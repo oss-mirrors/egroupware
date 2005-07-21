@@ -55,6 +55,11 @@
 			return $this->sessionData['activeFilter'];
 		}
 		
+		function getFilter($_filterID)
+		{
+			return $this->sessionData['filter'][$_filterID];
+		}
+		
 		function getFilterList()
 		{
 			return $this->sessionData['filter'];
@@ -108,18 +113,8 @@
 				$data['to']	= $_formData['to'];
 			if(!empty($_formData['subject']))
 				$data['subject']= $_formData['subject'];
-			if($_formData['filterActive'] == "true")
-			{
-				$data['filterActive']= "true";
-			}
 			
-			if(!is_array($this->sessionData['filter']))
-			{
-				print "<font color=\"red\">reset array</font><br>";
-				$this->sessionData['filter'] = array();
-			}
-
-			if($_filterID == '')
+			if($_filterID === '')
 			{
 				$this->sessionData['filter'][] = $data;
 			}

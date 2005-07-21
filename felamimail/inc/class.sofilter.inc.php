@@ -27,11 +27,12 @@
 		function sofilter()
 		{
 			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->db		= clone($GLOBALS['egw']->db);
 		}
 		
 		function saveFilter($_filterArray)
 		{
-			$GLOBALS['phpgw']->db->insert($this->filter_table,array(
+			$this->db->insert($this->filter_table,array(
 					'fmail_filter_data' => serialize($_filterArray)
 				),array(
 					'fmail_filter_accountid' => $this->accountid
@@ -42,14 +43,14 @@
 		
 		function restoreFilter()
 		{
-			$GLOBALS['phpgw']->db->select($this->filter_table,'fmail_filter_data',array(
+			$this->db->select($this->filter_table,'fmail_filter_data',array(
 					'fmail_filter_accountid' => $this->accountid
 				),__LINE__,__FILE__,False,False,'felamimail');
 			
 			
-			if ($GLOBALS['phpgw']->db->next_record())
+			if ($this->db->next_record())
 			{
-				$filter = unserialize($GLOBALS['phpgw']->db->f('fmail_filter_data'));
+				$filter = unserialize($this->db->f('fmail_filter_data'));
 				return $filter;
 			}
 		}

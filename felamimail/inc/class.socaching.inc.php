@@ -168,8 +168,11 @@
 		function getMessageCounter($_filter)
 		{
 			$where = $this->host_account_folder;
-			$filter = $this->getFilterSQL($_filter);
-			if ($filter) $where[] = $filter;
+			if($_filter)
+			{
+				$filter = $this->getFilterSQL($_filter);
+				$where[] = $filter;
+			}
 			
 			$this->db->select($this->cache_table,'count(*)',$where,__LINE__,__FILE__);
 			

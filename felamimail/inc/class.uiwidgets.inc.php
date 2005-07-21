@@ -150,7 +150,7 @@
 					$folder_icon = $folderImageDir."foldertree_folder.gif";
 				}
 
-				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,0,0,0,'$entryOptions');\n";
+				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,'folderClosed.gif',0,0,'$entryOptions');\n";
 			}
 
 			$folder_tree_new.= "

@@ -102,7 +102,7 @@
 		
 		// return the numbers of messages in cache currently
 		// but use the use filter
-		function getMessageCounter($_filter)
+		function getMessageCounter($_filter=FALSE)
 		{
 			return $this->socaching->getMessageCounter($_filter);
 		}

@@ -466,7 +466,11 @@
 				'manage_filter',
 				'msg_icon_sm',
 				'mail_find',
-				'new'
+				'new',
+				'start_kde',
+				'previous_kde',
+				'next_kde',
+				'finnish_kde',
 			);
 
 			foreach ($listOfImages as $image) 
@@ -477,18 +481,18 @@
 			$refreshTime = $preferences['refreshTime'];
 			if($refreshTime > 0)
 			{
-				$this->t->set_var('refreshTime',sprintf("aktiv = window.setTimeout( \"refresh()\", %s );",$refreshTime*60*1000));
+				$this->t->set_var('refreshTime',sprintf("aktiv = window.setInterval( \"refresh()\", %s );",$refreshTime*60*1000));
 			}
 			else
 			{
 				$this->t->set_var('refreshTime','');
 			}
-			// set the url to open when refreshing
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
-			);
-			$this->t->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			#// set the url to open when refreshing
+			#$linkData = array
+			#(
+			#	'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
+			#);
+			#$this->t->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			// define the sort defaults
 			$dateSort	= '0';
@@ -590,7 +594,7 @@
 			
 			// create the filter ui
 			$filterList = $bofilter->getFilterList();
-			$activeFilter = $bofilter->getActiveFilter();
+			$activeFilter = (isset($this->bofelamimail->sessionData['activeFilter'])?$this->bofelamimail->sessionData['activeFilter']:-1);
 			// -1 == no filter selected
 			if($activeFilter == -1)
 				$filterUI .= "<option value=\"-1\" selected>".lang('no filter')."</option>";

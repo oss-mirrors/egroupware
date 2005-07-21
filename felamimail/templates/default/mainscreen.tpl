@@ -11,8 +11,9 @@ function doLoad()
 
 function refresh()
 {
-	var Ziel = '{refresh_url}'
-	window.location.href = Ziel;
+	//var Ziel = '{refresh_url}'
+	//window.location.href = Ziel;
+	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
 }     
 
 function displayMessage(url) 
@@ -49,23 +50,21 @@ doLoad();
 			value = false;
 			checkedCounter = 0;
 		}
-		//alert(document.forms["messageList"].elements['msg[]'][10].checked);
- 		if (document.forms["messageList"].elements['msg[]'].constructor == '[NodeList]')
- 		{	
- 			for (var i = 0; i < document.forms["messageList"].elements['msg[]'].length; i++)
- 			{
- 				document.forms["messageList"].elements['msg[]'][i].checked = value;
- 			}
- 		}
- 		else
- 		{   
- 			document.forms["messageList"].elements['msg[]'].checked = value;
- 		} 
+		//alert(document.getElementsByTagName('input').length);
+		for (var i = 0; i < document.getElementsByTagName('input').length; i++)
+		{
+			if(document.getElementsByTagName('input')[i].name == 'msg[]')
+			{
+				//alert(document.getElementsByTagName('input')[i].name);
+				document.getElementsByTagName('input')[i].checked = value;
+			}
+		}
+
 		folderFunctions = document.getElementById('folderFunction');
 		if(inputBox.checked)
 		{
 			checkedCounter = maxMessages;
-			document.getElementsByTagName("input")[3].checked = "true";
+			//document.getElementsByTagName("input")[3].checked = "true";
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
 			var textNode = document.createTextNode('{lang_select_target_folder}');
@@ -75,7 +74,7 @@ doLoad();
 		else
 		{
 			checkedCounter = 0;
-			document.getElementsByTagName("input")[2].checked = "true";
+			//document.getElementsByTagName("input")[2].checked = "true";
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
 			var textNode = document.createTextNode('');
@@ -145,32 +144,18 @@ doLoad();
 -->
 
 <TABLE WIDTH="100%" CELLPADDING="2" CELLSPACING="0" BORDER="0">
-
-<!--		
-			<td align="LEFT" valign="center" width="5%">
-				<TT><SMALL>
-				
-				<SELECT NAME="mailbox" onChange="document.messageList.submit()" style="border-bottom : 1px solid; font-size:11px;border-left : 0px; border-right : 0px; border-top : 0px;">
-					{options_folder}
-					</SELECT></SMALL></TT>
-
-				</TD>
-				<td nowrap id="folderFunction" align="left" style="font-size:10px;">
-					{lang_change_folder}
-			</td>
--->
 	<TR>
-		<form name="searchForm" method="post" action="{url_search_settings}">
 		<TD BGCOLOR="{th_bg}" align="left"><nobr>
 			<img src="{mail_find}" border="0" name="{lang_quicksearch}" alt="{lang_quicksearch}" title="{lang_quicksearch}" width="16" onClick="javascript:document.searchForm.submit()">
-			<input class="input_text" type="text" size="25" name="quickSearch" value="{quicksearch}" onChange="javascript:document.searchForm.submit()" style="font-size:11px;">
+			<input class="input_text" type="text" size="25" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch(this.value);" style="font-size:11px;">
 		</td>
 		<TD BGCOLOR="{th_bg}" align="left"><nobr>
-			<input type=hidden name="changeFilter">
-			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;<select name="filter" onchange="javascript:document.searchForm.submit()" style="border : 1px solid silver; font-size:11px;">{filter_options}
+		<form name="searchForm" method="post" action="{url_search_settings}">
+			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;
+			<select name="filter" id="filter" onchange="javascript:extendedSearch(this)" style="border : 1px solid silver; font-size:11px;">
+				{filter_options}
 			</select>
 		</TD>
-		</form>
 		<TD BGCOLOR="{th_bg}" width="30%" align="center" style="white-space: nowrap;">
 			<b>{current_folder}</b>
 		</td>
@@ -214,7 +199,7 @@ doLoad();
 </table>
 
 <TABLE  width="100%" cellpadding="0" cellspacing="0" border="0">
-		<input type="hidden" name="folderAction" value="changeFolder">
+		<input type="hidden" name="folderAction" id="folderAction" value="changeFolder">
 		<noscript>
 			<NOBR><SMALL><INPUT TYPE=SUBMIT NAME="moveButton" VALUE="{lang_doit}"></SMALL></NOBR>
 		</noscript>
@@ -228,8 +213,14 @@ doLoad();
 		<td>
 			&nbsp;
 		</td>
-		<td align="center" style="font-size:10px">
-			&lt;-&nbsp;{link_previous}&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<span id="messageCounter">{message}</span>&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;{link_next}&nbsp;-&gt;&nbsp;{trash_link}
+		<td align="left" style="font-size:10px">
+			<span id="messageCounter">{message}</span>&nbsp;{trash_link}
+		</td>
+		<td align="right">
+			<input type="image" src="{start_kde}" border="0" alt="start" onClick="javascript:jumpStart(); return false;">
+			<input type="image" src="{previous_kde}" border="0" alt="skipPrevious" onClick="javascript:skipPrevious(); return false;">
+			<input type="image" src="{next_kde}" border="0" alt="skipForward" onClick="javascript:skipForward(); return false;">
+			<input type="image" src="{finnish_kde}" border="0" alt="end" onClick="javascript:jumpEnd(); return false;">
 		</td>
 	</tr>
 	<TR>
@@ -250,7 +241,7 @@ doLoad();
 		
 <!-- ToDo: ResizeVerticalRule -->		
 		
-		<TD valign="top">
+		<TD valign="top" colspan="2">
 
 			<!-- Start Header MessageList -->
 

@@ -54,7 +54,7 @@
 			
 			// FIXME: this->foldername seems to be unused
 			//$this->foldername	= $this->sessionData['mailbox'];
-			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
 			
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->sofelamimail	= CreateObject('felamimail.sofelamimail');
@@ -119,7 +119,7 @@
 		
 		function adminMenu()
 		{
- 			if ($GLOBALS['phpgw_info']['server']['account_repository'] == "ldap")
+ 			if ($GLOBALS['egw_info']['server']['account_repository'] == "ldap")
 			{
     		        	$data = Array
 		        	(
@@ -515,9 +515,15 @@
 			}
 		}
 		
+		#function microtime_float()
+		#{
+		#	list($usec, $sec) = explode(" ", microtime());
+		#	return ((float)$usec + (float)$sec);
+		#}
+		      
 		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
 		{
-			#printf ("this->bofelamimail->getHeaders start: %s<br>",date("H:i:s",mktime()));
+			#$start = $this->microtime_float();
 
 			$caching = CreateObject('felamimail.bocaching',
 					$this->mailPreferences['imapServerAddress'],
@@ -526,11 +532,15 @@
 			$bofilter = CreateObject('felamimail.bofilter');
 			$transformdate = CreateObject('felamimail.transformdate');
 
+			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
+
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->sessionData['mailbox'],3,$this->profileID);
 			$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
 			$this->reopen($this->sessionData['mailbox']);
 
 			$cachedStatus = $caching->getImapStatus();
+			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
+
 
 			// no data cached already?
 			// get all message informations from the imap server for this folder
@@ -631,9 +641,14 @@
 			// now let's do some clean up
 			// if we have more messages in the cache then in the imap box, some external 
 			// imap client deleted some messages. It's better to erase the messages from the cache.
-			$displayHeaders = $caching->getHeaders();
-			if (count($displayHeaders) > $status->messages)
+			#$displayHeaders = $caching->getHeaders();
+			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
+			$dbMessageCounter = $caching->getMessageCounter();
+			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
+			#print count($displayHeaders) .' - '.$messageCounter."<br>";
+			if ($dbMessageCounter > $status->messages)
 			{
+				$displayHeaders = $caching->getHeaders();
 				$messagesToRemove = count($displayHeaders) - $status->messages;
 				reset($displayHeaders);
 				for($i=0; $i<count($displayHeaders); $i++)
@@ -648,11 +663,16 @@
 				}
 			}
 
+			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
+
 			// now lets gets the important messages
-			$filterList = $bofilter->getFilterList();
-			$activeFilter = $bofilter->getActiveFilter();
-			$filter = $filterList[$activeFilter];
+			#$filterList = $bofilter->getFilterList();
+			#$activeFilter = $bofilter->getActiveFilter();
+			#$filter = $filterList[$activeFilter];
+			$filter = $bofilter->getFilter($this->sessionData['activeFilter']);
+			#_debug_array($filter);
 			$displayHeaders = $caching->getHeaders($_startMessage, $_numberOfMessages, $_sort, $filter);
+			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
 
 			$count=0;
 			$countDisplayHeaders = count($displayHeaders);
@@ -716,6 +736,8 @@
 				
 				$count++;
 			}
+
+			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
 
 			#printf ("this->bofelamimail->getHeaders done: %s<br>",date("H:i:s",mktime()));
 
@@ -1059,7 +1081,7 @@
 					$this->mailPreferences['imapServerAddress'],
 					$this->mailPreferences['username'],
 					$this->sessionData['mailbox']);
-			$deleteOptions  = $GLOBALS['phpgw_info']["user"]["preferences"]["felamimail"]["deleteOptions"];
+			$deleteOptions  = $GLOBALS['egw_info']["user"]["preferences"]["felamimail"]["deleteOptions"];
 
 			reset($_messageUID);
 			while(list($key, $value) = each($_messageUID))
