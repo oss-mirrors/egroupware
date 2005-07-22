@@ -3,6 +3,10 @@
 <!--
 var sURL = unescape(window.location.pathname);
 
+// some translations needed for javascript functions
+
+var movingMessages='{lang_moving_messages_to}';
+
 function doLoad()
 {
 	// the timeout value should be the same as in the "refresh" meta-tag
@@ -13,6 +17,7 @@ function refresh()
 {
 	//var Ziel = '{refresh_url}'
 	//window.location.href = Ziel;
+	resetMessageSelect();
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
 }     
 
@@ -119,38 +124,13 @@ doLoad();
 //-->
 </script>
 
-<!--
-<form name=searchFormOld method=post action="{url_search_settings}">
-<TABLE BORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="2">
-	<TR bgcolor="{row_off}">
-		<TD ALIGN="left" WIDTH="70%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">
--->
-			<!-- <a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp; -->
-<!--
-			{lang_quicksearch}
-			<input class="input_text" type="text" size="50" name="quickSearchOld" value="{quicksearch}"
-			onChange="javascript:document.searchFormOld.submit()" style="font-size:11px;">
-		</td>
-		<td align='right' width="30%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; ">
-			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>
-			<input type=hidden name="changeFilter">
-			<select name="filterOld" onchange="javascript:document.searchFormOld.submit()" style="border : 1px solid silver; font-size:11px;">
-				{filter_options}
-			</select>
-		</td>
-	</tr>
-</form>
-</table>
--->
-
 <TABLE WIDTH="100%" CELLPADDING="2" CELLSPACING="0" BORDER="0">
 	<TR>
 		<TD BGCOLOR="{th_bg}" align="left"><nobr>
 			<img src="{mail_find}" border="0" name="{lang_quicksearch}" alt="{lang_quicksearch}" title="{lang_quicksearch}" width="16" onClick="javascript:document.searchForm.submit()">
-			<input class="input_text" type="text" size="25" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch(this.value);" style="font-size:11px;">
+			<input class="input_text" type="text" size="25" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch(this.value);" onFocus="this.select();" style="font-size:11px;">
 		</td>
 		<TD BGCOLOR="{th_bg}" align="left"><nobr>
-		<form name="searchForm" method="post" action="{url_search_settings}">
 			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;
 			<select name="filter" id="filter" onchange="javascript:extendedSearch(this)" style="border : 1px solid silver; font-size:11px;">
 				{filter_options}
@@ -162,7 +142,6 @@ doLoad();
 		<td BGCOLOR="{th_bg}" width="30%" align="center" style="white-space: nowrap;">
 			{quota_display}
 		</td>
-		<FORM name="messageList" method="post" action="{url_change_folder}">
 		<TD BGCOLOR="{th_bg}" align="right" width="20%">
 			<TABLE BORDER="0" cellpadding="2" cellspacing=0>
 				<TR valign="middle" bgcolor="{th_bg}">
@@ -189,7 +168,7 @@ doLoad();
                                         <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>
                                         </td>
                                         <td width="12px" align="RIGHT" valign="center">
-						<input type="image" src="{trash}" name="mark_deleted" title="{desc_deleted}">
+						<input type="image" src="{trash}" name="mark_deleted" title="{desc_deleted}" onClick="javascript:deleteMessages(xajax.getFormValues('formMessageList'))">
 					</TD>
 				</TR>
 			</TABLE>
@@ -200,9 +179,6 @@ doLoad();
 
 <TABLE  width="100%" cellpadding="0" cellspacing="0" border="0">
 		<input type="hidden" name="folderAction" id="folderAction" value="changeFolder">
-		<noscript>
-			<NOBR><SMALL><INPUT TYPE=SUBMIT NAME="moveButton" VALUE="{lang_doit}"></SMALL></NOBR>
-		</noscript>
 		<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
 		<INPUT TYPE=hidden NAME="mailbox">
 
@@ -247,9 +223,9 @@ doLoad();
 
 			<table WIDTH=100% BORDER="0" CELLSPACING="0" style="table-layout:fixed;">
 				<tr>
-					<td width="22px" bgcolor="{th_bg}" align="center" class="text_small">
+					<!-- <td width="22px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;
-					</td>
+					</td>-->
 					<td width="20px" bgcolor="{th_bg}" align="center">
 					&nbsp;<input style="width:10px; height:10px; border:none" type="checkbox" id="messageCheckBox" onclick="selectAll(this)">
 					</td>
@@ -281,12 +257,14 @@ doLoad();
 
 
 			<!-- Start MessageList -->
-			
+
+			<form id="formMessageList">			
 			<div id="divMessageList" style="overflow:auto; height:460px; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
 				<table BORDER="0" style="width:98%; padding-left:2; table-layout: fixed;">
 					{header_rows}
 				</table>
 			</div>
+			</form>
 
 			<!-- End MessageList -->
 
@@ -329,9 +307,9 @@ doLoad();
 
 <!-- BEGIN header_row -->
 	<tr class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';">
-		<td class="{row_css_class}" width="20px" align="center">
+<!--		<td class="{row_css_class}" width="20px" align="center">
 			<img src="{msg_icon_sm}" border="0" title="">
-		</td>
+		</td> -->
 		<td width="20px" align="center" valign="top">
 			<input  style="width:10px; height:10px" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
 			onclick="toggleFolderRadio(this)" {row_selected}>

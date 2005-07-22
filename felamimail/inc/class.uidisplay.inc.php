@@ -54,6 +54,7 @@
 			
 			$this->mailbox		= $this->bofelamimail->sessionData['mailbox'];
 			$this->sort		= $this->bofelamimail->sessionData['sort'];
+			$this->activeFilter	= $activeFilter = (isset($this->bofelamimail->sessionData['activeFilter'])?$this->bofelamimail->sessionData['activeFilter']:-1);
 			
 			$this->uid		= $GLOBALS['HTTP_GET_VARS']['uid'];
 			
@@ -140,8 +141,7 @@
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid,$partID);
 			$filterList 	= $this->bofilter->getFilterList();
-			$activeFilter 	= $this->bofilter->getActiveFilter();
-			$filter 	= $filterList[$activeFilter];
+			$filter 	= $filterList[$this->activeFilter];
 			$nextMessage	= $this->bocaching->getNextMessage($this->uid, $this->sort, $filter);
 
 			$webserverURL	= $GLOBALS['phpgw_info']['server']['webserver_url'];

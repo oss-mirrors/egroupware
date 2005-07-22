@@ -1111,6 +1111,7 @@
 			$this->t->set_var('lang_select_target_folder',lang("Simply click the target-folder"));
 			$this->t->set_var('lang_open_all',lang("open all"));
 			$this->t->set_var('lang_close_all',lang("close all"));
+			$this->t->set_var('lang_moving_messages_to',lang('moving messages to'));
 		}
 	}
 ?>

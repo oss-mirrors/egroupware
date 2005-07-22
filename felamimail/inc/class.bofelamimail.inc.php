@@ -237,7 +237,9 @@
 			{
 				$deleteOptions = "remove_immediately";
 			}
-
+			
+			$this->reopen($this->sessionData['mailbox']);
+			
 			switch($deleteOptions)
 			{
 				case "move_to_trash":
@@ -254,7 +256,8 @@
 						}
 						else
 						{
-							print imap_last_error()."<br>";
+							//print imap_last_error()."<br>";
+							error_log(imap_last_error());
 						}
 					}
 					break;
@@ -1092,6 +1095,8 @@
 			#print $msglist."<br>";
 			
 			#print "destination folder($_folderName): ".$this->encodeFolderName($_foldername)."<br>";
+
+			$this->reopen($this->sessionData['mailbox']);
 			
 			if (imap_mail_move ($this->mbox, $msglist, $this->encodeFolderName($_foldername), CP_UID))
 			{
@@ -1108,7 +1113,7 @@
 			}
 			else
 			{
-				print imap_last_error()."<br>";
+				error_log(__FILE__ .' '.__LINE__.': '.imap_last_error());
 			}
 			
 		}

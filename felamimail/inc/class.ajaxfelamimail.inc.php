@@ -108,6 +108,13 @@
 			}
 		}
 		
+		function deleteMessages($_messageList)
+		{
+			$this->bofelamimail->deleteMessages($_messageList['msg']);
+
+			return $this->generateMessageList($this->sessionData['mailbox']);
+		}
+		
 		function extendedSearch($_filterID)
 		{
 			// start displaying at message 1
@@ -137,6 +144,9 @@
 			else
 				$response->addAssign("messageCounter", "innerHTML", lang('Viewing messages')." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage ".lang("total").')');
 			$response->addAssign("divMessageList", "innerHTML", $headerTable);
+
+			$response->addScript("tree.selectItem('".$_folderName."',false);");
+
 			return $response->getXML();
 		}
 		
@@ -199,6 +209,14 @@
 			$this->saveSessionData();
 			
 			return $this->generateMessageList($this->sessionData['mailbox']);
+		}
+		
+		function moveMessages($_folder, $_selectedMessages)
+		{
+			$this->bofelamimail->moveMessages($_folder, $_selectedMessages['msg']);
+
+			return $this->generateMessageList($this->sessionData['mailbox']);
+			
 		}
 
 		function quickSearch($_searchString)

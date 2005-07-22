@@ -153,8 +153,7 @@
 				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,'folderClosed.gif',0,0,'$entryOptions');\n";
 			}
 
-			$folder_tree_new.= "
-			</script>";
+			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$_selected');</script>";
 			
 			return $folder_tree_new;
 		}
@@ -354,7 +353,7 @@
 				
 				$linkData = array
 				(
-				'menuaction'    => 'addressbook.uiaddressbook.add_email',
+					'menuaction'    => 'addressbook.uiaddressbook.add_email',
 					'add_email'	=> urlencode($header['sender_address']),
 					'name'		=> urlencode($header['sender_name']),
 					'referer'	=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
