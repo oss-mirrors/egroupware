@@ -19,13 +19,15 @@
 		{
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
-			$this->bofelamimail->openConnection('',OP_HALFOPEN);
+			$this->bofelamimail->openConnection();
 
 			$this->sessionDataAjax	= $GLOBALS['egw']->session->appsession('ajax_session_data');
 			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data');
-			
+			error_log(print_r($this->sessionData,true));
 			if(!isset($this->sessionDataAjax['folderName']))
 				$this->sessionDataAjax['folderName'] = 'INBOX';
+
+			$this->bofelamimail->openConnection($this->sessionDataAjax['folderName']);
 		}
 		
 		function addACL($_accountName, $_aclData)
@@ -51,6 +53,31 @@
 				$response->addAssign("newSubFolder", "value", '');
 				return $response->getXML();
 			}
+		}
+		
+		function changeSorting($_sortBy)
+		{
+			$this->sessionData['startMessage']	= 1;
+
+			switch($_sortBy)
+			{
+				case 'date':
+					$this->sessionData['sort'] = ($this->sessionData['sort'] == 0?1:0);
+					break;
+				case 'from':
+					$this->sessionData['sort'] = ($this->sessionData['sort'] == 3?2:3);
+					break;
+				case 'size':
+					$this->sessionData['sort'] = ($this->sessionData['sort'] == 6?7:6);
+					break;
+				case 'subject':
+					$this->sessionData['sort'] = ($this->sessionData['sort'] == 5?4:5);
+					break;
+			}
+
+			$this->saveSessionData();
+
+			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 		
 		function createACLTable($_acl)
@@ -126,12 +153,19 @@
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
+		function flagMessages($_flag, $_messageList)
+		{
+			$this->bofelamimail->flagMessages($_flag, $_messageList['msg']);
+
+			return $this->generateMessageList($this->sessionData['mailbox']);
+		}
+		
 		function generateMessageList($_folderName)
 		{
 			$this->bofelamimail->restoreSessionData();
 			
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-			$headers = $this->bofelamimail->getHeaders($this->sessionData['startMessage'], $maxMessages, $this->sort);
+			$headers = $this->bofelamimail->getHeaders($this->sessionData['startMessage'], $maxMessages, $this->sessionData['sort']);
 			
 			$headerTable = $this->uiwidgets->messageTable($headers, $this->bofelamimail->isSentFolder($_folderName), TRUE);
 			
@@ -187,17 +221,16 @@
 		{
 			$bofilter =& CreateObject('felamimail.bofilter');
 			$caching =& CreateObject('felamimail.bocaching',
-																				$this->bofelamimail->mailPreferences['imapServerAddress'],
-																				$this->bofelamimail->mailPreferences['username'],
-																				$this->sessionData['mailbox']);
+				$this->bofelamimail->mailPreferences['imapServerAddress'],
+				$this->bofelamimail->mailPreferences['username'],
+				$this->sessionData['mailbox']);
+
 			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
 
 			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
 
-			$this->sessionData['startMessage']	+= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-			if($this->sessionData['startMessage'] > $lastPage)
-				$this->sessionData['startMessage'] = $lastPage;
-			
+			$this->sessionData['startMessage'] = $lastPage;
+
 			$this->saveSessionData();
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
@@ -248,7 +281,7 @@
 		
 		function refreshMessageList()
 		{
-			return $this->generateMessageList($_folderName);
+			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
 		function renameFolder($_oldName, $_newParent, $_newName)
@@ -267,15 +300,19 @@
 		{
 			$GLOBALS['egw']->session->appsession('ajax_session_data','',$this->sessionDataAjax);
 			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
+
+			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data');
+			error_log(__FILE__.' Line:'.__LINE__.': '.print_r($this->sessionData,true));
 		}
 		
 		function skipForward()
 		{
 			$bofilter =& CreateObject('felamimail.bofilter');
 			$caching =& CreateObject('felamimail.bocaching',
-																				$this->bofelamimail->mailPreferences['imapServerAddress'],
-																				$this->bofelamimail->mailPreferences['username'],
-																				$this->sessionData['mailbox']);
+				$this->bofelamimail->mailPreferences['imapServerAddress'],
+				$this->bofelamimail->mailPreferences['username'],
+				$this->sessionData['mailbox']);
+			
 			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
 
 			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;

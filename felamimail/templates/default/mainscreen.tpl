@@ -34,10 +34,11 @@ doLoad();
 <script type="text/javascript">
 <!--
 	var checkedCounter={checkedCounter}, aktiv;
-	var maxMessages = {maxMessages};
 	
 	function selectAll(inputBox)
 	{
+		maxMessages = 0;
+
 		if(aktiv)
 		{
 			// do not reload, while we try to select some messages
@@ -45,31 +46,21 @@ doLoad();
 			{refreshTime}
 		}
 
-		if(inputBox.checked)
-		{
-			value = true;
-			checkedCounter = maxMessages;
-		}
-		else
-		{
-			value = false;
-			checkedCounter = 0;
-		}
-		//alert(document.getElementsByTagName('input').length);
 		for (var i = 0; i < document.getElementsByTagName('input').length; i++)
 		{
 			if(document.getElementsByTagName('input')[i].name == 'msg[]')
 			{
 				//alert(document.getElementsByTagName('input')[i].name);
-				document.getElementsByTagName('input')[i].checked = value;
+				document.getElementsByTagName('input')[i].checked = inputBox.checked;
+				maxMessages++;
 			}
 		}
 
 		folderFunctions = document.getElementById('folderFunction');
+
 		if(inputBox.checked)
 		{
 			checkedCounter = maxMessages;
-			//document.getElementsByTagName("input")[3].checked = "true";
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
 			var textNode = document.createTextNode('{lang_select_target_folder}');
@@ -79,7 +70,6 @@ doLoad();
 		else
 		{
 			checkedCounter = 0;
-			//document.getElementsByTagName("input")[2].checked = "true";
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
 			var textNode = document.createTextNode('');
@@ -152,18 +142,18 @@ doLoad();
                                         </td>
                                         <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>				
 					<td width="12px" align="right" valign="center">
-						<input type="image" src="{read_small}" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16" onClick="document.messageList.submit()">
+						<input type="image" src="{read_small}" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16" onClick="javascript:flagMessages('read',xajax.getFormValues('formMessageList'))">
                                         </td>
                                         <td width="12px" align="left" valign="center">
-						<input type="image" src="{unread_small}" name="mark_unread" alt="title="{desc_unread}" title="{desc_unread}" width="16">
+						<input type="image" src="{unread_small}" name="mark_unread" alt="title="{desc_unread}" title="{desc_unread}" width="16" onClick="javascript:flagMessages('unread',xajax.getFormValues('formMessageList'))">
                                         </td>
                                         <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>
                                         
                                         <td width="12px" align="right" valign="center">
-						<input type="image" src="{unread_flagged_small}" name="mark_flagged" alt="{desc_important}" title="{desc_important}" width="16">
+						<input type="image" src="{unread_flagged_small}" name="mark_flagged" alt="{desc_important}" title="{desc_important}" width="16" onClick="javascript:flagMessages('flagged',xajax.getFormValues('formMessageList'))">
                                         </td>
                                         <td width="12px" align="left" valign="center">
-						<input type="image" src="{read_flagged_small}" name="mark_unflagged" alt="{desc_unimportant}" title="{desc_unimportant}">
+						<input type="image" src="{read_flagged_small}" name="mark_unflagged" alt="{desc_unimportant}" title="{desc_unimportant}" onClick="javascript:flagMessages('unflagged',xajax.getFormValues('formMessageList'))">
                                         </td>
                                         <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>
                                         </td>
@@ -230,10 +220,10 @@ doLoad();
 					&nbsp;<input style="width:10px; height:10px; border:none" type="checkbox" id="messageCheckBox" onclick="selectAll(this)">
 					</td>
 					<td width="120px" bgcolor="{th_bg}" align="left" class="{css_class_from}">
-						&nbsp;<a href="{url_sort_from}">{lang_from}</a>
+						&nbsp;<a href="javascript:changeSorting('from');">{lang_from}</a>
 					</td>
 					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
-						&nbsp;&nbsp;<a href="{url_sort_date}">{lang_date}</a>
+						&nbsp;&nbsp;<a href="javascript:changeSorting('date');">{lang_date}</a>
 					</td>
 					<td width="70px" bgcolor="{th_bg}" align="center" class="text_small">
 						{lang_status}
@@ -242,10 +232,10 @@ doLoad();
 						&nbsp;
 					</td>
 					<td bgcolor="{th_bg}" align="left" class="{css_class_subject}">
-						&nbsp;&nbsp;&nbsp;<a href="{url_sort_subject}">{lang_subject}</a>
+						&nbsp;&nbsp;&nbsp;<a href="javascript:changeSorting('subject');">{lang_subject}</a>
 					</td>
 					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
-						<a href="{url_sort_size}">{lang_size}</a>&nbsp;
+						<a href="javascript:changeSorting('size');">{lang_size}</a>&nbsp;
 					</td>
 					<td width="20px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
 						&nbsp;

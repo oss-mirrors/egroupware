@@ -1,3 +1,12 @@
+function changeSorting(_sort)
+{
+	resetMessageSelect();
+
+	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Change sorting ...</span>';
+	document.getElementById('divMessageList').innerHTML = '';
+	xajax_doXMLHTTP("felamimail.ajaxfelamimail.changeSorting",_sort);
+}
+
 function deleteMessages(_messageList)
 {
 	resetMessageSelect();
@@ -52,6 +61,15 @@ function extendedSearch(_selectBox)
 	document.getElementById('quickSearch').value = '';
 
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.extendedSearch',_selectBox.options[_selectBox.selectedIndex].value);
+}
+
+function flagMessages(_flag, _messageList)
+{
+	resetMessageSelect();
+
+	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Updating message status ...</span>';
+	document.getElementById('divMessageList').innerHTML = '';
+	xajax_doXMLHTTP("felamimail.ajaxfelamimail.flagMessages",_flag,_messageList);
 }
 
 function resetMessageSelect()

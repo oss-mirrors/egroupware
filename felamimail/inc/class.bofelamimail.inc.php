@@ -51,7 +51,7 @@
 		function bofelamimail($_displayCharset='iso-8859-1')
 		{
 			$this->restoreSessionData();
-			
+
 			// FIXME: this->foldername seems to be unused
 			//$this->foldername	= $this->sessionData['mailbox'];
 			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
@@ -318,6 +318,7 @@
 					return $_string;
 			}
 		}
+
 		function flagMessages($_flag, $_messageUID)
 		{
 			reset($_messageUID);
@@ -420,12 +421,12 @@
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			if($folderInfo = imap_getsubscribed($this->mbox,$mailboxString,$mailboxString))
 			{
-				$delimiter = $folderInfo[0]->delimiter;
+				$delimiter = @$folderInfo[0]->delimiter;
 				$retValue['subscribed'] = true;
 			}
 			elseif($folderInfo = imap_getmailboxes($this->mbox,$mailboxString,$mailboxString))
 			{
-				$delimiter = $folderInfo[0]->delimiter;
+				$delimiter = @$folderInfo[0]->delimiter;
 				$retValue['subscribed'] = false;
 			}
 			else
@@ -434,7 +435,7 @@
 				return false;
 			}
 			
-			$retValue['shortName'] = array_pop(explode($delimiter, $_folderName));
+			$retValue['shortName'] = array_pop(explode(($delimiter?$delimiter:'.'), $_folderName));
 			
 			$folderStatus = imap_status($this->mbox,$mailboxString,SA_ALL);
 			if($folderStatus)
@@ -484,6 +485,8 @@
 				$otherFolders = array();
 				while (list($key, $val) = each($list))
 				{ 
+					if(!isset($val->delimiter))
+						$val->delimiter = '.';
 					$folderNameIMAP = $this->decodeFolderName(preg_replace("/{.*}/",'',$val->name));
 					if($_getCounters == true)
 					{
@@ -708,7 +711,7 @@
 				// date from the future
 				if($timestamp > $timestampNow)
 				{
-					$retValue['header'][$count]['date'] = date("Y-m-d",$timestamp);
+					$retValue['header'][$count]['date'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],$timestamp);
 				}
 				// email from today, show only time
 				elseif (date("Y-m-d") == date("Y-m-d",$timestamp))
@@ -724,7 +727,7 @@
 				}
 				else
 				{
-					$retValue['header'][$count]['date'] = date("Y-m-d",$timestamp);
+					$retValue['header'][$count]['date'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],$timestamp);
 				}
 				$retValue['header'][$count]['id'] = $header[0]->msgno;
 				$retValue['header'][$count]['uid'] = $displayHeaders[$i]['uid'];

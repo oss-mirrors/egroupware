@@ -287,17 +287,9 @@
 				$this->t->set_var('sender_name',$sender_name);
 				$this->t->set_var('full_address',$full_address);
 			
-				#if($_GET["select_all"] == "select_all")
-				#{
-				#		$this->t->set_var('row_selected',"checked");
-				#}
-
 				$this->t->set_var('message_counter',$i);
 				$this->t->set_var('message_uid',$header['uid']);
-				// date format according to preferences, header[date] is iso YYYY-MM-DD
-				$date = explode('-',$header['date']);
-				$header['date'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],
-					mktime(12,0,0,$date[1],$date[2],$date[0]));
+
 				$this->t->set_var('date',$header['date']);
 				$this->t->set_var('size',$this->show_readable_size($header['size']));
 
