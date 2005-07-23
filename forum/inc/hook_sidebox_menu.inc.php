@@ -11,21 +11,21 @@
 
 	/* $Id$ */
 {
-	if($GLOBALS['phpgw_info']['user']['apps']['preferences'])
+	if($GLOBALS['egw_info']['user']['apps']['preferences'])
 	{
 		$menu_title = lang('Preferences');
 		$file = Array(
-			'Preferences'		=> $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=forum'),
+			'Preferences' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=forum')
 		);
 		display_sidebox($appname,$menu_title,$file);
-	}	
+	}
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+	if ($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
-        $menu_title = 'Administration';
-        $file = Array(
-			'Forum Administration' => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index')
-        );
+		$menu_title = 'Administration';
+		$file = Array(
+			'Forum Administration' => $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index')
+		);
 		display_sidebox($appname,$menu_title,$file);
 	}
 }

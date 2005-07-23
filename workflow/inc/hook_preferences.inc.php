@@ -10,11 +10,13 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
+  /* $Id$ */
+
 {
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = array(
-		'Preferences'			=> $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=workflow'),
+		'Preferences' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname)
 	);
 
 //	$workflowPreferences = ExecMethod('workflow.bopreferences.getPreferences');

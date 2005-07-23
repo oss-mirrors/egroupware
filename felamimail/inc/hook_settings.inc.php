@@ -23,20 +23,19 @@
 		#}
 		$folderList[$folderName] = $folderName;
 	}
-	
+
 	$this->bofelamimail->closeConnection();
-	
+
 	$config = CreateObject('phpgwapi.config','felamimail');
 	$config->read_repository();
 	$felamimailConfig = $config->config_data;
 	#_debug_array($felamimailConfig);
 	unset($config);
-	
+
 	#$boemailadmin = CreateObject('emailadmin.bo');
 	#$methodData = array($felamimailConfig['profileID']);
 	#_debug_array($methodData);
 	$felamimailConfig = ExecMethod('emailadmin.bo.getProfile',$felamimailConfig['profileID']);
-	                                                                                                
 
 	$refreshTime = array(
 		'0' => lang('disabled'),
@@ -54,9 +53,6 @@
 		'20' => '20',
 		'30' => '30'
 	);
-	create_select_box('Refresh time in minutes','refreshTime',$refreshTime);
-
-	create_notify('email signature','email_sig',3,50);
 
 	$sortOrder = array(
 		'0' => lang('date(newest first)'),
@@ -68,68 +64,181 @@
 		'7' => lang('size(0->...)'),
 		'6' => lang('size(...->0)')
 	);
-	create_select_box('Default sorting order','sortOrder',$sortOrder);
 
 	$selectOptions = array(
 		'0' => lang('no'),
 		'1' => lang('yes'),
 		'2' => lang('yes') . ' - ' . lang('small view')
 	);
-	create_select_box('show new messages on main screen','mainscreen_showmail',$selectOptions);
 
 	$selectOptions = array(
 		'0' => lang('no'),
 		'1' => lang('yes')
 	);
-	create_select_box('display message in new window','message_newwindow',$selectOptions);
 
 	$deleteOptions = array(
-		'move_to_trash'		=> lang('move to trash'),
-		'mark_as_deleted'	=> lang('mark as deleted'),
-		'remove_immediately'	=> lang('remove immediately')
+		'move_to_trash'   => lang('move to trash'),
+		'mark_as_deleted' => lang('mark as deleted'),
+		'remove_immediately' => lang('remove immediately')
 	);
-	create_select_box('when deleting messages','deleteOptions',$deleteOptions);
 
 	$htmlOptions = array(
-		'never_display'		=> lang('never display html emails'),
-		'only_if_no_text'	=> lang('display only when no plain text is available'),
-		'always_display'	=> lang('always show html emails')
+		'never_display'   => lang('never display html emails'),
+		'only_if_no_text' => lang('display only when no plain text is available'),
+		'always_display'  => lang('always show html emails')
 	);
-	create_select_box('display of html emails','htmlOptions',$htmlOptions);
 
 	$trashOptions = array_merge(
 		array(
-		'none' => lang("Don't use Trash")),
+			'none' => lang("Don't use Trash")
+		),
 		$folderList
 	);
-	create_select_box('trash folder','trashFolder',$trashOptions);
 
 	$sentOptions = array_merge(
 		array(
-		'none' => lang("Don't use Sent")),
+			'none' => lang("Don't use Sent")
+		),
 		$folderList
 	);
-	create_select_box('sent folder','sentFolder',$sentOptions);
 
-	if ($felamimailConfig['userDefinedAccounts'] == 'yes')
+	/* Settings array for this app */
+	$GLOBALS['settings'] = array(
+		'refreshTime' => array(
+			'type'   => 'select',
+			'label'  => 'Refresh time in minutes',
+			'name'   => 'refreshTime',
+			'values' => $refreshTime,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'email_sig' => array(
+			'type'   => 'notify',
+			'label'  => 'email signature',
+			'name'   => 'email_sig',
+			'size'   => 3,
+			'maxsize' => 50,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'sortOrder' => array(
+			'type'   => 'select',
+			'label'  => 'Default sorting order',
+			'name'   => 'sortOrder',
+			'values' => $sortOrder,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'mainscreen_showmail' => array(
+			'type'   => 'select',
+			'label'  => 'show new messages on main screen',
+			'name'   => 'mainscreen_showmail',
+			'values' => $selectOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'message_newwindow' => array(
+			'type'   => 'select',
+			'label'  => 'display message in new window',
+			'name'   => 'message_newwindow',
+			'values' => $selectOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'deleteOptions' => array(
+			'type'   => 'select',
+			'label'  => 'when deleting messages',
+			'name'   => 'deleteOptions',
+			'values' => $deleteOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'htmlOptions' => array(
+			'type'   => 'select',
+			'label'  => 'display of html emails',
+			'name'   => 'htmlOptions',
+			'values' => $htmlOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'trashFolder' => array(
+			'type'   => 'select',
+			'label'  => 'trash folder',
+			'name'   => 'trashFolder',
+			'values' => $trashOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'sentFolder' => array(
+			'type'   => 'select',
+			'label'  => 'sent folder',
+			'name'   => 'sentFolder',
+			'values' => $sentOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		)
+	);
+
+	if($felamimailConfig['userDefinedAccounts'] == 'yes')
 	{
 		$selectOptions = array(
-			'no' => lang('no'),
+			'no'  => lang('no'),
 			'yes' => lang('yes')
 		);
-		create_select_box('use custom settings','use_custom_settings',$selectOptions);
-		
-		create_input_box('username','username','','',40);
-		create_password_box('password','key','','',40);
-		create_input_box('EMail Address','emailAddress','','',40);
-		create_input_box('IMAP Server Address','imapServerAddress','','',40);
+		$GLOBALS['settings']['use_custom_settings'] = array(
+			'type'   => 'select',
+			'label'  => 'use custom settings',
+			'name'   => 'use_custom_settings',
+			'values' => $selectOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		);
+
+		$GLOBALS['settings']['username'] = array(
+			'type'   => 'input',
+			'label'  => 'username',
+			'name'   => 'username',
+			'size'   => 40,
+			'xmlrpc' => True,
+			'admin'  => False
+		);
+		$GLOBALS['settings']['key'] = array(
+			'type'   => 'password',
+			'label'  => 'password',
+			'name'   => 'key',
+			'size'   => 40,
+			'xmlrpc' => True,
+			'admin'  => False
+		);
+		$GLOBALS['settings']['emailAddress'] = array(
+			'type'   => 'input',
+			'label'  => 'EMail Address',
+			'name'   => 'emailAddress',
+			'size'   => 40,
+			'xmlrpc' => True,
+			'admin'  => False
+		);
+		$GLOBALS['settings']['imapServerAddress'] = array(
+			'type'   => 'input',
+			'label'  => 'IMAP Server Address',
+			'name'   => 'imapServerAddress',
+			'size'   => 40,
+			'xmlrpc' => True,
+			'admin'  => False
+		);
 
 		$selectOptions = array(
-			'no'			=> lang('IMAP'),
-			'yes'			=> lang('IMAPS Encryption only'),
-			'imaps-encr-auth'	=> lang('IMAPS Authentication')
+			'no'  => lang('IMAP'),
+			'yes' => lang('IMAPS Encryption only'),
+			'imaps-encr-auth' => lang('IMAPS Authentication')
 		);
-		create_select_box('IMAP Server type','imapServerMode',$selectOptions);
-
+		$GLOBALS['settings']['imapServerMode'] = array(
+			'type'   => 'select',
+			'label'  => 'IMAP Server type',
+			'name'   => 'imapServerMode',
+			'values' => $selectOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		);
 	}
 ?>

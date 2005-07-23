@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * eGroupWare                                                             *
-  * http://www.egroupware.org                                              *
+  * eGroupWare                                                               *
+  * http://www.egroupware.org                                                *
   * Written by Joseph Engo <jengo@phpgroupware.org>                          *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *
@@ -14,13 +14,13 @@
 {
 	$title = $appname;
 	$file = Array(
-		'E-Mail Preferences'	=> $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uipreferences.preferences')),
-		'Extra E-Mail Accounts'	=> $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uipreferences.ex_accounts_list')),
-		'E-Mail Filters'	=> $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uifilters.filters_list')),
-		'E-Mail Clear Cache'	=> $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.boaction.clearcache'))
+		'E-Mail Preferences'    => $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uipreferences.preferences')),
+		'Extra E-Mail Accounts' => $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uipreferences.ex_accounts_list')),
+		'E-Mail Filters'     => $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uifilters.filters_list')),
+		'E-Mail Clear Cache' => $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.boaction.clearcache'))
 	);
 	// relfbecker recommends NOT using a version test for xslt check
-	if (is_object($GLOBALS['phpgw']->xslttpl))
+	if(is_object($GLOBALS['phpgw']->xslttpl))
 	{
 		$phpgw_before_xslt = False;
 	}
@@ -29,7 +29,7 @@
 		$phpgw_before_xslt = True;
 	}
 	// now display according to the version of the template system in use
-	if ($phpgw_before_xslt == True)
+	if($phpgw_before_xslt == True)
 	{
 		// the is the OLD, pre-xslt way to display pref items
 		display_section($appname,$title,$file);

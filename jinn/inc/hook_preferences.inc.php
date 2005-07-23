@@ -10,10 +10,11 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-	{
-		$title = $appname;
-		$file = Array(
-			'Preferences' => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname='.$appname)
-		);
-		display_section($appname,$title,$file);
-	}
+
+{
+	$title = $appname;
+	$file = Array(
+		'Preferences' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname)
+	);
+	display_section($appname,$title,$file);
+}

@@ -12,7 +12,7 @@
 	/* $Id$ */
 {
 	display_section('forum','Forum',array(
-		'Preferences' => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=forum')
+		'Preferences' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname)
 	));
 }
 ?>

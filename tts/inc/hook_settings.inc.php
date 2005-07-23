@@ -11,36 +11,58 @@
 
   /* $Id$ */
 
-  $yes_and_no = array(
-    'True'  => lang('Yes'),
-    'False' => lang('No')
-  );
-  create_select_box('show new/updated tickets on main screen','mainscreen_show_new_updated',$yes_and_no);
+	$yes_and_no = array(
+		'True'  => lang('Yes'),
+		'False' => lang('No')
+	);
 
-  ///rem by Josip
-  ///$acc = CreateObject('phpgwapi.accounts');
-  ///$group_list = $acc->get_list('groups');
-  ///while (list($key,$entry) = each($group_list))
-  ///{
-  ///  $_groups[$entry['account_id']] = $entry['account_lid'];
-  ///}
-  ///create_select_box('Default group','groupdefault',$_groups);
+	///rem by Josip
+	///$acc = CreateObject('phpgwapi.accounts');
+	///$group_list = $acc->get_list('groups');
+	///while (list($key,$entry) = each($group_list))
+	///{
+	///  $_groups[$entry['account_id']] = $entry['account_lid'];
+	///}
+	///create_select_box('Default group','groupdefault',$_groups);
 
-  ///$account_list = $acc->get_list('accounts');
-  ///while (list($key,$entry) = each($account_list))
-  ///{
-  ///  $_accounts[$entry['account_id']] = $entry['account_lid'];
-  ///}
-  ///create_select_box('Default assign to','assigntodefault',$_accounts);
+	///$account_list = $acc->get_list('accounts');
+	///while (list($key,$entry) = each($account_list))
+	///{
+	///  $_accounts[$entry['account_id']] = $entry['account_lid'];
+	///}
+	///create_select_box('Default assign to','assigntodefault',$_accounts);
 
-  // Choose the correct priority to display
-  $priority_comment[1]  = ' - ' . lang('Lowest'); 
-  $priority_comment[5]  = ' - ' . lang('Medium'); 
-  $priority_comment[10] = ' - ' . lang('Highest'); 
-  for ($i=1; $i<=10; $i++)
-  {
-    $priority[$i] = $i . $priority_comment[$i];
-  }
-  create_select_box('Default Priority','prioritydefault',$priority);
+	// Choose the correct priority to display
+	$priority_comment[1]  = ' - ' . lang('Lowest'); 
+	$priority_comment[5]  = ' - ' . lang('Medium'); 
+	$priority_comment[10] = ' - ' . lang('Highest'); 
+	for ($i=1; $i<=10; $i++)
+	{
+		$priority[$i] = $i . $priority_comment[$i];
+	}
 
-  create_input_box('Refresh every (seconds)','refreshinterval');
+	$GLOBALS['settings'] = array(
+		'mainscreen_show_new_updated' => array(
+			'type'   => 'select',
+			'label'  => 'show new/updated tickets on main screen',
+			'name'   => 'mainscreen_show_new_updated',
+			'values' => $yes_and_no,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'prioritydefault' => array(
+			'type'   => 'select',
+			'label'  => 'Default Priority',
+			'name'   => 'prioritydefault',
+			'values' => $priority,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'refreshinterval' => array(
+			'type'    => 'input',
+			'label'   => 'Refresh every (seconds)',
+			'name'    => 'refreshinterval',
+			'xmlrpc' => True,
+			'admin'  => False
+		)
+	);

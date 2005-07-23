@@ -15,4 +15,13 @@
 		'threads'   => lang('Threaded'),
 		'collapsed' => lang('collapsed')
 	);
-	create_select_box('Default view','default_view',$default_view);
+	$GLOBALS['settings'] = array(
+		'default_view' => array(
+			'type'   => 'select',
+			'label'  => 'Default view',
+			'name'   => 'default_view',
+			'values' => $default_view,
+			'xmlrpc' => True,
+			'admin'  => False
+		)
+	);

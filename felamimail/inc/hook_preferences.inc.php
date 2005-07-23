@@ -15,8 +15,8 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = array(
-		'Preferences'			=> $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=felamimail'),
-		'Manage Folders'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')	
+		'Preferences'    => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname),
+		'Manage Folders' => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
 	);
 
 	$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
@@ -24,10 +24,10 @@
 	{
 		$sieveLinkData = array
 		(
-			'menuaction'	=> 'felamimail.uisieve.listScripts',
-			'action'	=> 'updateFilter'
+			'menuaction' => 'felamimail.uisieve.listScripts',
+			'action'     => 'updateFilter'
 		);
-		$file['Manage EMailfilter / Vacation']	= $GLOBALS['phpgw']->link('/index.php',$sieveLinkData);
+		$file['Manage EMailfilter / Vacation'] = $GLOBALS['phpgw']->link('/index.php',$sieveLinkData);
 	}
 //Do not modify below this line
 	display_section($appname,$title,$file);

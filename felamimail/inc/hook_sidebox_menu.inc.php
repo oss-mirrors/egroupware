@@ -14,7 +14,7 @@
 	/* $Id$ */
 
  /*
-	This hookfile is for generating an app-specific side menu used in the idots 
+	This hookfile is for generating an app-specific side menu used in the idots
 	template set.
 
 	$menu_title speaks for itself
@@ -51,10 +51,10 @@
 		#_debug_array($mailPreferences);
 		$menu_title = lang('Preferences');
 		$file = array(
-			'Preferences'       	  => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=felamimail'),
-			'Manage Folders'	  => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')	
+			'Preferences'    => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
+			'Manage Folders'	  => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
 		);
-		
+
 		if($mailPreferences['imapEnableSieve'] == true)
 		{
 			$linkData = array
@@ -71,7 +71,7 @@
 			);
 			$file['Vacation']	= $GLOBALS['phpgw']->link('/index.php',$linkData);
 		}
-		
+
 		display_sidebox($appname,$menu_title,$file);
 	}
 
