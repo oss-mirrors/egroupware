@@ -27,30 +27,30 @@
 
 		function uicompose()
 		{
-			$this->displayCharset   = $GLOBALS['phpgw']->translation->charset();
-			if (!isset($GLOBALS['HTTP_POST_VARS']['composeid']) && !isset($GLOBALS['HTTP_GET_VARS']['composeid']))
+			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
+			if (!isset($_POST['composeid']) && !isset($_GET['composeid']))
 			{
 				// create new compose session
-				$this->bocompose   = CreateObject('felamimail.bocompose','',$this->displayCharset);
+				$this->bocompose   =& CreateObject('felamimail.bocompose','',$this->displayCharset);
 				$this->composeID = $this->bocompose->getComposeID();
 			}
 			else
 			{
 				// reuse existing compose session
-				if (isset($GLOBALS['HTTP_POST_VARS']['composeid']))
-					$this->composeID = $GLOBALS['HTTP_POST_VARS']['composeid'];
+				if (isset($_POST['composeid']))
+					$this->composeID = $_POST['composeid'];
 				else
-					$this->composeID = $GLOBALS['HTTP_GET_VARS']['composeid'];
-				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID,$this->displayCharset);
+					$this->composeID = $_GET['composeid'];
+				$this->bocompose   =& CreateObject('felamimail.bocompose',$this->composeID,$this->displayCharset);
 			}			
-			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->mailPreferences  = ExecMethod('felamimail.bopreferences.getPreferences');
 
 			$this->t->set_unknowns('remove');
 			
-			$this->rowColor[0] = $GLOBALS['phpgw_info']["theme"]["bg01"];
-			$this->rowColor[1] = $GLOBALS['phpgw_info']["theme"]["bg02"];
+			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
+			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 
 
 		}
@@ -64,25 +64,25 @@
 
 		function action()
 		{
-			$formData['to'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['to']);
-			$formData['cc'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['cc']);
-			$formData['bcc'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['bcc']);
-			$formData['reply_to'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['reply_to']);
-			$formData['subject'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['subject']);
-			$formData['body'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['body']);
-			$formData['priority'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['priority']);
-			$formData['signature'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['signature']);
-			$formData['mailbox']	= $GLOBALS['HTTP_GET_VARS']['mailbox'];
+			$formData['to'] 	= $this->bocompose->stripSlashes($_POST['to']);
+			$formData['cc'] 	= $this->bocompose->stripSlashes($_POST['cc']);
+			$formData['bcc'] 	= $this->bocompose->stripSlashes($_POST['bcc']);
+			$formData['reply_to'] 	= $this->bocompose->stripSlashes($_POST['reply_to']);
+			$formData['subject'] 	= $this->bocompose->stripSlashes($_POST['subject']);
+			$formData['body'] 	= $this->bocompose->stripSlashes($_POST['body']);
+			$formData['priority'] 	= $this->bocompose->stripSlashes($_POST['priority']);
+			$formData['signature'] 	= $this->bocompose->stripSlashes($_POST['signature']);
+			$formData['mailbox']	= $_GET['mailbox'];
 
-			if (isset($GLOBALS['HTTP_POST_VARS']['send'])) 
+			if (isset($_POST['send'])) 
 			{
 				$action="send";
 			}
-			elseif (isset($GLOBALS['HTTP_POST_VARS']['addfile'])) 
+			elseif (isset($_POST['addfile'])) 
 			{
 				$action="addfile";
 			}
-			elseif (isset($GLOBALS['HTTP_POST_VARS']['removefile']))
+			elseif (isset($_POST['removefile']))
 			{
 				$action="removefile";
 			}
@@ -99,7 +99,7 @@
 					break;
 
 				case "removefile":
-					$formData['removeAttachments']	= $GLOBALS['HTTP_POST_VARS']['attachment'];
+					$formData['removeAttachments']	= $_POST['attachment'];
 					$this->bocompose->removeAttachment($formData);
 					$this->compose();
 					break;
@@ -113,12 +113,12 @@
 					
 					#$linkData = array
 					#(
-					#	'mailbox'	=> $GLOBALS['HTTP_GET_VARS']['mailbox'],
+					#	'mailbox'	=> $_GET['mailbox'],
 					#	'startMessage'	=> '1'
 					#);
-					#$link = $GLOBALS['phpgw']->link('/felamimail/index.php',$linkData);
-					#$GLOBALS['phpgw']->redirect($link);
-					#$GLOBALS['phpgw']->common->phpgw_exit();
+					#$link = $GLOBALS['egw']->link('/felamimail/index.php',$linkData);
+					#$GLOBALS['egw']->redirect($link);
+					#$GLOBALS['egw']->common->egw_exit();
 					if($this->mailPreferences['messageNewWindow'])
 					{
 						print "<script type=\"text/javascript\">window.close();</script>";
@@ -140,7 +140,7 @@
 			#_debug_array($preferences);
 			
 			// is the to address set already?
-			if (!empty($GLOBALS['HTTP_GET_VARS']['send_to']))
+			if (!empty($_GET['send_to']))
 			{
 				$sessionData['to'] = base64_decode($_GET['send_to']);
 			}
@@ -156,7 +156,7 @@
 			
 			$this->translate();
 			
-			$this->t->set_var("link_addressbook",$GLOBALS['phpgw']->link('/felamimail/addressbook.php'));
+			$this->t->set_var("link_addressbook",$GLOBALS['egw']->link('/felamimail/addressbook.php'));
 			$this->t->set_var("focusElement",$_focusElement);
 
 			$linkData = array
@@ -169,7 +169,7 @@
 			}
 			else
 			{    
-				$this->t->set_var("link_message_list",$GLOBALS['phpgw']->link('/felamimail/index.php',$linkData));
+				$this->t->set_var("link_message_list",$GLOBALS['egw']->link('/felamimail/index.php',$linkData));
 			}
 
 			$linkData = array
@@ -177,7 +177,7 @@
 				'menuaction'	=> 'felamimail.uicompose.action',
 				'composeid'	=> $this->composeID
 			);
-			$this->t->set_var("link_action",$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var("link_action",$GLOBALS['egw']->link('/index.php',$linkData));
 			$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
 
 			// check for some error messages from last posting attempt
@@ -198,7 +198,7 @@
 			$this->t->set_var("bcc",@htmlentities($sessionData['bcc'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("reply_to",@htmlentities($sessionData['reply_to'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("subject",@htmlentities($sessionData['subject'],ENT_QUOTES,$this->displayCharset));
-			$this->t->set_var('addressbookImage',$GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','users'));
+			$this->t->set_var('addressbookImage',$GLOBALS['egw']->common->image('phpgwapi/templates/phpgw_website','users'));
 			$this->t->pparse("out","header");
 
 			// body
@@ -235,14 +235,14 @@
 
 		function display_app_header()
 		{
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			if(!$this->mailPreferences['messageNewWindow'])
 				echo parse_navbar();
 		}
 		
 		function forward()
 		{
-			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
+			$replyID = $_GET['reply_id'];
 			$partID  = $_GET['part_id'];
 
 			if (!empty($replyID))
@@ -268,7 +268,7 @@
 		
 		function replyAll()
 		{
-			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
+			$replyID = $_GET['reply_id'];
 			$partID	 = $_GET['part_id'];
 			if (!empty($replyID))
 			{
@@ -300,10 +300,10 @@
 			$this->t->set_var("lang_low",lang('low'));
 			$this->t->set_var("lang_signature",lang('signature'));
 			
-			$this->t->set_var("th_bg",$GLOBALS['phpgw_info']["theme"]["th_bg"]);
-			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);
-			$this->t->set_var("bg02",$GLOBALS['phpgw_info']["theme"]["bg02"]);
-			$this->t->set_var("bg03",$GLOBALS['phpgw_info']["theme"]["bg03"]);
+			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
+			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
+			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);
+			$this->t->set_var("bg03",$GLOBALS['egw_info']["theme"]["bg03"]);
 		}
 }
 

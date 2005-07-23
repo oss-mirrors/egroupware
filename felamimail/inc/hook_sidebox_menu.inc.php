@@ -23,7 +23,7 @@
 	display_sidebox can be called as much as you like
  */
 
-	$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
+	$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
 	$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 	$linkData = array
 	(
@@ -32,27 +32,27 @@
 	if($preferences['messageNewWindow'] == 1)
 	{
 		$file = Array(
-			'Compose'   => "javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');"
+			'Compose'   => "javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."');"
 		);
 	}
 	else
 	{
 		$file = Array(
-			'Compose'   => $GLOBALS['phpgw']->link('/index.php',$linkData)
+			'Compose'   => $GLOBALS['egw']->link('/index.php',$linkData)
 			#'_NewLine_'=>'', // give a newline
-			#'INBOX'=>$GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen')
+			#'INBOX'=>$GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen')
 		);
 	}
 	display_sidebox($appname,$menu_title,$file);
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['preferences'])
+	if ($GLOBALS['egw_info']['user']['apps']['preferences'])
 	{
 		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 		#_debug_array($mailPreferences);
 		$menu_title = lang('Preferences');
 		$file = array(
 			'Preferences'    => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
-			'Manage Folders'	  => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
+			'Manage Folders'	  => $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
 		);
 
 		if($mailPreferences['imapEnableSieve'] == true)
@@ -62,24 +62,24 @@
 				'menuaction'	=> 'felamimail.uisieve.editScript',
 				'editmode'	=> 'filter'
 			);
-			$file['EMailfilter']	= $GLOBALS['phpgw']->link('/index.php',$linkData);
+			$file['EMailfilter']	= $GLOBALS['egw']->link('/index.php',$linkData);
 
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uisieve.editScript',
 				'editmode'	=> 'vacation'
 			);
-			$file['Vacation']	= $GLOBALS['phpgw']->link('/index.php',$linkData);
+			$file['Vacation']	= $GLOBALS['egw']->link('/index.php',$linkData);
 		}
 
 		display_sidebox($appname,$menu_title,$file);
 	}
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+	if ($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
 		$menu_title = lang('Administration');
 		$file = Array(
-			'Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uifelamimail.hookAdmin')
+			'Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.hookAdmin')
 		);
 		display_sidebox($appname,$menu_title,$file);
 	}

@@ -17,7 +17,7 @@
 	{
 		function sofelamimail()
 		{
-			#$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			#$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 		}
 
 		function fetchheader($_header)

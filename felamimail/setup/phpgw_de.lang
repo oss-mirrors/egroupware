@@ -17,14 +17,16 @@ address book search	felamimail	de	Adressbuch durchsuchen
 after message body	felamimail	de	nach dem Editorfenster
 all address books	felamimail	de	Alle Adressbücher
 all folders	felamimail	de	Alle Ordner
+all of	felamimail	de	mit allen
+allways a new window	felamimail	de	jede Mail in einem neuen Fenster
 always show html emails	felamimail	de	HTML Emails mmer anzeigen
+any of	felamimail	de	mit einem
 anyone	felamimail	de	jeder
 as a subfolder of	felamimail	de	als Unterordner von
 attach	felamimail	de	Anlagen
 attachments	felamimail	de	Anlagen
 auto refresh folder list	felamimail	de	Ordnerliste automatisch aktualisieren
 back to folder	felamimail	de	zurück zu Ordner
-bad reque	felamimail	de	
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	de	Eingehende Nachrichten können, basierend auf angegebenen Kriterien, unterschiedliche Hintergrundfarben in der Nachrichtenliste haben. Das kann helfen einfach zu unterscheiden woher die Nachricht kommt, speziell für Mailinglisten.
 bcc	felamimail	de	Blindkopie
 before headers	felamimail	de	vor den Kopfzeilen
@@ -33,9 +35,11 @@ body part	felamimail	de	Hauptteil
 cc	felamimail	de	Kopie
 change folder	felamimail	de	Ordner wechseln
 chars	felamimail	de	Zeichen
+check message against next rule also	felamimail	de	Nachricht auch gegen nächste Regel prüfen
 checkbox	felamimail	de	Auswahlbox
 click here to log back in.	felamimail	de	Hier klicken um sich wieder einzulogen.
 click here to return to %1	felamimail	de	Hier klicken um zu %1 zurückzukehren
+close all	felamimail	de	Schließe alle
 close this page	felamimail	de	Diese Seite schließen
 close window	felamimail	de	Fenster schließen
 color	felamimail	de	Farbe
@@ -58,11 +62,13 @@ dark magenta	felamimail	de	Dunkelrot
 dark yellow	felamimail	de	Braun
 date(newest first)	felamimail	de	Datum (neue zuerst)
 date(oldest first)	felamimail	de	Datum (alte zuerst)
+days	felamimail	de	Tage
 deactivate filter	felamimail	de	Filter deaktivieren
 deactivate script	felamimail	de	Script abschalten
 default sorting order	felamimail	de	Standard Sortierreihenfolge
 delete all	felamimail	de	alle löschen
 delete folder	felamimail	de	Ordner löschen
+delete script	felamimail	de	Skript löschen
 delete selected	felamimail	de	ausgewählte Nachrichten löschen
 delete selected attachments	felamimail	de	ausgewählte Anlagen löschen
 delete selected messages	felamimail	de	ausgewählte Nachrichten löschen
@@ -70,6 +76,7 @@ deleted	felamimail	de	gelöscht
 deleted folder successfully!	felamimail	de	Ordner erfolgreich gelöscht
 disable	felamimail	de	Deaktivieren
 disabled	felamimail	de	Deaktiviert
+discard message	felamimail	de	Nachricht verwerfen
 display message in new window	felamimail	de	Nachricht in neuem Fenster anzeigen
 display of html emails	felamimail	de	HTML EMails anzeigen
 display only when no plain text is available	felamimail	de	nur anzeigen wenn kein Plain Text vorhanden ist
@@ -92,10 +99,12 @@ e-mail folders	felamimail	de	E-Mail Ordner
 edit filter	felamimail	de	Filter bearbeiten
 edit rule	felamimail	de	Regel bearbeiten
 edit selected	felamimail	de	Ausgewählte bearbeiten
+edit vacation settings	felamimail	de	Abwesenheitsnotiz bearbeiten
 email account name	felamimail	de	EMailkonto Benutzername
 email address	felamimail	de	EMailadresse
 email password	felamimail	de	EMailkonto Passwort
 email signature	felamimail	de	EMail Signatur
+emailfilter	felamimail	de	EMailfilter
 empty trash	felamimail	de	Trash-Ordner leeren
 enable	felamimail	de	Aktivieren
 enable signature	felamimail	de	Signature aktivieren
@@ -109,12 +118,14 @@ enter your smtp server port	admin	de	Port Adresse des SMTP Servers
 error	felamimail	de	FEHLER
 error connecting to imap serv	felamimail	de	Konnte den IMAP Server (Mailserver) nicht erreichen
 error opening	felamimail	de	Fehler beim Öffnen
+every	felamimail	de	alle
 expunge	felamimail	de	Endgültig löschen
 felamimail	common	de	FeLaMiMail
 file into	felamimail	de	verschiebe nach
 files	felamimail	de	Dateien
 filter active	felamimail	de	Filter aktiv
 filter name	felamimail	de	Filtername
+filter rules	felamimail	de	Filter Regeln
 first name	felamimail	de	Vorname
 flagged	felamimail	de	wichtig
 flags	felamimail	de	Markierungen
@@ -132,13 +143,16 @@ follow	felamimail	de	folgen
 for mail to be send - not functional yet	felamimail	de	Für zu sendende Mail - funktioniert noch nicht
 for received mail	felamimail	de	Für empfangene Mail
 forward	felamimail	de	Weiterleiten
+forward to address	felamimail	de	weiterleiten an Adresse
 found	felamimail	de	Gefunden
 fri	felamimail	de	Fr
 from	felamimail	de	Von
 from(a->z)	felamimail	de	Von (A->Z)
 from(z->a)	felamimail	de	Von (Z->A)
 full name	felamimail	de	Vollständiger Name
+greater than	felamimail	de	größer als
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	de	Schauen Sie mal bei <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> vorbei, um mehr über Squirrelmail zu lernen.
+header lines	felamimail	de	Kopfzeilen
 hide header	felamimail	de	Kopfzeilen verbergen
 high	common	de	hoch
 html	felamimail	de	HTML
@@ -147,6 +161,11 @@ icons only	felamimail	de	nur Icons
 identifying name	felamimail	de	Identifizierender Name
 if	felamimail	de	Wenn
 if applicable	felamimail	de	wenn bekannt
+if from contains	felamimail	de	wenn Von enthält
+if mail header	felamimail	de	wenn EMail Header enthält
+if message size	felamimail	de	wenn Nachrichtengröße
+if subject contains	felamimail	de	wenn Betreff enthält
+if to contains	felamimail	de	wenn An enthält
 illegal folder name.  please select a different name.	felamimail	de	Ilegaler Ordnername. Bitte wählen Sie einen anderen Namen
 imap	felamimail	de	IMAP
 imap emailclient for egroupware	common	de	IMAP-EMailclient für EGroupware
@@ -156,109 +175,84 @@ imap server type	felamimail	de	IMAP-Servertyp
 imaps authentication	felamimail	de	IMAPS Authetifizierung
 imaps encryption only	felamimail	de	IMAPS nur Verschlüsselung
 in	felamimail	de	In
-in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	de	
-in the center	felamimail	de	
 index order	felamimail	de	Spaltenanordnung
 index_what_is	felamimail	de	Konfigurieren Sie hier die Anordnung der Spalten
 info	felamimail	de	Info
 invalid user name or password	felamimail	de	Falscher Benutzername oder Pasword
 javascript	felamimail	de	JavaScript
+keep a copy of the message in your inbox	felamimail	de	eine Kopie der Nachricht in der INBOX behalten
+kilobytes	felamimail	de	Kilobytes
 language	felamimail	de	Sprache
 last name	felamimail	de	Nachname
 left	felamimail	de	Links
 less	felamimail	de	kleiner
-let this folder contain subfolders	felamimail	de	
+less than	felamimail	de	kleiner als
 light blue	felamimail	de	Hellblau
-light cyan	felamimail	de	
 light gray	felamimail	de	Hellgrau
 light green	felamimail	de	Hellgrün
-light magenta	felamimail	de	
-light yellow	felamimail	de	
 list all	felamimail	de	Alle anzeigen
 location of buttons when composing	felamimail	de	Ort der Knöpfe beim EMail schreiben
-location of folder list	felamimail	de	
 low	common	de	niedrig
 mail folder(uw-maildir)	felamimail	de	EMailaordner(UW-Maildir)
 mail server	felamimail	de	Emailserver
-mail server login type	admin	de	
 mail server type	felamimail	de	EMailservertyp
 mail settings	felamimail	de	EMail Einstellungen
 mainmessage	felamimail	de	Hauptnachricht
-manage folders	felamimail	de	Ordner verwalten
-manage sieve	felamimail	de	Sieve Scripte verwalten
+manage emailfilter / vacation	preferences	de	Verwalten der EMailfilter und Abwesenheitsnotiz
+manage folders	common	de	Ordner verwalten
+manage sieve	common	de	Sieve Scripte verwalten
 mark as deleted	felamimail	de	als gelöscht markieren
 mark messages as	felamimail	de	ausgewählte Nachrichten markieren als
 mark selected as flagged	felamimail	de	ausgewählte Nachrichten markieren
 mark selected as read	felamimail	de	ausgewählte Nachrichten als gelesen markieren
 mark selected as unflagged	felamimail	de	ausgewählte Nachrichten nicht markieren
 mark selected as unread	felamimail	de	ausgewählte Nachrichten als ungelesen markieren
-match	felamimail	de	
-matches	felamimail	de	
-matches regexp	felamimail	de	
-medium gray	felamimail	de	
+match	felamimail	de	Übereinstimmung
 message highlighting	felamimail	de	Nachrichtenhervorhebung
 message list	felamimail	de	Nachrichtenliste
 messages	felamimail	de	Nachrichten
-minute	felamimail	de	
-minutes	felamimail	de	
 mon	felamimail	de	Mo
-more	felamimail	de	
 move	felamimail	de	verschieben
 move messages	felamimail	de	Nachrichten verschieben
 move selected to	felamimail	de	verschieben nach
 move to trash	felamimail	de	in den Trash-Ordner verschieben
-must be unique	felamimail	de	
 name	felamimail	de	Name
 never display html emails	felamimail	de	niemals anzeigen
-new	felamimail	de	Neu
+new	common	de	Neu
 new filter	felamimail	de	neuer Filter
 next	felamimail	de	nächste
 next message	felamimail	de	nächste Nachricht
-nickname	felamimail	de	
 no filter	felamimail	de	kein Filter
 no folders found	felamimail	de	Keine Ordner gefunden
 no folders were found to subscribe to!	felamimail	de	Keine Order gefunden, die bestellt werden können!
 no folders were found to unsubscribe from!	felamimail	de	Keine Order gefunden, die abbestellt werden können!
 no highlighting is defined	felamimail	de	keine Hervorhebung definiert
 no messages were selected.	felamimail	de	Es wurde keine NAchricht ausgewählt
-no next message	felamimail	de	
-no notification	felamimail	de	
-no personal address book is defined. contact administrator.	felamimail	de	
-no persons matching your search was found	felamimail	de	
 no previous message	felamimail	de	Keine vorherige Nachricht vorhanden
 no quota set	felamimail	de	keine Quota aktiviert
 no valid emailprofile selected!!	felamimail	de	Sie haben kein gültiges Email Profil ausgewählt!
 non-standard	felamimail	de	nicht Standard
 none	felamimail	de	kein
 normal	common	de	normal
-number of messages to index	felamimail	de	
 on behalf of	felamimail	de	im Auftrag von
 only inbox	felamimail	de	Nur Posteingang
+only one window	felamimail	de	nur ein einziges Fenster
 only unseen	felamimail	de	Nur nicht gesehene
+open all	felamimail	de	Öffne alle
 options	felamimail	de	Optionen
 organisation	felamimail	de	Organisation
 organization	felamimail	de	Organisation
 organization name	admin	de	Name der Organisation
 original message	felamimail	de	Originalnachricht
-oth	felamimail	de	
 participants	felamimail	de	Teilnehmer
 personal information	felamimail	de	persönliche Informationen
-posting	felamimail	de	
-preference file %1 not found. exiting abnormally	felamimail	de	
-preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	de	
 previous	felamimail	de	vorherige
 previous message	felamimail	de	vorherige Nachricht
 print it	felamimail	de	EMail drucken
 print this page	felamimail	de	Diese Seite drucken
-purge	felamimail	de	
 quicksearch	felamimail	de	Schnellsuche
 read	felamimail	de	gelesen
-read da	felamimail	de	
-reading	felamimail	de	
-reason giv	felamimail	de	
 recent	felamimail	de	neu
-refresh folder list	felamimail	de	
-refresh page	felamimail	de	
 refresh time in minutes	felamimail	de	Aktualisierungsinterval in Minuten
 remove	felamimail	de	entfernen
 remove immediately	felamimail	de	sofort löschen
@@ -271,27 +265,24 @@ reply	felamimail	de	Antworten
 reply all	felamimail	de	allen Antworten
 reply to	felamimail	de	Antwort an
 replyto	felamimail	de	Antwort an
+respond to mail sent to	felamimail	de	Anworte auf EMails die gesendet werden an
 return	felamimail	de	Zurück
 return to options page	felamimail	de	zurück zu Einstellungen
 right	felamimail	de	Rechts
 rule	felamimail	de	Regel
-running squirrelmail version %1 (c) 1999-2000.	felamimail	de	
-same window - not functional yet	felamimail	de	
 sat	felamimail	de	Sa
 save	felamimail	de	Speichern
+script name	felamimail	de	Skriptname
+script status	felamimail	de	Skriptstatus
 search	felamimail	de	Suchen
 search for	felamimail	de	Suchen nach
-seconds	felamimail	de	
 select	felamimail	de	Auswählen
 select all	felamimail	de	alle auswählen
 select emailprofile	felamimail	de	EMailprofil auswählen
-select home email address	felamimail	de	
-select work email address	felamimail	de	
-select your mail server type	admin	de	
+select folder	felamimail	de	Ordner auswählen
 send	felamimail	de	Senden
-sent fold	felamimail	de	
+send a reject message	felamimail	de	Ablehnungsemail senden
 sent folder	felamimail	de	Ordner für gesendete Nachrichten
-server respond	felamimail	de	
 show header	felamimail	de	Kopfzeilen anzeigen
 show new messages on main screen	felamimail	de	neue Nachrichten auf der Startseite anzeigen
 sieve settings	admin	de	Sieve Einstellungen
@@ -302,12 +293,7 @@ size	felamimail	de	Größe
 size of editor window	felamimail	de	Größe des Editorfensters
 size(...->0)	felamimail	de	Größe(...->0)
 size(0->...)	felamimail	de	Größe(0->...)
-small view	felamimail	de	
 smtp settings	admin	de	SMTP Einstellungen
-some or all of the help documents are not present!	felamimail	de	
-source	felamimail	de	
-special folder options	felamimail	de	
-squirrelmail	felamimail	de	
 status	felamimail	de	Status
 subject	felamimail	de	Betreff
 subject(a->z)	felamimail	de	Betreff(A->Z)
@@ -316,61 +302,43 @@ submit	felamimail	de	Absenden
 subscribe	felamimail	de	Bestellen
 subscribed	felamimail	de	abonniert
 subscribed successfully!	felamimail	de	Erfolgreich abonniert
-successfully saved display preferences!	felamimail	de	
-successfully saved folder preferences!	felamimail	de	
-successfully saved personal information!	felamimail	de	
 sun	felamimail	de	So
-switch current folder to	felamimail	de	
 table of contents	felamimail	de	Inhaltsverzeichnis
 text only	felamimail	de	Nur Text
 the connection to the imap server failed!!	felamimail	de	Die Verbindung zum IMAP Server ist fehlgeschlagen
-the help has not been translated to %1.  it will be displayed in english instead.	felamimail	de	
-the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	de	
-the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	de	
-theme	felamimail	de	
 then	felamimail	de	dann
-these settings change the way your folders are displayed and manipulated.	felamimail	de	
-this contains personal information about yourself such as your name, your email address, etc.	felamimail	de	
 this folder is empty	felamimail	de	DIESER ORDNER IST LEER
-this php has no imap support compiled in!!	felamimail	de	
-this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	de	
 thu	felamimail	de	Do
 to	felamimail	de	An
-to the left	felamimail	de	
-to the right	felamimail	de	
-top	felamimail	de	
-translation location	felamimail	de	
 translation preferences	felamimail	de	Übersetzungseinstellungen
 translation server	felamimail	de	Übersetzungsserver
 trash fold	felamimail	de	Abfall Ordner
 trash folder	felamimail	de	Ordner für gelöschte Nachrichten
 tue	felamimail	de	Di
 type	felamimail	de	Typ
-unable to list addresses from %1	felamimail	de	
 undelivered message	felamimail	de	Unzustellbare Nachricht
 unflagged	felamimail	de	unwichtig
 unknown err	felamimail	de	Unbekannter Fehler
 unknown error	felamimail	de	Unbekannter Fehler
 unknown sender	felamimail	de	Unbekannter Absender
 unknown user or password incorrect.	felamimail	de	Unbekannter Benutzer oder das Password ist falsch
-unread	felamimail	de	ungelesen
+unread	common	de	ungelesen
 unseen	felamimail	de	Ungelesen
-unseen and total	felamimail	de	
-unseen message notification	felamimail	de	
-unseen message notification type	felamimail	de	
 unselect all	felamimail	de	keine auswählen
 unsubscribe	felamimail	de	Abbestellen
 unsubscribed	felamimail	de	abbestellt
 unsubscribed successfully!	felamimail	de	Erfolgreich abbestellt
 up	felamimail	de	hoch
-update address	felamimail	de	
 use a signature	felamimail	de	Signatur benutzen
 use a signature?	felamimail	de	Eine Signatur benutzen?
 use addresses	felamimail	de	Adresse benutzen
 use custom settings	felamimail	de	benutze angepaßte Einstellungen
 use javascript or html addressbook?	felamimail	de	JavaScript oder HTML Adressbuch benutzen
+use regular expressions	felamimail	de	reguläre Ausdrücke verwenden
 use smtp auth	admin	de	SMTP Auth benutzen
 users can define their own emailaccounts	admin	de	Anwender können ihre eigenen Konten definieren
+vacation	felamimail	de	Abwesenheitsnotiz
+vacation notice	felamimail	de	Abwesenheitsnotiz
 view full header	felamimail	de	alle Kopfzeilen anzeigen
 view message	felamimail	de	zeige Nachricht
 viewing a text attachment	felamimail	de	zeige eine Textanlage
@@ -380,48 +348,8 @@ viewing messages	felamimail	de	zeige Nachrichten
 wed	felamimail	de	Mi
 welcome to %1's webmail system	felamimail	de	Willkommen beim %! Webmail System
 when deleting messages	felamimail	de	wenn Nachrichten gelöscht werden
-white	felamimail	de	
-width of folder list	felamimail	de	
+with message	felamimail	de	mit folgender Nachricht
 wrap incoming text at	felamimail	de	Text umbrechen nach
 writing	felamimail	de	schreiben
 wrote	felamimail	de	schrieb
-you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	de	
-you can only edit one address at the time	felamimail	de	
 you must login first.	felamimail	de	Sie müssen sich zuerst anmelden
-you need a valid user and password to access this page!	felamimail	de	
-your search failed with the following error(s)	felamimail	de	
-vacation notice	felamimail	de	Abwesenheitsnotiz
-respond to mail sent to	felamimail	de	Anworte auf EMails die gesendet werden an
-every	felamimail	de	alle
-days	felamimail	de	Tage
-with message	felamimail	de	mit folgender Nachricht
-filter rules	felamimail	de	Filter Regeln
-open all	felamimail	de	Öffne alle
-close all	felamimail	de	Schließe alle
-EMailfilter	felamimail	de	EMailfilter
-Vacation	felamimail	de	Abwesenheitsnotiz
-edit vacation settings	felamimail	de	Abwesenheitsnotiz bearbeiten
-script name	felamimail	de	Skriptname
-script status	felamimail	de	Skriptstatus
-delete script	felamimail	de	Skript löschen
-Manage Folders	preferences	de	Ordner verwalten
-Manage EMailfilter / Vacation	preferences	de	Verwalten der EMailfilter und Abwesenheitsnotiz
-Header Lines	felamimail	de	Kopfzeilen
-if from contains	felamimail	de	wenn Von enthält
-if to contains	felamimail	de	wenn An enthält
-if subject contains	felamimail	de	wenn Betreff enthält
-if mail header	felamimail	de	wenn EMail Header enthält
-forward to address	felamimail	de	weiterleiten an Adresse
-send a reject message	felamimail	de	Ablehnungsemail senden
-discard message	felamimail	de	Nachricht verwerfen
-select folder	felamimail	de	Ordner auswählen
-if message size	felamimail	de	wenn Nachrichtengröße
-less than	felamimail	de	kleiner als
-greater than	felamimail	de	größer als
-kilobytes	felamimail	de	Kilobytes
-check message against next rule also	felamimail	de	Nachricht auch gegen nächste Regel prüfen
-keep a copy of the message in your inbox	felamimail	de	eine Kopie der Nachricht in der INBOX behalten
-use regular expressions	felamimail	de	reguläre Ausdrücke verwenden
-match	felamimail	de	Übereinstimmung
-all of	felamimail	de	mit allen
-any of	felamimail	de	mit einem

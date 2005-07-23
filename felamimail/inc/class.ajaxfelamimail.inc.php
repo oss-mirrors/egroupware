@@ -17,8 +17,8 @@
 	{
 		function ajaxfelamimail()
 		{
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
-			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
+			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
 			$this->bofelamimail->openConnection('',OP_HALFOPEN);
 
 			$this->sessionDataAjax	= $GLOBALS['egw']->session->appsession('ajax_session_data');
@@ -34,7 +34,7 @@
 			{
 				$acl = implode('',(array)$_aclData['acl']);
 				$data = $this->bofelamimail->addACL($this->sessionDataAjax['folderName'], $_accountName, $acl);
-				#$response = new xajaxResponse();
+				#$response =& new xajaxResponse();
 				#$response->addScript("window.close();");
 				#$response->addAssign("accountName", "value", $this->sessionDataAjax['folderName'].'-'.$_accountName.'-'.$acl);
 				#return $response->getXML();
@@ -46,7 +46,7 @@
 		{
 			if($this->bofelamimail->imap_createmailbox($_parentFolder.'.'.$_newSubFolder))
 			{
-				$response = new xajaxResponse();
+				$response =& new xajaxResponse();
 				$response->addScript("tree.insertNewItem('$_parentFolder','$_parentFolder.$_newSubFolder','$_newSubFolder',onNodeSelect,0,0,0,'CHILD,CHECKED,SELECT,CALL');");
 				$response->addAssign("newSubFolder", "value", '');
 				return $response->getXML();
@@ -91,7 +91,7 @@
 				
 				$folderACL = $this->bofelamimail->getIMAPACL($this->sessionDataAjax['folderName']);
 				
-				$response = new xajaxResponse();
+				$response =& new xajaxResponse();
 				$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
 				return $response->getXML();
 			}
@@ -101,7 +101,7 @@
 		{
 			if($this->bofelamimail->imap_deletemailbox($_folderName))
 			{
-				$response = new xajaxResponse();
+				$response =& new xajaxResponse();
 				$response->addScript("tree.deleteItem('$_folderName',1);");
 				#$response->addAssign("newSubFolder", "value", '');
 				return $response->getXML();
@@ -130,12 +130,12 @@
 		{
 			$this->bofelamimail->restoreSessionData();
 			
-			$maxMessages = $GLOBALS['phpgw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			$headers = $this->bofelamimail->getHeaders($this->sessionData['startMessage'], $maxMessages, $this->sort);
 			
 			$headerTable = $this->uiwidgets->messageTable($headers, $this->bofelamimail->isSentFolder($_folderName), TRUE);
 			
-			$response = new xajaxResponse();
+			$response =& new xajaxResponse();
 			$firstMessage = (int)$headers['info']['first'];
 			$lastMessage  = (int)$headers['info']['last'];
 			$totalMessage = (int)$headers['info']['total'];
@@ -159,7 +159,7 @@
 				
 				$folderACL = $this->bofelamimail->getIMAPACL($_folderName);
 				
-				$response = new xajaxResponse();
+				$response =& new xajaxResponse();
 				$response->addAssign("newMailboxName", "value", $folderStatus['shortName']);
 				$response->addAssign("folderName", "innerHTML", $_folderName);
 				$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
@@ -185,16 +185,16 @@
 		
 		function jumpEnd()
 		{
-			$bofilter = CreateObject('felamimail.bofilter');
-			$caching = CreateObject('felamimail.bocaching',
-                                        $this->bofelamimail->mailPreferences['imapServerAddress'],
-                                        $this->bofelamimail->mailPreferences['username'],
-                                        $this->sessionData['mailbox']);
+			$bofilter =& CreateObject('felamimail.bofilter');
+			$caching =& CreateObject('felamimail.bocaching',
+																				$this->bofelamimail->mailPreferences['imapServerAddress'],
+																				$this->bofelamimail->mailPreferences['username'],
+																				$this->sessionData['mailbox']);
 			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
 
-			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['phpgw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
+			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
 
-			$this->sessionData['startMessage']	+= $GLOBALS['phpgw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$this->sessionData['startMessage']	+= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			if($this->sessionData['startMessage'] > $lastPage)
 				$this->sessionData['startMessage'] = $lastPage;
 			
@@ -222,7 +222,7 @@
 		function quickSearch($_searchString)
 		{
 			// save the filter
-			$bofilter		= CreateObject('felamimail.bofilter');
+			$bofilter		=& CreateObject('felamimail.bofilter');
 
 			$filter['filterName']	= lang('Quicksearch');
 			$filter['from']		= $_searchString;
@@ -237,7 +237,7 @@
 			else
 				$this->sessionData['activeFilter']	= -1;
 
-			#$response = new xajaxResponse();
+			#$response =& new xajaxResponse();
 			#$response->addScript("document.getElementById('quickSearch').select();");
 			#return $response->getXML();
 			$this->saveSessionData();
@@ -256,7 +256,7 @@
 			$newName = $_newParent.'.'.$_newName;
 			if($this->bofelamimail->imap_renamemailbox($_oldName, $newName))
 			{
-				$response = new xajaxResponse();
+				$response =& new xajaxResponse();
 				$response->addScript("tree.deleteItem('$_oldName',0);");
 				$response->addScript("tree.insertNewItem('$_newParent','$newName','$_newName',onNodeSelect,0,0,0,'CHILD,CHECKED,SELECT,CALL');");
 				return $response->getXML();
@@ -271,16 +271,16 @@
 		
 		function skipForward()
 		{
-			$bofilter = CreateObject('felamimail.bofilter');
-			$caching = CreateObject('felamimail.bocaching',
-                                        $this->bofelamimail->mailPreferences['imapServerAddress'],
-                                        $this->bofelamimail->mailPreferences['username'],
-                                        $this->sessionData['mailbox']);
+			$bofilter =& CreateObject('felamimail.bofilter');
+			$caching =& CreateObject('felamimail.bocaching',
+																				$this->bofelamimail->mailPreferences['imapServerAddress'],
+																				$this->bofelamimail->mailPreferences['username'],
+																				$this->sessionData['mailbox']);
 			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
 
-			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['phpgw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
+			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
 
-			$this->sessionData['startMessage']	+= $GLOBALS['phpgw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$this->sessionData['startMessage']	+= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			if($this->sessionData['startMessage'] > $lastPage)
 				$this->sessionData['startMessage'] = $lastPage;
 			$this->saveSessionData();
@@ -290,7 +290,7 @@
 		
 		function skipPrevious()
 		{
-			$this->sessionData['startMessage']	-= $GLOBALS['phpgw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$this->sessionData['startMessage']	-= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			if($this->sessionData['startMessage'] < 1)
 				$this->sessionData['startMessage'] = 1;
 			$this->saveSessionData();
@@ -302,7 +302,7 @@
 		{
 			$folderACL = $this->bofelamimail->getIMAPACL($this->sessionDataAjax['folderName']);
 			
-			$response = new xajaxResponse();
+			$response =& new xajaxResponse();
 			$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
 			return $response->getXML();
 		}
@@ -311,7 +311,7 @@
 		{
 			$this->bofelamimail->subscribe($_folderName,($_status == '1'?'subscribe':'unsubscribe'));
 
-			#$response = new xajaxResponse();
+			#$response =& new xajaxResponse();
 			#$response->addAssign("folderName", "innerHTML", $_status);
 			#return $response->getXML();
 			
@@ -330,19 +330,19 @@
 		function updateSingleACL($_accountName, $_aclType, $_aclStatus)
 		{
 			$data = $this->bofelamimail->updateSingleACL($this->sessionDataAjax['folderName'], $_accountName, $_aclType, $_aclStatus);			
-			#$response = new xajaxResponse();
+			#$response =& new xajaxResponse();
 			#$response->addAssign("newMailboxName", "value", $_accountName.' '.$_aclType.' '.$_aclStatus.' '.$data);
 			#return $response->getXML();
 		}
 		
 		function xajaxFolderInfo($_formValues)
 		{
-			$response = new xajaxResponse();
-                        $response->addAssign("field1", "value", $_formValues['num1']);
-                        $response->addAssign("field2", "value", $_formValues['num2']);
-                        $response->addAssign("field3", "value", $_formValues['num1'] * $_formValues['num2']);
+			$response =& new xajaxResponse();
+												$response->addAssign("field1", "value", $_formValues['num1']);
+												$response->addAssign("field2", "value", $_formValues['num2']);
+												$response->addAssign("field3", "value", $_formValues['num1'] * $_formValues['num2']);
 
-                        return $response->getXML();
+												return $response->getXML();
 		}
 	}
 ?>

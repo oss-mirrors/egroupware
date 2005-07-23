@@ -26,26 +26,26 @@
 		{
 			
 			// get posted variables
-			$this->urlMailbox	= urldecode($GLOBALS['HTTP_GET_VARS']['mailbox']);
-			$this->startMessage	= $GLOBALS['HTTP_GET_VARS']['startMessage'];
-			$this->sort		= $GLOBALS['HTTP_GET_VARS']['sort'];
+			$this->urlMailbox	= urldecode($_GET['mailbox']);
+			$this->startMessage	= $_GET['startMessage'];
+			$this->sort		= $_GET['sort'];
 			
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->urlMailbox);
-			$this->bofilter		= CreateObject('felamimail.bofilter');
+			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->urlMailbox);
+			$this->bofilter		=& CreateObject('felamimail.bofilter');
 			$this->sessionData	= $this->bofelamimail->sessionData;
 
-			$this->t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->t->set_unknowns('remove');
 			
-			$this->rowColor[0] = $GLOBALS['phpgw_info']["theme"]["bg01"];
-			$this->rowColor[1] = $GLOBALS['phpgw_info']["theme"]["bg02"];
+			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
+			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 
 		}
 		
 		function display_app_header()
 		{
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 		}
 
@@ -62,18 +62,18 @@
 			// translate most of the parts
 			$this->translate();
 			
-			switch($GLOBALS['HTTP_GET_VARS']['action'])
+			switch($_GET['action'])
 			{
 				case "deleteFilter":
-					$filterID = $GLOBALS['HTTP_GET_VARS']['filterID'];
+					$filterID = $_GET['filterID'];
 					$this->bofilter->deleteFilter($filterID);
 					$filterList = $this->bofilter->getFilterList();
-        		                $linkData = array
-        		                (
-        		                        'menuaction'    => 'felamimail.uifilter.mainScreen',
-        		                        'action'	=> 'updateFilter'
-        		                );
-					$this->t->set_var('link_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+														$linkData = array
+														(
+																		'menuaction'    => 'felamimail.uifilter.mainScreen',
+																		'action'	=> 'updateFilter'
+														);
+					$this->t->set_var('link_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$this->t->set_var("filterName",'');
 					$this->t->set_var("from",'');
@@ -83,17 +83,17 @@
 					break;
 					
 				case "editFilter":
-					$filterID = $GLOBALS['HTTP_GET_VARS']['filterID'];
+					$filterID = $_GET['filterID'];
 					$filterList = $this->bofilter->getFilterList();
 					
-		                        // set the default values for the sort links (sort by url)
-        		                $linkData = array
-        		                (
-        		                        'menuaction'    => 'felamimail.uifilter.mainScreen',
-        		                        'action'	=> 'updateFilter',
-        		                        'filterID'	=> $filterID
-        		                );
-					$this->t->set_var('link_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+														// set the default values for the sort links (sort by url)
+														$linkData = array
+														(
+																		'menuaction'    => 'felamimail.uifilter.mainScreen',
+																		'action'	=> 'updateFilter',
+																		'filterID'	=> $filterID
+														);
+					$this->t->set_var('link_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$this->t->set_var("filterName",$filterList[$filterID]['filterName']);
 					$this->t->set_var("from",$filterList[$filterID]['from']);
@@ -105,25 +105,25 @@
 					}
 					break;
 				case "updateFilter":
-					$filterID = $GLOBALS['HTTP_GET_VARS']['filterID'];
-					$formData['from']		= $GLOBALS['HTTP_POST_VARS']['from'];
-					$formData['to']			= $GLOBALS['HTTP_POST_VARS']['to'];
-					$formData['subject']		= $GLOBALS['HTTP_POST_VARS']['subject'];
-					$formData['filterName']		= $GLOBALS['HTTP_POST_VARS']['filterName'];
-					if($GLOBALS['HTTP_POST_VARS']['filter_active'] == "on")
+					$filterID = $_GET['filterID'];
+					$formData['from']		= $_POST['from'];
+					$formData['to']			= $_POST['to'];
+					$formData['subject']		= $_POST['subject'];
+					$formData['filterName']		= $_POST['filterName'];
+					if($_POST['filter_active'] == "on")
 					{
 						$formData['filterActive']	= "true";
 					}
 					$this->bofilter->saveFilter($formData, $filterID);
 					$filterList = $this->bofilter->getFilterList();
-		                        // set the default values for the sort links (sort by url)
-        		                $linkData = array
-        		                (
-        		                        'menuaction'    => 'felamimail.uifilter.mainScreen',
-        		                        'action'	=> 'updateFilter',
-        		                        'filterID'	=> $filterID
-        		                );
-					$this->t->set_var('link_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+														// set the default values for the sort links (sort by url)
+														$linkData = array
+														(
+																		'menuaction'    => 'felamimail.uifilter.mainScreen',
+																		'action'	=> 'updateFilter',
+																		'filterID'	=> $filterID
+														);
+					$this->t->set_var('link_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$this->t->set_var("filterName",$filterList[$filterID]['filterName']);
 					$this->t->set_var("from",$filterList[$filterID]['from']);
@@ -135,12 +135,12 @@
 					}
 					break;
 				default:
-        		                $linkData = array
-        		                (
-        		                        'menuaction'    => 'felamimail.uifilter.mainScreen',
-        		                        'action'	=> 'updateFilter'
-        		                );
-					$this->t->set_var('link_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+														$linkData = array
+														(
+																		'menuaction'    => 'felamimail.uifilter.mainScreen',
+																		'action'	=> 'updateFilter'
+														);
+					$this->t->set_var('link_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$this->t->set_var("filterName",'');
 					$this->t->set_var("from",'');
@@ -150,18 +150,18 @@
 					break;
 					
 			}
-	                $linkData = array
-	                (
-	                        'menuaction'    => 'felamimail.uifilter.mainScreen'
-	                );
-			$this->t->set_var('link_newFilter',$GLOBALS['phpgw']->link('/index.php',$linkData));
+									$linkData = array
+									(
+													'menuaction'    => 'felamimail.uifilter.mainScreen'
+									);
+			$this->t->set_var('link_newFilter',$GLOBALS['egw']->link('/index.php',$linkData));
 			$this->t->set_var("filterrows",'');
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
 				'filter'	=> -1
 			);
-			$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+			$link = $GLOBALS['egw']->link('/index.php',$linkData);
 			$this->t->set_var("link_noFilter",$link);
 			
 			$filterList = $this->bofilter->getFilterList();
@@ -177,7 +177,7 @@
 					'action'	=> 'editFilter',
 					'filterID'	=> $key
 				);
-				$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+				$link = $GLOBALS['egw']->link('/index.php',$linkData);
 				$this->t->set_var("link_editFilter",$link);
 
 				$linkData = array
@@ -186,7 +186,7 @@
 					'action'	=> 'deleteFilter',
 					'filterID'	=> $key
 				);
-				$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+				$link = $GLOBALS['egw']->link('/index.php',$linkData);
 				$this->t->set_var("link_deleteFilter",$link);
 
 				$linkData = array
@@ -194,7 +194,7 @@
 					'menuaction'	=> 'felamimail.uifelamimail.changeFilter',
 					'filter'	=> $key
 				);
-				$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+				$link = $GLOBALS['egw']->link('/index.php',$linkData);
 				$this->t->set_var("link_activateFilter",$link);
 
 				$this->t->parse("filterrows","filterrow",true);
@@ -222,8 +222,8 @@
 			$this->t->set_var("lang_activate",lang('activate'));
 			$this->t->set_var("lang_save",lang('save'));
 
-			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);
-			$this->t->set_var("bg02",$GLOBALS['phpgw_info']["theme"]["bg02"]);
-			$this->t->set_var("bg03",$GLOBALS['phpgw_info']["theme"]["bg03"]);
+			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
+			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);
+			$this->t->set_var("bg03",$GLOBALS['egw_info']["theme"]["bg03"]);
 		}
 }

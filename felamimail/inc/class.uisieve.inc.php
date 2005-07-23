@@ -35,18 +35,18 @@
 
 		function uisieve()
 		{
-			$this->displayCharset	= $GLOBALS['phpgw']->translation->charset();
+			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 
-			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 
-			$this->bopreferences    = CreateObject('felamimail.bopreferences');
+			$this->bopreferences    =& CreateObject('felamimail.bopreferences');
 			$this->mailPreferences  = $this->bopreferences->getPreferences();
 			
-			#$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			#$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 			#$this->mailPreferences	= $this->bopreferences->getPreferences();
 
 			
-			$config 		= CreateObject('phpgwapi.config','felamimail');
+			$config 		=& CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
 			$this->felamimailConfig	= $config->config_data;
 			unset($config);
@@ -57,14 +57,14 @@
 			$sievePort		= $this->mailPreferences["imapSievePort"];
 			$username		= $this->mailPreferences['username'];
 			$password		= $this->mailPreferences['key'];
-			$this->sieve		= CreateObject('felamimail.SieveSession',$sieveHost, $sievePort, $username, $password);
+			$this->sieve		=& CreateObject('felamimail.SieveSession',$sieveHost, $sievePort, $username, $password);
 			if(!$this->sieve->start())
 			{
 				print "bad thing!!<br>";
 			}
 			
-			$this->rowColor[0] = $GLOBALS['phpgw_info']["theme"]["bg01"];
-			$this->rowColor[1] = $GLOBALS['phpgw_info']["theme"]["bg02"];
+			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
+			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 
 		}
 		
@@ -72,7 +72,7 @@
 		{
 			if($scriptName = get_var('newScriptName',Array('POST')))
 			{
-				$script	= CreateObject('felamimail.Script',$scriptName);
+				$script	=& CreateObject('felamimail.Script',$scriptName);
 				$script->updateScript($this->sieve);
 			}
 			
@@ -94,7 +94,7 @@
 					/* we could display the full output here */
 				}
 			}
-                    
+										
 			$this->listScripts();
 		}
 		
@@ -241,7 +241,7 @@
 				#	/* we could display the full output here */
 				#}
 			}
-                    
+										
 			$this->listScripts();
 		}
 		
@@ -283,15 +283,15 @@
 			else
 				$editMode	= 'filter';
 
-			if(!@is_object($GLOBALS['phpgw']->js))
+			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
-			$GLOBALS['phpgw']->js->validate_file('jscode','editProfile','felamimail');
-			$GLOBALS['phpgw']->js->set_onload("javascript:initAll('$editMode');");
+			$GLOBALS['egw']->js->validate_file('tabs','tabs');
+			$GLOBALS['egw']->js->validate_file('jscode','editProfile','felamimail');
+			$GLOBALS['egw']->js->set_onload("javascript:initAll('$editMode');");
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 		}
 		
@@ -311,21 +311,21 @@
 				'menuaction'	=> 'felamimail.uisieve.editRule',
 				'scriptname'	=> $_scriptName
 			);
-			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uisieve.editScript',
 				'scriptname'	=> $_scriptName
 			);
-			$this->t->set_var('url_back',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('url_back',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uisieve.selectFolder',
 				'scriptname'	=> $_scriptName
 			);
-			$this->t->set_var('folder_select_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			
 			if(is_array($_ruleData))
@@ -353,8 +353,8 @@
 			}
 			$this->t->set_var('value_ruleID',$_ruleID);
 			
-			#$bofelamimail		= CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			#$uiwidgets		= CreateObject('felamimail.uiwidgets');
+			#$bofelamimail		=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 			#$connectionStatus	= $bofelamimail->openConnection();
 			#$folders = $bofelamimail->getFolderObjects(false);
 			
@@ -462,13 +462,13 @@
 				else
 				{
 					$this->listScripts();
-					$GLOBALS['phpgw']->common->phpgw_exit();
+					$GLOBALS['egw']->common->egw_exit();
 				}
 			}
 
-			$uiwidgets	= CreateObject('felamimail.uiwidgets',PHPGW_APP_TPL);
-			$script		= CreateObject('felamimail.Script',$scriptName);
-			$boemailadmin	= CreateObject('emailadmin.bo');
+			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
+			$script		=& CreateObject('felamimail.Script',$scriptName);
+			$boemailadmin	=& CreateObject('emailadmin.bo');
 			
 
 			if($this->sieve->getscript($scriptName))
@@ -489,10 +489,10 @@
 				#print "Unable to change active script!<br>";
 				/* we could display the full output here */
 				$this->listScripts();
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$GLOBALS['egw']->common->egw_exit();
 			}
 
-                    	$this->saveSessionData();
+											$this->saveSessionData();
 
 			// display the header
 			$this->display_app_header();
@@ -513,7 +513,7 @@
 				);
 				foreach ($listOfImages as $image)
 				{
-					$this->t->set_var('url_'.$image,$GLOBALS['phpgw']->common->image('felamimail',$image));
+					$this->t->set_var('url_'.$image,$GLOBALS['egw']->common->image('felamimail',$image));
 				}
 			
 				$linkData = array
@@ -522,7 +522,7 @@
 					'scriptname'	=> $scriptName,
 					'ruletype'	=> 'filter'
 				);
-				$this->t->set_var('url_add_rule',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				$this->t->set_var('url_add_rule',$GLOBALS['egw']->link('/index.php',$linkData));
 
 				$linkData = array
 				(
@@ -530,7 +530,7 @@
 					'scriptname'	=> $scriptName,
 					'ruletype'	=> 'vacation'
 				);
-				$this->t->set_var('url_add_vacation_rule',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				$this->t->set_var('url_add_vacation_rule',$GLOBALS['egw']->link('/index.php',$linkData));
 
 				foreach ($this->rules as $ruleID => $rule)
 				{
@@ -544,7 +544,7 @@
 						$this->t->set_var('ruleCSS','sieveRowInActive');
 					}
 					
-					$this->t->set_var('filter_text',htmlspecialchars($this->buildRule($rule),ENT_QUOTES,$GLOBALS['phpgw']->translation->charset()));
+					$this->t->set_var('filter_text',htmlspecialchars($this->buildRule($rule),ENT_QUOTES,$GLOBALS['egw']->translation->charset()));
 					$this->t->set_var('ruleID',$ruleID);
 
 					$linkData = array
@@ -553,7 +553,7 @@
 						'ruleID'	=> $ruleID,
 						'scriptname'	=> $scriptName
 					);
-					$this->t->set_var('url_edit_rule',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('url_edit_rule',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$linkData = array
 					(
@@ -561,7 +561,7 @@
 						'ruleID'	=> $ruleID,
 						'scriptname'	=> $scriptName
 					);
-					$this->t->set_var('url_increase',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('url_increase',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$linkData = array
 					(
@@ -569,14 +569,14 @@
 						'ruleID'	=> $ruleID,
 						'scriptname'	=> $scriptName
 					);
-					$this->t->set_var('url_decrease',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('url_decrease',$GLOBALS['egw']->link('/index.php',$linkData));
 					
 					$linkData = array
 					(
 						'menuaction'	=> 'felamimail.uisieve.updateRules',
 						'scriptname'	=> $scriptName
 					);
-					$this->t->set_var('action_rulelist',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('action_rulelist',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$this->t->parse('filterrows','filterrow',true);
 				}
@@ -616,7 +616,7 @@
 				}
 
 				// all local addresses
-				if($emailAddresses = $boemailadmin->getAccountEmailAddress($GLOBALS['phpgw_info']['user']['userid'], $this->felamimailConfig['profileID']))
+				if($emailAddresses = $boemailadmin->getAccountEmailAddress($GLOBALS['egw_info']['user']['userid'], $this->felamimailConfig['profileID']))
 				{
 					foreach($emailAddresses as $addressData)
 					{
@@ -639,27 +639,27 @@
 					'editmode'	=> 'vacation',
 					'scriptname'	=> $scriptName
 				);
-				$this->t->set_var('vacation_action_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				$this->t->set_var('vacation_action_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			}
 
-	                $linkData = array
-	                (
-	                        'menuaction'    => 'felamimail.uisieve.saveScript'
-	                );
-			$this->t->set_var('formAction',$GLOBALS['phpgw']->link('/index.php',$linkData));
-	                $linkData = array
-	                (
-	                        'menuaction'    => 'felamimail.uisieve.mainScreen'
-	                );
-			$this->t->set_var('link_newScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
+									$linkData = array
+									(
+													'menuaction'    => 'felamimail.uisieve.saveScript'
+									);
+			$this->t->set_var('formAction',$GLOBALS['egw']->link('/index.php',$linkData));
+									$linkData = array
+									(
+													'menuaction'    => 'felamimail.uisieve.mainScreen'
+									);
+			$this->t->set_var('link_newScript',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uisieve.listScripts',
 				'scriptname'	=> $scriptName
 			);
-			$this->t->set_var('url_back',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('url_back',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$this->t->pfp("out","header");
 			
@@ -698,7 +698,7 @@
 			(
 				'menuaction'	=> 'felamimail.uisieve.addScript'
 			);
-			$this->t->set_var('action_add_script',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('action_add_script',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			if($this->sieve->listscripts())
 			{
@@ -712,14 +712,14 @@
 						'menuaction'	=> 'felamimail.uisieve.deleteScript',
 						'scriptname'	=> $scriptName
 					);
-					$this->t->set_var('link_deleteScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('link_deleteScript',$GLOBALS['egw']->link('/index.php',$linkData));
 					
 					$linkData = array
 					(
 						'menuaction'	=> 'felamimail.uisieve.editScript',
 						'scriptname'	=> $scriptName
 					);
-					$this->t->set_var('link_editScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('link_editScript',$GLOBALS['egw']->link('/index.php',$linkData));
 					
 					if($this->sieve->activescript == $scriptName)
 					{
@@ -741,7 +741,7 @@
 						$this->t->set_var('lang_activate',lang('activate script'));
 						$this->t->set_var('ruleCSS','sieveRowInActive');
 					}
-					$this->t->set_var('link_activateScript',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('link_activateScript',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$this->t->parse('scriptrows','scriptrow',true);
 				}
@@ -758,7 +758,7 @@
 		
 		function restoreSessionData()
 		{
-			$sessionData = $GLOBALS['phpgw']->session->appsession('sieve_session_data');
+			$sessionData = $GLOBALS['egw']->session->appsession('sieve_session_data');
 			
 			$this->rules		= $sessionData['sieve_rules'];
 			$this->scriptToEdit	= $sessionData['sieve_scriptToEdit'];
@@ -766,16 +766,16 @@
 		
 		function selectFolder()
 		{
-			if(!@is_object($GLOBALS['phpgw']->js))
+			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
-			$GLOBALS['phpgw']->js->validate_file('jscode','editSieveRule','felamimail');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->js->validate_file('foldertree','foldertree');
+			$GLOBALS['egw']->js->validate_file('jscode','editSieveRule','felamimail');
+			$GLOBALS['egw']->common->egw_header();
 
-			$bofelamimail		= CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			$uiwidgets		= CreateObject('felamimail.uiwidgets');
+			$bofelamimail		=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 			$connectionStatus	= $bofelamimail->openConnection();
 
 			$folderObjects = $bofelamimail->getFolderObjects(false);
@@ -786,7 +786,7 @@
 				lang('IMAP Server'),
 				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
 				'setMoveToFolderName'
-                        );
+												);
 			print $folderTree;
 		}
 
@@ -849,7 +849,7 @@
 			$sessionData['sieve_rules']		= $this->rules;
 			$sessionData['sieve_scriptToEdit']	= $this->scriptToEdit;
 			
-			$GLOBALS['phpgw']->session->appsession('sieve_session_data','',$sessionData);
+			$GLOBALS['egw']->session->appsession('sieve_session_data','',$sessionData);
 		}
 		
 		function translate()
@@ -903,9 +903,9 @@
 			$this->t->set_var("lang_discard_message",lang('discard message'));
 			$this->t->set_var("lang_select_folder",lang('select folder'));
 
-			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);
-			$this->t->set_var("bg02",$GLOBALS['phpgw_info']["theme"]["bg02"]);
-			$this->t->set_var("bg03",$GLOBALS['phpgw_info']["theme"]["bg03"]);
+			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
+			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);
+			$this->t->set_var("bg03",$GLOBALS['egw_info']["theme"]["bg03"]);
 		}
 		
 		function updateRules()
@@ -958,7 +958,7 @@
 		function updateScript()
 		{
 			$scriptName		= $this->scriptToEdit;
-			$script			= CreateObject('felamimail.Script',$this->scriptToEdit);
+			$script			=& CreateObject('felamimail.Script',$this->scriptToEdit);
 
 			if(!empty($scriptName))
 			{
@@ -977,7 +977,7 @@
 					#print "Unable to change active script!<br>";
 					/* we could display the full output here */
 					$this->listScripts();
-					$GLOBALS['phpgw']->common->phpgw_exit();
+					$GLOBALS['egw']->common->egw_exit();
 				}
 			}
 
@@ -994,7 +994,7 @@
 			#phpinfo();exit;
 
 			$scriptName = get_var('scriptname',array('GET'));
- 			$script = CreateObject('felamimail.Script',$scriptName);
+ 			$script =& CreateObject('felamimail.Script',$scriptName);
 
 			if(!empty($scriptName))
 			{
@@ -1013,7 +1013,7 @@
 					#print "Unable to change active script!<br>";
 					/* we could display the full output here */
 					$this->listScripts();
-					$GLOBALS['phpgw']->common->phpgw_exit();
+					$GLOBALS['egw']->common->egw_exit();
 				}
 			}
 

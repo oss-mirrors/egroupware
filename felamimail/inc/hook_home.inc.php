@@ -1,49 +1,49 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - E-Mail                                                      *
-  * http://www.egroupware.org                                                *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* eGroupWare - E-Mail                                                      *
+	* http://www.egroupware.org                                                *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
 	/* $Id$ */
 
-	$homedisplay = intval($GLOBALS['phpgw_info']['user']['preferences']['felamimail']['mainscreen_showmail']);
+	$homedisplay = intval($GLOBALS['egw_info']['user']['preferences']['felamimail']['mainscreen_showmail']);
 	if($homedisplay>0)
 	{
 
-		$d1 = strtolower(substr(PHPGW_APP_INC,0,3));
+		$d1 = strtolower(substr(EGW_APP_INC,0,3));
 		if($d1 == 'htt' || $d1 == 'ftp' )
 		{
 			echo 'Failed attempt to break in via an old Security Hole!<br>'."\n";
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$GLOBALS['egw']->common->egw_exit();
 		}
 		unset($d1);
 
-		$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('felamimail');
+		$tmp_app_inc = $GLOBALS['egw']->common->get_inc_dir('felamimail');
 
 #		// ----  Create the base email Msg Class    -----
-		$GLOBALS['phpgw']->translation->add_app('felamimail');
-		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+		$GLOBALS['egw']->translation->add_app('felamimail');
+		$GLOBALS['egw']->msg =& CreateObject("email.mail_msg");
 
 		$title = lang('felamimail');
 	
-		$portalbox = CreateObject('phpgwapi.listbox',
+		$portalbox =& CreateObject('phpgwapi.listbox',
 			Array(
 				'title'				=> $title,
-				'primary'			=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'secondary'			=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'tertiary'			=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'primary'			=> $GLOBALS['egw_info']['theme']['navbar_bg'],
+				'secondary'			=> $GLOBALS['egw_info']['theme']['navbar_bg'],
+				'tertiary'			=> $GLOBALS['egw_info']['theme']['navbar_bg'],
 				'width'				=> '100%',
 				'outerborderwidth'		=> '0',
-				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+				'header_background_image'	=> $GLOBALS['egw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
 			)
 		);
 
-		$app_id = $GLOBALS['phpgw']->applications->name2id('felamimail');
+		$app_id = $GLOBALS['egw']->applications->name2id('felamimail');
 		//$GLOBALS['portal_order'][] = $app_id;
 		$var = Array(
 			'up'		=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
@@ -66,8 +66,8 @@
 			$portalbox->data = $data;
 		}
 		
-		$this->displayCharset	= $GLOBALS['phpgw']->translation->charset();
-		$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
+		$this->displayCharset	= $GLOBALS['egw']->translation->charset();
+		$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 		
 		if(!$this->bofelamimail->openConnection('', OP_READONLY))
 		{
@@ -115,7 +115,7 @@
 					'menuaction'    => 'felamimail.uifelamimail.changeFolder',
 					'mailbox'	=> urlencode($key)
 				);
-				$folderLink = $GLOBALS['phpgw']->link('/index.php',$linkData);
+				$folderLink = $GLOBALS['egw']->link('/index.php',$linkData);
 				
 				$extra_data .= "<tr><td><a href='$folderLink'>$key</a></td><td>$messages</td><td>$newMessages</td></tr>";
 			}

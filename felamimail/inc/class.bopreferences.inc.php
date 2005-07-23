@@ -47,21 +47,21 @@
 				$this->config->save_repository();
 			}
 			
-			#$usersEMailAddresses	= $this->boemailadmin->getAccountEmailAddress($GLOBALS['phpgw_info']['user']['userid'], $this->profileID);
+			#$usersEMailAddresses	= $this->boemailadmin->getAccountEmailAddress($GLOBALS['egw_info']['user']['userid'], $this->profileID);
 			
 			#_debug_array($usersEMailAddresses);
 			
-			$felamimailUserPrefs = $GLOBALS['phpgw_info']['user']['preferences']['felamimail'];
+			$felamimailUserPrefs = $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			
 			// set values to the global values
 			$data['imapServerAddress']	= $profileData['imapServer'];
-			$data['key']			= $GLOBALS['phpgw_info']['user']['passwd'];
+			$data['key']			= $GLOBALS['egw_info']['user']['passwd'];
 			if ($profileData['imapLoginType'] == 'vmailmgr')
-				$data['username']		= $GLOBALS['phpgw_info']['user']['userid']."@".$profileData['defaultDomain'];
+				$data['username']		= $GLOBALS['egw_info']['user']['userid']."@".$profileData['defaultDomain'];
 			else
-				$data['username']		= $GLOBALS['phpgw_info']['user']['userid'];
+				$data['username']		= $GLOBALS['egw_info']['user']['userid'];
 			$data['imap_server_type']	= $imapServerTypes[$profileData['imapType']]['protocol'];
-			$data['realname']		= $GLOBALS['phpgw_info']['user']['fullname'];
+			$data['realname']		= $GLOBALS['egw_info']['user']['fullname'];
 			$data['defaultDomainname']	= $profileData['defaultDomain'];
 
 			$data['smtpServerAddress']	= $profileData['smtpServer'];
@@ -70,7 +70,7 @@
 			if(!empty($profileData['organisationName']))
 				$data['organizationName']	= $profileData['organisationName'];
 
-			$data['emailAddress']		= $this->boemailadmin->getAccountEmailAddress($GLOBALS['phpgw_info']['user']['userid'], $this->profileID);
+			$data['emailAddress']		= $this->boemailadmin->getAccountEmailAddress($GLOBALS['egw_info']['user']['userid'], $this->profileID);
 			$data['smtpAuth']		= $profileData['smtpAuth'];
 			$data['imapAdminUsername']	= $profileData['imapAdminUsername'];
 			$data['imapAdminPW']		= $profileData['imapAdminPW'];
@@ -99,7 +99,7 @@
 					$data['emailAddress']		= array(
 										array(
 											'address'	=> $felamimailUserPrefs['emailAddress'],
-											'name'		=> $GLOBALS['phpgw_info']['user']['fullname'],
+											'name'		=> $GLOBALS['egw_info']['user']['fullname'],
 											'type'		=> 'default'
 										)
 									);
@@ -123,7 +123,7 @@
 			}
 			
 			if($profileData['imapTLSEncryption'] == 'yes' &&
-			   $profileData['imapTLSAuthentication'] == 'yes')
+				 $profileData['imapTLSAuthentication'] == 'yes')
 			{
 				$data['imapOptions']	= '/imap/tls';
 			}
@@ -145,8 +145,8 @@
 			
 			#_debug_array($data);
 			
-			$GLOBALS['phpgw']->preferences->read_repository();
-			$userPrefs = $GLOBALS['phpgw_info']['user']['preferences'];
+			$GLOBALS['egw']->preferences->read_repository();
+			$userPrefs = $GLOBALS['egw_info']['user']['preferences'];
 			
 			// how to handle deleted messages
 			if(isset($userPrefs['felamimail']['deleteOptions']))

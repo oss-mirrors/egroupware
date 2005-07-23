@@ -26,15 +26,15 @@
 
 		function uipreferences()
 		{
-			$this->t = $GLOBALS['phpgw']->template;
+			$this->t = $GLOBALS['egw']->template;
 			#$this->t->egroupware_hack = False;
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw']->translation->charset());
-			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
+			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
 			$this->bofelamimail->openConnection('',OP_HALFOPEN);
 			
 			
-			$this->rowColor[0] = $GLOBALS['phpgw_info']["theme"]["bg01"];
-			$this->rowColor[1] = $GLOBALS['phpgw_info']["theme"]["bg02"];
+			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
+			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 
 		}
 		
@@ -55,18 +55,18 @@
 		// $_displayNavbar false == don't display navbar
 		function display_app_header($_displayNavbar)
 		{
-			if(!@is_object($GLOBALS['phpgw']->js))
+			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			#$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
-			$GLOBALS['phpgw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['phpgw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-			$GLOBALS['phpgw']->js->validate_file('jscode','listFolder','felamimail');
-			$GLOBALS['phpgw']->js->validate_file('jscode','baseFunctions','felamimail');
+			#$GLOBALS['egw']->js->validate_file('foldertree','foldertree');
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
+			$GLOBALS['egw']->js->validate_file('jscode','listFolder','felamimail');
+			$GLOBALS['egw']->js->validate_file('jscode','baseFunctions','felamimail');
 			
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			if($_displayNavbar == TRUE)
 				echo parse_navbar();
 		}
@@ -161,13 +161,13 @@
 			(
 				'menuaction'    => 'felamimail.uipreferences.listFolder'
 			);
-			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$linkData = array
 			(
 				'menuaction'    => 'felamimail.uipreferences.addACL'
 			);
-			$this->t->set_var('url_addACL',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('url_addACL',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			// create the link to show folder settings
 			#$linkData = array
@@ -175,7 +175,7 @@
 			#	'menuaction'    => 'felamimail.uipreferences.listFolder',
 			#	'display'	=> 'settings'
 			#);
-			#$this->t->set_var('settings_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			#$this->t->set_var('settings_url',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			// create the link to show folder acl
 			#$linkData = array
@@ -183,7 +183,7 @@
 			#	'menuaction'    => 'felamimail.uipreferences.listFolder',
 			#	'display'	=> 'acl'
 			#);
-			#$this->t->set_var('acl_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			#$this->t->set_var('acl_url',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			// folder select box
 			$folderTree = $this->uiwidgets->createHTMLFolder
@@ -200,7 +200,7 @@
 			switch($_GET['display'])
 			{
 				#case 'acl':
-				#	$uiBaseClass = CreateObject('felamimail.uibaseclass');
+				#	$uiBaseClass =& CreateObject('felamimail.uibaseclass');
 				#	#$uiBaseClass->accounts_popup('calendar');
 				#	$this->t->parse('settings_view','folder_acl',True);
 				#	break;
@@ -296,10 +296,10 @@
 			$this->t->set_var('lang_delete_selected',lang("delete selected"));
 			$this->t->set_var('lang_cancel',lang("close"));
 			
-			$this->t->set_var("th_bg",$GLOBALS['phpgw_info']["theme"]["th_bg"]);
-			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);
-			$this->t->set_var("bg02",$GLOBALS['phpgw_info']["theme"]["bg02"]);
-			$this->t->set_var("bg03",$GLOBALS['phpgw_info']["theme"]["bg03"]);
+			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
+			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
+			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);
+			$this->t->set_var("bg03",$GLOBALS['egw_info']["theme"]["bg03"]);
 		}
 }
 

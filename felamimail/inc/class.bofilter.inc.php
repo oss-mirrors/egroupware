@@ -23,11 +23,11 @@
 
 		function bofilter()
 		{
-			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
 			
-			$this->bopreferences	= CreateObject('felamimail.bopreferences');
-			$this->sofelamimail	= CreateObject('felamimail.sofelamimail');
-			$this->sofilter		= CreateObject('felamimail.sofilter');
+			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
+			$this->sofelamimail	=& CreateObject('felamimail.sofelamimail');
+			$this->sofilter		=& CreateObject('felamimail.sofilter');
 			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->sessionData['activeFilter'] = "-1";
@@ -67,9 +67,9 @@
 		
 		function restoreSessionData()
 		{
-			$arrayFunctions = CreateObject('phpgwapi.arrayfunctions');
+			$arrayFunctions =& CreateObject('phpgwapi.arrayfunctions');
 
-			$this->sessionData = $GLOBALS['phpgw']->session->appsession('filter_session_data');
+			$this->sessionData = $GLOBALS['egw']->session->appsession('filter_session_data');
 
 			// sort the filter list
 			$unsortedFilter = $this->sofilter->restoreFilter();
@@ -130,7 +130,7 @@
 		
 		function saveSessionData()
 		{
-			$GLOBALS['phpgw']->session->appsession('filter_session_data','',$this->sessionData);
+			$GLOBALS['egw']->session->appsession('filter_session_data','',$this->sessionData);
 		}
 		
 		function setActiveFilter($_filter)

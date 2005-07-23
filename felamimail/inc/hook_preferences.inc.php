@@ -16,7 +16,7 @@
 	$title = $appname;
 	$file = array(
 		'Preferences'    => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=' . $appname),
-		'Manage Folders' => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
+		'Manage Folders' => $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
 	);
 
 	$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
@@ -27,7 +27,7 @@
 			'menuaction' => 'felamimail.uisieve.listScripts',
 			'action'     => 'updateFilter'
 		);
-		$file['Manage EMailfilter / Vacation'] = $GLOBALS['phpgw']->link('/index.php',$sieveLinkData);
+		$file['Manage EMailfilter / Vacation'] = $GLOBALS['egw']->link('/index.php',$sieveLinkData);
 	}
 //Do not modify below this line
 	display_section($appname,$title,$file);

@@ -14,15 +14,15 @@
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
-		$GLOBALS['phpgw']->common->phpgw_exit();
+		$GLOBALS['egw']->common->egw_exit();
 	}
 	unset($d1);
 
-	if (@$GLOBALS['phpgw_info']['user']['apps']['felamimail'])
+	if (@$GLOBALS['egw_info']['user']['apps']['felamimail'])
 	{
 		$my_msg_bootstrap = '';
 
-		$my_msg_bootstrap = CreateObject("felamimail.bofelamimail");
+		$my_msg_bootstrap =& CreateObject("felamimail.bofelamimail");
 
 		$connectionStatus = $my_msg_bootstrap->openConnection('INBOX',OP_READONLY);
 
@@ -32,7 +32,7 @@
 		
 		$current_uid=$folderStatus['uidnext'];
 		
-		$oldUidNext=$GLOBALS['phpgw']->session->appsession('notifywindow','felamimail');
+		$oldUidNext=$GLOBALS['egw']->session->appsession('notifywindow','felamimail');
 		
 		#if(!empty($old_uid))
 		#{
@@ -51,7 +51,7 @@
 			echo '	<!-- Activate Cloaking Device'."\n";
 			echo '	function CheckEmail()'."\n";
 			echo '	{'."\n";
-			echo '		window.opener.document.location.href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen').'";'."\n";
+			echo '		window.opener.document.location.href="'.$GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen').'";'."\n";
 			echo '		window.opener.focus()'."\r\n";
 			#echo '          window.resizeTo(1,1);'."\r\n";
 			echo '          window.blur();'."\r\n";
@@ -62,7 +62,7 @@
 			echo "\r\n" . '<tr><td align="left"><!-- Mailbox info X10 -->' . "\r\n";
 			echo '<table width="100%" style="border-color:#000000;border-style:solid;border-width:1px;"><tr>'."\r\n";
 			echo '<td width="20%" valign="middle" align="center">'."\r\n";
-			echo '<a href="JavaScript:CheckEmail();"><img src="'.$GLOBALS['phpgw']->common->image('felamimail','navbar').'" alt="email icon" border=0></a>'."\r\n";
+			echo '<a href="JavaScript:CheckEmail();"><img src="'.$GLOBALS['egw']->common->image('felamimail','navbar').'" alt="email icon" border=0></a>'."\r\n";
 			echo "<td>\r\n";
 
 			if($folderStatus[recent]>0)
@@ -102,6 +102,6 @@
 			echo "</td></tr></table>\r\n";
 			echo "\r\n".'<!-- Mailox info --></td></tr>'."\r\n";
 		}
-		$GLOBALS['phpgw']->session->appsession('notifywindow','felamimail',$folderStatus['uidnext']);
+		$GLOBALS['egw']->session->appsession('notifywindow','felamimail',$folderStatus['uidnext']);
 	}
 ?>

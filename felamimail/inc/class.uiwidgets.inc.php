@@ -37,15 +37,15 @@
 
 	/* $Id$ */
 
-        /**
-        * a class containing javascript enhanced html widgets
-        *
-        * @package FeLaMiMail
-        * @author Lars Kneschke
-        * @version 1.35
-        * @copyright Lars Kneschke 2004
-        * @license http://www.opensource.org/licenses/bsd-license.php BSD
-        */
+	/**
+	* a class containing javascript enhanced html widgets
+	*
+	* @package FeLaMiMail
+	* @author Lars Kneschke
+	* @version 1.35
+	* @copyright Lars Kneschke 2004
+	* @license http://www.opensource.org/licenses/bsd-license.php BSD
+	*/
 	class uiwidgets
 	{
 		/**
@@ -54,7 +54,7 @@
 		*/
 		function uiwidgets()
 		{
-			$template = CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$template =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 		}
@@ -72,7 +72,7 @@
 		* @param _formName string name of the sorounding form
 		* @param _hiddenVar string hidden form value, transports the selected folder
 		*
-		* @returns the html code, to be added into the template
+		* @return string the html code, to be added into the template
 		*/
 		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_formName, $_hiddenVar)
 		{
@@ -128,12 +128,12 @@
 					$messageCount = "";
 				}
 
-                                $entryOptions = 'CHILD,CHECKED';
+				$entryOptions = 'CHILD,CHECKED';
 
 				// highlight currently selected mailbox
 				if ($_selected == $longName)
 				{
-				        $entryOptions .= ',SELECT';
+								$entryOptions .= ',SELECT';
 				}
 				
 				$folder_name = $shortName.$messageCount;
@@ -160,7 +160,7 @@
 
 		function messageTable($_headers, $_isSentFolder, $_readInNewWindow)
 		{
-			$this->t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
 			$this->t->set_block('body','header_row');
 			$this->t->set_block('body','message_table');
@@ -239,7 +239,7 @@
 					$header['subject'] = @htmlspecialchars($header['subject'],ENT_QUOTES,$this->displayCharset);
 					if($header['attachments'] == "true")
 					{
-						$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
+						$image = '<img src="'.$GLOBALS['egw']->common->image('felamimail','attach').'" border="0">';
 
 						$header['attachment'] = $image;
 					}
@@ -257,11 +257,7 @@
 					if (!empty($header['to_name']))
 					{
 						$sender_name	= $header['to_name'];
-						$full_address	= @htmlentities(
-							$header['to_name'].
-							" <".
-							$header['to_address'].
-							">",ENT_QUOTES,$this->displayCharset);
+						$full_address	= $header['to_name'].' <'.$header['to_address'].'>';
 					}
 					else
 					{
@@ -275,11 +271,7 @@
 					if (!empty($header['sender_name']))
 					{
 						$sender_name	= $header['sender_name'];
-						$full_address	= @htmlentities(
-							$header['sender_name'].
-							" <".
-							$header['sender_address'].
-							">",ENT_QUOTES,$this->displayCharset);
+						$full_address	= $header['sender_name'].' <'.$header['sender_address'].'>';
 					}
 					else
 					{
@@ -292,18 +284,20 @@
 				#{
 				#	$sender_name = substr($sender_name,0,$maxAddressLength)."...";
 				#}
-				$this->t->set_var('sender_name',@htmlentities($sender_name,
-										 ENT_QUOTES,$this->displayCharset));
+				$this->t->set_var('sender_name',$sender_name);
 				$this->t->set_var('full_address',$full_address);
 			
-				#if($GLOBALS['HTTP_GET_VARS']["select_all"] == "select_all")
+				#if($_GET["select_all"] == "select_all")
 				#{
 				#		$this->t->set_var('row_selected',"checked");
 				#}
 
 				$this->t->set_var('message_counter',$i);
 				$this->t->set_var('message_uid',$header['uid']);
-// HINT: date style should be set according to preferences!
+				// date format according to preferences, header[date] is iso YYYY-MM-DD
+				$date = explode('-',$header['date']);
+				$header['date'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],
+					mktime(12,0,0,$date[1],$date[2],$date[0]));
 				$this->t->set_var('date',$header['date']);
 				$this->t->set_var('size',$this->show_readable_size($header['size']));
 
@@ -311,15 +305,16 @@
 				(
 					'menuaction'    => 'felamimail.uidisplay.display',
 					'showHeader'	=> 'false',
-					'uid'		=> $header['uid']
+					'uid'			=> $header['uid']
 				);
 				if($_readInNewWindow)
 				{
-					$this->t->set_var('url_read_message',"javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');");
+					$this->t->set_var('url_read_message',"javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."','".
+						($_readInNewWindow == 1 ? 'displayMessage' : '_blank')."');");
 				}
 				else
 				{
-					$this->t->set_var('url_read_message',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('url_read_message',$GLOBALS['egw']->link('/index.php',$linkData));
 				}
 			
 				if(!empty($header['sender_name']))
@@ -344,11 +339,12 @@
 				}
 				if($_readInNewWindow)
 				{
-					$this->t->set_var('url_compose',"javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');");
+					$this->t->set_var('url_compose',"javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."','".
+						($_readInNewWindow == 1 ? 'displayMessage' : '_blank')."');");
 				}
 				else
 				{
-					$this->t->set_var('url_compose',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('url_compose',$GLOBALS['egw']->link('/index.php',$linkData));
 				}
 				
 				$linkData = array
@@ -358,10 +354,10 @@
 					'name'		=> urlencode($header['sender_name']),
 					'referer'	=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
 				);
-				$this->t->set_var('url_add_to_addressbook',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				$this->t->set_var('url_add_to_addressbook',$GLOBALS['egw']->link('/index.php',$linkData));
 				$this->t->set_var('msg_icon_sm',$msg_icon_sm);
 				
-				$this->t->set_var('phpgw_images',PHPGW_IMAGES);
+				$this->t->set_var('phpgw_images',EGW_IMAGES);
 				$this->t->set_var('row_css_class','header_row_'.$flags);
 		
 				$this->t->parse('message_rows','header_row',True);

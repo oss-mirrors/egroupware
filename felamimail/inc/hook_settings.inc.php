@@ -11,7 +11,7 @@
 
 	/* $Id$ */
 
-	$this->bofelamimail = CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw']->translation->charset());
+	$this->bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 	$this->bofelamimail->openConnection('',OP_HALFOPEN);
 	$folderObjects = $this->bofelamimail->getFolderObjects();
 	foreach($folderObjects as $folderName => $folderInfo)
@@ -26,13 +26,13 @@
 
 	$this->bofelamimail->closeConnection();
 
-	$config = CreateObject('phpgwapi.config','felamimail');
+	$config =& CreateObject('phpgwapi.config','felamimail');
 	$config->read_repository();
 	$felamimailConfig = $config->config_data;
 	#_debug_array($felamimailConfig);
 	unset($config);
 
-	#$boemailadmin = CreateObject('emailadmin.bo');
+	#$boemailadmin =& CreateObject('emailadmin.bo');
 	#$methodData = array($felamimailConfig['profileID']);
 	#_debug_array($methodData);
 	$felamimailConfig = ExecMethod('emailadmin.bo.getProfile',$felamimailConfig['profileID']);
@@ -71,9 +71,10 @@
 		'2' => lang('yes') . ' - ' . lang('small view')
 	);
 
-	$selectOptions = array(
+	$newWindowOptions = array(
 		'0' => lang('no'),
-		'1' => lang('yes')
+		'1' => lang('only one window'),
+		'2' => lang('allways a new window'),
 	);
 
 	$deleteOptions = array(
@@ -116,10 +117,11 @@
 			'type'   => 'notify',
 			'label'  => 'email signature',
 			'name'   => 'email_sig',
-			'size'   => 3,
-			'maxsize' => 50,
+			'rows'   => 3,
+			'cols'   => 50,
 			'xmlrpc' => True,
-			'admin'  => False
+			'admin'  => False,
+			'help'   => ' ',	// this is to get the substitution help-texts
 		),
 		'sortOrder' => array(
 			'type'   => 'select',
@@ -141,7 +143,7 @@
 			'type'   => 'select',
 			'label'  => 'display message in new window',
 			'name'   => 'message_newwindow',
-			'values' => $selectOptions,
+			'values' => $newWindowOptions,
 			'xmlrpc' => True,
 			'admin'  => False
 		),

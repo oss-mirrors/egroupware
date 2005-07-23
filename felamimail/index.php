@@ -24,7 +24,7 @@
 		'nonavbar'   => True,
 		'include_xajax' => True,
 	);
-                
+								
 	include('../header.inc.php');
 
 	execmethod('felamimail.uifelamimail.viewMainScreen');

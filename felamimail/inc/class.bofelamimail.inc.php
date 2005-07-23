@@ -56,9 +56,9 @@
 			//$this->foldername	= $this->sessionData['mailbox'];
 			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
 			
-			$this->bopreferences	= CreateObject('felamimail.bopreferences');
-			$this->sofelamimail	= CreateObject('felamimail.sofelamimail');
-			$this->botranslation	= CreateObject('phpgwapi.translation');
+			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
+			$this->sofelamimail	=& CreateObject('felamimail.sofelamimail');
+			$this->botranslation	=& CreateObject('phpgwapi.translation');
 			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->imapBaseDir	= '';
@@ -88,7 +88,7 @@
 			
 			$this->htmlOptions 	= $this->mailPreferences['htmlOptions'];
 			
-			$config = CreateObject('phpgwapi.config','felamimail');
+			$config =& CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
 			$this->profileID = $config->config_data['profileID'];
 			
@@ -121,8 +121,8 @@
 		{
  			if ($GLOBALS['egw_info']['server']['account_repository'] == "ldap")
 			{
-    		        	$data = Array
-		        	(
+									$data = Array
+							(
 					'description'   => 'email settings',
 					'url'           => '/index.php',
 					'extradata'     => 'menuaction=emailadmin.uiuserdata.editUserData'
@@ -216,7 +216,7 @@
 		
 		function deleteMessages($_messageUID)
 		{
-			$caching = CreateObject('felamimail.bocaching',
+			$caching =& CreateObject('felamimail.bocaching',
 					$this->mailPreferences['imapServerAddress'],
 					$this->mailPreferences['username'],
 					$this->sessionData['mailbox']);
@@ -396,7 +396,7 @@
 		
 		function getEMailProfile()
 		{
-			$config = CreateObject('phpgwapi.config','felamimail');
+			$config =& CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
 			$felamimailConfig = $config->config_data;
 			
@@ -507,14 +507,14 @@
 			}
 			else
 			{
-                                if($_subscribedOnly == 'true' &&
-                                        is_array($inboxName = imap_list($this->mbox,$mailboxString,'INBOX')))
-                                {
+																if($_subscribedOnly == 'true' &&
+																				is_array($inboxName = imap_list($this->mbox,$mailboxString,'INBOX')))
+																{
 					$inboxData = imap_getmailboxes($this->mbox,$mailboxString,'INBOX');
 					$folders['INBOX'] = $inboxData[0];
 					
 					return $folders;
-                                }
+																}
 			}
 		}
 		
@@ -523,17 +523,17 @@
 		#	list($usec, $sec) = explode(" ", microtime());
 		#	return ((float)$usec + (float)$sec);
 		#}
-		      
+					
 		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
 		{
 			#$start = $this->microtime_float();
 
-			$caching = CreateObject('felamimail.bocaching',
+			$caching =& CreateObject('felamimail.bocaching',
 					$this->mailPreferences['imapServerAddress'],
 					$this->mailPreferences['username'],
 					$this->sessionData['mailbox']);
-			$bofilter = CreateObject('felamimail.bofilter');
-			$transformdate = CreateObject('felamimail.transformdate');
+			$bofilter =& CreateObject('felamimail.bofilter');
+			$transformdate =& CreateObject('felamimail.transformdate');
 
 			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
 
@@ -918,8 +918,8 @@
 					}
 					
 					$bodyPart[] = array('body'	=> $newPart,
-							    'mimeType'	=> $mimeType,
-							    'charSet'	=> $charSet);
+									'mimeType'	=> $mimeType,
+									'charSet'	=> $charSet);
 				}
 			}
 			
@@ -1080,7 +1080,7 @@
 		
 		function moveMessages($_foldername, $_messageUID)
 		{
-			$caching = CreateObject('felamimail.bocaching',
+			$caching =& CreateObject('felamimail.bocaching',
 					$this->mailPreferences['imapServerAddress'],
 					$this->mailPreferences['username'],
 					$this->sessionData['mailbox']);
@@ -1488,7 +1488,7 @@
 		
 		function restoreSessionData()
 		{
-			$this->sessionData = $GLOBALS['phpgw']->session->appsession('session_data');
+			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data');
 		}
 		
 		function saveFilter($_formData)
@@ -1510,12 +1510,12 @@
 		
 		function saveSessionData()
 		{
-			$GLOBALS['phpgw']->session->appsession('session_data','',$this->sessionData);
+			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
 		}
 		
 		function setEMailProfile($_profileID)
 		{
-			$config = CreateObject('phpgwapi.config','felamimail');
+			$config =& CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
 			$config->value('profileID',$_profileID);
 			$config->save_repository();
@@ -1586,7 +1586,7 @@
 		}
 		
 		/* inspired by http://de2.php.net/wordwrap
-		   desolate19 at hotmail dot com */
+			 desolate19 at hotmail dot com */
 		function wordwrap($str, $cols, $cut)
 		{
 /*			

@@ -27,10 +27,10 @@
 		function bocompose($_composeID = '', $_charSet = 'iso-8859-1')
 		{
 			$this->displayCharset	= strtolower($_charSet);
-			$this->bopreferences	= CreateObject('felamimail.bopreferences');
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$_charSet);
+			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
+			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$_charSet);
 			$this->preferences	= $this->bopreferences->getPreferences();
-			$this->botranslation	= CreateObject('phpgwapi.translation');
+			$this->botranslation	=& CreateObject('phpgwapi.translation');
 
 			if (!empty($_composeID))
 			{
@@ -50,7 +50,7 @@
 			$this->sessionData['priority']	= $_formData['priority'];
 			$this->sessionData['signature'] = $_formData['signature'];
 			
-			#while(list($key,$value) = each($GLOBALS['phpgw_info']['user']))
+			#while(list($key,$value) = each($GLOBALS['egw_info']['user']))
 			#{
 			#	print "$key: $value<br>";
 			#}
@@ -60,17 +60,17 @@
 				// ensure existance of PHPGROUPWARE temp dir
 				// note: this is different from apache temp dir, 
 				// and different from any other temp file location set in php.ini
-				if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
+				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
 				{
-					@mkdir($GLOBALS['phpgw_info']['server']['temp_dir'],0700);
+					@mkdir($GLOBALS['egw_info']['server']['temp_dir'],0700);
 				}
 				
 				// if we were NOT able to create this temp directory, then make an ERROR report
-				if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
+				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
 				{
 					$alert_msg .= 'Error:'.'<br>'
 						.'Server is unable to access phpgw tmp directory'.'<br>'
-						.$GLOBALS['phpgw_info']['server']['temp_dir'].'<br>'
+						.$GLOBALS['egw_info']['server']['temp_dir'].'<br>'
 						.'Please check your configuration'.'<br>'
 						.'<br>';
 				}
@@ -84,9 +84,9 @@
 					$_formData['type'] = $mime_type_default;
 				}
 				
-				$tmpFileName = $GLOBALS['phpgw_info']['server']['temp_dir'].
+				$tmpFileName = $GLOBALS['egw_info']['server']['temp_dir'].
 					SEP.
-					$GLOBALS['phpgw_info']['user']['account_id'].
+					$GLOBALS['egw_info']['user']['account_id'].
 					$this->composeID.
 					basename($_formData['file']);
 				
@@ -150,7 +150,7 @@
 		
 		function getForwardData($_uid, $_partID, $_folder)
 		{
-			$bofelamimail    = CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail    =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$bofelamimail->openConnection();
 
 			// get message headers for specified message
@@ -177,7 +177,7 @@
 		// all: for a reply to all
 		function getReplyData($_mode, $_uid, $_partID)
 		{
-			$bofelamimail    = CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail    =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$bofelamimail->openConnection();
 			
 			// get message headers for specified message
@@ -344,19 +344,19 @@
 		
 		function restoreSessionData()
 		{
-			$this->sessionData = $GLOBALS['phpgw']->session->appsession('compose_session_data_'.$this->composeID);
+			$this->sessionData = $GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID);
 			#print "bocompose after restore<pre>";print_r($this->sessionData);print"</pre>";
 		}
 		
 		function saveSessionData()
 		{
-			$GLOBALS['phpgw']->session->appsession('compose_session_data_'.$this->composeID,'',$this->sessionData);
+			$GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID,'',$this->sessionData);
 		}
 
 		function send($_formData)
 		{
-			$bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			$mail 		= CreateObject('phpgwapi.phpmailer');
+			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$mail 		=& CreateObject('phpgwapi.phpmailer');
 			
 			$this->sessionData['to']	= trim($_formData['to']);
 			$this->sessionData['cc']	= trim($_formData['cc']);
@@ -368,17 +368,17 @@
 			$this->sessionData['signature']	= $_formData['signature'];
 
 
-			$userLang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
-			$langFile = PHPGW_SERVER_ROOT."/phpgwapi/setup/phpmailer.lang-$userLang.php";
+			$userLang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
+			$langFile = EGW_SERVER_ROOT."/phpgwapi/setup/phpmailer.lang-$userLang.php";
 			if(file_exists($langFile))
 			{
-				$mail->SetLanguage($userLang, PHPGW_SERVER_ROOT."/phpgwapi/setup/");
+				$mail->SetLanguage($userLang, EGW_SERVER_ROOT."/phpgwapi/setup/");
 			}
 			else
 			{
-				$mail->SetLanguage("en", PHPGW_SERVER_ROOT."/phpgwapi/setup/");
+				$mail->SetLanguage("en", EGW_SERVER_ROOT."/phpgwapi/setup/");
 			}
-			$mail->PluginDir = PHPGW_SERVER_ROOT."/phpgwapi/inc/";
+			$mail->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
 			
 			#print $this->sessionData['uid']."<bR>";
 			#print $this->sessionData['folder']."<bR>";
@@ -386,7 +386,7 @@
 			#_debug_array($_formData);
 			#exit;
 			
-			#include(PHPGW_APP_ROOT . "/config/config.php");
+			#include(EGW_APP_ROOT . "/config/config.php");
 				
 			$mail->IsSMTP();
 			$mail->From 	= $this->preferences['emailAddress'][0]['address'];
@@ -514,7 +514,7 @@
 			if (isset($this->preferences['sentFolder']))
 			{
 				// mark message as answered
-				$bofelamimail = CreateObject('felamimail.bofelamimail');
+				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection($this->preferences['sentFolder']);
 				$bofelamimail->appendMessage($this->preferences['sentFolder'],
 								$mail->sentHeader,
@@ -526,7 +526,7 @@
 			if(isset($this->sessionData['uid']))
 			{
 				// mark message as answered
-				$bofelamimail = CreateObject('felamimail.bofelamimail',$this->sessionData['folder']);
+				$bofelamimail =& CreateObject('felamimail.bofelamimail',$this->sessionData['folder']);
 				$bofelamimail->openConnection();
 				$bofelamimail->flagMessages("answered",array('0' => $this->sessionData['uid']));
 				$bofelamimail->closeConnection();
@@ -569,6 +569,6 @@
 				return $_string;
 			}
 		}
-                              
+															
 
 }

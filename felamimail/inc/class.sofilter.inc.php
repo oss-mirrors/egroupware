@@ -26,7 +26,7 @@
 
 		function sofilter()
 		{
-			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
 			$this->db		= clone($GLOBALS['egw']->db);
 		}
 		
