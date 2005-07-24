@@ -786,8 +786,12 @@
 		
 		function getIMAPACL($_folderName)
 		{
+			$acl = array();
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
-			$acl = imap_getacl ($this->mbox, $_folderName);
+			if(function_exists('imap_getacl'))
+			{
+				$acl = imap_getacl ($this->mbox, $_folderName);
+			}
 			
 			return $acl;
 		}
