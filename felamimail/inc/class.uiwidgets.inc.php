@@ -103,13 +103,23 @@
 			
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new  = '<link rel="STYLESHEET" type="text/css" href="'.$GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/js/dhtmlxtree/css/dhtmlXTree.css">';
-			$folder_tree_new .= "<script type='text/javascript'>\n";
-			$folder_tree_new .= "tree=new dhtmlXTreeObject('divFolderTree','100%','100%',0);\n";
-			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');\n";
+			$folder_tree_new .= "<script type='text/javascript'>";
+			$folder_tree_new .= "tree=new dhtmlXTreeObject('divFolderTree','100%','100%',0);";
+			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";
+			if($_displayCheckBox)
+			{
+				$folder_tree_new .= "tree.enableCheckBoxes(1);\n";
+			}
+			
+			$folder_tree_new .= "tree.insertNewItem(0,'--topfolder--','$_topFolderName',0,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
 			
 			#foreach($_folders as $key => $obj)
 			foreach($allFolders as $longName => $obj)
 			{	
+				$image1 = "'folderClosed.gif'";
+				$image2 = "0";
+				$image3 = "0";
+				
 				$folderParts = explode($obj->delimiter, $longName);
 				
 				//get rightmost folderpart
@@ -117,7 +127,7 @@
 				
 				// the rest of the array is the name of the parent
 				$parentName = implode((array)$folderParts,$obj->delimiter);
-				if(empty($parentName)) $parentName = 0;
+				if(empty($parentName)) $parentName = '--topfolder--';
 				
  				if( @$obj->counter->unseen > 0 )
 				{
@@ -133,24 +143,20 @@
 				// highlight currently selected mailbox
 				if ($_selected == $longName)
 				{
-								$entryOptions .= ',SELECT';
+					$entryOptions .= ',SELECT';
 				}
 				
 				$folder_name = $shortName.$messageCount;
 				
-				// give INBOX a special folder
+				// give INBOX a special foldericon
 				if ($longName == 'INBOX')
 				{
-					$folder_icon = $folderImageDir."foldertree_felamimail_sm.png";
-					$folderOpen_icon = $folderImageDir."foldertree_felamimail_sm.png";
-					$entryOptions .= ',TOP';
-				}
-				else
-				{
-					$folder_icon = $folderImageDir."foldertree_folder.gif";
+					$image1 = "'kfm_home.png'";
+					$image2 = "'kfm_home.png'";
+					$image3 = "'kfm_home.png'";
 				}
 
-				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,'folderClosed.gif',0,0,'$entryOptions');\n";
+				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,$image1,$image2,$image3,'$entryOptions');\n";
 			}
 
 			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$_selected');</script>";
