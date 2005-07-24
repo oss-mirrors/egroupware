@@ -467,14 +467,29 @@
 				return $folders;
 			} 
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->imapBaseDir,3,$this->profileID);
+			$inboxMailboxString = ExecMethod('emailadmin.bo.getMailboxString','INBOX',3,$this->profileID);
 			
 			// we always fetch the subscribed first, to be able to detect subscribed state
-			$list = imap_getsubscribed($this->mbox,$mailboxString,"*");
+			$list = (array)imap_getsubscribed($this->mbox,$mailboxString,"*");
 			foreach($list as $folderInfo)
 			{
 				$subscribedFolders[$folderInfo->name] = true;
 			}
-			
+
+			// make sure that we always return the INBOX
+			if(!$subscribedFolders[$inboxMailboxString])
+			{
+				$inboxList = imap_getmailboxes($this->mbox,$mailboxString,"INBOX");
+				foreach($inboxList as $folderInfo)
+				{
+					if($folderInfo->name == $inboxMailboxString)
+					{
+						$list[] = $folderInfo;
+						break;
+					}
+				}
+			}
+
 			if($_subscribedOnly == false)
 			{
 				$list = imap_getmailboxes($this->mbox,$mailboxString,"*");
@@ -518,8 +533,8 @@
 			}
 			else
 			{
-																if($_subscribedOnly == 'true' &&
-																				is_array($inboxName = imap_list($this->mbox,$mailboxString,'INBOX')))
+					if($_subscribedOnly == 'true' &&
+						is_array($inboxName = imap_list($this->mbox,$mailboxString,'INBOX')))
 																{
 					$inboxData = imap_getmailboxes($this->mbox,$mailboxString,'INBOX');
 					$folders['INBOX'] = $inboxData[0];

@@ -47,10 +47,13 @@
 		function addFolder($_parentFolder, $_newSubFolder)
 		{
 			$folderName = ($_parentFolder == '--topfolder--'?$_newSubFolder:$_parentFolder.'.'.$_newSubFolder);
+			#$response =& new xajaxResponse();
+                        #$response->addAssign("folderName", "innerHTML", $folderName);
+                        #return $response->getXML();
 			if($this->bofelamimail->imap_createmailbox($folderName))
 			{
 				$response =& new xajaxResponse();
-				$response->addScript("tree.insertNewItem('$_parentFolder','$_parentFolder.$_newSubFolder','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
+				$response->addScript("tree.insertNewItem('$_parentFolder','$folderName','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
 				$response->addScript("tree.setCheck('$folderName','0');");
 				$response->addAssign("newSubFolder", "value", '');
 				return $response->getXML();
@@ -128,9 +131,9 @@
 
 		function deleteFolder($_folderName)
 		{
-			if($_folderName == 'INBOX' || $folderName == '--topfolder--')
+			if($_folderName == 'INBOX' || $_folderName == '--topfolder--')
 				return false;
-			
+
 			if($this->bofelamimail->imap_deletemailbox($_folderName))
 			{
 				$response =& new xajaxResponse();
@@ -190,7 +193,10 @@
 		
 		function getFolderInfo($_folderName)
 		{
-			if($folderStatus = $this->bofelamimail->getFolderStatus($_folderName))
+				#$response =& new xajaxResponse();
+                                #$response->addAssign("folderName", "innerHTML", 'Name: '.$folderName);
+                                #return $response->getXML();
+			if($_folderName != '--topfolder--' && $folderStatus = $this->bofelamimail->getFolderStatus($_folderName))
 			{
 				$response =& new xajaxResponse();
 
@@ -363,9 +369,9 @@
 		function updateFolderStatus($_folderName, $_status)
 		{
 			$this->bofelamimail->subscribe($_folderName,($_status == '1'?'subscribe':'unsubscribe'));
-
+			#$this->deleteFolder('--topfolder--.xxx.yyy');
 			#$response =& new xajaxResponse();
-			#$response->addAssign("folderName", "innerHTML", $_status);
+			#$response->addAssign("folderName", "innerHTML", $_folderName.$_status);
 			#return $response->getXML();
 			
 			#return($this->getFolderInfo($folderName));

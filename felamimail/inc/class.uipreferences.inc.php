@@ -116,7 +116,6 @@
 			}
 			
 			$folderList	= $this->bofelamimail->getFolderObjects();
-
 			// check user input BEGIN
 			// the name of the new current folder
 			if(get_var('mailboxName',array('POST')) && $folderList[get_var('mailboxName',array('POST'))] ||

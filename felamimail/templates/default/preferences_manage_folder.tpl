@@ -60,7 +60,7 @@
 						{lang_rename_folder}
 					</td>
 					<td align="left">
-						<input type="text" size="30" id="newMailboxName" name="newMailboxName" value="{mailboxNameShort}" onchange="document.renameMailbox.submit()">
+						<input type="text" size="30" id="newMailboxName" name="newMailboxName" value="{mailboxNameShort}" oonchange="document.renameMailbox.submit()">
 					</td>
 					<td align="center">
 						<button type='button' id="mailboxRenameButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.renameFolder",tree.getSelectedItemId(), tree.getParentId(tree.getSelectedItemId()), document.getElementById("newMailboxName").value)'>{lang_rename}</button>
@@ -71,7 +71,7 @@
 						{lang_create_subfolder}
 					</td>
 					<td align="left">
-						<input type="text" size="30" id="newSubFolder" name="newSubFolder" onchange="document.createSubFolder.submit()">
+						<input type="text" size="30" id="newSubFolder" name="newSubFolder" oonchange="document.createSubFolder.submit()">
 					</td>
 					<td align="center">
 						<button type='button' onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.addFolder",tree.getSelectedItemId(),document.getElementById("newSubFolder").value)'>{lang_create}</button>
