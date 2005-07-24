@@ -8,7 +8,7 @@
 			{lang_folder_settings}
 		</th>
 	</tr>
-	<tr>
+	<tr valign="top">
 		<td>
 			<form name="folderList" method="post" action="{form_action}">
 			<!-- <div id="divFolderTree" style='width:200;height:200;'></div> -->
@@ -98,10 +98,241 @@
 						<span id="aclTable"></span>
 					</td>
 					<td align="center">
-						<button type="button" onClick="javascript:xajax_doXMLHTTP('felamimail.ajaxfelamimail.deleteACL', xajax.getFormValues('editACL'));">{lang_delete_selected}</button>
+						<button type="button" onClick="javascript:xajax_doXMLHTTP('felamimail.ajaxfelamimail.deleteACL', xajax.getFormValues('editACL'));">{lang_delete}</button>
 						<form>
 					</td>
 				</tr>
+<tr><td colspan="3">
+<style type="text/css">
+.CellBody {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+</style>
+<TABLE border=1 style="border: 1px solid black; border-collapse: collapse;">
+<CAPTION>
+<B class="TableTitle">Mailbox Access Rights </b> 
+</caption>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">Access Right</p>
+
+</th>
+<TH ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellHeading">Purpose</p>
+
+</th>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+<P CLASS="CellBody"><EM CLASS="Emphasis">l</em> </p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Look up the name of the mailbox (but not its contents). </p>
+
+</td>
+
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+<P CLASS="CellBody"><EM CLASS="Emphasis">r</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Read the contents of the mailbox. </p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+<P CLASS="CellBody"><EM CLASS="Emphasis">s </em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Preserve the &quot;seen&quot; and &quot;recent&quot; status of messages across IMAP sessions.</p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+<P CLASS="CellBody"><EM CLASS="Emphasis">w</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Write (change message flags such as &quot;recent,&quot; &quot;answered,&quot; and &quot;draft&quot;). </p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+
+<P CLASS="CellBody"><EM CLASS="Emphasis">i</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Insert (move or copy) a message into the mailbox. </p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+<P CLASS="CellBody"><EM CLASS="Emphasis">p</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellBody">Post a message in the mailbox by sending the message to the mailbox's submission address (for example, post a message in the <EM CLASS="Filename">cyrushelp</em> mailbox by sending a message to <EM CLASS="Emphasis">sysadmin+cyrushelp@somewhere.net</em>).</p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+<P CLASS="CellBody"><EM CLASS="Emphasis">c</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellBody">Create a new mailbox below the top-level mailbox (ordinary users cannot create top-level mailboxes).</p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+<P CLASS="CellBody"><EM CLASS="Emphasis">d </em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Delete a message and/or the mailbox itself.</p>
+
+</td>
+</tr>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" align="center">
+<P CLASS="CellBody"><EM CLASS="Emphasis">a</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Administer the mailbox (change the mailbox's ACL).</p>
+
+</td>
+</tr>
+</table>
+
+<p>
+<TABLE border=1 style="border: 1px solid black; border-collapse: collapse;">
+<CAPTION>
+<B class="TableTitle">Abbreviations for Common Access Rights </b> 
+</caption>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">Abbreviation</p>
+
+</th>
+<TH ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellHeading">Access Rights</p>
+
+</th>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">Result</p>
+
+</th>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody"><EM CLASS="Emphasis">none</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellBody">Blank</p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">The user has no rights whatsoever.</p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody"><EM CLASS="Emphasis">read</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellBody"><EM CLASS="Emphasis">lrs </em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Allows a user to read the contents of the mailbox.</p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody"><EM CLASS="Emphasis">post</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellBody"><EM CLASS="Emphasis">lrps</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Allows a user to read the mailbox and post to it through the delivery system by sending mail to the mailbox's submission address. </p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody"><EM CLASS="Emphasis">append</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellBody"><EM CLASS="Emphasis">lrsip</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Allows a user to read the mailbox and append messages to it, either via IMAP or through the delivery system.</p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody"><EM CLASS="Emphasis">write</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellBody"><EM CLASS="Emphasis">lrswipcd</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">Allows a user to read the maibox, post to it, append messages to it, and delete messages or the mailbox itself. The only right not given is the right to change the mailbox's ACL. </p>
+
+</td>
+</tr>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody"><EM CLASS="Emphasis">all</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+
+<P CLASS="CellBody"><EM CLASS="Emphasis">lrswipcda</em></p>
+
+</td>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBody">The user has all possible rights on the mailbox. This is usually granted to users only on the mailboxes they own.</p>
+
+</td>
+</tr>
+</table>
+</td></tr>
 			</table>
 		</div>
 <!-- END folder_settings -->
