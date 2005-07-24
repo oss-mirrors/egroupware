@@ -11,6 +11,7 @@
 	* Free Software Foundation; either version 2 of the License, or (at your    *
 	* option) any later version.                                                *
 	\***************************************************************************/
+
 	/* $Id$ */
 
 	class ajaxfelamimail
@@ -46,10 +47,8 @@
 		
 		function addFolder($_parentFolder, $_newSubFolder)
 		{
-			$folderName = ($_parentFolder == '--topfolder--'?$_newSubFolder:$_parentFolder.'.'.$_newSubFolder);
-			#$response =& new xajaxResponse();
-                        #$response->addAssign("folderName", "innerHTML", $folderName);
-                        #return $response->getXML();
+			$folderData = $this->bofelamimail->getFolderStatus('INBOX');
+			$folderName = ($_parentFolder == '--topfolder--'?$_newSubFolder:$_parentFolder.$folderData['delimiter'].$_newSubFolder);
 			if($this->bofelamimail->imap_createmailbox($folderName))
 			{
 				$response =& new xajaxResponse();

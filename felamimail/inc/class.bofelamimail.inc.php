@@ -11,6 +11,7 @@
 	* Free Software Foundation; either version 2 of the License, or (at your    *
 	* option) any later version.                                                *
 	\***************************************************************************/
+
 	/* $Id$ */
 
 	/**
@@ -421,12 +422,10 @@
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			if($folderInfo = imap_getsubscribed($this->mbox,$mailboxString,$mailboxString))
 			{
-				$delimiter = @$folderInfo[0]->delimiter;
 				$retValue['subscribed'] = true;
 			}
 			elseif($folderInfo = imap_getmailboxes($this->mbox,$mailboxString,$mailboxString))
 			{
-				$delimiter = @$folderInfo[0]->delimiter;
 				$retValue['subscribed'] = false;
 			}
 			else
@@ -435,7 +434,8 @@
 				return false;
 			}
 			
-			$retValue['shortName'] = array_pop(explode(($delimiter?$delimiter:'.'), $_folderName));
+			$retValue['delimiter']	= (isset($folderInfo[0]->delimiter)?$folderInfo[0]->delimiter:'.');
+			$retValue['shortName']	= array_pop(explode($retValue['delimiter'], $_folderName));
 			
 			$folderStatus = imap_status($this->mbox,$mailboxString,SA_ALL);
 			if($folderStatus)
