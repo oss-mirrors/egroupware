@@ -762,8 +762,8 @@
 				$this->mailbox, 
 				lang('IMAP Server'), 
 				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
-				'messageList',
-				'mailbox'
+				'divFolderTree',
+				FALSE
 			);
 
 			$this->t->set_var('current_mailbox',$current_mailbox);

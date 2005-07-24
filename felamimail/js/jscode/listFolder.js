@@ -1,6 +1,18 @@
-function updateACLView()
+var tab = new Tabs(2,'activetab','inactivetab','tab','tabcontent','','','tabpage');
+
+function initAll()
 {
-	xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateACLView');
+	tab.init();
+}
+
+function onCheckHandler(_nodeID)
+{
+	xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateFolderStatus',_nodeID,tree.isItemChecked(_nodeID));
+}
+
+function onNodeSelect(_nodeID)
+{
+	xajax_doXMLHTTP("felamimail.ajaxfelamimail.getFolderInfo",_nodeID);
 }
 
 function resetACLAddView()
@@ -19,7 +31,7 @@ function resetACLAddView()
 	opener.updateACLView();
 }
 
-function onNodeSelect(_nodeID)
+function updateACLView()
 {
-	xajax_doXMLHTTP("felamimail.ajaxfelamimail.getFolderInfo",_nodeID);
+	xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateACLView');
 }

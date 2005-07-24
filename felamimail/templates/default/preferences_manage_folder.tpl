@@ -11,76 +11,27 @@
 	<tr>
 		<td>
 			<form name="folderList" method="post" action="{form_action}">
-			<div id="divFolderTree" style='width:200;height:200;'></div>
+			<!-- <div id="divFolderTree" style='width:200;height:200;'></div> -->
+			<div id="divFolderTree" style="overflow:auto; width:250px; height:400px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
 			{folder_tree}
 			</form>
 		</td>
 		<td valign="top">
+		<table width="100%" border="0" cellspacing="0" cellpading="0" bgcolor="white">
+			<tr>
+				<th id="tab1" class="activetab" onclick="javascript:tab.display(1);" style="width:50%;"><a href="#" tabindex="0" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);" style="font-size:10px;">{lang_Overview}</a></th>
+				<th id="tab2" class="activetab" onclick="javascript:tab.display(2);" style="width:50%;"><a href="#" tabindex="0" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);" style="font-size:10px;">{lang_ACL}</a></th>
+			</tr>
+		</table>
 			{settings_view}
 		</td>
 	</tr>
-<!-- 	<tr>
-		<td>
-			<table border="1" width="100%">
-				<tr>
-					<td width="100"align="left">
-						{lang_quota_status}
-					</td>
-					<td align="center">
-						<table width="100%" border="1">
-							<tr>
-								<td colspan="2">
-									Storage Limit<br>
-								</td>
-							</tr>
-							<tr>
-								<td width="50%">
-									STORAGE usage level is: 
-								</td>
-								<td width="50%">
-									{storage_usage}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									STORAGE limit level is: 
-								</td>
-								<td>
-									{storage_limit}
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Message Limit<br>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									MESSAGE usage level is: 
-								</td>
-								<td>
-									{message_usage}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									MESSAGE limit level is: 
-								</td>
-								<td>
-									{message_limit}
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr> -->
 </table>
 
 <!-- END main -->
 
 <!-- BEGIN folder_settings -->
+		<div id="tabcontent1" class="inactivetab" bgcolor="white">
 			<table border="0" width="100%" cellpadding=2 cellspacing=0>
 				<tr>
 					<td style="width:30%;">
@@ -106,27 +57,13 @@
 				</tr>
 				<tr>
 					<td align="left">
-						{lang_folder_subscribed}
-					</td>
-					<td align="left">
-						<form action="{form_action}" method="post" name="subscribeList">
-						<input type="checkbox" name="subscribed" onchange="xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateFolderStatus',this.checked)" id="subscribed" {subscribed_checked}>
-						<label for="subscribed">{lang_subscribed}</label> 
-						</form>
-					</td>
-					<td>
-						&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td align="left">
 						{lang_rename_folder}
 					</td>
 					<td align="left">
 						<input type="text" size="30" id="newMailboxName" name="newMailboxName" value="{mailboxNameShort}" onchange="document.renameMailbox.submit()">
 					</td>
 					<td align="center">
-						<button type='button' onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.renameFolder",tree.getSelectedItemId(), tree.getParentId(tree.getSelectedItemId()), document.getElementById("newMailboxName").value)'>{lang_rename}</button>
+						<button type='button' id="mailboxRenameButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.renameFolder",tree.getSelectedItemId(), tree.getParentId(tree.getSelectedItemId()), document.getElementById("newMailboxName").value)'>{lang_rename}</button>
 					</td>
 				</tr>
 				<tr>
@@ -148,19 +85,10 @@
 						&nbsp;
 					</td>
 				</tr>
-<!--				<tr>
-					<td align="left">
-						{lang_delete_folder}
-					</td>
-					<td>
-						&nbsp;
-					</td>
-					<td align="center">
-						<form action="{form_action}" method="post" name="deleteFolder">
-						<input type="submit" value="{lang_delete}" name="deleteFolder" onClick="return confirm('{lang_confirm_delete}')">
-						</form>
-					</td>
-				</tr> -->
+			</table>
+		</div>
+		<div id="tabcontent2" class="inactivetab">
+			<table border="0" width="100%" cellpadding=2 cellspacing=0>
 				<tr>
 					<td align="left">
 						ACL <a href="javascript:openWindow('{url_addACL}','felamiMailACL','400','200');">add ACL</a>
@@ -175,6 +103,7 @@
 					</td>
 				</tr>
 			</table>
+		</div>
 <!-- END folder_settings -->
 
 <!-- BEGIN mainFolder_settings -->

@@ -46,10 +46,12 @@
 		
 		function addFolder($_parentFolder, $_newSubFolder)
 		{
-			if($this->bofelamimail->imap_createmailbox($_parentFolder.'.'.$_newSubFolder))
+			$folderName = ($_parentFolder == '--topfolder--'?$_newSubFolder:$_parentFolder.'.'.$_newSubFolder);
+			if($this->bofelamimail->imap_createmailbox($folderName))
 			{
 				$response =& new xajaxResponse();
-				$response->addScript("tree.insertNewItem('$_parentFolder','$_parentFolder.$_newSubFolder','$_newSubFolder',onNodeSelect,0,0,0,'CHILD,CHECKED,SELECT,CALL');");
+				$response->addScript("tree.insertNewItem('$_parentFolder','$_parentFolder.$_newSubFolder','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
+				$response->addScript("tree.setCheck('$folderName','0');");
 				$response->addAssign("newSubFolder", "value", '');
 				return $response->getXML();
 			}
@@ -126,11 +128,13 @@
 
 		function deleteFolder($_folderName)
 		{
+			if($_folderName == 'INBOX' || $folderName == '--topfolder--')
+				return false;
+			
 			if($this->bofelamimail->imap_deletemailbox($_folderName))
 			{
 				$response =& new xajaxResponse();
 				$response->addScript("tree.deleteItem('$_folderName',1);");
-				#$response->addAssign("newSubFolder", "value", '');
 				return $response->getXML();
 			}
 		}
@@ -188,23 +192,36 @@
 		{
 			if($folderStatus = $this->bofelamimail->getFolderStatus($_folderName))
 			{
+				$response =& new xajaxResponse();
+
+				if($this->sessionDataAjax['oldFolderName'] == '--topfolder--')
+				{
+					$this->sessionDataAjax['oldFolderName'] = '';
+					$response->addScript("document.getElementById('newMailboxName').disabled = false;");
+					$response->addScript("document.getElementById('mailboxRenameButton').disabled = false;");
+				}
 				$this->sessionDataAjax['folderName'] = $_folderName;
 				$this->saveSessionData();
 				
 				$folderACL = $this->bofelamimail->getIMAPACL($_folderName);
 				
-				$response =& new xajaxResponse();
 				$response->addAssign("newMailboxName", "value", $folderStatus['shortName']);
 				$response->addAssign("folderName", "innerHTML", $_folderName);
 				$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
-				#if($folderStatus['subscribed'] == TRUE)
-				#{
-				#	$response->addScript("document.getElementById('subscribed').checked = true;");
-				#}
-				#else
-				#{
-				#	$response->addScript("document.getElementById('subscribed').checked = false;");
-				#}
+
+				return $response->getXML();
+			}
+			else
+			{
+				$this->sessionDataAjax['oldFolderName'] = $_folderName;
+				$this->saveSessionData();
+
+				$response =& new xajaxResponse();
+				$response->addAssign("newMailboxName", "value", '');
+				$response->addAssign("folderName", "innerHTML", '');
+				$response->addScript("document.getElementById('newMailboxName').disabled = true;");
+				$response->addScript("document.getElementById('mailboxRenameButton').disabled = true;");
+				$response->addAssign("aclTable", "innerHTML", '');
 				return $response->getXML();
 			}
 		}
@@ -318,8 +335,10 @@
 			if($this->sessionData['startMessage'] > $lastPage)
 				$this->sessionData['startMessage'] = $lastPage;
 			$this->saveSessionData();
+
+			$response = $this->generateMessageList($this->sessionData['mailbox']);
 			
-			return $this->generateMessageList($this->sessionData['mailbox']);
+			return $response;
 		}
 		
 		function skipPrevious()

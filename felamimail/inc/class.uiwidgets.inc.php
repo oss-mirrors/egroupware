@@ -74,7 +74,7 @@
 		*
 		* @return string the html code, to be added into the template
 		*/
-		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_formName, $_hiddenVar)
+		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox)
 		{
 			// create a list of all folders, also the ones which are not subscribed
  			foreach($_folders as $key => $obj)
@@ -104,14 +104,15 @@
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new  = '<link rel="STYLESHEET" type="text/css" href="'.$GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/js/dhtmlxtree/css/dhtmlXTree.css">';
 			$folder_tree_new .= "<script type='text/javascript'>";
-			$folder_tree_new .= "tree=new dhtmlXTreeObject('divFolderTree','100%','100%',0);";
+			$folder_tree_new .= "tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";
 			if($_displayCheckBox)
 			{
-				$folder_tree_new .= "tree.enableCheckBoxes(1);\n";
+				$folder_tree_new .= "tree.enableCheckBoxes(1);";
+				$folder_tree_new .= "tree.setOnCheckHandler('onCheckHandler');";
 			}
 			
-			$folder_tree_new .= "tree.insertNewItem(0,'--topfolder--','$_topFolderName',0,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
+			$folder_tree_new .= "tree.insertNewItem(0,'--topfolder--','$_topFolderName',onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
 			
 			#foreach($_folders as $key => $obj)
 			foreach($allFolders as $longName => $obj)
@@ -157,6 +158,8 @@
 				}
 
 				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,$image1,$image2,$image3,'$entryOptions');\n";
+				if($_displayCheckBox)
+					$folder_tree_new .= "tree.setCheck('$longName','".(int)$obj->subscribed."');";
 			}
 
 			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$_selected');</script>";

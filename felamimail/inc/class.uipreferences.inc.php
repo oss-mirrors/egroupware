@@ -59,11 +59,12 @@
 			{
 				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			#$GLOBALS['egw']->js->validate_file('foldertree','foldertree');
+			$GLOBALS['egw']->js->validate_file('tabs','tabs');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
 			$GLOBALS['egw']->js->validate_file('jscode','listFolder','felamimail');
 			$GLOBALS['egw']->js->validate_file('jscode','baseFunctions','felamimail');
+			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['egw']->common->egw_header();
@@ -192,8 +193,8 @@
 				$this->selectedFolder, 
 				lang('IMAP Server'), 
 				$mailPrefs['username'].'@'.$mailPrefs['imapServerAddress'],
-				'folderList',
-				'mailboxName'
+				'divFolderTree',
+				TRUE
 			);
 			$this->t->set_var('folder_tree',$folderTree);
 			
@@ -295,6 +296,8 @@
 			$this->t->set_var('lang_add',lang("add"));
 			$this->t->set_var('lang_delete_selected',lang("delete selected"));
 			$this->t->set_var('lang_cancel',lang("close"));
+			$this->t->set_var('lang_ACL',lang("ACL"));
+			$this->t->set_var('lang_Overview',lang("Overview"));
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);

@@ -1,4 +1,9 @@
-Version xxx
+Version 1.0
+- updated FeLaMiMail to use AJAX
+- reworked the way the UI works. Most UI actions now don't need any reload
+anymore.
+
+Version 0.9.6
 
 - displaying of subfolders with hyphen was broken Bug #1195101
 - patch from Regis Regis Leroy to display counters on folders and improve
