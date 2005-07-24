@@ -593,7 +593,6 @@
 					unset($messageData);
 				}
 				
-				return $caching->updateImapStatus($status);
 			}
 			// update cache, but only add new emails
 			elseif($status->uidnext != $cachedStatus['uidnext'])

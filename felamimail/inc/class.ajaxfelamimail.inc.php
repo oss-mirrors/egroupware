@@ -23,7 +23,7 @@
 
 			$this->sessionDataAjax	= $GLOBALS['egw']->session->appsession('ajax_session_data');
 			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data');
-			error_log(print_r($this->sessionData,true));
+
 			if(!isset($this->sessionDataAjax['folderName']))
 				$this->sessionDataAjax['folderName'] = 'INBOX';
 
@@ -300,9 +300,6 @@
 		{
 			$GLOBALS['egw']->session->appsession('ajax_session_data','',$this->sessionDataAjax);
 			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
-
-			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data');
-			error_log(__FILE__.' Line:'.__LINE__.': '.print_r($this->sessionData,true));
 		}
 		
 		function skipForward()
