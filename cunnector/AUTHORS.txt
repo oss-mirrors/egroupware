@@ -1,0 +1,21 @@
+cUnnector
+=========
+
+This program is developed by
+
+James Kessel <james@online.de>
+	initial development for credativ GmbH
+
+
+
+
+Imported 3rd party libraries in Libs/
+=====================================
+
+NSpring
+http://sourceforge.net/projects/nspring
+License: BSD
+
+XML-RPC.NET
+http://www.xml-rpc.net
+License: MIT X11

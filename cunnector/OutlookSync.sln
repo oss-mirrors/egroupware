@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookSync", "OutlookSync\OutlookSync.csproj", "{37B47784-B0DC-4355-A108-E26F83080BAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{C0736533-F372-4CE0-83CD-DFDD10D540B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cUnnectorStandaloneApplication", "cUnnectorStandaloneApplication\cUnnectorStandaloneApplication.csproj", "{77EB978F-5450-476A-9E3C-2C1E0A203B2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cUnnectorOutlookAddIn", "cUnnectorOutlookAddIn\cUnnectorOutlookAddIn.csproj", "{3A62392D-1DF2-4DA9-B7B0-2D557B2C8752}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "cUnnectorOutlookAddInSetup", "cUnnectorOutlookAddInSetup\cUnnectorOutlookAddInSetup", "{27891FBA-E5E4-49A7-9CFB-9C92E459C2D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASimpleTest", "ASimpleTest\ASimpleTest.csproj", "{3B8BF557-10B6-4810-B451-923BAB36D3B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{40A8CA57-26AA-427F-A173-6BDCE7C7C4AF}"
+	ProjectSection(SolutionItems) = postProject
+		AUTHORS.txt = AUTHORS.txt
+		COPYING.txt = COPYING.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37B47784-B0DC-4355-A108-E26F83080BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37B47784-B0DC-4355-A108-E26F83080BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37B47784-B0DC-4355-A108-E26F83080BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37B47784-B0DC-4355-A108-E26F83080BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0736533-F372-4CE0-83CD-DFDD10D540B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0736533-F372-4CE0-83CD-DFDD10D540B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0736533-F372-4CE0-83CD-DFDD10D540B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0736533-F372-4CE0-83CD-DFDD10D540B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77EB978F-5450-476A-9E3C-2C1E0A203B2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77EB978F-5450-476A-9E3C-2C1E0A203B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77EB978F-5450-476A-9E3C-2C1E0A203B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77EB978F-5450-476A-9E3C-2C1E0A203B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A62392D-1DF2-4DA9-B7B0-2D557B2C8752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A62392D-1DF2-4DA9-B7B0-2D557B2C8752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A62392D-1DF2-4DA9-B7B0-2D557B2C8752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A62392D-1DF2-4DA9-B7B0-2D557B2C8752}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27891FBA-E5E4-49A7-9CFB-9C92E459C2D9}.Debug|Any CPU.ActiveCfg = Debug
+		{27891FBA-E5E4-49A7-9CFB-9C92E459C2D9}.Release|Any CPU.ActiveCfg = Release
+		{3B8BF557-10B6-4810-B451-923BAB36D3B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B8BF557-10B6-4810-B451-923BAB36D3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B8BF557-10B6-4810-B451-923BAB36D3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B8BF557-10B6-4810-B451-923BAB36D3B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
