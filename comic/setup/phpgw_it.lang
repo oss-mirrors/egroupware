@@ -1,5 +1,6 @@
 %1 by %2	comic	it	%1 di %2
 %1 by %2 (%3)	comic	it	%1 di %2 (%3)
+are you sure you want to reset all	comic	it	Sei sicuro di voler azzerare tutto?
 are you sure you want to reset all comic dates and resolved image urls?	comic	it	Sei sicuro di voler cancellare tutti i dati dei fumetti e le URL delle immagini?
 censorship level	comic	it	Livello Censura
 censorship override enabled	comic	it	Abilita override della censura
@@ -29,7 +30,6 @@ my comics	comic	it	i Miei Fumetti
 no_entries	comic	it	nessun elemento
 parser	comic	it	Parser
 performed %1 of element	comic	it	Eseguito %1 dell'elemento
-egroupware daily comics	comic	it	Fumetti Quotidiani di eGroupWare
 random	comic	it	Casuale
 rated	comic	it	Valutazione
 remote (parse/snarf) enabled	comic	it	remote (parse/snarf)

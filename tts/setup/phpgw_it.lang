@@ -1,12 +1,20 @@
+%1 - %2 of %3 user groups	tts	it	%1 - %2 di %3 gruppi utenti
 a new ticket has been reported.	tts	it	E' stato inviato un nuovo ticket
 accept	tts	it	ACCETTA
 accept the ticket into verification process.	tts	it	Accetta il ticket nel processo di verifica
 accepted	tts	it	ACCETTATO
+account active	tts	it	Account attivo
 action	tts	it	Azione
+add a new account.	tts	it	Aggiungi un nuovo account.
+add new account	tts	it	Aggiungi nuovo account
 add new ticket	tts	it	Aggiungi nuovo ticket
 add ticket	tts	it	Aggiungi ticket
 additional notes	tts	it	Note aggiuntive
 admin options	common	it	Opzioni di amministrazione
+anonymous user (not shown in list sessions)	tts	it	Utente anonimo (non mostrato in elenco sessioni)
+any status	tts	it	Qualunque stato
+application	tts	it	applicazione
+are you sure you want to delete this group ?	tts	it	Sei sicuro di voler cancellare questo gruppo?
 assign to	tts	it	Assegna a
 assigned from	tts	it	Assegnato da
 assigned to	tts	it	Assegnato a
@@ -15,7 +23,24 @@ billable hours changed	tts	it	Ore fatturabili cambiate
 billable hours rate	tts	it	Tariffa oraria fatturabile
 billable rate	tts	it	Tariffa fatturabile
 billable rate changed	tts	it	Tariffa oraria cambiata
+caller address	tts	it	Chiamante: Indirizzo
+caller address 2	tts	it	Chiamante: Indirizzo 2
+caller audio file	tts	it	Chiamante: File Audio
+caller email	tts	it	Chiamante: Email
+caller name	tts	it	Chiamante: Nome
+caller password	tts	it	Chiamante: Password
+caller satisfaction	tts	it	Chiamante: Soddisfazione
+caller solution	tts	it	Chiamante: Soluzione
+caller telephone	tts	it	Chiamante: Telefono
+caller telephone id	tts	it	Chiamante: ID Telefono
+caller ticket id	tts	it	Chiamante: ID Ticket
+can change password	tts	it	Può cambiare password
+categories open %1	tts	it	Categorie aperte %1
+categories total %1	tts	it	Categorie totali %1
 category changed	tts	it	Categoria cambiata
+category description	tts	it	Descrizione Categoria
+category name	tts	it	Nome Categoria
+category statistic	tts	it	Statistiche Categoria
 check here to generate the state's id automatically or enter a particular id below.	tts	it	Segna qui per generare l'ID dello stato automaticamente o inserisci un ID sotto
 clear form	tts	it	Cancella il Form
 close the invalid ticket.	tts	it	Chiudi il ticket invalido
@@ -28,6 +53,8 @@ create new ticket	tts	it	Crea nuovo ticket
 create new transition	tts	it	Crea una nuova transizione
 creates a new ticket, returns ticket_id	tts	it	Creata un nuovo, restituisce il ticket_id
 creates a struct of tickets	tts	it	Crea una struct di ticket
+customer satisfaction	tts	it	Soddisfazione cliente
+date closed	tts	it	Data chiusura
 date opened	tts	it	Data apertura
 default assign to	tts	it	Assegna per default a
 default group	tts	it	Gruppo di default
@@ -55,6 +82,8 @@ keep the present state [%1].	tts	it	Mantieni lo stato attuale [%1].
 latest note added	tts	it	Ultima Nota Aggiunta
 list of available tickets' states.	tts	it	Lista degli stati disponibili per i ticket
 list of available tickets' transitions.	tts	it	Lista delle transizioini disponibili per i ticket
+low priority	tts	it	Bassa priorità
+medium priority	tts	it	Media priorità
 missing description	tts	it	Desrizione mancante
 morework	tts	it	PIULAVORO
 needswork	tts	it	RICHIEDELAVORO
@@ -63,7 +92,10 @@ new ticket	tts	it	Nuovo Ticket
 new tickets can be put into this state.	tts	it	I nuovi ticket possono essere inseriti in questo stato
 new value	tts	it	Nuovo Valore
 no additional notes	tts	it	Nessuna nota Aggiuntiva
+no category found	tts	it	Nessuna categoria trovata
+no data found	tts	it	Nessun dato trovato
 no duplicate	tts	it	NESSUN DUPLICATO
+no matches found	tts	it	Nessuna ricorrenza trovata
 no notes for this ticket	tts	it	Nessuna nota per questo ticket
 no states found	tts	it	Nessuno stato trovato
 no tickets found	tts	it	Nessun ticket trovato.
@@ -158,9 +190,13 @@ verified	tts	it	VERIFICATO
 verify	tts	it	VERIFICA
 verify the ticket to work on it.	tts	it	Verifica il ticket per lavorarlo.
 view all tickets	tts	it	Visualizza tutti i ticket
+view high critical categories	tts	it	Visualizza categorie criticità Alta
 view job detail	tts	it	Visualizza dettagli lavoro
+view medium critical categories	tts	it	Visualizza categorie criticità Media
+view my tickets	tts	it	Visualizza i miei ticket
 view only my open tickets	tts	it	Visualizza solo i miei ticket aperti
 view only open tickets	tts	it	Visualizza solo i ticket aperti
+www request	tts	it	richiesta WWW
 you can only close a ticket if it is assigned to you.	tts	it	Puoi chiudere un ticket solo se è stato assegnato a te.
 you want to delete the state %1 and associated transitions. are you sure?	tts	it	Vuoi davvero cancellare lo stato %1 e le transizioni associate?
 you want to delete the state %1. are you sure?	tts	it	Vuoi davvero cancellare lo stato %1?

@@ -1,5 +1,8 @@
 % to	projects	it	% a
 + jobs	projects	it	Lavori Extra
+a new project has been created	projects	it	Un nuovo progetto è stato creato il:
+a project has been deleted	projects	it	Un progetto è stato cancellato il:
+a project has been updated	projects	it	Un progetto è stato aggiornato il:
 account	projects	it	Conto
 accountancy	common	it	Accountancy
 accounting	common	it	Contabilità
@@ -92,6 +95,7 @@ date due planned	projects	it	Data stabilita pianificata
 days	projects	it	giorni
 days before	projects	it	giorni prima
 definition per project	admin	it	Definizione per progetto
+delete	admin	it	Cancella
 delete activity	projects	it	elimina attività
 delete factor	projects	it	elimina fattore
 delete hours	projects	it	Cancella ore
@@ -233,16 +237,25 @@ month	projects	it	Mese
 move start date if pervious projects end date changes	admin	it	Sposta la data di partenza se la fine dei progetti precedenti cambia
 name not exceed 250 characters in length	projects	it	il nome non può superare 250 caratteri in lunghezza
 net	projects	it	rete
+new	admin	it	Nuovo
 new date due of milestone %1: %2	projects	it	Nuova data prevista per il traguardo %1: %2.
 new end date	projects	it	Nuova data di termine
 new milestone	projects	it	Nuovo traguardo
 new project	projects	it	Nuovo progetto
+new project created	projects	it	Nuovo progetto creato:
 new start date	projects	it	Nuova data di inizio
 nonactive	common	it	Non Attivo
 not billable	projects	it	Non fatturabile
+notification settings	admin	it	Impostazioni notifiche
+notify management committee	admin	it	Notifica al gruppo dirigente
+notify project administrators	admin	it	Notifica agli amministratori del progetto
+notify sales department	admin	it	Notifica al dipartimento vendite
 number	projects	it	Numero
 old end date	projects	it	Vecchia data di termine
 old start date	projects	it	Vecchia data di inizio
+onadd	admin	it	All'aggiunta
+ondelete	admin	it	Alla cancellazione
+onstatuschange	admin	it	Alla variazione di stato
 open	projects	it	Apri
 open popup	projects	it	apri popup
 open popup window	projects	it	apri finestra popup
@@ -290,11 +303,12 @@ project	projects	it	Progetto
 project %1 has been saved	projects	it	Il progetto %1 è stato salvato
 project %1 has been updated	projects	it	Il progetto %1 è stato aggiornato.
 project accounting	admin	it	Contabilità progetto
-project administrators	projects	it	Amministratori progetto
+project administrators	common	it	Amministratori progetto
 project archive	projects	it	Archivio Progetti
 project billing	projects	it	Fatturazione Progetto
 project data due	projects	it	Data prevista progetto
 project date due	projects	it	Data obbligata termine
+project deleted	projects	it	Progetto cancellato
 project delivery	projects	it	Consegne Progetto
 project dependencies	common	it	Dipendenze progetto
 project id	common	it	ID Progetto
@@ -304,6 +318,7 @@ project overview	projects	it	Panoramica Progetto
 project preferences	projects	it	Preferenze progetto
 project statistic	projects	it	Statistica Progetto
 project statistics	projects	it	Statistiche Progetto
+project updated	projects	it	Progetto aggiornato
 project url	projects	it	URL Progetto
 projects	common	it	Progetti
 projects preferences	preferences	it	Preferenze progetti
@@ -334,6 +349,7 @@ select main project	common	it	Selezione progetto principale
 select own address	projects	it	Selezione del proprio indirizzo
 select per button !	projects	it	Selezionare con il pulsante
 select project	projects	it	Seleziona progetto
+select role	projects	it	Seleziona ruolo
 select tax for work time	projects	it	Seleziona tasse per tempo lavorato
 select users	projects	it	Selezione utenti
 seller	projects	it	Venditore
@@ -354,6 +370,7 @@ start date can not be before parent projects start date	projects	it	La data di i
 start date planned	projects	it	Data iniziale pianificata
 statistic	projects	it	Statistica
 statistics	projects	it	Statistiche
+status change	admin	it	Variazione di Stato
 stop	projects	it	Stop
 sub project level %1	projects	it	Sottoprogetto livello %1
 subproject	projects	it	Sottoprogetto
