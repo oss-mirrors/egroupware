@@ -79,7 +79,7 @@ function &_egwcontactssync_listBy($action, $timestamp)
 	// todo
 	// check for acl
 	
-	//Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$allChangedItems = $GLOBALS['phpgw']->contenthistory->getHistory('contacts', $action, $timestamp);
 
@@ -136,7 +136,6 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 	switch ($contentType) {
 		case 'text/x-vcard':
 			$contactId = $vcaladdressbook->addVCard($content,-1,0);
-			Horde::logMessage("SymcML: 2 egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			break;
 			
 		default:
