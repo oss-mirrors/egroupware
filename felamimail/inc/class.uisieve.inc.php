@@ -397,6 +397,13 @@
 				$newRule[regexp]	= get_var('regexp',array('POST'));
 				$newRule[unconditional]	= '0';		// what's this???
 				
+				$newRule[flg] = 0 ;
+				if( $newRule['continue'] ) { $newRule[flg] += 1; }
+				if( $newRule['gthan'] )    { $newRule[flg] += 2; }
+				if( $newRule['anyof'] )    { $newRule[flg] += 4; }
+				if( $newRule['keep'] )     { $newRule[flg] += 8; }
+				if( $newRule['regexp'] )   { $newRule[flg] += 128; }
+				
 				switch(get_var('action',array('POST')))
 				{
 					case 'reject':
