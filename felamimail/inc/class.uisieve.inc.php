@@ -774,7 +774,8 @@
 			{
 				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['egw']->js->validate_file('foldertree','foldertree');
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');                        
 			$GLOBALS['egw']->js->validate_file('jscode','editSieveRule','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
@@ -783,14 +784,16 @@
 			$connectionStatus	= $bofelamimail->openConnection();
 
 			$folderObjects = $bofelamimail->getFolderObjects(false);
-			$folderTree = $uiwidgets->createHTMLFolderJS
+			$folderTree = $uiwidgets->createHTMLFolder
 			(
 				$folderObjects,
-				$this->mailbox,
+				'INBOX',
 				lang('IMAP Server'),
 				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
-				'setMoveToFolderName'
-												);
+				'divFolderTree',
+				false
+			);
+			print '<div id="divFolderTree" style="overflow:auto; width:375px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;"></div>';
 			print $folderTree;
 		}
 
