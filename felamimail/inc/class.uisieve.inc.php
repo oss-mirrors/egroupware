@@ -38,13 +38,10 @@
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+ 			$this->botranslation	=& CreateObject('phpgwapi.translation');
 
 			$this->bopreferences    =& CreateObject('felamimail.bopreferences');
 			$this->mailPreferences  = $this->bopreferences->getPreferences();
-			
-			#$this->bopreferences	=& CreateObject('felamimail.bopreferences');
-			#$this->mailPreferences	= $this->bopreferences->getPreferences();
-
 			
 			$config 		=& CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
@@ -600,7 +597,7 @@
 				}
 				
 				// vacation text
-				$this->t->set_var('vacation_text',$this->vacation['text']);
+				$this->t->set_var('vacation_text',$this->botranslation->convert($this->vacation['text'],'UTF-8'));
 				
 				//vacation days
 				$this->t->set_var('selected_'.$this->vacation['days'],'selected="selected"');
@@ -1022,6 +1019,7 @@
 				case 'enable':
 				case 'save':
 					$vacation['text']	= get_var('vacation_text',array('POST'));
+					$vacation['text']	= $this->botranslation->convert($vacation['text'],$this->displayCharset,'UTF-8');
 					$vacation['days']	= get_var('days',array('POST'));
 					$vacation['addresses']	= get_var('vacationAddresses',array('POST'));
 					$vacation['status']	= 'on';
