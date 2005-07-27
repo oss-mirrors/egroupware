@@ -39,6 +39,13 @@
 			}
 		}
 		
+		/**
+		 * adds uploaded files or files in eGW's temp directory as attachments
+		 *
+		 * It also stores the given data in the session
+		 *
+		 * @param array $_formData fields of the compose form (to,cc,bcc,reply_to,subject,body,priority,signature), plus data of the file (name,file,size,type)
+		 */
 		function addAttachment($_formData)
 		{
 			$this->sessionData['to']	= $_formData['to'];
@@ -55,9 +62,11 @@
 			#	print "$key: $value<br>";
 			#}
 			
-			if ($_formData['size'] != 0)
+			// to gard against exploidts the file must be either uploaded or be in the temp_dir
+			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) || 
+				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir'])))
 			{
-				// ensure existance of PHPGROUPWARE temp dir
+				// ensure existance of eGW temp dir
 				// note: this is different from apache temp dir, 
 				// and different from any other temp file location set in php.ini
 				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
@@ -90,8 +99,14 @@
 					$this->composeID.
 					basename($_formData['file']);
 				
-				copy($_formData['file'],$tmpFileName);
-				
+				if (is_uploaded_file($_formData['file']))
+				{
+					move_uploaded_file($_formData['file'],$tmpFileName);	// requirement for safe_mode!
+				}
+				else
+				{
+					rename($_formData['file'],$tmpFileName);
+				}
 				$this->sessionData['attachments'][]=array
 				(
 					'name'	=> $_formData['name'],
@@ -553,7 +568,7 @@
 		
 		function setDefaults()
 		{
-			$this->sessionData['signature']	= $this->preferences['signature'];
+			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify($this->preferences['signature']);
 			
 			$this->saveSessionData();
 		}

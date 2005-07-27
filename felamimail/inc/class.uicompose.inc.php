@@ -90,10 +90,10 @@
 			switch ($action)
 			{
 				case "addfile":
-					$formData['name']	= $GLOBALS['HTTP_POST_FILES']['attachfile']['name'];
-					$formData['type']	= $GLOBALS['HTTP_POST_FILES']['attachfile']['type'];
-					$formData['file']	= $GLOBALS['HTTP_POST_FILES']['attachfile']['tmp_name'];
-					$formData['size']	= $GLOBALS['HTTP_POST_FILES']['attachfile']['size'];
+					$formData['name']	= $_FILES['attachfile']['name'];
+					$formData['type']	= $_FILES['attachfile']['type'];
+					$formData['file']	= $_FILES['attachfile']['tmp_name'];
+					$formData['size']	= $_FILES['attachfile']['size'];
 					$this->bocompose->addAttachment($formData);
 					$this->compose();
 					break;
@@ -130,12 +130,17 @@
 					break;
 			}
 		}
-		
+
 		function compose($_focusElement="to")
 		{
 			// read the data from session
 			// all values are empty for a new compose window
 			$sessionData = $this->bocompose->getSessionData();
+			if (is_array($_GET['preset']))
+			{
+				$this->bocompose->addAttachment(array_merge($sessionData,$_GET['preset']));
+				$sessionData = $this->bocompose->getSessionData();
+			}
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			#_debug_array($preferences);
 			
@@ -144,7 +149,6 @@
 			{
 				$sessionData['to'] = base64_decode($_GET['send_to']);
 			}
-			
 			$this->display_app_header();
 			
 			$this->t->set_file(array("composeForm" => "composeForm.tpl"));
