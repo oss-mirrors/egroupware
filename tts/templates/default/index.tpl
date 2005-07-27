@@ -25,22 +25,17 @@
 		<td colspan="3">&nbsp;</td>
 	</tr>
 	<tr>
-		<td align="left"><a href="{tts_newticket_link}">{tts_newticket}</a>{tts_newticket_delimiter}<a href="{tts_prefs_link}">{lang_preferences}</a>&nbsp;&nbsp;</td>
+		<td align="left"><a href="{tts_newticket_link}">{tts_newticket}</a>&nbsp;|&nbsp;<a href="{tts_prefs_link}">{lang_preferences}</a>&nbsp;&nbsp;</td>
 		{left}
 		<td align="center" width="15%">
 			<form action="{tts_search_link}" method="POST" name="search">
-                <input type="hidden" name="start" value="0">
 				<select name="filter" onChange="this.form.submit();">{options_filter}</select>
-                <select name="f_status">{options_f_status}</select>
-				<input type="submit" value="{lang_search}">
-
 			</form>
 		</td>
 		{right}
 		<td align="right">
 			<form action="{tts_search_link}" method="POST" name="search">
 				<input type="hidden" name="filter" value="search">
-                <input type="hidden" name="start" value="0">
 				<input name="searchfilter" value="{tts_searchfilter}">
 				<input type="submit" value="{lang_search}">
 			</form>

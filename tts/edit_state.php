@@ -28,8 +28,6 @@
 
   $GLOBALS['phpgw']->config->read_repository();
 
-  $_db=$GLOBALS['phpgw']->db;
-  
   if($_POST['save'])
   {
     $state = $_POST['state'];
@@ -44,22 +42,21 @@
     if (!$state_id)
     {
       $auto=($state['autoid']=='on');
-      $_db->query("insert into phpgw_tts_states (".
-        ($auto?'':'state_id,')."state_name,state_description,state_initial) "
-        . " values ("
-        . ($auto?'':($_db->quote($state['id'],'int') . ","))
-        . $_db->quote($state['name'],'string') . ","
-        . $_db->quote($state['description'],'string') . ","
-        . $_db->quote(($state['initial']=='on'?1:0),'int'). ")",__LINE__,__FILE__);
+      $GLOBALS['phpgw']->db->query("insert into phpgw_tts_states (".($auto?'':'state_id,')."state_name,state_description,state_initial) "
+        . " values ('"
+        . ($auto?'':(addslashes($state['id']) . "','"))
+        . addslashes($state['name']) . "','"
+        . addslashes($state['description']) . "','"
+        . ($state['initial']=='on'?1:0). "')",__LINE__,__FILE__);
     }
     else
     {
       $GLOBALS['phpgw']->db->query("update phpgw_tts_states "
-        . " set state_id=". $_db->quote($state['id'],'int') . ", "
-        . " state_name=". $_db->quote($state['name'],'string') . ", "
-        . " state_description=". $_db->quote($state['description'],'string') . ", "
-        . " state_initial=". $_db->quote(($state['initial']=='on'?1:0),'int')  
-        . " WHERE state_id=".$_db->quote($state_id,'int'),__LINE__,__FILE__);
+        . " set state_id='". addslashes($state['id']) . "', "
+        . " state_name='". addslashes($state['name']) . "', "
+        . " state_description='". addslashes($state['description']) . "', "
+        . " state_initial=". ($state['initial']=='on'?1:0) 
+        . " WHERE state_id=".intval($state_id),__LINE__,__FILE__);
   
     }
   
@@ -68,11 +65,10 @@
   else
   {
     // select the ticket that you selected
-    $GLOBALS['phpgw']->db->query("select * from phpgw_tts_states where state_id=".
-      $_db->quote($state_id,'int'),__LINE__,__FILE__);
+    $GLOBALS['phpgw']->db->query("select * from phpgw_tts_states where state_id='$state_id'",__LINE__,__FILE__);
     $GLOBALS['phpgw']->db->next_record();
 
-    $state['name']          = $GLOBALS['phpgw']->db->f('state_name');
+    $state['name']      = $GLOBALS['phpgw']->db->f('state_name');
     $state['description']   = try_lang($GLOBALS['phpgw']->db->f('state_description'));
     $state['initial']       = $GLOBALS['phpgw']->db->f('state_initial');
   
@@ -81,8 +77,7 @@
     ));
     $GLOBALS['phpgw']->template->set_block('edit_state','form');
 
-    $GLOBALS['phpgw_info']['flags']['app_header'] = 
-      $GLOBALS['phpgw_info']['apps']['tts']['title'].
+    $GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'].
       ' - '.(!$state_id ? lang('Create new state') : lang('Edit the state'));
     $GLOBALS['phpgw']->common->phpgw_header();
 
@@ -93,8 +88,7 @@
     if (!$state_id)
     {
       $GLOBALS['phpgw']->template->set_block('form','autoid','aid');
-      $GLOBALS['phpgw']->template->set_var('lang_auto_id',
-         lang("Check here to generate the state's ID automatically or enter a particular ID below."));
+      $GLOBALS['phpgw']->template->set_var('lang_auto_id',lang("Check here to generate the state's ID automatically or enter a particular ID below."));
       $GLOBALS['phpgw']->template->parse('aid','autoid',True);
     }
     else
@@ -106,8 +100,7 @@
     $GLOBALS['phpgw']->template->set_var('lang_state_id',lang('State ID'));
     $GLOBALS['phpgw']->template->set_var('lang_state_name',lang('State Name'));
     $GLOBALS['phpgw']->template->set_var('lang_state_description', lang('Description'));
-    $GLOBALS['phpgw']->template->set_var('lang_new_ticket_into_state', 
-      lang('New tickets can be put into this state.') );
+    $GLOBALS['phpgw']->template->set_var('lang_new_ticket_into_state', lang('New tickets can be put into this state.') );
     $GLOBALS['phpgw']->template->set_var('lang_save',lang('Save'));
     $GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 

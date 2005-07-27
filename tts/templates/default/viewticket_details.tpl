@@ -2,11 +2,6 @@
     <option value="{optionvalue}" {optionselected}>{optionname}</option>
 <!-- END options_select -->
 
-<!-- BEGIN options_select2 -->
-    <option value="{optionvalue2}" {optionselected2}>{optionname2}</option>
-<!-- END options_select2 -->
-
-
 <!-- BEGIN additional_notes_row -->
 	<tr class="{row_class}">
 		<td colspan="4">
@@ -44,12 +39,10 @@
 var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage');
 </script>
 
-{CatGroupUser}
-
 <br>
 <center><font color=red>{messages}</font></center>
 
-<form name="viewTicketDetails" method="POST" action="{viewticketdetails_link}">
+<form method="POST" action="{viewticketdetails_link}">
 <input type="hidden" name="ticket_id" value="{ticket_id}">
 <input type="hidden" name="lstAssignedfrom" value="{ticket_user}">
 
@@ -57,57 +50,6 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 	<tr class="th">
 		<td colspan="4">&nbsp;<b>[ #{ticket_id} ] - {value_subject}</b></td>
 	</tr>
-    {duplicate_ticket}
-	
-	<tr class="row_on">
-		<td width="25%">{lang_caller_name}:</td>
-		<td width="25%"><b>{value_caller_name}</b></td>
-		<td width="25%">{lang_caller_telephone}:</td>
-		<td width="25%"><b>{value_caller_telephone}</b></td>
-	</tr>
-	
-	<tr class="row_off">
-		<td width="25%">{lang_caller_email}:</td>
-		<td width="25%"><b>{value_caller_email}</b></td>
-		<td width="25%">{lang_caller_telephone_2}:</td>
-		<td width="25%"><b>{value_caller_telephone_2}</b></td>		
-	</tr>
-	
-	<tr class="row_on">
-		<td width="25%">{lang_caller_address}:</td>
-		<td width="25%"><b>{value_caller_address}</b></td>
-		<td width="25%">{lang_caller_address_2}:</td>
-		<td width="25%"><b>{value_caller_address_2}</b></td>
-	</tr>
-	
-	<tr class="row_off">
-		<td width="25%">{lang_caller_ticket_id} / {lang_caller_password}:</td>
-		<td width="25%"><b>{value_caller_ticket_id} / {value_caller_password}</b></td>
-		<td width="25%">{lang_caller_audio_file}:</td>
-		<td width="25%"><b>{value_caller_audio_file}</b></td>
-	</tr>
-
-	<tr class="row_on">
-		<td>{lang_category}:</td>
-		<td><b>{value_category}</b></td>
-		<td>{lang_priority}:</td>
-		<td><b>{value_priority}</b></td>
-	</tr>
-
-	<tr class="row_off">
-		<td>{lang_group}:</td>
-		<td><b>{value_group}</b></td>
-		<td>{lang_assignedto}:</td>
-		<td><b>{value_assignedto}</b></td>
-	</tr>
-
-	<tr class="row_on">
-		<td width="25%">{lang_billable_hours}:</td>
-		<td width="25%"><b>{value_billable_hours}</b></td>
-		<td>{lang_billable_hours_rate}:</td>
-		<td><b>{value_billable_hours_rate}</b></td>
-	</tr>
-
 
 	<tr class="row_off">
 		<td width="25%">{lang_opendate}:</td>
@@ -115,26 +57,34 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 		<td width="25%">{lang_assignedfrom}:</td>
 		<td width="25%"><b>{value_owner}</b></td>
 	</tr>
-	
+
 	<tr class="row_on">
+		<td>{lang_assignedto}:</td>
+		<td><b>{value_assignedto}</b></td>
+		<td>{lang_group}:</td>
+		<td><b>{value_group}</b></td>
+	</tr>
+
+	<tr class="row_off">
+		<td>{lang_priority}:</td>
+		<td><b>{value_priority}</b></td>
+		<td width="25%">{lang_billable_hours}:</td>
+		<td width="25%"><b>{value_billable_hours}</b></td>
+	</tr>
+
+	<tr class="row_on">
+		<td>{lang_category}:</td>
+		<td><b>{value_category}</b></td>
+		<td>{lang_billable_hours_rate}:</td>
+		<td><b>{value_billable_hours_rate}</b></td>
+	</tr>
+
+	<tr class="row_off">
 		<td>{lang_state}:</td>
 		<td><b>{value_state}</b><br>{value_state_description}</td>
 		<td>{lang_billable_hours_total}:</td>
 		<td><b>{value_billable_hours_total}</b></td>
 	</tr>
-
-        <tr class="row_off">
-                <td>{lang_caller_satisfaction}:</td>
-                <td><b>{value_caller_satisfaction}</b></td>
-                <td>{lang_escalation}:</td>
-                <td><b>{value_escalation}</b></td>
-        </tr>
-
-        <tr class="row_on">
-                <td>{lang_caller_solution}:</td>
-                <td colspan="3"><b>{value_caller_solution}</b></td>
-        </tr>
-
 
 	<tr>
 		<td colspan="4"><br>
@@ -169,91 +119,46 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 						<td colspan="4"><b>{lang_update}:</b></td>
 					</tr>
 
-
-				   {modify_subject}
-
-					<tr class="row_on">
-                       	<td>{lang_caller_name}:</td>
-                       	<td><input name="ticket[caller_name]" value="{value_caller_name}" size="30" {disabled_for_standard_user}></td>
-                        <td>{lang_caller_telephone}:</td>
-                       	<td><input name="ticket[caller_telephone]" value="{value_caller_telephone}" size="20" {disabled_for_standard_user}></td>
-                    </tr>
-
 					<tr class="row_off">
-						<td >{lang_caller_email}:</td>
-						<td><input name="ticket[caller_email]" value="{value_caller_email}" size="30" {disabled_for_standard_user}></td>
-						<td>{lang_caller_telephone_2}:</td>
-						<td><input name="ticket[caller_telephone_2]" value="{value_caller_telephone_2}" size="20" {disabled_for_standard_user}></td>
+						<td>{lang_assignedto}:</td>
+						<td><select size="1" name="ticket[assignedto]">{options_assignedto}</select></td>
+						<td>{lang_group}:</td>
+						<td><select name="ticket[group]">{options_group}</select></td>
 					</tr>
 
 					<tr class="row_on">
-						<td >{lang_caller_address}:</td>
-						<td><input name="ticket[caller_address]" value="{value_caller_address}" size="40" {disabled_for_standard_user}></td>
-						<td >{lang_caller_address_2}:</td>
-						<td><input name="ticket[caller_address_2]" value="{value_caller_address_2}" size="40" {disabled_for_standard_user}></td>
-
-					</tr>
-
-					<tr class="row_on">
-						<td >{lang_caller_ticket_id} / {lang_caller_password}:</td>
-						<td><input name="ticket[caller_ticket_id]" value="{value_caller_ticket_id}" size="10" {disabled_for_standard_user}>&nbsp;/&nbsp;
-                            <input name="ticket[caller_password]" value="{value_caller_password}" size="10" {disabled_for_standard_user}>
-                        </td>
-						<td >{lang_caller_audio_file}:</td>
-						<td><input name="ticket[caller_audio_file]" value="{value_caller_audio_file}" size="40" {disabled_for_standard_user}></td>
+						<td>{lang_priority}:</td>
+						<td><select name="ticket[priority]">{options_priority}</select></td>
+						<td>{lang_billable_hours}:</td>
+						<td><input name="ticket[billable_hours]" value="{value_billable_hours}" size="5"></td>
 					</tr>
 
 					<tr class="row_off">
 						<td>{lang_category}:</td>
-						<td>{value_category2}</td>
-						<td>{lang_priority}:</td>
-						<td><select name="ticket[priority]" {disabled_for_standard_user}>{options_priority}</select></td>
-					</tr>
-
-					<tr class="row_on">
-						<td>{lang_group}:</td>
-                       	                        <td>{value_group2}</td>
-						<td>{lang_assignedto}:</td>
-  						<td>{value_assignedto2}</td>
-					</tr>
-
-					<tr class="row_off">
-						<td>{lang_billable_hours}:</td>
-						<td><input name="ticket[billable_hours]" value="{value_billable_hours}" size="5" {disabled_for_standard_user}></td>
+						<td><select size="1" name="ticket[category]">{options_category}</select></td>
 						<td>{lang_billable_hours_rate}:</td>
-						<td><input name="ticket[billable_rate]" value="{value_billable_hours_rate}" size="5" {disabled_for_standard_user}></td>
+						<td><input name="ticket[billable_rate]" value="{value_billable_hours_rate}" size="5"></td>
 					</tr>
 
 					<tr class="row_on">
 						<td>{lang_additional_notes}:</td>
-						<td colspan="3">{additonal_details_rows}<textarea rows="12" name="ticket[note]" cols="70" wrap="physical" {disabled_for_admin_user}></textarea></td>
+						<td colspan="3">{additonal_details_rows}<textarea rows="12" name="ticket[note]" cols="70" wrap="physical"></textarea></td>
 					</tr>
 
 					<tr class="row_off">
 						<td>{lang_status}:</td>
-						<td colspan="3"><select name="ticket[status]" {disabled_field_status}>{options_status}</select></td>
+						<td colspan="3"><select name="ticket[status]">{options_status}</select></td>
 					</tr>
 					<tr class="row_on">
 						<td>{lang_update_state}:</td>
-						<td colspan="3"><input name="ticket[state]" type="radio" value="0" CHECKED {disabled_for_admin_user}>{lang_keep_present_state}</td>
+						<td colspan="3"><input name="ticket[state]" type="radio" value="0" CHECKED>{lang_keep_present_state}</td>
 					</tr>
 <!-- BEGIN update_state_items -->
 					<tr class="row_on">
 						<td>&nbsp;</td>
-						<td colspan="3"><input name="ticket[state]" type="radio" value="{update_state_value}" {disabled_for_admin_user}>{update_state_text}</td>
+						<td colspan="3"><input name="ticket[state]" type="radio" value="{update_state_value}">{update_state_text}</td>
 					</tr>
 <!-- END update_state_items -->
-
-                                  	<tr class="row_off">
-                                                <td>{lang_caller_satisfaction}:</td>
-                                                <td colspan="3"><select name="ticket[caller_satisfaction]" {disabled_for_standard_user}>{options_caller_satisfaction}</select></td>
-                                        </tr>
-
-                                  	<tr class="row_off">
-                                                <td>{lang_caller_solution}:</td>
-                                                <td colspan="3"><textarea rows="8" name="ticket[caller_solution]" cols="70" wrap="physical" {disabled_for_standard_user}>{value_caller_solution}</textarea></td>
-                                        </tr>
-
 				</table>
 			</div>
 
@@ -295,7 +200,4 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 
 </table>
 </form>
-
-{initCatGroupUser}
-
 <!-- END form -->

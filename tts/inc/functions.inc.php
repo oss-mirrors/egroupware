@@ -68,15 +68,9 @@
     }
   }
 
-  // add by Josip
-  // $ticket_state_is_assigned is new parameter which is used
-  // for sending mail when ticket_state = assigned
-  function mail_ticket($ticket_id, $ticket_state_is_assigned=false)
+  function mail_ticket($ticket_id)
   {
     $members = array();
-    //add by Josip
-    $members = array();
-    // end add
 
     // $GLOBALS['phpgw']->preferences->read_repository();
     // $GLOBALS['phpgw_info']['user']['preferences']['tts']['mailnotification']
@@ -96,10 +90,6 @@
       $t_assigned = $GLOBALS['phpgw']->db->f('ticket_assignedto');
       $t_assigned_name = $GLOBALS['phpgw']->accounts->id2name($t_assigned);
       $t_owner_name = $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner'));
-
-      //add by Josip
-      $t_priority = $GLOBALS['phpgw']->db->f('ticket_priority');
-      //end add
 
       // build subject
       $subject = '['.lang('Ticket').' #'.$ticket_id.' '.$group_name.'] '.lang(($GLOBALS['phpgw']->db->f('ticket_status')!='X')?'Updated':'Closed').': '.$GLOBALS['phpgw']->db->f('ticket_subject');
@@ -160,7 +150,7 @@
       if ($GLOBALS['phpgw']->config->config_data['ownernotification'])
       {
         // add owner to recipients
-        $members[] = array('account_id' => $GLOBALS['phpgw']->db->f('ticket_owner'));
+		$members[] = array('account_id' => $GLOBALS['phpgw']->db->f('ticket_owner'));
       }
 
       // do we need to email the user who is assigned to this ticket?
@@ -169,101 +159,6 @@
         // add assigned to recipients
         $members[] = array('account_id' => $t_assigned);
       }
-
-      //add by Josip
-      // do we need to email the user when the ticket is assigned to him?
-      if ($GLOBALS['phpgw']->config->config_data['assignmentnotification'])
-      {
-        // add assigned to recipients when the ticket state = assigned
-        if ($ticket_state_is_assigned)
-        {
-         	$members[] = array('account_id' => $t_assigned);
-        }
-      }
-
-      // do we need to email the user group when the ticket is assigned to him?
-      if ($GLOBALS['phpgw']->config->config_data['assignmentgroupnotification'])
-      {
-        // add group members to recipients when the ticket state = assigned
-        if ($ticket_state_is_assigned)
-        {
-             $members[] = $GLOBALS['phpgw']->accounts->member($group_id);
-        }
-      }
-
-      
-      /*
-      // This is under comment because account table must have additional attribute email_2
-      //_____________________________________________________________________________________
-      // do we need to email the user to the secondary email when the ticket is changed?
-      if ($GLOBALS['phpgw']->config->config_data['email2assignednotification'])
-      {
-        // add assigned to recipients
-        $members_email2[] = array('account_id' => $t_assigned);
-      }
-
-      // do we need to email the user to the secondary email when the ticket is assigned to him?
-      if ($GLOBALS['phpgw']->config->config_data['email2assignmentnotification'])
-      {
-        // add assigned to recipients when the ticket state = assigned
-        if ($ticket_state_is_assigned)
-        {
-         	$members_email2[] = array('account_id' => $t_assigned);
-        }
-      }
-
-      // do we need to email the user group to the secondary email when the ticket is assigned to him?
-      if ($GLOBALS['phpgw']->config->config_data['email2assignmentgroupnotification'])
-      {
-        // add group members to recipients when the ticket state = assigned
-        if ($ticket_state_is_assigned)
-        {
-             $members_email2[] = $GLOBALS['phpgw']->accounts->member($group_id);
-        }
-      }
-
-      // do we need to email the user to the secondary email when the high priority ticket is changed?
-      if ($GLOBALS['phpgw']->config->config_data['email2highpriorityassignednotification'])
-      {
-        //add only if ticket priority is high
-        if ($t_priority > 5)
-        {
-            // add assigned to recipients
-            $members_email2[] = array('account_id' => $t_assigned);
-        }
-      }
-
-      // do we need to email the user to the secondary email when the high priority ticket is assigned to him?
-      if ($GLOBALS['phpgw']->config->config_data['email2highpriorityassignmentnotification'])
-      {
-        //add only if ticket priority is high
-        if ($t_priority > 5)
-        {
-         	if ($ticket_state_is_assigned)
-            {
-         	 	// add assigned to recipients
-                $members_email2[] = array('account_id' => $t_assigned);
-            }
-        }
-      }
-
-      // do we need to email the user group to the secondary email when the high priority ticket is assigned to him?
-      if ($GLOBALS['phpgw']->config->config_data['email2highpriorityassignmentgroupnotification'])
-      {
-        //add only if ticket priority is high
-        if ($t_priority > 5)
-        {
-             if ($ticket_state_is_assigned)
-            {
-                  // add group members to recipients
-                $members_email2[] = $GLOBALS['phpgw']->accounts->member($group_id);
-            }
-        }
-      }
-      //_____________________________________________________________________________________
-      */
-
-      //end add
 
       $toarray = Array();
       $i=0;
@@ -274,22 +169,6 @@
           $toarray[] = $GLOBALS['phpgw']->accounts->id2name($members[$i]['account_id'], 'account_email');
         }
       }
-      /*
-      // This is under comment because account table must have additional attribute email_2
-      //_____________________________________________________________________________________
-      //add by Josip - email_2
-      $i=0;
-      for ($i=0;$i<count($members_email2);$i++)
-      {
-        if ($members_email2[$i])
-        {
-          $toarray[] = $GLOBALS['phpgw']->accounts->id2name($members_email2[$i]['account_id'], 'account_email_2');
-        }
-      }
-      //_____________________________________________________________________________________
-      */
-
-      //
       if(count($toarray) > 1)
       {
         $to = implode(',',$toarray);
@@ -300,20 +179,20 @@
       }
 
       $body=html_deactivate_urls($body);
-      if (($members) || ($members_email2))
+      if ($members)
       {
-        $rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, $body, '', $cc, $bcc);
-        if (!$rc)
-        {
-          echo  lang('Your message could <B>not</B> be sent!<BR>')."\n"
-            . lang('the mail server returned').':<BR>'
-            . "err_code: '".$GLOBALS['phpgw']->send->err['code']."';<BR>"
-            . "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->send->err['msg'])."';<BR>\n"
-            . "err_desc: '".$GLOBALS['phpgw']->err['desc']."'.<P>\n"
-            . lang('To go back to the tts index, click <a href= %1 >here</a>',$GLOBALS['phpgw']->link('/tts/index.php','cd=13'));
-          $GLOBALS['phpgw']->common->phpgw_exit();
-        }
-     }
+      	$rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, $body, '', $cc, $bcc);
+      	if (!$rc)
+      	{
+	        echo  lang('Your message could <B>not</B> be sent!<BR>')."\n"
+          	. lang('the mail server returned').':<BR>'
+          	. "err_code: '".$GLOBALS['phpgw']->send->err['code']."';<BR>"
+          	. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->send->err['msg'])."';<BR>\n"
+          	. "err_desc: '".$GLOBALS['phpgw']->err['desc']."'.<P>\n"
+          	. lang('To go back to the tts index, click <a href= %1 >here</a>',$GLOBALS['phpgw']->link('/tts/index.php','cd=13'));
+        	$GLOBALS['phpgw']->common->phpgw_exit();
+      	}
+  	 }
    }
 }
 
@@ -377,7 +256,7 @@ function html_activate_urls($str)
 
     // mailto into links
     $protocol = "mailto:"; // Protocol exp
-    $str = eregi_replace("$protocol$name@$server($params)?",  "<a href=\"\\0\">\\0</a>", $str);
+    $str = eregi_replace("$protocol$name@$server($params)?",  "<a href=\"\\0\">\\0</a>", $str); 
 
     // <someone@somewhere.net> into links
     $str = eregi_replace("<($name@$server($params)?)>",  "&lt;<a href=\"mailto:\\1\">\\1</a>&gt;", $str); 
@@ -389,48 +268,9 @@ function html_activate_urls($str)
 
 function html_deactivate_urls($str)
 {
-  $str=eregi_replace("<a[^>]+>","",$str);
-  $str=eregi_replace("</a>","",$str);
-  
-  return $str;
-}
-
-
-function csat_id2name($csatisfaction_id)
-{
-        $csat_id = (int)$csatisfaction_id;
-
-        switch($csat_id)
-        {
-                case '0':        $value = 'None'; break;
-                case '1':        $value = 'No Comment'; break;
-                case '2':        $value = 'Not Satisfied'; break;
-                case '3':        $value = 'Partitialy Satisfied'; break;
-                case '5':        $value = 'Satisfied'; break;
-                default:         $value = 'None'; break;
-        }
-        return $value;
-
-}
-
-/*! - this functions can be added to pgpgw common fuctions, ...
-//but for now it is here
-@function randomstringnumber
-@abstract return a random string number of size $size
-@param $size int-size of random string number to return
-*/
-function randomstringnumber($size)
-{
-    $s = '';
-    srand((double)microtime()*1000000);
-    $random_char = array(
-        '0','1','2','3','4','5','6','7','8','9'
-    );
-
-    for ($i=0; $i<$size; $i++)
-    {
-        $s .= $random_char[rand(1,9)];
-    }
-    return $s;
+	$str=eregi_replace("<a[^>]+>","",$str);
+	$str=eregi_replace("</a>","",$str);
+	
+	return $str;
 }
 ?>

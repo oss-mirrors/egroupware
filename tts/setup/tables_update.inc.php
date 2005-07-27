@@ -165,128 +165,31 @@
 		$GLOBALS['setup_info']['tts']['currentver'] = '1.0.002';
 		return $GLOBALS['setup_info']['tts']['currentver'];
 	}
-
-
-	$test[] = '1.0.002';
-	function tts_upgrade1_0_002()
+	
+	
+	// downgrade from former HEAD version (josip)
+	$test[] = '1.0.003';
+	function tts_upgrade1_0_003()
 	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_name',array(
-			'type' => 'varchar',
-			'precision' => '40'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_telephone',array(
-			'type' => 'varchar',
-			'precision' => '20'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_telephone_2',array(
-			'type' => 'varchar',
-			'precision' => '20'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_email',array(
-			'type' => 'varchar',
-			'precision' => '40'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_ticket_id',array(
-			'type' => 'varchar',
-			'precision' => '10'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_password',array(
-			'type' => 'varchar',
-			'precision' => '10'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_address',array(
-			'type' => 'varchar',
-			'precision' => '40'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_address_2',array(
-			'type' => 'varchar',
-			'precision' => '40'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_audio_file',array(
-			'type' => 'varchar',
-			'precision' => '255'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_caller_satisfaction',array(
-			'type' => 'int',
-			'precision' => '2',
-			'default' => '0'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_escalation',array(
-			'type' => 'int',
-			'precision' => '2'
-		));
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_escalation_time',array(
-			'type' => 'int',
-			'precision' => '4'
-		));
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_name');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_telephone');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_telephone_2');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_email');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_ticket_id');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_password');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_address');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_address_2');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_audio_file');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_caller_satisfaction');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_escalation');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_tts_tickets',null,'ticket_escalation_time');
 
-		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_tts_categories_groups',array(
-			'fd' => array(
-				'cat_group_id' => array('type' => 'auto','nullable' => False),
-				'cat_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'account_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
-			),
-			'pk' => array('cat_group_id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		));
-
-		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_tts_escalation',array(
-			'fd' => array(
-				'escalation_id' => array('type' => 'auto','nullable' => False),
-				'ticket_group' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'ticket_priority_1' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
-				'ticket_priority_2' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
-				'time_1' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'time_2' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'time_3' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'email_1' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
-				'email_2' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0')
-			),
-			'pk' => array('escalation_id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		));
-
-		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_tts_tickets_wnt',array(
-			'fd' => array(
-				'ticket_id' => array('type' => 'auto','nullable' => False),
-				'ticket_caller_name' => array('type' => 'varchar','precision' => '40'),
-				'ticket_caller_telephone' => array('type' => 'varchar','precision' => '20'),
-				'ticket_caller_email' => array('type' => 'varchar','precision' => '40'),
-				'ticket_caller_address' => array('type' => 'varchar','precision' => '40'),
-				'ticket_caller_address_2' => array('type' => 'varchar','precision' => '40'),
-				'ticket_subject' => array('type' => 'varchar','precision' => '255'),
-				'ticket_details' => array('type' => 'text','nullable' => False),
-				'ticket_status' => array('type' => 'char','precision' => '1','nullable' => False),
-				'creation_date' => array('type' => 'varchar','precision' => '20'),
-				'finish_date' => array('type' => 'varchar','precision' => '20')
-			),
-			'pk' => array('ticket_id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		));
-
-		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_tts_views_wnt',array(
-			'fd' => array(
-				'view_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'view_account_id' => array('type' => 'varchar','precision' => '40'),
-				'view_time' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
-			),
-			'pk' => array(),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		));
-
+		$GLOBALS['phpgw_setup']->oProc->DropTable('phpgw_tts_categories_groups');
+		$GLOBALS['phpgw_setup']->oProc->DropTable('phpgw_tts_escalation');
+		$GLOBALS['phpgw_setup']->oProc->DropTable('phpgw_tts_tickets_wnt');
+		$GLOBALS['phpgw_setup']->oProc->DropTable('phpgw_tts_views_wnt');
 		
-		$GLOBALS['setup_info']['tts']['currentver'] = '1.0.003';
+		$GLOBALS['setup_info']['tts']['currentver'] = '1.0.002';
 		return $GLOBALS['setup_info']['tts']['currentver'];
 	}
-
-
-	
 ?>

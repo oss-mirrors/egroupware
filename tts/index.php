@@ -43,78 +43,16 @@
 //  $GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_read', 'tts_ticket_id_read');
 //  $GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_unread', 'tts_ticket_id_unread');
   $GLOBALS['phpgw']->template->set_block('index','options_select');
-
+  
   $GLOBALS['phpgw']->template->set_var('lang_appname', lang('Trouble Ticket System'));
+  $GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
   $GLOBALS['phpgw']->template->set_var('tts_prefs_link', $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=tts'));
   $GLOBALS['phpgw']->template->set_var('lang_preferences', lang('Preferences'));
   $GLOBALS['phpgw']->template->set_var('lang_search', lang('search'));
+  $GLOBALS['phpgw']->template->set_var('tts_newticket', lang('New ticket'));
   $GLOBALS['phpgw']->template->set_var('tts_head_status','');
   $GLOBALS['phpgw']->template->set_var('tts_notickets','');
   $GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
-
-
-  //add by Josip
-  $can_add=False;
-  $can_mon=False;
-  $can_vip=False;
-  $can_view_all=False;
-
-  $def_group = $GLOBALS['phpgw_info']['user']['account_primary_group'];
-  
-  
-  // insert into acl table 'add', 'mon' or 'vip' similar to 'run' acl
-  // let's assume that user can have run, add, mon, vip privileges to the whole tts appllication (this is only for a begining)
-  // ACL is for discussion, and additional development must be made here
-  //INSERT INTO phpgw_acl VALUES ('tts', 'add', 1, 1);
-  //INSERT INTO phpgw_acl VALUES ('tts', 'vip', 1, 1);
-  //INSERT INTO phpgw_acl VALUES ('tts', 'mon', 1, 1);
-  
-  // if user is admin, or VIP user, or HD_OPER user then ...
-//ACL  if (($def_group == '16') || ($def_group == '6') || $GLOBALS['phpgw']->acl->check('add',1,'tts'))
-//ACL  {
-           $can_view_all=True;
-//ACL  }
-//ACL  if ($GLOBALS['phpgw']->acl->check('mon',1,'tts'))
-//ACL  {
-           $can_mon=True;
-           $can_view_all=True;
-//ACL  }
-//ACL  if ($GLOBALS['phpgw']->acl->check('vip',1,'tts'))
-//ACL  {
-           $can_vip=True;
-           $can_view_all=True;
-//ACL  }
-//ACL  if ($GLOBALS['phpgw']->acl->check('add',1,'tts'))
-//ACL  {
-           $can_add=True;
-//ACL  }
-
-  // if user can add new ticket
-  if ($can_add)
-  {
-    $GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php',array('filter'=>$filter,'f_status'=>$f_status,'order'=>$order,'start'=>$start,'sort'=>$sort)));
-    $GLOBALS['phpgw']->template->set_var('tts_newticket_delimiter', "&nbsp;|&nbsp;");
-    $GLOBALS['phpgw']->template->set_var('tts_newticket', lang('New ticket'));
-  }
-  ////
-
-  // get group membership for filters
-  $group_list = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
-
-  $group_ids == null;
-
-  foreach($group_list as $rowg)
-  {
-        if ($group_ids == null)
-        {
-                    $group_ids = "'".$rowg['account_id']."'";
-        }
-        else
-        {
-                $group_ids = $group_ids.",'".$rowg['account_id']."'";
-        }
-  }
-  ////
 
 
   $messages = rtrim($GLOBALS['phpgw']->session->appsession('messages','tts'),"\0");
@@ -125,201 +63,46 @@
   }
 
 
-
   // select what tickets to view
-  if ($can_add)
-  {
-         $filter = get_var('filter',array('POST','GET'),'viewownedbyme');
-        $order  = get_var('order',array('POST','GET'),'ticket_id');
-
-  }
-  else
-  {
-        if ($can_vip)
-        {
-           $filter = get_var('filter',array('POST','GET'),'view');
-        }
-        else
-        {
-           $filter = get_var('filter',array('POST','GET'),'viewmy');
-        }
-
-        $order  = get_var('order',array('POST','GET'),'ticket_priority');
-  }
-
-
-  $f_status  = get_var('f_status',array('POST','GET'),'O');
+  $filter = get_var('filter',array('POST','GET'),'viewmyopen');
   $start  = (int) get_var('start',array('POST','GET'));
   $sort   = get_var('sort',array('POST','GET'),'DESC');
+  $order  = get_var('order',array('POST','GET'),'ticket_priority');
   $searchfilter = reg_var('searchfilter','POST','any');
 
   // Append the filter to the search URL, so that the mode carries forward on a search
-  $GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'f_status'=>$f_status,'order'=>$order,'start'=>$start,'sort'=>$sort)));
+  $GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
-  $caller_telephone_2 = reg_var('telephone2','GET');
-
-  //if agent recive call from specified telephone number
-  if($caller_telephone_2<>"")
+  if ($filter == 'viewmyopen')
   {
-    $filtermethod ="where ticket_caller_telephone_2 ='".$caller_telephone_2."'";
+    $filtermethod = "WHERE ticket_status='O' AND ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."'";
   }
-else
-{
-
-  if ($filter == 'viewmy')
+  if ($filter == 'viewopen') 
   {
-    $filtermethod = "WHERE ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."'";
-  }
-
-  if ($filter == 'viewownedbyme')
-  {
-    $filtermethod = "WHERE ticket_owner='".$GLOBALS['phpgw_info']['user']['account_id']."'";
-  }
-
-  if ($filter == 'view')
-  {
-    $filtermethod = "";
-  }
-
-
-  if ($f_status == "O" || $f_status == "I")
-  {
+    $filtermethod = "WHERE ticket_status='O'";
+    }
+    if ($filter == 'viewopen' || $filter =='viewmyopen' )
+    {
     if ($GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'])
     {
-      $GLOBALS['phpgw']->template->set_var('autorefresh','<META HTTP-EQUIV="Refresh" CONTENT="'.$GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'].'; URL='.$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'f_status'=>$f_status,'order'=>$order,'start'=>$start,'sort'=>$sort)).'">');
+      $GLOBALS['phpgw']->template->set_var('autorefresh','<META HTTP-EQUIV="Refresh" CONTENT="'.$GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'].'; URL='.$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)).'">');
     }
     else
     {
       $GLOBALS['phpgw']->template->set_var('autorefresh','');
     }
   }
-
-
-  //  if ($filter <> 'viewmyopen' && $filter <> 'viewall' && $filter <> 'viewopen' && substr($filter,5) <> 'group' && $filter <>'' )
-  // if filter is g + group id then search for open tickets by group
-  if (substr($filter,0,1) == "g")
-  {
-    $group_filter=(int) substr($filter,1);
-
-      if ($filtermethod == "")
-        {
-           $filtermethod = "WHERE ticket_group='".$group_filter."'";
-        }
-        else
-        {
-           $filtermethod = $filtermethod." AND ticket_group='".$group_filter."'";
-        }
-  }
-
-  // if filter is s + state id then search for open tickets by group
-  if (substr($filter,0,1) == "u")
-  {
-    $status_filter=(int) substr($filter,1);
-
-       if ($filtermethod == "")
-        {
-           $filtermethod = "WHERE ticket_state=$status_filter";
-        }
-        else
-        {
-           $filtermethod = $filtermethod." AND ticket_state=$status_filter";
-        }
-  }
-
-   // if filter is c + category id then search for open tickets by category
-  if (substr($filter,0,1) == "c")
-  {
-    $category_filter=(int) substr($filter,1);
-
-       if ($filtermethod == "")
-        {
-           $filtermethod = "WHERE ticket_category='".$category_filter."'";
-        }
-        else
-        {
-           $filtermethod = $filtermethod." AND ticket_category='".$category_filter."'";
-        }
-  }
-  //$group_in = $GLOBALS['phpgw_info']['accounts']['user']['account_id']."'";
-//  $def_group = $GLOBALS['phpgw_info']['user']['account_primary_group'];
-
-
   // set for a possible search filter, outside of the all/open only "state" filter above
-  // but filter_status is used to additionaly specify filtering by ticket status
-  if ($searchfilter)
+  if ($searchfilter) 
   {
     $s_quoted = $GLOBALS['phpgw']->db->quote('%'.$searchfilter.'%');
-    //$filtermethod = "WHERE (ticket_details LIKE $s_quoted OR ticket_subject LIKE $s_quoted)";
-    if ($filtermethod == "")
-    {
-        $filtermethod = "WHERE (ticket_details LIKE $s_quoted OR ticket_subject LIKE $s_quoted OR ticket_caller_name LIKE $s_quoted OR ticket_caller_email LIKE $s_quoted OR ticket_caller_address LIKE $s_quoted OR ticket_caller_address_2 LIKE $s_quoted OR ticket_caller_telephone LIKE $s_quoted OR ticket_caller_telephone_2 LIKE $s_quoted OR ticket_caller_ticket_id LIKE $s_quoted)";
-    }
-    else
-    {
-        $filtermethod = $filtermethod." AND  (ticket_details LIKE $s_quoted OR ticket_subject LIKE $s_quoted OR ticket_caller_name LIKE $s_quoted OR ticket_caller_email LIKE $s_quoted OR ticket_caller_address LIKE $s_quoted OR ticket_caller_address_2 LIKE $s_quoted OR ticket_caller_telephone LIKE $s_quoted OR ticket_caller_telephone_2 LIKE $s_quoted OR ticket_caller_ticket_id LIKE $s_quoted)";
-    }
-
-
+    $filtermethod = "WHERE ticket_details LIKE $s_quoted OR ticket_subject LIKE $s_quoted";
   }
-
   $GLOBALS['phpgw']->template->set_var('tts_searchfilter',addslashes($searchfilter));
-}
-
-  // Added ACL check by Josip
-  // if can NOT view all then use restricted search
-  if (!$can_view_all)
-  {
-     if ($group_ids <> null)
-     {
-        if ($filtermethod == "")
-        {
-           $filtermethod = "WHERE ticket_group IN ($group_ids)";
-        }
-        else
-        {
-           $filtermethod = "$filtermethod AND ticket_group IN ($group_ids)";
-        }
-     }
-  }
-
-  $search_status = "";
-
-  if ($f_status == "O")
-  {
-           $search_status = "ticket_status='O'";
-  }
-  elseif ($f_status == "I")
-  {
-        $search_status = "ticket_status='I'";
-  }
-  elseif ($f_status == "X")
-  {
-        $search_status = "ticket_status='X'";
-  }
-
-  if ($search_status <> "")
-  {
-        if ($filtermethod == "")
-        {
-           $filtermethod = "WHERE $search_status";
-        }
-        else
-        {
-           $filtermethod = "$filtermethod AND $search_status";
-        }
-  }
 
   if (!preg_match('/^[a-z_]+$/i',$order) || !preg_match('/^(asc|desc)$/i',$sort))
   {
-    // if user can add ticket then default sort is by ticket id, else sort is by priority
-    if ($can_add)
-    {
-      $sortmethod = 'ORDER BY ticket_id DESC';
-    }
-    else
-    {
-      $sortmethod = 'ORDER BY ticket_priority DESC';
-    }
+    $sortmethod = 'ORDER BY ticket_priority DESC';
   }
   else
   {
@@ -332,126 +115,43 @@ else
 
   $db->limit_query("SELECT * FROM phpgw_tts_tickets $filtermethod $sortmethod",$start,__LINE__,__FILE__);
 
-
   $GLOBALS['phpgw']->template->set_var('tts_numfound',$GLOBALS['phpgw']->nextmatchs->show_hits($total,$start));
-  $GLOBALS['phpgw']->template->set_var('left',$GLOBALS['phpgw']->nextmatchs->left('/tts/index.php',$start,$total,'f_status='.$f_status));
-//                               array('filter'=>$filter,'f_status'=>$f_status,'order'=>$order,'start'=>$start,'sort'=>$sort)));
-  $GLOBALS['phpgw']->template->set_var('right',$GLOBALS['phpgw']->nextmatchs->right('/tts/index.php',$start,$total,'f_status='.$f_status));
-
-  //add filter status into variable filter
-
-
-  if ($can_add)
-  {
-      $tag = '';
-      $GLOBALS['phpgw']->template->set_var('optionname', lang('View tickets created by me'));
-      $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewownedbyme');
-      if ($filter == 'viewownedbyme' || substr($filter,1) == 'viewownedbyme')
-      {
-      $tag = 'selected';
-      }
-      $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-      $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
-  }
-
+  $GLOBALS['phpgw']->template->set_var('left',$GLOBALS['phpgw']->nextmatchs->left('/tts/index.php',$start,$total));
+  $GLOBALS['phpgw']->template->set_var('right',$GLOBALS['phpgw']->nextmatchs->right('/tts/index.php',$start,$total));
+    
   $tag = '';
-  $GLOBALS['phpgw']->template->set_var('optionname', lang('View all tickets'));
-  $GLOBALS['phpgw']->template->set_var('optionvalue', 'view');
-  //if filter is search then it is appropriate to options set to View All Tickets
-  if ($filter == 'view' || substr($filter,1) == 'view' || $filter == 'search')
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View all tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewall');
+    if ($filter == 'viewall' )
+  {
+    $tag = 'selected';
+  }
+    $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+    $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
+
+    $tag = '';
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View only open tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewopen');
+    if ($filter == 'viewopen' )
+    {
+    $tag = 'selected';
+    }
+    $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
+    $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
+
+    $tag = '';
+    $GLOBALS['phpgw']->template->set_var('optionname', lang('View only my open tickets'));
+    $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewmyopen');
+    if ($filter == 'viewmyopen' )
   {
     $tag = 'selected';
   }
   $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
   $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
-
-  $tag = '';
-  $GLOBALS['phpgw']->template->set_var('optionname', lang('View my tickets'));
-  $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewmy');
-  if ($filter == 'viewmy' || substr($filter,1) == 'viewmy' )
-  {
-    $tag = 'selected';
-  }
-  $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-  $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
-
-  //Added custom filter - view tickets for group a, ...
-  foreach($group_list as $rowg)
-  {
-     $tag = '';
-     $GLOBALS['phpgw']->template->set_var('optionname', lang('View tickets for group').' '.$rowg['account_name']);
-     $GLOBALS['phpgw']->template->set_var('optionvalue', "g".$rowg['account_id']);
-
-     if ($filter == "g".$rowg['account_id'] )
-     {
-        $tag = 'selected';
-     }
-     $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-     $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
-
-  }
-
-  if($can_view_all || $can_mon)
-  {
-      $db_s = $GLOBALS['phpgw']->db;
-      $db_s->query("select * from phpgw_tts_states where state_id > 1",__LINE__,__FILE__);
-
-      while($db_s->next_record())
-      {
-
-
-         $tag = '';
-         $GLOBALS['phpgw']->template->set_var('optionname', lang('View tickets with state').' '.try_lang($db_s->f('state_name')));
-         $GLOBALS['phpgw']->template->set_var('optionvalue', "u".$db_s->f('state_id'));
-
-         if ($filter == "u".$db_s->f('state_id'))
-         {
-            $tag = 'selected';
-         }
-         $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-         $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
-      }
-  }
-
-  if($can_view_all)
-  {
-      $db_c = $GLOBALS['phpgw']->db;
-      $db_c->query("SELECT distinct a.cat_id, b.cat_name FROM phpgw_tts_categories_groups a, phpgw_categories b WHERE a.cat_id = b.cat_id AND b.cat_appname = 'tts' ORDER BY b.cat_name",__LINE__,__FILE__);
-
-      while($db_c->next_record())
-      {
-
-
-         $tag = '';
-         $GLOBALS['phpgw']->template->set_var('optionname', lang('View tickets for category').' '.try_lang($db_c->f('cat_name')));
-         $GLOBALS['phpgw']->template->set_var('optionvalue', "c".$db_c->f('cat_id'));
-
-         if ($filter == "c".$db_c->f('cat_id'))
-         {
-            $tag = 'selected';
-         }
-         $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
-         $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
-
-
-      }
-  }
-  // end custom filter
-
-  $ticket_status[$f_status] = ' selected';
-
-  $s = '<option value="O"' . $ticket_status['O'] . '>' . lang('Status'). ' ' . lang('Open') . '</option>';
-  $s .= '<option value="I"' . $ticket_status['I'] . '>' . lang('Status'). ' ' . lang('Initiative') . '</option>';
-  $s .= '<option value="X"' . $ticket_status['X'] . '>' . lang('Status'). ' ' . lang('Closed') . '</option>';
-  $s .= '<option value="A"' . $ticket_status['A'] . '>' . lang('Any status') . '</option>';
-
-  $GLOBALS['phpgw']->template->set_var('options_f_status',$s);
-  //$GLOBALS['phpgw']->template->set_var('lang_status',lang('Open / Closed'));
-
 
   $GLOBALS['phpgw']->template->set_var('tts_ticketstotal', lang('Tickets total %1',$numtotal));
   $GLOBALS['phpgw']->template->set_var('tts_ticketsopen', lang('Tickets open %1',$numopen));
-
+  
   // fill header
   $GLOBALS['phpgw']->template->set_var('tts_head_bgcolor',$GLOBALS['phpgw_info']['theme']['th_bg'] );
   $GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg'] );
@@ -465,8 +165,7 @@ else
   // I am not sure how the sorting will work for this, if at all. (jengo)
   $GLOBALS['phpgw']->template->set_var('tts_head_dateopened',lang('Date opened'));
 //  $GLOBALS['phpgw']->template->set_var('tts_head_dateopened', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'',$order,'/tts/index.php',lang('Date opened')));
-//  if ($filter != 'viewopen')
-  if ($f_status != 'O')
+  if ($filter != 'viewopen')
   {
     $GLOBALS['phpgw']->template->set_var('tts_head_dateclosed', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_status',$order,'/tts/index.php',lang('Status/Date closed')));
     $GLOBALS['phpgw']->template->parse('tts_head_status','tts_head_ifviewall',false);
@@ -520,9 +219,9 @@ else
       }
 
       $GLOBALS['phpgw']->template->set_var('tts_row_color', $tr_color );
-      $GLOBALS['phpgw']->template->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('ticket_id'=>$db->f('ticket_id'),'filter'=>$filter,'f_status'=>$f_status,'order'=>$order,'start'=>$start,'sort'=>$sort)));
+      $GLOBALS['phpgw']->template->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('ticket_id'=>$db->f('ticket_id'),'filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
-      $view_link = '<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('ticket_id'=>$db->f('ticket_id'),'filter'=>$filter,'f_status'=>$f_status,'order'=>$order,'start'=>$start,'sort'=>$sort)). '">';
+      $view_link = '<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('ticket_id'=>$db->f('ticket_id'),'filter'=>$filter,'order'=>$order,'sort'=>$sort)). '">';
       $GLOBALS['phpgw']->template->set_var('row_ticket_id',$view_link . $db->f('ticket_id') . '</a>');
 
       if (! $ticket_read)
@@ -549,18 +248,11 @@ else
 
       if ($db->f('ticket_status') == 'X')
       {
-        $history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('X'),'history_timestamp','ASC',$db->f('ticket_id'));
+        $history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('X'),'history_timestamp','DESC',$db->f('ticket_id'));
         $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
         $GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
       }
-//      elseif ($filter != 'viewopen')
-      elseif ($db->f('ticket_status') == 'I')
-      {
-        $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Initiative'));
-        $GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
-      }
-
-      elseif ($f_status != 'O')
+      elseif ($filter != 'viewopen')
       {
 //        if ($db->f('ticket_assignedto') != -1)
 //        {
@@ -571,8 +263,7 @@ else
 //          $assigned_to = $GLOBALS['phpgw']->accounts->id2name($db->f('ticket_assignedto'));
 //        }
 //        $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$assigned_to);
-
-   $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
+        $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
         $GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
       }
       // cope with old, wrongly saved entries, stripslashes would remove single backslashes too
@@ -596,4 +287,4 @@ else
   $GLOBALS['phpgw']->template->pfp('out','index');
 
   $GLOBALS['phpgw']->common->phpgw_footer();
-  ?>
+?>

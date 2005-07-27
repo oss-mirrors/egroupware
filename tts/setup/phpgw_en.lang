@@ -1,20 +1,12 @@
-%1 - %2 of %3 user groups	tts	en	%1 - %2 of %3 user groups
 a new ticket has been reported.	tts	en	A new ticket has been reported.
 accept	tts	en	ACCEPT
 accept the ticket into verification process.	tts	en	Accept the ticket into verification process.
 accepted	tts	en	ACCEPTED
-account active	tts	en	Account active
 action	tts	en	Action
-add a new account.	tts	en	Add a new account.
-add new account	tts	en	Add new account
 add new ticket	tts	en	Add new ticket
 add ticket	tts	en	Add ticket
 additional notes	tts	en	Additional notes
 admin options	common	en	Admin Options
-anonymous user (not shown in list sessions)	tts	en	Anonymous User (not shown in list sessions)
-any status	tts	en	Any status
-application	tts	en	application
-are you sure you want to delete this group ?	tts	en	Are you sure you want to delete this group ?
 assign to	tts	en	Assign to
 assigned from	tts	en	Assigned from
 assigned to	tts	en	Assigned to
@@ -23,100 +15,45 @@ billable hours changed	tts	en	Billable hours changed
 billable hours rate	tts	en	Billable hours rate
 billable rate	tts	en	Billable rate
 billable rate changed	tts	en	Billable rate changed
-caller address	tts	en	Caller Address
-caller address 2	tts	en	Caller Address 2
-caller audio file	tts	en	Caller Audio File
-caller email	tts	en	Caller Email
-caller name	tts	en	Caller Name
-caller password	tts	en	Caller Password
-caller satisfaction	tts	en	Caller Satisfaction
-caller solution	tts	en	Caller Solution
-caller telephone	tts	en	Caller Telephone
-caller telephone id	tts	en	Caller Telephone ID
-caller ticket id	tts	en	Caller Ticket ID
-can change password	tts	en	Can change password
-categories open %1	tts	en	Categories open %1
-categories total %1	tts	en	Categories total %1
 category changed	tts	en	Category changed
-category description	tts	en	Category Description
-category name	tts	en	Category Name
-category statistic	tts	en	Category Statistic
 check here to generate the state's id automatically or enter a particular id below.	tts	en	Check here to generate the state's ID automatically or enter a particular ID below.
 clear form	tts	en	Clear Form
 close the invalid ticket.	tts	en	Close the invalid ticket.
-close with duplicate	tts	en	Close with duplicate
 closed	tts	en	Closed
 completed	tts	en	COMPLETED
-configure the cat-groups	tts	en	Configure the Cat-Groups
-configure the escalation	tts	en	Configure the Escalation
 configure the states	common	en	Configure the states
 configure the transitions	common	en	Configure the transitions
-create new category and group association	tts	en	Create new category and group association
-create new escalation parameters for certain group	tts	en	Create new escalation parameters for certain group
 create new state	tts	en	Create new state
 create new ticket	tts	en	Create new ticket
 create new transition	tts	en	Create new transition
 creates a new ticket, returns ticket_id	tts	en	Creates a new ticket, returns ticket_id
 creates a struct of tickets	tts	en	Creates a struct of tickets
-customer satisfaction	tts	en	customer satisfaction
-date closed	tts	en	Date closed
 date opened	tts	en	Date opened
 default assign to	tts	en	Default assign to
 default group	tts	en	Default group
 default priority	tts	en	Default Priority
-delete all records	tts	en	Delete All Records
 delete the listed tickets.	tts	en	Delete the listed tickets.
-deleting the category and group association	tts	en	Deleting the category and group association
 deleting the state	tts	en	Deleting the state
 deleting the transition	tts	en	Deleting the transition
 detail	tts	en	Detail
 duplicate	tts	en	DUPLICATE
-duplicate ticket	tts	en	Duplicate ticket
-edit group acl's	tts	en	edit group ACL's
-edit the category and group association	tts	en	Edit the category and group association
-edit the escalation parameters for certain group	tts	en	Edit the escalation parameters for certain group
 edit the state	tts	en	Edit the state
 edit the transition	tts	en	Edit the transition
-edit user account	tts	en	Edit user account
-email 2	tts	en	email 2
 error: the subject of the ticket is not specified.	tts	en	ERROR: The subject of the ticket is not specified.
-escalation	tts	en	Escalation
-escalation email 1	tts	en	Escalation email 1
-escalation email 2	tts	en	Escalation email 2
-escalation id	tts	en	Escalation ID
-escalation time 1	tts	en	Escalation time 1
-escalation time 2	tts	en	Escalation time 2
-escalation time 3	tts	en	Escalation time 3
-expires	tts	en	Expires
-file space	tts	en	File Space
-file space must be an integer	tts	en	File space must be an integer
 force	tts	en	Force
 global categories	tts	en	Global Categories
 group ownership changed	tts	en	Group ownership changed
-group statistic	tts	en	Group Statistic
-high priority	tts	en	High Priority
-highly critical categories	tts	en	Highly Critical Categories
 history	tts	en	History
-home directory	tts	en	home directory
 i worked on the ticket and the work requires validation.	tts	en	I worked on the ticket and the work requires validation.
 i worked on the ticket, but did not finish.	tts	en	I worked on the ticket, but did not finish.
 in progress	tts	en	In progress
 initial state	tts	en	Initial State
-initiative	tts	en	Initiative
 invalid	tts	en	INVALID
 invalidate	tts	en	INVALIDATE
 keep the present state [%1].	tts	en	Keep the present state [%1].
-last login	tts	en	Last login
-last login from	tts	en	Last login from
 latest note added	tts	en	Latest Note Added
-list of available groups per categories.	tts	en	List of available groups per categories.
 list of available tickets' states.	tts	en	List of available tickets' states.
 list of available tickets' transitions.	tts	en	List of available tickets' transitions.
-list of escalation parameters for certain group.	tts	en	List of escalation parameters for certain group.
-login shell	tts	en	login shell
-low priority	tts	en	Low Priority
-medium critical categories	tts	en	Medium Critical Categories
-medium priority	tts	en	Medium Priority
 missing description	tts	en	Missing description
 morework	tts	en	MOREWORK
 needswork	tts	en	NEEDSWORK
@@ -125,30 +62,16 @@ new ticket	tts	en	New Ticket
 new tickets can be put into this state.	tts	en	New tickets can be put into this state.
 new value	tts	en	New Value
 no additional notes	tts	en	No additional notes
-no categories, groups found	tts	en	No categories, groups found
-no category found	tts	en	No category found
-no data found	tts	en	No data found
 no duplicate	tts	en	NO DUPLICATE
-no escalations found	tts	en	No escalations found
-no matches found	tts	en	No matches found
 no notes for this ticket	tts	en	No notes for this ticket
 no states found	tts	en	No states found
 no tickets found	tts	en	No tickets found.
 no transitions found	tts	en	No transitions found
 not assigned	tts	en	Not Assigned
 not completed	tts	en	NOT COMPLETED
-notify assignment of the high priority ticket to ticket assignee by e-mail 2	tts	en	notify assignment of the high priority ticket to ticket assignee by e-mail 2
-notify assignment of the high priority ticket to ticket group by e-mail 2	tts	en	notify assignment of the high priority ticket to ticket group by e-mail 2
-notify assignment of the ticket to ticket assignee by e-mail	tts	en	notify assignment of the ticket to ticket assignee by e-mail
-notify assignment of the ticket to ticket assignee by e-mail 2	tts	en	notify assignment of the ticket to ticket assignee by e-mail 2
-notify assignment of the ticket to ticket group by e-mail	tts	en	notify assignment of the ticket to ticket group by e-mail
-notify assignment of the ticket to ticket group by e-mail 2	tts	en	notify assignment of the ticket to ticket group by e-mail 2
-notify changes of the high priority ticket to ticket assignee by e-mail 2	tts	en	notify changes of the high priority ticket to ticket assignee by e-mail 2
 notify changes to ticket assignee by e-mail	tts	en	Notify changes to ticket assignee by e-mail
-notify changes to ticket assignee by e-mail 2	tts	en	notify changes to ticket assignee by e-mail 2
 notify changes to ticket group by e-mail	tts	en	Notify changes to ticket group by e-mail
 notify changes to ticket owner by e-mail	tts	en	Notify changes to ticket owner by e-mail
-number of tickets	tts	en	Number of tickets
 old value	tts	en	Old Value
 open	tts	en	Open
 open / closed	tts	en	Open / Closed
@@ -157,21 +80,13 @@ opened	tts	en	Opened
 opened by	tts	en	Opened by
 original ticket details	tts	en	Original Ticket Details
 perform irregular transition into the following state	tts	en	Perform irregular transition into the following state
-permissions this group has	tts	en	Permissions this group has
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	en	Please enter the subject of the ticket, otherwise the ticket cannot be stored.
-primary group	tts	en	primary Group
-prio	tts	en	Prio
 priority	tts	en	Priority
-priority between	tts	en	Priority between
 priority changed	tts	en	Priority changed
-priority end	tts	en	Priority end
-priority start	tts	en	Priority start
 put the preexistent ticket into the state %1.	tts	en	Put the preexistent ticket into the state %1.
 re-assigned	tts	en	Re-assigned
-re-enter password	tts	en	Re-Enter Password
 re-opened	tts	en	Re-opened
 refresh every (seconds)	tts	en	Refresh every (seconds)
-remove all users from this group	tts	en	Remove all users from this group
 reopen	tts	en	REOPEN
 reopened	tts	en	REOPENED
 resolve	tts	en	RESOLVE
@@ -179,31 +94,18 @@ resolved	tts	en	RESOLVED
 returns a struct of a tickets history	tts	en	Returns a struct of a tickets history
 returns a struct of values of a single ticket	tts	en	Returns a struct of values of a single ticket
 returns the additional notes attached to a ticket	tts	en	Returns the additional notes attached to a ticket
-select group managers	tts	en	Select Group Managers
-select users for inclusion	tts	en	Select users for inclusion
 selected	tts	en	selected
-send escalation to primary email	tts	en	Send escalation to primary email
-send escalation to secondary email	tts	en	Send escalation to secondary email
 show new/updated tickets on main screen	tts	en	show new/updated tickets on main screen
-solution for caller	tts	en	Solution for Caller
-sorry, that group name has already been taken.	tts	en	Sorry, that group name has already been taken.
-sorry, the above users are still a member of the group %1	tts	en	Sorry, the above users are still a member of the group %1
 source state	tts	en	Source State
 state	tts	en	State
 state changed	tts	en	State changed
 state id	tts	en	State ID
 state name	tts	en	State Name
-statistic for all categories	tts	en	Statistic for all Categories
-statistic for all groups	tts	en	Statistic for all Groups
-status, priority	tts	en	status, priority
 status/date closed	tts	en	Status/Date closed
 subject changed	tts	en	Subject changed
-submit changes	tts	en	submit changes
 target state	tts	en	Target State
 test	tts	en	TEST
-that loginid has already been taken	tts	en	That loginid has already been taken
 the closed ticket requires more work. reopen it.	tts	en	The closed ticket requires more work. Reopen it.
-the groups must include the primary group	tts	en	The groups must include the primary group
 the owner of the ticket was not able to confirm the issue.	tts	en	The owner of the ticket was not able to confirm the issue.
 the ticket has been accepted by the owner, who is about to work on it.	tts	en	The ticket has been accepted by the owner, who is about to work on it.
 the ticket has been closed without resolution.	tts	en	The ticket has been closed without resolution.
@@ -219,18 +121,12 @@ the ticket resolution was successfully validated. close the ticket.	tts	en	The t
 the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	en	The ticket was existent before the Petri Net infrastructure was defined and should be assigned a state.
 the ticket was found a duplicate of another ticket.	tts	en	The ticket was found a duplicate of another ticket.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	en	The tickets in the following list are in the state %1. Please, decide what should be done with them.
-the two passwords are not the same	tts	en	The two passwords are not the same
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	en	The validation of the ticket was unsuccessfull. The ticket requires more work.
-there already is a group with this name. userid's can not have the same name as a groupid	tts	en	There already is a group with this name. Userid's can not have the same name as a groupid
-they must be removed before you can continue	tts	en	They must be removed before you can continue
 ticket	tts	en	Ticket
 ticket has been updated	tts	en	Ticket has been updated
 tickets found %1	tts	en	Tickets found %1
 tickets open %1	tts	en	Tickets open %1
 tickets total %1	tts	en	Tickets total %1
-time for escalation 1 (in seconds)	tts	en	Time for escalation 1 (in seconds)
-time for escalation 2 (in seconds)	tts	en	Time for escalation 2 (in seconds)
-time for escalation 3 (in seconds)	tts	en	Time for escalation 3 (in seconds)
 to go back to the tts index, click <a href= %1 >here</a>	tts	en	To go back to the tts index, click <a href="%1">here</a>
 toaccept	tts	en	TOACCEPT
 toclosed	tts	en	TOCLOSED
@@ -249,7 +145,6 @@ transition name	tts	en	Transition name
 trouble ticket system	common	en	Trouble Ticket System
 tts	common	en	Trouble Ticket System
 tts preferences	tts	en	Trouble Ticket System - preferences
-type of report	tts	en	Type of report
 undefined	tts	en	UNDEFINED
 update ticket state	tts	en	Update ticket state
 updates ticket	tts	en	Updates ticket
@@ -257,31 +152,10 @@ verified	tts	en	VERIFIED
 verify	tts	en	VERIFY
 verify the ticket to work on it.	tts	en	Verify the ticket to work on it.
 view all tickets	tts	en	View all tickets
-view high critical categories	tts	en	View high critical categories
 view job detail	tts	en	View Job Detail
-view medium critical categories	tts	en	View medium critical categories
-view my tickets	tts	en	View my tickets
 view only my open tickets	tts	en	View only my open tickets
 view only open tickets	tts	en	View only open tickets
-view statistic for all categories	tts	en	View statistic for all categories
-view statistic for all groups	tts	en	View statistic for all groups
-view statistic for category	tts	en	View statistic for category
-view statistic for group	tts	en	View statistic for group
-view tickets created by me	tts	en	View tickets created by me
-view tickets for category	tts	en	View tickets for category
-view tickets for group	tts	en	View tickets for group
-view tickets with state	tts	en	View tickets with state
-view user account	tts	en	View user account
-who would you like to transfer all records owned by the deleted user to?	tts	en	Who would you like to transfer ALL records owned by the deleted user to?
-www request	tts	en	WWW request
 you can only close a ticket if it is assigned to you.	tts	en	You can only close a ticket if it is assigned to you.
-you did not write any note! ticket can not be rejected.	tts	en	You did not write any note! Ticket can not be rejected.
-you have entered an invalid expiration date	tts	en	You have entered an invalid expiration date
-you must add at least 1 permission or group to this account	tts	en	You must add at least 1 permission or group to this account
-you must enter a group name.	tts	en	You must enter a group name.
-you must enter a lastname	tts	en	You must enter a lastname
-you must enter a loginid	tts	en	You must enter a loginid
-you want to delete the association between category %1 and group %2. are you sure?	tts	en	You want to delete the association between category %1 and group %2. Are you sure?
 you want to delete the state %1 and associated transitions. are you sure?	tts	en	You want to delete the state %1 and associated transitions. Are you sure?
 you want to delete the state %1. are you sure?	tts	en	You want to delete the state %1. Are you sure?
 you want to delete the transition %1. are you sure?	tts	en	You want to delete the transition %1. Are you sure?

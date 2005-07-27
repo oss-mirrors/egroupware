@@ -53,28 +53,26 @@
     {
       $GLOBALS['phpgw']->db->query("select ticket_id from phpgw_tts_tickets where ticket_state=$state_id");
 
-      if ($GLOBALS['phpgw']->db->next_record()) {
+      if ($GLOBALS['phpgw']->db->next_record())
         $ids='('.$GLOBALS['phpgw']->db->f('ticket_id');
 
-         while($GLOBALS['phpgw']->db->next_record())
-           $ids.=','.$GLOBALS['phpgw']->db->f('ticket_id');
+      while($GLOBALS['phpgw']->db->next_record())
+        $ids.=','.$GLOBALS['phpgw']->db->f('ticket_id');
 
-         $ids.=')';
+      $ids.=')';
 
-   //remove ticket's history
-         $GLOBALS['phpgw']->db->query("delete from phpgw_history_log where history_appname='tts' and history_record_id in $ids",__LINE__,__FILE__);
-         $GLOBALS['phpgw']->db->query("delete from phpgw_tts_tickets where ticket_state=$state_id",__LINE__,__FILE__);
-      }
+//remove ticket's history
+      $GLOBALS['phpgw']->db->query("delete from phpgw_history_log where history_appname='tts' and history_record_id in $ids",__LINE__,__FILE__);
+      $GLOBALS['phpgw']->db->query("delete from phpgw_tts_tickets where ticket_state=$state_id",__LINE__,__FILE__);
     }
     else if ($ticket['state']==-200) //change the state
     {
-      $GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".
-         $GLOBALS['phpgw']->db->quote($ticket['newstate'],'int').
+      $GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".intval($ticket['newstate']).
         " where ticket_state=$state_id",__LINE__,__FILE__);
     }
     else
     {
-      $GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".$GLOBALS['phpgw']->db->quote($ticket['state'],'int').
+      $GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".intval($ticket['state']).
         " where ticket_state=$state_id",__LINE__,__FILE__);
     }
     $GLOBALS['phpgw']->db->query("delete from phpgw_tts_transitions where transition_source_state=$state_id or transition_target_state=$state_id",__LINE__,__FILE__);
@@ -149,7 +147,7 @@
   $GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open %1',$numopen));
 
 
-  $db2 = $GLOBALS['phpgw']->db;
+  $db2 = clone($GLOBALS['phpgw']->db);
   $GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets where ticket_state=".$state_id." ".$sortmethod,__LINE__,__FILE__);
   $numfound = $GLOBALS['phpgw']->db->num_rows();
 

@@ -16,21 +16,17 @@
 		'False' => lang('No')
 	);
 
-	///rem by Josip
-	///$acc = CreateObject('phpgwapi.accounts');
-	///$group_list = $acc->get_list('groups');
-	///while (list($key,$entry) = each($group_list))
-	///{
-	///  $_groups[$entry['account_id']] = $entry['account_lid'];
-	///}
-	///create_select_box('Default group','groupdefault',$_groups);
+	$_groups = array();
+	foreach($GLOBALS['egw']->accounts->get_list('groups') as $entry)
+	{
+	  $_groups[$entry['account_id']] = $entry['account_lid'];
+	}
 
-	///$account_list = $acc->get_list('accounts');
-	///while (list($key,$entry) = each($account_list))
-	///{
-	///  $_accounts[$entry['account_id']] = $entry['account_lid'];
-	///}
-	///create_select_box('Default assign to','assigntodefault',$_accounts);
+	$_accounts = array();
+	foreach($GLOBALS['egw']->accounts->get_list('accounts') as $entry)
+	{
+	  $_accounts[$entry['account_id']] = $GLOBALS['egw']->common->grab_owner_name($entry['account_id']);
+	}
 
 	// Choose the correct priority to display
 	$priority_comment[1]  = ' - ' . lang('Lowest'); 
@@ -47,6 +43,22 @@
 			'label'  => 'show new/updated tickets on main screen',
 			'name'   => 'mainscreen_show_new_updated',
 			'values' => $yes_and_no,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'groupdefault' => array(
+			'type'   => 'select',
+			'label'  => 'Default group',
+			'name'   => 'groupdefault',
+			'values' => $_groups,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'assigntodefault' => array(
+			'type'   => 'select',
+			'label'  => 'Default assign to',
+			'name'   => 'assigntodefault',
+			'values' => $_accounts,
 			'xmlrpc' => True,
 			'admin'  => False
 		),
