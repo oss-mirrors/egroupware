@@ -134,7 +134,11 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 {
 	Horde::logMessage("SymcML: egwcalendarsync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
+	$state = $_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
+
 	$boical	= CreateObject('calendar.boical');
+	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 	
 	#$syncProfile	= _egwcalendarsync_getSyncProfile();
 	
@@ -199,23 +203,21 @@ function _egwcalendarsync_export($guid, $contentType)
 
 	Horde::logMessage("SymcML: egwcalendarsync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	#$syncProfile	= _egwcalendarsync_getSyncProfile();
-	$boCalendar	= CreateObject('calendar.boical');
+	$state = $_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
+
+	$boical	= CreateObject('calendar.boical');
+	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+
 	$eventID	= $GLOBALS['phpgw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
 		case 'text/x-vcalendar':
-			#$boCalendar	= CreateObject('calendar.boicalendar');
-			#return $boCalendar->export(array('l_event_id' => $eventID));
-			$boCalendar	= CreateObject('calendar.boical');
-			return $boCalendar->exportVCal($eventID,'1.0');
+			return $boical->exportVCal($eventID,'1.0');
 			
 			break;
 		case 'text/calendar':
-
-			#$vcal = $boCalendar->read($eventID, FALSE);
-			$boCalendar	= CreateObject('calendar.boical');
-			return $boCalendar->exportVCal($eventID,'2.0');
+			return $boical->exportVCal($eventID,'2.0');
 
 			break;
 		default:
@@ -273,11 +275,13 @@ function _egwcalendarsync_delete($guid)
 function _egwcalendarsync_replace($guid, $content, $contentType)
 {
 	Horde::logMessage("SymcML: egwcalendarsync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$state = $_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
 
 	$boical	= CreateObject('calendar.boical');
+	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+
 	$eventID = $GLOBALS['phpgw']->common->get_egwId($guid);
-	
-	#$syncProfile	= _egwcalendarsync_getSyncProfile();
 	
 	switch ($contentType) {
 		case 'text/x-vcalendar':
@@ -289,24 +293,4 @@ function _egwcalendarsync_replace($guid, $content, $contentType)
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 	
-}
-
-
-function _egwcalendarsync_getSyncProfile()
-{
-	$syncProfile = 0;
-
-	$state = $_SESSION['SyncML.state'];
-	$deviceInfo = $state->getClientDeviceInfo();
-	
-	Horde::logMessage("SymcML: egwcontactssync remote device: ". $deviceInfo['model'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
-	switch($deviceInfo['model'])
-	{
-		case 'SySync Client PalmOS PRO':
-			$syncProfile = 1;
-			break;
-	}
-	
-	return $syncProfile;
 }
