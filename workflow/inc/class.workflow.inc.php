@@ -246,15 +246,15 @@
 		//! get the href link for the css file, searching for themes specifics stylesheet if any
 		function get_css_link($css_name)
 		{
-			$css_file = $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'.SEP.'templates'
-					.SEP.$GLOBALS['egw_info']['server']['template_set'].SEP.'css'.SEP.$css_name;
+			$css_file = $GLOBALS['phpgw_info']['server']['webserver_url'].SEP.'workflow'.SEP.'templates'
+					.SEP.$GLOBALS['phpgw_info']['server']['template_set'].SEP.'css'.SEP.$css_name;
 			if(file_exists($css_file))
 			{
 				return $css_file;
 			}
 			else
 			{
-				return $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'
+				return $GLOBALS['phpgw_info']['server']['webserver_url'].SEP.'workflow'
 						.SEP.'templates'.SEP.'default'.SEP.'css'.SEP.$css_name;
 			}
 		}
