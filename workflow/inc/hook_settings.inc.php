@@ -123,11 +123,11 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
-		'wf_instances_show_view_column' => array(
-			'Column View in instance lists',
-			'name'  => 'wf_instances_show_view_column',
-			'help'  => 'Do you want the view column on instances lists, link to a read-only view on the instance datas',
-			'default' => 0,
+		'wf_instances_show_category_column' => array(
+			'Column Category in instance lists',
+			'name'  => 'wf_instances_show_category_column',
+			'help'  => 'Do you want the category name column on instances lists, if your instances use categories you should use it',
+			'default' => 1,
 			'xmlrpc' => True,
 			'admin'  => False
 		)
