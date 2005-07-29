@@ -93,7 +93,8 @@ table.table_submit_buttons
 {
 	position : relative;
 	align : center;
-	font-size:0.5em;	
+	font-size:0.5em;
+	margin-bottom:10px;
 }
 table.table_info
 {

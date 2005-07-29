@@ -112,3 +112,4 @@
 	</div>
 	<!-- END workflow_info_zone -->
 </div>
+{history}

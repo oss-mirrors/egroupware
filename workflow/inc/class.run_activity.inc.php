@@ -44,6 +44,7 @@
 		// vars used by automatic parsing
 		var $display_owner=0; // if 0 draw nothing, 1 draw selected owner, else draw a select box for owner, see function descr
 		var $display_next_user=0; // if 0 draw nothing, 1 draw selected next user, else draw a select box for next_user, see function descr
+		var $display_history=0; //if 0 draw nothing, 1 draw the history table in the bottom of the screen (ignore use_automatic_parsing config value)
 		// array of roles associated with the activity, usefull for lists of users associated with theses roles
 		var $act_role_names= Array();
 		
@@ -420,6 +421,9 @@
 			
 			//draw the info zone
 			$this->parse_info_zone();
+			
+			//draw the history zone if user wanted it
+			$this->parse_history_zone();
 			
 			$this->translate_template('run_activity');
 			$this->t->pparse('output', 'run_activity');
@@ -825,6 +829,28 @@
 			else
 			{
 				$this->t->set_var(array( 'info_zone' => ''));
+			}
+		}
+
+		//!Parse the history zone in the activity form, the user can decide if he want this name to be shown or not
+		/*!
+		* @abstract if $this->display_history is 0 we draw nothing (default value) 
+		* if $this->display_history is 1 we draw the history table 
+		* this function does not test the use_automatic_parsing configuration value
+		*/
+		function parse_history_zone()
+		{
+			if ( (empty($this->display_history)) || (!($this->display_history)))
+			{
+				//hide the history zone
+				$this->t->set_var(array( 'history' => ''));
+			}
+			else
+			{
+				$inst_parser    =& CreateObject('workflow.bo_uiinstance', $this->t);
+				$inst_parser->t =& $this->t;
+				$inst_parser->parse_instance_history($this->instance->workitems);
+				$this->t->set_var('history', $this->t->parse('output', 'history_tpl'));
 			}
 		}
 
