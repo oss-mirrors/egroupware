@@ -816,6 +816,7 @@
 					'wf_owner'		=> $this->owner_name,
 					'wf_activity_name'	=> $this->activity_name,
 					'wf_user_name'		=> $this->user_name,
+					'wf_started'		=> $GLOBALS['phpgw']->common->show_date($this->instance->getStarted()),
 					'wf_date'		=> $GLOBALS['phpgw']->common->show_date(),
 				));
 				$this->translate_template('workflow_info_zone');

@@ -86,23 +86,29 @@
 		</form>
 	</div>
 	<!-- BEGIN workflow_info_zone -->
-	<span id="workflow_info_zone">
+	<div id="workflow_info_zone">
 		<table class="table_info">
 		  <tr class="row_info"> 
 		    <td class="cell_info_label">{lang_process:}</td>
-		    <td class="cell_info_value">{wf_process_name}:{wf_process_version}</td>
+		    <td class="cell_info_value">{wf_process_name}</td>
 		    <td class="cell_info_label">{lang_instance:}</td>
 		    <td class="cell_info_value">({wf_instance_id})-{wf_instance_name}</td>
+		    <td class="cell_info_label">{lang_started:}</td>
+		    <td class="cell_info_value">{wf_started}</td>
 		    <td class="cell_info_label">{lang_owner:}</td>
 		    <td class="cell_info_value">{wf_owner}</td>
+		</tr>
+		<tr class="row_info">
+		    <td class="cell_info_label">{lang_process_version:}</td>
+		    <td class="cell_info_value">{wf_process_version}</td>
 		    <td class="cell_info_label">{lang_activity:}</td>
 		    <td class="cell_info_value">{wf_activity_name}</td>
-		    <td class="cell_info_label">{lang_user:}</td>
-		    <td class="cell_info_value">{wf_user_name}</td>
 		    <td class="cell_info_label">{lang_date:}</td>
 		    <td class="cell_info_value">{wf_date}</td>
+		    <td class="cell_info_label">{lang_user:}</td>
+		    <td class="cell_info_value">{wf_user_name}</td>
 		  </tr>
 		</table>
-	</span>
+	</div>
 	<!-- END workflow_info_zone -->
 </div>
