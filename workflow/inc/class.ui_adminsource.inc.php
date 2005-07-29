@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
 
 	class ui_adminsource extends workflow
 	{
@@ -75,8 +75,20 @@
 			if ($save)
 			{
 				$this->save_source($proc_info['wf_normalized_name'], $activity_info['wf_normalized_name'], $source_type, $source);
-				if ($activity_id) $this->activity_manager->compile_activity($this->wf_p_id, $activity_id);
-				$this->message[] = lang('Source saved');
+				if ($activity_id) 
+				{
+					$this->activity_manager->compile_activity($this->wf_p_id, $activity_id);
+					$errors =&  $this->activity_manager->get_error(true);
+					if (count($errors)==0)
+					{
+						$this->message[] = lang('Source saved');
+					}
+					else
+					{
+						$this->message[] = lang('They were problems at the compilation of the source:');
+						$this->message = array_merge($this->message,$errors);
+					}
+				}
 			}
 			elseif($switch_to_code)
 			{
@@ -145,7 +157,7 @@
 
 			$this->translate_template('admin_source');
 			
-			//only now we can insert data, to prevent templating vars used in the source
+			//only now wa can insert data, to prevent templating vars used in the source
 			$this->t->set_block('admin_source', 'block_datas', 'datas');
 			$this->t->set_var(array('data'	=> Htmlspecialchars($data),));
 			$this->t->parse('datas', 'block_datas', true);
