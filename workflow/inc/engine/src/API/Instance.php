@@ -20,12 +20,13 @@ class Instance extends Base {
   var $nextUser;
   var $ended;
   var $name='';
-  /// Array of asocs(activityId,status,started,user)
+  var $category;
+  /// Array of asocs(activityId, status, started, ended, user, name, interactivity, autorouting)
   var $activities = Array();
   var $pId;
   var $instanceId = 0;
   var $priority = 1;
-  /// An array of workitem ids
+  /// An array of workitem ids, date, duration, activity name, user, activity type and interactivity
   var $workitems = Array(); 
   
   function Instance($db) {
@@ -54,12 +55,35 @@ class Instance extends Base {
     $this->nextActivity = $res['wf_next_activity'];
     $this->nextUser = $res['wf_next_user'];
     $this->name = $res['wf_name'];
-    // Get the activities where the instance is (ids only is ok)
-    $query = "select * from `".GALAXIA_TABLE_PREFIX."instance_activities` where  `wf_instance_id`=?";
-    $result = $this->query($query,array((int)$instanceId));    
-    while($res = $result->fetchRow()) {
-      $this->activities[]=$res;
-    }    
+    $this->category = $res['wf_category'];
+    // Get the activities where the instance is
+    $query = "select gia.wf_activity_id, gia.wf_instance_id, wf_started, wf_ended, wf_started, wf_user, wf_status,
+              ga.wf_is_autorouted, ga.wf_is_interactive, ga.wf_name
+              from ".GALAXIA_TABLE_PREFIX."instance_activities gia
+              INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON ga.wf_activity_id = gia.wf_activity_id
+              where wf_instance_id=?";
+    $result = $this->query($query,array((int)$instanceId));
+    if (!(empty($result)))
+    {
+      while($res = $result->fetchRow())
+      {
+        $this->activities[]=$res;
+      }
+    }
+    // Get the workitems where the instance is
+    $query = "select wf_item_id, wf_order_id, gw.wf_instance_id, gw.wf_activity_id, wf_started, wf_ended, gw.wf_user,
+              ga.wf_name, ga.wf_type, ga.wf_is_interactive
+              from ".GALAXIA_TABLE_PREFIX."workitems gw
+              INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON ga.wf_activity_id = gw.wf_activity_id
+              where wf_instance_id=? order by wf_order_id ASC";
+    $result = $this->query($query,array((int)$instanceId));
+    if (!(empty($result)))
+    {
+      while($res = $result->fetchRow()) 
+      {
+        $this->workitems[]=$res;
+      }
+    }
   }
   
   /*! 
@@ -120,11 +144,12 @@ class Instance extends Base {
     $this->started=$now;
     $this->owner = $user;
     $name = $this->getName();
+    $category = $this->getCategory();
     $props=serialize($this->properties);
     $query = "insert into `".GALAXIA_TABLE_PREFIX."instances`
-      (`wf_started`,`wf_ended`,`wf_status`,`wf_p_id`,`wf_owner`,`wf_properties`,`wf_name`,`wf_priority`) 
-      values(?,?,?,?,?,?,?,?)";
-    $this->query($query,array($now,0,'active',$pid,$user,$props,$name,$this->priority));
+      (`wf_started`,`wf_ended`,`wf_status`,`wf_p_id`,`wf_owner`,`wf_properties`,`wf_name`,`wf_category`,`wf_priority`) 
+      values(?,?,?,?,?,?,?,?,?)";
+    $this->query($query,array($now,0,'active',$pid,$user,$props,$name,$category,$this->priority));
     $this->instanceId = $this->getOne("select max(`wf_instance_id`) from `".GALAXIA_TABLE_PREFIX."instances` where `wf_started`=? and `wf_owner`=?",array((int)$now,$user));
     $iid=$this->instanceId;
     
@@ -154,11 +179,26 @@ class Instance extends Base {
   function getName() {
     return $this->name;
   }
-  
+
+  /*!
+  * Sets the category of this instance.
+  */
+  function setCategory($value) {
+    $this->category = $value;
+    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_category=? where wf_instance_id=?";
+    $this->query($query,array($value,(int)$this->instanceId));
+  }
+
+  /*!
+  * Get the category of this instance.
+  */
+  function getCategory() {
+    return $this->category;
+  }
   
   /*! 
   Sets a property in this instance. This method is used in activities to
-  set instance properties. Instance properties are inemdiately serialized.
+  set instance properties. Instance properties are immediately serialized.
   */
   function set($name,$value) {
     $this->properties[$name] = $value;
@@ -179,7 +219,7 @@ class Instance extends Base {
   }
   
   /*! 
-  Returns an array of asocs describing the activities where the instance
+  Returns an array of assocs describing the activities where the instance
   is present, can be more than one activity if the instance was "splitted"
   */
   function getActivities() {
