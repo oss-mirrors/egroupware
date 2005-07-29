@@ -1,5 +1,5 @@
 <?php
-	include(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
 
 	class ui_useractivities extends bo_user_forms
 	{
@@ -120,7 +120,7 @@
 					$arrow = '<a href="'. $GLOBALS['phpgw']->link('/index.php', array(
 							'menuaction'	=> 'workflow.run_activity.go',
 							'activity_id'	=> $activity['wf_activity_id'],
-						)) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>';
+						)) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'runform') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>';
 				}
 				else
 				{
@@ -143,7 +143,7 @@
 					'act_icon'		=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
 					'act_name'		=> $act_name,
 					'run_act'		=> $arrow,
-					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
+					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color, true),
 				));
 				$this->t->parse('activities_list', 'block_activities_list', true);
 			}

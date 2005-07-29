@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
 
 	class ui_userprocesses extends bo_user_forms
 	{
@@ -52,7 +52,7 @@
 					'item_activities'	=> $process_data['wf_activities'],
 					'link_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&filter_process='. $process_data['wf_p_id']),
 					'item_instances'	=> $process_data['wf_instances'],
-					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
+					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color, true),
 				));
 				$this->t->parse('table', 'block_table', true);
 			}

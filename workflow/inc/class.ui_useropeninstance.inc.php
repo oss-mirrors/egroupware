@@ -1,5 +1,5 @@
 <?php
-	include(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.bo_user_forms.inc.php');
 
 	class ui_useropeninstance extends bo_user_forms
 	{
@@ -47,7 +47,7 @@
 			
 			// now the table
 			$this->t->set_block('user_openinstance', 'block_table', 'table');
-			$arrowimg = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('start process') .'" title="'. lang('start process') .'" />';
+			$arrowimg = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'runform') .'" alt="'. lang('start process') .'" title="'. lang('start process') .'" />';
 			foreach($activities as $activity_data)
 			{
 				$runlink = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id=' . $activity_data['wf_activity_id']);
@@ -56,7 +56,7 @@
 					'wf_procname'	=> $activity_data['wf_procname'].':'.$activity_data['wf_version'],
 					'actname'	=> $activity_data['wf_name'],
 					'arrow'		=> '<a href="'.$runlink.'">'.$arrowimg.'</a>',
-					'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color)
+					'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color, true)
 				));
 				$this->t->parse('table', 'block_table', true);
 			}

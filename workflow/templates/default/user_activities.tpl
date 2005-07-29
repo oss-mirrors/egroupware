@@ -10,6 +10,8 @@
 			{lang_List_of_activities}
 		</td>
 	</tr>
+</table>
+<table style="border: 0;width:100%;" cellspacing="1">
 	<tr class="row_off">
                 <td align="center">
                         {lang_Process:}
@@ -44,16 +46,18 @@
 <input type="hidden" name="show_globals" value="{show_globals}" />
 <input type="hidden" name="filter_process" value="{filter_process}" />
 <input type="hidden" name="filter_activity" value="{filter_activity}" />
-<table style="border: 0;width:100%;">
-        <tr><td colspan="2">
-        <table style="border: 0px;width:100%; margin:0 auto">
-                <tr class="row_off">
-                        {left}
-                        <td><div align="center">{lang_showing}</div></td>
-                        {right}
-                </tr>
-        </table>
-	</td></tr>
+<table style="border: 0;width:100%;" cellspacing="1">
+	<tr>
+		<td colspan="2">
+		        <table style="border: 0px;width:100%; margin:0 auto">
+		                <tr class="row_off">
+		                        {left}
+		                        <td><div align="center">{lang_showing}</div></td>
+		                        {right}
+		                </tr>
+		        </table>
+	        </td>
+	</tr>
 	<tr class="th" style="font-weight:bold">
 		<td>
 			{header_wf_procname}:
@@ -63,7 +67,7 @@
 		</td>
 	</tr>
 	<!-- BEGIN block_activities_list -->
-	<tr bgcolor="{color_line}">
+	<tr class="{color_line}">
 		<td>
 		  {act_wf_procname} {act_proc_version}
 		</td>

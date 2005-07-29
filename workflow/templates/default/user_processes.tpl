@@ -6,6 +6,8 @@
 			{lang_List_of_processes}
 		</td>
 	</tr>
+</table>
+<table style="border: 0;width:100%;" cellspacing="1">
 	<tr class="row_off">
                 <td colspan="3" align="left">
 			<form action="{form_action}" method="post">
@@ -39,7 +41,7 @@
 		<td>{lang_Instances}</td>
 	</tr>
 	<!-- BEGIN block_table -->
-	<tr bgcolor="{color_line}">
+	<tr class="{color_line}">
 		<td>
 		  <a href="{link_wf_procname}">{item_wf_procname} {item_version}</a>
 		</td>

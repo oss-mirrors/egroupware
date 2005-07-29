@@ -6,6 +6,8 @@
 			{lang_New_Instance}
 		</td>
 	</tr>
+</table>
+<table style="border: 0px;width:100%;" cellspacing="1">
 	<tr class="row_off">
 		<td colspan="2">
 			<table style="border: 0; width:100%">
@@ -26,26 +28,28 @@
 			</table>
 		</td>
 	</tr>
-	<tr><td colspan="2">
-	<form action="{form_action}" method="post">
-	<input type="hidden" name="start" value="{start}" />
-	<input type="hidden" name="find" value="{search_str}" />
-	<input type="hidden" name="sort" value="{sort}" />
-	<input type="hidden" name="order" value="{order}" />
-        <table style="border: 0px;width:100%; margin:0 auto">
-		<tr class="row_off">
-                	{left}
-	        	<td><div align="center">{lang_showing}</div></td>
-	                {right}
-        	</tr>
-	</table>
-	</td></tr>
+	<tr>
+		<td colspan="2">
+		        <table style="border: 0px;width:100%; margin:0 auto">
+		                <tr class="row_off">
+		                        {left}
+		                        <td><div align="center">{lang_showing}</div></td>
+		                        {right}
+		                </tr>
+		        </table>
+	        </td>
+	</tr>
 	<tr class="th">
+		<form action="{form_action}" method="post">
+		<input type="hidden" name="start" value="{start}" />
+		<input type="hidden" name="find" value="{search_str}" />
+		<input type="hidden" name="sort" value="{sort}" />
+		<input type="hidden" name="order" value="{order}" />
 		<td>{header_wf_procname}</td>
 		<td>{header_wf_name}</td>
 	</tr>
 	<!-- BEGIN block_table -->
-	<tr bgcolor="{color_line}">
+	<tr class="{color_line}">
 		<td>
 		  {wf_procname}
 		</td>
