@@ -12,7 +12,7 @@
 	/* Basic information about this app */
 	$setup_info['workflow']['name']			= 'workflow';
 	$setup_info['workflow']['title']		= 'Workflow management';
-	$setup_info['workflow']['version']		= '1.1.01.000';
+	$setup_info['workflow']['version']		= '1.1.02.000';
 	$setup_info['workflow']['app_order']		= 10;
 	$setup_info['workflow']['enable']		= 1;
 	$setup_info['workflow']['author']		= 'Ported from tikiwiki';
@@ -30,7 +30,7 @@
 								'egw_wf_roles', 
 								'egw_wf_instance_supplements', 
 								'egw_wf_transitions', 
-								'egw_wf_user_roles', 
+								'egw_wf_user_roles',
 								'egw_wf_workitems',
 								'egw_wf_process_config'
 							);
@@ -49,7 +49,7 @@
 	/* Dependencies for this app to work */ 
 	$setup_info['workflow']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('1.0.1')
+		'versions' => Array('1.0.0','1.0.1')
 	);
 	
 ?>

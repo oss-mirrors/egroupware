@@ -24,10 +24,8 @@
 				'wf_is_interactive'	=> array('type' => 'char', 'precision' => '1', 'nullable' => True),
 				'wf_last_modif'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 				'wf_description'	=> array('type' => 'text', 'nullable' => True),
-				'wf_is_reassign_box'	=> array('type' => 'char', 'precision' => '1', 'nullable' => True),
-				'wf_is_report'		=> array('type' => 'char', 'precision' => '1', 'nullable' => True),
 				'wf_default_user'	=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True, 'default'=> '*'),
-				'wf_default_group'	=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True, 'default'=> '*'),
+				'wf_agent'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 			),
 			'pk' => array('wf_activity_id'),
 			'fk' => array(),
@@ -37,7 +35,8 @@
 		'egw_wf_activity_roles' => array(
 			'fd' => array(
 				'wf_activity_id'	=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
-				'wf_role_id'		=> array('type' => 'int', 'precision' => '4', 'nullable' => False)
+				'wf_role_id'		=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
+				'wf_readonly'		=> array('type' => 'int', 'precision' => '1', 'nullable' => False, 'default'=> 0),
 			),
 			'pk' => array('wf_activity_id', 'wf_role_id'),
 			'fk' => array(),
@@ -86,6 +85,7 @@
 				'wf_priority'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True, 'default'=> 0),
 				'wf_properties'		=> array('type' => 'blob', 'nullable' => True),
 				'wf_name'		=> array('type' => 'varchar', 'precision'=>'120', 'nullable' => True),
+				'wf_category'		=> array('type' => 'int', 'precision'=>'4', 'nullable' => True),
 			),
 			'pk' => array('wf_instance_id'),
 			'fk' => array(),

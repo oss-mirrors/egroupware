@@ -97,4 +97,25 @@
 		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.01.000';
 		return $GLOBALS['setup_info']['workflow']['currentver'];
 	}
+
+	$test[] = '1.1.01.000';
+	function workflow_upgrade1_1_01_000()
+	{	
+		#remove unused 'new' fields in activity and add a agent key
+ 		$GLOBALS['phpgw_setup']->oProc->DropColumn('egw_wf_activities', '', 'wf_is_reassign_box');
+ 		$GLOBALS['phpgw_setup']->oProc->DropColumn('egw_wf_activities', '', 'wf_is_report');
+ 		$GLOBALS['phpgw_setup']->oProc->DropColumn('egw_wf_activities', '', 'wf_default_group');
+ 		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_wf_activities' ,'wf_agent', array('type' => 'int', 'precision' => '4', 'nullable' => True));
+ 		
+		#add a readonly attribute to role/activty mapping
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_wf_activity_roles' ,'wf_readonly', array('type' => 'int', 'precision' => '1', 'nullable' => False, 'default'=> 0));
+
+		#add a instance category attribute
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_wf_instances' ,'wf_category', array('type' => 'int', 'precision'=>'4', 'nullable' => True));
+		
+		#updating the current version
+		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.02.000';
+		return $GLOBALS['setup_info']['workflow']['currentver'];
+	}
+
 ?>

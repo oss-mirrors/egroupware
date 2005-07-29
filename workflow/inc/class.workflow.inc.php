@@ -30,7 +30,7 @@
 		function workflow()
 		{
 			// check version
-			if (substr($GLOBALS['phpgw_info']['apps']['workflow']['version'],0,6) != '1.1.01')
+			if (substr($GLOBALS['phpgw_info']['apps']['workflow']['version'],0,6) != '1.1.02')
 			{
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
@@ -258,5 +258,19 @@
 						.SEP.'templates'.SEP.'default'.SEP.'css'.SEP.$css_name;
 			}
 		}
+		
+		//! return a given duration in human readable form, usefull for workitems duration
+		function time_diff($to) {
+			$days = (int)($to/(24*3600));
+			$to = $to - ($days*(24*3600));
+			$hours = (int)($to/3600);
+			$to = $to - ($hours*3600);
+			$min = date("i", $to);
+			$to = $to - ($min*60);			
+			$sec = date("s", $to);
+
+			return lang('%1 days, %2:%3:%4',$days,$hours,$min,$sec);
+		}
+
 	}
 ?>
