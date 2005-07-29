@@ -20,5 +20,10 @@ if ($GLOBALS['__activity_completed'])
   {
     $instance->setOwner((int)$_REQUEST['wf_set_owner']);
   }
+  if(isset($_REQUEST['wf_category']))
+  {
+    $instance->setCategory((int)$_REQUEST['wf_category']);
+  }
+
 }
 ?>
