@@ -10,7 +10,7 @@
 	\**************************************************************************/
 
 	$GLOBALS['acl_manager']['workflow']['admin_workflow'] = array(
-		'name' => 'Grant access to the administration of workflow elements',
+		'name' => 'Grant access to the administration and development of workflow processes and activities.',
 		'rights' => array(
 			'administer processes'   => 1
 		)
@@ -22,4 +22,28 @@
 			'monitoring'    => 1,
 		)
 	);	
+
+
+	$GLOBALS['acl_manager']['workflow']['admin_instance_workflow'] = array(
+		'name' => 'Grant access to the administration of workflow instances in monitor screens',
+		'rights' => array(
+			'administer instances'   => 1
+		)
+	);	
+
+	$GLOBALS['acl_manager']['workflow']['cleanup_workflow'] = array(
+		'name' => 'Grant access to the cleanup/deletion of workflow instances in monitor screens',
+		'rights' => array(
+			'cleanup instances'   => 1
+		)
+	);
+	
+	
+	$GLOBALS['acl_manager']['workflow']['cleanup_workflow'] = array(
+		'name' => 'Grant access to the cleanup/deletion of workflow aborted instances in monitor screens',
+		'rights' => array(
+			'cleanup aborted instances'   => 1
+		)
+	);
+
 
