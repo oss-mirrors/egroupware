@@ -90,9 +90,10 @@ class ActivityManager extends BaseManager {
       }
     }
     
-    // Rule: if act is standalone no transitions allowed
-    if($a1['wf_type'] == 'standalone' || $a2['wf_type']=='standalone') {
-		$this->error[] = tra('No transitions allowed for standalone activities');
+    // Rule: if act is standalone or view no transitions allowed
+    if(($a1['wf_type'] == 'standalone' || $a2['wf_type']=='standalone') || ($a1['wf_type'] == 'view' || $a2['wf_type']=='view') )
+    {
+		$this->error[] = tra('No transitions allowed for standalone or view activities');
 		return false;
     }
     // No inbound to start
@@ -176,22 +177,24 @@ class ActivityManager extends BaseManager {
     return $ret;
   }
 	/**
-	* Returns an array of activities that can have transitions,
-	* i.e., non-standalone activities
-	* @params pId
+	* @abstract Returns an array of activities that can have transitions,
+	* i.e., non-standalone/view activities
+	* @param pId
+	* @param $type_exclusion type you want to exclude from the result
 	* @return array of activities array, count
 	*/
   function get_transition_activities($pId, $type_exclusion = false)
   {
-		$where = '';
-		$wheres = array();
-		$wheres[] = "wf_type <> 'standalone'";
+	$where = '';
+	$wheres = array();
+	$wheres[] = "wf_type <> 'standalone'";
+	$wheres[] = "wf_type <> 'view'";
 
-	  if( $type_exclusion )
-	  {
-		$wheres[] = "wf_type <> '".$type_exclusion."'";		  
-	  }
-				$where = implode(' and ', $wheres);
+	if( $type_exclusion )
+	{
+	  $wheres[] = "wf_type <> '".$type_exclusion."'";		  
+	}
+	$where = implode(' and ', $wheres);
 	  
 	return $this->list_activities($pId, 0, -1, 'wf_flow_num__asc', ''/*$find*/, $where);
   }
@@ -317,7 +320,7 @@ class ActivityManager extends BaseManager {
    2) End must be reachable from start
    3) Interactive activities must have a role assigned
    4) Roles should be mapped
-   5) Standalone activities cannot have transitions
+   5) Standalone and view activities cannot have transitions
    6) Non intractive activities non-auto routed must have some role
       so the user can "send" the activity
    7) start activities must be autorouted and interactive
@@ -395,7 +398,7 @@ class ActivityManager extends BaseManager {
     
     //Rule 3: interactive activities must have a role
     //assigned.
-    //Rule 5: standalone activities can't have transitions
+    //Rule 5: standalone and view activities can't have transitions
     $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id = $pId";
     $result = $this->query($query);
     while($res = $result->fetchRow()) {  
@@ -413,9 +416,9 @@ class ActivityManager extends BaseManager {
             }
         }
       }
-      if($res['wf_type']=='standalone') {
+      if(($res['wf_type']=='standalone')||($res['wf_type']=='view')) {
         if($this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."transitions where wf_act_from_id=$aid or wf_act_to_id=$aid")) {
-           $errors[] = tra('Activity %1 is standalone but has transitions', $res['wf_name']);
+           $errors[] = tra('Activity %1 is standalone or view but has transitions', $res['wf_name']);
         }
       }
 
@@ -458,10 +461,11 @@ class ActivityManager extends BaseManager {
   /*! 
   Validate process sources
   Rules:
-  1) Interactive activities (non-standalone) must use complete()
+  1) Interactive activities (non-standalone or view) must use complete()
   2) Standalone activities must not use $instance
   3) Switch activities must use setNextActivity
   4) Non-interactive activities cannot use complete()
+  5) View activities cannot use $instance->set
   */
   function validate_process_sources($pid)
   {
@@ -495,19 +499,38 @@ class ActivityManager extends BaseManager {
           if(strstr($data,'$instance')) {
             $errors[] = tra('Activity %1 is standalone and is using the $instance object', $res['wf_name']);
           }    
-      } else {
-        if($res['wf_is_interactive']=='y') {
-          if(!strstr($data,'$instance->complete()')) {
-            $errors[] = tra('Activity %1 is interactive so it must use the $instance->complete() method', $res['wf_name']);
-          }
-        } else {
-          if(strstr($data,'$instance->complete()')) {
-            $errors[] = tra('Activity %1 is non-interactive so it must not use the $instance->complete() method', $res['wf_name']);
+      }
+      else 
+      {
+        if($res['wf_type']=='view') 
+        {
+          if(strstr($data,'$instance->set')) 
+          {
+            $errors[] = tra('Activity %1 is view and is using the $instance object in write mode', $res['wf_name']);
           }
         }
-        if($res['wf_type']=='switch') {
-          if(!strstr($data,'$instance->setNextActivity(')) { 
-            $errors[] = tra('Activity %1 is switch so it must use $instance->setNextActivity($actname) method', $res['wf_name']);          
+        else 
+        { // for all others than standalone or view ...
+          if($res['wf_is_interactive']=='y') 
+          {
+            if(!strstr($data,'$instance->complete()')) 
+            {
+              $errors[] = tra('Activity %1 is interactive so it must use the $instance->complete() method', $res['wf_name']);
+            }
+          } 
+          else 
+          { // not interactive ...
+            if(strstr($data,'$instance->complete()')) 
+            {
+              $errors[] = tra('Activity %1 is non-interactive so it must not use the $instance->complete() method', $res['wf_name']);
+            }
+          }
+          if($res['wf_type']=='switch') 
+          {
+            if(!strstr($data,'$instance->setNextActivity(')) 
+            {
+              $errors[] = tra('Activity %1 is switch so it must use $instance->setNextActivity($actname) method', $res['wf_name']);
+            }
           }
         }
       }    
@@ -932,6 +955,8 @@ class ActivityManager extends BaseManager {
       case "join":
           return "invtriangle";
       case "standalone":
+          return "hexagon";
+      case "view":
           return "hexagon";
       default:
           return "egg";            

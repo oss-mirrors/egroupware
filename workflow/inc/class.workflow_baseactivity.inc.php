@@ -8,6 +8,7 @@
 	require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'API' . SEP . 'activities' . SEP . 'Join.php');
 	require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'API' . SEP . 'activities' . SEP . 'Split.php');
 	require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'API' . SEP . 'activities' . SEP . 'Standalone.php');
+	require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'API' . SEP . 'activities' . SEP . 'View.php');
 	require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'API' . SEP . 'activities' . SEP . 'Start.php');
 	require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'API' . SEP . 'activities' . SEP . 'SwitchActivity.php');
 	require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'common' . SEP . 'WfSecurity.php');

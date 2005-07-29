@@ -60,6 +60,9 @@ class BaseActivity extends Base {
       case 'standalone':
         $act = new Standalone($this->db);
         break;
+      case 'view':
+        $act = new View($this->db);
+        break;
       case 'switch':
         $act = new SwitchActivity($this->db);
         break;

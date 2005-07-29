@@ -151,7 +151,7 @@
 			}
 
 			// fill type filter select box
-			$activity_types = array('start', 'end', 'activity', 'switch', 'split', 'join', 'standalone');
+			$activity_types = array('start', 'end', 'activity', 'switch', 'split', 'join', 'standalone', 'view');
 			$filter_type = get_var('filter_type', 'any', '');
 			$this->show_select_filter_type($activity_types, $filter_type);
 			
@@ -629,7 +629,13 @@
 				}
 			}
 			$this->activity_manager->validate_process_activities($this->wf_p_id);
-
+			
+			//collect every error message after our actions on activity manager. If there is some we are in error
+			//$this->message = $this->activity_manager->get_error(true);
+			//if (!(count($this->message)==0))
+			//{
+			//	return false;
+			//}
 			return $activity_id;
 		}
 
