@@ -19,7 +19,7 @@
 				'class_tab_global_activities'	=> ($activtab=='userglobalactivities')? 'active_tab': 'inactive_tab',
 				'class_tab_my_processes'	=> ($activtab=='userprocesses')? 'active_tab': 'inactive_tab',
 				'class_tab_my_activities'	=> ($activtab=='useractivities')? 'active_tab': 'inactive_tab',
-				'class_tab_my_instances'	=> ($activtab=='userinstances')? 'active_tab': 'inactive_tab',
+				'class_tab_my_instances'	=> (($activtab=='userinstances') || ($activtab=='userviewinstance'))? 'active_tab': 'inactive_tab',
 				'link_new_instances'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useropeninstance.form'),
 				'link_global_activities'	=> $GLOBALS['phpgw']->link('/index.php',array(
 									'menuaction'	=> 'workflow.ui_useractivities.form',
