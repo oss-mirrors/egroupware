@@ -10,6 +10,8 @@
 
 		// communication with the workflow engine
 		var $GUI;
+		//egw's categories object
+		var $cat;
 		//filters
 		var $filter_process;
 		var $filter_activity;
@@ -31,17 +33,18 @@
 		var $show_id_column;
 		var $show_instStatus_column;
 		var $show_instName_column;
+		var $show_cat_column;
 		var $show_priority_column;
 		var $show_procname_column;
 		var $show_actStatus_column;
 		var $show_owner_column;
-		var $show_view_column;
 		var $nb_columns;
 		
 		function ui_userinstances()
 		{
 			parent::bo_user_forms('user_instances');
 			$this->GUI =& CreateObject('workflow.workflow_gui');
+			$this->cat =& CreateObject('phpgwapi.categories');
 		}
 
 		function form()
@@ -60,6 +63,7 @@
 				$this->filter_activity 		= 0;
 				$this->filter_activity_name 	= '';
 				$this->filter_user		= '';
+				$this->filter_category		= 'all';
 				$this->search_str		= '';
 				$this->advanced_search  	= true;
 				$this->show_advanced_actions	= get_var('show_advanced_actions', 'any', false); 
@@ -82,6 +86,7 @@
 				$this->filter_activity		= get_var('filter_activity', 'any', 0);
 				$this->filter_activity_name	= get_var('filter_activity_name', 'any', '');
 				$this->filter_user		= get_var('filter_user', 'any', '');
+				$this->filter_category		= get_var('filter_category', 'any', 'all');
 				$this->advanced_search  	= get_var('advanced_search', 'any', false);
 				if (!$this->advanced_search)
 				{
@@ -151,6 +156,7 @@
 				'filter_process' 		=> $this->filter_process,
 				'filter_activity_name' 		=> $this->filter_activity_name,
 				'filter_user' 			=> $this->filter_user,
+				'filter_category'           	=> $this->filter_category,
 				'advanced_search' 		=> $this->advanced_search,
 				'add_exception_instances' 	=> $this->add_exception_instances,
 				'add_completed_instances' 	=> $this->add_completed_instances,
@@ -264,51 +270,78 @@
 		    
 		    
 		    //fill selection zones and vars------------------------------------------
-		    $this->t->set_var('advanced_search', ($this->advanced_search)? 'checked="checked"' : '');
-		    $this->t->set_var('filters_on_change', ($this->advanced_search)? '' : 'onChange="this.form.submit();"');
-		    $this->t->set_var('start',0);// comming back again to start point
 		    // 3 selects 
 		    $this->show_select_user($this->filter_user);	
 		    $this->show_select_process($all_processes['data'], $this->filter_process);
 		    $this->show_select_activity($all_activities['data'], $this->filter_activity_name);
 		    // the filter on instance_id, depends on preferences
 		    $this->show_filter_instance($this->myPrefs['wf_instances_show_instance_search']);
-		    $this->t->set_var('filter_instance_id',$this->filter_instance);
-		    // to keep informed of the 4 select values the second form (actions in the list)
-		    // need additional vars4
-		    $this->t->set_var('filter_user_id_set',$this->filter_user);
-		    $this->t->set_var('filter_process_id_set',$this->filter_process);
-		    $this->t->set_var('filter_activity_name_set',$this->filter_activity_name);
-		    $this->t->set_var('filter_act_status_set',$this->filter_act_status);
+		    // to keep informed of the 5 select values the second form (actions in the list)
+		    // need additional vars
 		    // and the same for all checkboxes
-		    $this->t->set_var('advanced_search_set', $this->advanced_search);
-		    $this->t->set_var('add_exception_instances_set', $this->add_exception_instances);
-		    $this->t->set_var('add_completed_instances_set', $this->add_completed_instances);
-		    $this->t->set_var('add_aborted_instances_set', $this->add_aborted_instances);
-		    $this->t->set_var('remove_active_instances_set', $this->remove_active_instances);
-		    $this->t->set_var('show_advanced_actions_set', $this->show_advanced_actions);
+		    $this->t->set_var(array(
+		    	'filter_instance_id'		=> $this->filter_instance,
+		    	'filter_user_id_set'		=> $this->filter_user,
+		    	'filter_process_id_set'		=> $this->filter_process,
+		    	'filter_activity_name_set'	=> $this->filter_activity_name,
+		    	'filter_act_status_set'		=> $this->filter_act_status,
+		    	'filter_category_set'		=> $this->filter_category,
+		    	'advanced_search_set'		=> $this->advanced_search,
+		    	'add_exception_instances_set'	=> $this->add_exception_instances,
+		    	'add_completed_instances_set'	=> $this->add_completed_instances,
+		    	'add_aborted_instances_set'	=> $this->add_aborted_instances,
+		    	'remove_active_instances_set'	=> $this->remove_active_instances,
+			'show_advanced_actions_set'	=> $this->show_advanced_actions,
+		    ));
+		    //category filter
+		    if ($this->show_cat_column)
+		    {
+		    	$this->t->set_var(array(
+		    		'filter_category_select' 	=> '</td><td>'.$this->cat_option($this->filter_category,False),
+		    		'filter_category_label' 	=> '</td><td>'.lang('Category'),
+		    		'category_css'			=>  '<LINK href="'.$this->get_css_link('category.css').'" type="text/css" rel="StyleSheet">' ,
+			));
+		    }
+		    else
+		    {
+		    	$this->t->set_var(array(
+		    		'filter_category_select' 	=> '',
+		    		'filter_category_label' 	=> '',
+		    		'category_css'			=> '',
+			));
+		    }
 		    // a LINK css for showing priority levels
-		    $this->t->set_var('priority_css', ($this->show_priority_column)? '<LINK href="'.$GLOBALS['phpgw']->link('/workflow/templates/default/css/priority.css').'"  type="text/css" rel="StyleSheet">':'');
+		    $this->t->set_var('priority_css', ($this->show_priority_column)? '<LINK href="'.$this->get_css_link('priority.css').'" type="text/css" rel="StyleSheet">' : '');
 		    // back to the first form, the advanced zone
 		    if ($this->advanced_search) 
 		    {
+		    	$this->t->set_var(array(
+		    		'advanced_search'	=> 'checked="checked"',
+		    		'filters_on_change'     => '',
+			));
 		        $this->t->set_file('Advanced_table_tpl','user_instances_advanced.tpl');
-		     	$this->t->set_var('add_exception_instances', ($this->add_exception_instances)? 'checked="checked"' : '');
-		     	$this->t->set_var('add_completed_instances', ($this->add_completed_instances)? 'checked="checked"' : '');
-		     	$this->t->set_var('add_aborted_instances', ($this->add_aborted_instances)? 'checked="checked"' : '');
-		     	$this->t->set_var('remove_active_instances', ($this->remove_active_instances)? 'checked="checked"' : '');
+		     	$this->t->set_var(array(
+		     		'add_exception_instances'	=> ($this->add_exception_instances)? 'checked="checked"' : '',
+		     		'add_completed_instances'	=> ($this->add_completed_instances)? 'checked="checked"' : '',
+		     		'add_aborted_instances'		=> ($this->add_aborted_instances)? 'checked="checked"' : '',
+		     		'remove_active_instances'	=> ($this->remove_active_instances)? 'checked="checked"' : '',
+		     		'show_advanced_actions'		=> ($this->show_advanced_actions)? 'checked="checked"' : '',
+			));
 		     	$this->show_select_act_status($this->filter_act_status);
-		     	$this->t->set_var('show_advanced_actions', ($this->show_advanced_actions)? 'checked="checked"' : '');
 		     	$this->translate_template('Advanced_table_tpl');
 		     	$this->t->parse('Advanced_table', 'Advanced_table_tpl');
 		    } 
 		    else 
 		    {
-		        $this->t->set_var('Advanced_table','');
+		    	$this->t->set_var(array(
+		    		'advanced_search' 	=> '',
+		    		'filters_on_change'	=> 'onChange="this.form.submit();"',
+		    		'Advanced_table'	=> '',
+			));
 		    }
 		    //some lang text in javascript
 		    $this->t->set_var('lang_Confirm_delete',lang('Confirm Delete'));
-		    // and the view column defined in preferences
+		    $this->t->set_var('start',0);// comming back again to start point
 		    
 		    // Fill the final list of the instances we choosed in the template
 		    $this->show_list_instances($instances['data'], $this->show_advanced_actions);
@@ -341,7 +374,7 @@
 			
 			foreach ($instances_data as $instance)
 			{
-			// all theses actions (most of them --monitor and run are GET links--) are handled by a javascript function 
+			// all theses actions (most of them --monitor, view and run are GET links--) are handled by a javascript function 
 			// 'submitAnInstanceLine' on the template which permit to send the activity and instance Ids 
 			// (as we could do with a link) AND kepping all the others data filled in the form (using submit()) 
 			
@@ -374,13 +407,47 @@
 				{
 					$this->t->set_var('run', '');
 				}
+			  // View instance
+				// launch the view activity associated with this process if any
+				//and the ui_userviewinstance if not
+				if (isset($actions['view']))
+				{
+					$view_activity_id = $this->GUI->gui_get_process_user_view_activity($instance['wf_p_id'],$GLOBALS['phpgw_info']['user']['account_id']);
+				        if (!(empty($view_activity_id)))
+				        {
+				        	$this->t->set_var('view',
+				                          '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
+				                          	'menuaction'	=> 'workflow.run_activity.go',
+				                          	'iid'		=> $instance['wf_instance_id'],
+								'activity_id'	=> $view_activity_id,
+								)).'"><img src="'.$GLOBALS['phpgw']->common->image('phpgwapi', 'view').'" alt="'.$actions['view'].'" title="'.$actions['view'].'"></a>'
+						);
+					}
+					else
+					{
+						$this->t->set_var('view',
+				                          '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
+				                          	'menuaction'	=> 'workflow.ui_userviewinstance.form',
+				                          	'iid'		=> $instance['wf_instance_id'],
+								)).'"><img src="'.$GLOBALS['phpgw']->common->image('phpgwapi', 'view').'" alt="'.$actions['view'].'" title="'.$actions['view'].'"></a>'
+						);
+					
+					}
+				}
+				else
+				{
+					$this->t->set_var('view', '');
+				}
+				
+
 			// Send instance (no automatic routage)
 				if (isset($actions['send']))
 				{
 					$this->t->set_var('send', 
 						'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'linkto') 
 						.'" name="send_instance" alt="'.$actions['send'].'" title="'.$actions['send'] 
-						.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'send\')">');
+						.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+						.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'send\')">');
 				}
 				else
 				{
@@ -394,7 +461,8 @@
 				        $this->t->set_var('resume', 
 				        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'resume') 
 				        	.'" name="resume_instance" alt="'.$actions['resume'].'" title="'.$actions['resume'] 
-				        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'resume\')">');
+				        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+				        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'resume\')">');
 					} else {
 				        	$this->t->set_var('resume', '');
 					}
@@ -405,7 +473,8 @@
 					        $this->t->set_var('exception', 
 					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'tostop') 
 					        	.'" name="exception_instance" alt="'.$actions['exception'].'" title="'.$actions['exception'] 
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'exception\')">');
+					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+					        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'exception\')">');
 					}
 					else
 					{
@@ -420,7 +489,8 @@
 					        $this->t->set_var('abort', 
 					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'totrash') 
 					        	.'" name="abort_instance" alt="'.$actions['abort'].'" title="'.$actions['abort'] 
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'abort\')">');
+					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+					        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'abort\')">');
 					}
 					else
 					{
@@ -435,7 +505,8 @@
 					        $this->t->set_var('grab_or_release', 
 					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'float') 
 					        	.'" name="grab_instance" alt="'.$actions['grab'].'" title="'.$actions['grab'] 
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'grab\')">');
+					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+					        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'grab\')">');
 					}
 					elseif (isset($actions['release']))
 					{
@@ -443,7 +514,8 @@
 					        $this->t->set_var('grab_or_release', 
 					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix') 
 					        	.'" name="release_instance" alt="'.$actions['release'].'" title="'.$actions['release']
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','. $instance['wf_activity_id'].',\'release\')">');
+					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+					        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'release\')">');
 					}
 					else
 					{
@@ -499,7 +571,7 @@
 			$this->show_procname_column = $this->myPrefs['wf_instances_show_process_name_column'];
 			$this->show_actStatus_column = $this->myPrefs['wf_instances_show_activity_status_column'];
 			$this->show_owner_column = $this->myPrefs['wf_instances_show_owner_column'];
-			$this->show_view_column = $this->myPrefs['wf_instances_show_view_column'];
+			$this->show_cat_column = $this->myPrefs['wf_instances_show_category_column'];
 
 			// now we must check actual filters and force certain columns, for example if we show aborted instances
 			// we must show instance status
@@ -519,11 +591,11 @@
 				$this->show_id_column = true;
 			}
 			// total number of columns is user+activity+actions+others
-			$this->nb_columns = 3 + $this->show_view_column + $this->show_owner_column + $this->show_actStatus_column 
+			$this->nb_columns = 3 + $this->show_owner_column + $this->show_actStatus_column 
 				+ $this->show_procname_column + $this->show_priority_column + $this->show_instName_column + $this->show_instStatus_column
-				+ $this->show_id_column;
-			// if recent was made (column added) test it to prevent the user
-			if (!(isset($this->myPrefs['wf_instances_show_process_name_column'])))
+				+ $this->show_id_column + $this->show_cat_column;
+			// if recent change was made (column added) test it to prevent the user
+			if (!(isset($this->myPrefs['wf_instances_show_category_column'])))
 			{
 				$preferences = lang('preferences');
 				$preferenceslink = '<a href="'.$GLOBALS['phpgw']->link('/preferences/preferences.php','appname=workflow').'" />'.$preferences.'</a>';
@@ -531,7 +603,7 @@
 			}
 		}
 		
-		//! set the headers columns in the template and return an array containing columns aviable for nextmatchs sorting functions.
+		//! set the headers columns in the template and return an array containing columns avaible for nextmatchs sorting functions.
 		function get_instance_header()
 		{
 			$result = Array();
@@ -587,6 +659,15 @@
 				$this->t->parse('columns_header','block_header_column',true);
 			}
 			
+			// Category
+			if($this->show_cat_column)
+			{
+				$result['wf_category'] = lang('Category');
+				$this->t->set_var(array(
+					'column_header'	=> 'wf_category',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
 			
 			// Activity. Always show this information.
 			$result['wf_name'] = lang('Activity');
@@ -622,17 +703,6 @@
 			));
 			$this->t->parse('columns_header','block_header_column',true);
 
-			// View column
-			if($this->show_view_column)
-			{
-				$this->t->set_var(array(
-					'column_header'	=> 'view'
-				));
-				$this->t->set_var(array(
-					'header_view'	=> lang('View'),
-				));
-				$this->t->parse('columns_header','block_header_column',true);
-			}
 			// parse the header row
 			$this->translate_template('block_list_headers');
 			$this->t->parse('list_headers', 'block_list_headers', true);
@@ -717,6 +787,17 @@
 				));
 				$this->t->parse('columns','block_instance_column',true);
 			}
+
+			//Category
+			if($this->show_cat_column)
+			{
+				$cat_name = $this->cat->id2name($instance['wf_category'],'name');
+				$this->t->set_var(array(
+					'column_value'	=> $cat_name,
+					'class_column'	=> 'class="category_'.$instance['wf_category'].'"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
 			
 			// Activity. Always show this information.
 			$act_icon = $this->act_icon($instance['wf_type'],$instance['wf_is_interactive']);
@@ -767,20 +848,8 @@
 			));
 			$this->t->parse('columns','block_instance_column',true);
 
-			// View column
-			if($this->show_view_column)
-			{
-				$mylink=$GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userviewinstance.form&iid='.$instance['wf_instance_id']);
-				$this->t->set_var(array(
-					'column_value'	=> '<a href="'.$mylink.'">'.lang('View').'</a>',
-					'class_column'	=> 'class="col_view"',
-				));
-				$this->t->parse('columns','block_instance_column',true);
-			}
-
-			
  			$this->t->set_var(array(
-				'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color)
+				'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color,true)
 			));
 
 		}
@@ -864,8 +933,8 @@
 		//! fill the $this->where string taking care of all the filters and checkboxes actionned
 		function fill_where_data()
 		{
-		    // there're 4 principal filters, process, activity (id/name), user and search --------------
-		    // nothing to prepare for search, let's look the 3 others...
+		    // there're 5 principal filters, process, activity (id/name), user, category and search --------------
+		    // nothing to prepare for search, let's look the 4 others...
 		    $this->where = '';
 		    $wheres = array();
 		    $or_wheres = array();
@@ -881,6 +950,12 @@
 		    if(!($this->filter_user==''))
 		    {
 			$wheres[] = "gia.wf_user='".$this->filter_user."'";
+		    }
+		    if (!( ($this->filter_category == '') || ($this->filter_category == 'all')) )
+		    {
+		    	$childs = $this->cat->return_all_children($this->filter_category);
+		    	$cats_list = implode(',',$childs);
+			$wheres[] = "gi.wf_category in (".$cats_list.")";
 		    }
 		    
 		    // now adding special advanced search options or default values--------------------
@@ -917,7 +992,7 @@
 		    	$or_wheres[] = "(gi.wf_status='completed')";
 		    }
 		    $wheres[] = "(".implode(' or ', $or_wheres).")";
-		    
+
 		    //activities selection :: activities are running OR completed OR NULL (for aborted instances for example) 
 		    // and by default we keep all activities
 		    if ($this->filter_act_status =='running') 
@@ -939,6 +1014,31 @@
 		        $this->where = implode(' and ', $wheres);
 			//echo "<hr>where: <pre>";print_r($this->where);echo "</pre>";
 		    }
+	    }
+	    
+	    /* Return a select form element with the categories option dialog in it */
+	    function cat_option($cat_id='',$notall=False,$java=True,$multiple=False)
+	    {
+	    	if($java)
+	    	{
+	    		$jselect = ' {filters_on_change}';
+	    	}
+	    	/* Setup all and none first */
+	    	$cats_link  = "\n" .'<select name="filter_category'.(($multiple)? '[]':'').'"' .$jselect . (($multiple)? 'multiple ' : '') . ">\n";
+	    	if(!$notall)
+	    	{
+	    		$cats_link .= '<option value=""';
+	    		if($cat_id == 'all')
+	    		{
+	    			$cats_link .= ' selected';
+			}
+			$cats_link .= '>'.lang("all").'</option>'."\n";
+		}
+			
+		/* Get app-specific category listings */
+		$cats_link .= $this->cat->formated_list('select','all',$cat_id,False);
+		$cats_link .= '</select>'."\n";
+		return $cats_link;
 	    }
 
 	}

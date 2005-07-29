@@ -1,4 +1,5 @@
 {priority_css}
+{category_css}
 <div style="color:red; text-align:center">{message}</div>
 {user_tabs}
 <form name="userInstancesForm" action="{form_action}" method="post">
@@ -17,6 +18,7 @@
 		</td>
 		<td>
                         {lang_Activity}
+                        {filter_category_label}
                 </td>
 		<td>
 			{lang_User}
@@ -47,6 +49,7 @@
 				<option {selected_filter_activity} value="{filter_activity_name}">{filter_activity_name}</option>
 				<!-- END block_select_activity -->
 			</select>
+			{filter_category_select}
 		</td>
 		<td>
 			<select {filters_on_change} name="filter_user">
@@ -76,6 +79,7 @@
 <form name="userInstancesForm2" action="{form_action}" method="post">
 <input type="hidden" name="filter_process" value="{filter_process_id_set}">
 <input type="hidden" name="filter_activity_name" value="{filter_activity_name_set}">
+<input type="hidden" name="filter_category" value="{filter_category_set}">
 <input type="hidden" name="filter_user" value="{filter_user_id_set}">
 <input type="hidden" name="advanced_search" value="{advanced_search_set}" />
 <input type="hidden" name="find" value="{search_str}" />
@@ -142,10 +146,10 @@
 		</td>
 	<!-- END block_instance_column -->
 	<!-- BEGIN block_list_instances -->
-	<tr bgcolor="{color_line}">
+	<tr class="{color_line}">
 		{columns}
 		<td class="col_action">
-	  		 {run} {send} {grab_or_release} {exception} {resume} {abort} {monitor}
+	  		 {run} {send} {view} {grab_or_release} {exception} {resume} {abort} {monitor}
 		</td>
 	</tr>
 	<!-- END block_list_instances -->
