@@ -478,9 +478,9 @@ class ProcessManager extends BaseManager {
   */
   function get_process($pId, $withConfig=false)
   {
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."processes where wf_p_id=$pId";
-    $result = $this->query($query);
-    if(!$result->numRows()) return false;
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."processes where wf_p_id=?";
+    $result = $this->query($query, array($pId));
+    if((empty($result)) || (!$result->numRows())) return false;
     $res = $result->fetchRow();
     if ($withConfig)
     {
