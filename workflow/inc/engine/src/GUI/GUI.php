@@ -25,7 +25,6 @@ class GUI extends Base {
   /*
   TODO: 
    *) more options in list_user_instances, they should not be added by the external modules
-   *) still some group mappings
    */
    
    
@@ -167,10 +166,6 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
                 $more_tables
                 $mid ";
-//DEBUG
-//echo "<br>$query";
-//_debug_array($bindvars);
-//echo "<br> $query_cant";
     $result = $this->query($query,$bindvars,$maxRecords,$offset);
     $cant = $this->getOne($query_cant,$bindvars);
     $ret = Array();
@@ -300,9 +295,12 @@ class GUI extends Base {
 	$mid";
     $result = $this->query($query,$bindvars,$maxRecords,$offset);
     $ret = Array();
-    while($res = $result->fetchRow()) 
+    if (!(empty($result)))
     {
-      $ret[] = $res;
+      while($res = $result->fetchRow()) 
+      {
+        $ret[] = $res;
+      }
     }
     $retval = Array();
     $retval["data"]= $ret;
@@ -311,7 +309,7 @@ class GUI extends Base {
     return $retval;
   }
 
-  function gui_list_user_instances($user,$offset,$maxRecords,$sort_mode,$find,$where='')
+  function gui_list_user_instances($user,$offset,$maxRecords,$sort_mode,$find,$where='',$add_properties=false)
   {
     // FIXME: this doesn't support multiple sort criteria
     //$sort_mode = $this->convert_sortmode($sort_mode);
@@ -344,11 +342,12 @@ class GUI extends Base {
 
     // (regis) we need LEFT JOIN because aborted and completed instances are not showned 
     // in instance_activities, they're only in instances
-    $query = "select distinct(gi.wf_instance_id),                     
+    $query = 'select distinct(gi.wf_instance_id),                     
                      gi.wf_started,
                      gi.wf_owner,
                      gia.wf_user,
                      gi.wf_status,
+                     gi.wf_category,
                      gia.wf_status as wf_act_status,
                      ga.wf_name,
                      ga.wf_type,
@@ -359,8 +358,9 @@ class GUI extends Base {
                      gp.wf_version as wf_version,
                      gp.wf_p_id,
                      gi.wf_name as insname,
-                     gi.wf_priority
-              from ".GALAXIA_TABLE_PREFIX."instances gi 
+                     gi.wf_priority';
+    $query .= ($add_properties)? ', gi.wf_properties' : '';
+    $query .= ' from '.GALAXIA_TABLE_PREFIX."instances gi 
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gia.wf_activity_id = ga.wf_activity_id
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
@@ -386,16 +386,22 @@ class GUI extends Base {
     $result = $this->query($query,$bindvars,$maxRecords,$offset);
     $resultcant = $this->query($query_cant,$bindvars);
     $ret = Array();
-    while($res = $result->fetchRow()) 
+    if (!(empty($result)))
     {
-      // Get instances per activity
-      $ret[] = $res;
+      while($res = $result->fetchRow()) 
+      {
+        // Get instances per activity
+        $ret[] = $res;        
+      }
     }
     $cant=0;
-    while($rescant = $resultcant->fetchRow()) 
+    if (!(empty($resultcant)))
     {
-      // Get number of distinct instances per activity
-      $cant += $rescant['cant'];
+      while($rescant = $resultcant->fetchRow()) 
+      {
+        // Get number of distinct instances per activity
+        $cant += $rescant['cant'];
+      }
     }
     $retval = Array();
     $retval["data"] = $ret;
@@ -403,6 +409,36 @@ class GUI extends Base {
     return $retval;
   }
   
+  //! get the view activity id avaible for a given user and a given process
+  function gui_get_process_user_view_activity($pId, $user)
+  {
+    $mid = "where gp.wf_is_active=? and gp.wf_p_id=? and ga.wf_type=?";
+    // add group mapping, warning groups and user can have the same id
+    $groups = galaxia_retrieve_user_groups($user);
+    $mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
+    $mid .= "		or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
+    $bindvars = array('y',$pId,'view',$user);
+
+    $query = "select ga.wf_activity_id
+        from ".GALAXIA_TABLE_PREFIX."processes gp
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
+	$mid";
+    $result = $this->query($query,$bindvars);
+    $ret = Array();
+    $retval = false;
+    if (!(empty($result)))
+    {
+      while($res = $result->fetchRow()) 
+      {
+        $retval = $res['wf_activity_id'];
+      }
+    }
+    return $retval;
+  }
+
   //! gets all informations about a given instance and a given user, list activities and status
   /*!
   * We list activities for which the user is the owner or the actual user or in a role giving him access to the activity
