@@ -14,6 +14,8 @@
 		var $process;
 		// GUI engine object. Act carefully with it.
 		var $GUI;
+		// a categorie object for categories
+		var $categories;
 		// local process configuration cache
 		var $conf = array();
 		// local activity template
@@ -30,6 +32,7 @@
 		var $process_version;
 		var $activity_name;
 		var $user_name;
+		var $view_activity; //activity id of the view activity avaible for this process
 		// theses 4 vars aren't avaible for the user code, they're set only after this user code was executed
 		var $instance_id=0;
 		var $instance_name='';
@@ -50,6 +53,7 @@
 			$this->base_activity	=& CreateObject('workflow.workflow_baseactivity');
 			$this->process		=& CreateObject('workflow.workflow_process');
 			$this->GUI		=& CreateObject('workflow.workflow_gui');
+			$this->categories 	=& CreateObject('phpgwapi.categories');
 			// TODO: open a new connection to the database under a different username to allow privilege handling on tables
 			$this->db 		=& $GLOBALS['phpgw']->ADOdb;
 		}
@@ -64,7 +68,7 @@
 
 			if (!$activity_id)
 			{
-				$activity_id	= (int)get_var('activity_id', 'GET', 0);
+				$activity_id	= (int)get_var('activity_id', array('GET','POST'), 0);
 			}
 
 			if (!$activity_id) die(lang('No activity indicated'));
@@ -112,6 +116,7 @@
 			$this->process_version	= $this->process->getVersion();
 			$this->activity_name	= $activity->getName();
 			$this->user_name	= $GLOBALS['phpgw']->accounts->id2name($GLOBALS['user']);
+			$this->view_activity	= $this->GUI->gui_get_process_user_view_activity($this->process_id,$GLOBALS['user']);
 			
 			//we set them in $GLOBALS['workflow'] as well
 			$GLOBALS['workflow']['wf_activity_type']	=& $this->activity_type;
@@ -121,6 +126,7 @@
 			$GLOBALS['workflow']['wf_process_version']	=& $this->process_version;
 			$GLOBALS['workflow']['wf_activity_name']	=& $this->activity_name;
 			$GLOBALS['workflow']['wf_user_name']		=& $this->user_name;
+			$GLOBALS['workflow']['wf_view_activity']	=& $this->view_activity;
 			
 			//FIXME: useless, we remove it
 			// run the shared code (just in case because each activity is supposed to include it)
