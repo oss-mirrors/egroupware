@@ -1029,30 +1029,15 @@
 			{
 				case 'enable':
 				case 'save':
+				case 'disable':
 					$vacation['text']	= get_var('vacation_text',array('POST'));
 					$vacation['text']	= $this->botranslation->convert($vacation['text'],$this->displayCharset,'UTF-8');
 					$vacation['days']	= get_var('days',array('POST'));
 					$vacation['addresses']	= get_var('vacationAddresses',array('POST'));
-					$vacation['status']	= 'on';
+					$vacation['status']	= get_var('vacationRule_action',array('POST')) == 'disable' ? 'off' : 'on';
 					if($this->checkRule($vacation))
 					{
 						$script->vacation	= $vacation;
-						if (!$script->updateScript($this->sieve)) 
-						{
-							print "update failed<br>";
-							print $script->errstr."<br>";
-						}
-					}
-					break;
-				
-				case 'disable':
-					$vacation['text']	= get_var('vacation_text',array('POST'));
-					$vacation['days']	= get_var('days',array('POST'));
-					$vacation['addresses']	= get_var('vacationAddresses',array('POST'));
-					$vacation['status']	= 'off';
-					$script->vacation	= $vacation;
-					if($this->checkRule($vacation))
-					{
 						if (!$script->updateScript($this->sieve)) 
 						{
 							print "update failed<br>";
