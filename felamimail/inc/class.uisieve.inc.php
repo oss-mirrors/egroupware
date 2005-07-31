@@ -480,7 +480,8 @@
 				$this->scriptToEdit 	= $scriptName;
 				if (!$script->retrieveRules($this->sieve))
 				{
-					print "can't receive script<br>";
+					//print "can't receive script<br>";
+					$this->rules = $this->vacations = array();
 				}
 				else
 				{
