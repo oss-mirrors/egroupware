@@ -559,9 +559,13 @@ class ActivityManager extends BaseManager {
   */
   function get_activity($activityId)
   {
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_activity_id=$activityId";
-    $result = $this->query($query);
-    $res = $result->fetchRow();
+    $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_activity_id=?";
+    $result = $this->query($query, array($activityId));
+    $res = False;
+    if (!(empty($result)))
+    {
+      $res = $result->fetchRow();
+    }
     return $res;
   }
   
@@ -920,6 +924,7 @@ class ActivityManager extends BaseManager {
     if (GALAXIA_TEMPLATES && file_exists($template_file)) {
       @copy($template_file,GALAXIA_TEMPLATES.SEP.$proc_info['wf_normalized_name'].SEP.$actname.'.tpl');
     }
+    return $errors;
   }
   
   /*!
