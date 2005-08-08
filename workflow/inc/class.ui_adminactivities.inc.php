@@ -72,10 +72,21 @@
 			$this->order		= get_var('order', 'GET', 'wf_flow_num');
 			$this->sort			= get_var('sort', 'GET', 'asc');
 			$this->sort_mode	= $this->order . '__'. $this->sort;
+			$compile 		= get_var('compile', 'GET', False);
 
 			if (!$this->wf_p_id) die(lang('No process indicated'));
 
 			// *************************************   START OF OPERATIONS COMMANDED BY THIS SAME FORM ******************
+			
+			if ($compile)
+			{
+				$process_activities =& $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $find, $where);
+				foreach ($process_activities['data'] as $key => $activity)
+				{
+					$this->message[] = lang('compiling activity %1 : %2',$activity['wf_activity_id'], $activity['wf_name']);
+					$this->message = array_merge($this->message, $this->activity_manager->compile_activity($this->wf_p_id,$activity['wf_activity_id']));
+				}
+			}
 
 			// TODO: rolenames need to be valid.  Add a validity checking function
 			// add role to process roles
@@ -163,27 +174,27 @@
 			$activity_autoroute = array('y' => lang('Auto Routed'), 'n'=>lang('Manual'));
 			$this->show_select_filter_autoroute($activity_autoroute, $filter_autoroute);
 			
-		    $where = '';
-		    $wheres = array();
-		    if( !($filter_type == '') ) 
-		    {
-		    	$wheres[] = "wf_type = '" .$filter_type. "'";
-		    }
-		    if( !($filter_interactive == '') ) 
-		    {
-		    	$wheres[] = "wf_is_interactive = '" .$filter_interactive. "'";
-		    }
-		    if( !($filter_autoroute == '') ) 
-		    {
-		    	$wheres[] = "wf_is_autorouted = '" .$filter_autoroute. "'";
-		    }
-		    if( count($wheres) > 0 ) 
-		    {
+			$where = '';
+			$wheres = array();
+			if( !($filter_type == '') ) 
+			{
+		    		$wheres[] = "wf_type = '" .$filter_type. "'";
+			}
+			if( !($filter_interactive == '') ) 
+			{
+		    		$wheres[] = "wf_is_interactive = '" .$filter_interactive. "'";
+			}
+			if( !($filter_autoroute == '') ) 
+			{
+				$wheres[] = "wf_is_autorouted = '" .$filter_autoroute. "'";
+			}
+			if( count($wheres) > 0 ) 
+			{
 				$where = implode(' and ', $wheres);
-		    }
+			}
 			
 			$proc_info =& $this->process_manager->get_process($this->wf_p_id);
-			$process_activities =& $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $find, $where);
+			if (empty($process_activities)) $process_activities =& $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $find, $where);
 			$all_transition_activities_from =& $this->activity_manager->get_transition_activities($this->wf_p_id, 'end');
 			$all_transition_activities_to =& $this->activity_manager->get_transition_activities($this->wf_p_id, 'start');
 			if ($activity_id) $this->search_transitions_act($process_activities, $activity_id);

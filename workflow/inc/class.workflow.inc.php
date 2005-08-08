@@ -79,7 +79,7 @@
 				'img_validity'			=> $GLOBALS['phpgw']->common->image('workflow', $dot_color.'_dot'),
 				'alt_validity'			=> $alt_validity,
 				'start_stop'			=> $start_stop,
-				'link_admin_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id']),
+				'link_admin_activities'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id']),
 				'img_activity'			=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
 				'link_admin_processes'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&p_id='. $proc_info['wf_p_id']),
 				'img_change'			=> $GLOBALS['phpgw']->common->image('workflow', 'change'),
@@ -92,15 +92,12 @@
 				'img_process'			=> $GLOBALS['phpgw']->common->image('workflow', 'Process'),
 				'link_save_process'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.save_process&id='. $proc_info['wf_p_id']),
 				'img_save'			=> $GLOBALS['phpgw']->common->image('workflow', 'save'),
-				'link_monitor_process'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorprocesses.form&filter_process='. $proc_info['wf_p_id']),
-				'img_monitor_process'		=> $GLOBALS['phpgw']->common->image('workflow', 'monitorprocess'),
-				'link_monitor_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitoractivities.form&filter_process='. $proc_info['wf_p_id']),
-				'img_monitor_activity'		=> $GLOBALS['phpgw']->common->image('workflow', 'monitoractivity'),
-				'link_monitor_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $proc_info['wf_p_id']),
-				'img_monitor_instance'		=> $GLOBALS['phpgw']->common->image('workflow', 'monitorinstance'),
-				'link_monitor_workitems'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $proc_info['wf_p_id']),
-				'img_monitor_workitems'		=> $GLOBALS['phpgw']->common->image('workflow', 'monitor')
-
+				'link_compile'			=> $GLOBALS['phpgw']->link('/index.php', array(
+					'menuaction'	=> 	'workflow.ui_adminactivities.form',
+					'p_id'		=>	$proc_info['wf_p_id'],
+					'compile'	=>	true,
+				)),
+				'img_compile'			=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
 			));
 
 			$this->translate_template('proc_bar_tpl');
