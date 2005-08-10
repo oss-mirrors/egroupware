@@ -40,7 +40,7 @@ class Instance extends Base {
     // Get the instance data
     $query = "select * from `".GALAXIA_TABLE_PREFIX."instances` where `wf_instance_id`=?";
     $result = $this->query($query,array((int)$instanceId));
-    if(!$result->numRows()) return false;
+    if( empty($result) || (!$result->numRows())) return false;
     $res = $result->fetchRow();
 
     //Populate 
@@ -84,6 +84,7 @@ class Instance extends Base {
         $this->workitems[]=$res;
       }
     }
+    return true;
   }
   
   /*! 
