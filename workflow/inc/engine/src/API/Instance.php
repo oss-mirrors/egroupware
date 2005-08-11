@@ -101,8 +101,12 @@ class Instance extends Base {
       trigger_error(tra('Fatal error: setting next activity to an unexisting activity'),E_USER_WARNING);
     }
     $this->nextActivity=$aid;
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_next_activity`=? where `wf_instance_id`=?";
-    $this->query($query,array((int)$aid,(int)$this->instanceId));
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_next_activity`=? where `wf_instance_id`=?";
+      $this->query($query,array((int)$aid,(int)$this->instanceId));
+    }
   }
 
   /*!
@@ -111,10 +115,13 @@ class Instance extends Base {
   some user.
   */
   function setNextUser($user) {
-    $pId = $this->pId;
     $this->nextUser = $user;
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_next_user`=? where `wf_instance_id`=?";
-    $this->query($query,array($user,(int)$this->instanceId));
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_next_user`=? where `wf_instance_id`=?";
+      $this->query($query,array($user,(int)$this->instanceId));
+    }
   }
 
   /*!
@@ -146,7 +153,6 @@ class Instance extends Base {
     $this->owner = $user;
     $name = $this->getName();
     $category = $this->getCategory();
-    $props=serialize($this->properties);
     $query = "insert into `".GALAXIA_TABLE_PREFIX."instances`
       (`wf_started`,`wf_ended`,`wf_status`,`wf_p_id`,`wf_owner`,`wf_properties`,`wf_name`,`wf_category`,`wf_priority`) 
       values(?,?,?,?,?,?,?,?,?)";
@@ -170,8 +176,12 @@ class Instance extends Base {
   */
   function setName($value) {
     $this->name = $value;
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_name=? where wf_instance_id=?";
-    $this->query($query,array($value,(int)$this->instanceId));
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_name=? where wf_instance_id=?";
+      $this->query($query,array($value,(int)$this->instanceId));
+    }
   }
 
   /*!
@@ -186,8 +196,12 @@ class Instance extends Base {
   */
   function setCategory($value) {
     $this->category = $value;
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_category=? where wf_instance_id=?";
-    $this->query($query,array($value,(int)$this->instanceId));
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_category=? where wf_instance_id=?";
+      $this->query($query,array($value,(int)$this->instanceId));
+    }
   }
 
   /*!
@@ -203,9 +217,13 @@ class Instance extends Base {
   */
   function set($name,$value) {
     $this->properties[$name] = $value;
-    $props = serialize($this->properties);
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_properties`=? where `wf_instance_id`=?";
-    $this->query($query,array($props,$this->instanceId));
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      $props = serialize($this->properties);
+      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_properties`=? where `wf_instance_id`=?";
+      $this->query($query,array($props,$this->instanceId));
+    }
   }
   
   /*! 
@@ -241,9 +259,13 @@ class Instance extends Base {
   */
   function setStatus($status) {
     $this->status = $status; 
-    // and update the database
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_status`=? where `wf_instance_id`=?";
-    $this->query($query,array($status,(int)$this->instanceId));  
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      // and update the database
+      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_status`=? where `wf_instance_id`=?";
+      $this->query($query,array($status,(int)$this->instanceId));
+    }
   }
   
   /*!
@@ -261,10 +283,13 @@ class Instance extends Base {
   {
     $mypriority = (int)$priority;
     $this->priority = $mypriority;
-            
-    // and update the database
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_priority=? where wf_instance_id=?";
-    $this->query($query,array($this->priority,(int)$this->instanceId));  
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      // and update the database
+      $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_priority=? where wf_instance_id=?";
+      $this->query($query,array($this->priority,(int)$this->instanceId));
+    }
   }
    
   /*!
@@ -293,9 +318,13 @@ class Instance extends Base {
   */
   function setOwner($user) {
     $this->owner = $user;
-    // save database
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_owner`=? where `wf_instance_id`=?";
-    $this->query($query,array($this->owner,(int)$this->instanceId));  
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      // save database
+      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_owner`=? where `wf_instance_id`=?";
+      $this->query($query,array($this->owner,(int)$this->instanceId));
+    }
   }
   
   /*!
@@ -438,9 +467,13 @@ class Instance extends Base {
   Sets the time where the instance was started.    
   */
   function setStarted($time) {
-    $this->started=$time;
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_started`=? where `wf_instance_id`=?";
-    $this->query($query,array((int)$time,(int)$this->instanceId));    
+    $this->started = $time;
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_started`=? where `wf_instance_id`=?";
+      $this->query($query,array((int)$time,(int)$this->instanceId));    
+    }
   }
   
   /*!
