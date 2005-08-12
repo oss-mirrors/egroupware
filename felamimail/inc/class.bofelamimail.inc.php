@@ -507,7 +507,7 @@
 					else
 						$val->subscribed = FALSE;
 
-					if(!isset($val->delimiter))
+					if(empty($val->delimiter))
 						$val->delimiter = '.';
 					
 					$folderNameIMAP = $this->decodeFolderName(preg_replace("/{.*}/",'',$val->name));
