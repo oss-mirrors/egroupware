@@ -15,21 +15,19 @@
 
 	class messengernotify
 	{
-
-
 		function notify()
 		{
 			$db;
 			$table = 'phpgw_messenger_messages';
 			$owner;
-			$this->db    = $GLOBALS['phpgw']->db;
-			$this->owner = $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->db    = $GLOBALS['egw']->db;
+			$this->owner = $GLOBALS['egw_info']['user']['account_id'];
 			$config = CreateObject('phpgwapi.config');
 			$config->read_repository();
-			$GLOBALS['phpgw_info']['server']['messenger'] = $config->config_data;
+			$GLOBALS['egw_info']['server']['messenger'] = $config->config_data;
 			unset($config);
-				$messages = array();
-				
+			$messages = array();
+
 			$count = 0;
 
 			$this->db->limit_query('SELECT * FROM ' . $table . " WHERE message_owner=" . $this->owner
@@ -51,9 +49,8 @@
 				{
 					return "You have ".$count." new messages.";
 				}
-				
 			}
 			return False;
 		}
-	}	
+	}
 ?>

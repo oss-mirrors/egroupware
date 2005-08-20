@@ -32,7 +32,7 @@
 
 		function send_global_message($message='')
 		{
-			if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'admin') || $cancel)
+			if(!$GLOBALS['egw']->acl->check('run',PHPGW_ACL_READ,'admin') || $cancel)
 			{
 				return False;
 			}
@@ -53,7 +53,7 @@
 			}
 			else
 			{
-				$account_info = $GLOBALS['phpgw']->accounts->get_list('accounts');
+				$account_info = $GLOBALS['egw']->accounts->get_list('accounts');
 
 			//	$this->so->db->transaction_begin();
 				while(list(,$account) = @each($account_info))
@@ -66,26 +66,24 @@
 			}
 		}
 
-
 		function send_message($message='')
 		{
-			if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
+			if(!$GLOBALS['egw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
 			{
 				return False;
 			}
-			
+
 			/* from here, $message['recipient'] is an array of group ids and user
 			   account ids. we convert it to an array of user ids */
-			foreach ($message['recipient'] as $recipient_id)
+			foreach($message['recipient'] as $recipient_id)
 			{
-				if ($GLOBALS['phpgw']->accounts->get_type($recipient_id) == 'u') 
+				if($GLOBALS['egw']->accounts->get_type($recipient_id) == 'u')
 				{
-					$recipients[$recipient_id] = 
-					$GLOBALS['phpgw']->accounts->id2name[$recipient_id];
+					$recipients[$recipient_id] = $GLOBALS['egw']->accounts->id2name[$recipient_id];
 				}
 				else
 				{
-					foreach ($GLOBALS['phpgw']->accounts->member($recipient_id) as $account)
+					foreach($GLOBALS['egw']->accounts->member($recipient_id) as $account)
 					{
 						$recipients[$account['account_id']]=$account['account_name'];
 					}
@@ -93,25 +91,24 @@
 			}
 			$message['recipient']=@array_keys($recipients);
 			/* here $message['recipient'] only contain user ids */
-			
-			if ($recipients)
+
+			if($recipients)
 			{
 				foreach($recipients as $recipient_id -> $recipient_name)
 				{
 					$recipient = CreateObject('phpgwapi.accounts', $recipient_id);
 					$recipient->read_repository();
-					if ($recipient->is_expired())
+					if($recipient->is_expired())
 					{
-						$errors[] = 
-						lang("Sorry, %1's account is not currently active", $recipient_name);
-					}					
-				} 
+						$errors[] = lang("Sorry, %1's account is not currently active", $recipient_name);
+					}
+				}
 			}
-			else 
+			else
 			{
 				$errors[] = lang('You must enter the username this message is for');
 			}
-     
+
 			if(!$message['subject'])
 			{
 				$errors[] = lang('You must enter a subject');
@@ -120,7 +117,7 @@
 			if(!$message['content'])
 			{
 				$errors[] = lang("You didn't enter anything for the message");
-			}			
+			}
 
 			if(is_array($errors))
 			{
@@ -131,86 +128,87 @@
 				return $this->so->send_message($message);
 			}
 		}
-	  
+
 		function send_group_message($message='')
 		{
-		    
-		    if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
-		    {
-			return False;
-		    }
-		    if(count($message['to']) == 0)
-		    {
-			$errors[] = lang('You must enter the username this message is for');
-		    }
-		    else
-		    {
-		        $send_users_ids = array();
-			foreach($message['to'] as $to)
+			if(!$GLOBALS['egw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
 			{
-			  $users = $GLOBALS['phpgw']->accounts->member($to);
-			  if(is_array($users))
-			  {
-			    foreach($users as $user)
-			    {
-                                if(!in_array($user['account_id'],$send_users_ids))
-				{
-				    $acct = CreateObject('phpgwapi.accounts',$user['account_id']);
-				    $acct->read_repository();
-				    if($acct->is_expired())
-				    {
-				      continue;
-				    }
-				    else
-				    {
-				      $GLOBALS['phpgw']->acl->account_id = $user['account_id'];
-				      $user_acl = $GLOBALS['phpgw']->acl->read_repository();
-				      foreach ($user_acl as $user_app)
-				      {
-					  if ($user_app['appname'] == 'messenger' && $user_app['location'] == 'run' && $user_app['rights'] == 1)
-					  {
-					      $send_users_ids[] = $user['account_id'];
-					      continue 2;
-					  }
-				      }
-				    }  
-			       }
-			    }
-			  }
+				return False;
 			}
-		    }	
-		    
-		    $send_user_lids = array();
-		    
-		    foreach($send_users_ids as $id)
-		    {
-		      $name =	$GLOBALS['phpgw']->accounts->id2name($id);
-		      $send_user_lids[] = $name;
-		    }  
-		    
-		    unset($message['to']);
-		    $message['to'] = $send_user_lids;	  
+			if(count($message['to']) == 0)
+			{
+				$errors[] = lang('You must enter the username this message is for');
+			}
+			else
+			{
+				$send_users_ids = array();
+				foreach($message['to'] as $to)
+				{
+					$users = $GLOBALS['egw']->accounts->member($to);
+					if(is_array($users))
+					{
+						foreach($users as $user)
+						{
+							if(!in_array($user['account_id'],$send_users_ids))
+							{
+								$acct = CreateObject('phpgwapi.accounts',$user['account_id']);
+								$acct->read_repository();
+								if($acct->is_expired())
+								{
+									continue;
+								}
+								else
+								{
+									$GLOBALS['egw']->acl->account_id = $user['account_id'];
+									$user_acl = $GLOBALS['egw']->acl->read_repository();
+									foreach($user_acl as $user_app)
+									{
+										if($user_app['appname'] == 'messenger' &&
+											$user_app['location'] == 'run' &&
+											$user_app['rights'] == 1
+										)
+										{
+											$send_users_ids[] = $user['account_id'];
+											continue 2;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 
-		    if(!$message['subject'])
-		    {
-			$errors[] = lang('You must enter a subject');
-		    }
+			$send_user_lids = array();
 
-		    if(!$message['content'])
-		    {
-			$errors[] = lang("You didn't enter anything for the message");
-		    }
+			foreach($send_users_ids as $id)
+			{
+				$name = $GLOBALS['egw']->accounts->id2name($id);
+				$send_user_lids[] = $name;
+			}
 
-		    if(is_array($errors))
-		    {
-			return $errors;
-		    }
-		    else
-		    {
-			return $this->so->send_multiple_message($message);
-		    }
+			unset($message['to']);
+			$message['to'] = $send_user_lids;
+
+			if(!$message['subject'])
+			{
+				$errors[] = lang('You must enter a subject');
+			}
+
+			if(!$message['content'])
+			{
+				$errors[] = lang("You didn't enter anything for the message");
+			}
+
+			if(is_array($errors))
+			{
+				return $errors;
+			}
+			else
+			{
+				return $this->so->send_multiple_message($message);
+			}
 		}
-
 
 		function read_inbox($values)
 		{
@@ -234,7 +232,7 @@
 					$acct = CreateObject('phpgwapi.accounts',$message['from']);
 					$acct->read_repository();
 					$cached[$message['from']]       = $message['from'];
-					$cached_names[$message['from']] = $GLOBALS['phpgw']->common->display_fullname($acct->data['account_lid'],$acct->data['firstname'],$acct->data['lastname']);
+					$cached_names[$message['from']] = $GLOBALS['egw']->common->display_fullname($acct->data['account_lid'],$acct->data['firstname'],$acct->data['lastname']);
 				}
 
 				/*
@@ -247,12 +245,12 @@
 				{
 					$message['subject'] = '<b>' . $message['subject'] . '</b>';
 					//$message['status'] = 'N';
-					$message['date'] = '<b>' . $GLOBALS['phpgw']->common->show_date($message['date']) . '</b>';
+					$message['date'] = '<b>' . $GLOBALS['egw']->common->show_date($message['date']) . '</b>';
 					$message['from'] = '<b>' . $cached_names[$message['from']] . '</b>';
 				}
 				else
 				{
-					$message['date'] = $GLOBALS['phpgw']->common->show_date($message['date']);
+					$message['date'] = $GLOBALS['egw']->common->show_date($message['date']);
 					$message['from'] = $cached_names[$message['from']];
 				}
 
@@ -283,7 +281,7 @@
 		{
 			$message = $this->so->read_message((int)$message_id);
 
-			$message['date'] = $GLOBALS['phpgw']->common->show_date($message['date']);
+			$message['date'] = $GLOBALS['egw']->common->show_date($message['date']);
 
 			if($message['from'] == -1)
 			{
@@ -294,7 +292,7 @@
 			{
 				$acct = CreateObject('phpgwapi.accounts',$message['from']);
 				$acct->read_repository();
-				$message['from'] = $GLOBALS['phpgw']->common->display_fullname($acct->data['account_lid'],$acct->data['firstname'],$acct->data['lastname']);
+				$message['from'] = $GLOBALS['egw']->common->display_fullname($acct->data['account_lid'],$acct->data['firstname'],$acct->data['lastname']);
 			}
 
 			return $message;
@@ -312,7 +310,7 @@
 				$content_array = explode("\n",$message['content']);
 
 				$new_content_array[] = ' ';
-				$new_content_array[] = '> ' . $GLOBALS['phpgw']->common->display_fullname($acct->data['account_lid'],$acct->data['firstname'],$acct->data['lastname']) . ' wrote:';
+				$new_content_array[] = '> ' . $GLOBALS['egw']->common->display_fullname($acct->data['account_lid'],$acct->data['firstname'],$acct->data['lastname']) . ' wrote:';
 				$new_content_array[] = '>';
 				while(list(,$line) = each($content_array))
 				{
@@ -459,4 +457,4 @@
 					break;
 			}
 		}
-}
+	}

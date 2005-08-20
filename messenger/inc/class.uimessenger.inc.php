@@ -36,38 +36,38 @@
 
 		function display_headers($extras = '')
 		{
-			$GLOBALS['phpgw']->template->set_file('_header','messenger_header.tpl');
-			$GLOBALS['phpgw']->template->set_block('_header','global_header');
-			$GLOBALS['phpgw']->template->set_var('lang_inbox','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.inbox') . '">' . lang('Inbox') . '</a>');
-			$GLOBALS['phpgw']->template->set_var('lang_compose','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose') . '">' . lang('compose message') . '</a>');
-			$GLOBALS['phpgw']->template->set_var('lang_compose_group','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_group') . '">' . lang('Compose to group-users') . '</a>');
+			$GLOBALS['egw']->template->set_file('_header','messenger_header.tpl');
+			$GLOBALS['egw']->template->set_block('_header','global_header');
+			$GLOBALS['egw']->template->set_var('lang_inbox','<a href="' . $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.inbox') . '">' . lang('Inbox') . '</a>');
+			$GLOBALS['egw']->template->set_var('lang_compose','<a href="' . $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.compose') . '">' . lang('compose message') . '</a>');
+			$GLOBALS['egw']->template->set_var('lang_compose_group','<a href="' . $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.compose_group') . '">' . lang('Compose to group-users') . '</a>');
 			if($extras['nextmatchs_left'])
 			{
-				$GLOBALS['phpgw']->template->set_var('nextmatchs_left',$extras['nextmatchs_left']);
+				$GLOBALS['egw']->template->set_var('nextmatchs_left',$extras['nextmatchs_left']);
 			}
 
 			if($extras['nextmatchs_right'])
 			{
-				$GLOBALS['phpgw']->template->set_var('nextmatchs_right',$extras['nextmatchs_right']);
+				$GLOBALS['egw']->template->set_var('nextmatchs_right',$extras['nextmatchs_right']);
 			}
 
-			$GLOBALS['phpgw']->template->fp('app_header','global_header');
+			$GLOBALS['egw']->template->fp('app_header','global_header');
 
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->phpgw_header();
 			echo parse_navbar();
 		}
 
 		function set_common_langs()
 		{
-			$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$GLOBALS['phpgw']->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-			$GLOBALS['phpgw']->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+			$GLOBALS['egw']->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
+			$GLOBALS['egw']->template->set_var('row_on',$GLOBALS['egw_info']['theme']['row_on']);
+			$GLOBALS['egw']->template->set_var('row_off',$GLOBALS['egw_info']['theme']['row_off']);
 
-			$GLOBALS['phpgw']->template->set_var('lang_to',lang('Send message to'));
-			$GLOBALS['phpgw']->template->set_var('lang_from',lang('Message from'));
-			$GLOBALS['phpgw']->template->set_var('lang_subject',lang('Subject'));
-			$GLOBALS['phpgw']->template->set_var('lang_content',lang('Message'));
-			$GLOBALS['phpgw']->template->set_var('lang_date',lang('Date'));
+			$GLOBALS['egw']->template->set_var('lang_to',lang('Send message to'));
+			$GLOBALS['egw']->template->set_var('lang_from',lang('Message from'));
+			$GLOBALS['egw']->template->set_var('lang_subject',lang('Subject'));
+			$GLOBALS['egw']->template->set_var('lang_content',lang('Message'));
+			$GLOBALS['egw']->template->set_var('lang_date',lang('Date'));
 		}
 
 		function delete()
@@ -75,7 +75,7 @@
 			$messages = get_var('messages', array('GET','POST'));
 			$this->bo->delete_message($messages);
 
-			$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
+			$GLOBALS['egw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 		}
 
 		function inbox()
@@ -91,15 +91,15 @@
 
 			$this->display_headers($extra_header_info);
 
-			$GLOBALS['phpgw']->template->set_file('_inbox','inbox.tpl');
-			$GLOBALS['phpgw']->template->set_block('_inbox','list');
-			$GLOBALS['phpgw']->template->set_block('_inbox','row');
-			$GLOBALS['phpgw']->template->set_block('_inbox','row_empty');
+			$GLOBALS['egw']->template->set_file('_inbox','inbox.tpl');
+			$GLOBALS['egw']->template->set_block('_inbox','list');
+			$GLOBALS['egw']->template->set_block('_inbox','row');
+			$GLOBALS['egw']->template->set_block('_inbox','row_empty');
 
 			$this->set_common_langs();
-			$GLOBALS['phpgw']->template->set_var('sort_date','<a href="' . $this->nextmatchs->show_sort_order($sort,'message_date',$order,'/index.php','','&menuaction=messenger.uimessenger.inbox',False) . '" class="topsort">' . lang('Date') . '</a>');
-			$GLOBALS['phpgw']->template->set_var('sort_subject','<a href="' . $this->nextmatchs->show_sort_order($sort,'message_subject',$order,'/index.php','','&menuaction=messenger.uimessenger.inbox',False) . '" class="topsort">' . lang('Subject') . '</a>');
-			$GLOBALS['phpgw']->template->set_var('sort_from','<a href="' . $this->nextmatchs->show_sort_order($sort,'message_from',$order,'/index.php','','&menuaction=messenger.uimessenger.inbox',False) . '" class="topsort">' . lang('From') . '</a>');
+			$GLOBALS['egw']->template->set_var('sort_date','<a href="' . $this->nextmatchs->show_sort_order($sort,'message_date',$order,'/index.php','','&menuaction=messenger.uimessenger.inbox',False) . '" class="topsort">' . lang('Date') . '</a>');
+			$GLOBALS['egw']->template->set_var('sort_subject','<a href="' . $this->nextmatchs->show_sort_order($sort,'message_subject',$order,'/index.php','','&menuaction=messenger.uimessenger.inbox',False) . '" class="topsort">' . lang('Subject') . '</a>');
+			$GLOBALS['egw']->template->set_var('sort_from','<a href="' . $this->nextmatchs->show_sort_order($sort,'message_from',$order,'/index.php','','&menuaction=messenger.uimessenger.inbox',False) . '" class="topsort">' . lang('From') . '</a>');
 
 			$params = array(
 				'start' => $start,
@@ -116,47 +116,47 @@
 					$status = '&nbsp;';
 				}
 
-				$GLOBALS['phpgw']->template->set_var('row_from',$message['from']);
-				$GLOBALS['phpgw']->template->set_var('row_date',$message['date']);
-				$GLOBALS['phpgw']->template->set_var('row_subject','<a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.read_message&message_id=' . $message['id']) . '">' . $message['subject'] . '</a>');
-				$GLOBALS['phpgw']->template->set_var('row_status',$status);
-				$GLOBALS['phpgw']->template->set_var('row_checkbox','<input type="checkbox" name="messages[]" value="' . $message['id'] . '">');
+				$GLOBALS['egw']->template->set_var('row_from',$message['from']);
+				$GLOBALS['egw']->template->set_var('row_date',$message['date']);
+				$GLOBALS['egw']->template->set_var('row_subject','<a href="' . $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.read_message&message_id=' . $message['id']) . '">' . $message['subject'] . '</a>');
+				$GLOBALS['egw']->template->set_var('row_status',$status);
+				$GLOBALS['egw']->template->set_var('row_checkbox','<input type="checkbox" name="messages[]" value="' . $message['id'] . '">');
 
-				$GLOBALS['phpgw']->template->fp('rows','row',True);
+				$GLOBALS['egw']->template->fp('rows','row',True);
 			}
 
 			if(!is_array($messages))
 			{
-				$GLOBALS['phpgw']->template->set_var('lang_empty',lang('You have no messages'));
-				$GLOBALS['phpgw']->template->fp('rows','row_empty',True);
+				$GLOBALS['egw']->template->set_var('lang_empty',lang('You have no messages'));
+				$GLOBALS['egw']->template->fp('rows','row_empty',True);
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.delete'));
-				$GLOBALS['phpgw']->template->set_var('button_delete','<input type="image" src="' . PHPGW_IMAGES . '/delete.gif" name="delete" title="' . lang('Delete selected') . '" border="0">');
+				$GLOBALS['egw']->template->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.delete'));
+				$GLOBALS['egw']->template->set_var('button_delete','<input type="image" src="' . PHPGW_IMAGES . '/delete.gif" name="delete" title="' . lang('Delete selected') . '" border="0">');
 			}
 
-			$GLOBALS['phpgw']->template->pfp('out','list');
+			$GLOBALS['egw']->template->pfp('out','list');
 		}
 
 		function set_compose_read_blocks()
 		{
-			$GLOBALS['phpgw']->template->set_file('_form','form.tpl');
+			$GLOBALS['egw']->template->set_file('_form','form.tpl');
 
-			$GLOBALS['phpgw']->template->set_block('_form','form');
-			$GLOBALS['phpgw']->template->set_block('_form','form_to');
-			$GLOBALS['phpgw']->template->set_block('_form','form_date');
-			$GLOBALS['phpgw']->template->set_block('_form','form_from');
-			$GLOBALS['phpgw']->template->set_block('_form','form_buttons');
-			$GLOBALS['phpgw']->template->set_block('_form','form_read_buttons');
-			$GLOBALS['phpgw']->template->set_block('_form','form_read_buttons_for_global');
+			$GLOBALS['egw']->template->set_block('_form','form');
+			$GLOBALS['egw']->template->set_block('_form','form_to');
+			$GLOBALS['egw']->template->set_block('_form','form_date');
+			$GLOBALS['egw']->template->set_block('_form','form_from');
+			$GLOBALS['egw']->template->set_block('_form','form_buttons');
+			$GLOBALS['egw']->template->set_block('_form','form_read_buttons');
+			$GLOBALS['egw']->template->set_block('_form','form_read_buttons_for_global');
 		}
 
 		function compose_global()
 		{
-			if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'admin'))
+			if(!$GLOBALS['egw']->acl->check('run',PHPGW_ACL_READ,'admin'))
 			{
-				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
+				$GLOBALS['egw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 			}
 
 			$message = $_POST['message'];
@@ -165,11 +165,11 @@
 				$errors = $this->bo->send_global_message($message);
 				if(@is_array($errors))
 				{
-					$GLOBALS['phpgw']->template->set_var('errors',$GLOBALS['phpgw']->common->error_list($errors));
+					$GLOBALS['egw']->template->set_var('errors',$GLOBALS['egw']->common->error_list($errors));
 				}
 				else
 				{
-					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
+					$GLOBALS['egw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
 
@@ -177,19 +177,18 @@
 			$this->set_compose_read_blocks();
 
 			$this->set_common_langs();
-			$GLOBALS['phpgw']->template->set_var('header_message',lang('Compose global message'));
+			$GLOBALS['egw']->template->set_var('header_message',lang('Compose global message'));
 
-			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_global'));
-			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '">');
-			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
+			$GLOBALS['egw']->template->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.compose_global'));
+			$GLOBALS['egw']->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '">');
+			$GLOBALS['egw']->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
 
-			$GLOBALS['phpgw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
-			$GLOBALS['phpgw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
+			$GLOBALS['egw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
+			$GLOBALS['egw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
 
-			$GLOBALS['phpgw']->template->fp('buttons','form_buttons');
-			$GLOBALS['phpgw']->template->pfp('out','form');
+			$GLOBALS['egw']->template->fp('buttons','form_buttons');
+			$GLOBALS['egw']->template->pfp('out','form');
 		}
-
 
 		function compose()
 		{
@@ -197,21 +196,21 @@
 
 			if($_POST['cancel'])
 			{
-				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
+				$GLOBALS['egw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 			}
 			if($_POST['send'])
 			{
 				$errors = $this->bo->send_message($message);
 				if(@is_array($errors))
 				{
-					$GLOBALS['phpgw']->template->set_var('errors',$GLOBALS['phpgw']->common->error_list($errors));
+					$GLOBALS['egw']->template->set_var('errors',$GLOBALS['egw']->common->error_list($errors));
 				}
 				else
 				{
-					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
+					$GLOBALS['egw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
-			
+
 			$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
 			$tobox = $uiaccountsel->selection(
 				"message[recipient][]",    // name of the element used in form to repersent selected users
@@ -219,26 +218,25 @@
 				array(),     //no pre-selected user/group
 				'messenger+', //only show users who have 'run' permission in messenger app
 				5,                                           // 5 lines high
-				$GLOBALS['phpgw_info']['user']['account_id'] // do not send message to myself
-				); 
+				$GLOBALS['egw_info']['user']['account_id'] // do not send message to myself
+			);
 			$this->display_headers();
 			$this->set_compose_read_blocks();
 
 			$this->set_common_langs();
-			$GLOBALS['phpgw']->template->set_var('header_message',lang('Compose message'));
-			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose'));
-			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
-			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');
-			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
+			$GLOBALS['egw']->template->set_var('header_message',lang('Compose message'));
+			$GLOBALS['egw']->template->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.compose'));
+			$GLOBALS['egw']->template->set_var('value_to',$tobox);
+			$GLOBALS['egw']->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');
+			$GLOBALS['egw']->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
 
-			$GLOBALS['phpgw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
-			$GLOBALS['phpgw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
+			$GLOBALS['egw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
+			$GLOBALS['egw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
 
-			$GLOBALS['phpgw']->template->fp('to','form_to');
-			$GLOBALS['phpgw']->template->fp('buttons','form_buttons');
-			$GLOBALS['phpgw']->template->pfp('out','form');
+			$GLOBALS['egw']->template->fp('to','form_to');
+			$GLOBALS['egw']->template->fp('buttons','form_buttons');
+			$GLOBALS['egw']->template->pfp('out','form');
 		}
-	  
 
 		function read_message()
 		{
@@ -249,50 +247,50 @@
 			$this->set_compose_read_blocks();
 			$this->set_common_langs();
 
-			$GLOBALS['phpgw']->template->set_var('header_message',lang('Read message'));
+			$GLOBALS['egw']->template->set_var('header_message',lang('Read message'));
 
-			$GLOBALS['phpgw']->template->set_var('value_from',$message['from']);
-			$GLOBALS['phpgw']->template->set_var('value_subject',$message['subject']);
-			$GLOBALS['phpgw']->template->set_var('value_date',$message['date']);
-			$GLOBALS['phpgw']->template->set_var('value_content','<pre>' . $GLOBALS['phpgw']->strip_html($message['content']) . '</pre>');
+			$GLOBALS['egw']->template->set_var('value_from',$message['from']);
+			$GLOBALS['egw']->template->set_var('value_subject',$message['subject']);
+			$GLOBALS['egw']->template->set_var('value_date',$message['date']);
+			$GLOBALS['egw']->template->set_var('value_content','<pre>' . $GLOBALS['egw']->strip_html($message['content']) . '</pre>');
 
-			$GLOBALS['phpgw']->template->set_var('link_delete','<a href="'
-				. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.delete&messages%5B%5D=' . $message['id'])
+			$GLOBALS['egw']->template->set_var('link_delete','<a href="'
+				. $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.delete&messages%5B%5D=' . $message['id'])
 				. '">' . lang('Delete') . '</a>');
 
-			$GLOBALS['phpgw']->template->set_var('link_reply','<a href="'
-				. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.reply&message_id=' . $message['id'])
+			$GLOBALS['egw']->template->set_var('link_reply','<a href="'
+				. $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.reply&message_id=' . $message['id'])
 				. '">' . lang('Reply') . '</a>');
 
-			$GLOBALS['phpgw']->template->set_var('link_forward','<a href="'
-				. $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.forward&message_id=' . $message['id'])
+			$GLOBALS['egw']->template->set_var('link_forward','<a href="'
+				. $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.forward&message_id=' . $message['id'])
 				. '">' . lang('Forward') . '</a>');
 
 			switch($message['status'])
 			{
 				case 'N':
-					$GLOBALS['phpgw']->template->set_var('value_status',lang('New'));
+					$GLOBALS['egw']->template->set_var('value_status',lang('New'));
 					break;
 				case 'R':
-					$GLOBALS['phpgw']->template->set_var('value_status',lang('Replied'));
+					$GLOBALS['egw']->template->set_var('value_status',lang('Replied'));
 					break;
 				case 'F':
-					$GLOBALS['phpgw']->template->set_var('value_status',lang('Forwarded'));
+					$GLOBALS['egw']->template->set_var('value_status',lang('Forwarded'));
 					break;
 			}
 
 			if($message['global_message'])
 			{
-				$GLOBALS['phpgw']->template->fp('read_buttons','form_read_buttons_for_global');
+				$GLOBALS['egw']->template->fp('read_buttons','form_read_buttons_for_global');
 			}
 			else
 			{
-				$GLOBALS['phpgw']->template->fp('read_buttons','form_read_buttons');
+				$GLOBALS['egw']->template->fp('read_buttons','form_read_buttons');
 			}
 
-			$GLOBALS['phpgw']->template->fp('date','form_date');
-			$GLOBALS['phpgw']->template->fp('from','form_from');
-			$GLOBALS['phpgw']->template->pfp('out','form');
+			$GLOBALS['egw']->template->fp('date','form_date');
+			$GLOBALS['egw']->template->fp('from','form_from');
+			$GLOBALS['egw']->template->pfp('out','form');
 		}
 
 		// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
@@ -311,11 +309,11 @@
 				}
 				elseif(!isset($users[$id]))
 				{
-					if($GLOBALS['phpgw']->accounts->exists($id) == True && $GLOBALS['phpgw']->accounts->get_type($id) == 'u')
+					if($GLOBALS['egw']->accounts->exists($id) == True && $GLOBALS['egw']->accounts->get_type($id) == 'u')
 					{
 						$users[$id] = Array(
-							'name' => $GLOBALS['phpgw']->common->grab_owner_name($id),
-							'type' => $GLOBALS['phpgw']->accounts->get_type($id)
+							'name' => $GLOBALS['egw']->common->grab_owner_name($id),
+							'type' => $GLOBALS['egw']->accounts->get_type($id)
 						);
 					}
 				}
@@ -349,22 +347,22 @@
 				$errors = $this->bo->send_message($n_message);
 				if(@is_array($errors))
 				{
-					$GLOBALS['phpgw']->template->set_var('errors',$GLOBALS['phpgw']->common->error_list($errors));
+					$GLOBALS['egw']->template->set_var('errors',$GLOBALS['egw']->common->error_list($errors));
 				}
 				else
 				{
-					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
+					$GLOBALS['egw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
 			$sndid = 0;
 			if($message['from'] != '')
 			{
-				$sndid=$GLOBALS['phpgw']->accounts->name2id($message['from']);
+				$sndid=$GLOBALS['egw']->accounts->name2id($message['from']);
 			}
 			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
 			$tobox = '<input name="n_message[recipient][]" value="' . $sndid . '" size="30">';
-			$myownid=$GLOBALS['phpgw_info']['user']['account_id'];
-			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
+			$myownid=$GLOBALS['egw_info']['user']['account_id'];
+			if(@isset($GLOBALS['egw_info']['server']['messenger']['use_selectbox']))
 			{
 				//modified by wbshang @ 2005.6.6
 				$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
@@ -374,8 +372,8 @@
 					$sndid,     //pre-selected user/group
 					'messenger+', //only show users who have 'run' permission in messenger app
 					5,                                           // 5 lines high
-					$GLOBALS['phpgw_info']['user']['account_id'] // do not send message to myself
-				); 
+					$GLOBALS['egw_info']['user']['account_id'] // do not send message to myself
+				);
 		/*	//	$users = $this->bo->get_messenger_users();
 				$str = '';
 				foreach($users as $user)
@@ -391,7 +389,7 @@
 				{
 					$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
 				} */
-			} 
+			}
 
 			// end dropdown
 
@@ -399,19 +397,19 @@
 			$this->set_compose_read_blocks();
 			$this->set_common_langs();
 
-			$GLOBALS['phpgw']->template->set_var('header_message',lang('Reply to a message'));
+			$GLOBALS['egw']->template->set_var('header_message',lang('Reply to a message'));
 
-			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.reply&message_id=' . $message['id']));
-			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
-			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="n_message[subject]" value="' . stripslashes($message['subject']) . '" size="30">');
-			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="n_message[content]" rows="20" wrap="hard" cols="76">' . stripslashes($message['content']) . '</textarea>');
+			$GLOBALS['egw']->template->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.reply&message_id=' . $message['id']));
+			$GLOBALS['egw']->template->set_var('value_to',$tobox);
+			$GLOBALS['egw']->template->set_var('value_subject','<input name="n_message[subject]" value="' . stripslashes($message['subject']) . '" size="30">');
+			$GLOBALS['egw']->template->set_var('value_content','<textarea name="n_message[content]" rows="20" wrap="hard" cols="76">' . stripslashes($message['content']) . '</textarea>');
 
-			$GLOBALS['phpgw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
-			$GLOBALS['phpgw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
+			$GLOBALS['egw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
+			$GLOBALS['egw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
 
-			$GLOBALS['phpgw']->template->fp('to','form_to');
-			$GLOBALS['phpgw']->template->fp('buttons','form_buttons');
-			$GLOBALS['phpgw']->template->pfp('out','form');
+			$GLOBALS['egw']->template->fp('to','form_to');
+			$GLOBALS['egw']->template->fp('buttons','form_buttons');
+			$GLOBALS['egw']->template->pfp('out','form');
 		}
 
 		function forward()
@@ -429,11 +427,11 @@
 				$errors = $this->bo->send_message($n_message);
 				if(@is_array($errors))
 				{
-					$GLOBALS['phpgw']->template->set_var('errors',$GLOBALS['phpgw']->common->error_list($errors));
+					$GLOBALS['egw']->template->set_var('errors',$GLOBALS['egw']->common->error_list($errors));
 				}
 				else
 				{
-					$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
+					$GLOBALS['egw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 				}
 			}
 			// recipient dropdown field stuff added by tobi (gabele@uni-sql.de)
@@ -441,10 +439,10 @@
 			$sndid = 0;
 			if($message['from'] != '')
 			{
-				$sndid=$GLOBALS['phpgw']->accounts->name2id($message['from']);
+				$sndid=$GLOBALS['egw']->accounts->name2id($message['from']);
 			}
-			$myownid = $GLOBALS['phpgw_info']['user']['account_id'];
-			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
+			$myownid = $GLOBALS['egw_info']['user']['account_id'];
+			if(@isset($GLOBALS['egw_info']['server']['messenger']['use_selectbox']))
 			{
 				//modified by wbshang @ 2005.6.3
 				$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
@@ -454,8 +452,8 @@
 					array(),     //no pre-selected user/group
 					'messenger+', //only show users who have 'run' permission in messenger app
 					5,                                           // 5 lines high
-					$GLOBALS['phpgw_info']['user']['account_id'] // do not send message to myself
-				); 
+					$GLOBALS['egw_info']['user']['account_id'] // do not send message to myself
+				);
 			/*	$users = $this->bo->get_messenger_users();
 				$str = '';
 				foreach($users as $user)
@@ -478,18 +476,18 @@
 			$this->set_compose_read_blocks();
 			$this->set_common_langs();
 
-			$GLOBALS['phpgw']->template->set_var('header_message',lang('Forward a message'));
+			$GLOBALS['egw']->template->set_var('header_message',lang('Forward a message'));
 
-			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.forward&message_id=' . $message['id']));
-			$GLOBALS['phpgw']->template->set_var('value_to',$tobox);
-			$GLOBALS['phpgw']->template->set_var('value_subject','<input name="n_message[subject]" value="' . stripslashes($message['subject']) . '" size="30">');
-			$GLOBALS['phpgw']->template->set_var('value_content','<textarea name="n_message[content]" rows="20" wrap="hard" cols="76">' . stripslashes($message['content']) . '</textarea>');
+			$GLOBALS['egw']->template->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.forward&message_id=' . $message['id']));
+			$GLOBALS['egw']->template->set_var('value_to',$tobox);
+			$GLOBALS['egw']->template->set_var('value_subject','<input name="n_message[subject]" value="' . stripslashes($message['subject']) . '" size="30">');
+			$GLOBALS['egw']->template->set_var('value_content','<textarea name="n_message[content]" rows="20" wrap="hard" cols="76">' . stripslashes($message['content']) . '</textarea>');
 
-			$GLOBALS['phpgw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
-			$GLOBALS['phpgw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
+			$GLOBALS['egw']->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
+			$GLOBALS['egw']->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
 
-			$GLOBALS['phpgw']->template->fp('to','form_to');
-			$GLOBALS['phpgw']->template->fp('buttons','form_buttons');
-			$GLOBALS['phpgw']->template->pfp('out','form');
+			$GLOBALS['egw']->template->fp('to','form_to');
+			$GLOBALS['egw']->template->fp('buttons','form_buttons');
+			$GLOBALS['egw']->template->pfp('out','form');
 		}
 	}

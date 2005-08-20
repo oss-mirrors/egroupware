@@ -16,8 +16,8 @@
 
 	$title = $appname;
 	$file = Array(
-		'Site Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
-		'Compose global message' => $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_global')
+		'Site Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
+		'Compose global message' => $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.compose_global')
 	);
 
 	display_section($appname,$title,$file);

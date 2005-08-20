@@ -22,11 +22,11 @@
 	display_sidebox can be called as much as you like
  */
 
-	if($GLOBALS['phpgw']->acl->check('run',1,'admin'))
+	if($GLOBALS['egw']->acl->check('run',1,'admin'))
 	{
-		$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
+		$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
 		$file = Array(
-			'Compose global message' => $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_global')
+			'Compose global message' => $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.compose_global')
 		);
 
 		display_sidebox($appname,$menu_title,$file);

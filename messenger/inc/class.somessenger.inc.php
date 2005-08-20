@@ -95,14 +95,15 @@
 			}
 			foreach($message['recipient'] as $recipient)
 			{
-			   $this->db->query('INSERT INTO ' . $this->table . ' (message_owner, message_from, message_status, '
-				. "message_date, message_subject, message_content) VALUES ('"
-				. (int)$recipient . "','" . $this->owner . "','N','" . time() . "','"
-				. addslashes($message['subject']) . "','" . $this->db->db_addslashes($message['content'])
-				. "')",__LINE__,__FILE__);
+				$this->db->query('INSERT INTO ' . $this->table . ' (message_owner, message_from, message_status, '
+					. "message_date, message_subject, message_content) VALUES ('"
+					. (int)$recipient . "','" . $this->owner . "','N','" . time() . "','"
+					. addslashes($message['subject']) . "','" . $this->db->db_addslashes($message['content'])
+					. "')",__LINE__,__FILE__);
 			}
 			return True;
 		}
+
 		function total_messages($extra_where_clause = '')
 		{
 			$this->db->query('SELECT COUNT(message_owner) FROM ' . $this->table . " WHERE message_owner='"
