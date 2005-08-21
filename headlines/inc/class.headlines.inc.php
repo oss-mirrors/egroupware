@@ -34,7 +34,9 @@
 
 		function headlines()
 		{
-			$GLOBALS['phpgw']->network = CreateObject('phpgwapi.network',False);
+			$GLOBALS['egw']->network = CreateObject('phpgwapi.network',False);
+			$this->db     = clone($GLOBALS['egw']->db);
+			$this->db->set_app('headlines');
 			$this->current_time = time();
 		}
 
@@ -71,24 +73,41 @@
 		// do a quick read of the table
 		function readtable($site)
 		{
-			$GLOBALS['phpgw']->db->query("SELECT con,display,base_url,newsfile,lastread,newstype,"
-				. "cachetime,listings FROM phpgw_headlines_sites WHERE con = $site",__LINE__,__FILE__);
-			if(!$GLOBALS['phpgw']->db->num_rows())
+			$this->db->select(
+				'phpgw_headlines_sites',
+				'con,display,base_url,newsfile,lastread,newstype,cachetime,listings',
+				array('con' => (int)$site),
+				__LINE__,__FILE__
+			);
+			if(!$this->db->num_rows())
 			{
 				return False;
 			}
-			$GLOBALS['phpgw']->db->next_record();
+			$this->db->next_record();
 
-			$this->con       = $GLOBALS['phpgw']->db->f(0);
-			$this->display   = $GLOBALS['phpgw']->db->f(1);
-			$this->base_url  = $GLOBALS['phpgw']->db->f(2);
-			$this->newsfile  = $GLOBALS['phpgw']->db->f(3);
-			$this->lastread  = $GLOBALS['phpgw']->db->f(4);
-			$this->newstype  = $GLOBALS['phpgw']->db->f(5);
-			$this->cachetime = $GLOBALS['phpgw']->db->f(6);
-			$this->listings  = $GLOBALS['phpgw']->db->f(7);
+			$this->con       = $this->db->f(0);
+			$this->display   = $this->db->f(1);
+			$this->base_url  = $this->db->f(2);
+			$this->newsfile  = $this->db->f(3);
+			$this->lastread  = $this->db->f(4);
+			$this->newstype  = $this->db->f(5);
+			$this->cachetime = $this->db->f(6);
+			$this->listings  = $this->db->f(7);
 
 			return True;
+		}
+
+		function readcache($site)
+		{
+			$cache = array();
+			$this->db->select('phpgw_headlines_cached','title,link',array('site' => (int)$id),__LINE__,__FILE__);
+
+			while($this->db->next_record())
+			{
+				$cache['link'][]  = $this->db->f('link');
+				$cache['title'][] = $this->db->f('title');
+			}
+			return $cache;
 		}
 
 		// determines if the headlines were cached less than $cachetime minutes ago
@@ -101,9 +120,9 @@
 		function getLinksDB()
 		{
 //			return $this->getLinksSite();
-			$GLOBALS['phpgw']->db->query('SELECT title, link FROM phpgw_headlines_cached WHERE site=' . (int)$this->con);
+			$this->db->select('phpgw_headlines_cached','title,link',array('site' => (int)$this->con),__LINE__,__FILE__);
 
-			if(!$GLOBALS['phpgw']->db->num_rows())
+			if(!$this->db->num_rows())
 			{
 				$links = $this->getLinksSite();  // try from site again
 				if(!@is_array($links))
@@ -116,9 +135,9 @@
 			}
 			else
 			{
-				while($GLOBALS['phpgw']->db->next_record())
+				while($this->db->next_record())
 				{
-					$links[$GLOBALS['phpgw']->db->f('title')] = $GLOBALS['phpgw']->db->f('link');
+					$links[$this->db->f('title')] = $this->db->f('link');
 				}
 			}
 			return $links;
@@ -128,7 +147,7 @@
 		function getLinksSite()
 		{
 			/* get the file that contains the links as one string */
-			$data = $GLOBALS['phpgw']->network->gethttpsocketfile($this->base_url . $this->newsfile,NULL,NULL,True);
+			$data = $GLOBALS['egw']->network->gethttpsocketfile($this->base_url . $this->newsfile,NULL,NULL,True);
 			if(!$data)
 			{
 				return False;
@@ -137,7 +156,7 @@
 			if (preg_match('/\<\?xml.*encoding="([^"]+)"/i',$data,$matches) && $matches[1])
 			{
 				//echo "<p>converting from charset '$matches[1]'</p>\n";
-				$data = $GLOBALS['phpgw']->translation->convert($data,$matches[1]);
+				$data = $GLOBALS['egw']->translation->convert($data,$matches[1]);
 			}
 
 			switch($this->newstype)
@@ -187,8 +206,8 @@
 			$exclude = '';
 
 			// get the file that contains the links
-//			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile("http://blinkylight.com/headlines.rdf");
-			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile('http://egroupware.org/egroupware/headlines.rdf');
+//			$lines = $GLOBALS['egw']->network->gethttpsocketfile("http://blinkylight.com/headlines.rdf");
+			$lines = $GLOBALS['egw']->network->gethttpsocketfile('http://egroupware.org/egroupware/headlines.rdf');
 			if(!$lines)
 			{
 				return False;
@@ -231,51 +250,157 @@
 				}
 			}
 
-			$GLOBALS['phpgw']->db->transaction_begin();
+			$this->db->transaction_begin();
 			for($i=0;$i<count($title);$i++)
 			{
 				$server = str_replace('http://','',$links[$i]);
 				$file   = strstr($server,'/');
 				$server = 'http://' . str_replace($file,'',$server);
 
-				$GLOBALS['phpgw']->db->query("SELECT con,display,base_url,newsfile,newstype "
-					. "FROM phpgw_headlines_sites WHERE display='" . $title[$i] . "' AND "
-					. "base_url='$server' AND newsfile='$file'",__LINE__,__FILE__);
-				if($GLOBALS['phpgw']->db->num_rows() == 0)
+				$this->db->select(
+					'phpgw_headlines_sites',
+					'con,display,base_url,newsfile,newstype',
+					array(
+						'display'  => $title[$i],
+						'base_url' => $server,
+						'newsfile' => $file
+					),
+					__LINE__,__FILE__
+				);
+				if($this->db->num_rows() == 0)
 				{
-					$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_headlines_sites (display,base_url,newsfile,"
-						. "newstype,lastread,cachetime,listings) VALUES('"
-						. $title[$i] . "','$server','$file','" . $type[$i] . "',0,60,20)",__LINE__,__FILE__);
+					$this->db->insert(
+						'phpgw_headlines_sites',
+						array(
+							'display'   => $title[$i],
+							'base_url'  => $server,
+							'newsfile'  => $file,
+							'newstype'  => $type[$i],
+							'lastread'  => 0,
+							'cachetime' => 60,
+							'listings'  => 20
+						),
+						False,
+						__LINE__,__FILE__
+					);
 					continue;
 				}
-				$GLOBALS['phpgw']->db->next_record();
+				$this->db->next_record();
 
-				if($GLOBALS['phpgw']->db->f('newstype') <> $type[$i])
+				if($this->db->f('newstype') <> $type[$i])
 				{
-					$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET newstype='" . $type[$i]
-						. "' WHERE con=" . (int)$GLOBALS['phpgw']->db->f('con'),__LINE__,__FILE__);
+					$this->db->update(
+						'phpgw_headlines_sites',
+						array('newstype' => $type[$i]),
+						array('con' => (int)$this->db->f('con')),
+						__LINE__,__FILE__
+					);
 				}
 			}
-			$GLOBALS['phpgw']->db->transaction_commit();
+			$this->db->transaction_commit();
 		}
 
 		// save the new set of links and update the cache time
 		function saveToDB($links)
 		{
-			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_headlines_cached WHERE site=" . (int)$this->con,__LINE__,__FILE__);
+			$this->db->delete('phpgw_headlines_cached',array('site' => (int)$this->con),__LINE__,__FILE__);
 
 			// save links
-			while(list($title,$link) = each($links))
+			foreach($links as $title => $link)
 			{
-				$link  = $GLOBALS['phpgw']->db->db_addslashes($link);
-				$title = $GLOBALS['phpgw']->db->db_addslashes($title);
-				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_headlines_cached VALUES("
-					. $this->con .",'$title','$link')",__LINE__,__FILE__);
+				$title = $this->db->db_addslashes($title);
+				$link  = $this->db->db_addslashes($link);
+
+				$this->db->insert(
+					'phpgw_headlines_cached',
+					array(
+						'con'   => $this->con,
+						'title' => $title,
+						'link'  => $link
+					),
+					False,
+					__LINE__,__FILE__
+				);
 			}
 
 			// save cache time
-			$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET lastread='" . $this->current_time
-				. "' WHERE con=" . (int)$this->con,__LINE__,__FILE__);
+			$this->db->update(
+				'phpgw_headlines_sites',
+				array('lastread' => $this->current_time),
+				array('con' => (int)$this->con),
+				__LINE__,__FILE__
+			);
+		}
+
+		function edit($sitedata)
+		{
+			$this->db->select(
+				'phpgw_headlines_sites',
+				'display',
+				array(
+					'base_url' => $this->db->db_addslashes(strtolower($sitedata['base_url'])),
+					'newsfile' => $this->db->db_addslashes(strtolower($sitedata['newsfile'])),
+					'con'      => (int)$_GET['con']
+				),
+				__LINE__,__FILE__
+			);
+			$this->db->next_record();
+			if($this->db->f('display'))
+			{
+				$errors[] = lang('That site has already been entered');
+			}
+
+			if(!is_array($errors))
+			{
+				$this->db->update(
+					'phpgw_headlines_sites',
+					array(
+						'display'   => $this->db->db_addslashes($sitedata['display']) ,
+						'base_url'  => $this->db->db_addslashes($sitedata['base_url']),
+						'newsfile'  => $this->db->db_addslashes($sitedata['newsfile']),
+						'lastread'  => 0,
+						'cachetime' => (int)$sitedata['cachetime'],
+						'listings'  => (int)$sitedata['listings']
+					),
+					array('con' => (int)$_GET['con']),
+					__LINE__,__FILE__
+				);
+			}
+			return True;
+		}
+
+		function delete($id=False)
+		{
+			$this->db->transaction_begin();
+
+			$con = (int)$id;
+			$this->db->delete('phpgw_headlines_sites', array('con'  => $con),__LINE__,__FILE__);
+			$this->db->delete('phpgw_headlines_cached',array('site' => $con),__LINE__,__FILE__);
+
+			$this->db->select('phpgw_preferences','*',False,__LINE__,__FILE__);
+			while($this->db->next_record())
+			{
+				if($this->db->f('preference_owner') == $GLOBALS['egw_info']['user']['account_id'])
+				{
+					if($GLOBALS['egw_info']['user']['preferences']['headlines'][$con])
+					{
+						$GLOBALS['egw']->preferences->delete('headlines',$con);
+						$GLOBALS['egw']->preferences->commit();
+					}
+				}
+				else
+				{
+					$phpgw_newuser['user']['preferences'] = $this->db->f('preference_value');
+					if($phpgw_newuser['user']['preferences']['headlines'][$con])
+					{
+						$GLOBALS['egw']->preferences->delete_newuser('headlines',$con);
+						$GLOBALS['egw']->preferences->commit_user($this->db->f('preference_owner'));
+					}
+				}
+			}
+
+			$this->db->transaction_commit();
+			return True;
 		}
 	}
 ?>

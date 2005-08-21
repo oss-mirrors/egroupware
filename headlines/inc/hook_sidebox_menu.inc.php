@@ -23,17 +23,17 @@
 	display_sidebox can be called as much as you like
  */
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['preferences'])
+	if ($GLOBALS['egw_info']['user']['apps']['preferences'])
 	{
-		$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'];
+		$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'];
 		$file = Array(
-			'Select Headlines to Display' => $GLOBALS['phpgw']->link('/headlines/preferences.php'),
-			'Select layout' => $GLOBALS['phpgw']->link('/headlines/preferences_layout.php')
+			'Select Headlines to Display' => $GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.preferences'),
+			'Select layout' => $GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.preferences_layout')
 		);
 
-		if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+		if ($GLOBALS['egw_info']['user']['apps']['admin'])
 		{
-			$file['Headline Site Management'] = $GLOBALS['phpgw']->link('/headlines/admin.php');
+			$file['Headline Site Management'] = $GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.admin');
 		}
 		display_sidebox($appname,$menu_title,$file);
 	}

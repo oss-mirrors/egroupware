@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* eGroupWare - Headlines                                                 *
-	* http://www.epgroupware.org                                              *
+	* eGroupWare - Headlines                                                   *
+	* http://www.epgroupware.org                                               *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -19,9 +19,8 @@
 	$setup_info['headlines']['enable']    = 1;
 
 	$setup_info['headlines']['author'] = 'Mark Peters';
-	$setup_info['headlines']['license']  = 'GPL';
-	$setup_info['headlines']['description'] =
-		'Read news site headlines.';
+	$setup_info['headlines']['license'] = 'GPL';
+	$setup_info['headlines']['description'] = 'Read news site headlines.';
 	$setup_info['headlines']['maintainer'] = array(
 		'name' => 'eGroupWare developers',
 		'email' => 'egroupware-developers@lists.sourceforge.net'

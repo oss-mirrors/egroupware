@@ -56,10 +56,10 @@
 
 	class rss
 	{
-		var $CHANNELS           = array();      // Array, holds individual channel data
-		var $CHANNELINFO        = array();      // Array that holds NON-ITEM channel data
+		var $CHANNELS    = array();      // Array, holds individual channel data
+		var $CHANNELINFO = array();      // Array that holds NON-ITEM channel data
 
-		var $COUNT              = 0;            // Number of channels found
+		var $COUNT       = 0;            // Number of channels found
 
 		function rss($data='', $simple=0)
 		{
@@ -84,9 +84,9 @@
 		 */
 		function error($msg='')
 		{
-			if(@is_object($GLOBALS['phpgw']->template))
+			if(@is_object($GLOBALS['egw']->template))
 			{
-				$GLOBALS['phpgw']->template->set_var('errors',"<H3>Error: [$msg]</H3>\n",True);
+				$GLOBALS['egw']->template->set_var('errors',"<H3>Error: [$msg]</H3>\n",True);
 			}
 			else
 			{

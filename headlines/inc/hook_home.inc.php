@@ -1,6 +1,6 @@
 <?php
   /**************************************************************************\
-  * GW - Headlines                                                           *
+  * eGroupWare - Headlines                                                   *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
@@ -10,11 +10,11 @@
 
 	/* $Id$ */
 
-	if(@$GLOBALS['phpgw_info']['user']['preferences']['headlines']['mainscreen_showheadlines'])
+	if(@$GLOBALS['egw_info']['user']['preferences']['headlines']['mainscreen_showheadlines'])
 	{
-//		$GLOBALS['phpgw']->template->pfp('out', "\n<!-- Start Headlines -->\n", True);
+//		$GLOBALS['egw']->template->pfp('out', "\n<!-- Start Headlines -->\n", True);
 
-		while($preference = @each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+		while($preference = @each($GLOBALS['egw_info']['user']['preferences']['headlines']))
 		{
 			if(is_int($preference[0]))
 			{
@@ -27,15 +27,15 @@
 		$portalbox = CreateObject('phpgwapi.listbox',
 			array(
 				'title'     => $title,
-				'primary'   => $GLOBALS['phpgw']->prefs->data['theme']['navbar_bg'],
-				'secondary' => $GLOBALS['phpgw']->prefs->data['theme']['navbar_bg'],
-				'tertiary'  => $GLOBALS['phpgw']->prefs->data['theme']['navbar_bg'],
+				'primary'   => $GLOBALS['egw']->prefs->data['theme']['navbar_bg'],
+				'secondary' => $GLOBALS['egw']->prefs->data['theme']['navbar_bg'],
+				'tertiary'  => $GLOBALS['egw']->prefs->data['theme']['navbar_bg'],
 				'width'     => '100%',
 				'outerborderwidth' => '0',
-				'header_background_image' => $GLOBALS['phpgw']->common->image('bg_filler.png')
+				'header_background_image' => $GLOBALS['egw']->common->image('bg_filler.png')
 			)
 		);
-		$app_id = $GLOBALS['phpgw']->apps->name2id('headlines');
+		$app_id = $GLOBALS['egw']->apps->name2id('headlines');
 		$GLOBALS['portal_order'][] = $app_id;
 		$var = Array(
 			'up'       => Array('url' => '/set_box.php', 'app' => $app_id),
@@ -85,14 +85,14 @@
 					}
 				}
 			}
-			 $portalbox->data[] = array(
-				 'text' => '<hr>',
-				 'link' => ''
-			 );
+			$portalbox->data[] = array(
+				'text' => '<hr>',
+				'link' => ''
+			);
 		}
 
-		$GLOBALS['phpgw']->template->pfp('out', $portalbox->draw());
+		$GLOBALS['egw']->template->pfp('out', $portalbox->draw());
 		unset($portalbox);
-		$GLOBALS['phpgw']->template->pfp('out', "\n<!-- End Headlines -->\n", True);
+		$GLOBALS['egw']->template->pfp('out', "\n<!-- End Headlines -->\n", True);
 	}
 ?>
