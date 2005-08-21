@@ -18,6 +18,7 @@
 		// socket timeout in seconds
 		var $current_time;
 		var $db;
+		var $xmlrpc = False;
 
 		var $con       = 0;
 		var $display   = '';
@@ -35,9 +36,10 @@
 		function headlines()
 		{
 			$GLOBALS['egw']->network = CreateObject('phpgwapi.network',False);
-			$this->db     = clone($GLOBALS['egw']->db);
+			$this->db = clone($GLOBALS['egw']->db);
 			$this->db->set_app('headlines');
 			$this->current_time = time();
+			$this->xmlrpc = $GLOBALS['egw_info']['server']['xmlrpc'] ? True : False;
 		}
 
 		// try to get the links for the site
@@ -351,6 +353,7 @@
 						array('con' => (int)$sitedata['con']),
 						__LINE__,__FILE__
 					);
+					$rtrn = array('con' => (int)$sitedata['con']);
 					break;
 				case 'add':
 					$this->db->select(
@@ -388,8 +391,9 @@
 						False,
 						__LINE__,__FILE__
 					);
+					$rtrn = array('con' => $this->db->get_last_insert_id('phpgw_headlines_sites','con'));
 			}
-			return True;
+			return $rtrn;
 		}
 
 		function delete($id=False)
@@ -423,7 +427,7 @@
 			}
 
 			$this->db->transaction_commit();
-			return True;
+			return array('con' => (int)$id);
 		}
 	}
 ?>

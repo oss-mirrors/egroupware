@@ -153,15 +153,8 @@
 			{
 				case 'xmlrpc':
 					$xml_functions = array(
-						/*
 						'read' => array(
 							'function'  => 'read',
-							'signature' => array(array(xmlrpcStruct,xmlrpcInt)),
-							'docstring' => lang('Read site data for a single site by passing the id.')
-						),
-						*/
-						'read' => array(
-							'function'  => 'readtable',
 							'signature' => array(array(xmlrpcStruct,xmlrpcInt)),
 							'docstring' => lang('Read site data for a single site by passing the id.')
 						),
@@ -173,11 +166,16 @@
 						'edit' => array(
 							'function'  => 'edit',
 							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'docstring' => lang('Edit a single entry by passing the fields including the id.')
+						),
+						'add' => array(
+							'function'  => 'edit',
+							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
 							'docstring' => lang('Add a single entry by passing the fields.')
 						),
 						'delete' => array(
 							'function'  => 'delete',
-							'signature' => array(array(xmlrpcString,xmlrpcInt)),
+							'signature' => array(array(xmlrpcStruct,xmlrpcInt)),
 							'docstring' => lang('Delete a single entry by passing the id.')
 						),
 						'get_list' => array(

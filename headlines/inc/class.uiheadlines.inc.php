@@ -136,7 +136,7 @@
 					'newstype'  => $n_newstype
 				));
 
-				if(is_array($errors))
+				if(is_array($errors) && !isset($errors['con']))
 				{
 					$GLOBALS['egw']->template->set_var('messages',$GLOBALS['egw']->common->error_list($errors));
 				}
@@ -226,7 +226,7 @@
 					'newstype'  => $n_newstype
 				));
 
-				if(is_array($errors))
+				if(is_array($errors) && !isset($errors['con']))
 				{
 					$GLOBALS['egw']->template->set_var('messages',$GLOBALS['egw']->common->error_list($errors));
 				}
