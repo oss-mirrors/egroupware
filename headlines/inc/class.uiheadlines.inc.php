@@ -126,7 +126,7 @@
 				$n_base_url  = get_var('n_base_url','POST');
 				$n_newstype  = get_var('n_newstype','POST');
 
-				$errors = $this->bo->add(array(
+				$errors = $this->bo->edit(array(
 					'display'   => $n_display,
 					'base_url'  => $n_base_url,
 					'newsfile'  => $n_newsfile,
@@ -235,10 +235,8 @@
 					$GLOBALS['egw']->redirect_link('/index.php','menuaction=headlines.uiheadlines.admin');
 				}
 			}
-			else
-			{
-				$sitedata = $this->bo->read((int)$_GET['con']);
-			}
+
+			$sitedata = $this->bo->read((int)$_GET['con']);
 
 			$GLOBALS['egw_info']['flags']['app_title'] = lang('Headlines Administration');
 			$GLOBALS['egw']->common->phpgw_header();
