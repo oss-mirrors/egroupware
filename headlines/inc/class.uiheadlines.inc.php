@@ -109,6 +109,90 @@
 			$GLOBALS['egw']->common->phpgw_footer();
 		}
 
+		function add()
+		{
+			if($_POST['cancel'])
+			{
+				$GLOBALS['egw']->redirect_link('/index.php','menuaction=headlines.uiheadlines.admin&cd=28');
+			}
+
+			if($_POST['save'])
+			{
+				$n_display   = get_var('n_display','POST');
+				$n_base_url  = get_var('n_base_url','POST');
+				$n_newsfile  = get_var('n_newsfile','POST');
+				$n_cachetime = get_var('n_cachetime','POST');
+				$n_listings  = get_var('n_listings','POST');
+				$n_base_url  = get_var('n_base_url','POST');
+				$n_newstype  = get_var('n_newstype','POST');
+
+				$errors = $this->bo->add(array(
+					'display'   => $n_display,
+					'base_url'  => $n_base_url,
+					'newsfile'  => $n_newsfile,
+					'cachetime' => $n_cachetime,
+					'listings'  => $n_listings,
+					'base_url'  => $n_base_url,
+					'newstype'  => $n_newstype
+				));
+
+				if(is_array($errors))
+				{
+					$GLOBALS['egw']->template->set_var('messages',$GLOBALS['egw']->common->error_list($errors));
+				}
+				else
+				{
+					$GLOBALS['egw']->redirect_link('/index.php','menuaction=headlines.uiheadlines.admin&cd=28');
+				}
+			}
+
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('Headlines Administration');
+			$GLOBALS['egw']->common->phpgw_header();
+			echo parse_navbar();
+
+			// This is done for a reason (jengo)
+			$GLOBALS['egw']->template->set_root($GLOBALS['egw']->common->get_tpl_dir('headlines'));
+
+			$GLOBALS['egw']->template->set_file(array(
+				'admin_form' => 'admin_form.tpl'
+			));
+			$GLOBALS['egw']->template->set_block('admin_form','form');
+			$GLOBALS['egw']->template->set_block('admin_form','buttons');
+
+			$GLOBALS['egw']->template->set_var('lang_header',lang('Create new headline'));
+			$GLOBALS['egw']->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
+			$GLOBALS['egw']->template->set_var('row_on',$GLOBALS['egw_info']['theme']['row_on']);
+			$GLOBALS['egw']->template->set_var('row_off',$GLOBALS['egw_info']['theme']['row_off']);
+			$GLOBALS['egw']->template->set_var('lang_display',lang('Display'));
+			$GLOBALS['egw']->template->set_var('lang_base_url',lang('Base URL'));
+			$GLOBALS['egw']->template->set_var('lang_news_file',lang('News File'));
+			$GLOBALS['egw']->template->set_var('lang_minutes',lang('Minutes between refresh'));
+			$GLOBALS['egw']->template->set_var('lang_listings',lang('Listings Displayed'));
+			$GLOBALS['egw']->template->set_var('lang_type',lang('News Type'));
+			$GLOBALS['egw']->template->set_var('lang_save',lang('Save'));
+			$GLOBALS['egw']->template->set_var('lang_cancel',lang('Cancel'));
+
+			$GLOBALS['egw']->template->set_var('input_display','<input name="n_display" value="' . $n_display . '" size="40">');
+			$GLOBALS['egw']->template->set_var('input_base_url','<input name="n_base_url" value="' . $n_base_url . '" size="40">');
+			$GLOBALS['egw']->template->set_var('input_news_file','<input name="n_newsfile" value="' . $n_newsfile . '" size="40">');
+			$GLOBALS['egw']->template->set_var('input_minutes','<input name="n_cachetime" value="' . $n_cachetime . '" size="4">');
+			$GLOBALS['egw']->template->set_var('input_listings','<input name="n_listings" value="' . $n_listings . '" size="2">');
+
+			$news_type = array('rdf','fm','lt','sf','rdf-chan');
+			while(list(,$item) = each($news_type))
+			{
+				$_select .= '<option value="' . $item . '"' . ($n_newstype == $item?' checked':'')
+					. '>' . $item . '</option>';
+			}
+			$GLOBALS['egw']->template->set_var('input_type','<select name="n_newstype">' . $_select . '</select>');
+
+			$GLOBALS['egw']->template->set_var('action_url',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.add'));
+
+			$GLOBALS['egw']->template->parse('buttons','buttons');
+			$GLOBALS['egw']->template->pfp('out','form');
+			$GLOBALS['egw']->common->phpgw_footer();
+		}
+
 		function edit()
 		{
 			if(!$_GET['con'])
@@ -131,7 +215,8 @@
 				$n_base_url  = get_var('n_base_url','POST');
 				$n_newstype  = get_var('n_newstype','POST');
 
-				$this->bo->edit(array(
+				$errors = $this->bo->edit(array(
+					'con'       => $_GET['con'],
 					'display'   => $n_display,
 					'base_url'  => $n_base_url,
 					'newsfile'  => $n_newsfile,
@@ -141,7 +226,14 @@
 					'newstype'  => $n_newstype
 				));
 
-				$GLOBALS['egw']->redirect_link('/index.php','menuaction=headlines.uiheadlines.admin');
+				if(is_array($errors))
+				{
+					$GLOBALS['egw']->template->set_var('messages',$GLOBALS['egw']->common->error_list($errors));
+				}
+				else
+				{
+					$GLOBALS['egw']->redirect_link('/index.php','menuaction=headlines.uiheadlines.admin');
+				}
 			}
 			else
 			{
@@ -160,11 +252,6 @@
 			));
 			$GLOBALS['egw']->template->set_block('admin_form','form');
 			$GLOBALS['egw']->template->set_block('admin_form','buttons');
-
-			if(is_array($errors))
-			{
-				$GLOBALS['egw']->template->set_var('messages',$GLOBALS['egw']->common->error_list($errors));
-			}
 
 			$GLOBALS['egw']->template->set_var('lang_header',lang('Update headline'));
 			$GLOBALS['egw']->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
@@ -304,135 +391,6 @@
 			}
 			$GLOBALS['egw']->template->parse('cancel','cancel');
 
-			$GLOBALS['egw']->template->pfp('out','form');
-			$GLOBALS['egw']->common->phpgw_footer();
-		}
-
-		function add()
-		{
-			if($_POST['cancel'])
-			{
-				$GLOBALS['egw']->redirect_link('/index.php','menuaction=headlines.uiheadlines.admin&cd=28');
-			}
-
-			if($_POST['save'])
-			{
-				$n_display   = get_var('n_display','POST');
-				$n_base_url  = get_var('n_base_url','POST');
-				$n_newsfile  = get_var('n_newsfile','POST');
-				$n_cachetime = get_var('n_cachetime','POST');
-				$n_listings  = get_var('n_listings','POST');
-				$n_base_url  = get_var('n_base_url','POST');
-				$n_newstype  = get_var('n_newstype','POST');
-
-				if(!$n_display)
-				{
-					$errors[] = lang('You must enter a display');
-				}
-
-				if(!$n_base_url)
-				{
-					$errors[] = lang('You must enter a base url');
-				}
-
-				if(!$n_newsfile)
-				{
-					$errors[] = lang('You must enter a news url');
-				}
-
-				if(!$n_cachetime)
-				{
-					$errors[] = lang('You must enter the number of minutes between reload');
-				}
-
-				if(!$n_listings)
-				{
-					$errors[] = lang('You must enter the number of listings display');
-				}
-
-				if($n_listings && !ereg('^[0-9]+$',$n_listings))
-				{
-					$errors[] = lang('You can only enter numbers for listings display');
-				}
-
-				if($n_cachetime && !ereg('^[0-9]+$',$n_cachetime))
-				{
-					$errors[] = lang('You can only enter numbers minutes between refresh');
-				}
-
-				$GLOBALS['egw']->db->query("SELECT display FROM phpgw_headlines_sites WHERE base_url='"
-					. $GLOBALS['egw']->db->db_addslashes(strtolower($n_base_url)) . "' AND newsfile='"
-					. $GLOBALS['egw']->db->db_addslashes(strtolower($n_newsfile)) . "'",__LINE__,__FILE__);
-
-				$GLOBALS['egw']->db->next_record();
-				if($GLOBALS['egw']->db->f('display'))
-				{
-					$errors[] = lang('That site has already been entered');
-				}
-
-				if(!is_array($errors))
-				{
-					$sql = "INSERT INTO phpgw_headlines_sites (display,base_url,newsfile,"
-						. "lastread,newstype,cachetime,listings) "
-						. "VALUES ('" . $GLOBALS['egw']->db->db_addslashes($n_display) . "','"
-						. $GLOBALS['egw']->db->db_addslashes(strtolower($n_base_url)) . "','" 
-						. $GLOBALS['egw']->db->db_addslashes(strtolower($n_newsfile)) . "',0,'"
-						. $GLOBALS['egw']->db->db_addslashes($n_newstype) . "',".(int)$n_cachetime .',' . (int)$n_listings . ')';
-
-					$GLOBALS['egw']->db->query($sql,__LINE__,__FILE__);
-
-					$GLOBALS['egw']->redirect_link('/index.php','menuaction=headlines.uiheadlines.admin&cd=28');
-				}
-			}
-
-			$GLOBALS['egw_info']['flags']['app_header'] = lang('Headlines Administration');
-			$GLOBALS['egw']->common->phpgw_header();
-			echo parse_navbar();
-
-			// This is done for a reason (jengo)
-			$GLOBALS['egw']->template->set_root($GLOBALS['egw']->common->get_tpl_dir('headlines'));
-
-			$GLOBALS['egw']->template->set_file(array(
-				'admin_form' => 'admin_form.tpl'
-			));
-			$GLOBALS['egw']->template->set_block('admin_form','form');
-			$GLOBALS['egw']->template->set_block('admin_form','buttons');
-
-			if(is_array($errors))
-			{
-				$GLOBALS['egw']->template->set_var('messages',$GLOBALS['egw']->common->error_list($errors));
-			}
-
-			$GLOBALS['egw']->template->set_var('lang_header',lang('Create new headline'));
-			$GLOBALS['egw']->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
-			$GLOBALS['egw']->template->set_var('row_on',$GLOBALS['egw_info']['theme']['row_on']);
-			$GLOBALS['egw']->template->set_var('row_off',$GLOBALS['egw_info']['theme']['row_off']);
-			$GLOBALS['egw']->template->set_var('lang_display',lang('Display'));
-			$GLOBALS['egw']->template->set_var('lang_base_url',lang('Base URL'));
-			$GLOBALS['egw']->template->set_var('lang_news_file',lang('News File'));
-			$GLOBALS['egw']->template->set_var('lang_minutes',lang('Minutes between refresh'));
-			$GLOBALS['egw']->template->set_var('lang_listings',lang('Listings Displayed'));
-			$GLOBALS['egw']->template->set_var('lang_type',lang('News Type'));
-			$GLOBALS['egw']->template->set_var('lang_save',lang('Save'));
-			$GLOBALS['egw']->template->set_var('lang_cancel',lang('Cancel'));
-
-			$GLOBALS['egw']->template->set_var('input_display','<input name="n_display" value="' . $n_display . '" size="40">');
-			$GLOBALS['egw']->template->set_var('input_base_url','<input name="n_base_url" value="' . $n_base_url . '" size="40">');
-			$GLOBALS['egw']->template->set_var('input_news_file','<input name="n_newsfile" value="' . $n_newsfile . '" size="40">');
-			$GLOBALS['egw']->template->set_var('input_minutes','<input name="n_cachetime" value="' . $n_cachetime . '" size="4">');
-			$GLOBALS['egw']->template->set_var('input_listings','<input name="n_listings" value="' . $n_listings . '" size="2">');
-
-			$news_type = array('rdf','fm','lt','sf','rdf-chan');
-			while(list(,$item) = each($news_type))
-			{
-				$_select .= '<option value="' . $item . '"' . ($n_newstype == $item?' checked':'')
-					. '>' . $item . '</option>';
-			}
-			$GLOBALS['egw']->template->set_var('input_type','<select name="n_newstype">' . $_select . '</select>');
-
-			$GLOBALS['egw']->template->set_var('action_url',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.add'));
-
-			$GLOBALS['egw']->template->parse('buttons','buttons');
 			$GLOBALS['egw']->template->pfp('out','form');
 			$GLOBALS['egw']->common->phpgw_footer();
 		}
@@ -607,7 +565,7 @@
 				$GLOBALS['egw']->template->parse('rows','row',True);
 			}
 
-			$GLOBALS['egw']->template->set_var('add_url',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.new'));
+			$GLOBALS['egw']->template->set_var('add_url',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.add'));
 			$GLOBALS['egw']->template->set_var('grab_more_url',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.grabnewssites'));
 			$GLOBALS['egw']->template->set_var('lang_grab_more',lang('Grab New News Sites'));
 

@@ -332,40 +332,86 @@
 			);
 		}
 
-		function edit($sitedata)
+		function add($sitedata)
 		{
-			$this->db->select(
-				'phpgw_headlines_sites',
-				'display',
-				array(
-					'base_url' => $this->db->db_addslashes(strtolower($sitedata['base_url'])),
-					'newsfile' => $this->db->db_addslashes(strtolower($sitedata['newsfile'])),
-					'con'      => (int)$_GET['con']
-				),
-				__LINE__,__FILE__
-			);
-			$this->db->next_record();
-			if($this->db->f('display'))
+			if(!$sitedata['display'])
+			{
+				$errors[] = lang('You must enter a display');
+			}
+
+			if(!$sitedata['base_url'])
+			{
+				$errors[] = lang('You must enter a base url');
+			}
+
+			if(!$sitedata['newsfile'])
+			{
+				$errors[] = lang('You must enter a news url');
+			}
+
+			if(!$sitedata['cachetime'])
+			{
+				$errors[] = lang('You must enter the number of minutes between reload');
+			}
+
+			if(!$sitedata['listings'])
+			{
+				$errors[] = lang('You must enter the number of listings display');
+			}
+
+			if($sitedata['listings'] && !ereg('^[0-9]+$',$sitedata['listings']))
+			{
+				$errors[] = lang('You can only enter numbers for listings display');
+			}
+
+			if($sitedata['cachetime'] && !ereg('^[0-9]+$',$sitedata['cachetime']))
+			{
+				$errors[] = lang('You can only enter numbers minutes between refresh');
+			}
+
+			$GLOBALS['egw']->db->query("SELECT display FROM phpgw_headlines_sites WHERE base_url='"
+				. $GLOBALS['egw']->db->db_addslashes(strtolower($sitedata['base_url'])) . "' AND newsfile='"
+				. $GLOBALS['egw']->db->db_addslashes(strtolower($sitedata['newsfile'])) . "'",__LINE__,__FILE__);
+
+			$GLOBALS['egw']->db->next_record();
+			if($GLOBALS['egw']->db->f('display'))
 			{
 				$errors[] = lang('That site has already been entered');
 			}
 
 			if(!is_array($errors))
 			{
-				$this->db->update(
-					'phpgw_headlines_sites',
-					array(
-						'display'   => $this->db->db_addslashes($sitedata['display']) ,
-						'base_url'  => $this->db->db_addslashes($sitedata['base_url']),
-						'newsfile'  => $this->db->db_addslashes($sitedata['newsfile']),
-						'lastread'  => 0,
-						'cachetime' => (int)$sitedata['cachetime'],
-						'listings'  => (int)$sitedata['listings']
-					),
-					array('con' => (int)$_GET['con']),
-					__LINE__,__FILE__
-				);
+				$sql = "INSERT INTO phpgw_headlines_sites (display,base_url,newsfile,"
+					. "lastread,newstype,cachetime,listings) "
+					. "VALUES ('" . $GLOBALS['egw']->db->db_addslashes($sitedata['display']) . "','"
+					. $GLOBALS['egw']->db->db_addslashes(strtolower($sitedata['base_url'])) . "','" 
+					. $GLOBALS['egw']->db->db_addslashes(strtolower($sitedata['newsfile'])) . "',0,'"
+					. $GLOBALS['egw']->db->db_addslashes($sitedata['newstype']) . "',".(int)$sitedata['cachetime'] .',' . (int)$sitedata['listings'] . ')';
+
+				$GLOBALS['egw']->db->query($sql,__LINE__,__FILE__);
+				return True;
 			}
+			else
+			{
+				return $errors;
+			}
+		}
+
+		function edit($sitedata)
+		{
+			$this->db->update(
+				'phpgw_headlines_sites',
+				array(
+					'display'   => $this->db->db_addslashes($sitedata['display']) ,
+					'base_url'  => $this->db->db_addslashes($sitedata['base_url']),
+					'newsfile'  => $this->db->db_addslashes($sitedata['newsfile']),
+					'lastread'  => 0,
+					'cachetime' => (int)$sitedata['cachetime'],
+					'listings'  => (int)$sitedata['listings']
+				),
+				array('con' => (int)$sitedata['con']),
+				__LINE__,__FILE__
+			);
 			return True;
 		}
 

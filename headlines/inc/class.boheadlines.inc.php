@@ -76,6 +76,50 @@
 			return True;
 		}
 
+		function add($sitedata)
+		{
+			if(!$sitedata['display'])
+			{
+				$errors[] = lang('You must enter a display');
+			}
+
+			if(!$sitedata['base_url'])
+			{
+				$errors[] = lang('You must enter a base url');
+			}
+
+			if(!$sitedata['newsfile'])
+			{
+				$errors[] = lang('You must enter a news url');
+			}
+
+			if(!$sitedata['cachetime'])
+			{
+				$errors[] = lang('You must enter the number of minutes between reload');
+			}
+
+			if(!$sitedata['listings'])
+			{
+				$errors[] = lang('You must enter the number of listings display');
+			}
+
+			if($sitedata['listings'] && !ereg('^[0-9]+$',$sitedata['listings']))
+			{
+				$errors[] = lang('You can only enter numbers for listings display');
+			}
+
+			if($sitedata['cachetime'] && !ereg('^[0-9]+$',$sitedata['cachetime']))
+			{
+				$errors[] = lang('You can only enter numbers minutes between refresh');
+			}
+
+			if(@is_array($errors))
+			{
+				return $errors;
+			}
+			return $this->so->add($sitedata);
+		}
+
 		function edit($sitedata)
 		{
 			if(!$sitedata['display'])
