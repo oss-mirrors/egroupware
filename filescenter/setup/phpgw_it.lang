@@ -1,0 +1,177 @@
+$files format not recognized in bo->create_archive()	filescenter	it	Formato $files non riconosciuto in bo->create_archive()
+%1 already exists as a file	filescenter	it	%1 esiste già come file
+%1 files were sucessfully copied onto clipboard.	filescenter	it	%1 file copiati con successo su clipboard.
+%1 files were sucessfully cutted onto clipboard.	filescenter	it	%1 file tagliati e inviati con successo su clipboard.
+activate sharing	filescenter	it	Attiva Condivisione
+add a new file id prefix	filescenter	it	Aggiungi un nuovo prefisso per ID File
+add a new file type	filescenter	it	Aggiungi un nuovo tipo File
+add a new prefix	filescenter	it	Aggiungi un nuovo prefisso
+add a new type descriptor for file ids	filescenter	it	Aggiungi nuovo tipo di descrizione per ID File
+add another file	filescenter	it	Aggiungi un altro File
+add custom file property	filescenter	it	Aggiungi proprietà file personalizzata
+add file property	filescenter	it	Aggiungi proprietà File
+application	filescenter	it	Applicazione
+applications	filescenter	it	Applicazioni
+archive name	filescenter	it	Nome archivio
+archive name cannot contain "%1"	filescenter	it	Il nome archivio non può contenere "%1"
+are you sure you want to delete '"+filename+"'?	filescenter	it	Sei sicuro di voler cancellare '"+filename+"'?
+are you sure you want to delete _filename_?	filescenter	it	Vuoi davvero cancellare _filename_?
+are you sure you want to delete all these "+count+" items?	filescenter	it	Sei sicuro di voler cancellare tutti questi "+count+" oggetti?
+are you sure you want to delete all these _count_ items?	filescenter	it	Sei sicuro di voler cancellare tutti questi _count_ oggetti?
+are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	it	Sei sicuro? In alternativa puoi disattivare questo campo, in modo da recuperare la sua informazione più tardi. Davvero devo cancellare? (irreversibile)
+authorized groups	filescenter	it	Gruppi autorizzati
+authorized users	filescenter	it	Utenti autorizzati
+backup	filescenter	it	Backup
+cannot replace %1 because it is a directory	filescenter	it	Impossibile soastituire %1 perché è una directory
+cannot write file $1	filescenter	it	Impossibile scrivere il File $1
+change the values here to redefine this	filescenter	it	Cambia i valori qui per ridefinire questo
+clean the temporary folder for application	filescenter	it	Svuota la Cartella Temporanea dell'applicazione
+click in the row to edit a file type.	filescenter	it	Clicca sulla riga per modificare un tipo File
+click in the row to edit an item.	filescenter	it	Clicca sulla riga per modifcare una voce
+comment	filescenter	it	Commento
+compress	filescenter	it	Comprimi
+compresses a set of files in an archive	filescenter	it	Comprimi un set di File in un archivio
+compression type	filescenter	it	Tipo compressione
+copied	filescenter	it	Copiato
+copied %1 to %2	filescenter	it	Copiato %1 a %2
+copies(or cuts) a file (or a given set of files) into clipboard	filescenter	it	Copia (o taglia) un File (o un gruppo di File) su clipboard
+could not	filescenter	it	Impossibile
+could not copy %1 to %2	filescenter	it	Impossibile copiare %1 a %2
+could not create %1	filescenter	it	Impossibile creare %1
+could not delete %1	filescenter	it	Impossibile cancellare %1
+could not extract files from archive.	filescenter	it	Impossibile estrarre File dall'archivio
+could not move %1 to %2	filescenter	it	Impossibile spostare %1 a %2
+could not paste files here.	filescenter	it	Impossibile incollare File qui.
+could not retrieve files for this directory.	filescenter	it	Impossibile recuperare File da questa directory
+created	filescenter	it	Creato
+created %1	filescenter	it	Creato %1
+created %1,%2	filescenter	it	Creato%1,%2
+created directory %1	filescenter	it	Creata directory %1
+creates a directory.	filescenter	it	Crea una directory.
+custom file properties	filescenter	it	Proprietà File personalizzate
+decompress	filescenter	it	Decomprimi
+default number of upload fields to show	filescenter	it	Numero predefinito di campi caricamento da mostrare
+delete this file type	filescenter	it	Elimina questo tipo File
+delete unsuccessful. selected files could not be deleted.	filescenter	it	Cancellazione non eseguita. I File selezionati non possono essere cancellati.
+deleted	filescenter	it	Eiminato
+deleted %1	filescenter	it	Eliminato %1
+deletes a file or set of files.	filescenter	it	Cancella un File o un gruppo di File.
+destination	filescenter	it	Destinazione
+directory %1 already exists	filescenter	it	La Directory %1 esiste già
+directory names cannot contain "%1"	filescenter	it	I nomi Directory non possono contenere "%1"
+display attributes	filescenter	it	Mostra attributi
+do you really want to delete the custom field	filescenter	it	Vuoi veramente eliminare il campo personalizzato?
+edit custom file property	filescenter	it	Modifica Proprietà File personalizzate
+edit file property	filescenter	it	Modifica proprietà File
+edit file type:	filescenter	it	Modifica tipo File:
+edited	filescenter	it	Modificato
+edited comment	filescenter	it	Commento modificato
+error in creating folder. incorrect parameters.	filescenter	it	Errore in creazione cartella. Parametri non corretti.
+extension	filescenter	it	Estensione
+external shared folders	filescenter	it	Cartelle Esterne Condivise
+extract the contents of an archive in a folder	filescenter	it	Estrai i contenuti di un archivio in una cartella
+field name (small caps only, no spaces)	filescenter	it	Nome campo (solo minuscolo, no spazi)
+file history	filescenter	it	Cronologia File
+file id	filescenter	it	ID File
+file id management	filescenter	it	Gestione ID File
+file id prefix	filescenter	it	Prefisso ID File
+file name	filescenter	it	Nome File
+file names cannot contain "%1"	filescenter	it	I nomi File non possono contenere "%1"
+file type	filescenter	it	Tipo File
+file types management	filescenter	it	Gestione Tipi File
+file(s) to upload:	filescenter	it	File da caricare:
+file(s) written sucessfully.	filescenter	it	File scritto/i con successo.
+filemanager preferences	filescenter	it	Preferenze FileManager
+files to upload	filescenter	it	File da caricare:
+filescenter	filescenter	it	FilesCenter
+filescenter administration	filescenter	it	Amministra FilesCenter
+filescenter preferences	filescenter	it	Preferenze FileCenter
+fill the fields here to define a new	filescenter	it	Riempi i campi qui per definire un nuovo
+friendly description	filescenter	it	Descrizione amichevole
+from filescenter...	filescenter	it	da FilesCenter...
+general	filescenter	it	Generale
+general file properties	filescenter	it	Proprietà File Generali
+here is the management of custom file properties.	filescenter	it	Questa è la gestione delle proprietà File personalizzate
+here you can edit this property.	filescenter	it	Qui puoi modificare questa proprietà.
+history	filescenter	it	Cronologia
+i do not want to do this import procedure now.	filescenter	it	Non voglio eseguire questa procedura di importazione adesso.
+icon	filescenter	it	Icona
+id	filescenter	it	ID
+invert selection	filescenter	it	Inverti selezione
+item(s)	filescenter	it	oggetto/i
+level up	filescenter	it	Livello superiore
+location	filescenter	it	locazione
+manage file types	filescenter	it	Gestisci Tipi File
+management permissions	admin	it	Permessi di Gestione
+maximum filesize upload: %1	filescenter	it	Massima Dimensione File caricato: %1
+maximum number of backups	filescenter	it	Numero massimo di Backup
+mime magic	filescenter	it	Magic MIMI
+mime type	filescenter	it	Tipo MIME
+modificator	filescenter	it	Modificatore
+modified	filescenter	it	Modificato
+modified by	filescenter	it	Modificato da
+moved	filescenter	it	Spostato
+moved %1 to %2	filescenter	it	Spostato %1 a %2
+my shared folders	filescenter	it	Le mie cartelle condivise
+new	filescenter	it	Nuovo
+new folder	filescenter	it	Nuova cartella
+new folder name	filescenter	it	Nuovo nome cartella
+no permission to write file $1	filescenter	it	Nessun permesso per scrivere File $1
+no shared folders.	filescenter	it	Nessuna cartella condivisa.
+operation	filescenter	it	Operazione
+operations	filescenter	it	Operazioni
+other properties	filescenter	it	Altre proprietà
+pastes a file (or a given set of files) from clipboard	filescenter	it	Incolla un File (o un gruppo di File) da clipboard
+precision	filescenter	it	Precisione
+prefix	filescenter	it	Prefisso
+prefix description	filescenter	it	Descrizione prefisso
+proceed	filescenter	it	Procedi
+properties	filescenter	it	Proprietà
+read permissions	filescenter	it	Permessi di lettura
+refresh	filescenter	it	Aggiorna
+register a new file type:	filescenter	it	Registra un nuovo tipo File:
+remove	filescenter	it	Rimuovi
+replaced %1	filescenter	it	Sostituito %1
+returns data about a dir	filescenter	it	Riporta dati riguardo una dir
+returns data about a dir (alias of refresh_dir_info)	filescenter	it	Restituisce dati su una Dir (alias of refresh_dir_info)
+search for a keyword in files:	filescenter	it	Cerca parola chiave in File:
+search results	filescenter	it	Risultati Ricerca
+shared	filescenter	it	Condivisi
+sharing	filescenter	it	In condivisione
+show ..	filescenter	it	Mostra ..
+show .files	filescenter	it	Mostra .files
+show command line (experimental. dangerous.)	filescenter	it	Mostra linea di comando (SPERIMENTALE. PERICOLOSO.)
+show help	filescenter	it	Mostra aiuto
+size	filescenter	it	Dimensione
+size of folder	filescenter	it	Dimensione cartella
+source	filescenter	it	Origine
+subscribe	filescenter	it	Sottoscrivi
+subscribe some files	filescenter	it	Sottoscrivi alcuni File
+subscribed successfully	filescenter	it	Sottoscrizione effettuata
+subscriptions	filescenter	it	Sottoscrizioni
+the future filemanager, now for testing purposes only, please send bugreports	filescenter	it	Il futuro filemanager, ora solo per SCOPI DI TEST, prego inviare rapporti bug
+the maximum number of backups that will be stored in the file version system. oldest backups are deleted first. use -1 to store unlimited backups.	filescenter	it	Il numero massimo di backup che saranno conservati nel sistema di versionamento. I backup più vecchi saranno canncellati prima. Usa -1 per mantenere un numero infinito di backup.
+the temporary directory could not be deleted.	filescenter	it	La directory temporanea non può essere cancellata.
+there was a problem while trying to access/create the base infrastructure of filescenter directories.<br>	filescenter	it	Si è presentato un problema durante l'accesso/creazione dell'infrastruttura di base delle directory di FilesCenter.<br>
+this seems to be the first time you are using filescenter. the filescenter is the new file management tool for egroupware.<br><br>filescenter uses a new set of tables to store data about files. this allows a better management of files and some functionalities, like file versioning, mime types customization, different sharing methods and more. so, to use filescenter you will have to pass through an import process, where data about files in your system will be imported to this new set of tables. <b>after this import proccess, the old filemanager must be disabled system-wide to preserve consistency about files</b>.<br><br>you are about to do this import procedure. you must know that this is <b> an one way procedure</b> and is made once, just in the first time the admin uses the filescenter. <b>backup</b> of your data (database, as well the file repository folder in your system) is <b>very recommended</b>. remember that egroupware is a free software and offers <b>absolutely no warranty</b> to any damage that could happen with your files. if you have doubts, just test this filescenter in a non-production instance of egroupware before installing it in this system.	filescenter	it	Questa sembra essera la prima volta che utilizzi FilesCenter. FilesCenter è il nuovo strumento di eGroupWare per la gestione di file .<br><br>FilesCenter utilizza un nuovo insieme di tabelle per registrare i dati dei file. Questo permette una gestione migliore dei file e alcune funzionalità tipo il versionamento, customizzazione dei tipi MIME, metodi di condivisione differenti e altro ancora. Per utilizzare FilesCenter dovrai prima effettuare un passaggio importante, in cui i dati dei tuoi file nel sistema saranno importati nelle nuove tabelle. <b>Dopo questo processo di importazione, il vecchio Filemanager deve essere disabilitato per preservare la coerenza sui file</b>.<br><br>Stai per effettuare la procedura. Devi essere cosciente del fatto che è una <b>procedura a senso unico</b> e viene effettuata una sola volta, quando l'amministratore usa per la proma volta il FilesCenter. <b>E' FORTEMENTE RACCOMANDATO UN BACKUP</b> dei dati (database e cartella dei file del tuo sistema). Ricorda che eGroupWare è un software gratuito e <b>NON OFFRE ALCUNA GARANZIA</b> per qualunque danno possa verificarsi ai tuoi file. Se hai dei dubbi, prova FilesCenter all'interno di un'istallazione di non-produzione di eGroupWare prima di installarlo in questo sistema.
+type	filescenter	it	Tipo
+type description	filescenter	it	Descrizione Tipo
+type identifier for file ids	filescenter	it	Identificatore di Tipo per ID File
+unknown mime-type defaults to text/plain when viewing	filescenter	it	MIME predefinito in visualizzazione è text/plain per formati sconosciuti
+unsubscribe	filescenter	it	Cancella sottoscrizione
+unsubscribed successfully	filescenter	it	Sottoscrizione cancellata
+upload	filescenter	it	Carica
+upload files in folder	filescenter	it	Carica File nella cartella
+use new experimental filemanager?	filescenter	it	Utilizzare nuovo Filemanager sperimentale?
+use this file	filescenter	it	Usa questo File
+view documents in new window	filescenter	it	Visualizza documenti in nuova finestra
+view documents on server (if available)	filescenter	it	Visualizza documenti su server (se disponibile)
+view history	filescenter	it	Vedi cronologia
+view permissions - groups	filescenter	it	Vedi Permessi - Gruppi
+view permissions - users	filescenter	it	Vedi Permessi - Utenti
+wait. uploading...	filescenter	it	Attendere, Caricameto in corso...
+write permissions	filescenter	it	Permessi di scrittura
+yes, i am aware of the risks and i want to make this import procedure.	filescenter	it	Sì, sono cosciente dei rischi e voglio eseguire la procedura di importazione.
+you can\'t select more than one item with this option	filescenter	it	Non puoi selezionare più di un elemento con questa opzione
+you didn't select an item. click on an icon next to the name to select an item.	filescenter	it	Non hai selezionato un elemento. Clicca su un'icona accanto al nome per selezionare un elemento.
+you selected no items. click in the checkbox near the file name to select an item.	filescenter	it	Non hai selezionato alcun elemento. Clicca sul checkbox accanto al nome del file per selezionare un elemento.

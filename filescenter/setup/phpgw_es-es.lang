@@ -1,0 +1,179 @@
+$files format not recognized in bo->create_archive()	filescenter	es-es	El formato $files no está reconocido en bo->create_archive()
+%1 already exists as a file	filescenter	es-es	%1 ya existe como fichero
+%1 files were sucessfully copied onto clipboard.	filescenter	es-es	Se copiaron correctamente %1 ficheros en el portapapeles
+%1 files were sucessfully cutted onto clipboard.	filescenter	es-es	Se cortaron correctamente %1 ficheros en el portapapeles
+activate sharing	filescenter	es-es	Activar compartir
+add a new file id prefix	filescenter	es-es	Añadir un nuevo prefijo de ID de fichero
+add a new file type	filescenter	es-es	Añadir un nuevo tipo de fichero
+add a new prefix	filescenter	es-es	Añadir un nuevo prefijo
+add a new type descriptor for file ids	filescenter	es-es	Añadir un nuevo descriptor de tipo para IDs de fichero
+add another file	filescenter	es-es	Añadir otro fichero
+add custom file property	filescenter	es-es	Añadir propiedad personalizada de fichero
+add file property	filescenter	es-es	Añadir propiedad de fichero
+application	filescenter	es-es	Aplicación
+applications	filescenter	es-es	Aplicaciones
+archive name	filescenter	es-es	Nombre del archivo
+archive name cannot contain "%1"	filescenter	es-es	El nombre del archivo no puede contener "%1"
+are you sure you want to delete '"+filename+"'?	filescenter	es-es	¿Está seguro de que desea borrar "+filename+"?
+are you sure you want to delete _filename_?	filescenter	es-es	¿Seguro que desea borrar _filename_?
+are you sure you want to delete all these "+count+" items?	filescenter	es-es	¿Está seguro de que desea borrar todos estos elementos "+count+"?
+are you sure you want to delete all these _count_ items?	filescenter	es-es	¿Está seguro de que desea borrar todos estos elementos _count_?
+are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	es-es	¿Está seguro? También puede desativar este campo, de forma que puede recuperara la información más tarde. ¿Realmente desea borrar? (no se puede deshacer esta acción)
+authorized groups	filescenter	es-es	Grupos autorizados
+authorized users	filescenter	es-es	Usuarios autorizados
+backup	filescenter	es-es	Copia de seguridad
+cannot replace %1 because it is a directory	filescenter	es-es	No se puede sustituir %1 porque es un directorio
+cannot write file $1	filescenter	es-es	No se puede escribir el fichero $1
+change the values here to redefine this	filescenter	es-es	Cambiar los valores aquí para redefinir este
+clean the temporary folder for application	filescenter	es-es	Vaciar el directorio temporal para la aplicación
+click in the row to edit a file type.	filescenter	es-es	Pulsar en la fila para editar un tipo de fichero
+click in the row to edit an item.	filescenter	es-es	Pulsar en la fila para editar un elemento.
+comment	filescenter	es-es	Comentario
+compress	filescenter	es-es	Comprimir
+compresses a set of files in an archive	filescenter	es-es	Comprime un conjunto de ficheros en un archivo
+compression type	filescenter	es-es	Tipo de compresión
+copied	filescenter	es-es	Copiado
+copied %1 to %2	filescenter	es-es	Copiado %1 a %2
+copies(or cuts) a file (or a given set of files) into clipboard	filescenter	es-es	Copia (o corta) un fichero (o un conjunto de ficheros) en el portapapeles
+could not	filescenter	es-es	No se pudo
+could not copy %1 to %2	filescenter	es-es	No se pudo copiar %1 a %2
+could not create %1	filescenter	es-es	No se pudo crear %1
+could not delete %1	filescenter	es-es	No se pudo borrar %1
+could not extract files from archive.	filescenter	es-es	No se pudieron extraer los ficheros del archivo.
+could not move %1 to %2	filescenter	es-es	No se pudo mover %1 a %2
+could not paste files here.	filescenter	es-es	No se pudieron pegar aquí los ficheros.
+could not retrieve files for this directory.	filescenter	es-es	No se pudieron recuperar ficheros para este directorio.
+created	filescenter	es-es	Creado
+created %1	filescenter	es-es	Creado %1
+created %1,%2	filescenter	es-es	Creado %1,%2
+created directory %1	filescenter	es-es	Creado directorio %1
+creates a directory.	filescenter	es-es	Crea un directorio.
+custom file properties	filescenter	es-es	Propiedades de fichero personalizadas
+decompress	filescenter	es-es	Descomprimir
+default number of upload fields to show	filescenter	es-es	Número predeterminado de ficheros de subida para mostrar
+delete this file type	filescenter	es-es	Borrar este tipo de fichero
+delete unsuccessful. selected files could not be deleted.	filescenter	es-es	Borrado incorrecto. No se pudieron borrar los ficheros seleccionados.
+deleted	filescenter	es-es	Borrado
+deleted %1	filescenter	es-es	Borrado %1
+deletes a file or set of files.	filescenter	es-es	Borra un fichero o conjunto de ficheros.
+destination	filescenter	es-es	Destino
+directory %1 already exists	filescenter	es-es	El directorio %1 ya existe
+directory names cannot contain "%1"	filescenter	es-es	Los nombres de directorios no pueden contener "%1"
+display attributes	filescenter	es-es	Mostrar atributos
+do you really want to delete the custom field	filescenter	es-es	¿Realmente desea borrar el campo personalizado?
+edit custom file property	filescenter	es-es	Editar propiedad personalizada de fichero
+edit file property	filescenter	es-es	Editar propiedad de fichero
+edit file type:	filescenter	es-es	Editar tipo de fichero:
+edited	filescenter	es-es	Editado
+edited comment	filescenter	es-es	Comentario editado
+error in creating folder. incorrect parameters.	filescenter	es-es	Errar al crear el directorio. Parámetros incorrectos.
+extension	filescenter	es-es	Extensión
+external shared folders	filescenter	es-es	Directorios externos compartidos
+extract the contents of an archive in a folder	filescenter	es-es	Extraer el contenido de un archivo en un directorio
+fake base dir did not exist, egroupware created a new one.	filescenter	es-es	El directorio base ficticio no existe. EGroupWare ha creado uno nuevo.
+field name (small caps only, no spaces)	filescenter	es-es	Nombre del campo (sólo minúsculas, sin espacios)
+file history	filescenter	es-es	Historial del fichero
+file id	filescenter	es-es	ID del fichero
+file id management	filescenter	es-es	Gestión de ID de fichero
+file id prefix	filescenter	es-es	Prefijo de ID de fichero
+file name	filescenter	es-es	Nombre del fichero
+file names cannot contain "%1"	filescenter	es-es	Los nombres de fichero no pueden contener "%1"
+file type	filescenter	es-es	Tipo de fichero
+file types management	filescenter	es-es	Gestión de tipos de fichero
+file(s) to upload:	filescenter	es-es	Fichero(s) para subir:
+file(s) written sucessfully.	filescenter	es-es	Fichero(s) escritos correctamente.
+filemanager preferences	filescenter	es-es	Preferencias del administrador de archivos
+files to upload	filescenter	es-es	Ficheros para subir
+filescenter	filescenter	es-es	Centro de ficheros
+filescenter administration	filescenter	es-es	Administración del centro de ficheros
+filescenter preferences	filescenter	es-es	Preferencias del centro de ficheros
+fill the fields here to define a new	filescenter	es-es	Rellene los campos aquí para definir un nuevo
+friendly description	filescenter	es-es	Descripción amigable
+from filescenter...	filescenter	es-es	desde el centro de ficheros...
+general	filescenter	es-es	General
+general file properties	filescenter	es-es	Propiedades generales del fichero
+here is the management of custom file properties.	filescenter	es-es	Aquí está la gestión de propiedades personalizadas de fichero.
+here you can edit this property.	filescenter	es-es	Aquí se puede editar esta propiedad.
+history	filescenter	es-es	Historial
+i do not want to do this import procedure now.	filescenter	es-es	No quiero realizar ahora el procedimiento de importación.
+icon	filescenter	es-es	Icono
+id	filescenter	es-es	ID
+invert selection	filescenter	es-es	Invertir selección
+item(s)	filescenter	es-es	elemento(s)
+level up	filescenter	es-es	Nivel arriba
+location	filescenter	es-es	Dirección
+manage file types	filescenter	es-es	Gestionar tipos de fichero
+management permissions	admin	es-es	Gestión de permisos
+maximum filesize upload: %1	filescenter	es-es	Tamaño máximo para subir: %1
+maximum number of backups	filescenter	es-es	Número máximo de copias de seguridad
+mime type	filescenter	es-es	Tipo mime
+modificator	filescenter	es-es	Modificador
+modified	filescenter	es-es	Modificado
+modified by	filescenter	es-es	Modificado por
+moved	filescenter	es-es	Movido
+moved %1 to %2	filescenter	es-es	Movido %1 a %2
+my shared folders	filescenter	es-es	Mis carpetas compartidas
+new	filescenter	es-es	Nuevo
+new folder	filescenter	es-es	Nuevo directorio
+new folder name	filescenter	es-es	Nuevo nombre de directorio
+no permission to write file $1	filescenter	es-es	No tiene permiso para escribir el fichero $1
+no shared folders.	filescenter	es-es	No hay directorios compartidos.
+operation	filescenter	es-es	Operación
+operations	filescenter	es-es	Operaciones
+other properties	filescenter	es-es	Otras propiedades
+pastes a file (or a given set of files) from clipboard	filescenter	es-es	Pega un fichero (o un conjunto de ficheros) desde el portapapeles
+precision	filescenter	es-es	Precisión
+prefix	filescenter	es-es	Prefijo
+prefix description	filescenter	es-es	Descripción del prefijo
+proceed	filescenter	es-es	Proceder
+properties	filescenter	es-es	Propiedades
+read permissions	filescenter	es-es	Leer permisos
+refresh	filescenter	es-es	Refrescar
+register a new file type:	filescenter	es-es	Registrar un nuevo tipo de fichero:
+remove	filescenter	es-es	eliminar
+replaced %1	filescenter	es-es	Sustituido %1
+returns data about a dir	filescenter	es-es	Devuelve datos sobre un directorio
+returns data about a dir (alias of refresh_dir_info)	filescenter	es-es	Devuelve datos sobre un directorio (alias de refresh_dir_info)
+search for a keyword in files:	filescenter	es-es	Buscar una palabra clave en los ficheros:
+search results	filescenter	es-es	Resultados de la búsqueda
+shared	filescenter	es-es	Compartido
+sharing	filescenter	es-es	Compartir
+show ..	filescenter	es-es	Mostar...
+show .files	filescenter	es-es	Mostrar ficheros ocultos
+show command line (experimental. dangerous.)	filescenter	es-es	Mostrar línea de comandos (EXPERIMENTAL, PELIGROSO)
+show help	filescenter	es-es	Mostrar la ayuda
+size	filescenter	es-es	Tamaño
+size of folder	filescenter	es-es	Tamaño del directorio
+source	filescenter	es-es	Origen
+subscribe	filescenter	es-es	Suscribirse
+subscribe some files	filescenter	es-es	Suscribir algunos ficheros
+subscribed successfully	filescenter	es-es	Suscripción correcta
+subscriptions	filescenter	es-es	Suscripciones
+the future filemanager, now for testing purposes only, please send bugreports	filescenter	es-es	El futuro administrador de ficheros, SOLO PARA PRUEBAS. Por favor, enviar informes sobre fallos
+the maximum number of backups that will be stored in the file version system. oldest backups are deleted first. use -1 to store unlimited backups.	filescenter	es-es	El número máximo de copias de seguridad que se guardarán en el sistema de versión de ficheros. Las copias de seguridad antiguas se borran antes. Use -1 para guardar copias de seguridad sin límite.
+the temporary directory could not be deleted.	filescenter	es-es	No se pudo borrar el directorio temporal.
+there was a problem while trying to access/create the base infrastructure of filescenter directories.<br>	filescenter	es-es	Hubo un problema al intentar acceder o crear la infraestructura base de los directorios del centro de ficheros.<br>
+this seems to be the first time you are using filescenter. the filescenter is the new file management tool for egroupware.<br><br>filescenter uses a new set of tables to store data about files. this allows a better management of files and some functionalities, like file versioning, mime types customization, different sharing methods and more. so, to use filescenter you will have to pass through an import process, where data about files in your system will be imported to this new set of tables. <b>after this import proccess, the old filemanager must be disabled system-wide to preserve consistency about files</b>.<br><br>you are about to do this import procedure. you must know that this is <b> an one way procedure</b> and is made once, just in the first time the admin uses the filescenter. <b>backup</b> of your data (database, as well the file repository folder in your system) is <b>very recommended</b>. remember that egroupware is a free software and offers <b>absolutely no warranty</b> to any damage that could happen with your files. if you have doubts, just test this filescenter in a non-production instance of egroupware before installing it in this system.	filescenter	es-es	Parece que es la primera vez que usa el Centro de ficheros. El centro de ficheros es la nueva herramienta de gestión de ficheros para eGroupWare.<br><br>El centro de ficheros usa un conjunto nuevo de tablas para almacenar datos sobre los ficheros. Esto permite una mejor gestión de los ficheros y algunas funcionalidades, como la versión de los ficheros, personalización de tipos mime, distintas formas de compartir, etc. Por ello, para usar el Centro de ficheros debe realizarse un proceso de importación, donde los datos de los ficheros de su sistema se importarán a este nuevo conjunto de tablas.<b>Después de este proceso de importación, el antiguo Administrador de archivos debe desactivarse globalmente para preservar la consistencia de los ficheros</b>.<br><br>Está a punto de realizar este proceso de importación. Debe saber que es un <b>procedimiento irreversible</b> y se hace una sola vez, justo la primera vez que el administrador usa el centro de ficheros. <b>HACER COPIA DE SEGURIDAD</b> de sus datos (la base de datos y el directorio del repositorio en su sistema) está <b>ALTAMENTE RECOMENDADO</b>. Recuerde que eGroupWare es software libre y <b>NO OFRECE NINGUNA GARANTIA EN ABSOLUTO</b> a cualquier daño que pudiera ocurrir con sus ficheros. Si tiene dudas, pruebe este centro de ficheros en una instancia que no esté en producción de eGroupWare antes de instalarlo en este sistema.
+type	filescenter	es-es	Tipo
+type description	filescenter	es-es	Descripción del tipo
+type identifier for file ids	filescenter	es-es	Identificador del tipo para IDs de fichero
+unknown mime-type defaults to text/plain when viewing	filescenter	es-es	Un tipo MIME desconocido se ve de forma predeterminada como text/plain
+unsubscribe	filescenter	es-es	Desuscribirse
+unsubscribed successfully	filescenter	es-es	Desuscripción correcta
+upload	filescenter	es-es	Copiar al servidor
+upload files in folder	filescenter	es-es	Subir ficheros en el directorio
+use new experimental filemanager?	filescenter	es-es	¿Usar el nuevo administrador de archivos experimental?
+use this file	filescenter	es-es	Usar este fichero
+view documents in new window	filescenter	es-es	Ver documentos en una ventana nueva
+view documents on server (if available)	filescenter	es-es	Ver documentos en el servidor (si está disponible)
+view history	filescenter	es-es	Ver historial
+view permissions - groups	filescenter	es-es	Ver permisos - grupos
+view permissions - users	filescenter	es-es	Ver permisos - usuarios
+wait. uploading...	filescenter	es-es	Espere, copiando al servidor...
+write permissions	filescenter	es-es	Escribir permisos
+yes, i am aware of the risks and i want to make this import procedure.	filescenter	es-es	Sí, soy consciente de los riesgos y quiero realizar el procedimiento de importación.
+you can\'t select more than one item with this option	filescenter	es-es	No puede seleccionar más de un elemento con esta opción
+you didn't select an item. click on an icon next to the name to select an item.	filescenter	es-es	No selección ningún elemento. Pulse el icono junto al nombre para seleccionar un elemento.
+you selected no items. click in the checkbox near the file name to select an item.	filescenter	es-es	No hay seleccionado elementos. Pulse en la casilla junto al nombre del fichero para seleccionar un elemento.
+1	filescenter	es-es	1
+2	filescenter	es-es	2

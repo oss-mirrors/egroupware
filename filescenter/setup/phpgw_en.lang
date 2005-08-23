@@ -1,0 +1,178 @@
+$files format not recognized in bo->create_archive()	filescenter	en	$files format not recognized in bo->create_archive()
+%1 already exists as a file	filescenter	en	%1 already exists as a file
+%1 files were sucessfully copied onto clipboard.	filescenter	en	%1 files were sucessfully copied onto clipboard.
+%1 files were sucessfully cutted onto clipboard.	filescenter	en	%1 files were sucessfully cutted onto clipboard.
+activate sharing	filescenter	en	Activate Sharing
+add a new file id prefix	filescenter	en	Add a new File ID prefix
+add a new file type	filescenter	en	Add a new file type
+add a new prefix	filescenter	en	Add a new prefix
+add a new type descriptor for file ids	filescenter	en	Add a new type descriptor for File IDs
+add another file	filescenter	en	Add another file
+add custom file property	filescenter	en	Add Custom File Property
+add file property	filescenter	en	Add File Property
+application	filescenter	en	Application
+applications	filescenter	en	Applications
+archive name	filescenter	en	Archive name
+archive name cannot contain "%1"	filescenter	en	Archive name cannot contain "%1"
+are you sure you want to delete '"+filename+"'?	filescenter	en	Are you sure you want to delete '"+filename+"'?
+are you sure you want to delete _filename_?	filescenter	en	Are you sure you want to delete _filename_?
+are you sure you want to delete all these "+count+" items?	filescenter	en	Are you sure you want to delete all these "+count+" items?
+are you sure you want to delete all these _count_ items?	filescenter	en	Are you sure you want to delete all these _count_ items?
+are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	en	Are you sure? You can alternatively inactivate this field, so you can recover its information later. Really delete? (you cannot reverse this)
+authorized groups	filescenter	en	Authorized Groups
+authorized users	filescenter	en	Authorized Users
+backup	filescenter	en	Backup
+cannot replace %1 because it is a directory	filescenter	en	Cannot replace %1 because it is a directory
+cannot write file $1	filescenter	en	Cannot write file $1
+change the values here to redefine this	filescenter	en	Change the values here to redefine this
+clean the temporary folder for application	filescenter	en	Clean the Temporary Folder for application
+click in the row to edit a file type.	filescenter	en	Click in the row to edit a file type.
+click in the row to edit an item.	filescenter	en	Click in the row to edit an item.
+comment	filescenter	en	Comment
+compress	filescenter	en	Compress
+compresses a set of files in an archive	filescenter	en	Compresses a set of files in an archive
+compression type	filescenter	en	Compression type
+copied	filescenter	en	Copied
+copied %1 to %2	filescenter	en	Copied %1 to %2
+copies(or cuts) a file (or a given set of files) into clipboard	filescenter	en	Copies(or cuts) a file (or a given set of files) into clipboard
+could not	filescenter	en	Could not
+could not copy %1 to %2	filescenter	en	Could not copy %1 to %2
+could not create %1	filescenter	en	Could not create %1
+could not delete %1	filescenter	en	Could not delete %1
+could not extract files from archive.	filescenter	en	Could not extract files from archive.
+could not move %1 to %2	filescenter	en	Could not move %1 to %2
+could not paste files here.	filescenter	en	Could not paste files here.
+could not retrieve files for this directory.	filescenter	en	Could not retrieve files for this directory.
+created	filescenter	en	Created
+created %1	filescenter	en	Created %1
+created %1,%2	filescenter	en	Created %1,%2
+created directory %1	filescenter	en	Created directory %1
+creates a directory.	filescenter	en	Creates a directory.
+custom file properties	filescenter	en	Custom File Properties
+decompress	filescenter	en	Decompress
+default number of upload fields to show	filescenter	en	Default number of upload fields to show
+delete this file type	filescenter	en	Delete this file type
+delete unsuccessful. selected files could not be deleted.	filescenter	en	Delete unsuccessful. Selected files could not be deleted.
+deleted	filescenter	en	Deleted
+deleted %1	filescenter	en	Deleted %1
+deletes a file or set of files.	filescenter	en	Deletes a file or set of files.
+destination	filescenter	en	Destination
+directory %1 already exists	filescenter	en	Directory %1 already exists
+directory names cannot contain "%1"	filescenter	en	Directory names cannot contain "%1"
+display attributes	filescenter	en	Display attributes
+do you really want to delete the custom field	filescenter	en	Do you really want to delete the custom field
+edit custom file property	filescenter	en	Edit Custom File Property
+edit file property	filescenter	en	Edit File Property
+edit file type:	filescenter	en	Edit file type:
+edited	filescenter	en	Edited
+edited comment	filescenter	en	Edited Comment
+error in creating folder. incorrect parameters.	filescenter	en	Error in creating folder. Incorrect parameters.
+extension	filescenter	en	Extension
+external shared folders	filescenter	en	External Shared Folders
+extract the contents of an archive in a folder	filescenter	en	Extract the contents of an archive in a folder
+fake base dir did not exist, egroupware created a new one.	filescenter	en	Fake Base Dir did not exist, eGroupWare created a new one.
+field name (small caps only, no spaces)	filescenter	en	Field Name (small caps only, no spaces)
+file history	filescenter	en	File History
+file id	filescenter	en	File ID
+file id management	filescenter	en	File ID Management
+file id prefix	filescenter	en	File ID Prefix
+file name	filescenter	en	File Name
+file names cannot contain "%1"	filescenter	en	File names cannot contain "%1"
+file type	filescenter	en	File Type
+file types management	filescenter	en	File Types Management
+file(s) to upload:	filescenter	en	File(s) to upload:
+file(s) written sucessfully.	filescenter	en	File(s) written sucessfully.
+filemanager preferences	filescenter	en	FileManager preferences
+files to upload	filescenter	en	Files to Upload
+filescenter	filescenter	en	FilesCenter
+filescenter administration	filescenter	en	FilesCenter Administration
+filescenter preferences	filescenter	en	FilesCenter Preferences
+fill the fields here to define a new	filescenter	en	Fill the fields here to define a new
+friendly description	filescenter	en	Friendly Description
+from filescenter...	filescenter	en	from FilesCenter...
+general	filescenter	en	General
+general file properties	filescenter	en	General File Properties
+here is the management of custom file properties.	filescenter	en	Here is the management of custom file properties.
+here you can edit this property.	filescenter	en	Here you can edit this property.
+history	filescenter	en	History
+i do not want to do this import procedure now.	filescenter	en	I do not want to do this import procedure now.
+icon	filescenter	en	Icon
+id	filescenter	en	ID
+invert selection	filescenter	en	Invert Selection
+item(s)	filescenter	en	item(s)
+level up	filescenter	en	Level Up
+location	filescenter	en	Location
+manage file types	filescenter	en	Manage File Types
+management permissions	admin	en	Management Permissions
+maximum filesize upload: %1	filescenter	en	Maximum filesize upload: %1
+maximum number of backups	filescenter	en	Maximum number of backups
+mime magic	filescenter	en	Mime Magic
+mime type	filescenter	en	Mime Type
+modificator	filescenter	en	Modificator
+modified	filescenter	en	Modified
+modified by	filescenter	en	Modified by
+moved	filescenter	en	Moved
+moved %1 to %2	filescenter	en	Moved %1 to %2
+my shared folders	filescenter	en	My Shared Folders
+new	filescenter	en	New
+new folder	filescenter	en	New folder
+new folder name	filescenter	en	New folder name
+no permission to write file $1	filescenter	en	No permission to write file $1
+no shared folders.	filescenter	en	No shared folders.
+operation	filescenter	en	Operation
+operations	filescenter	en	Operations
+other properties	filescenter	en	Other Properties
+pastes a file (or a given set of files) from clipboard	filescenter	en	Pastes a file (or a given set of files) from clipboard
+precision	filescenter	en	Precision
+prefix	filescenter	en	Prefix
+prefix description	filescenter	en	Prefix Description
+proceed	filescenter	en	Proceed
+properties	filescenter	en	Properties
+read permissions	filescenter	en	Read Permissions
+refresh	filescenter	en	Refresh
+register a new file type:	filescenter	en	Register a new file type:
+remove	filescenter	en	remove
+replaced %1	filescenter	en	Replaced %1
+returns data about a dir	filescenter	en	Returns data about a dir
+returns data about a dir (alias of refresh_dir_info)	filescenter	en	Returns data about a dir (alias of refresh_dir_info)
+search for a keyword in files:	filescenter	en	Search for a keyword in files:
+search results	filescenter	en	Search Results
+shared	filescenter	en	Shared
+sharing	filescenter	en	Sharing
+show ..	filescenter	en	Show ..
+show .files	filescenter	en	Show .files
+show command line (experimental. dangerous.)	filescenter	en	Show command line (EXPERIMENTAL. DANGEROUS.)
+show help	filescenter	en	Show help
+size	filescenter	en	Size
+size of folder	filescenter	en	Size of folder
+source	filescenter	en	Source
+subscribe	filescenter	en	Subscribe
+subscribe some files	filescenter	en	Subscribe some files
+subscribed successfully	filescenter	en	Subscribed successfully
+subscriptions	filescenter	en	Subscriptions
+the future filemanager, now for testing purposes only, please send bugreports	filescenter	en	The future filemanager, now for TESTING PURPOSES ONLY, please send bugreports
+the maximum number of backups that will be stored in the file version system. oldest backups are deleted first. use -1 to store unlimited backups.	filescenter	en	The maximum number of backups that will be stored in the file version system. Oldest backups are deleted first. Use -1 to store unlimited backups.
+the temporary directory could not be deleted.	filescenter	en	The temporary directory could not be deleted.
+there was a problem while trying to access/create the base infrastructure of filescenter directories.<br>	filescenter	en	There was a problem while trying to access/create the base infrastructure of FilesCenter directories.<br>
+this seems to be the first time you are using filescenter. the filescenter is the new file management tool for egroupware.<br><br>filescenter uses a new set of tables to store data about files. this allows a better management of files and some functionalities, like file versioning, mime types customization, different sharing methods and more. so, to use filescenter you will have to pass through an import process, where data about files in your system will be imported to this new set of tables. <b>after this import proccess, the old filemanager must be disabled system-wide to preserve consistency about files</b>.<br><br>you are about to do this import procedure. you must know that this is <b> an one way procedure</b> and is made once, just in the first time the admin uses the filescenter. <b>backup</b> of your data (database, as well the file repository folder in your system) is <b>very recommended</b>. remember that egroupware is a free software and offers <b>absolutely no warranty</b> to any damage that could happen with your files. if you have doubts, just test this filescenter in a non-production instance of egroupware before installing it in this system.	filescenter	en	This seems to be the first time you are using FilesCenter. The FilesCenter is the new file management tool for eGroupWare.<br><br>FilesCenter uses a new set of tables to store data about files. This allows a better management of files and some functionalities, like file versioning, mime types customization, different sharing methods and more. So, to use FilesCenter you will have to pass through an import process, where data about files in your system will be imported to this new set of tables. <b>After this import proccess, the old Filemanager must be disabled system-wide to preserve consistency about files</b>.<br><br>You are about to do this import procedure. You must know that this is <b> an one way procedure</b> and is made once, just in the first time the admin uses the FilesCenter. <b>BACKUP</b> of your data (database, as well the file repository folder in your system) is <b>VERY RECOMMENDED</b>. Remember that eGroupWare is a free software and offers <b>ABSOLUTELY NO WARRANTY</b> to any damage that could happen with your files. If you have doubts, just test this FilesCenter in a non-production instance of eGroupWare before installing it in this system.
+type	filescenter	en	Type
+type description	filescenter	en	Type Description
+type identifier for file ids	filescenter	en	Type Identifier for File IDs
+unknown mime-type defaults to text/plain when viewing	filescenter	en	Unknown MIME-type defaults to text/plain when viewing
+unsubscribe	filescenter	en	Unsubscribe
+unsubscribed successfully	filescenter	en	Unsubscribed successfully
+upload	filescenter	en	Upload
+upload files in folder	filescenter	en	Upload files in folder
+use new experimental filemanager?	filescenter	en	Use new experimental Filemanager?
+use this file	filescenter	en	Use this file
+view documents in new window	filescenter	en	View documents in new window
+view documents on server (if available)	filescenter	en	View documents on server (if available)
+view history	filescenter	en	View History
+view permissions - groups	filescenter	en	View Permissions - Groups
+view permissions - users	filescenter	en	View Permissions - Users
+wait. uploading...	filescenter	en	Wait. Uploading...
+write permissions	filescenter	en	Write Permissions
+yes, i am aware of the risks and i want to make this import procedure.	filescenter	en	Yes, I am aware of the risks and I want to make this import procedure.
+you can\'t select more than one item with this option	filescenter	en	You can\'t select more than one item with this option
+you didn't select an item. click on an icon next to the name to select an item.	filescenter	en	You didn't select an item. Click on an icon next to the name to select an item.
+you selected no items. click in the checkbox near the file name to select an item.	filescenter	en	You selected no items. Click in the checkbox near the file name to select an item.

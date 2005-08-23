@@ -1,0 +1,5 @@
+switch now	switchuser	it	Cambia adesso
+switchuser	common	it	CambiaUtente
+to which user you want to switch?	switchuser	it	in quale utente vuoi cambiarti?
+with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	it	Con questa applicazione puoi loggarti come altro utente senza conoscere o cambiare nessuna password. Solo gli amministratori possono usare questa applicazione
+you're not allowed to switch identity.	switchuser	it	Non hai il permesso di cambiare identità.
