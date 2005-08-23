@@ -193,7 +193,6 @@
 						'inst_act_name'			=> $activity['wf_name'],
 						'inst_act_status'		=> $activity['wf_status'],
 						'inst_act_id'			=> $aid,
-						'inst_act_star_selected'	=> ($activity['wf_user'] == '*')? 'selected="selected"' : '',
 					));
 
 
@@ -306,7 +305,7 @@
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color, true),
 				));
 				
-				$this->translate_template('block_properties');
+				$this->translate_template('block_history_line');
 				$this->t->parse('history_line', 'block_history_line', true);
 			}
 			//if no workitems actually

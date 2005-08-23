@@ -94,6 +94,7 @@
 				 	foreach (array_keys($activityusers) as $act)
 				 	{
 				 		$new_user = $activityusers[$act];
+				 		if (!($new_user)) $new_user = '*';
 					  	$previous_user =$oldactivityusers[$act];
 					  	if (!($new_user==$previous_user))
 					  	{
