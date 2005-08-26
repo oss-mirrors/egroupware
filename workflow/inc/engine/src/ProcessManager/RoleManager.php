@@ -166,11 +166,19 @@ class RoleManager extends BaseManager {
        }
        if (count($roles_subset)>0)
        {
-         $whereand .= " and ((gr.wf_name) in ('".implode($roles_subset, "','")."'))";
+         if (!(is_array($roles_subset)))
+         {
+           $roles_subset = explode(',',$roles_subset);
+         }
+         $whereand .= " and ((gr.wf_name) in ('".implode("','",$roles_subset)."'))";
        }
        if (count($activities_subset)>0)
        {
-         $whereand .= " and ((ga.wf_name) in ('".implode($activities_subset, "','")."'))";
+         if (!(is_array($activities_subset)))
+         {
+           $activities_subset = explode(',',$activities_subset);
+         }
+         $whereand .= " and ((ga.wf_name) in ('".implode("','",$activities_subset)."'))";
        }
     }
     $query = "select distinct(wf_user),wf_account_type from
