@@ -64,7 +64,6 @@
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
 			$GLOBALS['egw']->js->validate_file('jscode','listFolder','felamimail');
-			$GLOBALS['egw']->js->validate_file('jscode','baseFunctions','felamimail');
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;

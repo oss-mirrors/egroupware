@@ -479,14 +479,8 @@
 			}
 			// refresh settings
 			$refreshTime = $preferences['refreshTime'];
-			if($refreshTime > 0)
-			{
-				$this->t->set_var('refreshTime',sprintf("aktiv = window.setInterval( \"refresh()\", %s );",$refreshTime*60*1000));
-			}
-			else
-			{
-				$this->t->set_var('refreshTime','');
-			}
+			$this->t->set_var('refreshTime',$refreshTime*60*1000);
+			
 			#// set the url to open when refreshing
 			#$linkData = array
 			#(

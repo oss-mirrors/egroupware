@@ -35,3 +35,8 @@ function updateACLView()
 {
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateACLView');
 }
+
+function displayACLAdd(_url)
+{
+	egw_openWindowCentered(_url,'felamiMailACL','400','200',window.outerWidth/2,window.outerHeight/2);
+}

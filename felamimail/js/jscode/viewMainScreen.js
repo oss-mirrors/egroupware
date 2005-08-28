@@ -1,3 +1,5 @@
+
+
 function changeSorting(_sort)
 {
 	resetMessageSelect();
@@ -14,6 +16,11 @@ function deleteMessages(_messageList)
 	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Deleting messages ...</span>';
 	document.getElementById('divMessageList').innerHTML = '';
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteMessages",_messageList);
+}
+
+function displayMessage(_url,_windowName) 
+{
+	egw_openWindowCentered(_url, _windowName, 800, egw_getWindowOuterHeight());
 }
 
 function onNodeSelect(_nodeID)
@@ -49,6 +56,103 @@ function quickSearch(_searchString)
 	selectBox.options[1].selected = true; 
 
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.quickSearch',_searchString);
+}
+
+function refresh()
+{
+	resetMessageSelect();
+	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
+	if(aktiv)
+	{
+		// set reload time to user selected value again
+		window.clearTimeout(aktiv);
+		aktiv = window.setInterval("refresh()", refreshTimeOut);
+	}
+}     
+
+function selectAll(inputBox)
+{
+	maxMessages = 0;
+
+	for (var i = 0; i < document.getElementsByTagName('input').length; i++)
+	{
+		if(document.getElementsByTagName('input')[i].name == 'msg[]')
+		{
+			//alert(document.getElementsByTagName('input')[i].name);
+			document.getElementsByTagName('input')[i].checked = inputBox.checked;
+			maxMessages++;
+		}
+	}
+
+	folderFunctions = document.getElementById('folderFunction');
+
+	if(inputBox.checked)
+	{
+		checkedCounter = maxMessages;
+		while (folderFunctions.hasChildNodes())
+		    folderFunctions.removeChild(folderFunctions.lastChild);
+		var textNode = document.createTextNode(lang_select_target_folder);
+		folderFunctions.appendChild(textNode);
+		document.getElementsByName("folderAction")[0].value = "moveMessage";
+		if(aktiv)
+		{
+			// just reload after 30 minutes, to not lose the selected messages
+			window.clearTimeout(aktiv);
+			aktiv = window.setInterval("refresh()", 30*60*1000);
+		}
+	}
+	else
+	{
+		checkedCounter = 0;
+		while (folderFunctions.hasChildNodes())
+		    folderFunctions.removeChild(folderFunctions.lastChild);
+		var textNode = document.createTextNode('');
+		folderFunctions.appendChild(textNode);
+		document.getElementsByName("folderAction")[0].value = "changeFolder";
+		if(aktiv)
+		{
+			// set reload time to user selected value again
+			window.clearTimeout(aktiv);
+			aktiv = window.setInterval("refresh()", refreshTimeOut);
+		}
+	}
+}
+
+function toggleFolderRadio(inputBox)
+{
+
+	folderFunctions = document.getElementById("folderFunction");
+	checkedCounter += (inputBox.checked) ? 1 : -1;
+	if (checkedCounter > 0)
+	{
+		while (folderFunctions.hasChildNodes())
+		    folderFunctions.removeChild(folderFunctions.lastChild);
+		var textNode = document.createTextNode('{lang_move_message}');
+		//folderFunctions.appendChild(textNode);
+		document.getElementById("folderFunction").innerHTML=lang_select_target_folder;
+		document.getElementsByName("folderAction")[0].value = "moveMessage";
+		if(aktiv)
+		{
+			// just reload after 30 minutes, to not lose the selected messages
+			window.clearTimeout(aktiv);
+			aktiv = window.setInterval("refresh()", 30*60*1000);
+		}
+	}
+	else
+	{
+		document.getElementById('messageCheckBox').checked = false;
+		while (folderFunctions.hasChildNodes())
+		    folderFunctions.removeChild(folderFunctions.lastChild);
+		//var textNode = document.createTextNode('{lang_change_folder}');
+		//folderFunctions.appendChild(textNode);
+		document.getElementsByName("folderAction")[0].value = "changeFolder";
+		if(aktiv)
+		{
+			// set reload time to user selected value again
+			window.clearTimeout(aktiv);
+			aktiv = window.setInterval("refresh()", refreshTimeOut);
+		}
+	}
 }
 
 function extendedSearch(_selectBox)
