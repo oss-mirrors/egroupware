@@ -8,8 +8,10 @@
 			'go'	=> true,
 		);
 
-		// Activity engine object. This is the object we'll be running
+		// Activity engine object. This is the object we'll be running to obtain the rigth activity
 		var $base_activity;
+		//This is the right  activity object
+		var $activity;
 		//Process engine object. Used to retrieve at least paths and configuration values
 		var $process;
 		// GUI engine object. Act carefully with it.
@@ -47,6 +49,8 @@
 		var $display_history=0; //if 0 draw nothing, 1 draw the history table in the bottom of the screen (ignore use_automatic_parsing config value)
 		// array of roles associated with the activity, usefull for lists of users associated with theses roles
 		var $act_role_names= Array();
+		//Array of ui_agent objects
+		var $agents = Array(); 
 		
 		function run_activity()
 		{
@@ -74,7 +78,8 @@
 
 			if (!$activity_id) die(lang('No activity indicated'));
 			// load activity
-			$activity =& $this->base_activity->getActivity($activity_id);
+			$activity =& $this->base_activity->getActivity($activity_id, true, true);
+			$this->activity =& $activity;
 
 			// load process
 			$this->process->getProcess($activity->getProcessId());
