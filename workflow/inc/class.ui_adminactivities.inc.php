@@ -18,7 +18,9 @@
 		var $where2;
 		var $sort_mode2;
 		
-
+		//agents handling
+		var $agents=Array();
+		
 		function ui_adminactivities()
 		{
 			parent::workflow();
@@ -50,27 +52,30 @@
 			$this->t->set_block('admin_activities', 'block_select_type', 'select_type');
 			$this->t->set_block('admin_activities', 'block_activity_roles', 'activity_roles');
 			$this->t->set_block('admin_activities', 'block_process_roles', 'process_roles');
+			$this->t->set_block('admin_activities', 'block_activity_agents', 'activity_agents');
+			$this->t->set_block('admin_activities', 'block_select_agents', 'select_agents');
 			$this->t->set_block('admin_activities', 'block_select_default_user', 'select_default_user');
 			
 			$activity_id		= (int)get_var('activity_id', 'any', 0);
-			$name				= get_var('name', 'any', '');
+			$name			= get_var('name', 'any', '');
 						
 			// TODO: not all variables below are still required.  clean up
 			
 			$description		= get_var('description', 'any', '');
-			$type				= get_var('type', 'any', '');
+			$type			= get_var('type', 'any', '');
 			$is_interactive		= get_var('is_interactive', 'any', '');
 			$is_autorouted		= get_var('is_autorouted', 'any', '');
-			$default_user       = get_var('default_user', 'any', '');
-			$userole			= get_var('userole', 'POST', '');
-			$where				= get_var('where', array('GET', 'POST'), '');
+			$default_user       	= get_var('default_user', 'any', '');
+			$userole		= get_var('userole', 'POST', '');
+			$useagent		= get_var('useagent', 'POST', '');
+			$where			= get_var('where', array('GET', 'POST'), '');
 			$this->where2		= get_var('where2', 'any', '');
-			$find				= get_var('find', 'any', '');
-			$find2				= get_var('find2', 'any', '');
+			$find			= get_var('find', 'any', '');
+			$find2			= get_var('find2', 'any', '');
 			$this->sort_mode2	= get_var('sort_mode2', 'any', '');
 			$filter_trans_from	= get_var('filter_trans_from', 'any', '');
 			$this->order		= get_var('order', 'GET', 'wf_flow_num');
-			$this->sort			= get_var('sort', 'GET', 'asc');
+			$this->sort		= get_var('sort', 'GET', 'asc');
 			$this->sort_mode	= $this->order . '__'. $this->sort;
 			$compile 		= get_var('compile', 'GET', False);
 
@@ -113,11 +118,18 @@
 				$this->message[] = lang('Activity role removed');
 			}
 
+			// remove activity agent
+			if (isset($_GET['remove_agent']) && $activity_id)
+			{
+				$this->activity_manager->remove_activity_agent($activity_id, $_GET['remove_agent']);
+				$this->message[] = lang('Activity agent removed');
+			}
+
 			// TODO: activityname need to be valid.  Add a validity checking function?
 			// save activity
 			if (isset($_POST['save_act']))
 			{
-				$activity_id = $this->save_activity($activity_id, $name, $description, $type,  $default_user, $is_interactive, $is_autorouted, $userole, $rolename);
+				$activity_id = $this->save_activity($activity_id, $name, $description, $type,  $default_user, $is_interactive, $is_autorouted, $userole, $useagent, $rolename);
 				if( $activity_id ) 
 				{
 					$this->message[] = lang('Activity saved');
@@ -141,24 +153,43 @@
 
 			// *************************************   END OF OPERATIONS COMMANDED BY THIS SAME FORM ******************
 
-			// retrieve activity info and its roles
+			// retrieve activity info and its roles and agents
 			if (!$activity_id || isset($_POST['new_activity']))
 			{
 				$activity_info = array(
 					'wf_name'		=> '',
 					'wf_description'	=> '',
 					'wf_activity_id'	=> 0,
-					'wf_is_interactive'	=> 'y',
-					'wf_is_autorouted'	=> 'n',
+					'wf_is_interactive'	=> true,
+					'wf_is_autorouted'	=> false,
 					'wf_default_user'       => '*',
 					'wf_type'		=> 'activity'
 				);
 				$activity_roles = array();
+				$activity_agents = array();
 			}
 			else
 			{
 				$activity_info =& $this->activity_manager->get_activity($activity_id);
 				$activity_roles =& $this->activity_manager->get_activity_roles($activity_id);
+				$activity_agents =& $this->activity_manager->get_activity_agents($activity_id);
+				//for all agents we create ui_agent object to handle admin agents displays
+				//this array can be already done by the save_activity function, in this case
+				// we will just actualize most of the records
+				foreach ($activity_agents as $agent)
+				{
+					if (empty($this->agents[$agent['wf_agent_type']]))
+					{
+						$ui_agent =& createObject('workflow.ui_agent_'.$agent['wf_agent_type']);
+						$ui_agent->load($agent['wf_agent_id']);
+						$this->agents[$agent['wf_agent_type']] = $ui_agent;
+						unset($ui_agent);
+					}
+					else
+					{
+						$this->agents[$agent['wf_agent_type']]->load($agent['wf_agent_id']);
+					}
+				}
 			}
 
 			// fill type filter select box
@@ -198,7 +229,8 @@
 			$all_transition_activities_from =& $this->activity_manager->get_transition_activities($this->wf_p_id, 'end');
 			$all_transition_activities_to =& $this->activity_manager->get_transition_activities($this->wf_p_id, 'start');
 			if ($activity_id) $this->search_transitions_act($process_activities, $activity_id);
-			$process_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');			
+			$process_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');
+			$agents_list = $this->process_manager->get_agents();
 			$all_process_transitions = $this->activity_manager->get_process_transitions($this->wf_p_id);
 			$process_transitions = $this->activity_manager->get_process_transitions($this->wf_p_id, $filter_trans_from);
 			$process_activities_with_transitions =& $this->activity_manager->get_process_activities_with_transitions($this->wf_p_id);
@@ -250,8 +282,8 @@
 				'new_act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'name'					=> $activity_info['wf_name'],
 				'description'			=> $activity_info['wf_description'],
-				'checked_interactive'	=> ($activity_info['wf_is_interactive'] == 'y')? 'checked="checked"' : '',
-				'checked_autorouted'	=> ($activity_info['wf_is_autorouted'] == 'y')? 'checked="checked"' : '',
+				'checked_interactive'	=> ($activity_info['wf_is_interactive'])? 'checked="checked"' : '',
+				'checked_autorouted'	=> ($activity_info['wf_is_autorouted'])? 'checked="checked"' : '',
 				'img_transition_auto'           => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_interactive.gif') .'" alt="'. lang('transition mode') .'" />',
 				'img_interactive'               => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'mini_interactive.gif') .'" alt="'. lang('interactivity') .'" />',
 				'img_transition'                => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition.gif') .'" alt="'. lang('transitions') .'" />',
@@ -297,11 +329,54 @@
 				{
 					$this->t->set_var(array(
 						'act_role_name'	=> $role['wf_name'],
-						'act_role_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&find='. $find .'&where='. $where .'&activity_id='. $activity_info['wf_activity_id'] .'&p_id='. $this->wf_p_id .'&remove_role='. $role['wf_role_id'])
+						'act_role_href'	=> $GLOBALS['phpgw']->link('/index.php', array(
+							'menuaction'	=> 'workflow.ui_adminactivities.form',
+							'where2'	=> $where2,
+							'sort_mode2'	=> $sort_mode2,
+							'find'		=> $find,
+							'where'		=> $where,
+							'activity_id'	=> $activity_info['wf_activity_id'],
+							'p_id'		=> $this->wf_p_id,
+							'remove_role'	=> $role['wf_role_id'],
+						)),
+						 'lang_delete'		=> lang('delete'),
 					));
 					$this->t->parse('activity_roles', 'block_activity_roles', True);
 				}
 			}
+			
+			// fill activity agents
+			if (!$activity_agents)
+			{
+				$this->t->set_var(array(
+					'activity_agents'	=> lang('No agents associated with this activity'),
+					'agents_config_rows' 	=> '',
+				));
+			}
+			else
+			{
+				foreach ($activity_agents as $agent)
+				{
+					$this->t->set_var(array(
+						'act_agent_type'	=> $agent['wf_agent_type'],
+						'act_agent_href'	=> $GLOBALS['phpgw']->link('/index.php', array(
+							'menuaction'	=> 'workflow.ui_adminactivities.form',
+							'where2'	=> $where2,
+							'sort_mode2'	=> $sort_mode2,
+							'find'		=> $find,
+							'where'		=> $where,
+							'activity_id'	=> $activity_info['wf_activity_id'],
+							'p_id'		=> $this->wf_p_id,
+							'remove_agent'	=> $agent['wf_agent_id'],
+						)),
+						'lang_delete'		=> lang('delete'),
+					));
+					$this->t->parse('activity_agents', 'block_activity_agents', True);
+				}
+			}
+			
+			//display agents options
+			$this->display_agents_rows();
 
 			// fill user list for the Default user menu
 			$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
@@ -336,6 +411,15 @@
 					'proc_roleName'	=> $role['wf_name']
 				));
 				$this->t->parse('process_roles', 'block_process_roles', True);
+			}
+			
+			// fill agents select
+			foreach ($agents_list as $agent)
+			{
+				$this->t->set_var(array(
+					'select_agentType'	=> $agent['wf_agent_type']
+				));
+				$this->t->parse('select_agents', 'block_select_agents', True);
 			}
 
 			// fill list of transitions table
@@ -474,7 +558,7 @@
 				{
 					if($activity['wf_default_user'] == '*' )
 					{
-						$act_default_user = lang('All');
+						$act_default_user = lang('None');
 					}
 					else if($activity['wf_default_user'] != '*')
 					{
@@ -588,7 +672,7 @@
 		}
 
 		//! save the edited activity. Return the activity_id or false in case of error, $this->message is set in case of error
-		function save_activity($activity_id, $name, $description, $type, $default_user, $is_interactive, $is_autorouted, $userole)
+		function save_activity($activity_id, $name, $description, $type, $default_user, $is_interactive, $is_autorouted, $userole, $useagent)
 		{
 			$is_interactive = ($is_interactive == 'on') ? 'y' : 'n';
 			$is_autorouted = ($is_autorouted == 'on') ? 'y' : 'n';
@@ -617,11 +701,44 @@
 			}
 
 			$activity_id = $this->activity_manager->replace_activity($this->wf_p_id, $activity_id, $vars);
-
+			
 			// assign role to activity
 			if ($userole) 
 			{
 				$this->activity_manager->add_activity_role($activity_id, $userole);
+			}
+			
+			// assign agent to activity
+			if ($useagent) 
+			{
+				$this->activity_manager->add_activity_agent($activity_id, $useagent);
+			}
+
+			//save agent configuration datas if any
+			if (isset($_POST['wf_agent']))
+			{
+				$agents_conf =& $_POST['wf_agent'];
+				
+				//retrieve agents list
+				$activity_agents =& $this->activity_manager->get_activity_agents($activity_id);
+				//for all agents we create ui_agent object to handle admin agents displays and savings
+				foreach ($activity_agents as $agent)
+				{
+					//create an empty temp ui_agent object
+					$ui_agent =& createObject('workflow.ui_agent_'.$agent['wf_agent_type']);
+					//build this object BUT without loading actual data
+					//because we will save next values soon
+					$ui_agent->load($agent['wf_agent_id'],false);
+					//store it in an array
+					$this->agents[$agent['wf_agent_type']] = $ui_agent;
+					//delete the temp object
+					unset($ui_agent);
+				}
+				// now we save the data obtained from the form in theses agents
+				foreach ($agents_conf as $typeagent => $confarray)
+				{
+					$this->agents[$typeagent]->save($confarray);
+				}
 			}
 
 			// add activity transitions
@@ -642,11 +759,11 @@
 			$this->activity_manager->validate_process_activities($this->wf_p_id);
 			
 			//collect every error message after our actions on activity manager. If there is some we are in error
-			//$this->message = $this->activity_manager->get_error(true);
-			//if (!(count($this->message)==0))
-			//{
-			//	return false;
-			//}
+			/*$this->message = $this->activity_manager->get_error(true);
+			if (!(count($this->message)==0))
+			{
+				return false;
+			}*/
 			return $activity_id;
 		}
 
@@ -698,6 +815,27 @@
 			header('content-length: ' . filesize($image));
 			readfile($image);
 		}
-
+		
+		/*!
+		* dislays th activity agents config rows
+		*/
+		function display_agents_rows()
+		{
+			if (empty($this->agents))
+			{
+				$this->t->set_var(array('agents_config_rows' => ''));
+			}
+			else
+			{
+				$this->t->set_file('admin_agents', 'admin_agents.tpl');
+				foreach ($this->agents as $ui_agent)
+				{
+					//this is parsing the agent's admin template in the given template var
+					$ui_agent->showAdminActivityOptions('each_agent_rows');
+				}
+				$this->translate_template('admin_agents');
+        	                $this->t->parse('agents_config_rows', 'admin_agents');
+			}
+		}
 	}
 ?>

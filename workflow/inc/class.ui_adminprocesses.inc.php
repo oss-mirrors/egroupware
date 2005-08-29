@@ -104,7 +104,11 @@
 						'role_give_release_right'               => 'yesno',
 						'role_give_exception_right'             => 'yesno',
 			);
-
+			//we add agents options
+			//mail_smtp
+			$bo_agent = CreateObject('workflow.bo_agent_mail_smtp');
+			$known_config_items = $known_config_items + $bo_agent->listProcessConfigurationFields();
+			
 			if( isset($_POST['upload']))
 			{
 				if ($_FILES['userfile1']['size'] == 0)
@@ -224,6 +228,7 @@
 			// show current process
 			$this->t->set_var(array(
 				'errors'		=> $error_str,
+				'txt_Process_Name'	=> lang('Process Name'),
 				'link_new'		=> $GLOBALS['phpgw']->link('/index.php', array_merge( array(
 								'menuaction'	=> $this->form_action,
 								'p_id'		=> 0,), $this->link_data)
@@ -253,11 +258,14 @@
 		
 		//! Show the list of process configuration options
 		/*!
-		Use the process_config array member which should be already setted. Show a table with a line for each config
-		value containing [Yes-No/value | default] choices. The parameter is an array containing all known config items and is used
-		to show all config items, as only the ones changed for this process are stored in process_config. You should give
-		this function all config_names avaible at process level associated with his type which is 'yesno' or 'text'. 
-		You can add titles by giving the title in the config_name and 'title' as type. 
+		* Use the process_config array member which should be already setted. Show a table with a line for each config
+		* value containing [Yes-No/value/select | default] choices. 
+		* The parameter is an array containing all known config items and is used to show all config items, as only 
+		* the ones changed for this process are stored in process_config. 
+		* You should give this function all config_names avaible at process level associated with type which 
+		* is 'yesno' or 'text' or an associative array with key 'select' containing an array of the select values
+		* to show (array: key => value) ==> (select: name => value)
+		* You can add titles by giving the title in the config_name and 'title' as type. 
 		*/
 		function show_process_config(&$known_config_items)
 		{
@@ -271,11 +279,13 @@
 		 	$this->t->set_block('admin_processes', 'block_config_table_title', 'config_table_title');
 			$this->t->set_block('admin_processes', 'block_config_table_yesno', 'config_table_yesno');
 			$this->t->set_block('admin_processes', 'block_config_table_text', 'config_table_text');
+			$this->t->set_block('admin_processes', 'block_config_table_select_option', 'config_table_select_option');
+			$this->t->set_block('admin_processes', 'block_config_table_select', 'config_table_select');
 			$this->translate_template('block_config_table_title');
 			$this->translate_template('block_config_table_yesno');
 			$this->translate_template('block_config_table_text');
 			$this->translate_template('block_config_table_empty');
-		
+			$this->translate_template('block_config_table_select');
                 
 		        if (!(is_array($known_config_items)) || !count($known_config_items))
 			{
@@ -284,6 +294,7 @@
 					'config_table_title' => '',
 					'config_table_yesno' => '',
 					'config_table_text' => '',
+					'config_table_select' => '',
 				));
 				
 				$this->t->parse('config_table_empty', 'block_config_table_empty', true);
@@ -299,24 +310,60 @@
 				foreach ($known_config_items as $config_name => $config_type)
 				{
 					// now rows can be of different types
-					if ($config_type=='title')
+					if (is_array($config_type))
+					{//we have a select
+						$this->t->set_var(array(
+        		                                'config_name' 			=> $config_name,
+        		                                'config_name_trad'		=> lang(str_replace('_',' ',$config_name)),
+                        		                'color_line' 			=> $this->nextmatchs->alternate_row_color($tr_color),
+                        		                'config_table_title' 		=> '',
+							'config_table_text' 		=> '',
+							'config_table_yesno'		=> '',
+						));
+						unset($row_value);
+						$row_value = $this->process_config[$config_name];
+						if (!(isset($row_value)))
+						{
+							$this->t->set_var(array(
+		                        	                'config_default_selected' 	=> 'selected',
+		                        	                'config_table_select_option'	=> '',
+							));
+						}
+						else
+						{
+							$this->t->set_var(array('config_default_selected' => ''));
+						}
+						foreach($config_type as $key => $value)
+						{
+							$this->t->set_var(array(
+		                        	              	 'config_option_name'		=> $value,
+		                        	              	 'config_option_value'		=> $key,
+		                        	              	 'config_option_selected'	=> ($key == $row_value)? 'selected' : '',
+							));//DEBUG TODO selected value?
+							$this->t->parse('config_table_select_option','block_config_table_select_option',true);
+						}
+						$this->t->parse('config_table_select', 'block_config_table_select', false);
+					}
+					elseif ($config_type=='title')
 					{
 						$this->t->set_var(array(
-                                	        	'config_name_trad'	=> lang($config_name),
+                                	        	'config_name_trad'	=> lang(str_replace('_',' ',$config_name)),
 	        	                                'color_line'		=> '#D3DCE3',
 	        	                                'config_table_text' 	=> '',
 	        	                                'config_table_yesno' 	=> '',
         	        	                ));
         	        	                $this->t->parse('config_table_title', 'block_config_table_title', false);
 					}
+
 					else
 					{
-						// if not title our row can be a text value or a Yes/No/Default value
+						// if not title or select our row can be a text value or a Yes/No/Default value
 						$this->t->set_var(array(
         		                                'config_name' 			=> $config_name,
-        		                                'config_name_trad'		=> lang($config_name),
+        		                                'config_name_trad'		=> lang(str_replace('_',' ',$config_name)),
                         		                'color_line' 			=> $this->nextmatchs->alternate_row_color($tr_color),
                         		                'config_table_title' 		=> '',
+                        		                'config_table_select'		=> '',
 						));
 						unset($row_value);
 						$row_value = $this->process_config[$config_name];
@@ -327,6 +374,7 @@
 								$this->t->set_var(array(
 									'config_value' 			=> $row_value,
 									'config_use_default_checked' 	=> '',
+									'txt_Use_Default'		=> lang('Use Default'),
 		                        		                'config_table_yesno' 		=> '',
 								));
 							}
@@ -335,6 +383,7 @@
 								$this->t->set_var(array(
 									'config_value' 			=> '',
 									'config_use_default_checked' 	=> 'checked',
+									'txt_Use_Default'               => lang('Use Default'),
 		                        		                'config_table_yesno' 		=> '',
 								));
 							}
@@ -470,19 +519,39 @@
 		
 		//! Save the configuration values for the current process
 		/*!
-		This function use the list of knwon configuration items to parse POSTed config values
+		This function use the list of known configuration items to parse POSTed config values
 		Theses values are passed to the process->SetConfigValues which know well what to do with
 		them.
 		*/
 		function save_config(&$global_config_data)
 		{
-			$known_config_items	= $global_config_data['known_items'];
-			$config_yesno		= $global_config_data['yesno'];	
-			$config_value		= $global_config_data['value'];
-			$config_use_default	= $global_config_data['default'];
+			$known_config_items	=& $global_config_data['known_items'];
+			$config_yesno		=& $global_config_data['yesno'];	
+			$config_value		=& $global_config_data['value'];
+			$config_use_default	=& $global_config_data['default'];
 			$array_config = array();
 			foreach ($known_config_items as $config_name => $config_type)
 			{
+				if (is_array($config_type))
+				{//case of a select
+					if (isset($config_use_default[$config_name]))
+					{
+						$user_post_value = $config_value[$config_name];
+						if ($user_post_value == 'default')
+						{
+							//user ask for default
+							$array_config[$config_name]=array('int' => -1);
+						}
+						elseif (is_numeric($user_post_value))
+						{
+							$array_config[$config_name]=array('int' => $user_post_value);
+						}
+						else
+						{
+							$array_config[$config_name]=array('text' => $user_post_value);
+						}
+					}
+				}
 				if (!($config_type=='title')) //we do not need titles
 				{
 					if ($config_type=='yesno')
@@ -514,7 +583,15 @@
 						}
 						elseif (isset($config_value[$config_name]))
 						{
-							$array_config[$config_name]=array('text' => $config_value[$config_name]);
+							$user_post_value = $config_value[$config_name];
+							if (is_numeric($user_post_value))
+							{
+								$array_config[$config_name]=array('int' => $user_post_value);
+							}
+							else
+							{
+								$array_config[$config_name]=array('text' => $user_post_value);
+							}						
 						}
 					}
 				}
