@@ -43,9 +43,9 @@ class RoleManager extends BaseManager {
   function get_role($pId, $roleId)
   {
     $query = "select * from `".GALAXIA_TABLE_PREFIX."roles` where `wf_p_id`=? and `wf_role_id`=?";
-  $result = $this->query($query,array($pId, $roleId));
-  $res = $result->fetchRow();
-  return $res;
+    $result = $this->query($query,array($pId, $roleId));
+    $res = $result->fetchRow();
+    return $res;
   }
   
   /*!
