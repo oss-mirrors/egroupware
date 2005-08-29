@@ -12,7 +12,7 @@
 	/* Basic information about this app */
 	$setup_info['workflow']['name']			= 'workflow';
 	$setup_info['workflow']['title']		= 'Workflow management';
-	$setup_info['workflow']['version']		= '1.1.02.000';
+	$setup_info['workflow']['version']		= '1.1.03.000';
 	$setup_info['workflow']['app_order']		= 10;
 	$setup_info['workflow']['enable']		= 1;
 	$setup_info['workflow']['author']		= 'Ported from tikiwiki';
@@ -32,7 +32,9 @@
 								'egw_wf_transitions', 
 								'egw_wf_user_roles',
 								'egw_wf_workitems',
-								'egw_wf_process_config'
+								'egw_wf_process_config',
+								'egw_wf_activity_agents',
+								'egw_wf_agent_mail_smtp',
 							);
 
 	/* The hooks this app includes, needed for hooks registration */
@@ -45,6 +47,7 @@
 	$setup_info['workflow']['hooks'][] = 'settings';
 	$setup_info['workflow']['hooks'][] = 'sidebox_menu';
 	$setup_info['workflow']['hooks'][] = 'acl_manager';
+	$setup_info['workflow']['hooks'][] = 'deleteaccount';
 
 	/* Dependencies for this app to work */ 
 	$setup_info['workflow']['depends'][] = array(

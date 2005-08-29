@@ -25,7 +25,6 @@
 				'wf_last_modif'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 				'wf_description'	=> array('type' => 'text', 'nullable' => True),
 				'wf_default_user'	=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True, 'default'=> '*'),
-				'wf_agent'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 			),
 			'pk' => array('wf_activity_id'),
 			'fk' => array(),
@@ -173,6 +172,33 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		)
-
+		),
+		'egw_wf_activity_agents' => array( 
+			'fd' => array(
+				'wf_activity_id'	=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
+				'wf_agent_id' 		=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
+				'wf_agent_type'		=> array('type' => 'varchar', 'precision' => '15', 'nullable' => False),
+			),
+			'pk' => array('wf_activity_id', 'wf_agent_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
+		'egw_wf_agent_mail_smtp' => array( 
+			'fd' => array(
+				'wf_agent_id'		=> array('type' => 'auto', 'precision' => '4', 'nullable' => False),
+				'wf_to' 		=> array('type' => 'varchar', 'precision' => '255', 'nullable' => False, 'default' => '%roles%'),
+				'wf_cc'			=> array('type' => 'varchar', 'precision' => '255', 'nullable' => True),
+				'wf_bcc'		=> array('type' => 'varchar', 'precision' => '255', 'nullable' => True),
+				'wf_from'		=> array('type' => 'varchar', 'precision' => '255', 'nullable' => True, 'default' => '%user%'),
+				'wf_replyTo'		=> array('type' => 'varchar', 'precision' => '255', 'nullable' => True, 'default' => '%user%'),
+				'wf_subject'		=> array('type' => 'varchar', 'precision' => '255', 'nullable' => True),
+				'wf_message'		=> array('type' => 'text', 'nullable' => True),
+				'wf_send_mode'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True, 'default' => 0),
+			),
+			'pk' => array('wf_agent_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
 	);
