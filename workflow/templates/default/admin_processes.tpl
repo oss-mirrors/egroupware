@@ -26,7 +26,7 @@
 	<tr>
 	</tr>
 	<tr class="row_on">
-		<td>{lang_Process_Name}</td>
+		<td>{txt_Process_Name}</td>
 		<td><input type="text" maxlength="80" name="name" value="{name}" /> ver:{version}</td>
 	</tr>
 	<tr class="row_off">
@@ -85,12 +85,32 @@
 				<tr><td>
 					<input type="text" maxlength="80" name="config_value[{config_name}]" value="{config_value}" />
 				</td><td>
-					<input type="checkbox" name="config_use_default[{config_name}]" {config_use_default_checked} />{lang_Use_Default}
+					<input type="checkbox" name="config_use_default[{config_name}]" {config_use_default_checked} />{txt_Use_Default}
 				</td></tr>
 				</table>
 				</td>
 			</tr>
 			<!-- END block_config_table_text -->
+			<!-- BEGIN block_config_table_select -->
+			<tr bgcolor="{color_line}">
+				<td>
+					{config_name_trad}
+				</td>
+				<td>
+				<table>
+				<tr><td>
+					<select name="config_value[{config_name}]">
+					<option value="default" {config_default_selected}>{lang_Use_default}</option>
+					<!-- BEGIN block_config_table_select_option -->
+					<option value="{config_option_value}" {config_option_selected} />{config_option_name}</option>
+					<!-- END block_config_table_select_option -->
+					</select>
+				</td></tr>
+				</table>
+				</td>
+			</tr>
+			<!-- END block_config_table_select -->
+
 	<!-- END block_config_table -->
 		</table>
 		</td>
