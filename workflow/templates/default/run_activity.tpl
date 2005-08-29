@@ -9,6 +9,13 @@
 					</span>
 				</div>
 				<!-- END block_title_zone -->
+				<!-- BEGIN block_instance_name_zone -->
+				<div id="wf_instance_name_zone">
+					<span id="wf_instance_name">
+					{wf_instance_name}
+					</span>
+				</div>
+				<!-- END block_instance_name_zone -->
 				<div id="wf_activity_template">
 						{activity_template}
 				</div>
