@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.bo_workflow_forms.inc.php');
 
 	class ui_adminprocesses extends bo_workflow_forms
 	{
@@ -89,6 +89,8 @@
 						'display_please_wait_message'		=> 'yesno',
 						'use_automatic_parsing'		 	=> 'yesno',
 						'show_activity_title' 			=> 'yesno',
+						'show_instance_name'			=> 'yesno',
+						'show_instance_owner'			=> 'yesno',
 						'show_multiple_submit_as_select'	=> 'yesno',
 						'show_activity_info_zone'		=> 'yesno',
 						'Graphic options'			=> 'title',
