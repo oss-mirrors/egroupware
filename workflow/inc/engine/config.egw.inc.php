@@ -86,11 +86,46 @@ function tra($msg, $m1='', $m2='', $m3='', $m4='')
 
 // Specify how error messages should be shown
 if (!function_exists('galaxia_show_error')) {
-    function galaxia_show_error($msg)
+    /*!
+    * Show error messages from the engine
+    * @param $msg is the message to show
+    * @param $dying is true by default and will launch a terminal die command
+    * 	if not set to false.
+    */
+    function galaxia_show_error($msg, $dying = true)
     {
-		die("Galaxia Error: $msg");
+		if ($dying)
+		{
+		  die("Galaxia Error: $msg");
+                }
+                else
+                {
+                  echo("<br>Galaxia Error: $msg");
+                }
     }
 }
+
+//define the list of agents avaible with your Galaxia installation
+if (!function_exists('galaxia_get_agents_list'))
+{
+  /*!
+  * This function list the agents avaible with your galaxia installation. The name of an agent
+  * is his unique identifier, the priority is an execution order priority
+  * @return an associative array of agents description, each row is an agent description
+  * containing a 'wf_agent_type' key and a 'wf_agent_priority' key
+  */
+  function galaxia_get_agents_list()
+  {
+    $res = array(
+      array(
+        'wf_agent_type' => 'mail_smtp', 
+        'wf_agent_priority' => 1,
+      )
+    );
+    return  $res;
+  }
+}
+
 
 
 if (!function_exists('galaxia_user_can_admin_process'))
