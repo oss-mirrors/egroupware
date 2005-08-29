@@ -87,9 +87,11 @@
 	<tr class="row_off">
 	  <td>{lang_Roles_assigned_to_this_activity}</td>
 	  <td>
+		<ul class="ul_activity_roles">
 	  <!-- BEGIN block_activity_roles -->
-	  {act_role_name}[<a href="{act_role_href}">x</a>]<br/>
+	  <li class="li_activity_role">{act_role_name}&nbsp;&nbsp;[<a href="{act_role_href}">{lang_delete}</a>]<br/>
 	  <!-- END block_activity_roles -->
+		</ul>
 	  </td>
 	</tr>
 	<tr class="row_on">
@@ -102,6 +104,27 @@
 	  <!-- END block_process_roles -->
 	  </select>
 	  <input type="text" name="rolename" /><input type="submit" name="addrole" value="{lang_Add_new_role}" />
+	  </td>
+	</tr>
+	<tr class="row_off">
+	  <td>{lang_Agents_assigned_to_this_activity}</td>
+	  <td>
+		<ul class="ul_activity_agents">
+	  <!-- BEGIN block_activity_agents -->
+	  <li class="li_activity_agent">{act_agent_type}&nbsp;&nbsp;[<a href="{act_agent_href}">{lang_delete}</a>]<br/>
+	  <!-- END block_activity_agents -->
+		<ul>
+	  </td>
+	</tr>
+	<tr class="row_on">
+	  <td>{lang_Add_agent}</td>
+	  <td>
+	  <select name="useagent">
+	  <option value="">{lang_None}</option>
+	  <!-- BEGIN block_select_agents -->
+	  <option value="{select_agentType}">{select_agentType}</option>
+	  <!-- END block_select_agents -->
+	  </select>
 	  </td>
 	</tr>
        <tr class="row_off">
@@ -118,7 +141,7 @@
 		{lang_setNextUser_directives_can_override_it}
          </td>
        </tr>
-
+	{agents_config_rows}
 	<tr class="th">
 	        <td colspan="2">
 			<table width="100%" cellpadding="0" cellspacing="0">
