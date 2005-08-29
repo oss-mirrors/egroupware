@@ -20,13 +20,18 @@ class BaseActivity extends Base {
   var $pId;
   var $activityId;
   var $type;
-  var $defaultUser;
+  var $defaultUser='*';
+  var $agents=Array();
   
   function setDb(&$db)
   {
     $this->db =& $db;
   }
   
+  /*!
+  * constructor of the BaseActivity Object
+  * @param $db is the ADODB object
+  */
   function BaseActivity(&$db)
   {
     $this->db =& $db;
@@ -35,10 +40,17 @@ class BaseActivity extends Base {
   
   
   /*!
-  Factory method returning an activity of the desired type
-  loading the information from the database.
+  * Factory method returning an activity of the desired type
+  * loading the information from the database and populating the activity object 
+  * with datas related to his activity type (being more than a BaseActivity then.
+  * @param $activityId : it is the id of the wanted activity
+  * @param $with_roles : true by default, gives you the basic roles information in the result
+  * @param $with_agents : false by default, gives you the basic agents information in the result
+  * @param $as_array : boolean false by default, if true the function will return an array instead of an object
+  * @return an Activity Object of the right class (Child class) or an associative array containing the activity 
+  * information if $as_array is set to true
   */
-  function getActivity($activityId) 
+  function getActivity($activityId, $with_roles= true,$with_agents=false,$as_array=false) 
   {
     $query = "select * from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?";
     $result = $this->query($query,array($activityId));
@@ -46,27 +58,35 @@ class BaseActivity extends Base {
     $res = $result->fetchRow();
     switch($res['wf_type']) {
       case 'start':
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'activities'.SEP.'Start.php');
         $act = new Start($this->db);  
         break;
       case 'end':
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'activities'.SEP.'End.php');
         $act = new End($this->db);
         break;
       case 'join':
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'activities'.SEP.'Join.php');
         $act = new Join($this->db);
         break;
       case 'split':
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'activities'.SEP.'Split.php');
         $act = new Split($this->db);
         break;
       case 'standalone':
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'activities'.SEP.'Standalone.php');
         $act = new Standalone($this->db);
         break;
       case 'view':
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'activities'.SEP.'View.php');
         $act = new View($this->db);
         break;
       case 'switch':
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'activities'.SEP.'SwitchActivity.php');
         $act = new SwitchActivity($this->db);
         break;
       case 'activity':
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'activities'.SEP.'Activity.php');
         $act = new Activity($this->db);
         break;
       default:
@@ -87,16 +107,62 @@ class BaseActivity extends Base {
     //Now get backward transitions
     
     //Now get roles
-    $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."activity_roles` where `wf_activity_id`=?";
-    $result=$this->query($query,array($res['wf_activity_id']));
-    while($res = $result->fetchRow()) {
-      $this->roles[] = $res['wf_role_id'];
+    if ($with_roles)
+    {
+      $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."activity_roles` where `wf_activity_id`=?";
+      $result=$this->query($query,array($activityId));
+      if (!(empty($result)))
+      {
+        while($res = $result->fetchRow()) 
+        {
+          $this->roles[] = $res['wf_role_id'];
+        }
+      }
+      $act->setRoles($this->roles);
     }
-    $act->setRoles($this->roles);
-    return $act;
+    
+    //Now get agents if asked so
+    if ($with_agents)
+    {
+      $query = "select wf_agent_id, wf_agent_type from ".GALAXIA_TABLE_PREFIX."activity_agents where wf_activity_id=?";
+      $result=$this->query($query,array($activityId));
+      if (!(empty($result)))
+      {
+        while($res = $result->fetchRow()) 
+        {
+          $this->agents[] = array(
+              'wf_agent_id'	=> $res['wf_agent_id'],
+              'wf_agent_type'	=> $res['wf_agent_type'],
+            );
+        }
+      }
+      $act->setAgents($this->agents);
+    }
+
+    if ($as_array)
+    {//we wont return the object but an associative array instead
+       $res['wf_name']=$act->getName();
+       $res['wf_normalized_name']=$act->getNormalizedName();
+       $res['wf_description']=$act->getDescription();
+       $res['wf_is_interactive']=$act->isInteractive();
+       $res['wf_is_autorouted']=$act->isAutoRouted();
+       $res['wf_roles']=$act->getRoles();
+       //$res['outbound']=$act->get();
+       //$res['inbound']=$act->get();
+       $res['wf_p_id']=$act->getProcessId();
+       $res['wf_activity_id']=$act->getActivityId();
+       $res['wf_type']=$act->getType();
+       $res['wf_default_user']=$act->getDefaultUser();
+       $res['wf_agents']= $act->getAgents();
+       return $res;
+    }
+    else
+    {
+      return $act;
+    }
   }
   
-  /*! Returns an Array of roleIds for the given user */
+  /*! @return an Array of roleIds for the given user */
   function getUserRoles($user) {
     
     // retrieve user_groups information in an array containing all groups for this user
@@ -147,6 +213,32 @@ class BaseActivity extends Base {
   /*! Gets the activity name */
   function getName() {
     return $this->name;
+  }
+
+  /*! 
+  * Sets the agents for the activity object (no save)
+  * @param $agents is an associative array with ['wf_agent_id'] and ['wf_agent_type'] keys
+  * @return false if any problem is detected
+  */
+  function setAgents($agents) 
+  {
+    if (!(is_array($agents)))
+    {
+      $this->error[] = tra('bad parameter for setAgents, the parameter should be an array');
+      return false;
+    }
+    $this->agents = $agents;
+  }
+  
+  /*! 
+  * Gets the activity agents 
+  * @return an associative array with the basic agents informations (id an type) or false
+  * if no agent is defined for this activity
+  */
+  function getAgents() 
+  {
+    if (empty($this->agents)) return false;
+    return $this->agents;
   }
   
   /*! Sets the activity description */
@@ -214,7 +306,7 @@ class BaseActivity extends Base {
     return $this->roles;
   }
   
-  /*! Sets roles for this activities, shoule receive an
+  /*! Sets roles for this activities, should receive an
   array of roleIds */
   function setRoles($roles) {
     $this->roles = $roles;
@@ -238,35 +330,14 @@ class BaseActivity extends Base {
   }
 
   //! DEPRECATED: unused function. old API, do not use it. return always false
-  /*! Checks if a user has a certain role (by name) for this activity,
-      e.g. $isadmin = $activity->checkUserRole($user,'admin'); */
+  /*! 
+  * Checks if a user has a certain role (by name) for this activity,
+  *    e.g. $isadmin = $activity->checkUserRole($user,'admin'); 
+  * @deprecated
+  */
   function checkUserRole($user,$rolename) 
   {
     return false;
-    /*
-    $aid = $this->activityId;
-    // add group mapping, warning groups and user can have the same id
-    $groups = galaxia_retrieve_user_groups($user);
-        
-    $result= $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."activity_roles gar, 
-        ".GALAXIA_TABLE_PREFIX."user_roles gur, 
-        ".GALAXIA_TABLE_PREFIX."roles gr 
-        where gar.wf_role_id=gr.wf_role_id 
-        and gur.wf_role_id=gr.wf_role_id
-        and gar.wf_activity_id=? 
-        and ( (gur.wf_user=? and gur.wf_account_type='u') 
-              or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g') 
-            )
-        and gr.wf_name=?"
-        ,array($aid, $user, $rolename));
-    if ($result >= 1)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }*/
   }
 
   //! Checks if a user has a access to this activity,
@@ -277,6 +348,7 @@ class BaseActivity extends Base {
   function checkUserAccess($user) 
   {
     $aid = $this->activityId;
+    require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'common' . SEP . 'WfSecurity.php');
     $wf_security = new WfSecurity($this->db);
     return $wf_security->checkUserAccess($user, $aid);
   }
