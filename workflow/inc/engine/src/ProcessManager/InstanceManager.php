@@ -113,7 +113,47 @@ class InstanceManager extends BaseManager {
     $query = "update ".GALAXIA_TABLE_PREFIX."instance_activities set wf_user=? where wf_instance_id=? and wf_activity_id=?";
     $this->query($query, array($user, $iid, $activityId));  
   }
-
+  
+  //! Removes an user from all fields where he could be on every instances
+  /*!
+  * This function delete all references on the given user on all instances.
+  * It will concern: wf_user, wf_owner and wf_next_user fields
+  * @param $user is the user id to remove
+  */
+  function remove_user($user)  
+  {
+    // user=id => user='*'
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_user=? where wf_user=?';
+    $this->query($query,array('*',$user));
+    // owner=id => owner=0
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_owner=? where wf_owner=?';
+    $this->query($query,array(0,$user));
+    // next_user=id => next_user=NULL
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_next_user=? where wf_next_user=?';
+    $this->query($query,array(NULL,$user));
+  }
+  
+  //! Transfer all references to one user to another one
+  /*!
+  * This function transfer all references concerning one user to another user
+  * It will concern: wf_user, wf_owner and wf_next_user fields
+  * This function will not check access on the instance for the new user, it is the task
+  * of the admin to ensure the new user will have the necessary access rights
+  * @param $old_user is the actual user id
+  * @param $new_user is the new user id
+  */
+  function transfer_user($old_user, $new_user)  
+  {
+    // user
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_user=? where wf_user=?';
+    $this->query($query,array($new_user,$old_user));
+    // owner
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_owner=? where wf_owner=?';
+    $this->query($query,array($new_user,$old_user));
+    // next_user
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_next_user=? where wf_next_user=?';
+    $this->query($query,array($new_user,$old_user));
+  }
 }    
 
 ?>

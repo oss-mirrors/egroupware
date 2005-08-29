@@ -60,7 +60,34 @@ class ActivityManager extends BaseManager {
               where wf_activity_id=? and wf_role_id=?';
     $this->query($query, array($activityId,$roleId));
   }
+
+  //! Removes an user from all fields where he could be on every activities
+  /*!
+  * This function delete all references on the given user on all activities.
+  * It will concern: wf_default_user
+  * @param $user is the user id to remove
+  */
+  function remove_user($user)  
+  {
+  echo "<hr> remove user".$user;
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'activities set wf_default_user=? where wf_default_user=?';
+    $this->query($query,array('',$user));
+  }
   
+  //! Transfer all references to one user to another one in the activities
+  /*!
+  * This function transfer all references concerning one user to another user
+  * It will concern: wf_default_user
+  * @param $old_user is the actual user id
+  * @param $new_user is the new user id
+  */
+  function transfer_user($old_user, $new_user)  
+  {
+  echo "<hr> transfer user".$user;
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'activities set wf_default_user=? where wf_default_user=?';
+    $this->query($query,array($new_user,$old_user));
+  }  
+
   /*!
    Checks if a transition exists
   */
@@ -656,22 +683,56 @@ class ActivityManager extends BaseManager {
   
   /*! 
   * Removes an activity.
+  * This will also remove transitions concerning the activity, roles associations, agents associations
+  * anassociated agents data
+  * @param $pId is the process id
+  * @param $activityId is the activity id
+  * @param $transaction is optional and true by default, it will permit to encapsulate the different deletes
+  * in a transaction, if you already started a transaction encapsulating this one use this paramater to prevent
+  * us to open a new one.
+  * @return true if it was ok, false if nothing was done
   */
-  function remove_activity($pId, $activityId)
+  function remove_activity($pId, $activityId, $transaction = true)
   {
     $pm = new ProcessManager($this->db);
     $proc_info = $pm->get_process($pId);
     $actname = $this->_get_normalized_name($activityId);
+    
+    // start a transaction
+    $this->db->StartTrans();
+     
+    //the activity
     $query = 'delete from '.GALAXIA_TABLE_PREFIX.'activities where wf_p_id=? and wf_activity_id=?';
     $this->query($query,array($pId,$activityId));
+    
+    //transitions
     $query = 'select wf_act_from_id,wf_act_to_id from '
       .GALAXIA_TABLE_PREFIX.'transitions where wf_act_from_id=? or wf_act_to_id=?';
     $result = $this->query($query, array($activityId,$activityId));
     while($res = $result->fetchRow()) {
       $this->remove_transition($res['wf_act_from_id'], $res['wf_act_to_id']);
     }
+    
+    //roles
     $query = 'delete from '.GALAXIA_TABLE_PREFIX.'activity_roles where wf_activity_id=?';
     $this->query($query, array($activityId));
+    
+    //agents
+    $query = 'select wf_agent_id, wf_agent_type from '.GALAXIA_TABLE_PREFIX.'activity_agents where wf_activity_id=?';
+    $result = $this->query($query, array($activityId));
+    if (!(empty($result)))
+    {
+      while ($res = $result->fetchRow())
+      {
+        //delete the associated agent
+        $query = 'delete from '.GALAXIA_TABLE_PREFIX.'agent_'.$res['wf_agent_type'].' where wf_agent_id=?';
+        $this->query($query, array($res['wf_agent_id']));
+      }
+      //now we can delete the association table
+      $query = 'delete from '.GALAXIA_TABLE_PREFIX.'activity_agents where wf_activity_id=?';
+      $this->query($query, array($activityId));
+    }
+    
     // And we have to remove the user and compiled files
     // for this activity
     $wf_procname = $proc_info['wf_normalized_name'];
@@ -680,7 +741,9 @@ class ActivityManager extends BaseManager {
       @unlink(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'templates'.$actname.'.tpl'); 
     }
     unlink(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'compiled'.SEP.$actname.'.php'); 
-    return true;
+    
+    // perform commit (return true) or Rollback (return false)
+    return $this->db->CompleteTrans();
   }
   
   /*!

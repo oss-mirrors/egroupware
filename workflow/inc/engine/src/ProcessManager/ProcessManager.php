@@ -700,11 +700,16 @@ class ProcessManager extends BaseManager {
     $this->deactivate_process($pId);
     $name = $this->_get_normalized_name($pId);
     $aM = new ActivityManager($this->db);
+    
+    // start a transaction
+    $this->db->StartTrans();
+    
     // Remove process activities
     $query = "select wf_activity_id from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId";
     $result = $this->query($query);
     while($res = $result->fetchRow()) {
-      $aM->remove_activity($pId,$res['wf_activity_id']);
+      //we add a false parameter to prevent the ActivityManager from opening a new transaction
+      $aM->remove_activity($pId,$res['wf_activity_id'], false);
     }
 
     // Remove process roles
@@ -735,7 +740,9 @@ class ProcessManager extends BaseManager {
     $msg = sprintf(tra('Process %s removed'),$name);
     $this->notify_all(5,$msg);
     
-    return true;
+    // perform commit (return true) or Rollback (return false)
+    return $this->db->CompleteTrans();
+    
   }
   
   /*!

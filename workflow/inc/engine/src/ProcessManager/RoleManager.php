@@ -1,4 +1,5 @@
 <?php
+
 require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php');
 //!! RoleManager
 //! A class to manipulate roles.
@@ -77,8 +78,31 @@ class RoleManager extends BaseManager {
   */
   function remove_mapping($user,$roleId)
   { 
-  $query = "delete from `".GALAXIA_TABLE_PREFIX."user_roles` where `wf_user`=? and `wf_role_id`=?";
-  $this->query($query,array($user, $roleId));
+    $query = "delete from `".GALAXIA_TABLE_PREFIX."user_roles` where `wf_user`=? and `wf_role_id`=?";
+    $this->query($query,array($user, $roleId));
+  }
+
+  //! Removes an user from the role mappings
+  /*!
+  * This function delete all existing mappings concerning one user
+  * @param $user is the user id
+  */
+  function remove_user($user)  
+  {
+    $query = 'delete * from '.GALAXIA_TABLE_PREFIX.'user_roles where wf_user=?';
+    $this->query($query,array($user));
+  }
+  
+  //! Transfer all roles from an user to another one
+  /*!
+  * This function transfer all existing mappings concerning one user to another user
+  * @param $old_user is the actual user id
+  * @param $new_user is the new user id
+  */
+  function transfer_user($old_user, $new_user)  
+  {
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'user_roles set wf_user=? where wf_user=?';
+    $this->query($query,array($new_user, $old_user));
   }
   
   //!  List mappings
@@ -261,7 +285,7 @@ class RoleManager extends BaseManager {
     $this->query($query,array($roleId));
     // perform commit (return true) or Rollback (return false)
     return $this->db->CompleteTrans();
-  }
+    }
   
   /*!
   * Updates or inserts a new role in the database, 
