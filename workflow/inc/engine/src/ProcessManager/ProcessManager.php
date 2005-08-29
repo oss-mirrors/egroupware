@@ -6,6 +6,7 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php
   This class is used to add,remove,modify and list
   processes.
   Most of the methods acts directly in database level, bypassing Project object methods.
+  TODO: fix multiple non checked fopen ==> infinite loops if problems with filesystem
 */
 class ProcessManager extends BaseManager {
   var $parser;
@@ -31,8 +32,8 @@ class ProcessManager extends BaseManager {
   */
   function activate_process($pId)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."processes set wf_is_active='y' where wf_p_id=$pId";
-    $this->query($query);  
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'processes set wf_is_active=? where wf_p_id=?';
+    $this->query($query, array('y',$pId));  
     $msg = sprintf(tra('Process %d has been activated'),$pId);
     $this->notify_all(3,$msg);
   }
@@ -42,8 +43,8 @@ class ProcessManager extends BaseManager {
   */
   function deactivate_process($pId)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."processes set wf_is_active='n' where wf_p_id=$pId";
-    $this->query($query);  
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'processes set wf_is_active=? where wf_p_id=?';
+    $this->query($query, array('n',$pId));  
     $msg = sprintf(tra('Process %d has been deactivated'),$pId);
     $this->notify_all(3,$msg);
   }
@@ -56,7 +57,7 @@ class ProcessManager extends BaseManager {
     // <process>
     $out = '<process>'."\n";
     //we retrieve config values with the others process data
-    $proc_info = $this->get_process($pId, true);
+    $proc_info =& $this->get_process($pId, true);
     $wf_procname = $proc_info['wf_normalized_name'];
     $out.= '  <name>'.htmlspecialchars($proc_info['wf_name']).'</name>'."\n";
     $out.= '  <isValid>'.htmlspecialchars($proc_info['wf_is_valid']).'</isValid>'."\n";
@@ -93,7 +94,7 @@ class ProcessManager extends BaseManager {
     $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId";
     $result = $this->query($query);
     $out.='  <activities>'."\n";
-    $am = new ActivityManager($this->db);
+    $am =& new ActivityManager($this->db);
     while($res = $result->fetchRow()) {      
       $name = $res['wf_normalized_name'];
       $out.='    <activity>'."\n";
@@ -104,12 +105,39 @@ class ProcessManager extends BaseManager {
       $out.='      <isInteractive>'.$res['wf_is_interactive'].'</isInteractive>'."\n";
       $out.='      <isAutoRouted>'.$res['wf_is_autorouted'].'</isAutoRouted>'."\n";
       $out.='      <roles>'."\n";
-
-      $roles = $am->get_activity_roles($res['wf_activity_id']);
+      //loop on activity roles
+      $actid = $res['wf_activity_id'];
+      $roles =& $am->get_activity_roles($actid);
       foreach($roles as $role) {
         $out.='        <role>'.htmlspecialchars($role['wf_name']).'</role>'."\n";
       }  
       $out.='      </roles>'."\n";
+      $out.='      <agents>'."\n";
+      //loop on activity agents
+      $agents =& $am->get_activity_agents($actid);
+      foreach($agents as $agent) {
+        $out.='        <agent>'."\n";
+        $out.='           <agent_type>'.htmlspecialchars($agent['wf_agent_type']).'</agent_type>'."\n";
+        //loop on agent datas
+        $agent_data =& $am->get_activity_agent_data($actid,$agent['wf_agent_type']);
+        $out.='           <agent_datas>'."\n";
+        foreach($agent_data as $key => $value)
+        {
+          if (!($key=='wf_agent_id'))
+          {
+            $out.='               <agent_data>'."\n";
+            $out.='                   <name>'.htmlspecialchars($key).'</name>'."\n";
+            $out.='                   <value>'.htmlspecialchars($value).'</value>'."\n";
+            $out.='               </agent_data>'."\n";
+          }
+        }
+        $out.='           </agent_datas>'."\n";
+        //DEBUG HERE
+        $out.='        </agent>'."\n";
+      }  
+      $out.='      </agents>'."\n";
+
+      //the code
       $out.='      <code><![CDATA[';
       $fp=fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$name.php","r");
       while(!feof($fp)) {
@@ -132,6 +160,7 @@ class ProcessManager extends BaseManager {
     }
     $out.='  </activities>'."\n";
     $out.='  <transitions>'."\n";
+    //loop on transitions
     $transitions = $am->get_process_transitions($pId);
     foreach($transitions as $tran) {
       $out.='     <transition>'."\n";
@@ -224,12 +253,72 @@ class ProcessManager extends BaseManager {
                   $name = trim($this->tree[$z4]['name']);
                   $data = trim($this->tree[$z4]['data']);
                   $roles[]=$data;
-                }                
+                }
+              } 
+              elseif ($name=='agents') 
+              {
+                $agents=Array();
+                for($l=0;$l<count($this->tree[$z3]['children']);$l++) 
+                {
+                  $z4 = $this->tree[$z3]['children'][$l];
+                  //$name is agent
+                  $name = trim($this->tree[$z4]['name']);
+                  if ($name = 'agent')
+                  {
+                    $agent = array();
+                    for($m=0;$m<count($this->tree[$z4]['children']);$m++)
+                    {
+                      $z5 = $this->tree[$z4]['children'][$m];
+                      //$name is agent_type or agent_datas
+                      $name = trim($this->tree[$z5]['name']);
+                      // data will be the agent_type or an array for agent_datas
+                      $data = trim($this->tree[$z5]['data']);
+                      $agent = array();
+                      if ($name=='agent_type') 
+                      {
+                        $agent[$name]=$data;
+                      } 
+                      elseif ($name=='agent_datas') 
+                      {
+                        for($n=0;$n<count($this->tree[$z5]['children']);$n++)
+                        {
+                          $z6 = $this->tree[$z5]['children'][$n];
+                          //$name is agent_data $val is an array
+                          $name = trim($this->tree[$z6]['name']);
+                          $val = trim($this->tree[$z6]['data']);
+                          if ($name=='agent_data')
+                          {
+                            for($o=0;$o<count($this->tree[$z6]['children']);$o++)
+                            {
+                              $z7 = $this->tree[$z6]['children'][$o];
+                              //$name is agent_data $val is 'name' or 'value'
+                              $name = trim($this->tree[$z7]['name']);
+                              $content = trim($this->tree[$z7]['data']);
+                              //echo "<br>z7 name $name content: $content";
+                              if ($name=='name')
+                              {
+                                $agent_data_name = $content;
+                              }
+                              elseif ($name=='value')
+                              {
+                                $agent_data_value =& $content;
+                              }
+                            }
+                            //echo "<br>associate $agent_data_name to $agent_data_value <hr>";
+                            $agent[$agent_data_name] = $agent_data_value;
+                          }
+                        }
+                      }
+                    }
+                    $agents[]=$agent;
+                  }
+                }
               } else {
                 $aux[$name]=$value;
                 //print("$name:$value<br/>");
               }
             }
+            $aux['agents']=$agents;
             $aux['roles']=$roles;
             $activities[]=$aux;
           }
@@ -327,6 +416,7 @@ class ProcessManager extends BaseManager {
       $actname = $am->_normalize_name($activity['name']);
       $now = date("U");
 
+      //roles
 	  if( is_array($activity['roles']) && count($activity['roles']) > 0 )
 	  {
 	      foreach($activity['roles'] as $role) {
@@ -345,11 +435,42 @@ class ProcessManager extends BaseManager {
 	        }
 	      }
 	  }
+      //agents
+      if( is_array($activity['agents']) && count($activity['agents']) > 0 )
+      {
+        foreach($activity['agents'] as $agent)
+        {
+        //_debug_array($agent);
+            //create a new agent of the same type for the new activity
+            $agentid = $am->add_activity_agent($actid,$agent['wf_agent_type']);
+            //save values of this new agent
+            $bindvars = Array();
+            $query = 'update '.GALAXIA_TABLE_PREFIX.'agent_'.$agent['wf_agent_type'].'
+                        set ';
+            //we wont need the old type anymore
+            unset($agent['wf_agent_type']);
+            $countfields = 0;
+            foreach ($agent as $key => $value)
+            {
+              if ($key)
+              {
+                $countfields++;
+                $query .= "$key = ? ,";
+                $bindvars[] = $value;
+              }
+            }
+            $query = substr($query,'0',-1);
+            $query .= ' where wf_agent_id = ?';
+            $bindvars[] = $agentid;
+            if ($countfields) $this->query($query, $bindvars);
+        }
+      }
     }
+    //transitions
     foreach($data['transitions'] as $tran) {
       $am->add_transition($pid,$actids[$tran['from']],$actids[$tran['to']]);  
     }
-    // FIXME: recompile activities seems to be needed here
+
     foreach ($actids as $name => $actid) {
       $am->compile_activity($pid,$actid);
     }
@@ -407,8 +528,8 @@ class ProcessManager extends BaseManager {
       $newaid[$oldaid] = $am->replace_activity($pid,0,$res, false);
     }
     // create transitions
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."transitions where wf_p_id=$oldpid";
-    $result = $this->query($query);
+    $query = 'select * from '.GALAXIA_TABLE_PREFIX.'transitions where wf_p_id=?';
+    $result = $this->query($query, array($oldpid));
 
     while($res = $result->fetchRow()) { 
       if (empty($newaid[$res['wf_act_from_id']]) || empty($newaid[$res['wf_act_to_id']])) {
@@ -449,6 +570,43 @@ class ProcessManager extends BaseManager {
           continue;
         }
         $am->add_activity_role($newaid[$res['wf_activity_id']],$newrid[$res['wf_role_id']]);
+      }
+    }
+
+    //create agents
+    //get the list of agents used by the old process
+    $query = 'select gaa.* from '.GALAXIA_TABLE_PREFIX.'activity_agents gaa
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities gac ON gaa.wf_activity_id = gac.wf_activity_id
+                where gac.wf_p_id=?';
+    $result = $this->query($query, array($oldpid));
+    if (!(empty($result)))
+    {
+      while ($res = $result->fetchRow()) 
+      {
+          //create a new agent of the same type for the new activity
+          $agentid = $am->add_activity_agent($newaid[$res['wf_activity_id']],$res['wf_agent_type']);
+          //save values of this new agents, taking the old ones, we make a simple copy
+          $old_activity_agent_data =& $am->get_activity_agent_data($res['wf_activity_id'],$res['wf_agent_type']);
+          //we wont need the old id and type
+          unset($old_activity_agent_data['wf_agent_id']);
+          unset($old_activity_agent_data['wf_agent_type']);
+          $bindvars = Array();
+          $query = 'update '.GALAXIA_TABLE_PREFIX.'agent_'.$res['wf_agent_type'].'
+                      set ';
+          $countfields = 0;
+          foreach ($old_activity_agent_data as $key => $value)
+          {
+            if ($key)
+            {
+              $countfields++;
+              $query .= "$key = ? ,";
+              $bindvars[] = $value;
+            }
+          }
+          $query = substr($query,'0',-1);
+          $query .= ' where wf_agent_id = ?';
+          $bindvars[] = $agentid;
+          if ($countfields) $this->query($query, $bindvars);
       }
     }
 
@@ -530,8 +688,8 @@ class ProcessManager extends BaseManager {
   */
   function invalidate_process($pid)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."processes set wf_is_valid='n' where wf_p_id=$pid";
-    $this->query($query);
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'processes set wf_is_valid=? where wf_p_id=?';
+    $this->query($query, array('n',$pid));
   }
   
   /*! 
@@ -844,24 +1002,24 @@ class ProcessManager extends BaseManager {
 
   //! return an associative array with all config items for the given processId
   /*!
-  This getConfigValues differs from the Process->getConfigValues because the parameter here
-  id just the processId. All config items are returned as a function result. This function
-  get the items defined in process_config table for this process. In fact this admin function bypass
-  the process behaviour and is just showing you the basic content of the table.
-  If the distinct_type is set the returned array will be:
-  0 =>('wf_config_name'=> 'foo')
-    =>('wf_config_value'=>'bar')
-    =>('wf_config_vale_int'=>null)
-  1 =>('wf_config_name' => 'toto')
-    =>('wf_config_value'=>'')
-    =>('wf_config_vale_int'=>15)
-  if set to false (default) the result array will be (note that this is the default result if having just the $pId):
-    'foo'=>'bar'
-    'toto'=>15
-  If the askProcessObject is set to true (false by default) then the ProcessManager will load a process
-  object to run directly Process->getConfigValues($config_ask_array) this let you use this ProcessManager
-  getConfigValues the same way you would use $process->getConfigValues, with initialisation of default values.
-  you should then call this function this way: $conf_result=$pm->getConfigValues($pId,true,true,$my_conf_array)
+  *This getConfigValues differs from the Process->getConfigValues because the parameter here
+  *id just the processId. All config items are returned as a function result. This function
+  *gets the items defined in process_config table for this process. In fact this admin function bypass
+  *the process behaviour and is just showing you the basic content of the table.
+  *If the distinct_type is set the returned array will be:
+  *	* 0	=>('wf_config_name'=> 'foo')
+  *  		=>('wf_config_value'=>'bar')
+  *  		=>('wf_config_vale_int'=>null)
+  *	* 1 	=>('wf_config_name' => 'toto')
+  *  		=>('wf_config_value'=>'')
+  *  		=>('wf_config_vale_int'=>15)
+  *if set to false (default) the result array will be (note that this is the default result if having just the $pId):
+  *	* 'foo'=>'bar'
+  *	* 'toto'=>15
+  *If the askProcessObject is set to true (false by default) then the ProcessManager will load a process
+  *object to run directly Process->getConfigValues($config_ask_array) this let you use this ProcessManager
+  *getConfigValues the same way you would use $process->getConfigValues, with initialisation of default values.
+  *you should then call this function this way: $conf_result=$pm->getConfigValues($pId,true,true,$my_conf_array)
   */
   function getConfigValues($pId, $distinct_types=false, $askProcessObject=false, $config_array=array())
   {
@@ -912,6 +1070,14 @@ class ProcessManager extends BaseManager {
     $this->Process->getProcess($pId);
     $this->Process->setConfigValues($config_array);
     unset ($this->Process);
+  }
+  
+  /*!
+  * @return the avaible agents array.
+  */
+  function get_agents()
+  {
+    return galaxia_get_agents_list();
   }
 
 }

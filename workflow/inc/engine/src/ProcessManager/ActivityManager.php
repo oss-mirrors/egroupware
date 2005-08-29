@@ -804,6 +804,113 @@ class ActivityManager extends BaseManager {
   }
 
   /*!
+  * Associates an activity with an agent type and create or retrieve the associated agent
+  * if the agent of this type for this activity already exists we return his id.
+  * @param activityId: the activity id
+  * @param $agentType: The type of the agent (string)
+  * @return agent_id created or retrieved after this association was done or false in case of problems
+  */
+  function add_activity_agent($activityId, $agentType)
+  {
+    $agent_id = 0;
+    //this will retrieve info directly from the agent table, not on the recorded activity-agent association table
+    $agents = $this->get_activity_agents($activityId);
+    foreach ($agents as $agent)
+    {
+      if ($agent['wf_type']==$agentType)
+      {
+        //we end here, we find an agent which were previously associated with the activity
+        return $agent['wf_agent_id'];
+      }
+    }
+    //if we are here we did not find this type of agent for this activity
+      //TODO: check agent type is in autorized list
+    unset($agentData['wf_agent_id']);  
+    $query = 'insert into '.GALAXIA_TABLE_PREFIX.'agent_'.$agentType.' (wf_agent_id) values(DEFAULT)';//('.implode(',',$agentData).') values('.substr(str_repeat('DEFAULT,', count($agentData)),0,-1).')';
+    $this->query($query);
+    $query = 'select max(wf_agent_id) from '.GALAXIA_TABLE_PREFIX.'agent_'.$agentType;
+    $agentId = $this->getOne($query);
+    //record the association
+    $query = 'insert into '.GALAXIA_TABLE_PREFIX.'activity_agents (wf_activity_id,wf_agent_id,wf_agent_type) values(?,?,?)';
+    $this->query($query,array($activityId, $agentId, $agentType));
+    return $agentId;
+  }
+  
+  /*!
+  * Gets the agents (id and type) associated to an activity
+  * @param $activityId is the activity id
+  * @return an associative array which can be empty
+  */
+  function get_activity_agents($activityId) 
+  {
+    $query = 'select wf_agent_id, wf_agent_type
+              from '.GALAXIA_TABLE_PREFIX.'activity_agents 
+              where wf_activity_id=?';
+    $result = $this->query($query,array($activityId));
+    $ret = Array();
+    if (!(empty($result)))
+    {
+      while($res = $result->fetchRow()) 
+      {
+        $ret[] = $res;
+      }
+    }
+    
+    return $ret;
+  }
+
+  /*!
+  * Gets the agent datas (with id and type as well) associated to an activity
+  * from the agent table
+  * @param $activityId is the activity id
+  * @param $agentType is the agent type, giving the table name for the engine
+  * @return an associative array which can be empty if we did not find the agentType
+  * for this activity
+  */
+  function get_activity_agent_data($activityId, $agentType) 
+  {
+    $query = 'select wf_agent_id
+              from '.GALAXIA_TABLE_PREFIX.'activity_agents 
+              where wf_activity_id=? and wf_agent_type=?';
+    $agent_id = $this->getOne($query,array($activityId,$agentType));
+    $ret = Array();
+    if ($agent_id==0)
+    {
+      return $ret;
+    }
+    else
+    {
+      $query = 'select * from '.GALAXIA_TABLE_PREFIX.'agent_'.$agentType.' where wf_agent_id=?';
+      $result = $this->query($query,array($agent_id));
+      if (!(empty($result)))
+      {
+        while($res = $result->fetchRow()) 
+        {
+          $ret[] = $res;
+        }
+        //fake agent_type column, we know what it should be and that we should have only one record
+        $ret[0]['wf_agent_type'] = $agentType;
+      }
+    } 
+    return $ret[0];
+  }
+  
+  /*!
+  * Removes an agent from an activity
+  * @param activityId the activity id
+  * @param $agentId The id of the agent
+  * @param $removeagent is false by default, if true the agent himself is destroyed, that means if you
+  *	re-associate the activity with the same agent type all previous configuration will be lost
+  */
+  function remove_activity_agent($activityId, $agentId, $removeagent=false)
+  {
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'activity_agents
+              where wf_activity_id=? and wf_agent_id=?';
+    $this->query($query, array($activityId, $agentId));
+    //TODO: refintegrity ($removeagent)
+  }
+
+  /*!
   * Sets if an activity is interactive or not
   */
   function set_interactivity($pId, $actid, $value)
@@ -880,6 +987,16 @@ class ActivityManager extends BaseManager {
     $user_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'activities'.SEP.$actname.'.php';
     $pre_file = GALAXIA_LIBRARY.SEP.'compiler'.SEP.$act_info['wf_type'].'_pre.php';
     $pos_file = GALAXIA_LIBRARY.SEP.'compiler'.SEP.$act_info['wf_type'].'_pos.php';
+    if (!(empty($act_info['wf_agents'])))
+    {
+      $agents = true;
+      $pre_agent_file = GALAXIA_LIBRARY.SEP.'compiler'.SEP.'agents_pre.php';
+      $pos_agent_file = GALAXIA_LIBRARY.SEP.'compiler'.SEP.'agents_pos.php';
+    }
+    else
+    {
+      $agents = false;
+    }
     
     $fw = fopen($compiled_file,"wb");
     if (!$fw)
@@ -926,6 +1043,25 @@ class ActivityManager extends BaseManager {
       fclose($fp);
     }
     
+    // Now get pre file for the agent
+    if ($agents)
+    {
+      $fp = fopen($pre_agent_file,"rb");
+      if (!$fp)
+      {
+        $errors[] = tra('pre-agent %1 code is not avaible', $act_info['wf_agent']);
+      }
+      else
+      {
+        while (!feof($fp)) 
+        {
+          $data = fread($fp, 4096);
+          fwrite($fw,$data);
+        }
+        fclose($fp);
+      }
+    }
+    
     // Get the user data for the activity 
     $fp = fopen($user_file,"rb");
     if (!$fp)
@@ -956,6 +1092,25 @@ class ActivityManager extends BaseManager {
           fwrite($fw,$data);
       }
       fclose($fp);
+    }
+
+    // Now get pos file for the agent
+    if ($agents)
+    {
+      $fp = fopen($pos_agent_file,"rb");
+      if (!$fp)
+      {
+        $errors[] = tra('post-agent %1 code is not avaible', $act_info['wf_agent']);
+      }
+      else
+      {
+        while (!feof($fp)) 
+        {
+          $data = fread($fp, 4096);
+          fwrite($fw,$data);
+        }
+        fclose($fp);
+      }
     }
 
     // Shared pos
