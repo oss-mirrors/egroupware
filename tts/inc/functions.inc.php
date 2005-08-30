@@ -166,7 +166,11 @@
       {
         if ($members[$i])
         {
-          $toarray[] = $GLOBALS['phpgw']->accounts->id2name($members[$i]['account_id'], 'account_email');
+          $account_email = $GLOBALS['phpgw']->accounts->id2name($members[$i]['account_id'], 'account_email');
+          if ($account_email)
+          {
+              $toarray[] = $account_email;
+          }
         }
       }
       if(count($toarray) > 1)
