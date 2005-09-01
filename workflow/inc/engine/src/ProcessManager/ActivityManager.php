@@ -981,7 +981,7 @@ class ActivityManager extends BaseManager {
       $query = 'select wf_agent_type from '.GALAXIA_TABLE_PREFIX.'activity_agents
           where wf_activity_id=? and wf_agent_id=?';
       $agent_type = $this->getOne($query, array($activityId, $agentId));
-      $this->remove_agent($agent_id, $agent_type);
+      $this->remove_agent($agentId, $agent_type);
     }
     $query = 'delete from '.GALAXIA_TABLE_PREFIX.'activity_agents
             where wf_activity_id=? and wf_agent_id=?';
