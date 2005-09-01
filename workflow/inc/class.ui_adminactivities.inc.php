@@ -121,7 +121,7 @@
 			// remove activity agent
 			if (isset($_GET['remove_agent']) && $activity_id)
 			{
-				$this->activity_manager->remove_activity_agent($activity_id, $_GET['remove_agent']);
+				$this->activity_manager->remove_activity_agent($activity_id, $_GET['remove_agent'],true);
 				$this->message[] = lang('Activity agent removed');
 			}
 

@@ -882,14 +882,22 @@ class ActivityManager extends BaseManager {
     {
       if ($agent['wf_type']==$agentType)
       {
-        //we end here, we find an agent which were previously associated with the activity
-        return $agent['wf_agent_id'];
+        //we found an agent which were previously associated with the activity
+        $agent_id = $agent['wf_agent_id'];
+        //but we still need to ensure it is still associated with the activity
+        $actualAssoc = $this->getOne('select wf_activity_id from '.GALAXIA_TABLE_PREFIX.'activity_agents where wf_activity_id=?', array($activityId));
+        if (!($actualAssoc == $activityId))
+        {
+          $query = 'insert into '.GALAXIA_TABLE_PREFIX.'activity_agents (wf_activity_id,wf_agent_id,wf_agent_type) values(?,?,?)';
+          $this->query($query,array($activityId, $agentId, $agentType));
+        }
+        return $agent_id;
       }
     }
     //if we are here we did not find this type of agent for this activity
       //TODO: check agent type is in autorized list
-    unset($agentData['wf_agent_id']);  
-    $query = 'insert into '.GALAXIA_TABLE_PREFIX.'agent_'.$agentType.' (wf_agent_id) values(DEFAULT)';//('.implode(',',$agentData).') values('.substr(str_repeat('DEFAULT,', count($agentData)),0,-1).')';
+    //add a new agent record
+    $query = 'insert into '.GALAXIA_TABLE_PREFIX.'agent_'.$agentType.' (wf_agent_id) values(DEFAULT)';
     $this->query($query);
     $query = 'select max(wf_agent_id) from '.GALAXIA_TABLE_PREFIX.'agent_'.$agentType;
     $agentId = $this->getOne($query);
@@ -967,10 +975,29 @@ class ActivityManager extends BaseManager {
   */
   function remove_activity_agent($activityId, $agentId, $removeagent=false)
   {
+    
+    if ($removeagent)
+    {
+      $query = 'select wf_agent_type from '.GALAXIA_TABLE_PREFIX.'activity_agents
+          where wf_activity_id=? and wf_agent_id=?';
+      $agent_type = $this->getOne($query, array($activityId, $agentId));
+      $this->remove_agent($agent_id, $agent_type);
+    }
     $query = 'delete from '.GALAXIA_TABLE_PREFIX.'activity_agents
-              where wf_activity_id=? and wf_agent_id=?';
+            where wf_activity_id=? and wf_agent_id=?';
     $this->query($query, array($activityId, $agentId));
-    //TODO: refintegrity ($removeagent)
+  }
+
+  /*!
+  * remove an agent.
+  * @param $agentId is the agent id
+  * @param $agent_type is the agent_type
+  */
+  function remove_agent($agentId, $agent_type)
+  {
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'agent_'.$agent_type.'
+      where wf_agent_id=?';
+    $this->query($query, array($agentId));
   }
 
   /*!
@@ -1362,7 +1389,7 @@ class ActivityManager extends BaseManager {
     //$this->query($query);
     return true;
   }
-    
+  
 }
 
 
