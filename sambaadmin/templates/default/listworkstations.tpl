@@ -1,6 +1,13 @@
 <!-- BEGIN main -->
 <center>
-<table width="90%" border="0" cellspacing="1" cellpading="1">
+<table width="100%" border="0" cellspacing="1" cellpading="1">
+<tr>
+	<td colspan="3" align="right">
+		<form method="POST" action="{search_form_action}">
+		{lang_search} <input type="text" id="search_string" name="search_string" value="{search_string}" onFocus="this.select();">
+		</form>
+	</td>
+<tr>
 <tr>
 	<td width="33%">
 		&nbsp;
@@ -14,8 +21,8 @@
 </tr>
 </table>
 <br>
-<form method="POST" action="{form_action}">
 {next_match_table}
+<form method="POST" action="{form_action}">
 <table width="100%" border="0" cellspacing="1" cellpading="1">
 <tr>
 <td align="right">
@@ -26,5 +33,6 @@
 </form>
 <br>
 </center>
+
 <!-- END main -->
 

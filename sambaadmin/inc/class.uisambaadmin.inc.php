@@ -24,17 +24,15 @@
 			'checkLDAPSetup'	=> True,
 			'listWorkstations'	=> True,
 			'deleteWorkstation'	=> True,
-			'editWorkstation'	=> True
+			'editWorkstation'	=> True,
+			'setSearchFilter'	=> True,
 		);
 
 		function uisambaadmin()
 		{
-			#$this->cats			= CreateObject('phpgwapi.categories');
-			#$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
-			#$this->account			= $phpgw_info['user']['account_id'];
+			$this->restoreSessionData();
+			
 			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			#$this->grants			= $phpgw->acl->get_grants('notes');
-			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
 			$this->bosambaadmin		= CreateObject('sambaadmin.bosambaadmin');
 			
 			$this->rowColor[0] = $phpgw_info["theme"]["row_on"];
@@ -135,7 +133,7 @@
 			$start  = get_var('start',array('POST','GET')) ? get_var('start',array('POST','GET')) : 0;
 			
 			$nextMatch = CreateObject('sambaadmin.uibaseclass');
-			$workstationList = $this->bosambaadmin->getWorkstationList($start, $sort, $order);
+			$workstationList = $this->bosambaadmin->getWorkstationList($start, $sort, $order, $this->sessionData['searchString']);
 			$this->displayAppHeader();
 
 			$this->t->set_file(array("body" => 'listworkstations.tpl'));
@@ -154,6 +152,14 @@
 				'menuaction'	=> 'sambaadmin.uisambaadmin.deleteWorkstation'
 			);
 			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+				'menuaction'	=> 'sambaadmin.uisambaadmin.setSearchFilter'
+			);
+			$this->t->set_var('search_form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
+			$this->t->set_var('search_string',$this->sessionData['searchString']);
 			
 			$tableHeader = array
 			(
@@ -204,6 +210,25 @@
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
 		}
+		
+		function restoreSessionData()
+		{
+			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data');
+		}
+		
+		function saveSessionData()
+		{
+			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
+		}
+		
+		function setSearchFilter()
+		{
+			$this->sessionData['searchString'] = $_POST['search_string'];
+			
+			$this->saveSessionData();
+			
+			$this->listWorkstations();
+		}
 
 
 		function translate()
@@ -223,7 +248,7 @@
 			$this->t->set_var('lang_back',lang('back'));
 			$this->t->set_var('lang_delete',lang('delete'));
 			$this->t->set_var('lang_do_you_really_want_to_delete',lang('Do you really want to delete selected workstation accounts?'));
-			#$this->t->set_var('',lang(''));
+			$this->t->set_var('lang_search',lang('search'));
 		}
 	}
 ?>

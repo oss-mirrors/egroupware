@@ -43,6 +43,7 @@
 					$newData['sambaLMPassword'] = $newpassword[0];
 					$newData['sambaNTPassword'] = $newpassword[1];
 					$newData['sambaPwdLastSet'] = $newData['sambaPwdCanChange'] = time();
+					$newData['sambaPwdMustChange'] = '2147483647';
 					if(@ldap_mod_replace ($ldap, $accountDN, $newData))
 					{
 						return true;
@@ -307,14 +308,17 @@
 			return false;
 		}
 
-		function getWorkstationList($_start, $_sort, $_order)
+		function getWorkstationList($_start, $_sort, $_order, $_searchString)
 		{
 			if(empty($this->computerou))
 				return false;
 				
 			$dn	= $this->computerou;
 			$ldap	= $GLOBALS['phpgw']->common->ldapConnect();
-			$filter = "(&(uid=*$)(objectclass=sambasamaccount))";
+			if(!empty($_searchString))
+				$filter = "(&(|(uid=*$_searchString*$)(description=*$_searchString*))(objectclass=sambasamaccount))";
+			else
+				$filter = "(&(uid=*$)(objectclass=sambasamaccount))";
 			
 			$sri = @ldap_search($ldap,$dn,$filter);
 			if($sri)
@@ -378,7 +382,7 @@
 			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
 			$filter = "(&(uidnumber=$_accountID)(objectclass=posixaccount))";
 			
-			$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
+			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],$filter);
 			if ($sri)
 			{
 				$allValues 	= ldap_get_entries($ldap, $sri);
@@ -420,13 +424,15 @@
 				isset($allValues[0]['sambapwdmustchange'][0])?$allValues[0]['sambapwdmustchange'][0]:2147483647;
 			$newData['sambaSID']	= 
 				isset($allValues[0]['sambasid'][0])?$allValues[0]['sambasid'][0]:$this->sid.'-'.(2 * $uidnumber + 1000);
-			$newData['sambaAcctFlags']	= 
-				isset($allValues[0]['sambaacctflags'][0])?$allValues[0]['sambaacctflags'][0]:'[U          ]';
+
+			$newData['sambaAcctFlags']	= '[U'.($_accountData['status'] == 'deactivated' ? 'D' : ' ').'         ]';
 			
 			$newData['displayname']	= $cn;
 				
+			$newData = array_change_key_case($newData);
+				
 			#_debug_array($_accountData);
-			$formFields = array('sambahomepath','sambahomedrive','sambalogonscript','sambaprofilepath');
+			$formFields = array('sambahomepath','sambahomedrive','sambalogonscript','sambaprofilepath','sambapwdmustchange','sambapwdcanchange');
 			foreach($formFields as $fieldName)
 			{
 				if(isset($_accountData[$fieldName]))
@@ -516,6 +522,11 @@
 				#$_newData['workstationName'] = trim($_newData['workstationName']);
 				#$_newData['description'] = trim($_newData['description']);
 				
+				if(empty($_newData['description']))
+				{
+					$_newData['description']	= lang('workstation account for').' '.$_newData['workstationName'];
+				}
+
 				if(substr($_newData['workstationName'],strlen($_newData['workstationName'])-1,1) != '$')
 				{
 					$_newData['workstationName'] .= "$";
@@ -524,10 +535,12 @@
 				$newData['objectClass'][0]	= 'top';
 				$newData['objectClass'][1]	= 'posixaccount';
 				$newData['objectClass'][2]	= 'sambasamaccount';
-				$newData['uid']			= $_newData['workstationName'];
-				$newData['description']		= $_newData['description'];
-				$newData['displayName']		= $_newData['workstationName'];
-				$newData['cn']			= $_newData['workstationName'];
+				$newData['objectClass'][3]	= 'person';
+				$newData['uid']			= $GLOBALS['phpgw']->translation->convert($_newData['workstationName'],'utf-8');
+				$newData['description']		= $GLOBALS['phpgw']->translation->convert($_newData['description'],'utf-8');
+				$newData['displayName']		= $GLOBALS['phpgw']->translation->convert($_newData['workstationName'],'utf-8');
+				$newData['cn']			= $GLOBALS['phpgw']->translation->convert($_newData['workstationName'],'utf-8');
+				$newData['sn']			= $newData['cn'];
 				$newData['homeDirectory']	= '/dev/null';
 				$newData['loginShell']		= '/bin/false';
 				#$newData['sambaacctflags']	= '[DW         ]';

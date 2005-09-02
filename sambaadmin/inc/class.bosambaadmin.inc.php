@@ -62,9 +62,9 @@
 			return $this->sosambaadmin->getWorkstationData($_uidnumber);
 		}
 		
-		function getWorkstationList($_start, $_sort, $_order)
+		function getWorkstationList($_start, $_sort, $_order, $_searchString)
 		{
-			return $this->sosambaadmin->getWorkstationList($_start, $_sort, $_order);
+			return $this->sosambaadmin->getWorkstationList($_start, $_sort, $_order, $_searchString);
 		}
 
 		function restoreSessionData()
@@ -86,16 +86,34 @@
 
 		function updateAccount()
 		{
-			#_debug_array($GLOBALS['hook_values']);
 			if($accountID = (int)$GLOBALS['hook_values']['account_id'])
 			{
+				$config = CreateObject('phpgwapi.config','sambaadmin');
+				$config->read_repository();
+				$config = $config->config_data;
+
+				$oldAccountData = $this->getUserData($accountID,false);
+
+				// account_status
 				$accountData = array();
 				if($GLOBALS['hook_values']['new_passwd'])
 				{
 					$accountData['password']	= $GLOBALS['hook_values']['new_passwd'];
 				}
+				if(!$oldAccountData['sambahomedrive'] && $config['samba_homedrive'])
+					$accountData['sambahomedrive']		= $config['samba_homedrive'];
+				if(!$oldAccountData['sambahomepath'] && $config['samba_homepath'])
+					$accountData['sambahomepath']		= $config['samba_homepath'].$GLOBALS['hook_values']['account_lid'];
+				if(!$oldAccountData['sambalogonscript'] && $config['samba_logonscript'])
+					$accountData['sambalogonscript']	= $config['samba_logonscript'];
+				if(!$oldAccountData['sambaprofilepath'] && $config['samba_profilepath'])
+					$accountData['sambaprofilepath']	= $config['samba_profilepath'].$GLOBALS['hook_values']['account_lid'];
+				$accountData['status']				= ($GLOBALS['hook_values']['account_status'] == 'A' ? 'activated' : 'deactivated');
+
 				return $this->sosambaadmin->saveUserData($accountID, $accountData);
 			}
+
+			// something went wrong
 			return false;
 		}
 

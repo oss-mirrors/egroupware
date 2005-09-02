@@ -2,8 +2,20 @@ samba settings	common	de	Fileserverkonto
 path to mkntpwd	admin	de	Pfad zu mkntpwd
 Samba SID	admin	de	Samba SID
 displayname	sambaadmin	de	Anzeigename
-homepath	sambaadmin	de	Heimatverzeichnis
+homepath	sambaadmin	de	Heimatpfad
 homedrive	sambaadmin	de	Heimatlaufwerk
+homedrive	admin	de	Heimatlaufwerk
 logonscript	sambaadmin	de	Anmeldescript
+logonscript	admin	de	Anmeldescript
 profilepath	sambaadmin	de	Profilepfad
+profilepath	admin	de	Profilepfad
 samba config	sambaadmin	de	Samba Konfiguration
+workstation list	sambaadmin	de	Liste der Arbeitsstationen
+add workstation	sambaadmin	de	Arbeitsstation hinzufügen
+workstation name	sambaadmin	de	Name der Arbeitsstation
+workstation account for	sambaadmin	de	Konto für Arbeitsstation
+workstation configuration	sambaadmin	de	Konfiguration der Arbeitsstation
+new account defaults	admin	de	Standards für neue Benutzerkonten
+smb homepath	admin	de	SMB Heimatpfad
+computer ou	admin	de	Computer OU
+computer group	admin	de	Computer Gruppe
