@@ -9,33 +9,53 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'BaseManager.php
   activity belongs to some process.
 */
 class ActivityManager extends BaseManager {
-      
+  //ProcessManager used sometimes by this object
+  var $process_manager;    
   /*!
     Constructor takes a PEAR::Db object to be used
     to manipulate activities in the database.
   */
-  function ActivityManager($db) {
-    if(!$db) {
-      die("Invalid db object passed to activityManager constructor");  
-    }
-    $this->db = $db;  
+  function ActivityManager(&$db) 
+  {
+    $this->child_name = 'ActivityManager';
+    parent::BaseManager($db);
+    require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'ProcessManager.php');
+    //$this->process_manager is not set here to avoid object A loading objetc B loading object A, etc...
+    
   }
-  
+
   /*!
-   Associates an activity with a role
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
   */
-  function add_activity_role($activityId, $roleId) {
-    $query = 'delete from `'.GALAXIA_TABLE_PREFIX.'activity_roles` where `wf_activity_id`=? and `wf_role_id`=?';
+  function collect_errors($debug=false)
+  {
+    parent::collect_errors($debug);
+    if (isset($this->process_manager)) $this->error[] = $this->process_manager->get_error(false, $debug);
+  }
+
+  /*!
+  * Associates an activity with a role
+  * @param $activityId is the activity Id
+  * @param $roleId is the roleId
+  * @param readonly is false by default, if true the role will be in read-only mode
+  */
+  function add_activity_role($activityId, $roleId, $readonly = false) 
+  {
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'activity_roles where wf_activity_id=? and wf_role_id=?';
     $this->query($query,array($activityId, $roleId));
-    $query = 'insert into `'.GALAXIA_TABLE_PREFIX.'activity_roles`(`wf_activity_id`,`wf_role_id`) values(?,?)';
-    $this->query($query,array($activityId, $roleId));
+    $query = 'insert into '.GALAXIA_TABLE_PREFIX.'activity_roles (wf_activity_id,wf_role_id,wf_readonly) values(?,?,?)';
+    $this->query($query,array($activityId, $roleId, (int)$readonly));
   }
   
   /*!
    Gets the roles associated to an activity
   */
   function get_activity_roles($activityId) {
-    $query = 'select wf_activity_id,roles.wf_role_id,roles.wf_name
+    $query = 'select wf_activity_id,roles.wf_role_id,roles.wf_name, wf_readonly
               from '.GALAXIA_TABLE_PREFIX.'activity_roles gar
               INNER JOIN '.GALAXIA_TABLE_PREFIX.'roles roles on gar.wf_role_id = roles.wf_role_id
               where wf_activity_id=?';
@@ -289,12 +309,12 @@ class ActivityManager extends BaseManager {
   //\todo build the real graph
   function build_process_graph($pId)
   {
+    if (!(isset($this->process_manager))) $this->process_manager =& new ProcessManager($this->db);
     $attributes = Array(
     
     );
     $graph = new Process_GraphViz(true,$attributes);
-    $pm = new ProcessManager($this->db);
-    $name = $pm->_get_normalized_name($pId);
+    $name = $this->process_manager->_get_normalized_name($pId);
     $graph->set_pid($name);
     
     //Get the config of the workflow where we'll have some tips for the graph
@@ -302,7 +322,7 @@ class ActivityManager extends BaseManager {
       'draw_roles' => true, 
       'font_size' => 12,
       );
-    $configs = $pm->getConfigValues($pId,true,true,$myconfneeds);
+    $configs = $this->process_manager->getConfigValues($pId,true,true,$myconfneeds);
 
     // Nodes are process activities so get
     // the activities and add nodes as needed
@@ -694,8 +714,8 @@ class ActivityManager extends BaseManager {
   */
   function remove_activity($pId, $activityId, $transaction = true)
   {
-    $pm = new ProcessManager($this->db);
-    $proc_info = $pm->get_process($pId);
+    if (!(isset($this->process_manager))) $this->process_manager =& new ProcessManager($this->db);
+    $proc_info = $this->process_manager->get_process($pId);
     $actname = $this->_get_normalized_name($activityId);
     
     // start a transaction
@@ -754,14 +774,14 @@ class ActivityManager extends BaseManager {
   */
   function replace_activity($pId, $activityId, $vars, $create_files=true)
   {
+    if (!(isset($this->process_manager))) $this->process_manager =& new ProcessManager($this->db);
     $TABLE_NAME = GALAXIA_TABLE_PREFIX.'activities';
     $now = date("U");
     $vars['wf_last_modif']=$now;
     $vars['wf_p_id']=$pId;
     $vars['wf_normalized_name'] = $this->_normalize_name($vars['wf_name']);    
 
-    $pm = new ProcessManager($this->db);
-    $proc_info = $pm->get_process($pId);
+    $proc_info = $this->process_manager->get_process($pId);
     
     
     foreach($vars as $key=>$value)
@@ -1067,11 +1087,11 @@ class ActivityManager extends BaseManager {
   */
   function compile_activity($pId, $activityId)
   {
+    if (!(isset($this->process_manager))) $this->process_manager =& new ProcessManager($this->db);
     $errors = Array();
     $act_info = $this->get_activity($activityId, true, true);
        $actname = $act_info['wf_normalized_name'];
-    $pm = new ProcessManager($this->db);
-    $proc_info = $pm->get_process($pId);
+    $proc_info = $this->process_manager->get_process($pId);
     $compiled_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'compiled'.SEP.$act_info['wf_normalized_name'].'.php';
     $template_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'templates'.SEP.$actname.'.tpl';
     $user_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'code'.SEP.'activities'.SEP.$actname.'.php';
@@ -1388,8 +1408,8 @@ class ActivityManager extends BaseManager {
     //$query = "update ".GALAXIA_TABLE_PREFIX."activities set flowNum=0 where flowNum=$cant+1";
     //$this->query($query);
     return true;
-  }
-  
+  }  
+
 }
 
 
