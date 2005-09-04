@@ -13,6 +13,7 @@ class ProcessMonitor extends Base
   // Constructor receiving a database abstraction object.
   function ProcessMonitor(&$db)
   {
+    $this->child_name = 'ProcessMonitor';
     parent::Base($db);
     // check the the actual user can really do this
     if ( !(galaxia_user_can_monitor()))
@@ -169,8 +170,24 @@ class ProcessMonitor extends Base
     return $this->db->CompleteTrans();
   }
 
-  //! list all process
-  function monitor_list_processes($offset,$maxRecords,$sort_mode,$find,$where='') 
+  /*! list all process
+  * List all processes and return stats
+  * @param $offset is the first row number to return
+  * @param $maxRecords is the maximumnumber of records to return
+  * @param $sort_mode is the sort order
+  * @param $find is a string to search for in process name or process description
+  * @param $where is a string to ad to the query, be carefull with this string, read the query before
+  * @param $add_stats is true by default, by setting it to false you wont get the statistics associated with
+  * the processes, this could be helpfull for gui listing on selects, to avoid (a big number of) unnecessary queries
+  * @return an associative array with the number of records for the 'cant' key and an array of process stats for the 
+  * 'data' key. each row is of this form:
+  *	* key : process_id
+  *	* value : an array of infos:
+  *		* keys are : wf_p_id, wf_name, wf_is_valid, wf_is_active, wf_version, wf_description, wf_last_modif,
+  *		and  wf_normalized_name for the 'classical part' and for the 'stats part' whe have: active_instances, 
+  *		exception_instances, completed_instances, aborted_instances, all_instances, activities
+  */
+  function monitor_list_processes($offset,$maxRecords,$sort_mode,$find,$where='', $add_stats=true) 
   {
   
     $sort_mode = $this->convert_sortmode($sort_mode);
@@ -216,44 +233,47 @@ class ProcessMonitor extends Base
       $retval["cant"] = $cant;
       return $retval;
     }
-    // get number of instances and timing statistics per process and status
-    $query = "select wf_p_id, wf_status, count(*) as num_instances,
-              min(wf_ended - wf_started) as min_time, avg(wf_ended - wf_started) as avg_time, max(wf_ended - wf_started) as max_time
-              from ".GALAXIA_TABLE_PREFIX."instances where wf_p_id in (" . join(', ', array_keys($ret)) . ") group by wf_p_id, wf_status";
-    $result = $this->query($query);
-    while($res = $result->fetchRow()) {
-      $pId = $res['wf_p_id'];
-      if (!isset($ret[$pId])) continue;
-      switch ($res['wf_status']) {
-        case 'active':
-          $ret[$pId]['active_instances'] = $res['num_instances'];
-          $ret[$pId]['all_instances'] += $res['num_instances'];
-          break;
-        case 'completed':
-          $ret[$pId]['completed_instances'] = $res['num_instances'];
-          $ret[$pId]['all_instances'] += $res['num_instances'];
-          $ret[$pId]['duration'] = array('min' => $res['min_time'], 'avg' => $res['avg_time'], 'max' => $res['max_time']);
-          break;
-        case 'exception':
-          $ret[$pId]['exception_instances'] = $res['num_instances'];
-          $ret[$pId]['all_instances'] += $res['num_instances'];
-          break;
-        case 'aborted':
-          $ret[$pId]['aborted_instances'] = $res['num_instances'];
-          $ret[$pId]['all_instances'] += $res['num_instances'];
-          break;
+    if ($add_stats)
+    {
+      // get number of instances and timing statistics per process and status
+      $query = "select wf_p_id, wf_status, count(*) as num_instances,
+                min(wf_ended - wf_started) as min_time, avg(wf_ended - wf_started) as avg_time, max(wf_ended - wf_started) as max_time
+                from ".GALAXIA_TABLE_PREFIX."instances where wf_p_id in (" . join(', ', array_keys($ret)) . ") group by wf_p_id, wf_status";
+      $result = $this->query($query);
+      while($res = $result->fetchRow()) {
+        $pId = $res['wf_p_id'];
+        if (!isset($ret[$pId])) continue;
+        switch ($res['wf_status']) {
+          case 'active':
+            $ret[$pId]['active_instances'] = $res['num_instances'];
+            $ret[$pId]['all_instances'] += $res['num_instances'];
+            break;
+          case 'completed':
+            $ret[$pId]['completed_instances'] = $res['num_instances'];
+            $ret[$pId]['all_instances'] += $res['num_instances'];
+            $ret[$pId]['duration'] = array('min' => $res['min_time'], 'avg' => $res['avg_time'], 'max' => $res['max_time']);
+            break;
+          case 'exception':
+            $ret[$pId]['exception_instances'] = $res['num_instances'];
+            $ret[$pId]['all_instances'] += $res['num_instances'];
+            break;
+          case 'aborted':
+            $ret[$pId]['aborted_instances'] = $res['num_instances'];
+            $ret[$pId]['all_instances'] += $res['num_instances'];
+            break;
+        }
       }
-    }
-    // get number of activities per process
-    $query = "select wf_p_id, count(*) as num_activities
-              from ".GALAXIA_TABLE_PREFIX."activities
-              where wf_p_id in (" . join(', ', array_keys($ret)) . ")
-              group by wf_p_id";
-    $result = $this->query($query);
-    while($res = $result->fetchRow()) {
-      $pId = $res['wf_p_id'];
-      if (!isset($ret[$pId])) continue;
-      $ret[$pId]['wf_activities'] = $res['num_activities'];
+      // get number of activities per process
+      $query = "select wf_p_id, count(*) as num_activities
+                from ".GALAXIA_TABLE_PREFIX."activities
+                where wf_p_id in (" . join(', ', array_keys($ret)) . ")
+                group by wf_p_id";
+      $result = $this->query($query);
+      while($res = $result->fetchRow()) {
+        $pId = $res['wf_p_id'];
+        if (!isset($ret[$pId])) continue;
+        $ret[$pId]['activities'] = $res['num_activities'];
+      }
     }
     $retval = Array();
     $retval["data"] = $ret;
@@ -261,8 +281,26 @@ class ProcessMonitor extends Base
     return $retval;
   }
 
-  //!list all activities
-  function monitor_list_activities($offset,$maxRecords,$sort_mode,$find,$where='') {
+  /*! list all activities
+  * List all activities and return stats
+  * @param $offset is the first row number to return
+  * @param $maxRecords is the maximumnumber of records to return
+  * @param $sort_mode is the sort order
+  * @param $find is a string to search for in activity name or activity description
+  * @param $where is a string to ad to the query, be carefull with this string, read the query before
+  * @param $add_stats is true by default, by setting it to false you wont get the statistics associated with
+  * the activities, this could be helpfull for gui listing on selects, to avoid (a big number of) unnecessary queries
+  * @return an associative array with the number of records for the 'cant' key and an array of process stats for the 
+  * 'data' key. each row is of this form:
+  *	* key : activity_id
+  *	* value : an array of infos:, 
+  *		* keys are : wf_procname, wf_version, wf_activity_id, wf_name, wf_normalized_name, wf_p_id, wf_type
+  *		wf_is_autorouted, wf_flow_num, wf_is_interactive, wf_last_modif, wf_description, wf_default_user
+  *		and for the stats part: active_instances, completed_instances ,aborted_instances, exception_instances
+  *		act_running_instances, act_completed_instances
+  */
+  function monitor_list_activities($offset,$maxRecords,$sort_mode,$find,$where='', $add_stats=true) 
+  {
   
     $sort_mode = $this->convert_sortmode($sort_mode);
     if($find) {
@@ -292,16 +330,19 @@ class ProcessMonitor extends Base
     while($res = $result->fetchRow()) {
       // Number of active instances
       $aid = $res['wf_activity_id'];
-      $res['active_instances']=$this->getOne("select count(gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where gi.wf_instance_id=gia.wf_instance_id and gia.wf_activity_id=$aid and gi.wf_status='active' and wf_p_id=".$res['wf_p_id']);
-    // activities of completed instances are all removed from the instance_activities table for some reason, so we need to look at workitems
-      $res['completed_instances']=$this->getOne("select count(distinct gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."workitems gw where gi.wf_instance_id=gw.wf_instance_id and gw.wf_activity_id=$aid and gi.wf_status='completed' and wf_p_id=".$res['wf_p_id']);
-    // activities of aborted instances are all removed from the instance_activities table for some reason, so we need to look at workitems
-      $res['aborted_instances']=$this->getOne("select count(distinct gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."workitems gw where gi.wf_instance_id=gw.wf_instance_id and gw.wf_activity_id=$aid and gi.wf_status='aborted' and wf_p_id=".$res['wf_p_id']);
-      $res['exception_instances']=$this->getOne("select count(gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where gi.wf_instance_id=gia.wf_instance_id and gia.wf_activity_id=$aid and gi.wf_status='exception' and wf_p_id=".$res['wf_p_id']);
-    $res['act_running_instances']=$this->getOne("select count(gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where gi.wf_instance_id=gia.wf_instance_id and gia.wf_activity_id=$aid and gia.wf_status='running' and wf_p_id=".$res['wf_p_id']);      
-    // completed activities are removed from the instance_activities table unless they're part of a split for some reason, so this won't work
-    //  $res['act_completed_instances']=$this->getOne("select count(gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where gi.wf_instance_id=gia.wf_instance_id and gia.activityId=$aid and gia.status='completed' and pId=".$res['pId']);      
-      $res['act_completed_instances'] = 0;
+      if ($add_stats)
+      {
+        $res['active_instances']=$this->getOne("select count(gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where gi.wf_instance_id=gia.wf_instance_id and gia.wf_activity_id=$aid and gi.wf_status='active' and wf_p_id=".$res['wf_p_id']);
+      // activities of completed instances are all removed from the instance_activities table for some reason, so we need to look at workitems
+        $res['completed_instances']=$this->getOne("select count(distinct gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."workitems gw where gi.wf_instance_id=gw.wf_instance_id and gw.wf_activity_id=$aid and gi.wf_status='completed' and wf_p_id=".$res['wf_p_id']);
+      // activities of aborted instances are all removed from the instance_activities table for some reason, so we need to look at workitems
+        $res['aborted_instances']=$this->getOne("select count(distinct gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."workitems gw where gi.wf_instance_id=gw.wf_instance_id and gw.wf_activity_id=$aid and gi.wf_status='aborted' and wf_p_id=".$res['wf_p_id']);
+        $res['exception_instances']=$this->getOne("select count(gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where gi.wf_instance_id=gia.wf_instance_id and gia.wf_activity_id=$aid and gi.wf_status='exception' and wf_p_id=".$res['wf_p_id']);
+        $res['act_running_instances']=$this->getOne("select count(gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where gi.wf_instance_id=gia.wf_instance_id and gia.wf_activity_id=$aid and gia.wf_status='running' and wf_p_id=".$res['wf_p_id']);      
+      // completed activities are removed from the instance_activities table unless they're part of a split for some reason, so this won't work
+      //  $res['act_completed_instances']=$this->getOne("select count(gi.wf_instance_id) from ".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where gi.wf_instance_id=gia.wf_instance_id and gia.activityId=$aid and gia.status='completed' and pId=".$res['pId']);      
+        $res['act_completed_instances'] = 0;
+      }
       $ret[$aid] = $res;
     }
     if (count($ret) < 1) {
@@ -310,17 +351,20 @@ class ProcessMonitor extends Base
       $retval["cant"] = $cant;
       return $retval;
     }
-    $query = "select wf_activity_id, count(distinct wf_instance_id) as num_instances, min(wf_ended - wf_started) as min_time, avg(wf_ended - wf_started) as avg_time, max(wf_ended - wf_started) as max_time
-              from ".GALAXIA_TABLE_PREFIX."workitems
-              where wf_activity_id in (" . join(', ', array_keys($ret)) . ")
-              group by wf_activity_id";
-    $result = $this->query($query);
-    while($res = $result->fetchRow()) {
-      // Number of active instances
-      $aid = $res['wf_activity_id'];
-      if (!isset($ret[$aid])) continue;
-      $ret[$aid]['act_completed_instances'] = $res['num_instances'] - $ret[$aid]['aborted_instances'];
-      $ret[$aid]['duration'] = array('min' => $res['min_time'], 'avg' => $res['avg_time'], 'max' => $res['max_time']);
+    if ($add_stats)
+    {
+      $query = "select wf_activity_id, count(distinct wf_instance_id) as num_instances, min(wf_ended - wf_started) as min_time, avg(wf_ended - wf_started) as avg_time, max(wf_ended - wf_started) as max_time
+                from ".GALAXIA_TABLE_PREFIX."workitems
+                where wf_activity_id in (" . join(', ', array_keys($ret)) . ")
+                group by wf_activity_id";
+      $result = $this->query($query);
+      while($res = $result->fetchRow()) {
+        // Number of active instances
+        $aid = $res['wf_activity_id'];
+        if (!isset($ret[$aid])) continue;
+        $ret[$aid]['act_completed_instances'] = $res['num_instances'] - $ret[$aid]['aborted_instances'];
+        $ret[$aid]['duration'] = array('min' => $res['min_time'], 'avg' => $res['avg_time'], 'max' => $res['max_time']);
+      }
     }
     $retval = Array();
     $retval["data"] = $ret;
@@ -329,7 +373,8 @@ class ProcessMonitor extends Base
   }
 
   //! list all instances
-  function monitor_list_instances($offset,$maxRecords,$sort_mode,$find,$where='',$wherevars='') {
+  function monitor_list_instances($offset,$maxRecords,$sort_mode,$find,$where='',$wherevars='', $addstats=true) 
+  {
     if($find) {
       $findesc = $this->qstr('%'.$find.'%');
       $mid=" where ((`wf_properties` like $findesc) or (gi.`wf_name` like $findesc) 
