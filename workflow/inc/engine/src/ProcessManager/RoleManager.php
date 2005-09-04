@@ -21,14 +21,24 @@ class RoleManager extends BaseManager {
   *  Constructor takes a PEAR::Db object to be used
   *  to manipulate roles in the database.
   */
-  function RoleManager($db) 
+  function RoleManager(&$db) 
   {
-    if(!$db) {
-      die("Invalid db object passed to RoleManager constructor");  
-    }
-    $this->db = $db;  
+    $this->child_name = 'RoleManager';
+    parent::Base($db);
   }
-  
+
+  /*!
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  */
+  function collect_errors($debug=false)
+  {
+    parent::collect_errors($debug);
+  }
+
   function get_role_id($pid,$name)
   {
     $name = addslashes($name);
@@ -294,57 +304,71 @@ class RoleManager extends BaseManager {
   * @param $roleId is the roleId, 0 in insert mode
   * @return the roleId (the new one if in insert mode) if everything was ok, false in the other case
   */
-  function replace_role($pId, $roleId, $vars)
+  function replace_role($pId, $roleId, $vars) 
   {
-    // start a transaction
-    $this->db->StartTrans();
-    $TABLE_NAME = GALAXIA_TABLE_PREFIX."roles";
+    // start a transaction 
+    $this->db->StartTrans(); 
+    $TABLE_NAME = GALAXIA_TABLE_PREFIX."roles"; 
     $now = date("U");
-    $vars['wf_last_modif']=$now;
+    $vars['wf_last_modif']=$now; 
     $vars['wf_p_id']=$pId;
     
-    foreach($vars as $key=>$value)
+    foreach($vars as $key=>$value) 
     {
       $vars[$key]=addslashes($value);
     }
   
     if($roleId) {
-      // update mode
-      $first = true;
-      $query ="update $TABLE_NAME set";
-      foreach($vars as $key=>$value) {
-        if(!$first) $query.= ',';
-        if(!is_numeric($value)) $value="'".$value."'";
-        $query.= " $key=$value ";
+      // update mode 
+      $first = true; 
+      $query ="update $TABLE_NAME set"; 
+      $bindvars = Array();
+      foreach($vars as $key=>$value) 
+      {
+        if(!$first) $query.= ','; 
+        //if(!is_numeric($value)) $value="'".$value."'"; 
+        $query.= " $key=? ";
+        $bindvars[] = $value; 
         $first = false;
       }
-      $query .= " where wf_p_id=$pId and wf_role_id=$roleId ";
-      $this->query($query);
-    } else {
-      $name = $vars['wf_name'];
-      if ($this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."roles where wf_p_id=$pId and wf_name='$name'")) {
+      $query .= ' where wf_p_id=? and wf_role_id=? '; 
+      $bindvars[] = $pId;
+      $bindvars[] = $roleId; 
+      $this->query($query, $bindvars);
+    } 
+    else 
+    {
+      //check unicity 
+      $name = $vars['wf_name']; 
+      if ($this->getOne('select count(*) from '.$TABLE_NAME.' where wf_p_id=? and wf_name=?', array($pId,$name))) 
+      { 
         return false;
       }
-      unset($vars['wf_role_id']);
+      unset($vars['wf_role_id']); 
       // insert mode
+      $bindvars = Array();
       $first = true;
       $query = "insert into $TABLE_NAME(";
-      foreach(array_keys($vars) as $key) {
+      foreach(array_keys($vars) as $key)
+      {
         if(!$first) $query.= ','; 
         $query.= "$key";
         $first = false;
       } 
       $query .=") values(";
       $first = true;
-      foreach(array_values($vars) as $value) {
+      foreach(array_values($vars) as $value) 
+      {
         if(!$first) $query.= ','; 
-        if(!is_numeric($value)) $value="'".$value."'";
-        $query.= "$value";
+        //if(!is_numeric($value)) $value="'".$value."'";
+        $query.= '?';
+        $bindvars[] = $value;
         $first = false;
       } 
       $query .=")";
-      $this->query($query);
-      $roleId = $this->getOne("select max(wf_role_id) from $TABLE_NAME where wf_p_id=$pId and wf_last_modif=$now"); 
+      $this->query($query, $bindvars);
+      //get the last inserted row
+      $roleId = $this->getOne('select max(wf_role_id) from '.$TABLE_NAME.' where wf_p_id=?', array($pId)); 
     }
     // perform commit (return true) or Rollback (return false)
     if ($this->db->CompleteTrans())
@@ -357,6 +381,29 @@ class RoleManager extends BaseManager {
       return false;
     }
   }
+  
+  /*!
+  * List all users and groups recorded in the mappings with their status (user or group)
+  * @return an associative array containing a row for each user. This row is an array
+  * containing 'wf_user' and 'wf_account_type' keys.
+  */
+  function get_all_users()
+  {
+    $final = Array();
+    //query for user mappings affected to groups & vice-versa
+    $query ='select distinct(gur.wf_user), gur.wf_account_type
+            from '.GALAXIA_TABLE_PREFIX.'user_roles gur';
+    $result = $this->query($query);
+    if (!(empty($result)))
+    {
+	while ($res = $result->fetchRow())
+	{
+		$final[] = $res;
+	}
+    }
+    return $final;
+  }
+
 }
 
 ?>
