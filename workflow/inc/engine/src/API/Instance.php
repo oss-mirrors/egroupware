@@ -342,17 +342,19 @@ class Instance extends Base {
   }
   
   /*!
-  Sets the user that must execute the activity indicated by the activityId.
-  Note that the instance MUST be present in the activity to set the user,
-  you can't program who will execute an activity.
-  If the user is empty then the activity user is setted to *, allowing any
-  authorised user to take the token later
-  
-  egw: if the user we set is not * verification is done before the update
-  that the instance has no user setted (or the same one)
-  return false if it was impossible to set the user, it can be because the
-  activity is not avaible anymore for this instance or because another user
-  is already there.
+  * Sets the user that must execute the activity indicated by the activityId.
+  * Note that the instance MUST be present in the activity to set the user,
+  * you can't program who will execute an activity.
+  * If the user is empty then the activity user is setted to *, allowing any
+  * authorised user to take the token later
+  * 
+  * concurrent access to this function is normally handled by WfRuntime and WfSecurity
+  * theses objects are the only ones which should call this function. WfRuntime is handling the
+  * current transaction and WfSecurity is Locking the instance and instance_activities table on
+  * a 'run' action which is the action leading to this setActivityUser call
+  * @param $activityId is the activity Id
+  * @param $theuser is the user id or '*' (or 0, '' or null which will be set to '*')
+  * @return false if something was wrong
   */
   function setActivityUser($activityId,$theuser) {
     if(empty($theuser)) $theuser='*';
@@ -373,23 +375,12 @@ class Instance extends Base {
         }
         
         // update the user
-        $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_user`=?";
+        $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_user=?';
         $query .= $where;
         $bindvars_update = array_merge(array($theuser),$bindvars);
         $this->query($query,$bindvars_update);
-        // we must verify the update had something to update and make it well
-        // if two concurrent user launch this code the same time, only one will be ok.
-        $verif_query = "select count(*) from `".GALAXIA_TABLE_PREFIX."instance_activities` ".$where;
-        if ($this->getOne($verif_query,$bindvars)==0)
-        {
-          //there're no corresponding rows
-          return false;
-        }
-        else
-        {
-          $this->activities[$i]['wf_user']=$theuser;
-          return true;
-        }
+        $this->activities[$i]['wf_user']=$theuser;
+        return true;
       }
     }
     // if we didn't find the activity it will be false
