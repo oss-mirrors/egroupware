@@ -14,6 +14,7 @@ class ProcessManager extends BaseManager {
   var $current;
   var $buffer;
   var $Process;
+  var $activity_manager; 
   
   /*!
     Constructor takes a PEAR::Db object to be used
@@ -21,12 +22,26 @@ class ProcessManager extends BaseManager {
   */
   function ProcessManager(&$db) 
   {
-    if(!$db) {
-      die("Invalid db object passed to ProcessManager constructor");  
-    }
-    $this->db =& $db;  
+    $this->child_name = 'ProcessManager';
+    parent::BaseManager($db);
+    require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'ActivityManager.php');
+    // $this->activity_manager is not set here to avoid objects loading object A loading object B loading object A, etc
+
   }
- 
+
+  /*!
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  */
+  function collect_errors($debug=false)
+  {
+    parent::collect_errors($debug);
+    if (isset($this->ActivityManager)) $this->error[] = $this->activity_manager->get_error(false, $debug);
+  }
+
   /*!
     Sets a process as active
   */
@@ -54,6 +69,7 @@ class ProcessManager extends BaseManager {
   */
   function serialize_process($pId)
   {
+    if (!(isset($this->activity_manager)))  $this->activity_manager =& new ActivityManager($this->db);
     // <process>
     $out = '<process>'."\n";
     //we retrieve config values with the others process data
@@ -94,7 +110,6 @@ class ProcessManager extends BaseManager {
     $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId";
     $result = $this->query($query);
     $out.='  <activities>'."\n";
-    $am =& new ActivityManager($this->db);
     while($res = $result->fetchRow()) {      
       $name = $res['wf_normalized_name'];
       $out.='    <activity>'."\n";
@@ -107,19 +122,19 @@ class ProcessManager extends BaseManager {
       $out.='      <roles>'."\n";
       //loop on activity roles
       $actid = $res['wf_activity_id'];
-      $roles =& $am->get_activity_roles($actid);
+      $roles =& $this->activity_manager->get_activity_roles($actid);
       foreach($roles as $role) {
         $out.='        <role>'.htmlspecialchars($role['wf_name']).'</role>'."\n";
       }  
       $out.='      </roles>'."\n";
       $out.='      <agents>'."\n";
       //loop on activity agents
-      $agents =& $am->get_activity_agents($actid);
+      $agents =& $this->activity_manager->get_activity_agents($actid);
       foreach($agents as $agent) {
         $out.='        <agent>'."\n";
         $out.='           <agent_type>'.htmlspecialchars($agent['wf_agent_type']).'</agent_type>'."\n";
         //loop on agent datas
-        $agent_data =& $am->get_activity_agent_data($actid,$agent['wf_agent_type']);
+        $agent_data =& $this->activity_manager->get_activity_agent_data($actid,$agent['wf_agent_type']);
         $out.='           <agent_datas>'."\n";
         foreach($agent_data as $key => $value)
         {
@@ -161,7 +176,7 @@ class ProcessManager extends BaseManager {
     $out.='  </activities>'."\n";
     $out.='  <transitions>'."\n";
     //loop on transitions
-    $transitions = $am->get_process_transitions($pId);
+    $transitions = $this->activity_manager->get_process_transitions($pId);
     foreach($transitions as $tran) {
       $out.='     <transition>'."\n";
       $out.='       <from>'.htmlspecialchars($tran['wf_act_from_name']).'</from>'."\n";
@@ -361,7 +376,7 @@ class ProcessManager extends BaseManager {
   function import_process(&$data)
   {
     //Now the show begins
-    $am = new ActivityManager($this->db);
+    if (!(isset($this->activity_manager)))  $this->activity_manager =& new ActivityManager($this->db);
     $rm = new RoleManager($this->db);
     // First create the process
     $vars = Array(
@@ -400,9 +415,9 @@ class ProcessManager extends BaseManager {
         'wf_is_interactive' => $activity['isInteractive'],
         'wf_is_autorouted' => $activity['isAutoRouted']
       );    
-      $actname=$am->_normalize_name($activity['name']);
+      $actname=$this->activity_manager->_normalize_name($activity['name']);
       
-      $actid = $am->replace_activity($pid,0,$vars);
+      $actid = $this->activity_manager->replace_activity($pid,0,$vars);
 	  
       $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php',"w");
       fwrite($fp, $activity['code']);
@@ -412,8 +427,8 @@ class ProcessManager extends BaseManager {
         fwrite($fp,$activity['template']);
         fclose($fp);
       }
-      $actids[$activity['name']] = $am->_get_activity_id_by_name($pid, $activity['name']);
-      $actname = $am->_normalize_name($activity['name']);
+      $actids[$activity['name']] = $this->activity_manager->_get_activity_id_by_name($pid, $activity['name']);
+      $actname = $this->activity_manager->_normalize_name($activity['name']);
       $now = date("U");
 
       //roles
@@ -431,7 +446,7 @@ class ProcessManager extends BaseManager {
 	          $rid = $rm->get_role_id($pid,$role);
 	        }
 	        if($actid && $rid) {
-	          $am->add_activity_role($actid,$rid);
+	          $this->activity_manager->add_activity_role($actid,$rid);
 	        }
 	      }
 	  }
@@ -442,7 +457,7 @@ class ProcessManager extends BaseManager {
         {
         //_debug_array($agent);
             //create a new agent of the same type for the new activity
-            $agentid = $am->add_activity_agent($actid,$agent['wf_agent_type']);
+            $agentid = $this->activity_manager->add_activity_agent($actid,$agent['wf_agent_type']);
             //save values of this new agent
             $bindvars = Array();
             $query = 'update '.GALAXIA_TABLE_PREFIX.'agent_'.$agent['wf_agent_type'].'
@@ -468,15 +483,14 @@ class ProcessManager extends BaseManager {
     }
     //transitions
     foreach($data['transitions'] as $tran) {
-      $am->add_transition($pid,$actids[$tran['from']],$actids[$tran['to']]);  
+      $this->activity_manager->add_transition($pid,$actids[$tran['from']],$actids[$tran['to']]);  
     }
 
     foreach ($actids as $name => $actid) {
-      $am->compile_activity($pid,$actid);
+      $this->activity_manager->compile_activity($pid,$actid);
     }
     // create a graph for the new process
-    $am->build_process_graph($pid);
-    unset($am);
+    $this->activity_manager->build_process_graph($pid);
     unset($rm);
     $msg = sprintf(tra('Process %s %s imported'),$proc_info['wf_name'],$proc_info['wf_version']);
     $this->notify_all(2,$msg);
@@ -492,6 +506,7 @@ class ProcessManager extends BaseManager {
   //TODO: copy process activities and so     
   function new_process_version($pId, $minor=true)
   {
+    if (!(isset($this->activity_manager)))  $this->activity_manager =& new ActivityManager($this->db);
     $oldpid = $pId;
     //retrieve process info with config rows
     $proc_info = $this->get_process($pId, true);
@@ -518,14 +533,13 @@ class ProcessManager extends BaseManager {
     $newname = $this->_get_normalized_name($pid);
     $this->_rec_copy(GALAXIA_PROCESSES.SEP."$oldname".SEP.'code',GALAXIA_PROCESSES.SEP."$newname".SEP.'code');
     // And here copy all the activities & so
-    $am = new ActivityManager($this->db);
     $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=?";
     $result = $this->query($query, array($oldpid));
     $newaid = array();
     while($res = $result->fetchRow()) {    
       $oldaid = $res['wf_activity_id'];
       // the false tell the am not to create activities source files
-      $newaid[$oldaid] = $am->replace_activity($pid,0,$res, false);
+      $newaid[$oldaid] = $this->activity_manager->replace_activity($pid,0,$res, false);
     }
     // create transitions
     $query = 'select * from '.GALAXIA_TABLE_PREFIX.'transitions where wf_p_id=?';
@@ -535,7 +549,7 @@ class ProcessManager extends BaseManager {
       if (empty($newaid[$res['wf_act_from_id']]) || empty($newaid[$res['wf_act_to_id']])) {
         continue;
       }
-      $am->add_transition($pid,$newaid[$res['wf_act_from_id']],$newaid[$res['wf_act_to_id']]);
+      $this->activity_manager->add_transition($pid,$newaid[$res['wf_act_from_id']],$newaid[$res['wf_act_to_id']]);
     }
     // create roles
     $rm = new RoleManager($this->db);
@@ -569,7 +583,7 @@ class ProcessManager extends BaseManager {
         if (empty($newaid[$res['wf_activity_id']]) || empty($newrid[$res['wf_role_id']])) {
           continue;
         }
-        $am->add_activity_role($newaid[$res['wf_activity_id']],$newrid[$res['wf_role_id']]);
+        $this->activity_manager->add_activity_role($newaid[$res['wf_activity_id']],$newrid[$res['wf_role_id']]);
       }
     }
 
@@ -584,9 +598,9 @@ class ProcessManager extends BaseManager {
       while ($res = $result->fetchRow()) 
       {
           //create a new agent of the same type for the new activity
-          $agentid = $am->add_activity_agent($newaid[$res['wf_activity_id']],$res['wf_agent_type']);
+          $agentid = $this->activity_manager->add_activity_agent($newaid[$res['wf_activity_id']],$res['wf_agent_type']);
           //save values of this new agents, taking the old ones, we make a simple copy
-          $old_activity_agent_data =& $am->get_activity_agent_data($res['wf_activity_id'],$res['wf_agent_type']);
+          $old_activity_agent_data =& $this->activity_manager->get_activity_agent_data($res['wf_activity_id'],$res['wf_agent_type']);
           //we wont need the old id and type
           unset($old_activity_agent_data['wf_agent_id']);
           unset($old_activity_agent_data['wf_agent_type']);
@@ -611,7 +625,7 @@ class ProcessManager extends BaseManager {
     }
 
     // create a graph for the new process
-    $am->build_process_graph($pid);
+    $this->activity_manager->build_process_graph($pid);
     
     return $pid;
   }
@@ -697,9 +711,9 @@ class ProcessManager extends BaseManager {
   */
   function remove_process($pId)
   {
+    if (!(isset($this->activity_manager)))  $this->activity_manager =& new ActivityManager($this->db);
     $this->deactivate_process($pId);
     $name = $this->_get_normalized_name($pId);
-    $aM = new ActivityManager($this->db);
     
     // start a transaction
     $this->db->StartTrans();
@@ -709,7 +723,7 @@ class ProcessManager extends BaseManager {
     $result = $this->query($query);
     while($res = $result->fetchRow()) {
       //we add a false parameter to prevent the ActivityManager from opening a new transaction
-      $aM->remove_activity($pId,$res['wf_activity_id'], false);
+      $this->activity_manager->remove_activity($pId,$res['wf_activity_id'], false);
     }
 
     // Remove process roles
@@ -755,6 +769,7 @@ class ProcessManager extends BaseManager {
   */
   function replace_process($pId, &$vars, $create = true)
   {
+    if (!(isset($this->activity_manager)))  $this->activity_manager =& new ActivityManager($this->db);
     $TABLE_NAME = GALAXIA_TABLE_PREFIX."processes";
     $now = date("U");
     $vars['wf_last_modif']=$now;
@@ -851,7 +866,6 @@ class ProcessManager extends BaseManager {
       // Now automatically add a start and end activity 
       // unless importing ($create = false)
       if($create) {
-        $aM= new ActivityManager($this->db);
         $vars1 = Array(
           'wf_name' => 'start',
           'wf_description' => 'default start activity',
@@ -867,8 +881,8 @@ class ProcessManager extends BaseManager {
           'wf_is_autorouted' => 'y'
         );
   
-        $aM->replace_activity($pId,0,$vars1);
-        $aM->replace_activity($pId,0,$vars2);
+        $this->activity_manager->replace_activity($pId,0,$vars1);
+        $this->activity_manager->replace_activity($pId,0,$vars2);
       }
     $msg = sprintf(tra('Process %s has been created'),$vars['wf_name']);     
     $this->notify_all(4,$msg);
@@ -1085,6 +1099,31 @@ class ProcessManager extends BaseManager {
   function get_agents()
   {
     return galaxia_get_agents_list();
+  }
+
+  /*! get the view activity id avaible for a given process
+  * @param $pId is the process Id
+  * @return false if no view activity is avaible for the process, return the activity id if there is one
+  */
+  function get_process_view_activity($pId)
+  {
+    $mid = "where gp.wf_p_id=? and ga.wf_type=?";
+    $bindvars = array($pId,'view');
+    $query = "select ga.wf_activity_id
+        from ".GALAXIA_TABLE_PREFIX."processes gp
+	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
+	$mid";
+    $result = $this->query($query,$bindvars);
+    $ret = Array();
+    $retval = false;
+    if (!(empty($result)))
+    {
+      while($res = $result->fetchRow()) 
+      {
+        $retval = $res['wf_activity_id'];
+      }
+    }
+    return $retval;
   }
 
 }
