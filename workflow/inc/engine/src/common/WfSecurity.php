@@ -13,14 +13,27 @@ class WfSecurity extends Base {
   var $processesConfig= Array();
       
   /*!
-    Constructor takes a PEAR::Db object to be used
-    to manipulate activities in the database.
+  * Constructor takes a PEAR::Db object
   */
-  function WfSecurity($db) {
-    if(!$db) {
-      die("Invalid db object passed to WfSecurity constructor");  
-    }
-    $this->db = $db;  
+  function WfSecurity(&$db) 
+  {
+    $this->child_name = 'WfSecurity';
+    parent::Base($db);
+    require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'Instance.php');
+    require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'Process.php');
+    require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'BaseActivity.php');
+  }
+
+  /*!
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  */
+  function collect_errors($debug=false)
+  {
+    parent::collect_errors($debug);
   }
   
   //! load the config values for a given process
@@ -51,33 +64,37 @@ class WfSecurity extends Base {
     }
   }
 
-
-
-  //! Checks if a user has a access to an activity,
+  //! Checks if a user has a access to an activity, use it at runtime
   /*!
   * To do so it checks if the user is in the users having the roles associated with the activity
   * or if he is in the groups having roles associated with the activity
   * @public
   * @param $user is the user id
   * @param $activityId is the activity id
+  * @param $readonly is a boolean, false by default. If true we only check rea-only access level
+  * 	for the user on this activity
   * @return true if access is granted false in other case. Errors are stored in the object.
   */
-  function checkUserAccess($user, $activity_id) 
+  function checkUserAccess($user, $activity_id, $readonly=false) 
   {
     //group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
         
-    $result= $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."activity_roles gar, 
-        ".GALAXIA_TABLE_PREFIX."user_roles gur, 
-        ".GALAXIA_TABLE_PREFIX."roles gr 
+    $query = 'select count(*) from '.GALAXIA_TABLE_PREFIX.'activity_roles gar, 
+        '.GALAXIA_TABLE_PREFIX.'user_roles gur, 
+        '.GALAXIA_TABLE_PREFIX.'roles gr 
         where gar.wf_role_id=gr.wf_role_id 
         and gur.wf_role_id=gr.wf_role_id
         and gar.wf_activity_id=? 
-        and ( (gur.wf_user=? and gur.wf_account_type='u') 
-              or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g') 
-            )"
-        ,array($activity_id, $user));
-    if ($result >= 1)
+        and ( (gur.wf_user=? and gur.wf_account_type=?) 
+              or (gur.wf_user in ('.implode(',',$groups).') and gur.wf_account_type=?))';
+    if (!($readonly))
+    {
+      $query.= 'and NOT(gar.wf_readonly=1)';
+    }
+            
+    $result= $this->getOne($query ,array($activity_id, $user, 'u', 'g'));
+    if ($result)
     {
       //echo "<br>Access granted for ".$user;
       return true;
@@ -89,12 +106,19 @@ class WfSecurity extends Base {
     }
   }
 
-  //! Return true if actual running user is authorized for a given action on a given activity/instance
+  //! Return true if actual running user is authorized for a given action on a given activity/instance. Use it at runtime.
   /*!
   * @public
+  * This function will check the given action for the current running user, lock the table rows if necessary to ensure
+  * nothing will move from another process between the check and the later action. 
+  * Encapsulate this function call in a transaction, locks will be removed at the end of the transaction, whent COMMIT 
+  * or ROLLBACK will be launched.
   * @param $activityId is the activity id, can be 0
   * @param $instanceId is the instanceId, can be 0
-  * @param $action is a string containing ONE action asked, it must be one of 'grab', 'release', 'exception', 'resume', 'abort', 'run', 'send', 'view'
+  * @param $action is a string containing ONE action asked, it must be one of 'grab', 'release', 'exception', 'resume', 'abort', 'run', 'send', 'view','viewrun'
+  * be carefull, View can be done in 2 ways
+  * 	* viewrun : by the view activity if the process has a view activity, and only by this way in such case
+  * 	* view: by a general view form with access to everybody if the process has no view activity
   * @return true if action access is granted false in other case. Errors are stored in the object.
   */
   function checkUserAction($activityId, $instanceId,$action)
@@ -104,7 +128,7 @@ class WfSecurity extends Base {
     //aborted and completed instances have no activities associated
 
     //$this->error[] = 'DEBUG: action:'.$action;
-    if ($action!='run' && $action!='send' && $action!='view' && $action!='grab' && $action!='release' && $action!='exception' && $action!='resume' && $action!='abort')
+    if ($action!='run' && $action!='send' && $action!='view' && $action!='viewrun' && $action!='grab' && $action!='release' && $action!='exception' && $action!='resume' && $action!='abort')
     {
       $this->error[] = tra('Security check: Cannot understand asked action');
       return false;
@@ -117,7 +141,49 @@ class WfSecurity extends Base {
       $this->error[] = tra('Cannot retrieve the user running the security check');
       return false;
     }
+    //0 - prepare RowLocks ----------------------------------------------------------
     
+    $lock_instance_activities = false;
+    $lock_instances = false;
+    switch($action)
+    {
+      case 'view':
+      case 'viewrun':
+        //no impact on write mode, no lock
+        break;
+      case 'grab':
+        //impacted tables is instance_activities
+        $lock_instance_activities = true;
+        break;
+      case 'release' :
+        //impacted tables is instance_activities
+        $lock_instance_activities = true;
+        break;
+      case 'exception':
+        //impacted tables is instances
+        $lock_instances = true;
+        break;
+      case 'resume':
+        //impacted tables is instances
+        $lock_instances = true;
+        break;
+      case 'abort':
+        //impacted tables are instances and instance_activities (deleting rows)
+        $lock_instance_activities = true;
+        $lock_instances = true;
+        break;
+      case 'run':
+        //impacted tables is instance_activities (new running user)
+        $lock_instance_activities = true;
+        break;
+      case 'send':
+        //impacted tables is instance_activities (deleting/adding row)
+        $lock_instance_activities = true;
+        break;
+    }
+    // no lock on instance_activities without a lock on instances
+    // to avoid changing status of an instance or deletion of an instance while impacting instance_activities
+    if ($lock_instance_activities) $lock_instances = true;
     
     //1 - load data -----------------------------------------------------------------
     $_no_activity=false;
@@ -130,11 +196,11 @@ class WfSecurity extends Base {
     }
     else
     {
-      $query = "select ga.wf_activity_id, ga.wf_type, ga.wf_is_interactive, ga.wf_is_autorouted, 
+      $query = 'select ga.wf_activity_id, ga.wf_type, ga.wf_is_interactive, ga.wf_is_autorouted, 
               gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version, gp.wf_p_id
-              from ".GALAXIA_TABLE_PREFIX."activities ga 
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=ga.wf_p_id
-                where ga.wf_activity_id = ?";
+              from '.GALAXIA_TABLE_PREFIX.'activities ga 
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'processes gp ON gp.wf_p_id=ga.wf_p_id
+                where ga.wf_activity_id = ?';
       $result = $this->query($query, array($activityId));
       $resactivity = Array();
       if (!!$result)
@@ -158,16 +224,24 @@ class WfSecurity extends Base {
     }
     else
     {
-      $query = "select gi.wf_instance_id, gi.wf_owner, gi.wf_status, 
+      if ($lock_instances)
+      {
+        //we need to make a row lock now, before any read action
+        $where = 'wf_instance_id='.(int)$instanceId;
+        //$this->error[]= '<br> Debug:locking instances '.$where;
+        $this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where);
+      }
+      $query = 'select gi.wf_instance_id, gi.wf_owner, gi.wf_status, 
               gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version, gp.wf_p_id
-              from ".GALAXIA_TABLE_PREFIX."instances gi
-              INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
-              where gi.wf_instance_id=?";
+              from '.GALAXIA_TABLE_PREFIX.'instances gi
+              INNER JOIN '.GALAXIA_TABLE_PREFIX.'processes gp ON gp.wf_p_id=gi.wf_p_id
+              where gi.wf_instance_id=?';
       $result = $this->query($query,array($instanceId));
       if (!!$result)
       {
+
         $resinstance = $result->fetchRow();
-        $pId = $resactivity['wf_p_id'];
+        $pId = $resinstance['wf_p_id'];
         //DEBUG
         //$debuginstance = implode(",",$resinstance);
         //$this->error[] = 'DEBUG: '. date("[d/m/Y h:i:s]").'instance:'.$debuginstance;
@@ -177,11 +251,6 @@ class WfSecurity extends Base {
         $_no_instance = true;
       }
     }
-    if ($_no_instance && $_no_activity)
-    {
-      $this->error[] = tra('no action avaible beacuse no activity and no instance are given!');
-      return false;
-    }
 
     if ($_no_activity && $_no_instance)
     {
@@ -190,12 +259,20 @@ class WfSecurity extends Base {
     }
     
     //retrieve some instance/activity data
-    //if no_activity or no_instance we are with out-flow/without instances activities or with instances terminated we wont obtain anything there
+    //if no_activity or no_instance we are with out-flow/without instances activities or with instances terminated 
+    //we would not obtain anything there
     if (!($_no_activity || $_no_instance))
     {
-      $query = "select gia.wf_instance_id, gia.wf_user, gia.wf_status
-              from ".GALAXIA_TABLE_PREFIX."instance_activities gia
-                where gia.wf_activity_id = ? and gia.wf_instance_id = ?";
+      if ($lock_instance_activities)
+      {
+        //we need to lock this row now, before any read action
+        $where = 'wf_instance_id='.(int)$instanceId.' and wf_activity_id='.(int)$activityId;
+        //$this->error[] = '<br> Debug:locking instance_activities '.$where;
+        $this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities', $where);
+      }
+      $query = 'select gia.wf_instance_id, gia.wf_user, gia.wf_status
+              from '.GALAXIA_TABLE_PREFIX.'instance_activities gia
+                where gia.wf_activity_id = ? and gia.wf_instance_id = ?';
       $result = $this->query($query, array($activityId, $instanceId));
       $res_inst_act = Array();
       if (!!$result)
@@ -236,18 +313,33 @@ class WfSecurity extends Base {
     $_check_is_user = false; //is the actual_user our user?
     $_check_is_not_star = false; //is the actual <>*?
     $_check_is_star = false; // is the actual user *?
-    $_check_is_in_role = false; //is our user in associated roles?
-
+    $_check_is_in_role = false; //is our user in associated roles with readonly=false?
+    $_check_is_in_role_in_readonly = false; //is our user in associated roles?
+    $_check_no_view_activity = false; //is the process having no view activities?
+    
     //first have a look at the action asked
     switch($action)
     {
       case 'view':
         //process can be inactive
+        //we need an existing instance
         //no activity needed
-        //we just need an existing instance
-        // TODO: add conf setting to refuse view if no (at least read-only-)role
         $_check_instance = true;
         $_bypass_user_if_admin	= true;
+        //but be carefull the view function is forbidden on process having the viewrun action with activities
+        $_check_no_view_activity = true;
+        break;
+      case 'viewrun':
+        //process can be inactive
+        //we need an existing instance
+        //we need an activity
+        //need a read-only role at least on this activity
+        $_check_instance = true;
+        $_bypass_user_if_admin	= true;
+        $_check_activity = true; 
+        $_check_is_in_role_in_readonly = true;
+        //The view type is a special activity related to all instances
+        $_check_instance_activity = false;
         break;
       case 'grab': 
         // we need an activity 'in_flow' ie: not start or standalone that means we need an instance
@@ -375,7 +467,7 @@ class WfSecurity extends Base {
       //$this->error[] = 'DEBUG: check instance';
       if ($_no_instance)
       {
-        $this->error[] = tra('Action %1 needs and instance and instance %2 does not exists', $action, $instanceId);
+        $this->error[] = tra('Action %1 needs an instance and instance %2 does not exists', $action, $instanceId);
         return false;
       }
     }
@@ -385,7 +477,7 @@ class WfSecurity extends Base {
       //$this->error[] = 'DEBUG: check activity';
       if ($_no_activity)
       {
-        $this->error[] = tra('Action %1 needs and activity and activity %2 does not exists', $action, $activityId);
+        $this->error[] = tra('Action %1 needs an activity and activity %2 does not exists', $action, $activityId);
         return false;
       }
     }
@@ -417,10 +509,26 @@ class WfSecurity extends Base {
         return false;
     }
     
+    // Test on the process to see if he has a view activity
+    if ($_check_no_view_activity)
+    {
+      if (!(isset($this->pm)))
+      {
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'ProcessManager.php');
+        $this->pm =& new ProcessManager($this->db);
+      }
+      //$this->error[] = 'DEBUG: checking to see if there is no view activities on process :'.$pId.':'.$this->pm->get_process_view_activity($pId);
+      if ($this->pm->get_process_view_activity($pId))
+      {
+        $this->error[] = tra('This process has a view activity. Access in view mode is granted only for this view activty.');
+        return false;
+      }
+    }
+    
     // user tests ---------------
     $checks = true;
     //is our actual workflow user a special rights user?
-    // TODO test actual workflow user diff de $user
+    // TODO test actual workflow user diff of $user
     //$this->error[] = 'DEBUG: user can admin instance :'.galaxia_user_can_admin_instance().' bypass?:'.$_bypass_user_if_admin;
     if (!( ($_bypass_user_if_admin) && (galaxia_user_can_admin_instance()) ))
     {
@@ -434,7 +542,7 @@ class WfSecurity extends Base {
         {
           //$this->error[] = 'DEBUG: no bypassing done:';
           //is the actual_user our user?
-          if ($_check_is_user) 
+          if ( (!($_no_instance)) && $_check_is_user) 
           {
             //$this->error[] = 'DEBUG: check user is actual instance user:'.$user.':'.$res_inst_act['wf_user'];
             if (!((int)$res_inst_act['wf_user']==(int)$user))
@@ -462,13 +570,19 @@ class WfSecurity extends Base {
               $this->error[] = tra('Action %1 is impossible, there are no user assigned to this activity for this instance', $action);
               return false;
             }
-            //perform the role test only if actual user is '*'
+            //perform the role test if actual user is '*'
             //$this->error[] = 'DEBUG: role checking?:'.$_check_is_in_role;
             if ($_check_is_in_role)
             {
               //$this->error[] = 'DEBUG: we have *, checking role of user:'.$user;
               $checks=$this->checkUserAccess($user, $activityId);
             }
+            //$this->error[] = 'DEBUG: role checking in read-only at least?:'.$_check_is_in_role_in_readonly;
+            if ($_check_is_in_role_in_readonly)
+            {
+              //$this->error[] = 'DEBUG: we have *, checking readonly role of user:'.$user;
+              $checks=$this->checkUserAccess($user, $activityId, true);
+            }        
           }
           else
           {
@@ -488,6 +602,13 @@ class WfSecurity extends Base {
               //$this->error[] = 'DEBUG: we have not *, checking role for user:'.$user;
               $checks=$this->checkUserAccess($user, $activityId);
             }
+            //$this->error[] = 'DEBUG: role checking in read-only at least?:'.$_check_is_in_role_in_readonly;
+            if ($_check_is_in_role_in_readonly)
+            {
+              //$this->error[] = 'DEBUG: we have not *, checking role in read-only for user:'.$user;
+              $checks=$this->checkUserAccess($user, $activityId, true);
+            }
+
           }
         }
       }
@@ -503,6 +624,7 @@ class WfSecurity extends Base {
   * @param $user is the user id
   * @param $instanceId is the instance id
   * @param $activityId is the activity id
+  * @param $readonly has to be true if the user has only read-only level access with his role mappings
   * @param $pId is the process id
   * @param $actType is the activity type
   * @param $actInteractive is 'y' or 'n' and is the activity interactivity
@@ -511,31 +633,33 @@ class WfSecurity extends Base {
   * @param $instanceOwner is the instance owner id
   * @param $instanceStatus is the instance status ('running', 'completed', 'aborted' or 'exception')
   * @param $currentUser is the actual instance/activity user id or '*'.
+  * @param $viewactivity is false if the process has no view activity, else it's the id of the view activity
   * @return an array of this form:
   * 	array('action name' => 'action description')
-  * 'actions names' are: 'grab', 'release', 'run', 'send', 'view', 'exception', 'resume', 'monitor'
+  * 'actions names' are: 'grab', 'release', 'run', 'send', 'view', 'viewrun', 'exception', 'resume', 'monitor'
+  * note that for the 'viewrun' key value is an array with a 'lang' key for the translation and a 'link' key for the view activity id
   * Some config values can change theses rules but basically here they are:
-  ** 'grab'	: be the user of this activity. User has access to it and instance status is ok.
-  ** 'release'	: let * be the user of this activity. Must be the actual user or the owner of the instance.
-  ** 'run'	: run an associated form. This activity is interactive, user has access, instance status is ok.
-  ** 'send'	: send this instance, activity was non-autorouted and he has access and status is ok.
-  ** 'view'	: view the instance, activity ok, always avaible except for start or standalone act.
-  ** 'abort'	: abort an instance, ok when we are the user
-  ** 'exception' : set the instance status to exception, need to be the user 
-  ** 'resume'	: back to running when instance status was exception, need to be the user
-  ** 'monitor' : admin the instance, for special rights users
+  *	* 'grab'	: be the user of this activity. User has access to it and instance status is ok.
+  *	* 'release'	: let * be the user of this activity. Must be the actual user or the owner of the instance.
+  *	* 'run'	: run an associated form. This activity is interactive, user has access, instance status is ok.
+  *	* 'send'	: send this instance, activity was non-autorouted and he has access and status is ok.
+  *	* 'view'	: view the instance, activity ok, always avaible if no view activity on the process except for start or standalone act.
+  *	* 'viewrun'	: view the instance in a view activity, need role on view activity, always avaible except for start or standalone act.
+  *	* 'abort'	: abort an instance, ok when we are the user
+  *	* 'exception' : set the instance status to exception, need to be the user 
+  *	* 'resume'	: back to running when instance status was exception, need to be the user
+  *	* 'monitor' : admin the instance, for special rights users
   * 'actions description' are translated explanations like 'release access to this activity'
   * This function will as well load process configuration which could have some impact on the rights. 
   * Theses config data will be cached during the existence of this WfSecurity object.
   * WARNING: this is a snapshot, the engine give you a snaphsot of the rights a user have on an instance-activity
   * at a given time, this is not meaning theses rights will still be there when the user launch the action.
-  * You should absolutely use the GUI Object to execute theses actions (except monitor) and they could be rejected.
-  * the GUI object call the checkUserAction() method of this object to check the rights at the real runtime
+  * You should absolutely use the GUI Object or runtime to execute theses actions (except monitor) and they could be rejected.
   * WARNING: we do not check the user access rights. If you launch this function for a list of instances obtained via a 
-  * GUI object theses access rights are allready checked.
+  * GUI object theses access rights are allready checked (for example we do not check your readonly parameter is true).
   * In fact this function is GUI oriented, it is not granting rights
   */
-  function getUserActions($user, $instanceId, $activityId, $pId, $actType, $actInteractive, $actAutorouted, $actStatus, $instanceOwner, $instanceStatus, $currentUser) 
+  function getUserActions($user, $instanceId, $activityId, $readonly, $pId, $actType, $actInteractive, $actAutorouted, $actStatus, $instanceOwner, $instanceStatus, $currentUser, $view_activity)
   {
     $result= array();//returned array
     $stopflow=false;//true when the instance is in a state where the flow musn't advance
@@ -551,117 +675,133 @@ class WfSecurity extends Base {
     $_release = false;
     $_abort = false;
     $_view = false;
+    $_viewrun = false;
     $_resume = false;
     $_exception = false;
     // this can be decided right now, it depends only on user rights
     $_monitor = galaxia_user_can_admin_instance($user);
 
     $this->loadConfigValues($pId);
-    
+
     // check the instance status
-    // 'completed' => no action except 'view' or 'abort' or 'monitor'
-    // 'aborted' =>  no action except 'view' or 'monitor'
+    // 'completed' => no action except 'view'/'viewrun' or 'abort' or 'monitor'
+    // 'aborted' =>  no action except 'view'/'viewrun' or 'monitor'
     // 'active' => ok first add 'exception'
     // 'exception' => first add 'resume', no 'run' or 'send' after
-    $_view = true;
-    if ($instanceStatus == 'aborted')
+    if (!($view_activity))
     {
-      $deathflow=true;
+      $_view = true;
     }
     else
     {
-      // first check ABORT
-      if ( ($user==$currentUser) ||
-           (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_abort_right'])) ||
-           ($this->processesConfig[$pId]['role_give_abort_right']))
-      {// we are the assigned user 
-       //OR we are the owner and it gives rights
-       //OR we have the role and it gives rights
-       $_abort =true;
-      }
-      // now handle resume and exception but before detect completed instances
-      if ($instanceStatus == 'completed')
+      //we should have a 'viewrun' instead of a 'view' action, but maybe we do not have access on this view activity
+      //this access right will be checked by gui_get_process_view_activity
+      $_viewrun = true;
+    }
+    
+    //on readonly mode things are simplier, no more rights
+    if (!($readonly))
+    {
+      if ($instanceStatus == 'aborted')
       {
         $deathflow=true;
       }
       else
       {
-        if ($instanceStatus == 'exception')
-        {
-          $stopflow = true;
-          if ( ($user==$currentUser) ||
-               (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_exception_right'])) ||
-               ($this->processesConfig[$pId]['role_give_exception_right']))
-          {// we are the assigned user OR we are the owner and it gives rights
-            $_resume = true;
-          }
+        // first check ABORT
+        if ( ($user==$currentUser) ||
+             (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_abort_right'])) ||
+             ($this->processesConfig[$pId]['role_give_abort_right']))
+        {// we are the assigned user 
+         //OR we are the owner and it gives rights
+         //OR we have the role and it gives rights
+         $_abort =true;
         }
-        elseif ($instanceStatus == 'active')
+        // now handle resume and exception but before detect completed instances
+        if ($instanceStatus == 'completed')
         {
-          //handle rules about ownership
-          if ( ($user==$currentUser) ||
-              (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_exception_right'])) ||
-              ($this->processesConfig[$pId]['role_give_exception_right']))
-          {// we are the assigned user OR we are the owner and it gives rights
-            $_exception = true;
-          }
+          $deathflow=true;
         }
-      }
-    }
-  
-    //now we check the activity
-    // start (only uncompleted) and standalone activities have no instance associated.
-    // If we are not in a 'stop' or 'death' flow we can check interactivity
-    // interactive -> run
-    // not interactive -> send (except for 'standalone')
-    // if we are not in a 'death flow' we can add grab and release actions
-    if ( ($actType=='standalone') || (($actType=='start') && (!($actStatus=='completed'))) )
-    {
-      $associated_instance=false;
-      // there's no instance to view in fact
-      $_view = false;
-    }
-    if (($actInteractive=='y') && (!($deathflow)))
-    {
-      if ($associated_instance)
-      {
-          if ($currentUser=='*')
+        else
+        {
+          if ($instanceStatus == 'exception')
           {
-            $_grab = true;
-          }
-          else
-          {
+            $stopflow = true;
             if ( ($user==$currentUser) ||
-               (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_release_right'])) ||
-               ($this->processesConfig[$pId]['role_give_release_right']))
-            {// we are the assigned user 
-             //OR we are the owner and it gives rights
-             //OR we have the role and it gives rights
-              $_release = true;
+                 (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_exception_right'])) ||
+                 ($this->processesConfig[$pId]['role_give_exception_right']))
+            {// we are the assigned user OR we are the owner and it gives rights
+              $_resume = true;
             }
           }
-      }
-      if (($actStatus=='running') && !($stopflow) && !($deathflow))
-      {
-        if (($currentUser=='*') || ($currentUser==$user))
-        {
-          $_run = true;
+          elseif ($instanceStatus == 'active')
+          {
+            //handle rules about ownership
+            if ( ($user==$currentUser) ||
+                (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_exception_right'])) ||
+                ($this->processesConfig[$pId]['role_give_exception_right']))
+            {// we are the assigned user OR we are the owner and it gives rights
+              $_exception = true;
+            }
+          }
         }
       }
-    }
-    //for non autorouted activities we'll have to send, useless on standalone but usefull for start
-    //activities which can be sended if completed and of course for all other activities
-    if ($actAutorouted=='n')
-    {
-      if ($associated_instance)
+  
+      //now we check the activity
+      // start (only uncompleted) and standalone activities have no instance associated.
+      // If we are not in a 'stop' or 'death' flow we can check interactivity
+      // interactive -> run
+      // not interactive -> send (except for 'standalone')
+      // if we are not in a 'death flow' we can add grab and release actions
+      if ( ($actType=='standalone') || (($actType=='start') && (!($actStatus=='completed'))) )
       {
-        if (($actStatus=='completed') && !($stopflow) && !($deathflow))
+        $associated_instance=false;
+        // there's no instance to view in fact
+        $_view = false;
+        $_viewrun = false;
+      }
+      if (($actInteractive=='y') && (!($deathflow)))
+      {
+        if ($associated_instance)
         {
-          $_send = true;
+            if ($currentUser=='*')
+            {
+              $_grab = true;
+            }
+            else
+            {
+              if ( ($user==$currentUser) ||
+                 (($user==$instanceOwner)&&($this->processesConfig[$pId]['ownership_give_release_right'])) ||
+                 ($this->processesConfig[$pId]['role_give_release_right']))
+              {// we are the assigned user 
+               //OR we are the owner and it gives rights
+               //OR we have the role and it gives rights
+                $_release = true;
+              }
+            }
+        }
+        if (($actStatus=='running') && !($stopflow) && !($deathflow))
+        {
+          if (($currentUser=='*') || ($currentUser==$user))
+          {
+            $_run = true;
+          }
         }
       }
-    }
-    
+      //for non autorouted activities we'll have to send, useless on standalone but usefull for start
+      //activities which can be sended if completed and of course for all other activities
+      if ($actAutorouted=='n')
+      {
+        if ($associated_instance)
+        {
+          if (($actStatus=='completed') && !($stopflow) && !($deathflow))
+          {
+            $_send = true;
+          }
+        }
+      }
+    }//end if !$readonly
+
     //build final array
     if ($_run) $result['run']=tra('Execute this activity');
     if ($_send) $result['send']=tra('Send this instance to the next activity');
@@ -669,10 +809,10 @@ class WfSecurity extends Base {
     if ($_release) $result['release']=tra('Release access to this activity');
     if ($_abort) $result['abort']=tra('Abort this instance');
     if ($_view) $result['view']=tra('View this instance');
+    if ($_viewrun) $result['viewrun']= array('lang' => tra('View this instance'), 'link' => $view_activity);
     if ($_resume) $result['resume']=tra('Resume this exception instance');
     if ($_exception) $result['exception']=tra('Exception this instance');
     if ($_monitor) $result['monitor']=tra('Monitor this instance');
-    
     return $result;
   }
 
