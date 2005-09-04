@@ -12,14 +12,24 @@ class InstanceManager extends BaseManager {
     Constructor takes a PEAR::Db object to be used
     to manipulate roles in the database.
   */
-  function InstanceManager($db) 
+  function InstanceManager(&$db) 
   {
-    if(!$db) {
-      die("Invalid db object passed to InstanceManager constructor");  
-    }
-    $this->db = $db;  
+    $this->child_name = 'InstanceManager';
+    parent::BaseManager($db);
   }
-  
+
+  /*!
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  */
+  function collect_errors($debug=false)
+  {
+    parent::collect_errors($debug);
+  }
+
   function get_instance_activities($iid)
   {
     $query = "select ga.wf_type,ga.wf_is_interactive,ga.wf_is_autorouted,gi.wf_p_id,ga.wf_activity_id,ga.wf_name,gi.wf_instance_id,gi.wf_status,gia.wf_activity_id,gia.wf_user,gi.wf_started,gia.wf_status as wf_act_status from ".GALAXIA_TABLE_PREFIX."activities ga,".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where ga.wf_activity_id=gia.wf_activity_id and gi.wf_instance_id=gia.wf_instance_id and gi.wf_instance_id=?";
