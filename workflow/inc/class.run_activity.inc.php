@@ -8,14 +8,18 @@
 			'go'	=> true,
 		);
 
+		//Runtime Object from the workflow engine
+		var $runtime;
 		// Activity engine object. This is the object we'll be running to obtain the rigth activity
-		var $base_activity;
-		//This is the right  activity object
+		//var $base_activity;
+		//This is the right activity object
 		var $activity;
 		//Process engine object. Used to retrieve at least paths and configuration values
 		var $process;
 		// GUI engine object. Act carefully with it.
 		var $GUI;
+		//a message array 
+		var $message = Array();
 		// a categorie object for categories
 		var $categories;
 		// local process configuration cache
@@ -55,7 +59,9 @@
 		function run_activity()
 		{
 			parent::workflow();
-			$this->base_activity	=& CreateObject('workflow.workflow_baseactivity');
+			$this->runtime		=& CreateObject('workflow.workflow_wfruntime');
+			$this->runtime->setDebug(_DEBUG);
+			//$this->base_activity	=& CreateObject('workflow.workflow_baseactivity');
 			$this->process		=& CreateObject('workflow.workflow_process');
 			$this->GUI		=& CreateObject('workflow.workflow_gui');
 			$this->categories 	=& CreateObject('phpgwapi.categories');
@@ -69,6 +75,7 @@
 			{
 				$_REQUEST['iid'] = $iid;
 			}
+			$iid = $_REQUEST['iid'];
 			
 
 			if (!$activity_id)
@@ -76,39 +83,29 @@
 				$activity_id	= (int)get_var('activity_id', array('GET','POST'), 0);
 			}
 
-			if (!$activity_id) die(lang('No activity indicated'));
-			// load activity
-			$activity =& $this->base_activity->getActivity($activity_id, true, true);
+			// load activity and instance
+			$activity =& $this->runtime->loadActivity($activity_id, true, true);
+			if (!$activity_id) $this->runtime->fail(lang('No activity indicated'), true, _DEBUG);
 			$this->activity =& $activity;
+			// the instance is avaible with $instance or $this->instance
+			// note that for standalone activities this instance can be an empty instance object
+			$instance =& $this->runtime->loadInstance($iid);
+			$this->instance =& $instance;
 
-			// load process
-			$this->process->getProcess($activity->getProcessId());
-
-			// instantiate instance class, but before set some global variables needed by it
+			//set some global variables needed
 			//TODO: move this global var in ['workflow']
 			$GLOBALS['__activity_completed'] = false;
 			$GLOBALS['workflow']['__leave_activity']=false;
 			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
-			// the instance is avaible with $instance or $this->instance
-			$instance =& CreateObject('workflow.workflow_instance');
-			$this->instance =& $instance;
-
-			//tests for access rights-----------------------------------------
 			
-			// Only check roles if this is an interactive activity
-			if ($activity->isInteractive() == 'y' 
-				// then verify roles, ownership and all defined access rules
-				&& !($activity->checkUserAccess($GLOBALS['phpgw_info']['user']['account_id'] ))
-			)
-			{
-				die(lang('You have not permission to execute this activity'));
-			}
-
+			// load process
+			$this->process->getProcess($activity->getProcessId());
+			//load role names, just an information
 			$this->act_role_names = $activity->getActivityRoleNames();
 
 			// load code sources
 			$source = GALAXIA_PROCESSES . SEP . $this->process->getNormalizedName(). SEP . 'compiled' . SEP . $activity->getNormalizedName(). '.php';
-			$shared = GALAXIA_PROCESSES . SEP . $this->process->getNormalizedName(). SEP . 'code' . SEP . 'shared.php';
+			//$shared = GALAXIA_PROCESSES . SEP . $this->process->getNormalizedName(). SEP . 'code' . SEP . 'shared.php';
 
 			// Activities' code will have at their disposition the $db object to handle database interactions
 			// they can access it in 3 ways: $db $this->db or $GLOBALS['workflow']['db'] 
@@ -122,7 +119,7 @@
 			$this->process_version	= $this->process->getVersion();
 			$this->activity_name	= $activity->getName();
 			$this->user_name	= $GLOBALS['phpgw']->accounts->id2name($GLOBALS['user']);
-			$this->view_activity	= $this->GUI->gui_get_process_user_view_activity($this->process_id,$GLOBALS['user']);
+			$this->view_activity	= $this->GUI->gui_get_process_view_activity($this->process_id);
 			
 			//we set them in $GLOBALS['workflow'] as well
 			$GLOBALS['workflow']['wf_activity_type']	=& $this->activity_type;
@@ -134,7 +131,7 @@
 			$GLOBALS['workflow']['wf_user_name']		=& $this->user_name;
 			$GLOBALS['workflow']['wf_view_activity']	=& $this->view_activity;
 			
-			//FIXME: useless, we remove it
+			//FIXed: useless, we remove it
 			// run the shared code (just in case because each activity is supposed to include it)
 			//include_once($shared);
 
@@ -183,7 +180,8 @@
 			// HERE the user code is 'executed'
 			require_once ($source);
 			
-			//Now that the instance is ready we can catch some others usefull vars
+			//Now that the instance is ready and that user code has maybe change some things 
+			// we can catch some others usefull vars
 			$this->instance_id	= $instance->getInstanceId();
 			$this->instance_name	= $instance->getName();
 			$this->instance_owner	= $instance->getOwner();
@@ -210,6 +208,8 @@
 					// re-retrieve instance data which could have been modified by an automatic activity
 					$this->instance_id	= $instance->getInstanceId();
 					$this->instance_name	= $instance->getName();
+					
+					$this->show_common_vars();
 
 					// and display completed template
 					$this->show_completed_page();
@@ -217,6 +217,7 @@
 				// it hasn't been completed
 				else
 				{
+					$this->show_common_vars();
 					if ($GLOBALS['workflow']['__leave_activity'])
 					{
 						// activity is interactive and the activity source set the 
@@ -268,6 +269,18 @@
 			$this->translate_template('activity_completed');
 			$this->t->pparse('output', 'activity_completed');
 			$this->show_after_running_page();
+		}
+		
+		//! show the common variable of interactive forms (like messages)
+		function show_common_vars()
+		{
+			$this->message = $this->GUI->get_error(true);
+			$this->message = $this->runtime->get_error(true);
+			$this->message = $this->process->get_error(true);
+			$this->t->set_var(array(
+				'wf_message'	=> implode('<br />',$this->message),
+				)
+			);
 		}
 		
 		//! show the page avaible when leaving an activity (with a Cancel or Quit button)
@@ -435,6 +448,7 @@
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 		
+
 		//!Parse the title in the activity form, the user can decide if he want this title to be shown or not
 		/*!
 		* if you do not want thuis to be displayed set your process config value for show_activity_title to false
