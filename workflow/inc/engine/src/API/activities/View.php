@@ -5,10 +5,13 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'BaseActivity.php');
 /*!
 This class handles activities of type 'view'
 */
-class View extends BaseActivity {
+class View extends BaseActivity 
+{
 	function View(&$db)
 	{
-	  $this->setDb($db);
+		$this->child_name = 'View';
+	 	parent::Base($db);
 	}
+	
 }
 ?>

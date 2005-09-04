@@ -6,7 +6,7 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'BaseActivity.php');
 This class handles activities of type 'switch'
 */
 class SwitchActivity extends BaseActivity {
-	function SwitchActivity($db)
+	function SwitchActivity(&$db)
 	{
 	  $this->setDb($db);
 	}

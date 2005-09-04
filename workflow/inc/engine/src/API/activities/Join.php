@@ -6,9 +6,10 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'BaseActivity.php');
 This class handles activities of type 'join'
 */
 class Join extends BaseActivity {
-	function Join($db)
+	function Join(&$db)
 	{
-	  $this->setDb($db);
+		$this->child_name = 'Join';
+	 	parent::Base($db);
 	}
 }
 ?>

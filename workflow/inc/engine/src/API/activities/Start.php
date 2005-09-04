@@ -6,9 +6,10 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'BaseActivity.php');
 This class handles activities of type 'start'
 */
 class Start extends BaseActivity {
-	function Start($db)
+	function Start(&$db)
 	{
-	  $this->setDb($db);
+		$this->child_name = 'Start';
+	 	parent::Base($db);
 	}
 }
 ?>
