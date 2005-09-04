@@ -1,5 +1,6 @@
 <?php
-
+	//set here the global DEBUG level which is actually 0 (nothing) or 1 (all)
+	if (!defined('_DEBUG')) define('_DEBUG', 0);
 	class workflow
 	{
 		var $public_functions = array(
@@ -63,11 +64,11 @@
 			// if process is active show stop button. Else show start button, but only if it is valid. If it's not valid, don't show any activation or stop button.
 			if ($proc_info['wf_is_active'] == 'y')
 			{
-				$start_stop = '<td><a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id'] .'&deactivate_proc='. $proc_info['wf_p_id']) .'"><img border ="0" src="'. $GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('stop') .'" title="'. lang('stop') .'" /></a></td>';
+				$start_stop = '<td><a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id'] .'&deactivate_proc='. $proc_info['wf_p_id']) .'"><img border ="0" src="'. $GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('stop') .'" title="'. lang('stop') .'" />'.lang('stop').'</a></td>';
 			}
 			elseif ($proc_info['wf_is_valid'] == 'y')
 			{
-				$start_stop = '<td><a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id'] .'&activate_proc='. $proc_info['wf_p_id']) .'"><img border ="0" src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('activate') .'" title="'. lang('activate') .'" /></a></td>';
+				$start_stop = '<td><a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id'] .'&activate_proc='. $proc_info['wf_p_id']) .'"><img border ="0" src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('activate') .'" title="'. lang('activate') .'" />'.lang('activate').'</a></td>';
 			}
 			else
 			{
@@ -97,7 +98,7 @@
 					'p_id'		=>	$proc_info['wf_p_id'],
 					'compile'	=>	true,
 				)),
-				'img_compile'			=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
+				'img_compile'			=> $GLOBALS['phpgw']->common->image('workflow', 'compilation'),
 			));
 
 			$this->translate_template('proc_bar_tpl');
