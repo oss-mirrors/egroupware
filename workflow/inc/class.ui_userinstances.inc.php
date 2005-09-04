@@ -208,7 +208,7 @@
 			{
 				if (!$this->GUI->gui_release_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
-					$this->message[]=$this->GUI->get_error(false);
+					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to release instance %1",$instance_id);
 				}
 			}
@@ -217,7 +217,7 @@
 			if ($askGrab)
 			{
 				if (!$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) {
-					$this->message[]=$this->GUI->get_error(false);
+					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to grab instance %1",$instance_id);
 				}
 			}
@@ -348,7 +348,7 @@
 
 		    $this->show_user_tabs($this->class_name);
 		    //check last GUI errors messages if any
-		    $this->message[]=$this->GUI->get_error(false);
+		    $this->message[]=$this->GUI->get_error(false, _DEBUG);
 		    $this->fill_form_variables();
 		    $this->finish();
 		}
@@ -383,6 +383,7 @@
 						$GLOBALS['phpgw_info']['user']['account_id'],
 						$instance['wf_instance_id'],
 				 		$instance['wf_activity_id'],
+				 		$instance['wf_readonly'],
 						$instance['wf_p_id'],
 						$instance['wf_type'],
 						$instance['wf_is_interactive'],
@@ -410,29 +411,24 @@
 			  // View instance
 				// launch the view activity associated with this process if any
 				//and the ui_userviewinstance if not
-				if (isset($actions['view']))
+				if (isset($actions['viewrun']))
 				{
-					$view_activity_id = $this->GUI->gui_get_process_user_view_activity($instance['wf_p_id'],$GLOBALS['phpgw_info']['user']['account_id']);
-				        if (!(empty($view_activity_id)))
-				        {
-				        	$this->t->set_var('view',
-				                          '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
-				                          	'menuaction'	=> 'workflow.run_activity.go',
-				                          	'iid'		=> $instance['wf_instance_id'],
-								'activity_id'	=> $view_activity_id,
-								)).'"><img src="'.$GLOBALS['phpgw']->common->image('phpgwapi', 'view').'" alt="'.$actions['view'].'" title="'.$actions['view'].'"></a>'
-						);
-					}
-					else
-					{
-						$this->t->set_var('view',
-				                          '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
-				                          	'menuaction'	=> 'workflow.ui_userviewinstance.form',
-				                          	'iid'		=> $instance['wf_instance_id'],
-								)).'"><img src="'.$GLOBALS['phpgw']->common->image('phpgwapi', 'view').'" alt="'.$actions['view'].'" title="'.$actions['view'].'"></a>'
-						);
-					
-					}
+			        	$this->t->set_var('view',
+			                          '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
+			                          	'menuaction'	=> 'workflow.run_activity.go',
+			                          	'iid'		=> $instance['wf_instance_id'],
+							'activity_id'	=> $actions['viewrun']['link'],
+							)).'"><img src="'.$GLOBALS['phpgw']->common->image('phpgwapi', 'view').'" alt="'.$actions['viewrun']['lang'].'" title="'.$actions['viewrun']['lang'].'"></a>'
+					);
+				}
+				elseif (isset($actions['view']))
+				{
+					$this->t->set_var('view',
+				                     '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
+				                      	'menuaction'	=> 'workflow.ui_userviewinstance.form',
+				                      	'iid'		=> $instance['wf_instance_id'],
+						)).'"><img src="'.$GLOBALS['phpgw']->common->image('phpgwapi', 'view').'" alt="'.$actions['view'].'" title="'.$actions['view'].'"></a>'
+					);
 				}
 				else
 				{
@@ -659,6 +655,13 @@
 				$this->t->parse('columns_header','block_header_column',true);
 			}
 			
+			// Activity. Always show this information.
+			$result['wf_name'] = lang('Activity');
+			$this->t->set_var(array(
+					'column_header'	=> 'wf_name',
+			));
+			$this->t->parse('columns_header','block_header_column',true);
+			
 			// Category
 			if($this->show_cat_column)
 			{
@@ -668,13 +671,6 @@
 				));
 				$this->t->parse('columns_header','block_header_column',true);
 			}
-			
-			// Activity. Always show this information.
-			$result['wf_name'] = lang('Activity');
-			$this->t->set_var(array(
-					'column_header'	=> 'wf_name',
-			));
-			$this->t->parse('columns_header','block_header_column',true);
 			
 			// Activity Status
 			if($this->show_actStatus_column)
@@ -788,6 +784,14 @@
 				$this->t->parse('columns','block_instance_column',true);
 			}
 
+			// Activity. Always show this information.
+			$act_icon = $this->act_icon($instance['wf_type'],$instance['wf_is_interactive']);
+			$this->t->set_var(array(
+				'column_value'	=> $act_icon.$instance['wf_name'],
+				'class_column'	=> 'class="activity_'.$instance['wf_name'].'"',
+			));
+			$this->t->parse('columns','block_instance_column',true);
+			
 			//Category
 			if($this->show_cat_column)
 			{
@@ -798,14 +802,6 @@
 				));
 				$this->t->parse('columns','block_instance_column',true);
 			}
-			
-			// Activity. Always show this information.
-			$act_icon = $this->act_icon($instance['wf_type'],$instance['wf_is_interactive']);
-			$this->t->set_var(array(
-				'column_value'	=> $act_icon.$instance['wf_name'],
-				'class_column'	=> 'class="activity_'.$instance['wf_name'].'"',
-			));
-			$this->t->parse('columns','block_instance_column',true);
 			
 			// Activity Status
 			if($this->show_actStatus_column)
