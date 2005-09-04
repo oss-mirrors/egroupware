@@ -29,8 +29,22 @@ class Instance extends Base {
   /// An array of workitem ids, date, duration, activity name, user, activity type and interactivity
   var $workitems = Array(); 
   
-  function Instance($db) {
-    $this->db = $db;
+  function Instance($db) 
+  {
+    $this->child_name = 'Instance';
+    parent::Base($db);
+  }
+
+  /*!
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  */
+  function collect_errors($debug=false)
+  {
+    parent::collect_errors($debug);
   }
   
   /*!

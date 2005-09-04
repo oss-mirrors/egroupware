@@ -23,6 +23,10 @@ class BaseActivity extends Base {
   var $defaultUser='*';
   var $agents=Array();
   
+  /*!
+  * @deprecated
+  * seems to be the rest of a bad object architecture
+  */
   function setDb(&$db)
   {
     $this->db =& $db;
@@ -34,11 +38,23 @@ class BaseActivity extends Base {
   */
   function BaseActivity(&$db)
   {
-    $this->db =& $db;
     $this->type='base';
+    $this->child_name = 'BaseActivity';
+    parent::Base($db);
   }
-  
-  
+
+  /*!
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  */
+  function collect_errors($debug=false)
+  {
+    parent::collect_errors($debug);
+  }
+
   /*!
   * Factory method returning an activity of the desired type
   * loading the information from the database and populating the activity object 
@@ -101,6 +117,7 @@ class BaseActivity extends Base {
     $act->setIsAutoRouted($res['wf_is_autorouted']);
     $act->setActivityId($res['wf_activity_id']);
     $act->setType($res['wf_type']);
+    $act->setDefaultUser($res['wf_default_user']);
     
     //Now get forward transitions 
     
@@ -337,20 +354,8 @@ class BaseActivity extends Base {
   */
   function checkUserRole($user,$rolename) 
   {
+    $this->error[] = 'use of an old deprecated function checkUserRole, return always false';
     return false;
-  }
-
-  //! Checks if a user has a access to this activity,
-  /*!
-  To do so it checks if the user is in the users having the roles associated with the activity
-  or if he is in the groups having roles associated with the activity.
-  */
-  function checkUserAccess($user) 
-  {
-    $aid = $this->activityId;
-    require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'common' . SEP . 'WfSecurity.php');
-    $wf_security = new WfSecurity($this->db);
-    return $wf_security->checkUserAccess($user, $aid);
   }
 
 }
