@@ -677,7 +677,7 @@
 										break;
 									case 'viewniceinstance' :
 										$GUI =& CreateObject('workflow.workflow_gui');
-										$view_activity = $GUI->gui_get_process_user_view_activity($this->process_id,$GLOBALS['phpgw_info']['user']['account_id']);
+										$view_activity = $GUI->gui_get_process_view_activity($this->process_id);
 										unset($GUI);
 										if (!($view_activity))
 										{//link on default view
