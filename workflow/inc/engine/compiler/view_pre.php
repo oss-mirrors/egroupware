@@ -1,15 +1,13 @@
 <?php
 //Code to be executed before a view activity
-// If we didn't retrieve the instance before
-if(empty($instance->instanceId)) {
-  // This activity needs an instance to be passed to 
-  // be started, so get the instance into $instance.
-  if(isset($_REQUEST['iid'])) {
-    $instance->getInstance($_REQUEST['iid']);
-  } else {
-    // defined in lib/Galaxia/config.php
-    galaxia_show_error(lang("No instance indicated"));
-    die;  
-  }
+
+$this->runtime->StartRun();
+
+//tests for access rights and lock some rows--------------------------
+if (!($this->runtime->checkUserRun($GLOBALS['user'])))
+{
+  $this->runtime->fail(lang('You have not permission to execute this activity'), true);
 }
+
+$this->runtime->EndStartRun();
 ?>
