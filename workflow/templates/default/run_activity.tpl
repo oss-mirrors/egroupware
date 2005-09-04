@@ -1,3 +1,4 @@
+<div id="wf_run_activity_message">{wf_message}</div>
 <LINK href="{run_activity_css_link}"  type="text/css" rel="StyleSheet">
 <div id="wf_run_activity_zone">
 	<form method="post" enctype='multipart/form-data' name="workflow_form">
