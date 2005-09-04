@@ -10,38 +10,59 @@ class Base extends Observable {
   var $db;  // The database abstraction object used to access the database
   var $num_queries = 0;
   var $error= Array(); // the error messages array
-
+  var $child_name = 'Base'; //name of the current object
+  
   // Constructor receiving a database abstraction object.
   function Base(&$db)
   {
     if(!$db) {
-      die("Invalid db object passed to Base constructor");
+      die('Invalid db object passed to '.$this->child_name.' constructor');
     }
     $this->db = &$db;
   }
 
   //! return errors recorded by this object
   /*!
-  * You should always call this function after failed operations on a workflow object to otain messages
+  * You should always call this function after failed operations on a workflow object to obtain messages
   * @param $as_array if true the result will be send as an array of errors or an empty array. Else, if you do not give any parameter 
-  * or give a false parameter you will obtain a single string which can be empty
-  * or will contain error messages with <br /> html tags.
+  * or give a false parameter you will obtain a single string which can be empty or will contain error messages with <br /> html tags.
+  * @param $debug is false by default, if true you wil obtain more messages
+  * @return a string containing error (and maybe debug) messages or an array of theses messages and empty the error messages
   */
-  function get_error($as_array=false) 
+  function get_error($as_array=false, $debug=false) 
   {
+    //collect errors from used objects
+    $this->collect_errors($debug);
     if ($as_array)
     {
-      return $this->error;
+      $result = $this->error;
+      $this->error= Array();
+      return $result;
     }
     $result_str = implode('<br />',$this->error);
     $this->error= Array();
     return $result_str;
   }
 
+  /*!
+  * @abstract
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  */
+  function collect_errors($debug=false)
+  {
+  	if ($debug)
+  	{
+  		$this->error[]= $this->child_name.': number of queries:'.$this->num_queries;
+	}
+  }
+  
 	// copied from tikilib.php
 	function query($query, $values = null, $numrows = -1, $offset = -1, $reporterrors = true) {
 		$this->convert_query($query);
-
 		// Galaxia needs to be call ADOdb in associative mode
 		$this->db->SetFetchMode(ADODB_FETCH_ASSOC);
 		
