@@ -64,8 +64,8 @@
 			{
 				$this->where = '';
 			}
-
 			$activities	=& $this->process_monitor->monitor_list_activities($this->start, $this->offset, $this->sort_mode, $this->search_str,$this->where);
+			//_debug_array($activities);
 			$all_types	=& $this->process_monitor->monitor_list_activity_types();
 
 			$this->show_filter_process();

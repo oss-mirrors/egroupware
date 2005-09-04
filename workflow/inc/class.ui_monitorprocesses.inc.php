@@ -39,7 +39,7 @@
 				'start'			=> $this->start,
 			);
 			$processes_list	=& $this->process_monitor->monitor_list_processes($this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres);
-
+			//_debug_array($processes_list);
 
 			$this->show_monitor_tabs($this->class_name);
 			$this->show_filter_process();
@@ -95,7 +95,7 @@
 					'process_name'				=> $process['wf_name'],
 					'process_version'			=> $process['wf_version'],
 					'process_href_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitoractivities.form&filter_process='. $process['wf_p_id']),
-					'process_activities'		=> $process['wf_activities'],
+					'process_activities'		=> $process['activities'],
 					'process_active_img'		=> ($process['wf_is_active'] == 'y')? '<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('Active') .'" title="'. lang('Active') .'" />' : '',
 					'process_valid_img'			=> $GLOBALS['phpgw']->common->image('workflow', ($process['wf_is_valid'] == 'y')? 'green_dot' : 'red_dot'),
 					'process_valid_alt'			=> ($process['wf_is_valid'] == 'y')? lang('Valid') : lang('Invalid'),

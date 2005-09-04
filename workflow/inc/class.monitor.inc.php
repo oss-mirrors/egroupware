@@ -33,8 +33,10 @@
 			
 			//retrieving common filters and stats common for all monitor forms
 			$this->process_monitor	=& CreateObject('workflow.workflow_processmonitor');
-			$this->all_processes	=& $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '');
-			$this->all_activities	=& $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', '');
+			//do not forget the false to avoid unnecessary queries
+			$this->all_processes	=& $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '', false);
+			//do not forget the false to avoid unnecessary queries
+			$this->all_activities	=& $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', '', false);
 			$this->stats 		=& $this->process_monitor->monitor_stats();
 			$this->filter_process	= get_var('filter_process', 'any', '');
 			$this->filter_activity	= get_var('filter_activity', 'any', '');
@@ -81,7 +83,8 @@
 		{
 			//echo "where: <pre>";print_r($where);echo "</pre>";
 			
-		    $unique_activities = $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', $where);
+			//do not forget the false to avoid unnecessary queries
+		    $unique_activities = $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', $where, false);
 				
 			//echo "unique_activities: <pre>";print_r($unique_activities);echo "</pre>";
 			
@@ -106,6 +109,8 @@
 		*/
 		function fill_general_variables()
 		{
+			//collect error messages before
+			$this->message[] = $this->process_monitor->get_error(false, _DEBUG);
 			$this->fill_form_variables();
 			$this->t->set_var(array(
 				'monitor_stats'			=> $this->fill_monitor_stats($this->stats),
