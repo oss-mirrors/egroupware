@@ -10,6 +10,7 @@
 		// true or false, decide if the form is the 'show global activities form' or 'show avaible acvtivities with instances form'
 		var $show_globals;
 		
+		//communication with the workflow engine
 		var $GUI;
 
 		var $filter_process;
@@ -95,6 +96,9 @@
 			{
 				$this->show_user_tabs($this->class_name);
 			}
+			
+			//collect error messages
+			$this->message[] = $this->GUI->get_error(false, _DEBUG);
 			
 			$this->fill_form_variables();
 			$this->finish();

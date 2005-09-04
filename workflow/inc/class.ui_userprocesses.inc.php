@@ -8,6 +8,7 @@
 			'form'	=> true
 		);
 
+		//communication with the workflow engine
 		var $GUI;
 
 		function ui_userprocesses()
@@ -29,6 +30,10 @@
 			// fill the table
 			$this->fill_table($processes['data'],$processes['cant']);
 			$this->show_user_tabs($this->class_name);
+			
+			//collect error messages
+			$this->message[] = $this->GUI->get_error(false, _DEBUG);
+			
 			$this->fill_form_variables();
 			$this->finish();
 		}

@@ -7,6 +7,7 @@
 			'form'	=> true
 		);
 
+		//communication with the workflow engine
 		var $GUI;
 
 		function ui_useropeninstance()
@@ -25,6 +26,10 @@
 			
 			$this->fill_table($activities['data'], $activities['cant']);
 			$this->show_user_tabs($this->class_name);
+			
+			//collect error messages
+			$this->message[] = $this->GUI->get_error(false, _DEBUG);
+
 			$this->fill_form_variables();
 			$this->finish();
 		}
@@ -42,7 +47,7 @@
 			$this->fill_nextmatchs($header_array,$total_number);
 
 			$this->t->set_var(array(
-				'help_info' => lang('By running theses links you will create new instances of the related process.')
+				'help_info' => lang('by running theses links you will create new instances of the related process.')
 			));
 			
 			// now the table
