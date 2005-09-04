@@ -1,5 +1,4 @@
-<?php
-require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
+<?php require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! GUI
 //! A GUI class for use in typical user interface scripts
 /*!
@@ -9,6 +8,10 @@ class GUI extends Base {
 
   //security object used to obtain access for the user on certain actions from the engine
   var $wf_security;
+  //process manager object used to retrieve infos from processes
+  var $pm;
+  //cache array to avoid queries
+  var $process_cache=Array();
 
   /*!
   List user processes, user processes should follow one of these conditions:
@@ -27,7 +30,31 @@ class GUI extends Base {
    *) more options in list_user_instances, they should not be added by the external modules
    */
    
-   
+  /*!
+  * Constructor takes a PEAR::Db object
+  */
+  function GUI(&$db) 
+  {
+    $this->child_name = 'GUI';
+    parent::Base($db);
+    require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'WfSecurity.php');
+    $this->wf_security =& new WfSecurity($this->db); 
+  }
+
+  /*!
+  * Collect errors from all linked objects which could have been used by this object
+  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
+  * for example if you had a $this->process_manager created in the constructor you shoudl call
+  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  */
+  function collect_errors($debug=false)
+  {
+    parent::collect_errors($debug);
+    $this->error[] = $this->wf_security->get_error(false, $debug);
+  }
+
+
   function gui_list_user_processes($user,$offset,$maxRecords,$sort_mode,$find,$where='')
   {
     // FIXME: this doesn't support multiple sort criteria
@@ -309,6 +336,23 @@ class GUI extends Base {
     return $retval;
   }
 
+  /*!
+  * List instances avaible for a given user, theses instances are all the instances where the user is able
+  * to launch a gui action (could be a run --even a run view activity-- or an advanced action like grab, release, admin, etc)
+  * type of action really avaible are not given by this function. see getUserAction.
+  * @param $user is the given user id
+  * @param $offset is the starting number for the returned records
+  * @param $maxRecords is the limit of records to return in data (but the 'cant' key count the total number without limits)
+  * @param $sort_mode is the sort mode for the query
+  * @param $find is a string to look at in activity name, activity description or instance name
+  * @param $where is an empty string by default, the string let you add a string to the SQL statement -please be carefull with it.
+  * @param $add_properties, false by default, will add properties in the returned instances
+  * @return an array with number of records in the 'cant key and instances in the 'data' key. Each instance 
+  * is an array containing theses keys: wf_instance_id, wf_started, wf_owner, wf_user, wf_status (instance status), wf_category, 
+  * wf_act_status, wf_name (activity name), wf_type, wf_procname, wf_is_interactive, wf_is_autorouted, wf_activity_id, 
+  * wf_version (process version), wf_p_id, insname (instance name), wf_priority and wf_readonly (which is true if the user only have 
+  * read-only roles associated with this activity).
+  */
   function gui_list_user_instances($user,$offset,$maxRecords,$sort_mode,$find,$where='',$add_properties=false)
   {
     // FIXME: this doesn't support multiple sort criteria
@@ -342,7 +386,7 @@ class GUI extends Base {
 
     // (regis) we need LEFT JOIN because aborted and completed instances are not showned 
     // in instance_activities, they're only in instances
-    $query = 'select distinct(gi.wf_instance_id),                     
+    $query = 'select distinct(gi.wf_instance_id),
                      gi.wf_started,
                      gi.wf_owner,
                      gia.wf_user,
@@ -358,7 +402,8 @@ class GUI extends Base {
                      gp.wf_version as wf_version,
                      gp.wf_p_id,
                      gi.wf_name as insname,
-                     gi.wf_priority';
+                     gi.wf_priority,
+                     gar.wf_readonly';
     $query .= ($add_properties)? ', gi.wf_properties' : '';
     $query .= ' from '.GALAXIA_TABLE_PREFIX."instances gi 
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
@@ -368,11 +413,12 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
               $mid order by $sort_mode";
     // (regis) this count query as to count global -unlimited- (instances/activities) not just instances
-    // as we can have multiple activities for one instance and we will show all of them 
-    // and the problem is that a user having memberships in several groups having the rights
-    // is counted several times. If we count instance_id without distinct we'll have
-    // several time the same line.
+    // as we can have multiple activities for one instance and we will show all of them and the problem is 
+    // that a user having memberships in several groups having the rights is counted several times. 
+    // If we count instance_id without distinct we'll have several time the same line.
     // the solution is to count distinct instance_id for each activity and to sum theses results
+    // Beware that when counting we do not take care of the read-only/or not for roles because this parameter
+    // could return two lines for the same user (having different roles mappings with different rights)
     $query_cant = "select count(distinct(gi.wf_instance_id)) as cant, gia.wf_activity_id
               from ".GALAXIA_TABLE_PREFIX."instances gi 
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
@@ -388,10 +434,40 @@ class GUI extends Base {
     $ret = Array();
     if (!(empty($result)))
     {
+      $record = Array();
+      $i = 0;
       while($res = $result->fetchRow()) 
       {
         // Get instances per activity
-        $ret[] = $res;        
+        //we record the record only if a record with the same key is not already recorded. This is because
+        //we could be mapped to the same activity with read-only retriction and without it on different roles
+        $result_row_key = $res['wf_instance_id'].'/'.$res['wf_activity_id'];
+        if (isset($record[$result_row_key]))
+        {
+          //we already saw this record
+          if ($record[$result_row_key]['readonly'])
+          {
+            //last time we were still in readonly
+            if (!($res['wf_readonly']))
+            {
+              //this time we have better rights
+              $record[$result_row_key]['readonly'] = false;
+              //we can update the already recorded result
+              $ret[$record[$result_row_key]['position']]['wf_readonly']= (int)false;
+            }
+          }
+        }
+        else
+        {
+          //we can record that we are recording
+          $record[$result_row_key] = array(
+              'position'	=> $i,
+              'readonly'	=> $res['wf_readonly'],
+          );
+          //record in the real result array
+          $ret[$i] = $res;
+          $i++;
+        }
       }
     }
     $cant=0;
@@ -409,34 +485,23 @@ class GUI extends Base {
     return $retval;
   }
   
-  //! get the view activity id avaible for a given user and a given process
-  function gui_get_process_user_view_activity($pId, $user)
+  /*! Get the view activity id avaible for a given process
+  * No test is done on real access to this activity for users, this access will be check at runtime (when clicking)
+  * @param $pId is the process Id
+  * @return the view activity id or false if no view activity is present dor this process
+  */
+  function gui_get_process_view_activity($pId)
   {
-    $mid = "where gp.wf_is_active=? and gp.wf_p_id=? and ga.wf_type=?";
-    // add group mapping, warning groups and user can have the same id
-    $groups = galaxia_retrieve_user_groups($user);
-    $mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
-    $mid .= "		or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
-    $bindvars = array('y',$pId,'view',$user);
-
-    $query = "select ga.wf_activity_id
-        from ".GALAXIA_TABLE_PREFIX."processes gp
-	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
-	INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
-	INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
-	INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
-	$mid";
-    $result = $this->query($query,$bindvars);
-    $ret = Array();
-    $retval = false;
-    if (!(empty($result)))
+    if (!(isset($this->process_cache[$pId]['view'])))
     {
-      while($res = $result->fetchRow()) 
+      if (!(isset($this->pm)))
       {
-        $retval = $res['wf_activity_id'];
+        require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'ProcessManager.php');
+        $this->pm =& new ProcessManager($this->db);
       }
+      $this->process_cache[$pId]['view'] = $this->pm->get_process_view_activity($pId);
     }
-    return $retval;
+    return $this->process_cache[$pId]['view'];
   }
 
   //! gets all informations about a given instance and a given user, list activities and status
@@ -570,12 +635,9 @@ class GUI extends Base {
   //!Abort an instance - this terminates the instance with status 'aborted', and removes all running activities
   function gui_abort_instance($user,$activityId,$instanceId)
   {
-    if (!(isset($this->wf_security)))
-    {
-      $this->wf_security = new WfSecurity($this->db);
-    }
     // start a transaction
     $this->db->StartTrans();
+
     if (!($this->wf_security->checkUserAction($activityId, $instanceId,'abort')))
     {
       $this->error[] = ($this->wf_security->get_error());
@@ -592,6 +654,8 @@ class GUI extends Base {
       }
       unset($instance);
     }
+    //DEBUG
+    //$this->error[] = ($this->wf_security->get_error());
     // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
     return $this->db->CompleteTrans();
   }
@@ -602,12 +666,9 @@ class GUI extends Base {
   */
   function gui_exception_instance($user,$activityId,$instanceId)
   {
-    if (!(isset($this->wf_security)))
-    {
-      $this->wf_security = new WfSecurity($this->db);
-    }
     // start a transaction
     $this->db->StartTrans();
+
     if (!($this->wf_security->checkUserAction($activityId, $instanceId,'exception')))
     {
       $this->error[] = ($this->wf_security->get_error());
@@ -630,12 +691,9 @@ class GUI extends Base {
   */
   function gui_resume_instance($user,$activityId,$instanceId)
   {
-    if (!(isset($this->wf_security)))
-    {
-      $this->wf_security = new WfSecurity($this->db);
-    }
     // start a transaction
     $this->db->StartTrans();
+
     if (!($this->wf_security->checkUserAction($activityId, $instanceId,'resume')))
     {
       $this->error[] = ($this->wf_security->get_error());
@@ -656,12 +714,9 @@ class GUI extends Base {
   
   function gui_send_instance($user,$activityId,$instanceId)
   {
-    if (!(isset($this->wf_security)))
-    {
-      $this->wf_security = new WfSecurity($this->db);
-    }
-    // start a transaction
+    //start a transaction
     $this->db->StartTrans();
+    
     if (!($this->wf_security->checkUserAction($activityId, $instanceId,'send')))
     {
       $this->error[] = ($this->wf_security->get_error());
@@ -684,12 +739,9 @@ class GUI extends Base {
   
   function gui_release_instance($user,$activityId,$instanceId)
   {
-    if (!(isset($this->wf_security)))
-    {
-      $this->wf_security = new WfSecurity($this->db);
-    }
     // start a transaction
     $this->db->StartTrans();
+
     if (!($this->wf_security->checkUserAction($activityId, $instanceId,'release')))
     {
       $this->error[] = ($this->wf_security->get_error());
@@ -710,12 +762,9 @@ class GUI extends Base {
   //! grab the instance for this activity and user if the security object agreed
   function gui_grab_instance($user,$activityId,$instanceId)
   {
-    if (!(isset($this->wf_security)))
-    {
-      $this->wf_security = new WfSecurity($this->db);
-    }
     // start a transaction
     $this->db->StartTrans();
+    //this check will as well lock the table rows
     if (!($this->wf_security->checkUserAction($activityId, $instanceId,'grab')))
     {
       $this->error[] = ($this->wf_security->get_error());
@@ -741,6 +790,7 @@ class GUI extends Base {
   * @param $user must be the user id
   * @param $instanceId must be the instance id (can be 0 if you have no instance - for start or standalone activities)
   * @param $activityId must be the activity id (can be 0 if you have no activity - for aborted or completed instances)
+  * @param $readonly is he role mode, if true this is a readonly access, if false it is a not-only-read access
   * All other datas can be retrieved by internal queries BUT if you want this function to be fast and if you already 
   * have theses datas you should give as well theses fields (all or none): 
   * @param $pId the process id
@@ -755,15 +805,16 @@ class GUI extends Base {
   * array('action name' => 'action description')
   * 'actions names' are: 'grab', 'release', 'run', 'send', 'view', 'exception', 'resume' and 'monitor'
   * Some config values can change theses rules but basically here they are:
-  * * 'grab'	: be the user of this activity. User has access to it and instance status is ok.
-  * * 'release'	: let * be the user of this activity. Must be the actual user or the owner of the instance.
-  * * 'run'	: run an associated form. This activity is interactive, user has access, instance status is ok.
-  * * 'send'	: send this instance, activity was non-autorouted and he has access and status is ok.
-  * * 'view'	: view the instance, activity ok, always avaible except for start or standalone act.
-  * * 'abort'	: abort an instance, ok when we are the user
-  * * 'exception' : set the instance status to exception, need to be the user 
-  * * 'resume'	: back to running when instance status was exception, need to be the user
-  * * 'monitor' : special user rights to administer the instance
+  * 	* 'grab'	: be the user of this activity. User has access to it and instance status is ok.
+  * 	* 'release'	: let * be the user of this activity. Must be the actual user or the owner of the instance.
+  * 	* 'run'		: run an associated form. This activity is interactive, user has access, instance status is ok.
+  * 	* 'send'	: send this instance, activity was non-autorouted and he has access and status is ok.
+  * 	* 'view'	: view the instance, activity ok, always avaible except for start or standalone act or processes with view activities.
+  *	* 'viewrun'	: view the instance in a view activity, need to have a role on this view activity
+  * 	* 'abort'	: abort an instance, ok when we are the user
+  * 	* 'exception' 	: set the instance status to exception, need to be the user 
+  * 	* 'resume'	: back to running when instance status was exception, need to be the user
+  * 	* 'monitor' 	: special user rights to administer the instance
   * 'actions description' are translated explanations like 'release access to this activity'
   * WARNING: this is a snapshot, the engine give you a snaphsots of the rights a user have on an instance-activity
   * at a given time, this is not meaning theses rights will still be there when the user launch the action.
@@ -771,7 +822,7 @@ class GUI extends Base {
   * WARNING: we do not check the user access rights. If you launch this function for a list of instances obtained via this
   * GUI object theses access rights are allready checked.
   */
-  function getUserActions($user, $instanceId, $activityId, $pId=0, $actType='not_set', $actInteractive='not_set', $actAutorouted='not_set', $actStatus='not_set', $instanceOwner='not_set', $instanceStatus='not_set', $currentUser='not_set') 
+  function getUserActions($user, $instanceId, $activityId, $readonly, $pId=0, $actType='not_set', $actInteractive='not_set', $actAutorouted='not_set', $actStatus='not_set', $instanceOwner='not_set', $instanceStatus='not_set', $currentUser='not_set') 
   {
     $result= array();//returned array
 
@@ -833,11 +884,8 @@ class GUI extends Base {
     }
     
     //now use the security object to get actions avaible, this object know the rules
-    if (!(isset($this->wf_security)))
-    {
-      $this->wf_security = new WfSecurity($this->db);
-    }
-    $result =& $this->wf_security->getUserActions($user, $instanceId, $activityId, $pId, $actType, $actInteractive, $actAutorouted, $actStatus, $instanceOwner, $instanceStatus, $currentUser);
+    $view_activity = $this->gui_get_process_view_activity($pId);
+    $result =& $this->wf_security->getUserActions($user, $instanceId, $activityId, $readonly, $pId, $actType, $actInteractive, $actAutorouted, $actStatus, $instanceOwner, $instanceStatus, $currentUser, $view_activity);
     return $result;
   }
 
