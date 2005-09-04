@@ -66,7 +66,6 @@
 			$is_interactive		= get_var('is_interactive', 'any', '');
 			$is_autorouted		= get_var('is_autorouted', 'any', '');
 			$default_user       	= get_var('default_user', 'any', '');
-			$userole		= get_var('userole', 'POST', '');
 			$useagent		= get_var('useagent', 'POST', '');
 			$where			= get_var('where', array('GET', 'POST'), '');
 			$this->where2		= get_var('where2', 'any', '');
@@ -77,7 +76,18 @@
 			$this->order		= get_var('order', 'GET', 'wf_flow_num');
 			$this->sort		= get_var('sort', 'GET', 'asc');
 			$this->sort_mode	= $this->order . '__'. $this->sort;
+			//action compilation
 			$compile 		= get_var('compile', 'GET', False);
+			//roles
+			$activity_role_ro	= get_var('activity_role_ro','POST', Array());
+			$activity_role_delete	= get_var('activity_role_delete','POST', Array());
+			$remove_roles		= get_var('remove_roles', 'POST', false);
+			$rolename		= get_var('rolename', 'POST', '');
+			$roledescription	= get_var('roledescription', 'POST', '');
+			$userole		= get_var('userole', 'POST', '');
+			$userole_ro		= get_var('userole_ro', 'POST', 'off');
+			$newrole_ro		= get_var('newrole_ro', 'POST', 'off');
+
 
 			if (!$this->wf_p_id) die(lang('No process indicated'));
 
@@ -93,29 +103,40 @@
 				}
 			}
 
-			// TODO: rolenames need to be valid.  Add a validity checking function
 			// add role to process roles
-			if (isset($_POST['addrole']))
+			if( !(empty($rolename)) )
 			{
-				if( isset($_POST['rolename']) ) 
+				$rolename = trim($rolename);
+				if( strlen($rolename) > 0 ) 
 				{
-					$rolename = trim($_POST['rolename']);
-					if( strlen($rolename) > 0 ) {
-						$this->add_process_role($_POST['rolename']);
-						$this->message[] = lang('Role added to process');
-					}
-					else 
+					//second parameter for read-only mode
+					$newrole_id = $this->add_process_role($rolename, $roledescription);
+					if ($newrole_id)
 					{
-						$this->message[] = lang('Invalid role name');						
+						$this->message[] = lang('Role added to process');
+						if ($activity_id)
+						{
+							$this->activity_manager->add_activity_role($activity_id, $newrole_id, ($newrole_ro=='on'));
+							$this->message[] = lang('Role added to activity');
+						}
 					}
+					
+				}
+				else 
+				{
+					$this->message[] = lang('Invalid role name');
 				}
 			}
 
 			// remove activity role
-			if (isset($_GET['remove_role']) && $activity_id)
+			if (!!($remove_roles) && $activity_id)
 			{
-				$this->activity_manager->remove_activity_role($activity_id, $_GET['remove_role']);
-				$this->message[] = lang('Activity role removed');
+				foreach ($activity_role_delete as $role_id => $checked_on)
+				{
+					$this->activity_manager->remove_activity_role($activity_id, $role_id);
+					$this->message[] = lang('Activity role #%1 removed', $role_id);
+				}
+				$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
 			}
 
 			// remove activity agent
@@ -123,13 +144,14 @@
 			{
 				$this->activity_manager->remove_activity_agent($activity_id, $_GET['remove_agent'],true);
 				$this->message[] = lang('Activity agent removed');
+				$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
 			}
 
 			// TODO: activityname need to be valid.  Add a validity checking function?
 			// save activity
 			if (isset($_POST['save_act']))
 			{
-				$activity_id = $this->save_activity($activity_id, $name, $description, $type,  $default_user, $is_interactive, $is_autorouted, $userole, $useagent, $rolename);
+				$activity_id = $this->save_activity($activity_id, $name, $description, $type,  $default_user, $is_interactive, $is_autorouted, $userole, $userole_ro, $useagent, $rolename);
 				if( $activity_id ) 
 				{
 					$this->message[] = lang('Activity saved');
@@ -229,10 +251,10 @@
 			$all_transition_activities_from =& $this->activity_manager->get_transition_activities($this->wf_p_id, 'end');
 			$all_transition_activities_to =& $this->activity_manager->get_transition_activities($this->wf_p_id, 'start');
 			if ($activity_id) $this->search_transitions_act($process_activities, $activity_id);
-			$process_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');
-			$agents_list = $this->process_manager->get_agents();
-			$all_process_transitions = $this->activity_manager->get_process_transitions($this->wf_p_id);
-			$process_transitions = $this->activity_manager->get_process_transitions($this->wf_p_id, $filter_trans_from);
+			$process_roles =& $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');
+			$agents_list =& $this->process_manager->get_agents();
+			$all_process_transitions =& $this->activity_manager->get_process_transitions($this->wf_p_id);
+			$process_transitions =& $this->activity_manager->get_process_transitions($this->wf_p_id, $filter_trans_from);
 			$process_activities_with_transitions =& $this->activity_manager->get_process_activities_with_transitions($this->wf_p_id);
 
 			// update activities
@@ -264,6 +286,11 @@
 
 			// fill proc_bar
 			$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));
+			
+			//collect some messages from used objects
+			$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
+			$this->message[] = $this->process_manager->get_error(false, _DEBUG);
+			$this->message[] = $this->role_manager->get_error(false, _DEBUG);
 
 			// fill the general variables of the template
 			$this->t->set_var(array(
@@ -321,29 +348,41 @@
 			// fill activity roles
 			if (!$activity_roles)
 			{
-				$this->t->set_var('activity_roles', lang('No roles asociated with this activity'));
+				$this->t->set_var('activity_roles', '<tr><td colspan="3">'.lang('No roles asociated with this activity').'</td></tr>');
 			}
 			else
 			{
 				foreach ($activity_roles as $role)
 				{
 					$this->t->set_var(array(
-						'act_role_name'	=> $role['wf_name'],
-						'act_role_href'	=> $GLOBALS['phpgw']->link('/index.php', array(
-							'menuaction'	=> 'workflow.ui_adminactivities.form',
-							'where2'	=> $where2,
-							'sort_mode2'	=> $sort_mode2,
-							'find'		=> $find,
-							'where'		=> $where,
-							'activity_id'	=> $activity_info['wf_activity_id'],
-							'p_id'		=> $this->wf_p_id,
-							'remove_role'	=> $role['wf_role_id'],
+						'act_role_name'		=> $role['wf_name'],
+						'act_role_id'		=> $role['wf_role_id'],
+						'act_role_ro_checked'	=> ($role['wf_readonly'])? 'checked="checked"' : '',
+						'act_role_href'		=> $GLOBALS['phpgw']->link('/index.php', array(
+								'menuaction'	=> 'workflow.ui_adminactivities.form',
+								'where2'	=> $where2,
+								'sort_mode2'	=> $sort_mode2,
+								'find'		=> $find,
+								'where'		=> $where,
+								'activity_id'	=> $activity_info['wf_activity_id'],
+								'p_id'		=> $this->wf_p_id,
+								'remove_role'	=> $role['wf_role_id'],
 						)),
 						 'lang_delete'		=> lang('delete'),
 					));
 					$this->t->parse('activity_roles', 'block_activity_roles', True);
 				}
+				
 			}
+			
+			//general texts about roles
+			$this->t->set_var(array(
+				'txt_read_only'				=> lang('read-only'),
+				'txt_role_name'				=> lang('Role Name'),
+				'txt_Remove_selected_roles'		=> lang('remove selected roles'),
+				'txt_Use_existing_roles'		=> lang('Use existing roles'),
+				)
+			);
 			
 			// fill activity agents
 			if (!$activity_agents)
@@ -512,13 +551,19 @@
 			}
 		}
 
-		function add_process_role($rolename)
+		/*!
+		* Add a role to the process
+		* @param $rolename is the role name
+		* @param $roledescription is the role description
+		* @return new role id
+		*/
+		function add_process_role($rolename, $roledescription)
 		{
 			$vars = array(
-				'wf_name'			=> $rolename,
-				'wf_description'	=> '',
+				'wf_name'		=> $rolename,
+				'wf_description'	=> $roledescription,
 			);
-			$this->role_manager->replace_role($this->wf_p_id, 0, $vars);
+			return $this->role_manager->replace_role($this->wf_p_id, 0, $vars);
 		}
 
 		function search_transitions_act(&$process_activities, $act_id)
@@ -672,7 +717,7 @@
 		}
 
 		//! save the edited activity. Return the activity_id or false in case of error, $this->message is set in case of error
-		function save_activity($activity_id, $name, $description, $type, $default_user, $is_interactive, $is_autorouted, $userole, $useagent)
+		function save_activity($activity_id, $name, $description, $type, $default_user, $is_interactive, $is_autorouted, $userole, $userole_ro, $useagent)
 		{
 			$is_interactive = ($is_interactive == 'on') ? 'y' : 'n';
 			$is_autorouted = ($is_autorouted == 'on') ? 'y' : 'n';
@@ -705,7 +750,7 @@
 			// assign role to activity
 			if ($userole) 
 			{
-				$this->activity_manager->add_activity_role($activity_id, $userole);
+				$this->activity_manager->add_activity_role($activity_id, $userole, ($userole_ro=='on'));
 			}
 			
 			// assign agent to activity
@@ -758,12 +803,7 @@
 			}
 			$this->activity_manager->validate_process_activities($this->wf_p_id);
 			
-			//collect every error message after our actions on activity manager. If there is some we are in error
-			/*$this->message = $this->activity_manager->get_error(true);
-			if (!(count($this->message)==0))
-			{
-				return false;
-			}*/
+			
 			return $activity_id;
 		}
 
@@ -799,7 +839,7 @@
 				$this->activity_manager->validate_process_activities($this->wf_p_id);
 				return lang('New transition added');
 			}
-			$error_msg =  $this->activity_manager->get_error();
+			$error_msg =  $this->activity_manager->get_error(false, _DEBUG);
 			return lang("Couldn't add transition"). '; '. $error_msg[0];
 		}
 

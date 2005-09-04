@@ -87,23 +87,54 @@
 	<tr class="row_off">
 	  <td>{lang_Roles_assigned_to_this_activity}</td>
 	  <td>
-		<ul class="ul_activity_roles">
+		<table style="border: 0;width:75%;">
+		<tr class="th">
+			<th>{txt_read_only}</th>
+			<th>{txt_role_name}</th>
+			<th>&nbsp;</th>
+		</tr>
 	  <!-- BEGIN block_activity_roles -->
-	  <li class="li_activity_role">{act_role_name}&nbsp;&nbsp;[<a href="{act_role_href}">{lang_delete}</a>]<br/>
+	  <tr class="tr_activity_role">
+	    <td width="25%" class="td_activity_role_ro" style="text-align:center"><input type="checkbox" name="activity_role_ro[{act_role_id}]" {act_role_ro_checked} disabled="disabled" /></td>
+	    <td width="70%" class="td_activity_role_name">{act_role_name}</td>
+	    <td width="5%" class="td_activity_role_del"><input type="checkbox" name="activity_role_delete[{act_role_id}]" {act_role_delete_checked} /></td>
+	  </tr>
 	  <!-- END block_activity_roles -->
-		</ul>
+		<tr class="tr_activity_role">
+			<td colspan="3" style="text-align:right"><input type="submit" name="remove_roles" value="{txt_Remove_selected_roles}"></td>
+		</tr>
+		</table>
 	  </td>
 	</tr>
 	<tr class="row_on">
+
 	  <td>{lang_Add_role}</td>
 	  <td>
+		<table style="width=100%; border=0;">
+		<tr class="th">
+			<th>{txt_Use_existing_roles}</th>
+			<th>{lang_Add_new_role}</th>
+		</tr>
+		<tr>
+			<td>
+	  {txt_read_only}<input type="checkbox" name="userole_ro" {userole_ro_checked} />
 	  <select name="userole">
-	  <option value="">{lang_add_new}</option>
+	  <option value=""> </option>
 	  <!-- BEGIN block_process_roles -->
 	  <option value="{proc_roleId}">{proc_roleName}</option>
 	  <!-- END block_process_roles -->
 	  </select>
-	  <input type="text" name="rolename" /><input type="submit" name="addrole" value="{lang_Add_new_role}" />
+			</td>
+			<td>
+	  {txt_read_only}<input type="checkbox" name="newrole_ro" {userole_ro_checked} />
+	  <input type="text" name="rolename" size="30"/>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>{lang_Description}<input type="text" name="roledescription" size="50"/></td>
+		</tr>
+		</table>
 	  </td>
 	</tr>
 	<tr class="row_off">
