@@ -3,6 +3,11 @@
 	width : 100%;
 }
 
+#wf_run_activity_message
+{
+	color: #FF0000;
+}
+
 /*********************  ACTIVITY ZONE *************/
 #wf_activity_playground
 {
