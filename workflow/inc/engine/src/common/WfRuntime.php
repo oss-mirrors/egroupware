@@ -121,7 +121,8 @@ class WfRuntime extends Base
   {
     $this->instance_id = $instanceId;
     $this->instance->getInstance($instanceId);
-    if (($this->instance->getInstanceId()==0) && (!($this->activity->getType()=='standalone')))
+    if ( ($this->instance->getInstanceId()==0) 
+      && (! (($this->activity->getType()=='standalone') || ($this->activity->getType()=='start') )) )
     {
       $this->fail(tra('no instance avaible'), true);
     }
