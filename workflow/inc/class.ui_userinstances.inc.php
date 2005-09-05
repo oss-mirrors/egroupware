@@ -38,6 +38,7 @@
 		var $show_procname_column;
 		var $show_actStatus_column;
 		var $show_owner_column;
+		var $show_started_column;
 		var $nb_columns;
 		
 		function ui_userinstances()
@@ -135,7 +136,7 @@
 			
 			//overwrite default sort order behaviour
 			// get sort mode data, done after preferences to handle priority yes/no
-			$this->order		= get_var('order', 'any', ($this->show_priority_column)? 'wf_priority' : 'wf_instance_id');
+			$this->order		= get_var('order', 'any', ($this->show_priority_column)? 'wf_priority' : 'wf_started');
 			$this->sort		= get_var('sort', 'any', ($this->show_priority_column)? 'desc' : 'asc');
 			$this->sort_mode	= $this->order . '__' . $this->sort;	
 
@@ -153,6 +154,7 @@
 			}
 			$this->link_data = array
 			(
+				'menuaction'			=> 'workflow.ui_userinstances.form',
 				'filter_process' 		=> $this->filter_process,
 				'filter_activity_name' 		=> $this->filter_activity_name,
 				'filter_user' 			=> $this->filter_user,
@@ -170,6 +172,8 @@
 			);
 
                         // handling actions asked by the user on the form---------------------
+                        
+                        //getting user name in $user_fname and $user_lname
 			$GLOBALS['phpgw']->accounts->get_account_name($GLOBALS['phpgw_info']['user']['account_id'],$lid,$user_fname,$user_lname);
 
 			//$this->message contains an array of ui error messages
@@ -179,6 +183,7 @@
 			        // to the instance activity history
 				if (!$this->GUI->gui_exception_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
+					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You don't have the rights necessary to exception instance %1",$instance_id);
 				}
 			}
@@ -190,6 +195,7 @@
 			        // to the instance activity history  
 				if (!$this->GUI->gui_resume_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
+					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to resume instance %1",$instance_id);
 				}
 			}
@@ -199,6 +205,7 @@
 			{
 				if (!$this->GUI->gui_abort_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
+					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to abort instance %1",$instance_id);
 				}
 			}
@@ -227,6 +234,7 @@
 			{
 				if (!$this->GUI->gui_send_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
 				{
+					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to send instance %1",$instance_id);
 				}
 			}
@@ -342,7 +350,7 @@
 		    //some lang text in javascript
 		    $this->t->set_var('lang_Confirm_delete',lang('Confirm Delete'));
 		    $this->t->set_var('start',0);// comming back again to start point
-		    
+
 		    // Fill the final list of the instances we choosed in the template
 		    $this->show_list_instances($instances['data'], $this->show_advanced_actions);
 
@@ -568,6 +576,7 @@
 			$this->show_actStatus_column = $this->myPrefs['wf_instances_show_activity_status_column'];
 			$this->show_owner_column = $this->myPrefs['wf_instances_show_owner_column'];
 			$this->show_cat_column = $this->myPrefs['wf_instances_show_category_column'];
+			$this->show_started_column = $this->myPrefs['wf_instances_show_started_column'];
 
 			// now we must check actual filters and force certain columns, for example if we show aborted instances
 			// we must show instance status
@@ -589,7 +598,7 @@
 			// total number of columns is user+activity+actions+others
 			$this->nb_columns = 3 + $this->show_owner_column + $this->show_actStatus_column 
 				+ $this->show_procname_column + $this->show_priority_column + $this->show_instName_column + $this->show_instStatus_column
-				+ $this->show_id_column + $this->show_cat_column;
+				+ $this->show_id_column + $this->show_cat_column + $this->show_started_column;
 			// if recent change was made (column added) test it to prevent the user
 			if (!(isset($this->myPrefs['wf_instances_show_category_column'])))
 			{
@@ -624,6 +633,17 @@
 				$this->t->parse('columns_header','block_header_column',true);
 			}
 			
+			
+			//Started date
+			if($this->show_started_column)
+			{
+				$result['wf_started'] =  lang('Started');
+				$this->t->set_var(array(
+					'column_header'	=> 'wf_started',
+				));
+				$this->t->parse('columns_header','block_header_column',true);
+			}
+
 			//Priority
 			if($this->show_priority_column)
 			{
@@ -754,6 +774,16 @@
 				$this->t->parse('columns','block_instance_column',true);
 			}
 			
+			//Started date
+			if($this->show_started_column)
+			{
+				$this->t->set_var(array(
+					'column_value'	=> $GLOBALS['phpgw']->common->show_date($instance['wf_started']),
+					'class_column'	=> 'class="col_date"',
+				));
+				$this->t->parse('columns','block_instance_column',true);
+			}
+
 			//Priority
 			if($this->show_priority_column)
 			{
