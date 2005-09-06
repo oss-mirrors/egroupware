@@ -52,3 +52,12 @@ a.wf_exception
         text-align: center;
 }
 
+/********************* NICE TABLES *************/
+tr.row_on:hover
+{
+  background            : #FFF url(/egroupware/workflow/templates/default/images/tr_bck.gif) repeat;
+}
+tr.row_off:hover
+{
+  background            : #FFF url(/egroupware/workflow/templates/default/images/tr_bck.gif) repeat;
+}
