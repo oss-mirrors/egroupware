@@ -39,7 +39,7 @@ class Base extends Observable {
       $this->error= Array();
       return $result;
     }
-    $result_str = implode('<br />',$this->error);
+    $result_str = implode('<br />',array_filter($this->error));
     $this->error= Array();
     return $result_str;
   }
