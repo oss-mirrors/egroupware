@@ -14,4 +14,17 @@
 	<td>{actname}</td>
 </tr>
 </table>
- 
+
+<table style="border: 1px solid black;margin:0 auto;">
+{report}
+</table>
+
+
+<!-- BEGIN report_row -->
+<tr class="{row_class}">
+	<td>{icon_type_report}</td>
+	<td>{icon_report}</td>
+	<td>{label_report}</td>
+	<td>{comment_report}</td>
+</tr>
+<!-- END report_row -->

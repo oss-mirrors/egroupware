@@ -238,7 +238,7 @@
 					
 					$this->show_common_vars();
 					// and display completed template
-					$this->show_completed_page();
+					$this->show_completed_page($instructions['engine_info']);
 					break;
 				case 'loop':
 					$this->show_common_vars();
@@ -250,9 +250,9 @@
 					break;
 				case 'return':
 					$result=Array();
-					$this->message[] = $this->GUI->get_error(false, _DEBUG);
-					$this->message[] = $this->runtime->get_error(false, _DEBUG);
-					$this->message[] = $this->process->get_error(false, _DEBUG);
+					$this->message[] = 'run activity\'s GUI : '.$this->GUI->get_error(false, _DEBUG);
+					$this->message[] = 'run activity\'s runtime : '.$this->runtime->get_error(false, _DEBUG);
+					$this->message[] = 'run activity\'s process : '.$this->process->get_error(false, _DEBUG);
 					$result =& $instructions['engine_info']; 
 					$this->message[] = $result['debug'];
 					$result['debug'] = implode('<br />',array_filter($this->message));
@@ -285,20 +285,107 @@
 		}
 
 		//! show the page avaible when completing an activity
-		function show_completed_page()
+		function show_completed_page(&$infos)
 		{
 			$this->t->set_file('activity_completed', 'activity_completed.tpl');
-
-			
+			$this->t->set_block('activity_completed', 'report_row', 'rowreport');
+			//build an icon array for show_engine_infos
+			$icon_array = Array();
+			$icon_array['transition_ok'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'next').'">';
+			$icon_array['completed'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'check').'">';
+			$icon_array['failure'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'stop').'">';
+			$icon_array['transition'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition').'">';
+			$icon_array['activity'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'Activity').'">';
+			$this->show_engine_infos($infos, $icon_array);
 			$this->t->set_var(array(
 				'wf_procname'	=> $this->process_name,
 				'procversion'	=> $this->process_version,
 				'actname'	=> $this->activity_name,
+				'rowreport'	=> '',
 			));
 
 			$this->translate_template('activity_completed');
 			$this->t->pparse('output', 'activity_completed');
 			$this->show_after_running_page();
+		}
+		
+		function show_engine_infos(&$infos, &$icon_array, $level=0)
+		{
+			//_debug_array($infos);
+			foreach ($infos as $infoitem => $content)
+			{
+				if (is_int($infoitem)) //splitting!
+				{
+					//recursive call with level increment
+					$this->show_engine_infos($content, $icon_array,$level+1);
+				}
+				else
+				{
+					switch($infoitem)
+					{
+						case 'transition':
+							$icon_type = $icon_array['transition'];
+							if (isset($content['failure']))
+							{
+								$icon = $icon_array['failure'];
+								$comment = $content['failure'];
+								if (isset($content['target_name']))
+								{
+									$report = str_repeat('+', $level).lang('transition to %1, status: %2', $content['target_name'], lang ('failure'));
+									$report = str_repeat('+', $level).lang('transition to %1 failure', $content['target_name']);
+								}
+								else
+								{
+									$report = str_repeat('+', $level).lang('transition failure');
+								}
+							}
+							else
+							{
+								$icon = $icon_array['transition_ok'];
+								$report = str_repeat('+', $level).lang('transition to %1, status: %2', $content['target_name'], $content['status']);
+								$comment = $content['failure'];
+							}
+							$this->t->set_var(array(
+								'icon_type_report'	=> $icon_type,
+								'icon_report'		=> $icon,
+								'label_report'		=> $report,
+								'comment_report'	=> $comment,
+								'row_class'             => $this->nextmatchs->alternate_row_color($tr_color, true),
+							));
+							$this->t->parse('report','report_row', true);
+							break;
+						case 'activity':
+							$icon_type = $icon_array['activity'];
+							if (isset($content['failure']))
+							{
+								$icon = $icon_array['failure'];
+								$report = str_repeat('+', $level).lang('activity failure');
+								$comment = $content['failure'];
+							}
+							else
+							{
+								$icon = $icon_array['completed'];
+								$report = str_repeat('+', $level).lang('activity completed');
+								$comment = $content['info']['activity_name'];
+							}
+							$this->t->set_var(array(
+								'icon_type_report'      => $icon_type,
+								'icon_report'		=> $icon,
+								'label_report'		=> $report,
+								'comment_report'	=> $comment,
+								'row_class'		=> $this->nextmatchs->alternate_row_color($tr_color, true),
+							));
+							$this->t->parse('report','report_row', true);
+							if (isset($content['next']))
+							{
+								//recursive call
+								$this->show_engine_infos($content['next'], $icon_array,$level);
+							}
+							break;
+					}
+				}
+			}
+			
 		}
 		
 		//! show the common variable of interactive forms (like messages)
