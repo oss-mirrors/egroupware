@@ -66,7 +66,7 @@ class BaseActivity extends Base {
   * @return an Activity Object of the right class (Child class) or an associative array containing the activity 
   * information if $as_array is set to true
   */
-  function getActivity($activityId, $with_roles= true,$with_agents=false,$as_array=false) 
+  function &getActivity($activityId, $with_roles= true,$with_agents=false,$as_array=false) 
   {
     $query = "select * from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?";
     $result = $this->query($query,array($activityId));
