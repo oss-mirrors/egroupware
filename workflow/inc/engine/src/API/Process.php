@@ -50,6 +50,14 @@ class Process extends Base {
   }
   
   /*!
+  Gets the process Id
+  */
+  function getProcessId() {
+    return $this->pId;
+  }
+  
+  
+  /*!
   Gets the normalized name of the process
   */
   function getNormalizedName() {
