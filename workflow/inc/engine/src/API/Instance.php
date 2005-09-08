@@ -379,7 +379,6 @@ class Instance extends Base {
         $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_user=?';
         $query .= $where;
         $bindvars_update = array_merge(array($theuser),$bindvars);
-  echo "<br>DEBUG:".$query; _debug_array($bindvars_update);
         $this->query($query,$bindvars_update);
         $this->activities[$i]['wf_user']=$theuser;
         return true;
@@ -594,12 +593,14 @@ class Instance extends Base {
   * executing them.
   * This function is in fact a Private function runned by the engine. You should
   * never use it without knowing very very well what you're doing.
-  * @return false in case of any problem, true if nothing was done and an array if something 
-  * done, like walk on transition and execution of an activity (see sendTo comments) or if
-  * this activity was a split activity (in this case the array contains a row for each following activity)
+  * @return false or an array with ['transition']['failure'] set in case of any problem, 
+  * true if nothing was done and an array if something done, like walk on transition 
+  * and execution of an activity (see sendTo comments) or if this activity was a split 
+  * activity (in this case the array contains a row for each following activity)
   */
   function sendAutorouted($activityId,$force=false)
   {
+    $returned_value = Array();
     $type = $this->getOne("select `wf_type` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array((int)$activityId));    
     //on a end activity we have nothing to do
     if ($type == 'end')
@@ -609,7 +610,8 @@ class Instance extends Base {
     //If the activity ending is not autorouted then we have nothing to do
     if (!(($force) || ($this->getOne("select `wf_is_autorouted` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array($activityId)) == 'y')))
     {
-      return true;
+      $returned_value['transition']['status'] = 'not autorouted';
+      return $returned_value;
     }
     //If the activity ending is autorouted then send to the activity
     // Now determine where to send the instance
@@ -646,8 +648,8 @@ class Instance extends Base {
       } 
       else 
       {
-        $this->error[] = tra('Fatal error: nextActivity does not match any candidate in autorouting switch activity');
-        return false;
+        $returned_value['transition']['failure'] = tra('Fatal error: nextActivity does not match any candidate in autorouting switch activity');
+        return $returned_value;
         //trigger_error(tra('Fatal error: nextActivity does not match any candidate in autorouting switch activity'),E_USER_WARNING);
       }
     } 
@@ -655,8 +657,8 @@ class Instance extends Base {
     {
       if (count($candidates)>1) 
       {
-        $this->error[] = tra('Fatal error: non-deterministic decision for autorouting activity');
-        return false;
+        $returned_value['transition']['failure'] = tra('Fatal error: non-deterministic decision for autorouting activity');
+        return $returned_value;
         //trigger_error(tra('Fatal error: non-deterministic decision for autorouting activity'),E_USER_WARNING);
       }
       else 
@@ -764,16 +766,31 @@ class Instance extends Base {
   *	* 'next' is the result of a SendAutorouted part which could in fact be the result of a call to this function, etc.
   */
   function sendTo($from,$activityId,$erase_from=true) {
+    //we will use an array for return value
+    $returned_data = Array();
     //1: if we are in a join check
     //if this instance is also in
     //other activity if so do
     //nothing
-    $type = $this->getOne("select `wf_type` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array((int)$activityId));
+    $query = 'select wf_type, wf_name from '.GALAXIA_TABLE_PREFIX.'activities where wf_activity_id=?';
+    $result = $this->query($query,array($activityId));
+    if (empty($result))
+    {
+      $returned_data['transition']['failure'] = tra('Fatal error: trying to send an instance to an activity but it was impossible to get this activity');
+      return $returned_data;
+    }
+    while ($res = $result->fetchRow())
+    {
+      $type = $res['wf_type'];
+      $targetname = $res['wf_name'];
+    }
+    $returned_data['transition']['target_id'] = $activityId;
+    $returned_data['transition']['target_name'] = $targetname;
     
     // Verify the existance of a transition
     if(!$this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."transitions` where `wf_act_from_id`=? and `wf_act_to_id`=?",array($from,(int)$activityId))) {
-      $this->error[] = tra('Fatal error: trying to send an instance to an activity but no transition found');
-      return false;
+      $returned_data['transition']['failure'] = tra('Fatal error: trying to send an instance to an activity but no transition found');
+      return $returned_data;
       //trigger_error(tra('Fatal error: trying to send an instance to an activity but no transition found'),E_USER_WARNING);
     }
 
@@ -851,8 +868,6 @@ class Instance extends Base {
         $putuser = $default_user;
       }
     }
-    //we will use an array for return value
-    $returned_data = Array();
     
     //update the instance_activities table
     //if not splitting delete first
@@ -872,18 +887,18 @@ class Instance extends Base {
     }    
 
     //create the new instance-activity
+    $returned_data['transition']['target_id'] = $activityId;
+    $returned_data['transition']['target_name'] = $targetname;
     $now = date("U");
     $iid = $this->instanceId;
     $query="delete from `".GALAXIA_TABLE_PREFIX."instance_activities` where `wf_instance_id`=? and `wf_activity_id`=?";
     $this->query($query,array((int)$iid,(int)$activityId));
-$returned_data['transition']['debug'][]= $query. "::".$iid."::".$activityId;
     $query="insert into `".GALAXIA_TABLE_PREFIX."instance_activities`(`wf_instance_id`,`wf_activity_id`,`wf_user`,`wf_status`,`wf_started`) values(?,?,?,?,?)";
     $this->query($query,array((int)$iid,(int)$activityId,$putuser,'running',(int)$now));
-$returned_data['transition']['debug'][]= $query. "::".$iid."::".$$activityId."::".$putuser."::".'running et Now()';
     
     //record the transition walk
     $returned_data['transition']['status'] = 'done';
-    $returned_data['transition']['target'] = $activityId;
+
     
     //we are now in a new activity
     $this->activities=Array();
