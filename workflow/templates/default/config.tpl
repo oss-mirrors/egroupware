@@ -109,7 +109,7 @@
        	                </select>
 		</td>
 	</tr>
-	<tr class="row_on">
+	<tr class="row_off">
 		<td width="60%" class="td_left">
 			{lang_this_will_display_an_activity_footer_when_any_activity_is_runned_with_workflow_engine_related_informations}
 		</td>
@@ -123,12 +123,26 @@
        	                </select>
 		</td>
 	</tr>
+	<tr class="row_on">
+		<td width="60%" class="td_left">
+			{lang_this_will_automatically_release_the_instance_when_leaving_an_activity_without_completing}
+		</td>
+		<td width="20%" class="td_right">
+			{lang_auto-release_on_leaving_activity}:
+		</td>
+		<td width="20%" class="td_right">
+			<select name="newsettings[auto-release_on_leaving_activity]">
+                               	<option value="False" {selected_auto-release_on_leaving_activity_False}>{lang_No}</option>
+                                <option value="True" {selected_auto-release_on_leaving_activity_True}>{lang_Yes}</option>
+       	                </select>
+		</td>
+	</tr>
 
 	<tr class="th">
 		<td>&nbsp;<b>{lang_Actions_Right_Options}</b></font></td>
 		<td colspan="2" class="row_off">&nbsp;</td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 		<td width="60%" class="td_left">
 			{lang_owner_of_the_instance_will_have_the_right_to_abort_the_instance_at_any_time}
 		</td>
@@ -142,7 +156,7 @@
        	                </select>
 		</td>
 	</tr>
-	<tr class="row_on">
+	<tr class="row_off">
 		<td width="60%" class="td_left">
 			{lang_owner_of_the_instance_will_have_the_right_to_exception_or_resume_the_instance_at_any_time}
 		</td>
@@ -156,7 +170,7 @@
        	                </select>
 		</td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 		<td width="60%" class="td_left">
 			{lang_owner_of_the_instance_will_have_the_right_to_release_(un-assign)_an_activity_assigned_to_an_user}
 		</td>
@@ -170,7 +184,7 @@
        	                </select>
 		</td>
 	</tr>
-	<tr class="row_on">
+	<tr class="row_off">
 		<td width="60%" class="td_left">
 			{lang_if_user_is_in_a_role_for_an_activity_he_will_have_the_right_to_abort_the_related_instance}
 		</td>
@@ -184,7 +198,7 @@
        	                </select>
 		</td>
 	</tr>
-	<tr class="row_off">
+	<tr class="row_on">
 		<td width="60%" class="td_left">
 			{lang_if_user_is_in_a_role_for_an_activity_he_will_have_the_right_to_exception_or_resume_the_related_instance}
 		</td>
@@ -198,7 +212,7 @@
        	                </select>
 		</td>
 	</tr>
-	<tr class="row_on">
+	<tr class="row_off">
 		<td width="60%" class="td_left">
 			{lang_if_user_is_in_a_role_for_an_activity_he_will_have_the_right_to_release_(un-assign)_the_related_instance}
 		</td>

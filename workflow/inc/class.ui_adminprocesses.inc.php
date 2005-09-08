@@ -93,6 +93,7 @@
 						'show_instance_owner'			=> 'yesno',
 						'show_multiple_submit_as_select'	=> 'yesno',
 						'show_activity_info_zone'		=> 'yesno',
+						'auto-release_on_leaving_activity'	=> 'yesno',
 						'Graphic options'			=> 'title',
 						'draw_roles'				=> 'yesno',
 						'font_size'				=> 'text',
