@@ -279,11 +279,22 @@ if (!function_exists('galaxia_user_can_monitor'))
    
 // Specify how to execute a non-interactive activity (for use in src/API/Instance.php)
 if (!function_exists('galaxia_execute_activity')) {
+    /*!
+    * This function will execute automatic (non-interactive) activities for the engine
+    * @param $activityId (default 0) is the activity_id it should run
+    * @param $iid (default 0) is the instance id it should run for
+    * @param $auto is true by default
+    * @return AN ARRAY, or at least true or false. This array can contain :
+    *	* a key 'failure' with an error string the engine will retrieve in instance error messages in case of
+    *	failure (this will mark your execution as Bad), 
+    *	* a key 'debug' with a debug string the engine will retrieve in instance error messages,
+    */
     function galaxia_execute_activity($activityId = 0, $iid = 0, $auto = 1)
     {
       // This way we create a new run_activity instance for the next activity
       $run_activity =& CreateObject('workflow.run_activity.go');
       $data = $run_activity->go($activityId, $iid, $auto);
+      return $data;
     }
 }
 
