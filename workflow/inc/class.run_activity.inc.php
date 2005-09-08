@@ -62,35 +62,69 @@
 			$this->runtime		=& CreateObject('workflow.workflow_wfruntime');
 			$this->runtime->setDebug(_DEBUG);
 			//$this->base_activity	=& CreateObject('workflow.workflow_baseactivity');
-			$this->process		=& CreateObject('workflow.workflow_process');
+			//$this->process		=& CreateObject('workflow.workflow_process');
 			$this->GUI		=& CreateObject('workflow.workflow_gui');
 			$this->categories 	=& CreateObject('phpgwapi.categories');
 			// TODO: open a new connection to the database under a different username to allow privilege handling on tables
 			$this->db 		=& $GLOBALS['phpgw']->ADOdb;
 		}
 
+		/*!
+		* This function is used to run all activities for specified instances. it could be interactive activities
+		* or automatic activities. this second case is the reason why we return some values
+		* @param $activityId is the activity_id it run
+		* @param $iid is the instance id it run for
+		* @param $auto is true by default
+		* @return AN ARRAY, or at least true or false. This array can contain :
+		*	* a key 'failure' with an error string the engine will retrieve in instance error messages in case of
+		*	failure (this will mark your execution as Bad), 
+		*	* a key 'debug' with a debug string the engine will retrieve in instance error messages,
+    		*/
 		function go($activity_id=0, $iid=0, $auto=0)
 		{
+			$result=Array();
+			
 			if ($iid)
 			{
 				$_REQUEST['iid'] = $iid;
 			}
 			$iid = $_REQUEST['iid'];
 			
-
+			//$activity_id is set when we are in auto mode. In interactive mode we get if from POST or GET
 			if (!$activity_id)
 			{
 				$activity_id	= (int)get_var('activity_id', array('GET','POST'), 0);
 			}
-
+			
+			//interactive or non_interactive?
+			$this->runtime->setAuto($auto);
+			
 			// load activity and instance
+			if (!$activity_id) 
+			{
+				$result['failure'] =  $this->runtime->fail(lang('Cannot run unknown activity'), true, _DEBUG, $auto);
+				return $result;
+			}
 			$activity =& $this->runtime->loadActivity($activity_id, true, true);
-			if (!$activity_id) $this->runtime->fail(lang('No activity indicated'), true, _DEBUG);
 			$this->activity =& $activity;
 			// the instance is avaible with $instance or $this->instance
-			// note that for standalone activities this instance can be an empty instance object
-			$instance =& $this->runtime->loadInstance($iid);
-			$this->instance =& $instance;
+			// note that for standalone activities this instance can be an empty instance object, but false is a bad value
+			$this->instance =& $this->runtime->loadInstance($iid);
+			$instance =& $this->instance;
+			if (!($instance)) 
+			{
+				$result['failure'] = $this->runtime->fail(lang('Cannot run the activity without instance').$instance, true, _DEBUG, $auto);
+				return $result;
+			}
+			$this->instance_id = $instance->getInstanceId();
+			
+			// load process
+			$this->process =& $this->runtime->loadProcess();
+			if (!($this->process)) 
+			{
+				$result['failure'] = $this->runtime->fail(lang('Cannot run the activity without her process').$instance, true, _DEBUG, $auto);
+				return $result;
+			}
 
 			//set some global variables needed
 			//TODO: move this global var in ['workflow']
@@ -98,8 +132,6 @@
 			$GLOBALS['workflow']['__leave_activity']=false;
 			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
 			
-			// load process
-			$this->process->getProcess($activity->getProcessId());
 			//load role names, just an information
 			$this->act_role_names = $activity->getActivityRoleNames();
 
@@ -111,7 +143,7 @@
 			// they can access it in 3 ways: $db $this->db or $GLOBALS['workflow']['db'] 
 			$db 				=& $this->db;
 			$GLOBALS['workflow']['db']	=& $this->db;
-			//set some other usefull vars (note that $instance is empty at this time)
+			//set some other usefull vars 
 			$this->activity_type	= $activity->getType();
 			$this->process_id 	= $activity->getProcessId();
 			$this->activity_id 	= $activity_id;
@@ -138,6 +170,7 @@
 			// run the activity
 			if (!$auto && $activity->isInteractive())
 			{
+
 				//get configuration options with default values if no init was done before
 				$myconf = array(
 					'display_please_wait_message'		=> 0,
@@ -147,7 +180,8 @@
 					'show_multiple_submit_as_select' 	=> 0,
 					'show_activity_info_zone' 		=> 1,
 				);
-				$this->conf =& $this->process->getConfigValues($myconf);
+				//this will give use asked options and som others used by WfRuntime
+				$this->conf =& $this->runtime->getConfigValues($myconf);
 				// if process conf says so we display a please wait message until the activity form is shown
 				if ($this->conf['display_please_wait_message'])
 				{
@@ -194,44 +228,39 @@
 			
 			// TODO: process instance comments
 
-			// for interactive activities in non-auto mode:
-			if (!$auto && $activity->isInteractive())
+			$instructions = $this->runtime->handle_postUserCode(_DEBUG);
+			switch($instructions['action'])
 			{
-				if ($GLOBALS['__activity_completed'])
-				{
-					// activity is interactive and completed, 
-					// we have to continue the workflow
-					// and send any autorouted activity which could be after this one
-					// this is not done in the $instance->complete() to let
-					// xxx_pos.php code be executed before sending the instance
-					$instance->sendAutorouted($activity_id);
+				case 'completed':
 					// re-retrieve instance data which could have been modified by an automatic activity
-					$this->instance_id	= $instance->getInstanceId();
-					$this->instance_name	= $instance->getName();
+					$this->instance_id      = $instance->getInstanceId();
+					$this->instance_name    = $instance->getName();
 					
 					$this->show_common_vars();
-
 					// and display completed template
 					$this->show_completed_page();
-				}
-				// it hasn't been completed
-				else
-				{
+					break;
+				case 'loop':
 					$this->show_common_vars();
-					if ($GLOBALS['workflow']['__leave_activity'])
-					{
-						// activity is interactive and the activity source set the 
-						// $GLOBALS[workflow][__leave_activity] it's a 'cancel' mode.
-						// we redirect the user to the leave activity page
-						$this->show_leaving_page();
-					}
-					else
-					{ 
-						//the activity is not completed and the user doesn't want to leave
-						// we loop on the form
-						$this->show_form();
-					}
-				}
+					$this->show_form();
+					break;
+				case 'leaving':
+					$this->show_common_vars();
+					$this->show_leaving_page();
+					break;
+				case 'return':
+					$result=Array();
+					$this->message[] = $this->GUI->get_error(false, _DEBUG);
+					$this->message[] = $this->runtime->get_error(false, _DEBUG);
+					$this->message[] = $this->process->get_error(false, _DEBUG);
+					$result =& $instructions['engine_info']; 
+					$this->message[] = $result['debug'];
+					$result['debug'] = implode('<br />',array_filter($this->message));
+					return $result;
+					break;
+				default:
+					return $this->runtime->fail(lang('unknown instruction from the workflow engine: %1', $instructions['action']), true, _DEBUG);
+					break;
 			}
 		}
 		
@@ -260,6 +289,7 @@
 		{
 			$this->t->set_file('activity_completed', 'activity_completed.tpl');
 
+			
 			$this->t->set_var(array(
 				'wf_procname'	=> $this->process_name,
 				'procversion'	=> $this->process_version,
@@ -274,9 +304,10 @@
 		//! show the common variable of interactive forms (like messages)
 		function show_common_vars()
 		{
-			$this->message = $this->GUI->get_error(true);
-			$this->message = $this->runtime->get_error(true);
-			$this->message = $this->process->get_error(true);
+			$this->message[] = $this->GUI->get_error(false, _DEBUG);
+			$this->message[] = $this->runtime->get_error(false, _DEBUG);
+			$this->message[] = $this->process->get_error(false, _DEBUG);
+			$this->message[] = $this->instance->get_error(false, _DEBUG);
 			$this->t->set_var(array(
 				'wf_message'	=> implode('<br />',$this->message),
 				)
@@ -294,9 +325,11 @@
 			));
 			
 			//check real avaible actions on this instance
-			$actions = $this->GUI->getUserActions($GLOBALS['user'],$this->instance_id,$this->activity_id);
+			//we assume user is not in read-only mode, if he were actions would be blocked anyway, and he should not come 
+			//here with a read-only right
+			$actions = $this->GUI->getUserActions($GLOBALS['user'],$this->instance_id,$this->activity_id, false);
 			if (isset($actions['release']))
-			{
+			{//we can release, it means we were not in auto-release mode
 				//prepare a release command on the user_instance form
 				$link_array = array(
 					'menuaction'		=> 'workflow.ui_userinstances.form',
@@ -316,7 +349,10 @@
 				));
 			}
 			else
-			{
+			{//we cannot release, 3 reasons
+			 // * already done in auto-release (TODO)
+			 // * standalone or view activity (TODO)
+			 // * multi-user concurrency problem moved some engine objects in other states
 				$this->t->set_var(array(
 					'release_text'	=> lang('It seems this activity for this instance is not assigned to you anymore.'),
 					'release_button'=> '',
@@ -394,7 +430,6 @@
 		//! show the activity form with automated parts if needed
 		function show_form()
 		{
-			
 			//set a global template for interactive activities
 			$this->t->set_file('run_activity','run_activity.tpl');
 			
@@ -410,6 +445,7 @@
 			//draw the instance_name input or label
 			// init wf_name to the requested one or the stored name
 			// the requested one handle the looping in activity form
+
 			$wf_name = get_var('wf_name','post',$this->instance->getName());
 			$this->parse_instance_name($wf_name);
 
