@@ -123,6 +123,7 @@ the ticket was found a duplicate of another ticket.	tts	en	The ticket was found 
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	en	The tickets in the following list are in the state %1. Please, decide what should be done with them.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	en	The validation of the ticket was unsuccessfull. The ticket requires more work.
 ticket	tts	en	Ticket
+ticket #	tts	en	Ticket #
 ticket has been updated	tts	en	Ticket has been updated
 tickets found %1	tts	en	Tickets found %1
 tickets open %1	tts	en	Tickets open %1
