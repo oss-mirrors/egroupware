@@ -6,7 +6,7 @@ $this->runtime->StartRun();
 //tests for access rights and lock some rows--------------------------
 if (!($this->runtime->checkUserRun($GLOBALS['user'])))
 {
-  $this->runtime->fail(lang('You have not permission to execute this activity'), true);
+  return $this->runtime->fail(lang('You have not permission to execute this activity'), true);
 }
 
 

@@ -25,4 +25,15 @@ if ($GLOBALS['__activity_completed'])
     $instance->setCategory((int)$_REQUEST['wf_category']);
   }
 }
+elseif($GLOBALS['workflow']['__leave_activity'])
+{
+  $this->runtime->StartRun();
+  //tests for auto-release (more complex than release) and lock some rows if needed--------------------
+  if ($this->runtime->checkUserRelease())
+  {
+    //release
+    $this->runtime->setActivityUser(false);
+  }
+  $this->runtime->EndStartRun();  
+}
 ?>
