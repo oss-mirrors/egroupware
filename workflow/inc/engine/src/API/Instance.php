@@ -21,13 +21,15 @@ class Instance extends Base {
   var $ended;
   var $name='';
   var $category;
-  /// Array of asocs(activityId, status, started, ended, user, name, interactivity, autorouting)
+  /// Array of assocs(activityId, status, started, ended, user, name, interactivity, autorouting)
   var $activities = Array();
   var $pId;
   var $instanceId = 0;
   var $priority = 1;
   /// An array of workitem ids, date, duration, activity name, user, activity type and interactivity
   var $workitems = Array(); 
+  // this is an internal reminder
+  var $__activity_completed=false;
   
   function Instance($db) 
   {
@@ -505,6 +507,26 @@ class Instance extends Base {
     return $this->ended;
   }
   
+  /*!
+  * This set to true or false the 'Activity Completed' status which will
+  * be important to know if the user code has completed the current activity
+  * @param $bool is true by default, it will be the next status of the 'Activity Completed' indicator
+  */
+  function setActivityCompleted($bool)
+  {
+    $this->__activity_completed = $bool;
+  }
+  
+  /*!
+  * This set to true or false the 'Activity Completed' status which will
+  * be important to know if the user code has completed the current activity
+  * @param $bool is true by default, it will be the next status of the 'Activity Completed' indicator
+  */
+  function getActivityCompleted()
+  {
+    return $this->__activity_completed;
+  }
+  
   //! Completes an activity, normally from any activity you should call this function without arguments.
   /*!
   * YOU MUST NOT CALL complete() for non-interactive activities since
@@ -516,34 +538,70 @@ class Instance extends Base {
   * are executed passing the activityId in the URI.
   * @param $addworkitem indicates if a workitem should be added for the completed
   * activity (true by default).
+  * @return true or false, if false it means the complete was not done for some internal reason
+  * consult $instance->get_error() for more informations
   */
   function complete($activityId=0,$addworkitem=true) {
     global $user;
-    global $__activity_completed;
+
+    //ensure it's false at first
+    $this->setActivityCompleted(false);
+    //the complete will be well done or not done at all
+    $this->db->StartTrans();
     
-    $__activity_completed = true;
-  
-    if(empty($user)) {$theuser='*';} else {$theuser=$user;}
+    if(empty($user)) 
+    {
+      $theuser='*';
+    } 
+    else 
+    {
+      $theuser=$user;
+    }
     
-    if($activityId==0) {
+    //TODO: this is maybe a bad idea, it could lead to strange bugs. avoid $_REQUEST when this object
+    // will really be only an internal object
+    if($activityId==0) 
+    {
       $activityId=$_REQUEST['activity_id'];
     }  
     
+    //Lock Rows (always the same order instances -> instance-activities -> activities to avoid deadlocks)
+    if ($this->instanceId > 0)
+    {
+      $where = 'wf_instance_id='.(int)$this->instanceId;
+      if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances',$where)))
+      {
+        $this->error[] = tra('failed to obtain a lock on database (table %1), aborting',GALAXIA_TABLE_PREFIX.'instances');
+        return $this->db->CompleteTrans();
+      }
+      $where .= ' and wf_activity_id='.(int)$activityId;
+      if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities',$where)))
+      {
+        $this->error[] = tra('failed to obtain a lock on database (table %1), aborting',GALAXIA_TABLE_PREFIX.'instance_activities');
+        return $this->db->CompleteTrans();
+      }
+    }
+    $where = 'wf_activity_id='.(int)$activityId;
+    if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'activities',$where)))
+    {
+        $this->error[] = tra('failed to obtain a lock on database (table %1), aborting',GALAXIA_TABLE_PREFIX.'activities');
+        return $this->db->CompleteTrans();
+    }
     // If we are completing a start activity then the instance must 
     // be created first!
-    $type = $this->getOne("select `wf_type` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array((int)$activityId));    
+    $type = $this->getOne('select wf_type from '.GALAXIA_TABLE_PREFIX.'activities where wf_activity_id=?',array((int)$activityId));    
     if($type=='start') {
       $this->_createNewInstance((int)$activityId,$theuser);
     }
       
     // Now set ended
     $now = date("U");
-    $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_ended`=? where `wf_activity_id`=? and `wf_instance_id`=?";
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_ended=? where wf_activity_id=? and wf_instance_id=?';
     $this->query($query,array((int)$now,(int)$activityId,(int)$this->instanceId));
     //Add a workitem to the instance 
     $iid = $this->instanceId;
     if($addworkitem) {
-      $max = $this->getOne("select max(`wf_order_id`) from `".GALAXIA_TABLE_PREFIX."workitems` where `wf_instance_id`=?",array((int)$iid));
+      $max = $this->getOne('select max(wf_order_id) from '.GALAXIA_TABLE_PREFIX.'workitems where wf_instance_id=?',array((int)$iid));
       if(!$max) {
         $max=1;
       } else {
@@ -560,7 +618,8 @@ class Instance extends Base {
       }
       $ended = date("U");
       $properties = serialize($this->properties);
-      $query="insert into `".GALAXIA_TABLE_PREFIX."workitems`(`wf_instance_id`,`wf_order_id`,`wf_activity_id`,`wf_started`,`wf_ended`,`wf_properties`,`wf_user`) values(?,?,?,?,?,?,?)";    
+      $query='insert into '.GALAXIA_TABLE_PREFIX.'workitems
+        (wf_instance_id,wf_order_id,wf_activity_id,wf_started,wf_ended,wf_properties,wf_user) values(?,?,?,?,?,?,?)';    
       $this->query($query,array((int)$iid,(int)$max,(int)$activityId,(int)$started,(int)$ended,$properties,$putuser));
     }
     
@@ -570,12 +629,16 @@ class Instance extends Base {
     //If this and end actt then terminate the instance
     if($type=='end') 
     {
-      return $this->terminate();
+      if (!($this->terminate()))
+      {
+        $this->db->FailTrans();
+      }
     }
-    else
-    {
-      return true;
-    }
+
+    //TODO: avoid unnecessary GLOBALS
+    $this->setActivityCompleted($this->db->CompleteTrans());
+
+    return $this->getActivityCompleted();
     
   }
   //! Send autorouted activities to the next one(s). Private engine function
@@ -648,7 +711,7 @@ class Instance extends Base {
       } 
       else 
       {
-        $returned_value['transition']['failure'] = tra('Fatal error: nextActivity does not match any candidate in autorouting switch activity');
+        $returned_value['transition']['failure'] = tra('Error: nextActivity does not match any candidate in autorouting switch activity');
         return $returned_value;
         //trigger_error(tra('Fatal error: nextActivity does not match any candidate in autorouting switch activity'),E_USER_WARNING);
       }
@@ -657,7 +720,7 @@ class Instance extends Base {
     {
       if (count($candidates)>1) 
       {
-        $returned_value['transition']['failure'] = tra('Fatal error: non-deterministic decision for autorouting activity');
+        $returned_value['transition']['failure'] = tra('Error: non-deterministic decision for autorouting activity');
         return $returned_value;
         //trigger_error(tra('Fatal error: non-deterministic decision for autorouting activity'),E_USER_WARNING);
       }
@@ -776,7 +839,7 @@ class Instance extends Base {
     $result = $this->query($query,array($activityId));
     if (empty($result))
     {
-      $returned_data['transition']['failure'] = tra('Fatal error: trying to send an instance to an activity but it was impossible to get this activity');
+      $returned_data['transition']['failure'] = tra('Error: trying to send an instance to an activity but it was impossible to get this activity');
       return $returned_data;
     }
     while ($res = $result->fetchRow())
@@ -789,7 +852,7 @@ class Instance extends Base {
     
     // Verify the existance of a transition
     if(!$this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."transitions` where `wf_act_from_id`=? and `wf_act_to_id`=?",array($from,(int)$activityId))) {
-      $returned_data['transition']['failure'] = tra('Fatal error: trying to send an instance to an activity but no transition found');
+      $returned_data['transition']['failure'] = tra('Error: trying to send an instance to an activity but no transition found');
       return $returned_data;
       //trigger_error(tra('Fatal error: trying to send an instance to an activity but no transition found'),E_USER_WARNING);
     }
@@ -947,10 +1010,15 @@ class Instance extends Base {
       //complete the activity
       if ($this->complete($activityId))
       {
-        $returned_data['activity']['completed']=true;
+        $returned_data['activity']['completed'] = true;
+        
+        //and send the next autorouted activity if any
+        $returned_data['activity']['next'] = $this->sendAutorouted($activityId);
       }
-      //and send the next autorouted activity if any
-      $returned_data['activity']['next'] = $this->sendAutorouted($activityId);
+      else
+      {
+        $returned_data['activity']['failure'] = $this->get_error();
+      }
     }
     return $returned_data;
   }
