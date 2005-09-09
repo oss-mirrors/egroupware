@@ -79,7 +79,7 @@
 				{
 					$this->activity_manager->compile_activity($this->wf_p_id, $activity_id);
 					$errors =&  $this->activity_manager->get_error(true);
-					if (count($errors)==0)
+					if (count(array_filter($errors))==0)
 					{
 						$this->message[] = lang('Source saved');
 					}
