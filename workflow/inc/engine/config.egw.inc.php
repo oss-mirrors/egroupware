@@ -164,7 +164,7 @@ if (!function_exists('galaxia_user_can_clean_instances'))
   * @return true if the actual user is granted access to the 'clean instances' and 'clean all instances for a process' functions
   * warning: theses are dangerous functions!
   */
-  function galaxia_user_can_clean_instances($user)
+  function galaxia_user_can_clean_instances()
   {
     return  (($GLOBALS['phpgw']->acl->check('run',1,'admin')) ||  ($GLOBALS['phpgw']->acl->check('cleanup_workflow',1,'workflow')));
   }
