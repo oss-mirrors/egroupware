@@ -2,7 +2,7 @@
 //Code to be executed after the end activity
 // we save name and others only when the instance
 // has been completed
-if ($GLOBALS['__activity_completed'])
+if ($instance->getActivityCompleted())
 {
   if(isset($_REQUEST['wf_name']))
   {

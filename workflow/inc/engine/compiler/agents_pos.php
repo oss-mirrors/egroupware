@@ -1,6 +1,6 @@
 <?php
 //Code to be executed after an activity by agents
-if (!($GLOBALS['__activity_completed']))
+if ($instance->getActivityCompleted())
 {
   foreach ($this->agents as $agent_type => $ui_agent)
   {
