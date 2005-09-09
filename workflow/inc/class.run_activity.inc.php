@@ -126,9 +126,10 @@
 				return $result;
 			}
 
+			//ensure the activity is not completed
+			$this->instance->setActivityCompleted(false);
+			
 			//set some global variables needed
-			//TODO: move this global var in ['workflow']
-			$GLOBALS['__activity_completed'] = false;
 			$GLOBALS['workflow']['__leave_activity']=false;
 			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
 			
@@ -210,7 +211,6 @@
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			//[__leave_activity] is setted if needed in the xxx_pre code or by the user in his code
-			//[__activity_completed] will be setted if $instance->complete() is runned
 			// HERE the user code is 'executed'
 			require_once ($source);
 			
@@ -250,9 +250,9 @@
 					break;
 				case 'return':
 					$result=Array();
-					$this->message[] = 'run activity\'s GUI : '.$this->GUI->get_error(false, _DEBUG);
-					$this->message[] = 'run activity\'s runtime : '.$this->runtime->get_error(false, _DEBUG);
-					$this->message[] = 'run activity\'s process : '.$this->process->get_error(false, _DEBUG);
+					$this->message[] = $this->GUI->get_error(false, _DEBUG);
+					$this->message[] = $this->runtime->get_error(false, _DEBUG);
+					$this->message[] = $this->process->get_error(false, _DEBUG);
 					$result =& $instructions['engine_info']; 
 					$this->message[] = $result['debug'];
 					$result['debug'] = implode('<br />',array_filter($this->message));
@@ -291,11 +291,13 @@
 			$this->t->set_block('activity_completed', 'report_row', 'rowreport');
 			//build an icon array for show_engine_infos
 			$icon_array = Array();
-			$icon_array['transition_ok'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'next').'">';
-			$icon_array['completed'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'check').'">';
-			$icon_array['failure'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'stop').'">';
-			$icon_array['transition'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition').'">';
-			$icon_array['activity'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'Activity').'">';
+			
+			$icon_array['ok'] 		= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'check').'">';
+			$icon_array['failure'] 		= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'stop').'">';
+			$icon_array['transition'] 	= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition').'">';
+			$icon_array['transition_human'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_human').'">';
+			$icon_array['activity'] 	= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'auto_activity').'">';
+			$icon_array['dot'] 		= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'puce').'">&nbsp;';
 			$this->show_engine_infos($infos, $icon_array);
 			$this->t->set_var(array(
 				'wf_procname'	=> $this->process_name,
@@ -328,22 +330,39 @@
 							if (isset($content['failure']))
 							{
 								$icon = $icon_array['failure'];
-								$comment = $content['failure'];
+								$comment = lang('failure').'<br />'.$content['failure'];
 								if (isset($content['target_name']))
 								{
-									$report = str_repeat('+', $level).lang('transition to %1, status: %2', $content['target_name'], lang ('failure'));
-									$report = str_repeat('+', $level).lang('transition to %1 failure', $content['target_name']);
+									$report = str_repeat($icon_array['dot'], $level).lang('transition to %1', $content['target_name']);
 								}
 								else
 								{
-									$report = str_repeat('+', $level).lang('transition failure');
+									$report = str_repeat($icon_array['dot'], $level).lang('transition');
 								}
 							}
 							else
 							{
-								$icon = $icon_array['transition_ok'];
-								$report = str_repeat('+', $level).lang('transition to %1, status: %2', $content['target_name'], $content['status']);
-								$comment = $content['failure'];
+								if ($content['status']=='not autorouted')
+								{
+									$icon_type = $icon_array['transition_human'];
+									$icon = '&nbsp;';
+									$report = str_repeat($icon_array['dot'], $level).lang('transition waiting for human interaction');
+									$comment = lang('no routage').'<br />';
+								}
+								else
+								{
+									if ($content['status']=='waiting')
+									{
+										$comment = lang('activity is waiting for pending transitions').'<br />';
+									}
+									else
+									{
+										$comment = '';
+									}
+									$icon = $icon_array['ok'];
+									$report = str_repeat($icon_array['dot'], $level).lang('transition to %1', $content['target_name']);
+								}
+								$comment .= $content['debug'];
 							}
 							$this->t->set_var(array(
 								'icon_type_report'	=> $icon_type,
@@ -359,14 +378,37 @@
 							if (isset($content['failure']))
 							{
 								$icon = $icon_array['failure'];
-								$report = str_repeat('+', $level).lang('activity failure');
-								$comment = $content['failure'];
+								$report = str_repeat($icon_array['dot'], $level).lang('activity failure');
+								if (isset($content['info']))
+								{
+									$comment = $content['info']['activity_name'].'<br />'.$content['failure'];
+								}
+								else
+								{
+									$comment = $content['failure'];
+								}
 							}
 							else
 							{
-								$icon = $icon_array['completed'];
-								$report = str_repeat('+', $level).lang('activity completed');
-								$comment = $content['info']['activity_name'];
+								if (isset($content['completed']))
+								{
+									$icon = $icon_array['ok'];
+									$report = str_repeat($icon_array['dot'], $level).lang('activity completed');
+								}
+								else
+								{
+
+									$icon = $icon_array['failure'];
+									$report = str_repeat($icon_array['dot'], $level).lang('activity failure');
+								}
+								if (isset($content['info']))
+								{
+									$comment = $content['info']['activity_name'];
+								}
+								else
+								{
+									$comment = '';
+								}
 							}
 							$this->t->set_var(array(
 								'icon_type_report'      => $icon_type,
