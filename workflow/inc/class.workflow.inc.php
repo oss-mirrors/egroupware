@@ -241,19 +241,41 @@
 			echo $out;
 		}
 		
-		//! get the href link for the css file, searching for themes specifics stylesheet if any
-		function get_css_link($css_name)
+		/*! get the href link for the css file, searching for themes specifics stylesheet if any
+		* @param $css_name is the name of the css file, without the .css extension
+		* @param $print_mode is false by default, if true '_print.css' is appended to the name if this 
+		* css print file exists
+		*/
+		function get_css_link($css_name, $print_mode=false)
 		{
-			$css_file = $GLOBALS['phpgw_info']['server']['webserver_url'].SEP.'workflow'.SEP.'templates'
-					.SEP.$GLOBALS['phpgw_info']['server']['template_set'].SEP.'css'.SEP.$css_name;
-			if(file_exists($css_file))
+			if (!!($print_mode))
 			{
-				return $css_file;
+				$css_file = SEP.'workflow'.SEP.'templates'.SEP
+					.$GLOBALS['phpgw_info']['server']['template_set'].SEP.'css'.SEP.$css_name.'_print.css';
+				if(file_exists(PHPGW_SERVER_ROOT.$css_file))
+				{
+					return $GLOBALS['phpgw_info']['server']['webserver_url'].$css_file;
+				}
+				else
+				{
+					$css_file = SEP.'workflow'.SEP.'templates'.SEP.'default'
+						.SEP.'css'.SEP.$css_name.'_print.css';
+					if(file_exists(PHPGW_SERVER_ROOT.$css_file))
+					{
+						return $GLOBALS['phpgw_info']['server']['webserver_url'].$css_file;
+					}
+				}
+			}
+			$css_file = SEP.'workflow'.SEP.'templates'.SEP
+					.$GLOBALS['phpgw_info']['server']['template_set'].SEP.'css'.SEP.$css_name.'css';
+			if(file_exists(PHPGW_SERVER_ROOT.$css_file))
+			{
+				return $GLOBALS['phpgw_info']['server']['webserver_url'].$css_file;
 			}
 			else
 			{
 				return $GLOBALS['phpgw_info']['server']['webserver_url'].SEP.'workflow'
-						.SEP.'templates'.SEP.'default'.SEP.'css'.SEP.$css_name;
+						.SEP.'templates'.SEP.'default'.SEP.'css'.SEP.$css_name.'.css';
 			}
 		}
 		
