@@ -1,3 +1,4 @@
+
 #wf_run_activity_zone
 {
 	width : 100%;
@@ -27,7 +28,7 @@
 /*********************  PRIORITY ZONE *************/
 #wf_priority_zone
 {
-	background-color: #FFF;
+	background-color: #F1F1F1;
 	display:inline;
 }
 #wf_priority_label
@@ -43,7 +44,7 @@
 /********************* NEXT USER ZONE *************/
 #wf_set_next_user_zone
 {
-	background-color: #FFF;
+	background-color: #F1F1F1;
 	display: inline;
 }
 #wf_set_next_user_label
@@ -60,7 +61,7 @@
 /********************* SET OWNER ZONE *************/
 #wf_set_owner_zone
 {
-	background-color: #FFF;
+	background-color: #F1F1F1;
 	display: inline;
 }
 #wf_set_owner_label
@@ -72,6 +73,24 @@
 #wf_set_owner_select
 {
 	text-align: left;
+}
+
+/*********************  PRINT MODE ZONE *************/
+#wf_print_mode_zone
+{
+	background-color: #F1F1F1;
+	display: inline;
+	position : relative;
+	width:100%;
+	margin-left: 50px;
+	text-align: right;
+}
+.wf_print_mode_button
+{
+	width=20%;
+        font-weight:bold;
+        text-align:right;
+        background-color: #D3DCE3;
 }
 
 /*********************  SUBMIT ZONE *************/
@@ -92,6 +111,7 @@ table.table_submit_buttons
 	text-align:right;
 	background-color: #D3DCE3;
 }
+
 
 /*********************  WORKFLOW INFO ZONE *************/
 #workflow_info_zone

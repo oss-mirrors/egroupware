@@ -1,5 +1,6 @@
 <div id="wf_run_activity_message">{wf_message}</div>
-<LINK href="{run_activity_css_link}"  type="text/css" rel="StyleSheet">
+<LINK href="{run_activity_css_link}"  type="text/css" rel="StyleSheet" />
+<LINK href="{run_activity_print_css_link}" type="text/css" rel="stylesheet" media="print" />
 <div id="wf_run_activity_zone">
 	<form method="post" enctype='multipart/form-data' name="workflow_form">
 	<div id="wf_activity_playground">
@@ -66,6 +67,11 @@
 					</span>
 				</div>
 				<!-- END block_set_owner_zone -->
+				<!-- BEGIN block_print_mode_zone -->
+				<div id="wf_print_mode_zone">
+					<span id="wf_print_mode_button"><input type="submit" name="{print_mode_name}" value="{print_mode_value}"></span>
+				</div>
+				<!-- END block_print_mode_zone -->
 				<!-- BEGIN block_submit_zone -->
 				<div id="wf_submit_zone">
 					<!-- BEGIN block_submit_select_area -->
