@@ -51,6 +51,9 @@
 		var $display_owner=0; // if 0 draw nothing, 1 draw selected owner, else draw a select box for owner, see function descr
 		var $display_next_user=0; // if 0 draw nothing, 1 draw selected next user, else draw a select box for next_user, see function descr
 		var $display_history=0; //if 0 draw nothing, 1 draw the history table in the bottom of the screen (ignore use_automatic_parsing config value)
+		//print mode
+		var $print_mode = false;
+		var $enable_print_mode = false;
 		// array of roles associated with the activity, usefull for lists of users associated with theses roles
 		var $act_role_names= Array();
 		//Array of ui_agent objects
@@ -98,7 +101,6 @@
 			
 			//interactive or non_interactive?
 			$this->runtime->setAuto($auto);
-			
 			// load activity and instance
 			if (!$activity_id) 
 			{
@@ -169,8 +171,11 @@
 			//include_once($shared);
 
 			// run the activity
+			//interactive section
 			if (!$auto && $activity->isInteractive())
 			{
+
+				$this->print_mode = get_var('print_mode', array('POST','GET'), false);
 
 				//get configuration options with default values if no init was done before
 				$myconf = array(
@@ -188,10 +193,12 @@
 				{
 					$this->show_wait_message();
 				}
-
-				$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
-				$GLOBALS['phpgw']->common->phpgw_header();
-				echo parse_navbar();
+				if (!($this->print_mode))
+				{
+					$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
+					$GLOBALS['phpgw']->common->phpgw_header();
+					echo parse_navbar();
+				}
 			
 				// activities' code will have at their disposition the $template object to handle the corresponding activity template, 
 				// but $GLOBALS['phpgw']->template will also be available, in case global scope for this is needed
@@ -220,6 +227,10 @@
 			$this->instance_name	= $instance->getName();
 			$this->instance_owner	= $instance->getOwner();
 			$this->owner_name	= $GLOBALS['phpgw']->accounts->id2name($this->instance_owner);
+			if ($this->owner_name == '')
+			{
+				$this->owner_name = lang('Nobody');
+			}
 			$GLOBALS['workflow']['wf_instance_id'] 	=& $this->instance_id;
 			$GLOBALS['workflow']['wf_instance_name']=& $this->instance_name;
 			$GLOBALS['workflow']['wf_instance_owner']=& $this->instance_owner;
@@ -438,7 +449,7 @@
 			$this->message[] = $this->process->get_error(false, _DEBUG);
 			$this->message[] = $this->instance->get_error(false, _DEBUG);
 			$this->t->set_var(array(
-				'wf_message'	=> implode('<br />',$this->message),
+				'wf_message'	=> implode('<br />',array_filter($this->message)),
 				)
 			);
 		}
@@ -564,7 +575,8 @@
 			
 			//set the css style files links
 			$this->t->set_var(array(
-				'run_activity_css_link'	=> $this->get_css_link('run_activity.css'),
+				'run_activity_css_link'	=> $this->get_css_link('run_activity', $this->print_mode),
+				'run_activity_print_css_link'	=> $this->get_css_link('run_activity', true),
 			));
 			
 			
@@ -599,6 +611,9 @@
 			$next_user = get_var('wf_next_user','POST',$this->instance->getNextUser());
 			$this->parse_next_user($next_user);
 			
+			//draw print_mode buttons
+			$this->parse_print_mode_buttons();
+			
 			//draw the activity submit buttons	
 			$this->parse_submit();
 			
@@ -613,6 +628,38 @@
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 		
+
+		/*!
+		* Draw a 'print mode' or 'back to normal mode' button if $this->print_mode is not false
+		* and if $this->enable_print_mode is true
+		*/
+		function parse_print_mode_buttons()
+		{
+			$this->t->set_block('run_activity', 'block_print_mode_zone', 'print_mode_zone');
+			
+			if (($this->conf['use_automatic_parsing']) && ($this->enable_print_mode))
+			{
+				if ($this->print_mode)
+				{
+					$this->t->set_var(array(
+						'print_mode_value'	=> lang('Close Printer friendly mode'),
+						'print_mode_name'	=> 'not_print_mode',
+					));
+				}
+				else
+				{
+					$this->t->set_var(array(
+						'print_mode_value'	=> lang('Printer friendly'),
+						'print_mode_name'       => 'print_mode',
+					));
+				}
+				$this->t->parse('print_mode_zone', 'block_print_mode_zone', true);
+			}
+			else
+			{
+				$this->t->set_var(array( 'print_mode_zone' => ''));
+			}
+		}
 
 		//!Parse the title in the activity form, the user can decide if he want this title to be shown or not
 		/*!
@@ -832,6 +879,10 @@
 				{
 					//we will just display the next_user
 					$next_user_name = $GLOBALS['phpgw']->accounts->id2name($actual_next_user);
+					if ($next_user_name == '')
+					{
+						$next_user_name = lang('not defined');
+					}
 					$this->t->set_var(array('wf_select_next_user' => $next_user_name));
 				}
 				else
