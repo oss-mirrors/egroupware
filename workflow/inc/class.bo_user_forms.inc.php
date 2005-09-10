@@ -12,7 +12,7 @@
 		{
 			$this->t->set_file('user_tabs_tpl', 'user_tabs.tpl');
 			//stylesheet
-			$this->t->set_var('link_tab_css', $this->get_css_link('user_tabs.css'));
+			$this->t->set_var('link_tab_css', $this->get_css_link('user_tabs'));
 			//tab class, depends on active form
 			$this->t->set_var(array(
 				'class_tab_new_instances' 	=> ($activtab=='useropeninstance')? 'active_tab': 'inactive_tab',

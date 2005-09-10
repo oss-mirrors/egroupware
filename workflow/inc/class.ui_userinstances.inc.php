@@ -307,7 +307,7 @@
 		    	$this->t->set_var(array(
 		    		'filter_category_select' 	=> '</td><td>'.$this->cat_option($this->filter_category,False),
 		    		'filter_category_label' 	=> '</td><td>'.lang('Category'),
-		    		'category_css'			=>  '<LINK href="'.$this->get_css_link('category.css').'" type="text/css" rel="StyleSheet">' ,
+		    		'category_css'			=>  '<LINK href="'.$this->get_css_link('category').'" type="text/css" rel="StyleSheet">' ,
 			));
 		    }
 		    else
@@ -319,7 +319,7 @@
 			));
 		    }
 		    // a LINK css for showing priority levels
-		    $this->t->set_var('priority_css', ($this->show_priority_column)? '<LINK href="'.$this->get_css_link('priority.css').'" type="text/css" rel="StyleSheet">' : '');
+		    $this->t->set_var('priority_css', ($this->show_priority_column)? '<LINK href="'.$this->get_css_link('priority').'" type="text/css" rel="StyleSheet">' : '');
 		    // back to the first form, the advanced zone
 		    if ($this->advanced_search) 
 		    {

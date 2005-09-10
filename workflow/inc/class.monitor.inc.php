@@ -137,7 +137,7 @@
 			));
 			//stylesheet
 			$this->t->set_var(array(
- 			 	'monitors_css_link' => $this->get_css_link('monitors.css'),
+ 			 	'monitors_css_link' => $this->get_css_link('monitors'),
 			));
 
 			$this->translate_template('monitor_stats_tpl');
@@ -149,7 +149,7 @@
 			$this->t->set_file('monitor_tabs_tpl', 'monitor_tabs.tpl');
 			//stylesheet
 			$this->t->set_var(array(
- 			 	'monitor_css_link' => $this->get_css_link('monitor_tabs.css'),
+ 			 	'monitor_css_link' => $this->get_css_link('monitor_tabs'),
 			));
 			
 			$improc	= $GLOBALS['phpgw']->common->image('workflow', 'monitorprocess');
