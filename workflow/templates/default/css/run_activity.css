@@ -13,7 +13,6 @@
 #wf_activity_playground
 {
 	border: 1px solid black;
-	width:100%;
 	margin-bottom:10px;
 }
 #wf_activity_title
@@ -23,6 +22,10 @@
 }
 #wf_activity_template
 {
+	border: 0;
+	width: 100%;
+	margin : 0;
+	padding: 0;
 }
 
 /*********************  PRIORITY ZONE *************/
@@ -99,11 +102,12 @@
 	text-align: right;
 	background-color: #F1F1F1;
 	width: 100%;
+	border-top: 1px solid black;
 }
 table.table_submit_buttons
 {
 	width: 100%;
-	border: 1px solid black;
+	border: 0; /*1px solid black;*/
 }
 .wf_submit_buttons_button
 {
