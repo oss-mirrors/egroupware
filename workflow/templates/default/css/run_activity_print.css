@@ -11,8 +11,6 @@ body
 	font-family: georgia, "Times New Roman", Times, serif;
 	size: 21.0cm 29.7cm; /* A4 */
 	size: portrait;
-	margin: 2cm;
-
 }
 a {
 	color: #000;
