@@ -289,11 +289,13 @@
 		{
 			if ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_AUTO_PRE)
 			{
+				if ($this->debugmode) $this->error[] = 'Sending at the start of the activity';
 				if (!($this->prepare_mail())) return false;
 				return $this->send();
 			}
 			else
 			{
+				if ($this->debugmode) $this->error[] = 'Not sending at the start of the activity';
 				return true;
 			}
 		}
@@ -310,11 +312,13 @@
 		{
 			if ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_AUTO_POS)
 			{
+				if ($this->debugmode) $this->error[] = 'Sending at the end of the activity';
 				if (!($this->prepare_mail())) return false;
 				return $this->send();
 			}
 			else
 			{
+				if ($this->debugmode) $this->error[] = 'Not sending at the end of the activity';
 				return true;
 			}
 		}
@@ -328,11 +332,13 @@
 		{
 			if ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_POST)
 			{
+				if ($this->debugmode) $this->error[] = 'Sending at POST in the activity';
 				if (!($this->prepare_mail())) return false;
 				return $this->send();
 			}
 			else
 			{
+				if ($this->debugmode) $this->error[] = 'Not sending at POST in the activity';
 				return true;
 			}
 		}
@@ -345,11 +351,13 @@
 		{
 			if ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_COMP)
 			{
+				if ($this->debugmode) $this->error[] = 'Sending when completing activity';
 				if (!($this->prepare_mail())) return false;
 				return $this->send();
 			}
 			else
 			{
+				if ($this->debugmode) $this->error[] = 'Not Sending when completing activity';
 				return true;
 			}
 		}
@@ -598,7 +606,7 @@
 						//Now we need to handle role_foo or property_bar or user_foobar
 						$matches2 = Array();
 						//echo "<br>2nd analysis on ".$value;
-						preg_match_all("/([^_]+)([_])([A-z0-9\|:\/\.\?\= ]*)/",$value, $matches2);
+						preg_match_all("/([^_]+)([_])([A-z0-9\|:\/\.\?\=\'\&\; ]*)/",$value, $matches2);
 						$first_part = $matches2[1][0];
 						$second_part = $matches2[3][0];
 						switch ($first_part)
@@ -628,7 +636,6 @@
 								}
 								$my_subset = array('wf_role_name' => $second_part);
 								$listing =& $this->role_manager->list_mapped_users($this->instance->getProcessId(),true, $my_subset);
-								//_debug_array($listing);
 								$matches[1][$key] = '';
 								foreach ($listing as $user_id => $user_name)
 								{
@@ -653,7 +660,7 @@
 								//$second_part should be in this form link adress|text
 								$matches3 = Array();
 								//echo "<br>3rd analysis on ".$second_part;
-								preg_match_all("/([^\|]+)([\|])([A-z0-9 ]*)/",$second_part, $matches3);
+								preg_match_all("/([^\|]+)([\|])([A-z0-9 \'\&\;]*)/",$second_part, $matches3);
 								$link_part = $matches3[1][0];
 								$text_part = $matches3[3][0];
 								//need something in the text
