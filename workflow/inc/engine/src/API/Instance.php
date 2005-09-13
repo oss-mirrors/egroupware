@@ -330,19 +330,30 @@ class Instance extends Base {
   }
   
   /*! 
-  Sets the instance creator user 
+  * Sets the instance creator user. On pseudo instance the change 
+  * is made only in the object, not in the database
+  * @param $user is the new owner id, musn't be false or empty
+  * @return true if the change was done
   */
-  function setOwner($user) {
-    $this->owner = $user;
-    //no need to save on pseudo-instances
-    if (!!($this->instanceId))
-    {
-      // save database
-      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_owner`=? where `wf_instance_id`=?";
-      $this->query($query,array($this->owner,(int)$this->instanceId));
+  function setOwner($user) 
+  {
+    if (empty($user))
+    { 
+      return false;
     }
+    {
+      $this->owner = $user;
+      //no need to save on pseudo-instances
+      if (!!($this->instanceId))
+      {
+        // save database
+        $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_owner`=? where `wf_instance_id`=?";
+        $this->query($query,array($this->owner,(int)$this->instanceId));
+      }
+    }
+    return true;
   }
-  
+
   /*!
   * Sets the user that must execute the activity indicated by the activityId.
   * Note that the instance MUST be present in the activity to set the user,

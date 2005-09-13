@@ -776,7 +776,7 @@
 					$authorized_users = $role_manager->list_mapped_users($this->process_id, true, $subset );
 					//first line of the select
 					$this->t->set_var(array(
-						'selected_owner_options'=> (!!$actual_owner)? 'selected="selected"' :'',
+						'selected_owner_options_default'=> (!!$actual_owner)? 'selected="selected"' :'',
 						'lang_default_owner'	=> lang('Default owner'),
 					));
 					//other lines
@@ -919,7 +919,7 @@
 					$authorized_users = $role_manager->list_mapped_users($this->process_id, true, $subset );
 					//first line of the select
 					$this->t->set_var(array(
-						'selected_next_user_options'=> (!!$actual_next_user)? 'selected="selected"' :'',
+						'selected_next_user_options_default'=> (!!$actual_next_user)? 'selected="selected"' :'',
 						'lang_default_next_user'	=> lang('Default next user'),
 					));
 					//other lines
