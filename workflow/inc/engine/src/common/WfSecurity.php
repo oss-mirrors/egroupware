@@ -111,11 +111,24 @@ class WfSecurity extends Base {
   * @public
   * This function will check the given action for the current running user, lock the table rows if necessary to ensure
   * nothing will move from another process between the check and the later action. 
+  * loacked tables can be instances and instance-activities.
+  * NOTA BENE: there is no lock on activity/processes table, we assume the admin is not changing the activity data
+  * on a running/production process, this is why there is versioning and activation on processes
   * Encapsulate this function call in a transaction, locks will be removed at the end of the transaction, whent COMMIT 
   * or ROLLBACK will be launched.
   * @param $activityId is the activity id, can be 0
   * @param $instanceId is the instanceId, can be 0
-  * @param $action is a string containing ONE action asked, it must be one of 'grab', 'release', 'exception', 'resume', 'abort', 'run', 'send', 'view','viewrun'
+  * @param $action is a string containing ONE action asked, it must be one of :
+  *	* 'grab'
+  *	* 'release'
+  *	* 'exception'
+  *	* 'resume'
+  *	* 'abort'
+  *	* 'run'
+  *	* 'send'
+  *	* 'view'
+  *	* 'viewrun'
+  *	* 'complete' (internal action before completing)
   * be carefull, View can be done in 2 ways
   * 	* viewrun : by the view activity if the process has a view activity, and only by this way in such case
   * 	* view: by a general view form with access to everybody if the process has no view activity
@@ -128,7 +141,7 @@ class WfSecurity extends Base {
     //aborted and completed instances have no activities associated
 
     //$this->error[] = 'DEBUG: action:'.$action;
-    if ($action!='run' && $action!='send' && $action!='view' && $action!='viewrun' && $action!='grab' && $action!='release' && $action!='exception' && $action!='resume' && $action!='abort')
+    if ($action!='run' && $action!='send' && $action!='view' && $action!='viewrun' && $action!='complete' && $action!='grab' && $action!='release' && $action!='exception' && $action!='resume' && $action!='abort')
     {
       $this->error[] = tra('Security check: Cannot understand asked action');
       return false;
@@ -141,8 +154,8 @@ class WfSecurity extends Base {
       $this->error[] = tra('Cannot retrieve the user running the security check');
       return false;
     }
+
     //0 - prepare RowLocks ----------------------------------------------------------
-    
     $lock_instance_activities = false;
     $lock_instances = false;
     switch($action)
@@ -179,6 +192,11 @@ class WfSecurity extends Base {
       case 'send':
         //impacted tables is instance_activities (deleting/adding row)
         $lock_instance_activities = true;
+        break;
+      case 'complete':
+        //impacted tables are instances and instance_activities
+        $lock_instance_activities = true;
+        $lock_instances = true;
         break;
     }
     // no lock on instance_activities without a lock on instances
@@ -288,13 +306,7 @@ class WfSecurity extends Base {
     //Now that we have the process we can load config values
     //$this->error[] = 'DEBUG: load config values for process:'.$pId;
     $this->loadConfigValues($pId);
-    //DEBUG
-    //$debuconfig = '';
-    //foreach ($this->processesConfig[$pId] as $label => $value)
-    //{
-      //$debugconfig .= ':'.$label.'=>'.$value;
-    //}
-    //$this->error[] = 'DEBUG: config:'.$debugconfig;
+    //$debuconfig = '';foreach ($this->processesConfig[$pId] as $label => $value){$debugconfig .= ':'.$label.'=>'.$value;} $this->error[] = 'DEBUG: config:'.$debugconfig;
 
 
     
@@ -310,6 +322,7 @@ class WfSecurity extends Base {
     $_bypass_user_role_if_owner = false; //if our user is the owner we ignore user tests
     $_bypass_user_on_non_interactive = false; //if activty is not interactive we do not perform user tests
     $_bypass_user_if_admin = false; //is our user a special rights user?
+    $_bypass_instance_on_pseudo = false; //should we jump the instance check when in 'start' activity?
     $_check_is_user = false; //is the actual_user our user?
     $_check_is_not_star = false; //is the actual <>*?
     $_check_is_star = false; // is the actual user *?
@@ -340,6 +353,25 @@ class WfSecurity extends Base {
         $_check_is_in_role_in_readonly = true;
         //The view type is a special activity related to all instances
         $_check_instance_activity = false;
+        break;
+      case 'complete':
+        // we need an activity 'in_flow' ie: not start or standalone that means we need an instance
+        // (the 'view' activity is not 'in_flow' and has instance, but no relashionship, no need to 
+        // test it here or later for grab or others actions). 
+        // warning we can complete a start activity, in this case it is the contrary, we musn't have an instance
+        // we need an instance not completed or aborted that means we need an activity
+        // but if we have an instance it musn't be in 'exception' as well
+        // authorization is given to currentuser only,
+        // for interactive activities (except start), instance user need to be the actual user
+        // 'view' cannot be completed
+        $_check_active_process		= true;
+        $_check_instance        	= true;
+        $_bypass_instance_on_pseudo	= true;
+        $_fail_on_exception		= true;
+        $_check_activity	        = true;
+        $_bypass_user_on_non_interactive = true;
+        $_check_is_user			= true;
+        $_check_is_not_star		= true;
         break;
       case 'grab': 
         // we need an activity 'in_flow' ie: not start or standalone that means we need an instance
@@ -465,7 +497,7 @@ class WfSecurity extends Base {
     if ($_check_instance)
     {
       //$this->error[] = 'DEBUG: check instance';
-      if ($_no_instance)
+      if ( (!($_bypass_instance_on_pseudo)) && ($_no_instance))
       {
         $this->error[] = tra('Action %1 needs an instance and instance %2 does not exists', $action, $instanceId);
         return false;
