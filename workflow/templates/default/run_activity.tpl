@@ -19,7 +19,7 @@
 				</div>
 				<!-- END block_instance_name_zone -->
 				<div id="wf_activity_template">
-						{activity_template}
+					{activity_template}
 				</div>
 				<!-- BEGIN block_priority_zone -->
 				<div id="wf_priority_zone">
@@ -43,7 +43,7 @@
 					<span id="wf_set_next_user_select">
 						<!-- BEGIN block_select_next_user -->
 						<select name="wf_set_next_user">
-						<option  {selected_next_user_options_default} value="0">{lang_default_next_user}</option>
+						<option  {selected_next_user_options_default} value="*">{lang_default_next_user}</option>
 						<!-- BEGIN block_next_user_options --><option {selected_next_user_options} value="{next_user_option_id}">{next_user_option_value}</option>
 						<!-- END block_next_user_options -->
 						</select>
@@ -59,7 +59,7 @@
 					<span id="wf_set_owner_select">
 						<!-- BEGIN block_select_owner -->
 						<select name="wf_set_owner">
-						<option  {selected_owner_options_default} value="0">{lang_default_owner}</option>
+						<option  {selected_owner_options_default} value="">{lang_default_owner}</option>
 						<!-- BEGIN block_owner_options --><option {selected_owner_options} value="{owner_option_id}">{owner_option_value}</option>
 						<!-- END block_owner_options -->
 						</select>
