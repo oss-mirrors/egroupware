@@ -14,7 +14,7 @@
 	<td>{actname}</td>
 </tr>
 </table>
-
+<br />
 <table style="border: 1px solid black;margin:0 auto;">
 {report}
 </table>
