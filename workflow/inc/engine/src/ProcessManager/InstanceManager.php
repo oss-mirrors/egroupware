@@ -30,71 +30,156 @@ class InstanceManager extends BaseManager {
     parent::collect_errors($debug);
   }
 
+  /*!
+  * @public
+  * @param $iid is the instance Id
+  * @return an associative array describing activities and their relation with the instance
+  */
   function get_instance_activities($iid)
   {
-    $query = "select ga.wf_type,ga.wf_is_interactive,ga.wf_is_autorouted,gi.wf_p_id,ga.wf_activity_id,ga.wf_name,gi.wf_instance_id,gi.wf_status,gia.wf_activity_id,gia.wf_user,gi.wf_started,gia.wf_status as wf_act_status from ".GALAXIA_TABLE_PREFIX."activities ga,".GALAXIA_TABLE_PREFIX."instances gi,".GALAXIA_TABLE_PREFIX."instance_activities gia where ga.wf_activity_id=gia.wf_activity_id and gi.wf_instance_id=gia.wf_instance_id and gi.wf_instance_id=?";
+    $query = 'select ga.wf_type,ga.wf_is_interactive,ga.wf_is_autorouted,ga.wf_activity_id,ga.wf_name,
+            gi.wf_p_id,gi.wf_instance_id,gi.wf_status,gi.wf_started,
+            gia.wf_activity_id,gia.wf_user,gia.wf_status as wf_act_status 
+            from '.GALAXIA_TABLE_PREFIX.'activities ga,
+            INNER JOIN '.GALAXIA_TABLE_PREFIX.'instances gi ON ga.wf_instance_id=gi.wf_instance_id,
+            INNER JOIN '.GALAXIA_TABLE_PREFIX.'instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
+            where gi.wf_instance_id=?';
     $result = $this->query($query, array($iid));
     $ret = Array();
-    while($res = $result->fetchRow()) {
-      // Number of active instances
-      $ret[] = $res;
+    if (!(empty($result)))
+    {
+      while($res = $result->fetchRow()) 
+      {
+        // Number of active instances
+        $ret[] = $res;
+      }
     }
     return $ret;
   }
 
+  /*!
+  * @public
+  * @param $iid is the instance Id
+  * @return an associative array describing the instance
+  */
   function get_instance($iid)
   {
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."instances gi where wf_instance_id=?";
+    $query = 'select * from '.GALAXIA_TABLE_PREFIX.'instances gi where wf_instance_id=?';
     $result = $this->query($query, array($iid));
-    $res = $result->fetchRow();
-    $res['wf_workitems']=$this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."workitems where wf_instance_id=?", array($iid));
+    $res = Array();
+    if (!(empty($result)))
+    {
+      $res = $result->fetchRow();
+      $result['wf_next_activity']=unserialize($result['wf_next_activity']);
+      $res['wf_workitems']=$this->getOne('select count(*) from '.GALAXIA_TABLE_PREFIX.'workitems where wf_instance_id=?', array($iid));
+    }
     return $res;
   }
 
+  /*!
+  * @public
+  * @param $iid is the instance Id
+  * @return an associative array describing the instance properties
+  */
   function get_instance_properties($iid)
   {
-    $prop = unserialize($this->getOne("select wf_properties from ".GALAXIA_TABLE_PREFIX."instances gi where wf_instance_id=?",array($iid)));
+    $prop = unserialize($this->getOne('select wf_properties from '.GALAXIA_TABLE_PREFIX.'instances gi where wf_instance_id=?',array($iid)));
     return $prop;
   }
   
+  /*!
+  * @public
+  * Save the given instance properties
+  * @param $iid is the instance Id
+  * @param $prop is an associative array describing the instance properties
+  * @return true or false
+  */
   function set_instance_properties($iid,&$prop)
   {
     $props = addslashes(serialize($prop));
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_properties=? where wf_instance_id=?";
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_properties=? where wf_instance_id=?';
     $this->query($query, array($prop,$iid));
+    return true;
   }
   
+  /*!
+  * @public
+  * Save the given instance name
+  * @param $iid is the instance Id
+  * @param $name is the name of the instance
+  * @return true or false
+  */
   function set_instance_name($iid,$name)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_name=? where wf_instance_id=?";
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_name=? where wf_instance_id=?';
     $this->query($query, array($name,$iid));
+    return true;
   }
 
+  /*!
+  * @public
+  * Save the given instance priority
+  * @param $iid is the instance Id
+  * @param $priority is the instance priority
+  * @return true or false
+  */
   function set_instance_priority($iid,$priority)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_priority=? where wf_instance_id=?";
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_priority=? where wf_instance_id=?';
     $this->query($query, array((int)$priority, (int)$iid));
+    return true;
   }
 
+  /*!
+  * @public
+  * Save the given instance category
+  * @param $iid is the instance Id
+  * @param $category is the instance category
+  * @return true or false
+  */
   function set_instance_category($iid,$category)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_category=? where wf_instance_id=?";
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_category=? where wf_instance_id=?';
     $this->query($query, array((int)$category, (int)$iid));
+    return true;
   }
 
+  /*!
+  * @public
+  * Save the given instance owner
+  * @param $iid is the instance Id
+  * @param $owner is the owner id of the instance
+  * @return true or false
+  */
   function set_instance_owner($iid,$owner)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_owner=? where wf_instance_id=?";
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_owner=? where wf_instance_id=?';
     $this->query($query, array($owner, $iid));
+    return true;
   }
   
+  /*!
+  * @public
+  * Save the given instance status
+  * @param $iid is the instance Id
+  * @param $status is the instance status, should be one of 'running', 'completed', 'exception' or 'aborted
+  * @return true or false
+  */
   function set_instance_status($iid,$status)
   {
-    $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_status=? where wf_instance_id=?";
+    if (!(($status=='completed') || ($status=='active') || ($status=='aborted') || ($status=='exception')))
+    {
+      $this->error[] = tra('unknown status');
+      return false;
+    }
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_status=? where wf_instance_id=?';
     $this->query($query, array($status,$iid)); 
+    return true;
   }
   
-  /*! remove all previous activities on this instance and create a new activity on the activity given
+  /*!
+  * @public 
+  * Remove all previous activities on this instance and create a new activity on the activity given
   * @param $iid is the instance id
   * @param $activityId is the activity id
   * @param $user is '*' by default and could be an user id
@@ -116,12 +201,18 @@ class InstanceManager extends BaseManager {
   }
  
   /*!
-  set $user as the new user of activity $activityId
+  * @public
+  * set $user as the new user of activity $activityId if this activity is really related to the instance.
+  * @param $iid is the instance Id
+  * @param $activityId is the activity Id
+  * @param $user is the new user id
+  * @return true or false
   */
   function set_instance_user($iid,$activityId,$user)
   {
     $query = "update ".GALAXIA_TABLE_PREFIX."instance_activities set wf_user=? where wf_instance_id=? and wf_activity_id=?";
-    $this->query($query, array($user, $iid, $activityId));  
+    $this->query($query, array($user, $iid, $activityId));
+    return true;
   }
   
   //! Removes an user from all fields where he could be on every instances
@@ -129,6 +220,7 @@ class InstanceManager extends BaseManager {
   * This function delete all references on the given user on all instances.
   * It will concern: wf_user, wf_owner and wf_next_user fields
   * @param $user is the user id to remove
+  * @return true or false
   */
   function remove_user($user)  
   {
@@ -141,6 +233,7 @@ class InstanceManager extends BaseManager {
     // next_user=id => next_user=NULL
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_next_user=? where wf_next_user=?';
     $this->query($query,array(NULL,$user));
+    return true;
   }
   
   //! Transfer all references to one user to another one
@@ -151,6 +244,7 @@ class InstanceManager extends BaseManager {
   * of the admin to ensure the new user will have the necessary access rights
   * @param $old_user is the actual user id
   * @param $new_user is the new user id
+  * @return true or false
   */
   function transfer_user($old_user, $new_user)  
   {
@@ -163,6 +257,7 @@ class InstanceManager extends BaseManager {
     // next_user
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_next_user=? where wf_next_user=?';
     $this->query($query,array($new_user,$old_user));
+    return true;
   }
   
   /*!
