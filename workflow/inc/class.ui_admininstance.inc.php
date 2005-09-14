@@ -132,7 +132,7 @@
 			{
 				//add one and save properties
 				$arrayprops =& $this->instance_manager->get_instance_properties($iid);
-				$propname= $_POST['name'];
+				$propname= $this->instance_manager->normalize_name($_POST['name']);
 				if (isset($arrayprops[$propname]))
 				{
 					$this->message[]=lang('property %1 already exists', $propname);
