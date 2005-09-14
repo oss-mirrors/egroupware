@@ -77,7 +77,7 @@
 				'wf_p_id'		=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
 				'wf_started'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 				'wf_owner'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
-				'wf_next_activity'	=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
+				'wf_next_activity'	=> array('type' => 'blob', 'nullable' => True),
 				'wf_next_user'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
 				'wf_ended'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 				'wf_status'		=> array('type' => 'varchar', 'precision' => '25', 'nullable' => True),

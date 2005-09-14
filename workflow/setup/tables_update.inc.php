@@ -165,4 +165,19 @@
 		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.03.000';
 		return $GLOBALS['setup_info']['workflow']['currentver'];
 	}
+
+	$test[] = '1.1.03.000';
+	function workflow_upgrade1_1_03_000()
+	{	
+		//change type of wf_next_user to handle serialization -> multiple states if instance has multiple activities running
+		//we will loose current wf_next_activity but the update should'nt be made when instances are running and this is
+		//a field needed only at runtime, normally.
+		$GLOBALS['phpgw_setup']->oProc->DropColumns('egw_wf_instances','','wf_next_activity');
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_wf_instances' ,'wf_next_activity', array('type' => 'blob', 'nullable' => True));
+
+		#updating the current version
+		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.04.000';
+		return $GLOBALS['setup_info']['workflow']['currentver'];
+	}
+
 ?>
