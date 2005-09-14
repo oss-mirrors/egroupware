@@ -164,6 +164,21 @@ class InstanceManager extends BaseManager {
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_next_user=? where wf_next_user=?';
     $this->query($query,array($new_user,$old_user));
   }
+  
+  /*!
+  * @public
+  * Normalizes a property name
+  * @param $name is the name you want to normalize
+  * @return the property name
+  */
+  function normalize_name($name)
+  {
+    $name = trim($name);
+    $name = str_replace(" ","_",$name);
+    $name = preg_replace("/[^0-9A-Za-z\_]/",'',$name);
+    return $name;
+  }
+
 }    
 
 ?>
