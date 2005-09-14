@@ -4,7 +4,9 @@ require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
 //!! WfRuntime
 //! A class to handle instances at runtime
 /*!
-*
+* This class can be viewed by the user like an Instance, it is in fact more than an instance
+* as it handle concurrency and part of the core execution of the instance while avoiding
+* bad manipulation of the instance
 */
 class WfRuntime extends Base 
 {
@@ -20,6 +22,10 @@ class WfRuntime extends Base
   var $activity_id = 0;
   //process object is used, for example, to retrieve the compiled code
   var $process = null;
+  //workitems is a reference to $instance->workitems
+  var $workitems = null;
+  //activities is a reference to $instance->activities
+  var $activities = null;
   //security Object
   var $security = null;
   //boolean, wether or not we are in a transaction
@@ -131,12 +137,49 @@ class WfRuntime extends Base
 
   /*!
   * @public
-  * retrieve the process object associated with th eactivity
+  * Load the instance, the activity and the process, allthings needed by the runtime engine
+  * to  'execute' the activity
+  * @param $activityId is the activity id, the activity we will run
+  * @param $instanceId is the instance Id, can be empty for a start or standalone activity
+  * @return true or false
+  */
+  function &LoadRuntime($activityId,$instanceId=0)
+  {
+    // load activity
+    if (!($this->loadActivity($activityId, true, true)))
+    {
+      return false;
+    }
+    //interactive or non_interactive?
+    $this->setAuto(!($this->activity->isInteractive()));
+    //load instance
+    if (!($this->loadInstance($instanceId)))
+    {
+      return false;
+    }
+    // load process
+    if (!($this->loadProcess()))
+    {
+      return false;
+    }
+    
+    //ensure the activity is not completed
+    $this->instance->setActivityCompleted(false);
+    
+    //set the workitems and activities links
+    $this->workitems =& $this->instance->workitems;
+    $this->activities =& $this->instance->activities;
+    return true;
+  }
+  
+  /*!
+  * @private
+  * retrieve the process object associated with the activity
   * @param $pId is the process id of the process you want, if you do not give it we will try to
   * take it from the activity
   * @return a Process Object of the right type or false
   */
-  function &loadProcess($pId=0)
+  function loadProcess($pId=0)
   {
     if ( (!(isset($this->process))) || ($this->process->getProcessId()==0))
     {
@@ -154,18 +197,22 @@ class WfRuntime extends Base
       if ($this->debug) $this->error[] = 'loading process '.$pId;
       $this->process->getProcess($this->activity->getProcessId($pId));
     }
+    return true;
+  }
+  
+  function &getProcess()
+  {
     return $this->process;
   }
-
   /*!
-  * @public
+  * @private
   * retrieve the activity of the right type from a baseActivity Object
   * @param $activity_id is the activity_id you want
   * @param $with_roles will load the roles links on the object
   * @param $with_agents will load the agents links on the object
   * @return an Activity Object of the right type or false
   */
-  function &loadActivity($activity_id, $with_roles= true,$with_agents=false)
+  function loadActivity($activity_id, $with_roles= true,$with_agents=false)
   {
     if ( (empty($activity_id)) || (!($activity_id)) )
     {
@@ -179,6 +226,11 @@ class WfRuntime extends Base
     $this->activity_id = $activity_id;
     $this->error[] =  $base_activity->get_error();
     if ($this->debug) $this->error[] = 'loading activity '.$activity_id;
+    return true;
+  }
+  
+  function &getActivity()
+  {
     return $this->activity;
   }
   
@@ -188,7 +240,7 @@ class WfRuntime extends Base
   * @param $instanceId is the instance id
   * @return an Instance Object which can be empty or or string if something was turning bad
   */
-  function &loadInstance($instanceId)
+  function loadInstance($instanceId)
   {
     $this->instance_id = $instanceId;
     $this->instance->getInstance($instanceId);
@@ -201,18 +253,18 @@ class WfRuntime extends Base
       return false;
     }
     if ($this->debug) $this->error[] = 'loading instance '.$instanceId;
-    return $this->instance;
+    return true;
   }
   
   /*!
+  * @public
   * Perform necessary security checks at runtime before running an activity
   * This will as well lock the tables via the security object.
   * It should be launched in a transaction.
-  * @param $user is the user id
-  * @param return true if ok, false if the user has no runtime access
+  * @return true if ok, false if the user has no runtime access
   * instance and activity are unsetted in case of false check
   */
-  function checkUserRun($user)
+  function checkUserRun()
   {
     if ($this->activity->getType()=='view')
     {
@@ -236,12 +288,13 @@ class WfRuntime extends Base
     }
   }
 
+
   /*!
+  * @public
   * Perform necessary security checks at runtime
   * This will as well lock the tables via the security object.
   * It should be launched in a transaction.
-  * @param $user is the user id
-  * @param return true if ok, false if the user has no runtime access
+  * @return true if ok, false if the user has no runtime access
   * instance and activity are unsetted in case of false check
   */
   function checkUserRelease()
@@ -262,7 +315,7 @@ class WfRuntime extends Base
         //if we can still grab this instance (avoiding the bad case)
         
         //test grab before release
-        if ($this->checkUserRun($GLOBALS['user']))
+        if ($this->checkUserRun())
         {
           return true;
         }
@@ -315,7 +368,7 @@ class WfRuntime extends Base
   /*!
   * For interactive activities this function will set the current user on the instance-activities table. 
   * This will prevent having several user using the same activity on the same intsance at the same time
-  * But if you want this function to behave well you should call it after a CheckUserRun or a CheckUserRelease
+  * But if you want this function to behave well you should call it after a checkUserRun or a checkUserRelease
   * and inside a transaction. Theses others function will ensure the table will be locked and the user
   * is really granted the action
   * @param $grab is true by default, if false the user will be set to '*', releasing the instance-activity record
@@ -356,9 +409,10 @@ class WfRuntime extends Base
   * Try to give some usefull info about the current runtime
   * @return an associative arrays with keys/values which could be usefull
   */
-  function getRuntimeInfo()
+  function &getRuntimeInfo()
   {
     $result = Array();
+//    _debug_array($this->instance);
     if (isset($this->instance))
     {
       $result['instance_name'] = $this->instance->getName();
@@ -396,7 +450,7 @@ class WfRuntime extends Base
     // for interactive activities in non-auto mode:
     if (!($this->auto_mode) && $this->activity->isInteractive())
     {
-      if ($GLOBALS['__activity_completed'])
+      if ($this->instance->getActivityCompleted())
       {
         // activity is interactive and completed, 
         // we have to continue the workflow
@@ -405,7 +459,6 @@ class WfRuntime extends Base
         // xxx_pos.php code be executed before sending the instance
 
         $result['engine_info'] =& $this->instance->sendAutorouted($this->activity_id);
-        //_debug_array($engine_info);
 
         // application should display completed page
         $result['action']='completed';
@@ -437,10 +490,319 @@ class WfRuntime extends Base
       // and we collect our errors, we do not let them for other objects
       $this->collect_errors($debug);
       $result['engine_info']['debug'] = implode('<br />',array_filter($this->error));
-      $result['engine_info']['info'] = $this->getRuntimeInfo();
+      $result['engine_info']['info'] =& $this->getRuntimeInfo();
       $result['action'] = 'return';
       return $result;
     }
+  }
+
+  /*!
+  * @public
+  * Gets the the 'Activity Completed' status 
+  */
+  function getActivityCompleted()
+  {
+    return $this->instance->getActivityCompleted();
+  }
+
+  
+  //----------- Instance public function mapping -------------------------------------------
+  
+  /*! 
+  * Sets the next activity to be executed, if the current activity is
+  * a switch activity the complete() method will use the activity setted
+  * in this method as the next activity for the instance. 
+  * Note that this method receives an activity name as argument. (Not an Id)
+  * @param $actname : name of the next activity
+  */
+  function setNextActivity($actname) 
+  {
+    return $this->instance->setNextActivity($actname);
+  }
+
+  /*!
+  * This method can be used to set the user that must perform the next 
+  * activity of the process. this effectively "assigns" the instance to
+  * some user.
+  * @param $user is the next user id
+  */
+  function setNextUser($user) 
+  {
+    return $this->instance->setNextUser($user);
+  }
+
+  /*!
+  * This method can be used to get the user that must perform the next 
+  * activity of the process. This can be empty if no setNextUser() was done before.
+  * It wont return the default user but only the user which was assigned by a setNextUser.
+  */
+  function getNextUser() 
+  {
+    return $this->instance->getNextUser();
+  }
+ 
+  /*!
+  * Sets the name of this instance.
+  * @param $value is the new name of the instance
+  */
+  function setName($value) 
+  {
+    return $this->instance->setName($value);
+  }
+
+  /*!
+  * Get the name of this instance.
+  */
+  function getName() {
+    return $this->instance->getName();
+  }
+
+  /*!
+  * Sets the category of this instance.
+  */
+  function setCategory($value) 
+  {
+    return $this->instance->setcategory($value);
+  }
+
+  /*!
+  * Get the category of this instance.
+  */
+  function getCategory() 
+  {
+    return $this->instance->getCategory();
+  }
+  
+  /*! 
+  * Sets a property in this instance. This method is used in activities to
+  * set instance properties. Instance properties are immediately serialized.
+  * @param $name is the name of the property
+  * @param $value is the new value of the property
+  */
+  function set($name,$value) 
+  {
+    return $this->instance->set($name,$value);
+  }
+  
+  /*! 
+  * Gets the value of an instance property.
+  * @param $name is the name of the instance
+  * @return false if the property was not found, but an error message is stored
+  * in the instance object
+  */
+  function get($name) 
+  {
+    return $this->instance->get($name);
+  }
+  
+  /*! 
+  * Returns an array of assocs describing the activities where the instance
+  * is present, can be more than one activity if the instance was "splitted"
+  */
+  function getActivities() 
+  {
+    return $this->instance->getActivities();
+  }
+  
+  /*! 
+  * Gets the instance status can be
+  * 'completed', 'active', 'aborted' or 'exception'
+  */
+  function getStatus() 
+  {
+    return $this->instance->getStatus();
+  }
+  
+  /*! 
+  * Sets the instance status , the value can be:
+  * @param $status is the status you want, it can be:
+  * 'completed', 'active', 'aborted' or 'exception'
+  * @return true or false
+  */
+  function setStatus($status) 
+  {
+    return $this->instance->setStatus($status);
+  }
+  
+  /*!
+  * Gets the instance priority, it's an integer
+  */
+  function getPriority()
+  {
+    return $this->instance->getPriority();
+  } 
+
+  /*!
+  * Sets the instance priority,
+  * @param $priority should be an integer
+  */
+  function setPriority($priority)
+  {
+    return $this->instance->setPriority($priority);
+  }
+   
+  /*!
+  * Returns the instanceId
+  */
+  function getInstanceId() 
+  {
+    return $this->instance->getInstanceId();
+  }
+  
+  /*! 
+  Returns the processId for this instance
+  */
+  function getProcessId() {
+    return $this->instance->getProcessId();
+  }
+  
+  /*! 
+  * Returns the owner of the instance
+  */
+  function getOwner() 
+  {
+    return $this->instance->getOwner();
+  }
+  
+  /*! 
+  * Sets the instance owner
+  * @user is the user id of the owner
+  */
+  function setOwner($user) 
+  {
+    return $this->instance->setOwner($user);
+  }
+  
+  /*!
+  * Returns the user that must execute or is already executing an activity
+  * where the instance is present.
+  * @param $activityId is the activity id
+  * @return false if the activity was not found for the instance, else return the user id
+  * or '*' if no user is defined yet.
+  */  
+  function getActivityUser($activityId) 
+  {
+    return $this->instance->getActivityUser($activityId);
+  }
+  
+  /*!
+  * Sets the status of the instance in some activity
+  * @param $activityId is the activity id
+  * @param $status is the new status, it can be 'running' or 'completed'
+  * @return false if no activity was found for the instance
+  */  
+  function setActivityStatus($activityId,$status) 
+  {
+    return $this->instance->setActivityStatus($activityId,$status);
+  }
+  
+  
+  /*!
+  * Gets the status of the instance in some activity, can be
+  * 'running' or 'completed'
+  * @param $activityId is the activity id
+  */
+  function getActivityStatus($activityId) 
+  {
+    return $this->instance->getActivityStatus($activityId);
+  }
+  
+  /*!
+  * Resets the start time of the activity indicated to the current time.
+  * @param $activityId is the activity id
+  */
+  function setActivityStarted($activityId) 
+  {
+    return $this->instance->setActivityStarted($activityId);
+  }
+  
+  /*!
+  * Gets the Unix timstamp of the starting time for the given activity.
+  * @param $activityId is the activity id
+  */
+  function getActivityStarted($activityId) 
+  {
+    return $this->instance->getActivityStarted($activityId);
+  }
+  
+  /*!
+  * Gets the time where the instance was started 
+  * @return a Unix timestamp
+  */
+  function getStarted() 
+  {
+    return $this->instance->getStarted();
+  }
+  
+  /*!
+  * Gets the end time of the instance (when the process was completed)
+  */
+  function getEnded() 
+  {
+    return $this->instance->getEnded();
+  }
+  
+  
+  //! Completes an activity
+  /*!
+  * YOU MUST NOT CALL complete() for non-interactive activities since
+  * the engine does automatically complete automatic activities after
+  * executing them.
+  * @return true or false, if false it means the complete was not done for some internal reason
+  * consult get_error() for more informations
+  */
+  function complete() 
+  {
+    if (!($this->activity->isInteractive()))
+    {
+      $this->error[] = tra('interactive instances should not call the complete() method');
+      return false;
+    }
+    
+    return $this->instance->complete($this->activity_id);
+  }
+
+  /*!
+  * Aborts an activity and terminates the whole instance. We still create a workitem to keep track
+  * of where in the process the instance was aborted
+  */
+  function abort() 
+  {
+    return $this->instance->abort();
+  }
+  
+  /*! 
+  * Gets a comment for this instance 
+  * @param $cId is the comment id
+  */
+  function get_instance_comment($cId) 
+  {
+    return $this->instance->get_instance_comment($cId);
+  }
+  
+  /*! 
+  * Inserts or updates an instance comment
+  */
+  function replace_instance_comment($cId, $activityId, $activity, $user, $title, $comment) 
+  {
+    return $this->instance->replace_instance_comment($cId, $activityId, $activity, $user, $title, $comment);
+  }
+  
+  /*!
+  * Removes an instance comment
+  * @param $cId is the comment id
+  */
+  function remove_instance_comment($cId) 
+  {
+    return $this->instance->remove_instance_comment($cId);
+  }
+ 
+  /*!
+  * Lists instance comments
+  */
+  function get_instance_comments() 
+  {
+    return $this->instance->get_instance_comments();
   }
 }
 
