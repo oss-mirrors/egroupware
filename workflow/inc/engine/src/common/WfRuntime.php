@@ -512,12 +512,13 @@ class WfRuntime extends Base
   * Sets the next activity to be executed, if the current activity is
   * a switch activity the complete() method will use the activity setted
   * in this method as the next activity for the instance. 
-  * Note that this method receives an activity name as argument. (Not an Id)
+  * Note that this method receives an activity name as argument (Not an Id)
+  * and that it does not need the activityId like the instance method
   * @param $actname : name of the next activity
   */
   function setNextActivity($actname) 
   {
-    return $this->instance->setNextActivity($actname);
+    return $this->instance->setNextActivity($this->activity_id,$actname);
   }
 
   /*!

@@ -16,7 +16,7 @@ class Instance extends Base {
   var $owner = '';
   var $status = '';
   var $started;
-  var $nextActivity;
+  var $nextActivity=Array();
   var $nextUser;
   var $ended;
   var $name='';
@@ -72,7 +72,7 @@ class Instance extends Base {
     $this->owner = $res['wf_owner'];
     $this->started = $res['wf_started'];
     $this->ended = $res['wf_ended'];
-    $this->nextActivity = $res['wf_next_activity'];
+    $this->nextActivity = unserialize($res['wf_next_activity']);
     $this->nextUser = $res['wf_next_user'];
     $this->name = $res['wf_name'];
     $this->category = $res['wf_category'];
@@ -108,25 +108,35 @@ class Instance extends Base {
   }
   
   /*! 
-  Sets the next activity to be executed, if the current activity is
-  a switch activity the complete() method will use the activity setted
-  in this method as the next activity for the instance. 
-  Note that this method receives an activity name as argument. (Not an Id)
+  * Sets the next activity to be executed, if the current activity is
+  * a switch activity the complete() method will use the activity setted
+  * in this method as the next activity for the instance. 
+  * The object records an array of transitions, as the instance can be splitted in several 
+  * running activities, transition from the current activity to the given activity will
+  * be recorded and all previous recorded transitions starting from the current activity
+  * will be deleted.
+  * @param $activityId is the running activity Id 
+  * @param $actname Warning this method receives an activity name as argument. (Not an Id)
+  * @return true or false
   */
-  function setNextActivity($actname) {
+  function setNextActivity($activityId, $actname) 
+  {
     $pId = $this->pId;
     $actname=trim($actname);
-    $aid = $this->getOne("select `wf_activity_id` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_p_id`=? and `wf_name`=?",array($pId,$actname));
-    if(!$this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=? and `wf_p_id`=?",array($aid,$pId))) {
-      trigger_error(tra('Fatal error: setting next activity to an unexisting activity'),E_USER_WARNING);
+    $aid = $this->getOne('select wf_activity_id from '.GALAXIA_TABLE_PREFIX.'activities where wf_p_id=? and wf_name=?',array($pId,$actname));
+    if (!($aid))
+    {
+      $this->error[] = tra('setting next activity to an unexisting activity');
+      return false;
     }
-    $this->nextActivity=$aid;
+    $this->nextActivity[$activityId]=$aid;
     //no need to save on pseudo-instances
     if (!!($this->instanceId))
     {
-      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_next_activity`=? where `wf_instance_id`=?";
-      $this->query($query,array((int)$aid,(int)$this->instanceId));
+      $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_next_activity=? where wf_instance_id=?';
+      $this->query($query,array(serialize($this->nextActivity),(int)$this->instanceId));
     }
+    return true;
   }
 
   /*!
@@ -168,7 +178,7 @@ class Instance extends Base {
     // and status
     $pid = $this->getOne("select `wf_p_id` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array((int)$activityId));
     $this->status = 'active';
-    $this->nextActivity = 0;
+    $this->nextActivity = Array();
     $this->setNextUser('');
     $this->pId = $pid;
     $now = date("U");
@@ -324,6 +334,7 @@ class Instance extends Base {
     if (!(($status=='completed') || ($status=='active') || ($status=='aborted') || ($status=='exception')))
     {
       $this->error[] = tra('unknown status');
+      return false;
     }
     $this->status = $status; 
     //no need to save on pseudo-instances
@@ -808,6 +819,7 @@ class Instance extends Base {
     $candidates = Array();
     while ($res = $result->fetchRow()) 
     {
+      //candidates store activities we can reach from our running activity
       $candidates[] = $res['wf_act_to_id'];
     }  
     if($type == 'split') 
@@ -830,9 +842,10 @@ class Instance extends Base {
     } 
     elseif($type == 'switch') 
     {
-      if (in_array($this->nextActivity,$candidates))
+      if (in_array($this->nextActivity[$activityId],$candidates))
       {
-        return $this->sendTo((int)$activityId,(int)$this->nextActivity);
+
+        return $this->sendTo((int)$activityId,(int)$this->nextActivity[$activityId]);
       } 
       else 
       {
@@ -870,23 +883,15 @@ class Instance extends Base {
       $activityId=$_REQUEST['wf_activity_id'];
     }  
     
-    // If we are completing a start activity then the instance must 
+    // If we are aborting a start activity then the instance must 
     // be created first!
+    // ==> No, there's no reason to have an uncompleted start activity to abort
     $type = $this->getOne('select wf_type from '.GALAXIA_TABLE_PREFIX.'activities where wf_activity_id=?',array((int)$activityId));    
-    if($type=='start') 
-    {
-      if (!($this->_createNewInstance((int)$activityId,$theuser)))
-      {
-        return false;
-      }
-    }
-    else
-    {  
-      // Now set ended
-      $now = date("U");
-      $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_ended=? where wf_activity_id=? and wf_instance_id=?';
-      $this->query($query,array((int)$now,(int)$activityId,(int)$this->instanceId));
-    }
+
+    // Now set ended
+    $now = date("U");
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_ended=? where wf_activity_id=? and wf_instance_id=?';
+    $this->query($query,array((int)$now,(int)$activityId,(int)$this->instanceId));
 
     //Add a workitem to the instance 
     $iid = $this->instanceId;
@@ -979,7 +984,8 @@ class Instance extends Base {
   *	* 'info' contains some usefull infos about the activity-instance running (like names)
   *	* 'next' is the result of a SendAutorouted part which could in fact be the result of a call to this function, etc.
   */
-  function sendTo($from,$activityId,$erase_from=true) {
+  function sendTo($from,$activityId,$erase_from=true) 
+  {
     //we will use an array for return value
     $returned_data = Array();
     //1: if we are in a join check
@@ -1117,7 +1123,8 @@ class Instance extends Base {
     $this->activities=Array();
     $query = "select * from `".GALAXIA_TABLE_PREFIX."instance_activities` where `wf_instance_id`=?";
     $result = $this->query($query,array((int)$iid));
-    while ($res = $result->fetchRow()) {
+    while ($res = $result->fetchRow()) 
+    {
       $this->activities[]=$res;
     }    
 
@@ -1129,6 +1136,7 @@ class Instance extends Base {
     {
       // Now execute the code for the activity (function defined in galaxia's config.php)
       $returned_data['activity'] =& galaxia_execute_activity($activityId, $iid , 1);
+
       //we should have some info in $returned_data now. if it is false there's a problem
       if ((!(is_array($returned_data['activity']))) && (!($returned_data['activity'])) )
       {
