@@ -28,6 +28,8 @@ class Instance extends Base {
   var $priority = 1;
   /// An array of workitem ids, date, duration, activity name, user, activity type and interactivity
   var $workitems = Array(); 
+  //a security object to perform some tests and locks
+  var $security;
   // this is an internal reminder
   var $__activity_completed=false;
   
@@ -52,7 +54,9 @@ class Instance extends Base {
   /*!
   Method used to load an instance data from the database.
   */
-  function getInstance($instanceId) {
+  function getInstance($instanceId) 
+  {
+    if (!($instanceId)) return true; //start activities for example - pseudo instances
     // Get the instance data
     $query = "select * from `".GALAXIA_TABLE_PREFIX."instances` where `wf_instance_id`=?";
     $result = $this->query($query,array((int)$instanceId));
@@ -72,7 +76,7 @@ class Instance extends Base {
     $this->nextUser = $res['wf_next_user'];
     $this->name = $res['wf_name'];
     $this->category = $res['wf_category'];
-    // Get the activities where the instance is
+    // Get the activities where the instance is (nothing for start activities)
     $query = "select gia.wf_activity_id, gia.wf_instance_id, wf_started, wf_ended, wf_started, wf_user, wf_status,
               ga.wf_is_autorouted, ga.wf_is_interactive, ga.wf_name
               from ".GALAXIA_TABLE_PREFIX."instance_activities gia
@@ -155,6 +159,9 @@ class Instance extends Base {
   * Creates a new instance.
   * This method is called in start activities when the activity is completed
   * to create a new instance representing the started process.
+  * @param $activityId is the start activity id
+  * @param $user is the current user id
+  * @return true if all things goes well
   */
   function _createNewInstance($activityId,$user) {
     // Creates a new instance setting up started,ended,user
@@ -185,6 +192,8 @@ class Instance extends Base {
     // activity the user and status running and started now
     $query = "insert into `".GALAXIA_TABLE_PREFIX."instance_activities`(`wf_instance_id`,`wf_activity_id`,`wf_user`,`wf_started`,`wf_status`) values(?,?,?,?,?)";
     $this->query($query,array((int)$iid,(int)$activityId,$user,(int)$now,'running'));
+    
+    return true;
   }
   
   /*!
@@ -198,6 +207,7 @@ class Instance extends Base {
       $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_name=? where wf_instance_id=?";
       $this->query($query,array($value,(int)$this->instanceId));
     }
+    return true;
   }
 
   /*!
@@ -218,6 +228,7 @@ class Instance extends Base {
       $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_category=? where wf_instance_id=?";
       $this->query($query,array($value,(int)$this->instanceId));
     }
+    return true;
   }
 
   /*!
@@ -226,12 +237,34 @@ class Instance extends Base {
   function getCategory() {
     return $this->category;
   }
+
+  /*!
+  * @private
+  * Normalizes a property name
+  * @param $name is the name you want to normalize
+  * @return the property name
+  */
+  function _normalize_name($name)
+  {
+    $name = trim($name);
+    $name = str_replace(" ","_",$name);
+    $name = preg_replace("/[^0-9A-Za-z\_]/",'',$name);
+    return $name;
+  }
+
   
   /*! 
-  Sets a property in this instance. This method is used in activities to
-  set instance properties. Instance properties are immediately serialized.
+  * Sets a property in this instance. This method is used in activities to
+  * set instance properties. Instance properties are immediately serialized.
+  * all property names are normalized for security reasons and to avoid localisation
+  * problems (A->z, digits and _ for spaces)
+  * @param $name is the property name (it will be normalized)
+  * @value is the value you want for this property
+  * @return true if it was ok
   */
-  function set($name,$value) {
+  function set($name,$value) 
+  {
+    $name = $this->_normalize_name($name);
     $this->properties[$name] = $value;
     //no need to save on pseudo-instances
     if (!!($this->instanceId))
@@ -240,15 +273,26 @@ class Instance extends Base {
       $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_properties`=? where `wf_instance_id`=?";
       $this->query($query,array($props,$this->instanceId));
     }
+    return true;
   }
   
+
   /*! 
-  Gets the value of an instance property.
+  * Gets the value of an instance property.
+  * @param $name is the name of the property
+  * @return false if the property was not found, in this case an error message is stored in
+  * the instance object
   */
-  function get($name) {
-    if(isset($this->properties[$name])) {
+  function get($name) 
+  {
+    $name = $this->_normalize_name($name);
+    if(isset($this->properties[$name])) 
+    {
       return $this->properties[$name];
-    } else {
+    } 
+    else 
+    {
+      $this->error[] = tra('property %1 not found', $name);
       return false;
     }
   }
@@ -270,10 +314,17 @@ class Instance extends Base {
   }
   
   /*! 
-  Sets the instance status , the value can be:
-  'completed', 'active', 'aborted' or 'exception'
+  * Sets the instance status
+  * @param $status is the status you want, it can be:
+  * 'completed', 'active', 'aborted' or 'exception'
+  * @return true or false
   */
-  function setStatus($status) {
+  function setStatus($status) 
+  {
+    if (!(($status=='completed') || ($status=='active') || ($status=='aborted') || ($status=='exception')))
+    {
+      $this->error[] = tra('unknown status');
+    }
     $this->status = $status; 
     //no need to save on pseudo-instances
     if (!!($this->instanceId))
@@ -282,6 +333,7 @@ class Instance extends Base {
       $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_status`=? where `wf_instance_id`=?";
       $this->query($query,array($status,(int)$this->instanceId));
     }
+    return true;
   }
   
   /*!
@@ -306,6 +358,7 @@ class Instance extends Base {
       $query = "update ".GALAXIA_TABLE_PREFIX."instances set wf_priority=? where wf_instance_id=?";
       $this->query($query,array($this->priority,(int)$this->instanceId));
     }
+    return true;
   }
    
   /*!
@@ -353,7 +406,7 @@ class Instance extends Base {
     }
     return true;
   }
-
+  
   /*!
   * Sets the user that must execute the activity indicated by the activityId.
   * Note that the instance MUST be present in the activity to set the user,
@@ -415,17 +468,30 @@ class Instance extends Base {
   }
 
   /*!
-  Sets the status of the instance in some activity, can be
-  'running' or 'completed'
+  * Sets the status of the instance in some activity
+  * @param $activityId is the activity id
+  * @param $status is the new status, it can be 'running' or 'completed'
+  * @return false if no activity was found for the instance
   */  
-  function setActivityStatus($activityId,$status) {
-    for($i=0;$i<count($this->activities);$i++) {
-      if($this->activities[$i]['wf_activity_id']==$activityId) {
+  function setActivityStatus($activityId,$status) 
+  {
+    if (!(($status=='running') || ($status=='completed')))
+    {
+      $this->error[] = tra('unknown status');
+      return false;
+    }
+    for($i=0;$i<count($this->activities);$i++) 
+    {
+      if($this->activities[$i]['wf_activity_id']==$activityId) 
+      {
         $this->activities[$i]['wf_status']=$status;
-        $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_status`=? where `wf_activity_id`=? and `wf_instance_id`=?";
+        $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_status=? where wf_activity_id=? and wf_instance_id=?';
         $this->query($query,array($status,(int)$activityId,(int)$this->instanceId));
+        return true;
       }
-    }  
+    }
+    $this->error[] = tra('new status not set, no corresponding activity was found.'); 
+    return false;
   }
   
   
@@ -438,7 +504,8 @@ class Instance extends Base {
       if($this->activities[$i]['wf_activity_id']==$activityId) {
         return $this->activities[$i]['wf_status'];
       }
-    }  
+    }
+    $this->error[] = tra('activity status not avaible, no corresponding activity was found.');
     return false;
   }
   
@@ -452,8 +519,11 @@ class Instance extends Base {
         $this->activities[$i]['wf_started']=$now;
         $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_started`=? where `wf_activity_id`=? and `wf_instance_id`=?";
         $this->query($query,array($now,(int)$activityId,(int)$this->instanceId));
+        return true;
       }
-    }  
+    }
+    $this->error[] = tra('activity start not set, no corresponding activity was found.');
+    return false;
   }
   
   /*!
@@ -464,21 +534,25 @@ class Instance extends Base {
       if($this->activities[$i]['wf_activity_id']==$activityId) {
         return $this->activities[$i]['wf_started'];
       }
-    }  
+    }
+    $this->error[] = tra('activity start not avaible, no corresponding activity was found.');
     return false;
   }
   
   /*!
-  \private
-  Gets an activity from the list of activities of the instance
-  the result is an array describing the instance
+  * @private
+  * Gets an activity from the list of activities of the instance
+  * the result is an array describing the instance
+  * @param $activityId is the activity id
+  * @returns the activity id or false if the activity was not found
   */
   function _get_instance_activity($activityId) {
     for($i=0;$i<count($this->activities);$i++) {
       if($this->activities[$i]['wf_activity_id']==$activityId) {
         return $this->activities[$i];
       }
-    }  
+    }
+    $this->error[] = tra('no corresponding activity was found.');
     return false;
   }
 
@@ -493,6 +567,7 @@ class Instance extends Base {
       $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_started`=? where `wf_instance_id`=?";
       $this->query($query,array((int)$time,(int)$this->instanceId));    
     }
+    return true;
   }
   
   /*!
@@ -505,10 +580,16 @@ class Instance extends Base {
   /*!
   Sets the end time of the instance (when the process was completed)
   */
-  function setEnded($time) {
+  function setEnded($time) 
+  {
     $this->ended=$time;
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_ended`=? where `wf_instance_id`=?";
-    $this->query($query,array((int)$time,(int)$this->instanceId));    
+    //no need to save on pseudo-instances
+    if (!!($this->instanceId))
+    {
+      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_ended`=? where `wf_instance_id`=?";
+      $this->query($query,array((int)$time,(int)$this->instanceId));
+    }
+    return true;
   }
   
   /*!
@@ -519,6 +600,7 @@ class Instance extends Base {
   }
   
   /*!
+  * @private
   * This set to true or false the 'Activity Completed' status which will
   * be important to know if the user code has completed the current activity
   * @param $bool is true by default, it will be the next status of the 'Activity Completed' indicator
@@ -529,37 +611,72 @@ class Instance extends Base {
   }
   
   /*!
-  * This set to true or false the 'Activity Completed' status which will
-  * be important to know if the user code has completed the current activity
-  * @param $bool is true by default, it will be the next status of the 'Activity Completed' indicator
+  * @public
+  * Gets the 'Activity Completed' status
   */
   function getActivityCompleted()
   {
     return $this->__activity_completed;
   }
-  
-  //! Completes an activity, normally from any activity you should call this function without arguments.
-  /*!
-  * YOU MUST NOT CALL complete() for non-interactive activities since
-  * the engine does automatically complete automatic activities after
-  * executing them.
-  * The arguments are explained just in case. YOU SHOULD NOT USE THEM in your activity code.
-  * @param $activityId is the activity that is being completed, when this is not
-  * passed the engine takes it from the $_REQUEST array,all activities
-  * are executed passing the activityId in the URI.
+ 
+  /*
+  * @public
+  * This function can be called by the instance object himself (for automatic activities)
+  * or by the WfRuntime object. In interactive activities code users use complete() --without args-- 
+  * which refer to the WfRuntime->complete() function which call this one. 
+  * In non-interactive activities a call to a complete() will generate errors because the engine
+  * does it his own way as I said first.
+  * Particularity of this internalComplete is that it is Transactional, i.e. it it done completely
+  * or not and row locks are ensured.
+  * @param $activityId is the activity that is being completed
   * @param $addworkitem indicates if a workitem should be added for the completed
   * activity (true by default).
   * @return true or false, if false it means the complete was not done for some internal reason
   * consult $instance->get_error() for more informations
   */
-  function complete($activityId=0,$addworkitem=true) {
-    global $user;
-
+  function complete($activityId,$addworkitem=true)
+  {
     //ensure it's false at first
     $this->setActivityCompleted(false);
-    //the complete will be well done or not done at all
+
+    //The complete() is in a transaction, it will be completly done or not at all
     $this->db->StartTrans();
     
+    //lock rows and ensure access is granted
+    if (!(isset($this->security))) $this->security =& new WfSecurity($this->db); 
+    if (!($this->security->checkUserAction($activityId,$this->instanceId,'complete')))
+    {
+      $this->error[] = tra('you were not allowed to complete the activity');
+      $this->db->FailTrans();
+    }
+    else
+    {
+      if (!($this->_internalComplete($activityId,$addworkitem)))
+      {
+        $this->error[] = tra('The activity was not completed');
+        $this->db->FailTrans();
+      }
+    }
+    //we mark completion with result of the transaction wich will be false if any error occurs
+    //this is the end of the transaction
+    $this->setActivityCompleted($this->db->CompleteTrans());
+
+    //we return the completion state.
+    return $this->getActivityCompleted();
+  }
+
+  /*!
+  * @private
+  * YOU MUST NOT CALL _internalComplete() directly, use Complete() instead
+  * @param $activityId is the activity that is being completed
+  * @param $addworkitem indicates if a workitem should be added for the completed
+  * activity (true by default).
+  * @return true or false, if false it means the complete was not done for some internal reason
+  * consult $instance->get_error() for more informations
+  */
+  function _internalComplete($activityId,$addworkitem=true) {
+    global $user;
+
     if(empty($user)) 
     {
       $theuser='*';
@@ -568,47 +685,30 @@ class Instance extends Base {
     {
       $theuser=$user;
     }
-    
-    //TODO: this is maybe a bad idea, it could lead to strange bugs. avoid $_REQUEST when this object
-    // will really be only an internal object
-    if($activityId==0) 
+
+    if(!($activityId)) 
     {
-      $activityId=$_REQUEST['activity_id'];
+      $this->error[] = tra('it was impossible to complete, no corresponding activity was found.');
+      return false;
     }  
     
-    //Lock Rows (always the same order instances -> instance-activities -> activities to avoid deadlocks)
-    if ($this->instanceId > 0)
-    {
-      $where = 'wf_instance_id='.(int)$this->instanceId;
-      if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances',$where)))
-      {
-        $this->error[] = tra('failed to obtain a lock on database (table %1), aborting',GALAXIA_TABLE_PREFIX.'instances');
-        return $this->db->CompleteTrans();
-      }
-      $where .= ' and wf_activity_id='.(int)$activityId;
-      if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities',$where)))
-      {
-        $this->error[] = tra('failed to obtain a lock on database (table %1), aborting',GALAXIA_TABLE_PREFIX.'instance_activities');
-        return $this->db->CompleteTrans();
-      }
-    }
-    $where = 'wf_activity_id='.(int)$activityId;
-    if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'activities',$where)))
-    {
-        $this->error[] = tra('failed to obtain a lock on database (table %1), aborting',GALAXIA_TABLE_PREFIX.'activities');
-        return $this->db->CompleteTrans();
-    }
     // If we are completing a start activity then the instance must 
     // be created first!
     $type = $this->getOne('select wf_type from '.GALAXIA_TABLE_PREFIX.'activities where wf_activity_id=?',array((int)$activityId));    
-    if($type=='start') {
-      $this->_createNewInstance((int)$activityId,$theuser);
+    if($type=='start') 
+    {
+      if (!($this->_createNewInstance((int)$activityId,$theuser)))
+      {
+        return false;
+      }
     }
-      
-    // Now set ended
-    $now = date("U");
-    $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_ended=? where wf_activity_id=? and wf_instance_id=?';
-    $this->query($query,array((int)$now,(int)$activityId,(int)$this->instanceId));
+    else
+    {  
+      // Now set ended
+      $now = date("U");
+      $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_ended=? where wf_activity_id=? and wf_instance_id=?';
+      $this->query($query,array((int)$now,(int)$activityId,(int)$this->instanceId));
+    }
     //Add a workitem to the instance 
     $iid = $this->instanceId;
     if($addworkitem) {
@@ -618,14 +718,26 @@ class Instance extends Base {
       } else {
         $max++;
       }
-      $act = $this->_get_instance_activity($activityId);
-      if(!$act) {
+      if($type=='start')
+      {
         //Then this is a start activity ending
         $started = $this->getStarted();
+        //at this time owner is the creator
         $putuser = $this->getOwner();
-      } else {
-        $started=$act['wf_started'];
-        $putuser = $act['wf_user'];
+      }
+      else
+      {
+        $act = $this->_get_instance_activity($activityId);
+        if(!$act) 
+        {
+          //this will abort the function
+          return false;
+        }
+        else 
+        {
+          $started=$act['wf_started'];
+          $putuser = $act['wf_user'];
+        }
       }
       $ended = date("U");
       $properties = serialize($this->properties);
@@ -635,22 +747,24 @@ class Instance extends Base {
     }
     
     //Set the status for the instance-activity to completed
-    $this->setActivityStatus($activityId,'completed');
+    //except for start activities
+    if (!($type=='start'))
+    {
+      if (!($this->setActivityStatus($activityId,'completed')))
+      {
+        return false;
+      }
+    }
     
     //If this and end actt then terminate the instance
     if($type=='end') 
     {
       if (!($this->terminate()))
       {
-        $this->db->FailTrans();
+        return false;
       }
     }
-
-    //TODO: avoid unnecessary GLOBALS
-    $this->setActivityCompleted($this->db->CompleteTrans());
-
-    return $this->getActivityCompleted();
-    
+    return true;
   }
   //! Send autorouted activities to the next one(s). Private engine function
   /*
@@ -724,7 +838,6 @@ class Instance extends Base {
       {
         $returned_value['transition']['failure'] = tra('Error: nextActivity does not match any candidate in autorouting switch activity');
         return $returned_value;
-        //trigger_error(tra('Fatal error: nextActivity does not match any candidate in autorouting switch activity'),E_USER_WARNING);
       }
     } 
     else 
@@ -733,7 +846,6 @@ class Instance extends Base {
       {
         $returned_value['transition']['failure'] = tra('Error: non-deterministic decision for autorouting activity');
         return $returned_value;
-        //trigger_error(tra('Fatal error: non-deterministic decision for autorouting activity'),E_USER_WARNING);
       }
       else 
       {
@@ -743,10 +855,12 @@ class Instance extends Base {
   }
   
   /*!
-  Aborts an activity and terminates the whole instance. We still create a workitem to keep track
-  of where in the process the instance was aborted
+  * Aborts an activity and terminates the whole instance. We still create a workitem to keep track
+  * of where in the process the instance was aborted
+  * TODO: review, reuse of completed code
   */
-  function abort($activityId=0,$theuser = '',$addworkitem=true) {
+  function abort($activityId=0,$theuser = '',$addworkitem=true) 
+  {
     if(empty($theuser)) {
       global $user;
       if (empty($user)) {$theuser='*';} else {$theuser=$user;}
@@ -758,43 +872,69 @@ class Instance extends Base {
     
     // If we are completing a start activity then the instance must 
     // be created first!
-    $type = $this->getOne("select `wf_type` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array((int)$activityId));    
-    if($type=='start') {
-      $this->_createNewInstance((int)$activityId,$theuser);
+    $type = $this->getOne('select wf_type from '.GALAXIA_TABLE_PREFIX.'activities where wf_activity_id=?',array((int)$activityId));    
+    if($type=='start') 
+    {
+      if (!($this->_createNewInstance((int)$activityId,$theuser)))
+      {
+        return false;
+      }
     }
-      
-    // Now set ended
-    $now = date("U");
-    $query = "update `".GALAXIA_TABLE_PREFIX."instance_activities` set `wf_ended`=? where `wf_activity_id`=? and `wf_instance_id`=?";
-    $this->query($query,array((int)$now,(int)$activityId,(int)$this->instanceId));
-    
+    else
+    {  
+      // Now set ended
+      $now = date("U");
+      $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_ended=? where wf_activity_id=? and wf_instance_id=?';
+      $this->query($query,array((int)$now,(int)$activityId,(int)$this->instanceId));
+    }
+
     //Add a workitem to the instance 
     $iid = $this->instanceId;
     if($addworkitem) {
-      $max = $this->getOne("select max(`wf_order_id`) from `".GALAXIA_TABLE_PREFIX."workitems` where `wf_instance_id`=?",array((int)$iid));
+      $max = $this->getOne('select max(wf_order_id) from '.GALAXIA_TABLE_PREFIX.'workitems where wf_instance_id=?',array((int)$iid));
       if(!$max) {
         $max=1;
       } else {
         $max++;
       }
-      $act = $this->_get_instance_activity($activityId);
-      if(!$act) {
+      if($type=='start')
+      {
         //Then this is a start activity ending
         $started = $this->getStarted();
+        //at this time owner is the creator
         $putuser = $this->getOwner();
-      } else {
-        $started=$act['wf_started'];
-        $putuser = $act['wf_user'];
+      }
+      else
+      {
+        $act = $this->_get_instance_activity($activityId);
+        if(!$act) 
+        {
+          //this will abort the function
+          return false;
+        }
+        else 
+        {
+          $started=$act['wf_started'];
+          $putuser = $act['wf_user'];
+        }
       }
       $ended = date("U");
       $properties = serialize($this->properties);
-      $query="insert into `".GALAXIA_TABLE_PREFIX."workitems`(`wf_instance_id`,`wf_order_id`,`wf_activity_id`,`wf_started`,`wf_ended`,`wf_properties`,`wf_user`) values(?,?,?,?,?,?,?)";    
+      $query='insert into '.GALAXIA_TABLE_PREFIX.'workitems
+        (wf_instance_id,wf_order_id,wf_activity_id,wf_started,wf_ended,wf_properties,wf_user) values(?,?,?,?,?,?,?)';    
       $this->query($query,array((int)$iid,(int)$max,(int)$activityId,(int)$started,(int)$ended,$properties,$putuser));
     }
     
     //Set the status for the instance-activity to aborted
 // TODO: support 'aborted' if we keep activities after termination some day
-    //$this->setActivityStatus($activityId,'aborted');
+    //except for start activities
+    //if (!($type=='start'))
+    //{
+    //  if (!($this->setActivityStatus($activityId,'completed')))
+    //  {
+    //    return false;
+    //  }
+    //}
 
     // terminate the instance with status 'aborted'
     return $this->terminate('aborted');
@@ -865,7 +1005,6 @@ class Instance extends Base {
     if(!$this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."transitions` where `wf_act_from_id`=? and `wf_act_to_id`=?",array($from,(int)$activityId))) {
       $returned_data['transition']['failure'] = tra('Error: trying to send an instance to an activity but no transition found');
       return $returned_data;
-      //trigger_error(tra('Fatal error: trying to send an instance to an activity but no transition found'),E_USER_WARNING);
     }
 
     //init
@@ -876,8 +1015,8 @@ class Instance extends Base {
     if($this->nextUser) 
     {
       //we check rights for this user on the next activity
-      $wf_security = new WfSecurity($this->db);
-      if ($wf_security->checkUserAccess($this->nextUser,$activityId))
+      if (!(isset($this->security))) $this->security =& new WfSecurity($this->db); 
+      if ($this->security->checkUserAccess($this->nextUser,$activityId))
       {
         $putuser = $this->nextUser;
       }
@@ -1018,8 +1157,9 @@ class Instance extends Base {
       }
       // Reload in case the activity did some change
       $this->getInstance($this->instanceId);
-      //complete the activity
-      if ($this->complete($activityId))
+
+      //complete the automatic activity----------------------------
+      if ($this->Complete($activityId))
       {
         $returned_data['activity']['completed'] = true;
         
@@ -1034,6 +1174,7 @@ class Instance extends Base {
     return $returned_data;
   }
   
+
   /*! 
   Gets a comment for this instance 
   */
@@ -1053,18 +1194,27 @@ class Instance extends Base {
       $user = 'Anonymous';
     }
     $iid = $this->instanceId;
-    if ($cId) {
-      $query = "update `".GALAXIA_TABLE_PREFIX."instance_comments` set `wf_title`=?,`wf_comment`=? where `wf_instance_id`=? and `wf_c_id`=?";
-      $this->query($query,array($title,$comment,(int)$iid,(int)$cId));
-    } else {
-      $hash = md5($title.$comment);
-      if ($this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."instance_comments` where `wf_instance_id`=? and `wf_hash`=?",array($iid,$hash))) {
-        return false;
+    //no need on pseudo-instance
+    if (!!($this->instanceId))
+    {
+      if ($cId) 
+      {
+        $query = "update `".GALAXIA_TABLE_PREFIX."instance_comments` set `wf_title`=?,`wf_comment`=? where `wf_instance_id`=? and `wf_c_id`=?";
+        $this->query($query,array($title,$comment,(int)$iid,(int)$cId));
+      } 
+      else 
+      {
+        $hash = md5($title.$comment);
+        if ($this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."instance_comments` where `wf_instance_id`=? and `wf_hash`=?",array($iid,$hash))) 
+        {
+          return false;
+        }
+        $now = date("U");
+        $query ="insert into `".GALAXIA_TABLE_PREFIX."instance_comments`(`wf_instance_id`,`wf_user`,`wf_activity_id`,`wf_activity`,`wf_title`,`wf_comment`,`wf_timestamp`,`wf_hash`) values(?,?,?,?,?,?,?,?)";
+        $this->query($query,array((int)$iid,$user,(int)$activityId,$activity,$title,$comment,(int)$now,$hash));
       }
-      $now = date("U");
-      $query ="insert into `".GALAXIA_TABLE_PREFIX."instance_comments`(`wf_instance_id`,`wf_user`,`wf_activity_id`,`wf_activity`,`wf_title`,`wf_comment`,`wf_timestamp`,`wf_hash`) values(?,?,?,?,?,?,?,?)";
-      $this->query($query,array((int)$iid,$user,(int)$activityId,$activity,$title,$comment,(int)$now,$hash));
-    }  
+    }
+    return true;
   }
   
   /*!
