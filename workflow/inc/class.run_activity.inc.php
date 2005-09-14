@@ -99,38 +99,46 @@
 				$activity_id	= (int)get_var('activity_id', array('GET','POST'), 0);
 			}
 			
-			//interactive or non_interactive?
-			$this->runtime->setAuto($auto);
 			// load activity and instance
 			if (!$activity_id) 
 			{
 				$result['failure'] =  $this->runtime->fail(lang('Cannot run unknown activity'), true, _DEBUG, $auto);
 				return $result;
 			}
-			$activity =& $this->runtime->loadActivity($activity_id, true, true);
+			
+			//initalising activity and instance objects inside the WfRuntime object
+			if (!($this->runtime->loadRuntime($activity_id,$iid)))
+			{
+				$result['failure'] = $this->runtime->fail(lang('Cannot run the activity'), true, _DEBUG, $auto);
+				return $result;
+			}
+
+			$activity =& $this->runtime->getActivity($activity_id, true, true);
 			$this->activity =& $activity;
 			// the instance is avaible with $instance or $this->instance
 			// note that for standalone activities this instance can be an empty instance object, but false is a bad value
-			$this->instance =& $this->runtime->loadInstance($iid);
+			//$this->instance =& $this->runtime->loadInstance($iid);
+			
+			// HERE IS A BIG POINT: we map the instance to a runtime object
+			// user code will manipulate a stance, thinking it's an instance, but it is
+			// in fact a WfRuntime object, mapping all instance functions
+			$this->instance =& $this->runtime;
 			$instance =& $this->instance;
 			if (!($instance)) 
 			{
-				$result['failure'] = $this->runtime->fail(lang('Cannot run the activity without instance').$instance, true, _DEBUG, $auto);
+				$result['failure'] = $this->runtime->fail(lang('Cannot run the activity without instance'), true, _DEBUG, $auto);
 				return $result;
 			}
 			$this->instance_id = $instance->getInstanceId();
 			
 			// load process
-			$this->process =& $this->runtime->loadProcess();
+			$this->process =& $this->runtime->getProcess();
 			if (!($this->process)) 
 			{
 				$result['failure'] = $this->runtime->fail(lang('Cannot run the activity without her process').$instance, true, _DEBUG, $auto);
 				return $result;
 			}
 
-			//ensure the activity is not completed
-			$this->instance->setActivityCompleted(false);
-			
 			//set some global variables needed
 			$GLOBALS['workflow']['__leave_activity']=false;
 			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
@@ -718,9 +726,6 @@
 		*/
 		function parse_instance_owner($actual_owner)
 		{
-		//echo "DEBUG parse_instance_owner:actual_owner:".$actual_owner.'display_owner:'
-		//_debug_array($this->display_owner);
-			
 			//inside the select
 			$this->t->set_block('run_activity', 'block_owner_options', 'owner_options');			
 			//the select
