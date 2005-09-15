@@ -633,8 +633,10 @@ class GUI extends Base {
   }
   
   //!Abort an instance - this terminates the instance with status 'aborted', and removes all running activities
-  function gui_abort_instance($user,$activityId,$instanceId)
+  function gui_abort_instance($activityId,$instanceId)
   {
+    $user = galaxia_retrieve_running_user();
+    
     // start a transaction
     $this->db->StartTrans();
 
@@ -650,12 +652,14 @@ class GUI extends Base {
       $instance->getInstance($instanceId);
       if (!empty($instance->instanceId)) 
       {
-          $instance->abort($activityId,$user);
+          if (!($instance->abort($activityId,$user)))
+          {
+            $this->error[] = ($instance->get_error());
+            $this->db->FailTrans();
+          }
       }
       unset($instance);
     }
-    //DEBUG
-    //$this->error[] = ($this->wf_security->get_error());
     // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
     return $this->db->CompleteTrans();
   }
@@ -664,8 +668,10 @@ class GUI extends Base {
   /*!
   * The instance can be resumed afterwards via gui_resume_instance().
   */
-  function gui_exception_instance($user,$activityId,$instanceId)
+  function gui_exception_instance($activityId,$instanceId)
   {
+    $user = galaxia_retrieve_running_user();
+    
     // start a transaction
     $this->db->StartTrans();
 
@@ -689,8 +695,10 @@ class GUI extends Base {
   /*!
   Resume an instance - this sets the instance status from 'exception' back to 'active'
   */
-  function gui_resume_instance($user,$activityId,$instanceId)
+  function gui_resume_instance($activityId,$instanceId)
   {
+    $user = galaxia_retrieve_running_user();
+    
     // start a transaction
     $this->db->StartTrans();
 
@@ -711,9 +719,52 @@ class GUI extends Base {
     return $this->db->CompleteTrans();
   }
 
-  
-  function gui_send_instance($user,$activityId,$instanceId)
+  /*!
+  * This function restart an automated activity (non-interactive) which is still in running mode (maybe it failed)
+  * @param $activityId is the activity Id (the starting point)
+  * @param $instanceId is the instance Id
+  * @return the result true or false, if false nothing was done
+  */
+  function gui_restart_instance($activityId,$instanceId)
   {
+    $user = galaxia_retrieve_running_user();
+    
+    //start a transaction
+    $this->db->StartTrans();
+    
+    if (!($this->wf_security->checkUserAction($activityId, $instanceId,'restart')))
+    {
+      $this->error[] = ($this->wf_security->get_error());
+      $this->db->FailTrans();
+    }
+    else
+    {
+      //the security object said everything was fine
+      $instance =& new Instance($this->db);
+      $instance->getInstance($instanceId);
+      // we force the execution of the activity
+      $result = $instance->executeAutomaticActivity($activityId, $instanceId);      
+      //TODO handle information returned in the sendAutorouted like in the completed activity template
+      //_debug_array($result);
+      $this->error[] = $instance->get_error();
+      unset($instance);
+    }
+    // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
+    return $this->db->CompleteTrans();
+  }
+
+  /*!
+  * This function send a non autorouted activity i.e. take the transition which was not
+  * taken automatically. It can be as well used to walk a transition which failed the first time
+  * by the admin.
+  * @param $activityId is the activity Id (the starting point)
+  * @param $instanceId is the instance Id
+  * @return the result true or false, if false nothing was done
+  */
+  function gui_send_instance($activityId,$instanceId)
+  {
+    $user = galaxia_retrieve_running_user();
+    
     //start a transaction
     $this->db->StartTrans();
     
@@ -727,9 +778,11 @@ class GUI extends Base {
       //the security object said everything was fine
       $instance =& new Instance($this->db);
       $instance->getInstance($instanceId);
-      $instance->complete($activityId,false);
       // we force the continuation of the flow
-      $instance->sendAutorouted($activityId,true);
+      $result = $instance->sendAutorouted($activityId,true);
+      //TODO handle information returned in the sendAutorouted like in the completed activity template
+      //_debug_array($result);
+      $this->error[] = $instance->get_error();
       unset($instance);
     }
     // perform commit (return true) or Rollback (return false) if Failtrans it will automatically rollback
@@ -737,8 +790,10 @@ class GUI extends Base {
   }
 
   
-  function gui_release_instance($user,$activityId,$instanceId)
+  function gui_release_instance($activityId,$instanceId)
   {
+    $user = galaxia_retrieve_running_user();
+    
     // start a transaction
     $this->db->StartTrans();
 
@@ -760,8 +815,10 @@ class GUI extends Base {
   }
   
   //! grab the instance for this activity and user if the security object agreed
-  function gui_grab_instance($user,$activityId,$instanceId)
+  function gui_grab_instance($activityId,$instanceId)
   {
+    $user = galaxia_retrieve_running_user();
+    
     // start a transaction
     $this->db->StartTrans();
     //this check will as well lock the table rows
