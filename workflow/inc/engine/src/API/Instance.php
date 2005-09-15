@@ -195,7 +195,7 @@ class Instance extends Base {
     
     // Now update the properties!
     $props = serialize($this->properties);
-    $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_properties`=? where `wf_instance_id`=?";
+    $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_properties=? where wf_instance_id=?';
     $this->query($query,array($props,(int)$iid));
 
     // Then add in ".GALAXIA_TABLE_PREFIX."instance_activities an entry for the
@@ -280,7 +280,7 @@ class Instance extends Base {
     if (!!($this->instanceId))
     {
       $props = serialize($this->properties);
-      $query = "update `".GALAXIA_TABLE_PREFIX."instances` set `wf_properties`=? where `wf_instance_id`=?";
+      $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_properties=? where wf_instance_id=?';
       $this->query($query,array($props,$this->instanceId));
     }
     return true;
@@ -844,7 +844,6 @@ class Instance extends Base {
     {
       if (in_array($this->nextActivity[$activityId],$candidates))
       {
-
         return $this->sendTo((int)$activityId,(int)$this->nextActivity[$activityId]);
       } 
       else 
@@ -1007,7 +1006,7 @@ class Instance extends Base {
     $returned_data['transition']['target_id'] = $activityId;
     $returned_data['transition']['target_name'] = $targetname;
     
-    // Verify the existance of a transition
+    // Verify the existence of a transition
     if(!$this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."transitions` where `wf_act_from_id`=? and `wf_act_to_id`=?",array($from,(int)$activityId))) {
       $returned_data['transition']['failure'] = tra('Error: trying to send an instance to an activity but no transition found');
       return $returned_data;
@@ -1134,55 +1133,72 @@ class Instance extends Base {
     $isInteractive = $this->getOne("select `wf_is_interactive` from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?",array((int)$activityId));
     if ($isInteractive=='n') 
     {
-      // Now execute the code for the activity (function defined in galaxia's config.php)
-      $returned_data['activity'] =& galaxia_execute_activity($activityId, $iid , 1);
-
-      //we should have some info in $returned_data now. if it is false there's a problem
-      if ((!(is_array($returned_data['activity']))) && (!($returned_data['activity'])) )
-      {
-        $this->error[] = tra('failed to execute automatic activity');
-        //record the failure
-        $returned_data['activity']['failure'] = true;
-        return $returned_data;
-      }
-      else
-      {
-        //ok, we have an array, but it can still be a bad result
-        //this one is just for debug info
-        if (isset($returned_data['activity']['debug']))
-        {
-          //we retrieve this info here, in this object
-          $this->error[] = $returned_data['activity']['debug'];
-        }
-        //and this really test if it worked, if not we have a nice failure message (better than just failure=true)
-        if (isset($returned_data['activity']['failure']))
-        {
-          $this->error[] = tra('failed to execute automatic activity');
-          $this->error[] = $returned_data['activity']['failure'];
-          //record the failure
-          return $returned_data;
-        }
-      }
-      // Reload in case the activity did some change
-      $this->getInstance($this->instanceId);
-
-      //complete the automatic activity----------------------------
-      if ($this->Complete($activityId))
-      {
-        $returned_data['activity']['completed'] = true;
-        
-        //and send the next autorouted activity if any
-        $returned_data['activity']['next'] = $this->sendAutorouted($activityId);
-      }
-      else
-      {
-        $returned_data['activity']['failure'] = $this->get_error();
-      }
+      // Now execute the code for the activity
+      $returned_data['activity'] = $this->executeAutomaticActivity($activityId, $iid);
     }
     return $returned_data;
   }
   
+  /*!
+  * @public
+  * This is a public method only because the GUI can ask this action for the admin
+  * on restart failed automated activities, but in fact it's quite an internal function,
+  * This function handle the execution of automatic activities (and the launch of transitions
+  * which can be related to this activity).
+  * @param $activityId is the activity id at the end of the transition
+  * @param $iid is the instance id
+  */
+  function executeAutomaticActivity($activityId, $iid)
+  {
+    $returned_data = Array();
+    // Now execute the code for the activity (function defined in galaxia's config.php)
+    $returned_data =& galaxia_execute_activity($activityId, $iid , 1);
 
+    //we should have some info in $returned_data now. if it is false there's a problem
+    if ((!(is_array($returned_data))) && (!($returned_data)) )
+    {
+      $this->error[] = tra('failed to execute automatic activity');
+      //record the failure
+      $returned_data['failure'] = true;
+      return $returned_data;
+    }
+    else
+    {
+      //ok, we have an array, but it can still be a bad result
+      //this one is just for debug info
+      if (isset($returned_data['debug']))
+      {
+        //we retrieve this info here, in this object
+        $this->error[] = $returned_data['debug'];
+      }
+      //and this really test if it worked, if not we have a nice failure message (better than just failure=true)
+      if (isset($returned_data['failure']))
+      {
+        $this->error[] = tra('failed to execute automatic activity');
+        $this->error[] = $returned_data['failure'];
+        //record the failure
+        return $returned_data;
+      }
+      
+    }
+    // Reload in case the activity did some change
+    $this->getInstance($this->instanceId);
+
+    //complete the automatic activity----------------------------
+    if ($this->Complete($activityId))
+    {
+      $returned_data['completed'] = true;
+      
+      //and send the next autorouted activity if any
+      $returned_data['next'] = $this->sendAutorouted($activityId);
+    }
+    else
+    {
+      $returned_data['failure'] = $this->get_error();
+    }
+    return $returned_data;
+  }
+  
   /*! 
   Gets a comment for this instance 
   */
