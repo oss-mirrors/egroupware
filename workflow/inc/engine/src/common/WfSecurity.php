@@ -129,6 +129,7 @@ class WfSecurity extends Base {
   *	* 'view'
   *	* 'viewrun'
   *	* 'complete' (internal action before completing)
+  *	* 'restart' admin function, restarting a failed automatic activity
   * be carefull, View can be done in 2 ways
   * 	* viewrun : by the view activity if the process has a view activity, and only by this way in such case
   * 	* view: by a general view form with access to everybody if the process has no view activity
@@ -141,7 +142,7 @@ class WfSecurity extends Base {
     //aborted and completed instances have no activities associated
 
     //$this->error[] = 'DEBUG: action:'.$action;
-    if ($action!='run' && $action!='send' && $action!='view' && $action!='viewrun' && $action!='complete' && $action!='grab' && $action!='release' && $action!='exception' && $action!='resume' && $action!='abort')
+    if ($action!='run' && $action!='send' && $action!='view' && $action!='viewrun' && $action!='complete' && $action!='grab' && $action!='release' && $action!='exception' && $action!='resume' && $action!='abort' && $action!='restart')
     {
       $this->error[] = tra('Security check: Cannot understand asked action');
       return false;
@@ -197,6 +198,9 @@ class WfSecurity extends Base {
         //impacted tables are instances and instance_activities
         $lock_instance_activities = true;
         $lock_instances = true;
+        break;
+      case 'restart':
+        //nothing to do, it will be done by the run part.
         break;
     }
     // no lock on instance_activities without a lock on instances
@@ -329,10 +333,22 @@ class WfSecurity extends Base {
     $_check_is_in_role = false; //is our user in associated roles with readonly=false?
     $_check_is_in_role_in_readonly = false; //is our user in associated roles?
     $_check_no_view_activity = false; //is the process having no view activities?
+    $_check_is_admin_only = false; //is the action vaible only for admins?
     
     //first have a look at the action asked
     switch($action)
     {
+      case 'restart':
+        // we need an activity 'in_flow' ie: not start or standalone that means we need an instance
+        // we need an instance not completed or aborted that means we need an activity
+        // but if we have an instance it musn't be in 'exception' as well
+        // authorization is given to admin only
+        $_check_active_process          = true;
+        $_check_activity                = true;
+        $_check_instance		= true;
+        $_fail_on_exception             = true;
+        $_check_is_admin_only		= true;
+        break;
       case 'view':
         //process can be inactive
         //we need an existing instance
@@ -562,7 +578,8 @@ class WfSecurity extends Base {
     //is our actual workflow user a special rights user?
     // TODO test actual workflow user diff of $user
     //$this->error[] = 'DEBUG: user can admin instance :'.galaxia_user_can_admin_instance().' bypass?:'.$_bypass_user_if_admin;
-    if (!( ($_bypass_user_if_admin) && (galaxia_user_can_admin_instance()) ))
+    $is_admin = galaxia_user_can_admin_instance();
+    if (! ( (($_bypass_user_if_admin) && ($is_admin)) || (($_check_is_admin_only) && ($is_admin))) )
     {
       //if our user is the owner we ignore user tests
       //$this->error[] = 'DEBUG: user is owner :'.$resinstance['wf_owner'].' bypass?:'.$_bypass_user_role_if_owner;
