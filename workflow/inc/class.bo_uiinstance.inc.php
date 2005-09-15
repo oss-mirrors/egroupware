@@ -163,7 +163,8 @@
 				foreach ($instance_acts as $activity)
 				{
 					$aid = $activity['wf_activity_id'];
-					
+					$send_button =  '';
+					$restart_button = '';
 					//handle user or user selection
 					if ($readonly)
 					{//we just need to read actual user name
@@ -177,6 +178,7 @@
 							$GLOBALS['phpgw']->accounts->get_account_name($activity['wf_user'],$lid,$fname,$lname);
 						}
 						$users = '<input {input_type} name="acts['.$aid.']" value="'.$fname.' '.$lname.'" />';
+						//no action
 					}
 					else
 					{//we prepare a big select
@@ -186,6 +188,37 @@
 						}
 					
 						$users = $GLOBALS['phpgw']->uiaccountsel->selection('acts['.$aid.']','acts['.$aid.']',$activity['wf_user'],'workflow',0,False,'','','*',False);
+						//for actions there is 2 avaible actions
+						//	* send : send after a completed activity, maybe the transitions failed the first time
+						//	* restart : restart an automated activity which have meybe failed while running
+						if (($activity['wf_status']=='completed') && ($activity['wf_is_autorouted']=='y') )
+						{
+							//this activity shouldn't be there in completed status, need to send manually the transition
+							//and we do it there because no user will have the right to send manually an autorouted activity
+							$send_button =  '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
+			                          		'menuaction'	=> 'workflow.ui_userinstances.form',
+				                          	'iid'		=> $activity['wf_instance_id'],
+				                          	'filter_instance'=> $activity['wf_instance_id'],
+				                          	'aid'		=> $activity['wf_activity_id'],
+								'send'		=> true,
+								'add_advanced_actions'=>true,
+								)).'"><img src="'.$GLOBALS['phpgw']->common->image('workflow', 'linkto')
+								.'" name="send_instance" alt="'.lang('send').'">'.lang('send transition').'</a>';
+						}
+						if (($activity['wf_status']=='running') && ($activity['wf_is_interactive']=='n') )
+						{
+							//this activity should terminate, this is not the case
+							//so we will restart it
+							$restart_button = '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
+			                          		'menuaction'	=> 'workflow.ui_userinstances.form',
+				                          	'iid'		=> $activity['wf_instance_id'],
+				                          	'filter_instance'=> $activity['wf_instance_id'],
+				                          	'aid'		=> $activity['wf_activity_id'],
+								'restart'	=> true,
+								'add_advanced_actions'=>true,
+								)).'"><img src="'.$GLOBALS['phpgw']->common->image('workflow', 'runform')
+								.'" name="restart activity" alt="'.lang('restart').'">'.lang('restart activity').'</a>';;
+						}
 					}
 					$this->t->set_var(array(
 						'select_user'			=> $users,
@@ -193,6 +226,8 @@
 						'inst_act_name'			=> $activity['wf_name'],
 						'inst_act_status'		=> $activity['wf_status'],
 						'inst_act_id'			=> $aid,
+						'send'				=> $send_button,
+						'restart'			=> $restart_button,
 					));
 
 

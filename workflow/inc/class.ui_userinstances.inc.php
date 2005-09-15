@@ -127,6 +127,7 @@
 			$askRelease=get_var('release','any',0);
 			$askAbort=get_var('abort','any',0);
 			$askSend=get_var('send','any',0);
+			$askRestart=get_var('restart','any',0);
 			$askException=get_var('exception','any',0);
 			$askResume=get_var('resume','any',0);
 			
@@ -181,7 +182,7 @@
 			{
 			        //TODO: add  a $system_comments = lang('exception raised by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
 			        // to the instance activity history
-				if (!$this->GUI->gui_exception_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
+				if (!$this->GUI->gui_exception_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You don't have the rights necessary to exception instance %1",$instance_id);
@@ -193,7 +194,7 @@
 			{
 			        //TODO: add a $system_comments = lang('exception resumed by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
 			        // to the instance activity history  
-				if (!$this->GUI->gui_resume_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
+				if (!$this->GUI->gui_resume_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to resume instance %1",$instance_id);
@@ -203,7 +204,7 @@
 			// abort instance
 			if ($askAbort)
 			{
-				if (!$this->GUI->gui_abort_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
+				if (!$this->GUI->gui_abort_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to abort instance %1",$instance_id);
@@ -213,7 +214,7 @@
 			// release instance
 			if ($askRelease)
 			{
-				if (!$this->GUI->gui_release_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
+				if (!$this->GUI->gui_release_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to release instance %1",$instance_id);
@@ -223,7 +224,7 @@
 			// grab instance
 			if ($askGrab)
 			{
-				if (!$this->GUI->gui_grab_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) {
+				if (!$this->GUI->gui_grab_instance($activity_id, $instance_id)) {
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to grab instance %1",$instance_id);
 				}
@@ -232,10 +233,19 @@
 			// send instance (needed when an activity is not autorouted)
 			if ($askSend)
 			{
-				if (!$this->GUI->gui_send_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id)) 
+				if (!$this->GUI->gui_send_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
 					$this->message[]=lang("You are not allowed to send instance %1",$instance_id);
+				}
+			}
+			// restart non interactive activity (this is an admin function)
+			if ($askRestart)
+			{
+				if (!$this->GUI->gui_restart_instance($activity_id, $instance_id)) 
+				{
+					$this->message[]=$this->GUI->get_error(false, _DEBUG);
+					$this->message[]=lang("You are not allowed to restart instance %1",$instance_id);
 				}
 			}
 

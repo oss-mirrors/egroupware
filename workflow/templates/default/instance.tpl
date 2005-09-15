@@ -72,7 +72,7 @@
 				<td>{inst_act_status}</td>
 				<td>
 					<input type="hidden" name="previous_acts[{inst_act_id}]" value="{activity_user}">
-					{select_user}
+					{select_user}{send}{restart}
 				</td>
 			</tr>
 			<!-- END block_instance_acts_table -->
