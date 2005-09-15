@@ -226,9 +226,10 @@
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			//[__leave_activity] is setted if needed in the xxx_pre code or by the user in his code
-			// HERE the user code is 'executed'
-			require_once ($source);
-			
+			// HERE the user code is 'executed'. Note that we do not use include_once or require_once because
+			//it could the same code several times with automatic activities looping in the graph and it still
+			//need to be executed
+			include ($source);
 			//Now that the instance is ready and that user code has maybe change some things 
 			// we can catch some others usefull vars
 			$this->instance_id	= $instance->getInstanceId();
