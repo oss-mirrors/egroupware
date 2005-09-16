@@ -1,0 +1,33 @@
+compose	tr	Oluþtur
+compose message	tr	Mesaj Oluþtur
+compose to single-user	tr	Tek kullanýcýya yeni mesaj
+compose to multi-users	tr	Birden fazla kullanýcýya yeni mesaj
+delete a message.	tr	Mesajý Sil.
+delete selected	tr	Seçileni Sil
+forward	tr	Ýlet
+forward a message	tr	Mesajý ilet
+forward a message to another user.	tr	Mesajý baþka bir kullanýcýya ilet.
+forwarded	tr	Ýletildi
+from	tr	Kimden
+global message	tr	Global Mesaj
+i can	tr	t find the username %1 on the system
+inbox	tr	Gelen Kutusu
+message from	tr	Kimden
+new	tr	Yeni
+read a list of messages.	tr	Mesajlar listesini oku.
+read a single message.	tr	Tek mesajý oku.
+read message	tr	Mesaj
+replied	tr	Cevaplandý
+reply	tr	Cevapla
+reply to a message	tr	Mesajý cevapla
+reply to a received message.	tr	Gelen mesajý cevapla.
+send	tr	Gönder
+send a global message.	tr	Global mesaj gönder.
+send a message to a single recipient.	tr	Tek alýcýya mesaj gönder.
+send message to	tr	Alýcý
+sorry, %1	tr	s account is not currently active
+update a message status	tr	Mesaj durumunu güncelle
+you didn	tr	t enter anything for the message
+you have no messages	tr	Mesajýnýz yok
+you must enter a subject	tr	Konu girmelisiniz
+you must enter the username this message is for	tr	Bu mesajýn hangi kullanýcýya ait olduðunu girmelisiniz

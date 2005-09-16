@@ -1,0 +1,157 @@
+a new ticket has been reported.	tr	Yeni kayýt açýldýðý bildirildi.
+accept	tr	KABUL
+accept the ticket into verification process.	tr	Bildirimi doðrulama sürecine al.
+accepted	tr	KABUL EDÝLDÝ
+action	tr	Eylem
+add new ticket	tr	Yeni kayýt
+add ticket	tr	Kayýt ekle
+additional notes	tr	Ek notlar
+assign to	tr	Görevli
+assigned from	tr	Kaydý Açan
+assigned to	tr	Görevli
+billable hours	tr	Fatura edilebilir saat
+billable hours changed	tr	Fatura edilebilir saat deðiþti.
+billable hours rate	tr	Saat ücreti
+billable rate	tr	Saat ücreti
+billable rate changed	tr	Saat ücreti deðiþti
+category changed	tr	Kategori deðiþti
+check here to generate the state	tr	s id automatically or enter a particular id below.
+clear form	tr	Formu temizle
+close the invalid ticket.	tr	Geçersiz kaydý kapat.
+closed	tr	Kapalý
+completed	tr	TAMAMLANDI
+create new state	tr	Yeni durum yarat
+create new ticket	tr	Yeni kayýt
+create new transition	tr	Yeni geçiþ yarat
+creates a new ticket, returns ticket_id	tr	Yeni kayýt oluþur, Kayýt No döner
+creates a struct of tickets	tr	Kayýt yapýlandýrmasý oluþur
+date opened	tr	Açýlýþ tarihi
+default assign to	tr	Varsayýlan görevli
+default group	tr	Varsayýlan grup
+default priority	tr	Varsayýlan öncelik
+delete the listed tickets.	tr	Listelenen kayýtlarý sil.
+deleting the state	tr	Durum siliniyor
+deleting the transition	tr	Durum geçiþi siliniyor
+detail	tr	Detay
+duplicate	tr	TEKRAR
+edit the state	tr	Durumu düzelt
+edit the transition	tr	Durum geçiþini düzelt
+error: the subject of the ticket is not specified.	tr	ERROR: The subject of the ticket is not specified.
+force	tr	Zorla
+global categories	tr	Global Kategoriler
+group ownership changed	tr	Grup sahibi deðiþti
+history	tr	Tarihçe
+i worked on the ticket and the work requires validation.	tr	I worked on the ticket and the work requires validation.
+i worked on the ticket, but did not finish.	tr	I worked on the ticket, but did not finish.
+in progress	tr	Sürüyor
+initial state	tr	Baþlangýç durumu
+invalid	tr	GEÇERSÝZ
+invalidate	tr	DOÐRULANMADI
+keep the present state [%1].	tr	[%1] durumunu koru.
+latest note added	tr	Eklenen son not
+list of available tickets	tr	 states.
+list of available tickets	tr	 transitions.
+missing description	tr	Açýklama eksik
+morework	tr	DAHAFAZLAÇALIÞMA
+needswork	tr	ÇALIÞMAÝSTER
+new	tr	YENÝ
+new ticket	tr	Yeni Kayýt
+new tickets can be put into this state.	tr	Yeni kayýtlar bu duruma konulabilir.
+new value	tr	Yeni deðer
+no additional notes	tr	Ek not yok
+no duplicate	tr	TEKRAR YOK
+no notes for this ticket	tr	Bu kayýt için not yok
+no states found	tr	Durum bulunamadý
+no tickets found	tr	Kayýt bulunamadý.
+no transitions found	tr	Durum geçiþi bulunamadý
+not assigned	tr	Görevlendirilmemiþ
+not completed	tr	TAMAM DEÐÝL
+notify changes to ticket assignee by e-mail	tr	Notify changes to ticket assignee by e-mail
+notify changes to ticket group by e-mail	tr	Notify changes to ticket group by e-mail
+notify changes to ticket owner by e-mail	tr	Notify changes to ticket owner by e-mail
+old value	tr	Eski deðer
+open	tr	 Açýk 
+open / closed	tr	Açýk / Kapalý
+open date	tr	Açýlýþ Tarihi
+opened	tr	Açýldý
+opened by	tr	Açan
+original ticket details	tr	Orijinal kayýt detaylarý
+perform irregular transition into the following state	tr	Perform irregular transition into the following state
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tr	Please enter the subject of the ticket, otherwise the ticket cannot be stored.
+priority	tr	Öncelik
+priority changed	tr	Öncelik deðiþtirildi
+put the preexistent ticket into the state %1.	tr	Daha ön sýradaki kayýtlarý %1 durumuna geçir.
+re-assigned	tr	Tekrar görevlendirildi
+re-opened	tr	Tekrar açýldý
+refresh every (seconds)	tr	Tazeleme aralýðý (saniye)
+reopen	tr	TEKRARAÇ
+reopened	tr	TEKRARAÇILDI
+resolve	tr	ÇÖZ
+resolved	tr	ÇÖZÜLDÜ
+returns a struct of a tickets history	tr	Returns a struct of a tickets history
+returns a struct of values of a single ticket	tr	Returns a struct of values of a single ticket
+returns the additional notes attached to a ticket	tr	Returns the additional notes attached to a ticket
+selected	tr	seçili
+show new/updated tickets on main screen	tr	yeni/güncellenen kayýtlarý ana ekranda göster
+source state	tr	Kaynak Durum
+state	tr	Durum
+state changed	tr	Durum deðiþtirildi
+state id	tr	Durum No
+state name	tr	Durum Adý
+status/date closed	tr	Durum/Kap.Tarihi
+subject changed	tr	Konu deðiþtirildi
+target state	tr	Hedef Durum
+test	tr	TEST
+the closed ticket requires more work. reopen it.	tr	The closed ticket requires more work. Reopen it.
+the owner of the ticket was not able to confirm the issue.	tr	The owner of the ticket was not able to confirm the issue.
+the ticket has been accepted by the owner, who is about to work on it.	tr	The ticket has been accepted by the owner, who is about to work on it.
+the ticket has been closed without resolution.	tr	The ticket has been closed without resolution.
+the ticket has been reopened for further work.	tr	The ticket has been reopened for further work.
+the ticket has been successfully resolved.	tr	The ticket has been successfully resolved.
+the ticket has been verified and has to be worked on.	tr	The ticket has been verified and has to be worked on.
+the ticket has been worked on and the work requires validation.	tr	The ticket has been worked on and the work requires validation.
+the ticket has been worked on, but requires more work.	tr	The ticket has been worked on, but requires more work.
+the ticket is a duplicate of another ticket and should be closed.	tr	The ticket is a duplicate of another ticket and should be closed.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tr	The ticket is essentially not a duplicate of another ticket. Reopen it.
+the ticket is invalid and cannot be worked on.	tr	The ticket is invalid and cannot be worked on.
+the ticket resolution was successfully validated. close the ticket.	tr	The ticket resolution was successfully validated. Close the ticket.
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tr	The ticket was existent before the Petri Net infrastructure was defined and should be assigned a state.
+the ticket was found a duplicate of another ticket.	tr	The ticket was found a duplicate of another ticket.
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tr	The tickets in the following list are in the state %1. Please, decide what should be done with them.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tr	The validation of the ticket was unsuccessfull. The ticket requires more work.
+ticket	tr	Kayýt
+ticket has been updated	tr	Kayýt güncellendi
+tickets found %1	tr	Bulunan kayýt %1
+tickets open %1	tr	Açýk kayýt %1
+tickets total %1	tr	Toplam kayýt %1
+to go back to the tts index, click <a href= %1 >here</a>	tr	To go back to the tts index, click <a href="%1">here</a>
+toaccept	tr	KABULEDÝLECEK
+toclosed	tr	KAPATILACAK
+toduplicate	tr	TEKRARLANACAK
+toinvalid	tr	GEÇERSÝZKILINACAK
+toneedswork	tr	ÇABAGEREKTÝRECEK
+tonew	tr	YENILENECEK
+toreopened	tr	TEKRARAÇILACAK
+toresolved	tr	ÇÖZÜLECEK
+total billable	tr	Faturalanabilir Toplam
+totovalidate	tr	GEÇERLÝKILINACAK
+tovalidate	tr	GEÇERLÝKILINACAK
+toverified	tr	DOÐRULANACAK
+transition	tr	Durum geçiþi
+transition name	tr	Geçiþ adý
+tts preferences	tr	Servis Takip Sistemi - Tercihler
+undefined	tr	TANIMSIZ
+updated	tr	Güncellendi
+update ticket state	tr	Durumu güncelle
+updates ticket	tr	Kaydý güncelle
+verified	tr	DOÐRULANDI
+verify	tr	DOÐRULA
+verify the ticket to work on it.	tr	Üzerinde çalýþmak için doðrula.
+view all tickets	tr	Tüm kayýtlar
+view job detail	tr	Ýþ detayý
+view only my open tickets	tr	Sadece açtýklarým
+view only open tickets	tr	Tüm açýk olanlar
+you can only close a ticket if it is assigned to you.	tr	You can only close a ticket if it is assigned to you.
+you want to delete the state %1 and associated transitions. are you sure?	tr	You want to delete the state %1 and associated transitions. Are you sure?
+you want to delete the state %1. are you sure?	tr	You want to delete the state %1. Are you sure?
+you want to delete the transition %1. are you sure?	tr	%1 isimli geçiþi silmek istiyorsunuz. Eminmisiniz?
