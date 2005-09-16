@@ -9,11 +9,19 @@
 %1 monitoring	workflow	es-es	Monitorizando %1
 %1 processes (%2 active) (%3 being_run)	workflow	es-es	%1 procesos (%2 activos) (%3 en ejecución)
 /workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	es-es	El directorio /workflow no existe y no se pudo crear. Por foavor, pida al administrador que compruebe la configuración global
+<strong>%owner%</strong> is the instance owner email	workflow	es-es	<strong>%owner%</strong> es el correo del propietario de la instancia
+<strong>%property_xx%</strong> is the content of the instance's property xx	workflow	es-es	<strong>%property_XX%</strong> es el contenido de la propiedad XX de la instancia
+<strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	es-es	<strong>%role_XX%</strong> son todos los correos de todos los usuarios mapeados al rol XX
+<strong>%roles%</strong> are the emails of all users mapped to any role on this activity	workflow	es-es	<strong>%roles%</strong> son los correos de todos los usuarios mapeados a cualquier rol en esta actividad
+<strong>%signature%</strong> is the agent signature defined in the process configuration	workflow	es-es	<strong>%signature%</strong> es la firma del agente definida en la configuración del proceso
+<strong>%user%</strong> is the instance user email	workflow	es-es	<strong>%user%</strong> es el correo del usuario de la instancia
+<strong>%user_xx%</strong> is the email of the acount xx	workflow	es-es	<strong>%user_XX%</strong> es el correo de la cuenta XX
 a please wait message is shown when loading the activity form usefull for long tasks	admin	es-es	al cargar el formulario de actividad, se muestra un mensaje de espera, útil para tareas largas
 abort instance	workflow	es-es	abortar instancia
 aborted	workflow	es-es	abortado
 act	workflow	es-es	actividad
 act. status	workflow	es-es	Estado de la actividad
+actions right options	admin	es-es	Opciones para derechos de acciones
 activate	workflow	es-es	activar
 active	workflow	es-es	Activa
 activities	workflow	es-es	Actividades
@@ -28,8 +36,10 @@ activity %1 is non-interactive so it must not use the $instance->complete() meth
 activity %1 is standalone and is using the $instance object	workflow	es-es	La actividad %1 es independiente y está usando el objeto $instance
 activity %1 is standalone but has transitions	workflow	es-es	La actividad %1 es independiente pero tiene transiciones
 activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	es-es	La actividad %1 es un interruptor, por lo que debe usar el método $instance->setNextActivity($actname)
+activity agent removed	workflow	es-es	Agente de actividad eliminado
 activity completed	workflow	es-es	Actividad completada
 activity name already exists	workflow	es-es	El nombre de la actividad ya existe
+activity role #%1 removed	workflow	es-es	Rol de actividad #%1 eliminado
 activity role removed	workflow	es-es	Papel de la actividad eliminado
 activity saved	workflow	es-es	La actividad ha sido guardada
 add a transition	workflow	es-es	Añadir una transición
@@ -48,21 +58,26 @@ admin process activities	workflow	es-es	Actividades del proceso administrativo
 admin process roles	workflow	es-es	Papeles del proceso administrativo
 admin processes	workflow	es-es	Procesos administrativos
 admin processes sources	workflow	es-es	Orígenes de los procesos administrativos
+administer instances	workflow	es-es	administrar instancias
 administer processes	workflow	es-es	administrar procesos
 all	workflow	es-es	Todos
 always show advanced actions	workflow	es-es	Mostrar siempre las acciones avanzadas
 always show advanced mode	workflow	es-es	Mostrar siempre el modo avanzado
+at least one email address cannot be validated.	workflow	es-es	No se pudo validar al menos un direccion de correo
 auto routed	workflow	es-es	Autoenrutado
 automatic	workflow	es-es	Automático
 base directory does not exist, please ask adminstrator to check the global configuration	workflow	es-es	El directorio base no existe, por favor, pida al administrador que compruebe la configuración global
+be carefull with interactive activity, end and start of theses activities are multiple.	workflow	es-es	Tenga cuidado con la actividad interactiva, porque el fin y el inicio de estas actividades son múltiples.
 being run	workflow	es-es	siendo ejecutado
 by running theses links you will create new instances of the related process.	workflow	es-es	Al ejecutar estos enlaces, creará nuevas instancias del proceso relacionado.
 cannot add transition only split activities can have more than one outbound transition	workflow	es-es	No se puede la transición. Sólo las actividades separadas pueden tener más de una transición saliente
 cannot add transition. only split activities can have more than one outbound transition	workflow	es-es	No se puede añadir la transición. Sólo las actividades divididas pueden tener más una transición saliente
 circular reference found some activity has a transition leading to itself	workflow	es-es	La referencia circular encontró alguna actividad que tiene una transición que vuelve a ella misma
 circular reference found. some activity has a transition leading to itself	workflow	es-es	Se encontró una referencia circular. Alguna actividad tiene una transición apuntando a sí misma
+cleanup aborted instances	workflow	es-es	limpieza de instancias abortadas
 code	workflow	es-es	código
 column activity status in instance lists	workflow	es-es	Columna estado de la actividad en listas de la instancia
+column category in instance lists	workflow	es-es	Columna de Categoria en listas de instancias
 column instance id in instance lists	workflow	es-es	Columna Id de instancia en listas de ia instancia
 column instance name in instance lists	workflow	es-es	Columna nombre de la instancia en listas de la instancia
 column instance status in instance lists	workflow	es-es	Columna estado de la instancia en listas de la instancia
@@ -70,6 +85,7 @@ column owner in instance lists	workflow	es-es	Columna propietario en listas de l
 column priority in instance lists	workflow	es-es	Columna prioridad en listas de la instancia
 column process name in instance lists	workflow	es-es	Columna nombre del proceso en listas de la instancia
 column view in instance lists	workflow	es-es	Columna ver en listas de la instancia
+compiling activity %1 : %2	workflow	es-es	compilando actividad %1 : %2
 complete	workflow	es-es	Completo
 complete cleanup of aborted instances done	workflow	es-es	se terminó el borrado completo de instancias abortadas
 complete cleanup of all instances done	workflow	es-es	se terminó el borrado completo de todas las instancias
@@ -79,6 +95,8 @@ consult %1 to get the default values:	workflow	es-es	Consultar %1 para obtener l
 couldn't add transition	workflow	es-es	No se pudo añadir la transición
 create	workflow	es-es	crear
 created	workflow	es-es	Creada
+default next user	workflow	es-es	Usuario siguiente predeterminado
+default owner	workflow	es-es	Propietario predeterminado
 default settings for processes	admin	es-es	Configuración predeterminada para los procesos
 default user	workflow	es-es	Usuario predeterminado
 delete selected	workflow	es-es	Borrar lo seleccionado
@@ -88,6 +106,8 @@ delition successful	workflow	es-es	Borrado correcto
 description	workflow	es-es	Descripción
 display please wait message	admin	es-es	mostrar mensaje "por favor, espere"
 do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	es-es	¿Desea el estado de la actividad en las listas de instancias? La mayoría del tiempo está "en ejecución", pero si usa transiciones no autorutadas tendrá más actividades completadas.
+do you want the category column on instances lists, if yout instances use categories you should use it	workflow	es-es	¿Desea la columna de categoría en las listas de instancias? Si sus instancias usan categorías, debería usarla.
+do you want the category name column on instances lists. if your instances use categories you should use this	workflow	es-es	¿Desea la columna nombre de categoria en las listas de instancias? Si sus instancias usan categorías, deberia usarla.
 do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	es-es	¿Desea la columna id de instancia en las listas de instancias? Es el único identificador es una instancia.
 do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	es-es	¿Desea la columna nombre de la instancia en las listas de instancias? Si sus instancias tienen nombre, debe usarla.
 do you want the instance status on instances lists. the instance status is usefull to disting beteween aborted, completed, exception or active instances	workflow	es-es	¿Desea el estado de la instancia en las listas de instancia? El estado de la instancia es útil para distinguir entre instancias abortadas, completadas, excepción o activa.
@@ -115,8 +135,10 @@ fatal error: non-deterministic decision for autorouting activity	workflow	es-es	
 fatal error: setting next activity to an unexisting activity	workflow	es-es	Error fatal: estableciendo la actividad siguente a una actividad inexistente
 fatal error: trying to send an instance to an activity but no transition found	workflow	es-es	Error fatal: intentando enviar una instanacia a una actividad, pero no se encontró transición
 filter	workflow	es-es	Filtro
+finally you have links with <strong>%link_xx|yy%</strong> syntax, xx is the address part, yy the text part.	workflow	es-es	finalmente tiene enlaces con la sintaxis <strong>%link_XX|YY%</strong>, donde XX es la parte de la dirección, e YY la parte de texto.
 font size	admin	es-es	tamaño de la letra
 from	workflow	es-es	De
+from:	workflow	es-es	De:
 get back to global activities	workflow	es-es	volver a las actividades globales
 get back to instance creation	workflow	es-es	volver a la creación de la instancia
 get property	workflow	es-es	Obtener propiedad
@@ -127,13 +149,17 @@ go to same activities for other instances of this process	workflow	es-es	ir a la
 go to same process activities	workflow	es-es	ir a las mismas actividades del proceso
 go to the actual state of this instance	workflow	es-es	ir al estado actual de esta instancia
 grab instance	workflow	es-es	coger instancia
+grant access to the administration and development of workflow processes and activities.	workflow	es-es	Conceder acceso a la administración y desarrollo de los procesos del flujo de trabajo y actividades.
 grant access to the administration of workflow elements	workflow	es-es	Conceder acceso a la administración de los elementos del flujo del tabajo
+grant access to the administration of workflow instances in monitor screens	workflow	es-es	Conceder acceso a la administración de las instancias del flujo de trabajo en pantallas de monitorización
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	es-es	Conceder acceso a la limpieza y/o borrado de las instancias del flujo de trabajo abortadas en en pantallas de monitorización
 grant access to the monitoring of workflow elements	workflow	es-es	Conceder acceso a la monitorización de elementos del flujo del trabajo
 graph	workflow	es-es	Gráfico
 graphic options	admin	es-es	Opciones de gráfico
 group	workflow	es-es	Grupo
 id	workflow	es-es	Id
 if automatic parsing is disabled next options will be useless	admin	es-es	si la interpretación automática está desactivada, las siguientes opciones no tienen efecto
+if not in debug mail_smtp agent would have sent this email:	workflow	es-es	si no se está depurando, el agente mail_smtp habría enviado este correo:
 if user is in a role for an activity he will have the right to abort the related instance	admin	es-es	si el usuario está en un rol para una actividad, tendrá el derecho de abortar la instancia relacionada
 if user is in a role for an activity he will have the right to exception or resume the related instance	admin	es-es	si un usuario está en un rol para una actividad, tendrá el derecho para una excepción o continuar la instancia relacionada
 if user is in a role for an activity he will have the right to release (un-assign) the related instance	admin	es-es	si un usuario está en un rol para una actividad, tendrá el derecho para liberar (desasignar) la instancia relacionada.
@@ -152,41 +178,71 @@ interactive	workflow	es-es	Interactiva
 interactivity	workflow	es-es	Interactividad
 invalid	workflow	es-es	no válida
 invalid process	workflow	es-es	Proceso inválido
+invalid role name	workflow	es-es	El nombre del rol no es válido
 is active	workflow	es-es	está activa
 it seems this activity for this instance is not assigned to you anymore.	workflow	es-es	Parece que esta actividad para esta instancia ya no está asignada a usted.
 join	workflow	es-es	unirse
+link addresses are considered local if not containing <strong>http://</strong>. they will get appended the configured local prefix and scanned by egroupware link engine	workflow	es-es	Las direcciones de los enlaces se consideran locales si no contienen <strong>http://</strong>. Se añadirán al prefijo local configurado y se el motor de enlaces de egroupware las comprobará.
 list of activities	workflow	es-es	Lista de actividades
+list of all activities with, for each,  counters of instances by status	workflow	es-es	lista de todas las actividades con contadores de instancias por estado para cada una
+list of all history items made by instances while they travel in the workflow with information about duration and date	workflow	es-es	lista de todos los elementos del historial hechos por instancias mientras viajan en el flujo del trabajo con información sobre la duración y la fecha
+list of all instances with info about current status and activities and link to administration of theses instances	workflow	es-es	lista de todas las instancias con información sobre el estado actual y actividades y enlaces a la administración de estas instancias
 list of instances	workflow	es-es	Lista de instancias
 list of mappings	workflow	es-es	Lista de mapeos
 list of processes	workflow	es-es	Lista de procesos
 list of processes (%1)	workflow	es-es	Lista de procesos (%1)
+list of processes with status and validity and, for each, counters of instances by status	workflow	es-es	lista de procesos con estado y validez y contadores de instancias por estado para cada uno
 list of transitions	workflow	es-es	Lista de transiciones
 list of workitems	workflow	es-es	Lista de elementos de trabajo
+mail automatically sent by mail smtp agent for egroupware's workflow	workflow	es-es	Correo enviado automáticamente por el agente SMTP para el Flujo de trabajo de eGroupware
+mail smtp agent	workflow	es-es	Agente de correo SMTP
+mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	es-es	Los correos se pueden enviar al principio o al final de la actividad. Para actividades interactivas, sólo se puede enviar después de completarse.
 manual	workflow	es-es	Manual
 map	workflow	es-es	mapa
 map users/groups to roles	workflow	es-es	Mapear usuarios/grupos a papeles
 mappings deleted	workflow	es-es	Mapeos borrados
+message:	workflow	es-es	Mensaje:
 monitor activities	workflow	es-es	Monitorizar actividades
+monitor instance	workflow	es-es	instancia de monitorización
 monitor instances	workflow	es-es	Monitorizar instancias
 monitor processes	workflow	es-es	Monitorizar procesos
 monitor work items	workflow	es-es	Monitorizar elementos de trabajo
 monitoring	admin	es-es	monitorizando
+my activities	workflow	es-es	Mis actividades
+my instances	workflow	es-es	Mis instancias
+my processes	workflow	es-es	Mis procesos
 name	workflow	es-es	Nombre
+new instance	workflow	es-es	Nueva instancia
 new major	workflow	es-es	Nuevo mayor
+new major version created	workflow	es-es	Se ha creado una nueva version mayor
 new mapping added	workflow	es-es	Se ha añadido un nuevo mapeo
 new mayor	workflow	es-es	Nuevo mayor
 new minor	workflow	es-es	Nuevo menor
+new minor version created	workflow	es-es	Se ha creado una nueva version menor
 new transition added	workflow	es-es	Se ha añadido una nueva transición
+next user:	workflow	es-es	Usuario siguiente:
 no activity indicated	workflow	es-es	No se ha indicado una actividad
-no instance indicated	workflow	es-es	No se ha inidicado una instancia
-no process indicated	workflow	es-es	No se ha inidicado ningún proceso
+no agents associated with this activity	workflow	es-es	No hay agentes asociados con esta actividad
+no instance given, nothing to show	workflow	es-es	no se ha indicado ninguna instancia, no se muestra nada
+no instance indicated	workflow	es-es	No se ha indicado una instancia
+no process indicated	workflow	es-es	No se ha indicado ningún proceso
 no properties defined	workflow	es-es	No se han definido propiedades
 no roles	workflow	es-es	No hay papeles
 no roles asociated with this activity	workflow	es-es	No hay papeles asociados con esta actividad
 no work item indicated	workflow	es-es	No se ha indicado elemento de trabajo
+nobody	workflow	es-es	Nadie
 or import a process	workflow	es-es	O importar un proceso
 owner	workflow	es-es	Propietario
+owner of the instance will have the right to abort the instance at any time	admin	es-es	El propietario de la instancia tendrá el derecho de abortar la instancia en cualquier momento
+owner of the instance will have the right to exception or resume the instance at any time	admin	es-es	El propietario de la instancia tendrá el derecho de crear excepciones o continuar la instancia en cualquier momento
+owner of the instance will have the right to release (un-assign) an activity assigned to an user	admin	es-es	El propietario de la instancia tendrá el derecho de liberar (desasignar) una actividad asignada a un usuario
+owner:	workflow	es-es	Propietario:
+ownership give abort right	admin	es-es	Ser propietario da derecho de abortar
+ownership give exception right	admin	es-es	Ser propietario da derecho para excepciones
+ownership give release right	admin	es-es	Ser propietario da derecho para liberar
+priority level:	workflow	es-es	Nivel de prioridad:
 process	workflow	es-es	Proceso
+process %1	workflow	es-es	proceso %1
 process %d has been activated	workflow	es-es	El proceso %d ha sido activado
 process %d has been deactivated	workflow	es-es	El proceso %d ha sido activado
 process %s %s imported	workflow	es-es	El proceso %s %s ha sido importado
@@ -197,65 +253,125 @@ process activities	workflow	es-es	Procesar actividades
 process does not have a start activity	workflow	es-es	El proceso no tiene una actividad de inicio
 process does not have exactly one end activity	workflow	es-es	El proceso no tiene exactamente una actividad de fin
 process form	workflow	es-es	Procesar formulario
+process name	workflow	es-es	Nombre del proceso
 process name already exists	workflow	es-es	El nombre del proceso ya existe
 process roles	workflow	es-es	Procesar papeles
+process saved	workflow	es-es	Proceso guardado
 process transitions	workflow	es-es	Procesar transiciones
 processes	workflow	es-es	Procesos
 properties	workflow	es-es	Propiedades
 property	workflow	es-es	Propiedad
+property %1 already exists	workflow	es-es	La propiedad %1 ya existe
+read-only	workflow	es-es	sólo lectura
+release activity for this instance	workflow	es-es	liberar actividad para esta instancia
 release instance	workflow	es-es	liberar instancia
+remove selected roles	workflow	es-es	eliminar roles seleccionados
+removing instances and workitems for aborted instances on all processes	workflow	es-es	eliminando instancias y elementos de trabajo para las instancias abortadas en todos los procesos
+removing instances and workitems for aborted instances on process #%1	workflow	es-es	eliminando instancias y elementos de trabajo paras las instancias abortadas en el proceso #%1
+removing instances and workitems for all instances on process #%1	workflow	es-es	eliminando instancias y elementos de trabajo paras las instancias en el proceso #%1
+replyto:	workflow	es-es	Responder a:
 role %1 is not mapped	workflow	es-es	El papel %1 no está mapeado
+role added to activity	workflow	es-es	Rol añadido a la actividad
 role added to process	workflow	es-es	Papel añadido al proceso
+role give abort right	admin	es-es	El rol da derecho de abortar
+role give exception right	admin	es-es	El rol da derecho para excepciones
+role give release right	admin	es-es	El rol da derecho para liberar
+role name	workflow	es-es	Nombre del rol
+role not saved (maybe a name collision)	workflow	es-es	Rol no guardado (quizás haya una colisión en el nombre)
 role saved	workflow	es-es	Papel guardado
-roles	workflow	es-es	Papeles
-roles assigned to this activity	workflow	es-es	Papeles asignados a esta actividad
+roles	workflow	es-es	Roles
+roles assigned to this activity	workflow	es-es	Roles asignados a esta actividad
 roles deleted	workflow	es-es	Papeles borrados
 routing	workflow	es-es	Enrutado
 run	workflow	es-es	ejecutar
 run activity	workflow	es-es	ejecutar actividad
 run instance	workflow	es-es	ejecutar instancia
 running	workflow	es-es	ejecutando
+running activities options	admin	es-es	Ejecutando opciones de las actividades
 running activity	workflow	es-es	Ejecutando actividad
+search instance filter in the bottom of instance lists	workflow	es-es	Filtro de búsqueda al final de las listas de instancias
+see as well <strong>%instance_name%</strong>, <strong>%activity_name%</strong>, <strong>%process_name%</strong>,<strong>%process_version%</strong>, <strong>%instance_id%</strong>, <strong>%activity_id%</strong> and <strong>%process_id%</strong>	workflow	es-es	ver también <strong>%instance_name%</strong>, <strong>%activity_name%</strong>, <strong>%process_name%</strong>,<strong>%process_version%</strong>, <strong>%instance_id%</strong>, <strong>%activity_id%</strong> y <strong>%process_id%</strong>
+select a transition to remove	workflow	es-es	Seleccionar una transicion para eliminar
 select source	workflow	es-es	seleccionar origen
+send after interactive activity is completed	workflow	es-es	enviar después de completar la actividad interactiva
 send all to	workflow	es-es	Enviar a todos
 send instance	workflow	es-es	enviar instancia
+send when the activity is ending	workflow	es-es	enviar cuando la actividad esté finalizando
+send when the activity is starting	workflow	es-es	enviar cuando la actividad esté comenzando
+send when wf_agent_mail_smtp['submit_send'] is posted	workflow	es-es	enviar cuando se envie wf_agent_mail_smtp['submit_send']
 set next act	workflow	es-es	Establecer acto siguiente
 set next user	workflow	es-es	Establecer usuario siguiente
 set property	workflow	es-es	Establecer propiedad
 shared code	workflow	es-es	Código compartido
+should we always give you the advanced search row on instances lists?	workflow	es-es	Debemos mostrar siempre la fila de búsqueda avanzada en las listas de instancias?
+show activity info zone	admin	es-es	Mostrar zona de información de actividad
+show activity title	admin	es-es	Mostrar el título de la actividad
 show code	workflow	es-es	mostrar código
+show multiple submit as select	admin	es-es	mostrar multiples submit como selección
 show template	workflow	es-es	mostrar plantilla
+size of the font used on the graph 12 should be a good default value	admin	es-es	el tamaño del tipo de letra usado en el gráfico 12 debe ser un buen valor predeterminado
+smtp agent has detected some errors when sending email after completion of the activity	workflow	es-es	El agente smtp ha detectaco algunos errores al enviar correo después de completar la actividad
+smtp agent has detected some errors when sending email at the beginning of the activity	workflow	es-es	El agente smtp ha detectado algunos errores al enviar correo al principio de la actividad
+smtp agent has detected some errors when sending email at the end of this activity	workflow	es-es	El agente smtp ha detectado algunos errores al enviar correo al final de la actividad
+smtp agent has detected some errors when sending email on demand whith this activity	workflow	es-es	El agente smtp ha detectado algunos errores al enviar correo bajo demanda con esta actividad
+something was wrong while creating the new major version	workflow	es-es	Ocurrió algo extraño al crear la nueva versión mayor
+something was wrong while creating the new minor version	workflow	es-es	Ocurrió algo extraño al crear la nueva versión menor
 source saved	workflow	es-es	Origen guardado
+special known values for local links address are <strong>userinstance</strong>, <strong>viewinstance</strong>, <strong>viewniceinstance</strong> and <strong>admininstance</strong>.	workflow	es-es	Los valores especiales conocidos para las direcciones de enlaces locales son <strong>userinstance</strong>, <strong>viewinstance</strong>, <strong>viewniceinstance</strong> y <strong>admininstance</strong>.
 split	workflow	es-es	separar
 standalone	workflow	es-es	independiente
 start	workflow	es-es	Iniciar
+start activity	workflow	es-es	Iniciar actividad
+start process	workflow	es-es	iniciar proceso
 started	workflow	es-es	Iniciado
+starting page	workflow	es-es	Página de inicio
 status	workflow	es-es	Estado
 stop	workflow	es-es	parar
+subject:	workflow	es-es	Asunto:
 switch	workflow	es-es	interruptor
 switch construct	workflow	es-es	Intercambiar constructor
 template	workflow	es-es	plantilla
 the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	es-es	El directorio /workflow no existe y no se pudo crear. Por favor, pida a su administrador que compruebe la configuración global
 the following items must be corrected to be able to activate this process	workflow	es-es	Deben corregirse los siguientes elementos para poder activar este proceso
+the instance title is shown on top of the form	admin	es-es	el título de la instancia se muestra en la parte superior del formulario
+the label you want	workflow	es-es	la etiqueta que desea
+the smtp configuration cannot be loaded by the mail_smtp workflow agent	workflow	es-es	El agente mail_smtp del flujo de trabajo no puede cargar la configuración SMTP
 there are no activities available	workflow	es-es	No hay actividades disponibles
+there are no config value defined	workflow	es-es	No hay definido un valor de configuración
 there are no instances available	workflow	es-es	No hay instancias disponibles
 there are no mappings defined for this process	workflow	es-es	No hay mapeos definidos para este proceso
+there are no process available	workflow	es-es	No hay procesos disponibles
 there are no processes	workflow	es-es	No hay procesos
 there are no processes available	workflow	es-es	No hay procesos disponibles
 there are no processes defined	workflow	es-es	No hay procesos definidos
+there are no processes with the current filter	workflow	es-es	No hay procesos con el filtro actual
 there are no properties available	workflow	es-es	No hay propiedades disponibles
 there are no roles defined for this process	workflow	es-es	No hay papeles definidos para este proceso
 there are no transitions defined	workflow	es-es	No hay transiciones definidas
 there are no user activites available	workflow	es-es	No hay actividades de usuario disponibles
 there are no workitems available	workflow	es-es	No hay elementos de trabajo disponibles
+there are some undefined preferences associated with this form : %1	workflow	es-es	hay algunas preferencias sin definir asociadas con este formulario: %1
+they were problems at the compilation of the source:	workflow	es-es	Hubo problemas con la compilación del codigo fuente:
+this activity for this instance is actually avaible for you.	workflow	es-es	Esta actividad para esta instancia actualmente está disponible para usted.
+this agent gives the activity the possibility to send an smtp message (mail)	workflow	es-es	Este agente proporciona a la actividad la posibilidad de enviar un mensaje SMTP (correo electrónico)
+this will display an activity footer when any activity is runned with workflow engine related informations	admin	es-es	esto mostrará un pie de actividad cuando cualquier actividad se ejecute con información relacionada con el motor del flujo del trabajo
 to	workflow	es-es	A
+to:	workflow	es-es	Para:
+transition mode	workflow	es-es	modo de transición
+transitions	workflow	es-es	transiciones
 transitions removed successfully	workflow	es-es	Las transiciones se han eliminado correctamente
 type	workflow	es-es	tipo
 update	workflow	es-es	actualizar
 upload file	workflow	es-es	Subir fichero
+use <a href="%1">emailadmin</a> to create mail profiles	workflow	es-es	Usar <a href="%1">EmailAdmin</a> para crear perfiles de correo
+use automatic parsing	admin	es-es	usar reconocimiento automático
+use default	workflow	es-es	Usar predeterminado
+use existing roles	workflow	es-es	Usar roles existentes
 user	workflow	es-es	Usuario
 user activities	workflow	es-es	Actividades del usuario
 user instances	workflow	es-es	Instancias del usuario
+user instances form: columns	workflow	es-es	Formulario de instancias de usuario: columnas
+user instances form: filters and actions	workflow	es-es	Formulario de instancias de usuario: filtros y acciones
 user processes	workflow	es-es	Procesos del usuairo
 user/group	workflow	es-es	Usuario/Grupo
 users/groups	workflow	es-es	Usuarios/Grupos
@@ -263,8 +379,25 @@ valid	workflow	es-es	Válido
 valid process	workflow	es-es	Proceso válido
 value	workflow	es-es	Valor
 version	workflow	es-es	Versión
-workflow	common	es-es	Flujo de trabajo
+view details	workflow	es-es	ver detalles
+warning: by using this button you will definitively remove all aborted instances and their history (workitems) for the selected process.	workflow	es-es	aviso: al usar este botón eliminará definitivamente todas las instancias abortadas Y su historial (elementos de trabajo) para el proceso seleccionado.
+warning: by using this button you will definitively remove all instances and their history (workitems) for the selected process, whatever the state they are.	workflow	es-es	aviso: al usar este botón eliminará definitivamente todas las instancias Y su historial (elementos de trabajo) para el proceso seleccionado, cualquiera que sea su estado.
+we cannot run this activity, maybe this instance or this activity do not exists anymore.	workflow	es-es	No podemos ejecutar esta actividad. Puede que la instancia o esta actividad ya no exista.
+we were not able to build the message	workflow	es-es	No pudimos construir el mensaje
+when in advanced mode, should we show you advanced actions by default (resume, exception, grab, etc.)?	workflow	es-es	Cuando se está en modo avanzado, ¿debemos mostrar las acciones avanzadas por defecto (continuar, excepción, tomar, etc)?
+when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	es-es	cuando hay múltiples opciones de envío, dibujamos un cuadro de selección con un único botón de envío en vez de múltiples botones
+when to send the message:	workflow	es-es	Cuándo enviar el mensaje:
+workflow	common	es-es	Flujo del trabajo
+workflow configuration	admin	es-es	Configuración del flujo del trabajo
+workflow site configuration	workflow	es-es	Configuración del sitio del flujo del trabajo
 workitem information	workflow	es-es	Información del elemento de trabajo
 workitems	workflow	es-es	Elementos de trabajo
+you are not allowed to abort instance %1	workflow	es-es	No tiene permiso para abortar la instancia %1
+you are not allowed to grab instance %1	workflow	es-es	No tiene permiso para tomar la instancia %1
+you are not allowed to release instance %1	workflow	es-es	No tiene permiso para liberar la instancia %1
+you are not allowed to resume instance %1	workflow	es-es	No tiene permiso para continuar la instancia %1
+you are not allowed to send instance %1	workflow	es-es	No tiene permiso para enviar la instancia %1
+you can use special values with this mail agent:	workflow	es-es	Puede usar valores especiales con este agente de correo:
 you do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas.	workflow	es-es	Ya no tiene permiso para volver a ejecutar esta actividad. Quizás sea un problema de acceso concurrente, refresque sus datos.
+you don't have the rights necessary to exception instance %1	workflow	es-es	No tiene los permisos necesarios para crear una excepción en la instancia %1
 you have not permission to execute this activity	workflow	es-es	No tiene permiso para ejecutar esta actividad

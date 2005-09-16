@@ -9,11 +9,16 @@
 %1 monitoring	workflow	it	Monitorizzazione %1
 %1 processes (%2 active) (%3 being_run)	workflow	it	%1 processi (%2 attivi) (%3 in_esecuzione)
 /workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	it	la directory /workflow non esiste e non può essere creata, prego chiedi all'amministratore di controllare la configurazione globale
+<strong>%owner%</strong> is the instance owner email	workflow	it	<strong>%proprietario%</strong> è l'email del proprietario dell'istanza
+<strong>%property_xx%</strong> is the content of the instance's property xx	workflow	it	<strong>%proprietà_XX%</strong> è il contenuto della proprietà XX dell'istanza
+<strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	it	<strong>%ruolo_XX%</strong> sono le email di tutti gli utenti mappati al ruolo XX
+<strong>%roles%</strong> are the emails of all users mapped to any role on this activity	workflow	it	<strong>%ruoli%</strong> sono le email di tutti gli utenti mappati a qualunque ruolo di questa attività
 a please wait message is shown when loading the activity form usefull for long tasks	admin	it	viene visualizzato un messaggio del tipo 'attendere prego' quando viene caricato il form per l'attività. Utile per i task lunghi
 abort instance	workflow	it	annulla istanza
 aborted	workflow	it	annullato
 act	workflow	it	att
 act. status	workflow	it	Stato Att.
+actions right options	admin	it	Opzioni Diritti Azione
 activate	workflow	it	attiva
 active	workflow	it	Attivo
 activities	workflow	it	Attività
@@ -28,8 +33,10 @@ activity %1 is non-interactive so it must not use the $instance->complete() meth
 activity %1 is standalone and is using the $instance object	workflow	it	L'attività %1 è Standalone e sta usando $instance object
 activity %1 is standalone but has transitions	workflow	it	L'attività %1 è Standalone ma ha transizioni
 activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	it	L'attività %1 è Switch, quindi deve usare il metodo $instance->setNextActivity($actname)
+activity agent removed	workflow	it	Agente attività rimosso
 activity completed	workflow	it	Attività completata
 activity name already exists	workflow	it	Il nome Attività esiste già
+activity role #%1 removed	workflow	it	Ruolo attività #%1 rimosso
 activity role removed	workflow	it	Ruolo Attività rimosso
 activity saved	workflow	it	Attività salvata
 add a transition	workflow	it	Aggiungi una transizione
@@ -48,22 +55,43 @@ admin process activities	workflow	it	Gestione Attività Processo
 admin process roles	workflow	it	Gestione Ruoli Processo
 admin processes	workflow	it	Gestione Processi
 admin processes sources	workflow	it	Gestione Sorgenti Processi
+administer instances	workflow	it	gestisci istanze
 administer processes	workflow	it	gestisci processi
 all	workflow	it	tutto
+always show advanced actions	workflow	it	Mostra sempre azioni avanzate
+always show advanced mode	workflow	it	Mostra sempre modalità avanzata
+at least one email address cannot be validated.	workflow	it	almeno un indirizzo email non può essere convalidato
 auto routed	workflow	it	Auto-instradata
 automatic	workflow	it	Automatico
 base directory does not exist, please ask adminstrator to check the global configuration	workflow	it	La directory base non esiste, prego chiedi all'amministratore di controllare la configurazione globale.
+bcc:	workflow	it	Ccn:
+be carefull with interactive activity, end and start of theses activities are multiple.	workflow	it	Fai attenzione alle attività interattive, la partenza e la fine di queste attività sono multiple
 being run	workflow	it	in esecuzione
 by running theses links you will create new instances of the related process.	workflow	it	Cliccando questi link creerai delle nuove istanze dei processi correlati.
 cannot add transition. only split activities can have more than one outbound transition	workflow	it	Impossibile aggiungere transizione. Solo le attività divise possono avere più di una transizione in uscita
+cc:	workflow	it	Cc:
 circular reference found. some activity has a transition leading to itself	workflow	it	E' stato trovato un riferimento circolare. Qualche attività ha una transizione che conduce a sé stessa.
+cleanup aborted instances	workflow	it	ripulisci istanze annullate
 code	workflow	it	codice
+column activity status in instance lists	workflow	it	Colonna Stato Attività in elenco istanze
+column category in instance lists	workflow	it	Colonna Categoria in elenco istanze
+column instance id in instance lists	workflow	it	Colonna ID Istanza in elenco istanze
+column instance name in instance lists	workflow	it	Colonna Nome Istanza in elenco istanze
+column instance status in instance lists	workflow	it	Colonna Stato Istanza in elenco istanze
+column owner in instance lists	workflow	it	Colonna Proprietario in elenco istanze
+column priority in instance lists	workflow	it	Colonna Priorità in elenco istanze
+column process name in instance lists	workflow	it	Colonna Nome Processo in elenco istanze
+compiling activity %1 : %2	workflow	it	compilazione attività %1 : %2
 complete	workflow	it	Completa
 completed	workflow	it	completata
 confirm delete	workflow	it	Conferma Elimina
 couldn't add transition	workflow	it	Impossibile aggiungere transizione
 create	workflow	it	crea
 created	workflow	it	Creato
+default next user	workflow	it	Utente successivo predefinito
+default owner	workflow	it	Proprietario predefinito
+default settings for processes	admin	it	Impostazioni predefinite per i processi
+default user	workflow	it	Utente Predefinito
 delete selected	workflow	it	Elimina selezione
 delete transition	workflow	it	elimina transizione
 deletion successful	workflow	it	Cancellazione effettuata
@@ -90,10 +118,12 @@ fatal error: trying to send an instance to an activity but no transition found	w
 filter	workflow	it	Filtro
 font size	admin	it	grandezza font
 from	workflow	it	Da
+from:	workflow	it	Da:
 get back to global activities	workflow	it	torna alle attività globali
 get back to instance creation	workflow	it	torna alla creazione dell'istanza
 get property	workflow	it	Ottieni proprietà
 global activities	workflow	it	Attività globali
+global workflow preferences	workflow	it	Preferenze Workflow Globali
 go	workflow	it	vai
 go to same activities for other instances of this process	workflow	it	vai alle stesse attività di altre istanze per questo processo
 go to same process activities	workflow	it	vai alle attività dello stesso processo
@@ -140,11 +170,13 @@ manual	workflow	it	Manuale
 map	workflow	it	mappa
 map users/groups to roles	workflow	it	Mappa utenti/gruppi ai ruoli
 mappings deleted	workflow	it	Mappature eliminate
+message:	workflow	it	Messaggio:
 monitor activities	workflow	it	Monitorizza Attività
 monitor instance	workflow	it	monitorizza istanza
 monitor instances	workflow	it	Monitorizza Istanze
 monitor processes	workflow	it	Monitorizza Processi
 monitor work items	workflow	it	Monitorizza Entità Lavorative
+monitoring	admin	it	Monitorizzazione in corso
 my activities	workflow	it	Mie Attività
 my instances	workflow	it	Mie Istanze
 my processes	workflow	it	Miei Processi
@@ -158,12 +190,15 @@ new minor version created	workflow	it	creata nuova versine minore
 new transition added	workflow	it	Nuova transizione aggiunta
 next user:	workflow	it	Utente successivo:
 no activity indicated	workflow	it	Nessuna attività indicata
+no agents associated with this activity	workflow	it	Nessun agente associato a questa attività
+no instance given, nothing to show	workflow	it	nessuna istanza data, nulla da mostrare
 no instance indicated	workflow	it	Nessuna istanza indicata
 no process indicated	workflow	it	Nessun processo indicato
 no properties defined	workflow	it	Nessuna proprietà definita
 no roles	workflow	it	nessun ruolo
 no roles asociated with this activity	workflow	it	Nessun ruolo associato a questa attività
 no work item indicated	workflow	it	Nessuna Entità Lavorativa indicata
+nobody	workflow	it	Nessuno
 or import a process	workflow	it	O importa un processo
 owner	workflow	it	Proprietario
 owner of the instance will have the right to abort the instance at any time	admin	it	il proprietario dell'istanza avrà il diritto di annullare l'istanza in qualunque momento
@@ -186,6 +221,7 @@ process activities	workflow	it	Attività Processo
 process does not have a start activity	workflow	it	Il processo non ha un'attività iniziale
 process does not have exactly one end activity	workflow	it	Il processo non ha esattamente una attività finale
 process form	workflow	it	Modulo Processo
+process name	workflow	it	Nome Processo
 process name already exists	workflow	it	Il nome processo esiste già
 process roles	workflow	it	Ruoli Processo
 process saved	workflow	it	Processo salvato
@@ -194,13 +230,18 @@ processes	workflow	it	Processi
 properties	workflow	it	Proprietà
 property	workflow	it	Proprietà
 property %1 already exists	workflow	it	la proprietà %1 esiste già
+read-only	workflow	it	sola-lettura
 release activity for this instance	workflow	it	rilasci l'attività per questa istanza
 release instance	workflow	it	rilascia istanza
+remove selected roles	workflow	it	rimuovi ruoli selezionati
+replyto:	workflow	it	Rispondi A:
 role %1 is not mapped	workflow	it	Il ruolo %1 non è mappato
+role added to activity	workflow	it	Ruolo aggiunto all'attività
 role added to process	workflow	it	Ruolo aggiunto al processo
 role give abort right	admin	it	il ruolo dà diritto di annullare
 role give exception right	admin	it	il ruolo dà diritto di sollevare eccezione
 role give release right	admin	it	il ruolo dà diritto di rilascio
+role name	workflow	it	Nome Ruolo
 role not saved (maybe a name collision)	workflow	it	Ruolo non salvato (probabile collisione di nomi)
 role saved	workflow	it	Ruolo salvato
 roles	workflow	it	Ruoli
@@ -215,8 +256,11 @@ running activities options	admin	it	Opzioni attività in corso
 running activity	workflow	it	Attività in corso
 select a transition to remove	workflow	it	Seleziona una transizione da rimuovere
 select source	workflow	it	seleziona sorgente
+send after interactive activity is completed	workflow	it	invia al completamento dell'attività interattiva
 send all to	workflow	it	Invia tutto a
 send instance	workflow	it	invia istanza
+send when the activity is ending	workflow	it	invia quando l'attività sta finendo
+send when the activity is starting	workflow	it	invia quando l'attività sta iniziando
 set next act	workflow	it	Imposta atto Seguente
 set next user	workflow	it	Imposta utente Seguente
 set property	workflow	it	Imposta proprietà
@@ -236,8 +280,10 @@ start	workflow	it	Inizia
 start activity	workflow	it	Inizia attività
 start process	workflow	it	inizia processo
 started	workflow	it	Iniziato
+starting page	workflow	it	Pagina iniziale
 status	workflow	it	Stato
 stop	workflow	it	stop
+subject:	workflow	it	Oggetto:
 switch	workflow	it	scambia
 switch construct	workflow	it	Scambia costrutto
 template	workflow	it	template
@@ -262,6 +308,7 @@ there are no workitems available	workflow	it	Non ci sono entità lavorative dispo
 there are some undefined preferences associated with this form : %1	workflow	it	ci sono delle preferenze non definita associate a questo form: %1
 this activity for this instance is actually avaible for you.	workflow	it	Questa attività per questa istanza, al momento, è disponibile per te.
 to	workflow	it	A
+to:	workflow	it	A:
 transition mode	workflow	it	modalità transizione
 transitions	workflow	it	transizioni
 transitions removed successfully	workflow	it	Transizioni rimosse con successo
@@ -269,9 +316,13 @@ type	workflow	it	tipo
 update	workflow	it	aggiorna
 upload file	workflow	it	Carica file
 use automatic parsing	admin	it	utilizza parsing automatico
+use default	workflow	it	Usa Predefinito
+use existing roles	workflow	it	Usa ruoli esistenti
 user	workflow	it	Utente
 user activities	workflow	it	Attività Utente
 user instances	workflow	it	Istanze Utente
+user instances form: columns	workflow	it	Maschera Istanze Utente: colonne
+user instances form: filters and actions	workflow	it	Maschera Istanze Utente: filtri e azioni
 user processes	workflow	it	Processi Utente
 user/group	workflow	it	Utente/Gruppo
 users/groups	workflow	it	Utenti/Gruppi
@@ -281,7 +332,9 @@ value	workflow	it	Valore
 version	workflow	it	Versione
 view details	workflow	it	visualizza dettagli
 we cannot run this activity, maybe this instance or this activity do not exists anymore.	workflow	it	Non è possibile eseguire questa attività, probabilmente questa istanza o questa attività non esiste più.
+we were not able to build the message	workflow	it	Impossibile costruire il messaggio
 when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	it	quando sono disponibili opzioni di invio multiplo tracciamo un box di selezione con un solo bottone di invio
+when to send the message:	workflow	it	Quando inviare il Messaggio:
 workflow	common	it	Work-Flow
 workflow configuration	admin	it	Configurazione Workflow
 workflow site configuration	workflow	it	Configurazione Workflow per tutto il sito
@@ -290,6 +343,7 @@ workitems	workflow	it	Entità lavorative
 you are not allowed to abort instance %1	workflow	it	Non hai il permesso di annullare l'istanza %1
 you are not allowed to release instance %1	workflow	it	Non hai il permesso di rilasciare l'istanza %1
 you are not allowed to resume instance %1	workflow	it	Non hai il permesso di riprendere l'istanza %1
+you can use special values with this mail agent:	workflow	it	Puoi usare valori speciali con questo agente di posta:
 you do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas.	workflow	it	Non hai più il permesso di eseguire questa attività, probabilmente a causa di un problema di accesso simultaneo, effettua un refresh dei dati
 you don't have the rights necessary to exception instance %1	workflow	it	Non hai i diritti necessari per sollevare un'eccezione per l'istanza %1
 you have not permission to execute this activity	workflow	it	Non hai il permesso di eseguire questa attività
