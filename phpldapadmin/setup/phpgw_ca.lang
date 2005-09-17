@@ -1,0 +1,119 @@
+add	phpldapadmin	ca	Afegir
+add_a_jpeg_photo	phpldapadmin	ca	Afegir una foto jpeg
+add_new	phpldapadmin	ca	Afegir nou
+add_new_attribute	phpldapadmin	ca	Afegir nou atribut
+add_new_attribute_tooltip	phpldapadmin	ca	Afegir un nou atribut o valor a aquesta entrada
+add_new_binary_attr	phpldapadmin	ca	Afegir nou atribut binari
+add_new_binary_attr_tooltip	phpldapadmin	ca	Afegir un nou atribut binari d'un arxiu
+add_oclass_and_attrs	phpldapadmin	ca	Afegir ObjectClass i atributs
+add_value	phpldapadmin	ca	afegir valor
+add_value_tooltip	phpldapadmin	ca	Afegir un valor addicional a aquest atribut
+advanced_search_form_str	phpldapadmin	ca	Formulari de recerca avançada
+alias_for	phpldapadmin	ca	Alies per
+bad_server_id	phpldapadmin	ca	Id de servidor erroni
+base_dn	phpldapadmin	ca	DN Base
+binary_value	phpldapadmin	ca	Valor binari
+change_entry_rdn	phpldapadmin	ca	Canviar el RDN d'aquesta entrada
+chooser_link_tooltip	phpldapadmin	ca	Prèmer per mostrar un diàleg i seleccionar una entrada (DN) gràficament
+click_to_display	phpldapadmin	ca	Prèmer per mostrar
+contains	phpldapadmin	ca	conté
+copy_this_entry	phpldapadmin	ca	Copiar aquesta entrada
+copy_this_entry_tooltip	phpldapadmin	ca	Copiar aquest objecte a un altre ubicació, un nou DN o un altre servidor
+could_not_connect	phpldapadmin	ca	No es pot connectar al servidor LDAP
+could_not_determine_root	phpldapadmin	ca	No es pot determinar l'arrel de l'arbre LDAP
+could_not_perform_ldap_mod_add	phpldapadmin	ca	No es pot realitzar la operació ldap_mod_add
+create	phpldapadmin	ca	crear
+create_a_child_entry	phpldapadmin	ca	Crear una entrada fill
+create_new	phpldapadmin	ca	Crear nou
+create_new_entry_in	phpldapadmin	ca	Crear una nova entrada dintre de
+create_new_entry_on	phpldapadmin	ca	Crear una nova entrada sobre
+current_list_of	phpldapadmin	ca	Llista actual de
+delete_attribute	phpldapadmin	ca	esborrar atribut
+delete_hint	phpldapadmin	ca	Consell: <b>Per esborrar un atribut</b>, buideu el camp de text i premeu desar.
+delete_this_entry	phpldapadmin	ca	Esborrar aquesta entrada
+delete_this_entry_tooltip	phpldapadmin	ca	Se us demanarà que confirmeu aquesta decisió
+desc	phpldapadmin	ca	Descripció
+distinguished_name	phpldapadmin	ca	Nom distinguit
+download_value	phpldapadmin	ca	Descarregar valor
+ends_with	phpldapadmin	ca	Acaba amb
+enter_value_to_add	phpldapadmin	ca	Entreu el valor que voldríeu afegir:
+entry_attributes	phpldapadmin	ca	Atributs de l'entrada
+equals	phpldapadmin	ca	igual a
+export_subtree_to_ldif	phpldapadmin	ca	Exportar branca a LDIF
+export_subtree_to_ldif_tooltip	phpldapadmin	ca	Desar un volcat LDIF d'aquest objecte i tots els seus fills
+export_to_ldif	phpldapadmin	ca	Exportar a LDIF
+export_to_ldif_mac	phpldapadmin	ca	Final de línia estil Macintosh
+export_to_ldif_tooltip	phpldapadmin	ca	Desar un volcat  LDIF d'aquest objecte
+export_to_ldif_unix	phpldapadmin	ca	Final de línia estil Unix
+export_to_ldif_win	phpldapadmin	ca	Final de línia estil Windows
+false	phpldapadmin	ca	fals
+hidden	phpldapadmin	ca	ocult
+hide_internal_attrs	phpldapadmin	ca	Ocultar atributs interns
+import	phpldapadmin	ca	importar
+import_from_ldif	phpldapadmin	ca	importar entrades d'un arxiu LDIF
+inappropriate_matching_note	phpldapadmin	ca	Nota: veureu un error "coincidència inapropiada" si no heu configurat una regla de <tt>IGUALTAT</tt> al vostre servidor LDAP per al atribut
+info	phpldapadmin	ca	informació
+inherits	phpldapadmin	ca	herències
+internal_attributes	phpldapadmin	ca	Atributs interns
+internal_attrs_tooltip	phpldapadmin	ca	Atributs establerts automàticament per el sistema
+is_obsolete	phpldapadmin	ca	Aquesta classe d'objecte és <b>obsoleta</b>
+jump_to_attr	phpldapadmin	ca	Saltar a un atribut
+jump_to_objectclass	phpldapadmin	ca	Saltar a una classe d'objecte
+jump_to_this_oclass	phpldapadmin	ca	Saltar a una definició de classe d'objecte
+ldap_refuses_to_give_root	phpldapadmin	ca	Sembla que el servidor LDAP ha estat configurat per no revelar la seva arrel.
+logged_in_as	phpldapadmin	ca	Sessió iniciada com:
+logout	phpldapadmin	ca	Tancar sessió
+logout_of_this_server	phpldapadmin	ca	Tancar la sessió amb aquest servidor
+matching_rule_oid	phpldapadmin	ca	Regla de coincidència OID
+new_attributes	phpldapadmin	ca	nous atributs
+new_required_attrs	phpldapadmin	ca	Nous Atributs Obligatoris
+new_required_attrs_instructions	phpldapadmin	ca	Instruccions: per afegir la classe d'objecte per aquesta entrada, heu d'especificar
+new_required_attrs_note	phpldapadmin	ca	Nota: es possible que se us demani entrar nous atributs<br />que necessita aquesta classe d'objecte
+no_new_attrs_available	phpldapadmin	ca	No hi han nous atributs disponibles per aquesta entrada
+no_updates_in_read_only_mode	phpldapadmin	ca	No podeu fer actualitzacions mentre el servidor està en modus de només lectura
+none	phpldapadmin	ca	cap
+none_remove_value	phpldapadmin	ca	cap, esborrar valor
+not_enough_login_info	phpldapadmin	ca	No hi ha prou informació per iniciar la sessió al servidor. Si us plau, comproveu la vostra configuració.
+oid	phpldapadmin	ca	OID
+optional_attrs	phpldapadmin	ca	Atributs opcionals
+please_specify_in_config	phpldapadmin	ca	Si us plau, especifíqueu-ho en config.php
+read_only	phpldapadmin	ca	només lectura
+really_delete_attribute	phpldapadmin	ca	Realment esborrar el atributo
+refresh	phpldapadmin	ca	referescar
+refresh_expanded_containers	phpldapadmin	ca	Refrescar tots els contenidors per
+refresh_this_entry	phpldapadmin	ca	Refrescar aquesta entrada
+rename	phpldapadmin	ca	Reanomenar
+rename_entry	phpldapadmin	ca	Reanomenar entrada
+report_bug	phpldapadmin	ca	Informar sobre una incidència
+request_new_feature	phpldapadmin	ca	Solicitar una característica nova
+required_attrs	phpldapadmin	ca	Atributs obligatoris
+requires_to_add	phpldapadmin	ca	La acción requereix que afegiu
+save_changes	phpldapadmin	ca	Desar canvis
+schema	phpldapadmin	ca	esquema
+schema_for_server	phpldapadmin	ca	Esquema per al servidor
+search	phpldapadmin	ca	cercar
+search_ filter	phpldapadmin	ca	Filtre de recerca
+search_for_entries_whose	phpldapadmin	ca	carcar entrades que
+search_scope	phpldapadmin	ca	Àmbit de recerca
+see_open_bugs	phpldapadmin	ca	veure incidències obertes
+see_open_requests	phpldapadmin	ca	veure solicituts obertes
+server	phpldapadmin	ca	Servidor
+show_attributes	phpldapadmin	ca	Mostrar atributs
+show_internal_attrs	phpldapadmin	ca	Mostrar atributs interns
+simple_search_form_str	phpldapadmin	ca	Formulari de recerca simple
+sounds_like	phpldapadmin	ca	sona com
+starts_with	phpldapadmin	ca	comença per
+syntax	phpldapadmin	ca	Sintaxi
+syntax_oid	phpldapadmin	ca	Sintaxi OID
+that_this_oclass_requires	phpldapadmin	ca	que aquesta classe d'objecte requereix. Podeu fer-ho en aquest formulari.
+the_following_attributes	phpldapadmin	ca	Els següents <b>tipus d'atribut</b> estàn suportats pel servidor LDAP.
+the_following_matching	phpldapadmin	ca	Les següentes <b>regles de coincidència</b> estàn suportades pel servidor LDAP.
+the_following_objectclasses	phpldapadmin	ca	Les següentes <b>classes d'objectes</b> estàn suportades pel servidor LDAP.
+the_following_syntaxes	phpldapadmin	ca	Les següentes <b>sintaxi</b> estàn suportades pel servidor LDAP.
+true	phpldapadmin	ca	cert
+value_to	phpldapadmin	ca	valor a
+values_for_attribute	phpldapadmin	ca	valors per el atribut
+view	phpldapadmin	ca	Veure
+view_schema_for	phpldapadmin	ca	Veure esquema per
+view_server_info	phpldapadmin	ca	Veure la informació proporcionada pel servidor
+viewing_read_only	phpldapadmin	ca	Veure la entrada en modus de només lectura.

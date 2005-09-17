@@ -1,0 +1,360 @@
+% to	projects	ca	% a
++ jobs	projects	ca	+ Treballs
+a new project has been created	projects	ca	S'ha creat un nou projecte a:
+a project has been deleted	projects	ca	S'ha esborrat un projecte de:
+a project has been updated	projects	ca	S'ha actualitzat un projecte a:
+account	projects	ca	Compte
+accounting	common	ca	Comptabilitat
+accounting factor	projects	ca	Factor de comptabilitat
+accounting factor for project	projects	ca	Factor de comptabilitat del projecte
+accounting system	projects	ca	Sistema de comptabilitat
+active	projects	ca	Actiu
+activities	projects	ca	Activitats
+activity	common	ca	Activitat
+activity %1 has been added	projects	ca	S'ha afegit l'activitat %1
+activity %1 has been updated	projects	ca	S'ha modificat l'activitat %1.
+activity id	projects	ca	Codi Activitat
+add activity	projects	ca	Afegeix activitat
+add file	projects	ca	Afegeix fitxer
+add job	projects	ca	Afegeix treball
+add milestone	projects	ca	afegeix fita
+add project	projects	ca	Afegeix projecte
+add role	projects	ca	Afegeix paper
+add work hours	projects	ca	Afegeix hores de treball
+address book	projects	ca	Llibreta d'Adreces
+administrator	projects	ca	Administrador
+administrator list	projects	ca	Llistat d'administradors
+alarm	projects	ca	alarma
+all delivery notes	projects	ca	Totes les notes d'entrega
+amount	projects	ca	Quantitat
+anonymous public	projects	ca	Anònim públic
+archive	common	ca	Arxiu
+are you sure you want to delete this activity	projects	ca	Esteu segurs d'esborrar aquesta activitat?
+are you sure you want to delete this job	projects	ca	Esteu segurs d'esborrar aquest treball ?
+are you sure you want to delete this project	projects	ca	Esteu segurs d'esborrar aquest projecte?
+assign	projects	ca	Assigna
+assign roles and events	projects	ca	Assigna papers i incidències
+assignment has been deleted	projects	ca	S'ha esborrat l'assignació
+assignment has been saved	projects	ca	S'ha desat l'assignació
+assignment to project	projects	ca	Assignació al projecte
+assignment to project %1	projects	ca	assignació al projecte %1
+assignment to role	projects	ca	Assignament al paper
+available	projects	ca	Disponible
+before	projects	ca	abans
+bill per hour	projects	ca	Cost per hora
+bill per hour/workunit	projects	ca	Cost per hora/unitat de treball
+bill per workunit	projects	ca	Cost per unitat de treball
+billable	projects	ca	Facturable
+billable activities	projects	ca	Activitats facturables
+billed	projects	ca	Facturat
+billed only	projects	ca	Només facturats
+billing	projects	ca	Facturació
+bookable activities	projects	ca	Activitats comptabilitzables
+bookkeeper	projects	ca	Comptable
+browse	projects	ca	navegador
+budget	projects	ca	Pressupost
+budget available	projects	ca	pressupost disponible
+budget limit	projects	ca	Pressupost límit
+budget main project	projects	ca	Pressupost del projecte principal
+budget planned	projects	ca	Pressupost planificat
+budget sum of all sub projects is bigger than the budget of the main project	projects	ca	El pressupost suma de tots els subprojectes és més gran que el pressupost del projecte principal!
+budget used	projects	ca	presupost usat
+budget used total	projects	ca	total del pressupost usat
+calculate	projects	ca	Calcula
+changed start date and end date	projects	ca	S'ha canviat la data d'inici i la data de finalització.
+changed start date and end date of projects bellow	projects	ca	S'ha canviat la data d'inici i la data de finalització dels projectes indicats abaix.
+changes of project data	projects	ca	Canvis de les dades del projecte
+click %1here%2 to return to projects.	projects	ca	Premeu %1aquí%2 per tornar als projectes
+closed	projects	ca	Tancat
+color legend	projects	ca	Color de la inscripció
+columns to show in the projects list	projects	ca	Columnes a mostrar a la llista de projectes
+comment	projects	ca	comentari
+continue	projects	ca	continua
+coordinator	common	ca	Coordinador
+costs	projects	ca	Costs
+costs list	projects	ca	Llistat de costs
+costtype	projects	ca	Tipus de costs
+create delivery	projects	ca	Crear enviament
+creator	projects	ca	Creador
+customer	common	ca	Client
+customer nr	projects	ca	Número de client
+date created	projects	ca	Data de creació
+date due of milestone %1 of project %2 has been updated	projects	ca	S'ha actualitzat la data de venciment de la fita %1 del projecte %2.
+date due planned	projects	ca	Data de venciment planificada
+days	projects	ca	dies
+days before	projects	ca	dies abans
+definition per project	admin	ca	Definició per projecte
+delete	admin	ca	Suprimeix
+delete activity	projects	ca	suprimeix activitat
+delete factor	projects	ca	suprimeix factor
+delete hours	projects	ca	Suprimeix hores
+delete job	projects	ca	suprimeix treball
+delete project	projects	ca	suprimeix projecte
+delete selected files	projects	ca	suprimeix els fitxers seleccionats
+delete work hours	projects	ca	suprimeix les hores de treball
+deliveries	projects	ca	Enviaments
+delivery	projects	ca	Enviament
+delivery date	projects	ca	Data d'enviament
+delivery id	projects	ca	Identificador de l'enviament
+delivery list	projects	ca	Llista d'enviaments
+delivery note	projects	ca	Nota d'enviament
+delivery note for project	projects	ca	Nota d'enviament per al projecte
+description can not exceed 250 characters in length	projects	ca	La descripció no pot superar els 250 caràcters de longitud
+description can not exceed 8000 characters in length	projects	ca	La descripció no pot superar els 8000 caràcters de longitud
+discount	projects	ca	Descompte
+distance	projects	ca	Distància
+do you also want to delete all sub projects	projects	ca	Voleu també esborrar tots els subprojectes?
+do you also want to delete all sub projects ?	projects	ca	Voleu també esborrar tots els subprojectes?
+edit activity	projects	ca	Edita activitat
+edit administrator list	projects	ca	Edita la llista d'administradors
+edit events	projects	ca	edita incidències
+edit job	projects	ca	Edita treball
+edit manager list	projects	ca	Edita la llista de gestors
+edit milestone	projects	ca	Edita previsió
+edit milestones	projects	ca	Edita previsions
+edit project	projects	ca	Edita projecte
+edit roles	projects	ca	edita papers
+edit roles and events	projects	ca	Edita papers i incidències
+edit seller list	projects	ca	Edita la llista de venedors
+edit time tracker entry	projects	ca	edita una entrada del seguiment temporal
+edit work hours	projects	ca	Edita hores de feina
+employee	projects	ca	Empleat
+employees	projects	ca	Empleats
+end date has changed	projects	ca	La data de finalització ha canviat
+ending date can not be after parent projects date due	projects	ca	La data de finalització del projecte no pot ser posterior a la data de venciment del projecte pare.
+ending date can not be after projects date due	projects	ca	La data de finalització no pot ser posterior a la data de venciment del projecte
+ending date can not be before start date	projects	ca	La data de finalització no pot ser anterior a la data d'inici.
+entry	projects	ca	entrada
+event	projects	ca	Incidència
+event %1 has been saved	projects	ca	La incidència %1 s'ha desat
+event %1 has been updated	projects	ca	La incidència %1 s'ha modificat
+events	projects	ca	Incidències
+exact accounting [hh.mm]	admin	ca	Comptabilitat exacta [hh.mm]
+export as	projects	ca	exportar com
+external reference	projects	ca	Referència externa
+extra budget	projects	ca	Pressupost extra
+extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	ca	La suma de pressuposts extres de tots els subprojectes és superior al pressupost extra del projecte principal.
+factor employee	projects	ca	Factor empleat
+factor has been deleted	projects	ca	s'ha suprimit el factor
+factor has been saved	projects	ca	s'ha desat el factor
+factor has been updated	projects	ca	s'ha actualitzat el factor
+factor project	projects	ca	Factor projecte
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	ca	Ha fallat enviant missatge a '%1' #%2 assumpte='%3', remitent='%4' !!!
+from	projects	ca	Des de
+from %1 to %2	projects	ca	des de %1 fins a %2
+gantt chart	projects	ca	Diagrama de Gantt
+gantt chart from %1 to %2	projects	ca	Diagrama de Gantt de %1 a %2
+generate activity id	projects	ca	Genera ID d'activitat?
+generate activity id ?	projects	ca	Genera ID d'activitat?
+generate delivery id ?	projects	ca	Genera ID de lliurament?
+generate job id	projects	ca	Genera ID de treball ?
+generate project id	projects	ca	Genera ID de Projecte ?
+global categories	projects	ca	Categories globals
+has reached	projects	ca	s'ha aconseguit
+hours	projects	ca	Hores
+hours limit	projects	ca	Límit d'hores
+hours of work day	admin	ca	Número d'hores per jornada de treball
+hours used total	projects	ca	total d'hores utilitzades
+id can not exceed 20 characters in length	projects	ca	id no pot tenir més de 20 caràcters de longitud
+id can not exceed 250 characters in length	projects	ca	ID no pot tenir més de 250 caràcters de longitud.
+id is already taken, choose an other one	projects	ca	aquest identificador ja existeix, tria'n un altre
+if using activities	admin	ca	Si s'utilitzen activitats
+investment nr	projects	ca	Número de la inversió
+invoicing method	projects	ca	Mètode de facturació
+invoicing of work time	admin	ca	Facturació del temps de treball
+job	projects	ca	Treball
+job has been added	projects	ca	S'ha afegit un treball.
+job has been updated	projects	ca	S'ha actualitzat un treball.
+job id	projects	ca	ID del treball
+job list	projects	ca	Llistat de treballs
+job manager	projects	ca	Gestor del treball
+jobs	common	ca	Treballs
+last update	projects	ca	Darrera actualització
+list activities	projects	ca	Llista activitats
+list budget	projects	ca	Llista pressupost
+list deliveries	projects	ca	Llistar lliuraments
+list jobs	common	ca	Llista treballs
+list projects	common	ca	Llista projectes
+list work hours	projects	ca	Llista hores de treball
+main project	projects	ca	Projecte principal
+main project:	projects	ca	Projecte principal:
+manager	projects	ca	Gestor
+manager list	projects	ca	Llista de gestor
+managing committee	projects	ca	Comité de gestió
+manuell entries	projects	ca	entrades manuals
+milestone	projects	ca	Fita
+milestone date due	projects	ca	Data de venciment de la fita
+milestone has been deleted	projects	ca	la fita s'ha esborrat
+milestone has been saved	projects	ca	la fita s'ha desat
+milestones	common	ca	Fites
+minutes per workunit	projects	ca	Minuts per unitat de treball
+month	projects	ca	Mes
+move start date if pervious projects end date changes	admin	ca	Mou la data d'inici si canvia la data de finalització dels projectes previs
+name not exceed 250 characters in length	projects	ca	el nom no pot superar els 250 caràcters de longitud
+new	admin	ca	Nou
+new date due of milestone %1: %2	projects	ca	Nova data de venciment de la fita %1: %2.
+new end date	projects	ca	Nova data de finalització
+new milestone	projects	ca	Nova fita
+new project	projects	ca	Nou projecte
+new project created	projects	ca	Nou projecte creat:
+new start date	projects	ca	Nova data d'inici
+no description	projects	ca	sense descripcio
+nonactive	common	ca	Inactiu
+not billable	projects	ca	No facturable
+notification settings	admin	ca	Configuracions de Notificació
+notify management committee	admin	ca	Notifica al comité de gestió
+notify project administrators	admin	ca	Notifica als administradors del projecte
+notify sales department	admin	ca	Notifica al departament de ventes
+number	projects	ca	Número
+old end date	projects	ca	Data de finalització antiga
+old start date	projects	ca	Data d'inici antiga
+onadd	admin	ca	En Afegir
+ondelete	admin	ca	En Esborrar
+onstatuschange	admin	ca	En canviar l'estat
+open	projects	ca	Obert
+open popup	projects	ca	obrir finestra emergent
+open popup window	projects	ca	obrir finestra emergent
+overall	projects	ca	Resum
+parent project	projects	ca	Projecte pare
+pause	projects	ca	Pausa
+per	projects	ca	per
+per day	projects	ca	per dia
+per hour	projects	ca	per hora
+per hour/workunit	projects	ca	per hora o unitat de treball
+per workunit	common	ca	per unitat de treball
+percent	projects	ca	Percentatge
+planned	projects	ca	Planificat
+planned time sum of all sub projects is bigger than the planned time of the main project	projects	ca	La suma del temps planificat de tots els subprojectes és superior al temps planificat del projecte principal!
+please choose a project coordinator	projects	ca	Si us plau, trieu un coordinador pel projecte.
+please choose activities for the project	projects	ca	Si us plau, trieu activitats pel projecte.
+please choose the accounting system for the project	projects	ca	Si us plau, trieu el sistema de comptabilitat del projecte.
+please choose the discount type	projects	ca	Si us plau, trieu el tipus de descompte.
+please enable html view of emails.	projects	ca	Si us plau, activa la vista de correus electrònics en HTML.
+please enter a remark	projects	ca	Si us plau, introdueix un comentari.
+please enter an id	projects	ca	Si us plau, introdueix un ID.
+please enter an id !	projects	ca	Si us plau, introdueix un ID !
+please enter the bill	projects	ca	Si us plau, introdueix la factura.
+please enter the minutes per workunit	projects	ca	Si us plau, introdueix els minuts per unitat de treball.
+please select a project for time tracking	projects	ca	Si us plau, seleccioneu un projecte per fer-ne un seguiment temporal
+please set the accounting factor for the project	projects	ca	Si us plau, indiqueu el factor comptable del projecte.
+please set your preferences for this application !	projects	ca	Si us plau, configureu les preferències per aquesta aplicació
+please specify the budget	projects	ca	Si us plau, especifiqueu el pressupost
+position	projects	ca	Posició
+previous	projects	ca	Projecte anterior
+previous project	projects	ca	Projecte anterior
+previous projects end date has changed	projects	ca	La data de finalització dels projectes anteriors ha canviat
+print delivery	projects	ca	Imprimeix nota de lliurament
+processor	projects	ca	Processador
+project	projects	ca	Projecte
+project %1 has been saved	projects	ca	El projecte %1 s'ha desat
+project %1 has been updated	projects	ca	El projecte %1 s'ha actualitzat
+project accounting	admin	ca	Comptabilitat del projecte
+project administrators	common	ca	Administradors del projecte
+project data due	projects	ca	Data de venciment del projecte
+project date due	projects	ca	Data de venciment del projecte
+project deleted	projects	ca	Projecte esborrat
+project dependencies	common	ca	Dependències del projecte
+project id	common	ca	ID del projecte
+project list	projects	ca	Llista de projectes
+project overview	projects	ca	Vista general del projecte
+project statistic	projects	ca	Estadística del projecte
+project updated	projects	ca	Projecte actualitzat
+project url	projects	ca	URL del projecte
+projects	common	ca	Projectes
+projects, which are assigned as sequencing	projects	ca	Els projectes són assignats seqüencialment
+quality check	projects	ca	Comprovació de qualitat
+read a list / search for entries.	projects	ca	Llegeix una llista / cerca entrades.
+reference	projects	ca	Referència
+remark	projects	ca	Comentari
+remark can not exceed 8000 characters in length	projects	ca	El comentari no pot superar els 8000 caràcters de longitud.
+remark can not exceed 8000 characters in length !	projects	ca	El comentari no pot superar els 8000 caràcters de longitud !
+remark required	projects	ca	Comentari requerit
+result	projects	ca	Resultat
+role	projects	ca	Paper
+role %1 has been saved	projects	ca	El paper %1 s'ha desat
+role %1 has been updated	projects	ca	El paper %1 s'ha actualitzat
+role has been deleted	projects	ca	El paper s'ha suprimit
+roles	projects	ca	Papers
+roles list	projects	ca	Llista de papers
+sales department	projects	ca	Departament de ventes
+save factor	projects	ca	Desa factor
+save milestone	projects	ca	desa fita
+select factor	projects	ca	Selecciona factor
+select groups	projects	ca	Selecciona grups
+select main project	common	ca	Selecciona projecte principal
+select project	projects	ca	Selecciona projecte
+select role	projects	ca	Selecciona paper
+select users	projects	ca	Selecciona els usuaris
+seller	projects	ca	Venedor
+seller list	projects	ca	Llista de venedors
+sequencing project	projects	ca	Projecte seqüencial
+settings	admin	ca	Opcions
+short description	projects	ca	Descripció curta
+show gantt chart	projects	ca	Mostra el diagrama de Gantt
+show milestones	projects	ca	mostra fites
+show planned resources	projects	ca	mostra recursos planificats
+site configuration	projects	ca	Configuració del lloc
+size	projects	ca	tamany
+start	projects	ca	Inici
+start date can not be before parent projects start date	projects	ca	La data d'inici no pot ser anterior a la data d'inici del projecte pare.
+start date planned	projects	ca	Data d'inici planificada
+statistic	projects	ca	Estadística
+statistics	projects	ca	Estadístiques
+status change	admin	ca	Canvi d'Estat
+stop	projects	ca	Atura
+sub project level %1	projects	ca	Subprojecte nivell %1
+subproject	projects	ca	Subprojecte
+sum	projects	ca	Suma
+sum budget	projects	ca	Sumar pressupost
+sum hours	projects	ca	Suma hores
+sum jobs	projects	ca	suma treballs
+sum workunits	projects	ca	Suma unitats de treball
+test	projects	ca	Test
+that id has been used already	projects	ca	Aquest ID ja ha estat utilitzat.
+that id has been used already !	projects	ca	Aquest ID ja ha estat utilitzat !
+the choosen previous project does not have an end date specified	projects	ca	El projecte anterior triat no te una data de finalització especificada!
+the delivery note contains no items !	projects	ca	La nota de lliurament no conté elements
+this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	ca	Això sol ser provocat un servidor SMTP sense configurar o mal configurat. Notifica-ho al teu administrador.
+till	projects	ca	Fins a
+time of journey	projects	ca	Temps de viatge
+time planned	projects	ca	Temps planificat
+time tracker	projects	ca	Seguiment temporal
+time tracking actions	projects	ca	accions del seguiment temporal
+time tracking for this project has been stopped already	projects	ca	el seguiment temporal d'aquest projecte ja ha estat aturat
+time tracking for this project is already active	projects	ca	el seguiment temporal d'aquest projecte ja està actiu
+time used	projects	ca	Temps utilitzat
+time used billable	projects	ca	temps facturable utilitzat
+time used total	projects	ca	temps total utilitzat
+title can not exceed 250 characters in length	projects	ca	El títol no pot superar els 250 caràcters de longitud.
+update delivery	projects	ca	Actualitzar lliurament
+use activities	admin	ca	Utilitza activitats
+used	projects	ca	utilitzat
+used - jobs included	projects	ca	utilitzat - treballs inclosos
+used billable	projects	ca	Utilitza facturables
+used not billable	projects	ca	Utilitza no facturables
+used total	projects	ca	Utilitza total
+user statistic	projects	ca	Estadística de l'usuari
+user statistics	projects	ca	Estadístiques dels usuaris
+view employees	projects	ca	Veure empleats
+view gantt chart	projects	ca	Veure diagrama de Gantt
+view hours	projects	ca	veure hores
+view job	projects	ca	Veure treball
+view project	projects	ca	Veure projecte
+view users	projects	ca	veure usuaris
+view work hours	projects	ca	Veure hores de treball
+work date	common	ca	Data del treball
+work hours	common	ca	Hores de treball
+work time	projects	ca	Temps de treball
+workload warning for project	projects	ca	Advertència sobre el volum de treball del projecte
+workunit	projects	ca	Unitat de treball
+workunits	projects	ca	Unitats de treball
+you have entered an invalid date !	projects	ca	Heu introduit una data incorrecta !
+you have entered an invalid date due	projects	ca	Heu introduit una data de venciment invàlida.
+you have entered an invalid end date	projects	ca	Heu introduit una data de finalització invàlida
+you have entered an invalid planned end date	projects	ca	Heu introduit una data de finalització planificada invàlida.
+you have entered an invalid planned start date	projects	ca	Heu introduit una data d'inici planificada invàlida.
+you have entered an invalid start date	projects	ca	Heu introduit una data d'inici invàlida.
+you have no customer selected !	projects	ca	No heu seleccionat cap client !
+you have no projects selected	projects	ca	no teniu cap projecte seleccionat
+you have selected an invalid activity	projects	ca	Heu triat una activitat invàlida
+you have to create a delivery or invoice first !	projects	ca	Primer heu de CREAR un lliurament o factura !

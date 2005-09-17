@@ -1,0 +1,68 @@
+absolute path of the backup directory	backup	ca	Ruta absoluta del directori de la copia de seguretat (ex.: /usr/local/www/egroupware/backup/arxius)
+absolute path of the directory to store the backup script	backup	ca	Ruta absoluta del directori de l'aplicació de Copia de Seguretat
+archive type	backup	ca	Trieu el tipus d'arxiu
+backup	common	ca	Copia de Seguretat
+backup administration	common	ca	Administració de la Copia de Seguretat
+bzip2	admin	ca	Compressió bzip2
+configuration backup	backup	ca	Configuració de la Copia de Seguretat
+configuration localhost	backup	ca	Configuració de l'equip local
+configuration remote host	backup	ca	Configuración del equipo remoto
+create backups of your data ?	backup	ca	Crear Copies de seguretat de les vostres dades?:
+daily	backup	ca	cada dia
+data	backup	ca	Dades
+directory locations	admin	ca	ubicació dels directoris
+directory names	admin	ca	noms del directoris
+e-mail	backup	ca	Marqueu per rebre notificacions per correu electrònic
+homedirs	admin	ca	Directoris d'inici
+interval	backup	ca	Interval
+ip or hostname	backup	ca	IP o nom de l'equip
+ldap	common	ca	LDAP
+ldap database	admin	ca	Base de dades LDAP
+list backup archives	backup	ca	lista de archivos de copia de seguridad
+maildir	admin	ca	Notificació al correu:
+monthly	backup	ca	Cada mes
+mysql	admin	ca	MySQL
+nfs	backup	ca	NFS
+no backup archives available !	backup	ca	No hi han arxius de copia de seguretat disponibles
+number of stored backup versions	backup	ca	Nombre de copies de seguretat desades abans d'esborrar les antigues:
+operating system	backup	ca	Sistema operatiu
+password	backup	ca	Contrseña
+pgsql	admin	ca	PostgreSQL
+php cgi	admin	ca	Ruta completa al vostre executable PHP (ex: /usr/local/bin/php)
+plase enter username and password for remote connection !	backup	ca	Ingrese usuario y clave para la coneccion remota !
+please enter the path of the backup dir and/or enable showing archives in egroupware !	backup	ca	Ingrese el camino absoluto del directorio de resguardos !
+please enter the path of the needed applications in *site configuration* !	backup	ca	Entreu la ruta de les aplicacions necessàries en "Configuració del lloc"!
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	ca	Entreu la ruta al directori de la copia de seguretat i/o activeu mostrar arxius en eGroupWare
+please enter username and password for remote connection !	backup	ca	Entreu el nom d'usuari i contrasenya per a connexió remota
+please select an application for transport to the remote host !	backup	ca	Trieu una aplicació per al transport al equip remot
+please set the path to a local dir to store the backup script !	backup	ca	Seleccioneu la ruta al directori local per desar el script de la copia de seguretat
+please set the path to the ldap database dir in *site configuration* !	backup	ca	Indiqueu la ruta a la base de dades LDAP en "Configuració del lloc"!
+please set the path to the mysql database dir in *site configuration* !	backup	ca	Indiqueu la ruta a la base de dades MySQL en "Configuració del lloc"
+please set the path to the postgresql database dir in *site configuration* !	backup	ca	Indiqueu la ruta a la base de dades PostgreSQL en "Configuració del lloc"
+please set the values in *site configuration* !	backup	ca	Indiqueu els valors en "Configuració del lloc"
+please specify the ip of the remote host !	backup	ca	Especifiqueu l'adreça IP del sistema remot
+please specify the name of the maildir in *site configuration* !	backup	ca	Indiqueu el nom del directori Maildir en "Configuració del lloc"
+please specify the path to the backup directory !	backup	ca	Indiqueu la ruta al directori de la copia de seguretat!
+please specify the path to the user-homedirectories in *site configuration* !	backup	ca	Indiqueu la ruta als directoris de los usuaris en "Configuració del lloc"
+program locations	admin	ca	Ubicació dels programes
+save backup locally ?	backup	ca	Guardar copia de seguretat localment?
+save backup to a remote host ?	backup	ca	¿Guardar copia de seguridad en un servidor remoto?
+select archive type	backup	ca	Seleccioneu tipus d'arxiu
+select interval	backup	ca	Seleccioneu interval
+select transport application	backup	ca	Seleccione aplicación de transporte
+settings	admin	ca	Configuració
+show backup archives in egroupware ?	backup	ca	Mostrar arxius de copia de seguretat en eGroupWare?
+smbmount	backup	ca	SMBMOUNT
+sql	backup	ca	SQL
+tar	admin	ca	tar
+tar.bz2	backup	ca	tar.bz2
+tar.gz	backup	ca	tar.gz
+the backup application is not configured for showing the archives in egroupware yet !	backup	ca	La aplicació de copia de seguretat encara no està configurada per mostrar els arxius en eGroupWare!
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	ca	El directori per desar el script de copia de seguretat ha d'estar dintre dels directoris arrel dels servidors web!
+the ftp connection failed ! please check your configuration !	backup	ca	¡La conexión por ftp falló! Por favor, compruebe su configuración
+transport application	backup	ca	Aplicación de transporte
+user	backup	ca	Usuario
+versions can only be a number !	backup	ca	Les versions només poden ser un número
+weekly	backup	ca	cada setmana
+your sql database isnt supported by this application !	backup	ca	La vostra base de dades SQL no està suportada per aquesta aplicació
+zip	common	ca	zip

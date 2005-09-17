@@ -1,0 +1,35 @@
+compose	messenger	ca	Redactar
+compose global message	common	ca	Redactar missatge global
+compose message	messenger	ca	Redactar missatge
+delete a message.	messenger	ca	Esborrar missatge.
+delete selected	messenger	ca	Esborrar seleccionats
+forward	messenger	ca	Reenviar
+forward a message	messenger	ca	Reenviar un missatge
+forward a message to another user.	messenger	ca	Reenviar un missatge a un altre usuari.
+forwarded	messenger	ca	Reenviat
+from	messenger	ca	De
+global message	messenger	ca	Missatge Global
+i can't find the username %1 on the system	messenger	ca	No es pot trobar l'usuario %1 al sistema
+inbox	messenger	ca	Entrada
+message from	messenger	ca	Missatge de
+messenger	common	ca	Missatgería
+new	messenger	ca	Nou
+read a list of messages.	messenger	ca	Llegir una llista de missatges
+read a single message.	messenger	ca	Llegir un sol missatge.
+read message	messenger	ca	Llegir missatge
+replied	messenger	ca	Contestat
+reply	messenger	ca	Contestar
+reply to a message	messenger	ca	Contestar un missatge
+reply to a received message.	messenger	ca	Contestar un missatge rebut.
+send	messenger	ca	Enviar
+send a global message.	messenger	ca	Enviar missatge global.
+send a message to a single recipient.	messenger	ca	Enviar un missatge a un sol destinatari.
+send message to	messenger	ca	Enviar missatge a
+sorry, %1's account is not currently active	messenger	ca	Disculpeu, el compte de %1 no està actiu actualment
+update a message status	messenger	ca	Actualitzar l'estat de un missatge
+you didn't enter anything for the message	messenger	ca	No heu entrat res al missatge
+you have %1 new message	messenger	ca	Teniu 1 missatge nou
+you have %1 new messages	messenger	ca	Teniu %1 missatges nous
+you have no messages	messenger	ca	No teniu missatges
+you must enter a subject	messenger	ca	Heu d'entrar un assumpte
+you must enter the username this message is for	messenger	ca	Heu d'entrar el nom d'usuari del destinatari
