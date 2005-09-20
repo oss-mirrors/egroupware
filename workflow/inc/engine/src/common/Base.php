@@ -8,7 +8,9 @@ database connection, database methods and the Observable interface.
 */
 class Base extends Observable {
   var $db;  // The database abstraction object used to access the database
+  //2 vars for debugging
   var $num_queries = 0;
+  var $num_queries_total = 0;
   var $error= Array(); // the error messages array
   var $child_name = 'Base'; //name of the current object
   
@@ -28,11 +30,12 @@ class Base extends Observable {
   * or give a false parameter you will obtain a single string which can be empty or will contain error messages with <br /> html tags.
   * @param $debug is false by default, if true you wil obtain more messages
   * @return a string containing error (and maybe debug) messages or an array of theses messages and empty the error messages
+  * @param $prefix is a string appended to the debug message
   */
-  function get_error($as_array=false, $debug=false) 
+  function get_error($as_array=false, $debug=false, $prefix='') 
   {
     //collect errors from used objects
-    $this->collect_errors($debug);
+    $this->collect_errors($debug, $prefix.$this->child_name.'::');
     if ($as_array)
     {
       $result = $this->error;
@@ -49,14 +52,17 @@ class Base extends Observable {
   * Collect errors from all linked objects which could have been used by this object
   * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
   * for example if you had a $this->process_manager created in the constructor you shoudl call
-  * $this->error[] = $this->process_manager->get_error(false, $debug);
+  * $this->error[] = $this->process_manager->get_error(false, $debug, $prefix);
   * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  * @param $prefix is a string appended to the debug message
   */
-  function collect_errors($debug=false)
+  function collect_errors($debug=false, $prefix = '')
   {
   	if ($debug)
   	{
-  		$this->error[]= $this->child_name.': number of queries:'.$this->num_queries;
+  		$this->num_queries_total += $this->num_queries;
+  		$this->error[] = $prefix.': number of queries: new='.$this->num_queries.'/ total='.$this->num_queries_total;
+  		$this->num_queries = 0;
 	}
   }
   
