@@ -47,11 +47,12 @@ class GUI extends Base {
   * for example if you had a $this->process_manager created in the constructor you shoudl call
   * $this->error[] = $this->process_manager->get_error(false, $debug);
   * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  * @param $prefix is a string appended to the debug message
   */
-  function collect_errors($debug=false)
+  function collect_errors($debug=false, $prefix='')
   {
-    parent::collect_errors($debug);
-    $this->error[] = $this->wf_security->get_error(false, $debug);
+    parent::collect_errors($debug, $prefix);
+    $this->error[] = $this->wf_security->get_error(false, $debug, $prefix);
   }
 
 
