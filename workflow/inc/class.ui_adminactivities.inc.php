@@ -92,7 +92,8 @@
 			if (!$this->wf_p_id) die(lang('No process indicated'));
 
 			// *************************************   START OF OPERATIONS COMMANDED BY THIS SAME FORM ******************
-			
+			// do we need to check validity? do it only if necessary, high load on database
+			$checkvalidity=false;
 			if ($compile)
 			{
 				$process_activities =& $this->activity_manager->list_activities($this->wf_p_id, 0, -1, $this->sort_mode, $find, $where);
@@ -101,6 +102,7 @@
 					$this->message[] = lang('compiling activity %1 : %2',$activity['wf_activity_id'], $activity['wf_name']);
 					$this->message = array_merge($this->message, $this->activity_manager->compile_activity($this->wf_p_id,$activity['wf_activity_id']));
 				}
+				$checkvalidity = true;
 			}
 
 			// add role to process roles
@@ -119,6 +121,7 @@
 							$this->activity_manager->add_activity_role($activity_id, $newrole_id, ($newrole_ro=='on'));
 							$this->message[] = lang('Role added to activity');
 						}
+						$checkvalidity = true;
 					}
 					
 				}
@@ -137,6 +140,7 @@
 					$this->message[] = lang('Activity role #%1 removed', $role_id);
 				}
 				$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
+				$checkvalidity = true;
 			}
 
 			// remove activity agent
@@ -156,6 +160,7 @@
 				{
 					$this->message[] = lang('Activity saved');
 				}
+				//no checkvalidity, this is done already in ActivityManager
 			}
 
 			// delete activity
@@ -164,14 +169,23 @@
 				if( isset($_POST['activities']) ) 
 				{
 					if ($this->delete_activities(array_keys($_POST['activities']))) $this->message[] = lang('Deletion successful');
+					$checkvalidity = true;
 				}
 			}
 
 			// add transitions
-			if (isset($_POST['add_trans'])) $this->message[] = $this->add_transition($_POST['wf_act_from_id'], $_POST['wf_act_to_id']);
+			if (isset($_POST['add_trans']))
+			{ 
+				$this->message[] = $this->add_transition($_POST['wf_act_from_id'], $_POST['wf_act_to_id']);
+				$checkvalidity = true;
+			}
 
 			// delete transitions
-			if (isset($_POST['delete_tran'])) $this->delete_transitions($_POST['transition']);
+			if (isset($_POST['delete_tran']))
+			{
+				$this->delete_transitions($_POST['transition']);
+				$checkvalidity = true;
+			}
 
 			// *************************************   END OF OPERATIONS COMMANDED BY THIS SAME FORM ******************
 
@@ -281,8 +295,9 @@
 				$proc_info['wf_is_active'] = 'n';
 			}
 
+			//regis : warning, heavy database load!
 			// check process validity and show errors if necessary
-			$proc_info['wf_is_valid'] = $this->show_errors($this->activity_manager, $error_str);
+			if ($checkvalidity) $proc_info['wf_is_valid'] = $this->show_errors($this->activity_manager, $error_str);
 
 			// fill proc_bar
 			$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));

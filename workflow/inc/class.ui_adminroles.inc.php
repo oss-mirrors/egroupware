@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
+	require_once(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
 
 	class ui_adminroles extends workflow
 	{
@@ -48,19 +48,31 @@
 			$role_id				= (int)get_var('role_id', 'any', 0);
 
 			if (!$this->wf_p_id) die(lang('No process indicated'));
+			
+			//do we need to check validity, warning high load on database
+			$checkvalidity=false;
 
 			// save new role
-			if (isset($_POST['save'])) $this->save_role($role_id, $_POST['name'], $_POST['description']);
+			if (isset($_POST['save']))
+			{
+				$this->save_role($role_id, $_POST['name'], $_POST['description']);
+				$checkvalidity = true;
+			}
 
 			// save new mapping
 			if (isset($_POST['save_map']))
 			{
 				$this->save_mapping($_POST['user'], $_POST['role']);
 				$this->message[] = lang('New mapping added');
+				$checkvalidity = true;
 			}
 
 			// delete roles
-			if (isset($_POST['delete_roles'])) $this->delete_roles(array_keys($_POST['role']));
+			if (isset($_POST['delete_roles']))
+			{
+				$this->delete_roles(array_keys($_POST['role']));
+				$checkvalidity = true;
+			}
 			
 			// delete mappings
 			if (isset($_POST['delete_map'])) 
@@ -72,7 +84,7 @@
 			$proc_info = $this->process_manager->get_process($this->wf_p_id);
 
 			// check process validity and show errors if necessary
-			$proc_info['isValid'] = $this->show_errors($this->activity_manager, $error_str);
+			if ($checkvalidity) $proc_info['isValid'] = $this->show_errors($this->activity_manager, $error_str);
 
 			// fill proc_bar
 			$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));
@@ -94,6 +106,12 @@
 			// retrieve all roles info
 			$all_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');
 			//echo "all_roles: <pre>";print_r($all_roles);echo "</pre>";
+			
+			//collect some messages from used objects
+			$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
+			$this->message[] = $this->process_manager->get_error(false, _DEBUG);
+			$this->message[] = $this->role_manager->get_error(false, _DEBUG);
+
 
 			// fill the general varibles of the template
 			$this->t->set_var(array(
@@ -197,10 +215,10 @@
 		function show_users_roles_selects($all_roles_data)
 		{
 			$this->t->set_block('admin_roles', 'block_select_users', 'select_users');
-			$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
-			//echo "users: <pre>"; print_r($users); echo "</pre>";
-			$groups = $GLOBALS['phpgw']->accounts->get_list('groups');
-			//echo "groups: <pre>"; print_r($groups); echo "</pre>";
+			$users =& $GLOBALS['phpgw']->accounts->get_list('accounts');
+			//_debug_array($users);
+			$groups =& $GLOBALS['phpgw']->accounts->get_list('groups');
+			//_debug_array($groups);
 			foreach ($users as $user)
 			{
 				$this->t->set_var(array(

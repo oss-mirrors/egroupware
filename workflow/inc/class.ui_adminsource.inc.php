@@ -70,6 +70,9 @@
 					'wf_normalized_name'	=> 'shared',
 				);
 			}
+			
+			//do we need to check validity, warning high load on database
+			$checkvalidity=false;
 
 			// save template and stay in same view
 			if ($save)
@@ -88,6 +91,7 @@
 						$this->message[] = lang('They were problems at the compilation of the source:');
 						$this->message = array_merge($this->message,$errors);
 					}
+					$checkvalidity=true;
 				}
 			}
 			elseif($switch_to_code)
@@ -112,10 +116,14 @@
 			//echo "data: <pre>";print_r($data);echo "</pre>";
 
 			// check process validity and show errors if necessary
-			$proc_info['isValid'] = $this->show_errors($this->activity_manager, $error_str);
+			if ($checkvalidity) $proc_info['isValid'] = $this->show_errors($this->activity_manager, $error_str);
 
 			// fill proc_bar
 			$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));
+			
+			//collect some messages from used objects
+			$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
+			$this->message[] = $this->process_manager->get_error(false, _DEBUG);
 
 			// fill the general variables of the template
 			$this->t->set_var(array(

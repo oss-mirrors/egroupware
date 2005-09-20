@@ -110,6 +110,9 @@
 			$bo_agent = CreateObject('workflow.bo_agent_mail_smtp');
 			$known_config_items = $known_config_items + $bo_agent->listProcessConfigurationFields();
 			
+			//do we need to check validity, warning high load on database
+			$checkvalidity=false;
+			
 			if( isset($_POST['upload']))
 			{
 				if ($_FILES['userfile1']['size'] == 0)
@@ -165,6 +168,7 @@
 					'default' 	=> &$config_use_default,
 				);
 				$this->wf_p_id = $this->save_process($name, $version, $description, $is_active,$global_config_array);
+				//no need for $checkvalidity because this is done by the ProcessManager
 			}
 
 			// new minor
@@ -178,6 +182,7 @@
 				{
 					$this->message[] = lang('new minor version created');
 				}
+				
 			}
 
 			// new major
@@ -223,8 +228,12 @@
 			if ($this->wf_p_id)
 			{
 				// check process validity and show errors if necessary
-				$proc_info['wf_is_valid'] = $this->show_errors($this->activity_manager, $error_str);
+				if ($checkvalidity) $proc_info['wf_is_valid'] = $this->show_errors($this->activity_manager, $error_str);
 			}
+			
+			//collect some messages from used objects
+			$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
+			$this->message[] = $this->process_manager->get_error(false, _DEBUG);
 
 			// show current process
 			$this->t->set_var(array(
