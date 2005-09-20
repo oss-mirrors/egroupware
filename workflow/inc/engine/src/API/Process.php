@@ -22,18 +22,6 @@ class Process extends Base {
   }
 
   /*!
-  * Collect errors from all linked objects which could have been used by this object
-  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
-  * for example if you had a $this->process_manager created in the constructor you shoudl call
-  * $this->error[] = $this->process_manager->get_error(false, $debug);
-  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
-  */
-  function collect_errors($debug=false)
-  {
-    parent::collect_errors($debug);
-  }
-  
-  /*!
   Loads a process from the database
   */
   function getProcess($pId) {

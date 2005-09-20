@@ -24,18 +24,6 @@ class WfSecurity extends Base {
     require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'API'.SEP.'BaseActivity.php');
   }
 
-  /*!
-  * Collect errors from all linked objects which could have been used by this object
-  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
-  * for example if you had a $this->process_manager created in the constructor you shoudl call
-  * $this->error[] = $this->process_manager->get_error(false, $debug);
-  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
-  */
-  function collect_errors($debug=false)
-  {
-    parent::collect_errors($debug);
-  }
-  
   //! load the config values for a given process
   /*!
   * config values for a given process are cached while this WfSecurity object stay alive
@@ -251,7 +239,11 @@ class WfSecurity extends Base {
         //we need to make a row lock now, before any read action
         $where = 'wf_instance_id='.(int)$instanceId;
         //$this->error[]= '<br> Debug:locking instances '.$where;
-        $this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where);
+        if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where)))
+        {
+          $this->error[] = tra('failed to obtain lock on instances table');
+          return false;
+        }
       }
       $query = 'select gi.wf_instance_id, gi.wf_owner, gi.wf_status, 
               gp.wf_name as wf_procname, gp.wf_is_active, gp.wf_version, gp.wf_p_id
@@ -290,7 +282,11 @@ class WfSecurity extends Base {
         //we need to lock this row now, before any read action
         $where = 'wf_instance_id='.(int)$instanceId.' and wf_activity_id='.(int)$activityId;
         //$this->error[] = '<br> Debug:locking instance_activities '.$where;
-        $this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities', $where);
+        if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities', $where)))
+        {
+          $this->error[] = tra('failed to obtain lock on instances_activities table');
+          return false;
+        }
       }
       $query = 'select gia.wf_instance_id, gia.wf_user, gia.wf_status
               from '.GALAXIA_TABLE_PREFIX.'instance_activities gia

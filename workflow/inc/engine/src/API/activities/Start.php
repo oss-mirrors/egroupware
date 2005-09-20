@@ -8,8 +8,8 @@ This class handles activities of type 'start'
 class Start extends BaseActivity {
 	function Start(&$db)
 	{
-		$this->child_name = 'Start';
 	 	parent::Base($db);
+		$this->child_name = 'Start';
 	}
 }
 ?>

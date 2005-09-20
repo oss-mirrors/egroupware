@@ -40,18 +40,6 @@ class Instance extends Base {
   }
 
   /*!
-  * Collect errors from all linked objects which could have been used by this object
-  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
-  * for example if you had a $this->process_manager created in the constructor you shoudl call
-  * $this->error[] = $this->process_manager->get_error(false, $debug);
-  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
-  */
-  function collect_errors($debug=false)
-  {
-    parent::collect_errors($debug);
-  }
-  
-  /*!
   Method used to load an instance data from the database.
   */
   function getInstance($instanceId) 
@@ -262,12 +250,12 @@ class Instance extends Base {
     return $name;
   }
 
-  
   /*! 
   * Sets a property in this instance. This method is used in activities to
-  * set instance properties. Instance properties are immediately serialized.
+  * set instance properties.
   * all property names are normalized for security reasons and to avoid localisation
-  * problems (A->z, digits and _ for spaces)
+  * problems (A->z, digits and _ for spaces). If you have several set to call look
+  * at the setProperties function. Each call to this function has an impact on database
   * @param $name is the property name (it will be normalized)
   * @value is the value you want for this property
   * @return true if it was ok
@@ -282,6 +270,54 @@ class Instance extends Base {
       $props = serialize($this->properties);
       $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_properties=? where wf_instance_id=?';
       $this->query($query,array($props,$this->instanceId));
+    }
+    return true;
+  }
+  
+  /*! 
+  * Sets several properties in this instance. This method is used in activities to
+  * set instance properties. Use this method if you have several properties to set
+  * as it will avoid
+  * all property names are normalized for security reasons and to avoid localisation
+  * problems (A->z, digits and _ for spaces). If you have several set to call look
+  * at the setProperties function. Each call to this function has an impact on database
+  * @param $properties_array is an associative array containing for each record the
+  * property name as the key and the property value as the value.
+  * @return true if it was ok
+  */
+  function setProperties($properties_array) 
+  {
+    $backup_values = $this->properties;
+    foreach ($properties_array as $key => $value)
+    {
+      $name = $this->_normalize_name($key);
+      $this->properties[$name] = $value;
+    }
+    //no need to save on pseudo-instances
+    if (!($this->instanceId))
+    {
+      return true;
+    }
+    //do it in a transaction, can have several activities running
+    $this->db->StartTrans();
+    //we need to make a row lock now,
+    $where = 'wf_instance_id='.(int)$this->instanceId;
+    if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where)))
+    {
+      $this->error[] = tra('failed to obtain lock on instances table');
+      $this->db->FailTrans();
+    }
+    else
+    {
+      $props = serialize($this->properties);
+      $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_properties=? where wf_instance_id=?';
+      $this->query($query,array($props,$this->instanceId));
+    }
+    if (!($this->db->CompleteTrans()))
+    {
+      $this->properties = $backup_values;
+      $this->error[] = tra('failed to record instance properties');
+      return false;
     }
     return true;
   }

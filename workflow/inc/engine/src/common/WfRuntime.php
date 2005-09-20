@@ -62,14 +62,15 @@ class WfRuntime extends Base
   * for example if you had a $this->process_manager created in the constructor you shoudl call
   * $this->error[] = $this->process_manager->get_error(false, $debug);
   * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  * @param $prefix is a string appended to the debug message
   */
-  function collect_errors($debug=false)
+  function collect_errors($debug=false, $prefix = '')
   {
-    parent::collect_errors($debug);
-    if (isset($this->instance)) $this->error[] = $this->instance->get_error(false, $debug);
-    if (isset($this->process)) $this->error[] = $this->process->get_error(false, $debug);
-    if (isset($this->security)) $this->error[] = $this->security->get_error(false, $debug);
-    if (isset($this->activity)) $this->error[] = $this->activity->get_error(false, $debug);
+    parent::collect_errors($debug, $prefix);
+    if (isset($this->instance)) $this->error[] = $this->instance->get_error(false, $debug, $prefix);
+    if (isset($this->process)) $this->error[] = $this->process->get_error(false, $debug, $prefix);
+    if (isset($this->security)) $this->error[] = $this->security->get_error(false, $debug, $prefix);
+    if (isset($this->activity)) $this->error[] = $this->activity->get_error(false, $debug, $prefix);
   }
 
   /*!
@@ -277,7 +278,7 @@ class WfRuntime extends Base
     }
     //this will test the action rights and lock the necessary rows in tables in case of 'run'
     $result = $this->security->checkUserAction($this->activity_id,$this->instance_id,$action);
-    $this->error[] =  $this->security->get_error();
+    $this->error[] =  $this->security->get_error(false, $this->debug);
     if ($result)
     {
       return true;
@@ -304,7 +305,7 @@ class WfRuntime extends Base
     {
       //this will test the release rights and lock the necessary rows in tables in case of 'release'
       $result = $this->security->checkUserAction($this->activity_id,$this->instance_id,'release');
-      $this->error[] =  $this->security->get_error();
+      $this->error[] =  $this->security->get_error(false, $this->debug);
       if ($result)
       {
         //we are granted an access to release but there is a special bad case where
@@ -576,14 +577,36 @@ class WfRuntime extends Base
   
   /*! 
   * Sets a property in this instance. This method is used in activities to
-  * set instance properties. Instance properties are immediately serialized.
-  * @param $name is the name of the property
-  * @param $value is the new value of the property
+  * set instance properties.
+  * all property names are normalized for security reasons and to avoid localisation
+  * problems (A->z, digits and _ for spaces). If you have several set to call look
+  * at the setProperties function. Each call to this function has an impact on database
+  * @param $name is the property name (it will be normalized)
+  * @value is the value you want for this property
+  * @return true if it was ok
   */
   function set($name,$value) 
   {
     return $this->instance->set($name,$value);
   }
+  
+  /*!
+  * Sets several properties in this instance. This method is used in activities to
+  * set instance properties. Use this method if you have several properties to set
+  * as it will avoid
+  * all property names are normalized for security reasons and to avoid localisation
+  * problems (A->z, digits and _ for spaces). If you have several set to call look
+  * at the setProperties function. Each call to this function has an impact on database
+  * @param $properties_array is an associative array containing for each record the
+  * property name as the key and the property value as the value. You do not need the complete
+  * porperty array, you can give only the knew or updated properties.
+  * @return true if it was ok
+  */
+  function setProperties($properties_array)
+  {
+     return $this->instance->setProperties($properties_array);
+  }
+
   
   /*! 
   * Gets the value of an instance property.

@@ -8,8 +8,8 @@ This class handles activities of type 'standalone'
 class Standalone extends BaseActivity {
 	function Standalone(&$db)
 	{
-		$this->child_name = 'Standalone';
 	 	parent::Base($db);
+		$this->child_name = 'Standalone';
 	}
 }
 ?>

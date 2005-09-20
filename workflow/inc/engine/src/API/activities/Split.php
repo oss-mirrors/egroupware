@@ -8,8 +8,8 @@ This class handles activities of type 'split'
 class Split extends BaseActivity {
 	function Split(&$db)
 	{
-		$this->child_name = 'Split';
 	 	parent::Base($db);
+		$this->child_name = 'Split';
 	}
 }
 ?>

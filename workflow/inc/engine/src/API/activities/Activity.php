@@ -9,8 +9,8 @@ class Activity extends BaseActivity
 {
 	function Activity(&$db)
 	{
+		parent::Base($db);
 		$this->child_name = 'Activity';
-	 	parent::Base($db);
 	}
 
 }

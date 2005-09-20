@@ -8,8 +8,8 @@ This class handles activities of type 'join'
 class Join extends BaseActivity {
 	function Join(&$db)
 	{
-		$this->child_name = 'Join';
 	 	parent::Base($db);
+		$this->child_name = 'Join';
 	}
 }
 ?>

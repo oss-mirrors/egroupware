@@ -9,8 +9,8 @@ class View extends BaseActivity
 {
 	function View(&$db)
 	{
-		$this->child_name = 'View';
 	 	parent::Base($db);
+		$this->child_name = 'View';
 	}
 	
 }
