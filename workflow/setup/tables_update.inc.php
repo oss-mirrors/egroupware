@@ -172,7 +172,7 @@
 		//change type of wf_next_user to handle serialization -> multiple states if instance has multiple activities running
 		//we will loose current wf_next_activity but the update should'nt be made when instances are running and this is
 		//a field needed only at runtime, normally.
-		$GLOBALS['phpgw_setup']->oProc->DropColumns('egw_wf_instances','','wf_next_activity');
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('egw_wf_instances','','wf_next_activity');
 		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_wf_instances' ,'wf_next_activity', array('type' => 'blob', 'nullable' => True));
 
 		#updating the current version
