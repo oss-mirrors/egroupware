@@ -17,8 +17,8 @@ class ActivityManager extends BaseManager {
   */
   function ActivityManager(&$db) 
   {
-    $this->child_name = 'ActivityManager';
     parent::BaseManager($db);
+    $this->child_name = 'ActivityManager';
     require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'ProcessManager.php');
     //$this->process_manager is not set here to avoid object A loading objetc B loading object A, etc...
     
@@ -30,11 +30,12 @@ class ActivityManager extends BaseManager {
   * for example if you had a $this->process_manager created in the constructor you shoudl call
   * $this->error[] = $this->process_manager->get_error(false, $debug);
   * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  * @param $prefix is a string appended to the debug message
   */
-  function collect_errors($debug=false)
+  function collect_errors($debug=false, $prefix='')
   {
-    parent::collect_errors($debug);
-    if (isset($this->process_manager)) $this->error[] = $this->process_manager->get_error(false, $debug);
+    parent::collect_errors($debug, $prefix);
+    if (isset($this->process_manager)) $this->error[] = $this->process_manager->get_error(false, $debug, $prefix);
   }
 
   /*!
@@ -260,7 +261,7 @@ class ActivityManager extends BaseManager {
 	* @param $type_exclusion type you want to exclude from the result
 	* @return array of activities array, count
 	*/
-  function get_transition_activities($pId, $type_exclusion = false)
+  function &get_transition_activities($pId, $type_exclusion = false)
   {
 	$where = '';
 	$wheres = array();
@@ -273,7 +274,7 @@ class ActivityManager extends BaseManager {
 	}
 	$where = implode(' and ', $wheres);
 	  
-	return $this->list_activities($pId, 0, -1, 'wf_flow_num__asc', ''/*$find*/, $where);
+	return $this->list_activities($pId, 0, -1, 'wf_flow_num__asc', '', $where);
   }
   
   /**
@@ -669,7 +670,7 @@ class ActivityManager extends BaseManager {
   /*!
    Lists activities at a per-process level
   */
-  function list_activities($pId,$offset,$maxRecords,$sort_mode,$find,$where='')
+  function &list_activities($pId,$offset,$maxRecords,$sort_mode,$find,$where='')
   {
     $sort_mode = str_replace("__"," ",$sort_mode);
     if($find) {
@@ -1408,8 +1409,8 @@ class ActivityManager extends BaseManager {
     //$query = "update ".GALAXIA_TABLE_PREFIX."activities set flowNum=0 where flowNum=$cant+1";
     //$this->query($query);
     return true;
-  }  
-
+  }
+  
 }
 
 

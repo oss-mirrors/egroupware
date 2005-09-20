@@ -23,20 +23,8 @@ class RoleManager extends BaseManager {
   */
   function RoleManager(&$db) 
   {
-    $this->child_name = 'RoleManager';
     parent::Base($db);
-  }
-
-  /*!
-  * Collect errors from all linked objects which could have been used by this object
-  * Each child class should instantiate this function with her linked objetcs, calling get_error(true)
-  * for example if you had a $this->process_manager created in the constructor you shoudl call
-  * $this->error[] = $this->process_manager->get_error(false, $debug);
-  * @param $debug is false by default, if true debug messages can be added to 'normal' messages
-  */
-  function collect_errors($debug=false)
-  {
-    parent::collect_errors($debug);
+    $this->child_name = 'RoleManager';
   }
 
   function get_role_id($pid,$name)
@@ -178,7 +166,7 @@ class RoleManager extends BaseManager {
   * @return an array containg for each row the user or group id and an associated name
   */
 
-  function list_mapped_users($pId,$expand_groups=false, $subset=Array())  
+  function &list_mapped_users($pId,$expand_groups=false, $subset=Array())  
   {
     $whereand = ' where gur.wf_p_id=? ';
     $bindvars = Array($pId);

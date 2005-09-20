@@ -22,8 +22,8 @@ class ProcessManager extends BaseManager {
   */
   function ProcessManager(&$db) 
   {
-    $this->child_name = 'ProcessManager';
     parent::BaseManager($db);
+    $this->child_name = 'ProcessManager';
     require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'ActivityManager.php');
     // $this->activity_manager is not set here to avoid objects loading object A loading object B loading object A, etc
 
@@ -35,11 +35,12 @@ class ProcessManager extends BaseManager {
   * for example if you had a $this->process_manager created in the constructor you shoudl call
   * $this->error[] = $this->process_manager->get_error(false, $debug);
   * @param $debug is false by default, if true debug messages can be added to 'normal' messages
+  * @param $prefix is a string appended to the debug message
   */
-  function collect_errors($debug=false)
+  function collect_errors($debug=false, $prefix = '')
   {
-    parent::collect_errors($debug);
-    if (isset($this->ActivityManager)) $this->error[] = $this->activity_manager->get_error(false, $debug);
+    parent::collect_errors($debug, $prefix);
+    if (isset($this->ActivityManager)) $this->error[] = $this->activity_manager->get_error(false, $debug, $prefix);
   }
 
   /*!
