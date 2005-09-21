@@ -56,10 +56,11 @@ function _egwcalendarsync_list($_startDate='', $_endDate='')
 
 	$searchFilter = array
 	(
-		'start'		=> $startDate,
-		'end'		=> $endDate,
-		'filter'	=> 'all',
-		'daywise'	=> 0,
+		'start'		    => $startDate,
+		'end'		    => $endDate,
+		'filter'	    => 'all',
+		'daywise'	    => false,
+		'enum_recuring' => false,
 	);
 	
 	$events = ExecMethod('calendar.bocal.search',$searchFilter);
