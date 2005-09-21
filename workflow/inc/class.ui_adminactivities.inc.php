@@ -309,7 +309,7 @@
 
 			// fill the general variables of the template
 			$this->t->set_var(array(
-				'message'				=> implode('<br>', $this->message),
+				'message'				=> implode('<br>', array_filter($this->message)),
 				'errors'				=> $error_str,
 				'form_details_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'form_list_transitions_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),

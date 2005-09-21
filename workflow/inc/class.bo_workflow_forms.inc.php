@@ -65,17 +65,17 @@
 		
 		//! fill the nextmatchs fields, arrows, and counter
 		/*!
-		$header_array is an array with header_names => header_text_shown
-		warning header names are header_[name or alias of the column in the query without a dot]
-		this is necessary for sorting
-		You need some fields on the template:
-		        <table style="border: 0px;width:100%; margin:0 auto">
-		        	<tr class="th" style="font-weight:bold">
-		                	{left}
-	        			<td><div align="center">{lang_showing}</div></td>
-	        			{right}
-		        	</tr>
-			</table>
+		* $header_array is an array with header_names => header_text_shown
+		* warning header names are header_[name or alias of the column in the query without a dot]
+		* this is necessary for sorting
+		* You need some fields on the template:
+		*         <table style="border: 0px;width:100%; margin:0 auto">
+		*         	<tr class="th" style="font-weight:bold">
+		*                	{left}
+	        * 			<td><div align="center">{lang_showing}</div></td>
+	        * 			{right}
+		*         	</tr>
+		*	</table>
 		*/
 		function fill_nextmatchs(&$header_array, $total_number)
 		{
@@ -119,7 +119,7 @@
 		function fill_form_variables()
 		{
 			$this->t->set_var(array(
-				'message'			=> implode('<br>', $this->message),
+				'message'			=> implode('<br />', array_filter($this->message)),
 				'start'				=> $this->start,
 				'search_str'			=> $this->search_str,
 				'sort'				=> $this->sort,
