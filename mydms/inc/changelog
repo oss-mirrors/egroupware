@@ -1,0 +1,9 @@
+To be changed:
+inc.ClassFolder.php    
+inc.ClassUser.php
+inc.ClassGroup.php
+inc.ClassDocument.php 
+inc.ClassKeywords.php
+
+Has been changed:(by Shang Wenbin)
+inc.DBAccess.php
