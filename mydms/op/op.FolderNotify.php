@@ -12,9 +12,12 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$folderid = (int)$_GET['folderid'];
 $folder = getFolder($folderid);
 
-
+$action		= $_GET['action'];
+$userid		= $_GET['userid'];
+$groupid	= $_GET['groupid'];
 
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );

@@ -1,26 +1,24 @@
 <?
+if(!is_array($GLOBALS['egw_info']))
+{
+	$GLOBALS['egw_info']['flags'] = array(
+	        'currentapp' => 'mydms',
+	        'noheader'   => True,
+	        'nonavbar'   => True
+	);
+
+	include('../../header.inc.php');
+}
 
 class Settings
 {
 	//IDs of admin-user, guest-user and root-folder (no need to change)
-        //changed by dawnlinux @ realss.com to solve the problem of 
-        // global category can only be created by user 1
-	//var $_adminID = 1;
-  	var $_adminID = 115;
+	var $_adminID = 1;
 	var $_guestID = 2;
 	var $_rootFolderID = 1;
 	
 	//If you don't want anybody to login as guest, set the following line to false
 	var $_enableGuestLogin = true;
-	
-	//path to where mydms is located
-	var $_rootDir = "/var/www/gtz.realss.com/htdocs/mydms/";
-	
-	//the same as URL
-	var $_httpRoot = "/mydms/";
-	
-	//where the uploaded files are stored (you better choose a directory that is not accessible through your web-server)
-	var $_contentDir = "/var/www/gtz.realss.com/document_root/mydms/";
 	
 	//default language (name of a subfolder in folder "languages")
 	var $_language = "English";
@@ -32,34 +30,30 @@ class Settings
 	var $_viewOnlineFileTypes = array(".txt", ".html", ".htm", ".pdf", ".gif", ".png", ".jpg");
 	
 	//enable/disable converting of files
-	var $_enableConverting = true;
+	var $_enableConverting = false;
 	
 	//default theme (name of a subfolder in folder "themes")
 	var $_theme = "default";
 	
-	// -------------------------------- Database-Setup --------------------------------------------
-	
-	//Path to adodb
-	var $_ADOdbPath = "/var/www/gtz.realss.com/htdocs/mydms/adodb/";
-	
-	//DB-Driver used by adodb (see adodb-readme)
-	var $_dbDriver = "mysql";
-	
-	//DB-Server
-	var $_dbHostname = "localhost";
-	
-	//database where the tables for mydms are stored (optional - see adodb-readme)
-	var $_dbDatabase = "gtz_realss_com_mydms";
-	
-	//username for database-access
-	var $_dbUser = "gtz_mydms";
-	
-	//password for database-access
-	var $_dbPass = "gtz.realss.com.mydms";
-	
 	function Settings()
 	{
-		
+		//path to where mydms is located
+		$this->_rootDir = EGW_SERVER_ROOT . '/mydms/';
+	
+		//where the uploaded files are stored (you better choose a directory that is not accessible through your web-server)
+		$this->_contentDir = $GLOBALS['egw_info']['server']['files_dir'] . "/mydms/";
+		//if the rootdir unexist or is not a directory, create it
+		if(!is_dir($this->_contentDir)) {
+			if($ret1 = is_writable($GLOBALS['egw_info']['server']['files_dir']))
+				$ret2 = mkdir($this->_contentDir,0755);
+			if(!$ret1 && $ret2)
+				die('The Root Dir does not exist or Can not be created');
+		}
+	
+		//the same as URL
+	//	$this->_httpRoot = $GLOBALS['egw_info']['server']['webserver_url'] . "/mydms/";   // we use the following more professional one
+		$this->_httpRoot = $GLOBALS['egw']->link('/mydms/');
+	
 		//files with one of the following endings will be converted with the given commands
 		//for windows users
 		$this->_convertFileTypes = array(".doc" => "cscript \"" . $this->_rootDir."op/convert_word.js\" {SOURCE} {TARGET}",
@@ -71,13 +65,6 @@ class Settings
 }
 
 $settings = new Settings();
-
-$GLOBALS['phpgw_info']['flags'] = array(
-        'currentapp' => 'mydms',
-        'noheader'   => True,
-        'nonavbar'   => True
-);
-
-include('../../header.inc.php');
+$GLOBALS['mydms']->settings = $settings;
 
 ?>

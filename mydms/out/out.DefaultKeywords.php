@@ -49,7 +49,7 @@ printStartBox(getMLText("new_default_keyword_category"));
 	<table>
 		<tr>
 			<td class="inputDescription" valign="top"><?printMLText("name");?>:</td>
-			<td><input name="cat_name"></td>
+			<td><input name="name"></td>
 		</tr>
 		<tr>
 			<td colspan="2"><br><input type="Submit"></td>
@@ -96,7 +96,7 @@ printNextBox(getMLText("edit_default_keyword_category"));
 						<form action="../op/op.DefaultKeywords.php" method="post">
 							<input type="Hidden" name="action" value="editcategory">
 							<input type="Hidden" name="categoryid" value="<?=$category->getID()?>">
-							<input name="edited_cat_name" value="<?=$category->getName()?>">&nbsp; 
+							<input name="name" value="<?=$category->getName()?>">&nbsp; 
 							<input type="Image" src="images/save.gif" title="<?=getMLText("save")?>" border="0">
 						</form>
 					</td>

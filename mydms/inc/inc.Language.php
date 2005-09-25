@@ -23,24 +23,22 @@ function getLanguages()
 
 include $settings->_rootDir . "languages/" . $settings->_language . "/lang.inc";
 
-
 function getMLText($key, $replace = array())
 {
 	GLOBAL $settings, $text;
-	
+
 	if (!isset($text[$key]))
 		return "Error getting Text: " . $key . " (" . $settings->_language . ")";
 	
 	$tmpText = $text[$key];
-	
 	if (count($replace) == 0)
-		return $tmpText;
+		return $GLOBALS['egw']->translation->convert($tmpText,'iso-8859-1',$displayCharset);
 	
 	$keys = array_keys($replace);
 	foreach ($keys as $key)
 		$tmpText = str_replace("[".$key."]", $replace[$key], $tmpText);
-	
-	return $tmpText;
+
+	return $GLOBALS['egw']->translation->convert($tmpText,'iso-8859-1',$displayCharset);
 }
 
 function printMLText($key, $replace = array())

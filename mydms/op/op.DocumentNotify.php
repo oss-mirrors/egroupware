@@ -12,6 +12,10 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$documentid = (int)$_GET['documentid'];
+$userid = $_GET['userid'];
+$groupid = $_GET['groupid'];
+$action = $_GET['action'];
 $document = getDocument($documentid);
 
 

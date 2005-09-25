@@ -13,14 +13,14 @@ print "Logout successful";
 
 //Code when running PHP in CGI-Mode ---------------------------------------------------------------
 
-//Delete from tblSessions
+//Delete from phpgw_mydms_Sessions
 
 $dms_session = $HTTP_COOKIE_VARS["mydms_session"];
 $dms_session = sanitizeString($dms_session);
 
-$queryStr = "DELETE FROM tblSessions WHERE id = '$dms_session'";
+$queryStr = "DELETE FROM phpgw_mydms_Sessions WHERE id = '$dms_session'";
 if (!$db->getResult($queryStr))
-	die ("Error while removing session from tblSessions: " . $db->getErrorMsg());
+	die ("Error while removing session from phpgw_mydms_Sessions: " . $db->getErrorMsg());
 
 //Delete Cookie
 setcookie("mydms_session", $HTTP_COOKIE_VARS["mydms_session"], time()-3600, $settings->_httpRoot);

@@ -92,16 +92,14 @@ function moveDir($sourcePath, $targetPath)
 //To-DO: fehler abfangen
 function getSuitableDocumentDir()
 {
-	GLOBAL $settings;
-	
 	$maxVal = 0;
 	
-	$handle = opendir($settings->_contentDir);
+	$handle = opendir($GLOBALS['mydms']->settings->_contentDir);
 	while ($entry = readdir($handle))
 	{
 		if ($entry == ".." || $entry == ".")
 			continue;
-		else if (is_dir($settings->_contentDir . $entry))
+		else if (is_dir($GLOBALS['mydms']->settings->_contentDir . $entry))
 		{
 			$num = intval($entry);
 			if ($num >= $maxVal)

@@ -13,7 +13,7 @@ include("../inc/inc.OutUtils.php");
 
 include("../inc/inc.Authentication.php");
 
-$folderid = (isset($folderid)) ? $folderid : 1;
+$folderid = (isset($_GET['folderid'])) ? $_GET['folderid'] : 1;
 $folder = getFolder($folderid);
 
 $notifyList = $folder->getNotifyList();

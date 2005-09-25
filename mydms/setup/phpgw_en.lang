@@ -1,3 +1,55 @@
-Content	mydms	en	Content
-Admin-Tools	mydms	en	Administration
-mydms	common	en	DMS
+access mode	mydms	en	access mode
+access rights	mydms	en	access rights
+access_mode_all	mydms	en	All
+access_mode_none	mydms	en	No access
+access_mode_read	mydms	en	Read
+access_mode_readwrite	mydms	en	Read+Write
+acl get inherited	mydms	en	acl get inherited
+add acl	mydms	en	add acl
+add document	mydms	en	add document
+add notification	mydms	en	add notification
+add subfolder	mydms	en	add subfolder
+admin-tools	mydms	en	Administrations Tools
+all versions	mydms	en	Alle Versionen
+comment	mydms	en	Kommentar
+comment for current version	mydms	en	Kommentar zur aktuellen Version
+copy acl	mydms	en	copy acl
+create empty acl	mydms	en	create empty acl
+creation date	mydms	en	Erstellt am
+current acl	mydms	en	current acl
+current version	mydms	en	Aktuelle Version
+default access	mydms	en	default access
+delete folder	mydms	en	delete folder
+delete this notification	mydms	en	delete this notification
+do you really want to delete this acl?	mydms	en	Do you really want to delete this acl?
+do you really want to delete this document?	mydms	en	Do you really want to delete this document?
+do you really want to delete this version of the document?	mydms	en	do you really want to delete this version of the document?
+does not expire	mydms	en	für immer verfügbar
+download	mydms	en	Herunterladen
+edit folder	mydms	en	edit folder
+expires	mydms	en	Gültigkeit
+expires after	mydms	en	verfügbar bis
+file size	mydms	en	Dateigröße
+filename	mydms	en	Dateiname
+folder	mydms	en	folder
+general information	mydms	en	general information
+information about last update	mydms	en	information about last update
+informations	mydms	en	Informationen
+inherit acl again	mydms	en	inherit acl again
+last update	mydms	en	Letzte Aktualisierung
+linked documents	mydms	en	Verwandte Dokumente
+lock status	mydms	en	Sperrstatus
+mime type	mydms	en	Mime-Typ
+move document	mydms	en	move document
+move folder	mydms	en	move folder
+mydms	common	en	mydms
+notifications	mydms	en	notifications
+permission	mydms	en	permission
+this document gets locked by you!	mydms	en	this document gets locked by you!
+this document gets unlocked by you.	mydms	en	this document gets unlocked by you.
+this document is currently not locked.	mydms	en	this document is currently not locked.
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	en	this document is locked by <a href="mailto:%1">%2</a>.
+update document	mydms	en	update document
+upload date	mydms	en	Upload am
+uploaded by	mydms	en	Upload durch
+view online	mydms	en	Online anzeigen

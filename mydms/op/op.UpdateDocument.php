@@ -12,6 +12,14 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$comment	= $_POST['comment'];
+$documentid	= (int)$_POST['documentid'];
+$expires	= $_POST['expires'];
+$expday		= (int)$_POST['expday'];
+$expmonth	= (int)$_POST['expmonth'];
+$expyear	= (int)$_POST['expyear'];
+$userfile	= $_FILES['userfile']['tmp_name'];
+
 
 $document = getDocument($documentid);
 

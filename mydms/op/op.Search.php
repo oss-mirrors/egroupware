@@ -11,6 +11,8 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$query	= $_GET['query'];
+$mode	= $_GET['mode'];
 
 $query = sanitizeString($query);
 $mode  = sanitizeString($mode);

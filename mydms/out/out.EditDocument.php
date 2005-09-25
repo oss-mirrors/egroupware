@@ -13,6 +13,7 @@ include("../inc/inc.OutUtils.php");
 
 include("../inc/inc.Authentication.php");
 
+$documentid = $_GET['documentid'];
 $document = getDocument($documentid);
 $folder = $document->getFolder();
 

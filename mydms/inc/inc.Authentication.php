@@ -1,7 +1,4 @@
 <?
-
-
-
 include_once("inc.Utils.php");
 
 switch($GLOBALS['phpgw_info']['user']['preferences']['common']['lang'])
@@ -18,7 +15,6 @@ switch($GLOBALS['phpgw_info']['user']['preferences']['common']['lang'])
 	default:
 	  $lang1 = "English";
 }
-
 
 $user = getUser($GLOBALS['phpgw_info']['user']['account_id']);
 $theme = 'English';

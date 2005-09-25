@@ -15,7 +15,7 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 
-$folderid = (isset($folderid)) ? $folderid : 1;
+$folderid = ((int)$_GET['folderid'] > 1) ? (int)$_GET['folderid'] : 1;
 $folder = getFolder($folderid);
 
 if ($folder->getAccessMode($user) < M_READ)
@@ -25,12 +25,11 @@ if ($folder->getAccessMode($user) < M_READ)
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );
 printTitleBar($folder);
 printFolderPageStart($folder);
+#printPageHeader(getMLText("folder_overview") . ": " . $folder->getName());
 
-printPageHeader(getMLText("folder_overview") . ": " . $folder->getName());
+#printStartBox(getMLText("folder_infos"));
 
-printStartBox(getMLText("folder_infos"));
-
-?>
+/* ?>
 	
 	<table cellpadding="0" cellspacing="10">
 		<tr>
@@ -50,7 +49,7 @@ printStartBox(getMLText("folder_infos"));
 	</table>
 	
 <?
-printNextBox(getMLText("subfolder_list"));
+printStartBox(getMLText("subfolder_list"));
 ?>
 				
 	<table cellspacing="5" cellpadding="0" border="0">
@@ -86,8 +85,8 @@ printNextBox(getMLText("subfolder_list"));
 	?>
 	</table>
 
-<?
-	printNextBox(getMLText("document_list"));
+<?*/
+	printStartBox(getMLText("document_list"));
 ?>
 
 	<table cellspacing="5" cellpadding="0" border="0">
@@ -96,7 +95,7 @@ printNextBox(getMLText("subfolder_list"));
 		$documents = filterAccess($documents, $user, M_READ);
 		if (count($documents) > 0)
 		{
-			$rownum = count($documents)+1;
+			$rownum = (count($documents)*2)+1;
 			print "<tr>\n";
 			print "<td></td>\n";
 			print "<td class=\"filelist\" style=\"border-bottom: 1pt solid #000080;\"><i>".getMLText("name")."</i></td>\n";
@@ -110,9 +109,27 @@ printNextBox(getMLText("subfolder_list"));
 				$owner = $document->getOwner();
 				$comment = $document->getComment();
 				if (strlen($comment) > 25) $comment = substr($comment, 0, 22) . "...";
+				
+				$linkData = array
+				(
+					'documentid'	=> $document->getID(),
+					'menuaction'	=> 'mydms.uimydms.viewDocument'
+				);
+				$editURL = $GLOBALS['egw']->link('/index.php',$linkData);
+				
+				// the old code
+				#print "<tr>";
+				#print "<td><img src=\"images/file.gif\" width=18 height=18 border=0></td>";
+				#print "<td class=\"filelist\"><a class=\"filelist\" href=\"out.ViewDocument.php?documentid=".$document->getID()."\">" . $document->getName() . "</a></td>\n";
+				#print "<td class=\"filelist\">" . $comment . "</td>";
+				#print "<td class=\"filelist\">".$owner->getFullName()."</td>";
+				#print "</tr>";
+				
+				// the new code
+				// onclick="window.open(this.href,this.target,'dependent=yes,width=750,height=400,scrollbars=yes,status=yes'); return false;"
 				print "<tr>";
 				print "<td><img src=\"images/file.gif\" width=18 height=18 border=0></td>";
-				print "<td class=\"filelist\"><a class=\"filelist\" href=\"out.ViewDocument.php?documentid=".$document->getID()."\">" . $document->getName() . "</a></td>\n";
+				print "<td class=\"filelist\"><a class=\"filelist\" href=\"#\" onclick=\"javascript:egw_openWindowCentered('$editURL','editDocument','680','630');\">" . $document->getName() . "</a></td>\n";
 				print "<td class=\"filelist\">" . $comment . "</td>";
 				print "<td class=\"filelist\">".$owner->getFullName()."</td>";
 				print "</tr>";
@@ -128,7 +145,5 @@ printNextBox(getMLText("subfolder_list"));
 printEndBox();
 
 printFolderPageEnd($folder);
-
-
 
 ?>

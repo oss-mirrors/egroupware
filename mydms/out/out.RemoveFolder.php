@@ -13,6 +13,7 @@ include("../inc/inc.OutUtils.php");
 
 include("../inc/inc.Authentication.php");
 
+$folderid = $_GET['folderid'];
 $folder = getFolder($folderid);
 
 if ($folder->getAccessMode($user) < M_ALL)

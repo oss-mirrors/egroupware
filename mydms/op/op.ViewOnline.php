@@ -19,6 +19,8 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 
+$documentid = (int)$_GET['documentid'];
+$version = (int)$_GET['version'];
 $document = getDocument($documentid);
 
 if ($document->getAccessMode($user) < M_READ)

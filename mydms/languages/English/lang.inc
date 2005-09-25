@@ -1,6 +1,5 @@
 <?
 $text = array();
-$text["GTZ E-Office Document Management System"] = "GTZ E-Office Document Management System";
 $text["folder_title"] = "MyDMS - Folder [foldername]";
 $text["document_title"] = "MyDMS - Document [documentname]";
 $text["folder_infos"] = "Informations";
@@ -17,7 +16,7 @@ $text["logout"] = "Logout";
 $text["foldertree"] = "Foldertree";
 $text["selected_folder"] = "Selected folder";
 $text["selected_document"] = "Selected document";
-$text["folder_path"] = "Path to the current folder";
+$text["folder_path"] = "Path";
 $text["folder_overview"] = "Folder-Overview";
 $text["document_overview"] = "Document-Overview";
 $text["comment"] = "Comment";

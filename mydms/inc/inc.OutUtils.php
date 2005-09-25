@@ -27,14 +27,23 @@ function printHTMLHead($title)
 {
 	global $theme;
 
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info']['flags'] = array(
         'currentapp' => 'mydms',
         'noheader'   => True,
         'nonavbar'   => True
 );
 	include_once('../../header.inc.php');
+	
+	if(!@is_object($GLOBALS['egw']->js))
+	{
+		$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+	}
+	$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+	$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
 
-	$GLOBALS['phpgw']->common->phpgw_header();
+	$GLOBALS['egw']->js->validate_file('jscode','mydms','mydms');
+                        
+	$GLOBALS['egw']->common->phpgw_header();
 	echo parse_navbar();
 
 	if ( is_file("../themes/$theme/styles.css") )
@@ -52,7 +61,7 @@ function printHTMLFoot()
 {
 	global $theme;
 
-	$GLOBALS['phpgw']->common->phpgw_footer();	
+	$GLOBALS['egw']->common->phpgw_footer();	
 	if ( is_file("../themes/$theme/HTMLFoot.html" ) )
 	{
 		include("../themes/$theme/HTMLFoot.html");
@@ -126,6 +135,8 @@ function printGoto($targets)
 
 function printTitleBar($folder)
 {
+	return; 
+	
 	global $user, $settings, $theme;
 	
 	$options=array();
@@ -145,11 +156,9 @@ function printTitleBar($folder)
 	
 	//$options[getMLText("logout")]=$settings->_httpRoot . "op/op.Logout.php";
 	
-	//$title=getMLText("logged_in_as")." ".$user->getFullName();
-	//$menu = buildMenu( $options, "titlebar" );
-
-	$title=getMLText("GTZ E-Office Document Management System");
-
+	$title=getMLText("logged_in_as")." ".$user->getFullName();
+	$menu = buildMenu( $options, "titlebar" );
+	
 	if ( is_file("../themes/$theme/TitleBar.html" ) )
 	{
 		include("../themes/$theme/TitleBar.html");
@@ -162,71 +171,31 @@ function printTitleBar($folder)
 function printFolderTree($path, $level = 0, $activeObj, $isFolder)
 {
 	GLOBAL $user;
-	
-	$folder = $path[$level];
-	$subFolders = $folder->getSubFolders();
-	$subFolders = filterAccess($subFolders, $user, M_READ);
-	if ($level == count($path)-1)
+
+	#$folder = $path[$level];
+	#$subFolders = $folder->getSubFolders();
+	#$subFolders = filterAccess($subFolders, $user, M_READ);
+
+	$allSubFolders = array();
+	foreach($path as $folderObject)
 	{
-		$documents = $folder->getDocuments();
-		$documents = filterAccess($documents, $user, M_READ);
+		$allSubFolders['_id'.$folderObject->getID()] = $folderObject;
+		$subFoldersL1 = $folderObject->getSubFolders();
+		foreach((array)$subFoldersL1 as $subFolderL1Object)
+		{
+			$allSubFolders['_id'.$subFolderL1Object->getID()] = $subFolderL1Object;
+			$subFoldersL2 = $subFolderL1Object->getSubFolders();
+			foreach((array)$subFoldersL2 as $subFolderL2Object)
+			{
+				$allSubFolders['_id'.$subFolderL2Object->getID()] = $subFolderL2Object;
+			}
+		}
 	}
-	else
-		$documents = array();
+
+	$uimydms =& CreateObject('mydms.uimydms');
+	print $uimydms->folderChooser($allSubFolders, $activeObj);
 	
-	if ($level+1 < count($path))
-		$nextFolderID = $path[$level+1]->getID();
-	else
-		$nextFolderID = -1;
-	
-	print "<table cellpadding=0 cellspacing=0>\n";
-	print "  <tr>\n";
-	print "    <td valign=\"top\"";
-	if (count($subFolders) > 0 || count ($documents) > 0)
-		print " background=\"".getImgPath("down.gif")."\"";
-	print "><img src=\"";
-		if ($level == 0) printImgPath("to_down.gif");
-		else if ((count($subFolders) > 0) || (count($documents) > 0)) printImgPath("right_in_to_down.gif");
-		else printImgPath("right_in.gif");
-	print "\" border=0></td>\n";
-	if (($folder->getID() == $activeObj->getID()) && $isFolder)
-		print "    <td class=\"foldertree_active\"><a href=\"out.ViewFolder.php?folderid=".$folder->getID()."\" class=\"foldertree_active\"><img src=\"".getImgPath("folder_opened.gif")."\" width=18 height=18 border=0>".$folder->getName()."</a></td>\n";
-	else
-		print "    <td class=\"foldertree_inpath\"><a href=\"out.ViewFolder.php?folderid=".$folder->getID()."\" class=\"foldertree_inpath\"><img src=\"".getImgPath("folder_opened.gif")."\" width=18 height=18 border=0>".$folder->getName()."</a></td>\n";
-	print "  </tr>\n";
-	
-	for ($i = 0; $i < count($subFolders); $i++)
-	{
-		print "<tr>";
-		if (($i +1 < count($subFolders)) || (count($documents) != 0))
-			print "<td background=\"".getImgPath("down.gif")."\" valign=\"top\"><img src=\"".getImgPath("right.gif")."\" border=0></td>";
-		else
-			print "<td valign=\"top\"><img src=\"".getImgPath("right_last.gif")."\" border=0></td>";
-		print "<td>";
-		if ($subFolders[$i]->getID() == $nextFolderID)
-			printFolderTree($path, $level+1, $activeObj, $isFolder);
-		else
-			print "<table cellpadding=0 cellspacing=0><tr><td valign=\"top\"><img src=\"".getImgPath("right_in.gif")."\"></td><td class=\"foldertree\" valign=\"top\"><a href=\"out.ViewFolder.php?folderid=".$subFolders[$i]->getID()."\" class=\"foldertree\"><img src=\"".getImgPath("folder_closed.gif")."\" width=18 height=18 border=0>".$subFolders[$i]->getName()."</a></td></tr></table>";
-		print "</td>";
-		print "</tr>";
-	}
-	for ($i = 0; $i < count($documents); $i++)
-	{
-		print "<tr>";
-		if ($i +1 < count($documents))
-			print "<td background=\"".getImgPath("down.gif")."\" valign=\"top\"><img src=\"".getImgPath("right.gif")."\" border=0></td>";
-		else
-			print "<td valign=\"top\"><img src=\"".getImgPath("right_last.gif")."\" border=0></td>";
-		print "<td>";
-		if (!$isFolder  && $documents[$i]->getID() == $activeObj->getID())
-			print "<table cellpadding=0 cellspacing=0><tr><td valign=\"top\"><img src=\"".getImgPath("right_in.gif")."\"></td><td class=\"foldertree_active\"><a href=\"out.ViewDocument.php?documentid=".$documents[$i]->getID()."\" class=\"foldertree_active\"><img src=\"".getImgPath("file.gif")."\" width=18 height=18 border=0>".$documents[$i]->getName()."</a></td></tr></table>";
-		else
-			print "<table cellpadding=0 cellspacing=0><tr><td valign=\"top\"><img src=\"".getImgPath("right_in.gif")."\"></td><td class=\"foldertree\"><a href=\"out.ViewDocument.php?documentid=".$documents[$i]->getID()."\" class=\"foldertree\"><img src=\"".getImgPath("file.gif")."\" width=18 height=18 border=0>".$documents[$i]->getName()."</a></td></tr></table>";
-		print "</td>";
-		print "</tr>";
-	}
-	
-	print "</table>\n";
+	return; 
 }
 
 
@@ -234,18 +203,23 @@ function printFolderPageStart($folder)
 {
 	global $theme;
 	
+	$uimydms =& CreateObject('mydms.uimydms');
+	
 	$title1 = getMLText("foldertree");
 	$title2 = "<img src='".getImgPath("folder_opened.gif")."' ".
 	               "width='18' height='18' alt='' border='0' align='absmiddle'> ".
 	  	  getMLText("selected_folder") . ": " . $folder->getName();
-	$txtpath = getMLText("folder_path") . ": ";
-	$path = $folder->getPath();
-	for ($i = 0; $i < count($path); $i++)
+	$path = $folder->getPathNew();
+
+	$txtpath = '';
+	foreach($path as $folderObject)
 	{
-		$txtpath .= "<a class=\"path\" href=\"out.ViewFolder.php?folderid=".$path[$i]->getID()."\">".
-		            $path[$i]->getName()."</a>";
-		if ($i +1 < count($path)) $txtpath .= " / ";
+		if(!empty($txtpath)) $txtpath .= " / ";
+		$txtpath .= "<a class=\"path\" href=\"out.ViewFolder.php?folderid=".$folderObject->getID()."\">".
+		            $folderObject->getName()."</a>";
 	}
+	
+	$txtpath = getMLText("folder_path") . ": " . $txtpath;
 	
 	if ( is_file("../themes/$theme/FolderPageStart.html" ) )
 	{
@@ -258,9 +232,8 @@ function printFolderPageStart($folder)
 
 function printFolderPageEnd($folder)
 {
-
 	GLOBAL $user, $theme;
-	
+
 	$title = getMLText("edit_folder");
 	$options=array();
 	$accessMode = $folder->getAccessMode($user);
@@ -279,8 +252,8 @@ function printFolderPageEnd($folder)
 		$options[getMLText("edit_folder_access")] = "out.FolderAccess.php?folderid=" . $folder->getID();
 	}
 	
-	//$menu=buildMenu( $options, "editfolder" );
-	$menu=buildMenu( $options , "editfolder_text");	
+	$menu=buildMenu( $options, "editfolder" );
+	
 	if ( is_file("../themes/$theme/FolderPageEnd.html" ) )
 	{
 		include("../themes/$theme/FolderPageEnd.html");
@@ -297,21 +270,27 @@ function printPageHeader($header)
 function printDocumentPageStart($document)
 {
 	global $theme;
+
+	$uimydms =& CreateObject('mydms.uimydms');
 	
 	$folder = $document->getFolder();
 	$title1 = getMLText("foldertree");
 	$title2 = "<img src='".getImgPath("file.gif")."' ".
 	               "width='18' height='18' alt='' border='0' align='absmiddle'> ".
 	  	  getMLText("selected_document") . ": " . $document->getName();
-	$txtpath = getMLText("folder_path") . ": ";
-	$path = $folder->getPath();
-	for ($i = 0; $i < count($path); $i++)
+
+	$path = $folder->getPathNew();
+
+	$txtpath = '';
+	foreach($path as $folderObject)
 	{
-		$txtpath .= "<a class=\"path\" href=\"out.ViewFolder.php?folderid=".$path[$i]->getID()."\">".
-		            $path[$i]->getName()."</a>";
-		if ($i +1 < count($path)) $txtpath .= " / ";
+		if(!empty($txtpath)) $txtpath .= " / ";
+		$txtpath .= "<a class=\"path\" href=\"out.ViewFolder.php?folderid=".$folderObject->getID()."\">".
+		            $folderObject->getName()."</a>";
 	}
 	
+	$txtpath = getMLText("folder_path") . ": " . $txtpath;
+
 	if ( is_file("../themes/$theme/DocumentPageStart.html" ) )
 	{
 		include("../themes/$theme/DocumentPageStart.html");
@@ -358,9 +337,8 @@ function printDocumentPageEnd($document)
 	  $options[getMLText("edit_document_access")]	= "out.DocumentAccess" . $docid;
 	}
 	
-	//$menu=buildMenu( $options, "editfolder" );
-	$menu=buildMenu( $options , "editfolder_text");
-
+	$menu=buildMenu( $options, "editfolder" );
+	
 	if ( is_file("../themes/$theme/DocumentPageEnd.html" ) )
 	{
 		include("../themes/$theme/DocumentPageEnd.html");
@@ -453,11 +431,23 @@ function printDocumentChooser($formName) {
 
 function printFolderChooser($formName, $accessMode, $exclude = -1, $default = false) {
 	GLOBAL $settings;
+	
+	$linkData = array
+	(
+		'menuaction'	=> 'mydms.uimydms.folderChooser',
+		'form'		=> $formName,
+		'mode'		=> $accessMode,
+		'exlcude'	=> $exclude,
+		'folderid'	=> $settings->_rootFolderID
+	);
+	$link = $GLOBALS['egw']->link('/index.php',$linkData);
+	
 	?>
 	<script language="JavaScript">
 	var openDlg;
 	function chooseDoc() {
-		openDlg = open("out.FolderChooser.php?form=<?=$formName?>&mode=<?=$accessMode?>&exclude=<?=$exclude?>&folderid=<?=$settings->_rootFolderID?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
+		//openDlg = open("out.FolderChooser.php?form=<?=$formName?>&mode=<?=$accessMode?>&exclude=<?=$exclude?>&folderid=<?=$settings->_rootFolderID?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
+		openDlg = open("<?=$link?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
 	}
 	</script>
 	<?
@@ -522,8 +512,7 @@ function buildMenu( $options , $class="titlebar" )
 	while ( list($desc,$url) = each($options) )
 	{
 		$menu.=$sep;
-		//$menu.="<nobr><a href='$url' class='$class'>$desc</a></nobr>\n";
-		$menu.="<nobr><a href='$url'><span class='$class'>$desc</span></a></nobr>\n";
+		$menu.="<nobr><a href='$url' class='$class'>$desc</a></nobr>\n";
 		$sep=" | \n";
 	}
 	return $menu;

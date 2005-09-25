@@ -30,11 +30,9 @@ if ($action == "addcategory")
 	print "<div class=\"standardText\">";
 	printMLText("creating_new_default_keyword_category");
 	
-	//changed by dawnlinux @ realss.com from variable name "name" to "cat_name"
-	//to fix the bug of always producing "sort" as the cat name
-	$cat_name = sanitizeString($cat_name);
+	$name = sanitizeString($name);
 	
-	$newCategory = addKeywordCategory($user->getID(), $cat_name);
+	$newCategory = addKeywordCategory($user->getID(), $name);
 	if ($newCategory) {
 		printMLText("op_finished");
 		
@@ -88,11 +86,9 @@ else if ($action == "editcategory")
 	if (!$user->isAdmin() && $owner->getID() != $user->getID())
 		die("You're not allowed to edit this category");
 	
-	//changed by dawnlinux @ realss.com from variable "name" to "edited_cat_name" 
-	//to solve the problem that it is aways producing re-edited name as "sort"
-	$edited_cat_name = sanitizeString($edited_cat_name);
+	$name = sanitizeString($name);
 	
-	if ($category->setName($edited_cat_name)) {
+	if ($category->setName($name)) {
 		printMLText("op_finished");
 		
 		if ($user->isAdmin())

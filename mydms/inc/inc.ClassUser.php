@@ -103,7 +103,7 @@ function addUser($login, $pwd, $fullName, $email, $comment)
 	echo "add user is disabled \n";
 	/*GLOBAl $db;
 	
-	$queryStr = "INSERT INTO tblUsers (login, pwd, fullName, email, comment, isAdmin) VALUES ('".$login."', '".$pwd."', '".$fullName."', '".$email."', '".$comment."', 0)";
+	$queryStr = "INSERT INTO phpgw_mydms_Users (login, pwd, fullName, email, comment, isAdmin) VALUES ('".$login."', '".$pwd."', '".$fullName."', '".$email."', '".$comment."', 0)";
 	$res = $db->getResult($queryStr);
 	if (!$res)
 		return false;
@@ -145,7 +145,7 @@ class User
 	{
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblUsers SET login ='" . $newLogin . "' WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Users SET login ='" . $newLogin . "' WHERE id = " . $this->_id;
 		$res = $db->getResult($queryStr);
 		if (!$res)
 			return false;
@@ -160,7 +160,7 @@ class User
 	{
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblUsers SET fullname = '" . $newFullName . "' WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Users SET fullname = '" . $newFullName . "' WHERE id = " . $this->_id;
 		$res = $db->getResult($queryStr);
 		if (!$res)
 			return false;
@@ -175,7 +175,7 @@ class User
 	{
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblUsers SET pwd ='" . $newPwd . "' WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Users SET pwd ='" . $newPwd . "' WHERE id = " . $this->_id;
 		$res = $db->getResult($queryStr);
 		if (!$res)
 			return false;
@@ -190,7 +190,7 @@ class User
 	{
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblUsers SET email ='" . $newEmail . "' WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Users SET email ='" . $newEmail . "' WHERE id = " . $this->_id;
 		$res = $db->getResult($queryStr);
 		if (!$res)
 			return false;
@@ -205,7 +205,7 @@ class User
 	{
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblUsers SET comment ='" . $newComment . "' WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Users SET comment ='" . $newComment . "' WHERE id = " . $this->_id;
 		$res = $db->getResult($queryStr);
 		if (!$res)
 			return false;
@@ -221,7 +221,7 @@ class User
 		GLOBAL $db;
 		
 		$isAdmin = ($isAdmin) ? "1" : "0";
-		$queryStr = "UPDATE tblUsers SET isAdmin = " . $isAdmin . " WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Users SET isAdmin = " . $isAdmin . " WHERE id = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
@@ -231,19 +231,19 @@ class User
 
 	/**
 	 * Entfernt den Benutzer aus dem System.
-	 * Dies ist jedoch nicht mit einem Löschen des entsprechenden Eintrags aus tblUsers geschehen - vielmehr
-	 * muss dafür gesorgt werden, dass der Benutzer nirgendwo mehr auftaucht. D.h. auch die Tabellen tblACLs,
-	 * tblNotify, tblGroupMembers, tblFolders, tblDocuments und tblDocumentContent müssen berücksichtigt werden.
+	 * Dies ist jedoch nicht mit einem Löschen des entsprechenden Eintrags aus phpgw_mydms_Users geschehen - vielmehr
+	 * muss dafür gesorgt werden, dass der Benutzer nirgendwo mehr auftaucht. D.h. auch die Tabellen phpgw_mydms_ACLs,
+	 * phpgw_mydms_Notify, phpgw_mydms_GroupMembers, phpgw_mydms_Folders, phpgw_mydms_Documents und phpgw_mydms_DocumentContent müssen berücksichtigt werden.
 	 */
 	function remove()
 	{
 		GLOBAL $db, $settings;
 		
 		//Private Stichwortlisten löschen
-		$queryStr = "SELECT tblKeywords.id FROM tblKeywords, tblKeywordCategories WHERE tblKeywords.category = tblKeywordCategories.id AND tblKeywordCategories.owner = " . $this->_id;
+		$queryStr = "SELECT phpgw_mydms_Keywords.id FROM phpgw_mydms_Keywords, phpgw_mydms_KeywordCategories WHERE phpgw_mydms_Keywords.category = phpgw_mydms_KeywordCategories.id AND phpgw_mydms_KeywordCategories.owner = " . $this->_id;
 		$resultArr = $db->getResultArray($queryStr);
 		if (count($resultArr) > 0) {
-			$queryStr = "DELETE FROM tblKeywords WHERE ";
+			$queryStr = "DELETE FROM phpgw_mydms_Keywords WHERE ";
 			for ($i = 0; $i < count($resultArr); $i++) {
 				$queryStr .= "id = " . $resultArr[$i]["id"];
 				if ($i + 1 < count($resultArr))
@@ -252,46 +252,46 @@ class User
 			if (!$db->getResult($queryStr))
 				return false;
 		}
-		$queryStr = "DELETE FROM tblKeywordCategories WHERE owner = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_KeywordCategories WHERE owner = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
 		//Benachrichtigungen entfernen
-		$queryStr = "DELETE FROM tblNotify WHERE userID = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE userID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		//Der Besitz von Dokumenten oder Ordnern, deren bisheriger Besitzer der zu löschende war, geht an den Admin über
-		$queryStr = "UPDATE tblFolders SET owner = " . $settings->_adminID . " WHERE owner = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Folders SET owner = " . $settings->_adminID . " WHERE owner = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		$queryStr = "UPDATE tblDocuments SET owner = " . $settings->_adminID . " WHERE owner = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Documents SET owner = " . $settings->_adminID . " WHERE owner = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		$queryStr = "UPDATE tblDocumentContent SET createdBy = " . $settings->_adminID . " WHERE createdBy = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_DocumentContent SET createdBy = " . $settings->_adminID . " WHERE createdBy = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		//Verweise auf Dokumente: Private löschen...
-		$queryStr = "DELETE FROM tblDocumentLinks WHERE userID = " . $this->_id . " AND public = 0";
+		$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE userID = " . $this->_id . " AND public = 0";
 		if (!$db->getResult($queryStr))
 			return false;
 		//... und öffentliche an Admin übergeben
-		$queryStr = "UPDATE tblDocumentLinks SET userID = " . $settings->_adminID . " WHERE userID = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_DocumentLinks SET userID = " . $settings->_adminID . " WHERE userID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		//Evtl. von diesem Benutzer gelockte Dokumente werden freigegeben
-		$queryStr = "UPDATE tblDocuments SET locked = -1 WHERE locked = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Documents SET locked = -1 WHERE locked = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		//User aus allen Gruppen löschen
-		$queryStr = "DELETE FROM tblGroupMembers WHERE userID = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_GroupMembers WHERE userID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		//User aus allen ACLs streichen
-		$queryStr = "DELETE FROM tblACLs WHERE userID = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE userID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		//Eintrag aus tblUsers löschen
-		$queryStr = "DELETE FROM tblUsers WHERE id = " . $this->_id;
+		//Eintrag aus phpgw_mydms_Users löschen
+		$queryStr = "DELETE FROM phpgw_mydms_Users WHERE id = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
@@ -347,7 +347,7 @@ class User
 		{
 			GLOBAL $db;
 			
-			$queryStr = "SELECT COUNT(*) AS num FROM tblUserImages WHERE userID = " . $this->_id;
+			$queryStr = "SELECT COUNT(*) AS num FROM phpgw_mydms_UserImages WHERE userID = " . $this->_id;
 			$resArr = $db->getResultArray($queryStr);
 			if (is_bool($resArr) && $resArr == false)
 				return false;
@@ -378,9 +378,9 @@ class User
 		fclose($fp);
 		
 		if ($this->hasImage())
-			$queryStr = "UPDATE tblUserImages SET image = '".base64_encode($content)."', mimeType = '". $mimeType."' WHERE userID = " . $this->_id;
+			$queryStr = "UPDATE phpgw_mydms_UserImages SET image = '".base64_encode($content)."', mimeType = '". $mimeType."' WHERE userID = " . $this->_id;
 		else
-			$queryStr = "INSERT INTO tblUserImages (userID, image, mimeType) VALUES (" . $this->_id . ", '".base64_encode($content)."', '".$mimeType."')";
+			$queryStr = "INSERT INTO phpgw_mydms_UserImages (userID, image, mimeType) VALUES (" . $this->_id . ", '".base64_encode($content)."', '".$mimeType."')";
 		if (!$db->getResult($queryStr))
 			return false;
 		

@@ -12,6 +12,12 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$documentid	= (int)$_GET['documentid'];
+$expires	= $_GET['expires'];
+$expday		= $_GET['expday'];
+$expmonth	= $_GET['expmonth'];
+$expyear	= $_GET['expyear'];
+
 $document = getDocument($documentid);
 
 printHTMLHead( getMLText("document_title", array("documentname" => $document->getName()) ) );

@@ -8,7 +8,7 @@
 function getGroup($id)
 {
 	
-	$name = $GLOBALS['phpgw']->accounts->id2name($id);
+	$name = $GLOBALS['egw']->accounts->id2name($id);
 	
 	return new Group($id, $name, '');
 }
@@ -17,7 +17,7 @@ function getGroup($id)
 function getAllGroups()
 {
 	
-	$phpgw_groups = $GLOBALS['phpgw']->accounts->get_list('groups');
+	$phpgw_groups = $GLOBALS['egw']->accounts->get_list('groups');
 	
 	$groups = array();
 	
@@ -32,7 +32,7 @@ function addGroup($name, $comment)
 {
 	GLOBAl $db;
 	
-	$queryStr = "INSERT INTO tblGroups (name, comment) VALUES ('".$name."', '" . $comment . "')";
+	$queryStr = "INSERT INTO phpgw_mydms_Groups (name, comment) VALUES ('".$name."', '" . $comment . "')";
 	if (!$db->getResult($queryStr))
 		return false;
 	
@@ -64,7 +64,7 @@ class Group
 	{
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblGroups SET name = '" . $newName . "' WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Groups SET name = '" . $newName . "' WHERE id = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
@@ -78,7 +78,7 @@ class Group
 	{
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblGroups SET comment = '" . $newComment . "' WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Groups SET comment = '" . $newComment . "' WHERE id = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
@@ -88,7 +88,7 @@ class Group
 
 	function getUsers()
 	{
-		$members = $GLOBALS['phpgw']->accounts->member($this->_id);	
+		$members = $GLOBALS['egw']->accounts->member($this->_id);	
 		$egw_group_member = array();
 
 		if (is_array($members))
@@ -118,7 +118,7 @@ class Group
 	{
 		GLOBAL $db;
 		
-		$queryStr = "INSERT INTO tblGroupMembers (groupID, userID) VALUES (".$this->_id.", ".$user->getID().")";
+		$queryStr = "INSERT INTO phpgw_mydms_GroupMembers (groupID, userID) VALUES (".$this->_id.", ".$user->getID().")";
 		$res = $db->getResult($queryStr);
 		if ($res)
 			return false;
@@ -131,7 +131,7 @@ class Group
 	{
 		GLOBAL $db;
 		
-		$queryStr = "DELETE FROM tblGroupMembers WHERE  groupID = ".$this->_id." AND userID = ".$user->getID();
+		$queryStr = "DELETE FROM phpgw_mydms_GroupMembers WHERE  groupID = ".$this->_id." AND userID = ".$user->getID();
 		$res = $db->getResult($queryStr);
 		if ($res)
 			return false;
@@ -152,7 +152,7 @@ class Group
 		}
 		
 		
-		$members = $GLOBALS['phpgw']->accounts->member($this->_id);
+		$members = $GLOBALS['egw']->accounts->member($this->_id);
                 $egw_group_member = array();
 
                 if (is_array($members))
@@ -179,24 +179,24 @@ class Group
 
 	/**
 	 * Entfernt die Gruppe aus dem System.
-	 * Dies ist jedoch nicht mit einem Löschen des entsprechenden Eintrags aus tblGroups geschehen - vielmehr
-	 * muss dafür gesorgt werden, dass die Gruppe nirgendwo mehr auftaucht. D.h. auch die Tabellen tblACLs,
-	 * tblNotify und tblGroupMembers müssen berücksichtigt werden.
+	 * Dies ist jedoch nicht mit einem Löschen des entsprechenden Eintrags aus phpgw_mydms_Groups geschehen - vielmehr
+	 * muss dafür gesorgt werden, dass die Gruppe nirgendwo mehr auftaucht. D.h. auch die Tabellen phpgw_mydms_ACLs,
+	 * phpgw_mydms_Notify und phpgw_mydms_GroupMembers müssen berücksichtigt werden.
 	 */
 	function remove()
 	{
 		GLOBAl $db;
 		
-		$queryStr = "DELETE FROM tblGroups WHERE id = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_Groups WHERE id = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		$queryStr = "DELETE FROM tblGroupMembers WHERE groupID = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_GroupMembers WHERE groupID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		$queryStr = "DELETE FROM tblACLs WHERE groupID = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE groupID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		$queryStr = "DELETE FROM tblNotify WHERE groupID = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE groupID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		

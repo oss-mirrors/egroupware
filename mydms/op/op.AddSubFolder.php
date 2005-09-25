@@ -13,6 +13,11 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 
+$folderid	= (int)$_GET['folderid'];
+$fname		= $_GET['fname'];
+$comment	= $_GET['comment'];
+$sequence	= $_GET['sequence'];
+
 $folder = getFolder($folderid);
 
 

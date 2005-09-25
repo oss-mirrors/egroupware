@@ -13,6 +13,12 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 
+$documentid = (int)$_GET['documentid'];
+$fname		= $_GET['fname'];
+$comment	= $_GET['comment'];
+$keywords	= $_GET['keywords'];
+$sequence	= $_GET['sequence'];
+
 $document = getDocument($documentid);
 
 

@@ -1,3 +1,55 @@
-Content	mydms	de	Dokumente
-Admin-Tools	mydms	de	Administration
-mydms	common	de	DMS
+access mode	mydms	de	Zugriffsberechtigung
+access rights	mydms	de	Zugriffsrechte
+access_mode_all	mydms	de	Keine Beschränkung
+access_mode_none	mydms	de	Kein Zugriff
+access_mode_read	mydms	de	Lesen
+access_mode_readwrite	mydms	de	Lesen+Schreiben
+acl get inherited	mydms	de	Berechtigungen werden momentan ererbt.
+add acl	mydms	de	Zugriffsberechtigung hinzufügen
+add document	mydms	de	Dokument anlegen
+add notification	mydms	de	Benachrichtigung hinzufügen
+add subfolder	mydms	de	Unterordner anlegen
+admin-tools	mydms	de	Administrations Tools
+all versions	mydms	de	alle Versionen
+comment	mydms	de	Kommentar
+comment for current version	mydms	de	Kommentar zur aktuellen Version
+copy acl	mydms	de	Berechtigungen kopieren
+create empty acl	mydms	de	leere ACL
+creation date	mydms	de	Erstellt am
+current acl	mydms	de	Aktuelle Zugriffsberechtigungen
+current version	mydms	de	Aktuelle Version
+default access	mydms	de	Standardberechtigung
+delete folder	mydms	de	Ordner löschen
+delete this notification	mydms	de	diese Benachrichtigung löschen
+do you really want to delete this acl?	mydms	de	Möchten Sie diese Zugriffberechtigung wirklich löschen?
+do you really want to delete this document?	mydms	de	Möchten Sie dieses Dokument wirklich löschen?
+do you really want to delete this version of the document?	mydms	de	Möchten Sie wirklich diese Version des Dokumentes löschen?
+does not expire	mydms	de	für immer verfügbar
+download	mydms	de	Herunterladen
+edit folder	mydms	de	Ordner bearbeiten
+expires	mydms	de	Gültigkeit
+expires after	mydms	de	verfügbar bis
+file size	mydms	de	Dateigröße
+filename	mydms	de	Dateiname
+folder	mydms	de	Ordner
+general information	mydms	de	Allgemeine Informationen
+information about last update	mydms	de	Informationen über das letzte Update
+informations	mydms	de	Informationen
+inherit acl again	mydms	de	Berechtigungen wieder ererben
+last update	mydms	de	Letzte Aktualisierung
+linked documents	mydms	de	verwandte Dokumente
+lock status	mydms	de	Sperrstatus
+mime type	mydms	de	Mime-Typ
+move document	mydms	de	Dokument verschieben
+move folder	mydms	de	Ordner verschieben
+mydms	common	de	MyDMS
+notifications	mydms	de	Benachrichtigungen
+permission	mydms	de	Berechtigung
+this document gets locked by you!	mydms	de	Dieses Dokument wird von Ihnen gesperrt!
+this document gets unlocked by you.	mydms	de	Dieses Dokument wird von Ihnen entsperrt.
+this document is currently not locked.	mydms	de	Dieses Dokument ist momentan nicht gesperrt.
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	de	Dieses Dokument wurde von <a href="mailto:%1">%2</a> gesperrt.
+update document	mydms	de	Dokument aktualisieren
+upload date	mydms	de	Upload am
+uploaded by	mydms	de	Upload durch
+view online	mydms	de	Online anzeigen

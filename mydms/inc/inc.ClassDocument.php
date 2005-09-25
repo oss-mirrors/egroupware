@@ -2,21 +2,24 @@
 
 function getDocument($id)
 {
-	GLOBAL $db;
-	
 	if (!is_numeric($id))
 		die ("invalid documentid");
 	
-	$queryStr = "SELECT * FROM tblDocuments WHERE id = " . $id;
-	$resArr = $db->getResultArray($queryStr);
+	$queryStr = "SELECT * FROM phpgw_mydms_Documents WHERE id = " . $id;
+	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 	if (is_bool($resArr) && $resArr == false)
 		return false;
 	
 	if (count($resArr) != 1)
 		return false;
-	
+
 	$resArr = $resArr[0];
-	return new Document($resArr["id"], $resArr["name"], $resArr["comment"], $resArr["date"], $resArr["expires"], $resArr["owner"], $resArr["folder"], $resArr["inheritAccess"], $resArr["defaultAccess"], $resArr["locked"], $resArr["keywords"], $resArr["sequence"]);
+	$newDocument = new Document($resArr["id"], $resArr["name"], $resArr["comment"], $resArr["date"], $resArr["expires"], $resArr["owner"], $resArr["folder"], $resArr["inheritAccess"], $resArr["defaultAccess"], $resArr["locked"], $resArr["keywords"], $resArr["sequence"]);
+
+	if($newDocument->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id'])) > M_NONE)
+		return $newDocument;
+	else
+		return false;
 }
 
 class Document
@@ -55,10 +58,8 @@ class Document
 
 	function setName($newName)
 	{
-		GLOBAL $db;
-		
-		$queryStr = "UPDATE tblDocuments SET name = '" . $newName . "' WHERE id = ". $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents SET name = '" . $newName . "' WHERE id = ". $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_name = $newName;
@@ -69,10 +70,8 @@ class Document
 
 	function setComment($newComment)
 	{
-		GLOBAL $db;
-		
-		$queryStr = "UPDATE tblDocuments SET comment = '" . $newComment . "' WHERE id = ". $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents SET comment = '" . $newComment . "' WHERE id = ". $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_comment = $newComment;
@@ -83,10 +82,8 @@ class Document
 
 	function setKeywords($newKeywords)
 	{
-		GLOBAL $db;
-		
-		$queryStr = "UPDATE tblDocuments SET keywords = '" . $newKeywords . "' WHERE id = ". $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents SET keywords = '" . $newKeywords . "' WHERE id = ". $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_keywords = $newKeywords;
@@ -107,10 +104,8 @@ class Document
 
 	function setFolder($newFolder)
 	{
-		GLOBAL $db;
-		
-		$queryStr = "UPDATE tblDocuments SET folder = " . $newFolder->getID() . " WHERE id = ". $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents SET folder = " . $newFolder->getID() . " WHERE id = ". $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_folderID = $newFolder->getID();
@@ -127,10 +122,8 @@ class Document
 
 	function setOwner($user)
 	{
-		GLOBAL $db;
-		
-		$queryStr = "UPDATE tblDocuments set owner = " . $user->getID() . " WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents set owner = " . $user->getID() . " WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_ownerID = $user->getID();
@@ -151,10 +144,8 @@ class Document
 
 	function setDefaultAccess($mode)
 	{
-		GLOBAL $db;
-		
-		$queryStr = "UPDATE tblDocuments set defaultAccess = " . $mode . " WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents set defaultAccess = " . $mode . " WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_defaulAccess = $mode;
@@ -165,12 +156,10 @@ class Document
 
 	function setInheritAccess($inheritAccess)
 	{
-		GLOBAL $db;
-		
 		$inheritAccess = ($inheritAccess) ? "1" : "0";
 		
-		$queryStr = "UPDATE tblDocuments SET inheritAccess = " . $inheritAccess . " WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents SET inheritAccess = " . $inheritAccess . " WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_inheritAccess = $inheritAccess;
@@ -195,12 +184,10 @@ class Document
 
 	function setExpires($expires)
 	{
-		GLOBAL $db;
-		
 		$expires = (!$expires) ? 0 : $expires;
 		
-		$queryStr = "UPDATE tblDocuments SET expires = " . $expires . " WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents SET expires = " . $expires . " WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_expires = $expires;
@@ -211,12 +198,10 @@ class Document
 
 	function setLocked($falseOrUser)
 	{
-		GLOBAL $db;
-		
 		$locked = (is_object($falseOrUser)) ? $falseOrUser->getID() : -1;
 		
-		$queryStr = "UPDATE tblDocuments SET locked = " . $locked . " WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents SET locked = " . $locked . " WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_lockingUser);
@@ -238,10 +223,8 @@ class Document
 
 	function setSequence($seq)
 	{
-		GLOBAL $db;
-		
-		$queryStr = "UPDATE tblDocuments SET sequence = " . $seq . " WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_Documents SET sequence = " . $seq . " WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		$this->_sequence = $seq;
@@ -250,10 +233,8 @@ class Document
 
 	function clearAccessList()
 	{
-		GLOBAL $db;
-		
-		$queryStr = "DELETE FROM tblACLs WHERE targetType = " . T_DOCUMENT . " AND target = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE targetType = " . T_DOCUMENT . " AND target = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_accessList);
@@ -262,8 +243,6 @@ class Document
 
 	function getAccessList()
 	{
-		GLOBAL $db;
-		
 		if ($this->inheritsAccess())
 		{
 			$res = $this->getFolder();
@@ -273,8 +252,8 @@ class Document
 		
 		if (!isset($this->_accessList))
 		{
-			$queryStr = "SELECT * FROM tblACLs WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " ORDER BY targetType";
-			$resArr = $db->getResultArray($queryStr);
+			$queryStr = "SELECT * FROM phpgw_mydms_ACLs WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " ORDER BY targetType";
+			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && !$resArr)
 				return false;
 			
@@ -293,13 +272,11 @@ class Document
 
 	function addAccess($mode, $userOrGroupID, $isUser)
 	{
-		GLOBAL $db;
-		
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "INSERT INTO tblACLs (target, targetType, ".$userOrGroup.", mode) VALUES 
+		$queryStr = "INSERT INTO phpgw_mydms_ACLs (target, targetType, ".$userOrGroup.", mode) VALUES 
 					(".$this->_id.", ".T_DOCUMENT.", " . $userOrGroupID . ", " .$mode. ")";
-		if (!$db->getResult($queryStr))
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_accessList);
@@ -308,12 +285,10 @@ class Document
 
 	function changeAccess($newMode, $userOrGroupID, $isUser)
 	{
-		GLOBAL $db;
-		
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "UPDATE tblACLs SET mode = " . $newMode . " WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " AND " . $userOrGroup . " = " . $userOrGroupID;
-		if (!$db->getResult($queryStr))
+		$queryStr = "UPDATE phpgw_mydms_ACLs SET mode = " . $newMode . " WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " AND " . $userOrGroup . " = " . $userOrGroupID;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_accessList);
@@ -322,12 +297,10 @@ class Document
 
 	function removeAccess($userOrGroupID, $isUser)
 	{
-		GLOBAL $db;
-		
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "DELETE FROM tblACLs WHERE targetType = ".T_DOCUMENT." AND target = ".$this->_id." AND ".$userOrGroup." = " . $userOrGroupID;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE targetType = ".T_DOCUMENT." AND target = ".$this->_id." AND ".$userOrGroup." = " . $userOrGroupID;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_accessList);
@@ -343,8 +316,6 @@ class Document
 	 */
 	function getAccessMode($user)
 	{
-		GLOBAL $settings;
-		
 		//Administrator??
 		if ($user->isAdmin())
 			return M_ALL;
@@ -354,7 +325,7 @@ class Document
 			return M_ALL;
 		
 		//Gast-Benutzer??
-		if (($user->getID() == $settings->_guestID) && ($settings->_enableGuestLogin))
+		if (($user->getID() == $GLOBALS['mydms']->settings->_guestID) && ($GLOBALS['mydms']->settings->_enableGuestLogin))
 		{
 			$mode = $this->getDefaultAccess();
 			if ($mode >= M_READ)
@@ -415,10 +386,8 @@ class Document
 	{
 		if (!isset($this->_notifyList))
 		{
-			GLOBAL $db;
-			
-			$queryStr ="SELECT * FROM tblNotify WHERE targetType = " . T_DOCUMENT . " AND target = " . $this->_id;
-			$resArr = $db->getResultArray($queryStr);
+			$queryStr ="SELECT * FROM phpgw_mydms_Notify WHERE targetType = " . T_DOCUMENT . " AND target = " . $this->_id;
+			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && $resArr == false)
 				return false;
 			
@@ -436,12 +405,10 @@ class Document
 
 	function addNotify($userOrGroupID, $isUser)
 	{
-		GLOBAL $db;
-		
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "INSERT INTO tblNotify (target, targetType, " . $userOrGroup . ") VALUES (" . $this->_id . ", " . T_DOCUMENT . ", " . $userOrGroupID . ")";
-		if (!$db->getResult($queryStr))
+		$queryStr = "INSERT INTO phpgw_mydms_Notify (target, targetType, " . $userOrGroup . ") VALUES (" . $this->_id . ", " . T_DOCUMENT . ", " . $userOrGroupID . ")";
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_notifyList);
@@ -450,12 +417,10 @@ class Document
 
 	function removeNotify($userOrGroupID, $isUser)
 	{
-		GLOBAL $db;
-		
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "DELETE FROM tblNotify WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT . " AND " . $userOrGroup . " = " . $userOrGroupID;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT . " AND " . $userOrGroup . " = " . $userOrGroupID;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_notifyList);
@@ -465,8 +430,6 @@ class Document
 
 	function addContent($comment, $user, $tmpFile, $orgFileName, $fileType, $mimeType)
 	{
-		GLOBAL $db, $settings;
-		
 //		if ($this->isLocked() && ($user->getID() != $this->getLockingUser()->getID()))
 //			return false;
 		
@@ -487,24 +450,28 @@ class Document
 		$dir = getSuitableDocumentDir();
 		if (is_bool($res) && !$res)
 			return false;
-		
+
 		//Kopieren der temporären Datei
-		if (!makeDir($settings->_contentDir . $dir))
+		if(!file_exists($GLOBALS['mydms']->settings->_contentDir . $dir))
+		{
+			if (!makeDir($GLOBALS['mydms']->settings->_contentDir . $dir))
+				return false;
+		}
+
+		if (!copyFile($tmpFile, $GLOBALS['mydms']->settings->_contentDir . $dir . "data" . $fileType))
 			return false;
-		if (!copyFile($tmpFile, $settings->_contentDir . $dir . "data" . $fileType))
-			return false;
-		
-		//Eintrag in tblDocumentContent
-		$queryStr = "INSERT INTO tblDocumentContent (document, version, comment, date, createdBy, dir, orgFileName, fileType, mimeType) VALUES ".
+
+		//Eintrag in phpgw_mydms_DocumentContent
+		$queryStr = "INSERT INTO phpgw_mydms_DocumentContent (document, version, comment, date, createdBy, dir, orgFileName, fileType, mimeType) VALUES ".
 					"(".$this->_id.", ".$newVersion.", '".$comment."', ".mktime().", ".$user->getID().", '".$dir."', '".$orgFileName."', '".$fileType."', '" . $mimeType . "')";
-		if (!$db->getResult($queryStr))
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_content);
 		unset($this->_latestContent);
 		
 		$this->getLatestContent();
-		if ($settings->_enableConverting && in_array($this->_latestContent->getFileType(), array_keys($settings->_convertFileTypes)))
+		if ($GLOBALS['mydms']->settings->_enableConverting && in_array($this->_latestContent->getFileType(), array_keys($GLOBALS['mydms']->settings->_convertFileTypes)))
 			$this->_latestContent->convert(); //Auch wenn das schiefgeht, wird deswegen nicht gleich alles "hingeschmissen" (sprich: false zurückgegeben)
 		
 //		$this->setLocked(false);
@@ -514,12 +481,10 @@ class Document
 
 	function getContent()
 	{
-		GLOBAL $db;
-		
 		if (!isset($this->_content))
 		{
-			$queryStr = "SELECT * FROM tblDocumentContent WHERE document = ".$this->_id." ORDER BY version";
-			$resArr = $db->getResultArray($queryStr);
+			$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." ORDER BY version";
+			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && !$res)
 				return false;
 			
@@ -546,9 +511,8 @@ class Document
 			return false;
 		}
 		
-		GLOBAL $db;
-		$queryStr = "SELECT * FROM tblDocumentContent WHERE document = ".$this->_id." AND version = " . $version;
-		$resArr = $db->getResultArray($queryStr);
+		$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." AND version = " . $version;
+		$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 		if (is_bool($resArr) && !$res)
 			return false;
 		if (count($resArr) != 1)
@@ -569,9 +533,8 @@ class Document
 				return $this->_latestContent;
 			}
 			*/
-			GLOBAL $db;
-			$queryStr = "SELECT * FROM tblDocumentContent WHERE document = ".$this->_id." ORDER BY version DESC LIMIT 0,1";
-			$resArr = $db->getResultArray($queryStr);
+			$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." ORDER BY version DESC LIMIT 0,1";
+			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && !$resArr)
 				return false;
 			if (count($resArr) != 1)
@@ -587,10 +550,8 @@ class Document
 	{
 		if (!isset($this->_documentLinks))
 		{
-			GLOBAL $db;
-			
-			$queryStr = "SELECT * FROM tblDocumentLinks WHERE document = " . $this->_id;
-			$resArr = $db->getResultArray($queryStr);
+			$queryStr = "SELECT * FROM phpgw_mydms_DocumentLinks WHERE document = " . $this->_id;
+			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && !$resArr)
 				return false;
 			$this->_documentLinks = array();
@@ -603,12 +564,10 @@ class Document
 
 	function addDocumentLink($targetID, $userID, $public)
 	{
-		GLOBAL $db;
-		
 		$public = ($public) ? "1" : "0";
 		
-		$queryStr = "INSERT INTO tblDocumentLinks(document, target, userID, public) VALUES (".$this->_id.", ".$targetID.", ".$userID.", " . $public.")";
-		if (!$db->getResult($queryStr))
+		$queryStr = "INSERT INTO phpgw_mydms_DocumentLinks(document, target, userID, public) VALUES (".$this->_id.", ".$targetID.", ".$userID.", " . $public.")";
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		unset($this->_documentLinks);
@@ -617,10 +576,8 @@ class Document
 
 	function removeDocumentLink($linkID)
 	{
-		GLOBAL $db;
-		
-		$queryStr = "DELETE FROM tblDocumentLinks WHERE id = " . $linkID;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE id = " . $linkID;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		unset ($this->_documentLinks);
 		return true;
@@ -629,8 +586,6 @@ class Document
 
 	function remove()
 	{
-		GLOBAL $db;
-		
 		$res = $this->getContent();
 		if (is_bool($res) && !$res) return false;
 		
@@ -638,17 +593,17 @@ class Document
 			if (!$this->_content[$i]->remove())
 				return false;
 		
-		$queryStr = "DELETE FROM tblDocuments WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_Documents WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		$queryStr = "DELETE FROM tblACLs WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		$queryStr = "DELETE FROM tblNotify WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		$queryStr = "DELETE FROM tblDocumentLinks WHERE document = " . $this->_id . " OR target = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE document = " . $this->_id . " OR target = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		return true;
@@ -699,20 +654,18 @@ class DocumentContent
 
 	function convert()
 	{
-		GLOBAL $settings;
-		
-		if (file_exists($settings->_contentDir . $this->_dir . "index.html"))
+		if (file_exists($GLOBALS['mydms']->settings->_contentDir . $this->_dir . "index.html"))
 			return true;
 		
-		if (!in_array($this->_fileType, array_keys($settings->_convertFileTypes)))
+		if (!in_array($this->_fileType, array_keys($GLOBALS['mydms']->settings->_convertFileTypes)))
 			return false;
 		
-		$source = $settings->_contentDir . $this->_dir . $this->getFileName();
-		$target = $settings->_contentDir . $this->_dir . "index.html";
+		$source = $GLOBALS['mydms']->settings->_contentDir . $this->_dir . $this->getFileName();
+		$target = $GLOBALS['mydms']->settings->_contentDir . $this->_dir . "index.html";
 	//	$source = str_replace("/", "\\", $source);
 	//	$target = str_replace("/", "\\", $target);
 		
-		$command = $settings->_convertFileTypes[$this->_fileType];
+		$command = $GLOBALS['mydms']->settings->_convertFileTypes[$this->_fileType];
 		$command = str_replace("{SOURCE}", "\"$source\"", $command);
 		$command = str_replace("{TARGET}", "\"$target\"", $command);
 		
@@ -730,11 +683,9 @@ class DocumentContent
 
 	function viewOnline()
 	{
-		GLOBAL $settings;
-		
-		if (in_array($this->_fileType, $settings->_viewOnlineFileTypes))
+		if (in_array($this->_fileType, $GLOBALS['mydms']->settings->_viewOnlineFileTypes))
 			return true;
-		if ($settings->_enableConverting && in_array($this->_fileType, array_keys($settings->_convertFileTypes)))
+		if ($GLOBALS['mydms']->settings->_enableConverting && in_array($this->_fileType, array_keys($GLOBALS['mydms']->settings->_convertFileTypes)))
 			if ($this->wasConverted())
 				return true;
 		
@@ -743,19 +694,15 @@ class DocumentContent
 
 	function wasConverted()
 	{
-		GLOBAL $settings;
-		
-		return file_exists($settings->_contentDir . $this->_dir . "index.html");
+		return file_exists($GLOBALS['mydms']->settings->_contentDir . $this->_dir . "index.html");
 	}
 
 	function getURL()
 	{
-		GLOBAL $settings;
-		
 		if (!$this->viewOnline())
 			return false;
 		
-		if (in_array($this->_fileType, $settings->_viewOnlineFileTypes))
+		if (in_array($this->_fileType, $GLOBALS['mydms']->settings->_viewOnlineFileTypes))
 			return "/" . $this->_documentID . "/" . $this->_version . "/" . $this->getOriginalFileName();
 		else
 			return "/" . $this->_documentID . "/" . $this->_version . "/index.html";
@@ -763,13 +710,11 @@ class DocumentContent
 
 	function remove()
 	{
-		GLOBAL $settings, $db;
-		
-		if (!removeDir($settings->_contentDir . $this->_dir))
+		if (!removeDir($GLOBALS['mydms']->settings->_contentDir . $this->_dir))
 			return false;
 		
-		$queryStr = "DELETE FROM tblDocumentContent WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_DocumentContent WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		return true;
@@ -780,13 +725,11 @@ class DocumentContent
  /* ---------------------------------------------------------------------------------------------------- */
 function getDocumentLink($linkID)
 {
-	GLOBAL $db;
-	
 	if (!is_numeric($linkID))
 		die ("invalid linkID");
 	
-	$queryStr = "SELECT * FROM tblDocumentLinks WHERE id = " . $linkID;
-	$resArr = $db->getResultArray($queryStr);
+	$queryStr = "SELECT * FROM phpgw_mydms_DocumentLinks WHERE id = " . $linkID;
+	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 	if (is_bool($resArr) && !$resArr)
 		return false;
 	
@@ -796,11 +739,9 @@ function getDocumentLink($linkID)
 
 function filterDocumentLinks($user, $links)
 {
-	GLOBAL $settings;
-	
 	$tmp = array();
 	foreach ($links as $link)
-		if ($link->isPublic() || ($link->_userID == $user->getID()) || ($user->getID() == $settings->_adminID) )
+		if ($link->isPublic() || ($link->_userID == $user->getID()) || ($user->getID() == $GLOBALS['mydms']->settings->_adminID) )
 			array_push($tmp, $link);
 	return $tmp;
 }
@@ -849,10 +790,8 @@ class DocumentLink
 
 	function remove()
 	{
-		GLOBAL $db;
-		
-		$queryStr = "DELETE FROM tblDocumentLinks WHERE id = " . $this->_id;
-		if (!$db->getResult($queryStr))
+		$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE id = " . $this->_id;
+		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
 		return true;

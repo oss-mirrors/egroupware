@@ -50,13 +50,6 @@
 		color: black;
 	}
 	
-	.editfolder_text {
-		font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
-		/*background-color : #A0A1EC;*/
-		font-size : 10pt;
-		color: blue;
-	}
-	
 	.editdocument {
 		font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
 		background-color : #A0A1CE;
@@ -66,7 +59,7 @@
 	
 	.infos {
 		font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
-		font-size : 10pt;
+		font-size : 90%;
 		color: black;
 	}
 	
@@ -89,8 +82,8 @@
 	}
 	
 	.boxHeader {
-			color : White;
-		        background-color : #000080;
+			color : black;
+		        bbackground-color : #000080;
 			font-style : italic;
 			font-size : 11pt;
 			font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;

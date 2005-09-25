@@ -13,7 +13,7 @@ include("../inc/inc.OutUtils.php");
 
 include("../inc/inc.Authentication.php");
 
-$folderid = (isset($folderid)) ? $folderid : 1;
+$folderid = (isset($_GET['folderid'])) ? $_GET['folderid'] : 1;
 $folder = getFolder($folderid);
 
 if ($folder->getAccessMode($user) < M_READWRITE)
@@ -49,14 +49,14 @@ printStartBox(getMLText("add_subfolder"));
 
 <form action="../op/op.AddSubFolder.php" name="form1" onsubmit="return checkForm();">
 	<input type="Hidden" name="folderid" value="<?print $folderid;?>">
-	<table>
+	<table border="0" width="100%">
 		<tr>
-			<td class="inputDescription"><?printMLText("name");?>:</td>
-			<td><input name="fname"></td>
+			<td class="inputDescription" width="150px"><?printMLText("name");?>:</td>
+			<td><input name="fname" style="width: 100%;"></td>
 		</tr>
 		<tr>
 			<td valign="top" class="inputDescription"><?printMLText("comment");?>:</td>
-			<td><textarea name="comment" rows="4" cols="30"></textarea></td>
+			<td><textarea name="comment" rows="4" style="width: 100%;"></textarea></td>
 		</tr>
 		<tr>
 			<td class="inputDescription"><?printMLText("sequence");?>:</td>

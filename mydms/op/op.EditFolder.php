@@ -12,9 +12,12 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-
+$folderid = (int)$_GET['folderid'];
 $folder = getFolder($folderid);
 
+$fname		= $_GET['fname'];
+$comment	= $_GET['comment'];
+$sequence	= $_GET['sequence'];
 
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );
@@ -39,7 +42,8 @@ else
 
 	$comment =  sanitizeString($comment);
 	if (!is_numeric($sequence) && $sequence != "keep")
-		die ("invalid sequence value");
+		$sequence = "keep";
+	//	die ("invalid sequence value");
 	
 	if (
 			(($folder->getName() == $fname) || $folder->setName($fname))

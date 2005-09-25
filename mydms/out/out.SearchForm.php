@@ -11,6 +11,7 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$folderid = $_GET['folderid'];
 $currentFolder = getFolder($folderid);
 
 printHTMLHead( getMLText("search") );

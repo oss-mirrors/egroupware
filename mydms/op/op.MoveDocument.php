@@ -13,6 +13,9 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 
+$documentid = (int)$_GET['documentid'];
+$targetid = (int)$_GET['targetid'];
+
 $document = getDocument($documentid);
 $oldFolder = $document->getFolder();
 $targetFolder = getFolder($targetid);

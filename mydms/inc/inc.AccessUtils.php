@@ -3,7 +3,7 @@
 define("M_NONE", 1);		//Keine Rechte
 define("M_READ", 2);		//Lese-Recht
 define("M_READWRITE", 3);	//Schreib-Lese-Recht
-define("M_ALL", 4);			//Unbeschränkte Rechte
+define("M_ALL", 4);		//Unbeschränkte Rechte
 
 define("T_FOLDER", 1);		//TargetType = Folder
 define("T_DOCUMENT", 2);	//    "      = Document

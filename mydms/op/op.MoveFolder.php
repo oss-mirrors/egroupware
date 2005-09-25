@@ -12,6 +12,8 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$folderid = $_GET['folderid'];
+$targetid = $_GET['targetid'];
 
 $folder = getFolder($folderid);
 $oldParent = $folder->getParent();

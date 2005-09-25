@@ -15,7 +15,7 @@ $myUser = getUser($userid); //es soll ja auch möglich sein, die bilder von ander
 if (!$myUser->hasImage())
 	die ("Kein Bild verfügbar");
 
-$queryStr = "SELECT * FROM tblUserImages WHERE userID = " . $userid;
+$queryStr = "SELECT * FROM phpgw_mydms_UserImages WHERE userID = " . $userid;
 $resArr = $db->getResultArray($queryStr);
 if (is_bool($resArr) && $resArr == false)
 	return false;

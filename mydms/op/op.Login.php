@@ -12,9 +12,9 @@ if($GLOBALS['phpgw']->auth->authenticate($GLOBALS['phpgw_info']['user']['account
 }
 
 
-$queryStr = "DELETE FROM tblSessions WHERE " . mktime() . " - lastAccess > 86400";
+$queryStr = "DELETE FROM phpgw_mydms_Sessions WHERE " . mktime() . " - lastAccess > 86400";
 if (!$db->getResult($queryStr))
-	die ("Error while removing old sessions from tblSessions: " . $db->getErrorMsg());
+	die ("Error while removing old sessions from phpgw_mydms_Sessions: " . $db->getErrorMsg());
 
 //Erstellen einer Sitzungs-ID
 
@@ -26,10 +26,10 @@ $sesstheme = sanitizeString($sesstheme);
 
 $userid = $GLOBALS['phpgw']->accounts->name2id($GLOBALS['phpgw_info']['user']['account_lid']);
 
-//Einfügen eines neuen Datensatzes in tblSessions
-$queryStr = "INSERT INTO tblSessions (id, userID, lastAccess, theme, language) VALUES ('$id', userid, ".mktime().", '$sesstheme', 'English')";
+//Einfügen eines neuen Datensatzes in phpgw_mydms_Sessions
+$queryStr = "INSERT INTO phpgw_mydms_Sessions (id, userID, lastAccess, theme, language) VALUES ('$id', userid, ".mktime().", '$sesstheme', 'English')";
 if (!$db->getResult($queryStr))
-	die ("Error while adding Session to tblSessions: " . $db->getErrorMsg());
+	die ("Error while adding Session to phpgw_mydms_Sessions: " . $db->getErrorMsg());
 
 //Setzen des Sitzungs-Cookies
 setcookie("mydms_session", $id, 0, $settings->_httpRoot);

@@ -1,6 +1,5 @@
 <?
 $text = array();
-$text["GTZ E-Office Document Management System"] = "GTZ E-Office 文档管理系统";
 $text["folder_title"] = "文档管理 - 文件夹 [foldername]";
 $text["document_title"] = "文档管理 - 文件 [documentname]";
 $text["folder_infos"] = "文件夹信息";

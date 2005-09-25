@@ -12,6 +12,12 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$folderid	= (int)$_GET['folderid'];
+$userid		= (int)$_GET['userid'];
+$groupid	= (int)$_GET['groupid'];
+$action		= $_GET['action'];
+$mode		= $_GET['mode'];
+
 $folder = getFolder($folderid);
 
 

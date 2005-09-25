@@ -1,7 +1,7 @@
 <?
 
 /*
- * Repräsentiert einen Eintrag in der tblACLs für einen User.
+ * Repräsentiert einen Eintrag in der phpgw_mydms_ACLs für einen User.
  * Änderungen an der Berechtigung können nicht vorgenommen werden; dafür sind die Klassen Folder und Document selbst
  * verantwortlich.
  */

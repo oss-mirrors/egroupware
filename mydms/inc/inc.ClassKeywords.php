@@ -7,7 +7,7 @@ function getKeywordCategory($id)
 	if (!is_numeric($id))
 		die ("invalid id");
 	
-	$queryStr = "SELECT * FROM tblKeywordCategories WHERE id = " . $id;
+	$queryStr = "SELECT * FROM phpgw_mydms_KeywordCategories WHERE id = " . $id;
 	$resArr = $db->getResultArray($queryStr);
 	if ((is_bool($resArr) && !$resArr) || (count($resArr) != 1))
 		return false;
@@ -20,7 +20,7 @@ function getAllKeywordCategories($userID = -1)
 {
 	GLOBAL $db, $settings;
 	
-	$queryStr = "SELECT * FROM tblKeywordCategories";
+	$queryStr = "SELECT * FROM phpgw_mydms_KeywordCategories";
 	if ($userID != -1)
 		$queryStr .= " WHERE owner = $userID OR owner = " . $settings->_adminID;
 	
@@ -39,7 +39,7 @@ function addKeywordCategory($owner, $name)
 {
 	GLOBAL $db;
 	
-	$queryStr = "INSERT INTO tblKeywordCategories (owner, name) VALUES ($owner, '$name')";
+	$queryStr = "INSERT INTO phpgw_mydms_KeywordCategories (owner, name) VALUES ($owner, '$name')";
 	if (!$db->getResult($queryStr))
 		return false;
 	
@@ -74,7 +74,7 @@ class KeywordCategory
 	{
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblKeywordCategories SET name = '$newName' WHERE id = ". $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_KeywordCategories SET name = '$newName' WHERE id = ". $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
@@ -85,7 +85,7 @@ class KeywordCategory
 	function setOwner($user) {
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblKeywordCategories SET owner = " . $user->getID() . " WHERE id " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_KeywordCategories SET owner = " . $user->getID() . " WHERE id " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
@@ -97,28 +97,28 @@ class KeywordCategory
 	function getKeywordLists() {
 		GLOBAL $db;
 		
-		$queryStr = "SELECT * FROM tblKeywords WHERE category = " . $this->_id;
+		$queryStr = "SELECT * FROM phpgw_mydms_Keywords WHERE category = " . $this->_id;
 		return $db->getResultArray($queryStr);
 	}
 
 	function editKeywordList($listID, $keywords) {
 		GLOBAL $db;
 		
-		$queryStr = "UPDATE tblKeywords SET keywords = '$keywords' WHERE id = $listID";
+		$queryStr = "UPDATE phpgw_mydms_Keywords SET keywords = '$keywords' WHERE id = $listID";
 		return $db->getResult($queryStr);
 	}
 
 	function addKeywordList($keywords) {
 		GLOBAL $db;
 		
-		$queryStr = "INSERT INTO tblKeywords (category, keywords) VALUES (" . $this->_id . ", '$keywords')";
+		$queryStr = "INSERT INTO phpgw_mydms_Keywords (category, keywords) VALUES (" . $this->_id . ", '$keywords')";
 		return $db->getResult($queryStr);
 	}
 
 	function removeKeywordList($listID) {
 		GLOBAL $db;
 		
-		$queryStr = "DELETE FROM tblKeywords WHERE id = $listID";
+		$queryStr = "DELETE FROM phpgw_mydms_Keywords WHERE id = $listID";
 		return $db->getResult($queryStr);
 	}
 
@@ -126,11 +126,11 @@ class KeywordCategory
 	{
 		GLOBAL $db;
 		
-		$queryStr = "DELETE FROM tblKeywords WHERE category = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_Keywords WHERE category = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
-		$queryStr = "DELETE FROM tblKeywordCategories WHERE id = " . $this->_id;
+		$queryStr = "DELETE FROM phpgw_mydms_KeywordCategories WHERE id = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		

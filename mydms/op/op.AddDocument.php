@@ -13,10 +13,19 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$folderid	= (int)$_POST['folderid'];
+$folder		= getFolder($folderid);
 
-$folder = getFolder($folderid);
-
-
+// form data
+$userfile	= $_FILES['userfile']['tmp_name'];
+$fname		= (!empty($_POST['fname']) ? $_POST['fname'] : $_FILES['userfile']['name']);
+$comment	= $_POST['comment'];
+$keywords	= $_POST['keywords'];
+$expires	= $_POST['expires'];
+$expday		= $_POST['expday'];
+$expmonth	= $_POST['expmonth'];
+$expyear	= $_POST['expyear'];
+$sequence	= $_POST['sequence'];
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );
 printTitleBar($folder);
@@ -43,15 +52,16 @@ else
 	{
 		printMLText("adding_document", array("documentname" => $fname, "foldername" => $folder->getName()));
 		
-		$fname     = sanitizeString($fname);
-		$comment  = sanitizeString($comment);
-		$keywords = sanitizeString($keywords);
-		$userfile_type = sanitizeString($userfile_type);
-		$userfile_name = sanitizeString($userfile_name);
+		$fname		= sanitizeString($fname);
+		$comment	= sanitizeString($comment);
+		$keywords	= sanitizeString($keywords);
+		$userfile_type	= sanitizeString($_FILES['userfile']['type']);
+		$userfile_name	= sanitizeString($_FILES['userfile']['name']);
+
 		if (!is_numeric($sequence))
 			die ("invalid sequence value");
 		
-		$lastDotIndex = strrpos(basename($userfile_name), ".");
+		$lastDotIndex	= strrpos(basename($userfile_name), ".");
 		if (is_bool($lastDotIndex) && !$lastDotIndex)
 			$fileType = ".";
 		else

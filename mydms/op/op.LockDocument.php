@@ -13,6 +13,8 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$documentid = (int)$_GET['documentid'];
+
 $document = getDocument($documentid);
 
 

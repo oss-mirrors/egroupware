@@ -13,7 +13,7 @@ include("../inc/inc.OutUtils.php");
 
 include("../inc/inc.Authentication.php");
 
-$folderid = (isset($folderid)) ? $folderid : 1;
+$folderid = (isset($_GET['folderid'])) ? $_GET['folderid'] : 1;
 $folder = getFolder($folderid);
 
 if ($folder->getAccessMode($user) < M_READWRITE)
@@ -27,9 +27,9 @@ function checkForm()
 {
 	msg = "";
 	if (document.form1.userfile.value == "") msg += "<?printMLText("js_no_file");?>\n";
-	if (document.form1.fname.value == "") msg += "<?printMLText("js_no_name");?>\n";
-	if (document.form1.comment.value == "") msg += "<?printMLText("js_no_comment");?>\n";
-	if (document.form1.keywords.value == "") msg += "<?printMLText("js_no_keywords");?>\n";
+	//if (document.form1.fname.value == "") msg += "<?printMLText("js_no_name");?>\n";
+	//if (document.form1.comment.value == "") msg += "<?printMLText("js_no_comment");?>\n";
+	//if (document.form1.keywords.value == "") msg += "<?printMLText("js_no_keywords");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
