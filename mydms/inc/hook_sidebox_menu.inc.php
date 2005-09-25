@@ -1,10 +1,12 @@
 <?php
 { 
 	$folderID	= ((int)$_GET[folderid] ? (int)$_GET[folderid] : 1);
-	$folder		= getFolder($folderID);
 	
-	$accessMode	= $folder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id']));
-
+	if(function_exists(getFolder))
+	{
+		$folder		= getFolder($folderID);
+		$accessMode	= $folder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id']));
+	}
 	$menu_title = lang('mydms');
 	$file = Array(
 		'Content' => $GLOBALS['egw']->link('/mydms/out/out.ViewFolder.php', array('folderid' => 1)),
