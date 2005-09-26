@@ -74,6 +74,8 @@
 			}
 
 			print "<tree id='$clientID'>$xmlContent</tree>";
+			
+			$GLOBALS['egw']->common->egw_exit();
 		}
 			
 		function getSubFolder()
@@ -99,6 +101,8 @@
 			}
 
 			print("</tree>");
+			
+			$GLOBALS['egw']->common->egw_exit();
 		}
 	}
 ?>
