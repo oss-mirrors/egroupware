@@ -1,11 +1,5 @@
 <?
 
-$arr = split(":", $request);
-
-$documentid = $arr[0];
-$version = $arr[1];
-
-
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
