@@ -1,5 +1,5 @@
 <?
-if(!is_array($GLOBALS['egw_info']))
+if(!isset($GLOBALS['egw_info']) || !is_array($GLOBALS['egw_info']))
 {
 	$GLOBALS['egw_info']['flags'] = array(
 	        'currentapp' => 'mydms',
