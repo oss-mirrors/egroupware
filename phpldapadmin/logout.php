@@ -1,53 +1,43 @@
-<?php 
+<?php
+// $Header$
 
-/*
- * logout.php
- * For servers whose auth_type is set to 'form'. Pass me 
+/**
+ * For servers whose auth_type is set to 'cookie' or 'session'. Pass me
  * the server_id and I will log out the user (delete the cookie)
  *
- * Variables that come in as GET vars:
+ * Variables that come in via common.php
  *  - server_id
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
-require 'common.php';
+require './common.php';
 
-$server_id = $_GET['server_id'];
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "No one is logged in to that server." );
+if (! $ldapserver->haveAuthInfo())
+	pla_error($lang['no_one_logged_in']);
 
-$logged_in_dn = get_logged_in_dn( $server_id );
-$logged_in_pass = get_logged_in_pass( $server_id );
-$anon_bind = $logged_in_dn == 'Anonymous' ? true : false;
+if (in_array($ldapserver->auth_type, array('cookie','session'))) {
+	syslog_notice (sprintf("Logout for %s",get_logged_in_dn($ldapserver)));
+	unset_login_dn($ldapserver) or pla_error($lang['could_not_logout']);
+	unset_lastactivity($ldapserver);
 
-$expire = time()-3600;
-if( $anon_bind ) {
-	$res1 = setcookie( "pla_login_dn_$server_id", '0', $expire, dirname( $_SERVER['PHP_SELF'] ) );
-	$res2 = setcookie( "pla_pass_$server_id", '0', $expire, dirname( $_SERVER['PHP_SELF'] ) );
-} else {
-	$res1 = setcookie( "pla_login_dn_$server_id", $logged_in_dn, $expire, dirname( $_SERVER['PHP_SELF'] ) );
-	$res2 = setcookie( "pla_pass_$server_id", $logged_in_pass, $expire, dirname( $_SERVER['PHP_SELF'] ) );
-}
+} else
+	pla_error(sprintf($lang['unknown_auth_type'], htmlspecialchars($ldapserver->auth_type)));
 
-if( ! $res1 || ! $res2 )
-	pla_error( "Could not delete cookie!" );
+include './header.php';
 ?>
 
-<html>
-<head>
 <script language="javascript">
 	parent.left_frame.location.reload();
 </script>
-<link rel="stylesheet" href="style.css" />
-
-</head>
-<body>
 
 	<center>
 	<br />
 	<br />
-	Logged out successfully from <b><?php echo htmlspecialchars($servers[$server_id]['name']); ?></b><br />
+	<?php echo sprintf($lang['logged_out_successfully'],htmlspecialchars($ldapserver->name)); ?><br />
 	</center>
 
 </body>
 </html>
-

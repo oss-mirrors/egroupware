@@ -1,10 +1,42 @@
-<?php include 'header.php'; ?>
+<?php
+// $Header$
+ 
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
+	require './common.php'; 
+	include './header.php'; 
+//	include './config.php'; 
+    
+// Close the session for faster page loading
+pla_session_close();
+?>
 
+<body>
 <center>
 <br />
 <br />
 <br />
-<img src="images/logo.jpg" /><br />
+<img src="images/logo.jpg" title="<?php echo $lang['pla_logo']; ?>" alt="<?php echo $lang['pla_logo']; ?>" /><br />
 <br />
-Use the menu to the left to navigate.
+<?php echo $lang['welcome_note']; ?>
+<br />
+<br />
+<br />
+<br />
+<?php
+if (! $config->GetValue('appearance','hide_configuration_management')) {
+?>
+<a href="documentation.php?view=credits"><?php echo $lang['credits']; ?></a> |
+<a href="documentation.php?view=changelog"><?php echo $lang['changelog']; ?></a> |
+<a href="http://wiki.pldapadmin.com/Documentation"><?php echo $lang['documentation']; ?></a> |
+<a href="<?php echo get_href( 'donate' ); ?>"><?php echo $lang['donate']; ?></a>
+<?php
+}
+?>
+
 </center>
+</body>
+</html>

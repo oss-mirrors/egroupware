@@ -1,82 +1,101 @@
-<?php 
+<?php
+// $Header$
 
-/*
- * login_form.php
- * Displays the login form for a server for users who specify
- * 'form' for their auth_type.
+/**
+ * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
  *
- * Variables that come in as GET vars:
- *  - server_id
+ * Variables that come in via common.php
+ * - server_id
+ *
+ * @package phpLDAPadmin
+ * @author The phpLDAPadmin development team
+ * @see login.php
+ */
+/**
  */
 
-require 'common.php';
+require './common.php';
 
-$server_id = $_GET['server_id'];
-$server = $servers[$server_id];
+if (! $ldapserver->auth_type)
+	pla_error($lang['error_auth_type_config']);
+if (! in_array($ldapserver->auth_type, array('cookie','session')))
+	pla_error(sprintf($lang['unknown_auth_type'],htmlspecialchars($ldapserver->auth_type)));
 
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
+include './header.php'; ?>
 
-?>
-
-<?php include 'header.php'; ?>
 <body>
-
+<?php if( $ldapserver->isAnonBindAllowed() ) { ?>
 <script language="javascript">
 <!--
 	function toggle_disable_login_fields( anon_checkbox )
 	{
-		if( anon_checkbox.checked) {
-			anon_checkbox.form.login_dn.disabled = true;
+		if( anon_checkbox.checked ) {
+			anon_checkbox.form.<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>.disabled = true;
 			anon_checkbox.form.login_pass.disabled = true;
 		} else {
-			anon_checkbox.form.login_dn.disabled = false;
+			anon_checkbox.form.<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>.disabled = false;
 			anon_checkbox.form.login_pass.disabled = false;
 		}
 	}
 -->
 </script>
+<?php } ?>
 
-<center>
-<h3 class="title">Authenticate to server <b><?php echo $servers[$server_id]['name']; ?></b></h3>
+<h3 class="title"><?php printf($lang['authenticate_to_server'],$ldapserver->name); ?></h3>
 <br />
 
-<?php  if( $_SERVER['SERVER_PORT'] != 443 ) { ?>
-
+<?php if (! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') { ?>
 <center>
-<span style="color:red">Warning: This web connection is <acronym title="Your login and password will be transmitted in clear text">unencrypted</acronym> (not https).<br />
- </span>
-
-<?php  } ?>
+<span style="color:red">
+	<acronym title="<?php echo $lang['not_using_https']; ?>">
+		<?php echo $lang['warning_this_web_connection_is_unencrypted']; ?>
+	</acronym>
+</span>
+<br />
+</center>
+<?php } ?>
 
 <br />
 
 <form action="login.php" method="post" name="login_form">
-<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-<?php if( $_GET['redirect'] ) { ?>
-	<input type="hidden" name="redirect" value="<?php echo rawurlencode( $_GET['redirect'] ) ?>" />
+<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
+
+<?php if( isset( $_GET['redirect'] ) ) { ?>
+<input type="hidden" name="redirect" value="<?php echo rawurlencode( $_GET['redirect'] ) ?>" />
 <?php } ?>
+
 <center>
 <table class="login">
+
+<?php if( $ldapserver->isAnonBindAllowed() ) { ?>
 <tr>
+	<td colspan="2"><small><label for="anonymous_bind_checkbox"><?php echo $lang['anonymous_bind']; ?></label></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox"/></td>
 </tr>
+<?php } ?>
+
 <tr>
-	<td colspan="2"><small>Anonymous Bind</small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" /></td>
+<td><small>
+<?php
+if ($ldapserver->isLoginAttrEnabled())
+	echo $lang['user_name'];
+else
+	echo $lang['login_dn'];
+?>
+</small></td>
+
+<td><input type="text" name="<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>" size="40" value="<?php echo $ldapserver->isLoginAttrEnabled() ? '' : $ldapserver->login_dn; ?>" /></td>
 </tr>
+
 <tr>
-<!--
-	<td><small>Login <acronym title="Distinguished Name">DN</acronym></small></td>
-	<td><input type="text" name="login_dn" size="40" value="<?php echo $servers[$server_id]['login_dn']; ?>" name="login_dn" /></td>
--->
-<td><small>Login <?php if ( $servers[$server_id]['login_attr'] == "dn" || $servers[$server_id]['login_attr'] == "") { echo '<acronym title="Distinguished Name">DN</acronym>';} ?></small></td>
-<td><input type="text" name="<?php if ( $servers[$server_id]['login_attr'] == "dn" || $servers[$server_id]['login_attr'] == "" ) {echo 'login_dn';} else {echo 'uid';} ?>" size="40" value="<?php echo $servers[$server_id]['login_dn']; ?>" /></td>
+	<td><small><?php echo $lang['password']; ?></small></td>
+	<td><input type="password" size="40" value="" name="login_pass" /></td>
 </tr>
+
 <tr>
-	<td><small>Password</small></td>
-	<td><input type="password" name="login_pass" size="40" value="" name="login_pass" /></td>
-</tr>
-<tr>
-	<td colspan="2"><center><input type="submit" name="submit" value="Authenticate" /></center></td>
+	<td colspan="2"><center><input type="submit" name="submit" value="<?php echo $lang['authenticate']; ?>" /></center></td>
 </tr>
 </table>
-</form>
 </center>
+</form>
+</body>
+</html>

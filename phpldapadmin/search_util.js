@@ -3,7 +3,7 @@
 // This JavaScript file defines some functions used by the two search forms for
 // auto-populating the base DN dynamically when a server is selected from the
 // drop-down.
-//
+// $Header$
 
 //the array to store the server
 var servers = new Array();

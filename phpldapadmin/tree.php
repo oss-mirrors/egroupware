@@ -1,17 +1,24 @@
-<?php 
+<?php
+// $Header$
 
-/* 
- * tree.php
+/**
  * This script displays the LDAP tree for all the servers that you have
- * in config.php. We read the session variable 'tree' to know which
- * dns are expanded or collapsed. No query string parameters are expected,
- * however, you can use a '#' offset to scroll to a given dn. The syntax is
- * tree.php#<server_id>_<rawurlencoded dn>, so if I wanted to scroll to
- * dc=example,dc=com for server 3, the URL would be: 
+ * in config.php.
+ *
+ * We read the session variable 'tree' to know which dns are expanded or collapsed.
+ * No query string parameters are expected, however, you can use a '#' offset to
+ * scroll to a given dn. The syntax is tree.php#<server_id>_<rawurlencoded dn>, so
+ * if I wanted to scroll to dc=example,dc=com for server 3, the URL would be:
+ *
  *	tree.php#3_dc%3Dexample%2Cdc%3Dcom
+ *
+ * @package phpLDAPadmin
+ * @author The phpLDAPadmin development team
+ */
+/**
  */
 
-require 'common.php';
+require './common.php';
 
 // no expire header stuff
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -20,285 +27,268 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-// The entire visible tree is stored in the session.
-session_start();
+// This allows us to display large sub-trees without running out of time.
+@set_time_limit( 0 );
 
-// do we not have a tree yet? Build a new one.
-if( ! session_is_registered( 'tree' ) ) {
-	session_register( 'tree' );
-	$_SESSION['tree'] = build_initial_tree(); 
-	session_register( 'tree_icons' );
-	$_SESSION['tree_icons'] = build_initial_tree_icons();
-}
+// do we not have a tree and tree icons yet? Build a new ones.
+initialize_session_tree();
 
-// grab the tree out of the session variable
+// get the tree and tree icons.
 $tree = $_SESSION['tree'];
 $tree_icons = $_SESSION['tree_icons'];
-?>
 
-<?php include 'header.php'; ?>
+// Test to see if any have timedout.
+// Initialize array of recently timed out servers
+$recently_timed_out_servers = array();
+// Set a default META REFRESH value in sec. before determining it
+$meta_refresh_variable = ( session_cache_expire()-1 )*60;
+
+foreach( $ldapservers->GetServerList() as $server_id ) {
+	$ldapserver = $ldapservers->Instance($server_id);
+
+	# Test to see if we should log out the user due to the timeout.
+	if ($ldapserver->haveAuthInfo()) {
+
+		/* If time out value has been reached:
+			- log out user
+			- put $server_id in array of recently timed out servers */
+		if (session_timed_out($ldapserver))
+			array_push($recently_timed_out_servers, $server_id);
+
+		/* if the timeout value is less than the previous $meta_refresh_variable value
+		   set $meta_refresh_variable to $ldapserver->session_timeout */
+		if (($ldapserver->session_timeout*60) < $meta_refresh_variable )
+			$meta_refresh_variable = $ldapserver->session_timeout*60;
+	}
+}
+
+/* Close the session for faster page loading (we're done with session data anyway).
+   Unfortunately, now that we dont show a plus '+' for leafs in a tree, we need to keep
+   the session open, so that if we create an entry, it'll cause the refresh of the tree view.
+   Hope this doesnt affect performance...? */
+// pla_session_close();
+
+include './header.php';
+?>
 
 <body>
 
-<?php 
+<?php
 	$bug_href = get_href( 'add_bug' );
-	$open_bugs_href = get_href( 'open_bugs' );
 	$feature_href = get_href( 'add_rfe' );
-	$open_features_href = get_href( 'open_rfes' );
+	$donate_href = get_href( 'donate' );
+	$help_href = get_href( 'help' );
 ?>
 
 <h3 class="subtitle" style="margin:0px">phpLDAPadmin - <?php echo pla_version(); ?></h3>
-<table class="edit_dn_menu">
+
+<!-- Links at the top of the tree viewer -->
+<table class="edit_dn_menu" width=100%>
 <tr>
-	<td><img src="images/light.png" /></td>
-	<td><nobr><a href="<?php echo $feature_href; ?>" target="new"><?php echo $lang['request_new_feature']; ?></a>
-		(<a href="<?php echo $open_features_href; ?>" target="new"><?php echo $lang['see_open_requests']; ?></a>)</nobr></td>
+	<td><img src="images/home.png" alt="<?php echo $lang['home']; ?>" /></td>
+	<td width=50%><nobr><a href="welcome.php" target="right_frame"><?php echo $lang['home']; ?></a></nobr></td>
+	<td><img src="images/trash.png" alt="<?php echo $lang['purge_cache']; ?>" /></td>
+	<td width=50%><nobr><a href="purge_cache.php" target="right_frame" title="<?php echo $lang['purge_cache_tooltip']; ?>"><?php echo $lang['purge_cache']; ?></a></nobr></td>
 </tr>
-<tr>	
-	<td><img src="images/bug.png" /></td>
-	<td><nobr><a href="<?php echo $bug_href; ?>" target="new"><?php echo $lang['report_bug']; ?></a>
-		(<a href="<?php echo $open_bugs_href; ?>" target="new"><?php echo $lang['see_open_bugs']; ?></a>)</nobr></td>
+<tr>
+
+<?php if ( ! $config->GetValue('appearance','hide_configuration_management') ) { ?>
+	<td><img src="images/light.png" alt="<?php echo $lang['light']; ?>" /></td>
+	<td width=50%><nobr><a href="<?php echo $feature_href; ?>" target="new"><?php echo $lang['request_new_feature']; ?></a></nobr></td>
+	<td><img src="images/bug.png" alt="<?php echo $lang['bug']; ?>" /></td>
+	<td width=50%><nobr><a href="<?php echo $bug_href; ?>" target="new"><?php echo $lang['report_bug']; ?></a></nobr></td>
+</tr>
+<tr>
+	<td><img src="images/smile.png" alt="<?php echo $lang['donate']; ?>" /></td>
+	<td width=50%><nobr><a href="<?php echo $donate_href; ?>" target="right_frame"><?php echo $lang['donate']; ?></a></nobr></td>
+<?php } ?>
+	<td><img src="images/help.png" alt="<?php echo $lang['help']; ?>" /></td>
+	<td><nobr><a href="help.php" target="right_frame"><?php echo $lang['help']; ?></a></nobr></td>
 </tr>
 </table>
 
 <table class="tree" cellspacing="0">
 
-<?php 
+<?php
 
-foreach( $servers as $server_id => $server_tree ) { 
+# We want the std tree function as a fallback
+require LIBDIR.'tree_functions.php';
 
-	if( $servers[$server_id]['host'] != '' ) { 
+# For each of the configured servers
+foreach( $ldapservers->GetServerList() as $server_id ) {
+	$ldapserver = $ldapservers->Instance($server_id);
 
-		$server_name = $servers[$server_id]['name'];
-		echo '<tr class="server">';
-		echo '<td class="icon"><img src="images/server.png" alt="server"/></td>';
-		echo '<td colspan="99"><a name="' . $server_id . '"></a>';
-		echo '<nobr>' . htmlspecialchars( $server_name ) . '</nobr></td>';
-		echo '</tr>';
+	if ($ldapserver->isVisible()) {
+		$filename = get_custom_file($server_id,'tree_functions.php',LIBDIR);
+		require_once($filename);
 
-		// do we have what it takes to authenticate here, or do we need to
-		// present the user with a login link (for 'form' auth_types)?
-		if( have_auth_info( $server_id ) )
-		{
-			$schema_href =  'schema.php?server_id=' . $server_id  . '" target="right_frame';
-			$search_href=   'search.php?server_id=' . $server_id  . '" target="right_frame';
-			$refresh_href = 'refresh.php?server_id=' . $server_id;
-			$create_href =  'create_form.php?server_id=' . $server_id . '&amp;container=' .
-					 rawurlencode( $servers[$server_id]['base'] );
-			$logout_href = 'logout.php?server_id=' . $server_id;
-			$info_href = 'server_info.php?server_id=' . $server_id;
-			$import_href = 'ldif_import_form.php?server_id=' . $server_id;
-
-			// Draw the quick-links below the server name: 
-			// ( schema | search | refresh | create )
-			echo '<tr><td colspan="100" class="links">';
-			echo '<nobr>';
-			echo '( ';
-			echo '<a title="' . $lang['view_schema_for'] . ' ' . $server_name . '"'.
-			     ' href="' . $schema_href . '">' . $lang['schema'] . '</a> | ';
-			echo '<a title="' . $lang['search'] . ' ' . $server_name . '"' .
-			     ' href="' . $search_href . '">' . $lang['search'] . '</a> | ';
-			echo '<a title="' . $lang['refresh_expanded_containers'] . ' ' . $server_name . '"'.
-			     ' href="' . $refresh_href . '">' . $lang['refresh'] . '</a> | ';
-			echo '<a title="' . $lang['create_new_entry_on'] . ' ' . $server_name . '"'.
-			     ' href="' . $create_href . '" target="right_frame">create</a> | ';
-			echo '<a title="' . $lang['view_server_info'] . '" target="right_frame"'.
-			     'href="' . $info_href . '">' . $lang['info'] . '</a> | ';
-			echo '<a title="' . $lang['import_from_ldif'] . '" target="right_frame"' .
-			     'href="' . $import_href .'">' . $lang['import'] . '</a>';
-			if( $servers[ $server_id ][ 'auth_type' ] == 'form' )
-				echo ' | <a title="' . $lang['logout_of_this_server'] . '" href="' . $logout_href . 
-					'" target="right_frame">' . $lang['logout'] . '</a>';
-			echo ' )</nobr></td></tr>';
-			
-			if( $servers[$server_id]['auth_type'] == 'form' && have_auth_info( $server_id ) )
-				echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
-					$lang['logged_in_as'] . htmlspecialchars(get_logged_in_dn($server_id)) . 
-					"</nobr></td></tr>";
-			if( is_server_read_only( $server_id ) ) 
-				echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
-					"(" . $lang['read_only'] . ")</nobr></td></tr>";
-
-			// Fetch and display the base DN for this server
-			//$rdn = utf8_decode( $dn );
-			if( null == $servers[ $server_id ]['base'] ) {
-				$base_dn = try_to_get_root_dn( $server_id );
-			} else {
-				$base_dn = $servers[ $server_id ]['base'];
-			}
-
-			// Did we get a base_dn for this server somehow?
-			if( $base_dn ) {
-				// is the root of the tree expanded already?
-				if( isset( $tree[$server_id][$base_dn] ) ) {
-					$expand_href =  "collapse.php?server_id=$server_id&amp;" .
-					"dn=" . rawurlencode( $base_dn );
-					$expand_img = "images/minus.png";
-				} else {
-					$expand_href =  "expand.php?server_id=$server_id&amp;" .
-					"dn=" . rawurlencode( $base_dn );
-					$expand_img = "images/plus.png";
-				}
-
-				$edit_href = "edit.php?server_id=$server_id&amp;dn=" . rawurlencode( $base_dn );
-
-				$icon = get_icon( $server_id, $base_dn );
-				echo "<td class=\"expander\" style=\"text-align: right\">";
-				echo "<a href=\"$expand_href\"><img src=\"$expand_img\" /></td>";
-				echo "<td class=\"icon\"><a href=\"$edit_href\" target=\"right_frame\">";
-				echo "<img src=\"images/$icon\" /></a></td>\n";
-				echo "<td class=\"rdn\" colspan=\"98\"><nobr><a href=\"$edit_href\" ";
-				echo " target=\"right_frame\">$base_dn</nobr></td>\n";
-				echo "</tr>\n";
-			} else {
-				if( "" === $base_dn || null === $base_dn ) {
-					// The server refuses to give out the base dn
-					echo "<tr><td class=\"spacer\"></td><td colspan=\"98\"><small><nobr>";
-					echo $lang['could_not_determine_root'];
-					echo '<br />';
-					echo $lang['ldap_refuses_to_give_root'];
-					echo '<br />';
-					echo $lang['please_specify_in_config'];
-					echo "</small></nobr></td></tr>";
-					// Proceed to the next server. We cannot draw anything else for this server.
-					continue;
-				} else {
-					// For some unknown reason, we couldn't determine the base dn
-					echo "<tr><td class=\"spacer\"></td><td colspan=\"99\"><small><nobr>";
-					echo $lang['could_not_determine_root'];
-					echo '<br />';
-					echo $lang['please_specify_in_config'];
-					echo "</small></nobr></td></tr>";
-					// Proceed to the next server. We cannot draw anything else for this server.
-					continue;
-				}
-			}
-
-			flush();
-
-			// Is the root of the tree expanded already?
-			if( isset( $tree[$server_id][$base_dn] ) ) {
-				foreach( $tree[ $server_id ][ $base_dn ] as $child_dn )
-					draw_tree_html( $child_dn, $server_id, 0 );
-				if( ! is_server_read_only( $server_id ) ) {
-					echo '<td class="spacer"></td>';
-					echo '<td class="icon"><a href="' . $create_href .
-						'" target="right_frame"><img src="images/star.png" /></a></td>';
-					echo '<td class="create" colspan="100"><a href="' . $create_href . 
-						'" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . 
-						$base_dn.'">' . $lang['create_new'] . '</a></td></tr>';
-				}
-			}
-		}
-		else // have_auth_info() returned false.
-		{
-			// We don't have enough information to login to this server
-			// Draw the "login..." link
-			$login_href = "login_form.php?server_id=$server_id";
-			echo '<tr class="login"><td colspan="100">';
-			echo '&nbsp;&nbsp;&nbsp;<a href="' . $login_href . '" target="right_frame">';
-			echo '<img src="images/uid.png" align="top" alt="login"/></a> ';
-			echo '<a href="' . $login_href . '" target="right_frame">login...</a>';
-			echo '</td></tr>';
-		}
+		call_custom_function($server_id,'draw_server_tree');
 	}
 }
 
+# Case where user not logged into any server
+if ($meta_refresh_variable == 0)
+	$meta_refresh_variable = (session_cache_expire()-1)*60;
+
 ?>
+
+<META HTTP-EQUIV="REFRESH" CONTENT="<?php echo $meta_refresh_variable?>">
 
 </table>
-<?php 
-	//echo "<pre>"; print_r( $tree ); 
-?>
-
 </body>
 </html>
 
-<?php 
-
+<?php
 exit;
 
 /**
  * Recursively descend on the given dn and draw the tree in html
+ *
+ * @param dn $dn Current dn.
+ * @param object $LDAPServer LDAPServer object
+ * @param int $level Level to start drawing (defaults to 0)
  */
-function draw_tree_html( $dn, $server_id, $level=0 )
-{
-	global $servers, $tree, $tree_icons, $lang;
-	$id = $server_id;
-	
+function draw_tree_html($dn,$ldapserver,$level=0) {
+	global $config, $tree, $tree_icons, $lang;
+
 	$encoded_dn = rawurlencode( $dn );
-	$expand_href = "expand.php?server_id=$id&amp;dn=$encoded_dn";
-	$collapse_href = "collapse.php?server_id=$id&amp;dn=$encoded_dn";
-	$edit_href = "edit.php?server_id=$id&amp;dn=$encoded_dn";
+	$expand_href = sprintf("expand.php?server_id=%s&amp;dn=%s",$ldapserver->server_id,$encoded_dn);
+	$collapse_href = sprintf("collapse.php?server_id=%s&amp;dn=%s",$ldapserver->server_id,$encoded_dn);
+	$edit_href = sprintf("edit.php?server_id=%s&amp;dn=%s",$ldapserver->server_id,$encoded_dn);
 
 	// should never happen, but just in case
-	if( ! isset( $tree_icons[ $server_id ][ $dn ] ) )
-		$tree_icons[ $server_id ][ $dn ] = get_icon( $server_id, $dn );
-	$img_src = 'images/' . $tree_icons[ $server_id ][ $dn ];
+	if( ! isset( $tree_icons[ $ldapserver->server_id ][ $dn ] ) )
+		$tree_icons[ $ldapserver->server_id ][ $dn ] = get_icon( $ldapserver, $dn );
+	$img_src = 'images/' . $tree_icons[ $ldapserver->server_id ][ $dn ];
 
-	$rdn = pla_explode_dn( $dn );
-	$rdn = $rdn[0];
+	$rdn = get_rdn( $dn );
 
 	echo '<tr>';
 
 	for( $i=0; $i<=$level; $i++ ) {
 		echo '<td class="spacer"></td>' . "\n";
 	}
-		
+
+	// Shall we draw the "mass-delete" checkbox?
+	if( $ldapserver->isMassDeleteEnabled() ) {
+		printf('<td><input type="checkbox" name="mass_delete[%s]" /></td>',htmlspecialchars($dn));
+	}
+
 	// is this node expanded? (deciding whether to draw "+" or "-")
-	if( isset( $tree[$server_id][$dn] ) ) { ?>
+	if( isset( $tree[$ldapserver->server_id][$dn] ) ) { ?>
+		<?php $child_count = number_format( count( $tree[$ldapserver->server_id][$dn] ) );
+		if ((! $child_count) && (! $ldapserver->isShowCreateEnabled())) { ?>
 		<td class="expander">
 			<nobr>
-			<a href="<?php echo $collapse_href; ?>"><img src="images/minus.png" alt="plus" /></a>
+			<img src="images/minus.png" alt="-" />
 			</nobr>
 		</td>
-		<?php  $object_count = ' <span class="count">(' . count( $tree[$server_id][$dn] ) . ')</span>';
-	} else { ?>	
+
+		<?php } else { ?>
 		<td class="expander">
 			<nobr>
-			<a href="<?php echo $expand_href; ?>"><img src="images/plus.png" alt="minus" /></a>
+			<a href="<?php echo $collapse_href; ?>"><img src="images/minus.png" alt="-" /></a>
 			</nobr>
 		</td>
-		<?php  $object_count = '';
-	} ?>	
+		<?php }
+
+	} else {
+		$size_limit = $config->GetValue('search','size_limit');
+
+		if( $ldapserver->isLowBandwidth() ) {
+	                $child_count = null;
+		} else {
+	                $child_count = count( get_container_contents( $ldapserver, $dn, $size_limit+1,
+				'(objectClass=*)', $config->GetValue('deref','tree')));
+
+			if( $child_count > $size_limit )
+				$child_count = $size_limit . '+';
+		}
+
+		if (($child_count === 0) && (! $ldapserver->isShowCreateEnabled())) {
+			// Since we know the tree is empty, we'll create a $tree object anyway, just incase we
+			// create something later (otherwise it doesnt cause the tree to get refreshed).
+
+			$_SESSION['tree'][$ldapserver->server_id][$dn] = array();
+			$_SESSION['tree_icons'][$ldapserver->server_id][$dn] = get_icon( $ldapserver, $dn ); ?>
+
+		<td class="expander">
+			<nobr>
+			<img src="images/minus.png" alt="-" />
+			</nobr>
+		</td>
+
+		<?php } else { ?>
+		<td class="expander">
+			<nobr>
+			<a href="<?php echo $expand_href; ?>"><img src="images/plus.png" alt="+" /></a>
+			</nobr>
+		</td>
+		<?php }
+	} ?>
 
 	<td class="icon">
 		<a href="<?php echo $edit_href; ?>"
 		   target="right_frame"
-		   name="<?php echo $server_id; ?>_<?php echo $encoded_dn; ?>"><img src="<?php echo $img_src; ?>" /></a>
+		   name="<?php echo $ldapserver->server_id; ?>_<?php echo $encoded_dn; ?>"><img src="<?php echo $img_src; ?>" alt="img" /></a>
 	</td>
 	<td class="rdn" colspan="<?php echo (97-$level); ?>">
 		<nobr>
 			<a href="<?php echo $edit_href; ?>"
-				target="right_frame"><?php echo htmlspecialchars( utf8_decode( $rdn ) ); ?></a>
-				<?php echo $object_count; ?>
+				target="right_frame"><?php echo ( draw_formatted_dn( $ldapserver, $dn ) ); /*pretty_print_dn( $rdn ) );*/ ?></a>
+				<?php if( $child_count ) { ?>
+					<span class="count">(<?php echo $child_count; ?>)</span>
+				<?php } ?>
 		</nobr>
 	</td>
 	</tr>
 
-	<?php 
+	<?php
 
-	if( isset( $tree[$server_id][$dn] ) && is_array( $tree[$server_id][$dn] ) )	{
-		foreach( $tree[$server_id][$dn] as $dn ) { 
-			draw_tree_html( $dn, $server_id, $level+1 );
-		}
+	if( isset( $tree[$ldapserver->server_id][$dn] ) && is_array( $tree[$ldapserver->server_id][$dn] ) ) {
+		// Draw the "create new" link at the top of the tree list if there are more than 10
+		// entries in the listing for this node.
 
-		// print the "Create New object" link.
-		$create_href = "create_form.php?server_id=$server_id&amp;container=$encoded_dn";
-		echo '<tr>';
-		for( $i=0; $i<=$level; $i++ ) {
-			echo '<td class="spacer"></td>';
-		}
-		echo '<td class="spacer"></td>';
-		echo '<td class="icon"><a href="' . $create_href .
-		     '" target="right_frame"><img src="images/star.png" /></a></td>';
-		echo '<td class="create" colspan="' . (97-$level) . '"><a href="' . $create_href . 
-		     '" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . $rdn.'">' . 
-		     $lang['create_new'] . '</a></td></tr>';
+		if(( count( $tree[$ldapserver->server_id][$dn] ) > 10 ) && ( $ldapserver->isShowCreateEnabled() ))
+			draw_create_link( $ldapserver->server_id, $rdn, $level, $encoded_dn );
+
+		foreach( $tree[$ldapserver->server_id][$dn] as $dn )
+			draw_tree_html( $dn, $ldapserver, $level+1 );
+
+		// Always draw the "create new" link at the bottom of the listing
+		if( $ldapserver->isShowCreateEnabled() )
+			draw_create_link( $ldapserver->server_id, $rdn, $level, $encoded_dn );
+	}
+}
+
+/**
+ * Print the HTML to show the "create new entry here".
+ *
+ * @param int $server_id
+ * @param dn $rdn
+ * @param int $level
+ * @param dn $encoded_dn
+ */
+function draw_create_link( $server_id, $rdn, $level, $encoded_dn )
+{
+	global $lang;
+
+	// print the "Create New object" link.
+	$create_href = sprintf("create_form.php?server_id=%s&amp;container=%s",$server_id,$encoded_dn);
+
+	$create_html = '<tr>';
+	for( $i=0; $i<=$level; $i++ ) {
+		$create_html .= '<td class="spacer"></td>';
 	}
 
-	echo '</tr>';
-
+	$create_html .= '<td class="spacer"></td>';
+	$create_html .= '<td class="icon"><a href="' . $create_href .
+		'" target="right_frame"><img src="images/star.png" alt="' . $lang['new'] . '" /></a></td>';
+	$create_html .= '<td class="create" colspan="' . (97-$level) . '"><a href="' . $create_href .
+		'" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . $rdn.'">' .
+		$lang['create_new'] . '</a></td>';
+	$create_html .= '</tr>';
+	echo $create_html;
 }
 
 ?>

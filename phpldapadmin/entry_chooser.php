@@ -1,97 +1,114 @@
 <?php
+// $Header$
 
-require 'common.php';
+/**
+ * Display a selection (popup window) to pick a DN.
+ *
+ * @package phpLDAPadmin
+ */
+/**
+ */
 
-$container = isset( $_GET['container'] ) ? rawurldecode( $_GET['container'] ) : false;
-$server_id = isset( $_GET['server_id'] ) ? $_GET['server_id'] : false;
-$return_form_element = $_GET['form_element'];
+require './common.php';
 
-include "header.php";
+$container = isset($_GET['container']) ? rawurldecode($_GET['container']) : false;
+$return_form_element = isset($_GET['form_element']) ? htmlspecialchars($_GET['form_element']) : null;
+$rdn = isset($_GET['rdn']) ? htmlspecialchars($_GET['rdn']) : null;
 
-echo "<h3 class=\"subtitle\">Automagic Entry Chooser</h3>\n";
+include "./header.php";
 
-if( $container ) {
-	echo "Server: <b>" . htmlspecialchars( $servers[ $server_id ][ 'name' ] ) .  "</b><br />\n";
-	echo "Looking in: <b>" . htmlspecialchars( $container ) . "</b><br />\n"; 
+printf('<h3 class="subtitle">%s</h3>',$lang['entry_chooser_title']);
+flush();
+?>
+
+<script language="javascript">
+	function returnDN( dn ) {
+		opener.document.<?php echo $return_form_element; ?>.value = dn;
+		close();
+	}
+</script>
+
+<?php
+if ($container) {
+	printf('%s<b>%s</b>',$lang['server_colon_pare'],htmlspecialchars($ldapserver->name));
+	print '<br />';
+	printf('%s<b>%s</b>',$lang['look_in'],htmlspecialchars($container));
+	print '<br />';
 }
 
 /* Has the use already begun to descend into a specific server tree? */
-if( $server_id !== false && $container !== false )
-{
-	check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-	have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. ".
-							"Please check your configuration." );
-	pla_ldap_connect( $server_id ) or pla_error( "Coult not connect to LDAP server." );
-	$dn_list = get_container_contents( $server_id, $container );
+if (isset($ldapserver) && $container !== false) {
 
-	$base_dn = $servers[ $server_id ][ 'base' ];
-	if( ! $base_dn )
-		$base_dn = try_to_get_root_dn( $server_id );
+	if (! $ldapserver->haveAuthInfo())
+		pla_error($lang['not_enough_login_info']);
 
-	if( $container == $base_dn ) {
-		$parent_container = false;
-		$up_href = "entry_chooser.php?form_element=$return_form_element";
-	} else {
-		$parent_container = get_container( $container );
-		$up_href = "entry_chooser.php?form_element=$return_form_element&amp;server_id=$server_id&amp;container=" .
-				rawurlencode( $parent_container );
-	}
-	echo "&nbsp;<a href=\"$up_href\" style=\"text-decoration:none\">" . 
-		"<img src=\"images/up.png\"> Back Up...</a><br />\n";
+	$dn_list = get_container_contents($ldapserver,$container,0,'(objectClass=*)',$config->GetValue('deref','tree'));
+	sort($dn_list);
 
-	if( count( $dn_list ) == 0 )
-		echo "&nbsp;&nbsp;&nbsp;(no entries)<br />\n";
-	else
-		foreach( $dn_list as $dn ) {
-			$href = "javascript:returnDN( '$dn' )";
-			echo "&nbsp;&nbsp;&nbsp;<a href=\"entry_chooser.php?form_element=$return_form_element".
-				"&amp;server_id=$server_id&amp;container=" .
-				rawurlencode( $dn ) . "\"><img src=\"images/plus.png\" /></a> " .
-				"<a href=\"$href\">" . htmlspecialchars( $dn ) . "</a><br />\n";
+	foreach ($ldapserver->getBaseDN() as $base_dn) {
+		debug_log(sprintf('%s: Comparing BaseDN [%s] with container [%s]','entry_chooser.php',$base_dn,$container),9);
+
+		if (! pla_compare_dns($container,$base_dn)) {
+			$parent_container = false;
+			$up_href = sprintf('entry_chooser.php?form_element=%s&rdn=%s',$return_form_element,$rdn);
+			break;
+
+		} else {
+			$parent_container = get_container($container);
+			$up_href = sprintf('entry_chooser.php?form_element=%s&rdn=%s&amp;server_id=%s&amp;container=%s',
+				$return_form_element,$rdn,$ldapserver->server_id,rawurlencode($parent_container));
 		}
-}
+	}
+
+	print '&nbsp;';
+	printf('<a href="%s" style="text-decoration:none"><img src="images/up.png"> %s</a>',$up_href,$lang['back_up_p']);
+	print '<br />';
+
+	if (! count($dn_list))
+		printf('&nbsp;&nbsp;&nbsp;(%s)<br />',$lang['no_entries']);
+
+	else
+		foreach ($dn_list as $dn) {
+			$href = sprintf("javascript:returnDN('%s%s')",($rdn ? "$rdn," : ''),$dn);
+			print '&nbsp;&nbsp;&nbsp;';
+			printf('<a href="entry_chooser.php?server_id=%s&amp;form_element=%s&rdn=%s&amp;container=%s"><img src="images/plus.png" /></a>',
+				$ldapserver->server_id,$return_form_element,$rdn,rawurlencode($dn));
+
+			printf('<a href="%s">%s</a>',$href,htmlspecialchars($dn));
+			print '<br />';
+		}
+
 /* draw the root of the selection tree (ie, list all the servers) */
-else
-{
-	foreach( $servers as $id => $server ) {
-		if( $server['host'] ) {
-			echo "<b>" . htmlspecialchars( $server['name'] ) . "</b><br />\n";
-			if( ! have_auth_info( $id ) ) 
-				echo "<small>&nbsp;&nbsp;&nbsp;(Not logged in)</small><br />";
+} else {
+	foreach ($ldapservers->GetServerList() as $id) {
+
+		$ldapserver = $ldapservers->Instance($id);
+
+		if ($ldapserver->isVisible()) {
+
+			if (! $ldapserver->haveAuthInfo())
+				continue;
+
 			else {
-				$dn = ( $server['base'] ? $server['base'] : try_to_get_root_dn( $id ) ); 
-				if( ! $dn ) {
-					echo "<small>&nbsp;&nbsp;&nbsp;(Could not determine base DN)</small><br />";
-				} else {
-					$href = "javascript:returnDN( '$dn' )";
-					echo "&nbsp;&nbsp;&nbsp;<a href=\"entry_chooser.php?form_element=" . 
-						"$return_form_element&amp;server_id=$id&amp;container=" .
-						rawurlencode( $dn ) . "\"><img src=\"images/plus.png\" /></a> " .
-						"<a href=\"$href\">" . htmlspecialchars( $dn ) . "</a><br />\n";
+				printf('<b>%s</b>',htmlspecialchars($ldapserver->name));
+				print '<br />';
+				foreach ($ldapserver->getBaseDN() as $dn) {
+					if (! $dn) {
+						printf('<small>&nbsp;&nbsp;&nbsp;(%s)</small><br />',$lang['could_not_det_base_dn']);
+
+					} else {
+						$href = sprintf("javascript:returnDN('%s%s')",($rdn ? "$rdn," : ''),$dn);
+
+						print '&nbsp;&nbsp;&nbsp;';
+						printf('<a href="entry_chooser.php?server_id=%s&amp;form_element=%s&rdn=%s&amp;container=%s"><img src="images/plus.png" /></a> ',
+							$ldapserver->server_id,$return_form_element,$rdn,rawurlencode($dn));
+
+						printf('<a href="%s">%s</a>',$href,htmlspecialchars($dn));
+						print '<br />';
+					}
 				}
 			}
 		}
 	}
 }
-
-// added by PD. 14082003,
-// adding the element access allows it to work with javascript arrays
-
-// the name of the form extracted from the first part of the URL variable.
-$formpart=substr($return_form_element,0,strpos($return_form_element,"."));
-
-// the name of the element extracted from the last part of the URL variable (after the dot)
-$elmpart =substr($return_form_element,strpos($return_form_element,".")+1);
-
-// rebuilt return value
-$return_form_element = $formpart . ".elements[\"" . $elmpart . "\"]";
-
 ?>
-
-<script language="javascript">
-	function returnDN( dn )
-	{
-		opener.document.<?php echo $return_form_element; ?>.value = dn;
-		close();
-	}
-</script>

@@ -1,42 +1,54 @@
-<?php 
-
-/* 
- *  delete_attr.php
+<?php
+// $Header$
+ 
+/**
  *  Deletes an attribute from an entry with NO confirmation.
+ *
+ * Variables that come in via common.php
+ * - server_id
  *
  *  On success, redirect to edit.php
  *  On failure, echo an error.
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
-require 'common.php';
+require './common.php';
 
-if( is_server_read_only( $server_id ) )
-	pla_error( "You cannot perform updates while server is in read-only mode" );
+if ($ldapserver->isReadOnly())
+	pla_error($lang['no_updates_in_read_only_mode']);
+if (! $ldapserver->haveAuthInfo())
+	pla_error($lang['not_enough_login_info']);
 
-$server_id = $_POST['server_id'];
-$dn = rawurldecode( $_POST['dn'] );
-$encoded_dn = rawurlencode( $dn );
-$attr = $_POST['attr'];
+$dn = isset($_POST['dn']) ? $_POST['dn'] : null;
+$attr = isset($_POST['attr']) ? $_POST['attr'] : null;
 
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
-if( ! $attr ) pla_error( "No attribute name specified in POST variables" );
-if( ! $dn ) pla_error( "No DN name specified in POST variables" );
+if (! $dn)
+	pla_error($lang['no_dn_specified']);
+
+if (! $attr)
+	pla_error($lang['no_attr_specified']);
+
+$encoded_dn = rawurlencode($dn);
+
+if (is_attr_read_only($ldapserver,$attr))
+	pla_error(sprintf($lang['attr_is_read_only'],htmlspecialchars($attr)));
 
 $update_array = array();
 $update_array[$attr] = array();
-$ds = pla_ldap_connect( $server_id );
-$res = @ldap_modify( $ds, $dn, $update_array );
-if( $res )
-{
-	$redirect_url = "edit.php?server_id=$server_id&dn=$encoded_dn";
-	foreach( $update_array as $attr => $junk )
-		$redirect_url .= "&modified_attrs[]=$attr";
-	header( "Location: $redirect_url" );
-}
-else
-{
-	pla_error( "Could not perform ldap_modify operation.", ldap_error( $ds ), ldap_errno( $ds ) );
-}
 
+$res = @ldap_modify($ldapserver->connect(),$dn,$update_array);
+if ($res) {
+	$redirect_url = sprintf("edit.php?server_id=%s&dn=%s",$ldapserver->server_id,$encoded_dn);
+
+	foreach($update_array as $attr => $junk)
+		$redirect_url .= "&modified_attrs[]=$attr";
+
+	header("Location: $redirect_url");
+
+} else {
+	pla_error($lang['could_not_perform_ldap_modify'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+}
 ?>
