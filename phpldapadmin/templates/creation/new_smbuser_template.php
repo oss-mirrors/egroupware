@@ -1,19 +1,19 @@
 <?php
-	require realpath( 'common.php' );
+// $Header$
 
-	// customize this to your needs
-	$default_samba_sid = "S-1-5-21-3509297442-4087397136-3591104989";
 	$default_container = "ou=Users";
-	$default_home = "/export/home";
-	$mkntpwdCommand = "./templates/creation/mkntpwd";
+	$default_home = "/home";
 
 	// Common to all templates
 	$server_id = $_POST['server_id'];
 
-	// Unique to this template
-	$step = $_POST['step'];
-	if( ! $step )
-		$step = 1;
+	$step = 1;
+	if( isset($_POST['step']) )
+		$step = $_POST['step'];
+		
+	//check if the sambaSamAccount objectClass is availaible
+	if( get_schema_objectclass( $ldapserver, 'sambaAccount' ) == null )
+		pla_error( "Your LDAP server does not have schema support for the sambaAccount objectClass. Cannot continue." );
 
 	check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 	have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -32,7 +32,6 @@
 			return false;
 		}
 		user_name = first_name.substr( 0,1 ) + last_name;
-		user_name = first_name.substr( 0,8 );
 
 		form.user_name.value = user_name;
 		autoFillHomeDir( form );
@@ -48,27 +47,26 @@
 		form.home_dir.value = home_dir;
 
 	}
-	function autoFillSambaSID( form ){
-		var sambaSID;
+	function autoFillSambaRID( form ){
+		var sambaRID;
 		var uidNumber;
 
+		// TO DO:need to check if uidNumber is an integer
 		uidNumber = form.uid_number.value;
-		sambaSID = '<?php echo $default_samba_sid; ?>-'+(2*uidNumber+1000);
-
-		form.samba_sid.value = sambaSID;
-
+		sambaRID = (2*uidNumber)+1000;
+		form.samba_user_rid.value = sambaRID;
 	}
 	-->
 	</script>
 
-<center><h2>New Samba3-User Account</h2></center>
+<center><h2>New Samba  User Account</h2></center>
 
 <?php if( $step == 1 ) { ?>
 
 <form action="creation_template.php" method="post" id="user_form" name="user_form">
 <input type="hidden" name="step" value="2" />
 <input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-<input type="hidden" name="template" value="<?php echo $_POST['template']; ?>" />
+<input type="hidden" name="template" value="<?php echo htmlspecialchars( $_POST['template'] ); ?>" />
 
 <center>
 <table class="confirm">
@@ -76,12 +74,12 @@
 <tr>
 	<td></td>
 	<td class="heading">UID Number:</td>
-	<td><input type="text" name="uid_number" value="" onChange="autoFillSambaSID(this.form)" /></td>
+	<td><input type="text" name="uid_number" value="" onChange="autoFillSambaRID(this.form)" /></td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading"><i>Samba SID:</i></td>
-	<td><input type="text" name="samba_sid" value="" id="samba_sid" readonly=""/></td>
+	<td class="heading"><i>RID:</i></td>
+	<td><input type="text" name="samba_user_rid" id="samba_user_rid" value="" size="7"/></td>
 </tr>
 <tr class="spacer"><td colspan="3"></tr>
 <tr>
@@ -121,11 +119,18 @@
 </tr>
 <tr class="spacer"><td colspan="3"></tr>
 <tr>
-	<td><img src="images/nt.png" /></td>
+	<td><img src="images/terminal.png" /></td>
 	<td class="heading">Login Shell:</td>
-	<td>
-		<input type="hidden" name="login_shell" value="/bin/csh"/>
-		<i>/bin/csh</i>
+        <td>
+	<select name="login_shell">
+           <option value="/bin/bash">/bin/bash</option>
+	   <option value="/bin/csh">/bin/csh</option>
+	   <option value="/bin/ksh">/bin/ksh</option>
+	   <option value="/bin/tcsh">/bin/tcsh</option>
+           <option value="/bin/zsh">/bin/zsh</option>
+	   <option value="/bin/sh">/bin/sh</option>
+	   <option value="/bin/false">/bin/false</option>
+        </select>
 	</td>
 </tr>
 <tr>
@@ -136,11 +141,11 @@
 				echo htmlspecialchars( $container );
 			     else
 				echo htmlspecialchars( $default_container . ',' . $servers[$server_id]['base'] ); ?>" />
-		<?php draw_chooser_link( 'user_form.container' ); ?></td>
+		<?php draw_chooser_link( 'user_form.container' ); ?>
 	</td>
 </tr>
 <tr>
-	<td></td>
+<td></td>
 	<td class="heading">Unix Group:</td>
 	<td><select name="group">
 		<option value="1000">admins (1000)</option>
@@ -151,42 +156,40 @@
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Windows Group:</td>
-	<td><select name="sambaPrimaryGroupSID">
-			<option value="S-1-5-32-547">Local Power Users</option>
-			<option value="S-1-5-32-544">Local Administrator</option>
-			<option value="S-1-5-32-545">Local Users</option>
-			<option value="<?php echo $default_samba_sid; ?>-512">Domain Admins</option>
-			<option value="<?php echo $default_samba_sid; ?>-513">Domain Users</option>
-			<option value="<?php echo $default_samba_sid; ?>-514">Domain Guests</option>
-	    </select></td>
+	<td class="heading">Primary Group Id:</td>
+        <td><input type="text" name="primary_group_id">									   
 </tr>
 <tr>
 	<td></td>
 	<td class="heading">Home Directory:</td>
-	<td><input type="text" name="home_dir" value="<?php echo $default_home ?>" id="home_dir" /></td>
+	<td><input type="text" name="home_dir" value="" id="home_dir" /></td>
 </tr>
 <tr>
 	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></td>
 </tr>
+
 </table>
 </center>
 
 <?php } elseif( $step == 2 ) {
 
-	$user_name = trim( stripslashes( $_POST['user_name'] ) );
-	$first_name = trim( stripslashes( $_POST['first_name'] ) );
-	$last_name = trim( stripslashes( $_POST['last_name'] ) );
-	$password1 = stripslashes( $_POST['user_pass1'] );
-	$password2 = stripslashes( $_POST['user_pass2'] );
-	$encryption = stripslashes( $_POST['encryption'] );
-	$login_shell = trim( stripslashes( $_POST['login_shell'] ) );
-	$uid_number = trim( stripslashes( $_POST['uid_number'] ) );
-	$gid_number = trim( stripslashes( $_POST['group'] ) );
-	$container = trim( stripslashes( $_POST['container'] ) );
-	$home_dir = trim( stripslashes( $_POST['home_dir'] ) );
-
-	$samba_sid = trim( stripslashes( $_POST['samba_sid'] ) );
+	$user_name = trim( $_POST['user_name'] );
+	$first_name = trim( $_POST['first_name'] );
+	$last_name = trim( $_POST['last_name'] );
+	$password1 = $_POST['user_pass1'];
+	$password2 = $_POST['user_pass2'];
+	$encryption = $_POST['encryption'];
+	$login_shell = trim( $_POST['login_shell'] );
+	$uid_number = trim( $_POST['uid_number'] );
+	$gid_number = trim( $_POST['group'] );
+	$container = trim( $_POST['container'] );
+	$home_dir = trim( $_POST['home_dir'] );
+	$samba_user_rid = trim( $_POST['samba_user_rid'] );
+	$samba_primary_group_id = trim( $_POST['primary_group_id'] );
+	
+	$sambaLMPassword="";
+	$sambaNTPassword="";
+	$smb_passwd_creation_success = 0;
 
 	/* Critical assertions */
 	$password1 == $password2 or
@@ -195,16 +198,23 @@
 		pla_error( "You cannot leave the UID number blank. Please go back and try again." );
 	is_numeric( $uid_number ) or
 		pla_error( "You can only enter numeric values for the UID number field. Please go back and try again." );
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 
 	$password = password_hash( $password1, $encryption );
 
+        //build the mkntpwd command line string
 	$sambaPassCommand = $mkntpwdCommand . " " . $password1;
+
+        // execute this command
 	$sambaPassCommandOutput = shell_exec($sambaPassCommand);
-	$sambaLMPassword = substr($sambaPassCommandOutput,0,strPos($sambaPassCommandOutput,':'));
-	$sambaNTPassword = substr($sambaPassCommandOutput,strPos($sambaPassCommandOutput,':')+1);
+	if($sambaPassCommandOutput){
+	  $sambaLMPassword = substr($sambaPassCommandOutput,0,strPos($sambaPassCommandOutput,':'));
+	  $sambaNTPassword = substr($sambaPassCommandOutput,strPos($sambaPassCommandOutput,':')+1);
+	  $smb_passwd_creation_success = 1;
+	}
+
 	?>
 	<center><h3>Confirm account creation:</h3></center>
 
@@ -213,7 +223,7 @@
 	<input type="hidden" name="new_dn" value="<?php echo htmlspecialchars( 'uid=' . $user_name . ',' . $container ); ?>" />
 
 	<!-- ObjectClasses  -->
-	<?php $object_classes = rawurlencode( serialize( array( 'top', 'account', 'posixAccount', 'shadowAccount' , 'sambaSamAccount' ) ) ); ?>
+	<?php $object_classes = rawurlencode( serialize( array( 'top', 'account', 'posixAccount', 'shadowAccount' , 'sambaAccount' ) ) ); ?>
 
 	<input type="hidden" name="object_classes" value="<?php echo $object_classes; ?>" />
 
@@ -230,25 +240,12 @@
 		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($home_dir);?>" />
 	<input type="hidden" name="attrs[]" value="loginShell" />
 		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($login_shell);?>" />
-	<input type="hidden" name="attrs[]" value="sambaAcctFlags" />
+	<input type="hidden" name="attrs[]" value="acctFlags" />
 		<input type="hidden" name="vals[]" value="[U          ]" />
-	<input type="hidden" name="attrs[]" value="sambaLMPassword" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($sambaLMPassword);?>" />
-	<input type="hidden" name="attrs[]" value="sambaNTPassword" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($sambaNTPassword);?>" />
-	<input type="hidden" name="attrs[]" value="sambaPrimaryGroupSID" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($sambaPrimaryGroupSID);?>" />
-	<input type="hidden" name="attrs[]" value="sambaPwdCanChange" />
-		<input type="hidden" name="vals[]" value="0" />
-	<input type="hidden" name="attrs[]" value="sambaPwdLastSet" />
-		<input type="hidden" name="vals[]" value="0" />
-	<input type="hidden" name="attrs[]" value="sambaPwdMustChange" />
-		<input type="hidden" name="vals[]" value="2147483647" />
-
-	<input type="hidden" name="attrs[]" value="sambaSID" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($samba_sid); ?>" />
-
-
+	<input type="hidden" name="attrs[]" value="primaryGroupID" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($samba_primary_group_id);?>" />
+	<input type="hidden" name="attrs[]" value="rid" />
+		<input type="hidden" name="vals[]" value="<?php echo $samba_user_rid; ?>" />
 	<input type="hidden" name="attrs[]" value="shadowLastChange" />
 		<input type="hidden" name="vals[]" value="11778" />
 	<input type="hidden" name="attrs[]" value="uid" />
@@ -257,20 +254,37 @@
 		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($uid_number);?>" />
 	<input type="hidden" name="attrs[]" value="userPassword" />
 		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($password);?>" />
+	   <?php if( $smb_passwd_creation_success ){?>
+         <input type="hidden" name="attrs[]" value="lmPassword" />
+               <input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($sambaLMPassword);?>" />
+	       <input type="hidden" name="attrs[]" value="ntPassword" />
+	       <input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($sambaNTPassword);?>" />
+	       <!--
+               <input type="hidden" name="attrs[]" value="pwdCanChange" />
+	       <input type="hidden" name="vals[]" value="0" />
+	       <input type="hidden" name="attrs[]" value="pwdLastSet" />
+	       <input type="hidden" name="vals[]" value="0" />
+	       <input type="hidden" name="attrs[]" value="pwdMustChange" />
+	       <input type="hidden" name="vals[]" value="2147483647" />
+               -->
+	   <?php } ?>
 
 	<center>
 	<table class="confirm">
 	<tr class="even"><td class="heading">User name:</td><td><b><?php echo htmlspecialchars( $user_name ); ?></b></td></tr>
 	<tr class="odd"><td class="heading">First name:</td><td><b><?php echo htmlspecialchars( $first_name ); ?></b></td></tr>
 	<tr class="even"><td class="heading">Last name:</td><td><b><?php echo htmlspecialchars( $last_name ); ?></b></td></tr>
-	<tr class="odd"><td class="heading">Password:</td><td>[secret]</td></tr>
+        <tr class="odd"><td class="heading">UID Number:</td><td><?php echo htmlspecialchars( $uid_number ); ?></td></tr>
 	<tr class="even"><td class="heading">Login Shell:</td><td><?php echo htmlspecialchars( $login_shell); ?></td></tr>
-	<tr class="odd"><td class="heading">UID Number:</td><td><?php echo htmlspecialchars( $uid_number ); ?></td></tr>
-	<tr class="even"><td class="heading">GID Number:</td><td><?php echo htmlspecialchars( $gid_number ); ?></td></tr>
-	<tr class="odd"><td class="heading">Container:</td><td><?php echo htmlspecialchars( $container ); ?></td></tr>
-	<tr class="even"><td class="heading">Home dir:</td><td><?php echo htmlspecialchars( $home_dir ); ?></td></tr>
-	</table>
-	<br /><input type="submit" value="Create Account" />
+	<tr class="even"><td class="heading">Rid</td><td><?php echo htmlspecialchars( $samba_user_rid ); ?></td></tr>
+	<tr class="odd"><td class="heading">GID Number:</td><td><?php echo htmlspecialchars( $gid_number ); ?></td></tr>
+	<tr class="even"><td class="heading">Container:</td><td><?php echo htmlspecialchars( $container ); ?></td></tr>
+	<tr class="odd"><td class="heading">Home dir:</td><td><?php echo htmlspecialchars( $home_dir ); ?></td></tr>
+        <?php if( $smb_passwd_creation_success ){ ?>
+	<tr class="even"><td class="heading">Password:</td><td>[secret]</td></tr>
+	<?php } ?>
+        </table>
+	<br /><input type="submit" value="Create Samba Account" />
 	</center>
 
 <?php } ?>

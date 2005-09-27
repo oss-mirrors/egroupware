@@ -1,6 +1,6 @@
 <?php
+// $Header$
 
-require 'common.php';
 
 // Common to all templates
 $container = $_POST['container'];
@@ -8,9 +8,9 @@ $server_id = $_POST['server_id'];
 
 
 // Unique to this template
-$step = $_POST['step'];
-if( ! $step )
-	$step = 1;
+$step = 1;
+if( isset($_POST['step']) )
+    $step = $_POST['step'];
 
 // A little config for this template
 $default_gid_number = 30000;
@@ -21,6 +21,9 @@ $default_home_dir = '/dev/null';
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
 
+if( get_schema_objectclass( $ldapserver, 'sambaAccount' ) == null )
+	pla_error( "Your LDAP server does not have schema support for the sambaAccount objectClass. Cannot continue." );
+
 ?>
 
 <center><h2>New Samba NT Machine</h2></center>
@@ -30,7 +33,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 <form action="creation_template.php" method="post" name="machine_form">
 <input type="hidden" name="step" value="2" />
 <input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-<input type="hidden" name="template" value="<?php echo $_POST['template']; ?>" />
+<input type="hidden" name="template" value="<?php echo htmlspecialchars( $_POST['template'] ); ?>" />
 
 <center>
 <table class="confirm">
@@ -49,7 +52,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 	<td></td>
 	<td class="heading">Container:</td>
 	<td><input type="text" size="40" name="container" value="<?php echo htmlspecialchars( $container ); ?>" />
-		<?php draw_chooser_link( 'machine_form.container' ); ?></td>
+		<?php draw_chooser_link( 'machine_form.container' ); ?>
 	</td>
 </tr>
 <tr>
@@ -84,7 +87,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 	$machine_name = trim( $_POST['machine_name'] );
 	$uid_number = trim( $_POST['uid_number'] );
 
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 	?>
