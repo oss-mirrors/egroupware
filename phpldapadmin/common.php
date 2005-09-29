@@ -17,6 +17,11 @@ if (!isset($GLOBALS['phpgw_info']['flags']))
 }
 include_once ('../header.inc.php');
 
+if (phpversion() >= "5") {
+	# Work-around to get PLA to work in PHP5
+	ini_set( "zend.ze1_compatibility_mode", 1 );
+}
+
 if( file_exists( realpath( 'config.php' ) ) ) {
 	require realpath( 'config.php' );
 }
