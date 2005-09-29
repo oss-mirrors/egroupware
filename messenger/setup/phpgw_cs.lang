@@ -1,0 +1,38 @@
+compose	messenger	cs	Vytvoøit
+compose global message	common	cs	Vytvoøit globální zprávu
+compose message	messenger	cs	Vytvoøit zprávu
+compose to multi-users	messenger	cs	Vytvoøit pro více u¾ivatelù
+compose to single-user	messenger	cs	Vytvoøit pro 1 u¾ivatele
+delete a message.	messenger	cs	Smazat zprávu
+delete selected	messenger	cs	Smazat oznaèené
+forward	messenger	cs	Pøedat
+forward a message	messenger	cs	Pøedat zprávu
+forward a message to another user.	messenger	cs	Pøedat zprávu jinému u¾ivateli
+forwarded	messenger	cs	Pøedaná
+from	messenger	cs	Od
+global message	messenger	cs	Globální zpráva
+i can't find the username %1 on the system	messenger	cs	Nemohu v systému najít u¾ivatele %1
+inbox	messenger	cs	Pøíchozí
+message from	messenger	cs	Zpráva od
+messenger	common	cs	Zprávy
+new	messenger	cs	Nové
+read a list of messages.	messenger	cs	Èíst seznam zpráv
+read a single message.	messenger	cs	Èíst jednu zprávu
+read message	messenger	cs	Èíst zprávu
+replied	messenger	cs	Odpovìzená
+reply	messenger	cs	Odpovìï
+reply to a message	messenger	cs	Odpovìdìt na zprávu
+reply to a received message.	messenger	cs	Odpovìdìt na pøijatou zprávu
+send	messenger	cs	Odeslat
+send a global message.	messenger	cs	Poslat globální zprávu
+send a message to a single recipient.	messenger	cs	Poslat zprávu jednomu adresátovi.
+send message to	messenger	cs	Poslat zprávu pro
+sorry, %1's account is not currently active	messenger	cs	Promiòte, úèet %1 není právì aktivní
+update a message status	messenger	cs	Aktualizovat stav zprávy
+use select box for user list in compose	common	cs	Vyberte u¾ivatele ze seznamu
+you didn't enter anything for the message	messenger	cs	Nevlo¾il jste nic k odeslání
+you have %1 new message	common	cs	Máte %1 novou zprávu
+you have %1 new messages	common	cs	Máte %1 nových zpráv
+you have no messages	messenger	cs	Nemáte ¾ádné zprávy
+you must enter a subject	messenger	cs	Musíte zadat nadpis
+you must enter the username this message is for	messenger	cs	Musíte zadat jmého adresáta

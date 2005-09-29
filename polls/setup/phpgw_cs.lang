@@ -1,0 +1,33 @@
+actions	polls	cs	akce
+add answer to poll	polls	cs	Pøidat odpovìï do hlasování
+add answers	polls	cs	Pøidat odpovìdi
+add new poll question	polls	cs	Pøidat novou otázku do hlasování
+add questions	polls	cs	Pøidat otázky
+allow users to vote more then once	polls	cs	Povolit u¾ivatelùm hlasovat více jak jedenkrát
+answer	polls	cs	Odpovìï
+answer has been added to poll	polls	cs	Odpovìï byla pøidána do hlasování
+answer has been updated	polls	cs	Odpovìï byla zmìnìna
+answers	polls	cs	Odpovìdi
+are you sure want to delete this answer ?	polls	cs	Opravdu chcete smazat tuto odpovìï ?
+are you sure want to delete this question ?	polls	cs	Opravdu chcete smazat tuto otázku ?
+current poll	polls	cs	Aktuální hlasování
+edit answer	polls	cs	Upravit odpovìï
+edit poll question	polls	cs	Upravit otázku v hlasování
+enter poll question	polls	cs	Upravit odpovìï v hlasování
+new poll has been added.  you should now add some answers for this poll	polls	cs	Nové hlasování bylo pøidáno. Nyní by mìly být pøidány nìjaké odpovìdi pro toto hlasování.
+poll question	polls	cs	Otázka v hlasování
+poll settings	common	cs	Nastavení hlasování
+polls	common	cs	Hlasování
+question has been updated	polls	cs	Otázka byla zmìnìna
+select current poll	polls	cs	Vybrat aktuální hlasování
+settings	polls	cs	Nastavení
+settings updated	polls	cs	Nastavení zmìnìno
+show answers	polls	cs	Zobrazit odpovìdi
+show questions	common	cs	Zobrazit otázky
+total votes	polls	cs	Celkem
+view poll	polls	cs	Prohlédnout hlasování
+view results	polls	cs	Prohlédnout výsledky
+vote	polls	cs	Hlasovat
+voting booth admin	admin	cs	Hlasovací kabina
+voting booth administration	polls	cs	Administrace hlasovací kabiny
+which poll	polls	cs	Které hlasování

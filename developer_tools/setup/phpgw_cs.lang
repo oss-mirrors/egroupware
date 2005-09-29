@@ -1,0 +1,58 @@
+add	developer_tools	cs	pøidat
+add change	developer_tools	cs	Pøidat zmìnu
+add more	developer_tools	cs	Pøidat více
+add new phrase	developer_tools	cs	Pøidat novou frázi
+add phrase	developer_tools	cs	pøidat frázi
+allows you to add a single phrase	developer_tools	cs	Umo¾ní vám pøidat frázi
+application	developer_tools	cs	Aplikace
+back	developer_tools	cs	Zpìt
+cancel	developer_tools	cs	Storno
+change	developer_tools	cs	Zmìnit
+clears the internal buffer, all changes made sofar are lost	developer_tools	cs	Vyèistí interní buffer, ve¹keré zmìny vytvoøené a¾ do této chvíle budou ztraceny.
+create new language file	developer_tools	cs	Vytvoøit nový jazykový soubor
+create sgml file	developer_tools	cs	Vytvoøit SGML soubor
+developer tools - preferences	developer_tools	cs	Vývojáøské nástroje - nastavení
+developer_tools	common	cs	Nástroje pro pøeklad
+diary	developer_tools	cs	Zápisník
+done	developer_tools	cs	hotovo
+download	developer_tools	cs	Download
+edit	developer_tools	cs	Zmìnit
+installed applications	developer_tools	cs	Nainstalované aplikace
+language file management	developer_tools	cs	Správa jazykových souborù
+load	developer_tools	cs	Nahrát
+loading source langfile	developer_tools	cs	Nahrávám zdrojový jazykový soubor
+loading target langfile	developer_tools	cs	Nahrávám cílový jazykový soubor
+message	developer_tools	cs	Zpráva
+message_id in english	developer_tools	cs	id zprávy v Angliètinì
+no file	developer_tools	cs	¾ádný soubor
+ok	developer_tools	cs	OK
+original	developer_tools	cs	Originál
+phrase in english (or empty if identical)	developer_tools	cs	Fráze v angliètinì (v pøípadì shody ponechat prázdné)
+preferences	developer_tools	cs	Pøedvolby
+preferences have been updated	developer_tools	cs	Pøedvolby byly zmìnìny
+project	developer_tools	cs	Projekt
+remove	developer_tools	cs	Odstranit
+returns to the application list, not saved changes get lost !!!	developer_tools	cs	Návrat na seznam aplikací, neulo¾ené zmìny budou ztraceny !!!
+revert	developer_tools	cs	Obnovit
+search for missing phrase	developer_tools	cs	Vyhledat chybìjící fráze
+search new phrases	developer_tools	cs	Vyhledat nové fráze
+searches the source-code for phrases not in the actual source-lang-file	developer_tools	cs	Prohledá zdrojový kód k nalezení frází, které nejsou obsa¾eny v aktuálním zdrojovém jazykovém souboru
+select project	developer_tools	cs	Vybrat projekt
+source language	developer_tools	cs	Zdrojový jazyk
+step	developer_tools	cs	Krok
+submit	developer_tools	cs	Odeslat
+target language	developer_tools	cs	Cílový jazyk
+title	developer_tools	cs	Název
+translate	developer_tools	cs	Pøelo¾it
+translation	developer_tools	cs	Pøeklad
+translation of phrase	developer_tools	cs	Pøeklad fráze
+update	developer_tools	cs	Aktualizovat
+update database	developer_tools	cs	Aktualizace databáze
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	cs	Aktualizuje pøeklady obou jazykových souborù v databázi, mù¾ete tedy okam¾itì zkontrolovat va¹i práci
+version	developer_tools	cs	Verze
+write	developer_tools	cs	Zapsat
+write the lang-file to the apps setup-dir	developer_tools	cs	Zapsat jazykový soubor do instalaèního adresáøe aplikace
+write to lang table	developer_tools	cs	Zapsat do jazykové tabulky
+writing langfile for '%1' ...	developer_tools	cs	Zapisuji jazykový soubor '%1'
+you must select a project	developer_tools	cs	Musíte vybrat projekt
+you need to set your preferences for this app	developer_tools	cs	Je nutno nastavit va¹e pøedvolby pro tuto aplikaci
