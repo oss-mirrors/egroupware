@@ -152,7 +152,7 @@ class Group
 		}
 		
 		
-		$members = $GLOBALS['egw']->accounts->member($this->_id);
+		$members = $GLOBALS['egw']->accounts->member((int)$this->_id);
                 $egw_group_member = array();
 
                 if (is_array($members))
