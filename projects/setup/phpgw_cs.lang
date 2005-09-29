@@ -1,35 +1,344 @@
 % to	projects	cs	% do
++ jobs	projects	cs	+ Úkoly
+account	projects	cs	U¾ivatelský úèet
+accounting	common	cs	Úètování
+accounting factor	projects	cs	Úèetní faktor
+accounting factor for project	projects	cs	Úèetní faktor pro projekt
+accounting system	projects	cs	Úèetní systém
+active	projects	cs	Aktivní
+activities	projects	cs	Èinnosti
+activity	common	cs	Èinnost
+activity %1 has been added	projects	cs	Èinnost %1 byla pøidána
+activity %1 has been updated	projects	cs	Èinnost %1 byla updatována
+activity id	projects	cs	ID èinnosti
+add activity	projects	cs	Pøidat èinnost
+add file	projects	cs	Pøidat soubor
+add job	projects	cs	Pøidat úkol
+add milestone	projects	cs	Pøidat mílník
+add project	projects	cs	Pøidat projekt
+add role	projects	cs	Pøidat roli
+add work hours	projects	cs	Pøidat pracovní hodiny
+address book	projects	cs	Adresáø
+administrator	projects	cs	Administrátor
+administrator list	projects	cs	Seznam administrátorù
+alarm	projects	cs	Alarm
+all delivery notes	projects	cs	V¹echy poznámky k doruèení
+amount	projects	cs	Poèet
+anonymous public	projects	cs	Veøejný anonymní
+archive	common	cs	Archív
+are you sure you want to delete this activity	projects	cs	Urèitì chcete smazat tuto èinnost ?
+are you sure you want to delete this job	projects	cs	Urèitì chcete smazat tuto úkol ?
+are you sure you want to delete this project	projects	cs	Urèitì chcete smazat tuto projekt ?
+assign	projects	cs	Pøidìlit
+assign roles and events	projects	cs	Pøidìlit role a události
+assignment has been deleted	projects	cs	pøidìlení bylo zru¹eno
+assignment has been saved	projects	cs	pøidìlení bylo ulo¾eno
+assignment to project	projects	cs	Pøidìlení k projektu
+assignment to project %1	projects	cs	pøidìlení k projektu %1
+assignment to role	projects	cs	Pøidìlení k roli
+available	projects	cs	Dostupné
+before	projects	cs	pøed
+bill per hour	projects	cs	Úètovat na hodinu
+bill per hour/workunit	projects	cs	Úètovat na hodinu / pracovní jednotku
+bill per workunit	projects	cs	Úètovat na pracovní jednotku
+billable	projects	cs	Úètovatelné
+billable activities	projects	cs	Úètovatelné èinnosti
+billed	projects	cs	Vyúètováno
+billed only	projects	cs	Vyúètováno pouze
+billing	projects	cs	Billing
+bookable activities	projects	cs	Pøedplatitelné èinnosti
+bookkeeper	projects	cs	Úèetní
+browse	projects	cs	prohlí¾et
+budget	projects	cs	Rozpoèet
+budget available	projects	cs	rozpoèet dostupný
+budget limit	projects	cs	Rozpoètový limit
+budget main project	projects	cs	bilance hlavního projektu
+budget planned	projects	cs	Rozpoètový plán
+budget sum of all sub projects is bigger than the budget of the main project	projects	cs	Souhrn bilancí v¹ech subprojektù je vìt¹í ne¾ rozpoèet hlavního projektu.
+budget used	projects	cs	spotøebovaný rozpoèet
+budget used total	projects	cs	spotøebovaný rozpoèet celkem
+calculate	projects	cs	Spoèítat
+changed start date and end date	projects	cs	Poèáteèní a koncové datum zmìnìno.
+changed start date and end date of projects bellow	projects	cs	Poèáteèní a koncové datum projektù uvedených ní¾e zmìnìno.
+changes of project data	projects	cs	Zmìny projektových dat
+click %1here%2 to return to projects.	projects	cs	Pro návrat do projektù kliknìte %1zde%2.
+closed	projects	cs	Uzavøeno
+color legend	projects	cs	Barevná popiska
+columns to show in the projects list	projects	cs	Sloupce zobrazované v seznamu projektù
+comment	projects	cs	poznámka
+continue	projects	cs	Pokraèovat
 coordinator	common	cs	Koordinátor
-costs	projects	cs	Náklady
-costs list	projects	cs	Seznam nákladù
-costtype	projects	cs	Typ nákladù
-creator	projects	cs	Tvùrce
+costs	projects	cs	Ceny
+costs list	projects	cs	Pøehled cen
+create delivery	projects	cs	Vytvoøit dodávku
+creator	projects	cs	Pùvodce
 customer	common	cs	Zákazník
+customer nr	projects	cs	Zákazník è.
 date created	projects	cs	Datum vytvoøení
-delete project	projects	cs	smazat projekt
+date due of milestone %1 of project %2 has been updated	projects	cs	Datum vypr¹ení mílníku %1 projektu %2 bylo updatováno.
+date due planned	projects	cs	Plánovaný termín
+days	projects	cs	dní
+days before	projects	cs	dní pøed
+definition per project	admin	cs	Definice na projekt
+delete activity	projects	cs	Smazat èinnost
+delete factor	projects	cs	Smazat faktor
+delete hours	projects	cs	Smazat hodiny
+delete job	projects	cs	Smazat úkol
+delete project	projects	cs	Smazat projekt
+delete selected files	projects	cs	Smazat vybraná data
+delete work hours	projects	cs	Smazat pracovní dobu
+deliveries	projects	cs	Dodávky
+delivery	projects	cs	Dodávka
+delivery date	projects	cs	Termín dodávky
+delivery id	projects	cs	ID dodávky
+delivery list	projects	cs	Seznam dodávek
+delivery note	projects	cs	Dodací list
+delivery note for project	projects	cs	Dodací list k projektu
+description can not exceed 250 characters in length	projects	cs	Popis nemù¾e pøekroèit 250 znakù
+description can not exceed 8000 characters in length	projects	cs	Popis nemù¾e pøekroèit 8000 znakù
 discount	projects	cs	Sleva
 distance	projects	cs	Vzdálenost
-edit milestone	projects	cs	upravit mezník
-edit milestones	projects	cs	Upravit mezníky
-edit project	projects	cs	Upravit projekt
+do you also want to delete all sub projects	projects	cs	Pøejete si také smazat v¹echny subprojekty?
+do you also want to delete all sub projects ?	projects	cs	Pøejete si také smazat v¹echny subprojekty?
+edit activity	projects	cs	Editovat èinnost
+edit administrator list	projects	cs	Editovat seznam administrátorù
+edit events	projects	cs	Editovat událost
+edit job	projects	cs	Editovat úkol
+edit manager list	projects	cs	Editovat seznam mana¾erù
+edit milestone	projects	cs	Editovat mílník
+edit milestones	projects	cs	Editovat mílníky
+edit project	projects	cs	Editovat projekt
+edit roles	projects	cs	Editovat role
+edit roles and events	projects	cs	Editovat role a události
+edit seller list	projects	cs	Editovat seznam obchodníkù
+edit time tracker entry	projects	cs	Editovat èasový záznam
+edit work hours	projects	cs	Editovat pracovní dobu
 employee	projects	cs	Zamìstnanec
 employees	projects	cs	Zamìstnanci
-entry	projects	cs	záznam
+end date has changed	projects	cs	Datum ukonèení zmìnìno
+ending date can not be after parent projects date due	projects	cs	Datum ukonèení nemù¾e být pozdìj¹í ne¾ termín rodièovských projektù.
+ending date can not be after projects date due	projects	cs	Datum ukonèení nemù¾e být pozdìj¹í ne¾ termín projektu.
+ending date can not be before start date	projects	cs	Datum ukonèení nemù¾e pøedcházet poèáteèní datum.
+entry	projects	cs	vstup
 event	projects	cs	Událost
 event %1 has been saved	projects	cs	událost %1 byla ulo¾ena
+event %1 has been updated	projects	cs	událost %1 byla updatována
 events	projects	cs	Události
+exact accounting [hh.mm]	admin	cs	Pøesné úètování [hh.mm]
+export as	projects	cs	exportovat jako
+external reference	projects	cs	Externí odkaz
+extra budget	projects	cs	Mimoøádný rozpoèet
+extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	cs	Souhrn mimoøádných rozpoèetù v¹ech subprojektù je vìt¹í ne¾ mimoøádný rozpoèet hlavního projektu.
+factor employee	projects	cs	Faktor zamìstnace
+factor has been deleted	projects	cs	faktor myl smazán
+factor has been saved	projects	cs	faktor byl ulo¾en
+factor has been updated	projects	cs	faktor byl updatován
+factor project	projects	cs	Faktor projektu
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	cs	Chyba pøi odesílání zprávy pro '%1' #%2 pøedmìt='%3', odesílatel='%4' !!!
 from	projects	cs	Od
-from %1 to %2	projects	cs	od %1 do %2
+from %1 to %2	projects	cs	of %1 do %2
+gantt chart	projects	cs	Ganttùv diagram
+gantt chart from %1 to %2	projects	cs	Ganttùv diagram od %1 do %2
+generate activity id	projects	cs	Generovat ID èinnosti ?
+generate activity id ?	projects	cs	Generovat ID èinnosti ?
+generate delivery id ?	projects	cs	Generovat ID dodávky ?
+generate job id	projects	cs	Generovat ID úkolu ?
+generate project id	projects	cs	Generovat ID projektu ?
+global categories	projects	cs	V¹eobecné kategorie
+has reached	projects	cs	dosáhl
 hours	projects	cs	Hodiny
-last update	projects	cs	Poslední úprava
+hours limit	projects	cs	Limit hodin
+hours of work day	admin	cs	Poèet hodin pracovního dne
+hours used total	projects	cs	spotøebováno hodin celkem
+id can not exceed 20 characters in length	projects	cs	ID nemù¾e pøekroèit 20 znakù
+id can not exceed 250 characters in length	projects	cs	ID nemù¾e pøekroèit 250 znakù.
+id is already taken, choose an other one	projects	cs	id ji¾ bylo pou¾ito, vyberte jiné
+if using activities	admin	cs	Pøi pou¾ití èinností
+if you are an administrator, please edit the site configuration for projects in the admin section	projects	cs	Pokud jste administrátor, editujte prosím konfiguraci pro projekty v sekci admin.
+if you are not an administrator, please inform the administrator to configure projects	projects	cs	Pokud nejste administrátor, informujte prosím va¹eho administrátora o potøebì konfigurace projektù.
+investment nr	projects	cs	Investice è.
+invoicing method	projects	cs	Zpùsob fakturace
+invoicing of work time	admin	cs	Fakturace pracovní doby
+job	projects	cs	Úkol
+job has been added	projects	cs	Úkol byl pøidán.
+job has been updated	projects	cs	Úkol byl updatován.
+job id	projects	cs	ID úkolu
+job list	projects	cs	Seznam úkolù
+job manager	projects	cs	Øízení úkolù
+jobs	common	cs	Úkoly
+last update	projects	cs	Poslední update
+list activities	projects	cs	Seznam èinností
+list budget	projects	cs	Vylistovat rozpoèet
+list deliveries	projects	cs	Seznam dodávek
+list jobs	common	cs	Seznam úkolù
+list projects	common	cs	Seznam projektù
+list work hours	projects	cs	Seznam pracovní doby
+main project	projects	cs	Hlavní projekt
+main project:	projects	cs	Hlavní projekt:
+manager	projects	cs	Mana¾er
+manager list	projects	cs	Mana¾erský seznam
+managing committee	projects	cs	Øídící výbor
+manuell entries	projects	cs	Ruèní záznamy
+milestone	projects	cs	Mílník
+milestone date due	projects	cs	Termín mílníku
+milestone has been deleted	projects	cs	mílník byl smazán
+milestone has been saved	projects	cs	mílník byl ulo¾en
+milestones	common	cs	Mílníky
+minutes per workunit	projects	cs	Minut na pracovní jednotku
+month	projects	cs	Mìsíc
+move start date if pervious projects end date changes	admin	cs	Posunout poèáteèní datum pokud se zmìní koncové datum pøedchozích projektù
+name not exceed 250 characters in length	projects	cs	jméno nemù¾e pøekroèit 250 znakù
+new date due of milestone %1: %2	projects	cs	Nový termín mílníku %1: %2.
+new end date	projects	cs	Nové datum ukonèení
+new milestone	projects	cs	Nový mílník
+new project	projects	cs	Nový projekt
+new start date	projects	cs	Nové poèáteèní datum
+nonactive	common	cs	Neaktivní
+not billable	projects	cs	neúètované
+number	projects	cs	Èíslo
+old end date	projects	cs	Staré datum ukonèení
+old start date	projects	cs	Staré poèáteèní datum
+open	projects	cs	Otevøeno
+open popup	projects	cs	otevøít ve vyskakovacím oknì
+open popup window	projects	cs	otevøít vyskakovací okno
+overall	projects	cs	Souhrnný
+parent project	projects	cs	Rodièovský projekt
+pause	projects	cs	Pozastavit
+per	projects	cs	na
+per day	projects	cs	na den
+per hour	projects	cs	na hodinu
+per hour/workunit	projects	cs	na hodinu / pracovní jednotku
+per workunit	common	cs	na pracovní jednotku
+percent	projects	cs	Procent
+planned	projects	cs	Plánováno
+planned time sum of all sub projects is bigger than the planned time of the main project	projects	cs	Souhrn plánovaného èasu v¹ech subprojektù je vìt¹í ne¾ plánovaný èas hlavního projektu.
+please choose a project coordinator	projects	cs	Vyberte prosím koordinátora projektu.
+please choose activities for the project	projects	cs	Vyberte prosím èinnosti projektu.
+please choose the accounting system for the project	projects	cs	Vyberte prosím systém úètování projektu.
+please choose the columns to list in the projects preferences section	projects	cs	Vyberte prosím sloupce, které se mají zobrazovat v sekci pøedvoleb projektu.
+please choose the discount type	projects	cs	Vyberte typ slevy.
+please enable html view of emails.	projects	cs	Povolte HTML zobrazení E-Mailù
+please enter a remark	projects	cs	Vlo¾te pøipomínku.
+please enter an id	projects	cs	Vlo¾te prosím ID.
+please enter an id !	projects	cs	Vlo¾te prosím ID !
+please enter the bill	projects	cs	Vlo¾te prosím úèet.
+please enter the minutes per workunit	projects	cs	Vlo¾te poèet minut na pracovní jednotku.
+please select a project for time tracking	projects	cs	Vyberte projekt pro sledování èasu
+please set the accounting factor for the project	projects	cs	Nastavte úèetní faktor projektu.
+please set your preferences for this application !	projects	cs	Nastavte pøedvolby této aplikace !
+please specify the budget	projects	cs	Urèete rozpoèet.
+please specify the currency in the global preferences section	common	cs	Prosím specifikujte mìnu v sekci globálních pøedvoleb.
 position	projects	cs	Pozice
 previous	projects	cs	Pøedchozí projekt
 previous project	projects	cs	Pøedchozí projekt
+previous projects end date has changed	projects	cs	Datum ukonèení pøedchozího projektu zmìnìno
+print delivery	projects	cs	Písemné doruèení
+processor	projects	cs	Procesor
 project	projects	cs	Projekt
-project administrators	common	cs	Administrátoøi projektù
+project %1 has been saved	projects	cs	Projekt %1 byl ulo¾en.
+project %1 has been updated	projects	cs	Projekt %1 byl updatován.
+project accounting	admin	cs	Úètování projektu
+project administrators	common	cs	Administrátoøi projektu
+project data due	projects	cs	Termín projektu
+project date due	projects	cs	Termín projektu
+project dependencies	common	cs	Projektové vazby
+project id	common	cs	ID projektu
 project list	projects	cs	Seznam projektù
-project statistic	projects	cs	Statistika projektu
+project overview	projects	cs	Náhled projektu
+project statistic	projects	cs	Statistiky projektu
 project url	projects	cs	URL projektu
 projects	common	cs	Projekty
-remark	projects	cs	Poznámka
+projects, which are assigned as sequencing	projects	cs	Projekty zaøazené ve sledu
+quality check	projects	cs	Kontrola kvality
+reference	projects	cs	Odkaz
+remark	projects	cs	Pøipomínka
+remark can not exceed 8000 characters in length	projects	cs	Pøipomínka nemù¾e pøesáhnout 8000 znakù.
+remark can not exceed 8000 characters in length !	projects	cs	Pøipomínka nemù¾e pøesáhnout 8000 znakù !
+remark required	projects	cs	Pøipomínka je vy¾adována
 result	projects	cs	Výsledek
+role	projects	cs	Role
+role %1 has been saved	projects	cs	Role %1 byla ulo¾ena
+role %1 has been updated	projects	cs	Role %1 byla updatována
+role has been deleted	projects	cs	Role byla smazána
+roles	projects	cs	Role
+roles list	projects	cs	Seznam rolí
+sales department	projects	cs	Prodejní oddìlení
+save factor	projects	cs	Ulo¾it faktor
+save milestone	projects	cs	Ulo¾it mílník
+select factor	projects	cs	Vybrat faktor
+select groups	projects	cs	Vybrat skupiny
+select main project	common	cs	Vybrat hlavní projekt
+select project	projects	cs	Vybrat projekt
+select role	projects	cs	Vybrat roli
+select users	projects	cs	Vybrat u¾ivatele
+seller	projects	cs	Prodejce
+seller list	projects	cs	Seznam prodejcù
+sequencing project	projects	cs	Projekt ve sledu
+settings	admin	cs	Nastavení
+short description	projects	cs	Krátký popis
+show gantt chart	projects	cs	Ukázat Ganttùv diagram
+show milestones	projects	cs	Ukázat milníky
+show planned resources	projects	cs	Ukázat plánované zdroje
+site configuration	projects	cs	Konfigurace stránek
+size	projects	cs	Velikost
+start	projects	cs	Start
+start date can not be before parent projects start date	projects	cs	Poèáteèní datum nemù¾e pøedcházet poèáteèní datum projektu.
+start date planned	projects	cs	Plánované poèáteèní datum
+statistic	projects	cs	Statistika
+statistics	projects	cs	Statistiky
+stop	projects	cs	Stop
+sub project level %1	projects	cs	Subprojekt úrovnì %1
+subproject	projects	cs	podprojekt
+sum	projects	cs	souhrn
+sum budget	projects	cs	Souhrn rozpoètu
+sum hours	projects	cs	Souhrn hodin
+sum jobs	projects	cs	Souhrn úkolù
+sum workunits	projects	cs	Souhrn pracovních jednotek
+test	projects	cs	Test
+that id has been used already	projects	cs	Toto ID je ji¾ pou¾ito.
+that id has been used already !	projects	cs	Toto ID je ji¾ pou¾ito !
+the choosen previous project does not have an end date specified	projects	cs	Vybraný pøedchozí projekt nemá urèeno datum ukonèení.
+the delivery note contains no items !	projects	cs	Dodací list neobsahuje ¾ádné polo¾ky !
+this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	cs	Toto vìt¹inou zpùspbuje ¹patnì konfigurovaný SMTP server. Kontaktujte va¹eho administrátora.
+till	projects	cs	Dokud
+time of journey	projects	cs	Èas cesty
+time planned	projects	cs	Plánovaný èas
+time tracker	projects	cs	Sledování èasu
+time tracking actions	projects	cs	akce sledování èasu
+time tracking for this project has been stopped already	projects	cs	sledování èasu pro tento projekt ji¾ bylo zastaveno
+time tracking for this project is already active	projects	cs	sledování èasu pro tento projekt ji¾ bylo aktivováno
+time used	projects	cs	Spotøebovaný èas
+time used billable	projects	cs	Spotøebovaný èas úètovaný
+time used total	projects	cs	Spotøebovaný èas celkem
+title can not exceed 250 characters in length	projects	cs	Název nemù¾e pøesáhnout 250 znakù.
+update delivery	projects	cs	Update dodávky
+use activities	admin	cs	Pou¾ít èinnosti
+used	projects	cs	pou¾ito
+used - jobs included	projects	cs	pou¾ito - vèetnì úkolù.
+used billable	projects	cs	Pou¾ito (úètovatelné)
+used not billable	projects	cs	Pou¾ito (neúètovatelné)
+used total	projects	cs	Pou¾ito celkem
+user statistic	projects	cs	Statistika u¾ivatele
+user statistics	projects	cs	Statistiky u¾ivatele
+view employees	projects	cs	Prohlédnout zamìstnance
+view gantt chart	projects	cs	Prohlédnout Ganttùv diagram
+view hours	projects	cs	Prohlédnout hodiny
+view job	projects	cs	Prohlédnout úkol
+view project	projects	cs	Prohlédnout projekt
+view users	projects	cs	Prohlédnout u¾ivatele
+view work hours	projects	cs	Prohlédnout pracovní dobu
+work date	common	cs	Pracovní datum
+work hours	common	cs	Pracovní doba
+work time	projects	cs	Pracovní èas
+workunit	projects	cs	Pracovní jednotka
+workunits	projects	cs	Pracovní jednotky
+you have entered an invalid date !	projects	cs	Bylo zadáno neplatné datum !
+you have entered an invalid date due	projects	cs	Bylo zadáno neplatné datum termínu !
+you have entered an invalid end date	projects	cs	Bylo zadáno neplatné datum ukonèení !
+you have entered an invalid planned end date	projects	cs	Bylo zadáno neplatné naplánované datum ukonèení !
+you have entered an invalid planned start date	projects	cs	Bylo zadáno neplatné naplánované poèáteèní datum !
+you have entered an invalid start date	projects	cs	Bylo zadáno neplatné poèáteèní datum !
+you have no customer selected !	projects	cs	Nebyl vybrán ¾ádný zákazník !
+you have no projects selected	projects	cs	Nebyl vybrán ¾ádný projekt !
+you have selected an invalid activity	projects	cs	Byla vybrána neplatná èinnost.
+you have to create a delivery or invoice first !	projects	cs	Musíte nejdøíve VYTVOØIT dodávku nebo fakturu.
