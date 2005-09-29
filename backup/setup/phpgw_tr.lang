@@ -1,0 +1,63 @@
+absolute path of the backup directory	backup	tr	Yedekleme yapýlacak dizin (örnek: /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	tr	Yedekleme yapýlacak dizin (örnek: /usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	tr	EGW Yedekleme Uygulamasý tam dizini
+absolute path of the directory to store the backup script	backup	tr	EGW Yedekleme Uygulamasý tam dizini
+archive type	backup	tr	Arþiv tipinizi seçiniz
+backup	common	tr	Yedekleme
+backup administration	common	tr	Yedekleme yönetimi
+bzip2	admin	tr	bzip2
+configuration backup	backup	tr	Yedekleme Ayarlarý
+configuration localhost	backup	tr	Localhost Ayarlarý
+create backups of your data ?	backup	tr	Verilerinizin yedeðini almak için seçiniz
+daily	backup	tr	günlük
+data	backup	tr	Veri
+directory locations	admin	tr	Dizin yerleri
+directory names	admin	tr	Dizin isimleri
+e-mail	backup	tr	E-MAIL uyarýlarý almak için seçiniz:
+e-mail notification?	backup	tr	E-MAIL Uyarýlarý?
+homedirs	admin	tr	Ev dizinleri
+interval	backup	tr	Ara
+ip or hostname	backup	tr	IP ya da hostname
+ldap	common	tr	LDAP
+ldap database	admin	tr	LDAP veritabaný
+list backup archives	backup	tr	yedekleme arþivlerini listele
+maildir	admin	tr	Uyarýlarýn gideceði E-Mail adresi:
+monthly	backup	tr	aylýk
+mysql	admin	tr	MySQL
+nfs	backup	tr	nfs
+no backup archives available !	backup	tr	Hiç yedek arþivi yok !
+number of stored backup versions	backup	tr	Eskilerini silmeden önceki kaydedilmiþ veritabaný sayýsý:
+operating system	backup	tr	Ýþletim Sistemi
+pgsql	admin	tr	PostgreSQL
+php cgi	admin	tr	PHP Yorumlayýcýsýn tam yolu (ör: /usr/bin/php)
+please enter the path of the needed applications in *site configuration* !	backup	tr	Lütfen 'Site Ayarlarý'nda gerekli olan uygulamalarýn yolunu giriniz.
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	tr	Lütfen veritabaný dizininin tam yolunu giriniz ve/veya eGroupWare arþiv görüntülemesini etkinleþtirin
+please enter username and password for remote connection !	backup	tr	Uzaktan Eriþim için kullanýcý ve þifre giriniz !
+please select an application for transport to the remote host !	backup	tr	Uzaktaki bilgisayara taþýnacak uygulamayý seçiniz !
+please set the path to a local dir to store the backup script !	backup	tr	Yedekleme betiðini saklayacaðýnýz yolu yerel bir dizine ayarlayýnýz !
+please set the path to the ldap database dir in *site configuration* !	backup	tr	'Site Ayarlarý'ndaki LDAP veritabaný tam yolunu giriniz !
+please set the path to the mysql database dir in *site configuration* !	backup	tr	'Site Ayarlarý'ndaki MySQL veritabaný tam yolunu giriniz !
+please set the path to the postgresql database dir in *site configuration* !	backup	tr	'Site Ayarlarý'ndaki PostgreSQL veritabaný tam yolunu giriniz !
+please set the values in *site configuration* !	backup	tr	'Site Ayarlarý'ndaki deðerleri giriniz !
+please specify the ip of the remote host !	backup	tr	Uzaktaki bilgisayarýn IP'sini giriniz !
+please specify the name of the maildir in *site configuration* !	backup	tr	'Site Ayarlarý'ndaki mail dizini deðerini giriniz !
+please specify the path to the backup directory !	backup	tr	Yedekleme dizininin yolunu giriniz !
+please specify the path to the user-homedirectories in *site configuration* !	backup	tr	'Site Ayarlarý'ndaki kullanýcý ev dizinleri yolunu giriniz !
+please write down you e-mail for beeing notified	backup	tr	Uyarýlmak istiyorsanýz e-mail adresinizi giriniz
+program locations	admin	tr	Program Konumlarý
+save backup locally ?	backup	tr	Yedeklemeyi yerel olarak kaydetmek için seçiniz
+select archive type	backup	tr	Arþiv tipi belirleyiniz
+select interval	backup	tr	Ara seçiniz
+settings	admin	tr	ayarlar
+show backup archives in egroupware ?	backup	tr	eGroupWare^deki yedek arþivlerini göstermek çin seçiniz:
+smbmount	backup	tr	smbmount
+sql	backup	tr	SQL
+tar	admin	tr	tar
+tar.bz2	backup	tr	tar.bz2
+tar.gz	backup	tr	tar.gz
+the backup application is not configured for showing the archives in egroupware yet !	backup	tr	Yedekleme uygulamanýz eGroupware arþivlerini üzere henüz ayarlanmamýþ !
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	tr	Yedekleme betiðinin saklanacaðý dizini giriniz, web sunucusunun DocumentRoot'unun içinde olmalýdýr.
+versions can only be a number !	backup	tr	Sürüm sadece sayý olabilir!
+weekly	backup	tr	haftalýk
+your sql database isnt supported by this application !	backup	tr	SQL veritabanýnýz bu uygulama tarafýndan desteklenmemektedir !
+zip	common	tr	zip

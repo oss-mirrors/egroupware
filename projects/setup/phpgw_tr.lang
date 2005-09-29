@@ -1,314 +1,342 @@
-% to	tr	% e
-+ jobs	tr	+ Ýþler
-account	tr	Hesap
-accounting factor	tr	Hesap faktörü
-accounting factor for project	tr	Proje için para birimi
-accounting system	tr	Hesap sistemi
-active	tr	Faal
-activities	tr	Faaliyetler
-activity %1 has been added	tr	%1 faaliyeti eklendi.
-activity %1 has been updated	tr	%1 faaliyeti güncellendi.
-activity id	tr	Faaliyet No
-add activity	tr	Faaliyet Ekle
-add file	tr	Dosya Ekle
-add job	tr	Ýþ Ekle
-add milestone	tr	Dönemeç Ekle
-add project	tr	Proje Ekle
-add role	tr	Rol Ekle
-add work hours	tr	Çalýþma saati ekle
-address book	tr	Adres Defteri
-administrator	tr	Yönetici
-administrator list	tr	Yönetici Listesi
-alarm	tr	alarm
-all delivery notes	tr	Bütün teslimat notlarý
-amount	tr	Tutar
-anonymous public	tr	Ýsimsiz genel
-are you sure you want to delete this activity	tr	Bu faaliyeti silmek istediðinizden eminmisiniz ?
-are you sure you want to delete this job	tr	Bu iþi silmek istediðinizden eminmisiniz ?
-are you sure you want to delete this project	tr	Bu projeyi silmek istediðinizden eminmisiniz ?
-assign	tr	Atama
-assign roles and events	tr	Rol ve Olay Ata
-assignment has been deleted	tr	assignment has been deleted
-assignment has been saved	tr	assignment has been saved
-assignment to project	tr	Assignment to project
-assignment to project %1	tr	assignment to project %1
-assignment to role	tr	Assignment to role
-available	tr	Kalan
-before	tr	önce
-bill per hour	tr	Saat baþýna Faturala
-bill per hour/workunit	tr	Saat/Çalýþma Birimi ne göre Faturala
-bill per workunit	tr	ÇalýþmaBirimine göre Faturala
-billable	tr	Faturalanabilir
-billable activities	tr	Faturalanabilir faaliyetler
-billed	tr	Faturalandý
-billed only	tr	Sadece Faturalandý
-billing	tr	Faturalanýyor
-bookable activities	tr	Bookable activities
-bookkeeper	tr	Bookkeeper
-browse	tr	tara
-budget	tr	Butçe
-budget available	tr	bütçe kaldý
-budget limit	tr	Butçe sýnýrý
-budget main project	tr	ana proje bütçesi
-budget planned	tr	Planlanmýþ Bütçe
-budget sum of all sub projects is bigger than the budget of the main project	tr	Alt projelere ait bütçelerin toplamý ana proje bütçesini aþýyor.
-budget used	tr	bütçe kullanýldý
-budget used total	tr	Tüm bütçe kullanýldý
-calculate	tr	Hesapla
-changed start date and end date	tr	Baþlama ve Bitiþ tarihleri deðiþti.
-changed start date and end date of projects bellow	tr	Aþaðýdaki projelerin baþlama ve bitiþ tarihleri deðiþti.
-changes of project data	tr	Proje verilerindeki deðiþiklikler
-click %1here%2 to return to projects.	tr	Projelere dönmek için %1burayý%2 týklayýnýz.
-closed	tr	Kapandý
-color legend	tr	Color legend
-columns to show in the projects list	tr	Proje listesi içinde gösterilecek sütunlar
-comment	tr	yorum
-continue	tr	Devam
-costs	tr	Masraflar
-costs list	tr	Masraf Listesi
-costtype	tr	Masraf Tipi
-create delivery	tr	Create delivery
-creator	tr	Oluþturan
-customer nr	tr	Müþteri No.
-date created	tr	Oluþturma Tarihi
-date due of milestone %1 of project %2 has been updated	tr	%2 Projesine ait %1 Dönemecinin son tarihi güncellendi.
-date due planned	tr	Planlanan son tarih
-days	tr	günler
-days before	tr	gün önce
-delete activity	tr	faaliyeti sil
-delete factor	tr	faktörü sil
-delete hours	tr	Saatleri sil
-delete job	tr	iþi sil
-delete project	tr	projeyi sil
-delete selected files	tr	seçili dosyalarý sil
-delete work hours	tr	çalýþma saatlerini sil
-deliveries	tr	Teslimatlar
-delivery	tr	Teslimat
-delivery date	tr	Teslim tarihi
-delivery id	tr	Teslimat No
-delivery list	tr	Teslimat listesi
-delivery note	tr	Teslimat notu
-delivery note for project	tr	Proje için teslimat notu
-description can not exceed 250 characters in length	tr	Açýklama boyu 250 haneyi geçemez
-description can not exceed 8000 characters in length	tr	Açýklama boyu 8000 haneyi geçemez.
-discount	tr	Ýndirim
-distance	tr	Mesafe
-do you also want to delete all sub projects	tr	Tüm alt projeler de silinsinmi
-do you also want to delete all sub projects ?	tr	Tüm alt projeler de silinsinmi ?
-edit activity	tr	Faaliyeti düzelt
-edit administrator list	tr	Yönetici listesini düzelt
-edit events	tr	olaylarý düzelt
-edit job	tr	Eylemi düzelt
-edit manager list	tr	Gözetim listesini düzelt
-edit milestone	tr	Dönemeci düzelt
-edit milestones	tr	Dönemeçleri Düzelt
-edit project	tr	Projeyi düzelt
-edit roles	tr	Görevleri düzelt
-edit roles and events	tr	Olay ve Görevleri düzelt
-edit seller list	tr	Satýcý listesini düzelt
-edit time tracker entry	tr	Zaman takip kaydýný düzelt
-edit work hours	tr	Çalýþma saatlerini düzelt
-employee	tr	Görevli
-employees	tr	Görevliler
-end date has changed	tr	Bitiþ tarihi deðiþti
-ending date can not be after parent projects date due	tr	Bitiþ tarihi ana proje son tarihinden sonra olamaz.
-ending date can not be after projects date due	tr	Bitiþ tarihi projelerin son tarihlerinden sonra olamaz.
-ending date can not be before start date	tr	Bitiþ tarihi baþlama tarihinden önce olamaz.
-entry	tr	Giriþ
-event	tr	Olay
-event %1 has been saved	tr	%1 olay kaydedildi
-event %1 has been updated	tr	%1 olay güncellendi
-events	tr	Olaylar
-export as	tr	export as
-external reference	tr	Dýþ referans
-extra budget	tr	Ekstra bütçe
-extra budget sum of all sub projects is bigger than the extra budget of the main project	tr	Alt projelere ait ekstra bütçeler toplamý ana proje ekstra bütçesinden fazla olamaz.
-factor employee	tr	Adam baþýna
-factor has been deleted	tr	faktör silindi
-factor has been saved	tr	faktör kaydedildi
-factor has been updated	tr	faktör güncellendi
-factor project	tr	Götürü
-failed sending message to 	tr	%1
-from	tr	Baþlama
-from %1 to %2	tr	%1 den %2 ye
-gantt chart	tr	Gantt chart
-gantt chart from %1 to %2	tr	Gantt chart from %1 to %2
-generate activity id	tr	Otomatik numara ver
-generate activity id ?	tr	Otomatik numara ver
-generate delivery id ?	tr	Otomatik numara ver
-generate job id	tr	Otomatik numara ver
-generate project id	tr	Otomatik numara ver
-global categories	tr	Global Kategoriler
-has reached	tr	aþtý
-hours	tr	Saatler
-hours limit	tr	Saat limiti
-hours used total	tr	toplam çalýþýlan saat
-id can not exceed 20 characters in length	tr	id can not exceed 20 characters in length
-id can not exceed 250 characters in length	tr	ID can not exceed 250 characters in length.
-investment nr	tr	Yatýrým No.
-invoicing method	tr	Faturalama metodu
-job	tr	Ýþ
-job has been added	tr	Ýþ eklendi.
-job has been updated	tr	Ýþ güncellendi.
-job id	tr	Ýþ No
-job list	tr	Ýþ listesi
-job manager	tr	Ýþ yöneticisi
-last update	tr	Son güncelleme
-list activities	tr	Faaliyet listesi
-list budget	tr	Bütçe Listesi
-list deliveries	tr	Teslimat Listesi
-list work hours	tr	Çalýþma Listesi
-main project	tr	Ana proje
-main project:	tr	Ana proje:
-manager	tr	Yönetici
-manager list	tr	Yönetici Listesi
-managing committee	tr	Yönetim kurulu
-manuell entries	tr	Elle giriþler
-milestone	tr	Dönemeç
-milestone date due	tr	Dönemeç son tarihi
-milestone has been deleted	tr	dönemeç silindi
-milestone has been saved	tr	dönemeç kaydedildi
-minutes per workunit	tr	çalýþma birimi baþýna dakika
-month	tr	Ay
-name not exceed 250 characters in length	tr	Ad uzunluðu 250 haneyi geçemez
-new date due of milestone %1: %2	tr	Dönemeç için son tarih %1: %2.
-new end date	tr	Yeni bitiþ tarihi
-new milestone	tr	Yeni dönemeç
-new project	tr	Yeni proje
-new start date	tr	Yeni baþlama tarihi
-not billable	tr	Karþýlýksýz
-number	tr	Sayý
-old end date	tr	Eski bitiþ tarihi
-old start date	tr	Eski baþlama tarihi
-open	tr	Aç
-open popup	tr	Ayrý aç
-open popup window	tr	Ayrý pencere aç
-overall	tr	Herþey için
-parent project	tr	Ana proje
-pause	tr	Duraklat
-per	tr	baþýna
-per day	tr	gün baþýna
-per hour	tr	saat baþýna
-per hour/workunit	tr	saat/çalýþmabirimi baþýna
-percent	tr	Yüzde
-planned	tr	Planlanan
-planned time sum of all sub projects is bigger than the planned time of the main project	tr	Planned time sum of all sub projects is bigger than the planned time of the main project.
-please choose a project coordinator	tr	Please choose a project coordinator.
-please choose activities for the project	tr	Please choose activities for the project.
-please choose the accounting system for the project	tr	Please choose the accounting system for the project.
-please choose the discount type	tr	Please choose the discount type.
-please enable html view of emails.	tr	Please enable HTML view of E-Mails.
-please enter a remark	tr	Please enter a remark.
-please enter an id	tr	Please enter an ID.
-please enter an id !	tr	Please enter an ID !
-please enter the bill	tr	Please enter the bill.
-please enter the minutes per workunit	tr	Please enter the minutes per workunit.
-please select a project for time tracking	tr	Zaman takip kaydý için proje seçiniz
-please set the accounting factor for the project	tr	Proje için para birimi seçiniz.
-please set your preferences for this application !	tr	Bu uygulama için tercihlerinizi belirleyiniz !
-please specify the budget	tr	Bütçeyi belirleyiniz.
-position	tr	Konum
-previous	tr	Önceki proje
-previous project	tr	Önceki proje
-previous projects end date has changed	tr	Önceki projeninin bitiþ tarihi deðiþti
-print delivery	tr	Teslimat yazdýr
-processor	tr	Ýþlemci
-project	tr	Proje
-project %1 has been saved	tr	Proje %1 kaydedildi.
-project %1 has been updated	tr	Proje %1 güncellendi.
-project data due	tr	Proje son tarihi
-project date due	tr	Proje son tarihi
-project list	tr	Proje Listesi
-project overview	tr	Proje Özeti
-project statistic	tr	Proje Ýstatistiði
-project url	tr	Proje URL
-projects, which are assigned as sequencing	tr	Ýliþkilendirilen projeler sýralýdýr
-quality check	tr	Kalite kontrol
-reference	tr	Referans
-remark	tr	Görüþ
-remark can not exceed 8000 characters in length	tr	Görüþ boyu 8000 haneyi geçemez.
-remark can not exceed 8000 characters in length !	tr	Görüþ boyu 8000 haneyi geçemez !
-remark required	tr	Görüþ gerekir
-result	tr	Sonuç
-role	tr	Rol
-role %1 has been saved	tr	Rol %1 kaydedildi
-role %1 has been updated	tr	Rol %1 güncellendi
-role has been deleted	tr	Rol silindi
-roles	tr	Roller
-roles list	tr	Roller listesi
-sales department	tr	Satýþ Bölümü
-save factor	tr	Faktörü Kaydet
-save milestone	tr	dönemeci kaydet
-select factor	tr	Faktör seç
-select groups	tr	Gruplarý seç
-select project	tr	Proje seç
-select role	tr	Rol seç
-select users	tr	Kullanýcýlarý seç
-seller	tr	Satýcý
-seller list	tr	Satýcý listesi
-sequencing project	tr	Zincirleme proje
-short description	tr	Kýsa açýklama
-show gantt chart	tr	Show gantt chart
-show milestones	tr	dönemeçleri göster
-show planned resources	tr	planlanan kaynaklarý göster
-site configuration	tr	Site Configuration
-size	tr	boyut
-start	tr	Baþla
-start date can not be before parent projects start date	tr	Baþlama tarihi ana proje baþlama tarihinden önce olamaz
-start date planned	tr	Planlanan baþlama tarihi
-statistic	tr	Ýstatistik
-statistics	tr	Ýstatistikler
-stop	tr	Dur
-sub project level %1	tr	Alt proje düzeyi %1
-subproject	tr	altproje
-sum	tr	toplam
-sum budget	tr	Bütçe toplamý
-sum hours	tr	Saatler toplamý
-sum jobs	tr	Ýþler toplamý
-sum workunits	tr	Çalýþma birimleri toplamý
-test	tr	Test
-that id has been used already	tr	Bu No daha önce kullanýldý.
-that id has been used already !	tr	Bu No daha önce kullanýldý !
-the choosen previous project does not have an end date specified	tr	Seçilen önceki projenin bitiþ tarihi yok.
-the delivery note contains no items !	tr	Teslimat fiþi boþ !
-this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	tr	This is mostly caused by a not or wrongly configured SMTP server. Notify your administrator.
-till	tr	Bitiþ
-time of journey	tr	Tatil günü
-time planned	tr	Zaman
-time tracker	tr	Zaman Takibi
-time tracking actions	tr	zaman takip eylemler
-time tracking for this project has been stopped already	tr	bu proje için zaman takip kaydý zaten durmuþtu
-time tracking for this project is already active	tr	bu proje için zaman takip kaydý zaten aktif
-time used	tr	Kullanýlan saat
-time used billable	tr	fatura edilebilir saat
-time used total	tr	çalýþýlan toplam saat
-title can not exceed 250 characters in length	tr	Baþlýk boyu 250 haneyi geçemez.
-update delivery	tr	Teslimatý güncelle
-used	tr	çalýþýlan
-used - jobs included	tr	çalýþýlanlar - iþler dahil
-used billable	tr	Faturalanabilir
-used not billable	tr	Karþýlýksýz
-used total	tr	Toplam Çalýþma
-user statistic	tr	Kullanýcý istatistiði
-user statistics	tr	Kullanýcý istatistikleri
-view employees	tr	Çalýþanlarý gör
-view gantt chart	tr	View gantt chart
-view hours	tr	saatleri göre
-view job	tr	Ýþi gör
-view project	tr	Projeyi gör
-view users	tr	Kullanýcýlarý gör
-view work hours	tr	Çalýþmalarý gör
-work time	tr	Çalýþma Süresi
-workload warning for project	tr	proje için çalýþma saati aþýmý
-workunit	tr	Çalýþmabirimi
-workunits	tr	Çalýþmabirimleri
-you have entered an invalid date !	tr	Geçersiz tarih girdiniz !
-you have entered an invalid date due	tr	Geçersiz son tarih girdiniz.
-you have entered an invalid end date	tr	Geçersiz bitiþ tarihi girdiniz
-you have entered an invalid planned end date	tr	Geçersiz planlanan bitiþ tarihi girdiniz.
-you have entered an invalid planned start date	tr	Geçersiz planlanan baþlama tarihi girdiniz.
-you have entered an invalid start date	tr	Geçersiz baþlama tarihi girdiniz.
-you have no customer selected !	tr	Müþteri seçmediniz !
-you have no projects selected	tr	Proje seçmediniz
-you have selected an invalid activity	tr	Geçersiz eylem seçtiniz.
-you have to create a delivery or invoice first !	tr	Öncelikle teslimat veya oluþturmalýsýnýz !
+% to	projects	tr	% e
++ jobs	projects	tr	+ Görevler
+account	projects	tr	Hesap
+accounting	common	tr	Finans
+accounting factor	projects	tr	Finans çarpaný
+accounting factor for project	projects	tr	Projeler için finans çarpaný
+accounting system	projects	tr	Finans Sistemi
+active	projects	tr	Etkin
+activities	projects	tr	Faaliyetler
+activity	common	tr	Faaliyet
+activity %1 has been added	projects	tr	Faaliyet %1 eklendi
+activity %1 has been updated	projects	tr	Faaliyet %1 güncellendi.
+activity id	projects	tr	Faaliyet ID
+add activity	projects	tr	Faaliyet ekle
+add file	projects	tr	Dosya Ekle
+add job	projects	tr	Görev Ekle
+add milestone	projects	tr	Kilometre Taþý Ekle
+add project	projects	tr	Proje Ekle
+add role	projects	tr	Rol Ekle
+add work hours	projects	tr	Çalýþma Saatleri Ekle
+address book	projects	tr	Adres Defteri
+administrator	projects	tr	Yönetici
+administrator list	projects	tr	Yönetici Listesi
+alarm	projects	tr	alarm
+all delivery notes	projects	tr	Bütün Ýletim Notlarý
+amount	projects	tr	Miktar
+anonymous public	projects	tr	Anonim
+archive	common	tr	Arþiv
+are you sure you want to delete this activity	projects	tr	Bu faaliyeti silmek istediðinize emin misiniz?
+are you sure you want to delete this job	projects	tr	Bu görevi silmek istediðinize emin misiniz?
+are you sure you want to delete this project	projects	tr	Bu projeyi silmek istediðinize emin misiniz?
+assign	projects	tr	Ata
+assign roles and events	projects	tr	Rol ve faaliyet ata
+assignment has been deleted	projects	tr	faaliyet silindi
+assignment has been saved	projects	tr	faaliyet kaydedildi
+assignment to project	projects	tr	Faaliyet sahibi proje
+assignment to project %1	projects	tr	faaliyet sahibi proje %1
+assignment to role	projects	tr	Atama sahibi rol
+available	projects	tr	Müsait
+before	projects	tr	önce
+bill per hour	projects	tr	Saatlik ödeme
+bill per hour/workunit	projects	tr	Saat/Ýþ Birimi baþýna ödeme
+bill per workunit	projects	tr	Ýþ Birimi baþýna ödeme
+billable	projects	tr	Ücretli
+billable activities	projects	tr	Ücretli Faaliyetler
+billed	projects	tr	Ödendi
+billed only	projects	tr	Sadece Ödenenler
+billing	projects	tr	Fatura
+bookable activities	projects	tr	Ayýrtýlabilir faaliyetler
+bookkeeper	projects	tr	Muhasebeci
+browse	projects	tr	gözat
+budget	projects	tr	Bütçe
+budget available	projects	tr	Müsait bütçe
+budget limit	projects	tr	Bütçe limiti
+budget main project	projects	tr	Ana proje bütçesi
+budget planned	projects	tr	Planlanan bütçe
+budget sum of all sub projects is bigger than the budget of the main project	projects	tr	Alt projelerin bütçeleri toplamý ana projenin bütçesini aþmaktadýr.
+budget used	projects	tr	Kullanýlmýþ bütçe
+budget used total	projects	tr	Toplam kullanýlmýþ bütçe
+calculate	projects	tr	Hesapla
+changed start date and end date	projects	tr	Baþlangýç ya da bitiþ tarihini deðiþtir.
+changed start date and end date of projects bellow	projects	tr	Aþaðýdaki projelerin baþlangýç/bitiþ tarihlerini deðiþtir.
+changes of project data	projects	tr	Proje Veri Deðiþiklikleri
+click %1here%2 to return to projects.	projects	tr	Projelere dönmek için %1buraya%2 týklayýnýz.
+closed	projects	tr	Kapalý
+color legend	projects	tr	Renk Bilgisi
+columns to show in the projects list	projects	tr	Projeler listesinde görüntülecek sütunlar
+comment	projects	tr	yorum
+continue	projects	tr	Devam
+coordinator	common	tr	Koordinatör
+costs	projects	tr	Masraflar
+costs list	projects	tr	Masraf Listesi
+costtype	projects	tr	Masraf Tipi
+create delivery	projects	tr	Teslimat oluþtur
+creator	projects	tr	Oluþturan
+customer	common	tr	Müþteri
+customer nr	projects	tr	Müþteri Nr.
+date created	projects	tr	Oluþturuluma tarihi
+date due of milestone %1 of project %2 has been updated	projects	tr	%2 Projesinin kilometre taþý olan '%1'e ait son tarih güncellenmiþtir.
+date due planned	projects	tr	Planlanan son tarih
+days	projects	tr	gün
+days before	projects	tr	gün önce
+definition per project	admin	tr	Proje baþýna tanýmlama
+delete activity	projects	tr	faaliyeti sil
+delete factor	projects	tr	çarpaný sil
+delete hours	projects	tr	Saatleri sil
+delete job	projects	tr	görevi sil
+delete project	projects	tr	projeyi sil
+delete selected files	projects	tr	seçili dosyalarý sil
+delete work hours	projects	tr	çalýþýlmýþ saatleri sil
+deliveries	projects	tr	Teslimatlar
+delivery	projects	tr	Teslimat
+delivery date	projects	tr	Teslimat Tarihi
+delivery id	projects	tr	Teslimat ID
+delivery list	projects	tr	Teslimat listesi
+delivery note	projects	tr	Teslimat Notu
+delivery note for project	projects	tr	Proje için teslimat notu
+description can not exceed 250 characters in length	projects	tr	Açýklama uzunluðu 250 karakteri aþamaz.
+description can not exceed 8000 characters in length	projects	tr	Açýklama uzunluðu 8000 karakteri aþamaz.
+discount	projects	tr	Ýndirim
+distance	projects	tr	Mesafe
+do you also want to delete all sub projects	projects	tr	Ayný zamanda alt projeleri de silmek ister misiniz?
+do you also want to delete all sub projects ?	projects	tr	Ayný zamanda alt projeleri de silmek ister misiniz?
+edit activity	projects	tr	Faaliyeti Düzenle
+edit administrator list	projects	tr	Yönetici listesini düzenle
+edit events	projects	tr	Etkinlikleri düzenle
+edit job	projects	tr	Görev düzenle
+edit manager list	projects	tr	Ýdareci listesini düzenle
+edit milestone	projects	tr	kilometretaþý düzenle
+edit milestones	projects	tr	Kilometretaþlarýný düzenle
+edit project	projects	tr	Projeyi düzenle
+edit roles	projects	tr	Rolleri düzenle
+edit roles and events	projects	tr	Rolleri ve etkinlikleri düzenle
+edit seller list	projects	tr	Satýcý listesini düzenle
+edit time tracker entry	projects	tr	Zaman izleyici kaydýný düzenle
+edit work hours	projects	tr	Çalýþma saatlerini düzenle
+employee	projects	tr	Çalýþan
+employees	projects	tr	Çalýþanlar
+end date has changed	projects	tr	Bitiþ tarihi deðiþtirildi
+ending date can not be after parent projects date due	projects	tr	Bitiþ tarihi ana projenin son tarihinden daha sonra olamaz.
+ending date can not be after projects date due	projects	tr	Bitiþ tarihi projelerin son tarihinden sonra olamaz.
+ending date can not be before start date	projects	tr	Bitiþ tarihi baþlangýç tarihinden önce olamaz
+entry	projects	tr	kayýt
+event	projects	tr	Etkinlik
+event %1 has been saved	projects	tr	Etkinlik %1 kaydedildi
+event %1 has been updated	projects	tr	Etkinlik %1 güncellendi
+events	projects	tr	Etkinlikler
+exact accounting [hh.mm]	admin	tr	Kesin muhasebe [hh.mm]
+export as	projects	tr	Ýhraç þekli
+external reference	projects	tr	Dýþ referans
+extra budget	projects	tr	Extra bütçe
+extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	tr	Bütün alt projelerin extra bütçe toplamý ana projenin extra bütçe miktarýný aþmaktadýr.
+factor employee	projects	tr	Çalýþan çarpaný
+factor has been deleted	projects	tr	çarpan silindi
+factor has been saved	projects	tr	çarpan kaydedildi
+factor has been updated	projects	tr	çarpan güncellendi
+factor project	projects	tr	Proje çarpaný
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	tr	'%1'e gönderilecek mesaj <b>baþarýsýz</b>! (#%2 konu='%3', gönderen='%4')
+from	projects	tr	Gönderen
+from %1 to %2	projects	tr	%1'den %2'ye
+gantt chart	projects	tr	Gantt Çizimi
+gantt chart from %1 to %2	projects	tr	%1'den %2'ye Gantt Çizimi
+generate activity id	projects	tr	Faaliyet ID'si oluþtur?
+generate activity id ?	projects	tr	Faaliyet ID'si oluþtur?
+generate delivery id ?	projects	tr	Teslimat ID'si oluþtur?
+generate job id	projects	tr	Görev ID'si oluþtur?
+generate project id	projects	tr	Proje ID'si oluþtur?
+global categories	projects	tr	Genel Kategoriler
+has reached	projects	tr	ulaþtý
+hours	projects	tr	Saat
+hours limit	projects	tr	Saat limiti
+hours of work day	admin	tr	Çalýþma günü baþýna saat
+hours used total	projects	tr	saat toplamda harcandý
+id can not exceed 20 characters in length	projects	tr	id uzunluðu 20 karakteri aþamaz
+id can not exceed 250 characters in length	projects	tr	ID uzunluðu 250 karakteri aþamaz
+if using activities	admin	tr	Faaliyetleri kullanýyorsa
+investment nr	projects	tr	Yatýrým Nr.
+invoicing method	projects	tr	Faturalama Methodu
+invoicing of work time	admin	tr	Çalýþma saati faturalamasý
+job	projects	tr	Görev
+job has been added	projects	tr	Görev eklendi.
+job has been updated	projects	tr	Görev güncellendi.
+job id	projects	tr	Görev ID
+job list	projects	tr	Görev listesi
+job manager	projects	tr	Görev idarecisi
+jobs	common	tr	Görevler
+last update	projects	tr	Son güncelleme
+list activities	projects	tr	Faaliyetleri listele
+list budget	projects	tr	Bütçeyi listele
+list deliveries	projects	tr	teslimatlarý listele
+0	projects	tr	baþlýk
+list jobs	common	tr	Görevleri listele
+list projects	common	tr	Projeleri listele
+list work hours	projects	tr	Çalýþma saatlerini listele
+main project	projects	tr	Ana Proje
+main project:	projects	tr	Ana Proje:
+manager	projects	tr	Ýdareci
+manager list	projects	tr	Ýdareci Listesi
+managing committee	projects	tr	Ýdari Kurul
+manuell entries	projects	tr	Manual kayýtlar
+milestone	projects	tr	Kilometre taþý
+milestone date due	projects	tr	Kilometre taþý son tarihi
+milestone has been deleted	projects	tr	kilometre taþý silindi
+milestone has been saved	projects	tr	kilometre taþý kaydedildi
+milestones	common	tr	Kilometre taþlarý
+minutes per workunit	projects	tr	Ýþ Birimi baþýna dakika
+month	projects	tr	Ay
+move start date if pervious projects end date changes	admin	tr	Öncül projenin bitiþ tarihi deðiþirse baþlangýç tarihini kaydýr.
+name not exceed 250 characters in length	projects	tr	isim uzunluðu 250 karakteri aþamaz
+new date due of milestone %1: %2	projects	tr	%1 kilometre taþýnýn yeni son tarihi: %2.
+new end date	projects	tr	Yeni bitiþ tarihi
+new milestone	projects	tr	Yeni kilometre taþý
+new project	projects	tr	Yeni proje
+new start date	projects	tr	Yeni baþlangýç tarihi
+nonactive	common	tr	Etkin Deðil
+not billable	projects	tr	ücretsiz
+number	projects	tr	Sayý
+old end date	projects	tr	Eski bitiþ tarihi
+old start date	projects	tr	Eski baþlangýç tarihi
+open	projects	tr	Açýk
+open popup	projects	tr	Popup Aç
+open popup window	projects	tr	Pop pencere aç
+overall	projects	tr	Tamamý
+parent project	projects	tr	Ana proje
+pause	projects	tr	Duraklat
+per	projects	tr	baþýna
+per day	projects	tr	gün baþýna
+per hour	projects	tr	saat baþýna
+per hour/workunit	projects	tr	saat/iþ birimi baþýna
+per workunit	common	tr	iþ birimi baþýna
+percent	projects	tr	Yüzde
+planned	projects	tr	Planlandý
+planned time sum of all sub projects is bigger than the planned time of the main project	projects	tr	Bütün alt projelerin planlanan zamaný ana projenin planlanan zamanýný aþmaktadýr.
+please choose a project coordinator	projects	tr	Lütfen bir koordinatör seçiniz.
+please choose activities for the project	projects	tr	Lütfen projeye ait faaliyetleri seçiniz.
+please choose the accounting system for the project	projects	tr	Lütfen proje için geçerli olan muhasebe sistemini seçiniz.
+please choose the discount type	projects	tr	Lütfen indirim þeklini seçiniz.
+please enable html view of emails.	projects	tr	Lütfen E-mail'lerin HTML görünümünü etkinleþtir
+please enter a remark	projects	tr	Lütfen bir hatýrlatma giriniz
+please enter an id	projects	tr	Lütfen bir ID giriniz
+please enter an id !	projects	tr	Lütfen bir ID giriniz !
+please enter the bill	projects	tr	Lütfen hesabý giriniz.
+please enter the minutes per workunit	projects	tr	Lütfen iþ birimi baþýna dakikayý giriniz.
+please select a project for time tracking	projects	tr	Lütfen zaman izlemesi için bir proje seçiniz.
+please set the accounting factor for the project	projects	tr	Lütfen muhasebe faktörünü giriniz.
+please set your preferences for this application !	projects	tr	Lütfen bu uygulama için seçeneklerinizi ayarlayýnýz.
+please specify the budget	projects	tr	Lütfen bütçeyi tanýmlayýnýz.
+position	projects	tr	Pozisyon
+previous	projects	tr	Önceki proje
+previous project	projects	tr	Önceki proje
+previous projects end date has changed	projects	tr	Önceki projelerin bitiþ tarihi deðiþtirildi
+print delivery	projects	tr	Teslimatý yazdýr
+processor	projects	tr	Ýþlem Birimi
+project	projects	tr	Proje
+project %1 has been saved	projects	tr	Proje %1 kaydedildi.
+project %1 has been updated	projects	tr	Proje %1 üncellendi.
+project accounting	admin	tr	Proje muhasebesi
+project administrators	common	tr	Proje yöneticileri
+project data due	projects	tr	Proje son tarihi
+project date due	projects	tr	Proje son tarihi
+project dependencies	common	tr	Proje baðýmlýlýklarý
+project id	common	tr	Proje ID
+project list	projects	tr	Proje listesi
+project overview	projects	tr	Projeye genel bakýþ
+project statistic	projects	tr	proje istatistikleri
+project url	projects	tr	Proje URL
+projects	common	tr	Projeler
+projects, which are assigned as sequencing	projects	tr	Sýrada bekliyor oalrak atanan projeler
+quality check	projects	tr	Kalite Kontrol
+reference	projects	tr	Referans
+remark	projects	tr	Hatýrlatma
+remark can not exceed 8000 characters in length	projects	tr	Hatýrlatma uzunluðu 8000 karakteri aþamaz.
+remark can not exceed 8000 characters in length !	projects	tr	Hatýrlatma uzunluðu 8000 karakteri aþamaz !
+remark required	projects	tr	Hatýrlatma gereklidir
+result	projects	tr	Sonuç
+role	projects	tr	Rol
+role %1 has been saved	projects	tr	Rol %1 kaydedildi
+role %1 has been updated	projects	tr	Rol %1  güncellendi
+role has been deleted	projects	tr	Rol silindi
+roles	projects	tr	Roller
+roles list	projects	tr	Rol Listesi
+sales department	projects	tr	Satýþ Departmaný
+save factor	projects	tr	Kazanç çarpaný
+save milestone	projects	tr	Kazanç kilometre taþý
+select factor	projects	tr	Çarpan seçiniz
+select groups	projects	tr	Gruplarý seçiniz
+select main project	common	tr	Ana projeyi seçiniz
+select project	projects	tr	proje seçiniz
+select role	projects	tr	Rol seçiniz
+select users	projects	tr	Kullanýcýlarý seçiniz
+seller	projects	tr	Satýcý
+seller list	projects	tr	Satýcý listesi
+sequencing project	projects	tr	Sýrada bekleyen proje
+settings	admin	tr	ayarlar
+short description	projects	tr	Açýklamayý göster
+show gantt chart	projects	tr	Gannt Çizimini göster
+show milestones	projects	tr	kilometre taþlarýný göster
+show planned resources	projects	tr	Planlanmýþ kaynaklarý göster
+site configuration	projects	tr	Site Ayarlarý
+size	projects	tr	büyüklük
+start	projects	tr	Baþlangýç
+start date can not be before parent projects start date	projects	tr	Baþlangýç tarihi ana projenin baþlangýç tarihinden önce olamaz.
+start date planned	projects	tr	Planlanan baþlangýç tarihi
+statistic	projects	tr	Ýstatistik
+statistics	projects	tr	Ýstatistikler
+stop	projects	tr	Durdur
+sub project level %1	projects	tr	Alt proje seviyesi %1
+subproject	projects	tr	altproje
+sum	projects	tr	toplam
+sum budget	projects	tr	Toplam bütçe
+sum hours	projects	tr	Toplam saat
+sum jobs	projects	tr	toplam görevler
+sum workunits	projects	tr	Toplam iþ birimleri
+test	projects	tr	Test
+that id has been used already	projects	tr	ID kullanýmda.
+that id has been used already !	projects	tr	ID kullanýmda !
+the choosen previous project does not have an end date specified	projects	tr	Seçilen önceki proje bir bitiþ tarihine sahip deðil.
+the delivery note contains no items !	projects	tr	Teslimat notu boþ !
+this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	tr	Bu genellikle yanlýþ ayarlanmýþ ya da ayalanmamýþ SMTP sunucu yüzünden kaynaklanýr. Lütfen sistem yöneticinizi bilgilendiriniz.
+till	projects	tr	e kadar
+time of journey	projects	tr	Seyahat Zamaný
+time planned	projects	tr	Planlanan Zaman
+time tracker	projects	tr	Ýzleyici Zamaný
+time tracking actions	projects	tr	zaman izleme eylemleri
+time tracking for this project has been stopped already	projects	tr	bu projenn zaman izlemesi zaten durdurulmuþ.
+time tracking for this project is already active	projects	tr	bu projenin zaman izlemesi etkin
+time used	projects	tr	Kullanýlmýþ zaman
+time used billable	projects	tr	Harcanan ücretli zaman
+time used total	projects	tr	toplam harcanan zaman
+title can not exceed 250 characters in length	projects	tr	baþlýk uzunluðu 255 karakteri geçemez
+update delivery	projects	tr	Teslimat güncelle
+use activities	admin	tr	Kullaným faaliyetleri
+used	projects	tr	kullanýlmýþ
+used - jobs included	projects	tr	kullanýlmýþ-görevler dahil
+used billable	projects	tr	Kullanýlmýþ (ücretli)
+used not billable	projects	tr	Kullanýlmýþ (Ücretsiz)
+used total	projects	tr	Kullanýlmýþ (Toplam)
+user statistic	projects	tr	Kullanýcý Ýstatistiði
+user statistics	projects	tr	Kullanýcý Ýstatistikleri
+view employees	projects	tr	Çalýþanlarý görüntüle
+view gantt chart	projects	tr	Gannt Çizimi görüntüle
+view hours	projects	tr	saatleri görüntüle
+view job	projects	tr	Görevleri görüntüle
+view project	projects	tr	Projeyi görüntüle
+view users	projects	tr	Kullanýcýlarý görüntüle
+view work hours	projects	tr	Çalýþma saatlerini görüntüle
+work date	common	tr	Çalýþma Tarihi
+work hours	common	tr	Çalýþma Saatleri
+work time	projects	tr	Çalýþma Zamaný
+workload warning for project	projects	tr	Proje için iþ yükü uyarýsý
+workunit	projects	tr	Ýþ Birimi
+workunits	projects	tr	Ýþ Birimleri
+you have entered an invalid date !	projects	tr	Geçersiz bir tarih girdiniz !
+you have entered an invalid date due	projects	tr	Geçersiz bir son tarih girdiniz.
+you have entered an invalid end date	projects	tr	Geçersiz bir bitiþ tarihi girdiniz.
+you have entered an invalid planned end date	projects	tr	Geçersiz bir planlanan bitiþ tarihi girdiniz.
+you have entered an invalid planned start date	projects	tr	Geçersiz bir planlanan baþlangýç tarihi girdiniz.
+you have entered an invalid start date	projects	tr	Geçersiz bir baþlangýç tarihi girdiniz.
+you have no customer selected !	projects	tr	Seçili müþteri bulunmamaktadýr.
+you have no projects selected	projects	tr	seçili proje bulunmamaktadýr
+you have selected an invalid activity	projects	tr	Geçersiz bir faaliyet seçiminde bulundunuz.
+you have to create a delivery or invoice first !	projects	tr	Öncelikle bir teslimat ya da fatura oluþturmalýsýnýz.
