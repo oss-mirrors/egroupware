@@ -1,5 +1,3 @@
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	de	!!! Sie müssen nach jeder manuellen Änderung in den obigen Feldern [Speichern], bevor sie zum nächsten Schritt weitergehen !!!
-you have to [save] your changes before you can [update database], [download] or [write] the lang-file !!!	developer_tools	de	!!! Unbedingt zuerst Änderungen [Speichern], danach [Datenbank aktualisieren] und [Download] oder [Schreiben] der Sprachdatei !!!
 add	developer_tools	de	Zufügen
 add change	developer_tools	de	Änderung zufügen
 add more	developer_tools	de	Weitere zufügen
@@ -39,6 +37,7 @@ preferences	developer_tools	de	Einstellungen
 preferences have been updated	developer_tools	de	Einstellungen wurden geschrieben
 project	developer_tools	de	Projekt
 remove	developer_tools	de	Entfernen
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	de	%1 Phrasen der Zielsprache entfernt die nicht in der Quellsprache vorhanden sind!
 returns to the application list, not saved changes get lost !!!	developer_tools	de	Kehrt zur Liste der Anwendungen zurück, nicht gespeicherte Änderungen gehen verloren !!!
 revert	developer_tools	de	Rückgängig machen
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	de	Speichert die zugefügten/geänderten Übersetzungen intern, für die weiteren Schritte
@@ -68,6 +67,7 @@ write	developer_tools	de	Schreiben
 write the lang-file to the apps setup-dir	developer_tools	de	Schreibt die Übersetzungsdatei in das setup-Verzeichnis der Anwendung
 write to lang table	developer_tools	de	Datenbank schreiben
 writing langfile for '%1' ...	developer_tools	de	Sprachdate für '%1' schreiben ...
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	de	!!! Sie müssen nach jeder manuellen Änderung in den obigen Feldern [Speichern], bevor sie zum nächsten Schritt weitergehen !!!
 you must a version	developer_tools	de	Sie benötigen eine Version
 you must enter a change	developer_tools	de	Sie müssen eine Änderungen eingeben
 you must select a project	developer_tools	de	Sie müsssen ein Projekt auswählen

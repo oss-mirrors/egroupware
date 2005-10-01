@@ -229,6 +229,13 @@
 					$this->src_file = $this->so->write_file($app_name,$this->source_langarray,$userlang,$which);
 					break;
 				case 'target':
+					// removing phrases not in the source language
+					$before = count($this->target_langarray);
+					$this->target_langarray = array_intersect_assoc($this->target_langarray,$this->source_langarray);
+					if ($before > ($after = count($this->target_langarray)))
+					{
+						echo '<br />'. lang('Removed %1 phrases from the target language, as they are not present in the source language!',$before-$after)."\n";
+					}
 					$this->tgt_file = $this->so->write_file($app_name,$this->target_langarray,$userlang,$which);
 					break;
 				default:

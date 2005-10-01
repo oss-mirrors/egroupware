@@ -527,7 +527,8 @@
 					$langarray = $this->bo->source_langarray;
 					break;
 				case 'target':
-					$langarray = $this->bo->target_langarray;
+					// removing phrases not in the source language
+					$langarray = $this->bo->target_langarray = array_intersect_assoc($this->bo->target_langarray,$this->bo->source_langarray);
 					break;
 				default:
 					break;
