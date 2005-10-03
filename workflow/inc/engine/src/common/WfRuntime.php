@@ -445,8 +445,11 @@ class WfRuntime extends Base
   {
     $result = Array();
     
-     // re-retrieve instance data which could have been modified by a complete
+     // re-retrieve instance id which could have been modified by a complete
      $this->instance_id	= $this->instance->getInstanceId();
+     
+     //synchronised instance object with the database
+     $this->instance->sync();
 
     // for interactive activities in non-auto mode:
     if (!($this->auto_mode) && $this->activity->isInteractive())
