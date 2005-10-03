@@ -74,6 +74,39 @@ class InstanceManager extends BaseManager {
     $prop = unserialize($this->getOne('select wf_properties from '.GALAXIA_TABLE_PREFIX.'instances gi where wf_instance_id=?',array($iid)));
     return $prop;
   }
+
+  /*!
+  * @private
+  * Start a transaction and lock the instance table on the given instance row.
+  * It can lock as weel the instance-activities table.
+  * @param $instanceId is the instance id
+  * @param $activityId is the activityId, 0 b default, if 0 the we do not lock
+  * the instance-activities table, ellese the instance-activities table will
+  * be locked on the corresponding instance-activity row
+  */
+  function lockAndStartTrans($instanceId, $activityId=0)
+  {
+    //do it in a transaction, for activities running
+    $this->db->StartTrans();
+    //we need to make a row lock now, first on the instance table (always first!)
+    $where = 'wf_instance_id='.(int)$instanceId;
+    if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where)))
+    {
+      $this->error[] = 'sync: '.tra('failed to obtain lock on instances table');
+      $this->db->FailTrans();
+    }
+    if ($activityId)
+    {
+      //we need to make a row lock now, on the instance_activities table (always second!)
+      $where = 'wf_instance_id='.(int)$instanceId.' and wf_activity_id='.(int)$activityId;
+      if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities', $where)))
+      {
+        $this->error[] = tra('failed to obtain lock on instances_activities table');
+        return false;
+      }
+    }
+   } 
+
   
   /*!
   * @public
@@ -84,10 +117,11 @@ class InstanceManager extends BaseManager {
   */
   function set_instance_properties($iid,&$prop)
   {
+    $this->lockAndStartTrans($iid);
     $props = addslashes(serialize($prop));
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_properties=? where wf_instance_id=?';
     $this->query($query, array($prop,$iid));
-    return true;
+    return $this->db->CompleteTrans();
   }
   
   /*!
@@ -99,9 +133,10 @@ class InstanceManager extends BaseManager {
   */
   function set_instance_name($iid,$name)
   {
+    $this->lockAndStartTrans($iid);
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_name=? where wf_instance_id=?';
     $this->query($query, array($name,$iid));
-    return true;
+    return $this->db->CompleteTrans();
   }
 
   /*!
@@ -113,9 +148,10 @@ class InstanceManager extends BaseManager {
   */
   function set_instance_priority($iid,$priority)
   {
+    $this->lockAndStartTrans($iid);
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_priority=? where wf_instance_id=?';
     $this->query($query, array((int)$priority, (int)$iid));
-    return true;
+    return $this->db->CompleteTrans();
   }
 
   /*!
@@ -127,9 +163,10 @@ class InstanceManager extends BaseManager {
   */
   function set_instance_category($iid,$category)
   {
+    $this->lockAndStartTrans($iid);
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_category=? where wf_instance_id=?';
     $this->query($query, array((int)$category, (int)$iid));
-    return true;
+    return $this->db->CompleteTrans();
   }
 
   /*!
@@ -141,9 +178,10 @@ class InstanceManager extends BaseManager {
   */
   function set_instance_owner($iid,$owner)
   {
+    $this->lockAndStartTrans($iid);
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_owner=? where wf_instance_id=?';
     $this->query($query, array($owner, $iid));
-    return true;
+    return $this->db->CompleteTrans();
   }
   
   /*!
@@ -160,9 +198,10 @@ class InstanceManager extends BaseManager {
       $this->error[] = tra('unknown status');
       return false;
     }
+    $this->lockAndStartTrans($iid);
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_status=? where wf_instance_id=?';
-    $this->query($query, array($status,$iid)); 
-    return true;
+    $this->query($query, array($status,$iid));
+    return $this->db->CompleteTrans();
   }
   
   /*!
@@ -177,8 +216,7 @@ class InstanceManager extends BaseManager {
   */
   function set_instance_destination($iid,$activityId, $user='*', $status='running')
   {
-    //Start a Transaction
-    $this->db->StartTrans();
+    $this->lockAndStartTrans($iid, $activityId);
     $query = 'delete from '.GALAXIA_TABLE_PREFIX.'instance_activities where wf_instance_id=?';
     $this->query($query, array($iid));
     $query = 'insert into '.GALAXIA_TABLE_PREFIX.'instance_activities(wf_instance_id,wf_activity_id,wf_user,wf_status, wf_started, wf_ended)
@@ -198,9 +236,10 @@ class InstanceManager extends BaseManager {
   */
   function set_instance_user($iid,$activityId,$user)
   {
+    $this->lockAndStartTrans($iid, $activityId);
     $query = "update ".GALAXIA_TABLE_PREFIX."instance_activities set wf_user=? where wf_instance_id=? and wf_activity_id=?";
     $this->query($query, array($user, $iid, $activityId));
-    return true;
+    return $this->db->CompleteTrans();
   }
   
   //! Removes an user from all fields where he could be on every instances
@@ -212,6 +251,7 @@ class InstanceManager extends BaseManager {
   */
   function remove_user($user)  
   {
+    //TODO: add a global lock on the whole tables
     // user=id => user='*'
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_user=? where wf_user=?';
     $this->query($query,array('*',$user));
@@ -236,6 +276,7 @@ class InstanceManager extends BaseManager {
   */
   function transfer_user($old_user, $new_user)  
   {
+    //TODO: add a global lock on the whole tables
     // user
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_user=? where wf_user=?';
     $this->query($query,array($new_user,$old_user));
