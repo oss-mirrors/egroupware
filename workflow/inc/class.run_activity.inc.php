@@ -201,6 +201,8 @@
 				{
 					$this->show_wait_message();
 				}
+				$this->prepare_javascript_submit();
+				
 				if (!($this->print_mode))
 				{
 					$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
@@ -251,6 +253,7 @@
 			$instructions = $this->runtime->handle_postUserCode(_DEBUG);
 			switch($instructions['action'])
 			{
+				//interactive activity completed
 				case 'completed':
 					// re-retrieve instance data which could have been modified by an automatic activity
 					$this->instance_id      = $instance->getInstanceId();
@@ -260,19 +263,22 @@
 					// and display completed template
 					$this->show_completed_page($instructions['engine_info']);
 					break;
+				//interactive activity still in interactive mode
 				case 'loop':
 					$this->show_common_vars();
 					$this->show_form();
 					break;
+				//nothing more
 				case 'leaving':
 					$this->show_common_vars();
 					$this->show_leaving_page();
 					break;
+				//non-interactive activities, auto-mode
 				case 'return':
 					$result=Array();
 					$this->message[] = $this->GUI->get_error(false, _DEBUG);
 					$this->message[] = $this->runtime->get_error(false, _DEBUG);
-					$this->message[] = $this->process->get_error(false, _DEBUG);
+					//$this->message[] = $this->process->get_error(false, _DEBUG);
 					$result =& $instructions['engine_info']; 
 					$this->message[] = $result['debug'];
 					$result['debug'] = implode('<br />',array_filter($this->message));
@@ -282,6 +288,22 @@
 					return $this->runtime->fail(lang('unknown instruction from the workflow engine: %1', $instructions['action']), true, _DEBUG);
 					break;
 			}
+		}
+		
+		function prepare_javascript_submit()
+		{
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['phpgw_info']['flags']['java_script'] .= '<script type="text/javascript">
+				function confirmSubmit(submit_name,txt_confirm)
+				{
+					if(confirm(txt_confirm))
+						return true ;
+					else
+						return false;
+				}</script>';
 		}
 		
 		//! show a waiting message using css and script to hide it on onLoad events. 
@@ -455,8 +477,6 @@
 		{
 			$this->message[] = $this->GUI->get_error(false, _DEBUG);
 			$this->message[] = $this->runtime->get_error(false, _DEBUG);
-			$this->message[] = $this->process->get_error(false, _DEBUG);
-			$this->message[] = $this->instance->get_error(false, _DEBUG);
 			$this->t->set_var(array(
 				'wf_message'	=> implode('<br />',array_filter($this->message)),
 				)
@@ -1029,8 +1049,28 @@
 						//draw input button for each entry
 						foreach ($this->submit_array as $submit_button_name => $submit_button_value)
 						{
+							//now we can have some special options, like jscode
+							if (is_array($submit_button_value))
+							{
+								$button_val = $submit_button_value['label'];
+								$confirm = $submit_button_value['confirm'];
+								
+							}
+							else
+							{
+								$button_val = $submit_button_value;
+								$confirm = false;
+							}
 						 	$buttons .= '<td class="wf_submit_buttons_button">';
-							$buttons .= '<input name="'.$submit_button_name.'" type="submit" value="'.$submit_button_value.'"/>';
+							$buttons .= '<input name="'.$submit_button_name.'" type="submit" value="'.$button_val.'" ';
+							if (!!($confirm))
+							{
+								$buttons .= 'onClick="return confirmSubmit(\''.$submit_button_name.'\',\''.$confirm.'\')"/>';
+							}
+							else
+							{
+								$buttons .= '/>';
+							}
 							$buttons .= '</td>';
 						}
 						//set the buttons
