@@ -90,7 +90,6 @@ class ActivityManager extends BaseManager {
   */
   function remove_user($user)  
   {
-  echo "<hr> remove user".$user;
     $query = 'update '.GALAXIA_TABLE_PREFIX.'activities set wf_default_user=? where wf_default_user=?';
     $this->query($query,array('',$user));
   }
@@ -104,7 +103,6 @@ class ActivityManager extends BaseManager {
   */
   function transfer_user($old_user, $new_user)  
   {
-  echo "<hr> transfer user".$user;
     $query = 'update '.GALAXIA_TABLE_PREFIX.'activities set wf_default_user=? where wf_default_user=?';
     $this->query($query,array($new_user,$old_user));
   }  
@@ -826,7 +824,7 @@ class ActivityManager extends BaseManager {
       
       $compiled_file = GALAXIA_PROCESSES.SEP.$proc_info['wf_normalized_name'].SEP.'compiled'.SEP.$oldname.'.php';    
       unlink($compiled_file);
-      $this->compile_activity($pId,$activityId);
+      $this->error[] = $this->compile_activity($pId,$activityId);
       
       
     } else {
@@ -880,7 +878,7 @@ class ActivityManager extends BaseManager {
 			}
 	  }
 
-      $this->compile_activity($pId,$activityId);
+      $this->error[] = $this->compile_activity($pId,$activityId);
       
     }
     // Get the id
@@ -1029,7 +1027,7 @@ class ActivityManager extends BaseManager {
     $query = 'update '.GALAXIA_TABLE_PREFIX.'activities set wf_is_interactive=? where wf_p_id=? and wf_activity_id=?';
     $this->query($query, array($value, $pId, $actid));
     // If template does not exist then create template
-    $this->compile_activity($pId,$actid);
+    $this->error[] = $this->compile_activity($pId,$actid);
   }
 
   /*!
@@ -1410,7 +1408,7 @@ class ActivityManager extends BaseManager {
     //$this->query($query);
     return true;
   }
-  
+
 }
 
 
