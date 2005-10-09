@@ -15,6 +15,7 @@ class ProcessManager extends BaseManager {
   var $buffer;
   var $Process;
   var $activity_manager; 
+  var $role_manager;
   
   /*!
     Constructor takes a PEAR::Db object to be used
@@ -26,7 +27,7 @@ class ProcessManager extends BaseManager {
     $this->child_name = 'ProcessManager';
     require_once(GALAXIA_LIBRARY.SEP.'src'.SEP.'ProcessManager'.SEP.'ActivityManager.php');
     // $this->activity_manager is not set here to avoid objects loading object A loading object B loading object A, etc
-
+    //$this->role_manager will only be loaded when needed as well
   }
 
   /*!
@@ -40,7 +41,8 @@ class ProcessManager extends BaseManager {
   function collect_errors($debug=false, $prefix = '')
   {
     parent::collect_errors($debug, $prefix);
-    if (isset($this->ActivityManager)) $this->error[] = $this->activity_manager->get_error(false, $debug, $prefix);
+    if (isset($this->activity_manager)) $this->error[] = $this->activity_manager->get_error(false, $debug, $prefix);
+    if (isset($this->role_manager)) $this->error[] = $this->role_manager->get_error(false, $debug, $prefix);
   }
 
   /*!
@@ -125,7 +127,14 @@ class ProcessManager extends BaseManager {
       $actid = $res['wf_activity_id'];
       $roles =& $this->activity_manager->get_activity_roles($actid);
       foreach($roles as $role) {
-        $out.='        <role>'.htmlspecialchars($role['wf_name']).'</role>'."\n";
+        if ($role['wf_readonly'])
+        {
+          $out.='        <role readonly="true">'.htmlspecialchars($role['wf_name']).'</role>'."\n";
+        }
+        else
+        {
+          $out.='        <role>'.htmlspecialchars($role['wf_name']).'</role>'."\n";
+        }
       }  
       $out.='      </roles>'."\n";
       $out.='      <agents>'."\n";
@@ -148,7 +157,6 @@ class ProcessManager extends BaseManager {
           }
         }
         $out.='           </agent_datas>'."\n";
-        //DEBUG HERE
         $out.='        </agent>'."\n";
       }  
       $out.='      </agents>'."\n";
@@ -211,7 +219,8 @@ class ProcessManager extends BaseManager {
       'name'=>'root',
       'children'=>Array(),
       'parent' => 0,
-      'data'=>''
+      'data'=>'', 
+      'attribs'	=> Array(),
     );
     $this->tree[0]=$aux;
     $this->current=0;
@@ -268,7 +277,17 @@ class ProcessManager extends BaseManager {
                   $z4 = $this->tree[$z3]['children'][$l];
                   $name = trim($this->tree[$z4]['name']);
                   $data = trim($this->tree[$z4]['data']);
-                  $roles[]=$data;
+                  $attribs = $this->tree[$z4]['attribs'];
+                  $readonly = false;
+                  if ( (isset($attribs['readonly'])) && ($attribs['readonly']))
+                  {
+                    //role in read-only
+                    $readonly = true;
+                  }
+                  $roles[]=array(
+                    'name' 	=> $data,
+                    'readonly'	=> $readonly,
+                  );
                 }
               } 
               elseif ($name=='agents') 
@@ -378,15 +397,15 @@ class ProcessManager extends BaseManager {
   {
     //Now the show begins
     if (!(isset($this->activity_manager)))  $this->activity_manager =& new ActivityManager($this->db);
-    $rm = new RoleManager($this->db);
-    // First create the process
+    if (!(isset($this->role_manager))) $this->role_manager = new RoleManager($this->db);
+    // First create the process. Always inactive and inactive first, compilation will set theses informations later.
     $vars = Array(
       'wf_name' => $data['name'],
       'wf_version' => $data['version'],
       'wf_description' => $data['description'],
       'wf_last_modif' => $data['lastModif'],
-      'wf_is_active' => $data['isActive'],
-      'wf_is_valid' => $data['isValid'],
+      'wf_is_active' => false,
+      'wf_is_valid' => false,
       'config' => $data['configs'],
     );
 
@@ -417,7 +436,7 @@ class ProcessManager extends BaseManager {
         'wf_is_autorouted' => $activity['isAutoRouted']
       );    
       $actname=$this->activity_manager->_normalize_name($activity['name']);
-      
+      //this is calling the activity compilation
       $actid = $this->activity_manager->replace_activity($pid,0,$vars);
 	  
       $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php',"w");
@@ -431,23 +450,24 @@ class ProcessManager extends BaseManager {
       $actids[$activity['name']] = $this->activity_manager->_get_activity_id_by_name($pid, $activity['name']);
       $actname = $this->activity_manager->_normalize_name($activity['name']);
       $now = date("U");
-
       //roles
 	  if( is_array($activity['roles']) && count($activity['roles']) > 0 )
 	  {
-	      foreach($activity['roles'] as $role) {
+	      foreach($activity['roles'] as $role) 
+	      {
+	        $rolename = $role['name'];
 	        $vars = Array(
-	          'wf_name' => $role,
-	          'wf_description' => $role,
+	          'wf_name' => $rolename,
+	          'wf_description' => $rolename,
 	          'wf_last_modif' => $now,
 	        );
-	        if(!$rm->role_name_exists($pid,$role)) {
-	          $rid=$rm->replace_role($pid,0,$vars);
+	        if(!$this->role_manager->role_name_exists($pid,$rolename)) {
+	          $rid=$this->role_manager->replace_role($pid,0,$vars);
 	        } else {
-	          $rid = $rm->get_role_id($pid,$role);
+	          $rid = $this->role_manager->get_role_id($pid,$rolename);
 	        }
 	        if($actid && $rid) {
-	          $this->activity_manager->add_activity_role($actid,$rid);
+	          $this->activity_manager->add_activity_role($actid,$rid,$role['readonly']);
 	        }
 	      }
 	  }
@@ -483,16 +503,16 @@ class ProcessManager extends BaseManager {
       }
     }
     //transitions
-    foreach($data['transitions'] as $tran) {
+    foreach($data['transitions'] as $tran) 
+    {
       $this->activity_manager->add_transition($pid,$actids[$tran['from']],$actids[$tran['to']]);  
     }
 
-    foreach ($actids as $name => $actid) {
-      $this->activity_manager->compile_activity($pid,$actid);
-    }
     // create a graph for the new process
     $this->activity_manager->build_process_graph($pid);
-    unset($rm);
+    //Test the final process
+    $this->activity_manager->validate_process_activities($pid);
+
     $msg = sprintf(tra('Process %s %s imported'),$proc_info['wf_name'],$proc_info['wf_version']);
     $this->notify_all(2,$msg);
     return true;
@@ -504,7 +524,6 @@ class ProcessManager extends BaseManager {
    is created as an unactive process and the version is
    by default a minor version of the process.
    */
-  //TODO: copy process activities and so     
   function new_process_version($pId, $minor=true)
   {
     if (!(isset($this->activity_manager)))  $this->activity_manager =& new ActivityManager($this->db);
@@ -553,15 +572,15 @@ class ProcessManager extends BaseManager {
       $this->activity_manager->add_transition($pid,$newaid[$res['wf_act_from_id']],$newaid[$res['wf_act_to_id']]);
     }
     // create roles
-    $rm = new RoleManager($this->db);
+    if (!(isset($this->role_manager))) $this->role_manager = new RoleManager($this->db);
     $query = "select * from ".GALAXIA_TABLE_PREFIX."roles where wf_p_id=?";
     $result = $this->query($query, array($oldpid));
     $newrid = array();
     while($res = $result->fetchRow()) {
-      if(!$rm->role_name_exists($pid,$res['wf_name'])) {
-        $rid=$rm->replace_role($pid,0,$res);
+      if(!$this->role_manager->role_name_exists($pid,$res['wf_name'])) {
+        $rid=$this->role_manager->replace_role($pid,0,$res);
       } else {
-        $rid = $rm->get_role_id($pid,$res['wf_name']);
+        $rid = $this->role_manager->get_role_id($pid,$res['wf_name']);
       }
       $newrid[$res['wf_role_id']] = $rid;
     }
@@ -573,7 +592,7 @@ class ProcessManager extends BaseManager {
         if (empty($newrid[$res['wf_role_id']])) {
           continue;
         }
-        $rm->map_user_to_role($pid,$res['wf_user'],$newrid[$res['wf_role_id']], $res['wf_account_type']);
+        $this->role_manager->map_user_to_role($pid,$res['wf_user'],$newrid[$res['wf_role_id']], $res['wf_account_type']);
       }
     }
     // add roles to activities
@@ -584,7 +603,7 @@ class ProcessManager extends BaseManager {
         if (empty($newaid[$res['wf_activity_id']]) || empty($newrid[$res['wf_role_id']])) {
           continue;
         }
-        $this->activity_manager->add_activity_role($newaid[$res['wf_activity_id']],$newrid[$res['wf_role_id']]);
+        $this->activity_manager->add_activity_role($newaid[$res['wf_activity_id']],$newrid[$res['wf_role_id']], $res['wf_readonly']);
       }
     }
 
@@ -998,7 +1017,8 @@ class ProcessManager extends BaseManager {
     $aux=Array('name'=>$element,
                'data'=>'',
                'parent' => $this->current,
-               'children'=>Array());
+               'children'=>Array(),
+               'attribs' => $attribs);
 			   
     $i = count($this->tree);           
     $this->tree[$i] = $aux;
@@ -1127,6 +1147,7 @@ class ProcessManager extends BaseManager {
     return $retval;
   }
 
+  
 }
 
 
