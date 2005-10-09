@@ -92,7 +92,7 @@ class InstanceManager extends BaseManager {
     $where = 'wf_instance_id='.(int)$instanceId;
     if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where)))
     {
-      $this->error[] = 'sync: '.tra('failed to obtain lock on instances table');
+      $this->error[] = 'sync: '.tra('failed to obtain lock on %1 table', 'instances');
       $this->db->FailTrans();
     }
     if ($activityId)
@@ -101,7 +101,7 @@ class InstanceManager extends BaseManager {
       $where = 'wf_instance_id='.(int)$instanceId.' and wf_activity_id='.(int)$activityId;
       if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities', $where)))
       {
-        $this->error[] = tra('failed to obtain lock on instances_activities table');
+        $this->error[] = tra('failed to obtain lock on %1 table','instances_activities');
         return false;
       }
     }
