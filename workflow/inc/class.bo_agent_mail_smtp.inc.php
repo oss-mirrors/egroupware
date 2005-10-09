@@ -411,7 +411,7 @@
 			$this->mail->From 	= $this->mail->EncodeHeader($this->final_fields['wf_from']);
 			$this->mail->FromName 	= $this->activity->getName();
 			$this->mail->Subject 	= $this->mail->EncodeHeader($this->final_fields['wf_subject']);
-			$this->mail->Body    	= str_replace("\n",'<br />',$this->final_fields['wf_message']);
+			$this->mail->Body    	= str_replace("\n",'<br />',html_entity_decode($this->final_fields['wf_message']));
 			$this->mail->AltBody	= $this->final_fields['wf_message'];
 			$this->mail->ClearAllRecipients();
 			foreach ($this->final_fields['wf_to'] as $email)
@@ -457,8 +457,14 @@
 					//for all adresse fields we make an email array to detect repetitions
 					if (($key=='wf_to') || ($key=='wf_cc') || ($key=='wf_bcc'))
 					{
+						 //_debug_array($res[$key]);//DEBUG
+						 //clean ',,' or ', ,'  or starting or ending by ','
+						 $res[$key] = $this->cleanup_adress_string($res[$key]);
+						//_debug_array($res[$key]);//DEBUG 
+						
 						//warning, need to handle < and > as valid chars for emails
 						$address_array  = imap_rfc822_parse_adrlist(str_replace('&gt;','>',str_replace('&lt;','<',$res[$key])),'');
+						//_debug_array($address_array);//DEBUG
 						if (is_array($address_array) && (!(empty($address_array))))
 						{
 							foreach ($address_array as $val)
@@ -502,6 +508,29 @@
 			}
 			return true;
 		}
+
+		/*!
+		* This function will clean ',,' or ', ,'  or starting or ending by ','
+		* in the email address string list.
+		* @param $address_string is the string we should clean
+		* @return the cleaned up string
+		*/
+		function cleanup_adress_string($address_string)
+		{
+			//in PHP5 we could ve been using the count parameter to stop recursivity
+			$new = str_replace(array(', ,' , ',,'),array(',', ','),trim(trim($address_string),','));
+			if ($new == $address_string)
+			{
+				//it did nothing, lets stop recursivity
+				return $new;
+			}
+			{
+				//we made sime changes, lets verify the new string is syntaxically correct, recursivity
+				return $this->cleanup_adress_string($new);
+			}
+		}
+
+		
 		/*!
 		* This function is used to find and replace tokens in the fields
 		* @param $string is the string to analyse
