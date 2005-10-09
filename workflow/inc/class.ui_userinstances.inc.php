@@ -185,7 +185,7 @@
 				if (!$this->GUI->gui_exception_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
-					$this->message[]=lang("You don't have the rights necessary to exception instance %1",$instance_id);
+					$this->message[]=lang("You are not allowed to exception instance %1",$instance_id);
 				}
 			}
 
