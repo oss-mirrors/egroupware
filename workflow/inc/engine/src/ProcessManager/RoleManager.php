@@ -298,7 +298,7 @@ class RoleManager extends BaseManager {
     $this->db->StartTrans(); 
     $TABLE_NAME = GALAXIA_TABLE_PREFIX."roles"; 
     $now = date("U");
-    $vars['wf_last_modif']=$now; 
+    if (!(isset($vars['wf_last_modif']))) $vars['wf_last_modif']=$now; 
     $vars['wf_p_id']=$pId;
     
     foreach($vars as $key=>$value) 
@@ -370,6 +370,7 @@ class RoleManager extends BaseManager {
     }
   }
   
+
   /*!
   * List all users and groups recorded in the mappings with their status (user or group)
   * @return an associative array containing a row for each user. This row is an array
