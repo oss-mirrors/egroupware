@@ -209,6 +209,17 @@
 					$GLOBALS['phpgw']->common->phpgw_header();
 					echo parse_navbar();
 				}
+				else
+				{
+					$GLOBALS['phpgw_info']['flags'] = array(
+						'noheader' => True,
+						'nonavbar' => True,
+						'currentapp' => 'workflow',
+						'enable_nextmatchs_class' => True
+					);
+					$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
+					$GLOBALS['phpgw']->common->phpgw_header();
+				}
 			
 				// activities' code will have at their disposition the $template object to handle the corresponding activity template, 
 				// but $GLOBALS['phpgw']->template will also be available, in case global scope for this is needed
@@ -510,7 +521,7 @@
 				);
 				$releasetxt = lang('release activity for this instance');
 				$this->t->set_var(array(
-					'release_text'	=> lang('This activity for this instance is actually avaible for you.'),
+					'release_text'	=> lang('This activity for this instance is actually only avaible for you.'),
 					'release_button'=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_array)
 						.'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix')
 						.'" alt="'.$releasetxt.'" title="'.$releasetxt.'" width="16" >'
@@ -519,11 +530,11 @@
 			}
 			else
 			{//we cannot release, 3 reasons
-			 // * already done in auto-release (TODO)
-			 // * standalone or view activity (TODO)
+			 // * already done in auto-release
+			 // * standalone or view activity
 			 // * multi-user concurrency problem moved some engine objects in other states
 				$this->t->set_var(array(
-					'release_text'	=> lang('It seems this activity for this instance is not assigned to you anymore.'),
+					'release_text'	=> lang('This activity for this instance is not specifically assigned to you.'),
 					'release_button'=> '',
 				));
 
