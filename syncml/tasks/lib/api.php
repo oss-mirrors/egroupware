@@ -57,6 +57,8 @@ function _egwtaskssync_list()
 	(
 		'order'		=> 'info_datemodified',
 		'sort'		=> 'DESC',
+		'filter'    => 'my',		// filter my: entries user is responsible for, filter own: entries the user own or is responsible for
+		// todo add a filter to limit how far back entries from the past get synced
 		'col_filter'	=> Array
 		(
 			'info_type'	=> 'task',
@@ -86,28 +88,30 @@ function &_egwtaskssync_listBy($action, $timestamp)
 {
 	#Horde::logMessage("SymcML: egwnotessync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	$allChangedItems = $GLOBALS['phpgw']->contenthistory->getHistory('infolog_task', $action, $timestamp);
+	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('infolog_task', $action, $timestamp);
 	
-	if($action != 'delete')
+	if($action == 'delete')
 	{
-		$boInfolog = CreateObject('infolog.boinfolog');
-		$readAbleItems = array();
-
-		// check if we have access to the changed data
-		// need to get improved in the future
-		foreach($allChangedItems as $guid)
-		{
-			$uid = $GLOBALS['phpgw']->common->get_egwId($guid);
-			if($boInfolog->check_access($uid, PHPGW_ACL_READ))
-			{
-				$readAbleItems[] = $guid;
-			}
-		}
-		
-		return $readAbleItems;
+		return $allChangedItems;	// InfoLog has no further info about deleted entries
 	}
+	$boInfolog =& CreateObject('infolog.boinfolog');
+	$user = $GLOBALS['egw_info']['user']['account_id'];
 
-	return $allChangedItems;
+	$readAbleItems = array();
+	foreach($allChangedItems as $guid)
+	{
+		$uid = $GLOBALS['egw']->common->get_egwId($guid);
+
+		if(($info = $boInfolog->read($uid)) &&		// checks READ rights too and returns false if none
+			// for filter my = all items the user is responsible for:
+			($user == $info['info_owner'] && !count($info['info_responsible']) || in_array($user,$info['info_responsible'])))
+			// for filter own = all items the user own or is responsible for:
+			//($user == $info['info_owner'] || in_array($user,$info['info_responsible'])))
+		{
+			$readAbleItems[] = $guid;
+		}
+	}
+	return $readAbleItems;
 }
 
 /**
@@ -125,7 +129,7 @@ function _egwtaskssync_import($content, $contentType, $notepad = null)
 {
 	switch ($contentType) {
 		case 'text/x-vcalendar':
-			$vcalInfolog	= CreateObject('infolog.vcalinfolog');
+			$vcalInfolog	=& CreateObject('infolog.vcalinfolog');
 
 			$taskID = $vcalInfolog->importVTODO($content);
 
@@ -139,7 +143,7 @@ function _egwtaskssync_import($content, $contentType, $notepad = null)
 		return $taskID;
 	}
 
-	#Horde::logMessage("SymcML: egwnotessync import imported: ".$GLOBALS['phpgw']->common->generate_uid('infolog',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $GLOBALS['egw']->common->generate_uid('infolog_task',$taskID);
 }
 
@@ -172,13 +176,13 @@ function _egwtaskssync_export($guid, $contentType)
 	Horde::logMessage("SymcML: egwtaskssync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
 	#$syncProfile	= _egwcalendarsync_getSyncProfile();
-	$taskID	= $GLOBALS['phpgw']->common->get_egwId($guid);
+	$taskID	= $GLOBALS['egw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
 		case 'text/x-vcalendar':
-			#$boCalendar	= CreateObject('calendar.boicalendar');
+			#$boCalendar	=& CreateObject('calendar.boicalendar');
 			#return $boCalendar->export(array('l_event_id' => $eventID));
-			$vcalInfolog    = CreateObject('infolog.vcalinfolog');
+			$vcalInfolog    =& CreateObject('infolog.vcalinfolog');
 			return $vcalInfolog->exportVTODO($taskID,'1.0');
 			
 			break;
@@ -213,11 +217,11 @@ function _egwtaskssync_delete($guid)
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
-	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$GLOBALS['phpgw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$GLOBALS['egw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	$bocalendar = CreateObject('calendar.bocalupdate');
+	$bocalendar =& CreateObject('calendar.bocalupdate');
 	
-	return $bocalendar->delete($GLOBALS['phpgw']->common->get_egwId($guid));
+	return $bocalendar->delete($GLOBALS['egw']->common->get_egwId($guid));
 	
 	#return $bocalendar->expunge();
 }
@@ -238,12 +242,12 @@ function _egwtaskssync_replace($guid, $content, $contentType)
 {
 	Horde::logMessage("SymcML: egwtaskssync replace content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	$taskID = $GLOBALS['phpgw']->common->get_egwId($guid);
+	$taskID = $GLOBALS['egw']->common->get_egwId($guid);
 
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
-			$vcalInfolog	= CreateObject('infolog.vcalinfolog');
+			$vcalInfolog	=& CreateObject('infolog.vcalinfolog');
 
 			return $vcalInfolog->importVTODO($content, $taskID);
 
