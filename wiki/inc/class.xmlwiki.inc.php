@@ -58,7 +58,7 @@
 
 			$xml_wiki =& new xmlnode('wiki');
 
-			foreach($this->find($name.'%','name') as $page)
+			foreach($this->find($name.'%','wiki_name') as $page)
 			{
 				if ($lang && !in_array($page['lang'],$lang)) 
 				{
