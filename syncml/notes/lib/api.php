@@ -57,19 +57,19 @@ function _egwnotessync_list()
 	(
 		'order'		=> 'info_datemodified',
 		'sort'		=> 'DESC',
+		'filter'    => 'own',
 		'col_filter'	=> Array
 		(
 			'info_type'	=> 'note',
 		),
 	);
 	
-	$notes = ExecMethod('infolog.boinfolog.search',$searchFilter);
+	$notes =& ExecMethod('infolog.boinfolog.search',$searchFilter);
 	
 	foreach((array)$notes as $note)
 	{
-		$guids[] = $GLOBALS['phpgw']->common->generate_uid('infolog_note',$note['info_id']);
+		$guids[] = $GLOBALS['egw']->common->generate_uid('infolog_note',$note['info_id']);
 	}
-	
 	return $guids;
 }
 
@@ -86,28 +86,30 @@ function &_egwnotessync_listBy($action, $timestamp)
 {
 	#Horde::logMessage("SymcML: egwnotessync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	$allChangedItems = $GLOBALS['phpgw']->contenthistory->getHistory('infolog_note', $action, $timestamp);
+	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('infolog_note', $action, $timestamp);
 	
-	if($action != 'delete')
+	if($action == 'delete')
 	{
-		$boInfolog = CreateObject('infolog.boinfolog');
-		$readAbleItems = array();
-
-		// check if we have access to the changed data
-		// need to get improved in the future
-		foreach($allChangedItems as $guid)
-		{
-			$uid = $GLOBALS['phpgw']->common->get_egwId($guid);
-			if($boInfolog->check_access($uid, PHPGW_ACL_READ))
-			{
-				$readAbleItems[] = $guid;
-			}
-		}
-		
-		return $readAbleItems;
+		return $allChangedItems;	// InfoLog has no further info about deleted entries
 	}
+	$boInfolog =& CreateObject('infolog.boinfolog');
+	$user = $GLOBALS['egw_info']['user']['account_id'];
 
-	return $allChangedItems;
+	$readAbleItems = array();
+	foreach($allChangedItems as $guid)
+	{
+		$uid = $GLOBALS['egw']->common->get_egwId($guid);
+
+		if(($info = $boInfolog->read($uid)) &&		// checks READ rights too and returns false if none
+			// for filter my = all items the user is responsible for:
+			//($user == $info['info_owner'] && !count($info['info_responsible']) || in_array($user,$info['info_responsible'])))
+			// for filter own = all items the user own or is responsible for:
+			($user == $info['info_owner'] || in_array($user,$info['info_responsible'])))
+		{
+			$readAbleItems[] = $guid;
+		}
+	}
+	return $readAbleItems;
 }
 
 /**
@@ -143,7 +145,7 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 #    require_once MNEMO_BASE . '/lib/Driver.php';
 #    $storage = &Mnemo_Driver::singleton($notepad);
 #
-	$botranslation	= CreateObject('phpgwapi.translation');
+	$botranslation	=& CreateObject('phpgwapi.translation');
 	
 	switch ($contentType) {
 		case 'text/plain':
@@ -153,7 +155,7 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 			break;
 
 		case 'text/x-vnote':
-			require_once(PHPGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php');
+			require_once(EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php');
 
 			
 			// Create new note.
@@ -197,8 +199,8 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 		return $noteId;
 	}
 
-	#Horde::logMessage("SymcML: egwnotessync import imported: ".$GLOBALS['phpgw']->common->generate_uid('infolog',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	return $GLOBALS['phpgw']->common->generate_uid('infolog_note',$noteId);
+	#Horde::logMessage("SymcML: egwnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	return $GLOBALS['egw']->common->generate_uid('infolog_note',$noteId);
 }
 
 /**
@@ -240,13 +242,13 @@ function _egwnotessync_export($guid, $contentType)
 		$options = array();
 	}
 	
-	$botranslation = CreateObject('phpgwapi.translation');
+	$botranslation =& CreateObject('phpgwapi.translation');
 	
 	switch ($contentType) {
 		case 'text/plain':
-			if($note = ExecMethod('infolog.boinfolog.read',$GLOBALS['phpgw']->common->get_egwId($guid)))
+			if($note = ExecMethod('infolog.boinfolog.read',$GLOBALS['egw']->common->get_egwId($guid)))
 			{
-				$utf8EncodedNote = $botranslation->convert(trim($note['info_des']),$GLOBALS['phpgw']->translation->charset(),'utf-8');
+				$utf8EncodedNote = $botranslation->convert(trim($note['info_des']),$GLOBALS['egw']->translation->charset(),'utf-8');
 
 				return $utf8EncodedNote;
 			}
@@ -258,16 +260,16 @@ function _egwnotessync_export($guid, $contentType)
 			break;
 			
 		case 'text/x-vnote':
-			if($note = ExecMethod('infolog.boinfolog.read',$GLOBALS['phpgw']->common->get_egwId($guid)))
+			if($note = ExecMethod('infolog.boinfolog.read',$GLOBALS['egw']->common->get_egwId($guid)))
 			{
-				require_once PHPGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar/vnote.php';
+				require_once EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar/vnote.php';
 			
 				// Create the new iCalendar container.
 				$vNote = &new Horde_iCalendar_vnote();
 				$vNote->setAttribute('VERSION', '1.1');
 				#$vNote->setAttribute('PRODID', '-//The Horde Project//Mnemo //EN');
 				#$vNote->setAttribute('METHOD', 'PUBLISH');
-				#$vNote->setAttribute('BODY',$botranslation->convert(trim($note['info_des']),$GLOBALS['phpgw']->translation->charset(),'utf-8'));
+				#$vNote->setAttribute('BODY',$botranslation->convert(trim($note['info_des']),$GLOBALS['egw']->translation->charset(),'utf-8'));
 				$vNote->setAttribute('BODY','ballo');
 				$vNote->setAttribute('SUMMARY','sallo');
 				#$vNote->setAttribute('DCREATED','20050609T042643');
@@ -326,7 +328,7 @@ function _egwnotessync_delete($guid)
 	#}
 	#
 	
-	return ExecMethod('infolog.boinfolog.delete',$GLOBALS['phpgw']->common->get_egwId($guid));
+	return ExecMethod('infolog.boinfolog.delete',$GLOBALS['egw']->common->get_egwId($guid));
 }
 
 /**
@@ -354,9 +356,9 @@ function _egwnotessync_replace($guid, $content, $contentType)
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 	
-	$botranslation	= CreateObject('phpgwapi.translation');
+	$botranslation	=& CreateObject('phpgwapi.translation');
 	
-	$infoId = $GLOBALS['phpgw']->common->get_egwId($guid);
+	$infoId = $GLOBALS['egw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
 		case 'text/plain':
@@ -364,12 +366,9 @@ function _egwnotessync_replace($guid, $content, $contentType)
 			$result = ExecMethod('infolog.boinfolog.write',array('info_des' => $content, 'info_type' => 'note', 'info_id' => $infoId));
 			
 			return $result;
-			break;
 
 		case 'text/x-vnote':
-			require_once(PHPGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php');
-
-			
+			require_once(EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php');
 			// Create new note.
 			$vNote = Horde_iCalendar::newComponent('vnote', $container);
 			
@@ -393,9 +392,8 @@ function _egwnotessync_replace($guid, $content, $contentType)
 				}
 			}
 
-			$noteId = ExecMethod('infolog.boinfolog.write',$note);
-
-			break;
+			$result = ExecMethod('infolog.boinfolog.write',$note);
+			return $result;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
