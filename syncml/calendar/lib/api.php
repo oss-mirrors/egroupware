@@ -63,15 +63,13 @@ function _egwcalendarsync_list($_startDate='', $_endDate='')
 		'enum_recuring' => false,
 	);
 	
-	$events = ExecMethod('calendar.bocal.search',$searchFilter);
+	$events =& ExecMethod('calendar.bocal.search',$searchFilter);
 	
 	foreach((array)$events as $event)
 	{
-		$guids[] = $GLOBALS['phpgw']->common->generate_uid('calendar',$event['id']);
+		$guids[] = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
 	}
-	
-	return $guids;
-	
+	return $guids;	
 }
 
 /**
@@ -85,39 +83,37 @@ function _egwcalendarsync_list($_startDate='', $_endDate='')
  */
 function &_egwcalendarsync_listBy($action, $timestamp)
 {
-	// todo
-	// check for acl
-	
 	Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('calendar', $action, $timestamp);
 	Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	if($action != 'delete')
+	if($action == 'delete')
 	{
-		$readAbleItems = array();
-		$boCalendar = CreateObject('calendar.bocal');
-
-		// check if we have access to the changed data
-		// need to get improved in the future
-		foreach($allChangedItems as $guid)
-		{
-			$uid = $GLOBALS['phpgw']->common->get_egwId($guid);
-			Horde::logMessage("SymcML: egwcalendarsync check perms for $uid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-			if($boCalendar->check_perms(PHPGW_ACL_READ, $uid))
-			{
-				$readAbleItems[] = $guid;
-				Horde::logMessage("SymcML: egwcalendarsync added id $uid/$guid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-			}
-		}
-		
-		return $readAbleItems;
+		return $allChangedItems;	// we cant query the calendar for deleted events
 	}
+	// query the calendar, to check if we are a participants in these changed events
+	$boCalendar =& CreateObject('calendar.bocal');
+	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
+	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
 
-	return $allChangedItems;
-	
+	// get the calendar id's for all these items
+	$ids = $guids = array();
+	foreach($allChangedItems as $guid)
+	{
+		$ids[] = $GLOBALS['egw']->common->get_egwId($guid);
+	}
+	// read all events in one go, and check if the user participats
+	foreach((array)$boCalendar->read($ids) as $event)
+	{
+		Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		if (isset($event['participants'][$user]) && ($show_rejected || $event['participants'][$user] != 'R'))
+		{
+			$guids[] = $guid = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
+			Horde::logMessage("SymcML: egwcalendarsync added id $event[id] ($guid) / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		}
+	}
+	return $guids;
 }
 
 /**
@@ -138,7 +134,7 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 	$state = $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
-	$boical	= CreateObject('calendar.boical');
+	$boical	=& CreateObject('calendar.boical');
 	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 	
 	#$syncProfile	= _egwcalendarsync_getSyncProfile();
@@ -157,7 +153,7 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 		return $calendarId;
 	}
 
-	$guid = $GLOBALS['phpgw']->common->generate_uid('calendar',$calendarId);
+	$guid = $GLOBALS['egw']->common->generate_uid('calendar',$calendarId);
 	Horde::logMessage("SymcML: egwcalendarsync import imported: ".$guid, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $guid;
 }
@@ -207,10 +203,10 @@ function _egwcalendarsync_export($guid, $contentType)
 	$state = $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
-	$boical	= CreateObject('calendar.boical');
+	$boical	=& CreateObject('calendar.boical');
 	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-	$eventID	= $GLOBALS['phpgw']->common->get_egwId($guid);
+	$eventID	= $GLOBALS['egw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
 		case 'text/x-vcalendar':
@@ -252,11 +248,11 @@ function _egwcalendarsync_delete($guid)
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
-	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$GLOBALS['phpgw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$GLOBALS['egw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	$bocalendar = CreateObject('calendar.bocalupdate');
+	$bocalendar =& CreateObject('calendar.bocalupdate');
 	
-	return $bocalendar->delete($GLOBALS['phpgw']->common->get_egwId($guid));
+	return $bocalendar->delete($GLOBALS['egw']->common->get_egwId($guid));
 	
 	#return $bocalendar->expunge();
 }
@@ -279,10 +275,10 @@ function _egwcalendarsync_replace($guid, $content, $contentType)
 	$state = $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 
-	$boical	= CreateObject('calendar.boical');
+	$boical	=& CreateObject('calendar.boical');
 	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-	$eventID = $GLOBALS['phpgw']->common->get_egwId($guid);
+	$eventID = $GLOBALS['egw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
 		case 'text/x-vcalendar':
