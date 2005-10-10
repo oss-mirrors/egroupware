@@ -51,15 +51,16 @@ function _egwcalendarsync_list($_startDate='', $_endDate='')
 {
 	$guids = array();
 
+	// until it's configurable we do 1 month back and ~2 years in the future
 	$startDate	= (!empty($_startDate)?$_startDate:date('Ymd',time()-2678400));
-	$endDate	= (!empty($_endDate)?$_endDate:date('Ymd',time()+2678400));
+	$endDate	= (!empty($_endDate)?$_endDate:date('Ymd',time()+65000000));
 
 	$searchFilter = array
 	(
-		'start'		    => $startDate,
-		'end'		    => $endDate,
-		'filter'	    => 'all',
-		'daywise'	    => false,
+		'start'   => $startDate,
+		'end'     => $endDate,
+		'filter'  => 'all',
+		'daywise' => false,
 		'enum_recuring' => false,
 	);
 	
@@ -86,8 +87,8 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 	Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('calendar', $action, $timestamp);
-	Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+	Horde::logMessage("SymcML: egwcalendarsync getHistory('calendar', $action, $timestamp)=".print_r($allChangedItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
 	if($action == 'delete')
 	{
 		return $allChangedItems;	// we cant query the calendar for deleted events
@@ -104,13 +105,16 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 		$ids[] = $GLOBALS['egw']->common->get_egwId($guid);
 	}
 	// read all events in one go, and check if the user participats
-	foreach((array)$boCalendar->read($ids) as $event)
+	if (count($ids) && ($events =& $boCalendar->read($ids)))
 	{
-		Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		if (isset($event['participants'][$user]) && ($show_rejected || $event['participants'][$user] != 'R'))
+		foreach((array)$boCalendar->read($ids) as $event)
 		{
-			$guids[] = $guid = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
-			Horde::logMessage("SymcML: egwcalendarsync added id $event[id] ($guid) / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			if (isset($event['participants'][$user]) && ($show_rejected || $event['participants'][$user] != 'R'))
+			{
+				$guids[] = $guid = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
+				Horde::logMessage("SymcML: egwcalendarsync added id $event[id] ($guid) / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			}
 		}
 	}
 	return $guids;
