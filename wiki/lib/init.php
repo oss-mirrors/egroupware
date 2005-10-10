@@ -68,9 +68,9 @@
 	$EditWithPreview = (isset($config[Edit_With_Preview])?$config[Edit_With_Preview]:1);
 
 	$UserName = $GLOBALS['egw_info']['user']['account_lid'];
-	if (!($action == 'save' && !$Preview) && $action != 'admin' && !($action == 'prefs' && $Save) && $action != 'xml')
+	if (!($_GET['action'] == 'save' && !$_POST['Preview']) && $_GET['action'] != 'admin' && !($_GET['action'] == 'prefs' && $_POST['Save']) && $_GET['action'] != 'xml')
 	{
-		$GLOBALS['egw']->common->phpgw_header();
+		$GLOBALS['egw']->common->egw_header();
 	}
 
 	define('TemplateDir', 'template');
