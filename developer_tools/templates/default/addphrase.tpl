@@ -2,9 +2,7 @@
 {lang_error_messages}<br>
 
 <form method="POST" action="{form_action}">
- <input name="entry[app_name]" type="hidden" value="{app_name}">
- <input name="app_name"  type="hidden" value="{app_name}">
- <input name="sourcelang" type="hidden" value="{sourcelang}">
+  <input name="sourcelang" type="hidden" value="{sourcelang}">
  <input name="targetlang" type="hidden" value="{targetlang}">
 
  <table border="0" align="center">
@@ -13,10 +11,14 @@
    <td>{message_id_field}</td>
   </tr>
   <tr>
+   <td>{lang_app}</td>
+   <td>{app_field}</td>
+  </tr>
+  <tr>
+  <tr>
    <td>{lang_translation}</td>
    <td>{translation_field}</td>
   </tr>
-  <tr>
    <td>{lang_target}</td>
    <td>{target_field}</td>
   </tr>

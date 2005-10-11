@@ -86,16 +86,16 @@
 
 			$this->template->set_file(array('form' => 'addphrase.tpl'));
 			$this->template->set_var('message_id_field','<input size ="40" name="entry[message_id]">');
+			$this->template->set_var('app_field',$this->lang_option($app_name,$app_name,'entry[app_name]'));
 			$this->template->set_var('translation_field','<input size ="40" name="entry[content]">');
 			$this->template->set_var('target_field','<input size ="40" name="entry[target]">');
-			$this->template->set_var('app_name','<input type="hidden" name="entry[app_name]" value="'.$app_name.'">');
 
 			$this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.addphrase'));
 			$this->template->set_var('sourcelang',$sourcelang);
 			$this->template->set_var('targetlang',$targetlang);
-			$this->template->set_var('app_name',$app_name);
 
 			$this->template->set_var('lang_message_id',lang('message_id in English'));
+			$this->template->set_var('lang_app',lang('Application'));
 			$this->template->set_var('lang_translation',lang('Phrase in English (or empty if identical)'));
 			$this->template->set_var('lang_target',lang('Translation of phrase'));
 			$this->template->set_var('lang_add',lang('Add'));
@@ -214,7 +214,7 @@
 					$mess_id  = $this->encode_id($key);
 					$this->template->set_var('mess_id',$mess_id);
 					$this->template->set_var('source_content',$this->html->htmlspecialchars($data['content']));
-					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],$mess_id));
+					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],"transapp[$mess_id]"));
 					$this->template->set_var('tr_color',$this->nextmatchs->alternate_row_color());
 					$this->template->pfp('out','detail');
 				}
@@ -466,7 +466,7 @@
 					$this->template->set_var('mess_id',$mess_id);
 					$this->template->set_var('source_content',$content);
 					$this->template->set_var('content',$transy);
-					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],$mess_id));
+					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],"transapp[$mess_id]"));
 					$this->template->set_var('tr_color',empty($transy) ? $GLOBALS['phpgw_info']['theme']['bg06'] : $this->nextmatchs->alternate_row_color());
 					if (($len = max(strlen($key),strlen($content))) > 50)
 					{
@@ -662,7 +662,7 @@
 				'preferences' => 'preferences'
 			);
 
-			$select  = "\n" .'<select name="transapp[' . $name . ']">' . "\n";
+			$select  = "\n" .'<select name="' . $name . '">' . "\n";
 			while (list($key,$val) = each($list))
 			{
 				$select .= '<option value="' . $key . '"';
