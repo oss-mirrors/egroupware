@@ -1,13 +1,13 @@
 <process>
   <name>TestJoin2</name>
   <isValid>y</isValid>
-  <version>1.3</version>
-  <isActive>y</isActive>
+  <version>1.6</version>
+  <isActive>n</isActive>
    <description>Testing join activities</description>
-  <lastModif>27/06/2005 [11:53:04]</lastModif>
+  <lastModif>11/10/2005 [12:41:57]</lastModif>
   <sharedCode><![CDATA[<?php
 //***************************************************************************
-//* copyleft Regis dot Leroy at glconseil dot com                               *
+//* copyleft Regis dot Leroy at glconseil dot com                           *
 //* This program is free software; you can redistribute it and/or modify it *
 //*  under the terms of the GNU General Public License as published by the  *
 //*  Free Software Foundation; either version 2 of the License, or (at your *
@@ -15,6 +15,11 @@
 //***************************************************************************
 ?>  ]]></sharedCode>
   <configs>
+    <config>
+      <wf_config_name>draw_select_next_user</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>1</wf_config_value_int>
+    </config>
     <config>
       <wf_config_name>display_please_wait_message</wf_config_name>
       <wf_config_value></wf_config_value>
@@ -31,9 +36,24 @@
       <wf_config_value_int>1</wf_config_value_int>
     </config>
     <config>
+      <wf_config_name>show_instance_name</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>0</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>show_instance_owner</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>0</wf_config_value_int>
+    </config>
+    <config>
       <wf_config_name>show_multiple_submit_as_select</wf_config_name>
       <wf_config_value></wf_config_value>
       <wf_config_value_int>0</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>show_activity_info_zone</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>1</wf_config_value_int>
     </config>
     <config>
       <wf_config_name>draw_roles</wf_config_name>
@@ -42,21 +62,85 @@
     </config>
     <config>
       <wf_config_name>font_size</wf_config_name>
-      <wf_config_value>10</wf_config_value>
-      <wf_config_value_int></wf_config_value_int>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>10</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>ownership_give_abort_right</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>0</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>ownership_give_exception_right</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>0</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>ownership_give_release_right</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>0</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>role_give_abort_right</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>1</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>role_give_release_right</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>1</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>role_give_exception_right</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>1</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>mail_smtp_profile</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>1</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>mail_smtp_debug</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>1</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>show_select_next_user</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>0</wf_config_value_int>
     </config>
   </configs>
   <activities>
     <activity>
+      <name>Empty One</name>
+      <type>activity</type>
+      <description>This automatic activity does nothing but is there to test if someone goes there when PROPERTY_ONE is empty.
+</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+ $counter = $instance->get('EMPTY_ONE');
+ $counter++;
+ $instance->set('EMPTY_ONE',$counter);
+?>      ]]></code>    </activity>
+    <activity>
       <name>Report</name>
       <type>standalone</type>
       <description>standalone activity used to make a report of the tests</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>n</isAutoRouted>
       <roles>
         <role>Role1</role>
       </roles>
+      <agents>
+      </agents>
       <code><![CDATA[<?php
 //! show all instances contained in the list to the table of instances
 function report_show_instances(&$mylist, &$template)
@@ -95,23 +179,23 @@ if ($ActClose)
 } 
 else 
 {
-//--------------------------------------
-//
-// showing the form
-//
-//--------------------------------------
+  //--------------------------------------
+  //
+  // showing the form
+  //
+  //--------------------------------------
 
-// we want to retrieve a list of all instances ordered by priority
-$sort_mode='wf_priority__desc';
-$wheres[] = '(gi.wf_p_id='.$GLOBALS['workflow']['wf_process_id'].')';
-$wheres[] = "(gi.wf_status<>'aborted')";
-$where = implode(' and ', $wheres);
-$inst_list = $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], -1,-1, $sort_mode, '',$where);
-//_debug_array($inst_list['data']);
-report_show_instances($inst_list['data'], $this->wf_template);
+  // we want to retrieve a list of all instances ordered by priority
+  $sort_mode='wf_priority__desc';
+  $wheres[] = '(gi.wf_p_id='.$GLOBALS['workflow']['wf_process_id'].')';
+  $wheres[] = "(gi.wf_status<>'aborted')";
+  $where = implode(' and ', $wheres);
+  $inst_list = $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], -1,-1, $sort_mode, '',$where);
+  //_debug_array($inst_list['data']);
+  report_show_instances($inst_list['data'], $this->wf_template);
 
-//Submit options we want
-$this->submit_array['ActClose'] = lang('Close');
+  //Submit options we want
+  //$this->submit_array['ActClose'] = lang('Close');
 }
 
 ?>      ]]></code>      <template><![CDATA[<!--******************** ROWS ********************* -->
@@ -140,11 +224,13 @@ $this->submit_array['ActClose'] = lang('Close');
       <name>end</name>
       <type>end</type>
       <description>default end activity</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
       </roles>
+      <agents>
+      </agents>
       <code><![CDATA[<?php
 ?>      ]]></code>    </activity>
     <activity>
@@ -152,27 +238,34 @@ $this->submit_array['ActClose'] = lang('Close');
       <type>activity</type>
       <description>non interactive auto-routed activity.
 add &quot;Tagged&quot; string at the end of PROPERTY_ONE and PROPERTY_TWO</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
       </roles>
+      <agents>
+      </agents>
       <code><![CDATA[<?php
 ?>      ]]></code>    </activity>
     <activity>
       <name>After-Join</name>
       <type>activity</type>
       <description>Interactive activity after the join to check PROPERTY_ONE and PROPERTY_TWO values</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
         <role>Role1</role>
       </roles>
+      <agents>
+      </agents>
       <code><![CDATA[<?php
 $array_vars = array(
     'PROPERTY_ONE' => '',
     'PROPERTY_TWO' => '',
+    'EMPTY_ONE' => '',
+    'EMPTY_TWO' => '',
+    'EMPTY_COUNTER' => '',
 );
 
 //--------------------------------------
@@ -191,14 +284,16 @@ foreach ($array_vars as $prop => $value)
 $ActNextStage = get_var('ActNextStage','POST',false);
 $ActClose = get_var('ActClose','POST',false);
 $ActNothing = get_var('ActNothing', 'POST',false);
+$ActSleep = get_var('ActSleep', 'POST',false);
 
 //--------------------------------------
 //
 // handling results from the form
 //
 //--------------------------------------
+$leaveloop = false;
 
-if ($ActNothing)
+if ($ActSleep)
 { 
   // to test the please wait message
   // waiting 30 seconds...
@@ -219,38 +314,41 @@ if (($ActNextStage) || ($ActClose))
   if ($ActNextStage)
   {
      // going to next stage
-     $instance->complete();
+     $leaveloop = $instance->complete();
   }
   elseif($ActClose)
   {
-   $GLOBALS['workflow']['__leave_activity']=true;
+    $leaveloop = true;
+    $GLOBALS['workflow']['__leave_activity']=true;
   } 
 } 
-else 
+if (!($leaveloop))
 {
-
-//--------------------------------------
-//
-// showing the form
-//
-//--------------------------------------
+  //--------------------------------------
+  //
+  // showing the form
+  //
+  //--------------------------------------
   foreach ($array_vars as $prop => $value) 
   {
     $template->set_var(array($prop => $array_vars[$prop]));
   }
-// submit options we want
-$this->submit_array['ActNextStage'] = lang('going to next stage');
-$this->submit_array['ActClose'] = lang('Close and get back later');
-$this->submit_array['ActNothing'] = lang('long loop for fun');
-//special Cancel Value we wont get back here
-$this->submit_array['__Cancel'] = lang('Quit Without Saving');
+  // submit options we want
+  $this->submit_array['ActNextStage'] = lang('going to next stage');
+  $this->submit_array['ActClose'] = lang('Close and get back later');
+  $this->submit_array['ActSleep'] = lang('long loop for fun');
+  $this->submit_array['ActNothing'] = lang('little loop');
+  //special Cancel Value we wont get back here
+  $this->submit_array['__Cancel'] = lang('Quit Without Saving');
+  //special Print mode button
+  $this->enable_print_mode = true;
   //priority levels we want
-$this->priority_array = array( 
+  $this->priority_array = array( 
         1 => lang('1 - low'),
         2 => lang('2 - medium'),
         3 => lang('3 - medium but better'),
         4 => lang('4 - high'),
-        );
+  );
 }
 
 ?>      ]]></code>      <template><![CDATA[<table width="100%">
@@ -261,33 +359,99 @@ $this->priority_array = array(
     <td bgcolor="#EEEEEE" width="25%"> <div align="right">PROPERTY TWO&nbsp;:</div></td>
     <td bgcolor="#E8F0F0" width="25%"> <div align="left"><input type="text" name="PROPERTY_TWO" value="{PROPERTY_TWO}" size="38"></div></td>
   </tr>
+ <tr class="row_on">
+    </td>
+    <td> <div align="right">counter of empty PROPERTY ONE&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_ONE}</div></td>
+  </tr>
+  <tr class="row_off">
+    </td>
+    <td> <div align="right">counter of empty PROPERTY TWO&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_TWO}</div></td>
+  </tr>  
+  <tr class="row_on">
+    </td>
+    <td> <div align="right">counter of empty One or Two&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_COUNTER}</div></td>
+  </tr>  
 </table>      ]]></template>    </activity>
     <activity>
       <name>joiner</name>
       <type>join</type>
       <description>Join activities from left and right and then permits a send to  the end activity when both are Ok</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>n</isAutoRouted>
       <roles>
         <role>Role1</role>
+        <role>Role3</role>
       </roles>
+      <agents>
+      </agents>
       <code><![CDATA[<?php
 ?>      ]]></code>    </activity>
     <activity>
       <name>right branch</name>
       <type>activity</type>
       <description>interactive activity on the right branch</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
         <role>Role2</role>
       </roles>
+      <agents>
+        <agent>
+           <agent_type>mail_smtp</agent_type>
+           <agent_datas>
+               <agent_data>
+                   <name>wf_to</name>
+                   <value>%property_DEST%, %user%, Georges &amp;lt;gege@hotmail.com&amp;gt;</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_cc</name>
+                   <value>%roles%</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_bcc</name>
+                   <value></value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_from</name>
+                   <value>Bernard &amp;lt;%user%&amp;gt;</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_replyto</name>
+                   <value>%user%</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_subject</name>
+                   <value>test</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_message</name>
+                   <value>test 1 
+mail sent from %activity_name% for instance %instance_name% (%instance_id%).
+</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_send_mode</name>
+                   <value>1</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_agent_type</name>
+                   <value>mail_smtp</value>
+               </agent_data>
+           </agent_datas>
+        </agent>
+      </agents>
       <code><![CDATA[<?php
 $array_vars = array(
     'PROPERTY_ONE' => '',
     'PROPERTY_TWO' => '',
+    'EMPTY_ONE' => '',
+    'EMPTY_TWO' => '',
+    'EMPTY_COUNTER' => '',
 );
 
 //--------------------------------------
@@ -302,16 +466,18 @@ foreach ($array_vars as $prop => $value)
 {
   $array_vars[$prop] = get_var($prop,'any',$instance->get($prop));
 }
+
 //user commands   ****************
 $ActNextStage = get_var('ActNextStage','post',false);
 $ActClose = get_var('ActClose','post',false);
+$ActSave = get_var('ActSave','post',false);
 
 //--------------------------------------
 //
 // handling results from the form
 //
 //--------------------------------------
-
+$leaveloop = false;
 if (($ActNextStage) || ($ActClose)) 
 {
   // saving properties
@@ -326,32 +492,56 @@ if (($ActNextStage) || ($ActClose))
   if ($ActNextStage)
   {
      // going to next stage
-     $instance->complete();
+     $leaveloop = $instance->complete();
   }
   elseif($ActClose)
   {
-   $GLOBALS['workflow']['__leave_activity']=true;
+    $leaveloop = true;
+    $GLOBALS['workflow']['__leave_activity']=true;
   } 
 } 
-else 
+if ($ActSave)
 {
-
-//--------------------------------------
-//
-// showing the form
-//
-//--------------------------------------
+  // saving properties
+  // if they changed
+  foreach ($array_vars as $prop => $value)
+  {
+    echo "<br> having $prop, was ".($instance->get($prop));
+    if ($value != ($instance->get($prop)) ) 
+    {
+      echo " ...saving $prop to $value";
+      $instance->set($prop,$value);
+    }
+  }
+}
+//showing the form if we are not leaving the loop
+if (!($leaveloop)) 
+{
+  //--------------------------------------
+  //
+  // showing the form
+  //
+  //--------------------------------------
   foreach ($array_vars as $prop => $value) 
   {
     $template->set_var(array($prop => $array_vars[$prop]));
   }
-// submit options we want
-$this->submit_array['ActNextStage'] = lang('going to next stage');
-$this->submit_array['ActClose'] = lang('Close and get back later');
-//special Cancel Value we wont get back here
-$this->submit_array['__Cancel'] = lang('Quit Without Saving');
+
+  //we want to display the owner
+  $this->display_owner = 1;
+  //we want to display the next_user
+  $this->display_next_user =1;
+  // submit options we want
+  $this->submit_array['ActNextStage'] = lang('going to next stage');
+  $this->submit_array['ActClose'] = lang('Close and get back later');
+  //special Cancel Value we wont get back here
+  $this->submit_array['__Cancel'] = lang('Quit Without Saving');
+  //A Save Button keeping on the form
+  $this->submit_array['ActSave'] = lang('Save and stay on form');
+  //special Print mode button
+  $this->enable_print_mode = true;
   //priority levels we want
-$this->priority_array = array( 
+  $this->priority_array = array( 
         1 => lang('1 - low'),
         2 => lang('2 - medium'),
         3 => lang('3 - medium but better'),
@@ -372,23 +562,184 @@ $this->priority_array = array(
     </td>
     <td> <div align="right">PROPERTY TWO&nbsp;:</div></td>
     <td> <div align="left"><input type="text" name="PROPERTY_TWO" value="{PROPERTY_TWO}" size="38"></div></td>
+  </tr> 
+  <tr class="row_on">
+    </td>
+    <td> <div align="right">counter of empty PROPERTY ONE&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_ONE}</div></td>
   </tr>
+  <tr class="row_off">
+    </td>
+    <td> <div align="right">counter of empty PROPERTY TWO&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_TWO}</div></td>
+  </tr>  
+  <tr class="row_on">
+    </td>
+    <td> <div align="right">counter of empty One or Two&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_COUNTER}</div></td>
+  </tr>  
 </table>
       ]]></template>    </activity>
     <activity>
+      <name>Switch 1</name>
+      <type>switch</type>
+      <description>This automatic switch will decide which way he will take by looking at PROPERTY_ONE. If this property is empty it will go t the Empty_one, else it goes to the joiner</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+ $choose = $instance->get('PROPERTY_ONE');
+ if (empty($choose))
+ {
+    if (!($instance->setNextActivity('Empty One')))
+    {
+      $instance->setNextActivity('joiner');
+    }
+ }
+ else
+ {
+   $instance->setNextActivity('joiner');
+ }
+?>      ]]></code>    </activity>
+    <activity>
+      <name>lonely branch 1</name>
+      <type>activity</type>
+      <description>another automatic activity somewhere</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+?>      ]]></code>    </activity>
+    <activity>
+      <name>Lonely branch II</name>
+      <type>activity</type>
+      <description>yet another automatic lonely branch but this one need to be send manually</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>n</isAutoRouted>
+      <roles>
+        <role>Role1</role>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+?>      ]]></code>    </activity>
+    <activity>
+      <name>Switch2</name>
+      <type>switch</type>
+      <description>A second automatic switch.
+It decide which branch to choose by looking at PROPERTY_TWO.
+If the property is empty it take the instance to Empty Two, else it goes to the joiner</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+ $choose = $instance->get('PROPERTY_TWO');
+ if (empty($choose))
+ {
+    if (!($instance->setNextActivity('Empty Two')))
+    {
+      $instance->setNextActivity('joiner');
+    }
+ }
+ else
+ {
+   $instance->setNextActivity('joiner');
+ }
+?>      ]]></code>    </activity>
+    <activity>
+      <name>Empty Counter</name>
+      <type>activity</type>
+      <description>This automatic activity records a counter named EMPTY_COUNTER to remember how many times he has been launched for a given instance</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+ $counter = $instance->get('EMPTY_COUNTER');
+echo "<br> counter is actually:".$counter;
+ $counter++;
+echo "<br> now is set it to:".$counter;
+ $instance->set('EMPTY_COUNTER',$counter);
+?>      ]]></code>    </activity>
+    <activity>
+      <name>splitter2</name>
+      <type>split</type>
+      <description>second splitter after the first one</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+?>      ]]></code>    </activity>
+    <activity>
+      <name>splitter</name>
+      <type>split</type>
+      <description>splitt the workflow in 2 branches</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+?>      ]]></code>    </activity>
+    <activity>
+      <name>Empty Two</name>
+      <type>activity</type>
+      <description>This automatic activity does nothing but is there to test if someone goes there when PROPERTY_TWO is empty.</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+ $counter = $instance->get('EMPTY_TWO');
+ $counter++;
+ $instance->set('EMPTY_TWO',$counter);
+?>      ]]></code>    </activity>
+    <activity>
       <name>left branch</name>
       <type>activity</type>
-      <description>interactive form activity on the left branch</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <description>interactive form activity on the left branch.
+contains a test on changing the owner.
+After Left branch is finished we rerun splitter2, giving a new Right branch for the instance. This make a second right branch!</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
         <role>Role1</role>
       </roles>
+      <agents>
+      </agents>
       <code><![CDATA[<?php
 $array_vars = array(
     'PROPERTY_ONE' => '',
     'PROPERTY_TWO' => '',
+    'EMPTY_ONE' => '',
+    'EMPTY_TWO' => '',
+    'EMPTY_COUNTER' => '',
 );
 
 //--------------------------------------
@@ -412,7 +763,7 @@ $ActClose = get_var('ActClose','post',false);
 // handling results from the form
 //
 //--------------------------------------
-
+$leaveloop = false;
 if (($ActNextStage) || ($ActClose)) 
 {
   // saving properties
@@ -427,36 +778,50 @@ if (($ActNextStage) || ($ActClose))
   if ($ActNextStage)
   {
      // going to next stage
-     $instance->complete();
+     $leaveloop = $instance->complete();
   }
   elseif($ActClose)
   {
-   $GLOBALS['workflow']['__leave_activity']=true;
+    $leaveloop = true;
+    $GLOBALS['workflow']['__leave_activity']=true;
   } 
 } 
-else 
+if (!($leaveloop))
 {
-
-//--------------------------------------
-//
-// showing the form
-//
-//--------------------------------------
+  //--------------------------------------
+  //
+  // showing the form
+  //
+  //--------------------------------------
   foreach ($array_vars as $prop => $value) 
   {
     $template->set_var(array($prop => $array_vars[$prop]));
   }
-// submit options we want
-$this->submit_array['ActNextStage'] = lang('going to next stage');
-$this->submit_array['ActClose'] = lang('Close and get back later');
-//special Cancel Value we wont get back here
-$this->submit_array['__Cancel'] = lang('Quit Without Saving');
+  //we want to diplay the owner as well, and as a select
+  //avaible users are people from Role1 and Role2 which have access to joiner
+  //BUT if you have an user in Role3 which is in Role2 as well he wont be there
+  //he would be there as a Role2 which is not allowed, you need the Role3 for it.
+  $this->display_owner = array(
+      'role' => array('Role1','Role2'),
+      'activity' => 'joiner',
+  );
+  //we want to select the next user for the Join sending
+  $this->display_next_user = array(
+    'activity' => 'joiner',
+  );
+  // submit options we want
+  $this->submit_array['ActNextStage'] = lang('going to next stage');
+  $this->submit_array['ActClose'] = lang('Close and get back later');
+  //special Cancel Value we wont get back here
+  $this->submit_array['__Cancel'] = lang('Quit Without Saving');
+  //special Print mode button
+  $this->enable_print_mode = true;
   //priority levels we want
-$this->priority_array = array( 1 => lang('1 - low'),
+  $this->priority_array = array( 1 => lang('1 - low'),
         2 => lang('2 - medium'),
         3 => lang('3 - medium but better'),
         4 => lang('4 - high'),
-        );
+  );
 }
 
 ?>      ]]></code>      <template><![CDATA[<!--******************** PROPERTIES ********************* -->
@@ -473,30 +838,63 @@ $this->priority_array = array( 1 => lang('1 - low'),
     <td> <div align="right">PROPERTY TWO&nbsp;:</div></td>
     <td> <div align="left"><input type="text" name="PROPERTY_TWO" value="{PROPERTY_TWO}" size="38"></div></td>
   </tr>
+ <tr class="row_on">
+    </td>
+    <td> <div align="right">counter of empty PROPERTY ONE&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_ONE}</div></td>
+  </tr>
+  <tr class="row_off">
+    </td>
+    <td> <div align="right">counter of empty PROPERTY TWO&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_TWO}</div></td>
+  </tr>  
+  <tr class="row_on">
+    </td>
+    <td> <div align="right">counter of empty One or Two&nbsp;:</div></td>
+    <td> <div align="left">{EMPTY_COUNTER}</div></td>
+  </tr>
 </table>
 
       ]]></template>    </activity>
     <activity>
-      <name>splitter</name>
-      <type>split</type>
-      <description>splitt the workflow in 2 branches</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <name>auto logger</name>
+      <type>activity</type>
+      <description>log some infos about the state of this process after the start</description>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
       </roles>
+      <agents>
+      </agents>
       <code><![CDATA[<?php
+// saving some properties to retain the state we have just after starting
+$value = $instance->getName();
+$instance->set('auto_logger_NAME_START',$value);
+$value = $instance->getPriority();
+$instance->set('auto_logger_PRIORITY_START',$value);
+$instance->set('auto_logger_USER_START',$GLOBALS['user']);
+
+//Setting the default values for the properties we will use later
+$instance->set('PROPERTY_ONE',0);
+$instance->set('PROPERTY_TWO',0);
+$instance->set('EMPTY_ONE',0);
+$instance->set('EMPTY_TWO',0);
+$instance->set('EMPTY_COUNTER',0);
 ?>      ]]></code>    </activity>
     <activity>
       <name>start the test</name>
       <type>start</type>
       <description>start activity for this test</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
+      <lastModif>11/10/2005 [12:41:58]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
         <role>Role1</role>
+        <role>Role3</role>
       </roles>
+      <agents>
+      </agents>
       <code><![CDATA[<?php
 
 // retrieve submit options ****************
@@ -507,22 +905,21 @@ $ActNextStage = get_var('ActNextStage','post',false);
 // handling results from the form
 //
 //--------------------------------------
-
+$leaveloop = false;
 if ($ActNextStage) 
 {
      // going to next stage
-     $instance->complete();
+     $leaveloop = $instance->complete();
      // the 'wf_name' and 'wf_priority' special properties are saved in
      // start_pos.php when completing
 } 
-else 
+if (!$leaveloop)
 {
-
-//--------------------------------------
-//
-// let's run_activity show the form
-//
-//--------------------------------------
+  //--------------------------------------
+  //
+  // let's run_activity show the form
+  //
+  //--------------------------------------
    // submit options we want
    $this->submit_array['ActNextStage'] = lang('Create this instance');
    //Special cancel value
@@ -534,6 +931,14 @@ else
         3 => lang('3 - medium but better'),
         4 => lang('4 - high'),
         );
+  // we want to select the owner 
+  //(0:empty,1:display,2:select all people having a role on the process)
+  // could be an array as well to define other values, see left branch
+  $this->display_owner = 2;
+  // we want to select the next user
+  //(0:empty,1:display,2:select all people having a role on the process)
+  // could be an array as well to define other values, see left branch
+  $this->display_next_user = 2;
 }
 ?>      ]]></code>      <template><![CDATA[<!--******************** SPECIAL START PROPERTIES ********************* -->
 <table width="100%">
@@ -546,53 +951,8 @@ else
   </tr>
 
 </table>      ]]></template>    </activity>
-    <activity>
-      <name>auto logger</name>
-      <type>activity</type>
-      <description>log some infos about the state of this process after the start</description>
-      <lastModif>14/06/2005 [07:29:59]</lastModif>
-      <isInteractive>n</isInteractive>
-      <isAutoRouted>y</isAutoRouted>
-      <roles>
-      </roles>
-      <code><![CDATA[<?php
-// saving some properties to retain the state we have just after starting
-$value = $instance->getName();
-$instance->set('auto_logger_NAME_START',$value);
-$value = $instance->getPriority();
-$instance->set('auto_logger_PRIORITY_START',$value);
-$instance->set('auto_logger_USER_START',$GLOBALS['user']);
-?>      ]]></code>    </activity>
   </activities>
   <transitions>
-     <transition>
-       <from>Automatik</from>
-       <to>end</to>
-     </transition>
-     <transition>
-       <from>After-Join</from>
-       <to>Automatik</to>
-     </transition>
-     <transition>
-       <from>joiner</from>
-       <to>After-Join</to>
-     </transition>
-     <transition>
-       <from>right branch</from>
-       <to>joiner</to>
-     </transition>
-     <transition>
-       <from>left branch</from>
-       <to>joiner</to>
-     </transition>
-     <transition>
-       <from>splitter</from>
-       <to>left branch</to>
-     </transition>
-     <transition>
-       <from>splitter</from>
-       <to>right branch</to>
-     </transition>
      <transition>
        <from>start the test</from>
        <to>auto logger</to>
@@ -600,6 +960,90 @@ $instance->set('auto_logger_USER_START',$GLOBALS['user']);
      <transition>
        <from>auto logger</from>
        <to>splitter</to>
+     </transition>
+     <transition>
+       <from>left branch</from>
+       <to>splitter2</to>
+     </transition>
+     <transition>
+       <from>splitter</from>
+       <to>left branch</to>
+     </transition>
+     <transition>
+       <from>splitter2</from>
+       <to>Switch 1</to>
+     </transition>
+     <transition>
+       <from>splitter</from>
+       <to>splitter2</to>
+     </transition>
+     <transition>
+       <from>splitter2</from>
+       <to>right branch</to>
+     </transition>
+     <transition>
+       <from>splitter</from>
+       <to>lonely branch 1</to>
+     </transition>
+     <transition>
+       <from>splitter2</from>
+       <to>Lonely branch II</to>
+     </transition>
+     <transition>
+       <from>splitter2</from>
+       <to>Switch2</to>
+     </transition>
+     <transition>
+       <from>Empty One</from>
+       <to>Empty Counter</to>
+     </transition>
+     <transition>
+       <from>Empty Two</from>
+       <to>Empty Counter</to>
+     </transition>
+     <transition>
+       <from>right branch</from>
+       <to>joiner</to>
+     </transition>
+     <transition>
+       <from>Switch 1</from>
+       <to>joiner</to>
+     </transition>
+     <transition>
+       <from>lonely branch 1</from>
+       <to>joiner</to>
+     </transition>
+     <transition>
+       <from>Lonely branch II</from>
+       <to>joiner</to>
+     </transition>
+     <transition>
+       <from>Switch 1</from>
+       <to>Empty One</to>
+     </transition>
+     <transition>
+       <from>Switch2</from>
+       <to>joiner</to>
+     </transition>
+     <transition>
+       <from>Empty Counter</from>
+       <to>joiner</to>
+     </transition>
+     <transition>
+       <from>Switch2</from>
+       <to>Empty Two</to>
+     </transition>
+     <transition>
+       <from>joiner</from>
+       <to>After-Join</to>
+     </transition>
+     <transition>
+       <from>After-Join</from>
+       <to>Automatik</to>
+     </transition>
+     <transition>
+       <from>Automatik</from>
+       <to>end</to>
      </transition>
   </transitions>
 </process>
