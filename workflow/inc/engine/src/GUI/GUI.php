@@ -220,6 +220,7 @@ class GUI extends Base {
     return $retval;
   }
 
+	//! list user activities but each activity name (and not id) appears only one time
 	function gui_list_user_activities_by_unique_name($user,$offset,$maxRecords,$sort_mode,$find,$where='')
 	{
 		// FIXME: this doesn't support multiple sort criteria
@@ -360,17 +361,19 @@ class GUI extends Base {
     //$sort_mode = $this->convert_sortmode($sort_mode);
     $sort_mode = str_replace("__"," ",$sort_mode);
 
-    $mid = "where gp.wf_is_active=?";
+    $mid = 'where gp.wf_is_active=?';
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
     $mid .= " and (  ((gur.wf_user=? and gur.wf_account_type='u')";
-    $mid .= "		or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
+    $mid .= '		or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g'))";
+
     // this collect non interactive instances we are owner of
-    $mid .= " 	or (gi.wf_owner=?)"; 
+    $mid .= ' 	or (gi.wf_owner=?)'; 
     // and this collect completed instances when asked which haven't got any user anymore
-    $mid .= "   or (gur.wf_user is NULL) )";
+    $mid .= '   or (gur.wf_user is NULL) )';
+
     
-    $bindvars = array('y',$user,$user); 
+    $bindvars = array('y', $user, $user);
     
     if($find) {
       $findesc = '%'.$find.'%';
@@ -404,7 +407,7 @@ class GUI extends Base {
                      gp.wf_p_id,
                      gi.wf_name as insname,
                      gi.wf_priority,
-                     gar.wf_readonly';
+                     MIN(gar.wf_readonly)';
     $query .= ($add_properties)? ', gi.wf_properties' : '';
     $query .= ' from '.GALAXIA_TABLE_PREFIX."instances gi 
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
@@ -412,14 +415,16 @@ class GUI extends Base {
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gar.wf_role_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
-              $mid order by $sort_mode";
+              $mid 
+              GROUP BY gi.wf_instance_id, gi.wf_started, gi.wf_owner, gia.wf_user, gi.wf_status, gi.wf_category, 
+              gia.wf_status, ga.wf_name, ga.wf_type, gp.wf_name, ga.wf_is_interactive, ga.wf_is_autorouted, 
+              ga.wf_activity_id, gp.wf_version, gp.wf_p_id, gi.wf_name, gi.wf_priority
+              order by $sort_mode";
     // (regis) this count query as to count global -unlimited- (instances/activities) not just instances
     // as we can have multiple activities for one instance and we will show all of them and the problem is 
     // that a user having memberships in several groups having the rights is counted several times. 
     // If we count instance_id without distinct we'll have several time the same line.
     // the solution is to count distinct instance_id for each activity and to sum theses results
-    // Beware that when counting we do not take care of the read-only/or not for roles because this parameter
-    // could return two lines for the same user (having different roles mappings with different rights)
     $query_cant = "select count(distinct(gi.wf_instance_id)) as cant, gia.wf_activity_id
               from ".GALAXIA_TABLE_PREFIX."instances gi 
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
@@ -429,7 +434,8 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
               $mid
                 GROUP BY gia.wf_activity_id";
- 
+     //echo "<br> query => ".$query; _debug_array($bindvars);
+     
     $result = $this->query($query,$bindvars,$maxRecords,$offset);
     $resultcant = $this->query($query_cant,$bindvars);
     $ret = Array();
@@ -440,35 +446,7 @@ class GUI extends Base {
       while($res = $result->fetchRow()) 
       {
         // Get instances per activity
-        //we record the record only if a record with the same key is not already recorded. This is because
-        //we could be mapped to the same activity with read-only retriction and without it on different roles
-        $result_row_key = $res['wf_instance_id'].'/'.$res['wf_activity_id'];
-        if (isset($record[$result_row_key]))
-        {
-          //we already saw this record
-          if ($record[$result_row_key]['readonly'])
-          {
-            //last time we were still in readonly
-            if (!($res['wf_readonly']))
-            {
-              //this time we have better rights
-              $record[$result_row_key]['readonly'] = false;
-              //we can update the already recorded result
-              $ret[$record[$result_row_key]['position']]['wf_readonly']= (int)false;
-            }
-          }
-        }
-        else
-        {
-          //we can record that we are recording
-          $record[$result_row_key] = array(
-              'position'	=> $i,
-              'readonly'	=> $res['wf_readonly'],
-          );
-          //record in the real result array
-          $ret[$i] = $res;
-          $i++;
-        }
+        $ret[]=$res;
       }
     }
     $cant=0;
