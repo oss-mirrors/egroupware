@@ -86,7 +86,7 @@
                         </select>
 		</td>
 		<td>
-			<input type="submit" name="cleanup_process" value="{lang_remove_all_instances_from_this_process}" />
+			<input type="submit" name="cleanup_process" value="{lang_remove_all_instances_for_this_process}" />
 		</td>
 		<td>
 			{help_cleanup}
