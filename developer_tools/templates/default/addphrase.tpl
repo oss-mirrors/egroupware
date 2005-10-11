@@ -2,8 +2,9 @@
 {lang_error_messages}<br>
 
 <form method="POST" action="{form_action}">
-  <input name="sourcelang" type="hidden" value="{sourcelang}">
+ <input name="sourcelang" type="hidden" value="{sourcelang}">
  <input name="targetlang" type="hidden" value="{targetlang}">
+ <input name="app_name" type="hidden" value="{app_name}">
 
  <table border="0" align="center">
   <tr>

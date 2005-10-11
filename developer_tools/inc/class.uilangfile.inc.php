@@ -93,6 +93,7 @@
 			$this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.addphrase'));
 			$this->template->set_var('sourcelang',$sourcelang);
 			$this->template->set_var('targetlang',$targetlang);
+			$this->template->set_var('app_name',$app_name);
 
 			$this->template->set_var('lang_message_id',lang('message_id in English'));
 			$this->template->set_var('lang_app',lang('Application'));
