@@ -200,7 +200,7 @@ class Instance extends Base {
     $where = 'wf_instance_id='.(int)$this->instanceId;
     if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where)))
     {
-      $this->error[] = 'sync: '.tra('failed to obtain lock on instances table');
+      $this->error[] = 'sync: '.tra('failed to obtain lock on %1 table', 'instances');
       $this->db->FailTrans();
     }
     else
