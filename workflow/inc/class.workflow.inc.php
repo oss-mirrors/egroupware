@@ -31,7 +31,7 @@
 		function workflow()
 		{
 			// check version
-			if (substr($GLOBALS['phpgw_info']['apps']['workflow']['version'],0,6) != '1.1.04')
+			if (substr($GLOBALS['phpgw_info']['apps']['workflow']['version'],0,6) != '1.1.05')
 			{
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();

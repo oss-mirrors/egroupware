@@ -12,7 +12,7 @@
 	/* Basic information about this app */
 	$setup_info['workflow']['name']			= 'workflow';
 	$setup_info['workflow']['title']		= 'Workflow management';
-	$setup_info['workflow']['version']		= '1.1.04.000';
+	$setup_info['workflow']['version']		= '1.1.05.000';
 	$setup_info['workflow']['app_order']		= 10;
 	$setup_info['workflow']['enable']		= 1;
 	$setup_info['workflow']['author']		= 'Ported from tikiwiki';

@@ -50,11 +50,10 @@
 				'wf_ended'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 				'wf_user'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
 				'wf_status'		=> array('type' => 'varchar', 'precision' => '25', 'nullable' => True),
-				'wf_group'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True, 'default' => '*')
 			),
 			'pk' => array('wf_instance_id', 'wf_activity_id'),
 			'fk' => array(),
-			'ix' => array(),
+			'ix' => array(array('wf_activity_id'),array('wf_instance_id'), array('wf_user')),
 			'uc' => array()
 		),
 		'egw_wf_instance_supplements' => array(
@@ -88,7 +87,7 @@
 			),
 			'pk' => array('wf_instance_id'),
 			'fk' => array(),
-			'ix' => array(),
+			'ix' => array(array('wf_owner'), array('wf_status')),
 			'uc' => array()
 		),
 		'egw_wf_processes' => array(
@@ -104,7 +103,7 @@
 			),
 			'pk' => array('wf_p_id'),
 			'fk' => array(),
-			'ix' => array(),
+			'ix' => array(array('wf_p_id','wf_is_active')),
 			'uc' => array()
 		),
 		'egw_wf_roles' => array(

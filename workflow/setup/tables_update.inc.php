@@ -91,7 +91,7 @@
 		);
 		
 		//change de default value for priority
-		$GLOBALS['phpgw_setup']->oProc->AlterColumn('egw_wf_instances','wf_priority',array('type' => 'int', 'precision' => '4', 'nullable' => True, 'default'=> 0));
+		
 
 		#updating the current version
 		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.01.000';
@@ -177,6 +177,75 @@
 
 		#updating the current version
 		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.04.000';
+		return $GLOBALS['setup_info']['workflow']['currentver'];
+	}
+
+	$test[] = '1.1.04.000';
+	function workflow_upgrade1_1_04_000()
+	{	
+		//unused column. Notice I had to do this manually with MAIN versions of phpgwapi/class.schema_proc.inc.php
+		$GLOBALS['phpgw_setup']->oProc->DropColumn('egw_wf_instance_activities','','wf_group');
+
+		//Adding some indexes on some tables:
+		
+		//we need a RefreshTable for that
+		$GLOBALS['phpgw_setup']->oProc->RefreshTable('egw_wf_instance_activities' ,array(
+			'fd' => array(
+				'wf_instance_id'	=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
+				'wf_activity_id'	=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
+				'wf_started'		=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
+				'wf_ended'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
+				'wf_user'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
+				'wf_status'		=> array('type' => 'varchar', 'precision' => '25', 'nullable' => True),
+			),
+			'pk' => array(array('wf_instance_id', 'wf_activity_id'),
+			'fk' => array(),
+			'ix' => array(array('wf_activity_id'),array('wf_instance_id'), array('wf_user')),
+			'uc' => array()
+		));
+		// we change some indexes
+		// we need a RefreshTable
+		$GLOBALS['phpgw_setup']->oProc->RefreshTable('egw_wf_instances' ,array(
+			'fd' => array(
+				'wf_instance_id'	=> array('type' => 'auto', 'precision' => '4', 'nullable' => False),
+				'wf_p_id'		=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
+				'wf_started'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
+				'wf_owner'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
+				'wf_next_activity'	=> array('type' => 'blob', 'nullable' => True),
+				'wf_next_user'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
+				'wf_ended'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
+				'wf_status'		=> array('type' => 'varchar', 'precision' => '25', 'nullable' => True),
+				'wf_priority'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True, 'default'=> 0),
+				'wf_properties'		=> array('type' => 'blob', 'nullable' => True),
+				'wf_name'		=> array('type' => 'varchar', 'precision'=>'120', 'nullable' => True),
+				'wf_category'		=> array('type' => 'int', 'precision'=>'4', 'nullable' => True),
+			),
+			'pk' => array('wf_instance_id'),
+			'fk' => array(),
+			'ix' => array(array('wf_owner'), array('wf_status')),
+			'uc' => array()
+		));
+		// we change some indexes
+		// we need a RefreshTable
+		$GLOBALS['phpgw_setup']->oProc->RefreshTable('egw_wf_processes' ,array(
+			'fd' => array(
+				'wf_p_id'		=> array('type' => 'auto', 'precision' => '4', 'nullable' => False),
+				'wf_name'		=> array('type' => 'varchar', 'precision' => '80', 'nullable' => True),
+				'wf_is_valid'		=> array('type' => 'char', 'precision' => '1', 'nullable' => True),
+				'wf_is_active'		=> array('type' => 'char', 'precision' => '1', 'nullable' => True),
+				'wf_version'		=> array('type' => 'varchar', 'precision' => '12', 'nullable' => True),
+				'wf_description'	=> array('type' => 'text', 'nullable' => True),
+				'wf_last_modif'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
+				'wf_normalized_name'	=> array('type' => 'varchar', 'precision' => '80', 'nullable' => True),
+			),
+			'pk' => array('wf_p_id'),
+			'fk' => array(),
+			'ix' => array(array('wf_p_id','wf_is_active')),
+			'uc' => array()
+		));
+		
+		#updating the current version
+		$GLOBALS['setup_info']['workflow']['currentver'] = '1.1.05.000';
 		return $GLOBALS['setup_info']['workflow']['currentver'];
 	}
 
