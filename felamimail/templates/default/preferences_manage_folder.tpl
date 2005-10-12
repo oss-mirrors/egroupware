@@ -91,7 +91,7 @@
 			<table border="0" width="100%" cellpadding=2 cellspacing=0>
 				<tr>
 					<td align="left">
-						ACL <a href="javascript:openWindow('{url_addACL}','felamiMailACL','400','200');">add ACL</a>
+						ACL <a href="#" onclick="javascript:egw_openWindowCentered('{url_addACL}','felamiMailACL','400','200'); return false;">add ACL</a>
 					</td>
 					<td>
 						<form id="editACL">
