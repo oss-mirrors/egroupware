@@ -307,6 +307,8 @@
 			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
 
 			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
+			if($lastPage > $messageCounter)
+				$lastPage -= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 
 			$this->sessionData['startMessage'] = $lastPage;
 
