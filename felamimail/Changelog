@@ -1,3 +1,6 @@
+20051012
+- fixed a bug, which triggered when compressing the folder
+
 20051011
 - fixed handling of "empty trash" and "compress folder"
   the links got moved to the sidebox and are using ajax too

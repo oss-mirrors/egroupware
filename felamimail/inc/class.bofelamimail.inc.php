@@ -159,6 +159,7 @@
 		{
 			$prefs	= $this->bopreferences->getPreferences();
 
+
 			$folderName	= ($_folderName ? $_folderName : $this->sessionData['mailbox']);
 			$deleteOptions	= $prefs['deleteOptions'];
 			$trashFolder	= $prefs['trash_folder'];
@@ -172,11 +173,18 @@
 				$msgList = "1:$numberOfMessages";
 				imap_delete($this->mbox, $msgList);
 				imap_expunge($this->mbox);
+
+				$caching =& CreateObject('felamimail.bocaching',
+					$this->mailPreferences['imapServerAddress'],
+					$this->mailPreferences['username'],
+					$folderName);
+				$caching->clearCache($folderName);
 			}
 			elseif($deleteOptions == "mark_as_deleted")
 			{
 				// delete all messages in the current folder which have the deleted flag set 
 				imap_expunge($this->mbox);
+				$this->updateCache($folderName);				
 			}
 		}
 		
@@ -550,29 +558,21 @@
 		#	list($usec, $sec) = explode(" ", microtime());
 		#	return ((float)$usec + (float)$sec);
 		#}
-					
-		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
+		
+		function updateCache($_folderName)
 		{
-			#$start = $this->microtime_float();
-
 			$caching =& CreateObject('felamimail.bocaching',
 					$this->mailPreferences['imapServerAddress'],
 					$this->mailPreferences['username'],
-					$this->sessionData['mailbox']);
-			$bofilter =& CreateObject('felamimail.bofilter');
-			$transformdate =& CreateObject('felamimail.transformdate');
+					$_folderName);
 
-			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
-
-			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->sessionData['mailbox'],3,$this->profileID);
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
-			$this->reopen($this->sessionData['mailbox']);
+			$this->reopen($_folderName);
 
 			$cachedStatus = $caching->getImapStatus();
-			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
 
-
-			// no data cached already?
+			// no data cached yet?
 			// get all message informations from the imap server for this folder
 			if ($cachedStatus['uidnext'] == 0 || $cachedStatus['uidnext'] > $status->uidnext)
 			{
@@ -667,7 +667,7 @@
 				}
 				$caching->updateImapStatus($status);
 			}
-
+			
 			// now let's do some clean up
 			// if we have more messages in the cache then in the imap box, some external 
 			// imap client deleted some messages. It's better to erase the messages from the cache.
@@ -693,14 +693,21 @@
 				}
 			}
 
-			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
+		}
+					
+		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
+		{
+			#$start = $this->microtime_float();
 
-			// now lets gets the important messages
-			#$filterList = $bofilter->getFilterList();
-			#$activeFilter = $bofilter->getActiveFilter();
-			#$filter = $filterList[$activeFilter];
-			$filter = $bofilter->getFilter($this->sessionData['activeFilter']);
-			#_debug_array($filter);
+			$caching =& CreateObject('felamimail.bocaching',
+					$this->mailPreferences['imapServerAddress'],
+					$this->mailPreferences['username'],
+					$this->sessionData['mailbox']);
+			$bofilter =& CreateObject('felamimail.bofilter');
+			$transformdate =& CreateObject('felamimail.transformdate');
+			
+			$this->updateCache($this->sessionData['mailbox']);
+			
 			$displayHeaders = $caching->getHeaders($_startMessage, $_numberOfMessages, $_sort, $filter);
 			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
 

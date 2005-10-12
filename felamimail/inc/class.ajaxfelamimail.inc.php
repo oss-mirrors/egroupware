@@ -89,6 +89,30 @@
 			$this->bofelamimail->reopen($this->sessionData['mailbox']);
 			$this->bofelamimail->compressFolder();
 
+			$bofilter =& CreateObject('felamimail.bofilter');
+			$caching =& CreateObject('felamimail.bocaching',
+				$this->bofelamimail->mailPreferences['imapServerAddress'],
+				$this->bofelamimail->mailPreferences['username'],
+				$this->sessionData['mailbox']);
+			
+			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
+
+			// $lastPage is the first message ID of the last page
+			if($messageCounter > $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"])
+			{
+				$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
+				if($lastPage > $messageCounter)
+					$lastPage -= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+				if($this->sessionData['startMessage'] > $lastPage)
+					$this->sessionData['startMessage'] = $lastPage;
+			}
+			else
+			{
+				$this->sessionData['startMessage'] = 1;
+			}
+
+			$this->saveSessionData();
+
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
@@ -366,14 +390,23 @@
 				$this->sessionData['mailbox']);
 			
 			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
+			// $lastPage is the first message ID of the last page
+			if($messageCounter > $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"])
+			{
+				$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
+				if($lastPage > $messageCounter)
+					$lastPage -= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+				$this->sessionData['startMessage'] += $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+				if($this->sessionData['startMessage'] > $lastPage)
+					$this->sessionData['startMessage'] = $lastPage;
+			}
+			else
+			{
+				$this->sessionData['startMessage'] = 1;
+			}
 
-			$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
-
-			$this->sessionData['startMessage']	+= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-			if($this->sessionData['startMessage'] > $lastPage)
-				$this->sessionData['startMessage'] = $lastPage;
 			$this->saveSessionData();
-
+			
 			$response = $this->generateMessageList($this->sessionData['mailbox']);
 			
 			return $response;
