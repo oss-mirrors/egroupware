@@ -41,7 +41,6 @@
 				#$response->addScript("window.close();");
 				#$response->addAssign("accountName", "value", $this->sessionDataAjax['folderName'].'-'.$_accountName.'-'.$acl);
 				#return $response->getXML();
-
 			}
 		}
 		
@@ -84,6 +83,15 @@
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 		
+		function compressFolder()
+		{
+			$this->bofelamimail->restoreSessionData();
+			$this->bofelamimail->reopen($this->sessionData['mailbox']);
+			$this->bofelamimail->compressFolder();
+
+			return $this->generateMessageList($this->sessionData['mailbox']);
+		}
+
 		function createACLTable($_acl)
 		{
 			$aclList = array('l','r','s','w','i','p','c','d','a');
@@ -148,6 +156,20 @@
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 		
+		function emptyTrash()
+		{
+			$preferences	= ExecMethod('felamimail.bopreferences.getPreferences');
+			
+			if(!empty($preferences['trash_folder']))
+			{
+				$this->bofelamimail->closeConnection();
+				$this->bofelamimail->openConnection($preferences['trash_folder']);
+				$this->bofelamimail->compressFolder($preferences['trash_folder']);
+			}
+
+			return $this->generateMessageList($this->sessionData['mailbox']);
+		}
+		
 		function extendedSearch($_filterID)
 		{
 			// start displaying at message 1
@@ -170,10 +192,12 @@
 		{
 			$this->bofelamimail->restoreSessionData();
 			
+			$isSentFolder = $this->bofelamimail->isSentFolder($_folderName);
+			
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			$headers = $this->bofelamimail->getHeaders($this->sessionData['startMessage'], $maxMessages, $this->sessionData['sort']);
 			
-			$headerTable = $this->uiwidgets->messageTable($headers, $this->bofelamimail->isSentFolder($_folderName), TRUE);
+			$headerTable = $this->uiwidgets->messageTable($headers, $isSentFolder, TRUE);
 			
 			$response =& new xajaxResponse();
 			$firstMessage = (int)$headers['info']['first'];
@@ -183,6 +207,15 @@
 				$response->addAssign("messageCounter", "innerHTML", lang('no messages found...'));
 			else
 				$response->addAssign("messageCounter", "innerHTML", lang('Viewing messages')." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage ".lang("total").')');
+			if($isSentFolder)
+			{
+				$response->addAssign("from_or_to", "innerHTML", lang('to'));
+			}
+			else
+			{
+				$response->addAssign("from_or_to", "innerHTML", lang('from'));
+			}
+			
 			$response->addAssign("divMessageList", "innerHTML", $headerTable);
 
 			$response->addScript("tree.selectItem('".$_folderName."',false);");
@@ -367,7 +400,7 @@
 		
 		function updateFolderStatus($_folderName, $_status)
 		{
-			$this->bofelamimail->subscribe($_folderName,($_status == '1'?'subscribe':'unsubscribe'));
+			$this->bofelamimail->subscribe($_folderName,($_status == '1' ? 'subscribe' : 'unsubscribe'));
 			#$this->deleteFolder('--topfolder--.xxx.yyy');
 			#$response =& new xajaxResponse();
 			#$response->addAssign("folderName", "innerHTML", $_folderName.$_status);

@@ -9,6 +9,12 @@ function changeSorting(_sort)
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.changeSorting",_sort);
 }
 
+function compressFolder()
+{
+	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + msg_compressingFolder + ' </span>...';
+	xajax_doXMLHTTP("felamimail.ajaxfelamimail.compressFolder");
+}
+
 function deleteMessages(_messageList)
 {
 	resetMessageSelect();
@@ -21,6 +27,12 @@ function deleteMessages(_messageList)
 function displayMessage(_url,_windowName) 
 {
 	egw_openWindowCentered(_url, _windowName, 800, egw_getWindowOuterHeight());
+}
+
+function emptyTrash()
+{
+	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + msg_emptyTrashFolder + ' </span>...';
+	xajax_doXMLHTTP("felamimail.ajaxfelamimail.emptyTrash");
 }
 
 function onNodeSelect(_nodeID)

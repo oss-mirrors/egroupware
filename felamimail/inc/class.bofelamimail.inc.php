@@ -155,17 +155,18 @@
 			}
 		}
 		
-		function compressFolder()
+		function compressFolder($_folderName = false)
 		{
 			$prefs	= $this->bopreferences->getPreferences();
 
+			$folderName	= ($_folderName ? $_folderName : $this->sessionData['mailbox']);
 			$deleteOptions	= $prefs['deleteOptions'];
 			$trashFolder	= $prefs['trash_folder'];
 			
-			if($this->sessionData['mailbox'] == $trashFolder && $deleteOptions == "move_to_trash")
+			if($folderName == $trashFolder && $deleteOptions == "move_to_trash")
 			{
 				// delete all messages in the trash folder
-				$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->sessionData['mailbox'],3,$this->profileID);
+				$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$folderName,3,$this->profileID);
 				$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
 				$numberOfMessages = $status->messages;
 				$msgList = "1:$numberOfMessages";

@@ -6,6 +6,8 @@ var sURL = unescape(window.location.pathname);
 // some translations needed for javascript functions
 
 var movingMessages='{lang_moving_messages_to}';
+var msg_emptyTrashFolder = '{lang_empty_trash}';
+var msg_compressingFolder = '{lang_compress_folder}';
 
 function doLoad()
 {
@@ -180,7 +182,7 @@ doLoad();
 			&nbsp;
 		</td>
 		<td align="left" style="font-size:10px">
-			<span id="messageCounter">{message}</span>&nbsp;{trash_link}
+			<span id="messageCounter">{message}</span>
 		</td>
 		<td align="right">
 			<input type="image" src="{start_kde}" border="0" alt="start" onClick="javascript:jumpStart(); return false;">
@@ -220,7 +222,7 @@ doLoad();
 					&nbsp;<input style="width:10px; height:10px; border:none" type="checkbox" id="messageCheckBox" onclick="selectAll(this)">
 					</td>
 					<td width="120px" bgcolor="{th_bg}" align="left" class="{css_class_from}">
-						&nbsp;<a href="javascript:changeSorting('from');">{lang_from}</a>
+						&nbsp;<a href="javascript:changeSorting('from');"><span id='from_or_to'>{lang_from}</span></a>
 					</td>
 					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
 						&nbsp;&nbsp;<a href="javascript:changeSorting('date');">{lang_date}</a>

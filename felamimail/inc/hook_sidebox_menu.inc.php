@@ -43,16 +43,32 @@
 			#'INBOX'=>$GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen')
 		);
 	}
+
+	if($preferences['deleteOptions'] == 'move_to_trash')
+	{
+		$file += Array(
+			'_NewLine_'	=> '', // give a newline
+			'empty trash'	=> "javascript:emptyTrash();",
+		);
+	}
+	
+	if($preferences['deleteOptions'] == 'mark_as_deleted')
+	{
+		$file += Array(
+			'_NewLine_'		=> '', // give a newline
+			'compress folder'	=> "javascript:compressFolder();",
+		);
+	}
+	
 	display_sidebox($appname,$menu_title,$file);
 
 	if ($GLOBALS['egw_info']['user']['apps']['preferences'])
 	{
 		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
-		#_debug_array($mailPreferences);
 		$menu_title = lang('Preferences');
 		$file = array(
-			'Preferences'    => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
-			'Manage Folders'	  => $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
+			'Preferences'		=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
+			'Manage Folders'	=> $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
 		);
 
 		if($mailPreferences['imapEnableSieve'] == true)

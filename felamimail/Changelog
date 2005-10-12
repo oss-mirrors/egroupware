@@ -1,3 +1,9 @@
+20051011
+- fixed handling of "empty trash" and "compress folder"
+  the links got moved to the sidebox and are using ajax too
+- fixed the header of the address row in the main view
+  the sent folder displays "to" all other folders are diplaying "from"
+
 Version 1.0
 - updated FeLaMiMail to use AJAX
 - reworked the way the UI works. Most UI actions now don't need any reload

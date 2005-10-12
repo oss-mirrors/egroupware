@@ -214,11 +214,11 @@
 			$this->viewMainScreen();
 		}
 
-		function compressFolder()
+/*		function compressFolder()
 		{
 			$this->bofelamimail->compressFolder();
 			$this->viewMainScreen();
-		}
+		} */
 
 
 		function deleteMessage()
@@ -691,7 +691,7 @@
 			// create the links for the delete options
 			// "delete all" in the trash folder
 			// "compress folder" in normal folders
-			if ($mailPreferences['trash_folder'] == $this->mailbox &&
+/*			if ($mailPreferences['trash_folder'] == $this->mailbox &&
 					$mailPreferences['deleteOptions'] == "move_to_trash")
 			{
 				$linkData = array
@@ -714,7 +714,7 @@
 							$GLOBALS['egw']->link('/index.php',$linkData),
 							lang("compress folder"));
 				$this->t->set_var('trash_link',$trashLink);
-			}
+			}*/
 			
 			
 			$this->t->set_var('message',lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)");
@@ -910,6 +910,8 @@
 			$this->t->set_var('lang_open_all',lang("open all"));
 			$this->t->set_var('lang_close_all',lang("close all"));
 			$this->t->set_var('lang_moving_messages_to',lang('moving messages to'));
+			$this->t->set_var('lang_empty_trash',lang('empty trash'));
+			$this->t->set_var('lang_compress_folder',lang('compress folder'));
 		}
 	}
 ?>
