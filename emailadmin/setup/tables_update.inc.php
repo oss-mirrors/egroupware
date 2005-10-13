@@ -73,4 +73,18 @@
 		$GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.0';
 		return $GLOBALS['setup_info']['emailadmin']['currentver'];
 	}
+
+	$test[] = '1.0.0';
+	function emailadmin_upgrade1_0_0()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','editforwardingaddress',array(
+			'type' => 'varchar',
+			'precision' => '3'
+		));
+
+		$GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.1';
+		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+	}
+
+
 ?>

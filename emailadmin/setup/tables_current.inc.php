@@ -21,6 +21,7 @@
 				'smtpType' => array('type' => 'int','precision' => '4'),
 				'smtpPort' => array('type' => 'int','precision' => '4'),
 				'smtpAuth' => array('type' => 'varchar','precision' => '3'),
+				'editforwardingaddress' => array('type' => 'varchar','precision' => '3'),
 				'smtpLDAPServer' => array('type' => 'varchar','precision' => '80'),
 				'smtpLDAPBaseDN' => array('type' => 'varchar','precision' => '200'),
 				'smtpLDAPAdminDN' => array('type' => 'varchar','precision' => '200'),
