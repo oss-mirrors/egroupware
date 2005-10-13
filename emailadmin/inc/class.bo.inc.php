@@ -22,7 +22,7 @@
 		var $imapClass;				// holds the imap/pop3 class
 		var $smtpClass;				// holds the smtp class
 
-		var $public_functions = array
+/*		var $public_functions = array
 		(
 			'getFieldNames'		=> True,
 			'getLDAPStorageData'	=> True,
@@ -31,7 +31,7 @@
 			'getProfileList'	=> True,
 			'getRcptHosts'		=> True,
 			'getSMTPServerTypes'	=> True
-		);
+		); */
 
 		function bo($_profileID=-1)
 		{
@@ -54,6 +54,7 @@
 						'smtpPort',
 						'smtpAuth',
 						'smtpType',
+						'editforwardingaddress',
 						'smtpLDAPServer',
 						'smtpLDAPAdminDN',
 						'smtpLDAPAdminPW',
@@ -275,25 +276,25 @@
 					list($found,$data) = each($profileData);
 					$this->profileID = $_profileID = $data['profileID'];
 				}
-				elseif ($GLOBALS['phpgw_info']['server']['smtp_server'])	// create a default profile, from the data in the api config
+				elseif ($GLOBALS['egw_info']['server']['smtp_server'])	// create a default profile, from the data in the api config
 				{
 					$this->profileID = $_profileID = $this->soemailadmin->addProfile(array(
-						'description' => $GLOBALS['phpgw_info']['server']['smtp_server'],
-						'defaultDomain' => $GLOBALS['phpgw_info']['server']['mail_suffix'],
+						'description' => $GLOBALS['egw_info']['server']['smtp_server'],
+						'defaultDomain' => $GLOBALS['egw_info']['server']['mail_suffix'],
 						'organisationName' => '',
 						'userDefinedAccounts' => '',
 					),array(
-						'smtpServer' => $GLOBALS['phpgw_info']['server']['smtp_server'],
-						'smtpPort' => $GLOBALS['phpgw_info']['server']['smtp_port'],
+						'smtpServer' => $GLOBALS['egw_info']['server']['smtp_server'],
+						'smtpPort' => $GLOBALS['egw_info']['server']['smtp_port'],
 						'smtpAuth' => '',
 						'smtpType' => '1',
 					),array(
-						'imapServer' => $GLOBALS['phpgw_info']['server']['mail_server'] ? 
-							$GLOBALS['phpgw_info']['server']['mail_server'] : $GLOBALS['phpgw_info']['server']['smtp_server'],
+						'imapServer' => $GLOBALS['egw_info']['server']['mail_server'] ? 
+							$GLOBALS['egw_info']['server']['mail_server'] : $GLOBALS['egw_info']['server']['smtp_server'],
 						'imapPort' => '143',
 						'imapType' => '2',	// imap
-						'imapLoginType' => $GLOBALS['phpgw_info']['server']['mail_login_type'] ? 
-							$GLOBALS['phpgw_info']['server']['mail_login_type'] : 'standard',
+						'imapLoginType' => $GLOBALS['egw_info']['server']['mail_login_type'] ? 
+							$GLOBALS['egw_info']['server']['mail_login_type'] : 'standard',
 						'imapTLSEncryption' => '',
 						'imapTLSAuthentication' => '',
 						'imapoldcclient' => '',						
@@ -372,12 +373,16 @@
 		
 			$this->sessionData = $phpgw->session->appsession('session_data');
 			$this->userSessionData = $phpgw->session->appsession('user_session_data');
+		}
+		
+		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
+		{
+			if (!empty($this->smtpClass))
+			{
+				$smtpClass = &CreateObject('emailadmin.'.$this->smtpClass,$this->profileID);
+				$smtpClass->saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy);
+			}
 			
-			#while(list($key, $value) = each($this->userSessionData))
-			#{
-			#	print "++ $key: $value<br>";
-			#}
-			#print "restored Session<br>";
 		}
 		
 		function saveProfile($_globalSettings, $_smtpSettings, $_imapSettings)

@@ -49,6 +49,11 @@
 			);
 		}
 
+		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
+		{
+			return true;
+		}
+		
 		// update a account
 		function updateAccount($_hookValues)
 		{

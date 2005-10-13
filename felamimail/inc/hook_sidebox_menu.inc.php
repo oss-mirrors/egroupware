@@ -87,6 +87,14 @@
 			);
 			$file['Vacation']	= $GLOBALS['egw']->link('/index.php',$linkData);
 		}
+		if($mailPreferences['editForwardingAddress'] == true)
+		{
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uipreferences.editForwardingAddress',
+			);
+			$file['Forwarding']	= $GLOBALS['egw']->link('/index.php',$linkData);
+		}
 
 		display_sidebox($appname,$menu_title,$file);
 	}

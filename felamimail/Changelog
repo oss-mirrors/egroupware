@@ -1,3 +1,7 @@
+20051013
+- added feature to let Postfix LDAP users edit there own email forwarding settings
+  feature can be enabled/disabled by settings in emailadmin
+
 20051012
 - fixed a bug, which triggered when compressing the folder
 

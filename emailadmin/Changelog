@@ -1,0 +1,4 @@
+20051013
+
+- Postfix LDAP users can now update there email forwardingaddress 
+  themself(if enabled)

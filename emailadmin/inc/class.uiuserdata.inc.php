@@ -29,16 +29,13 @@
 	
 		function display_app_header()
 		{
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
-			
 		}
 
 		function editUserData($_useCache='0')
 		{
-			global $phpgw, $phpgw_info, $HTTP_GET_VARS;
-			
-			$accountID = $HTTP_GET_VARS['account_id'];			
+			$accountID = $_GET['account_id'];			
 			$GLOBALS['account_id'] = $accountID;
 
 			$this->display_app_header();
@@ -48,10 +45,10 @@
 			$this->t->set_file(array("editUserData" => "edituserdata.tpl"));
 			$this->t->set_block('editUserData','form','form');
 			$this->t->set_block('editUserData','link_row','link_row');
-			$this->t->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
-			$this->t->set_var("tr_color1",$phpgw_info["theme"]["row_on"]);
-			$this->t->set_var("tr_color2",$phpgw_info["theme"]["row_off"]);
-			
+			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
+			$this->t->set_var("tr_color1",$GLOBALS['egw_info']["theme"]["row_on"]);
+			$this->t->set_var("tr_color2",$GLOBALS['egw_info']["theme"]["row_off"]);
+
 			$this->t->set_var("lang_email_config",lang("edit email settings"));
 			$this->t->set_var("lang_emailAddress",lang("email address"));
 			$this->t->set_var("lang_emailaccount_active",lang("email account active"));
@@ -63,15 +60,15 @@
 			$this->t->set_var("lang_deliver_extern",lang("deliver extern"));
 			$this->t->set_var("lang_edit_email_settings",lang("edit email settings"));
 			$this->t->set_var("lang_ready",lang("Done"));
-			$this->t->set_var("link_back",$phpgw->link('/admin/accounts.php'));
-			
+			$this->t->set_var("link_back",$GLOBALS['egw']->link('/admin/accounts.php'));
+
 			$linkData = array
 			(
 				'menuaction'	=> 'emailadmin.uiuserdata.saveUserData',
 				'account_id'	=> $accountID
 			);
-			$this->t->set_var("form_action", $phpgw->link('/index.php',$linkData));
-			
+			$this->t->set_var("form_action", $GLOBALS['egw']->link('/index.php',$linkData));
+
 			// only when we show a existing user
 			if($userData = $this->boemailadmin->getUserData($accountID, $_useCache))
 			{
@@ -146,38 +143,36 @@
 		
 		function saveUserData()
 		{
-			global $HTTP_POST_VARS, $HTTP_GET_VARS;
-			
-			if($HTTP_POST_VARS["accountStatus"] == "on")
+			if($_POST["accountStatus"] == "on")
 			{
 				$accountStatus = "active";
 			}
-			if($HTTP_POST_VARS["forwardOnly"] == "on")
+			if($_POST["forwardOnly"] == "on")
 			{
 				$deliveryMode = "forwardOnly";
 			}
 
 			$formData = array
 			(
-				'mailLocalAddress'		=> $HTTP_POST_VARS["mailLocalAddress"],
-				'mailRoutingAddress'		=> $HTTP_POST_VARS["mailRoutingAddress"],
-				'add_mailAlternateAddress'	=> $HTTP_POST_VARS["mailAlternateAddressInput"],
-				'remove_mailAlternateAddress'	=> $HTTP_POST_VARS["mailAlternateAddress"],
-				'quotaLimit'			=> $HTTP_POST_VARS["quotaLimit"],
-				'add_mailRoutingAddress'	=> $HTTP_POST_VARS["mailRoutingAddressInput"],
-				'remove_mailRoutingAddress'	=> $HTTP_POST_VARS["mailRoutingAddress"],
+				'mailLocalAddress'		=> $_POST["mailLocalAddress"],
+				'mailRoutingAddress'		=> $_POST["mailRoutingAddress"],
+				'add_mailAlternateAddress'	=> $_POST["mailAlternateAddressInput"],
+				'remove_mailAlternateAddress'	=> $_POST["mailAlternateAddress"],
+				'quotaLimit'			=> $_POST["quotaLimit"],
+				'add_mailRoutingAddress'	=> $_POST["mailRoutingAddressInput"],
+				'remove_mailRoutingAddress'	=> $_POST["mailRoutingAddress"],
 				
-				'qmailDotMode'			=> $HTTP_POST_VARS["qmailDotMode"],
-				'deliveryProgramPath'		=> $HTTP_POST_VARS["deliveryProgramPath"],
+				'qmailDotMode'			=> $_POST["qmailDotMode"],
+				'deliveryProgramPath'		=> $_POST["deliveryProgramPath"],
 				'accountStatus'			=> $accountStatus,
 				'deliveryMode'			=> $deliveryMode
 			);
 			
-			if($HTTP_POST_VARS["add_mailAlternateAddress"]) $bo_action='add_mailAlternateAddress';
-			if($HTTP_POST_VARS["remove_mailAlternateAddress"]) $bo_action='remove_mailAlternateAddress';
-			if($HTTP_POST_VARS["add_mailRoutingAddress"]) $bo_action='add_mailRoutingAddress';
-			if($HTTP_POST_VARS["remove_mailRoutingAddress"]) $bo_action='remove_mailRoutingAddress';
-			if($HTTP_POST_VARS["save"]) $bo_action='save';
+			if($_POST["add_mailAlternateAddress"]) $bo_action='add_mailAlternateAddress';
+			if($_POST["remove_mailAlternateAddress"]) $bo_action='remove_mailAlternateAddress';
+			if($_POST["add_mailRoutingAddress"]) $bo_action='add_mailRoutingAddress';
+			if($_POST["remove_mailRoutingAddress"]) $bo_action='remove_mailRoutingAddress';
+			if($_POST["save"]) $bo_action='save';
 			
 			$this->boemailadmin->saveUserData($_GET['account_id'], $formData, $bo_action);
 
@@ -195,9 +190,7 @@
 		
 		function translate()
 		{
-			global $phpgw_info;			
-
-			$this->t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+			$this->t->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 
 			$this->t->set_var('lang_add',lang('add'));
 			$this->t->set_var('lang_done',lang('Done'));

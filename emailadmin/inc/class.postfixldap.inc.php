@@ -92,5 +92,40 @@
 			
 			return $emailAddresses;
 		}
+		
+		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
+		{
+			$ds = $GLOBALS['egw']->common->ldapConnect();
+			$filter 	= sprintf("(&(uidnumber=%s)(objectclass=posixAccount))",$_accountID);
+			$attributes	= array('dn','mailforwardingaddress','deliverymode');
+			$sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $attributes);
+			
+			if ($sri)
+			{
+				$allValues = ldap_get_entries($ds, $sri);
+				if(!empty($_forwardingAddress))
+				{
+					if(is_array($allValues[0]['mailforwardingaddress']))
+					{
+						$newData['mailforwardingaddress'] = $allValues[0]['mailforwardingaddress'];
+						unset($newData['mailforwardingaddress']['count']);
+						$newData['mailforwardingaddress'][0] = $_forwardingAddress;
+					}
+					else
+					{
+						$newData['mailforwardingaddress'][0] = $_forwardingAddress;
+					}
+					$newData['deliverymode'] = ($_keepLocalCopy == 'yes'? 'forwardOnly' : array());
+				}
+				else
+				{
+					$newData['mailforwardingaddress'] = array();
+					$newData['deliverymode'] = array();
+				}
+				
+				ldap_modify ($ds, $allValues[0]['dn'], $newData);
+				#print ldap_error($ds);
+			}
+		}
 	}
 ?>

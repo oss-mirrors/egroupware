@@ -19,10 +19,11 @@
 
 		var $public_functions = array
 		(
-			'addACL'	=> 'True',
-			'listFolder'	=> 'True',
-			'showHeader'	=> 'True',
-			'getAttachment'	=> 'True'
+			'addACL'		=> 'True',
+			'editForwardingAddress'	=> 'True',
+			'listFolder'		=> 'True',
+			'showHeader'		=> 'True',
+			'getAttachment'		=> 'True'
 		);
 
 		function uipreferences()
@@ -70,6 +71,43 @@
 			$GLOBALS['egw']->common->egw_header();
 			if($_displayNavbar == TRUE)
 				echo parse_navbar();
+		}
+		
+		function editForwardingAddress()
+		{
+			$config =& CreateObject('phpgwapi.config','felamimail');
+			$config->read_repository();
+			$profileID = $config->config_data['profileID'];
+			$boEMailAdmin	=& CreateObject('emailadmin.bo',$profileID);
+
+			if($_POST['save'])
+			{
+				//_debug_array($_POST);_debug_array($_POST);_debug_array($_POST);
+				$boEMailAdmin->saveSMTPForwarding(&$GLOBALS['egw_info']['user']['account_id'],$_POST['forwardingAddress'],$_POST['keepLocalCopy']);
+			}
+			
+			$userData	= $boEMailAdmin->getUserData(&$GLOBALS['egw_info']['user']['account_id'],false);
+			#_debug_array($userData);
+			$this->display_app_header(TRUE);
+
+			$this->t->set_file(array("body" => "edit_forwarding_address.tpl"));
+			$this->t->set_block('body','main');
+
+			$this->translate();
+
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.editForwardingAddress'
+			);
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
+			$this->t->set_var('forwarding_address',$userData['mailRoutingAddress'][0]);
+			#deliveryMode checked_keep_local_copy
+			if($userData['deliveryMode'] == 'forwardOnly')
+				$this->t->set_var('checked_keep_local_copy','checked');
+
+
+			$this->t->parse("out","main");
+			print $this->t->get('out','main');
 		}
 		
 		function listFolder()
@@ -296,7 +334,12 @@
 			$this->t->set_var('lang_delete_selected',lang("delete selected"));
 			$this->t->set_var('lang_cancel',lang("close"));
 			$this->t->set_var('lang_ACL',lang("ACL"));
+			$this->t->set_var('lang_save',lang('save'));
+			$this->t->set_var('lang_cancel',lang('cancel'));
 			$this->t->set_var('lang_Overview',lang("Overview"));
+			$this->t->set_var('lang_edit_forwarding_address',lang('edit email forwarding address'));
+			$this->t->set_var('lang_forwarding_address',lang("email forwarding address"));
+			$this->t->set_var('lang_keep_local_copy',lang("keep local copy of email"));
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
