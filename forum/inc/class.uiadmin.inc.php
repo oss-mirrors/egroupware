@@ -34,20 +34,20 @@
 
 		function uiadmin()
 		{
-			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			if(!$GLOBALS['egw_info']['user']['apps']['admin'])
 			{
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['egw']->common->egw_exit();
 			}
 
-			$GLOBALS['phpgw']->nextmatchs = CreateObject('phpgwapi.nextmatchs');
+			$GLOBALS['egw']->nextmatchs =& CreateObject('phpgwapi.nextmatchs');
 
-			$this->bo = CreateObject('forum.boforum');
+			$this->bo =& CreateObject('forum.boforum');
 			$this->debug = $this->bo->debug;
 
-			$this->template_dir = $GLOBALS['phpgw']->common->get_tpl_dir('forum');
-			$this->template = CreateObject('phpgwapi.Template',$this->template_dir);
-			$info = explode('.',$GLOBALS['HTTP_GET_VARS']['menuaction']);
+			$this->template_dir = $GLOBALS['egw']->common->get_tpl_dir('forum');
+			$this->template =& CreateObject('phpgwapi.Template',$this->template_dir);
+			$info = explode('.',$_GET['menuaction']);
 			$this->current_page = $info[2];
 		}
 
@@ -55,26 +55,26 @@
 		{
 			echo '<table border="0" width="100%" align="center" cellspacing="1" cellpadding="0">'."\n"
 				. ' <tr>'."\n"
-				. '  <td bgcolor="'.$GLOBALS['phpgw_info']['theme']['bg03'].'" align="left">'.lang('Forums').' '.lang('Admin').'</td>'."\n"
+				. '  <td bgcolor="'.$GLOBALS['egw_info']['theme']['bg03'].'" align="left">'.lang('Forums').' '.lang('Admin').'</td>'."\n"
 				. ' </tr>'."\n"
 				. ' <tr>'."\n"
-				. '  <td bgcolor="'.$GLOBALS['phpgw_info']['theme']['row_off'].'" align="left">'
+				. '  <td bgcolor="'.$GLOBALS['egw_info']['theme']['row_off'].'" align="left">'
 				. '[<font size="-1">'."\n"
-				. '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.add_category').'">'.lang('New Category').'</a> '."\n"
-				. '| <a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.add_forum').'">'.lang('New Forum').'</a> '."\n"
-				. ($this->current_page!='index'?'| <a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index').'">'.lang('Return to Admin').'</a> ':' ')."\n"
-				. '| <a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index').'">'.lang('Return to Forums').'</a>'."\n"
+				. '<a href="'.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.add_category').'">'.lang('New Category').'</a> '."\n"
+				. '| <a href="'.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.add_forum').'">'.lang('New Forum').'</a> '."\n"
+				. ($this->current_page!='index'?'| <a href="'.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index').'">'.lang('Return to Admin').'</a> ':' ')."\n"
+				. '| <a href="'.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index').'">'.lang('Return to Forums').'</a>'."\n"
 				. '</font>]'
 				. '  </td>'."\n".' </tr>'."\n".'</table>'."\n";
 		}
 
 		function index()
 		{
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
-			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-			$GLOBALS['phpgw']->common->phpgw_header();
+			unset($GLOBALS['egw_info']['flags']['noheader']);
+			unset($GLOBALS['egw_info']['flags']['nonavbar']);
+			unset($GLOBALS['egw_info']['flags']['noappheader']);
+			unset($GLOBALS['egw_info']['flags']['noappfooter']);
+			$GLOBALS['egw']->common->egw_header();
 
 			$this->template->set_file(
 				Array(
@@ -87,16 +87,16 @@
 
 			$var = Array(
 				'FORUM_ADMIN'	=> lang('Forums') . ' '	. lang('Admin'),
-				'TB_BG'	=> $GLOBALS['phpgw_info']['theme']['table_bg'],
+				'TB_BG'	=> $GLOBALS['egw_info']['theme']['table_bg'],
 				//TRY TO FIND A	PERFECT	CHOICE
-				// $GLOBALS['phpgw_info']['theme']['bg_color']
+				// $GLOBALS['egw_info']['theme']['bg_color']
 	
-				'TR_BG'		=> $GLOBALS['phpgw_info']['theme']['bg_color'],
-				'CAT_IMG'	=> $GLOBALS['phpgw']->common->image('forum','category'),
-				'FORUM_IMG'	=> $GLOBALS['phpgw']->common->image('forum','forum'),
-				'CAT_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.add_category'),
-				'FOR_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.add_forum'),
-				'MAIN_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'),
+				'TR_BG'		=> $GLOBALS['egw_info']['theme']['bg_color'],
+				'CAT_IMG'	=> $GLOBALS['egw']->common->image('forum','category'),
+				'FORUM_IMG'	=> $GLOBALS['egw']->common->image('forum','forum'),
+				'CAT_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.add_category'),
+				'FOR_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.add_forum'),
+				'MAIN_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index'),
 				'LANG_CAT'	=> lang('New Category'),
 				'LANG_FOR'	=> lang('New Forum'),
 				'LANG_MAIN'	=> lang('Return to Forums'),
@@ -110,7 +110,7 @@
 			$cats = $this->bo->get_all_cat_info();
 
 			$var = Array(
-				'BG6'       => $GLOBALS['phpgw_info']['theme']['bg03'],
+				'BG6'       => $GLOBALS['egw_info']['theme']['bg03'],
 				'LANG_EDIT'	=> lang('Edit'),
 				'LANG_DEL'  => lang('Delete'),
 				'LANG_FORUM'   => lang('Forum'),
@@ -125,13 +125,13 @@
 					$var = Array(
 						'CAT_NAME'  => $cat['name'],
 						'CAT_DESC'  => ($cat['descr']?$cat['descr']:'&nbsp;'),
-						'EDIT_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
+						'EDIT_LINK'	=> $GLOBALS['egw']->link('/index.php',
 								Array(
 									'menuaction'	=> 'forum.uiadmin.edit_category',
 									'cat_id'		=> $cat['id']
 								)
 							),
-						'DEL_LINK'  => $GLOBALS['phpgw']->link('/index.php',
+						'DEL_LINK'  => $GLOBALS['egw']->link('/index.php',
 								Array(
 									'menuaction'	=> 'forum.uiadmin.delete_category',
 									'cat_id'		=> $cat['id']
@@ -141,7 +141,7 @@
 
 					$this->template->set_var($var);
 
-					$GLOBALS['tr_color'] = $GLOBALS['phpgw_info']['theme']['row_off'];
+					$GLOBALS['tr_color'] = $GLOBALS['egw_info']['theme']['row_off'];
 					//Cleaning the ForumB variable because the blocks use more than	once
 					$this->template->set_var('ForumB','');
 
@@ -151,19 +151,19 @@
 					{
 						while(list($key,$forum) = each($forums))
 						{
-							$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color();
+							$GLOBALS['tr_color'] = $GLOBALS['egw']->nextmatchs->alternate_row_color();
 							$var = Array(
 								'TR_BG'        => $GLOBALS['tr_color'],
 								'SUBCAT_NAME'  => $forum['name'],
 								'SUBCAT_DESC'  => ($forum['descr']?$forum['descr']:'&nbsp;'),
-								'SUBEDIT_LINK' => $GLOBALS['phpgw']->link('/index.php',
+								'SUBEDIT_LINK' => $GLOBALS['egw']->link('/index.php',
 										Array(
 											'menuaction'	=> 'forum.uiadmin.edit_forum',
 											'cat_id'	=> $cat['id'],
 											'forum_id'	=> $forum['id']
 										)
 									),
-								'SUBDEL_LINK'  => $GLOBALS['phpgw']->link('/index.php',
+								'SUBDEL_LINK'  => $GLOBALS['egw']->link('/index.php',
 										Array(
 											'menuaction'	=> 'forum.uiadmin.delete_forum',
 											'cat_id'	=> $cat['id'],
@@ -190,12 +190,12 @@
 
 		function edit_category()
 		{
-			$this->category_screen($GLOBALS['HTTP_GET_VARS']['cat_id']);
+			$this->category_screen($_GET['cat_id']);
 		}
 
 		function edit_forum()
 		{
-			$this->forum_screen($GLOBALS['HTTP_GET_VARS']['forum_id']);
+			$this->forum_screen($_GET['forum_id']);
 		}
 
 		function add_category()
@@ -210,11 +210,11 @@
 
 		function delete_category()
 		{
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			unset($GLOBALS['egw_info']['flags']['noheader']);
+			unset($GLOBALS['egw_info']['flags']['nonavbar']);
+			$GLOBALS['egw_info']['flags']['noappheader'] = True;
+			$GLOBALS['egw_info']['flags']['noappfooter'] = True;
+			$GLOBALS['egw']->common->egw_header();
 
 			$this->template->set_file(
 				Array(
@@ -233,10 +233,10 @@
 			$this->template->set_var($var);
 
 			$var = Array(
-				'action_url_button'	=> $GLOBALS['phpgw']->link('/index.php',
+				'action_url_button'	=> $GLOBALS['egw']->link('/index.php',
 						Array(
 							'menuaction'	=> 'forum.boforum.delete_category',
-							'cat_id'	=> $GLOBALS['HTTP_GET_VARS']['cat_id']
+							'cat_id'	=> $_GET['cat_id']
 						)
 					),
 				'action_text_button'	=> lang('Delete'),
@@ -247,7 +247,7 @@
 			$this->template->parse('YES','form_button');
 
 			$var = Array(
-				'action_url_button'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'),
+				'action_url_button'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index'),
 				'action_text_button'	=> lang('Cancel'),
 				'action_confirm_button'	=> '',
 				'action_extra_field'	=> ''
@@ -259,11 +259,11 @@
 
 		function delete_forum()
 		{
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
-			$GLOBALS['phpgw']->common->phpgw_header();
+			unset($GLOBALS['egw_info']['flags']['noheader']);
+			unset($GLOBALS['egw_info']['flags']['nonavbar']);
+			$GLOBALS['egw_info']['flags']['noappheader'] = True;
+			$GLOBALS['egw_info']['flags']['noappfooter'] = True;
+			$GLOBALS['egw']->common->egw_header();
 
 			$this->template->set_file(
 				Array(
@@ -284,11 +284,11 @@
 			$this->template->set_var($var);
 
 			$var = Array(
-				'action_url_button'	=> $GLOBALS['phpgw']->link('/index.php',
+				'action_url_button'	=> $GLOBALS['egw']->link('/index.php',
 						Array(
 							'menuaction'	=> 'forum.boforum.delete_forum',
-							'cat_id'	=> $GLOBALS['HTTP_GET_VARS']['cat_id'],
-							'forum_id'	=> $GLOBALS['HTTP_GET_VARS']['forum_id']
+							'cat_id'	=> $_GET['cat_id'],
+							'forum_id'	=> $_GET['forum_id']
 						)
 					),
 				'action_text_button'	=> lang('Delete'),
@@ -299,7 +299,7 @@
 			$this->template->parse('YES','form_button');
 
 			$var = Array(
-				'action_url_button'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'),
+				'action_url_button'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index'),
 				'action_text_button'	=> lang('Cancel'),
 				'action_confirm_button'	=> '',
 				'action_extra_field'	=> ''
@@ -311,11 +311,11 @@
 
 		function category_screen($cat_id)
 		{
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
-			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-			$GLOBALS['phpgw']->common->phpgw_header();
+			unset($GLOBALS['egw_info']['flags']['noheader']);
+			unset($GLOBALS['egw_info']['flags']['nonavbar']);
+			unset($GLOBALS['egw_info']['flags']['noappheader']);
+			unset($GLOBALS['egw_info']['flags']['noappfooter']);
+			$GLOBALS['egw']->common->egw_header();
 
 			$this->template->set_file(
 				Array(
@@ -325,15 +325,15 @@
 
 			$var = Array(
 				'FORUM_ADMIN' 	=> lang('Forums') . ' ' . lang('Admin'),
-				'TABLEBG'	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+				'TABLEBG'	=> $GLOBALS['egw_info']['theme']['th_bg'],
 				//TRY TO FIND A PERFECT CHOICE
-				'THBG'		=>  $GLOBALS['phpgw_info']['theme']['bg09'],
-				//'TRBG'		=> $GLOBALS['phpgw_info']['theme']['row_off'],
+				'THBG'		=>  $GLOBALS['egw_info']['theme']['bg09'],
+				//'TRBG'		=> $GLOBALS['egw_info']['theme']['row_off'],
 
-				'CAT_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.category'),
-				'FOR_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.forum'),
-				'MAIN_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'),
-				'ADM_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'),
+				'CAT_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.category'),
+				'FOR_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.forum'),
+				'MAIN_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index'),
+				'ADM_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index'),
 				'LANG_ADM_MAIN'	=> lang('Return to Admin'),
 				'LANG_CAT'	=> lang('New Category'),
 				'LANG_FOR'	=> lang('New Forum'),
@@ -344,7 +344,7 @@
 				'LANG_CAT_DESC' => lang('Category Description'),
 				'BELONG_TO'	=> lang('Belongs to Category'),
 				'ACTION'	=> 'addforum',
-				'ACTION_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.boforum.category'),
+				'ACTION_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.boforum.category'),
 				'LANG_ADD_CAT' 	=> lang('Edit Category'),
 				'CAT_ID'	=> $cat_id
 			);
@@ -376,11 +376,11 @@
 
 		function forum_screen($forum_id)
 		{
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
-			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-			$GLOBALS['phpgw']->common->phpgw_header();
+			unset($GLOBALS['egw_info']['flags']['noheader']);
+			unset($GLOBALS['egw_info']['flags']['nonavbar']);
+			unset($GLOBALS['egw_info']['flags']['noappheader']);
+			unset($GLOBALS['egw_info']['flags']['noappfooter']);
+			$GLOBALS['egw']->common->egw_header();
 
 			$this->template->set_file(
 				Array(
@@ -390,15 +390,15 @@
 
 			$var = Array(
 				'FORUM_ADMIN' 	=> lang('Forums') . ' ' . lang('Admin'),
-				'TABLEBG'	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+				'TABLEBG'	=> $GLOBALS['egw_info']['theme']['th_bg'],
 				//TRY TO FIND A PERFECT CHOICE
-				'THBG'		=>  $GLOBALS['phpgw_info']['theme']['bg09'],
-				//'TRBG'		=> $GLOBALS['phpgw_info']['theme']['row_off'],
+				'THBG'		=>  $GLOBALS['egw_info']['theme']['bg09'],
+				//'TRBG'		=> $GLOBALS['egw_info']['theme']['row_off'],
 
-				'CAT_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.category'),
-				'FOR_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.forum'),
-				'MAIN_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'),
-				'ADM_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'),
+				'CAT_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.category'),
+				'FOR_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.forum'),
+				'MAIN_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index'),
+				'ADM_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index'),
 				'LANG_ADM_MAIN'	=> lang('Return to Admin'),
 				'LANG_CAT'	=> lang('New Category'),
 				'LANG_FOR'	=> lang('New Forum'),
@@ -409,7 +409,7 @@
 				'LANG_CAT_DESC' => lang('Category Description'),
 				'BELONG_TO'	=> lang('Belongs to Category'),
 				'ACTION'	=> 'addforum',
-				'ACTION_LINK'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.boforum.forum'),
+				'ACTION_LINK'	=> $GLOBALS['egw']->link('/index.php','menuaction=forum.boforum.forum'),
 				'FORID'	=> $forum_id,
 				'CATID'	=> $this->bo->cat_id
 			);

@@ -23,7 +23,7 @@
 
 		function soforum()
 		{
-			$this->db = $GLOBALS['phpgw']->db;
+			$this->db = $GLOBALS['egw']->db;
 			$this->db->set_app('forum');
 			
 			foreach(array('threads','body','forums','categories') as $name)
@@ -143,7 +143,7 @@
 					'parent'	=> $data['parent'],
 					'cat_id'	=> $data['cat_id'],
 					'for_id'	=> $data['forum_id'],
-					'thread_owner' => $GLOBALS['phpgw_info']['user']['account_id'],
+					'thread_owner' => $GLOBALS['egw_info']['user']['account_id'],
 					'subject'	=> $data['subject'],
 					'stat'		=> 0,
 					'n_replies'	=> 0,
@@ -176,7 +176,7 @@
 					'parent'	=> -1,
 					'cat_id'	=> $data['cat_id'],
 					'for_id'	=> $data['forum_id'],
-					'thread_owner' => $GLOBALS['phpgw_info']['user']['account_id'],
+					'thread_owner' => $GLOBALS['egw_info']['user']['account_id'],
 					'subject'	=> $data['subject'],
 					'stat'		=> 0,
 					'n_replies'	=> 0,
@@ -207,7 +207,7 @@
 
 		function fix_pos($thread,$pos)
 		{
-			$db2 = $GLOBALS['phpgw']->db;
+			$db2 = $GLOBALS['egw']->db;
 			$this->db->select($this->threads_table,'id,pos',array(
 					'thread' => $thread,
 					'pos>='.(int)$pos,
@@ -262,12 +262,12 @@
 			if($forum_id) $where['for_id'] = $forum_id;
 			if($thread_id) $where['thread'] = $thread_id;
 
-			$db2 = $GLOBALS['phpgw']->db;
+			$db2 = $GLOBALS['egw']->db;
 			$db2->select($this->threads_table,'max(postdate),count(id)',$where,__LINE__,__FILE__);
 			$db2->next_record();
 			if($db2->f(0))
 			{
-				$forum['last_post'] = $GLOBALS['phpgw']->common->show_date($db2->from_timestamp($db2->f(0)));
+				$forum['last_post'] = $GLOBALS['egw']->common->show_date($db2->from_timestamp($db2->f(0)));
 			}
 			else
 			{
@@ -320,7 +320,7 @@
 					'replies'	=> $this->db->f('n_replies'),
 					'pos'		=> $this->db->f('pos'),
 					'depth'	=> $this->db->f('depth'),
-					'last_reply'=> ($last_post?$last_post:$GLOBALS['phpgw']->common->show_date($this->db->from_timestamp($this->db->f('postdate'))))
+					'last_reply'=> ($last_post?$last_post:$GLOBALS['egw']->common->show_date($this->db->from_timestamp($this->db->f('postdate'))))
 				);
 
 			}
@@ -329,7 +329,7 @@
 
 		function read_msg($cat_id,$forum_id,$msg_id)
 		{
-			$db2 = $GLOBALS['phpgw']->db;
+			$db2 = $GLOBALS['egw']->db;
 			$db2->select($this->threads_table,'thread',array('id'=>$msg_id),__LINE__,__FILE__);
 			$db2->next_record();
 			$this->db->select($this->threads_table,'*',array(
@@ -353,7 +353,7 @@
 
 				$db2->select($this->body_table,'*',array('id'=>$this->db->f('id')),__LINE__,__FILE__);
 				$db2->next_record();
-				$message = $GLOBALS['phpgw']->strip_html($db2->f('message'));
+				$message = $GLOBALS['egw']->strip_html($db2->f('message'));
 
 				$msg[] = Array(
 					'id'	=> $this->db->f('id'),

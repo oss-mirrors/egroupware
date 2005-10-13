@@ -37,7 +37,7 @@
 
 		function boforum($session=0)
 		{
-			$this->so = CreateObject('forum.soforum');
+			$this->so =& CreateObject('forum.soforum');
 			
 			if($session)
 			{
@@ -55,14 +55,14 @@
 			for($i=0;$i<count($var);$i++)
 			{
 				$var_str = $var[$i];
-//				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?intval($GLOBALS['HTTP_GET_VARS'][$var_str]):$this->$var_str);
-//				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?intval($GLOBALS['HTTP_POST_VARS'][$var_str]):$this->$var_str);
-				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?$GLOBALS['HTTP_GET_VARS'][$var_str]:$this->$var_str);
-				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?$GLOBALS['HTTP_POST_VARS'][$var_str]:$this->$var_str);
+//				$this->$var_str = (@isset($_GET[$var_str])?intval($_GET[$var_str]):$this->$var_str);
+//				$this->$var_str = (@isset($_POST[$var_str])?intval($_POST[$var_str]):$this->$var_str);
+				$this->$var_str = (@isset($_GET[$var_str])?$_GET[$var_str]:$this->$var_str);
+				$this->$var_str = (@isset($_POST[$var_str])?$_POST[$var_str]:$this->$var_str);
 			}
 			if(!@isset($this->view))
 			{
-				$this->view = $GLOBALS['phpgw_info']['user']['preferences']['forum']['default_view'];
+				$this->view = $GLOBALS['egw_info']['user']['preferences']['forum']['default_view'];
 			}
 		}
 
@@ -71,13 +71,13 @@
 			if ($this->use_session)
 			{
 				if($this->debug) { echo '<br>Save:'; _debug_array($data); }
-				$GLOBALS['phpgw']->session->appsession('session_data','forum',$data);
+				$GLOBALS['egw']->session->appsession('session_data','forum',$data);
 			}
 		}
 
 		function read_sessiondata()
 		{
-			$data = $GLOBALS['phpgw']->session->appsession('session_data','forum');
+			$data = $GLOBALS['egw']->session->appsession('session_data','forum');
 			if($this->debug) { echo '<br>Read:'; _debug_array($data); }
 
 			$this->view     = $data['view'];
@@ -88,25 +88,25 @@
 		
 		function post()
 		{
-			if ($GLOBALS['HTTP_POST_VARS']['action'] == 'post')
+			if ($_POST['action'] == 'post')
 			{
 				$data = Array(
-					'cat_id'	=> $GLOBALS['HTTP_POST_VARS']['cat_id'],
-					'forum_id'	=> $GLOBALS['HTTP_POST_VARS']['forum_id'],
-					'postdate'	=> time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
-					'subject'	=> $GLOBALS['HTTP_POST_VARS']['subject'],
-					'message'	=> $GLOBALS['HTTP_POST_VARS']['message']
+					'cat_id'	=> $_POST['cat_id'],
+					'forum_id'	=> $_POST['forum_id'],
+					'postdate'	=> time() - ((60 * 60) * intval($GLOBALS['egw_info']['user']['preferences']['common']['tz_offset'])),
+					'subject'	=> $_POST['subject'],
+					'message'	=> $_POST['message']
 				);
 
 				$this->so->add_post($data);
 			}
-			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.threads'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.threads'));
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
 		function reply()
 		{
-			if ($GLOBALS['HTTP_POST_VARS']['action'] == 'reply')
+			if ($_POST['action'] == 'reply')
 			{
 				$stat = 0;
 
@@ -114,79 +114,79 @@
 
 				$next_f_threads_id = $this->so->get_max_thread_id() + 1;
 
-				if ($GLOBALS['HTTP_POST_VARS']['pos'] != 0)
+				if ($_POST['pos'] != 0)
 				{
-					$this->so->fix_pos($GLOBALS['HTTP_POST_VARS']['thread'],$GLOBALS['HTTP_POST_VARS']['pos']);
+					$this->so->fix_pos($_POST['thread'],$_POST['pos']);
 				}
 				else
 				{
-					$GLOBALS['HTTP_POST_VARS']['pos'] = 1;
+					$_POST['pos'] = 1;
 				}
 
 				$data = Array(
-					'pos' => $GLOBALS['HTTP_POST_VARS']['pos'],
-					'thread'	=> $GLOBALS['HTTP_POST_VARS']['thread'],
-					'depth'	=> $GLOBALS['HTTP_POST_VARS']['depth'],
-					'postdate'	=> time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
-					'parent'	=> $GLOBALS['HTTP_POST_VARS']['msg'],
-					'cat_id'	=> $GLOBALS['HTTP_POST_VARS']['cat_id'],
-					'forum_id'	=> $GLOBALS['HTTP_POST_VARS']['forum_id'],
-					'subject'	=> $GLOBALS['HTTP_POST_VARS']['subject'],
-					'message'	=> $GLOBALS['HTTP_POST_VARS']['message']
+					'pos' => $_POST['pos'],
+					'thread'	=> $_POST['thread'],
+					'depth'	=> $_POST['depth'],
+					'postdate'	=> time() - ((60 * 60) * intval($GLOBALS['egw_info']['user']['preferences']['common']['tz_offset'])),
+					'parent'	=> $_POST['msg'],
+					'cat_id'	=> $_POST['cat_id'],
+					'forum_id'	=> $_POST['forum_id'],
+					'subject'	=> $_POST['subject'],
+					'message'	=> $_POST['message']
 				);
 
 				$this->so->add_reply($data);
 			}
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.threads'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.threads'));
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
 		function delete_category()
 		{
-			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			if(!$GLOBALS['egw_info']['user']['apps']['admin'])
 			{
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['egw']->common->egw_exit();
 			}
 			$this->so->delete_category($this->cat_id);
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index'));
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
 		function delete_forum()
 		{
-			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			if(!$GLOBALS['egw_info']['user']['apps']['admin'])
 			{
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['egw']->common->egw_exit();
 			}
 			$this->so->delete_forum($this->cat_id,$this->forum_id);
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index'));
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
 		function category()
 		{
-			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			if(!$GLOBALS['egw_info']['user']['apps']['admin'])
 			{
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['egw']->common->egw_exit();
 			}
-			$this->so->save_category($GLOBALS['HTTP_POST_VARS']['cat']);
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$this->so->save_category($_POST['cat']);
+			Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index'));
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
 		function forum()
 		{
-			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			if(!$GLOBALS['egw_info']['user']['apps']['admin'])
 			{
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['egw']->common->egw_exit();
 			}
-			$this->so->save_forum($GLOBALS['HTTP_POST_VARS']['forum']);
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
+			$this->so->save_forum($_POST['forum']);
+			Header('Location: '.$GLOBALS['egw']->link('/index.php','menuaction=forum.uiadmin.index'));
+			$GLOBALS['egw']->common->egw_exit();
 		}
 
 		function get_all_cat_info()

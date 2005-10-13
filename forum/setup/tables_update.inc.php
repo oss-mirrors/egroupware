@@ -14,12 +14,12 @@
 	$test[] = '0.9.13';
 	function forum_upgrade0_9_13()
 	{
-		global $setup_info, $phpgw_setup;
+		global $setup_info;
 
-		$phpgw_setup->oProc->RenameTable('f_body','phpgw_forum_body');
-		$phpgw_setup->oProc->RenameTable('f_categories','phpgw_forum_categories');
-		$phpgw_setup->oProc->RenameTable('f_forums','phpgw_forum_forums');
-		$phpgw_setup->oProc->RenameTable('f_threads','phpgw_forum_threads');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('f_body','phpgw_forum_body');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('f_categories','phpgw_forum_categories');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('f_forums','phpgw_forum_forums');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('f_threads','phpgw_forum_threads');
 
 		$setup_info['forum']['currentver'] = '0.9.13.001';
 		return $setup_info['forum']['currentver'];

@@ -12,19 +12,15 @@
 
 	/* $Id$ */
 
-	$phpgw_flags = Array(
-		'currentapp'	=>	'forum',
-		'noheader'	=>	True,
-		'nonavbar'	=>	True,
-		'noappheader'	=>	True,
-		'noappfooter'	=>	True,
-		'nofooter'	=>	True
-	);
-
-	$GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
-	
+	$GLOBALS['egw_info'] = array(
+		'flags' => array(
+			'currentapp'	=>	'forum',
+			'noheader'	=>	True,
+			'nonavbar'	=>	True,
+			'noappheader'	=>	True,
+			'noappfooter'	=>	True,
+			'nofooter'	=>	True
+	));
 	include('../header.inc.php');
 
-	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
-	$GLOBALS['phpgw']->common->phpgw_exit();
-?>
+	$GLOBALS['egw']->redirect_link('/index.php','menuaction=forum.uiforum.index');
