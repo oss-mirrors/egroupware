@@ -198,7 +198,7 @@
 				'wf_user'		=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
 				'wf_status'		=> array('type' => 'varchar', 'precision' => '25', 'nullable' => True),
 			),
-			'pk' => array(array('wf_instance_id', 'wf_activity_id'),
+			'pk' => array('wf_instance_id', 'wf_activity_id'),
 			'fk' => array(),
 			'ix' => array(array('wf_activity_id'),array('wf_instance_id'), array('wf_user')),
 			'uc' => array()
