@@ -318,6 +318,18 @@
 		{
 			$this->t->set_block('history_tpl', 'block_history_line', 'history_line');
 			$view = $GLOBALS['phpgw']->common->image('workflow', 'view');
+			
+			// access granted to the view workitem function?
+			// need access to the monitor screens. Workitems contains the whole properties for example
+			$access_granted = true;
+			if(!$GLOBALS['phpgw']->acl->check('run',1,'admin'))
+			{
+				if(!$GLOBALS['phpgw']->acl->check('monitor_workflow',1,'workflow'))
+				{
+					$access_granted = false;
+				}
+			}
+			//fill rows
 			foreach ($works as $work)
 			{
 				if ($work['wf_user']=='*')
@@ -329,14 +341,23 @@
 				{
 					$GLOBALS['phpgw']->accounts->get_account_name($work['wf_user'],$lid,$fname,$lname);
 				}
+
+				if ($access_granted)
+				{
+					$address = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='.$work['wf_item_id']);
+					$history_link = '<a href="'.$address.'"><img src="'.$view.'" alt="'.lang('Details').'" /></a>';
+				}
+				else
+				{
+					$history_link = '&nbsp;';
+				}
 				$this->t->set_var(array(
 					'act_icon'		=> $this->act_icon($work['wf_type'],$work['wf_is_interactive']),
 					'history_activity'	=> $work['wf_name'],
 					'history_started'	=> $GLOBALS['phpgw']->common->show_date($work['wf_started']),
 					'history_duration'	=> $this->time_diff($work['wf_ended']-$work['wf_started']),
 					'history_user'		=> $fname.' '.$lname,
-					'wi_view'		=> $view,
-					'wi_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='.$work['wf_item_id']),
+					'history_link'		=> $history_link,
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color, true),
 				));
 				

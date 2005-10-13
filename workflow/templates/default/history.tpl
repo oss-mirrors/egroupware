@@ -17,7 +17,7 @@
 		<td>{history_started}</td>
 		<td>{history_duration}</td>
 		<td>{history_user}</td>
-		<td><a href="{wi_href}"><img src="{wi_view}" alt="{lang_Details}" /></a></td>
+		<td>{history_link}</td>
 	</tr>
 	<!-- END block_history_line -->
 </table>
