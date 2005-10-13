@@ -2,7 +2,7 @@
 (only cc/bcc)	felamimail	es-es	(sólo Cc/Cco)
 (unknown sender)	felamimail	es-es	(remitente desconocido)
 activate	felamimail	es-es	Activar
-activate script	felamimail	es-es	sctivar script
+activate script	felamimail	es-es	activar script
 add	felamimail	es-es	añadir
 add address	felamimail	es-es	Añadir dirección
 add rule	felamimail	es-es	Añadir regla
@@ -17,6 +17,7 @@ after message body	felamimail	es-es	Después del cuerpo del mensaje
 all address books	felamimail	es-es	Todas las libretas de direcciones
 all folders	felamimail	es-es	Todas las carpetas
 all of	felamimail	es-es	todos los
+allways a new window	felamimail	es-es	siempre una ventana nueva
 always show html emails	felamimail	es-es	Mostrar siempre los correos HTML
 any of	felamimail	es-es	cualquiera de
 anyone	felamimail	es-es	cualquiera
@@ -26,12 +27,12 @@ auto refresh folder list	felamimail	es-es	Refrescar automáticamente la lista de 
 back to folder	felamimail	es-es	Volver a la carpeta
 bad reque	felamimail	es-es	Petición errónea
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	es-es	Basado en los criterios dados, los mensajes que lleguen pueden tener distintos colores de fondo en la lista de mensajes. Esto ayuda a distinguir fácilmente de quién son los mensajes, espcialmente para listas de correo.
-bcc	felamimail	es-es	Cco
+bcc	felamimail	es-es	CCO
 before headers	felamimail	es-es	Antes de las cabeceras
 between headers and message body	felamimail	es-es	Entre las cabeceras y el cuerpo del mensaje
 body part	felamimail	es-es	Parte del cuerpo
 can't connect to inbox!!	felamimail	es-es	¡¡No se puede leer la Bandeja de entrada!!
-cc	felamimail	es-es	Cc
+cc	felamimail	es-es	CC
 change folder	felamimail	es-es	Cambiar carpeta
 check message against next rule also	felamimail	es-es	comprobar el mensaje también con la regla siguiente
 checkbox	felamimail	es-es	Casilla
@@ -47,9 +48,9 @@ configuration	felamimail	es-es	Configuración
 contains	felamimail	es-es	contiene
 create	felamimail	es-es	Crear
 create folder	felamimail	es-es	Crear carpeta
-create sent	felamimail	es-es	Crear carpeta de enviados
+create sent	felamimail	es-es	Crear carpeta Enviados
 create subfolder	felamimail	es-es	Crear subcarpeta
-create trash	felamimail	es-es	Crear Papelera
+create trash	felamimail	es-es	Crear carpeta Papelera
 created folder successfully!	felamimail	es-es	La carpeta se ha creado correctamente
 dark blue	felamimail	es-es	Azul oscuro
 dark cyan	felamimail	es-es	Cyan oscuro
@@ -105,7 +106,7 @@ email address	felamimail	es-es	Dirección de correo electrónico
 email signature	felamimail	es-es	Firma de correo
 empty trash	felamimail	es-es	Vaciar papelera
 enable	felamimail	es-es	Habilitar
-enter your default mail domain ( from: user@domain )	admin	es-es	Introduzca su dominio de correo predeterminado (de usuario@dominio)
+enter your default mail domain ( from: user@domain )	admin	es-es	Introduzca su dominio de correo predeterminado (From: usuario@dominio)
 enter your imap mail server hostname or ip address	admin	es-es	Introduzca el nombre del servidor de correo IMAP o la dirección IP
 enter your sieve server hostname or ip address	admin	es-es	Introduzca el nombre del servidor SIEVE o la dirección IP
 enter your sieve server port	admin	es-es	Introduzca el puerto del servidor SIEVE
@@ -174,7 +175,7 @@ imaps encryption only	felamimail	es-es	Cifrado IMAPS solamente
 in	felamimail	es-es	en
 in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	es-es	Para que SquirrelMail proporcione todas las opciones necesita crear las carpetas especiales que se indican debajo. Simplemente marque la casilla pulse el botón de crear.
 in the center	felamimail	es-es	en el centro
-index order	felamimail	es-es	Orden del índica
+index order	felamimail	es-es	Orden del índice
 info	felamimail	es-es	Información
 invalid user name or password	felamimail	es-es	El usuario o la contraseña no son válidos
 javascript	felamimail	es-es	JavaScript
@@ -198,6 +199,7 @@ location of folder list	felamimail	es-es	Ubicación de la lista de carpetas
 mail server login type	admin	es-es	Tipo de sesión del servidor de correo
 mail settings	felamimail	es-es	Configuración del correo
 mainmessage	felamimail	es-es	mensaje principal
+manage emailfilter / vacation	preferences	es-es	Administrar filtros de correo / Vacaciones
 manage folders	common	es-es	Administrar carpetas
 manage sieve	common	es-es	Administrar scripts Sieve
 mark as deleted	felamimail	es-es	Marcar como borrado
@@ -222,6 +224,7 @@ move	felamimail	es-es	mover
 move messages	felamimail	es-es	mover mensajes
 move selected to	felamimail	es-es	mover los seleccionados a
 move to trash	felamimail	es-es	Mover a la papelera
+moving messages to	felamimail	es-es	mover mensajes a
 must be unique	felamimail	es-es	Debe ser único
 name	felamimail	es-es	Nombre
 never display html emails	felamimail	es-es	Nunca mostar los correos en HTML
@@ -235,6 +238,7 @@ no folders found	felamimail	es-es	No se encontraron carpetas
 no folders were found to subscribe to!	felamimail	es-es	No se encontraron carpetas a las que suscribirse
 no folders were found to unsubscribe from!	felamimail	es-es	No se encontraron carpetas de las que desuscribirse
 no highlighting is defined	felamimail	es-es	No se definió un resaltado
+no messages found...	felamimail	es-es	no se encontraron mensajes...
 no messages were selected.	felamimail	es-es	No se seleccionaron mensajes
 no next message	felamimail	es-es	No hay mensaje siguiente
 no notification	felamimail	es-es	Sin notificación
@@ -247,6 +251,7 @@ number of messages to index	felamimail	es-es	Número de mensajes a indexar
 on behalf of	felamimail	es-es	en nombre de
 one address is not valid	felamimail	es-es	Una dirección no es válida
 only inbox	felamimail	es-es	Sólo la Bandeja de entrada
+only one window	felamimail	es-es	sólo una ventana
 only unseen	felamimail	es-es	Sólo los no vistos
 open all	felamimail	es-es	abrir todas
 options	felamimail	es-es	Opciones

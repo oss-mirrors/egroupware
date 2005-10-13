@@ -32,12 +32,12 @@ message_id in english	developer_tools	es-es	id del mensaje en inglés
 no file	developer_tools	es-es	sin fichero
 ok	developer_tools	es-es	Aceptar
 original	developer_tools	es-es	Original
-phrase in english	developer_tools	es-es	Frase en inglés
 phrase in english (or empty if identical)	developer_tools	es-es	Frase en inglés (o en blanco si son idénticas)
 preferences	developer_tools	es-es	Preferencias
 preferences have been updated	developer_tools	es-es	Se han actualizado las preferencias
 project	developer_tools	es-es	Proyecto
 remove	developer_tools	es-es	Borrar
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	es-es	Se han borrado %1 frases del idioma de destino, ya que ya no están presentes en el idioma de origen
 returns to the application list, not saved changes get lost !!!	developer_tools	es-es	Vuelve a la lista de aplicaciones. Se perderán los cambios que se hayan guardado.
 revert	developer_tools	es-es	Volver
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	es-es	Guarda las traducciones añadidas o modificadas a un búfer interno, para usar en los pasos siguientes

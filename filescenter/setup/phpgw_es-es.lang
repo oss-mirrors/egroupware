@@ -18,7 +18,7 @@ are you sure you want to delete '"+filename+"'?	filescenter	es-es	¿Está seguro d
 are you sure you want to delete _filename_?	filescenter	es-es	¿Seguro que desea borrar _filename_?
 are you sure you want to delete all these "+count+" items?	filescenter	es-es	¿Está seguro de que desea borrar todos estos elementos "+count+"?
 are you sure you want to delete all these _count_ items?	filescenter	es-es	¿Está seguro de que desea borrar todos estos elementos _count_?
-are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	es-es	¿Está seguro? También puede desativar este campo, de forma que puede recuperara la información más tarde. ¿Realmente desea borrar? (no se puede deshacer esta acción)
+are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	es-es	¿Está seguro? También puede desativar este campo, de forma que puede recuperar la información más tarde. ¿Realmente desea borrar? (no se puede deshacer esta acción)
 authorized groups	filescenter	es-es	Grupos autorizados
 authorized users	filescenter	es-es	Usuarios autorizados
 backup	filescenter	es-es	Copia de seguridad
@@ -50,7 +50,7 @@ created directory %1	filescenter	es-es	Creado directorio %1
 creates a directory.	filescenter	es-es	Crea un directorio.
 custom file properties	filescenter	es-es	Propiedades de fichero personalizadas
 decompress	filescenter	es-es	Descomprimir
-default number of upload fields to show	filescenter	es-es	Número predeterminado de ficheros de subida para mostrar
+default number of upload fields to show	filescenter	es-es	Número predeterminado de campos de subida para mostrar
 delete this file type	filescenter	es-es	Borrar este tipo de fichero
 delete unsuccessful. selected files could not be deleted.	filescenter	es-es	Borrado incorrecto. No se pudieron borrar los ficheros seleccionados.
 deleted	filescenter	es-es	Borrado
@@ -58,7 +58,7 @@ deleted %1	filescenter	es-es	Borrado %1
 deletes a file or set of files.	filescenter	es-es	Borra un fichero o conjunto de ficheros.
 destination	filescenter	es-es	Destino
 directory %1 already exists	filescenter	es-es	El directorio %1 ya existe
-directory names cannot contain "%1"	filescenter	es-es	Los nombres de directorios no pueden contener "%1"
+directory names cannot contain "%1"	filescenter	es-es	Los nombres de directorio no pueden contener "%1"
 display attributes	filescenter	es-es	Mostrar atributos
 do you really want to delete the custom field	filescenter	es-es	¿Realmente desea borrar el campo personalizado?
 edit custom file property	filescenter	es-es	Editar propiedad personalizada de fichero
@@ -106,6 +106,7 @@ manage file types	filescenter	es-es	Gestionar tipos de fichero
 management permissions	admin	es-es	Gestión de permisos
 maximum filesize upload: %1	filescenter	es-es	Tamaño máximo para subir: %1
 maximum number of backups	filescenter	es-es	Número máximo de copias de seguridad
+mime magic	filescenter	es-es	Mime Magic
 mime type	filescenter	es-es	Tipo mime
 modificator	filescenter	es-es	Modificador
 modified	filescenter	es-es	Modificado
@@ -149,7 +150,7 @@ subscribe	filescenter	es-es	Suscribirse
 subscribe some files	filescenter	es-es	Suscribir algunos ficheros
 subscribed successfully	filescenter	es-es	Suscripción correcta
 subscriptions	filescenter	es-es	Suscripciones
-the future filemanager, now for testing purposes only, please send bugreports	filescenter	es-es	El futuro administrador de ficheros, SOLO PARA PRUEBAS. Por favor, enviar informes sobre fallos
+the future filemanager, now for testing purposes only, please send bugreports	filescenter	es-es	El futuro administrador de ficheros, ahora SOLO PARA PRUEBAS. Por favor, enviar informes sobre fallos
 the maximum number of backups that will be stored in the file version system. oldest backups are deleted first. use -1 to store unlimited backups.	filescenter	es-es	El número máximo de copias de seguridad que se guardarán en el sistema de versión de ficheros. Las copias de seguridad antiguas se borran antes. Use -1 para guardar copias de seguridad sin límite.
 the temporary directory could not be deleted.	filescenter	es-es	No se pudo borrar el directorio temporal.
 there was a problem while trying to access/create the base infrastructure of filescenter directories.<br>	filescenter	es-es	Hubo un problema al intentar acceder o crear la infraestructura base de los directorios del centro de ficheros.<br>
