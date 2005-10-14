@@ -13,16 +13,17 @@
 
 	/* $Id$ */
 
-	$GLOBALS['egw_info'] = array();
-	$GLOBALS['egw_info']['flags'] = array(
-		'currentapp'              => 'polls',
-		'noheader'                => True,
-		'nonavbar'                => True,
-		'enable_nextmatchs_class' => True
+	$GLOBALS['egw_info'] = array(
+		'flags' => array(
+			'currentapp'              => 'polls',
+			'noheader'                => True,
+			'nonavbar'                => True,
+			'enable_nextmatchs_class' => True,
+		),
 	);
 	include('../header.inc.php');
 
 	ExecMethod('polls.ui.index');
 
-	$GLOBALS['egw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->egw_footer();
 ?>

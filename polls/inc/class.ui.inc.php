@@ -1,15 +1,15 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - Polls                                                       *
-  * http://www.egroupware.org                                                *
-  * Copyright (c) 1999 Till Gerken (tig@skv.org)                             *
-  * Modified by Greg Haygood (shrykedude@bellsouth.net)                      *
-  * -----------------------------------------------                          *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* eGroupWare - Polls                                                       *
+	* http://www.egroupware.org                                                *
+	* Copyright (c) 1999 Till Gerken (tig@skv.org)                             *
+	* Modified by Greg Haygood (shrykedude@bellsouth.net)                      *
+	* -----------------------------------------------                          *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
 	/* $Id$ */
 
@@ -31,14 +31,14 @@
 
 		function ui()
 		{
-			$this->t = $GLOBALS["phpgw"]->template;
-			$this->bo = createobject('polls.bo',true);
-			$this->nextmatchs = createobject('phpgwapi.nextmatchs');
+			$this->t = $GLOBALS['egw']->template;
+			$this->bo =& CreateObject('polls.bo',true);
+			$this->nextmatchs =& CreateObject('phpgwapi.nextmatchs');
 		}
 
 		function index()
 		{
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$currentpoll = $GLOBALS['poll_settings']['currentpoll'];
@@ -74,7 +74,7 @@
 						'show_results' => $poll_id
 					)
 				);
-				$GLOBALS['egw']->common->phpgw_exit();
+				$GLOBALS['egw']->common->egw_exit();
 				return 0;
 			}
 			$showpoll = $_GET['show_results'];
@@ -82,10 +82,10 @@
 			{
 				$showpoll = $GLOBALS['poll_settings']['currentpoll'];
 			}
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 			$this->view_results($showpoll);
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function admin()
@@ -106,7 +106,7 @@
 				{
 					$GLOBALS['egw']->redirect_link('/index.php',array('menuaction'=>'polls.ui.vote'));
 				}
-				$GLOBALS['egw']->common->phpgw_exit();
+				$GLOBALS['egw']->common->egw_exit();
 				return 0;
 			}
 			if(isset($_POST['delete']) && $action == 'edit')
@@ -179,7 +179,7 @@
 		function addanswer()
 		{
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add Answer to poll');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -254,7 +254,7 @@
 		function addquestion()
 		{
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add new poll question');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -304,7 +304,7 @@
 			else
 			{
 				$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('delete') . ' ' . lang('answer');
-				$GLOBALS['egw']->common->phpgw_header();
+				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
 
 				$poll_data = $this->bo->get_poll_data($poll_id,$vote_id);
@@ -344,7 +344,7 @@
 			else
 			{
 				$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('delete') . ' ' . lang('Poll Question');
-				$GLOBALS['egw']->common->phpgw_header();
+				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
 
 				$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -372,7 +372,7 @@
 		function editanswer()
 		{
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Edit answer');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -414,13 +414,13 @@
 			$this->add_template_row(lang('Answer'),'<input name="answer" value="' . $answer_value . '">');
 
 			$this->t->pparse('out','form');
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function editquestion()
 		{
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Edit poll question');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -505,7 +505,7 @@
 		function settings()
 		{
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Settings');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_settings.tpl'));
@@ -541,7 +541,7 @@
 			$poll_id = (int)$_GET['poll_id'];
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.lang('View poll');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
@@ -589,12 +589,12 @@
 			else
 			{
 				$GLOBALS['egw']->redirect_link('/polls/index.php');
-				$GLOBALS['egw']->common->phpgw_exit(True);
+				$GLOBALS['egw']->common->egw_exit(True);
 				return 0;
 			}
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Polls').' - '.$pagetitle;
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->bo->sort  = $_GET['sort'] ? $_GET['sort'] : 'ASC';
@@ -697,7 +697,7 @@
 
 			$this->t->pparse('out','form');
 
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function view_results($poll_id,$showtitle=true,$showtotal=true,$returnstring=false)
