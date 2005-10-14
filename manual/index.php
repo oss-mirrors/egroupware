@@ -12,14 +12,15 @@
 
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp' => 'manual',
-		'nonavbar'   => True,
-		'noheader'   => True,
+	$GLOBALS['egw_info'] = array(
+		'flags' => array(
+			'currentapp' => 'manual',
+			'nonavbar'   => True,
+			'noheader'   => True,
+		),
 	);
 	include('../header.inc.php');
 
 	ExecMethod('manual.uimanual.view');
 
-	$GLOBALS['phpgw']->common->phpgw_footer();
-?>
+	$GLOBALS['egw']->common->egw_footer();

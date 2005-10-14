@@ -12,7 +12,7 @@
 
 	/* $Id$ */
 
-	include_once(PHPGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
+	include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
 
 	class uimanual extends bowiki
 	{
@@ -22,13 +22,13 @@
 
 		function uimanual()
 		{
-			$this->config = CreateObject('phpgwapi.config','manual');
+			$this->config =& CreateObject('phpgwapi.config','manual');
 			$this->config->read_repository();
 			$this->wiki_id = (int) (isset($this->config->config_data['manual_wiki_id']) ? $this->config->config_data['manual_wiki_id'] : 1);
 
 			$this->bowiki($this->wiki_id);
 
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 		}
 
 		function viewURL($page, $lang='', $version='', $full = '')
@@ -39,7 +39,7 @@
 			if ($lang || @$page['lang'])
 			{
 				$args['lang'] = $lang ? $lang : @$page['lang'];
-				if ($args['lang'] == $GLOBALS['phpgw_info']['user']['prefereces']['common']['lang']) unset($args['lang']);
+				if ($args['lang'] == $GLOBALS['egw_info']['user']['prefereces']['common']['lang']) unset($args['lang']);
 			}
 			if ($version)
 			{
@@ -50,7 +50,7 @@
 				$args['full'] = 1;
 			}
 			// the page-parameter has to be the last one, as the old wiki code only calls it once with empty page and appends the pages later
-			return $GLOBALS['phpgw']->link('/index.php',$args).'&page='.urlencode(is_array($page) ? $page['name'] : $page);
+			return $GLOBALS['egw']->link('/index.php',$args).'&page='.urlencode(is_array($page) ? $page['name'] : $page);
 		}
 		
 		function editURL()
@@ -89,9 +89,9 @@
 				}
 				else
 				{
-					if ($GLOBALS['phpgw_info']['server']['webserver_url'] != '/')
+					if ($GLOBALS['egw_info']['server']['webserver_url'] != '/')
 					{
-						list(,$referer) = explode($GLOBALS['phpgw_info']['server']['webserver_url'],$referer,2);
+						list(,$referer) = explode($GLOBALS['egw_info']['server']['webserver_url'],$referer,2);
 					}
 					else
 					{

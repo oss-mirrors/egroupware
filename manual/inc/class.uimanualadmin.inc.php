@@ -12,7 +12,7 @@
 
 	/* $Id$ */
 
-	include_once(PHPGW_INCLUDE_ROOT.'/wiki/inc/class.xmlwiki.inc.php');
+	include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.xmlwiki.inc.php');
 
 	class uimanualadmin extends xmlwiki
 	{
@@ -22,7 +22,7 @@
 
 		function uimanualadmin()
 		{
-			$this->config = CreateObject('phpgwapi.config','manual');
+			$this->config =& CreateObject('phpgwapi.config','manual');
 			$this->config->read_repository();
 			
 			foreach(array(
@@ -50,7 +50,7 @@
 			$from = explode('/',$url);
 			$from = count($from) > 2 ? $from[2] : $url;
 
-			$langs = implode(',',array_keys($GLOBALS['phpgw']->translation->get_installed_langs()));
+			$langs = implode(',',array_keys($GLOBALS['egw']->translation->get_installed_langs()));
 			if ($langs)
 			{
 				$url .= (strstr($url,'?') === False ? '?' : '&').'lang='.$langs;
@@ -61,8 +61,8 @@
 				$url .= (strstr($url,'?') === False ? '?' : '&').'modified='.(int) $this->config->config_data['manual_updated'];
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('manual').' - '.lang('download');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = lang('manual').' - '.lang('download');
+			$GLOBALS['egw']->common->egw_header();
 			parse_navbar();
 			echo str_pad('<h3>'.lang('Starting import from %1, this might take several minutes (specialy if you start it the first time) ...',
 				'<a href="'.$url.'" target="_blank">'.$from.'</a>')."</h3>\n",4096);	// dirty hack to flushes the buffer;
@@ -76,14 +76,14 @@
 
 			echo '<h3>'.lang('%1 manual page(s) added or updated',count($status['imported']))."</h3>\n";
 
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function menu($args)
 		{
 			display_section('manual','manual',array(
-//				'Site Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=manual'),
-				'install or update the manual-pages' => $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'manual.uimanualadmin.import')),
+//				'Site Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=admin.uiconfig.index&appname=manual'),
+				'install or update the manual-pages' => $GLOBALS['egw']->link('/index.php',array('menuaction'=>'manual.uimanualadmin.import')),
 			));
 		}
 	}
