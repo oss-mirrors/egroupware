@@ -23,7 +23,7 @@
 	 */
 	function wiki_check_anon_access(&$anon_account)
 	{
-		$c = CreateObject('phpgwapi.config','wiki');
+		$c =& CreateObject('phpgwapi.config','wiki');
 		$c->read_repository();
 		$config =& $c->config_data;
 		unset($c);
@@ -52,7 +52,7 @@
 	);
 	include('../header.inc.php');
 
-	$c = CreateObject('phpgwapi.config','wiki');
+	$c =& CreateObject('phpgwapi.config','wiki');
 	$c->read_repository();
 	$config = $c->config_data;
 	unset($c);

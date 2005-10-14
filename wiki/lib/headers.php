@@ -12,10 +12,10 @@ function gen_headers($timestamp)
 //                 substr($timestamp, 12, 2), substr($timestamp, 4, 2),
 //                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4));
 //  $mod = gmdate("D, d M Y H:i:s", $time);
-  $now = gmdate("D, d M Y H:i:s");
+	$now = gmdate("D, d M Y H:i:s");
 
-  #header("Expires: $now GMT");
-  #header("Last-Modified: $now GMT");
+	#header("Expires: $now GMT");
+	#header("Last-Modified: $now GMT");
 //  header("Cache-Control: no-cache, must-revalidate");
 //  header("Pragma: no-cache");
 }

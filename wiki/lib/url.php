@@ -3,29 +3,29 @@
 
 // Under phpgw these URL's are NOT configurable, you can set the phpgw install-path in setup
 
-$ScriptBase = $GLOBALS['phpgw']->link('/wiki/index.php');
+$ScriptBase = $GLOBALS['egw']->link('/wiki/index.php');
 $ScriptBase .= strstr($ScriptBase,'?') ? '&' : '?';
 
 $AdminScript = $ScriptBase . 'action=admin';
 
 //if(!isset($ViewBase))
-  { $ViewBase    = $ScriptBase . 'page='; }
+	{ $ViewBase    = $ScriptBase . 'page='; }
 //if(!isset($EditBase))
-  { $EditBase    = $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.edit')).'&page='; }
+	{ $EditBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.edit')).'&page='; }
 //if(!isset($HistoryBase))
-  { $HistoryBase = $ScriptBase . 'action=history&page='; }
+	{ $HistoryBase = $ScriptBase . 'action=history&page='; }
 //if(!isset($FindScript))
-  { $FindScript  = $ScriptBase . 'action=find'; }
+	{ $FindScript  = $ScriptBase . 'action=find'; }
 //if(!isset($FindBase))
-  { $FindBase    = $FindScript . '&find='; }
+	{ $FindBase    = $FindScript . '&find='; }
 //if(!isset($SaveBase))
-  { $SaveBase    = $ScriptBase . 'action=save&page='; }
+	{ $SaveBase    = $ScriptBase . 'action=save&page='; }
 //if(!isset($DiffScript))
-  { $DiffScript  = $ScriptBase . 'action=diff'; }
+	{ $DiffScript  = $ScriptBase . 'action=diff'; }
 //if(!isset($PrefsScript))
-  { $PrefsScript = $ScriptBase . 'action=prefs'; }
+	{ $PrefsScript = $ScriptBase . 'action=prefs'; }
 //if(!isset($StyleScript))
-  { $StyleScript = $ScriptBase . 'action=style'; }
+	{ $StyleScript = $ScriptBase . 'action=style'; }
 
 if(!function_exists('viewURL'))
 {
@@ -35,7 +35,7 @@ if(!function_exists('viewURL'))
 
 		if (is_array($page))
 		{
-			$lang = @$page['lang'] && $page['lang'] != $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'] ? '&lang='.$page['lang'] : '';
+			$lang = @$page['lang'] && $page['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'] ? '&lang='.$page['lang'] : '';
 			$page = $page['name'];
 		}
 		return $ViewBase . urlencode($page) . @$lang .
@@ -52,7 +52,7 @@ if(!function_exists('editURL'))
 
 		if (is_array($page))
 		{
-			$lang = @$page['lang'] && $page['lang'] != $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'] ? '&lang='.$page['lang'] : '';
+			$lang = @$page['lang'] && $page['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'] ? '&lang='.$page['lang'] : '';
 			$page = $page['name'];
 		}
 		return $EditBase . urlencode($page) . @$lang .

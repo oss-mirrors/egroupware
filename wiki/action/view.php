@@ -10,21 +10,21 @@ require('lib/headers.php');
 // Parse and display a page.
 function action_view()
 {
-  global $page, $pagestore, $ParseEngine, $version;
+	global $page, $pagestore, $ParseEngine, $version;
 
-  $pg = $pagestore->page($page);
-  if($version != '')
-    { $pg->version = $version; }
-  $pg->read();
+	$pg = $pagestore->page($page);
+	if($version != '')
+		{ $pg->version = $version; }
+	$pg->read();
 
-  gen_headers($pg->time);
+	gen_headers($pg->time);
 
-  template_view(array('page'      => $pg->as_array(),
-                      'title'     => $pg->title,
-                      'html'      => parseText($pg->text, $ParseEngine, $page),
-                      'editable'  => $pg->acl_check(),
-                      'timestamp' => $pg->time,
-                      'archive'   => $version != '',
-                      'version'   => $pg->version));
+	template_view(array('page'      => $pg->as_array(),
+											'title'     => $pg->title,
+											'html'      => parseText($pg->text, $ParseEngine, $page),
+											'editable'  => $pg->acl_check(),
+											'timestamp' => $pg->time,
+											'archive'   => $version != '',
+											'version'   => $pg->version));
 }
 ?>

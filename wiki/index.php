@@ -13,9 +13,11 @@
 
 	/* $Id$ */
 
-$GLOBALS['phpgw_info']['flags'] = array(
-	'currentapp' => 'wiki',
-	'noheader'   => True
+$GLOBALS['egw_info'] = array(
+	'flags' => array(
+		'currentapp' => 'wiki',
+		'noheader'   => True,
+	),
 );
 
 // the phpGW header.inc.php got included later by lib/init.php

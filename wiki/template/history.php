@@ -12,34 +12,34 @@ require_once(TemplateDir . '/common.php');
 
 function template_history($args)
 {
-  global $DiffScript;
+	global $DiffScript;
 
-  //echo "<p>template_history(".print_r($args,True).")</p>";
-  template_common_prologue(array('norobots' => 1,
-                                 'title'    => lang('History of').' ' . get_title($args['page']),
-                                 'heading'  => lang('History of').' ',
-                                 'headlink' => $args['page'],
-                                 'headsufx' => '',
-                                 'toolbar'  => 1));
+	//echo "<p>template_history(".print_r($args,True).")</p>";
+	template_common_prologue(array('norobots' => 1,
+																 'title'    => lang('History of').' ' . get_title($args['page']),
+																 'heading'  => lang('History of').' ',
+																 'headlink' => $args['page'],
+																 'headsufx' => '',
+																 'toolbar'  => 1));
 ?>
 <div id="body">
-  <form method="get" action="<?php print $DiffScript; ?>">
-  <div class="form">
-    <input type="hidden" name="action" value="diff" />
-    <input type="hidden" name="page" value="<?php print $args['page']['name']; ?>" />
-    <input type="hidden" name="lang" value="<?php print $args['page']['lang']; ?>" />
+	<form method="get" action="<?php print $DiffScript; ?>">
+	<div class="form">
+		<input type="hidden" name="action" value="diff" />
+		<input type="hidden" name="page" value="<?php print $args['page']['name']; ?>" />
+		<input type="hidden" name="lang" value="<?php print $args['page']['lang']; ?>" />
 <table border="0">
-  <tr><td><strong><?php echo lang('Older'); ?></strong></td>
-      <td><strong><?php echo lang('Newer'); ?></strong></td><td></td></tr>
+	<tr><td><strong><?php echo lang('Older'); ?></strong></td>
+			<td><strong><?php echo lang('Newer'); ?></strong></td><td></td></tr>
 <?php
-  print $args['history'];
+	print $args['history'];
 
 ?>
-  <tr><td colspan="3">
-    <input type="submit" value="<?php echo lang('Compute Difference'); ?>" /></td></tr>
+	<tr><td colspan="3">
+		<input type="submit" value="<?php echo lang('Compute Difference'); ?>" /></td></tr>
 </table>
-  </div>
-  </form>
+	</div>
+	</form>
 <hr /><br />
 
 <strong><?php echo lang('Changes by last author'); ?>:</strong><br /><br />
@@ -47,11 +47,11 @@ function template_history($args)
 <?php print $args['diff']; ?>
 </div>
 <?php
-  template_common_epilogue(array('twin'      => $args['page'],
-                                 'edit'      => '',
-                                 'editver'   => 0,
-                                 'history'   => '',
-                                 'timestamp' => '',
-                                 'nosearch'  => 0));
+	template_common_epilogue(array('twin'      => $args['page'],
+																 'edit'      => '',
+																 'editver'   => 0,
+																 'history'   => '',
+																 'timestamp' => '',
+																 'nosearch'  => 0));
 }
 ?>

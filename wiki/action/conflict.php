@@ -7,17 +7,17 @@ require(TemplateDir . '/conflict.php');
 //   else just saved.
 function action_conflict()
 {
-  global $pagestore, $page, $document, $ParseEngine;
+	global $pagestore, $page, $document, $ParseEngine;
 
-  $pg = $pagestore->page($page);
-  $pg->read();
+	$pg = $pagestore->page($page);
+	$pg->read();
 
-  template_conflict(array('page'      => $page,
-                          'text'      => $pg->text,
-                          'html'      => parseText($pg->text,
-                                                   $ParseEngine, $page),
-                          'usertext'  => $document,
-                          'timestamp' => $pg->time,
-                          'nextver'   => $pg->version + 1));
+	template_conflict(array('page'      => $page,
+													'text'      => $pg->text,
+													'html'      => parseText($pg->text,
+																									 $ParseEngine, $page),
+													'usertext'  => $document,
+													'timestamp' => $pg->time,
+													'nextver'   => $pg->version + 1));
 }
 ?>

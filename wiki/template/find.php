@@ -12,22 +12,22 @@ require_once(TemplateDir . '/common.php');
 
 function template_find($args)
 {
-  template_common_prologue(array('norobots' => 1,
-                                 'title'    => lang('Find').' ' . htmlspecialchars($args['find']),
-                                 'heading'  => lang('Find').' ' . htmlspecialchars($args['find']),
-                                 'headlink' => '',
-                                 'headsufx' => '',
-                                 'toolbar'  => 1));
+	template_common_prologue(array('norobots' => 1,
+																 'title'    => lang('Find').' ' . htmlspecialchars($args['find']),
+																 'heading'  => lang('Find').' ' . htmlspecialchars($args['find']),
+																 'headlink' => '',
+																 'headsufx' => '',
+																 'toolbar'  => 1));
 ?>
 <div id="body">
 <?php print $args['pages']; ?>
 </div>
 <?php
-  template_common_epilogue(array('twin'      => '',
-                                 'edit'      => '',
-                                 'editver'   => 0,
-                                 'history'   => '',
-                                 'timestamp' => '',
-                                 'nosearch'  => 0));
+	template_common_epilogue(array('twin'      => '',
+																 'edit'      => '',
+																 'editver'   => 0,
+																 'history'   => '',
+																 'timestamp' => '',
+																 'nosearch'  => 0));
 }
 ?>

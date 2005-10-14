@@ -18,62 +18,62 @@ require_once(TemplateDir . '/common.php');
 
 function template_conflict($args)
 {
-  global $EditRows, $EditCols, $UserName, $PrefsScript;
+	global $EditRows, $EditCols, $UserName, $PrefsScript;
 
-  template_common_prologue(array('norobots' => 1,
-                                 'title'    => lang('Editing').' ' . $args['page'],
-                                 'heading'  => lang('Editing').' ',
-                                 'headlink' => $args['page'],
-                                 'headsufx' => '',
-                                 'toolbar'  => 1));
+	template_common_prologue(array('norobots' => 1,
+																 'title'    => lang('Editing').' ' . $args['page'],
+																 'heading'  => lang('Editing').' ',
+																 'headlink' => $args['page'],
+																 'headsufx' => '',
+																 'toolbar'  => 1));
 ?>
 <div id="body">
 <p class="warning">
-  <?php echo lang('Warning: since you started editing, this document has been changed by someone else.  Please merge your edits into the current version of this document.'); ?>
+	<?php echo lang('Warning: since you started editing, this document has been changed by someone else.  Please merge your edits into the current version of this document.'); ?>
 </p>
 <h1><?php echo lang('Current Version'); ?></h1>
 <form method="post" action="<?php print saveURL($args['page']); ?>">
 <div class="form">
-  <input type="submit" name="Save" value="<?php echo lang('Save'); ?>" />
-  <input type="submit" name="Preview" value="<?php echo lang('Preview'); ?>" />
+	<input type="submit" name="Save" value="<?php echo lang('Save'); ?>" />
+	<input type="submit" name="Preview" value="<?php echo lang('Preview'); ?>" />
 <?php
-  if($UserName != '')
-    { print lang('Your user name is "%1".',html_ref($UserName, $UserName)); }
-  else
-  {
-    echo lang('Visit %1 to set your user name','<a href="'.$PrefsScript.'">'.lang('Preferences').'</a>');
-  }
+	if($UserName != '')
+		{ print lang('Your user name is "%1".',html_ref($UserName, $UserName)); }
+	else
+	{
+		echo lang('Visit %1 to set your user name','<a href="'.$PrefsScript.'">'.lang('Preferences').'</a>');
+	}
 ?><br />
-  <input type="hidden" name="nextver" value="<?php print $args['nextver']; ?>" />
-  <textarea name="document" rows="<?php
-    print $EditRows; ?>" cols="<?php
-    print $EditCols; ?>" wrap="virtual"><?php
-  print str_replace('<', '&lt;', str_replace('&', '&amp;', $args['text']));
+	<input type="hidden" name="nextver" value="<?php print $args['nextver']; ?>" />
+	<textarea name="document" rows="<?php
+		print $EditRows; ?>" cols="<?php
+		print $EditCols; ?>" wrap="virtual"><?php
+	print str_replace('<', '&lt;', str_replace('&', '&amp;', $args['text']));
 ?></textarea><br />
-  <?php echo lang('Summary of change'); ?>:
-  <input type="text" name="comment" size="40" value="" /><br />
-  <?php echo lang('Add document to category'); ?>:
-  <input type="text" name="categories" size="40" value="" />
+	<?php echo lang('Summary of change'); ?>:
+	<input type="text" name="comment" size="40" value="" /><br />
+	<?php echo lang('Add document to category'); ?>:
+	<input type="text" name="categories" size="40" value="" />
 <hr />
 <h1><?php echo lang('Your changes'); ?></h1>
-  <textarea name="discard" rows="<?php
-    print $EditRows; ?>" cols="<?php
-    print $EditCols; ?>" wrap="virtual"><?php
-  print str_replace('<', '&lt;', str_replace('&', '&amp;', $args['usertext']));
+	<textarea name="discard" rows="<?php
+		print $EditRows; ?>" cols="<?php
+		print $EditCols; ?>" wrap="virtual"><?php
+	print str_replace('<', '&lt;', str_replace('&', '&amp;', $args['usertext']));
 ?></textarea><br />
 </div>
 </form>
 <h1><?php echo lang('Preview of Current Version'); ?></h1>
 <?php
-  print $args['html'];
+	print $args['html'];
 ?>
 </div>
 <?php
-  template_common_epilogue(array('twin'      => $args['page'],
-                                 'edit'      => '',
-                                 'editver'   => 0,
-                                 'history'   => $args['page'],
-                                 'timestamp' => $args['timestamp'],
-                                 'nosearch'  => 0));
+	template_common_epilogue(array('twin'      => $args['page'],
+																 'edit'      => '',
+																 'editver'   => 0,
+																 'history'   => $args['page'],
+																 'timestamp' => $args['timestamp'],
+																 'nosearch'  => 0));
 }
 ?>

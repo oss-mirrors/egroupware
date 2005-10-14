@@ -14,12 +14,12 @@ require_once(TemplateDir . '/common.php');
 
 function template_diff($args)
 {
-  template_common_prologue(array('norobots' => 1,
-                                 'title'    => lang('Differences in').' ' . $args['page'],
-                                 'heading'  => lang('Differences in').' ',
-                                 'headlink' => $args['page'],
-                                 'headsufx' => '',
-                                 'toolbar'  => 1));
+	template_common_prologue(array('norobots' => 1,
+																 'title'    => lang('Differences in').' ' . $args['page'],
+																 'heading'  => lang('Differences in').' ',
+																 'headlink' => $args['page'],
+																 'headsufx' => '',
+																 'toolbar'  => 1));
 ?>
 <div id="body">
 <strong><?php echo lang('Difference between versions'); ?>:</strong><br /><br />
@@ -28,11 +28,11 @@ function template_diff($args)
 <?php print $args['html']; ?>
 </div>
 <?php
-  template_common_epilogue(array('twin'      => $args['page'],
-                                 'edit'      => $args['page'],
-                                 'editver'   => $args['editable'] ? 0 : -1,
-                                 'history'   => $args['page'],
-                                 'timestamp' => $args['timestamp'],
-                                 'nosearch'  => 1));
+	template_common_epilogue(array('twin'      => $args['page'],
+																 'edit'      => $args['page'],
+																 'editver'   => $args['editable'] ? 0 : -1,
+																 'history'   => $args['page'],
+																 'timestamp' => $args['timestamp'],
+																 'nosearch'  => 1));
 }
 ?>

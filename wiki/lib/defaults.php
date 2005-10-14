@@ -23,19 +23,19 @@ $LowerPtn = "[a-z]";
 $AlphaPtn = "[A-Za-z]";
 
 $LinkPtn = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' .
-           $UpperPtn . $AlphaPtn . '*(\\/' . $UpperPtn . $AlphaPtn . '*)?';
+					 $UpperPtn . $AlphaPtn . '*(\\/' . $UpperPtn . $AlphaPtn . '*)?';
 
 // $UrlPtn establishes the format for URLs in this wiki.
 //   Note that changing this requires a change to parse/transforms.php so
 //   that parse_hyperlinkxxx know how many parentheses are included in $UrlPtn.
 $UrlPtn  = "(http:|mailto:|https:|ftp:|gopher:|news:|irc:|egw:|vfs:)" .
-           "([^ \\/\"\']*\\/)*[^ \\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+					 "([^ \\/\"\']*\\/)*[^ \\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
 // $InterWikiPtn establishes the format for InterWiki links in this wiki.
 //   Note that changing this requires a change to parse/transforms.php so
 //   that parse_interwiki knows how many parentheses are in $InterwikiPtn.
 $InterwikiPtn = "([A-Za-z0-9]+):" .
-                "(([^ \\/\"\']*\\/)*[^ \\t\\n\\/\"\']*[\\/=&~A-Za-z0-9])";
+								"(([^ \\/\"\']*\\/)*[^ \\t\\n\\/\"\']*[\\/=&~A-Za-z0-9])";
 
 // !!!WARNING!!!
 // If $AdminEnabled is set to 1, the script admin/index.php will be accessible.
@@ -152,41 +152,41 @@ $MaxHeading = 6;
 // Raw HTML parsing is turned off by default, since this is a potential
 //   security hole.
 $ParseEngine = array(
-                 'parse_elem_flag',
+								 'parse_elem_flag',
 				 'parse_remove_script',
 				 'parse_htmlisms_outside_html',
 //                 'parse_raw_html',
 //                 'parse_htmlisms',
-                 'parse_code',
-                 'parse_nowiki',
-                 'parse_hyperlink_ref',
-                 'parse_hyperlink_description',
-                 'parse_hyperlink',
-                 'parse_macros',
-                 'parse_transclude',
-                 'parse_freelink',
-                 'parse_interwiki',
-                 'parse_wikiname',
-                 'parse_bold',
-                 'parse_italic',
-                 'parse_teletype',
-                 'parse_heading',
-                 'parse_table',
-                 'parse_horiz',
-                 'parse_indents',
-                 'parse_newline',
-                 'parse_elements'
-               );
+								 'parse_code',
+								 'parse_nowiki',
+								 'parse_hyperlink_ref',
+								 'parse_hyperlink_description',
+								 'parse_hyperlink',
+								 'parse_macros',
+								 'parse_transclude',
+								 'parse_freelink',
+								 'parse_interwiki',
+								 'parse_wikiname',
+								 'parse_bold',
+								 'parse_italic',
+								 'parse_teletype',
+								 'parse_heading',
+								 'parse_table',
+								 'parse_horiz',
+								 'parse_indents',
+								 'parse_newline',
+								 'parse_elements'
+							 );
 
 // convert wiki syntax to html, without any links!
 $ConvertEngine = array(
-                 'parse_elem_flag',
+								 'parse_elem_flag',
 				 'parse_remove_script',
 				 'parse_htmlisms_outside_html',
 //                 'parse_raw_html',
 //                 'parse_htmlisms',
-                 'parse_code',
-                 'parse_nowiki',
+								 'parse_code',
+								 'parse_nowiki',
 //                 'parse_hyperlink_ref',
 //                 'parse_hyperlink_description',
 //                 'parse_hyperlink',
@@ -195,103 +195,103 @@ $ConvertEngine = array(
 //                 'parse_freelink',
 //                 'parse_interwiki',
 //                 'parse_wikiname',
-                 'parse_bold',
-                 'parse_italic',
-                 'parse_teletype',
-                 'parse_heading',
-                 'parse_table',
-                 'parse_horiz',
-                 'parse_indents',
-                 'parse_newline',
-                 'parse_elements'
-               );
+								 'parse_bold',
+								 'parse_italic',
+								 'parse_teletype',
+								 'parse_heading',
+								 'parse_table',
+								 'parse_horiz',
+								 'parse_indents',
+								 'parse_newline',
+								 'parse_elements'
+							 );
 
 // $DiffEngine indicates what parsing rules will be run to display differences
 //   between versions.  This should be a shorter list than $ParseEngine,
 //   since we just want minimal things like bold and italic and wiki links.
 $DiffEngine = array(
-                'parse_elem_flag',
-                'parse_diff_skip',
-                'parse_diff_message',
-                'parse_diff_color',
-                'parse_htmlisms',
-                'parse_nowiki',
-                'parse_hyperlink_ref',
-                'parse_hyperlink_description',
-                'parse_hyperlink',
-                'parse_freelink',
-                'parse_interwiki',
-                'parse_wikiname',
-                'parse_bold',
-                'parse_italic',
-                'parse_teletype',
-                'parse_newline',
-                'parse_elements'
-              );
+								'parse_elem_flag',
+								'parse_diff_skip',
+								'parse_diff_message',
+								'parse_diff_color',
+								'parse_htmlisms',
+								'parse_nowiki',
+								'parse_hyperlink_ref',
+								'parse_hyperlink_description',
+								'parse_hyperlink',
+								'parse_freelink',
+								'parse_interwiki',
+								'parse_wikiname',
+								'parse_bold',
+								'parse_italic',
+								'parse_teletype',
+								'parse_newline',
+								'parse_elements'
+							);
 
 // $DisplayEngine indicates what functions will be used to translate wiki
 //   markup elements into actual HTML.  See parse/html.php
 $DisplayEngine = array(
-                   'bold_start'   => 'html_bold_start',
-                   'bold_end'     => 'html_bold_end',
-                   'italic_start' => 'html_italic_start',
-                   'italic_end'   => 'html_italic_end',
-                   'tt_start'     => 'html_tt_start',
-                   'tt_end'       => 'html_tt_end',
-                   'head_start'   => 'html_head_start',
-                   'head_end'     => 'html_head_end',
-                   'newline'      => 'html_newline',
-                   'ref'          => 'html_ref',
-                   'url'          => 'html_url',
-                   'interwiki'    => 'html_interwiki',
-                   'raw'          => 'html_raw',
-                   'code'         => 'html_code',
-                   'hr'           => 'html_hr',
-                   'nowiki'       => 'html_nowiki',
-                   'anchor'       => 'html_anchor',
-                   'bullet_list_start'   => 'html_ul_start',
-                   'bullet_list_end'     => 'html_ul_end',
-                   'bullet_item_start'   => 'html_li_start',
-                   'bullet_item_end'     => 'html_li_end',
-                   'indent_list_start'   => 'html_dl_start',
-                   'indent_list_end'     => 'html_dl_end',
-                   'indent_item_start'   => 'html_dd_start',
-                   'indent_item_end'     => 'html_dd_end',
-                   'term_item_start'     => 'html_dt_start',
-                   'term_item_end'       => 'html_dt_end',
-                   'numbered_list_start' => 'html_ol_start',
-                   'numbered_list_end'   => 'html_ol_end',
-                   'numbered_item_start' => 'html_li_start',
-                   'numbered_item_end'   => 'html_li_end',
-                   'diff_old_start'      => 'html_diff_old_start',
-                   'diff_old_end'        => 'html_diff_end',
-                   'diff_new_start'      => 'html_diff_new_start',
-                   'diff_new_end'        => 'html_diff_end',
-                   'diff_change'         => 'html_diff_change',
-                   'diff_add'            => 'html_diff_add',
-                   'diff_delete'         => 'html_diff_delete'
-                 );
+									 'bold_start'   => 'html_bold_start',
+									 'bold_end'     => 'html_bold_end',
+									 'italic_start' => 'html_italic_start',
+									 'italic_end'   => 'html_italic_end',
+									 'tt_start'     => 'html_tt_start',
+									 'tt_end'       => 'html_tt_end',
+									 'head_start'   => 'html_head_start',
+									 'head_end'     => 'html_head_end',
+									 'newline'      => 'html_newline',
+									 'ref'          => 'html_ref',
+									 'url'          => 'html_url',
+									 'interwiki'    => 'html_interwiki',
+									 'raw'          => 'html_raw',
+									 'code'         => 'html_code',
+									 'hr'           => 'html_hr',
+									 'nowiki'       => 'html_nowiki',
+									 'anchor'       => 'html_anchor',
+									 'bullet_list_start'   => 'html_ul_start',
+									 'bullet_list_end'     => 'html_ul_end',
+									 'bullet_item_start'   => 'html_li_start',
+									 'bullet_item_end'     => 'html_li_end',
+									 'indent_list_start'   => 'html_dl_start',
+									 'indent_list_end'     => 'html_dl_end',
+									 'indent_item_start'   => 'html_dd_start',
+									 'indent_item_end'     => 'html_dd_end',
+									 'term_item_start'     => 'html_dt_start',
+									 'term_item_end'       => 'html_dt_end',
+									 'numbered_list_start' => 'html_ol_start',
+									 'numbered_list_end'   => 'html_ol_end',
+									 'numbered_item_start' => 'html_li_start',
+									 'numbered_item_end'   => 'html_li_end',
+									 'diff_old_start'      => 'html_diff_old_start',
+									 'diff_old_end'        => 'html_diff_end',
+									 'diff_new_start'      => 'html_diff_new_start',
+									 'diff_new_end'        => 'html_diff_end',
+									 'diff_change'         => 'html_diff_change',
+									 'diff_add'            => 'html_diff_add',
+									 'diff_delete'         => 'html_diff_delete'
+								 );
 
 // $ViewMacroEngine determines what macro names will be processed when
 //   displaying a page.  For each name, a function must be provided.
 //   See parse/macros.php
 $ViewMacroEngine = array(
-                     '!'             => 'view_macro_category',
-                     'Anchor'        => 'view_macro_anchor',
-                     'Transclude'    => 'view_macro_transclude',
-                     'PageSize'      => 'view_macro_pagesize',
-                     'LinkTable'     => 'view_macro_linktab',
-                     'OrphanedPages' => 'view_macro_orphans',
-                     'WantedPages'   => 'view_macro_wanted',
-                     'PageLinks'     => 'view_macro_outlinks',
-                     'PageRefs'      => 'view_macro_refs'
-                   );
+										 '!'             => 'view_macro_category',
+										 'Anchor'        => 'view_macro_anchor',
+										 'Transclude'    => 'view_macro_transclude',
+										 'PageSize'      => 'view_macro_pagesize',
+										 'LinkTable'     => 'view_macro_linktab',
+										 'OrphanedPages' => 'view_macro_orphans',
+										 'WantedPages'   => 'view_macro_wanted',
+										 'PageLinks'     => 'view_macro_outlinks',
+										 'PageRefs'      => 'view_macro_refs'
+									 );
 
 // $SaveMacroEngine determines what save macros will be called after a
 //   page is saved.  See parse/save.php
 $SaveMacroEngine = array(
-                     'parse_define_interwiki',
-                     'parse_define_sisterwiki',
-                     'parse_define_links'
-                   );
+										 'parse_define_interwiki',
+										 'parse_define_sisterwiki',
+										 'parse_define_links'
+									 );
 ?>

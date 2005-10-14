@@ -21,17 +21,17 @@
 
 function template_common_prologue($args)
 {
-  global $WikiName, $HomePage, $WikiLogo, $MetaKeywords, $MetaDescription;
-  global $StyleScript, $SeparateTitleWords, $SeparateHeaderWords, $SearchURL, $FindScript;
+	global $WikiName, $HomePage, $WikiLogo, $MetaKeywords, $MetaDescription;
+	global $StyleScript, $SeparateTitleWords, $SeparateHeaderWords, $SearchURL, $FindScript;
 
-  //echo "<p>template_common_prologue(".print_r($args,True).")</p>";
-  $keywords = ' ' . html_split_name($args['headlink']);
-  $keywords = str_replace('"', '&quot;', $keywords);
+	//echo "<p>template_common_prologue(".print_r($args,True).")</p>";
+	$keywords = ' ' . html_split_name($args['headlink']);
+	$keywords = str_replace('"', '&quot;', $keywords);
 
 //ob_start();                           // Start buffering output.
 /*
-  if($SeparateTitleWords)
-    { $args['title'] = html_split_name($args['title']); }
+	if($SeparateTitleWords)
+		{ $args['title'] = html_split_name($args['title']); }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -39,12 +39,12 @@ function template_common_prologue($args)
 <meta name="KEYWORDS" content="<?php print $MetaKeywords . $keywords; ?>" />
 <meta name="DESCRIPTION" content="<?php print $MetaDescription; ?>" />
 <?php
-  if($args['norobots'])
-  {
+	if($args['norobots'])
+	{
 ?>
 <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
 <?php
-  }
+	}
 ?>
 <link rel="STYLESHEET" href="<?php print $StyleScript; ?>" type="text/css" />
 <title><?php print $args['title'] . ' - ' . $WikiName; ?></title>
@@ -53,33 +53,33 @@ function template_common_prologue($args)
 <?php
 */
 ?>
-<link rel="stylesheet" href="<?php echo $GLOBALS['phpgw_info']['server']['webserver_url'].'/wiki/template/wiki.css'; ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $GLOBALS['egw_info']['server']['webserver_url'].'/wiki/template/wiki.css'; ?>" type="text/css" />
 <div align="left">
 <div id="header">
-  <?php /* removed logo for now: TODO show it on extern site
-  <div class="logo">
-   <a href="<?php print viewURL($HomePage); ?>"><img
-    src="<?php print $WikiLogo; ?>" alt="[Home]" /></a>
-  </div> */ ?>
-  <h1 style="margin:0px;">
+	<?php /* removed logo for now: TODO show it on extern site
+	<div class="logo">
+	 <a href="<?php print viewURL($HomePage); ?>"><img
+		src="<?php print $WikiLogo; ?>" alt="[Home]" /></a>
+	</div> */ ?>
+	<h1 style="margin:0px;">
 <?php
-    print $args['heading'];
-    if($args['headlink'] != '')
-    {
+		print $args['heading'];
+		if($args['headlink'] != '')
+		{
 ?>
-    <a class="title" href="<?php print findURL($args['headlink']); ?>">
+		<a class="title" href="<?php print findURL($args['headlink']); ?>">
 <?php
 	$title = get_title($args['headlink']);
-    if($SeparateHeaderWords)
-      { print html_split_name($title); }
-    else
-      { print $title; }
+		if($SeparateHeaderWords)
+			{ print html_split_name($title); }
+		else
+			{ print $title; }
 ?></a>
 <?php
-    }
-    print $args['headsufx'];
+		}
+		print $args['headsufx'];
 ?>
-  </h1>
+	</h1>
 <?php
 	if($args['toolbar'])
 	{ 
@@ -128,78 +128,78 @@ function template_common_prologue($args)
 
 function template_common_epilogue($args)
 {
-  global $FindScript, $pagestore, $PrefsScript, $AdminScript;
-  //echo "<p>template_common_epilogue(".print_r($args,True).")</p>";
+	global $FindScript, $pagestore, $PrefsScript, $AdminScript;
+	//echo "<p>template_common_epilogue(".print_r($args,True).")</p>";
 
 ?>
 <div id="footer">
 <hr align=left width=99% />
 <?php
-  if(!$args['nosearch']) { ?>	
-    <form method="POST" action="<?php print $FindScript; ?>" name="thesearch">
-      <div class="form">
-        <input type="hidden" name="action" value="find" />
+	if(!$args['nosearch']) { ?>	
+		<form method="POST" action="<?php print $FindScript; ?>" name="thesearch">
+			<div class="form">
+				<input type="hidden" name="action" value="find" />
 <?php
-  }
-  if($args['edit'])
-  {
-    if($args['editver'] == 0)
-    {
-       echo '<a href="'.editURL($args['edit']).'">'.lang('Edit this document').'</a>';
-    }
-    else if($args['editver'] == -1)
-    {
-       echo lang('This page can not be edited.');
-    }
-    else
-    {
-       echo '<a href="'.editURL($args['edit'], $args['editver']).'">'.
-       lang('Edit this <em>ARCHIVE VERSION</em> of this document').'</a>';
-    }
+	}
+	if($args['edit'])
+	{
+		if($args['editver'] == 0)
+		{
+			 echo '<a href="'.editURL($args['edit']).'">'.lang('Edit this document').'</a>';
+		}
+		else if($args['editver'] == -1)
+		{
+			 echo lang('This page can not be edited.');
+		}
+		else
+		{
+			 echo '<a href="'.editURL($args['edit'], $args['editver']).'">'.
+			 lang('Edit this <em>ARCHIVE VERSION</em> of this document').'</a>';
+		}
 
-    if($args['history'])
-      { print ' | '; }
-  }
-  if($args['history'])
-  {
-    echo '<a href="'.historyURL($args['history']).'">'.lang('View document history').'</a>';
-    echo ' | <a href="' . $PrefsScript . '">'.lang('Preferences').'</a>';
-  
-    if(!$args['nosearch']) {
-      echo '| '.lang('Search').': <input type="text" name="find" size="20" />';
-    }
+		if($args['history'])
+			{ print ' | '; }
+	}
+	if($args['history'])
+	{
+		echo '<a href="'.historyURL($args['history']).'">'.lang('View document history').'</a>';
+		echo ' | <a href="' . $PrefsScript . '">'.lang('Preferences').'</a>';
+	
+		if(!$args['nosearch']) {
+			echo '| '.lang('Search').': <input type="text" name="find" size="20" />';
+		}
 	echo "<br />";
-  }
-  if($args['timestamp'])
-  {
-    echo lang('Document last modified').' '.html_time($args['timestamp']).'<br />';
-  } ?>
-      </div>
-    </form>
+	}
+	if($args['timestamp'])
+	{
+		echo lang('Document last modified').' '.html_time($args['timestamp']).'<br />';
+	} ?>
+			</div>
+		</form>
 <?php
-  if($args['twin'] != '')
-  {
-    if(count($twin = $pagestore->twinpages($args['twin'])))
-    {
-      echo lang('Twin pages').': ';
-      for($i = 0; $i < count($twin); $i++)
-        { print html_twin($twin[$i][0], $twin[$i][1]) . ' '; } ?>
+	if($args['twin'] != '')
+	{
+		if(count($twin = $pagestore->twinpages($args['twin'])))
+		{
+			echo lang('Twin pages').': ';
+			for($i = 0; $i < count($twin); $i++)
+				{ print html_twin($twin[$i][0], $twin[$i][1]) . ' '; } ?>
 <br /><?php
-    }
-  }
-  if(!$args['nosearch'] && $args['history'])
-  {
-    echo "\n<hr align=left width=99% />\n";
-  }
+		}
+	}
+	if(!$args['nosearch'] && $args['history'])
+	{
+		echo "\n<hr align=left width=99% />\n";
+	}
 ?>
 </div>
 <?php
 //</body>
 //</html>
 /*
-  $size = ob_get_length();
-  ##header("Content-Length: $size");
-  ob_end_flush();
+	$size = ob_get_length();
+	##header("Content-Length: $size");
+	ob_end_flush();
 */
 }
 ?>

@@ -16,23 +16,23 @@ require_once(TemplateDir . '/common.php');
 
 function template_view($args)
 {
-  template_common_prologue(array('norobots' => $args['archive'],
-                                 'title'    => $args['title'],
-                                 'heading'  => '',
-                                 'headlink' => $args['page'],
-                                 'headsufx' => $args['archive'] ?
-                                                 ' (' . html_timestamp($args['timestamp']) . ')'
-                                                 : '',
-                                 'toolbar'  => 1));
+	template_common_prologue(array('norobots' => $args['archive'],
+																 'title'    => $args['title'],
+																 'heading'  => '',
+																 'headlink' => $args['page'],
+																 'headsufx' => $args['archive'] ?
+																								 ' (' . html_timestamp($args['timestamp']) . ')'
+																								 : '',
+																 'toolbar'  => 1));
 /*
-  template_common_epilogue(array('twin'      => $args['page'],
-                                 'edit'      => $args['page'],
-                                 'editver'   => !$args['editable'] ? -1
-                                                : ($args['archive']
-                                                   ? $args['version'] : 0),
-                                 'history'   => $args['page'],
-                                 'timestamp' => $args['timestamp'],
-                                 'nosearch'  => 0));
+	template_common_epilogue(array('twin'      => $args['page'],
+																 'edit'      => $args['page'],
+																 'editver'   => !$args['editable'] ? -1
+																								: ($args['archive']
+																									 ? $args['version'] : 0),
+																 'history'   => $args['page'],
+																 'timestamp' => $args['timestamp'],
+																 'nosearch'  => 0));
 */
 ?>
 <div id="body">
@@ -40,12 +40,12 @@ function template_view($args)
 </div>
 <?php
 template_common_epilogue(array('twin'      => $args['page'],
-                                 'edit'      => $args['page'],
-                                 'editver'   => !$args['editable'] ? -1
-                                                : ($args['archive']
-                                                   ? $args['version'] : 0),
-                                 'history'   => $args['page'],
-                                 'timestamp' => $args['timestamp'],
-                                 'nosearch'  => 1));
+																 'edit'      => $args['page'],
+																 'editver'   => !$args['editable'] ? -1
+																								: ($args['archive']
+																									 ? $args['version'] : 0),
+																 'history'   => $args['page'],
+																 'timestamp' => $args['timestamp'],
+																 'nosearch'  => 1));
 }
 ?>

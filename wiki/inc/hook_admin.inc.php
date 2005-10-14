@@ -15,9 +15,9 @@
 	// Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Site Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
-//		'Lock / Unlock Pages' => $GLOBALS['phpgw']->link('/wiki/index.php','action=admin&locking=1'),
-		'Block / Unblock hosts' => $GLOBALS['phpgw']->link('/wiki/index.php','action=admin&blocking=1'),
+		'Site Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
+//		'Lock / Unlock Pages' => $GLOBALS['egw']->link('/wiki/index.php','action=admin&locking=1'),
+		'Block / Unblock hosts' => $GLOBALS['egw']->link('/wiki/index.php','action=admin&blocking=1'),
 	);
 	//Do not modify below this line
 	display_section($appname,$title,$file);
