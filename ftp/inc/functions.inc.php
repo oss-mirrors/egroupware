@@ -14,12 +14,12 @@
 
 	function createLink($string,$params='')
 	{
-		return $GLOBALS['phpgw']->link($string,$params);
+		return $GLOBALS['egw']->link($string,$params);
 	}
 
 	function getConnectionInfo()
 	{
-		$connectionInfo = unserialize(stripslashes($GLOBALS['phpgw']->session->appsession('connectionInfo','ftp')));
+		$connectionInfo = unserialize(stripslashes($GLOBALS['egw']->session->appsession('connectionInfo','ftp')));
 		//echo "<p>getConnectionInfo()=".print_r($connectionInfo,true)."</p>\n";
 		return $connectionInfo;
 	}
@@ -27,7 +27,7 @@
 	function updateSession($connectionInfo='')
 	{
 		//echo "<p>updateSession(".print_r($connectionInfo,true).")</p>\n";
-		$GLOBALS['phpgw']->session->appsession('connectionInfo','ftp',addslashes(serialize($connectionInfo)));
+		$GLOBALS['egw']->session->appsession('connectionInfo','ftp',addslashes(serialize($connectionInfo)));
 	}
 
 	function phpftp_connect($host,$user,$pass) 
@@ -56,7 +56,7 @@
 		$rename_form_submit = '<input type="submit" name="confirm" value="' . lang('rename') . '">'."\n";
 		$rename_form_cancel = '<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
 
-		$GLOBALS['phpgw']->template->set_var(array(
+		$GLOBALS['egw']->template->set_var(array(
 			'rename_form_begin' => $rename_form_begin,
 			'rename_form_end'  => $rename_form_end,
 			'rename_form_from' => $rename_form_from,
@@ -67,12 +67,12 @@
 			'lang_rename_to' => lang('rename to')
 		));
 
-		$GLOBALS['phpgw']->template->set_var('lang_message',lang('Rename file'));
+		$GLOBALS['egw']->template->set_var('lang_message',lang('Rename file'));
 
-		$GLOBALS['phpgw']->template->parse('out','rename',true);
+		$GLOBALS['egw']->template->parse('out','rename',true);
 		// $template->p('renameform');
-		$GLOBALS['phpgw']->template->set_var('return',$GLOBALS['phpgw']->template->get('out'));
-		return $GLOBALS['phpgw']->template->get('return');
+		$GLOBALS['egw']->template->set_var('return',$GLOBALS['egw']->template->get('out'));
+		return $GLOBALS['egw']->template->get('return');
 	}
 
 	function confirmDeleteForm($session,$filename,$directory,$type ='delete')
@@ -89,7 +89,7 @@
 		$delete_form_confirm = '<input type="submit" name="confirm" value="' . lang('delete') . '">'."\n";
 		$delete_form_cancel = '<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
 
-		$GLOBALS['phpgw']->template->set_var(array(
+		$GLOBALS['egw']->template->set_var(array(
 			'delete_form_begin' => $delete_form_begin,
 			'delete_form_end'  => $delete_form_end,
 			'delete_form_question' => $delete_form_question,
@@ -97,9 +97,9 @@
 			'delete_form_cancel' => $delete_form_cancel
 		));
 
-		$GLOBALS['phpgw']->template->parse('out','confirm_delete',true);
-		$GLOBALS['phpgw']->template->set_var('return',$GLOBALS['phpgw']->template->get('out'));
-		return $GLOBALS['phpgw']->template->get('return');
+		$GLOBALS['egw']->template->parse('out','confirm_delete',true);
+		$GLOBALS['egw']->template->set_var('return',$GLOBALS['egw']->template->get('out'));
+		return $GLOBALS['egw']->template->get('return');
 	}
 
 	function newLogin($dfhost,$dfuser,$dfpass)
@@ -112,7 +112,7 @@
 		$login_form_submit='<input type="submit" name="submit" value="'.lang('connect').'">'."\n";
 		$login_form_end="</form>";
 
-		$GLOBALS['phpgw']->template->set_var(array(
+		$GLOBALS['egw']->template->set_var(array(
 			'login_form_begin' => $login_form_begin,
 			'login_form_end' => $login_form_end,
 			'login_form_username' => $login_form_username,
@@ -123,11 +123,11 @@
 			'lang_password' => lang('password'),
 			'langserver' => lang('Ftp Server')
 		));
-		$GLOBALS['phpgw']->template->set_var('lang_login',lang('Log into FTP server'));
-		$GLOBALS['phpgw']->template->set_var('lang_ftpserver',lang('FTP hostname'));
+		$GLOBALS['egw']->template->set_var('lang_login',lang('Log into FTP server'));
+		$GLOBALS['egw']->template->set_var('lang_ftpserver',lang('FTP hostname'));
 
-		$GLOBALS['phpgw']->template->parse('loginform','login',false);
-		$GLOBALS['phpgw']->template->p('loginform');
+		$GLOBALS['egw']->template->parse('loginform','login',false);
+		$GLOBALS['egw']->template->p('loginform');
 		return;
 	}
 
@@ -146,8 +146,8 @@
 		else
 		{
 			ftp_quit($ftp);
-			$b = CreateObject('phpgwapi.browser');
-			if($GLOBALS['phpgw_info']['server']['ftp_use_mime'])
+			$b =& CreateObject('phpgwapi.browser');
+			if($GLOBALS['egw_info']['server']['ftp_use_mime'])
 			{
 				$mime = getMimeType($file);
 				$b->content_header($file,$mime);
@@ -168,7 +168,7 @@
 	function getMimeType($file)
 	{
 		$file = basename($file);
-		$mimefile = PHPGW_API_INC . SEP . 'phpgw_mime.types';
+		$mimefile = EGW_API_INC . SEP . 'phpgw_mime.types';
 		$fp = fopen($mimefile,'rb');
 		$contents = explode("\n",fread($fp, filesize($mimefile)));
 		fclose($fp);
@@ -283,7 +283,7 @@
 		ftp_chdir($ftp,$dir);
 		$dirlist = ftp_rawlist($ftp,'');
 
-		for($i=$start; $i<($start+$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']); $i++)
+		for($i=$start; $i<($start+$GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs']); $i++)
 		{
 			if($i < count($dirlist))
 			{
@@ -304,7 +304,7 @@
 			$new = urlencode($GLOBALS['newdir']);
 		}
 		$retval = '<a href="'
-			. $GLOBALS['phpgw']->link($GLOBALS['target'],
+			. $GLOBALS['egw']->link($GLOBALS['target'],
 				'olddir='  . urlencode($GLOBALS['olddir']) . '&action=' . urlencode($action)
 				. '&file=' . urlencode($GLOBALS['file'])  . '&newdir=' . $new
 			).'">';

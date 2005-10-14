@@ -14,7 +14,7 @@
 	$GLOBALS['egw']->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display asc',__LINE__,__FILE__);
 	while($GLOBALS['egw']->db->next_record())
 	{
-		$_headlines[$GLOBALS['egw']->db->f('con')] = $GLOBALS['phpgw']->db->f('display');
+		$_headlines[$GLOBALS['egw']->db->f('con')] = $GLOBALS['egw']->db->f('display');
 	}
 
 	$GLOBALS['settings'] = array(

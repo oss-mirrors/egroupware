@@ -13,15 +13,17 @@
 
 	/* $Id$ */
 
-	$GLOBALS['egw_info']['flags'] = array(
-		'currentapp'           => 'headlines',
-		'enable_network_class' => True,
-		'noheader'             => True,
-		'nonavbar'             => True
+	$GLOBALS['egw_info'] = array(
+		'flags' => array(
+			'currentapp'           => 'headlines',
+			'enable_network_class' => True,
+			'noheader'             => True,
+			'nonavbar'             => True,
+		),
 	);
 	include('../header.inc.php');
 
-	$obj = CreateObject('headlines.uiheadlines');
+	$obj =& CreateObject('headlines.uiheadlines');
 	$obj->index();
-	$GLOBALS['egw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->egw_footer();
 ?>

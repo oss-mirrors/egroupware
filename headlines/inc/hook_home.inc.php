@@ -1,12 +1,12 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - Headlines                                                   *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* eGroupWare - Headlines                                                   *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
 	/* $Id$ */
 
@@ -24,7 +24,7 @@
 
 		$title = '<center><font color="#FFFFFF">'.lang('Headlines').'</font></center>';
 
-		$portalbox = CreateObject('phpgwapi.listbox',
+		$portalbox =& CreateObject('phpgwapi.listbox',
 			array(
 				'title'     => $title,
 				'primary'   => $GLOBALS['egw']->prefs->data['theme']['navbar_bg'],
@@ -51,7 +51,7 @@
 		}
 
 		$portalbox->data = Array();
-		$headlines = CreateObject('headlines.headlines');
+		$headlines =& CreateObject('headlines.headlines');
 
 		while(list(,$site) = @each($sites))
 		{

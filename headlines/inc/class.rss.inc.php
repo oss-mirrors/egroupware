@@ -1,58 +1,58 @@
 <?php
-  /*******************************************************************
-  * $Id$
-  *
-  * class.RSS.php3
-  * Version: 0.91 (natch!)
-  * Author: Joseph Harris (CDI)
-  * Copyright (C) 2001, Joseph Harris
-  * cdi@thewebmasters.net
-  * http://www.thewebmasters.net/
-  *
-  *******************************************************************
-  This program is free software; you can redistribute it and/or modify it
-  under the terms of the GNU General Public License as published by the
-  Free Software Foundation; either version 2 of the License, or (at your
-  option) any later version.
+	/*******************************************************************
+	* $Id$
+	*
+	* class.RSS.php3
+	* Version: 0.91 (natch!)
+	* Author: Joseph Harris (CDI)
+	* Copyright (C) 2001, Joseph Harris
+	* cdi@thewebmasters.net
+	* http://www.thewebmasters.net/
+	*
+	*******************************************************************
+	This program is free software; you can redistribute it and/or modify it
+	under the terms of the GNU General Public License as published by the
+	Free Software Foundation; either version 2 of the License, or (at your
+	option) any later version.
 
-  This program is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  General Public License for more details.
+	This program is distributed in the hope that it will be useful, but
+	WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along
-  with this program; if not, write to the Free Software Foundation, Inc.,
-  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-  *******************************************************************
-  *
-  * I use a tab stop of (4) in my editor, so this file may look weird
-  * if you have your tab stop set differently.
-  *
-  * This class will completely parse RSS 0.91 compliant data.
-  * Reference the 'rss-0.91.dtd' included with this distribution
-  * or visit 'http://my.netscape.com/publish/formats/rss-0.91.dtd'
-  * or 'http://www.webreference.com/authoring/languages/xml/rss/1/'
-  *
-  * Requires: PHP4 w/PCRE support
-  *
-  * Basic usage is extremely simple:
-  *
-  *      $rss = new RSS ($data);
-  *
-  *      // The call to 'new' results in the data being parsed.
-  *  // Data needs to be raw RSS data already obtained from a file or URL.
-  *      // Data needs to be one big string, no pre-processing of the data is needed.
-  *
-  *      $allItems = $rss->getAllItems();
-  *      $itemCount = count($allItems);
-  *      for($y=0;$y<$itemCount;$y++) {
-  *              echo "\nItem [$y] has data\n";
-  *              echo "[$y]: Title: " . $allItems[$y]['TITLE'];
-  *              echo "\n[$y]: Link : " . $allItems[$y]['LINK'];
-  *              echo "\n[$y]: Desc : " . $allItems[$y]['DESCRIPTION'];
-  *      }
-  *
-  */
+	You should have received a copy of the GNU General Public License along
+	with this program; if not, write to the Free Software Foundation, Inc.,
+	59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+	*******************************************************************
+	*
+	* I use a tab stop of (4) in my editor, so this file may look weird
+	* if you have your tab stop set differently.
+	*
+	* This class will completely parse RSS 0.91 compliant data.
+	* Reference the 'rss-0.91.dtd' included with this distribution
+	* or visit 'http://my.netscape.com/publish/formats/rss-0.91.dtd'
+	* or 'http://www.webreference.com/authoring/languages/xml/rss/1/'
+	*
+	* Requires: PHP4 w/PCRE support
+	*
+	* Basic usage is extremely simple:
+	*
+	*      $rss =& new RSS ($data);
+	*
+	*      // The call to 'new' results in the data being parsed.
+	*  // Data needs to be raw RSS data already obtained from a file or URL.
+	*      // Data needs to be one big string, no pre-processing of the data is needed.
+	*
+	*      $allItems = $rss->getAllItems();
+	*      $itemCount = count($allItems);
+	*      for($y=0;$y<$itemCount;$y++) {
+	*              echo "\nItem [$y] has data\n";
+	*              echo "[$y]: Title: " . $allItems[$y]['TITLE'];
+	*              echo "\n[$y]: Link : " . $allItems[$y]['LINK'];
+	*              echo "\n[$y]: Desc : " . $allItems[$y]['DESCRIPTION'];
+	*      }
+	*
+	*/
 
 	class rss
 	{

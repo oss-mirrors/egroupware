@@ -29,7 +29,7 @@
 
 		function uiheadlines()
 		{
-			$this->bo = CreateObject('headlines.boheadlines');
+			$this->bo =& CreateObject('headlines.boheadlines');
 		}
 
 		function index()
@@ -40,13 +40,13 @@
 			}
 			else
 			{
-				$GLOBALS['egw']->common->phpgw_header();
+				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
 			}
 
 			$this->bo->getsites();
 
-//			$headlines = CreateObject('headlines.headlines');
+//			$headlines =& CreateObject('headlines.headlines');
 			$GLOBALS['egw']->template->set_file(array(
 				'layout_row' => 'layout_row.tpl',
 				'form'       => $GLOBALS['egw_info']['user']['preferences']['headlines']['headlines_layout'] . '.tpl'
@@ -106,7 +106,7 @@
 					$i--;
 				}
 			}
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function add()
@@ -147,7 +147,7 @@
 			}
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Headlines Administration');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			// This is done for a reason (jengo)
@@ -190,7 +190,7 @@
 
 			$GLOBALS['egw']->template->parse('buttons','buttons');
 			$GLOBALS['egw']->template->pfp('out','form');
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function edit()
@@ -239,7 +239,7 @@
 			$sitedata = $this->bo->read((int)$_GET['con']);
 
 			$GLOBALS['egw_info']['flags']['app_title'] = lang('Headlines Administration');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			// This is done for a reason (jengo)
@@ -283,7 +283,7 @@
 			$GLOBALS['egw']->template->parse('buttons','buttons');
 			$GLOBALS['egw']->template->pfp('out','form');
 
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function delete()
@@ -302,7 +302,7 @@
 			}
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Headlines Administration - Delete headline');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			// This is done for a reason (jengo)
@@ -321,7 +321,7 @@
 
 			$GLOBALS['egw']->template->pfp('out','delete_form');
 
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function view()
@@ -334,7 +334,7 @@
 			}
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Headlines Administration');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$sitedata = $this->bo->read($con);
@@ -390,7 +390,7 @@
 			$GLOBALS['egw']->template->parse('cancel','cancel');
 
 			$GLOBALS['egw']->template->pfp('out','form');
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function preferences()
@@ -425,7 +425,7 @@
 			}
 
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Headline preferences');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$GLOBALS['egw']->template->set_file(array('form' => 'preferences.tpl'));
@@ -454,7 +454,7 @@
 			$GLOBALS['egw']->template->set_var('lang_cancel',lang('Cancel'));
 
 			$GLOBALS['egw']->template->pparse('out','form');
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function preferences_layout()
@@ -470,7 +470,7 @@
 				$GLOBALS['egw']->redirect($GLOBALS['egw']->link('/headlines/index.php'));
 			}
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Headlines layout');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$GLOBALS['egw']->template->set_file(array(
@@ -515,13 +515,13 @@
 			$GLOBALS['egw']->template->parse('layout_3','layout3');
 
 			$GLOBALS['egw']->template->pfp('out','body');
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function admin()
 		{
 			$GLOBALS['egw_info']['flags']['app_header'] = lang('Headline Sites');
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			// This is done for a reason (jengo)
@@ -569,7 +569,7 @@
 
 			$GLOBALS['egw']->template->pfp('out','list');
 
-			$GLOBALS['egw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function grabnewssites()
