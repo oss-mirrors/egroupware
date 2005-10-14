@@ -1,16 +1,16 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - Calendar                                                    *
-  * http://www.egroupware.org                                                *
-  * Based on Webcalendar by Craig Knudsen <cknudsen@radix.net>               *
-  *          http://www.radix.net/~cknudsen                                  *
-  * Created by Edo van Bruggen0 <edovanbruggen@raketnet.nl>                  *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* eGroupWare - Calendar                                                    *
+	* http://www.egroupware.org                                                *
+	* Based on Webcalendar by Craig Knudsen <cknudsen@radix.net>               *
+	*          http://www.radix.net/~cknudsen                                  *
+	* Created by Edo van Bruggen0 <edovanbruggen@raketnet.nl>                  *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
 
 	class messengernotify
@@ -22,7 +22,7 @@
 			$owner;
 			$this->db    = $GLOBALS['egw']->db;
 			$this->owner = $GLOBALS['egw_info']['user']['account_id'];
-			$config = CreateObject('phpgwapi.config');
+			$config =& CreateObject('phpgwapi.config');
 			$config->read_repository();
 			$GLOBALS['egw_info']['server']['messenger'] = $config->config_data;
 			unset($config);

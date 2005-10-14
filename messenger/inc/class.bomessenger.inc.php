@@ -22,7 +22,7 @@
 
 		function bomessenger()
 		{
-			$this->so = CreateObject('messenger.somessenger');
+			$this->so =& CreateObject('messenger.somessenger');
 		}
 
 		function update_message_status($p)
@@ -32,7 +32,7 @@
 
 		function send_global_message($message='')
 		{
-			if(!$GLOBALS['egw']->acl->check('run',PHPGW_ACL_READ,'admin') || $cancel)
+			if(!$GLOBALS['egw']->acl->check('run',EGW_ACL_READ,'admin') || $cancel)
 			{
 				return False;
 			}
@@ -68,13 +68,13 @@
 
 		function send_message($message='')
 		{
-			if(!$GLOBALS['egw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
+			if(!$GLOBALS['egw']->acl->check('run',EGW_ACL_READ,'messenger'))
 			{
 				return False;
 			}
 
 			/* from here, $message['recipient'] is an array of group ids and user
-			   account ids. we convert it to an array of user ids */
+				 account ids. we convert it to an array of user ids */
 			foreach($message['recipient'] as $recipient_id)
 			{
 				if($GLOBALS['egw']->accounts->get_type($recipient_id) == 'u')
@@ -96,7 +96,7 @@
 			{
 				foreach($recipients as $recipient_id -> $recipient_name)
 				{
-					$recipient = CreateObject('phpgwapi.accounts', $recipient_id);
+					$recipient =& CreateObject('phpgwapi.accounts', $recipient_id);
 					$recipient->read_repository();
 					if($recipient->is_expired())
 					{
@@ -131,7 +131,7 @@
 
 		function send_group_message($message='')
 		{
-			if(!$GLOBALS['egw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
+			if(!$GLOBALS['egw']->acl->check('run',EGW_ACL_READ,'messenger'))
 			{
 				return False;
 			}
@@ -151,7 +151,7 @@
 						{
 							if(!in_array($user['account_id'],$send_users_ids))
 							{
-								$acct = CreateObject('phpgwapi.accounts',$user['account_id']);
+								$acct =& CreateObject('phpgwapi.accounts',$user['account_id']);
 								$acct->read_repository();
 								if($acct->is_expired())
 								{
@@ -229,7 +229,7 @@
 				// Cache our results, so we don't query the same account multiable times
 				if(!$cached[$message['from']])
 				{
-					$acct = CreateObject('phpgwapi.accounts',$message['from']);
+					$acct =& CreateObject('phpgwapi.accounts',$message['from']);
 					$acct->read_repository();
 					$cached[$message['from']]       = $message['from'];
 					$cached_names[$message['from']] = $GLOBALS['egw']->common->display_fullname($acct->data['account_lid'],$acct->data['firstname'],$acct->data['lastname']);
@@ -290,7 +290,7 @@
 			}
 			else
 			{
-				$acct = CreateObject('phpgwapi.accounts',$message['from']);
+				$acct =& CreateObject('phpgwapi.accounts',$message['from']);
 				$acct->read_repository();
 				$message['from'] = $GLOBALS['egw']->common->display_fullname($acct->data['account_lid'],$acct->data['firstname'],$acct->data['lastname']);
 			}
@@ -302,7 +302,7 @@
 		{
 			$message = $this->so->read_message((int)$message_id);
 
-			$acct = CreateObject('phpgwapi.accounts',$message['from']);
+			$acct =& CreateObject('phpgwapi.accounts',$message['from']);
 			$acct->read_repository();
 
 			if(!$n_message['content'])
@@ -389,9 +389,9 @@
 		function list_methods($_type='xmlrpc')
 		{
 			/*
-			  This handles introspection or discovery by the logged in client,
-			  in which case the input might be an array.  The server always calls
-			  this function to fill the server dispatch map using a string.
+				This handles introspection or discovery by the logged in client,
+				in which case the input might be an array.  The server always calls
+				this function to fill the server dispatch map using a string.
 			*/
 			if(is_array($_type))
 			{

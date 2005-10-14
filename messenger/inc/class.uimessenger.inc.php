@@ -30,8 +30,8 @@
 
 		function uimessenger()
 		{
-			$this->bo         = CreateObject('messenger.bomessenger');
-			$this->nextmatchs = createobject('phpgwapi.nextmatchs');
+			$this->bo         =& CreateObject('messenger.bomessenger');
+			$this->nextmatchs =& CreateObject('phpgwapi.nextmatchs');
 		}
 
 		function display_headers($extras = '')
@@ -53,7 +53,7 @@
 
 			$GLOBALS['egw']->template->fp('app_header','global_header');
 
-			$GLOBALS['egw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 		}
 
@@ -133,7 +133,7 @@
 			else
 			{
 				$GLOBALS['egw']->template->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.delete'));
-				$GLOBALS['egw']->template->set_var('button_delete','<input type="image" src="' . PHPGW_IMAGES . '/delete.gif" name="delete" title="' . lang('Delete selected') . '" border="0">');
+				$GLOBALS['egw']->template->set_var('button_delete','<input type="image" src="' . EGW_IMAGES . '/delete.gif" name="delete" title="' . lang('Delete selected') . '" border="0">');
 			}
 
 			$GLOBALS['egw']->template->pfp('out','list');
@@ -154,7 +154,7 @@
 
 		function compose_global()
 		{
-			if(!$GLOBALS['egw']->acl->check('run',PHPGW_ACL_READ,'admin'))
+			if(!$GLOBALS['egw']->acl->check('run',EGW_ACL_READ,'admin'))
 			{
 				$GLOBALS['egw']->redirect_link('/index.php','menuaction=messenger.uimessenger.inbox');
 			}
