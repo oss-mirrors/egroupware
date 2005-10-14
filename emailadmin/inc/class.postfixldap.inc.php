@@ -11,7 +11,7 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	include_once(PHPGW_SERVER_ROOT."/emailadmin/inc/class.defaultsmtp.inc.php");
+	include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.defaultsmtp.inc.php");
 
 	class postfixldap extends defaultsmtp
 	{
@@ -19,11 +19,11 @@
 		{
 			$mailLocalAddress	= $_hookValues['account_lid']."@".$this->profileData['defaultDomain'];
 
-			$ds = $GLOBALS['phpgw']->common->ldapConnect();
+			$ds = $GLOBALS['egw']->common->ldapConnect();
 			
 			$filter = "uid=".$_hookValues['account_lid'];
 
-			$sri = @ldap_search($ds,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
+			$sri = @ldap_search($ds,$GLOBALS['egw_info']['server']['ldap_context'],$filter);
 			if ($sri)
 			{
 				$allValues 	= ldap_get_entries($ds, $sri);
@@ -58,10 +58,10 @@
 		function getAccountEmailAddress($_accountName)
 		{
 			$emailAddresses	= array();
-			$ds = $GLOBALS['phpgw']->common->ldapConnect();
+			$ds = $GLOBALS['egw']->common->ldapConnect();
 			$filter 	= sprintf("(&(uid=%s)(objectclass=posixAccount))",$_accountName);
 			$attributes	= array('dn','mail','mailAlternateAddress');
-			$sri = @ldap_search($ds, $GLOBALS['phpgw_info']['server']['ldap_context'], $filter, $attributes);
+			$sri = @ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $attributes);
 			
 			if ($sri)
 			{
@@ -70,7 +70,7 @@
 				{
 					$emailAddresses[] = array
 					(
-						'name'		=> $GLOBALS['phpgw_info']['user']['fullname'],
+						'name'		=> $GLOBALS['egw_info']['user']['fullname'],
 						'address'	=> $allValues[0]['mail'][0],
 						'type'		=> 'default'
 					);
@@ -82,7 +82,7 @@
 					{
 						$emailAddresses[] = array
 						(
-							'name'		=> $GLOBALS['phpgw_info']['user']['fullname'],
+							'name'		=> $GLOBALS['egw_info']['user']['fullname'],
 							'address'	=> $allValues[0]['mailalternateaddress'][$i],
 							'type'		=> 'alternate'
 						);

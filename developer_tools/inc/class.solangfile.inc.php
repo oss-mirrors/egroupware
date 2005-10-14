@@ -1,15 +1,15 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - Translation Editor                                          *
-  * http://www.egroupware.org                                                *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* eGroupWare - Translation Editor                                          *
+	* http://www.egroupware.org                                                *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
 	class solangfile
 	{
@@ -46,7 +46,7 @@
 
 		function solangfile()
 		{
-			$this->db = $GLOBALS['phpgw']->db;
+			$this->db = $GLOBALS['egw']->db;
 		}
 
 		function fetch_keys($app,$arr)
@@ -223,7 +223,7 @@
 		{
 			$cur_lang=$this->load_app($app,$userlang);
 			define('SEP',filesystem_separator());
-			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP;
+			$fd = EGW_SERVER_ROOT . SEP . $app . SEP;
 			$this->plist = array();
 			$this->parse_php_app($app == 'phpgwapi' ? 'common' : $app,$fd);
 
@@ -231,17 +231,17 @@
 			return($this->plist);
 		}
 
-		/*!
-		@function load_app
-		@abstract loads all app phrases into langarray
-		@param $lang user lang variable (defaults to en)
-		*/
+		/**
+		 * loads all app phrases into langarray
+		 *
+		 * @param $lang user lang variable (defaults to en)
+		 */
 		function load_app($app,$userlang='en',$target=True)
 		{
 			define('SEP',filesystem_separator());
 
 			$langarray = array();
-			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . ($app == 'setup' ? 'lang' : 'setup');
+			$fd = EGW_SERVER_ROOT . SEP . $app . SEP . ($app == 'setup' ? 'lang' : 'setup');
 			$fn = $fd . SEP . 'phpgw_' . $userlang . '.lang';
 			if (@is_writeable($fn) || is_writeable($fd))
 			{
@@ -249,16 +249,16 @@
 			}
 			if (!$target) $this->src_apps = array();
 
-			$from = $GLOBALS['phpgw']->translation->charset($userlang);
-			$to = $GLOBALS['phpgw']->translation->charset();
+			$from = $GLOBALS['egw']->translation->charset($userlang);
+			$to = $GLOBALS['egw']->translation->charset();
 			//echo "<p>solangfile::load_app('$app','$userlang') converting from charset('$userlang')='$from' to '$to'</p>\n";
 
 			if (file_exists($fn))
 			{
 				if ($fp = @fopen($fn,'rb'))
 				{
-				   while ($data = fgets($fp,8000))
-				   {
+					 while ($data = fgets($fp,8000))
+					 {
 						list($message_id,$app_name,,$content) = explode("\t",$data);
 						if(!$message_id)
 						{
@@ -278,9 +278,9 @@
 							$this->src_apps[$app_name] = $app_name;
 						}
 						$langarray[$_mess_id]['content']    =
-							$GLOBALS['phpgw']->translation->convert(trim($content),$from,$to);
-				   }
-				   fclose($fp);
+							$GLOBALS['egw']->translation->convert(trim($content),$from,$to);
+					 }
+					 fclose($fp);
 				}
 			}
 			else
@@ -316,7 +316,7 @@
 			}
 			$installed = "('".implode("','",$installed)."')";
 			
-			$f = fopen(PHPGW_SERVER_ROOT.'/setup/lang/languages','rb');
+			$f = fopen(EGW_SERVER_ROOT.'/setup/lang/languages','rb');
 			while($line = fgets($f,200))
 			{
 				list($id,$name) = explode("\t",$line);
@@ -341,11 +341,11 @@
 
 		function write_file($app_name,$langarray,$userlang,$which='target')
 		{
-			$to = $GLOBALS['phpgw']->translation->charset($userlang);
-			$from = $GLOBALS['phpgw']->translation->charset();
+			$to = $GLOBALS['egw']->translation->charset($userlang);
+			$from = $GLOBALS['egw']->translation->charset();
 			//echo "<p>solangfile::write_file('$app_name',,'$userlang') converting from '$from' to charset('$userlang')='$to'</p>\n";
 
-			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . ($app_name == 'setup' ? 'lang' : 'setup') . SEP . 'phpgw_' . $userlang . '.lang';
+			$fn = EGW_SERVER_ROOT . SEP . $app_name . SEP . ($app_name == 'setup' ? 'lang' : 'setup') . SEP . 'phpgw_' . $userlang . '.lang';
 			if (file_exists($fn))
 			{
 				$backup = $fn . '.old';
@@ -355,7 +355,7 @@
 			$fp = fopen($fn,'wb');
 			while(list($mess_id,$data) = @each($langarray))
 			{
-				$data['content'] = $GLOBALS['phpgw']->translation->convert(trim($data['content']),$from,$to);
+				$data['content'] = $GLOBALS['egw']->translation->convert(trim($data['content']),$from,$to);
 
 				// dont write empty content
 				if (!empty($data['content']))
@@ -382,7 +382,7 @@
 			{
 				$userlangs = array($userslangs => $userlangs);
 			}
-			$GLOBALS['phpgw']->translation->install_langs($userlangs,'addmissing',$app_name);
+			$GLOBALS['egw']->translation->install_langs($userlangs,'addmissing',$app_name);
 
 			return lang('done');
 		}

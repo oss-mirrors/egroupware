@@ -14,7 +14,7 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Site Configuration'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=emailadmin.ui.listProfiles')
+		'Site Configuration'	=> $GLOBALS['egw']->link('/index.php','menuaction=emailadmin.ui.listProfiles')
 	);
 
 //Do not modify below this line

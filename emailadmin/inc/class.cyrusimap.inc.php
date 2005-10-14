@@ -11,7 +11,7 @@
 	\***************************************************************************/
 	/* $Id$ */
 	
-	include_once(PHPGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
+	include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
 	
 	class cyrusimap extends defaultimap
 	{

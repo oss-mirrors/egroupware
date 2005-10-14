@@ -1,15 +1,15 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - Translation Editor                                          *
-  * http://www.egroupware.org                                                *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* eGroupWare - Translation Editor                                          *
+	* http://www.egroupware.org                                                *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
 	class bolangfile
 	{
@@ -28,7 +28,7 @@
 
 		function bolangfile()
 		{
-			$this->so = CreateObject('developer_tools.solangfile');
+			$this->so =& CreateObject('developer_tools.solangfile');
 			settype($this->source_langarray,'string');
 			settype($this->target_langarray,'string');
 			settype($this->missing_langarray,'string');
@@ -46,31 +46,31 @@
 				$target = &$this->target_langarray;
 			}
 			if($this->debug) { echo '<br>Save:'; _debug_array($source); }
-			$GLOBALS['phpgw']->session->appsession('developer_source_lang','developer_tools',$source);
+			$GLOBALS['egw']->session->appsession('developer_source_lang','developer_tools',$source);
 			if($this->debug) { echo '<br>Save:'; _debug_array($target); }
-			$GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools',$target);
-			$GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools',$this->src_file);
-			$GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools',$this->tgt_file);
-			$GLOBALS['phpgw']->session->appsession('developer_t_lang','developer_tools',$this->tgt_lang);
-			$GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools',$this->loaded_apps);
-			$GLOBALS['phpgw']->session->appsession('developer_src_apps','developer_tools',$this->src_apps);
-			$GLOBALS['phpgw']->session->appsession('developer_missing_lang','developer_tools',$this->missing_langarray);
+			$GLOBALS['egw']->session->appsession('developer_target_lang','developer_tools',$target);
+			$GLOBALS['egw']->session->appsession('developer_source_file','developer_tools',$this->src_file);
+			$GLOBALS['egw']->session->appsession('developer_target_file','developer_tools',$this->tgt_file);
+			$GLOBALS['egw']->session->appsession('developer_t_lang','developer_tools',$this->tgt_lang);
+			$GLOBALS['egw']->session->appsession('developer_loaded_apps','developer_tools',$this->loaded_apps);
+			$GLOBALS['egw']->session->appsession('developer_src_apps','developer_tools',$this->src_apps);
+			$GLOBALS['egw']->session->appsession('developer_missing_lang','developer_tools',$this->missing_langarray);
 		}
 
 		function read_sessiondata()
 		{
-			$source = $GLOBALS['phpgw']->session->appsession('developer_source_lang','developer_tools');
+			$source = $GLOBALS['egw']->session->appsession('developer_source_lang','developer_tools');
 			if($this->debug) { echo '<br>Read:'; _debug_array($source); }
 
-			$target = $GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools');
+			$target = $GLOBALS['egw']->session->appsession('developer_target_lang','developer_tools');
 			if($this->debug) { echo '<br>Read:'; _debug_array($target); }
 
-			$src_file = $GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools');
-			$tgt_file = $GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools');
-			$tgt_lang = $GLOBALS['phpgw']->session->appsession('developer_t_lang','developer_tools');
-			$loaded_apps = $GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools');
-			$src_apps = $GLOBALS['phpgw']->session->appsession('developer_src_apps','developer_tools');
-			$missing = $GLOBALS['phpgw']->session->appsession('developer_missing_lang','developer_tools');
+			$src_file = $GLOBALS['egw']->session->appsession('developer_source_file','developer_tools');
+			$tgt_file = $GLOBALS['egw']->session->appsession('developer_target_file','developer_tools');
+			$tgt_lang = $GLOBALS['egw']->session->appsession('developer_t_lang','developer_tools');
+			$loaded_apps = $GLOBALS['egw']->session->appsession('developer_loaded_apps','developer_tools');
+			$src_apps = $GLOBALS['egw']->session->appsession('developer_src_apps','developer_tools');
+			$missing = $GLOBALS['egw']->session->appsession('developer_missing_lang','developer_tools');
 
 			$this->set_sessiondata($source,$target,$src_file,$tgt_file,$tgt_lang,$loaded_apps,$src_apps,$missing);
 		}
@@ -89,12 +89,12 @@
 
 		function clear_sessiondata()
 		{
-			$GLOBALS['phpgw']->session->appsession('developer_source_lang','developer_tools','');
-			$GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools','');
-			$GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools','');
-			$GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools','');
-			$GLOBALS['phpgw']->session->appsession('developer_t_lang','developer_tools','');
-			$GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools','');
+			$GLOBALS['egw']->session->appsession('developer_source_lang','developer_tools','');
+			$GLOBALS['egw']->session->appsession('developer_target_lang','developer_tools','');
+			$GLOBALS['egw']->session->appsession('developer_source_file','developer_tools','');
+			$GLOBALS['egw']->session->appsession('developer_target_file','developer_tools','');
+			$GLOBALS['egw']->session->appsession('developer_t_lang','developer_tools','');
+			$GLOBALS['egw']->session->appsession('developer_loaded_apps','developer_tools','');
 		}
 
 		function list_langs()
@@ -173,7 +173,7 @@
 					}
 				}
 				if (!empty($_mess_id) && !$this->source_langarray[$_mess_id] &&
-				    !$this->extra_langarray['common'][$_mess_id] &&
+						!$this->extra_langarray['common'][$_mess_id] &&
 					($app == $loc || !$this->extra_langarray[$loc][$_mess_id]))
 				{
 					//echo "Havn't found '$_mess_id'/$loc !!!<br>\n";

@@ -31,12 +31,12 @@
 
 		function ui()
 		{
-			$this->cats			= CreateObject('phpgwapi.categories');
-			$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
-			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			#$this->grants			= $phpgw->acl->get_grants('notes');
-			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
-			$this->boemailadmin		= CreateObject('emailadmin.bo');
+			$this->cats			=& CreateObject('phpgwapi.categories');
+			$this->nextmatchs		=& CreateObject('phpgwapi.nextmatchs');
+			$this->t			=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			#$this->grants			= $GLOBALS['egw']->acl->get_grants('notes');
+			#$this->grants[$this->account]	= EGW_ACL_READ + EGW_ACL_ADD + EGW_ACL_EDIT + EGW_ACL_DELETE;
+			$this->boemailadmin		=& CreateObject('emailadmin.bo');
 		}
 		
 		function addProfile()
@@ -56,13 +56,13 @@
 			(
 				'menuaction'	=> 'emailadmin.ui.saveProfile'
 			);
-			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			$linkData = array
 			(
 				'menuaction'	=> 'emailadmin.ui.listProfiles'
 			);
-			$this->t->set_var('back_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			foreach($this->boemailadmin->getSMTPServerTypes() as $key => $value)
 			{
@@ -122,22 +122,22 @@
 		
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['phpgw']->js))
+			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
+			$GLOBALS['egw']->js->validate_file('tabs','tabs');
 			switch($_GET['menuaction'])
 			{
 				case 'emailadmin.ui.addProfile':
 				case 'emailadmin.ui.editProfile':
-					$GLOBALS['phpgw']->js->validate_file('jscode','editProfile','emailadmin');
-					$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
-					#$GLOBALS['phpgw']->js->set_onload('smtp.init();');
+					$GLOBALS['egw']->js->validate_file('jscode','editProfile','emailadmin');
+					$GLOBALS['egw']->js->set_onload('javascript:initAll();');
+					#$GLOBALS['egw']->js->set_onload('smtp.init();');
 
 					break;
 			}
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 		}
 
@@ -198,13 +198,13 @@
 				'menuaction'	=> 'emailadmin.ui.saveProfile',
 				'profileID'	=> $profileID
 			);
-			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			$linkData = array
 			(
 				'menuaction'	=> 'emailadmin.ui.listProfiles'
 			);
-			$this->t->set_var('back_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			foreach($this->boemailadmin->getSMTPServerTypes() as $key => $value)
 			{
@@ -243,7 +243,7 @@
 						'tabpage'	=> '3',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$imapServerLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['imapServer'].'</a>';
+					$imapServerLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.$profileList[$i]['imapServer'].'</a>';
 					
 					$linkData = array
 					(
@@ -252,7 +252,7 @@
 						'tabpage'	=> '1',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$descriptionLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['description'].'</a>';
+					$descriptionLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.$profileList[$i]['description'].'</a>';
 					
 					$linkData = array
 					(
@@ -261,16 +261,16 @@
 						'tabpage'	=> '2',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$smtpServerLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['smtpServer'].'</a>';
+					$smtpServerLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.$profileList[$i]['smtpServer'].'</a>';
 					
 					$linkData = array
 					(
 						'menuaction'	=> 'emailadmin.ui.deleteProfile',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$deleteLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).
-						      '" onClick="return confirm(\''.lang('Do you really want to delete this Profile').'?\')">'.
-						      lang('delete').'</a>';
+					$deleteLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).
+									'" onClick="return confirm(\''.lang('Do you really want to delete this Profile').'?\')">'.
+									lang('delete').'</a>';
 					
 					$data[] = array(
 						$descriptionLink,
@@ -304,7 +304,7 @@
 			(
 				'menuaction'	=> 'emailadmin.ui.addProfile'
 			);
-			$this->t->set_var('add_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('add_link',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$this->t->parse("out","main");
 			
@@ -314,13 +314,13 @@
 
 		function nextMatchTable($_rows, $_data, $_description, $_start, $_total, $_menuAction)
 		{
-			$template = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$template =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$template->set_file(array("body" => "nextMatch.tpl"));
 			$template->set_block('body','row_list','rowList');
 			$template->set_block('body','header_row','headerRow');
 		
 			$var = Array(
-				'th_bg'			=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+				'th_bg'			=> $GLOBALS['egw_info']['theme']['th_bg'],
 				'left_next_matchs'	=> $this->nextmatchs->left('/index.php',$start,$total,'menuaction=emailadmin.ui.listServers'),
 				'right_next_matchs'	=> $this->nextmatchs->right('/admin/groups.php',$start,$total,'menuaction=emailadmin.ui.listServers'),
 				'lang_groups'		=> lang('user groups'),
@@ -399,13 +399,13 @@
 			#_debug_array($imapSettings);
 			
 			$this->boemailadmin->saveProfile($globalSettings, $smtpSettings, $imapSettings);
-			#if ($HTTP_POST_VARS['bo_action'] == 'save_ldap' || $HTTP_GET_VARS['bo_action'] == 'save_ldap')
+			#if ($_POST['bo_action'] == 'save_ldap' || $_GET['bo_action'] == 'save_ldap')
 			#{
 				$this->listProfiles();
 			#}
 			#else
 			#{
-			#	$this->editServer($HTTP_GET_VARS["serverid"],$HTTP_GET_VARS["pagenumber"]);
+			#	$this->editServer($_GET["serverid"],$_GET["pagenumber"]);
 			#}
 		}
 		

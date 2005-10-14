@@ -35,7 +35,7 @@
 
 		function bo($_profileID=-1)
 		{
-			$this->soemailadmin = CreateObject('emailadmin.so');
+			$this->soemailadmin =& CreateObject('emailadmin.so');
 			
 			$this->SMTPServerType = array(
 				'1' 	=> array(
@@ -218,7 +218,7 @@
 #			if(!is_object($this->imapClass))
 #			{
 #				$profileData		= $this->getProfile($_profileID);
-#				$this->imapClass	= CreateObject('emailadmin.cyrusimap',$profileData);
+#				$this->imapClass	=& CreateObject('emailadmin.cyrusimap',$profileData);
 #			}
 #			
 #			return $this->imapClass;
@@ -327,7 +327,7 @@
 #			if(!is_object($this->smtpClass))
 #			{
 #				$profileData		= $this->getProfile($_profileID);
-#				$this->smtpClass	= CreateObject('emailadmin.postfixldap',$profileData);
+#				$this->smtpClass	=& CreateObject('emailadmin.postfixldap',$profileData);
 #			}
 #			
 #			return $this->smtpClass;
@@ -352,10 +352,10 @@
 			else
 			{
 				$userData = $this->soemailadmin->getUserData($_accountID);
-				$bofelamimail = CreateObject('felamimail.bofelamimail');
+				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection('','',true);
 				$userQuota = 
-					$bofelamimail->imapGetQuota($GLOBALS['phpgw']->accounts->id2name($_accountID));
+					$bofelamimail->imapGetQuota($GLOBALS['egw']->accounts->id2name($_accountID));
 				if(is_array($userQuota))
 				{
 					$userData['quotaLimit']	= $userQuota['limit'];
@@ -369,10 +369,10 @@
 
 		function restoreSessionData()
 		{
-			global $phpgw;
+			
 		
-			$this->sessionData = $phpgw->session->appsession('session_data');
-			$this->userSessionData = $phpgw->session->appsession('user_session_data');
+			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data');
+			$this->userSessionData = $GLOBALS['egw']->session->appsession('user_session_data');
 		}
 		
 		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
@@ -399,10 +399,10 @@
 		
 		function saveSessionData()
 		{
-			global $phpgw;
 			
-			$phpgw->session->appsession('session_data','',$this->sessionData);
-			$phpgw->session->appsession('user_session_data','',$this->userSessionData);
+			
+			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
+			$GLOBALS['egw']->session->appsession('user_session_data','',$this->userSessionData);
 		}
 		
 		function saveUserData($_accountID, $_formData, $_boAction)
@@ -492,12 +492,12 @@
 					$this->soemailadmin->saveUserData(
 						$_accountID, 
 						$this->userSessionData[$_accountID]);
-					$bofelamimail = CreateObject('felamimail.bofelamimail');
+					$bofelamimail =& CreateObject('felamimail.bofelamimail');
 					$bofelamimail->openConnection('','',true);
-					$bofelamimail->imapSetQuota($GLOBALS['phpgw']->accounts->id2name($_accountID),
-								    $this->userSessionData[$_accountID]['quotaLimit']);
+					$bofelamimail->imapSetQuota($GLOBALS['egw']->accounts->id2name($_accountID),
+										$this->userSessionData[$_accountID]['quotaLimit']);
 					$bofelamimail->closeConnection();
-					$GLOBALS['phpgw']->accounts->cache_invalidate($_accountID);
+					$GLOBALS['egw']->accounts->cache_invalidate($_accountID);
 					
 					
 					break;

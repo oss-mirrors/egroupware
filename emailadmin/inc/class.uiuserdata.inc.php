@@ -23,8 +23,8 @@
 
 		function uiuserdata()
 		{
-			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$this->boemailadmin		= CreateObject('emailadmin.bo');
+			$this->t			=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$this->boemailadmin		=& CreateObject('emailadmin.bo');
 		}
 	
 		function display_app_header()
@@ -134,7 +134,7 @@
 			}
 		
 			// create the menu on the left, if needed		
-			$menuClass = CreateObject('admin.uimenuclass');
+			$menuClass =& CreateObject('admin.uimenuclass');
 			$this->t->set_var('rows',$menuClass->createHTMLCode('edit_user'));
 
 			$this->t->pparse("out","form");

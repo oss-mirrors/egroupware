@@ -44,7 +44,7 @@
 		function getMailboxString($_folderName='')
 		{
 			if($this->profileData['imapTLSEncryption'] == 'yes' &&
-			   $this->profileData['imapTLSAuthentication'] == 'yes')
+				 $this->profileData['imapTLSAuthentication'] == 'yes')
 			{
 				if(empty($this->profileData['imapPort']))
 					$port = '995';

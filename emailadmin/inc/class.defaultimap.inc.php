@@ -35,7 +35,7 @@
 		{
 			if($this->mbAvailable)
 			{
-				return mb_convert_encoding( $_folderName, "UTF7-IMAP", $GLOBALS['phpgw']->translation->charset());
+				return mb_convert_encoding( $_folderName, "UTF7-IMAP", $GLOBALS['egw']->translation->charset());
 			}
 			
 			// if not
@@ -46,7 +46,7 @@
 		function getMailboxString($_folderName='')
 		{
 			if($this->profileData['imapTLSEncryption'] == 'yes' &&
-			   $this->profileData['imapTLSAuthentication'] == 'yes')
+				 $this->profileData['imapTLSAuthentication'] == 'yes')
 			{
 				if(empty($this->profileData['imapPort']))
 					$port = '993';

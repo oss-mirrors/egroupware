@@ -35,14 +35,14 @@
 		
 		function getAccountEmailAddress($_accountName)
 		{
-			$accountID = $GLOBALS['phpgw']->accounts->name2id($_accountName);
-			$emailAddress = $GLOBALS['phpgw']->accounts->id2name($accountID,'account_email');
+			$accountID = $GLOBALS['egw']->accounts->name2id($_accountName);
+			$emailAddress = $GLOBALS['egw']->accounts->id2name($accountID,'account_email');
 			if(empty($emailAddress))
 				$emailAddress = $_accountName.'@'.$this->profileData['defaultDomain'];
 
 			return array(
 				array(
-					'name'		=> $GLOBALS['phpgw_info']['user']['fullname'], 
+					'name'		=> $GLOBALS['egw_info']['user']['fullname'], 
 					'address'	=> $emailAddress, 
 					'type'		=> 'default'
 				)

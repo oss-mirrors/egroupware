@@ -11,11 +11,13 @@
 
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp' => 'developer_tools',
-		'noheader'   => True,
-		'nofooter'   => True
+	$GLOBALS['egw_info'] = array(
+		'flags' => array(
+			'currentapp' => 'developer_tools',
+			'noheader'   => True,
+			'nofooter'   => True,
+		),
 	);
 	include('../header.inc.php');
 
-	$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=developer_tools.uilangfile.index');
+	$GLOBALS['egw']->redirect_link('/index.php','menuaction=developer_tools.uilangfile.index');

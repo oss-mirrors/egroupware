@@ -13,12 +13,12 @@
 
 	$_GET['menuaction']     = 'emailadmin.ui.listProfiles';
 
-	$phpgw_info = array();
-	$phpgw_info['flags'] = array
-	(
-		'currentapp' => 'emailadmin',
-		'noheader'   => True,
-		'nonavbar'   => True
+	$GLOBALS['egw_info'] = array(
+		'flags' => array(
+			'currentapp' => 'emailadmin',
+			'noheader'   => True,
+			'nonavbar'   => True,
+		),
 	);
 	include('../header.inc.php');
 
