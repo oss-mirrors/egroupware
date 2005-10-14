@@ -23,10 +23,10 @@
 
 		function so()
 		{
-			$this->db = $GLOBALS['phpgw']->db;
+			$this->db = clone($GLOBALS['egw']->db);
 			$this->db->set_app('bookmarks');
 			$this->table = 'phpgw_bookmarks';
-			$this->user = $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->user = $GLOBALS['egw_info']['user']['account_id'];
 		}
 
 		function _list($cat_list,$public_user_list,$start,$where_clause)
@@ -67,7 +67,7 @@
 			{
 				foreach(array('name','url','desc','keywords') as $name)
 				{
-					$bookmark[$name] = $GLOBALS['phpgw']->strip_html($bookmark[$name]);
+					$bookmark[$name] = $GLOBALS['egw']->strip_html($bookmark[$name]);
 				}
 			}
 			return $bookmark;
@@ -95,7 +95,7 @@
 		function add($values)
 		{
 			$columns = $this->_bookmark2db($values,$values['timestamps'] ? $values['timestamps'] : time() . ',0,0');
-			$columns['bm_owner'] = (int) $GLOBALS['phpgw_info']['user']['account_id'];
+			$columns['bm_owner'] = (int) $GLOBALS['egw_info']['user']['account_id'];
 			$columns['bm_visits'] = 0;
 
 			if (!$this->db->insert($this->table,$columns,False,__LINE__,__FILE__))
@@ -111,7 +111,7 @@
 
 			$this->db->select($this->table,'bm_info',array('bm_id'=>$id),__LINE__,__FILE__);
 			$this->db->next_record();
-			$ts = explode(',',$GLOBALS['phpgw']->db->f('bm_info'));
+			$ts = explode(',',$GLOBALS['egw']->db->f('bm_info'));
 			$ts[2] = time();
 
 			$columns = $this->_bookmark2db($values,implode(',',$ts));

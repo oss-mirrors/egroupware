@@ -13,15 +13,15 @@
 
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp' => 'bookmarks',
-		'nonavbar'   => True,
-		'noheader' => True
+	$GLOBALS['egw_info'] = array(
+		'flags' => array(
+			'currentapp' => 'bookmarks',
+			'nonavbar'   => True,
+			'noheader'   => True,
+		),
 	);
 	include('../header.inc.php');
 
-	$obj = createobject('bookmarks.ui');
+	$obj =& CreateObject('bookmarks.ui');
 	$obj->init();
-	$GLOBALS['phpgw']->common->phpgw_footer();
-
-?>
+	$GLOBALS['egw']->common->egw_footer();

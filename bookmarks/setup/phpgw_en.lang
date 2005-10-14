@@ -48,6 +48,7 @@ name is required	bookmarks	en	Name is required
 netscape bookmark file	bookmarks	en	Netscape Bookmark File
 netscape bookmark filename is required!	bookmarks	en	Netscape bookmark filename is required!
 new	bookmark	en	New
+new bookmark	bookmarks	en	new bookmark
 or	bookmarks	en	or
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	en	Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!
 please select the categories to export	bookmarks	en	Please select the categories to export

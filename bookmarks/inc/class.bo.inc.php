@@ -31,17 +31,17 @@
 
 		function bo()
 		{
-			$this->so = createobject('bookmarks.so');
-			$this->db          = $GLOBALS['phpgw']->db;
-			$this->grants      = $GLOBALS['phpgw']->acl->get_grants('bookmarks');
-			$this->categories = createobject('phpgwapi.categories','','bookmarks');
-			$GLOBALS['phpgw']->config     = createobject('phpgwapi.config');
-			$GLOBALS['phpgw']->config->read_repository();
-			$this->config      = $GLOBALS['phpgw']->config->config_data;
+			$this->so =& CreateObject('bookmarks.so');
+			$this->db          = clone($GLOBALS['egw']->db);
+			$this->grants      = $GLOBALS['egw']->acl->get_grants('bookmarks');
+			$this->categories =& CreateObject('phpgwapi.categories','','bookmarks');
+			$GLOBALS['egw']->config     =& CreateObject('phpgwapi.config');
+			$GLOBALS['egw']->config->read_repository();
+			$this->config      = $GLOBALS['egw']->config->config_data;
 			$this->url_format_check = True;
-			$this->validate = createobject('phpgwapi.validator');
+			$this->validate =& CreateObject('phpgwapi.validator');
 
-			$this->translation = &$GLOBALS['phpgw']->translation;
+			$this->translation = &$GLOBALS['egw']->translation;
 			$this->charset = $this->translation->charset();
 		}
 
@@ -67,9 +67,9 @@
 		{
 			$ts = explode(',',$raw_string);
 
-			$tpl->set_var('added_value',$GLOBALS['phpgw']->common->show_date($ts[0]));
-			$tpl->set_var('visited_value',($ts[1]?$GLOBALS['phpgw']->common->show_date($ts[1]):lang('Never')));
-			$tpl->set_var('updated_value',($ts[2]?$GLOBALS['phpgw']->common->show_date($ts[2]):lang('Never')));
+			$tpl->set_var('added_value',$GLOBALS['egw']->common->show_date($ts[0]));
+			$tpl->set_var('visited_value',($ts[1]?$GLOBALS['egw']->common->show_date($ts[1]):lang('Never')));
+			$tpl->set_var('updated_value',($ts[2]?$GLOBALS['egw']->common->show_date($ts[2]):lang('Never')));
 		}
 
 		function _list($cat_id,$start=False,$where_clause=False,$subcatsalso=True)
@@ -83,7 +83,7 @@
 		function read($id,$do_htmlspecialchars=True)
 		{
 			$bookmark = $this->so->read($id,$do_htmlspecialchars);
-			foreach(array(PHPGW_ACL_READ,PHPGW_ACL_EDIT,PHPGW_ACL_DELETE) as $required)
+			foreach(array(EGW_ACL_READ,EGW_ACL_EDIT,EGW_ACL_DELETE) as $required)
 			{
 				$bookmark[$required] = $this->check_perms2($bookmark['owner'],$bookmark['access'],$required);
 			}
@@ -109,7 +109,7 @@
 
 		function check_perms2($owner,$access,$required)
 		{
-			return ($owner == $GLOBALS['phpgw_info']['user']['account_id']) ||
+			return ($owner == $GLOBALS['egw_info']['user']['account_id']) ||
 				($access == 'public' && ($this->grants[$owner] & $required));
 		}
 
@@ -187,7 +187,7 @@
 		function update($id, $values)
 		{
 			#echo "bo::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
-			if ($this->validate($values) && $this->check_perms($id,PHPGW_ACL_EDIT))
+			if ($this->validate($values) && $this->check_perms($id,EGW_ACL_EDIT))
 			{
 				if ($this->so->update($id,$values))
 				{
@@ -208,7 +208,7 @@
 
 		function delete($id)
 		{
-			if ($this->check_perms($id,PHPGW_ACL_DELETE))
+			if ($this->check_perms($id,EGW_ACL_DELETE))
 			{
 				if ($this->so->delete($id))
 				{
@@ -248,8 +248,8 @@
 				if (! $this->validate->is_url($values['url']))
 				{
 					$this->error_msg = '<br>URL invalid. Format must be <strong>http://</strong> or
-                            <strong>ftp://</strong> followed by a valid hostname and
-                            URL!<br><small>' .  $this->validate->ERROR . '</small>';
+														<strong>ftp://</strong> followed by a valid hostname and
+														URL!<br><small>' .  $this->validate->ERROR . '</small>';
 					$result = False;
 				}
 			}
@@ -258,12 +258,12 @@
 
 		function save_session_data($data)
 		{
-			$GLOBALS['phpgw']->session->appsession('session_data','bookmarks',$data);
+			$GLOBALS['egw']->session->appsession('session_data','bookmarks',$data);
 		}
 
 		function read_session_data()
 		{
-			return $GLOBALS['phpgw']->session->appsession('session_data','bookmarks');
+			return $GLOBALS['egw']->session->appsession('session_data','bookmarks');
 		}
 
 		function cat_exists($catname,$parent)
@@ -346,17 +346,17 @@
 						// URLs are recognized by A HREF tags in the NS file.
 						elseif (eregi('<A HREF="([^"]*)[^>]*>(.*)</A>', $line, $match))
 						{
-						        if(!$have_desc)
+										if(!$have_desc)
 							{
-							  unset($values['desc']);
-							  if ($this->add($values))
-						          {
-							      $inserts++;
-						          }
-						        }
+								unset($values['desc']);
+								if ($this->add($values))
+											{
+										$inserts++;
+											}
+										}
 							$have_desc = False;
 							$dir_desc = False;
-						  
+							
 							$url_parts = @parse_url($match[1]);
 							if
 							(
@@ -399,18 +399,18 @@
 						// will be skiped
 						elseif (eregi('<DD>(.*)',$line,$desc))
 						{
-						        if($dir_desc)
-						        {
-							    continue;
-						        }
-						        else
-						        {  
-							    $values['desc']     = str_replace(array('&amp;','&lt;','&gt;','&quot;','&#039;'),array('&','<','>','"',"'"),$this->translation->convert($desc[1],$from_charset));
-							    if ($this->add($values))
-							    {
-							         $inserts++;
-							    }
-							    $have_desc = True;
+										if($dir_desc)
+										{
+									continue;
+										}
+										else
+										{  
+									$values['desc']     = str_replace(array('&amp;','&lt;','&gt;','&quot;','&#039;'),array('&','<','>','"',"'"),$this->translation->convert($desc[1],$from_charset));
+									if ($this->add($values))
+									{
+											 $inserts++;
+									}
+									$have_desc = True;
 							}  
 						}
 						elseif (eregi('</DL>', $line))
@@ -421,12 +421,12 @@
 
 					if(!$have_desc)
 					{
-					        unset($values['desc']);
-					        if ($this->add($values))
-				                {
-						  $inserts++;
+									unset($values['desc']);
+									if ($this->add($values))
+												{
+							$inserts++;
 						}
-				        }
+								}
 
 					@fclose($fd);
 					$this->_debug('</table>');
@@ -444,7 +444,7 @@
 			$this->type = $type;
 			$this->expanded = $expanded;
 
-			$t = CreateObject('phpgwapi.Template',PHPGW_INCLUDE_ROOT . '/bookmarks/templates/export');
+			$t =& CreateObject('phpgwapi.Template',EGW_INCLUDE_ROOT . '/bookmarks/templates/export');
 			$t->set_file('export','export_' . $this->type . '.tpl');
 			$t->set_block('export','catlist','categs');
 			if (is_array($catlist))
@@ -460,7 +460,7 @@
 
 		function gencat($catid)
 		{
-			$t = new Template(PHPGW_INCLUDE_ROOT . '/bookmarks/templates/export');
+			$t =& new Template(EGW_INCLUDE_ROOT . '/bookmarks/templates/export');
 			$t->set_file('categ','export_' . $this->type . '_catlist.tpl');
 			$t->set_block('categ','subcatlist','subcats');
 			$t->set_block('categ','urllist','urls');
@@ -476,7 +476,7 @@
 			}
 
 			$t->set_var(array(
-				'catname' => $this->translation->convert($GLOBALS['phpgw']->strip_html($this->categories->id2name($catid)),$this->charset,'utf-8'),
+				'catname' => $this->translation->convert($GLOBALS['egw']->strip_html($this->categories->id2name($catid)),$this->charset,'utf-8'),
 				'catid' => $catid,
 				'folded' => (in_array($catid,$this->expanded) ? 'no' : 'yes')
 			));
