@@ -1,0 +1,108 @@
+add	phpldapadmin	lv	Pievienot
+add_a_jpeg_photo	phpldapadmin	lv	Pievienot  jpeg Fotogrāfiju
+add_new	phpldapadmin	lv	Pievienot jaunu
+add_new_attribute	phpldapadmin	lv	Pievienot jaunu atribūtu
+add_new_attribute_tooltip	phpldapadmin	lv	PIevienot jaunu atribūtu/vērtību šim ierakstam
+add_new_binary_attr	phpldapadmin	lv	Pievienot jaunu Bināro atribūtu
+add_new_binary_attr_tooltip	phpldapadmin	lv	Pievienot jaunu bināro atribūtu/vērtību no datnes
+add_oclass_and_attrs	phpldapadmin	lv	Pievienot Objektu klases un atribūtus
+add_value	phpldapadmin	lv	pievienot vērtību
+add_value_tooltip	phpldapadmin	lv	Pievienot papildus vērŧību šim atribūtam
+advanced_search_form_str	phpldapadmin	lv	Uzlabota meklēšanas forma
+alias_for	phpldapadmin	lv	Aizstājvārds
+bad_server_id	phpldapadmin	lv	Slikts servera ID
+base_dn	phpldapadmin	lv	Bāzes DN
+binary_value	phpldapadmin	lv	binarā vērtība
+change_entry_rdn	phpldapadmin	lv	Mainīt šī ieraksta RDN
+chooser_link_tooltip	phpldapadmin	lv	Uzklikšķināt uz <i>uznirstošas</i> izvēlnes, lai atzīmētu ierakstu (DN) grafiski
+click_to_display	phpldapadmin	lv	uzklikšķini, lai parādītu
+contains	phpldapadmin	lv	satur
+copy_this_entry	phpldapadmin	lv	Kopēt šo ierakstu
+copy_this_entry_tooltip	phpldapadmin	lv	Kopēt objektu uz citu vietu, jaunu DN vai citu serveri
+could_not_connect	phpldapadmin	lv	Nevar pieslēgties LDAP serverim
+create	phpldapadmin	lv	izveidot
+create_a_child_entry	phpldapadmin	lv	Izveidot bērnu ierakstu
+create_new	phpldapadmin	lv	Izveidot jaunu
+create_new_entry_in	phpldapadmin	lv	Izveido jaunu ierakstu iekšā
+create_new_entry_on	phpldapadmin	lv	Iveido jaunu ierakstu uz
+current_list_of	phpldapadmin	lv	Patreizējais saraksts
+delete_attribute	phpldapadmin	lv	dzēst atribūtu
+delete_this_entry	phpldapadmin	lv	Dzēst šō ierakstu
+delete_this_entry_tooltip	phpldapadmin	lv	Tu tiksi paaugstināts, lai apstiprinātu šo lemumu
+desc	phpldapadmin	lv	Apraksts
+distinguished_name	phpldapadmin	lv	Ievērojams vārds
+download_value	phpldapadmin	lv	lejupielādēt vērtību
+ends_with	phpldapadmin	lv	beidzas ar
+enter_value_to_add	phpldapadmin	lv	Ievadi vērtību, kuru vēlies pievienot
+entry_attributes	phpldapadmin	lv	Ievades atribūti
+equals	phpldapadmin	lv	līdzīgi
+export_subtree_to_ldif	phpldapadmin	lv	Eksportēt koku uz LDIF
+export_to_ldif	phpldapadmin	lv	Ekspotē uz LDIF
+export_to_ldif_mac	phpldapadmin	lv	Macintosh stila līnija beidzas
+export_to_ldif_unix	phpldapadmin	lv	Unix stila līnija beidzas
+export_to_ldif_win	phpldapadmin	lv	Widows stila līnija beidzas
+false	phpldapadmin	lv	nepatiess
+hidden	phpldapadmin	lv	paslēpts
+hide_internal_attrs	phpldapadmin	lv	Paslēpt iekšējos atribūtus
+import	phpldapadmin	lv	importēt
+import_from_ldif	phpldapadmin	lv	Importēt ierakstus no LDIF datnes
+info	phpldapadmin	lv	informācija
+inherits	phpldapadmin	lv	Mantojumi
+internal_attributes	phpldapadmin	lv	Iekšējie atribūti
+internal_attrs_tooltip	phpldapadmin	lv	Sistēmas automātiski uzstādītie atribūtu
+is_obsolete	phpldapadmin	lv	Šī objektuKlase ir <b>obsolete</b>
+jump_to_attr	phpldapadmin	lv	Pārlekt uz atribūtu
+jump_to_objectclass	phpldapadmin	lv	Pārlekt uz objektuKlase
+jump_to_this_oclass	phpldapadmin	lv	Parlekt uz objektuKlases nosacījumiem
+logged_in_as	phpldapadmin	lv	Pieteicies kā
+logout	phpldapadmin	lv	iziet
+logout_of_this_server	phpldapadmin	lv	Iziet no servera
+matching_rule_oid	phpldapadmin	lv	Saderības noteikumi
+new_attributes	phpldapadmin	lv	jauni atribūti
+new_required_attrs	phpldapadmin	lv	Jauni pieprasītie atribūti
+new_required_attrs_instructions	phpldapadmin	lv	Norādījumi: Lai pievienotu šo objektuKlasi šim ierakstam, tev jānorada
+new_required_attrs_note	phpldapadmin	lv	Piezīme: tu vari pieprasīt ievadīt jaunus atribūtus, <br/> ko pieprasa šī objektuKlase.
+no_new_attrs_available	phpldapadmin	lv	šim ierakstam nav pieejami jauni atribūti
+no_updates_in_read_only_mode	phpldapadmin	lv	Tu nevari veikt uzlabojumus, kamēr serveris atrodas tikai lasīšanas režīmā
+none	phpldapadmin	lv	neviens
+none_remove_value	phpldapadmin	lv	neviens, pārvieto vērtību
+not_enough_login_info	phpldapadmin	lv	Nav pietiekami informācijas, lai pieteiktos serverī. Lūdzu pārbaudi savu konfigurāciju
+oid	phpldapadmin	lv	OID
+optional_attrs	phpldapadmin	lv	Izvēles atribūti
+please_specify_in_config	phpldapadmin	lv	Lūdzu norādi tos config.php
+read_only	phpldapadmin	lv	tikai lasāms
+really_delete_attribute	phpldapadmin	lv	Tiešām dzēst atribūtu
+refresh	phpldapadmin	lv	atsvaidzināt
+refresh_expanded_containers	phpldapadmin	lv	Atsvaidzināt visus paplašinatos konteinerus
+refresh_this_entry	phpldapadmin	lv	Atsvaidzināt šo ierakstu
+rename	phpldapadmin	lv	Pārsaukt
+rename_entry	phpldapadmin	lv	Pārsaukt ierakstu
+report_bug	phpldapadmin	lv	Ziņot par kļūdu
+request_new_feature	phpldapadmin	lv	Pieprasīt jaunu iezīmi
+required_attrs	phpldapadmin	lv	Pieprasītie atribūti
+requires_to_add	phpldapadmin	lv	Šī darbība pieprasa tev pievienot
+save_changes	phpldapadmin	lv	Saglabāt izmaiņas
+schema	phpldapadmin	lv	shēma
+schema_for_server	phpldapadmin	lv	Shēma serverim
+search	phpldapadmin	lv	meklēt
+search_ filter	phpldapadmin	lv	Meklēt filtru
+see_open_requests	phpldapadmin	lv	apskatīt atvērtos pieprasījumus
+server	phpldapadmin	lv	Serveris
+show_attributes	phpldapadmin	lv	Rādīt atribūtus
+show_internal_attrs	phpldapadmin	lv	Rādīt iekšējos atribūtus
+simple_search_form_str	phpldapadmin	lv	Vienkārša meklēšanas forma
+sounds_like	phpldapadmin	lv	skaņas kā
+starts_with	phpldapadmin	lv	sākas ar
+syntax	phpldapadmin	lv	Sintakse
+syntax_oid	phpldapadmin	lv	Sintakses OID
+that_this_oclass_requires	phpldapadmin	lv	ko šī objektuKlase pieprasa. Tu tā vari darīt šādā formā
+the_following_attributes	phpldapadmin	lv	LDAP serveris atbalsta sekojošos <b>atribūtuTipus</b>
+the_following_matching	phpldapadmin	lv	LDAP serveris atbalsta sekojošus <b>saderības noteikumus</b>
+the_following_objectclasses	phpldapadmin	lv	LDAP serveris atbalsta sekojošas <b>objektuKLases</b>
+the_following_syntaxes	phpldapadmin	lv	LDAP serveris atbalsta sekojošu <b>sintaksi</b>
+true	phpldapadmin	lv	patiess
+values_for_attribute	phpldapadmin	lv	vērtības atribūtiem
+view	phpldapadmin	lv	Rādīt
+view_schema_for	phpldapadmin	lv	Rādīt shēmu
+view_server_info	phpldapadmin	lv	Rādīt servera piegādāto informāciju
+viewing_read_only	phpldapadmin	lv	Rādīt ierakstus lasīšanas režīmā

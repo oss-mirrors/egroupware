@@ -1,0 +1,11 @@
+$ change	common	lv	Mainīt
+%	stocks	lv	%
+% change	common	lv	Mainīt%
+add new stock	stocks	lv	Pievienot jaunu krātuvi
+disable	stocks	lv	neatļauts
+display stocks on main screen is disabled	stocks	lv	Nav atļauts rādīt krātuves galvenajā ekrānā
+display stocks on main screen is enabled	stocks	lv	Atļauts rādīt krātuves galvenajā ekrānā
+edit stock	stocks	lv	Rediģēt noliktavas
+enable	stocks	lv	atļauts
+price	stocks	lv	Cena
+symbol	stocks	lv	Simbols

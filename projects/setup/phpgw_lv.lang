@@ -1,0 +1,265 @@
+% to	projects	lv	%uz
++ jobs	projects	lv	+Darbi
+account	projects	lv	Konts
+accounting	common	lv	Uzskaite
+accounting factor	projects	lv	Uzskaites nosacījums
+accounting factor for project	projects	lv	Uzskaites nosacījums projektam
+accounting system	projects	lv	Uzskaites sistēma
+active	projects	lv	Aktīvs
+activities	projects	lv	Aktivitātes
+activity	common	lv	Aktivitāte
+activity %1 has been added	projects	lv	%1 aktivitāte tika pievienota
+activity %1 has been updated	projects	lv	%1 aktivitāte tika atjaunināta
+activity id	projects	lv	Aktivitātes ID
+add activity	projects	lv	PIevienot aktivitāti
+add file	projects	lv	PIevienot datni
+add job	projects	lv	PIevienot darbu
+add project	projects	lv	Pievienot projektu
+add role	projects	lv	Pievienot lomu
+add work hours	projects	lv	Pievienot darba stundas
+address book	projects	lv	Adrešu grāmata
+administrator	projects	lv	Administrators
+administrator list	projects	lv	Administratora saraksts
+alarm	projects	lv	trauksme
+all delivery notes	projects	lv	Visas piegādes piezīmes
+amount	projects	lv	Summa
+archive	common	lv	Arhīvs
+are you sure you want to delete this activity	projects	lv	Vai esi drošs, ka vēlies dzēst šō aktivitāti?
+are you sure you want to delete this job	projects	lv	esi drošs, ka vēlies dzēst šō darbu
+are you sure you want to delete this project	projects	lv	Esi pārliecinats, ka vēlies dzēst šo projektu?
+assign	projects	lv	Piešķirt
+assign roles and events	projects	lv	Piešķirt lomas un notikumus
+assignment has been deleted	projects	lv	piešķire tika izdzēsta
+assignment has been saved	projects	lv	piešķire tika saglabāta
+assignment to project	projects	lv	Piešķire projektam
+assignment to project %1	projects	lv	piešķire %1projektam
+assignment to role	projects	lv	Piešķire lomai
+available	projects	lv	PIeejams
+before	projects	lv	pirms
+bill per hour	projects	lv	Rēķins par stundu
+bill per hour/workunit	projects	lv	Rēķins par stundu/darba vienību
+bill per workunit	projects	lv	Rēķins par darba vienību
+bookkeeper	projects	lv	Grāmatvedis
+browse	projects	lv	meklēt
+budget	projects	lv	Budžets
+budget available	projects	lv	budžets pieejams
+budget limit	projects	lv	Budžeta limits
+budget planned	projects	lv	Ieplānotai budžets
+budget used	projects	lv	budžets iezlietots
+budget used total	projects	lv	budžets pavisam izlietots
+calculate	projects	lv	Saskaitīt
+changed start date and end date	projects	lv	Nomainīts sākuma un beigu datums
+changes of project data	projects	lv	Projekta datu izmaiņas
+click %1here%2 to return to projects.	projects	lv	Noklikšķini%1šeit%2,lai atgrieztos uz projektiem
+closed	projects	lv	Aizvērts
+color legend	projects	lv	Krāsas apzīmējums
+columns to show in the projects list	projects	lv	Projektu sarakstā rādamās kolonnas
+comment	projects	lv	komentārs
+continue	projects	lv	Turpinat
+coordinator	common	lv	Koordinators
+costs	projects	lv	Izmaksas
+costs list	projects	lv	Izmaksusaraksts
+costtype	projects	lv	Izmaksu tips
+create delivery	projects	lv	Izveidot piegādi
+creator	projects	lv	Izveidotājs
+customer	common	lv	Klients
+customer nr	projects	lv	Klienta Nr.
+date created	projects	lv	Datums izveidots
+date due planned	projects	lv	Diena, kas ieplānota
+days	projects	lv	dienas
+days before	projects	lv	dienas pirms
+definition per project	admin	lv	Definīcija par projektu
+delete activity	projects	lv	dzēst aktivitāti
+delete factor	projects	lv	dzēst nosacījumu
+delete hours	projects	lv	Dzēst stundas
+delete job	projects	lv	Dzēst darbu
+delete project	projects	lv	dzēst projektu
+delete selected files	projects	lv	dzēst atzīmētās datnes
+delete work hours	projects	lv	dzēst darba stundas
+deliveries	projects	lv	Piegādes
+delivery	projects	lv	Piegāde
+delivery date	projects	lv	Piegādes datums
+delivery id	projects	lv	Piegādes ID
+delivery list	projects	lv	Piegādes saraksts
+delivery note	projects	lv	Piegādes piezīme
+delivery note for project	projects	lv	Piegādes piezīme projektam
+description can not exceed 250 characters in length	projects	lv	Apraksts nedrīkst pārsniegt 250simbolus
+description can not exceed 8000 characters in length	projects	lv	Apraksts nedrīkst pārsniegt 8000 simbolus
+discount	projects	lv	Atlaide
+distance	projects	lv	Attālums
+do you also want to delete all sub projects	projects	lv	Vai tu vēlies dzēst arī visus apakšprojektus?
+do you also want to delete all sub projects ?	projects	lv	Vai tu vēlies dzēst arī visus apakšprojektus?
+edit activity	projects	lv	Rediģēt aktivitāti
+edit administrator list	projects	lv	Rediģēt adsministratora sarakstu
+edit events	projects	lv	rediģēt notikumus
+edit job	projects	lv	Rediģēt darbu
+edit manager list	projects	lv	Rediģēt vadītaja sarakstu
+edit project	projects	lv	Rediģēt projektu
+edit roles	projects	lv	rediģēt lomas
+edit roles and events	projects	lv	Rediģēt lomas un notikumus
+edit seller list	projects	lv	Rediģēt pārdevēju sarakstu
+edit work hours	projects	lv	Rediģēt darba stundas
+employee	projects	lv	Darbinieks
+employees	projects	lv	Darbinieki
+end date has changed	projects	lv	Beigu datums nomainīts
+ending date can not be before start date	projects	lv	Beigu datums nevar būt pirms sākuma datuma
+entry	projects	lv	ieraksts
+event	projects	lv	Notikums
+event %1 has been saved	projects	lv	Notikums %1 tika saglabāts
+event %1 has been updated	projects	lv	notikums%1 tika atjaunināts
+events	projects	lv	Notikumi
+exact accounting [hh.mm]	admin	lv	Precīza uzskaite
+export as	projects	lv	eksportēt kā
+external reference	projects	lv	Ārējā norādē
+extra budget	projects	lv	Papildus budžets
+factor employee	projects	lv	Notikuma darbinikes
+factor has been deleted	projects	lv	notikums tika izdzēsts
+factor has been saved	projects	lv	notikums tika saglabāts
+factor has been updated	projects	lv	notikums tika atjaunināts
+factor project	projects	lv	Notikuma projekts
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	lv	Neizdevās nosūtīt vēstuli "%1"#$2temats"%3", sūtītājs="%4"!!!
+from	projects	lv	No
+from %1 to %2	projects	lv	no %1 uz%2
+gantt chart	projects	lv	Ganta diagramma
+gantt chart from %1 to %2	projects	lv	Ganta diagramma no%1 uz %2
+generate activity id	projects	lv	Ģenerēt aktivitātes ID?
+generate activity id ?	projects	lv	Ģenerēt aktivitātes ID?
+generate delivery id ?	projects	lv	Ģenerēt piegādes ID?
+generate job id	projects	lv	Ģenerēt Darba ID?
+generate project id	projects	lv	Ģenerēt projekta ID?
+global categories	projects	lv	VIspārējas kategorijas
+has reached	projects	lv	tika sasniegts
+hours	projects	lv	Stundas
+hours limit	projects	lv	Stundu limits
+hours of work day	admin	lv	Stundu skaits dienā
+hours used total	projects	lv	izmantotās stundas kopā
+id can not exceed 20 characters in length	projects	lv	id nevar pārsniegt 2o simbolus
+id can not exceed 250 characters in length	projects	lv	ID nevar pārsniegt 250simbolus
+if using activities	admin	lv	Ja lieto aktivitātes
+investment nr	projects	lv	Investēšanas Nr.
+invoicing method	projects	lv	Rēķina izrakstīšanas metode
+invoicing of work time	admin	lv	Darba laika rēķina izrakstīšana
+job	projects	lv	Darbs
+job has been added	projects	lv	Darbs tika pievienots
+job has been updated	projects	lv	Darbs tika atjaunināts
+job id	projects	lv	Darbs ID
+job list	projects	lv	Darbu saraksts
+job manager	projects	lv	Darbu pārvaldnieks
+jobs	common	lv	Darbi
+last update	projects	lv	Pedējie jauninājumi
+list activities	projects	lv	Uzskaitīt aktivitātes
+list budget	projects	lv	Uzskaitīt bidžetu
+list deliveries	projects	lv	uzskaitīt piegādes
+list jobs	common	lv	Uzskaitīt darbus
+list projects	common	lv	Uzskaitīt projektus
+list work hours	projects	lv	Uzskaitīt darba stundas
+main project	projects	lv	Galvenais projekts
+main project:	projects	lv	Galvenais projekts
+manager	projects	lv	Pārvaldnieks
+manager list	projects	lv	Pārvaldnieka saraksts
+managing committee	projects	lv	Vadības komiteja
+manuell entries	projects	lv	Manuāli ieraksti
+minutes per workunit	projects	lv	Minūtes darba vienībā
+month	projects	lv	Mēnesis
+move start date if pervious projects end date changes	admin	lv	Pārvietot sākuma datumu, ja iepriekšējais projekta beigu datums tika mainīts
+name not exceed 250 characters in length	projects	lv	vārds nedrīkst pārsniegt 250simbolugarumu
+new end date	projects	lv	Jauns beigu datums
+new project	projects	lv	Jauns projekts
+new start date	projects	lv	Jauns sākums datums
+nonactive	common	lv	Neaktīvs
+number	projects	lv	Numurs
+old end date	projects	lv	Vecais beigu datums
+old start date	projects	lv	Vecais sākuma datums
+open	projects	lv	Atvērt
+open popup window	projects	lv	Atvērt papildus logu
+overall	projects	lv	Kopumā
+parent project	projects	lv	Vecāku projekti
+pause	projects	lv	Pauze
+per	projects	lv	pa
+per day	projects	lv	dienā
+per hour	projects	lv	stundā
+per hour/workunit	projects	lv	stundā/darba vienībā
+per workunit	common	lv	darba vienībā
+percent	projects	lv	Procents
+planned	projects	lv	Plānots
+please choose a project coordinator	projects	lv	Lūdzu izvēlies projekta koordinatoru
+please choose activities for the project	projects	lv	Lūdzu izvēlies aktivitātes projektam
+please choose the accounting system for the project	projects	lv	Lūdzu izvēlies skaitīšanas sistēmu projektam
+please choose the discount type	projects	lv	Lūdzu izvēlies atlaižū tipu
+please enable html view of emails.	projects	lv	Lūdzu aktivizē HTML  E-pasta skatu
+please enter a remark	projects	lv	Lūdzu ievadi piezīmi
+please enter an id	projects	lv	Lūdzu ievadi ID
+please enter an id !	projects	lv	Lūdzu ievadi ID
+please enter the bill	projects	lv	Lūdzu ievadi rēķinu
+please enter the minutes per workunit	projects	lv	Lūdzu ievadi minūtes darba vienībā
+please set the accounting factor for the project	projects	lv	Lūdzu uzstādi uzskaitīšanas nosacījumus projektam
+please set your preferences for this application !	projects	lv	Lūdzu uzstādi izvēles šai aplikacijai
+please specify the budget	projects	lv	Lūdzu precizē budžetu
+position	projects	lv	Pozīcija
+previous	projects	lv	Iepriekšējais projekts
+previous project	projects	lv	Iepriekšējais projekts
+previous projects end date has changed	projects	lv	Iepriekšējā projekta beigu datums ir mainīts
+print delivery	projects	lv	Drukāt piegādi
+processor	projects	lv	Procesors
+project	projects	lv	Projekts
+project %1 has been saved	projects	lv	Projekts %1 tika saglabāts
+project %1 has been updated	projects	lv	Projekts %1 tika atjaunināts
+project accounting	admin	lv	Projekta uzskaitīšana
+project administrators	common	lv	Projekta administratori
+project data due	projects	lv	Projekta termiņš
+project date due	projects	lv	Projekta termiņš
+project dependencies	common	lv	Projekta atkarības
+project id	common	lv	Projekta ID
+project list	projects	lv	Projekta saraksts
+project overview	projects	lv	projekta pārskats
+project statistic	projects	lv	projekta statistika
+project url	projects	lv	Projekta URL
+projects	common	lv	Projekti
+projects, which are assigned as sequencing	projects	lv	Projekti, kuri norādīti ka rezultāts
+quality check	projects	lv	Kvalitātes pārbaude
+reference	projects	lv	Norāde
+remark	projects	lv	Piezīme
+remark can not exceed 8000 characters in length	projects	lv	PIezīme nevar pārsniegt 8000 simbolu garumu.
+remark can not exceed 8000 characters in length !	projects	lv	Piezīme nevar pārsniegt 8000 simbolu garumu!
+remark required	projects	lv	Piezīme pieprasīta
+result	projects	lv	Rezultats
+role	projects	lv	Loma
+role %1 has been saved	projects	lv	Loma %1 tika saglabāta
+role %1 has been updated	projects	lv	Loma %1 tika atjaunināta
+role has been deleted	projects	lv	Loma tika izdzēsta
+roles	projects	lv	Lomas
+roles list	projects	lv	Lomu saraksts
+sales department	projects	lv	Tirdzniecības nodaļa
+save factor	projects	lv	Saglabāt nosacījumu
+select factor	projects	lv	Azīmēt nosacījumu
+select groups	projects	lv	Atzīmēt grupas
+select main project	common	lv	Atzīmēt galveno projektu
+select project	projects	lv	atzīmēt projektu
+select role	projects	lv	Atzīmēt lomu
+select users	projects	lv	Atzīmēt lietotājus
+seller	projects	lv	Pārdevējs
+seller list	projects	lv	Pārdevēju saraksts
+sequencing project	projects	lv	Rezultatīvi projekti
+settings	admin	lv	uzstādījumi
+short description	projects	lv	Īss apraksts
+show gantt chart	projects	lv	Rādīt Ganta diagrammu
+show planned resources	projects	lv	rādīt plānotos līdzekļus
+site configuration	projects	lv	VIetnes konfigurācija
+size	projects	lv	izmēŗs
+start	projects	lv	Sākt
+start date can not be before parent projects start date	projects	lv	Sākuma datums nevar būt pirms vecāku projektu sākuma datuma
+start date planned	projects	lv	Plānotais sākuma datums
+statistic	projects	lv	Statistisks
+statistics	projects	lv	Statistika
+stop	projects	lv	Beigt
+sub project level %1	projects	lv	Apakšprojekta līmenis%1
+subproject	projects	lv	apakšprojekts
+sum	projects	lv	summa
+sum budget	projects	lv	Saskaitītbudžetu
+sum hours	projects	lv	Saskaitīt stundas
+sum jobs	projects	lv	saskaitīt darbus
+sum workunits	projects	lv	Saskaitīt darba vienības
+test	projects	lv	Pārbaudīt
+that id has been used already	projects	lv	Tas ID jau tiek lietots
+that id has been used already !	projects	lv	Tas ID jau tiek lietots!
+the delivery note contains no items !	projects	lv	PIegādes piezīmē nav nevienas vienības!

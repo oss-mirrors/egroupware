@@ -1,0 +1,149 @@
+a new ticket has been reported.	tts	lv	Ir ienācis jauns darba uzdevums
+accept	tts	lv	Akceptēt
+accept the ticket into verification process.	tts	lv	Akceptēt numuru verifikācijas procesā
+accepted	tts	lv	Akceptēts
+action	tts	lv	Darbība
+add new ticket	tts	lv	Pievienot darba uzdevumu
+add ticket	tts	lv	Pievienot darba uzdevumu
+additional notes	tts	lv	Papildus piezīmes
+admin options	common	lv	Administratora iespējas
+assign to	tts	lv	Pārrakstīt uz
+assigned from	tts	lv	Pārrakstīts no
+assigned to	tts	lv	Pārrakstīts uz
+category changed	tts	lv	Kategorija nomainīta
+check here to generate the state's id automatically or enter a particular id below.	tts	lv	Atzīmē šeit, lai ģenerētu stāvokļa ID automātiski vai zemāk ievadi detalizētu ID
+clear form	tts	lv	Nodzēst formu
+close the invalid ticket.	tts	lv	Aizvērt nederīgu darba uzdevumu
+closed	tts	lv	Aizvērts
+completed	tts	lv	Pabeigts
+configure the states	common	lv	Konfigurēt stāvokļus
+configure the transitions	common	lv	Konfigurēt pārejas
+create new state	tts	lv	Izveidot jaunu stāvokli
+create new ticket	tts	lv	Izveidot jaunu darba uzdevumu
+create new transition	tts	lv	Izveidot jaunu pāreju
+creates a new ticket, returns ticket_id	tts	lv	Izveido jaunu darba uzdevumu, atgriež darba uzdevuma_id
+creates a struct of tickets	tts	lv	Izveido darba uzdevumu struktūru
+date opened	tts	lv	Datums atvērts
+default assign to	tts	lv	Noklusējuma pieeja
+default group	tts	lv	Noklusējuma grupa
+default priority	tts	lv	Noklusējuma prioritāte
+delete the listed tickets.	tts	lv	Dzēst uzskaitītos darba uzdevumus
+deleting the state	tts	lv	Dzēš stāvokli
+deleting the transition	tts	lv	Dzēš pāreju
+duplicate	tts	lv	DUBLIKĀTS
+edit the state	tts	lv	Rediģēt stāvokli
+edit the transition	tts	lv	Rediģēt pāreju
+error: the subject of the ticket is not specified.	tts	lv	KĻŪDA: nav norādīts darba uzdevuma temats
+force	tts	lv	Ietekme
+global categories	tts	lv	VIspārējas kategorijas
+group ownership changed	tts	lv	Mainīts grupas īpašumtiesības
+history	tts	lv	Vēsture
+i worked on the ticket and the work requires validation.	tts	lv	Es strādāju pie darba uzdevuma un darbs pieprasa apstiprināšanu
+i worked on the ticket, but did not finish.	tts	lv	Es strādaju pie darba uzdevuma, bet vēl nepabeidzu
+in progress	tts	lv	Turpinās
+initial state	tts	lv	Inicializēt stāvokli
+invalid	tts	lv	NEDERĪGS
+invalidate	tts	lv	PADARĪT NEDERĪGU
+keep the present state [%1].	tts	lv	paturēt esošo stāvokli [%1].
+latest note added	tts	lv	Pēdējais pievienotais ziņojums
+list of available tickets' states.	tts	lv	Pieejamo darba uzdevumu stāvokļu saraksts
+list of available tickets' transitions.	tts	lv	Pieejamo darba uzdevumu pāreju saraksts
+missing description	tts	lv	Trūkst apraksta
+morework	tts	lv	VAIRĀK DARBA
+needswork	tts	lv	NEPIECIEŠAMS DARBS
+new	tts	lv	JAUNS
+new ticket	tts	lv	Jauns darba uzdevums
+new tickets can be put into this state.	tts	lv	Šajā stāvoklī var tikt ievietots jauns darba uzdevums
+new value	tts	lv	Jauna vērtība
+no additional notes	tts	lv	Nav papildu ziņojumu
+no duplicate	tts	lv	NAV DUBLIKĀTA
+no notes for this ticket	tts	lv	Šim darba uzdevumam piezīmju nav
+no states found	tts	lv	Nav atrasti stavokļi
+no tickets found	tts	lv	Nav atrasti darba uzdevumi
+no transitions found	tts	lv	Nav atrastas pārejas
+not assigned	tts	lv	Nav piešķirts
+not completed	tts	lv	NAV PABEIGTS
+notify changes to ticket assignee by e-mail	tts	lv	Paziņot par izmaiņām darba uzdevuma pilnvarotajam pa e-pastu
+notify changes to ticket group by e-mail	tts	lv	Paziņot par izmaiņām darba uzdevuma grupai pa e-pastu
+notify changes to ticket owner by e-mail	tts	lv	Paziņot par izmiņām darba uzdevuma īpašniekam pa e-pastu
+old value	tts	lv	Vecā vērtība
+open	tts	lv	Atvērt
+open / closed	tts	lv	Atvērts/ Aizvērts
+open date	tts	lv	Atvēršanas datums
+opened	tts	lv	Atvērts
+opened by	tts	lv	Atvēra
+priority	tts	lv	Prioritāte
+priority changed	tts	lv	Prioritāte nomainīta
+re-assigned	tts	lv	Vēlreiz piešķirts
+re-opened	tts	lv	Vēlreiz atvērts
+refresh every (seconds)	tts	lv	Atsvaidzināt katras (sekundes)
+reopen	tts	lv	ATVĒRT VĒLREIZ
+reopened	tts	lv	ATVĒRTS VĒLREIZ
+resolve	tts	lv	IZLEMT
+resolved	tts	lv	IZLEMTS
+returns a struct of a tickets history	tts	lv	Atgriež darba uzdevumu vēsturi
+returns a struct of values of a single ticket	tts	lv	Atgriež darba uzdevuma vērtības
+returns the additional notes attached to a ticket	tts	lv	Atgriež papildus ziņojumus pievienotus darba uzdevumam
+selected	tts	lv	atzīmēts
+show new/updated tickets on main screen	tts	lv	rādīt jaunus/atjauninātus darba uzdevumus galvenajā logā
+source state	tts	lv	Pamata stāvoklis
+state	tts	lv	Stāvoklis
+state changed	tts	lv	Stāvoklis mainīts
+state id	tts	lv	Stāvokļa ID
+state name	tts	lv	Stāvokļa nosaukums
+status/date closed	tts	lv	Statuss/Diena  slēgta
+subject changed	tts	lv	Temets mainīts
+target state	tts	lv	Mērķa stāvoklis
+test	tts	lv	Pārbaudīt
+the closed ticket requires more work. reopen it.	tts	lv	Aizvērtais darba uzdevums pieprasa vairāk darba. Atver to vēlreiz.
+the owner of the ticket was not able to confirm the issue.	tts	lv	Darba uzdevuma īpašnieks nebija spējīgs apstiprināt šo jautājumu
+the ticket has been accepted by the owner, who is about to work on it.	tts	lv	Darba uzdevumu akceptēja īpašnieks, kuram ar to ir jāstrādā
+the ticket has been closed without resolution.	tts	lv	Darba uzdevums tika aizvērts bez atrisinājuma
+the ticket has been reopened for further work.	tts	lv	Darba uzdevums tika vēlreiz atvērts turpmākajam darbam
+the ticket has been successfully resolved.	tts	lv	Darba uzdevums tika veiksmīgi atrisināts
+the ticket has been verified and has to be worked on.	tts	lv	Darba uzdevums tika parbaudīts un pie tā jāsāk strādāt
+the ticket has been worked on and the work requires validation.	tts	lv	Pie darba uzdevuma tika strādāts un darbs pieprasa apstiprināšanu
+the ticket has been worked on, but requires more work.	tts	lv	Pie darba uzdevumiem tiek strādāts, bet pieprasa vairāk darba
+the ticket is a duplicate of another ticket and should be closed.	tts	lv	Darba uzdevums ir cita darba uzdevuma dublikāts, tāpēc to vajadzētu aizvērt
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	lv	Pamata darba uzdevums nav cita darba uzdevuma dublikāts. Atver to velreiz.
+the ticket is invalid and cannot be worked on.	tts	lv	Darba uzdevums nav derīgs un nevar tikt atvērts
+the ticket resolution was successfully validated. close the ticket.	tts	lv	Darba uzdevuma atrisinājums tika veiksmīgi apstiprināts. Aizver darba uzdevumu.
+the ticket was found a duplicate of another ticket.	tts	lv	Darba uzdevums atrada cita darba uzdevuma dublikātu
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	lv	Darba uzdevumi sekojošā sarakstā ir stāvoklī %1. Lūdzu izlem, kas būtu ar tiem jādara.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	lv	Darba uzdevuma apstiprināšana nebija veiksmīga. Darba uzdevums pieprasa vairāk darba.
+ticket	tts	lv	Darba uzdevums
+ticket has been updated	tts	lv	Darba uzdevums tika atjaunināts
+tickets found %1	tts	lv	Atrasti darba uzdevumi %1
+tickets open %1	tts	lv	Atvērt darba uzdevumud  %1
+tickets total %1	tts	lv	Darba uzdevumi kopā %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	lv	Iet atpakaļ uz tts izvēlni, klikšķini <a href="%1">šeit</a>
+toaccept	tts	lv	AKCEPTĒT
+toclosed	tts	lv	AIZVĒRT
+toduplicate	tts	lv	DUBLICĒT
+toinvalid	tts	lv	PADARĪT NEDERĪGU
+toneedswork	tts	lv	NEPIECIEŠAMS DARBS
+tonew	tts	lv	JAUNAM
+toreopened	tts	lv	ATVĒRTAM NO JAUNA
+toresolved	tts	lv	ATRISINĀTAM
+totovalidate	tts	lv	APSTIPRINĀT
+tovalidate	tts	lv	APSTIPRINĀT
+toverified	tts	lv	PĀRBAUDĪTAM
+transition	tts	lv	Pāreja
+transition name	tts	lv	Pārejas nosaukums
+trouble ticket system	common	lv	Darba uzdevumu traucējumu sistēma
+tts	common	lv	Darba uzdevumu traucējumu sistēma
+tts preferences	tts	lv	Darba uzdevumu traucējumu sistēma- izvēles
+undefined	tts	lv	NEDEFINĒTS
+update ticket state	tts	lv	Atjaunināt darba uzdevuma stāvokli
+updates ticket	tts	lv	Atjaunināt darba uzdevumus
+verified	tts	lv	PĀRBAUDĪTS
+verify	tts	lv	PĀRBAUDĪT
+verify the ticket to work on it.	tts	lv	Pārbaudīt darba uzdevumu, lai pie tā strādātu
+view all tickets	tts	lv	Rādīt visus darba uzdevumus
+view job detail	tts	lv	Rādīt darba detaļas
+view only my open tickets	tts	lv	Rādīt tikai manus atvērtos darba uzdevumus
+view only open tickets	tts	lv	Rādīt tikai atvērtos darba uzdevumus
+you can only close a ticket if it is assigned to you.	tts	lv	Tu vari tikai aizvērt darba uzdevumu, ja tas tev ir piešķirts.
+you want to delete the state %1 and associated transitions. are you sure?	tts	lv	Tu vēlies dzēst stāvokli %1 un saistītas pārejas. Vai esi drošs?
+you want to delete the state %1. are you sure?	tts	lv	Tu vēlies dzēst stāvokli %1. Vai esi drošs?
+you want to delete the transition %1. are you sure?	tts	lv	Tu vēlies dzēst pāreju %1. Vai esi drošs?
