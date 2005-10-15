@@ -1,0 +1,23 @@
+%1 - %2 of %3	sambaadmin	en	%1 - %2 of %3
+add workstation	sambaadmin	en	add workstation
+check ldap setup (experimental!!!)	admin	en	check ldap setup (experimental!!!)
+computer group	admin	en	computer group
+computer ou	admin	en	computer ou
+displayname	sambaadmin	en	displayname
+do you really want to delete selected workstation accounts?	sambaadmin	en	Do you really want to delete selected workstation accounts?
+homedrive	admin	en	homedrive
+homepath	sambaadmin	en	homepath
+logonscript	admin	en	logonscript
+new account defaults	admin	en	new account defaults
+participants	sambaadmin	en	Participants
+path to mkntpwd	admin	en	path to mkntpwd
+profilepath	admin	en	profilepath
+samba config	sambaadmin	en	samba config
+samba sid	admin	en	Samba SID
+smb homepath	admin	en	smb homepath
+workstation account for	sambaadmin	en	workstation account for
+workstation configuration	sambaadmin	en	workstation configuration
+workstation list	sambaadmin	en	workstation list
+workstation name	sambaadmin	en	workstation name
+workstationaccount active	sambaadmin	en	workstationaccount active
+workstations	sambaadmin	en	workstations
