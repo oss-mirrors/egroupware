@@ -1,0 +1,284 @@
+% to	projects	no	% til
++ jobs	projects	no	+ jobber
+account	projects	no	Konto
+accounting	common	no	Regnskap
+accounting factor	projects	no	Regnskapsfaktor
+accounting factor for project	projects	no	Regnskapsfaktor for prosjektet
+accounting system	projects	no	Regnskapssystem
+active	projects	no	Aktiv
+activities	projects	no	Aktiviteter
+activity	common	no	Aktivitet
+activity %1 has been added	projects	no	Aktivitet %1 ble opprettet
+activity %1 has been updated	projects	no	Aktivitet %1 ble oppdatert
+activity id	projects	no	Aktivitetsidentitet
+add activity	projects	no	Opprett aktivitet
+add file	projects	no	Opprett fil
+add job	projects	no	Opprett jobb
+add milestone	projects	no	Opprett milepel
+add project	projects	no	Opprett prosjekt
+add role	projects	no	Opprett rolle
+address book	projects	no	Adressebok
+administrator	projects	no	Administrator
+alarm	projects	no	alarm
+amount	projects	no	Mengde
+archive	common	no	Arkivere
+are you sure you want to delete this activity	projects	no	Vil du slette denne aktiviteten?
+are you sure you want to delete this job	projects	no	Vil du slette denne jobben?
+are you sure you want to delete this project	projects	no	Vil du slette dette prosjektet?
+assign	projects	no	Tilordne
+assign roles and events	projects	no	Tilordne roller og hendelser
+assignment has been deleted	projects	no	Tillordning ble slettet
+assignment has been saved	projects	no	Tillordning ble lagret
+assignment to project	projects	no	Tilordne til prosjekt
+assignment to project %1	projects	no	Tillordne til prosjekt %1
+assignment to role	projects	no	Tilordne til rolle
+available	projects	no	Tilgjengelig
+before	projects	no	før
+bill per hour	projects	no	Fakturer pr. time
+bill per hour/workunit	projects	no	Fakturer pr. time / arbeidsenhet
+bill per workunit	projects	no	Fakturer pr. arbeidsenhet
+billable	projects	no	Fakturerbar
+billable activities	projects	no	Fakturerbare aktiviteter
+billed	projects	no	Fakturert
+bookkeeper	projects	no	Bokholder
+browse	projects	no	list
+budget	projects	no	Budsjett
+budget available	projects	no	Budsjett tilgjengelig
+budget limit	projects	no	Budsjett grense
+budget main project	projects	no	budsjett hovedprosjekt
+budget planned	projects	no	Budsjett planlagt
+budget used	projects	no	Budsjett brukt
+budget used total	projects	no	Budsjett brukt totalt
+calculate	projects	no	Kalkuler
+changed start date and end date	projects	no	Endret start og sluttdato
+changes of project data	projects	no	Endringer på prosjektdata
+click %1here%2 to return to projects.	projects	no	Klikk %1her%2 for retur til prosjektene
+closed	projects	no	Lukket
+columns to show in the projects list	projects	no	Kolonner som skal vises i prosjektlisten
+comment	projects	no	kommentar
+continue	projects	no	Fortsette
+coordinator	common	no	Koordinator
+costs	projects	no	Kostnader
+costs list	projects	no	Liste kostnader
+costtype	projects	no	Kostnadstype
+create delivery	projects	no	Opprette leveranse
+creator	projects	no	Opprettet av
+customer	common	no	Kunde
+customer nr	projects	no	Kundenr.
+date created	projects	no	Opprettet dato
+date due planned	projects	no	Planlagt sluttdato
+days	projects	no	dager
+days before	projects	no	dager før
+definition per project	admin	no	Definisjon pr. prosjekt
+delete activity	projects	no	slett aktivitet
+delete factor	projects	no	slett faktor
+delete hours	projects	no	slett timer
+delete job	projects	no	slett jobb
+delete project	projects	no	slett prosjekt
+delete selected files	projects	no	slett valgte filer
+delete work hours	projects	no	slett arbeidede timer
+deliveries	projects	no	Leveranser
+delivery	projects	no	Levering
+delivery date	projects	no	Leveringsdato
+delivery id	projects	no	Leveringsidentitet
+delivery list	projects	no	Leveranseliste
+delivery note	projects	no	Leveransenotat
+delivery note for project	projects	no	Leveransenotat for prosjektet
+discount	projects	no	Rabatt
+distance	projects	no	Distanse
+do you also want to delete all sub projects	projects	no	Ønsker du også å slette alle underprosjekter?
+do you also want to delete all sub projects ?	projects	no	Ønsker du også å slette alle underprosjekter?
+edit activity	projects	no	Endre aktivitet
+edit administrator list	projects	no	Endre administratorliste
+edit events	projects	no	endre hendelser
+edit job	projects	no	Endre jobb
+edit manager list	projects	no	Endre lederliste
+edit milestone	projects	no	Endre milepel
+edit milestones	projects	no	Endre milepeler
+edit project	projects	no	Endre prosjekt
+edit roles	projects	no	endre roller
+edit roles and events	projects	no	Endre roller og hendelser
+edit seller list	projects	no	Endre selgerliste
+edit work hours	projects	no	Endre arbeidede timer
+employee	projects	no	Ansatt
+employees	projects	no	Ansatte
+end date has changed	projects	no	Sluttdato har blitt endret
+event	projects	no	Hendelse
+event %1 has been saved	projects	no	Hendelse %1 ble lagret
+event %1 has been updated	projects	no	Hendelse %2 ble lagret
+events	projects	no	Hendelser
+export as	projects	no	eksporter som
+external reference	projects	no	Ekstern referanse
+extra budget	projects	no	Ekstra budsjett
+factor employee	projects	no	Faktor ansatt
+factor has been deleted	projects	no	Faktor ble slettet
+factor has been saved	projects	no	Faktor ble lagret
+factor has been updated	projects	no	Faktor ble oppdatert
+factor project	projects	no	Faktor for prosjektet
+from	projects	no	Fra
+from %1 to %2	projects	no	fra %1 til %2
+gantt chart	projects	no	Gantt diagram
+gantt chart from %1 to %2	projects	no	Gantt diagram fra %1 til %2
+generate activity id	projects	no	Generere aktivitetsident ?
+generate activity id ?	projects	no	Generere aktivitetsident ?
+generate delivery id ?	projects	no	Generere leveranseident ?
+generate job id	projects	no	Generere Jobbident ?
+generate project id	projects	no	Generer prosjektnr.
+global categories	projects	no	Globale Kategorier
+has reached	projects	no	er nådd
+hours	projects	no	Timer
+hours limit	projects	no	Timer grense
+hours of work day	admin	no	Antall timer pr. arbeidsdag
+hours used total	projects	no	timer brukt totalt
+id can not exceed 20 characters in length	projects	no	ID kan ikke overskride 20 karakterer
+id can not exceed 250 characters in length	projects	no	ID kan ikke overskride 250 karakterer
+if using activities	admin	no	Dersom aktiviteter benyttes
+investment nr	projects	no	Investeringsnr.
+invoicing method	projects	no	Faktureringsmetode
+invoicing of work time	admin	no	Fakturere arbeidstimer
+job	projects	no	Jobb
+job has been added	projects	no	Jobb ble opprettet
+job has been updated	projects	no	Jobb ble oppdatert
+job id	projects	no	Jobb ID
+job list	projects	no	Jobbliste
+job manager	projects	no	Jobbleder
+jobs	common	no	Jobber
+last update	projects	no	Sist oppdatert
+list activities	projects	no	Liste aktiviteter
+list budget	projects	no	Liste budsjett
+list deliveries	projects	no	liste leveranser
+list jobs	common	no	Liste jobber
+list projects	common	no	Liste prosjekter
+list work hours	projects	no	Liste arbeidede timer
+main project	projects	no	Hovedprosjekt
+main project:	projects	no	Hovedprosjekt:
+manager	projects	no	Leder
+manager list	projects	no	Liste ledere
+managing committee	projects	no	Styringskomitee
+manuell entries	projects	no	Manuelle tillegg
+milestone	projects	no	Milepel
+milestone date due	projects	no	Milepel overskredet
+milestone has been deleted	projects	no	Milepel ble slettet
+milestone has been saved	projects	no	Milepel ble lagret
+milestones	common	no	Milepeler
+minutes per workunit	projects	no	Minutter pr. enhet
+month	projects	no	Måned
+new end date	projects	no	Ny sluttdato
+new milestone	projects	no	Ny milepel
+new project	projects	no	Nytt prosjekt
+new start date	projects	no	Ny startdato
+nonactive	common	no	Ikke aktiv
+not billable	projects	no	Ikke fakturerbar
+number	projects	no	Nummer
+old end date	projects	no	Gammel sluttdato
+old start date	projects	no	Gammel startdato
+open	projects	no	Åpen
+overall	projects	no	Totalt
+parent project	projects	no	Hovedprosjekt
+pause	projects	no	Pause
+per	projects	no	pr.
+per day	projects	no	pr. dag
+per hour	projects	no	pr. time
+per hour/workunit	projects	no	pr. time / enhet
+per workunit	common	no	pr. enhet
+percent	projects	no	Prosent
+planned	projects	no	Planlagt
+please choose a project coordinator	projects	no	Velg en prosjektkoordinator
+please choose activities for the project	projects	no	Velg aktiviteter for prosjektet
+position	projects	no	Posisjon
+previous	projects	no	Tidligere prosjekt
+previous project	projects	no	Tidligere prosjekt
+project	projects	no	Prosjekt
+project %1 has been saved	projects	no	Prosjekt %1 ble lagret
+project %1 has been updated	projects	no	Prosjekt %1 ble oppdatert
+project administrators	common	no	Prosjektadministrasjon
+project dependencies	common	no	Prosjektavhengigheter
+project id	common	no	Prosjektnr.
+project list	projects	no	Prosjektliste
+project overview	projects	no	Prosjektoversikt
+project statistic	projects	no	Prosjektstatistikk
+project url	projects	no	Prosjekt URL
+projects	common	no	Prosjekter
+quality check	projects	no	Kvalitetskontroll
+reference	projects	no	Referanse
+remark	projects	no	Bemerkning
+result	projects	no	Resultat
+role	projects	no	Rolle
+role %1 has been saved	projects	no	Rolle %1 ble lagret
+role %1 has been updated	projects	no	Rolle %1 ble oppdatert
+role has been deleted	projects	no	Rolle ble slettet
+roles	projects	no	Roller
+roles list	projects	no	Liste roller
+sales department	projects	no	Salgsavdeling
+save factor	projects	no	Lagre faktor
+save milestone	projects	no	lagre milepel
+select factor	projects	no	Velg faktor
+select groups	projects	no	Velg grupper
+select main project	common	no	Velg hovedprosjekt
+select project	projects	no	Velg prosjekt
+select role	projects	no	Velg rolle
+select users	projects	no	Velg brukere
+seller	projects	no	Selger
+seller list	projects	no	Selgerliste
+settings	admin	no	innstillinger
+short description	projects	no	Kort beskrivelse
+show gantt chart	projects	no	Vis Gantt diagram
+show milestones	projects	no	Vis milepeler
+show planned resources	projects	no	Vis planlagte ressurser
+site configuration	projects	no	Konfigurasjon av web
+size	projects	no	str.
+start	projects	no	Start
+start date planned	projects	no	Planlagt startdato
+statistic	projects	no	Statistikk
+statistics	projects	no	Statistikk
+stop	projects	no	Stopp
+sub project level %1	projects	no	Underprosjekt nivå %1
+subproject	projects	no	underprosjekt
+sum	projects	no	sum
+sum budget	projects	no	Sum budsjett
+sum hours	projects	no	Sum timer
+sum jobs	projects	no	Sum jobber
+sum workunits	projects	no	Sum arbeidsenheter
+test	projects	no	Test
+that id has been used already	projects	no	Identiteten er allerede i bruk.
+that id has been used already !	projects	no	Identiteten er allerede i bruk !
+till	projects	no	Inntil
+time of journey	projects	no	Reisetid
+time planned	projects	no	Planlagt tid
+time tracker	projects	no	Timeregistrering
+time tracking for this project is already active	projects	no	timeregistrering for prosjektet er alledere aktivert
+time used	projects	no	Medgått tid
+time used billable	projects	no	Fakturerbar tid
+time used total	projects	no	Tid brukt totalt
+title can not exceed 250 characters in length	projects	no	Tittel kan ikke overstige 250 karakterer
+update delivery	projects	no	Oppdater leveranse
+use activities	admin	no	Bruke aktiviteter
+used	projects	no	brukt
+used - jobs included	projects	no	brukt - inkl. jobber
+used billable	projects	no	Brukt - fakturerbart
+used not billable	projects	no	Brukt - ikke fakturerbart
+used total	projects	no	Brukt totalt
+user statistic	projects	no	Statistikk
+user statistics	projects	no	Statistikker
+view employees	projects	no	Vis ansatte
+view gantt chart	projects	no	Vis Gantt diagram
+view hours	projects	no	Vis timer
+view job	projects	no	Vis jobb
+view project	projects	no	Vis prosjekt
+view users	projects	no	Vis brukere
+view work hours	projects	no	Vis arbeidede timer
+work date	common	no	Dato
+work hours	common	no	Timer
+work time	projects	no	Medgått tid
+workunit	projects	no	Arbeidsenhet
+workunits	projects	no	Arbeidsenheter
+you have entered an invalid date !	projects	no	Du har registrert en feil dato
+you have entered an invalid date due	projects	no	Du har registrert en feil sluttdato.
+you have entered an invalid end date	projects	no	Du har registrert en feil sluttdato.
+you have entered an invalid planned end date	projects	no	Du har registrert en feil planlagt sluttdato.
+you have entered an invalid planned start date	projects	no	Du har registrert en feil planlagt startdato.
+you have entered an invalid start date	projects	no	Du har registrert en feil startdato.
+you have no customer selected !	projects	no	Du har ikke valgt en kunde !
+you have no projects selected	projects	no	Du har ikke valgt noe prosjekt
+you have selected an invalid activity	projects	no	Du har valgt feil aktivitet
+you have to create a delivery or invoice first !	projects	no	Du må lage en leveranse eller faktura først !
