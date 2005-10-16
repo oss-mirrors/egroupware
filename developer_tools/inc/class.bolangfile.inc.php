@@ -246,6 +246,8 @@
 
 		function loaddb($app_name,$userlangs)
 		{
+			$GLOBALS['egw']->invalidate_session_cache();	// otherwise you habe to logout to see the changes, if the session-cache is enabled
+
 			return $this->so->loaddb($app_name,$userlangs);
 		}
 	}
