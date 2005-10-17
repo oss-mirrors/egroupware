@@ -13,6 +13,7 @@ participants	sambaadmin	de	Teilnehmer
 path to mkntpwd	admin	de	Pfad zu mkntpwd
 profilepath	admin	de	Profilepfad
 samba config	sambaadmin	de	Samba Konfiguration
+samba settings	common	de	Samba Einstellungen
 samba sid	admin	de	Samba SID
 smb homepath	admin	de	SMB Heimatpfad
 workstation account for	sambaadmin	de	Konto für Arbeitsstation
