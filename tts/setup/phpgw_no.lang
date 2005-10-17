@@ -17,11 +17,6 @@ billable rate	tts	no	Fakturerbar pris
 billable rate changed	tts	no	Fakturerbar pris endret
 category changed	tts	no	Kategori endret
 check here to generate the state's id automatically or enter a particular id below.	tts	no	Huk av her for å lage tilstands-ID automatisk, eller skriv inn ønsker ID under.
-check here to generate the state\'s id automatically or enter a particular id below.	tts	no	Merk denne for å generere ID automatisk eller skriv inn ønsket ID under.
-check here to generate the state\\\'s id automatically or enter a particular id below.	tts	no	Merk denne for å generere ID automatisk eller skriv inn ønsket ID under.
-check here to generate the state\\\\\\\'s id automatically or enter a particular id below.	tts	no	Merk denne for å generere ID automatisk eller skriv inn ønsket ID under.
-check here to generate the state\\\\\\\\\\\\\\\'s id automatically or enter a particular id below.	tts	no	Merk denne for å generere ID automatisk eller skriv inn ønsket ID under.
-check here to generate the state\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'s id automatically or enter a particular id below.	tts	no	Merk denne for å generere ID automatisk eller skriv inn ønsket ID under.
 clear form	tts	no	Tøm formular
 close the invalid ticket.	tts	no	Lukk den ugyldig saken.
 closed	tts	no	Lukket
@@ -44,6 +39,7 @@ detail	tts	no	Detalj
 duplicate	tts	no	KOPI
 edit the state	tts	no	Endre tilstand
 edit the transition	tts	no	Endre overgang
+error: the subject of the ticket is not specified.	tts	no	FEIL : Du må ha en overskrift på saken
 force	tts	no	Tving
 global categories	tts	no	Globale kategorier
 group ownership changed	tts	no	Gruppeeierskap endret
@@ -58,16 +54,6 @@ keep the present state [%1].	tts	no	Behold nåværende tilstand [%1].
 latest note added	tts	no	Siste notat lagt til
 list of available tickets' states.	tts	no	Vis tilgjengelige saks-tilstander.
 list of available tickets' transitions.	tts	no	Vis tilgjengelige saks-overganger.
-list of available tickets\' states.	tts	no	Liste over tilgjengelige saks-tilstander.
-list of available tickets\' transitions.	tts	no	Liste over tilgjengelige saks-overganger.
-list of available tickets\\\' states.	tts	no	Liste over tilgjengelige saks-tilstander.
-list of available tickets\\\' transitions.	tts	no	Liste over tilgjengelige saks-overganger.
-list of available tickets\\\\\\\' states.	tts	no	Liste over tilgjengelige saks-tilstander.
-list of available tickets\\\\\\\' transitions.	tts	no	Liste over tilgjengelige saks-overganger.
-list of available tickets\\\\\\\\\\\\\\\' states.	tts	no	Liste over tilgjengelige saks-tilstander.
-list of available tickets\\\\\\\\\\\\\\\' transitions.	tts	no	Liste over tilgjengelige saks-overganger.
-list of available tickets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\' states.	tts	no	Liste over tilgjengelige saks-tilstander.
-list of available tickets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\' transitions.	tts	no	Liste over tilgjengelige saks-overganger.
 missing description	tts	no	Mangler beskrivelse
 morework	tts	no	MERARBEID
 needswork	tts	no	TRENGERMERARBEID
@@ -94,7 +80,7 @@ opened	tts	no	Åpnet
 opened by	tts	no	Åpnet av
 original ticket details	tts	no	Orginale saksdetaljer
 perform irregular transition into the following state	tts	no	Utfør uvanlig overgang til følgende tilstand
-prio	tts	no	Prio
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	no	Du må registrere en overskrift på meldingen ellers vil den ikke lagres.
 priority	tts	no	Prioritet
 priority changed	tts	no	Prioritet endret
 put the preexistent ticket into the state %1.	tts	no	Sett den eksisterende saken til tilstand %1.
@@ -137,6 +123,7 @@ the ticket was found a duplicate of another ticket.	tts	no	Saken er en kopi av e
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	no	Følgende saker har tilstand %1. Vennligst avgjør hva som skal gjøres.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	no	Validering av saken feilet. Saken krever mer arbeid.
 ticket	tts	no	Sak
+ticket #	tts	no	Saksnr.
 ticket has been updated	tts	no	Saken har blitt oppdatert
 tickets found %1	tts	no	Saker funnet %1
 tickets open %1	tts	no	Saker åpnet %1
@@ -167,7 +154,9 @@ verify	tts	no	VERIFISER
 verify the ticket to work on it.	tts	no	Verifiser sak for å arbeide med den.
 view all tickets	tts	no	Vis alle saker
 view job detail	tts	no	Vis jobbdetaljer
+view only my open tickets	tts	no	Vis bare mine åpne saker
 view only open tickets	tts	no	Vis kun åpne saker
 you can only close a ticket if it is assigned to you.	tts	no	Du kan kun lukke en sak hvis den er tildelt deg.
+you want to delete the state %1 and associated transitions. are you sure?	tts	no	Du vil slette tilstand %1 og tilhørende overganger. Er du sikker?
 you want to delete the state %1. are you sure?	tts	no	Du vil slette tilstand %1. Er du sikker?
 you want to delete the transition %1. are you sure?	tts	no	Du vil slette overgang %1. Er du sikker?

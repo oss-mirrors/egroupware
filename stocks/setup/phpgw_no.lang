@@ -1,0 +1,15 @@
+$ change	common	no	Endr.
+%	stocks	no	%
+% change	common	no	Endr. %
+add new stock	stocks	no	Opprett ny aksje
+disable	stocks	no	deaktiver
+display stocks on main screen is disabled	stocks	no	Visning av aksjer på skrivebordet er deaktivert
+display stocks on main screen is enabled	stocks	no	Visning av aksjer på skrivebordet er aktivert
+edit stock	stocks	no	Endre aksje
+enable	stocks	no	Aktiver
+price	stocks	no	Siste
+select displayed stocks	preferences	no	Velg viste aksjenoteringer
+stock quote preferences	stocks	no	Aksjenoteringspreferanser
+stock quotes	common	no	Aksjenoteringer
+stocks	common	no	Aksjenoteringer
+symbol	stocks	no	Ticker

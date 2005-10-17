@@ -1,0 +1,5 @@
+switch now	switchuser	no	Skift nå
+switchuser	common	no	Skift bruker
+to which user you want to switch?	switchuser	no	til hvilken bruker ønsker du å skifte
+with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	no	Med dette programmet kan du logge inn som en annen bruker uten å vite om eller endre passord.  Kun administrator kan benytte dette programmet.
+you're not allowed to switch identity.	switchuser	no	Du har ikke rettigheter til å skifte bruker
