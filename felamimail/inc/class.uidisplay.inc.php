@@ -146,6 +146,10 @@
 
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
 
+			$nonDisplayAbleCharacters = array('[\016]','[\017]',
+					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
+					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
+
 			#print "<pre>";print_r($rawheaders);print"</pre>";exit;
 
 			// add line breaks to $rawheaders
@@ -425,12 +429,12 @@
 				@htmlspecialchars($GLOBALS['egw']->common->show_date($transformdate->getTimeStamp($tmpdate)),
 				ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("subject_data",
-				@htmlspecialchars($this->bofelamimail->decode_header($headers->subject),
+				@htmlspecialchars($this->bofelamimail->decode_header(preg_replace($nonDisplayAbleCharacters,'',$headers->subject)),
 				ENT_QUOTES,$this->displayCharset));
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
 
-			$this->t->set_var("rawheader",@htmlentities($rawheaders,ENT_QUOTES,$this->displayCharset));
+			$this->t->set_var("rawheader",@htmlentities(preg_replace($nonDisplayAbleCharacters,'',$rawheaders),ENT_QUOTES,$this->displayCharset));
 
 			#$this->kses->AddProtocol("http");
 			$this->kses->AddHTML(
@@ -649,6 +653,8 @@
 			$body = preg_replace("/(\\\\\\\\)([\w,\\\\,-]+)/i", 
 				"<a href=\"file:$1$2\" target=\"_blank\"><font color=\"blue\">$1$2</font></a>", $body);
 			
+			$body = preg_replace($nonDisplayAbleCharacters,'',$body);
+                                                                                                                                			
 				
 			$this->t->set_var("body",$body);
 			$this->t->set_var("signature",$sessionData['signature']);
