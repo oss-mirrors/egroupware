@@ -63,7 +63,14 @@
 		
 		function addToCache($_data)
 		{
-			$this->socaching->addToCache($_data);
+			$search = array('[\016]','[\017]',
+					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
+					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
+			$replace = '';
+			
+			$data = preg_replace($search,$replace,$_data);
+			
+			$this->socaching->addToCache($data);
 		}
 		
 		function clearCache($_folderName='')
