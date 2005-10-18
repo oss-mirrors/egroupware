@@ -179,6 +179,7 @@
 					case 'smtpLDAPUseDefault':
 					case 'userDefinedAccounts':
 					case 'imapoldcclient':
+					case 'editforwardingaddress':
 						if($value == 'yes')
 							$this->t->set_var('selected_'.$key,'checked="1"');
 						break;
@@ -460,6 +461,7 @@
 			$this->t->set_var('lang_standard',lang('standard'));
 			$this->t->set_var('lang_vmailmgr',lang('Virtual MAIL ManaGeR'));
 			$this->t->set_var('lang_pre_2001_c_client',lang('IMAP C-Client Version < 2001'));
+			$this->t->set_var('lang_user_can_edit_forwarding_address',lang('user can edit forwarding address'));
 			# $this->t->set_var('',lang(''));
 			
 		}
