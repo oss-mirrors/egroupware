@@ -420,7 +420,7 @@ class GUI extends Base {
               gia.wf_status, ga.wf_name, ga.wf_type, gp.wf_name, ga.wf_is_interactive, ga.wf_is_autorouted, 
               ga.wf_activity_id, gp.wf_version, gp.wf_p_id, gi.wf_name, gi.wf_priority";
     $query .= ($add_properties)? ', gi.wf_properties' : '';
-    $qsuery.= "          order by $sort_mode";
+    $query.= "          order by $sort_mode";
     // (regis) this count query as to count global -unlimited- (instances/activities) not just instances
     // as we can have multiple activities for one instance and we will show all of them and the problem is 
     // that a user having memberships in several groups having the rights is counted several times. 
