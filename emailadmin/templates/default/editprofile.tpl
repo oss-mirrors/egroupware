@@ -115,8 +115,15 @@
 					<input type="checkbox" name="smtpsettings[2][smtpAuth]" {selected_smtpAuth} value="yes">
 				</td>
 			</tr>
+
+			<tr class="row_on">
+				<td class="td_left">{lang_user_can_edit_forwarding_address}:</td>
+				<td class="td_right">
+					<input type="checkbox" name="smtpsettings[2][editforwardingaddress]" {selected_editforwardingaddress} value="yes">
+				</td>
+			</tr>
 		</table>
-		<table>
+<!--		<table>
 			<tr>
 				<td colspan="2">&nbsp;</td>
 			</tr>
@@ -155,7 +162,7 @@
 				<td class="td_left">{lang_LDAP_server_base_dn}:</td>
 				<td class="td_right"><input name="smtpsettings[2][smtpLDAPBaseDN]" maxlength="200" size="40" value="{value_smtpLDAPBaseDN}"></td>
 			</tr>
-		</table>
+		</table> -->
 	</div>
 </div>
 
