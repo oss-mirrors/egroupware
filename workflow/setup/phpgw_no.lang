@@ -1,0 +1,90 @@
+#	workflow	no	Nr.
+%1 aborted	workflow	no	%1 abortert
+%1 active	workflow	no	% 1 aktiv
+%1 completed	workflow	no	%1 fullført
+%1 configuration	workflow	no	%1 Konfigurasjon
+%1 days, %2:%3:%4	workflow	no	%1 dager, %2:%3:%4
+%1 menu	workflow	no	%1 Meny
+%1 monitoring	workflow	no	%1 overvåkes
+abort instance	workflow	no	Avbryt instanse
+abort this instance	workflow	no	Avbryt denne instanse
+aborted	workflow	no	Avbrutt
+access denied for user %1 on activity %2, no role	workflow	no	Tilgang nektet for bruker %1 for aktivitet %2, ingen rolle
+act	workflow	no	akt
+act. status	workflow	no	Akt. status
+act. status:	workflow	no	Akt. status :
+actions	workflow	no	Aksjoner
+actions right options	admin	no	Aksjoner Rettigheter Valg
+activate	workflow	no	aktiver
+active	workflow	no	Aktiv
+active:	workflow	no	aktiv :
+activities	workflow	no	Aktiviteter
+activities selection	workflow	no	Valg av aktiviteter
+activities updated	workflow	no	Aktiviteter oppdatert
+activity	workflow	no	aktivitet
+activity  status	workflow	no	Aktivitetsstatus
+activity %1	workflow	no	aktivitet %1
+activity %1 code is not avaible	workflow	no	aktivitet %1 kode er ikke tilgjengelig
+activity completed	workflow	no	Aktivitet fullført
+activity failure	workflow	no	Aktivitet feil
+activity in inexistent process	workflow	no	Aktivitet i ikke eksisterende prosess
+activity name already exists	workflow	no	Aktivitetsnavn eksisterer allerede
+activity saved	workflow	no	Aktivitet ble lagret
+activity:	workflow	no	aktivitet :
+add new	workflow	no	opprett ny
+add or edit a process	workflow	no	Legg til eller endre en prosess
+add or edit an activity	workflow	no	Legg til eller endre en aktivitet
+add role	workflow	no	Legg til rolle
+add role to process	workflow	no	Legg rolle til prosess
+all	workflow	no	Alle
+always show advanced actions	workflow	no	Vis alltid avanserte aksjoner
+always show advanced mode	workflow	no	Vis alltid avansert modus
+automatic	workflow	no	Automatisk
+being run	workflow	no	kjøres nå
+code	workflow	no	kode
+duration	workflow	no	Varighet
+global activities	workflow	no	Globale aktiviteter
+global workflow preferences	workflow	no	Globale arbeidsflyts preferanser
+list of instances	workflow	no	Liste over instanser
+list of processes	workflow	no	Liste over prosesser
+list of processes (%1)	workflow	no	Liste over prosesser (%1)
+more options?	workflow	no	flere valg ?
+my activities	workflow	no	Mine aktiviteter
+my instances	workflow	no	Mine instanser
+my processes	workflow	no	Mine prosesser
+name	workflow	no	Navn
+new instance	workflow	no	Ny instanse
+there are no activities available	workflow	no	Det er ingen aktiviteter tilgjengelig
+there are no instances available	workflow	no	Det er ingen instanser tilgjengelig
+there are no process available	workflow	no	Det er ingen prosess tilgjengelig
+there are no processes	workflow	no	Det er ingen prosesser
+there are no processes available	workflow	no	Det er ingen prosesser tilgjengelig
+there are no processes defined	workflow	no	Det er ingen definerte prosesser
+to	workflow	no	Til
+to:	workflow	no	Til :
+type	workflow	no	type
+type:	workflow	no	type :
+unknown status	workflow	no	ukjent status
+update	workflow	no	oppdater
+upload file	workflow	no	last opp fil
+use default	workflow	no	Bruk standard
+use existing roles	workflow	no	Bruk eksisterende roller
+user	workflow	no	Bruker
+user activities	workflow	no	Brukeraktiviteter
+user instances	workflow	no	Brukerinstanser
+user processes	workflow	no	Brukerprosesser
+user/group	workflow	no	Bruker/Gruppe
+user:	workflow	no	bruker :
+users/groups	workflow	no	Brukere/Grupper
+valid	workflow	no	Gyldig
+valid process	workflow	no	Valideringsprosess
+valid:	workflow	no	gyldig :
+value	workflow	no	Verdi
+version	workflow	no	Versjon
+view details	workflow	no	Vis detaljer
+view this instance	workflow	no	Vis denne instansen
+we were not able to build the message	workflow	no	Vi er ikke istand til å lage meldingen
+when to send the message:	workflow	no	Når skal melding sendes :
+workflow	common	no	Arbeidsflyt
+workflow configuration	admin	no	Arbeidsflyt Konfigurasjon
+workflow preferences	workflow	no	Arbeidsflyt Preferanser

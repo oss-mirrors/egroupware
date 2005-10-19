@@ -1,0 +1,29 @@
+access mode	mydms	no	aksessmodus
+access rights	mydms	no	aksessrettigheter
+access_mode_all	mydms	no	Alle
+access_mode_none	mydms	no	Ingen adgang
+access_mode_read	mydms	no	Lese
+access_mode_readwrite	mydms	no	Lese + skrive
+add document	mydms	no	Opprett dokument
+add subfolder	mydms	no	Opprette undermappe
+admin-tools	mydms	no	Administrasjonsverktøy
+all versions	mydms	no	Alle versjoner
+comment	mydms	no	Kommentar
+comment for current version	mydms	no	Kommentar til aktuell versjon
+current version	mydms	no	Aktuell versjon
+default access	mydms	no	standard tilgang
+delete folder	mydms	no	slette mappe
+delete this notification	mydms	no	slette denne meldingen
+do you really want to delete this document?	mydms	no	Ønsker du å slette dette dokumentet?
+does not expire	mydms	no	alltid disponibel
+download	mydms	no	Trekke ned
+edit folder	mydms	no	endre mappe
+expires	mydms	no	Gyldighet
+expires after	mydms	no	disponibel innen
+folder	mydms	no	mappe
+general information	mydms	no	generell informasjon
+information about last update	mydms	no	informasjon om siste oppdatering
+move document	mydms	no	flytte dokument
+move folder	mydms	no	flytte mappe
+permission	mydms	no	tillatelser
+update document	mydms	no	oppdater dokument

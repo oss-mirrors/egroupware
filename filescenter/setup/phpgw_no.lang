@@ -1,0 +1,105 @@
+%1 already exists as a file	filescenter	no	%1 finnes allerede som en fil
+activate sharing	filescenter	no	Aktiver deling
+add a new file type	filescenter	no	Legg til en ny filtype
+add a new prefix	filescenter	no	Legg til en ny prefiks
+add another file	filescenter	no	Legg til en annen fil
+application	filescenter	no	Program
+applications	filescenter	no	Programmer
+archive name	filescenter	no	Arkivnavn
+archive name cannot contain "%1"	filescenter	no	Arkivnavn kan ikke inneholde "%1"
+are you sure you want to delete '"+filename+"'?	filescenter	no	Ønsker du å slette '"+filename+"'
+are you sure you want to delete _filename_?	filescenter	no	Er du sikker på at du ønsker å slette -_filename_?
+authorized groups	filescenter	no	Autoriserte grupper
+authorized users	filescenter	no	Autoriserte brukere
+backup	filescenter	no	Sikkerhetskopiering
+cannot replace %1 because it is a directory	filescenter	no	Kan ikke erstatte %1 fordi det er en mappe
+cannot write file $1	filescenter	no	Kan ikke opprette filen $1
+click in the row to edit a file type.	filescenter	no	Klikk på raden for å redigere filtype
+click in the row to edit an item.	filescenter	no	Klikk på raden for en endre en enhet
+comment	filescenter	no	Kommentar
+compress	filescenter	no	Komprimer
+compresses a set of files in an archive	filescenter	no	Komprimer et sett av filer til et arkiv
+compression type	filescenter	no	Kompresjonstype
+copied	filescenter	no	Kopiert
+copied %1 to %2	filescenter	no	Kopiert %1 til %2
+could not	filescenter	no	Kunne ikke
+could not copy %1 to %2	filescenter	no	Kunne ikke kopiere %1 til %2
+could not create %1	filescenter	no	Kunne ikke opprette %1
+could not delete %1	filescenter	no	Kunne ikke slette %1
+could not extract files from archive.	filescenter	no	Kunne ikke opprette filene fra arkivet
+created	filescenter	no	Opprettet
+created %1	filescenter	no	Opprettet %1
+created %1,%2	filescenter	no	Opprettet %1, %2
+created directory %1	filescenter	no	Opprettet mappe %1
+creates a directory.	filescenter	no	Opprette en mappe
+decompress	filescenter	no	Dekomprimer
+delete this file type	filescenter	no	Slett denne filtypen
+deleted	filescenter	no	Slettet
+deleted %1	filescenter	no	Slettet %1
+directory %1 already exists	filescenter	no	Mappe %1 finnes allerede
+directory names cannot contain "%1"	filescenter	no	Mappens navn kan ikke inneholde %1
+display attributes	filescenter	no	Vis attributter
+file id	filescenter	no	Filedent
+file id prefix	filescenter	no	Filiden prefiks
+file name	filescenter	no	Filnavn
+file names cannot contain "%1"	filescenter	no	Filnavn kan ikke inneholde "%1"
+file type	filescenter	no	Filtype
+file(s) to upload:	filescenter	no	Fil(er) som skal lastes opp
+files to upload	filescenter	no	Filer for opplasting
+filescenter	filescenter	no	Filsenter
+filescenter administration	filescenter	no	Filsenteradministrasjon
+filescenter preferences	filescenter	no	Filsenterpreferanser
+from filescenter...	filescenter	no	Fra Filsenter
+general	filescenter	no	Generell
+history	filescenter	no	Historikk
+icon	filescenter	no	Ikon
+id	filescenter	no	Ident
+invert selection	filescenter	no	Inverter valgene
+level up	filescenter	no	Nivå opp
+location	filescenter	no	Lokasjon
+manage file types	filescenter	no	Håndtere filtyper
+management permissions	admin	no	Håndtere tillatelser
+maximum number of backups	filescenter	no	Maks. antall sikkerhetskopier
+modified	filescenter	no	Endret
+modified by	filescenter	no	Endret av
+moved	filescenter	no	Flyttet
+moved %1 to %2	filescenter	no	Flyttet %1 til %2
+my shared folders	filescenter	no	Mine delte mapper
+new	filescenter	no	Ny
+new folder	filescenter	no	Ny mappe
+new folder name	filescenter	no	Nytt mappenavn
+no permission to write file $1	filescenter	no	Ingen tillatelse til å skrive fil $1
+no shared folders.	filescenter	no	Ingen delte mapper
+operation	filescenter	no	Operasjon
+operations	filescenter	no	Operasjoner
+precision	filescenter	no	Presisjon
+prefix	filescenter	no	Prefiks
+prefix description	filescenter	no	Beskrivelse av prefiks
+refresh	filescenter	no	Oppfrisk
+register a new file type:	filescenter	no	Opprett en ny filtype:
+remove	filescenter	no	fjern
+replaced %1	filescenter	no	Erstattet %1
+search results	filescenter	no	Rsultat av søk
+shared	filescenter	no	Delte
+sharing	filescenter	no	Deles
+show ..	filescenter	no	Vis..
+show .files	filescenter	no	Vis .filer
+show command line (experimental. dangerous.)	filescenter	no	Vis kommandolinje (Eksperimentell. Farlig)
+show help	filescenter	no	Vis hjelp
+size	filescenter	no	Str.
+size of folder	filescenter	no	Str. på mappe
+source	filescenter	no	Kilde
+subscribe	filescenter	no	Abboner
+subscriptions	filescenter	no	Abbonementer
+type	filescenter	no	Type
+type description	filescenter	no	Beskrivelse av type
+upload	filescenter	no	Last opp
+upload files in folder	filescenter	no	Last opp filer til folder
+use this file	filescenter	no	Bruk denne filen
+view documents in new window	filescenter	no	Vis dokumenter i nytt vindu
+view documents on server (if available)	filescenter	no	Vis dokumenter på tjener (hvis tilgjengelig)
+view history	filescenter	no	Vis historikk
+view permissions - groups	filescenter	no	Vis tillatelser - grupper
+view permissions - users	filescenter	no	Vis tillatelser - brukere
+wait. uploading...	filescenter	no	Vent.  Laster opp..
+write permissions	filescenter	no	Skrivetillatelser
