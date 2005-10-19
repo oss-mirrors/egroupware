@@ -221,7 +221,7 @@
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			$headers = $this->bofelamimail->getHeaders($this->sessionData['startMessage'], $maxMessages, $this->sessionData['sort']);
 			
-			$headerTable = $this->uiwidgets->messageTable($headers, $isSentFolder, TRUE);
+			$headerTable = $this->uiwidgets->messageTable($headers, $isSentFolder, $GLOBALS['egw_info']['user']['preferences']['felamimail']['message_newwindow']);
 			
 			$response =& new xajaxResponse();
 			$firstMessage = (int)$headers['info']['first'];
