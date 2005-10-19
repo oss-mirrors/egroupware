@@ -66,6 +66,7 @@
 
 			$data['smtpServerAddress']	= $profileData['smtpServer'];
 			$data['smtpPort']		= $profileData['smtpPort'];
+			$data['editForwardingAddress']	= ($profileData['editforwardingaddress'] == 'yes' ? true : false);
 
 			if(!empty($profileData['organisationName']))
 				$data['organizationName']	= $profileData['organisationName'];

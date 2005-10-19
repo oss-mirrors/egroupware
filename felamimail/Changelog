@@ -1,3 +1,7 @@
+20051018
+- fixed Bug where nodisplayable characters got displayed and broke caching
+  in the database
+
 20051013
 - added feature to let Postfix LDAP users edit there own email forwarding settings
   feature can be enabled/disabled by settings in emailadmin
