@@ -143,9 +143,9 @@ tovalidate	tts	no	TILVALIDER
 toverified	tts	no	TILVERIFISER
 transition	tts	no	Overgang
 transition name	tts	no	Overgangsnavn
-trouble ticket system	common	no	Henvendelssystem
-tts	common	no	Henvendelssystem
-tts preferences	tts	no	Henvendelssystem - preferanser
+trouble ticket system	common	no	HelpDesk
+tts	common	no	HelpDesk
+tts preferences	tts	no	HelpDesk - preferanser
 undefined	tts	no	UDEFINERT
 update ticket state	tts	no	Oppdater saks status
 updates ticket	tts	no	Oppdater sak
