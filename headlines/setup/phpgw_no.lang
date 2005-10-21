@@ -8,8 +8,10 @@ current headlines in cache	headlines	no	Gjeldende overskrifter i lager
 display	headlines	no	Vis
 edit headline sites	headlines	no	Endre overskriftssteder
 edit headlines shown by default	headlines	no	Endre overskrifter vist som standard
+grab new news sites	common	no	Hente nye overskriftsnettsteder
 gray	headlines	no	Grå
 headline preferences	common	no	Preferanser for overskrifter
+headline site management	common	no	Adm. nettstedets overskrifter
 headline sites	headlines	no	Overskriftsteder
 headlines	common	no	Overskriftene
 headlines administration	headlines	no	Administrere overskriftene
@@ -24,6 +26,7 @@ news headlines	common	no	Nyhets headlines
 news type	headlines	no	Nyhets Type
 no headlines found	headlines	no	Ingen overskrifter funnet
 other preferences	preferences	no	Andre preferanser
+reload news sites	headlines	no	Last nye nettsteder på nytt
 reset	headlines	no	Tilbakestill
 sample	headlines	no	Eksempel
 select headline news sites	headlines	no	Velg steder for overskrifter
@@ -32,8 +35,11 @@ select layout	common	no	Velg utseende
 show headlines on homepage	headlines	no	Vis overskrifter på hjemmesiden
 site	headlines	no	Sted
 that site has already been entered	headlines	no	Dette stedet er allerede registrert
+unable to retrieve links	headlines	no	Ikke i stand til å hente lenkene
 update headline	headlines	no	Oppdater overskrift
 view headline	headlines	no	Vis overskrift
+you can only enter numbers for listings display	headlines	no	Du kan kun registrere antall for listens visning
+you can only enter numbers minutes between refresh	headlines	no	Du kan kun registrere antall minutter mellom oppfriskningene
 you must enter a base url	headlines	no	Du må skrive inn en base url
 you must enter a display	headlines	no	Du må skrive inn et display
 you must enter a news url	headlines	no	Du må skrive inn en nyhets url

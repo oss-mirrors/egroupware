@@ -1,1 +1,29 @@
 backup	common	no	Sikkerhetskopiering
+backup administration	common	no	Administrasjon av sikkerhetskopiering
+bzip2	admin	no	Bzip2
+configuration backup	backup	no	Konf. av sikkerhetskopiering
+daily	backup	no	Daglig
+data	backup	no	Data
+directory locations	admin	no	Lokasjon for mapper
+directory names	admin	no	Mappenavn
+e-mail	backup	no	Kryss av for mptta meldinger via e-mail:
+e-mail notification?	backup	no	Melding via e-mail ?
+interval	backup	no	Intervall
+ip or hostname	backup	no	IP eller vertsnavn
+ldap	common	no	LDAP
+ldap database	admin	no	LDAP database
+list backup archives	backup	no	vise arkiv for sikkerhetskopier
+maildir	admin	no	Melding går til e-mail :
+monthly	backup	no	Månedlig
+mysql	admin	no	MySql
+nfs	backup	no	nfs
+operating system	backup	no	Operativsystem
+pgsql	admin	no	PostgreSQL
+select interval	backup	no	Velg intervall
+sql	backup	no	SQL
+tar	admin	no	tar
+tar.bz2	backup	no	tar.bz2
+tar.gz	backup	no	tar.gz
+versions can only be a number !	backup	no	Versjoner kan bare være et nummer !
+weekly	backup	no	Ukentlig
+zip	common	no	zip

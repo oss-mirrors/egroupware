@@ -36,7 +36,7 @@ highest	bookmarks	tr	En yüksek
 i thought you would be interested in the following link(s):	bookmarks	tr	Aþaðýdaki linklerle ilgilenebileceðinizi düþündüm:
 import bookmarks	common	tr	Favorileri Ýhraç Et
 like	bookmarks	tr	benzer
-list	bookmarks	tr	Liste
+list view	bookmarks	tr	liste görünümü
 lowest	bookmarks	tr	En düþük
 mail this bookmark	bookmarks	tr	Bu favoriyi maille
 mail-this-link message sent to %1.	bookmarks	tr	Mesaj %1'e gönderildi.
@@ -47,7 +47,8 @@ name	bookmarks	tr	Ýsim
 name is required	bookmarks	tr	Ýsim gereklidir
 netscape bookmark file	bookmarks	tr	Netscape favori dosyasý
 netscape bookmark filename is required!	bookmarks	tr	Netscape favori dosyasý gereklidir!
-new	bookmarks	tr	Yeni
+new	bookmark	tr	Yeni
+new bookmark	bookmarks	tr	Yeni Favori
 or	bookmarks	tr	ya da
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	tr	Lütfen <b>Alýcý E-mail Adresi</b>, <b>Konu</b> ve <b>Mesaj</b> alanlarýný doldurunuz!
 please select the categories to export	bookmarks	tr	Ýhraç edilecek kategorileri seçiniz

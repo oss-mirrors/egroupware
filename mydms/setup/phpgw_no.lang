@@ -4,26 +4,52 @@ access_mode_all	mydms	no	Alle
 access_mode_none	mydms	no	Ingen adgang
 access_mode_read	mydms	no	Lese
 access_mode_readwrite	mydms	no	Lese + skrive
+acl get inherited	mydms	no	acl ble arvet
+add acl	mydms	no	Opprett acl
 add document	mydms	no	Opprett dokument
+add notification	mydms	no	Opprette bekjentgjørelse
 add subfolder	mydms	no	Opprette undermappe
 admin-tools	mydms	no	Administrasjonsverktøy
 all versions	mydms	no	Alle versjoner
 comment	mydms	no	Kommentar
 comment for current version	mydms	no	Kommentar til aktuell versjon
+copy acl	mydms	no	kopier acl
+create empty acl	mydms	no	opprett tom acl
+creation date	mydms	no	Først opprettet
+current acl	mydms	no	gjeldende acl
 current version	mydms	no	Aktuell versjon
 default access	mydms	no	standard tilgang
 delete folder	mydms	no	slette mappe
-delete this notification	mydms	no	slette denne meldingen
+delete this notification	mydms	no	slette denne bekjentgjørelsen
+do you really want to delete this acl?	mydms	no	Ønsker du virkelig å slette denne acl ?
 do you really want to delete this document?	mydms	no	Ønsker du å slette dette dokumentet?
+do you really want to delete this version of the document?	mydms	no	ønsker du virkelig å slette denne versjonen av dokumentet ?
 does not expire	mydms	no	alltid disponibel
 download	mydms	no	Trekke ned
 edit folder	mydms	no	endre mappe
 expires	mydms	no	Gyldighet
 expires after	mydms	no	disponibel innen
+file size	mydms	no	Filstrørrelse
+filename	mydms	no	Filnavn
 folder	mydms	no	mappe
 general information	mydms	no	generell informasjon
 information about last update	mydms	no	informasjon om siste oppdatering
+informations	mydms	no	Informasjon
+inherit acl again	mydms	no	arve acl igjen
+last update	mydms	no	siste ajourføring
+linked documents	mydms	no	Nylig benyttede dokumenter
+lock status	mydms	no	Sperrestatus
+mime type	mydms	no	Mime-type
 move document	mydms	no	flytte dokument
 move folder	mydms	no	flytte mappe
+mydms	common	no	Dokumentsenter
+notifications	mydms	no	Bekjentgjørelser
 permission	mydms	no	tillatelser
+this document gets locked by you!	mydms	no	dette dokumentet ble låst av deg !
+this document gets unlocked by you.	mydms	no	dette dokumentet ble frigitt av deg !
+this document is currently not locked.	mydms	no	dette dokumentet er for nåværende ikke låst
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	no	dette dokumentet er låst av <a href="mailto:%1>%2</a>
 update document	mydms	no	oppdater dokument
+upload date	mydms	no	last opp hos
+uploaded by	mydms	no	last opp gjennom
+view online	mydms	no	anvise online

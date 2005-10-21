@@ -1,0 +1,17 @@
+%1 - %2 of %3	sambaadmin	no	%1 - %2 av %3
+add workstation	sambaadmin	no	Legg til arbeidsstasjon
+computer group	admin	no	Datamaskingruppe
+displayname	sambaadmin	no	Visningsnavn
+logonscript	admin	no	loginskript
+new account defaults	admin	no	standard for nye konti
+participants	sambaadmin	no	Deltakere
+profilepath	admin	no	Sti for profiler
+samba config	sambaadmin	no	Samba konfigurasjon
+samba settings	common	no	Samba instillinger
+samba sid	admin	no	Samba SID
+workstation account for	sambaadmin	no	arbeidsstasjonens konto for
+workstation configuration	sambaadmin	no	arbeidsstasjonens konfigurasjon
+workstation list	sambaadmin	no	Liste over arbeidsstasjoner
+workstation name	sambaadmin	no	arbeidsstasjonens navn
+workstationaccount active	sambaadmin	no	arbeidsstasjonskonto aktiv
+workstations	sambaadmin	no	arbeidsstasjoner
