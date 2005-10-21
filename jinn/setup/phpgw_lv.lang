@@ -1,0 +1,194 @@
+%1 site objects have been imported.	jinn	lv	%1 vietnes objekti tika importēti
+access rights	jinn	lv	PIeejas tiesības
+access rights for site not succesfully editted	jinn	lv	Vietnes pieejas tiesības netika uzstādītas
+access rights for site succesfully editted	jinn	lv	Vietnes pieejas tiesības veiksmīgi uzstādītas
+access rights for site-object not succesfully editted	jinn	lv	Pieejas tiesības vietnes objektiem netika uzstādītas
+access rights for site-object succesfully editted	jinn	lv	Pieejas tiesības vietnes objektiem veiksmīgi uzstādītas
+access rights site-objects	jinn	lv	Pieejas tiesības vietnes objektiem
+access_rights	jinn	lv	pieejas tiesības
+add	jinn	lv	pievienot
+add %1st image	jinn	lv	pievienot %1 attēlu
+add attachent	jinn	lv	pievienot pielikumu
+add attachment	jinn	lv	pievienot pielikumu
+add attachment %1	jinn	lv	pievienot pielikumu %1
+add edit	jinn	lv	PIevienot Rediģēt
+add image	jinn	lv	pievienot attēlu
+add image %1	jinn	lv	pievienot attēlu %1
+add new	jinn	lv	Pievienot jaunu
+add new entry	jinn	lv	PIevienot jaunu ierakstu
+add new many with many relation	jinn	lv	PIevienot jaunu Daudz pret daudziem saiti
+add new one with many	jinn	lv	Pievienot jaunu Viens pret daudziem
+add object	jinn	lv	pievienot objektu
+add or remove	jinn	lv	pievienot vai pārvietot
+add site	jinn	lv	PIevienot vietni
+add site object	jinn	lv	pievienot vietnes objektu
+add site-object	jinn	lv	pievienot vietnes objektu
+admin:: edit site	jinn	lv	administrators: rediģēt vietni
+administrator mode	jinn	lv	Administratora režīms
+administrators for site $site_name	jinn	lv	vietnes administrators $vietnes_nosaukums
+all from	jinn	lv	visi no
+another	jinn	lv	citi
+are you sure?	jinn	lv	Esi pārliecināts?
+attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	lv	pielikumu direktorija neeskistē vai nav pareiza, vai arī nevar tikt izveidota...<br> Lūdzu pārbaudi ielādēto objektu direktoriju:
+automatic	jinn	lv	automātiski
+binary	jinn	lv	binārs
+browse	jinn	lv	Meklēt
+browse current object	jinn	lv	Meklēt esošo objektu
+browse sites	jinn	lv	meklēt vietnes
+browse through object settings	admin	lv	Meklēt caur obejektu uzstādījumiem
+browse through sites	jinn	lv	Meklēt caur vietnēm
+browses through sites	admin	lv	Meklēt caur vietnēm
+cancel	jinn	lv	Atcelt
+category	jinn	lv	Kategorija
+check:	jinn	lv	pārbaudi:
+choose	jinn	lv	izvēlēties
+close this window	jinn	lv	aizvērt šo logu
+column name	jinn	lv	kolonnas nosaukums
+come back after new valid tablename is saved to configure plugins	jinn	lv	kad derīgais tabulas nosaukums ir saglabāts, atgriezties, lai konfigurētu spraudņus
+come back in edit mode for configuring plugins	jinn	lv	atgriezties rediģēšanas režīmā spraudņu konfigurēšanai
+come back in edit mode to configure plugins	jinn	lv	atgriezties rediģēšanas režīmā, lai konfirgurētu spraudņus
+configure	jinn	lv	konfigurēt
+configure browse view	jinn	lv	konfigurēt meklēšanas skatījumu
+configure this object list view	jinn	lv	Konfigurēt šo objektu Sarakstu skatījumu
+configure this tableview	jinn	lv	Konfigurēt šo tabulas skatījumu
+configure this view	jinn	lv	Konfigurēt šo skatījumu
+configure view of	jinn	lv	Konfigurēt  skatījumu
+copy	jinn	lv	kopēt
+could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	lv	evar atrast nevienu tabulu! Pārbaudi datubāzes nosaukumu, datubāzes lietotājvārdu vai paroli, vai izveido vienu vai vairākas jaunas tabulas datubāzē
+database connection failed! <p>please recheck your settings.	jinn	lv	neveiksmīga pieslēgšanās datubāzei! <P>Lūdzu pārbaudi savus uzstādījumus.
+database connection was succesfull. <p>you can go on with the site-objects	jinn	lv	Veiksmīgi pieslēdzās datubāzei. <P>Jūs varat turpināt ar vietnes objektiem
+days	jinn	lv	dienas
+default image type (jpg, gif, png)	admin	lv	Noklusētais attēla tips (jpg,gif,png)
+default image width	admin	lv	Noklusētais attēla platums
+default order	jinn	lv	noklusētā kārtība
+default:	jinn	lv	noklusējums:
+delete	jinn	lv	Izdzēst
+developer links	jinn	lv	Pilnveidotāja saites
+development	admin	lv	Pilnveidošana
+development server	jinn	lv	Pilnveidošanas serveris
+dimensions	jinn	lv	dimensijas
+edit	jinn	lv	rediģēt
+edit this site	jinn	lv	Rediģēt šo vietni
+edit this site object	jinn	lv	Rediģēt šo vietnes objektu
+editors for object $object_name in site $site_name	jinn	lv	vietnes $vietnes_nosaukums objektu $objekta_nosaukums redaktori
+error path_open %1	jinn	lv	kļūda atverot ceļu %1
+export this site	jinn	lv	eksportēt šo vietni
+failed to open table. please check if table <i>%1</i> still exists in database	jinn	lv	Nevar atvērt tabulu. Pārbaudi vai tabula <i>%1</i> joprojām eksistē datubāzē
+field plugin configuration	jinn	lv	lauku spraudņu konfigurācija
+fields	jinn	lv	lauki
+filename	jinn	lv	datnes nosaukums
+filesize	jinn	lv	datnes izmērs
+form input plugin	jinn	lv	nofirmē ievades spraudni
+general preferences	jinn	lv	Galvenās izvēles
+general settings	admin	lv	Galvenie uzstādījumi
+global configuration	jinn	lv	Vispārēja konfigurēšana
+global site configuration	admin	lv	Vispārēja vietnes konfigurēšana
+go	jinn	lv	aiziet
+height:	jinn	lv	Augstums:
+hidden	jinn	lv	paslēpts
+image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	lv	attēlu direktorija nepastāv vai nav pareiza...<br>lūdzu pārbaudi objektu ielādēto direktoriju
+image settings	admin	lv	Attēla uzstādījumi
+import failed	jinn	lv	importēšana neizdevās
+import jinn site	jinn	lv	Importēt JiNN vietni
+import jinn-site	jinn	lv	Importēt JiNN-vietni
+import site	jinn	lv	importēt vietni
+import was succesfull	jinn	lv	Importēšana bija veiksmīga
+import was succesfull<br>imported one site with	jinn	lv	importēsana bija veiksmīga<br>Tika importēta viena vietne ar
+index	jinn	lv	indekss
+insert another record after saving	jinn	lv	ievadi citu ierakstu pēc saglabāšanas
+jinn	common	lv	JiNN
+jinn editors menu	jinn	lv	JiNN redaktora izvēlne
+jinn preferences	jinn	lv	JiNN izvēles
+max. number of previews in form	jinn	lv	Maksimālo priekšskatījumu skaits
+maximum image width isn	jinn	lv	maksimālais attēlu platums ir n
+moderator mode	jinn	lv	Regulatora režīms
+months	jinn	lv	mēneši
+months_abbr	jinn	lv	mēneši saīsinājums
+new image size limits.	jinn	lv	Jauns attēlu izmēra limits
+no matchs found	jinn	lv	Nav atrasti atbilstoši ieraksti
+no max. number	jinn	lv	Nav maks.skaitļa
+normal view	jinn	lv	Normāls skatījums
+path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	lv	Ceļš, lai pārveidotu no ImageMagick (pie., /usr/X11R6/bin)
+please set your preferences for this application	jinn	lv	Lūdzu uzstādi savas izvēles šai aplikācijai
+preview website	jinn	lv	Priekšskatīt tīkla vietni
+production	admin	lv	Izstrāde
+real value	jinn	lv	reālā vērtība
+record	jinn	lv	ieraksts
+record added succesfully	jinn	lv	Ieraksts tikai veiksmīgi pievienots
+record deleted succesfully	jinn	lv	Ieraksts veiksmīgi izdzēsts
+record not succesfully copied. unknown error	jinn	lv	Ieraksts netika nokopēts. Nezināma kļūda.
+record not succesfully deleted. unknown error	jinn	lv	Ieraksts netika izdzēsts. Nezināma kļūda
+record succesfully copied	jinn	lv	Ieraksts veiksmīgi nokopēts
+record succesfully deleted	jinn	lv	Ieraksts veiksmīgi izdzēsts
+record succesfully editted	jinn	lv	Ieraksts veiksmīgi rediģēts
+related	jinn	lv	saistīts
+relation %1	jinn	lv	relācija %1
+relations for this object	jinn	lv	Relācija šim objektam
+remote	admin	lv	Attāls
+remove	jinn	lv	izmest
+replace existing site with the same name?	jinn	lv	Aizvietot esošo vietni ar tādu pašu nosaukumu?
+replaced existing site named <strong>%1</strong>.	jinn	lv	Aizvietots esošais vietnes nosaukums <strong>%1</strong>
+reset form	jinn	lv	atiestatīt no
+save	jinn	lv	saglabāt
+search	jinn	lv	Meklēt
+search for string	jinn	lv	meklēt virni
+select directory	jinn	lv	atzīmēt direktoriju
+select jinn site file	jinn	lv	Atzīmēt JiNN vietnes datni
+select site	jinn	lv	atzīmēt vietni
+select site to moderate	jinn	lv	Atzīmēt vietni, lai regulētu
+select site-object to moderate	jinn	lv	Atzīmēt vietnes objektu, lai regulētu
+select_object	jinn	lv	Atzīmēt objektu
+server type?	admin	lv	Servera tips?
+set access right for site objects	jinn	lv	UZstādīt pieejas tiesības vietnes objektiem
+set access rights	admin	lv	Uzstādīt pieejas tiesības
+set access rights for sites	jinn	lv	Uzstādīt pieejas tiesības vietnēm
+set administrators for	jinn	lv	Uzstādīt administratorus
+set object moderator	jinn	lv	uzstādīt objektu regulatoru
+set site admin	jinn	lv	uzstādīt vietnes administratoru
+show	jinn	lv	rādīt
+show all columns	jinn	lv	Rādīt visas kolonnas
+show colomn	jinn	lv	rādīt kolonnu
+show upload path	admin	lv	Rādīt ielādes ceļu
+site beheerders	jinn	lv	Vietnes administratori
+site db host	admin	lv	Vietnes datubāzes hosts
+site db name	admin	lv	Vietnes datubāzes nosaukums
+site db password	admin	lv	Vietnes datubāzes parole
+site db type	admin	lv	Vietnes datubāzes tips
+site db user	admin	lv	Vietnes datubāzes lietotājs
+site description	admin	lv	Vietnes apraksts
+site id	admin	lv	Vietnes ID
+site media and documents	jinn	lv	Vietnes vide un dokumenti
+site name	admin	lv	VIetnes nosaukums
+site not succesfully added, unknown error	jinn	lv	Vietne netika pievienota, nezināma kļūda
+site not succesfully deleted, unknown error	jinn	lv	Vietne netika izdzēsta, nezināma kļūda
+site not succesfully saved, unknown error	jinn	lv	Vietne netika saglabāta, nezināma kļūda
+site object not succesfully added, unknown error	jinn	lv	Vietnes objekts netika pievienots, nezināma kļūda
+site object not succesfully deleted, unknown error	jinn	lv	VIetnes objekts netika izdzēsts, nezināma kļūda
+site object not succesfully saved, unknown error	jinn	lv	Vietnes objekts netika saglabāts, nezināma kļūda
+site object succesfully added	jinn	lv	Vietnes objekts veiksmīgi pievienots
+site object succesfully deleted	jinn	lv	Vietnes objekts veiksmīgi izdzēsts
+site object succesfully saved	jinn	lv	Vietnes objekts veiksmīgi saglabāts
+site succesfully added	jinn	lv	Vietne veiksmīgi pievienota
+site succesfully deleted	jinn	lv	vietne veiksmīgi izdzēsta
+site succesfully saved	jinn	lv	Vietne veiksmīgi saglabāta
+site title	admin	lv	VIetnes virsraksts
+site-objects	jinn	lv	VIetnes objekti
+sites	jinn	lv	Vietnes
+start	admin	lv	Sākt
+start at record	jinn	lv	sākt ierakstā
+stop at record	jinn	lv	pārtraukt ierakstā
+submit and import	jinn	lv	apstiprināt un importēt
+t/m	jinn	lv	t/m
+tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	lv	Tabulas nosaukums <i>%1</i> nav pareizs. Iespējams tabulas nosaukums ir nomainīts vai tabula ir izdzēsta. Lūdzu atzīmē jaunu tabulu vai izdzēs šo objektu
+test database access	jinn	lv	testa datubāzes pieeja
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	lv	Datne %1, kuru ielādēji, nav attēla datne, ir bojāta, vai arī JiNN neatbalsta datnes tipu
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	lv	Ielādētā datne %1 nav attēlu datne, ir bojāta, vai arī JiNN neatbalsta datnes tipu. Ja šī kļūda atkārtojas, pārbaudi ImageMagic instalāciju. Zināms,ka vecāka ImageMagick versija ar JiNN nestrādā pareizi. Pārliecinies, ka ir instalēta vismaz 5.4.9 versija
+the name of the new site is <strong>%1</strong>.	jinn	lv	Jaunais vietnes nosaukums ir <strong>%1</strong>
+the resize process failed, please contact the administrator	jinn	lv	<b>resize</b> process izgāzās, lūdzu sazinies ar administratoru
+there are no directories in this site you have access to.	jinn	lv	Šajā vietnē nav direktoriju, kurām tev jāpiekļūst
+thisfile	jinn	lv	šī datne
+version	jinn	lv	versija
+when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	lv	Kad pievienots daudz attēlu, lai ierakstītu, logs varētu ielādēties ļoti lēni. Tu vari uzstādīt maksimālo attēlu skaitu, kas tiek parādīts logā
+width:	jinn	lv	Platums
+with_checked_files	jinn	lv	ar_pārbaudītam_datnēm
+you're not allowed to administrate media files	jinn	lv	Tev nav atļaujas administrēt vides datus

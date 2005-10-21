@@ -1,0 +1,109 @@
+"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	no	"Du har ikke adgang til noen nettsteder.  Spør EDB-ansvarlig om å gi deg tilgang til ditt nettsted eller nettstedsobjekter eller kontrollere on det eksisterer et nettsted.
+%1 has a one-to-many with %2 showing %3	jinn	no	% har en en-til-mange relasjon med %2 viser %3
+%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	no	%1 har en en-til-en relasjon med %2 som benytter konfigurasjon fra objekt %3
+%1 site obj-fields have been imported.	jinn	no	%1 nettstedsobjekt-felt ble importert
+%1 site objects have been imported.	jinn	no	%1 nettstedsobjekter ble importert
+4 (default)	jinn	no	4 (standard)
+access rights	jinn	no	Tilgangsrettigheter
+access rights for site not succesfully editted	jinn	no	Tilgangsrettighetene for nettstedet ble ikke endret
+access rights for site not succesfully saved	jinn	no	Tilgangsrettighetene for nettstedet ble ikke lagret
+access rights for site succesfully editted	jinn	no	Tilgangsrettighetene for nettstedet ble endret
+access rights for site succesfully saved	jinn	no	Tilgangsrettighetene for nettstedet ble lagret
+access rights for site-object not succesfully editted	jinn	no	Tilgangsrettighetene for nettstedsobjektet ble ikke endret
+access rights for site-object not succesfully saved	jinn	no	Tilgangsrettighetene for nettstedsobjektet ble ikke lagret
+access rights for site-object succesfully editted	jinn	no	Tilgangsrettighetene for nettstedsobjektet ble endret
+access rights for site-object succesfully saved	jinn	no	Tilgangsrettighetene for nettstedsobjektet ble lagret
+access rights site-objects	jinn	no	Tilgangsrettigheter for nettstedsobjektet
+access_rights	jinn	no	Tilgangsrettigheter
+action was not succesful. unknown error	jinn	no	Aksjonen var ikke vellykket.  Ukjent feil
+action was succesful.	jinn	no	Aksjonen var vellykket
+actions	jinn	no	Aksjoner
+actions to apply on all selected record	jinn	no	Aksjoner som skal tilordnes alle postene
+activate experimental features which are in development	jinn	no	Aktivere ekperimentelle funskjoner som er under utvikling
+add	jinn	no	Legg til
+add %1st image	jinn	no	Legg til %1ste bilde
+add attachent	jinn	no	Legg til vedlegg
+add attachment	jinn	no	Legg til vedlegg
+add attachment %1	jinn	no	Legg til vedlegg %1
+add edit	jinn	no	Opprette Endre
+add egw_jinn_sites	jinn	no	Legg til egw-jinn-nettsteder
+add image	jinn	no	Legg til bilde
+add image %1	jinn	no	Legg til bilde %1
+add multiple records	jinn	no	Legg til flere poster
+add new	jinn	no	Legg til ny
+add new entry	jinn	no	Opprett ny post
+add new many to many relation	jinn	no	Opprett ny MANGE TIL MANGE relasjoner
+add new many with many relation	jinn	no	Opprett ny MANGE MED MANGE relasjoner
+add new one to many	jinn	no	Opprett ny EN TIL MANGE
+add new one with many	jinn	no	Opprett ny EN MED MANGE
+add new one-to-one relation	jinn	no	Opprett ny en-til-en relasjon
+add object	jinn	no	Opprett objekt
+add or remove	jinn	no	Legge til eller fjerne
+add site	jinn	no	Legge til nettsted
+add site object	jinn	no	Legge til nettsteds objekt
+add site-object	jinn	no	Legge til nettsteds-objekt
+admin:: edit site	jinn	no	Admin:: endre nettsted
+administrator mode	jinn	no	Adminsitratormodus
+administrators for site $site_name	jinn	no	Adminsitratorer for nettsted $site_name
+advanced configuration	jinn	no	avansert konfigurasjon
+all from	jinn	no	alle fra
+alternative fieldname for display	jinn	no	Alternativt feltnavn for visning
+an error occured.	jinn	no	En feil oppsto
+another	jinn	no	en annen
+are you sure you want to delete these multiple records?	jinn	no	Er du sikker på at du ønsker å slette flere poster ?
+are you sure you want to delete this record?	jinn	no	Er du sikker på at du ønsker å slette denne posten ?
+are you sure your want to edit these records?	jinn	no	Er du sikker på at du ønsker å endre denne posten ?
+are you sure?	jinn	no	Er du sikker ?
+ascending	jinn	no	Stigende
+automatic	jinn	no	Automatisk
+automaticly add objects for all tables	jinn	no	automatisk legge til objekter for alle tabellene
+automaticly incrementing	jinn	no	automastisk øke
+available for field types	common	no	Tilgjengelig for felttyper
+back to record list	jinn	no	tilbake til liste over postene
+binary	jinn	no	binær
+binary, contains data	jinn	no	binær, inneholder data
+binary, empty	jinn	no	binær, tom
+c_all	jinn	no	c_alle
+c_none	jinn	no	c_ingen
+can't edit more then 99 record at once (error code 108)	jinn	no	Kan ikke endre mer enn 99 poster på en gang (Feil kode 108)
+cancel	jinn	no	Kanseller
+cannot copy a record from this table.	jinn	no	Kan ikke kopiere en post fra denne tabellen
+category	jinn	no	Kategori
+change number of records	jinn	no	endre antall poster
+check:	jinn	no	kontroller:
+choose	jinn	no	velg
+close this window	jinn	no	lukk vinduet
+column name	jinn	no	kolonnenavn
+configure	jinn	no	konfigurer
+configure field plugin	jinn	no	konfigurer felt for plugin
+configure this object list view	jinn	no	Konfigurer denne visningen av objekter
+configure this tableview	jinn	no	Konfigurer denne tabellvisningen
+configure this view	jinn	no	Konfigurer denne visningen
+configure view of	jinn	no	Konfigurer visning av
+copy	jinn	no	kopier
+copy and edit the new record	jinn	no	kopier og endre denne nye posten
+create a new site now	jinn	no	Opprett et nytt nettsted nå
+current color:	jinn	no	Gjeldende farge :
+days	jinn	no	dager
+debug	jinn	no	debug
+default	jinn	no	standard
+default image type (jpg, gif, png)	admin	no	Standard bildetype (jpg, gif, png)
+default image width	admin	no	Standard bildebredde
+default number of visable columns	jinn	no	Standard antall av visbare kolonner
+default order	jinn	no	standard sortering
+default thumb width	admin	no	Standard muniatyrbilde bredde
+default:	jinn	no	standard:
+delete	jinn	no	Slette
+delete all selected records	jinn	no	slette alle valgte poster
+descending	jinn	no	fallende
+descrition	common	no	Beskrivelse
+dev site db host	jinn	no	Utvikkling (Test) nettsteds database tjenernavn
+dev site db name	jinn	no	Utvikkling (Test) nettsteds database navn
+dev site db password	jinn	no	Utvikkling (Test) nettsteds database passord
+dev site db type	jinn	no	Utvikkling (Test) nettsteds database type
+dev site db user	jinn	no	Utvikkling (Test) nettsteds database brukernavn
+dev upload path	jinn	no	Utvikkling (Test) nettsteds opplastingssti
+developer links	jinn	no	Utvikler lenker
+development	admin	no	Utvikling
+development server	jinn	no	Utviklingstjener
+dimensions	jinn	no	dimensjoner
