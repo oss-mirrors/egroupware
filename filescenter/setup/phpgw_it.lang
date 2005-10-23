@@ -14,10 +14,10 @@ application	filescenter	it	Applicazione
 applications	filescenter	it	Applicazioni
 archive name	filescenter	it	Nome archivio
 archive name cannot contain "%1"	filescenter	it	Il nome archivio non può contenere "%1"
-are you sure you want to delete '"+filename+"'?	filescenter	it	Sei sicuro di voler cancellare '"+filename+"'?
+are you sure you want to delete '"+filename+"'?	filescenter	it	Vuoi davvero cancellare '"+filename+"'?
 are you sure you want to delete _filename_?	filescenter	it	Vuoi davvero cancellare _filename_?
-are you sure you want to delete all these "+count+" items?	filescenter	it	Sei sicuro di voler cancellare tutti questi "+count+" oggetti?
-are you sure you want to delete all these _count_ items?	filescenter	it	Sei sicuro di voler cancellare tutti questi _count_ oggetti?
+are you sure you want to delete all these "+count+" items?	filescenter	it	Vuoi davvero cancellare tutti questi "+count+" oggetti?
+are you sure you want to delete all these _count_ items?	filescenter	it	Vuoi davvero cancellare tutti questi _count_ oggetti?
 are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	it	Sei sicuro? In alternativa puoi disattivare questo campo, in modo da recuperare la sua informazione più tardi. Davvero devo cancellare? (irreversibile)
 authorized groups	filescenter	it	Gruppi autorizzati
 authorized users	filescenter	it	Utenti autorizzati
@@ -60,7 +60,7 @@ destination	filescenter	it	Destinazione
 directory %1 already exists	filescenter	it	La Directory %1 esiste già
 directory names cannot contain "%1"	filescenter	it	I nomi Directory non possono contenere "%1"
 display attributes	filescenter	it	Mostra attributi
-do you really want to delete the custom field	filescenter	it	Vuoi veramente eliminare il campo personalizzato?
+do you really want to delete the custom field	filescenter	it	Vuoi davvero eliminare il campo personalizzato?
 edit custom file property	filescenter	it	Modifica Proprietà File personalizzate
 edit file property	filescenter	it	Modifica proprietà File
 edit file type:	filescenter	it	Modifica tipo File:
@@ -70,6 +70,7 @@ error in creating folder. incorrect parameters.	filescenter	it	Errore in creazio
 extension	filescenter	it	Estensione
 external shared folders	filescenter	it	Cartelle Esterne Condivise
 extract the contents of an archive in a folder	filescenter	it	Estrai i contenuti di un archivio in una cartella
+fake base dir did not exist, egroupware created a new one.	filescenter	it	La directory Base non esisteva, eGroupWare ne ha creata una.
 field name (small caps only, no spaces)	filescenter	it	Nome campo (solo minuscolo, no spazi)
 file history	filescenter	it	Cronologia File
 file id	filescenter	it	ID File

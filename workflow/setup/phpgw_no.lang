@@ -4,8 +4,10 @@
 %1 completed	workflow	no	%1 fullført
 %1 configuration	workflow	no	%1 Konfigurasjon
 %1 days, %2:%3:%4	workflow	no	%1 dager, %2:%3:%4
+%1 exception	workflow	no	%1 unntak
 %1 menu	workflow	no	%1 Meny
 %1 monitoring	workflow	no	%1 overvåkes
+%1 processes (%2 active) (%3 being_run)	workflow	no	%1 prosesser (%2 aktive ) (%3 being_run)
 abort instance	workflow	no	Avbryt instanse
 abort this instance	workflow	no	Avbryt denne instanse
 aborted	workflow	no	Avbrutt
@@ -13,6 +15,8 @@ access denied for user %1 on activity %2, no role	workflow	no	Tilgang nektet for
 act	workflow	no	akt
 act. status	workflow	no	Akt. status
 act. status:	workflow	no	Akt. status :
+action %1 needs an activity and activity %2 does not exists	workflow	no	Aksjon %1 trenger en aktivitet og aktivitet %2 eksisterer ikke
+action %1 needs an instance and instance %2 does not exists	workflow	no	Aksjon %1 trenger en instanse og instanse %2 eksisterer ikke
 actions	workflow	no	Aksjoner
 actions right options	admin	no	Aksjoner Rettigheter Valg
 activate	workflow	no	aktiver
@@ -24,24 +28,76 @@ activities updated	workflow	no	Aktiviteter oppdatert
 activity	workflow	no	aktivitet
 activity  status	workflow	no	Aktivitetsstatus
 activity %1	workflow	no	aktivitet %1
+activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	no	Aktivitet %1 (#%2) er assosiert med en ikke eksisterende prosess (#%3)
 activity %1 code is not avaible	workflow	no	aktivitet %1 kode er ikke tilgjengelig
+activity %1 is interactive but has no role assigned	workflow	no	Aktivitet %1 er interaktiv men har ingen rolle tilknyttet
+activity %1 is interactive so it must use the $instance->complete() method	workflow	no	Aktivitet %1 er interaktiv slik at den må benytte $instance->complete() metode.
 activity completed	workflow	no	Aktivitet fullført
 activity failure	workflow	no	Aktivitet feil
 activity in inexistent process	workflow	no	Aktivitet i ikke eksisterende prosess
 activity name already exists	workflow	no	Aktivitetsnavn eksisterer allerede
+activity role #%1 removed	workflow	no	Aktivitetsrolle #%1 fjernet
+activity role removed	workflow	no	Aktivitetsrolle fjernet
 activity saved	workflow	no	Aktivitet ble lagret
+activity start not avaible, no corresponding activity was found.	workflow	no	aktivitetsstart ikke mulig, ingen korresponderende aktivitet ble funnet.
+activity start not set, no corresponding activity was found.	workflow	no	aktivitetsstart ikke satt, ingen korresponderene aktivitet ble funnet.
+activity status not avaible, no corresponding activity was found.	workflow	no	aktivitetsstatus ikke tilgjengelig, ingen korresponderene aktivitet ble funnet.
 activity:	workflow	no	aktivitet :
+add a transition	workflow	no	Legg til en overgang
+add aborted instances	workflow	no	Legg til avbrutte instanser
+add advanced actions	workflow	no	Legg til avanserte aksjoner
+add completed instances	workflow	no	Legg til fullførte instanser
+add instances in exception	workflow	no	Legg til instanser unntatt
 add new	workflow	no	opprett ny
 add or edit a process	workflow	no	Legg til eller endre en prosess
 add or edit an activity	workflow	no	Legg til eller endre en aktivitet
+add property	workflow	no	Legg til eiendel
 add role	workflow	no	Legg til rolle
 add role to process	workflow	no	Legg rolle til prosess
+add transition	workflow	no	Legg til overgang
+add transitions	workflow	no	Legg til overganger
+add transitions from	workflow	no	Legg til overganger fra
+add transitions to	workflow	no	Legg til overganger til
+admin instance	workflow	no	Administrer instanse
+admin process activities	workflow	no	Administrer prosessaktiviteter
+admin process roles	workflow	no	Administrer prosessroller
+admin processes	workflow	no	Administrer prosesser
+admin processes sources	workflow	no	Administrer prosesskilder
+administer instances	workflow	no	Administrer instanser
+administer processes	workflow	no	Adminsitrer prosesser
 all	workflow	no	Alle
 always show advanced actions	workflow	no	Vis alltid avanserte aksjoner
 always show advanced mode	workflow	no	Vis alltid avansert modus
 automatic	workflow	no	Automatisk
+bad role type	workflow	no	Feil rolletype
+bad user	workflow	no	Feil bruker
+bcc:	workflow	no	Bcc:
 being run	workflow	no	kjøres nå
+cannot create compiled file %1	workflow	no	kan ikke skape kompilert fil %1
+cleanup aborted instances	workflow	no	fjerning av avbrutte instanser
+cleanup actions	workflow	no	oppryddingsaksjoner
+close and get back later	workflow	no	Lukk og kom tilbake senere
+close printer friendly mode	workflow	no	Lukk printervennlig modus
 code	workflow	no	kode
+compiling activity %1 : %2	workflow	no	kompilerer aktivitet %1 : %2
+complete	workflow	no	Ferdig
+complete cleanup of aborted instances done	workflow	no	komplett fjerning av avbrutte instanser utført
+complete cleanup of all instances done	workflow	no	komplett fjerning av alle instanser utført
+completed	workflow	no	fullført
+confirm delete	workflow	no	Bekreft sletting
+consult %1 to get the default values:	workflow	no	Konsulter %1 for standard verdier
+couldn't add transition	workflow	no	Kunne ikke legge til overgang
+create	workflow	no	skap
+created	workflow	no	Skapt
+date:	workflow	no	dato:
+default config values	workflow	no	Standard konfigurasjonsverdier
+default next user	workflow	no	Standard neste bruker
+default owner	workflow	no	Standard eier
+default settings for processes	admin	no	Standard instillinger for prosesser
+default user	workflow	no	Standard bruker
+delete selected	workflow	no	Slette valgte
+delete transition	workflow	no	Slette overgang
+deletion successful	workflow	no	Sletting utført
 duration	workflow	no	Varighet
 global activities	workflow	no	Globale aktiviteter
 global workflow preferences	workflow	no	Globale arbeidsflyts preferanser

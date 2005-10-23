@@ -1,0 +1,35 @@
+access mode	mydms	it	modalità accesso
+access rights	mydms	it	diritti di accesso
+access_mode_all	mydms	it	Tutto
+access_mode_none	mydms	it	Nessun accesso
+access_mode_read	mydms	it	Lettura
+access_mode_readwrite	mydms	it	Lettura+Scrittura
+acl get inherited	mydms	it	acl viene ereditata
+add acl	mydms	it	aggiungi acl
+add document	mydms	it	aggiungi documento
+add notification	mydms	it	aggiungi notifica
+add subfolder	mydms	it	aggiungi sottocartella
+admin-tools	mydms	it	Strumenti di Amministrazione
+all versions	mydms	it	Tutte le Versioni
+comment	mydms	it	Commento
+comment for current version	mydms	it	Commento alla versione attuale
+copy acl	mydms	it	copia acl
+create empty acl	mydms	it	crea acl vuota
+current acl	mydms	it	acl corrente
+current version	mydms	it	Versiona Attuale
+default access	mydms	it	accesso predefinito
+delete folder	mydms	it	cancella cartella
+delete this notification	mydms	it	cancella questa notifica
+do you really want to delete this acl?	mydms	it	Vuoi davvero cancellare questa acl?
+do you really want to delete this document?	mydms	it	Vuoi davvero cancellare questo documento?
+do you really want to delete this version of the document?	mydms	it	Vuoi davvero cancellare questa versione del documento?
+edit folder	mydms	it	modifica cartella
+folder	mydms	it	cartella
+information about last update	mydms	it	informazioni ultimo aggiornamento
+move document	mydms	it	sopsta documento
+move folder	mydms	it	sposta cartella
+mydms	common	it	mydms
+notifications	mydms	it	notifiche
+permission	mydms	it	permesso
+this document is currently not locked.	mydms	it	questo documento non è attualmente bloccato
+update document	mydms	it	aggiorna documento
