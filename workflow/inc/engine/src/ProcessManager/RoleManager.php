@@ -87,20 +87,21 @@ class RoleManager extends BaseManager {
   */
   function remove_user($user)  
   {
-    $query = 'delete * from '.GALAXIA_TABLE_PREFIX.'user_roles where wf_user=?';
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'user_roles where wf_user=?';
     $this->query($query,array($user));
   }
   
   //! Transfer all roles from an user to another one
   /*!
   * This function transfer all existing mappings concerning one user to another user
-  * @param $old_user is the actual user id
-  * @param $new_user is the new user id
+  * @param $user_array is an associative arrays, keys are:
+  *     * 'old_user' : the actual user id
+  *     * 'new_user' : the new user id
   */
-  function transfer_user($old_user, $new_user)  
+  function transfer_user($user_array)  
   {
     $query = 'update '.GALAXIA_TABLE_PREFIX.'user_roles set wf_user=? where wf_user=?';
-    $this->query($query,array($new_user, $old_user));
+    $this->query($query,array($user_array['new_user'], $user_array['old_user']));
   }
   
   //!  List mappings
@@ -370,7 +371,6 @@ class RoleManager extends BaseManager {
     }
   }
   
-
   /*!
   * List all users and groups recorded in the mappings with their status (user or group)
   * @return an associative array containing a row for each user. This row is an array

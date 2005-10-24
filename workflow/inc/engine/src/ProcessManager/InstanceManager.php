@@ -92,7 +92,7 @@ class InstanceManager extends BaseManager {
     $where = 'wf_instance_id='.(int)$instanceId;
     if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where)))
     {
-      $this->error[] = 'sync: '.tra('failed to obtain lock on %1 table', 'instances');
+      $this->error[] = 'Process Manager: '.tra('failed to obtain lock on %1 table', 'instances');
       $this->db->FailTrans();
     }
     if ($activityId)
@@ -101,7 +101,7 @@ class InstanceManager extends BaseManager {
       $where = 'wf_instance_id='.(int)$instanceId.' and wf_activity_id='.(int)$activityId;
       if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities', $where)))
       {
-        $this->error[] = tra('failed to obtain lock on %1 table','instances_activities');
+        $this->error[] = 'Process Manager: '.tra('failed to obtain lock on %1 table','instances_activities');
         return false;
       }
     }
@@ -270,12 +270,15 @@ class InstanceManager extends BaseManager {
   * It will concern: wf_user, wf_owner and wf_next_user fields
   * This function will not check access on the instance for the new user, it is the task
   * of the admin to ensure the new user will have the necessary access rights
-  * @param $old_user is the actual user id
-  * @param $new_user is the new user id
+  * @param $user_array is an associative arrays, keys are:
+  *     * 'old_user' : the actual user id
+  *     * 'new_user' : the new user id
   * @return true or false
   */
-  function transfer_user($old_user, $new_user)  
+  function transfer_user($user_array)  
   {
+    $new_user = $user_array['new_user'];
+    $old_user = $user_array['old_user'];
     //TODO: add a global lock on the whole tables
     // user
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instance_activities set wf_user=? where wf_user=?';

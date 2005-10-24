@@ -98,13 +98,14 @@ class ActivityManager extends BaseManager {
   /*!
   * This function transfer all references concerning one user to another user
   * It will concern: wf_default_user
-  * @param $old_user is the actual user id
-  * @param $new_user is the new user id
+  * @param $user_array is an associative arrays, keys are:
+  * 	* 'old_user' : the actual user id
+  * 	* 'new_user' : the new user id
   */
-  function transfer_user($old_user, $new_user)  
+  function transfer_user($user_array)
   {
     $query = 'update '.GALAXIA_TABLE_PREFIX.'activities set wf_default_user=? where wf_default_user=?';
-    $this->query($query,array($new_user,$old_user));
+    $this->query($query,array($user_array['new_user'],$user_array['old_user']));
   }  
 
   /*!
@@ -1408,7 +1409,6 @@ class ActivityManager extends BaseManager {
     //$this->query($query);
     return true;
   }
-
 }
 
 
