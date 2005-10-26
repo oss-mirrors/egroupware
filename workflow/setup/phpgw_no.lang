@@ -87,7 +87,7 @@ completed	workflow	no	fullført
 confirm delete	workflow	no	Bekreft sletting
 consult %1 to get the default values:	workflow	no	Konsulter %1 for standard verdier
 couldn't add transition	workflow	no	Kunne ikke legge til overgang
-create	workflow	no	skap
+create	workflow	no	skape
 created	workflow	no	Skapt
 date:	workflow	no	dato:
 default config values	workflow	no	Standard konfigurasjonsverdier
@@ -98,9 +98,33 @@ default user	workflow	no	Standard bruker
 delete selected	workflow	no	Slette valgte
 delete transition	workflow	no	Slette overgang
 deletion successful	workflow	no	Sletting utført
+delition successful	workflow	no	Sletting utført
+description	workflow	no	Beskrivelse
+display please wait message	admin	no	Vise vennligst vent melding
+don't move	workflow	no	Ikke flytt
+draw roles	admin	no	tegne roller
 duration	workflow	no	Varighet
+end	workflow	no	Slutt
+ended	workflow	no	Avsluttet
+enter an activity name	workflow	no	Registrer et aktivitetsnavn
+error: removing was not done	workflow	no	Feil: Fjerining ble ikke utført
+exception this instance	workflow	no	Unntatt denne instansen
+exceptions	workflow	no	unntak
+execute this activity	workflow	no	Utfør denne aktivitet
+export	workflow	no	Eksporter
+filter	workflow	no	Filter
+font size	admin	no	font str.
+from	workflow	no	Fra
+from:	workflow	no	Fra:
 global activities	workflow	no	Globale aktiviteter
 global workflow preferences	workflow	no	Globale arbeidsflyts preferanser
+graph	workflow	no	Graf
+graphic options	admin	no	Grafiske valg
+group	workflow	no	Gruppe
+id	workflow	no	Ident
+interactive:	workflow	no	Interaktiv:
+interactivity	workflow	no	Interaktivitet
+list of activities	workflow	no	Liste over aktivitetene
 list of instances	workflow	no	Liste over instanser
 list of processes	workflow	no	Liste over prosesser
 list of processes (%1)	workflow	no	Liste over prosesser (%1)
@@ -110,6 +134,32 @@ my instances	workflow	no	Mine instanser
 my processes	workflow	no	Mine prosesser
 name	workflow	no	Navn
 new instance	workflow	no	Ny instanse
+new major	workflow	no	Ny hoved
+new major version created	workflow	no	Ny hovedversjon laget
+new minor	workflow	no	Ny mindre
+new minor version created	workflow	no	Ny mindre versjon laget
+next activity	workflow	no	neste aktivitet
+next user:	workflow	no	Neste bruker:
+no activites	workflow	no	Ingen aktiviteter
+no activity indicated	workflow	no	Ingen aktivitet indikert
+nobody	workflow	no	Ingen
+not defined	workflow	no	ikke definert
+owner	workflow	no	Eier
+split	workflow	no	splitt
+start	workflow	no	Start
+start activity	workflow	no	Start aktivitet
+start process	workflow	no	Start prosess
+started	workflow	no	Startet
+started:	workflow	no	startet:
+starting page	workflow	no	Startside
+status	workflow	no	Status
+status:	workflow	no	status:
+stop	workflow	no	stopp
+template	workflow	no	mal
+test concistency	workflow	no	Test for konsistens
+test consistency of datas in the database	workflow	no	Test for konsistens av data i databasen
+test local installation	workflow	no	Test lokal installasjon
+the activity was not completed	workflow	no	Aktiviteten ble ikke fullført
 there are no activities available	workflow	no	Det er ingen aktiviteter tilgjengelig
 there are no instances available	workflow	no	Det er ingen instanser tilgjengelig
 there are no process available	workflow	no	Det er ingen prosess tilgjengelig
@@ -139,6 +189,7 @@ value	workflow	no	Verdi
 version	workflow	no	Versjon
 view details	workflow	no	Vis detaljer
 view this instance	workflow	no	Vis denne instansen
+view workitem	workflow	no	Vis arbeidsenhet
 we were not able to build the message	workflow	no	Vi er ikke istand til å lage meldingen
 when to send the message:	workflow	no	Når skal melding sendes :
 workflow	common	no	Arbeidsflyt

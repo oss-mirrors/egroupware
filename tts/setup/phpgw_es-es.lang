@@ -130,8 +130,6 @@ tickets found %1	tts	es-es	Incidencias encontradas: %1
 tickets open %1	tts	es-es	Incidencias abiertas: %1
 tickets total %1	tts	es-es	Total de incidencias: %1
 to go back to the tts index, click <a href= %1 >here</a>	tts	es-es	Para volver al índice, pulsar <a href="%1">aquí</a>
-to go back to the tts index, click <a href= %1?sessionid=69211c0c32aa5581c5d69abdbcac4d64 >here</a>	tts	es-es	Para volver al índice del Sistema, pulse <a href="%1">aquí</a>
-to go back to the tts index, click <a href= %1?sessionid=e8b5fbb098cb6b1e628cc61a5b848229 >here</a>	tts	es-es	Para volver al índice, pulse <a href="%1">aquí</a>
 toaccept	tts	es-es	PARA ACEPTAR
 toclosed	tts	es-es	PARA CERRAR
 toduplicate	tts	es-es	PARA DUPLICAR
@@ -152,7 +150,6 @@ tts preferences	tts	es-es	Sistema de notificación de incidencias - preferencias
 undefined	tts	es-es	SIN DEFINIR
 update ticket state	tts	es-es	Actualizar estado de incidencia
 updates ticket	tts	es-es	Actualiza la incidencia
-use email notification	tts	es-es	Usar notificación por correo electrónico
 verified	tts	es-es	VERIFICADA
 verify	tts	es-es	VERIFICAR
 verify the ticket to work on it.	tts	es-es	Verificar la incidencia en la que se va a trabajar.
@@ -162,5 +159,5 @@ view only my open tickets	tts	es-es	Ver sólo mis incidencias abiertas
 view only open tickets	tts	es-es	Ver sólo incidencias abiertas
 you can only close a ticket if it is assigned to you.	tts	es-es	Sólo puede cerrar una incidencia si está asignada a usted.
 you want to delete the state %1 and associated transitions. are you sure?	tts	es-es	¿Seguro que desea borrar el estado %1 y las transiciones asociadas?
-you want to delete the state %1. are you sure?	tts	es-es	¿Está seguro de que desea borrar el estado %!?
-you want to delete the transition %1. are you sure?	tts	es-es	¿Está seguro de que desea borrar la transición %!?
+you want to delete the state %1. are you sure?	tts	es-es	¿Está seguro de que desea borrar el estado %1?
+you want to delete the transition %1. are you sure?	tts	es-es	¿Está seguro de que desea borrar la transición %1?

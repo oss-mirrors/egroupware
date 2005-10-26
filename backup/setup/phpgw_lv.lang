@@ -1,0 +1,56 @@
+absolute path of the backup directory	backup	lv	Pilns dublējuma direktorijas ceļš (piemēram,/usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	lv	Pilns dublējuma direktorijas ceļš (piemēram,/usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	lv	Pilns EGW dublešanas programmatūras direktorijas ceļš
+absolute path of the directory to store the backup script	backup	lv	Pilns EGW dublēšanas programmatūras direktorijas ceļš
+archive type	backup	lv	Izvēlies sava arhīva tipu
+backup	common	lv	Dublējums
+backup administration	common	lv	Dublējuma administrēšana
+bzip2	admin	lv	bzip2
+configuration backup	backup	lv	Dublējuma konfigurācija
+configuration localhost	backup	lv	Lokalhosta konfigurācija
+create backups of your data ?	backup	lv	Atzīmē, lai izveidotu savu datu dublējumus
+daily	backup	lv	ikdienas
+data	backup	lv	Dati
+directory locations	admin	lv	Drektoriju atrašanās
+directory names	admin	lv	Direktoriju nosaukumi
+e-mail	backup	lv	Atzīmē, lai saņemtu E-pasta paziņojumus
+e-mail notification?	backup	lv	E-pasta paziņojumi?
+homedirs	admin	lv	Mājas direktorijas
+interval	backup	lv	Intervāls
+ip or hostname	backup	lv	IP vai hostdatora vārds
+ldap	common	lv	LDAP
+ldap database	admin	lv	LDAP datu bāze
+list backup archives	backup	lv	uzskaiti dublējumu arhīvus
+maildir	admin	lv	Paziņojums aiziet uz E-pastu
+monthly	backup	lv	ikmēneša
+mysql	admin	lv	MySQL
+nfs	backup	lv	nfs
+no backup archives available !	backup	lv	Nav pieejamu dublējumu arhīvu!
+number of stored backup versions	backup	lv	Pirms izdzēšanas uzglabājamo dublējumu skaits
+operating system	backup	lv	Operētājsistēma
+pgsql	admin	lv	PostgreSQL
+please enter the path of the needed applications in *site configuration* !	backup	lv	Lūzdu norādi ceļu uz *Lapas konfigurācijā* nepieciešamajām aplpikācijām
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	lv	Lūdzu ievadi ceļu uz dublējumu direktoriju un/vai aktivizē arhīvu rādīšanu eGropWare
+please enter username and password for remote connection !	backup	lv	Lūdzu ievadi lietotājvārdu un paroli attālinātam pieslēgumam
+please set the path to a local dir to store the backup script !	backup	lv	Lūdzu norādi ceļu un lokālo direktoriju, lai uzglabātu dublēšanas skriptu
+please set the path to the ldap database dir in *site configuration* !	backup	lv	Lūdzu norādi ceļu uz LDAP datubāzes direktoriju *Lapas konfigurācijā*!
+please set the path to the mysql database dir in *site configuration* !	backup	lv	Lūdzu norādi ceļu uz MySQL datubāzes direktoriju *Lapas konfigurācijā*!
+please set the path to the postgresql database dir in *site configuration* !	backup	lv	Lūdzu norādi ceļu uz PostgreSQL datubāzes direktoriju *Lapas konfigurācijā*!
+please set the values in *site configuration* !	backup	lv	Lūdzu uzstādi vērtības  *Lapas konfigurācijā*!
+please specify the ip of the remote host !	backup	lv	Lūdzu norādi attālinātā hosta ip!
+please specify the name of the maildir in *site configuration* !	backup	lv	Lūdzu norāri Sūtījumu direktorijas nosaukumu "Lapas konfigurācijā"!
+please specify the path to the backup directory !	backup	lv	Lūdzu norādi ceļu uz dublējumu direktoriju!
+please specify the path to the user-homedirectories in *site configuration* !	backup	lv	Lūdzu  norādi ceļu uz lietotāja mājasdirektorijām *Lapas konfigurācijā*!
+please write down you e-mail for beeing notified	backup	lv	Lūdzu ieraksti savu e-pasta adresi, lai tiktu informēts
+program locations	admin	lv	Programmas atrašanās
+save backup locally ?	backup	lv	Atzīmē, lai saglabātu dublējumus lokāli
+select archive type	backup	lv	Atzīmē arhīva tipu
+select interval	backup	lv	Atzīmē intervālu
+settings	admin	lv	uzstādījumi
+show backup archives in egroupware ?	backup	lv	Atzīmē, lai rādītu dublējumu arhīvus eGroupWare
+sql	backup	lv	SQL
+the backup application is not configured for showing the archives in egroupware yet !	backup	lv	Dublējumu programmatūra vēl nav konfigurēta, lai rādītu arhīvus eGroupWare !
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	lv	Direktorijai dublēšanas skripta uzglabāšanai jābūt webserverī *DocumentRoot*!
+weekly	backup	lv	iknedēļas
+your sql database isnt supported by this application !	backup	lv	Šī programmatūra neatbalsta tavu SQL datubāzi
+zip	common	lv	zip
