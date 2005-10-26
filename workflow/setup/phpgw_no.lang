@@ -8,6 +8,8 @@
 %1 menu	workflow	no	%1 Meny
 %1 monitoring	workflow	no	%1 overvåkes
 %1 processes (%2 active) (%3 being_run)	workflow	no	%1 prosesser (%2 aktive ) (%3 being_run)
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	no	/arbeidsflytskatalogen eksisterer ikke og kunne ikke skapes.  Få edb-ansvarlig til å kontrollere konfigurasjonen.
+a please wait message is shown when loading the activity form usefull for long tasks	admin	no	en Vennligst vent melding vises ved lasting av skjermbildet.  Fint for tunge jobber.
 abort instance	workflow	no	Avbryt instanse
 abort this instance	workflow	no	Avbryt denne instanse
 aborted	workflow	no	Avbrutt
@@ -15,6 +17,9 @@ access denied for user %1 on activity %2, no role	workflow	no	Tilgang nektet for
 act	workflow	no	akt
 act. status	workflow	no	Akt. status
 act. status:	workflow	no	Akt. status :
+action %1 is impossible if we have no activity and no instance designated for it!	workflow	no	Aksjon %1 er ikke mulig så lenge det ikke er tilegnet noen aktivitet eller instanse.
+action %1 is impossible, another user is already in place	workflow	no	Aksjon %1 er ikke mulig, en annen bruker er allerede på plass
+action %1 is impossible, there are no user assigned to this activity for this instance	workflow	no	Aksjon %1 er ikke mulig, det er ingen bruker tilknyttet denne aktiviteten for instansen.
 action %1 needs an activity and activity %2 does not exists	workflow	no	Aksjon %1 trenger en aktivitet og aktivitet %2 eksisterer ikke
 action %1 needs an instance and instance %2 does not exists	workflow	no	Aksjon %1 trenger en instanse og instanse %2 eksisterer ikke
 actions	workflow	no	Aksjoner
@@ -32,9 +37,13 @@ activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	no	Ak
 activity %1 code is not avaible	workflow	no	aktivitet %1 kode er ikke tilgjengelig
 activity %1 is interactive but has no role assigned	workflow	no	Aktivitet %1 er interaktiv men har ingen rolle tilknyttet
 activity %1 is interactive so it must use the $instance->complete() method	workflow	no	Aktivitet %1 er interaktiv slik at den må benytte $instance->complete() metode.
+activity %1 is standalone but has transitions	workflow	no	Aktivitet %1 er frittstående men har overganger
+activity %1 is standalone or view but has transitions	workflow	no	Aktivitet %1 er frittstående eller vises men har overganger
+activity agent removed	workflow	no	Aktivitetsagent fjernet
 activity completed	workflow	no	Aktivitet fullført
 activity failure	workflow	no	Aktivitet feil
 activity in inexistent process	workflow	no	Aktivitet i ikke eksisterende prosess
+activity is waiting for pending transitions	workflow	no	Aktivitet venter i påvente av overganger
 activity name already exists	workflow	no	Aktivitetsnavn eksisterer allerede
 activity role #%1 removed	workflow	no	Aktivitetsrolle #%1 fjernet
 activity role removed	workflow	no	Aktivitetsrolle fjernet
@@ -65,15 +74,27 @@ admin processes	workflow	no	Administrer prosesser
 admin processes sources	workflow	no	Administrer prosesskilder
 administer instances	workflow	no	Administrer instanser
 administer processes	workflow	no	Adminsitrer prosesser
+agent associated with inexistent activity	workflow	no	Agent assisiert med ikkeeksisterende aktivitet
+agent without activity	workflow	no	Agent uten aktivitet
 all	workflow	no	Alle
 always show advanced actions	workflow	no	Vis alltid avanserte aksjoner
 always show advanced mode	workflow	no	Vis alltid avansert modus
+assign me this activity	workflow	no	Tilordne meg denne aktiviteten
+at least one email address cannot be validated.	workflow	no	minst en e-mailadresse kunne ikke gjenkjennes
 automatic	workflow	no	Automatisk
 bad role type	workflow	no	Feil rolletype
 bad user	workflow	no	Feil bruker
+base directory does not exist, please ask adminstrator to check the global configuration	workflow	no	Basekatalogen eksisterer ikke; be edb-ansvarlig om å kontrollere den globale konfigurasjonen.
 bcc:	workflow	no	Bcc:
 being run	workflow	no	kjøres nå
 cannot create compiled file %1	workflow	no	kan ikke skape kompilert fil %1
+cannot run the activity	workflow	no	Kan ikke starte aktivieten
+cannot run the activity without her process	workflow	no	Kan ikke starte aktiviteten uten dennes prosess
+cannot run the activity without instance	workflow	no	Kan ikke starte aktiviteten uten en instanse
+cannot run unknown activity	workflow	no	Kan ikke starte ukjent aktivitet
+cc:	workflow	no	Cc:
+circular reference found some activity has a transition leading to itself	workflow	no	Sirkulær referanse funner. En eller annen aktivitet har en overgang som leder til seg selv.
+circular reference found. some activity has a transition leading to itself	workflow	no	Sirkulær referanse funner. En eller annen aktivitet har en overgang som leder til seg selv.
 cleanup aborted instances	workflow	no	fjerning av avbrutte instanser
 cleanup actions	workflow	no	oppryddingsaksjoner
 close and get back later	workflow	no	Lukk og kom tilbake senere
@@ -105,29 +126,72 @@ don't move	workflow	no	Ikke flytt
 draw roles	admin	no	tegne roller
 duration	workflow	no	Varighet
 end	workflow	no	Slutt
+end activity is not reachable from start activity	workflow	no	Avslutningsaktivitet kan ikke nåes fra startaktivitet.
 ended	workflow	no	Avsluttet
 enter an activity name	workflow	no	Registrer et aktivitetsnavn
-error: removing was not done	workflow	no	Feil: Fjerining ble ikke utført
+error: removing was not done	workflow	no	Feil: Fjerning ble ikke utført
+exception	workflow	no	Unntak
 exception this instance	workflow	no	Unntatt denne instansen
-exceptions	workflow	no	unntak
+exceptions	workflow	no	unntakene
 execute this activity	workflow	no	Utfør denne aktivitet
 export	workflow	no	Eksporter
+failed to create workitem	workflow	no	kunne ikke opprette arbeidselement
+failed to execute automatic activity	workflow	no	feil i utførelse av automatisk aktivitet
 filter	workflow	no	Filter
+filter instance by id	workflow	no	filtrer instanse etter ident
+fix	workflow	no	Rett
+fix concistency for selected rows	workflow	no	Rett konsistens for valgte rader
 font size	admin	no	font str.
 from	workflow	no	Fra
 from:	workflow	no	Fra:
+get back to global activities	workflow	no	gå tilbake til globale aktiviteter
+get back to instance creation	workflow	no	gå tilbake til opprettelse av instanser
+get property	workflow	no	Få egenskap
 global activities	workflow	no	Globale aktiviteter
-global workflow preferences	workflow	no	Globale arbeidsflyts preferanser
+global workflow preferences	workflow	no	Globale arbeidsflytspreferanser
+go	workflow	no	Gå til
 graph	workflow	no	Graf
 graphic options	admin	no	Grafiske valg
 group	workflow	no	Gruppe
 id	workflow	no	Ident
+import aborted	workflow	no	Import avbrutt
+import successfull	workflow	no	Import vellykket
+inactive	workflow	no	Inaktive
+inst.	workflow	no	Inst.
+inst. status	workflow	no	Inst. status
+instance	workflow	no	Instanse
+instance %1	workflow	no	Instanse %1
+instance history	workflow	no	Instanse historikk
+instance properties	workflow	no	Instanse egenskaper
+instance:	workflow	no	Instanse:
+instance: %1 (process: %2)	workflow	no	Instanse: %1 (Prosess: %2)
+instances	workflow	no	Instanser
+instances selection	workflow	no	Valgte instanser
+int.	workflow	no	Int.
+interactive	workflow	no	Interaktiv
 interactive:	workflow	no	Interaktiv:
 interactivity	workflow	no	Interaktivitet
+invalid	workflow	no	Ikke gyldig
+invalid process	workflow	no	Ikke gyldig prosess
+invalid role name	workflow	no	Ikke gyldig rollenavn
+is active	workflow	no	er aktiv
+join	workflow	no	tilknytte
 list of activities	workflow	no	Liste over aktivitetene
 list of instances	workflow	no	Liste over instanser
 list of processes	workflow	no	Liste over prosesser
 list of processes (%1)	workflow	no	Liste over prosesser (%1)
+list of transitions	workflow	no	Liste over overganger
+list of workitems	workflow	no	Liste over arbeidselementer
+manual	workflow	no	Manuell
+message:	workflow	no	Melding:
+monitor activities	workflow	no	Overvåk aktiviteter
+monitor instance	workflow	no	Overvåk instanse
+monitor instances	workflow	no	Overvåk instanser
+monitor processes	workflow	no	Overvåk prosesser
+monitor this instance	workflow	no	Overvåk denne instansen
+monitor work items	workflow	no	Overvåk arbeidselementer
+monitor workitems	workflow	no	Overvåk arbeidselementer
+monitoring	workflow	no	Overvåker
 more options?	workflow	no	flere valg ?
 my activities	workflow	no	Mine aktiviteter
 my instances	workflow	no	Mine instanser
@@ -142,10 +206,99 @@ next activity	workflow	no	neste aktivitet
 next user:	workflow	no	Neste bruker:
 no activites	workflow	no	Ingen aktiviteter
 no activity indicated	workflow	no	Ingen aktivitet indikert
+no work item indicated	workflow	no	Ingen arbeidselement indikert
 nobody	workflow	no	Ingen
 not defined	workflow	no	ikke definert
+or import a process	workflow	no	Eller importer en prosess
 owner	workflow	no	Eier
+owner of the instance will have the right to abort the instance at any time	admin	no	eier av instansen vil ha rett til å avbryte instansen når som helst
+owner:	workflow	no	Eier:
+ownership give abort right	admin	no	eierskap gir rett til å avbryte
+pr.	workflow	no	Pr.
+printer friendly	workflow	no	Utskriftsvennlig
+priority level:	workflow	no	Prioriteringsnivå:
+process	workflow	no	Prosess
+process %1	workflow	no	Prosess %1
+process %1 %2 is not active, action %3 is impossible	workflow	no	Prosess %1 %2 er ikke aktiv, aksjon %3 er derfor umulig
+process %1 v%2 as no related activity	workflow	no	Prosess %1 v%2 har ingen relatert aktivitet
+process %d has been activated	workflow	no	Prosess %d er nå aktivert
+process %d has been deactivated	workflow	no	Prosess %d er nå dekativert
+process %s %s already exists, the import process was aborted	workflow	no	Prosess %s %s eksisterer allerede, import av prosess ble derfor avbrutt
+process %s %s imported	workflow	no	Prosess %s %s ble importert
+process %s has been created	workflow	no	Prosess %s har blitt opprettet
+process %s has been updated	workflow	no	Prosess %s har blitt oppdatert
+process %s removed	workflow	no	Prosess %s fjernet
+process activities	workflow	no	Prosessaktiviteter
+process alone	workflow	no	Alenestående prosess
+process does not have a start activity	workflow	no	Prosessen har ikke en startaktivitet
+process does not have exactly one end activity	workflow	no	Prosessen har ikke en eksakt avslutningsaktivitet
+process form	workflow	no	Prosessskjema
+process name	workflow	no	Prosessnavn
+process name already exists	workflow	no	Prosessnavn allerede opprettet
+process roles	workflow	no	Prosessroller
+process saved	workflow	no	Prosess lagret
+process transitions	workflow	no	Prosessoverganger
+process version:	workflow	no	Prosess versjon:
+process:	workflow	no	Prosess:
+processes	workflow	no	Prosesser
+properties	workflow	no	Egenskaper
+property	workflow	no	Eiendel
+property %1 already exists	workflow	no	Eiendel %1 er allerede opprettet
+property %1 not found	workflow	no	Eiendel % 1 ikke funnet
+quit without saving	workflow	no	Avslutt uten lagring
+read-only	workflow	no	kun lesbar
+release access to this activity	workflow	no	Frigjør aksess til denne aktiviteten
+release activity for this instance	workflow	no	Frigjør aktiviteten for denne instansen
+release instance	workflow	no	Frigjør instansen
+reload filter	workflow	no	Last inn filter på nytt
+remove active instances	workflow	no	Fjern aktive instanser
+remove all instance for this process	workflow	no	Fjern alle instanser for denne prosessen
+remove selected roles	workflow	no	Fjern valgte roller
+removing instances and workitems for aborted instances on all processes	workflow	no	fjerner instanser og arbeidselementer på avbrutte instanser for alle prosesser
+removing instances and workitems for aborted instances on process #%1	workflow	no	fjerner instanser og arbeidselementer på avbrutte instanser for prosess #%1
+removing instances and workitems for all instances on process #%1	workflow	no	fjerner instanser og arbeidselementer på alle instanser for prosess #%1
+replyto:	workflow	no	Svar til
+restart	workflow	no	Start på nytt
+restart activity	workflow	no	Start aktivitet på ny
+role added to activity	workflow	no	Rolle lagt til aktiviteten
+role added to process	workflow	no	Rolle lagt til prosessen
+role give abort right	admin	no	Rolle gir rett til å avbryte
+role give exception right	admin	no	Rolle gir rett til unntak
+role give release right	admin	no	Rolle gir rett til å frigi
+role name	workflow	no	Rollenavn
+role not saved (maybe a name collision)	workflow	no	Rolle ikke lagret (kan være en navnkollisjon)
+role saved	workflow	no	Rolle lagret
+roles	workflow	no	Roller
+roles assigned to this activity	workflow	no	Roller tilordnet denne aktiviteten
+roles deleted	workflow	no	Roller slettet
+run	workflow	no	start
+run activity	workflow	no	start aktivitet
+run instance	workflow	no	start instanse
+running	workflow	no	kjører
+running activities options	admin	no	Valg for startede aktiviteter
+search:	workflow	no	Søk:
+select a transition to remove	workflow	no	Velg en overgang som skal fjernes
+select source	workflow	no	velg kilde
+send all to	workflow	no	Send til alle
+send an email	workflow	no	Send en e-mail
+send instance	workflow	no	send instanse
+send this instance to the next activity	workflow	no	Send denne instansen til neste aktivitet
+send transition	workflow	no	Send overgang
+send when the activity is ending	workflow	no	Send når aktivitet avsluttes
+send when the activity is starting	workflow	no	Send når aktivitet påbegynnes
+set next act	workflow	no	Sett neste aktivitet
+set next user	workflow	no	Sett neste bruker
+set property	workflow	no	Sett egenskaper
+setting next activity to an unexisting activity	workflow	no	setter neste aktivitet til en ikkeeksisterende aktivitet
+shared code	workflow	no	Delt kode
+show activity title	admin	no	Vis aktivitetstittel
+show code	workflow	no	Vis kode
+show template	workflow	no	Vis mal
+source code file for activity %1 is not avaible	workflow	no	Kildekodefilen for aktivitet %1 er ikke tilgjengelig
+source code for activity %1 is not avaible	workflow	no	Kildekoden for aktivitet %1 er ikke tilgjengelig
+source saved	workflow	no	Kilden lagret
 split	workflow	no	splitt
+standalone	workflow	no	frittstående
 start	workflow	no	Start
 start activity	workflow	no	Start aktivitet
 start process	workflow	no	Start prosess
@@ -160,14 +313,28 @@ test concistency	workflow	no	Test for konsistens
 test consistency of datas in the database	workflow	no	Test for konsistens av data i databasen
 test local installation	workflow	no	Test lokal installasjon
 the activity was not completed	workflow	no	Aktiviteten ble ikke fullført
+the instance title is shown on top of the form	admin	no	Navn på instansen vises i toppen av skjermbildet
 there are no activities available	workflow	no	Det er ingen aktiviteter tilgjengelig
+there are no config value defined	workflow	no	Det er ikke definert noen konfigurasjonsverdi
 there are no instances available	workflow	no	Det er ingen instanser tilgjengelig
 there are no process available	workflow	no	Det er ingen prosess tilgjengelig
 there are no processes	workflow	no	Det er ingen prosesser
 there are no processes available	workflow	no	Det er ingen prosesser tilgjengelig
 there are no processes defined	workflow	no	Det er ingen definerte prosesser
+there are no properties available	workflow	no	Det er ingen tilgjengelige egenskaper
+there are no roles defined for this process	workflow	no	Det er ikke definert roller for denne prosessen
+there are no transitions defined	workflow	no	Det er ikke definert noen overganger
+there are no user activites available	workflow	no	Det er ingen brukeraktiviteter tilgjengelig
+there are no workitems available	workflow	no	Det er ingen arbeidselementer tilgjengelig
+this process has no end activity	workflow	no	denne prosessen har ingen avslutningsaktivitet
+this will automatically release the instance when leaving an activity without completing	admin	no	dette vil automatisk frigjøre instansen når en prosess forlates uten at den fullføres
 to	workflow	no	Til
 to:	workflow	no	Til :
+transition	workflow	no	Overgang
+transition mode	workflow	no	Overgangsmodus
+transition to %1	workflow	no	Overgang til %1
+transitions	workflow	no	Overganger
+transitions removed successfully	workflow	no	Overgangene ble fjernet
 type	workflow	no	type
 type:	workflow	no	type :
 unknown status	workflow	no	ukjent status
@@ -190,8 +357,12 @@ version	workflow	no	Versjon
 view details	workflow	no	Vis detaljer
 view this instance	workflow	no	Vis denne instansen
 view workitem	workflow	no	Vis arbeidsenhet
+warning this filter override all others filters	workflow	no	Advarsel: Dette filteret overstyrer alle andre filtere
 we were not able to build the message	workflow	no	Vi er ikke istand til å lage meldingen
 when to send the message:	workflow	no	Når skal melding sendes :
 workflow	common	no	Arbeidsflyt
 workflow configuration	admin	no	Arbeidsflyt Konfigurasjon
 workflow preferences	workflow	no	Arbeidsflyt Preferanser
+workflow site configuration	workflow	no	Konfigurering av nettstedet for arbeidsflyt
+workitem information	workflow	no	Informasjon om arbeidselementet
+workitems	workflow	no	Arbeidselementer

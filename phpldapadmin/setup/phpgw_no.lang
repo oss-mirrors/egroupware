@@ -1,0 +1,116 @@
+add	phpldapadmin	no	Legg til
+add_a_jpeg_photo	phpldapadmin	no	Legg til en jpeg-bilde
+add_new	phpldapadmin	no	Legg til ny
+add_new_attribute	phpldapadmin	no	Legg til ny attributt
+add_new_attribute_tooltip	phpldapadmin	no	Legg til en ny attributt/verdie til denne registreringen
+add_new_binary_attr	phpldapadmin	no	Legg til ny binær attributt
+add_new_binary_attr_tooltip	phpldapadmin	no	Legg til en ny binær attributt/verdi fra en fil
+add_oclass_and_attrs	phpldapadmin	no	Legg til objektklasser og attributter
+add_value	phpldapadmin	no	Legg til verdi
+add_value_tooltip	phpldapadmin	no	Legg til en tilleggsverdi for denne attributten
+advanced_search_form_str	phpldapadmin	no	Avansert søkeformular
+alias_for	phpldapadmin	no	Alias for
+bad_server_id	phpldapadmin	no	Feil tjenerident
+base_dn	phpldapadmin	no	Base DN
+binary_value	phpldapadmin	no	Binær verdi
+change_entry_rdn	phpldapadmin	no	Endre denne postens RDN
+chooser_link_tooltip	phpldapadmin	no	Klikk for å vise en dialog i et nytt vindu for å velge en post(DN) grafisk
+click_to_display	phpldapadmin	no	klikk for å vise
+contains	phpldapadmin	no	inneholder
+copy_this_entry	phpldapadmin	no	Kopier denne posten
+copy_this_entry_tooltip	phpldapadmin	no	Kopier dette objektet til en annen lokasjon, en ny DN, eller en annen tjener
+could_not_connect	phpldapadmin	no	Kan ikke koble til LDAP tjener
+could_not_determine_root	phpldapadmin	no	Kan ikke bestemme roten av ditt LDAP tre
+could_not_perform_ldap_mod_add	phpldapadmin	no	Kan ikke utføre perform_mod_app operasjonen.
+create	phpldapadmin	no	Opprett
+create_a_child_entry	phpldapadmin	no	Skap en underforliggende forekomst
+create_new	phpldapadmin	no	Opprett ny
+create_new_entry_in	phpldapadmin	no	Opprett en ny post i
+create_new_entry_on	phpldapadmin	no	Opprett en ny post av
+current_list_of	phpldapadmin	no	Gjeldende liste for
+delete_attribute	phpldapadmin	no	slett attributt
+delete_hint	phpldapadmin	no	Hint: <b>for å slette en attributt</b>, tøm tekstfeltet og trykk lagre
+delete_this_entry	phpldapadmin	no	Slett denne posten
+delete_this_entry_tooltip	phpldapadmin	no	Du vil bli forespurt om å bekrefte denne beslutningen
+desc	phpldapadmin	no	Beskrivelse
+download_value	phpldapadmin	no	nedlastingsverdi
+ends_with	phpldapadmin	no	slutter på
+enter_value_to_add	phpldapadmin	no	Registrer verdien du ønsker å legge til:
+entry_attributes	phpldapadmin	no	Postens attributter
+export_subtree_to_ldif	phpldapadmin	no	Eksporter undertre til LDIF
+export_subtree_to_ldif_tooltip	phpldapadmin	no	Lagre en LDIF dump av dette og underliggende objekter.
+export_to_ldif	phpldapadmin	no	Eksporter til LDIF
+export_to_ldif_mac	phpldapadmin	no	Macintosh linjeskiftsstil
+export_to_ldif_tooltip	phpldapadmin	no	Lagre en LDIF dump av dette objektet.
+export_to_ldif_unix	phpldapadmin	no	Unix linjeskriftsstil
+export_to_ldif_win	phpldapadmin	no	Windows linjeskiftsstil
+false	phpldapadmin	no	ikke sann
+hidden	phpldapadmin	no	skjult
+hide_internal_attrs	phpldapadmin	no	Skjul interne attributter
+import	phpldapadmin	no	Importer
+import_from_ldif	phpldapadmin	no	Importer poster fra en LDIF fil
+info	phpldapadmin	no	Informasjon
+inherits	phpldapadmin	no	Arver
+internal_attributes	phpldapadmin	no	Interne attributter
+internal_attrs_tooltip	phpldapadmin	no	Attributter settes automatisk av systemet
+is_obsolete	phpldapadmin	no	Denne objektklassen er <b>påkrevet</b>
+jump_to_attr	phpldapadmin	no	Hopp til en attributt
+jump_to_objectclass	phpldapadmin	no	Hopp til en objektklasse
+jump_to_this_oclass	phpldapadmin	no	Hopp til definisjonen for denne objektklassen
+ldap_refuses_to_give_root	phpldapadmin	no	Det ser ut til at denne LDAP tjeneren er satt opp til å ikke vise sin rot.
+logged_in_as	phpldapadmin	no	Logget inn som:
+logout	phpldapadmin	no	Logg ut
+logout_of_this_server	phpldapadmin	no	Logg ut fra denne tjeneren
+matching_rule_oid	phpldapadmin	no	Passende regel OID
+new_attributes	phpldapadmin	no	Nye attributter
+new_required_attrs	phpldapadmin	no	Nye nødvendige attributter
+new_required_attrs_instructions	phpldapadmin	no	Instruksjon: for å legge denne objektklassen til posten må du spesifisere
+new_required_attrs_note	phpldapadmin	no	Note: Det kan hende du må registrere nye attributter som er nødvendige for denne objektklassen.
+no_new_attrs_available	phpldapadmin	no	ingen nye attributter tilgjengelig for denne forekomsten
+no_updates_in_read_only_mode	phpldapadmin	no	Du kan ikke utføre oppdateringer med tjeneren i kun lesbar modus.
+none	phpldapadmin	no	ingen
+none_remove_value	phpldapadmin	no	ingen, fjern verdi
+not_enough_login_info	phpldapadmin	no	Ikke nok informasjon for å logge på tjeneren.  Vennligts kontroller din konfigurasjon.
+oid	phpldapadmin	no	OID
+optional_attrs	phpldapadmin	no	Valgfrie attributter
+please_specify_in_config	phpldapadmin	no	Vennligst spesifiser i config.php
+read_only	phpldapadmin	no	kun lesbar
+really_delete_attribute	phpldapadmin	no	Virkelige slette attributten
+refresh	phpldapadmin	no	Oppdater
+refresh_expanded_containers	phpldapadmin	no	Oppfrisk alle ekspanderte kontainere for
+refresh_this_entry	phpldapadmin	no	Oppfrisk denne forekomsten
+rename	phpldapadmin	no	Gi nytt navn
+rename_entry	phpldapadmin	no	Gi forekomsten nytt navn
+report_bug	phpldapadmin	no	Rapporter en feil
+request_new_feature	phpldapadmin	no	Forespør en ny mulighet
+required_attrs	phpldapadmin	no	Nødvendige attributter
+requires_to_add	phpldapadmin	no	Denne aksjonen krever at du legger til
+save_changes	phpldapadmin	no	Lagre endringer
+schema	phpldapadmin	no	Skjema
+schema_for_server	phpldapadmin	no	Skjema for tjener
+search	phpldapadmin	no	Søk
+search_ filter	phpldapadmin	no	Søkefilter
+search_for_entries_whose	phpldapadmin	no	Søk for poster som
+search_scope	phpldapadmin	no	Søkeområde
+see_open_bugs	phpldapadmin	no	Se åpne feil
+see_open_requests	phpldapadmin	no	Se åpne forespørsler
+server	phpldapadmin	no	Tjener
+show_attributes	phpldapadmin	no	Vis attributter
+show_internal_attrs	phpldapadmin	no	Vis interne attributter
+simple_search_form_str	phpldapadmin	no	Enkelt søkeskjema
+sounds_like	phpldapadmin	no	høres ut som
+starts_with	phpldapadmin	no	startet med
+syntax	phpldapadmin	no	Syntaks
+syntax_oid	phpldapadmin	no	Syntaks IOD
+that_this_oclass_requires	phpldapadmin	no	som denne objektklassen trenger.  Du kan gjøre dette i dette skjemaet
+the_following_attributes	phpldapadmin	no	Følgende <b>attributt-typer</b> er supportert av denne LDAP-tjeneren
+the_following_matching	phpldapadmin	no	Følgende <b>regler for treff</b> er supportert av denne LDAP-tjeneren
+the_following_objectclasses	phpldapadmin	no	Følgende <b>objektklasser</b> er supportert av denne LDAP-tjeneren
+the_following_syntaxes	phpldapadmin	no	Følgende <b>syntakser</b> er supportert av denne LDAP-tjeneren
+true	phpldapadmin	no	sant
+value_to	phpldapadmin	no	verdi til
+values_for_attribute	phpldapadmin	no	verdi for attributt
+view	phpldapadmin	no	Vis
+view_schema_for	phpldapadmin	no	Vis skjema for
+view_server_info	phpldapadmin	no	Vis informasjon gitt av tjeneren
+viewing_read_only	phpldapadmin	no	Vis forekomst i bareles-modus

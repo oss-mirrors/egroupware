@@ -1,4 +1,4 @@
-"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	no	"Du har ikke adgang til noen nettsteder.  Spør EDB-ansvarlig om å gi deg tilgang til ditt nettsted eller nettstedsobjekter eller kontrollere on det eksisterer et nettsted.
+"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	no	"Du har ikke adgang til noen nettsteder.  Spør EDB-ansvarlig om å gi deg tilgang til ditt nettsted eller nettstedsobjekter eller kontrollere om det eksisterer noe nettsted.
 %1 has a one-to-many with %2 (default:%4) showing %3	jinn	no	%1 har en en-til-mange relasjon med %2 (standard:%4) viser %3
 %1 has a one-to-many with %2 showing %3	jinn	no	% har en en-til-mange relasjon med %2 viser %3
 %1 has a one-to-one relation with %2 using the configuration of object %3	jinn	no	%1 har en en-til-en relasjon med %2 som benytter konfigurasjon fra objekt %3
@@ -6,6 +6,7 @@
 %1 records per page	jinn	no	%1 poster pr side
 %1 site obj-fields have been imported.	jinn	no	%1 nettstedsobjekt-felt ble importert
 %1 site objects have been imported.	jinn	no	%1 nettstedsobjekter ble importert
+%3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	no	%3: hendelse <b>%1</b> trigger plugin <b>%2</b>
 4 (default)	jinn	no	4 (standard)
 access rights	jinn	no	Tilgangsrettigheter
 access rights for site not succesfully editted	jinn	no	Tilgangsrettighetene for nettstedet ble ikke endret
@@ -47,6 +48,7 @@ add or remove	jinn	no	Legge til eller fjerne
 add site	jinn	no	Legge til nettsted
 add site object	jinn	no	Legge til nettsteds objekt
 add site-object	jinn	no	Legge til nettsteds-objekt
+add slot	jinn	no	Legg til luke
 add your zip-file with images here	jinn	no	Legg til zip-filen med bilder her
 admin:: edit site	jinn	no	Admin:: endre nettsted
 administrator mode	jinn	no	Administratormodus
@@ -66,6 +68,7 @@ are you sure you want to delete this record?	jinn	no	Er du sikker på at du ønske
 are you sure your want to edit these records?	jinn	no	Er du sikker på at du ønsker å endre denne posten ?
 are you sure?	jinn	no	Er du sikker ?
 ascending	jinn	no	Stigende
+attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	no	Katalog for tillegg eksisterer ikke eller er ikke korrekt angitt, heller ikke kan de skapes.. Vennligst kontroller objektets opplastingskatalog:
 automatic	jinn	no	Automatisk
 automaticly add objects for all tables	jinn	no	automatisk legge til objekter for alle tabellene
 automaticly incrementing	jinn	no	automastisk øke
@@ -75,6 +78,12 @@ back to record list	jinn	no	tilbake til liste over postene
 binary	jinn	no	binær
 binary, contains data	jinn	no	binær, inneholder data
 binary, empty	jinn	no	binær, tom
+browse	jinn	no	Gjennomse
+browse current object	jinn	no	Gjennomse gjeldende objekt
+browse sites	jinn	no	Gjennomse nettsteder
+browse through object settings	admin	no	Se igjennom objektoppsett
+browse through sites	jinn	no	Se igennom nettsteder
+browses through sites	admin	no	Ser igjennom nettsteder
 can't edit more then 99 record at once (error code 108)	jinn	no	Kan ikke endre mer enn 99 poster på en gang (Feil kode 108)
 cancel	jinn	no	Kanseller
 cannot copy a record from this table.	jinn	no	Kan ikke kopiere en post fra denne tabellen
@@ -85,18 +94,25 @@ choose	jinn	no	velg
 close this window	jinn	no	lukk vinduet
 column	jinn	no	kolonne
 column name	jinn	no	kolonnenavn
+come back after new valid tablename is saved to configure plugins	jinn	no	kom tilbake etter at en ny gyldig tabell er lagret for å konfigurere plugins
+come back in edit mode for configuring plugins	jinn	no	kom tilbake i editeringsmodus for konfigurasjon av plugins
+come back in edit mode to configure plugins	jinn	no	kom tilbake i editeringsmodus for konfigurasjon av plugins
+come back in edit mode to enter one-to-one fields for this record.	jinn	no	kom tilbake i editeringsmodus for registrering av en-til-en felter for denne posten.
 configure	jinn	no	konfigurer
+configure browse view	jinn	no	konfigurer visning for å gjennomse
 configure field plugin	jinn	no	konfigurer felt for plugin
 configure this object list view	jinn	no	Konfigurer denne visningen av objekter
 configure this tableview	jinn	no	Konfigurer denne tabellvisningen
 configure this view	jinn	no	Konfigurer denne visningen
 configure view of	jinn	no	Konfigurer visning av
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	no	sti for konvertering fra ImageMagic (f.eks /usr/X11R6/bin/convert)
 copy	jinn	no	kopier
 copy and edit the new record	jinn	no	kopier og endre denne nye posten
 could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	no	Kan ikke finne noen tabeller! Kontroller databasenavn, brukernavn og passord for database eller skap en eller flere tabeller i databasen.
 create a new site now	jinn	no	Opprett et nytt nettsted nå
 criterium	jinn	no	Kriterium
 current color:	jinn	no	Gjeldende farge :
+current session filter	jinn	no	filter for gjeldende session
 database connection failed! <p>please recheck your settings.	jinn	no	Databaseoppkoblingen feilet! <P>Se over dine innstillinger igjen.
 database connection was succesful.	jinn	no	Databaseoppkoblingen var vellykket.
 database connection was succesfull. <p>you can go on with the site-objects	jinn	no	Databaseoppkoblingen var vellykket.<P>Du kan nå fortsette med nettstedsobjektene.
@@ -132,6 +148,7 @@ edit	jinn	no	endre
 edit all selected records	jinn	no	endre alle valgte poster
 edit egw_jinn_sites	jinn	no	endre nettsteder
 edit filter	jinn	no	endre filter
+edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	no	Editer JiNN nettsteds objektparametre: <li>velg et JiNN Objektnavn for visning</li> <li>velg en databasetabell for bruk med dette objektet</li> <li>om nødvendig en alternative korrekt absolute opplastingssti</li><li>om nødvendig en korresponderende alternativ forhåndsvisningsadresse for opplastede elementer</li><br><li>definer feltrelasjoner</li><li>konfigurer feltplugins</li>
 edit object	jinn	no	Endre objekt
 edit site	jinn	no	Endre nettsted
 edit this record	jinn	no	endre denne posten
@@ -153,6 +170,7 @@ export this site	jinn	no	eksporter dette nettstedet
 exporteer object	jinn	no	Eksporter objekt
 extra help information for this field	jinn	no	Ekstra hjelpinformasjon for dette feltet
 failed to copy: %1 to %2 ...	jinn	no	kunne ikke kopiere: %1 til %2 ...
+failed to open table. please check if table <i>%1</i> still exists in database	jinn	no	Kunne ikke åpne tabell.  Vennligst kontroller om tabell <i>%1</i> fortsatt eksisterer i databasen.
 field	jinn	no	felt
 field configuration	jinn	no	Feltkonfigurasjon
 field position	jinn	no	feltposisjon
@@ -165,6 +183,8 @@ filtered list	jinn	no	filtrert liste
 first row has field names	jinn	no	første rekke har feltnavn
 general preferences	jinn	no	Generelle preferanser
 general settings	admin	no	Generelle innstillinger
+give a new timestamp	jinn	no	Registrer en ny tidsmerking
+give new timestamp	jinn	no	Registrer ny tidsmerking
 global configuration	jinn	no	Global konfigurasjon
 global site configuration	admin	no	Global nettsidekonfigurasjon
 go	jinn	no	Gå til
@@ -195,16 +215,22 @@ jinn editors menu	jinn	no	JiNN Redigeringsmeny
 jinn main	jinn	no	JiNN Hoved
 jinn main menu	jinn	no	JiNN Hovedmeny
 jinn preferences	jinn	no	JiNN Preferanser
+keep current timestamp	jinn	no	Behold gjeldende tidsmerking
+keep this empty to let is auto increment	jinn	no	Hold denne tom for å få automatisk økning
 last edited record	jinn	no	Sist endrede post
 license	common	no	Lisens
 lines terminated by	jinn	no	linjen terminert av
 list sites	jinn	no	List nettsteder
+load export profile	jinn	no	Last inn eksportprofil
+load site conf from file	jinn	no	Last inn nettstedskonf. fra fil
 maintainer	common	no	Vedlikeholder
 mandatory	jinn	no	Obligatorisk
 manually enter a new relative file path	jinn	no	Registrer manuelt en ny relativ filsti
 many 2 many relations will not work	jinn	no	Mange-til-mange relasjoner vil ikke virke
 max records	jinn	no	Maks. ant. poster
 max. number of previews in form	jinn	no	Maks. antall av forhåndsvisning i skjermbildet
+maximum image width isn	jinn	no	Maks. bildebredde med isn
+maximum image width isn\	jinn	no	Maks. bildebredde med isn
 moderator mode	jinn	no	Moderatormodus
 months	jinn	no	Måneder
 move down	jinn	no	flytt ned
@@ -213,6 +239,7 @@ move up	jinn	no	flytt opp
 moved record one row down.	jinn	no	Flytt posten en linje ned
 moved record one row up.	jinn	no	Flytt posten en linje opp.
 moved record to last row.	jinn	no	Flytt posten til siste linje.
+name and help info	jinn	no	Info om navn og hjelp
 new image size limits.	jinn	no	Begrensning på str. av nye bilder
 no filter	jinn	no	uten filter
 no matchs found	jinn	no	Ingen treff funnet
@@ -222,6 +249,8 @@ no objects found for this site.	jinn	no	Ingen objekter funnet for dette nettsted
 no records found	jinn	no	Ingen poster funnet
 normal view	jinn	no	Normal visning
 not yet implemented	jinn	no	ennå ikke implementert
+nothing to save. please select a plugin to delete or configure a new plugin	jinn	no	ingenting å lagre.  Vennligst velg en plugin for sletting eller konfigurer en ny plugin
+notice that jinn needs imagemagick 5.4.9 or a later version	admin	no	Bemerk at JiNN krever ImageMagic 5.4.9 eller en senere versjon
 number of objects	jinn	no	Antall objekter
 number of records per page	jinn	no	Antall poster pr. side
 object event configuration	jinn	no	Objekt hendelseskonfigurasjon
@@ -233,12 +262,23 @@ one or more records not succesfully saved.	jinn	no	En eller flere poster ble ikk
 one or more records not succesfully saved. (error code 106)	jinn	no	En eller flere poster ble ikke lagret (feilkode 106)
 one page backwards	jinn	no	En side tilbake
 one page forward	jinn	no	En side forover
+only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	no	Bare aktiver dette om du vet hva du gjør.  Du kan ødelegge alle dine data ved å benytte eksperimentelle tillegg.
 only if thumnails exits	jinn	no	Bare dersom miniatyrbilde eksisterer
 only one	jinn	no	bare en
+operation on multiple records failed.	jinn	no	Handling på flere poster feilet
+operation on multiple records failed. (error code 100)	jinn	no	Handling på flere poster feilet (Feilkode 100)
 optional max. height	jinn	no	Valgfri maks. høyde
 optional max. width	jinn	no	Velgfri maks bredde
 page %1	jinn	no	Side %1
 parent site id	jinn	no	Overordnet nettstedsident
+path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	no	Sti til konvertering for ImageMagic (f.eks /usr/X11R6/bin )
+please contact administrator with this message	jinn	no	Vennligst kontakt edb-ansvarlig med denne meldingen.
+please contact administrator with this message.	jinn	no	Vennligst kontakt edb-ansvarlig med denne meldingen.
+please fill in all mandatory fields	jinn	no	Vennligst fyll inn alle nødvendige felt.
+please set your preferences for this application	jinn	no	Vennligst registrer preferanser for dette programmet
+plugin configuration	jinn	no	Konfigurasjon av Plugin
+plugin configuration successfully saved	jinn	no	Konfigurasjon av Plugin ble lagret
+plugin name	jinn	no	Navn på plugin
 postgresql support is not stable. wanna help?	common	no	PostgreSQL support er ikke stabil.  Ønsker du å hjelpe oss?
 preset: ms excel	jinn	no	forhåndsinnst: MS Excel
 preset: open office spreadsheet	jinn	no	forhåndsinnst:Open Office Regneark
@@ -247,7 +287,24 @@ preview website	jinn	no	Forhåndsvis nettsted
 production	admin	no	Produksjon
 real value	jinn	no	reel verdi
 record	jinn	no	post
+record added succesfully	jinn	no	Posten ble lagt til
+record deleted succesfully	jinn	no	Posten ble slettet
+record not succesfully copied	jinn	no	Posten ble IKKE kopiert
+record not succesfully copied. unknown error	jinn	no	Posten ble IKKE kopiert. Ukjent feil
+record not succesfully deleted.	jinn	no	Posten ble IKKE slettet
+record not succesfully deleted. unknown error	jinn	no	Posten ble IKKE slettet.  Ukjent feil
+record not succesfully saved	jinn	no	Posten ble IKKE lagret
+record not succesfully saved. unknown error	jinn	no	Posten ble IKKE lagret.  Ukjent feil
+record succesfully copied	jinn	no	Posten ble kopiert
+record succesfully deleted	jinn	no	Posten ble slettet
+record succesfully editted	jinn	no	Posten ble endret
+records not succesfully deleted.	jinn	no	Posten ble IKKE slettet.
+records not succesfully deleted. (error code 101)	jinn	no	Posten ble IKKE slettet.  (Feilkode 101)
+records succesfully deleted	jinn	no	Posten ble slettet
+registered field plugins	common	no	Registrerte felt-plugins
+registered object event plugins	jinn	no	Registrerte hendelsesobjekt plugins
 related	jinn	no	relatert
+related entries from table %1	jinn	no	Relatertet forekomster fra tabell %1
 relation %1	jinn	no	relasjon %1
 relations	jinn	no	relasjoner
 relations for this object	jinn	no	Relasjoner for dette objektet
@@ -255,6 +312,7 @@ remote	admin	no	Fjern(betjenes)
 remove	jinn	no	fjern
 remove all	jinn	no	Fjern alle
 replace existing site with the same name?	jinn	no	Erstatte eksisterende nettsted med det samme navn?
+replaced existing site named <strong>%1</strong>.	jinn	no	Eksisterende nettsted ble erstattet <strong>%1</strong>.
 represented by:	jinn	no	representert ved:
 reset form	jinn	no	tilbakestill skjermbilde
 save	jinn	no	lagre
@@ -284,9 +342,14 @@ select_object	jinn	no	Velg objekt
 selected records	jinn	no	valgte poster
 serialnumber	jinn	no	Objekt serienummer
 server type?	admin	no	Tjenertype?
+session filter	jinn	no	Filter for session
 set access right for site objects	jinn	no	Reg. adgangsrettigheter for nettstedsobjekter
 set access rights	jinn	no	Reg. adgangsrettigheter
 set access rights for sites	jinn	no	Reg. adgangsrettigheter for nettstedene
+set administrators for	jinn	no	Reg. administratorer for
+set administrators for %1	jinn	no	Reg. administratorer for %1
+set object moderator	jinn	no	Reg. objektmoderator
+set site admin	jinn	no	Reg. nettstedsansvarlig
 show	jinn	no	vis
 show all columns	jinn	no	Vis alle kolonner
 show all colums, always	jinn	no	Vis alle kolonner, alltid
@@ -304,6 +367,18 @@ site description	admin	no	Nettstedsbeskrivelse
 site id	jinn	no	Nettstedsident
 site media and documents	jinn	no	Nettstedets Media og Dokumenter
 site name	jinn	no	Nettstedsnavn
+site not succesfully added, unknown error	jinn	no	Nettstedet ble IKKE lagt til, ukjent feil
+site not succesfully deleted, unknown error	jinn	no	Nettstedet ble IKKE slettet, ukjent feil
+site not succesfully saved, unknown error	jinn	no	Nettstedet ble IKKE lagret, ukjent feil
+site object not succesfully added, unknown error	jinn	no	Nettstedsobjekt ble IKKE lagt til, ukjent feil
+site object not succesfully deleted, unknown error	jinn	no	Nettstedsobjekt ble IKKE slettet, ukjent feil
+site object not succesfully saved, unknown error	jinn	no	Nettstedsobjekt ble IKKE lagret til, ukjent feil
+site object succesfully added	jinn	no	Nettstedsobjekt lagt til
+site object succesfully deleted	jinn	no	Nettstedsobjekt  slettet
+site object succesfully saved	jinn	no	Nettstedsobjekt lagret
+site succesfully added	jinn	no	Nettsted lagt til
+site succesfully deleted	jinn	no	Nettsted slettet
+site succesfully saved	jinn	no	Nettsted lagret
 site title	admin	no	Nettstedstittel
 site-objects	jinn	no	Nettstedsobjekter
 sites	jinn	no	Nettsteder
@@ -334,6 +409,7 @@ with_checked_files	jinn	no	med avkryssede filer
 yes, hide from menu	jinn	no	Ja, skjul fra menyen
 you are on a <b>development</b> server	jinn	no	du er på en <b>utviklings</b> tjener
 you are on a <b>production</b> server	jinn	no	du er på en <b>produksjons</b> tjener
+you cannot delete the session filter	jinn	no	du kan ikke slette filter for session
 you don't have access to this page.	jinn	no	Du har ikke adgang til denne siden.
 you have no access to this file.	jinn	no	Du har ikke adgang til denne filen.
 you have no access to this object	jinn	no	Du har ikke adgang til dette objektet
