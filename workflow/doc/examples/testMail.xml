@@ -1,10 +1,10 @@
 <process>
   <name>testMail</name>
   <isValid>y</isValid>
-  <version>1.0</version>
+  <version>1.1</version>
   <isActive>y</isActive>
    <description>This process tests the mail agent for egroupware</description>
-  <lastModif>29/08/2005 [04:36:57]</lastModif>
+  <lastModif>28/10/2005 [10:34:59]</lastModif>
   <sharedCode><![CDATA[<?php
 //***************************************************************************
 //* copyleft Regis dot Leroy at glconseil dot com                           *
@@ -57,13 +57,8 @@
     </config>
     <config>
       <wf_config_name>mail_smtp_profile</wf_config_name>
-      <wf_config_value></wf_config_value>
-      <wf_config_value_int>1</wf_config_value_int>
-    </config>
-    <config>
-      <wf_config_name>mail_smtp_debug</wf_config_name>
-      <wf_config_value></wf_config_value>
-      <wf_config_value_int>0</wf_config_value_int>
+      <wf_config_value>default</wf_config_value>
+      <wf_config_value_int></wf_config_value_int>
     </config>
   </configs>
   <activities>
@@ -72,12 +67,12 @@
       <type>view</type>
       <description>This 'view' activity is there to give a nicer view in read-only mode on the message for all users of the process.
 We use the mail agent on it to prevent the owner (author of the message) that someones has consulted his message.</description>
-      <lastModif>28/08/2005 [05:32:18]</lastModif>
+      <lastModif>02/09/2005 [04:04:04]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>n</isAutoRouted>
       <roles>
-        <role>Validator</role>
-        <role>MailUser</role>
+        <role readonly="true">Validator</role>
+        <role readonly="true">MailUser</role>
       </roles>
       <agents>
         <agent>
@@ -200,66 +195,12 @@ foreach ($property_vars as $prop => $value)
       <name>end</name>
       <type>end</type>
       <description>default end activity</description>
-      <lastModif>26/08/2005 [10:16:48]</lastModif>
+      <lastModif>01/09/2005 [09:13:00]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
       </roles>
       <agents>
-      </agents>
-      <code><![CDATA[<?php
-?>      ]]></code>    </activity>
-    <activity>
-      <name>Send the message</name>
-      <type>activity</type>
-      <description>This automatic activity will send the message that the user was asking for.</description>
-      <lastModif>27/08/2005 [01:14:24]</lastModif>
-      <isInteractive>n</isInteractive>
-      <isAutoRouted>y</isAutoRouted>
-      <roles>
-      </roles>
-      <agents>
-        <agent>
-           <agent_type>mail_smtp</agent_type>
-           <agent_datas>
-               <agent_data>
-                   <name>wf_to</name>
-                   <value>%property_MYDEST%</value>
-               </agent_data>
-               <agent_data>
-                   <name>wf_cc</name>
-                   <value></value>
-               </agent_data>
-               <agent_data>
-                   <name>wf_bcc</name>
-                   <value></value>
-               </agent_data>
-               <agent_data>
-                   <name>wf_from</name>
-                   <value>%user%</value>
-               </agent_data>
-               <agent_data>
-                   <name>wf_replyto</name>
-                   <value></value>
-               </agent_data>
-               <agent_data>
-                   <name>wf_subject</name>
-                   <value>%instance_name%</value>
-               </agent_data>
-               <agent_data>
-                   <name>wf_message</name>
-                   <value>%property_MYBODY%</value>
-               </agent_data>
-               <agent_data>
-                   <name>wf_send_mode</name>
-                   <value>0</value>
-               </agent_data>
-               <agent_data>
-                   <name>wf_agent_type</name>
-                   <value>mail_smtp</value>
-               </agent_data>
-           </agent_datas>
-        </agent>
       </agents>
       <code><![CDATA[<?php
 ?>      ]]></code>    </activity>
@@ -267,7 +208,7 @@ foreach ($property_vars as $prop => $value)
       <name>Acknowledge user it was good</name>
       <type>activity</type>
       <description>This automatic activity send an email to the user to prevent him his mail was sent</description>
-      <lastModif>28/08/2005 [03:34:31]</lastModif>
+      <lastModif>01/09/2005 [09:13:00]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -323,7 +264,7 @@ foreach ($property_vars as $prop => $value)
       <name>Acknowledge user it was bad</name>
       <type>activity</type>
       <description>Boo, the validator said the mail was bad, send an email to the owner, aka the user starting the process, to tell him it was bad</description>
-      <lastModif>28/08/2005 [03:35:23]</lastModif>
+      <lastModif>01/09/2005 [09:13:00]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -377,18 +318,75 @@ here is his explanation: %property_REFUSAL%
       <code><![CDATA[<?php
 ?>      ]]></code>    </activity>
     <activity>
+      <name>Send the message</name>
+      <type>activity</type>
+      <description>This automatic activity will send the message that the user was asking for.</description>
+      <lastModif>28/10/2005 [10:21:20]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+        <agent>
+           <agent_type>mail_smtp</agent_type>
+           <agent_datas>
+               <agent_data>
+                   <name>wf_to</name>
+                   <value>%property_MYDEST%</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_cc</name>
+                   <value></value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_bcc</name>
+                   <value></value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_from</name>
+                   <value>%owner%</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_replyto</name>
+                   <value>%owner%</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_subject</name>
+                   <value>%instance_name%</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_message</name>
+                   <value>%property_MYBODY%</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_send_mode</name>
+                   <value>2</value>
+               </agent_data>
+               <agent_data>
+                   <name>wf_agent_type</name>
+                   <value>mail_smtp</value>
+               </agent_data>
+           </agent_datas>
+        </agent>
+      </agents>
+      <code><![CDATA[<?php
+?>      ]]></code>    </activity>
+    <activity>
       <name>Validation</name>
       <type>switch</type>
       <description>The Validator validate the mail and send it by completing the activity. He can as well invalidate the mail.</description>
-      <lastModif>26/08/2005 [11:19:10]</lastModif>
+      <lastModif>02/09/2005 [03:06:38]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
         <role>Validator</role>
+        <role readonly="true">MailUser</role>
       </roles>
       <agents>
       </agents>
       <code><![CDATA[<?php
+//avoid empty property warning
+$instance->set('REFUSAL','');
 
 $property_vars = array(
     'MYDEST' => '',
@@ -473,7 +471,7 @@ if ($checkforstaying)
 
   foreach ($property_vars as $prop => $value) 
   {
-    $template->set_var(array($prop => $property_vars[$prop]));
+    $template->set_var(array($prop => htmlentities($property_vars[$prop])));
   }
   //some more form vars
   $template->set_var(array(
@@ -485,9 +483,9 @@ if ($checkforstaying)
   $this->display_owner = 1;
 
   // submit options we want
-  $this->submit_array['ActBad'] = lang('BaAad');
-  $this->submit_array['ActGood'] = lang('GoOod');
-  $this->submit_array['ActLater'] = lang('Later, I need more reflexion');
+  $this->submit_array['ActBad'] = array(label => 'BaAad', confirm => 'Are you sure you want to reject it?');
+  $this->submit_array['ActGood'] = array(label => 'GoOod', confirm => 'this will send the email, you really want it, really?');
+  $this->submit_array['ActLater'] = 'Later, I need more reflexion';
 
   //priority array
   $this->priority_array = array( 
@@ -531,7 +529,7 @@ if ($checkforstaying)
       <name>Send Automatic Mail to Validator</name>
       <type>activity</type>
       <description>This automatic activity sends an email to people in validator role. This email contains a lot of tips for writing emails with this agent</description>
-      <lastModif>29/08/2005 [04:37:03]</lastModif>
+      <lastModif>01/09/2005 [09:13:00]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -602,7 +600,7 @@ Last tip, if you want the \% character use the '\' charater to escape him.
       <name>Need to send an email</name>
       <type>start</type>
       <description>This start activity let the User write an email and send an email to the Validator Role, the user email is not sent. To test some other functionnalities we send an email to the user after he finished this activity to tell him we are sending an email to the validator</description>
-      <lastModif>28/08/2005 [03:21:36]</lastModif>
+      <lastModif>01/09/2005 [09:13:00]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
