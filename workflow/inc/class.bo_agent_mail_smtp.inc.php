@@ -249,7 +249,7 @@
 			}
 			
 			// set values to the global values
-			$data['defaultDomainname']	= $profileData['defaultDomain'];
+			$data['defaultDomain']		= $profileData['defaultDomain'];
 			$data['smtpServerAddress']	= $profileData['smtpServer'];
 			$data['smtpPort']		= $profileData['smtpPort'];
 			$data['smtpAuth']		= $profileData['smtpAuth'];
@@ -403,7 +403,7 @@
 			//we need HTMl for handling nicely links
 			$this->mail->IsHTML(true);
 			//compute $this->final_fields if not done already
-			if (!( $this->decode_fields_in_final_fields() ))
+			if (!( $this->decode_fields_in_final_fields($smtpconf['defaultDomain']) ))
 			{
 				$this->error[] = lang('We were not able to build the message');
 				return false;
@@ -439,11 +439,12 @@
 		*	* If you call this function twice the final result will NOT be recalculated. except with the $force 
 		*	parameter. This is done so that you can call this function sooner than the engine and add or remove
 		*	emails from final fields. The engine will not recompute automatically theses fields if you done it already.
+		* @param $defaultDomain is the default mail Domain, used with empty domains
 		* @param $force is falmse by default, if true the final are recalculated even if they are already there
 		* @return true/false and set the $this->final_fields array containing the fields with the 'real' final value and for 
 		* the wf_to, wf_bcc and wf_cc fields you'll have arrays with email values.
 		*/
-		function decode_fields_in_final_fields($force=false)
+		function decode_fields_in_final_fields($defaultDomain, $force=false)
 		{
 			if ($force || (!(isset($this->final_fields['calculated']))) )
 			{
@@ -471,6 +472,7 @@
 							{
 								//we retain this email is used in To or Bcc or Cc
 								//and we affect this email only the first time
+								//first detect errors
 								if ($val->host == '.SYNTAX-ERROR.')
 								{
 									$this->error[] = lang("at least one email address cannot be validated.");
@@ -480,6 +482,12 @@
 									}
 									return false;
 								}
+								//detect empty domains
+								if (empty($val->host))
+								{ 
+									$val->host = $defaultDomain;
+								}
+								//build email adress
 								$his_email = $val->mailbox.'@'. $val->host;
 								if (!isset($email_list[$his_email]))
 								{
