@@ -1,5 +1,5 @@
 access mode	mydms	no	aksessmodus
-access rights	mydms	no	aksessrettigheter
+access rights	mydms	no	Aksessrettigheter
 access_mode_all	mydms	no	Alle
 access_mode_none	mydms	no	Ingen adgang
 access_mode_read	mydms	no	Lese
@@ -7,8 +7,8 @@ access_mode_readwrite	mydms	no	Lese + skrive
 acl get inherited	mydms	no	acl ble arvet
 add acl	mydms	no	Opprett acl
 add document	mydms	no	Opprett dokument
-add notification	mydms	no	Opprette bekjentgjørelse
-add subfolder	mydms	no	Opprette undermappe
+add notification	mydms	no	Opprett bekjentgjørelse
+add subfolder	mydms	no	Opprett undermappe
 admin-tools	mydms	no	Administrasjonsverktøy
 all versions	mydms	no	Alle versjoner
 comment	mydms	no	Kommentar
@@ -19,20 +19,20 @@ creation date	mydms	no	Først opprettet
 current acl	mydms	no	gjeldende acl
 current version	mydms	no	Aktuell versjon
 default access	mydms	no	standard tilgang
-delete folder	mydms	no	slette mappe
+delete folder	mydms	no	Slette mappe
 delete this notification	mydms	no	slette denne bekjentgjørelsen
 do you really want to delete this acl?	mydms	no	Ønsker du virkelig å slette denne acl ?
 do you really want to delete this document?	mydms	no	Ønsker du å slette dette dokumentet?
 do you really want to delete this version of the document?	mydms	no	ønsker du virkelig å slette denne versjonen av dokumentet ?
 does not expire	mydms	no	alltid disponibel
 download	mydms	no	Trekke ned
-edit folder	mydms	no	endre mappe
+edit folder	mydms	no	Endre mappe
 expires	mydms	no	Gyldighet
 expires after	mydms	no	disponibel innen
-file size	mydms	no	Filstrørrelse
+file size	mydms	no	Filstørrelse
 filename	mydms	no	Filnavn
-folder	mydms	no	mappe
-general information	mydms	no	generell informasjon
+folder	mydms	no	Mappe
+general information	mydms	no	Generell informasjon
 information about last update	mydms	no	informasjon om siste oppdatering
 informations	mydms	no	Informasjon
 inherit acl again	mydms	no	arve acl igjen
@@ -40,8 +40,8 @@ last update	mydms	no	siste ajourføring
 linked documents	mydms	no	Nylig benyttede dokumenter
 lock status	mydms	no	Sperrestatus
 mime type	mydms	no	Mime-type
-move document	mydms	no	flytte dokument
-move folder	mydms	no	flytte mappe
+move document	mydms	no	Flytte dokument
+move folder	mydms	no	Flytte mappe
 mydms	common	no	Dokumentsenter
 notifications	mydms	no	Bekjentgjørelser
 permission	mydms	no	tillatelser

@@ -1,4 +1,4 @@
-"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	no	"Du har ikke adgang til noen nettsteder.  Spør EDB-ansvarlig om å gi deg tilgang til ditt nettsted eller nettstedsobjekter eller kontrollere om det eksisterer noe nettsted.
+"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	no	"Du har ikke adgang til noen nettsteder.  Spør EDB-ansvarlig om å gi deg tilgang til ditt nettsted eller nettstedsobjekter eller kontrollere on det eksisterer et nettsted.
 %1 has a one-to-many with %2 (default:%4) showing %3	jinn	no	%1 har en en-til-mange relasjon med %2 (standard:%4) viser %3
 %1 has a one-to-many with %2 showing %3	jinn	no	% har en en-til-mange relasjon med %2 viser %3
 %1 has a one-to-one relation with %2 using the configuration of object %3	jinn	no	%1 har en en-til-en relasjon med %2 som benytter konfigurasjon fra objekt %3
@@ -177,14 +177,16 @@ field position	jinn	no	feltposisjon
 field to display	jinn	no	felt som vises
 fieldname	jinn	no	Feltnavn
 fields	jinn	no	felt
+fields enclosed by	jinn	no	felt lukket av
+fields terminated by	jinn	no	felt terminert av
 filename	jinn	no	filnavn
 filesize	jinn	no	filstr.
 filtered list	jinn	no	filtrert liste
 first row has field names	jinn	no	første rekke har feltnavn
 general preferences	jinn	no	Generelle preferanser
 general settings	admin	no	Generelle innstillinger
-give a new timestamp	jinn	no	Registrer en ny tidsmerking
-give new timestamp	jinn	no	Registrer ny tidsmerking
+give a new timestamp	jinn	no	Sett en ny tidsangivelse
+give new timestamp	jinn	no	Sett en ny tidsangivelse
 global configuration	jinn	no	Global konfigurasjon
 global site configuration	admin	no	Global nettsidekonfigurasjon
 go	jinn	no	Gå til
@@ -196,6 +198,7 @@ hidden	jinn	no	skjult
 hide from menu	jinn	no	skjul fra objektmenyen
 how many columns do you want to be visible by default in list view?	jinn	no	Hvor mange kolonner ønsker du skal være synlige som standard i listevisning?
 how many records do you want to list per page?	jinn	no	Hvor mange poster skal vises pr. side?
+image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	no	Bildekatalogen eksisterer ikke eller er ikke korrekt..<br>kontroller objektekt opplastingskatalog.
 image settings	admin	no	Bildeoppsett
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	no	ImageMagick mappe (eks. /usr/X11R6/bin)
 import failed	jinn	no	import feilet
@@ -215,11 +218,12 @@ jinn editors menu	jinn	no	JiNN Redigeringsmeny
 jinn main	jinn	no	JiNN Hoved
 jinn main menu	jinn	no	JiNN Hovedmeny
 jinn preferences	jinn	no	JiNN Preferanser
-keep current timestamp	jinn	no	Behold gjeldende tidsmerking
-keep this empty to let is auto increment	jinn	no	Hold denne tom for å få automatisk økning
+keep current timestamp	jinn	no	Behold gjeldende tidsangivelse
+keep this empty to let is auto increment	jinn	no	Behold denne tom for å la den øke automatisk
 last edited record	jinn	no	Sist endrede post
 license	common	no	Lisens
 lines terminated by	jinn	no	linjen terminert av
+list record(s) in current object	jinn	no	Liste over poster for gjeldende objekt
 list sites	jinn	no	List nettsteder
 load export profile	jinn	no	Last inn eksportprofil
 load site conf from file	jinn	no	Last inn nettstedskonf. fra fil
@@ -355,6 +359,10 @@ show all columns	jinn	no	Vis alle kolonner
 show all colums, always	jinn	no	Vis alle kolonner, alltid
 show by default_listview	jinn	no	vises som standard i listevisning
 show colomn	jinn	no	vis kolonne
+show extra table debugging information	jinn	no	Vis ekstra feilsøkingsinformasjon for tabell
+show object_arr in msgbox	jinn	no	Vis objektmatrise i meldingsboks
+show site_arr in msgbox	jinn	no	Vis nettstedsmatrise i meldingsboks
+show sql-statements in msgbox	jinn	no	Vis SQL-Meldinger i meldingsboks
 show upload path	admin	no	Vis opplastingssti
 showing	jinn	no	viser
 site beheerders	jinn	no	Nettstedsadministratorer
@@ -382,6 +390,7 @@ site succesfully saved	jinn	no	Nettsted lagret
 site title	admin	no	Nettstedstittel
 site-objects	jinn	no	Nettstedsobjekter
 sites	jinn	no	Nettsteder
+some errors accured while upgrading. we have not touched the old settings so you can try again. if this error keeps coming back please contact your administrator or the jinn developers<br/><br/>	jinn	no	Noe feil oppsto ved oppgradering og vi lot derfor de gamle verdien stå slik at du kan prøve igjen.  Dersom feil oppstår igjen kontakt edb-ansvarlig eller JiNN-utviklerne</br></br>
 start	admin	no	Start
 start at record	jinn	no	start ved post
 stop at record	jinn	no	stopp ved post
@@ -390,11 +399,40 @@ submit and import	jinn	no	bekreft og importer
 switchboard	jinn	no	Tavle
 t/m	jinn	no	t/m
 table name	jinn	no	Tabellnavn
+tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	no	Tabellnavn <i>%1</i> stemmer ikke. Mulig at tabellnavnet er endret eller at tabellen er slettet.  Velg en ny tabell eller slett dette objektet.
 test database access	jinn	no	test databaseaksess
 test database and paths	jinn	no	test database og stier
+the administrator set an invalid max. file upload size. for safety reasons we now use a max. filesize of 1mb. please contact your jinn administrator.	jinn	no	Administrator anga en feil str. på filer somskal lastes opp.  For sikkerhets skyld tillater vi derfor kun maks. 1mb.  Kontakt din JiNN administrator.
+the attachments subdirectory does not exist and cannot be created ...	jinn	no	Underkatalogen for tillegg eksisterer ikke eller kan ikke opprettes.
+the attachments subdirectory is not writable by the webserver ...	jinn	no	Underkatalogen for tillegg er ikke skrivbar for nettstedstjeneren.
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	no	Bildet %1 som ble forsøkt opplastet er ikke en bildefil, er korrupt eller ikke supportert av JiNN.
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	no	Bildet %1 som ble forsøkt opplastet er ikke en bildefil, er korrupt eller ikke supportert av JiNN.  Dersom feilen gjentar seg, kontroller din installasjon av ImageMagic.  Elder versjoner av denne er kjent for ikke å gå sammen med JiNN.  Denne må minst være versjon 5.4.9 eller høyere.
+the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	no	Filtypen GIF støttes ikke av denne tjeneren.  Klikk tilbake og prøv en annen filtype.
+the identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5	jinn	no	Identfikasjonsfeltet i denne tabellen, %1, representert ved %2 har en mange-til-mange relasjon med %3 representert ved %4 og viser %5
+the identifyer from this table (%1.id) represented by	jinn	no	Identfikasjonsfeltet i denne tabellen(%1.id)representert ved
+the image normal_size-directory subdirectory does not exist and cannot be created ...	jinn	no	Underkatalogen for bilder av fullstørrelse eksisterer ikke og kan ikke opprettes...
+the image_path normal_size subdirectory is not writable by the webserver ...	jinn	no	Underkatalogen for bilder av fullstørrelse kan ikke skrives til av nettstedstjeneren...
+the image_path thumb subdirectory is not writable by the webserver ...	jinn	no	Underkatalogen for bilder av miniatyrstøreelse kan ikke skrives til av nettstedstjeneren...
+the max. file upload size is %1 mb.	jinn	no	Maksimal opplastingsstr. er %1 Mb.
+the name of the new object is <strong>%1</strong>.	jinn	no	Navnet på det nye objektet er <strong>%1</strong>.
+the name of the new site is <strong>%1</strong>.	jinn	no	Navnet på det nye nettstedet er <strong>%1</strong>.
+the old confguration data is replaced<br/><br/>	jinn	no	De gamle konfigurasjonsdataene ble erstattet<br/><br/>
+the path to upload files is not correct, please contact your jinn administrator.	jinn	no	Stien for opplastede filer er ikke korrekt; vennligst kontakt din JiNN ansvarlige.
+the path to upload files is not set, please contact your jinn administrator.	jinn	no	Stien for opplastede filer er ikke satt; vennligst kontakt din JiNN ansvarlige.
+the path to upload images is not correct, please contact your jinn administrator.	jinn	no	Stien for opplastede bilder er ikke korrekt; vennligst kontakt din JiNN ansvarlige.
+the path to upload images is not set, please contact your jinn administrator.	jinn	no	Stien for opplastede filer er ikke satt; vennligst kontakt din JiNN ansvarlige.
+the resize process failed, please contact the administrator	jinn	no	Prosessen for ny billedstørrelse feilet.  Vennligst kontakt din JiNN ansvarlige.
+the upgrade process has is finished. you can now close this windows and start over again<br/><br/>	jinn	no	Oppgraderingsprosess er avsluttet.  Du kan nå lukke vinduet og starte på nytt<br/><br/>
+the wysiwyg plugin makes you edit text like you do in a program like openoffice writer or word. some people don't like this feature though, so you can force jinn not to use it.	jinn	no	WYSIWYG modulen lar deg redigere tekst slik du gjør i programmer som OpenOffice Writer eller Word.  Noen liker ikke denne muligheten så du kan tvinge JiNN til ikke å benytte denne.
+there are no directories in this site you have access to.	jinn	no	Det er ingen kataloger i dette nettstedet hvor du har adgang.
 there are no pages	jinn	no	Det er ingen sider
+there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	no	Det er ingen nettsteder som du har adgang til.  Spør ansvarlig om å gi deg adgang til ditt nettsted eller dine nettstedsobjekter eller kontroller at nettsted finnes.
+this is for debugging purposes.	jinn	no	Denne er for feilsøkingsformål.
+this object can only have one record.	jinn	no	Objektet kan bare ha en post
+this table has not unique identifier field	jinn	no	Denne tabellen har ikke et unikt gjenkjennelsesfelt.
 thisfile	jinn	no	denne filen
 thumb directory does not exist or is not correct ...	jinn	no	Mappe for miniatyrbilder eksistere ikke eller er ikke korrekt
+thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	no	Mappe for miniatyrbilder eksistere ikke eller er ikke korrekt...<br>Vennligst kontroller objektets opplastingskatalog.
 thumbnail	jinn	no	miniatyrbilde
 unexpected error	jinn	no	uventet feil
 unlimited	jinn	no	ubegrenset
@@ -404,6 +442,8 @@ using object configuration	jinn	no	Bruker objektkonfigurasjon
 version	jinn	no	versjon
 view all selected records	jinn	no	vis alle valgte poster
 website url	jinn	no	Nettstedsadresse for forhåndsvisning
+when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	no	Når en mengde bilder er knyttet til en post kan det ta lang tid å laste skjermbilde.  Du kan sette et maks. antall bilder for visning.
+when this is enables information like field length and field type is shown when editing record	jinn	no	Med denne aktiv vises informasjon om feltlengde og -type under redigering av posten.
 width:	jinn	no	Bredde:
 with_checked_files	jinn	no	med avkryssede filer
 yes, hide from menu	jinn	no	Ja, skjul fra menyen
