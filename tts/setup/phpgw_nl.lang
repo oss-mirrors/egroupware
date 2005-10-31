@@ -23,31 +23,32 @@ close date	tts	nl	Datum sluiting
 close the invalid ticket.	tts	nl	Sluit de ongeldige kaart
 closed	tts	nl	Gesloten
 completed	tts	nl	AFGESLOTEN
-configure the states	common	nl	Configureerd de statussen
-configure the transitions	common	nl	
+configure the states	common	nl	Configureer de statussen
+configure the transitions	common	nl	Configureer de overgangen
 create new state	tts	nl	Een nieuwe status creëren
 create new ticket	tts	nl	Een nieuwe kaart creëren
-create new transition	tts	nl	
+create new transition	tts	nl	Een nieuwe overgang creëren
 creates a new ticket, returns ticket_id	tts	nl	Creëert een nieuwe kaart, geeft  'ticket_id' terug
-creates a struct of tickets	tts	nl	
+creates a struct of tickets	tts	nl	Creëert een structuur van kaarten
 date opened	tts	nl	Datum geopend
 default assign to	tts	nl	Standaard toegewezen aan
 default group	tts	nl	Standaard groep
 default priority	tts	nl	Standaard priotiteit
 delete the listed tickets.	tts	nl	De weergegeven kaarten verwijderen
 deleting the state	tts	nl	De status verwijderen
-deleting the transition	tts	nl	
+deleting the transition	tts	nl	De overgang verwijderen
 detail	tts	nl	Detail
 details	tts	nl	Details
 duplicate	tts	nl	DUPLICEER
 edit the state	tts	nl	De status wijzigen
-edit the transition	tts	nl	
+edit the transition	tts	nl	De overgang wijzigen
+error: the subject of the ticket is not specified.	tts	nl	FOUT: Het onderwerp van de kaart is niet ingevuld
 force	tts	nl	Forceer
 global categories	tts	nl	Globale categoriën
 group	tts	nl	Groep
 group ownership changed	tts	nl	Groepeigendom  is gewijzigd
 history	tts	nl	Geschiedenis
-i worked on the ticket and the work requires validation.	tts	nl	I heb aan de kaart gewerkt en het werk vereist validatie.
+i worked on the ticket and the work requires validation.	tts	nl	Ik heb aan de kaart gewerkt en het werk vereist validatie.
 i worked on the ticket, but did not finish.	tts	nl	Ik heb aan de kaart gewerkt maar niet afgerond.
 in progress	tts	nl	In uitvoering
 initial state	tts	nl	Initiële status
@@ -55,8 +56,8 @@ invalid	tts	nl	ONGELDIG
 invalidate	tts	nl	ONGELDIG
 keep the present state [%1].	tts	nl	Behoud de huidige status [%1].
 latest note added	tts	nl	Laatste notitie  toegevoegd
-list of available tickets' states.	tts	nl	Lijst van beschikbare kaartstatussen
-list of available tickets' transitions.	tts	nl	
+list of available tickets' states.	tts	nl	Lijst van beschikbare kaartstatussen.
+list of available tickets' transitions.	tts	nl	Lijst van beschikbare kaartovergangen.
 missing description	tts	nl	Beschrijving ontbreekt
 morework	tts	nl	MEERWERK
 needswork	tts	nl	WERKNODIG
@@ -70,7 +71,7 @@ no notes for this ticket	tts	nl	Geen notities voor deze kaart
 no states found	tts	nl	Geen statussen gevonden
 no subject	tts	nl	Geen onderwerp
 no tickets found	tts	nl	Geen meldingen gevonden
-no transitions found	tts	nl	
+no transitions found	tts	nl	Geen overgangen gevonden
 not assigned	tts	nl	Niet toegegwezen
 not completed	tts	nl	NIET AFGEROND
 notify changes to ticket assignee by e-mail	tts	nl	Meld kaartwijzigingen aan toegewezen persoon via e-mail
@@ -84,7 +85,8 @@ open date	tts	nl	Datum opening
 opened	tts	nl	Geopend
 opened by	tts	nl	Geopend door
 original ticket details	tts	nl	Originele Kaartdetails
-perform irregular transition into the following state	tts	nl	
+perform irregular transition into the following state	tts	nl	Voer een onregelmatige overgang in de volgende status door
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	nl	Vul s.v.p. het onderwerp van de kaart in, anders kan de kaart niet bewaard worden.
 prio	tts	nl	Prio
 priority	tts	nl	Prioriteit
 priority changed	tts	nl	Prioriteit  gewijzigd
@@ -96,8 +98,8 @@ reopen	tts	nl	HEROPENEN
 reopened	tts	nl	HEROPEND
 resolve	tts	nl	OPLOSSEN
 resolved	tts	nl	OPGELOST
-returns a struct of a tickets history	tts	nl	
-returns a struct of values of a single ticket	tts	nl	
+returns a struct of a tickets history	tts	nl	Geeft een structuur van de kaarthistorie terug
+returns a struct of values of a single ticket	tts	nl	Geeft een stuctuur van waarden van een enkele kaart terug
 returns the additional notes attached to a ticket	tts	nl	Geeft de extra notities van een kaart terug
 selected	tts	nl	geselecteerd
 show new/updated tickets on main screen	tts	nl	Nieuwe en gewijzigde meldingen op startscherm weergeven
@@ -127,42 +129,43 @@ the ticket resolution was successfully validated. close the ticket.	tts	nl	De ka
 the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	nl	De kaart bestond reeds voor de "Petri Net" infrastructuur en heeft een status nodig.
 the ticket was found a duplicate of another ticket.	tts	nl	De kaart blijkt een duplicaat te zijn van een andere kaart.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	nl	De kaarten in de onderstaande lijst zijn in de status %1. Beslis a.u.b. wat met ze gedaan moet worden.
-the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	nl	
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	nl	De validatie van de kaart was niet succesvol. De kaart vereist meer werk.
 ticket	tts	nl	Melding
 ticket assigned to %1	tts	nl	Melding toegewezen aan %1
-ticket has been updated	tts	nl	Medling is bijgewerkt
-tickets found %1	tts	nl	
-tickets open %1	tts	nl	
-tickets total %1	tts	nl	
-to go back to the tts index, click <a href= %1 >here</a>	tts	nl	
-toaccept	tts	nl	
-toclosed	tts	nl	
-toduplicate	tts	nl	
-toinvalid	tts	nl	
-toneedswork	tts	nl	
-tonew	tts	nl	
-toreopened	tts	nl	
-toresolved	tts	nl	
-total billable	tts	nl	
-totovalidate	tts	nl	
-tovalidate	tts	nl	
-toverified	tts	nl	
-transition	tts	nl	
-transition name	tts	nl	
+ticket has been updated	tts	nl	Melding is bijgewerkt
+tickets found %1	tts	nl	Gevonden kaarten %1
+tickets open %1	tts	nl	Geopende kaarten %1
+tickets total %1	tts	nl	Totaal kaarten $1
+to go back to the tts index, click <a href= %1 >here</a>	tts	nl	Om terug te keren naar de tts index, klik <a href="%1">hier</a>
+toaccept	tts	nl	NAARACCEPTATIE
+toclosed	tts	nl	NAARSLUITEN
+toduplicate	tts	nl	NAARDUBBEL
+toinvalid	tts	nl	NAARONGELDIG
+toneedswork	tts	nl	NAARBEHOEFTWERK
+tonew	tts	nl	NAARNIEUW
+toreopened	tts	nl	NAARHEROPEND
+toresolved	tts	nl	NAAROPGELOST
+total billable	tts	nl	Totaal factureerbaar
+totovalidate	tts	nl	NAARTEVALIDEREN
+tovalidate	tts	nl	NAARVALIDEREN
+toverified	tts	nl	NAARGEVERIFIEERD
+transition	tts	nl	Overgang
+transition name	tts	nl	Overgangnaam
 trouble ticket system	common	nl	Probleemregistratie
 tts	common	nl	Probleemregistratie
 tts preferences	tts	nl	Probleemregistratie - Voorkeuren
-undefined	tts	nl	
+undefined	tts	nl	ONGEDEFINIEERD
 update	tts	nl	bijwerken
-update ticket state	tts	nl	
-updates ticket	tts	nl	
-use email notification	tts	nl	
-verified	tts	nl	
-verify	tts	nl	
-verify the ticket to work on it.	tts	nl	
+update ticket state	tts	nl	Kaartstatus bijwerken
+updates ticket	tts	nl	Werkt de kaartstatus bij
+verified	tts	nl	GEVERIFIEERD
+verify	tts	nl	VERIFIEREN
+verify the ticket to work on it.	tts	nl	Controleer de kaart om aan te werken.
 view all tickets	tts	nl	Alle meldingen bekijken
-view job detail	tts	nl	werkdetail bekijken
+view job detail	tts	nl	Werk detail bekijken
+view only my open tickets	tts	nl	Bekijk alleen mijn geopende kaarten
 view only open tickets	tts	nl	Alleen openstaande meldingen bekijken
-you can only close a ticket if it is assigned to you.	tts	nl	
-you want to delete the state %1. are you sure?	tts	nl	
-you want to delete the transition %1. are you sure?	tts	nl	
+you can only close a ticket if it is assigned to you.	tts	nl	Je kunt uitsluitend kaarten sluiten die aan jou zijn toegewezen.
+you want to delete the state %1 and associated transitions. are you sure?	tts	nl	Je wilt de status %1 en de verbonden overgangen verwijderen. Weet je dat zeker?
+you want to delete the state %1. are you sure?	tts	nl	Je wilt de status %1 verwijderen. Weet je dat zeker?
+you want to delete the transition %1. are you sure?	tts	nl	Je wilt de overgang %1 verwijderen. Weet je dat zeker?

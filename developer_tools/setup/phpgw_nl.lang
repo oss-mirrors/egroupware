@@ -1,17 +1,16 @@
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	nl	!!! U moet na elke handeling hierboven op [Opslaan] klikken, voordat u verder kunt met de volgende stap !!!
 add	developer_tools	nl	toevoegen
 add change	developer_tools	nl	Verandering toevoegen
 add more	developer_tools	nl	Meer toevoegen
 add new phrase	developer_tools	nl	Nieuwe zin toevoegen
-add phrase	developer_tools	nl	Phrase toevoegen
-allows you to add a single phrase	developer_tools	nl	Staat u toe een enkele phrase toe te voegen
+add phrase	developer_tools	nl	tekst toevoegen
+allows you to add a single phrase	developer_tools	nl	Staat u toe een enkele frase toe te voegen
 application	developer_tools	nl	Toepassing
 back	developer_tools	nl	Terug
 cancel	developer_tools	nl	Annuleren
 change	developer_tools	nl	Veranderen
-changelog entry has been added	developer_tools	nl	
-changelogs	developer_tools	nl	
-clears the internal buffer, all changes made sofar are lost	developer_tools	nl	Maakt de inerne buffer leeg, alle verandering tot nu gaan verloren.
+changelog entry has been added	developer_tools	nl	Changelog entry is toegevoegd
+changelogs	developer_tools	nl	Changelogs
+clears the internal buffer, all changes made sofar are lost	developer_tools	nl	Maakt de interne buffer leeg, alle verandering tot nu gaan verloren.
 create new language file	developer_tools	nl	Maak nieuw taalbestand
 create sgml file	developer_tools	nl	Maak SQML-bestand
 developer tools - preferences	developer_tools	nl	Ontwikkelaarshulpmiddelen - voorkeuren
@@ -23,7 +22,7 @@ download the lang-file to be saved in the apps setup-dir	developer_tools	nl	Down
 edit	developer_tools	nl	Wijzig
 installed applications	developer_tools	nl	Geïnstalleerde toepassingen
 language file management	developer_tools	nl	Taalbestandenbeheer
-list changelogs	developer_tools	nl	
+list changelogs	developer_tools	nl	Toon changelogs
 load	developer_tools	nl	Openen
 loading source langfile	developer_tools	nl	Brontaalbestand openen
 loading target langfile	developer_tools	nl	Doeltaalbestand openen
@@ -42,17 +41,17 @@ remove	developer_tools	nl	Verwijder
 returns to the application list, not saved changes get lost !!!	developer_tools	nl	Ga terug naar de lijst met toepassingen. Niet opgeslagen verandering gaan verloren !!!
 revert	developer_tools	nl	Draai terug
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	nl	Slaat de toegevoegde en gewijzigde vertalingen op in een intern geheugen om gebruikt te worden in de volgende stappen
-search changelogs	developer_tools	nl	
+search changelogs	developer_tools	nl	Doorzoek changelogs
 search for missing phrase	developer_tools	nl	Zoek naar missende zinnen
 search new phrases	developer_tools	nl	Zoek naar nieuwe  zinnen
 searches the source-code for phrases not in the actual source-lang-file	developer_tools	nl	Doorzoekt de broncode naar phrasen die niet voorkomen in de huidige taalbestanden
 select project	developer_tools	nl	Selecteer project
-sf project tracker	developer_tools	nl	
-sf project tracker preferences	preferences	nl	
+sf project tracker	developer_tools	nl	SF Project tracker
+sf project tracker preferences	preferences	nl	SF Project tracker voorkeuren
 source language	developer_tools	nl	Brontaal
-sourceforge project id	developer_tools	nl	
-sourceforge project tracker	developer_tools	nl	
-sourceforge project tracker preferences	developer_tools	nl	
+sourceforge project id	developer_tools	nl	SourceForge project ID
+sourceforge project tracker	developer_tools	nl	SourceForge project tracker
+sourceforge project tracker preferences	developer_tools	nl	SourceForge project tracker voorkeuren
 step	developer_tools	nl	Stap
 submit	developer_tools	nl	Verzend
 target language	developer_tools	nl	Doeltaal
@@ -67,8 +66,9 @@ version	developer_tools	nl	Versie
 write	developer_tools	nl	Opslaan
 write the lang-file to the apps setup-dir	developer_tools	nl	Schrijf het taalbestand naar de setupdirectory van de toepassing
 write to lang table	developer_tools	nl	Schrijf naar de taaltabel in de database
-writing langfile for '%1' ...	developer_tools	nl	
-you must a version	developer_tools	nl	
+writing langfile for '%1' ...	developer_tools	nl	Schrijf taalbestand voor '%1'...
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	nl	!!! U moet na elke handeling hierboven op [Opslaan] klikken, voordat u verder kunt met de volgende stap !!!
+you must a version	developer_tools	nl	U moet een versie invoeren
 you must enter a change	developer_tools	nl	U moet een verandering toevoegen
 you must select a project	developer_tools	nl	U moet een project selecteren
 you need to set your preferences for this app	developer_tools	nl	U moet de voorkeuren voor deze toepassingen instellen

@@ -1,8 +1,8 @@
-%1 by %2	comic	nl	
-%1 by %2 (%3)	comic	nl	
-are you sure you want to reset all comic dates and resolved image urls?	comic	nl	
-censorship level	comic	nl	Niveau Cencuur
-censorship override enabled	comic	nl	
+%1 by %2	comic	nl	%1 bij %2
+%1 by %2 (%3)	comic	nl	%1 bij %2 (%3)
+are you sure you want to reset all comic dates and resolved image urls?	comic	nl	Weet je zeker dat je alle strip datums en gevonden URLS wilt herstarten?
+censorship level	comic	nl	Niveau Censuur
+censorship override enabled	comic	nl	Censuur overschrijding ingeschakeld
 comic	common	nl	Strips
 comic preferences updated	comic	nl	Voorkeuren strips bijgewerkt
 comics	common	nl	Strips
@@ -27,14 +27,14 @@ image source	comic	nl	Afbeeldingbron
 max file size	comic	nl	Max. bestandsgrootte
 my comics	comic	nl	Mijn strips
 no_entries	comic	nl	geen items
-parser	comic	nl	
-performed %1 of element	comic	nl	
+parser	comic	nl	Parser
+performed %1 of element	comic	nl	%1 van element uitgevoerd
 random	comic	nl	Willekeurig
 rated	comic	nl	Beoordeling
-remote (parse/snarf) enabled	comic	nl	
+remote (parse/snarf) enabled	comic	nl	Extern (parse/snarf)
 reset	comic	nl	Herstel
 reset comic data	admin	nl	Herstel stripgegevens
-resolve	comic	nl	
-showing %1 (%2 - %3 of %4)	comic	nl	
+resolve	comic	nl	Opzoeken
+showing %1 (%2 - %3 of %4)	comic	nl	toont %1 (%2 - %3 van %4)
 template	comic	nl	Sjabloon
 visit %1	comic	nl	Bezoek %1

@@ -11,10 +11,11 @@ collapse threads	forum	nl	Alleen onderwerpen tonen
 collapsed	forum	nl	Alleen onderwerpen
 create new category	forum	nl	Nieuwe categorie aanmaken
 current categories and sub forums	forum	nl	Huidige categorie en onderliggende forums
+default view	forum	nl	Standaard weergave
 edit forum	forum	nl	Forum bewerken
 email replies to this thread, to the address above	forum	nl	E-mail antwoorden over dit onderwerp naar bovenstaand adres
 forum	common	nl	Forum
-forum administration	admin	nl	Forum Beheer
+forum administration	common	nl	Forum Beheer
 forum description	forum	nl	Forum omschrijving
 forum name	forum	nl	Forum Naam
 forums	common	nl	Forums
@@ -31,6 +32,7 @@ return to forums	forum	nl	Terug naar de forums
 sub category	forum	nl	Onderliggende categorie
 there are no forums in this category	forum	nl	Er zijn geen forums in deze categorie
 threaded	forum	nl	Onderwerpen en reacties
+threads	forum	nl	Discussies
 topic	forum	nl	Onderwerp
 update category	forum	nl	Categorie bijwerken
 update forum	forum	nl	Forum bijwerken
