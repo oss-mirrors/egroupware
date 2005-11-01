@@ -1,8 +1,9 @@
 <?php
 	/***************************************************************************\
-	* phpGroupWare - Notes                                                      *
-	* http://www.phpgroupware.org                                               *
-	* Written by : Lars Kneschke [lkneschke@phpgroupware.org]                   *
+	* eGroupWare - SambaAdmin                                                   *
+	* http://www.egroupware.org                                                 *
+	* http://www.linux-at-work.de                                               *
+	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
@@ -32,15 +33,15 @@
 		{
 			$this->restoreSessionData();
 			
-			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$this->bosambaadmin		= CreateObject('sambaadmin.bosambaadmin');
+			$this->t			=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$this->bosambaadmin		=& CreateObject('sambaadmin.bosambaadmin');
 			
-			$this->rowColor[0] = $phpgw_info["theme"]["row_on"];
-			$this->rowColor[1] = $phpgw_info["theme"]["row_off"];
+			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["row_on"];
+			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["row_off"];
 
-			$this->dataRowColor[0] = $phpgw_info["theme"]["bg01"];
-			$this->dataRowColor[1] = $phpgw_info["theme"]["bg02"];
-			                 
+			$this->dataRowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
+			$this->dataRowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
+											 
 		}
 		
 		function checkLDAPSetup()
@@ -59,7 +60,7 @@
 		
 		function displayAppHeader()
 		{
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 		}
 
@@ -101,13 +102,13 @@
 			(
 				'menuaction'	=> 'sambaadmin.uisambaadmin.editWorkstation'
 			);
-			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$linkData = array
 			(
 				'menuaction'	=> 'sambaadmin.uisambaadmin.listWorkstations'
 			);
-			$this->t->set_var('back_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('back_link',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			if(is_numeric($workstationID) && $workstationID > 0)
 			{
@@ -132,7 +133,7 @@
 			$order	= get_var('order',array('POST','GET')) ? get_var('order',array('POST','GET')) : 'workstation_name';
 			$start  = get_var('start',array('POST','GET')) ? get_var('start',array('POST','GET')) : 0;
 			
-			$nextMatch = CreateObject('sambaadmin.uibaseclass');
+			$nextMatch =& CreateObject('sambaadmin.uibaseclass');
 			$workstationList = $this->bosambaadmin->getWorkstationList($start, $sort, $order, $this->sessionData['searchString']);
 			$this->displayAppHeader();
 
@@ -145,19 +146,19 @@
 			(
 				'menuaction'	=> 'sambaadmin.uisambaadmin.editWorkstation'
 			);
-			$this->t->set_var('add_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('add_link',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$linkData = array
 			(
 				'menuaction'	=> 'sambaadmin.uisambaadmin.deleteWorkstation'
 			);
-			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$linkData = array
 			(
 				'menuaction'	=> 'sambaadmin.uisambaadmin.setSearchFilter'
 			);
-			$this->t->set_var('search_form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('search_form_action',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			$this->t->set_var('search_string',$this->sessionData['searchString']);
 			
@@ -179,7 +180,7 @@
 						'menuaction'	=> 'sambaadmin.uisambaadmin.editWorkstation',
 						'workstationID'	=> $workstationList['workstations'][$i]['uidnumber'][0]
 					);
-					$editLink = $GLOBALS['phpgw']->link('/index.php',$linkData);
+					$editLink = $GLOBALS['egw']->link('/index.php',$linkData);
 					
 					$rows[] = array
 					(
@@ -233,9 +234,9 @@
 
 		function translate()
 		{
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']["theme"]["th_bg"]);
-			$this->t->set_var('bg_01',$GLOBALS['phpgw_info']["theme"]["bg01"]);
-			$this->t->set_var('bg_02',$GLOBALS['phpgw_info']["theme"]["bg02"]);
+			$this->t->set_var('th_bg',$GLOBALS['egw_info']["theme"]["th_bg"]);
+			$this->t->set_var('bg_01',$GLOBALS['egw_info']["theme"]["bg01"]);
+			$this->t->set_var('bg_02',$GLOBALS['egw_info']["theme"]["bg02"]);
 
 			$this->t->set_var('lang_workstation_list',lang('workstation list'));
 			$this->t->set_var('lang_add_workstation',lang('add workstation'));

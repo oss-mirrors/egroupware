@@ -22,14 +22,14 @@
 		
 		function accounts_popup($_appName)
 		{
-			$GLOBALS['phpgw']->accounts->accounts_popup($_appName);
+			$GLOBALS['egw']->accounts->accounts_popup($_appName);
 		}
 		
 		function create_html()
 		{
-			if(!isset($GLOBALS['phpgw_info']['server']['deny_user_grants_access']) || !$GLOBALS['phpgw_info']['server']['deny_user_grants_access'])
+			if(!isset($GLOBALS['egw_info']['server']['deny_user_grants_access']) || !$GLOBALS['egw_info']['server']['deny_user_grants_access'])
 			{
-				$accounts = $GLOBALS['phpgw']->acl->get_ids_for_location('run',1,'calendar');
+				$accounts = $GLOBALS['egw']->acl->get_ids_for_location('run',1,'calendar');
 				$users = Array();
 #				$this->build_part_list($users,$accounts,$event['owner']);
 
@@ -37,15 +37,15 @@
 				@asort($users);
 				@reset($users);
 
-				switch($GLOBALS['phpgw_info']['user']['preferences']['common']['account_selection'])
+				switch($GLOBALS['egw_info']['user']['preferences']['common']['account_selection'])
 				{
 					case 'popup':
 						while (is_array($event['participants']) && list($id) = each($event['participants']))
 						{
 							if($id != intval($event['owner']))
 							{
-								$str .= '<option value="' . $id.$event['participants'][$id] . '"'.($event['participants'][$id]?' selected':'').'>('.$GLOBALS['phpgw']->accounts->get_type($id)
-										.') ' . $GLOBALS['phpgw']->common->grab_owner_name($id) . '</option>' . "\n"; 
+								$str .= '<option value="' . $id.$event['participants'][$id] . '"'.($event['participants'][$id]?' selected':'').'>('.$GLOBALS['egw']->accounts->get_type($id)
+										.') ' . $GLOBALS['egw']->common->grab_owner_name($id) . '</option>' . "\n"; 
 							}
 						}
 						$var[] = array
@@ -76,8 +76,8 @@
 
 		function create_table($_start, $_total, $_defaultSort, $_defaultOrder, $_header, $_rows, $_menuaction, $_name)
 		{
-			$t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$nextmatchs	= CreateObject('phpgwapi.nextmatchs');
+			$t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$nextmatchs	=& CreateObject('phpgwapi.nextmatchs');
 			
 			$rowCSS = array
 			(
@@ -87,7 +87,7 @@
 			$t->set_file(array("body" => 'nextmatchtable.tpl'));
 			$t->set_block('body','main');
 			
-			$url = $GLOBALS['phpgw']->link('/index.php','menuaction='.$_menuaction);
+			$url = $GLOBALS['egw']->link('/index.php','menuaction='.$_menuaction);
 
 			$order	= get_var('order',array('POST','GET')) ? get_var('order',array('POST','GET')) : $_defaultOrder;
 			$sort	= get_var('sort',array('POST','GET')) ? get_var('sort',array('POST','GET')) : $_defaultSort;
@@ -98,7 +98,7 @@
 			$t->set_var('left_next_matchs', $nextmatchs->left($url,$start,$_total,$_menuaction));
 			$t->set_var('name', lang('%1 - %2 of %3',$start+1,$start+count($_rows),$_total).'&nbsp;'.$_name);
 			$t->set_var('right_next_matchs', $nextmatchs->right($url,$start,$_total,$_menuaction));
-			                              
+																		
 			// create the header
 			if(is_array($_header))
 			{

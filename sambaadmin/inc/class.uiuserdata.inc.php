@@ -1,7 +1,7 @@
 <?php
 	/***************************************************************************\
-	* phpGroupWare - QMailLDAP                                                  *
-	* http://www.phpgroupware.org                                               *
+	* eGroupWare - SambaAdmin                                                   *
+	* http://www.egroupware.org                                                 *
 	* http://www.linux-at-work.de                                               *
 	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
 	* -------------------------------------------------                         *
@@ -23,25 +23,25 @@
 
 		function uiuserdata()
 		{
-			$this->t		= CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('sambaadmin'));
-			$this->bosambaadmin	= CreateObject('sambaadmin.bosambaadmin');
+			$this->t		=& CreateObject('phpgwapi.Template',$GLOBALS['egw']->common->get_tpl_dir('sambaadmin'));
+			$this->bosambaadmin	=& CreateObject('sambaadmin.bosambaadmin');
 			
 			$this->rowColor[0] = $GLOBLAS['phpgw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBLAS['phpgw_info']["theme"]["bg02"];
-			                 
+											 
 		}
 	
 		function display_app_header()
 		{
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 		}
 
 		function editUserData($_useCache='0')
 		{
-			global $phpgw, $phpgw_info, $HTTP_GET_VARS;
+			global $phpgw, $phpgw_info, $_GET;
 			
-			$accountID = $HTTP_GET_VARS['account_id'];			
+			$accountID = $_GET['account_id'];			
 
 			$this->display_app_header();
 
@@ -50,25 +50,25 @@
 			$this->t->set_file(array("editUserData" => "edituserdata.tpl"));
 			$this->t->set_block('editUserData','form','form');
 			$this->t->set_block('editUserData','link_row','link_row');
-			$this->t->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
-			$this->t->set_var("tr_color1",$phpgw_info["theme"]["row_on"]);
-			$this->t->set_var("tr_color2",$phpgw_info["theme"]["row_off"]);
+			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
+			$this->t->set_var("tr_color1",$GLOBALS['egw_info']["theme"]["row_on"]);
+			$this->t->set_var("tr_color2",$GLOBALS['egw_info']["theme"]["row_off"]);
 			
 			$this->t->set_var("lang_button",lang("save"));
 			$this->t->set_var("lang_ready",lang("Done"));
-			$this->t->set_var("link_back",$phpgw->link('/admin/accounts.php'));
+			$this->t->set_var("link_back",$GLOBALS['egw']->link('/admin/accounts.php'));
 			
 			$linkData = array
 			(
 				'menuaction'	=> 'sambaadmin.uiuserdata.saveUserData',
 				'account_id'	=> $accountID
 			);
-			$this->t->set_var("form_action", $phpgw->link('/index.php',$linkData));
+			$this->t->set_var("form_action", $GLOBALS['egw']->link('/index.php',$linkData));
 			
 			// only when we show a existing user
 			if($userData = $this->bosambaadmin->getUserData($accountID, $_useCache))
 			{
-				$charset = $GLOBALS['phpgw']->translation->charset();
+				$charset = $GLOBALS['egw']->translation->charset();
 				$this->t->set_var('displayname',htmlspecialchars($userData["displayname"],ENT_QUOTES,$charset));
 				$this->t->set_var('sambahomepath',htmlspecialchars($userData["sambahomepath"],ENT_QUOTES,$charset));
 				$this->t->set_var('sambahomedrive',htmlspecialchars($userData['sambahomedrive'],ENT_QUOTES,$charset));
@@ -82,7 +82,7 @@
 			}
 		
 			// create the menu on the left, if needed		
-			$menuClass = CreateObject('admin.uimenuclass');
+			$menuClass =& CreateObject('admin.uimenuclass');
 			$this->t->set_var('rows',$menuClass->createHTMLCode('edit_user'));
 
 			$this->t->pfp("out","form");

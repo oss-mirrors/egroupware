@@ -14,24 +14,24 @@
 	{
 		function sosambaadmin()
 		{
-			$config		= CreateObject('phpgwapi.config','sambaadmin');
+			$config		=& CreateObject('phpgwapi.config','sambaadmin');
 			$config->read_repository();
 			
 			$this->sid		= $config->config_data['sambasid'];
 			$this->mkntpwd		= $config->config_data['mkntpwd'];
 			$this->computerou	= $config->config_data['samba_computerou'];
 			$this->computergroup	= $config->config_data['samba_computergroup'];
-			$this->charSet	= $GLOBALS['phpgw']->translation->charset();
+			$this->charSet	= $GLOBALS['egw']->translation->charset();
 			
 			unset($config);
 		}
 		
 		function changePassword($_accountID, $_newPassword)
 		{
-			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
 			$filter = "(&(uidnumber=$_accountID)(objectclass=sambasamaccount))";
 			
-			$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
+			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],$filter);
 			if ($sri)
 			{
 				$allValues 	= ldap_get_entries($ldap, $sri);
@@ -144,9 +144,9 @@
 				),
 			);
 
-			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
 
-			$dn = $GLOBALS['phpgw_info']['server']['ldap_group_context'];
+			$dn = $GLOBALS['egw_info']['server']['ldap_group_context'];
 			
 			foreach($sambaGroups as $groupName => $groupData)
 			{
@@ -189,7 +189,7 @@
 			if(is_array($_workstations))
 			{
 				$dn	= $this->computerou;
-				$ldap	= $GLOBALS['phpgw']->common->ldapConnect();
+				$ldap	= $GLOBALS['egw']->common->ldapConnect();
 				foreach($_workstations as $key => $value)
 				{
 					$filter = "(&(uidnumber=$key)(objectclass=sambasamaccount))";
@@ -214,10 +214,10 @@
 		function findNextUID()
 		{
 			$nextUID = 0;
-			$tmpUID = (int)$GLOBALS['phpgw']->common->last_id('accounts');
+			$tmpUID = (int)$GLOBALS['egw']->common->last_id('accounts');
 			do
 			{
-				$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+				$ldap = $GLOBALS['egw']->common->ldapConnect();
 
 				$dn = $this->computerou;
 				$filter = "(&(uidnumber=$tmpUID)(objectclass=posixaccount))";
@@ -228,7 +228,7 @@
 					if ($allValues['count'] == 0)
 					{
 						// now search under the accounts dn too, maybe the same dn 
-						$dn = $GLOBALS['phpgw_info']['server']['ldap_context'];
+						$dn = $GLOBALS['egw_info']['server']['ldap_context'];
 						$filter = "(&(uidnumber=$tmpUID)(objectclass=posixaccount))";
 						
 						$sri = @ldap_search($ldap,$dn,$filter);
@@ -249,7 +249,7 @@
 					return false;
 				}
 				
-				$tmpUID = (int)$GLOBALS['phpgw']->common->next_id('accounts');
+				$tmpUID = (int)$GLOBALS['egw']->common->next_id('accounts');
 			} while ($nextUID == 0);
 			
 			return $nextUID;
@@ -257,8 +257,8 @@
 
 		function getUserData($_accountID)
 		{
-			$dn = $GLOBALS['phpgw_info']['server']['ldap_contact_context'];
-			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+			$dn = $GLOBALS['egw_info']['server']['ldap_contact_context'];
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
 			$filter = "(&(uidnumber=$_accountID)(objectclass=sambaSamAccount))";
 			
 			$sri = @ldap_search($ldap,$dn,$filter);
@@ -269,11 +269,11 @@
 				{
 					#print "found something<br>";
 					$userData = array();
-					$userData["displayname"]	= $GLOBALS['phpgw']->translation->convert($allValues[0]["displayname"][0],'utf-8');
-					$userData["sambahomedrive"]	= $GLOBALS['phpgw']->translation->convert($allValues[0]["sambahomedrive"][0],'utf-8');
-					$userData["sambahomepath"]	= $GLOBALS['phpgw']->translation->convert($allValues[0]["sambahomepath"][0],'utf-8');
-					$userData["sambalogonscript"]	= $GLOBALS['phpgw']->translation->convert($allValues[0]["sambalogonscript"][0],'utf-8');
-					$userData["sambaprofilepath"]	= $GLOBALS['phpgw']->translation->convert($allValues[0]["sambaprofilepath"][0],'utf-8');
+					$userData["displayname"]	= $GLOBALS['egw']->translation->convert($allValues[0]["displayname"][0],'utf-8');
+					$userData["sambahomedrive"]	= $GLOBALS['egw']->translation->convert($allValues[0]["sambahomedrive"][0],'utf-8');
+					$userData["sambahomepath"]	= $GLOBALS['egw']->translation->convert($allValues[0]["sambahomepath"][0],'utf-8');
+					$userData["sambalogonscript"]	= $GLOBALS['egw']->translation->convert($allValues[0]["sambalogonscript"][0],'utf-8');
+					$userData["sambaprofilepath"]	= $GLOBALS['egw']->translation->convert($allValues[0]["sambaprofilepath"][0],'utf-8');
 					$userData["uid"]		= $allValues[0]["uid"][0];
 
 					return $userData;
@@ -290,7 +290,7 @@
 				return false;
 				
 			$dn	= $this->computerou;
-			$ldap	= $GLOBALS['phpgw']->common->ldapConnect();
+			$ldap	= $GLOBALS['egw']->common->ldapConnect();
 			$filter = "(&(uidnumber=$_uidNumber)(objectclass=sambasamaccount))";
 			
 			$sri = @ldap_search($ldap,$dn,$filter);
@@ -314,7 +314,7 @@
 				return false;
 				
 			$dn	= $this->computerou;
-			$ldap	= $GLOBALS['phpgw']->common->ldapConnect();
+			$ldap	= $GLOBALS['egw']->common->ldapConnect();
 			if(!empty($_searchString))
 				$filter = "(&(|(uid=*$_searchString*$)(description=*$_searchString*))(objectclass=sambasamaccount))";
 			else
@@ -345,7 +345,7 @@
 				}
 				#_debug_array($allValues);
 				
-				$wsList['workstations'] = array_slice($allValues,$_start,(int)$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']);
+				$wsList['workstations'] = array_slice($allValues,$_start,(int)$GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs']);
 				$wsList['total']	= count($allValues);
 				
 				return $wsList;
@@ -356,10 +356,10 @@
 		
 		function name2sid($_name)
 		{
-			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
 
 			$filter = "(&(cn=$_name)(objectclass=sambasamaccount))";
-			$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
+			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],$filter);
 
 			if (!$sri) return false;
 
@@ -367,7 +367,7 @@
 			if($allValues[0]['sambasid'][0]) return $allValues[0]['sambasid'][0];
 			
 			$filter = "(&(cn=$_name)(objectclass=sambagroupmapping))";
-			$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_group_context'],$filter);
+			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_group_context'],$filter);
 
 			if (!$sri) return false;
 
@@ -379,7 +379,7 @@
 		
 		function saveUserData($_accountID, $_accountData)
 		{
-			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
 			$filter = "(&(uidnumber=$_accountID)(objectclass=posixaccount))";
 			
 			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],$filter);
@@ -395,7 +395,7 @@
 				unset($objectClass['count']);
 				
 				if(!in_array('sambasamaccount',$objectClass) &&
-				   !in_array('sambaSamAccount',$objectClass))
+					 !in_array('sambaSamAccount',$objectClass))
 				{
 					$objectClass[]	= "sambaSamAccount";
 				}
@@ -439,7 +439,7 @@
 				{
 					if(!empty($_accountData[$fieldName]))
 					{
-						$newData[$fieldName] = $GLOBALS['phpgw']->translation->convert
+						$newData[$fieldName] = $GLOBALS['egw']->translation->convert
 						(
 							$_accountData[$fieldName],
 							$this->charSet,
@@ -472,10 +472,10 @@
 		{
 			if(!$groupID = (int)$_groupID) return false;
 			
-			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
 			$filter = "(&(gidnumber=$groupID)(objectclass=posixgroup))";
 			
-			$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_group_context'],$filter);
+			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_group_context'],$filter);
 			if ($sri)
 			{
 				$allValues 	= ldap_get_entries($ldap, $sri);
@@ -513,7 +513,7 @@
 				if(!$newData['uidNumber'] = $this->findNextUID())
 					return false;
 
-				if(!$groupID = $GLOBALS['phpgw']->accounts->name2id($this->computergroup))
+				if(!$groupID = $GLOBALS['egw']->accounts->name2id($this->computergroup))
 					return false;
 
 				if(!$groupSID = $this->name2sid($this->computergroup))
@@ -536,10 +536,10 @@
 				$newData['objectClass'][1]	= 'posixaccount';
 				$newData['objectClass'][2]	= 'sambasamaccount';
 				$newData['objectClass'][3]	= 'person';
-				$newData['uid']			= $GLOBALS['phpgw']->translation->convert($_newData['workstationName'],'utf-8');
-				$newData['description']		= $GLOBALS['phpgw']->translation->convert($_newData['description'],'utf-8');
-				$newData['displayName']		= $GLOBALS['phpgw']->translation->convert($_newData['workstationName'],'utf-8');
-				$newData['cn']			= $GLOBALS['phpgw']->translation->convert($_newData['workstationName'],'utf-8');
+				$newData['uid']			= $GLOBALS['egw']->translation->convert($_newData['workstationName'],'utf-8');
+				$newData['description']		= $GLOBALS['egw']->translation->convert($_newData['description'],'utf-8');
+				$newData['displayName']		= $GLOBALS['egw']->translation->convert($_newData['workstationName'],'utf-8');
+				$newData['cn']			= $GLOBALS['egw']->translation->convert($_newData['workstationName'],'utf-8');
 				$newData['sn']			= $newData['cn'];
 				$newData['homeDirectory']	= '/dev/null';
 				$newData['loginShell']		= '/bin/false';
@@ -549,7 +549,7 @@
 				$newData['sambasid']		= $this->sid.'-'.($newData['uidNumber']*2 + 1000);
 				$newData['sambaprimarygroupsid']= $groupSID;
 				
-				$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+				$ldap = $GLOBALS['egw']->common->ldapConnect();
 				$dn = "uid=".$_newData['workstationName'].",".$this->computerou;
 
 				if(ldap_add($ldap,$dn,$newData))
@@ -569,7 +569,7 @@
 				#$newData['sambaacctflags']	= '[W          ]';
 				
 				$dn	= $this->computerou;
-				$ldap	= $GLOBALS['phpgw']->common->ldapConnect();
+				$ldap	= $GLOBALS['egw']->common->ldapConnect();
 				$filter = "(&(uidnumber=".$_newData[workstationID].")(objectclass=sambasamaccount))";
 				
 				$sri = @ldap_search($ldap,$dn,$filter);

@@ -31,7 +31,7 @@
 	);
 
 
-	$setup_info['sambaadmin']['tables']    = array('phpgw_sambaadmin');
+	$setup_info['sambaadmin']['tables']    = array();
 	$setup_info['sambaadmin']['enable']    = 1;
 
 	/* The hooks this app includes, needed for hooks registration */

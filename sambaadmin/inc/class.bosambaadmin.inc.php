@@ -1,7 +1,7 @@
 <?php
 	/***************************************************************************\
-	* phpGroupWare - QMailLDAP                                                  *
-	* http://www.phpgroupware.org                                               *
+	* eGroupWare - SambaAdmin                                                   *
+	* http://www.egroupware.org                                                 *
 	* http://www.linux-at-work.de                                               *
 	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
 	* -------------------------------------------------                         *
@@ -19,9 +19,9 @@
 
 		function bosambaadmin()
 		{
-			#global $phpgw;
+			#
 
-			$this->sosambaadmin = CreateObject('sambaadmin.sosambaadmin');
+			$this->sosambaadmin =& CreateObject('sambaadmin.sosambaadmin');
 			
 			$this->restoreSessionData();
 
@@ -34,6 +34,8 @@
 		
 		function changePassword($_accountID, $_newPassword)
 		{
+			if (!$GLOBALS['egw_info']['server']['ldap_host']) return false;
+
 			return $this->sosambaadmin->changePassword($_accountID, $_newPassword);
 		}
 		
@@ -69,14 +71,14 @@
 
 		function restoreSessionData()
 		{
-			$this->sessionData = $GLOBALS['phpgw']->session->appsession('session_data');
-			$this->userSessionData = $GLOBALS['phpgw']->session->appsession('user_session_data');
+			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data');
+			$this->userSessionData = $GLOBALS['egw']->session->appsession('user_session_data');
 		}
 		
 		function saveSessionData()
 		{
-			$GLOBALS['phpgw']->session->appsession('session_data','',$this->sessionData);
-			$GLOBALS['phpgw']->session->appsession('user_session_data','',$this->userSessionData);
+			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
+			$GLOBALS['egw']->session->appsession('user_session_data','',$this->userSessionData);
 		}
 		
 		function saveUserData($_accountID, $_formData)
@@ -86,9 +88,11 @@
 
 		function updateAccount()
 		{
+			if (!$GLOBALS['egw_info']['server']['ldap_host']) return false;
+
 			if($accountID = (int)$GLOBALS['hook_values']['account_id'])
 			{
-				$config = CreateObject('phpgwapi.config','sambaadmin');
+				$config =& CreateObject('phpgwapi.config','sambaadmin');
 				$config->read_repository();
 				$config = $config->config_data;
 
@@ -119,6 +123,8 @@
 
 		function updateGroup()
 		{
+			if (!$GLOBALS['egw_info']['server']['ldap_host']) return false;
+
 			if($accountID = (int)$GLOBALS['hook_values']['account_id'])
 			{
 				return $this->sosambaadmin->updateGroup($accountID);
