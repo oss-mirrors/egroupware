@@ -17,6 +17,7 @@ $userid		= (int)$_GET['userid'];
 $groupid	= (int)$_GET['groupid'];
 $action		= $_GET['action'];
 $mode		= $_GET['mode'];
+$ownerid	= (int)$_GET['ownerid'];
 
 $folder = getFolder($folderid);
 
