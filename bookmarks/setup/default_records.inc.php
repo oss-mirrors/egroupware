@@ -11,6 +11,14 @@
 
 	/* $Id$ */
 
-	$oProc->query("DELETE FROM phpgw_config WHERE config_app='bookmarks'");
-	$oProc->query("INSERT INTO phpgw_config (config_app, config_name, config_value) VALUES ('bookmarks','mail_footer','\n\n--\nThis was sent from eGroupWare\nhttp://www.egroupware.org\n')");
-?>
+	foreach(array(
+		'mail_footer' => '\n\n--\nThis was sent from eGroupWare\nhttp://www.egroupware.org\n',
+	) as $name => $value)
+	{
+		$oProc->insert($GLOBALS['egw_setup']->config_table,array(
+			'config_value' => $value,
+		),array(
+			'config_app' => 'bookmarks',
+			'config_name' => $name,
+		),__FILE__,__LINE__);
+	}
