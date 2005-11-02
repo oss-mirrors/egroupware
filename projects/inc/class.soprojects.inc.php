@@ -36,7 +36,7 @@
 
 		function soprojects()
 		{
-			$this->db		= $GLOBALS['phpgw']->db;
+			$this->db		= clone($GLOBALS['phpgw']->db);
 			$this->db->set_app('projects');
 			$this->db2		= clone($this->db);
 			$this->grants		= $GLOBALS['phpgw']->acl->get_grants('projects');
@@ -1359,18 +1359,17 @@
 
 		function delete_acl($project_id)
 		{
-			$this->db->query("DELETE from phpgw_acl where acl_appname='projects' AND acl_location='$project_id'"
-							. ' AND acl_rights=7',__LINE__,__FILE__);
+			$GLOBALS['egw']->acl->delete_repository('projects',$project_id,false);
 		}
 
 		function get_acl_projects()
 		{
-			$this->db->query("SELECT acl_location from phpgw_acl where acl_appname = 'projects' and acl_rights=7 and acl_account="
-								. $this->account,__LINE__,__FILE__);
-
-			while($this->db->next_record())
+			foreach($GLOBALS['egw']->acl->get_all_location_rights($this->account,'projects',false) as $location => $right)
 			{
-				$projects[] = $this->db->f(0);
+				if ($right == 7)
+				{
+					$projects[] = $location;
+				}
 			}
 			return $projects;
 		}
