@@ -575,6 +575,12 @@
 			
 			$linkData = array
 			(
+				'menuaction'	=> 'mydms.uimydms.folderChooser',
+			);
+			$this->t->set_var('folderChooserURL', $GLOBALS['egw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
 				'menuaction'	=> 'mydms.uimydms.updateDocument',
 				'documentid'	=> $documentID,
 			);

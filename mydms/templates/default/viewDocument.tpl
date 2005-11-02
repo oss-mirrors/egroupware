@@ -1,4 +1,7 @@
 <!-- BEGIN main -->
+<script type='text/javascript'>
+	var folderChooserURL ='{folderChooserURL}';
+</script>
 
 <table width="100%" border="0" cellspacing="0" cellpading="0" bgcolor="white" hheight="100px">
 	<tr class="topRow">
