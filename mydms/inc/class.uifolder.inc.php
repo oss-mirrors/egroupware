@@ -107,19 +107,6 @@
 			print $t->get('out','main');
 		}
 		
-		function translate(&$template)
-		{
-			$template->set_var('lang_cancel',lang('cancel'));
-			$template->set_var('lang_copy',lang('copy'));
-			$template->set_var('lang_copy_documents',lang('copy documents'));
-			$template->set_var('lang_copy_options',lang('copy options'));
-			$template->set_var('lang_copy_subfolders',lang('copy subfolders'));
-			$template->set_var('lang_folder',lang('folder'));
-			$template->set_var('lang_select_folder',lang('select folder'));
-			$template->set_var('lang_select_target_folder',lang('Select target folder'));
-			$template->set_var('lang_target_folder',lang('target folder'));
-		}
-		
 		function display_app_header()
 		{
 			if(!@is_object($GLOBALS['egw']->js))
@@ -214,6 +201,20 @@
 			print("</tree>");
 			
 			$GLOBALS['egw']->common->egw_exit();
+		}
+
+		function translate(&$template)
+		{
+			$template->set_var('lang_cancel',lang('cancel'));
+			$template->set_var('lang_copy',lang('copy'));
+			$template->set_var('lang_copy_documents',lang('copy documents'));
+			$template->set_var('lang_copy_options',lang('copy options'));
+			$template->set_var('lang_copy_subfolders',lang('copy subfolders'));
+			$template->set_var('lang_folder',lang('folder'));
+			$template->set_var('lang_name',lang('name'));
+			$template->set_var('lang_select_folder',lang('select folder'));
+			$template->set_var('lang_select_target_folder',lang('Select target folder'));
+			$template->set_var('lang_target_folder',lang('target folder'));
 		}
 	}
 ?>
