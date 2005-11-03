@@ -14,6 +14,10 @@ all versions	mydms	en	Alle Versionen
 comment	mydms	en	Kommentar
 comment for current version	mydms	en	Kommentar zur aktuellen Version
 copy acl	mydms	en	copy acl
+copy documents	mydms	en	copy documents
+copy folder	mydms	en	copy folder
+copy options	mydms	en	copy options
+copy subfolders	mydms	en	copy subfolder
 create empty acl	mydms	en	create empty acl
 creation date	mydms	en	Erstellt am
 current acl	mydms	en	current acl
@@ -45,6 +49,9 @@ move folder	mydms	en	move folder
 mydms	common	en	mydms
 notifications	mydms	en	notifications
 permission	mydms	en	permission
+select folder	mydms	en	select folder
+select target folder	mydms	en	select target folder
+target folder	mydms	en	target folder
 this document gets locked by you!	mydms	en	this document gets locked by you!
 this document gets unlocked by you.	mydms	en	this document gets unlocked by you.
 this document is currently not locked.	mydms	en	this document is currently not locked.
