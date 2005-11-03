@@ -474,7 +474,7 @@
 			$mail->Body    = $this->sessionData['body'];
 			if (!empty($this->sessionData['signature']))
 			{
-				$mail->Body	.= "\r\n--\r\n";
+				$mail->Body	.= "\r\n-- \r\n";
 				$mail->Body	.= $this->sessionData['signature'];
 			}
 
