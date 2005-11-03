@@ -183,6 +183,8 @@
 			$entryOptions	= 'CHILD,CHECKED';
 			$folderID	= $folderObject->getID();
 			$folderName	= $folderObject->getName();
+			
+			$selectedFolderID = $_selected->getID();
 
 			$folder_tree_new .= "tree.insertNewItem('0','$folderID','$folderName',onNodeSelect,$image1,$image2,$image3,'$entryOptions');\n";
 
@@ -201,7 +203,11 @@
 			);
 			$xmlInitialLoadURL = $GLOBALS['egw']->link('/index.php',$linkData);
 				
+			if($selectedFolderID == 1)
+				$folder_tree_new .= "tree.selectItem('$folderID',false);";
+
 			$folder_tree_new .= "tree.loadXML('$xmlInitialLoadURL');";
+			
 
 			$folder_tree_new.= '</script>';
 

@@ -14,6 +14,10 @@ all versions	mydms	de	alle Versionen
 comment	mydms	de	Kommentar
 comment for current version	mydms	de	Kommentar zur aktuellen Version
 copy acl	mydms	de	Berechtigungen kopieren
+copy documents	mydms	de	Dokumente mitkopieren
+copy folder	mydms	de	Ordner kopieren
+copy options	mydms	de	Kopieroptionen
+copy subfolders	mydms	de	Unterordner mitkopieren
 create empty acl	mydms	de	leere ACL
 creation date	mydms	de	Erstellt am
 current acl	mydms	de	Aktuelle Zugriffsberechtigungen
@@ -45,6 +49,9 @@ move folder	mydms	de	Ordner verschieben
 mydms	common	de	MyDMS
 notifications	mydms	de	Benachrichtigungen
 permission	mydms	de	Berechtigung
+select folder	mydms	de	Ordner auswählen
+select target folder	mydms	de	Zielordner auswählen
+target folder	mydms	de	Zielordner
 this document gets locked by you!	mydms	de	Dieses Dokument wird von Ihnen gesperrt!
 this document gets unlocked by you.	mydms	de	Dieses Dokument wird von Ihnen entsperrt.
 this document is currently not locked.	mydms	de	Dieses Dokument ist momentan nicht gesperrt.

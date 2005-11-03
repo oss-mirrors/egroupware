@@ -1,8 +1,8 @@
 <!-- BEGIN main -->
 <script language="JavaScript">
 
-targetName = opener.document.{formName}.targetname;
-targetID   = opener.document.{formName}.targetid;
+var targetName = opener.document.{formName}.targetname;
+var targetID   = opener.document.{formName}.targetid;
 
 </script>
 
