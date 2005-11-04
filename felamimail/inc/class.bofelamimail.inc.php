@@ -697,8 +697,6 @@
 					
 		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
 		{
-			#$start = $this->microtime_float();
-
 			$caching =& CreateObject('felamimail.bocaching',
 					$this->mailPreferences['imapServerAddress'],
 					$this->mailPreferences['username'],
@@ -707,31 +705,22 @@
 			$transformdate =& CreateObject('felamimail.transformdate');
 			
 			$this->updateCache($this->sessionData['mailbox']);
-			
+
+			$filter = $bofilter->getFilter($this->sessionData['activeFilter']);			
 			$displayHeaders = $caching->getHeaders($_startMessage, $_numberOfMessages, $_sort, $filter);
-			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
 
 			$count=0;
 			$countDisplayHeaders = count($displayHeaders);
 			for ($i=0;$i<$countDisplayHeaders;$i++)
 			{
 				$header = imap_fetch_overview($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
-				#print $header[0]->date;print "<br>";
-				#print_r($displayHeaders[$i]);print "<br>";
-				#print_r($header);exit;
 
-				#$rawHeader = imap_fetchheader($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
-				#$headers = $this->sofelamimail->fetchheader($rawHeader);
-				
-				//$retValue['header'][$count]['subject'] 		= $this->decode_header($header[0]->subject);
 				$retValue['header'][$count]['subject'] 		= $this->decode_header($displayHeaders[$i]['subject']);
 				$retValue['header'][$count]['sender_name'] 	= $this->decode_header($displayHeaders[$i]['sender_name']);
 				$retValue['header'][$count]['sender_address'] 	= $this->decode_header($displayHeaders[$i]['sender_address']);
 				$retValue['header'][$count]['to_name'] 		= $this->decode_header($displayHeaders[$i]['to_name']);
 				$retValue['header'][$count]['to_address'] 	= $this->decode_header($displayHeaders[$i]['to_address']);
 				$retValue['header'][$count]['attachments']	= $displayHeaders[$i]['attachments'];
-				//$retValue['header'][$count]['size'] 		= $this->decode_header($displayHeaders[$i]['size']);
-				//$retValue['header'][$count]['size'] 		= $header[0]->size;
 				$retValue['header'][$count]['size'] 		= $this->decode_header($header[0]->size);
 				
 				$timestamp = $displayHeaders[$i]['date'];
@@ -739,11 +728,13 @@
 					mktime(date("H"), date("i"), date("s"), date("m"), date("d")-7, date("Y"));
 				$timestampNow = 
 					mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"));
+
 				// date from the future
 				if($timestamp > $timestampNow)
 				{
 					$retValue['header'][$count]['date'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],$timestamp);
 				}
+
 				// email from today, show only time
 				elseif (date("Y-m-d") == date("Y-m-d",$timestamp))
 				{
