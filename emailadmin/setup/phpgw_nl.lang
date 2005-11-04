@@ -65,5 +65,6 @@ use ldap defaults	emailadmin	nl	gebruiker LDAP standaard instellingen
 use smtp auth	emailadmin	nl	Gebruike SMTP authenticatie
 use tls authentication	emailadmin	nl	Gebruike TLS authenticatie
 use tls encryption	emailadmin	nl	Gebruike TLS-encryptie
+user can edit forwarding address	emailadmin	nl	gebruiker kan het doorstuuradres aanpassen
 users can define their own emailaccounts	emailadmin	nl	Gebruikers kunnen hun eigen emailaccounts definiëren
 virtual mail manager	emailadmin	nl	Virtual MAIL ManaGeR

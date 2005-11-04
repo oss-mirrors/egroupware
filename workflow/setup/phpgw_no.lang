@@ -192,6 +192,7 @@ monitor this instance	workflow	no	Overvåk denne instansen
 monitor work items	workflow	no	Overvåk arbeidselementer
 monitor workitems	workflow	no	Overvåk arbeidselementer
 monitoring	workflow	no	Overvåker
+monitors	workflow	no	Monitorer
 more options?	workflow	no	flere valg ?
 my activities	workflow	no	Mine aktiviteter
 my instances	workflow	no	Mine instanser
@@ -308,6 +309,7 @@ starting page	workflow	no	Startside
 status	workflow	no	Status
 status:	workflow	no	status:
 stop	workflow	no	stopp
+subject:	workflow	no	Emne:
 template	workflow	no	mal
 test concistency	workflow	no	Test for konsistens
 test consistency of datas in the database	workflow	no	Test for konsistens av data i databasen
@@ -340,6 +342,7 @@ type:	workflow	no	type :
 unknown status	workflow	no	ukjent status
 update	workflow	no	oppdater
 upload file	workflow	no	last opp fil
+use automatic parsing	admin	no	Benytt automatisk analyse
 use default	workflow	no	Bruk standard
 use existing roles	workflow	no	Bruk eksisterende roller
 user	workflow	no	Bruker
@@ -364,5 +367,16 @@ workflow	common	no	Arbeidsflyt
 workflow configuration	admin	no	Arbeidsflyt Konfigurasjon
 workflow preferences	workflow	no	Arbeidsflyt Preferanser
 workflow site configuration	workflow	no	Konfigurering av nettstedet for arbeidsflyt
+workflow.ui_useractivities	workflow	no	workflow.ui_useractivities
 workitem information	workflow	no	Informasjon om arbeidselementet
 workitems	workflow	no	Arbeidselementer
+you are not allowed to abort instance %1	workflow	no	Du har ikke tillatelse til å avbryte instanse %1
+you are not allowed to exception instance %1	workflow	no	Du har ikke tillatelse til å unnta instanse %1
+you are not allowed to grab instance %1	workflow	no	Du har ikke tillatelse til å ta fatt i instanse %1
+you are not allowed to release instance %1	workflow	no	Du har ikke tillatelse til å frigjøre instanse %1
+you are not allowed to restart instance %1	workflow	no	Du har ikke tillatelse til å starte instanse %1 på nytt
+you are not allowed to resume instance %1	workflow	no	Du har ikke tillatelse til å gjennoppta instanse %1
+you are not allowed to send instance %1	workflow	no	Du har ikke tillatelse til å videreesnde instanse %1
+you can use special values with this mail agent:	workflow	no	Du kan benytte spesialverdier med denne e-mailklienten
+you have not permission to execute this activity	workflow	no	Du har ikke tillatelse til å utføre denne aktiviteten
+you were not allowed to complete the activity	workflow	no	Du har ikke tillatelse til å fullføre denne aktiviteten

@@ -7,6 +7,7 @@ add a new file id prefix	filescenter	no	Legg til ny prefiks for filident
 add a new file type	filescenter	no	Legg til en ny filtype
 add a new prefix	filescenter	no	Legg til en ny prefiks
 add another file	filescenter	no	Legg til en annen fil
+add custom file property	filescenter	no	Legg til tipassede egenskaper
 add file property	filescenter	no	Legg til filegenskaper
 application	filescenter	no	Program
 applications	filescenter	no	Programmer
@@ -14,6 +15,9 @@ archive name	filescenter	no	Arkivnavn
 archive name cannot contain "%1"	filescenter	no	Arkivnavn kan ikke inneholde "%1"
 are you sure you want to delete '"+filename+"'?	filescenter	no	Ønsker du å slette '"+filename+"'
 are you sure you want to delete _filename_?	filescenter	no	Er du sikker på at du ønsker å slett  _filename_?
+are you sure you want to delete all these "+count+" items?	filescenter	no	Ønsker du virkelig å slette alle disse "+count+" enhetene?
+are you sure you want to delete all these _count_ items?	filescenter	no	Ønsker du virkelig å slette alle disse _count_ enhetene?
+are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	no	Er du sikker?  Du kan alternativt deaktivere dette feltet slik at du kan gjenskape informasjonen senere.  Ønsker du virkelig å slett (dette kan ikke omgjøres)?
 authorized groups	filescenter	no	Autoriserte grupper
 authorized users	filescenter	no	Autoriserte brukere
 backup	filescenter	no	Sikkerhetskopiering
@@ -36,13 +40,17 @@ could not create %1	filescenter	no	Kunne ikke opprette %1
 could not delete %1	filescenter	no	Kunne ikke slette %1
 could not extract files from archive.	filescenter	no	Kunne ikke opprette filene fra arkivet
 could not move %1 to %2	filescenter	no	Kan ikke flytte %1 til %2
+could not paste files here.	filescenter	no	Kan ikke lime inn filene her.
+could not retrieve files for this directory.	filescenter	no	Kan ikke hente frem filer for denne katalogen.
 created	filescenter	no	Opprettet
 created %1	filescenter	no	Opprettet %1
 created %1,%2	filescenter	no	Opprettet %1, %2
 created directory %1	filescenter	no	Opprettet mappe %1
 creates a directory.	filescenter	no	Opprette en mappe
 decompress	filescenter	no	Dekomprimer
+default number of upload fields to show	filescenter	no	Standard antall av opplastingsfiler som vises
 delete this file type	filescenter	no	Slett denne filtypen
+delete unsuccessful. selected files could not be deleted.	filescenter	no	Valgte filer kunne ikke slettes.
 deleted	filescenter	no	Slettet
 deleted %1	filescenter	no	Slettet %1
 deletes a file or set of files.	filescenter	no	Slett en fil eller et sett av filer
@@ -50,6 +58,7 @@ destination	filescenter	no	Mål
 directory %1 already exists	filescenter	no	Mappe %1 finnes allerede
 directory names cannot contain "%1"	filescenter	no	Mappens navn kan ikke inneholde %1
 display attributes	filescenter	no	Vis attributter
+do you really want to delete the custom field	filescenter	no	Ønsker du å slette dette tilpassede feltet
 edit file property	filescenter	no	Endre filens egenskaper
 edit file type:	filescenter	no	Endre filtype :
 edited	filescenter	no	Endret
@@ -64,6 +73,7 @@ file id prefix	filescenter	no	Filiden prefiks
 file name	filescenter	no	Filnavn
 file names cannot contain "%1"	filescenter	no	Filnavn kan ikke inneholde "%1"
 file type	filescenter	no	Filtype
+file types management	filescenter	no	Filtypebehandling
 file(s) to upload:	filescenter	no	Fil(er) som skal lastes opp
 file(s) written sucessfully.	filescenter	no	Filen(e) ble lagret.
 filemanager preferences	filescenter	no	Filbehandler preferanser
@@ -71,6 +81,7 @@ files to upload	filescenter	no	Filer for opplasting
 filescenter	filescenter	no	Filsenter
 filescenter administration	filescenter	no	Filsenteradministrasjon
 filescenter preferences	filescenter	no	Filsenterpreferanser
+fill the fields here to define a new	filescenter	no	Fyll inn i feltene her for å definere en ny.
 friendly description	filescenter	no	Vennlig beskrivelse
 from filescenter...	filescenter	no	Fra Filsenter
 general	filescenter	no	Generell
@@ -101,6 +112,7 @@ no shared folders.	filescenter	no	Ingen delte mapper
 operation	filescenter	no	Operasjon
 operations	filescenter	no	Operasjoner
 other properties	filescenter	no	Andre egenskaper
+pastes a file (or a given set of files) from clipboard	filescenter	no	Limer inn en fil(eller et sett filer) fra utklippstavlen.
 precision	filescenter	no	Presisjon
 prefix	filescenter	no	Prefiks
 prefix description	filescenter	no	Beskrivelse av prefiks

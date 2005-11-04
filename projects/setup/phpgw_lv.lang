@@ -263,3 +263,38 @@ test	projects	lv	Pārbaudīt
 that id has been used already	projects	lv	Tas ID jau tiek lietots
 that id has been used already !	projects	lv	Tas ID jau tiek lietots!
 the delivery note contains no items !	projects	lv	PIegādes piezīmē nav nevienas vienības!
+time of journey	projects	lv	Izbraukuma laiks
+time planned	projects	lv	Plānotais laiks
+time tracker	projects	lv	Laika okšķerējumi
+time tracking actions	projects	lv	laika okšķerējumu darbības
+time tracking for this project is already active	projects	lv	laika okšķērējumi šim projektam ir jau aktīvi
+time used	projects	lv	Izmantotais laiks
+time used total	projects	lv	kopā izmantotais laiks
+update delivery	projects	lv	atjaunināt piegādi
+use activities	admin	lv	Lietot aktivitātes
+used	projects	lv	izmantots
+used - jobs included	projects	lv	izmantots- iekļauti darbi
+used total	projects	lv	Kopā izmantots
+user statistics	projects	lv	Lietotāju statisktika
+view employees	projects	lv	Rādīt darbiniekus
+view gantt chart	projects	lv	Rāðīt Ganta diagrammu
+view hours	projects	lv	radīt stundas
+view job	projects	lv	Rādīt darbu
+view project	projects	lv	Rādīt projektu
+view users	projects	lv	rādīt lietotājus
+view work hours	projects	lv	Rāðīt darba stundas
+work date	common	lv	Darba datums
+work hours	common	lv	Darba stundas
+work time	projects	lv	Darba laiks
+workunit	projects	lv	darba uzdevums
+workunits	projects	lv	Darba uzdevumi
+you have entered an invalid date !	projects	lv	Tu esi ievadījis nederīgu datumu!
+you have entered an invalid date due	projects	lv	Tu esi ievadīji nederīgu termiņa datumu
+you have entered an invalid end date	projects	lv	Tu esi ievadījis nederīgu beigu datumu
+you have entered an invalid planned end date	projects	lv	Tu esi ievadījis nederīgu plānoto beigu datumu.
+you have entered an invalid planned start date	projects	lv	Tu esi ievadījis nederīgu planoto sākuma datumu
+you have entered an invalid start date	projects	lv	Tu esi ievadījis nederīgu sakuma datumu
+you have no customer selected !	projects	lv	Tu neesi iezīmējis klientu!
+you have no projects selected	projects	lv	tu neesi iezīmējis nevienu projektu!
+you have selected an invalid activity	projects	lv	Tu esi atzīmējis nederīgu aktivitāti.
+you have to create a delivery or invoice first !	projects	lv	Vispirms tev jāizveido piegāde vai rēķins

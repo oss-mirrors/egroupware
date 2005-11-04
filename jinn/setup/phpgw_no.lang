@@ -82,7 +82,7 @@ browse	jinn	no	Gjennomse
 browse current object	jinn	no	Gjennomse gjeldende objekt
 browse sites	jinn	no	Gjennomse nettsteder
 browse through object settings	admin	no	Se igjennom objektoppsett
-browse through sites	jinn	no	Se igennom nettsteder
+browse through sites	jinn	no	Se igjennom nettsteder
 browses through sites	admin	no	Ser igjennom nettsteder
 can't edit more then 99 record at once (error code 108)	jinn	no	Kan ikke endre mer enn 99 poster på en gang (Feil kode 108)
 cancel	jinn	no	Kanseller
@@ -150,6 +150,7 @@ edit egw_jinn_sites	jinn	no	endre nettsteder
 edit filter	jinn	no	endre filter
 edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	no	Editer JiNN nettsteds objektparametre: <li>velg et JiNN Objektnavn for visning</li> <li>velg en databasetabell for bruk med dette objektet</li> <li>om nødvendig en alternative korrekt absolute opplastingssti</li><li>om nødvendig en korresponderende alternativ forhåndsvisningsadresse for opplastede elementer</li><br><li>definer feltrelasjoner</li><li>konfigurer feltplugins</li>
 edit object	jinn	no	Endre objekt
+edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	no	Endre objektkonfigurasjon: <li>Velg et objektnavn for visning</li> <li>Velg en databasetabell for bruk med dette objektet</li> <li>om nødvendig en alternativ korrekt opsolutt opplastingssti</li><li>om nødvendig en korresponderende alternati forhådsviningsadresse for opplastede elementer</li><br><li>definer feltrelasjoner</li><li>konfigurer feltplugins</li>
 edit site	jinn	no	Endre nettsted
 edit this record	jinn	no	endre denne posten
 edit this site	jinn	no	Endre dette nettstedet
@@ -173,11 +174,17 @@ failed to copy: %1 to %2 ...	jinn	no	kunne ikke kopiere: %1 til %2 ...
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	no	Kunne ikke åpne tabell.  Vennligst kontroller om tabell <i>%1</i> fortsatt eksisterer i databasen.
 field	jinn	no	felt
 field configuration	jinn	no	Feltkonfigurasjon
+field info configuration	jinn	no	Info om feltets konfigurasjon
+field info configuration successfully saved	jinn	no	Info for feltets konfigurasjon ble lagret
+field plugin	jinn	no	Felt plugin
+field plugin configuration	jinn	no	Felt plugin konfigurasjon
+field plugins	jinn	no	Felt plugins
 field position	jinn	no	feltposisjon
 field to display	jinn	no	felt som vises
 fieldname	jinn	no	Feltnavn
 fields	jinn	no	felt
 fields enclosed by	jinn	no	felt lukket av
+fields escaped by	jinn	no	Felt omsluttet av
 fields terminated by	jinn	no	felt terminert av
 filename	jinn	no	filnavn
 filesize	jinn	no	filstr.
@@ -426,6 +433,7 @@ the upgrade process has is finished. you can now close this windows and start ov
 the wysiwyg plugin makes you edit text like you do in a program like openoffice writer or word. some people don't like this feature though, so you can force jinn not to use it.	jinn	no	WYSIWYG modulen lar deg redigere tekst slik du gjør i programmer som OpenOffice Writer eller Word.  Noen liker ikke denne muligheten så du kan tvinge JiNN til ikke å benytte denne.
 there are no directories in this site you have access to.	jinn	no	Det er ingen kataloger i dette nettstedet hvor du har adgang.
 there are no pages	jinn	no	Det er ingen sider
+there are no records found for this object. you can now at a new record.	jinn	no	Det ble ikke funnet noen poster for dette objektet.  Du kan nå legge til en ny post
 there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	no	Det er ingen nettsteder som du har adgang til.  Spør ansvarlig om å gi deg adgang til ditt nettsted eller dine nettstedsobjekter eller kontroller at nettsted finnes.
 this is for debugging purposes.	jinn	no	Denne er for feilsøkingsformål.
 this object can only have one record.	jinn	no	Objektet kan bare ha en post
@@ -441,9 +449,11 @@ upload url	jinn	no	Opplastingsadresse
 using object configuration	jinn	no	Bruker objektkonfigurasjon
 version	jinn	no	versjon
 view all selected records	jinn	no	vis alle valgte poster
+we must upgrade your plugin configuration. <p>please don't click on back or stop untill i'm finished and a close button appears</p>	jinn	no	Vi må oppgradere din plugin-konfigurasjon. <p>Vennligts ikke klokk eller stopp før dette er avsluttet og en knapp for lukking kommer tilsyne</p>
 website url	jinn	no	Nettstedsadresse for forhåndsvisning
 when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	no	Når en mengde bilder er knyttet til en post kan det ta lang tid å laste skjermbilde.  Du kan sette et maks. antall bilder for visning.
 when this is enables information like field length and field type is shown when editing record	jinn	no	Med denne aktiv vises informasjon om feltlengde og -type under redigering av posten.
+when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	no	Dersom du velger 'Aldri' vil bare lenker til bildene vises; dersom du velger 'Bare dersom miniatyrbilder eksisterer' skjer det kun forhåndsvisning der hvor miniatyrbilder finnes; velger du 'Ja' vil alle bilder vises.
 width:	jinn	no	Bredde:
 with_checked_files	jinn	no	med avkryssede filer
 yes, hide from menu	jinn	no	Ja, skjul fra menyen
