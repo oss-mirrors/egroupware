@@ -1,1 +1,6 @@
+%1 manual page(s) added or updated	manual	nl	%1 handleidingpagina('s) toegevoegd of bijgewerkt
+download	manual	nl	downloaden
+install or update the manual-pages	admin	nl	installeer of update de handleidingpagina's
 manual	common	nl	Handleiding / Help
+page(s) %1 not found !!!	manual	nl	Pagina('s) %1 niet gevonden !!!
+starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	nl	Start het importeren vanaf %1, dit kan een aantal minuten duren (vooral als de eerste keer is dat u dit uitvoert) ...
