@@ -13,7 +13,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.0.0.004';
+	$setup_info['felamimail']['version']     	= '1.0.0.006';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -24,7 +24,7 @@
 	$setup_info['felamimail']['maintainer'] 	= 'Lars Kneschke';
 	$setup_info['felamimail']['maintainer_email'] 	= 'lkneschke@linux-at-work.de';
 
-	$setup_info['felamimail']['tables']    = array('phpgw_felamimail_cache','phpgw_felamimail_folderstatus','phpgw_felamimail_displayfilter');
+	$setup_info['felamimail']['tables']    = array('egw_felamimail_cache','egw_felamimail_folderstatus','egw_felamimail_displayfilter');
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['felamimail']['hooks'][] = 'preferences';
@@ -47,6 +47,8 @@
 		'appname'  => 'emailadmin',
 		'versions' => Array('1.0.1')
 	);
+
+
 
 
 

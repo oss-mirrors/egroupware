@@ -22,7 +22,7 @@
 			'flagMessages'		=> True
 		);
 		*/
-		var $filter_table = 'phpgw_felamimail_displayfilter';	// only reference to table-prefix
+		var $filter_table = 'egw_felamimail_displayfilter';	// only reference to table-prefix
 
 		function sofilter()
 		{

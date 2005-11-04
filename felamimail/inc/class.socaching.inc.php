@@ -20,8 +20,8 @@
 			'addAtachment'	=> True,
 			'action'	=> True
 		);
-		var $cache_table = 'phpgw_felamimail_cache';
-		var $folder_table = 'phpgw_felamimail_folderstatus';
+		var $cache_table = 'egw_felamimail_cache';
+		var $folder_table = 'egw_felamimail_folderstatus';
 		var $hostname,$accountname,$foldername,$accountid,$host_account_folder;	// set by the constructor
 		
 		function socaching($_hostname, $_accountname, $_foldername, $_accountid)

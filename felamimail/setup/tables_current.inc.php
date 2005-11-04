@@ -12,12 +12,12 @@
   /* $Id$ */
 
 	$phpgw_baseline = array(
-		'phpgw_felamimail_cache' => array(
+		'egw_felamimail_cache' => array(
 			'fd' => array(
 				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
-				'fmail_accountname' => array('type' => 'varchar','precision' => '200','nullable' => False),
-				'fmail_foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
+				'fmail_accountname' => array('type' => 'varchar','precision' => '128','nullable' => False),
+				'fmail_foldername' => array('type' => 'varchar','precision' => '128','nullable' => False),
 				'fmail_uid' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fmail_subject' => array('type' => 'text'),
 				'fmail_striped_subject' => array('type' => 'text'),
@@ -34,12 +34,12 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_felamimail_folderstatus' => array(
+		'egw_felamimail_folderstatus' => array(
 			'fd' => array(
 				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
-				'fmail_accountname' => array('type' => 'varchar','precision' => '200','nullable' => False),
-				'fmail_foldername' => array('type' => 'varchar','precision' => '200','nullable' => False),
+				'fmail_accountname' => array('type' => 'varchar','precision' => '128','nullable' => False),
+				'fmail_foldername' => array('type' => 'varchar','precision' => '128','nullable' => False),
 				'fmail_messages' => array('type' => 'int','precision' => '4'),
 				'fmail_recent' => array('type' => 'int','precision' => '4'),
 				'fmail_unseen' => array('type' => 'int','precision' => '4'),
@@ -51,7 +51,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_felamimail_displayfilter' => array(
+		'egw_felamimail_displayfilter' => array(
 			'fd' => array(
 				'fmail_filter_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fmail_filter_data' => array('type' => 'text')
