@@ -1,0 +1,177 @@
+$files format not recognized in bo->create_archive()	filescenter	nl	$files formaat wordt niet herkend in bo->create_archive()
+%1 already exists as a file	filescenter	nl	%1 bestaat reeds als een bestand
+%1 files were sucessfully copied onto clipboard.	filescenter	nl	%1 bestanden zijn met succes gekopieerd naar het klembord.
+%1 files were sucessfully cutted onto clipboard.	filescenter	nl	%1 bestanden zijn met succes geknipt naar het klembord.
+activate sharing	filescenter	nl	Delen inschakelen
+add a new file id prefix	filescenter	nl	Een nieuwe bestands ID prefix toevoegen
+add a new file type	filescenter	nl	Een nieuw bestandstype toevoegen
+add a new prefix	filescenter	nl	Een nieuwe prefix toevoegen
+add a new type descriptor for file ids	filescenter	nl	Een nieuwe typebeschrijving voor bestands ID's toevoegen
+add another file	filescenter	nl	Nog een bestand toevoegen
+add custom file property	filescenter	nl	Een bijzondere bestandseigenschap toevoegen
+add file property	filescenter	nl	Een bestandseigenschap toevoegen
+application	filescenter	nl	Toepassing
+applications	filescenter	nl	Toepassingen
+archive name	filescenter	nl	Archiefnaam
+archive name cannot contain "%1"	filescenter	nl	Archiefnaam mag niet "%1" bevatten
+are you sure you want to delete '"+filename+"'?	filescenter	nl	Weet u zeker dat uw '"+filename+"' wilt verwijderen?
+are you sure you want to delete _filename_?	filescenter	nl	Weet u zeker dat uw _filename_ wilt verwijderen?
+are you sure you want to delete all these "+count+" items?	filescenter	nl	Weet u zeker dat u al deze "+count+" items wilt verwijderen?
+are you sure you want to delete all these _count_ items?	filescenter	nl	Weet u zeker dat u al deze _count_ items wilt verwijderen?
+are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	nl	Weet u dit zeker? Als alternatief kunt u dit veld uitschakelen zodat u de informatie later terug kunt halen. Echt verwijderen? (u kunt dit niet ongedaan maken)
+authorized groups	filescenter	nl	Geautoriseerde groepen
+authorized users	filescenter	nl	Geautoriseerde gebruikers
+backup	filescenter	nl	Backup
+cannot replace %1 because it is a directory	filescenter	nl	Kan %1 niet vervangen omdat het een directory is.
+cannot write file $1	filescenter	nl	Kan bestand $1 niet schrijven
+clean the temporary folder for application	filescenter	nl	De tijdelijke folder voor toepassing leegmaken
+click in the row to edit a file type.	filescenter	nl	Klik op de rij om een bestandtype te bewerken..
+click in the row to edit an item.	filescenter	nl	Klik op de rij om een item te bewerken.
+comment	filescenter	nl	Commentaar
+compress	filescenter	nl	Comprimeren
+compresses a set of files in an archive	filescenter	nl	Een set bestanden in een archief comprimeren
+compression type	filescenter	nl	Compressie type
+copied	filescenter	nl	Gekopieerd
+copied %1 to %2	filescenter	nl	%1 naar %2 gekopieerd
+copies(or cuts) a file (or a given set of files) into clipboard	filescenter	nl	Kopieert (of knipt) een bestand (of een gegeven set van bestanden) naar het klembord
+could not	filescenter	nl	Kon niet
+could not copy %1 to %2	filescenter	nl	Kon %1 niet naar %2 kopiëren
+could not create %1	filescenter	nl	Kon %1 niet aanmaken
+could not delete %1	filescenter	nl	Kon %1 niet verwijderen
+could not extract files from archive.	filescenter	nl	Kon bestanden niet uit het archief halen.
+could not move %1 to %2	filescenter	nl	Kon %1 niet naar %2 verplaatsen
+could not paste files here.	filescenter	nl	Kon bestanden hier niet plakken.
+could not retrieve files for this directory.	filescenter	nl	Kon de bestanden voor deze directory niet ophalen.
+created	filescenter	nl	Aangemaakt
+created %1	filescenter	nl	%1 aangemaakt
+created %1,%2	filescenter	nl	%1,%2 aangemaakt
+created directory %1	filescenter	nl	Directory %1 aangemaakt
+creates a directory.	filescenter	nl	Maakt een directory.
+custom file properties	filescenter	nl	Aangepaste bestandseigenschappen
+decompress	filescenter	nl	Decomprimeren
+default number of upload fields to show	filescenter	nl	Standaard aantal uploadvelden dat getoond wordt
+delete this file type	filescenter	nl	Verwijder dit bestandstype
+delete unsuccessful. selected files could not be deleted.	filescenter	nl	Verwijderen is mislukt. Geselecteerde bestanden konden niet verwijderd worden.
+deleted	filescenter	nl	Verwijderd
+deleted %1	filescenter	nl	%1 verwijderd
+deletes a file or set of files.	filescenter	nl	Verwijdert een set van bestanden.
+destination	filescenter	nl	Bestemming
+directory %1 already exists	filescenter	nl	Directory %1 bestaat reeds
+directory names cannot contain "%1"	filescenter	nl	Directorynamen kunnen geen "%1" bevatten.
+display attributes	filescenter	nl	Attributen weergeven
+do you really want to delete the custom field	filescenter	nl	Wilt u echt het aangepaste veld verwijderen
+edit custom file property	filescenter	nl	Aangepaste bestandseigenschap bewerken
+edit file property	filescenter	nl	Bestandseigenschap bewerken
+edit file type:	filescenter	nl	Bewerk bestandstype:
+edited	filescenter	nl	Bewerkt
+edited comment	filescenter	nl	Commentaar bewerkt
+error in creating folder. incorrect parameters.	filescenter	nl	Fout bij aanmaken van folder. Onjuiste parameters.
+extension	filescenter	nl	Extensie
+external shared folders	filescenter	nl	Externe gedeelde folders
+extract the contents of an archive in a folder	filescenter	nl	Pak een archief uit naar een folder
+fake base dir did not exist, egroupware created a new one.	filescenter	nl	Fake Base Dir bestond niet, eGroupWare heeft een nieuwe aangemaakt.
+field name (small caps only, no spaces)	filescenter	nl	Veldnaam (uitsluitend kleine letters, geen spaties)
+file history	filescenter	nl	Bestandshistorie
+file id	filescenter	nl	Bestands ID
+file id management	filescenter	nl	Bestands ID beheer
+file id prefix	filescenter	nl	Bestands ID prefix
+file name	filescenter	nl	Bestandnaam
+file names cannot contain "%1"	filescenter	nl	Bestandsnamen mogen geen "%1" bevatten
+file type	filescenter	nl	Bestandstype
+file types management	filescenter	nl	Bestandstypen beheer
+file(s) to upload:	filescenter	nl	Bestand(en) te uploaden:
+file(s) written sucessfully.	filescenter	nl	Bestand(en) schrijven gelukt.
+filemanager preferences	filescenter	nl	Bestandsbeheerder voorkeuren
+files to upload	filescenter	nl	Bestanden te uploaden
+filescenter	filescenter	nl	Bestandscentrum
+filescenter administration	filescenter	nl	Bestandscentrum beheer
+filescenter preferences	filescenter	nl	Bestandscentrum voorkeuren
+fill the fields here to define a new	filescenter	nl	Vul de velden hier in om een nieuwe te definiëren
+friendly description	filescenter	nl	Vriendelijke omschrijving
+from filescenter...	filescenter	nl	van Bestandscentrum
+general	filescenter	nl	Algemeen
+general file properties	filescenter	nl	Algemene bestandseigenschappen
+here is the management of custom file properties.	filescenter	nl	Hier is het beheer van de aangepaste bestandseigenschappen.
+here you can edit this property.	filescenter	nl	Hier kun je deze eigenschap bewerken.
+history	filescenter	nl	Historie
+i do not want to do this import procedure now.	filescenter	nl	Ik wil deze importprocedure nu niet uitvoeren.
+icon	filescenter	nl	Icoon
+id	filescenter	nl	ID
+invert selection	filescenter	nl	Selectie omkeren
+item(s)	filescenter	nl	item(s)
+level up	filescenter	nl	Niveau omhoog
+location	filescenter	nl	Lokatie
+manage file types	filescenter	nl	Bestandstypen beheren
+management permissions	admin	nl	Beheersrechten
+maximum filesize upload: %1	filescenter	nl	Maximale bestandsupload grootte: %1
+maximum number of backups	filescenter	nl	Maximum aantal backups
+mime magic	filescenter	nl	Mime magic
+mime type	filescenter	nl	Mime type
+modificator	filescenter	nl	Modificator
+modified	filescenter	nl	Gewijzigd
+modified by	filescenter	nl	Gewijzigd door
+moved	filescenter	nl	Verplaatst
+moved %1 to %2	filescenter	nl	Verplaatst %1 naar %2
+my shared folders	filescenter	nl	Mijn gedeelde mappen
+new	filescenter	nl	Nieuw
+new folder	filescenter	nl	Nieuwe map
+new folder name	filescenter	nl	Nieuwe mapnaam
+no permission to write file $1	filescenter	nl	Geen rechten om bestand %1 te schrijven
+no shared folders.	filescenter	nl	Geen gedeelde mappen.
+operation	filescenter	nl	Bewerking
+operations	filescenter	nl	Bewerkingen
+other properties	filescenter	nl	Andere eigenschappen
+pastes a file (or a given set of files) from clipboard	filescenter	nl	Plakt een bestand (of een opgegeven set van bestanden) vanuit het klembord
+precision	filescenter	nl	Precisie
+prefix	filescenter	nl	Prefix
+prefix description	filescenter	nl	Prefix omschrijving
+proceed	filescenter	nl	Doorgaan
+properties	filescenter	nl	Eigenschappen
+read permissions	filescenter	nl	Leesrechten
+refresh	filescenter	nl	Verversen
+register a new file type:	filescenter	nl	Registreer een nieuw bestandstype:
+remove	filescenter	nl	verwijderen
+replaced %1	filescenter	nl	%1 vervangen
+returns data about a dir	filescenter	nl	Geeft informatie over een dir
+returns data about a dir (alias of refresh_dir_info)	filescenter	nl	Geeft informatie over een dir (alias van refresh_dir_info)
+search for a keyword in files:	filescenter	nl	Zoek naar een sleutelwoord in bestanden:
+search results	filescenter	nl	Zoekresultaten
+shared	filescenter	nl	Gedeeld
+sharing	filescenter	nl	Delen
+show ..	filescenter	nl	Toon ..
+show .files	filescenter	nl	Toon .bestanden
+show command line (experimental. dangerous.)	filescenter	nl	Toon commandoregel (EXPERIMENTEEL. GEVAARLIJK.)
+show help	filescenter	nl	Toon help
+size	filescenter	nl	Grootte
+size of folder	filescenter	nl	Mapgrootte
+source	filescenter	nl	Bron
+subscribe	filescenter	nl	Abonneren
+subscribe some files	filescenter	nl	Enkele bestanden abonneren
+subscribed successfully	filescenter	nl	Abonnering gelukt
+subscriptions	filescenter	nl	Abonnementen
+the future filemanager, now for testing purposes only, please send bugreports	filescenter	nl	De toekomstige bestandsbeheerder, nu UITSLUITEND VOOR TESTDOELEINDEN, graag foutrapportages insturen
+the maximum number of backups that will be stored in the file version system. oldest backups are deleted first. use -1 to store unlimited backups.	filescenter	nl	Het maximum aantal backups dat in het bestandsversiesysteem wordt opgeslagen. De oudste backups worden het eerst verwijderd. Gebruik -1 om een ongelimiteerd aantal backups op te slaan.
+the temporary directory could not be deleted.	filescenter	nl	De tijdelijke directory kon niet verwijderd worden.
+there was a problem while trying to access/create the base infrastructure of filescenter directories.<br>	filescenter	nl	Er trad een probleem op tijdens de poging om de basis directory infrastructuur van het Bestandscentrum te benaderen of aan te maken.
+this seems to be the first time you are using filescenter. the filescenter is the new file management tool for egroupware.<br><br>filescenter uses a new set of tables to store data about files. this allows a better management of files and some functionalities, like file versioning, mime types customization, different sharing methods and more. so, to use filescenter you will have to pass through an import process, where data about files in your system will be imported to this new set of tables. <b>after this import proccess, the old filemanager must be disabled system-wide to preserve consistency about files</b>.<br><br>you are about to do this import procedure. you must know that this is <b> an one way procedure</b> and is made once, just in the first time the admin uses the filescenter. <b>backup</b> of your data (database, as well the file repository folder in your system) is <b>very recommended</b>. remember that egroupware is a free software and offers <b>absolutely no warranty</b> to any damage that could happen with your files. if you have doubts, just test this filescenter in a non-production instance of egroupware before installing it in this system.	filescenter	nl	Het lijkt erop dat dit de eerste keer is dat u het Bestandscentrum gebruikt. Het Bestandscentrum is het nieuwe beheersinstrument voor eGroupWare.<br /><br />Het Bestandscentrum gebruikt een nieuwe set tabellen om gegevens over de bestanden op te slaan. Dit biedt een beter beheer van bestanden en enkele enkele nieuwe functies zoals bestandsversies, mime type aanpassing, verschillende methoden om bestanden te delen en meer. Daarom moet u, om het nieuwe Bestandscentrum te kunnen gebruiken, een aantal stappen van een importprocedure doorlopen waarbij gegevens over de bestanden in uw systeem in de nieuwe tabellen wordt geimporteerd. <b>Na dit importproces moet de oude Bestandsbeheerder in het gehele systeem worden uitgeschakeld tervoorkoming van onjuiste bestandsinformatie</b><br /><br />U staat op het punt om deze importprocedure uit te voeren. U moet weten dat dit <b>een éénrichtingsmethode</b> is en slechts één maal uitgevoerd hoeft te worden, alleen maar de eerste keer dat de beheerder het Bestandscentrum gebruikt. <b>BACKUP</b> van uw gegevens (zowel de database als de bestandenmap in uw systeem) wordt <b>ZEER AANBEVOLEN</b>. Realiseer u dat eGroupWare gratis software is en <b>ABSOLUUT GEEN GARANTIE</b> biedt voor enige schade die aan uw bestanden kan ontstaan. Bij twijfel moet u het Bestandscentrum gewoon uittesten in een testomgeving (dus geen productieomgeving) van eGroupWare voordat u het op dit systeem installeert.
+type	filescenter	nl	Type
+type description	filescenter	nl	Type beschrijving
+type identifier for file ids	filescenter	nl	Type aanduiding voor bestand ID's
+unknown mime-type defaults to text/plain when viewing	filescenter	nl	Onbekend MIME-type gaat tijdens het weergeven standaard over in text/plain
+unsubscribe	filescenter	nl	Afmelden
+unsubscribed successfully	filescenter	nl	Afmelding gelukt
+upload	filescenter	nl	Uploaden
+upload files in folder	filescenter	nl	Upload bestanden in map
+use new experimental filemanager?	filescenter	nl	De nieuwe experimentele bestandsbeheerder gebruiken?
+use this file	filescenter	nl	Gebruik dit bestand
+view documents in new window	filescenter	nl	Documenten in een nieuw venster weergeven
+view documents on server (if available)	filescenter	nl	Documenten op de server weergeven (indien beschikbaar)
+view history	filescenter	nl	Historie weergeven
+view permissions - groups	filescenter	nl	Rechten weergeven - groepen
+view permissions - users	filescenter	nl	Rechten weergeven - gebruikers
+wait. uploading...	filescenter	nl	Wachten, bezig met uploaden...
+write permissions	filescenter	nl	Schrijfrechten
+yes, i am aware of the risks and i want to make this import procedure.	filescenter	nl	Ja, ik ben mij bewust van de risico's en ik wil deze importprocedure uitvoeren
+you can\'t select more than one item with this option	filescenter	nl	U kunt bij deze optie slechts één item kiezen
+you didn't select an item. click on an icon next to the name to select an item.	filescenter	nl	U heeft geen item geselecteerd. Klik op een icoon naast de naam om een item te selecteren.
+you selected no items. click in the checkbox near the file name to select an item.	filescenter	nl	U heeft geen items geselecteerd. Klik in het vinkveld bij de bestandsnaam om een item te selecteren.

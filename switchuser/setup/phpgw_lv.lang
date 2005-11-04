@@ -1,0 +1,5 @@
+switch now	switchuser	lv	Pārslēgt tagad
+switchuser	common	lv	Pārslēgt lietotāju
+to which user you want to switch?	switchuser	lv	uz kuru lietotāju tu vēlies pārslēgties?
+with this application you can login as other user without knowing or changing any passwords. only administrators can use this application	switchuser	lv	Ar šo programmatūru tu vari pieteikties kā lietotājs nezinot vai mainot paroli. Šo aplikāciju var lietot tikai administrators.
+you're not allowed to switch identity.	switchuser	lv	Tev nav atļaujas pārslēgt identitāti
