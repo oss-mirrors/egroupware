@@ -9,41 +9,41 @@ add acl	mydms	en	add acl
 add document	mydms	en	add document
 add notification	mydms	en	add notification
 add subfolder	mydms	en	add subfolder
-admin-tools	mydms	en	Administrations Tools
-all versions	mydms	en	Alle Versionen
+admin-tools	mydms	en	administration Tools
+all versions	mydms	en	all versions
 comment	mydms	en	Kommentar
-comment for current version	mydms	en	Kommentar zur aktuellen Version
+comment for current version	mydms	en	comment for current version
 copy acl	mydms	en	copy acl
 copy documents	mydms	en	copy documents
 copy folder	mydms	en	copy folder
 copy options	mydms	en	copy options
 copy subfolders	mydms	en	copy subfolder
 create empty acl	mydms	en	create empty acl
-creation date	mydms	en	Erstellt am
+creation date	mydms	en	creation date
 current acl	mydms	en	current acl
-current version	mydms	en	Aktuelle Version
+current version	mydms	en	current version
 default access	mydms	en	default access
 delete folder	mydms	en	delete folder
 delete this notification	mydms	en	delete this notification
 do you really want to delete this acl?	mydms	en	Do you really want to delete this acl?
 do you really want to delete this document?	mydms	en	Do you really want to delete this document?
 do you really want to delete this version of the document?	mydms	en	do you really want to delete this version of the document?
-does not expire	mydms	en	für immer verfügbar
-download	mydms	en	Herunterladen
+does not expire	mydms	en	does not expire
+download	mydms	en	download
 edit folder	mydms	en	edit folder
-expires	mydms	en	Gültigkeit
-expires after	mydms	en	verfügbar bis
-file size	mydms	en	Dateigröße
-filename	mydms	en	Dateiname
+expires	mydms	en	expires
+expires after	mydms	en	expires after
+file size	mydms	en	file size
+filename	mydms	en	file name
 folder	mydms	en	folder
 general information	mydms	en	general information
 information about last update	mydms	en	information about last update
-informations	mydms	en	Informationen
+informations	mydms	en	Informations
 inherit acl again	mydms	en	inherit acl again
-last update	mydms	en	Letzte Aktualisierung
-linked documents	mydms	en	Verwandte Dokumente
-lock status	mydms	en	Sperrstatus
-mime type	mydms	en	Mime-Typ
+last update	mydms	en	last update
+linked documents	mydms	en	linked documents
+lock status	mydms	en	lock status
+mime type	mydms	en	Mime Type
 move document	mydms	en	move document
 move folder	mydms	en	move folder
 mydms	common	en	mydms
@@ -57,6 +57,6 @@ this document gets unlocked by you.	mydms	en	this document gets unlocked by you.
 this document is currently not locked.	mydms	en	this document is currently not locked.
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	en	this document is locked by <a href="mailto:%1">%2</a>.
 update document	mydms	en	update document
-upload date	mydms	en	Upload am
-uploaded by	mydms	en	Upload durch
-view online	mydms	en	Online anzeigen
+upload date	mydms	en	upload date
+uploaded by	mydms	en	uploaded by
+view online	mydms	en	view online
