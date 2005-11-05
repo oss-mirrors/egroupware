@@ -266,25 +266,11 @@
 			return $GLOBALS['egw']->session->appsession('session_data','bookmarks');
 		}
 
-		function cat_exists($catname,$parent)
-		{
-			//the exists function in the API's category class does not tell if a category exists with a specific parent
-			$this->db->query("SELECT cat_id FROM phpgw_categories WHERE cat_name='$catname' AND cat_parent=".intval($parent),__LINE__,__FILE__);
-			if ($this->db->next_record())
-			{
-				return $this->db->f('cat_id');
-			}
-			else
-			{
-				return False;
-			}
-		}
-
 		function get_category($catname,$parent)
 		{
 			$this->_debug('<br>Testing for category: ' . $catname . ' with parent: \'' . $parent . '\'');
 
-			$catid = $this->cat_exists($catname,$parent);
+			$catid = $this->categories->exist($parent?'subs':'mains',$catname,0,$parent);
 			if ($catid)
 			{
 				$this->_debug(' - ' . $catname . ' already exists - id: ' . $catid);

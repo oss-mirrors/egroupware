@@ -1096,7 +1096,11 @@
 			$account_id = intval($account_id);
 			if ($account_id > 0)
 			{
-				$this->db->query('delete from phpgw_categories where cat_owner=' . $account_id . " AND cat_appname='projects'",__LINE__,__FILE__);
+				if (!is_object($GLOBALS['egw']->categories))
+				{
+					$GLOBALS['egw']->categories =& CreateObject('phpgwapi.categories');
+				}
+				$GLOBALS['egw']->categories->change_owner($account_id,0,'projects');
 				$this->db->query('delete from phpgw_p_hours where employee=' . $account_id,__LINE__,__FILE__);
 				$this->db->query('select project_id from phpgw_p_projects where coordinator=' . $account_id,__LINE__,__FILE__);
 
@@ -1170,7 +1174,11 @@
 			$this->db->query('UPDATE phpgw_p_projectmembers set account_id=' . $new . ' where (account_id=' . $old . " AND type='aa')",__LINE__,__FILE__);
 			$this->db->query('UPDATE phpgw_p_invoice set owner=' . $new . ' where owner=' . $old,__LINE__,__FILE__);
 			$this->db->query('UPDATE phpgw_p_delivery set owner=' . $new . ' where owner=' . $old,__LINE__,__FILE__);
-			$this->db->query('UPDATE phpgw_categories set cat_owner=' . $new . ' where cat_owner=' . $old . " AND cat_appname='projects'",__LINE__,__FILE__);
+			if (!is_object($GLOBALS['egw']->categories))
+			{
+				$GLOBALS['egw']->categories =& CreateObject('phpgwapi.categories');
+			}
+			$GLOBALS['egw']->categories->change_owner($old,$new,'projects');
 		}
 
 
