@@ -84,16 +84,17 @@
 			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
-			$this->template->set_file(array('form' => 'addphrase.tpl'));
-			$this->template->set_var('message_id_field','<input size ="40" name="entry[message_id]">');
-			$this->template->set_var('app_field',$this->lang_option($app_name,$app_name,'entry[app_name]'));
-			$this->template->set_var('translation_field','<input size ="40" name="entry[content]">');
-			$this->template->set_var('target_field','<input size ="40" name="entry[target]">');
-
 			$this->template->set_var('form_action',$GLOBALS['egw']->link('/index.php','menuaction=developer_tools.uilangfile.addphrase'));
 			$this->template->set_var('sourcelang',$sourcelang);
 			$this->template->set_var('targetlang',$targetlang);
 			$this->template->set_var('app_name',$app_name);
+
+			$this->template->set_file(array('form' => 'addphrase.tpl'));
+			$this->template->set_var('message_id_field','<input size ="40" name="entry[message_id]">');
+			if ($app_name == 'phpgwapi') $app_name = 'common';
+			$this->template->set_var('app_field',$this->lang_option($app_name,$app_name,'entry[app_name]'));
+			$this->template->set_var('translation_field','<input size ="40" name="entry[content]">');
+			$this->template->set_var('target_field','<input size ="40" name="entry[target]">');
 
 			$this->template->set_var('lang_message_id',lang('message_id in English'));
 			$this->template->set_var('lang_app',lang('Application'));
@@ -293,8 +294,6 @@
 			$this->template->set_var('write_help',sprintf($help,str_replace("'","\\'",lang('Write the lang-file to the apps setup-dir'))));
 			$this->template->set_var('loaddb_help',sprintf($help,str_replace("'","\\'",lang('Updates the translations of both lang-files in your database, so you can verify your work immediately'))));
 
-			$languages = $this->bo->list_langs();
-
 			if(!$sourcelang)
 			{
 				$sourcelang = 'en';
@@ -304,39 +303,21 @@
 				$targetlang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
 			}
 
-			while (list($x,$_lang) = @each($languages))
+			foreach($GLOBALS['egw']->translation->list_langs() as $lang_id => $lang_name)
 			{
-				$sourcelangs .= '      <option value="' . $_lang['lang_id'] . '"';
-				if ($sourcelang)
+				$sourcelangs .= '      <option value="' . $lang_id . '"';
+				if ($lang_id == $sourcelang || !$sourcelang && $lang_id == 'en')
 				{
-					if ($_lang['lang_id'] == $sourcelang)
-					{
-						$sourcelangs .= ' selected';
-					}
+					$sourcelangs .= ' selected="selected"';
 				}
-				elseif ($_lang['lang_id'] == 'EN')
-				{
-					$sourcelangs .= ' selected';
-				}
-				$sourcelangs .= '>' . $_lang['lang_name'] . '</option>' . "\n";
-			}
-			@reset($languages);
+				$sourcelangs .= '>' . $lang_name . '</option>' . "\n";
 
-			while (list($x,$_lang) = @each($languages))
-			{
-				$targetlangs .= '      <option value="' . $_lang['lang_id'] . '"';
-				if ($targetlang)
+				$targetlangs .= '      <option value="' . $lang_id . '"';
+				if ($lang_id == $targetlang || !$targetlang && $lang_id == 'en')
 				{
-					if ($_lang['lang_id'] == $targetlang)
-					{
-						$targetlangs .= ' selected';
-					}
+					$targetlangs .= ' selected="selected"';
 				}
-				elseif ($_lang['lang_id'] == 'EN')
-				{
-					$targetlangs .= ' selected';
-				}
-				$targetlangs .= '>' . $_lang['lang_name'] . '</option>' . "\n";
+				$targetlangs .= '>' . $lang_name . '</option>' . "\n";
 			}
 			$this->template->set_var('sourcelangs',$sourcelangs);
 			$this->template->set_var('targetlangs',$targetlangs);
@@ -344,24 +325,14 @@
 			$this->template->set_var('app_title',$GLOBALS['egw_info']['apps'][$app_name]['title']);
 			$this->template->pfp('out','header');
 
-			$db_perms = $GLOBALS['egw']->acl->get_user_applications($GLOBALS['egw_info']['user']['account_id']);
-			@ksort($db_perms);
-			@reset($db_perms);
-			while (list($userapp) = each($db_perms))
+			foreach($GLOBALS['egw_info']['apps']+array('setup' => array('title' => lang('Setup'))) as $app => $data)
 			{
-				if ($GLOBALS['egw_info']['apps'][$userapp]['enabled'] || $userapp == 'setup')
+				$userapps .= '<option value="' . $userapp . '"';
+				if ($application_name == $userapp)
 				{
-					$userapps .= '<option value="' . $userapp . '"';
-					if ($application_name == $userapp)
-					{
-						$userapps .= ' selected';
-					}
-					elseif ($GLOBALS['egw_info']['user']['preferences']['default_app'] == $userapp)
-					{
-						$userapps .= ' selected';
-					}
-					$userapps .= '>' . (isset($GLOBALS['egw_info']['apps'][$userapp]['title']) ? $GLOBALS['egw_info']['apps'][$userapp]['title'] : lang($userapp)) . '</option>' . "\n";
+					$userapps .= ' selected="selected"';
 				}
+				$userapps .= '>' . $data['title'] . '</option>' . "\n";
 			}
 			$this->template->set_var('userapps',$userapps);
 
@@ -370,7 +341,7 @@
 				$transapp     = $_POST['transapp'];
 				$translations = $_POST['translations'];
 				$deleteme     = $_POST['delete'];
-				while (list($_mess,$_app) = each($transapp))
+				foreach($transapp as $_mess => $_app)
 				{
 					if($_mess)
 					{
@@ -383,7 +354,7 @@
 				{
 					$this->bo->target_langarray = array();
 				}
-				while (list($_mess,$_cont) = each($translations))
+				foreach($translations as $_mess => $_cont)
 				{
 					if($_mess && $_cont)
 					{
@@ -401,7 +372,8 @@
 						}
 					}
 				}
-				while (list($_mess,$_checked) = @each($deleteme))
+				if ($deleteme)
+				foreach($deleteme as $_mess => $_checked)
 				{
 					if($_checked == 'on')
 					{
@@ -664,12 +636,12 @@
 			);
 
 			$select  = "\n" .'<select name="' . $name . '">' . "\n";
-			while (list($key,$val) = each($list))
+			foreach($list as $key => $val)
 			{
 				$select .= '<option value="' . $key . '"';
 				if ($key == $current && $current != '')
 				{
-					$select .= ' selected';
+					$select .= ' selected="selected"';
 				}
 				$select .= '>' . $val . '</option>'."\n";
 			}

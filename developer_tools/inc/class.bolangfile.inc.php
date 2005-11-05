@@ -97,11 +97,6 @@
 			$GLOBALS['egw']->session->appsession('developer_loaded_apps','developer_tools','');
 		}
 
-		function list_langs()
-		{
-			return $this->so->list_langs();
-		}
-
 		function addphrase($entry)
 		{
 			/* _debug_array($this->source_langarray);exit; */

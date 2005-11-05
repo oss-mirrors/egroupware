@@ -306,39 +306,6 @@
 			return $langarray;
 		}
 
-		function list_langs()
-		{
-			$this->db->query("SELECT DISTINCT lang FROM egw_lang",__LINE__,__FILE__);
-			while($this->db->next_record())
-			{
-				$lang = $this->db->f('lang');
-				$installed[] = $lang;
-			}
-			$installed = "('".implode("','",$installed)."')";
-			
-			$f = fopen(EGW_SERVER_ROOT.'/setup/lang/languages','rb');
-			while($line = fgets($f,200))
-			{
-				list($id,$name) = explode("\t",$line);
-				$availible[]  = trim($id);
-			}
-			fclose($f);
-			$availible = "('".implode("','",$availible)."')";
-			
-			// this shows first the installed, then the available and then the rest
-			$this->db->query("SELECT lang_id,lang_name,CASE WHEN lang_id IN $installed THEN 1 ELSE 0 END AS installed,CASE WHEN lang_id IN $availible THEN 1 ELSE 0 END AS availible FROM egw_languages ORDER BY installed DESC,availible DESC,lang_name",__LINE__,__FILE__);
-			$i = 0;
-			while ($this->db->next_record())
-			{
-				$languages[$i]['lang_id']   = $this->db->f('lang_id');
-				$languages[$i]['lang_name'] = $this->db->f('lang_name');
-				$i++;
-			}
-			@reset($languages);
-			if($this->debug) { _debug_array($languages); }
-			return $languages;
-		}
-
 		function write_file($app_name,$langarray,$userlang,$which='target')
 		{
 			$to = $GLOBALS['egw']->translation->charset($userlang);
