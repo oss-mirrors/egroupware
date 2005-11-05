@@ -1,5 +1,0 @@
-switch now		zt	立刻切換
-switchuser		zt	使用者切換
-to which user you want to switch?		zt	您想要切換成哪個使用者？
-with this application you can login as other user without knowing or changing any passwords. only administrators can use this application		zt	透過這個應用程式您可以不需要知道其他人的密碼就能夠登入成其他使用者，只有管理者可以使用這個程式！
-you're not allowed to switch identity.		zt	您沒有權限切換身分
