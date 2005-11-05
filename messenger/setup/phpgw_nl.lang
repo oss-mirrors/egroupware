@@ -1,8 +1,7 @@
 compose	messenger	nl	Opstellen
 compose global message	common	nl	Globaal bericht opstellen
 compose message	messenger	nl	Bericht opstellen
-compose to multi-users	messenger	nl	Voor meerdere gebruikers opstellen
-compose to single-user	messenger	nl	Voor één gebruiker opstellen
+compose to group-users	messenger	nl	Opstellen voor groep van gebruikers
 delete a message.	messenger	nl	Verwijder een bericht.
 delete selected	messenger	nl	Verwijder geselecteerde
 forward	messenger	nl	Doorsturen
