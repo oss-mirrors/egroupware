@@ -1,0 +1,162 @@
+a new ticket has been reported.	tts	zh-tw	新增了一筆問題傳票
+accept	tts	zh-tw	同意
+accept the ticket into verification process.	tts	zh-tw	允許傳票進入驗證程序
+accepted	tts	zh-tw	已同意
+action	tts	zh-tw	行動
+add new ticket	tts	zh-tw	新增傳票
+add ticket	tts	zh-tw	新增傳票
+additional notes	tts	zh-tw	新增備註
+admin options	common	zh-tw	管理者選項
+assign to	tts	zh-tw	指派給
+assigned from	tts	zh-tw	指派者
+assigned to	tts	zh-tw	已指派給
+billable hours	tts	zh-tw	可報帳時數
+billable hours changed	tts	zh-tw	可報帳時數改變
+billable hours rate	tts	zh-tw	可報帳時薪
+billable rate	tts	zh-tw	可報帳時薪
+billable rate changed	tts	zh-tw	可報帳時薪改變
+category changed	tts	zh-tw	類別變更
+check here to generate the state's id automatically or enter a particular id below.	tts	zh-tw	勾選這裡來自動產生狀態代碼或是您可以在下面指定。
+clear form	tts	zh-tw	清除表單
+close the invalid ticket.	tts	zh-tw	關閉無效的傳票
+closed	tts	zh-tw	已關閉
+completed	tts	zh-tw	完成
+configure the states	common	zh-tw	設定狀態
+configure the transitions	common	zh-tw	設定轉換
+create new state	tts	zh-tw	建立新狀態
+create new ticket	tts	zh-tw	建立新傳票
+create new transition	tts	zh-tw	建立新的轉換
+creates a new ticket, returns ticket_id	tts	zh-tw	建立新傳票，傳回傳票流水號
+creates a struct of tickets	tts	zh-tw	建立傳票的架構
+date opened	tts	zh-tw	開啟日期
+default assign to	tts	zh-tw	預設指派給
+default group	tts	zh-tw	預設群組
+default priority	tts	zh-tw	預設優先權
+delete the listed tickets.	tts	zh-tw	刪除列出的傳票。
+deleting the state	tts	zh-tw	刪除狀態
+deleting the transition	tts	zh-tw	刪除轉換
+detail	tts	zh-tw	詳細內容
+duplicate	tts	zh-tw	重複
+edit the state	tts	zh-tw	編輯狀態
+edit the transition	tts	zh-tw	編輯轉換
+error: the subject of the ticket is not specified.	tts	zh-tw	錯誤：沒有輸入傳票的標題
+force	tts	zh-tw	強制
+global categories	tts	zh-tw	全域類別
+group ownership changed	tts	zh-tw	群組所有權改變
+history	tts	zh-tw	歷史
+i worked on the ticket and the work requires validation.	tts	zh-tw	我接到了這個傳票但是需要經過核准才能進行。
+i worked on the ticket, but did not finish.	tts	zh-tw	我接到了這個傳票但是尚未完成。
+in progress	tts	zh-tw	處理中
+initial state	tts	zh-tw	初始狀態
+invalid	tts	zh-tw	無效
+invalidate	tts	zh-tw	使無效
+keep the present state [%1].	tts	zh-tw	維持目前狀態[%1]。
+latest note added	tts	zh-tw	最新記事新增
+list of available tickets' states.	tts	zh-tw	列出有效傳票狀態
+list of available tickets' transitions.	tts	zh-tw	列出有效傳票轉換
+missing description	tts	zh-tw	沒有輸入說明
+morework	tts	zh-tw	更多工作
+needswork	tts	zh-tw	需要工作
+new	tts	zh-tw	新
+new ticket	tts	zh-tw	新增傳票
+new tickets can be put into this state.	tts	zh-tw	新傳票可以放到這個狀態
+new value	tts	zh-tw	新數值
+no additional notes	tts	zh-tw	沒有其他備註
+no duplicate	tts	zh-tw	不能重複
+no notes for this ticket	tts	zh-tw	這張傳票沒有備註
+no states found	tts	zh-tw	找不到任何狀態
+no tickets found	tts	zh-tw	沒有找到任何傳票。
+no transitions found	tts	zh-tw	找不到任何轉換
+not assigned	tts	zh-tw	未指派
+not completed	tts	zh-tw	尚未完成
+notify changes to ticket assignee by e-mail	tts	zh-tw	用郵件通知傳票負責人異動狀況
+notify changes to ticket group by e-mail	tts	zh-tw	用郵件通知傳票負責群組異動狀況
+notify changes to ticket owner by e-mail	tts	zh-tw	用郵件通知傳票擁有人異動狀況
+old value	tts	zh-tw	原始值
+open	tts	zh-tw	開啟
+open / closed	tts	zh-tw	開啟 / 關閉
+open date	tts	zh-tw	開啟日期
+opened	tts	zh-tw	開啟
+opened by	tts	zh-tw	開啟人
+original ticket details	tts	zh-tw	原始傳票細節
+perform irregular transition into the following state	tts	zh-tw	執行不規則轉換到下列狀態
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	zh-tw	請輸入傳票的標題，否則無法儲存。
+priority	tts	zh-tw	優先權
+priority changed	tts	zh-tw	優先權改變
+put the preexistent ticket into the state %1.	tts	zh-tw	將已存在的傳票放到這個狀態
+re-assigned	tts	zh-tw	重新指派
+re-opened	tts	zh-tw	重新開啟
+refresh every (seconds)	tts	zh-tw	重新整理（秒）
+reopen	tts	zh-tw	重新開啟
+reopened	tts	zh-tw	已重開
+resolve	tts	zh-tw	處理
+resolved	tts	zh-tw	已處理
+returns a struct of a tickets history	tts	zh-tw	傳回傳票的歷史架構
+returns a struct of values of a single ticket	tts	zh-tw	傳回單一傳票數值的架構
+returns the additional notes attached to a ticket	tts	zh-tw	傳回傳票的附加訊息
+selected	tts	zh-tw	已被選擇
+show new/updated tickets on main screen	tts	zh-tw	顯示最新及更新過的傳票在主畫面
+source state	tts	zh-tw	來源狀態
+state	tts	zh-tw	狀態
+state changed	tts	zh-tw	狀態已改變
+state id	tts	zh-tw	狀態代碼
+state name	tts	zh-tw	狀態名稱
+status/date closed	tts	zh-tw	目前狀態／關閉日期
+subject changed	tts	zh-tw	主題改變
+target state	tts	zh-tw	目標狀態
+test	tts	zh-tw	測試
+the closed ticket requires more work. reopen it.	tts	zh-tw	被關閉的傳票需要更多的作業,請重新開啟
+the owner of the ticket was not able to confirm the issue.	tts	zh-tw	傳票的擁有人無法確認這個問題
+the ticket has been accepted by the owner, who is about to work on it.	tts	zh-tw	傳票已經被擁有人確認，他正在處理中。
+the ticket has been closed without resolution.	tts	zh-tw	傳票已經被中止了
+the ticket has been reopened for further work.	tts	zh-tw	傳票已經被未來的工作重新開啟
+the ticket has been successfully resolved.	tts	zh-tw	傳票已經成功處理
+the ticket has been verified and has to be worked on.	tts	zh-tw	傳票已經被確認而且需要開始進行
+the ticket has been worked on and the work requires validation.	tts	zh-tw	傳票已經開始進行而且需要核准
+the ticket has been worked on, but requires more work.	tts	zh-tw	傳票已經開始進行但是需要更多作業
+the ticket is a duplicate of another ticket and should be closed.	tts	zh-tw	傳票已經重複，請關閉
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	zh-tw	傳票事實上並未重複，請重新開啟
+the ticket is invalid and cannot be worked on.	tts	zh-tw	傳票無效而且無法進行
+the ticket resolution was successfully validated. close the ticket.	tts	zh-tw	傳票已經核准了，請關閉。
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	zh-tw	傳票需要指定一個狀態
+the ticket was found a duplicate of another ticket.	tts	zh-tw	傳票重複了
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	zh-tw	下面列出的傳票狀態是 %1 ，請決定該怎麼做
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	zh-tw	傳票核准需求被退回，需要做進一步的檢查。
+ticket	tts	zh-tw	傳票
+ticket #	tts	zh-tw	傳票編號
+ticket has been updated	tts	zh-tw	傳票已經更新
+tickets found %1	tts	zh-tw	找到 %1 張傳票
+tickets open %1	tts	zh-tw	未處理的傳票有 %1
+tickets total %1	tts	zh-tw	總計傳票有 %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	zh-tw	按<a href="%1"></a>這裡回到傳票系統首頁
+toaccept	tts	zh-tw	同意
+toclosed	tts	zh-tw	關閉
+toduplicate	tts	zh-tw	重複
+toinvalid	tts	zh-tw	無效
+toneedswork	tts	zh-tw	需要檢查
+tonew	tts	zh-tw	新
+toreopened	tts	zh-tw	重新開啟
+toresolved	tts	zh-tw	已處理
+total billable	tts	zh-tw	可報帳總額
+totovalidate	tts	zh-tw	待確認
+tovalidate	tts	zh-tw	確認
+toverified	tts	zh-tw	核准
+transition	tts	zh-tw	轉換
+transition name	tts	zh-tw	轉換名稱
+trouble ticket system	common	zh-tw	問題傳票系統
+tts	common	zh-tw	問題傳票系統
+tts preferences	tts	zh-tw	問題傳票系統喜好設定
+undefined	tts	zh-tw	未定義
+update ticket state	tts	zh-tw	更新傳票狀態
+updates ticket	tts	zh-tw	更新傳票
+verified	tts	zh-tw	已確認
+verify	tts	zh-tw	確認
+verify the ticket to work on it.	tts	zh-tw	確認傳票來進行
+view all tickets	tts	zh-tw	檢視所有傳票
+view job detail	tts	zh-tw	檢視詳細內容
+view only my open tickets	tts	zh-tw	檢視我的未處理傳票
+view only open tickets	tts	zh-tw	檢視未處理的傳票
+you can only close a ticket if it is assigned to you.	tts	zh-tw	在傳票指定給您時您只能夠關閉它
+you want to delete the state %1 and associated transitions. are you sure?	tts	zh-tw	您要刪除狀態 %1 與相關的異動，確定？
+you want to delete the state %1. are you sure?	tts	zh-tw	您確定要刪除狀態 %1  ？
+you want to delete the transition %1. are you sure?	tts	zh-tw	您確定要刪除轉換 %1 ？

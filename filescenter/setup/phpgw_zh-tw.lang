@@ -1,0 +1,178 @@
+$files format not recognized in bo->create_archive()	filescenter	zh-tw	$files 格式在 bo->create_archive() 無法辨識
+%1 already exists as a file	filescenter	zh-tw	%1 已經存在
+%1 files were sucessfully copied onto clipboard.	filescenter	zh-tw	%1 成功複製到剪貼簿
+%1 files were sucessfully cutted onto clipboard.	filescenter	zh-tw	%1 成功剪下到剪貼簿
+activate sharing	filescenter	zh-tw	啟用分享
+add a new file id prefix	filescenter	zh-tw	新增一個檔案編號字首
+add a new file type	filescenter	zh-tw	新增一個檔案類型
+add a new prefix	filescenter	zh-tw	新增一個前置字元
+add a new type descriptor for file ids	filescenter	zh-tw	新增一個檔案編號的類型說明
+add another file	filescenter	zh-tw	新增另一個檔案
+add custom file property	filescenter	zh-tw	新增自訂檔案屬性
+add file property	filescenter	zh-tw	新增檔案屬性
+application	filescenter	zh-tw	應用程式
+applications	filescenter	zh-tw	應用程式
+archive name	filescenter	zh-tw	壓縮檔名稱
+archive name cannot contain "%1"	filescenter	zh-tw	壓縮檔名稱不能包含"%1"
+are you sure you want to delete '"+filename+"'?	filescenter	zh-tw	您確定要刪除 '"+filename+"' ？
+are you sure you want to delete _filename_?	filescenter	zh-tw	您確定要刪除 _filename_ ？
+are you sure you want to delete all these "+count+" items?	filescenter	zh-tw	您確定要刪除 "+count+" 個項目？
+are you sure you want to delete all these _count_ items?	filescenter	zh-tw	您確定要刪除 _count_ 個項目？
+are you sure? you can alternatively inactivate this field, so you can recover its information later. really delete? (you cannot reverse this)	filescenter	zh-tw	您確定？您可以選擇停用這個欄位，這樣子未來就可以還原。確定要刪除？（刪除後就無法還原）
+authorized groups	filescenter	zh-tw	授權的群組
+authorized users	filescenter	zh-tw	授權的帳號
+backup	filescenter	zh-tw	備份
+cannot replace %1 because it is a directory	filescenter	zh-tw	無法取代 %1 ，因為它是一個資料夾
+cannot write file $1	filescenter	zh-tw	無法寫入檔案 $1
+change the values here to redefine this	filescenter	zh-tw	在這裡修改數值來重新定義
+clean the temporary folder for application	filescenter	zh-tw	清除應用程式的暫存資料夾
+click in the row to edit a file type.	filescenter	zh-tw	點選資料列來編輯檔案類型
+click in the row to edit an item.	filescenter	zh-tw	點選資料列來編輯一個項目
+comment	filescenter	zh-tw	備註
+compress	filescenter	zh-tw	壓縮
+compresses a set of files in an archive	filescenter	zh-tw	壓縮一群檔案成一個壓縮檔
+compression type	filescenter	zh-tw	壓縮格式
+copied	filescenter	zh-tw	複製了
+copied %1 to %2	filescenter	zh-tw	複製 %1 到 %2
+copies(or cuts) a file (or a given set of files) into clipboard	filescenter	zh-tw	複製（或剪下）一個檔案（或是一群檔案）到剪貼簿
+could not	filescenter	zh-tw	無法
+could not copy %1 to %2	filescenter	zh-tw	無法複製 %1 到 %2
+could not create %1	filescenter	zh-tw	無法建立 %1
+could not delete %1	filescenter	zh-tw	無法刪除 %1
+could not extract files from archive.	filescenter	zh-tw	無法解壓縮檔案
+could not move %1 to %2	filescenter	zh-tw	無法移動 %1 到 %2
+could not paste files here.	filescenter	zh-tw	無法將檔案貼在這裡
+could not retrieve files for this directory.	filescenter	zh-tw	無法回復這個資料夾的檔案
+created	filescenter	zh-tw	建立日期
+created %1	filescenter	zh-tw	建立 %1
+created %1,%2	filescenter	zh-tw	建立 %1，%2
+created directory %1	filescenter	zh-tw	建立資料夾 %1
+creates a directory.	filescenter	zh-tw	建立一個資料夾
+custom file properties	filescenter	zh-tw	自訂檔案屬性
+decompress	filescenter	zh-tw	解壓縮
+default number of upload fields to show	filescenter	zh-tw	預設要顯示的上傳檔案表單數量
+delete this file type	filescenter	zh-tw	刪除這個檔案類型
+delete unsuccessful. selected files could not be deleted.	filescenter	zh-tw	刪除失敗，選擇的檔案無法刪除。
+deleted	filescenter	zh-tw	已刪除
+deleted %1	filescenter	zh-tw	已刪除 %1
+deletes a file or set of files.	filescenter	zh-tw	刪除一個或一群檔案
+destination	filescenter	zh-tw	目標
+directory %1 already exists	filescenter	zh-tw	資料夾 %1 已經存在
+directory names cannot contain "%1"	filescenter	zh-tw	資料夾名稱字元不能夠包含 "%1"
+display attributes	filescenter	zh-tw	顯示屬性
+do you really want to delete the custom field	filescenter	zh-tw	您確定要刪除自訂欄位
+edit custom file property	filescenter	zh-tw	編輯自訂檔案屬性
+edit file property	filescenter	zh-tw	編輯檔案屬性
+edit file type:	filescenter	zh-tw	編輯檔案類型：
+edited	filescenter	zh-tw	編輯
+edited comment	filescenter	zh-tw	編輯備註
+error in creating folder. incorrect parameters.	filescenter	zh-tw	建立資料夾錯誤，參數有誤。
+extension	filescenter	zh-tw	外掛
+external shared folders	filescenter	zh-tw	外部分享資料夾
+extract the contents of an archive in a folder	filescenter	zh-tw	解壓縮檔案到一個資料夾
+fake base dir did not exist, egroupware created a new one.	filescenter	zh-tw	系統資料夾不存在， eGroupWare 建立了一個新的。
+field name (small caps only, no spaces)	filescenter	zh-tw	欄位名稱（小寫英文，不包含空白）
+file history	filescenter	zh-tw	檔案紀錄
+file id	filescenter	zh-tw	檔案編號
+file id management	filescenter	zh-tw	檔案編號管理
+file id prefix	filescenter	zh-tw	檔案編號前置字元
+file name	filescenter	zh-tw	檔案名稱
+file names cannot contain "%1"	filescenter	zh-tw	檔案名稱不能夠包含 "%1"
+file type	filescenter	zh-tw	檔案類型
+file types management	filescenter	zh-tw	檔案類型管理
+file(s) to upload:	filescenter	zh-tw	要上傳的檔案：
+file(s) written sucessfully.	filescenter	zh-tw	檔案寫入成功。
+filemanager preferences	filescenter	zh-tw	檔案管理設定
+files to upload	filescenter	zh-tw	要上傳的檔案
+filescenter	filescenter	zh-tw	檔案中心
+filescenter administration	filescenter	zh-tw	檔案中心管理
+filescenter preferences	filescenter	zh-tw	檔案中心設定
+fill the fields here to define a new	filescenter	zh-tw	填寫這些欄位來新增
+friendly description	filescenter	zh-tw	簡易說明
+from filescenter...	filescenter	zh-tw	從檔案中心...
+general	filescenter	zh-tw	一般
+general file properties	filescenter	zh-tw	一般檔案屬性
+here is the management of custom file properties.	filescenter	zh-tw	這是自訂檔案屬性的管理
+here you can edit this property.	filescenter	zh-tw	您可以在這裡編輯這個屬性。
+history	filescenter	zh-tw	紀錄
+i do not want to do this import procedure now.	filescenter	zh-tw	我不要現在執行匯入動作。
+icon	filescenter	zh-tw	圖示
+id	filescenter	zh-tw	編號
+invert selection	filescenter	zh-tw	反向選擇
+item(s)	filescenter	zh-tw	項目
+level up	filescenter	zh-tw	上一層
+location	filescenter	zh-tw	位置
+manage file types	filescenter	zh-tw	管理檔案類型
+management permissions	admin	zh-tw	管理權限
+maximum filesize upload: %1	filescenter	zh-tw	上傳檔案大小上限： %1
+maximum number of backups	filescenter	zh-tw	備份數量上限
+mime magic	filescenter	zh-tw	Mime Magic
+mime type	filescenter	zh-tw	Mime類型
+modificator	filescenter	zh-tw	修改者
+modified	filescenter	zh-tw	修改日期
+modified by	filescenter	zh-tw	修改於
+moved	filescenter	zh-tw	移動
+moved %1 to %2	filescenter	zh-tw	移動%1 到 %2
+my shared folders	filescenter	zh-tw	我的共用資料夾
+new	filescenter	zh-tw	新增
+new folder	filescenter	zh-tw	新增資料夾
+new folder name	filescenter	zh-tw	新資料夾名稱
+no permission to write file $1	filescenter	zh-tw	沒有寫入檔案 $1 的權限
+no shared folders.	filescenter	zh-tw	沒有共用資料夾。
+operation	filescenter	zh-tw	操作
+operations	filescenter	zh-tw	操作
+other properties	filescenter	zh-tw	其他屬性
+pastes a file (or a given set of files) from clipboard	filescenter	zh-tw	從剪貼簿貼上一個（或一群）檔案
+precision	filescenter	zh-tw	精密度
+prefix	filescenter	zh-tw	前置字元
+prefix description	filescenter	zh-tw	前置字元說明
+proceed	filescenter	zh-tw	已處理
+properties	filescenter	zh-tw	屬性
+read permissions	filescenter	zh-tw	讀取權限
+refresh	filescenter	zh-tw	重新整理
+register a new file type:	filescenter	zh-tw	註冊一個新的檔案類型：
+remove	filescenter	zh-tw	移除
+replaced %1	filescenter	zh-tw	取代 %1
+returns data about a dir	filescenter	zh-tw	一個資料夾所回傳的資料
+returns data about a dir (alias of refresh_dir_info)	filescenter	zh-tw	一個資料夾所回傳的資料（refresh_dir_info的代稱）
+search for a keyword in files:	filescenter	zh-tw	在檔案中搜尋的關鍵字：
+search results	filescenter	zh-tw	搜尋結果
+shared	filescenter	zh-tw	分享
+sharing	filescenter	zh-tw	分享中
+show ..	filescenter	zh-tw	顯示 ..
+show .files	filescenter	zh-tw	顯示 .files
+show command line (experimental. dangerous.)	filescenter	zh-tw	顯示指令列（實驗性功能，具有危險性）
+show help	filescenter	zh-tw	顯示說明
+size	filescenter	zh-tw	大小
+size of folder	filescenter	zh-tw	資料夾的大小
+source	filescenter	zh-tw	來源
+subscribe	filescenter	zh-tw	訂閱
+subscribe some files	filescenter	zh-tw	訂閱一些檔案
+subscribed successfully	filescenter	zh-tw	訂閱成功
+subscriptions	filescenter	zh-tw	訂閱
+the future filemanager, now for testing purposes only, please send bugreports	filescenter	zh-tw	未來的檔案管理程式，現在只適合用來測試，請回報錯誤給我們
+the maximum number of backups that will be stored in the file version system. oldest backups are deleted first. use -1 to store unlimited backups.	filescenter	zh-tw	在檔案版本系統中要儲存的備份數量上限，最舊的資料會先刪除；使用 -1 表示沒有上限。
+the temporary directory could not be deleted.	filescenter	zh-tw	暫存資料夾無法刪除。
+there was a problem while trying to access/create the base infrastructure of filescenter directories.<br>	filescenter	zh-tw	嘗試存取/建立檔案中心基本資料夾結構時發生問題。<br>
+this seems to be the first time you are using filescenter. the filescenter is the new file management tool for egroupware.<br><br>filescenter uses a new set of tables to store data about files. this allows a better management of files and some functionalities, like file versioning, mime types customization, different sharing methods and more. so, to use filescenter you will have to pass through an import process, where data about files in your system will be imported to this new set of tables. <b>after this import proccess, the old filemanager must be disabled system-wide to preserve consistency about files</b>.<br><br>you are about to do this import procedure. you must know that this is <b> an one way procedure</b> and is made once, just in the first time the admin uses the filescenter. <b>backup</b> of your data (database, as well the file repository folder in your system) is <b>very recommended</b>. remember that egroupware is a free software and offers <b>absolutely no warranty</b> to any damage that could happen with your files. if you have doubts, just test this filescenter in a non-production instance of egroupware before installing it in this system.	filescenter	zh-tw	您似乎是第一次使用檔案中心，這個模組是為eGroupWare設計的新一代檔案管理工具。<br><br>檔案中心使用新的資料表來儲存檔案資訊，這將提供較佳的管理與一些功能，像是檔案版本、自訂mime類型、不同的分享模式等。使用檔案中心時需要先經過一個匯入的動作，系統中的檔案將會匯入到檔案中心。<b>在這個動作之後，舊的檔案管理工具將會自動停用</b><br><br>您正在執行這個匯入動作，必須提醒您這是<b>單向</b>的操作而且只能夠執行一次，也就是第一次使用本模組時。在這之前請記得一定要<b>備份</b>您的資料（包括資料庫與系統中的檔案），也希望提醒您， eGroupWare 是一個自由軟體，因此對於您在操作過程中造成的損害將<b>沒有任何保證</b>，如果您有任何疑問，請只在測試環境中使用本模組。
+type	filescenter	zh-tw	類型
+type description	filescenter	zh-tw	類型說明
+type identifier for file ids	filescenter	zh-tw	檔案編號的類型辨識字元
+unknown mime-type defaults to text/plain when viewing	filescenter	zh-tw	不知名的MIME類型，預設會在瀏覽時視為純文字
+unsubscribe	filescenter	zh-tw	取消訂閱
+unsubscribed successfully	filescenter	zh-tw	取消訂閱成功
+upload	filescenter	zh-tw	上傳
+upload files in folder	filescenter	zh-tw	在資料夾中上傳檔案
+use new experimental filemanager?	filescenter	zh-tw	確定要使用實驗中的新檔案管理？
+use this file	filescenter	zh-tw	使用這個檔案
+view documents in new window	filescenter	zh-tw	在新視窗瀏覽檔案
+view documents on server (if available)	filescenter	zh-tw	在伺服器上瀏覽檔案（如果能夠）
+view history	filescenter	zh-tw	瀏覽紀錄
+view permissions - groups	filescenter	zh-tw	瀏覽權限 - 群組
+view permissions - users	filescenter	zh-tw	瀏覽權限 - 使用者
+wait. uploading...	filescenter	zh-tw	上傳中，請等待...
+write permissions	filescenter	zh-tw	寫入權限
+yes, i am aware of the risks and i want to make this import procedure.	filescenter	zh-tw	是的，我明白這些風險，我仍然希望執行匯入程序。
+you can\'t select more than one item with this option	filescenter	zh-tw	在這個選項您不能夠選擇超過一個項目
+you didn't select an item. click on an icon next to the name to select an item.	filescenter	zh-tw	您沒有選擇任何項目，點選名稱旁邊的小圖示來選擇。
+you selected no items. click in the checkbox near the file name to select an item.	filescenter	zh-tw	您沒有選擇任何項目，點選名稱旁邊的小圖示來選擇。

@@ -1,0 +1,50 @@
+access mode	mydms	zh-tw	存取模式
+access rights	mydms	zh-tw	存取權限
+access_mode_all	mydms	zh-tw	全部
+access_mode_none	mydms	zh-tw	拒絕存取
+access_mode_read	mydms	zh-tw	讀取
+access_mode_readwrite	mydms	zh-tw	讀取＋寫入
+acl get inherited	mydms	zh-tw	繼承存取權限
+add acl	mydms	zh-tw	新增存取權限
+add document	mydms	zh-tw	新增檔案
+add notification	mydms	zh-tw	新增提醒通知
+add subfolder	mydms	zh-tw	新增子資料夾
+admin-tools	mydms	zh-tw	管理工具
+all versions	mydms	zh-tw	所有版本
+comment	mydms	zh-tw	備註
+comment for current version	mydms	zh-tw	目前版本的備註
+copy acl	mydms	zh-tw	複製存取權限
+create empty acl	mydms	zh-tw	建立空的存取權限
+creation date	mydms	zh-tw	提供給
+current acl	mydms	zh-tw	目前存取權限
+current version	mydms	zh-tw	目前版本
+default access	mydms	zh-tw	預設存取權限
+delete folder	mydms	zh-tw	刪除資料夾
+delete this notification	mydms	zh-tw	刪除這個提醒通知
+do you really want to delete this acl?	mydms	zh-tw	您確定要刪除這個存取權限？
+do you really want to delete this document?	mydms	zh-tw	您確定要刪除這個檔案？
+do you really want to delete this version of the document?	mydms	zh-tw	您確定要刪除這個檔案版本？
+does not expire	mydms	zh-tw	永遠啟用
+download	mydms	zh-tw	下載
+edit folder	mydms	zh-tw	編輯資料夾
+expires after	mydms	zh-tw	開放給
+file size	mydms	zh-tw	檔案大小
+filename	mydms	zh-tw	檔案名稱
+folder	mydms	zh-tw	資料夾
+general information	mydms	zh-tw	一般資訊
+information about last update	mydms	zh-tw	最後更新資訊
+informations	mydms	zh-tw	資訊
+inherit acl again	mydms	zh-tw	再次繼承存取權限
+mime type	mydms	zh-tw	Mime類型
+move document	mydms	zh-tw	移動檔案
+move folder	mydms	zh-tw	移動資料夾
+mydms	common	zh-tw	我的文件夾
+notifications	mydms	zh-tw	提醒通知
+permission	mydms	zh-tw	權限
+this document gets locked by you!	mydms	zh-tw	這個檔案被您鎖定！
+this document gets unlocked by you.	mydms	zh-tw	這個檔案被您取消鎖定。
+this document is currently not locked.	mydms	zh-tw	這個目前未鎖定。
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	zh-tw	這個檔案目前被 <a href="mailto:%1">%2</a> 鎖定。
+update document	mydms	zh-tw	更新檔案
+upload date	mydms	zh-tw	上傳到
+uploaded by	mydms	zh-tw	上傳自

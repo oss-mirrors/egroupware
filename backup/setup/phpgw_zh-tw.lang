@@ -1,0 +1,63 @@
+absolute path of the backup directory	backup	zh-tw	備份資料存放位置的絕對路徑 (例如： /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	zh-tw	備份資料夾的絕對路徑，例如： /usr/local/www/egroupware/backup/archive
+absolute path of the directory of egw backup application	backup	zh-tw	EGW備份程式的絕對路徑
+absolute path of the directory to store the backup script	backup	zh-tw	EGW備份程式的絕對位置
+archive type	backup	zh-tw	檔案格式
+backup	common	zh-tw	備份
+backup administration	common	zh-tw	備份管理
+bzip2	admin	zh-tw	bzip2
+configuration backup	backup	zh-tw	設定備份
+configuration localhost	backup	zh-tw	設定本地端
+create backups of your data ?	backup	zh-tw	確定要建立資料備份？
+daily	backup	zh-tw	每日
+data	backup	zh-tw	資料
+directory locations	admin	zh-tw	資料夾位置
+directory names	admin	zh-tw	資料夾名稱
+e-mail	backup	zh-tw	透過E-MAIL提醒？
+e-mail notification?	backup	zh-tw	透過E-MAIL提醒？
+homedirs	admin	zh-tw	根目錄
+interval	backup	zh-tw	間隔
+ip or hostname	backup	zh-tw	IP 或主機名稱
+ldap	common	zh-tw	LDAP
+ldap database	admin	zh-tw	LDAP資料庫
+list backup archives	backup	zh-tw	列出備份的檔案
+maildir	admin	zh-tw	郵件資料夾
+monthly	backup	zh-tw	每月
+mysql	admin	zh-tw	MySQL
+nfs	backup	zh-tw	網路檔案系統
+no backup archives available !	backup	zh-tw	沒有備份資料！
+number of stored backup versions	backup	zh-tw	備份資料的版本編號
+operating system	backup	zh-tw	作業系統
+pgsql	admin	zh-tw	PostgreSQL
+php cgi	admin	zh-tw	PHP執行程式的完整路徑
+please enter the path of the needed applications in *site configuration* !	backup	zh-tw	請輸入"網站設定"中需要的程式路徑！
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	zh-tw	請輸入備份資料夾路徑並且/或在eGroupWare啟用顯示備份資料！
+please enter username and password for remote connection !	backup	zh-tw	請輸入遠端連線的帳號與密碼！
+please select an application for transport to the remote host !	backup	zh-tw	請選擇一個應用程式來傳輸到遠端的主機！
+please set the path to a local dir to store the backup script !	backup	zh-tw	請設置一個本地端的資料夾來儲存備份的指令檔！
+please set the path to the ldap database dir in *site configuration* !	backup	zh-tw	請在"網站設定"中設置LDAP資料庫的路徑！
+please set the path to the mysql database dir in *site configuration* !	backup	zh-tw	請在"網站設定"中設置MySQL資料庫的路徑！
+please set the path to the postgresql database dir in *site configuration* !	backup	zh-tw	請在"網站設定"中設置PostgreSQL資料庫的路徑！
+please set the values in *site configuration* !	backup	zh-tw	請在"網站設定"中填上設定值！
+please specify the ip of the remote host !	backup	zh-tw	請指定遠端主機的IP！
+please specify the name of the maildir in *site configuration* !	backup	zh-tw	請在"網站設定"中指定郵件資料夾的名稱！
+please specify the path to the backup directory !	backup	zh-tw	請指定備份資料夾的路徑！
+please specify the path to the user-homedirectories in *site configuration* !	backup	zh-tw	請在"網站設定"中指定使用者根目錄的路徑！
+please write down you e-mail for beeing notified	backup	zh-tw	請填入您的e-mail來收取系統的通知
+program locations	admin	zh-tw	程式位置
+save backup locally ?	backup	zh-tw	儲存本地備份？
+select archive type	backup	zh-tw	選擇檔案格式
+select interval	backup	zh-tw	選擇備份頻率
+settings	admin	zh-tw	設定
+show backup archives in egroupware ?	backup	zh-tw	勾選後可以在eGroupWare顯示備份資料
+smbmount	backup	zh-tw	smbmount
+sql	backup	zh-tw	SQL
+tar	admin	zh-tw	tar
+tar.bz2	backup	zh-tw	tar.bz2
+tar.gz	backup	zh-tw	tar.gz
+the backup application is not configured for showing the archives in egroupware yet !	backup	zh-tw	還沒設定可以在eGroupWare顯示備份資料！
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	zh-tw	備份指令檔存放的位置必須在網站根目錄之中！
+versions can only be a number !	backup	zh-tw	版本只能是數字！
+weekly	backup	zh-tw	每週
+your sql database isnt supported by this application !	backup	zh-tw	這個應用程式不支援您的 SQL 資料庫！
+zip	common	zh-tw	zip

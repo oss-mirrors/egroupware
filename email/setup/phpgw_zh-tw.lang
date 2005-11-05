@@ -1,0 +1,389 @@
+%1 messages have been deleted	email	zh-tw	已經刪除 %1 封郵件
+(required)	email	zh-tw	(必填)
+1 message has been deleted	email	zh-tw	已經刪除 1 封郵件
+1 message has been moved to	email	zh-tw	成功搬移 1 封電子郵件到
+<b>*apply*</b> this filter	email	zh-tw	<b>*啟用*</b> 這個郵件規則
+<b>apply all</b> filters	email	zh-tw	<b>啟用所有</b>郵件規則
+a scrips tag block of code, javascript or otherwise, is in an inline html message. not necessarily bad, but user may want to know. this is script ... code ... script blocks, not the "onmouseover"  stuff.	email	zh-tw	在網頁訊息中包含了程式標籤，例如 javascript。不見得是壞事，但是使用者也許想要知道。而這個程式標籤並不包含"OnMouseOver"之類的語法
+account	email	zh-tw	帳號
+account name	email	zh-tw	帳號名稱
+account user name	email	zh-tw	帳號使用者名稱
+accounts	common	zh-tw	帳號
+accounts:	email	zh-tw	帳號：
+add to address book	email	zh-tw	新增到通訊錄
+add to addressbook	email	zh-tw	加入通訊錄
+address book	email	zh-tw	通訊錄
+after	email	zh-tw	後
+all messages	email	zh-tw	所有訊息
+and	email	zh-tw	且
+and stop filtering	email	zh-tw	並且停用郵件規則
+answered	email	zh-tw	已經回應
+apply filters report:	email	zh-tw	啟用郵件規則報告：
+apr	email	zh-tw	四月
+aqua fusion	email	zh-tw	液化效果
+arrival date	email	zh-tw	送達日期
+as	email	zh-tw	當
+attach file	email	zh-tw	附加檔案
+attach signature	email	zh-tw	附加簽名
+attachment	email	zh-tw	附加
+aug	email	zh-tw	八月
+bcc	email	zh-tw	密件副本
+bcc address	email	zh-tw	密件副本位址
+before	email	zh-tw	前
+big	email	zh-tw	大
+bigger	email	zh-tw	更大
+biggest	email	zh-tw	最大
+body	email	zh-tw	內容
+both	email	zh-tw	皆
+button type	email	zh-tw	按鈕種類
+cache server data whenever possible	email	zh-tw	如果能夠就暫存伺服器資料
+cc	email	zh-tw	副本
+cc address	email	zh-tw	附件位址
+change font size in your e-mail pages	email	zh-tw	改變電子郵件頁面的字型大小
+check flags for type of mails	email	zh-tw	檢查郵件格式的標示
+choose for rename	email	zh-tw	改名
+choose to rename	email	zh-tw	改名
+clear cache	email	zh-tw	清除暫存資料
+click here for more info in a new window	email	zh-tw	開啟新視窗顯示更多資訊
+click here to continue	email	zh-tw	繼續
+click here to edit the settings for this email account.	email	zh-tw	點選這裡來編輯這個郵件帳號
+click here to return to your home page.	email	zh-tw	點這裡回到首頁
+company	email	zh-tw	公司
+compose	common	zh-tw	建立
+compose message	email	zh-tw	建立訊息
+compose new	common	zh-tw	建立新郵件
+contains	email	zh-tw	包含
+could not open this mailbox	email	zh-tw	無法開啟這個郵件匣
+create (expert)	email	zh-tw	建立
+create a folder	email	zh-tw	建立資料夾
+current attachments (%1)	email	zh-tw	目前的附加檔案(%1)
+custom e-mail preferences	email	zh-tw	使用者電子郵件偏好
+custom e-mail settings	email	zh-tw	使用者電子郵件設定
+debugging page	email	zh-tw	偵錯頁面
+dec	email	zh-tw	十二月
+default sorting order	email	zh-tw	預設排序
+default:	common	zh-tw	預設：
+delete (expert)	email	zh-tw	刪除
+delete a folder	email	zh-tw	刪除資料夾
+delete account	common	zh-tw	刪除帳號
+deleted	email	zh-tw	刪除日期
+deleted messages (trash) folder	email	zh-tw	清空垃圾桶
+deleted messages folder name	email	zh-tw	刪除訊息資料夾名稱
+deleted messages go to trash	email	zh-tw	刪除訊息移往垃圾桶
+deleted messages saved to folder:	email	zh-tw	刪除訊息存到資料夾：
+discard	email	zh-tw	丟棄
+does not contain	email	zh-tw	不包含
+draft	email	zh-tw	草稿
+e-mail clear cache	preferences	zh-tw	清除E-Mail暫存資料
+e-mail extra account	email	zh-tw	其他E-Mail帳號
+e-mail extra accounts	email	zh-tw	其他E-Mail帳號
+e-mail extra accounts list	email	zh-tw	其他E-Mail帳號清單
+e-mail filters	common	zh-tw	郵件規則
+e-mail folders	common	zh-tw	郵件資料夾
+e-mail inbox filters list	email	zh-tw	郵件
+e-mail preferences	common	zh-tw	郵件設定
+each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	zh-tw	每個使用者都有一個可以看到各種資訊的概要頁面，這個選項會在該網頁中顯示一個使用者預設郵件的概要清單。
+each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	zh-tw	每個使用者都有一個可以看到各種資訊的概要頁面，這個選項會在該網頁中顯示一個使用者預設郵件的概要清單。
+edit filters	email	zh-tw	編輯規則
+email account name	email	zh-tw	帳號
+email address	email	zh-tw	郵件位址
+email date	email	zh-tw	日期
+email filters	email	zh-tw	郵件規則
+email password	email	zh-tw	密碼
+email preferences	email	zh-tw	偏好
+email signature	email	zh-tw	簽名檔
+email type	common	zh-tw	種類
+enable this email account	common	zh-tw	啟用
+enable utf-7 encoded folder names	email	zh-tw	在資料夾名稱啟用 UTF-7 編碼
+enter the search string in the text boxes	email	zh-tw	請輸入您要搜尋的文字
+enter your pop	admin	zh-tw	輸入您的POP伺服器
+error moving messages to	email	zh-tw	移動訊息時發生錯誤
+error text not provided	email	zh-tw	錯誤文字並未提供
+error: unknown message data	email	zh-tw	錯誤：未知名的訊息資料
+evolution style	email	zh-tw	發展風格
+extra accounts	email	zh-tw	其他帳號
+extra e-mail account	common	zh-tw	其他郵件帳號
+extra e-mail accounts	common	zh-tw	其他郵件帳號
+extra e-mail preferences number %1	email	zh-tw	其他郵件設定編號 %1
+feb	email	zh-tw	二月
+fewer actions	email	zh-tw	更少的動作
+fewer choices	email	zh-tw	更少的選擇
+file	email	zh-tw	檔案
+file attachment	email	zh-tw	檔案附加
+file into	email	zh-tw	檔案插入
+fill in as much as you can	email	zh-tw	請盡量填寫
+filter [number] and name	email	zh-tw	規則 [編號]與名稱
+filter inbox for accounts	email	zh-tw	帳號的收件匣規則
+filter name	email	zh-tw	規則名稱
+filter name:	email	zh-tw	規則名稱：
+filter number	email	zh-tw	規則數字
+filters	email	zh-tw	規則
+filters list	email	zh-tw	規則列表
+flag as important	email	zh-tw	標示為重要信件
+flagged	email	zh-tw	被標示
+folder	common	zh-tw	資料夾
+folder maintenance	email	zh-tw	資料夾維護
+folder name	email	zh-tw	資料夾名稱
+folder size	email	zh-tw	資料夾大小
+folders	email	zh-tw	資料夾
+for the file to actually upload	email	zh-tw	實際上傳檔案
+for these items, fill only what is different from you default e-mail preferences	common	zh-tw	在這些項目中只要填入與預設郵件設定不同的地方即可
+forward	email	zh-tw	轉寄
+from	email	zh-tw	來自
+from address	email	zh-tw	來自
+get size	email	zh-tw	取得大小
+go	email	zh-tw	前往
+go back	email	zh-tw	回上一頁
+go back to	email	zh-tw	回到
+header field	email	zh-tw	標頭
+hidden	email	zh-tw	隱藏
+hide help	email	zh-tw	關閉說明文字
+html messages with the iframe  tag may be klez or other worm emails.	email	zh-tw	帶有IFRAME標籤的html訊息中可能帶來KLEZ或是其他電腦病毒的攻擊
+icon size	email	zh-tw	圖示大小
+icon theme	email	zh-tw	圖示佈景
+idots crystal style	email	zh-tw	iDots風格
+if &quot; deleted messages go to trash &quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot;. this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zh-tw	如果 &quot; 刪除的訊息移到垃圾桶 &quot; 選取了，刪除的信件會移到您在這裡所輸入的資料夾名稱；如果這個資料夾不存在，系統會自動產生。預設的名稱是 &quot;垃圾桶&quot;，這是您的&quot;垃圾桶&quot; 資料夾，但是不一定要稱為 &quot;垃圾桶&quot;，您可以使用任何名稱。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if &quot; sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot;. this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zh-tw	如果 &quot; 寄件備份 &quot; 選取了，寄出的信件會保留一份副本在您所輸入的資料夾名稱；如果這個資料夾不存在，系統會自動產生。預設的名稱是 &quot;寄件備份&quot;，這是您的&quot;寄件備份&quot; 資料夾，但是不一定要稱為 &quot;寄件備份&quot;，您可以使用任何名稱。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if &quot;deleted messages go to trash&quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot; this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zh-tw	如果 &quot; 刪除的訊息移到垃圾桶 &quot; 選取了，刪除的信件會移到您在這裡所輸入的資料夾名稱；如果這個資料夾不存在，系統會自動產生。預設的名稱是 &quot;垃圾桶&quot;，這是您的&quot;垃圾桶&quot; 資料夾，但是不一定要稱為 &quot;垃圾桶&quot;，您可以使用任何名稱。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if &quot;sent messages folder&quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot; this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zh-tw	如果 &quot; 寄件備份 &quot; 選取了，寄出的信件會保留一份副本在您所輸入的資料夾名稱；如果這個資料夾不存在，系統會自動產生。預設的名稱是 &quot;寄件備份&quot;，這是您的&quot;寄件備份&quot; 資料夾，但是不一定要稱為 &quot;寄件備份&quot;，您可以使用任何名稱。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if applicable	email	zh-tw	如果可以使用
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder &quot;. only works with imap servers, pop servers do not have folders.	email	zh-tw	如果選取了，寄出的信件會保留一份副本在您的&quot;寄件備份&quot;資料夾中。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot; only works with imap servers, pop servers do not have folders.	email	zh-tw	如果選取了，寄出的信件會保留一份副本在您的&quot;寄件備份&quot;資料夾中。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot;. only works with imap servers, pop servers do not have folders.	email	zh-tw	如果選取了，寄出的信件會保留一份副本在您的&quot;寄件備份&quot;資料夾中。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot; deleted messages (trash) folder &quot;. only works with imap servers, pop servers do not have folders.	email	zh-tw	如果選取了，刪除的信件會移到您的&quot;垃圾桶&quot;。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot;deleted messages (trash) folder&quot; only works with imap servers, pop servers do not have folders.	email	zh-tw	如果選取了，刪除的信件會移到您的&quot;垃圾桶&quot;。這個設定只在使用IMAP伺服器時才有意義，POP伺服器並不支援郵件資料夾功能。
+if fileto then select destination folder	email	zh-tw	如果檔案是，則選擇目標資料夾
+if messages match	email	zh-tw	如果訊息符合
+if there is no obvious error, check your email account name and password first.	email	zh-tw	如果沒有發現明顯的錯誤，請先檢查您的帳號與密碼。
+if there is no obvious error, check your username and password first.	email	zh-tw	如果沒有發現明顯的錯誤，請先檢查您的帳號與密碼。
+if using an imap server, what kind is it, most often this option can safely be set to &quot;cyrus or courier&quot;. technically, this means the server uses a dot between the different parts of the folder names, such as &quot;inbox.sent&quot;. the other major kind of imap server is the university of washington &quot;uwash&quot; imap server. it uses slashes instead of the dots the other servers use, and although it has a folder called &quot;inbox&quot;, it is not considered the &quot;namespace&quot; for the other folder names. the &quot;uw-maildir&quot; is a rare combination of the two above types. this is the least used kind of imap server. if you are unsure, ask your it administrator. only applies to imap servers.	email	zh-tw	如果您使用IMAP伺服器，這個選項一般可以選擇&quot;Cyrus or Courier&quot;，技術上來說，這指的是資料夾名稱的各個部份會用一個點來分隔，例如&quot;INBOX.Sent&quot;。另外一種比較常看到的IMAP伺服器是華盛頓大學的&quot;UWash&quot;，它是使用斜線來取代點，而且即使它有&quot;收件夾&quot;這樣的資料夾名稱，其他資料夾並不會包含這個&quot;名稱空間&quot;。而&quot;UW-Maildir&quot;則趨近於兩者之間。如果您不確定可以詢問您的管理員。這些設定只有使用IMAP伺服器時才會用到。
+image	email	zh-tw	圖片
+imap mail server hostname or ip address	admin	zh-tw	IMAP郵件主機名稱或IP位址
+imap server type	common	zh-tw	IMAP伺服器種類
+imap server type - if applicable	email	zh-tw	IMAP 主機類型 - 如果能夠使用
+important	email	zh-tw	重要的
+in the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, however all of these need to be ordered from first to last, this options controlls what is first and last. for example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.	email	zh-tw	在郵件模組的索引頁中，郵件可以根據日期、寄件人、大小或標題來排序，而排序的方式也有正反之分，這個選項決定了排序的方法。例如依據日期排序時，新到舊的排序方式會先顯示最新的信件。
+inbox	email	zh-tw	收件匣
+input error	email	zh-tw	輸入錯誤
+input error:	email	zh-tw	輸入錯誤：
+is not set so your administrator should set email site configuration for mail server hostname or ip address	email	zh-tw	尚未設定，所以您的管理員應該先設定郵件伺服器的主機名稱或IP位址
+it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	zh-tw	這個附加檔案並不是標準的RFC base64編碼，現在這個檢查是在訊息被瀏覽後執行，應該要避免類似的訊息自動被顯示，例如： 用一個"顯示"的按鈕來取代
+jan	email	zh-tw	一月
+javascript	email	zh-tw	Javascript
+jul	email	zh-tw	七月
+jun	email	zh-tw	六月
+keep	email	zh-tw	保留
+keyword	email	zh-tw	關鍵字
+keywords	email	zh-tw	關鍵字
+layout 1	common	zh-tw	第一種版面
+layout 2	common	zh-tw	第二種版面
+lines	email	zh-tw	行
+list messages	email	zh-tw	訊息列表
+long names	email	zh-tw	完整名稱
+mail folder(uw-maildir)	email	zh-tw	郵件資料夾(uw-maildir)
+mail server	email	zh-tw	郵件伺服器
+mail server login type	admin	zh-tw	郵件伺服器登入種類
+mail server type	email	zh-tw	郵件伺服器種類
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zh-tw	您送出的郵件將會用這個位址當&quot;寄件人&quot;，這也許與您登入eGroupWare的帳號一樣或是伺服器管理員另外幫您設定。當收件人點選回信時將會寄到這個信箱，您可以不填入任何資料來使用預設值。
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zh-tw	您送出的郵件將會用這個位址當&quot;寄件人&quot;，這也許與您登入eGroupWare的帳號一樣或是伺服器管理員另外幫您設定。當收件人點選回信時將會寄到這個信箱，您可以不填入任何資料來使用預設值。
+manage accounts	email	zh-tw	管理帳號
+manage folders	email	zh-tw	管理資料夾
+mar	email	zh-tw	三月
+message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	zh-tw	附加檔案中可能包含惡意的程式，它們的副檔名通常是bat, inf, pif, com, exe, reg, vbs, 或 scr。
+message list layout	common	zh-tw	訊息清單版面
+messages	email	zh-tw	訊息
+messages found in folder	email	zh-tw	在資料匣發現的訊息
+messages have been moved to	email	zh-tw	訊息被移到
+more actions	email	zh-tw	更多動作
+more choices	email	zh-tw	更多選擇
+most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them / default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zh-tw	大部分歐美國家的使用者不需要啟用這個項目，如果這個項目被選取了，您的郵件伺服器可以處理非ASCII編碼的文字，預設是關閉的。中文環境的使用者會需要啟用這個項目，只有IMAP伺服器會使用這個設定。
+most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them/ default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zh-tw	大部分歐美國家的使用者不需要啟用這個項目，如果這個項目被選取了，您的郵件伺服器可以處理非ASCII編碼的文字，預設是關閉的。中文環境的使用者會需要啟用這個項目，只有IMAP伺服器會使用這個設定。
+move down	email	zh-tw	向下移
+move selected messages into	email	zh-tw	移動選取的郵件到
+move this message into	email	zh-tw	將這個訊息移到
+move up	email	zh-tw	向上移
+mozilla modern style	email	zh-tw	Mozilla摩登樣式
+name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	zh-tw	您希望存取的郵件伺服器名稱，例如 &quot;mail.example.com&quot;，如果您不填入任何資料將會使用預設值。
+new	email	zh-tw	新增
+new account	email	zh-tw	新帳號
+new filter	email	zh-tw	新規則
+new message	email	zh-tw	新信件
+new messages	email	zh-tw	新信件
+newest	common	zh-tw	最新
+next message	email	zh-tw	下一封郵件
+no change	email	zh-tw	沒有改變
+no error returned from server	email	zh-tw	伺服器沒有錯誤訊息
+no message found in folder '%1'	email	zh-tw	資料夾 '%1' 沒有任何訊息
+no next message	email	zh-tw	沒有下一個
+no previous message	email	zh-tw	沒有上一個
+noia &#64; carlitus style	email	zh-tw	Noia @ Carlitus 風格
+non-standard	email	zh-tw	沒有標準
+not used	email	zh-tw	未使用
+notify on delivery	email	zh-tw	傳送時提醒
+nov	email	zh-tw	十一月
+number	common	zh-tw	數字
+number of matches:	email	zh-tw	符合的項目：
+oct	email	zh-tw	十月
+old	email	zh-tw	舊的
+oldest	common	zh-tw	最舊
+on	email	zh-tw	在
+only needed with the university of washington &quot;uwash&quot; imap server. the default value is &quot;mail&quot; which means your mail folders, other then inbox, are located in a directory called &quot;mail&quot; directly under your &quot;home&quot; directory. this box may be left empty, which means your mail folders are located in your &quot;home&quot; directory, not a subdirectory. if your mail folders are located in a subdirectory of &quot;home&quot; then put the name of that subdirectory here. generally, it is not necessary to use any special slashes or tildes, &quot;home&quot; is always considered the base directory, and the slash bewteen &quot;home&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.	email	zh-tw	只有在您使用美國華盛頓大學的&quot;UWash&quot;IMAP伺服器時需要。預設值是&quot;mail&quot;，這表示您的郵件資料夾會放在您的&quot;家&quot;目錄下的一個&quot;mail&quot;資料夾中。您可以不填入任何資料，表示郵件資料夾放在預設的位置。如果您的郵件資料夾放在&quot;家&quot;目錄下的其他子資料夾中，請輸入該資料夾的名稱。通常不需要使用任何斜線或是符號，&quot;家&quot;目錄通常是基本的目錄，系統會自動加上斜線，請不要輸入任何斜線。
+or	common	zh-tw	或
+or enter text	email	zh-tw	或是輸入文字
+or you can use custom settings for this email account	email	zh-tw	或是您可以針對這個郵件帳號做設定
+organization	email	zh-tw	組織
+persistent email server session	email	zh-tw	持續連線郵件伺服器
+phone	email	zh-tw	電話
+please fill in everything you need	email	zh-tw	請填入您需要的各種資訊
+please select a folder to rename	email	zh-tw	請選擇要修改名稱的資料匣
+please select a message first	email	zh-tw	請先選擇一封郵件
+please submit a filename to attach	email	zh-tw	請上傳要附加的檔案
+please type a folder name in the text box	email	zh-tw	請在文字輸入方塊輸入資料匣名稱
+previous	email	zh-tw	上一個
+previous message	email	zh-tw	上一封郵件
+printable	email	zh-tw	友善列印
+raw message	email	zh-tw	未讀信件
+read mail	email	zh-tw	閱讀
+received headers	email	zh-tw	收到的鏢頭
+recent	email	zh-tw	最近
+recipient	email	zh-tw	收件者
+redirect	email	zh-tw	轉寄
+reject	email	zh-tw	拒絕
+rename (expert)	email	zh-tw	改名(專業)
+rename a folder	email	zh-tw	修改資料匣名稱
+reply	email	zh-tw	回信
+reply all	email	zh-tw	全部回覆
+replyto	email	zh-tw	回覆到
+request delivery notification	email	zh-tw	要求傳送提示
+requested filter action:	email	zh-tw	要求郵件規則動作：
+required	email	zh-tw	必填
+reset	email	zh-tw	重設
+result	email	zh-tw	結果
+return mails during this time period	email	zh-tw	在這個期間退回信件
+save deleted messages in folder named below	email	zh-tw	儲存被刪除的信件到這個資料匣
+save sent messages in folder named below	email	zh-tw	儲存已寄出的信件到這個資料匣
+search for mails in these folders	email	zh-tw	在這些資料匣中搜尋郵件
+search this folder	email	zh-tw	搜尋這個資料匣
+section	email	zh-tw	選擇
+seen	email	zh-tw	已讀
+select home email address	email	zh-tw	選擇家用信箱
+select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	zh-tw	這個選項會將轉寄的郵件包含在郵件主體中
+select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message.	email	zh-tw	這個選項會將轉寄的郵件包含在郵件主體中
+select work email address	email	zh-tw	選擇工作用信箱
+select your mail server type	admin	zh-tw	選擇您的郵件伺服器種類
+select your screensize for proper showing of the javascript addressbook	email	zh-tw	請選擇您的螢幕解析度來調整通訊錄顯示的大小
+select your screensize for propper showing of the javascript addressbook	email	zh-tw	請選擇您的螢幕解析度來調整通訊錄顯示的大小
+select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	zh-tw	請選擇通訊錄的風格
+send	email	zh-tw	送出
+send deleted messages to the trash	email	zh-tw	刪除的信件移到垃圾桶
+send forwarded mail as quoted attachment	email	zh-tw	以縮排方式轉寄信件
+sender	email	zh-tw	寄件人
+sent	common	zh-tw	已送出
+sent folder	email	zh-tw	寄件備份
+sent messages folder	common	zh-tw	寄件備份
+sent messages folder name	email	zh-tw	寄件備份資料匣名稱
+sent messages saved in &quot;sent&quot; folder	common	zh-tw	寄出的郵件被存在&quot;寄件備份&quot;資料夾
+sent messages saved to folder:	email	zh-tw	已寄出信件存到資料匣：
+sep	email	zh-tw	九月
+settings	common	zh-tw	設定
+short names	email	zh-tw	簡易名稱
+show help	email	zh-tw	顯示說明
+show long names	email	zh-tw	顯示完整名稱
+show message	email	zh-tw	顯示訊息
+show new messages in combobox	email	zh-tw	在提示視窗中顯示新訊息
+show new messages on main screen	email	zh-tw	在主要畫面顯示新訊息
+show sender's email address with name	email	zh-tw	顯示寄件者名稱來取代郵件位址
+show short names	email	zh-tw	顯示簡易名稱
+show total folder size by default	email	zh-tw	預設顯示完整資料匣大小
+simple	email	zh-tw	單一
+size	email	zh-tw	大小
+size larger than	email	zh-tw	大小超過
+size smaller than	email	zh-tw	大小未達
+small	email	zh-tw	小
+small view	email	zh-tw	縮小
+smaller	email	zh-tw	更小
+smallest	email	zh-tw	最小
+somebody	email	zh-tw	匿名
+sort by	email	zh-tw	排序
+source accounts	email	zh-tw	收件帳號
+spell check	email	zh-tw	拼字檢查
+standard e-mail preferences	email	zh-tw	標準郵件設定
+stop if matched	email	zh-tw	符合規則就停止
+switch accounts	email	zh-tw	切換帳號
+switch current folder to	common	zh-tw	切換目前的文件夾到
+test all filters	email	zh-tw	測試所有規則
+test or apply all filters	email	zh-tw	測試或是啟用所有規則
+test run this filter	email	zh-tw	測試這個規則
+text	email	zh-tw	文字
+the email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. this page may be the page the user looks at the most and so different layouts, or looks, are offered.	email	zh-tw	這個郵件閱讀程式提供兩種不懂的索引頁版面配置方式，這個頁面一般是使用者最常看到的畫面
+the email application offers different button displays, these buttons can be text, images, or both.	email	zh-tw	這個郵件閱讀程式提供多種按鈕顯示方式，可以是文字、圖片或是兩者
+the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape6 / mozilla browser buttons. additional themes are anticipated and welcome.	email	zh-tw	這個程式提供多種不同樣式的圖示、佈景，大多沿用Ximian的Evolution、Netscape6或是Mozilla瀏覽器的按鈕，歡迎提供您所製作的素材。
+the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape7, mozilla browser buttons. additional themes are anticipated and welcome.	email	zh-tw	這個程式提供多種不同樣式的圖示、佈景，大多沿用Ximian的Evolution、Netscape6或是Mozilla瀏覽器的按鈕，歡迎提供您所製作的素材。
+the email application offers different icon image themes, these icons can be big or small.	email	zh-tw	這個程式提供多種不同樣式的圖示、佈景，圖示可大可小
+the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you clear this box, then it goes back to the default value. if you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.	email	zh-tw	用來檢查這個郵件信箱的帳號，也許跟您登入系統的名稱一樣，或是管理員另外幫您設定。如果您要設定多個信箱帳號，您就必須填入這個資料；如果您只有使用預設的信箱，那麼可以不需要輸入。如果您清除了這個資料，系統會自動還原成預設值。
+the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. exra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zh-tw	用來檢查這個郵件信箱的帳號，也許跟您登入系統的名稱一樣，或是管理員另外幫您設定。如果您要設定多個信箱帳號，您就必須填入這個資料；如果您只有使用預設的信箱，那麼可以不需要輸入。如果您設定了自訂的密碼，下次您瀏覽這個頁面時將會看到空白的欄位，藉此避免您的密碼外洩。要修改您的自訂密碼，只要在欄位中輸入新的密碼即可。附加的郵件信箱必須設定這個值，而預設的信箱當您取消勾選&quot;使用自訂密碼&quot;後會自動清除。
+the password to use when checking mail for this email account. this may be the same as your egroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zh-tw	用來檢查這個郵件信箱的密碼，也許跟您登入系統的密碼一樣，或是管理員另外幫您設定。如果您要設定多個信箱帳號，您就必須填入這個資料；如果您只有使用預設的信箱，那麼可以不需要輸入。如果您設定了自訂的密碼，下次您瀏覽這個頁面時將會看到空白的欄位，藉此避免您的密碼外洩。要修改您的自訂密碼，只要在欄位中輸入新的密碼即可。附加的郵件信箱必須設定這個值，而預設的信箱當您取消勾選&quot;使用自訂密碼&quot;後會自動清除。
+the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your egroupware installation has a &quot;ssl&quot; capabable version of php.	email	zh-tw	您希望存取的郵件主機類型，IMAP伺服器有資料夾功能，像是寄件備份與垃圾桶等；POP伺服器則不提供這個功能，POP, POP-3與POP3指的是同樣的類型。您也可以透過加密方式存取，像是IMAPS或POPS，但是您必須確認遠端的伺服器與您操作的系統支援 SSL 功能！
+then check the	email	zh-tw	接著檢查
+then do this	email	zh-tw	接著做
+then take this actions	email	zh-tw	接著執行這個動作
+there is no text or other part of the email to display to the user, all part(s) are attachments.	email	zh-tw	這個郵件沒有內容，只有附加檔案
+there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	zh-tw	連結IMAP伺服器時發生錯誤<br>請聯絡管理員檢查伺服器名稱、帳號或密碼
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	zh-tw	連結郵件伺服器時發生錯誤<br>請聯絡管理員檢查伺服器名稱、帳號或密碼
+there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	zh-tw	連結POP3伺服器時發生錯誤<br>請聯絡管理員檢查伺服器名稱、帳號或密碼
+this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you a) the senders name only, if a name was provided, b) the senders from email address, in addition to the senders name, or c) the senders reply to address if it is different from the senders from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	zh-tw	這個不容易理解的設定是來自於這個系統的前身， Mark Cushman 設計的 Aeromail 。當瀏覽一個郵件資料夾中的郵件清單時，寄件人欄位會顯示幾種情況 a) 寄件人名稱，如果對方有輸入時, b) 寄件人郵件位址或是 c) 如果跟寄件人欄位不一樣時會顯示寄件人回應位址，通常不會設定這個。如果沒有寄件人名稱，將會顯示寄件人位址。
+this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you<br>a) the senders name only, if a name was provided,<br>b) the senders from email address, in addition to the senders name, or<br>c) the senders reply to address if it is different from the senders<br>from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	zh-tw	這個不容易理解的設定是來自於這個系統的前身， Mark Cushman 設計的 Aeromail 。當瀏覽一個郵件資料夾中的郵件清單時，寄件人欄位會顯示幾種情況 <br>a) 寄件人名稱，如果對方有輸入時, <br>b) 寄件人郵件位址或是 <br>c) 如果跟寄件人欄位不一樣時會顯示寄件人回應位址，通常不會設定這個。如果沒有寄件人名稱，將會顯示寄件人位址。
+this data not supplied.	email	zh-tw	不支援這個資料
+this folder is empty	email	zh-tw	這個資料夾沒有任何信件
+this is really a visual template conflict issue. the phpgw template already has it own css, and style sheets are cascading, subsequent css can be inherited by the page and totally b0rk the look of the template theme. or maybe not, only certain css tags are really capable of this such as the css body property, or the a (href) properties.	email	zh-tw	這是個視覺樣板衝突所造成的問題，系統樣板有自己的CSS設定，也許跟信件內容所使用的設定相衝突。
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as "your full name". if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use "your full name" as your from name for email messages. note that "your full name" for your email account 0 is the name you gave in the egroupware setup.	email	zh-tw	這是顯示在帳號欄位的名稱，如果您保持空白，假設您的全名是Jane Doe，系統會自動填上類似 Account[1]: Jane Doe 的資料。如果您希望使用自訂的名稱，您可以修改這個欄位的設定。這個設定並不會影響您寄出信件的寄件人名稱，系統還是會使用您的全名。注意： 您的全名是基本資料中的一個欄位。
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as your full name. if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use your full name as your from name for email messages. note that your full name for your email account 0 is the name you gave in the egroupware setup.	email	zh-tw	這是顯示在帳號欄位的名稱，如果您保持空白，假設您的全名是Jane Doe，系統會自動填上類似 Account[1]: Jane Doe 的資料。如果您希望使用自訂的名稱，您可以修改這個欄位的設定。這個設定並不會影響您寄出信件的寄件人名稱，系統還是會使用您的全名。注意： 您的全名是基本資料中的一個欄位。
+this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	zh-tw	這個名稱會顯示在寄件人欄位，預設帳號會從系統取得，附加的帳號預設會使用用您的全名，您可以為每個附加的信箱指定一個名稱。
+this pref currently does nothing users may have more than one email account. in the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use. also, an admin may want to disable accounts from time to time.	email	zh-tw	這個設定目前不會執行任何動作！使用者可能有一個以上的郵件信箱，未來這個設定將關係於一些自動執行的動作，像是自動收信、自動過濾等等。
+this pref currently does nothing<br>users may have more than one email account. in the future it is anticipated that automatic actions may be performedon these accounts, such as automatic new mail checks, auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use.<br>also, an admin may want to disable accounts from time to time.	email	zh-tw	這個設定目前不會執行任何動作！使用者可能有一個以上的郵件信箱，未來這個設定將關係於一些自動執行的動作，像是自動收信、自動過濾等等。
+this specifies whether or not to show the number of new message in the folders combo box on the index screen.	email	zh-tw	這裡設定要在索引畫面顯示多少封信或是不顯示
+this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size.	email	zh-tw	這裡設定系統預設是否要顯示整個資料夾的大小，如果沒有勾選，您會在畫面中看到一個按鈕來提示您是否要顯示
+this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size..	email	zh-tw	這裡設定系統預設是否要顯示整個資料夾的大小，如果沒有勾選，您會在畫面中看到一個按鈕來提示您是否要顯示
+this text will be appended to the bottom of the users emails for this email account. currently, html tags are not supported. also, forwarded email will not get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.	email	zh-tw	這些文字會附加在這個郵件帳號寄出的信中，目前不支援HTML標籤，且轉寄信件將不會附加，因為部分信件可能有自己的原始簽名檔。
+to	email	zh-tw	到
+to address	email	zh-tw	收件者
+total messages	email	zh-tw	所有訊息
+trash	email	zh-tw	垃圾
+trash folder	email	zh-tw	垃圾桶
+u-wash mail folder	email	zh-tw	U-Wash郵件資料夾
+u-wash mail folder - if applicable	email	zh-tw	U-Wash郵件資料夾 - 如果可以使用
+unable to get source folder name	email	zh-tw	無法取得來源資料匣名稱
+unable to get target folder name	email	zh-tw	無法取得目標資料匣名稱
+unanswered	email	zh-tw	未回應
+undeleted	email	zh-tw	復原
+undisclosed recipients	email	zh-tw	未公開的收件者
+undisclosed sender	email	zh-tw	未公開的寄件者
+unflagged	email	zh-tw	取消標示
+unknown action	email	zh-tw	未知名動作
+unknown error	email	zh-tw	不知名的錯誤
+unknown translation	email	zh-tw	未知名翻譯
+unseen	email	zh-tw	未讀取
+use custom settings	email	zh-tw	使用個人設定
+view as html	email	zh-tw	用HTML瀏覽
+view formatted	email	zh-tw	瀏覽格式化結果
+view headers	email	zh-tw	瀏覽標頭
+view unformatted	email	zh-tw	瀏覽未格式化結果
+warn_attachment_name_dangerous	email	zh-tw	附加檔案可能是病毒或來路不明的程式
+warn_attachment_only_mail	email	zh-tw	附加檔案是另外一個郵件
+warn_b64_encoded_displayable	email	zh-tw	BASE64編碼可以顯示
+warn_has_iframe_maybe_klez	email	zh-tw	郵件包含內文框架，電腦病毒KLEZ透過類似的方式傳佈
+warn_script_tags	email	zh-tw	郵件內文可能具有隱含的程式碼
+warn_style_sheet	email	zh-tw	郵件內文包含獨立的風格配置
+we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	zh-tw	新的通訊錄的功能有 a) 容易連結與搜尋, b) 更適合處理大量通訊錄名單 。您可以決定要使用哪一個。
+we have recently added this new addressbook so that users can choose to have a more complex addressbook that features<br>a) easy, point and click searching,<br>b) best suited for organizations with large central addressbooks with many categories.<br>you can choose here which addressbook do you prefer.	email	zh-tw	新的通訊錄的功能有<br>a) 容易連結與搜尋,<br>b) 更適合處理大量通訊錄名單 。<br>您可以決定要使用哪一個。
+we have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). the fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).	email	zh-tw	我們提供三種通訊錄顯示大小，您可以視自己的需求調整： 800x600 (通訊錄會顯示在寬度為700畫素的視窗), 1024x768 (會顯示在寬度為800畫素的視窗), 1200x1600 (會顯示在寬度為900畫素的視窗)。而字型大小也會跟著調整為 xx-small, x-small 與一般
+wrote	email	zh-tw	寫
+you have %1 new messages!	common	zh-tw	您有 %1 封新郵件
+you have 1 new message!	common	zh-tw	您有 1 封新郵件
+you have messages!	common	zh-tw	您沒有任何郵件
+you have no new messages	common	zh-tw	您沒有新郵件
+you must click	email	zh-tw	您必須點選
+you must click %1 for the file to actually upload	email	zh-tw	您必須點選 %1 來上傳這個檔案
+your full name	common	zh-tw	您的全名
+your message has been sent	common	zh-tw	您的信件已送出！
+your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	zh-tw	您的伺服器管理員將會設定下面項目的預設值，您也許完全不需要調整它；如果您需要不同的設定，請記得勾選這個項目，預設是不會勾選的。如果您修改了某些項目但是想要換回預設值，只要取消這個項目的勾選即可。這個項目只會顯示在預設的信箱帳號，如果您要新增其他的帳號，您就需要自行設定下面這些項目。

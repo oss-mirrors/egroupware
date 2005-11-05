@@ -14,7 +14,12 @@ all versions	mydms	es-es	Todas las versiones
 comment	mydms	es-es	Comentario
 comment for current version	mydms	es-es	Comentario sobre la versión actual
 copy acl	mydms	es-es	copiar acl
+copy documents	mydms	es-es	copiar documentos
+copy folder	mydms	es-es	copiar carpeta
+copy options	mydms	es-es	copiar opciones
+copy subfolders	mydms	es-es	copiar subcarpeta
 create empty acl	mydms	es-es	crear acl vacía
+creation date	mydms	es-es	fecha de creación
 current acl	mydms	es-es	acl actual
 current version	mydms	es-es	Versión actual
 default access	mydms	es-es	acceso predeterminado
@@ -23,18 +28,35 @@ delete this notification	mydms	es-es	borrar esta notificación
 do you really want to delete this acl?	mydms	es-es	¿Realmente desea borrar esta acl?
 do you really want to delete this document?	mydms	es-es	¿Realmente desea borrar este documento?
 do you really want to delete this version of the document?	mydms	es-es	¿Realmente desea borrar esta versión del documento?
+does not expire	mydms	es-es	no expira
+download	mydms	es-es	descargar
 edit folder	mydms	es-es	editar carpeta
+expires	mydms	es-es	expira
+expires after	mydms	es-es	expira después de
+file size	mydms	es-es	tamaño del fichero
+filename	mydms	es-es	nombre del fichero
 folder	mydms	es-es	carpeta
 general information	mydms	es-es	información general
 information about last update	mydms	es-es	información sobre la última actualización
+informations	mydms	es-es	Información
 inherit acl again	mydms	es-es	volver a heredar acl
+last update	mydms	es-es	última actualización
+linked documents	mydms	es-es	documentos vinculados
+lock status	mydms	es-es	estado del bloqueo
+mime type	mydms	es-es	Tipo MIME
 move document	mydms	es-es	mover documento
 move folder	mydms	es-es	mover carpeta
 mydms	common	es-es	Sistema de gestión de documentos
 notifications	mydms	es-es	notificaciones
 permission	mydms	es-es	permiso
+select folder	mydms	es-es	seleccionar carpeta
+select target folder	mydms	es-es	seleccionar carpeta de destino
+target folder	mydms	es-es	carpeta de destino
 this document gets locked by you!	mydms	es-es	este documento está bloqueado por usted
 this document gets unlocked by you.	mydms	es-es	este documento ha sido desbloqueado por usted
 this document is currently not locked.	mydms	es-es	este documento no se encuentra bloqueado
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	es-es	este documento está bloqueado por <a href="mailto:%1">%2</a>.
 update document	mydms	es-es	actualizar documento
+upload date	mydms	es-es	fecha en que se subió
+uploaded by	mydms	es-es	subido por
+view online	mydms	es-es	ver en línea

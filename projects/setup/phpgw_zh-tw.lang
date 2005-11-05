@@ -1,0 +1,357 @@
+% to	projects	zh-tw	% 到
++ jobs	projects	zh-tw	+ 工作
+a new project has been created	projects	zh-tw	一個新專案建立於：
+a project has been deleted	projects	zh-tw	一個專案被刪除於：
+a project has been updated	projects	zh-tw	一個專案被更新於：
+account	projects	zh-tw	帳號
+accounting	common	zh-tw	會計
+accounting factor	projects	zh-tw	會計要素
+accounting factor for project	projects	zh-tw	專案的會計要素
+accounting system	projects	zh-tw	會計系統
+active	projects	zh-tw	啟用
+activities	projects	zh-tw	活動
+activity	common	zh-tw	活動
+activity %1 has been added	projects	zh-tw	新增了活動：%1
+activity %1 has been updated	projects	zh-tw	更新了活動：%1
+activity id	projects	zh-tw	動作代碼
+add activity	projects	zh-tw	新增活動
+add file	projects	zh-tw	新增檔案
+add job	projects	zh-tw	新增工作
+add milestone	projects	zh-tw	新增專案階段
+add project	projects	zh-tw	新增專案
+add role	projects	zh-tw	新增角色
+add work hours	projects	zh-tw	新增工作時數
+address book	projects	zh-tw	通訊錄
+administrator	projects	zh-tw	管理者
+administrator list	projects	zh-tw	管理者清單
+alarm	projects	zh-tw	警告
+all delivery notes	projects	zh-tw	所有傳遞訊息
+amount	projects	zh-tw	金額
+anonymous public	projects	zh-tw	公開的
+archive	common	zh-tw	封存
+are you sure you want to delete this activity	projects	zh-tw	您確定要刪除這個活動？
+are you sure you want to delete this job	projects	zh-tw	您確定要刪除這個工作？
+are you sure you want to delete this project	projects	zh-tw	您確定要刪除這個專案？
+assign	projects	zh-tw	指派
+assign roles and events	projects	zh-tw	指派角色與事件
+assignment has been deleted	projects	zh-tw	指派動作已經被刪除了
+assignment has been saved	projects	zh-tw	指派動作已經被儲存了
+assignment to project	projects	zh-tw	指派到專案
+assignment to project %1	projects	zh-tw	指派到專案%1
+assignment to role	projects	zh-tw	指派給角色
+available	projects	zh-tw	可用
+before	projects	zh-tw	之前
+bill per hour	projects	zh-tw	鐘點費
+bill per hour/workunit	projects	zh-tw	鐘點費
+bill per workunit	projects	zh-tw	每一個工作單位的費用
+billable	projects	zh-tw	可付款
+billable activities	projects	zh-tw	可計費的動作
+billed	projects	zh-tw	已計費
+billed only	projects	zh-tw	計費專用
+billing	projects	zh-tw	計費
+bookable activities	projects	zh-tw	可使用的動作
+bookkeeper	projects	zh-tw	記帳人
+browse	projects	zh-tw	瀏覽
+budget	projects	zh-tw	預算
+budget available	projects	zh-tw	可用預算
+budget limit	projects	zh-tw	預算上限
+budget main project	projects	zh-tw	編列主要專案的預算
+budget planned	projects	zh-tw	計畫預算
+budget sum of all sub projects is bigger than the budget of the main project	projects	zh-tw	所有附屬專案的預算總合超過主要專案的預算
+budget used	projects	zh-tw	已使用預算
+budget used total	projects	zh-tw	已使用預算總合
+calculate	projects	zh-tw	計算
+changed start date and end date	projects	zh-tw	修改開始與結束日期
+changed start date and end date of projects bellow	projects	zh-tw	修改下面專案的開始與結束日期
+changes of project data	projects	zh-tw	專案資料的異動
+click %1here%2 to return to projects.	projects	zh-tw	點選 %1這裡%2 返回專案
+closed	projects	zh-tw	關閉
+color legend	projects	zh-tw	顏色區隔
+columns to show in the projects list	projects	zh-tw	專案列表要顯示的欄位
+comment	projects	zh-tw	備註
+continue	projects	zh-tw	繼續
+coordinator	common	zh-tw	專案協調人
+costs	projects	zh-tw	成本
+costs list	projects	zh-tw	成本列表
+costtype	projects	zh-tw	成本類型
+create delivery	projects	zh-tw	建立遞送
+creator	projects	zh-tw	建立者
+customer	common	zh-tw	客戶
+customer nr	projects	zh-tw	客戶暱稱
+date created	projects	zh-tw	建立日期
+date due of milestone %1 of project %2 has been updated	projects	zh-tw	專案%2的階段%1已經更新
+date due planned	projects	zh-tw	已規劃日期
+days	projects	zh-tw	日
+days before	projects	zh-tw	日之前
+definition per project	admin	zh-tw	每個專案的定義
+delete	admin	zh-tw	刪除
+delete activity	projects	zh-tw	刪除活動
+delete factor	projects	zh-tw	刪除要素
+delete hours	projects	zh-tw	移除時數
+delete job	projects	zh-tw	刪除工作
+delete project	projects	zh-tw	刪除專案
+delete selected files	projects	zh-tw	刪除選取的檔案
+delete work hours	projects	zh-tw	刪除工作時數
+deliveries	projects	zh-tw	遞送
+delivery	projects	zh-tw	遞送
+delivery date	projects	zh-tw	遞送日期
+delivery id	projects	zh-tw	遞送 ID
+delivery list	projects	zh-tw	遞送清單
+delivery note	projects	zh-tw	遞送訊息
+delivery note for project	projects	zh-tw	專案傳送訊息
+description can not exceed 250 characters in length	projects	zh-tw	描述文字不能夠超過250字元(約145個中文字)
+description can not exceed 8000 characters in length	projects	zh-tw	描述文字不能夠超過8000字元(約4000個中文字)
+discount	projects	zh-tw	折扣
+distance	projects	zh-tw	距離
+do you also want to delete all sub projects	projects	zh-tw	您確定要刪除所有附屬專案？
+do you also want to delete all sub projects ?	projects	zh-tw	您確定要刪除所有附屬專案？
+edit activity	projects	zh-tw	編輯動作
+edit administrator list	projects	zh-tw	編輯專案管理者清單
+edit events	projects	zh-tw	編輯事件
+edit job	projects	zh-tw	編輯工作
+edit manager list	projects	zh-tw	編輯管理員清單
+edit milestone	projects	zh-tw	編輯階段
+edit milestones	projects	zh-tw	編輯階段
+edit project	projects	zh-tw	編輯專案管理人員
+edit roles	projects	zh-tw	編輯角色
+edit roles and events	projects	zh-tw	編輯角色與事件
+edit seller list	projects	zh-tw	編輯銷售清單
+edit time tracker entry	projects	zh-tw	編輯時間追蹤記錄
+edit work hours	projects	zh-tw	編輯工作時數
+employee	projects	zh-tw	員工
+employees	projects	zh-tw	員工
+end date has changed	projects	zh-tw	結束日期已經更新
+ending date can not be after parent projects date due	projects	zh-tw	結束日期不能夠在主要專案結束日期之後。
+ending date can not be after projects date due	projects	zh-tw	結束日期不能夠在主要專案期間之後。
+ending date can not be before start date	projects	zh-tw	結束日期不能夠在開始日期之前
+entry	projects	zh-tw	資料
+event	projects	zh-tw	事件
+event %1 has been saved	projects	zh-tw	%1事件已經儲存
+event %1 has been updated	projects	zh-tw	%1事件已經更新
+events	projects	zh-tw	事件
+exact accounting [hh.mm]	admin	zh-tw	確實的會計時間[hh.mm]
+export as	projects	zh-tw	匯出成
+external reference	projects	zh-tw	外部參考
+extra budget	projects	zh-tw	其他預算
+extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	zh-tw	所有附屬專案的額外預算總合超過主要專案的額外預算金額。
+factor employee	projects	zh-tw	員工
+factor has been deleted	projects	zh-tw	要素已經被刪除了
+factor has been saved	projects	zh-tw	要素已經被儲存了
+factor has been updated	projects	zh-tw	要素已經被更新了
+factor project	projects	zh-tw	要素專案
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	zh-tw	傳送訊息給'%1'時發生錯誤 #%2 標題='%3', 寄件人='%4' ！
+from	projects	zh-tw	來自
+from %1 to %2	projects	zh-tw	從 %1 到 %2
+gantt chart	projects	zh-tw	甘特圖
+gantt chart from %1 to %2	projects	zh-tw	從%1到%2的甘特圖
+generate activity id	projects	zh-tw	自動產生活動代碼？
+generate activity id ?	projects	zh-tw	自動產生活動代碼？
+generate delivery id ?	projects	zh-tw	自動產生運送代碼？
+generate job id	projects	zh-tw	自動產生工作代碼？
+generate project id	projects	zh-tw	自動產生專案代碼？
+global categories	projects	zh-tw	全域類別
+has reached	projects	zh-tw	達到
+hours	projects	zh-tw	時數
+hours limit	projects	zh-tw	時數上限
+hours of work day	admin	zh-tw	每個工作天計算時數
+hours used total	projects	zh-tw	已使用時數總合
+id can not exceed 20 characters in length	projects	zh-tw	代碼不能夠超過20個字元
+id can not exceed 250 characters in length	projects	zh-tw	代碼不能夠超過250個字元
+if using activities	admin	zh-tw	如果使用活動
+investment nr	projects	zh-tw	投資數
+invoicing method	projects	zh-tw	發票形式
+invoicing of work time	admin	zh-tw	工作時間發票
+job	projects	zh-tw	工作
+job has been added	projects	zh-tw	工作已經新增
+job has been updated	projects	zh-tw	工作已經更新
+job id	projects	zh-tw	工作代碼
+job list	projects	zh-tw	工作列表
+job manager	projects	zh-tw	工作管理員
+jobs	common	zh-tw	工作
+last update	projects	zh-tw	最後更新
+list activities	projects	zh-tw	活動清單
+list budget	projects	zh-tw	預算清單
+list deliveries	projects	zh-tw	遞送清單
+list jobs	common	zh-tw	工作清單
+list projects	common	zh-tw	專案清單
+list work hours	projects	zh-tw	工時清單
+main project	projects	zh-tw	主要專案
+main project:	projects	zh-tw	主要專案：
+manager	projects	zh-tw	管理
+manager list	projects	zh-tw	管理員清單
+managing committee	projects	zh-tw	管理委員會
+manuell entries	projects	zh-tw	手冊資料
+milestone	projects	zh-tw	階段
+milestone date due	projects	zh-tw	預訂階段日期
+milestone has been deleted	projects	zh-tw	階段已經刪除了
+milestone has been saved	projects	zh-tw	階段已經儲存了
+milestones	common	zh-tw	階段
+minutes per workunit	projects	zh-tw	每一個工作單位的分鐘數
+month	projects	zh-tw	月
+move start date if pervious projects end date changes	admin	zh-tw	如果上一個專案的結束日期改變就同時修改這個專案的開始日期
+name not exceed 250 characters in length	projects	zh-tw	名稱不能夠超過250字元
+new	admin	zh-tw	新增
+new date due of milestone %1: %2	projects	zh-tw	預訂 %1 階段的日期：%2。
+new end date	projects	zh-tw	新的結束日期
+new milestone	projects	zh-tw	新的階段
+new project	projects	zh-tw	新增專案
+new project created	projects	zh-tw	新專案建立於：
+new start date	projects	zh-tw	新的開始日期
+nonactive	common	zh-tw	停用
+not billable	projects	zh-tw	未付款
+notification settings	admin	zh-tw	提醒設定
+notify management committee	admin	zh-tw	通知管理群
+notify project administrators	admin	zh-tw	通知專案管理員
+notify sales department	admin	zh-tw	通知業務部門
+number	projects	zh-tw	編號
+old end date	projects	zh-tw	舊的結束日期
+old start date	projects	zh-tw	舊的開始日期
+onadd	admin	zh-tw	新增時
+ondelete	admin	zh-tw	刪除時
+onstatuschange	admin	zh-tw	異動時
+open	projects	zh-tw	開放
+open popup	projects	zh-tw	開啟彈出式視窗
+open popup window	projects	zh-tw	開啟彈出式視窗
+overall	projects	zh-tw	總覽
+parent project	projects	zh-tw	主要專案
+pause	projects	zh-tw	暫停
+per	projects	zh-tw	每一
+per day	projects	zh-tw	每天
+per hour	projects	zh-tw	每個小時
+per hour/workunit	projects	zh-tw	每個小時/工作單位
+per workunit	common	zh-tw	每一工作單位
+percent	projects	zh-tw	百分比
+planned	projects	zh-tw	已規劃
+planned time sum of all sub projects is bigger than the planned time of the main project	projects	zh-tw	所有附屬專案的規劃時間超過主要專案。
+please choose a project coordinator	projects	zh-tw	請選擇一個專案協調人！
+please choose activities for the project	projects	zh-tw	請選擇這個專案的活動！
+please choose the accounting system for the project	projects	zh-tw	請選擇這個專案的會計系統
+please choose the discount type	projects	zh-tw	請選擇折扣種類。
+please enable html view of emails.	projects	zh-tw	請啟用郵件的HTML瀏覽功能
+please enter a remark	projects	zh-tw	請輸入一個代稱
+please enter an id	projects	zh-tw	請輸入代碼。
+please enter an id !	projects	zh-tw	請輸入代碼！
+please enter the bill	projects	zh-tw	請輸入帳單！
+please enter the minutes per workunit	projects	zh-tw	請輸入每個工作單位的分鐘數！
+please select a project for time tracking	projects	zh-tw	請選擇要追蹤時間的專案
+please set the accounting factor for the project	projects	zh-tw	請為這個專案設定會計要素。
+please set your preferences for this application !	projects	zh-tw	請在偏好設定中調整這個應用程式的設定！
+please specify the budget	projects	zh-tw	請指定一個預算！
+position	projects	zh-tw	位置
+previous	projects	zh-tw	上一個專案
+previous project	projects	zh-tw	上一個專案
+previous projects end date has changed	projects	zh-tw	上一個專案結束日期已經改變
+print delivery	projects	zh-tw	列印遞送
+processor	projects	zh-tw	處理者
+project	projects	zh-tw	專案
+project %1 has been saved	projects	zh-tw	專案%1已經儲存了。
+project %1 has been updated	projects	zh-tw	專案%1已經更新了。
+project accounting	admin	zh-tw	專案會計帳
+project administrators	common	zh-tw	專案管理者
+project data due	projects	zh-tw	專案預定時程
+project date due	projects	zh-tw	專案預定時程
+project deleted	projects	zh-tw	專案刪除了
+project dependencies	common	zh-tw	專案附加說明
+project id	common	zh-tw	專案代碼
+project list	projects	zh-tw	專案列表
+project overview	projects	zh-tw	專案概要
+project statistic	projects	zh-tw	專案統計
+project updated	projects	zh-tw	專案更新了
+project url	projects	zh-tw	專案網址
+projects	common	zh-tw	專案管理
+projects, which are assigned as sequencing	projects	zh-tw	專案，依序被指定
+quality check	projects	zh-tw	品質查核
+reference	projects	zh-tw	參考
+remark	projects	zh-tw	註記
+remark can not exceed 8000 characters in length	projects	zh-tw	註記不能夠超過8000個字元。
+remark can not exceed 8000 characters in length !	projects	zh-tw	註記不能夠超過8000個字元！
+remark required	projects	zh-tw	必須輸入註記
+result	projects	zh-tw	結果
+role	projects	zh-tw	角色
+role %1 has been saved	projects	zh-tw	角色 %1 已經儲存
+role %1 has been updated	projects	zh-tw	角色 %1 已經更新
+role has been deleted	projects	zh-tw	角色已經刪除
+roles	projects	zh-tw	角色
+roles list	projects	zh-tw	角色清單
+sales department	projects	zh-tw	業務部
+save factor	projects	zh-tw	儲存要素
+save milestone	projects	zh-tw	儲存階段
+select factor	projects	zh-tw	選擇要素
+select groups	projects	zh-tw	選擇群組
+select main project	common	zh-tw	選擇主要專案
+select project	projects	zh-tw	選擇專案
+select role	projects	zh-tw	選擇角色
+select users	projects	zh-tw	選擇使用者
+seller	projects	zh-tw	銷售人員
+seller list	projects	zh-tw	銷售人員清單
+sequencing project	projects	zh-tw	排序專案
+settings	admin	zh-tw	設定
+short description	projects	zh-tw	簡短說明
+show gantt chart	projects	zh-tw	顯示甘特圖
+show milestones	projects	zh-tw	顯示里程碑
+show planned resources	projects	zh-tw	顯示
+site configuration	projects	zh-tw	網站設定
+size	projects	zh-tw	大小
+start	projects	zh-tw	開始
+start date can not be before parent projects start date	projects	zh-tw	開始日期不能夠在主要專案的開始日期之前
+start date planned	projects	zh-tw	預定開始日期
+statistic	projects	zh-tw	統計
+statistics	projects	zh-tw	統計
+status change	admin	zh-tw	狀態異動
+stop	projects	zh-tw	結束
+sub project level %1	projects	zh-tw	附屬專案層級 %1
+subproject	projects	zh-tw	子專案
+sum	projects	zh-tw	總計
+sum budget	projects	zh-tw	預算總計
+sum hours	projects	zh-tw	工時總計
+sum jobs	projects	zh-tw	工作總計
+sum workunits	projects	zh-tw	工作單位總計
+test	projects	zh-tw	測試
+that id has been used already	projects	zh-tw	這個代碼已經被使用了。
+that id has been used already !	projects	zh-tw	這個代碼已經被使用了！
+the choosen previous project does not have an end date specified	projects	zh-tw	上一個專案並未指定結束日期。
+the delivery note contains no items !	projects	zh-tw	遞送訊息沒有任何項目！
+this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	zh-tw	這通常是您的郵件伺服器設定出問題，請通知網站管理員
+till	projects	zh-tw	直到
+time of journey	projects	zh-tw	行程
+time planned	projects	zh-tw	已規劃行程
+time tracker	projects	zh-tw	時間表查核員
+time tracking actions	projects	zh-tw	時間表查核動作
+time tracking for this project has been stopped already	projects	zh-tw	這個專案的時間查核已經被終止了
+time tracking for this project is already active	projects	zh-tw	這個專案的時間查核已經被啟用了
+time used	projects	zh-tw	已經使用的時間
+time used billable	projects	zh-tw	可請款工時
+time used total	projects	zh-tw	總使用工時
+title can not exceed 250 characters in length	projects	zh-tw	標題不能夠超過250字元
+update delivery	projects	zh-tw	更新遞送
+use activities	admin	zh-tw	使用活動
+used	projects	zh-tw	已使用
+used - jobs included	projects	zh-tw	已使用 - 包含工作
+used billable	projects	zh-tw	可請款活動
+used not billable	projects	zh-tw	未能請款活動
+used total	projects	zh-tw	已使用總計
+user statistic	projects	zh-tw	使用者統計
+user statistics	projects	zh-tw	使用者統計
+view employees	projects	zh-tw	檢視員工
+view gantt chart	projects	zh-tw	檢視甘特圖
+view hours	projects	zh-tw	檢視工時
+view job	projects	zh-tw	檢視工作
+view project	projects	zh-tw	檢視專案
+view users	projects	zh-tw	檢視使用者
+view work hours	projects	zh-tw	檢視工時
+work date	common	zh-tw	工作日期
+work hours	common	zh-tw	時數
+work time	projects	zh-tw	工作時間
+workload warning for project	projects	zh-tw	專案工作進度警告
+workunit	projects	zh-tw	工作單位
+workunits	projects	zh-tw	工作單位
+you have entered an invalid date !	projects	zh-tw	您輸入了一個錯誤的日期！
+you have entered an invalid date due	projects	zh-tw	您輸入了一個錯誤的預定日期。
+you have entered an invalid end date	projects	zh-tw	您輸入了一個錯誤的結束日期！
+you have entered an invalid planned end date	projects	zh-tw	您輸入了一個錯誤的計畫日期！
+you have entered an invalid planned start date	projects	zh-tw	您輸入了一個錯誤的已規劃開始日期！
+you have entered an invalid start date	projects	zh-tw	您輸入了一個錯誤的開始日期！
+you have no customer selected !	projects	zh-tw	您沒有選擇任何的顧客！
+you have no projects selected	projects	zh-tw	您沒有選擇任何的專案！
+you have selected an invalid activity	projects	zh-tw	您選擇了一個錯誤的活動
+you have to create a delivery or invoice first !	projects	zh-tw	您必須先「建立」送貨單或發票！

@@ -1,0 +1,15 @@
+$ change	common	zh-tw	修改
+%	stocks	zh-tw	%
+% change	common	zh-tw	修改 %
+add new stock	stocks	zh-tw	新增股票
+disable	stocks	zh-tw	關閉
+display stocks on main screen is disabled	stocks	zh-tw	關閉主要視窗顯示股票的功能
+display stocks on main screen is enabled	stocks	zh-tw	開啟主要視窗顯示股票的功能
+edit stock	stocks	zh-tw	編輯股票
+enable	stocks	zh-tw	啟用
+price	stocks	zh-tw	價格
+select displayed stocks	preferences	zh-tw	選取已顯示的股票指數
+stock quote preferences	stocks	zh-tw	股票指數設定
+stock quotes	common	zh-tw	股票指數
+stocks	common	zh-tw	股票指數
+symbol	stocks	zh-tw	指標
