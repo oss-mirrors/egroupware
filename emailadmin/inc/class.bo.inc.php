@@ -305,8 +305,12 @@
 					);
 				}
 			}
-			$fieldNames = array_merge($this->SMTPServerType[$profileData[$found]['smtpType']]['fieldNames'],
-				$this->IMAPServerType[$profileData[$found]['imapType']]['fieldNames']);
+			$fieldNames = array();
+			if (isset($profileData[$found]))
+			{
+				$fieldNames = array_merge($this->SMTPServerType[$profileData[$found]['smtpType']]['fieldNames'],
+					$this->IMAPServerType[$profileData[$found]['imapType']]['fieldNames']);
+			}
 			$fieldNames[] = 'description';
 			$fieldNames[] = 'defaultDomain';
 			$fieldNames[] = 'profileID';
