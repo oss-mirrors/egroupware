@@ -1,7 +1,7 @@
 <!-- BEGIN main -->
 <center>
 
-<table width="90%" border="0" cellspacing="1" cellpading="1">
+<table width="90%" border="0" cellspacing="0" cellpading="5">
 <tr>
 	<td width="33%">
 		&nbsp;
@@ -18,6 +18,16 @@
 		{server_next_match}
 	</td>
 </tr>
+	<tr>
+		<td colspan="3" align="right">
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" align="right">
+			<button onclick="saveOrder()">{lang_save}</button>
+		</td>
+	</tr>
 </table>
 <br>
 </center>

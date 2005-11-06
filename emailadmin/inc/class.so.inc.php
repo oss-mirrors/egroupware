@@ -99,7 +99,6 @@
 				{
 					$profileData[$value] = $this->db->f($key);
 				}
-
 				return $profileData;
 			}
 			
@@ -110,23 +109,25 @@
 		{
 			if(intval($_profileID) > 0)
 			{
-				$query = 'SELECT profileID,smtpServer,smtpType,imapServer,imapType,description FROM phpgw_emailadmin WHERE profileID='.intval($_profileID);
+				$query = 'SELECT profileID,smtpServer,smtpType,imapServer,imapType,description,ea_appname,ea_group FROM phpgw_emailadmin WHERE profileID='.intval($_profileID);
 			}
 			else
 			{
-				$query = 'SELECT profileID,smtpServer,smtpType,imapServer,imapType,description FROM phpgw_emailadmin';
+				$query = 'SELECT profileID,smtpServer,smtpType,imapServer,imapType,description,ea_appname,ea_group FROM phpgw_emailadmin order by ea_order';
 			}
 			$this->db->query($query);
 
 			$i=0;
 			while ($this->db->next_record())
 			{
-				$serverList[$i]['profileID']   = $this->db->f(0);
-				$serverList[$i]['smtpServer']  = $this->db->f(1);
-				$serverList[$i]['smtpType']    = $this->db->f(2);
-				$serverList[$i]['imapServer']  = $this->db->f(3);
-				$serverList[$i]['imapType']    = $this->db->f(4);
-				$serverList[$i]['description'] = $this->db->f(5);
+				$serverList[$i]['profileID']	= $this->db->f(0);
+				$serverList[$i]['smtpServer']	= $this->db->f(1);
+				$serverList[$i]['smtpType']	= $this->db->f(2);
+				$serverList[$i]['imapServer']	= $this->db->f(3);
+				$serverList[$i]['imapType']	= $this->db->f(4);
+				$serverList[$i]['description']	= $this->db->f(5);
+				$serverList[$i]['ea_appname'] 	= $this->db->f(6);
+				$serverList[$i]['ea_group']	= $this->db->f(7);
 				$i++;
 			}
 			
@@ -286,6 +287,17 @@
 						'account_id'	=> $_accountID
 					),__LINE__,__FILE__
 				);
+			}
+		}
+		
+		function setOrder($_order)
+		{
+			error_log('buh');
+			foreach($_order as $order => $profileID)
+			{
+				$query = "update phpgw_emailadmin set ea_order='".(int)$order."' where profileID='".(int)$profileID."'";
+				error_log($query);
+				$this->db->query($query , __LINE__, __FILE__);
 			}
 		}
 	}

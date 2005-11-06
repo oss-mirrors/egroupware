@@ -86,5 +86,23 @@
 		return $GLOBALS['setup_info']['emailadmin']['currentver'];
 	}
 
+	$test[] = '1.0.1';
+	function emailadmin_upgrade1_0_1()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','ea_order', array('type' => 'int', 'precision' => 4));		
+
+		$GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.2';
+		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+	}
+
+	$test[] = '1.0.2';
+	function emailadmin_upgrade1_0_2()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','ea_appname', array('type' => 'varchar','precision' => '80'));
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','ea_group', array('type' => 'varchar','precision' => '80'));
+
+		$GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.3';
+		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+	}
 
 ?>

@@ -1,3 +1,11 @@
+20051123
+
+- polished gui a little bit. the gui looks much better now. at least i hope so :-)
+- added option to define global used smtp auth options
+- made multiple profiles useable. you can now assign profiles depending on 
+  application name and group membership.
+
+
 20051013
 
 - Postfix LDAP users can now update there email forwardingaddress 

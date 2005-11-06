@@ -43,7 +43,10 @@
 				'defaultDomain' => array('type' => 'varchar','precision' => '100'),
 				'organisationName' => array('type' => 'varchar','precision' => '100'),
 				'userDefinedAccounts' => array('type' => 'varchar','precision' => '3'),
-				'imapoldcclient' => array('type' => 'varchar','precision' => '3')
+				'imapoldcclient' => array('type' => 'varchar','precision' => '3'),
+				'ea_order' => array('type' => 'int','precision' => '4'),
+				'ea_appname' => array('type' => 'varchar','precision' => '80'),
+				'ea_group' => array('type' => 'varchar','precision' => '80'),
 			),
 			'pk' => array('profileID'),
 			'fk' => array(),

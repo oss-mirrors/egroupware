@@ -67,7 +67,7 @@
 			);
 
 			$this->IMAPServerType = array(
-/*				'1' 	=> array(
+				'1' 	=> array(
 					'fieldNames'	=> array(
 						'imapServer',
 						'imapPort',
@@ -80,7 +80,7 @@
 					'description'	=> lang('standard POP3 server'),
 					'protocol'	=> 'pop3',
 					'classname'	=> 'defaultpop'
-				),*/
+				),
 				'2' 	=> array(
 					'fieldNames'	=> array(
 						'imapServer',
@@ -316,6 +316,8 @@
 			$fieldNames[] = 'profileID';
 			$fieldNames[] = 'organisationName';
 			$fieldNames[] = 'userDefinedAccounts';
+			$fieldNames[] = 'ea_appname';
+			$fieldNames[] = 'ea_group';
 			
 			return $this->soemailadmin->getProfile($_profileID, $fieldNames);
 		}
@@ -505,6 +507,13 @@
 					
 					
 					break;
+			}
+		}
+		
+		function setOrder($_order)
+		{
+			if(is_array($_order)) {
+				$this->soemailadmin->setOrder($_order);
 			}
 		}
 

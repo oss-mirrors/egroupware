@@ -136,13 +136,33 @@
 					#$GLOBALS['egw']->js->set_onload('smtp.init();');
 
 					break;
+
+				case 'emailadmin.ui.listProfiles':
+					$GLOBALS['egw']->js->validate_file('jscode','listProfile','emailadmin');
+
+					break;
 			}
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 		}
 
 		function editProfile($_profileID='')
 		{
+			$allGroups = $GLOBALS['egw']->accounts->get_list('groups');
+			foreach($allGroups as $groupInfo)
+			{
+				$groups[$groupInfo['account_id']] = $groupInfo['account_lid'];
+			}
+			asort($groups);
+			$groups = array('any' => lang('any group')) + $groups;
+			
+			$applications = array(
+				'calendar'	=> $GLOBALS['egw_info']['apps']['calendar']['title'],
+				'felamimail' 	=> $GLOBALS['egw_info']['apps']['felamimail']['title'],
+			);
+			asort($applications);
+			$applications = array('any' => lang('any application')) + $applications;
 			
 			if($_profileID != '')
 			{
@@ -168,7 +188,7 @@
 			
 			foreach($profileData as $key => $value)
 			{
-				#print "$key $value<br>";
+				//print "$key $value<br>";
 				switch($key)
 				{
 					case 'imapEnableCyrusAdmin':
@@ -187,6 +207,12 @@
 					case 'smtpType':
 					case 'imapLoginType':
 						$this->t->set_var('selected_'.$key.'_'.$value,'selected="1"');
+						break;
+					case 'ea_appname':
+						$this->t->set_var('application_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_appname]',$value,$applications, true, "style='width: 250px;'"));
+						break;
+					case 'ea_group':
+						$this->t->set_var('group_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_group]',$value,$groups, true, "style='width: 250px;'"));
 						break;
 					default:
 						$this->t->set_var('value_'.$key,$value);
@@ -211,7 +237,7 @@
 			{
 				$this->t->set_var("lang_smtp_option_$key",$value);
 			};
-						
+
 			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value)
 			{
 				$this->t->set_var("lang_imap_option_$key",$value['description']);
@@ -231,7 +257,7 @@
 			$this->translate();
 
 			$profileList = $this->boemailadmin->getProfileList();
-			
+
 			// create the data array
 			if ($profileList)
 			{
@@ -272,12 +298,22 @@
 					$deleteLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).
 									'" onClick="return confirm(\''.lang('Do you really want to delete this Profile').'?\')">'.
 									lang('delete').'</a>';
+
+					$application = (empty($profileList[$i]['ea_appname']) ? lang('any application') : $GLOBALS['egw_info']['apps'][$profileList[$i]['ea_appname']]['title']);
+
+					$group = (empty($profileList[$i]['ea_group']) ? lang('any group') : $GLOBALS['egw']->accounts->id2name($profileList[$i]['ea_group']));
+
+					$moveButtons = '<img src="'. $GLOBALS['egw']->common->image('phpgwapi', 'up') .'" onclick="moveUp(this)">&nbsp;'.
+						       '<img src="'. $GLOBALS['egw']->common->image('phpgwapi', 'down') .'" onclick="moveDown(this)">';
 					
-					$data[] = array(
+					$data['profile_'.$profileList[$i]['profileID']] = array(
 						$descriptionLink,
 						$smtpServerLink,
 						$imapServerLink,
-						$deleteLink
+						$deleteLink,
+						$application,
+						$group,
+						$moveButtons,
 						
 					);
 				}
@@ -288,7 +324,10 @@
 				lang('description'),
 				lang('smtp server name'),
 				lang('imap/pop3 server name'),
-				lang('delete')
+				lang('delete'),
+				lang('application'),
+				lang('group'),
+				lang('order'),
 			);
 				
 			// create the table html code
@@ -346,7 +385,7 @@
 
 			if(is_array($_data))
 			{
-				foreach($_data as $value)
+				foreach($_data as $rowID => $value)
 				{
 					$data = '';
 					foreach($value as $rowData)
@@ -354,6 +393,7 @@
 						$data .= "<td align='center'>$rowData</td>";
 					}
 					$template->set_var('row_data', $data);
+					$template->set_var('row_id', $rowID);
 					$template->fp('rowList','row_list',True);
 				}
 			}
@@ -377,6 +417,8 @@
 			$globalSettings['defaultDomain'] = $_POST['globalsettings']['defaultDomain'];
 			$globalSettings['organisationName'] = $_POST['globalsettings']['organisationName'];
 			$globalSettings['userDefinedAccounts'] = $_POST['globalsettings']['userDefinedAccounts'];
+			$globalSettings['ea_appname'] = ($_POST['globalsettings']['ea_appname'] == 'any' ? '' : $_POST['globalsettings']['ea_appname']);
+			$globalSettings['ea_group'] = ($_POST['globalsettings']['ea_group'] == 'any' ? '' : (int)$_POST['globalsettings']['ea_group']);
 			
 			
 			// get the settings for the smtp server
@@ -458,10 +500,27 @@
 			$this->t->set_var('lang_admin_username',lang('admin username'));
 			$this->t->set_var('lang_admin_password',lang('admin passwort'));
 			$this->t->set_var('lang_imap_server_logintyp',lang('imap server logintyp'));
-			$this->t->set_var('lang_standard',lang('standard'));
-			$this->t->set_var('lang_vmailmgr',lang('Virtual MAIL ManaGeR'));
+			$this->t->set_var('lang_standard',lang('username (standard)'));
+			$this->t->set_var('lang_vmailmgr',lang('username@domainname (Virtual MAIL ManaGeR)'));
 			$this->t->set_var('lang_pre_2001_c_client',lang('IMAP C-Client Version < 2001'));
 			$this->t->set_var('lang_user_can_edit_forwarding_address',lang('user can edit forwarding address'));
+			$this->t->set_var('lang_can_be_used_by_application',lang('can be used by application'));
+			$this->t->set_var('lang_can_be_used_by_group',lang('can be used by group'));
+			$this->t->set_var('lang_smtp_auth',lang('smtp authentication'));
+			$this->t->set_var('lang_username',lang('username'));
+			$this->t->set_var('lang_password',lang('password'));
+			$this->t->set_var('lang_smtp_settings',lang('smtp settings'));
+			$this->t->set_var('lang_smtp_options',lang('smtp options'));
+			$this->t->set_var('lang_profile_access_rights',lang('profile access rights'));
+			$this->t->set_var('lang_global_settings',lang(''));
+			$this->t->set_var('lang_organisation',lang('organisation'));
+			$this->t->set_var('lang_global_options',lang('global options'));
+			$this->t->set_var('lang_server_settings',lang('server settings'));
+			$this->t->set_var('lang_encryption_settings',lang('encryption settings'));
+			$this->t->set_var('',lang(''));
+			$this->t->set_var('',lang(''));
+			$this->t->set_var('',lang(''));
+			$this->t->set_var('',lang(''));
 			# $this->t->set_var('',lang(''));
 			
 		}

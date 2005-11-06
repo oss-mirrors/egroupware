@@ -8,14 +8,18 @@
 </table>
 
 <table width="100%" border="0" cellspacing="1" cellpading="1">
+	<thead>
 <!-- BEGIN header_row -->
-	<tr bgcolor="{th_bg}">
-		{header_row_data}
-	</tr>
+		<tr bgcolor="{th_bg}">
+			{header_row_data}
+		</tr>
 <!-- END header_row -->
+	</thead>
+	<tbody id="nextMatchBody">
 <!-- BEGIN row_list -->
-	<tr bgcolor="{row_color}">
-		{row_data}
-	</tr>
+		<tr id="{row_id}" bgcolor="{row_color}">
+			{row_data}
+		</tr>
 <!-- END row_list -->
+	</tbody>
 </table>
