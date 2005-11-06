@@ -1,5 +1,8 @@
 % to	projects	nl	% tot
 + jobs	projects	nl	+ Jobs
+a new project has been created	projects	nl	Er is een nieuw project aangemaakt op:
+a project has been deleted	projects	nl	Er is een project verwijderd op:
+a project has been updated	projects	nl	Er is een project bijgewerkt op:
 account	projects	nl	Account
 accounting	common	nl	Berekenen
 accounting factor	projects	nl	Reken factor
@@ -81,6 +84,7 @@ date due planned	projects	nl	Geplande einddatum
 days	projects	nl	dagen
 days before	projects	nl	dagen ervoor
 definition per project	admin	nl	Definitie per project
+delete	admin	nl	Verwijderen
 delete activity	projects	nl	verwijder activiteit
 delete factor	projects	nl	verwijder factor
 delete hours	projects	nl	Verwijder uren
@@ -141,6 +145,7 @@ from %1 to %2	projects	nl	van %1 aan %2
 gantt chart	projects	nl	Gantt grafiek
 gantt chart from %1 to %2	projects	nl	Gantt grafiek van %1 naar %2
 generate activity id	projects	nl	Genereer activiteit ID ?
+generate activity id ?	projects	nl	Genereer activiteit ID ?
 generate delivery id ?	projects	nl	Genereer oplevering ID ?
 generate job id	projects	nl	Genereer Job ID ?
 generate project id	projects	nl	Genereer project ID ?
@@ -185,16 +190,25 @@ minutes per workunit	projects	nl	Minuten per werkeenheid
 month	projects	nl	Maand
 move start date if pervious projects end date changes	admin	nl	Verplaats startdatum indien de einddatum van het voorliggende project wijzigt
 name not exceed 250 characters in length	projects	nl	naam mag niet langer zijn dan 250 tekens
+new	admin	nl	Nieuwe
 new date due of milestone %1: %2	projects	nl	Nieuwe deadline datum voor mijlpaal %1: %2.
 new end date	projects	nl	Nieuewe einddatum
 new milestone	projects	nl	Nieuwe mijlpaal
 new project	projects	nl	Nieuw project
+new project created	projects	nl	NIeuw project aangemaakt:
 new start date	projects	nl	Nieuwe startdatum
 nonactive	common	nl	Inactief
 not billable	projects	nl	niet factureerbaar
+notification settings	admin	nl	Notificatie instellingen
+notify management committee	admin	nl	Notificeer beheer commité
+notify project administrators	admin	nl	Notificeer project beheerders
+notify sales department	admin	nl	Notificeer verkoop afdeling
 number	projects	nl	Aantal
 old end date	projects	nl	Oude einddatum
 old start date	projects	nl	Oude startdatum
+onadd	admin	nl	Bij toevoegen
+ondelete	admin	nl	Bij verwijderen
+onstatuschange	admin	nl	Bij statuswijziging
 open	projects	nl	Open
 open popup	projects	nl	open popup
 open popup window	projects	nl	open popup venster
@@ -236,11 +250,13 @@ project accounting	admin	nl	Project berekening
 project administrators	common	nl	Project beheerders
 project data due	projects	nl	Project deadline datum
 project date due	projects	nl	Project deadline datum
+project deleted	projects	nl	Project verwijderd
 project dependencies	common	nl	Project afhankelijkheden
 project id	common	nl	Project ID
 project list	projects	nl	Projectenlijst
 project overview	projects	nl	project overzicht
 project statistic	projects	nl	project statistiek
+project updated	projects	nl	Project bijgewerkt
 project url	projects	nl	Project URL
 projects	common	nl	Projecten
 projects, which are assigned as sequencing	projects	nl	Projecten, die aangewezen zijn als opeenvolgend
@@ -281,6 +297,7 @@ start date can not be before parent projects start date	projects	nl	Startdatum k
 start date planned	projects	nl	Startdatum gepland
 statistic	projects	nl	Statistiek
 statistics	projects	nl	Statistieken
+status change	admin	nl	Statuswijziging
 stop	projects	nl	Stop
 sub project level %1	projects	nl	Sub project niveau %1
 subproject	projects	nl	sub project

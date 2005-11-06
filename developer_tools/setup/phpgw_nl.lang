@@ -12,14 +12,14 @@ changelog entry has been added	developer_tools	nl	Changelog entry is toegevoegd
 changelogs	developer_tools	nl	Changelogs
 clears the internal buffer, all changes made sofar are lost	developer_tools	nl	Maakt de interne buffer leeg, alle verandering tot nu gaan verloren.
 create new language file	developer_tools	nl	Maak nieuw taalbestand
-create sgml file	developer_tools	nl	Maak SQML-bestand
+create sgml file	developer_tools	nl	Maak SGML-bestand
 developer tools - preferences	developer_tools	nl	Ontwikkelaarshulpmiddelen - voorkeuren
 developer_tools	common	nl	Vertaalhulpmiddelen
 diary	developer_tools	nl	Dagboek
 done	developer_tools	nl	klaar
-download	developer_tools	nl	download
+download	developer_tools	nl	Downloaden
 download the lang-file to be saved in the apps setup-dir	developer_tools	nl	Download het taalbestand om het op te slaan in de setupdirectorie van de toepassing.
-edit	developer_tools	nl	Wijzig
+edit	developer_tools	nl	Wijzigen
 installed applications	developer_tools	nl	Geïnstalleerde toepassingen
 language file management	developer_tools	nl	Taalbestandenbeheer
 list changelogs	developer_tools	nl	Toon changelogs
@@ -28,16 +28,16 @@ loading source langfile	developer_tools	nl	Brontaalbestand openen
 loading target langfile	developer_tools	nl	Doeltaalbestand openen
 loads the selected lang-files, to be modified in the next steps	developer_tools	nl	Opent de geselecteerde taalbestanden, om gewijzigd to worden in de volgende stappen
 message	developer_tools	nl	Bericht
-message_id in english	developer_tools	nl	bericht_code in Engels
+message_id in english	developer_tools	nl	bericht ID in het Engels
 no file	developer_tools	nl	geen bestand
 ok	developer_tools	nl	Ok
 original	developer_tools	nl	Origineel
-phrase in english	developer_tools	nl	Phrase in Engels
 phrase in english (or empty if identical)	developer_tools	nl	Zin in het Engels (of leeg indien gelijk)
 preferences	developer_tools	nl	Voorkeuren
 preferences have been updated	developer_tools	nl	Voorkeuren zijn bijgewerkt
 project	developer_tools	nl	Project
-remove	developer_tools	nl	Verwijder
+remove	developer_tools	nl	Verwijderen
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	nl	%1 teksten uit de doeltaal verwijderd omdat ze niet (meer) voorkomen in de brontaal!
 returns to the application list, not saved changes get lost !!!	developer_tools	nl	Ga terug naar de lijst met toepassingen. Niet opgeslagen verandering gaan verloren !!!
 revert	developer_tools	nl	Draai terug
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	nl	Slaat de toegevoegde en gewijzigde vertalingen op in een intern geheugen om gebruikt te worden in de volgende stappen
@@ -53,7 +53,7 @@ sourceforge project id	developer_tools	nl	SourceForge project ID
 sourceforge project tracker	developer_tools	nl	SourceForge project tracker
 sourceforge project tracker preferences	developer_tools	nl	SourceForge project tracker voorkeuren
 step	developer_tools	nl	Stap
-submit	developer_tools	nl	Verzend
+submit	developer_tools	nl	Verzenden
 target language	developer_tools	nl	Doeltaal
 title	developer_tools	nl	Titel
 translate	developer_tools	nl	Vertaal
@@ -63,10 +63,10 @@ update	developer_tools	nl	Bijwerken
 update database	developer_tools	nl	Database bijwerken
 updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	nl	Werkt de vertalingen van beide taalbestanden bij in de database zodat u uw werk direct kunt controleren
 version	developer_tools	nl	Versie
-write	developer_tools	nl	Opslaan
+write	developer_tools	nl	Naar bestand schrijven
 write the lang-file to the apps setup-dir	developer_tools	nl	Schrijf het taalbestand naar de setupdirectory van de toepassing
 write to lang table	developer_tools	nl	Schrijf naar de taaltabel in de database
-writing langfile for '%1' ...	developer_tools	nl	Schrijf taalbestand voor '%1'...
+writing langfile for '%1' ...	developer_tools	nl	Taalbestand voor '%1' wordt geschreven...
 you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	nl	!!! U moet na elke handeling hierboven op [Opslaan] klikken, voordat u verder kunt met de volgende stap !!!
 you must a version	developer_tools	nl	U moet een versie invoeren
 you must enter a change	developer_tools	nl	U moet een verandering toevoegen
