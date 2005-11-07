@@ -27,10 +27,14 @@ act. status:	workflow	it	Stato Att:
 action %1 is impossible if we have no activity and no instance designated for it!	workflow	it	L'azione %1 è impossibile se non c'è un'attività e un'istanza progettata per essa!
 action %1 is impossible, another user is already in place	workflow	it	L'azione %1 è impossibile, un altro utente è già in posizione
 action %1 is impossible, there are no user assigned to this activity for this instance	workflow	it	L'azione %1 è impossibile, non ci sono utenti assegnati a questa attività per questa istanza
+action %1 needs an activity and activity %2 does not exists	workflow	it	L'azione %1 necessita di un'attività e l'attività %2 non esiste
+actions	workflow	it	Azioni
 actions right options	admin	it	Opzioni Diritti Azione
 activate	workflow	it	attiva
 active	workflow	it	Attivo
+active:	workflow	it	attivo:
 activities	workflow	it	Attività
+activities selection	workflow	it	Selezione attività
 activities updated	workflow	it	Attività aggiornate
 activity	workflow	it	attività
 activity  status	workflow	it	Stato Attività
@@ -48,7 +52,12 @@ activity name already exists	workflow	it	Il nome Attività esiste già
 activity role #%1 removed	workflow	it	Ruolo attività #%1 rimosso
 activity role removed	workflow	it	Ruolo Attività rimosso
 activity saved	workflow	it	Attività salvata
+activity:	workflow	it	attività:
 add a transition	workflow	it	Aggiungi una transizione
+add aborted instances	workflow	it	Aggiungi istanze interrotte
+add advanced actions	workflow	it	Aggiungi azioni avanzate
+add completed instances	workflow	it	Aggiungi istanze completate
+add instances in exception	workflow	it	Aggiungi istanze in eccezione
 add new	workflow	it	aggiungi nuovo
 add or edit a process	workflow	it	Aggiungi o modifica un processo
 add or edit an activity	workflow	it	Aggiungi o modifica un'attività
@@ -66,6 +75,7 @@ admin processes	workflow	it	Gestione Processi
 admin processes sources	workflow	it	Gestione Sorgenti Processi
 administer instances	workflow	it	gestisci istanze
 administer processes	workflow	it	gestisci processi
+agent without activity	workflow	it	Agente senza attività
 all	workflow	it	tutto
 always show advanced actions	workflow	it	Mostra sempre azioni avanzate
 always show advanced mode	workflow	it	Mostra sempre modalità avanzata
@@ -81,6 +91,9 @@ cannot add transition. only split activities can have more than one outbound tra
 cc:	workflow	it	Cc:
 circular reference found. some activity has a transition leading to itself	workflow	it	E' stato trovato un riferimento circolare. Qualche attività ha una transizione che conduce a sé stessa.
 cleanup aborted instances	workflow	it	ripulisci istanze annullate
+cleanup actions	workflow	it	azioni di pulitira
+close and get back later	workflow	it	Chiudi e ritorna più tardi
+close printer friendly mode	workflow	it	Chiudi modalità anteprima stampa
 code	workflow	it	codice
 column activity status in instance lists	workflow	it	Colonna Stato Attività in elenco istanze
 column category in instance lists	workflow	it	Colonna Categoria in elenco istanze
@@ -97,6 +110,7 @@ confirm delete	workflow	it	Conferma Elimina
 couldn't add transition	workflow	it	Impossibile aggiungere transizione
 create	workflow	it	crea
 created	workflow	it	Creato
+date:	workflow	it	data:
 default next user	workflow	it	Utente successivo predefinito
 default owner	workflow	it	Proprietario predefinito
 default settings for processes	admin	it	Impostazioni predefinite per i processi
@@ -257,17 +271,21 @@ roles	workflow	it	Ruoli
 roles assigned to this activity	workflow	it	Ruoli assegnati a questa attività
 roles deleted	workflow	it	Ruoli cancellati
 routing	workflow	it	Instradamento
+routing:	workflow	it	instradamento:
 run	workflow	it	esegui
 run activity	workflow	it	esegui attività
 run instance	workflow	it	esegui istanza
 running	workflow	it	in corso
 running activities options	admin	it	Opzioni attività in corso
 running activity	workflow	it	Attività in corso
+search:	workflow	it	cerca:
 select a transition to remove	workflow	it	Seleziona una transizione da rimuovere
 select source	workflow	it	seleziona sorgente
 send after interactive activity is completed	workflow	it	invia al completamento dell'attività interattiva
 send all to	workflow	it	Invia tutto a
+send an email	workflow	it	Invia email
 send instance	workflow	it	invia istanza
+send transition	workflow	it	invia transizione
 send when the activity is ending	workflow	it	invia quando l'attività sta finendo
 send when the activity is starting	workflow	it	invia quando l'attività sta iniziando
 set next act	workflow	it	Imposta atto Seguente

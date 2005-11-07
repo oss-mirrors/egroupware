@@ -26,7 +26,6 @@ as	email	es-es	como
 attach file	email	es-es	Adjuntar archivo
 attach signature	email	es-es	Adjuntar firma
 attachment	email	es-es	Adjunto
-attachments	email	es-es	Archivos Adjuntos
 aug	email	es-es	Ago
 bcc	email	es-es	CCO
 bcc address	email	es-es	Dirección CCO
@@ -57,18 +56,13 @@ contains	email	es-es	Contiene
 could not open this mailbox	email	es-es	No se pudo abrir este buzón
 create (expert)	email	es-es	Crear (experto)
 create a folder	email	es-es	Crear carpeta
-current attachments	email	es-es	Archivos Adjuntos Actuales
 current attachments (%1)	email	es-es	Adjuntos actuales (%1)
-custom	email	es-es	Personal -
 custom e-mail preferences	email	es-es	Preferencias personalizadas del correo
 custom e-mail settings	email	es-es	Opciones personalizadas del correo
-custom email settings	email	es-es	Seteos personalizados del Email
-date	email	es-es	Fecha
 debugging page	email	es-es	Página de depuración
 dec	email	es-es	Dic
 default sorting order	email	es-es	Modo de orden por defecto
 default:	common	es-es	por defecto:
-delete	email	es-es	Borrar
 delete (expert)	email	es-es	Borrar (experto)
 delete a folder	email	es-es	Borrar Carpeta
 delete account	common	es-es	Eliminar cuenta
@@ -91,8 +85,6 @@ e-mail preferences	common	es-es	Preferencias de correo electrónico
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	es-es	Cada usuario tiene una página de resumen que puede mostrar información variada. Esta opción mostrará una pequeña lista de mensajes de correo en la Bandeja de entrada de la cuenta predeterminada del usuario en el resumen de la página de inicio del usuario.
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	es-es	Cada usuario tiene una página de resumen que puede mostrar información variada. Esta opción mostrará una lista reducida de mensajes de correo en la Bandeja de entrada de la cuenta predeterminada del usuario en la página principal del resumen del usuario.
 edit filters	email	es-es	Editar filtros
-email	email	es-es	E-mail
-email - file attachment	email	es-es	Email - Adjuntar Archivo
 email account name	email	es-es	Nombre de cuenta de Email
 email address	email	es-es	Dirección de Email
 email date	email	es-es	Fecha del Mensaje
@@ -109,7 +101,6 @@ error moving messages to	email	es-es	Error moviendo mensajes a
 error text not provided	email	es-es	texto de error no proporcionado
 error: unknown message data	email	es-es	Error: Datos del mensaje desconocidos
 evolution style	email	es-es	Estilo Evolution
-extended sieve	email	es-es	Filtrado Extendido
 extra accounts	email	es-es	Cuentas extra
 extra e-mail account	common	es-es	Cuenta de correo adicional
 extra e-mail accounts	common	es-es	Cuentas de Correo adicionales
@@ -120,7 +111,6 @@ fewer choices	email	es-es	Menos Opciones
 file	email	es-es	Archivo
 file attachment	email	es-es	Adjuntar Archivo
 file into	email	es-es	Guardar en
-files	email	es-es	Archivos
 fill in as much as you can	email	es-es	rellenar todo lo que se pueda
 filter [number] and name	email	es-es	Filtro [número] y nombre
 filter inbox for accounts	email	es-es	Filtrar Bandeja de entrada para las cuentas
@@ -185,7 +175,6 @@ jun	email	es-es	Jun
 keep	email	es-es	Mantener
 keyword	email	es-es	palabra clave
 keywords	email	es-es	Palabras Clave
-layout	email	es-es	Modo
 layout 1	common	es-es	Modo 1
 layout 2	common	es-es	Modo 2
 lines	email	es-es	Lineas
@@ -200,13 +189,11 @@ mail you send will use this address as the &quot;from&quot; address. this may be
 manage accounts	email	es-es	Administrar cuentas
 manage folders	email	es-es	Administrar carpetas
 mar	email	es-es	Mar
-message	email	es-es	Mensaje
 message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	es-es	El mensaje tiene un adjunto que es algún tipo de script o fichero exe que los usuarios de Windows deberían tener cuidado de <b>NO ejecutar</b>. Suelen ser ficheros que se envían con malas intenciones, y suelen tener la extensión bat, inf, pif, com, exe, reg, vbs o scr.
 message list layout	common	es-es	Formato del listado de mensajes
 messages	email	es-es	Mensajes
 messages found in folder	email	es-es	Mensajes encontrados en la carpeta
 messages have been moved to	email	es-es	mensajes fueron movidos a
-monitor	email	es-es	Monitor
 more actions	email	es-es	Más acciones
 more choices	email	es-es	Más opciones
 most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them / default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	es-es	La mayoría de usuarios de EEUU y Europa no necesitan activar esto. Si esta opción está marcada, entonces su servidor de correo puede manejar nombres de carpetas con caracteres que no son ASCII. Por defecto está desactivado, sin marcar. Usar sólo si está realmente seguro de que lo necesita. Sólo funciona en servidores IMAP, ya que los servidores POP no tienen carpetas.
@@ -216,7 +203,6 @@ move selected messages into	email	es-es	Mover los mensajes seleccionados a
 move this message into	email	es-es	Mover este mensaje a
 move up	email	es-es	Hacia arriba
 mozilla modern style	email	es-es	Estilo moderno de Mozilla
-na	email	es-es	NA
 name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	es-es	Nombre del servidor de correo al que quiere acceder. Tiene que ser un nombre como &quot;mail.ejemplo.com&quot;. Si deja esta casilla en blanco se usará el valor predeterminado.
 new	email	es-es	Nuevo
 new account	email	es-es	Nueva cuenta
@@ -224,14 +210,12 @@ new filter	email	es-es	Nuevo filtro
 new message	email	es-es	Nuevo mensaje
 new messages	email	es-es	Mensajes nuevos
 newest	common	es-es	el más reciente
-next	email	es-es	Proximo
 next message	email	es-es	Mensaje siguiente
 no change	email	es-es	sin cambio
 no error returned from server	email	es-es	El servidor no devolvió errores
 no message found in folder '%1'	email	es-es	No se encontraron mensajes en la carpeta '%1'
 no next message	email	es-es	No hay mensaje siguiente
 no previous message	email	es-es	No hay mensaje anterior
-no subject	email	es-es	Sin Asunto
 noia &#64; carlitus style	email	es-es	Noia @ Carlitus Style
 non-standard	email	es-es	No estándar
 not used	email	es-es	Sin usar
@@ -323,10 +307,8 @@ somebody	email	es-es	alguien
 sort by	email	es-es	Ordenar por
 source accounts	email	es-es	cuentas de origen
 spell check	email	es-es	Ortografía
-standard	email	es-es	Normal -
 standard e-mail preferences	email	es-es	Preferencias estándar del correo electrónico
 stop if matched	email	es-es	Parar si coincide
-subject	email	es-es	Asunto
 switch accounts	email	es-es	Cambiar de cuenta
 switch current folder to	common	es-es	Cambiar la carpeta actual a
 test all filters	email	es-es	Comprobar todos los filtros
@@ -340,7 +322,6 @@ the email application offers different icon image themes, groups of images of a 
 the email application offers different icon image themes, these icons can be big or small.	email	es-es	La aplicación de correo ofrece distintos temas de imágenes de iconos, que pueden ser grandes o pequeños.
 the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you clear this box, then it goes back to the default value. if you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.	email	es-es	El nombre de usuario para recibir el correo de esta cuenta. Puede ser el mismo que el de eGroupWare, o el administrador puede haber puesto uno distinto. Si tiene varias cuentas configuradas, necesitará rellenar este campo. Si tiene sólo una cuenta de correo configurada, entonces probablemente puede dejar esto en blanco. Si desmarca esta casilla, entonces vuelve al valor predeterminado. Si sólo necesita algunas opciones personalizadas pero quiere que sea el valor predeterminado, deje la casilla en blanco, lo que usará el valor predeterminado, y verá ese valor cuando vuelva a entrar a esta página de preferencias.
 the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. exra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	es-es	El nombre de usuario para recibir el correo de esta cuenta. Puede ser el mismo que el de eGroupWare, o el administrador puede haber puesto uno distinto. Si tiene varias cuentas configuradas, necesitará rellenar este campo. Si tiene sólo una cuenta de correo configurada, entonces probablemente puede dejar esto en blanco. Si pone una contraseña personalizada, la casilla estará en blanco la próxima vez que vuelva a esta página de configuración. Es simplemente una característica de seguridad porque su contraseña personal no se envía al navegador después de ponerla. Para cambiar su contraseña, simplemente introduzca una nueva contraseña en la casilla. Las cuentas de correo adicionales necesitan que haga esto. Para su cuenta de correo predeterminada, puede borrar su contraseña personal desmarcando la opción &quot;Usar configuración personalizada&quot;.
-the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	es-es	El nombre de usuario para recibir el correo de esta cuenta. Puede ser el mismo que el de eGroupWare, o el administrador puede haber puesto uno distinto. Si tiene varias cuentas configuradas, necesitará rellenar este campo. Si tiene sólo una cuenta de correo configurada, entonces probablemente puede dejar esto en blanco. Si pone una contraseña personalizada, la casilla estará en blanco la próxima vez que vuelva a esta página de configuración. Es simplemente una característica de seguridad porque su contraseña personal no se envía al navegador después de ponerla. Para cambiar su contraseña, simplemente introduzca una nueva contraseña en la casilla. Las cuentas de correo adicionales necesitan que haga esto. Para su cuenta de correo predeterminada, puede borrar su contraseña personal desmarcando la opción &quot;Usar configuración personalizada&quot;.
 the password to use when checking mail for this email account. this may be the same as your egroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	es-es	La contraseña a usar para recibir el correo de esta cuenta. Puede ser la misma que para eGroupWare, o el administrador puede haber puesto una distinta. Si tiene varias cuentas configuradas, necesitará rellenar este campo. Si tiene sólo una cuenta de correo configurada, entonces probablemente puede dejar esto en blanco. Si pone una contraseña personalizada, la casilla estará en blanco la próxima vez que vuelva a esta página de configuración. Es simplemente una característica de seguridad porque su contraseña personal no se envía al navegador después de ponerla. Para cambiar su contraseña, simplemente introduzca una nueva contraseña en la casilla. Las cuentas de correo adicionales necesitan que haga esto. Para su cuenta de correo predeterminada, puede borrar su contraseña personal desmarcando la opción &quot;Usar configuración personalizada&quot;.
 the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your egroupware installation has a &quot;ssl&quot; capabable version of php.	email	es-es	El tipo de servidor de correo al que quiere acceder. Los servidores IMAP tienen carpetas, como la de Enviados y Papelera. Los servidores POP no tienen carpetas. POP, POP-3 y POP3 son lo mismo. Puede tener la conexión con el servidor cifrada usando IMAPS o POPS, sólo si el servidor lo soporta y si la instalación de eGroupWare tiene soporte para PHP y SSL.
 then check the	email	es-es	luego compruebe la
