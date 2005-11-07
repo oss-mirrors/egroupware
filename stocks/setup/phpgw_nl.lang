@@ -1,0 +1,15 @@
+$ change	common	nl	Wijzigen
+%	stocks	nl	%
+% change	common	nl	% wijzigen
+add new stock	stocks	nl	Nieuw aandeel toevoegen
+disable	stocks	nl	uitschakelen
+display stocks on main screen is disabled	stocks	nl	Weergeven van aandelen op het hoofdscherm is uitgeschakeld
+display stocks on main screen is enabled	stocks	nl	Weergeven van aandelen op het hoofdscherm is uitgeschakeld
+edit stock	stocks	nl	Aandeel bewerken
+enable	stocks	nl	inschakelen
+price	stocks	nl	Prijs
+select displayed stocks	preferences	nl	Selecteer de getoonde aandelenkoersen
+stock quote preferences	stocks	nl	Aandelenkoersen voorkeuren
+stock quotes	common	nl	Aandelenkoersen
+stocks	common	nl	Aandelenkoersen
+symbol	stocks	nl	Symbool

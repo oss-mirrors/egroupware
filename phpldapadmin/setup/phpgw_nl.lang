@@ -1,0 +1,119 @@
+add	phpldapadmin	nl	Toevoegen
+add_a_jpeg_photo	phpldapadmin	nl	Een jpegfoto toevoegen
+add_new	phpldapadmin	nl	Nieuwe toevoegen
+add_new_attribute	phpldapadmin	nl	Nieuwe attribuut toevoegen
+add_new_attribute_tooltip	phpldapadmin	nl	Een nieuwe attribuut/waarde toevoegen voor deze entry
+add_new_binary_attr	phpldapadmin	nl	Een nieuwe binaire attribuut toevoegen
+add_new_binary_attr_tooltip	phpldapadmin	nl	Een nieuwe binaire attribuut/waarde vanuit een bestand toevoegen
+add_oclass_and_attrs	phpldapadmin	nl	Een objectklasse en attributen toevoegen
+add_value	phpldapadmin	nl	een waarde toevoegen
+add_value_tooltip	phpldapadmin	nl	Een additionele waarde toevoegen aan deze attribuut
+advanced_search_form_str	phpldapadmin	nl	Geavanceerd zoeken formulier
+alias_for	phpldapadmin	nl	Alias voor
+bad_server_id	phpldapadmin	nl	Verkeerd server ID
+base_dn	phpldapadmin	nl	Basis DN
+binary_value	phpldapadmin	nl	Binaire waarde
+change_entry_rdn	phpldapadmin	nl	Wijzig deze entry's RDN
+chooser_link_tooltip	phpldapadmin	nl	Klik om een grafische dialoog te tonen waarin een DN entry wordt geselecteerd
+click_to_display	phpldapadmin	nl	klik om te tonen
+contains	phpldapadmin	nl	bevat
+copy_this_entry	phpldapadmin	nl	Kopieer deze entry
+copy_this_entry_tooltip	phpldapadmin	nl	Kopieer dit object naar een andere lokatie, een nieuwe DN of een andere server
+could_not_connect	phpldapadmin	nl	Kon geen verbinding met LDAP server maken.
+could_not_determine_root	phpldapadmin	nl	Kon niet de root van uw LDAP boom niet vaststellen.
+could_not_perform_ldap_mod_add	phpldapadmin	nl	Kon ldap_mod_add operation niet uitvoeren
+create	phpldapadmin	nl	aanmaken
+create_a_child_entry	phpldapadmin	nl	Een kind entry aanmaken
+create_new	phpldapadmin	nl	Nieuwe aanmaken
+create_new_entry_in	phpldapadmin	nl	Maak een nieuwe entry in
+create_new_entry_on	phpldapadmin	nl	Maak een nieuwe entry op
+current_list_of	phpldapadmin	nl	Huidige lijst van
+delete_attribute	phpldapadmin	nl	attribuut verwijderen
+delete_hint	phpldapadmin	nl	Hint: <b>Om een attribuut te verwijderen</b>, maak het tekstveld leeg en klik op bewaren.
+delete_this_entry	phpldapadmin	nl	Deze entry verwijderen
+delete_this_entry_tooltip	phpldapadmin	nl	U wordt gevraagd om dit besluit te bevestigen
+desc	phpldapadmin	nl	Beschrijving
+distinguished_name	phpldapadmin	nl	Onderscheiden namen
+download_value	phpldapadmin	nl	download waarde
+ends_with	phpldapadmin	nl	eindigt met
+enter_value_to_add	phpldapadmin	nl	Vul de waarde in die u wilt toevoegen:
+entry_attributes	phpldapadmin	nl	Entry attributen
+equals	phpldapadmin	nl	is gelijk aan
+export_subtree_to_ldif	phpldapadmin	nl	Exporteer subboom naar LDIF
+export_subtree_to_ldif_tooltip	phpldapadmin	nl	Bewaar een LDIF dump van dit object en al de kinderen
+export_to_ldif	phpldapadmin	nl	Exporteren naar LDIF
+export_to_ldif_mac	phpldapadmin	nl	Macintosh stijl regeleinden
+export_to_ldif_tooltip	phpldapadmin	nl	Bewaar een LDIF dump van dit object
+export_to_ldif_unix	phpldapadmin	nl	Unix stijl regeleinden
+export_to_ldif_win	phpldapadmin	nl	Windows stijl regeleinden
+false	phpldapadmin	nl	onwaar
+hidden	phpldapadmin	nl	verborgen
+hide_internal_attrs	phpldapadmin	nl	Interne attributen verbergen
+import	phpldapadmin	nl	importeren
+import_from_ldif	phpldapadmin	nl	Entries uit een LDIF bestand importeren
+inappropriate_matching_note	phpldapadmin	nl	Noot: U zult een "onjuiste match" foutmelding krijgen indien u geen <br /><tt>GELIJKWAARDIGHEID</tt> regel op uw LDAP server voor deze attribuut heeft ingesteld.
+info	phpldapadmin	nl	info
+inherits	phpldapadmin	nl	Erft
+internal_attributes	phpldapadmin	nl	Interne attributen
+internal_attrs_tooltip	phpldapadmin	nl	Attributen die automatisch door het systeem zijn ingesteld.
+is_obsolete	phpldapadmin	nl	Deze objectklasse is <b>overbodig</b>
+jump_to_attr	phpldapadmin	nl	Spring naar een attribuut
+jump_to_objectclass	phpldapadmin	nl	Spring naar een objectklasse
+jump_to_this_oclass	phpldapadmin	nl	Spring naar deze objectklasse definitie
+ldap_refuses_to_give_root	phpldapadmin	nl	Het blijkdat de LDAP server is ingesteld om zijn root te verbergen.
+logged_in_as	phpldapadmin	nl	Ingelogd als:
+logout	phpldapadmin	nl	uitloggen
+logout_of_this_server	phpldapadmin	nl	Van deze server uitloggen
+matching_rule_oid	phpldapadmin	nl	Matchende regel OID
+new_attributes	phpldapadmin	nl	nieuwe attributen
+new_required_attrs	phpldapadmin	nl	Nieuwe vereiste attributen
+new_required_attrs_instructions	phpldapadmin	nl	Instructies: Om deze objectklasse aan deze entry te kunnen toevoegen, moet u specificeren
+new_required_attrs_note	phpldapadmin	nl	Noot: u kan verplicht zijn om nieuwe attributen in te vullen<br />die deze objectklasse vereist.
+no_new_attrs_available	phpldapadmin	nl	geen nieuwe attributen beschibkaar voor deze entry
+no_updates_in_read_only_mode	phpldapadmin	nl	U kunt geen updates uitvoeren terwijl de server in alleen-lezen modus staat
+none	phpldapadmin	nl	geen
+none_remove_value	phpldapadmin	nl	geen, waarde verwijderen
+not_enough_login_info	phpldapadmin	nl	Niet genoeg informatie om in te loggen op deze server. Controleer a.u.b. uw configuratie.
+oid	phpldapadmin	nl	OID
+optional_attrs	phpldapadmin	nl	Optionele attributen
+please_specify_in_config	phpldapadmin	nl	Specificeer het a.u.b. in config.php
+read_only	phpldapadmin	nl	alleen lezen
+really_delete_attribute	phpldapadmin	nl	Attibuut werkelijk verwijderen
+refresh	phpldapadmin	nl	verversen
+refresh_expanded_containers	phpldapadmin	nl	Ververs alle uitgeklapte containers voor
+refresh_this_entry	phpldapadmin	nl	Deze entry verversen
+rename	phpldapadmin	nl	Hernoemen
+rename_entry	phpldapadmin	nl	Entry hernoemen
+report_bug	phpldapadmin	nl	Een bug rapporteren
+request_new_feature	phpldapadmin	nl	Een nieuwe feature aanvragen
+required_attrs	phpldapadmin	nl	Vereiste attributen
+requires_to_add	phpldapadmin	nl	Deze actie vereist dat u toevoegt
+save_changes	phpldapadmin	nl	Wijzigingen bewaren
+schema	phpldapadmin	nl	schema
+schema_for_server	phpldapadmin	nl	Schema voor server
+search	phpldapadmin	nl	zoeken
+search_ filter	phpldapadmin	nl	Zoekfilter
+search_for_entries_whose	phpldapadmin	nl	Zoek naar entries wier
+search_scope	phpldapadmin	nl	Zoek scope
+see_open_bugs	phpldapadmin	nl	bekijk openstaande bugs
+see_open_requests	phpldapadmin	nl	bekijk openstaande verzoeken
+server	phpldapadmin	nl	Server
+show_attributes	phpldapadmin	nl	Attributen tonen
+show_internal_attrs	phpldapadmin	nl	Interne attributen tonen
+simple_search_form_str	phpldapadmin	nl	Eenvoudig zoeken formulier
+sounds_like	phpldapadmin	nl	klinkt als
+starts_with	phpldapadmin	nl	start met
+syntax	phpldapadmin	nl	Syntax
+syntax_oid	phpldapadmin	nl	Syntax OID
+that_this_oclass_requires	phpldapadmin	nl	dat deze objectklasse vereist. U kunt dat in dit formulier doen.
+the_following_attributes	phpldapadmin	nl	De volgende <b>attribuuttypen</b> worden door deze LDAP server ondersteund.
+the_following_matching	phpldapadmin	nl	De volgende <b>matching regels</b> worden door deze LDAP server ondersteund.
+the_following_objectclasses	phpldapadmin	nl	De volgende <b>objectklasses</b> worden door deze LDAP server ondersteund.
+the_following_syntaxes	phpldapadmin	nl	De volgende <b>syntaxes</b> worden door deze LDAP server ondersteund.
+true	phpldapadmin	nl	waar
+value_to	phpldapadmin	nl	waarde aan
+values_for_attribute	phpldapadmin	nl	waarde voor attribuut
+view	phpldapadmin	nl	Weergeven
+view_schema_for	phpldapadmin	nl	Schema weergeven voor
+view_server_info	phpldapadmin	nl	Door serververstrekte informatie weergeven
+viewing_read_only	phpldapadmin	nl	Entry in alleen-lezen modus bekijken.

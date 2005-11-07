@@ -1,0 +1,30 @@
+#	workflow	nl	#
+%1 aborted	workflow	nl	%1 afgebroken
+%1 active	workflow	nl	%1 actief
+%1 completed	workflow	nl	%1 voltooid
+%1 configuration	workflow	nl	%1 configuratie
+%1 days, %2:%3:%4	workflow	nl	%1 dagen, %2:%3:%4
+%1 exception	workflow	nl	%1 uitzondering
+%1 menu	workflow	nl	%1 Menu
+%1 monitoring	workflow	nl	%1 Volgen
+%1 processes (%2 active) (%3 being_run)	workflow	nl	%1 processen (%2 actief) (%3 in uitvoering)
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	nl	/workflow directory bestaat niet en kon niet worden aangemaakt. Vraag a.u.b. de beheerder om de globale configuratie te controleren
+<strong>%owner%</strong> is the instance owner email	workflow	nl	<strong%owner%</strong> is het emailadres van de instantie eigenaar
+<strong>%property_xx%</strong> is the content of the instance's property xx	workflow	nl	<strong>%property_XX%</strong> is de inhoud van instantie-eigenschap XX
+<strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	nl	<strong>%role_XX%</strong> zijn alle emails van alle gebruikers die gekoppeld zijn aan de rol XX
+<strong>%roles%</strong> are the emails of all users mapped to any role on this activity	workflow	nl	<strong>%roles%</strong> zijn de emails van alle gebruikers die verbonden zijn aan willekeurig welke rol van deze activiteit
+<strong>%signature%</strong> is the agent signature defined in the process configuration	workflow	nl	<strong>%signature%</strong> is de agent ondertekening zoals gedefinieerd in de proces configuratie
+<strong>%user%</strong> is the instance user email	workflow	nl	<strong>%user%</strong> is de instantiegebruiker's emailadres
+<strong>%user_xx%</strong> is the email of the acount xx	workflow	nl	<strong>%user_XX%</strong> is de email van het acount XX
+a please wait message is shown when loading the activity form usefull for long tasks	admin	nl	een "even geduld a.u.b." melding wordt getoond terwijl het formulier geladen wordt, nuttig bij lange taken
+abort instance	workflow	nl	instantie afbreken
+abort this instance	workflow	nl	Deze instantie afbreken
+aborted	workflow	nl	afgebroken
+access denied for user %1 on activity %2, no role	workflow	nl	Toegang geweiger voor gebruiker %1 op activiteit %2, geen rol
+act	workflow	nl	act
+act. status	workflow	nl	Act. status
+act. status:	workflow	nl	Act. status:
+action %1 is impossible if we have no activity and no instance designated for it!	workflow	nl	Actie %1 is onmogelijk als we geen activiteit en geen instantie hiervoor hebben aangewezen!
+action %1 is impossible, another user is already in place	workflow	nl	Actie %1 is onmogelijk, een andere gebruiker is reeds bezig
+action %1 is impossible, there are no user assigned to this activity for this instance	workflow	nl	Actie %1 is onmogelijk, er zijn geen gebruikers toegewezen aan deze activiteit voor deze instantie
+action %1 needs an activity and activity %2 does not exists	workflow	nl	Actie %1 vereist een activiteit en activiteit %2 bestaat niet

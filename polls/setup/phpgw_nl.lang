@@ -1,0 +1,33 @@
+actions	polls	nl	acties
+add answer to poll	polls	nl	Voeg een antwoord aan de enquete toe
+add answers	polls	nl	Antwoorden toevoegen
+add new poll question	polls	nl	Voeg een nieuwe enquete vraag toe
+add questions	polls	nl	Vragen toevoegen
+allow users to vote more then once	polls	nl	Gebruikers toestaan om meer dan één keer te stemmen
+answer	polls	nl	Antwoord
+answer has been added to poll	polls	nl	Antwoord is aan de enquete toegevoegd
+answer has been updated	polls	nl	Antwoord is bijgewerkt
+answers	polls	nl	Antwoorden
+are you sure want to delete this answer ?	polls	nl	Weet u zeker dat u dit antwoord wilt verwijderen ?
+are you sure want to delete this question ?	polls	nl	Weet u zeker dat u deze vraag wilt verwijderen ?
+current poll	polls	nl	Huidige enquete
+edit answer	polls	nl	Antwoord bewerken
+edit poll question	polls	nl	Enquete vraag bewerken
+enter poll question	polls	nl	Enquete vraag invoeren
+new poll has been added.  you should now add some answers for this poll	polls	nl	Nieuwe enquete is toegevoegd. U moet nu enkele antwoorden aan deze enquete gaan toevoegen
+poll question	polls	nl	Enquete vraag
+poll settings	common	nl	Enquete instellingen
+polls	common	nl	Enquetes
+question has been updated	polls	nl	Vragen zijn bijgewerkt
+select current poll	polls	nl	Selecteer de huidge enquete
+settings	polls	nl	Instellingen
+settings updated	polls	nl	Instellingen bijgewerkt
+show answers	polls	nl	Toon antwoorden
+show questions	common	nl	Toon vragen
+total votes	polls	nl	Totaal
+view poll	polls	nl	Enquete weergeven
+view results	polls	nl	Resultaten weergeven
+vote	polls	nl	Stemmen
+voting booth admin	admin	nl	Stemhokje
+voting booth administration	polls	nl	Stemhokje beheer
+which poll	polls	nl	Welke enquete
