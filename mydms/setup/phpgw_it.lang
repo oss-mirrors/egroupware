@@ -14,7 +14,12 @@ all versions	mydms	it	Tutte le Versioni
 comment	mydms	it	Commento
 comment for current version	mydms	it	Commento alla versione attuale
 copy acl	mydms	it	copia acl
+copy documents	mydms	it	copia documenti
+copy folder	mydms	it	copia cartella
+copy options	mydms	it	copia opzioni
+copy subfolders	mydms	it	copia sottocartella
 create empty acl	mydms	it	crea acl vuota
+creation date	mydms	it	data creazione
 current acl	mydms	it	acl corrente
 current version	mydms	it	Versiona Attuale
 default access	mydms	it	accesso predefinito
@@ -23,13 +28,35 @@ delete this notification	mydms	it	cancella questa notifica
 do you really want to delete this acl?	mydms	it	Vuoi davvero cancellare questa acl?
 do you really want to delete this document?	mydms	it	Vuoi davvero cancellare questo documento?
 do you really want to delete this version of the document?	mydms	it	Vuoi davvero cancellare questa versione del documento?
+does not expire	mydms	it	non scade
+download	mydms	it	download
 edit folder	mydms	it	modifica cartella
+expires	mydms	it	scade
+expires after	mydms	it	scade dopo
+file size	mydms	it	dimensione file
+filename	mydms	it	nome file
 folder	mydms	it	cartella
+general information	mydms	it	informazioni generali
 information about last update	mydms	it	informazioni ultimo aggiornamento
+informations	mydms	it	Informazioni
+inherit acl again	mydms	it	eredita acl ancora
+last update	mydms	it	ultimo aggiornamento
+linked documents	mydms	it	documenti collegati
+lock status	mydms	it	stato blocco
+mime type	mydms	it	Tipo Mime
 move document	mydms	it	sopsta documento
 move folder	mydms	it	sposta cartella
 mydms	common	it	mydms
 notifications	mydms	it	notifiche
 permission	mydms	it	permesso
+select folder	mydms	it	scegli cartella
+select target folder	mydms	it	scegli cartella destinazione
+target folder	mydms	it	cartella destinazione
+this document gets locked by you!	mydms	it	questo documento viene bloccato da te!
+this document gets unlocked by you.	mydms	it	questo documento viene sbloccato da te
 this document is currently not locked.	mydms	it	questo documento non è attualmente bloccato
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	it	questo documento è bloccato da <a href="mailto:%1">%2</a>.
 update document	mydms	it	aggiorna documento
+upload date	mydms	it	data caricamento
+uploaded by	mydms	it	caricato da
+view online	mydms	it	visualizza online

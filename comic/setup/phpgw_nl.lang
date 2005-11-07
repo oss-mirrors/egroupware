@@ -1,6 +1,7 @@
 %1 by %2	comic	nl	%1 bij %2
 %1 by %2 (%3)	comic	nl	%1 bij %2 (%3)
-are you sure you want to reset all comic dates and resolved image urls?	comic	nl	Weet je zeker dat je alle strip datums en gevonden URLS wilt herstarten?
+are you sure you want to reset all	comic	nl	Weet u zeker dat u alles wilt herstarten
+are you sure you want to reset all comic dates and resolved image urls?	comic	nl	Weet u zeker dat u alle strip datums en gevonden URLS wilt herstarten?
 censorship level	comic	nl	Niveau Censuur
 censorship override enabled	comic	nl	Censuur overschrijding ingeschakeld
 comic	common	nl	Strips
