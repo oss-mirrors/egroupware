@@ -3,6 +3,7 @@
 accounting system	projects	ru	Система учета
 add file	projects	ru	Добавить файл
 add job	projects	ru	Добавить Работу
+add milestone	projects	ru	Добавить отметку
 add project	projects	ru	Добавить проект
 address book	projects	ru	Адресная книга
 administrator	projects	ru	Администратор
@@ -10,12 +11,14 @@ administrator list	projects	ru	Список администраторов
 alarm	projects	ru	предупреждение
 archive	common	ru	Архив
 are you sure you want to delete this job	projects	ru	вы уверены, что хотите удалить данную работу
-are you sure you want to delete this project	projects	ru	Вы уверены, что хотите удалить данный роект?
+are you sure you want to delete this project	projects	ru	Вы уверены, что хотите удалить данный проект?
 available	projects	ru	Осталось
 before	projects	ru	до
+budget	projects	ru	Бюджет
 continue	projects	ru	Продолжить
 coordinator	common	ru	Руководитель
 costtype	projects	ru	Тип оплаты
+creator	projects	ru	Создатель
 customer	common	ru	Заказчик
 customer nr	projects	ru	&#8470; Заказчика
 date due planned	projects	ru	Планируемая дата окончания
@@ -24,6 +27,7 @@ days before	projects	ru	дней до
 delete job	projects	ru	удалить работу
 delete project	projects	ru	удалить проект
 delete selected files	projects	ru	удалить выбранный файл
+discount	projects	ru	Скидка
 distance	projects	ru	Расстояние
 do you also want to delete all sub projects	projects	ru	Хотите ли Вы так же удалить все под-проекты?
 do you also want to delete all sub projects ?	projects	ru	Хотите ли Вы так же удалить все под-проекты?
@@ -31,6 +35,8 @@ edit administrator list	projects	ru	Редактирование списка администраторов
 edit events	projects	ru	редактировать события
 edit job	projects	ru	Редактировать работы
 edit manager list	projects	ru	Редактировать список менеджеров
+edit milestone	projects	ru	Редактировать отметку
+edit milestones	projects	ru	Редактировать отметки
 edit project	projects	ru	Редактировать проект
 edit work hours	projects	ru	Редактировать рабочие часы
 employee	projects	ru	Работник
@@ -43,11 +49,13 @@ event	projects	ru	Событие
 event %1 has been saved	projects	ru	событие %1 было созранено
 events	projects	ru	События
 export as	projects	ru	экспортировать как
+external reference	projects	ru	Внешняя ссылка
 from	projects	ru	с
 generate project id	projects	ru	Генерировать ID проекта?
 global categories	projects	ru	Общие Категории
 hours	projects	ru	Часы
 hours limit	projects	ru	Окончание времени
+invoicing method	projects	ru	Тип оплаты
 job	projects	ru	Работа
 job has been added	projects	ru	Работа была добавлена
 job has been updated	projects	ru	Работа была обновлена
@@ -62,11 +70,15 @@ main project	projects	ru	Основной проект
 main project:	projects	ru	Основной проект:
 manager	projects	ru	Менеджер
 manager list	projects	ru	Список менеджеров
+milestone	projects	ru	Отметка
+milestones	common	ru	Отметки
 month	projects	ru	Месяц
 new end date	projects	ru	Новая дата окончания
+new milestone	projects	ru	Новая отметка
 new project	projects	ru	Новый проект
 new start date	projects	ru	Новая дата начала
 nonactive	common	ru	Неактивно
+not billable	projects	ru	не тарифицируется
 old end date	projects	ru	Старая дата окончания
 old start date	projects	ru	Старая дата начала
 pause	projects	ru	Пауза
@@ -91,8 +103,11 @@ project url	projects	ru	URL Проекта
 projects	common	ru	Проекты
 quality check	projects	ru	Проверка качества
 result	projects	ru	Результат
+save milestone	projects	ru	сохранить отметку
 select groups	projects	ru	Выбирите группы
+select project	projects	ru	выбирите проект
 select users	projects	ru	Выбирите пользователей
+short description	projects	ru	Короткое описание
 start	projects	ru	Старт
 start date planned	projects	ru	Планируемая дата начала
 statistics	projects	ru	Статистика
