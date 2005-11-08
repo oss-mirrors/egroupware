@@ -36,6 +36,7 @@
 			'config.tpl' => 'config',
 			'hook_admin.inc.php' => 'file_admin',
 			'hook_preferences.inc.php' => 'file_preferences',
+			'hook_settings.inc.php' => 'file',
 			'hook_sidebox_menu.inc.php' => 'file',
 			'hook_acl_manager.inc.php' => 'acl_manager'
 		);
@@ -98,7 +99,7 @@
 					$app = 'common';
 					break;
 			}
-			$GLOBALS['file'] = array();
+			$GLOBALS['file'] = $GLOBALS['settings'] = array();
 			unset($GLOBALS['acl_manager']);
 
 			ob_start();		// suppress all output
@@ -134,6 +135,16 @@
 				foreach ($GLOBALS['file'] as $lang => $link)
 				{
 					$this->plist[$lang] = $app;
+				}
+			}
+			foreach($GLOBALS['settings'] as $data)
+			{
+				foreach(array('label','help') as $key)
+				{
+					if (isset($data[$key]) && !empty($data[$key]))
+					{
+						$this->plist[$data[$key]] = $app;
+					}
 				}
 			}
 		}
