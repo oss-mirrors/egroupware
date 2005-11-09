@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['manual']['name']      = 'manual';
 	$setup_info['manual']['title']     = 'User Manual';
-	$setup_info['manual']['version']   = '1.0.0';
+	$setup_info['manual']['version']   = '1.2';
 	$setup_info['manual']['app_order'] = 5;
 	$setup_info['manual']['enable']    = 4;	// popup
 
@@ -31,10 +31,10 @@
 	/* Dependencies for this app to work */
 	$setup_info['manual']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('1.0.0','1.0.1')
+		 'versions' => Array('1.0.0','1.0.1','1.2')
 	);
 	$setup_info['manual']['depends'][] = array(
 		 'appname' => 'wiki',
-		 'versions' => Array('1.0.0','1.0.1')
+		 'versions' => Array('1.0.0','1.0.1','1.2')
 	);
 ?>
