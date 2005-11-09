@@ -16,7 +16,7 @@
 	function wiki_upgrade0_9_15_001()
 	{
 		// this will also create the new colums, with its default values and discards the not longer used mutable column
-		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_wiki_pages',array(
+		$GLOBALS['egw_setup']->oProc->RefreshTable('phpgw_wiki_pages',array(
 			'fd' => array(
 				'wiki_id' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
 				'name' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -50,7 +50,7 @@
 	$test[] = '0.9.15.002';
 	function wiki_upgrade0_9_15_002()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_wiki_links',array(
+		$GLOBALS['egw_setup']->oProc->RefreshTable('phpgw_wiki_links',array(
 			'fd' => array(
 				'wiki_id' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
 				'page' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -72,7 +72,7 @@
 	$test[] = '0.9.15.003';
 	function wiki_upgrade0_9_15_003()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_wiki_interwiki',array(
+		$GLOBALS['egw_setup']->oProc->RefreshTable('phpgw_wiki_interwiki',array(
 			'fd' => array(
 				'wiki_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'prefix' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -96,7 +96,7 @@
 	$test[] = '0.9.15.004';
 	function wiki_upgrade0_9_15_004()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_wiki_sisterwiki',array(
+		$GLOBALS['egw_setup']->oProc->RefreshTable('phpgw_wiki_sisterwiki',array(
 			'fd' => array(
 				'wiki_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'prefix' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
@@ -129,9 +129,9 @@
 	function wiki_upgrade1_0_0()
 	{
 		// drop the index on the page-content, as it limites the content to 2700 chars
-		if ($GLOBALS['phpgw_setup']->oProc->sType == 'pgsql')
+		if ($GLOBALS['egw_setup']->oProc->sType == 'pgsql')
 		{
-			$GLOBALS['phpgw_setup']->oProc->DropIndex('phpgw_wiki_pages',array('body'));
+			$GLOBALS['egw_setup']->oProc->DropIndex('phpgw_wiki_pages',array('body'));
 		}
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.001';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
@@ -141,10 +141,10 @@
 	$test[] = '1.0.0.001';
 	function wiki_upgrade1_0_0_001()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_links','page','wiki_name');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_links','lang','wiki_lang');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_links','link','wiki_link');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_links','count','wiki_count');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_links','page','wiki_name');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_links','lang','wiki_lang');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_links','link','wiki_link');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_links','count','wiki_count');
 
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.002';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
@@ -154,20 +154,20 @@
 	$test[] = '1.0.0.002';
 	function wiki_upgrade1_0_0_002()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','name','wiki_name');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','lang','wiki_lang');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','version','wiki_version');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','time','wiki_time');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','supercede','wiki_supercede');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','readable','wiki_readable');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','writable','wiki_writable');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','username','wiki_username');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','hostname','wiki_hostname');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','comment','wiki_comment');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','title','wiki_title');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_pages','body','wiki_body');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','name','wiki_name');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','lang','wiki_lang');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','version','wiki_version');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','time','wiki_time');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','supercede','wiki_supercede');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','readable','wiki_readable');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','writable','wiki_writable');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','username','wiki_username');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','hostname','wiki_hostname');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','comment','wiki_comment');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','title','wiki_title');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_pages','body','wiki_body');
 		// deleted wiki-pages are now marked as NULL, not longer just as '', as MaxDB cant compare the LONG column agains ''
-		$GLOBALS['phpgw_setup']->oProc->query("UPDATE phpgw_wiki_pages SET wiki_body=NULL WHERE wiki_body LIKE ''",__LINE__,__FILE__);
+		$GLOBALS['egw_setup']->oProc->query("UPDATE phpgw_wiki_pages SET wiki_body=NULL WHERE wiki_body LIKE ''",__LINE__,__FILE__);
 
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.003';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
@@ -177,11 +177,11 @@
 	$test[] = '1.0.0.003';
 	function wiki_upgrade1_0_0_003()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_rate','ip','wiki_rate_ip');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_rate','time','wiki_rate_time');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_rate','viewLimit','wiki_rate_viewLimit');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_rate','searchLimit','wiki_rate_searchLimit');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_rate','editLimit','wiki_rate_editLimit');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_rate','ip','wiki_rate_ip');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_rate','time','wiki_rate_time');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_rate','viewLimit','wiki_rate_viewLimit');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_rate','searchLimit','wiki_rate_searchLimit');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_rate','editLimit','wiki_rate_editLimit');
 
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.004';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
@@ -191,10 +191,10 @@
 	$test[] = '1.0.0.004';
 	function wiki_upgrade1_0_0_004()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','prefix','interwiki_prefix');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','where_defined_page','wiki_name');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','where_defined_lang','wiki_lang');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','url','interwiki_url');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','prefix','interwiki_prefix');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','where_defined_page','wiki_name');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','where_defined_lang','wiki_lang');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','url','interwiki_url');
 
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.005';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
@@ -204,10 +204,10 @@
 	$test[] = '1.0.0.005';
 	function wiki_upgrade1_0_0_005()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','prefix','sisterwiki_prefix');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','where_defined_page','wiki_name');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','where_defined_lang','wiki_lang');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','url','sisterwiki_url');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','prefix','sisterwiki_prefix');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','where_defined_page','wiki_name');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','where_defined_lang','wiki_lang');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','url','sisterwiki_url');
 
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.006';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
@@ -217,8 +217,8 @@
 	$test[] = '1.0.0.006';
 	function wiki_upgrade1_0_0_006()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_remote_pages','page','wiki_remote_page');
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_wiki_remote_pages','site','wiki_remote_site');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_remote_pages','page','wiki_remote_page');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_remote_pages','site','wiki_remote_site');
 
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.007';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
@@ -228,14 +228,22 @@
 	$test[] = '1.0.0.007';
 	function wiki_upgrade1_0_0_007()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_links','egw_wiki_links');
-		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_pages','egw_wiki_pages');
-		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_rate','egw_wiki_rate');
-		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_interwiki','egw_wiki_interwiki');
-		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_sisterwiki','egw_wiki_sisterwiki');
-		$GLOBALS['phpgw_setup']->oProc->RenameTable('phpgw_wiki_remote_pages','egw_wiki_remote_pages');
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_wiki_links','egw_wiki_links');
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_wiki_pages','egw_wiki_pages');
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_wiki_rate','egw_wiki_rate');
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_wiki_interwiki','egw_wiki_interwiki');
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_wiki_sisterwiki','egw_wiki_sisterwiki');
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_wiki_remote_pages','egw_wiki_remote_pages');
 
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.1.001';
+		return $GLOBALS['setup_info']['wiki']['currentver'];
+	}
+
+
+	$test[] = '1.0.1.001';
+	function wiki_upgrade1_0_0_007()
+	{
+		$GLOBALS['setup_info']['wiki']['currentver'] = '1.2';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
 	}
 ?>
