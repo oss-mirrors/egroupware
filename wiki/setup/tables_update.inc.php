@@ -241,7 +241,7 @@
 
 
 	$test[] = '1.0.1.001';
-	function wiki_upgrade1_0_0_007()
+	function wiki_upgrade1_0_1_001()
 	{
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.2';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
