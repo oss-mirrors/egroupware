@@ -24,6 +24,7 @@ authorized users	filescenter	nl	Geautoriseerde gebruikers
 backup	filescenter	nl	Backup
 cannot replace %1 because it is a directory	filescenter	nl	Kan %1 niet vervangen omdat het een directory is.
 cannot write file $1	filescenter	nl	Kan bestand $1 niet schrijven
+change the values here to redefine this	filescenter	nl	Wijzig hier de waarden om dit opnieuw te definiëren
 clean the temporary folder for application	filescenter	nl	De tijdelijke folder voor toepassing leegmaken
 click in the row to edit a file type.	filescenter	nl	Klik op de rij om een bestandtype te bewerken..
 click in the row to edit an item.	filescenter	nl	Klik op de rij om een item te bewerken.

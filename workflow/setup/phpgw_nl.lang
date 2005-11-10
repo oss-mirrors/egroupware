@@ -28,3 +28,11 @@ action %1 is impossible if we have no activity and no instance designated for it
 action %1 is impossible, another user is already in place	workflow	nl	Actie %1 is onmogelijk, een andere gebruiker is reeds bezig
 action %1 is impossible, there are no user assigned to this activity for this instance	workflow	nl	Actie %1 is onmogelijk, er zijn geen gebruikers toegewezen aan deze activiteit voor deze instantie
 action %1 needs an activity and activity %2 does not exists	workflow	nl	Actie %1 vereist een activiteit en activiteit %2 bestaat niet
+we were not able to build the message	workflow	nl	We konden het bericht niet samenstellen
+workflow	common	nl	Werkstroom
+workflow configuration	admin	nl	Werkstroom configuratie
+workflow preferences	workflow	nl	Werkstroom voorkeuren
+workflow site configuration	workflow	nl	Werkstroom site configuratie
+workflow.ui_useractivities	workflow	nl	workflow.ui_useractivities
+workitem information	workflow	nl	Werkitem informatie
+workitems	workflow	nl	Werkitems

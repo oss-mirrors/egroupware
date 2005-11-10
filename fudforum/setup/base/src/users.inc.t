@@ -51,7 +51,7 @@ function init_user()
 	/* this is ugly, very ugly, but there is no way around it, we need to see if the 
 	 * user's language had changed and we can only do it this way.
 	 */
-	$langl = array('bg'=>'bulgarian', 'zh'=>'chinese_big5', 'cs'=>'czech', 'nl'=>'dutch', 'fr'=>'french', 'de'=>'german', 'it'=>'italian', 'lv'=>'latvian', 'no'=>'norwegian', 'pl'=>'polish', 'pt'=>'portuguese', 'ro'=>'romanian', 'ru'=>'russian', 'sk'=>'slovak', 'es'=>'spanish', 'sv'=>'swedish', 'tr'=>'turkish', 'en'=>'english');
+	$langl = array('bg'=>'bulgarian', 'zh'=>'chinese_big5', 'cs'=>'czech', 'nl'=>'dutch', 'fr'=>'french', 'de'=>'german', 'it'=>'italian', 'lv'=>'latvian', 'no'=>'norwegian', 'pl'=>'polish', 'pt'=>'portuguese', 'ro'=>'romanian', 'ru'=>'russian', 'sk'=>'slovak', 'es-es'=>'spanish', 'sv'=>'swedish', 'tr'=>'turkish', 'en'=>'english');
 	$lang =& $phpgw['preferences']['common']['lang'];
 	if (isset($langl[$lang]) && $langl[$lang] != $u->lang) {
 		if (!($o = db_sab("SELECT * FROM {SQL_TABLE_PREFIX}themes WHERE lang='{$langl[$lang]}'"))) {
