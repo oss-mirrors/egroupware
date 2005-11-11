@@ -13,6 +13,7 @@ admin-tools	mydms	it	Strumenti di Amministrazione
 all versions	mydms	it	Tutte le Versioni
 comment	mydms	it	Commento
 comment for current version	mydms	it	Commento alla versione attuale
+content	mydms	it	Contenuto
 copy acl	mydms	it	copia acl
 copy documents	mydms	it	copia documenti
 copy folder	mydms	it	copia cartella
@@ -44,7 +45,7 @@ last update	mydms	it	ultimo aggiornamento
 linked documents	mydms	it	documenti collegati
 lock status	mydms	it	stato blocco
 mime type	mydms	it	Tipo Mime
-move document	mydms	it	sopsta documento
+move document	mydms	it	sposta documento
 move folder	mydms	it	sposta cartella
 mydms	common	it	mydms
 notifications	mydms	it	notifiche

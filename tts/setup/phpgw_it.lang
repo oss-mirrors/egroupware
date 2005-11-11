@@ -35,7 +35,6 @@ delete the listed tickets.	tts	it	Cancella i ticket in elenco
 deleting the state	tts	it	Cancello lo stato
 deleting the transition	tts	it	Cancello la transizione
 detail	tts	it	Dettagli
-details	tts	it	Dettagli
 duplicate	tts	it	DUPLICATO
 edit the state	tts	it	Modifica lo stato
 edit the transition	tts	it	Modifica la transizione
@@ -81,7 +80,6 @@ opened by	tts	it	Aperto da
 original ticket details	tts	it	Dettagli Originali del Ticket
 perform irregular transition into the following state	tts	it	Esegui transizione irregolare nel seguente stato
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	it	Per favore inserisci l'oggetto del ticket, altrimenti il ticket non può essere salvato.
-prio	tts	it	Prio
 priority	tts	it	Priorità
 priority changed	tts	it	Priorità cambiata
 put the preexistent ticket into the state %1.	tts	it	Porta il ticket preesistente allo stato %1.
@@ -93,17 +91,29 @@ reopened	tts	it	RIAPERTO
 resolve	tts	it	RISOLVI
 resolved	tts	it	RISOLTO
 returns a struct of a tickets history	tts	it	Riporta una struttura della cronologia del ticket
+returns the additional notes attached to a ticket	tts	it	Restituisce le note aggiuntive allegate ad un ticket
 selected	tts	it	selezionato
+show new/updated tickets on main screen	tts	it	mostra i ticket nuovi/aggiornati sulla videata principale
 source state	tts	it	Stato di partenza
-status	tts	it	Status
+state	tts	it	Stato
+state changed	tts	it	Stato modificato
+state id	tts	it	ID stato
+state name	tts	it	Nome stato
 status/date closed	tts	it	Status/Data chiusura
 subject changed	tts	it	Oggetto cambiato
 target state	tts	it	Stato d'arrivo
 test	tts	it	TEST
 the closed ticket requires more work. reopen it.	tts	it	Il ticket che è stato chiuso richiede più lavoro. Riaprilo.
+the owner of the ticket was not able to confirm the issue.	tts	it	Il proprietario del ticket non è stato in grado di confermare il problema.
+the ticket has been accepted by the owner, who is about to work on it.	tts	it	Il ticket è stato accettato dal proprietario, che sta per lavorarlo.
 the ticket has been closed without resolution.	tts	it	Il ticket è stato chiuso senza soluzione.
 the ticket has been reopened for further work.	tts	it	Il ticket è stato riaperto per un'ulteriore lavorazione.
 the ticket has been successfully resolved.	tts	it	Il ticket è stato risolto.
+the ticket has been verified and has to be worked on.	tts	it	Il ticket è stato verificato e deve essere lavorato.
+the ticket has been worked on and the work requires validation.	tts	it	Il ticket è stato lavorato e il lavoro richiede validazione.
+the ticket has been worked on, but requires more work.	tts	it	Il ticket è stato lavorato, ma richiede ulteriore lavoro.
+the ticket is a duplicate of another ticket and should be closed.	tts	it	Il ticket è un duplicato di un altro ticket e deve essere chiuso.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	it	Il ticket non è effettivamente un duplicato di un altro ticket. Riaprilo.
 the ticket is invalid and cannot be worked on.	tts	it	Il ticket non è valido e non può essere lavorato.
 ticket	tts	it	Ticket
 ticket has been updated	tts	it	Il ticket è stato aggiornato
@@ -128,11 +138,8 @@ trouble ticket system	common	it	Sistema Gestione Problemi
 tts	common	it	Sistema Gestione Problemi
 tts preferences	tts	it	Sistema Gestione Problemi - preferenze
 undefined	tts	it	NONDEFINITO
-update	tts	it	Aggiornamento
 update ticket state	tts	it	Aggiorna stato del ticket
 updates ticket	tts	it	Aggiorna il ticket
-use email notification	tts	it	Usa notifica via email
-user	tts	it	Utente
 verified	tts	it	VERIFICATO
 verify	tts	it	VERIFICA
 verify the ticket to work on it.	tts	it	Verifica il ticket per lavorarlo.
