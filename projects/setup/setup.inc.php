@@ -66,10 +66,10 @@
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.16','0.9.17','0.9.14','1.0.0','1.0.1')
+		 'versions' => Array('0.9.16','0.9.17','0.9.14','1.0.0','1.0.1','1.2')
 	);	
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'infolog',
-		 'versions' => Array('1.0.0','1.0.1')
+		 'versions' => Array('1.0.0','1.0.1','1.2')
 	);
