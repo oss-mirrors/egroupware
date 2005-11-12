@@ -60,6 +60,7 @@ not set	wiki	en	not set
 older	wiki	en	Older
 only if browser supports a richtext-editor	admin	en	Only if browser supports a richtext-editor
 please contact the %1administrator%2 for assistance.	wiki	en	Please contact the %1Administrator%2 for assistance.
+preferences	wiki	en	Preferences
 preview	wiki	en	Preview
 preview of current version	wiki	en	Preview of Current Version
 rate control / ip blocking disabled	wiki	en	Rate control / IP blocking disabled
