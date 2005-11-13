@@ -782,7 +782,7 @@ class WfRuntime extends Base
   {
     if (!($this->activity->isInteractive()))
     {
-      $this->error[] = tra('interactive instances should not call the complete() method');
+      $this->error[] = tra('interactive activities should not call the complete() method');
       return false;
     }
     

@@ -68,19 +68,16 @@ class WfSecurity extends Base {
     //group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
         
-    $query = 'select count(*) from '.GALAXIA_TABLE_PREFIX.'activity_roles gar, 
-        '.GALAXIA_TABLE_PREFIX.'user_roles gur, 
-        '.GALAXIA_TABLE_PREFIX.'roles gr 
-        where gar.wf_role_id=gr.wf_role_id 
-        and gur.wf_role_id=gr.wf_role_id
-        and gar.wf_activity_id=? 
+    $query = 'select count(*) from '.GALAXIA_TABLE_PREFIX.'activity_roles gar 
+        INNER JOIN '.GALAXIA_TABLE_PREFIX.'roles gr ON gar.wf_role_id=gr.wf_role_id
+        INNER JOIN '.GALAXIA_TABLE_PREFIX.'user_roles gur ON gur.wf_role_id=gr.wf_role_id 
+        where gar.wf_activity_id=? 
         and ( (gur.wf_user=? and gur.wf_account_type=?) 
               or (gur.wf_user in ('.implode(',',$groups).') and gur.wf_account_type=?))';
     if (!($readonly))
     {
       $query.= 'and NOT(gar.wf_readonly=1)';
     }
-            
     $result= $this->getOne($query ,array($activity_id, $user, 'u', 'g'));
     if ($result)
     {
@@ -241,7 +238,7 @@ class WfSecurity extends Base {
         //$this->error[]= '<br> Debug:locking instances '.$where;
         if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instances', $where)))
         {
-          $this->error[] = tra('failed to obtain lock on instances table');
+          $this->error[] = tra('failed to obtain lock on %1 table', 'instances');
           return false;
         }
       }
@@ -284,7 +281,7 @@ class WfSecurity extends Base {
         //$this->error[] = '<br> Debug:locking instance_activities '.$where;
         if (!($this->db->RowLock(GALAXIA_TABLE_PREFIX.'instance_activities', $where)))
         {
-          $this->error[] = tra('failed to obtain lock on instances_activities table');
+          $this->error[] = tra('failed to obtain lock on %1 table','instances_activities');
           return false;
         }
       }
