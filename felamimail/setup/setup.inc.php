@@ -13,7 +13,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.0.0.006';
+	$setup_info['felamimail']['version']     	= '1.2';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -41,11 +41,11 @@
 	/* Dependacies for this app to work */
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('1.0.0','1.0.1')
+		'versions' => Array('1.0.0','1.0.1','1.2')
 	);
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'emailadmin',
-		'versions' => Array('1.0.1')
+		'versions' => Array('1.0.1','1.2')
 	);
 
 

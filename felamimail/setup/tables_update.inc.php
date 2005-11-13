@@ -243,4 +243,13 @@
 		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0.006';
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
 	}
+
+
+	$test[] = '1.0.0.006';
+	function felamimail_upgrade1_0_0_006()
+	{
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.2';
+	}
+	
+	// next version should be 1.2.001
 ?>
