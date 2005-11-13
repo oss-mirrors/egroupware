@@ -14,7 +14,7 @@
 	/* $Id$ */
 
 	$phpgw_baseline = array(
-		'phpgw_emailadmin' => array(
+		'egw_emailadmin' => array(
 			'fd' => array(
 				'profileID' => array('type' => 'auto','nullable' => False),
 				'smtpServer' => array('type' => 'varchar','precision' => '80'),

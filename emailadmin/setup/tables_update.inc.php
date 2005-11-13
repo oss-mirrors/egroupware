@@ -15,29 +15,26 @@
 	$test[] = '0.0.3';
 	function emailadmin_upgrade0_0_3()
 	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','smtpType', array('type' => 'int', 'precision' => 4));		
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','smtpType', array('type' => 'int', 'precision' => 4));		
 
-		$setup_info['emailadmin']['currentver'] = '0.0.4';
-		return $setup_info['emailadmin']['currentver'];
+		return $setup_info['emailadmin']['currentver'] = '0.0.4';
 	}
 
 	$test[] = '0.0.4';
 	function emailadmin_upgrade0_0_4()
 	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','defaultDomain', array('type' => 'varchar', 'precision' => 100));		
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','defaultDomain', array('type' => 'varchar', 'precision' => 100));		
 
-		$setup_info['emailadmin']['currentver'] = '0.0.5';
-		return $setup_info['emailadmin']['currentver'];
+		return $setup_info['emailadmin']['currentver'] = '0.0.5';
 	}
 
 	$test[] = '0.0.5';
 	function emailadmin_upgrade0_0_5()
 	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','organisationName', array('type' => 'varchar', 'precision' => 100));		
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','userDefinedAccounts', array('type' => 'varchar', 'precision' => 3));		
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','organisationName', array('type' => 'varchar', 'precision' => 100));		
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','userDefinedAccounts', array('type' => 'varchar', 'precision' => 3));		
 
-		$setup_info['emailadmin']['currentver'] = '0.0.6';
-		return $setup_info['emailadmin']['currentver'];
+		return $setup_info['emailadmin']['currentver'] = '0.0.6';
 	}
 	
 
@@ -45,33 +42,28 @@
 	$test[] = '0.0.6';
 	function emailadmin_upgrade0_0_6()
 	{
-		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','oldimapcclient',array(
+		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','oldimapcclient',array(
 			'type' => 'varchar',
 			'precision' => '3'
 		));
 
-
-		$GLOBALS['setup_info']['emailadmin']['currentver'] = '0.0.007';
-		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '0.0.007';
 	}
 
 
 	$test[] = '0.0.007';
 	function emailadmin_upgrade0_0_007()
 	{
-		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_emailadmin','oldimapcclient','imapoldcclient');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_emailadmin','oldimapcclient','imapoldcclient');
 
-
-		$GLOBALS['setup_info']['emailadmin']['currentver'] = '0.0.008';
-		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '0.0.008';
 	}
 	
 
 	$test[] = '0.0.008';
 	function emailadmin_upgrade0_0_008()
 	{
-		$GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.0';
-		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.0';
 	}
 
 	$test[] = '1.0.0';
@@ -82,8 +74,7 @@
 			'precision' => '3'
 		));
 
-		$GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.1';
-		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.1';
 	}
 
 	$test[] = '1.0.1';
@@ -91,8 +82,7 @@
 	{
 		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','ea_order', array('type' => 'int', 'precision' => 4));		
 
-		$GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.2';
-		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.2';
 	}
 
 	$test[] = '1.0.2';
@@ -101,8 +91,16 @@
 		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','ea_appname', array('type' => 'varchar','precision' => '80'));
 		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_emailadmin','ea_group', array('type' => 'varchar','precision' => '80'));
 
-		$GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.3';
-		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.0.3';
 	}
 
+	$test[] = '1.0.3';
+	function emailadmin_upgrade1_0_3()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_emailadmin','egw_emailadmin');
+
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.2';
+	}
+	
+	//next version should be 1.2.001
 ?>

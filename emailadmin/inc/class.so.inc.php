@@ -13,55 +13,25 @@
 
 	class so
 	{
+		var $db;
+		var $table = 'egw_emailadmin';
+
 		function so()
 		{
-			$this->db		= clone($GLOBALS['egw']->db);
-			include(EGW_INCLUDE_ROOT.'/emailadmin/setup/tables_current.inc.php');
-			$this->tables = &$phpgw_baseline;
-			unset($phpgw_baseline);
-			$this->table = &$this->tables['phpgw_emailadmin'];
+			$this->db = clone($GLOBALS['egw']->db);
+			$this->db->set_app('emailadmin');
 		}
 		
 		function updateProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
 			$profileID = (int) $_globalSettings['profileID'];
-			$fields = $values = $query = '';
+			unset($_globalSettings['profileID']);
 
-			foreach($_smtpSettings+$_globalSettings+$_imapSettings as $key => $value)
-			{
-				if($key == 'profileID')
-					continue;
+			$where = $profileID ? array('profileID' => $_globalSettings['profileID']) : false;
 
-				if($fields != '')
-				{
-					$fields .= ',';
-					$values .= ',';
-					$query  .= ',';
-				}
-				switch($this->table['fd'][$key]['type'])
-				{
-					case 'int': case 'auto':
-						$value = intval($value);
-						break;
-					default:
-						$value = $this->db->db_addslashes($value);
-						break;
-				}
-				$fields .= "$key";
-				$values .= "'$value'";
-				$query  .= "$key='$value'";
-			}
-			if ($profileID)
-			{
-				$query = "update phpgw_emailadmin set $query where profileID=$profileID";
-			}
-			else
-			{
-				$query = "insert into phpgw_emailadmin ($fields) values ($values)";
-			}
-			$this->db->query($query,__LINE__,__FILE__);
-			
-			return $profileID ? $profileID : $this->db->get_last_insert_id('phpgw_emailadmin','profileID');
+			$this->db->insert($this->table,$_smtpSettings+$_globalSettings+$_imapSettings,$where,__LINE__,__FILE__);
+
+			return $profileID ? $profileID : $this->db->get_last_insert_id($this->table,'profileID');
 		}
 
 		function addProfile($_globalSettings, $_smtpSettings, $_imapSettings)
@@ -73,83 +43,37 @@
 
 		function deleteProfile($_profileID)
 		{
-			$query = 'DELETE FROM phpgw_emailadmin WHERE profileID='.intval($_profileID);
-			$this->db->query($query,__LINE__ , __FILE__);
+			$this->db->delete($this->table,array('profileID' => $_profileID),__LINE__ , __FILE__);
 		}
 
 		function getProfile($_profileID, $_fieldNames)
 		{
-			$query = '';
-			foreach($_fieldNames as $key => $value)
-			{
-				if(!empty($query))
-				{
-					$query .= ', ';
-				}
-				$query .= $value;
-			}
+			$this->db->select($this->table,$_fieldNames,array('profileID' => $_profileID), __LINE__, __FILE__);
 			
-			$query = "SELECT $query FROM phpgw_emailadmin WHERE profileID=".intval($_profileID);
-			
-			$this->db->query($query, __LINE__, __FILE__);
-			
-			if($this->db->next_record())
-			{
-				foreach($_fieldNames as $key => $value)
-				{
-					$profileData[$value] = $this->db->f($key);
-				}
-				return $profileData;
-			}
-			
-			return false;
+			return $this->db->row(true);
 		}
 		
 		function getProfileList($_profileID='')
 		{
-			if(intval($_profileID) > 0)
-			{
-				$query = 'SELECT profileID,smtpServer,smtpType,imapServer,imapType,description,ea_appname,ea_group FROM phpgw_emailadmin WHERE profileID='.intval($_profileID);
-			}
-			else
-			{
-				$query = 'SELECT profileID,smtpServer,smtpType,imapServer,imapType,description,ea_appname,ea_group FROM phpgw_emailadmin order by ea_order';
-			}
-			$this->db->query($query);
-
-			$i=0;
-			while ($this->db->next_record())
-			{
-				$serverList[$i]['profileID']	= $this->db->f(0);
-				$serverList[$i]['smtpServer']	= $this->db->f(1);
-				$serverList[$i]['smtpType']	= $this->db->f(2);
-				$serverList[$i]['imapServer']	= $this->db->f(3);
-				$serverList[$i]['imapType']	= $this->db->f(4);
-				$serverList[$i]['description']	= $this->db->f(5);
-				$serverList[$i]['ea_appname'] 	= $this->db->f(6);
-				$serverList[$i]['ea_group']	= $this->db->f(7);
-				$i++;
-			}
+			$where = false;
+			if ((int) $_profileID) $where = array('profileID' => $_profileID);
 			
-			if ($i>0)
+			$this->db->select($this->table,'profileID,smtpServer,smtpType,imapServer,imapType,description,ea_appname,ea_group',
+				$where, __LINE__, __FILE__,false,(int) $_profileID ? '' : 'ORDER BY ea_order');
+
+			$serverList = false;
+			while (($row = $this->db->row(true)))
 			{
-				return $serverList;
+				$serverList[] = $row;
 			}
-			else
-			{
-				return false;
-			}
+			return $serverList;
 		}
 
 		function getUserData($_accountID)
 		{
-			global $phpgw, $phpgw_info;
-
 			$ldap = $GLOBALS['egw']->common->ldapConnect();
-			$filter = "(&(uidnumber=$_accountID))";
 			
-			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],$filter);
-			if ($sri)
+			if (($sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],"(uidnumber=$_accountID)")))
 			{
 				$allValues = ldap_get_entries($ldap, $sri);
 				if ($allValues['count'] > 0)
@@ -157,11 +81,11 @@
 					#print "found something<br>";
 					$userData["mailLocalAddress"]		= $allValues[0]["mail"][0];
 					$userData["mailAlternateAddress"]	= $allValues[0]["mailalternateaddress"];
-					$userData["accountStatus"]		= $allValues[0]["accountstatus"][0];
+					$userData["accountStatus"]			= $allValues[0]["accountstatus"][0];
 					$userData["mailRoutingAddress"]		= $allValues[0]["mailforwardingaddress"];
-					$userData["qmailDotMode"]		= $allValues[0]["qmaildotmode"][0];
+					$userData["qmailDotMode"]			= $allValues[0]["qmaildotmode"][0];
 					$userData["deliveryProgramPath"]	= $allValues[0]["deliveryprogrampath"][0];
-					$userData["deliveryMode"]		= $allValues[0]["deliverymode"][0];
+					$userData["deliveryMode"]			= $allValues[0]["deliverymode"][0];
 
 					unset($userData["mailAlternateAddress"]["count"]);
 					unset($userData["mailRoutingAddress"]["count"]);					
@@ -211,13 +135,13 @@
 			// the old code for qmail ldap
 			$newData = array 
 			(
-				'mail'			=> $_accountData["mailLocalAddress"],
+				'mail'					=> $_accountData["mailLocalAddress"],
 				'mailAlternateAddress'	=> $_accountData["mailAlternateAddress"],
 				'mailRoutingAddress'	=> $_accountData["mailRoutingAddress"],
-				'homedirectory'		=> $homedirectory,
-				'mailMessageStore'	=> $homedirectory."/Maildir/",
-				'gidnumber'		=> '1000',
-				'qmailDotMode'		=> $_accountData["qmailDotMode"],
+				'homedirectory'			=> $homedirectory,
+				'mailMessageStore'		=> $homedirectory."/Maildir/",
+				'gidnumber'				=> '1000',
+				'qmailDotMode'			=> $_accountData["qmailDotMode"],
 				'deliveryProgramPath'	=> $_accountData["deliveryProgramPath"]
 			);
 			
@@ -288,16 +212,18 @@
 					),__LINE__,__FILE__
 				);
 			}
+			return true;
 		}
 		
 		function setOrder($_order)
 		{
-			error_log('buh');
 			foreach($_order as $order => $profileID)
 			{
-				$query = "update phpgw_emailadmin set ea_order='".(int)$order."' where profileID='".(int)$profileID."'";
-				error_log($query);
-				$this->db->query($query , __LINE__, __FILE__);
+				$this->db->update($this->table,array(
+					'ea_order'  => $order,
+				),array(
+					'profileID' => $profileID,
+				),__LINE__, __FILE__);
 			}
 		}
 	}
