@@ -54,6 +54,7 @@ class ProcessManager extends BaseManager {
     $this->query($query, array('y',$pId));  
     $msg = sprintf(tra('Process %d has been activated'),$pId);
     $this->notify_all(3,$msg);
+    $this->error[] = $msg;
   }
   
   /*!
@@ -65,6 +66,7 @@ class ProcessManager extends BaseManager {
     $this->query($query, array('n',$pId));  
     $msg = sprintf(tra('Process %d has been deactivated'),$pId);
     $this->notify_all(3,$msg);
+    $this->error[] = $msg;
   }
   
   /*!
@@ -413,6 +415,7 @@ class ProcessManager extends BaseManager {
     {
       $msg = sprintf(tra('Process %s %s already exists, the import process was aborted'),$vars['wf_name'],$vars['wf_version']);
       $this->notify_all(2,$msg);
+      $this->error[] = $msg;
       return false;
     }
     $pid = $this->replace_process(0,$vars,false);
@@ -515,6 +518,7 @@ class ProcessManager extends BaseManager {
 
     $msg = sprintf(tra('Process %s %s imported'),$proc_info['wf_name'],$proc_info['wf_version']);
     $this->notify_all(2,$msg);
+    $this->error[] = $msg;
     return true;
   }
 
@@ -708,8 +712,12 @@ class ProcessManager extends BaseManager {
     $result = $this->query($query,$bindvars,$maxRecords,$offset);
     $cant = $this->getOne($query_cant,$bindvars);
     $ret = Array();
-    while($res = $result->fetchRow()) {
-      $ret[] = $res;
+    if (isset($result))
+    {
+      while($res = $result->fetchRow()) 
+      {
+        $ret[] = $res;
+      }
     }
     $retval = Array();
     $retval["data"] = $ret;
@@ -773,6 +781,7 @@ class ProcessManager extends BaseManager {
     $this->query($query);
     $msg = sprintf(tra('Process %s removed'),$name);
     $this->notify_all(5,$msg);
+    $this->error[] = $msg;
     
     // perform commit (return true) or Rollback (return false)
     return $this->db->CompleteTrans();
@@ -854,6 +863,7 @@ class ProcessManager extends BaseManager {
       }
       $msg = sprintf(tra('Process %s has been updated'),$vars['wf_name']);     
       $this->notify_all(3,$msg);
+      $this->error[] = $msg;
     } else {
       unset($vars['wf_p_id']);
       // insert mode
@@ -906,6 +916,7 @@ class ProcessManager extends BaseManager {
       }
     $msg = sprintf(tra('Process %s has been created'),$vars['wf_name']);     
     $this->notify_all(4,$msg);
+    $this->error[] = $msg;
     }
     // Get the id
     return $pId;
@@ -1147,7 +1158,6 @@ class ProcessManager extends BaseManager {
     return $retval;
   }
 
-  
 }
 
 
