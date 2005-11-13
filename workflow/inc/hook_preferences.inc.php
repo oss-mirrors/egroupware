@@ -15,8 +15,12 @@
 {
 // Only Modify the $file and $title variables.....
 	$title = $appname;
+	# old syntax unavaible with the new preferences application $GLOBALS['egw']->link('/preferences/preferences.php','appname=workflow')
 	$file = array(
-		'Preferences'                   => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=workflow')
+		'Preferences'	=> $GLOBALS['egw']->link('/index.php', array(
+			'menuaction'	=> 'preferences.uisettings.index',
+			'appname'	=>  $appname
+			))
 	);
 
 //	$workflowPreferences = ExecMethod('workflow.bopreferences.getPreferences');
