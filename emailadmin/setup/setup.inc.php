@@ -29,7 +29,7 @@
 		'email' => 'lkneschke@linux-at-work.de'
 	);
 
-	$setup_info['emailadmin']['tables'][]	= 'phpgw_emailadmin';
+	$setup_info['emailadmin']['tables'][]	= 'egw_emailadmin';
 	
 	/* The hooks this app includes, needed for hooks registration */
 	#$setup_info['emailadmin']['hooks'][] = 'preferences';

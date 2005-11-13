@@ -27,7 +27,7 @@
 			$profileID = (int) $_globalSettings['profileID'];
 			unset($_globalSettings['profileID']);
 
-			$where = $profileID ? array('profileID' => $_globalSettings['profileID']) : false;
+			$where = $profileID ? array('profileID' => $profileID) : false;
 
 			$this->db->insert($this->table,$_smtpSettings+$_globalSettings+$_imapSettings,$where,__LINE__,__FILE__);
 
