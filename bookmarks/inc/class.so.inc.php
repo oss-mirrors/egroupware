@@ -25,7 +25,7 @@
 		{
 			$this->db = clone($GLOBALS['egw']->db);
 			$this->db->set_app('bookmarks');
-			$this->table = 'phpgw_bookmarks';
+			$this->table = 'egw_bookmarks';
 			$this->user = $GLOBALS['egw_info']['user']['account_id'];
 		}
 
