@@ -404,26 +404,12 @@
 			$this->db->delete('phpgw_headlines_sites', array('con'  => $con),__LINE__,__FILE__);
 			$this->db->delete('phpgw_headlines_cached',array('site' => $con),__LINE__,__FILE__);
 
-			$this->db->select('phpgw_preferences','*',False,__LINE__,__FILE__);
-			while($this->db->next_record())
+			// not sure what this function should do, but it was fiddeling direct with the prefs table and
+			// calling not existing methods of the preferences class -- RalfBecker 2005/11/13
+			if (isset($GLOBALS['egw_info']['user']['preferences']['headlines'][$con]))
 			{
-				if($this->db->f('preference_owner') == $GLOBALS['egw_info']['user']['account_id'])
-				{
-					if($GLOBALS['egw_info']['user']['preferences']['headlines'][$con])
-					{
-						$GLOBALS['egw']->preferences->delete('headlines',$con);
-						$GLOBALS['egw']->preferences->commit();
-					}
-				}
-				else
-				{
-					$phpgw_newuser['user']['preferences'] = $this->db->f('preference_value');
-					if($phpgw_newuser['user']['preferences']['headlines'][$con])
-					{
-						$GLOBALS['egw']->preferences->delete_newuser('headlines',$con);
-						$GLOBALS['egw']->preferences->commit_user($this->db->f('preference_owner'));
-					}
-				}
+				$GLOBALS['egw']->preferences->delete('headlines',$con);
+				$GLOBALS['egw']->preferences->save_repository(false,'user');
 			}
 
 			$this->db->transaction_commit();
