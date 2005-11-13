@@ -13,7 +13,7 @@
 
 	$setup_info['phpsysinfo']['name']      = 'phpsysinfo';
 	$setup_info['phpsysinfo']['title']     = 'phpsysinfo';
-	$setup_info['phpsysinfo']['version']   = '1.0.0';
+	$setup_info['phpsysinfo']['version']   = '1.2';
 	$setup_info['phpsysinfo']['app_order'] = 99;
 	$setup_info['phpsysinfo']['enable']    = 2;
 	$setup_info['phpsysinfo']['tables']    = '';
@@ -24,6 +24,5 @@
 	/* Dependacies for this app to work */
 	$setup_info['phpsysinfo']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.14','1.0.0','1.0.1')
+		 'versions' => Array('1.0.0','1.0.1','1.2')
 	);
-?>
