@@ -305,10 +305,10 @@
 	{
 		$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_p_hours','pro_parent',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
 
-		$GLOBALS['egw_setup']->oProc->query("INSERT INTO {$GLOBALS['egw_info']->hooks_table} (hook_appname,hook_location,hook_filename) VALUES ('projects','add_def_pref','hook_add_def_pref.inc.php')");
-		$GLOBALS['egw_setup']->oProc->query("INSERT INTO {$GLOBALS['egw_info']->hooks_table} (hook_appname,hook_location,hook_filename) VALUES ('projects','manual','hook_manual.inc.php')");
-		$GLOBALS['egw_setup']->oProc->query("INSERT INTO {$GLOBALS['egw_info']->hooks_table} (hook_appname,hook_location,hook_filename) VALUES ('projects','about','hook_about.inc.php')");
-		$GLOBALS['egw_setup']->oProc->query("INSERT INTO {$GLOBALS['egw_info']->hooks_table} (hook_appname,hook_location,hook_filename) VALUES ('projects','deleteaccount','hook_deleteaccount.inc.php')");
+		$GLOBALS['egw_setup']->oProc->query("INSERT INTO {$GLOBALS['egw_setup']->hooks_table} (hook_appname,hook_location,hook_filename) VALUES ('projects','add_def_pref','hook_add_def_pref.inc.php')");
+		$GLOBALS['egw_setup']->oProc->query("INSERT INTO {$GLOBALS['egw_setup']->hooks_table} (hook_appname,hook_location,hook_filename) VALUES ('projects','manual','hook_manual.inc.php')");
+		$GLOBALS['egw_setup']->oProc->query("INSERT INTO {$GLOBALS['egw_setup']->hooks_table} (hook_appname,hook_location,hook_filename) VALUES ('projects','about','hook_about.inc.php')");
+		$GLOBALS['egw_setup']->oProc->query("INSERT INTO {$GLOBALS['egw_setup']->hooks_table} (hook_appname,hook_location,hook_filename) VALUES ('projects','deleteaccount','hook_deleteaccount.inc.php')");
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.5.007';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
