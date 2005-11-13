@@ -1,0 +1,79 @@
+The second digit is pair (0,2,...) when the version is considered stable
+have a look at the roadmap and other info in the workflow wiki: http://egroupware.org/egroupware/wiki/index.php?page=Work-flow+engine
+mbartz is Michael Bartz
+alpeb is Alejandro Pedraza
+regis_glc is Regis Leroy
+
+[1.1.05.000] unstable. Beta. Lastest version compatibile with egroupware's phpgwapi 1.0.0
+	Next ones will only be compatible with series > 1.0.1 (1.2 release)
+	Note that with 1.0.0.009 you could experiment several problems:
+		* tables updates are not always done well
+		* with MySQL you should set your tables to Innodb type and get the adoDB from the 1.0.1 phpgwapi
+		or the 1.2 release and update some lines in egw.db class. All this to
+		support mylst ADOdb type with transactions and locks
+	Note as well this version is not securized with egroupware SQL
+	checks, you should not use it as a stable web-open application
+	You could notice as well some lost of data in the sources of your activities if you use javascript code 
+	which is emptied by some security filters of egroupware
+	* some fixes to support myslt type
+	* somes fixes on the read-only functionnality on impoprt/export an for the instances/activities listing
+	
+[1.1.004.000] unstable
+	* fix bugs on switch interactive activities after split -> need an array of NextActivity, not a single data (regis_glc)
+	* add a function to re-run a broken automatic activity or re-send a broken transition(regis_glc)
+	* securise run/release/complete() actions on instances (regis_glc)
+
+[1.1.003.000] unstable
+	* new agents concept to extend interaction of the workflow with other applications, one agent is implemented, a mail_smtp_agent to send emails (regis_glc)
+	* use new WfSecurity and WfRuntime objects to ensure multi-user concurrency problems with transactions and locks (regis_glc)
+	* add debug mode in the engine with, for example, number of queries per objects (regis_glc)
+	* allow an instances to be in user_instances list, even with no run rights -- read-only role-- (regis_glc)
+	* fix monitor forms asking for thousand unnecessary queries (regis_glc)
+	* delete users mapped to roles when users are deleted from egroupware (regis_glc)
+	* fix the preferences with new preference app (regis_glc)
+	* try to get some infos back from automated transitions and/or activities which have been done after the complete(), stop dying on every error (regis_glc)
+
+[1.1.002.000] unstable
+	* add buttons and rights for cleanup action on monitor screens (regis_glc)
+	* add category for instances (regis_glc)
+	* add 'view' type of read-only special activity. Only one per process. Not an obligation but used in the 'view' action if there. Else a default engine instance view is used. (regis_glc)
+	* add 'instance history' on default instance view, admin instance view and as a possibility for activities (regis_glc)
+	* add css for categories and priorities (regis_glc)
+
+
+[1.1.001.000] marking as unstable, which is the reality
+	* adding process level configuration, need a database upgrade (regis_glc)
+	* blue color for interactive send arrows in graph (regis_glc)
+	* adding possibility to quit an activity form without completing (regis_glc)
+	* adding a process example in doc/examples (regis_glc)
+	* new GUI function getUserActions which gives all avaible actions for a given user/activity/instance and gui_get_user_instance_status which gives complete infos very detailled a given instance (regis_glc)
+	* review monitor forms and add nextmatchs (max records per pages) (regis_glc)
+	* add real code under the 'import process' button and really import a process from the xml file (michael bartz)
+	* adding "open instance" form based on neomagic idea and review the sidebox (regis_glc, neomagic)
+	* use new GUI functions in user_instance and add a filter on unique instance_id. Link to this form when completing an activity (regis_glc)
+	* add a workflow information footer in automatic activity parsing (regis_glc)
+	* add a css for the running_activity (regis_glc)
+	* add user tabs for basic navigation with 'New Instances', 'Global Activities', 'My Activities', 'My Processes' and 'My instances' (regis_glc)
+	* add preferences for showing or not each column in user_instances (regis_glc)
+	* review filters and form interactions on the admin_activities form (mbartz)
+	* add monitor tabs for navigation (regis_glc)
+	* centralize security related problems in the engine with a WfSecurity object class (regis_glc)
+	* use new configuration rights and new WfSecurity object on actions when really launching theses actions (regis_glc)
+
+[1.1.000.000] maybe stable
+	* initial Port of Galaxia workflow engine from tikiwiki. (alpeb, mbartz)
+	* try to ad wf_ prefixes to tables and columns fields (alpeb,mbartz)
+	* migration of the galaxia library form phpgwapi to /workflow (regis_glc)
+	* upgrade database for future neomagic functionnalities (regis_glc, neomagic)
+	* automatic submit buttons and activity title on activity forms (regis_glc, neomagic)
+	* basic/advanced mode on user lists of instances (regis_glc)
+	* group mapping management (regis_glc)
+	* default user management (regis_glc, neomagic)
+	* adding instance priority  (regis_glc)
+	* run the post-completion code of activities before running next activities in the flow. usefull especially for start activities  (regis_glc)
+
+Before this lot of work has been done by Alejandro Pedraza and Michael
+Bartz. Prior to this there was as well a lot of work done on the original
+Galaxia engine, see http://tikiwiki.org/tiki-index.php?page=GalaxiaWorkflow
+ with contributors like Marc Laporte and others, gatto look at the sources
+Prior to this they was work done on Openflow (http://www.openflow.it)
