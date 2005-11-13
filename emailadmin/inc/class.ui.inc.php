@@ -31,12 +31,9 @@
 
 		function ui()
 		{
-			$this->cats			=& CreateObject('phpgwapi.categories');
-			$this->nextmatchs		=& CreateObject('phpgwapi.nextmatchs');
-			$this->t			=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
-			#$this->grants			= $GLOBALS['egw']->acl->get_grants('notes');
-			#$this->grants[$this->account]	= EGW_ACL_READ + EGW_ACL_ADD + EGW_ACL_EDIT + EGW_ACL_DELETE;
-			$this->boemailadmin		=& CreateObject('emailadmin.bo');
+			$this->nextmatchs   =& CreateObject('phpgwapi.nextmatchs');
+			$this->t            =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$this->boemailadmin =& CreateObject('emailadmin.bo');
 		}
 		
 		function addProfile()
@@ -155,14 +152,14 @@
 				$groups[$groupInfo['account_id']] = $groupInfo['account_lid'];
 			}
 			asort($groups);
-			$groups = array('any' => lang('any group')) + $groups;
+			$groups = array_merge(array('' => lang('any group')),$groups);
 			
 			$applications = array(
 				'calendar'	=> $GLOBALS['egw_info']['apps']['calendar']['title'],
 				'felamimail' 	=> $GLOBALS['egw_info']['apps']['felamimail']['title'],
 			);
 			asort($applications);
-			$applications = array('any' => lang('any application')) + $applications;
+			$applications = array_merge(array('' => lang('any application')),$applications);
 			
 			if($_profileID != '')
 			{
