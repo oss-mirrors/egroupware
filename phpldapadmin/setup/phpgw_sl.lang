@@ -76,6 +76,7 @@ none_remove_value	phpldapadmin	sl	noben, odstrani vrednost
 not_enough_login_info	phpldapadmin	sl	Nimam dovolj informacij za prijavo na strežnik. Prosim preverite konfiguracijo.
 oid	phpldapadmin	sl	OID šifra
 optional_attrs	phpldapadmin	sl	Neobvezni atributi
+phpldapadmin	common	sl	Php LDAP administrator
 please_specify_in_config	phpldapadmin	sl	Določite ga v datoteki config.php
 read_only	phpldapadmin	sl	samo za branje
 really_delete_attribute	phpldapadmin	sl	Res izbrišem atribut?

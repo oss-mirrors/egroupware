@@ -15,7 +15,10 @@ address book search	felamimail	sl	Iskanje po adresarju
 after message body	felamimail	sl	Za besedilom
 all address books	felamimail	sl	Vsi adresarji
 all folders	felamimail	sl	Vse mape
+all of	felamimail	sl	vse od
+allways a new window	felamimail	sl	vedno novo okno
 always show html emails	felamimail	sl	Vedno prikaži HTML sporočila
+any of	felamimail	sl	katerikoli od
 anyone	felamimail	sl	kdorkoli
 as a subfolder of	felamimail	sl	kot podmapa v
 attachments	felamimail	sl	Priponke
@@ -30,6 +33,7 @@ body part	felamimail	sl	telo sporočila
 can't connect to inbox!!	felamimail	sl	ne morem se povezati z INBOX nabiralnikom!!!
 cc	felamimail	sl	CC
 change folder	felamimail	sl	Spremeni mapo
+check message against next rule also	felamimail	sl	preverite sporočilo nasproti nasletnjemu pravilu
 checkbox	felamimail	sl	Stikalo
 click here to log back in.	felamimail	sl	Kliknite tu za ponovno prijavo.
 click here to return to %1	felamimail	sl	Kliknite tu za vrnitev v %1
@@ -66,6 +70,7 @@ delete selected messages	felamimail	sl	briši označena sporočila
 deleted	felamimail	sl	izbrisano
 deleted folder successfully!	felamimail	sl	Mapa je bila uspešno izbrisana!
 disable	felamimail	sl	Onemogoči
+discard message	felamimail	sl	opusti sporočilo
 display message in new window	felamimail	sl	Prikaži obvestilo v novem oknu
 display of html emails	felamimail	sl	Prikazovanje HTML sporočil
 display only when no plain text is available	felamimail	sl	Prikaži le, ko ni na voljo navadnega besedila
@@ -128,12 +133,14 @@ follow	felamimail	sl	sledi
 for mail to be send - not functional yet	felamimail	sl	Za pošiljanje sporočila - še ne deluje
 for received mail	felamimail	sl	Za prejeto pošto
 forward	felamimail	sl	Posreduj
+forward to address	felamimail	sl	Posreduj na naslov
 found	felamimail	sl	Najdenih
 fri	felamimail	sl	pet
 from	felamimail	sl	Pošiljatelj
 from(a->z)	felamimail	sl	Pošiljatelj (A->Z)
 from(z->a)	felamimail	sl	Pošiljatelj (Z->A)
 full name	felamimail	sl	Polno ime
+greater than	felamimail	sl	večje kakor
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	sl	Oglejte si <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> za več informacij o SquirrelMail.<br>
 header lines	felamimail	sl	Glava sporočila
 hide header	felamimail	sl	skrij glavo
@@ -142,6 +149,11 @@ icons and text	felamimail	sl	Ikone in besedilo
 icons only	felamimail	sl	Le ikone
 identifying name	felamimail	sl	Določujoče ime
 if	felamimail	sl	ČE
+if from contains	felamimail	sl	če iz vsebuje
+if mail header	felamimail	sl	če glava elektronskega sporočila
+if message size	felamimail	sl	če velikost sporočila
+if subject contains	felamimail	sl	če sujekt vsebuje
+if to contains	felamimail	sl	če za vsebuje
 illegal folder name.  please select a different name.	felamimail	sl	Nedovoljeno ime mape. Prosim, izberite drugo ime.
 imap	felamimail	sl	IMAP
 imap server	felamimail	sl	IMAP strežnik
@@ -156,10 +168,13 @@ index order	felamimail	sl	Vrstni red kazala
 info	felamimail	sl	Podatki
 invalid user name or password	felamimail	sl	Napačno uporabniško ime ali geslo
 javascript	felamimail	sl	Javascript
+keep a copy of the message in your inbox	felamimail	sl	obdrži kopijo sporočila v mapi dohodna
+kilobytes	felamimail	sl	kilobytov
 language	felamimail	sl	Jezik
 last name	felamimail	sl	Priimek
 left	felamimail	sl	Levo
 less	felamimail	sl	manj
+less than	felamimail	sl	manj kot
 let this folder contain subfolders	felamimail	sl	Ta mapa naj vsebuje podmape
 light blue	felamimail	sl	Svetlo modra
 light cyan	felamimail	sl	Svetlo cianidna
@@ -173,6 +188,7 @@ location of folder list	felamimail	sl	Položaj seznama map
 mail server login type	admin	sl	Način prijave v poštni strežnik
 mail settings	felamimail	sl	Nastavitve mape
 mainmessage	felamimail	sl	glavno sporočilo
+manage emailfilter / vacation	preferences	sl	Uredi EMailFilter/ Dopust
 manage folders	common	sl	Upravljanje map
 manage sieve	common	sl	Upravljanje skript za Sieve
 mark as deleted	felamimail	sl	Označi kot izbrisano
@@ -197,6 +213,7 @@ move	felamimail	sl	premakni
 move messages	felamimail	sl	premakni sporočila
 move selected to	felamimail	sl	premakni označeno v
 move to trash	felamimail	sl	Premakni v smeti
+moving messages to	felamimail	sl	premakni sporočilo v
 must be unique	felamimail	sl	Mora biti enolično
 name	felamimail	sl	Ime
 never display html emails	felamimail	sl	Nikoli ne prikaži HTML sporočil
@@ -210,6 +227,7 @@ no folders found	felamimail	sl	Ne najdem map
 no folders were found to subscribe to!	felamimail	sl	Ni map za prijavo!
 no folders were found to unsubscribe from!	felamimail	sl	Ni map za odjavo!
 no highlighting is defined	felamimail	sl	Poudarjanje ni definirano
+no messages found...	felamimail	sl	nobeno sporočilo ni najdeno
 no messages were selected.	felamimail	sl	Nobeno sporočilo ni izbrano
 no next message	felamimail	sl	ni naslednjega sporočila
 no notification	felamimail	sl	Brez obvestila
@@ -222,6 +240,7 @@ number of messages to index	felamimail	sl	Število sporočil v kazalu
 on behalf of	felamimail	sl	v imenu
 one address is not valid	felamimail	sl	En naslov ni veljaven
 only inbox	felamimail	sl	Le INBOX nabiralnik
+only one window	felamimail	sl	le eno okno
 only unseen	felamimail	sl	Le nova
 open all	felamimail	sl	odpri vse
 options	felamimail	sl	Možnosti
@@ -281,10 +300,12 @@ seconds	felamimail	sl	Sekunde
 select	felamimail	sl	Označi
 select all	felamimail	sl	Označi vse
 select emailprofile	felamimail	sl	Izberite E-poštni profil
+select folder	felamimail	sl	izberi mapo
 select home email address	felamimail	sl	Izberite domači E-poštni naslov
 select work email address	felamimail	sl	Izberite službeni E-poštni naslov
 select your mail server type	admin	sl	Izberite tip poštnega strežnika
 send	felamimail	sl	Pošlji
+send a reject message	felamimail	sl	pošlji zavrnjeno sporočilo
 sent fold	felamimail	sl	Poslano
 sent folder	felamimail	sl	Mapa s poslanimi
 server respond	felamimail	sl	Odziv strežnika
@@ -365,6 +386,7 @@ use a signature?	felamimail	sl	Uporabim podpis?
 use addresses	felamimail	sl	Uporabi naslove
 use custom settings	felamimail	sl	Uporabi lastne nastavitve
 use javascript or html addressbook?	felamimail	sl	Uporabi Javascript ali HTML adresar?
+use regular expressions	felamimail	sl	uporabite regularne izraze
 use smtp auth	admin	sl	Uporabi SMTP avtentikacijo
 users can define their own emailaccounts	admin	sl	Uporabniki lahko definirajo lastne E-poštne račune
 vacation notice	felamimail	sl	Na oddihu

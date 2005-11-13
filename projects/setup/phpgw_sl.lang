@@ -1,5 +1,8 @@
 % to	projects	sl	% do
 + jobs	projects	sl	+ Naloge
+a new project has been created	projects	sl	Nov projekt je bil ustvarjen na:
+a project has been deleted	projects	sl	Projekt je bil izbrisan na:
+a project has been updated	projects	sl	Projekt je bil posodobljen na:
 account	projects	sl	Račun
 accountancy	common	sl	Računatvo
 accounting	common	sl	Računovodstvo
@@ -91,6 +94,7 @@ date due planned	projects	sl	Načrtovan rok
 days	projects	sl	dni
 days before	projects	sl	dni pred
 definition per project	admin	sl	Definirano po projektu
+delete	admin	sl	Izbriši
 delete activity	projects	sl	izbriši aktivnost
 delete factor	projects	sl	izbriši faktor
 delete hours	projects	sl	Izbriši ure
@@ -237,16 +241,25 @@ month	projects	sl	Mesec
 move start date if pervious projects end date changes	admin	sl	Premakni začetni datum projekta, če se spremeni datum predhodnega projekta
 name not exceed 250 characters in length	projects	sl	Dolžina imena ne sme presegati 250 znakov
 net	projects	sl	mreža
+new	admin	sl	Nov
 new date due of milestone %1: %2	projects	sl	Nov rok zapadlosti mejnika %1: %2.
 new end date	projects	sl	Nov končni datum
 new milestone	projects	sl	Nov mejnik
 new project	projects	sl	Nov projekt
+new project created	projects	sl	Nov projekt narejen:
 new start date	projects	sl	Nov začetni datum
 nonactive	common	sl	Ni dejavno
 not billable	projects	sl	Ni zaračunljivo
+notification settings	admin	sl	Nastavitev obvestil
+notify management committee	admin	sl	Obvesti vodstveni odbor
+notify project administrators	admin	sl	Obvesti projektne skrbnike
+notify sales department	admin	sl	Obvesti prodajni oddelek
 number	projects	sl	Številka
 old end date	projects	sl	Star datum zaključka
 old start date	projects	sl	Star začetni datum
+onadd	admin	sl	Na Dodaj
+ondelete	admin	sl	Na Izbris
+onstatuschange	admin	sl	Na spremembo statusa
 open	projects	sl	Odprto
 open popup	projects	sl	odpri menu
 open popup window	projects	sl	odpri popup okno
@@ -302,6 +315,7 @@ project archive	projects	sl	Arhiv projekta
 project billing	projects	sl	Obračun projekta
 project data due	projects	sl	Rok izvedbe projekta
 project date due	projects	sl	Rok izvedbe projekta
+project deleted	projects	sl	Projekt izbrisan
 project delivery	projects	sl	Dostava projekta
 project dependencies	common	sl	Odvisnosti projekta
 project id	common	sl	Šifra projekta
@@ -311,6 +325,7 @@ project overview	projects	sl	Pregled projekta
 project preferences	projects	sl	Nastavitve projekta
 project statistic	projects	sl	Statistika projekta
 project statistics	projects	sl	Statistike projekta
+project updated	projects	sl	Projekt posodobljen
 project url	projects	sl	URL projekta
 projects	common	sl	Projekti
 projects preferences	preferences	sl	Nastavitve projektov
@@ -361,6 +376,7 @@ start date can not be before parent projects start date	projects	sl	Začetni dat
 start date planned	projects	sl	Načrtovan začetni datum
 statistic	projects	sl	Statistika
 statistics	projects	sl	Statistike
+status change	admin	sl	Stanje Spremembe
 stop	projects	sl	Ustavi
 sub project level %1	projects	sl	Podporjekt na nivoju %1
 subproject	projects	sl	podprojekt

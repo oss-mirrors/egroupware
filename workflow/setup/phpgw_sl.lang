@@ -1,6 +1,6 @@
 abort instance	workflow	sl	prekini primerek
 aborted	workflow	sl	prekinjeno
-act	workflow	sl	akt
+act	workflow	sl	delovati
 act. status	workflow	sl	Status aktivnosti
 activate	workflow	sl	aktiviraj
 active	workflow	sl	Dejaven
@@ -16,7 +16,7 @@ activity %1 is standalone and is using the $instance object	workflow	sl	Dejavnos
 activity %1 is standalone but has transitions	workflow	sl	Dejavnost %1 je samostojna, vendar uporablja prehode.
 activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	sl	Dejavnost %1 je stikalo, zato mora uporabiti postopek $instance->setNextActivity($actname).
 activity completed	workflow	sl	Dejavnost dokončana
-activity name already exists	workflow	sl	Ime dejavnosti je že uporabljeno
+activity name already exists	workflow	sl	Ime dejavnosti že obstaja
 activity role removed	workflow	sl	Vloga dejavnosti odstranjena
 activity saved	workflow	sl	Dejavnost shranjena
 add a transition	workflow	sl	Dodaj prehod
