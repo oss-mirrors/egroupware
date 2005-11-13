@@ -47,22 +47,19 @@
     $GLOBALS['phpgw']->redirect_link('/tts/states.php');
   }
 
+  $GLOBALS['phpgw']->historylog =& CreateObject('phpgwapi.historylog','tts');
+ 
   if($_POST['delete'])
   {
     if ($ticket['state']==-100) //delete the tickets
     {
+      $ids = array();
       $GLOBALS['phpgw']->db->query("select ticket_id from phpgw_tts_tickets where ticket_state=$state_id");
-
-      if ($GLOBALS['phpgw']->db->next_record())
-        $ids='('.$GLOBALS['phpgw']->db->f('ticket_id');
-
       while($GLOBALS['phpgw']->db->next_record())
-        $ids.=','.$GLOBALS['phpgw']->db->f('ticket_id');
+        $ids[] = $GLOBALS['phpgw']->db->f('ticket_id');
 
-      $ids.=')';
-
-//remove ticket's history
-      $GLOBALS['phpgw']->db->query("delete from phpgw_history_log where history_appname='tts' and history_record_id in $ids",__LINE__,__FILE__);
+      //remove ticket's history
+      $GLOBALS['phpgw']->historylog->delete($ids);
       $GLOBALS['phpgw']->db->query("delete from phpgw_tts_tickets where ticket_state=$state_id",__LINE__,__FILE__);
     }
     else if ($ticket['state']==-200) //change the state
@@ -83,8 +80,6 @@
   $GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'].
     ' - '.lang('Deleting the state');
   $GLOBALS['phpgw']->common->phpgw_header();
-
-  $GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
   $GLOBALS['phpgw']->template->set_file('delete_state','delete_state.tpl');
   $GLOBALS['phpgw']->template->set_block('delete_state', 'tts_title', 'tts_title');
