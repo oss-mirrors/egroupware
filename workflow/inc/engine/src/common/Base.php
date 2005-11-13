@@ -23,16 +23,15 @@ class Base extends Observable {
     //Force transactionnal mysql (Innodb) -> mysqlt
     if ($db->databaseType=='mysql')
     {
-    	echo "<br> reload driver in mysqlt type";
     	$GLOBALS['egw']->db->disconnect();
     	$db = $GLOBALS['egw']->db->connect(
-		$GLOBALS['egw_info']['server']['db_name'],
-		$GLOBALS['egw_info']['server']['db_host'],
-		$GLOBALS['egw_info']['server']['db_port'],
-		$GLOBALS['egw_info']['server']['db_user'],
-		$GLOBALS['egw_info']['server']['db_pass'],
-		'mysqlt'
-	);
+			$GLOBALS['egw_info']['server']['db_name'],
+			$GLOBALS['egw_info']['server']['db_host'],
+			$GLOBALS['egw_info']['server']['db_port'],
+			$GLOBALS['egw_info']['server']['db_user'],
+			$GLOBALS['egw_info']['server']['db_pass'],
+			'mysqlt'
+		);
     }
     $this->db = &$db;
   }
