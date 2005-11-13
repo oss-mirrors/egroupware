@@ -17,7 +17,8 @@ regis_glc is Regis Leroy
 	which is emptied by some security filters of egroupware
 	* some fixes to support myslt type
 	* somes fixes on the read-only functionnality on impoprt/export an for the instances/activities listing
-	
+	* add user_viewinstance.tpl template which was forgotten
+
 [1.1.004.000] unstable
 	* fix bugs on switch interactive activities after split -> need an array of NextActivity, not a single data (regis_glc)
 	* add a function to re-run a broken automatic activity or re-send a broken transition(regis_glc)
