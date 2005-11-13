@@ -14,6 +14,10 @@ all versions	mydms	zh-tw	所有版本
 comment	mydms	zh-tw	備註
 comment for current version	mydms	zh-tw	目前版本的備註
 copy acl	mydms	zh-tw	複製存取權限
+copy documents	mydms	zh-tw	複製檔案
+copy folder	mydms	zh-tw	複製資料夾
+copy options	mydms	zh-tw	複製選項
+copy subfolders	mydms	zh-tw	複製子資料夾
 create empty acl	mydms	zh-tw	建立空的存取權限
 creation date	mydms	zh-tw	提供給
 current acl	mydms	zh-tw	目前存取權限
@@ -27,7 +31,8 @@ do you really want to delete this version of the document?	mydms	zh-tw	您確定
 does not expire	mydms	zh-tw	永遠啟用
 download	mydms	zh-tw	下載
 edit folder	mydms	zh-tw	編輯資料夾
-expires after	mydms	zh-tw	開放給
+expires	mydms	zh-tw	過期
+expires after	mydms	zh-tw	到期日
 file size	mydms	zh-tw	檔案大小
 filename	mydms	zh-tw	檔案名稱
 folder	mydms	zh-tw	資料夾
@@ -35,12 +40,18 @@ general information	mydms	zh-tw	一般資訊
 information about last update	mydms	zh-tw	最後更新資訊
 informations	mydms	zh-tw	資訊
 inherit acl again	mydms	zh-tw	再次繼承存取權限
+last update	mydms	zh-tw	最後更新
+linked documents	mydms	zh-tw	連結的檔案
+lock status	mydms	zh-tw	鎖定狀態
 mime type	mydms	zh-tw	Mime類型
 move document	mydms	zh-tw	移動檔案
 move folder	mydms	zh-tw	移動資料夾
 mydms	common	zh-tw	我的文件夾
 notifications	mydms	zh-tw	提醒通知
 permission	mydms	zh-tw	權限
+select folder	mydms	zh-tw	選擇資料夾
+select target folder	mydms	zh-tw	選擇目標資料夾
+target folder	mydms	zh-tw	目標資料夾
 this document gets locked by you!	mydms	zh-tw	這個檔案被您鎖定！
 this document gets unlocked by you.	mydms	zh-tw	這個檔案被您取消鎖定。
 this document is currently not locked.	mydms	zh-tw	這個目前未鎖定。
@@ -48,3 +59,4 @@ this document is locked by <a href="mailto:%1">%2</a>.	mydms	zh-tw	這個檔案�
 update document	mydms	zh-tw	更新檔案
 upload date	mydms	zh-tw	上傳到
 uploaded by	mydms	zh-tw	上傳自
+view online	mydms	zh-tw	線上檢視

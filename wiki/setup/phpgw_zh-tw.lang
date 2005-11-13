@@ -60,6 +60,7 @@ not set	wiki	zh-tw	未設定
 older	wiki	zh-tw	更舊
 only if browser supports a richtext-editor	admin	zh-tw	請確認您的瀏覽器支援所見即所得編輯器
 please contact the %1administrator%2 for assistance.	wiki	zh-tw	請聯絡%1管理員%2。
+preferences	wiki	zh-tw	設定
 preview	wiki	zh-tw	預覽
 preview of current version	wiki	zh-tw	預覽目前版本
 rate control / ip blocking disabled	wiki	zh-tw	評分控制 / 取消IP鎖定

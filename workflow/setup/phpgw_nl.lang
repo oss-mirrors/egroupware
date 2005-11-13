@@ -28,6 +28,131 @@ action %1 is impossible if we have no activity and no instance designated for it
 action %1 is impossible, another user is already in place	workflow	nl	Actie %1 is onmogelijk, een andere gebruiker is reeds bezig
 action %1 is impossible, there are no user assigned to this activity for this instance	workflow	nl	Actie %1 is onmogelijk, er zijn geen gebruikers toegewezen aan deze activiteit voor deze instantie
 action %1 needs an activity and activity %2 does not exists	workflow	nl	Actie %1 vereist een activiteit en activiteit %2 bestaat niet
+action %1 needs an instance and instance %2 does not exists	workflow	nl	Actie %1 veriest een instantie en instantie %2 bestaat niet
+actions	workflow	nl	Acties
+actions right options	admin	nl	Acties rechts opties
+activate	workflow	nl	activeren
+active	workflow	nl	Actief
+active:	workflow	nl	actief:
+activities	workflow	nl	Activiteiten
+activities selection	workflow	nl	Activiteiten selectie
+activities updated	workflow	nl	Activiteiten bijgewerkt
+activity	workflow	nl	activiteit
+activity  status	workflow	nl	Activiteitsstatus
+activity %1	workflow	nl	activiteit %1
+activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	nl	Activiteit %1 (#%2) is geassocieerd met een nietbestaand proces (#%3)
+activity %1 code is not avaible	workflow	nl	activiteitscode %1 is niet beschikbaar
+activity %1 is interactive but has no role assigned	workflow	nl	Activiteit %1 is interactief maar heeft geen rol toegewezen
+activity %1 is interactive so it must use the $instance->complete() method	workflow	nl	Activiteit %1 is interactief en moet daarom de $instance->complete() methode gebruiken
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	nl	Activiteit %1 is niet-interactief en niet-zelfrouterend maar heeft geen rol toegewezen
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	nl	Activiteit %1 is niet-interactief en mag daarom de $instance->complete() methode niet gebruiken
+activity %1 is standalone and is using the $instance object	workflow	nl	Activiteit %1 is alleenstaand en gebruikt het $instance object
+activity %1 is standalone but has transitions	workflow	nl	Activiteit %1 is alleenstaand maar heeft transities
+activity %1 is standalone or view but has transitions	workflow	nl	Activiteit %1 is alleenstaand of een presentatie maar heeft transities
+activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	nl	Activiteit %1 is een schakelpunt en moet daarom de $instance->setNextActivity($actname) methode gebruiken
+activity %1 is view and is using the $instance object in write mode	workflow	nl	Activiteit %1 is een presentatie en gebruikt het $instance object in schrijfmodus
+activity agent removed	workflow	nl	Activiteitsagent verwijderd
+activity completed	workflow	nl	Activiteit voltooid
+activity failure	workflow	nl	activiteit mislukt
+activity in inexistent process	workflow	nl	Activiteit in nietbestaand proces
+activity is waiting for pending transitions	workflow	nl	activiteit wacht op lopende transities
+activity name already exists	workflow	nl	Activiteitsnaam bestaat reeds
+activity role #%1 removed	workflow	nl	Activiteitsrol #%1 verwijderd
+activity role removed	workflow	nl	Activiteitsrol verwijderd
+activity saved	workflow	nl	Activiteit opgeslagen
+activity start not avaible, no corresponding activity was found.	workflow	nl	activiteitsbeginpunt niet beschikbaar, geen overeenkomende activiteit gevonden.
+activity start not set, no corresponding activity was found.	workflow	nl	activiteitsstartpunt is niet ingesteld, geen overeenkomende activiteit gevonden.
+activity status not avaible, no corresponding activity was found.	workflow	nl	activiteitsstatus is niet beschikbaar, geen overeenkomende activiteit gevonden.
+activity:	workflow	nl	activiteit:
+add a transition	workflow	nl	Transitie toevoegen
+add aborted instances	workflow	nl	Afgebroken instanties toevoegen
+add advanced actions	workflow	nl	Geavanceerde instanties toevoegen
+add completed instances	workflow	nl	Voltooide instanties toegevoegen
+add instances in exception	workflow	nl	Instanties in uitzonder toevoegen
+add new	workflow	nl	nieuwse toevoegen
+add or edit a process	workflow	nl	Een proces toevoegen of bewerken
+add or edit an activity	workflow	nl	Een activiteit toevoegen of bewerken
+add property	workflow	nl	Eigenschap toevoegen
+add role	workflow	nl	Rol toevoegen
+add role to process	workflow	nl	Rol aan proces toevoegen
+add transition	workflow	nl	transitie toevoegen
+add transitions	workflow	nl	Transities toevoegen
+add transitions from	workflow	nl	Transities toevoegen van
+add transitions to	workflow	nl	Transities toevoegen aan
+admin instance	workflow	nl	Beheerder instantie
+admin process activities	workflow	nl	Beheerder procesactiviteiten
+admin process roles	workflow	nl	Beheerder procesrollen
+admin processes	workflow	nl	Beheerder processen
+admin processes sources	workflow	nl	Beheerder processen bronnen
+administer instances	workflow	nl	beheer instanties
+administer processes	workflow	nl	beheer processen
+agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	nl	Agent #%1 van type %2 is geassocieerd met een nietbestaande activiteti #%3
+agent #%1 of type %2 is not linked with an activity	workflow	nl	Agent #%1 van type %2 is niet gekoppeld aan een activiteit
+agent associated with inexistent activity	workflow	nl	Agent geassocieerd met een nietbestaande activiteit
+agent without activity	workflow	nl	Agent zonder activiteit
+all	workflow	nl	Alle
+always show advanced actions	workflow	nl	Altijd de geavanceerde acties weergeven
+always show advanced mode	workflow	nl	Altijd de geavanceerde modus weergeven
+assign me this activity	workflow	nl	Wijs mij deze activiteit toe
+at least one email address cannot be validated.	workflow	nl	minstens één emailadres kon niet gevalideerd worden.
+auto routed	workflow	nl	Automatisch gerouteerd
+auto-release on leaving activity	admin	nl	automatisch vrijgeven als de activiteit verlaten wordt
+automatic	workflow	nl	Automatisch
+bad parameter for setagents, the parameter should be an array	workflow	nl	verkeerde parameter voor setAgents, de parameter moet een array zijn
+bad role type	workflow	nl	Verkeerd roltype
+bad user	workflow	nl	Verkeerde gebruiker
+base directory does not exist, please ask adminstrator to check the global configuration	workflow	nl	Basisdirectory bestaat niet, vraag a.u.b. de beheerder om de globale configuratie te controleren
+bcc:	workflow	nl	BCC:
+be carefull with interactive activity, end and start of theses activities are multiple.	workflow	nl	Wees voorzichtig met de interactieve activiteit, eind en begin van deze activiteiten zijn meervoudig.
+being run	workflow	nl	wordt uitgevoerd
+by running theses links you will create new instances of the related process.	workflow	nl	door het uitvoeren van deze links maakt u nieuwe instanties van het gerelateerde proces aan.
+cannot add transition only split or switch activities can have more than one outbound transition	workflow	nl	Kan transitie niet toevoegen, alleen splitsende of schakelende activiteiten kunnen meer dan één uitgaande transitie hebben
+cannot add transition. only split activities can have more than one outbound transition	workflow	nl	Kan transitie niet toevoegen. Alleen splitsende activiteiten kunnen meer dan één uitgaande transitie hebben
+cannot create compiled file %1	workflow	nl	kan het gecompileerde bestand %1 niet aanmaken
+cannot retrieve the user running the security check	workflow	nl	Kan de gebruiker voor de beveiligingscontrole niet ophalen
+cannot run the activity	workflow	nl	Kan de activiteit niet uitvoeren
+cannot run the activity without her process	workflow	nl	Kan de activiteit niet uitvoeren zonder haar proces
+cannot run the activity without instance	workflow	nl	Kan de activiteit niet uitvoeren zonder instantie
+cannot run unknown activity	workflow	nl	Kan onbekende activiteit niet uitvoeren
+cc:	workflow	nl	CC:
+circular reference found some activity has a transition leading to itself	workflow	nl	Circulaire referentie gevonden, een activiteit heeft een transitie die naar zichzelf verwijst
+circular reference found. some activity has a transition leading to itself	workflow	nl	Circulaire referentie gevonden. Een activiteit heeft een transitie die naar zichzelf verwijst
+cleanup aborted instances	workflow	nl	afgebroken instanties opruimen
+cleanup actions	workflow	nl	acties opruimen
+close and get back later	workflow	nl	Sluit af en kom later terug
+close printer friendly mode	workflow	nl	Printervriendelijke modus sluiten
+code	workflow	nl	code
+column activity status in instance lists	workflow	nl	Kolom activiteitsstatus in instantie lijsten
+column category in instance lists	workflow	nl	Kolom categorie in instantie lijsten
+column instance id in instance lists	workflow	nl	Kolom instantie ID in instantie lijsten
+column instance name in instance lists	workflow	nl	Kolom instantie naam in instantie lijsten
+column instance status in instance lists	workflow	nl	Kolom instantie status in instantie lijsten
+column owner in instance lists	workflow	nl	Kolom eigenaar in instantie lijsten
+column priority in instance lists	workflow	nl	Kolom prioriteit in instantie lijsten
+column process name in instance lists	workflow	nl	Kolom procesnaam in instantie lijsten
+column start date in instance lists	workflow	nl	Kolom startdatum in instantie lijsten
+compiling activity %1 : %2	workflow	nl	compileert activiteit %1 : %2
+complete	workflow	nl	Voltooid
+complete cleanup of aborted instances done	workflow	nl	volledige opruiming van afgebroken instanties voltooid
+complete cleanup of all instances done	workflow	nl	volledige opruiming van alle instanties voltooid
+completed	workflow	nl	voltooid
+confirm delete	workflow	nl	Bevest verwijdering
+consult %1 to get the default values:	workflow	nl	Raadpleeg %1 voor de standaard waardes:
+couldn't add transition	workflow	nl	Kon transitie niet toevoegen
+create	workflow	nl	aanmaken
+created	workflow	nl	Aangemaakt
+date:	workflow	nl	datum:
+default config values	workflow	nl	Standaard configuratie waardes:
+default next user	workflow	nl	Standaard volgende gebruiker
+default owner	workflow	nl	Standaard eigenaar
+default settings for processes	admin	nl	Standaard instellingen voor processen
+default user	workflow	nl	Standaard gebruiker
+delete selected	workflow	nl	Verwijder geselecteerde
+delete transition	workflow	nl	verwijder transitie
+deletion successful	workflow	nl	Verwijdering succesvol
+delition successful	workflow	nl	Verwijderng succesvol
+description	workflow	nl	Beschrijving
+display please wait message	admin	nl	toon het even geduld bericht
 we were not able to build the message	workflow	nl	We konden het bericht niet samenstellen
 workflow	common	nl	Werkstroom
 workflow configuration	admin	nl	Werkstroom configuratie
