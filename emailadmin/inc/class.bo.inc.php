@@ -33,7 +33,7 @@
 			'getSMTPServerTypes'	=> True
 		); */
 
-		function bo($_profileID=-1)
+		function bo($_profileID=-1,$_restoreSesssion=true)
 		{
 			$this->soemailadmin =& CreateObject('emailadmin.so');
 			
@@ -117,7 +117,7 @@
 				)
 			); 
 			
-			$this->restoreSessionData();
+			if ($_restoreSesssion) $this->restoreSessionData();
 			
 			if($_profileID >= 0)
 			{
@@ -324,8 +324,7 @@
 		
 		function getProfileList($_profileID='')
 		{
-			$profileList = $this->soemailadmin->getProfileList($_profileID);
-			return $profileList;
+			return $this->soemailadmin->getProfileList($_profileID);
 		}
 		
 #		function getSMTPClass($_profileID)
@@ -375,8 +374,6 @@
 
 		function restoreSessionData()
 		{
-			
-		
 			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data');
 			$this->userSessionData = $GLOBALS['egw']->session->appsession('user_session_data');
 		}
@@ -391,6 +388,83 @@
 			
 		}
 		
+		/**
+		 * called by the validation hook in setup
+		 *
+		 * @param array $settings following keys: mail_server, mail_server_type {IMAP|IMAPS|POP-3|POP-3S}, 
+		 *	mail_login_type {standard|vmailmgr}, mail_suffix (domain), smtp_server, smpt_port, smtp_auth_user, smtp_auth_passwd
+		 */
+		function setDefaultProfile($settings)
+		{
+			if (($profiles = $this->soemailadmin->getProfileList(0,true)))
+			{
+				$profile = array_shift($profiles);
+			}
+			else
+			{
+				$profile = array(
+					'smtpType' => 1,
+					'description' => 'default profile (created by setup)',
+					'ea_appname' => '',
+					'ea_group' => 0,
+				);
+			}
+			foreach(array(
+				'mail_server' => 'imapServer',
+				'mail_server_type' => array(
+					'imap' => array(
+						'imapType' => 2,
+						'imapPort' => 143,
+						'imapTLSEncryption' => null,
+					),
+					'imaps' => array(
+						'imapType' => 2,
+						'imapPort' => 993,
+						'imapTLSEncryption' => 'yes',
+					),
+					'pop3' => array(
+						'imapType' => 1,
+						'imapPort' => 110,
+						'imapTLSEncryption' => null,
+					),
+					'pop3s' => array(
+						'imapType' => 1,
+						'imapPort' => 995,
+						'imapTLSEncryption' => 'yes',
+					),
+				),
+				'mail_login_type' => 'imapLoginType',
+				'mail_suffix' => 'defaultDomain',
+				'smtp_server' => 'smtpServer',
+				'smpt_port' => 'smtpPort',
+			) as $setup_name => $ea_name_data)
+			{
+				if (!is_array($ea_name_data))
+				{
+					$profile[$ea_name_data] = $settings[$setup_name];
+				}
+				else
+				{
+					foreach($ea_name_data as $setup_val => $ea_data)
+					{
+						if ($setup_val == $settings[$setup_name])
+						{
+							foreach($ea_data as $var => $val)
+							{
+								if ($var != 'imapType' || $val != 2 || $profile[$var] < 3)	// dont kill special imap server types
+								{
+									$profile[$var] = $val;		
+								}
+							}
+							break;
+						}
+					}
+				}
+			}
+			$this->soemailadmin->updateProfile($profile);
+			//echo "<p>EMailAdmin profile update: ".print_r($profile,true)."</p>\n"; exit;
+		}
+
 		function saveProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
 			if(!isset($_globalSettings['profileID']))
@@ -401,12 +475,46 @@
 			{
 				$this->soemailadmin->updateProfile($_globalSettings, $_smtpSettings, $_imapSettings);
 			}
+			$all = $_globalSettings+$_smtpSettings+$_imapSettings;
+			if (!$all['ea_group'] && !$all['ea_application'])	// standard profile update eGW config
+			{
+				$new_config = array();
+				foreach(array(
+					'imapServer'    => 'mail_server',
+					'imapType'      => 'mail_server_type',
+					'imapLoginType' => 'mail_login_type',
+					'defaultDomain' => 'mail_suffix',
+					'smtpServer'    => 'smtp_server',
+					'smtpPort'      => 'smpt_port',
+				) as $ea_name => $config_name)
+				{
+					if (isset($all[$ea_name]))
+					{
+						if ($ea_name != 'imapType')
+						{
+							$new_config[$config_name] = $all[$ea_name];
+						}
+						else	// imap type
+						{
+							$new_config[$config_name] = ($all['imapType'] == 1 ? 'pop3' : 'imap').($all['imapTLSEncryption'] ? 's' : '');
+						}
+					}
+				}
+				if (count($new_config))
+				{
+					$config =& CreateObject('phpgwapi.config','phpgwapi');
+
+					foreach($new_config as $name => $value)
+					{
+						$config->save_value($name,$value,'phpgwapi');
+					}
+					echo "<p>eGW configuration update: ".print_r($new_config,true)."</p>\n";
+				}
+			}
 		}
 		
 		function saveSessionData()
 		{
-			
-			
 			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
 			$GLOBALS['egw']->session->appsession('user_session_data','',$this->userSessionData);
 		}

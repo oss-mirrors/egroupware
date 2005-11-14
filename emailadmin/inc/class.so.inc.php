@@ -18,11 +18,18 @@
 
 		function so()
 		{
-			$this->db = clone($GLOBALS['egw']->db);
+			if (is_object($GLOBALS['egw_setup']->db))
+			{
+				$this->db = clone($GLOBALS['egw_setup']->db);
+			}
+			else
+			{
+				$this->db = clone($GLOBALS['egw']->db);
+			}
 			$this->db->set_app('emailadmin');
 		}
 		
-		function updateProfile($_globalSettings, $_smtpSettings, $_imapSettings)
+		function updateProfile($_globalSettings, $_smtpSettings=array(), $_imapSettings=array())
 		{
 			$profileID = (int) $_globalSettings['profileID'];
 			unset($_globalSettings['profileID']);
@@ -53,13 +60,19 @@
 			return $this->db->row(true);
 		}
 		
-		function getProfileList($_profileID='')
+		function getProfileList($_profileID=0,$_defaultProfile=false)
 		{
 			$where = false;
-			if ((int) $_profileID) $where = array('profileID' => $_profileID);
-			
-			$this->db->select($this->table,'profileID,smtpServer,smtpType,imapServer,imapType,description,ea_appname,ea_group',
-				$where, __LINE__, __FILE__,false,(int) $_profileID ? '' : 'ORDER BY ea_order');
+			if ((int) $_profileID)
+			{
+				$where = array('profileID' => $_profileID);
+			}
+			elseif ($_defaultProfile)
+			{
+				$where['ea_appname'] = '';
+				$where['ea_group'] = 0;
+			}			
+			$this->db->select($this->table,'*',$where, __LINE__,__FILE__,false,(int) $_profileID ? '' : 'ORDER BY ea_order');
 
 			$serverList = false;
 			while (($row = $this->db->row(true)))
