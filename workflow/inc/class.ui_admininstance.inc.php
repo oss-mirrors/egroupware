@@ -22,15 +22,15 @@
 		{
 			parent::workflow();
 		
-		       //regis: acl check
-			if ( !(($GLOBALS['phpgw']->acl->check('run',1,'admin')) || ($GLOBALS['phpgw']->acl->check('admin_workflow',1,'workflow'))) )
+					 //regis: acl check
+			if ( !(($GLOBALS['egw']->acl->check('run',1,'admin')) || ($GLOBALS['egw']->acl->check('admin_workflow',1,'workflow'))) )
 			{
-				$GLOBALS['phpgw']->common->phpgw_header();
+				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
 				echo lang('access not permitted');
-				$GLOBALS['phpgw']->log->message('F-Abort, Unauthorized access to workflow.ui_admininstance');
-				$GLOBALS['phpgw']->log->commit();
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$GLOBALS['egw']->log->message('F-Abort, Unauthorized access to workflow.ui_admininstance');
+				$GLOBALS['egw']->log->commit();
+				$GLOBALS['egw']->common->egw_exit();
 			}
 
 			$this->instance_manager	=& CreateObject('workflow.workflow_instancemanager');
@@ -42,8 +42,8 @@
 		function form()
 		{
 			// FIXME: active user should be done in a per activity level, not per instance
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Instance');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Instance');
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file('admin_instance', 'admin_instance.tpl');
@@ -95,10 +95,10 @@
 				 	{
 				 		$new_user = $activityusers[$act];
 				 		if (!($new_user)) $new_user = '*';
-					  	$previous_user =$oldactivityusers[$act];
-					  	if (!($new_user==$previous_user))
-					  	{
-					  		$this->instance_manager->set_instance_user($iid, $act , $new_user);
+							$previous_user =$oldactivityusers[$act];
+							if (!($new_user==$previous_user))
+							{
+								$this->instance_manager->set_instance_user($iid, $act , $new_user);
 						}
 					}
 				}  
@@ -113,7 +113,8 @@
 			if (isset($_POST['saveprops']))
 			{
 				//save properties
-				$props = serialize($_POST['props']);
+				//no more serialize here
+				$props = $_POST['props'];
 				$this->instance_manager->set_instance_properties($iid,$props);
 			}
 
@@ -123,8 +124,8 @@
 				//remove one and save properties
 				$arrayprops =& $this->instance_manager->get_instance_properties($iid);
 				unset($arrayprops[$_GET['unsetprop']]);
-				$props = serialize($arrayprops);
-				$this->instance_manager->set_instance_properties($iid,$props);
+				//no more serialize here
+				$this->instance_manager->set_instance_properties($iid,$arrayprops);
 			}
 
 			// add a property
@@ -139,9 +140,9 @@
 				}
 				else
 				{
-					$arrayprops[$propname]=$_POST['value'];
-					$props = serialize($arrayprops);
-					$this->instance_manager->set_instance_properties($iid,$props);
+					$arrayprops[$propname]= $_POST['value'];
+					//no more serialize here
+					$this->instance_manager->set_instance_properties($iid,$arrayprops);
 				}
 			}
 
@@ -157,19 +158,22 @@
 			$inst_parser->parse_instance($instance, false);
 			$inst_parser->parse_instance_history($instance->workitems);
 				
+			//collect some messages from used objects
+                        $this->message[] = $this->instance_manager->get_error(false, _DEBUG);
+                        
 			// fill the general variables of the template
 			$this->t->set_var(array(
 				'instance'	=> $this->t->parse('output', 'instance_tpl'),
 				'history'	=> $this->t->parse('output', 'history_tpl'),
 				'message'		=> implode('<br />', $this->message),
 				'iid'			=> $iid,
-				'form_action'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form'),
+				'form_action'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form'),
 							));
 
 			$this->translate_template('admin_instance');
 			$this->t->pparse('output', 'admin_instance');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
-		    
+				
 	}
 ?>
