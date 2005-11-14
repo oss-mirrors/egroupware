@@ -67,10 +67,10 @@ class WfRuntime extends Base
   function collect_errors($debug=false, $prefix = '')
   {
     parent::collect_errors($debug, $prefix);
-    if (isset($this->instance)) $this->error[] = $this->instance->get_error(false, $debug, $prefix);
-    if (isset($this->process)) $this->error[] = $this->process->get_error(false, $debug, $prefix);
-    if (isset($this->security)) $this->error[] = $this->security->get_error(false, $debug, $prefix);
-    if (isset($this->activity)) $this->error[] = $this->activity->get_error(false, $debug, $prefix);
+    if (isset($this->instance) && !!($this->instance)) $this->error[] = $this->instance->get_error(false, $debug, $prefix);
+    if (isset($this->process) && !!($this->process)) $this->error[] = $this->process->get_error(false, $debug, $prefix);
+    if (isset($this->security) && !!($this->security)) $this->error[] = $this->security->get_error(false, $debug, $prefix);
+    if (isset($this->activity) && !!($this->activity)) $this->error[] = $this->activity->get_error(false, $debug, $prefix);
   }
 
   /*!
@@ -224,6 +224,12 @@ class WfRuntime extends Base
     }
     $base_activity =& new BaseActivity($this->db);
     $this->activity =& $base_activity->getActivity($activity_id, $with_roles, $with_agents);
+    if (!$this->activity)
+    {
+      $errors = $this->fail(tra('failed to load the activity'),true, $this->debug, !($this->auto_mode));
+      $this->error[] = $errors;
+      return false;
+    }
     $this->activity_id = $activity_id;
     $this->error[] =  $base_activity->get_error();
     if ($this->debug) $this->error[] = 'loading activity '.$activity_id;

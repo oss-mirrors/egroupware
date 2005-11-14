@@ -58,7 +58,7 @@ class BaseActivity extends Base {
   {
     $query = "select * from `".GALAXIA_TABLE_PREFIX."activities` where `wf_activity_id`=?";
     $result = $this->query($query,array($activityId));
-    if(!$result->numRows()) return false;
+    if(!$result || !$result->numRows() ) return false;
     $res = $result->fetchRow();
     switch($res['wf_type']) {
       case 'start':
