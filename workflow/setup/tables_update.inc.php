@@ -249,4 +249,41 @@
 		return $GLOBALS['setup_info']['workflow']['currentver'];
 	}
 
+	$test[] = '1.1.05.000';
+	function workflow_upgrade1_1_05_000()
+	{	
+		#serialized data is now stored with a Base64 encoding to ensure it work in all case (even with \' for example)
+		//We gonna make our updates manually here:
+		$GLOBALS['egw']->ADOdb->SetFetchMode(ADODB_FETCH_ASSOC);
+		$result = $GLOBALS['egw']->ADOdb->query('select * from egw_wf_instances');
+		if (!(empty($result)))
+		{
+			while ($res = $result->fetchRow())
+			{
+				$new_props = base64_encode($res['wf_properties']);
+				$new_next = base64_encode($res['wf_next_activity']);
+				$ok =  $GLOBALS['egw']->ADOdb->query(
+					'update "egw_wf_instances" set "wf_properties" = ?, "wf_next_activity"=? where "wf_instance_id" = ?',
+					array($new_props,$new_next, $res['wf_instance_id'])
+				);
+			}
+		}
+		$result = $GLOBALS['egw']->ADOdb->query('select * from egw_wf_workitems');
+		if (!(empty($result)))
+		{
+			while ($res = $result->fetchRow())
+			{
+				$new_props = base64_encode($res['wf_properties']);
+				$ok =  $GLOBALS['egw']->ADOdb->query(
+					'update "egw_wf_workitems" set "wf_properties" = ?  where "wf_item_id" = ?',
+					array($new_props, $res['wf_item_id'])
+				);
+			}
+		}
+
+		#updating the current version
+		$GLOBALS['setup_info']['workflow']['currentver'] = '1.2.00.000';
+		return $GLOBALS['setup_info']['workflow']['currentver'];
+	}
+
 ?>
