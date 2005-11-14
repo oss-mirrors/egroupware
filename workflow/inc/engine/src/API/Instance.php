@@ -64,7 +64,7 @@ class Instance extends Base {
     $res = $result->fetchRow();
 
     //Populate 
-    $this->properties = unserialize($res['wf_properties']);
+    $this->properties = unserialize(base64_decode($res['wf_properties']));
     $this->status = $res['wf_status'];
     $this->pId = $res['wf_p_id'];
     $this->instanceId = $res['wf_instance_id'];
@@ -72,7 +72,7 @@ class Instance extends Base {
     $this->owner = $res['wf_owner'];
     $this->started = $res['wf_started'];
     $this->ended = $res['wf_ended'];
-    $this->nextActivity = unserialize($res['wf_next_activity']);
+    $this->nextActivity = unserialize(base64_decode($res['wf_next_activity']));
     $this->nextUser = $res['wf_next_user'];
     $this->name = $res['wf_name'];
     $this->category = $res['wf_category'];
@@ -172,7 +172,8 @@ class Instance extends Base {
       if ($modif_done) //at least one modif
       {
         $namearray[] = $fieldname;
-        $vararray[] = serialize($actual);
+        //no more serialize, done by the core security_cleanup
+        $vararray[] = $actual; //serialize($actual);
       }   
       $changed=Array();
     }
@@ -423,7 +424,7 @@ class Instance extends Base {
   function set($name,$value) 
   {
     $name = $this->_normalize_name($name);
-    $this->changed['properties'][$name] = $value;
+    $this->changed['properties'][$name] = $this->security_cleanup($value);
     $this->unsynch = true;
     return true;
   }
@@ -444,7 +445,7 @@ class Instance extends Base {
     foreach ($properties_array as $key => $value)
     {
       $name = $this->_normalize_name($key);
-      $this->changed['properties'][$name] = $value;
+      $this->changed['properties'][$name] = $this->security_cleanup($value);
     }
     $this->unsynch = true;
     return true;
@@ -975,7 +976,8 @@ class Instance extends Base {
         $putuser = $act['wf_user'];
       }
     }
-    $properties = serialize($this->properties);
+    //no more serialize, done by the core security_cleanup
+    $properties = $this->properties; //serialize($this->properties);
     $query='insert into '.GALAXIA_TABLE_PREFIX.'workitems
         (wf_instance_id,wf_order_id,wf_activity_id,wf_started,wf_ended,wf_properties,wf_user) values(?,?,?,?,?,?,?)';    
     $this->query($query,array((int)$iid,(int)$max,(int)$activityId,(int)$started,(int)$ended,$properties,$putuser));
