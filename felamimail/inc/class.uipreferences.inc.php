@@ -83,10 +83,10 @@
 			if($_POST['save'])
 			{
 				//_debug_array($_POST);_debug_array($_POST);_debug_array($_POST);
-				$boEMailAdmin->saveSMTPForwarding(&$GLOBALS['egw_info']['user']['account_id'],$_POST['forwardingAddress'],$_POST['keepLocalCopy']);
+				$boEMailAdmin->saveSMTPForwarding($GLOBALS['egw_info']['user']['account_id'],$_POST['forwardingAddress'],$_POST['keepLocalCopy']);
 			}
 			
-			$userData	= $boEMailAdmin->getUserData(&$GLOBALS['egw_info']['user']['account_id'],false);
+			$userData	= $boEMailAdmin->getUserData($GLOBALS['egw_info']['user']['account_id'],false);
 			#_debug_array($userData);
 			$this->display_app_header(TRUE);
 
