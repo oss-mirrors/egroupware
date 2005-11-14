@@ -16,7 +16,7 @@
   /* $Id$ */
 
 	$phpgw_baseline = array(
-		'phpgw_bookmarks' => array(
+		'egw_bookmarks' => array(
 			'fd' => array(
 				'bm_id' => array('type' => 'auto','nullable' => False),
 				'bm_owner' => array('type' => 'int', 'precision' => 4,'nullable' => True),
