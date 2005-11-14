@@ -1,4 +1,4 @@
-#	workflow	it	#
+#	workflow	it	n.
 %1 aborted	workflow	it	%1 annullata
 %1 active	workflow	it	%1 attiva
 %1 completed	workflow	it	%1 completata
@@ -28,6 +28,7 @@ action %1 is impossible if we have no activity and no instance designated for it
 action %1 is impossible, another user is already in place	workflow	it	L'azione %1 è impossibile, un altro utente è già in posizione
 action %1 is impossible, there are no user assigned to this activity for this instance	workflow	it	L'azione %1 è impossibile, non ci sono utenti assegnati a questa attività per questa istanza
 action %1 needs an activity and activity %2 does not exists	workflow	it	L'azione %1 necessita di un'attività e l'attività %2 non esiste
+action %1 needs an instance and instance %2 does not exists	workflow	it	L'azione %1 necessita un'istanza e l'istanza %2 non esiste
 actions	workflow	it	Azioni
 actions right options	admin	it	Opzioni Diritti Azione
 activate	workflow	it	attiva
@@ -39,6 +40,8 @@ activities updated	workflow	it	Attività aggiornate
 activity	workflow	it	attività
 activity  status	workflow	it	Stato Attività
 activity %1	workflow	it	attività %1
+activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	it	L'attività %1 (n.%2) è associata a un processo inesistente (n.%3)
+activity %1 code is not avaible	workflow	it	Il codice dell'attività %1 non è disponibile
 activity %1 is interactive but has no role assigned	workflow	it	L'Attività %1 è Interattiva ma non ha ruoli assegnati
 activity %1 is interactive so it must use the $instance->complete() method	workflow	it	L'Attività %1 è Interattiva cosicché deve usare il metodo $instance->complete()
 activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	it	L'Attività %1 è Non-interattiva e non-autoindirizzante ma non ha ruoli assegnati
@@ -48,6 +51,9 @@ activity %1 is standalone but has transitions	workflow	it	L'attività %1 è Standa
 activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	it	L'attività %1 è Switch, quindi deve usare il metodo $instance->setNextActivity($actname)
 activity agent removed	workflow	it	Agente attività rimosso
 activity completed	workflow	it	Attività completata
+activity failure	workflow	it	fallimento attività
+activity in inexistent process	workflow	it	Attività in processo inesistente
+activity is waiting for pending transitions	workflow	it	l'attività è in attesa di transizioni in corso
 activity name already exists	workflow	it	Il nome Attività esiste già
 activity role #%1 removed	workflow	it	Ruolo attività #%1 rimosso
 activity role removed	workflow	it	Ruolo Attività rimosso
@@ -81,7 +87,10 @@ always show advanced actions	workflow	it	Mostra sempre azioni avanzate
 always show advanced mode	workflow	it	Mostra sempre modalità avanzata
 at least one email address cannot be validated.	workflow	it	almeno un indirizzo email non può essere convalidato
 auto routed	workflow	it	Auto-instradata
+auto-release on leaving activity	admin	it	auto-rilascio in uscita attività
 automatic	workflow	it	Automatico
+bad role type	workflow	it	Tipo ruolo errato
+bad user	workflow	it	Utente errato
 base directory does not exist, please ask adminstrator to check the global configuration	workflow	it	La directory base non esiste, prego chiedi all'amministratore di controllare la configurazione globale.
 bcc:	workflow	it	Ccn:
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	it	Fai attenzione alle attività interattive, la partenza e la fine di queste attività sono multiple
@@ -211,7 +220,7 @@ new mapping added	workflow	it	Nuova mappatura aggiunta
 new minor	workflow	it	Nuova minore
 new minor version created	workflow	it	creata nuova versine minore
 new transition added	workflow	it	Nuova transizione aggiunta
-next user:	workflow	it	Utente successivo:
+next user:	workflow	it	Utente seguente:
 no activity indicated	workflow	it	Nessuna attività indicata
 no agents associated with this activity	workflow	it	Nessun agente associato a questa attività
 no instance given, nothing to show	workflow	it	nessuna istanza data, nulla da mostrare
