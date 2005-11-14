@@ -58,7 +58,7 @@ class InstanceManager extends BaseManager {
     if (!(empty($result)))
     {
       $res = $result->fetchRow();
-      $result['wf_next_activity']=unserialize($result['wf_next_activity']);
+      $result['wf_next_activity']=unserialize(base64_decode($result['wf_next_activity']));
       $res['wf_workitems']=$this->getOne('select count(*) from '.GALAXIA_TABLE_PREFIX.'workitems where wf_instance_id=?', array($iid));
     }
     return $res;
@@ -71,7 +71,7 @@ class InstanceManager extends BaseManager {
   */
   function get_instance_properties($iid)
   {
-    $prop = unserialize($this->getOne('select wf_properties from '.GALAXIA_TABLE_PREFIX.'instances gi where wf_instance_id=?',array($iid)));
+    $prop = unserialize(base64_decode($this->getOne('select wf_properties from '.GALAXIA_TABLE_PREFIX.'instances gi where wf_instance_id=?',array($iid))));
     return $prop;
   }
 
@@ -118,7 +118,14 @@ class InstanceManager extends BaseManager {
   function set_instance_properties($iid,&$prop)
   {
     $this->lockAndStartTrans($iid);
-    $props = addslashes(serialize($prop));
+    //no more serialize, done by the core security_cleanup
+    //$props = addslashes(serialize($prop));
+    foreach ($prop as $property_name => $property_value)
+    {
+      //we do not check proprty name as this is an admin form
+      //but we check the values for special html chars
+      $prop[$property_name]= $this->security_cleanup($property_value);
+    }
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_properties=? where wf_instance_id=?';
     $this->query($query, array($prop,$iid));
     return $this->db->CompleteTrans();
