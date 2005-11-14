@@ -51,8 +51,8 @@
 			$this->t->set_var(array(
 				'iid'			=> $iid,
 				'instance_process'	=> lang('Instance: %1 (Process: %2)', $iid, $this->process->getName() . ' ' . $this->process->getVersion()),
-				'inst_started'		=> $GLOBALS['phpgw']->common->show_date($instance->getStarted()),
-				'inst_ended' 		=> ($ended==0)? '-' : $GLOBALS['phpgw']->common->show_date($ended),
+				'inst_started'		=> $GLOBALS['egw']->common->show_date($instance->getStarted()),
+				'inst_ended' 		=> ($ended==0)? '-' : $GLOBALS['egw']->common->show_date($ended),
 				'instance_name'		=> $instance->getName(),
 				'status'		=> $instance->getStatus(),
 				'instance_priority'	=> $instance->getPriority(),
@@ -105,17 +105,17 @@
 		{
 			if ($readonly)
 			{//we just need to read actual owner name
-				$GLOBALS['phpgw']->accounts->get_account_name($actual_owner,$lid,$owner_fname,$owner_lname);
+				$GLOBALS['egw']->accounts->get_account_name($actual_owner,$lid,$owner_fname,$owner_lname);
 				$myselect = '<input {input_type} name="owner" value="'.$owner_fname.' '.$owner_lname.'" />';
 			}
 			else
 			{//we prepare a big select
-				if (!is_object($GLOBALS['phpgw']->uiaccountsel))
+				if (!is_object($GLOBALS['egw']->uiaccountsel))
 				{
-					$GLOBALS['phpgw']->uiaccountsel = CreateObject('phpgwapi.uiaccountsel');
+					$GLOBALS['egw']->uiaccountsel =& CreateObject('phpgwapi.uiaccountsel');
 				}
-                                                                                 
-				$myselect = $GLOBALS['phpgw']->uiaccountsel->selection('owner', 'owner',$actual_owner,'workflow',0,False,'','',lang('None'),False);
+																																								 
+				$myselect = $GLOBALS['egw']->uiaccountsel->selection('owner', 'owner',$actual_owner,'workflow',0,False,'','',lang('None'),False);
 			}
 		
 			$this->t->set_var(array(
@@ -175,19 +175,19 @@
 						}
 						else
 						{
-							$GLOBALS['phpgw']->accounts->get_account_name($activity['wf_user'],$lid,$fname,$lname);
+							$GLOBALS['egw']->accounts->get_account_name($activity['wf_user'],$lid,$fname,$lname);
 						}
 						$users = '<input {input_type} name="acts['.$aid.']" value="'.$fname.' '.$lname.'" />';
 						//no action
 					}
 					else
 					{//we prepare a big select
-						if (!is_object($GLOBALS['phpgw']->uiaccountsel))
+						if (!is_object($GLOBALS['egw']->uiaccountsel))
 						{
-							$GLOBALS['phpgw']->uiaccountsel = CreateObject('phpgwapi.uiaccountsel');
+							$GLOBALS['egw']->uiaccountsel =& CreateObject('phpgwapi.uiaccountsel');
 						}
 					
-						$users = $GLOBALS['phpgw']->uiaccountsel->selection('acts['.$aid.']','acts['.$aid.']',$activity['wf_user'],'workflow',0,False,'','','*',False);
+						$users = $GLOBALS['egw']->uiaccountsel->selection('acts['.$aid.']','acts['.$aid.']',$activity['wf_user'],'workflow',0,False,'','','*',False);
 						//for actions there is 2 avaible actions
 						//	* send : send after a completed activity, maybe the transitions failed the first time
 						//	* restart : restart an automated activity which have meybe failed while running
@@ -195,28 +195,28 @@
 						{
 							//this activity shouldn't be there in completed status, need to send manually the transition
 							//and we do it there because no user will have the right to send manually an autorouted activity
-							$send_button =  '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
-			                          		'menuaction'	=> 'workflow.ui_userinstances.form',
-				                          	'iid'		=> $activity['wf_instance_id'],
-				                          	'filter_instance'=> $activity['wf_instance_id'],
-				                          	'aid'		=> $activity['wf_activity_id'],
+							$send_button =  '<a href="'.$GLOBALS['egw']->link('/index.php',array(
+																		'menuaction'	=> 'workflow.ui_userinstances.form',
+																		'iid'		=> $activity['wf_instance_id'],
+																		'filter_instance'=> $activity['wf_instance_id'],
+																		'aid'		=> $activity['wf_activity_id'],
 								'send'		=> true,
 								'add_advanced_actions'=>true,
-								)).'"><img src="'.$GLOBALS['phpgw']->common->image('workflow', 'linkto')
+								)).'"><img src="'.$GLOBALS['egw']->common->image('workflow', 'linkto')
 								.'" name="send_instance" alt="'.lang('send').'">'.lang('send transition').'</a>';
 						}
 						if (($activity['wf_status']=='running') && ($activity['wf_is_interactive']=='n') )
 						{
 							//this activity should terminate, this is not the case
 							//so we will restart it
-							$restart_button = '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
-			                          		'menuaction'	=> 'workflow.ui_userinstances.form',
-				                          	'iid'		=> $activity['wf_instance_id'],
-				                          	'filter_instance'=> $activity['wf_instance_id'],
-				                          	'aid'		=> $activity['wf_activity_id'],
+							$restart_button = '<a href="'.$GLOBALS['egw']->link('/index.php',array(
+																		'menuaction'	=> 'workflow.ui_userinstances.form',
+																		'iid'		=> $activity['wf_instance_id'],
+																		'filter_instance'=> $activity['wf_instance_id'],
+																		'aid'		=> $activity['wf_activity_id'],
 								'restart'	=> true,
 								'add_advanced_actions'=>true,
-								)).'"><img src="'.$GLOBALS['phpgw']->common->image('workflow', 'runform')
+								)).'"><img src="'.$GLOBALS['egw']->common->image('workflow', 'runform')
 								.'" name="restart activity" alt="'.lang('restart').'">'.lang('restart activity').'</a>';;
 						}
 					}
@@ -280,8 +280,8 @@
 				else
 				{
 					$this->t->set_var(array(
-						'prop_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $iid .'&unsetprop='. $key),
-						'img_trash'		=> $GLOBALS['phpgw']->common->image('workflow', 'trash'),
+						'prop_href'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $iid .'&unsetprop='. $key),
+						'img_trash'		=> $GLOBALS['egw']->common->image('workflow', 'trash'),
 						'prop_key'		=> $key,
 						'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color, true),
 					));
@@ -317,14 +317,14 @@
 		function show_workitems(&$works)
 		{
 			$this->t->set_block('history_tpl', 'block_history_line', 'history_line');
-			$view = $GLOBALS['phpgw']->common->image('workflow', 'view');
+			$view = $GLOBALS['egw']->common->image('workflow', 'view');
 			
 			// access granted to the view workitem function?
 			// need access to the monitor screens. Workitems contains the whole properties for example
 			$access_granted = true;
-			if(!$GLOBALS['phpgw']->acl->check('run',1,'admin'))
+			if(!$GLOBALS['egw']->acl->check('run',1,'admin'))
 			{
-				if(!$GLOBALS['phpgw']->acl->check('monitor_workflow',1,'workflow'))
+				if(!$GLOBALS['egw']->acl->check('monitor_workflow',1,'workflow'))
 				{
 					$access_granted = false;
 				}
@@ -339,12 +339,12 @@
 				}
 				else
 				{
-					$GLOBALS['phpgw']->accounts->get_account_name($work['wf_user'],$lid,$fname,$lname);
+					$GLOBALS['egw']->accounts->get_account_name($work['wf_user'],$lid,$fname,$lname);
 				}
 
 				if ($access_granted)
 				{
-					$address = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='.$work['wf_item_id']);
+					$address = $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='.$work['wf_item_id']);
 					$history_link = '<a href="'.$address.'"><img src="'.$view.'" alt="'.lang('Details').'" /></a>';
 				}
 				else
@@ -354,7 +354,7 @@
 				$this->t->set_var(array(
 					'act_icon'		=> $this->act_icon($work['wf_type'],$work['wf_is_interactive']),
 					'history_activity'	=> $work['wf_name'],
-					'history_started'	=> $GLOBALS['phpgw']->common->show_date($work['wf_started']),
+					'history_started'	=> $GLOBALS['egw']->common->show_date($work['wf_started']),
 					'history_duration'	=> $this->time_diff($work['wf_ended']-$work['wf_started']),
 					'history_user'		=> $fname.' '.$lname,
 					'history_link'		=> $history_link,
@@ -373,16 +373,16 @@
 		{
 			if($java)
 			{
-	    			$jselect = ' ';
-		    	}
-		    	/* Setup all and none first */
-		    	$cats_link  = "\n" .'<select name="instance_category'.(($multiple)? '[]':'').'"' .$jselect . (($multiple)? 'multiple ' : '') . ">\n";
-		    	if(!$notall)
-		    	{
-		    		$cats_link .= '<option value=""';
-		    		if($cat_id == 'all')
-		    		{
-		    			$cats_link .= ' selected';
+						$jselect = ' ';
+					}
+					/* Setup all and none first */
+					$cats_link  = "\n" .'<select name="instance_category'.(($multiple)? '[]':'').'"' .$jselect . (($multiple)? 'multiple ' : '') . ">\n";
+					if(!$notall)
+					{
+						$cats_link .= '<option value=""';
+						if($cat_id == 'all')
+						{
+							$cats_link .= ' selected';
 				}
 				$cats_link .= '>'.lang("all").'</option>'."\n";
 			}

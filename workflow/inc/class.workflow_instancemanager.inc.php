@@ -8,7 +8,7 @@
 	{
 		function workflow_instancemanager()
 		{
-			parent::InstanceManager($GLOBALS['phpgw']->ADOdb);
+			parent::InstanceManager($GLOBALS['egw']->ADOdb);
 		}
 	}
 ?>

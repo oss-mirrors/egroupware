@@ -21,19 +21,19 @@
 		{
 			parent::bo_workflow_forms('admin_processes');
 
-		       //regis: acl check
-			if ( !(($GLOBALS['phpgw']->acl->check('run',1,'admin')) || ($GLOBALS['phpgw']->acl->check('admin_workflow',1,'workflow'))) )
+					 //regis: acl check
+			if ( !(($GLOBALS['egw']->acl->check('run',1,'admin')) || ($GLOBALS['egw']->acl->check('admin_workflow',1,'workflow'))) )
 			{
-				$GLOBALS['phpgw']->common->phpgw_header();
+				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
 				echo lang('access not permitted');
-				$GLOBALS['phpgw']->log->message('F-Abort, Unauthorized access to workflow.ui_adminprocesses');
-				$GLOBALS['phpgw']->log->commit();
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$GLOBALS['egw']->log->message('F-Abort, Unauthorized access to workflow.ui_adminprocesses');
+				$GLOBALS['egw']->log->commit();
+				$GLOBALS['egw']->common->egw_exit();
 			}
 
-			$this->process_manager	= CreateObject('workflow.workflow_processmanager');
-			$this->activity_manager	= CreateObject('workflow.workflow_activitymanager');
+			$this->process_manager	=& CreateObject('workflow.workflow_processmanager');
+			$this->activity_manager	=& CreateObject('workflow.workflow_activitymanager');
 			
 		}
 
@@ -46,8 +46,8 @@
 		*/
 		function form()
 		{
-			//$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Processes');
-			//$GLOBALS['phpgw']->common->phpgw_header();
+			//$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Processes');
+			//$GLOBALS['egw']->common->egw_header();
 			//echo parse_navbar();
 			//$this->t->set_file('admin_processes', 'admin_processes.tpl');
 			$this->t->set_block('admin_processes', 'block_items', 'items');
@@ -107,7 +107,7 @@
 			);
 			//we add agents options
 			//mail_smtp
-			$bo_agent = CreateObject('workflow.bo_agent_mail_smtp');
+			$bo_agent =& CreateObject('workflow.bo_agent_mail_smtp');
 			$known_config_items = $known_config_items + $bo_agent->listProcessConfigurationFields();
 			
 			//do we need to check validity, warning high load on database
@@ -128,8 +128,8 @@
 				$date = '';
 				while (!feof($fh))
 				{
-				   $data .= fgets($fh);
-				   //echo $data;
+					 $data .= fgets($fh);
+					 //echo $data;
 				}
 				// close file
 				fclose ($fh); 
@@ -239,7 +239,7 @@
 			$this->t->set_var(array(
 				'errors'		=> $error_str,
 				'txt_Process_Name'	=> lang('Process Name'),
-				'link_new'		=> $GLOBALS['phpgw']->link('/index.php', array_merge( array(
+				'link_new'		=> $GLOBALS['egw']->link('/index.php', array_merge( array(
 								'menuaction'	=> $this->form_action,
 								'p_id'		=> 0,), $this->link_data)
 								),
@@ -267,19 +267,19 @@
 		}
 		
 		//! Show the list of process configuration options
-		/*!
-		* Use the process_config array member which should be already setted. Show a table with a line for each config
-		* value containing [Yes-No/value/select | default] choices. 
-		* The parameter is an array containing all known config items and is used to show all config items, as only 
-		* the ones changed for this process are stored in process_config. 
-		* You should give this function all config_names avaible at process level associated with type which 
-		* is 'yesno' or 'text' or an associative array with key 'select' containing an array of the select values
-		* to show (array: key => value) ==> (select: name => value)
-		* You can add titles by giving the title in the config_name and 'title' as type. 
-		*/
+		/**
+		 * * Use the process_config array member which should be already setted. Show a table with a line for each config
+		 * * value containing [Yes-No/value/select | default] choices. 
+		 * * The parameter is an array containing all known config items and is used to show all config items, as only 
+		 * * the ones changed for this process are stored in process_config. 
+		 * * You should give this function all config_names avaible at process level associated with type which 
+		 * * is 'yesno' or 'text' or an associative array with key 'select' containing an array of the select values
+		 * * to show (array: key => value) ==> (select: name => value)
+		 * * You can add titles by giving the title in the config_name and 'title' as type. 
+		 */
 		function show_process_config(&$known_config_items)
 		{
-			$siteconfiglink = '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=workflow')
+			$siteconfiglink = '<a href="'.$GLOBALS['egw']->link('/index.php','menuaction=admin.uiconfig.index&appname=workflow')
 				.'">'.lang('Workflow Site Configuration').'</a>';
 			$this->t->set_var(array(
 				'txt_consult_site_config_with_link' => lang ('Consult %1 to get the default values:',$siteconfiglink),
@@ -296,8 +296,8 @@
 			$this->translate_template('block_config_table_text');
 			$this->translate_template('block_config_table_empty');
 			$this->translate_template('block_config_table_select');
-                
-		        if (!(is_array($known_config_items)) || !count($known_config_items))
+								
+						if (!(is_array($known_config_items)) || !count($known_config_items))
 			{
 				$this->t->set_var(array(
 					'config_empty' => lang('There are no config value defined'),
@@ -323,10 +323,10 @@
 					if (is_array($config_type))
 					{//we have a select
 						$this->t->set_var(array(
-        		                                'config_name' 			=> $config_name,
-        		                                'config_name_trad'		=> lang(str_replace('_',' ',$config_name)),
-                        		                'color_line' 			=> $this->nextmatchs->alternate_row_color($tr_color),
-                        		                'config_table_title' 		=> '',
+																						'config_name' 			=> $config_name,
+																						'config_name_trad'		=> lang(str_replace('_',' ',$config_name)),
+																						'color_line' 			=> $this->nextmatchs->alternate_row_color($tr_color),
+																						'config_table_title' 		=> '',
 							'config_table_text' 		=> '',
 							'config_table_yesno'		=> '',
 						));
@@ -335,8 +335,8 @@
 						if (!(isset($row_value)))
 						{
 							$this->t->set_var(array(
-		                        	                'config_default_selected' 	=> 'selected',
-		                        	                'config_table_select_option'	=> '',
+																							'config_default_selected' 	=> 'selected',
+																							'config_table_select_option'	=> '',
 							));
 						}
 						else
@@ -346,9 +346,9 @@
 						foreach($config_type as $key => $value)
 						{
 							$this->t->set_var(array(
-		                        	              	 'config_option_name'		=> $value,
-		                        	              	 'config_option_value'		=> $key,
-		                        	              	 'config_option_selected'	=> ($key == $row_value)? 'selected' : '',
+																							 'config_option_name'		=> $value,
+																							 'config_option_value'		=> $key,
+																							 'config_option_selected'	=> ($key == $row_value)? 'selected' : '',
 							));//DEBUG TODO selected value?
 							$this->t->parse('config_table_select_option','block_config_table_select_option',true);
 						}
@@ -357,23 +357,23 @@
 					elseif ($config_type=='title')
 					{
 						$this->t->set_var(array(
-                                	        	'config_name_trad'	=> lang(str_replace('_',' ',$config_name)),
-	        	                                'color_line'		=> '#D3DCE3',
-	        	                                'config_table_text' 	=> '',
-	        	                                'config_table_yesno' 	=> '',
-        	        	                ));
-        	        	                $this->t->parse('config_table_title', 'block_config_table_title', false);
+																						'config_name_trad'	=> lang(str_replace('_',' ',$config_name)),
+																						'color_line'		=> '#D3DCE3',
+																						'config_table_text' 	=> '',
+																						'config_table_yesno' 	=> '',
+																		));
+																		$this->t->parse('config_table_title', 'block_config_table_title', false);
 					}
 
 					else
 					{
 						// if not title or select our row can be a text value or a Yes/No/Default value
 						$this->t->set_var(array(
-        		                                'config_name' 			=> $config_name,
-        		                                'config_name_trad'		=> lang(str_replace('_',' ',$config_name)),
-                        		                'color_line' 			=> $this->nextmatchs->alternate_row_color($tr_color),
-                        		                'config_table_title' 		=> '',
-                        		                'config_table_select'		=> '',
+																						'config_name' 			=> $config_name,
+																						'config_name_trad'		=> lang(str_replace('_',' ',$config_name)),
+																						'color_line' 			=> $this->nextmatchs->alternate_row_color($tr_color),
+																						'config_table_title' 		=> '',
+																						'config_table_select'		=> '',
 						));
 						unset($row_value);
 						$row_value = $this->process_config[$config_name];
@@ -385,7 +385,7 @@
 									'config_value' 			=> $row_value,
 									'config_use_default_checked' 	=> '',
 									'txt_Use_Default'		=> lang('Use Default'),
-		                        		                'config_table_yesno' 		=> '',
+																								'config_table_yesno' 		=> '',
 								));
 							}
 							else
@@ -394,7 +394,7 @@
 									'config_value' 			=> '',
 									'config_use_default_checked' 	=> 'checked',
 									'txt_Use_Default'               => lang('Use Default'),
-		                        		                'config_table_yesno' 		=> '',
+																								'config_table_yesno' 		=> '',
 								));
 							}
 							$this->t->parse('config_table_text', 'block_config_table_text', false);
@@ -404,19 +404,19 @@
 							if (isset($row_value))
 							{
 								$this->t->set_var(array(
-	                        		                	'config_table_text' 		=> '',
-		                        		                'config_default_selected' 	=> '',
-		                        		                'config_yes_selected'		=> ($row_value==1)? 'selected':'',
-		                        		                'config_no_selected'		=> ($row_value==1)? '':'selected',
+																								'config_table_text' 		=> '',
+																								'config_default_selected' 	=> '',
+																								'config_yes_selected'		=> ($row_value==1)? 'selected':'',
+																								'config_no_selected'		=> ($row_value==1)? '':'selected',
 								));
 							}
 							else
 							{
 								$this->t->set_var(array(
-	                        		                	'config_table_text' 		=> '',
-		                        		                'config_default_selected' 	=> 'selected',
-		                        		                'config_yes_selected'		=> '',
-		                        		                'config_no_selected'		=> '',
+																								'config_table_text' 		=> '',
+																								'config_default_selected' 	=> 'selected',
+																								'config_yes_selected'		=> '',
+																								'config_no_selected'		=> '',
 								));
 							}
 							$this->t->parse('config_table_yesno', 'block_config_table_yesno', false);
@@ -467,30 +467,30 @@
 				$myp_id = $item['wf_p_id'];
 				$this->t->set_var(array(
 					'item_wf_p_id'		=> $myp_id,
-					'href_item_name'	=> $GLOBALS['phpgw']->link('/index.php', array_merge($get_link,array('p_id' => $myp_id))),
+					'href_item_name'	=> $GLOBALS['egw']->link('/index.php', array_merge($get_link,array('p_id' => $myp_id))),
 					'item_name'		=> $item['wf_name'],
 					'item_version'		=> $item['wf_version'],
-					'img_active'		=> ($item['wf_is_active'] == 'y')? '<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('active') .'" title="'. lang('active') .'" />' : '',
-					'img_valid'		=> '<img src="'. $GLOBALS['phpgw']->common->image('workflow', $dot.'_dot') .'" alt="'. $alt .'" title="'. $alt .'" />',
-					'href_item_minor'	=> $GLOBALS['phpgw']->link('/index.php', array_merge($get_link,array('newminor'	=> $myp_id))),
-					'img_new'		=> $GLOBALS['phpgw']->common->image('workflow', 'new'),
-					'href_item_major'	=> $GLOBALS['phpgw']->link('/index.php', array_merge($get_link,array('newmajor' => $myp_id))),
-					'href_item_activities'	=> $GLOBALS['phpgw']->link('/index.php', array(
+					'img_active'		=> ($item['wf_is_active'] == 'y')? '<img src="'. $GLOBALS['egw']->common->image('workflow', 'refresh2') .'" alt="'. lang('active') .'" title="'. lang('active') .'" />' : '',
+					'img_valid'		=> '<img src="'. $GLOBALS['egw']->common->image('workflow', $dot.'_dot') .'" alt="'. $alt .'" title="'. $alt .'" />',
+					'href_item_minor'	=> $GLOBALS['egw']->link('/index.php', array_merge($get_link,array('newminor'	=> $myp_id))),
+					'img_new'		=> $GLOBALS['egw']->common->image('workflow', 'new'),
+					'href_item_major'	=> $GLOBALS['egw']->link('/index.php', array_merge($get_link,array('newmajor' => $myp_id))),
+					'href_item_activities'	=> $GLOBALS['egw']->link('/index.php', array(
 									'menuaction'	=> 'workflow.ui_adminactivities.form',
 									'p_id'		=> $myp_id)),
-					'img_activities'	=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
-					'href_item_code'	=> $GLOBALS['phpgw']->link('/index.php', array(
+					'img_activities'	=> $GLOBALS['egw']->common->image('workflow', 'Activity'),
+					'href_item_code'	=> $GLOBALS['egw']->link('/index.php', array(
 									'menuaction'	=> 'workflow.ui_adminsource.form',
 									'p_id'		=> $myp_id)),
-					'img_code'		=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
-					'href_item_save'	=> $GLOBALS['phpgw']->link('/index.php', array(
+					'img_code'		=> $GLOBALS['egw']->common->image('workflow', 'code'),
+					'href_item_save'	=> $GLOBALS['egw']->link('/index.php', array(
 									'menuaction'	=> 'workflow.workflow.export',
 									'p_id'		=> $myp_id)),
-					'img_save'		=> $GLOBALS['phpgw']->common->image('workflow', 'save'),
-					'href_item_roles'	=> $GLOBALS['phpgw']->link('/index.php', array(
+					'img_save'		=> $GLOBALS['egw']->common->image('workflow', 'save'),
+					'href_item_roles'	=> $GLOBALS['egw']->link('/index.php', array(
 									'menuaction'	=> 'workflow.ui_adminroles.form',
 									'p_id'		=> $myp_id)),
-					'img_roles'		=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
+					'img_roles'		=> $GLOBALS['egw']->common->image('workflow', 'roles'),
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
 				$this->t->parse('items', 'block_items', True);
@@ -528,11 +528,11 @@
 		}
 		
 		//! Save the configuration values for the current process
-		/*!
-		This function use the list of known configuration items to parse POSTed config values
-		Theses values are passed to the process->SetConfigValues which know well what to do with
-		them.
-		*/
+		/**
+		 * This function use the list of known configuration items to parse POSTed config values
+		 * Theses values are passed to the process->SetConfigValues which know well what to do with
+		 * them.
+		 */
 		function save_config(&$global_config_data)
 		{
 			$known_config_items	=& $global_config_data['known_items'];

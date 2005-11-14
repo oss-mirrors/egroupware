@@ -11,15 +11,15 @@
 	/* $Id$ */
 
 
-	/*!
-	 * Mail-SMTP Agent : interface layer
-	 *
-	 * This class connects the workflow agents calls to the mail_smtp agent business layer
-	 *
-	 * @package workflow
-	 * @author regis.leroy@glconseil.com
-	 * @license GPL
-	 */
+	/**
+	 *  * Mail-SMTP Agent : interface layer
+	 *  *
+	 *  * This class connects the workflow agents calls to the mail_smtp agent business layer
+	 *  *
+	 *  * @package workflow
+	 *  * @author regis.leroy@glconseil.com
+	 *  * GPL
+	  */
 
 	require_once(dirname(__FILE__) . SEP . 'class.ui_agent.inc.php');
 		
@@ -87,18 +87,18 @@
 			//show the shared part handled by parent object
 			parent::showAdminActivityOptions('shared_part');
 			$this->translate_template($admin_name);
-                        $this->t->parse($template_block_name, $admin_name);
+												$this->t->parse($template_block_name, $admin_name);
 		}
 		
-		/*!
-		* Function called by the running object (run_activity) after the activity_pre code
-		* and before the user code. This code is runned only if the $GLOBALS['workflow']['__leave_activity']
-		* IS NOT set (i.e.: the user is not cancelling his form in case of interactive activity)
-		* WARNING : on interactive queries the user code is parsed several times and this function is called
-		* each time you reach the begining of the code, this means at least the first time when you show the form
-		* and every time you loop on the form + the last time when you complete the code (if the user did not cancel).
-		* @return true or false, if false the $this->error array should contains error messages
-		*/
+		/**
+		 * * Function called by the running object (run_activity) after the activity_pre code
+		 * * and before the user code. This code is runned only if the $GLOBALS['workflow']['__leave_activity']
+		 * * IS NOT set (i.e.: the user is not cancelling his form in case of interactive activity)
+		 * * WARNING : on interactive queries the user code is parsed several times and this function is called
+		 * * each time you reach the begining of the code, this means at least the first time when you show the form
+		 * * and every time you loop on the form + the last time when you complete the code (if the user did not cancel).
+		*  * @return true or false, if false the $this->error array should contains error messages
+		 */
 		function run_activity_pre()
 		{
 			//load agent data from database
@@ -119,24 +119,24 @@
 			return $ok;
 		}
 		
-		/*!
-		* Function called by the running object (run_activity) after the activity_pre code
-		* and before the user code. This code is runned only if the $GLOBALS['workflow']['__leave_activity']
-		* IS set (i.e.: the user is cancelling his form in case of interactive activity)
-		* @return true or false, if false the $this->error array should contains error messages
-		*/
+		/**
+		 * * Function called by the running object (run_activity) after the activity_pre code
+		 * * and before the user code. This code is runned only if the $GLOBALS['workflow']['__leave_activity']
+		 * * IS set (i.e.: the user is cancelling his form in case of interactive activity)
+		*  * @return true or false, if false the $this->error array should contains error messages
+		 */
 		function run_leaving_activity_pre()
 		{
 			//actually we never send emails when cancelling
 			return true;
 		}
 		
-		/*!
-		* Function called by the running object (run_activity) after the user code
-		* and after the activity_pos code. This code is runned only if the $GLOBALS['__activity_completed']
-		* IS set (i.e.: the user has completing the activity)
-		* @return true or false, if false the $this->error array should contains error messages
-		*/
+		/**
+		 * * Function called by the running object (run_activity) after the user code
+		 * * and after the activity_pos code. This code is runned only if the $GLOBALS['__activity_completed']
+		 * * IS set (i.e.: the user has completing the activity)
+		*  * @return true or false, if false the $this->error array should contains error messages
+		 */
 		function run_activity_completed_pos()
 		{
 			//this will send an email only if the configuration says to do so
@@ -154,20 +154,20 @@
 			return $ok;
 		}
 		
-		/*!
-		* Function called by the running object (run_activity) after the user code
-		* and after the activity_pos code. This code is runned only if the $GLOBALS['__activity_completed']
-		* IS NOT set (i.e.: the user is not yet completing the activity)
-		* WARNING : on interactive queries the user code is parsed several times and this function is called
-		* each time you reach the end of the code without completing, this means at least the first time
-		* and every time you loop on the form.
-		* This function can call two types of mail sending
-		*	* sending email on POST queries (usefull for interactive forms), retrieving POSTed values
-		*	* sending email at each reach of the end of the code (usefull for automatic activities which 
-		*	completes only after execution of user code (sending after completion is not possible). And we
-		*	musn't retrieve POSTed values in this case because it can concerns previous non-automatic activities
-		* @return true or false, if false the $this->error array should contains error messages
-		*/
+		/**
+		 * * Function called by the running object (run_activity) after the user code
+		 * * and after the activity_pos code. This code is runned only if the $GLOBALS['__activity_completed']
+		 * * IS NOT set (i.e.: the user is not yet completing the activity)
+		 * * WARNING : on interactive queries the user code is parsed several times and this function is called
+		 * * each time you reach the end of the code without completing, this means at least the first time
+		 * * and every time you loop on the form.
+		 * * This function can call two types of mail sending
+		 * *	* sending email on POST queries (usefull for interactive forms), retrieving POSTed values
+		 * *	* sending email at each reach of the end of the code (usefull for automatic activities which 
+		 * *	completes only after execution of user code (sending after completion is not possible). And we
+		 * *	musn't retrieve POSTed values in this case because it can concerns previous non-automatic activities
+		*  * @return true or false, if false the $this->error array should contains error messages
+		 */
 		function run_activity_pos()
 		{
 			if ($this->bo_agent->sendOnPosted())

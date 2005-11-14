@@ -57,7 +57,7 @@
 
 			if( count($this->wheres) > 0 ) 
 			{
-		        	$this->where = implode(' and ', $this->wheres);
+							$this->where = implode(' and ', $this->wheres);
 			}
 			else 
 			{
@@ -119,13 +119,13 @@
 				foreach ($instances_data as $instance)
 				{
 					$this->t->set_var(array(
-						'inst_id_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id']),
+						'inst_id_href'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id']),
 						'inst_id'		=> $instance['wf_instance_id'],
 						'instance_name'		=> $instance['wf_instance_name'],
 						'activity_name'		=> $instance['wf_activity_name'],
 						'inst_status'		=> $instance['wf_status'],
-						'inst_owner'		=> $GLOBALS['phpgw']->common->grab_owner_name($instance['wf_owner']), 
-						'inst_user'		=> $GLOBALS['phpgw']->common->grab_owner_name($instance['wf_user']), 
+						'inst_owner'		=> $GLOBALS['egw']->common->grab_owner_name($instance['wf_owner']), 
+						'inst_user'		=> $GLOBALS['egw']->common->grab_owner_name($instance['wf_user']), 
 						'inst_procname'		=> $instance['wf_procname'],
 						'inst_version'		=> $instance['wf_version'],
 						'class_alternate_row'	=> $this->nextmatchs->alternate_row_color($tr_color, true),
@@ -169,7 +169,7 @@
 				$this->t->set_var(array(
 					'filter_user_selected'	=> ($user == $filter_user)? 'selected="selected"' : '',
 					'filter_user_value'		=> $user,
-					'filter_user_name'		=> $GLOBALS['phpgw']->common->grab_owner_name($user)
+					'filter_user_name'		=> $GLOBALS['egw']->common->grab_owner_name($user)
 				));
 				$this->t->parse('filter_user', 'block_filter_user', true);
 			}

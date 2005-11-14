@@ -16,27 +16,27 @@
 		{
 			parent::workflow();
 
-		       //regis: acl check
-			if ( !(($GLOBALS['phpgw']->acl->check('run',1,'admin')) || ($GLOBALS['phpgw']->acl->check('admin_workflow',1,'workflow'))) )
+					 //regis: acl check
+			if ( !(($GLOBALS['egw']->acl->check('run',1,'admin')) || ($GLOBALS['egw']->acl->check('admin_workflow',1,'workflow'))) )
 			{
-				$GLOBALS['phpgw']->common->phpgw_header();
+				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
 				echo lang('access not permitted');
-				$GLOBALS['phpgw']->log->message('F-Abort, Unauthorized access to workflow.ui_adminroles');
-				$GLOBALS['phpgw']->log->commit();
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$GLOBALS['egw']->log->message('F-Abort, Unauthorized access to workflow.ui_adminroles');
+				$GLOBALS['egw']->log->commit();
+				$GLOBALS['egw']->common->egw_exit();
 			}
 
-			$this->process_manager	= CreateObject('workflow.workflow_processmanager');
-			$this->activity_manager	= CreateObject('workflow.workflow_activitymanager');
-			$this->role_manager	= CreateObject('workflow.workflow_rolemanager');
+			$this->process_manager	=& CreateObject('workflow.workflow_processmanager');
+			$this->activity_manager	=& CreateObject('workflow.workflow_activitymanager');
+			$this->role_manager	=& CreateObject('workflow.workflow_rolemanager');
 			
 		}
 
 		function form()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Process Roles');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Process Roles');
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file('admin_roles', 'admin_roles.tpl');
@@ -77,7 +77,7 @@
 			// delete mappings
 			if (isset($_POST['delete_map'])) 
 			{
-			  $this->delete_maps(array_keys($_POST['map']));
+				$this->delete_maps(array_keys($_POST['map']));
 			}
 
 			// retrieve process info
@@ -117,7 +117,7 @@
 			$this->t->set_var(array(
 				'message'				=> implode('<br>', array_filter($this->message)),
 				'errors'				=> $error_str,
-				'form_action_adminroles'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form'),
+				'form_action_adminroles'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form'),
 				'role_info_role_id'		=> $role_info['wf_role_id'],
 				'role_info_name'		=> $role_info['wf_name'],
 				'role_info_description'	=> $role_info['wf_description'],
@@ -135,7 +135,7 @@
 
 			$this->translate_template('admin_roles');
 			$this->t->pparse('output', 'admin_roles');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		function save_role($role_id, $name, $description)
@@ -166,13 +166,13 @@
 		
 		function delete_maps($mappings)
 		{
-		        foreach($mappings as $map)
-		        {
-		               $pos = strpos($map,":::");
-		               $user=substr($map,0,$pos);
-		               $role_id=substr($map,$pos+3);
-		               $this->role_manager->remove_mapping($user,$role_id);
-		        }
+						foreach($mappings as $map)
+						{
+									 $pos = strpos($map,":::");
+									 $user=substr($map,0,$pos);
+									 $role_id=substr($map,$pos+3);
+									 $this->role_manager->remove_mapping($user,$role_id);
+						}
 			$this->message[] = lang('Mappings deleted');
 		}
 		
@@ -187,7 +187,7 @@
 			else {	
 				foreach ($mappings['data'] as $mapping)
 				{
-					$GLOBALS['phpgw']->accounts->get_account_name($mapping['wf_user'], $lid, $fname, $lname);
+					$GLOBALS['egw']->accounts->get_account_name($mapping['wf_user'], $lid, $fname, $lname);
 					$this->t->set_var(array(
 						'map_user_id'	=> $mapping['wf_user'],
 						'map_role_id'	=> $mapping['wf_role_id'],
@@ -215,9 +215,9 @@
 		function show_users_roles_selects($all_roles_data)
 		{
 			$this->t->set_block('admin_roles', 'block_select_users', 'select_users');
-			$users =& $GLOBALS['phpgw']->accounts->get_list('accounts');
+			$users =& $GLOBALS['egw']->accounts->get_list('accounts');
 			//_debug_array($users);
-			$groups =& $GLOBALS['phpgw']->accounts->get_list('groups');
+			$groups =& $GLOBALS['egw']->accounts->get_list('groups');
 			//_debug_array($groups);
 			foreach ($users as $user)
 			{
@@ -256,7 +256,7 @@
 			{
 				$this->t->set_var(array(
 					'all_roles_role_id'		=> $role['wf_role_id'],
-					'all_roles_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&sort_mode='. $this->sort_mode .'&start='. $this->start .'&find='. $find .'&p_id='. $this->wf_p_id .'&sort_mode2='. $sort_mode2 .'&role_id='. $role['wf_role_id']),
+					'all_roles_href'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&sort_mode='. $this->sort_mode .'&start='. $this->start .'&find='. $find .'&p_id='. $this->wf_p_id .'&sort_mode2='. $sort_mode2 .'&role_id='. $role['wf_role_id']),
 					'all_roles_name'		=> $role['wf_name'],
 					'all_roles_description'	=> $role['wf_description'],
 					'color_line'			=> $this->nextmatchs->alternate_row_color($tr_color),

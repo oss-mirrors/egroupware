@@ -41,8 +41,8 @@
 			
 			$this->fill_local_variables();
 			$this->fill_monitor_stats($this->stats);
-                        $this->t->set_var(array('message' => implode('<br>', $this->message)));
-                        $this->fill_general_variables();
+												$this->t->set_var(array('message' => implode('<br>', $this->message)));
+												$this->fill_general_variables();
 			$this->finish();
 		}
 		

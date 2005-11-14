@@ -11,17 +11,17 @@
 	/* $Id$ */
 
 
-	/*!
-	 * Mail-SMTP Agent : business layer
-	 *
-	 * This class connects the workflow agent to the egroupware phpmailer and emailadmin
-	 * This let the workflow activities send emails. It contains some logic to replace
-	 * known tokens by workflow information (user, owner, activity name, etc...)
-	 *
-	 * @package workflow
-	 * @author regis.leroy@glconseil.com
-	 * @license GPL
-	 */
+	/**
+	 *  * Mail-SMTP Agent : business layer
+	 *  *
+	 *  * This class connects the workflow agent to the egroupware phpmailer and emailadmin
+	 *  * This let the workflow activities send emails. It contains some logic to replace
+	 *  * known tokens by workflow information (user, owner, activity name, etc...)
+	 *  *
+	 *  * @package workflow
+	 *  * @author regis.leroy@glconseil.com
+	 *  * GPL
+	  */
 
 
 	require_once(dirname(__FILE__) . SEP . 'class.bo_agent.inc.php');
@@ -77,7 +77,7 @@
 			
 			$this->title = lang('Mail Smtp Agent');
 			$this->description = lang('This agent gives the activity the possibility to send an SMTP message (mail)');
-			$this->help = lang('Use <a href="%1">EmailAdmin</a> to create mail profiles', $GLOBALS['phpgw']->link('/index.php',array('menuaction' => 'emailadmin.ui.listProfiles')));
+			$this->help = lang('Use <a href="%1">EmailAdmin</a> to create mail profiles', $GLOBALS['egw']->link('/index.php',array('menuaction' => 'emailadmin.ui.listProfiles')));
 			$this->help .= "<br />\n".lang('Mails can be sent at the begining or at the end of the activity, For interactive activities only it can be sent after completion.');
 			$this->help .= "<br />\n".lang('Be carefull with interactive activity, end and start of theses activities are multiple.');
 			$this->help .= "<br />\n".lang('You can use special values with this mail agent:');
@@ -151,13 +151,13 @@
 			
 		}
 
-		/*!
-		* Factory: Load the agent values stored somewhere in the agent object and retain the agent id
-		* @param $agent_id is the agent id
-		* @param $really_load boolean, true by default, if false the data wont be loaded from database and
-		* the only thing done by this function is storing the agent_id (usefull if you know you wont need actual data)
-		* @return false if the agent cannot be loaded, true else
-		*/
+		/**
+		 * * Factory: Load the agent values stored somewhere in the agent object and retain the agent id
+		*  * @param $agent_id is the agent id
+		*  * @param $really_load boolean, true by default, if false the data wont be loaded from database and
+		*  * the only thing done by this function is storing the agent_id (usefull if you know you wont need actual data)
+		*  * @return false if the agent cannot be loaded, true else
+		 */
 		function load($agent_id, $really_load=true)
 		{
 			//read values from the so_object
@@ -178,10 +178,10 @@
 			$this->agent_id = $agent_id;
 		}
 
-		/*!
-		* Save the agent
-		* @return false if the agent cannot be saved, true else
-		*/
+		/**
+		 * * Save the agent
+		*  * @return false if the agent cannot be saved, true else
+		 */
 		function save()
 		{
 			//make a simplified version of $this->fields with just values
@@ -194,21 +194,21 @@
 		}
 
 		
-		/*!
-		* this function lists activity level options avaible for the agent
-		* @return an associative array which can be empty
-		*/
+		/**
+		 * * this function lists activity level options avaible for the agent
+		*  * @return an associative array which can be empty
+		 */
 		function getAdminActivityOptions ()
 		{
 			return $this->fields;
 		}
 		
-		/*!
-		* This function tell the engine which process level options have to be set
-		* for the agent. Theses options will be initialized for all processes by the engine
-		* and can be different for each process.
-		* @return an array which can be empty
-		*/
+		/**
+		 * * This function tell the engine which process level options have to be set
+		 * * for the agent. Theses options will be initialized for all processes by the engine
+		 * * and can be different for each process.
+		*  * @return an array which can be empty
+		 */
 		function listProcessConfigurationFields()
 		{
 			$profile_list = $this->bo_emailadmin->getProfileList();
@@ -226,11 +226,11 @@
 			return $this->showProcessConfigurationFields;
 		}
 	
-		/*!
-		* return the SMTP config values stored by the emailadmin egw application
-		* @return an associative array containing the'emailConfigValid' token at true if
-		* it was ok, and at false else
-		*/
+		/**
+		 * * return the SMTP config values stored by the emailadmin egw application
+		*  * @return an associative array containing the'emailConfigValid' token at true if
+		*  * it was ok, and at false else
+		 */
 		function getSMTPConfiguration()
 		{
 			$data =Array();
@@ -254,7 +254,7 @@
 			$data['smtpPort']		= $profileData['smtpPort'];
 			$data['smtpAuth']		= $profileData['smtpAuth'];
 			$data['smtpType']               = $profileData['smtpType'];
-			$useremail = $this->bo_emailadmin->getAccountEmailAddress($GLOBALS['phpgw_info']['user']['userid'], $this->profileID);
+			$useremail = $this->bo_emailadmin->getAccountEmailAddress($GLOBALS['egw_info']['user']['userid'], $this->profileID);
 			$data['emailAddress']           = $useremail[0]['address'];
 			return $data;
 		}
@@ -263,28 +263,28 @@
 		//initialize objects we will need for the mailing and retrieve the conf
 		function init()
 		{
-			$this->mail = CreateObject('phpgwapi.phpmailer');
+			$this->mail =& CreateObject('phpgwapi.phpmailer');
 			//set the $this->conf
 			$this->getProcessConfigurationFields($this->activity->getProcessId());
 			if ($this->conf['mail_smtp_debug']) $this->debugmode = true;
 			
 		}
 		
-		/*!
-		* @return true if the conf says that we send email on POSTed forms, else false.
-		*/
+		/**
+		*  * @return true if the conf says that we send email on POSTed forms, else false.
+		 */
 		function sendOnPosted()
 		{
 			return ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_POST);
 		}
 		
-		/*!
-		* If this activity is defined as an activity sending the email when starting we'll send it now
-		* WARNING : on interactive queries the user code is parsed several times and this function is called
-		* each time you reach the begining of the code, this means at least the first time when you show the form
-		* and every time you loop on the form + the last time when you complete the code (if the user did not cancel).
-		* @return true if everything was ok, false if something went wrong
-		*/
+		/**
+		 * * If this activity is defined as an activity sending the email when starting we'll send it now
+		 * * WARNING : on interactive queries the user code is parsed several times and this function is called
+		 * * each time you reach the begining of the code, this means at least the first time when you show the form
+		 * * and every time you loop on the form + the last time when you complete the code (if the user did not cancel).
+		*  * @return true if everything was ok, false if something went wrong
+		 */
 		function send_start()
 		{
 			if ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_AUTO_PRE)
@@ -301,13 +301,13 @@
 		}
 
 		
-		/*!
-		* If this activity is defined as an activity sending the email when finishing the code we'll send it now
-		* WARNING : on interactive queries the user code is parsed several times and this function is called
-		* each time you reach the end of the code without completing, this means at least the first time
-		* and every time you loop on the form.
-		* @return true if everything was ok, false if something went wrong
-		*/
+		/**
+		 * * If this activity is defined as an activity sending the email when finishing the code we'll send it now
+		 * * WARNING : on interactive queries the user code is parsed several times and this function is called
+		 * * each time you reach the end of the code without completing, this means at least the first time
+		 * * and every time you loop on the form.
+		*  * @return true if everything was ok, false if something went wrong
+		 */
 		function send_end()
 		{
 			if ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_AUTO_POS)
@@ -323,11 +323,11 @@
 			}
 		}
 
-		/*!
-		* If this activity is defined as an activity sending the email when the user post a command for it
-		* we'll send it now
-		* @return true if everything was ok, false if something went wrong
-		*/
+		/**
+		 * * If this activity is defined as an activity sending the email when the user post a command for it
+		 * * we'll send it now
+		*  * @return true if everything was ok, false if something went wrong
+		 */
 		function send_post()
 		{
 			if ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_POST)
@@ -343,10 +343,10 @@
 			}
 		}
 		
-		/*!
-		*  If this activity is defined as an activity sending the email when completing we'll send it now
-		* @return true if everything was ok, false if something went wrong
-		*/
+		/**
+		 * *  If this activity is defined as an activity sending the email when completing we'll send it now
+		*  * @return true if everything was ok, false if something went wrong
+		 */
 		function send_completed()
 		{
 			if ($this->fields['wf_send_mode']['value']== _SMTP_MAIL_AGENT_SND_COMP)
@@ -365,17 +365,17 @@
 		//! Buid the email fields
 		function prepare_mail()
 		{
-			$userLang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
-			$langFile = PHPGW_SERVER_ROOT."/phpgwapi/setup/phpmailer.lang-$userLang.php";
+			$userLang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
+			$langFile = EGW_SERVER_ROOT."/phpgwapi/setup/phpmailer.lang-$userLang.php";
 			if(file_exists($langFile))
 			{
-				$this->mail->SetLanguage($userLang, PHPGW_SERVER_ROOT."/phpgwapi/setup/");
+				$this->mail->SetLanguage($userLang, EGW_SERVER_ROOT."/phpgwapi/setup/");
 			}
 			else
 			{
-				$this->mail->SetLanguage("en", PHPGW_SERVER_ROOT."/phpgwapi/setup/");
+				$this->mail->SetLanguage("en", EGW_SERVER_ROOT."/phpgwapi/setup/");
 			}
-			$this->mail->PluginDir = PHPGW_SERVER_ROOT."/phpgwapi/inc/";
+			$this->mail->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
 			$this->mail->IsSMTP();
 			
 			//SMTP Conf
@@ -391,8 +391,8 @@
 			if ($smtpconf['smtpAuth'])
 			{
 				$this->mail->SMTPAuth	= true;
-				$this->mail->Username	= $GLOBALS['phpgw_info']['user']['userid'];
-				$this->mail->Password	= $GLOBALS['phpgw_info']['user']['passwd'];
+				$this->mail->Username	= $GLOBALS['egw_info']['user']['userid'];
+				$this->mail->Password	= $GLOBALS['egw_info']['user']['passwd'];
 			}
 			
 			$this->mail->Encoding = '8bit';
@@ -433,17 +433,17 @@
 			return true;
 		}
 		
-		/*!
-		* This function is used to decode admin instructions about the final value or the activity
-		* fields. i.e.: decoding %user% in toto@foo.com for example
-		*	* If you call this function twice the final result will NOT be recalculated. except with the $force 
-		*	parameter. This is done so that you can call this function sooner than the engine and add or remove
-		*	emails from final fields. The engine will not recompute automatically theses fields if you done it already.
-		* @param $defaultDomain is the default mail Domain, used with empty domains
-		* @param $force is falmse by default, if true the final are recalculated even if they are already there
-		* @return true/false and set the $this->final_fields array containing the fields with the 'real' final value and for 
-		* the wf_to, wf_bcc and wf_cc fields you'll have arrays with email values.
-		*/
+		/**
+		 * * This function is used to decode admin instructions about the final value or the activity
+		 * * fields. i.e.: decoding %user% in toto@foo.com for example
+		 * *	* If you call this function twice the final result will NOT be recalculated. except with the $force 
+		 * *	parameter. This is done so that you can call this function sooner than the engine and add or remove
+		 * *	emails from final fields. The engine will not recompute automatically theses fields if you done it already.
+		*  * @param $defaultDomain is the default mail Domain, used with empty domains
+		*  * @param $force is falmse by default, if true the final are recalculated even if they are already there
+		*  * @return true/false and set the $this->final_fields array containing the fields with the 'real' final value and for 
+		*  * the wf_to, wf_bcc and wf_cc fields you'll have arrays with email values.
+		 */
 		function decode_fields_in_final_fields($defaultDomain, $force=false)
 		{
 			if ($force || (!(isset($this->final_fields['calculated']))) )
@@ -517,12 +517,12 @@
 			return true;
 		}
 
-		/*!
-		* This function will clean ',,' or ', ,'  or starting or ending by ','
-		* in the email address string list.
-		* @param $address_string is the string we should clean
-		* @return the cleaned up string
-		*/
+		/**
+		 * * This function will clean ',,' or ', ,'  or starting or ending by ','
+		 * * in the email address string list.
+		*  * @param $address_string is the string we should clean
+		*  * @return the cleaned up string
+		 */
 		function cleanup_adress_string($address_string)
 		{
 			//in PHP5 we could ve been using the count parameter to stop recursivity
@@ -539,11 +539,11 @@
 		}
 
 		
-		/*!
-		* This function is used to find and replace tokens in the fields
-		* @param $string is the string to analyse
-		* @return the modified string
-		*/
+		/**
+		 * * This function is used to find and replace tokens in the fields
+		*  * @param $string is the string to analyse
+		*  * @return the modified string
+		 */
 		function replace_tokens(&$string)
 		{
 			//first we need to escape the \% before the analysis
@@ -602,7 +602,7 @@
 					case 'user' :
 						//the current instance/activity user which is in fact running
 						//this class actually
-						$matches[1][$key] = $GLOBALS['phpgw_info']['user']['email'];
+						$matches[1][$key] = $GLOBALS['egw_info']['user']['email'];
 						break;
 					case 'owner' :
 						//the owner of the instance
@@ -706,14 +706,14 @@
 								switch ($link_part)
 								{
 									case 'userinstance' :
-										$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['phpgw']->link('/index.php',array(
+										$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['egw']->link('/index.php',array(
 											'menuaction' 		=> 'workflow.ui_userinstances.form',
 											'filter_instance'	=> $this->instance_id,
 											)
 										);
 										break;
 									case 'viewinstance' :
-										$my_link =  $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['phpgw']->link('/index.php',array(
+										$my_link =  $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['egw']->link('/index.php',array(
 											'menuaction'	=> 'workflow.ui_userviewinstance.form',
 											'iid'		=> $this->instance_id,
 											)
@@ -725,7 +725,7 @@
 										unset($GUI);
 										if (!($view_activity))
 										{//link on default view
-											$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['phpgw']->link('/index.php',array(
+											$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['egw']->link('/index.php',array(
 												'menuaction'	=> 'workflow.ui_userviewinstance.form',
 												'iid'		=> $this->instance_id,
 												)
@@ -733,7 +733,7 @@
 										}
 										else
 										{//link on this special activity
-											$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['phpgw']->link('/index.php',array(
+											$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['egw']->link('/index.php',array(
 												'menuaction'	=> 'workflow.run_activity.go',
 												'iid'		=> $this->instance_id,
 												'activity_id'	=> $view_activity,
@@ -742,7 +742,7 @@
 										}
 										break;
 									case 'admininstance' :
-										$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['phpgw']->link('/index.php',array(
+										$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['egw']->link('/index.php',array(
 											'menuaction'	=> 'workflow.ui_admininstance.form',
 											'iid'		=> $this->instance_id,
 											)
@@ -756,7 +756,7 @@
 										}
 										else
 										{//local link
-											$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['phpgw']->link($link_part);
+											$my_link = $this->conf['mail_smtp_local_link_prefix'].$GLOBALS['egw']->link($link_part);
 										}
 								}
 								$matches[1][$key] = '<a href="'.$my_link.'">'.$text_part.'</a>';

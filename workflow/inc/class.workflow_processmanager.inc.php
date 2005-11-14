@@ -11,7 +11,7 @@
 	{
 		function workflow_processmanager()
 		{
-			parent::ProcessManager($GLOBALS['phpgw']->ADOdb);
+			parent::ProcessManager($GLOBALS['egw']->ADOdb);
 		}
 	}
 ?>

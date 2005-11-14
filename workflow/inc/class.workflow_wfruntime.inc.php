@@ -8,7 +8,7 @@
 	{
 		function workflow_wfruntime()
 		{
-			parent::WfRuntime($GLOBALS['phpgw']->ADOdb);
+			parent::WfRuntime($GLOBALS['egw']->ADOdb);
 		}
 	}
 ?>

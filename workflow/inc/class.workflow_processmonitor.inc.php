@@ -8,7 +8,7 @@
 	{
 		function workflow_processmonitor()
 		{
-			parent::ProcessMonitor($GLOBALS['phpgw']->ADOdb);
+			parent::ProcessMonitor($GLOBALS['egw']->ADOdb);
 		}
 	}
 ?>

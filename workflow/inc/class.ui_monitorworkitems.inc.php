@@ -36,22 +36,22 @@
 			$this->link_data['search_str'] = $this->search_str;
 			if ($this->filter_process) 
 			{
-		        	$this->wheres[] = "gp.wf_p_id=".$this->filter_process;
+							$this->wheres[] = "gp.wf_p_id=".$this->filter_process;
 				$this->link_data['filter_process'] = $this->filter_process;
 			}
 			if ($this->filter_activity) 
 			{  
-		        	$this->wheres[] = "ga.wf_activity_id=" .$this->filter_activity;
+							$this->wheres[] = "ga.wf_activity_id=" .$this->filter_activity;
 				$this->link_data['filter_activity'] = $this->filter_activity;
 			}
 			if ($this->filter_user)
 			{
-			        $this->wheres[] = "wf_user =" .$this->filter_user;
+							$this->wheres[] = "wf_user =" .$this->filter_user;
 				$this->link_data['filter_user'] = $this->filter_user;
 			}
 			if ($this->filter_instance != 0)
 			{
-		        	$this->wheres[] = "wf_instance_id =" .$this->filter_instance;
+							$this->wheres[] = "wf_instance_id =" .$this->filter_instance;
 				$this->link_data['filter_instance'] = $this->filter_instance;
 			}
 			else 
@@ -60,7 +60,7 @@
 			}
 			if (count($this->wheres) > 0)
 			{
-			        $this->where = implode(' and ', $this->wheres);
+							$this->where = implode(' and ', $this->wheres);
 			}
 			else 
 			{
@@ -105,7 +105,7 @@
 
 			foreach ($workitems_data as $workitem)
 			{
-				$link_view_workitem = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='. $workitem['wf_item_id']);
+				$link_view_workitem = $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='. $workitem['wf_item_id']);
 				$this->t->set_var(array(
 					'wi_href'		=> $link_view_workitem,
 					'wi_id'			=> $workitem['wf_item_id'],
@@ -113,10 +113,10 @@
 					'wi_version'		=> $workitem['wf_version'],
 					'act_icon'		=> $this->act_icon($workitem['wf_type'],$workitem['wf_is_interactive']),
 					'wi_actname'		=> $workitem['wf_act_name'],
-					'wi_adm_inst_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $workitem['wf_instance_id']),
+					'wi_adm_inst_href'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $workitem['wf_instance_id']),
 					'wi_inst_id'		=> $workitem['wf_instance_id'],
 					'wi_order_id'		=> $workitem['wf_order_id'],
-					'wi_started'		=> $GLOBALS['phpgw']->common->show_date($workitem['wf_started'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
+					'wi_started'		=> $GLOBALS['egw']->common->show_date($workitem['wf_started'] - ((60*60) * $GLOBALS['egw_info']['user']['preferences']['common']['tz_offset'])),
 					'wi_duration'		=> $this->time_diff($workitem['wf_duration']),
 					'class_alternate_row'	=> $this->nextmatchs->alternate_row_color($tr_color, true),
 					'link_view_details'	=> '<a href="'.$link_view_workitem.'">'.lang('view details').'</a>',
@@ -125,7 +125,7 @@
 					$this->t->set_var('wi_user', $workitem['wf_user']);
 				}
 				else {
-					$this->t->set_var('wi_user', $GLOBALS['phpgw']->common->grab_owner_name($workitem['wf_user']));
+					$this->t->set_var('wi_user', $GLOBALS['egw']->common->grab_owner_name($workitem['wf_user']));
 				}
 				$this->t->parse('workitems_table', 'block_workitems_table', true);
 			}
@@ -141,14 +141,14 @@
 				$this->t->set_var(array(
 					'filter_user_selected'	=> ($user == $filter_user)? 'selected="selected"' : '',
 					'filter_user_value'		=> $user,
-					//'filter_user_name'		=> $GLOBALS['phpgw']->common->grab_owner_name($user)
+					//'filter_user_name'		=> $GLOBALS['egw']->common->grab_owner_name($user)
 					//'filter_user_name'		=> $user,
 				));
 				if( $user == '*') {
 					$this->t->set_var('filter_user_name', $user);
 				}
 				else {
-					$this->t->set_var('filter_user_name', $GLOBALS['phpgw']->common->grab_owner_name($user));
+					$this->t->set_var('filter_user_name', $GLOBALS['egw']->common->grab_owner_name($user));
 				}
 				$this->t->parse('filter_user', 'block_filter_user', true);
 			}

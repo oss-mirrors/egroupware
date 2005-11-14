@@ -20,16 +20,16 @@
 				'class_tab_my_processes'	=> ($activtab=='userprocesses')? 'active_tab': 'inactive_tab',
 				'class_tab_my_activities'	=> ($activtab=='useractivities')? 'active_tab': 'inactive_tab',
 				'class_tab_my_instances'	=> (($activtab=='userinstances') || ($activtab=='userviewinstance'))? 'active_tab': 'inactive_tab',
-				'link_new_instances'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useropeninstance.form'),
-				'link_global_activities'	=> $GLOBALS['phpgw']->link('/index.php',array(
+				'link_new_instances'		=> $GLOBALS['egw']->link('/index.php','menuaction=workflow.ui_useropeninstance.form'),
+				'link_global_activities'	=> $GLOBALS['egw']->link('/index.php',array(
 									'menuaction'	=> 'workflow.ui_useractivities.form',
 									'show_globals'	=> 1,)),
-				'link_my_processes'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userprocesses.form'),
-				'link_my_activities'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_useractivities.form'),
-				'link_my_instances'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=workflow.ui_userinstances.form'),
+				'link_my_processes'		=> $GLOBALS['egw']->link('/index.php','menuaction=workflow.ui_userprocesses.form'),
+				'link_my_activities'		=> $GLOBALS['egw']->link('/index.php','menuaction=workflow.ui_useractivities.form'),
+				'link_my_instances'		=> $GLOBALS['egw']->link('/index.php','menuaction=workflow.ui_userinstances.form'),
 			));
 			$this->translate_template('user_tabs_tpl');
-                        return $this->t->parse('user_tabs', 'user_tabs_tpl');
+												return $this->t->parse('user_tabs', 'user_tabs_tpl');
 		}
 	}
 ?>

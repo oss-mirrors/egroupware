@@ -41,7 +41,7 @@ class so_agent
 	 //do not forget to call it (parent::so_agent();) in child classes
 	function so_agent()
 	{
-		$this->db =& $GLOBALS['phpgw']->db;
+		$this->db =& $GLOBALS['egw']->db;
 	}
 	
 	/**

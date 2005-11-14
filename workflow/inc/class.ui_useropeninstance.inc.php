@@ -13,12 +13,12 @@
 		function ui_useropeninstance()
 		{
 			parent::bo_user_forms('user_openinstance');
-			$this->GUI = CreateObject('workflow.workflow_gui');
+			$this->GUI =& CreateObject('workflow.workflow_gui');
 		}
 
 		function form()
 		{
-			$activities =& $this->GUI->gui_list_user_start_activities($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, '');
+			$activities =& $this->GUI->gui_list_user_start_activities($GLOBALS['egw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, '');
 			
 			$this->link_data = array(
 				'find'	=> $this->search_str,
@@ -52,10 +52,10 @@
 			
 			// now the table
 			$this->t->set_block('user_openinstance', 'block_table', 'table');
-			$arrowimg = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'runform') .'" alt="'. lang('start process') .'" title="'. lang('start process') .'" />';
+			$arrowimg = '<img src="'.$GLOBALS['egw']->common->image('workflow', 'runform') .'" alt="'. lang('start process') .'" title="'. lang('start process') .'" />';
 			foreach($activities as $activity_data)
 			{
-				$runlink = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id=' . $activity_data['wf_activity_id']);
+				$runlink = $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id=' . $activity_data['wf_activity_id']);
 				$this->t->set_var(array(
 					'link_starting'	=> $runlink,
 					'wf_procname'	=> $activity_data['wf_procname'].':'.$activity_data['wf_version'],

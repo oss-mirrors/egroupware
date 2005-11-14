@@ -69,9 +69,9 @@
 				'filter_activity'	=> $this->filter_activity,
 			);
 			
-			$all_processes =& $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'wf_procname__asc', '', '');
-			$all_activities =&  $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', $select_wheres);
-			$activities =& $this->GUI->gui_list_user_activities($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres, $withoutzero);
+			$all_processes =& $this->GUI->gui_list_user_processes($GLOBALS['egw_info']['user']['account_id'], 0, -1, 'wf_procname__asc', '', '');
+			$all_activities =&  $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['egw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', $select_wheres);
+			$activities =& $this->GUI->gui_list_user_activities($GLOBALS['egw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres, $withoutzero);
 
 			// show process select box
 			$this->show_process_select_box($all_processes['data']);
@@ -121,10 +121,10 @@
 				// for standalone or start activities we make arrows to execute the activity
 				if ($activity['wf_is_interactive'] == 'y' && ($activity['wf_type'] == 'start' || $activity['wf_type'] == 'standalone'))
 				{
-					$arrow = '<a href="'. $GLOBALS['phpgw']->link('/index.php', array(
+					$arrow = '<a href="'. $GLOBALS['egw']->link('/index.php', array(
 							'menuaction'	=> 'workflow.run_activity.go',
 							'activity_id'	=> $activity['wf_activity_id'],
-						)) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'runform') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>';
+						)) .'"><img src="'. $GLOBALS['egw']->common->image('workflow', 'runform') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>';
 				}
 				else
 				{
@@ -133,7 +133,7 @@
 				}
 				//create the activity name with a link if there are some instances to see
 				$act_name = '';
-				if ($activity['wf_instances'] > 0) $act_name = '<a href="'. $GLOBALS['phpgw']->link('/index.php', array(
+				if ($activity['wf_instances'] > 0) $act_name = '<a href="'. $GLOBALS['egw']->link('/index.php', array(
 						'menuaction'		=> 'workflow.ui_userinstances.form',
 						'filter_process'	=> $activity['wf_p_id'],
 						'filter_activity'	=> $activity['wf_activity_id'],

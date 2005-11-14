@@ -69,20 +69,20 @@
 			$this->GUI		=& CreateObject('workflow.workflow_gui');
 			$this->categories 	=& CreateObject('phpgwapi.categories');
 			// TODO: open a new connection to the database under a different username to allow privilege handling on tables
-			$this->db 		=& $GLOBALS['phpgw']->ADOdb;
+			$this->db 		=& $GLOBALS['egw']->ADOdb;
 		}
 
-		/*!
-		* This function is used to run all activities for specified instances. it could be interactive activities
-		* or automatic activities. this second case is the reason why we return some values
-		* @param $activityId is the activity_id it run
-		* @param $iid is the instance id it run for
-		* @param $auto is true by default
-		* @return AN ARRAY, or at least true or false. This array can contain :
+		/**
+		 * * This function is used to run all activities for specified instances. it could be interactive activities
+		 * * or automatic activities. this second case is the reason why we return some values
+		*  * @param $activityId is the activity_id it run
+		*  * @param $iid is the instance id it run for
+		*  * @param $auto is true by default
+		*  * @return AN ARRAY, or at least true or false. This array can contain :
 		*	* a key 'failure' with an error string the engine will retrieve in instance error messages in case of
 		*	failure (this will mark your execution as Bad), 
 		*	* a key 'debug' with a debug string the engine will retrieve in instance error messages,
-    		*/
+				 */
 		function go($activity_id=0, $iid=0, $auto=0)
 		{
 			$result=Array();
@@ -141,7 +141,7 @@
 
 			//set some global variables needed
 			$GLOBALS['workflow']['__leave_activity']=false;
-			$GLOBALS['user'] = $GLOBALS['phpgw_info']['user']['account_id'];
+			$GLOBALS['user'] = $GLOBALS['egw_info']['user']['account_id'];
 			
 			//load role names, just an information
 			$this->act_role_names = $activity->getActivityRoleNames();
@@ -161,7 +161,7 @@
 			$this->process_name	= $this->process->getName();
 			$this->process_version	= $this->process->getVersion();
 			$this->activity_name	= $activity->getName();
-			$this->user_name	= $GLOBALS['phpgw']->accounts->id2name($GLOBALS['user']);
+			$this->user_name	= $GLOBALS['egw']->accounts->id2name($GLOBALS['user']);
 			$this->view_activity	= $this->GUI->gui_get_process_view_activity($this->process_id);
 			
 			//we set them in $GLOBALS['workflow'] as well
@@ -205,29 +205,29 @@
 				
 				if (!($this->print_mode))
 				{
-					$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
-					$GLOBALS['phpgw']->common->phpgw_header();
+					$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
+					$GLOBALS['egw']->common->egw_header();
 					echo parse_navbar();
 				}
 				else
 				{
-					$GLOBALS['phpgw_info']['flags'] = array(
+					$GLOBALS['egw_info']['flags'] = array(
 						'noheader' => True,
 						'nonavbar' => True,
 						'currentapp' => 'workflow',
 						'enable_nextmatchs_class' => True
 					);
-					$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
-					$GLOBALS['phpgw']->common->phpgw_header();
+					$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['workflow']['title'] . ' - ' . lang('Running Activity');
+					$GLOBALS['egw']->common->egw_header();
 				}
 			
 				// activities' code will have at their disposition the $template object to handle the corresponding activity template, 
-				// but $GLOBALS['phpgw']->template will also be available, in case global scope for this is needed
+				// but $GLOBALS['egw']->template will also be available, in case global scope for this is needed
 				// and we have as well the $this->wf_template for the same template
 				$template =& CreateObject('phpgwapi.Template', GALAXIA_PROCESSES.SEP);
 				
 				$template->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
-				$GLOBALS['phpgw']->template =& $template;
+				$GLOBALS['egw']->template =& $template;
 				$this->wf_template =& $template;
 				
 				// They will also have at their disposition theses array, used for automatic parsing
@@ -248,7 +248,7 @@
 			$this->instance_id	= $instance->getInstanceId();
 			$this->instance_name	= $instance->getName();
 			$this->instance_owner	= $instance->getOwner();
-			$this->owner_name	= $GLOBALS['phpgw']->accounts->id2name($this->instance_owner);
+			$this->owner_name	= $GLOBALS['egw']->accounts->id2name($this->instance_owner);
 			if ($this->owner_name == '')
 			{
 				$this->owner_name = lang('Nobody');
@@ -303,11 +303,11 @@
 		
 		function prepare_javascript_submit()
 		{
-			if(!@is_object($GLOBALS['phpgw']->js))
+			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['phpgw_info']['flags']['java_script'] .= '<script type="text/javascript">
+			$GLOBALS['egw_info']['flags']['java_script'] .= '<script type="text/javascript">
 				function confirmSubmit(submit_name,txt_confirm)
 				{
 					if(confirm(txt_confirm))
@@ -318,23 +318,23 @@
 		}
 		
 		//! show a waiting message using css and script to hide it on onLoad events. 
-		/*!
-		You can enable/disable it in process configuration.
-		Css for the please wait message is defined in app.css, a css automatically included by egroupware
-		*/
+		/**
+		 * You can enable/disable it in process configuration.
+		 * Css for the please wait message is defined in app.css, a css automatically included by egroupware
+		 */
 		function show_wait_message()
 		{
-			if(!@is_object($GLOBALS['phpgw']->js))
+			if(!@is_object($GLOBALS['egw']->js))
 			{
-				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['phpgw_info']['flags']['java_script'] .= '<script type="text/javascript">
+			$GLOBALS['egw_info']['flags']['java_script'] .= '<script type="text/javascript">
 				document.write(\'<DIV id="loading"><BR><BR>Please wait, task in progress ...*</DIV>\');
 				function hide_loading()
 				{
 					document.getElementById("loading").style.display="none";
 				}</script>';
-			$GLOBALS['phpgw']->js->set_onload('hide_loading();');
+			$GLOBALS['egw']->js->set_onload('hide_loading();');
 		}
 
 		//! show the page avaible when completing an activity
@@ -345,12 +345,12 @@
 			//build an icon array for show_engine_infos
 			$icon_array = Array();
 			
-			$icon_array['ok'] 		= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'check').'">';
-			$icon_array['failure'] 		= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'stop').'">';
-			$icon_array['transition'] 	= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition').'">';
-			$icon_array['transition_human'] = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_human').'">';
-			$icon_array['activity'] 	= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'auto_activity').'">';
-			$icon_array['dot'] 		= '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'puce').'">&nbsp;';
+			$icon_array['ok'] 		= '<img src="'.$GLOBALS['egw']->common->image('workflow', 'check').'">';
+			$icon_array['failure'] 		= '<img src="'.$GLOBALS['egw']->common->image('workflow', 'stop').'">';
+			$icon_array['transition'] 	= '<img src="'.$GLOBALS['egw']->common->image('workflow', 'transition').'">';
+			$icon_array['transition_human'] = '<img src="'.$GLOBALS['egw']->common->image('workflow', 'transition_human').'">';
+			$icon_array['activity'] 	= '<img src="'.$GLOBALS['egw']->common->image('workflow', 'auto_activity').'">';
+			$icon_array['dot'] 		= '<img src="'.$GLOBALS['egw']->common->image('workflow', 'puce').'">&nbsp;';
 			$this->show_engine_infos($infos, $icon_array);
 			$this->t->set_var(array(
 				'wf_procname'	=> $this->process_name,
@@ -522,8 +522,8 @@
 				$releasetxt = lang('release activity for this instance');
 				$this->t->set_var(array(
 					'release_text'	=> lang('This activity for this instance is actually only avaible for you.'),
-					'release_button'=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_array)
-						.'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix')
+					'release_button'=> '<a href="'.$GLOBALS['egw']->link('/index.php',$link_array)
+						.'"><img src="'. $GLOBALS['egw']->common->image('workflow', 'fix')
 						.'" alt="'.$releasetxt.'" title="'.$releasetxt.'" width="16" >'
 						.$releasetxt.'</a>',
 				));
@@ -545,10 +545,10 @@
 		}
 		
 		//! show the bottom of end run_activity interactive pages with links to user_instance form
-		/*!
-		for start activities we link back to user_openinstance form
-		and for standalone activities we loop back to global activities form
-		*/
+		/**
+		 * for start activities we link back to user_openinstance form
+		 * and for standalone activities we loop back to global activities form
+		 */
 		function show_after_running_page()
 		{
 			$this->t->set_file('after_running', 'after_running.tpl');
@@ -589,22 +589,22 @@
 					'filter_activity_name'	=> $this->activity_name,
 				);
 			}
-			$button='<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next')
+			$button='<img src="'. $GLOBALS['egw']->common->image('workflow', 'next')
 				.'" alt="'.lang('go').'" title="'.lang('go').'" width="16" >';
 			$this->t->set_var(array(
 				'same_instance_text'	=> ($this->activity_type=='standalone')? '-' : lang('go to the actual state of this instance'),
 				'same_activities_text'	=> $activitytxt,
 				'same_process_text'	=> lang('go to same process activities'),
-				'same_instance_button'	=> ($this->activity_type=='standalone')? '-' : '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_data_inst).'">'
+				'same_instance_button'	=> ($this->activity_type=='standalone')? '-' : '<a href="'.$GLOBALS['egw']->link('/index.php',$link_data_inst).'">'
 					.$button.lang('instance %1', ($this->instance_name=='')? $this->instance_id: $this->instance_name).'</a>',
-				'same_activities_button'=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_data_act).'">'
+				'same_activities_button'=> '<a href="'.$GLOBALS['egw']->link('/index.php',$link_data_act).'">'
 					.$button.$act_button_name.'</a>',
-				'same_process_button'	=> '<a href="'.$GLOBALS['phpgw']->link('/index.php',$link_data_proc).'">'
+				'same_process_button'	=> '<a href="'.$GLOBALS['egw']->link('/index.php',$link_data_proc).'">'
 					.$button.lang('process %1', $this->process_name).'</a>',
 			));
 			$this->translate_template('after_running');
 			$this->t->pparse('output', 'after_running');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 		//! show the activity form with automated parts if needed
@@ -665,14 +665,14 @@
 			
 			$this->translate_template('run_activity');
 			$this->t->pparse('output', 'run_activity');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 		
 
-		/*!
-		* Draw a 'print mode' or 'back to normal mode' button if $this->print_mode is not false
-		* and if $this->enable_print_mode is true
-		*/
+		/**
+		 * * Draw a 'print mode' or 'back to normal mode' button if $this->print_mode is not false
+		 * * and if $this->enable_print_mode is true
+		 */
 		function parse_print_mode_buttons()
 		{
 			$this->t->set_block('run_activity', 'block_print_mode_zone', 'print_mode_zone');
@@ -702,10 +702,10 @@
 		}
 
 		//!Parse the title in the activity form, the user can decide if he want this title to be shown or not
-		/*!
-		* if you do not want thuis to be displayed set your process config value for show_activity_title to false
-		* @param title is by default empty, You can give a title as a parameter. 
-		*/
+		/**
+		 * * if you do not want thuis to be displayed set your process config value for show_activity_title to false
+		*  * @param title is by default empty, You can give a title as a parameter. 
+		 */
 		function parse_title($title='')
 		{
 			$this->t->set_block('run_activity', 'block_title_zone', 'title_zone');
@@ -722,10 +722,10 @@
 		}
 		
 		//!Parse the instance name input in the activity form, the user can decide if he want this name to be shown or not
-		/*!
-		* if you do not want this to be displayed set your process config value for show_instance_name to false
-		* @param instance_name is the name we will display. 
-		*/
+		/**
+		 * * if you do not want this to be displayed set your process config value for show_instance_name to false
+		*  * @param instance_name is the name we will display. 
+		 */
 		function parse_instance_name($instance_name)
 		{
 			$this->t->set_block('run_activity', 'block_instance_name_zone', 'instance_name_zone');
@@ -742,20 +742,20 @@
 		}
 		
 		//!Parse the set_owner select/display in the activity form, the user can decide if he want this name to be shown or not
-		/*!
-		* if $this->display_owner is 0 we draw nothing (default value) 
-		* if $this->display_owner is 1 the owner is just shown 
-		* if $this->display_owner is anything else we draw a select box
-		* this 'anything else' can be an associative array containing the 'role' and/or 'activity' key
-		* the values associated with theses keys can be strings or array of strings containing roles and/or
-		* activities's names. Users displayed in the select will then be the users having access to theses activities
-		* and users which are mapped  to theses roles (one match per user is enought to be displayed).
-		* ie: $this->display_owner = 2; will display all users mapped to roles on the process
-		* $this->display_owner = array('role' => array('Chiefs','assistant'), 'activity' => 'updating foo'); will
-		* display users having access to activity 'updating foo' AND which are mapped to 'Chief' OR 'assistant' roles
-		* of course roles and activities names must be matching the current process's roles and activities names.
-		* @param actual_owner is the selected owner in the select list we will display or the shown owner. 
-		*/
+		/**
+		 * * if $this->display_owner is 0 we draw nothing (default value) 
+		 * * if $this->display_owner is 1 the owner is just shown 
+		 * * if $this->display_owner is anything else we draw a select box
+		 * * this 'anything else' can be an associative array containing the 'role' and/or 'activity' key
+		 * * the values associated with theses keys can be strings or array of strings containing roles and/or
+		 * * activities's names. Users displayed in the select will then be the users having access to theses activities
+		 * * and users which are mapped  to theses roles (one match per user is enought to be displayed).
+		 * * ie: $this->display_owner = 2; will display all users mapped to roles on the process
+		 * * $this->display_owner = array('role' => array('Chiefs','assistant'), 'activity' => 'updating foo'); will
+		 * * display users having access to activity 'updating foo' AND which are mapped to 'Chief' OR 'assistant' roles
+		 * * of course roles and activities names must be matching the current process's roles and activities names.
+		*  * @param actual_owner is the selected owner in the select list we will display or the shown owner. 
+		 */
 		function parse_instance_owner($actual_owner)
 		{
 			//inside the select
@@ -773,7 +773,7 @@
 			else
 			{
 				// a little label before the select box
-                                $this->t->set_var(array('set_owner_text' => lang('Owner:')));
+																$this->t->set_var(array('set_owner_text' => lang('Owner:')));
 				if ((!(is_array($this->display_owner))) && ($this->display_owner==1))
 				{
 					//we will just display the owner
@@ -836,13 +836,13 @@
 		}
 		
 		//! Draw the priority select box in the activity form
-		/*!
-		* Parse the priority select box in the activity form. The user can decide if he want this select box to be shown or not
-		* by completing $this->priority_array.
-		* For example like that : $this->priority_array = array(1 => '1-Low',2 =>'2', 3 => '3-High');
-		* If the array is empty or the conf values says the user does not want automatic parsing no select box will be shown
-		* @param actual_priority is by default at 1 and will be the selected activity level.
-		*/
+		/**
+		 * * Parse the priority select box in the activity form. The user can decide if he want this select box to be shown or not
+		 * * by completing $this->priority_array.
+		 * * For example like that : $this->priority_array = array(1 => '1-Low',2 =>'2', 3 => '3-High');
+		 * * If the array is empty or the conf values says the user does not want automatic parsing no select box will be shown
+		*  * @param actual_priority is by default at 1 and will be the selected activity level.
+		 */
 		function parse_priority($actual_priority=1)
 		{
 			$this->t->set_block('run_activity', 'block_priority_options', 'priority_options');
@@ -877,20 +877,20 @@
 		}
 
 		//!Parse the next_user select/display in the activity form, the user can decide if he want this to be shown or not
-		/*!
-		* if $this->display_next_user is 0 we draw nothing (default value) 
-		* if $this->display_next_user is 1 the next_user is just shown 
-		* if $this->display_next_user is anything else we draw a select box
-		* this 'anything else' can be an associative array containing the 'role' and/or 'activity' key
-		* the values associated with theses keys can be strings or array of strings containing roles and/or
-		* activities's names. Users displayed in the select will then be the users having access to theses activities
-		* and users which are mapped to theses roles (one match per user is enought to be displayed).
-		* ie: $this->display_next_user = 2; will display all users mapped to roles on the process
-		* $this->display_next_user = array('role' => array('Chiefs','assistant'), 'activity' => 'updating foo'); will
-		* display users having access to activity 'updating foo' AND which are mapped to 'Chief' OR 'assistant' roles
-		* of course roles and activities names must be matching the current process's roles and activities names.
-		* @param actual_next_user is the selected next_user in the select list we will display or the shown next_user. 
-		*/
+		/**
+		 * * if $this->display_next_user is 0 we draw nothing (default value) 
+		 * * if $this->display_next_user is 1 the next_user is just shown 
+		 * * if $this->display_next_user is anything else we draw a select box
+		 * * this 'anything else' can be an associative array containing the 'role' and/or 'activity' key
+		 * * the values associated with theses keys can be strings or array of strings containing roles and/or
+		 * * activities's names. Users displayed in the select will then be the users having access to theses activities
+		 * * and users which are mapped to theses roles (one match per user is enought to be displayed).
+		 * * ie: $this->display_next_user = 2; will display all users mapped to roles on the process
+		 * * $this->display_next_user = array('role' => array('Chiefs','assistant'), 'activity' => 'updating foo'); will
+		 * * display users having access to activity 'updating foo' AND which are mapped to 'Chief' OR 'assistant' roles
+		 * * of course roles and activities names must be matching the current process's roles and activities names.
+		*  * @param actual_next_user is the selected next_user in the select list we will display or the shown next_user. 
+		 */
 		function parse_next_user($actual_next_user)
 		{
 		//echo "DEBUG parse_instance_next_user:actual_next_user:".$actual_next_user.'display_next_user:'
@@ -911,11 +911,11 @@
 			else
 			{
 				// a little label before the select box
-                                $this->t->set_var(array('set_next_user_text' => lang('Next user:')));
+																$this->t->set_var(array('set_next_user_text' => lang('Next user:')));
 				if ((!(is_array($this->display_next_user))) && ($this->display_next_user==1))
 				{
 					//we will just display the next_user
-					$next_user_name = $GLOBALS['phpgw']->accounts->id2name($actual_next_user);
+					$next_user_name = $GLOBALS['egw']->accounts->id2name($actual_next_user);
 					if ($next_user_name == '')
 					{
 						$next_user_name = lang('not defined');
@@ -979,17 +979,17 @@
 		}
 
 		//! Draw the submit buttons on the activity form
-		/*!
-		In this function we'll draw the command buttons asked for this activity.
-		else we'll check $this->submit_array which should be completed in the activity source
-		and is an array with the names of the submit options corresponding to the value like this: 
-		$this->submit_array['the_value_you_want']=lang('the label you want');
-		if this array is empty we'll draw a simple submit button.
-		The poweruser can decide to handle theses buttons in his own way in the config section
-		He'll then have to draw it himself in his activity template.
-		Note that the special value '__Cancel' is automatically handled and set the ['__leaving_activity']
-		var to true.
-		*/
+		/**
+		 * In this function we'll draw the command buttons asked for this activity.
+		 * else we'll check $this->submit_array which should be completed in the activity source
+		 * and is an array with the names of the submit options corresponding to the value like this: 
+		 * $this->submit_array['the_value_you_want']=lang('the label you want');
+		 * if this array is empty we'll draw a simple submit button.
+		 * The poweruser can decide to handle theses buttons in his own way in the config section
+		 * He'll then have to draw it himself in his activity template.
+		 * Note that the special value '__Cancel' is automatically handled and set the ['__leaving_activity']
+		 * var to true.
+		 */
 		function parse_submit()
 		{
 			//inside the select box for submits
@@ -1112,8 +1112,8 @@
 					'wf_owner'		=> $this->owner_name,
 					'wf_activity_name'	=> $this->activity_name,
 					'wf_user_name'		=> $this->user_name,
-					'wf_started'		=> $GLOBALS['phpgw']->common->show_date($this->instance->getStarted()),
-					'wf_date'		=> $GLOBALS['phpgw']->common->show_date(),
+					'wf_started'		=> $GLOBALS['egw']->common->show_date($this->instance->getStarted()),
+					'wf_date'		=> $GLOBALS['egw']->common->show_date(),
 				));
 				$this->translate_template('workflow_info_zone');
 				$this->t->parse('info_zone', 'workflow_info_zone', true);
@@ -1125,11 +1125,12 @@
 		}
 
 		//!Parse the history zone in the activity form, the user can decide if he want this name to be shown or not
-		/*!
-		* @abstract if $this->display_history is 0 we draw nothing (default value) 
-		* if $this->display_history is 1 we draw the history table 
-		* this function does not test the use_automatic_parsing configuration value
-		*/
+		/**
+		*  * if $this->display_history is 0 we draw nothing (default value) 
+		*  *
+		*  * if $this->display_history is 1 we draw the history table 
+		*  * this function does not test the use_automatic_parsing configuration value
+		 */
 		function parse_history_zone()
 		{
 			if ( (empty($this->display_history)) || (!($this->display_history)))

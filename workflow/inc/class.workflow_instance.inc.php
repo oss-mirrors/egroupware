@@ -10,7 +10,7 @@
 	{
 		function workflow_Instance()
 		{
-			parent::Instance($GLOBALS['phpgw']->ADOdb);
+			parent::Instance($GLOBALS['egw']->ADOdb);
 		}
 	}
 ?>

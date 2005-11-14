@@ -11,7 +11,7 @@
 	{
 		function workflow_activitymanager()
 		{
-			parent::ActivityManager($GLOBALS['phpgw']->ADOdb);
+			parent::ActivityManager($GLOBALS['egw']->ADOdb);
 		}
 	}
 ?>

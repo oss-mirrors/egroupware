@@ -25,27 +25,27 @@
 		{
 			parent::workflow();
 			
-		       //regis: acl check
-			if ( !(($GLOBALS['phpgw']->acl->check('run',1,'admin')) || ($GLOBALS['phpgw']->acl->check('admin_workflow',1,'workflow'))) )
+					 //regis: acl check
+			if ( !(($GLOBALS['egw']->acl->check('run',1,'admin')) || ($GLOBALS['egw']->acl->check('admin_workflow',1,'workflow'))) )
 			{
-				$GLOBALS['phpgw']->common->phpgw_header();
+				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
 				echo lang('access not permitted');
-				$GLOBALS['phpgw']->log->message('F-Abort, Unauthorized access to workflow.ui_adminactivities');
-				$GLOBALS['phpgw']->log->commit();
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$GLOBALS['egw']->log->message('F-Abort, Unauthorized access to workflow.ui_adminactivities');
+				$GLOBALS['egw']->log->commit();
+				$GLOBALS['egw']->common->egw_exit();
 			}
 
-			$this->process_manager	= CreateObject('workflow.workflow_processmanager');
-			$this->activity_manager	= CreateObject('workflow.workflow_activitymanager');
-			$this->role_manager	= CreateObject('workflow.workflow_rolemanager');
+			$this->process_manager	=& CreateObject('workflow.workflow_processmanager');
+			$this->activity_manager	=& CreateObject('workflow.workflow_activitymanager');
+			$this->role_manager	=& CreateObject('workflow.workflow_rolemanager');
 
 		}
 
 		function form()
 		{		 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Process Activities');
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Process Activities');
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file('admin_activities', 'admin_activities.tpl');
@@ -245,11 +245,11 @@
 			$wheres = array();
 			if( !($filter_type == '') ) 
 			{
-		    		$wheres[] = "wf_type = '" .$filter_type. "'";
+						$wheres[] = "wf_type = '" .$filter_type. "'";
 			}
 			if( !($filter_interactive == '') ) 
 			{
-		    		$wheres[] = "wf_is_interactive = '" .$filter_interactive. "'";
+						$wheres[] = "wf_is_interactive = '" .$filter_interactive. "'";
 			}
 			if( !($filter_autoroute == '') ) 
 			{
@@ -311,8 +311,8 @@
 			$this->t->set_var(array(
 				'message'				=> implode('<br>', array_filter($this->message)),
 				'errors'				=> $error_str,
-				'form_details_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
-				'form_list_transitions_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
+				'form_details_action'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
+				'form_list_transitions_action'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'p_id'					=> $this->wf_p_id,
 				'where'					=> $where,
 				'where2'				=> $this->where2,
@@ -321,16 +321,16 @@
 				'find'				=> $find,
 				'find2'				=> $find2,
 				'activity_id'			=> $activity_info['wf_activity_id'],
-				'new_act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
+				'new_act_href'			=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'name'					=> $activity_info['wf_name'],
 				'description'			=> $activity_info['wf_description'],
 				'checked_interactive'	=> ($activity_info['wf_is_interactive'])? 'checked="checked"' : '',
 				'checked_autorouted'	=> ($activity_info['wf_is_autorouted'])? 'checked="checked"' : '',
-				'img_transition_auto'           => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_interactive.gif') .'" alt="'. lang('transition mode') .'" />',
-				'img_interactive'               => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'mini_interactive.gif') .'" alt="'. lang('interactivity') .'" />',
-				'img_transition'                => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition.gif') .'" alt="'. lang('transitions') .'" />',
-				'img_transition_add'            => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_add.gif') .'" alt="'. lang('add transition') .'" />',
-				'img_transition_delete'         => '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'transition_remove.gif') .'" alt="'. lang('delete transition') .'" />',
+				'img_transition_auto'           => '<img src="'.$GLOBALS['egw']->common->image('workflow', 'transition_interactive.gif') .'" alt="'. lang('transition mode') .'" />',
+				'img_interactive'               => '<img src="'.$GLOBALS['egw']->common->image('workflow', 'mini_interactive.gif') .'" alt="'. lang('interactivity') .'" />',
+				'img_transition'                => '<img src="'.$GLOBALS['egw']->common->image('workflow', 'transition.gif') .'" alt="'. lang('transitions') .'" />',
+				'img_transition_add'            => '<img src="'.$GLOBALS['egw']->common->image('workflow', 'transition_add.gif') .'" alt="'. lang('add transition') .'" />',
+				'img_transition_delete'         => '<img src="'.$GLOBALS['egw']->common->image('workflow', 'transition_remove.gif') .'" alt="'. lang('delete transition') .'" />',
 				'add_trans_from'		=> $this->build_select_transition('add_tran_from[]', $all_transition_activities_from['data'], true, false, 'from'),
 				'add_trans_to'			=> $this->build_select_transition('add_tran_to[]', $all_transition_activities_to['data'], true, false, 'to'),
 				'add_a_trans_from'		=> $this->build_select_transition('wf_act_from_id', $all_transition_activities_from['data'], false, false),
@@ -373,7 +373,7 @@
 						'act_role_name'		=> $role['wf_name'],
 						'act_role_id'		=> $role['wf_role_id'],
 						'act_role_ro_checked'	=> ($role['wf_readonly'])? 'checked="checked"' : '',
-						'act_role_href'		=> $GLOBALS['phpgw']->link('/index.php', array(
+						'act_role_href'		=> $GLOBALS['egw']->link('/index.php', array(
 								'menuaction'	=> 'workflow.ui_adminactivities.form',
 								'where2'	=> $where2,
 								'sort_mode2'	=> $sort_mode2,
@@ -413,7 +413,7 @@
 				{
 					$this->t->set_var(array(
 						'act_agent_type'	=> $agent['wf_agent_type'],
-						'act_agent_href'	=> $GLOBALS['phpgw']->link('/index.php', array(
+						'act_agent_href'	=> $GLOBALS['egw']->link('/index.php', array(
 							'menuaction'	=> 'workflow.ui_adminactivities.form',
 							'where2'	=> $where2,
 							'sort_mode2'	=> $sort_mode2,
@@ -433,7 +433,7 @@
 			$this->display_agents_rows();
 
 			// fill user list for the Default user menu
-			$users = $GLOBALS['phpgw']->accounts->get_list('accounts');
+			$users = $GLOBALS['egw']->accounts->get_list('accounts');
 				// if we have no default user
 			$this->t->set_var(array(
 				'default_user_selected_none'	=> ($activity_info['wf_default_user'] == '*')? 'selected="selected"' : '',
@@ -488,7 +488,7 @@
 
 			$this->translate_template('admin_activities');
 			$this->t->pparse('output', 'admin_activities');
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 		
 		function show_select_filter_type($all_activity_types, $filter_type)
@@ -566,12 +566,12 @@
 			}
 		}
 
-		/*!
-		* Add a role to the process
-		* @param $rolename is the role name
-		* @param $roledescription is the role description
-		* @return new role id
-		*/
+		/**
+		 * * Add a role to the process
+		*  * @param $rolename is the role name
+		*  * @param $roledescription is the role description
+		*  * @return new role id
+		 */
 		function add_process_role($rolename, $roledescription)
 		{
 			$vars = array(
@@ -595,7 +595,7 @@
 		{
 			$this->t->set_block('admin_activities', 'block_process_activities', 'process_activities');
 			$this->t->set_var(array(
-				'form_process_activities_action'=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
+				'form_process_activities_action'=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'left_arrow'		=> $this->nextmatchs->left('index.php', $this->start, $this->total),
 				'right_arrow'		=> $this->nextmatchs->right('index.php', $this->start, $this->total),
 			));
@@ -622,22 +622,22 @@
 					}
 					else if($activity['wf_default_user'] != '*')
 					{
-						$act_default_user = $GLOBALS['phpgw']->accounts->id2name($activity['wf_default_user']);
+						$act_default_user = $GLOBALS['egw']->accounts->id2name($activity['wf_default_user']);
 					}
 					
 					$this->t->set_var(array(
 						'act_activity_id'	=> $activity['wf_activity_id'],
 						'act_flowNum'		=> $activity['wf_flow_num'],
-						'act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $activity['wf_activity_id']),
+						'act_href'			=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $activity['wf_activity_id']),
 						'act_name'			=> $activity['wf_name'],
 						'no_roles'			=> ($activity['wf_roles'] < 1)? '<small>('.lang('no roles').')</small>' : '',
 						'act_icon'			=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
 						'act_inter_checked'	=> ($activity['wf_is_interactive'] == 'y')? 'checked="checked"' : '',
 						'act_route_checked'	=> ($activity['wf_is_autorouted'] == 'y')? 'checked="checked"' : '',
 						'act_default_user'      => $act_default_user,
-						'act_href_edit'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id']),
-						'act_template'		=> ($activity['wf_is_interactive'] == 'y')? '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id'] .'&template=1') .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'template') .'" alt="' .lang('template') .'" title="' . lang('template') .'" /></a>' : '',
-						'img_code'		=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
+						'act_href_edit'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id']),
+						'act_template'		=> ($activity['wf_is_interactive'] == 'y')? '<a href="'. $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $this->wf_p_id .'&activity_id='. $activity['wf_activity_id'] .'&template=1') .'"><img src="'. $GLOBALS['egw']->common->image('workflow', 'template') .'" alt="' .lang('template') .'" title="' . lang('template') .'" /></a>' : '',
+						'img_code'		=> $GLOBALS['egw']->common->image('workflow', 'code'),
 						'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 	
 					));
@@ -666,10 +666,10 @@
 				$this->t->set_var(array(
 					'trans_actFromId'	=> $transition['wf_act_from_id'],
 					'trans_actToId'		=> $transition['wf_act_to_id'],
-					'trans_href_from'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $transition['wf_act_from_id']),
+					'trans_href_from'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $transition['wf_act_from_id']),
 					'trans_actFromName'	=> $transition['wf_act_from_name'],
-					'trans_arrow'		=> $GLOBALS['phpgw']->common->image('workflow', 'next'),
-					'trans_href_to'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $transition['wf_act_to_id']),
+					'trans_arrow'		=> $GLOBALS['egw']->common->image('workflow', 'next'),
+					'trans_href_to'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&where2='. $where2 .'&sort_mode2='. $sort_mode2 .'&p_id='. $this->wf_p_id .'&find='. $find .'&where='. $where .'&sort_mode='. $this->sort_mode .'&activity_id='. $transition['wf_act_to_id']),
 					'trans_actToName'	=> $transition['wf_act_to_name'],
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
@@ -871,9 +871,9 @@
 			readfile($image);
 		}
 		
-		/*!
-		* dislays th activity agents config rows
-		*/
+		/**
+		 * * dislays th activity agents config rows
+		 */
 		function display_agents_rows()
 		{
 			if (empty($this->agents))
@@ -889,7 +889,7 @@
 					$ui_agent->showAdminActivityOptions('each_agent_rows');
 				}
 				$this->translate_template('admin_agents');
-        	                $this->t->parse('agents_config_rows', 'admin_agents');
+													$this->t->parse('agents_config_rows', 'admin_agents');
 			}
 		}
 	}

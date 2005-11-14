@@ -8,7 +8,7 @@
 	{
 		function workflow_process()
 		{
-			parent::Process($GLOBALS['phpgw']->ADOdb);
+			parent::Process($GLOBALS['egw']->ADOdb);
 		}
 	}
 ?>

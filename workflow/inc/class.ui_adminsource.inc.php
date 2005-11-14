@@ -17,32 +17,32 @@
 		{
 			parent::workflow();
 			
-		       //regis: acl check
-			if ( !(($GLOBALS['phpgw']->acl->check('run',1,'admin')) || ($GLOBALS['phpgw']->acl->check('admin_workflow',1,'workflow'))) )
+					 //regis: acl check
+			if ( !(($GLOBALS['egw']->acl->check('run',1,'admin')) || ($GLOBALS['egw']->acl->check('admin_workflow',1,'workflow'))) )
 			{
-				$GLOBALS['phpgw']->common->phpgw_header();
+				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
 				echo lang('access not permitted');
-				$GLOBALS['phpgw']->log->message('F-Abort, Unauthorized access to workflow.ui_adminsources');
-				$GLOBALS['phpgw']->log->commit();
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$GLOBALS['egw']->log->message('F-Abort, Unauthorized access to workflow.ui_adminsources');
+				$GLOBALS['egw']->log->commit();
+				$GLOBALS['egw']->common->egw_exit();
 			}
 
-			$this->process_manager = CreateObject('workflow.workflow_processmanager');
-			$this->activity_manager = CreateObject('workflow.workflow_activitymanager');
+			$this->process_manager =& CreateObject('workflow.workflow_processmanager');
+			$this->activity_manager =& CreateObject('workflow.workflow_activitymanager');
 		}
 
 		function form()
 		{
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Processes Sources');
+			$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Processes Sources');
 
 			// js function to introduce commands in the textarea
-			$GLOBALS['phpgw_info']['flags']['java_script_thirst'] = "<script>
+			$GLOBALS['egw_info']['flags']['java_script_thirst'] = "<script>
 				function setSomeElement(fooel, foo1) {\n
 					document.getElementById(fooel).value = document.getElementById(fooel).value + foo1;\n
 				}\n
 			</script>";
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file('admin_source', 'admin_source.tpl');
@@ -129,7 +129,7 @@
 			$this->t->set_var(array(
 				'message'				=> implode('<br>', array_filter($this->message)),
 				'errors'				=> $error_str,
-				'form_editsource_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form'),
+				'form_editsource_action'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form'),
 				'p_id'					=> $this->wf_p_id,
 				'selected_sharedcode'	=> ($activity_id == 0)? 'selected="selected"' : '',
 				'source_type'			=> $source_type,

@@ -20,10 +20,10 @@
 		function form()
 		{
 			//override monitor sort values
-	        	$this->order			= get_var('order', 'any', 'wf_flow_num');
-		        $this->sort_mode		= $this->order . '__'. $this->sort;
+						$this->order			= get_var('order', 'any', 'wf_flow_num');
+						$this->sort_mode		= $this->order . '__'. $this->sort;
 
-		        //add new filters
+						//add new filters
 			$this->filter_is_interactive	= get_var('filter_is_interactive', 'any', '');
 			$this->filter_is_autorouted	= get_var('filter_is_autorouted', 'any', '');
 			$this->filter_type		= get_var('filter_type', 'any', '');
@@ -58,7 +58,7 @@
 
 			if( count($this->wheres) > 0 ) 
 			{
-		        	$this->where = implode(' and ', $this->wheres);
+							$this->where = implode(' and ', $this->wheres);
 			}
 			else 
 			{
@@ -69,14 +69,14 @@
 			$all_types	=& $this->process_monitor->monitor_list_activity_types();
 
 			$this->show_filter_process();
-		        $this->show_filter_unique_activities($this->where);
-		        $this->show_filter_types($all_types, $this->filter_type);
-		        $this->show_filter_is_interactive($this->filter_is_interactive);
-		        $this->show_filter_is_autorouted($this->filter_is_autorouted);
-		        $this->show_activities_table($activities['data'], $activities['cant']);
+						$this->show_filter_unique_activities($this->where);
+						$this->show_filter_types($all_types, $this->filter_type);
+						$this->show_filter_is_interactive($this->filter_is_interactive);
+						$this->show_filter_is_autorouted($this->filter_is_autorouted);
+						$this->show_activities_table($activities['data'], $activities['cant']);
 
-		        $this->fill_general_variables();
-	        	$this->finish();
+						$this->fill_general_variables();
+						$this->finish();
 		}
 
 		function show_activities_table(&$activities_data, $total_number)
@@ -104,11 +104,11 @@
 				{
 					if ($activity['wf_type'] == 'standalone')
 					{
-						$this->t->set_var('act_run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id='. $activity['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>');
+						$this->t->set_var('act_run', '<a href="'. $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id='. $activity['wf_activity_id']) .'"><img src="'. $GLOBALS['egw']->common->image('workflow', 'next') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>');
 					}
 					elseif ($activity['wf_type'] == 'start')
 					{
-						$this->t->set_var('act_run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id='. $activity['wf_activity_id'] .'&createInstance=1') .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>');
+						$this->t->set_var('act_run', '<a href="'. $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id='. $activity['wf_activity_id'] .'&createInstance=1') .'"><img src="'. $GLOBALS['egw']->common->image('workflow', 'next') .'" alt="'. lang('run activity') .'" title="'. lang('run activity') .'" /></a>');
 					}
 					else
 					{
@@ -119,15 +119,15 @@
 						'act_process'			=> $activity['wf_procname'],
 						'act_process_version'		=> $activity['wf_version'],
 						'act_icon'			=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),
-						'act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $activity['wf_p_id'] .'&activity_id='. $activity['wf_activity_id']),
+						'act_href'			=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $activity['wf_p_id'] .'&activity_id='. $activity['wf_activity_id']),
 						'act_name'			=> $activity['wf_name'],
 						'act_type'			=> $activity['wf_type'],
 						'act_is_interactive'		=> $activity['wf_is_interactive'],
 						'act_is_autorouted'		=> $activity['wf_is_autorouted'],
-						'act_active_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=active&filter_activity='. $activity['wf_activity_id']),
-						'act_completed_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=completed&filter_activity='. $activity['wf_activity_id']),
-						'act_aborted_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=aborted&filter_activity='. $activity['wf_activity_id']),
-						'act_exception_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=exception&filter_activity='. $activity['wf_activity_id']),
+						'act_active_href'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=active&filter_activity='. $activity['wf_activity_id']),
+						'act_completed_href'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=completed&filter_activity='. $activity['wf_activity_id']),
+						'act_aborted_href'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=aborted&filter_activity='. $activity['wf_activity_id']),
+						'act_exception_href'		=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=exception&filter_activity='. $activity['wf_activity_id']),
 						'active_instances'		=> $activity['active_instances'],
 						'completed_instances'		=> $activity['completed_instances'],
 						'aborted_instances'		=> $activity['aborted_instances'],

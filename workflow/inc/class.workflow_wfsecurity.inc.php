@@ -8,7 +8,7 @@
 	{
 		function workflow_wfsecurity()
 		{
-			parent::WfSecurity($GLOBALS['phpgw']->ADOdb);
+			parent::WfSecurity($GLOBALS['egw']->ADOdb);
 		}
 	}
 ?>

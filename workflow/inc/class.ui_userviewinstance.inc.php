@@ -57,7 +57,7 @@
 			else
 			{
 				//echo lang('no instance given, nothing to show');
-				//$GLOBALS['phpgw']->common->phpgw_exit();
+				//$GLOBALS['egw']->common->egw_exit();
 				$this->message[] = lang('no instance given, nothing to show');
 				$this->t->set_var(array(
 						'instance'	=> '',

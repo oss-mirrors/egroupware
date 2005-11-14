@@ -38,9 +38,9 @@
 			$this->nextmatchs	=& CreateObject('phpgwapi.nextmatchs');
 			
 			// number of rows allowed
-                        if ($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0) 
-                        {
-                        	$this->offset = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+												if ($GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'] > 0) 
+												{
+													$this->offset = $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
 			}
 			else
 			{
@@ -50,33 +50,33 @@
 			$this->template_name = $template_name;
 			$this->class_name = explode('_', $this->template_name);
 			$this->class_name = implode('', $this->class_name);
-			$this->form_action = $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_'. $this->class_name .'.form');
+			$this->form_action = $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_'. $this->class_name .'.form');
 
 			$title = explode('_', $this->template_name);
 			$title[0] = ucfirst($title[0]);
 			$title[1] = ucfirst($title[1]);
 			$title = implode(' ', $title);
-			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang($title);
-			$GLOBALS['phpgw']->common->phpgw_header();
+			$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['workflow']['title'] . ' - ' . lang($title);
+			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
 			$this->t->set_file($this->template_name, $this->template_name . '.tpl');
 		}
 		
 		//! fill the nextmatchs fields, arrows, and counter
-		/*!
-		* $header_array is an array with header_names => header_text_shown
-		* warning header names are header_[name or alias of the column in the query without a dot]
-		* this is necessary for sorting
-		* You need some fields on the template:
-		*         <table style="border: 0px;width:100%; margin:0 auto">
-		*         	<tr class="th" style="font-weight:bold">
-		*                	{left}
-	        * 			<td><div align="center">{lang_showing}</div></td>
-	        * 			{right}
-		*         	</tr>
-		*	</table>
-		*/
+		/**
+		 * * $header_array is an array with header_names => header_text_shown
+		 * * warning header names are header_[name or alias of the column in the query without a dot]
+		 * * this is necessary for sorting
+		 * * You need some fields on the template:
+		 * *         <table style="border: 0px;width:100%; margin:0 auto">
+		 * *         	<tr class="th" style="font-weight:bold">
+		 * *                	{left}
+		 * 		 * 	* 		 * 	<td><div align="center">{lang_showing}</div></td>
+		 * 		 * 	* 		 * 	{right}
+		 * *         	</tr>
+		 * *	</table>
+		 */
 		function fill_nextmatchs(&$header_array, $total_number)
 		{
 			$this->total_records = $total_number;
@@ -107,15 +107,15 @@
 		}
 
 		//!fill general datas of workflow forms 
-		/*!
-		theses datas are:
-			$message	: one or more ui message
-			$search_str	: search string for research
-			$start		: nextmatch: number of the first row
-			$sort		: nextmatch: current sort header
-			$order		: nextmatch: asc or desc
-			$form_action	: link to the monitor subclass
-		*/
+		/**
+		 * theses datas are:
+		 * 	$message	: one or more ui message
+		 * 	$search_str	: search string for research
+		 * 	$start		 * : nextmatch: number of the first row
+		 * 	$sort		 * : nextmatch: current sort header
+		 * 	$order		 * : nextmatch: asc or desc
+		 * 	$form_action	: link to the monitor subclass
+		 */
 		function fill_form_variables()
 		{
 			$this->t->set_var(array(
@@ -133,7 +133,7 @@
 		{
 			$this->translate_template($this->template_name);
 			$this->t->pparse('output', $this->template_name);
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['egw']->common->egw_footer();
 		}
 
 	}

@@ -51,8 +51,8 @@
 		function form()
 		{
 			//enable preferences
-			$GLOBALS['phpgw']->preferences->read_repository();
-			$this->myPrefs =& $GLOBALS['phpgw_info']['user']['preferences']['workflow'];
+			$GLOBALS['egw']->preferences->read_repository();
+			$this->myPrefs =& $GLOBALS['egw_info']['user']['preferences']['workflow'];
 			
 			//Retrieve form args
 			// FILTER INSTANCE
@@ -141,8 +141,8 @@
 			$this->sort		= get_var('sort', 'any', ($this->show_priority_column)? 'desc' : 'asc');
 			$this->sort_mode	= $this->order . '__' . $this->sort;	
 
-		        // we have 2 different filters on activities, keeping only one
-		        // we keep only activity_name as a valid filter, when asking for a particular id we assume that de process id
+						// we have 2 different filters on activities, keeping only one
+						// we keep only activity_name as a valid filter, when asking for a particular id we assume that de process id
 			// is set as well and we only keep the activity name
 			// if someone sends us an activity id without the process id we could show him activities with the same name
 			// on other processes (so with other id).
@@ -172,16 +172,16 @@
 				'instance_id' 			=> $instance_id,
 			);
 
-                        // handling actions asked by the user on the form---------------------
-                        
-                        //getting user name in $user_fname and $user_lname
-			$GLOBALS['phpgw']->accounts->get_account_name($GLOBALS['phpgw_info']['user']['account_id'],$lid,$user_fname,$user_lname);
+												// handling actions asked by the user on the form---------------------
+												
+												//getting user name in $user_fname and $user_lname
+			$GLOBALS['egw']->accounts->get_account_name($GLOBALS['egw_info']['user']['account_id'],$lid,$user_fname,$user_lname);
 
 			//$this->message contains an array of ui error messages
 			if ($askException)
 			{
-			        //TODO: add  a $system_comments = lang('exception raised by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
-			        // to the instance activity history
+							//TODO: add  a $system_comments = lang('exception raised by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
+							// to the instance activity history
 				if (!$this->GUI->gui_exception_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
@@ -192,8 +192,8 @@
 			// resume an exception instance
 			if ($askResume)
 			{
-			        //TODO: add a $system_comments = lang('exception resumed by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
-			        // to the instance activity history  
+							//TODO: add a $system_comments = lang('exception resumed by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
+							// to the instance activity history  
 				if (!$this->GUI->gui_resume_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
@@ -250,125 +250,125 @@
 			}
 
 
-		    // handling widgets on the form -------------------------------------------
-		    $this->where = '';
-		    // retrieve all user processes info - used by the 'select processes'
-		    $all_processes =& $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'],0, -1, 'wf_procname__asc', '', $this->where);
+				// handling widgets on the form -------------------------------------------
+				$this->where = '';
+				// retrieve all user processes info - used by the 'select processes'
+				$all_processes =& $this->GUI->gui_list_user_processes($GLOBALS['egw_info']['user']['account_id'],0, -1, 'wf_procname__asc', '', $this->where);
 
-		    //(regis) adding a request for data in a select activity block
-		    // we want only activities avaible for the selected process (filter on process to limit number of results)
-		    // but when we are in advanced search mode we are not recomputing the search at every change on the processes select
-		    // or on the activity select, so we can't recompute the select activity list every time the process changes
-		    // in fact in this case we need __All__ avaible activities, but only in this case.
-		    $this->where = '';
-		    $wheres = array();
-		    if (!($this->advanced_search))
-		    {
-			    if(!($this->filter_process==''))
-			    {
-			    	$wheres[] = "gp.wf_p_id=" .$this->filter_process. "";
-			    }
-		    }
-		    if( count($wheres) > 0 )
-		    {
-		   	$this->where = implode(' and ', $wheres);
-		    }
-  
+				//(regis) adding a request for data in a select activity block
+				// we want only activities avaible for the selected process (filter on process to limit number of results)
+				// but when we are in advanced search mode we are not recomputing the search at every change on the processes select
+				// or on the activity select, so we can't recompute the select activity list every time the process changes
+				// in fact in this case we need __All__ avaible activities, but only in this case.
+				$this->where = '';
+				$wheres = array();
+				if (!($this->advanced_search))
+				{
+					if(!($this->filter_process==''))
+					{
+						$wheres[] = "gp.wf_p_id=" .$this->filter_process. "";
+					}
+				}
+				if( count($wheres) > 0 )
+				{
+			 	$this->where = implode(' and ', $wheres);
+				}
+	
 		
-		    // retrieve all user activities info (with the selected process) for the select
-		    $all_activities =& $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', $this->where);
+				// retrieve all user activities info (with the selected process) for the select
+				$all_activities =& $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['egw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', $this->where);
 
-		    //filling our query special string with all our filters
-		    $this->fill_where_data();
+				//filling our query special string with all our filters
+				$this->fill_where_data();
 
-		    // retrieve user instances
-		    $instances =& $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str,$this->where);
-		    $this->total_records = $instances['cant'];
-		    //echo "instances: <pre>";print_r($instances);echo "</pre>";
-		    
-		    
-		    //fill selection zones and vars------------------------------------------
-		    // 3 selects 
-		    $this->show_select_user($this->filter_user);	
-		    $this->show_select_process($all_processes['data'], $this->filter_process);
-		    $this->show_select_activity($all_activities['data'], $this->filter_activity_name);
-		    // the filter on instance_id, depends on preferences
-		    $this->show_filter_instance($this->myPrefs['wf_instances_show_instance_search']);
-		    // to keep informed of the 5 select values the second form (actions in the list)
-		    // need additional vars
-		    // and the same for all checkboxes
-		    $this->t->set_var(array(
-		    	'filter_instance_id'		=> $this->filter_instance,
-		    	'filter_user_id_set'		=> $this->filter_user,
-		    	'filter_process_id_set'		=> $this->filter_process,
-		    	'filter_activity_name_set'	=> $this->filter_activity_name,
-		    	'filter_act_status_set'		=> $this->filter_act_status,
-		    	'filter_category_set'		=> $this->filter_category,
-		    	'advanced_search_set'		=> $this->advanced_search,
-		    	'add_exception_instances_set'	=> $this->add_exception_instances,
-		    	'add_completed_instances_set'	=> $this->add_completed_instances,
-		    	'add_aborted_instances_set'	=> $this->add_aborted_instances,
-		    	'remove_active_instances_set'	=> $this->remove_active_instances,
+				// retrieve user instances
+				$instances =& $this->GUI->gui_list_user_instances($GLOBALS['egw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str,$this->where);
+				$this->total_records = $instances['cant'];
+				//echo "instances: <pre>";print_r($instances);echo "</pre>";
+				
+				
+				//fill selection zones and vars------------------------------------------
+				// 3 selects 
+				$this->show_select_user($this->filter_user);	
+				$this->show_select_process($all_processes['data'], $this->filter_process);
+				$this->show_select_activity($all_activities['data'], $this->filter_activity_name);
+				// the filter on instance_id, depends on preferences
+				$this->show_filter_instance($this->myPrefs['wf_instances_show_instance_search']);
+				// to keep informed of the 5 select values the second form (actions in the list)
+				// need additional vars
+				// and the same for all checkboxes
+				$this->t->set_var(array(
+					'filter_instance_id'		=> $this->filter_instance,
+					'filter_user_id_set'		=> $this->filter_user,
+					'filter_process_id_set'		=> $this->filter_process,
+					'filter_activity_name_set'	=> $this->filter_activity_name,
+					'filter_act_status_set'		=> $this->filter_act_status,
+					'filter_category_set'		=> $this->filter_category,
+					'advanced_search_set'		=> $this->advanced_search,
+					'add_exception_instances_set'	=> $this->add_exception_instances,
+					'add_completed_instances_set'	=> $this->add_completed_instances,
+					'add_aborted_instances_set'	=> $this->add_aborted_instances,
+					'remove_active_instances_set'	=> $this->remove_active_instances,
 			'show_advanced_actions_set'	=> $this->show_advanced_actions,
-		    ));
-		    //category filter
-		    if ($this->show_cat_column)
-		    {
-		    	$this->t->set_var(array(
-		    		'filter_category_select' 	=> '</td><td>'.$this->cat_option($this->filter_category,False),
-		    		'filter_category_label' 	=> '</td><td>'.lang('Category'),
-		    		'category_css'			=>  '<LINK href="'.$this->get_css_link('category').'" type="text/css" rel="StyleSheet">' ,
+				));
+				//category filter
+				if ($this->show_cat_column)
+				{
+					$this->t->set_var(array(
+						'filter_category_select' 	=> '</td><td>'.$this->cat_option($this->filter_category,False),
+						'filter_category_label' 	=> '</td><td>'.lang('Category'),
+						'category_css'			=>  '<LINK href="'.$this->get_css_link('category').'" type="text/css" rel="StyleSheet">' ,
 			));
-		    }
-		    else
-		    {
-		    	$this->t->set_var(array(
-		    		'filter_category_select' 	=> '',
-		    		'filter_category_label' 	=> '',
-		    		'category_css'			=> '',
+				}
+				else
+				{
+					$this->t->set_var(array(
+						'filter_category_select' 	=> '',
+						'filter_category_label' 	=> '',
+						'category_css'			=> '',
 			));
-		    }
-		    // a LINK css for showing priority levels
-		    $this->t->set_var('priority_css', ($this->show_priority_column)? '<LINK href="'.$this->get_css_link('priority').'" type="text/css" rel="StyleSheet">' : '');
-		    // back to the first form, the advanced zone
-		    if ($this->advanced_search) 
-		    {
-		    	$this->t->set_var(array(
-		    		'advanced_search'	=> 'checked="checked"',
-		    		'filters_on_change'     => '',
+				}
+				// a LINK css for showing priority levels
+				$this->t->set_var('priority_css', ($this->show_priority_column)? '<LINK href="'.$this->get_css_link('priority').'" type="text/css" rel="StyleSheet">' : '');
+				// back to the first form, the advanced zone
+				if ($this->advanced_search) 
+				{
+					$this->t->set_var(array(
+						'advanced_search'	=> 'checked="checked"',
+						'filters_on_change'     => '',
 			));
-		        $this->t->set_file('Advanced_table_tpl','user_instances_advanced.tpl');
-		     	$this->t->set_var(array(
-		     		'add_exception_instances'	=> ($this->add_exception_instances)? 'checked="checked"' : '',
-		     		'add_completed_instances'	=> ($this->add_completed_instances)? 'checked="checked"' : '',
-		     		'add_aborted_instances'		=> ($this->add_aborted_instances)? 'checked="checked"' : '',
-		     		'remove_active_instances'	=> ($this->remove_active_instances)? 'checked="checked"' : '',
-		     		'show_advanced_actions'		=> ($this->show_advanced_actions)? 'checked="checked"' : '',
+						$this->t->set_file('Advanced_table_tpl','user_instances_advanced.tpl');
+				 	$this->t->set_var(array(
+				 		'add_exception_instances'	=> ($this->add_exception_instances)? 'checked="checked"' : '',
+				 		'add_completed_instances'	=> ($this->add_completed_instances)? 'checked="checked"' : '',
+				 		'add_aborted_instances'		=> ($this->add_aborted_instances)? 'checked="checked"' : '',
+				 		'remove_active_instances'	=> ($this->remove_active_instances)? 'checked="checked"' : '',
+				 		'show_advanced_actions'		=> ($this->show_advanced_actions)? 'checked="checked"' : '',
 			));
-		     	$this->show_select_act_status($this->filter_act_status);
-		     	$this->translate_template('Advanced_table_tpl');
-		     	$this->t->parse('Advanced_table', 'Advanced_table_tpl');
-		    } 
-		    else 
-		    {
-		    	$this->t->set_var(array(
-		    		'advanced_search' 	=> '',
-		    		'filters_on_change'	=> 'onChange="this.form.submit();"',
-		    		'Advanced_table'	=> '',
+				 	$this->show_select_act_status($this->filter_act_status);
+				 	$this->translate_template('Advanced_table_tpl');
+				 	$this->t->parse('Advanced_table', 'Advanced_table_tpl');
+				} 
+				else 
+				{
+					$this->t->set_var(array(
+						'advanced_search' 	=> '',
+						'filters_on_change'	=> 'onChange="this.form.submit();"',
+						'Advanced_table'	=> '',
 			));
-		    }
-		    //some lang text in javascript
-		    $this->t->set_var('lang_Confirm_delete',lang('Confirm Delete'));
-		    $this->t->set_var('start',0);// comming back again to start point
+				}
+				//some lang text in javascript
+				$this->t->set_var('lang_Confirm_delete',lang('Confirm Delete'));
+				$this->t->set_var('start',0);// comming back again to start point
 
-		    // Fill the final list of the instances we choosed in the template
-		    $this->show_list_instances($instances['data'], $this->show_advanced_actions);
+				// Fill the final list of the instances we choosed in the template
+				$this->show_list_instances($instances['data'], $this->show_advanced_actions);
 
-		    $this->show_user_tabs($this->class_name);
-		    //check last GUI errors messages if any
-		    $this->message[]=$this->GUI->get_error(false, _DEBUG);
-		    $this->fill_form_variables();
-		    $this->finish();
+				$this->show_user_tabs($this->class_name);
+				//check last GUI errors messages if any
+				$this->message[]=$this->GUI->get_error(false, _DEBUG);
+				$this->fill_form_variables();
+				$this->finish();
 		}
 
 		//! handle the table containing all instances
@@ -398,7 +398,7 @@
 			
 				// ask the engine what actions are avaible for each line
 				$actions = $this->GUI->getUserActions(
-						$GLOBALS['phpgw_info']['user']['account_id'],
+						$GLOBALS['egw_info']['user']['account_id'],
 						$instance['wf_instance_id'],
 				 		$instance['wf_activity_id'],
 				 		$instance['wf_readonly'],
@@ -411,41 +411,41 @@
 						$instance['wf_status'],
 						$instance['wf_user']); 
 
-			  // Run instance
+				// Run instance
 				// run the instance, the grab stuff is done in the run function
 				if (isset($actions['run']))
 				{
-				        $this->t->set_var('run',
-				                          '<a href="'. $GLOBALS['phpgw']->link('/index.php', 
-				                              'menuaction=workflow.run_activity.go&iid='.$instance['wf_instance_id'] 
-				                              .'&activity_id='.$instance['wf_activity_id']).'"><img src="'
-				                              .$GLOBALS['phpgw']->common->image('workflow', 'runform').'" alt="'.$actions['run'] 
-				                              .'" title="'.$actions['run'].'"></a>');
+								$this->t->set_var('run',
+																	'<a href="'. $GLOBALS['egw']->link('/index.php', 
+																			'menuaction=workflow.run_activity.go&iid='.$instance['wf_instance_id'] 
+																			.'&activity_id='.$instance['wf_activity_id']).'"><img src="'
+																			.$GLOBALS['egw']->common->image('workflow', 'runform').'" alt="'.$actions['run'] 
+																			.'" title="'.$actions['run'].'"></a>');
 				}
 				else
 				{
 					$this->t->set_var('run', '');
 				}
-			  // View instance
+				// View instance
 				// launch the view activity associated with this process if any
 				//and the ui_userviewinstance if not
 				if (isset($actions['viewrun']))
 				{
-			        	$this->t->set_var('view',
-			                          '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
-			                          	'menuaction'	=> 'workflow.run_activity.go',
-			                          	'iid'		=> $instance['wf_instance_id'],
+								$this->t->set_var('view',
+																'<a href="'.$GLOBALS['egw']->link('/index.php',array(
+																	'menuaction'	=> 'workflow.run_activity.go',
+																	'iid'		=> $instance['wf_instance_id'],
 							'activity_id'	=> $actions['viewrun']['link'],
-							)).'"><img src="'.$GLOBALS['phpgw']->common->image('phpgwapi', 'view').'" alt="'.$actions['viewrun']['lang'].'" title="'.$actions['viewrun']['lang'].'"></a>'
+							)).'"><img src="'.$GLOBALS['egw']->common->image('phpgwapi', 'view').'" alt="'.$actions['viewrun']['lang'].'" title="'.$actions['viewrun']['lang'].'"></a>'
 					);
 				}
 				elseif (isset($actions['view']))
 				{
 					$this->t->set_var('view',
-				                     '<a href="'.$GLOBALS['phpgw']->link('/index.php',array(
-				                      	'menuaction'	=> 'workflow.ui_userviewinstance.form',
-				                      	'iid'		=> $instance['wf_instance_id'],
-						)).'"><img src="'.$GLOBALS['phpgw']->common->image('phpgwapi', 'view').'" alt="'.$actions['view'].'" title="'.$actions['view'].'"></a>'
+														 '<a href="'.$GLOBALS['egw']->link('/index.php',array(
+																'menuaction'	=> 'workflow.ui_userviewinstance.form',
+																'iid'		=> $instance['wf_instance_id'],
+						)).'"><img src="'.$GLOBALS['egw']->common->image('phpgwapi', 'view').'" alt="'.$actions['view'].'" title="'.$actions['view'].'"></a>'
 					);
 				}
 				else
@@ -458,7 +458,7 @@
 				if (isset($actions['send']))
 				{
 					$this->t->set_var('send', 
-						'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'linkto') 
+						'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'linkto') 
 						.'" name="send_instance" alt="'.$actions['send'].'" title="'.$actions['send'] 
 						.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
 						.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'send\')">');
@@ -472,23 +472,23 @@
 				// Resume exception instance
 					if (isset($actions['resume']))
 					{
-				        $this->t->set_var('resume', 
-				        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'resume') 
-				        	.'" name="resume_instance" alt="'.$actions['resume'].'" title="'.$actions['resume'] 
-				        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-				        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'resume\')">');
+								$this->t->set_var('resume', 
+									'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'resume') 
+									.'" name="resume_instance" alt="'.$actions['resume'].'" title="'.$actions['resume'] 
+									.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+									.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'resume\')">');
 					} else {
-				        	$this->t->set_var('resume', '');
+									$this->t->set_var('resume', '');
 					}
 					
 				// Exception instance
 					if (isset($actions['exception']))
 					{
-					        $this->t->set_var('exception', 
-					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'tostop') 
-					        	.'" name="exception_instance" alt="'.$actions['exception'].'" title="'.$actions['exception'] 
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-					        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'exception\')">');
+									$this->t->set_var('exception', 
+										'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'tostop') 
+										.'" name="exception_instance" alt="'.$actions['exception'].'" title="'.$actions['exception'] 
+										.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+										.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'exception\')">');
 					}
 					else
 					{
@@ -500,11 +500,11 @@
 					// aborting an instance is avaible for the owner or the user of an instance
 					if (isset($actions['abort']))
 					{
-					        $this->t->set_var('abort', 
-					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'totrash') 
-					        	.'" name="abort_instance" alt="'.$actions['abort'].'" title="'.$actions['abort'] 
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-					        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'abort\')">');
+									$this->t->set_var('abort', 
+										'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'totrash') 
+										.'" name="abort_instance" alt="'.$actions['abort'].'" title="'.$actions['abort'] 
+										.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+										.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'abort\')">');
 					}
 					else
 					{
@@ -514,22 +514,22 @@
 				// Grabb or Release instance
 					if (isset($actions['grab']))
 					{//the instance is not yet grabbed by anyone and we have rights to grabb it (if we don't we wont be able to do it)
-					        //(regis) seems better for me to show a float status when you want to grab, cause this is the actual state
-					        // and the user understand better this way the metaphore
-					        $this->t->set_var('grab_or_release', 
-					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'float') 
-					        	.'" name="grab_instance" alt="'.$actions['grab'].'" title="'.$actions['grab'] 
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-					        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'grab\')">');
+									//(regis) seems better for me to show a float status when you want to grab, cause this is the actual state
+									// and the user understand better this way the metaphore
+									$this->t->set_var('grab_or_release', 
+										'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'float') 
+										.'" name="grab_instance" alt="'.$actions['grab'].'" title="'.$actions['grab'] 
+										.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+										.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'grab\')">');
 					}
 					elseif (isset($actions['release']))
 					{
-					        //(regis) seems better for me to show a fix status when you want to release, cause this is the actual state
-					        $this->t->set_var('grab_or_release', 
-					        	'<input type="image" src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix') 
-					        	.'" name="release_instance" alt="'.$actions['release'].'" title="'.$actions['release']
-					        	.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-					        	.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'release\')">');
+									//(regis) seems better for me to show a fix status when you want to release, cause this is the actual state
+									$this->t->set_var('grab_or_release', 
+										'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'fix') 
+										.'" name="release_instance" alt="'.$actions['release'].'" title="'.$actions['release']
+										.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+										.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'release\')">');
 					}
 					else
 					{
@@ -540,9 +540,9 @@
 					if (isset($actions['monitor']))
 					{
 						$this->t->set_var('monitor', 
-							'<a href="'. $GLOBALS['phpgw']->link('/index.php', 
+							'<a href="'. $GLOBALS['egw']->link('/index.php', 
 							'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id'])
-							.'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'monitorinstance') 
+							.'"><img src="'. $GLOBALS['egw']->common->image('workflow', 'monitorinstance') 
 							.'" alt="'. lang('monitor instance') .'" title="'
 							. lang('monitor instance') .'" /></a>');
 					}
@@ -613,7 +613,7 @@
 			if (!(isset($this->myPrefs['wf_instances_show_category_column'])))
 			{
 				$preferences = lang('preferences');
-				$preferenceslink = '<a href="'.$GLOBALS['phpgw']->link('/preferences/preferences.php','appname=workflow').'" />'.$preferences.'</a>';
+				$preferenceslink = '<a href="'.$GLOBALS['egw']->link('/preferences/preferences.php','appname=workflow').'" />'.$preferences.'</a>';
 				$this->message[] = lang('there are some undefined preferences associated with this form : %1', $preferenceslink);
 			}
 		}
@@ -763,19 +763,19 @@
 				// managing 4 types of instance status in a graphical manner
 				if ($instance['wf_status'] == 'active') 
 				{
-					$graphical_status = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'ok') .'" alt="'. lang('active') .'" title="'. lang('active') .'" />';
+					$graphical_status = '<img src="'.$GLOBALS['egw']->common->image('workflow', 'ok') .'" alt="'. lang('active') .'" title="'. lang('active') .'" />';
 				} 
 				elseif ($instance['wf_status'] == 'exception') 
 				{
-					$graphical_status = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('exception') .'" title="'. lang('exception') .'" />';				
+					$graphical_status = '<img src="'.$GLOBALS['egw']->common->image('workflow', 'stop') .'" alt="'. lang('exception') .'" title="'. lang('exception') .'" />';				
 				} 
 				elseif ($instance['wf_status'] == 'aborted') 
 				{
-					$graphical_status = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'trash') .'" alt="'. lang('aborted') .'" title="'. lang('aborted') .'" />';				
+					$graphical_status = '<img src="'.$GLOBALS['egw']->common->image('workflow', 'trash') .'" alt="'. lang('aborted') .'" title="'. lang('aborted') .'" />';				
 				} 
 				elseif ($instance['wf_status'] == 'completed') 
 				{
-					$graphical_status = '<img src="'.$GLOBALS['phpgw']->common->image('workflow', 'completed') .'" alt="'. lang('completed') .'" title="'. lang('completed') .'" />';				
+					$graphical_status = '<img src="'.$GLOBALS['egw']->common->image('workflow', 'completed') .'" alt="'. lang('completed') .'" title="'. lang('completed') .'" />';				
 				}
 				$this->t->set_var(array(
 					'column_value'	=> $graphical_status,
@@ -788,7 +788,7 @@
 			if($this->show_started_column)
 			{
 				$this->t->set_var(array(
-					'column_value'	=> $GLOBALS['phpgw']->common->show_date($instance['wf_started']),
+					'column_value'	=> $GLOBALS['egw']->common->show_date($instance['wf_started']),
 					'class_column'	=> 'class="col_date"',
 				));
 				$this->t->parse('columns','block_instance_column',true);
@@ -856,7 +856,7 @@
 			// Owner
 			if($this->show_owner_column)
 			{
-				$GLOBALS['phpgw']->accounts->get_account_name($instance['wf_owner'],$lid,$fname_owner,$lname_owner);
+				$GLOBALS['egw']->accounts->get_account_name($instance['wf_owner'],$lid,$fname_owner,$lname_owner);
 				$this->t->set_var(array(
 					'column_value'	=> $fname_owner . ' ' . $lname_owner,
 					'class_column'	=> 'class="instance_owner_'.$instance['wf_owner'].'"',
@@ -865,18 +865,18 @@
 			}
 			
 			// User. Always show this information.
-			$GLOBALS['phpgw']->accounts->get_account_name($instance['wf_user'],$lid,$fname_user,$lname_user);
+			$GLOBALS['egw']->accounts->get_account_name($instance['wf_user'],$lid,$fname_user,$lname_user);
 			if ($instance['wf_user'] == "*") 
 			{ // case for non assigned instances
-			  $shownuser = "*";
+				$shownuser = "*";
 			}
 			elseif ($instance['wf_user'] == "") 
 			{ // case for aborted instances
-			  $shownuser = lang('none');
+				$shownuser = lang('none');
 			}
 			else 
 			{ // all others
-			  $shownuser = $fname_user . ' ' . $lname_user;
+				$shownuser = $fname_user . ' ' . $lname_user;
 			}
 			$this->t->set_var(array(
 				'column_value'	=> $shownuser,
@@ -925,13 +925,13 @@
 
 		function show_select_user($filter_user)
 		{
-			$GLOBALS['phpgw']->accounts->get_account_name($GLOBALS['phpgw_info']['user']['account_id'], $lid, $fname, $lname);
+			$GLOBALS['egw']->accounts->get_account_name($GLOBALS['egw_info']['user']['account_id'], $lid, $fname, $lname);
 
 			$this->t->set_var(array(
 				'filter_user_all'	=> ($filter_user == '')? 'selected="selected"' : '',
 				'filter_user_star'	=> ($filter_user == '*')? 'selected="selected"' : '',
-				'filter_user_user'	=> ($filter_user == $GLOBALS['phpgw_info']['user']['account_id'])? 'selected="selected"' : '',
-				'filter_user_id'	=> $GLOBALS['phpgw_info']['user']['account_id'],
+				'filter_user_user'	=> ($filter_user == $GLOBALS['egw_info']['user']['account_id'])? 'selected="selected"' : '',
+				'filter_user_id'	=> $GLOBALS['egw_info']['user']['account_id'],
 				'filter_user_name'	=> $fname . ' ' . $lname
 			));
 		}
@@ -969,104 +969,104 @@
 		//! fill the $this->where string taking care of all the filters and checkboxes actionned
 		function fill_where_data()
 		{
-		    // there're 5 principal filters, process, activity (id/name), user, category and search --------------
-		    // nothing to prepare for search, let's look the 4 others...
-		    $this->where = '';
-		    $wheres = array();
-		    $or_wheres = array();
-		    if(!($this->filter_process==''))
-		    {
-		        // warning, need to filter process on instance table, not activity
-		    	$wheres[] = "gi.wf_p_id=" .$this->filter_process. "";
-		    }
-		    if(!($this->filter_activity_name==''))
-		    {
+				// there're 5 principal filters, process, activity (id/name), user, category and search --------------
+				// nothing to prepare for search, let's look the 4 others...
+				$this->where = '';
+				$wheres = array();
+				$or_wheres = array();
+				if(!($this->filter_process==''))
+				{
+						// warning, need to filter process on instance table, not activity
+					$wheres[] = "gi.wf_p_id=" .$this->filter_process. "";
+				}
+				if(!($this->filter_activity_name==''))
+				{
 			$wheres[] = "ga.wf_name='" .$this->filter_activity_name. "'";
-		    }
-		    if(!($this->filter_user==''))
-		    {
+				}
+				if(!($this->filter_user==''))
+				{
 			$wheres[] = "gia.wf_user='".$this->filter_user."'";
-		    }
-		    if (!( ($this->filter_category == '') || ($this->filter_category == 'all')) )
-		    {
-		    	$childs = $this->cat->return_all_children($this->filter_category);
-		    	$cats_list = implode(',',$childs);
+				}
+				if (!( ($this->filter_category == '') || ($this->filter_category == 'all')) )
+				{
+					$childs = $this->cat->return_all_children($this->filter_category);
+					$cats_list = implode(',',$childs);
 			$wheres[] = "gi.wf_category in (".$cats_list.")";
-		    }
-		    
-		    // now adding special advanced search options or default values--------------------
-		    // TODO this should maybe go elsewhere, in a bo_ something or the engine
-		    
-		    //if we want only one instance
-		    if ($this->filter_instance)
-		    {
-		    	$wheres[] = "(gi.wf_instance_id='".$this->filter_instance."')";
-		    }
-		    
-		    //instance selection :: instances can be active|exception|aborted|completed
-		    if ($this->remove_active_instances) 
-		    {
-		    	// no active instances, it's an AND
+				}
+				
+				// now adding special advanced search options or default values--------------------
+				// TODO this should maybe go elsewhere, in a bo_ something or the engine
+				
+				//if we want only one instance
+				if ($this->filter_instance)
+				{
+					$wheres[] = "(gi.wf_instance_id='".$this->filter_instance."')";
+				}
+				
+				//instance selection :: instances can be active|exception|aborted|completed
+				if ($this->remove_active_instances) 
+				{
+					// no active instances, it's an AND
 			$wheres[] = "(gi.wf_status<>'active')";
-		    }
-		    else 
-		    {
+				}
+				else 
+				{
 			// default: we need active instances it's an OR with further instance selection	
 			$or_wheres[]= "(gi.wf_status='active')";
-		    }
-		    // others are in OR mode
-		    if ($this->add_exception_instances) 
-		    {
+				}
+				// others are in OR mode
+				if ($this->add_exception_instances) 
+				{
 			$or_wheres[] = "(gi.wf_status='exception')";
-		    }
-		    if ($this->add_aborted_instances) 
-		    {
+				}
+				if ($this->add_aborted_instances) 
+				{
 			$or_wheres[] = "(gi.wf_status='aborted')";
-		    }
-		    if ($this->add_completed_instances) 
-		    {
-		    	$or_wheres[] = "(gi.wf_status='completed')";
-		    }
-		    $wheres[] = "(".implode(' or ', $or_wheres).")";
+				}
+				if ($this->add_completed_instances) 
+				{
+					$or_wheres[] = "(gi.wf_status='completed')";
+				}
+				$wheres[] = "(".implode(' or ', $or_wheres).")";
 
-		    //activities selection :: activities are running OR completed OR NULL (for aborted instances for example) 
-		    // and by default we keep all activities
-		    if ($this->filter_act_status =='running') 
-		    {
-		    	$wheres[] = "(gia.wf_status='running')"; 
-		    }
-		    elseif ($this->filter_act_status =='completed') 
-		    {
+				//activities selection :: activities are running OR completed OR NULL (for aborted instances for example) 
+				// and by default we keep all activities
+				if ($this->filter_act_status =='running') 
+				{
+					$wheres[] = "(gia.wf_status='running')"; 
+				}
+				elseif ($this->filter_act_status =='completed') 
+				{
 			$wheres[] = "(gia.wf_status='completed')"; 
-		    }  
-		    elseif ($this->filter_act_status =='empty') 
-		    {
-		    	// we do not want completed or running activities
+				}  
+				elseif ($this->filter_act_status =='empty') 
+				{
+					// we do not want completed or running activities
 			$wheres[] = "(gia.wf_status is NULL)"; 
-		    }
-		    
-		    if( count($wheres) > 0 ) 
-		    {
-		        $this->where = implode(' and ', $wheres);
+				}
+				
+				if( count($wheres) > 0 ) 
+				{
+						$this->where = implode(' and ', $wheres);
 			//echo "<hr>where: <pre>";print_r($this->where);echo "</pre>";
-		    }
-	    }
-	    
-	    /* Return a select form element with the categories option dialog in it */
-	    function cat_option($cat_id='',$notall=False,$java=True,$multiple=False)
-	    {
-	    	if($java)
-	    	{
-	    		$jselect = ' {filters_on_change}';
-	    	}
-	    	/* Setup all and none first */
-	    	$cats_link  = "\n" .'<select name="filter_category'.(($multiple)? '[]':'').'"' .$jselect . (($multiple)? 'multiple ' : '') . ">\n";
-	    	if(!$notall)
-	    	{
-	    		$cats_link .= '<option value=""';
-	    		if($cat_id == 'all')
-	    		{
-	    			$cats_link .= ' selected';
+				}
+			}
+			
+			/* Return a select form element with the categories option dialog in it */
+			function cat_option($cat_id='',$notall=False,$java=True,$multiple=False)
+			{
+				if($java)
+				{
+					$jselect = ' {filters_on_change}';
+				}
+				/* Setup all and none first */
+				$cats_link  = "\n" .'<select name="filter_category'.(($multiple)? '[]':'').'"' .$jselect . (($multiple)? 'multiple ' : '') . ">\n";
+				if(!$notall)
+				{
+					$cats_link .= '<option value=""';
+					if($cat_id == 'all')
+					{
+						$cats_link .= ' selected';
 			}
 			$cats_link .= '>'.lang("all").'</option>'."\n";
 		}
@@ -1075,7 +1075,7 @@
 		$cats_link .= $this->cat->formated_list('select','all',$cat_id,False);
 		$cats_link .= '</select>'."\n";
 		return $cats_link;
-	    }
+			}
 
 	}
 ?>

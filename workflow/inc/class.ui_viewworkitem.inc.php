@@ -41,7 +41,7 @@
 			{
 				$wi =& $this->process_monitor->monitor_get_workitem($this->itemId);
 
-				$GLOBALS['phpgw']->accounts->get_account_name($wi['wf_user'],$lid,$fname,$lname);
+				$GLOBALS['egw']->accounts->get_account_name($wi['wf_user'],$lid,$fname,$lname);
 			}
 
 			$this->t->set_var(array(
@@ -52,7 +52,7 @@
 				'act_icon'	=> $this->act_icon($wi['wf_type'],$wi['wf_is_interactive']),
 				'wi_name'	=> $wi['wf_name'],
 				'wi_user'	=> $fname . ' ' . $lname,
-				'wi_started'	=> $GLOBALS['phpgw']->common->show_date($wi['wf_started']),
+				'wi_started'	=> $GLOBALS['egw']->common->show_date($wi['wf_started']),
 				'wi_duration'	=> $this->time_diff($wi['wf_duration']),
 			));
 			
