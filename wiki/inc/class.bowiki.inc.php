@@ -47,6 +47,8 @@
 
 	class bowiki extends sowiki
 	{
+		var $upload_url,$upload_dir;
+
 		function bowiki($wiki_id=0)
 		{
 			$this->sowiki($wiki_id);
@@ -65,6 +67,10 @@
 			$InterWikiPrefix = (isset($config['InterWikiPrefix'])?$config['InterWikiPrefix']:'EGroupWare');
 			$EnableFreeLinks = (isset($config['Enable_Free_Links'])?$config['Enable_Free_Links']:1);
 			$EnableWikiLinks = (isset($config['Enable_Wiki_Links'])?$config['Enable_Wiki_Links']:1);
+			
+			$this->ExpireLen = $config['ExpireLen'];
+			$this->upload_dir = $config['upload_dir'];
+			$this->upload_url = $config['upload_url'];
 
 			global $Charset,$UserName;
 			$Charset = $GLOBALS['egw']->translation->charset();

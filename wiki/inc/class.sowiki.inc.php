@@ -107,8 +107,8 @@ class soWikiPage
 	/**
 	 * filter to and into query to get only readable / writeable page of current user
 	 *
-	 *  * @paramboolean $readable generate SQL for readable or writable filter, default True == readable
-	 *  * @paramboolean $add_wiki_id add code to filter only the actual wiki
+	 * @param boolean $readable generate SQL for readable or writable filter, default True == readable
+	 * @param boolean $add_wiki_id add code to filter only the actual wiki
 	 * @return string SQL to AND into the query
 	 */
 	function acl_filter($readable = True,$add_wiki_id=True)

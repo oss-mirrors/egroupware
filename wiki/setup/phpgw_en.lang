@@ -4,6 +4,7 @@ add document to category	wiki	en	Add document to category
 added	wiki	en	Added
 administration features are disabled for this wiki.	wiki	en	Administration features are disabled for this wiki.
 admins	wiki	en	admins
+after how many days should old versions of a page be removed (0 for never)	admin	en	After how many days should old versions of a page be removed (0 for never)
 allow anonymous access	admin	en	allow anonymous access
 anonymous password	admin	en	Anonymous password
 anonymous session type	admin	en	Anonymous Session Type
@@ -59,8 +60,9 @@ no only on request	admin	en	No only on request
 not set	wiki	en	not set
 older	wiki	en	Older
 only if browser supports a richtext-editor	admin	en	Only if browser supports a richtext-editor
+path of the upload directory (has to be writable by the webserver!)	admin	en	Path of the upload directory (has to be writable by the webserver!)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	en	Picture upload via richtext editor (leave the upload directory empty to disable the upload)
 please contact the %1administrator%2 for assistance.	wiki	en	Please contact the %1Administrator%2 for assistance.
-preferences	wiki	en	Preferences
 preview	wiki	en	Preview
 preview of current version	wiki	en	Preview of Current Version
 rate control / ip blocking disabled	wiki	en	Rate control / IP blocking disabled
@@ -80,6 +82,7 @@ this page can not be edited.	wiki	en	This page can not be edited.
 twin pages	wiki	en	Twin pages
 unblock	wiki	en	Unblock
 updates the preview	wiki	en	Updates the preview
+url of the upload directory	admin	en	URL of the upload directory
 users	wiki	en	users
 view document history	wiki	en	View document history
 visit %1 to set your user name	wiki	en	Visit %1 to set your user name

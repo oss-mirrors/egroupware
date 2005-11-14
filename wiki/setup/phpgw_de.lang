@@ -4,6 +4,7 @@ add document to category	wiki	de	Dokument zu Kategroie zufügen
 added	wiki	de	Zugefügt
 administration features are disabled for this wiki.	wiki	de	Administrationszugang ist ausgeschaltet für diese Wiki.
 admins	wiki	de	Administratoren
+after how many days should old versions of a page be removed (0 for never)	admin	de	Nach wievielen Tagen sollen alter Versionen einer Seite gelöscht werden (0 für niemals)
 allow anonymous access	admin	de	Anonymen Zugriff erlauben
 anonymous password	admin	de	Passwort des anonymen Benutzers
 anonymous session type	admin	de	Typ der anonymen Sitzung
@@ -59,6 +60,8 @@ no only on request	admin	de	Nein nur auf Anforderung
 not set	wiki	de	nicht gesetzt
 older	wiki	de	Älter
 only if browser supports a richtext-editor	admin	de	Nur wenn der Webbrowser das Bearbeiten von formatiertem Text unterstütz
+path of the upload directory (has to be writable by the webserver!)	admin	de	Pfad des Verzeichnisses zum Hochladen (muß vom Webserver beschreibbar sein!)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	de	Hochladen von Bildern über den Editor für formatierten Text (das Verzeichnis leer lassen um das Hochladen abzuschalten)
 please contact the %1administrator%2 for assistance.	wiki	de	Bitte wenden Sie sich für weitere Hilfe an den %1Administrator%2..
 preview	wiki	de	Vorschau
 preview of current version	wiki	de	Vorschau der aktuellen Version
@@ -79,6 +82,7 @@ this page can not be edited.	wiki	de	Diese Seite kann nicht bearbeitet werden.
 twin pages	wiki	de	Zwillingsseiten
 unblock	wiki	de	Blockierung aufheben
 updates the preview	wiki	de	Aktualisiert die Vorschau
+url of the upload directory	admin	de	URL / Webadresse des Verzeichnisses zum Hochladen
 users	wiki	de	Benutzern
 view document history	wiki	de	Bearbeitungshistorie des Dokuments anzeigen
 visit %1 to set your user name	wiki	de	Besuchen Sie die %1 um ihren Benutzernamen zu setzten

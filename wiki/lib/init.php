@@ -54,6 +54,11 @@
 
 	$c =& CreateObject('phpgwapi.config','wiki');
 	$c->read_repository();
+	if (!isset($c->config_data['ExpireLen']))
+	{
+		$c->config_data['ExpireLen'] = $ExpireLen;
+		$c->save_repository();
+	}
 	$config = $c->config_data;
 	unset($c);
 
@@ -66,6 +71,7 @@
 	$EnableFreeLinks = (isset($config[Enable_Free_Links])?$config[Enable_Free_Links]:1);
 	$EnableWikiLinks = (isset($config[Enable_Wiki_Links])?$config[Enable_Wiki_Links]:1);
 	$EditWithPreview = (isset($config[Edit_With_Preview])?$config[Edit_With_Preview]:1);
+	$ExpireLen = $config['ExpireLen'];
 
 	$UserName = $GLOBALS['egw_info']['user']['account_lid'];
 	if (!($_GET['action'] == 'save' && !$_POST['Preview']) && $_GET['action'] != 'admin' && !($_GET['action'] == 'prefs' && $_POST['Save']) && $_GET['action'] != 'xml')

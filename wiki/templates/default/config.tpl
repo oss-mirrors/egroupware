@@ -2,17 +2,17 @@
 <form name=frm method="POST" action="{action_url}">
 {hidden_vars}
 <table border="0" align="left">
-   <tr bgcolor="{th_bg}">
-    <td colspan="2"><font color="{th_text}">&nbsp;<b>{title}</b></font></td>
+   <tr class="th">
+    <td colspan="2">&nbsp;<b>{title}</b></td>
    </tr>
 <!-- END header -->
 <!-- BEGIN body -->
-<tr bgcolor="{row_on}">
+<tr class="row_on">
 <td>{lang_name_wiki_home_link}:</td>
 <td><input name="newsettings[wikihome]" size="30" value="{value_wikihome}"></td>
 </tr>
 
-<tr bgcolor="{row_off}">
+<tr class="row_off">
 <td>{lang_allow_anonymous_access}:</td>
 <td>
 <select name="newsettings[allow_anonymous]">
@@ -22,7 +22,7 @@
 </td>
 </tr>
 
-<tr bgcolor="{row_on}">
+<tr class="row_on">
 <td>{lang_Anonymous_Session_Type}:</td>
 <td>
 <select name="newsettings[Anonymous_Session_Type]">
@@ -32,28 +32,28 @@
 </td>
 </tr>
 
-<tr bgcolor="{row_off}">
+<tr class="row_off">
 <td>{lang_anonymous_username}:</td>
 <td><input name="newsettings[anonymous_username]" size="30" value="{value_anonymous_username}"></td>
 </tr>
 
-<tr bgcolor="{row_on}">
+<tr class="row_on">
 <td>{lang_Anonymous_password}:</td>
 <td><input name="newsettings[anonymous_password]" size="30" value="{value_anonymous_password}"></td>
 </tr>
 
-<tr bgcolor="{row_off}">
+<tr class="row_off">
 <td>{lang_Emailaddress_Administrator}:</td>
 <td><input name="newsettings[emailadmin]" size="30" value="{value_emailadmin}"></td>
 </tr>
 
-<tr bgcolor="{row_on}">
+<tr class="row_on">
 <td>{lang_InterWikiPrefix}:</td>
 <td><input name="newsettings[InterWikiPrefix]" size="30" value="{value_InterWikiPrefix}"></td>
 </tr>
 
 
-<tr bgcolor="{row_off}">
+<tr class="row_off">
 <td>{lang_Enable_Free_Links}:</td>
 <td>
 <select name="newsettings[Enable_Free_Links]">
@@ -63,7 +63,7 @@
 </td>
 </tr>
 
-<tr bgcolor="{row_on}">
+<tr class="row_on">
 <td>{lang_Enable_Wiki_Links}:</td>
 <td>
 <select name="newsettings[Enable_Wiki_Links]">
@@ -73,7 +73,7 @@
 </td>
 </tr>
 
-<tr bgcolor="{row_off}">
+<tr class="row_off">
 <td>{lang_Automatically_convert_pages_with_wiki-syntax_to_richtext_(if_edited)?}:</td>
 <td>
 <select name="newsettings[AutoconvertPages]">
@@ -84,10 +84,30 @@
 </select>
 </td>
 </tr>
+
+<tr class="row_on">
+ <td>{lang_After_how_many_days_should_old_versions_of_a_page_be_removed_(0_for_never)}:</td>
+ <td><input name="newsettings[ExpireLen]" size="5" value="{value_ExpireLen}"></td>
+</tr>
+
+<tr class="th">
+ <td colspan="2">{lang_Picture_upload_via_richtext_editor_(leave_the_upload_directory_empty_to_disable_the_upload)}</td>
+</tr>
+
+<tr class="row_on">
+ <td>{lang_Path_of_the_upload_directory_(has_to_be_writable_by_the_webserver!)}:</td>
+ <td><input name="newsettings[upload_dir]" size="40" value="{value_upload_dir}"></td>
+</tr>
+
+<tr class="row_off">
+ <td>{lang_URL_of_the_upload_directory}:</td>
+ <td><input name="newsettings[upload_url]" size="40" value="{value_upload_url}"></td>
+</tr>
+
 <!-- END body -->
 
 <!-- BEGIN footer -->
-  <tr bgcolor="{th_bg}">
+  <tr class="th">
     <td colspan="2">
 &nbsp;
     </td>
