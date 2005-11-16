@@ -407,7 +407,7 @@ class GUI extends Base {
                      gp.wf_p_id,
                      gi.wf_name as insname,
                      gi.wf_priority,
-                     MIN(gar.wf_readonly)';
+                     MIN(gar.wf_readonly) as wf_readonly';
     $query .= ($add_properties)? ', gi.wf_properties' : '';
     $query .= ' from '.GALAXIA_TABLE_PREFIX."instances gi 
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
