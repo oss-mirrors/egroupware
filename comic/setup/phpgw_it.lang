@@ -1,7 +1,6 @@
 %1 by %2	comic	it	%1 di %2
 %1 by %2 (%3)	comic	it	%1 di %2 (%3)
-are you sure you want to reset all	comic	it	Sei sicuro di voler azzerare tutto?
-are you sure you want to reset all comic dates and resolved image urls?	comic	it	Sei sicuro di voler cancellare tutti i dati dei fumetti e le URL delle immagini?
+are you sure you want to reset all comic dates and resolved image urls?	comic	it	Vuoi davvero cancellare tutti i dati dei fumetti e le URL delle immagini?
 censorship level	comic	it	Livello Censura
 censorship override enabled	comic	it	Abilita override della censura
 comic	common	it	Fumetti
@@ -13,7 +12,7 @@ daily comic	common	it	Fumetto quotidiano
 daily comic preferences	comic	it	Preferenze Fumetto quotidiano
 daily comics	admin	it	Fumetti Quotidiani
 daily comics - global options	comic	it	Fumetti Quotidiani - Opzioni Generali
-daily comics data	comic	it	Dati sui Fumetti Quotidiani
+daily comics data	comic	it	Dati Fumetti Quotidiani
 daily comics global options	comic	it	Opzioni Generali per Fumetti Quotidiani
 display layout	comic	it	Layout visualizzazione
 display options	comic	it	Opzioni visualizzazione
@@ -31,7 +30,7 @@ no_entries	comic	it	nessun elemento
 parser	comic	it	Parser
 performed %1 of element	comic	it	Eseguito %1 dell'elemento
 random	comic	it	Casuale
-rated	comic	it	Valutazione
+rated	comic	it	Valutato
 remote (parse/snarf) enabled	comic	it	remote (parse/snarf)
 reset	comic	it	Reset
 reset comic data	admin	it	Reset Dati Fumetti
