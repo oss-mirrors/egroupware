@@ -1,0 +1,36 @@
+%1 records	jinn	it	%1 record
+%1 records per page	jinn	it	%1 record per pagina
+%1 site obj-fields have been imported.	jinn	it	%1 Obj-fields Sito sono stati importati
+%1 site objects have been imported.	jinn	it	%1 Oggetti Sito sono stati importati
+%3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	it	%3: l'evento <b>%1</b> attiva il plugin <b>%2</b>
+4 (default)	jinn	it	4 (default)
+access rights	jinn	it	Diritti di accesso
+access rights for site not succesfully editted	jinn	it	Diritti di accesso per Sito NON modificati con successo
+access rights for site not succesfully saved	jinn	it	Diritti di accesso per Sito NON salvati con successo
+access rights for site succesfully editted	jinn	it	Diritti di accesso per Sito modificati con successo
+access rights for site succesfully saved	jinn	it	Diritti di accesso per Sito salvati con successo
+add	jinn	it	aggiungi
+add %1st image	jinn	it	aggiungi %1a immagine
+add a new configuration:	jinn	it	aggiungi una nuova configurazione
+add attachent	jinn	it	aggiungi allegato
+add attachment %1	jinn	it	aggiungi allegato %1
+add edit	jinn	it	Aggiungi Modifica
+add egw_jinn_sites	jinn	it	aggiungi siti
+add image	jinn	it	aggiungi immagine
+add image %1	jinn	it	aggiungi immagine %1
+add multiple records	jinn	it	Aggiungi record multipli
+add new	jinn	it	Aggiungi nuovo
+add new entry	jinn	it	Aggiungi nuova voce
+add new many to many relation	jinn	it	Aggiungi nuova relazione MOLTI A MOLTI
+add new many with many relation	jinn	it	Aggiungi nuova relazione MOLTI CON MOLTI
+add new one to many	jinn	it	Aggiungi nuova relazione UNO A MOLTI
+add new one with many	jinn	it	Aggiungi nuova relazione UNO CON MOLTI
+add new one-to-one relation	jinn	it	Aggiungi nuova relazione UNO A UNO
+add object	jinn	it	aggiungi oggetto
+add or remove	jinn	it	aggiungi o rimuovi
+add site	jinn	it	Aggiungi Sito
+add site object	jinn	it	aggiungi oggetto sito
+add site-object	jinn	it	aggiungi oggetto-sito
+add slot	jinn	it	aggiungi slot
+add your zip-file with images here	jinn	it	Aggiungi file ZIP con immagini qui
+admin:: edit site	jinn	it	amministrazione: modifica sito
