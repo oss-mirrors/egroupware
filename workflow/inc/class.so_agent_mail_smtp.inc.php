@@ -42,7 +42,7 @@ class so_agent_mail_smtp extends so_agent
 	function read($agent_id)
 	{
 		//perform the query
-		$this->db->select($this->agent_table,'*',array('wf_agent_id'=>$agent_id),__LINE__,__FILE__);
+		$this->db->select($this->agent_table,'*',array('wf_agent_id'=>$agent_id),__LINE__,__FILE__, 'workflow');
 		
 		while (($row = $this->db->row(true)))
 		{
@@ -60,7 +60,7 @@ class so_agent_mail_smtp extends so_agent
 	 */
 	function save($agent_id, &$datas)
 	{
-		$this->db->update($this->agent_table,$datas,array('wf_agent_id'=>$agent_id),__LINE__,__FILE__);
+		$this->db->update($this->agent_table,$datas,array('wf_agent_id'=>$agent_id),__LINE__,__FILE__, 'workflow');
 		return false;
 	}
 }
