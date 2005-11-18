@@ -1,67 +1,85 @@
-add profile		it	Aggiungi Profilo
-admin dn		it	dn amministratore
-admin password		it	password amministratore
-admin username		it	username amministratore
-advanced options		it	opzioni avanzate
-alternate email address		it	indirizzo email alternativo
-cyrus imap server		it	Server IMAP Cyrus
-cyrus imap server administration		it	Amministrazione Server IMAP Cyrus
-default		it	predefinito
-do you really want to delete this profile		it	Vuoi davvero cancellare questo Profilo
-domainname		it	nome dominio
-edit email settings		it	Modifica impostazioni email
-email account active		it	account email attivo
-email address		it	indirizzo email
-enable cyrus imap server administration		it	abilita amministrazione Server IMAP Cyrus
-enable sieve		it	abilita Sieve
-enter your default mail domain (from: user@domain)		it	Inserisci il tuo dominio di posta predefinito (da: utente@dominio)
-forward also to		it	inoltra anche a
-forward email's to		it	inoltra email a
-forward only		it	inoltra solo
-imap admin password		it	Password amministratore IMAP
-imap admin user		it	User amministratore IMAP
-imap c-client version < 2001		it	Versione C-Cliente < 2001
-imap server hostname or ip address		it	Nome Host o IP del server IMAP
-imap server logintyp		it	Tipo login server IMAP
-imap server port		it	Porta server IMAP
-imap/pop3 server name		it	Nome server IMAP/POP3
-in mbyte		it	in MByte
-ldap basedn		it	LDAP basedn
-ldap server		it	server LDAP
-ldap server accounts dn		it	DN account server LDAP
-ldap server admin dn		it	DN amministratore server LDAP
-ldap server admin password		it	password amministratore server LDAP
-ldap server hostname or ip address		it	Nome host o IP server LDAP
-ldap settings		it	impostazioni LDAP
-leave empty for no quota		it	lascia vuoto per nessuna quota
-mail settings		it	Impostazioni Posta
-name of organisation		it	Nome dell'organizzazione
-no alternate email address		it	nessun indirizzo email alternativo
-no forwarding email address		it	nessun indirizzo email di inoltro
-pop3 server hostname or ip address		it	Nome host o IP server POP3
-pop3 server port		it	porta server POP3
-postfix with ldap		it	Postfix con LDAP
-profile list		it	Elenco Profili
-profile name		it	Nome Profilo
-qmaildotmode		it	qmaildotmode
-qouta size in mbyte		it	dimensione quota in MByte
-quota settings		it	impostazioni quota
-remove		it	rimuovi
-select type of imap/pop3 server		it	Seleziona il tipo si server IMAP/POP3
-select type of smtp server		it	Seleziona il tipo di server SMTP
-sieve server hostname or ip address		it	Nome host o IP server Sieve
-sieve server port		it	porta server Sieve
-sieve settings		it	impostazioni SIeve
-smtp server name		it	nome server SMTP
-smtp-server hostname or ip address		it	Nome host o IP server SMTP
-smtp-server port		it	porta server SMTP
-standard		it	Standard
-standard imap server		it	Server IMAP standard
-standard pop3 server		it	Server POP3 standard
-standard smtp-server		it	Server SMTP standard
-use ldap defaults		it	usa predefiniti LDAP
-use smtp auth		it	usa autenticazione SMTP
-use tls authentication		it	usa autenticazione TLS
-use tls encryption		it	usa crittografia TLS
-users can define their own emailaccounts		it	Gli utenti possono definire i propri account email
-virtual mail manager		it	Manager POSTA virtuale
+add profile	emailadmin	it	Aggiungi Profilo
+admin dn	emailadmin	it	dn amministratore
+admin password	emailadmin	it	password amministratore
+admin passwort	emailadmin	it	password amministratore
+admin username	emailadmin	it	username amministratore
+advanced options	emailadmin	it	opzioni avanzate
+alternate email address	emailadmin	it	indirizzo email alternativo
+any application	emailadmin	it	ogni applicazione
+any group	emailadmin	it	ogni gruppo
+application	emailadmin	it	applicazione
+can be used by application	emailadmin	it	può essere usato da applicazione
+can be used by group	emailadmin	it	può essere usato da gruppo
+cyrus imap server	emailadmin	it	Server IMAP Cyrus
+cyrus imap server administration	emailadmin	it	Amministrazione Server IMAP Cyrus
+default	emailadmin	it	predefinito
+do you really want to delete this profile	emailadmin	it	Vuoi davvero cancellare questo Profilo
+domainname	emailadmin	it	nome dominio
+edit email settings	emailadmin	it	modifica impostazioni email
+email account active	emailadmin	it	account email attivo
+email address	emailadmin	it	indirizzo email
+enable cyrus imap server administration	emailadmin	it	abilita amministrazione Server IMAP Cyrus
+enable sieve	emailadmin	it	abilita Sieve
+encryption settings	emailadmin	it	impostazioni cifratura
+enter your default mail domain (from: user@domain)	emailadmin	it	Inserisci il tuo dominio di posta predefinito (da: utente@dominio)
+forward also to	emailadmin	it	inoltra anche a
+forward email's to	emailadmin	it	inoltra email a
+forward only	emailadmin	it	inoltra solo
+global options	emailadmin	it	opzioni globali
+imap admin password	admin	it	Password amministratore IMAP
+imap admin user	admin	it	User amministratore IMAP
+imap c-client version < 2001	emailadmin	it	Versione C-Cliente < 2001
+imap server hostname or ip address	emailadmin	it	Nome Host o IP del server IMAP
+imap server logintyp	emailadmin	it	Tipo login server IMAP
+imap server port	emailadmin	it	Porta server IMAP
+imap/pop3 server name	emailadmin	it	Nome server IMAP/POP3
+in mbyte	emailadmin	it	in MByte
+ldap basedn	emailadmin	it	LDAP basedn
+ldap server	emailadmin	it	server LDAP
+ldap server accounts dn	emailadmin	it	DN account server LDAP
+ldap server admin dn	emailadmin	it	DN amministratore server LDAP
+ldap server admin password	emailadmin	it	password amministratore server LDAP
+ldap server hostname or ip address	emailadmin	it	Nome host o IP server LDAP
+ldap settings	emailadmin	it	impostazioni LDAP
+leave empty for no quota	emailadmin	it	lascia vuoto per nessuna quota
+mail settings	admin	it	Impostazioni Posta
+name of organisation	emailadmin	it	Nome dell'organizzazione
+no alternate email address	emailadmin	it	nessun indirizzo email alternativo
+no forwarding email address	emailadmin	it	nessun indirizzo email di inoltro
+order	emailadmin	it	ordine
+organisation	emailadmin	it	organizzazione
+pop3 server hostname or ip address	emailadmin	it	Nome host o IP server POP3
+pop3 server port	emailadmin	it	porta server POP3
+postfix with ldap	emailadmin	it	Postfix con LDAP
+profile access rights	emailadmin	it	diritti di accesso profilo
+profile list	emailadmin	it	Elenco Profili
+profile name	emailadmin	it	Nome Profilo
+qmaildotmode	emailadmin	it	qmaildotmode
+qouta size in mbyte	emailadmin	it	dimensione quota in MByte
+quota settings	emailadmin	it	impostazioni quota
+remove	emailadmin	it	rimuovi
+select type of imap/pop3 server	emailadmin	it	Seleziona il tipo si server IMAP/POP3
+select type of smtp server	emailadmin	it	Seleziona il tipo di server SMTP
+server settings	emailadmin	it	impostazioni server
+sieve server hostname or ip address	emailadmin	it	Nome host o IP server Sieve
+sieve server port	emailadmin	it	porta server Sieve
+sieve settings	emailadmin	it	impostazioni SIeve
+smtp authentication	emailadmin	it	autenticazione smtp
+smtp options	emailadmin	it	opzioni smtp
+smtp server name	emailadmin	it	nome server SMTP
+smtp settings	emailadmin	it	impostazioni smtp
+smtp-server hostname or ip address	emailadmin	it	Nome host o IP server SMTP
+smtp-server port	emailadmin	it	porta server SMTP
+standard	emailadmin	it	Standard
+standard imap server	emailadmin	it	Server IMAP standard
+standard pop3 server	emailadmin	it	Server POP3 standard
+standard smtp-server	emailadmin	it	Server SMTP standard
+use ldap defaults	emailadmin	it	usa predefiniti LDAP
+use smtp auth	emailadmin	it	usa autenticazione SMTP
+use tls authentication	emailadmin	it	usa autenticazione TLS
+use tls encryption	emailadmin	it	usa crittografia TLS
+user can edit forwarding address	emailadmin	it	l'utente può modificare indirizzo di inoltro
+username (standard)	emailadmin	it	nome utente (standard)
+username@domainname (virtual mail manager)	emailadmin	it	nomeutente@nome dominio (ManaGeR MAIL Virtuale)
+users can define their own emailaccounts	emailadmin	it	Gli utenti possono definire i propri account email
+virtual mail manager	emailadmin	it	ManaGeR MAIL Virtuale

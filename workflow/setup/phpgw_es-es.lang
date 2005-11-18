@@ -155,7 +155,6 @@ description	workflow	es-es	Descripción
 display please wait message	admin	es-es	mostrar mensaje "por favor, espere"
 do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	es-es	¿Desea el estado de la actividad en las listas de instancias? La mayoría del tiempo está "en ejecución", pero si usa transiciones no autorutadas tendrá más actividades completadas.
 do you want the category column on instances lists, if yout instances use categories you should use it	workflow	es-es	¿Desea la columna de categoría en las listas de instancias? Si sus instancias usan categorías, debería usarla.
-do you want the category name column on instances lists, if your instances use categories you should use it	workflow	es-es	¿Desea que aparezca una columna con el nombre de la categoría en las listas de instancias? Si sus instancias usan categorías, debería usarla.
 do you want the category name column on instances lists. if your instances use categories you should use this	workflow	es-es	¿Desea la columna nombre de categoria en las listas de instancias? Si sus instancias usan categorías, deberia usarla.
 do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	es-es	¿Desea la columna id de instancia en las listas de instancias? Es el único identificador es una instancia.
 do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	es-es	¿Desea la columna nombre de la instancia en las listas de instancias? Si sus instancias tienen nombre, debe usarla.
@@ -508,7 +507,6 @@ this activity for this instance is actually only avaible for you.	workflow	es-es
 this activity for this instance is not specifically assigned to you.	workflow	es-es	Esta actividad para esta instancia no está asignada especificamente a usted
 this agent gives the activity the possibility to send an smtp message (mail)	workflow	es-es	Este agente proporciona a la actividad la posibilidad de enviar un mensaje SMTP (correo electrónico)
 this form will test your local workflow installation to detect potential issues	workflow	es-es	Este formulario realizará una prueba en su instalación local de flujo del trabajo para detectar problemas potenciales
-this is the first screen shown when you click on the workflow application icon	workflow	es-es	Esta es la primera pantalla que se muestra al pulsar en el icono de la aplicación flujo del trabajo
 this process has a view activity. access in view mode is granted only for this view activty.	workflow	es-es	Este proceso tiene una actividad de vista. El acceso en modo vista se concede sólo para esta actividad de vista.
 this process has no end activity	workflow	es-es	este proceso no tiene actividad de fin
 this will automatically release the instance when leaving an activity without completing	admin	es-es	esto liberará automáticamente la instancia al abandonar una actividad sin completarla
@@ -560,7 +558,7 @@ we were not able to build the message	workflow	es-es	No pudimos construir el men
 when in advanced mode, should we show you advanced actions by default (resume, exception, grab, etc.)?	workflow	es-es	Cuando se está en modo avanzado, ¿debemos mostrar las acciones avanzadas por defecto (continuar, excepción, tomar, etc)?
 when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	es-es	cuando hay múltiples opciones de envío, dibujamos un cuadro de selección con un único botón de envío en vez de múltiples botones
 when to send the message:	workflow	es-es	Cuándo enviar el mensaje:
-workflow	common	es-es	Flujo del trabajo
+workflow	common	es-es	Flujos de trabajo
 workflow configuration	admin	es-es	Configuración del flujo del trabajo
 workflow preferences	workflow	es-es	Preferencias del flujo del trabajo
 workflow site configuration	workflow	es-es	Configuración del sitio del flujo del trabajo
