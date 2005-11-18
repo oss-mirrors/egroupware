@@ -368,7 +368,7 @@ class GUI extends Base {
     $mid .= '		or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g'))";
 
     // this collect non interactive instances we are owner of
-    $mid .= ' 	or (gi.wf_owner=?)'; 
+    $mid .= " 	or ((gi.wf_owner=?) and ga.wf_is_interactive = 'n')"; 
     // and this collect completed instances when asked which haven't got any user anymore
     $mid .= '   or (gur.wf_user is NULL) )';
 
@@ -435,7 +435,7 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
               $mid
                 GROUP BY gia.wf_activity_id";
-     //echo "<br> query => ".$query; _debug_array($bindvars);
+    //echo "<br> query => ".$query; _debug_array($bindvars);
      
     $result = $this->query($query,$bindvars,$maxRecords,$offset);
     $resultcant = $this->query($query_cant,$bindvars);
