@@ -89,7 +89,7 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
-              $mid order by $sort_mode";
+              $mid";
     $query_cant = "select count(distinct(gp.wf_p_id))
               from ".GALAXIA_TABLE_PREFIX."processes gp
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
@@ -97,13 +97,15 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
               $mid";
-    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $result = $this->query($query,$bindvars,$maxRecords,$offset, true, $sort_mode);
     $cant = $this->getOne($query_cant,$bindvars);
     $ret = Array();
-    while($res = $result->fetchRow()) {
-      // Get instances and activities per process,
-      $pId=$res['wf_p_id'];
-      $res['wf_activities']=$this->getOne("select count(distinct(ga.wf_activity_id))
+    if (!(empty($result)))
+    {
+      while($res = $result->fetchRow()) {
+        // Get instances and activities per process,
+        $pId=$res['wf_p_id'];
+        $res['wf_activities']=$this->getOne("select count(distinct(ga.wf_activity_id))
               from ".GALAXIA_TABLE_PREFIX."processes gp
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
@@ -113,9 +115,9 @@ class GUI extends Base {
               and (  ((gur.wf_user=? and gur.wf_account_type='u')
                 or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g')))",
               array($pId,$user));
-      //we are counting here instances which are completed/exception or actives
-      // TODO: maybe we should add a second counter with only running instances
-      $res['wf_instances']=$this->getOne("select count(distinct(gi.wf_instance_id))
+        //we are counting here instances which are completed/exception or actives
+        // TODO: maybe we should add a second counter with only running instances
+        $res['wf_instances']=$this->getOne("select count(distinct(gi.wf_instance_id))
               from ".GALAXIA_TABLE_PREFIX."instances gi
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
                 LEFT JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
@@ -127,7 +129,8 @@ class GUI extends Base {
                    or ((gur.wf_user=?) and gur.wf_account_type='u')
                   )",
               array($pId,$user,$user));
-      $ret[] = $res;
+        $ret[] = $res;
+      }
     }
     $retval = Array();
     $retval["data"] = $ret;
@@ -184,7 +187,7 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
                 $more_tables
-                $mid order by $sort_mode";
+                $mid";
               
     $query_cant = "select count(distinct(ga.wf_activity_id))
               from ".GALAXIA_TABLE_PREFIX."processes gp
@@ -194,7 +197,7 @@ class GUI extends Base {
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
                 $more_tables
                 $mid ";
-    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $result = $this->query($query,$bindvars,$maxRecords,$offset, true, $sort_mode);
     $cant = $this->getOne($query_cant,$bindvars);
     $ret = Array();
     $removed_instances = 0;
@@ -251,7 +254,7 @@ class GUI extends Base {
 			INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
 			INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
 			INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
-			$mid order by $sort_mode";
+			$mid";
 
 		$query_cant = "select count(distinct(ga.wf_name))
 			from ".GALAXIA_TABLE_PREFIX."processes gp
@@ -260,7 +263,7 @@ class GUI extends Base {
 			INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
 			INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
 			$mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
+		$result = $this->query($query,$bindvars,$maxRecords,$offset, true, $sort_mode);
 		$cant = $this->getOne($query_cant,$bindvars);
 		$ret = Array();
 		while($res = $result->fetchRow()) 
@@ -314,7 +317,7 @@ class GUI extends Base {
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
-	$mid order by $sort_mode";
+	$mid";
     $query_cant = "select count(distinct(ga.wf_activity_id))
 	from ".GALAXIA_TABLE_PREFIX."processes gp
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
@@ -322,7 +325,7 @@ class GUI extends Base {
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
 	$mid";
-    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $result = $this->query($query,$bindvars,$maxRecords,$offset, true, $sort_mode);
     $ret = Array();
     if (!(empty($result)))
     {
@@ -420,7 +423,6 @@ class GUI extends Base {
               gia.wf_status, ga.wf_name, ga.wf_type, gp.wf_name, ga.wf_is_interactive, ga.wf_is_autorouted, 
               ga.wf_activity_id, gp.wf_version, gp.wf_p_id, gi.wf_name, gi.wf_priority";
     $query .= ($add_properties)? ', gi.wf_properties' : '';
-    $query.= "          order by $sort_mode";
     // (regis) this count query as to count global -unlimited- (instances/activities) not just instances
     // as we can have multiple activities for one instance and we will show all of them and the problem is 
     // that a user having memberships in several groups having the rights is counted several times. 
@@ -437,7 +439,7 @@ class GUI extends Base {
                 GROUP BY gia.wf_activity_id";
     //echo "<br> query => ".$query; _debug_array($bindvars);
      
-    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $result = $this->query($query,$bindvars,$maxRecords,$offset, true, $sort_mode);
     $resultcant = $this->query($query_cant,$bindvars);
     $ret = Array();
     if (!(empty($result)))
