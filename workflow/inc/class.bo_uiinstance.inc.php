@@ -53,8 +53,8 @@
 				'instance_process'	=> lang('Instance: %1 (Process: %2)', $iid, $this->process->getName() . ' ' . $this->process->getVersion()),
 				'inst_started'		=> $GLOBALS['egw']->common->show_date($instance->getStarted()),
 				'inst_ended' 		=> ($ended==0)? '-' : $GLOBALS['egw']->common->show_date($ended),
-				'instance_name'		=> $instance->getName(),
-				'status'		=> $instance->getStatus(),
+				'instance_name'		=> htmlspecialchars($instance->getName()),
+				'status'		=> htmlspecialchars($instance->getStatus()),
 				'instance_priority'	=> $instance->getPriority(),
 				'instance_category'	=> $category,
 				'instance_category_select'=> $selectcategory,
@@ -253,7 +253,7 @@
 			$this->t->set_block('block_properties', 'block_button_delete', 'button_delete');
 			foreach ($props as $key=>$prop)
 			{
-			
+				$prop = htmlspecialchars($prop);
 				//make textarea for big properties
 				if (strlen($prop) > 80)
 				{
