@@ -667,9 +667,19 @@ class ActivityManager extends BaseManager {
   }
   
   /*!
-   Lists activities at a per-process level
+  * Lists activities at a per-process level
+  * @param $pId is the process id
+  * @param $offset is the first row number (see $maxRecords)
+  * @param $maxRecords is the maximum number of records returned
+  * @param $sort_mode is the sort order
+  * @param $find is a string searched name or description of the activity
+  * @param $where is a sql string appended
+  * @param count_roles is true by default and is adding stat queries results about number of roles
+  * concerned by the activity
+  * return a reference to an array containing two keys, 'cant' for the number of total activities
+  * and 'data' containing an associative array with the activities content
   */
-  function &list_activities($pId,$offset,$maxRecords,$sort_mode,$find,$where='')
+  function &list_activities($pId,$offset,$maxRecords,$sort_mode,$find,$where='', $count_roles=true)
   {
     $sort_mode = str_replace("__"," ",$sort_mode);
     if($find) {
@@ -683,14 +693,16 @@ class ActivityManager extends BaseManager {
     if($where) {
       $mid.= " and ($where) ";
     }
-    $query = 'select * from '.GALAXIA_TABLE_PREFIX."activities $mid order by $sort_mode";
+    $query = 'select * from '.GALAXIA_TABLE_PREFIX."activities $mid";
     $query_cant = 'select count(*) from '.GALAXIA_TABLE_PREFIX."activities $mid";
-    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $result = $this->query($query,$bindvars,$maxRecords,$offset,true,$sort_mode);
     $cant = $this->getOne($query_cant,$bindvars);
     $ret = Array();
     while($res = $result->fetchRow()) {
-      $res['wf_roles'] = $this->getOne('select count(*) from '
+      if ($count_roles) {
+        $res['wf_roles'] = $this->getOne('select count(*) from '
         .GALAXIA_TABLE_PREFIX.'activity_roles where wf_activity_id=?',array($res['wf_activity_id']));
+      }
       $ret[] = $res;
     }
     $retval = Array();
