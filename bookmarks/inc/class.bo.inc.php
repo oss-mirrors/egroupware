@@ -18,7 +18,6 @@
 	class bo
 	{
 		var $so;
-		var $db;
 		var $grants;
 		var $url_format_check;
 		var $validate;
@@ -32,7 +31,6 @@
 		function bo()
 		{
 			$this->so =& CreateObject('bookmarks.so');
-			$this->db          = clone($GLOBALS['egw']->db);
 			$this->grants      = $GLOBALS['egw']->acl->get_grants('bookmarks');
 			$this->categories =& CreateObject('phpgwapi.categories','','bookmarks');
 			$GLOBALS['egw']->config     =& CreateObject('phpgwapi.config');
@@ -115,14 +113,13 @@
 
 		function check_perms($id, $required)
 		{
-			$this->db->query("select bm_owner, bm_access from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
-			if (!$this->db->next_record())
+			if (!($bookmark = $this->so->read($id)))
 			{
 				return False;
 			}
 			else
 			{
-				return $this->check_perms2($this->db->f('bm_owner'),$this->db->f('bm_access'),$required);
+				return $this->check_perms2($bookmark['owner'],$bookmark['access'],$required);
 			}
 		}
 

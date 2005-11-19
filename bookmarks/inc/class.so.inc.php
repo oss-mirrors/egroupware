@@ -75,7 +75,6 @@
 
 		function read($id,$do_htmlspecialchars=True)
 		{
-			$query = "SELECT * FROM $this->table WHERE bm_id=".(int)$id;
 			$this->db->select($this->table,'*',array('bm_id'=>$id),__LINE__,__FILE__);
 			if (!$this->db->next_record())
 			{
