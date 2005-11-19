@@ -120,23 +120,10 @@
 
 			// fill proc_bar
 			$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));
-			
-			//collect some messages from used objects
-			$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
-			$this->message[] = $this->process_manager->get_error(false, _DEBUG);
-
-			// fill the general variables of the template
-			$this->t->set_var(array(
-				'message'				=> implode('<br>', array_filter($this->message)),
-				'errors'				=> $error_str,
-				'form_editsource_action'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form'),
-				'p_id'					=> $this->wf_p_id,
-				'selected_sharedcode'	=> ($activity_id == 0)? 'selected="selected"' : '',
-				'source_type'			=> $source_type,
-			));
 
 			// fill activities select box
-			$process_activities = $this->activity_manager->list_activities($this->wf_p_id, 0, -1, 'wf_name__asc', '');
+			// avoid stats queries on roles here with a false parameter
+			$process_activities = $this->activity_manager->list_activities($this->wf_p_id, 0, -1, 'wf_name__asc', '','',false);
 			foreach ($process_activities['data'] as $process_activity)
 			{
 				$this->t->set_var(array(
@@ -146,6 +133,20 @@
 				));
 				$this->t->parse('select_activity', 'block_select_activity', true);
 			}
+
+			//collect some messages from used objects
+			$this->message[] = $this->activity_manager->get_error(false, _DEBUG);
+			$this->message[] = $this->process_manager->get_error(false, _DEBUG);
+			
+			// fill the general variables of the template
+			$this->t->set_var(array(
+				'message'				=> implode('<br>', array_filter($this->message)),
+				'errors'				=> $error_str,
+				'form_editsource_action'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form'),
+				'p_id'					=> $this->wf_p_id,
+				'selected_sharedcode'	=> ($activity_id == 0)? 'selected="selected"' : '',
+				'source_type'			=> $source_type,
+			));
 
 			// generate 'template' or 'code' submit button
 			if ($source_type == 'template')
@@ -165,7 +166,7 @@
 
 			$this->translate_template('admin_source');
 			
-			//only now wa can insert data, to prevent templating vars used in the source
+			//only now we can insert data, to prevent templating vars used in the source
 			$this->t->set_block('admin_source', 'block_datas', 'datas');
 			$this->t->set_var(array('data'	=> Htmlspecialchars($data),));
 			$this->t->parse('datas', 'block_datas', true);
