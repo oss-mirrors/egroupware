@@ -233,6 +233,7 @@ class ProcessManager extends BaseManager {
                     xml_error_string(xml_get_error_code($this->parser)),
                     xml_get_current_line_number($this->parser));
        trigger_error($error,E_USER_WARNING);
+       $this->error[] = $error;
     }
     xml_parser_free($this->parser);   
     // Now that we have the tree we can do interesting things
@@ -310,10 +311,9 @@ class ProcessManager extends BaseManager {
                       $name = trim($this->tree[$z5]['name']);
                       // data will be the agent_type or an array for agent_datas
                       $data = trim($this->tree[$z5]['data']);
-                      $agent = array();
                       if ($name=='agent_type') 
                       {
-                        $agent[$name]=$data;
+                        $agent['wf_agent_type']=$data;
                       } 
                       elseif ($name=='agent_datas') 
                       {
@@ -479,29 +479,35 @@ class ProcessManager extends BaseManager {
       {
         foreach($activity['agents'] as $agent)
         {
-        //_debug_array($agent);
-            //create a new agent of the same type for the new activity
-            $agentid = $this->activity_manager->add_activity_agent($actid,$agent['wf_agent_type']);
-            //save values of this new agent
-            $bindvars = Array();
-            $query = 'update '.GALAXIA_TABLE_PREFIX.'agent_'.$agent['wf_agent_type'].'
-                        set ';
-            //we wont need the old type anymore
-            unset($agent['wf_agent_type']);
-            $countfields = 0;
-            foreach ($agent as $key => $value)
+            if (empty($agent['wf_agent_type']))
             {
-              if ($key)
-              {
-                $countfields++;
-                $query .= "$key = ? ,";
-                $bindvars[] = $value;
-              }
+              $this->error[] = lang('empty agent type');
             }
-            $query = substr($query,'0',-1);
-            $query .= ' where wf_agent_id = ?';
-            $bindvars[] = $agentid;
-            if ($countfields) $this->query($query, $bindvars);
+            else
+            {
+              //create a new agent of the same type for the new activity
+              $agentid = $this->activity_manager->add_activity_agent($actid,$agent['wf_agent_type']);
+              //save values of this new agent
+              $bindvars = Array();
+              $query = 'update '.GALAXIA_TABLE_PREFIX.'agent_'.$agent['wf_agent_type'].'
+                        set ';
+              //we wont need the old type anymore
+              unset($agent['wf_agent_type']);
+              $countfields = 0;
+              foreach ($agent as $key => $value)
+              {
+                if ($key)
+                {
+                  $countfields++;
+                  $query .= "$key = ? ,";
+                  $bindvars[] = $value;
+                }
+              }
+              $query = substr($query,'0',-1);
+              $query .= ' where wf_agent_id = ?';
+              $bindvars[] = $agentid;
+              if ($countfields) $this->query($query, $bindvars);
+            }
         }
       }
     }
