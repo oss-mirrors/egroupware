@@ -135,14 +135,14 @@ will be stored for this process (and existing values are erased)
     //delete previous config values if they are in a bulk statement
     if (count($array_delete)>0) 
     {
-      $result= $this->query("DELETE from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=? and wf_config_name=?",$array_delete);
+      $result= $this->query("DELETE from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=? and wf_config_name=?",$array_delete, -1,-1,true,'',true);
     }
     //insert in a bulk statement
     if (count($array_set)>0) 
     {
         $result= $this->query("INSERT into ".GALAXIA_TABLE_PREFIX."process_config 
           (wf_config_name,wf_config_value,wf_config_value_int,wf_p_id) values (?,?,?,?)"
-          ,$array_set);
+          ,$array_set, -1,-1,true,'', true);
     }
   }
   
