@@ -79,38 +79,37 @@ class Base extends Observable {
 	}
   }
 	
-/*	function query($query, $values = null, $numrows = -1, $offset = -1, $reporterrors = true) {
-		#$result = $this->db->query($query, $line = __LINE__, $file = __FILE__, $offset=$offset, $num_rows=$numrows,$inputarr=$values);
-		$this->num_queries++;
-		if (!$result)
-		{
-			$this->error[] = "they were some SQL errors in the database, please warn your sysadmin.";
-			if ($reporterrors) $this->sql_error($query, $values, $result);
-		}
-		return $result;
-
-	} 
-*/
 	//! perform a query on the AdoDB database object
 	/*! initially copied from tikilib.php. Modifications for galaxia
-	* @param $query
-	* @param $values
-	* @param $numrows
-	* @param $offset
-	* @param $reporterrors
+	* @param $query is the sql query, parameters should be replaced with ?
+	* @param $values is an array containing the parameters (going in the ?), use it to avoid security problems. If
+	*	one of theses values is an array it will be serialized and encoded in Base64
+	* @param $numrows is the maximum number of rows to return 
+	* @param $offset is the starting row number
+	* @param $reporterrors is true by default, if false no warning will be generated in the php log
+	* @param $sort is the sort sql string for the query (without the "order by "),
+	* @param $bulk is false by default, if true the $values array parameters could contain arrays vars for bulk statement
+	* (see ADOdb help) theses arrays wont be serialized and encoded in Base64 like current arrays parameters.
+	*  it will be checked for security reasons before being appended to the sql
 	* @return false if something went wrong or the resulting recordset array if it was ok
 	*/
-	function query($query, $values = null, $numrows = -1, $offset = -1, $reporterrors = true) 
+	function query($query, $values = null, $numrows = -1, $offset = -1, $reporterrors = true, $sort='', $bulk=false)
 	{
 		$this->convert_query($query);
+		//clean the parameters
 		$clean_values = Array();
 		foreach($values as $value)
 		{
-			$clean_values[] = $this->security_cleanup($value);
+			$clean_values[] = $this->security_cleanup($value, !($bulk));
+		}
+		//clean sort order as well and add it to the query
+		if (!(empty($sort)))
+		{
+			$sort = $this->security_cleanup($sort, true, true);
+			$query .= " order by $sort";
 		}
 		// Galaxia needs to be call ADOdb in associative mode
 		$this->db->SetFetchMode(ADODB_FETCH_ASSOC);
-		
 		if ($numrows == -1 && $offset == -1)
 			$result = $this->db->Execute($query, $clean_values);
 		else
@@ -128,7 +127,12 @@ class Base extends Observable {
 		return $result;
 	}
 
-	
+	/*! initially copied from tikilib.php. Modifications for galaxia
+	* @param $query is the sql query, parameters should be replaced with ?
+	* @param $values is an array containing the parameters (going in the ?), use it to avoid security problems
+	* @param $reporterrors is true by default, if false no warning will be generated in the php log
+	* @return NULL if something went wrong or the first value of the first row if it was ok
+	*/
 	function getOne($query, $values = null, $reporterrors = true) {
 		$this->convert_query($query);
 		$clean_values = Array();
@@ -170,18 +174,32 @@ class Base extends Observable {
 	*	- If it is an array we'll make a serialize and then an base64_encode 
 	*	  (you'll have to make an unserialize(base64_decode())
 	*	- If it is not an array we make an htmlspecialchars() on it
+	* @param  $flat_arrays is true by default, if false arrays won't be serialized and encoded
+	* @param $check_for_injection is false by default, if true we'll perform some modifications
+	*	 on the string to avoid SQL injection
 	* @return the resulting value, ready for an ADODB query
 	*/
-	function security_cleanup($value)
+	function security_cleanup($value, $flat_arrays = true, $check_for_injection = false)
 	{
 		if (is_array($value))
 		{
-			//serialize and \' are a big #!%*
-			$res = base64_encode(serialize($value));
+			if ($flat_arrays) {
+				//serialize and \' are a big #!%*
+				$res = base64_encode(serialize($value));
+			}
+			else
+			{
+				//recursive cleanup on the array
+				$res = Array();
+				foreach ($value as $key => $item)
+				{
+					$res[$this->security_cleanup($key,$flat_arrays)] = $this->security_cleanup($item, $flat_arrays);
+				}
+			}
 		}
 		else
 		{
-			$res=htmlspecialchars($value);
+			$res = ($check_for_injection)? addslashes(str_replace(';','',$value)) : $value;
 		}
 		return $res;
 	}
@@ -231,15 +249,7 @@ class Base extends Observable {
 			break;
 		}
 	}
-/*
-	function qstr($string, $quoted = null)
-	{
-		if (!isset($quoted)) {
-			$quoted = get_magic_quotes_gpc();
-		}
-		return $this->db->qstr($string,$quoted);
-	}
-*/
+
 } //end of class
 
 ?>
