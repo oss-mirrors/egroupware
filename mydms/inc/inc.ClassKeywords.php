@@ -43,7 +43,7 @@ function addKeywordCategory($owner, $name)
 	if (!$db->getResult($queryStr))
 		return false;
 	
-	return getKeywordCategory($db->getInsertID());
+	return getKeywordCategory($db->getInsertID('phpgw_mydms_KeywordCategories','id'));
 }
 
 //----------------------------------------------------------------------------------------------

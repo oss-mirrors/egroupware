@@ -103,12 +103,12 @@ function addUser($login, $pwd, $fullName, $email, $comment)
 	echo "add user is disabled \n";
 	/*GLOBAl $db;
 	
-	$queryStr = "INSERT INTO phpgw_mydms_Users (login, pwd, fullName, email, comment, isAdmin) VALUES ('".$login."', '".$pwd."', '".$fullName."', '".$email."', '".$comment."', 0)";
+	$queryStr = "INSERT INTO phpgw_mydms_Users (login, pwd, fullName, email, comment, isAdmin) VALUES ('".$login."', '".$pwd."', '".$fullName."', '".$email."', '".$comment."', false)";
 	$res = $db->getResult($queryStr);
 	if (!$res)
 		return false;
 	
-	return getUser($db->getInsertID());*/
+	return getUser($db->getInsertID('phpgw_mydms_Users','id'));*/
 }
 
 
@@ -220,8 +220,8 @@ class User
 	{
 		GLOBAL $db;
 		
-		$isAdmin = ($isAdmin) ? "1" : "0";
-		$queryStr = "UPDATE phpgw_mydms_Users SET isAdmin = " . $isAdmin . " WHERE id = " . $this->_id;
+		$isAdmin = $isAdmin ? "1" : "0";
+		$queryStr = "UPDATE phpgw_mydms_Users SET isAdmin = " . $GLOBALS['egw']->db->quote($isAdmin) . " WHERE id = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
 		
@@ -231,15 +231,15 @@ class User
 
 	/**
 	 * Entfernt den Benutzer aus dem System.
-	 * Dies ist jedoch nicht mit einem Löschen des entsprechenden Eintrags aus phpgw_mydms_Users geschehen - vielmehr
-	 * muss dafür gesorgt werden, dass der Benutzer nirgendwo mehr auftaucht. D.h. auch die Tabellen phpgw_mydms_ACLs,
-	 * phpgw_mydms_Notify, phpgw_mydms_GroupMembers, phpgw_mydms_Folders, phpgw_mydms_Documents und phpgw_mydms_DocumentContent müssen berücksichtigt werden.
+	 * Dies ist jedoch nicht mit einem Lï¿½schen des entsprechenden Eintrags aus phpgw_mydms_Users geschehen - vielmehr
+	 * muss dafï¿½r gesorgt werden, dass der Benutzer nirgendwo mehr auftaucht. D.h. auch die Tabellen phpgw_mydms_ACLs,
+	 * phpgw_mydms_Notify, phpgw_mydms_GroupMembers, phpgw_mydms_Folders, phpgw_mydms_Documents und phpgw_mydms_DocumentContent mï¿½ssen berï¿½cksichtigt werden.
 	 */
 	function remove()
 	{
 		GLOBAL $db, $settings;
 		
-		//Private Stichwortlisten löschen
+		//Private Stichwortlisten lï¿½schen
 		$queryStr = "SELECT phpgw_mydms_Keywords.id FROM phpgw_mydms_Keywords, phpgw_mydms_KeywordCategories WHERE phpgw_mydms_Keywords.category = phpgw_mydms_KeywordCategories.id AND phpgw_mydms_KeywordCategories.owner = " . $this->_id;
 		$resultArr = $db->getResultArray($queryStr);
 		if (count($resultArr) > 0) {
@@ -260,7 +260,7 @@ class User
 		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE userID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		//Der Besitz von Dokumenten oder Ordnern, deren bisheriger Besitzer der zu löschende war, geht an den Admin über
+		//Der Besitz von Dokumenten oder Ordnern, deren bisheriger Besitzer der zu lï¿½schende war, geht an den Admin ï¿½ber
 		$queryStr = "UPDATE phpgw_mydms_Folders SET owner = " . $settings->_adminID . " WHERE owner = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
@@ -270,11 +270,11 @@ class User
 		$queryStr = "UPDATE phpgw_mydms_DocumentContent SET createdBy = " . $settings->_adminID . " WHERE createdBy = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		//Verweise auf Dokumente: Private löschen...
+		//Verweise auf Dokumente: Private lï¿½schen...
 		$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE userID = " . $this->_id . " AND public = 0";
 		if (!$db->getResult($queryStr))
 			return false;
-		//... und öffentliche an Admin übergeben
+		//... und ï¿½ffentliche an Admin ï¿½bergeben
 		$queryStr = "UPDATE phpgw_mydms_DocumentLinks SET userID = " . $settings->_adminID . " WHERE userID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
@@ -282,7 +282,7 @@ class User
 		$queryStr = "UPDATE phpgw_mydms_Documents SET locked = -1 WHERE locked = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		//User aus allen Gruppen löschen
+		//User aus allen Gruppen lï¿½schen
 		$queryStr = "DELETE FROM phpgw_mydms_GroupMembers WHERE userID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
@@ -290,7 +290,7 @@ class User
 		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE userID = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;
-		//Eintrag aus phpgw_mydms_Users löschen
+		//Eintrag aus phpgw_mydms_Users lï¿½schen
 		$queryStr = "DELETE FROM phpgw_mydms_Users WHERE id = " . $this->_id;
 		if (!$db->getResult($queryStr))
 			return false;

@@ -56,7 +56,7 @@
 				'expires' => array('type' => 'int', 'precision' => '8', 'default' => 'NULL'),
 				'owner' => array('type' => 'int', 'precision' => '4', 'default' => 'NULL'),
 				'folder' => array('type' => 'int', 'precision' => '4', 'default' => 'NULL'),
-				'inheritAccess' => array('type' => 'bool', 'nullable' => False, 'default' => '1'),
+				'inheritAccess' => array('type' => 'bool', 'nullable' => False, 'default' => 'true'),
 				'defaultAccess' => array('type' => 'int', 'precision' => '2', 'nullable' => False, 'default' => '0'),
 				'locked' => array('type' => 'int', 'precision' => '4', 'nullable' => False, 'default' => '-1'),
 				'keywords' => array('type' => 'text', 'nullable' => False),
@@ -75,7 +75,7 @@
 			'parent' => array('type' => 'int', 'precision' => '4', 'default' => 'NULL'),
 			'comment' => array('type' => 'text'),
 			'owner' => array('type' => 'int', 'precision' => '4', 'default' => 'NULL'),
-			'inheritAccess' => array('type' => 'bool', 'nullable' => False, 'default' => '1'),
+			'inheritAccess' => array('type' => 'bool', 'nullable' => False, 'default' => 'true'),
 			'defaultAccess' => array('type' => 'int', 'precision' => '2', 'nullable' => False, 'default' => '0'),
 			'sequence' => array('type' => 'float', 'precision' => '8', 'nullable' => False, 'default' => '0')
 		),
@@ -130,7 +130,7 @@
 			'document' => array('type' => 'int', 'precision' => '4', 'nullable' => False, 'default' => '0'),
 			'target' => array('type' => 'int', 'precision' => '4', 'nullable' => False, 'default' => '0'),
 			'userID' => array('type' => 'int', 'precision' => '4', 'nullable' => False, 'default' => '0'),
-			'public' => array('type' => 'bool', 'nullable' => False, 'default' => '0')
+			'public' => array('type' => 'bool', 'nullable' => False, 'default' => 'false')
 		),
 		'pk' => array('id'),
 		'fk' => array(),

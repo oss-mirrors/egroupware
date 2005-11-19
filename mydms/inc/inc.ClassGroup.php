@@ -36,7 +36,7 @@ function addGroup($name, $comment)
 	if (!$db->getResult($queryStr))
 		return false;
 	
-	return getGroup($db->getInsertID());
+	return getGroup($db->getInsertID('phpgw_mydms_Groups','id'));
 }
 
 
@@ -179,9 +179,9 @@ class Group
 
 	/**
 	 * Entfernt die Gruppe aus dem System.
-	 * Dies ist jedoch nicht mit einem Löschen des entsprechenden Eintrags aus phpgw_mydms_Groups geschehen - vielmehr
-	 * muss dafür gesorgt werden, dass die Gruppe nirgendwo mehr auftaucht. D.h. auch die Tabellen phpgw_mydms_ACLs,
-	 * phpgw_mydms_Notify und phpgw_mydms_GroupMembers müssen berücksichtigt werden.
+	 * Dies ist jedoch nicht mit einem Lï¿½schen des entsprechenden Eintrags aus phpgw_mydms_Groups geschehen - vielmehr
+	 * muss dafï¿½r gesorgt werden, dass die Gruppe nirgendwo mehr auftaucht. D.h. auch die Tabellen phpgw_mydms_ACLs,
+	 * phpgw_mydms_Notify und phpgw_mydms_GroupMembers mï¿½ssen berï¿½cksichtigt werden.
 	 */
 	function remove()
 	{

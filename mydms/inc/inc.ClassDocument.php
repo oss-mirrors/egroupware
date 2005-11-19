@@ -158,7 +158,7 @@ class Document
 	{
 		$inheritAccess = ($inheritAccess) ? "1" : "0";
 		
-		$queryStr = "UPDATE phpgw_mydms_Documents SET inheritAccess = " . $inheritAccess . " WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Documents SET inheritAccess = " . $GLOBALS['egw']->db->quote($inheritAccess,'bool') . " WHERE id = " . $this->_id;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
@@ -308,10 +308,10 @@ class Document
 	}
 
 	/*
-	 * Liefert die Art der Zugriffsberechtigung für den User $user; Mögliche Rechte: n (keine), r (lesen), w (schreiben+lesen), a (alles)
-	 * Zunächst wird Geprüft, ob die Berechtigung geerbt werden soll; in diesem Fall wird die Anfrage an den Eltern-Ordner weitergeleitet.
-	 * Ansonsten werden die ACLs durchgegangen: Die höchstwertige Berechtigung gilt.
-	 * Wird bei den ACLs nicht gefunden, wird die Standard-Berechtigung zurückgegeben.
+	 * Liefert die Art der Zugriffsberechtigung fï¿½r den User $user; Mï¿½gliche Rechte: n (keine), r (lesen), w (schreiben+lesen), a (alles)
+	 * Zunï¿½chst wird Geprï¿½ft, ob die Berechtigung geerbt werden soll; in diesem Fall wird die Anfrage an den Eltern-Ordner weitergeleitet.
+	 * Ansonsten werden die ACLs durchgegangen: Die hï¿½chstwertige Berechtigung gilt.
+	 * Wird bei den ACLs nicht gefunden, wird die Standard-Berechtigung zurï¿½ckgegeben.
 	 * Ach ja: handelt es sich bei $user um den Besitzer ist die Berechtigung automatisch "a".
 	 */
 	function getAccessMode($user)
@@ -335,8 +335,8 @@ class Document
 		}
 		
 		//Berechtigung erben??
-		// wird über GetAccessList() bereits realisiert.
-		// durch das Verwenden der folgenden Zeilen wären auch Owner-Rechte vererbt worden.
+		// wird ï¿½ber GetAccessList() bereits realisiert.
+		// durch das Verwenden der folgenden Zeilen wï¿½ren auch Owner-Rechte vererbt worden.
 		/*
 		if ($this->inheritsAccess())
 		{
@@ -360,7 +360,7 @@ class Document
 				$foundInACL = true;
 				if ($userAccess->getMode() > $highestPrivileged)
 					$highestPrivileged = $userAccess->getMode();
-				if ($highestPrivileged == M_ALL) //höher geht's nicht -> wir können uns die arbeit schenken
+				if ($highestPrivileged == M_ALL) //hï¿½her geht's nicht -> wir kï¿½nnen uns die arbeit schenken
 					return $highestPrivileged;
 			}
 		}
@@ -371,7 +371,7 @@ class Document
 				$foundInACL = true;
 				if ($groupAccess->getMode() > $highestPrivileged)
 					$highestPrivileged = $groupAccess->getMode();
-				if ($highestPrivileged == M_ALL) //höher geht's nicht -> wir können uns die arbeit schenken
+				if ($highestPrivileged == M_ALL) //hï¿½her geht's nicht -> wir kï¿½nnen uns die arbeit schenken
 					return $highestPrivileged;
 			}
 		}
@@ -451,7 +451,7 @@ class Document
 		if (is_bool($res) && !$res)
 			return false;
 
-		//Kopieren der temporären Datei
+		//Kopieren der temporï¿½ren Datei
 		if(!file_exists($GLOBALS['mydms']->settings->_contentDir . $dir))
 		{
 			if (!makeDir($GLOBALS['mydms']->settings->_contentDir . $dir))
@@ -472,7 +472,7 @@ class Document
 		
 		$this->getLatestContent();
 		if ($GLOBALS['mydms']->settings->_enableConverting && in_array($this->_latestContent->getFileType(), array_keys($GLOBALS['mydms']->settings->_convertFileTypes)))
-			$this->_latestContent->convert(); //Auch wenn das schiefgeht, wird deswegen nicht gleich alles "hingeschmissen" (sprich: false zurückgegeben)
+			$this->_latestContent->convert(); //Auch wenn das schiefgeht, wird deswegen nicht gleich alles "hingeschmissen" (sprich: false zurï¿½ckgegeben)
 		
 //		$this->setLocked(false);
 		
@@ -533,7 +533,7 @@ class Document
 				return $this->_latestContent;
 			}
 			*/
-			$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." ORDER BY version DESC LIMIT 0,1";
+			$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." ORDER BY version DESC";
 			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && !$resArr)
 				return false;
@@ -564,9 +564,7 @@ class Document
 
 	function addDocumentLink($targetID, $userID, $public)
 	{
-		$public = ($public) ? "1" : "0";
-		
-		$queryStr = "INSERT INTO phpgw_mydms_DocumentLinks(document, target, userID, public) VALUES (".$this->_id.", ".$targetID.", ".$userID.", " . $public.")";
+		$queryStr = "INSERT INTO phpgw_mydms_DocumentLinks(document, target, userID, public) VALUES (".$this->_id.", ".$targetID.", ".$userID.", " . $GLOBALS['egw']->db->quote($public,'bool').")";
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
@@ -613,11 +611,11 @@ class Document
  /* ---------------------------------------------------------------------------------------------------- */
  
 /**
- * Die Datei wird als "data.ext" (z.b. data.txt) gespeichert. Getrennt davon wird in der DB der ursprüngliche
- * Dateiname festgehalten (-> $orgFileName). Die Datei wird deshalb nicht unter diesem ursprünglichen Namen
+ * Die Datei wird als "data.ext" (z.b. data.txt) gespeichert. Getrennt davon wird in der DB der ursprï¿½ngliche
+ * Dateiname festgehalten (-> $orgFileName). Die Datei wird deshalb nicht unter diesem ursprï¿½nglichen Namen
  * gespeichert, da es zu Problemen mit verschiedenen Dateisystemen kommen kann: Linux hat z.b. Probleme mit
- * deutschen Umlauten, während Windows wiederum den Doppelpunkt in Dateinamen nicht verwenden kann.
- * Der ursprüngliche Dateiname wird nur zum Download verwendet (siehe op.Download.pgp)
+ * deutschen Umlauten, wï¿½hrend Windows wiederum den Doppelpunkt in Dateinamen nicht verwenden kann.
+ * Der ursprï¿½ngliche Dateiname wird nur zum Download verwendet (siehe op.Download.pgp)
  */
 class DocumentContent
 {

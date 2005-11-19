@@ -49,11 +49,13 @@ class DatabaseAccess
 
 	/**
 	 * get the last insert id
-	 * NOTE: not used for pgsql
+	 * @param string $table
+	 * @param string $column
+	 * @return int
 	 */
-	function getInsertID()
+	function getInsertID($table,$column)
 	{
-		return $this->db->get_last_insert_id('','');
+		return $this->db->get_last_insert_id($table,$column);
 	}
 
 }

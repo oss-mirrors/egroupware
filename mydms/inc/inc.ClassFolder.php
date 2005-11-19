@@ -148,9 +148,9 @@ class Folder
 
 	function setInheritAccess($inheritAccess)
 	{
-		$inheritAccess = ($inheritAccess) ? "1" : "0";
+		$inheritAccess = $inheritAccess ? "1" : "0";
 		
-		$queryStr = "UPDATE phpgw_mydms_Folders SET inheritAccess = " . $inheritAccess . " WHERE id = " . $this->_id;
+		$queryStr = "UPDATE phpgw_mydms_Folders SET inheritAccess = " . $GLOBALS['egw']->db->quote($inheritAccess,'bool') . " WHERE id = " . $this->_id;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
@@ -197,18 +197,18 @@ class Folder
 		$ownerid = $GLOBALS['phpgw_info']['user']['account_id'];
 		//inheritAccess = true, defaultAccess = M_READ
 		$queryStr = "INSERT INTO phpgw_mydms_Folders (name, parent, comment, owner, inheritAccess, defaultAccess, sequence) ".
-					"VALUES ('".$name."', ".$this->_id.", '".$comment."', ".$ownerid.", 1, ".M_READ.", ".$sequence.")";
+					"VALUES ('".$name."', ".$this->_id.", '".$comment."', ".$ownerid.", true, ".M_READ.", ".$sequence.")";
 		$res = $GLOBALS['mydms']->db->getResult($queryStr);
 		if (!$res)
 			return false;
 		
 		unset($this->_subFolders);
 		
-		return getFolder($GLOBALS['mydms']->db->getInsertID());
+		return getFolder($GLOBALS['mydms']->db->getInsertID('phpgw_mydms_Folders','id'));
 	}
 
 	/**
-	 * Gibt ein Array mit allen Eltern, "Großelter" usw bis zum RootFolder zurück
+	 * Gibt ein Array mit allen Eltern, "Groï¿½elter" usw bis zum RootFolder zurï¿½ck
 	 * Der Ordner selbst ist das letzte Element dieses Arrays
 	 */
 	function getPath()
@@ -229,7 +229,7 @@ class Folder
 	}
 
 	/**
-	 * Gibt ein Array mit allen Eltern, "Großelter" usw bis zum RootFolder zurück
+	 * Gibt ein Array mit allen Eltern, "Groï¿½elter" usw bis zum RootFolder zurï¿½ck
 	 * Der Ordner selbst ist das letzte Element dieses Arrays
 	 */
 	function getPathNew()
@@ -259,7 +259,7 @@ class Folder
 	}
 
 	/**
-	 * Überprüft, ob dieser Ordner ein Unterordner von $folder ist
+	 * ï¿½berprï¿½ft, ob dieser Ordner ein Unterordner von $folder ist
 	 */
 	function isDescendant($folder)
 	{
@@ -299,11 +299,11 @@ class Folder
 		$expires = (!$expires) ? 0 : $expires;
 		
 		$queryStr = "INSERT INTO phpgw_mydms_Documents (name, comment, date, expires, owner, folder, inheritAccess, defaultAccess, locked, keywords, sequence) VALUES ".
-					"('".$name."', '".$comment."', " . mktime().", ".$expires.", ".$ownerid.", ".$this->_id.", 1, ".M_READ.", -1, '".$keywords."', " . $sequence . ")";
+					"('".$name."', '".$comment."', " . mktime().", ".$expires.", ".$ownerid.", ".$this->_id.", true, ".M_READ.", -1, '".$keywords."', " . $sequence . ")";
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
 		
-		$document = getDocument($GLOBALS['mydms']->db->getInsertID());
+		$document = getDocument($GLOBALS['mydms']->db->getInsertID('phpgw_mydms_Documents','id'));
 		
 		$res = $document->addContent($comment, $owner, $tmpFile, $orgFileName, $fileType, $mimeType);
 		if (is_bool($res) && !$res)
@@ -336,7 +336,7 @@ class Folder
 			if (!$res) return false;
 		}
 		
-		//Entfernen der Datenbankeinträge
+		//Entfernen der Datenbankeintrï¿½ge
 		$queryStr = "DELETE FROM phpgw_mydms_Folders WHERE id =  " . $this->_id;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
@@ -428,10 +428,10 @@ class Folder
 	}
 
 	/*
-	 * Liefert die Art der Zugriffsberechtigung für den User $user; Mögliche Rechte: n (keine), r (lesen), w (schreiben+lesen), a (alles)
-	 * Zunächst wird Geprüft, ob die Berechtigung geerbt werden soll; in diesem Fall wird die Anfrage an den Eltern-Ordner weitergeleitet.
-	 * Ansonsten werden die ACLs durchgegangen: Die höchstwertige Berechtigung gilt.
-	 * Wird bei den ACLs nicht gefunden, wird die Standard-Berechtigung zurückgegeben.
+	 * Liefert die Art der Zugriffsberechtigung fï¿½r den User $user; Mï¿½gliche Rechte: n (keine), r (lesen), w (schreiben+lesen), a (alles)
+	 * Zunï¿½chst wird Geprï¿½ft, ob die Berechtigung geerbt werden soll; in diesem Fall wird die Anfrage an den Eltern-Ordner weitergeleitet.
+	 * Ansonsten werden die ACLs durchgegangen: Die hï¿½chstwertige Berechtigung gilt.
+	 * Wird bei den ACLs nicht gefunden, wird die Standard-Berechtigung zurï¿½ckgegeben.
 	 * Ach ja: handelt es sich bei $user um den Besitzer ist die Berechtigung automatisch "a".
 	 */
 	function getAccessMode($user)
@@ -458,8 +458,8 @@ class Folder
 		
 		
 		//Berechtigung erben??
-		// wird über GetAccessList() bereits realisiert.
-		// durch das Verwenden der folgenden Zeilen wären auch Owner-Rechte vererbt worden.
+		// wird ï¿½ber GetAccessList() bereits realisiert.
+		// durch das Verwenden der folgenden Zeilen wï¿½ren auch Owner-Rechte vererbt worden.
 		/*
 		if ($this->inheritsAccess())
 		{
@@ -487,7 +487,7 @@ class Folder
 				$foundInACL = true;
 				if ($userAccess->getMode() > $highestPrivileged)
 					$highestPrivileged = $userAccess->getMode();
-				if ($highestPrivileged == M_ALL) //höher geht's nicht -> wir können uns die arbeit schenken
+				if ($highestPrivileged == M_ALL) //hï¿½her geht's nicht -> wir kï¿½nnen uns die arbeit schenken
 					return $highestPrivileged;
 			}
 		}
@@ -498,7 +498,7 @@ class Folder
 				$foundInACL = true;
 				if ($groupAccess->getMode() > $highestPrivileged)
 					$highestPrivileged = $groupAccess->getMode();
-				if ($highestPrivileged == M_ALL) //höher geht's nicht -> wir können uns die arbeit schenken
+				if ($highestPrivileged == M_ALL) //hï¿½her geht's nicht -> wir kï¿½nnen uns die arbeit schenken
 					return $highestPrivileged;
 			}
 		}
