@@ -1,10 +1,10 @@
 <process>
   <name>TestJoin2</name>
   <isValid>y</isValid>
-  <version>1.6</version>
-  <isActive>n</isActive>
+  <version>1.7</version>
+  <isActive>y</isActive>
    <description>Testing join activities</description>
-  <lastModif>11/10/2005 [12:41:57]</lastModif>
+  <lastModif>19/11/2005 [12:57:34]</lastModif>
   <sharedCode><![CDATA[<?php
 //***************************************************************************
 //* copyleft Regis dot Leroy at glconseil dot com                           *
@@ -19,6 +19,11 @@
       <wf_config_name>draw_select_next_user</wf_config_name>
       <wf_config_value></wf_config_value>
       <wf_config_value_int>1</wf_config_value_int>
+    </config>
+    <config>
+      <wf_config_name>show_select_next_user</wf_config_name>
+      <wf_config_value></wf_config_value>
+      <wf_config_value_int>0</wf_config_value_int>
     </config>
     <config>
       <wf_config_name>display_please_wait_message</wf_config_name>
@@ -38,7 +43,7 @@
     <config>
       <wf_config_name>show_instance_name</wf_config_name>
       <wf_config_value></wf_config_value>
-      <wf_config_value_int>0</wf_config_value_int>
+      <wf_config_value_int>1</wf_config_value_int>
     </config>
     <config>
       <wf_config_name>show_instance_owner</wf_config_name>
@@ -97,27 +102,21 @@
     </config>
     <config>
       <wf_config_name>mail_smtp_profile</wf_config_name>
-      <wf_config_value></wf_config_value>
-      <wf_config_value_int>1</wf_config_value_int>
+      <wf_config_value>default</wf_config_value>
+      <wf_config_value_int></wf_config_value_int>
     </config>
     <config>
       <wf_config_name>mail_smtp_debug</wf_config_name>
       <wf_config_value></wf_config_value>
       <wf_config_value_int>1</wf_config_value_int>
     </config>
-    <config>
-      <wf_config_name>show_select_next_user</wf_config_name>
-      <wf_config_value></wf_config_value>
-      <wf_config_value_int>0</wf_config_value_int>
-    </config>
   </configs>
   <activities>
     <activity>
-      <name>Empty One</name>
-      <type>activity</type>
-      <description>This automatic activity does nothing but is there to test if someone goes there when PROPERTY_ONE is empty.
-</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <name>end</name>
+      <type>end</type>
+      <description>default end activity</description>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -125,15 +124,12 @@
       <agents>
       </agents>
       <code><![CDATA[<?php
- $counter = $instance->get('EMPTY_ONE');
- $counter++;
- $instance->set('EMPTY_ONE',$counter);
 ?>      ]]></code>    </activity>
     <activity>
       <name>Report</name>
       <type>standalone</type>
       <description>standalone activity used to make a report of the tests</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>n</isAutoRouted>
       <roles>
@@ -221,24 +217,11 @@ else
 <!-- END block_instances_row -->
 </table>      ]]></template>    </activity>
     <activity>
-      <name>end</name>
-      <type>end</type>
-      <description>default end activity</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
-      <isInteractive>n</isInteractive>
-      <isAutoRouted>y</isAutoRouted>
-      <roles>
-      </roles>
-      <agents>
-      </agents>
-      <code><![CDATA[<?php
-?>      ]]></code>    </activity>
-    <activity>
       <name>Automatik</name>
       <type>activity</type>
       <description>non interactive auto-routed activity.
 add &quot;Tagged&quot; string at the end of PROPERTY_ONE and PROPERTY_TWO</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -251,7 +234,7 @@ add &quot;Tagged&quot; string at the end of PROPERTY_ONE and PROPERTY_TWO</descr
       <name>After-Join</name>
       <type>activity</type>
       <description>Interactive activity after the join to check PROPERTY_ONE and PROPERTY_TWO values</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -266,6 +249,7 @@ $array_vars = array(
     'EMPTY_ONE' => '',
     'EMPTY_TWO' => '',
     'EMPTY_COUNTER' => '',
+    'BUZZ' => '',
 );
 
 //--------------------------------------
@@ -304,13 +288,7 @@ if (($ActNextStage) || ($ActClose))
 {
   // saving properties
   // if they changed
-  foreach ($array_vars as $prop => $value)
-  {
-     if ($value != ($instance->get($prop)) ) 
-     {
-       $instance->set($prop,$value);
-     }
-  }
+  $instance->setProperties($array_vars);
   if ($ActNextStage)
   {
      // going to next stage
@@ -331,7 +309,7 @@ if (!($leaveloop))
   //--------------------------------------
   foreach ($array_vars as $prop => $value) 
   {
-    $template->set_var(array($prop => $array_vars[$prop]));
+    $template->set_var(array($prop => htmlspecialchars($array_vars[$prop])));
   }
   // submit options we want
   $this->submit_array['ActNextStage'] = lang('going to next stage');
@@ -373,13 +351,19 @@ if (!($leaveloop))
     </td>
     <td> <div align="right">counter of empty One or Two&nbsp;:</div></td>
     <td> <div align="left">{EMPTY_COUNTER}</div></td>
+  </tr> 
+  <tr class="row_off">
+    </td>
+    <td> <div align="right">The Buzz&nbsp;:</div></td>
+    <td> <div align="left">{BUZZ}</div></td>
   </tr>  
+ 
 </table>      ]]></template>    </activity>
     <activity>
       <name>joiner</name>
       <type>join</type>
       <description>Join activities from left and right and then permits a send to  the end activity when both are Ok</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>n</isAutoRouted>
       <roles>
@@ -394,7 +378,7 @@ if (!($leaveloop))
       <name>right branch</name>
       <type>activity</type>
       <description>interactive activity on the right branch</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -452,6 +436,7 @@ $array_vars = array(
     'EMPTY_ONE' => '',
     'EMPTY_TWO' => '',
     'EMPTY_COUNTER' => '',
+    'BUZZ' => '',
 );
 
 //--------------------------------------
@@ -466,7 +451,7 @@ foreach ($array_vars as $prop => $value)
 {
   $array_vars[$prop] = get_var($prop,'any',$instance->get($prop));
 }
-
+_debug_array($array_vars);
 //user commands   ****************
 $ActNextStage = get_var('ActNextStage','post',false);
 $ActClose = get_var('ActClose','post',false);
@@ -484,7 +469,7 @@ if (($ActNextStage) || ($ActClose))
   // if they changed
   foreach ($array_vars as $prop => $value)
   {
-     if ($value != ($instance->get($prop)) ) 
+     if (($value === ($instance->get($prop))) ) 
      {
        $instance->set($prop,$value);
      }
@@ -506,8 +491,8 @@ if ($ActSave)
   // if they changed
   foreach ($array_vars as $prop => $value)
   {
-    echo "<br> having $prop, was ".($instance->get($prop));
-    if ($value != ($instance->get($prop)) ) 
+    echo "<br> having $prop, was ".($instance->get($prop)). " is $value";
+    if (!($value === ($instance->get($prop)) ))
     {
       echo " ...saving $prop to $value";
       $instance->set($prop,$value);
@@ -524,7 +509,7 @@ if (!($leaveloop))
   //--------------------------------------
   foreach ($array_vars as $prop => $value) 
   {
-    $template->set_var(array($prop => $array_vars[$prop]));
+    $template->set_var(array($prop => htmlspecialchars($array_vars[$prop])));
   }
 
   //we want to display the owner
@@ -577,14 +562,19 @@ if (!($leaveloop))
     </td>
     <td> <div align="right">counter of empty One or Two&nbsp;:</div></td>
     <td> <div align="left">{EMPTY_COUNTER}</div></td>
-  </tr>  
-</table>
-      ]]></template>    </activity>
+  </tr> 
+  <tr class="row_off">
+    </td>
+    <td> <div align="right">the BUZZ property&nbsp;:</div></td>
+    <td> <div align="left"><input type="text" name="BUZZ" value="{BUZZ}" size="38"></div></td>
+  </tr> 
+ 
+</table>      ]]></template>    </activity>
     <activity>
       <name>Switch 1</name>
       <type>switch</type>
       <description>This automatic switch will decide which way he will take by looking at PROPERTY_ONE. If this property is empty it will go t the Empty_one, else it goes to the joiner</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -609,7 +599,7 @@ if (!($leaveloop))
       <name>lonely branch 1</name>
       <type>activity</type>
       <description>another automatic activity somewhere</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -622,7 +612,7 @@ if (!($leaveloop))
       <name>Lonely branch II</name>
       <type>activity</type>
       <description>yet another automatic lonely branch but this one need to be send manually</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>n</isAutoRouted>
       <roles>
@@ -638,7 +628,7 @@ if (!($leaveloop))
       <description>A second automatic switch.
 It decide which branch to choose by looking at PROPERTY_TWO.
 If the property is empty it take the instance to Empty Two, else it goes to the joiner</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -663,7 +653,7 @@ If the property is empty it take the instance to Empty Two, else it goes to the 
       <name>Empty Counter</name>
       <type>activity</type>
       <description>This automatic activity records a counter named EMPTY_COUNTER to remember how many times he has been launched for a given instance</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -681,7 +671,7 @@ echo "<br> now is set it to:".$counter;
       <name>splitter2</name>
       <type>split</type>
       <description>second splitter after the first one</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -694,7 +684,7 @@ echo "<br> now is set it to:".$counter;
       <name>splitter</name>
       <type>split</type>
       <description>splitt the workflow in 2 branches</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -704,10 +694,27 @@ echo "<br> now is set it to:".$counter;
       <code><![CDATA[<?php
 ?>      ]]></code>    </activity>
     <activity>
+      <name>Empty One</name>
+      <type>activity</type>
+      <description>This automatic activity does nothing but is there to test if someone goes there when PROPERTY_ONE is empty.
+</description>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
+      <isInteractive>n</isInteractive>
+      <isAutoRouted>y</isAutoRouted>
+      <roles>
+      </roles>
+      <agents>
+      </agents>
+      <code><![CDATA[<?php
+ $counter = $instance->get('EMPTY_ONE');
+ $counter++;
+ $instance->set('EMPTY_ONE',$counter);
+?>      ]]></code>    </activity>
+    <activity>
       <name>Empty Two</name>
       <type>activity</type>
       <description>This automatic activity does nothing but is there to test if someone goes there when PROPERTY_TWO is empty.</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -725,7 +732,7 @@ echo "<br> now is set it to:".$counter;
       <description>interactive form activity on the left branch.
 contains a test on changing the owner.
 After Left branch is finished we rerun splitter2, giving a new Right branch for the instance. This make a second right branch!</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -740,6 +747,7 @@ $array_vars = array(
     'EMPTY_ONE' => '',
     'EMPTY_TWO' => '',
     'EMPTY_COUNTER' => '',
+    'BUZZ' => '',
 );
 
 //--------------------------------------
@@ -768,13 +776,7 @@ if (($ActNextStage) || ($ActClose))
 {
   // saving properties
   // if they changed
-  foreach ($array_vars as $prop => $value)
-  {
-     if ($value != ($instance->get($prop)) ) 
-     {
-       $instance->set($prop,$value);
-     }
-  }
+  $instance->setProperties($array_vars);
   if ($ActNextStage)
   {
      // going to next stage
@@ -795,7 +797,7 @@ if (!($leaveloop))
   //--------------------------------------
   foreach ($array_vars as $prop => $value) 
   {
-    $template->set_var(array($prop => $array_vars[$prop]));
+    $template->set_var(array($prop => htmlspecialchars($array_vars[$prop])));
   }
   //we want to diplay the owner as well, and as a select
   //avaible users are people from Role1 and Role2 which have access to joiner
@@ -853,14 +855,17 @@ if (!($leaveloop))
     <td> <div align="right">counter of empty One or Two&nbsp;:</div></td>
     <td> <div align="left">{EMPTY_COUNTER}</div></td>
   </tr>
-</table>
-
-      ]]></template>    </activity>
+  <tr class="row_off">
+    </td>
+    <td> <div align="right">The BUZZ property in a textarea&nbsp;:</div></td>
+    <td> <textarea>{BUZZ}</textarea></td>
+  </tr>  
+</table>      ]]></template>    </activity>
     <activity>
       <name>auto logger</name>
       <type>activity</type>
       <description>log some infos about the state of this process after the start</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:35]</lastModif>
       <isInteractive>n</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
@@ -876,17 +881,21 @@ $instance->set('auto_logger_PRIORITY_START',$value);
 $instance->set('auto_logger_USER_START',$GLOBALS['user']);
 
 //Setting the default values for the properties we will use later
-$instance->set('PROPERTY_ONE',0);
-$instance->set('PROPERTY_TWO',0);
-$instance->set('EMPTY_ONE',0);
-$instance->set('EMPTY_TWO',0);
-$instance->set('EMPTY_COUNTER',0);
+$init = array(
+    'PROPERTY_ONE' => 0,
+    'PROPERTY_TWO' => 0,
+    'EMPTY_ONE' => 0,
+    'EMPTY_TWO' => 0,
+    'EMPTY_COUNTER' => 0,
+    'BUZZ' => ' here is a quote " double single '."'' escaped \'".' escaped slash \\ and escaped quote\", trying to end an input zone "> and trying to end a textarea </textarea> as well.',
+);
+$instance->setProperties($init);
 ?>      ]]></code>    </activity>
     <activity>
       <name>start the test</name>
       <type>start</type>
       <description>start activity for this test</description>
-      <lastModif>11/10/2005 [12:41:58]</lastModif>
+      <lastModif>19/11/2005 [12:57:34]</lastModif>
       <isInteractive>y</isInteractive>
       <isAutoRouted>y</isAutoRouted>
       <roles>
