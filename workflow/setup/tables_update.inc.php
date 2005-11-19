@@ -254,6 +254,8 @@
 	{	
 		#serialized data is now stored with a Base64 encoding to ensure it work in all case (even with \' for example)
 		//We gonna make our updates manually here:
+		//they were an error (quotes) in the first version of this upgrade, if your database is MySQL you should
+		//set the version to 1.1.05.000 in egw_applications and rerun this upgrade for old properties
 		$GLOBALS['egw']->ADOdb->SetFetchMode(ADODB_FETCH_ASSOC);
 		$result = $GLOBALS['egw']->ADOdb->query('select * from egw_wf_instances');
 		if (!(empty($result)))
@@ -263,8 +265,8 @@
 				$new_props = base64_encode($res['wf_properties']);
 				$new_next = base64_encode($res['wf_next_activity']);
 				$ok =  $GLOBALS['egw']->ADOdb->query(
-					'update "egw_wf_instances" set "wf_properties" = ?, "wf_next_activity"=? where "wf_instance_id" = ?',
-					array($new_props,$new_next, $res['wf_instance_id'])
+					'update egw_wf_instances set wf_properties = ?, wf_next_activity=? where wf_instance_id = ?',
+					array($new_props,$new_next, (int)$res['wf_instance_id'])
 				);
 			}
 		}
@@ -275,8 +277,8 @@
 			{
 				$new_props = base64_encode($res['wf_properties']);
 				$ok =  $GLOBALS['egw']->ADOdb->query(
-					'update "egw_wf_workitems" set "wf_properties" = ?  where "wf_item_id" = ?',
-					array($new_props, $res['wf_item_id'])
+					'update egw_wf_workitems set wf_properties = ?  where wf_item_id = ?',
+					array($new_props, (int)$res['wf_item_id'])
 				);
 			}
 		}
@@ -285,5 +287,14 @@
 		$GLOBALS['setup_info']['workflow']['currentver'] = '1.2.00.000';
 		return $GLOBALS['setup_info']['workflow']['currentver'];
 	}
+
+	$test[] = '1.2.00.000';
+	function workflow_upgrade1_2_00_000()
+	{
+		#updating the current version
+		$GLOBALS['setup_info']['workflow']['currentver'] = '1.2.00.001';
+		return $GLOBALS['setup_info']['workflow']['currentver'];
+	}
+	
 
 ?>
