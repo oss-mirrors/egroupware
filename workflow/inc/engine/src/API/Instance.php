@@ -352,7 +352,7 @@ class Instance extends Base {
   */
   function setName($value) 
   {
-    $this->changed['name'] = $value;
+    $this->changed['name'] = substr($value,0,120);
     $this->unsynch = true;
     return true;
   }
