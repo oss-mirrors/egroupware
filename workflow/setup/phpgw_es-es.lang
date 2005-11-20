@@ -257,9 +257,9 @@ interactive instances should not call the complete() method	workflow	es-es	Las i
 interactive:	workflow	es-es	interactiva:
 interactivity	workflow	es-es	Interactividad
 invalid	workflow	es-es	no válida
-invalid process	workflow	es-es	Proceso inválido
+invalid process	workflow	es-es	El proceso no es válido
 invalid role name	workflow	es-es	El nombre del rol no es válido
-is active	workflow	es-es	está activa
+is active	workflow	es-es	¿Está activa
 it seems this activity for this instance is not assigned to you anymore.	workflow	es-es	Parece que esta actividad para esta instancia ya no está asignada a usted.
 it was impossible to complete, no activity was given.	workflow	es-es	No se pudo completar, no se proporcionó la actividad.
 it was impossible to complete, no corresponding activity was found.	workflow	es-es	No se pudo completar, no se encontró una actividad correspondiente.

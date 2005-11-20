@@ -15,10 +15,12 @@ billable hours changed	tts	es-es	Horas facturables cambiadas
 billable hours rate	tts	es-es	Valoración de las horas facturables
 billable rate	tts	es-es	Valoración facturable
 billable rate changed	tts	es-es	Valoración facturable cambiada
+can make full changes	tts	es-es	Puede hacer cualquier cambio
 category changed	tts	es-es	Categoría cambiada
 check here to generate the state's id automatically or enter a particular id below.	tts	es-es	Marque la casilla para generar los identificadores de estados automáticamente o introduzca un id particular debajo.
 clear form	tts	es-es	Despejar formulario
 close the invalid ticket.	tts	es-es	Cerrar la incidencia no válida
+close ticket	tts	es-es	Cerrar incidencia
 closed	tts	es-es	Cerrada
 completed	tts	es-es	COMPLETADA
 configure the states	common	es-es	Configurar los estados
@@ -87,6 +89,7 @@ priority changed	tts	es-es	Prioridad modificada
 put the preexistent ticket into the state %1.	tts	es-es	Poner la incidencia ya existente en el estado %1.
 re-assigned	tts	es-es	Reasignada
 re-opened	tts	es-es	Reabierta
+read tickets within group only	tts	es-es	Leer incidencias sólo del grupo
 refresh every (seconds)	tts	es-es	Refrescar cada (segundos)
 reopen	tts	es-es	REABRIR
 reopened	tts	es-es	REABIERTA

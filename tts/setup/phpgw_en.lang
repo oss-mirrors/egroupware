@@ -15,10 +15,12 @@ billable hours changed	tts	en	Billable hours changed
 billable hours rate	tts	en	Billable hours rate
 billable rate	tts	en	Billable rate
 billable rate changed	tts	en	Billable rate changed
+can make full changes	tts	en	Can make full changes
 category changed	tts	en	Category changed
 check here to generate the state's id automatically or enter a particular id below.	tts	en	Check here to generate the state's ID automatically or enter a particular ID below.
 clear form	tts	en	Clear Form
 close the invalid ticket.	tts	en	Close the invalid ticket.
+close ticket	tts	en	Close ticket
 closed	tts	en	Closed
 completed	tts	en	COMPLETED
 configure the states	common	en	Configure the states
@@ -81,11 +83,13 @@ opened by	tts	en	Opened by
 original ticket details	tts	en	Original Ticket Details
 perform irregular transition into the following state	tts	en	Perform irregular transition into the following state
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	en	Please enter the subject of the ticket, otherwise the ticket cannot be stored.
+prio	tts	en	Prio
 priority	tts	en	Priority
 priority changed	tts	en	Priority changed
 put the preexistent ticket into the state %1.	tts	en	Put the preexistent ticket into the state %1.
 re-assigned	tts	en	Re-assigned
 re-opened	tts	en	Re-opened
+read tickets within group only	tts	en	Read tickets within group only
 refresh every (seconds)	tts	en	Refresh every (seconds)
 reopen	tts	en	REOPEN
 reopened	tts	en	REOPENED
