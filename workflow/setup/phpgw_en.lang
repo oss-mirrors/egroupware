@@ -30,7 +30,7 @@ action %1 is impossible, there are no user assigned to this activity for this in
 action %1 needs an activity and activity %2 does not exists	workflow	en	Action %1 needs an activity and activity %2 does not exists
 action %1 needs an instance and instance %2 does not exists	workflow	en	Action %1 needs an instance and instance %2 does not exists
 actions	workflow	en	Actions
-actions right options	admin	en	Actions Right Options
+actions right options	common	en	Actions Right Options
 activate	workflow	en	activate
 active	workflow	en	Active
 active:	workflow	en	active:
@@ -96,7 +96,7 @@ always show advanced mode	workflow	en	Always show advanced mode
 assign me this activity	workflow	en	Assign me this activity
 at least one email address cannot be validated.	workflow	en	at least one email address cannot be validated.
 auto routed	workflow	en	Auto routed
-auto-release on leaving activity	admin	en	auto-release on leaving activity
+auto-release on leaving activity	common	en	auto-release on leaving activity
 automatic	workflow	en	Automatic
 bad parameter for setagents, the parameter should be an array	workflow	en	bad parameter for setAgents, the parameter should be an array
 bad role type	workflow	en	Bad role type
@@ -136,6 +136,7 @@ complete	workflow	en	Complete
 complete cleanup of aborted instances done	workflow	en	complete cleanup of aborted instances done
 complete cleanup of all instances done	workflow	en	complete cleanup of all instances done
 completed	workflow	en	completed
+config values	workflow	en	Config values
 confirm delete	workflow	en	Confirm Delete
 consult %1 to get the default values:	workflow	en	Consult %1 to get the default values:
 couldn't add transition	workflow	en	Couldn't add transition
@@ -152,9 +153,10 @@ delete transition	workflow	en	delete transition
 deletion successful	workflow	en	Deletion successful
 delition successful	workflow	en	Delition successful
 description	workflow	en	Description
-display please wait message	admin	en	display please wait message
+display please wait message	common	en	display please wait message
 do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	en	Do you want the activity status on instances lists. Most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.
 do you want the category column on instances lists, if yout instances use categories you should use it	workflow	en	Do you want the category column on instances lists, if yout instances use categories you should use it
+do you want the category name column on instances lists, if your instances use categories you should use it	workflow	en	Do you want the category name column on instances lists, if your instances use categories you should use it
 do you want the category name column on instances lists. if your instances use categories you should use this	workflow	en	Do you want the category name column on instances lists. If your instances use categories you should use this
 do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	en	Do you want the instance id column on instances lists. This is the unique identifier of an instance
 do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	en	Do you want the instance name column on instances lists. If your instances have name you should really use this
@@ -165,9 +167,10 @@ do you want the process column on instances lists. usefull if you have different
 do you want the search instance button in the last row of instances list.	workflow	en	Do you want the search instance button in the last row of instances list.
 do you want the started date column on instances lists.	workflow	en	Do you want the started date column on instances lists.
 don't move	workflow	en	Don't move
-draw roles	admin	en	draw roles
+draw roles	common	en	draw roles
 draw roles on the graph beside activity name like [that]	admin	en	draw roles on the graph beside activity name like [that]
 duration	workflow	en	Duration
+empty agent type	workflow	en	empty agent type
 end	workflow	en	end
 end activity is not reachable from start activity	workflow	en	End activity is not reachable from start activity
 ended	workflow	en	ended
@@ -202,7 +205,7 @@ filter instance by id	workflow	en	filter instance by id
 finally you have links with <strong>%link_xx|yy%</strong> syntax, xx is the address part, yy the text part.	workflow	en	finally you have links with <strong>%link_XX|YY%</strong> syntax, XX is the address part, YY the text part.
 fix	workflow	en	Fix
 fix concistency for selected rows	workflow	en	Fix Concistency for selected rows
-font size	admin	en	font size
+font size	workflow	en	Font size
 from	workflow	en	From
 from:	workflow	en	From:
 get back to global activities	workflow	en	get back to global activities
@@ -221,7 +224,7 @@ grant access to the administration of workflow instances in monitor screens	work
 grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	en	Grant access to the cleanup/deletion of workflow aborted instances in monitor screens
 grant access to the monitoring of workflow elements	workflow	en	Grant access to the monitoring of workflow elements
 graph	workflow	en	Graph
-graphic options	admin	en	Graphic options
+graphic options	common	en	Graphic options
 group	workflow	en	Group
 id	workflow	en	Id
 if automatic parsing is disabled next options will be useless	admin	en	if automatic parsing is disabled next options will be useless
@@ -277,6 +280,10 @@ list of transitions	workflow	en	List of transitions
 list of workitems	workflow	en	List of workitems
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	en	Mail automatically sent by Mail SMTP Agent for eGroupware's Workflow
 mail smtp agent	workflow	en	Mail Smtp Agent
+mail smtp debug	workflow	en	Mail smtp debug
+mail smtp local link prefix	workflow	en	Mail smtp local link prefix
+mail smtp profile	workflow	en	Mail smtp profile
+mail smtp signature	workflow	en	Mail smtp signature
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	en	Mails can be sent at the begining or at the end of the activity, For interactive activities only it can be sent after completion.
 manual	workflow	en	Manual
 map	workflow	en	map
@@ -398,9 +405,9 @@ role %1 is associated in a mapping with user #%2 with a non-existent process (%3
 role %1 is not mapped	workflow	en	Role %1 is not mapped
 role added to activity	workflow	en	Role added to activity
 role added to process	workflow	en	Role added to process
-role give abort right	admin	en	role give abort right
-role give exception right	admin	en	role give exception right
-role give release right	admin	en	role give release right
+role give abort right	common	en	role give abort right
+role give exception right	common	en	role give exception right
+role give release right	common	en	role give release right
 role in inexistent process	workflow	en	Role in inexistent process
 role mapping in inexistent process	workflow	en	Role Mapping in inexistent process
 role name	workflow	en	Role Name
@@ -416,7 +423,7 @@ run	workflow	en	run
 run activity	workflow	en	run activity
 run instance	workflow	en	run instance
 running	workflow	en	running
-running activities options	admin	en	Running activities options
+running activities options	common	en	Running activities options
 running activity	workflow	en	Running Activity
 scan activities	workflow	en	Scan activities
 scan agents	workflow	en	Scan agents
@@ -445,10 +452,12 @@ set property	workflow	en	Set property
 setting next activity to an unexisting activity	workflow	en	setting next activity to an unexisting activity
 shared code	workflow	en	Shared code
 should we always give you the advanced search row on instances lists?	workflow	en	Should we always give you the advanced search row on instances lists?
-show activity info zone	admin	en	show activity info zone
-show activity title	admin	en	show activity title
+show activity info zone	common	en	show activity info zone
+show activity title	common	en	show activity title
 show code	workflow	en	show code
-show multiple submit as select	admin	en	show multiple submit as select
+show instance name	workflow	en	Show instance name
+show instance owner	workflow	en	Show instance owner
+show multiple submit as select	common	en	show multiple submit as select
 show template	workflow	en	show template
 size of the font used on the graph 12 should be a good default value	admin	en	size of the font used on the graph 12 should be a good default value
 smtp agent has detected some errors when sending email after completion of the activity	workflow	en	Smtp Agent has detected some errors when sending email after completion of the activity
@@ -509,6 +518,7 @@ this activity for this instance is actually only avaible for you.	workflow	en	Th
 this activity for this instance is not specifically assigned to you.	workflow	en	This activity for this instance is not specifically assigned to you.
 this agent gives the activity the possibility to send an smtp message (mail)	workflow	en	This agent gives the activity the possibility to send an SMTP message (mail)
 this form will test your local workflow installation to detect potential issues	workflow	en	This form will test your local workflow installation to detect potential issues
+this is the first screen shown when you click on the workflow application icon	workflow	en	This is the first screen shown when you click on the workflow application icon
 this process has a view activity. access in view mode is granted only for this view activty.	workflow	en	This process has a view activity. Access in view mode is granted only for this view activty.
 this process has no end activity	workflow	en	this process has no end activity
 this will automatically release the instance when leaving an activity without completing	admin	en	this will automatically release the instance when leaving an activity without completing
