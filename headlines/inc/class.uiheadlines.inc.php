@@ -434,16 +434,18 @@
 			$GLOBALS['egw']->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 			$GLOBALS['egw']->template->set_var('lang_header',lang('select headline news sites'));
 
-			$GLOBALS['egw']->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display asc',__LINE__,__FILE__);
-			while($GLOBALS['egw']->db->next_record())
+			if (($sites = $this->bo->sites()))
 			{
-				$html_select .= '<option value="' . $GLOBALS['egw']->db->f('con') . '"';
-
-				if($GLOBALS['egw_info']['user']['preferences']['headlines'][$GLOBALS['egw']->db->f('con')])
+				foreach($sites as $con => $display)
 				{
-					$html_select .= ' selected';
+					$html_select .= '<option value="' . $con . '"';
+
+					if($GLOBALS['egw_info']['user']['preferences']['headlines'][$con])
+					{
+						$html_select .= ' selected="1"';
+					}
+					$html_select .= '>' . $display . '</option>'."\n";
 				}
-				$html_select .= '>' . $GLOBALS['egw']->db->f('display') . '</option>'."\n";
 			}
 			$GLOBALS['egw']->template->set_var('select_options',$html_select);
 
@@ -481,7 +483,7 @@
 			));
 
 			$GLOBALS['egw']->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
-			$GLOBALS['egw']->template->set_var('action_url',$GLOBALS['egw']->link('/headlines/preferences_layout.php'));
+			$GLOBALS['egw']->template->set_var('action_url',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.preferences_layout'));
 			$GLOBALS['egw']->template->set_var('save_label',lang('Save'));
 			$GLOBALS['egw']->template->set_var('cancel_label',lang('Cancel'));
 
@@ -540,29 +542,26 @@
 			$GLOBALS['egw']->template->set_var('lang_view',lang('View'));
 			$GLOBALS['egw']->template->set_var('lang_add',lang('Add'));
 
-			$GLOBALS['egw']->db->query('SELECT COUNT(*) FROM phpgw_headlines_sites',__LINE__,__FILE__);
-			$GLOBALS['egw']->db->next_record();
-
-			if(!$GLOBALS['egw']->db->f(0))
+			if (!($sites = $this->bo->sites()))
 			{
 				$GLOBALS['egw']->template->set_var('lang_row_empty',lang('No headlines found'));
 				$GLOBALS['egw']->nextmatchs->template_alternate_row_color($GLOBALS['egw']->template);
 				$GLOBALS['egw']->template->parse('rows','row_empty');
 			}
-
-			$GLOBALS['egw']->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display',__LINE__,__FILE__);
-			while($GLOBALS['egw']->db->next_record())
+			else
 			{
-				$GLOBALS['egw']->nextmatchs->template_alternate_row_color($GLOBALS['egw']->template);
-
-				$GLOBALS['egw']->template->set_var('row_display',$GLOBALS['egw']->db->f('display'));
-				$GLOBALS['egw']->template->set_var('row_edit',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.edit&con='.$GLOBALS['egw']->db->f('con')));
-				$GLOBALS['egw']->template->set_var('row_delete',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.delete&con='.$GLOBALS['egw']->db->f('con')));
-				$GLOBALS['egw']->template->set_var('row_view',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.view&con='.$GLOBALS['egw']->db->f('con')));
-
-				$GLOBALS['egw']->template->parse('rows','row',True);
+				foreach($sites as $con => $display)
+				{
+					$GLOBALS['egw']->nextmatchs->template_alternate_row_color($GLOBALS['egw']->template);
+	
+					$GLOBALS['egw']->template->set_var('row_display',$display);
+					$GLOBALS['egw']->template->set_var('row_edit',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.edit&con='.$con));
+					$GLOBALS['egw']->template->set_var('row_delete',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.delete&con='.$con));
+					$GLOBALS['egw']->template->set_var('row_view',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.view&con='.$con));
+	
+					$GLOBALS['egw']->template->parse('rows','row',True);
+				}
 			}
-
 			$GLOBALS['egw']->template->set_var('add_url',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.add'));
 			$GLOBALS['egw']->template->set_var('grab_more_url',$GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.grabnewssites'));
 			$GLOBALS['egw']->template->set_var('lang_grab_more',lang('Grab New News Sites'));

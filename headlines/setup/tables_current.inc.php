@@ -17,15 +17,15 @@
 
   // table array for headlines
 	$phpgw_baseline = array(
-		'phpgw_headlines_sites' => array(
+		'egw_headlines_sites' => array(
 			'fd' => array(
 				'con' => array('type' => 'auto','nullable' => False),
 				'display' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'base_url' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'newsfile' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
-				'lastread' => array('type' => 'int', 'precision' => 4,'nullable' => True),
+				'lastread' => array('type' => 'int', 'precision' => 8,'nullable' => True),
 				'newstype' => array('type' => 'varchar', 'precision' => 15,'nullable' => True),
-				'cachetime' => array('type' => 'int', 'precision' => 4,'nullable' => True),
+				'cachetime' => array('type' => 'int', 'precision' => 8,'nullable' => True),
 				'listings' => array('type' => 'int', 'precision' => 4,'nullable' => True)
 			),
 			'pk' => array('con'),
@@ -33,7 +33,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_headlines_cached' => array(
+		'egw_headlines_cached' => array(
 			'fd' => array(
 				'site' => array('type' => 'int', 'precision' => 4,'nullable' => False),
 				'title' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),

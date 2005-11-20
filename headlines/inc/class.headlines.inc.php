@@ -18,6 +18,8 @@
 		// socket timeout in seconds
 		var $current_time;
 		var $db;
+		var $cache_table = 'egw_headlines_cached';
+		var $site_table = 'egw_headlines_sites';
 		var $xmlrpc = False;
 
 		var $con       = 0;
@@ -76,7 +78,7 @@
 		function readtable($site)
 		{
 			$this->db->select(
-				'phpgw_headlines_sites',
+				$this->site_table,
 				'con,display,base_url,newsfile,lastread,newstype,cachetime,listings',
 				array('con' => (int)$site),
 				__LINE__,__FILE__
@@ -102,7 +104,7 @@
 		function readcache($site)
 		{
 			$cache = array();
-			$this->db->select('phpgw_headlines_cached','title,link',array('site' => (int)$id),__LINE__,__FILE__);
+			$this->db->select($this->cache_table,'title,link',array('site' => (int)$id),__LINE__,__FILE__);
 
 			while($this->db->next_record())
 			{
@@ -122,7 +124,7 @@
 		function getLinksDB()
 		{
 //			return $this->getLinksSite();
-			$this->db->select('phpgw_headlines_cached','title,link',array('site' => (int)$this->con),__LINE__,__FILE__);
+			$this->db->select($this->cache_table,'title,link',array('site' => (int)$this->con),__LINE__,__FILE__);
 
 			if(!$this->db->num_rows())
 			{
@@ -160,7 +162,10 @@
 				//echo "<p>converting from charset '$matches[1]'</p>\n";
 				$data = $GLOBALS['egw']->translation->convert($data,$matches[1]);
 			}
-
+			else
+			{
+				$data = $GLOBALS['egw']->translation->convert($data,'iso-8859-1');
+			}
 			switch($this->newstype)
 			{
 				case 'rdf':
@@ -208,7 +213,6 @@
 			$exclude = '';
 
 			// get the file that contains the links
-//			$lines = $GLOBALS['egw']->network->gethttpsocketfile("http://blinkylight.com/headlines.rdf");
 			$lines = $GLOBALS['egw']->network->gethttpsocketfile('http://egroupware.org/egroupware/headlines.rdf');
 			if(!$lines)
 			{
@@ -260,7 +264,7 @@
 				$server = 'http://' . str_replace($file,'',$server);
 
 				$this->db->select(
-					'phpgw_headlines_sites',
+					$this->site_table,
 					'con,display,base_url,newsfile,newstype',
 					array(
 						'display'  => $title[$i],
@@ -272,7 +276,7 @@
 				if($this->db->num_rows() == 0)
 				{
 					$this->db->insert(
-						'phpgw_headlines_sites',
+						$this->site_table,
 						array(
 							'display'   => $title[$i],
 							'base_url'  => $server,
@@ -292,7 +296,7 @@
 				if($this->db->f('newstype') <> $type[$i])
 				{
 					$this->db->update(
-						'phpgw_headlines_sites',
+						$this->site_table,
 						array('newstype' => $type[$i]),
 						array('con' => (int)$this->db->f('con')),
 						__LINE__,__FILE__
@@ -305,18 +309,15 @@
 		// save the new set of links and update the cache time
 		function saveToDB($links)
 		{
-			$this->db->delete('phpgw_headlines_cached',array('site' => (int)$this->con),__LINE__,__FILE__);
+			$this->db->delete($this->cache_table,array('site' => (int)$this->con),__LINE__,__FILE__);
 
 			// save links
 			foreach($links as $title => $link)
 			{
-				$title = $this->db->db_addslashes($title);
-				$link  = $this->db->db_addslashes($link);
-
 				$this->db->insert(
-					'phpgw_headlines_cached',
+					$this->cache_table,
 					array(
-						'con'   => $this->con,
+						'site'  => $this->con,
 						'title' => $title,
 						'link'  => $link
 					),
@@ -327,7 +328,7 @@
 
 			// save cache time
 			$this->db->update(
-				'phpgw_headlines_sites',
+				$this->site_table,
 				array('lastread' => $this->current_time),
 				array('con' => (int)$this->con),
 				__LINE__,__FILE__
@@ -341,14 +342,14 @@
 			{
 				case 'change':
 					$this->db->update(
-						'phpgw_headlines_sites',
+						$this->site_table,
 						array(
-							'display'   => $this->db->db_addslashes($sitedata['display']) ,
-							'base_url'  => $this->db->db_addslashes($sitedata['base_url']),
-							'newsfile'  => $this->db->db_addslashes($sitedata['newsfile']),
+							'display'   => $sitedata['display'],
+							'base_url'  => $sitedata['base_url'],
+							'newsfile'  => $sitedata['newsfile'],
 							'lastread'  => 0,
-							'cachetime' => (int)$sitedata['cachetime'],
-							'listings'  => (int)$sitedata['listings']
+							'cachetime' => $sitedata['cachetime'],
+							'listings'  => $sitedata['listings']
 						),
 						array('con' => (int)$sitedata['con']),
 						__LINE__,__FILE__
@@ -357,11 +358,11 @@
 					break;
 				case 'add':
 					$this->db->select(
-						'phpgw_headlines_sites',
+						$this->site_table,
 						'display',
 						array(
-							'base_url' => $this->db->db_addslashes(strtolower($sitedata['base_url'])),
-							'newsfile' => $this->db->db_addslashes(strtolower($sitedata['newsfile']))
+							'base_url' => strtolower($sitedata['base_url']),
+							'newsfile' => strtolower($sitedata['newsfile'])
 						),
 						__LINE__,__FILE__
 					);
@@ -378,20 +379,20 @@
 					}
 
 					$this->db->insert(
-						'phpgw_headlines_sites',
+						$this->site_table,
 						array(
-							'display'   => $GLOBALS['egw']->db->db_addslashes($sitedata['display']),
-							'base_url'  => $GLOBALS['egw']->db->db_addslashes(strtolower($sitedata['base_url'])),
-							'newsfile'  => $GLOBALS['egw']->db->db_addslashes(strtolower($sitedata['newsfile'])),
+							'display'   => $sitedata['display'],
+							'base_url'  => strtolower($sitedata['base_url']),
+							'newsfile'  => strtolower($sitedata['newsfile']),
 							'lastread'  => 0,
-							'newstype'  => $GLOBALS['egw']->db->db_addslashes($sitedata['newstype']),
+							'newstype'  => $sitedata['newstype'],
 							'cachetime' => (int)$sitedata['cachetime'],
 							'listings'  => (int)$sitedata['listings']
 						),
 						False,
 						__LINE__,__FILE__
 					);
-					$rtrn = array('con' => $this->db->get_last_insert_id('phpgw_headlines_sites','con'));
+					$rtrn = array('con' => $this->db->get_last_insert_id($this->site_table,'con'));
 			}
 			return $rtrn;
 		}
@@ -401,8 +402,8 @@
 			$this->db->transaction_begin();
 
 			$con = (int)$id;
-			$this->db->delete('phpgw_headlines_sites', array('con'  => $con),__LINE__,__FILE__);
-			$this->db->delete('phpgw_headlines_cached',array('site' => $con),__LINE__,__FILE__);
+			$this->db->delete($this->site_table, array('con'  => $con),__LINE__,__FILE__);
+			$this->db->delete($this->cache_table,array('site' => $con),__LINE__,__FILE__);
 
 			// not sure what this function should do, but it was fiddeling direct with the prefs table and
 			// calling not existing methods of the preferences class -- RalfBecker 2005/11/13
@@ -414,6 +415,17 @@
 
 			$this->db->transaction_commit();
 			return array('con' => (int)$id);
+		}
+		
+		function sites()
+		{
+			$sites = false;
+			$this->db->select($this->site_table,'con,display',false,__LINE__,__FILE__,false,'ORDER BY display asc');
+			while ($this->db->next_record())
+			{
+				$sites[$this->db->f('con')] = $this->db->f('display');
+			}
+			return $sites;
 		}
 	}
 ?>

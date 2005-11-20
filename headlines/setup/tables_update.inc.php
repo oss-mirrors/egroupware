@@ -14,20 +14,28 @@
 	$test[] = '0.8.1';
 	function headlines_upgrade0_8_1()
 	{
-		global $phpgw_info, $phpgw_setup;
+		$GLOBALS['egw_setup']->oProc->RenameTable('news_site','phpgw_headlines_sites');
+		$GLOBALS['egw_setup']->oProc->RenameTable('news_headlines','phpgw_headlines_cached');
+		$GLOBALS['egw_setup']->oProc->DropTable('users_headlines');
 
-		$phpgw_setup->oProc->RenameTable('news_site','phpgw_headlines_sites');
-		$phpgw_setup->oProc->RenameTable('news_headlines','phpgw_headlines_cached');
-		$phpgw_setup->oProc->DropTable('users_headlines');
-
-		$setup_info['headlines']['currentver'] = '0.8.1.001';
-		return $setup_info['headlines']['currentver'];
+		return $GLOBALS['setup_info']['headlines']['currentver'] = '0.8.1.001';
 	}
 
 	$test[] = '0.8.1.001';
 	function headlines_upgrade0_8_1_001()
 	{
-		$setup_info['headlines']['currentver'] = '1.0.0';
-		return $setup_info['headlines']['currentver'];
+		return $GLOBALS['setup_info']['headlines']['currentver'] = '1.0.0';
 	}
-?>
+
+	$test[] = '1.0.0';
+	function headlines_upgrade1_0_0()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_headlines_sites','egw_headlines_sites');
+		// timestamps have to be 8byte
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_headlines_sites','lastread',array('type' => 'int', 'precision' => 8));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_headlines_sites','cachetime',array('type' => 'int', 'precision' => 8));
+		
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_headlines_cached','egw_headlines_cached');
+
+		return $GLOBALS['setup_info']['headlines']['currentver'] = '1.2';
+	}

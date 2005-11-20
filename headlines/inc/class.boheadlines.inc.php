@@ -137,6 +137,11 @@
 		{
 			return $this->so->getlinks($site);
 		}
+		
+		function sites()
+		{
+			return $this->so->sites();
+		}
 
 		function list_methods($_type='xmlrpc')
 		{

@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['headlines']['name']      = 'headlines';
 	$setup_info['headlines']['title']     = 'Headlines';
-	$setup_info['headlines']['version']   = '1.0.0';
+	$setup_info['headlines']['version']   = '1.2';
 	$setup_info['headlines']['app_order'] = 13;
 	$setup_info['headlines']['enable']    = 1;
 
@@ -28,8 +28,8 @@
 
 	/* The tables this app creates */
 	$setup_info['headlines']['tables']    = array(
-		'phpgw_headlines_sites',
-		'phpgw_headlines_cached'
+		'egw_headlines_sites',
+		'egw_headlines_cached'
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
@@ -42,6 +42,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['headlines']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.14','0.9.15','0.9.16','1.0.0','1.0.1')
+		'versions' => Array('1.0.0','1.0.1','1.2')
 	);
 ?>

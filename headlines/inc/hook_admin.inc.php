@@ -15,7 +15,7 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Headline Site Management' => $GLOBALS['egw']->link('/headlines/admin.php')
+		'Headline Site Management' => $GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.admin')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);
