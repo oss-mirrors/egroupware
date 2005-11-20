@@ -156,7 +156,12 @@
 				$groups[$groupInfo['account_id']] = $groupInfo['account_lid'];
 			}
 			asort($groups);
-			$groups = array_merge(array('' => lang('any group')),$groups);
+
+			$allGroups = array('' => lang('any group'));
+			foreach($groups as $groupID => $groupName)
+			{
+				$allGroups[$groupID] = $groupName;
+			}
 			
 			$applications = array(
 				'calendar'	=> $GLOBALS['egw_info']['apps']['calendar']['title'],
@@ -187,7 +192,7 @@
 			
 			$this->translate();
 			
-			foreach($profileData as $key => $value)
+			foreach((array)$profileData as $key => $value)
 			{
 				//print "$key $value<br>";
 				switch($key)
@@ -213,7 +218,7 @@
 						$this->t->set_var('application_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_appname]',$value,$applications, true, "style='width: 250px;'"));
 						break;
 					case 'ea_group':
-						$this->t->set_var('group_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_group]',$value,$groups, true, "style='width: 250px;'"));
+						$this->t->set_var('group_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_group]',$value,$allGroups, true, "style='width: 250px;'"));
 						break;
 					default:
 						$this->t->set_var('value_'.$key,$value);
