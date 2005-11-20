@@ -124,5 +124,5 @@
 		echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
 			.$portalbox->draw($extra_data)
 			.'<!-- ends Mailox info -->'."\r\n";
-	}exit;
+	}
 ?>
