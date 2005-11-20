@@ -25,9 +25,7 @@
 
 		$tmp_app_inc = $GLOBALS['egw']->common->get_inc_dir('felamimail');
 
-#		// ----  Create the base email Msg Class    -----
 		$GLOBALS['egw']->translation->add_app('felamimail');
-		$GLOBALS['egw']->msg =& CreateObject("email.mail_msg");
 
 		$title = lang('felamimail');
 	
@@ -126,5 +124,5 @@
 		echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
 			.$portalbox->draw($extra_data)
 			.'<!-- ends Mailox info -->'."\r\n";
-	}
+	}exit;
 ?>

@@ -1,3 +1,7 @@
+20051120
+
+- removed dependency on email
+
 20051018
 - fixed Bug where nodisplayable characters got displayed and broke caching
   in the database
