@@ -444,7 +444,8 @@
 			}
 			
 			$retValue['delimiter']	= (isset($folderInfo[0]->delimiter)?$folderInfo[0]->delimiter:'.');
-			$retValue['shortName']	= array_pop(explode($retValue['delimiter'], $_folderName));
+			$shortNameParts = explode($retValue['delimiter'], $_folderName);
+			$retValue['shortName']	= array_pop($shortNameParts);
 			
 			$folderStatus = imap_status($this->mbox,$mailboxString,SA_ALL);
 			if($folderStatus)
