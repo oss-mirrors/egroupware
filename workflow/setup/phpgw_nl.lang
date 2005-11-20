@@ -153,6 +153,239 @@ deletion successful	workflow	nl	Verwijdering succesvol
 delition successful	workflow	nl	Verwijderng succesvol
 description	workflow	nl	Beschrijving
 display please wait message	admin	nl	toon het even geduld bericht
+do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	nl	Wilt u de activiteitsstatus op instanties lijsten weergeven? Meestal is dit 'lopend' maar indien u nietzelfrouterende transities gebruik zult u enkele voltooide activiteiten hebben.
+do you want the category column on instances lists, if yout instances use categories you should use it	workflow	nl	Wilt u de categorie kolom op instanties lijsten weergeven? Indien uw instanties categorieën gebruiken zou u dit moeten inschakelen
+do you want the category name column on instances lists. if your instances use categories you should use this	workflow	nl	Wilt u de categorienaam kolom op instanties lijsten weergeven? Indien uw instanties categorieën gebruiken zou u dit moeten inschakelen
+do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	nl	Wilt u de instantie ID kolom op instanties lijsten weergeven? Dit is de unieke identifier van een instantie
+do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	nl	Wilt u de instantienaam kolom op instanties lijsten weergeven? Indien uw instanties namen gebruiken zou u dit zeker moeten doen.
+do you want the instance status on instances lists. the instance status is usefull to disting beteween aborted, completed, exception or active instances	workflow	nl	Wilt u de instantiestatus kolom op instanties lijsten weergeven? De instantiestatus is nuttig om onderscheid te maken tussen afgebroken, voltooid, uitzondering of actieve instanties
+do you want the owner column on instances lists. this will show you the actual owner, especially usefull if ownership is defined with special rights	workflow	nl	Wilt u de eigenaar kolom op instanties lijsten weergeven? Dit toont u de werkelijke eigenaar, bijzonder handig indien eigendommen met speciale rechten zijn gedefinieerd
+do you want the priority column on instances lists. priority can be set with activities forms	workflow	nl	Wilt u de prioriteiten kolom op instanties lijsten weergeven? Prioriteit kan worden ingesteld in het activiteitenformulier
+do you want the process column on instances lists. usefull if you have different processes and/or versions of theses processes	workflow	nl	Wilt u de proces kolom op instantieslijsten weergeven? Nuttig indien u verschillende processen en/of versies van deze processen heeft
+do you want the search instance button in the last row of instances list.	workflow	nl	Wilt u de zoekinstantieknop in de laatste rij van de instanties lijst weergeven?
+do you want the started date column on instances lists.	workflow	nl	Wilt u de startdatum kolom op instanties lijsten weergeven?
+don't move	workflow	nl	Niet verplaatsen
+draw roles	admin	nl	teken rollen
+draw roles on the graph beside activity name like [that]	admin	nl	teken rollen op de grafiek naast activiteitsnaam zoals [dit]
+duration	workflow	nl	Duur
+end	workflow	nl	einde
+end activity is not reachable from start activity	workflow	nl	Eind activiteit is niet bereikbaar vanaf de start activiteit
+ended	workflow	nl	geeindigd
+enter an activity name	workflow	nl	Vul een activiteitnaam in
+error: nextactivity does not match any candidate in autorouting switch activity	workflow	nl	Fout: nextActivity komt niet overeen met enige kandidaat in de zelfrouterende schakel activiteit
+error: non-deterministic decision for autorouting activity	workflow	nl	Fout: onbepaalde beslissing voor zelfrouterende activiteit
+error: removing was not done	workflow	nl	fout: verwijdering is niet uitgevoerd
+error: trying to send an instance to an activity but it was impossible to get this activity	workflow	nl	Fout: geprobeerd een instantie naar een activiteit te verzenden maar het was onmogelijk om de activiteit op te halen
+error: trying to send an instance to an activity but no transition found	workflow	nl	Fout: probeerde een instantie naar een activiteit te sturen maar er is geen transitie gevonden
+exception	workflow	nl	uitzondering
+exception instance	workflow	nl	uitzondering instantie
+exception raised by %1 %2: %3	workflow	nl	uitzondering opgetreden bij %1 %2: %3
+exception resumed by %1 %2: %3	workflow	nl	uitzondering is hervat door %1 %2: %3
+exception this instance	workflow	nl	Uitzondering deze instantie
+exceptions	workflow	nl	uitzonderingen
+execute this activity	workflow	nl	Deze activiteit uitvoeren
+export	workflow	nl	Exporteren
+failed to create workitem	workflow	nl	aanmaken van werkonderdeel is mislukt
+failed to execute automatic activity	workflow	nl	uitvoeren van automatische activiteit is mislukt
+failed to obtain lock on %1 table	workflow	nl	het verkrijgen van een lock op %1 tabel is mislukt
+failed to obtain lock on instances table	workflow	nl	het verkrijgen van een lock op de instanties tabel is mislukt
+failed to obtain lock on instances_activities table	workflow	nl	het verkrijgen van een lock op de instanties-activiteiten tabel is mislukt
+failed to record instance properties	workflow	nl	het vastleggen van instantie eigenschappen is mislukt
+failed to synchronize instance data with the database	workflow	nl	het synchroniseren van instantie data met de database is mislukt
+failure	workflow	nl	fout
+fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	nl	Fatale fout: netxActivity komt niet overeen met enige kandidaat in zelfrouterende schakel activiteit
+fatal error: non-deterministic decision for autorouting activity	workflow	nl	Fatale fout: onbepaalde beslissing voor zelfrouterende activiteit
+fatal error: setting next activity to an unexisting activity	workflow	nl	Fatale fout: volgende activiteit instellen op een nietbestaande activiteit
+fatal error: trying to send an instance to an activity but no transition found	workflow	nl	Fatale fout: probeerde een instantie naar een activiteit te sturen maar er is geen transitie gevonden
+filter	workflow	nl	Filter
+filter instance by id	workflow	nl	filter instantie op ID
+finally you have links with <strong>%link_xx|yy%</strong> syntax, xx is the address part, yy the text part.	workflow	nl	tenslotten heeft u links met <strong>%link_XX|YY%</strong> syntax, XX is het adres deel, YY het tekst deel.
+fix	workflow	nl	Herstel
+fix concistency for selected rows	workflow	nl	Herstel consistentie voor de geselecteerde rijen
+font size	admin	nl	lettergrootte
+from	workflow	nl	Van
+from:	workflow	nl	Van:
+get back to global activities	workflow	nl	ga terug naar globale activiteiten
+get back to instance creation	workflow	nl	ga terug naar instantie aanmaak
+get property	workflow	nl	Verkrijg eigenschap
+global activities	workflow	nl	Globale activiteiten
+global workflow preferences	workflow	nl	Globale werkstroomvoorkeuren
+go	workflow	nl	ga
+go to same activities for other instances of this process	workflow	nl	ga naar dezelfde activiteiten voor andere instanties van dit proces
+go to same process activities	workflow	nl	ga naar dezelfde procesactiviteiten
+go to the actual state of this instance	workflow	nl	ga naar de werkelijke staat van deze instantie
+grab instance	workflow	nl	grijp instantie
+grant access to the administration and development of workflow processes and activities.	workflow	nl	Verleen toegang aan beheer en ontwikkeling van werkstroomprocessen en activiteiten.
+grant access to the administration of workflow elements	workflow	nl	Verleen toegang aan de beheerder van werkstroomelementen.
+grant access to the administration of workflow instances in monitor screens	workflow	nl	Verleen toegang aan de beheerder van werkstroominstanties in monitor pagina's.
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	nl	Verleeg toegang aan het opruimen/verwijderen van afgebroken werkstroom instanties in monitor pagina's
+grant access to the monitoring of workflow elements	workflow	nl	Verleen toegang tot het monitoren van werkstroomelementen
+graph	workflow	nl	Grafiek
+graphic options	admin	nl	Grafiek opties
+group	workflow	nl	Groep
+id	workflow	nl	ID
+if automatic parsing is disabled next options will be useless	admin	nl	indien automatisch parsen uitgeschakeld is zijn de volgende opties onbruikbaar
+if not in debug mail_smtp agent would have sent this email:	workflow	nl	indien je niet in debug modus was zou de mail_smtp agent deze email verzonden hebben:
+if user is in a role for an activity he will have the right to abort the related instance	admin	nl	indien gebruiker een rol bij een activiteit heeft, zal hij de rechten hebben om de gerelateerd instantie af te breken
+if user is in a role for an activity he will have the right to exception or resume the related instance	admin	nl	indien gebruiker een rol heeft in een activiteit, zal hij de rechten hebben om de gerelateerd instantie in een uitzondering te laten lopen of te laten doorgaan
+if user is in a role for an activity he will have the right to release (un-assign) the related instance	admin	nl	indien gebruiker een rol heeft in een activiteit, dan heeft hij ook het recht om de gerelateerde instantie vrij te geven (un-assign)
+if:setnextact	workflow	nl	If:SetNextact
+import aborted	workflow	nl	Importeren afgebroken
+import successfull	workflow	nl	Importeren met succes voltooid
+in role mappings user #%1 is specified as a "%2" but is maybe a "%3"	workflow	nl	In de rol mapping is gebruiker #%1 gespecificeerd als een "%2" maar is MISSCHIEN een "%3"
+inactive	workflow	nl	Inactief
+inst.	workflow	nl	Instantie
+inst. status	workflow	nl	Instantiestatus
+instance	workflow	nl	Instantie
+instance %1	workflow	nl	instantie %1
+instance %1 is in %2 state, action %3 is impossible.	workflow	nl	Instantie %1 is in %2 staat, actie %3 is onmogelijk.
+instance %1 is in exception, action %2 is not possible.	workflow	nl	Instantie %1 is in uitzondering, actie %2 is niet mogelijk.
+instance %1 is not associated with activity %2, action %3 is impossible.	workflow	nl	Instantie %1 is niet geassocieerd met activiteit %2, actie %3 is onmogelijk.
+instance history	workflow	nl	Instantie historie
+instance properties	workflow	nl	Instantie eigenschappen
+instance:	workflow	nl	instantie:
+instance: %1 (process: %2)	workflow	nl	Instantie: %1 (Proces: %2)
+instance: unable to modify %1 [%2], someone has changed it before us	workflow	nl	Instantie: onmogelijk om %1 [%2] te wijzigen, iemand heeft het vlak voor ons gewijzigd
+instance: unable to modify %1, someone has changed it before us	workflow	nl	Instantie: onmogelijk om %1 te wijzigen, iemand heeft het vlak voor ons gewijzigd
+instances	workflow	nl	Instanties
+instances selection	workflow	nl	Instanties selectie
+int.	workflow	nl	Int.
+interactive	workflow	nl	Interactief
+interactive instances should not call the complete() method	workflow	nl	interactieve instanties zouden de complete() methode niet moeten aanroepen
+interactive:	workflow	nl	interactief:
+interactivity	workflow	nl	Interactiviteit
+invalid	workflow	nl	ongeldig
+invalid process	workflow	nl	Ongeldig proces
+invalid role name	workflow	nl	Ongeldige rolnaam
+is active	workflow	nl	is actief
+it seems this activity for this instance is not assigned to you anymore.	workflow	nl	Het lijkt erop dat deze activiteit voor deze instantie niet langer aan u is toegewezen.
+it was impossible to complete, no activity was given.	workflow	nl	het was onmogelijk om dit te voltooien, er werd geen activiteit opgegeven.
+it was impossible to complete, no corresponding activity was found.	workflow	nl	het was onmogelijk om dit te voltooien, er werd geen overeenkomstige activiteit gevonden.
+join	workflow	nl	neem deel aan
+link addresses are considered local if not containing <strong>http://</strong>. they will get appended the configured local prefix and scanned by egroupware link engine	workflow	nl	Link adressen worden geacht lokaal te zijn als ze niet <strong>http://</strong> bevatten. Ze zullen de ingestelde lokale prefix toegevoegd krijgen en door de eGroupWare linkmachine gescand worden.
+list of activities	workflow	nl	Lijst van activiteiten
+list of all activities with, for each,  counters of instances by status	workflow	nl	lijst van alle activiteiten met, voor elk, aantallen van de instanties per status
+list of all history items made by instances while they travel in the workflow with information about duration and date	workflow	nl	lijst van alle historische items die zijn aangemaakt door instantie terwijl ze zich in de werkstroom bewegen met informatie over duur en datum
+list of all instances with info about current status and activities and link to administration of theses instances	workflow	nl	lijst van alle instanties met informatie over de huidige status en activiteiten en een link naar het beheer van deze instanties
+list of instances	workflow	nl	Lijst van instanties
+list of mappings	workflow	nl	Lijst van mappings
+list of monitors	workflow	nl	Lijst van monitors
+list of processes	workflow	nl	Lijst van processen
+list of processes (%1)	workflow	nl	Lijst van processen (%1)
+list of processes with status and validity and, for each, counters of instances by status	workflow	nl	lijst van processen met status en geldigheid en, voor elk, aantal van instanties per status
+list of transitions	workflow	nl	Lijst van transities
+list of workitems	workflow	nl	Lijst van werkonderdelen
+mail automatically sent by mail smtp agent for egroupware's workflow	workflow	nl	Mail automatisch verzonden door de Mail SMTP Agent voor eGroupWare's werkstroom
+mail smtp agent	workflow	nl	Mail SMTP Agent
+mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	nl	Mails kunnen worden verzonden aan het begin of aan het einde van een activiteit. Voor interactieve instanties kan er alleen aan het eind verzonden worden.
+manual	workflow	nl	Handboek
+map	workflow	nl	map
+map users/groups to roles	workflow	nl	Koppel gebruikers/groepen aan rollen
+mapping to inexistent role	workflow	nl	Koppeling aan nietbestaande rol
+mappings deleted	workflow	nl	Koppelingen verwijderd
+message:	workflow	nl	Bericht:
+monitor activities	workflow	nl	Activiteiten monitoren
+monitor instance	workflow	nl	monitor instantie
+monitor instances	workflow	nl	Instanties monitoren
+monitor processes	workflow	nl	Processen monitoren
+monitor this instance	workflow	nl	Deze instantie monitoren
+monitor work items	workflow	nl	Werkonderdelen monitoren
+monitor workitems	workflow	nl	Werkonderdelen monitoren
+monitoring	workflow	nl	aan het monitoren
+monitors	workflow	nl	Monitors
+more options?	workflow	nl	meer opties?
+my activities	workflow	nl	Mijn activiteiten
+my instances	workflow	nl	Mijn instanties
+my processes	workflow	nl	Mijn processen
+name	workflow	nl	Naam
+new instance	workflow	nl	Nieuwe instantie
+new major	workflow	nl	Nieuwe majeure
+new major version created	workflow	nl	nieuwe majeure versie aangemaakt
+new mapping added	workflow	nl	Nieuwe koppeling toegevoegd
+new minor	workflow	nl	Nieuwe mineure
+new minor version created	workflow	nl	Nieuwe minuere versie aangemaakt
+new status not set, no corresponding activity was found.	workflow	nl	nieuwe status is niet ingesteld, geen overeenkomstige activiteit gevonden.
+new transition added	workflow	nl	Nieuwe transitie toegevoegd
+next activity	workflow	nl	volgende activiteit
+next user:	workflow	nl	Volgende gebruiker:
+no action avaible because no activity and no instance are given!	workflow	nl	geen actie beschikbaar omdat er geen activiteit en geen instantie zijn opgegeven!
+no activites	workflow	nl	Geen activiteiten
+no activity indicated	workflow	nl	Geen activiteit aangegeven
+no agents associated with this activity	workflow	nl	Er zijn geen agenten met deze activiteit geassocieerd
+no circular transitions allowed.	workflow	nl	Circulaire transities zijn niet toegestaan.
+no corresponding activity was found.	workflow	nl	geen overeenkomstige activiteit gevonden.
+no inbound for start activity	workflow	nl	Geen ingang voor de start activiteit
+no inconcistency detected	workflow	nl	geen inconsistentie gevonden
+no instance avaible	workflow	nl	geen instantie beschikbaar
+no instance given, nothing to show	workflow	nl	geen instantie opgegeven, niets weer te geven
+no instance indicated	workflow	nl	Geen instantie opgegeven
+no outbound for end activity	workflow	nl	Geen uitgang voor de eind activiteit
+no process indicated	workflow	nl	Geen proces opgegeven
+no properties defined	workflow	nl	Geen eigenschappen gedefinieerd
+no roles	workflow	nl	geen rollen
+no roles asociated with this activity	workflow	nl	Er zijn geen rollen geassocieerd met deze activiteit
+no routage	workflow	nl	geen routering
+no scan done	workflow	nl	geen scan gedaan
+no transitions allowed for standalone or view activities	workflow	nl	Geen transities toegestaan voor zelfstandige of weergave activiteiten
+no work item indicated	workflow	nl	Geen werkitem aangegeven
+nobody	workflow	nl	Niemand
+not defined	workflow	nl	niet gedefinieerd
+or import a process	workflow	nl	Of importeer een proces
+owner	workflow	nl	Eigenaar
+owner of the instance will have the right to abort the instance at any time	admin	nl	eigenaar van de instantie heeft het recht de instantie op ieder gewenst tijdstip af te breken
+owner of the instance will have the right to exception or resume the instance at any time	admin	nl	eigenaar van de instantie heeft het recht om de instantie op ieder tijdstip in een uitzondering te laten lopen of om hem door te laten gaan
+owner of the instance will have the right to release (un-assign) an activity assigned to an user	admin	nl	eigenaar van de instantie heef het recht om op ieder tijdstip een aan een gebruiker toegewezen activiteit vrij te geven (un-assign)
+owner:	workflow	nl	Eigenaar:
+ownership give abort right	admin	nl	eigenaarschap geeft afbreek rechten
+ownership give exception right	admin	nl	eigenaarschap geeft uitzondering rechten
+ownership give release right	admin	nl	eigenaarschap geeft vrijgave rechten
+printer friendly	workflow	nl	Printervriendelijk
+priority level:	workflow	nl	Prioriteitsniveau:
+process	workflow	nl	Proces
+process %1	workflow	nl	proces %1
+process %1 %2 is not active, action %3 is impossible	workflow	nl	Proces %1 %2 is niet actief, actie %3 is onmogelijk
+process %1 v%2 as no related activity	workflow	nl	Proces %1 v%2 heeft geen gerelateerde activiteit
+process %d has been activated	workflow	nl	Proces %d is geactiveerd
+process %d has been deactivated	workflow	nl	Proces %d is gedeactiveerd
+process %s %s already exists, the import process was aborted	workflow	nl	Proces %s %s bestaat reeds, het importproces is afgebroken
+process %s %s imported	workflow	nl	Proces %s %s geimporteerd
+process %s has been created	workflow	nl	Proces %s is aangemaakt
+process %s has been updated	workflow	nl	Proces %s is bijgewerkt
+process %s removed	workflow	nl	Proces %s is verwijderd
+process activities	workflow	nl	Proces activiteiten
+process alone	workflow	nl	Proces alleen
+process does not have a start activity	workflow	nl	Proces heeft geen startactiviteit
+process does not have exactly one end activity	workflow	nl	Proces heeft niet precies één eind activiteit
+process form	workflow	nl	Procesformulier
+process name	workflow	nl	Procesnaam
+process name already exists	workflow	nl	Procesnaam bestaat reeds
+process roles	workflow	nl	Procesrollen
+process saved	workflow	nl	Proces opgeslagen
+process transitions	workflow	nl	Proces transities
+process version:	workflow	nl	proces versie:
+process:	workflow	nl	proces:
+processes	workflow	nl	Processen
+properties	workflow	nl	Eigenschappen
+property	workflow	nl	Eigenschap
+property %1 already exists	workflow	nl	Eigenschap %1 bestaat reeds
+property %1 not found	workflow	nl	eigenschap %1 niet gevonden
+quit without saving	workflow	nl	Einde zonder opslaan
+read-only	workflow	nl	alleen-lezen
+release access to this activity	workflow	nl	Toegang tot deze activiteit vrijgeven
+release activity for this instance	workflow	nl	activiteit voor deze instantie vrijgeven
+release instance	workflow	nl	instantie vrijgeven
+reload filter	workflow	nl	Filter herladen
+remove active instances	workflow	nl	Actieve instanties verwijderen
+remove all instance for this process	workflow	nl	alle instanties voor dit proces verwijderen
+remove selected roles	workflow	nl	geselecteerde rollen verwijderen
+removing instances and workitems for aborted instances on all processes	workflow	nl	bezig met verwijderen van instanties en werkonderdelen voor afgebroken instanties op alle processen
+removing instances and workitems for aborted instances on process #%1	workflow	nl	bezig met verwijderen van instanties en werkonderdelen voor afgebroken instanties op proces #%1
+removing instances and workitems for all instances on process #%1	workflow	nl	bezig met verwijderen van instanties en werkonderdelen voor alle instanties op proces #%1
+replyto:	workflow	nl	Antwoord-Aan:
+restart	workflow	nl	herstarten
+restart activity	workflow	nl	activiteit herstarten
+resume this exception instance	workflow	nl	Hervat deze uitgezonderde instantie
+role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	nl	Rol #%1 in proces %s heeft een ander proces (%3) in koppeling met gebruiker #%4
 we were not able to build the message	workflow	nl	We konden het bericht niet samenstellen
 workflow	common	nl	Werkstroom
 workflow configuration	admin	nl	Werkstroom configuratie
