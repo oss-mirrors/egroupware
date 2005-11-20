@@ -221,7 +221,6 @@ instance: %1 (process: %2)	workflow	fr	Instance: %1 (Processus: %2)
 instances	workflow	fr	Instances
 instances selection	workflow	fr	selection des instances
 interactive	workflow	fr	Interactive
-interactive activities should not call the complete() method	workflow	fr	les activités interactives ne devraient pas appeler la méthode complete()
 interactive:	workflow	fr	Interactive :
 interactivity	workflow	fr	Interactivité
 invalid	workflow	fr	Invalide
@@ -304,10 +303,16 @@ owner of the instance will have the right to abort the instance at any time	admi
 owner of the instance will have the right to exception or resume the instance at any time	admin	fr	le propriétaire de l'instance aura le droit de passer l'instance en exception ou de la remettre en cours à tout moment.
 owner of the instance will have the right to release (un-assign) an activity assigned to an user	admin	fr	le propriétaire de l'instance aura le droit de libérer (désassigner) une activité de l'instance assignée à un utilisateur.
 owner:	workflow	fr	Propriétaire:
-ownership give abort right	admin	fr	la propriété donne le droit d'interrompre
-ownership give exception right	admin	fr	la propriété donne le droit d'exception
-ownership give release right	admin	fr	la propriété donne le droit de libération
+ownership give abort right	common	fr	la propriété donne le droit d'interrompre
+ownership give exception right	common	fr	la propriété donne le droit d'exception
+ownership give release right	common	fr	la propriété donne le droit de libération
+post activity %1 code is not avaible	workflow	fr	le code suivant l'activité %1 n'est pas disponible
+post shared code is not avaible	workflow	fr	le code suivant le code partagé n'est pas disponible
+post-agent %1 code is not avaible	workflow	fr	le code suivant l'agent %1 n'est pas disponible
 pr.	workflow	fr	Pr.
+pre-activity %1 code is not avaible	workflow	fr	le code précédant l'activité %1 n'est pas disponible
+pre-agent %1 code is not avaible	workflow	fr	le code précédant l'agent %1 n'est pas disponible
+pre-shared code is not avaible	workflow	fr	le code précédant le code partagé n'est pas disponible
 printer friendly	workflow	fr	Mode impression
 priority level:	workflow	fr	Niveau de Priorité:
 process	workflow	fr	Processus
@@ -468,7 +473,7 @@ unknown status	workflow	fr	Statut inconnu
 update	workflow	fr	Mettre à jour
 upload file	workflow	fr	Télécharger fichier
 use <a href="%1">emailadmin</a> to create mail profiles	workflow	fr	Utilisez <a href="%1">EmailAdmin</a> pour créer les profils email
-use automatic parsing	admin	fr	utiliser l'affichage automatique
+use automatic parsing	common	fr	utiliser l'affichage automatique
 use default	workflow	fr	Utiliser le défaut
 use existing roles	workflow	fr	Utiliser un rôle existant
 user	workflow	fr	Utilisateur

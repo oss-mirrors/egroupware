@@ -336,9 +336,9 @@ owner of the instance will have the right to abort the instance at any time	admi
 owner of the instance will have the right to exception or resume the instance at any time	admin	en	owner of the instance will have the right to exception or resume the instance at any time
 owner of the instance will have the right to release (un-assign) an activity assigned to an user	admin	en	owner of the instance will have the right to release (un-assign) an activity assigned to an user
 owner:	workflow	en	Owner:
-ownership give abort right	admin	en	ownership give abort right
-ownership give exception right	admin	en	ownership give exception right
-ownership give release right	admin	en	ownership give release right
+ownership give abort right	common	en	ownership give abort right
+ownership give exception right	common	en	ownership give exception right
+ownership give release right	common	en	ownership give release right
 post activity %1 code is not avaible	workflow	en	post activity %1 code is not avaible
 post shared code is not avaible	workflow	en	post shared code is not avaible
 post-agent %1 code is not avaible	workflow	en	post-agent %1 code is not avaible
@@ -529,7 +529,7 @@ unknown status	workflow	en	unknown status
 update	workflow	en	update
 upload file	workflow	en	Upload file
 use <a href="%1">emailadmin</a> to create mail profiles	workflow	en	Use <a href="%1">EmailAdmin</a> to create mail profiles
-use automatic parsing	admin	en	use automatic parsing
+use automatic parsing	common	en	use automatic parsing
 use default	workflow	en	Use Default
 use existing roles	workflow	en	Use existing roles
 user	workflow	en	User
