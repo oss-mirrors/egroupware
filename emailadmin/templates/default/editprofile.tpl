@@ -1,7 +1,7 @@
 <!-- BEGIN main -->
 <center>
+<div style="background-color: white">
 <form action="{action_url}" name="mailsettings" method="post">
-<br>
 <table width="670px" border="0" cellspacing="0" cellpading="0">
 	<tr>
 		<th width="33%" id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="1" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);">Global</a></th>
@@ -161,7 +161,7 @@
 		</table>
 		</fieldset>
 		<p>
-		<fieldset style="width:650px;"><legend>{lang_smtp_auth}</legend>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_smtp_auth}</legend>
 		<table width="100%" border="0" cellspacing="0" cellpading="1">
 			<tr class="row_off">
 				<td width="300px">{lang_Use_SMTP_auth}:</td>
@@ -169,13 +169,13 @@
 					<input type="checkbox" name="smtpsettings[1][smtpAuth]" {selected_smtpAuth} value="yes">
 				</td>
 			</tr>
-			<tr class="row_off">
+			<tr>
 				<td>{lang_username}:</td>
 				<td>
 					<input type="text" name="smtpsettings[1][smtpauthusername]" style="width: 350px;" value="{value_smtpauthusername}">
 				</td>
 			</tr>
-			<tr class="row_off">
+			<tr>
 				<td>{lang_password}:</td>
 				<td>
 					<input type="password" name="smtpsettings[1][smtpauthpassword]" style="width: 350px;" value="{value_smtpauthpassword}">
@@ -184,7 +184,7 @@
 		</table>
 		</fieldset>
 		<p>
-		<fieldset style="width:650px;"><legend>{lang_smtp_options}</legend>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_smtp_options}</legend>
 		<table width="100%" border="0" cellspacing="0" cellpading="1">
 			<tr>
 				<td width="300px">{lang_user_can_edit_forwarding_address}:</td>
@@ -285,7 +285,7 @@
 		</table>
 		</fieldset>
 		<p>
-		<fieldset style="width:650px;"><legend>{lang_encryption_settings}</legend>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
@@ -341,7 +341,7 @@
 		</table>
 		</fieldset>
 		<p>
-		<fieldset style="width:650px;"><legend>{lang_encryption_settings}</legend>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
@@ -397,7 +397,7 @@
 		</table>
 		</fieldset>
 		<p>
-		<fieldset style="width:650px;"><legend>{lang_encryption_settings}</legend>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
@@ -423,9 +423,9 @@
 		</table>
 		</fieldset>
 		<p>
-		<fieldset style="width:650px;"><legend>{lang_cyrus_imap_administration}</legend>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_cyrus_imap_administration}</legend>
 		<table width="100%" border="0" cellspacing="0" cellpading="1">
-			<tr class="row_off">
+			<tr>
 				<td width="300px">{lang_enable_cyrus_imap_administration}:</td>
 				<td>
 					<input type="checkbox" name="imapsettings[3][imapEnableCyrusAdmin]" {selected_imapEnableCyrusAdmin} value="yes">
@@ -443,7 +443,7 @@
 		</table>
 		</fieldset>
 		<p>
-		<fieldset style="width:650px;"><legend>{lang_sieve_settings}</legend>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_sieve_settings}</legend>
 		<table width="100%" border="0" cellspacing="0" cellpading="1">
 			<tr>
 				<td width="300px">{lang_enable_sieve}:</td>
@@ -480,7 +480,7 @@
 <table width="670px" border="0" cellspacing="0" cellpading="1">
 	<tr>
 		<td width="90%" align="left"  class="td_left">
-			<a href="{back_url}">{lang_back}</a>
+			<a href="#" onclick="window.close(); return false;">{lang_back}</a>
 		</td>
 		<td width="10%" align="center" class="td_right">
 			<a href="javascript:document.mailsettings.submit();">{lang_save}</a>
@@ -488,6 +488,7 @@
 	</tr>
 </table>
 </form>
+<div>
 </center>
 <!-- END main -->
 

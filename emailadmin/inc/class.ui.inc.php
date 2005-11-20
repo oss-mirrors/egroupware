@@ -124,10 +124,13 @@
 				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
 			$GLOBALS['egw']->js->validate_file('tabs','tabs');
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+
 			switch($_GET['menuaction'])
 			{
 				case 'emailadmin.ui.addProfile':
 				case 'emailadmin.ui.editProfile':
+					$GLOBALS['egw_info']['nofooter'] = true;
 					$GLOBALS['egw']->js->validate_file('jscode','editProfile','emailadmin');
 					$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 					#$GLOBALS['egw']->js->set_onload('smtp.init();');
@@ -139,9 +142,10 @@
 
 					break;
 			}
-			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['egw']->common->egw_header();
-			echo parse_navbar();
+			
+			if($_GET['menuaction'] == 'emailadmin.ui.listProfiles' || $_GET['menuaction'] == 'emailadmin.ui.deleteProfile')
+				echo parse_navbar();
 		}
 
 		function editProfile($_profileID='')
@@ -267,7 +271,7 @@
 						'tabpage'	=> '3',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$imapServerLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.$profileList[$i]['imapServer'].'</a>';
+					$imapServerLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$profileList[$i]['imapServer'].'</a>';
 					
 					$linkData = array
 					(
@@ -276,7 +280,7 @@
 						'tabpage'	=> '1',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$descriptionLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.$profileList[$i]['description'].'</a>';
+					$descriptionLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$profileList[$i]['description'].'</a>';
 					
 					$linkData = array
 					(
@@ -285,7 +289,7 @@
 						'tabpage'	=> '2',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$smtpServerLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.$profileList[$i]['smtpServer'].'</a>';
+					$smtpServerLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$profileList[$i]['smtpServer'].'</a>';
 					
 					$linkData = array
 					(
@@ -297,8 +301,24 @@
 									lang('delete').'</a>';
 
 					$application = (empty($profileList[$i]['ea_appname']) ? lang('any application') : $GLOBALS['egw_info']['apps'][$profileList[$i]['ea_appname']]['title']);
+					$linkData = array
+					(
+						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'nocache'	=> '1',
+						'tabpage'	=> '1',
+						'profileid'	=> $profileList[$i]['profileID']
+					);
+					$applicationLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$application.'</a>';					
 
 					$group = (empty($profileList[$i]['ea_group']) ? lang('any group') : $GLOBALS['egw']->accounts->id2name($profileList[$i]['ea_group']));
+					$linkData = array
+					(
+						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'nocache'	=> '1',
+						'tabpage'	=> '1',
+						'profileid'	=> $profileList[$i]['profileID']
+					);
+					$groupLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$group.'</a>';
 
 					$moveButtons = '<img src="'. $GLOBALS['egw']->common->image('phpgwapi', 'up') .'" onclick="moveUp(this)">&nbsp;'.
 						       '<img src="'. $GLOBALS['egw']->common->image('phpgwapi', 'down') .'" onclick="moveDown(this)">';
@@ -307,9 +327,9 @@
 						$descriptionLink,
 						$smtpServerLink,
 						$imapServerLink,
+						$applicationLink,
+						$groupLink,
 						$deleteLink,
-						$application,
-						$group,
 						$moveButtons,
 						
 					);
@@ -321,9 +341,9 @@
 				lang('description'),
 				lang('smtp server name'),
 				lang('imap/pop3 server name'),
-				lang('delete'),
 				lang('application'),
 				lang('group'),
+				lang('delete'),
 				lang('order'),
 			);
 				
@@ -441,12 +461,15 @@
 			$this->boemailadmin->saveProfile($globalSettings, $smtpSettings, $imapSettings);
 			#if ($_POST['bo_action'] == 'save_ldap' || $_GET['bo_action'] == 'save_ldap')
 			#{
-				$this->listProfiles();
+			#	$this->listProfiles();
 			#}
 			#else
 			#{
 			#	$this->editServer($_GET["serverid"],$_GET["pagenumber"]);
 			#}
+			print "<script type=\"text/javascript\">opener.location.reload(); window.close();</script>";
+			$GLOBALS['egw']->common->egw_exit();
+			exit;
 		}
 		
 		function translate()

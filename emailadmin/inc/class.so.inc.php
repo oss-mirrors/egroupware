@@ -57,7 +57,9 @@
 		{
 			$this->db->select($this->table,$_fieldNames,array('profileID' => $_profileID), __LINE__, __FILE__);
 			
-			return $this->db->row(true);
+			$data = $this->db->row(true);
+			
+			return $data;
 		}
 		
 		function getProfileList($_profileID=0,$_defaultProfile=false)

@@ -10,7 +10,7 @@
 		&nbsp;
 	</td>
 	<td width="33%" align="right">
-		<a href="{add_link}">{lang_add_profile}</a>
+		<a href="#" onclick="egw_openWindowCentered2('{add_link}','ea_addProfile',700,600); return false;">{lang_add_profile}</a>
 	</td>
 </tr>
 <tr>

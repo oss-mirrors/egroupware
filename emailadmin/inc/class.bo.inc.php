@@ -508,7 +508,7 @@
 					{
 						$config->save_value($name,$value,'phpgwapi');
 					}
-					echo "<p>eGW configuration update: ".print_r($new_config,true)."</p>\n";
+					//echo "<p>eGW configuration update: ".print_r($new_config,true)."</p>\n";
 				}
 			}
 		}
