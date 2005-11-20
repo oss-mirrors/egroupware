@@ -27,7 +27,7 @@
 		'Test Suite'    => $GLOBALS['egw']->link('/xmlrpc/testsuite.php'),
 		'Introspection' => $GLOBALS['egw']->link('/xmlrpc/introspect.php'),
 		'client / server test' => $GLOBALS['egw']->link('/xmlrpc/interserv.php'),
-		'server test'   => $GLOBALS['egw']->link('/xmlrpc/phpgw_test.php'),
+		'server test'   => $GLOBALS['egw']->link('/xmlrpc/egw_test.php'),
 		'Simple Client' => $GLOBALS['egw']->link('/xmlrpc/client.php')
 	);
 
