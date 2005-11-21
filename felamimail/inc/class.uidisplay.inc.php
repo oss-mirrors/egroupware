@@ -269,7 +269,7 @@
 						'action'	=> "window.location.href = '$forwardURL'",
 						'tooltip'	=> lang('forward'),
 					),
-					'editdelete'	=> array(
+					'delete'	=> array(
 						'action'	=> "window.location.href = '$deleteURL'",
 						'tooltip'	=> lang('delete'),
 					),
@@ -339,11 +339,11 @@
 				}
 
 				$navbarImages = array(
-					'up'	=> array(
+					'up.button'	=> array(
 						'action'	=> $previousURL,
 						'tooltip'	=> lang('previous message'),
 					),
-					'down'	=> array(
+					'down.button'	=> array(
 						'action'	=> $nextURL,
 						'tooltip'	=> lang('next message'),
 					),
