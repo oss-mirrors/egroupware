@@ -2,8 +2,8 @@
 <script language="JavaScript1.2">
 self.focus();
 </script>
-{print_navbar}
-<table border="0" width="100%" cellspacing="0" bgcolor="white">
+<!-- {print_navbar} -->
+<table border="0" width="100%" cellspacing="0" style="border: solid white 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
 <tr>
 	<td>
 		{navbar}
@@ -16,9 +16,6 @@ self.focus();
 <tr class="th">
 	<td style="font-weight:bold;">
 		{subject_data}
-	</td>
-	<td style="text-align:right; width:100px;">
-		<a href="{link_printable}" target="_blank">{lang_printable}</a>
 	</td>
 </tr>
 </table>
@@ -96,40 +93,20 @@ self.focus();
 <!-- END message_raw_header -->
 
 <!-- BEGIN message_navbar -->
-<table border="0" cellpadding="1" cellspacing="0" width="100%">
-	<tr bgcolor="{th_bg}">
-		<td width="40%">
-			{lang_back_to_folder}:&nbsp;<a href="{link_message_list}">{folder_name}</a>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr class="navbarBackground">
+		<td width="250px">
+			<div class="parentDIV">
+				{navbarButtonsLeft}
+			</div>
 		</td>
-		<td align="right">
-			{previous_message}
-			{next_message}
+		<td width="300px"align="left">
+			&nbsp;
 		</td>
-	</tr>
-	<tr bgcolor="{th_bg}">
-		<td align="left">
-			{link_mainmessage}
-		</td>
-		<td align="right">
-			<a href="{link_reply}">
-			<!-- <img src="{app_image_path}/sm_reply.gif" height="26" width="28" alt="{lang_reply}" border="0"> -->
-			{lang_reply}
-			</a>
-			&nbsp;|&nbsp;
-			<a href="{link_reply_all}">
-			<!-- <img src="{app_image_path}/sm_reply_all.gif" height="26" width="28" alt="{lang_reply_all}" border="0"> -->
-			{lang_reply_all}
-			</a>
-			&nbsp;|&nbsp;
-			<a href="{link_forward}">
-			<!-- <img src="{app_image_path}/sm_forward.gif" height="26" width="28" alt="{lang_forward}" border="0"> -->
-			{lang_forward}
-			</a>
-			&nbsp;|&nbsp;
-			<a href="{link_delete}">
-			<!-- <img src="{app_image_path}/sm_delete.gif" height="26" width="28" alt="{lang_delete}" border="0"> -->
-			{lang_delete}
-			</a>
+		<td width="55px" align="right">
+			<div class="parentDIV">
+				{navbarButtonsRight}
+			</div>
 		</td>
 	</tr>
 </table>
@@ -143,22 +120,22 @@ self.focus();
 <!-- BEGIN message_attachement_row -->
 <tr>
 	<td valign="top">
-		<a href="{link_view}" target="{target}"><font size="2" face="{theme_font}">
+		<a href="#" onclick="{link_view} return false;"><font size="2" face="{theme_font}">
 		<b>{filename}</b></font><a>
 	</td> 
-	<td>
+	<td align="center">
 		<font size="2" face="{theme_font}">
 		{mimetype}
 		</font>
 	</td>
-	<td>
+	<td align="center">
 		<font size="2" face="{theme_font}">
 		{size}
 		</font>
 	</td>
 	<td width="10%" align="center">
 		<font size="2" face="{theme_font}">
-		<a href="{link_save}">{lang_save}</a>
+		<a href="{link_save}"><img src="{url_img_save}" title="{lang_save}"></a>
 		</font>
 	</td>
 </tr>

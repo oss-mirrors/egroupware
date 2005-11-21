@@ -134,6 +134,7 @@
 			$partID		= $_GET['part'];
 			$transformdate	=& CreateObject('felamimail.transformdate');
 			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
+			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
@@ -216,43 +217,8 @@
 			
 //			if(!isset($_GET['printable']))
 //			{
-				// navbar
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
-				);
-				if($this->mailPreferences['messageNewWindow'])
-				{
-					$this->t->set_var("link_message_list","javascript:window.close();");
-				}
-				else
-				{
-					$this->t->set_var("link_message_list",$GLOBALS['egw']->link('/felamimail/index.php',$linkData));
-				}
-	
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uicompose.compose'
-				);
-				$this->t->set_var("link_compose",$GLOBALS['egw']->link('/index.php',$linkData));
-				$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
-				
-				// return link to main message
-				if($partID != '')
-				{
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uidisplay.display',
-						'showHeader'	=> 'false',
-						'uid'		=> $this->uid
-					);
-					$this->t->set_var('link_mainmessage','<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.lang('mainmessage').'</a>');
-				}
-				else
-				{
-					$this->t->set_var('link_mainmessage','');
-				}
-
+			// navbar start
+				// reply url
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uicompose.reply',
@@ -260,8 +226,9 @@
 				);
 				if($partID != '')
 					$linkData['part_id'] = $partID;
-				$this->t->set_var("link_reply",$GLOBALS['egw']->link('/index.php',$linkData));
+				$replyURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
+				// reply all url
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uicompose.replyAll',
@@ -269,8 +236,9 @@
 				);
 				if($partID != '')
 					$linkData['part_id'] = $partID;
-				$this->t->set_var("link_reply_all",$GLOBALS['egw']->link('/index.php',$linkData));
+				$replyAllURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
+				// forward url
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uicompose.forward',
@@ -278,22 +246,41 @@
 				);
 				if($partID != '')
 					$linkData['part_id'] = $partID;
-				$this->t->set_var("link_forward",$GLOBALS['egw']->link('/index.php',$linkData));	
+				$forwardURL = $GLOBALS['egw']->link('/index.php',$linkData);	
 
+				//delete url
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uifelamimail.deleteMessage',
 					'message'	=> $this->uid
 				);
-				$this->t->set_var("link_delete",$GLOBALS['egw']->link('/index.php',$linkData));
+				$deleteURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uidisplay.showHeader',
-					'uid'		=> $this->uid
+				$navbarImages = array(
+					'mail_reply'	=> array(
+						'action'	=> "window.location.href = '$replyURL'",
+						'tooltip'	=> lang('reply'),
+					),
+					'mail_replyall'	=> array(
+						'action'	=> "window.location.href = '$replyAllURL'",
+						'tooltip'	=> lang('reply all'),
+					),
+					'mail_forward'	=> array(
+						'action'	=> "window.location.href = '$forwardURL'",
+						'tooltip'	=> lang('forward'),
+					),
+					'editdelete'	=> array(
+						'action'	=> "window.location.href = '$deleteURL'",
+						'tooltip'	=> lang('delete'),
+					),
 				);
-				$this->t->set_var("link_header",$GLOBALS['egw']->link('/index.php',$linkData));
+				foreach($navbarImages as $buttonName => $buttonInfo)
+				{
+					$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
+				}
+				$navbarButtons .= $uiWidgets->navbarSeparator();
 
+				// print url
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uidisplay.display',
@@ -302,8 +289,23 @@
 				);
 				if($partID != '')
 					$linkData['part'] = $partID;
-				$this->t->set_var("link_printable",$GLOBALS['egw']->link('/index.php',$linkData));
+				$printURL = $GLOBALS['egw']->link('/index.php',$linkData);
+
+				$navbarImages = array(
+					'fileprint' => array(
+						'action'	=> "window.location.href = '$printURL'",
+						'tooltip'	=> lang('print it'),
+					),
+				);
 				
+				foreach($navbarImages as $buttonName => $buttonData)
+				{
+					$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip']);
+				}
+				$this->t->set_var('navbarButtonsLeft',$navbarButtons);
+				
+				$navbarButtons = '';
+
 				if($nextMessage['previous'])
 				{
 					$linkData = array
@@ -312,12 +314,12 @@
 						'showHeader'	=> 'false',
 						'uid'		=> $nextMessage['previous']
 					);
-					$this->t->set_var('previous_url',$GLOBALS['egw']->link('/index.php',$linkData));
-					$this->t->parse('previous_message','previous_message_block',True);
+					$previousURL = $GLOBALS['egw']->link('/index.php',$linkData);
+					$previousURL = "window.location.href = '$previousURL'";
 				}
 				else
 				{
-					$this->t->set_var('previous_message',lang('previous message'));
+					$previousURL = '';
 				}
 	
 				if($nextMessage['next'])
@@ -328,28 +330,36 @@
 						'showHeader'	=> 'false',
 						'uid'		=> $nextMessage['next']
 					);
-					$this->t->set_var('next_url',$GLOBALS['egw']->link('/index.php',$linkData));
-					$this->t->parse('next_message','next_message_block',True);
+					$nextURL = $GLOBALS['egw']->link('/index.php',$linkData);
+					$nextURL = "window.location.href = '$nextURL'";
 				}
 				else
 				{
-					$this->t->set_var('next_message',lang('next message'));
+					$nextURL = '';
 				}
-	
-				$langArray = array
-				(
-					'lang_messagelist'      => lang('Message List'),
-					'lang_compose'          => lang('Compose'),
-					'lang_delete'           => lang('Delete'),
-					'lang_forward'          => lang('Forward'),
-					'lang_reply'            => lang('Reply'),
-					'lang_reply_all'        => lang('Reply All'),
-					'lang_back_to_folder'   => lang('back to folder'),
-					'print_navbar'		=> '',
-					'app_image_path'        => EGW_IMAGES
+
+				$navbarImages = array(
+					'up'	=> array(
+						'action'	=> $previousURL,
+						'tooltip'	=> lang('previous message'),
+					),
+					'down'	=> array(
+						'action'	=> $nextURL,
+						'tooltip'	=> lang('next message'),
+					),
 				);
-				$this->t->set_var($langArray);
+				
+				foreach($navbarImages as $buttonName => $buttonData)
+				{
+					$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip']);
+				}
+
+				$this->t->set_var('navbarButtonsRight',$navbarButtons);
+				
 				$this->t->parse('navbar','message_navbar',True);
+
+			// navbar end
+			
 /*			}
 			else
 			{	
@@ -671,6 +681,7 @@
 				$this->t->set_var('name',lang('name'));
 				$this->t->set_var('type',lang('type'));
 				$this->t->set_var('size',lang('size'));
+				$this->t->set_var('url_img_save',$GLOBALS['egw']->common->image('felamimail','fileexport'));
 				#$this->t->parse('attachment_rows','attachment_row_bold',True);
 				foreach ($attachments as $key => $value)
 				{
@@ -689,19 +700,21 @@
 								'uid'		=> $this->uid,
 								'part'		=> $value['partID']
 							);
-							$target = '';
+							$windowName = 'displayMessage_'.$this->uid;
+							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());";
 							break;
 						case 'image/jpeg':
 						case 'image/png':
 						case 'image/gif':
-						case 'application/pdf':
+						#case 'application/pdf':
 							$linkData = array
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
 								'part'		=> $value['partID']
 							);
-							$target = '_blank';
+							$windowName = 'displayAttachment_'.$this->uid;
+							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',800,600);";
 							break;
 						default:
 							$linkData = array
@@ -710,10 +723,10 @@
 								'uid'		=> $this->uid,
 								'part'		=> $value['partID']
 							);
-							$target = '';
+							$linkView = "window.location.href = '".$GLOBALS['egw']->link('/index.php',$linkData)."';";
 							break;
 					}
-					$this->t->set_var("link_view",$GLOBALS['egw']->link('/index.php',$linkData));
+					$this->t->set_var("link_view",$linkView);
 					$this->t->set_var("target",$target);
 
 					$linkData = array

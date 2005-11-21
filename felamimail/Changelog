@@ -1,5 +1,8 @@
-20051120
+20051121
+- fixed the display of messages. messages now always open in new windows
+- fixed navbar and replaced text with icons
 
+20051120
 - removed dependency on email
 
 20051018

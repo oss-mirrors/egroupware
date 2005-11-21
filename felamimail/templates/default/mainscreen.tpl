@@ -116,60 +116,36 @@ doLoad();
 //-->
 </script>
 
-<TABLE WIDTH="100%" CELLPADDING="2" CELLSPACING="0" BORDER="0">
-	<TR>
-		<TD BGCOLOR="{th_bg}" align="left"><nobr>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
+	<tr class="navbarBackground">
+		<td align="right" width="170px">
+			<div class="parentDIV">
+				{navbarButtonsLeft}
+			</div>
+		</td>
+		<td align="right" width="200px">
 			<img src="{mail_find}" border="0" name="{lang_quicksearch}" alt="{lang_quicksearch}" title="{lang_quicksearch}" width="16" onClick="javascript:document.searchForm.submit()">
 			<input class="input_text" type="text" size="25" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch(this.value);" onFocus="this.select();" style="font-size:11px;">
 		</td>
-		<TD BGCOLOR="{th_bg}" align="left"><nobr>
+		<td align="left" width="200px">
+			&nbsp;
 			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;
-			<select name="filter" id="filter" onchange="javascript:extendedSearch(this)" style="border : 1px solid silver; font-size:11px;">
+			<select name="filter" id="filter" onchange="javascript:extendedSearch(this)" style="border : 1px solid silver; font-size:11px; width: 170px;">
 				{filter_options}
 			</select>
-		</TD>
-		<TD BGCOLOR="{th_bg}" width="30%" align="center" style="white-space: nowrap;">
-			<b>{current_folder}</b>
 		</td>
-		<td BGCOLOR="{th_bg}" width="30%" align="center" style="white-space: nowrap;">
+		<td align="center" style="white-space: nowrap;">
 			{quota_display}
 		</td>
-		<TD BGCOLOR="{th_bg}" align="right" width="20%">
-			<TABLE BORDER="0" cellpadding="2" cellspacing=0>
-				<TR valign="middle" bgcolor="{th_bg}">
-					<td width="12px" align="left" valign="center">
-						<a href="{url_compose_empty}">
-						<img src="{write_mail}" border="0" name="{lang_compose}" alt="{lang_compose}" title="{lang_compose}" width="16">
-						</a>
-                                        </td>
-                                        <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>				
-					<td width="12px" align="right" valign="center">
-						<input type="image" src="{read_small}" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16" onClick="javascript:flagMessages('read',xajax.getFormValues('formMessageList'))">
-                                        </td>
-                                        <td width="12px" align="left" valign="center">
-						<input type="image" src="{unread_small}" name="mark_unread" alt="title="{desc_unread}" title="{desc_unread}" width="16" onClick="javascript:flagMessages('unread',xajax.getFormValues('formMessageList'))">
-                                        </td>
-                                        <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>
-                                        
-                                        <td width="12px" align="right" valign="center">
-						<input type="image" src="{unread_flagged_small}" name="mark_flagged" alt="{desc_important}" title="{desc_important}" width="16" onClick="javascript:flagMessages('flagged',xajax.getFormValues('formMessageList'))">
-                                        </td>
-                                        <td width="12px" align="left" valign="center">
-						<input type="image" src="{read_flagged_small}" name="mark_unflagged" alt="{desc_unimportant}" title="{desc_unimportant}" onClick="javascript:flagMessages('unflagged',xajax.getFormValues('formMessageList'))">
-                                        </td>
-                                        <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>
-                                        </td>
-                                        <td width="12px" align="RIGHT" valign="center">
-						<input type="image" src="{trash}" name="mark_deleted" title="{desc_deleted}" onClick="javascript:deleteMessages(xajax.getFormValues('formMessageList'))">
-					</TD>
-				</TR>
-			</TABLE>
-			
+		<td width="105px" align="right" style="white-space: nowrap;">
+			<div class="parentDIV">
+				{navbarButtonsRight}
+			</div>
 		</td>
 	</TR>
 </table>
 
-<TABLE  width="100%" cellpadding="0" cellspacing="0" border="0">
+<TABLE  width="100%" cellpadding="0" cellspacing="0" border="0" style="height:100px;">
 		<input type="hidden" name="folderAction" id="folderAction" value="changeFolder">
 		<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
 		<INPUT TYPE=hidden NAME="mailbox">
@@ -181,14 +157,11 @@ doLoad();
 		<td>
 			&nbsp;
 		</td>
-		<td align="left" style="font-size:10px">
+		<td align="left" style="font-size:10px;">
 			<span id="messageCounter">{message}</span>
 		</td>
 		<td align="right">
-			<input type="image" src="{start_kde}" border="0" alt="start" onClick="javascript:jumpStart(); return false;">
-			<input type="image" src="{previous_kde}" border="0" alt="skipPrevious" onClick="javascript:skipPrevious(); return false;">
-			<input type="image" src="{next_kde}" border="0" alt="skipForward" onClick="javascript:skipForward(); return false;">
-			<input type="image" src="{finnish_kde}" border="0" alt="end" onClick="javascript:jumpEnd(); return false;">
+			&nbsp;
 		</td>
 	</tr>
 	<TR>
@@ -307,7 +280,7 @@ doLoad();
 			onclick="toggleFolderRadio(this)" {row_selected}>
 		</td>
 		<td  style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
-			<a class="{row_css_class}" href="{url_compose}" title="{full_address}">{sender_name}</a>
+			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
 	<!--		<a href="{url_add_to_addressbook}"><img src="{add_address}"  border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>  -->
 		</td>
 		<td class="{row_css_class}" width="95px" align="center">
@@ -320,7 +293,7 @@ doLoad();
 			<nobr>{attachments}
 		</td>
 		<td style="overflow:hidden; white-space:nowrap;"><nobr>
-			<a  class="{row_css_class}" name="subject_url" href="{url_read_message}" title="{full_subject}">{header_subject}</a>
+			<a  class="{row_css_class}" name="subject_url" href="#" onclick="{url_read_message} return false;" title="{full_subject}">{header_subject}</a>
 		</td>
 		<td colspan=2 align="right" class="{row_css_class}" width="40px">
 			<span style="font-size:10px">{size}</span
@@ -339,7 +312,7 @@ doLoad();
 <!-- END error_message -->
 
 <!-- BEGIN quota_block -->
-	<table cellpadding="0" cellspacing="0" width="200" style="border : 1px solid silver;">
+	<table cellpadding="0" cellspacing="0" width="100%" style="border : 1px solid silver;">
 		<tr valign="middle">
 			<td bgcolor="{quotaBG}" align="center" valign="middle" style="width : {leftWidth}%;">
 				<small>{quotaUsage_left}</small>

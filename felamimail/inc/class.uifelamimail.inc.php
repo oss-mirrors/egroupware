@@ -454,6 +454,71 @@
 				$this->t->set_var('quota_display','&nbsp;');
 			}
 			
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uicompose.compose'
+			);
+			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','test',700,750);";
+
+			$navbarImages = array(
+				'mail_new'	=> array(
+					'action'	=> $urlCompose,
+					'tooltip'	=> lang('compose'),
+				),
+				'read_small'		=> array(
+					'action'	=> "flagMessages('read',xajax.getFormValues('formMessageList'))",
+					'tooltip'	=> lang('mark selected as read'),
+				),
+				'unread_small'		=> array(
+					'action'	=> "flagMessages('unread',xajax.getFormValues('formMessageList'))",
+					'tooltip'	=> lang('mark selected as unread'),
+				),
+				'unread_flagged_small'	=> array(
+					'action'	=> "flagMessages('flagged',xajax.getFormValues('formMessageList'))",
+					'tooltip'	=> lang('mark selected as read'),
+				),
+				'read_flagged_small'	=> array(
+					'action'	=> "flagMessages('unflagged',xajax.getFormValues('formMessageList'))",
+					'tooltip'	=> lang('mark selected as unread'),
+				),
+				'delete'		=> array(
+					'action'	=> "deleteMessages(xajax.getFormValues('formMessageList'))",
+					'tooltip'	=> lang('mark selected as unread'),
+				),
+			);
+			foreach($navbarImages as $buttonName => $buttonInfo)
+			{
+				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
+			}
+			#$navbarButtons .= $uiwidgets->navbarSeparator();
+			$this->t->set_var('navbarButtonsLeft',$navbarButtons);
+
+			$navbarImages = array(
+				'first'			=> array(
+					'action'	=> "jumpStart(); return false;",
+					'tooltip'	=> '',
+				),
+				'left'		=> array(
+					'action'	=> "skipPrevious(); return false;",
+					'tooltip'	=> '',
+				),
+				'right'			=> array(
+					'action'	=> "skipForward(); return false;",
+					'tooltip'	=> '',
+				),
+				'last'		=> array(
+					'action'	=> "jumpEnd(); return false;",
+					'tooltip'	=> '',
+				),
+			);
+			$navbarButtons  = '';
+			foreach($navbarImages as $buttonName => $buttonInfo)
+			{
+				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
+			}
+			#$navbarButtons .= $uiwidgets->navbarSeparator();
+			$this->t->set_var('navbarButtonsRight',$navbarButtons);
+
 			// set the images
 			$listOfImages = array(
 				'read_small',
@@ -769,15 +834,16 @@
 			(
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			if($preferences['messageNewWindow'])
-			{
-				$this->t->set_var('url_compose_empty',"javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."','".
-					($preferences['messageNewWindow'] == 1 ? 'displayMessage' : '_blank')."');");
-			}
-			else
-			{
-				$this->t->set_var('url_compose_empty',$GLOBALS['egw']->link('/index.php',$linkData));
-			}
+			#if($preferences['messageNewWindow'])
+			#{
+				#$this->t->set_var('url_compose_empty',"javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."','".
+				#	($preferences['messageNewWindow'] == 1 ? 'displayMessage' : '_blank')."');");
+				$this->t->set_var('url_compose_empty',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','test',700,egw_getWindowOuterHeight());");
+			#}
+			#else
+			#{
+			#	$this->t->set_var('url_compose_empty',$GLOBALS['egw']->link('/index.php',$linkData));
+			#}
 
 
 			$linkData = array

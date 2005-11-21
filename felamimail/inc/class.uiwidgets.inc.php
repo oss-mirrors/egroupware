@@ -308,15 +308,8 @@
 					'showHeader'	=> 'false',
 					'uid'			=> $header['uid']
 				);
-				if($_readInNewWindow)
-				{
-					$this->t->set_var('url_read_message',"javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."','".
-						($_readInNewWindow == 1 ? 'displayMessage' : '_blank')."');");
-				}
-				else
-				{
-					$this->t->set_var('url_read_message',$GLOBALS['egw']->link('/index.php',$linkData));
-				}
+				$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
+				$this->t->set_var('url_read_message',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());");
 			
 				if(!empty($header['sender_name']))
 				{
@@ -338,15 +331,10 @@
 						'send_to'	=> base64_encode($header['sender_address'])
 					);
 				}
-				if($_readInNewWindow)
-				{
-					$this->t->set_var('url_compose',"javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."','".
-						($_readInNewWindow == 1 ? 'displayMessage' : '_blank')."');");
-				}
-				else
-				{
-					$this->t->set_var('url_compose',$GLOBALS['egw']->link('/index.php',$linkData));
-				}
+				
+				$windowName = 'compose'.$header['uid'];
+				$this->t->set_var('url_compose',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());");
+
 				
 				$linkData = array
 				(
@@ -409,6 +397,22 @@
 			
 			
 			return $this->template->fp('out','multiSelectBox');
+		}
+		
+		function navbarButton($_imageName, $_imageAction, $_toolTip='')
+		{
+			$image = $GLOBALS['egw']->common->image('felamimail',$_imageName);
+			
+			return "<div class='navButton'><img style='width:16px; height:16px;' title='$_toolTip' src='$image' 
+				onmousedown='this.parentNode.className=\"navButtonActive\";' 
+				onmouseup='this.parentNode.className=\"navButtonHover\";' 
+				onmouseout='this.parentNode.className=\"navButton\";'
+				onclick=\"$_imageAction\"></div>";
+		}
+
+		function navbarSeparator()
+		{
+			return '<div class="navSeparator"></div>';
 		}
 
 		/* Returns a string showing the size of the message/attachment */

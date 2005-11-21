@@ -72,7 +72,6 @@
 	);
 
 	$newWindowOptions = array(
-		'0' => lang('no'),
 		'1' => lang('only one window'),
 		'2' => lang('allways a new window'),
 	);
@@ -141,7 +140,7 @@
 		),
 		'message_newwindow' => array(
 			'type'   => 'select',
-			'label'  => 'display message in new window',
+			'label'  => 'display messages in multiple windows',
 			'name'   => 'message_newwindow',
 			'values' => $newWindowOptions,
 			'xmlrpc' => True,
