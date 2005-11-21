@@ -51,6 +51,7 @@ class Folder
 		$this->_sequence = $sequence;
 		
 		$this->db = clone($GLOBALS['egw']->db);
+		$this->db->set_app('mydms');
 	}
 
 	function getID() { return $this->_id; }
@@ -59,9 +60,10 @@ class Folder
 
 	function setName($newName)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Folders SET name = '" . $newName . "' WHERE id = ". $this->_id;
-		$res = $GLOBALS['mydms']->db->getResult($queryStr);
-		if (!$res)
+		$data 	= array('name' => $newName);
+		$where	= array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
 		
 		$this->_name = $newName;
@@ -73,9 +75,10 @@ class Folder
 
 	function setComment($newComment)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Folders SET comment = '" . $newComment . "' WHERE id = ". $this->_id;
-		$res = $GLOBALS['mydms']->db->getResult($queryStr);
-		if (!$res)
+		$data 	= array('comment' => $newComment);
+		$where	= array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
 		
 		$this->_comment = $newComment;
@@ -95,9 +98,10 @@ class Folder
 
 	function setParent($newParent)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Folders SET parent = " . $newParent->getID() . " WHERE id = ". $this->_id;
-		$res = $GLOBALS['mydms']->db->getResult($queryStr);
-		if (!$res)
+		$data 	= array('parent' => $newParent->getID());
+		$where	= array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
 		
 		$this->_parentID = $newParent->getID();
@@ -115,8 +119,10 @@ class Folder
 
 	function setOwner($user)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Folders set owner = " . $user->getID() . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data 	= array('owner' => $user->getID());
+		$where	= array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
 		
 		$this->_ownerID = $user->getID();
@@ -138,8 +144,10 @@ class Folder
 
 	function setDefaultAccess($mode)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Folders set defaultAccess = " . $mode . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data 	= array('defaultAccess' => $mode);
+		$where	= array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
 		
 		$this->_defaulAccess = $mode;
@@ -151,9 +159,11 @@ class Folder
 	function setInheritAccess($inheritAccess)
 	{
 		$inheritAccess = $inheritAccess ? "1" : "0";
+
+		$data 	= array('inheritAccess' => $inheritAccess);
+		$where	= array('id' => $this->_id);
 		
-		$queryStr = "UPDATE phpgw_mydms_Folders SET inheritAccess = " . $GLOBALS['egw']->db->quote($inheritAccess,'bool') . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
 		
 		$this->_inheritAccess = $inheritAccess;
@@ -164,10 +174,12 @@ class Folder
 
 	function setSequence($seq)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Folders SET sequence = " . $seq . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
-			return false;
+		$data 	= array('sequence' => $seq);
+		$where	= array('id' => $this->_id);
 		
+		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
+			return false;
+
 		$this->_sequence = $seq;
 		return true;
 	}
@@ -305,7 +317,7 @@ class Folder
 
 	function addDocument($name, $comment, $expires, $owner, $keywords, $tmpFile, $orgFileName, $fileType, $mimeType, $sequence)
 	{
-		$ownerid = $GLOBALS['phpgw_info']['user']['account_id'];		
+		$ownerid = $GLOBALS['egw_info']['user']['account_id'];		
 
 		$expires = (!$expires) ? 0 : $expires;
 

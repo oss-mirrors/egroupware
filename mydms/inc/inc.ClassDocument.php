@@ -50,6 +50,9 @@ class Document
 		$this->_locked = $locked;
 		$this->_keywords = $keywords;
 		$this->_sequence = $sequence;
+
+		$this->db = clone($GLOBALS['egw']->db);
+		$this->db->set_app('mydms');
 	}
 
 	function getID() { return $this->_id; }
