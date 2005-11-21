@@ -12,6 +12,19 @@
 	\**************************************************************************/
 
 	/*Write the Root Folder name into the database*/
-	$oProc->query("INSERT INTO phpgw_mydms_Folders VALUES (1, 'Root-Folder', 0, 'no comment', 1, false, 2, 0)");
+	#$oProc->query("INSERT INTO phpgw_mydms_Folders VALUES (1, 'Root-Folder', 0, 'no comment', 1, false, 2, 0)");
+	$oProc->query("INSERT INTO phpgw_mydms_Folders VALUES (1, 'Root-Folder', 0, 'no comment', 1, 0, 2, 0)");
 
+/*	$rootFolder = array(
+		'id'		=> 1,
+		'name'		=> 'Root-Folder',
+		'parent'	=> 0,
+		'comment'	=> 'no comment',
+		'owner'		=> 1,
+		'inheritAccess'	=> 0,
+		'defaultAccess'	=> 2,
+		'sequence'	=> 0,
+	);
+
+	$oProc->insert('phpgw_mydms_Folders', $rootFolder, '', __LINE__, _FILE__); */
 ?>
