@@ -14,7 +14,7 @@ regis_glc is Regis Leroy
 	* bugfix, agents were not created when importing process from xml (regis_glc)
 	* bugfix, wrong sql call with new db class on agent configuration (regis_glc)
 	* 2 bugfix with the "execute instance" icon shown without having real rights to execute. (regis_glc)
-	* translations (omgs)
+	* translations (omgs) fixing shared translations between preferences and proccess administration (omgs - ralf becker)
 
 [1.2.00.000] Release candidate 1
 	* Modernization of the code for egroupware 1.2 (see egroupware's modernize.php script) $GLOBALS['phpgw']->$GLOBALS['egw'], etc (regis_glc, script by Ralf becker). The engine part is not impacted --except config file).
