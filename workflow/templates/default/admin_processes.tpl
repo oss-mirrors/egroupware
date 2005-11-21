@@ -130,7 +130,7 @@
 	</td>
 </tr>
 <tr>
-  <td>{lang_Upload_file}:</td><td><input type="hidden" name="MAX_FILE_SIZE" value="10000000000000" /><input size="16" name="userfile1" type="file" /><input style="font-size:9px;" type="submit" name="upload" value="upload" /></td>
+  <td>{lang_Upload_file}:</td><td><input type="hidden" name="MAX_FILE_SIZE" value="10000000000000" /><input size="16" name="userfile1" type="file" /><input style="font-size:9px;" type="submit" name="upload" value="{lang_upload}" /></td>
 </tr>
 </table>
 </form>
