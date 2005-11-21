@@ -115,7 +115,7 @@
 					{
 						$newData['mailforwardingaddress'][0] = $_forwardingAddress;
 					}
-					$newData['deliverymode'] = ($_keepLocalCopy == 'yes'? 'forwardOnly' : array());
+					$newData['deliverymode'] = ($_keepLocalCopy == 'yes'? array() : 'forwardOnly');
 				}
 				else
 				{
