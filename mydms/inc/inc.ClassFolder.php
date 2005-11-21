@@ -49,6 +49,8 @@ class Folder
 		$this->_inheritAccess = $inheritAccess;
 		$this->_defaultAccess = $defaultAccess;
 		$this->_sequence = $sequence;
+		
+		$this->db = clone($GLOBALS['egw']->db);
 	}
 
 	function getID() { return $this->_id; }
@@ -196,15 +198,24 @@ class Folder
 	{
 		$ownerid = $GLOBALS['phpgw_info']['user']['account_id'];
 		//inheritAccess = true, defaultAccess = M_READ
-		$queryStr = "INSERT INTO phpgw_mydms_Folders (name, parent, comment, owner, inheritAccess, defaultAccess, sequence) ".
-					"VALUES ('".$name."', ".$this->_id.", '".$comment."', ".$ownerid.", true, ".M_READ.", ".$sequence.")";
-		$res = $GLOBALS['mydms']->db->getResult($queryStr);
+
+		$insertData = array(
+			'name'		=> $name,
+			'parent'	=> $this->_id,
+			'comment'	=> $comment,
+			'owner'		=> $ownerid,
+			'inheritAccess'	=> true,
+			'defaultAccess'	=> M_READ,
+			'sequence'	=> $sequence,
+		);
+		$res = $this->db->insert('phpgw_mydms_Folders', $insertData, '', __LINE__, __FILE__, 'mydms');
+
 		if (!$res)
 			return false;
 		
 		unset($this->_subFolders);
 		
-		return getFolder($GLOBALS['mydms']->db->getInsertID('phpgw_mydms_Folders','id'));
+		return getFolder($this->db->get_last_insert_id('phpgw_mydms_Folders','id'));
 	}
 
 	/**
@@ -297,13 +308,36 @@ class Folder
 		$ownerid = $GLOBALS['phpgw_info']['user']['account_id'];		
 
 		$expires = (!$expires) ? 0 : $expires;
-		
-		$queryStr = "INSERT INTO phpgw_mydms_Documents (name, comment, date, expires, owner, folder, inheritAccess, defaultAccess, locked, keywords, sequence) VALUES ".
-					"('".$name."', '".$comment."', " . mktime().", ".$expires.", ".$ownerid.", ".$this->_id.", true, ".M_READ.", -1, '".$keywords."', " . $sequence . ")";
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+
+
+		$insertData = array(
+			'name'		=> $name,
+			'comment'	=> $comment,
+			'date'		=> mktime(),
+			'expires'	=> $expires,
+			'owner'		=> $ownerid,
+			'folder'	=> $this->_id,
+			'inheritAccess'	=> true,
+			'defaultAccess'	=> M_READ,
+			'locked'	=> -1,
+			'keywords'	=> $keywords,
+			'sequence'	=> $sequence,
+		);
+		$res = $this->db->insert('phpgw_mydms_Documents', $insertData, '', __LINE__, __FILE__, 'mydms');
+
+		if (!$res)
 			return false;
 		
-		$document = getDocument($GLOBALS['mydms']->db->getInsertID('phpgw_mydms_Documents','id'));
+		#unset($this->_subFolders);
+		
+		#return getFolder($this->db->get_last_insert_id('phpgw_mydms_Folders','id'));
+
+		#$queryStr = "INSERT INTO phpgw_mydms_Documents (name, comment, date, expires, owner, folder, inheritAccess, defaultAccess, locked, keywords, sequence) VALUES ".
+		#			"('".$name."', '".$comment."', " . mktime().", ".$expires.", ".$ownerid.", ".$this->_id.", true, ".M_READ.", -1, '".$keywords."', " . $sequence . ")";
+		#if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		#	return false;
+		
+		$document = getDocument($this->db->get_last_insert_id('phpgw_mydms_Documents','id'));
 		
 		$res = $document->addContent($comment, $owner, $tmpFile, $orgFileName, $fileType, $mimeType);
 		if (is_bool($res) && !$res)

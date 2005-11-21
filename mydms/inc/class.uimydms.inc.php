@@ -544,7 +544,7 @@
 			$versions	= $document->getContent();
 			$notifyList	= $document->getNotifyList();
 			$accessList	= $document->getAccessList();
-			$updatingUser	= $document->getUser();
+			$updatingUser	= $latestContent->getUser();
 			
 			#_debug_array($document);
 			
