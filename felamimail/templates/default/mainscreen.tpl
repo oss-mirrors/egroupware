@@ -5,9 +5,10 @@ var sURL = unescape(window.location.pathname);
 
 // some translations needed for javascript functions
 
-var movingMessages='{lang_moving_messages_to}';
-var msg_emptyTrashFolder = '{lang_empty_trash}';
-var msg_compressingFolder = '{lang_compress_folder}';
+var movingMessages		= '{lang_moving_messages_to}';
+var msg_emptyTrashFolder	= '{lang_empty_trash}';
+var msg_compressingFolder	= '{lang_compress_folder}';
+var lang_select_target_folder	= '{lang_select_target_folder}';
 
 // how many row are selected currently
 var checkedCounter=0;
@@ -43,7 +44,7 @@ doLoad();
 			<img src="{mail_find}" border="0" name="{lang_quicksearch}" alt="{lang_quicksearch}" title="{lang_quicksearch}" width="16" onClick="javascript:document.searchForm.submit()">
 			<input class="input_text" type="text" size="25" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch(this.value);" onFocus="this.select();" style="font-size:11px;">
 		</td>
-		<td align="left" width="200px">
+		<td align="left" width="210px">
 			&nbsp;
 			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;
 			<select name="filter" id="filter" onchange="javascript:extendedSearch(this)" style="border : 1px solid silver; font-size:11px; width: 170px;">
@@ -225,7 +226,7 @@ doLoad();
 <!-- END error_message -->
 
 <!-- BEGIN quota_block -->
-	<table cellpadding="0" cellspacing="0" width="100%" style="border : 1px solid silver;">
+	<table cellpadding="0" cellspacing="0" width="100%" style="border : 1px solid silver; min-width:200px; max-width:300px;">
 		<tr valign="middle">
 			<td bgcolor="{quotaBG}" align="center" valign="middle" style="width : {leftWidth}%;">
 				<small>{quotaUsage_left}</small>
