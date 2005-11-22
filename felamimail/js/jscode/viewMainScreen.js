@@ -240,3 +240,86 @@ function jumpStart()
 
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.jumpStart');
 }
+
+	function selectAll(inputBox)
+	{
+		maxMessages = 0;
+
+		if(aktiv)
+		{
+			// do not reload, while we try to select some messages
+			window.clearTimeout(aktiv);
+			{refreshTime}
+		}
+
+		for (var i = 0; i < document.getElementsByTagName('input').length; i++)
+		{
+			if(document.getElementsByTagName('input')[i].name == 'msg[]')
+			{
+				//alert(document.getElementsByTagName('input')[i].name);
+				document.getElementsByTagName('input')[i].checked = inputBox.checked;
+				maxMessages++;
+			}
+		}
+
+		folderFunctions = document.getElementById('folderFunction');
+
+		if(inputBox.checked)
+		{
+			checkedCounter = maxMessages;
+			while (folderFunctions.hasChildNodes())
+			    folderFunctions.removeChild(folderFunctions.lastChild);
+			var textNode = document.createTextNode('{lang_select_target_folder}');
+			folderFunctions.appendChild(textNode);
+			document.getElementsByName("folderAction")[0].value = "moveMessage";
+		}
+		else
+		{
+			checkedCounter = 0;
+			while (folderFunctions.hasChildNodes())
+			    folderFunctions.removeChild(folderFunctions.lastChild);
+			var textNode = document.createTextNode('');
+			folderFunctions.appendChild(textNode);
+			document.getElementsByName("folderAction")[0].value = "changeFolder";
+		}
+	}
+
+	function toggleFolderRadio(inputBox)
+	{
+		if(aktiv)
+		{
+			// do not reload, while we try to select some messages
+			window.clearTimeout(aktiv);
+			{refreshTime}
+		}
+
+		folderFunctions = document.getElementById("folderFunction");
+		checkedCounter += (inputBox.checked) ? 1 : -1;
+		if (checkedCounter > 0)
+		{
+			while (folderFunctions.hasChildNodes())
+			    folderFunctions.removeChild(folderFunctions.lastChild);
+			var textNode = document.createTextNode('{lang_move_message}');
+			//folderFunctions.appendChild(textNode);
+			document.getElementById("folderFunction").innerHTML="{lang_select_target_folder}";
+			document.getElementsByName("folderAction")[0].value = "moveMessage";
+		}
+		
+		else
+		{
+			document.getElementById('messageCheckBox').checked = false;
+			while (folderFunctions.hasChildNodes())
+			    folderFunctions.removeChild(folderFunctions.lastChild);
+			//var textNode = document.createTextNode('{lang_change_folder}');
+			//folderFunctions.appendChild(textNode);
+			document.getElementsByName("folderAction")[0].value = "changeFolder";
+		}
+		
+	}
+
+function refresh()
+{
+	resetMessageSelect();
+	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
+}     
+

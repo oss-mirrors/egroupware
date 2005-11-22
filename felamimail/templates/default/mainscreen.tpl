@@ -9,109 +9,25 @@ var movingMessages='{lang_moving_messages_to}';
 var msg_emptyTrashFolder = '{lang_empty_trash}';
 var msg_compressingFolder = '{lang_compress_folder}';
 
+// how many row are selected currently
+var checkedCounter=0;
+
+// the refreshtimer object
+var aktiv;
+
+// refresh time for mailboxview
+var refreshTimeOut = {refreshTime};
+
 function doLoad()
 {
 	// the timeout value should be the same as in the "refresh" meta-tag
-	{refreshTime}
-}
-
-function refresh()
-{
-	//var Ziel = '{refresh_url}'
-	//window.location.href = Ziel;
-	resetMessageSelect();
-	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
-}     
-
-function displayMessage(url,target) 
-{
-	window.open(url,target, "width=800,height=600,screenX=0,screenY=0,top=0,left=0,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no");
+	if(refreshTimeOut > 0)
+	{
+		aktiv = window.setInterval("refresh()", refreshTimeOut);
+	}
 }
 
 doLoad();
-
-//-->
-</script>
-
-<script type="text/javascript">
-<!--
-	var checkedCounter={checkedCounter}, aktiv;
-	
-	function selectAll(inputBox)
-	{
-		maxMessages = 0;
-
-		if(aktiv)
-		{
-			// do not reload, while we try to select some messages
-			window.clearTimeout(aktiv);
-			{refreshTime}
-		}
-
-		for (var i = 0; i < document.getElementsByTagName('input').length; i++)
-		{
-			if(document.getElementsByTagName('input')[i].name == 'msg[]')
-			{
-				//alert(document.getElementsByTagName('input')[i].name);
-				document.getElementsByTagName('input')[i].checked = inputBox.checked;
-				maxMessages++;
-			}
-		}
-
-		folderFunctions = document.getElementById('folderFunction');
-
-		if(inputBox.checked)
-		{
-			checkedCounter = maxMessages;
-			while (folderFunctions.hasChildNodes())
-			    folderFunctions.removeChild(folderFunctions.lastChild);
-			var textNode = document.createTextNode('{lang_select_target_folder}');
-			folderFunctions.appendChild(textNode);
-			document.getElementsByName("folderAction")[0].value = "moveMessage";
-		}
-		else
-		{
-			checkedCounter = 0;
-			while (folderFunctions.hasChildNodes())
-			    folderFunctions.removeChild(folderFunctions.lastChild);
-			var textNode = document.createTextNode('');
-			folderFunctions.appendChild(textNode);
-			document.getElementsByName("folderAction")[0].value = "changeFolder";
-		}
-	}
-
-	function toggleFolderRadio(inputBox)
-	{
-		if(aktiv)
-		{
-			// do not reload, while we try to select some messages
-			window.clearTimeout(aktiv);
-			{refreshTime}
-		}
-
-		folderFunctions = document.getElementById("folderFunction");
-		checkedCounter += (inputBox.checked) ? 1 : -1;
-		if (checkedCounter > 0)
-		{
-			while (folderFunctions.hasChildNodes())
-			    folderFunctions.removeChild(folderFunctions.lastChild);
-			var textNode = document.createTextNode('{lang_move_message}');
-			//folderFunctions.appendChild(textNode);
-			document.getElementById("folderFunction").innerHTML="{lang_select_target_folder}";
-			document.getElementsByName("folderAction")[0].value = "moveMessage";
-		}
-		
-		else
-		{
-			document.getElementById('messageCheckBox').checked = false;
-			while (folderFunctions.hasChildNodes())
-			    folderFunctions.removeChild(folderFunctions.lastChild);
-			//var textNode = document.createTextNode('{lang_change_folder}');
-			//folderFunctions.appendChild(textNode);
-			document.getElementsByName("folderAction")[0].value = "changeFolder";
-		}
-		
-	}
 
 //-->
 </script>
