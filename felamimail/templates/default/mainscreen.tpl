@@ -226,7 +226,7 @@ doLoad();
 <!-- END error_message -->
 
 <!-- BEGIN quota_block -->
-	<table cellpadding="0" cellspacing="0" width="100%" style="border : 1px solid silver; min-width:200px; max-width:300px;">
+	<table cellpadding="0" cellspacing="0" width="100%" style="border : 1px solid silver; max-width:200px;">
 		<tr valign="middle">
 			<td bgcolor="{quotaBG}" align="center" valign="middle" style="width : {leftWidth}%;">
 				<small>{quotaUsage_left}</small>
