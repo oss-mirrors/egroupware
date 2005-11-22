@@ -150,18 +150,15 @@ doLoad();
 		<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
 		<INPUT TYPE=hidden NAME="mailbox">
 
-	<tr>
+	<tr style="height: 20px;">
 		<td>
-			<span id="folderFunction" align="left" style="font-size:10px;">&nbsp;</span>	
+			<span id="folderFunction" align="left" style="font-size:11px;">&nbsp;</span>	
 		</td>
 		<td>
 			&nbsp;
 		</td>
-		<td align="left" style="font-size:10px;">
+		<td align="center" style="font-size:11px;" colspan="2">
 			<span id="messageCounter">{message}</span>
-		</td>
-		<td align="right">
-			&nbsp;
 		</td>
 	</tr>
 	<TR>

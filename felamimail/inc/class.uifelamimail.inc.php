@@ -685,7 +685,7 @@
 					
  				// if there aren't any messages left (eg. after delete or move) 
  				// adjust $this->startMessage  
- 				if ($headerCount==0 && $this->$startMessage > $maxMessages)
+ 				if ($headerCount==0 && $this->startMessage > $maxMessages)
  				{
  					$this->startMessage = $this->startMessage - $maxMessages;
 					$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
