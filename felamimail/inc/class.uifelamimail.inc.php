@@ -494,27 +494,27 @@
 			$this->t->set_var('navbarButtonsLeft',$navbarButtons);
 
 			$navbarImages = array(
-				'first'			=> array(
-					'action'	=> "jumpStart(); return false;",
-					'tooltip'	=> '',
-				),
-				'left'		=> array(
-					'action'	=> "skipPrevious(); return false;",
+				'last'		=> array(
+					'action'	=> "jumpEnd(); return false;",
 					'tooltip'	=> '',
 				),
 				'right'			=> array(
 					'action'	=> "skipForward(); return false;",
 					'tooltip'	=> '',
 				),
-				'last'		=> array(
-					'action'	=> "jumpEnd(); return false;",
+				'left'		=> array(
+					'action'	=> "skipPrevious(); return false;",
+					'tooltip'	=> '',
+				),
+				'first'			=> array(
+					'action'	=> "jumpStart(); return false;",
 					'tooltip'	=> '',
 				),
 			);
 			$navbarButtons  = '';
 			foreach($navbarImages as $buttonName => $buttonInfo)
 			{
-				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
+				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip'],'right');
 			}
 			#$navbarButtons .= $uiwidgets->navbarSeparator();
 			$this->t->set_var('navbarButtonsRight',$navbarButtons);

@@ -248,7 +248,7 @@
 					$header['subject'] = @htmlspecialchars($header['subject'],ENT_QUOTES,$this->displayCharset);
 					if($header['attachments'] == "true")
 					{
-						$image = '<img src="'.$GLOBALS['egw']->common->image('felamimail','attach').'" border="0">';
+						$image = '<img src="'.$GLOBALS['egw']->common->image('felamimail','attach').'" border="0" style="width:12px;">';
 
 						$header['attachment'] = $image;
 					}
@@ -399,15 +399,12 @@
 			return $this->template->fp('out','multiSelectBox');
 		}
 		
-		function navbarButton($_imageName, $_imageAction, $_toolTip='')
+		function navbarButton($_imageName, $_imageAction, $_toolTip='', $_float='left')
 		{
 			$image = $GLOBALS['egw']->common->image('felamimail',$_imageName);
+			$float = $_float == 'right' ? 'right' : 'left';
 			
-			return "<div class='navButton'><img style='width:16px; height:16px;' title='$_toolTip' src='$image' 
-				onmousedown='this.parentNode.className=\"navButtonActive\";' 
-				onmouseup='this.parentNode.className=\"navButtonHover\";' 
-				onmouseout='this.parentNode.className=\"navButton\";'
-				onclick=\"$_imageAction\"></div>";
+			return "<div class='navButton' style='float:$float;' onmousedown='this.className=\"navButtonActive\";' onmouseup='this.className=\"navButtonHover\";' onmouseout='this.className=\"navButton\";' onclick=\"$_imageAction\"><img style='width:16px; height:16px;' title='$_toolTip' src='$image' ></div>\n";
 		}
 
 		function navbarSeparator()

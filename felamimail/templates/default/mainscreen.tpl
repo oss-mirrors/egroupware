@@ -54,8 +54,8 @@ doLoad();
 		<td align="center" style="white-space: nowrap;">
 			{quota_display}
 		</td>
-		<td width="105px" align="right" style="white-space: nowrap;">
-			<div class="parentDIV">
+		<td width="120px" style="white-space:nowrap; align:right; text-align:right;">
+			<div class="parentDIV" style="text-align:right; align:right;">
 				{navbarButtonsRight}
 			</div>
 		</td>
@@ -101,15 +101,18 @@ doLoad();
 			<!-- Start Header MessageList -->
 
 			<table WIDTH=100% BORDER="0" CELLSPACING="0" style="table-layout:fixed;">
-				<tr>
+				<tr class="th">
 					<!-- <td width="22px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;
 					</td>-->
-					<td width="20px" bgcolor="{th_bg}" align="center">
-					&nbsp;<input style="width:10px; height:10px; border:none" type="checkbox" id="messageCheckBox" onclick="selectAll(this)">
+					<td width="20px" align="left">
+						<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this)">
 					</td>
-					<td width="120px" bgcolor="{th_bg}" align="left" class="{css_class_from}">
-						&nbsp;<a href="javascript:changeSorting('from');"><span id='from_or_to'>{lang_from}</span></a>
+					<td width="14px" bgcolor="{th_bg}" align="center" class="text_small">
+						&nbsp;
+					</td>
+					<td bgcolor="{th_bg}" align="left" class="{css_class_subject}">
+						&nbsp;&nbsp;&nbsp;<a href="javascript:changeSorting('subject');">{lang_subject}</a>
 					</td>
 					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
 						&nbsp;&nbsp;<a href="javascript:changeSorting('date');">{lang_date}</a>
@@ -117,11 +120,8 @@ doLoad();
 					<td width="70px" bgcolor="{th_bg}" align="center" class="text_small">
 						{lang_status}
 					</td>
-					<td width="14px" bgcolor="{th_bg}" align="center" class="text_small">
-						&nbsp;
-					</td>
-					<td bgcolor="{th_bg}" align="left" class="{css_class_subject}">
-						&nbsp;&nbsp;&nbsp;<a href="javascript:changeSorting('subject');">{lang_subject}</a>
+					<td width="120px" bgcolor="{th_bg}" align="left" class="{css_class_from}">
+						&nbsp;<a href="javascript:changeSorting('from');"><span id='from_or_to'>{lang_from}</span></a>
 					</td>
 					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
 						<a href="javascript:changeSorting('size');">{lang_size}</a>&nbsp;
@@ -186,16 +186,15 @@ doLoad();
 
 <!-- BEGIN header_row -->
 	<tr class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';">
-<!--		<td class="{row_css_class}" width="20px" align="center">
-			<img src="{msg_icon_sm}" border="0" title="">
-		</td> -->
-		<td width="20px" align="center" valign="top">
-			<input  style="width:10px; height:10px" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
+		<td width="20px" align="left" valign="top">
+			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
 			onclick="toggleFolderRadio(this)" {row_selected}>
 		</td>
-		<td  style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
-			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
-	<!--		<a href="{url_add_to_addressbook}"><img src="{add_address}"  border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>  -->
+		<td class="{row_css_class}" width="14px" align="center">
+			<nobr>{attachments}
+		</td>
+		<td style="overflow:hidden; white-space:nowrap;"><nobr>
+			<a  class="{row_css_class}" name="subject_url" href="#" onclick="{url_read_message} return false;" title="{full_subject}">{header_subject}</a>
 		</td>
 		<td class="{row_css_class}" width="95px" align="center">
 			<nobr><span style="font-size:10px">{date}</span>
@@ -203,11 +202,8 @@ doLoad();
 		<td class="{row_css_class}" width="70px" align="center">
 			<nobr><span style="font-size:10px">{state}{row_text}</span>
 		</td>
-		<td class="{row_css_class}" width="14px" align="center">
-			<nobr>{attachments}
-		</td>
-		<td style="overflow:hidden; white-space:nowrap;"><nobr>
-			<a  class="{row_css_class}" name="subject_url" href="#" onclick="{url_read_message} return false;" title="{full_subject}">{header_subject}</a>
+		<td  style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
+			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
 		</td>
 		<td colspan=2 align="right" class="{row_css_class}" width="40px">
 			<span style="font-size:10px">{size}</span
@@ -226,7 +222,7 @@ doLoad();
 <!-- END error_message -->
 
 <!-- BEGIN quota_block -->
-	<table cellpadding="0" cellspacing="0" width="100%" style="border : 1px solid silver; max-width:200px;">
+	<table cellpadding="0" cellspacing="0" style="border : 1px solid silver; width:170px;">
 		<tr valign="middle">
 			<td bgcolor="{quotaBG}" align="center" valign="middle" style="width : {leftWidth}%;">
 				<small>{quotaUsage_left}</small>

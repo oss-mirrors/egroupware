@@ -339,19 +339,19 @@
 				}
 
 				$navbarImages = array(
-					'up.button'	=> array(
-						'action'	=> $previousURL,
-						'tooltip'	=> lang('previous message'),
-					),
 					'down.button'	=> array(
 						'action'	=> $nextURL,
 						'tooltip'	=> lang('next message'),
+					),
+					'up.button'	=> array(
+						'action'	=> $previousURL,
+						'tooltip'	=> lang('previous message'),
 					),
 				);
 				
 				foreach($navbarImages as $buttonName => $buttonData)
 				{
-					$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip']);
+					$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip'], 'right');
 				}
 
 				$this->t->set_var('navbarButtonsRight',$navbarButtons);

@@ -100,10 +100,10 @@ self.focus();
 				{navbarButtonsLeft}
 			</div>
 		</td>
-		<td width="300px"align="left">
+		<td>
 			&nbsp;
 		</td>
-		<td width="55px" align="right">
+		<td width="60px">
 			<div class="parentDIV">
 				{navbarButtonsRight}
 			</div>
