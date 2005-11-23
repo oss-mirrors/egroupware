@@ -959,6 +959,7 @@
 			$this->t->set_var('desc_unimportant',lang("mark selected as unflagged"));
 			$this->t->set_var('desc_deleted',lang("delete selected"));
 			$this->t->set_var('lang_date',lang("date"));
+			$this->t->set_var('lang_status',lang('status'));
 			$this->t->set_var('lang_size',lang("size"));
 			$this->t->set_var('lang_quicksearch',lang("Quicksearch"));
 			$this->t->set_var('lang_replied',lang("replied"));

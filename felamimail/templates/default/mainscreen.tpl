@@ -102,11 +102,11 @@ doLoad();
 
 			<table WIDTH=100% BORDER="0" CELLSPACING="0" style="table-layout:fixed;">
 				<tr class="th">
-					<!-- <td width="22px" bgcolor="{th_bg}" align="center" class="text_small">
-						&nbsp;
-					</td>-->
 					<td width="20px" align="left">
 						<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this)">
+					</td>
+					<td width="70px" bgcolor="{th_bg}" align="center" class="text_small">
+						{lang_status}
 					</td>
 					<td width="14px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;
@@ -117,10 +117,7 @@ doLoad();
 					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
 						&nbsp;&nbsp;<a href="javascript:changeSorting('date');">{lang_date}</a>
 					</td>
-					<td width="70px" bgcolor="{th_bg}" align="center" class="text_small">
-						{lang_status}
-					</td>
-					<td width="120px" bgcolor="{th_bg}" align="left" class="{css_class_from}">
+					<td width="120px" bgcolor="{th_bg}" align="center" class="{css_class_from}">
 						&nbsp;<a href="javascript:changeSorting('from');"><span id='from_or_to'>{lang_from}</span></a>
 					</td>
 					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
@@ -190,6 +187,9 @@ doLoad();
 			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
 			onclick="toggleFolderRadio(this)" {row_selected}>
 		</td>
+		<td class="{row_css_class}" width="70px" align="center">
+			<nobr><span style="font-size:10px">{state}{row_text}</span>
+		</td>
 		<td class="{row_css_class}" width="14px" align="center">
 			<nobr>{attachments}
 		</td>
@@ -198,9 +198,6 @@ doLoad();
 		</td>
 		<td class="{row_css_class}" width="95px" align="center">
 			<nobr><span style="font-size:10px">{date}</span>
-		</td>
-		<td class="{row_css_class}" width="70px" align="center">
-			<nobr><span style="font-size:10px">{state}{row_text}</span>
 		</td>
 		<td  style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
 			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
