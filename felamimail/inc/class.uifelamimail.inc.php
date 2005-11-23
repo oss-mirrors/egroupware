@@ -475,15 +475,15 @@
 				),
 				'unread_flagged_small'	=> array(
 					'action'	=> "flagMessages('flagged',xajax.getFormValues('formMessageList'))",
-					'tooltip'	=> lang('mark selected as read'),
+					'tooltip'	=> lang('mark selected as flagged'),
 				),
 				'read_flagged_small'	=> array(
 					'action'	=> "flagMessages('unflagged',xajax.getFormValues('formMessageList'))",
-					'tooltip'	=> lang('mark selected as unread'),
+					'tooltip'	=> lang('mark selected as unflagged'),
 				),
 				'delete'		=> array(
 					'action'	=> "deleteMessages(xajax.getFormValues('formMessageList'))",
-					'tooltip'	=> lang('mark selected as unread'),
+					'tooltip'	=> lang('mark as deleted'),
 				),
 			);
 			foreach($navbarImages as $buttonName => $buttonInfo)
