@@ -15,6 +15,36 @@
 	{
 		var $db;
 		var $table = 'egw_emailadmin';
+		var $db_cols = array(
+			'ea_profile_id'            => 'profileID',
+			'ea_smtp_server'           => 'smtpServer',
+			'ea_smtp_type'             => 'smtpType',
+			'ea_smtp_port'             => 'smtpPort',
+			'ea_smtp_auth'             => 'smtpAuth',
+			'ea_editforwardingaddress' => 'editforwardingaddress',
+			'ea_smtp_ldap_server'      => 'smtpLDAPServer',
+			'ea_smtp_ldap_basedn'      => 'smtpLDAPBaseDN',
+			'ea_smtp_ldap_admindn'     => 'smtpLDAPAdminDN',
+			'ea_smtp_ldap_adminpw'     => 'smtpLDAPAdminPW',
+			'ea_smtp_ldap_use_default' => 'smtpLDAPUseDefault',
+			'ea_imap_server'           => 'imapServer',
+			'ea_imap_type'             => 'imapType',
+			'ea_imap_port'             => 'imapPort',
+			'ea_imap_login_type'       => 'imapLoginType',
+			'ea_imap_tsl_auth'         => 'imapTLSAuthentication',
+			'ea_imap_tsl_encryption'   => 'imapTLSEncryption',
+			'ea_imap_enable_cyrus'     => 'imapEnableCyrusAdmin',
+			'ea_imap_admin_user'       => 'imapAdminUsername',
+			'ea_imap_admin_pw'         => 'imapAdminPW',
+			'ea_imap_enable_sieve'     => 'imapEnableSieve',
+			'ea_imap_sieve_server'     => 'imapSieveServer',
+			'ea_imap_sieve_port'       => 'imapSievePort',
+			'ea_description'           => 'description',
+			'ea_default_domain'        => 'defaultDomain',
+			'ea_organisation_name'     => 'organisationName',
+			'ea_user_defined_accounts' => 'userDefinedAccounts',
+			'ea_imapoldcclient'        => 'imapoldcclient',
+		);
 
 		function so()
 		{
@@ -28,17 +58,53 @@
 			}
 			$this->db->set_app('emailadmin');
 		}
-		
+
+		/**
+		 * Convert array with internal values/names to db-column-names
+		 *
+		 * @param array $vals
+		 * @return array
+		 */
+		function vals2db($vals)
+		{
+			$cols = array();
+			foreach($vals as $key => $val)
+			{
+				if (($k = array_search($key,$this->db_cols)) === false) $k = $key;
+				
+				$cols[$k] = $val;
+			}
+			return $cols;
+		}
+
+		/**
+		 * Convert array with db-columns/-values to internal names
+		 *
+		 * @param array $vals
+		 * @return array
+		 */
+		function db2vals($cols)
+		{
+			$vals = array();
+			foreach($cols as $key => $val)
+			{
+				if (isset($this->db_cols[$key])) $key = $this->db_cols[$key];
+				
+				$vals[$key] = $val;
+			}
+			return $vals;
+		}
+
 		function updateProfile($_globalSettings, $_smtpSettings=array(), $_imapSettings=array())
 		{
 			$profileID = (int) $_globalSettings['profileID'];
 			unset($_globalSettings['profileID']);
 
-			$where = $profileID ? array('profileID' => $profileID) : false;
+			$where = $profileID ? array('ea_profile_id' => $profileID) : false;
 
-			$this->db->insert($this->table,$_smtpSettings+$_globalSettings+$_imapSettings,$where,__LINE__,__FILE__);
+			$this->db->insert($this->table,$this->vals2db($_smtpSettings+$_globalSettings+$_imapSettings),$where,__LINE__,__FILE__);
 
-			return $profileID ? $profileID : $this->db->get_last_insert_id($this->table,'profileID');
+			return $profileID ? $profileID : $this->db->get_last_insert_id($this->table,'ea_profile_id');
 		}
 
 		function addProfile($_globalSettings, $_smtpSettings, $_imapSettings)
@@ -50,15 +116,18 @@
 
 		function deleteProfile($_profileID)
 		{
-			$this->db->delete($this->table,array('profileID' => $_profileID),__LINE__ , __FILE__);
+			$this->db->delete($this->table,array('ea_profile_id' => $_profileID),__LINE__ , __FILE__);
 		}
 
 		function getProfile($_profileID, $_fieldNames)
 		{
-			$this->db->select($this->table,$_fieldNames,array('profileID' => $_profileID), __LINE__, __FILE__);
+			$_fieldNames = array_keys($this->vals2db(array_flip($_fieldNames)));
+			$this->db->select($this->table,$_fieldNames,array('ea_profile_id' => $_profileID), __LINE__, __FILE__);
 			
-			$data = $this->db->row(true);
-			
+			if (($data = $this->db->row(true)))
+			{
+				return $this->db2vals($data);
+			}
 			return $data;
 		}
 		
@@ -67,7 +136,7 @@
 			$where = false;
 			if ((int) $_profileID)
 			{
-				$where = array('profileID' => $_profileID);
+				$where = array('ea_profile_id' => $_profileID);
 			}
 			elseif ($_defaultProfile)
 			{
@@ -79,7 +148,7 @@
 			$serverList = false;
 			while (($row = $this->db->row(true)))
 			{
-				$serverList[] = $row;
+				$serverList[] = $this->db2vals($row);
 			}
 			return $serverList;
 		}
@@ -237,7 +306,7 @@
 				$this->db->update($this->table,array(
 					'ea_order'  => $order,
 				),array(
-					'profileID' => $profileID,
+					'ea_profile_id' => $profileID,
 				),__LINE__, __FILE__);
 			}
 		}

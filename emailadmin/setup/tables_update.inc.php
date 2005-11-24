@@ -102,5 +102,38 @@
 		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.2';
 	}
 	
-	//next version should be 1.2.001
+	$test[] = '1.2';
+	function emailadmin_upgrade1_2()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','profileID','ea_profile_id');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpServer','ea_smtp_server');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpType','ea_smtp_type');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpPort','ea_smtp_port');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpAuth','ea_smtp_auth');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','editforwardingaddress','ea_editforwardingaddress');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpLDAPServer','ea_smtp_ldap_server');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpLDAPBaseDN','ea_smtp_ldap_basedn');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpLDAPAdminDN','ea_smtp_ldap_admindn');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpLDAPAdminPW','ea_smtp_ldap_adminpw');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','smtpLDAPUseDefault','ea_smtp_ldap_use_default');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapServer','ea_imap_server');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapType','ea_imap_type');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapPort','ea_imap_port');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapLoginType','ea_imap_login_type');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapTLSAuthentication','ea_imap_tsl_auth');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapTLSEncryption','ea_imap_tsl_encryption');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapEnableCyrusAdmin','ea_imap_enable_cyrus');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapAdminUsername','ea_imap_admin_user');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapAdminPW','ea_imap_admin_pw');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapEnableSieve','ea_imap_enable_sieve');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapSieveServer','ea_imap_sieve_server');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapSievePort','ea_imap_sieve_port');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','description','ea_description');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','defaultDomain','ea_default_domain');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','organisationName','ea_organisation_name');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','userDefinedAccounts','ea_user_defined_accounts');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_emailadmin','imapoldcclient','ea_imapoldcclient');
+
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.2.001';
+	}
 ?>
