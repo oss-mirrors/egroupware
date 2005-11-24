@@ -4,6 +4,7 @@ add document to category	wiki	es-es	Añadir documento a la categoría
 added	wiki	es-es	Añadido
 administration features are disabled for this wiki.	wiki	es-es	Las características de administración estás desactivadas para este wiki
 admins	wiki	es-es	administradores
+after how many days should old versions of a page be removed (0 for never)	admin	es-es	¿Después de cuántos días deben borrarse las versiones antiguas de una página (0 para nunca)?
 allow anonymous access	admin	es-es	permitir acceso anónimo
 anonymous password	admin	es-es	Contraseña anónimo
 anonymous session type	admin	es-es	Tipo de sesión anónimo
@@ -59,8 +60,9 @@ no only on request	admin	es-es	No, sólo si se pide
 not set	wiki	es-es	no especificado
 older	wiki	es-es	Anterior
 only if browser supports a richtext-editor	admin	es-es	Sólo si el navegador soporta un editor de texto enriquecido
+path of the upload directory (has to be writable by the webserver!)	admin	es-es	Ruta al directorio de subir ficheros (el servidor web debe tener derecho de escritura)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	es-es	Subir ficheros con el editor de texto enriquecido (dejar el directorio de subir en blanco para desactivar)
 please contact the %1administrator%2 for assistance.	wiki	es-es	Por favor, póngase en contacto con el %1Administrator%2 para obtener ayuda.
-preferences	wiki	es-es	Preferencias
 preview	wiki	es-es	Vista previa
 preview of current version	wiki	es-es	Vista previa de la versión actual
 rate control / ip blocking disabled	wiki	es-es	El control de transferencia o bloqueo de IP está desactivado
@@ -80,6 +82,7 @@ this page can not be edited.	wiki	es-es	Esta página no se puede editar
 twin pages	wiki	es-es	Páginas gemelas
 unblock	wiki	es-es	Desbloquear
 updates the preview	wiki	es-es	Actualiza la vista previa
+url of the upload directory	admin	es-es	URL del directorio para subir ficheros
 users	wiki	es-es	usuarios
 view document history	wiki	es-es	Ver el historial del documento
 visit %1 to set your user name	wiki	es-es	Visite %1 para poner su nombre de usuario
