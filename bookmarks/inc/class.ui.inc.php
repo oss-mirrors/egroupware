@@ -508,12 +508,12 @@ define('SEARCH',4);
 
 			// the following fields are selectable
 			$field = array(
-				'phpgw_bookmarks.bm_name'        => lang('Name'),
-				'phpgw_bookmarks.bm_keywords'    => lang('Keywords'),
-				'phpgw_bookmarks.bm_url'         => lang('URL'),
-				'phpgw_bookmarks.bm_desc'        => lang('Description')
-			//		'phpgw_bookmarks.bm_category'    => 'Category',
-			//		'phpgw_bookmarks.bm_subcategory' => 'Sub Category',
+				'bm_name'        => lang('Name'),
+				'bm_keywords'    => lang('Keywords'),
+				'bm_url'         => lang('URL'),
+				'bm_desc'        => lang('Description')
+			//		'bm_category'    => 'Category',
+			//		'bm_subcategory' => 'Sub Category',
 			);
 
 			// PHPLIB's sqlquery class loads this string when
@@ -528,12 +528,16 @@ define('SEARCH',4);
 				# handle quotes properly. we can't put an addslashes
 				# on the resulting sql because the sql_query object
 				# doesn't do the quotes correctly
-				reset($x);
-				while (list($key, $value) = each ($x))
+				foreach ($x as $key => $value)
 				{
+					if (substr($key,0,4) == 'sel_' && !preg_match('/^bm_(name|keywords|url|desc)$/',$value) || 
+						substr($key,0,5) == 'comp_' && !preg_match('/^(like|[<>=]{1,2})$/',$value))
+					{
+						continue;	// someone trying something nasty
+					}
 					$y[$key] = addslashes($value);
 				}
-				$q->query = $q->where("y", 1);
+				if (is_array($y)) $q->query = $q->where("y", 1);
 			}
 
 			$this->t->set_var(array(
