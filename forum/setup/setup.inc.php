@@ -44,6 +44,6 @@
 	/* the dependencies */
 	$setup_info['forum']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('0.9.14','0.9.15','1.0.0','1.0.1')
+		'versions' => Array('1.0.0','1.0.1','1.2')
 	);
 ?>
