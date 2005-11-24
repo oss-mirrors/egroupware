@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Addressbook                                               *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - SOAP test app                                               *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -23,8 +23,8 @@
 	$setup_info['soap']['hooks'][] = 'admin';
 
 	/* Dependencies for this app to work */
-	$setup_info['soap']['depends'][] = array(
-		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13', '0.9.14')
+	$setup_info['xmlrpc']['depends'][] = array(
+		'appname' => 'phpgwapi',
+		'versions' => Array('0.9.13','0.9.14','1.0.0','1.0.1')
 	);
 ?>
