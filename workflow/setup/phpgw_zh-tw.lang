@@ -30,7 +30,7 @@ action %1 is impossible, there are no user assigned to this activity for this in
 action %1 needs an activity and activity %2 does not exists	workflow	zh-tw	動作 %1 需要一個活動而活動 %2 不存在
 action %1 needs an instance and instance %2 does not exists	workflow	zh-tw	動作 %1 需要一個實例而實例 %2 不存在
 actions	workflow	zh-tw	動作
-actions right options	admin	zh-tw	動作權限選項
+actions right options	common	zh-tw	動作權限選項
 activate	workflow	zh-tw	進行中
 active	workflow	zh-tw	活動
 active:	workflow	zh-tw	活動：
@@ -96,7 +96,7 @@ always show advanced mode	workflow	zh-tw	永遠顯示進階模式
 assign me this activity	workflow	zh-tw	將這個活動指派給我
 at least one email address cannot be validated.	workflow	zh-tw	一個以上的信箱無法通過驗證
 auto routed	workflow	zh-tw	自動指派
-auto-release on leaving activity	admin	zh-tw	在離開活動時自動釋出
+auto-release on leaving activity	common	zh-tw	在離開活動時自動釋出
 automatic	workflow	zh-tw	自動
 bad parameter for setagents, the parameter should be an array	workflow	zh-tw	setAgents的參數錯誤，參數必須是一個陣列
 bad role type	workflow	zh-tw	錯誤的角色類型
@@ -136,6 +136,7 @@ complete	workflow	zh-tw	完成
 complete cleanup of aborted instances done	workflow	zh-tw	完整清除中止的實例完成
 complete cleanup of all instances done	workflow	zh-tw	完整清除所有實例完成
 completed	workflow	zh-tw	完成
+config values	workflow	zh-tw	設定值
 confirm delete	workflow	zh-tw	確認刪除
 consult %1 to get the default values:	workflow	zh-tw	詢問 %1 來取得預設值：
 couldn't add transition	workflow	zh-tw	無法新增異動
@@ -152,9 +153,10 @@ delete transition	workflow	zh-tw	刪除遞交
 deletion successful	workflow	zh-tw	刪除成功
 delition successful	workflow	zh-tw	刪除成功
 description	workflow	zh-tw	說明
-display please wait message	admin	zh-tw	顯示提示等候訊息
+display please wait message	common	zh-tw	顯示提示等候訊息
 do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	zh-tw	在實體清單中是否要顯示活動狀態？大部分情況下它都是 "執行中" ，但是如果您使用非自動遞送方式傳輸，會有部份顯示完成狀態的活動。
 do you want the category column on instances lists, if yout instances use categories you should use it	workflow	zh-tw	在實體清單中是否要顯示類別欄位？如果您的實體有進行分類，建議採用。
+do you want the category name column on instances lists, if your instances use categories you should use it	workflow	zh-tw	在實體清單中是否要顯示類別名稱欄位？如果您的實體有進行分類，建議採用。
 do you want the category name column on instances lists. if your instances use categories you should use this	workflow	zh-tw	在實體清單中是否要顯示類別名稱欄位？如果您的實體有進行分類，建議採用。
 do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	zh-tw	在實體清單中是否要顯示實體編號欄位？每個實體會有一個不重複的編號。
 do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	zh-tw	在實體清單中是否要顯示實體名稱欄位？如果您有設定名稱，建議採用。
@@ -165,9 +167,10 @@ do you want the process column on instances lists. usefull if you have different
 do you want the search instance button in the last row of instances list.	workflow	zh-tw	在實體清單最後一列是否要顯示搜尋實體的按鈕？
 do you want the started date column on instances lists.	workflow	zh-tw	在實體清單是否要顯示開始日期欄位？
 don't move	workflow	zh-tw	不能移動
-draw roles	admin	zh-tw	繪製角色
+draw roles	common	zh-tw	繪製角色
 draw roles on the graph beside activity name like [that]	admin	zh-tw	繪製角色於圖形上，在像是 [that] 的活動名稱旁。
 duration	workflow	zh-tw	期間
+empty agent type	workflow	zh-tw	清除代理人類型
 end	workflow	zh-tw	結束
 end activity is not reachable from start activity	workflow	zh-tw	結束活動無法從起始活動找到
 ended	workflow	zh-tw	結束
@@ -202,7 +205,7 @@ filter instance by id	workflow	zh-tw	透過編號過濾實體
 finally you have links with <strong>%link_xx|yy%</strong> syntax, xx is the address part, yy the text part.	workflow	zh-tw	最後您的連結語法為 <strong>%link_XX|YY%</strong>， XX是網路位址， YY是說明文字。
 fix	workflow	zh-tw	修正
 fix concistency for selected rows	workflow	zh-tw	修正選取資料的重要性
-font size	admin	zh-tw	字型大小
+font size	workflow	zh-tw	字型大小
 from	workflow	zh-tw	來自
 from:	workflow	zh-tw	寄件人：
 get back to global activities	workflow	zh-tw	回到全域活動
@@ -221,7 +224,7 @@ grant access to the administration of workflow instances in monitor screens	work
 grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	zh-tw	取得在訂閱視窗中停用工作流程的清除、刪除權限。
 grant access to the monitoring of workflow elements	workflow	zh-tw	取得工作流程元件的訂閱權限。
 graph	workflow	zh-tw	圖形
-graphic options	admin	zh-tw	圖形選項
+graphic options	common	zh-tw	圖形選項
 group	workflow	zh-tw	群組
 id	workflow	zh-tw	編號
 if automatic parsing is disabled next options will be useless	admin	zh-tw	如果自動分析停用，下一個選項就沒用了
@@ -229,6 +232,7 @@ if not in debug mail_smtp agent would have sent this email:	workflow	zh-tw	如�
 if user is in a role for an activity he will have the right to abort the related instance	admin	zh-tw	如果使用者是一個活動中的角色，他就有權限中止相關實體
 if user is in a role for an activity he will have the right to exception or resume the related instance	admin	zh-tw	如果使用者是一個活動中的角色，他就有權限排除或繼續相關實體
 if user is in a role for an activity he will have the right to release (un-assign) the related instance	admin	zh-tw	如果使用者是一個活動中的角色，他就有權限釋出（取消指派）相關實體
+if:setnextact	workflow	zh-tw	If:SetNextact
 import aborted	workflow	zh-tw	匯入中止了
 import successfull	workflow	zh-tw	匯入成功
 in role mappings user #%1 is specified as a "%2" but is maybe a "%3"	workflow	zh-tw	在角色對應表中，使用者 #%1 被定義為一個 "%2" ，但他也許是一個 "%3"
@@ -275,7 +279,11 @@ list of processes with status and validity and, for each, counters of instances 
 list of transitions	workflow	zh-tw	異動清單
 list of workitems	workflow	zh-tw	工作項目清單
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	zh-tw	郵件由 eGroupware 工作流程的郵件寄送程式自動送出
-mail smtp agent	workflow	zh-tw	郵件寄送代理人
+mail smtp agent	workflow	zh-tw	SMTP郵件寄送代理人
+mail smtp debug	workflow	zh-tw	SMTP郵件寄送偵錯
+mail smtp local link prefix	workflow	zh-tw	SMTP郵件本地端連結前置字元（smtp）
+mail smtp profile	workflow	zh-tw	SMTP郵件資料
+mail smtp signature	workflow	zh-tw	SMTP郵件簽名
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	zh-tw	郵件可以在活動開始或結束時寄出，互動式的活動只能夠在完成後寄出
 manual	workflow	zh-tw	手冊
 map	workflow	zh-tw	對應
@@ -323,8 +331,11 @@ no process indicated	workflow	zh-tw	沒有包含任何處理程序
 no properties defined	workflow	zh-tw	沒有定義屬性
 no roles	workflow	zh-tw	沒有角色
 no roles asociated with this activity	workflow	zh-tw	這個活動沒有任何角色
+no routage	workflow	zh-tw	沒有開始
 no scan done	workflow	zh-tw	沒有執行掃描
+no transitions allowed for standalone or view activities	workflow	zh-tw	獨立或瀏覽活動沒有可用的遞交
 no work item indicated	workflow	zh-tw	沒有包含任何工作項目
+nobody	workflow	zh-tw	沒有人
 not defined	workflow	zh-tw	未定義
 or import a process	workflow	zh-tw	或是匯入處理過程
 owner	workflow	zh-tw	擁有者
@@ -332,9 +343,9 @@ owner of the instance will have the right to abort the instance at any time	admi
 owner of the instance will have the right to exception or resume the instance at any time	admin	zh-tw	實例的擁有者有權隨時排除或繼續這個實例
 owner of the instance will have the right to release (un-assign) an activity assigned to an user	admin	zh-tw	實例的擁有者有權釋出（取消指派）指派給使用者的活動
 owner:	workflow	zh-tw	擁有者：
-ownership give abort right	admin	zh-tw	擁有者有中止權限
-ownership give exception right	admin	zh-tw	擁有者有排除權限
-ownership give release right	admin	zh-tw	擁有者有釋出權限
+ownership give abort right	common	zh-tw	擁有者有中止權限
+ownership give exception right	common	zh-tw	擁有者有排除權限
+ownership give release right	common	zh-tw	擁有者有釋出權限
 post activity %1 code is not avaible	workflow	zh-tw	下一活動 %1 代碼不存在
 post shared code is not avaible	workflow	zh-tw	下一分享代碼不存在
 post-agent %1 code is not avaible	workflow	zh-tw	下一代理人 %1 代碼不存在
@@ -394,13 +405,14 @@ role %1 is associated in a mapping with user #%2 with a non-existent process (%3
 role %1 is not mapped	workflow	zh-tw	角色 %1 未對應
 role added to activity	workflow	zh-tw	角色新增到活動
 role added to process	workflow	zh-tw	角色新增到處理程序
-role give abort right	admin	zh-tw	角色有中止權限
-role give exception right	admin	zh-tw	角色有排除權限
-role give release right	admin	zh-tw	角色有釋出權限
+role give abort right	common	zh-tw	角色有中止權限
+role give exception right	common	zh-tw	角色有排除權限
+role give release right	common	zh-tw	角色有釋出權限
 role in inexistent process	workflow	zh-tw	角色在不存在的處理程序中
 role mapping in inexistent process	workflow	zh-tw	角色對應到不存在的處理程序
 role name	workflow	zh-tw	角色名稱
 role not saved (maybe a name collision)	workflow	zh-tw	角色未儲存（也許是名稱重複）
+role process inconcistency in mappings	workflow	zh-tw	角色處理對應不一致
 role saved	workflow	zh-tw	角色儲存了
 roles	workflow	zh-tw	角色
 roles assigned to this activity	workflow	zh-tw	指派到這個活動的角色
@@ -411,7 +423,7 @@ run	workflow	zh-tw	執行
 run activity	workflow	zh-tw	執行活動
 run instance	workflow	zh-tw	執行異動
 running	workflow	zh-tw	執行中
-running activities options	admin	zh-tw	執行中活動選項
+running activities options	common	zh-tw	執行中活動選項
 running activity	workflow	zh-tw	執行中活動
 scan activities	workflow	zh-tw	掃描活動
 scan agents	workflow	zh-tw	掃描代理人
@@ -440,10 +452,12 @@ set property	workflow	zh-tw	設定屬性
 setting next activity to an unexisting activity	workflow	zh-tw	設定的下個活動不存在
 shared code	workflow	zh-tw	共享程式碼
 should we always give you the advanced search row on instances lists?	workflow	zh-tw	在實例清單中是否永遠顯示進接搜尋資料列？
-show activity info zone	admin	zh-tw	顯示活動資訊區域
-show activity title	admin	zh-tw	顯示活動標題
+show activity info zone	common	zh-tw	顯示活動資訊區域
+show activity title	common	zh-tw	顯示活動標題
 show code	workflow	zh-tw	顯示程式碼
-show multiple submit as select	admin	zh-tw	顯示選取的多個項目
+show instance name	workflow	zh-tw	顯示實體名稱
+show instance owner	workflow	zh-tw	顯示實體擁有者
+show multiple submit as select	common	zh-tw	顯示選取的多個項目
 show template	workflow	zh-tw	顯示樣板
 size of the font used on the graph 12 should be a good default value	admin	zh-tw	在圖形中使用的文字大小，預設值 12
 smtp agent has detected some errors when sending email after completion of the activity	workflow	zh-tw	在活動完成後寄送郵件時發生錯誤
@@ -473,6 +487,8 @@ subject:	workflow	zh-tw	主旨：
 switch	workflow	zh-tw	切換
 switch construct	workflow	zh-tw	切換結構
 template	workflow	zh-tw	樣板
+test concistency	workflow	zh-tw	測試一致性
+test consistency of datas in the database	workflow	zh-tw	測試資料庫的資料一致性
 test local installation	workflow	zh-tw	測試本地安裝
 the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	zh-tw	資料夾 /workflow 不存在且無法建立，請聯絡管理員來檢查全域設定
 the activity was not completed	workflow	zh-tw	這個活動沒有完成
@@ -502,6 +518,7 @@ this activity for this instance is actually only avaible for you.	workflow	zh-tw
 this activity for this instance is not specifically assigned to you.	workflow	zh-tw	這個實例的活動並沒有指派給您
 this agent gives the activity the possibility to send an smtp message (mail)	workflow	zh-tw	這個代理人可以讓活動寄送 SMTP 訊息（也就是郵件）
 this form will test your local workflow installation to detect potential issues	workflow	zh-tw	這個表單會測試您的工作流程系統並且偵測可能的問題
+this is the first screen shown when you click on the workflow application icon	workflow	zh-tw	這是當您點選工作流程圖示時顯示的第一個畫面
 this process has a view activity. access in view mode is granted only for this view activty.	workflow	zh-tw	這個處理程序有個瀏覽活動，瀏覽模式只允許再這個瀏覽活動中取得。
 this process has no end activity	workflow	zh-tw	這個處理程序沒有結束活動
 this will automatically release the instance when leaving an activity without completing	admin	zh-tw	這將會在離開未完成活動時自動釋出實例
@@ -522,7 +539,7 @@ unknown status	workflow	zh-tw	不知名的狀態
 update	workflow	zh-tw	更新
 upload file	workflow	zh-tw	上傳檔案
 use <a href="%1">emailadmin</a> to create mail profiles	workflow	zh-tw	使用<a href="%1">郵件管理</a>來建立郵件資料
-use automatic parsing	admin	zh-tw	使用自動解析
+use automatic parsing	common	zh-tw	使用自動解析
 use default	workflow	zh-tw	使用預設值
 use existing roles	workflow	zh-tw	使用已經存在的角色
 user	workflow	zh-tw	使用者

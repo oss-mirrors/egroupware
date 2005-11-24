@@ -15,10 +15,12 @@ billable hours changed	tts	zh-tw	可報帳時數改變
 billable hours rate	tts	zh-tw	可報帳時薪
 billable rate	tts	zh-tw	可報帳時薪
 billable rate changed	tts	zh-tw	可報帳時薪改變
+can make full changes	tts	zh-tw	可以異動全部
 category changed	tts	zh-tw	類別變更
 check here to generate the state's id automatically or enter a particular id below.	tts	zh-tw	勾選這裡來自動產生狀態代碼或是您可以在下面指定。
 clear form	tts	zh-tw	清除表單
 close the invalid ticket.	tts	zh-tw	關閉無效的傳票
+close ticket	tts	zh-tw	關閉傳票
 closed	tts	zh-tw	已關閉
 completed	tts	zh-tw	完成
 configure the states	common	zh-tw	設定狀態
@@ -81,11 +83,13 @@ opened by	tts	zh-tw	開啟人
 original ticket details	tts	zh-tw	原始傳票細節
 perform irregular transition into the following state	tts	zh-tw	執行不規則轉換到下列狀態
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	zh-tw	請輸入傳票的標題，否則無法儲存。
+prio	tts	zh-tw	順序
 priority	tts	zh-tw	優先權
 priority changed	tts	zh-tw	優先權改變
 put the preexistent ticket into the state %1.	tts	zh-tw	將已存在的傳票放到這個狀態
 re-assigned	tts	zh-tw	重新指派
 re-opened	tts	zh-tw	重新開啟
+read tickets within group only	tts	zh-tw	只有同樣群組的人能夠讀取傳票
 refresh every (seconds)	tts	zh-tw	重新整理（秒）
 reopen	tts	zh-tw	重新開啟
 reopened	tts	zh-tw	已重開
