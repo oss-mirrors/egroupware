@@ -15,8 +15,8 @@
 /* $Id$ */
 
 define ('WIKI_ACL_ALL',0);		// everyone incl. anonymous
-define ('WIKI_ACL_USER',-1);	// everyone BUT anonymous
-define ('WIKI_ACL_ADMIN',-2);	// only admins (access to the admin app !)
+define ('WIKI_ACL_USER',1);		// everyone BUT anonymous
+define ('WIKI_ACL_ADMIN',2);	// only admins (access to the admin app !)
 
 /**
  * Class representing a wiki-page, usualy gets instanciated via sowiki::page()
