@@ -11,8 +11,24 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-$query	= $_GET['query'];
-$mode	= $_GET['mode'];
+$query			= $_GET['query'];
+$mode			= $_GET['mode'];
+$searchin		= $_GET['searchin'];
+$ownerid		= $_GET['ownerid'];
+$creationdate		= $_GET['creationdate'];
+$lastupdate		= $_GET['lastupdate'];
+$createstartmonth	= $_GET['createstartmonth'];
+$createstartday		= $_GET['createstartday'];
+$createstartyear	= $_GET['createstartyear'];
+$createendmonth		= $_GET['createendmonth'];
+$createendday		= $_GET['createendday'];
+$createendyear		= $_GET['createendyear'];
+$updatestartmonth	= $_GET['updatestartmonth'];
+$updatestartday		= $_GET['updatestartday'];
+$updatestartyear	= $_GET['updatestartyear'];
+$updateendmonth		= $_GET['updateendmonth'];
+$updateendday		= $_GET['updateendday'];
+$updateendyear		= $_GET['updateendyear'];
 
 $query = sanitizeString($query);
 $mode  = sanitizeString($mode);

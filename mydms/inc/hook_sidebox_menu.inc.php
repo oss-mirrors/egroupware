@@ -29,7 +29,7 @@
 		$file['edit folder']	= $GLOBALS['egw']->link('/mydms/out/out.EditFolder.php',$linkData);
 		$file['move folder']	= $GLOBALS['egw']->link('/mydms/out/out.MoveFolder.php',$linkData);
 		$file['copy folder']	= $GLOBALS['egw']->link('/index.php', array('menuaction' => 'mydms.uifolder.copyFolder')+$linkData);
-		if($accessMode == M_ALL)
+		if($accessMode == M_ALL && $folderID > 1)
 		{
 			$file['delete folder']	= $GLOBALS['egw']->link('/mydms/out/out.RemoveFolder.php',$linkData);
 		}
