@@ -190,7 +190,7 @@
 		$is->kp3 = $xkp3;
 		/* TODO - Adjust the values below as desired */
 		$is->send(
-			'calendar.bocalendar.store_to_cache', array(
+			'calendar.bocalendar.search', array(
 				'start' => date('Y-m-d').'T00:00:00',
 				'end'   => date('Y-m-d').'T00:00:00',
 			),
