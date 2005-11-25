@@ -540,8 +540,6 @@ class Document
 			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && !$resArr)
 				return false;
-			if (count($resArr) != 1)
-				return false;
 			
 			$resArr = $resArr[0];
 			$this->_latestContent = new DocumentContent($resArr["id"], $resArr["document"], $resArr["version"], $resArr["comment"], $resArr["date"], $resArr["createdBy"], $resArr["dir"], $resArr["orgFileName"], $resArr["fileType"], $resArr["mimeType"]);
