@@ -267,7 +267,7 @@
 		{
 			$this->_debug('<br>Testing for category: ' . $catname . ' with parent: \'' . $parent . '\'');
 
-			$catid = $this->categories->exist($parent?'subs':'mains',$catname,0,$parent);
+			$catid = $this->categories->exists($parent?'subs':'mains',$catname,0,$parent);
 			if ($catid)
 			{
 				$this->_debug(' - ' . $catname . ' already exists - id: ' . $catid);
