@@ -65,7 +65,7 @@ class GUI extends Base {
     $mid = "where gp.wf_is_active=?";
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
-    $mid .= "and ((gur.wf_user=? and gur.wf_account_type='u')";
+    $mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
     $mid .= "	or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
     $bindvars = array('y',$user);
     if($find) {
