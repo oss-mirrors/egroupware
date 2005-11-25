@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -24,8 +24,8 @@ function checkForm1(num) {
 	msg = "";
 	eval("var formObj = document.form" + num + "_1;");
 	
-	if (formObj.name.value == "") msg += "<?printMLText("js_no_name");?>\n";
-	if (formObj.comment.value == "") msg += "<?printMLText("js_no_comment");?>\n";
+	if (formObj.name.value == "") msg += "<?php printMLText("js_no_name");?>\n";
+	if (formObj.comment.value == "") msg += "<?php printMLText("js_no_comment");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
@@ -39,7 +39,7 @@ function checkForm2(num) {
 	msg = "";
 	eval("var formObj = document.form" + num + "_2;");
 	
-	if (formObj.userid.options[formObj.userid.selectedIndex].value == -1) msg += "<?printMLText("js_select_user");?>\n";
+	if (formObj.userid.options[formObj.userid.selectedIndex].value == -1) msg += "<?php printMLText("js_select_user");?>\n";
 
 	if (msg != "")
 	{
@@ -65,7 +65,7 @@ function showUser(selectObj) {
 }
 
 </script>
-<?
+<?php
 printTitleBar(getFolder($settings->_rootFolderID));
 printCenterStart();
 
@@ -75,11 +75,11 @@ printStartBox(getMLText("add_group"));
 	<input type="Hidden" name="action" value="addgroup">
 	<table>
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("name");?>:</td>
+			<td class="inputDescription" valign="top"><?php printMLText("name");?>:</td>
 			<td><input name="name"></td>
 		</tr>
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("comment");?>:</td>
+			<td class="inputDescription" valign="top"><?php printMLText("comment");?>:</td>
 			<td><textarea name="comment" rows="4" cols="30"></textarea></td>
 		</tr>
 		<tr>
@@ -88,16 +88,16 @@ printStartBox(getMLText("add_group"));
 	</table>
 	</form>
 
-<?
+<?php
 printNextBox(getMLText("edit_group"));
 ?>
 	<table>
 	<tr>
-		<td class="inputDescription"><?=getMLText("name")?>:</td>
+		<td class="inputDescription"><?php echo getMLText("name")?>:</td>
 		<td>
 			<select onchange="showUser(this)">
-				<option value="-1"><?=getMLText("choose_group")?>
-				<?
+				<option value="-1"><?php echo getMLText("choose_group")?>
+				<?php
 				foreach ($groups as $group) {
 					print "<option value=\"".$group->getID()."\">" . $group->getName();
 				}
@@ -105,26 +105,26 @@ printNextBox(getMLText("edit_group"));
 			</select>
 		</td>
 	</tr>
-	<?
+	<?php
 	foreach ($groups as $group) {
 	?>
-	<tr id="keywords<?=$group->getID()?>" style="display : none;">
+	<tr id="keywords<?php echo $group->getID()?>" style="display : none;">
 	<td colspan="2">
 	
-	<form action="../op/op.GroupMgr.php" name="form<?print $group->getID();?>_1" onsubmit="return checkForm1('<?print $group->getID();?>');">
-	<input type="Hidden" name="groupid" value="<?print $group->getID();?>">
+	<form action="../op/op.GroupMgr.php" name="form<?php print $group->getID();?>_1" onsubmit="return checkForm1('<?php print $group->getID();?>');">
+	<input type="Hidden" name="groupid" value="<?php print $group->getID();?>">
 	<input type="Hidden" name="action" value="editgroup">
 	<table border="0">
 		<tr>
 			<td colspan="2"><hr size="1" width="100%" color="#000080" noshade></td>
 		</tr>
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("name");?>:</td>
-			<td class="standardText"><input name="name" value="<?print $group->getName();?>"></td>
+			<td class="inputDescription" valign="top"><?php printMLText("name");?>:</td>
+			<td class="standardText"><input name="name" value="<?php print $group->getName();?>"></td>
 		</tr>
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("comment");?>:</td>
-			<td class="standardText"><textarea name="comment" rows="4" cols="30"><?print $group->getComment();?></textarea></td>
+			<td class="inputDescription" valign="top"><?php printMLText("comment");?>:</td>
+			<td class="standardText"><textarea name="comment" rows="4" cols="30"><?php print $group->getComment();?></textarea></td>
 		</tr>
 		<tr>
 			<td colspan="2"><br><input type="Submit"></td>
@@ -133,7 +133,7 @@ printNextBox(getMLText("edit_group"));
 	</form>
 	<hr size="1" width="100%" color="#000080" noshade>
 		<table border="0" cellpadding="5" cellspacing="0">
-		<?
+		<?php
 			$members = $group->getUsers();
 			if (count($members) == 0)
 				print "<tr><td class=\"groupMembers\">".getMLText("no_group_members")."</td></tr>";
@@ -155,17 +155,17 @@ printNextBox(getMLText("edit_group"));
 			}
 		?>
 		</table>
-		<form action="../op/op.GroupMgr.php" name="form<?print $group->getID();?>_2" onsubmit="return checkForm2('<?print $group->getID();?>');">
+		<form action="../op/op.GroupMgr.php" name="form<?php print $group->getID();?>_2" onsubmit="return checkForm2('<?php print $group->getID();?>');">
 		<input type="Hidden" name="action" value="addmember">
-		<input type="Hidden" name="groupid" value="<?print $group->getID();?>">
+		<input type="Hidden" name="groupid" value="<?php print $group->getID();?>">
 		<table>
 			<tr>
-				<td class="inputDescription"><?printMLText("add_member");?>:</td>
+				<td class="inputDescription"><?php printMLText("add_member");?>:</td>
 				<td>
 					<select name="userid">
-						<option value="-1"><?printMLText("select_one");?>
+						<option value="-1"><?php printMLText("select_one");?>
 						<option value="-1">-------------------------------
-						<?
+						<?php
 							foreach ($allUsers as $currUser)
 								if (!$group->isMember($currUser))
 									print "<option value=\"".$currUser->getID()."\">" . $currUser->getFullName() . "\n";
@@ -180,14 +180,14 @@ printNextBox(getMLText("edit_group"));
 		</form>
 	</div>
 	<hr size="1" width="100%" color="#000080" noshade>
-	<a class="standardText" href="../op/op.GroupMgr.php?groupid=<?print $group->getID();?>&action=removegroup"><img src="images/del.gif" width="15" height="15" border="0" align="absmiddle" alt=""> <?printMLText("rm_group");?></a>
+	<a class="standardText" href="../op/op.GroupMgr.php?groupid=<?php print $group->getID();?>&action=removegroup"><img src="images/del.gif" width="15" height="15" border="0" align="absmiddle" alt=""> <?php printMLText("rm_group");?></a>
 	
 	</td>
 	</tr>
-<?  } ?>
+<?php  } ?>
 </table>
 
-<?
+<?php
 printEndBox();
 
 printCenterEnd();

@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -20,13 +20,13 @@ printHTMLHead( getMLText("admin_tools") );
 
 <style type="text/css">
 .folderClass {
-	list-style-image : url(<?printImgPath("folder_closed.gif");?>);
-	list-style : url(<?printImgPath("folder_closed.gif");?>);
+	list-style-image : url(<?php printImgPath("folder_closed.gif");?>);
+	list-style : url(<?php printImgPath("folder_closed.gif");?>);
 }
 
 .documentClass {
-	list-style-image : url(<?printImgPath("file.gif");?>);
-	list-style : url(<?printImgPath("file.gif");?>);
+	list-style-image : url(<?php printImgPath("file.gif");?>);
+	list-style : url(<?php printImgPath("file.gif");?>);
 }
 </style>
 
@@ -44,7 +44,7 @@ function showFolder(id) {
 
 </script>
 
-<?
+<?php
 printTitleBar(getFolder($settings->_rootFolderID));
 printCenterStart();
 

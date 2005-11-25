@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -28,13 +28,13 @@ printStartBox(getMLText("expires"));
 ?>
 
 <form action="../op/op.SetExpires.php">
-	<input type="Hidden" name="documentid" value="<?print $documentid;?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
 	<table>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("expires");?>:</td>
+			<td valign="top" class="inputDescription"><?php printMLText("expires");?>:</td>
 			<td class="standardText">
-				<input type="Radio" name="expires" value="false"<?if (!$document->expires()) print " checked";?>><?printMLText("does_not_expire");?><br>
-				<input type="radio" name="expires" value="true"<?if ($document->expires()) print " checked";?>><? if ($document->expires()) printDateChooser($document->getExpires(), "exp"); else printDateChooser(-1, "exp"); ?>
+				<input type="Radio" name="expires" value="false"<?phpif (!$document->expires()) print " checked";?>><?php printMLText("does_not_expire");?><br>
+				<input type="radio" name="expires" value="true"<?phpif ($document->expires()) print " checked";?>><?php if ($document->expires()) printDateChooser($document->getExpires(), "exp"); else printDateChooser(-1, "exp"); ?>
 			</td>
 		</tr>
 		<tr>
@@ -44,7 +44,7 @@ printStartBox(getMLText("expires"));
 </form>
 
 
-<?
+<?php
 
 printEndBox();
 printDocumentPageEnd($document);

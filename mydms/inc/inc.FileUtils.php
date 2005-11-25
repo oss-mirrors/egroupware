@@ -1,4 +1,4 @@
-<?
+<?php
 
 function renameFile($old, $new)
 {

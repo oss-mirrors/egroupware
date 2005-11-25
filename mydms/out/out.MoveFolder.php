@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -30,11 +30,11 @@ printStartBox(getMLText("move_folder"));
 ?>
 
 <form action="../op/op.MoveFolder.php" name="form1">
-	<input type="Hidden" name="folderid" value="<?print $folderid;?>">
+	<input type="Hidden" name="folderid" value="<?php print $folderid;?>">
 	<table>
 		<tr>
-			<td class="inputDescription"><?printMLText("choose_target_folder");?>:</td>
-			<td><?printFolderChooser("form1", M_READWRITE, $folder->getID());?></td>
+			<td class="inputDescription"><?php printMLText("choose_target_folder");?>:</td>
+			<td><?php printFolderChooser("form1", M_READWRITE, $folder->getID());?></td>
 		</tr>
 		<tr>
 			<td colspan="2"><br><input type="Submit"></td>
@@ -43,7 +43,7 @@ printStartBox(getMLText("move_folder"));
 	</form>
 
 
-<?
+<?php
 
 printEndBox();
 printFolderPageEnd($folder);

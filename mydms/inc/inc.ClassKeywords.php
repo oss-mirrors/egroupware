@@ -1,4 +1,4 @@
-<?
+<?php
 
 function getKeywordCategory($id)
 {

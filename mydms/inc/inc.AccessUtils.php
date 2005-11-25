@@ -1,4 +1,4 @@
-<?
+<?php
 
 define("M_NONE", 1);		//Keine Rechte
 define("M_READ", 2);		//Lese-Recht

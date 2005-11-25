@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -32,25 +32,25 @@ for ($i = 0; $i < count($users); $i++)
 ?>
 	<table border="0">
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("user_login");?>:</td>
-			<td class="standardText"><?print $currUser->getLogin();?></td>
+			<td class="inputDescription" valign="top"><?php printMLText("user_login");?>:</td>
+			<td class="standardText"><?php print $currUser->getLogin();?></td>
 		</tr>
 	<tr>
-			<td class="inputDescription" valign="top"><?printMLText("user_name");?>:</td>
-			<td class="standardText"><?print $currUser->getFullName();?></td>
+			<td class="inputDescription" valign="top"><?php printMLText("user_name");?>:</td>
+			<td class="standardText"><?php print $currUser->getFullName();?></td>
 		</tr>
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("email");?>:</td>
-			<td class="standardText"><a href="mailto:<?print $currUser->getEmail();?>"><?print $currUser->getEmail();?></a></td>
+			<td class="inputDescription" valign="top"><?php printMLText("email");?>:</td>
+			<td class="standardText"><a href="mailto:<?php print $currUser->getEmail();?>"><?php print $currUser->getEmail();?></a></td>
 		</tr>
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("comment");?>:</td>
-			<td class="standardText"><?print $currUser->getComment();?></td>
+			<td class="inputDescription" valign="top"><?php printMLText("comment");?>:</td>
+			<td class="standardText"><?php print $currUser->getComment();?></td>
 		</tr>
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("groups");?>:</td>
+			<td class="inputDescription" valign="top"><?php printMLText("groups");?>:</td>
 			<td class="standardText">
-				<?
+				<?php
 					$groups = $currUser->getGroups();
 					if (count($groups) == 0)
 						printMLText("no_groups");
@@ -67,9 +67,9 @@ for ($i = 0; $i < count($users); $i++)
 			</td>
 		</tr>
 		<tr>
-			<td class="inputDescription" valign="top"><?printMLText("user_image");?>:</td>
+			<td class="inputDescription" valign="top"><?php printMLText("user_image");?>:</td>
 			<td class="standardText">
-				<?
+				<?php
 					if ($currUser->hasImage())
 						print "<img src=\"".$currUser->getImageURL()."\">";
 					else
@@ -78,7 +78,7 @@ for ($i = 0; $i < count($users); $i++)
 			</td>
 		</tr>
 	</table>
-<?
+<?php
 }
 printEndBox();
 printCenterEnd();

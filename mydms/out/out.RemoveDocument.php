@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -29,15 +29,15 @@ printStartBox(getMLText("rm_document"));
 ?>
 
 <form action="../op/op.RemoveDocument.php" name="form1">
-	<input type="Hidden" name="documentid" value="<?print $documentid;?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
 	<div class="standardText">
-	<? printMLText("confirm_rm_document", array ("documentname" => $document->getName()));?>
+	<?php printMLText("confirm_rm_document", array ("documentname" => $document->getName()));?>
 	</div><br>
-	<input type="Submit" value="<?printMLText("rm_document");?>">
+	<input type="Submit" value="<?php printMLText("rm_document");?>">
 </form>
 
 
-<?
+<?php
 
 printEndBox();
 printDocumentPageEnd($document);

@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -33,16 +33,16 @@ printStartBox(getMLText("rm_version"));
 ?>
 
 <form action="../op/op.RemoveVersion.php" name="form1">
-	<input type="Hidden" name="documentid" value="<?=$documentid?>">
-	<input type="Hidden" name="version" value="<?=$version->getVersion()?>">
+	<input type="Hidden" name="documentid" value="<?php echo $documentid?>">
+	<input type="Hidden" name="version" value="<?php echo $version->getVersion()?>">
 	<div class="standardText">
-	<? printMLText("confirm_rm_version", array ("documentname" => $document->getName(), "version" => $version->getVersion()));?>
+	<?php printMLText("confirm_rm_version", array ("documentname" => $document->getName(), "version" => $version->getVersion()));?>
 	</div><br>
-	<input type="Submit" value="<?printMLText("rm_version");?>">
+	<input type="Submit" value="<?php printMLText("rm_version");?>">
 </form>
 
 
-<?
+<?php
 
 printEndBox();
 printDocumentPageEnd($document);

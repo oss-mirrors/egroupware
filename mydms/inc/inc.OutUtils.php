@@ -1,4 +1,4 @@
-<?
+<?php
 
 function getThemes()
 {
@@ -419,10 +419,10 @@ function printDocumentChooser($formName) {
 	<script language="JavaScript">
 	var openDlg;
 	function chooseDoc() {
-		openDlg = open("out.DocumentChooser.php?folderid=<?=$settings->_rootFolderID?>&form=<?=urlencode($formName)?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
+		openDlg = open("out.DocumentChooser.php?folderid=<?php echo $settings->_rootFolderID?>&form=<?php echo urlencode($formName)?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
 	}
 	</script>
-	<?
+	<?php
 	print "<input type=\"Hidden\" name=\"docid\">";
 	print "<input disabled name=\"docname\">";
 	print "&nbsp;&nbsp;<input type=\"Button\" value=\"Open...\" onclick=\"chooseDoc();\">";
@@ -446,11 +446,11 @@ function printFolderChooser($formName, $accessMode, $exclude = -1, $default = fa
 	<script language="JavaScript">
 	var openDlg;
 	function chooseDoc() {
-		//openDlg = open("out.FolderChooser.php?form=<?=$formName?>&mode=<?=$accessMode?>&exclude=<?=$exclude?>&folderid=<?=$settings->_rootFolderID?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
-		openDlg = open("<?=$link?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
+		//openDlg = open("out.FolderChooser.php?form=<?php echo $formName?>&mode=<?php echo $accessMode?>&exclude=<?php echo $exclude?>&folderid=<?php echo $settings->_rootFolderID?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
+		openDlg = open("<?php echo $link?>", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
 	}
 	</script>
-	<?
+	<?php
 	print "<input type=\"Hidden\" name=\"targetid\" value=\"". (($default) ? $default->getID() : "") ."\">";
 	print "<input disabled name=\"targetname\" value=\"". (($default) ? $default->getName() : "") ."\">";
 	print "&nbsp;&nbsp;<input type=\"Button\" value=\"Open...\" onclick=\"chooseDoc();\">";

@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
@@ -11,8 +11,8 @@ printHTMLHead( getMLText("login") );
 function checkForm()
 {
 	msg = "";
-	if (document.form1.login.value == "") msg += "<?printMLText("js_no_login");?>\n";
-	if (document.form1.pwd.value == "") msg += "<?printMLText("js_no_pwd");?>\n";
+	if (document.form1.login.value == "") msg += "<?php printMLText("js_no_login");?>\n";
+	if (document.form1.pwd.value == "") msg += "<?php printMLText("js_no_pwd");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
@@ -33,7 +33,7 @@ function guestLogin()
 
 </script>
 
-<?
+<?php
 
 printCenterStart();
 printStartBox(getMLText("login"));
@@ -42,17 +42,17 @@ printStartBox(getMLText("login"));
 <form action="../op/op.Login.php" method="post" name="form1" onsubmit="return checkForm();">
 <table>
 	<tr>
-		<td class="inputDescription"><?printMLText("user_login");?></td>
+		<td class="inputDescription"><?php printMLText("user_login");?></td>
 		<td><input name="login"></td>
 	</tr>
 	<tr>
-		<td class="inputDescription"><?printMLText("password");?></td>
+		<td class="inputDescription"><?php printMLText("password");?></td>
 		<td><input name="pwd" type="Password"></td>
 	</tr>
 	<tr>
-		<td class="inputDescription"><?printMLText("language");?></td>
+		<td class="inputDescription"><?php printMLText("language");?></td>
 		<td>
-			<?
+			<?php
 				print "<select name=\"lang\">";
 				$languages = getLanguages();
 				foreach ($languages as $currLang)
@@ -67,9 +67,9 @@ printStartBox(getMLText("login"));
 		</td>
 	</tr>
 	<tr>
-		<td class="inputDescription"><?printMLText("theme");?></td>
+		<td class="inputDescription"><?php printMLText("theme");?></td>
 		<td>
-			<?
+			<?php
 				print "<select name=\"sesstheme\">";
 				$themes = getThemes();
 				foreach ($themes as $currTheme)
@@ -86,7 +86,7 @@ printStartBox(getMLText("login"));
 	<tr>
 		<td colspan="2" class="standardText">
 			<br><input type="Submit">
-			<?
+			<?php
 				if ($settings->_enableGuestLogin)
 					print "<p><a href=\"javascript:guestLogin()\">" . getMLText("guest_login") . "</a>";
 			?>
@@ -99,7 +99,7 @@ printStartBox(getMLText("login"));
 document.form1.login.focus();
 </script>
 
-<?
+<?php
 printEndBox();
 printCenterEnd();
 printHTMLFoot();

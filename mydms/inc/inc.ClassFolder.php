@@ -1,4 +1,4 @@
-<?
+<?php
 function getFolder($id)
 {
 	if (!is_numeric($id))

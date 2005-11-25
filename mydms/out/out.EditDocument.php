@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -27,9 +27,9 @@ printHTMLHead( getMLText("document_title", array("documentname" => $document->ge
 function checkForm()
 {
 	msg = "";
-	if (document.form1.name.value == "") msg += "<?printMLText("js_no_name");?>\n";
-	if (document.form1.comment.value == "") msg += "<?printMLText("js_no_comment");?>\n";
-	if (document.form1.keywords.value == "") msg += "<?printMLText("js_no_keywords");?>\n";
+	if (document.form1.name.value == "") msg += "<?php printMLText("js_no_name");?>\n";
+	if (document.form1.comment.value == "") msg += "<?php printMLText("js_no_comment");?>\n";
+	if (document.form1.keywords.value == "") msg += "<?php printMLText("js_no_keywords");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
@@ -40,7 +40,7 @@ function checkForm()
 }
 </script>
 
-<?
+<?php
 printTitleBar($document->getFolder());
 printDocumentPageStart($document);
 printPageHeader(getMLText("edit_document_props") . ": " . $document->getName());
@@ -49,21 +49,21 @@ printStartBox(getMLText("edit_document_props"));
 ?>
 
 <form action="../op/op.EditDocument.php" name="form1" onsubmit="return checkForm();">
-	<input type="Hidden" name="documentid" value="<?print $documentid;?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
 	<table cellpadding="3">
 		<tr>
-			<td class="inputDescription"><?printMLText("name");?>:</td>
-			<td><input name="fname" value="<?print $document->getName();?>"></td>
+			<td class="inputDescription"><?php printMLText("name");?>:</td>
+			<td><input name="fname" value="<?php print $document->getName();?>"></td>
 		</tr>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("comment");?>:</td>
-			<td><textarea name="comment" rows="4" cols="30"><?print $document->getComment();?></textarea></td>
+			<td valign="top" class="inputDescription"><?php printMLText("comment");?>:</td>
+			<td><textarea name="comment" rows="4" cols="30"><?php print $document->getComment();?></textarea></td>
 		</tr>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("keywords");?>:</td>
+			<td valign="top" class="inputDescription"><?php printMLText("keywords");?>:</td>
 			<td class="standardText">
-				<textarea name="keywords" rows="4" cols="30"><?print $document->getKeywords();?></textarea><br>
-				<a href="javascript:chooseKeywords();"><?printMLText("use_default_keywords");?></a>
+				<textarea name="keywords" rows="4" cols="30"><?php print $document->getKeywords();?></textarea><br>
+				<a href="javascript:chooseKeywords();"><?php printMLText("use_default_keywords");?></a>
 				<script language="JavaScript">
 					var openDlg;
 					
@@ -73,7 +73,7 @@ printStartBox(getMLText("edit_document_props"));
 				</script>
 			</td>
 		</tr>
-		<?
+		<?php
 			if ($folder->getAccessMode($user) > M_READ)
 			{
 				print "<tr>";
@@ -90,7 +90,7 @@ printStartBox(getMLText("edit_document_props"));
 </form>
 
 
-<?
+<?php
 
 printEndBox();
 printDocumentPageEnd($document);

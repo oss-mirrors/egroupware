@@ -1,4 +1,4 @@
-<?
+<?php
 $GLOBALS['egw_info']['flags'] = array(
         'currentapp' => 'mydms',
         'noheader'   => True,

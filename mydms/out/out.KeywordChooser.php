@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -77,16 +77,16 @@ function showKeywords(which) {
 </script>
 
 <div style="margin-left: 10pt; margin-top: 10pt">
-<?
+<?php
 printStartBox(getMLText("use_default_keywords"));
 ?>
 <table>
 	<tr>
-		<td class="inputDescription"><?=getMLText("global_default_keywords")?>:</td>
+		<td class="inputDescription"><?php echo getMLText("global_default_keywords")?>:</td>
 		<td>
 			<select onchange="showKeywords(0)" id="categories0">
-				<option value="-1"><?=getMLText("choose_category")?>
-				<?
+				<option value="-1"><?php echo getMLText("choose_category")?>
+				<?php
 				foreach ($categories as $category) {
 					$owner = $category->getOwner();
 					if ($owner->getID() != $settings->_adminID)
@@ -98,16 +98,16 @@ printStartBox(getMLText("use_default_keywords"));
 			</select>
 		</td>
 	</tr>
-<?
+<?php
 	foreach ($categories as $category) {
 		$owner = $category->getOwner();
 		if ($owner->getID() != $settings->_adminID)
 			continue;
 ?>
-	<tr id="keywords<?=$category->getID()?>" style="display : none;">
-		<td valign="top" class="inputDescription"><?=getMLText("default_keywords")?>:</td>
+	<tr id="keywords<?php echo $category->getID()?>" style="display : none;">
+		<td valign="top" class="inputDescription"><?php echo getMLText("default_keywords")?>:</td>
 		<td class="standardText">
-			<?
+			<?php
 				$lists = $category->getKeywordLists();
 				foreach ($lists as $list) {
 					print "<li><a href='javascript:insertKeywords(\"$list[keywords]\");'>$list[keywords]</a></li>";
@@ -115,16 +115,16 @@ printStartBox(getMLText("use_default_keywords"));
 			?>
 		</td>
 	</tr>
-<? } ?>
+<?php } ?>
 	<tr>
 		<td colspan="2"><hr></td>
 	</tr>
 	<tr>
-		<td class="inputDescription"><?=getMLText("personal_default_keywords")?>:</td>
+		<td class="inputDescription"><?php echo getMLText("personal_default_keywords")?>:</td>
 		<td>
 			<select onchange="showKeywords(1)" id="categories1">
-				<option value="-1"><?=getMLText("choose_category")?>
-				<?
+				<option value="-1"><?php echo getMLText("choose_category")?>
+				<?php
 				foreach ($categories as $category) {
 					$owner = $category->getOwner();
 					if ($owner->getID() == $settings->_adminID)
@@ -136,16 +136,16 @@ printStartBox(getMLText("use_default_keywords"));
 			</select>
 		</td>
 	</tr>
-<?
+<?php
 	foreach ($categories as $category) {
 		$owner = $category->getOwner();
 		if ($owner->getID() == $settings->_adminID)
 			continue;
 ?>
-	<tr id="keywords<?=$category->getID()?>" style="display : none;">
-		<td valign="top" class="inputDescription"><?=getMLText("default_keywords")?>:</td>
+	<tr id="keywords<?php echo $category->getID()?>" style="display : none;">
+		<td valign="top" class="inputDescription"><?php echo getMLText("default_keywords")?>:</td>
 		<td class="standardText">
-			<?
+			<?php
 				$lists = $category->getKeywordLists();
 				foreach ($lists as $list) {
 					print "<li><a href='javascript:insertKeywords(\"$list[keywords]\");'>$list[keywords]</a></li>";
@@ -153,24 +153,24 @@ printStartBox(getMLText("use_default_keywords"));
 			?>
 		</td>
 	</tr>
-<? } ?>
+<?php } ?>
 	<tr>
 		<td colspan="2"><hr></td>
 	</tr>
 	<tr>
-		<td valign="top" class="inputDescription"><?=getMLText("keywords")?>:</td>
+		<td valign="top" class="inputDescription"><?php echo getMLText("keywords")?>:</td>
 		<td><textarea id="keywordta" rows="5" cols="30"></textarea></td>
 	</tr>
 	<tr>
 		<td colspan="2">
 			<br>
-			<input type="Button" onclick="acceptKeywords();" value="<?=getMLText("accept")?>"> &nbsp;&nbsp;
-			<input type="Button" onclick="cancel();" value="<?=getMLText("cancel")?>">
+			<input type="Button" onclick="acceptKeywords();" value="<?php echo getMLText("accept")?>"> &nbsp;&nbsp;
+			<input type="Button" onclick="cancel();" value="<?php echo getMLText("cancel")?>">
 		</td>
 	</tr>
 </table>
 
-<?
+<?php
 printEndBox();
 ?>
 </div>

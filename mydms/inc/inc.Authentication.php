@@ -1,4 +1,4 @@
-<?
+<?php
 include_once("inc.Utils.php");
 
 switch($GLOBALS['phpgw_info']['user']['preferences']['common']['lang'])

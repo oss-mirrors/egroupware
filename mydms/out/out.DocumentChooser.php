@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -93,7 +93,7 @@ function printTree($path, $level = 0)
 <html>
 <head>
 <link rel="STYLESHEET" type="text/css" href="styles.css">
-<title><?=getMLText("choose_target_document")?></title>
+<title><?php echo getMLText("choose_target_document")?></title>
 
 <script language="JavaScript">
 var targetName;
@@ -110,14 +110,14 @@ function documentSelected(id, name) {
 </head>
 <body>
 
-<?
+<?php
 	$folder = getFolder($folderid);
 	printTree($folder->getPath());
 ?>
 
 <script language="JavaScript">
-targetName = opener.document.<?=$form?>.docname;
-targetID   = opener.document.<?=$form?>.docid;
+targetName = opener.document.<?php echo $form?>.docname;
+targetID   = opener.document.<?php echo $form?>.docid;
 </script>
 
 </body>

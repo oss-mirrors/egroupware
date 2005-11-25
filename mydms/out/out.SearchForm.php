@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -27,7 +27,7 @@ function checkForm()
 		if (document.form1.creationdate.checked || document.form1.lastupdate.checked)
 			document.form1.query.value = "%"
 		else
-			msg += "<?printMLText("js_no_query");?>\n";
+			msg += "<?php printMLText("js_no_query");?>\n";
 	}
 	
 	if (msg != "")
@@ -40,7 +40,7 @@ function checkForm()
 }
 </script>
 
-<?
+<?php
 printTitleBar($currentFolder);
 printCenterStart();
 
@@ -51,29 +51,29 @@ printStartBox(getMLText("search"));
 
 <table cellpadding="3">
 	<tr>
-		<td class="inputDescription"><?printMLText("search_query");?>:</td>
+		<td class="inputDescription"><?php printMLText("search_query");?>:</td>
 		<td>
 			<input name="query">
 			<select name="mode">
-				<option value="and" selected><?printMLText("search_mode_and");?><br>
-				<option value="or"><?printMLText("search_mode_or");?>
+				<option value="and" selected><?php printMLText("search_mode_and");?><br>
+				<option value="or"><?php printMLText("search_mode_or");?>
 			</select>
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" class="inputDescription"><?printMLText("search_in");?>:</td>
+		<td valign="top" class="inputDescription"><?php printMLText("search_in");?>:</td>
 		<td class="standardText">
-			<input type="Checkbox" name="searchin[]" value="keywords" checked><?printMLText("keywords");?><br>
-			<input type="Checkbox" name="searchin[]" value="name"><?printMLText("name");?><br>
-			<input type="Checkbox" name="searchin[]" value="comment"><?printMLText("comment");?>
+			<input type="Checkbox" name="searchin[]" value="keywords" checked><?php printMLText("keywords");?><br>
+			<input type="Checkbox" name="searchin[]" value="name"><?php printMLText("name");?><br>
+			<input type="Checkbox" name="searchin[]" value="comment"><?php printMLText("comment");?>
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" class="inputDescription"><?printMLText("owner");?>:</td>
+		<td valign="top" class="inputDescription"><?php printMLText("owner");?>:</td>
 		<td class="standardText">
 			<select name="ownerid">
-			<option value="-1"><?printMLText("all_users");?>
-			<?
+			<option value="-1"><?php printMLText("all_users");?>
+			<?php
 				$allUsers = getAllUsers();
 				foreach ($allUsers as $userObj)
 				{
@@ -86,14 +86,14 @@ printStartBox(getMLText("search"));
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" class="inputDescription"><?printMLText("under_folder")?>:</td>
-		<td class="standardText"><?printFolderChooser("form1", M_READ, -1, $currentFolder);?></td>
+		<td valign="top" class="inputDescription"><?php printMLText("under_folder")?>:</td>
+		<td class="standardText"><?php printFolderChooser("form1", M_READ, -1, $currentFolder);?></td>
 	</tr>
 	<tr>
-		<td valign="top" class="inputDescription"><?printMLText("creation_date");?>:</td>
+		<td valign="top" class="inputDescription"><?php printMLText("creation_date");?>:</td>
 		<td class="standardText">
 			<input type="Checkbox" name="creationdate" value="true">
-			<?
+			<?php
 				printMLText("between");
 				print "&nbsp;&nbsp;";
 				printDateChooser(-1, "createstart");
@@ -105,10 +105,10 @@ printStartBox(getMLText("search"));
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" class="inputDescription"><?printMLText("last_update");?>:</td>
+		<td valign="top" class="inputDescription"><?php printMLText("last_update");?>:</td>
 		<td class="standardText">
 			<input type="Checkbox" name="lastupdate" value="true">
-			<?
+			<?php
 				printMLText("between");
 				print "&nbsp;&nbsp;";
 				printDateChooser(-1, "updatestart");
@@ -127,7 +127,7 @@ printStartBox(getMLText("search"));
 
 </form>
 
-<?
+<?php
 printEndBox();
 printCenterEnd();
 printHTMLFoot();

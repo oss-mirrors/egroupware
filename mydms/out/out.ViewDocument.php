@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -34,8 +34,8 @@ printPageHeader(getMLText("document_overview") . ": " . $document->getName());
 
 ?>
 	<p class="standardText">
-	<a href="../op/op.Download.php?documentid=<?print $documentid;?>&version=<?print $latestContent->getVersion();?>"><img src="images/download.gif" width=22 height=22 border=0 align="absmiddle"><? printMLText("download"); ?></a>
-	<?
+	<a href="../op/op.Download.php?documentid=<?php print $documentid;?>&version=<?php print $latestContent->getVersion();?>"><img src="images/download.gif" width=22 height=22 border=0 align="absmiddle"><?php printMLText("download"); ?></a>
+	<?php
 		if ($latestContent->viewOnline())
 			print "&nbsp;&nbsp;&nbsp;<a target=\"_blank\" href=\"../op/viewonline" . $latestContent->getURL()."\"><img src=\"images/view.gif\" width=18 height=18 border=0 align=\"absmiddle\">" . getMLText("view_online") . "</a>";
 	print "</p>";
@@ -45,37 +45,37 @@ printStartBox(getMLText("document_infos"));
 ?>
 	<table cellpadding="0" cellspacing="10">
 		<tr>
-			<td class="infos" valign="top"><?printMLText("owner");?>:</td>
+			<td class="infos" valign="top"><?php printMLText("owner");?>:</td>
 			<td style="border-left: 1pt solid #000080;" rowspan="13">&nbsp;</td>
 			<td class="infos">
-				<?
+				<?php
 					$owner = $document->getOwner();
 					print "<a class=\"infos\" href=\"mailto:".$owner->getEmail()."\">".$owner->getFullName()."</a>";
 				?>
 			</td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("comment");?>:</td>
-			<td class="infos"><?print $document->getComment();?></td>
+			<td class="infos" valign="top"><?php printMLText("comment");?>:</td>
+			<td class="infos"><?php print $document->getComment();?></td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("creation_date");?>:</td>
-			<td class="infos"><? print getLongReadableDate($document->getDate()); ?></td>
+			<td class="infos" valign="top"><?php printMLText("creation_date");?>:</td>
+			<td class="infos"><?php print getLongReadableDate($document->getDate()); ?></td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("keywords");?>:</td>
-			<td class="infos"><?print $document->getKeywords();?></td>
+			<td class="infos" valign="top"><?php printMLText("keywords");?>:</td>
+			<td class="infos"><?php print $document->getKeywords();?></td>
 		</tr>
-		<?
+		<?php
 			if ($document->isLocked())
 			{
 				$lockingUser = $document->getLockingUser();
 				?>
 					<tr>
-						<td class="infos" valign="top"><?printMLText("lock_status");?>:</td>
-						<td class="infos"><?printMLText("lock_message", array("email" => $lockingUser->getEmail(), "username" => $lockingUser->getFullName()));?></td>
+						<td class="infos" valign="top"><?php printMLText("lock_status");?>:</td>
+						<td class="infos"><?php printMLText("lock_message", array("email" => $lockingUser->getEmail(), "username" => $lockingUser->getFullName()));?></td>
 					</tr>
-				<?
+				<?php
 			}
 		?>
 		<tr>
@@ -83,41 +83,41 @@ printStartBox(getMLText("document_infos"));
 			<td style="border-bottom: 1pt solid #000080;">&nbsp;</td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("last_update");?></td>
-			<td class="infos"><?print getLongReadableDate($latestContent->getDate());?></td>
+			<td class="infos" valign="top"><?php printMLText("last_update");?></td>
+			<td class="infos"><?php print getLongReadableDate($latestContent->getDate());?></td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("current_version");?>:</td>
-			<td class="infos"><?print $latestContent->getVersion();?></td>
+			<td class="infos" valign="top"><?php printMLText("current_version");?>:</td>
+			<td class="infos"><?php print $latestContent->getVersion();?></td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("comment_for_current_version");?>:</td>
-			<td class="infos" valign="top"><?print $latestContent->getComment();?></td>
+			<td class="infos" valign="top"><?php printMLText("comment_for_current_version");?>:</td>
+			<td class="infos" valign="top"><?php print $latestContent->getComment();?></td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("uploaded_by");?>:</td>
+			<td class="infos" valign="top"><?php printMLText("uploaded_by");?>:</td>
 			<td class="infos">
-				<?
+				<?php
 					$updatingUser = $latestContent->getUser();
 					print "<a class=\"infos\" href=\"mailto:".$updatingUser->getEmail()."\">".$updatingUser->getFullName()."</a>";
 				?>
 			</td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("file_size");?>:</td>
-			<td class="infos"><?print filesize($settings->_contentDir . $latestContent->getPath());?> bytes</td>
+			<td class="infos" valign="top"><?php printMLText("file_size");?>:</td>
+			<td class="infos"><?php print filesize($settings->_contentDir . $latestContent->getPath());?> bytes</td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("mime_type");?>:</td>
+			<td class="infos" valign="top"><?php printMLText("mime_type");?>:</td>
 			<td class="infos">
-				<img align="absmiddle" src="images/icons/<?print getMimeIcon($latestContent->getFileType());?>"> 
-				<?print $latestContent->getMimeType();?>
+				<img align="absmiddle" src="images/icons/<?php print getMimeIcon($latestContent->getFileType());?>"> 
+				<?php print $latestContent->getMimeType();?>
 			</td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("expires");?>:</td>
+			<td class="infos" valign="top"><?php printMLText("expires");?>:</td>
 			<td class="infos" valign="top">
-			<?
+			<?php
 				if (!$document->getExpires())
 					printMLText("does_not_expire");
 				else
@@ -127,12 +127,12 @@ printStartBox(getMLText("document_infos"));
 		</tr>
 	</table>
 
-<?
+<?php
 printNextBox(getMLText("document_versions"));
 ?>
 	
 	<table cellspacing="5" cellpadding="0" border="0">
-	<?
+	<?php
 		$versions = $document->getContent();
 		$rownum = count($versions)+1;
 		print "<tr>\n";
@@ -171,7 +171,7 @@ printNextBox(getMLText("document_versions"));
 	?>
 	</table>
 
-<?
+<?php
 printNextBox(getMLText("linked_documents"));
 
 $links = $document->getDocumentLinks();
@@ -181,22 +181,22 @@ $rownum = count($links)+1;
 ?>
 
 <table cellspacing="5" cellpadding="0" border="0">
-	<?
+	<?php
 	if ($rownum > 1)
 	{
 		?>
 		<tr>
 		<td></td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?printMLText("name");?></i></td>
-		<td rowspan="<?print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?printMLText("comment");?></i></td>
-		<td rowspan="<?print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?printMLText("document_link_by");?></i></td>
-		<td rowspan="<?print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?printMLText("document_link_public");?></i></td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("name");?></i></td>
+		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("comment");?></i></td>
+		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("document_link_by");?></i></td>
+		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("document_link_public");?></i></td>
 		<td></td>
 		</tr>
-		<?
+		<?php
 		foreach($links as $link)
 		{
 			$responsibleUser = $link->getUser();
@@ -220,18 +220,18 @@ $rownum = count($links)+1;
 	?>
 </table>
 
-<?
+<?php
 if ($user->getID() != $settings->_guestID)
 {
 ?>
 	<form action="../op/op.AddDocumentLink.php" name="form1">
-	<input type="Hidden" name="documentid" value="<?print $documentid;?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
 	<table>
 		<tr>
-			<td class="inputDescription"><?printMLText("choose_target_document");?>:</td>
-			<td><?printDocumentChooser("form1");?></td>
+			<td class="inputDescription"><?php printMLText("choose_target_document");?>:</td>
+			<td><?php printDocumentChooser("form1");?></td>
 		</tr>
-		<?
+		<?php
 			if ($document->getAccessMode($user) >= M_READWRITE)
 			{
 				print "<tr><td class=\"inputDescription\">".getMLText("document_link_public")."</td><td class=\"inputDescription\">";
@@ -241,11 +241,11 @@ if ($user->getID() != $settings->_guestID)
 			}
 		?>
 		<tr>
-			<td colspan="2"><br><input type="Submit" value="<?printMLText("add_document_link");?>"></td>
+			<td colspan="2"><br><input type="Submit" value="<?php printMLText("add_document_link");?>"></td>
 		</tr>
 	</table>
 	</form>
-<?
+<?php
 }
 
 printEndBox();

@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -157,18 +157,18 @@ printStartBox(getMLText("search_results"));
 <table width="100%">
 	<tr>
 		<td align="left" class="standardText">
-			<?
+			<?php
 				if (count($results) == 0)
 					printMLText("search_no_results", array("query" => $query));
 				else
 					printMLText("search_report", array("query" => $query, "count" => count($results)));
 			?>
 		</td>
-		<td align="right" class="standardText"><?printMLText("search_time", array("time" => $searchTime));?></td>
+		<td align="right" class="standardText"><?php printMLText("search_time", array("time" => $searchTime));?></td>
 	</tr>
 </table>
 
-<?
+<?php
 if (count($results) == 0)
 {
 	printEndBox();

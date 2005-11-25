@@ -1,4 +1,4 @@
-<?
+<?php
 //session_cache_limiter('none');
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");

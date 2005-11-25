@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -26,8 +26,8 @@ printHTMLHead( getMLText("document_title", array("documentname" => $document->ge
 function checkForm()
 {
 	msg = "";
-	if (document.form1.userfile.value == "") msg += "<?printMLText("js_no_file");?>\n";
-	if (document.form1.comment.value == "") msg += "<?printMLText("js_no_comment");?>\n";
+	if (document.form1.userfile.value == "") msg += "<?php printMLText("js_no_file");?>\n";
+	if (document.form1.comment.value == "") msg += "<?php printMLText("js_no_comment");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
@@ -38,7 +38,7 @@ function checkForm()
 }
 </script>
 
-<?
+<?php
 printTitleBar($document->getFolder());
 printDocumentPageStart($document);
 printPageHeader(getMLText("update_document") . ": " . $document->getName());
@@ -71,23 +71,23 @@ if ($document->isLocked())
 ?>
 
 <form action="../op/op.UpdateDocument.php" enctype="multipart/form-data" method="post" name="form1" onsubmit="return checkForm();">
-	<input type="Hidden" name="documentid" value="<? print $documentid; ?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid; ?>">
 	<table>
 		<tr>
-			<td class="inputDescription"><?printMLText("local_file");?>:</td>
+			<td class="inputDescription"><?php printMLText("local_file");?>:</td>
 			<td><input type="File" name="userfile"></td>
 		</tr>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("comment");?>:</td>
+			<td valign="top" class="inputDescription"><?php printMLText("comment");?>:</td>
 			<td class="standardText">
 				<textarea name="comment" rows="4" cols="30"></textarea>
 			</td>
 		</tr>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("expires");?>:</td>
+			<td valign="top" class="inputDescription"><?php printMLText("expires");?>:</td>
 			<td class="standardText">
-				<input type="Radio" name="expires" value="false"<?if (!$document->expires()) print " checked";?>><?printMLText("does_not_expire");?><br>
-				<input type="radio" name="expires" value="true"<?if ($document->expires()) print " checked";?>><?printDateChooser(-1, "exp");?>
+				<input type="Radio" name="expires" value="false"<?phpif (!$document->expires()) print " checked";?>><?php printMLText("does_not_expire");?><br>
+				<input type="radio" name="expires" value="true"<?phpif ($document->expires()) print " checked";?>><?php printDateChooser(-1, "exp");?>
 			</td>
 		</tr>
 		<tr>
@@ -96,7 +96,7 @@ if ($document->isLocked())
 	</table>
 </form>
 
-<?
+<?php
 
 printEndBox();
 printDocumentPageEnd($document);

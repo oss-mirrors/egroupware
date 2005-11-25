@@ -1,4 +1,4 @@
-<?
+<?php
 ///////////////////////////////////////////////////////////////////////
 // We dont use ths db class any more, and use the egroupware db      //
 // class instead, rewritten by Shang Wenbin <wbsh@realss.com>        //

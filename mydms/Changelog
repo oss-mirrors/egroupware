@@ -1,3 +1,9 @@
+20051125
+- fixed various bugs
+  [ 1365737 ] Deleting RootFolder is crashing mydms
+  [ 1364055 ] short open tag in php.ini must be set to on
+  [ 1362088 ] mydms bugs
+
 20051103
 - added option to copy folderstructures, will add support for copying
   documents later too

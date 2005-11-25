@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.Utils.php");
 include("../inc/inc.AccessUtils.php");

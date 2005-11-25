@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -31,7 +31,7 @@ function checkForm()
 	msg = "";
 	if ((document.form1.userid.options[document.form1.userid.selectedIndex].value == -1) && 
 		(document.form1.groupid.options[document.form1.groupid.selectedIndex].value == -1))
-			msg += "<?printMLText("js_select_user_or_group");?>\n";
+			msg += "<?php printMLText("js_select_user_or_group");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
@@ -42,7 +42,7 @@ function checkForm()
 }
 </script>
 
-<?
+<?php
 printTitleBar($folder);
 printFolderPageStart($folder);
 printPageHeader(getMLText("edit_folder_notify") . ": " . $folder->getName());
@@ -51,7 +51,7 @@ printStartBox(getMLText("edit_existing_notify"));
 ?>
 
 <table border="0" cellpadding="5" cellspacing="0">
-	<?
+	<?php
 		if ((count($notifyList["users"]) == 0) && (count($notifyList["groups"]) == 0))
 		{
 			print "<tr><td class=\"notifylist\">".getMLText("empty_notify_list")."</td></tr>";
@@ -84,22 +84,22 @@ printStartBox(getMLText("edit_existing_notify"));
 	?>
 </table>
 
-<?
+<?php
 printNextBox(getMLText("add_new_notify"));
 ?>
 
 
 <form action="../op/op.FolderNotify.php" name="form1" onsubmit="return checkForm();">
-<input type="Hidden" name="folderid" value="<?print $folderid?>">
+<input type="Hidden" name="folderid" value="<?php print $folderid?>">
 <input type="Hidden" name="action" value="addnotify">
 <table>
 	<tr>
-		<td class="inputDescription"><?printMLText("user");?>:</td>
+		<td class="inputDescription"><?php printMLText("user");?>:</td>
 		<td>
 			<select name="userid">
-				<option value="-1"><?printMLText("select_one");?>
+				<option value="-1"><?php printMLText("select_one");?>
 				<option value="-1">-------------------------------
-				<?
+				<?php
 					$allUsers = getAllUsers();
 					foreach ($allUsers as $userObj)
 					{
@@ -112,12 +112,12 @@ printNextBox(getMLText("add_new_notify"));
 		</td>
 	</tr>
 	<tr>
-		<td class="inputDescription"><?printMLText("group");?>:</td>
+		<td class="inputDescription"><?php printMLText("group");?>:</td>
 		<td>
 			<select name="groupid">
-				<option value="-1"><?printMLText("select_one");?>
+				<option value="-1"><?php printMLText("select_one");?>
 				<option value="-1">-------------------------------
-				<?
+				<?php
 					$allGroups = getAllGroups();
 					foreach ($allGroups as $groupObj)
 						print "<option value=\"".$groupObj->getID()."\">" . $groupObj->getName() . "\n";
@@ -131,7 +131,7 @@ printNextBox(getMLText("add_new_notify"));
 </table>
 </form>
 
-<?
+<?php
 printEndBox();
 printFolderPageEnd($folder);
 printHTMLFoot();

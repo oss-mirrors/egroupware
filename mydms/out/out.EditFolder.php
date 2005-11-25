@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -29,8 +29,8 @@ printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName(
 function checkForm()
 {
 	msg = "";
-	if (document.form1.fname.value == "") msg += "<?printMLText("js_no_name");?>\n";
-	if (document.form1.comment.value == "") msg += "<?printMLText("js_no_comment");?>\n";
+	if (document.form1.fname.value == "") msg += "<?php printMLText("js_no_name");?>\n";
+	if (document.form1.comment.value == "") msg += "<?php printMLText("js_no_comment");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
@@ -41,7 +41,7 @@ function checkForm()
 }
 </script>
 
-<?
+<?php
 printTitleBar($folder);
 printFolderPageStart($folder);
 printPageHeader(getMLText("edit_folder_props") . ": " . $folder->getName());
@@ -50,17 +50,17 @@ printStartBox(getMLText("edit_folder_props"));
 ?>
 
 <form action="../op/op.EditFolder.php" name="form1" onsubmit="return checkForm();">
-	<input type="Hidden" name="folderid" value="<?print $folderid;?>">
+	<input type="Hidden" name="folderid" value="<?php print $folderid;?>">
 	<table>
 		<tr>
-			<td class="inputDescription"><?printMLText("name");?>:</td>
-			<td><input name="fname" value="<?print $folder->getName();?>"></td>
+			<td class="inputDescription"><?php printMLText("name");?>:</td>
+			<td><input name="fname" value="<?php print $folder->getName();?>"></td>
 		</tr>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("comment");?>:</td>
-			<td><textarea name="comment" rows="4" cols="30"><?print $folder->getComment();?></textarea></td>
+			<td valign="top" class="inputDescription"><?php printMLText("comment");?>:</td>
+			<td><textarea name="comment" rows="4" cols="30"><?php print $folder->getComment();?></textarea></td>
 		</tr>
-		<?
+		<?php
 			if ($parent && $parent->getAccessMode($user) > M_READ)
 			{
 				print "<tr>";
@@ -77,7 +77,7 @@ printStartBox(getMLText("edit_folder_props"));
 </form>
 
 
-<?
+<?php
 
 printEndBox();
 printFolderPageEnd($folder);

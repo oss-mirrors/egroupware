@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -26,10 +26,10 @@ printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName(
 function checkForm()
 {
 	msg = "";
-	if (document.form1.userfile.value == "") msg += "<?printMLText("js_no_file");?>\n";
-	//if (document.form1.fname.value == "") msg += "<?printMLText("js_no_name");?>\n";
-	//if (document.form1.comment.value == "") msg += "<?printMLText("js_no_comment");?>\n";
-	//if (document.form1.keywords.value == "") msg += "<?printMLText("js_no_keywords");?>\n";
+	if (document.form1.userfile.value == "") msg += "<?php printMLText("js_no_file");?>\n";
+	//if (document.form1.fname.value == "") msg += "<?php printMLText("js_no_name");?>\n";
+	//if (document.form1.comment.value == "") msg += "<?php printMLText("js_no_comment");?>\n";
+	//if (document.form1.keywords.value == "") msg += "<?php printMLText("js_no_keywords");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
@@ -40,7 +40,7 @@ function checkForm()
 }
 </script>
 
-<?
+<?php
 printTitleBar($folder);
 printFolderPageStart($folder);
 printPageHeader(getMLText("add_document") . ": " . $folder->getName());
@@ -49,25 +49,25 @@ printStartBox(getMLText("add_document"));
 ?>
 
 <form action="../op/op.AddDocument.php" enctype="multipart/form-data" method="post" name="form1" onsubmit="return checkForm();">
-	<input type="Hidden" name="folderid" value="<? print $folderid; ?>">
+	<input type="Hidden" name="folderid" value="<?php print $folderid; ?>">
 	<table>
 		<tr>
-			<td class="inputDescription"><?printMLText("local_file");?>:</td>
+			<td class="inputDescription"><?php printMLText("local_file");?>:</td>
 			<td><input type="File" name="userfile"></td>
 		</tr>
 		<tr>
-			<td class="inputDescription"><?printMLText("name");?>:</td>
+			<td class="inputDescription"><?php printMLText("name");?>:</td>
 			<td><input name="fname"></td>
 		</tr>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("comment");?>:</td>
+			<td valign="top" class="inputDescription"><?php printMLText("comment");?>:</td>
 			<td><textarea name="comment" rows="4" cols="30"></textarea></td>
 		</tr>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("keywords");?>:</td>
+			<td valign="top" class="inputDescription"><?php printMLText("keywords");?>:</td>
 			<td class="standardText">
 				<textarea name="keywords" rows="4" cols="30"></textarea><br>
-				<a href="javascript:chooseKeywords();"><?printMLText("use_default_keywords");?></a>
+				<a href="javascript:chooseKeywords();"><?php printMLText("use_default_keywords");?></a>
 				<script language="JavaScript">
 					var openDlg;
 					
@@ -78,15 +78,15 @@ printStartBox(getMLText("add_document"));
 			</td>
 		</tr>
 		<tr>
-			<td valign="top" class="inputDescription"><?printMLText("expires");?>:</td>
+			<td valign="top" class="inputDescription"><?php printMLText("expires");?>:</td>
 			<td class="standardText">
-				<input type="Radio" name="expires" value="false" checked><?printMLText("does_not_expire");?><br>
-				<input type="radio" name="expires" value="true"><?printDateChooser(-1, "exp");?>
+				<input type="Radio" name="expires" value="false" checked><?php printMLText("does_not_expire");?><br>
+				<input type="radio" name="expires" value="true"><?php printDateChooser(-1, "exp");?>
 			</td>
 		</tr>
 		<tr>
-			<td class="inputDescription"><?printMLText("sequence");?>:</td>
-			<td><?printSequenceChooser($folder->getDocuments());?></td>
+			<td class="inputDescription"><?php printMLText("sequence");?>:</td>
+			<td><?php printSequenceChooser($folder->getDocuments());?></td>
 		</tr>
 		<tr>
 			<td colspan="2"><br><input type="Submit"></td>
@@ -95,7 +95,7 @@ printStartBox(getMLText("add_document"));
 </form>
 
 
-<?
+<?php
 
 printEndBox();
 printFolderPageEnd($folder);

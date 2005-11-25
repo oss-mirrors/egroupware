@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -28,11 +28,11 @@ printStartBox(getMLText("move_document"));
 ?>
 
 <form action="../op/op.MoveDocument.php" name="form1">
-	<input type="Hidden" name="documentid" value="<?print $documentid;?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
 	<table>
 		<tr>
-			<td class="inputDescription"><?printMLText("choose_target_folder");?>:</td>
-			<td><?printFolderChooser("form1", M_READWRITE, -1);?></td>
+			<td class="inputDescription"><?php printMLText("choose_target_folder");?>:</td>
+			<td><?php printFolderChooser("form1", M_READWRITE, -1);?></td>
 		</tr>
 		<tr>
 			<td colspan="2"><br><input type="Submit"></td>
@@ -41,7 +41,7 @@ printStartBox(getMLText("move_document"));
 	</form>
 
 
-<?
+<?php
 
 printEndBox();
 printDocumentPageEnd($document);

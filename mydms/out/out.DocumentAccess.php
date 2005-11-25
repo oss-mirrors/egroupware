@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -41,7 +41,7 @@ function checkForm()
 	msg = "";
 	if ((document.form1.userid.options[document.form1.userid.selectedIndex].value == -1) && 
 		(document.form1.groupid.options[document.form1.groupid.selectedIndex].value == -1))
-			msg += "<?printMLText("js_select_user_or_group");?>\n";
+			msg += "<?php printMLText("js_select_user_or_group");?>\n";
 	if (msg != "")
 	{
 		alert(msg);
@@ -52,7 +52,7 @@ function checkForm()
 }
 </script>
 
-<?
+<?php
 printTitleBar($document->getFolder());
 printDocumentPageStart($document);
 printPageHeader(getMLText("edit_document_access") . ": " . $document->getName());
@@ -66,13 +66,13 @@ if ($user->isAdmin())
 	?>
 		<form action="../op/op.DocumentAccess.php">
 		<input type="Hidden" name="action" value="setowner">
-		<input type="Hidden" name="documentid" value="<?print $documentid;?>">
+		<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
 		<table>
 			<tr>
-				<td class="inputDescription"><?printMLText("owner");?></td>
+				<td class="inputDescription"><?php printMLText("owner");?></td>
 				<td>
 					<select name="ownerid">
-						<?
+						<?php
 							$owner = $document->getOwner();
 							foreach ($allUsers as $currUser)
 							{
@@ -92,7 +92,7 @@ if ($user->isAdmin())
 			</tr>
 		</table>
 		</form>
-	<?
+	<?php
 	printNextBox(getMLText("edit_inherit_access"));
 }
 else
@@ -123,21 +123,21 @@ printNextBox(getMLText("default_access"));
 
 <div class="defaultAccess">
 <form action="../op/op.DocumentAccess.php">
-	<input type="Hidden" name="documentid" value="<?print $documentid;?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
 	<input type="Hidden" name="action" value="setdefault">
 	
-	<? printAccessModeSelection($document->getDefaultAccess()); ?>
+	<?php printAccessModeSelection($document->getDefaultAccess()); ?>
 	<p>
 	<input type="Submit">
 </form>
 </div>
 
-<?
+<?php
 printNextBox(getMLText("edit_existing_access"));
 ?>
 
 <table border="0" cellpadding="0" cellspacing="5">
-	<?
+	<?php
 		if ((count($accessList["users"]) == 0) && (count($accessList["groups"]) == 0))
 		{
 			print "<tr><td class=\"accessList\">".getMLText("empty_access_list")."</td></tr>";
@@ -148,12 +148,12 @@ printNextBox(getMLText("edit_existing_access"));
 			?>
 				<tr>
 					<td></td>
-					<td class="accessList" style="border-bottom: 1pt solid #000080;"><i><?printMLText("name");?></i></td>
-					<td rowspan="<?print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-					<td class="accessList" style="border-bottom: 1pt solid #000080;"><i><?printMLText("access_mode");?></i></td>
+					<td class="accessList" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("name");?></i></td>
+					<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
+					<td class="accessList" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("access_mode");?></i></td>
 					<td></td>
 				</tr>
-				<?
+				<?php
 					foreach ($accessList["users"] as $userAccess)
 					{
 						$userObj = $userAccess->getUser();
@@ -195,21 +195,21 @@ printNextBox(getMLText("edit_existing_access"));
 	?>
 </table>
 
-<?
+<?php
 printNextBox(getMLText("add_access"));
 ?>
 
 <form action="../op/op.DocumentAccess.php" name="form1" onsubmit="return checkForm();">
-	<input type="Hidden" name="documentid" value="<?print $documentid?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid?>">
 	<input type="Hidden" name="action" value="addaccess">
 	<table>
 	<tr>
-		<td class="inputDescription"><?printMLText("user");?>:</td>
+		<td class="inputDescription"><?php printMLText("user");?>:</td>
 		<td>
 			<select name="userid">
-				<option value="-1"><?printMLText("select_one");?>
+				<option value="-1"><?php printMLText("select_one");?>
 				<option value="-1">-------------------------------
-				<?
+				<?php
 					foreach ($allUsers as $userObj)
 					{
 						if ($userObj->getID() == $settings->_guestID)
@@ -221,12 +221,12 @@ printNextBox(getMLText("add_access"));
 		</td>
 	</tr>
 	<tr>
-		<td class="inputDescription"><?printMLText("group");?>:</td>
+		<td class="inputDescription"><?php printMLText("group");?>:</td>
 		<td>
 			<select name="groupid">
-				<option value="-1"><?printMLText("select_one");?>
+				<option value="-1"><?php printMLText("select_one");?>
 				<option value="-1">-------------------------------
-				<?
+				<?php
 					$allGroups = getAllGroups();
 					foreach ($allGroups as $groupObj)
 						print "<option value=\"".$groupObj->getID()."\">" . $groupObj->getName() . "\n";
@@ -235,9 +235,9 @@ printNextBox(getMLText("add_access"));
 		</td>
 	</tr>
 	<tr>
-		<td class="inputDescription"><?printMLText("access_mode");?>:</td>
+		<td class="inputDescription"><?php printMLText("access_mode");?>:</td>
 		<td>
-			<?
+			<?php
 				printAccessModeSelection(M_READ);
 			?>
 		</td>
@@ -248,7 +248,7 @@ printNextBox(getMLText("add_access"));
 </table>
 </form>
 
-<?
+<?php
 	printEndBox();
 	printDocumentPageEnd($document);
 	printHTMLFoot();

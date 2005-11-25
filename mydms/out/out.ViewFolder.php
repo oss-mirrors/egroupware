@@ -1,4 +1,4 @@
-<?
+<?php
 include("../inc/inc.Settings.php");
 include("../inc/inc.AccessUtils.php");
 include("../inc/inc.ClassAccess.php");
@@ -33,27 +33,27 @@ printFolderPageStart($folder);
 	
 	<table cellpadding="0" cellspacing="10">
 		<tr>
-			<td class="infos" valign="top"><?printMLText("owner");?>:</td>
+			<td class="infos" valign="top"><?php printMLText("owner");?>:</td>
 			<td style="border-left: 1pt solid #000080;" rowspan="2">&nbsp;</td>
 			<td class="infos">
-				<?
+				<?php
 					$owner = $folder->getOwner();
 					print "<a class=\"infos\" href=\"mailto:".$owner->getEmail()."\">".$owner->getFullName()."</a>";
 				?>
 			</td>
 		</tr>
 		<tr>
-			<td class="infos" valign="top"><?printMLText("comment");?>:</td>
-			<td class="infos"><?print $folder->getComment();?></td>
+			<td class="infos" valign="top"><?php printMLText("comment");?>:</td>
+			<td class="infos"><?php print $folder->getComment();?></td>
 		</tr>
 	</table>
 	
-<?
+<?php
 printStartBox(getMLText("subfolder_list"));
 ?>
 				
 	<table cellspacing="5" cellpadding="0" border="0">
-	<?
+	<?php
 		$subFolders = $folder->getSubFolders();
 		$subFolders = filterAccess($subFolders, $user, M_READ);
 		if (count($subFolders) > 0)
@@ -85,12 +85,12 @@ printStartBox(getMLText("subfolder_list"));
 	?>
 	</table>
 
-<?*/
+<?php*/
 	printStartBox(getMLText("document_list"));
 ?>
 
 	<table cellspacing="5" cellpadding="0" border="0">
-	<?
+	<?php
 		$documents = $folder->getDocuments();
 		$documents = filterAccess($documents, $user, M_READ);
 		if (count($documents) > 0)
@@ -140,7 +140,7 @@ printStartBox(getMLText("subfolder_list"));
 	?>
 	</table>
 		
-<?
+<?php
 
 printEndBox();
 

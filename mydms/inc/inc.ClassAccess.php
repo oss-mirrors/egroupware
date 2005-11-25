@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
  * Repräsentiert einen Eintrag in der phpgw_mydms_ACLs für einen User.
