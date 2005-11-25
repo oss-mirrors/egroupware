@@ -39,8 +39,6 @@
 
 		function editUserData($_useCache='0')
 		{
-			global $phpgw, $phpgw_info, $_GET;
-			
 			$accountID = $_GET['account_id'];			
 
 			$this->display_app_header();

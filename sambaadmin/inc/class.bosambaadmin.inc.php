@@ -44,6 +44,11 @@
 			return $this->sosambaadmin->deleteWorkstation($_workstations);
 		}
 		
+		function expirePassword($_accountID)
+		{
+			return $this->sosambaadmin->expirePassword($_accountID);
+		}
+		
 		function getUserData($_accountID, $_usecache)
 		{
 			if ($_usecache)

@@ -211,6 +211,30 @@
 			}
 		}
 		
+		function expirePassword($_accountID)
+		{
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
+			$filter = "(&(uidnumber=$_accountID)(objectclass=sambasamaccount))";
+			
+			$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
+			if ($sri)
+			{
+				$allValues      = ldap_get_entries($ldap, $sri);
+				$accountDN      = $allValues[0]['dn'];
+				
+				$newData['sambaPwdLastSet']     = time();
+				$newData['sambaPwdCanChange']   = '1';
+				$newData['sambaPwdMustChange']  = '1';
+				
+				if(@ldap_mod_replace ($ldap, $accountDN, $newData))
+				{
+					return true;
+				}
+				#print ldap_error($ldap);
+			}
+			return false;
+		}
+		
 		function findNextUID()
 		{
 			$nextUID = 0;
