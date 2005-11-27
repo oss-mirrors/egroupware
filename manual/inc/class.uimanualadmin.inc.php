@@ -50,9 +50,9 @@
 			$from = explode('/',$url);
 			$from = count($from) > 2 ? $from[2] : $url;
 
-			$langs = implode(',',array_keys($GLOBALS['egw']->translation->get_installed_langs()));
-			if ($langs)
+			if (($langs = $GLOBALS['egw']->translation->get_installed_langs()))
 			{
+				$langs = implode(',',array_keys($langs));
 				$url .= (strstr($url,'?') === False ? '?' : '&').'lang='.$langs;
 			}
 			// only do an incremental update if the langs are unchanged and we already did an update
