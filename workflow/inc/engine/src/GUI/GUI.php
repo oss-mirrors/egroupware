@@ -66,7 +66,11 @@ class GUI extends Base {
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
     $mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
-    $mid .= "	or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
+    if (is_array($groups))
+    {
+      $mid .= '	or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+    }
+    $mid .= ')';
     $bindvars = array('y',$user);
     if($find) {
       $findesc = '%'.$find.'%';
@@ -105,30 +109,37 @@ class GUI extends Base {
       while($res = $result->fetchRow()) {
         // Get instances and activities per process,
         $pId=$res['wf_p_id'];
-        $res['wf_activities']=$this->getOne("select count(distinct(ga.wf_activity_id))
-              from ".GALAXIA_TABLE_PREFIX."processes gp
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."roles gr ON gr.wf_role_id=gar.wf_role_id
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
+        $query_act = 'select count(distinct(ga.wf_activity_id))
+              from '.GALAXIA_TABLE_PREFIX.'processes gp
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities ga ON gp.wf_p_id=ga.wf_p_id
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'roles gr ON gr.wf_role_id=gar.wf_role_id
+                INNER JOIN '.GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gr.wf_role_id
               where gp.wf_p_id=? 
-              and (  ((gur.wf_user=? and gur.wf_account_type='u')
-                or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g')))",
-              array($pId,$user));
+              and (  ((gur.wf_user=? and gur.wf_account_type='u') ";
+        if (is_array($groups))
+        {
+          $query_act .= ' or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+        }
+        $query_act .= '))';
+         
+        $res['wf_activities']=$this->getOne($query_act,array($pId,$user));
         //we are counting here instances which are completed/exception or actives
         // TODO: maybe we should add a second counter with only running instances
-        $res['wf_instances']=$this->getOne("select count(distinct(gi.wf_instance_id))
-              from ".GALAXIA_TABLE_PREFIX."instances gi
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gar.wf_role_id=gur.wf_role_id
+        $query_inst = 'select count(distinct(gi.wf_instance_id))
+              from '.GALAXIA_TABLE_PREFIX.'instances gi
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
+                LEFT JOIN '.GALAXIA_TABLE_PREFIX.'activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
+                LEFT JOIN '.GALAXIA_TABLE_PREFIX."user_roles gur ON gar.wf_role_id=gur.wf_role_id
               where gi.wf_p_id=? 
-              and (
-                   (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g')
-                   or (gi.wf_owner=?) 
-                   or ((gur.wf_user=?) and gur.wf_account_type='u')
-                  )",
-              array($pId,$user,$user));
+              and (";
+        if (is_array($groups))
+        {
+          $query_inst .= "(gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g') or ";
+        }
+        $query_inst .= "(gi.wf_owner=?) 
+                         or ((gur.wf_user=?) and gur.wf_account_type='u'))";
+        $res['wf_instances']=$this->getOne($query_inst,array($pId,$user,$user));
         $ret[] = $res;
       }
     }
@@ -150,7 +161,11 @@ class GUI extends Base {
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
     $mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
-    $mid .= "	or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
+    if (is_array($groups))
+    {
+      $mid .= '	or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+    }
+    $mid .= ')';
 
     $bindvars = array('y',$user);
     if($find) {
@@ -201,21 +216,27 @@ class GUI extends Base {
     $cant = $this->getOne($query_cant,$bindvars);
     $ret = Array();
     $removed_instances = 0;
-    while($res = $result->fetchRow()) {
-      // Get instances per activity
-      $res['wf_instances']=$this->getOne("select count(distinct(gi.wf_instance_id))
-              from ".GALAXIA_TABLE_PREFIX."instances gi
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gar.wf_role_id=gur.wf_role_id
+    if (!(empty($result)))
+    {
+      while($res = $result->fetchRow()) 
+      {
+        // Get instances per activity
+        $query_act = 'select count(distinct(gi.wf_instance_id))
+              from '.GALAXIA_TABLE_PREFIX.'instances gi
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
+                INNER JOIN '.GALAXIA_TABLE_PREFIX.'user_roles gur ON gar.wf_role_id=gur.wf_role_id
               where gia.wf_activity_id=? 
-              and (
-                   (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g')
-                   or (gi.wf_owner=?) 
-                   or ((gur.wf_user=?) and gur.wf_account_type='u')
-                  )",
-              array($res['wf_activity_id'],$user,$user));
-      $ret[] = $res;
+              and (';
+        if (is_array($groups))
+        {
+          $query_act .= "(gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g') or ";
+        }
+        $query_act .= "(gi.wf_owner=?) 
+                   or ((gur.wf_user=?) and gur.wf_account_type='u'))";
+        $res['wf_instances']=$this->getOne($query_act, array($res['wf_activity_id'],$user,$user));
+        $ret[] = $res;
+      }
     }
     $retval = Array();
     $retval["data"] = $ret;
@@ -233,7 +254,11 @@ class GUI extends Base {
 		// add group mapping, warning groups and user can have the same id
 		$groups = galaxia_retrieve_user_groups($user);
 		$mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
-		$mid .= "		or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
+		if (is_array($groups))
+		{
+		  $mid .= ' or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+                }
+                $mid .= ')';
 
 		$bindvars = array('y',$user);
 		if($find) 
@@ -266,10 +291,13 @@ class GUI extends Base {
 		$result = $this->query($query,$bindvars,$maxRecords,$offset, true, $sort_mode);
 		$cant = $this->getOne($query_cant,$bindvars);
 		$ret = Array();
-		while($res = $result->fetchRow()) 
+		if (!(empty($result)))
 		{
+		  while($res = $result->fetchRow()) 
+		  {
 			$ret[] = $res;
-		}
+                  }
+                }
 
 		$retval = Array();
 		$retval["data"] = $ret;
@@ -287,8 +315,11 @@ class GUI extends Base {
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
     $mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
-    $mid .= "		or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
-
+    if (is_array($groups))
+    {
+      $mid .= '	or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+    }
+    $mid .= ')';
     $bindvars = array('y','start',$user);
     if($find)
     {
@@ -368,7 +399,11 @@ class GUI extends Base {
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
     $mid .= " and (  ((gur.wf_user=? and gur.wf_account_type='u')";
-    $mid .= '		or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g'))";
+    if (is_array($groups))
+    {
+      $mid .= '	or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+    }
+    $mid .= ')';
 
     // this collect non interactive instances we are owner of
     $mid .= " 	or ((gi.wf_owner=?) and ga.wf_is_interactive = 'n')"; 
@@ -543,8 +578,12 @@ class GUI extends Base {
     }
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
-    $mid .= "\n and (  ((gur.wf_user=? and gur.wf_account_type='u')";
-    $mid .= "		or (gur.wf_user in (".implode(",",$groups).") and gur.wf_account_type='g'))";
+    $mid .= "\n and ( ((gur.wf_user=? and gur.wf_account_type='u')";
+    if (is_array($groups))
+    {
+      $mid .= '	or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+    }
+    $mid .= ')';
     $bindvars[] = $user;
     // this collect non interactive instances we are owner of
     $mid .= "\n or (gi.wf_owner=?)"; 

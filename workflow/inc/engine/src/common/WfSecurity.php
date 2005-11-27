@@ -59,7 +59,7 @@ class WfSecurity extends Base {
   * @public
   * @param $user is the user id
   * @param $activityId is the activity id
-  * @param $readonly is a boolean, false by default. If true we only check rea-only access level
+  * @param $readonly is a boolean, false by default. If true we only check read-only access level
   * 	for the user on this activity
   * @return true if access is granted false in other case. Errors are stored in the object.
   */
@@ -72,13 +72,18 @@ class WfSecurity extends Base {
         INNER JOIN '.GALAXIA_TABLE_PREFIX.'roles gr ON gar.wf_role_id=gr.wf_role_id
         INNER JOIN '.GALAXIA_TABLE_PREFIX.'user_roles gur ON gur.wf_role_id=gr.wf_role_id 
         where gar.wf_activity_id=? 
-        and ( (gur.wf_user=? and gur.wf_account_type=?) 
-              or (gur.wf_user in ('.implode(',',$groups).') and gur.wf_account_type=?))';
+        and ( (gur.wf_user=? and gur.wf_account_type=?)';
+    if (is_array($groups))
+    {
+      $query .= ' or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+    }
+    $query .= ')';
+
     if (!($readonly))
     {
       $query.= 'and NOT(gar.wf_readonly=1)';
     }
-    $result= $this->getOne($query ,array($activity_id, $user, 'u', 'g'));
+    $result= $this->getOne($query ,array($activity_id, $user, 'u'));
     if ($result)
     {
       //echo "<br>Access granted for ".$user;

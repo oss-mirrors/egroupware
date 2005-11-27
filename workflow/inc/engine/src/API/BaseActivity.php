@@ -173,11 +173,14 @@ class BaseActivity extends Base {
     // retrieve user_groups information in an array containing all groups for this user
     $user_groups = galaxia_retrieve_user_groups($GLOBALS['phpgw_info']['user']['account_id'] );
     // and append it to query                      
-    $query = "select `wf_role_id` from `".GALAXIA_TABLE_PREFIX."user_roles` 
+    $query = 'select `wf_role_id` from `'.GALAXIA_TABLE_PREFIX."user_roles` 
           where (
-            (wf_user=? and wf_account_type='u')
-            or (wf_user in (".implode(",",$user_groups).") and wf_account_type='g')
-          )";
+            (wf_user=? and wf_account_type='u')";
+    if (is_array($groups))
+    {
+      $mid .= '	or (wf_user in ('.implode(',',$groups).") and wf_account_type='g')";
+    }
+    $mid .= ')';
 
     $result=$this->query($query,array($user));
     $ret = Array();

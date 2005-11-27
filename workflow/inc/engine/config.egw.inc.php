@@ -196,7 +196,13 @@ if (!function_exists('galaxia_user_can_monitor'))
 
 	if (!function_exists('galaxia_retrieve_user_groups')) 
 	{
-		//! Specify how to retrieve an array containing all groups id for a given user
+		/*!
+		* Specify how to retrieve an array containing all groups id for a given user
+		* if the user is in no group this function should return false
+		* @param $user is the current user id
+		* @return an arry of integers, the groups ids the user is member of, or false if the user is not
+		* the member of any group
+		*/
 		function galaxia_retrieve_user_groups($user=0) 
 		{
 			if (!($user == $GLOBALS['egw_info']['user']['account_id'])) 
@@ -217,7 +223,7 @@ if (!function_exists('galaxia_user_can_monitor'))
 			{
 				$user_groups[]=($value['account_id']);
 			}
-			
+			if (empty($user_groups)) return false;
 			return $user_groups;
 		}
 	}

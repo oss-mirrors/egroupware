@@ -4,7 +4,10 @@ mbartz is Michael Bartz
 alpeb is Alejandro Pedraza
 regis_glc is Regis Leroy
 
-[1.2.00.001]
+[1.2.00.002] target egroupware 1.2
+	* bugfix bug #1366362 SQL errors, missing space and SQL errors when the user had no group membership at all
+
+[1.2.00.001] Release candidate 2
 	* review SQL cleanup functions (sort mode, properties) (regis_glc)
 	* fix process config unable to save, bul statements were encoded and should not (regis_glc)
 	* upgrade from 1.1.05.000 to 1.2 was broken for MySQL, properties were not encoded during upgrade, rerun the upgrade (set app version to 1.1.05.00) (regis_glc)
