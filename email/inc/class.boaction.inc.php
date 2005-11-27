@@ -1428,7 +1428,7 @@
 			//if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache line('.__LINE__.') GLOBALS[phpgw_info] DUMP:', $GLOBALS['phpgw_info']); }
 
 			// make an error report URL
-			$this->redirect_if_error = $GLOBALS['phpgw']->link('/home.php');
+			$this->redirect_if_error = $GLOBALS['phpgw']->link('/home');
 			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $this->redirect_if_error is ['.htmlspecialchars($this->redirect_if_error).']<br>'); }
 			
 			// where do we goto after done here
