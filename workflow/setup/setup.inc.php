@@ -12,7 +12,7 @@
 	/* Basic information about this app */
 	$setup_info['workflow']['name']			= 'workflow';
 	$setup_info['workflow']['title']		= 'Workflow management';
-	$setup_info['workflow']['version']		= '1.2.00.001';
+	$setup_info['workflow']['version']		= '1.2.00.002';
 	$setup_info['workflow']['app_order']		= 10;
 	$setup_info['workflow']['enable']		= 1;
 	$setup_info['workflow']['author']		= 'Ported from tikiwiki, modified by regis_glc alpeb & mbartz';
@@ -52,7 +52,7 @@
 	/* Dependencies for this app to work */ 
 	$setup_info['workflow']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('1.0.0','1.0.1','1.2')
+		'versions' => Array('1.0.1','1.2')
 	);
 	$setup_info['workflow']['depends'][] = array(
 		'appname' => 'preferences',
