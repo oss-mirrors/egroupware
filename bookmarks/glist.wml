@@ -1,7 +1,7 @@
 <?php 
   /**************************************************************************\
-  * eGroupWare - Bookmarks                                                 *
-  * http://www.egroupware.org                                              *
+  * eGroupWare - Bookmarks                                                   *
+  * http://www.egroupware.org                                                *
   * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
   *                     http://www.renaghan.com/bookmarker                   *
   * --------------------------------------------                             *
@@ -13,34 +13,36 @@
 
   /* $Id$ */
   
-  include("../header.inc.php");
-  header("Content-Type: text/vnd.wap.wml");
-  print("<?xml version=\"1.0\"?>");
+	include("../header.inc.php");
+	header("Content-Type: text/vnd.wap.wml");
+	print("<?xml version=\"1.0\"?>");
 ?>
 <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN"
   "http://www.wapforum.org/DTD/wml_1.1.xml">
 <wml>
   <card>
 <?php
-  $query = "select subcategory.name as subcategory_name "
-         . ", bookmark.name as bookmark_name, url "
-         . "from bookmark, subcategory "
-         . "where public_f = 'Y' "
-         . "and category_id = 12 "
-         . "and subcategory_id = subcategory.id "
-         . "order by subcategory_name, bookmark_name ";
-  $phpgw->db->query($query,__LINE__,__FILE__);
-  if ($phpgw->db->Errno != 0) {
-     print("<p>ERROR</p>");
-  }
+	$query = "select subcategory.name as subcategory_name "
+		. ", bookmark.name as bookmark_name, url "
+		. "from bookmark, subcategory "
+		. "where public_f = 'Y' "
+		. "and category_id = 12 "
+		. "and subcategory_id = subcategory.id "
+		. "order by subcategory_name, bookmark_name ";
+	$GLOBALS['egw']->db->query($query,__LINE__,__FILE__);
+	if ($GLOBALS['egw']->db->Errno != 0)
+	{
+		print("<p>ERROR</p>");
+	}
 
-  while ($phpgw->db->next_record()) {
-    $subcategory = $phpgw->db->f("subcategory_name");
-    $name        = $phpgw->db->f("bookmark_name");
-    $url         = $phpgw->db->f("url");
-    printf("<p><a href=\"%s\" title=\"%s\">%s</a></p>", $url, $url, $name);
-  }
+	while ($GLOBALS['egw']->db->next_record())
+	{
+		$subcategory = $GLOBALS['egw']->db->f("subcategory_name");
+		$name        = $GLOBALS['egw']->db->f("bookmark_name");
+		$url         = $GLOBALS['egw']->db->f("url");
+		printf("<p><a href=\"%s\" title=\"%s\">%s</a></p>", $url, $url, $name);
+	}
 ?>
   </card>
 </wml>
-<?php $phpgw->common->phpgw_footer(); ?>
+<?php $GLOBALS['egw']->common->phpgw_footer(); ?>

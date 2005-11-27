@@ -15,10 +15,10 @@
 
 	/* $Id$ */
 
-define('TREE',1);
-define('_LIST',2);
-define('CREATE',3);
-define('SEARCH',4);
+	define('TREE',1);
+	define('_LIST',2);
+	define('CREATE',3);
+	define('SEARCH',4);
 
 	class ui
 	{
@@ -530,7 +530,7 @@ define('SEARCH',4);
 				# doesn't do the quotes correctly
 				foreach ($x as $key => $value)
 				{
-					if (substr($key,0,4) == 'sel_' && !preg_match('/^bm_(name|keywords|url|desc)$/',$value) || 
+					if (substr($key,0,4) == 'sel_' && !preg_match('/^bm_(name|keywords|url|desc)$/',$value) ||
 						substr($key,0,5) == 'comp_' && !preg_match('/^(like|[<>=]{1,2})$/',$value))
 					{
 						continue;	// someone trying something nasty
@@ -568,7 +568,7 @@ define('SEARCH',4);
 				}
 				$link_data = array
 				(
-					'menuaction' => 'bookmarks.ui.search',
+					'menuaction' => 'bookmarks.ui.search'
 				);
 
 				$this->t->set_var(array(
@@ -580,9 +580,9 @@ define('SEARCH',4);
 				$this->t->set_var(array(
 					'QUERY_CONDITION' => $GLOBALS['egw']->strip_html($q->query),
 					'LANG_QUERY_CONDITION' => lang('Query Condition'),
-					'BOOKMARK_LIST'   => $bookmark_list,
+					'BOOKMARK_LIST'   => $bookmark_list
 				));
-				$this->t->parse('QUERY_RESULTS', "results");
+				$this->t->parse('QUERY_RESULTS', 'results');
 			}
 
 			$this->t->fp('body','searchbody');
@@ -830,7 +830,7 @@ function toggle(image, catid)
 					'</a></td></tr>' .
 					"\n";
 				$subcats = $this->bo->categories->return_array('subs',0,False,'','','',True,$cat_id);
-		 		$bookmarks = $this->bo->_list($cat_id,False,False,False);
+				$bookmarks = $this->bo->_list($cat_id,False,False,False);
 				if ($subcats || $bookmarks)
 				{
 					$tree .= '<tr><td></td><td><table style="display:' .

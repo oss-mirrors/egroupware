@@ -55,7 +55,7 @@
 				'keywords'  => $bookmark['keywords'],
 				'category'  => $bookmark['category'],
 				'rating'    => $bookmark['rating'],
-				'access' => $bookmark['access'],
+				'access' => $bookmark['access']
 				)
 			);
 			$this->save_session_data($location_info);
@@ -245,8 +245,8 @@
 				if (! $this->validate->is_url($values['url']))
 				{
 					$this->error_msg = '<br>URL invalid. Format must be <strong>http://</strong> or
-														<strong>ftp://</strong> followed by a valid hostname and
-														URL!<br><small>' .  $this->validate->ERROR . '</small>';
+						<strong>ftp://</strong> followed by a valid hostname and
+						URL!<br><small>' .  $this->validate->ERROR . '</small>';
 					$result = False;
 				}
 			}
@@ -313,7 +313,7 @@
 					$folderstack = array($parent);
 
 					$utf8flag = False;
-					
+
 					//In the bookmark import file, description for site is allowd to be empty
 					//The description of folders in the bookmark will be skiped.
 					$have_desc = True;
@@ -329,22 +329,22 @@
 						// URLs are recognized by A HREF tags in the NS file.
 						elseif (eregi('<A HREF="([^"]*)[^>]*>(.*)</A>', $line, $match))
 						{
-										if(!$have_desc)
+							if(!$have_desc)
 							{
 								unset($values['desc']);
 								if ($this->add($values))
-											{
-										$inserts++;
-											}
-										}
+								{
+									$inserts++;
+								}
+							}
 							$have_desc = False;
 							$dir_desc = False;
-							
+
 							$url_parts = @parse_url($match[1]);
 							if
 							(
-									$url_parts[scheme] == 'http' || $url_parts[scheme] == 'https' ||
-									$url_parts[scheme] == 'ftp' || $url_parts[scheme] == 'news'
+								$url_parts[scheme] == 'http' || $url_parts[scheme] == 'https' ||
+								$url_parts[scheme] == 'ftp' || $url_parts[scheme] == 'news'
 							)
 							{
 								$values['category'] = end($folderstack);
@@ -378,23 +378,23 @@
 							$dir_desc = True;
 							array_push($folderstack,$current_cat_id);
 						}
-						// description start with tag <DD> and the description for folders 
+						// description start with tag <DD> and the description for folder
 						// will be skiped
 						elseif (eregi('<DD>(.*)',$line,$desc))
 						{
-										if($dir_desc)
-										{
-									continue;
-										}
-										else
-										{  
-									$values['desc']     = str_replace(array('&amp;','&lt;','&gt;','&quot;','&#039;'),array('&','<','>','"',"'"),$this->translation->convert($desc[1],$from_charset));
-									if ($this->add($values))
-									{
-											 $inserts++;
-									}
-									$have_desc = True;
-							}  
+							if($dir_desc)
+							{
+								continue;
+							}
+							else
+							{
+								$values['desc']     = str_replace(array('&amp;','&lt;','&gt;','&quot;','&#039;'),array('&','<','>','"',"'"),$this->translation->convert($desc[1],$from_charset));
+								if ($this->add($values))
+								{
+									$inserts++;
+								}
+								$have_desc = True;
+							}
 						}
 						elseif (eregi('</DL>', $line))
 						{
@@ -404,12 +404,12 @@
 
 					if(!$have_desc)
 					{
-									unset($values['desc']);
-									if ($this->add($values))
-												{
+						unset($values['desc']);
+						if ($this->add($values))
+						{
 							$inserts++;
 						}
-								}
+					}
 
 					@fclose($fd);
 					$this->_debug('</table>');
@@ -471,7 +471,7 @@
 				$t->set_var(array(
 					'url' => $bookmark['url'],
 					'name' => $this->translation->convert($bookmark['name'],$this->charset,'utf-8'),
-					'desc' => $this->translation->convert($bookmark['desc'],$this->charset,'utf-8'),
+					'desc' => $this->translation->convert($bookmark['desc'],$this->charset,'utf-8')
 				));
 				$t->fp('urls','urllist',True);
 			}
