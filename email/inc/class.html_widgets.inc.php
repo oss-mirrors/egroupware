@@ -1656,7 +1656,7 @@
 				}
 				elseif (eregi("^.*\/home\.php.*$",$GLOBALS['PHP_SELF']))
 				{
-					$reload_me = $GLOBALS['phpgw']->link('/home.php');			
+					$reload_me = $GLOBALS['phpgw']->link('/home');			
 				}
 			}
 			*/
@@ -1722,7 +1722,7 @@
 		{
 			$this->F_error_report_text = lang('error text not provided');
 			$this->F_go_somewhere_link = '';
-			$go_home_url = $GLOBALS['phpgw']->link('/home.php');
+			$go_home_url = $GLOBALS['phpgw']->link('/home');
 			$go_home_text = lang('click here to return to your home page.');
 			$this->F_go_home_link = '<a href="'.$go_home_url.'">'.$go_home_text.'</a>';
 		}
