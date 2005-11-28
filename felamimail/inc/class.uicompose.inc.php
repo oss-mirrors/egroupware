@@ -160,14 +160,6 @@
 			(
 				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
 			);
-			if($this->mailPreferences['messageNewWindow'])
-			{
-				$this->t->set_var("link_message_list","javascript:window.close();");
-			}
-			else
-			{    
-				$this->t->set_var("link_message_list",$GLOBALS['egw']->link('/felamimail/index.php',$linkData));
-			}
 
 			$linkData = array
 			(
