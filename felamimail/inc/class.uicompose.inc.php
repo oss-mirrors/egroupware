@@ -240,8 +240,6 @@
 		function display_app_header()
 		{
 			$GLOBALS['egw']->common->egw_header();
-			if(!$this->mailPreferences['messageNewWindow'])
-				echo parse_navbar();
 		}
 		
 		function forward()
