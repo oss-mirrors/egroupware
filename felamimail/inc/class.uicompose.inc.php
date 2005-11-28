@@ -119,14 +119,7 @@
 					#$link = $GLOBALS['egw']->link('/felamimail/index.php',$linkData);
 					#$GLOBALS['egw']->redirect($link);
 					#$GLOBALS['egw']->common->egw_exit();
-					if($this->mailPreferences['messageNewWindow'])
-					{
-						print "<script type=\"text/javascript\">window.close();</script>";
-					}
-					else
-					{       
-						ExecMethod('felamimail.uifelamimail.viewMainScreen');
-					}
+					print "<script type=\"text/javascript\">window.close();</script>";
 					break;
 			}
 		}

@@ -764,10 +764,6 @@
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			
 			$GLOBALS['egw']->common->egw_header();
-			if(!$this->mailPreferences['messageNewWindow'])
-			{
-				echo parse_navbar();
-			}
 		}
 
 		function emailAddressToHTML($_emailAddress)

@@ -236,16 +236,9 @@
 			);
 			$refreshURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
-			if($preferences['messageNewWindow'])
-			{
-				print "<script type=\"text/javascript\">
-				opener.location.href = '".$refreshURL."';
-				window.close();</script>";
-			}
-			else
-			{
-				$this->viewMainScreen();
-			}
+			print "<script type=\"text/javascript\">
+			opener.location.href = '".$refreshURL."';
+			window.close();</script>";
 		}
 		
 		function display_app_header()
