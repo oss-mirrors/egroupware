@@ -29,20 +29,10 @@
 	(
 		'menuaction'    => 'felamimail.uicompose.compose'
 	);
-	if($preferences['messageNewWindow'] == 1)
-	{
-		$file = Array(
-			'Compose' => "javascript:openComposeWindow('".$GLOBALS['egw']->link('/index.php',$linkData)."');",
-		);
-	}
-	else
-	{
-		$file = Array(
-			'Compose'   => $GLOBALS['egw']->link('/index.php',$linkData)
-			#'_NewLine_'=>'', // give a newline
-			#'INBOX'=>$GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen')
-		);
-	}
+
+	$file = Array(
+		'Compose' => "javascript:openComposeWindow('".$GLOBALS['egw']->link('/index.php',$linkData)."');",
+	);
 
 	if($preferences['deleteOptions'] == 'move_to_trash')
 	{
