@@ -263,7 +263,7 @@
 			$this->translate();
 
 			$profileList = $this->boemailadmin->getProfileList();
-
+			
 			// create the data array
 			if ($profileList)
 			{

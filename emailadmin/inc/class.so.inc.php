@@ -16,34 +16,37 @@
 		var $db;
 		var $table = 'egw_emailadmin';
 		var $db_cols = array(
-			'ea_profile_id'            => 'profileID',
-			'ea_smtp_server'           => 'smtpServer',
-			'ea_smtp_type'             => 'smtpType',
-			'ea_smtp_port'             => 'smtpPort',
-			'ea_smtp_auth'             => 'smtpAuth',
-			'ea_editforwardingaddress' => 'editforwardingaddress',
-			'ea_smtp_ldap_server'      => 'smtpLDAPServer',
-			'ea_smtp_ldap_basedn'      => 'smtpLDAPBaseDN',
-			'ea_smtp_ldap_admindn'     => 'smtpLDAPAdminDN',
-			'ea_smtp_ldap_adminpw'     => 'smtpLDAPAdminPW',
-			'ea_smtp_ldap_use_default' => 'smtpLDAPUseDefault',
-			'ea_imap_server'           => 'imapServer',
-			'ea_imap_type'             => 'imapType',
-			'ea_imap_port'             => 'imapPort',
-			'ea_imap_login_type'       => 'imapLoginType',
-			'ea_imap_tsl_auth'         => 'imapTLSAuthentication',
-			'ea_imap_tsl_encryption'   => 'imapTLSEncryption',
-			'ea_imap_enable_cyrus'     => 'imapEnableCyrusAdmin',
-			'ea_imap_admin_user'       => 'imapAdminUsername',
-			'ea_imap_admin_pw'         => 'imapAdminPW',
-			'ea_imap_enable_sieve'     => 'imapEnableSieve',
-			'ea_imap_sieve_server'     => 'imapSieveServer',
-			'ea_imap_sieve_port'       => 'imapSievePort',
-			'ea_description'           => 'description',
-			'ea_default_domain'        => 'defaultDomain',
-			'ea_organisation_name'     => 'organisationName',
-			'ea_user_defined_accounts' => 'userDefinedAccounts',
-			'ea_imapoldcclient'        => 'imapoldcclient',
+			'ea_profile_id'			=> 'profileID',
+			'ea_smtp_server'		=> 'smtpServer',
+			'ea_smtp_type'			=> 'smtpType',
+			'ea_smtp_port'			=> 'smtpPort',
+			'ea_smtp_auth'			=> 'smtpAuth',
+			'ea_editforwardingaddress'	=> 'editforwardingaddress',
+			'ea_smtp_ldap_server'		=> 'smtpLDAPServer',
+			'ea_smtp_ldap_basedn'		=> 'smtpLDAPBaseDN',
+			'ea_smtp_ldap_admindn'		=> 'smtpLDAPAdminDN',
+			'ea_smtp_ldap_adminpw'		=> 'smtpLDAPAdminPW',
+			'ea_smtp_ldap_use_default'	=> 'smtpLDAPUseDefault',
+			'ea_imap_server'		=> 'imapServer',
+			'ea_imap_type'			=> 'imapType',
+			'ea_imap_port'			=> 'imapPort',
+			'ea_imap_login_type'		=> 'imapLoginType',
+			'ea_imap_tsl_auth'		=> 'imapTLSAuthentication',
+			'ea_imap_tsl_encryption'	=> 'imapTLSEncryption',
+			'ea_imap_enable_cyrus'		=> 'imapEnableCyrusAdmin',
+			'ea_imap_admin_user'		=> 'imapAdminUsername',
+			'ea_imap_admin_pw'		=> 'imapAdminPW',
+			'ea_imap_enable_sieve'		=> 'imapEnableSieve',
+			'ea_imap_sieve_server'		=> 'imapSieveServer',
+			'ea_imap_sieve_port'		=> 'imapSievePort',
+			'ea_description'		=> 'description',
+			'ea_default_domain'		=> 'defaultDomain',
+			'ea_organisation_name'		=> 'organisationName',
+			'ea_user_defined_accounts'	=> 'userDefinedAccounts',
+			'ea_imapoldcclient'		=> 'imapoldcclient',
+			'ea_order'			=> 'ea_order',
+			'ea_group'			=> 'ea_group',
+			'ea_appname'			=> 'ea_appname',
 		);
 
 		function so()
@@ -131,6 +134,23 @@
 			return $data;
 		}
 		
+		function getUserProfile($_appName, $_groups)
+		{
+			if(empty($_appName) || !is_array($_groups))
+				return false;
+			
+			$where = $this->db->expression($this->table,'(',array('ea_appname'=>$_appName),' OR ea_appname IS NULL) and ',array('ea_group'=>$_groups));
+
+			$this->db->select($this->table,'ea_profile_id',$where, __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
+			
+			if (($data = $this->db->row(true)))
+			{
+				return $this->getProfile($data['ea_profile_id'], $this->db_cols);
+			}
+			return false;
+		}
+
+		
 		function getProfileList($_profileID=0,$_defaultProfile=false)
 		{
 			$where = false;
@@ -165,11 +185,11 @@
 					#print "found something<br>";
 					$userData["mailLocalAddress"]		= $allValues[0]["mail"][0];
 					$userData["mailAlternateAddress"]	= $allValues[0]["mailalternateaddress"];
-					$userData["accountStatus"]			= $allValues[0]["accountstatus"][0];
+					$userData["accountStatus"]		= $allValues[0]["accountstatus"][0];
 					$userData["mailRoutingAddress"]		= $allValues[0]["mailforwardingaddress"];
-					$userData["qmailDotMode"]			= $allValues[0]["qmaildotmode"][0];
+					$userData["qmailDotMode"]		= $allValues[0]["qmaildotmode"][0];
 					$userData["deliveryProgramPath"]	= $allValues[0]["deliveryprogrampath"][0];
-					$userData["deliveryMode"]			= $allValues[0]["deliverymode"][0];
+					$userData["deliveryMode"]		= $allValues[0]["deliverymode"][0];
 
 					unset($userData["mailAlternateAddress"]["count"]);
 					unset($userData["mailRoutingAddress"]["count"]);					
@@ -219,13 +239,13 @@
 			// the old code for qmail ldap
 			$newData = array 
 			(
-				'mail'					=> $_accountData["mailLocalAddress"],
+				'mail'			=> $_accountData["mailLocalAddress"],
 				'mailAlternateAddress'	=> $_accountData["mailAlternateAddress"],
 				'mailRoutingAddress'	=> $_accountData["mailRoutingAddress"],
-				'homedirectory'			=> $homedirectory,
-				'mailMessageStore'		=> $homedirectory."/Maildir/",
-				'gidnumber'				=> '1000',
-				'qmailDotMode'			=> $_accountData["qmailDotMode"],
+				'homedirectory'		=> $homedirectory,
+				'mailMessageStore'	=> $homedirectory."/Maildir/",
+				'gidnumber'		=> '1000',
+				'qmailDotMode'		=> $_accountData["qmailDotMode"],
 				'deliveryProgramPath'	=> $_accountData["deliveryProgramPath"]
 			);
 			

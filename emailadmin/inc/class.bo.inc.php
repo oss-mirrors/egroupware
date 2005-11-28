@@ -1,3 +1,4 @@
+
 <?php
 	/***************************************************************************\
 	* eGroupWare                                                                *
@@ -21,17 +22,6 @@
 		
 		var $imapClass;				// holds the imap/pop3 class
 		var $smtpClass;				// holds the smtp class
-
-/*		var $public_functions = array
-		(
-			'getFieldNames'		=> True,
-			'getLDAPStorageData'	=> True,
-			'getLocals'		=> True,
-			'getProfile'		=> True,
-			'getProfileList'	=> True,
-			'getRcptHosts'		=> True,
-			'getSMTPServerTypes'	=> True
-		); */
 
 		function bo($_profileID=-1,$_restoreSesssion=true)
 		{
@@ -348,6 +338,27 @@
 			return $retData;
 		}
 		
+		function getUserProfile($_appName='', $_groups='')
+		{
+			$appName	= ($_appName != '' ? $_appName : $GLOBALS['egw_info']['flags']['currentapp']);
+			if(!is_array($_groups))
+			{
+				// initialize with 0 => means no group id
+				$groups = array(0);
+				$userGroups = $GLOBALS['egw']->accounts->membership($GLOBALS['egw_info']['user']['account_id']);
+				foreach((array)$userGroups as $groupInfo)
+				{
+					$groups[] = $groupInfo['account_id'];
+				}
+			}
+			else
+			{
+				$groups = $_groups;
+			}
+			
+			return $this->soemailadmin->getUserProfile($appName, $groups);
+		}
+		
 		function getUserData($_accountID, $_usecache)
 		{
 			if ($_usecache)
@@ -469,6 +480,7 @@
 		{
 			if(!isset($_globalSettings['profileID']))
 			{
+				$_globalSettings['ea_order'] = count($this->getProfileList()) + 1;
 				$this->soemailadmin->addProfile($_globalSettings, $_smtpSettings, $_imapSettings);
 			}
 			else
