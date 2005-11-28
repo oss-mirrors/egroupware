@@ -89,9 +89,7 @@
 			
 			$this->htmlOptions 	= $this->mailPreferences['htmlOptions'];
 			
-			$config =& CreateObject('phpgwapi.config','felamimail');
-			$config->read_repository();
-			$this->profileID = $config->config_data['profileID'];
+			$this->profileID = $this->mailPreferences['profileID'];
 			
 		}
 		

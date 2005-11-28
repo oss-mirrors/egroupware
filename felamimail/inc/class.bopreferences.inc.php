@@ -46,6 +46,7 @@
 			$felamimailUserPrefs = $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			
 			// set values to the global values
+			$data['profileID']		= $profileData['profileID'];
 			$data['imapServerAddress']	= $profileData['imapServer'];
 			$data['key']			= $GLOBALS['egw_info']['user']['passwd'];
 			if ($profileData['imapLoginType'] == 'vmailmgr')
