@@ -247,3 +247,7 @@ function refresh()
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
 }     
 
+function openComposeWindow(_url)
+{
+	egw_openWindowCentered(_url,'test',700,750);
+}

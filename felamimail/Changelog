@@ -1,3 +1,8 @@
+20051128
+- fixed compose link in sidebox menu
+- added action to cancel button on edit forwarding page
+- removed admin section, any configuration is now done in emailadmin
+
 20051121
 - fixed the display of messages. messages now always open in new windows
 - fixed navbar and replaced text with icons

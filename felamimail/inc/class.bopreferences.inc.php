@@ -18,15 +18,10 @@
 		var $public_functions = array
 		(
 			'getPreferences'	=> True,
-			'none'	=> True
 		);
 		
 		function bopreferences()
 		{
-			$this->config =& CreateObject('phpgwapi.config','felamimail');
-			$this->config->read_repository();
-			$this->profileID = $this->config->config_data['profileID'];
-			
 			$this->boemailadmin =& CreateObject('emailadmin.bo');
 		}
 		
@@ -35,16 +30,13 @@
 			$data['emailConfigValid'] = true;
 
 			$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
-			$profileData		= $this->boemailadmin->getProfile($this->profileID);
+			#$profileData		= $this->boemailadmin->getProfile($this->profileID);
+			$profileData		= $this->boemailadmin->getUserProfile();
+			
 			if(!is_array($profileData) || $imapServerTypes[$profileData['imapType']]['protocol'] != 'imap')
 			{
 				$data['emailConfigValid'] = false;
 				return $data;
-			}
-			elseif ($this->profileID != $profileData['profileID'])
-			{
-				$this->profileID = $this->config->config_data['profileID'] = $profileData['profileID'];
-				$this->config->save_repository();
 			}
 			
 			#$usersEMailAddresses	= $this->boemailadmin->getAccountEmailAddress($GLOBALS['egw_info']['user']['userid'], $this->profileID);
@@ -71,7 +63,7 @@
 			if(!empty($profileData['organisationName']))
 				$data['organizationName']	= $profileData['organisationName'];
 
-			$data['emailAddress']		= $this->boemailadmin->getAccountEmailAddress($GLOBALS['egw_info']['user']['userid'], $this->profileID);
+			$data['emailAddress']		= $this->boemailadmin->getAccountEmailAddress($GLOBALS['egw_info']['user']['userid'], $profileData['profileID']);
 			$data['smtpAuth']		= $profileData['smtpAuth'];
 			$data['imapAdminUsername']	= $profileData['imapAdminUsername'];
 			$data['imapAdminPW']		= $profileData['imapAdminPW'];

@@ -32,7 +32,7 @@
 	if($preferences['messageNewWindow'] == 1)
 	{
 		$file = Array(
-			'Compose'   => "javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."');"
+			'Compose' => "javascript:openComposeWindow('".$GLOBALS['egw']->link('/index.php',$linkData)."');",
 		);
 	}
 	else

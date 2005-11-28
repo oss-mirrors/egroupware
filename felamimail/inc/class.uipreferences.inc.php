@@ -85,6 +85,11 @@
 				//_debug_array($_POST);_debug_array($_POST);_debug_array($_POST);
 				$boEMailAdmin->saveSMTPForwarding($GLOBALS['egw_info']['user']['account_id'],$_POST['forwardingAddress'],$_POST['keepLocalCopy']);
 			}
+			elseif($_POST['cancel'])
+			{
+				ExecMethod('felamimail.uifelamimail.viewMainScreen');
+				return;
+			}
 			
 			$userData	= $boEMailAdmin->getUserData($GLOBALS['egw_info']['user']['account_id'],false);
 			#_debug_array($userData);

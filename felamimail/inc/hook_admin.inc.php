@@ -12,12 +12,19 @@
 
 	/* $Id$ */
 {
+
+##
+#
+# There is nothing to configure in FeLaMiMail anymore
+#
+##
+
 // Only Modify the $file and $title variables.....
-	$title = $appname;
-	$file = Array(
-		'Site Configuration'	=> $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.hookAdmin')
-	);
+#	$title = $appname;
+#	$file = Array(
+#		'Site Configuration'	=> $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.hookAdmin')
+#	);
 //Do not modify below this line
-	display_section($appname,$title,$file);
+#	display_section($appname,$title,$file);
 }
 ?>
