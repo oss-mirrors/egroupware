@@ -190,7 +190,7 @@
 			$site = Array(
 				'_NewLine_', // give a newline
 				'Edit this Site' => array(
-					'link' => $GLOBALS['epgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
+					'link' => $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
 					'text' => 'Edit this Site',
 					'icon' => 'edit'
 				),
