@@ -1,9 +1,4 @@
 <!-- BEGIN message_main -->
-<html>
-<head>
-	<meta http-equiv="content-type" content="text/html; charset={charset}" />
-</head>
-<body onload="javascript:window.print()">
 <STYLE type="text/css">
         .subjectBold
         {
@@ -31,16 +26,13 @@
 </STYLE>
 <table border="0" cellpadding="1" cellspacing="0" width="100%" style="table-layout:fixed">
 
-<tr class="th">
-	<td style="font-weight:bold;">
+<tr style="background: white;">
+	<td colspnan="2" style="font-weight:bold; text-align: center; font-size: 120%;">
 		{subject_data}
-	</td>
-	<td style="text-align:right; width:100px;">
-		&nbsp;
 	</td>
 </tr>
 </table>
-<div id="tabcontent1" class="inactivetab" bgcolor="white">
+<div id="tabcontent1" class="activetab" bgcolor="white">
 <table border="0" width="100%" cellspacing="0" cellpading="0" bgcolor="white" style="table-layout:fixed">
 <tr>
 	<td>
