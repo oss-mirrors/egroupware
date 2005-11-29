@@ -67,9 +67,11 @@ activity:	workflow	en	activity:
 add a transition	workflow	en	Add a transition
 add aborted instances	workflow	en	Add aborted instances
 add advanced actions	workflow	en	Add advanced actions
+add agent	workflow	en	Add agent
 add completed instances	workflow	en	Add completed instances
 add instances in exception	workflow	en	Add instances in exception
 add new	workflow	en	add new
+add new role	workflow	en	Add new role
 add or edit a process	workflow	en	Add or edit a process
 add or edit an activity	workflow	en	Add or edit an activity
 add property	workflow	en	Add property
@@ -90,6 +92,7 @@ agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	en	Age
 agent #%1 of type %2 is not linked with an activity	workflow	en	Agent #%1 of type %2 is not linked with an activity
 agent associated with inexistent activity	workflow	en	Agent associated with inexistent activity
 agent without activity	workflow	en	Agent without activity
+agents assigned to this activity	workflow	en	Agents assigned to this activity
 all	workflow	en	All
 always show advanced actions	workflow	en	Always show advanced actions
 always show advanced mode	workflow	en	Always show advanced mode
@@ -98,6 +101,7 @@ at least one email address cannot be validated.	workflow	en	at least one email a
 auto routed	workflow	en	Auto routed
 auto-release on leaving activity	common	en	auto-release on leaving activity
 automatic	workflow	en	Automatic
+autorouted activities does not need to be sent by any user after their execution	workflow	en	Autorouted activities do not need to be sent by any user after their execution
 bad parameter for setagents, the parameter should be an array	workflow	en	bad parameter for setAgents, the parameter should be an array
 bad role type	workflow	en	Bad role type
 bad user	workflow	en	Bad user
@@ -131,6 +135,7 @@ column owner in instance lists	workflow	en	Column owner in instance lists
 column priority in instance lists	workflow	en	Column priority in instance lists
 column process name in instance lists	workflow	en	Column process name in instance lists
 column start date in instance lists	workflow	en	Column start date in instance lists
+compilation	workflow	en	Compilation
 compiling activity %1 : %2	workflow	en	compiling activity %1 : %2
 complete	workflow	en	Complete
 complete cleanup of aborted instances done	workflow	en	complete cleanup of aborted instances done
@@ -254,6 +259,7 @@ instances	workflow	en	Instances
 instances selection	workflow	en	Instances selection
 int.	workflow	en	Int.
 interactive	workflow	en	Interactive
+interactive activities show form before being executed	workflow	en	Interactive activities show form before being executed
 interactive instances should not call the complete() method	workflow	en	interactive instances should not call the complete() method
 interactive:	workflow	en	interactive:
 interactivity	workflow	en	Interactivity
@@ -449,6 +455,7 @@ send when wf_agent_mail_smtp['submit_send'] is posted	workflow	en	send when wf_a
 set next act	workflow	en	Set Next act
 set next user	workflow	en	Set next user
 set property	workflow	en	Set property
+setnextuser directives can override it	workflow	en	setNextUser directives can override it
 setting next activity to an unexisting activity	workflow	en	setting next activity to an unexisting activity
 shared code	workflow	en	Shared code
 should we always give you the advanced search row on instances lists?	workflow	en	Should we always give you the advanced search row on instances lists?
@@ -492,6 +499,7 @@ test consistency of datas in the database	workflow	en	Test Consistency of datas 
 test local installation	workflow	en	Test local installation
 the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	en	The /workflow directory does not exist and could not be created. Please ask your administrator to check the global configuration
 the activity was not completed	workflow	en	The activity was not completed
+the default user will only be set if he is mapped to a role on the activity	workflow	en	The default user will only be set if he is mapped to a role on the activity
 the following items must be corrected to be able to activate this process	workflow	en	The following items must be corrected to be able to activate this process
 the instance title is shown on top of the form	admin	en	the instance title is shown on top of the form
 the label you want	workflow	en	the label you want
@@ -553,10 +561,12 @@ user is not authorized to delete instances	workflow	en	user is not authorized to
 user processes	workflow	en	User Processes
 user/group	workflow	en	User/Group
 user:	workflow	en	user:
+users can act on activity before its execution with form and after by sending it to the next activity	workflow	en	Users can act on activity before its execution with form and after by sending it to the next activity
 users/groups	workflow	en	Users/Groups
 valid	workflow	en	Valid
 valid process	workflow	en	Valid Process
 valid:	workflow	en	valid:
+validity:	workflow	en	Validity:
 value	workflow	en	Value
 version	workflow	en	Version
 view details	workflow	en	view details
