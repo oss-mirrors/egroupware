@@ -138,8 +138,15 @@
 		{
 			if(empty($_appName) || !is_array($_groups))
 				return false;
-			
-			$where = $this->db->expression($this->table,'(',array('ea_appname'=>$_appName),' OR ea_appname IS NULL) and ',array('ea_group'=>$_groups));
+				
+			$where = $this->db->expression(
+				$this->table,'(',
+				array('ea_appname'=>$_appName),
+				' OR ea_appname IS NULL or ea_appname = \'\') and ',
+				'(',
+				array('ea_group'=>$_groups),
+				' OR ea_group IS NULL or ea_group = \'\')'
+			);
 
 			$this->db->select($this->table,'ea_profile_id',$where, __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
 			

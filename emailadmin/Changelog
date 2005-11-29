@@ -1,6 +1,6 @@
 20051128
 
-- added function retrieve users profile based on applicationname and
+- added function to retrieve users profile based on applicationname and
   groupmembership. No need to select profile as admin anymore.
 
 20051120
