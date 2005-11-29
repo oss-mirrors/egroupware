@@ -179,17 +179,18 @@ class Script {
 		
 		//include "$default->lib_dir/version.php";
  
-		if (!is_object($connection)) {
-	$this->errstr = "updateScript: no sieve session open";
-				return false;
+		if (!is_object($connection)) 
+		{
+			$this->errstr = "updateScript: no sieve session open";
+			return false;
 		}
 
 		// don't overwrite a file if not created by SmartSieve,
 		// unless configured to do so.
-#LK    if (!$this->so && !$default->allow_write_unrecognised_scripts) {
-#LK        $this->errstr = 'updateScript: encoding not recognised: not safe to overwrite ' . $this->name;
-#LK        return false;
-#LK    }
+#LK		if (!$this->so && !$default->allow_write_unrecognised_scripts) {
+#LK			$this->errstr = 'updateScript: encoding not recognised: not safe to overwrite ' . $this->name;
+#LK			return false;
+#LK		}
  
 		// lets generate the main body of the script from our rules
  
@@ -398,7 +399,7 @@ class Script {
  
 		$newscript = $newscripthead . $newscriptbody . $newscriptfoot;
 		$this->script = $newscript;
-
+#print "<pre>$newscript</pre>";
 		$scriptfile = $this->name;
 		if (!$connection->putscript($scriptfile,$newscript))
 		{

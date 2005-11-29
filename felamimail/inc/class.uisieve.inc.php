@@ -57,7 +57,7 @@
 			$this->sieve		=& CreateObject('felamimail.SieveSession',$sieveHost, $sievePort, $username, $password);
 			if(!$this->sieve->start())
 			{
-				print "bad thing!!<br>";
+				print "bad thing: ".$this->sieve->errstr."!!<br>";
 			}
 			
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];

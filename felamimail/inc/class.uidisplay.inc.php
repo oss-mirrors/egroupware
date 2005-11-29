@@ -189,9 +189,9 @@
 			
 			$this->bofelamimail->closeConnection();
 			
+			$this->display_app_header();
 			if(!isset($_GET['printable']))
 			{
-				$this->display_app_header();
 				$this->t->set_file(array("displayMsg" => "view_message.tpl"));
 			}
 			else
@@ -759,9 +759,16 @@
 			{
 				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['egw']->js->validate_file('tabs','tabs');
-			$GLOBALS['egw']->js->validate_file('jscode','view_message','felamimail');
-			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
+			if(!isset($_GET['printable']))
+			{
+				$GLOBALS['egw']->js->validate_file('tabs','tabs');
+				$GLOBALS['egw']->js->validate_file('jscode','view_message','felamimail');
+				$GLOBALS['egw']->js->set_onload('javascript:initAll();');
+			}
+			else
+			{
+				$GLOBALS['egw']->js->set_onload('javascript:window.print()');
+			}
 			
 			$GLOBALS['egw']->common->egw_header();
 		}

@@ -336,35 +336,43 @@ class SieveSession {
 		 * upload the script $script to the server. save it as $scriptfile.
 		 * the script will not be active. call activatescript() to do this.
 		 */
-		function putscript ($scriptfile,$script) {
-	if (!isset($scriptfile)) {
-						$this->errstr = "putscript: no script file specified";
-						return false;
-				}
-	if (!isset($script)) {
-						$this->errstr = "putscript: no script specified";
-						return false;
-				}
-	if (!$this->socket) {
-						$this->errstr = "putscript: no connection open to $this->server";
-						return false;
-				}
-
-	$len = strlen($script);
-	fputs($this->socket,"PUTSCRIPT \"$scriptfile\" \{$len+}\r\n");
-	fputs($this->socket,"$script\r\n");
-
-	$said = '';
-	while ($said == '') {
-			$said = $this->read();
-	}
- 
-				if (preg_match("/^OK/",$said)) {
-			return true;
-	}
-
-				$this->errstr = "putscript: could not put script $scriptfile: $said";
+		function putscript ($scriptfile,$script) 
+		{
+			if (!isset($scriptfile)) {
+				$this->errstr = "putscript: no script file specified";
 				return false;
+			}
+			if (!isset($script)) {
+				$this->errstr = "putscript: no script specified";
+				return false;
+			}
+			if (!$this->socket) {
+				$this->errstr = "putscript: no connection open to $this->server";
+				return false;
+			}
+			
+			if (extension_loaded('mbstring') || @dl(PHP_SHLIB_PREFIX.'mbstring.'.PHP_SHLIB_SUFFIX))
+			{
+				$len = mb_strlen($script,'latin1');
+			}
+			else
+			{
+				$len = strlen($script);
+			}
+			fputs($this->socket,"PUTSCRIPT \"$scriptfile\" \{$len+}\r\n");
+			fputs($this->socket,"$script\r\n");
+			
+			$said = '';
+			while ($said == '') {
+				$said = $this->read();
+			}
+			
+			if (preg_match("/^OK/",$said)) {
+				return true;
+			}
+			
+			$this->errstr = "putscript: could not put script '$scriptfile': $said";
+			return false;
 		}
 
 
