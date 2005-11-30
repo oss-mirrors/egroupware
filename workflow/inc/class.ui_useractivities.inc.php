@@ -43,8 +43,8 @@
 			$this->filter_activity  = get_var('filter_activity', 'any', '');
 			//echo '<br>filter_activity:'.$this->filter_activity;
 			
-			if ($this->filter_process) $this->wheres[] = 'gp.wf_p_id=' . $this->filter_process;
-			if ($this->filter_activity) $this->wheres[] = "ga.wf_name='" . $this->filter_activity."'";
+			if ($this->filter_process) $this->wheres[] = 'gp.wf_p_id=' . (int)$this->filter_process;
+			if ($this->filter_activity) $this->wheres[] = "ga.wf_name='" . $this->GUI->security_cleanup($this->filter_activity, false, true)."'";
 			$remove_non_pseudo = false; //remove 'classical' activities, other are pseudo-activities because not related to instances
 			$select_standalone = false; //add standalone activities, not a classical one becaus no instance is associated to it
 			$select_start = false; //idem with start

@@ -9,6 +9,7 @@ regis_glc is Regis Leroy
 	* bugfix: galaxia_retrieve_user_memberships adaptation to eally retrieve it and not an empty array with API changes
 	* minor fix: user activities tabs loose info global/not global sometimes
 	* minor fix: clean user activities filters in user activities tabs with only usefull activities
+	* security: check filters parameters in user activities and user instances forms
 
 [1.2.00.002] Release candidate 3 
 	* bugfix bug #1366362 SQL errors, missing space and SQL errors when the user had no group membership at all

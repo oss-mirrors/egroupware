@@ -266,7 +266,7 @@
 				{
 					if(!($this->filter_process==''))
 					{
-						$wheres[] = "gp.wf_p_id=" .$this->filter_process. "";
+						$wheres[] = "gp.wf_p_id=" .(int)$this->filter_process. "";
 					}
 				}
 				if( count($wheres) > 0 )
@@ -977,21 +977,21 @@
 				if(!($this->filter_process==''))
 				{
 						// warning, need to filter process on instance table, not activity
-					$wheres[] = "gi.wf_p_id=" .$this->filter_process. "";
+					$wheres[] = "gi.wf_p_id=" .(int)$this->filter_process. "";
 				}
 				if(!($this->filter_activity_name==''))
 				{
-			$wheres[] = "ga.wf_name='" .$this->filter_activity_name. "'";
+					$wheres[] = "ga.wf_name='" .$this->GUI->security_cleanup($this->filter_activity_name, false, true). "'";
 				}
 				if(!($this->filter_user==''))
 				{
-			$wheres[] = "gia.wf_user='".$this->filter_user."'";
+					$wheres[] = "gia.wf_user='".(int)$this->filter_user."'";
 				}
 				if (!( ($this->filter_category == '') || ($this->filter_category == 'all')) )
 				{
-					$childs = $this->cat->return_all_children($this->filter_category);
+					$childs = $this->cat->return_all_children((int)$this->filter_category);
 					$cats_list = implode(',',$childs);
-			$wheres[] = "gi.wf_category in (".$cats_list.")";
+					$wheres[] = "gi.wf_category in (".$cats_list.")";
 				}
 				
 				// now adding special advanced search options or default values--------------------
@@ -1000,28 +1000,28 @@
 				//if we want only one instance
 				if ($this->filter_instance)
 				{
-					$wheres[] = "(gi.wf_instance_id='".$this->filter_instance."')";
+					$wheres[] = "(gi.wf_instance_id='".(int)$this->filter_instance."')";
 				}
 				
 				//instance selection :: instances can be active|exception|aborted|completed
 				if ($this->remove_active_instances) 
 				{
 					// no active instances, it's an AND
-			$wheres[] = "(gi.wf_status<>'active')";
+					$wheres[] = "(gi.wf_status<>'active')";
 				}
 				else 
 				{
-			// default: we need active instances it's an OR with further instance selection	
-			$or_wheres[]= "(gi.wf_status='active')";
+					// default: we need active instances it's an OR with further instance selection	
+					$or_wheres[]= "(gi.wf_status='active')";
 				}
 				// others are in OR mode
 				if ($this->add_exception_instances) 
 				{
-			$or_wheres[] = "(gi.wf_status='exception')";
+					$or_wheres[] = "(gi.wf_status='exception')";
 				}
 				if ($this->add_aborted_instances) 
 				{
-			$or_wheres[] = "(gi.wf_status='aborted')";
+					$or_wheres[] = "(gi.wf_status='aborted')";
 				}
 				if ($this->add_completed_instances) 
 				{
@@ -1037,18 +1037,18 @@
 				}
 				elseif ($this->filter_act_status =='completed') 
 				{
-			$wheres[] = "(gia.wf_status='completed')"; 
+					$wheres[] = "(gia.wf_status='completed')"; 
 				}  
 				elseif ($this->filter_act_status =='empty') 
 				{
 					// we do not want completed or running activities
-			$wheres[] = "(gia.wf_status is NULL)"; 
+					$wheres[] = "(gia.wf_status is NULL)"; 
 				}
 				
 				if( count($wheres) > 0 ) 
 				{
-						$this->where = implode(' and ', $wheres);
-			//echo "<hr>where: <pre>";print_r($this->where);echo "</pre>";
+					$this->where = implode(' and ', $wheres);
+					//echo "<hr>where: <pre>";print_r($this->where);echo "</pre>";
 				}
 			}
 			
