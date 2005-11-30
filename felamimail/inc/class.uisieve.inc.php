@@ -71,6 +71,18 @@
 			{
 				$script	=& CreateObject('felamimail.Script',$scriptName);
 				$script->updateScript($this->sieve);
+
+				// always activate and then edit the first script added
+				if ($this->sieve->listscripts() && count($this->sieve->scriptlist) == 1)
+				{
+					if ($this->sieve->activatescript($scriptName))
+					{
+						$GLOBALS['egw']->redirect_link('/index.php',array(
+							'menuaction' => 'felamimail.uisieve.editScript',
+							'scriptname' => $scriptName,
+						));
+					}
+				}
 			}
 			
 			$this->listScripts();
@@ -223,6 +235,7 @@
 			}
 		}
 
+		// RalfBecker: that does obviously nothing
 		function deactivateScript()
 		{
 			$scriptName = get_var('scriptname',array('GET'));
@@ -733,7 +746,9 @@
 							'menuaction'	=> 'felamimail.uisieve.deactivateScript',
 							'scriptname'	=> $scriptName
 						);
-						$this->t->set_var('lang_activate',lang('deactivate script'));
+						// show only active label and no (not working/existing) deactivate link
+						$this->t->set_var('lang_activate',''/*lang('deactivate script')*/);
+						$this->t->set_var('active',lang('active'));
 						$this->t->set_var('ruleCSS','sieveRowActive');
 					}
 					else
@@ -744,6 +759,7 @@
 							'scriptname'	=> $scriptName
 						);
 						$this->t->set_var('lang_activate',lang('activate script'));
+						$this->t->set_var('active','');
 						$this->t->set_var('ruleCSS','sieveRowInActive');
 					}
 					$this->t->set_var('link_activateScript',$GLOBALS['egw']->link('/index.php',$linkData));
