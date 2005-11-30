@@ -3,6 +3,7 @@
 <input type="hidden" name="start" value="0" />
 <input type="hidden" name="sort" value="{sort}" />
 <input type="hidden" name="order" value="{order}" />
+<input type="hidden" name="show_globals" value="{show_globals}" />
 {user_tabs}
 <table style="border: 0;width:100%;" cellspacing="0">
 	<tr class="th">
