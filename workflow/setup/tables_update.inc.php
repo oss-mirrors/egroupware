@@ -302,6 +302,27 @@
 		$GLOBALS['setup_info']['workflow']['currentver'] = '1.2.00.002';
 		return $GLOBALS['setup_info']['workflow']['currentver'];
 	}
+	$test[] = '1.2.00.002';
+	function workflow_upgrade1_2_00_002()
+	{
+		#groups Ids are now negative in egroupware, we need to negative all user id which is positive and of type 'g'
+		#code inspired by phpgwapi/setup/table_update.inc.php
+		// convert all positive group id's to negative ones
+		// this allows duplicate id for users and groups in ldap
+		$where = false;
+		list($table,$col,$where) = $data;
+		$table = 'egw_wf_user_roles';
+		$col = 'wf_user';
+		$where = "wf_account_type='g' and (SUBSTR($col,1,1) <> '-')";
+		$set = $col.'='.$GLOBALS['egw_setup']->db->concat("'-'",$col);
+		$query = "UPDATE $table SET $set WHERE $where";
+		echo "<p>debug query: $query</p>\n";
+		$GLOBALS['egw_setup']->db->query($query,__LINE__,__FILE__);
+
+		#updating the current version
+		$GLOBALS['setup_info']['workflow']['currentver'] = '1.2.01.000';
+		return $GLOBALS['setup_info']['workflow']['currentver'];
+	}
 	
 
 ?>

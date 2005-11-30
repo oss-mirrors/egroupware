@@ -216,7 +216,7 @@ if (!function_exists('galaxia_user_can_monitor'))
 			{
 				// we are asking groups membership for the actual user
 				// in egroupware we retrieve the already loaded in memory group list.
-				$memberships = $GLOBALS['egw']->accounts->memberships;
+				$memberships = $GLOBALS['egw']->accounts->membership();
 				$user_groups=Array();
 			}
 			foreach((array)$memberships as $key => $value)
