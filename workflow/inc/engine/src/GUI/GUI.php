@@ -149,15 +149,54 @@ class GUI extends Base {
     return $retval;
   }
 
-  /*
-    $user is the real user id
+  /*! list user activities
+  * @param $user is the current user id
+  * @param $offset is the current starting point for the query results
+  * @param $maxRecords is the max number of results to return
+  * @param $sort_mode is for sorting
+  * @param $find is a string to search in activity name or description
+  * @param $where is deprecated it's a string to add to the query, use with care for SQL injection 
+  * @param $remove_activities_without_instances is false by default will remove all activities having no instances related at this time
+  * @param $remove_instances_activities is false by default, if true then all activities related to instances will be avoided 
+  * (i.e. activities which are not standalone, start or view). If $remove_activities_without_instances is true you'll obtain nothing :-)
+  * @param $add_start is false by default, if true start activities are added to the listing, no effect if $remove_activities_without_instances is true
+  * @param $add_standalone is false by default, if true standalone activities are added to the listing, no effect if $remove_activities_without_instances is true
+  * @param $add_view is false by default, if true view activities are added to the listing, no effect if $remove_activities_without_instances is true
+  * @return an associative array, key cant gives the number of results, key data is an associative array conteining the results
   */
-  function gui_list_user_activities($user,$offset,$maxRecords,$sort_mode,$find,$where='', $remove_activities_without_instances=false)
+  function gui_list_user_activities($user,$offset,$maxRecords,$sort_mode,$find,$where='', $remove_activities_without_instances=false, $remove_instances_activities =false, $add_start = false, $add_standalone = false, $add_view = false)
   {
     // FIXME: this doesn't support multiple sort criteria
     //$sort_mode = $this->convert_sortmode($sort_mode);
     $sort_mode = str_replace("__"," ",$sort_mode);
     $mid = "where gp.wf_is_active=?";
+    $bindvars = array('y');
+    
+    if ($remove_instances_activities)
+    {
+      $mid .= " and ga.wf_type <> ? and ga.wf_type <> ? and ga.wf_type <> ?  and  ga.wf_type <> ?  and  ga.wf_type <> ? ";
+      $bindvars[] = 'end';
+      $bindvars[] = 'switch';
+      $bindvars[] = 'join';
+      $bindvars[] = 'activity';
+      $bindvars[] = 'split';
+    }
+    if (!($add_start))
+    {
+      $mid .= " and ga.wf_type <> ?";
+      $bindvars[] = 'start';
+    }
+    if (!($add_standalone))
+    {
+      $mid .= " and ga.wf_type <> ?";
+      $bindvars[] = 'standalone';
+    }
+    if (!($add_view))
+    {
+      $mid .= " and ga.wf_type <> ?";
+      $bindvars[] = 'view';
+    }
+
     // add group mapping, warning groups and user can have the same id
     $groups = galaxia_retrieve_user_groups($user);
     $mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
@@ -166,8 +205,7 @@ class GUI extends Base {
       $mid .= '	or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
     }
     $mid .= ')';
-
-    $bindvars = array('y',$user);
+    $bindvars[] = $user;
     if($find) {
       $findesc = '%'.$find.'%';
       $mid .= " and ((ga.wf_name like ?) or (ga.wf_description like ?))";
@@ -244,13 +282,53 @@ class GUI extends Base {
     return $retval;
   }
 
-	//! list user activities but each activity name (and not id) appears only one time
-	function gui_list_user_activities_by_unique_name($user,$offset,$maxRecords,$sort_mode,$find,$where='')
+	/*! list user activities but each activity name (and not id) appears only one time
+	* @param $user is the current user id
+	* @param $offset is the current starting point for the query results
+	* @param $maxRecords is the max number of results to return
+	* @param $sort_mode is for sorting
+	* @param $find is a string to search in activity name or description
+	* @param $where is deprecated it's a string to add to the query, use with care for SQL injection 
+	* @param $remove_instances_activities is false by default, if true then all activities related to instances will be avoided 
+	* (i.e. activities which are not standalone, start or view).
+	* @param $add_start is false by default, if true start activities are added to the listing
+	* @param $add_standalone is false by default, if true standalone activities are added to the listing
+	* @param $add_view is false by default, if true view activities are added to the listing
+	* @return an associative array, key cant gives the number of results, key data is an associative array conteining the results
+	*/
+	function gui_list_user_activities_by_unique_name($user,$offset,$maxRecords,$sort_mode,$find,$where='', $remove_instances_activities =false, $add_start = false, $add_standalone = false, $add_view = false)
 	{
 		// FIXME: this doesn't support multiple sort criteria
 		//$sort_mode = $this->convert_sortmode($sort_mode);
 		$sort_mode = str_replace("__"," ",$sort_mode);
 		$mid = "where gp.wf_is_active=?";
+		$bindvars = array('y');
+		
+                if ($remove_instances_activities)
+                {
+                   $mid .= " and ga.wf_type <> ? and ga.wf_type <> ? and ga.wf_type <> ?  and  ga.wf_type <> ?  and  ga.wf_type <> ? ";
+                   $bindvars[] = 'end';
+                   $bindvars[] = 'switch';
+                   $bindvars[] = 'join';
+                   $bindvars[] = 'activity';
+                   $bindvars[] = 'split';
+                }
+		if (!($add_start))
+		{
+		  $mid .= " and ga.wf_type <> ?";
+		  $bindvars[] = 'start';
+                }
+                if (!($add_standalone))
+		{
+		  $mid .= " and ga.wf_type <> ?";
+		  $bindvars[] = 'standalone';
+                }
+                if (!($add_view))
+		{
+		  $mid .= " and ga.wf_type <> ?";
+		  $bindvars[] = 'view';
+                }
+                
 		// add group mapping, warning groups and user can have the same id
 		$groups = galaxia_retrieve_user_groups($user);
 		$mid .= " and ((gur.wf_user=? and gur.wf_account_type='u')";
@@ -260,7 +338,7 @@ class GUI extends Base {
                 }
                 $mid .= ')';
 
-		$bindvars = array('y',$user);
+		$bindvars[] = $user;
 		if($find) 
 		{
 			$findesc = '%'.$find.'%';

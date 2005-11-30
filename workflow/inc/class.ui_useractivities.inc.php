@@ -45,20 +45,23 @@
 			
 			if ($this->filter_process) $this->wheres[] = 'gp.wf_p_id=' . $this->filter_process;
 			if ($this->filter_activity) $this->wheres[] = "ga.wf_name='" . $this->filter_activity."'";
+			$remove_non_pseudo = false; //remove 'classical' activities, other are pseudo-activities because not related to instances
+			$select_standalone = false; //add standalone activities, not a classical one becaus no instance is associated to it
+			$select_start = false; //idem with start
+			$select_view = false; //idem no real activity-instance association
 			if ($this->show_globals) 
 			{
 				//we want only standalone activities
-				$this->wheres[] = "ga.wf_type='standalone'";
-				$withoutzero = false;
 				//this will filter the activities select list
-				$select_wheres = " ga.wf_type='standalone'";
+				$remove_non_pseudo = true;
+				$select_standalone = true;
+				//we need activities without instances
+				$remove_zero = false;
 			}
 			else
 			{
-				//we need only activities with instances avaible, start and standalone activities are left out then
-				$withoutzero = true;
-				//this will filter the activities select list
-				$select_wheres = " (ga.wf_type<>'standalone') and (ga.wf_type<>'start') ";
+				//we do not need activities without instances
+				$remove_zero = true;
 			}
 			$this->wheres = implode(' and ', $this->wheres);
 			//echo "<br>wheres:".$this->wheres;
@@ -70,8 +73,8 @@
 			);
 			
 			$all_processes =& $this->GUI->gui_list_user_processes($GLOBALS['egw_info']['user']['account_id'], 0, -1, 'wf_procname__asc', '', '');
-			$all_activities =&  $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['egw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', $select_wheres);
-			$activities =& $this->GUI->gui_list_user_activities($GLOBALS['egw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres, $withoutzero);
+			$all_activities =&  $this->GUI->gui_list_user_activities_by_unique_name($GLOBALS['egw_info']['user']['account_id'], 0, -1, 'ga.wf_name__asc', '', '',$remove_non_pseudo, $select_start, $select_standalone, $select_view);
+			$activities =& $this->GUI->gui_list_user_activities($GLOBALS['egw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str, $this->wheres, $remove_zero, $remove_non_pseudo, $select_start, $select_standalone, $select_view);
 
 			// show process select box
 			$this->show_process_select_box($all_processes['data']);

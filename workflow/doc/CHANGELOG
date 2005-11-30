@@ -4,11 +4,12 @@ mbartz is Michael Bartz
 alpeb is Alejandro Pedraza
 regis_glc is Regis Leroy
 
-[1.2.01.000]
+[1.2.01.000] Release candidate 4
 	* bugfix: support of groups mapping was broken with phpgwapi 1.2 (groups now have negative ids in egroupware)
 	* bugfix: galaxia_retrieve_user_memberships adaptation to eally retrieve it and not an empty array with API changes
 	* minor fix: user activities tabs loose info global/not global sometimes
-	
+	* minor fix: clean user activities filters in user activities tabs with only usefull activities
+
 [1.2.00.002] Release candidate 3 
 	* bugfix bug #1366362 SQL errors, missing space and SQL errors when the user had no group membership at all
 	* fixed dependency with phpgwapi, only 1.2 is supported, no more 1.0
