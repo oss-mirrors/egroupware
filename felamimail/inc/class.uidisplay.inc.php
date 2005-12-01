@@ -803,6 +803,8 @@
 									$link,
 									@htmlentities($newSenderAddress,ENT_QUOTES,$this->displayCharset),
 									@htmlentities($val->personal,ENT_QUOTES,$this->displayCharset));
+						//TODO: This uses old addressbook code, which should be removed in Version 1.4
+						//Please use addressbook.uicontacts.edit with proper paramenters
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
@@ -811,12 +813,14 @@
 							'referer'	=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
+						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
 						$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
-						$senderAddress .= sprintf('<a href="%s">
+						$senderAddress .= sprintf('<a href="%s" onClick="%s">
 							<img src="%s" width="10" height="8" border="0" 
 							align="absmiddle" alt="%s" 
 							title="%s"></a>',
 							$urlAddToAddressbook,
+							$onClick,
 							$image,
 							lang('add to addressbook'),
 							lang('add to addressbook'));
@@ -832,6 +836,8 @@
 						$link = $GLOBALS['egw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',
 									$link,@htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset));
+						//TODO: This uses old addressbook code, which should be removed in Version 1.4
+						//Please use addressbook.uicontacts.edit with proper paramenters
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
@@ -839,12 +845,14 @@
 							'referer'	=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
+						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
 						$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
-						$senderAddress .= sprintf('<a href="%s">
+						$senderAddress .= sprintf('<a href="%s" onClick="%s">
 							<img src="%s" width="10" height="8" border="0" 
 							align="absmiddle" alt="%s" 
 							title="%s"></a>',
 							$urlAddToAddressbook,
+							$onClick,
 							$image,
 							lang('add to addressbook'),
 							lang('add to addressbook'));

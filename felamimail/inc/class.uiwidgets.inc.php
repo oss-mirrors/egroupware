@@ -343,6 +343,8 @@
 					'name'		=> urlencode($header['sender_name']),
 					'referer'	=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
 				);
+				//TODO: url_add_to_addressbook isn't in any of the templates. 
+				//If you want to use it, you need to adopt syntax to the new addressbook (popup)
 				$this->t->set_var('url_add_to_addressbook',$GLOBALS['egw']->link('/index.php',$linkData));
 				$this->t->set_var('msg_icon_sm',$msg_icon_sm);
 				
