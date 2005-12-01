@@ -67,9 +67,11 @@ activity:	workflow	zh-tw	活動：
 add a transition	workflow	zh-tw	新增遞交
 add aborted instances	workflow	zh-tw	新增停用的實例
 add advanced actions	workflow	zh-tw	新增進階動作
+add agent	workflow	zh-tw	新增代理人
 add completed instances	workflow	zh-tw	新增完成的實例
 add instances in exception	workflow	zh-tw	新增例外的實例
 add new	workflow	zh-tw	新增
+add new role	workflow	zh-tw	新增角色
 add or edit a process	workflow	zh-tw	新增或編輯一個處理過程
 add or edit an activity	workflow	zh-tw	新增或編輯一個活動
 add property	workflow	zh-tw	新增屬性
@@ -90,6 +92,7 @@ agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	zh-tw	
 agent #%1 of type %2 is not linked with an activity	workflow	zh-tw	代理人 #%1 於類型 %2 沒有被任何活動連結
 agent associated with inexistent activity	workflow	zh-tw	代理人被歸類到一個不存在的活動
 agent without activity	workflow	zh-tw	沒有活動的代理人
+agents assigned to this activity	workflow	zh-tw	指派到這個活動的代理人
 all	workflow	zh-tw	全部
 always show advanced actions	workflow	zh-tw	永遠顯示進階動作
 always show advanced mode	workflow	zh-tw	永遠顯示進階模式
@@ -98,6 +101,7 @@ at least one email address cannot be validated.	workflow	zh-tw	一個以上的�
 auto routed	workflow	zh-tw	自動指派
 auto-release on leaving activity	common	zh-tw	在離開活動時自動釋出
 automatic	workflow	zh-tw	自動
+autorouted activities does not need to be sent by any user after their execution	workflow	zh-tw	自動偵測的活動在他們執行後不需要由任何使用者寄出
 bad parameter for setagents, the parameter should be an array	workflow	zh-tw	setAgents的參數錯誤，參數必須是一個陣列
 bad role type	workflow	zh-tw	錯誤的角色類型
 bad user	workflow	zh-tw	錯誤的使用者
@@ -131,6 +135,7 @@ column owner in instance lists	workflow	zh-tw	在實例清單中的擁有者欄�
 column priority in instance lists	workflow	zh-tw	在實例清單中的屬性欄位
 column process name in instance lists	workflow	zh-tw	在實例清單中的流程名稱欄位
 column start date in instance lists	workflow	zh-tw	在實例清單中的開始日期欄位
+compilation	workflow	zh-tw	編譯
 compiling activity %1 : %2	workflow	zh-tw	編譯中活動 %1 : %2
 complete	workflow	zh-tw	完成
 complete cleanup of aborted instances done	workflow	zh-tw	完整清除中止的實例完成
@@ -254,6 +259,7 @@ instances	workflow	zh-tw	實例
 instances selection	workflow	zh-tw	實例選擇
 int.	workflow	zh-tw	實例
 interactive	workflow	zh-tw	互動模式
+interactive activities show form before being executed	workflow	zh-tw	互動活動會在被執行前顯示表單
 interactive instances should not call the complete() method	workflow	zh-tw	互動實例不應該使用 complete() 方法
 interactive:	workflow	zh-tw	互動：
 interactivity	workflow	zh-tw	互動活動
@@ -449,6 +455,7 @@ send when wf_agent_mail_smtp['submit_send'] is posted	workflow	zh-tw	在 wf_agen
 set next act	workflow	zh-tw	設定下個活動
 set next user	workflow	zh-tw	設定下個使用者
 set property	workflow	zh-tw	設定屬性
+setnextuser directives can override it	workflow	zh-tw	setNextUser 會覆蓋它
 setting next activity to an unexisting activity	workflow	zh-tw	設定的下個活動不存在
 shared code	workflow	zh-tw	共享程式碼
 should we always give you the advanced search row on instances lists?	workflow	zh-tw	在實例清單中是否永遠顯示進接搜尋資料列？
@@ -492,6 +499,7 @@ test consistency of datas in the database	workflow	zh-tw	測試資料庫的資�
 test local installation	workflow	zh-tw	測試本地安裝
 the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	zh-tw	資料夾 /workflow 不存在且無法建立，請聯絡管理員來檢查全域設定
 the activity was not completed	workflow	zh-tw	這個活動沒有完成
+the default user will only be set if he is mapped to a role on the activity	workflow	zh-tw	預設使用者將只會在對應到活動角色時被設定
 the following items must be corrected to be able to activate this process	workflow	zh-tw	進行這個處理程序前必須先修正下面這些項目
 the instance title is shown on top of the form	admin	zh-tw	實例標題會顯示在表單上方
 the label you want	workflow	zh-tw	要使用的標籤
@@ -553,10 +561,12 @@ user is not authorized to delete instances	workflow	zh-tw	使用者沒有被授�
 user processes	workflow	zh-tw	使用者處理程序
 user/group	workflow	zh-tw	使用者/群組
 user:	workflow	zh-tw	使用者：
+users can act on activity before its execution with form and after by sending it to the next activity	workflow	zh-tw	使用者可以在活動執行前以及在寄送它到下一個活動後透過表單操作
 users/groups	workflow	zh-tw	使用者/群組
 valid	workflow	zh-tw	正確
 valid process	workflow	zh-tw	正確處理程序
 valid:	workflow	zh-tw	正確：
+validity:	workflow	zh-tw	有效性：
 value	workflow	zh-tw	值
 version	workflow	zh-tw	版本
 view details	workflow	zh-tw	瀏覽細節
