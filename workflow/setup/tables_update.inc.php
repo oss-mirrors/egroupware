@@ -316,7 +316,7 @@
 		$where = "wf_account_type='g' and (SUBSTR($col,1,1) <> '-')";
 		$set = $col.'='.$GLOBALS['egw_setup']->db->concat("'-'",$col);
 		$query = "UPDATE $table SET $set WHERE $where";
-		echo "<p>debug query: $query</p>\n";
+		//echo "<p>debug query: $query</p>\n";
 		$GLOBALS['egw_setup']->db->query($query,__LINE__,__FILE__);
 
 		#updating the current version
