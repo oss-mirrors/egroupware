@@ -73,6 +73,7 @@ add instances in exception	workflow	en	Add instances in exception
 add new	workflow	en	add new
 add new role	workflow	en	Add new role
 add or edit a process	workflow	en	Add or edit a process
+add or edit a role	workflow	en	Add or edit a rol
 add or edit an activity	workflow	en	Add or edit an activity
 add property	workflow	en	Add property
 add role	workflow	en	Add role
@@ -396,7 +397,7 @@ release activity for this instance	workflow	en	release activity for this instanc
 release instance	workflow	en	release instance
 reload filter	workflow	en	Reload filter
 remove active instances	workflow	en	Remove active instances
-remove all instance for this process	workflow	en	remove all instance for this process
+remove all instances for this process	workflow	en	remove all instances for this process
 remove selected roles	workflow	en	remove selected roles
 removing instances and workitems for aborted instances on all processes	workflow	en	removing instances and workitems for aborted instances on all processes
 removing instances and workitems for aborted instances on process #%1	workflow	en	removing instances and workitems for aborted instances on process #%1
@@ -405,6 +406,7 @@ replyto:	workflow	en	ReplyTo:
 restart	workflow	en	restart
 restart activity	workflow	en	restart activity
 resume this exception instance	workflow	en	Resume this exception instance
+role	workflow	en	Role
 role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	en	Role #%1 in process %2 has different process (%3) in mapping with user #%4
 role %1 (#%2) is associated with a non-existent process (#%3)	workflow	en	Role %1 (#%2) is associated with a non-existent process (#%3)
 role %1 is associated in a mapping with user #%2 with a non-existent process (%3)	workflow	en	Role %1 is associated in a mapping with user #%2 with a non-existent process (%3)
