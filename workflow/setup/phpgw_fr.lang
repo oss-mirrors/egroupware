@@ -30,7 +30,7 @@ action %1 is impossible, there are no user assigned to this activity for this in
 action %1 needs an activity and activity %2 does not exists	workflow	fr	L'action %1 à besoin d'une activité et l'activité %2 n'existe pas.
 action %1 needs an instance and instance %2 does not exists	workflow	fr	L'action %1 à besoin d'une instance et l'instance %2 n'existe pas.
 actions	workflow	fr	Actions
-actions right options	admin	fr	Options sur les Droits des Actions
+actions right options	common	fr	Options sur les Droits des Actions
 activate	workflow	fr	activer
 active	workflow	fr	active
 active:	workflow	fr	actif :
@@ -92,7 +92,7 @@ always show advanced mode	workflow	fr	Toujours montrer le mode avancé
 assign me this activity	workflow	fr	M'assigner cette activité
 at least one email address cannot be validated.	workflow	fr	au moins une adresse email n'a pas pue être validée
 auto routed	workflow	fr	Auto transmise
-auto-release on leaving activity	admin	fr	libérer automatiquement en quittant l'activité
+auto-release on leaving activity	common	fr	libérer automatiquement en quittant l'activité
 automatic	workflow	fr	Automatique
 bad parameter for setagents, the parameter should be an array	workflow	fr	mauvais paramètre pour setAgents, le paramètre devrait être un vecteur
 bad role type	workflow	fr	mauvais type de rôle
@@ -131,6 +131,7 @@ complete	workflow	fr	terminer
 complete cleanup of aborted instances done	workflow	fr	Nettoyage complet des instances interrompues effectué
 complete cleanup of all instances done	workflow	fr	Nettoyage complet de toutes les instances effectué
 completed	workflow	fr	Terminé
+config values	common	fr	Valeurs de Configuration
 confirm delete	workflow	fr	Confirmez-vous la suppression?
 consult %1 to get the default values:	workflow	fr	Consultez %1 pour avoir les valeurs par défaut
 couldn't add transition	workflow	fr	Impossible d'ajouter une transition
@@ -147,9 +148,19 @@ delete transition	workflow	fr	supprimer la transition
 deletion successful	workflow	fr	Suppression Réussie
 delition successful	workflow	fr	Suppression Réussie
 description	workflow	fr	Description
-display please wait message	admin	fr	afficher un message de patience
+display please wait message	common	fr	afficher un message de patience
+do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	fr	Voulez-vous la colonne statut de l'activité dans les listes d'instances. La plupart du temps c'est "en cours" mais si vous utilisez des transitions non-autoroutées vous saurez quelques activités complétées.
+do you want the category name column on instances lists, if your instances use categories you should use it	workflow	fr	Voulez-vous la colonne catégorie dans les listes d'instances. Si vos instances utilisent les catégories vous devriez l'utiliser.
+do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	fr	Voulez-vous la colonne id de l'instance dans les listes d'instances. Ceci est l'identifiant unique de l'instance.
+do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	fr	Voulez-vous la colonne nom de l'instance dans les listes d'instances. Si vos instances ont des noms vous devriez l'utiliser.
+do you want the instance status on instances lists. the instance status is usefull to disting beteween aborted, completed, exception or active instances	workflow	fr	Voulez-vous la colonne statut de l'instance dans les listes d'instances. Le statut de l'instance est utile pour faire la distinction entre les instances interrompues, complétées, en exception ou bien actives.
+do you want the owner column on instances lists. this will show you the actual owner, especially usefull if ownership is defined with special rights	workflow	fr	Voulez-vous la colonne propriétaire dans les listes d'instances. Cela vous montrera le propriétaire actuel ce qui est spécialement utile quand le proriétaire hérite de droits spéciaux.
+do you want the priority column on instances lists. priority can be set with activities forms	workflow	fr	Voulez-vous la colonne priorité de l'instance dans les listes d'instances. La priorité peut être définie via les formulaires des activités.
+do you want the process column on instances lists. usefull if you have different processes and/or versions of theses processes	workflow	fr	Voulez-vous la colonne processus dans les listes d'instances. utile si vous avez plusieurs processus et/ou versions de ces processus.
+do you want the search instance button in the last row of instances list.	workflow	fr	Voulez-vous afficher le bouton de recherche d'instance qui se trouve sur la dernière ligne des listes d'instances.
+do you want the started date column on instances lists.	workflow	fr	Voulez-vous la colonne date de départ de l'instance dans les listes d'instances.
 don't move	workflow	fr	Ne pas déplacer
-draw roles	admin	fr	afficher les rôles
+draw roles	common	fr	afficher les rôles
 draw roles on the graph beside activity name like [that]	admin	fr	affiche les roles sur le graphique sous les noms d'activités comme [cela]
 duration	workflow	fr	Durée
 end	workflow	fr	fin
@@ -179,7 +190,7 @@ fatal error: trying to send an instance to an activity but no transition found	w
 filter	workflow	fr	Filtre
 filter instance by id	workflow	fr	filtrer les instances par id
 finally you have links with <strong>%link_xx|yy%</strong> syntax, xx is the address part, yy the text part.	workflow	fr	Et pour finir vous avez des liens avec la syntaxe <strong>%link_XX|YY%</strong>, XX est la partie adresse, YY la partie textuelle.
-font size	admin	fr	taille de fonte
+font size	workflow	fr	taille de fonte
 from	workflow	fr	Depuis
 from:	workflow	fr	Exp :
 get back to global activities	workflow	fr	retourner aux activités globales
@@ -196,7 +207,7 @@ grant access to the administration of workflow instances in monitor screens	work
 grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	fr	Donner l'accès au nettoyage/suppression des instances interrompues dans les écrans de supervision
 grant access to the monitoring of workflow elements	workflow	fr	Permettre l'accès à la supervision des éléments du workflow
 graph	workflow	fr	Graphique
-graphic options	admin	fr	Options du graphique
+graphic options	common	fr	Options du graphique
 group	workflow	fr	Groupe
 id	workflow	fr	Id
 if automatic parsing is disabled next options will be useless	admin	fr	si l'analyse automatique n'est pas activée les options suivantes seront inutiles
@@ -246,6 +257,10 @@ list of transitions	workflow	fr	Liste des transitions
 list of workitems	workflow	fr	Liste des éléments de travail
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	fr	Ce mail est envoyé automatiquement par l'Agent Mail SMTP du Workflow de eGroupware
 mail smtp agent	workflow	fr	Agent Mail SMTP
+mail smtp debug	common	fr	Mail smtp: debug
+mail smtp local link prefix	common	fr	Mail smtp: préfixe pour liens locaux
+mail smtp profile	common	fr	Mail smtp: Profil
+mail smtp signature	common	fr	Mail smtp: signature
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	fr	Les mails peuvent être envoyés au début ou à la fin d'une activité. Ils ne peuvent être envoyés après la completion que pour les activités interactives.
 manual	workflow	fr	Manuel
 map	workflow	fr	mapper
@@ -363,9 +378,9 @@ role %1 is associated in a mapping with user #%2 with a non-existent process (%3
 role %1 is not mapped	workflow	fr	Le rôle %1 n'est pas mappé
 role added to activity	workflow	fr	Rôle ajouté à cette activité
 role added to process	workflow	fr	Rôle ajouté au processus
-role give abort right	admin	fr	le rôle donne les droits d'interruption
-role give exception right	admin	fr	le rôle donne les droits d'exception
-role give release right	admin	fr	le rôle donne les droits de libération
+role give abort right	common	fr	le rôle donne les droits d'interruption
+role give exception right	common	fr	le rôle donne les droits d'exception
+role give release right	common	fr	le rôle donne les droits de libération
 role name	workflow	fr	Nom du rôle
 role not saved (maybe a name collision)	workflow	fr	Rôle non enregistré (peut-être une collision de noms)
 role saved	workflow	fr	Rôle sauvegardé
@@ -378,7 +393,7 @@ run	workflow	fr	démarrer
 run activity	workflow	fr	démarrer l'activité
 run instance	workflow	fr	éxécuter l'instance
 running	workflow	fr	En cours
-running activities options	admin	fr	Options d'éxécution des activités
+running activities options	common	fr	Options d'éxécution des activités
 running activity	workflow	fr	Activité en cours
 search instance filter in the bottom of instance lists	workflow	fr	Filtre de recherche d'instance dans le bas des listes d'instances
 search:	workflow	fr	Chercher :
@@ -396,10 +411,12 @@ send when the activity is ending	workflow	fr	envoyer quand l'activité se termine
 send when the activity is starting	workflow	fr	envoyer quand l'activité commence
 shared code	workflow	fr	Code partagé du processus
 should we always give you the advanced search row on instances lists?	workflow	fr	Devons nous toujours vous afficher la ligne de recherche avancée dans les listes d'instances?
-show activity info zone	admin	fr	montrer la zone d'information de l'activité
-show activity title	admin	fr	montrer le titre de l'activité
+show activity info zone	common	fr	montrer la zone d'information de l'activité
+show activity title	common	fr	montrer le titre de l'activité
 show code	workflow	fr	montrer le code
-show multiple submit as select	admin	fr	montrer les multiples boutons de validation dans une liste déroulante
+show instance name	common	fr	Montrer le nom de l'instance
+show instance owner	common	fr	Montrer le propriétaire de l'instance
+show multiple submit as select	common	fr	montrer les multiples boutons de validation dans une liste déroulante
 show template	workflow	fr	montrer le template
 size of the font used on the graph 12 should be a good default value	admin	fr	taille de la fonte utilisée sur le graphique. 12 devrait être une bonne valeur par défaut.
 smtp agent has detected some errors when sending email after completion of the activity	workflow	fr	L'agent Smtp a détecté quelques erreurs quand il voulait envoyer un mail après la completion de l'activité.
@@ -454,6 +471,7 @@ this activity for this instance is actually avaible for you.	workflow	fr	Cette a
 this activity for this instance is actually only avaible for you.	workflow	fr	Cette activité pour cette instance est actuellement disponible uniquement pour vous.
 this activity for this instance is not specifically assigned to you.	workflow	fr	Cette activité pour cette instance ne vous est pas spécifiquement attribuée.
 this agent gives the activity the possibility to send an smtp message (mail)	workflow	fr	Cet agent donne à l'activité la possibilité d'envoyer un message SMTP (mail)
+this is the first screen shown when you click on the workflow application icon	workflow	fr	Ceci est le premier écran affiché quand vous cliquez sur l'icône de l'application workflow
 this process has a view activity. access in view mode is granted only for this view activty.	workflow	fr	Ce processus possède une activité de type Vue. L'accès en mode lecture seul est autorisé uniquement pour cette activité de type Vue.
 this process has no end activity	workflow	fr	ce processus n'a pas d'activité de fin
 this will automatically release the instance when leaving an activity without completing	admin	fr	ceci va automatiquement libérer l'instance quand vous quitterez une activité sans la compléter
