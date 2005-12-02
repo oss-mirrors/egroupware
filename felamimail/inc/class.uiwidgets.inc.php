@@ -311,31 +311,43 @@
 				$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
 				$this->t->set_var('url_read_message',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());");
 			
-				if(!empty($header['sender_name']))
+				if($_isSentFolder)
 				{
-					list($mailbox, $host) = explode('@',$header['sender_address']);
-					$senderAddress  = imap_rfc822_write_address($mailbox,
+					if(!empty($header['to_name']))
+					{
+						list($mailbox, $host) = explode('@',$header['to_address']);
+						$senderAddress  = imap_rfc822_write_address($mailbox,
 								$host,
-								$header['sender_name']);
-					$linkData = array
-					(
-						'menuaction'    => 'felamimail.uicompose.compose',
-						'send_to'	=> base64_encode($senderAddress)
-					);
+								$header['to_name']);
+					}
+					else
+					{
+						$senderAddress  = $header['to_address'];
+					}
 				}
 				else
 				{
-					$linkData = array
-					(
-						'menuaction'    => 'felamimail.uicompose.compose',
-						'send_to'	=> base64_encode($header['sender_address'])
-					);
+					if(!empty($header['sender_name']))
+					{
+						list($mailbox, $host) = explode('@',$header['sender_address']);
+						$senderAddress  = imap_rfc822_write_address($mailbox,
+								$host,
+								$header['sender_name']);
+					}
+					else
+					{
+						$senderAddress  = $header['sender_address'];
+					}
 				}
-				
+
+				$linkData = array
+				(
+					'menuaction'    => 'felamimail.uicompose.compose',
+					'send_to'	=> base64_encode($senderAddress)
+				);
 				$windowName = 'compose'.$header['uid'];
 				$this->t->set_var('url_compose',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());");
 
-				
 				$linkData = array
 				(
 					'menuaction'    => 'addressbook.uiaddressbook.add_email',
