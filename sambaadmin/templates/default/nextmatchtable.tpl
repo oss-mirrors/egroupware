@@ -9,6 +9,7 @@
   </table>
  </div>
 
+{table_prefix}
 <table width="100%" border="0" cellspacing="1" cellpading="1">
 {header}
 {rows}

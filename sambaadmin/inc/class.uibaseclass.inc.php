@@ -44,7 +44,7 @@
 						{
 							if($id != intval($event['owner']))
 							{
-								$str .= '<option value="' . $id.$event['participants'][$id] . '"'.($event['participants'][$id]?' selected':'').'>('.$GLOBALS['egw']->accounts->get_type($id)
+								$str .= '<option value="' . $id.$event['participants'][$id] . '"'.($event['participants'][$id] ? ' selected' : '').'>('.$GLOBALS['egw']->accounts->get_type($id)
 										.') ' . $GLOBALS['egw']->common->grab_owner_name($id) . '</option>' . "\n"; 
 							}
 						}
@@ -60,7 +60,7 @@
 						{
 							if($id != intval($event['owner']))
 							{
-								$str .= '    <option value="' . $id.$event['participants'][$id] . '"'.($event['participants'][$id]?' selected':'').'>('.$user_array['type'].') '.$user_array['name'].'</option>'."\n";
+								$str .= '    <option value="' . $id.$event['participants'][$id] . '"'.($event['participants'][$id] ? ' selected' : '').'>('.$user_array['type'].') '.$user_array['name'].'</option>'."\n";
 							}
 						}
 						$var[] = array
@@ -74,7 +74,7 @@
 			
 		}
 
-		function create_table($_start, $_total, $_defaultSort, $_defaultOrder, $_header, $_rows, $_menuaction, $_name)
+		function create_table($_start, $_total, $_defaultSort, $_defaultOrder, $_header, $_rows, $_menuaction, $_name, $_tablePrefix)
 		{
 			$t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$nextmatchs	=& CreateObject('phpgwapi.nextmatchs');
@@ -98,6 +98,7 @@
 			$t->set_var('left_next_matchs', $nextmatchs->left($url,$start,$_total,$_menuaction));
 			$t->set_var('name', lang('%1 - %2 of %3',$start+1,$start+count($_rows),$_total).'&nbsp;'.$_name);
 			$t->set_var('right_next_matchs', $nextmatchs->right($url,$start,$_total,$_menuaction));
+			$t->set_var('table_prefix', $_tablePrefix);
 																		
 			// create the header
 			if(is_array($_header))

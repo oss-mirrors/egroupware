@@ -152,7 +152,7 @@
 			(
 				'menuaction'	=> 'sambaadmin.uisambaadmin.deleteWorkstation'
 			);
-			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
+			$formAction = $GLOBALS['egw']->link('/index.php',$linkData);
 
 			$linkData = array
 			(
@@ -191,6 +191,8 @@
 				}
 			}
 			
+			$tablePrefix = "<form method='POST' action='$formAction'>";
+			
 			$this->t->set_var
 			(
 				'next_match_table',$nextMatch->create_table
@@ -202,7 +204,8 @@
 					$tableHeader, 
 					$rows,
 					'sambaadmin.uibaseclass.listWorkstations',
-					lang('workstations')
+					lang('workstations'),
+					$tablePrefix
 				)
 			);
 

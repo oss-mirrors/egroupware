@@ -22,7 +22,6 @@
 </table>
 <br>
 {next_match_table}
-<form method="POST" action="{form_action}">
 <table width="100%" border="0" cellspacing="1" cellpading="1">
 <tr>
 <td align="right">
