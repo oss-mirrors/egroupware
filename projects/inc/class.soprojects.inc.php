@@ -1434,7 +1434,7 @@
 
 		function member($project_id)
 		{
-			$this->db->query("SELECT acl_account from phpgw_acl where acl_appname = 'projects' and acl_rights=7 and acl_location='"
+			$this->db->query("SELECT acl_account from egw_acl where acl_appname = 'projects' and acl_rights=7 and acl_location='"
 								. intval($project_id)."'",__LINE__,__FILE__);
 
 			while($this->db->next_record())
