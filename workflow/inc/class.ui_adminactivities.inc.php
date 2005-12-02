@@ -500,7 +500,8 @@
 			{
 				$this->t->set_var(array(
 					'selected_filter_type'	=> ($filter_type == $type)? 'selected="selected"' : '',
-					'filter_type_name'		=> $type
+					'filter_type_name'	=> lang($type),
+					'filter_type_en_name'	=> $type
 				));
 				$this->t->parse('select_filter_type', 'block_select_filter_type', true);
 			}

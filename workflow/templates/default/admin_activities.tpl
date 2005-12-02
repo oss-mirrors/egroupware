@@ -204,7 +204,7 @@
 			<select name="filter_type" >
 				<option {selected_filter_type_all} value="">{lang_All}</option>
 				<!-- BEGIN block_select_filter_type -->
-				<option {selected_filter_type} value="{filter_type_name}">{filter_type_name}</option>
+				<option {selected_filter_type} value="{filter_type_en_name}">{filter_type_name}</option>
 				<!-- END block_select_filter_type -->
 			</select>
 		{lang_Interactivity}:
