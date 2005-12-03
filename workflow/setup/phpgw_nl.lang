@@ -30,7 +30,7 @@ action %1 is impossible, there are no user assigned to this activity for this in
 action %1 needs an activity and activity %2 does not exists	workflow	nl	Actie %1 vereist een activiteit en activiteit %2 bestaat niet
 action %1 needs an instance and instance %2 does not exists	workflow	nl	Actie %1 veriest een instantie en instantie %2 bestaat niet
 actions	workflow	nl	Acties
-actions right options	admin	nl	Acties rechts opties
+actions right options	common	nl	Acties rechts opties
 activate	workflow	nl	activeren
 active	workflow	nl	Actief
 active:	workflow	nl	actief:
@@ -67,10 +67,13 @@ activity:	workflow	nl	activiteit:
 add a transition	workflow	nl	Transitie toevoegen
 add aborted instances	workflow	nl	Afgebroken instanties toevoegen
 add advanced actions	workflow	nl	Geavanceerde instanties toevoegen
+add agent	workflow	nl	Agent toevoegen
 add completed instances	workflow	nl	Voltooide instanties toegevoegen
 add instances in exception	workflow	nl	Instanties in uitzonder toevoegen
 add new	workflow	nl	nieuwse toevoegen
+add new role	workflow	nl	Nieuwe rol toevoegen
 add or edit a process	workflow	nl	Een proces toevoegen of bewerken
+add or edit a role	workflow	nl	Een rol toevoegen of bewerken
 add or edit an activity	workflow	nl	Een activiteit toevoegen of bewerken
 add property	workflow	nl	Eigenschap toevoegen
 add role	workflow	nl	Rol toevoegen
@@ -90,14 +93,16 @@ agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	nl	Age
 agent #%1 of type %2 is not linked with an activity	workflow	nl	Agent #%1 van type %2 is niet gekoppeld aan een activiteit
 agent associated with inexistent activity	workflow	nl	Agent geassocieerd met een nietbestaande activiteit
 agent without activity	workflow	nl	Agent zonder activiteit
+agents assigned to this activity	workflow	nl	Agenten die aan deze activiteit zijn toegewezen
 all	workflow	nl	Alle
 always show advanced actions	workflow	nl	Altijd de geavanceerde acties weergeven
 always show advanced mode	workflow	nl	Altijd de geavanceerde modus weergeven
 assign me this activity	workflow	nl	Wijs mij deze activiteit toe
 at least one email address cannot be validated.	workflow	nl	minstens één emailadres kon niet gevalideerd worden.
 auto routed	workflow	nl	Automatisch gerouteerd
-auto-release on leaving activity	admin	nl	automatisch vrijgeven als de activiteit verlaten wordt
+auto-release on leaving activity	common	nl	automatisch vrijgeven als de activiteit verlaten wordt
 automatic	workflow	nl	Automatisch
+autorouted activities does not need to be sent by any user after their execution	workflow	nl	Automatisch gerouteerde activiteiten hoeven niet door een gebruiker verzonden te worden nadat ze zijn uitgevoerd
 bad parameter for setagents, the parameter should be an array	workflow	nl	verkeerde parameter voor setAgents, de parameter moet een array zijn
 bad role type	workflow	nl	Verkeerd roltype
 bad user	workflow	nl	Verkeerde gebruiker
@@ -131,11 +136,13 @@ column owner in instance lists	workflow	nl	Kolom eigenaar in instantie lijsten
 column priority in instance lists	workflow	nl	Kolom prioriteit in instantie lijsten
 column process name in instance lists	workflow	nl	Kolom procesnaam in instantie lijsten
 column start date in instance lists	workflow	nl	Kolom startdatum in instantie lijsten
+compilation	workflow	nl	Compilatie
 compiling activity %1 : %2	workflow	nl	compileert activiteit %1 : %2
 complete	workflow	nl	Voltooid
 complete cleanup of aborted instances done	workflow	nl	volledige opruiming van afgebroken instanties voltooid
 complete cleanup of all instances done	workflow	nl	volledige opruiming van alle instanties voltooid
 completed	workflow	nl	voltooid
+config values	workflow	nl	Configuratie waardes
 confirm delete	workflow	nl	Bevest verwijdering
 consult %1 to get the default values:	workflow	nl	Raadpleeg %1 voor de standaard waardes:
 couldn't add transition	workflow	nl	Kon transitie niet toevoegen
@@ -152,9 +159,10 @@ delete transition	workflow	nl	verwijder transitie
 deletion successful	workflow	nl	Verwijdering succesvol
 delition successful	workflow	nl	Verwijderng succesvol
 description	workflow	nl	Beschrijving
-display please wait message	admin	nl	toon het even geduld bericht
+display please wait message	common	nl	toon het even geduld bericht
 do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	nl	Wilt u de activiteitsstatus op instanties lijsten weergeven? Meestal is dit 'lopend' maar indien u nietzelfrouterende transities gebruik zult u enkele voltooide activiteiten hebben.
 do you want the category column on instances lists, if yout instances use categories you should use it	workflow	nl	Wilt u de categorie kolom op instanties lijsten weergeven? Indien uw instanties categorieën gebruiken zou u dit moeten inschakelen
+do you want the category name column on instances lists, if your instances use categories you should use it	workflow	nl	Wilt u de categorienaam kolom op instanties lijsten weergeven? Indien uw instanties categorieën gebruiken zou u dit moeten inschakelen
 do you want the category name column on instances lists. if your instances use categories you should use this	workflow	nl	Wilt u de categorienaam kolom op instanties lijsten weergeven? Indien uw instanties categorieën gebruiken zou u dit moeten inschakelen
 do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	nl	Wilt u de instantie ID kolom op instanties lijsten weergeven? Dit is de unieke identifier van een instantie
 do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	nl	Wilt u de instantienaam kolom op instanties lijsten weergeven? Indien uw instanties namen gebruiken zou u dit zeker moeten doen.
@@ -165,9 +173,10 @@ do you want the process column on instances lists. usefull if you have different
 do you want the search instance button in the last row of instances list.	workflow	nl	Wilt u de zoekinstantieknop in de laatste rij van de instanties lijst weergeven?
 do you want the started date column on instances lists.	workflow	nl	Wilt u de startdatum kolom op instanties lijsten weergeven?
 don't move	workflow	nl	Niet verplaatsen
-draw roles	admin	nl	teken rollen
+draw roles	common	nl	teken rollen
 draw roles on the graph beside activity name like [that]	admin	nl	teken rollen op de grafiek naast activiteitsnaam zoals [dit]
 duration	workflow	nl	Duur
+empty agent type	workflow	nl	leeg agent type
 end	workflow	nl	einde
 end activity is not reachable from start activity	workflow	nl	Eind activiteit is niet bereikbaar vanaf de start activiteit
 ended	workflow	nl	geeindigd
@@ -202,7 +211,7 @@ filter instance by id	workflow	nl	filter instantie op ID
 finally you have links with <strong>%link_xx|yy%</strong> syntax, xx is the address part, yy the text part.	workflow	nl	tenslotten heeft u links met <strong>%link_XX|YY%</strong> syntax, XX is het adres deel, YY het tekst deel.
 fix	workflow	nl	Herstel
 fix concistency for selected rows	workflow	nl	Herstel consistentie voor de geselecteerde rijen
-font size	admin	nl	lettergrootte
+font size	workflow	nl	lettergrootte
 from	workflow	nl	Van
 from:	workflow	nl	Van:
 get back to global activities	workflow	nl	ga terug naar globale activiteiten
@@ -221,7 +230,7 @@ grant access to the administration of workflow instances in monitor screens	work
 grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	nl	Verleeg toegang aan het opruimen/verwijderen van afgebroken werkstroom instanties in monitor pagina's
 grant access to the monitoring of workflow elements	workflow	nl	Verleen toegang tot het monitoren van werkstroomelementen
 graph	workflow	nl	Grafiek
-graphic options	admin	nl	Grafiek opties
+graphic options	common	nl	Grafiek opties
 group	workflow	nl	Groep
 id	workflow	nl	ID
 if automatic parsing is disabled next options will be useless	admin	nl	indien automatisch parsen uitgeschakeld is zijn de volgende opties onbruikbaar
@@ -251,6 +260,7 @@ instances	workflow	nl	Instanties
 instances selection	workflow	nl	Instanties selectie
 int.	workflow	nl	Int.
 interactive	workflow	nl	Interactief
+interactive activities show form before being executed	workflow	nl	Interactieve activiteiten tonen het formulier voordat ze worden uitgevoerd
 interactive instances should not call the complete() method	workflow	nl	interactieve instanties zouden de complete() methode niet moeten aanroepen
 interactive:	workflow	nl	interactief:
 interactivity	workflow	nl	Interactiviteit
@@ -277,6 +287,10 @@ list of transitions	workflow	nl	Lijst van transities
 list of workitems	workflow	nl	Lijst van werkonderdelen
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	nl	Mail automatisch verzonden door de Mail SMTP Agent voor eGroupWare's werkstroom
 mail smtp agent	workflow	nl	Mail SMTP Agent
+mail smtp debug	workflow	nl	Mail SMTP debug
+mail smtp local link prefix	workflow	nl	Mail SMTP lokale link prefix
+mail smtp profile	workflow	nl	Mail SMTP profiel
+mail smtp signature	workflow	nl	Mail SMTP ondertekening
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	nl	Mails kunnen worden verzonden aan het begin of aan het einde van een activiteit. Voor interactieve instanties kan er alleen aan het eind verzonden worden.
 manual	workflow	nl	Handboek
 map	workflow	nl	map
@@ -336,9 +350,16 @@ owner of the instance will have the right to abort the instance at any time	admi
 owner of the instance will have the right to exception or resume the instance at any time	admin	nl	eigenaar van de instantie heeft het recht om de instantie op ieder tijdstip in een uitzondering te laten lopen of om hem door te laten gaan
 owner of the instance will have the right to release (un-assign) an activity assigned to an user	admin	nl	eigenaar van de instantie heef het recht om op ieder tijdstip een aan een gebruiker toegewezen activiteit vrij te geven (un-assign)
 owner:	workflow	nl	Eigenaar:
-ownership give abort right	admin	nl	eigenaarschap geeft afbreek rechten
-ownership give exception right	admin	nl	eigenaarschap geeft uitzondering rechten
-ownership give release right	admin	nl	eigenaarschap geeft vrijgave rechten
+ownership give abort right	common	nl	eigenaarschap geeft afbreek rechten
+ownership give exception right	common	nl	eigenaarschap geeft uitzondering rechten
+ownership give release right	common	nl	eigenaarschap geeft vrijgave rechten
+post activity %1 code is not avaible	workflow	nl	na-activiteit %1 code is niet beschikbaar
+post shared code is not avaible	workflow	nl	na-gedeelde code is niet beschikbaar
+post-agent %1 code is not avaible	workflow	nl	na-agent %1 code is niet beschikbaar
+pr.	workflow	nl	Pr.
+pre-activity %1 code is not avaible	workflow	nl	pre-activiteit %1 code is niet beschikbaar
+pre-agent %1 code is not avaible	workflow	nl	pre-agent %1 code is niet beschikbaar
+pre-shared code is not avaible	workflow	nl	pre-gedeelde code is niet beschikbaar
 printer friendly	workflow	nl	Printervriendelijk
 priority level:	workflow	nl	Prioriteitsniveau:
 process	workflow	nl	Proces
@@ -376,7 +397,7 @@ release activity for this instance	workflow	nl	activiteit voor deze instantie vr
 release instance	workflow	nl	instantie vrijgeven
 reload filter	workflow	nl	Filter herladen
 remove active instances	workflow	nl	Actieve instanties verwijderen
-remove all instance for this process	workflow	nl	alle instanties voor dit proces verwijderen
+remove all instances for this process	workflow	nl	verwijder alle instanties voor dit proces
 remove selected roles	workflow	nl	geselecteerde rollen verwijderen
 removing instances and workitems for aborted instances on all processes	workflow	nl	bezig met verwijderen van instanties en werkonderdelen voor afgebroken instanties op alle processen
 removing instances and workitems for aborted instances on process #%1	workflow	nl	bezig met verwijderen van instanties en werkonderdelen voor afgebroken instanties op proces #%1
@@ -385,8 +406,10 @@ replyto:	workflow	nl	Antwoord-Aan:
 restart	workflow	nl	herstarten
 restart activity	workflow	nl	activiteit herstarten
 resume this exception instance	workflow	nl	Hervat deze uitgezonderde instantie
+role	workflow	nl	Rol
 role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	nl	Rol #%1 in proces %s heeft een ander proces (%3) in koppeling met gebruiker #%4
 we were not able to build the message	workflow	nl	We konden het bericht niet samenstellen
+when to send the message:	workflow	nl	Wanneer het bericht verzenden:
 workflow	common	nl	Werkstroom
 workflow configuration	admin	nl	Werkstroom configuratie
 workflow preferences	workflow	nl	Werkstroom voorkeuren
@@ -394,3 +417,15 @@ workflow site configuration	workflow	nl	Werkstroom site configuratie
 workflow.ui_useractivities	workflow	nl	workflow.ui_useractivities
 workitem information	workflow	nl	Werkitem informatie
 workitems	workflow	nl	Werkitems
+you are not allowed to abort instance %1	workflow	nl	U mag instantie %1 niet afbreken
+you are not allowed to exception instance %1	workflow	nl	U mag instantie%1 niet laten uitzonderen
+you are not allowed to grab instance %1	workflow	nl	U mag instantie %1 niet benaderen
+you are not allowed to release instance %1	workflow	nl	U mag instantie %1 niet vrijgeven
+you are not allowed to restart instance %1	workflow	nl	U mag instantie %1 niet herstarten
+you are not allowed to resume instance %1	workflow	nl	U mag instantie %1 niet laten doorgaan
+you are not allowed to send instance %1	workflow	nl	U mag instantie %1 niet verzenden
+you can use special values with this mail agent:	workflow	nl	U moet speciale waardes gebruiken met deze mail agent:
+you do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas.	workflow	nl	U heeft niet meer het recht om deze activiteit uit te voeren, misschien een gelijktijdige toegang probleem, ververs uw gegevens.
+you don't have the rights necessary to exception instance %1	workflow	nl	U heeft geen rechten om instantie %1 te laten uitzonderen
+you have not permission to execute this activity	workflow	nl	U heeft geen rechten om deze activiteit uit te laten voeren
+you were not allowed to complete the activity	workflow	nl	u was niet bevoegd om deze activiteit te voltooien

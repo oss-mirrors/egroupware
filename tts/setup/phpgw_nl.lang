@@ -15,10 +15,12 @@ billable hours changed	tts	nl	Te factureren uren gewijzigd
 billable hours rate	tts	nl	Te factureren uren tarief
 billable rate	tts	nl	Factuurtarief
 billable rate changed	tts	nl	Factuurtarief is gewijzigd
+can make full changes	tts	nl	Kan volledige wijzigingen maken
 category changed	tts	nl	Categorie is gewijzigd
 check here to generate the state's id automatically or enter a particular id below.	tts	nl	Markeer hier om de status ID automatisch te genereren of vul hieronder een specifieke ID in.
 clear form	tts	nl	Formulier wissen
 close the invalid ticket.	tts	nl	Sluit de ongeldige melding
+close ticket	tts	nl	Ticket afsluiten
 closed	tts	nl	Gesloten
 completed	tts	nl	AFGESLOTEN
 configure the states	common	nl	Configureer de statussen
@@ -81,11 +83,13 @@ opened by	tts	nl	Geopend door
 original ticket details	tts	nl	Originele meldingdetails
 perform irregular transition into the following state	tts	nl	Voer een onregelmatige overgang in de volgende status door
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	nl	Vul s.v.p. het onderwerp van de melding in, anders kan de melding niet bewaard worden.
+prio	tts	nl	Prio
 priority	tts	nl	Prioriteit
 priority changed	tts	nl	Prioriteit  gewijzigd
 put the preexistent ticket into the state %1.	tts	nl	Geef de reeds bestaande melding de status %1.
 re-assigned	tts	nl	Opnieuw geopend
 re-opened	tts	nl	Heropend
+read tickets within group only	tts	nl	Alleen tickets binnen de groep lezen
 refresh every (seconds)	tts	nl	Ververs elke (seconden)
 reopen	tts	nl	HEROPENEN
 reopened	tts	nl	HEROPEND
