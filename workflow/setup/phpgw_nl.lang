@@ -397,6 +397,7 @@ release activity for this instance	workflow	nl	activiteit voor deze instantie vr
 release instance	workflow	nl	instantie vrijgeven
 reload filter	workflow	nl	Filter herladen
 remove active instances	workflow	nl	Actieve instanties verwijderen
+remove all instance for this process	workflow	nl	verwijder alle instanties voor dit proces
 remove all instances for this process	workflow	nl	verwijder alle instanties voor dit proces
 remove selected roles	workflow	nl	geselecteerde rollen verwijderen
 removing instances and workitems for aborted instances on all processes	workflow	nl	bezig met verwijderen van instanties en werkonderdelen voor afgebroken instanties op alle processen
@@ -408,7 +409,179 @@ restart activity	workflow	nl	activiteit herstarten
 resume this exception instance	workflow	nl	Hervat deze uitgezonderde instantie
 role	workflow	nl	Rol
 role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	nl	Rol #%1 in proces %s heeft een ander proces (%3) in koppeling met gebruiker #%4
+role %1 (#%2) is associated with a non-existent process (#%3)	workflow	nl	Rol %1 (#%2) is verbonden met een niet bestaand proces (#%3)
+role %1 is associated in a mapping with user #%2 with a non-existent process (%3)	workflow	nl	Rol %1 is verbonden in een koppeling aan gebruiker #%2 met een niet bestaand proces (%3)
+role %1 is not mapped	workflow	nl	Rol %1 is niet gekoppeld
+role added to activity	workflow	nl	Rol toegevoegd aan activiteit
+role added to process	workflow	nl	Rol toegevoegd aan proces
+role give abort right	common	nl	rol geeft recht tot afbreken
+role give exception right	common	nl	rol geeft recht tot uitzondering
+role give release right	common	nl	rol geeft recht tot vrijgave
+role in inexistent process	workflow	nl	Rol in nietbestaand proces
+role mapping in inexistent process	workflow	nl	Rol koppeling in niet bestaand proces
+role name	workflow	nl	Rol naam
+role not saved (maybe a name collision)	workflow	nl	Rol niet opgeslagen (mogelijk een naam conflict)
+role process inconcistency in mappings	workflow	nl	Rol proces inconsistentie in kopellingen
+role saved	workflow	nl	Rol opgeslagen
+roles	workflow	nl	Rollen
+roles assigned to this activity	workflow	nl	Rollen toegewezen aan deze activiteit
+roles deleted	workflow	nl	Rollen verwijderd
+routing	workflow	nl	Routeren
+routing:	workflow	nl	routeren:
+run	workflow	nl	uitvoeren
+run activity	workflow	nl	activiteit uitvoeren
+run instance	workflow	nl	instantie uitvoeren
+running	workflow	nl	wordt uitgevoerd
+running activities options	common	nl	Activiteiten opties worden uitgevoerd
+running activity	workflow	nl	Activiteit wordt uitgevoerd
+scan activities	workflow	nl	Activiteiten scannen
+scan agents	workflow	nl	Scan agenten
+scan instances	workflow	nl	Scan instanties
+scan processes	workflow	nl	Scan processen
+scan roles	workflow	nl	Scan rollen
+scan transitions	workflow	nl	Scan transities
+search instance filter in the bottom of instance lists	workflow	nl	Zoek instantie filter aan de onderzijde van de instantie lijsten
+search:	workflow	nl	zoeken:
+security check: cannot understand asked action	workflow	nl	Veiligheidscontrole: Begrijp de gevraagde actie niet
+see as well <strong>%instance_name%</strong>, <strong>%activity_name%</strong>, <strong>%process_name%</strong>,<strong>%process_version%</strong>, <strong>%instance_id%</strong>, <strong>%activity_id%</strong> and <strong>%process_id%</strong>	workflow	nl	zie ook <strong>%instance_name%</strong>, <strong>%activity_name%</strong>, <strong>%process_name%</strong>,<strong>%process_version%</strong>, <strong>%instance_id%</strong>, <strong>%activity_id%</strong> en <strong>%process_id%</strong>
+select a transition to remove	workflow	nl	Selecteer een transitie die verwijderd moet worden
+select source	workflow	nl	selecteer bron
+send after interactive activity is completed	workflow	nl	het verzenden na een interactieve activiteit is voltooid
+send all to	workflow	nl	Verzend naar alle
+send an email	workflow	nl	Verzend een emailbericht
+send instance	workflow	nl	verzend instantie
+send this instance to the next activity	workflow	nl	Verzend deze instantie naar de volgende activiteitq
+send transition	workflow	nl	verzend transitie
+send when the activity is ending	workflow	nl	verzenden wanneer de activiteit eindigt
+send when the activity is starting	workflow	nl	verzenden wanneer de activiteit begint
+send when wf_agent_mail_smtp['submit_send'] is posted	workflow	nl	verzenden wanneer wf_agent_mail_smtp['submit_send'] is geplaatst
+set next act	workflow	nl	Volgende activiteit instellen
+set next user	workflow	nl	Volgende gebruiker instellen
+set property	workflow	nl	Eigenschap instellen
+setnextuser directives can override it	workflow	nl	setNextUser parameters kunnen het overheersen
+setting next activity to an unexisting activity	workflow	nl	volgende activiteit instellen op een niet bestaande activiteit
+shared code	workflow	nl	Gedeelde code
+should we always give you the advanced search row on instances lists?	workflow	nl	Moeten we u altijd de geavanceerd zoeken rij tonen in instantie lijsten?
+show activity info zone	common	nl	activiteit informatie zone weergeven
+show activity title	common	nl	activiteit titel weergeven
+show code	workflow	nl	code weergeven
+show instance name	workflow	nl	Instanatienaam weergeven
+show instance owner	workflow	nl	Instantie eigenaar weergeven
+show multiple submit as select	common	nl	meervoudige invoer als keuzelijst weergeven
+show template	workflow	nl	sjabloon weergeven
+size of the font used on the graph 12 should be a good default value	admin	nl	de lettergrootte die in de grafiek gebruikt wordt, 12 is een geschikte standaard waarde
+smtp agent has detected some errors when sending email after completion of the activity	workflow	nl	SMTP agent heeft enkele fouten geconstateerd tijdens het verzenden van email nadat de activiteit voltooid was
+smtp agent has detected some errors when sending email at the beginning of the activity	workflow	nl	SMTP agent heeft enkele fouten geconstateerd tijdens het verzenden van email aan het begin van de activiteit
+smtp agent has detected some errors when sending email at the end of this activity	workflow	nl	SMTP agent heeft enkele fouten geconstateerd tijdens het verzenden van email nadat deze activiteit voltooid was
+smtp agent has detected some errors when sending email on demand whith this activity	workflow	nl	SMTP agent heeft enkele fouten geconstateerd tijdens het verzenden van email op verzoek van   deze activiteit
+something was wrong while creating the new major version	workflow	nl	er ging iets fout bij het aanmaken van de nieuwe boven versie
+something was wrong while creating the new minor version	workflow	nl	er ging is fout bij het aanmaken van de nieuwe onder versie
+source code file for activity %1 is not avaible	workflow	nl	broncode bestand voor activiteit %1 is niet beschikbaar
+source code for activity %1 is not avaible	workflow	nl	broncode voor activiteit %1 is niet beschikbaar
+source saved	workflow	nl	Bron opgeslagen
+special known values for local links address are <strong>userinstance</strong>, <strong>viewinstance</strong>, <strong>viewniceinstance</strong> and <strong>admininstance</strong>.	workflow	nl	Bijzondere bekende waarden voor lokale links adressen zijn <strong>userinstance</strong>, <strong>viewinstance</strong>, <strong>viewniceinstance</strong> en <strong>admininstance</strong>.
+split	workflow	nl	splitsen
+standalone	workflow	nl	alleenstaand
+start	workflow	nl	Begin
+start activities must be autorouted	workflow	nl	begin activiteiten moeten zelfrouterend zijn
+start activities must be interactive	workflow	nl	begin activiteiten moeten interactief zijn
+start activity	workflow	nl	Activiteit beginnen
+start process	workflow	nl	proces beginnen
+started	workflow	nl	Begonnen
+started:	workflow	nl	begonnen:
+starting page	workflow	nl	Beginpagina
+status	workflow	nl	Status
+status:	workflow	nl	status:
+stop	workflow	nl	stoppen
+subject:	workflow	nl	Onderwerp:
+switch	workflow	nl	afwisselen
+switch construct	workflow	nl	Constructie afwisselen
+template	workflow	nl	sjabloon
+test concistency	workflow	nl	Consistentie testen
+test consistency of datas in the database	workflow	nl	Consistentie van gegevens in de database testen
+test local installation	workflow	nl	Lokale installatie testen
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	nl	De /workflow map bestaat niet en kon niet worden aangemaakt. Vraag uw beheerder om de globale configuratie te controleren
+the activity was not completed	workflow	nl	De activiteit werd niet voltooid
+the default user will only be set if he is mapped to a role on the activity	workflow	nl	De standaard gebruiker wordt alleen ingesteld als hij is gekoppeld aan een rol van de activiteit
+the following items must be corrected to be able to activate this process	workflow	nl	De volgende items moeten gecorrigeerd worden voordat dit proces geactiveerd kan worden
+the instance title is shown on top of the form	admin	nl	de instantietitel wordt weergegeven aan de bovenzijde van het formulier
+the label you want	workflow	nl	het label dat u wilt
+the smtp configuration cannot be loaded by the mail_smtp workflow agent	workflow	nl	De SMTP configuratie kan niet door de mail_smtp_workflow agent geladen worden
+there are no activities available	workflow	nl	Er zijn geen activiteiten beschikbaar
+there are no config value defined	workflow	nl	Er is geen configuratie waarde gedefinieerd
+there are no instances available	workflow	nl	Er zijn geen instanties beschikbaar
+there are no mappings defined for this process	workflow	nl	Er zijn geen koppelingen voor dit proces gedefinieerd
+there are no process available	workflow	nl	Er zijn geen processen beschikbaar
+there are no processes	workflow	nl	Er zijn geen processen
+there are no processes available	workflow	nl	Er zijn geen processen beschikbaar
+there are no processes defined	workflow	nl	Er zijn geen processen gedefinieerd
+there are no processes with the current filter	workflow	nl	Er zijn geen processen binnen het huidige filter
+there are no properties available	workflow	nl	Er zijn geen eigenschappen beschikbaar
+there are no roles defined for this process	workflow	nl	Er zijn geen rollen voor dit proces gedefinieerd
+there are no transitions defined	workflow	nl	Er zijn geen transities gedefinieerd
+there are no user activites available	workflow	nl	Er zijn geen gebruiker activiteiten beschikbaar
+there are no workitems available	workflow	nl	Er zijn geen werkitems beschikbaar
+there are some undefined preferences associated with this form : %1	workflow	nl	er zijn enkele ongedefinieerde voorkeuren verbonden met dit formulier : %1
+there is an unknown user or group #%1 in role mappings	workflow	nl	Er is een onbekende gebruiker of groep #%1 in de rol koppelingen
+they were problems at the compilation of the source:	workflow	nl	Er waren problemen bij het compileren van de bron:
+this activity for this instance is actually avaible for you.	workflow	nl	Deze activiteit voor deze instantie is feitelijk voor u beschikbaar.
+this activity for this instance is actually only avaible for you.	workflow	nl	Deze activiteit voor deze instantie is feitelijk uitsluitend voor u beschikbaar.
+this activity for this instance is not specifically assigned to you.	workflow	nl	Deze activiteit voor deze instantie is niet speciaal aan u toegewezen.
+this agent gives the activity the possibility to send an smtp message (mail)	workflow	nl	Deze agent geeft de activiteit de mogelijkheid een emailbericht te verzenden
+this form will test your local workflow installation to detect potential issues	workflow	nl	Dit formulier zal uw lokale werkstroom installatie controleren op potentiele problemen
+this is the first screen shown when you click on the workflow application icon	workflow	nl	Dit is het eerste scherm dat getoond wordt als u de werkstroom toepassing opstart
+this process has a view activity. access in view mode is granted only for this view activty.	workflow	nl	Dit proces heeft een weergave activiteit. Toegang tot de weergave modus wordt alleen verleend voor deze weergave activiteit.
+this process has no end activity	workflow	nl	dit proces heeft geen eind activiteit
+this will automatically release the instance when leaving an activity without completing	admin	nl	dit zal automatisch de instantie vrijgeven zodra een activiteit wordt verlaten zonder 'm te voltooien
+this will display an activity footer when any activity is runned with workflow engine related informations	admin	nl	dit zal een activiteit voettekst tonen indien een activiteit met werkstroom gerelateerde informatie wordt uitgevoerd
+to	workflow	nl	Aan
+to:	workflow	nl	Aan:
+transition	workflow	nl	transitie
+transition mode	workflow	nl	transitie modus
+transition to %1	workflow	nl	transitie naar %1
+transition waiting for human interaction	workflow	nl	transitie wacht op menselijke interactie
+transitions	workflow	nl	transities
+transitions removed successfully	workflow	nl	Transities zijn verwijderd
+type	workflow	nl	type
+type:	workflow	nl	type:
+unknow fix instruction :%1	workflow	nl	onbekende fix instructie : %1
+unknown instruction from the workflow engine: %1	workflow	nl	onbekende instructie vanuit de werkstroom machine : %1
+unknown status	workflow	nl	onbekende status
+update	workflow	nl	bijwerken
+upload file	workflow	nl	Bestand verzenden
+use <a href="%1">emailadmin</a> to create mail profiles	workflow	nl	Gebruik <a href="%1">EmailAdmin</a> om emailprofielen aan te maken
+use automatic parsing	common	nl	gebruik automatische parsing
+use default	workflow	nl	Gebruik standaard
+use existing roles	workflow	nl	Gebruik bestaande rollen
+user	workflow	nl	Gebruiker
+user #%1 is associated with a non-existent role #%2	workflow	nl	Gebruiker $%1 is verbonden aan een niet bestaande rol $%2
+user activities	workflow	nl	Gebruikersactiviteiten
+user instances	workflow	nl	Gebruikersinstanties
+user instances form: columns	workflow	nl	Gebruikersinstanties formulier: kolommen
+user instances form: filters and actions	workflow	nl	Gebruikersinstanties formulier: filters en acties
+user is not authorized to delete aborted instances	workflow	nl	gebruiker is niet bevoegd om afgebroken instanties te verwijderen
+user is not authorized to delete instances	workflow	nl	gebruiker is niet bevoegd om instanties te verwijderen
+user processes	workflow	nl	Gebruikersprocessen
+user/group	workflow	nl	Gebruiker/groep
+user:	workflow	nl	gebruiker:
+users can act on activity before its execution with form and after by sending it to the next activity	workflow	nl	Gebruikers kunnen met een formulier reageren op een activiteit voordat deze wordt uitgevoerd en nadat ze hem naar de volgende activiteit hebben verzonden
+users/groups	workflow	nl	Gebruikers/groepen
+valid	workflow	nl	Geldig
+valid process	workflow	nl	Geldig proces
+valid:	workflow	nl	geldig:
+validity:	workflow	nl	Geldigheid:
+value	workflow	nl	Waarde
+version	workflow	nl	Versie
+view details	workflow	nl	details bekijken
+view this instance	workflow	nl	Deze instantie bekijken
+view workitem	workflow	nl	Werkitem bekijken
+warning this filter override all others filters	workflow	nl	waarschuwing: dit filter overschrijft alle andere filters
+warning: by using this button you will definitively remove all aborted instances and their history (workitems) for the selected process.	workflow	nl	waarschuwing: door deze knop te gebruiken verwijdert u alle afgebroken instanties EN hun historie (werkitems) van het geselecteerde proces.
+warning: by using this button you will definitively remove all instances and their history (workitems) for the selected process, whatever the state they are.	workflow	nl	waarschuwing: door deze knop te gebruiken verwijdert u alle instanties EN hun historie (werkitems) van het geselecteerde proces, ongeacht de staat waarin ze zich bevinden.
+we cannot run this activity, maybe this instance or this activity do not exists anymore.	workflow	nl	We konden deze activiteit niet uitvoeren, misschien bestaat deze instantie of deze activiteit niet meer.
 we were not able to build the message	workflow	nl	We konden het bericht niet samenstellen
+when in advanced mode, should we show you advanced actions by default (resume, exception, grab, etc.)?	workflow	nl	Indien in geavanceerde modus, moeten we u dan standaard de geavanceerde acties tonen (doorgaan, uitzonderen, oppakken, enz.)?
+when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	nl	indien meerdere verzend opties beschikbaar zijn tonen we een keuzelijst met slechts één verzendknop in plaats van meerdere knoppen
 when to send the message:	workflow	nl	Wanneer het bericht verzenden:
 workflow	common	nl	Werkstroom
 workflow configuration	admin	nl	Werkstroom configuratie
