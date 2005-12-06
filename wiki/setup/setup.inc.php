@@ -31,10 +31,9 @@
 	$setup_info['wiki']['tables'][] = 'egw_wiki_remote_pages';
 	
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['wiki']['hooks'] = array(
-		'admin',
-		'sidebox_menu',
-	);
+	$setup_info['wiki']['hooks'][] = 'admin';
+	$setup_info['wiki']['hooks'][] = 'sidebox_menu';
+	$setup_info['wiki']['hooks']['search_link'] = 'wiki.bowiki.search_link';
 
 	/* Dependencies for this app to work */
 	$setup_info['wiki']['depends'][] = array

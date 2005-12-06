@@ -19,6 +19,7 @@
 	{
 		var $public_functions = array(
 			'edit' => True,
+			'view' => True,	// only redirects to /wiki/index.php for the moment
 		);
 
 		function uiwiki()
@@ -189,5 +190,17 @@
 				'version'  => $content['version'],
 				'is_html'  => $content['is_html'],
 			));
+		}
+		
+		/**
+		 * Show a wiki page
+		 *
+		 * redirects to /wiki/index.php for the moment
+		 */
+		function view()
+		{
+			$params = $_GET;
+			unset($params['menuaction']);
+			$GLOBALS['egw']->redirect_link('/wiki/index.php',$params);
 		}
 	}

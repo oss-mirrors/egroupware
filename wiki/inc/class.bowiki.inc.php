@@ -278,4 +278,58 @@
 			}
 			return $GLOBALS['egw']->link('/wiki/index.php',$args);
 		}
+		
+		/**
+		 * Hook called by link-class to include infolog in the appregistry of the linkage
+		 *
+		 * @param array/string $location location and other parameters (not used)
+		 * @return array with method-names
+		 */
+		function search_link($location)
+		{
+			return array(
+				'query'      => 'wiki.bowiki.link_query',
+				'title'      => 'wiki.bowiki.link_title',
+				'view'       => array(
+					'menuaction' => 'wiki.uiwiki.view',
+				),
+				'view_id'    => 'page',
+			);
+		}
+
+		/**
+		 * get title of a wiki-page identified by $page
+		 * 
+		 * Is called as hook to participate in the linking
+		 *
+		 * @param string/object $page string with page-name or sowikipage object
+		 * @return string the title
+		 */
+		function link_title( $page )
+		{
+			if (!is_object($page))
+			{
+				$page =& $this->page( $page );
+				$page->read();
+			}
+			return $page->exists ? strip_tags($page->title) : false;
+		}
+
+		/**
+		 * query infolog for entries matching $pattern
+		 *
+		 * Is called as hook to participate in the linking
+		 *
+		 * @param string $pattern pattern to search
+		 * @return array with info_id - title pairs of the matching entries
+		 */
+		function link_query( $pattern )
+		{
+			$content = array();
+			foreach($this->find($pattern) as $page)
+			{
+				$content[$page['name']] = strip_tags($page['title']);
+			}
+			return $content;
+		}		
 	}
