@@ -1,0 +1,62 @@
+access mode	mydms	nl	toegangsmodus
+access rights	mydms	nl	toegangsrechten
+access_mode_all	mydms	nl	Alle
+access_mode_none	mydms	nl	Geen toegang
+access_mode_read	mydms	nl	Lezen
+access_mode_readwrite	mydms	nl	Lezen+Schrijven
+acl get inherited	mydms	nl	acl wordt geërfd
+add acl	mydms	nl	acl toevoegen
+add document	mydms	nl	document toevoegen
+add notification	mydms	nl	notificatie toevoegen
+add subfolder	mydms	nl	submap toevoegen
+admin-tools	mydms	nl	beheerders hulpmiddelen
+all versions	mydms	nl	alle versies
+comment	mydms	nl	Kommentaar
+comment for current version	mydms	nl	Kommentaar bij de huidige versie
+copy acl	mydms	nl	kopieer acl
+copy documents	mydms	nl	kopieer documenten
+copy folder	mydms	nl	kopieer map
+copy options	mydms	nl	kopieer opties
+copy subfolders	mydms	nl	kopieer submap
+create empty acl	mydms	nl	maak een lege acl aan
+creation date	mydms	nl	aanmaakdatum
+current acl	mydms	nl	huidige acl
+current version	mydms	nl	huidige versie
+default access	mydms	nl	standaard toegang
+delete folder	mydms	nl	map verwijderen
+delete this notification	mydms	nl	deze notificatie verwijderen
+do you really want to delete this acl?	mydms	nl	Wilt u deze acl werkelijk verwijderen?
+do you really want to delete this document?	mydms	nl	Wilt u dit document werkelijk verwijderen?
+do you really want to delete this version of the document?	mydms	nl	wilt u deze versie van dit document werkelijk verwijderen?
+does not expire	mydms	nl	verloopt nooit
+download	mydms	nl	ophalen
+edit folder	mydms	nl	map bewerken
+expires	mydms	nl	verloopt
+expires after	mydms	nl	verloopt na
+file size	mydms	nl	bestandsgrootte
+filename	mydms	nl	bestandsnaam
+folder	mydms	nl	map
+general information	mydms	nl	algemene informatie
+information about last update	mydms	nl	informatie over de laatste update
+informations	mydms	nl	Informatie
+inherit acl again	mydms	nl	acl opnieuw erven
+last update	mydms	nl	laatste update
+linked documents	mydms	nl	gekoppelde documenten
+lock status	mydms	nl	status vastzetten
+mime type	mydms	nl	Mime Type
+move document	mydms	nl	document verplaatsen
+move folder	mydms	nl	map verplaatsen
+mydms	common	nl	myDMS
+notifications	mydms	nl	notificaties
+permission	mydms	nl	toestemming
+select folder	mydms	nl	map selecteren
+select target folder	mydms	nl	doel map selecteren
+target folder	mydms	nl	doel map
+this document gets locked by you!	mydms	nl	dit document wordt door u vastgezet!
+this document gets unlocked by you.	mydms	nl	dit document wordt door u vrijgegeven.
+this document is currently not locked.	mydms	nl	dit document is op dit moment niet vastgezet.
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	nl	dit document is vastgezet door <a href="mailto:%1">%2</a>.
+update document	mydms	nl	document bijwerken
+upload date	mydms	nl	verzenddatum
+uploaded by	mydms	nl	verzonden door
+view online	mydms	nl	online bekijken
