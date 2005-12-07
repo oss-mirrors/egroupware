@@ -157,7 +157,7 @@ default user	workflow	nl	Standaard gebruiker
 delete selected	workflow	nl	Verwijder geselecteerde
 delete transition	workflow	nl	verwijder transitie
 deletion successful	workflow	nl	Verwijdering succesvol
-delition successful	workflow	nl	Verwijderng succesvol
+delition successful	workflow	nl	Verwijdering succesvol
 description	workflow	nl	Beschrijving
 display please wait message	common	nl	toon het even geduld bericht
 do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	nl	Wilt u de activiteitsstatus op instanties lijsten weergeven? Meestal is dit 'lopend' maar indien u nietzelfrouterende transities gebruik zult u enkele voltooide activiteiten hebben.

@@ -15,10 +15,12 @@ billable hours changed	tts	no	Fakturerbare timer endret
 billable hours rate	tts	no	Fakturerbar timepris
 billable rate	tts	no	Fakturerbar pris
 billable rate changed	tts	no	Fakturerbar pris endret
+can make full changes	tts	no	Kan utføre alle endringer
 category changed	tts	no	Kategori endret
 check here to generate the state's id automatically or enter a particular id below.	tts	no	Huk av her for å lage tilstands-ID automatisk, eller skriv inn ønsker ID under.
 clear form	tts	no	Tøm formular
 close the invalid ticket.	tts	no	Lukk den ugyldig saken.
+close ticket	tts	no	Lukk saken
 closed	tts	no	Lukket
 completed	tts	no	FULLFØRT
 configure the states	common	no	Konfigurer tilstander
@@ -81,11 +83,13 @@ opened by	tts	no	Åpnet av
 original ticket details	tts	no	Orginale saksdetaljer
 perform irregular transition into the following state	tts	no	Utfør uvanlig overgang til følgende tilstand
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	no	Du må registrere en overskrift på meldingen ellers vil den ikke lagres.
+prio	tts	no	Prio
 priority	tts	no	Prioritet
 priority changed	tts	no	Prioritet endret
 put the preexistent ticket into the state %1.	tts	no	Sett den eksisterende saken til tilstand %1.
 re-assigned	tts	no	Gjen-tildelt
 re-opened	tts	no	Gjenåpnet
+read tickets within group only	tts	no	Bare lese saker innen gruppen
 refresh every (seconds)	tts	no	Oppdater hver (sekunder)
 reopen	tts	no	GJENÅPNE
 reopened	tts	no	GJENÅPNET
