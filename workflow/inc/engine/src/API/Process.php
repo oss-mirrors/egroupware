@@ -208,7 +208,7 @@ If no default value is given we assume it's a false.
     {
       $global_array =& galaxia_get_config_values($global_default_array);
     }
-    $result =& array_merge($local_array,$global_array);
+    $result = $local_array + $global_array;
     return $result;
   }
 
