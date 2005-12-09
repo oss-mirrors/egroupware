@@ -975,19 +975,31 @@ class ProcessManager extends BaseManager {
   function _create_directory_structure($name)
   {
     // Create in processes a directory with this name
-    mkdir(GALAXIA_PROCESSES.SEP."$name",0770);
-    mkdir(GALAXIA_PROCESSES.SEP."$name".SEP."graph",0770);
-    mkdir(GALAXIA_PROCESSES.SEP."$name".SEP."code",0770);
-    mkdir(GALAXIA_PROCESSES.SEP."$name".SEP."compiled",0770);
-    mkdir(GALAXIA_PROCESSES.SEP."$name".SEP."code".SEP."activities",0770);
-    mkdir(GALAXIA_PROCESSES.SEP."$name".SEP."code".SEP."templates",0770);
+    $path = GALAXIA_PROCESSES.SEP.$name;
+    if (!file_exists($path)) mkdir($path,0770);
+    $path = GALAXIA_PROCESSES.SEP.$name.SEP."graph";
+    if (!file_exists($path)) mkdir($path,0770); 
+    $path = GALAXIA_PROCESSES.SEP.$name.SEP."code";
+    if (!file_exists($path)) mkdir($path,0770);
+    $path = GALAXIA_PROCESSES.SEP.$name.SEP."compiled";
+    if (!file_exists($path)) mkdir($path,0770);
+    $path = GALAXIA_PROCESSES.SEP.$name.SEP."code".SEP."activities";
+    if (!file_exists($path)) mkdir($path,0770);
+    $path = GALAXIA_PROCESSES.SEP.$name.SEP."code".SEP."templates";
+    if (!file_exists($path)) mkdir($path,0770);
     if (GALAXIA_TEMPLATES) {
-      mkdir(GALAXIA_TEMPLATES.SEP."$name",0770);
+      $path = GALAXIA_TEMPLATES.SEP.$name;
+      if (!file_exists($path)) mkdir($path,0770);
     }
     // Create shared file
-    $fp = fopen(GALAXIA_PROCESSES.SEP."$name".SEP."code".SEP."shared.php","w");
-    fwrite($fp,'<'.'?'.'php'."\n".'?'.'>');
-    fclose($fp);
+    $file = GALAXIA_PROCESSES.SEP.$name.SEP."code".SEP."shared.php";
+    if (!file_exists($path))
+    {
+      $fp = fopen(GALAXIA_PROCESSES.SEP.$name.SEP."code".SEP."shared.php","w");
+      if (!fp) return false;
+      fwrite($fp,'<'.'?'.'php'."\n".'?'.'>');
+      fclose($fp);
+    }
   }
    
   /*!
