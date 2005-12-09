@@ -98,9 +98,16 @@ class Base extends Observable {
 		$this->convert_query($query);
 		//clean the parameters
 		$clean_values = Array();
-		foreach($values as $value)
+		if (!($values===null))
 		{
-			$clean_values[] = $this->security_cleanup($value, !($bulk));
+			if (!(is_array($values)))
+			{
+				$values= array($values);
+			}
+			foreach($values as $value)
+			{
+				$clean_values[] = $this->security_cleanup($value, !($bulk));
+			}
 		}
 		//clean sort order as well and add it to the query
 		if (!(empty($sort)))
@@ -136,9 +143,16 @@ class Base extends Observable {
 	function getOne($query, $values = null, $reporterrors = true) {
 		$this->convert_query($query);
 		$clean_values = Array();
-		foreach($values as $value)
+		if (!($values===null))
 		{
-			$clean_values[] = $this->security_cleanup($value);
+			if (!(is_array($values)))
+			{
+				$values= array($values);
+			}
+			foreach($values as $value)
+			{
+				$clean_values[] = $this->security_cleanup($value);
+			}
 		}
 		$result = $this->db->SelectLimit($query, 1, 0, $clean_values);
 		if (empty($result))
