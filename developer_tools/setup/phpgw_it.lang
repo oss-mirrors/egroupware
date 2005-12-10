@@ -1,9 +1,8 @@
-!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	it	E' necessario [Salva]re ogni cambiamento fatto nei campi qui sopra, prima di passare alla prossima fase
 add	developer_tools	it	aggiungi
 add change	developer_tools	it	Aggiungi modifica
 add more	developer_tools	it	Aggiungi altro
 add new phrase	developer_tools	it	Aggiungi una nuova frase
-add phrase	developer_tools	it	Aggiunge frase
+add phrase	developer_tools	it	Aggiungi frase
 allows you to add a single phrase	developer_tools	it	Consente di inserire una singola frase
 application	developer_tools	it	Applicazione
 back	developer_tools	it	Indietro
@@ -14,7 +13,6 @@ changelogs	developer_tools	it	Changelog
 clears the internal buffer, all changes made sofar are lost	developer_tools	it	Pulisce il buffer interno, tutti i cambiamenti saranno persi
 create new language file	developer_tools	it	Crea nuovo File Linguaggio
 create sgml file	developer_tools	it	Crea file SGML
-developer tools	common	it	Strumenti per gli sviluppatori
 developer tools - preferences	developer_tools	it	Strumenti Sviluppatori - preferenze
 developer_tools	common	it	Strumenti di Traduzione
 diary	developer_tools	it	Diario
@@ -34,12 +32,12 @@ message_id in english	developer_tools	it	Message_id in Inglese
 no file	developer_tools	it	Nessun File
 ok	developer_tools	it	ok
 original	developer_tools	it	Originale
-phrase in english	developer_tools	it	Frase in Inglese
 phrase in english (or empty if identical)	developer_tools	it	Frase in INGLESE (o vuota se identica)
 preferences	developer_tools	it	Preferenze
 preferences have been updated	developer_tools	it	Le Preferenze sono state aggiornate
 project	developer_tools	it	Progetto
 remove	developer_tools	it	Rimuovi
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	it	Rimosse %1 frase/i dal linguaggio destinazione, dato che non è/sono presenti nel linguaggio origine!
 returns to the application list, not saved changes get lost !!!	developer_tools	it	Ritorna alla lista delle applicazioni, tutti i cambiamenti non salvati saranno perduti !!!
 revert	developer_tools	it	Ripristina
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	it	Salva le traduzioni aggiunte/modificate in un buffer interno, per essere usate nei passaggi successivi

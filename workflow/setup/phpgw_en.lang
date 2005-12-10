@@ -353,6 +353,7 @@ owner:	workflow	en	Owner:
 ownership give abort right	common	en	ownership give abort right
 ownership give exception right	common	en	ownership give exception right
 ownership give release right	common	en	ownership give release right
+please wait, task in progress ...	workflow	en	Please wait, task in progress ...
 post activity %1 code is not avaible	workflow	en	post activity %1 code is not avaible
 post shared code is not avaible	workflow	en	post shared code is not avaible
 post-agent %1 code is not avaible	workflow	en	post-agent %1 code is not avaible
@@ -584,6 +585,7 @@ when multiple submit options are avaible we draw a select box with only one subm
 when to send the message:	workflow	en	When to send the Message:
 workflow	common	en	Work-Flow
 workflow configuration	admin	en	Workflow configuration
+workflow navigation	workflow	en	Workflow navigation
 workflow preferences	workflow	en	Workflow Preferences
 workflow site configuration	workflow	en	Workflow Site Configuration
 workflow.ui_useractivities	workflow	en	workflow.ui_useractivities

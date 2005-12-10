@@ -306,7 +306,7 @@ monitor work items	workflow	es-es	Monitorizar elementos de trabajo
 monitor workitems	workflow	es-es	Monitorizar elementos de trabajo
 monitoring	workflow	es-es	monitorizando
 monitors	workflow	es-es	Monitores
-more options?	workflow	es-es	más opciones?
+more options?	workflow	es-es	¿Más opciones?
 my activities	workflow	es-es	Mis actividades
 my instances	workflow	es-es	Mis instancias
 my processes	workflow	es-es	Mis procesos
@@ -352,6 +352,7 @@ owner:	workflow	es-es	Propietario:
 ownership give abort right	common	es-es	Ser propietario da derecho de abortar
 ownership give exception right	common	es-es	Ser propietario da derecho para excepciones
 ownership give release right	common	es-es	Ser propietario da derecho para liberar
+please wait, task in progress ...	workflow	es-es	Por favor, espere. Tarea en progreso...
 post activity %1 code is not avaible	workflow	es-es	el código de la actividad posterior %1 no está disponible
 post shared code is not avaible	workflow	es-es	el código compartido posterior no está disponible
 post-agent %1 code is not avaible	workflow	es-es	el código de agente posterior %1 no está disponible
@@ -583,6 +584,7 @@ when multiple submit options are avaible we draw a select box with only one subm
 when to send the message:	workflow	es-es	Cuándo enviar el mensaje:
 workflow	common	es-es	Flujos de trabajo
 workflow configuration	admin	es-es	Configuración de flujos de trabajo
+workflow navigation	workflow	es-es	Navegación por los flujos de trabajo
 workflow preferences	workflow	es-es	Preferencias del flujos de trabajo
 workflow site configuration	workflow	es-es	Configuración del sitio de flujos de trabajo
 workitem information	workflow	es-es	Información del elemento de trabajo
