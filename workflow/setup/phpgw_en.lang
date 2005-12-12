@@ -142,7 +142,7 @@ complete	workflow	en	Complete
 complete cleanup of aborted instances done	workflow	en	complete cleanup of aborted instances done
 complete cleanup of all instances done	workflow	en	complete cleanup of all instances done
 completed	workflow	en	completed
-config values	workflow	en	Config values
+config values	common	en	Config values
 confirm delete	workflow	en	Confirm Delete
 consult %1 to get the default values:	workflow	en	Consult %1 to get the default values:
 couldn't add transition	workflow	en	Couldn't add transition
@@ -287,10 +287,10 @@ list of transitions	workflow	en	List of transitions
 list of workitems	workflow	en	List of workitems
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	en	Mail automatically sent by Mail SMTP Agent for eGroupware's Workflow
 mail smtp agent	workflow	en	Mail Smtp Agent
-mail smtp debug	workflow	en	Mail smtp debug
-mail smtp local link prefix	workflow	en	Mail smtp local link prefix
-mail smtp profile	workflow	en	Mail smtp profile
-mail smtp signature	workflow	en	Mail smtp signature
+mail smtp debug	common	en	Mail smtp debug
+mail smtp local link prefix	common	en	Mail smtp local link prefix
+mail smtp profile	common	en	Mail smtp profile
+mail smtp signature	common	en	Mail smtp signature
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	en	Mails can be sent at the begining or at the end of the activity, For interactive activities only it can be sent after completion.
 manual	workflow	en	Manual
 map	workflow	en	map
@@ -465,8 +465,8 @@ should we always give you the advanced search row on instances lists?	workflow	e
 show activity info zone	common	en	show activity info zone
 show activity title	common	en	show activity title
 show code	workflow	en	show code
-show instance name	workflow	en	Show instance name
-show instance owner	workflow	en	Show instance owner
+show instance name	common	en	Show instance name
+show instance owner	common	en	Show instance owner
 show multiple submit as select	common	en	show multiple submit as select
 show template	workflow	en	show template
 size of the font used on the graph 12 should be a good default value	admin	en	size of the font used on the graph 12 should be a good default value
