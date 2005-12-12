@@ -330,7 +330,7 @@
 			}
 			$please_wait=lang('Please wait, task in progress ...');
 			$GLOBALS['egw_info']['flags']['java_script'] .= '<script type="text/javascript">
-				document.write(\'<DIV id="loading"><BR><BR>'.$please_wait.'</DIV>\');
+				document.write(\'<DIV id="loading"><BR><BR>\'+"'.$please_wait.'" +\'</DIV>\');
 				function hide_loading()
 				{
 					document.getElementById("loading").style.display="none";
