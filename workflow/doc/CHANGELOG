@@ -6,6 +6,7 @@ regis_glc is Regis Leroy
 
 [1.2.01.001]
 	* fix some warnings
+	* translations fixes, 'please wait' message fix by omgs
 	
 [1.2.01.000] Release candidate 4
 	* bugfix: support of groups mapping was broken with phpgwapi 1.2 (groups now have negative ids in egroupware)
