@@ -95,7 +95,6 @@ class Base extends Observable {
 	*/
 	function query($query, $values = null, $numrows = -1, $offset = -1, $reporterrors = true, $sort='', $bulk=false)
 	{
-		$this->convert_query($query);
 		//clean the parameters
 		$clean_values = Array();
 		if (!($values===null))
@@ -115,6 +114,8 @@ class Base extends Observable {
 			$sort = $this->security_cleanup($sort, true, true);
 			$query .= " order by $sort";
 		}
+		//conversion must be done after oder by is set
+		$this->convert_query($query);
 		// Galaxia needs to be call ADOdb in associative mode
 		$this->db->SetFetchMode(ADODB_FETCH_ASSOC);
 		if ($numrows == -1 && $offset == -1)
