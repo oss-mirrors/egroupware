@@ -141,7 +141,7 @@ complete	workflow	pt-br	Completada
 complete cleanup of aborted instances done	workflow	pt-br	remoção total de instâncias abortadas realizada
 complete cleanup of all instances done	workflow	pt-br	remoção total de todas as instâncias realizada
 completed	workflow	pt-br	completada
-config values	workflow	pt-br	Valores de configuração
+config values	common	pt-br	Valores de configuração
 confirm delete	workflow	pt-br	Confirma a Deleção
 consult %1 to get the default values:	workflow	pt-br	Consulte %1 para obter os valores padrão:
 couldn't add transition	workflow	pt-br	Impossível adicionar transição
@@ -286,10 +286,10 @@ list of transitions	workflow	pt-br	Lista de transições
 list of workitems	workflow	pt-br	Lista de workitems
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	pt-br	Email enviado automaticamente, pelo Agente de Correio SMTP, para o Workflow do eGroupware
 mail smtp agent	workflow	pt-br	Agente de Correio Smtp
-mail smtp debug	workflow	pt-br	Depurar correio smtp
-mail smtp local link prefix	workflow	pt-br	Prefixo de link local do correio smtp
-mail smtp profile	workflow	pt-br	Profile do correio smtp
-mail smtp signature	workflow	pt-br	Assinatura do correio smtp
+mail smtp debug	common	pt-br	Depurar correio smtp
+mail smtp local link prefix	common	pt-br	Prefixo de link local do correio smtp
+mail smtp profile	common	pt-br	Profile do correio smtp
+mail smtp signature	common	pt-br	Assinatura do correio smtp
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	pt-br	Emails podem ser enviados no inícil ou no final de uma atividade. Para atividades interativas, podem ser enviados somente depois de completadas.
 manual	workflow	pt-br	Manual
 map	workflow	pt-br	mapear
@@ -462,8 +462,8 @@ should we always give you the advanced search row on instances lists?	workflow	p
 show activity info zone	common	pt-br	mostrar zona de informações das atividades
 show activity title	common	pt-br	mostrar título das atividades
 show code	workflow	pt-br	mostrar código
-show instance name	workflow	pt-br	Mostrar nome da instância
-show instance owner	workflow	pt-br	Mostrar proprietário da instância
+show instance name	common	pt-br	Mostrar nome da instância
+show instance owner	common	pt-br	Mostrar proprietário da instância
 show multiple submit as select	common	pt-br	mostrar múltiplos submit como seleção
 show template	workflow	pt-br	mostrar template
 size of the font used on the graph 12 should be a good default value	admin	pt-br	tamanho da fonte usada nos gráficos. Recomenda-se 12 como valor padrão

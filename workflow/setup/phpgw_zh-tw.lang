@@ -141,7 +141,7 @@ complete	workflow	zh-tw	完成
 complete cleanup of aborted instances done	workflow	zh-tw	完整清除中止的實例完成
 complete cleanup of all instances done	workflow	zh-tw	完整清除所有實例完成
 completed	workflow	zh-tw	完成
-config values	workflow	zh-tw	設定值
+config values	common	zh-tw	設定值
 confirm delete	workflow	zh-tw	確認刪除
 consult %1 to get the default values:	workflow	zh-tw	詢問 %1 來取得預設值：
 couldn't add transition	workflow	zh-tw	無法新增異動
@@ -286,10 +286,10 @@ list of transitions	workflow	zh-tw	異動清單
 list of workitems	workflow	zh-tw	工作項目清單
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	zh-tw	郵件由 eGroupware 工作流程的郵件寄送程式自動送出
 mail smtp agent	workflow	zh-tw	SMTP郵件寄送代理人
-mail smtp debug	workflow	zh-tw	SMTP郵件寄送偵錯
-mail smtp local link prefix	workflow	zh-tw	SMTP郵件本地端連結前置字元（smtp）
-mail smtp profile	workflow	zh-tw	SMTP郵件資料
-mail smtp signature	workflow	zh-tw	SMTP郵件簽名
+mail smtp debug	common	zh-tw	SMTP郵件寄送偵錯
+mail smtp local link prefix	common	zh-tw	SMTP郵件本地端連結前置字元（smtp）
+mail smtp profile	common	zh-tw	SMTP郵件資料
+mail smtp signature	common	zh-tw	SMTP郵件簽名
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	zh-tw	郵件可以在活動開始或結束時寄出，互動式的活動只能夠在完成後寄出
 manual	workflow	zh-tw	手冊
 map	workflow	zh-tw	對應
@@ -462,8 +462,8 @@ should we always give you the advanced search row on instances lists?	workflow	z
 show activity info zone	common	zh-tw	顯示活動資訊區域
 show activity title	common	zh-tw	顯示活動標題
 show code	workflow	zh-tw	顯示程式碼
-show instance name	workflow	zh-tw	顯示實體名稱
-show instance owner	workflow	zh-tw	顯示實體擁有者
+show instance name	common	zh-tw	顯示實體名稱
+show instance owner	common	zh-tw	顯示實體擁有者
 show multiple submit as select	common	zh-tw	顯示選取的多個項目
 show template	workflow	zh-tw	顯示樣板
 size of the font used on the graph 12 should be a good default value	admin	zh-tw	在圖形中使用的文字大小，預設值 12

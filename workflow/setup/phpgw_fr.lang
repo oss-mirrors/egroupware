@@ -321,6 +321,7 @@ owner:	workflow	fr	Propriétaire:
 ownership give abort right	common	fr	la propriété donne le droit d'interrompre
 ownership give exception right	common	fr	la propriété donne le droit d'exception
 ownership give release right	common	fr	la propriété donne le droit de libération
+please wait, task in progress ...	workflow	fr	Patientez s'il vous plaît, tâche en cours
 post activity %1 code is not avaible	workflow	fr	le code suivant l'activité %1 n'est pas disponible
 post shared code is not avaible	workflow	fr	le code suivant le code partagé n'est pas disponible
 post-agent %1 code is not avaible	workflow	fr	le code suivant l'agent %1 n'est pas disponible
@@ -363,7 +364,7 @@ release activity for this instance	workflow	fr	libérer l'activité pour cette ins
 release instance	workflow	fr	libérer l'instance
 reload filter	workflow	fr	Relancer le filtre
 remove active instances	workflow	fr	Enlever les instances actives
-remove all instance for this process	workflow	fr	Suppression de toutes les instances pour ce processus
+remove all instances for this process	workflow	fr	Supprimer toutes les instances pour ce processus
 remove selected roles	workflow	fr	supprimer les rôles sélectionés
 removing instances and workitems for aborted instances on all processes	workflow	fr	Suppression des instances et des éléments d'historique pour les instances interrompues sur tous les processus
 removing instances and workitems for aborted instances on process #%1	workflow	fr	Suppression des instances et des éléments d'historique pour les instances interrompues sur tous le processus numéro %1
@@ -372,6 +373,7 @@ replyto:	workflow	fr	Répondre à:
 restart	workflow	fr	redémarrer
 restart activity	workflow	fr	redémarrer l'activité
 resume this exception instance	workflow	fr	Reprise de cette instance en exception
+role	workflow	fr	Rôle
 role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	fr	Le rôle #%1 dans le processus %2 possède un processus différent (%3) dans le mapping avec l'utilisateur #%4
 role %1 (#%2) is associated with a non-existent process (#%3)	workflow	fr	Le rôle %1 (#%2) est associé avec un processus inexistant (#%3)
 role %1 is associated in a mapping with user #%2 with a non-existent process (%3)	workflow	fr	Le rôle %1 est associé dans un mapping avec l'utilisateur #%2 avec un processus inexistant (%3)
@@ -523,6 +525,7 @@ when multiple submit options are avaible we draw a select box with only one subm
 when to send the message:	workflow	fr	Quand envoyer le message
 workflow	common	fr	Workflow
 workflow configuration	admin	fr	Configuration du workflow
+workflow navigation	workflow	fr	Navigation dans le workflow
 workflow preferences	workflow	fr	Préférences du Workflow
 workflow site configuration	workflow	fr	Configuration du site pour le workflow
 workitem information	workflow	fr	Information sur l'élément de travail

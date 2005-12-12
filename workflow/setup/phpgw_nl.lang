@@ -142,7 +142,7 @@ complete	workflow	nl	Voltooid
 complete cleanup of aborted instances done	workflow	nl	volledige opruiming van afgebroken instanties voltooid
 complete cleanup of all instances done	workflow	nl	volledige opruiming van alle instanties voltooid
 completed	workflow	nl	voltooid
-config values	workflow	nl	Configuratie waardes
+config values	common	nl	Configuratie waardes
 confirm delete	workflow	nl	Bevest verwijdering
 consult %1 to get the default values:	workflow	nl	Raadpleeg %1 voor de standaard waardes:
 couldn't add transition	workflow	nl	Kon transitie niet toevoegen
@@ -287,10 +287,10 @@ list of transitions	workflow	nl	Lijst van transities
 list of workitems	workflow	nl	Lijst van werkonderdelen
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	nl	Mail automatisch verzonden door de Mail SMTP Agent voor eGroupWare's werkstroom
 mail smtp agent	workflow	nl	Mail SMTP Agent
-mail smtp debug	workflow	nl	Mail SMTP debug
-mail smtp local link prefix	workflow	nl	Mail SMTP lokale link prefix
-mail smtp profile	workflow	nl	Mail SMTP profiel
-mail smtp signature	workflow	nl	Mail SMTP ondertekening
+mail smtp debug	common	nl	Mail SMTP debug
+mail smtp local link prefix	common	nl	Mail SMTP lokale link prefix
+mail smtp profile	common	nl	Mail SMTP profiel
+mail smtp signature	common	nl	Mail SMTP ondertekening
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	nl	Mails kunnen worden verzonden aan het begin of aan het einde van een activiteit. Voor interactieve instanties kan er alleen aan het eind verzonden worden.
 manual	workflow	nl	Handboek
 map	workflow	nl	map
@@ -465,8 +465,8 @@ should we always give you the advanced search row on instances lists?	workflow	n
 show activity info zone	common	nl	activiteit informatie zone weergeven
 show activity title	common	nl	activiteit titel weergeven
 show code	workflow	nl	code weergeven
-show instance name	workflow	nl	Instanatienaam weergeven
-show instance owner	workflow	nl	Instantie eigenaar weergeven
+show instance name	common	nl	Instanatienaam weergeven
+show instance owner	common	nl	Instantie eigenaar weergeven
 show multiple submit as select	common	nl	meervoudige invoer als keuzelijst weergeven
 show template	workflow	nl	sjabloon weergeven
 size of the font used on the graph 12 should be a good default value	admin	nl	de lettergrootte die in de grafiek gebruikt wordt, 12 is een geschikte standaard waarde

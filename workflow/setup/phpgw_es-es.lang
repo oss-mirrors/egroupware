@@ -142,7 +142,7 @@ complete	workflow	es-es	Completo
 complete cleanup of aborted instances done	workflow	es-es	se terminó el borrado completo de instancias abortadas
 complete cleanup of all instances done	workflow	es-es	se terminó el borrado completo de todas las instancias
 completed	workflow	es-es	completado
-config values	workflow	es-es	Valores de configuración
+config values	common	es-es	Valores de configuración
 confirm delete	workflow	es-es	Confirmar borrar
 consult %1 to get the default values:	workflow	es-es	Consultar %1 para obtener los valores predeterminados:
 couldn't add transition	workflow	es-es	No se pudo añadir la transición
@@ -286,10 +286,10 @@ list of transitions	workflow	es-es	Lista de transiciones
 list of workitems	workflow	es-es	Lista de elementos de trabajo
 mail automatically sent by mail smtp agent for egroupware's workflow	workflow	es-es	Correo enviado automáticamente por el agente SMTP para Flujos de trabajo de eGroupware
 mail smtp agent	workflow	es-es	Agente de correo SMTP
-mail smtp debug	workflow	es-es	Depurar correo smtp
-mail smtp local link prefix	workflow	es-es	Prefijo del enlace local de correo smtp
-mail smtp profile	workflow	es-es	Perfil de correo smtp
-mail smtp signature	workflow	es-es	Firma de correo smtp
+mail smtp debug	common	es-es	Depurar correo smtp
+mail smtp local link prefix	common	es-es	Prefijo del enlace local de correo smtp
+mail smtp profile	common	es-es	Perfil de correo smtp
+mail smtp signature	common	es-es	Firma de correo smtp
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	es-es	Los correos se pueden enviar al principio o al final de la actividad. Para actividades interactivas, sólo se puede enviar después de completarse.
 manual	workflow	es-es	Manual
 map	workflow	es-es	mapa
@@ -464,8 +464,8 @@ should we always give you the advanced search row on instances lists?	workflow	e
 show activity info zone	common	es-es	Mostrar zona de información de actividad
 show activity title	common	es-es	Mostrar el título de la actividad
 show code	workflow	es-es	mostrar código
-show instance name	workflow	es-es	Mostrar nombre de la instancia
-show instance owner	workflow	es-es	Mostrar propietario de la instancia
+show instance name	common	es-es	Mostrar nombre de la instancia
+show instance owner	common	es-es	Mostrar propietario de la instancia
 show multiple submit as select	common	es-es	Mostrar multiples submit como selección
 show template	workflow	es-es	Mostrar plantilla
 size of the font used on the graph 12 should be a good default value	admin	es-es	el tamaño del tipo de letra usado en el gráfico 12 debe ser un buen valor predeterminado
