@@ -203,19 +203,17 @@ class ActivityManager extends BaseManager {
           from '.GALAXIA_TABLE_PREFIX.'transitions gt
           INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities a1 ON gt.wf_act_from_id = a1.wf_activity_id 
           INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities a2 ON gt.wf_act_to_id = a2.wf_activity_id
-          where gt.wf_p_id = ?
-          order by a1.wf_flow_num';
+          where gt.wf_p_id = ?';
     } else {
         $query = 'select a1.wf_name as wf_act_from_name, a2.wf_name as wf_act_to_name, wf_act_from_id, wf_act_to_id 
         from '.GALAXIA_TABLE_PREFIX.'transitions gt
         INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities a1 ON gt.wf_act_from_id = a1.wf_activity_id
         INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities a2 ON gt.wf_act_to_id = a2.wf_activity_id
         where gt.wf_p_id = ?
-        and (wf_act_from_id = ?) 
-        order by a1.wf_flow_num';
+        and (wf_act_from_id = ?)'; 
         $bindvars[] = $actid;
     }
-    $result = $this->query($query, $bindvars);
+    $result = $this->query($query, $bindvars, -1, -1, true, 'a1.wf_flow_num');
     $ret = Array();
     if (!(empty($result)))
     {
@@ -287,9 +285,8 @@ class ActivityManager extends BaseManager {
       from '.GALAXIA_TABLE_PREFIX.'transitions gt
       INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities a1 ON gt.wf_act_from_id = a1.wf_activity_id 
       INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities a2 ON gt.wf_act_to_id = a2.wf_activity_id 
-      where gt.wf_p_id = ? 
-      order by a1.wf_flow_num';
-    $result = $this->query($query, array($pId));
+      where gt.wf_p_id = ? ';
+    $result = $this->query($query, array($pId),  -1, -1, true, 'a1.wf_flow_num');
     $ret = Array();
     if (!(empty($result)))
     {

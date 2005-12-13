@@ -215,8 +215,8 @@ class ProcessManager extends BaseManager {
     xml_parser_set_option($this->parser,XML_OPTION_CASE_FOLDING,0);
     //xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE, 1);
     xml_set_object($this->parser, $this);
-    xml_set_element_handler($this->parser, "_start_element_handler", "_end_element_handler");
-    xml_set_character_data_handler($this->parser, "_data_handler"); 
+    xml_set_element_handler($this->parser, '_start_element_handler', '_end_element_handler');
+    xml_set_character_data_handler($this->parser, '_data_handler'); 
     $aux=Array(
       'name'=>'root',
       'children'=>Array(),
@@ -422,7 +422,7 @@ class ProcessManager extends BaseManager {
     //Put the shared code 
     $proc_info = $this->get_process($pid);
     $wf_procname = $proc_info['wf_normalized_name'];
-    $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."shared.php","w");
+    $fp = fopen(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'shared.php',"w");
 	fwrite($fp, $data['sharedCode']);
     fclose($fp);
     $actids = Array();
@@ -442,11 +442,11 @@ class ProcessManager extends BaseManager {
       //this is calling the activity compilation
       $actid = $this->activity_manager->replace_activity($pid,0,$vars);
 	  
-      $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."activities".SEP."$actname".'.php',"w");
+      $fp = fopen(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'activities'.SEP.$actname.'.php',"w");
       fwrite($fp, $activity['code']);
       fclose($fp);
       if($activity['isInteractive']=='y') {
-        $fp = fopen(GALAXIA_PROCESSES.SEP."$wf_procname".SEP."code".SEP."templates".SEP."$actname".'.tpl',"w");
+        $fp = fopen(GALAXIA_PROCESSES.SEP.$wf_procname.SEP.'code'.SEP.'templates'.SEP.$actname.'.tpl',"w");
         fwrite($fp,$activity['template']);
         fclose($fp);
       }
@@ -545,7 +545,8 @@ class ProcessManager extends BaseManager {
 
     // Now update the version
     $version = $this->_new_version($proc_info['wf_version'],$minor);
-    while($this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."processes where wf_name='$name' and wf_version='$version'")) {
+    while($this->getOne('select count(*) from '.GALAXIA_TABLE_PREFIX.'processes where wf_name=? and wf_version=?',array($name,$version))) 
+    {
       $version = $this->_new_version($version,$minor);
     }
     $oldname = $proc_info['wf_normalized_name'];
@@ -561,9 +562,9 @@ class ProcessManager extends BaseManager {
     //the old directory structure to the new directory
     //oldname was saved a few lines before
     $newname = $this->_get_normalized_name($pid);
-    $this->_rec_copy(GALAXIA_PROCESSES.SEP."$oldname".SEP.'code',GALAXIA_PROCESSES.SEP."$newname".SEP.'code');
+    $this->_rec_copy(GALAXIA_PROCESSES.SEP.$oldname.SEP.'code',GALAXIA_PROCESSES.SEP.$newname.SEP.'code');
     // And here copy all the activities & so
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=?";
+    $query = 'select * from '.GALAXIA_TABLE_PREFIX.'activities where wf_p_id=?';
     $result = $this->query($query, array($oldpid));
     $newaid = array();
     while($res = $result->fetchRow()) {    
@@ -583,7 +584,7 @@ class ProcessManager extends BaseManager {
     }
     // create roles
     if (!(isset($this->role_manager))) $this->role_manager = new RoleManager($this->db);
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."roles where wf_p_id=?";
+    $query = 'select * from '.GALAXIA_TABLE_PREFIX.'roles where wf_p_id=?';
     $result = $this->query($query, array($oldpid));
     $newrid = array();
     while($res = $result->fetchRow()) {
@@ -596,7 +597,7 @@ class ProcessManager extends BaseManager {
     }
     // map users to roles
     if (count($newrid) > 0) {
-      $query = "select * from ".GALAXIA_TABLE_PREFIX."user_roles where wf_p_id=?";
+      $query = 'select * from '.GALAXIA_TABLE_PREFIX.'user_roles where wf_p_id=?';
       $result = $this->query($query, array($oldpid));
       while($res = $result->fetchRow()) {
         if (empty($newrid[$res['wf_role_id']])) {
@@ -607,7 +608,7 @@ class ProcessManager extends BaseManager {
     }
     // add roles to activities
     if (count($newaid) > 0 && count($newrid ) > 0) {
-      $query = "select * from ".GALAXIA_TABLE_PREFIX."activity_roles where wf_activity_id in (" . join(', ',array_keys($newaid)) . ")";
+      $query = 'select * from '.GALAXIA_TABLE_PREFIX.'activity_roles where wf_activity_id in (' . join(', ',array_keys($newaid)) . ')';
       $result = $this->query($query);
       while($res = $result->fetchRow()) {
         if (empty($newaid[$res['wf_activity_id']]) || empty($newrid[$res['wf_role_id']])) {
@@ -669,7 +670,7 @@ class ProcessManager extends BaseManager {
   function process_name_exists($name,$version)
   {
     $name = addslashes($this->_normalize_name($name,$version));
-    return $this->getOne("select count(*) from ".GALAXIA_TABLE_PREFIX."processes where wf_normalized_name='$name'");
+    return $this->getOne('select count(*) from '.GALAXIA_TABLE_PREFIX.'processes where wf_normalized_name=?',array($name));
   }
   
   
@@ -680,7 +681,7 @@ class ProcessManager extends BaseManager {
   */
   function get_process($pId, $withConfig=false)
   {
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."processes where wf_p_id=?";
+    $query = 'select * from '.GALAXIA_TABLE_PREFIX.'processes where wf_p_id=?';
     $result = $this->query($query, array($pId));
     if((empty($result)) || (!$result->numRows())) return false;
     $res = $result->fetchRow();
@@ -700,10 +701,10 @@ class ProcessManager extends BaseManager {
     $sort_mode = $this->convert_sortmode($sort_mode);
     if($find) {
       $findesc = '%'.$find.'%';
-      $mid=" where ((wf_name like ?) or (wf_description like ?))";
+      $mid=' where ((wf_name like ?) or (wf_description like ?))';
       $bindvars = array($findesc,$findesc);
     } else {
-      $mid="";
+      $mid='';
       $bindvars = array();
     }
     if($where) {
@@ -713,9 +714,9 @@ class ProcessManager extends BaseManager {
         $mid.= " where ($where) ";
       }
     }
-    $query = "select * from ".GALAXIA_TABLE_PREFIX."processes $mid order by $sort_mode";
-    $query_cant = "select count(*) from ".GALAXIA_TABLE_PREFIX."processes $mid";
-    $result = $this->query($query,$bindvars,$maxRecords,$offset);
+    $query = 'select * from '.GALAXIA_TABLE_PREFIX."processes $mid";
+    $query_cant = 'select count(*) from '.GALAXIA_TABLE_PREFIX."processes $mid";
+    $result = $this->query($query,$bindvars,$maxRecords,$offset, true, $sort_mode);
     $cant = $this->getOne($query_cant,$bindvars);
     $ret = Array();
     if (isset($result))
@@ -726,8 +727,8 @@ class ProcessManager extends BaseManager {
       }
     }
     $retval = Array();
-    $retval["data"] = $ret;
-    $retval["cant"] = $cant;
+    $retval['data'] = $ret;
+    $retval['cant'] = $cant;
     return $retval;
   }
   
@@ -753,38 +754,38 @@ class ProcessManager extends BaseManager {
     $this->db->StartTrans();
     
     // Remove process activities
-    $query = "select wf_activity_id from ".GALAXIA_TABLE_PREFIX."activities where wf_p_id=$pId";
-    $result = $this->query($query);
+    $query = 'select wf_activity_id from '.GALAXIA_TABLE_PREFIX.'activities where wf_p_id=?';
+    $result = $this->query($query, array($pId));
     while($res = $result->fetchRow()) {
       //we add a false parameter to prevent the ActivityManager from opening a new transaction
       $this->activity_manager->remove_activity($pId,$res['wf_activity_id'], false);
     }
 
     // Remove process roles
-    $query = "delete from ".GALAXIA_TABLE_PREFIX."roles where wf_p_id=$pId";
-    $this->query($query);
-    $query = "delete from ".GALAXIA_TABLE_PREFIX."user_roles where wf_p_id=$pId";
-    $this->query($query);
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'roles where wf_p_id=?';
+    $this->query($query, array($pId));
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'user_roles where wf_p_id=?';
+    $this->query($query, array($pId));
 
 	// Remove process instances
-	$query = "delete from ".GALAXIA_TABLE_PREFIX."instances where wf_p_id=$pId";
-    $this->query($query);
+	$query = 'delete from '.GALAXIA_TABLE_PREFIX.'instances where wf_p_id=?';
+    $this->query($query, array($pId));
     
     // Remove the directory structure
-    if (!empty($name) && is_dir(GALAXIA_PROCESSES.SEP."$name")) {
-      $this->_remove_directory(GALAXIA_PROCESSES.SEP."$name",true);
+    if (!empty($name) && is_dir(GALAXIA_PROCESSES.SEP.$name)) {
+      $this->_remove_directory(GALAXIA_PROCESSES.SEP.$name,true);
     }
-    if (GALAXIA_TEMPLATES && !empty($name) && is_dir(GALAXIA_TEMPLATES.SEP."$name")) {
-      $this->_remove_directory(GALAXIA_TEMPLATES.SEP."$name",true);
+    if (GALAXIA_TEMPLATES && !empty($name) && is_dir(GALAXIA_TEMPLATES.SEP.$name)) {
+      $this->_remove_directory(GALAXIA_TEMPLATES.SEP.$name,true);
     }
     
     // Remove configuration data
-    $query = "delete from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=?";
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'process_config where wf_p_id=?';
     $this->query($query, array($pId));
     
     // And finally remove the proc
-    $query = "delete from ".GALAXIA_TABLE_PREFIX."processes where wf_p_id=$pId";
-    $this->query($query);
+    $query = 'delete from '.GALAXIA_TABLE_PREFIX.'processes where wf_p_id=?';
+    $this->query($query, array($pId));
     $msg = sprintf(tra('Process %s removed'),$name);
     $this->notify_all(5,$msg);
     $this->error[] = $msg;
@@ -805,10 +806,10 @@ class ProcessManager extends BaseManager {
   function replace_process($pId, &$vars, $create = true)
   {
     if (!(isset($this->activity_manager)))  $this->activity_manager =& new ActivityManager($this->db);
-    $TABLE_NAME = GALAXIA_TABLE_PREFIX."processes";
+    $TABLE_NAME = GALAXIA_TABLE_PREFIX.'processes';
     $now = date("U");
     $vars['wf_last_modif']=$now;
-    $vars['wf_normalized_name'] = $this->_normalize_name($vars['wf_name'],$vars['wf_version']);        
+    $vars['wf_normalized_name'] = $this->_normalize_name($vars['wf_name'],$vars['wf_version']);
     $config_array = array();
 	
     foreach($vars as $key=>$value)
@@ -819,9 +820,9 @@ class ProcessManager extends BaseManager {
         // rebuild a nice config_array with type of config and value
         if( is_array($config_array_init) && count($config_array_init) > 0 )
 	{
-	        foreach($config_array_init as $config) 
+	        foreach($config_array_init as $config)
 	        {
-	          if (isset($config['wf_config_value_int']) && (!($config['wf_config_value_int']==''))) 
+	          if (isset($config['wf_config_value_int']) && (!($config['wf_config_value_int']=='')))
 	          {
 	            $config_array[$config['wf_config_name']] = array('int' => $config['wf_config_value_int']);
 	          }
@@ -1096,7 +1097,7 @@ class ProcessManager extends BaseManager {
   {
     if (!$askProcessObject)
     {
-      $query = "select * from ".GALAXIA_TABLE_PREFIX."process_config where wf_p_id=?";
+      $query = 'select * from '.GALAXIA_TABLE_PREFIX.'process_config where wf_p_id=?';
       $result = $this->query($query, array($pId));
       $result_array=array();
       while($res = $result->fetchRow())
@@ -1157,11 +1158,11 @@ class ProcessManager extends BaseManager {
   */
   function get_process_view_activity($pId)
   {
-    $mid = "where gp.wf_p_id=? and ga.wf_type=?";
+    $mid = 'where gp.wf_p_id=? and ga.wf_type=?';
     $bindvars = array($pId,'view');
-    $query = "select ga.wf_activity_id
-        from ".GALAXIA_TABLE_PREFIX."processes gp
-	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
+    $query = 'select ga.wf_activity_id
+        from '.GALAXIA_TABLE_PREFIX.'processes gp
+	INNER JOIN '.GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
 	$mid";
     $result = $this->query($query,$bindvars);
     $ret = Array();
