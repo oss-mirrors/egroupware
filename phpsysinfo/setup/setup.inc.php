@@ -21,8 +21,8 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['phpsysinfo']['hooks'][]   = 'admin';
 
-	/* Dependacies for this app to work */
+	/* Dependencies for this app to work */
 	$setup_info['phpsysinfo']['depends'][] = array(
-		 'appname' => 'phpgwapi',
-		 'versions' => Array('1.0.0','1.0.1','1.2')
+		'appname' => 'phpgwapi',
+		'versions' => Array('1.0.0','1.0.1','1.2')
 	);
