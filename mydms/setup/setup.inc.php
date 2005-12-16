@@ -12,7 +12,7 @@
 	/* Basic information about this app */
 	$setup_info['mydms']['name']      = 'mydms';
 	$setup_info['mydms']['title']     = 'mydms';
-	$setup_info['mydms']['version']   = '0.1.0.001';
+	$setup_info['mydms']['version']   = '1.2.000';
 	$setup_info['mydms']['app_order'] = 5;
 	$setup_info['mydms']['enable']    = 1;
 
@@ -22,8 +22,8 @@
 	$setup_info['mydms']['description'] =
 		'This module is ported from project mydms';
 
-	$setup_info['mydms']['maintainer'] = 'Lian Liming';
-	$setup_info['mydms']['maintainer_email'] = 'dawnlinux@realss.com';
+	$setup_info['mydms']['maintainer'] = 'Lars Kneschke';
+	$setup_info['mydms']['maintainer_email'] = 'l.kneschke@metaways.de';
  
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['mydms']['hooks'][] = 'sidebox_menu';
