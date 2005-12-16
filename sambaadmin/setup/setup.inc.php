@@ -14,7 +14,7 @@
 
 	$setup_info['sambaadmin']['name']	= 'sambaadmin';
 	$setup_info['sambaadmin']['title']	= 'SambaAdmin';
-	$setup_info['sambaadmin']['version']	= '1.2';
+	$setup_info['sambaadmin']['version']	= '1.2.000';
 	$setup_info['sambaadmin']['app_order']	= 99;
 
 	$setup_info['sambaadmin']['author']	= array(
