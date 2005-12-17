@@ -44,7 +44,8 @@
 		'phpgw_mydms_KeywordCategories',
 		'phpgw_mydms_Keywords'
 	);
-
+	$setup_info['mydms']['only_db'] = array('mysql');
+	
 	/* Dependencies for this app to work */
 	$setup_info['mydms']['depends'][] = array(
 		 'appname'  => 'phpgwapi',
