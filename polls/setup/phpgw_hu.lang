@@ -1,0 +1,33 @@
+actions	polls	hu	mûveletek
+add answer to poll	polls	hu	Válasz hozzáadása
+add answers	polls	hu	Válaszok hozzáadása
+add new poll question	polls	hu	Új kérdés hozzáadása
+add questions	polls	hu	Kérdések hozzáadása
+allow users to vote more then once	polls	hu	Engedély a felhasználóknak többszöri szavazáshoz
+answer	polls	hu	Válasz
+answer has been added to poll	polls	hu	A válasz hozzáadásra került
+answer has been updated	polls	hu	A válasz frissítésre került
+answers	polls	hu	Válaszok
+are you sure want to delete this answer ?	polls	hu	Biztosan törli a választ ?
+are you sure want to delete this question ?	polls	hu	Biztosan törli a kérdést ?
+current poll	polls	hu	Jelenlegi szavazás
+edit answer	polls	hu	Válasz szerkesztése
+edit poll question	polls	hu	Szavazás kérdésének szerkesztése
+enter poll question	polls	hu	Szavazás kérdésének megadása
+new poll has been added.  you should now add some answers for this poll	polls	hu	Az új szavazás hozzáadásra került. Most a válaszlehetõségek hozzáadásán a sor
+poll question	polls	hu	Szavazás kérdése
+poll settings	common	hu	Szavazás beállítása
+polls	common	hu	Szavazások
+question has been updated	polls	hu	A kérdés frissítve
+select current poll	polls	hu	Jelenlegi szavazás kiválasztása
+settings	polls	hu	Beállítások
+settings updated	polls	hu	A beállítások frissítve
+show answers	polls	hu	Válaszok megjelenítése
+show questions	common	hu	Kérdések megjelenítése
+total votes	polls	hu	Összesen
+view poll	polls	hu	Szavazás megtekintése
+view results	polls	hu	Eredmények megtekintése
+vote	polls	hu	Szavaz
+voting booth admin	admin	hu	Mindegyikre szavaz
+voting booth administration	polls	hu	Mindegyikre szavazás adminisztrációja
+which poll	polls	hu	Melyik szavazás
