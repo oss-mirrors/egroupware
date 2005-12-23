@@ -426,10 +426,8 @@
 			{
 				if (!(empty($email))) $this->mail->AddBCC($email);
 			}
-			foreach ($this->final_fields['wf_replyto'] as $email)
-			{
-				if (!(empty($email))) $this->mail->AddReplyTo($email);
-			}
+			$email = $this->final_fields['wf_replyto'];
+			if (!(empty($email))) $this->mail->AddReplyTo($email);
 			return true;
 		}
 		

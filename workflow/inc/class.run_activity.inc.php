@@ -368,6 +368,10 @@
 		function show_engine_infos(&$infos, &$icon_array, $level=0)
 		{
 			//_debug_array($infos);
+			if (!(is_array($infos)))
+			{
+				return ;
+			}
 			foreach ($infos as $infoitem => $content)
 			{
 				if (is_int($infoitem)) //splitting!
