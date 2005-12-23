@@ -6,6 +6,7 @@ regis_glc is Regis Leroy
 
 [1.2.01.002] Minor fixes
 	* fix PHP5 warnings
+	* fix for bug #1385356 Workflow Monitor InstanceSQL error with MySQL
 
 [1.2.01.001] Release Candidate 5
 	* fix some warnings

@@ -373,14 +373,19 @@ class ProcessMonitor extends Base
   }
 
   //! list all instances
-  function monitor_list_instances($offset,$maxRecords,$sort_mode,$find,$where='',$wherevars='', $addstats=true) 
+  function monitor_list_instances($offset,$maxRecords,$sort_mode,$find,$where='', $addstats=true) 
   {
+    $wherevars = array();
     if($find) {
       $findesc = $this->qstr('%'.$find.'%');
-      $mid=" where ((`wf_properties` like $findesc) or (gi.`wf_name` like $findesc) 
-        or (ga.`wf_name` like $findesc) or (gp.`wf_name` like $findesc))";
+      $mid=' where ((`wf_properties` like ?) or (gi.`wf_name` like ?)
+        or (ga.`wf_name` like ?) or (gp.`wf_name` like ?))';
+        $wherevars[] = $findesc;
+        $wherevars[] = $findesc;
+        $wherevars[] = $findesc;
+        $wherevars[] = $findesc;
     } else {
-      $mid="";
+      $mid='';
     }
     if($where) {
       if($mid) {
@@ -390,25 +395,25 @@ class ProcessMonitor extends Base
       }
     }
 
-    $query = "select gp.`wf_p_id`, ga.`wf_is_interactive`, gi.`wf_owner`, gp.`wf_name` as `wf_procname`, gp.`wf_version`, ga.`wf_type`,";
-    $query.= " ga.`wf_activity_id`, ga.`wf_name` as `wf_activity_name`, gi.`wf_instance_id`, gi.`wf_name` as `wf_instance_name`, gi.`wf_status`, gia.`wf_activity_id`, gia.`wf_user`, gi.`wf_started`, gi.`wf_ended`, gia.`wf_status` as wf_act_status ";
-    $query.=" from `".GALAXIA_TABLE_PREFIX."instances` gi LEFT JOIN `".GALAXIA_TABLE_PREFIX."instance_activities` gia ON gi.`wf_instance_id`=gia.`wf_instance_id` ";
-    $query.= "LEFT JOIN `".GALAXIA_TABLE_PREFIX."activities` ga ON gia.`wf_activity_id` = ga.`wf_activity_id` ";
-    $query.= "LEFT JOIN `".GALAXIA_TABLE_PREFIX."processes` gp ON gp.`wf_p_id`=gi.`wf_p_id` $mid order by ".$this->convert_sortmode($sort_mode);   
+    $query = 'select gp.`wf_p_id`, ga.`wf_is_interactive`, gi.`wf_owner`, gp.`wf_name` as `wf_procname`, gp.`wf_version`, ga.`wf_type`,';
+    $query.= ' ga.`wf_activity_id`, ga.`wf_name` as `wf_activity_name`, gi.`wf_instance_id`, gi.`wf_name` as `wf_instance_name`, gi.`wf_status`, gia.`wf_activity_id`, gia.`wf_user`, gi.`wf_started`, gi.`wf_ended`, gia.`wf_status` as wf_act_status ';
+    $query.= ' from `'.GALAXIA_TABLE_PREFIX.'instances` gi LEFT JOIN `'.GALAXIA_TABLE_PREFIX.'instance_activities` gia ON gi.`wf_instance_id`=gia.`wf_instance_id` ';
+    $query.= 'LEFT JOIN `'.GALAXIA_TABLE_PREFIX.'activities` ga ON gia.`wf_activity_id` = ga.`wf_activity_id` ';
+    $query.= 'LEFT JOIN `'.GALAXIA_TABLE_PREFIX."processes` gp ON gp.`wf_p_id`=gi.`wf_p_id` $mid";
 
-    $query_cant = "select count(*) from `".GALAXIA_TABLE_PREFIX."instances` gi LEFT JOIN `".GALAXIA_TABLE_PREFIX."instance_activities` gia ON gi.`wf_instance_id`=gia.`wf_instance_id` ";
-    $query_cant.= "LEFT JOIN `".GALAXIA_TABLE_PREFIX."activities` ga ON gia.`wf_activity_id` = ga.`wf_activity_id` LEFT JOIN `".GALAXIA_TABLE_PREFIX."processes` gp ON gp.`wf_p_id`=gi.`wf_p_id` $mid";
-    $result = $this->query($query,$wherevars,$maxRecords,$offset);
+    $query_cant = 'select count(*) from `'.GALAXIA_TABLE_PREFIX.'instances` gi LEFT JOIN `'.GALAXIA_TABLE_PREFIX.'instance_activities` gia ON gi.`wf_instance_id`=gia.`wf_instance_id` ';
+    $query_cant.= 'LEFT JOIN `'.GALAXIA_TABLE_PREFIX.'activities` ga ON gia.`wf_activity_id` = ga.`wf_activity_id` LEFT JOIN `'.GALAXIA_TABLE_PREFIX."processes` gp ON gp.`wf_p_id`=gi.`wf_p_id` $mid";
+    $result = $this->query($query,$wherevars,$maxRecords,$offset,true,$this->convert_sortmode($sort_mode));
     $cant = $this->getOne($query_cant,$wherevars);
     $ret = Array();
     while($res = $result->fetchRow()) {
       $iid = $res['wf_instance_id'];
-      $res['workitems']=$this->getOne("select count(*) from `".GALAXIA_TABLE_PREFIX."workitems` where `wf_instance_id`=?",array($iid));
+      $res['workitems']=$this->getOne('select count(*) from `'.GALAXIA_TABLE_PREFIX.'workitems` where `wf_instance_id`=?',array($iid));
       $ret[$iid] = $res;
     }
     $retval = Array();
-    $retval["data"] = $ret;
-    $retval["cant"] = $cant;
+    $retval['data'] = $ret;
+    $retval['cant'] = $cant;
     return $retval;
   }
 
