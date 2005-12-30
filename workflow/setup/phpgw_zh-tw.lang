@@ -73,6 +73,7 @@ add instances in exception	workflow	zh-tw	新增例外的實例
 add new	workflow	zh-tw	新增
 add new role	workflow	zh-tw	新增角色
 add or edit a process	workflow	zh-tw	新增或編輯一個處理過程
+add or edit a role	workflow	zh-tw	新增或編輯一個角色
 add or edit an activity	workflow	zh-tw	新增或編輯一個活動
 add property	workflow	zh-tw	新增屬性
 add role	workflow	zh-tw	新增角色
@@ -352,6 +353,7 @@ owner:	workflow	zh-tw	擁有者：
 ownership give abort right	common	zh-tw	擁有者有中止權限
 ownership give exception right	common	zh-tw	擁有者有排除權限
 ownership give release right	common	zh-tw	擁有者有釋出權限
+please wait, task in progress ...	workflow	zh-tw	請稍候，任務處理中...
 post activity %1 code is not avaible	workflow	zh-tw	下一活動 %1 代碼不存在
 post shared code is not avaible	workflow	zh-tw	下一分享代碼不存在
 post-agent %1 code is not avaible	workflow	zh-tw	下一代理人 %1 代碼不存在
@@ -396,7 +398,7 @@ release activity for this instance	workflow	zh-tw	這個實例的釋出活動
 release instance	workflow	zh-tw	釋出階段
 reload filter	workflow	zh-tw	重新讀取過濾規則
 remove active instances	workflow	zh-tw	移除啟用的實例
-remove all instance for this process	workflow	zh-tw	移除這個處理程序的所有實例
+remove all instances for this process	workflow	zh-tw	移除這個處理程序的所有實例
 remove selected roles	workflow	zh-tw	移除選擇的角色
 removing instances and workitems for aborted instances on all processes	workflow	zh-tw	在所有處理程序中移除中止實例的實例與工作項目
 removing instances and workitems for aborted instances on process #%1	workflow	zh-tw	在處理程序 #%1 中移除中止實例的實例與工作項目
@@ -405,6 +407,7 @@ replyto:	workflow	zh-tw	回信信箱：
 restart	workflow	zh-tw	重新開始
 restart activity	workflow	zh-tw	重新開始活動
 resume this exception instance	workflow	zh-tw	回復這個排除的實例
+role	workflow	zh-tw	角色
 role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	zh-tw	角色 #%1 於處理程序 %2 在使用者 #%4 對應上有不同的處理程序 %3
 role %1 (#%2) is associated with a non-existent process (#%3)	workflow	zh-tw	角色 #%1 (#%2) 歸類於不存在的處理程序 (#%3)
 role %1 is associated in a mapping with user #%2 with a non-existent process (%3)	workflow	zh-tw	歸類於使用者 #%2 的角色 %1 對應到不存在的處理程序 (#%3)
@@ -582,6 +585,7 @@ when multiple submit options are avaible we draw a select box with only one subm
 when to send the message:	workflow	zh-tw	寄送訊息的時機：
 workflow	common	zh-tw	工作流程
 workflow configuration	admin	zh-tw	工作流程設定
+workflow navigation	workflow	zh-tw	工作流程導覽
 workflow preferences	workflow	zh-tw	工作流程偏好
 workflow site configuration	workflow	zh-tw	工作流程網站設定
 workflow.ui_useractivities	workflow	zh-tw	workflow.ui_useractivities
