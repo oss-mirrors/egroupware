@@ -87,8 +87,8 @@ admin process activities	workflow	en	Admin Process Activities
 admin process roles	workflow	en	Admin Process Roles
 admin processes	workflow	en	Admin Processes
 admin processes sources	workflow	en	Admin Processes Sources
-administer instances	workflow	en	administer instances
-administer processes	workflow	en	administer processes
+administer instances	admin	en	Administer instances
+administer processes	admin	en	Administer processes
 agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	en	Agent #%1 of type %2 is associated to an inexistent activity #%3
 agent #%1 of type %2 is not linked with an activity	workflow	en	Agent #%1 of type %2 is not linked with an activity
 agent associated with inexistent activity	workflow	en	Agent associated with inexistent activity
@@ -122,7 +122,7 @@ cannot run unknown activity	workflow	en	Cannot run unknown activity
 cc:	workflow	en	Cc:
 circular reference found some activity has a transition leading to itself	workflow	en	Circular reference found some activity has a transition leading to itself
 circular reference found. some activity has a transition leading to itself	workflow	en	Circular reference found. Some activity has a transition leading to itself
-cleanup aborted instances	workflow	en	cleanup aborted instances
+cleanup aborted instances	admin	en	Cleanup aborted instances
 cleanup actions	workflow	en	cleanup actions
 close and get back later	workflow	en	Close and get back later
 close printer friendly mode	workflow	en	Close Printer friendly mode
@@ -224,11 +224,11 @@ go to same activities for other instances of this process	workflow	en	go to same
 go to same process activities	workflow	en	go to same process activities
 go to the actual state of this instance	workflow	en	go to the actual state of this instance
 grab instance	workflow	en	grab instance
-grant access to the administration and development of workflow processes and activities.	workflow	en	Grant access to the administration and development of workflow processes and activities.
-grant access to the administration of workflow elements	workflow	en	Grant access to the administration of workflow elements
-grant access to the administration of workflow instances in monitor screens	workflow	en	Grant access to the administration of workflow instances in monitor screens
-grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	en	Grant access to the cleanup/deletion of workflow aborted instances in monitor screens
-grant access to the monitoring of workflow elements	workflow	en	Grant access to the monitoring of workflow elements
+grant access to the administration and development of workflow processes and activities.	admin	en	Grant access to the administration and development of workflow processes and activities.
+grant access to the administration of workflow elements	admin	en	Grant access to the administration of workflow elements
+grant access to the administration of workflow instances in monitor screens	admin	en	Grant access to the administration of workflow instances in monitor screens
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	admin	en	Grant access to the cleanup/deletion of workflow aborted instances in monitor screens
+grant access to the monitoring of workflow elements	admin	en	Grant access to the monitoring of workflow elements
 graph	workflow	en	Graph
 graphic options	common	en	Graphic options
 group	workflow	en	Group
@@ -305,7 +305,7 @@ monitor processes	workflow	en	Monitor Processes
 monitor this instance	workflow	en	Monitor this instance
 monitor work items	workflow	en	Monitor Work Items
 monitor workitems	workflow	en	Monitor workitems
-monitoring	workflow	en	monitoring
+monitoring	admin	en	Monitoring
 monitors	workflow	en	Monitors
 more options?	workflow	en	more options?
 my activities	workflow	en	My Activities

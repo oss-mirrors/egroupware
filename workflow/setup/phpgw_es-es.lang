@@ -87,8 +87,8 @@ admin process activities	workflow	es-es	Administrar actividades del proceso
 admin process roles	workflow	es-es	Administrar roles del proceso
 admin processes	workflow	es-es	Administrar procesos
 admin processes sources	workflow	es-es	Administrar código fuente de los procesos
-administer instances	workflow	es-es	administrar instancias
-administer processes	workflow	es-es	administrar procesos
+administer instances	admin	es-es	Administrar instancias
+administer processes	admin	es-es	Administrar procesos
 agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	es-es	El agente nº%1 del tipo %2 está asociado a una actividad inexistente nº%3
 agent #%1 of type %2 is not linked with an activity	workflow	es-es	El agente nº%1 de tipo %2 no está vinculado con una actividad
 agent associated with inexistent activity	workflow	es-es	El agente asociado con una actividad inexistente
@@ -122,7 +122,7 @@ cannot run unknown activity	workflow	es-es	No se puede ejecutar una actividad de
 cc:	workflow	es-es	Cc:
 circular reference found some activity has a transition leading to itself	workflow	es-es	La referencia circular encontró alguna actividad que tiene una transición que vuelve a ella misma
 circular reference found. some activity has a transition leading to itself	workflow	es-es	Se encontró una referencia circular. Alguna actividad tiene una transición apuntando a sí misma
-cleanup aborted instances	workflow	es-es	limpieza de instancias abortadas
+cleanup aborted instances	admin	es-es	Limpiar las instancias abortadas
 cleanup actions	workflow	es-es	limpiar acciones
 close and get back later	workflow	es-es	Cerrar y volver más tarde
 close printer friendly mode	workflow	es-es	Cerrar modo orientado para impresión
@@ -224,11 +224,11 @@ go to same activities for other instances of this process	workflow	es-es	ir a la
 go to same process activities	workflow	es-es	ir a las mismas actividades del proceso
 go to the actual state of this instance	workflow	es-es	ir al estado actual de esta instancia
 grab instance	workflow	es-es	coger instancia
-grant access to the administration and development of workflow processes and activities.	workflow	es-es	Conceder acceso a la administración y desarrollo de los procesos del flujo de trabajo y actividades.
-grant access to the administration of workflow elements	workflow	es-es	Conceder acceso a la administración de los elementos del flujo del tabajo
-grant access to the administration of workflow instances in monitor screens	workflow	es-es	Conceder acceso a la administración de las instancias del flujo de trabajo en pantallas de monitorización
-grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	es-es	Conceder acceso a la limpieza y/o borrado de las instancias del flujo de trabajo abortadas en en pantallas de monitorización
-grant access to the monitoring of workflow elements	workflow	es-es	Conceder acceso a la monitorización de elementos del flujo del trabajo
+grant access to the administration and development of workflow processes and activities.	admin	es-es	Conceder acceso a la administración y desarrollo de procesos y actividades de flujos de trabajo.
+grant access to the administration of workflow elements	admin	es-es	Conceder acceso a la administración de los elementos del flujo del tabajo
+grant access to the administration of workflow instances in monitor screens	admin	es-es	Conceder acceso para la administración de instancias de flujos de trabajo en pantallas de monitorización
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	admin	es-es	Conceder acceso a la limpieza y/o borrado de las instancias abortadas de flujos de trabajo en las pantallas de monitorización
+grant access to the monitoring of workflow elements	admin	es-es	Conceder acceso para monitorizar elementos de flujos de trabajo
 graph	workflow	es-es	Gráfico
 graphic options	common	es-es	Opciones de gráfico
 group	workflow	es-es	Grupo
@@ -304,7 +304,7 @@ monitor processes	workflow	es-es	Monitorizar procesos
 monitor this instance	workflow	es-es	Monitorizar esta instancia
 monitor work items	workflow	es-es	Monitorizar elementos de trabajo
 monitor workitems	workflow	es-es	Monitorizar elementos de trabajo
-monitoring	workflow	es-es	monitorizando
+monitoring	admin	es-es	Monitorizar
 monitors	workflow	es-es	Monitores
 more options?	workflow	es-es	¿Más opciones?
 my activities	workflow	es-es	Mis actividades
