@@ -4,6 +4,9 @@ mbartz is Michael Bartz
 alpeb is Alejandro Pedraza
 regis_glc is Regis Leroy
 
+[1.2.01.003] Minor fixes and translations
+	* fix bug #1395256 Missing css file on template other than default, solution by Mauricio Luiz Viani
+
 [1.2.01.002] Minor fixes
 	* fix PHP5 warnings
 	* fix for bug #1385356 Workflow Monitor InstanceSQL error with MySQL

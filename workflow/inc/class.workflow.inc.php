@@ -268,7 +268,7 @@
 				}
 			}
 			$css_file = SEP.'workflow'.SEP.'templates'.SEP
-					.$GLOBALS['egw_info']['server']['template_set'].SEP.'css'.SEP.$css_name.'css';
+					.$GLOBALS['egw_info']['server']['template_set'].SEP.'css'.SEP.$css_name.'.css';
 			if(file_exists(EGW_SERVER_ROOT.$css_file))
 			{
 				return $GLOBALS['egw_info']['server']['webserver_url'].$css_file;
