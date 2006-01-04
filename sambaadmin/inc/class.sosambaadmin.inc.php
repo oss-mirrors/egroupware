@@ -494,7 +494,7 @@
 		
 		function updateGroup($_groupID)
 		{
-			if(!$groupID = abs($_groupID)) return false;
+			if(!$groupID = abs((int)$_groupID)) return false;
 			
 			$ldap = $GLOBALS['egw']->common->ldapConnect();
 			$filter = "(&(gidnumber=$groupID)(objectclass=posixgroup))";
