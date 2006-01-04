@@ -44,11 +44,12 @@
 					$newData['sambaNTPassword'] = $newpassword[1];
 					$newData['sambaPwdLastSet'] = $newData['sambaPwdCanChange'] = time();
 					$newData['sambaPwdMustChange'] = '2147483647';
+
 					if(@ldap_mod_replace ($ldap, $accountDN, $newData))
 					{
 						return true;
 					}
-					#print ldap_error($ldap);
+					#print ldap_error($ldap); exit;
 				}
 			}
 			return false;
@@ -245,7 +246,6 @@
 
 				$dn = $this->computerou;
 				$filter = "(&(uidnumber=$tmpUID)(objectclass=posixaccount))";
-				
 				$sri = 	ldap_search($ldap,$dn,$filter);
 				{
 					$allValues = ldap_get_entries($ldap, $sri);
@@ -494,11 +494,11 @@
 		
 		function updateGroup($_groupID)
 		{
-			if(!$groupID = (int)$_groupID) return false;
+			if(!$groupID = abs($_groupID)) return false;
 			
 			$ldap = $GLOBALS['egw']->common->ldapConnect();
 			$filter = "(&(gidnumber=$groupID)(objectclass=posixgroup))";
-			
+		
 			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_group_context'],$filter);
 			if ($sri)
 			{
@@ -518,6 +518,7 @@
 					$newData['sambasid']		= $this->sid.'-'.($groupID*2 + 1001);
 					$newData['sambagrouptype']	= 2;
 					$newData['displayname']		= $cn;
+
 					if(@ldap_mod_replace ($ldap, $groupDN, $newData))
 					{
 						return true;
