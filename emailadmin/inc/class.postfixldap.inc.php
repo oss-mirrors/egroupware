@@ -97,12 +97,24 @@
 		{
 			$ds = $GLOBALS['egw']->common->ldapConnect();
 			$filter 	= sprintf("(&(uidnumber=%s)(objectclass=posixAccount))",$_accountID);
-			$attributes	= array('dn','mailforwardingaddress','deliverymode');
+			$attributes	= array('dn','mailforwardingaddress','deliverymode','objectclass');
 			$sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $attributes);
 			
 			if ($sri)
 			{
+				$newData = array();
 				$allValues = ldap_get_entries($ds, $sri);
+
+				$newData['objectclass']	= $allValues[0]['objectclass'];
+				
+				unset($newData['objectclass']['count']);
+
+				if(!in_array('qmailUser',$newData['objectclass']) &&
+					!in_array('qmailuser',$newData['objectclass']))
+				{
+					$newData['objectclass'][]	= 'qmailuser'; 
+				}
+
 				if(!empty($_forwardingAddress))
 				{
 					if(is_array($allValues[0]['mailforwardingaddress']))
@@ -122,7 +134,7 @@
 					$newData['mailforwardingaddress'] = array();
 					$newData['deliverymode'] = array();
 				}
-				
+
 				ldap_modify ($ds, $allValues[0]['dn'], $newData);
 				#print ldap_error($ds);
 			}
