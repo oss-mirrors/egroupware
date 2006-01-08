@@ -73,6 +73,7 @@ add instances in exception	workflow	it	Aggiungi istanze in eccezione
 add new	workflow	it	aggiungi nuovo
 add new role	workflow	it	Aggiungi nuovo ruolo
 add or edit a process	workflow	it	Aggiungi o modifica un processo
+add or edit a role	workflow	it	Aggiungi o modifica un ruolo
 add or edit an activity	workflow	it	Aggiungi o modifica un'attività
 add property	workflow	it	Aggiungi proprietà
 add role	workflow	it	Aggiungi ruolo
@@ -86,8 +87,8 @@ admin process activities	workflow	it	Gestione Attività Processo
 admin process roles	workflow	it	Gestione Ruoli Processo
 admin processes	workflow	it	Gestione Processi
 admin processes sources	workflow	it	Gestione Sorgenti Processi
-administer instances	workflow	it	gestisci istanze
-administer processes	workflow	it	gestisci processi
+administer instances	admin	it	gestisci istanze
+administer processes	admin	it	gestisci processi
 agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	it	L'agente n.%1 di tipo %2 è associato ad una attività inesistente n.%3
 agent #%1 of type %2 is not linked with an activity	workflow	it	L'agente n.%1 di tipo %2 non è collegato con un'attività
 agent associated with inexistent activity	workflow	it	Agente associato ad un'attività inesistente
@@ -121,7 +122,7 @@ cannot run unknown activity	workflow	it	Impossibile eseguire attività sconosciut
 cc:	workflow	it	Cc:
 circular reference found some activity has a transition leading to itself	workflow	it	Riferimento circolare trovato: qualche attività ha una transizione che riconduce a sé stessa
 circular reference found. some activity has a transition leading to itself	workflow	it	E' stato trovato un riferimento circolare. Qualche attività ha una transizione che conduce a sé stessa.
-cleanup aborted instances	workflow	it	ripulisci istanze annullate
+cleanup aborted instances	admin	it	ripulisci istanze annullate
 cleanup actions	workflow	it	azioni di pulitira
 close and get back later	workflow	it	Chiudi e ritorna più tardi
 close printer friendly mode	workflow	it	Chiudi modalità anteprima stampa
@@ -134,16 +135,21 @@ column instance status in instance lists	workflow	it	Colonna Stato Istanza in el
 column owner in instance lists	workflow	it	Colonna Proprietario in elenco istanze
 column priority in instance lists	workflow	it	Colonna Priorità in elenco istanze
 column process name in instance lists	workflow	it	Colonna Nome Processo in elenco istanze
+column start date in instance lists	workflow	it	Colonna data inizio in elenco istanze
 compilation	workflow	it	Compilazione
 compiling activity %1 : %2	workflow	it	compilazione attività %1 : %2
 complete	workflow	it	Completa
 complete cleanup of aborted instances done	workflow	it	pulizia completa delle istanze annullate eseguita
+complete cleanup of all instances done	workflow	it	pulizia completa di tutte le istanze completate
 completed	workflow	it	completata
+config values	common	it	Configura valori
 confirm delete	workflow	it	Conferma Elimina
+consult %1 to get the default values:	workflow	it	Consulta %1 per ottenere i valori predefiniti:
 couldn't add transition	workflow	it	Impossibile aggiungere transizione
 create	workflow	it	crea
 created	workflow	it	Creato
 date:	workflow	it	data:
+default config values	workflow	it	Valori di configurazione predefiniti
 default next user	workflow	it	Utente successivo predefinito
 default owner	workflow	it	Proprietario predefinito
 default settings for processes	admin	it	Impostazioni predefinite per i processi
@@ -154,12 +160,14 @@ deletion successful	workflow	it	Cancellazione effettuata
 delition successful	workflow	it	Cancellazione effettuata
 description	workflow	it	Descrizione
 display please wait message	common	it	mostra messaggio di attesa
+do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	it	Vuoi lo stato attività in elenco istanze. La maggior parte del tempo è "in esecuzione" ma se utilizzi transizioni non-auto-instradate avrai alcune attività completate.
 don't move	workflow	it	Non spostare
 draw roles	common	it	traccia i ruoli
 draw roles on the graph beside activity name like [that]	admin	it	traccia i ruoli sul grafico accanto al nome dell'attività come [quello]
 duration	workflow	it	Durata
 end	workflow	it	fine
 end activity is not reachable from start activity	workflow	it	L'attività finale non è raggiungibile dall'attività iniziale
+ended	workflow	it	terminato
 enter an activity name	workflow	it	Inserisci un nome per l'attività
 error: removing was not done	workflow	it	errore: rimozione non effettuata
 exception	workflow	it	eccezione
@@ -199,18 +207,24 @@ go to same activities for other instances of this process	workflow	it	vai alle s
 go to same process activities	workflow	it	vai alle attività dello stesso processo
 go to the actual state of this instance	workflow	it	vai allo stato attuale di questa istanza
 grab instance	workflow	it	afferra istanza
-grant access to the administration of workflow elements	workflow	it	Permetti l'accesso alla gestione degli elementi del workflow
-grant access to the monitoring of workflow elements	workflow	it	Permetti l'accesso alla monitorizzazione degli elementi del workflow
+grant access to the administration and development of workflow processes and activities.	admin	it	Permetti l'accesso alla gestione e allo sviluppo di processi e attività workflow.
+grant access to the administration of workflow elements	admin	it	Permetti l'accesso alla gestione degli elementi di workflow
+grant access to the administration of workflow instances in monitor screens	admin	it	Permetti l'accesso alla gestione delle istanze di workflow in videate monitoraggio
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	admin	it	Permetti l'accesso alla pulizia/eliminazione delle istanze di workflow annullate in videate monitoraggio
+grant access to the monitoring of workflow elements	admin	it	Permetti l'accesso alla monitorizzazione degli elementi di workflow
 graph	workflow	it	Grafico
 graphic options	common	it	Opzioni grafico
 group	workflow	it	Gruppo
 id	workflow	it	Id
 if automatic parsing is disabled next options will be useless	admin	it	Se il parsing automatico è disabilitato, le opzioni successive sono inutili
+if not in debug mail_smtp agent would have sent this email:	workflow	it	se non fosse stato in debug l'agente mail_smtp avrebbe inviato questa email:
 if user is in a role for an activity he will have the right to abort the related instance	admin	it	se un utente ha un ruolo in un'attività, avrà i diritti per annullare l'istanza correlata
 if user is in a role for an activity he will have the right to exception or resume the related instance	admin	it	se un utente ha un ruolo in un'attività, avrà i diritti per sollevare un'eccezione o riprendere l'istanza correlata
+if user is in a role for an activity he will have the right to release (un-assign) the related instance	admin	it	se l'utente è in un ruolo per un'attività avrà il diritto di rilasciare (de-assegnare) la relativa istanza
 if:setnextact	workflow	it	If:SetNextact
 import aborted	workflow	it	Importazione annullata
 import successfull	workflow	it	Importazione effettuata
+in role mappings user #%1 is specified as a "%2" but is maybe a "%3"	workflow	it	Nella mappatura dei ruoli l'utente n°%1 è specificato come un "%2" ma è FORSE un "%3"
 inactive	workflow	it	Inattiva
 inst.	workflow	it	Ist.
 inst. status	workflow	it	Stato Istanza
@@ -222,6 +236,8 @@ instances	workflow	it	Istanze
 instances selection	workflow	it	Selezione istanze
 int.	workflow	it	Int.
 interactive	workflow	it	Interattiva
+interactive activities show form before being executed	workflow	it	Le attività interattive mostrano un modulo prima di essere eseguite
+interactive:	workflow	it	interattiva:
 interactivity	workflow	it	Interattività
 invalid	workflow	it	non valido
 invalid process	workflow	it	Processo non valido
@@ -246,8 +262,11 @@ monitor activities	workflow	it	Monitorizza Attività
 monitor instance	workflow	it	monitorizza istanza
 monitor instances	workflow	it	Monitorizza Istanze
 monitor processes	workflow	it	Monitorizza Processi
+monitor this instance	workflow	it	Monitorizza questa istanza
 monitor work items	workflow	it	Monitorizza Entità Lavorative
-monitoring	workflow	it	Monitorizzazione in corso
+monitor workitems	workflow	it	Monitorizza entità lavorative
+monitoring	admin	it	Monitorizzazione in corso
+monitors	workflow	it	Monitor
 more options?	workflow	it	altre opzioni?
 my activities	workflow	it	Mie Attività
 my instances	workflow	it	Mie Istanze
@@ -260,17 +279,27 @@ new mapping added	workflow	it	Nuova mappatura aggiunta
 new minor	workflow	it	Nuova minore
 new minor version created	workflow	it	creata nuova versine minore
 new transition added	workflow	it	Nuova transizione aggiunta
+next activity	workflow	it	attività seguente
 next user:	workflow	it	Utente seguente:
+no activites	workflow	it	Nessuna attività
 no activity indicated	workflow	it	Nessuna attività indicata
 no agents associated with this activity	workflow	it	Nessun agente associato a questa attività
+no circular transitions allowed.	workflow	it	Transizioni circolari non permesse.
+no corresponding activity was found.	workflow	it	nessuna attività corrispondente trovata.
+no inconcistency detected	workflow	it	nessuna inconsistenza individuata
+no instance avaible	workflow	it	nessuna istanza disponibile
 no instance given, nothing to show	workflow	it	nessuna istanza data, nulla da mostrare
 no instance indicated	workflow	it	Nessuna istanza indicata
 no process indicated	workflow	it	Nessun processo indicato
 no properties defined	workflow	it	Nessuna proprietà definita
 no roles	workflow	it	nessun ruolo
 no roles asociated with this activity	workflow	it	Nessun ruolo associato a questa attività
+no routage	workflow	it	nessun instradamento
+no scan done	workflow	it	nessuna scansione eseguita
+no transitions allowed for standalone or view activities	workflow	it	Nessuna transizione permessa per attività standalone o vista
 no work item indicated	workflow	it	Nessuna Entità Lavorativa indicata
 nobody	workflow	it	Nessuno
+not defined	workflow	it	non definito
 or import a process	workflow	it	O importa un processo
 owner	workflow	it	Proprietario
 owner of the instance will have the right to abort the instance at any time	admin	it	il proprietario dell'istanza avrà il diritto di annullare l'istanza in qualunque momento
@@ -413,6 +442,8 @@ when multiple submit options are avaible we draw a select box with only one subm
 when to send the message:	workflow	it	Quando inviare il Messaggio:
 workflow	common	it	Work-Flow
 workflow configuration	admin	it	Configurazione Workflow
+workflow navigation	workflow	it	Navigazione Workflow
+workflow preferences	workflow	it	Preferenze Workflow
 workflow site configuration	workflow	it	Configurazione Workflow per tutto il sito
 workitem information	workflow	it	Informazione entità lavorative
 workitems	workflow	it	Entità lavorative

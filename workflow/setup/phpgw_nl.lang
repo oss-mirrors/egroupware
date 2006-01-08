@@ -87,8 +87,8 @@ admin process activities	workflow	nl	Beheerder procesactiviteiten
 admin process roles	workflow	nl	Beheerder procesrollen
 admin processes	workflow	nl	Beheerder processen
 admin processes sources	workflow	nl	Beheerder processen bronnen
-administer instances	workflow	nl	beheer instanties
-administer processes	workflow	nl	beheer processen
+administer instances	admin	nl	beheer instanties
+administer processes	admin	nl	beheer processen
 agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	nl	Agent #%1 van type %2 is geassocieerd met een nietbestaande activiteti #%3
 agent #%1 of type %2 is not linked with an activity	workflow	nl	Agent #%1 van type %2 is niet gekoppeld aan een activiteit
 agent associated with inexistent activity	workflow	nl	Agent geassocieerd met een nietbestaande activiteit
@@ -122,7 +122,7 @@ cannot run unknown activity	workflow	nl	Kan onbekende activiteit niet uitvoeren
 cc:	workflow	nl	CC:
 circular reference found some activity has a transition leading to itself	workflow	nl	Circulaire referentie gevonden, een activiteit heeft een transitie die naar zichzelf verwijst
 circular reference found. some activity has a transition leading to itself	workflow	nl	Circulaire referentie gevonden. Een activiteit heeft een transitie die naar zichzelf verwijst
-cleanup aborted instances	workflow	nl	afgebroken instanties opruimen
+cleanup aborted instances	admin	nl	afgebroken instanties opruimen
 cleanup actions	workflow	nl	acties opruimen
 close and get back later	workflow	nl	Sluit af en kom later terug
 close printer friendly mode	workflow	nl	Printervriendelijke modus sluiten
@@ -224,11 +224,11 @@ go to same activities for other instances of this process	workflow	nl	ga naar de
 go to same process activities	workflow	nl	ga naar dezelfde procesactiviteiten
 go to the actual state of this instance	workflow	nl	ga naar de werkelijke staat van deze instantie
 grab instance	workflow	nl	grijp instantie
-grant access to the administration and development of workflow processes and activities.	workflow	nl	Verleen toegang aan beheer en ontwikkeling van werkstroomprocessen en activiteiten.
-grant access to the administration of workflow elements	workflow	nl	Verleen toegang aan de beheerder van werkstroomelementen.
-grant access to the administration of workflow instances in monitor screens	workflow	nl	Verleen toegang aan de beheerder van werkstroominstanties in monitor pagina's.
-grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	nl	Verleeg toegang aan het opruimen/verwijderen van afgebroken werkstroom instanties in monitor pagina's
-grant access to the monitoring of workflow elements	workflow	nl	Verleen toegang tot het monitoren van werkstroomelementen
+grant access to the administration and development of workflow processes and activities.	admin	nl	Verleen toegang aan beheer en ontwikkeling van werkstroomprocessen en activiteiten.
+grant access to the administration of workflow elements	admin	nl	Verleen toegang aan de beheerder van werkstroomelementen.
+grant access to the administration of workflow instances in monitor screens	admin	nl	Verleen toegang aan de beheerder van werkstroominstanties in monitor pagina's.
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	admin	nl	Verleeg toegang aan het opruimen/verwijderen van afgebroken werkstroom instanties in monitor pagina's
+grant access to the monitoring of workflow elements	admin	nl	Verleen toegang tot het monitoren van werkstroomelementen
 graph	workflow	nl	Grafiek
 graphic options	common	nl	Grafiek opties
 group	workflow	nl	Groep
@@ -305,7 +305,7 @@ monitor processes	workflow	nl	Processen monitoren
 monitor this instance	workflow	nl	Deze instantie monitoren
 monitor work items	workflow	nl	Werkonderdelen monitoren
 monitor workitems	workflow	nl	Werkonderdelen monitoren
-monitoring	workflow	nl	aan het monitoren
+monitoring	admin	nl	aan het monitoren
 monitors	workflow	nl	Monitors
 more options?	workflow	nl	meer opties?
 my activities	workflow	nl	Mijn activiteiten
@@ -353,6 +353,7 @@ owner:	workflow	nl	Eigenaar:
 ownership give abort right	common	nl	eigenaarschap geeft afbreek rechten
 ownership give exception right	common	nl	eigenaarschap geeft uitzondering rechten
 ownership give release right	common	nl	eigenaarschap geeft vrijgave rechten
+please wait, task in progress ...	workflow	nl	Even wachten, taak wordt uitgevoerd ...
 post activity %1 code is not avaible	workflow	nl	na-activiteit %1 code is niet beschikbaar
 post shared code is not avaible	workflow	nl	na-gedeelde code is niet beschikbaar
 post-agent %1 code is not avaible	workflow	nl	na-agent %1 code is niet beschikbaar
@@ -397,7 +398,6 @@ release activity for this instance	workflow	nl	activiteit voor deze instantie vr
 release instance	workflow	nl	instantie vrijgeven
 reload filter	workflow	nl	Filter herladen
 remove active instances	workflow	nl	Actieve instanties verwijderen
-remove all instance for this process	workflow	nl	verwijder alle instanties voor dit proces
 remove all instances for this process	workflow	nl	verwijder alle instanties voor dit proces
 remove selected roles	workflow	nl	geselecteerde rollen verwijderen
 removing instances and workitems for aborted instances on all processes	workflow	nl	bezig met verwijderen van instanties en werkonderdelen voor afgebroken instanties op alle processen
@@ -585,6 +585,7 @@ when multiple submit options are avaible we draw a select box with only one subm
 when to send the message:	workflow	nl	Wanneer het bericht verzenden:
 workflow	common	nl	Werkstroom
 workflow configuration	admin	nl	Werkstroom configuratie
+workflow navigation	workflow	nl	Werkstroom navigatie
 workflow preferences	workflow	nl	Werkstroom voorkeuren
 workflow site configuration	workflow	nl	Werkstroom site configuratie
 workflow.ui_useractivities	workflow	nl	workflow.ui_useractivities
