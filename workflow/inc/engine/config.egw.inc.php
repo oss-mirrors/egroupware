@@ -14,6 +14,34 @@ if (!defined('GALAXIA_LIBRARY')) {
 		define('GALAXIA_LIBRARY', dirname(__FILE__));
 }
 
+// Specify how error messages should be shown
+if (!function_exists('galaxia_show_error')) {
+	/**
+	* Show error messages from the engine
+	* @param $msg is the message to show
+	* @param $dying is true by default and will launch a terminal die command
+	* @param $log is trru by default and will emit a PHP WARNING if set to true
+	* if not set to false.
+	*/
+	function galaxia_show_error($msg, $dying = true, $log=true)
+	{
+		$final_message = htmlspecialchars("Galaxia Workflow Error: $msg");
+		if ($log)
+		{
+			trigger_error($final_message, E_USER_WARNING);
+		}
+		if ($dying)
+		{
+			die($final_message);
+		}
+		else
+		{
+			echo("<br>$final_message");
+		}
+	}
+}
+
+
 // filesystem Operations
 $GLOBALS['egw']->vfs = createobject('phpgwapi.vfs');
 
@@ -21,7 +49,7 @@ $GLOBALS['egw']->vfs = createobject('phpgwapi.vfs');
 $test=$GLOBALS['egw']->vfs->get_real_info(array('string' => '/', 'relatives' => array(RELATIVE_NONE), 'relative' => False));
 if($test[mime_type]!='Directory')
 {
-	die(lang('Base directory does not exist, please ask adminstrator to check the global configuration'));
+	galaxia_show_error(lang('Base directory does not exist, please ask adminstrator to check the global configuration'),false, true);
 }
 
 // check if /workflow  exists
@@ -40,7 +68,7 @@ if($test[mime_type]!='Directory')
 	$test = $GLOBALS['egw']->vfs->get_real_info(array('string' => '/workflow', 'relatives' => array(RELATIVE_NONE), 'relative' => False));
 	if($test[mime_type]!='Directory')
 	{
-		die(lang('/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration'));
+		galaxia_show_error(lang('/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration'), false, true);
 	}
 }
 			
@@ -84,26 +112,6 @@ function tra($msg, $m1='', $m2='', $m3='', $m4='')
 	return lang($msg, $m1, $m2, $m3, $m4);
 }
 
-// Specify how error messages should be shown
-if (!function_exists('galaxia_show_error')) {
-		/**
-		 * * Show error messages from the engine
-		*  * @param $msg is the message to show
-		*  * @param $dying is true by default and will launch a terminal die command
-		*  * 	if not set to false.
-		 */
-		function galaxia_show_error($msg, $dying = true)
-		{
-		if ($dying)
-		{
-			die("Galaxia Error: $msg");
-								}
-								else
-								{
-									echo("<br>Galaxia Error: $msg");
-								}
-		}
-}
 
 //define the list of agents avaible with your Galaxia installation
 if (!function_exists('galaxia_get_agents_list'))
