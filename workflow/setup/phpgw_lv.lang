@@ -72,7 +72,7 @@ auto routed	workflow	lv	Autom?tiski mar?rut?ts
 automatic	workflow	lv	Autom?tisks
 bad role type	workflow	lv	Neder?gs funkcijas tips
 bad user	workflow	lv	Neder?gs lietot?js
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	lv	Pamata direktorijs neeksist?, pal?dz administratoru p?rbaud?t visp?r?jo konfigur?ciju
+base directory does not exist, please ask adminstrator to check the global configuration	common	lv	Pamata direktorijs neeksist?, pal?dz administratoru p?rbaud?t visp?r?jo konfigur?ciju
 bcc:	workflow	lv	Bcc:
 being run	workflow	lv	notiek
 cannot create compiled file %1	workflow	lv	nevar izveidot pabeigto failu%1
@@ -375,7 +375,7 @@ template	workflow	lv	veidne
 test concistency	workflow	lv	Pārbaudīt nepretrunīgumu
 test consistency of datas in the database	workflow	lv	Pārbaudīt datu nepretrunīgumu datubāzē
 test local installation	workflow	lv	Pārbaudīt vietejo instalēsanu
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	lv	Darbplūsma direktorijs neeksistē un nevar tikt izveidots. Lūdz administratoru pārbaudīt vispārējo konfiguraciju
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	lv	Darbplūsma direktorijs neeksistē un nevar tikt izveidots. Lūdz administratoru pārbaudīt vispārējo konfiguraciju
 the activity was not completed	workflow	lv	Darbība netika pabeigta
 the instance title is shown on top of the form	admin	lv	instances virsraksts ir parādīts formas augšpusē
 the label you want	workflow	lv	iezīme, kādu vēlies

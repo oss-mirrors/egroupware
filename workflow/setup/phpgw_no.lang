@@ -8,7 +8,7 @@
 %1 menu	workflow	no	%1 Meny
 %1 monitoring	workflow	no	%1 overvåkes
 %1 processes (%2 active) (%3 being_run)	workflow	no	%1 prosesser (%2 aktive ) (%3 being_run)
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	no	/arbeidsflytskatalogen eksisterer ikke og kunne ikke skapes.  Få edb-ansvarlig til å kontrollere konfigurasjonen.
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	no	/arbeidsflytskatalogen eksisterer ikke og kunne ikke skapes.  Få edb-ansvarlig til å kontrollere konfigurasjonen.
 <strong>%owner%</strong> is the instance owner email	workflow	no	<strong>%owner%</strong> er e-maildresse til eier av instansen
 <strong>%property_xx%</strong> is the content of the instance's property xx	workflow	no	<strong>%property_XX%</strong> er innholdet i instansens tilhørigheter XX
 <strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	no	<strong>%role_XX%</strong> er alle emailer til alle brukere mappet til denne rollen XX
@@ -96,7 +96,7 @@ auto-release on leaving activity	admin	no	Frigjør automatisk når aktivitet forla
 automatic	workflow	no	Automatisk
 bad role type	workflow	no	Feil rolletype
 bad user	workflow	no	Feil bruker
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	no	Basekatalogen eksisterer ikke; be edb-ansvarlig om å kontrollere den globale konfigurasjonen.
+base directory does not exist, please ask adminstrator to check the global configuration	common	no	Basekatalogen eksisterer ikke; be edb-ansvarlig om å kontrollere den globale konfigurasjonen.
 bcc:	workflow	no	Bcc:
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	no	Vær forsiktig med interaktiv aktivitet, slutt og start på disse aktivitene er fler enn en.
 being run	workflow	no	kjøres nå
@@ -401,7 +401,7 @@ template	workflow	no	mal
 test concistency	workflow	no	Test for konsistens
 test consistency of datas in the database	workflow	no	Test for konsistens av data i databasen
 test local installation	workflow	no	Test lokal installasjon
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	no	Arbeidsflytskatalogen eksisterer ikke og kunne ikke opprettes.  Kontakt edb-ansvarlig og be vedkommende kontrollere den globale konfigurasjonen.
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	no	Arbeidsflytskatalogen eksisterer ikke og kunne ikke opprettes.  Kontakt edb-ansvarlig og be vedkommende kontrollere den globale konfigurasjonen.
 the activity was not completed	workflow	no	Aktiviteten ble ikke fullført
 the following items must be corrected to be able to activate this process	workflow	no	Følgende enheter må korrigeres for at vi skal kunne aktivisere denne prosessen
 the instance title is shown on top of the form	admin	no	Navn på instansen vises i toppen av skjermbildet

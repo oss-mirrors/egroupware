@@ -8,7 +8,7 @@
 %1 menu	workflow	zh-tw	%1 個選單
 %1 monitoring	workflow	zh-tw	%1 個訂閱中
 %1 processes (%2 active) (%3 being_run)	workflow	zh-tw	%1 個流程（%2 啟用中，%3  執行中）
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	zh-tw	/workflow 資料夾不存在而且無法建立，請詢問系統管理員網站設定是否正確
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	zh-tw	/workflow 資料夾不存在而且無法建立，請詢問系統管理員網站設定是否正確
 <strong>%owner%</strong> is the instance owner email	workflow	zh-tw	<strong>%owner%</strong> 是實例擁有人的信箱
 <strong>%property_xx%</strong> is the content of the instance's property xx	workflow	zh-tw	<strong>%property_XX%</strong> 是實例的屬性內容 XX
 <strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	zh-tw	<strong>%role_XX%</strong> 是所有對應到角色 XX 的使用者信箱
@@ -106,7 +106,7 @@ autorouted activities does not need to be sent by any user after their execution
 bad parameter for setagents, the parameter should be an array	workflow	zh-tw	setAgents的參數錯誤，參數必須是一個陣列
 bad role type	workflow	zh-tw	錯誤的角色類型
 bad user	workflow	zh-tw	錯誤的使用者
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	zh-tw	主要目錄不存在，請聯絡管理人員新增全域設定
+base directory does not exist, please ask adminstrator to check the global configuration	common	zh-tw	主要目錄不存在，請聯絡管理人員新增全域設定
 bcc:	workflow	zh-tw	密件副本：
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	zh-tw	在互動的活動中請小心，這些活動可能有多個開始與結束時間。
 being run	workflow	zh-tw	開始執行
@@ -500,7 +500,7 @@ template	workflow	zh-tw	樣板
 test concistency	workflow	zh-tw	測試一致性
 test consistency of datas in the database	workflow	zh-tw	測試資料庫的資料一致性
 test local installation	workflow	zh-tw	測試本地安裝
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	zh-tw	資料夾 /workflow 不存在且無法建立，請聯絡管理員來檢查全域設定
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	zh-tw	資料夾 /workflow 不存在且無法建立，請聯絡管理員來檢查全域設定
 the activity was not completed	workflow	zh-tw	這個活動沒有完成
 the default user will only be set if he is mapped to a role on the activity	workflow	zh-tw	預設使用者將只會在對應到活動角色時被設定
 the following items must be corrected to be able to activate this process	workflow	zh-tw	進行這個處理程序前必須先修正下面這些項目

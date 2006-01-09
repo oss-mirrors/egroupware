@@ -1,4 +1,4 @@
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	ca	El directori /workflow no existeix i no s'ha pogut crear. Si us plau, demaneu al vostre administrador que comprovi la configuració global
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	ca	El directori /workflow no existeix i no s'ha pogut crear. Si us plau, demaneu al vostre administrador que comprovi la configuració global
 abort instance	workflow	ca	avortar instància
 aborted	workflow	ca	avortat
 act	workflow	ca	activitat
@@ -39,7 +39,7 @@ admin processes sources	workflow	ca	Orígens dels processos administratius
 all	workflow	ca	Tots
 auto routed	workflow	ca	Autoencaminat
 automatic	workflow	ca	Automàtic
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	ca	El directori base no existeix, si us plau, demaneu a l'administrador que comprovi la configuració global
+base directory does not exist, please ask adminstrator to check the global configuration	common	ca	El directori base no existeix, si us plau, demaneu a l'administrador que comprovi la configuració global
 being run	workflow	ca	s'està executant
 cannot add transition. only split activities can have more than one outbound transition	workflow	ca	No es pot afegir la transició. Només les activitats separades poden tenir més d'una transició de sortida.
 circular reference found. some activity has a transition leading to itself	workflow	ca	S'ha trobat una referència circular. Algunes activitats tenen una transició principal cap a elles mateixes
@@ -167,7 +167,7 @@ stop	workflow	ca	atura
 switch	workflow	ca	commutador
 switch construct	workflow	ca	Constructor del commutador
 template	workflow	ca	plantilla
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	ca	El directori /workflow no existeix i no es pot crear. Si us plau, demaneu al vostre administrador que comprovi la configuració global
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	ca	El directori /workflow no existeix i no es pot crear. Si us plau, demaneu al vostre administrador que comprovi la configuració global
 the following items must be corrected to be able to activate this process	workflow	ca	S'han de corregir els següents elements per poder activar aquest procés
 there are no activities available	workflow	ca	No hi ha activitats disponibles
 there are no instances available	workflow	ca	No hi ha instàncies disponibles

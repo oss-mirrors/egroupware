@@ -8,7 +8,7 @@
 %1 menu	workflow	fr	%1 Menu
 %1 monitoring	workflow	fr	%1 Surpervision
 %1 processes (%2 active) (%3 being_run)	workflow	fr	%1 processus (%2 actifs) (%3 en cours)
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	fr	le répertoire /workflow n'existe pas et n'a pas pu être créé, s'il vous plaît demandez à l'administrateur de vérifier la configuration globale de l'application.
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	fr	le répertoire /workflow n'existe pas et n'a pas pu être créé, s'il vous plaît demandez à l'administrateur de vérifier la configuration globale de l'application.
 <strong>%owner%</strong> is the instance owner email	workflow	fr	<strong>%owner%</strong> est l'email du propriétaire de l'instance.
 <strong>%property_xx%</strong> is the content of the instance's property xx	workflow	fr	<strong>%property_XX%</strong> est le contenu de la propriété XX de l'instance.
 <strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	fr	<strong>%role_XX%</strong> sont les emails de tous les utilisateurs mappés sur le role XX.
@@ -97,7 +97,7 @@ automatic	workflow	fr	Automatique
 bad parameter for setagents, the parameter should be an array	workflow	fr	mauvais paramètre pour setAgents, le paramètre devrait être un vecteur
 bad role type	workflow	fr	mauvais type de rôle
 bad user	workflow	fr	mauvais utilisateur
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	fr	Le répertoire de stockage n'existe pas, veuillez contacter l'administrateur pour qu'il vérifie la configuration globale
+base directory does not exist, please ask adminstrator to check the global configuration	common	fr	Le répertoire de stockage n'existe pas, veuillez contacter l'administrateur pour qu'il vérifie la configuration globale
 bcc:	workflow	fr	Bcc :
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	fr	Attention avec les activité interactives, le début et la fin de ces activités sont multiples.
 being run	workflow	fr	en cours d'éxécution
@@ -447,7 +447,7 @@ subject:	workflow	fr	Sujet :
 switch	workflow	fr	Condition
 switch construct	workflow	fr	Constructeur de Condition
 template	workflow	fr	template
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	fr	Le répertoire de stockage des fichiers du workflow (/workflow) n'existe pas et ne peut être créée. Veuillez demander à l'administrateur de vérifier le configuration globale
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	fr	Le répertoire de stockage des fichiers du workflow (/workflow) n'existe pas et ne peut être créée. Veuillez demander à l'administrateur de vérifier le configuration globale
 the activity was not completed	workflow	fr	l'activité n'a pas été complétée
 the following items must be corrected to be able to activate this process	workflow	fr	Les éléments suivants doivents être corrigés pour pouvoir activer ce processus
 the instance title is shown on top of the form	admin	fr	le titre de l'instance est montré en haut du formulaire

@@ -8,7 +8,7 @@
 %1 menu	workflow	en	%1 Menu
 %1 monitoring	workflow	en	%1 Monitoring
 %1 processes (%2 active) (%3 being_run)	workflow	en	%1 processes (%2 active) (%3 being_run)
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	en	/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	en	/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration
 <strong>%owner%</strong> is the instance owner email	workflow	en	<strong>%owner%</strong> is the instance owner email
 <strong>%property_xx%</strong> is the content of the instance's property xx	workflow	en	<strong>%property_XX%</strong> is the content of the instance's property XX
 <strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	en	<strong>%role_XX%</strong> are all the emails of all users mapped to the role XX
@@ -106,7 +106,7 @@ autorouted activities does not need to be sent by any user after their execution
 bad parameter for setagents, the parameter should be an array	workflow	en	bad parameter for setAgents, the parameter should be an array
 bad role type	workflow	en	Bad role type
 bad user	workflow	en	Bad user
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	en	Base directory does not exist, please ask adminstrator to check the global configuration
+base directory does not exist, please ask adminstrator to check the global configuration	common	en	Base directory does not exist, please ask adminstrator to check the global configuration
 bcc:	workflow	en	Bcc:
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	en	Be carefull with interactive activity, end and start of theses activities are multiple.
 being run	workflow	en	being run
@@ -500,7 +500,7 @@ template	workflow	en	template
 test concistency	workflow	en	Test Concistency
 test consistency of datas in the database	workflow	en	Test Consistency of datas in the database
 test local installation	workflow	en	Test local installation
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	en	The /workflow directory does not exist and could not be created. Please ask your administrator to check the global configuration
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	en	The /workflow directory does not exist and could not be created. Please ask your administrator to check the global configuration
 the activity was not completed	workflow	en	The activity was not completed
 the default user will only be set if he is mapped to a role on the activity	workflow	en	The default user will only be set if he is mapped to a role on the activity
 the following items must be corrected to be able to activate this process	workflow	en	The following items must be corrected to be able to activate this process

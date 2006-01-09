@@ -38,7 +38,7 @@ admin processes sources	workflow	sl	Viri oskrbnikovih procesov
 all	workflow	sl	Vsi
 auto routed	workflow	sl	Samodejno usmerjen
 automatic	workflow	sl	Samodejen
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	sl	Osnovna mapa ne obstaja, prosite oskrbnika, da preveri globalno konfiguracijo.
+base directory does not exist, please ask adminstrator to check the global configuration	common	sl	Osnovna mapa ne obstaja, prosite oskrbnika, da preveri globalno konfiguracijo.
 being run	workflow	sl	teče
 cannot add transition. only split activities can have more than one outbound transition	workflow	sl	Ne morem dodati prehoda. Le razcepne aktivnosti imajo lahko več kot en izhodni prehod.
 circular reference found. some activity has a transition leading to itself	workflow	sl	Najdena krožna referenca. Neka aktivnost vodi sama do sebe.
@@ -163,7 +163,7 @@ stop	workflow	sl	ustavi
 switch	workflow	sl	preklopi
 switch construct	workflow	sl	Preklopi obliko
 template	workflow	sl	predloga
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	sl	Mapa /workflow ne obstaja in je ni mogoče ustvariti. Prosite oskrbnika, da preveri globalno konfiguracijo.
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	sl	Mapa /workflow ne obstaja in je ni mogoče ustvariti. Prosite oskrbnika, da preveri globalno konfiguracijo.
 the following items must be corrected to be able to activate this process	workflow	sl	Naslednje zadeve je potrebno popraviti, da bo aktiviranje procesa mogoče:
 there are no activities available	workflow	sl	Ni razpoložljivih dejavnosti
 there are no instances available	workflow	sl	Ni razpoložljivih primerkov

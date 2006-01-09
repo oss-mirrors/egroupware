@@ -8,7 +8,7 @@
 %1 menu	workflow	es-es	Menú %1
 %1 monitoring	workflow	es-es	Monitorización de %1
 %1 processes (%2 active) (%3 being_run)	workflow	es-es	%1 procesos (%2 activos) (%3 en ejecución)
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	es-es	El directorio /workflow no existe y no se pudo crear. Por favor, pida al administrador que compruebe la configuración global
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	es-es	El directorio /workflow no existe y no se pudo crear. Por favor, pida al administrador que compruebe la configuración global
 <strong>%owner%</strong> is the instance owner email	workflow	es-es	<strong>%owner%</strong> es el correo del propietario de la instancia
 <strong>%property_xx%</strong> is the content of the instance's property xx	workflow	es-es	<strong>%property_XX%</strong> es el contenido de la propiedad XX de la instancia
 <strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	es-es	<strong>%role_XX%</strong> son todos los correos de todos los usuarios mapeados al rol XX
@@ -106,7 +106,7 @@ autorouted activities does not need to be sent by any user after their execution
 bad parameter for setagents, the parameter should be an array	workflow	es-es	parámetro erróneo para setAgents. El parámetro debe ser un array
 bad role type	workflow	es-es	Tipo de rol incorrecto
 bad user	workflow	es-es	Usuario incorrecto
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	es-es	El directorio base no existe. Por favor, pida al administrador que compruebe la configuración global
+base directory does not exist, please ask adminstrator to check the global configuration	common	es-es	El directorio base no existe. Por favor, pida al administrador que compruebe la configuración global
 bcc:	workflow	es-es	Cco:
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	es-es	Tenga cuidado con la actividad interactiva, porque el fin y el inicio de estas actividades son múltiples.
 being run	workflow	es-es	siendo ejecutado
@@ -499,7 +499,7 @@ template	workflow	es-es	plantilla
 test concistency	workflow	es-es	Probar consistencia
 test consistency of datas in the database	workflow	es-es	Probar consistencia de los datos en la base de datos
 test local installation	workflow	es-es	Probar instalación local
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	es-es	El directorio /workflow no existe y no se pudo crear. Por favor, pida a su administrador que compruebe la configuración global
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	es-es	El directorio /workflow no existe y no se pudo crear. Por favor, pida a su administrador que compruebe la configuración global
 the activity was not completed	workflow	es-es	No se completó la actividad
 the default user will only be set if he is mapped to a role on the activity	workflow	es-es	Sólo se establecerá el usuario predeterminado si tiene asignado un rol en la actividad
 the following items must be corrected to be able to activate this process	workflow	es-es	Deben corregirse los siguientes elementos para poder activar este proceso

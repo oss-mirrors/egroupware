@@ -8,7 +8,7 @@
 %1 menu	workflow	it	Menu %1
 %1 monitoring	workflow	it	Monitorizzazione %1
 %1 processes (%2 active) (%3 being_run)	workflow	it	%1 processi (%2 attivi) (%3 in_esecuzione)
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	it	la directory /workflow non esiste e non può essere creata, prego chiedi all'amministratore di controllare la configurazione globale
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	it	la directory /workflow non esiste e non può essere creata, prego chiedi all'amministratore di controllare la configurazione globale
 <strong>%owner%</strong> is the instance owner email	workflow	it	<strong>%proprietario%</strong> è l'email del proprietario dell'istanza
 <strong>%property_xx%</strong> is the content of the instance's property xx	workflow	it	<strong>%proprietà_XX%</strong> è il contenuto della proprietà XX dell'istanza
 <strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	it	<strong>%ruolo_XX%</strong> sono le email di tutti gli utenti mappati al ruolo XX
@@ -106,7 +106,7 @@ autorouted activities does not need to be sent by any user after their execution
 bad parameter for setagents, the parameter should be an array	workflow	it	parametro non corretto per setAgents, il parametro deve essere un array
 bad role type	workflow	it	Tipo ruolo errato
 bad user	workflow	it	Utente errato
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	it	La directory base non esiste, prego chiedi all'amministratore di controllare la configurazione globale.
+base directory does not exist, please ask adminstrator to check the global configuration	common	it	La directory base non esiste, prego chiedi all'amministratore di controllare la configurazione globale.
 bcc:	workflow	it	Ccn:
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	it	Fai attenzione alle attività interattive, la partenza e la fine di queste attività sono multiple
 being run	workflow	it	in esecuzione
@@ -392,7 +392,7 @@ subject:	workflow	it	Oggetto:
 switch	workflow	it	scambia
 switch construct	workflow	it	Scambia costrutto
 template	workflow	it	template
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	it	La directory /workflow non esiste e non può essere creata. Prego chiedi al tuo amministratore di controllare la configurazione globale
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	it	La directory /workflow non esiste e non può essere creata. Prego chiedi al tuo amministratore di controllare la configurazione globale
 the following items must be corrected to be able to activate this process	workflow	it	Le seguenti entità devono essere corrette per poter attivare questo processo
 the instance title is shown on top of the form	admin	it	il titolo dell'istanza è mostrato nella parte superiore del form
 the label you want	workflow	it	l'etichetta che desideri

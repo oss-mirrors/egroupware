@@ -8,7 +8,7 @@
 %1 menu	workflow	nl	%1 Menu
 %1 monitoring	workflow	nl	%1 Volgen
 %1 processes (%2 active) (%3 being_run)	workflow	nl	%1 processen (%2 actief) (%3 in uitvoering)
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	nl	/workflow directory bestaat niet en kon niet worden aangemaakt. Vraag a.u.b. de beheerder om de globale configuratie te controleren
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	nl	/workflow directory bestaat niet en kon niet worden aangemaakt. Vraag a.u.b. de beheerder om de globale configuratie te controleren
 <strong>%owner%</strong> is the instance owner email	workflow	nl	<strong%owner%</strong> is het emailadres van de instantie eigenaar
 <strong>%property_xx%</strong> is the content of the instance's property xx	workflow	nl	<strong>%property_XX%</strong> is de inhoud van instantie-eigenschap XX
 <strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	nl	<strong>%role_XX%</strong> zijn alle emails van alle gebruikers die gekoppeld zijn aan de rol XX
@@ -106,7 +106,7 @@ autorouted activities does not need to be sent by any user after their execution
 bad parameter for setagents, the parameter should be an array	workflow	nl	verkeerde parameter voor setAgents, de parameter moet een array zijn
 bad role type	workflow	nl	Verkeerd roltype
 bad user	workflow	nl	Verkeerde gebruiker
-base directory does not exist, please ask adminstrator to check the global configuration	workflow	nl	Basisdirectory bestaat niet, vraag a.u.b. de beheerder om de globale configuratie te controleren
+base directory does not exist, please ask adminstrator to check the global configuration	common	nl	Basisdirectory bestaat niet, vraag a.u.b. de beheerder om de globale configuratie te controleren
 bcc:	workflow	nl	BCC:
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	nl	Wees voorzichtig met de interactieve activiteit, eind en begin van deze activiteiten zijn meervoudig.
 being run	workflow	nl	wordt uitgevoerd
@@ -500,7 +500,7 @@ template	workflow	nl	sjabloon
 test concistency	workflow	nl	Consistentie testen
 test consistency of datas in the database	workflow	nl	Consistentie van gegevens in de database testen
 test local installation	workflow	nl	Lokale installatie testen
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	nl	De /workflow map bestaat niet en kon niet worden aangemaakt. Vraag uw beheerder om de globale configuratie te controleren
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	nl	De /workflow map bestaat niet en kon niet worden aangemaakt. Vraag uw beheerder om de globale configuratie te controleren
 the activity was not completed	workflow	nl	De activiteit werd niet voltooid
 the default user will only be set if he is mapped to a role on the activity	workflow	nl	De standaard gebruiker wordt alleen ingesteld als hij is gekoppeld aan een rol van de activiteit
 the following items must be corrected to be able to activate this process	workflow	nl	De volgende items moeten gecorrigeerd worden voordat dit proces geactiveerd kan worden
