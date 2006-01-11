@@ -130,6 +130,9 @@
 				case 'standalone':
 					$ic="mini_".(($interactive == 'y')? 'blue_':'')."hexagon.gif";
 					break;
+				case 'view':
+					$ic="mini_blue_eyes.gif";
+					break;
 				default:
 					$ic="no-activity.gif";
 			}
