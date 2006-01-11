@@ -24,7 +24,7 @@ include_once(EGW_INCLUDE_ROOT.'/projectmanager/inc/class.datasource.inc.php');
  *  - planned end from the planned time and a start-time
  *  - planned start and end from the "real" values
  *
- * @package projectmanager
+ * @package infolog
  * @author RalfBecker-AT-outdoor-training.de
  * @copyright (c) 2005 by RalfBecker-AT-outdoor-training.de
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License

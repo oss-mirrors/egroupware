@@ -17,7 +17,7 @@ include_once(EGW_INCLUDE_ROOT.'/projectmanager/inc/class.datasource.inc.php');
 /**
  * DataSource for the Calendar
  *
- * @package projectmanager
+ * @package calendar
  * @author RalfBecker-AT-outdoor-training.de
  * @copyright (c) 2005 by RalfBecker-AT-outdoor-training.de
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
