@@ -2,6 +2,7 @@
 %1 has a one-to-many with %2 (default:%4) showing %3	jinn	en	%1 has a one-to-many with %2 (default:%4) showing %3
 %1 has a one-to-many with %2 showing %3	jinn	en	%1 has a one-to-many with %2 showing %3
 %1 has a one-to-one relation with %2 using the configuration of object %3	jinn	en	%1 has a one-to-one relation with %2 using the configuration of object %3
+%1 new objects where successfully created%2	jinn	en	%1 new objects where successfully created%2
 %1 records	jinn	en	%1 records
 %1 records per page	jinn	en	%1 records per page
 %1 site obj-fields have been imported.	jinn	en	%1 Site Obj-fields have been imported.
@@ -55,6 +56,7 @@ administrator mode	jinn	en	Administrator Mode
 administrators for site %1	jinn	en	administrators for site %1
 advanced configuration	jinn	en	advanced configuration
 all from	jinn	en	all from
+all records	jinn	en	all records
 all records (unfiltered)	jinn	en	all records (unfiltered)
 all tests were successful. you can go on with the site-objects	jinn	en	All tests were successful. You can go on with the site-objects
 alternative fieldname for display	jinn	en	Alternative Fieldname for display
@@ -78,6 +80,7 @@ back to record list	jinn	en	back to record list
 binary	jinn	en	binary
 binary, contains data	jinn	en	binary, contains data
 binary, empty	jinn	en	binary, empty
+body	jinn	en	Body
 browse	jinn	en	Browse
 browse current object	jinn	en	Browse current object
 browse sites	jinn	en	browse sites
@@ -125,6 +128,7 @@ default number of visable columns	jinn	en	Default number of visable columns
 default order	jinn	en	default order
 default thumb width	admin	en	Default thumb width
 default value	jinn	en	default value
+default value:	jinn	en	default value:
 default:	jinn	en	default:
 delete	jinn	en	Delete
 delete all selected records	jinn	en	delete all selected records
@@ -140,6 +144,7 @@ dev upload path	jinn	en	Development (Test) site upload path
 dev upload url	jinn	en	Dev upload url
 developer links	jinn	en	Developer Links
 development	admin	en	Development
+development (test) site upload path	jinn	en	Development (Test) site upload path
 development server	jinn	en	Development Server
 dimensions	jinn	en	dimensions
 disable the wysiwyg/htmlarea plugin	jinn	en	Disable the WYSIWYG/HTMLArea Plugin
@@ -159,8 +164,10 @@ editors for object %1 in site %2	jinn	en	editors for object %1 in site %2
 empty	jinn	en	empty
 empty filter	jinn	en	empty filter
 error code %1	jinn	en	ERROR CODE %1
+error creating one or more new objects%1	jinn	en	Error creating one or more new Objects%1
 error path_open %1	jinn	en	error opening path %1
 error: the file %1 doesn't exists, please contact the webmaster	jinn	en	ERROR: the file %1 doesn't exists, please contact the webmaster
+events config	jinn	en	Events config
 existing plugin configuration	jinn	en	Existing Plugin Configuration
 export	jinn	en	export
 export all columns	jinn	en	export all columns
@@ -170,6 +177,7 @@ export source	jinn	en	export source
 export this site	jinn	en	export this site
 exporteer object	jinn	en	Exporteer Object
 extra help information for this field	jinn	en	Extra help information for this field
+extra where sql filter	jinn	en	Extra where sql filter
 failed to copy: %1 to %2 ...	jinn	en	failed to copy: %1 to %2 ...
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	en	Failed to open table. Please check if table <i>%1</i> still exists in database
 field	jinn	en	field
@@ -182,6 +190,8 @@ field plugin configuration	jinn	en	field plugin configuration
 field plugins	jinn	en	Field Plugins
 field position	jinn	en	field position
 field to display	jinn	en	field to display
+field to display:	jinn	en	field to display:
+field:	jinn	en	field:
 fieldname	jinn	en	Fieldname
 fields	jinn	en	fields
 fields enclosed by	jinn	en	fields enclosed by
@@ -190,27 +200,36 @@ fields terminated by	jinn	en	fields terminated by
 filename	jinn	en	filename
 filesize	jinn	en	filesize
 filter operator	jinn	en	filter operator
+filterd list	jinn	en	filterd list
 filtered list	jinn	en	filtered list
 first row has field names	jinn	en	first row has field names
+footer	jinn	en	Footer
 form input plugin	jinn	en	form input plugin
 general preferences	jinn	en	General Preferences
 general settings	admin	en	General Settings
+generate html start en end tags	jinn	en	Generate html start en end tags
 give a new timestamp	jinn	en	Give a new timestamp
 give new timestamp	jinn	en	Give new timestamp
 global configuration	jinn	en	Global Configuration
 global site configuration	admin	en	Global site configuration
 go	jinn	en	go
 has a many to many relation with	jinn	en	has a MANY TO MANY relation with
+has a many to many relation with:	jinn	en	has a MANY TO MANY relation with:
 has a one to many relation with	jinn	en	has a ONE TO MANY relation with
+has a one to many relation with:	jinn	en	has a ONE TO MANY relation with:
 has a one-to-one relation with	jinn	en	has a ONE-TO-ONE relation with
+has a one-to-one relation with:	jinn	en	has a ONE-TO-ONE relation with:
+header	jinn	en	Header
 height:	jinn	en	Height:
 hidden	jinn	en	hidden
 hide from menu	jinn	en	Hide from object menu
+hide from object menu	jinn	en	Hide from object menu
 how many columns do you want to be visible by default in list view?	jinn	en	How many columns do you want to be visible by default in List View?
 how many records do you want to list per page?	jinn	en	How many records do you want to list per page?
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	en	image directory does not exist or is not correct ...<br>please check object's upload dir
 image settings	admin	en	Image settings
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	en	ImageMagick directory ( e.g. /usr/X11R6/bin )
+import anyway	jinn	en	import anyway
 import failed	jinn	en	import failed
 import jinn site	jinn	en	Import JiNN Site
 import jinn-object	jinn	en	Import JiNN-Object
@@ -219,6 +238,12 @@ import object from file to this site	jinn	en	Import object from file to this sit
 import site	jinn	en	import site
 import was succesfull	jinn	en	Import was succesfull
 import was succesfull<br>imported one site with	jinn	en	import was succesfull<br>Imported one site with
+incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	en	incompatibility result: Object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file
+incompatibility result: object <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	en	incompatibility result: Object <b>'%2'</b>, property <b>'%1'</b> was not present in the file
+incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	en	incompatibility result: Object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this JiNN version
+incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	en	incompatibility result: Object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this JiNN version
+incompatibility result: site <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	en	incompatibility result: Site <b>'%2'</b>, property <b>'%1'</b> was not present in the file
+incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	en	incompatibility result: Site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this JiNN version
 index	jinn	en	index
 info	jinn	en	info
 information	jinn	en	information
@@ -226,6 +251,8 @@ insert another record after saving	jinn	en	insert another record after saving
 insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	en	Insert JiNN Site Parameters: <li>Insert a JiNN Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>
 insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	en	Insert/Select JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>
 jinn	common	en	JiNN
+jinn - add report	jinn	en	JiNN - Add Report
+jinn - add report from selected	jinn	en	JiNN - Add Report from Selected
 jinn editors menu	jinn	en	JiNN Editors Menu
 jinn main	jinn	en	JiNN Main
 jinn main menu	jinn	en	JiNN Main Menu
@@ -240,14 +267,17 @@ list record(s) in current object	jinn	en	Record list in current object
 list sites	jinn	en	List Sites
 load export profile	jinn	en	load export profile
 load site conf from file	jinn	en	Load site conf from file
+loaded jinn site file	jinn	en	Loaded JiNN site file
 maintainer	common	en	Maintainer
 mandatory	jinn	en	mandatory
 manually enter a new relative file path	jinn	en	Manually enter a new relative file path
 many 2 many relations will not work	jinn	en	Many 2 Many relations will not work
 max records	jinn	en	Max. records
 max. number of previews in form	jinn	en	Max. number of previews in form
+max. records	jinn	en	Max. records
 maximum image width isn	jinn	en	maximum image width isn
 maximum image width isn\	jinn	en	maximum image width isn
+merge	jinn	en	Merge
 moderator mode	jinn	en	Moderator Mode
 months	jinn	en	months
 move down	jinn	en	move down
@@ -257,10 +287,13 @@ moved record one row down.	jinn	en	Moved Record one row down.
 moved record one row up.	jinn	en	Moved Record one row up.
 moved record to last row.	jinn	en	Moved Record to last row.
 name and help info	jinn	en	name and help info
+new from selected	jinn	en	New from selected
 new image size limits.	jinn	en	New image size limits.
+new report	jinn	en	New Report
 no filter	jinn	en	no filter
 no matchs found	jinn	en	No matchs found
 no max. number	jinn	en	No max. number
+no new objects created%1	jinn	en	no new objects created%1
 no object selected. no able to configure this view	jinn	en	No object selected. No able to configure this view
 no objects found for this site.	jinn	en	No objects found for this site.
 no records found	jinn	en	No records found
@@ -274,6 +307,7 @@ object configuration: <li>select a object name for display</li> <li>select a dat
 object event configuration	jinn	en	Object event configuration
 object events configuration	jinn	en	Object Events Configuration
 object id	jinn	en	Object id
+object serialnumber	jinn	en	Object serialnumber
 on_update	jinn	en	on_update
 one or more records not succesfully added.	jinn	en	One or more records NOT succesfully added.
 one or more records not succesfully saved.	jinn	en	One or more records NOT succesfully saved.
@@ -331,7 +365,11 @@ remove	jinn	en	remove
 remove all	jinn	en	Remove all
 replace existing site with the same name?	jinn	en	Replace existing site with the same name?
 replaced existing site named <strong>%1</strong>.	jinn	en	Replaced existing site named <strong>%1</strong>.
+report not saved succesfull	jinn	en	Report NOT saved succesfull
+report saved succesfull	jinn	en	Report saved succesfull
+reports	jinn	en	Reports
 represented by:	jinn	en	represented by:
+reset	jinn	en	Reset
 reset form	jinn	en	reset form
 save	jinn	en	save
 save and add new record	jinn	en	save and add new record
@@ -371,14 +409,17 @@ set site admin	jinn	en	set site admin
 show	jinn	en	show
 show all columns	jinn	en	Show all columns
 show all colums, always	jinn	en	Show all colums, always
+show by default in listview	jinn	en	show by default in listview
 show by default_listview	jinn	en	show by default in listview
 show colomn	jinn	en	show colomn
 show extra table debugging information	jinn	en	Show extra table debugging information
+show in form	jinn	en	Show in form
 show object_arr in msgbox	jinn	en	Show object array in msgbox
 show site_arr in msgbox	jinn	en	Show site array in msgbox
 show sql-statements in msgbox	jinn	en	Show SQL-statements in msgbox
 show upload path	admin	en	Show upload path
 showing	jinn	en	showing
+showing:	jinn	en	showing:
 site beheerders	jinn	en	Site Administrators
 site db host	jinn	en	Site database hostname
 site db name	jinn	en	Site database name
@@ -424,6 +465,7 @@ the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype 
 the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	en	The GIF-filetype is not supported by this server, please click on back and try a different filetype.
 the identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5	jinn	en	The identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5
 the identifyer from this table (%1.id) represented by	jinn	en	The identifyer from this table (%1.id) represented by
+the identifyer from this table (tp_categories.id) represented by:	jinn	en	The identifyer from this table (tp_categories.id) represented by:
 the image normal_size-directory subdirectory does not exist and cannot be created ...	jinn	en	The image normal_size-directory subdirectory does not exist and cannot be created ...
 the image_path normal_size subdirectory is not writable by the webserver ...	jinn	en	The image_path normal_size subdirectory is not writable by the webserver ...
 the image_path thumb subdirectory is not writable by the webserver ...	jinn	en	The image_path thumb subdirectory is not writable by the webserver ...
@@ -442,19 +484,26 @@ there are no directories in this site you have access to.	jinn	en	There are no d
 there are no pages	jinn	en	There are no pages
 there are no records found for this object. you can now at a new record.	jinn	en	There are no records found for this object. You can now at a new record.
 there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	en	There is not site you have access to. Ask your administrator to give you access to your site of site-objects or check if any site exist
+this allows the users to use the report functionalitie	admin	en	This allows the users to use the report functionalitie
 this is for debugging purposes.	jinn	en	This is for debugging purposes.
 this object can only have one record.	jinn	en	This object can only have one record.
+this siteconfiguration, saved using jinn version %1, may be incompatible with this jinn version %2	jinn	en	This siteconfiguration, saved using JiNN version %1, may be incompatible with this JiNN version %2
 this table has not unique identifier field	jinn	en	This table has not unique identifier field
 thisfile	jinn	en	thisfile
 thumb directory does not exist or is not correct ...	jinn	en	thumb directory does not exist or is not correct ...
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	en	thumb directory does not exist or is not correct ...<br>please check object's upload dir
 thumbnail	jinn	en	thumbnail
+title for html-page	jinn	en	title for HTML-page
 toggle all above checkboxes	jinn	en	toggle all above checkboxes
 unexpected error	jinn	en	unexpected error
+unique id	jinn	en	Unique id
 unlimited	jinn	en	unlimited
+upgrade	jinn	en	upgrade
 upload path	jinn	en	Upload path
 upload url	jinn	en	Upload url
+use reports	admin	en	Use reports
 using object configuration	jinn	en	Using object configuration
+using object configuration:	jinn	en	Using object configuration:
 version	jinn	en	version
 view all selected records	jinn	en	view all selected records
 we must upgrade your plugin configuration. <p>please don't click on back or stop untill i'm finished and a close button appears</p>	jinn	en	we must upgrade your plugin configuration. <p>please don't click on back or stop untill I'm finished and a close button appears</p>
@@ -467,6 +516,7 @@ with_checked_files	jinn	en	with checked files
 yes, hide from menu	jinn	en	Yes, hide from menu
 you are on a <b>development</b> server	jinn	en	you are on a <b>development</b> server
 you are on a <b>production</b> server	jinn	en	you are on a <b>production</b> server
+you can only edit your own templates	jinn	en	You can only edit your own templates
 you cannot delete the session filter	jinn	en	you cannot delete the session filter
 you don't have access to this page.	jinn	en	You don't have access to this page.
 you have no access to this file.	jinn	en	You have no access to this file.
