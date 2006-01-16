@@ -120,18 +120,11 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 {
 	Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	#/* Make sure we have a valid notepad and permissions to edit
-	#* it. */
-	#if (empty($notepad)) {
-	#	$notepad = Mnemo::getDefaultNotepad(PERMS_EDIT);
-	#}
-	#
-	#if (!array_key_exists($notepad, Mnemo::listNotepads(false, PERMS_EDIT))) {
-	#	return PEAR::raiseError(_("Permission Denied"));
-	#}
-	
 	$syncProfile		= _egwcontactssync_getSyncProfile();
-	$vcaladdressbook	= CreateObject('addressbook.vcaladdressbook',true);
+	$deviceInfo		= $state->getClientDeviceInfo();
+
+	$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',true);
+	$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
@@ -168,21 +161,6 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
  */
 function _egwcontactssync_export($guid, $contentType)
 {
-#	Horde::logMessage("SymcML: egwcontactssync export guid: $guid contenttype: ".$contentType['ContentType'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
-#    require_once dirname(__FILE__) . '/base.php';
-#
-#    $storage = &Mnemo_Driver::singleton();
-#    $memo = $storage->getByGUID($guid);
-#    if (is_a($memo, 'PEAR_Error')) {
-#        return $memo;
-#    }
-#
-#    if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_EDIT))) {
-#        return PEAR::raiseError(_("Permission Denied"));
-#    }
-#
-
 	if (is_array($contentType)) {
 		$options = $contentType;
 		$contentType = $options['ContentType'];
@@ -191,14 +169,17 @@ function _egwcontactssync_export($guid, $contentType)
 		$options = array();
 	}
 	
-	$syncProfile		= _egwcontactssync_getSyncProfile();
-	$vcaladdressbook	= CreateObject('addressbook.vcaladdressbook',True);
+	$state		= $_SESSION['SyncML.state'];
+	$deviceInfo	= $state->getClientDeviceInfo();
+
+	$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',True);
+	$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 	$contactID		= $GLOBALS['phpgw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
 
-			if($vcard = $vcaladdressbook->getVCard($contactID, $syncProfile))
+			if($vcard = $vcaladdressbook->getVCard($contactID))
 			{
 				Horde::logMessage("SymcML: export good", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 				return $vcard;
@@ -267,9 +248,14 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 
+	$state		= $_SESSION['SyncML.state'];
+	$deviceInfo	= $state->getClientDeviceInfo();
+
+	$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',True);
+	$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+
 	$contactID = $GLOBALS['phpgw']->common->get_egwId($guid);
-	$vcaladdressbook	= CreateObject('addressbook.vcaladdressbook',True);
-    
+
 	switch ($contentType) {
 		case 'text/x-vcard':
 			#Horde::logMessage("SymcML: egwcontactssync replace id: $contactId", __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -285,22 +271,3 @@ function _egwcontactssync_replace($guid, $content, $contentType)
     	}
 }
 
-
-function _egwcontactssync_getSyncProfile()
-{
-	$syncProfile = 0;
-
-	$state = $_SESSION['SyncML.state'];
-	$deviceInfo = $state->getClientDeviceInfo();
-	
-	Horde::logMessage("SymcML: egwcontactssync remote device: ". $deviceInfo['model'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
-	switch($deviceInfo['model'])
-	{
-		case 'SySync Client PalmOS PRO':
-			$syncProfile = 1;
-			break;
-	}
-	
-	return $syncProfile;
-}
