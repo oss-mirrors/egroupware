@@ -18,7 +18,6 @@
 			$config->read_repository();
 			
 			$this->sid		= $config->config_data['sambasid'];
-			$this->mkntpwd		= $config->config_data['mkntpwd'];
 			$this->computerou	= $config->config_data['samba_computerou'];
 			$this->computergroup	= $config->config_data['samba_computergroup'];
 			$this->charSet	= $GLOBALS['egw']->translation->charset();
@@ -28,6 +27,7 @@
 		
 		function changePassword($_accountID, $_newPassword)
 		{
+			$smbHash = &CreateObject('phpgwapi.smbhash');
 			$ldap = $GLOBALS['egw']->common->ldapConnect();
 			$filter = "(&(uidnumber=$_accountID)(objectclass=sambasamaccount))";
 			
@@ -39,9 +39,8 @@
 
 				if($_newPassword)
 				{
-					$newpassword = explode(':',exec($this->mkntpwd.' '.$_newPassword));
-					$newData['sambaLMPassword'] = $newpassword[0];
-					$newData['sambaNTPassword'] = $newpassword[1];
+					$newData['sambaLMPassword'] = $smbHash->lmhash($_newPassword);
+					$newData['sambaNTPassword'] = $smbHash->nthash($_newPassword);
 					$newData['sambaPwdLastSet'] = $newData['sambaPwdCanChange'] = time();
 					$newData['sambaPwdMustChange'] = '2147483647';
 
