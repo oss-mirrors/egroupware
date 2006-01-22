@@ -38,6 +38,26 @@
 		
 		function addProfile()
 		{
+			$allGroups = $GLOBALS['egw']->accounts->get_list('groups');
+			foreach($allGroups as $groupInfo)
+			{
+				$groups[$groupInfo['account_id']] = $groupInfo['account_lid'];
+			}
+			asort($groups);
+
+			$allGroups = array('' => lang('any group'));
+			foreach($groups as $groupID => $groupName)
+			{
+				$allGroups[$groupID] = $groupName;
+			}
+			
+			$applications = array(
+				'calendar'	=> $GLOBALS['egw_info']['apps']['calendar']['title'],
+				'felamimail' 	=> $GLOBALS['egw_info']['apps']['felamimail']['title'],
+			);
+			asort($applications);
+			$applications = array_merge(array('' => lang('any application')),$applications);
+			
 			$this->display_app_header();
 			
 			$this->t->set_file(array("body" => "editprofile.tpl"));
@@ -48,6 +68,8 @@
 			#$this->t->set_var('profile_name',$profileList[0]['description']);
 			$this->t->set_var('smtpActiveTab','1');
 			$this->t->set_var('imapActiveTab','1');
+			$this->t->set_var('application_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_appname]','',$applications, true, "style='width: 250px;'"));
+			$this->t->set_var('group_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_group]','',$allGroups, true, "style='width: 250px;'"));
 			
 			$linkData = array
 			(
