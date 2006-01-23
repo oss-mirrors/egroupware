@@ -55,7 +55,7 @@ function _egwcontactssync_list()
 	
 	$allContacts = ExecMethod('addressbook.vcaladdressbook.read_entries',array());
 
-	Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach((array)$allContacts as $contact)
 	{
@@ -79,7 +79,7 @@ function &_egwcontactssync_listBy($action, $timestamp)
 	// todo
 	// check for acl
 	
-	Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$allChangedItems = $GLOBALS['phpgw']->contenthistory->getHistory('contacts', $action, $timestamp);
 
@@ -118,9 +118,9 @@ function &_egwcontactssync_listBy($action, $timestamp)
  */
 function _egwcontactssync_import($content, $contentType, $notepad = null)
 {
-	Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$syncProfile		= _egwcontactssync_getSyncProfile();
+	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
 
 	$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',true);
@@ -128,7 +128,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$contactId = $vcaladdressbook->addVCard($content,-1,0);
+			$contactId = $vcaladdressbook->addVCard($content,-1);
 			break;
 			
 		default:
@@ -139,7 +139,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 		return $contactId;
 	}
 
-	Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $GLOBALS['phpgw']->common->generate_uid('contacts',$contactId);
 }
 
@@ -181,19 +181,17 @@ function _egwcontactssync_export($guid, $contentType)
 
 			if($vcard = $vcaladdressbook->getVCard($contactID))
 			{
-				Horde::logMessage("SymcML: export good", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 				return $vcard;
 			}
 			else
 			{
-				Horde::logMessage("SymcML: export bad $contactID", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			
 			break;
 		
 		default:
-			Horde::logMessage("SymcML: export unsupported", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			#Horde::logMessage("SymcML: export unsupported", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 }
@@ -260,7 +258,7 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 		case 'text/x-vcard':
 			#Horde::logMessage("SymcML: egwcontactssync replace id: $contactId", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			#$result = ExecMethod('addressbook.vcaladdressbook.update_entry',$contact);
-			$result = $vcaladdressbook->addVCard($content,$contactID,0);
+			$result = $vcaladdressbook->addVCard($content,$contactID);
     			
     			return $result;
     			
