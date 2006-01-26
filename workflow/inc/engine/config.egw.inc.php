@@ -213,6 +213,7 @@ if (!function_exists('galaxia_user_can_monitor'))
 		*/
 		function galaxia_retrieve_user_groups($user=0) 
 		{
+			$user_groups=Array();
 			if (!($user == $GLOBALS['egw_info']['user']['account_id'])) 
 			{
 				//we are asking groups membership for another user than the actually loaded in memory.
@@ -225,11 +226,10 @@ if (!function_exists('galaxia_user_can_monitor'))
 				// we are asking groups membership for the actual user
 				// in egroupware we retrieve the already loaded in memory group list.
 				$memberships = $GLOBALS['egw']->accounts->membership();
-				$user_groups=Array();
 			}
 			foreach((array)$memberships as $key => $value)
 			{
-				$user_groups[]=($value['account_id']);
+				if (!( (is_null($value)) || ($value=='') )) $user_groups[]=($value['account_id']);
 			}
 			if (empty($user_groups)) return false;
 			return $user_groups;
