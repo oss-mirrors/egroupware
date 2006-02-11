@@ -1,29 +1,74 @@
+(don't offer the possibility)	admin	hu	(ne ajánlja fel a lehetõséget)
+add document to category	wiki	hu	Dokumentum kategorizálása
 added	wiki	hu	Hozzáadva
+admins	wiki	hu	adminisztrátorok
+allow anonymous access	admin	hu	anoním hozzáférések engedélyezése
+anonymous password	admin	hu	Anoním jelszó
+anonymous session type	admin	hu	Anoním Viszony Tpus
+anonymous username	admin	hu	anoním felhasználónév
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	hu	Automatikusan átalakítsa szerkesztéskor a wiki-szintaktikát ritchtexté?
 block	wiki	hu	Blokk
+block / unblock hosts	common	hu	Hosztok blokkolása / engedélyezése
+blocked ip address ranges	wiki	hu	Blokkol IP címtartomány
 cancel without saving	wiki	hu	Változtatások eldobása
 changed	wiki	hu	Változott
+changes by last author	wiki	hu	Az utolsó szerzõ módosításai
 columns	wiki	hu	Oszlopok
 compute difference	wiki	hu	Különbség számítása
+converts the page to richtext	wiki	hu	Oldal konvertálása ritchtext formába
 current version	wiki	hu	Jelénlegi változat
 deleted	wiki	hu	Törölt
 deletes this page	wiki	hu	Oldal törlése
+difference between versions	wiki	hu	Változatonkénti eltérések
+different languages can have different titles	wiki	hu	minden nyelven saját címet lehet megadni
+document last modified	wiki	hu	Utolsó módosítás
 edit this document	wiki	hu	Dokumentum szerkesztése
+edit with preview	admin	hu	Szerkesztés elõnézettel
 editable	admin	hu	szerkeszthetõ
 editing	wiki	hu	Szerkesztés
+enable free links	admin	hu	Szabad linkek engedélyezése
+enable wiki links	admin	hu	Wiki linkek engedélyezése
+error creating temporary file.	wiki	hu	Hiba az ideiglenes fájl létrehozásakor.
+error writing to temporary file.	wiki	hu	Hiba az ideiglenes fájl írásakor.
 everyone	wiki	hu	bárki
+find	wiki	hu	Keresés
+history	wiki	hu	napló
+interwikiprefix	admin	hu	InterWikiElõtag
+load	wiki	hu	Betöltés
+lock / unlock pages	common	hu	Oldalak zárolása / engedélyezése
 locked	wiki	hu	Zárolt
 newer	wiki	hu	Újabb
+no never	admin	hu	Nem, soha
+no only on request	admin	hu	Nem, csak igény esetén
+not set	wiki	hu	nincs megadva
 older	wiki	hu	Régebbi
+only if browser supports a richtext-editor	admin	hu	Csak ha a böngészõ támogatja a ritchtext-szerkesztõt
 preview	wiki	hu	Elõnézet
 preview of current version	wiki	hu	Jelenlegi változat elõnézete
 readonly	admin	hu	csak olvasható
 recent changes	wiki	hu	Legfrissebb változások
+renames page to the given name and language	wiki	hu	Az oldal átnevezése a megadott névre és nyelvre
+richtext	wiki	hu	Ritchtext
 rows	wiki	hu	Sorok
+save the changes and exit	wiki	hu	Módosítások mentése, majd kilépés
+saves and continues editing	wiki	hu	Mentés, majd a szerkesztés folytatása
+site configuration	wiki	hu	Webhely beállításai
 summary	wiki	hu	Összegzés
 summary of change	wiki	hu	Változások összefoglalója
 this page can not be edited.	wiki	hu	Ez az oldal nem szerkeszthetõ.
 twin pages	wiki	hu	Iker oldalak
+unblock	wiki	hu	Engedélyez
+updates the preview	wiki	hu	Elõnézet frissítése
+url of the upload directory	admin	hu	A feltöltési könyvár URL-je
 users	wiki	hu	felhasználók
+view document history	wiki	hu	A dokumentum naplójának megtekintése
+who should be able to edit this page	wiki	hu	azok, akik ezt az oldal szerkeszthetik
+who should be able to read this page	wiki	hu	azok, akik ezt az oldalt megtekinthetik
 wiki	common	hu	Wiki
 wiki administration	wiki	hu	Wiki adminisztráció
 wiki menu	wiki	hu	Wiki menü
+yes always	admin	hu	Igen, mindig
+you have been denied access to this site.	wiki	hu	A webhely elérése megtagadva.
+you have entered an invalid user name.	wiki	hu	Érvénytelen felhasználónév lett megadva.
+your changes	wiki	hu	Az Ön változtatásai
+your user name is "%1".	wiki	hu	Az Ön felhasználóneve: %1.
