@@ -105,7 +105,7 @@ error opening	felamimail	eu	Errorea irekitzean
 every	felamimail	eu	guztiak
 every %1 days	felamimail	eu	guztiak %1 egunetan
 expunge	felamimail	eu	Deuseztu
-felamimail	common	eu	E-Posta
+felamimail	common	eu	FelaMiMail
 file into	felamimail	eu	Filtroa
 files	felamimail	eu	artxiboak
 filter active	felamimail	eu	Filtro aktiboa
@@ -257,7 +257,7 @@ rename	felamimail	eu	Izena aldatu
 rename a folder	felamimail	eu	Karpeta baten izena aldatu
 rename folder	felamimail	eu	Karpeta izena aldatu
 renamed successfully!	felamimail	eu	Izena aldatua izan da
-replied	felamimail	eu	erantzundakoa
+replied	felamimail	eu	erantzunda
 reply	felamimail	eu	Erantzun
 reply all	felamimail	eu	Erantzun guztiei
 reply to	felamimail	eu	Erantzun
