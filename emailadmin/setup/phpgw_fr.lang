@@ -5,6 +5,9 @@ admin passwort	emailadmin	fr	Mot de passe administrateur
 admin username	emailadmin	fr	Nom d'utilisateur de l'administrateur
 advanced options	emailadmin	fr	Options avancées
 alternate email address	emailadmin	fr	Adresse email alternative
+any application	emailadmin	fr	Toutes les applications
+any group	emailadmin	fr	Tous les groupes
+application	emailadmin	fr	Application
 cyrus imap server	emailadmin	fr	Serveur Cyrus IMAP
 cyrus imap server administration	emailadmin	fr	Administration du serveur Cyrus IMAP
 default	emailadmin	fr	défaut

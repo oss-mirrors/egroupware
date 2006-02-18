@@ -1,0 +1,68 @@
+add profile		sk	Prida» profil
+admin dn		sk	správcov dn
+admin password		sk	heslo správcu
+admin passwort		sk	heslo správcu
+admin username		sk	pou¾ívateµské meno správcu
+advanced options		sk	Roz¹írené mo¾nosti
+alternate email address		sk	alternatívna emailová adresa
+cyrus imap server		sk	Cyrus IMAP Server
+cyrus imap server administration		sk	administrácia Cyrus IMAP Servera
+default		sk	¹tandardný
+do you really want to delete this profile		sk	Naozaj chcete zmaza» tento Profil
+domainname		sk	názov domény
+edit email settings		sk	upravi» nastavenia emailu
+email account active		sk	emailový úèet aktívny
+email address		sk	emailová adresa
+enable cyrus imap server administration		sk	zapnú» administráciu Cyrus IMAP Servera
+enable sieve		sk	zapnú» Sieve
+enter your default mail domain (from: user@domain)		sk	Zadajte va¹u predvolenú doménu (z tvaru: user@domain|
+forward also to		sk	preposla» taktie¾ (komu)
+forward email's to		sk	preposla» emaily (kam)
+forward only		sk	preposla» iba
+imap admin password		sk	heslo správcu IMAP
+imap admin user		sk	pou¾ívateµ pre správu IMAP
+imap c-client version < 2001		sk	IMAP C-klient verzia < 2001
+imap server hostname or ip address		sk	názov (hostname) alebo IP adresa IMAP servera
+imap server logintyp		sk	typ prihlásenia IMAP servera
+imap server port		sk	port IMAP servera
+imap/pop3 server name		sk	názov IMAP/POP3 servera
+in mbyte		sk	v Megabajtoch
+ldap basedn		sk	LDAP basedn
+ldap server		sk	LDAP server
+ldap server accounts dn		sk	DN úètov LDAP servera
+ldap server admin dn		sk	DN správcu LDAP servera
+ldap server admin password		sk	heslo správcu LDAP servera
+ldap server hostname or ip address		sk	názov (hostname) alebo IP adresa LDAP servera
+ldap settings		sk	nastavenia LDAP
+leave empty for no quota		sk	ak nechcete kvóty, ponechajte prázdne
+mail settings		sk	nastavenia Po¹ty
+name of organisation		sk	Názov organizácie
+no alternate email address		sk	¾iadna alternatívna emailová adresa
+no forwarding email address		sk	¾iadna emailová adresa pre preposielanie
+pop3 server hostname or ip address		sk	názov (hostname) alebo IP adresa POP3 servera
+pop3 server port		sk	port POP3 servera
+postfix with ldap		sk	Postfix + LDAP
+profile list		sk	Zoznam profilov
+profile name		sk	Názov profilu
+qmaildotmode		sk	qmail bodkový re¾im
+qouta size in mbyte		sk	veµkos» kvóty v Megabajtoch
+quota settings		sk	nastavenia kvóty
+remove		sk	odstráni»
+select type of imap/pop3 server		sk	Vyberte typ IMAP/POP3 servera
+select type of smtp server		sk	Vyberte typ SMTP servera
+sieve server hostname or ip address		sk	názov (hostname) alebo IP Sieve servera
+sieve server port		sk	port Sieve servera
+sieve settings		sk	nastavenia Sieve
+smtp server name		sk	názov SMTP servera
+smtp-server hostname or ip address		sk	názov (hostname) alebo IP adresa SMTP servera
+smtp-server port		sk	port SMTP servera
+standard		sk	©tandard
+standard imap server		sk	©tandardný IMAP server
+standard pop3 server		sk	©tandardný POP3 server
+standard smtp-server		sk	©tandardný SMTP server
+use ldap defaults		sk	pou¾i» predvolené hodnoty LDAP
+use smtp auth		sk	Pou¾i» SMTP autentifikáciu
+use tls authentication		sk	Pou¾i» TLS autentifikáciu
+use tls encryption		sk	Pou¾i» TLS kryptovanie
+users can define their own emailaccounts		sk	Pou¾ívatelia mô¾u definova» ich vlastné emailové úèty
+virtual mail manager		sk	Virtual MAIL ManaGeR

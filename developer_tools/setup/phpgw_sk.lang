@@ -28,7 +28,7 @@ loading source langfile	developer_tools	sk	Nahrávam zdrojový jazykový súbor
 loading target langfile	developer_tools	sk	Nahrávam cieµový jazykový súbor
 loads the selected lang-files, to be modified in the next steps	developer_tools	sk	Nahrá vybrané jazykové súbory, ktoré majú by» zmenené v nasledujúcich krokoch
 message	developer_tools	sk	Správa
-message_id in english	developer_tools	sk	id správy v angliètine
+message_id in english	developer_tools	sk	ID správy v angliètine
 no file	developer_tools	sk	¾iadny súbor
 ok	developer_tools	sk	ok
 original	developer_tools	sk	Originál
