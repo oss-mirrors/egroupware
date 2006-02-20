@@ -121,7 +121,7 @@ class SieveSession {
 	$authstr = $this->proxy . "\x00" . $this->uid . "\x00" . $this->passwd;
 	$encoded = base64_encode($authstr);
 	$len = strlen($encoded);
-	fputs($this->socket,"AUTHENTICATE \"PLAIN\" \{$len+}\r\n");
+	fputs($this->socket,"AUTHENTICATE \"PLAIN\" {". $len ."+}\r\n");
 	fputs($this->socket,"$encoded\r\n");
 	$said = $this->read();
 
@@ -359,7 +359,7 @@ class SieveSession {
 			{
 				$len = strlen($script);
 			}
-			fputs($this->socket,"PUTSCRIPT \"$scriptfile\" \{$len+}\r\n");
+			fputs($this->socket,"PUTSCRIPT \"$scriptfile\" {". $len ."+}\r\n");
 			fputs($this->socket,"$script\r\n");
 			
 			$said = '';
