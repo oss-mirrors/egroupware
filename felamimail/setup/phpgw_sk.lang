@@ -1,0 +1,86 @@
+(no subject)	felamimail	sk	(bez predmetu)
+(only cc/bcc)	felamimail	sk	(iba Kópia/Skrytá kópia)
+(unknown sender)	felamimail	sk	(neznámy odosielateµ)
+activate	felamimail	sk	Aktivova»
+activate script	felamimail	sk	aktivova» skript
+add address	felamimail	sk	Prida» adresu
+add rule	felamimail	sk	Prida» pravidlo
+add script	felamimail	sk	Prida» skript
+add to %1	felamimail	sk	Prida» do %1
+add to address book	felamimail	sk	Prida» do adresára
+add to addressbook	felamimail	sk	Prida» do adresára
+additional info	felamimail	sk	Ïal¹ie info
+address book	felamimail	sk	Adresár
+address book search	felamimail	sk	Vyhµadávanie v Adresári
+after message body	felamimail	sk	Za telom správy
+all address books	felamimail	sk	V¹etky Adresáre
+all folders	felamimail	sk	V¹etky prieèinky
+all of	felamimail	sk	v¹etko z
+allways a new window	felamimail	sk	v¾dy nové okno
+always show html emails	felamimail	sk	V¾dy zobrazi» HTML správy
+any of	felamimail	sk	ktorýkoµvek z
+anyone	felamimail	sk	ktokoµvek
+as a subfolder of	felamimail	sk	ako podprieèinok (èoho)
+attachments	felamimail	sk	Prílohy
+auto refresh folder list	felamimail	sk	Automaticky obnovi» zoznam prieèinkov
+back to folder	felamimail	sk	Naspa» do prieèinka
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	sk	Na základe zadaných kritérií, príchodzie správy mô¾u ma» rozliènú farbu pozadia v zozname správ. Je to pomôcka pre µah¹ie rozlí¹enie odosielateµa, najmä v prípade mailing listov.
+bcc	felamimail	sk	Skrytá kópia
+before headers	felamimail	sk	Pred hlavièkou
+between headers and message body	felamimail	sk	Medzi hlavièkou a telom správy
+body part	felamimail	sk	èas» tela
+can't connect to inbox!!	felamimail	sk	nedá sa pripoji» k INBOX-u!
+cc	felamimail	sk	Kópia
+change folder	felamimail	sk	Zmeni» prieèinok
+check message against next rule also	felamimail	sk	skontrolova» správu aj voèi ïal¹iemu pravidlu
+checkbox	felamimail	sk	Za¹krtávacie políèko
+click here to log back in.	felamimail	sk	Kliknite som pre opätovné prihlásenie.
+click here to return to %1	felamimail	sk	Kliknite sem pre návrat do %1
+close all	felamimail	sk	zavrie» v¹etko
+close this page	felamimail	sk	zavrie» túto stránku
+close window	felamimail	sk	Zavrie» okno
+color	felamimail	sk	Farba
+compose	felamimail	sk	Nová správa
+compress folder	felamimail	sk	Zhutni» prieèinok
+configuration	felamimail	sk	Nastavenia
+contains	felamimail	sk	obsahuje
+create	felamimail	sk	Vytvori»
+create folder	felamimail	sk	Vytvori» prieèinok
+create sent	felamimail	sk	Vytvori» [Odoslaná po¹ta]
+create subfolder	felamimail	sk	Vytvori» podprieèinok
+create trash	felamimail	sk	Vytvori» [Odpadkový kô¹]
+created folder successfully!	felamimail	sk	Prieèinok vytvorený!
+dark blue	felamimail	sk	Tmavá modrá
+dark gray	felamimail	sk	Tmavá sivá
+dark green	felamimail	sk	Tmavá zelená
+dark yellow	felamimail	sk	Tmavá ¾ltá
+date(newest first)	felamimail	sk	Dátum (nov¹ie na zaèiatok)
+date(oldest first)	felamimail	sk	Dátum (star¹ie na zaèiatok)
+days	felamimail	sk	dni
+deactivate script	felamimail	sk	deaktivova» skript
+default sorting order	felamimail	sk	Predvolené triedenie
+delete all	felamimail	sk	zmaza» v¹etko
+delete folder	felamimail	sk	Zmaza» prieèinok
+delete script	felamimail	sk	zmaza» skript
+delete selected	felamimail	sk	Zmaza» oznaèené
+delete selected messages	felamimail	sk	zmaza» oznaèené správy
+deleted	felamimail	sk	zmazané
+deleted folder successfully!	felamimail	sk	Prieèinok vymazaný!
+disable	felamimail	sk	Vypnú»
+discard message	felamimail	sk	zahodi» správu
+display message in new window	felamimail	sk	Zobrazi» správu v novom okne
+display of html emails	felamimail	sk	Zobrazovanie HTML správ
+display only when no plain text is available	felamimail	sk	Zobrazi» iba keï nie je poruke èistý neformátovaný text
+display preferences	felamimail	sk	Nastavenia zobrazovania
+do it!	felamimail	sk	Vykonaj!
+do not use sent	felamimail	sk	Nepou¾íva» [Odoslana po¹ta]
+do not use trash	felamimail	sk	Nepou¾íva» [Odpadkový kô¹]
+do you really want to delete the '%1' folder?	felamimail	sk	Naozaj chcete vymaza» prieèinok '%1'?
+does not contain	felamimail	sk	neobsahuje
+does not match	felamimail	sk	nezodpovedá
+does not match regexp	felamimail	sk	nezodpovedá regulárnemu výrazu
+don't use sent	felamimail	sk	Nepou¾íva» [Odoslana po¹ta]
+don't use trash	felamimail	sk	Nepou¾íva» [Odpadkový kô¹]
+down	felamimail	sk	dole
+download	felamimail	sk	Stiahnu»
+download this as a file	felamimail	sk	Stiahnu» to do súboru
