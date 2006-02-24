@@ -39,26 +39,26 @@ button type	email	sk	Typ tlaèítka
 cache server data whenever possible	email	sk	ak sa dá, ke¹ova» serverové dáta
 cc	email	sk	Kópia
 cc address	email	sk	Adresa kópie
-change font size in your e-mail pages	email	sk	Zmeò veµkos» písma na svojich e-mailových stránkach
-check flags for type of mails	email	sk	Skontroluj návestia pre typy mailov
+change font size in your e-mail pages	email	sk	Zmeò veµkos» písma na svojich E-mail stránkach
+check flags for type of mails	email	sk	Skontroluj návestia pre typy po¹tových správ
 choose for rename	email	sk	Vyber pre zmenu názvu
 choose to rename	email	sk	vyber pre zmenu názvu
 clear cache	email	sk	Vyma¾ cache
 click here for more info in a new window	email	sk	kliknite pre viac informácií v novom okne
 click here to continue	email	sk	Ak chcete pokraèova», kliknite sem
-click here to edit the settings for this email account.	email	sk	uprav nastavenia pre tento e-mailový úèet
+click here to edit the settings for this email account.	email	sk	uprav nastavenia pre tento po¹tový úèet
 click here to return to your home page.	email	sk	návrat na domovskú stránku
 company	email	sk	Spoloènos»
 compose	common	sk	Vytvor
 compose message	email	sk	vytvor správu
 compose new	common	sk	Vytvor novú
 contains	email	sk	Obsahuje
-could not open this mailbox	email	sk	Nemô¾em otvori» túto mailovú schránku
+could not open this mailbox	email	sk	Nemô¾em otvori» túto po¹tovú schránku
 create (expert)	email	sk	vytvor (expert)
 create a folder	email	sk	Vytvor prieèinok
 current attachments (%1)	email	sk	Poèet  príloh (%1)
-custom e-mail preferences	email	sk	Pou¾ívateµské nastavenia e-mailu
-custom e-mail settings	email	sk	Pou¾ívateµské nastavenia e-mailu
+custom e-mail preferences	email	sk	Pou¾ívateµské predvoµby E-mailu
+custom e-mail settings	email	sk	Pou¾ívateµské nastavenia E-mailu
 debugging page	email	sk	Ladiaca stránka
 dec	email	sk	Dec
 default sorting order	email	sk	©tandardné zotriedenie
@@ -80,10 +80,10 @@ e-mail extra accounts	email	sk	E-mail dodatoèné úèty
 e-mail extra accounts list	email	sk	E-mail zoznam dodatoèných úètov
 e-mail filters	common	sk	E-mail filtre
 e-mail folders	common	sk	E-mail prieèinky
-e-mail inbox filters list	email	sk	E-mail zoznam filtrov pre Do¹lé
+e-mail inbox filters list	email	sk	E-mail zoznam filtrov pre Doruèenú po¹tu
 e-mail preferences	common	sk	E-mail nastavenia
-each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	sk	Ka¾dý pou¾ívateµ má sumárnu stránku ktorá doká¾e zobrazi» rozlièné informácie. Táto voµba zobrazí malý zoznam emailových správ v pou¾ívateµovom prieèinku [Doruèené] v jeho predvolenom emailovom úète na jeho sumárnej domovskej stránke.
-each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	sk	Ka¾dý pou¾ívateµ má sumárnu stránku ktorá doká¾e zobrazi» rozlièné informácie. Táto voµba zobrazí malý zoznam emailových správ v pou¾ívateµovom prieèinku [Doruèené] v jeho predvolenom emailovom úète na jeho sumárnej domovskej stránke.
+each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	sk	Ka¾dý pou¾ívateµ má sumárnu stránku ktorá doká¾e zobrazi» rozlièné informácie. Táto voµba zobrazí malý zoznam po¹tových správ v pou¾ívateµovom prieèinku [Doruèené] v jeho predvolenom po¹tovom úète na jeho sumárnej domovskej stránke.
+each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	sk	Ka¾dý pou¾ívateµ má sumárnu stránku ktorá doká¾e zobrazi» rozlièné informácie. Táto voµba zobrazí malý zoznam po¹tových správ v pou¾ívateµovom prieèinku [Doruèené] v jeho predvolenom po¹tovom úète na jeho sumárnej domovskej stránke.
 edit filters	email	sk	Uprav filtre
 email account name	email	sk	Názov úètu pre E-Mail
 email address	email	sk	Adresa E-Mailu
@@ -93,7 +93,7 @@ email password	email	sk	Heslo pre E-Mail
 email preferences	email	sk	Nastavenia E-Mailu
 email signature	email	sk	Podpis E-Mailu
 email type	common	sk	Typ E-Mailu
-enable this email account	common	sk	Zapni tento e-mailový úèet
+enable this email account	common	sk	Zapni tento po¹tový úèet
 enable utf-7 encoded folder names	email	sk	Zapni utf-7 kódovanie názvov prieèinkov
 enter the search string in the text boxes	email	sk	Zadajte vyhµadávací re»azec do textových polí
 enter your pop	admin	sk	Zadajte POP
@@ -162,11 +162,17 @@ imap mail server hostname or ip address	admin	sk	Meno (hostname) IMAP servra ale
 imap server type	common	sk	Typ IMAP servra
 imap server type - if applicable	email	sk	Typ IMAP servra - ak je pou¾itaµný
 important	email	sk	dôle¾ité
-inbox	email	sk	Do¹lé
+in the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, however all of these need to be ordered from first to last, this options controlls what is first and last. for example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.	email	sk	Na indexovej stránke po¹ty (to je tá, na ktorej sa zobrazujú v¹etky správy v prieèinku), sa správy dajú triedi» podµa dátumu, autora, veµkosti, èasu, predmetu, ALE v¹etko z toho musí by» zoradené od prvého po posledné. Toto nastavenie urèuje, èo je prvé a èo posledné. Napríklad pri triedení podµa dátumu, mô¾e by» prvý mail najnov¹í, alebo najstar¹í.
+inbox	email	sk	Doruèená po¹ta
 input error	email	sk	Chyba vstupu
 input error:	email	sk	Chyba vstupu:
-is not set so your administrator should set email site configuration for mail server hostname or ip address	email	sk	nie je nastavené, adminitrátor by mal nastavi» meno servra alebo IP adresu
-keep	email	sk	Nechaj
+is not set so your administrator should set email site configuration for mail server hostname or ip address	email	sk	nie je nastavené, administrátor by mal nastavi» meno servra alebo IP adresu
+it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	sk	Kódova» base64 tú èas» správy, ktorá nie je prílohou, je v rozpore s RFC ¹tandardom. Upozornenie: táto kontrola sa vykonáva po tom ako je u¾ správa zobrazená, tak¾e namiesto zobrazenia správy mô¾ete obdr¾a» tlaèítko "Zobrazi»".
+jan	email	sk	Jan
+javascript	email	sk	Javascript
+jul	email	sk	Júl
+jun	email	sk	Jún
+keep	email	sk	Ponechaj
 keyword	email	sk	kµúèové slovo
 keywords	email	sk	kµúèové slová
 layout 1	common	sk	Usporiadanie 1
@@ -174,20 +180,30 @@ layout 2	common	sk	Usporiadanie 2
 lines	email	sk	Èiary
 list messages	email	sk	uká¾ správy
 long names	email	sk	dlhé názvy
-mail folder(uw-maildir)	email	sk	Mailový prieèinok (uw-maildir)
+mail folder(uw-maildir)	email	sk	Po¹tový prieèinok (uw-maildir)
+mail server	email	sk	Po¹tový Server
+mail server login type	admin	sk	Typ prihlásenia po¹tového servera
+mail server type	email	sk	Typ po¹tového servera
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	sk	Správa, ktorú odo¹lete, bude pou¾íva» túto adresu ako adresu &quot;Od&quot;. Mô¾e by» toto¾ná s va¹ím prihlasovacím menom, alebo vám ju správca u¾ nastavil. Keï adresát klikne na "Odpoveï", pou¾ije sa táto adresa. Mô¾ete ponecha» prázdne a pou¾ije sa predvolená hodnota.
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	sk	Správa, ktorú odo¹lete, bude pou¾íva» túto adresu ako adresu &quot;Od&quot;. Mô¾e by» toto¾ná s va¹ím prihlasovacím menom, alebo vám ju správca u¾ nastavil. Keï adresát klikne na "Odpoveï", pou¾ije sa táto adresa. Mô¾ete ponecha» prázdne a pou¾ije sa predvolená hodnota.
 manage accounts	email	sk	Správa úètov
 manage folders	email	sk	Správa prieèinkov
+mar	email	sk	Mar
+message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	sk	Správa obsahuje spustiteµnú prílohu (skript alebo exe), ktorej by sa pou¾ívatelia Windows mali vyvarova» a neklika» na òu. Prílohy s takýmito koncovkami, ako sú bat, inf, pif, com, exe, reg, vbs, a scr, sa zvyèajne pou¾ívajú v zá¹kodníckom kóde.
 message list layout	common	sk	Usporiadanie zoznamu správ
 messages	email	sk	Správy
 messages found in folder	email	sk	Správy nájdené v prieèinku
-messages have been moved to	email	sk	správy budú presunuté do
+messages have been moved to	email	sk	správy boli presunuté presunuté do
 more actions	email	sk	Viac akcií
 more choices	email	sk	Viac volieb
-move down	email	sk	Posuò dole
+most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them / default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	sk	Väè¹ina amerických a európskych pou¾ívateµov to nepotrebuje zapína» (pozn.prekl.:Slováci pravdepodobne áno). Ale ak je voµba zapnutá, po¹tový server bude schopný zvládnu» aj ïal¹ie znaky okrem US/ASCII v názvoch prieèinkov. Predvolene je táto mo¾nos» vypnutá. Pou¾ívajte iba ak ste si istí, ¾e ju potrebujete. Funguje len s IMAP servermi, preto¾e POP nepozná prieèinky.
+most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them/ default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	sk	Väè¹ina amerických a európskych pou¾ívateµov to nepotrebuje zapína» (pozn.prekl.:Slováci pravdepodobne áno). Ale ak je voµba zapnutá, po¹tový server bude schopný zvládnu» aj ïal¹ie znaky okrem US/ASCII v názvoch prieèinkov. Predvolene je táto mo¾nos» vypnutá. Pou¾ívajte iba ak ste si istí, ¾e ju potrebujete. Funguje len s IMAP servermi, preto¾e POP nepozná prieèinky.
+move down	email	sk	Posun nadol
 move selected messages into	email	sk	Presuò vybrané správy do
 move this message into	email	sk	Presuò túto správu do
-move up	email	sk	Posuò hore
+move up	email	sk	Posun nahor
 mozilla modern style	email	sk	©týl Mozilla Modern
+name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	sk	Názov po¹tového servera ktorý chcete pou¾i». Malo by by» v tvare &quot;mail.example.com&quot;. Ak ponecháte prázdne, pou¾ije sa predvolená hodnota.
 new	email	sk	Nové
 new account	email	sk	Nový úèet
 new filter	email	sk	Nový filter
@@ -195,8 +211,8 @@ new message	email	sk	Nová správa
 new messages	email	sk	Nové správy
 newest	common	sk	najnov¹ie
 next message	email	sk	Ïal¹ia správa
-no change	email	sk	bez zmany
-no error returned from server	email	sk	®iadna chyba nehlásená zo servra
+no change	email	sk	bezo zmeny
+no error returned from server	email	sk	Zo servera nebola ohlásená ¾iadna chyba
 no message found in folder '%1'	email	sk	®iadna správa nenájdená v prieèinku '%1'
 no next message	email	sk	¾iadna ïal¹ia správa
 no previous message	email	sk	¾iadna predchádzajúca správa
@@ -204,22 +220,25 @@ noia &#64; carlitus style	email	sk	©týl Noia @ Carlitus
 non-standard	email	sk	Ne¹tandardné
 not used	email	sk	nepou¾ité
 notify on delivery	email	sk	Upozorni po doruèení
+nov	email	sk	Nov
 number	common	sk	Èíslo
-number of matches:	email	sk	poèet zhôd:
+number of matches:	email	sk	na¹lo sa:
+oct	email	sk	Okt
 old	email	sk	Staré
 oldest	common	sk	star¹ie
 on	email	sk	Zapnuté
+only needed with the university of washington &quot;uwash&quot; imap server. the default value is &quot;mail&quot; which means your mail folders, other then inbox, are located in a directory called &quot;mail&quot; directly under your &quot;home&quot; directory. this box may be left empty, which means your mail folders are located in your &quot;home&quot; directory, not a subdirectory. if your mail folders are located in a subdirectory of &quot;home&quot; then put the name of that subdirectory here. generally, it is not necessary to use any special slashes or tildes, &quot;home&quot; is always considered the base directory, and the slash bewteen &quot;home&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.	email	sk	Potrebné iba pri IMAP serveri University of Washington &quot;UWash&quot;. Predvolená hodnota je &quot;mail&quot; èo znamená, ¾e va¹e po¹tové prieèinky, okrem INBOX-u, sa nachádzajú v adresári &quot;mail&quot; priamo vo va¹om domovskom (&quot;HOME&quot;) adresári, nie v nejakom podadresári. Ak sa va¹e po¹tové prieèinky nachádzajú v podadresári domovského (&quot;HOME&quot;) adresára, tak sem zadajte názov toho podadresára. Vcelku netreba pou¾íva» ¾iadne ¹peciálne lomítka alebo tildy, preto¾e domovský (&quot;HOME&quot;) adresár sa v¾dy pova¾uje za základný, a lomítko medzi &quot;HOME&quot; a podadresárom sa doplní automaticky, tak¾e ho sem nepí¹te. Zadajte len názov adresára a je to.
 or	common	sk	alebo
 or enter text	email	sk	alebo vlo¾ text
-or you can use custom settings for this email account	email	sk	alebo mô¾ete pou¾i» u¾ívateµské nastavenia pre tento e-mailový úèet
+or you can use custom settings for this email account	email	sk	alebo mô¾ete pou¾i» pou¾ívateµské nastavenia pre tento e-mailový úèet
 organization	email	sk	Organizácia
-persistent email server session	email	sk	trvalé sedenia  z e-mailovým servrom
+persistent email server session	email	sk	trvalé sedenia  po¹tového servera
 phone	email	sk	Telefón
 please fill in everything you need	email	sk	Prosím vyplòte v¹etko, èo potrebujete
 please select a folder to rename	email	sk	Prosím vyberte prieèinok na premenovanie
-please select a message first	email	sk	Prosím vyberte najslôr správu
-please submit a filename to attach	email	sk	Prosím uveïte meno súboru na pripojenie
-please type a folder name in the text box	email	sk	Prosim vyplòte názov prieèinka
+please select a message first	email	sk	Prosím vyberte najskôr správu
+please submit a filename to attach	email	sk	Prosím zadajte meno súboru nktorý chcete pripoji»
+please type a folder name in the text box	email	sk	Prosim zadajte názov prieèinka
 previous	email	sk	Predchádzajúca
 previous message	email	sk	Predchádzajúca správa
 printable	email	sk	pre tlaèiareò
@@ -238,43 +257,45 @@ replyto	email	sk	Odpoveda»(komu)
 request delivery notification	email	sk	Vy¾iadaj správu o doruèení
 requested filter action:	email	sk	po¾adovaná akcia filtra:
 required	email	sk	povinné
+reset	email	sk	Vynulova»
 result	email	sk	výsledok
-return mails during this time period	email	sk	Vrá» maily poèas tohoto èasového intervalu
+return mails during this time period	email	sk	Vrá» správy poèas tohoto èasového intervalu
 save deleted messages in folder named below	email	sk	ulo¾ Vymazané správy do prieèinka s názvom
 save sent messages in folder named below	email	sk	ulo¾ Odoslané správy do prieèinka s názvom
-search for mails in these folders	email	sk	Hµadaj maily  v týchto prieèinkoch
+search for mails in these folders	email	sk	Hµadaj správy  v týchto prieèinkoch
 search this folder	email	sk	prehµadaj tento prieèinok
 section	email	sk	Sekcia
 seen	email	sk	Prezerané
-select home email address	email	sk	Vyber domácu e-mailovú adresu
-select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	sk	Vyber, ak chce¹, aby sa telo preposielanej správy objavilo v tele posielanej správy
-select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message.	email	sk	Vyber, ak chce¹, aby sa telo preposielanej správy objavilo v tele posielanej správy
-select work email address	email	sk	Vyber e-mailovú adresu v práci
-select your mail server type	admin	sk	Vyber typ e-mailového servra
-select your screensize for proper showing of the javascript addressbook	email	sk	Vyber veµkos» obrazovky na vhodné zobrazenie Adresára
-select your screensize for propper showing of the javascript addressbook	email	sk	Vyber veµkos» obrazovky na vhodné zobrazenie Adresára
-select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	sk	Vyber ¹týl pre adresár.
+select home email address	email	sk	Vyberte domácu e-mailovú adresu
+select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	sk	Vyberte, ak chcete, aby sa telo preposielanej správy objavilo v tele posielanej správy
+select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message.	email	sk	Vyberte, ak chcete, aby sa telo preposielanej správy objavilo v tele posielanej správy
+select work email address	email	sk	Vyberte e-mailovú adresu v práci
+select your mail server type	admin	sk	Vyberte typ po¹tového servera
+select your screensize for proper showing of the javascript addressbook	email	sk	Vyberte veµkos» obrazovky pre správne zobrazenie Adresára pomocou Javaskriptu
+select your screensize for propper showing of the javascript addressbook	email	sk	Vyberte veµkos» obrazovky pre správne zobrazenie Adresára
+select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	sk	Vyberte ¹týl pre Adresár. Tradièný jednoduchý, alebo nový zlo¾itý Javaskriptový.
 send	email	sk	Po¹li
 send deleted messages to the trash	email	sk	Po¹li vymazané správy do Vymazaných
-send forwarded mail as quoted attachment	email	sk	Po¹li preposielaný mail ako prílohu
+send forwarded mail as quoted attachment	email	sk	Po¹li preposielanú správu ako prílohu
 sender	email	sk	Odosielateµ
 sent	common	sk	odoslané
 sent folder	email	sk	prieèinok odoslaných
 sent messages folder	common	sk	Prieèinok odoslaných správ
-sent messages folder name	email	sk	Meno prieèinka odoslaných správ
+sent messages folder name	email	sk	Názov prieèinka odoslaných správ
 sent messages saved in &quot;sent&quot; folder	common	sk	Odoslané správy sú ulo¾ené v &quot;sent&quot; prieèinku
 sent messages saved to folder:	email	sk	Odoslané správy ulo¾ené do prieèinka:
+sep	email	sk	Sep
 settings	common	sk	Nastavenia
 short names	email	sk	krátke mená
 show help	email	sk	Uká¾ Pomoc
 show long names	email	sk	Uká¾ dlhé mená
 show message	email	sk	uká¾ správy
 show new messages in combobox	email	sk	Uká¾ Nové správy v ComboBoxe
-show new messages on main screen	email	sk	Uká¾ nové správy na hlavnej obrazovke
+show new messages on main screen	email	sk	Uká¾ nové správy na hlavnej stránke
 show sender's email address with name	email	sk	Uká¾ e-mailovú adresu odosielateµa s menom
 show short names	email	sk	Uká¾ krátke mená
-show total folder size by default	email	sk	Uká¾ celkovú veµkos» prieèinka ¹tandardne
-simple	email	sk	Jednoducho
+show total folder size by default	email	sk	V¾dy zobraz celkovú veµkos» prieèinka
+simple	email	sk	Jednoduchý
 size	email	sk	Veµkos»
 size larger than	email	sk	Veµkos» väè¹ia ako
 size smaller than	email	sk	Veµkos» men¹ia ako
@@ -292,17 +313,48 @@ switch accounts	email	sk	Prepni úèty
 switch current folder to	common	sk	Prepni aktuálny prieèinok na
 test all filters	email	sk	Testuj v¹etky filtre
 test or apply all filters	email	sk	testuj alebo pou¾i v¹etky filtre
-test run this filter	email	sk	Tetsuj tento filter
+test run this filter	email	sk	Testuj tento filter
+text	email	sk	Text
+the email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. this page may be the page the user looks at the most and so different layouts, or looks, are offered.	email	sk	E-mailová aplikácia ponúka 2 rozdielne usporiadania indexovej stránky (to je tá, ktorá zobrazuje zoznam správ v prieèinku). Na túto stránku sa pou¾ívateµ pozerá najèastej¹ie, preto má na výber 2 usporiadania.
+the email application offers different button displays, these buttons can be text, images, or both.	email	sk	Aplikácia ponúka rozlièné spôsoby zobrazenia tlaèidiel: text, obrázok alebo oboje.
+the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape6 / mozilla browser buttons. additional themes are anticipated and welcome.	email	sk	Emailová aplikácia ponúka rozlièné grafické témy, ktoré ovplyvòujú vzhµad ikoniek. V súèasnosti dostupné témy majú tlaèítka prevzaté z Ximian Evolution a z Netscape6 / Mozilla. Ak mô¾ete prispie» ïal¹ou témou, radi va¹u pomoc privítame.
+the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape7, mozilla browser buttons. additional themes are anticipated and welcome.	email	sk	Emailové aplikácia ponúka rozlièné grafické témy, ktoré ovplyvòujú vzhµad ikoniek. V súèasnosti dostupné témy majú tlaèítka prevzaté z Ximian Evolution a z Netscape6 / Mozilla. Ak mô¾ete prispie» ïal¹ou témou, radi va¹u pomoc privítame.
+the email application offers different icon image themes, these icons can be big or small.	email	sk	Emailové aplikácia ponúka rozlièné grafické témy, ktoré ovplyvòujú vzhµad ikoniek. Tieto mô¾u by» veµké alebo malé.
+the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you clear this box, then it goes back to the default value. if you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.	email	sk	Prihlasovacie meno, ktoré sa pou¾íva pri kontrole po¹ty pre tento úèet. Mô¾e by» toto¾né s prihlasovacím menom v eGroupWare, alebo vám správca nastavil iné. Ak máte viacero po¹tových úètov, treba aby ste to vyplnili. Ak máte len jeden úèet, pravdepodobne to mô¾ete necha» tak. Ak vyma¾ete toto pole, pou¾ije sa predvolená hodnota. Ak potrebujete nejaké svojrázne nastavenie ale toto jedno chcete ponecha» v predvolenej hodnote, tak nechajte pole prázdne -pou¾ije sa predvolená hodnota a nabudúce, keï vstúpite do nastavení, to bude v tomto poli uvedené.
+the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. exra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	sk	Prihlasovacie meno, ktoré sa pou¾íva pri kontrole po¹ty pre tento úèet. Mô¾e by» toto¾né s prihlasovacím menom v eGroupWare, alebo vám správca nastavil iné. Ak máte viacero po¹tových úètov, treba aby ste to vyplnili. Ak máte len jeden, pravdepodobne to mô¾ete necha» tak. Ak zadáte nejaké heslo, nabudúce keï vstúpite do nastavení, bude toto pole vyzera» prázdne (z bezpeènostných dôvodov). Ak chcete heslo zmeni», zadajte ho do poµa. Va¹e dodatoèné emailové úèty musia ma» pre svoj chod zadané heslo. Ak chcete vo va¹om predvolenom úète vymaza» va¹e nové heslo, tak vypnite voµbu &quot;Pou¾i pou¾ívateµské nastavenia&quot;.
+the password to use when checking mail for this email account. this may be the same as your egroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	sk	Heslo, ktoré sa pou¾íva pri kontrole po¹ty pre tento úèet. Mô¾e by» toto¾né s heslom v eGroupWare, alebo vám správca nastavil iné. Ak máte viacero po¹tových úètov, treba aby ste to vyplnili. Ak máte len jeden, pravdepodobne to mô¾ete necha» tak. Ak zadáte nejaké heslo, nabudúce keï vstúpite do nastavení, bude toto pole vyzera» prázdne (z bezpeènostných dôvodov). Ak chcete heslo zmeni», zadajte ho do poµa - Va¹e dodatoèné emailové úèty musia ma» pre svoj chod zadané heslo. Ak chcete vo va¹om predvolenom úète vymaza» va¹e nové heslo, tak vypnite voµbu &quot;Pou¾i pou¾ívateµské nastavenia&quot;.
+the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your egroupware installation has a &quot;ssl&quot; capabable version of php.	email	sk	Typ po¹tového servera. IMAP servre podporujú prieèinky, napríklad "Odoslaná po¹ta" alebo "Odpadkový kô¹". POP servre nemajú prieèinky. POP, POP-3 a POP3 znamená to isté. Ak chcete spojenie ¹ifrova», pou¾ite IMAPS alebo POPS, ale po¹tový server to najprv musí podporova», a va¹a in¹talácia eGroupWare musí ma» verziu PHP podporujúcu &quot;SSL&quot;.
 then check the	email	sk	potom skontroluj
 then do this	email	sk	Potom urob toto
-then take this actions	email	sk	Potom zvoµ  túto akciu
+then take this actions	email	sk	Potom zvoµ túto akciu
+there is no text or other part of the email to display to the user, all part(s) are attachments.	email	sk	V správe nie je ¾iadny text, v¹etko iba samé prílohy.
+there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	sk	Pri pripájaní na IMAP server nastala chyba.<br>Prosím kontaktujte svojho správcu aby skontroloval názov servera, pou¾ívateµské meno a heslo.
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	sk	Pri pripájaní na po¹tový server nastala chyba.<br>Prosím skontrolujte pou¾ívateµské meno a heslo, alebo kontaktujte svojho správcu.
+there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	sk	Pri pripájaní na POP server nastala chyba.<br>Prosím kontaktujte svojho správcu aby skontroloval názov servera, pou¾ívateµské meno a heslo.
+this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you a) the senders name only, if a name was provided, b) the senders from email address, in addition to the senders name, or c) the senders reply to address if it is different from the senders from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	sk	Táto mätúca a èasto nepochopená voµba je tu e¹te z èias predchodcu tejto aplikácie -Aeromail od Marka Cushmana. Keï sa pozeráte na zoznam správ, ståpec Od mô¾e zobrazova»:
+a, len meno odosielateµa (ak nejaké meno uviedol)
+b, odosielateµovu adresu Od, spolu s názvom servera
+c, alebo odosielateµovu odpovedaciu adresu ak sa táto lí¹i od jeho adresy Od, spolu s menom odosielateµa (ak nejaké meno uviedol).
+Najèastej¹ie pou¾ívatelia túto voµbu nenastavujú, èo spôsobí zobrazenie mena odosielateµa. Ak meno nezadal, zobrazí sa jeho adresa Od (èi má alebo nemá nastavenú odpovedaciu adresu, nemá vplyv).
+this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you<br>a) the senders name only, if a name was provided,<br>b) the senders from email address, in addition to the senders name, or<br>c) the senders reply to address if it is different from the senders<br>from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	sk	Táto mätúca a èasto nepochopená voµba je tu e¹te z èias predchodcu tejto aplikácie -Aeromail od Marka Cushmana. Keï sa pozeráte na zoznam správ, ståpec Od mô¾e zobrazova»:<br>a, len meno odosielateµa (ak nejaké meno uviedol)<br>b, odosielateµovu adresu Od, spolu s názvom servera<br>c, alebo odosielateµovu odpovedaciu adresu ak sa táto lí¹i od jeho adresy Od, spolu s menom odosielateµa (ak nejaké meno uviedol).<br>Najèastej¹ie pou¾ívatelia túto voµbu nenastavujú, èo spôsobí zobrazenie mena odosielateµa. Ak meno nezadal, zobrazí sa jeho adresa Od (èi má alebo nemá nastavenú odpovedaciu adresu, nemá vplyv).
 this data not supplied.	email	sk	Tieto údaje nie sú poskytnuté
 this folder is empty	email	sk	Tento adresár je prázdny
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as "your full name". if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use "your full name" as your from name for email messages. note that "your full name" for your email account 0 is the name you gave in the egroupware setup.	email	sk	Toto je meno, ktoré sa zobrazí v comboboxe úètu. Ak necháte prázdne, vá¹ úèet dostane ¹tandardné meno ako: Úèet[1]: Jana Nováková, kde Jana Nováková je to meno, ktoré uvádzate ni¾¹ie ako "Va¹e plné meno". Na tejto voµbe príli¹ nezále¾í, nakoµko va¹e správy budú tak èi tak pou¾íva» "Va¹e plné meno" ako meno Od. Upozornenie: "Va¹e plné meno" pre vá¹ po¹tový úèet 0 je to meno, ktoré ste uviedli v nastavení eGroupWare.
+this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as your full name. if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use your full name as your from name for email messages. note that your full name for your email account 0 is the name you gave in the egroupware setup.	email	sk	Toto je meno, ktoré sa zobrazí v comboboxe úètu. Ak necháte prázdne, vá¹ úèet dostane ¹tandardné meno ako: Úèet[1]: Jana Nováková, kde Jana Nováková je to meno, ktoré uvádzate ni¾¹ie ako "Va¹e plné meno". Na tejto voµbe príli¹ nezále¾í, nakoµko va¹e správy budú tak èi tak pou¾íva» "Va¹e plné meno" ako meno Od. Upozornenie: "Va¹e plné meno" pre vá¹ po¹tový úèet 0 je to meno, ktoré ste uviedli v nastavení eGroupWare.
+this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	sk	Toto je meno ktoré sa bude zobrazova» v polo¾ke Od. Predvolený po¹tový úèet dostane svoju hodnotu automaticky od phpgwapi. Dodatoèné úèty sú vytvorené s plným menom poskytnutým od phpgwapi, ktoré mô¾ete zada» zvlá¹» pre ka¾dý po¹tový úèet.
+this pref currently does nothing users may have more than one email account. in the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use. also, an admin may want to disable accounts from time to time.	email	sk	TÁTO VO¥BA NEROBÍ NIÈ Pou¾ívatelia mô¾u ma» aj viac ne¾ jeden po¹tový úèet. Do budúcnosti sa predpokladá, ¾e nad týmito úètami sa budú vykonáva» niektoré automatické úkony, napríklad kontrola novej po¹ty, filtre atï. Pou¾ívateµ by prípadne mohol chcie» zablokova» úèet, tak¾e by sa nad ním tieto akcie nevykonávali. To je jeden príklad pou¾itia. Taktie¾ správca by mohol zablokova» úèty v prípade potreby.
+this pref currently does nothing<br>users may have more than one email account. in the future it is anticipated that automatic actions may be performedon these accounts, such as automatic new mail checks, auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use.<br>also, an admin may want to disable accounts from time to time.	email	sk	TÁTO VO¥BA NEROBÍ NIÈ<br>Pou¾ívatelia mô¾u ma» aj viac ne¾ jeden po¹tový úèet. Do budúcnosti sa predpokladá, ¾e nad týmito úètami sa budú vykonáva» niektoré automatické úkony, napríklad kontrola novej po¹ty, filtre atï. Pou¾ívateµ by prípadne mohol chcie» zablokova» úèet, tak¾e by sa nad ním tieto akcie nevykonávali. To je jeden príklad pou¾itia.<br>Taktie¾ správca by mohol zablokova» úèty v prípade potreby.
+this specifies whether or not to show the number of new message in the folders combo box on the index screen.	email	sk	Tu urèíte, èi sa má v comboboxe na indexovej stránke zobrazova» poèet nových správ.
+this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size.	email	sk	Tu urèujete, èi sa má v¾dy zobrazova» celková veµkos» prieèinkov. Ak je vypnuté, budete ma» k dispozícii tlaèítko pre zistenie veµkosti prieèinkov.
+this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size..	email	sk	Tu urèujete, èi sa má v¾dy zobrazova» celková veµkos» prieèinkov. Ak je vypnuté, budete ma» k dispozícii tlaèítko pre zistenie veµkosti prieèinkov.
+this text will be appended to the bottom of the users emails for this email account. currently, html tags are not supported. also, forwarded email will not get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.	email	sk	Tento text sa má nachádza» naspodku správ pochádzajúcich z tohto po¹tového úètu. Zatiaµ nie sú podporované html tagy. Preposlaná správa NEobdr¾í tento text z mnohých dôvodov, napríklad ¾e to pre»a¾uje po¹tu, pôvodná správa u¾ zrejme nejaký podobný text obsahuje, a to je informácia väè¹ieho významu.
 to	email	sk	Komu
 to address	email	sk	Na adresu
 total messages	email	sk	Celkom správ
 trash	email	sk	Vymazané
-trash folder	email	sk	Prieèinok vymazaných
+trash folder	email	sk	Prieèinok vymazaných (Odpadkový kô¹)
+u-wash mail folder	email	sk	Po¹tový prieèinok U-Wash
+u-wash mail folder - if applicable	email	sk	Po¹tový prieèinok U-Wash -ak je dostupný
 unable to get source folder name	email	sk	Nie je mo¾né získa» meno zdrojového prieèinka
 unable to get target folder name	email	sk	Nie je mo¾né získa» meno cieµového prieèinka
 unanswered	email	sk	Neodpovedané
@@ -313,18 +365,28 @@ unflagged	email	sk	Neoznaèená
 unknown action	email	sk	Neznáma akcia
 unknown error	email	sk	Neznáma chyba
 unknown translation	email	sk	neznámy preklad
-use custom settings	email	sk	Pou¾i u¾ívateµské nastavenia
+unseen	email	sk	Nezobrazené
+use custom settings	email	sk	Pou¾i pu¾ívateµské nastavenia
 view as html	email	sk	HTML náhµad
 view formatted	email	sk	Formátovaný náhµad
 view headers	email	sk	Náhµad cez hlavièky
 view unformatted	email	sk	Neformátovaný náhµad
-warn_attachment_name_dangerous	email	sk	upozornenie NEBEZPEÈNÉ meno prílohy
+warn_attachment_name_dangerous	email	sk	varovanie NEBEZPEÈNÉ meno prílohy
+warn_attachment_only_mail	email	sk	varovanie iba príloha
+warn_b64_encoded_displayable	email	sk	varovanie zobraziteµné b64 kódovanie
+warn_has_iframe_maybe_klez	email	sk	varovanie obsahuje iframe mo¾no vírus
+warn_script_tags	email	sk	varovanie skriptové tagy
+warn_style_sheet	email	sk	varovanie style sheet
+we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	sk	Pridali sme tento nový Adresár, tak¾e pou¾ívatelia si mô¾u vybra» zlo¾itej¹í, prepracovanej¹í kalendár s funkciami: a, Jednoduché, uká¾-a-klikni vyhµadávanie b, Predurèený pre organizácie s rozsiahlymi centrálnymi adresármi s mno¾stvom kategórií. Mô¾ete si vybra», ktorý Adresár chcete pou¾íva».
+we have recently added this new addressbook so that users can choose to have a more complex addressbook that features<br>a) easy, point and click searching,<br>b) best suited for organizations with large central addressbooks with many categories.<br>you can choose here which addressbook do you prefer.	email	sk	Pridali sme tento nový Adresár, tak¾e pou¾ívatelia si mô¾u vybra» zlo¾itej¹í, prepracovanej¹í kalendár s funkciami:<br>a, Jednoduché, uká¾-a-klikni vyhµadávanie<br>b, Predurèený pre organizácie s rozsiahlymi centrálnymi adresármi s mno¾stvom kategórií.<br>Mô¾ete si vybra», ktorý Adresár chcete pou¾íva».
+we have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). the fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).	email	sk	Kvôli èo najlep¹iemu zobrazeniu Adresára máme 3 veµkosti: 800x600 (Adresár sa otvorí v okne ¹irokom 700 pixelov), 1024x768 (800 pixelov), 1200x1600 (900 pixelov). Fonty pre html sa príslu¹ne nastavujú na xx-malé, x-malé a normálne (¾iadne nastavenie fontov).
 wrote	email	sk	napísané
-you have %1 new messages!	common	sk	Máte %1 nových správ
-you have 1 new message!	common	sk	Máte 1 novú správu
+you have %1 new messages!	common	sk	Máte %1 nových správ!
+you have 1 new message!	common	sk	Máte 1 novú správu!
 you have messages!	common	sk	Máte správy!
-you have no new messages	common	sk	Nemáte ¾iadne nové správy
+you have no new messages	common	sk	Nemáte ¾iadne nové správy.
 you must click	email	sk	Musíte kliknú»
-you must click %1 for the file to actually upload	email	sk	Musíte kliknú» %1 na nahratie súboru
-your full name	common	sk	Va¹e celé mano
-your message has been sent	common	sk	Va¹a správa bola odoslaná
+you must click %1 for the file to actually upload	email	sk	Musíte kliknú» %1 pre nahratie súboru
+your full name	common	sk	Va¹e celé meno
+your message has been sent	common	sk	Va¹a správa bola odoslaná.
+your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	sk	Vá¹ správca servera nastaví pre nasledujúce voµby predvolené hodnoty. Zrejme ich nikdy nebudete musie» meni». Ak potrebujete nastavenia odli¹né od predvolených, tak za¹krtnite toto políèko. Predvolene je vypnutá (neza¹krtnutá). Ak vyplníte nejaké voµby, ale v budúcnosti  sa rozhodnete vráti» ku predvoleným, od¹krtnutie tejto voµby spôsobí vymazanie va¹ich pou¾ívateµských volieb a návrat k predvoleným. V¹etky nasledujúce voµby zaèínajú s predvolenou hodnotou, tak¾e ni¾¹ie mô¾ete vidie» aj také voµby ktoré ste nikdy nevypåòali. Toto pole sa zobrazuje len pre predvolený po¹tový úèet. Ak nastavujete dodatoèné úèty, budete po¾iadaní o vyplnenie v¹etkých volieb a toto pole sa nezobrazí, bude za¹krtnuté pre v¹etky dodatoèné po¹tové úèty.

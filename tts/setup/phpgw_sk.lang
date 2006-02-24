@@ -83,6 +83,7 @@ original ticket details	tts	sk	Pôvodný popis problému
 perform irregular transition into the following state	tts	sk	Vykona» neregulérny prechod na nasledujúci stav
 please enter the subject of the ticket otherwise the ticket cannot be stored.	tts	sk	Prosím zadajte PREDMET problému, ináè sa problém neulo¾í.
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	sk	Prosím, zadajte predmet problému, ináè sa problém nedá ulo¾i».
+prio	tts	sk	Prio
 priority	tts	sk	Priorita
 priority changed	tts	sk	Priorita zmenená
 put the preexistent ticket into the state %1.	tts	sk	Nastavi» stav problému na %1.
