@@ -788,7 +788,7 @@
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			if(function_exists('imap_getacl'))
 			{
-				$acl = imap_getacl ($this->mbox, $_folderName);
+				$acl = imap_getacl ($this->mbox, $this->encodeFolderName($_folderName));
 			}
 			
 			return $acl;
