@@ -41,6 +41,7 @@
     <input type="submit" name="apps" value="{lang_list} {lang_apps}">
     <input type="submit" name="users" value="{lang_list} {lang_users}">
     <input type="submit" name="bogus" value="{lang_bogus}">
+    {lang_method} <input name="method" value="{method}"> {lang_param} <input name="param" value="{param}"> <input type="submit" name="custom" value="{lang_custom}">
     <input type="hidden" name="xsessionid" value="{xsessionid}">
     <input type="hidden" name="xkp3" value="{xkp3}">
     </td>

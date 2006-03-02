@@ -22,24 +22,35 @@
 	include('../header.inc.php');
 
 	$method = get_var('method',array('POST'),'system.listMethods');
-
+	$param = get_var('param',array('POST'));
+	$type = get_var('type',array('POST'));
+	
 	echo '
 <form action="' . $GLOBALS['egw']->link('/xmlrpc/egw_test.php') . '" method="post">
 <input name="method" VALUE="' . $method . '">
 <input name="param" VALUE="' . $param . '">
+<select name="type">
+<option value="">no param</option>
+';
+	foreach($GLOBALS['xmlrpcTypes'] as $label => $t)
+	{
+		if ($t == 1) echo '<option value="'.$label.'"'.($label == $type ? ' selected="1"' : '').'>'.$label."</option>\n";
+	}
+	echo '</select>
 <input type="submit" value="go" name="submit">
 </form>
 <p>
-Enter a method to execute and one parameter';
+Enter a method to execute, one parameter and it\'s type';
 
 	if ($_POST['method'])
 	{
-		$f = CreateObject('phpgwapi.xmlrpcmsg',$method,array(
-			CreateObject('phpgwapi.xmlrpcval',$_POST['param'], 'string')
-		));
+		$f = CreateObject('phpgwapi.xmlrpcmsg',$method,$_POST['type'] ? array(
+			CreateObject('phpgwapi.xmlrpcval',$_POST['type'] == 'INT' ? (int) $_POST['param'] : $_POST['param'], $_POST['type'])
+		) : array());
 		print '<pre style="text-align: left;">' . htmlentities($f->serialize()) . "</pre>\n";
 		$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['egw_info']['server']['webserver_url']).'/xmlrpc.php';
-		$c = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $_SERVER['HTTP_HOST'], 80);
+			
+		$c = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc,$_SERVER['HTTP_HOST'],80);
 		$c->setDebug(1);
 		$r = $c->send($f);
 		if (!$r)

@@ -60,6 +60,9 @@
 	{
 		$xserver_name = $_POST['xserver_name'];
 	}
+	
+	$method = $_POST['method'];
+	$param  = $_POST['param'];
 
 	/* _debug_array($is->server); */
 	if($_POST['login'])
@@ -67,7 +70,7 @@
 		if($_POST['xserver'])
 		{
 			$is->send(
-				'system.login', array(
+				$method='system.login', array(
 					'server_name' => $_POST['xserver_name'],
 					'username'    => $_POST['xusername'],
 					'password'    => $_POST['xpassword']
@@ -79,7 +82,7 @@
 		else
 		{
 			$is->send(
-				'system.login', array(
+				$method='system.login', array(
 					'domain'      => $_POST['xserver_name'],
 					'username'    => $_POST['xusername'],
 					'password'    => $_POST['xpassword']
@@ -96,7 +99,7 @@
 	elseif($_POST['logout'])
 	{
 		$is->send(
-			'system.logout', array(
+			$method='system.logout', array(
 				'sessionid' => $xsessionid,
 				'kp3'       => $xkp3
 			),
@@ -118,12 +121,12 @@
 
 		if($xsessionid & $_POST['xappname'])
 		{
-			$method_str = $_POST['xappname'] . '.bo' . $_POST['xappname'] . '.list_methods';
-			$server_id ? $is->send($method_str,'xmlrpc',$is->server['server_url'], True) : '';
+			$method = $_POST['xappname'] . '.bo' . $_POST['xappname'] . '.list_methods';
+			$server_id ? $is->send($method,'xmlrpc',$is->server['server_url'], True) : '';
 		}
 		else
 		{
-			$server_id ? $is->send('system.listMethods','',$is->server['server_url'], True) : '';
+			$server_id ? $is->send($method='system.listMethods','',$is->server['server_url'], True) : '';
 		}
 	}
 	elseif($_POST['apps'])
@@ -131,21 +134,21 @@
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.listApps','',$is->server['server_url'],True);
+		$is->send($method='system.listApps','',$is->server['server_url'],True);
 	}
 	elseif($_POST['users'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.listUsers','',$is->server['server_url'],True);
+		$is->send($method='system.listUsers','',$is->server['server_url'],True);
 	}
 	elseif($_POST['bogus'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.bogus','',$is->server['server_url'],True);
+		$is->send($method='system.bogus','',$is->server['server_url'],True);
 	}
 	elseif($_POST['addressbook'])
 	{
@@ -153,7 +156,7 @@
 		$is->kp3 = $xkp3;
 		/* TODO - Adjust the values below as desired */
 		$is->send(
-			'addressbook.boaddressbook.search',array(
+			$method='addressbook.boaddressbook.search',array(
 				'start' => 1,
 				'limit' => 5,
 				//'fields' => array('n_given','n_family','cat_id','bday','last_mod','custom1'),
@@ -172,7 +175,7 @@
 		$is->kp3 = $xkp3;
 		/* TODO - Adjust the values below as desired */
 		$is->send(
-			'infolog.boinfolog.search',array(
+			$method='infolog.boinfolog.search',array(
 				'start' => 1,
 				'limit' => 5,
 				'query'  => '',
@@ -190,10 +193,21 @@
 		$is->kp3 = $xkp3;
 		/* TODO - Adjust the values below as desired */
 		$is->send(
-			'calendar.bocalendar.search', array(
+			$method='calendar.bocalendar.search', array(
 				'start' => date('Y-m-d').'T00:00:00',
 				'end'   => date('Y-m-d').'T00:00:00',
 			),
+			$is->server['server_url'],
+			True
+		);
+	}
+	elseif ($_POST['custom'])
+	{
+		$is->sessionid = $xsessionid;
+		$is->kp3 = $xkp3;
+		
+		$is->send(
+			$method,$param,
 			$is->server['server_url'],
 			True
 		);
@@ -204,7 +218,7 @@
 	$GLOBALS['egw']->template->set_var('action_url',$GLOBALS['egw']->link('/xmlrpc/interserv.php'));
 	$GLOBALS['egw']->template->set_var('lang_title',lang('eGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)'));
 	$GLOBALS['egw']->template->set_var('lang_select_target',lang('Select target server'));
-	$GLOBALS['egw']->template->set_var('lang_st_note',lang('Configure using admin - Peer servers'));
+	$GLOBALS['egw']->template->set_var('lang_st_note','<a href="'.$GLOBALS['egw']->link('/index.php',array('menuaction'=>'admin.uiserver.list_servers')).'">'.lang('Configure using admin - Peer servers')).'</a>';
 	$GLOBALS['egw']->template->set_var('lang_this_servername',lang('Servername/Domain'));
 	$GLOBALS['egw']->template->set_var('lang_sd_note',lang('(optional: set domain for user/client login, required: set this servername for server login)'));
 	$GLOBALS['egw']->template->set_var('lang_addressbook',lang('Addressbook test'));
@@ -223,6 +237,11 @@
 	$GLOBALS['egw']->template->set_var('lang_kp3',lang('Assigned kp3'));
 	$GLOBALS['egw']->template->set_var('login_type',lang('Server<->Server'));
 	$GLOBALS['egw']->template->set_var('note',lang('NOTE: listapps and listusers are disabled by default in xml_functions.php') . '.');
+	$GLOBALS['egw']->template->set_var('lang_custom',lang('Custom request'));
+	$GLOBALS['egw']->template->set_var('lang_method',lang('Method'));
+	$GLOBALS['egw']->template->set_var('lang_param',lang('Scalar parameter'));
+	$GLOBALS['egw']->template->set_var('method',$method);
+	$GLOBALS['egw']->template->set_var('param',$param);
 
 	$GLOBALS['egw']->template->set_var('xserver',$_POST['xserver'] ? ' checked' : '');
 	$GLOBALS['egw']->template->set_var('xsessionid',$xsessionid ? $xsessionid : lang('none'));
@@ -236,5 +255,5 @@
 
 	$GLOBALS['egw']->template->pfp('out','interserv');
 
-	$GLOBALS['egw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->egw_footer();
 ?>
