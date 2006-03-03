@@ -79,6 +79,10 @@
 						$app = $query['acl_app'] ? $query['acl_app'] : $_GET['acl_app'];
 						$function = 'acl';
 					}
+					elseif ($app == 'preferences' && $class == 'uisettings')
+					{
+						$pages[] = 'Manual'.ucfirst($query['appname'] ? $query['appname'] : $_GET['appname']).'Preferences';
+					}
 					elseif ($app == 'admin' && $class == 'uiconfig')
 					{
 						$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
