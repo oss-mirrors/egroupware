@@ -195,7 +195,7 @@
 		$is->send(
 			$method='calendar.bocalendar.search', array(
 				'start' => date('Y-m-d').'T00:00:00',
-				'end'   => date('Y-m-d').'T00:00:00',
+				'end'   => date('Y-m-d',time()+60*60*24).'T00:00:00',
 			),
 			$is->server['server_url'],
 			True
