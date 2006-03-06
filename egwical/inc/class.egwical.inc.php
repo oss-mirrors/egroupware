@@ -6,6 +6,7 @@
 	 *
 	 * @author Jan van Lieshout                                                *
 	 * @package egwical
+	 * $Id$
 	 * ------------------------------------------------------------------------ *
 	 * This library is free software; you can redistribute it and/or modify it  *
 	 * under the terms of the GNU Lesser General Public License as published by *
@@ -111,7 +112,8 @@
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (original code of reused parts)
 	 *
 	 *
-	 * @version 0.9.04 (First wurh pattern implementation, with RRULE count= impl.)
+	 * @since 0.9.05  added the st_dst_patch function
+	 * @since 0.9.04 (First wurh pattern implementation, with RRULE count= impl.)
 	 * @date 20060216
 	 * @license http://opensource.org/licenses/gpl-license.php GPL -
 	 *  GNU General Public License
@@ -643,6 +645,24 @@
 		  // assume user time zone (for utc use gmmktime()
 		  return @mktime(0,0,0,$ddtval['month'],$ddtval['mday'],$ddtval['year']);
 		}
+	  }
+
+	  /**
+	   * Patch the servertime with an DaylightSavingsTime offset, before converting to utc
+	   *
+	   * As the current export of servertime to UTC routine from Horde does not respect
+	   * daylight savings time, the conversion from a server time, for a server working in a
+	   * locale with day savings time, to a UTC value wont work correctly.
+	   * This function returns the the time value in $so_utime patched (i.e. added
+	   * or subtracted) by an offset based on the DST setting of the server time zone
+	   * servertime for the date in $so_utime.
+	   * @param int $so_utime the utime in the server timezone, to be corrected with
+	   * the timezones DST setting at that date
+	   * @return int the patched, i.e. server timezone DST corrected, utime value.
+	   */
+	  function st_dst_patch($so_utime)
+	  {
+		return $so_utime + -3600 * date("I",$so_utime);
 	  }
 
 

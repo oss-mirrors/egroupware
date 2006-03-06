@@ -2,8 +2,8 @@
 
 Short description on the timezone handling in EgwIcal
 
-@date 20060216
-@version 0.9.04
+@date 20060305
+@version 0.9.05
 @author JVL
 @note Document needs further editing and annotations!!
 
@@ -55,12 +55,25 @@ descriptions for an event. An event can either be a:
 
 </ul>
 
+Timeindications for DT events are often stored using a socalled
+<i>unix timestamp</i>: an integer that counts the seconds gone after
+some initial day in 1970. 
+Indeed, at the moment in Egroupware the date times are stored
+following the rule (Ralf, is this correct?):
+ 
+<ul>
+<li>RE.0,<b> Egw stores DATE-TIME events using unix timestamps
+in the server local time.</b>
+
+Or of course, equivalently, some (servertime + offset)-pair description.
+</ul>
+
 
 For handling DT events it can be profitable to use a globally unified standard
 for describing the timingly definitions, like e.g. UTC. 
 And indeed:
 <ul>
-<li>RE.0, REI.0 <b> Egw and EgwIcal try to handle DATE-TIME events in UTC.</b>
+<li>REI.0 <b> EgwIcal tries to handle DATE-TIME events in UTC.</b>
 
 Or of course, equivalently, some (time + UTC offset)-pair description.
 </ul>

@@ -6,6 +6,7 @@
 	*
 	* http://www.egroupware.org                                                *
 	* @author Jan van Lieshout                                         *  
+	* $Id$
 	* based on class.boical.inc.php and on class.vcalinfolog.inc.php
 	* originals written by Lars Kneschke <lkneschke@egroupware.org>            *
 	* --------------------------------------------                             *
@@ -59,7 +60,7 @@
 	 * @author Jan van Lieshout <jvl (at)xs4all.nl> This version.
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts of reused code)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts of reused code)
-	 * @version 0.9.02 First for use with new WURH egwical class
+	 * @version 0.9.05 First for use with new WURH egwical class
 	 * @license http://opensource.org/licenses/gpl-license.php GPL -
 	 *  GNU General Public License
 	  */
@@ -68,7 +69,7 @@
 	{
 
 	  /**
-	   * @var object
+	   * @var boinfolog
 	   * The egw infolog object that will be used to transport events from and to
 	   * This is set by setRsc()
 	   */
@@ -98,10 +99,10 @@
 	   * Our Constructor, fills the basic class members
 	   * and set the description of our worker capabilities.
 	   */
-	  function bovtodos() {
+	  function boinfolog_vtodos() {
 
 		// call superclass constructor by hand
-		boinfolog::boinfolog();
+		//		boinfolog::boinfolog();
 
 		$this->TASKMAGIC = $GLOBALS['egw_info']['server']['install_id']
 		  ? $GLOBALS['egw_info']['server']['install_id']
@@ -268,9 +269,15 @@
 
 		  // egw2VTOD: owner -> ORGANIZER field 
 		  if ($tfrom_id = $todo['info_owner']){
-			$mailtoOrganizer = $GLOBALS['egw']->accounts->id2name($tfrom_id,'account_email');
-			$vtodo->setAttribute('ORGANIZER', $this->mki_v_CAL_ADDRESS($tfrom_id));
-			$vtodo->setParameter('ORGANIZER', $this->mki_p_CN($tfrom_id));
+			//			$mailtoOrganizer = $GLOBALS['egw']->accounts->id2name($tfrom_id,'account_email');
+			//			$vtodo->setAttribute('ORGANIZER', $this->mki_v_CAL_ADDRESS($tfrom_id));
+			//			$vtodo->setParameter('ORGANIZER', $this->mki_p_CN($tfrom_id));
+			$this->addAttributeOntoVevent($vtodo,
+										  'ORGANIZER',
+										  $this->mki_v_CAL_ADDRESS($tfrom_id),
+										  $this->mki_p_CN($tfrom_id)
+										  );
+
 		  }
 
 		  $vtodo->setAttribute('CLASS',

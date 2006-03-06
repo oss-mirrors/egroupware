@@ -5,6 +5,7 @@
 	*
 	* http://www.egroupware.org                                                *
 	* @author Jan van Lieshout   
+	* $Id$
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -65,7 +66,7 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.03 (First WURH version, most stuff used from old bovevents class)
+	 * @version 0.9.05 (added the dst patch for DTSTART and DTEND)
 	 * @since 0.9.03 changed mke_RECUR2rar() api
 	 * @license  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
 	 */
@@ -82,7 +83,7 @@
 
 	  /**
 	   * @private
-	   * @var object
+	   * @var bocalupdate
 	   * The egw bocal calendar that will be used to transport events from and to
 	   * This is set by setRsc()
 	   */
@@ -293,11 +294,16 @@
 				}
 				break;
 
+
+			  case 'DTSTART':
+				$attributes[$veFieldName]	= $this->st_dst_patch($event['start']);
+				break;
+
 				// Note; wholeday detection may change the DTEND value later! 
 			  case 'DTEND':
 				//				if(date('H:i:s',$event['end']) == '23:59:59')
 				// $event['end']++;
-				$attributes[$veFieldName]	= $event['end'];
+				$attributes[$veFieldName]	= $this->st_dst_patch($event['end']);
 				break;
 
 			  case 'RRULE':

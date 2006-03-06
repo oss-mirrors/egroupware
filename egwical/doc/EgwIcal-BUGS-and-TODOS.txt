@@ -1,5 +1,7 @@
 /*! \page pageegwicalbugandtodo BUGS and TODOS
 
+@note page is not up to date!
+
 <PRE>
 Know BUGS and things todo
 ---------------------------
