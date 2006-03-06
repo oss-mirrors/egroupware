@@ -397,6 +397,7 @@ release activity for this instance	workflow	es-es	liberar actividad para esta in
 release instance	workflow	es-es	liberar instancia
 reload filter	workflow	es-es	Recargar filtro
 remove active instances	workflow	es-es	Eliminar instancias activas
+remove all instance for this process	workflow	es-es	eliminar todas las instancias para este proceso
 remove all instances for this process	workflow	es-es	eliminar todas las instancias para este proceso
 remove selected roles	workflow	es-es	eliminar roles seleccionados
 removing instances and workitems for aborted instances on all processes	workflow	es-es	eliminando instancias y elementos de trabajo para las instancias abortadas en todos los procesos
