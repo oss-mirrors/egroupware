@@ -1,0 +1,40 @@
+/*! \page egwicalreleaselog Small EgwIcal Release Log
+
+
+
+
+
+
+\section secrel0905 Release 0.9.05  minor bug fix release 
+
+- release date: 20060305
+- file: egwical-with-doc-0.9.05.tgz
+- via: homepage and egroupware  and (possibly) cvs
+
+\subsection subsecrel0905changes Changes from previous version
+
+- in bocalupdate_vevents: added small patch to correct the Daylight savings export
+  behaviour.
+- in boinfolog_vtodos: DST export still unrepaired (will be done in new release)
+- in boinfolog_vtodos: added utf-8 translation for export of ORGANIZERR field
+- in EgwIcal-Timezone handling: corrected some notes on how egw handles date-times
+
+
+\subsection subsecrel0.9.05bugs Found bugs and problems
+
+...........
+
+
+\section secrel0904 Release 0.9.04 first public release via cvs and tarball
+
+- release date: 20060223
+- file: egwica l-with-doc-0.9.04.tgz
+- via: homepage and egroupware cvs (first version)
+
+\subsection subsecrel0904bugs Found bugs and problems
+
+- Cornelius Weiss: export of ORGANIZER and other vtodo fields is not translated to utf8
+- Andreas Goesele: Daylight Savings Time is not respected in UTC Datetime setting for events
+
+
+*/
