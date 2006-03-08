@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['tts']['name']      = 'tts';
 	$setup_info['tts']['title']     = 'Trouble Ticket System';
-	$setup_info['tts']['version']   = '1.0.002';
+	$setup_info['tts']['version']   = '1.2.003';
 	$setup_info['tts']['app_order'] = 10;
 	$setup_info['tts']['enable']    = 1;
 
@@ -31,6 +31,9 @@
 	/* Dependencies for this app to work */
 	$setup_info['tts']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('1.0.0','1.0.1','1.2')
+		 'versions' => Array('1.0.0','1.0.1','1.2','1.3')
 	);
+
+
+
 
