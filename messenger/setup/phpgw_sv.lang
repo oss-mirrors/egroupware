@@ -1,12 +1,13 @@
 compose	messenger	sv	Skapa
 compose global message	common	sv	Skapa globalt meddelande
 compose message	messenger	sv	Skapa meddelande
+compose to group-users	messenger	sv	Skapa till grupp-användare
 delete a message.	messenger	sv	Ta bort ett meddelande
 delete selected	messenger	sv	Ta bort valda
-forward	messenger	sv	Skicka vidare
-forward a message	messenger	sv	Skicka vidare ett meddelande
-forward a message to another user.	messenger	sv	Skicka vidare ett meddelande till en annan användare
-forwarded	messenger	sv	VIdareskickat
+forward	messenger	sv	Vidarebefordra
+forward a message	messenger	sv	Vidarebefordra ett meddelande
+forward a message to another user.	messenger	sv	Vidarebefordra ett meddelande till en annan användare
+forwarded	messenger	sv	Vidarebefordrat
 from	messenger	sv	Från
 global message	messenger	sv	Globalt meddelande
 i can't find the username %1 on the system	messenger	sv	Jag kan inte hitta användaren %1 i systemet

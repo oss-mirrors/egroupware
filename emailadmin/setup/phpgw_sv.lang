@@ -13,8 +13,7 @@ do you really want to delete this profile	emailadmin	sv	Vill du verkligen radera
 domainname	emailadmin	sv	Domän namn
 edit email settings	emailadmin	sv	Redigera e-post alternativ
 email account active	emailadmin	sv	Aktivt e-post konto
-email address	emailadmin	sv	e-post adress
-emailadmin	emailadmin	sv	E-post administration
+email address	emailadmin	sv	E-post adress
 enable cyrus imap server administration	emailadmin	sv	Aktivera Cyrus IMAP server administration
 enable sieve	emailadmin	sv	Aktivera Sieve
 enter your default mail domain (from: user@domain)	emailadmin	sv	Standard e-post domän (från: user@domain)
@@ -28,7 +27,7 @@ imap server hostname or ip address	emailadmin	sv	IMAP server hostnamn eller IP a
 imap server logintyp	emailadmin	sv	IMAP server inloggnings typ
 imap server port	emailadmin	sv	IMAP server port
 imap/pop3 server name	emailadmin	sv	IMAP/POP3 server namn
-in mbyte	emailadmin	sv	in MByte
+in mbyte	emailadmin	sv	i MByte
 ldap basedn	emailadmin	sv	LDAP basedn
 ldap server	emailadmin	sv	LDAP server
 ldap server accounts dn	emailadmin	sv	LDAP server konton DN
@@ -47,8 +46,8 @@ postfix with ldap	emailadmin	sv	Postfix med LDAP
 profile list	emailadmin	sv	Profil lista
 profile name	emailadmin	sv	Profil namn
 qmaildotmode	emailadmin	sv	qmaildotmode
-qouta size in mbyte	emailadmin	sv	kvot storlek i mb
-quota settings	emailadmin	sv	kvot inställningar
+qouta size in mbyte	emailadmin	sv	Kvot storlek i Mb
+quota settings	emailadmin	sv	Kvot alternativ
 remove	emailadmin	sv	Radera
 select type of imap/pop3 server	emailadmin	sv	Välj typ av IMAP/POP3 server
 select type of smtp server	emailadmin	sv	Välj typ av SMTP Server
@@ -66,5 +65,5 @@ use ldap defaults	emailadmin	sv	använd LDAP standarder
 use smtp auth	emailadmin	sv	Använd SMTP autentisering
 use tls authentication	emailadmin	sv	Använd TLS autentisering
 use tls encryption	emailadmin	sv	Använd TLS kryptering
-users can define their own emailaccounts	emailadmin	sv	Användare kan definiera egna e-post konton?
-virtual mail manager	emailadmin	sv	Virtuell MAIL administration
+users can define their own emailaccounts	emailadmin	sv	Användare kan definiera egna epost konton?
+virtual mail manager	emailadmin	sv	Virtuell E-post administration

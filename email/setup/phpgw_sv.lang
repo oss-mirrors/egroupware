@@ -32,7 +32,7 @@ before	email	sv	Före
 big	email	sv	Stor
 bigger	email	sv	Större
 biggest	email	sv	Störst
-body	email	sv	Brev kropp
+body	email	sv	Brevkropp
 both	email	sv	Båda
 button type	email	sv	Knapp typ
 cache server data whenever possible	email	sv	Lagra server data när möjligt
@@ -42,7 +42,7 @@ change font size in your e-mail pages	email	sv	Ändra teckenstorlek i e-post
 check flags for type of mails	email	sv	Kontrollera flaggor för e-post typer
 choose for rename	email	sv	Byt namn
 choose to rename	email	sv	Byt namn
-clear cache	email	sv	Töm cache
+clear cache	email	sv	Töm buffer
 click here for more info in a new window	email	sv	Klicka för mer information i nytt fönster
 click here to continue	email	sv	Klicka för att fortsätta
 click here to edit the settings for this email account.	email	sv	Redigera e-post konto
@@ -56,14 +56,12 @@ could not open this mailbox	email	sv	Kunde inte öppna e-post kontot
 create (expert)	email	sv	Skapa (avanserad)
 create a folder	email	sv	Skapa katalog
 current attachments (%1)	email	sv	Bilagor (%1)
-custom e-mail preferences	email	sv	Redigera e-post alternativ
-custom e-mail settings	email	sv	Redigera e-post alternativ
-date	email	sv	Datum
-debugging page	email	sv	Debug sida
+custom e-mail preferences	email	sv	Ändra e-post alternativ
+custom e-mail settings	email	sv	Ändra e-post alternativ
+debugging page	email	sv	Felsöknings sida
 dec	email	sv	Dec
 default sorting order	email	sv	Standard sortering enl.
 default:	common	sv	Standard:
-delete	email	sv	Radera
 delete (expert)	email	sv	Radera (avanserad)
 delete a folder	email	sv	Radera katalog
 delete account	common	sv	Radera konto
@@ -82,17 +80,16 @@ e-mail extra accounts list	email	sv	E-post extra konto lista
 e-mail filters	common	sv	E-post filter
 e-mail folders	common	sv	E-post kataloger
 e-mail inbox filters list	email	sv	E-post filter lista för Inkorg
-e-mail preferences	common	sv	E-post Alternativ
+e-mail preferences	common	sv	E-post alternativ
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	sv	Varje användare har en sammanfattad sida som kan visa olika information. Detta tillval visar en kort lista på meddelanden i användarens standard e-post konto på Startsidan.
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	sv	Varje användare har en sammanfattad sida som kan visa olika information. Detta tillval visar en kort lista på meddelanden i användarens standard e-post konto på Startsidan.
-edit filters	email	sv	Redigera filter
-email	email	sv	E-Post
+edit filters	email	sv	Ändra filter
 email account name	email	sv	E-post kontonamn
 email address	email	sv	E-post adress
 email date	email	sv	E-post datum
 email filters	email	sv	E-post filter
 email password	email	sv	E-post lösenord
-email preferences	email	sv	E-post Alternativ
+email preferences	email	sv	E-post alternativ
 email signature	email	sv	E-post signatur
 email type	common	sv	E-post typ
 enable this email account	common	sv	Aktivera e-post kontot
@@ -113,7 +110,6 @@ fewer choices	email	sv	Färre val
 file	email	sv	Fil
 file attachment	email	sv	Fil bilaga
 file into	email	sv	Flytta till
-files	email	sv	Filer
 fill in as much as you can	email	sv	Fyll i det du kan
 filter [number] and name	email	sv	Filter [nummer] och namn
 filter inbox for accounts	email	sv	Filtrera Inkorg för konto
@@ -130,7 +126,7 @@ folder name	email	sv	Katalog namn
 folder size	email	sv	Katalog storlek
 folders	email	sv	Kataloger
 for the file to actually upload	email	sv	För att filen ska laddas upp
-for these items, fill only what is different from you default e-mail preferences	common	sv	Fyll i endast det som skiljer från standard e-post alternativ
+for these items, fill only what is different from you default e-mail preferences	common	sv	Fyll i endast det som skiljer från standard epost alternativ
 forward	email	sv	Vidarebefodra
 from	email	sv	Från
 from address	email	sv	Från adress
@@ -151,7 +147,7 @@ if messages match	email	sv	Filtrera meddelanden
 if there is no obvious error, check your email account name and password first.	email	sv	Om det inte är något uppenbart fel, kontrollera e-post kontonamn och lösenord först.
 if there is no obvious error, check your username and password first.	email	sv	Om det inte är något uppenbart fel, kontrollera användarnamn och lösenord först.
 image	email	sv	Bild
-imap mail server hostname or ip address	admin	sv	IMAP mail server namn eller IP adress
+imap mail server hostname or ip address	admin	sv	IMAP e-post server namn eller IP adress
 imap server type	common	sv	IMAP server typ
 imap server type - if applicable	email	sv	IMAP server typ - om tillämpligt
 important	email	sv	Viktig
@@ -170,19 +166,17 @@ layout 2	common	sv	Layout  2
 lines	email	sv	Rader
 list messages	email	sv	Lista meddelanden
 long names	email	sv	Långa namn
-mail folder(uw-maildir)	email	sv	Mail katalog (uw-maildir)
-mail server	email	sv	Mail Server
-mail server login type	admin	sv	Mail Server login typ
-mail server type	email	sv	Mail Server typ
+mail folder(uw-maildir)	email	sv	E-post katalog (uw-maildir)
+mail server	email	sv	E-post Server
+mail server login type	admin	sv	E-post Server inloggnings typ
+mail server type	email	sv	E-post Server typ
 manage accounts	email	sv	Konto hantering
 manage folders	email	sv	Katalog hantering
 mar	email	sv	Mar
-message	email	sv	Meddelande
 message list layout	common	sv	Meddelande lista layout
 messages	email	sv	Meddelanden
 messages found in folder	email	sv	Meddelanden i katalog
 messages have been moved to	email	sv	Meddelanden flyttades till
-monitor	email	sv	Kontrollera
 more actions	email	sv	Fler åtgärder
 more choices	email	sv	Fler val
 move down	email	sv	Flytta ner
@@ -196,14 +190,12 @@ new filter	email	sv	Nytt filter
 new message	email	sv	Nytt meddelande
 new messages	email	sv	Nya meddelanden
 newest	common	sv	Senaste
-next	email	sv	Nästa
 next message	email	sv	Nästa meddelande
 no change	email	sv	Inga ändringar
 no error returned from server	email	sv	Inget fel returnerades av server
 no message found in folder '%1'	email	sv	Inga meddelanden i katalog '%1'
 no next message	email	sv	Inga fler meddelanden
 no previous message	email	sv	Inga tidigare meddelanden
-no subject	email	sv	Inget Subjekt
 noia &#64; carlitus style	email	sv	Noia @ Carlitus Stil
 non-standard	email	sv	Icke standard
 not used	email	sv	Oanvänd
@@ -219,7 +211,7 @@ or	common	sv	Eller
 or enter text	email	sv	Eller skriv text
 or you can use custom settings for this email account	email	sv	eller använd anpassade inställningar för detta konto
 organization	email	sv	Organisation
-persistent email server session	email	sv	Ständig e-post server session
+persistent email server session	email	sv	Ständig epost server session
 phone	email	sv	Telefon
 please fill in everything you need	email	sv	Fyll i det du kan
 please select a folder to rename	email	sv	Välj katalog att döpa om
@@ -243,7 +235,7 @@ reply all	email	sv	Svara alla
 replyto	email	sv	Svara till
 request delivery notification	email	sv	Begär leverans kvittens
 requested filter action:	email	sv	Begärd filter åtgärd:
-required	email	sv	Erfodras
+required	email	sv	Obligatorisk
 reset	email	sv	Återställ
 result	email	sv	Resultat
 return mails during this time period	email	sv	Återsänd meddelanden under denna period
@@ -255,7 +247,7 @@ section	email	sv	Sektion
 seen	email	sv	Läst
 select home email address	email	sv	Välj hem e-post adress
 select work email address	email	sv	Välj arbets e-post adress
-select your mail server type	admin	sv	Välj mail server typ
+select your mail server type	admin	sv	Välj e-post server typ
 select your screensize for proper showing of the javascript addressbook	email	sv	Välja din skärm storlek för korrekt visning av Javascript adressbok
 select your screensize for propper showing of the javascript addressbook	email	sv	Välja din skärm storlek för korrekt visning av Javascript adressbok
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	sv	Välj den traditionellt enkla eller nya Javascript baserade utseendet för adressboken.
@@ -294,7 +286,6 @@ source accounts	email	sv	Ursprungs konton
 spell check	email	sv	Stavning
 standard e-mail preferences	email	sv	Standard e-post alternativ
 stop if matched	email	sv	Stoppa vid träff
-subject	email	sv	Rubrik
 switch accounts	email	sv	Byt identitet
 switch current folder to	common	sv	Visa katalog
 test all filters	email	sv	Testa alla filter
@@ -305,9 +296,9 @@ then check the	email	sv	Kryssa i
 then do this	email	sv	För att därefter
 then take this actions	email	sv	Utför åtgärd
 there is no text or other part of the email to display to the user, all part(s) are attachments.	email	sv	Din e-post innehåller bara bilagor och ingen text
-there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	sv	Fel uppstod vid kontakt med din IMAP server.<br> Verifiera servernamn, användarlogin och lösenord eller kontakta support.
-there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	sv	Fel uppstod vid kontakt med din mail server.<br> Verifiera servernamn, användarlogin och lösenord eller kontakta support.
-there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	sv	Fel uppstod vid kontakt med din POP3 server.<br> Verifiera servernamn, användarlogin och lösenord eller kontakta support.
+there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	sv	Fel uppstod vid kontakt med din IMAP server.<br> Verifiera servernamn, användarnamn och lösenord eller kontakta support.
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	sv	Fel uppstod vid kontakt med din epost server.<br> Verifiera servernamn, användarnamn och lösenord eller kontakta support.
+there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	sv	Fel uppstod vid kontakt med din POP3 server.<br> Verifiera servernamn, användarnamn och lösenord eller kontakta support.
 this data not supplied.	email	sv	Data inte tillhandahållen
 this folder is empty	email	sv	Katalogen är tom
 to	email	sv	Till
