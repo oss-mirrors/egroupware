@@ -73,6 +73,7 @@ add instances in exception	workflow	pt-br	Adicionar instâncias em exceção
 add new	workflow	pt-br	adicionar novo
 add new role	workflow	pt-br	Adicionar novo perfil
 add or edit a process	workflow	pt-br	Adicionar ou editar um processo
+add or edit a role	workflow	pt-br	Adicionar ou editar um perfil
 add or edit an activity	workflow	pt-br	Adicionar ou editar uma atividade
 add property	workflow	pt-br	Adicionar propriedade
 add role	workflow	pt-br	Adicionar perfil
@@ -86,8 +87,8 @@ admin process activities	workflow	pt-br	Administrar Atividades de Processos
 admin process roles	workflow	pt-br	Administrar Perfis de Processos
 admin processes	workflow	pt-br	Administrar Processos
 admin processes sources	workflow	pt-br	Administrar Código Fonte de Processos
-administer instances	workflow	pt-br	Administrar instâncias
-administer processes	workflow	pt-br	administrar processos
+administer instances	admin	pt-br	Administrar instâncias
+administer processes	admin	pt-br	administrar processos
 agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	pt-br	Agente #%1 do tipo %2 está associado a uma atividade inexistente #%3
 agent #%1 of type %2 is not linked with an activity	workflow	pt-br	Agente #%1 do tipo %2 não está associado a uma atividade
 agent associated with inexistent activity	workflow	pt-br	Agente associado a uma atividade inexistente
@@ -121,7 +122,7 @@ cannot run unknown activity	workflow	pt-br	Impossível executar atividade desconh
 cc:	workflow	pt-br	Cc:
 circular reference found some activity has a transition leading to itself	workflow	pt-br	Loop encontrado. Alguma atividade tem uma transição conduzindo a ela mesma
 circular reference found. some activity has a transition leading to itself	workflow	pt-br	Loop encontrado. Alguma atividade tem uma transição conduzindo a ela mesma
-cleanup aborted instances	workflow	pt-br	remover instâncias abortadas
+cleanup aborted instances	admin	pt-br	remover instâncias abortadas
 cleanup actions	workflow	pt-br	ações de remoção
 close and get back later	workflow	pt-br	Fechar e retornar depois
 close printer friendly mode	workflow	pt-br	Fechar o modo de visualização de impressão
@@ -223,11 +224,11 @@ go to same activities for other instances of this process	workflow	pt-br	ir para
 go to same process activities	workflow	pt-br	ir para as mesmas atividades do processo
 go to the actual state of this instance	workflow	pt-br	ir para o estado atual desta instância
 grab instance	workflow	pt-br	capturar instância
-grant access to the administration and development of workflow processes and activities.	workflow	pt-br	Liberar acesso para administração e desenvolvimento de processos e atividades de workflow
-grant access to the administration of workflow elements	workflow	pt-br	Liberar acesso para administração de elementos do workflow
-grant access to the administration of workflow instances in monitor screens	workflow	pt-br	Liberar acesso para administração de instâncias de workflow, nas janelas de monitoramento
-grant access to the cleanup/deletion of workflow aborted instances in monitor screens	workflow	pt-br	Liberar acesso para remover/deletar instâncias abortadas de workflow, nas janelas de monitoramento
-grant access to the monitoring of workflow elements	workflow	pt-br	Liberar acesso para monitoramento de elementos do workflow
+grant access to the administration and development of workflow processes and activities.	admin	pt-br	Liberar acesso para administração e desenvolvimento de processos e atividades de workflow
+grant access to the administration of workflow elements	admin	pt-br	Liberar acesso para administração de elementos do workflow
+grant access to the administration of workflow instances in monitor screens	admin	pt-br	Liberar acesso para administração de instâncias de workflow, nas janelas de monitoramento
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	admin	pt-br	Liberar acesso para remover/deletar instâncias abortadas de workflow, nas janelas de monitoramento
+grant access to the monitoring of workflow elements	admin	pt-br	Liberar acesso para monitoramento de elementos do workflow
 graph	workflow	pt-br	Gráfico
 graphic options	common	pt-br	Opções gráficas
 group	workflow	pt-br	Grupo
@@ -304,7 +305,7 @@ monitor processes	workflow	pt-br	Monitorar Processos
 monitor this instance	workflow	pt-br	Monitorar esta instância
 monitor work items	workflow	pt-br	Monitorar Workitens
 monitor workitems	workflow	pt-br	Monitorar Workitems
-monitoring	workflow	pt-br	monitoring
+monitoring	admin	pt-br	monitoring
 monitors	workflow	pt-br	Monitores
 more options?	workflow	pt-br	mais opções?
 my activities	workflow	pt-br	Minhas Atividades
@@ -352,6 +353,7 @@ owner:	workflow	pt-br	Proprietário:
 ownership give abort right	common	pt-br	a posse garante o direito de abortar
 ownership give exception right	common	pt-br	a posse garante o direito de lançar exceção
 ownership give release right	common	pt-br	a posse garante o direito de liberar
+please wait, task in progress ...	workflow	pt-br	Por favor aguarde, atividade em execução ...
 post activity %1 code is not avaible	workflow	pt-br	código da pós-atividade %1 não está disponível
 post shared code is not avaible	workflow	pt-br	código pós-compartilhado não está disponível
 post-agent %1 code is not avaible	workflow	pt-br	código do pós-agente %1 não está disponível
@@ -405,6 +407,7 @@ replyto:	workflow	pt-br	Responder para:
 restart	workflow	pt-br	reiniciar
 restart activity	workflow	pt-br	reiniciar atividade
 resume this exception instance	workflow	pt-br	Continuar esta instância em exceção
+role	workflow	pt-br	Perfil
 role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	pt-br	Perfil #%1 no processo %2 tem processo diferente (%3) no mapeamento com usuário #%4
 role %1 (#%2) is associated with a non-existent process (#%3)	workflow	pt-br	Perfil %1 (#%2) está associado a um processo inexistente (#%3)
 role %1 is associated in a mapping with user #%2 with a non-existent process (%3)	workflow	pt-br	Perfil %1 está associado, em um mapeamento com o usuário #%2, a um processo inexistente (%3)
@@ -582,6 +585,7 @@ when multiple submit options are avaible we draw a select box with only one subm
 when to send the message:	workflow	pt-br	Quando enviar a Mensagem:
 workflow	common	pt-br	WorkFlow
 workflow configuration	admin	pt-br	Configuração do Workflow
+workflow navigation	workflow	pt-br	Navegação do Workflow
 workflow preferences	workflow	pt-br	Preferências do Workflow
 workflow site configuration	workflow	pt-br	Configuração do Site Workflow
 workflow.ui_useractivities	workflow	pt-br	workflow.ui_useractivities
