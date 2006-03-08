@@ -11,11 +11,7 @@
 
 	/* $Id$ */
 
-	$GLOBALS['egw']->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display asc',__LINE__,__FILE__);
-	while($GLOBALS['egw']->db->next_record())
-	{
-		$_headlines[$GLOBALS['egw']->db->f('con')] = $GLOBALS['egw']->db->f('display');
-	}
+	$_headlines = ExecMethod('headlines.headlines.sites');
 
 	$GLOBALS['settings'] = array(
 		'headlines' => array(
@@ -23,7 +19,7 @@
 			'label'  => 'Select Headline News sites',
 			'name'   => 'headlines',
 			'values' => $_headlines,
-			'size'   => (count($_headlines)>10 ? 10 : count($_headlines)),
+			'size'   => count($_headlines) >10 ? 10 : count($_headlines),
 			'xmlrpc' => True,
 			'admin'  => False
 		)
