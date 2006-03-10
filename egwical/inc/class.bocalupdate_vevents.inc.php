@@ -66,7 +66,8 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.05 (added the dst patch for DTSTART and DTEND)
+	 * @version 0.9.06 minor bugfixes for php5 compatibility
+	 * @since 0.9.05 (added the dst patch for DTSTART and DTEND)
 	 * @since 0.9.03 changed mke_RECUR2rar() api
 	 * @license  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
 	 */
@@ -341,6 +342,9 @@
 
 				// @todo find out about AALARM, DALARM, Is this in the RFC !?
 			  case 'AALARM':
+				//for php5 seems picky about the need for an array to iterate on
+				// may try casting to array as alternative to this check, once I use php5
+				if(!is_array($event['alarm'])) break; 
 				foreach($event['alarm'] as $alarmID => $alarmData) {
 				  $attributes['AALARM'] = $hIcal->_exportDateTime($alarmData['time']);
 				  // lets take only the first alarm
@@ -349,6 +353,7 @@
 				break;
 
 			  case 'DALARM':
+				if(!is_array($event['alarm'])) break; 
 				foreach($event['alarm'] as $alarmID => $alarmData) {
 				  $attributes['DALARM'] = $hIcal->_exportDateTime($alarmData['time']);
 				  // lets take only the first alarm
@@ -357,6 +362,7 @@
 				break;
 
 			  case 'VALARM':
+				if(!is_array($event['alarm'])) break; 
 				foreach($event['alarm'] as $alarmID => $alarmData) {
 				  $this->mki_c_VALARM($alarmData, $vevent,
 										  $event['start'], $veExportFields);
@@ -587,7 +593,8 @@
 
 			case 'DTEND':
 			  // will be reviewed after all fields are collected
-			  $event['end']		= $attrval;
+			  $event['end']		= $this->mke_DDT2utime($attrval);
+ //			  $event['end']		= $attrval;
 			  break;
 
 			  // note: DURATION and DTEND are mutually exclusive
@@ -700,6 +707,10 @@
 		  } 
 		  
 		  // a trick for whole day handling or ...??
+		  /**
+		   * @bug php5 detects that event[end] is not always a int.
+		   * Solution use conversion function to utime fromegwical  here
+		   */
 		  if(date('H:i:s',$event['end']) == '00:00:00')
 			$event['end']--;
 

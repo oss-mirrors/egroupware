@@ -213,8 +213,10 @@
 		$todo = array();  // container for each todo to be exported
 		$tid = null;      // id of the todo to be exported
 		$vexpcnt =0; // number of vtodos exported
-#		$options = array('CHARSET' => 'UTF-8','ENCODING' => 'QUOTED-PRINTABLE');
-
+		$options = array('CHARSET' => 'UTF-8','ENCODING' => 'QUOTED-PRINTABLE');
+		//		$options = array('CHARSET' => 'UTF-8',
+						 //						 'ENCODING' => 'QUOTED-PRINTABLE'
+		//						 );
 
 		if (!is_array($todos)) $todos = array($todos);
 		  
@@ -228,9 +230,10 @@
 		  $tid = $todo['info_id'];
 		  // oke, now sure $todo is a todoData array and $tid its info_id field..
 		  //_debug_array($todo);
-		  
-		  $todo = $GLOBALS['egw']->translation->
-			convert($todo,$GLOBALS['egw']->translation->charset(),'UTF-8');
+
+		  // do this for the vtodo fields later in addAttributeOntoVevent not here		  
+		  //		  $todo = $GLOBALS['egw']->translation->
+		  //			convert($todo,$GLOBALS['egw']->translation->charset(),'UTF-8');
 
 #		  error_log('todo to export=' . print_r($todo,true));
 
@@ -248,10 +251,8 @@
 		  if ($parid = $todo['info_id_parent'])
 			$vtodo->setAttribute('RELATED-TO', $this->_id2guid($parid));
 
-		  $vtodo->setAttribute('SUMMARY', $todo['info_subject']);
-		  $vtodo->setParameter('SUMMARY', $options);
-		  $vtodo->setAttribute('DESCRIPTION', $todo['info_des']);
-		  $vtodo->setParameter('DESCRIPTION', $options);
+		  $this->addAttributeOntoVevent($vtodo,	'SUMMARY', $todo['info_subject'] );
+		  $this->addAttributeOntoVevent($vtodo,	'DESCRIPTION', $todo['info_des'] );
 		  if($todo['info_startdate'])
 			$vtodo->setAttribute('DTSTART', $todo['info_startdate']);
 		  if($todo['info_enddate'])
@@ -270,14 +271,12 @@
 		  // egw2VTOD: owner -> ORGANIZER field 
 		  if ($tfrom_id = $todo['info_owner']){
 			//			$mailtoOrganizer = $GLOBALS['egw']->accounts->id2name($tfrom_id,'account_email');
-			//			$vtodo->setAttribute('ORGANIZER', $this->mki_v_CAL_ADDRESS($tfrom_id));
-			//			$vtodo->setParameter('ORGANIZER', $this->mki_p_CN($tfrom_id));
+
 			$this->addAttributeOntoVevent($vtodo,
 										  'ORGANIZER',
 										  $this->mki_v_CAL_ADDRESS($tfrom_id),
 										  $this->mki_p_CN($tfrom_id)
 										  );
-
 		  }
 
 		  $vtodo->setAttribute('CLASS',
@@ -286,7 +285,7 @@
 		  // n.b. dont mind catid ==0 (this is none categorie, I think)
 		  if ($catids = $todo['info_cat']){ 
 			$catnamescstr = $this->cats_ids2idnamescstr(explode(',',$catids));
-			$vtodo->setAttribute('CATEGORIES',$catnamescstr);
+			$this->addAttributeOntoVevent($vtodo, 'CATEGORIES',  $catnamescstr);
 		  }
 
 

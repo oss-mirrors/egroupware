@@ -2,6 +2,28 @@
 
 
 
+\section secrel0905php5compat Release 0.9.05-php5compat some fixes to be compatible with php5
+
+- release date: 20060310
+- file: egwical-with-doc-0.9.05php5compat.tgz
+- via: homepage and egroupware  and (possibly) cvs
+
+\subsection subsecrel0905php5compatchanges Changes from previous version
+
+- in egwical: corrected the addAttributeOntoVevent() routine to be php5 compatible
+  (no refs for value and params, added good default arguments for aparams)
+- in bocalupdate_vevents: corrected dtend check for whole days (first convert to utime)
+- in bocalupdate_vevents: check the presence of alarms before processing (array php5 problem)
+- in boinfolog_vtodos: use the addAttributeOntVevent() call for summary and description field export
+  to get utf-8 translation activated for these fields
+- added patches for horde iCalendar.php to get rid of php5 warnings
+
+
+\subsection subsecrel0.9.05php5compatbugs Found bugs and problems
+
+...........
+
+
 
 
 
@@ -22,7 +44,15 @@
 
 \subsection subsecrel0.9.05bugs Found bugs and problems
 
-...........
+- bad compatibility towards php5 (warnings about array_merge without array parameters etc.)
+  reported by (roger ? and omgs)
+- reported (roger ...) bad import of category names for empty categories (could not reproduce..)
+
+
+
+
+
+
 
 
 \section secrel0904 Release 0.9.04 first public release via cvs and tarball

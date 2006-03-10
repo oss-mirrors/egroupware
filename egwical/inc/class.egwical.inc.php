@@ -112,6 +112,7 @@
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (original code of reused parts)
 	 *
 	 *
+	 * @version 0.9.06  small php5 related bugfixes
 	 * @since 0.9.05  added the st_dst_patch function
 	 * @since 0.9.04 (First wurh pattern implementation, with RRULE count= impl.)
 	 * @date 20060216
@@ -149,7 +150,7 @@
 	   *
 	   * @var array
 	   * The resource workers registry is an array that holds 
-	   * an entry for each type of resource classs with the appropiate worker class and
+	   * an entry for each type of resource class with the appropiate worker class and
 	   * the currently set worker (representative) instantiated object of that class.
 	   * @note the (instantiated) worker representative object in the registry entry is
 	   * firstly set when an appropiate worker subclass is actually instantiated during
@@ -1163,12 +1164,15 @@
 	   * @param horde_iCalendar_vevent $vevent obj to which the attribute is added
 	   * @param string $aname  name for the new attribute
 	   * @param mixed $avalue  value for the new attribute
-	   * @param array $aparams  parameters for the new attribute
+	   * @param array $aparams  optional parameters for the new attribute
 	   * @return true
 	   */
-	  function addAttributeOntoVevent(&$vevent,$aname,&$avalue,&$aparams)
+	  function addAttributeOntoVevent(&$vevent,$aname,$avalue,$aparams=null)
 	  {
 		
+		if(!isset($aparams) || ($aparams == null))
+		  $aparams =array();
+
 		// it appears that translation->convert() can translate an array
 		// (that is: the values!, not the keys though)
 		// so lets apply it to the avalue and aparams, that should be enough!
@@ -1182,6 +1186,7 @@
 												 $GLOBALS['egw']->translation->charset(),
 												 'UTF-8');
 //		error_log('n:' . $aname . 'v:' . $valueData);
+//		error_log('n: paramData:' . print_r($paramData,true ));
 		$vevent->setAttribute($aname, $valueData, $paramData);
 		$options = array();
 		// JVL:is this really needed?
