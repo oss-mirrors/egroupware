@@ -89,13 +89,11 @@ download this as a file	felamimail	es-es	Descargar esto como un fichero
 e-mail	felamimail	es-es	Correo electrónico
 e-mail address	felamimail	es-es	Dirección de correo electrónico
 e-mail folders	felamimail	es-es	Carpetas de correo electrónico
-edit email forwarding address	felamimail	es-es	editar la dirección para reenvío de correo
 edit filter	felamimail	es-es	Editar filtro
 edit rule	felamimail	es-es	Añadir regla
 edit selected	felamimail	es-es	Editar selección
 edit vacation settings	felamimail	es-es	editar configuración de vacaciones
 email address	felamimail	es-es	Dirección de correo electrónico
-email forwarding address	felamimail	es-es	dirección de correo para reenviar
 email signature	felamimail	es-es	Firma de correo
 empty trash	felamimail	es-es	Vaciar papelera
 enable	felamimail	es-es	Habilitar
@@ -103,8 +101,8 @@ enter your default mail domain ( from: user@domain )	admin	es-es	Introduzca su d
 enter your imap mail server hostname or ip address	admin	es-es	Introduzca el nombre del servidor de correo IMAP o la dirección IP
 enter your sieve server hostname or ip address	admin	es-es	Introduzca el nombre del servidor SIEVE o la dirección IP
 enter your sieve server port	admin	es-es	Introduzca el puerto del servidor SIEVE
-enter your smtp server hostname or ip address	admin	es-es	ntroduzca el nombre del servidor SIEVE o la dirección IP
-enter your smtp server port	admin	es-es	Introduzca el el puerto del servidor smtp
+enter your smtp server hostname or ip address	admin	es-es	ntroduzca el nombre del servidor SMTP o la dirección IP
+enter your smtp server port	admin	es-es	Introduzca el el puerto del servidor SMTP
 error	felamimail	es-es	ERROR
 error connecting to imap serv	felamimail	es-es	Error al conectar al servidor IMAP
 error opening	felamimail	es-es	Error al abrir
@@ -168,7 +166,6 @@ info	felamimail	es-es	Información
 invalid user name or password	felamimail	es-es	El usuario o la contraseña no son válidos
 javascript	felamimail	es-es	JavaScript
 keep a copy of the message in your inbox	felamimail	es-es	guardar una copia del mensaje en la bandeja de entrada
-keep local copy of email	felamimail	es-es	guardar una copia local del correo
 kilobytes	felamimail	es-es	kilobytes
 language	felamimail	es-es	Idioma
 last name	felamimail	es-es	Apellidos
