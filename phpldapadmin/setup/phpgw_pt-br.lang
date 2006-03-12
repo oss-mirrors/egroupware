@@ -15,7 +15,7 @@ base_dn	phpldapadmin	pt-br	Base DN
 binary_value	phpldapadmin	pt-br	Valor binário
 change_entry_rdn	phpldapadmin	pt-br	Alterar esta entrada RDN
 chooser_link_tooltip	phpldapadmin	pt-br	Clique na janela instantânea para selecionar graficamente um registro DN
-click_to_display	phpldapadmin	pt-br	clique para visualizar
+click_to_display	phpldapadmin	pt-br	clique para exibir
 contains	phpldapadmin	pt-br	conteúdo
 copy_this_entry	phpldapadmin	pt-br	copiar este registro
 copy_this_entry_tooltip	phpldapadmin	pt-br	Copiar este objeto para outro local, um novo DN, ou outro servidor.
@@ -28,9 +28,9 @@ create_new	phpldapadmin	pt-br	Criar nova
 create_new_entry_in	phpldapadmin	pt-br	Criar uma nova entrada em
 create_new_entry_on	phpldapadmin	pt-br	Criar uma nova entrada no
 current_list_of	phpldapadmin	pt-br	Lista atual de
-delete_attribute	phpldapadmin	pt-br	apagar atributo
-delete_hint	phpldapadmin	pt-br	Sugestão: <b>Para apagar um atributo</b>, remova o conteúdo do campo de texto e clique em salvar.
-delete_this_entry	phpldapadmin	pt-br	Apagar este registro
+delete_attribute	phpldapadmin	pt-br	remover atributo
+delete_hint	phpldapadmin	pt-br	Sugestão: <b>Para remover um atributo</b>, remova o conteúdo do campo de texto e clique em salvar.
+delete_this_entry	phpldapadmin	pt-br	Remover este registro
 delete_this_entry_tooltip	phpldapadmin	pt-br	Você será alertado para confirmar sua decisão.
 desc	phpldapadmin	pt-br	Descrição
 distinguished_name	phpldapadmin	pt-br	Nome diferente
@@ -76,10 +76,9 @@ none_remove_value	phpldapadmin	pt-br	nenhum, remover valor
 not_enough_login_info	phpldapadmin	pt-br	Não há informação para conexão ao servidor. Por favor verifique sua configuração.
 oid	phpldapadmin	pt-br	OID
 optional_attrs	phpldapadmin	pt-br	Atributos opcionais
-phpldapadmin	common	pt-br	Admin do LDAP
 please_specify_in_config	phpldapadmin	pt-br	Especifique dentro do arquivo config.php
 read_only	phpldapadmin	pt-br	Leitura apenas
-really_delete_attribute	phpldapadmin	pt-br	Realmente apagar atributo
+really_delete_attribute	phpldapadmin	pt-br	Realmente remover atributo
 refresh	phpldapadmin	pt-br	atualizar
 refresh_expanded_containers	phpldapadmin	pt-br	Atualizar todo o conteúdo expandido para
 refresh_this_entry	phpldapadmin	pt-br	Atualizar este registro
@@ -114,7 +113,7 @@ the_following_syntaxes	phpldapadmin	pt-br	As <b>sintaxes</b> a seguir são suport
 true	phpldapadmin	pt-br	verdadeiro
 value_to	phpldapadmin	pt-br	valor para
 values_for_attribute	phpldapadmin	pt-br	valores para os atributos
-view	phpldapadmin	pt-br	Visualizar
-view_schema_for	phpldapadmin	pt-br	Visualizar o esquema para
-view_server_info	phpldapadmin	pt-br	Visualizar informação disponível do servidor
-viewing_read_only	phpldapadmin	pt-br	Visualizar registros em modo de leitura apenas.
+view	phpldapadmin	pt-br	Exibir
+view_schema_for	phpldapadmin	pt-br	Exibir o esquema para
+view_server_info	phpldapadmin	pt-br	Exibir informação disponível do servidor
+viewing_read_only	phpldapadmin	pt-br	Exibir registros em modo de leitura apenas.
