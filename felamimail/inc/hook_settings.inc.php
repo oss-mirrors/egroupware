@@ -26,16 +26,7 @@
 
 	$this->bofelamimail->closeConnection();
 
-	$config =& CreateObject('phpgwapi.config','felamimail');
-	$config->read_repository();
-	$felamimailConfig = $config->config_data;
-	#_debug_array($felamimailConfig);
-	unset($config);
-
-	#$boemailadmin =& CreateObject('emailadmin.bo');
-	#$methodData = array($felamimailConfig['profileID']);
-	#_debug_array($methodData);
-	$felamimailConfig = ExecMethod('emailadmin.bo.getProfile',$felamimailConfig['profileID']);
+	$felamimailConfig = ExecMethod('emailadmin.bo.getUserProfile');
 
 	$refreshTime = array(
 		'0' => lang('disabled'),

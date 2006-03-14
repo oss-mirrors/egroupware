@@ -88,7 +88,7 @@
 
 		display_sidebox($appname,$menu_title,$file);
 	}
-
+/* There is nothing to configure in felamimail anymore
 	if ($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
 		$menu_title = lang('Administration');
@@ -97,5 +97,6 @@
 		);
 		display_sidebox($appname,$menu_title,$file);
 	}
+*/
 }
 ?>
