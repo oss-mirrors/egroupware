@@ -27,17 +27,6 @@
      require_once EGW_SERVER_ROOT.'/egwical/inc/class.bocalupdate_vevents.inc.php';
      require_once EGW_SERVER_ROOT.'/egwical/inc/class.boinfolog_vtodos.inc.php';
 
-    //TODO VERSION 0.9.04
-    //[ ] overwrite of myid partstatus in nonowned events/tasks 
-    /* recur count implementation:
-	  [+] daily with intervals
-	  [-] daily with exdates
-	  [+ ] weekly;byday withintervals
-	  [ ] monthly;
-	  [ ] yearly;
-	*/
-
-
     /**
 	 * 
 	 * Common  routines to manipulate iCalendar components and fields in
@@ -112,10 +101,11 @@
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (original code of reused parts)
 	 *
 	 *
-	 * @version 0.9.06  small php5 related bugfixes
+	 * @since 0.9.07  corrected the cats_names2idscstr app_name handling
+	 * @since 0.9.06  small php5 related bugfixes
 	 * @since 0.9.05  added the st_dst_patch function
 	 * @since 0.9.04 (First wurh pattern implementation, with RRULE count= impl.)
-	 * @date 20060216
+	 * @date 20060313
 	 * @license http://opensource.org/licenses/gpl-license.php GPL -
 	 *  GNU General Public License
 	 */
@@ -570,11 +560,11 @@
 	  /** 
 	   * Translate catnames back to cat-ids creating/modifying cats on the fly
 	   *
-	   * <i>JVLNOTE boldly copied from class.xmlrpc_server.inc.php because I donot know how
-	   * to instantiate $GLOBALS['server'] (that provides this method) atm. </i>
 	   * 
 	   * @note THIS CODE SHOULD BE SOMEWHERE ELSE: IT HAS NOTHING TO DO WITH ICAL!!
 	   * @param array $cnames  list with category names
+	   * @param string $owner_id id of the user whose categories we search
+	   * @param string $app_name name of the application whose categories are searched or added.
 	   * @return string $cidscstr   commasep string with ids generated or found for
 	   * the category names.
 	   */
@@ -586,8 +576,14 @@
 		if (!is_object($catsys =& $GLOBALS['egw']->categories)) {
 		  $GLOBALS['egw']->categories =& CreateObject('phpgwapi.categories',
 													  $owner_id,$app_name);
-		  $catsys =& $GLOBALS['egw']->categories;
 		}
+
+		$catsys =& $GLOBALS['egw']->categories;
+		// change the app_name to the request app if needed
+		if (! ($catsys->app_name == $app_name)){
+		  $catsys->categories($owner_id, $app_name);
+		}
+
 		$cids = array();
 		foreach($cnames as $name) {
 		  if (!($cid = $catsys->name2id($name))) {

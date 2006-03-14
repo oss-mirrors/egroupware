@@ -1,6 +1,25 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
 
 
+\section secrel0907catfix Release 0.9.07-catfix some fixes for category handling
+
+- release date: 20060310
+- file: egwical-with-doc-0.9.07catfix.tgz
+- via: homepage and egroupware  and (possibly) cvs
+
+\subsection subsecrel0907catfix Changes from previous version
+
+- in egwical: fixed import category handling: calendar and infolog categories
+  should now be added to their own category lists 
+- temporarily switched of error handling for vtodo import (= upload into egw)
+  vtodo import errorhandling is rather flaky and will be improved in new api versions (>9.9.20)
+  At this moment, problematic import of vtodos is only reported via errorlog, not to the client.
+
+\subsection subsecrel0.9.07catfixbugs Found bugs and problems
+
+..........
+
+
 
 \section secrel0905php5compat Release 0.9.05-php5compat some fixes to be compatible with php5
 
@@ -21,7 +40,9 @@
 
 \subsection subsecrel0.9.05php5compatbugs Found bugs and problems
 
-...........
+- in boinfolog_vtodos and egwical: the category import is always in the calendar
+  category list, even when it should be in the infolog list
+- boinfolog_vtodos: error, skip handling etc.  on import is weak! breaks after one problem.
 
 
 
