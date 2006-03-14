@@ -1,5 +1,19 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
 
+\section secrel0907catfixbf1 Release 0.9.07-catfix-bf1 some fixes for category handling
+
+- release date: 20060314
+- file: egwical-with-doc-0.9.07catfix-bf1.tgz
+- via: homepage and egroupware  and (possibly) cvs
+
+\subsection subsecrel0907catfixbf1 Changes from previous version
+
+- in boinfolog_vtodos: fixed 3 erroneous pass by reference function calls in boinfolog_vtodos
+
+\subsection subsecrel0.9.07catfixbf1bugs Found bugs and problems
+
+.........
+
 
 \section secrel0907catfix Release 0.9.07-catfix some fixes for category handling
 
@@ -17,7 +31,7 @@
 
 \subsection subsecrel0.9.07catfixbugs Found bugs and problems
 
-..........
+-Friedmar: 3 erroneous pass by reference function calls in boinfolog_vtodos
 
 
 
