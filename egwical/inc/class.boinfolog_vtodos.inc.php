@@ -60,7 +60,8 @@
 	 * @author Jan van Lieshout <jvl (at)xs4all.nl> This version.
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts of reused code)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts of reused code)
-	 * @version 0.9.07 temporarily switch of vtodo import error returns
+	 * @version 0.9.07bf1 fix of faulty superfluous ampersand for passed by ref args
+	 * @since 0.9.07 temporarily switch of vtodo import error returns
 	 * @version 0.9.05 First for use with new WURH egwical class
 	 * @license http://opensource.org/licenses/gpl-license.php GPL -
 	 *  GNU General Public License
@@ -346,7 +347,7 @@
 		$hIcal->setAttribute('VERSION',$_version);
 		$hIcal->setAttribute('METHOD','PUBLISH');
 			
-		if(! $tcnt = $this->exportTodosOntoIcal(&$hIcal, array($_taskID), true))
+		if(! $tcnt = $this->exportTodosOntoIcal($hIcal, array($_taskID), true))
 		  return false;
 
 		return $hIcal->exportvCalendar();
@@ -383,7 +384,7 @@
 		  // ($ftid > 0) => use this value to set the id (compatibility mode) 
 
 		  if(is_a($component, 'Horde_iCalendar_vtodo')){
-			$tidOk = $this->_importVTodoIcalComponent(&$component, $overwritemode, -1);
+			$tidOk = $this->_importVTodoIcalComponent($component, $overwritemode, -1);
 			if (!$tidOk){
 			  error_log('infolog.bovtodos.importVTodosFromIcal(): '
 						. ' ERROR importing VTODO ');
@@ -565,7 +566,7 @@
 		if(count($components) < 1)
 		  return false;
 
-		return $this->_importVTodoIcalComponent(&$components[0],
+		return $this->_importVTodoIcalComponent($components[0],
 												true, $_taskID);
 	  }
 
