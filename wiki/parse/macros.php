@@ -4,7 +4,7 @@
 // Prepare a category list.
 function view_macro_category($args)
 {
-	global $pagestore, $MinEntries, $DayLimit, $full, $page, $Entity;
+	global $pagestore, $MinEntries, $DayLimit, $page, $Entity;
 	global $FlgChr;
 
 	$text = '';
@@ -29,8 +29,9 @@ function view_macro_category($args)
 	}
 
 	if(count($list) == 0)
-		{ return ''; }
-
+	{
+		return '';
+	}
 	usort($list, 'catSort');
 
 	$now = time();
@@ -39,19 +40,18 @@ function view_macro_category($args)
 	foreach($list as $i => $lpage)
 	{
 		$editTime = $lpage['time'];
-		if($DayLimit && $i >= $MinEntries
-			 && !$full && ($now - $editTime) > $DayLimit * 24 * 60 * 60)
-			{ break; }
-
-		$text = $text . html_category($lpage['time'], $lpage,
-																	$lpage['author'], $lpage['username'],
-																	$lpage['comment']);
+		if($DayLimit && $i >= $MinEntries && !$_GET['full'] && ($now - $editTime) > $DayLimit * 24 * 60 * 60)
+		{
+			break;
+		}
+		$text .= html_category($lpage['time'], $lpage,$lpage['author'], $lpage['username'],$lpage['comment']);
 		$text .= html_newline();
 	}
 
 	if($i < count($list)-1)
-		{ $text .= html_fulllist($page, count($list)); }
-
+	{
+		$text .= html_fulllist(preg_match('/^[a-z]+$/i',$_GET['wikipage']) ? $_GET['wikipage']:$page, count($list));
+	}
 	return $text;
 }
 
