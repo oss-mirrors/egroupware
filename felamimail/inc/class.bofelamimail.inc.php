@@ -197,6 +197,33 @@
 			return @imap_utf7_decode($_folderName);
 		}
 
+		function decodeMimePart($_mimeMessage, $_encoding) {
+			#// MS-Outlookbug workaround (don't break links)
+			#$mimeMessage = preg_replace("!((http(s?)://)|((www|ftp)\.))(([^\n\t\r]+)([=](\r)?\n))+!i", 
+			#		"$1$7", 
+			#		$_mimeMessage);
+
+			// decode the file ...
+			switch ($_encoding) 
+			{
+				case ENCBASE64:
+					// use imap_base64 to decode
+					return imap_base64($_mimeMessage);
+					break;
+				case ENCQUOTEDPRINTABLE:
+					// use imap_qprint to decode
+					return quoted_printable_decode($_mimeMessage);
+					break;
+				case ENCOTHER:
+					// not sure if this needs decoding at all
+					#break;
+				default:
+					// it is either not encoded or we don't know about it
+					return $_mimeMessage;
+					break;
+			}
+		}
+
 		function decode_header($string)
 		{
 			#print "decode header: $string<br><br>";
@@ -552,6 +579,103 @@
 			}
 		}
 		
+		function getMimePartCharset($_mimePartObject) {
+			$charSet = 'ISO-8859-1';
+
+			if(is_array($_mimePartObject->parameters)) {
+				foreach($_mimePartObject->parameters as $parameters) {
+					if($parameters->attribute == 'CHARSET') {
+						$charSet = $parameters->value;
+					}
+				}
+			}
+			
+			return $charSet;
+		}
+		
+		function getMultipartAlternative($_uid, $_parentPartID, $_structure, $_htmlMode) {
+				// a multipart/alternative has exactly 2 parts (text and html)
+				$i=1;
+				$partText;
+				$partHTML;
+				$parentPartID = ($_parentPartID != '') ? $_parentPartID.'.' : $_parentPartID;
+
+				foreach($_structure->parts as $mimePart) {
+					if($mimePart->type == TYPETEXT && $mimePart->subtype == 'PLAIN' && $mimePart->bytes > 0) {
+						$partText = array(
+							'partID'	=> $parentPartID.$i ,
+							'charset'	=> $this->getMimePartCharset($mimePart) ,
+							'encoding'	=> $mimePart->encoding ,
+						);
+					} elseif ($mimePart->type == TYPETEXT && $mimePart->subtype == 'HTML' && $mimePart->bytes > 0) {
+						$partHTML = array(
+							'partID'	=> $parentPartID.$i ,
+							'charset'	=> $this->getMimePartCharset($mimePart) ,
+							'encoding'	=> $mimePart->encoding ,
+						);
+					}
+					$i++;
+				}
+
+				switch($_htmlMode) {
+					case 'always_display':
+						if(is_array($partHTML)) {
+							$partContent = $this->decodeMimePart(
+								imap_fetchbody($this->mbox, $_uid, $partHTML['partID'], FT_UID) ,
+								$partHTML['encoding']
+							);
+							$bodyPart[] = array(
+								'body'		=> $partContent ,
+								'mimeType'	=> 'text/html' ,
+								'charSet'	=> $partHTML['charset']
+							);
+						}
+						break;
+					case 'only_if_no_text':
+						if(is_array($partHTML) && !is_array($partText)) {
+							$partContent = $this->decodeMimePart(
+								imap_fetchbody($this->mbox, $_uid, $partHTML['partID'], FT_UID) ,
+								$partHTML['encoding']
+							);
+							$bodyPart[] = array(
+								'body'		=> $partContent ,
+								'mimeType'	=> 'text/html' ,
+								'charSet'	=> $partHTML['charset']
+							);
+						} elseif (is_array($partText)) {
+							$partContent = $this->decodeMimePart(
+								imap_fetchbody($this->mbox, $_uid, $partText['partID'], FT_UID) ,
+								$partText['encoding']
+							);
+
+							$bodyPart[] = array(
+								'body'		=> $partContent ,
+								'mimeType'	=> 'text/plain' ,
+								'charSet'	=> $partText['charset']
+							);
+						}
+						break;
+						
+					default:
+						if (is_array($partText)) {
+							$partContent = $this->decodeMimePart(
+								imap_fetchbody($this->mbox, $_uid, $partText['partID'], FT_UID) ,
+								$partText['encoding']
+							);
+
+							$bodyPart[] = array(
+								'body'		=> $partContent ,
+								'mimeType'	=> 'text/plain' ,
+								'charSet'	=> $partText['charset']
+							);
+						}
+						break;
+				}
+				
+				return $bodyPart;
+				
+		}
+		
 		#function microtime_float()
 		#{
 		#	list($usec, $sec) = explode(" ", microtime());
@@ -804,11 +928,6 @@
 			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
 			$sections = array();
 			$this->parseMessage($sections, $structure, $_partID);
-			#if(isset($sections['attachment']) && is_array($sections['attachment']))
-			#{
-			#	#_debug_array($structure['attachment']);
-			#	return $sections['attachment'];
-			#}
 			
 			$arrayData = array();
 			if(count($sections) > 0)
@@ -831,128 +950,88 @@
 
 		}
 		
-		function getMessageBody($_uid, $_htmlOptions = '', $_partID)
+		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure='')
 		{
+			#print "UID: $_uid HTML: $_htmlOptions PART: $_partID<br>";
+			#print $this->htmlOptions."<br>";
+			#require_once('Mail/mimeDecode.php');
+			#$messageBody = imap_fetchbody($this->mbox, $_uid, '', FT_UID);
+			#print "<pre>".$messageBody."</pre>"; print "<hR>";
+			#$decoder = new Mail_mimeDecode($messageBody);
+			#$structure = $decoder->decode($params);
+
 			if($_htmlOptions != '')
 				$this->htmlOptions = $_htmlOptions; 
 
-			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			#_debug_array($structure);exit;
-			$sections = array();
-			$this->parseMessage($sections, $structure, $_partID);
-			#_debug_array($sections);
-			
-			foreach($sections as $key => $value)
-			{
-				#print 'parent is: '.$sections[substr($key,0,-2)]['mimeType'].'<br>';
-				if($value['type'] == 'body' || $sections[substr($key,0,-2)]['mimeType'] == "multipart/alternative")
-				{
-					#_debug_array($value);
-					// no mime message, only body available
-					if($key == 0)
-					{
-						$newPart	= trim(imap_body($this->mbox, $_uid, FT_UID));
-						$encoding	= $structure->encoding;
-						
-						// find mimetype
-						if(strtolower($structure->subtype) == 'html')
-						{
-							$mimeType = 'text/html';
-						}
-						else
-						{
-							$mimeType = 'text/plain';
-						}
-						
-						// find charset
-						if($structure->ifparameters)
-						{
-							foreach($structure->parameters as $value)
-							{
-								$parameter[strtolower($value->attribute)] = 
-									strtolower($value->value);
-							}
-							$charSet = $parameter['charset'];
+			if(is_object($_structure)) {
+				$structure = $_structure;
+			} else {
+				$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
+				if($_partID != '') {
+					$imapPartIDs = explode('.',$_partID);
+					foreach($imapPartIDs as $id) {
+						if($structure->type == TYPEMESSAGE && $structure->subtype == 'RFC822') {
+							$structure = $structure->parts[0]->parts[$id-1];
+						} else {
+							$structure = $structure->parts[$id-1];
 						}
 					}
-					else
-					{
-						// select which part(text or html) to display from multipart/alternative
-						#_debug_array($sections);
-						#print $sections['']['mimeType']."<br>";
-						if($sections[substr($key,0,-2)]['mimeType'] == "multipart/alternative")
-						{
-							switch($this->htmlOptions)
-							{
-								// prefer html part
-								// don't display text part
-								case 'always_display':
-									if($value['mimeType'] == 'text/plain')
-										continue 2;
-									break;
-									
-								case 'only_if_no_text':
-								default:
-									if($value['mimeType'] == 'text/html')
-										continue 2;
-									break;
-							}
-						}
-						// don't diplay html emails at all
-						if($value['mimeType'] == 'text/html' && 
-						$this->htmlOptions != 'always_display' &&
-						$this->htmlOptions != 'only_if_no_text')
-						{
-							continue;
-						}
-						$newPart = imap_fetchbody($this->mbox, $_uid, $value["partID"], FT_UID);
-						#if($newPart == '')
-						#{
-						#	#print "nothing<br>";
-						#	// FIX ME
-						#	// do this only if the parent sub type is multipart/mixed
-						#	// and parent/parent is message/rfc
-						#	$newPart = imap_fetchbody($this->mbox, $_uid, substr($value["partID"],0,-2), FT_UID);
-						#	#$newPart = imap_fetchbody($this->mbox, $_uid, '2.2', FT_UID);
-						#}
-						$encoding	= $value['encoding'];
-						$mimeType	= $value['mimeType'];
-						$charSet	= $value['charset'];
-					}
-					
-					// MS-Outlookbug workaround (don't break links)
-					$newPart = preg_replace("!((http(s?)://)|((www|ftp)\.))(([^\n\t\r]+)([=](\r)?\n))+!i", 
-							"$1$7", 
-							$newPart);
-					
-					// decode the file ...
-					switch ($encoding) 
-					{
-						case ENCBASE64:
-							// use imap_base64 to decode
-							$newPart = imap_base64($newPart);
-							break;
-						case ENCQUOTEDPRINTABLE:
-							// use imap_qprint to decode
-							#$newPart = imap_qprint($newPart);
-							$newPart = quoted_printable_decode($newPart);
-							break;
-						case ENCOTHER:
-							// not sure if this needs decoding at all
-							break;
-						default:
-							// it is either not encoded or we don't know about it
-							break;
-					}
-					
-					$bodyPart[] = array('body'	=> $newPart,
-									'mimeType'	=> $mimeType,
-									'charSet'	=> $charSet);
 				}
 			}
-			
-			return $bodyPart;
-			
+			if($structure->type == TYPETEXT) {
+				// only text or html email
+				if($_partID == '') $_partID=1;
+				$mimePartBody = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
+				$bodyPart = array(
+					array(
+						'body'		=> $this->decodeMimePart($mimePartBody, $structure->encoding),
+						'mimeType'	=> (strtolower($structure->subtype) == 'html') ? 'text/html' : 'text/plain',
+						'charSet'	=> $this->getMimePartCharset($structure),
+					)
+				);
+				return $bodyPart;
+
+			} elseif ($structure->type == TYPEMULTIPART && $structure->subtype == 'ALTERNATIVE') {
+				return $this->getMultipartAlternative($_uid, $_partID, $structure, $this->htmlOptions);
+
+			#} elseif (($structure->type == TYPEMULTIPART && ($structure->subtype == 'MIXED' || $structure->subtype == 'REPORT' || $structure->subtype == 'SIGNED'))) {
+			} elseif ($structure->type == TYPEMULTIPART) {
+				$i = 1;
+				$parentPartID = ($_partID != '') ? $_partID.'.' : '';
+				$bodyParts = array();
+				foreach($structure->parts as $part) {
+					if($part->type == TYPETEXT || ($part->type == TYPEMULTIPART && $part->subtype == 'ALTERNATIVE')) {
+						$bodyParts = array_merge($bodyParts, $this->getMessageBody($_uid, $this->htmlOptions, $parentPartID.$i, $part));
+					}
+					$i++;
+				}
+				return $bodyParts;
+			} elseif ($structure->type == TYPEMESSAGE && $structure->subtype == 'RFC822') {
+				$bodyParts = $this->getMessageBody($_uid, $this->htmlOptions, $_partID, $structure->parts[0]);
+				return $bodyParts;
+
+			} elseif ($structure->type == TYPEMESSAGE && $structure->subtype == 'DELIVERY-STATUS') {
+				// only text
+				if($_partID == '') $_partID=1;
+				$mimePartBody = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
+				$bodyPart = array(
+					array(
+						'body'		=> $this->decodeMimePart($mimePartBody, $structure->encoding),
+						'mimeType'	=> 'text/plain',
+						'charSet'	=> $this->getMimePartCharset($structure),
+					)
+				);
+				return $bodyPart;
+			} else {
+				$bodyPart = array(
+					array(
+						'body'		=> lang('The mimeparser can not parse this message.'),
+						'mimeType'	=> 'text/plain',
+						'charSet'	=> 'iso-8859-1',
+					)
+				);
+				return $bodyPart;
+			}
 		}
 
 

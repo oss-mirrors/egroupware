@@ -58,10 +58,10 @@
 			
 			$this->uid		= $_GET['uid'];
 			
-			if(isset($_GET['part']) &&
-				is_numeric($_GET['part']))
+			if(isset($_GET['partID']) &&
+				is_numeric($_GET['partID']))
 			{
-				$this->partID = $_GET['part'];
+				$this->partID = $_GET['partID'];
 			}
 			else
 			{
@@ -131,7 +131,7 @@
 		
 		function display()
 		{
-			$partID		= $_GET['part'];
+			$partID		= $_GET['partID'];
 			$transformdate	=& CreateObject('felamimail.transformdate');
 			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
@@ -591,6 +591,10 @@
 				if($bodyParts[$i]['mimeType'] == 'text/plain')
 				{
 					$newBody	= $bodyParts[$i]['body'];
+					// MS-Outlookbug workaround (don't break links)
+					$newBody	= preg_replace("!((http(s?)://)|((www|ftp)\.))(([^\n\t\r]+)([=](\r)?\n))+!i", 
+							"$1$7", 
+							$newBody);
 
 					$newBody	= @htmlentities($bodyParts[$i]['body'],ENT_QUOTES,$this->displayCharset);
 					$newBody	= $this->bofelamimail->wordwrap($newBody,90,"\n");
@@ -677,6 +681,7 @@
 
 			if (is_array($attachments) && count($attachments) > 0)
 			{
+				#_debug_array($attachments);
 				$this->t->set_var('row_color',$this->rowColor[0]);
 				$this->t->set_var('name',lang('name'));
 				$this->t->set_var('type',lang('type'));
@@ -694,13 +699,14 @@
 					switch($value['mimeType'])
 					{
 						case 'message/rfc822':
+						case 'message/delivery-status':
 							$linkData = array
 							(
 								'menuaction'	=> 'felamimail.uidisplay.display',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'partID'	=> $value['partID']
 							);
-							$windowName = 'displayMessage_'.$this->uid;
+							$windowName = 'displayMessage_'.$this->uid.'_'.$value['partID'];
 							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());";
 							break;
 						case 'image/jpeg':
@@ -711,7 +717,7 @@
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'partID'	=> $value['partID']
 							);
 							$windowName = 'displayAttachment_'.$this->uid;
 							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',800,600);";
@@ -721,7 +727,7 @@
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'partID'	=> $value['partID']
 							);
 							$linkView = "window.location.href = '".$GLOBALS['egw']->link('/index.php',$linkData)."';";
 							break;
@@ -734,7 +740,7 @@
 						'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 						'mode'		=> 'save',
 						'uid'		=> $this->uid,
-						'part'		=> $value['partID']
+						'partID'	=> $value['partID']
 					);
 					$this->t->set_var("link_save",$GLOBALS['egw']->link('/index.php',$linkData));
 					
@@ -868,7 +874,7 @@
 		function getAttachment()
 		{
 			
-			$part		= $_GET['part'];
+			$part		= $_GET['partID'];
 			
 			$attachment 	= $this->bofelamimail->getAttachment($this->uid,$part);
 			
