@@ -10,7 +10,6 @@ book marks	common	sk	Zálo¾ky
 bookmark changed sucessfully	bookmarks	sk	Zálo¾ka úspe¹ne zmenená
 bookmark created successfully.	bookmarks	sk	Zálo¾ka úspe¹ne vytvorená.
 bookmark deleted successfully	bookmarks	sk	Zálo¾ka úspe¹ne zmazaná.
-bookmark deleted successfully.	bookmarks	sk	Zálo¾ka úspe¹ne zmazaná.
 bookmark not editable	bookmarks	sk	Zálo¾ka sa nedá upravova»
 bookmark not readable	bookmarks	sk	Zálo¾ka sa nedá èíta»
 bookmarks	common	sk	Zálo¾ky
@@ -29,15 +28,14 @@ edit this bookmark	bookmarks	sk	Uprav túto zálo¾ku
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	sk	Zadajte názov súboru zálo¾iek Netscape<br>ktorý chcete naimportova» do doleuvedeného zálo¾kovaèa.
 export bookmarks	common	sk	Exportova» zálo¾ky
 fewer	bookmarks	sk	Menej
+filter by	bookmarks	sk	Filtrova» podµa
 found a link you might like	bookmarks	sk	Na¹iel sa odkaz ktorý by vás mohol zaujíma»
 from	bookmarks	sk	Od
 from category %1	bookmarks	sk	z kategórie %1
-global categories	bookmarks	sk	Globálne kategórie
 highest	bookmarks	sk	Najvy¹¹ie
 i thought you would be interested in the following link(s):	bookmarks	sk	Myslím, ¾e by vás mohli zaujíma» nasledujúce odkazy:
 import bookmarks	common	sk	Naimportova» zálo¾ky
 like	bookmarks	sk	ako
-list	bookmarks	sk	Zoznam
 list view	bookmarks	sk	zobrazi» zoznam
 lowest	bookmarks	sk	Najni¾¹ie
 mail this bookmark	bookmarks	sk	Posla» túto zálo¾ku mailom
@@ -49,16 +47,16 @@ name	bookmarks	sk	Meno
 name is required	bookmarks	sk	Je potrebné meno
 netscape bookmark file	bookmarks	sk	Súbor so zálo¾kami Netscape
 netscape bookmark filename is required!	bookmarks	sk	Je potrebný názov súboru zálo¾iek Netscape
-new	bookmarks	sk	Nová
+new	bookmark	sk	Nová
 new bookmark	bookmarks	sk	Nová zálo¾ka
 or	bookmarks	sk	alebo
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	sk	Prosím vyplòte <B>Adresu Komu</B>,<B>Predmet</B>,a <B>Spr8vu</B>!
 please select the categories to export	bookmarks	sk	Prosím vyberte kategórie ktoré chcete exportova»
+query condition	bookmarks	sk	Výberové kritérium
 rating	bookmarks	sk	Hodnotenie
 search for:	bookmarks	sk	Vyhµada»:
 select the format you would like to export to	bookmarks	sk	Vyberte formát do ktorého chcete exportova»
 send bookmark	bookmarks	sk	Posla» zálo¾ku
-site configuration	bookmarks	sk	Nastavenia stránky
 sub category	bookmarks	sk	Podkategória
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sk	Adresa Kmou %1 je chybná. Formát musí by» <strong>user@domain</strong> a doména musí by» spomedzi existujúcich!
 to e-mail addresses	bookmarks	sk	Adresa Komu
@@ -72,4 +70,3 @@ view this bookmark	bookmarks	sk	Zobrazi» túto zálo¾ku
 warning	bookmarks	sk	Pozor
 you are viewing this site outside of egroupware	bookmarks	sk	Stránka, na ktorú sa pozeráte, je u¾ mimo eGroupWare
 you must select a category	bookmarks	sk	Musíte vybra» kategóriu
-you need to select a category!	bookmarks	sk	Je potrebné, aby ste vybrali kategóriu!

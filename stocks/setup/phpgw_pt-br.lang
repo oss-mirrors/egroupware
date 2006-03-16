@@ -1,5 +1,8 @@
+$ change	common	pt-br	Alterar
 %	stocks	pt-br	%
+% change	common	pt-br	Alterar %
 add new stock	stocks	pt-br	Adicionar nova Ação
+company name	stocks	pt-br	Nome da empresa
 disable	stocks	pt-br	desabilitar
 display stocks on main screen is disabled	stocks	pt-br	Exibir Ações na tela principal está desabilitado
 display stocks on main screen is enabled	stocks	pt-br	Exibir Ações na tela principal está habilitado

@@ -10,6 +10,7 @@ answer has been updated	polls	pt-br	Resposta atualizada
 answers	polls	pt-br	Respostas
 are you sure want to delete this answer ?	polls	pt-br	Você tem certeza que deseja remover essa resposta?
 are you sure want to delete this question ?	polls	pt-br	Você tem certeza que deseja remover essa pergunta?
+current poll	polls	pt-br	Enquete atual
 edit answer	polls	pt-br	Editar resposta
 edit poll question	polls	pt-br	Editar pergunta
 enter poll question	polls	pt-br	Incluir pergunta
@@ -24,7 +25,8 @@ settings updated	polls	pt-br	Configurações atualizadas
 show answers	polls	pt-br	Exibir respostas
 show questions	common	pt-br	Exibir perguntas
 total votes	polls	pt-br	Total de respostas
-view poll	polls	pt-br	Ver enquete
+view poll	polls	pt-br	Exibir enquete
+view results	polls	pt-br	Exibir resultados
 vote	polls	pt-br	Responder
 voting booth admin	admin	pt-br	Área de votação
 voting booth administration	polls	pt-br	Área de Administração de enquetes
