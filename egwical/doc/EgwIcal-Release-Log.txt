@@ -1,5 +1,24 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
 
+\section secrel0907catfixbf2 Release 0.9.07-catfix-bf2 category import more robust
+
+- release date: 20060316
+- file: egwical-with-doc-0.9.07catfix-bf2.tgz
+- via: homepage and egroupware  and (possibly) cvs
+
+\subsection subsecrel0907catfixbf2 Changes from previous version
+
+- in egwical: import now only categories with proper names.
+- activated translation from utf-8 to server charset on vtodo import
+
+\subsection subsecrel0.9.07catfixbf2bugs Found bugs and problems
+
+-... more a icalsrv problem: some clients only publish one category
+ while they downloaded many, result: multiple categories attributed in egw
+ get replaced by a single on publish.
+ 
+
+
 \section secrel0907catfixbf1 Release 0.9.07-catfix-bf1 some fixes for category handling
 
 - release date: 20060314
@@ -12,7 +31,8 @@
 
 \subsection subsecrel0.9.07catfixbf1bugs Found bugs and problems
 
-.........
+-Roger (jasjar): import of events, once exported with categories, produces many
+ bad (empty, space only etc.) categories.
 
 
 \section secrel0907catfix Release 0.9.07-catfix some fixes for category handling

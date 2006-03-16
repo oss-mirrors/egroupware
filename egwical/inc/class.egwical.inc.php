@@ -101,6 +101,7 @@
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (original code of reused parts)
 	 *
 	 *
+	 * @since 0.9.07catfix2 made names2cats more robust
 	 * @since 0.9.07  corrected the cats_names2idscstr app_name handling
 	 * @since 0.9.06  small php5 related bugfixes
 	 * @since 0.9.05  added the st_dst_patch function
@@ -111,6 +112,7 @@
 	 */
     class egwical
     {
+	  var $eidebug =false;
 
 	  /**
 	   * @var Horde_iCalendar
@@ -586,11 +588,24 @@
 
 		$cids = array();
 		foreach($cnames as $name) {
+		  if(empty($name) || preg_match('/^\s+$/',$name)){
+			if ($this->eidebug)
+			  error_log('******detected an empty category! in(' . print_r($cnames,true) . ')');
+			continue;
+		  }
+
 		  if (!($cid = $catsys->name2id($name))) {
 			// existing cat-name use the id
 			// new cat
 			$cid = $catsys->add(array('name' => $name,'descr' => $name));
 		  }
+		  if ($this->eidebug)
+			error_log('found category:' . $name . ':with id:' . $cid);
+
+		  // skip none category or problematic ones
+		  if (!((int)$cid > 0))
+			  continue;
+
 		  $cids[] = (int)$cid;
 		}
 		return implode(',',$cids); 

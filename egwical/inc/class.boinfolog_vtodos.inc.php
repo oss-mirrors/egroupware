@@ -60,7 +60,8 @@
 	 * @author Jan van Lieshout <jvl (at)xs4all.nl> This version.
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts of reused code)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts of reused code)
-	 * @version 0.9.07bf1 fix of faulty superfluous ampersand for passed by ref args
+	 * @version 0.9.08utfin utf decoding activated on import
+	 * @since 0.9.07bf1 fix of faulty superfluous ampersand for passed by ref args
 	 * @since 0.9.07 temporarily switch of vtodo import error returns
 	 * @version 0.9.05 First for use with new WURH egwical class
 	 * @license http://opensource.org/licenses/gpl-license.php GPL -
@@ -431,8 +432,8 @@
 		// now process all the fields found
 		foreach($hIcalComponent->_attributes as $attributes) {
 #         error_log( $attributes['name'].' - '.$attributes['value']);
-		  //$attributes['value'] =
-		  //	$GLOBALS['egw']->translation->convert($attributes['value'],'UTF-8');
+		  $attributes['value'] =
+		  	$GLOBALS['egw']->translation->convert($attributes['value'],'UTF-8');
 		  switch($attributes['name']){
 		  case 'UID':
 			if ($ftid > 0)  // fixed id mode so we got id from $newtask_id
