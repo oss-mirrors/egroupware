@@ -57,8 +57,7 @@
 			));
 			
 			$this->t->set_block('view_workitem', 'block_properties', 'properties');
-			
-			if (!count($wi['wf_properties']))
+			if ( (empty($wi['wf_properties'])) || (!(count($wi['wf_properties']))) )
 			{
 				$this->t->set_var('properties', '<tr><td colspan="2" align="center">'. lang('No properties defined') .'</td></tr>');
 			}

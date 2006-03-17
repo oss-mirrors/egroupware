@@ -251,7 +251,15 @@
 
 			$this->t->set_block('instance_tpl', 'block_properties', 'properties');
 			$this->t->set_block('block_properties', 'block_button_delete', 'button_delete');
-			foreach ($props as $key=>$prop)
+			if (!(empty($props)))
+			{
+				$parsed =& $props;
+			}
+			else
+			{
+				$parsed = Array('--' => '--');
+			}
+			foreach ($parsed as $key=>$prop)
 			{
 				$prop = htmlspecialchars($prop);
 				//make textarea for big properties
