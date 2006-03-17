@@ -1192,13 +1192,14 @@ class Instance extends Base {
     
     //try to determine the user or *
     //Use the nextUser
-    if($this->nextUser) 
+    $the_next_user = $this->getNextUser();
+    if($the_next_user) 
     {
       //we check rights for this user on the next activity
       if (!(isset($this->security))) $this->security =& new WfSecurity($this->db); 
-      if ($this->security->checkUserAccess($this->nextUser,$activityId))
+      if ($this->security->checkUserAccess($the_next_user,$activityId))
       {
-        $putuser = $this->nextUser;
+        $putuser = $the_next_user;
       }
     }
     if ($putuser==0)
