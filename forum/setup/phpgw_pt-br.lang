@@ -13,10 +13,9 @@ create new category	forum	pt-br	Criar uma nova Categoria
 current categories and sub forums	forum	pt-br	Categorias e sub-fóruns atuais
 default view	forum	pt-br	Visualização padrão
 edit forum	forum	pt-br	Editar Fórum
-email replies to this thread to the address above	forum	pt-br	Enviar respostas desta thread por email para o endereço abaixo
 email replies to this thread, to the address above	forum	pt-br	Envie mensagens de resposta à esse agrupamento, através do endereço acima
 forum	common	pt-br	Fórum
-forum administration	admin	pt-br	Administração do Fórum
+forum administration	common	pt-br	Administração do Fórum
 forum description	forum	pt-br	Descrição do Fórum
 forum name	forum	pt-br	Nome do Fórum
 forums	common	pt-br	Fórums
@@ -33,6 +32,7 @@ return to forums	forum	pt-br	Retornar aos fóruns
 sub category	forum	pt-br	Subcategria
 there are no forums in this category	forum	pt-br	Não há fóruns nesta categoria
 threaded	forum	pt-br	Agrupado
+threads	forum	pt-br	Assuntos
 topic	forum	pt-br	Tópico
 update category	forum	pt-br	Atualizar categoria
 update forum	forum	pt-br	Atualizar fórum

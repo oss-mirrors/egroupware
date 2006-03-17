@@ -1,4 +1,4 @@
-add	developer_tools	pt-br	adicionar
+add	developer_tools	pt-br	Adicionar
 add change	developer_tools	pt-br	Adicionar alteração
 add more	developer_tools	pt-br	Adicionar mais
 add new phrase	developer_tools	pt-br	Adicionar nova frase
@@ -13,9 +13,8 @@ changelogs	developer_tools	pt-br	Registro de Modificação
 clears the internal buffer, all changes made sofar are lost	developer_tools	pt-br	Limpa a área de memória interna, e todas as mudanças feitas até o presente momento serão perdidas
 create new language file	developer_tools	pt-br	Criar novo arquivo de idioma
 create sgml file	developer_tools	pt-br	Criar arquivo SGML
-developer tools	common	pt-br	Ferramentas de desenvolvedores
-developer tools - preferences	developer_tools	pt-br	Ferramentas de Desenvolvimento - preferências
-developer_tools	common	pt-br	Ferramentas de Desenvolvimento
+developer tools - preferences	developer_tools	pt-br	Ferramentas de Tradução - Preferências
+developer_tools	common	pt-br	Ferramentas de Tradução
 diary	developer_tools	pt-br	Diário
 done	developer_tools	pt-br	feito
 download	developer_tools	pt-br	Baixar
@@ -33,12 +32,12 @@ message_id in english	developer_tools	pt-br	message_id em inglês
 no file	developer_tools	pt-br	Nenhum arquivo
 ok	developer_tools	pt-br	ok
 original	developer_tools	pt-br	Original
-phrase in english	developer_tools	pt-br	Frase em inglês
 phrase in english (or empty if identical)	developer_tools	pt-br	Frase em inglês (ou vazio para idêntico)
 preferences	developer_tools	pt-br	Preferências
 preferences have been updated	developer_tools	pt-br	Suas preferências foram atualizadas
 project	developer_tools	pt-br	Projeto
 remove	developer_tools	pt-br	Remover
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	pt-br	%1 frases removidas do idioma destino, já que elas não estão presentes no idioma de origem.
 returns to the application list, not saved changes get lost !!!	developer_tools	pt-br	Retorna à lista de aplicativos, mudanças não salvas serão perdidas!!!
 revert	developer_tools	pt-br	Reverter
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	pt-br	Salva as traduções adicionadas/modificadas na área interna de memória, utilizada nas etapas seguintes
