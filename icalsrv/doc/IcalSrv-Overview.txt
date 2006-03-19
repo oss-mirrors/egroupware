@@ -1,10 +1,10 @@
-/*!  @mainpage  Ical Service for Egroupware
+/*!  @mainpage  Simple Ical Service for Egroupware
 
 @note this is still <b>EXPERIMENTAL, USE AT YOUR OWN RISK! </b> and better not yet in a
 production environment.
-@version 0.9.01R2
+@version 0.9.01R3
 @author jvl
-@date 20060314
+@date 20060318
 
 @section secabout About IcalSrv
 
@@ -31,14 +31,18 @@ deletions of events. (Read more on this below at @ref secdeletions )
 
 We are working on extensions towards real groupdav and caldav behaviour.
 
-
 @note We tried to prevent that accidental misuse of the service can ruin all
 your egroupware data. But, <b> be warned: when you use the service for
 <i>publishing</i> from the client, you can (and want to) change data
 in the egroupware server, and thus you have a potential risk of damaging
 or losing egroupware data!</b>
 
+One well know danger is the loss of multiple egroupware categories attributed to an event or task
+when you publish calendars from a client that doesnot allow multiple categories. In this 
+case the single, client attributed, category will replace the original egw attributed set.
+See further in the warnings related-page. Mozilla Sunbird is notably such a 'single category only" client.
 
+For behaviour of the various clients see futher in @ref pageicalsrvclients
 
 
 @section secinstall SHORT experimental Install How-To:
@@ -52,10 +56,11 @@ or losing egroupware data!</b>
    you find a small release notes document that tells of about the changes in
    the releases.
 
- - Install the icalsrv package by either checking out the icalsrv stuff from cvs
-  or untarring some tarball icalsrv-vx.y.x.tgz of the package (if available). 
-  At the moment (200602xx) the icalsrv is partly in cvs module <i>egroupware</i> and
-  partly (the documentation only) in module <i>phpgwapi</i>. So be sure to update at least the first one!
+ - Install the icalsrv package by either untarring some tarball icalsrv-vx.y.x.tgz of the
+  package (if available) or by checking out the icalsrv stuff from cvs.
+  At the moment (200603xx) the icalsrv is partly (the file icalsrv.php) in cvs module
+  <i>egroupware</i> and for the rest in module <i>icalsrv</i>.
+  So be sure to update both (file) icalsrv.php and (folder) icalsrv when using cvs.
  - @note The IcalSrv package depends on the availability of an
    EgwIcal (>= 0.9.x) package. So if you dont have this already, be sure
    to install that too. Likewise this can be installed by untarring an appropiate
@@ -64,7 +69,9 @@ or losing egroupware data!</b>
  - Take care that icalsrv.php is <code>.../egroupware/icalsrv.php</code>
 (and the other files from the icalsrv package also in their appropiate places)
 
-- Append something like the following onto your apache httpd.conf part
+- If your install (should be working after 1.2RC8) didnot provide a icalsrv catered version of the
+  httpd.conf, you should manually add a small piece of extra lines. 
+  That is, append something like the following onto your apache httpd.conf part	
   for egroupware (assuming that your standard egroupware root path is
   e.g in <code>/var/www/egroupware</code> and with a http alias
  <code>egroupware</code> pointing to it):
@@ -81,7 +88,7 @@ or losing egroupware data!</b>
 - Restart apache (or other webserver) ( /etc/init.d/httpd restart )
 
 - Connect your ical client (e.g: Sunbird)
-	   with http://your.host.com/egroupware/icalsrv.php
+	   with http://your.host.com/egroupware/icalsrv.php/
         
 - now you should need to authenticate (with your normal EGW login and password)
   and when done you receive the calendar on doing a "reload remote calendars" or so.
@@ -192,11 +199,22 @@ information, there a just three other places to look at:
 
   -see BUGs and TODOs in  @ref pageicalsrvbugandtodo
   -see Todo page in ..
+  -see warning page in.
 
+
+@section icalsrvroadmap The IcalSrv future
+
+At some time we hope to provide the ability to let users configure their own calendars
+by setting search periods, access grants and possibly other criteria.
+Freebusy calendars are also on our todolist :-)
+
+Later on we want to work towards GroupDav and CalDAV extended functionality.
+
+...
 
 
 have fun
-
+ 
 
 JVL
 

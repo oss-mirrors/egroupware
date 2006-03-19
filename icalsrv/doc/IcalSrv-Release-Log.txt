@@ -1,4 +1,25 @@
-/*! \page pageicalsrvreleaselog Small IcalSrv Release Log
+/*! \page pageicalsrvreleaselog IcalSrv Release Log
+
+\section secrel0908 Release 0.9.08 First Release as egw application
+
+- release date: 20060318
+- file: icalsrv-with-doc-0.9.08.tgz
+- via: homepage and egroupware  cvs head (maybe also 1_2 branch later)
+
+\subsection subsecrel0908changes Changes from previous version
+
+- icalsrv.php iteration search loop for infolog reverted to old version
+  as this routine is fixed now in cvs 
+- icalsrv.php set the search filter periods to -1 month and +1 year
+- moved all doc and setup folders to the new module: icalsrv. This is the
+  start of icalsrv becoming an egroupware application (to allow user configurability)
+- added EricS initial setup files to the icalsrv/setup folder
+
+\subsection subsecrel0908bugs Found bugs and problems
+
+- problems: still demand for more flexible and configurable export filter settings
+ Note: this will not be handled before the new api releases (>0.9.20).
+- this is probably the latest version of icalsrv using the current egwical api
 
 
 \section secrel0907 Release 0.9.07 Small Bug fix to remove todo export limit of 15
