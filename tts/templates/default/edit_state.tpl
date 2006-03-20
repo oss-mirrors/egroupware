@@ -34,6 +34,10 @@
 		<td colspan="2"><input type="checkbox" name="state[initial]" {value_initial}>{lang_new_ticket_into_state}</td>
 	</tr>
 
+	<tr class="row_on">
+		<td colspan="2"><input type="checkbox" name="state[open]" {value_open}>{lang_ticket_state_is_open}</td>
+	</tr>
+
 	<tr height="40">
 		<td colspan="2">
 			<input type="submit" name="save" value="{lang_save}"> &nbsp;

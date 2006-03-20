@@ -68,7 +68,7 @@
     }
   }
 
-  function mail_ticket($ticket_id)
+  function mail_ticket($ticket_id, $owner_notify = True)
   {
     $members = array();
 
@@ -101,7 +101,8 @@
       $body .= lang('Assigned To').': '.$t_assigned_name."\n";
       $body .= lang('Priority').': '.$GLOBALS['phpgw']->db->f('ticket_priority')."\n";
       $body .= lang('Group').': '.$group_name."\n";
-      $body .= lang('Opened By').': '.$t_owner_name."\n\n";
+      $body .= lang('Opened By').': '.$t_owner_name."\n";
+      $body .= lang('Due Date').': '.$GLOBALS['phpgw']->db->f('ticket_due')."\n\n";
       $body .= lang('Latest Note Added').":\n";
       /**************************************************************\
       * Display latest note                                         *
@@ -136,25 +137,29 @@
 //      {
 //        $body .= 'Date Closed: '.$GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->f('t_timestamp_closed'))."\n\n";
 //      }
-      $body .= stripslashes(strip_tags($GLOBALS['phpgw']->db->f('ticket_detail')))."\n\n.";
+      $body .= stripslashes(strip_tags($GLOBALS['phpgw']->db->f('ticket_detail')))."\n.\n";
+
+      $body .= sprintf ("\nURL: ".$GLOBALS['egw_info']['server']['webserver_url']."/tts/viewticket_details.php?ticket_id=%d\n",
+	      $ticket_id);
 
 
       // do we need to email all the users in the group assigned to this ticket?
-      if ($GLOBALS['phpgw']->config->config_data['groupnotification'])
+      // or is it assigned to None (in this case, we notify always)  -- MSc 050824
+      if ($GLOBALS['phpgw']->config->config_data['groupnotification'] || $t_assigned == 0)
       {
         // select group recipients
         $members  = $GLOBALS['phpgw']->accounts->member($group_id);
       }
 
       // do we need to email the owner of this ticket?
-      if ($GLOBALS['phpgw']->config->config_data['ownernotification'])
+      if ($GLOBALS['phpgw']->config->config_data['ownernotification'] && $owner_notify)
       {
         // add owner to recipients
 		$members[] = array('account_id' => $GLOBALS['phpgw']->db->f('ticket_owner'));
       }
 
       // do we need to email the user who is assigned to this ticket?
-      if ($GLOBALS['phpgw']->config->config_data['assignednotification'])
+      if ($GLOBALS['phpgw']->config->config_data['assignednotification'] && $t_assigned > 0)
       {
         // add assigned to recipients
         $members[] = array('account_id' => $t_assigned);

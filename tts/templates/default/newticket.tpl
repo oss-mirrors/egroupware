@@ -21,24 +21,36 @@
 	</tr>
 
 	<tr class="row_on">
-		<td align="left">{lang_priority}:</td>
-		<td align="left">{value_priority}</td>
+		<td align="left">{lang_group}:</td>
+		<td align="left"><select name="ticket_group">{options_group}</select></td>
 		<td align="left">{lang_billable_hours_rate}:</td>
 		<td align="left"><input name="ticket_billable_rate" value="{value_billable_hours_rate}"></td>
 	</tr>
 
 	<tr class="row_off">
-		<td align="left">{lang_group}:</td>
-		<td align="left"><select name="ticket_group">{options_group}</select></b></td>
-		<td align="left">{lang_category}:</td>
-		<td align="left">{value_category}</td>
+		<td align="left">{lang_priority}:</td>
+		<td align="left">{value_priority}</td>
+		<td align="left">{lang_initialstate}:</td>
+		<td align="left"><select name="ticket_state">{options_state}</select></td>
 	</tr>
 
 	<tr class="row_on">
-		<td align="left">{lang_initialstate}:</td>
-		<td align="left"><select name="ticket_state">{options_state}</select></b></td>
-		<td align="left">&nbsp;</td>
-		<td align="left">&nbsp;</td>
+		<td align="left">{lang_category}:</td>
+		<td align="left">{value_category}</td>
+		<td align="left">{lang_duedate} (YYYY-MM-DD [hh:mm]):</td>
+		<td align="left">
+		    <input type="text" id="duedate" name="ticket_due" size="16" value="{value_duedate}" />
+		    <script type="text/javascript">
+		      document.writeln('<img id="duedate-trigger" '+
+			      'src="/egroupware/phpgwapi/templates/default/images/datepopup.gif" '+
+			      'title="Select date" style="cursor:pointer; cursor:hand;"/>');
+  		      Calendar.setup( {
+			    inputField: "duedate",
+			    button:     "duedate-trigger",
+			    ifFormat:   "%Y-%m-%d %H:%M",
+			    showsTime:  true
+			    });
+		    </script>
 	</tr>
 
 	<tr class="row_off">

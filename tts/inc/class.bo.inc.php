@@ -159,7 +159,8 @@
 					'details'        => $this->db->f('ticket_details'),
 					'odate'          => $GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']),
 					'odate_epoch'    => (int)$history_values[0]['datetime'],
-					'view'           => $ticket_read
+					'view'           => $ticket_read,
+					'due_date'	 => $this->db->f('due_date')
 				);
 			}
 			return $r;
@@ -206,6 +207,7 @@
 				'odate'          => $GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']),
 				'odate_epoch'    => (int)$history_values[0]['datetime'],
 				'view'           => $this->db->f('ticket_view'),
+				'due_date'	 => $this->db->f('due_date'),
 				'history_size'   => count($this->historylog->return_array(array('C','O'),array(),'','',$params['id']))
 			);
 			return $r;			
@@ -239,6 +241,7 @@
 					case 'S': $type = lang('Subject changed'); break;
 					case 'H': $type = lang('Billable hours changed'); break;
 					case 'B': $type = lang('Billable rate changed'); break;
+					case 'D': $type = lang('Due date changed'); break;
 					default: break;
 				}
 
@@ -285,7 +288,7 @@
 		{
 			$this->db->query("insert into phpgw_tts_tickets (ticket_group,ticket_priority,ticket_owner,"
 				. "ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,"
-				. "ticket_billable_rate,ticket_status,ticket_details) values ('0','"
+				. "ticket_billable_rate,ticket_status,ticket_details,ticket_due) values ('0','"
 				. $params['priority'] . "','"
 				. $GLOBALS['phpgw_info']['user']['account_id'] . "','"
 				. $params['assignedto'] . "','"
@@ -293,7 +296,8 @@
 				. $params['category'] . "','"
 				. $params['billable_hours'] . "','"
 				. $params['billable_rate'] . "','O','"
-				. addslashes($params['details']) . "')",__LINE__,__FILE__);
+				. addslashes($params['details']) . "','"
+				. $params['due_date'] ."')",__LINE__,__FILE__);
 
 			$ticket_id = $this->db->get_last_insert_id('phpgw_tts_tickets','ticket_id');
 			$this->historylog->add('O',$ticket_id,'');
@@ -316,6 +320,7 @@
 			$oldpriority = $this->db->f('ticket_priority');
 			$oldcategory = $this->db->f('ticket_category');
 			$old_status  = $this->db->f('ticket_status');
+			$old_duedate = $this->db->f('ticket_due');
 
 			$this->db->transaction_begin();
 
@@ -381,19 +386,22 @@
 					. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
 				$this->historylog->add('B',$ticket_id,$ticket['billable_rate']);
 			}
+
+			if ($old_duedate != $ticket['due_date'])
+			{
+				$fields_updated = True;
+				$this->db->query("update phpgw_tts_tickets set ticket_due='" . $ticket['due_date']
+					. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
+				$this->historylog->add('D',$ticket_id,$ticket['due_date']);
+			}
+				
 	
 			if ($ticket['note'])
 			{
 				$fields_updated = True;
 				$this->historylog->add('C',$ticket_id,$ticket['note']);
 	
-				// Do this before we go into mail_ticket()
 				$this->db->transaction_commit();
-	
-				if ($GLOBALS['phpgw_info']['server']['tts_mailticket'])
-				{
-					//$this->mail_ticket($ticket_id);
-				}
 			}
 			else
 			{
@@ -403,92 +411,4 @@
 			return True;
 		}
 
-		function mail_ticket($ticket_id)
-		{
-			// $GLOBALS['phpgw']->preferences->read_repository();
-			// $GLOBALS['phpgw_info']['user']['preferences']['tts']['mailnotification']
-
-			$GLOBALS['phpgw']->config->read_repository();
-
-			if ($GLOBALS['phpgw']->config->config_data['mailnotification'])
-			{
-				$GLOBALS['phpgw']->send = CreateObject('phpgwapi.send');
-	
-				$this->db->query('select t_id,t_category,t_detail,t_priority,t_user,t_assignedto,'
-					. "t_timestamp_opened, t_timestamp_closed, t_subject from phpgw_tts_tickets where t_id='".$ticket_id."'",__LINE__,__FILE__);
-				$this->db->next_record();
-    
-				$group = $this->db->f('t_category');
-			
-				// build subject
-				$subject = '[TTS #'.$ticket_id.' '.$group.'] '.(!$this->db->f('t_timestamp_closed')?'Updated':'Closed').': '.$this->db->f('t_subject');
-
-				// build body
-				$body  = '';
-				$body .= 'TTS #'.$ticket_id."\n\n";
-				$body .= 'Subject: '.$this->db->f('t_subject')."\n\n";
-				$body .= 'Assigned To: '.$this->db->f('t_assignedto')."\n\n";
-				$body .= 'Priority: '.$this->db->f('t_priority')."\n\n";
-				$body .= 'Group: '.$group."\n\n";
-				$body .= 'Opened By: '.$this->db->f('t_user')."\n";
-				$body .= 'Date Opened: '.$GLOBALS['phpgw']->common->show_date($this->db->f('t_timestamp_opened'))."\n\n";
-				if($this->db->f('t_timestamp_closed'))
-				{
-					$body .= 'Date Closed: '.$GLOBALS['phpgw']->common->show_date($this->db->f('t_timestamp_closed'))."\n\n";
-				}
-				$body .= stripslashes(strip_tags($this->db->f('t_detail')))."\n\n.";
-			
-				$members = array();
-				if ($GLOBALS['phpgw']->config->config_data['groupnotification']) 
-				{
-					// select group recipients
-					$group_id = $GLOBALS['phpgw']->accounts->name2id($group);
-					$members  = $GLOBALS['phpgw']->accounts->members($group_id);
-				}
-
-				if ($GLOBALS['phpgw']->config->config_data['ownernotification'])
-				{
-					// add owner to recipients
-					$members[] = array('account_id' => $GLOBALS['phpgw']->accounts->name2id($this->db->f('t_user')), 'account_name' => $this->db->f('t_user'));
-				}
-
-				if ($GLOBALS['phpgw']->config->config_data['assignednotification'])
-				{
-					// add assigned to recipients
-					$members[] = array('account_id' => $GLOBALS['phpgw']->accounts->name2id($this->db->f('t_assignedto')), 'account_name' => $this->db->f('t_assignedto'));
-				}
-
-				$toarray = Array();
-				$i=0;
-				for ($i=0;$i<count($members);$i++)
-				{
-					if ($members[$i]['account_id'])
-					{
-						$prefs = $GLOBALS['phpgw']->preferences->create_email_preferences($members[$i]['account_id']);
-						$toarray[$prefs['email']['address']] = $prefs['email']['address'];
-					}
-				}
-				if(count($toarray) > 1)
-				{
-					@reset($toarray);
-					$to = implode(',',$toarray);
-				}
-				else
-				{
-					$to = current($toarray);
-				}
-
-				$rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
-				if (!$rc)
-				{
-					echo  'Your message could <B>not</B> be sent!<BR>'."\n"
-						. 'The mail server returned:<BR>'
-						. "err_code: '".$GLOBALS['phpgw']->send->err['code']."';<BR>"
-						. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->send->err['msg'])."';<BR>\n"
-						. "err_desc: '".$GLOBALS['phpgw']->err['desc']."'.<P>\n"
-						. 'To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link('/tts/index.php','cd=13').'">here</a>';
-					$GLOBALS['phpgw']->common->phpgw_exit();
-				}
-			}
-		}
 	}

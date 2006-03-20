@@ -5,9 +5,9 @@
 <!-- BEGIN additional_notes_row -->
 	<tr class="{row_class}">
 		<td colspan="4">
-			{lang_date}: &nbsp; {value_date}<br>
+			{lang_date}: &nbsp; {value_date}<br />
 			{lang_user}: &nbsp; {value_user}<p>
-			{value_note}
+			{value_note}</p>
 		</td>
 	</tr>
 <!-- END additional_notes_row -->
@@ -39,12 +39,12 @@
 var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage');
 </script>
 
-<br>
+<br />
 <center><font color=red>{messages}</font></center>
 
-<form method="POST" action="{viewticketdetails_link}">
-<input type="hidden" name="ticket_id" value="{ticket_id}">
-<input type="hidden" name="lstAssignedfrom" value="{ticket_user}">
+<form method="post" action="{viewticketdetails_link}">
+<input type="hidden" name="ticket_id" value="{ticket_id}" />
+<input type="hidden" name="lstAssignedfrom" value="{ticket_user}" />
 
 <table border="0" width="95%" cellspacing="0" align="center">
 	<tr class="th">
@@ -52,42 +52,47 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 	</tr>
 
 	<tr class="row_off">
-		<td width="25%">{lang_opendate}:</td>
-		<td width="25%"><b>{value_opendate}</b></td>
+		<td width="25%">{lang_assignedto}:</td>
+		<td width="25%"><b>{value_assignedto}</b></td>
 		<td width="25%">{lang_assignedfrom}:</td>
 		<td width="25%"><b>{value_owner}</b></td>
 	</tr>
 
 	<tr class="row_on">
-		<td>{lang_assignedto}:</td>
-		<td><b>{value_assignedto}</b></td>
 		<td>{lang_group}:</td>
 		<td><b>{value_group}</b></td>
+		<td>{lang_opendate}:</td>
+		<td><b>{value_opendate}</b></td>
 	</tr>
 
 	<tr class="row_off">
 		<td>{lang_priority}:</td>
 		<td><b>{value_priority}</b></td>
-		<td width="25%">{lang_billable_hours}:</td>
-		<td width="25%"><b>{value_billable_hours}</b></td>
+		<td>{lang_duedate}:</td>
+		<td><b>{value_duedate}</b></td>
 	</tr>
 
 	<tr class="row_on">
 		<td>{lang_category}:</td>
 		<td><b>{value_category}</b></td>
-		<td>{lang_billable_hours_rate}:</td>
-		<td><b>{value_billable_hours_rate}</b></td>
+		<td>{lang_billable_hours}:</td>
+		<td><b>{value_billable_hours_pretty}</b></td>
 	</tr>
 
 	<tr class="row_off">
-		<td>{lang_state}:</td>
-		<td><b>{value_state}</b><br>{value_state_description}</td>
+		<td rowspan=2>{lang_state}:</td>
+		<td rowspan=2><b>{value_state}</b> ({value_state_description})</td>
+		<td>{lang_billable_hours_rate}:</td>
+		<td><b>{value_billable_hours_rate_pretty}</b></td>
+	</tr>
+
+	<tr class="row_on">
 		<td>{lang_billable_hours_total}:</td>
 		<td><b>{value_billable_hours_total}</b></td>
 	</tr>
 
 	<tr>
-		<td colspan="4"><br>
+		<td colspan="4"><br />
 			<table width="100%" border="0" cellspacing="0" cellpading="0">
 				<tr>
 					<th id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="0" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);">&nbsp; {lang_details} &nbsp;</a></th>
@@ -122,41 +127,55 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 					<tr class="row_off">
 						<td>{lang_assignedto}:</td>
 						<td><select size="1" name="ticket[assignedto]">{options_assignedto}</select></td>
-						<td>{lang_group}:</td>
-						<td><select name="ticket[group]">{options_group}</select></td>
+						<td>{lang_billable_hours}:</td>
+						<td><input name="ticket[billable_hours]" value="{value_billable_hours}" size="5" /></td>
 					</tr>
 
 					<tr class="row_on">
-						<td>{lang_priority}:</td>
-						<td><select name="ticket[priority]">{options_priority}</select></td>
-						<td>{lang_billable_hours}:</td>
-						<td><input name="ticket[billable_hours]" value="{value_billable_hours}" size="5"></td>
+						<td>{lang_group}:</td>
+						<td><select name="ticket[group]">{options_group}</select></td>
+						<td>{lang_billable_hours_rate}:</td>
+						<td><input name="ticket[billable_rate]" value="{value_billable_hours_rate}" size="5" /></td>
 					</tr>
 
 					<tr class="row_off">
-						<td>{lang_category}:</td>
-						<td><select size="1" name="ticket[category]">{options_category}</select></td>
-						<td>{lang_billable_hours_rate}:</td>
-						<td><input name="ticket[billable_rate]" value="{value_billable_hours_rate}" size="5"></td>
+						<td>{lang_priority}:</td>
+						<td><select name="ticket[priority]">{options_priority}</select></td>
+						<td>{lang_duedate} (YYYY-MM-DD [hh:mm]):</td>
+						<td><input name="ticket[duedate]" id="duedate" value="{value_duedate}" size="16" />
+						    <script type="text/javascript">
+						      document.writeln('<img id="duedate-trigger" '+
+							      'src="{image_location}/datepopup.gif" '+
+							      'title="Select date" style="cursor:pointer; cursor:hand;"/>');
+						      Calendar.setup( {
+							    inputField: "duedate",
+							    button:     "duedate-trigger",
+							    ifFormat:   "%Y-%m-%d %H:%M",
+							    showsTime:  true
+							    });
+						    </script>
+						</td>
 					</tr>
 
 					<tr class="row_on">
+						<td>{lang_category}:</td>
+						<td><select size="1" name="ticket[category]">{options_category}</select></td>
+						<td colspan=2></td>
+					</tr>
+
+					<tr class="row_off">
 						<td>{lang_additional_notes}:</td>
 						<td colspan="3">{additonal_details_rows}<textarea rows="12" name="ticket[note]" cols="70" wrap="physical"></textarea></td>
 					</tr>
 
-					<tr class="row_off">
-						<td>{lang_status}:</td>
-						<td colspan="3"><select name="ticket[status]">{options_status}</select></td>
-					</tr>
 					<tr class="row_on">
 						<td>{lang_update_state}:</td>
-						<td colspan="3"><input name="ticket[state]" type="radio" value="0" CHECKED>{lang_keep_present_state}</td>
+						<td colspan="3"><input name="ticket[state]" type="radio" value="N0" CHECKED style="float:left;" />{lang_keep_present_state}</td>
 					</tr>
 <!-- BEGIN update_state_items -->
-					<tr class="row_on">
+ 					<tr class="row_on">
 						<td>&nbsp;</td>
-						<td colspan="3"><input name="ticket[state]" type="radio" value="{update_state_value}">{update_state_text}</td>
+						<td colspan="3"><input name="ticket[state]" type="radio" value="{update_state_value}" style="float:left;" />{update_state_text}</td>
 					</tr>
 <!-- END update_state_items -->
 				</table>
@@ -190,11 +209,11 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 		</td>
 	</tr>
 
-	<tr height="40">
+	<tr style="height:40px">
 		<td colspan="4">
-			<input type="submit" value="{lang_save}" name="save"> &nbsp;
-			<input type="submit" value="{lang_apply}" name="apply"> &nbsp;
-			<input type="submit" value="{lang_cancel}" name="cancel">
+			<input type="submit" value="{lang_save}" name="save" /> &nbsp;
+			<input type="submit" value="{lang_apply}" name="apply" /> &nbsp;
+			<input type="submit" value="{lang_cancel}" name="cancel" />
 		</td>
 	</tr>
 

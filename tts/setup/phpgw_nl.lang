@@ -7,6 +7,7 @@ add new ticket	tts	nl	Nieuwe melding toevoegen
 add ticket	tts	nl	Melding toevoegen
 additional notes	tts	nl	Aanvullende opmerkingen
 admin options	common	nl	Beheeropties
+assign tickets	tts	nl	Toewijzen
 assign to	tts	nl	Toewijzen aan
 assigned from	tts	nl	Toegewezen door
 assigned to	tts	nl	Toegewezen aan
@@ -38,9 +39,12 @@ delete the listed tickets.	tts	nl	De weergegeven meldingen verwijderen
 deleting the state	tts	nl	De status verwijderen
 deleting the transition	tts	nl	De overgang verwijderen
 detail	tts	nl	Detail
+due date	tts	nl	Einddatum
+due date changed	tts	nl	Einddatum gewijzigd
 duplicate	tts	nl	DUPLICEER
 edit the state	tts	nl	De status wijzigen
 edit the transition	tts	nl	De overgang wijzigen
+emergency	tts	nl	Spoed
 error: the subject of the ticket is not specified.	tts	nl	FOUT: Het onderwerp van de melding is niet ingevuld
 force	tts	nl	Forceer
 global categories	tts	nl	Globale categoriën
@@ -56,6 +60,7 @@ keep the present state [%1].	tts	nl	Behoud de huidige status [%1].
 latest note added	tts	nl	Laatste notitie  toegevoegd
 list of available tickets' states.	tts	nl	Lijst van beschikbare meldingstatussen.
 list of available tickets' transitions.	tts	nl	Lijst van beschikbare meldingovergangen.
+low	tts	nl	Laag
 missing description	tts	nl	Beschrijving ontbreekt
 morework	tts	nl	MEERWERK
 needswork	tts	nl	WERKNODIG
@@ -89,7 +94,7 @@ priority changed	tts	nl	Prioriteit  gewijzigd
 put the preexistent ticket into the state %1.	tts	nl	Geef de reeds bestaande melding de status %1.
 re-assigned	tts	nl	Opnieuw geopend
 re-opened	tts	nl	Heropend
-read tickets within group only	tts	nl	Alleen tickets binnen de groep lezen
+read tickets	tts	nl	Lezen
 refresh every (seconds)	tts	nl	Ververs elke (seconden)
 reopen	tts	nl	HEROPENEN
 reopened	tts	nl	HEROPEND
@@ -126,9 +131,11 @@ the ticket was existent before the petri net infrastructure was defined and shou
 the ticket was found a duplicate of another ticket.	tts	nl	De melding blijkt een duplicaat te zijn van een andere melding.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	nl	De meldingen in de onderstaande lijst zijn in de status %1. Beslis a.u.b. wat met ze gedaan moet worden.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	nl	De validatie van de melding was niet succesvol. De melding vereist meer werk.
+this state means an open ticket	tts	en	Bij deze status staat de melding open.
 ticket	tts	nl	melding
 ticket #	tts	nl	melding #
 ticket has been updated	tts	nl	melding is bijgewerkt
+ticket is not accessable	tts	nl	Deze melding is niet toegankelijk
 tickets found %1	tts	nl	Gevonden meldingen %1
 tickets open %1	tts	nl	Geopende meldingen %1
 tickets total %1	tts	nl	Totaal meldingen $1
@@ -160,6 +167,7 @@ view all tickets	tts	nl	Alle meldingen bekijken
 view job detail	tts	nl	Werk detail bekijken
 view only my open tickets	tts	nl	Bekijk alleen mijn geopende meldingen
 view only open tickets	tts	nl	Alleen openstaande meldingen bekijken
+wish	tts	nl	Wens
 you can only close a ticket if it is assigned to you.	tts	nl	U kunt uitsluitend meldingen sluiten die aan u zijn toegewezen.
 you want to delete the state %1 and associated transitions. are you sure?	tts	nl	U wilt de status %1 en de verbonden overgangen verwijderen. Weet u dat zeker?
 you want to delete the state %1. are you sure?	tts	nl	U wilt de status %1 verwijderen. Weet u dat zeker?

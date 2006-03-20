@@ -22,6 +22,8 @@
   );
 
   include('../header.inc.php');
+  require_once ('inc/acl_funcs.inc.php');
+  require_once ('inc/prio.inc.php');
 
   $GLOBALS['phpgw']->config->read_repository();
 
@@ -35,19 +37,22 @@
   
     if (get_magic_quotes_gpc())
     {
-      foreach(array('subject','details') as $name)
+      foreach(array('subject','details','due') as $name)
       {
         $_POST['ticket_'.$name] = stripslashes($_POST['ticket_'.$name]);
       }
     }
-    $_POST['ticket_details'] = html_activate_urls($_POST['ticket_details']);
+    /* This is the wrong place for doing this
+     * MSc 060131
+     */
+    // $_POST['ticket_details'] = html_activate_urls($_POST['ticket_details']);
 
     $ticket_billable_hours = str_replace(',','.',$_POST['ticket_billable_hours']);
     $ticket_billable_rate = str_replace(',','.',$_POST['ticket_billable_rate']);
 
     $GLOBALS['phpgw']->db->query("insert into phpgw_tts_tickets (ticket_state,ticket_group,ticket_priority,ticket_owner,"
       . "ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,"
-      . "ticket_billable_rate,ticket_status,ticket_details) values ('"
+      . "ticket_billable_rate,ticket_status,ticket_details,ticket_due) values ('"
       . intval($_POST['ticket_state']) . "','"
       . intval($_POST['ticket_group']) . "','"
       . intval($_POST['ticket_priority']) . "','"
@@ -57,7 +62,9 @@
       . intval($_POST['ticket_category']) . "','"
       . $GLOBALS['phpgw']->db->db_addslashes($ticket_billable_hours) . "','"
       . $GLOBALS['phpgw']->db->db_addslashes($ticket_billable_rate) . "','O','"
-      . $GLOBALS['phpgw']->db->db_addslashes($_POST['ticket_details']) . "')",__LINE__,__FILE__);
+      . $GLOBALS['phpgw']->db->db_addslashes($_POST['ticket_details']) . "','"
+      . $GLOBALS['phpgw']->db->db_addslashes($_POST['ticket_due'])
+      . "')",__LINE__,__FILE__);
 
     $ticket_id = $GLOBALS['phpgw']->db->get_last_insert_id('phpgw_tts_tickets','ticket_id');
 
@@ -85,10 +92,18 @@
       $_POST['ticket_priority']=$GLOBALS['phpgw_info']['user']['preferences']['tts']['prioritydefault'];
   }
 
+  # The following sets up jsCalendar  -- MSc
+  $jscal = CreateObject('phpgwapi.jscalendar');	// before phpgw_header() !!!
+
   $GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'] . ' - ' . lang('Create new ticket');
   $GLOBALS['phpgw']->common->phpgw_header();
   echo parse_navbar();
 
+  /* Let's define the warnings for too high prios now
+   * MSc 060130
+   */
+  generate_priowarn();
+  
   $GLOBALS['phpgw']->template->set_file(array(
     'newticket'   => 'newticket.tpl'
   ));
@@ -126,53 +141,70 @@
   $GLOBALS['phpgw']->template->set_var('value_billable_hours',($_POST['ticket_billable_hours']?$_POST['ticket_billable_hours']:'0.00'));
   $GLOBALS['phpgw']->template->set_var('value_billable_hours_rate',($_POST['ticket_billable_rate']?$_POST['ticket_billable_rate']:'0.00'));
 
+
+# Msc: due date
+  $GLOBALS['phpgw']->template->set_var('lang_duedate', lang('Due Date'));
+  if ($_POST['ticket_duedate']) {
+      $GLOBALS['phpgw']->template->set_var('value_duedate',$_POST['ticket_duedate']);
+  } else {
+      $GLOBALS['phpgw']->template->set_var('value_duedate', date('Y-'));
+  }
+
   
-  //produce the list of groups
-  unset($s);
-  $groups = CreateObject('phpgwapi.accounts');
+  //produce the list of groups	-- MSc 050824
+  // This used to be a list of all groups the user is a member of
+  // but now we want a list of all groups the user can assign tickets to
+
   $group_list = array();
-  $group_list = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
+  $group_list = $GLOBALS['phpgw']->accounts->search (array('type'=>'groups'));
+//  $group_list = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
 
   while(list($key,$entry) = each($group_list))
   {
-    $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_name']);
-    $GLOBALS['phpgw']->template->set_var('optionvalue', $entry['account_id']);
-    $GLOBALS['phpgw']->template->set_var('optionselected', $entry['account_id']==$_POST['ticket_group']?' SELECTED ':'');
-    $GLOBALS['phpgw']->template->parse('options_group','options_select',true);
+      if (check_ticket_right(-1, -1, $entry['account_id'], PHPGW_ACL_ADD)) {
+	  $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_lid']);
+	  $GLOBALS['phpgw']->template->set_var('optionvalue', $entry['account_id']);
+	  $GLOBALS['phpgw']->template->set_var('optionselected', $entry['account_id']==$_POST['ticket_group']?' SELECTED ':'');
+	  $GLOBALS['phpgw']->template->parse('options_group','options_select',true);
+      }
   }
 
 
   //produce the list of categories
+  unset($s);
   $s = '<select name="ticket_category">' . $GLOBALS['phpgw']->categories->formated_list('select','all',$_POST['ticket_category'],True) . '</select>';
   $GLOBALS['phpgw']->template->set_var('value_category',$s);
 
   
   
-  //produce the list of accounts for assigned to
+  //produce the list of accounts for assigned to   -- MSc 050824
+  // This used to be a list of all users (it used a undefined variable, though, so
+  //   maybe it was broken anyways)
+  // Now we want a list of all users that the current user can assign tickets to
   $s = '<option value="0">' . lang('None') . '</option>';
-  $accounts = $groups;
-  $accounts->account_id = $group_id;
-  $account_list = $accounts->get_list('accounts');
+  $account_list = array();
+  $account_list = $GLOBALS['phpgw']->accounts->search (array('type'=>'accounts'));
   while(list($key,$entry) = each($account_list))
   {
-    $s .= '<option value="' . $entry['account_id'] . '" ' 
-      . ($entry['account_id']==$_POST['ticket_assignedto']?' SELECTED ':'')
-      . '>' . $entry['account_lid'] . '</option>';
+      if (check_ticket_right($entry['account_id'], -1, -1, PHPGW_ACL_ADD)) {
+	  $s .= '<option value="' . $entry['account_id'] . '"' 
+	      . ($entry['account_id']==$_POST['ticket_assignedto']?' SELECTED ':'')
+	      . '>' . $entry['account_lid'] . '</option>';
+      }
   }
   $GLOBALS['phpgw']->template->set_var('value_assignedto','<select name="ticket_assignedto">' . $s . '</select>');
 
   // Choose the correct priority to display
   $prority_selected[$ticket_priority] = ' selected';
-  $priority_comment[1]  = ' - '.lang('Lowest');
-  $priority_comment[5]  = ' - '.lang('Medium');
-  $priority_comment[10] = ' - '.lang('Highest');
-  for($i=1; $i<=10; $i++)
+  
+  for($i=4; $i>=0; $i--)
   {
+    $priority_comment[$i] = ' - '.lang(prioname($i));
     $priority_select .= '<option value="' . $i . '"' 
       . ($i==$_POST['ticket_priority']?' SELECTED ':'') 
       . '>' . $i . $priority_comment[$i] . '</option>';
   }
-  $GLOBALS['phpgw']->template->set_var('value_priority','<select name="ticket_priority">' . $priority_select . '</select>');
+  $GLOBALS['phpgw']->template->set_var('value_priority','<select name="ticket_priority" onChange="generate_priowarn(this.value);">' . $priority_select . '</select>');
 
   // Choose the initial state to display
   $GLOBALS['phpgw']->template->set_var('options_state',

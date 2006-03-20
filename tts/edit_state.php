@@ -55,11 +55,11 @@
         . " set state_id='". addslashes($state['id']) . "', "
         . " state_name='". addslashes($state['name']) . "', "
         . " state_description='". addslashes($state['description']) . "', "
-        . " state_initial=". ($state['initial']=='on'?1:0) 
+        . " state_initial=". ($state['initial']=='on'?1:0) . ", "
+        . " state_open='". ($state['open']=='on'?'X':'O') . "' "
         . " WHERE state_id=".intval($state_id),__LINE__,__FILE__);
-  
     }
-  
+
     $GLOBALS['phpgw']->redirect_link('/tts/states.php');
   }
   else
@@ -68,9 +68,10 @@
     $GLOBALS['phpgw']->db->query("select * from phpgw_tts_states where state_id='$state_id'",__LINE__,__FILE__);
     $GLOBALS['phpgw']->db->next_record();
 
-    $state['name']      = $GLOBALS['phpgw']->db->f('state_name');
-    $state['description']   = try_lang($GLOBALS['phpgw']->db->f('state_description'));
-    $state['initial']       = $GLOBALS['phpgw']->db->f('state_initial');
+    $state['name']        = $GLOBALS['phpgw']->db->f('state_name');
+    $state['description'] = try_lang($GLOBALS['phpgw']->db->f('state_description'));
+    $state['initial']     = $GLOBALS['phpgw']->db->f('state_initial');
+    $state['open']        = $GLOBALS['phpgw']->db->f('state_open');
   
     $GLOBALS['phpgw']->template->set_file(array(
       'edit_state'   => 'edit_state.tpl'
@@ -101,6 +102,7 @@
     $GLOBALS['phpgw']->template->set_var('lang_state_name',lang('State Name'));
     $GLOBALS['phpgw']->template->set_var('lang_state_description', lang('Description'));
     $GLOBALS['phpgw']->template->set_var('lang_new_ticket_into_state', lang('New tickets can be put into this state.') );
+    $GLOBALS['phpgw']->template->set_var('lang_ticket_state_is_open', lang('this state means an open ticket') );
     $GLOBALS['phpgw']->template->set_var('lang_save',lang('Save'));
     $GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 
@@ -108,6 +110,7 @@
     $GLOBALS['phpgw']->template->set_var('value_id',$state_id>0?intval($state_id):'');
     $GLOBALS['phpgw']->template->set_var('value_name',try_lang($state['name']));
     $GLOBALS['phpgw']->template->set_var('value_initial',($state['initial']?'CHECKED':''));
+    $GLOBALS['phpgw']->template->set_var('value_open',(($state['open']=='X')?'CHECKED':''));
 
     $GLOBALS['phpgw']->template->pfp('out','form');
     $GLOBALS['phpgw']->common->phpgw_footer();

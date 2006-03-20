@@ -29,20 +29,29 @@
 	}
 
 	// Choose the correct priority to display
-	$priority_comment[1]  = ' - ' . lang('Lowest'); 
-	$priority_comment[5]  = ' - ' . lang('Medium'); 
-	$priority_comment[10] = ' - ' . lang('Highest'); 
-	for ($i=1; $i<=10; $i++)
+	$priority_comment[4] = ' - '.lang('Wish');
+	$priority_comment[3] = ' - '.lang('Low');
+	$priority_comment[2] = ' - '.lang('High');
+	$priority_comment[1] = ' - '.lang('Critical');
+	$priority_comment[0] = ' - '.lang('Emergency');
+	for ($i=4; $i>=0; $i--)
 	{
-		$priority[$i] = $i . $priority_comment[$i];
+	    $priority[$i] = $i . $priority_comment[$i];
 	}
+
+	$show_entries = array(
+		0 => lang('No'),
+//		1 => lang('Yes'),
+		2 => lang('Yes').' - '.lang('small view'),
+	);
 
 	$GLOBALS['settings'] = array(
 		'mainscreen_show_new_updated' => array(
 			'type'   => 'select',
 			'label'  => 'show new/updated tickets on main screen',
 			'name'   => 'mainscreen_show_new_updated',
-			'values' => $yes_and_no,
+			'values' => $show_entries,
+//			'values' => $yes_and_no,
 			'xmlrpc' => True,
 			'admin'  => False
 		),

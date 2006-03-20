@@ -29,10 +29,11 @@
 
 		// this will be an user option
 		$filtermethod="where ticket_status='O' and ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."'";
-		$sortmethod='order by ticket_priority desc';
+		$sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
 
-		$GLOBALS['phpgw']->db->query('select ticket_id,ticket_category,ticket_priority,ticket_assignedto,ticket_owner,ticket_subject '
-			. 'from phpgw_tts_tickets ' . $filtermethod . ' ' . $sortmethod,__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->query('select ticket_id, ticket_category, ticket_priority,'.
+			' ticket_assignedto, ticket_owner, ticket_subject, ticket_due,'.
+			' from phpgw_tts_tickets ' . $filtermethod . ' ' . $sortmethod,__LINE__,__FILE__);
 
 		$tmp_app_tpl = $GLOBALS['phpgw']->common->get_tpl_dir('tts');
 		$p = CreateObject('phpgwapi.Template',$tmp_app_tpl);
@@ -44,28 +45,27 @@
 		$p->set_block('index', 'tts_ticket_id_unread', 'tts_ticket_id_unread');
 		$p->set_var(
 			Array(
-				'tts_head_id'			=> lang('Ticket').' #',
-				'tts_head_openedby'		=> lang('Opened by'),
-				'tts_head_dateopened'	=> lang('Date opened'),
-				'tts_head_subject'		=> lang('Subject')
+				'tts_head_id'			=> lang('Ticket #'),
+				'tts_head_subject'		=> lang('Subject'),
+				'tts_head_duedate'		=> lang('Due Date'),
+				'tts_head_openedby'		=> lang('Opened by')
 			)
 		);
 		while ($GLOBALS['phpgw']->db->next_record())
 		{
 
 			$p->set_var('tts_col_status','');
-			$priority=$GLOBALS['phpgw']->db->f('ticket_priority');
-			if($priority >= 1 && $priority <= 9)
-			{
-				$tr_color = $GLOBALS['phpgw_info']['theme']['bg0'.$priority];
-			}
-			elseif($priority==10)
-			{
-				$tr_color = $GLOBALS['phpgw_info']['theme']['bg10'];
-			}
-			else
-			{
-				$tr_color = $GLOBALS['phpgw_info']['theme']['bg_color'];
+
+			/* We now try to find a good bg-color:	    -- MSc
+			 * If the due date is in the past, color it red
+			 * If the due date is in the future, color it according to Prio */
+			$priority = $GLOBALS['phpgw']->db->f('ticket_priority');
+			$tdu = $GLOBALS['phpgw']->db->f('ticket_due');
+			if ($tdu && $tdu > 0 && $tdu < time()) {  # it's DUE!
+			    $tr_color = $GLOBALS['phpgw_info']['theme']['due'];
+			} else {
+			    # as we are using prios from 1..5, let's multiply prio by 2
+			    $tr_color = $GLOBALS['phpgw_info']['theme']['bg'.sprintf('%02s',(5-$priority)*2)];
 			}
 
 			$db2->query("select count(*) from phpgw_tts_views where view_id='" . $GLOBALS['phpgw']->db->f('ticket_id')
@@ -94,10 +94,15 @@
 			}
 
 			$p->set_var('tts_t_user', $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner')));
-			$history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('O'),'history_timestamp','ASC',$GLOBALS['phpgw']->db->f('ticket_id'));
-			$p->set_var('tts_t_timestampopened',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
 
-			$subject = str_replace(array('\\\'','\\"','\\\\'),array("'",'"','\\'),$GLOBALS['phpgw']->db->f('ticket_subject'));
+			$p->set_var('tts_t_duedate', substr($GLOBALS['phpgw']->db->f('ticket_due'), 0, 16));
+
+			// cope with old, wrongly saved entries, stripslashes would remove single backslashes too
+			$subject = str_replace(array('\\\'','\\"','\\\\'),array("'",'"','\\'),
+				$GLOBALS['phpgw']->db->f('ticket_subject'));
+			if (strlen($subject) > 25) {
+			    $subject = substr($subject,0,23) . '...';
+			}
 			$p->set_var('tts_t_subject', $subject);
 
 			$p->fp('rows','tts_row',true);

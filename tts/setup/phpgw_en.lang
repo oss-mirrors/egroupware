@@ -7,6 +7,10 @@ add new ticket	tts	en	Add new ticket
 add ticket	tts	en	Add ticket
 additional notes	tts	en	Additional notes
 admin options	common	en	Admin Options
+alert for critical prio setting	tts	en	You are setting the Priority to Critical; Make sure you know what this means to the recipient of the ticket, and dont forget to call him immediately!
+alert for emergency prio setting	tts	en	You are setting the Priority to Emergency; Make sure you know what this means to the recipient of the ticket, and dont forget to call him immediately!
+alert for high prio setting	tts	en	Please consider calling the recipient of this ticket!
+assign tickets	tts	en	Assign
 assign to	tts	en	Assign to
 assigned from	tts	en	Assigned from
 assigned to	tts	en	Assigned to
@@ -16,6 +20,7 @@ billable hours rate	tts	en	Billable hours rate
 billable rate	tts	en	Billable rate
 billable rate changed	tts	en	Billable rate changed
 can make full changes	tts	en	Can make full changes
+can assign to	tts	en	can assign tickets
 category changed	tts	en	Category changed
 check here to generate the state's id automatically or enter a particular id below.	tts	en	Check here to generate the state's ID automatically or enter a particular ID below.
 clear form	tts	en	Clear Form
@@ -30,6 +35,7 @@ create new ticket	tts	en	Create new ticket
 create new transition	tts	en	Create new transition
 creates a new ticket, returns ticket_id	tts	en	Creates a new ticket, returns ticket_id
 creates a struct of tickets	tts	en	Creates a struct of tickets
+critical	tts	en	Critical
 date opened	tts	en	Date opened
 default assign to	tts	en	Default assign to
 default group	tts	en	Default group
@@ -38,9 +44,12 @@ delete the listed tickets.	tts	en	Delete the listed tickets.
 deleting the state	tts	en	Deleting the state
 deleting the transition	tts	en	Deleting the transition
 detail	tts	en	Detail
+due date	tts	en	Due Date
+due date changed	tts	en	Due Date changed
 duplicate	tts	en	DUPLICATE
 edit the state	tts	en	Edit the state
 edit the transition	tts	en	Edit the transition
+emergency	tts	en	Emergency
 error: the subject of the ticket is not specified.	tts	en	ERROR: The subject of the ticket is not specified.
 force	tts	en	Force
 global categories	tts	en	Global Categories
@@ -56,6 +65,7 @@ keep the present state [%1].	tts	en	Keep the present state [%1].
 latest note added	tts	en	Latest Note Added
 list of available tickets' states.	tts	en	List of available tickets' states.
 list of available tickets' transitions.	tts	en	List of available tickets' transitions.
+low	tts	en	Low
 missing description	tts	en	Missing description
 morework	tts	en	MOREWORK
 needswork	tts	en	NEEDSWORK
@@ -84,12 +94,13 @@ original ticket details	tts	en	Original Ticket Details
 perform irregular transition into the following state	tts	en	Perform irregular transition into the following state
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	en	Please enter the subject of the ticket, otherwise the ticket cannot be stored.
 prio	tts	en	Prio
-priority	tts	en	Priority
+priority	tts	en	Prio
 priority changed	tts	en	Priority changed
 put the preexistent ticket into the state %1.	tts	en	Put the preexistent ticket into the state %1.
 re-assigned	tts	en	Re-assigned
 re-opened	tts	en	Re-opened
 read tickets within group only	tts	en	Read tickets within group only
+read tickets	tts	en	Read tickets
 refresh every (seconds)	tts	en	Refresh every (seconds)
 reopen	tts	en	REOPEN
 reopened	tts	en	REOPENED
@@ -126,9 +137,11 @@ the ticket was existent before the petri net infrastructure was defined and shou
 the ticket was found a duplicate of another ticket.	tts	en	The ticket was found a duplicate of another ticket.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	en	The tickets in the following list are in the state %1. Please, decide what should be done with them.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	en	The validation of the ticket was unsuccessfull. The ticket requires more work.
+this state means an open ticket	tts	en	In this state the ticket is open.
 ticket	tts	en	Ticket
 ticket #	tts	en	Ticket #
 ticket has been updated	tts	en	Ticket has been updated
+ticket is not accessible	tts	en	This ticket is not accessible
 tickets found %1	tts	en	Tickets found %1
 tickets open %1	tts	en	Tickets open %1
 tickets total %1	tts	en	Tickets total %1
@@ -147,8 +160,8 @@ tovalidate	tts	en	TOVALIDATE
 toverified	tts	en	TOVERIFIED
 transition	tts	en	Transition
 transition name	tts	en	Transition name
-trouble ticket system	common	en	Trouble Ticket System
-tts	common	en	Trouble Ticket System
+trouble ticket system	common	en	TTS
+tts	common	en	TTS
 tts preferences	tts	en	Trouble Ticket System - preferences
 undefined	tts	en	UNDEFINED
 update ticket state	tts	en	Update ticket state
@@ -160,6 +173,7 @@ view all tickets	tts	en	View all tickets
 view job detail	tts	en	View Job Detail
 view only my open tickets	tts	en	View only my open tickets
 view only open tickets	tts	en	View only open tickets
+wish	tts	en	Wish
 you can only close a ticket if it is assigned to you.	tts	en	You can only close a ticket if it is assigned to you.
 you want to delete the state %1 and associated transitions. are you sure?	tts	en	You want to delete the state %1 and associated transitions. Are you sure?
 you want to delete the state %1. are you sure?	tts	en	You want to delete the state %1. Are you sure?

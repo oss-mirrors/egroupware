@@ -11,26 +11,23 @@
 
   /* $Id$ */
 
-  /* Note to self:
-  ** Self ... heres the query to use when limiting access to entrys within a group
-  ** The acl class *might* handle this instead .... not sure
-  ** select distinct group_ticket_id, phpgw_tts_groups.group_ticket_id, phpgw_tts_tickets.*
-  ** from phpgw_tts_tickets, phpgw_tts_groups where ticket_id = group_ticket_id and group_id in (14,15);
-  */
-
-  /* ACL levels
-  ** 1 - Read ticket within your group only
-  ** 2 - Close ticket
-  ** 4 - Allow to make changes to priority, billing hours, billing rate, category, and assigned to
-  */
-
   $GLOBALS['phpgw_info']['flags']['currentapp'] = 'tts';
   $GLOBALS['phpgw_info']['flags']['enable_contacts_class'] = True;
   $GLOBALS['phpgw_info']['flags']['enable_categories_class'] = True;
   $GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
   include('../header.inc.php');
 
+  require_once ('inc/acl_funcs.inc.php');
+
   $GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
+
+  // select what tickets to view
+  // We have to do this early on, as some links might need to forward these vars -- MSc
+  $filter = get_var('filter',array('POST','GET'),'viewmyopen');
+  $start  = (int) get_var('start',array('POST','GET'));
+  $sort   = get_var('sort',array('POST','GET'),'ASC');
+  $order  = get_var('order',array('POST','GET'),'ticket_priority');
+  $searchfilter = reg_var('searchfilter','POST','any');
 
   $GLOBALS['phpgw']->template->set_file('index','index.tpl');
   $GLOBALS['phpgw']->template->set_block('index', 'tts_title', 'tts_title');
@@ -62,21 +59,14 @@
     $GLOBALS['phpgw']->session->appsession('messages','tts','');
   }
 
-
-  // select what tickets to view
-  $filter = get_var('filter',array('POST','GET'),'viewmyopen');
-  $start  = (int) get_var('start',array('POST','GET'));
-  $sort   = get_var('sort',array('POST','GET'),'DESC');
-  $order  = get_var('order',array('POST','GET'),'ticket_priority');
-  $searchfilter = reg_var('searchfilter','POST','any');
-
   // Append the filter to the search URL, so that the mode carries forward on a search
   $GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
   if ($filter == 'viewmyopen')
   {
-    $filtermethod = "WHERE ticket_status='O' AND ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."'";
+    $filtermethod = "WHERE ticket_status='O' AND (ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."' OR ticket_assignedto=0)";
   }
+
   if ($filter == 'viewopen') 
   {
     $filtermethod = "WHERE ticket_status='O'";
@@ -92,6 +82,7 @@
       $GLOBALS['phpgw']->template->set_var('autorefresh','');
     }
   }
+
   // set for a possible search filter, outside of the all/open only "state" filter above
   if ($searchfilter) 
   {
@@ -102,30 +93,31 @@
 
   if (!preg_match('/^[a-z_]+$/i',$order) || !preg_match('/^(asc|desc)$/i',$sort))
   {
-    $sortmethod = 'ORDER BY ticket_priority DESC';
+    $sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
   }
   else
   {
-    $sortmethod = "ORDER BY $order $sort";
+    if ($order == 'ticket_priority' && $sort == 'ASC') {
+	$sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
+    } elseif ($order == 'ticket_due') {
+	$sortmethod = "ORDER BY CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END $sort, ticket_priority ASC, ticket_id ASC";
+    } else {
+	$sortmethod = "ORDER BY $order $sort, ticket_priority ASC, CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
+    }
   }
   $db = clone($GLOBALS['phpgw']->db);
   $db2 = clone($GLOBALS['phpgw']->db);
-  $db->query($sql="SELECT count(*) FROM phpgw_tts_tickets $filtermethod",__LINE__,__FILE__);
-  $total = $db->next_record() ? $db->f(0) : 0;
 
-  $db->limit_query("SELECT * FROM phpgw_tts_tickets $filtermethod $sortmethod",$start,__LINE__,__FILE__);
+  // we are _not_ limiting the number of results here, as we filter via ACL later on -- MSc
+  $db->query("SELECT *, ticket_due FROM phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
 
-  $GLOBALS['phpgw']->template->set_var('tts_numfound',$GLOBALS['phpgw']->nextmatchs->show_hits($total,$start));
-  $GLOBALS['phpgw']->template->set_var('left',$GLOBALS['phpgw']->nextmatchs->left('/tts/index.php',$start,$total));
-  $GLOBALS['phpgw']->template->set_var('right',$GLOBALS['phpgw']->nextmatchs->right('/tts/index.php',$start,$total));
-    
-  $tag = '';
+  
+    $tag = '';
     $GLOBALS['phpgw']->template->set_var('optionname', lang('View all tickets'));
     $GLOBALS['phpgw']->template->set_var('optionvalue', 'viewall');
-    if ($filter == 'viewall' )
-  {
-    $tag = 'selected';
-  }
+    if ($filter == 'viewall' ) {
+	$tag = 'selected';
+    }
     $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
     $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
 
@@ -149,10 +141,10 @@
   $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
   $GLOBALS['phpgw']->template->parse('options_filter','options_select',True);
 
-  $GLOBALS['phpgw']->template->set_var('tts_ticketstotal', lang('Tickets total %1',$numtotal));
   $GLOBALS['phpgw']->template->set_var('tts_ticketsopen', lang('Tickets open %1',$numopen));
   
   // fill header
+  $GLOBALS['phpgw']->nextmatchs->_filter = $filter;
   $GLOBALS['phpgw']->template->set_var('tts_head_bgcolor',$GLOBALS['phpgw_info']['theme']['th_bg'] );
   $GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg'] );
   $GLOBALS['phpgw']->template->set_var('tts_head_ticket', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_id',$order,'/tts/index.php',lang('Ticket #')));
@@ -162,10 +154,13 @@
   $GLOBALS['phpgw']->template->set_var('tts_head_assignedto', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_assignedto',$order,'/tts/index.php',lang('Assigned to')));
   $GLOBALS['phpgw']->template->set_var('tts_head_openedby', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_owner',$order,'/tts/index.php',lang('Opened by')));
 
+# MSc: due date header
+  $GLOBALS['phpgw']->template->set_var('tts_head_duedate', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_due',$order,'/tts/index.php',lang('Due Date')));
+
   // I am not sure how the sorting will work for this, if at all. (jengo)
   $GLOBALS['phpgw']->template->set_var('tts_head_dateopened',lang('Date opened'));
 //  $GLOBALS['phpgw']->template->set_var('tts_head_dateopened', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'',$order,'/tts/index.php',lang('Date opened')));
-  if ($filter != 'viewopen')
+  if ($filter != 'viewopen' && $filter != 'viewmyopen')
   {
     $GLOBALS['phpgw']->template->set_var('tts_head_dateclosed', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_status',$order,'/tts/index.php',lang('Status/Date closed')));
     $GLOBALS['phpgw']->template->parse('tts_head_status','tts_head_ifviewall',false);
@@ -179,31 +174,59 @@
   }
   else
   {
+      $nrtickets = 0;	// Number of listed tickets 
+      $maxtickets = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+      $moretickets = 0;	// will be set to 1 if there are unshown tickets left
+      $total = 0;
+      
     while ($db->next_record())
     {
+	
+	// If the user is not allow to READ the ticket, don't view it in this list
+	if (! check_ticket_right($db->f('ticket_assignedto'), $db->f('ticket_owner'), $db->f('ticket_group'), PHPGW_ACL_READ)) {
+	    continue;
+	}
+
+	$total++;
+
+      // Have we reached maxtickets? if so, then exit loop
+      if ($nrtickets > $start+$maxtickets-1) {
+	  $moretickets = 1;
+	  continue;	// we continue anyway, to get total nr of tickets
+      }
+
+      // ok, the ticket is viewable, so let's increase the count...
+      $nrtickets++;
+      // and now go to the next one if we haven't reached $start yet
+      if ($nrtickets<=$start) continue;
+
+	
       $GLOBALS['phpgw']->template->set_var('tts_col_status','');
       $priority = $db->f('ticket_priority');
       $GLOBALS['phpgw']->template->set_var('tts_t_prio',$priority);
 
-      switch ($priority)
-      {
-        case 1:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg01']; break;
-        case 2:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg02']; break;
-        case 3:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg03']; break;
-        case 4:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg04']; break;
-        case 5:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg05']; break;
-        case 6:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg06']; break;
-        case 7:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg07']; break;
-        case 8:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg08']; break;
-        case 9:  $tr_color = $GLOBALS['phpgw_info']['theme']['bg09']; break;
-        case 10: $tr_color = $GLOBALS['phpgw_info']['theme']['bg10']; break;
-        default: $tr_color = $GLOBALS['phpgw_info']['theme']['bg_color'];
+      // We now try to find a good bg-color:	    -- MSc
+      // If the due date is in the past, color it 'unas'
+      // If the due date is in the past, color it 'due'
+      // If the due date is in the future, color it according to Prio
+      if ($db->f('ticket_assignedto') == 0) {	# unassigned ticket
+	  $tr_color = $GLOBALS['phpgw_info']['theme']['unas'];
+      } else {
+	  $tdu = $db->f('ticket_due');
+	  if ($tdu && $tdu > 0 && $tdu < time()) {  # it's DUE!
+	      $tr_color = $GLOBALS['phpgw_info']['theme']['due'];
+	  } else {
+	      # as we are using prios from 1..5, let's multiply prio by 2
+	      $tr_color = $GLOBALS['phpgw_info']['theme']['bg'.sprintf('%02s',(5-$priority)*2)];
+	  }
       }
 
-      if ($filter!="viewopen" && $db->f('t_timestamp_closed'))
+      // the following will not work here, let's do this later	-- MSc 050830
+/*    if ($filter!="viewopen" && $db->f('t_timestamp_closed'))
       {
-        $tr_color = $GLOBALS['phpgw_info']['theme']['th_bg']; /*"#CCCCCC";*/
+        $tr_color = $GLOBALS['phpgw_info']['theme']['th_bg'];
       }
+*/
 
       $db2->query("select count(*) from phpgw_tts_views where view_id='" . $db->f('ticket_id')
         . "' and view_account_id='" . $GLOBALS['phpgw_info']['user']['account_id'] . "'",__LINE__,__FILE__);
@@ -218,15 +241,13 @@
         $ticket_read = False;
       }
 
-      $GLOBALS['phpgw']->template->set_var('tts_row_color', $tr_color );
       $GLOBALS['phpgw']->template->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('ticket_id'=>$db->f('ticket_id'),'filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
-      $view_link = '<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('ticket_id'=>$db->f('ticket_id'),'filter'=>$filter,'order'=>$order,'sort'=>$sort)). '">';
-      $GLOBALS['phpgw']->template->set_var('row_ticket_id',$view_link . $db->f('ticket_id') . '</a>');
+      $GLOBALS['phpgw']->template->set_var('row_ticket_id', $db->f('ticket_id'));
 
       if (! $ticket_read)
       {
-        $GLOBALS['phpgw']->template->set_var('row_status','<img src="templates/default/images/updated.gif">');
+        $GLOBALS['phpgw']->template->set_var('row_status','<img src="templates/default/images/updated.gif" />');
       }
       else
       {
@@ -246,13 +267,15 @@
       $history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('O'),'history_timestamp','ASC',$db->f('ticket_id'));
       $GLOBALS['phpgw']->template->set_var('tts_t_timestampopened',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
 
+      # Check if the ticket is Closed
       if ($db->f('ticket_status') == 'X')
       {
-        $history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('X'),'history_timestamp','DESC',$db->f('ticket_id'));
-        $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
-        $GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
+	  $history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('X'),'history_timestamp','DESC',$db->f('ticket_id'));
+	  $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
+	  $GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
+	  $tr_color = $GLOBALS['phpgw_info']['theme']['th_bg'];
       }
-      elseif ($filter != 'viewopen')
+      elseif ($filter != 'viewopen' && $filter != 'viewmyopen')
       {
 //        if ($db->f('ticket_assignedto') != -1)
 //        {
@@ -263,18 +286,39 @@
 //          $assigned_to = $GLOBALS['phpgw']->accounts->id2name($db->f('ticket_assignedto'));
 //        }
 //        $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$assigned_to);
-        $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
-        $GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
+	  $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
+	  $GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
       }
+      
+      # now set the bg-color
+      $GLOBALS['phpgw']->template->set_var('tts_row_color', $tr_color );
+      
       // cope with old, wrongly saved entries, stripslashes would remove single backslashes too
       $subject = str_replace(array('\\\'','\\"','\\\\'),array("'",'"','\\'),$db->f('ticket_subject'));
-      $GLOBALS['phpgw']->template->set_var('tts_t_subject', $view_link.$subject.'</a>');
+      if (strlen($subject) > 25) {
+	  $subject = substr($subject,0,23) . '...';
+      }
+      $GLOBALS['phpgw']->template->set_var('tts_t_subject', $subject);
       $GLOBALS['phpgw']->template->set_var('tts_t_state',
         id2field('phpgw_tts_states','state_name','state_id',$db->f('ticket_state')));
 
+# MSc: due date
+      $GLOBALS['phpgw']->template->set_var('tts_t_duedate',
+	      ($db->f('ticket_due') != '0000-00-00 00:00:00')?substr($db->f('ticket_due'), 0, 16):'');
+      
       $GLOBALS['phpgw']->template->parse('rows','tts_row',True);
+
+    }
+    if ($nrtickets == 0)
+    {
+      $GLOBALS['phpgw']->template->set_var('rows', '<p><center>'.lang('No tickets found').'</center>');
     }
   }
+
+  // we can only now, after going through the list, know the following numbers -- MSc
+  $GLOBALS['phpgw']->template->set_var('tts_numfound',$GLOBALS['phpgw']->nextmatchs->show_hits($total,$start));
+  $GLOBALS['phpgw']->template->set_var('left', $GLOBALS['phpgw']->nextmatchs->left('/tts/index.php',$start,$total));
+  $GLOBALS['phpgw']->template->set_var('right',$GLOBALS['phpgw']->nextmatchs->right('/tts/index.php',$start,$total));
 
   // this is a workaround to clear the subblocks autogenerated vars
   $GLOBALS['phpgw']->template->set_var('tts_row','');
