@@ -13,8 +13,8 @@ changelogs	developer_tools	pt-br	Registro de Modificação
 clears the internal buffer, all changes made sofar are lost	developer_tools	pt-br	Limpa a área de memória interna, e todas as mudanças feitas até o presente momento serão perdidas
 create new language file	developer_tools	pt-br	Criar novo arquivo de idioma
 create sgml file	developer_tools	pt-br	Criar arquivo SGML
-developer tools - preferences	developer_tools	pt-br	Ferramentas de Tradução - Preferências
-developer_tools	common	pt-br	Ferramentas de Tradução
+developer tools - preferences	developer_tools	pt-br	Ferramenta de Tradução - Preferências
+developer_tools	common	pt-br	Ferramenta de Tradução
 diary	developer_tools	pt-br	Diário
 done	developer_tools	pt-br	feito
 download	developer_tools	pt-br	Baixar
