@@ -52,15 +52,15 @@ $_services['replace'] = array(
  *
  * @return array  An array of GUIDs for all notes the user can access.
  */
-function _egwcontactssync_list()
+function _egwsifcontactssync_list()
 {
 	$guids = array();
 	
-	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwsifcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
 	$allContacts = ExecMethod('addressbook.vcaladdressbook.read_entries',array());
 
-	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwsifcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach((array)$allContacts as $contact)
 	{
@@ -79,18 +79,18 @@ function _egwcontactssync_list()
  *
  * @return array  An array of GUIDs matching the action and time criteria.
  */
-function &_egwcontactssync_listBy($action, $timestamp)
+function &_egwsifcontactssync_listBy($action, $timestamp)
 {
 	// todo
 	// check for acl
 	
-	#Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwsifcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$allChangedItems = $GLOBALS['phpgw']->contenthistory->getHistory('contacts', $action, $timestamp);
 
 	if($action != 'delete')
 	{
-		$vcalAddressBook = CreateObject('addressbook.vcaladdressbook');
+		$boAddressBook = CreateObject('addressbook.boaddressbook');
 		$readAbleItems = array();
 
 		// check if we have access to the changed data
@@ -98,7 +98,7 @@ function &_egwcontactssync_listBy($action, $timestamp)
 		foreach($allChangedItems as $guid)
 		{
 			$uid = $GLOBALS['phpgw']->common->get_egwId($guid);
-			if($vcalAddressBook->check_perms($uid, PHPGW_ACL_READ))
+			if($boAddressBook->check_perms($uid, PHPGW_ACL_READ))
 			{
 				$readAbleItems[] = $guid;
 			}
@@ -121,10 +121,10 @@ function &_egwcontactssync_listBy($action, $timestamp)
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcontactssync_import($content, $contentType, $notepad = null)
+function _egwsifcontactssync_import($content, $contentType, $notepad = null)
 {
-	error_log("SymcML: egwcontactssync import content: ".base64_decode($ccontent)." contentType: $contentType");
-	#Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#error_log("SymcML: egwsifcontactssync import content: ".base64_decode($ccontent)." contentType: $contentType");
+	#Horde::logMessage("SymcML: egwsifcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
@@ -151,7 +151,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 		return $contactId;
 	}
 
-	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwsifcontactssync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $GLOBALS['phpgw']->common->generate_uid('contacts',$contactId);
 }
 
@@ -166,23 +166,16 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcontactssync_search($content, $contentType)
+function _egwsifcontactssync_search($content, $contentType)
 {
-	error_log("SymcML: egwcontactssync search content contentType: $contentType");
-	#Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#error_log("SymcML: egwsifcontactssync search content contentType: $contentType");
+	#Horde::logMessage("SymcML: egwsifcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
 
 	
 	switch ($contentType) {
-		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',true);
-			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-
-			$contactId		= $vcaladdressbook->search($content);
-			break;
-
 		case 'text/x-s4j-sifc':
 			$sifaddressbook		=& CreateObject('addressbook.sifaddressbook');
 			$contactId = 		$sifaddressbook->search($content);
@@ -196,8 +189,8 @@ function _egwcontactssync_search($content, $contentType)
 		return $contactId;
 	}
 
-	error_log("SymcML: egwcontactssync search found: $contactId");
-	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#error_log("SymcML: egwsifcontactssync search found: $contactId");
+	#Horde::logMessage("SymcML: egwsifcontactssync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	if(!$contactId) {
 		return false;
 	} else {
@@ -221,8 +214,9 @@ function _egwcontactssync_search($content, $contentType)
  *
  * @return string  The requested data.
  */
-function _egwcontactssync_export($guid, $contentType)
+function _egwsifcontactssync_export($guid, $contentType)
 {
+	#Horde::logMessage("-- SymcML: egwsifcontactssync export guid: $guid contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	if (is_array($contentType)) {
 		$options = $contentType;
 		$contentType = $options['ContentType'];
@@ -234,16 +228,14 @@ function _egwcontactssync_export($guid, $contentType)
 	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
-	$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',True);
-	$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-	$contactID		= $GLOBALS['phpgw']->common->get_egwId($guid);
+	$sifaddressbook	=& CreateObject('addressbook.sifaddressbook');
+	$contactID	= $GLOBALS['phpgw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
-		case 'text/x-vcard':
-
-			if($vcard = $vcaladdressbook->getVCard($contactID))
+		case 'text/x-s4j-sifc':
+			if($sifcard = $sifaddressbook->getSIF($contactID))
 			{
-				return $vcard;
+				return $sifcard;
 			}
 			else
 			{
@@ -266,13 +258,13 @@ function _egwcontactssync_export($guid, $contentType)
  *
  * @return boolean  Success or failure.
  */
-function _egwcontactssync_delete($guid)
+function _egwsifcontactssync_delete($guid)
 {
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// contacts at once.
 	if (is_array($guid)) {
 		foreach ($guid as $g) {
-			$result = _egwcontactssync_delete($g);
+			$result = _egwsifcontactssync_delete($g);
 			if (is_a($result, 'PEAR_Error')) {
 				return $result;
 			}
@@ -285,7 +277,7 @@ function _egwcontactssync_delete($guid)
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 	
-	return ExecMethod('addressbook.vcaladdressbook.delete_entry',$GLOBALS['phpgw']->common->get_egwId($guid));
+	return ExecMethod('addressbook.boaddressbook.delete_entry',$GLOBALS['egw']->common->get_egwId($guid));
 }
 
 /**
@@ -300,10 +292,10 @@ function _egwcontactssync_delete($guid)
  *
  * @return boolean  Success or failure.
  */
-function _egwcontactssync_replace($guid, $content, $contentType)
+function _egwsifcontactssync_replace($guid, $content, $contentType)
 {
-	#Horde::logMessage("SymcML: egwcontactssync replace guid: $guid content: $content", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	error_log("SymcML: egwcontactssync replace guid: $guid content: $ccontent contentType: $contentType");
+	#Horde::logMessage("SymcML: egwsifcontactssync replace guid: $guid content: $content", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#error_log("SymcML: egwsifcontactssync replace guid: $guid content: $ccontent contentType: $contentType");
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_EDIT))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
@@ -331,6 +323,8 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 
 			$sifaddressbook		=& CreateObject('addressbook.sifaddressbook');
 			$result = $sifaddressbook->addSIF($content,$contactID);
+
+			#error_log("SymcML: egwsifcontactssync replace result: $result");
 			
 			return $result;
 			

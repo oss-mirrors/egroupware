@@ -1,0 +1,71 @@
+
+*** Modified files in JOE when it aborted on Fri Mar 17 08:03:44 2006
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+1
+1
+1
+1
+
+*** File '(Unnamed)'
+$GLOBALS['horde_syncml_config']['syncml_debug_dir'].'/'
+$GLOBALS['horde_syncml_config']['syncml_debug_dir']
+$GLOBALS['horde_syncml_config']['syncml_debug_dir']
+6
+$this->supportedFields
+$_filename
+egwsifcontact
+siftasks
+ID
+'egw'
+
+*** File '(Unnamed)'
+error_l
+export
+change:
+><
+>
+ion de
+ion 
+sifcontacts
+genrate
+genera
+taskI
+Id
+delete
+'phpgw'
+
+*** File '(Unnamed)'
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+../../tasks/lib/api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+api.php
+../../tasks/lib/api.php
+../../tasks/lib/api.php
+api.php
+api.php
+api.php
