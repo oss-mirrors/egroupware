@@ -22,8 +22,8 @@
   );
 
   include('../header.inc.php');
-  require_once ('inc/acl_funcs.inc.php');
-  require_once ('inc/prio.inc.php');
+  require_once (EGW_INCLUDE_ROOT.'/tts/inc/acl_funcs.inc.php');
+  require_once (EGW_INCLUDE_ROOT.'/tts/inc/prio.inc.php');
 
   $GLOBALS['phpgw']->config->read_repository();
 

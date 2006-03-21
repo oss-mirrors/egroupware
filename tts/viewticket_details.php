@@ -25,8 +25,8 @@
 
   include('../header.inc.php');
   
-  require_once ('inc/acl_funcs.inc.php');
-  require_once ('inc/prio.inc.php');
+  require_once (EGW_INCLUDE_ROOT.'/tts/inc/acl_funcs.inc.php');
+  require_once (EGW_INCLUDE_ROOT.'/tts/inc/prio.inc.php');
 
   $filter = reg_var('filter','GET');
   $start  = reg_var('start','GET','numeric',0);
