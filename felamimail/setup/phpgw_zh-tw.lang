@@ -71,6 +71,7 @@ deleted folder successfully!	felamimail	zh-tw	刪除資料夾完成！
 disable	felamimail	zh-tw	停用
 discard message	felamimail	zh-tw	取消郵件
 display message in new window	felamimail	zh-tw	在新視窗顯示訊息
+display messages in multiple windows	felamimail	zh-tw	開啟多個視窗顯示訊息
 display of html emails	felamimail	zh-tw	顯示HTML郵件
 display only when no plain text is available	felamimail	zh-tw	只有在不包含存文字時顯示
 display preferences	felamimail	zh-tw	顯示設定
@@ -89,11 +90,13 @@ download this as a file	felamimail	zh-tw	另存新檔
 e-mail	felamimail	zh-tw	E-Mail
 e-mail address	felamimail	zh-tw	E-Mail位址
 e-mail folders	felamimail	zh-tw	郵件資料夾
+edit email forwarding address	felamimail	zh-tw	編輯郵件轉寄位址
 edit filter	felamimail	zh-tw	編輯規則
 edit rule	felamimail	zh-tw	編輯規則
 edit selected	felamimail	zh-tw	編輯選取的
 edit vacation settings	felamimail	zh-tw	編輯假期設定
 email address	felamimail	zh-tw	郵件位址
+email forwarding address	felamimail	zh-tw	郵件轉寄位址
 email signature	felamimail	zh-tw	簽名檔
 empty trash	felamimail	zh-tw	清空垃圾桶
 enable	felamimail	zh-tw	啟用
@@ -166,6 +169,7 @@ info	felamimail	zh-tw	資訊
 invalid user name or password	felamimail	zh-tw	錯誤的帳號或密碼
 javascript	felamimail	zh-tw	JavaScript
 keep a copy of the message in your inbox	felamimail	zh-tw	在收件夾保留郵件副本
+keep local copy of email	felamimail	zh-tw	在本機保留信件備份
 kilobytes	felamimail	zh-tw	KB
 language	felamimail	zh-tw	語言
 last name	felamimail	zh-tw	姓
@@ -295,6 +299,7 @@ sun	felamimail	zh-tw	日
 table of contents	felamimail	zh-tw	內容表單
 text only	felamimail	zh-tw	純文字
 the connection to the imap server failed!!	felamimail	zh-tw	連結IMAP伺服器發生錯誤！
+the mimeparser can not parse this message.	felamimail	zh-tw	無法辨識這個訊息的 mime 類型。
 then	felamimail	zh-tw	然後
 this folder is empty	felamimail	zh-tw	這個資料夾沒有任何信件
 this php has no imap support compiled in!!	felamimail	zh-tw	您的PHP並未編譯為支援IMAP的狀態

@@ -71,6 +71,7 @@ deleted folder successfully!	felamimail	en	Deleted folder successfully!
 disable	felamimail	en	Disable
 discard message	felamimail	en	discard message
 display message in new window	felamimail	en	Display message in new window
+display messages in multiple windows	felamimail	en	display messages in multiple windows
 display of html emails	felamimail	en	Display of HTML emails
 display only when no plain text is available	felamimail	en	Display only when no plain text is available
 display preferences	felamimail	en	Display Preferences
@@ -89,11 +90,13 @@ download this as a file	felamimail	en	Download this as a file
 e-mail	felamimail	en	E-Mail
 e-mail address	felamimail	en	E-Mail address
 e-mail folders	felamimail	en	E-Mail Folders
+edit email forwarding address	felamimail	en	edit email forwarding address
 edit filter	felamimail	en	Edit filter
 edit rule	felamimail	en	edit rule
 edit selected	felamimail	en	Edit selected
 edit vacation settings	felamimail	en	edit vacation settings
 email address	felamimail	en	E-Mail Address
+email forwarding address	felamimail	en	email forwarding address
 email signature	felamimail	en	Email signature
 empty trash	felamimail	en	empty trash
 enable	felamimail	en	enable
@@ -166,6 +169,7 @@ info	felamimail	en	Info
 invalid user name or password	felamimail	en	Invalid user name or password
 javascript	felamimail	en	JavaScript
 keep a copy of the message in your inbox	felamimail	en	keep a copy of the message in your inbox
+keep local copy of email	felamimail	en	keep local copy of email
 kilobytes	felamimail	en	kilobytes
 language	felamimail	en	Language
 last name	felamimail	en	Last name
@@ -295,6 +299,7 @@ sun	felamimail	en	Sun
 table of contents	felamimail	en	Table of Contents
 text only	felamimail	en	Text only
 the connection to the imap server failed!!	felamimail	en	The connection to the IMAP Server failed!!
+the mimeparser can not parse this message.	felamimail	en	The mimeparser can not parse this message.
 then	felamimail	en	THEN
 this folder is empty	felamimail	en	THIS FOLDER IS EMPTY
 this php has no imap support compiled in!!	felamimail	en	This PHP has no IMAP support compiled in!!

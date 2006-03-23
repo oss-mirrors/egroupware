@@ -7,7 +7,7 @@ add address	felamimail	pt-br	Adicionar endereço
 add rule	felamimail	pt-br	Adicionar Regra
 add script	felamimail	pt-br	Adicionar Script
 add to %1	felamimail	pt-br	Adicionar a %1
-add to address book	felamimail	pt-br	Adicionar aos contatos
+add to address book	felamimail	pt-br	Adicionar aos Contatos
 add to addressbook	felamimail	pt-br	Adicionar aos Contatos
 additional info	felamimail	pt-br	Adicionar informação
 address book	felamimail	pt-br	Contatos
@@ -47,7 +47,7 @@ contains	felamimail	pt-br	contém
 create	felamimail	pt-br	Criar
 create folder	felamimail	pt-br	Criar pasta
 create sent	felamimail	pt-br	Criar Enviadas
-create subfolder	felamimail	pt-br	criar sub-pasta
+create subfolder	felamimail	pt-br	Criar sub-pasta
 create trash	felamimail	pt-br	Criar Lixeira
 created folder successfully!	felamimail	pt-br	Pasta criada com sucesso!
 dark blue	felamimail	pt-br	Azul escuro
@@ -70,7 +70,7 @@ deleted	felamimail	pt-br	Removido
 deleted folder successfully!	felamimail	pt-br	Pasta removida com sucesso!
 disable	felamimail	pt-br	Desabilitada
 discard message	felamimail	pt-br	Descartar mensagem
-display message in new window	felamimail	pt-br	Exibir mensagem em uma nova janela
+display message in new window	felamimail	pt-br	Exibir mensagens em uma nova janela
 display messages in multiple windows	felamimail	pt-br	Exibir mensagens em múltiplas janelas
 display of html emails	felamimail	pt-br	Exibir emails em HTML
 display only when no plain text is available	felamimail	pt-br	Exibir somente quando não possuir versão em texto plano disponível
@@ -96,7 +96,7 @@ edit rule	felamimail	pt-br	Editar regra
 edit selected	felamimail	pt-br	Editar selecionado
 edit vacation settings	felamimail	pt-br	Editar configurações de férias
 email address	felamimail	pt-br	Endereço de E-Mail
-email forwarding address	felamimail	pt-br	E-Mail para encaminhamento
+email forwarding address	felamimail	pt-br	E-Mail de encaminhamento
 email signature	felamimail	pt-br	Assinatura de E-Mail
 empty trash	felamimail	pt-br	Lixeira  vazia
 enable	felamimail	pt-br	habilitado
@@ -112,7 +112,7 @@ error opening	felamimail	pt-br	Erro abrindo
 every	felamimail	pt-br	cada
 every %1 days	felamimail	pt-br	cada %1 dia(s)
 expunge	felamimail	pt-br	Excluir
-felamimail	common	pt-br	FelaMiMail
+felamimail	common	pt-br	Meu E-Mail
 file into	felamimail	pt-br	Arquivar em
 files	felamimail	pt-br	arquivos
 filter active	felamimail	pt-br	filtro ativo
@@ -164,12 +164,12 @@ imap server type	felamimail	pt-br	Tipo do Servidor IMAP
 imaps authentication	felamimail	pt-br	Autenticação IMAPS
 imaps encryption only	felamimail	pt-br	Somente encriptação IMAPS
 in	felamimail	pt-br	em
-index order	felamimail	pt-br	ïndices de classificação
+index order	felamimail	pt-br	Índices de classificação
 info	felamimail	pt-br	Informação
-invalid user name or password	felamimail	pt-br	usuário ou senha inválido
+invalid user name or password	felamimail	pt-br	Usuário e/ou senha inválido(s)
 javascript	felamimail	pt-br	JavaScript
 keep a copy of the message in your inbox	felamimail	pt-br	Manter uma cópia da mensagem em sua caixa de entrada
-keep local copy of email	felamimail	pt-br	Manter uma cópia local do e-mail
+keep local copy of email	felamimail	pt-br	manter uma cópia local do e-mail
 kilobytes	felamimail	pt-br	Kbytes
 language	felamimail	pt-br	Idioma
 last name	felamimail	pt-br	Último nome
@@ -185,12 +185,12 @@ mainmessage	felamimail	pt-br	mensagem principal
 manage emailfilter / vacation	preferences	pt-br	Gerenciar Filtros / Férias
 manage folders	common	pt-br	Gerenciar pastas
 manage sieve	common	pt-br	Gerenciar scripts Sieve
-mark as deleted	felamimail	pt-br	Marcar como apagada
-mark messages as	felamimail	pt-br	Marcar mensagens selecionadas como
-mark selected as flagged	felamimail	pt-br	Marcar selecionado como sinalizado
-mark selected as read	felamimail	pt-br	Marcar selecionado como lido
-mark selected as unflagged	felamimail	pt-br	Marcar selecionado como não sinalizado
-mark selected as unread	felamimail	pt-br	Marcar selecionado como não lido
+mark as deleted	felamimail	pt-br	Remover mensagem(ns) selecionada(s)
+mark messages as	felamimail	pt-br	Marcar mensagem(ns) selecionada(s) como
+mark selected as flagged	felamimail	pt-br	Marcar mensagem(ns) selecionada(s) como sinalizada(s)
+mark selected as read	felamimail	pt-br	Marcar mensagem(ns) selecionada(s) como lida(s)
+mark selected as unflagged	felamimail	pt-br	Marcar mensagem(ns) selecionada(s) como não sinalizada(s)
+mark selected as unread	felamimail	pt-br	Marcar mensagem(ns) selecionada(s) como não lida(s)
 match	felamimail	pt-br	Coincidente
 matches	felamimail	pt-br	coincidentes
 matches regexp	felamimail	pt-br	coincidentes com a expressão
@@ -240,8 +240,8 @@ previous message	felamimail	pt-br	mensagem anterior
 print it	felamimail	pt-br	imprima
 print this page	felamimail	pt-br	Imprimir esta página
 quicksearch	felamimail	pt-br	Pesquia rápida
-read	felamimail	pt-br	ler
-reading	felamimail	pt-br	leitura
+read	felamimail	pt-br	Lido
+reading	felamimail	pt-br	Lendo
 recent	felamimail	pt-br	recente
 refresh time in minutes	felamimail	pt-br	Tempo de atualização em minutos
 remove	felamimail	pt-br	Remover
@@ -250,7 +250,7 @@ rename	felamimail	pt-br	Renomear
 rename a folder	felamimail	pt-br	Renomear uma pasta
 rename folder	felamimail	pt-br	Renomear pasta
 renamed successfully!	felamimail	pt-br	Renomeado com sucesso!
-replied	felamimail	pt-br	respondida
+replied	felamimail	pt-br	Respondido
 reply	felamimail	pt-br	Responde
 reply all	felamimail	pt-br	Responde a todos
 reply to	felamimail	pt-br	Responde a
@@ -299,8 +299,8 @@ sun	felamimail	pt-br	Dom
 table of contents	felamimail	pt-br	Ïndice
 text only	felamimail	pt-br	Somente texto
 the connection to the imap server failed!!	felamimail	pt-br	A conexão com o servidor IMAP falhou!
-the mimeparser can not parse this message.	felamimail	pt-br	O tratador de mime não pode tratar esta mensagem.
-then	felamimail	pt-br	ENTÂO
+the mimeparser can not parse this message.	felamimail	pt-br	O analisador mime não verificou esta mensagem.
+then	felamimail	pt-br	ENTÃO
 this folder is empty	felamimail	pt-br	ESTA PASTA  ESTÁ  VAZIA
 this php has no imap support compiled in!!	felamimail	pt-br	Esse aplicativo PHP não foi compilado com suporte IMAP
 thu	felamimail	pt-br	Qui
@@ -347,4 +347,4 @@ with message "%1"	felamimail	pt-br	com mensagem "%1"
 wrap incoming text at	felamimail	pt-br	Quebrar a linha do texto de entrada em
 writing	felamimail	pt-br	escrevendo
 wrote	felamimail	pt-br	esceveu
-you must login first.	felamimail	pt-br	Você preciar conectar-se primeiro
+you must login first.	felamimail	pt-br	Você precisa conectar-se primeiro

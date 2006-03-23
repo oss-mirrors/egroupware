@@ -71,6 +71,7 @@ deleted folder successfully!	felamimail	es-es	Carpeta borrada correctamente
 disable	felamimail	es-es	Deshabilitar
 discard message	felamimail	es-es	descartar mensaje
 display message in new window	felamimail	es-es	Mostrar el mensaje en una ventana nueva
+display messages in multiple windows	felamimail	es-es	mostrar los mensajes en múltiples ventanas
 display of html emails	felamimail	es-es	Mostrar los mensajes HTML
 display only when no plain text is available	felamimail	es-es	Mostrar sólo cuando no hay texto simple disponible
 display preferences	felamimail	es-es	Preferencias de visualización
@@ -89,11 +90,13 @@ download this as a file	felamimail	es-es	Descargar esto como un fichero
 e-mail	felamimail	es-es	Correo electrónico
 e-mail address	felamimail	es-es	Dirección de correo electrónico
 e-mail folders	felamimail	es-es	Carpetas de correo electrónico
+edit email forwarding address	felamimail	es-es	editar la dirección de reenvío del correo
 edit filter	felamimail	es-es	Editar filtro
 edit rule	felamimail	es-es	Añadir regla
 edit selected	felamimail	es-es	Editar selección
 edit vacation settings	felamimail	es-es	editar configuración de vacaciones
 email address	felamimail	es-es	Dirección de correo electrónico
+email forwarding address	felamimail	es-es	dirección de reenvío del correo
 email signature	felamimail	es-es	Firma de correo
 empty trash	felamimail	es-es	Vaciar papelera
 enable	felamimail	es-es	Habilitar
@@ -166,6 +169,7 @@ info	felamimail	es-es	Información
 invalid user name or password	felamimail	es-es	El usuario o la contraseña no son válidos
 javascript	felamimail	es-es	JavaScript
 keep a copy of the message in your inbox	felamimail	es-es	guardar una copia del mensaje en la bandeja de entrada
+keep local copy of email	felamimail	es-es	guardar copia local del correo
 kilobytes	felamimail	es-es	kilobytes
 language	felamimail	es-es	Idioma
 last name	felamimail	es-es	Apellidos
@@ -295,6 +299,7 @@ sun	felamimail	es-es	Dom
 table of contents	felamimail	es-es	Tabla de contenidos
 text only	felamimail	es-es	Sólo texto
 the connection to the imap server failed!!	felamimail	es-es	¡Ha fallado la conexión con el servidor IMAP!
+the mimeparser can not parse this message.	felamimail	es-es	El intérprete no puede leer este mensaje
 then	felamimail	es-es	ENTONCES
 this folder is empty	felamimail	es-es	ESTA CARPETA ESTA VACIA
 this php has no imap support compiled in!!	felamimail	es-es	¡Esta instalación de PHP no tiene soporte IMAP!
