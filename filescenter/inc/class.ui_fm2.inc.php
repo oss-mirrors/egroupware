@@ -71,8 +71,6 @@
 
 		var $bo;
 
-		var $prefs;//array
-
 		# (array) Describe the buttons on the main menu 
 		var $menu_buttons;
 
