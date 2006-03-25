@@ -37,6 +37,7 @@ preferences	developer_tools	sk	Nastavenia
 preferences have been updated	developer_tools	sk	Nastavenia boli aktualizované
 project	developer_tools	sk	Projekt
 remove	developer_tools	sk	Odstráni»
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	sk	Odstránených %1 fráz z cieµového jazyka, nakoµko sa u¾ nevyskytujú ani v zdrojovom jazyku!
 returns to the application list, not saved changes get lost !!!	developer_tools	sk	Návrat do zoznamu aplikácií -neulo¾ené zmeny sa stratia!!!
 revert	developer_tools	sk	Naspä»
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sk	Ulo¾í pridané/zmenené preklady do vnútorného bufera, pre pou¾itie v ïal¹ích krokoch

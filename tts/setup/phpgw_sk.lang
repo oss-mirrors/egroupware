@@ -7,6 +7,10 @@ add new ticket	tts	sk	Prida» nový problém
 add ticket	tts	sk	Prida» problém
 additional notes	tts	sk	Ïal¹ie poznámky
 admin options	common	sk	Administrátorské nastavenia
+alert for critical prio setting	tts	sk	Nastavujete prioritu na Kritickú; prosím uistite sa, ¾e viete, èo to znamená pre adresáta problému, a nezabudnite mu bezodkladne zavola»!
+alert for emergency prio setting	tts	sk	Nastavujete prioritu na Havarijnú; prosím uistite sa, ¾e viete, èo to znamená pre adresáta problému, a nezabudnite mu bezodkladne zavola»!
+alert for high prio setting	tts	sk	Prosím zvá¾te, èi netreba zavola» adresátovi problému!
+assign tickets	tts	sk	Prideli»
 assign to	tts	sk	Prideli» (komu)
 assigned from	tts	sk	Pridelené (od)
 assigned to	tts	sk	Pridelené (komu)
@@ -15,6 +19,7 @@ billable hours changed	tts	sk	Úètovateµné hodiny zmenené
 billable hours rate	tts	sk	Hodinová sadzba
 billable rate	tts	sk	Sadzba
 billable rate changed	tts	sk	Sadzba zmenená
+can assign to	tts	sk	mô¾e prideµova» problémy
 can make full changes	tts	sk	Mô¾e robi» plné zmeny
 category changed	tts	sk	Kategória zmenená
 check here to generate the state's id automatically or enter a particular id below.	tts	sk	Za¹krtnite ak chcete, aby sa ID vytvorilo automaticky. Alebo zadajte ID ruène.
@@ -30,6 +35,7 @@ create new ticket	tts	sk	Vytvori» nový problém
 create new transition	tts	sk	Vytvori» nový prechod
 creates a new ticket, returns ticket_id	tts	sk	Vytvorí nový problém, vráti id problému
 creates a struct of tickets	tts	sk	Vytvorí ¹truktúru problémov
+critical	tts	sk	Kritická
 date opened	tts	sk	Dátum otvorenia
 default assign to	tts	sk	Zvyèajne prideµ (komu)
 default group	tts	sk	Zvyèajná skupina
@@ -38,9 +44,12 @@ delete the listed tickets.	tts	sk	Zmaza» zobrazené problémy.
 deleting the state	tts	sk	Ma¾em stav
 deleting the transition	tts	sk	Ma¾em transakciu
 detail	tts	sk	Detail
+due date	tts	sk	Koneèný termín
+due date changed	tts	sk	Koneèný termín sa zmenil
 duplicate	tts	sk	DUPLIKÁT
 edit the state	tts	sk	Úprava stavu
 edit the transition	tts	sk	Úprava prechodu
+emergency	tts	sk	Havarijná
 error: the subject of the ticket is not specified.	tts	sk	CHYBA: Nezadali ste predmet problému
 force	tts	sk	Vynúti»
 global categories	tts	sk	Globálne kategórie
@@ -56,6 +65,7 @@ keep the present state [%1].	tts	sk	Zachovaj súèasný stav [%1].
 latest note added	tts	sk	Posledná poznámka
 list of available tickets' states.	tts	sk	Zoznam dostupných stavov
 list of available tickets' transitions.	tts	sk	Zoznam dostupných prechodov
+low	tts	sk	Nízka
 missing description	tts	sk	Chýba popis!
 morework	tts	sk	NEDOKONÈENÝ
 needswork	tts	sk	NEDORIE©ENÝ
@@ -89,6 +99,7 @@ priority changed	tts	sk	Priorita zmenená
 put the preexistent ticket into the state %1.	tts	sk	Nastavi» stav problému na %1.
 re-assigned	tts	sk	Zmena priradenia
 re-opened	tts	sk	Znovu otvorený
+read tickets	tts	sk	Èíta» problémy
 read tickets within group only	tts	sk	Èíta» problémy iba v rámci skupiny
 refresh every (seconds)	tts	sk	Obnovi» ka¾dých (sekúnd)
 reopen	tts	sk	ZNOVUOTVORI«
@@ -110,7 +121,7 @@ subject changed	tts	sk	Predmet zmenený
 target state	tts	sk	Cieµový stav
 test	tts	sk	TEST
 the closed ticket requires more work. reopen it.	tts	sk	Je uzavretý, ale potrebuje dorie¹i». OTVORI«.
-the owner of the ticket was not able to confirm the issue.	tts	sk	Vlastník nebol schopný potvrdi» rie¹enie.
+the owner of the ticket was not able to confirm the issue.	tts	sk	Vlastník nepotvrdil platnos» problému; nebude sa rie¹i».
 the ticket has been accepted by the owner, who is about to work on it.	tts	sk	Hlásenie o probléme bolo preèítané. Vyhodnocuje sa ïal¹í postup.
 the ticket has been closed without resolution.	tts	sk	Problém bol uzavretý bez vyrie¹enia.
 the ticket has been reopened for further work.	tts	sk	Problém bol znovuotvorený pre dorie¹enie.
@@ -126,9 +137,11 @@ the ticket was existent before the petri net infrastructure was defined and shou
 the ticket was found a duplicate of another ticket.	tts	sk	Problém je duplikátom iného problému -u¾ bol predtým ohlásený.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	sk	Problémy na zozname sú v stave %1. Prosím, rozhodnite èo s nimi ïalej.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	sk	NEDORIE©ENÝ - vyrie¹enie problému sa nepotvrdilo.
+this state means an open ticket	tts	sk	V tomto stave je problém otvorený.
 ticket	tts	sk	Problém
 ticket #	tts	sk	Problém è.
 ticket has been updated	tts	sk	Problém bol aktualizovaný
+ticket is not accessible	tts	sk	Tento problém je neprístupný
 tickets found %1	tts	sk	Na¹lo sa %1 problémov
 tickets open %1	tts	sk	%1 otvorených problémov
 tickets total %1	tts	sk	Celkovo %1 problémov
@@ -160,6 +173,7 @@ view all tickets	tts	sk	Zobazi» v¹etky problémy
 view job detail	tts	sk	Zobrazi» detail práce
 view only my open tickets	tts	sk	Zobrazi» len moje otvorené problémy
 view only open tickets	tts	sk	Zobrazi» iba otvorené problémy
+wish	tts	sk	®elanie
 you can only close a ticket if it is assigned to you.	tts	sk	CHYBA! Problém mô¾ete uzavrie» iba ak vám je pridelený.
 you want to delete the state %1 and associated transitions. are you sure?	tts	sk	Sna¾íte sa zmaza» stav %1 a príslu¹né prechody. Naozaj to chcete?
 you want to delete the state %1. are you sure?	tts	sk	Sna¾íte sa zmaza» stav %1. Naozaj to chcete?

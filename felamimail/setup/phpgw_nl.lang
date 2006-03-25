@@ -71,6 +71,7 @@ deleted folder successfully!	felamimail	nl	Map met succes verwijderd!
 disable	felamimail	nl	Deactiveren
 discard message	felamimail	nl	bericht negeren
 display message in new window	felamimail	nl	Bericht in nieuw venster weergeven
+display messages in multiple windows	felamimail	nl	berichten in meerdere vensters weergeven
 display of html emails	felamimail	nl	Weergave van HTML-emails
 display only when no plain text is available	felamimail	nl	Alleen weergeven als platte tekst niet beschikbaar is.
 display preferences	felamimail	nl	Weergavevoorkeuren
@@ -89,11 +90,13 @@ download this as a file	felamimail	nl	Dit als een bestand downloaden
 e-mail	felamimail	nl	Email
 e-mail address	felamimail	nl	Emailadres
 e-mail folders	felamimail	nl	Emailmappen
+edit email forwarding address	felamimail	nl	wijzig email doorstuur adres
 edit filter	felamimail	nl	Filter wijzigen
 edit rule	felamimail	nl	regel bewerken
 edit selected	felamimail	nl	Het geselecteerde wijzigen
 edit vacation settings	felamimail	nl	afwezigheidsinstellingen bewerken
 email address	felamimail	nl	Emailadres
+email forwarding address	felamimail	nl	email doorstuur adres
 email signature	felamimail	nl	Emailondertekening
 empty trash	felamimail	nl	Prullenmand legen
 enable	felamimail	nl	inschakelen
@@ -166,6 +169,7 @@ info	felamimail	nl	Informatie
 invalid user name or password	felamimail	nl	Ongeldige gebruikersnaam of -wachtwoord
 javascript	felamimail	nl	JavaScript
 keep a copy of the message in your inbox	felamimail	nl	bewaar een kopie van het bericht in uw postvak in
+keep local copy of email	felamimail	nl	bewaar een lokale kopie van het bericht
 kilobytes	felamimail	nl	kilobytes
 language	felamimail	nl	Taal
 last name	felamimail	nl	Achternaam
@@ -295,6 +299,7 @@ sun	felamimail	nl	Zon
 table of contents	felamimail	nl	Inhoudsopgave
 text only	felamimail	nl	Alleen tekst
 the connection to the imap server failed!!	felamimail	nl	De vebinding met de IMAP-server is mislukt!!
+the mimeparser can not parse this message.	felamimail	nl	De mimeparsers kan dit bericht niet lezen.
 then	felamimail	nl	DAN
 this folder is empty	felamimail	nl	DEZE MAP IS LEEG
 this php has no imap support compiled in!!	felamimail	nl	In deze PHP versie is geen IMAP ondersteuning meegecompileerd!!

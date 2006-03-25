@@ -7,6 +7,9 @@ add new ticket	tts	nl	Nieuwe melding toevoegen
 add ticket	tts	nl	Melding toevoegen
 additional notes	tts	nl	Aanvullende opmerkingen
 admin options	common	nl	Beheeropties
+alert for critical prio setting	tts	nl	Je stelt de prioriteit in op kritiek. Overtuig jezelf ervan dat je weet wat dit betekent voor de ontvanger van deze melding en vergeet niet hem/haar onmiddellijk te bellen!
+alert for emergency prio setting	tts	nl	Je stelt de prioriteit in op noodgeval. Overtuig jezelf ervan dat je weet wat dit betekent voor de ontvanger van deze melding en vergeet niet hem/haar onmiddellijk te bellen!
+alert for high prio setting	tts	nl	Denk er s.v.p. aan de ontvanger van deze melding op te bellen!
 assign tickets	tts	nl	Toewijzen
 assign to	tts	nl	Toewijzen aan
 assigned from	tts	nl	Toegewezen door
@@ -16,6 +19,7 @@ billable hours changed	tts	nl	Te factureren uren gewijzigd
 billable hours rate	tts	nl	Te factureren uren tarief
 billable rate	tts	nl	Factuurtarief
 billable rate changed	tts	nl	Factuurtarief is gewijzigd
+can assign to	tts	nl	kan meldingen toewijzen
 can make full changes	tts	nl	Kan volledige wijzigingen maken
 category changed	tts	nl	Categorie is gewijzigd
 check here to generate the state's id automatically or enter a particular id below.	tts	nl	Markeer hier om de status ID automatisch te genereren of vul hieronder een specifieke ID in.
@@ -31,6 +35,7 @@ create new ticket	tts	nl	Een nieuwe melding creëren
 create new transition	tts	nl	Een nieuwe overgang creëren
 creates a new ticket, returns ticket_id	tts	nl	Creëert een nieuwe melding, geeft  'ticket_id' terug
 creates a struct of tickets	tts	nl	Creëert een structuur van meldingen
+critical	tts	nl	Kritiek
 date opened	tts	nl	Datum geopend
 default assign to	tts	nl	Standaard toegewezen aan
 default group	tts	nl	Standaard groep
@@ -95,6 +100,7 @@ put the preexistent ticket into the state %1.	tts	nl	Geef de reeds bestaande mel
 re-assigned	tts	nl	Opnieuw geopend
 re-opened	tts	nl	Heropend
 read tickets	tts	nl	Lezen
+read tickets within group only	tts	nl	Lees meldingen uitsluitend binnen de groep
 refresh every (seconds)	tts	nl	Ververs elke (seconden)
 reopen	tts	nl	HEROPENEN
 reopened	tts	nl	HEROPEND
@@ -131,11 +137,11 @@ the ticket was existent before the petri net infrastructure was defined and shou
 the ticket was found a duplicate of another ticket.	tts	nl	De melding blijkt een duplicaat te zijn van een andere melding.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	nl	De meldingen in de onderstaande lijst zijn in de status %1. Beslis a.u.b. wat met ze gedaan moet worden.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	nl	De validatie van de melding was niet succesvol. De melding vereist meer werk.
-this state means an open ticket	tts	en	Bij deze status staat de melding open.
+this state means an open ticket	tts	nl	Bij deze status staat de melding open.
 ticket	tts	nl	melding
 ticket #	tts	nl	melding #
 ticket has been updated	tts	nl	melding is bijgewerkt
-ticket is not accessable	tts	nl	Deze melding is niet toegankelijk
+ticket is not accessible	tts	nl	Deze melding is niet toegankelijk
 tickets found %1	tts	nl	Gevonden meldingen %1
 tickets open %1	tts	nl	Geopende meldingen %1
 tickets total %1	tts	nl	Totaal meldingen $1

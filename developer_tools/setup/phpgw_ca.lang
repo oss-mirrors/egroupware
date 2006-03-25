@@ -37,6 +37,7 @@ preferences	developer_tools	ca	Preferències
 preferences have been updated	developer_tools	ca	Preferències actualitzades
 project	developer_tools	ca	Projecte
 remove	developer_tools	ca	Treure
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	ca	Eliminades %1 frases de l'idioma origen, perquè no se troben en el llenguatge font!
 returns to the application list, not saved changes get lost !!!	developer_tools	ca	Torna a la llista d'aplicacions, els canvis no guardats es perdran !!!
 revert	developer_tools	ca	Revertir
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	ca	Desa les traduccions afegides/canviades a un magatzem intern, per al seu ús en posteriors accions
@@ -71,3 +72,4 @@ you must a version	developer_tools	ca	Heu de versionar
 you must enter a change	developer_tools	ca	Heu d'entrar un canvi
 you must select a project	developer_tools	ca	Heu de sel·leccionar un projecte
 you need to set your preferences for this app	developer_tools	ca	Heu d'establir les vostres preferències per a aquesta aplicació
+
