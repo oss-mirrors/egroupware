@@ -414,7 +414,7 @@
 
     $GLOBALS['phpgw']->template->set_var('lang_duedate', lang('Due Date'));
     $GLOBALS['phpgw']->template->set_var('value_duedate',
-	    ($ticket['duedate'] != '0000-00-00 00:00')?$ticket['duedate']:'');
+	    ($ticket['duedate'] != 'NULL')?$ticket['duedate']:'');
     
     $GLOBALS['phpgw']->template->set_var('lang_priority', lang('Priority'));
     $GLOBALS['phpgw']->template->set_var('value_priority', $ticket['priority'].' - '.lang(prioname($ticket['priority'])));
@@ -637,17 +637,18 @@
     // Sanitize Due Date
     $td = $ticket['duedate'];	    // save some typing
     if (strlen($td) == 10) {		# 2005-09-07
-	$td .= ' 18:00:00';
+	$td .= ' 23:59:00';
     } elseif (strlen($td) == 16) {	# 2005-09-07 12:13
 	$td .= ':00';
     } else {
-	$td = '0000-00-00 00:00:00';
+	$td = 'NULL';
     }
     if($old_duedate != $td)
     {
       $fields_updated = True;
       $send_mail = True;
-      $GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_due='$td'".
+      if ($td != 'NULL') $td = "'$td'";
+      $GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_due=$td".
 	      " where ticket_id='$ticket_id'",__LINE__,__FILE__);
       // we save the given DueDate into the history, on purpose
       $GLOBALS['phpgw']->historylog->add('D',$ticket_id,$ticket['duedate'],$old_duedate);

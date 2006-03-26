@@ -64,7 +64,10 @@
 
   if ($filter == 'viewmyopen')
   {
-    $filtermethod = "WHERE ticket_status='O' AND (ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."' OR ticket_assignedto=0)";
+    $filtermethod = "WHERE ticket_status='O' "
+    		  . "AND ((ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."' "
+		  . "OR ticket_assignedto=0) "
+		  . "OR  (ticket_owner='".$GLOBALS['phpgw_info']['user']['account_id']."')) ";
   }
 
   if ($filter == 'viewopen') 
@@ -93,16 +96,16 @@
 
   if (!preg_match('/^[a-z_]+$/i',$order) || !preg_match('/^(asc|desc)$/i',$sort))
   {
-    $sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
+    $sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due IS NOT NULL THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
   }
   else
   {
     if ($order == 'ticket_priority' && $sort == 'ASC') {
-	$sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
+	$sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due IS NOT NULL THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
     } elseif ($order == 'ticket_due') {
-	$sortmethod = "ORDER BY CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END $sort, ticket_priority ASC, ticket_id ASC";
+	$sortmethod = "ORDER BY CASE WHEN ticket_due IS NOT NULL THEN ticket_due ELSE '2100-01-01' END $sort, ticket_priority ASC, ticket_id ASC";
     } else {
-	$sortmethod = "ORDER BY $order $sort, ticket_priority ASC, CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
+	$sortmethod = "ORDER BY $order $sort, ticket_priority ASC, CASE WHEN ticket_due IS NOT NULL THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
     }
   }
   $db = clone($GLOBALS['phpgw']->db);

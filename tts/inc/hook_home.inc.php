@@ -28,11 +28,12 @@
 		$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
 		// this will be an user option
-		$filtermethod="where ticket_status='O' and ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."'";
-		$sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
+		$filtermethod="where ticket_status='O' and (ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."' "
+				. "or ticket_owner='".$GLOBALS['phpgw_info']['user']['account_id']."') ";
+		$sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due IS NOT NULL THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
 
 		$GLOBALS['phpgw']->db->query('select ticket_id, ticket_category, ticket_priority,'.
-			' ticket_assignedto, ticket_owner, ticket_subject, ticket_due'.
+			' ticket_assignedto, ticket_owner, ticket_subject, ticket_due ' .
 			' from phpgw_tts_tickets ' . $filtermethod . ' ' . $sortmethod,__LINE__,__FILE__);
 
 		$tmp_app_tpl = $GLOBALS['phpgw']->common->get_tpl_dir('tts');

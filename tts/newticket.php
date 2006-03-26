@@ -50,6 +50,17 @@
     $ticket_billable_hours = str_replace(',','.',$_POST['ticket_billable_hours']);
     $ticket_billable_rate = str_replace(',','.',$_POST['ticket_billable_rate']);
 
+	$td = $_POST['ticket_due'];
+	if (strlen($td) == 10) {		# 2005-09-07
+		$td .= ' 23:59:00';
+		$td = "'$td'";
+	} elseif (strlen($td) == 16) {	# 2005-09-07 12:13
+		$td .= ':00';
+		$td = "'$td'";
+	} else {
+		$td = 'NULL';
+	}
+
     $GLOBALS['phpgw']->db->query("insert into phpgw_tts_tickets (ticket_state,ticket_group,ticket_priority,ticket_owner,"
       . "ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,"
       . "ticket_billable_rate,ticket_status,ticket_details,ticket_due) values ('"
@@ -62,9 +73,9 @@
       . intval($_POST['ticket_category']) . "','"
       . $GLOBALS['phpgw']->db->db_addslashes($ticket_billable_hours) . "','"
       . $GLOBALS['phpgw']->db->db_addslashes($ticket_billable_rate) . "','O','"
-      . $GLOBALS['phpgw']->db->db_addslashes($_POST['ticket_details']) . "','"
-      . $GLOBALS['phpgw']->db->db_addslashes($_POST['ticket_due'])
-      . "')",__LINE__,__FILE__);
+      . $GLOBALS['phpgw']->db->db_addslashes($_POST['ticket_details']) . "',"
+      . $td
+      . ")",__LINE__,__FILE__);
 
     $ticket_id = $GLOBALS['phpgw']->db->get_last_insert_id('phpgw_tts_tickets','ticket_id');
 
