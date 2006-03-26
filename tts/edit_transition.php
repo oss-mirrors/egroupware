@@ -42,11 +42,12 @@
 
 		if (!$transition_id)
 		{
-			$GLOBALS['phpgw']->db->query("insert into phpgw_tts_transitions (transition_name,transition_description,transition_source_state,transition_target_state) values ('"
+			$GLOBALS['phpgw']->db->query("insert into phpgw_tts_transitions (transition_name,transition_description,transition_source_state,transition_target_state, transition_email) values ('"
 			. addslashes($transition['name']) . "','"
 			. addslashes($transition['description']) . "',"
 			. intval($transition['source_state']) . ", "
-			. intval($transition['target_state']). ")",__LINE__,__FILE__);
+			. intval($transition['target_state']). ", "
+			. "'" . (($transition['mail_transition']=='on')?'Y':'N') . "')",__LINE__,__FILE__);
 		}
 		else
 		{
@@ -54,7 +55,8 @@
 				. " set transition_name='". addslashes($transition['name']) . "', "
 				. " transition_description='". addslashes($transition['description']) . "', "
 				. " transition_source_state=". intval($transition['source_state']). ", "
-				. " transition_target_state=". intval($transition['target_state'])
+				. " transition_target_state=". intval($transition['target_state']). ", "
+				. " transition_email='". (($transition['mail_transition']=='on')?'Y':'N') ."' "
 				. " WHERE transition_id=".$transition_id,__LINE__,__FILE__);
 	
 		}
@@ -70,10 +72,14 @@
 		$GLOBALS['phpgw']->db->query("select * from phpgw_tts_transitions where transition_id='$transition_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
-		$transition['name']           = try_lang($GLOBALS['phpgw']->db->f('transition_name'));
-		$transition['source_state']   = try_lang($GLOBALS['phpgw']->db->f('transition_source_state'));
-		$transition['target_state']   = try_lang($GLOBALS['phpgw']->db->f('transition_target_state'));
-		$transition['description']    = try_lang($GLOBALS['phpgw']->db->f('transition_description'),$transition['target_state']);
+		$transition['name']            = try_lang($GLOBALS['phpgw']->db->f('transition_name'));
+		$transition['source_state']    = try_lang($GLOBALS['phpgw']->db->f('transition_source_state'));
+		$transition['target_state']    = try_lang($GLOBALS['phpgw']->db->f('transition_target_state'));
+		$transition['description']     = try_lang($GLOBALS['phpgw']->db->f('transition_description'),$transition['target_state']);
+		$transition['mail_transition'] = (($GLOBALS['phpgw']->db->f('transition_email')=='Y')?' CHECKED':'');
+
+//transition_email
+//		<td colspan="2"><input type="checkbox" name="transition[mail_transition]" {value_mail_transition}>{lang_mail_transition}</td>
 
 		$GLOBALS['phpgw']->template->set_file(array(
 			'edit_transition'   => 'edit_transition.tpl'
@@ -86,11 +92,14 @@
 		$GLOBALS['phpgw']->template->set_var('lang_transition_description', lang('Description'));
 		$GLOBALS['phpgw']->template->set_var('lang_source_state', lang('Source State'));
 		$GLOBALS['phpgw']->template->set_var('lang_target_state', lang('Target State'));
+		$GLOBALS['phpgw']->template->set_var('lang_mail_transition', lang('mail owner on transition'));
+
 		$GLOBALS['phpgw']->template->set_var('lang_save',lang('Save'));
 		$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 
 		$GLOBALS['phpgw']->template->set_var('value_name',$transition['name']);
 		$GLOBALS['phpgw']->template->set_var('value_description',$transition['description']);
+		$GLOBALS['phpgw']->template->set_var('value_mail_transition',$transition['mail_transition']);
 		$GLOBALS['phpgw']->template->set_var('options_source_state',listid_field('phpgw_tts_states','state_name','state_id',$transition['source_state']));
 		$GLOBALS['phpgw']->template->set_var('options_target_state',listid_field('phpgw_tts_states','state_name','state_id',$transition['target_state']));
 

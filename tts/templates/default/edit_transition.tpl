@@ -31,6 +31,10 @@
 		<td><select name="transition[target_state]">{options_target_state}</select></b></td>
 	</tr>
 
+	<tr class="row_on">
+		<td colspan="2"><input type="checkbox" name="transition[mail_transition]" {value_mail_transition}>{lang_mail_transition}</td>
+	</tr>
+
 	<tr height="40">
 		<td>
 			<input type="submit" name="save" value="{lang_save}"> &nbsp;
