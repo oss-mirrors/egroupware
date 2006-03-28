@@ -400,6 +400,10 @@ function comic_parser($baseurl, $fetch_url, $parse_expr, &$comic_url)
     /**************************************************************************
      * get the file to parse
      *************************************************************************/
+    if (!is_object($GLOBALS['phpgw']->network))
+    {
+		$GLOBALS['phpgw']->network =& CreateObject('phpgwapi.network');
+    }
     if ($file  = $GLOBALS['phpgw']->network->gethttpsocketfile($fetch_url))
     {
         $lines = count($file);
