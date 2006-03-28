@@ -8,11 +8,15 @@ bogus request	xmlrpc	zh-tw	Bogus 請求
 calendar test	xmlrpc	zh-tw	行事曆測試
 client / server test	xmlrpc	zh-tw	終端/伺服器測試
 configure using admin - peer servers	xmlrpc	zh-tw	使用管理者設定 - 個別伺服器
+custom request	xmlrpc	zh-tw	自訂請求
 egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	zh-tw	eGroupWare XML-RPC/SOAP 終端 <-> 伺服器對伺服器 <-> 伺服器測試（SOAP 等候中...）
+infolog test	xmlrpc	zh-tw	測試記事本
 introspection	xmlrpc	zh-tw	偵錯
 meerkat browser	xmlrpc	zh-tw	Meerkat 瀏覽器
+method	xmlrpc	zh-tw	方法
 methods	xmlrpc	zh-tw	方法
 note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	zh-tw	注意： xml_functions.php 預設會顯示 listapps 與 listusers
+scalar parameter	xmlrpc	zh-tw	數量參數
 select target server	xmlrpc	zh-tw	選擇目標伺服器
 server test	xmlrpc	zh-tw	伺服器測試
 server<->server	xmlrpc	zh-tw	伺服器對伺服器

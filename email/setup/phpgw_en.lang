@@ -367,11 +367,7 @@ view as html	email	en	View as HTML
 view formatted	email	en	View formatted
 view headers	email	en	View headers
 view unformatted	email	en	View unformatted
-warn_attachment_name_dangerous	email	en	warn_attachment_name_DANGEROUS
-warn_attachment_only_mail	email	en	warn_attachment_only_mail
 warn_b64_encoded_displayable	email	en	warn_b64_encoded_displayable
-warn_has_iframe_maybe_klez	email	en	warn_has_iframe_maybe_klez
-warn_script_tags	email	en	warn_script_tags
 warn_style_sheet	email	en	warn_style_sheet
 we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	en	We have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) Easy, point and click searching, b) Best suited for organizations with large central addressbooks with many categories. You can choose here which addressbook do you prefer.
 we have recently added this new addressbook so that users can choose to have a more complex addressbook that features<br>a) easy, point and click searching,<br>b) best suited for organizations with large central addressbooks with many categories.<br>you can choose here which addressbook do you prefer.	email	en	We have recently added this new addressbook so that users can choose to have a more complex addressbook that features<br>a) Easy, point and click searching,<br>b) Best suited for organizations with large central addressbooks with many categories.<br>You can choose here which addressbook do you prefer.

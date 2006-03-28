@@ -1,8 +1,10 @@
+(don't offer the possibility)	admin	pt-br	(não oferecer a possibilidade)
 <em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	pt-br	<em>Mostrar</em> os vários arquivos no documento RecentChanges e também em outras listas:
 add document to category	wiki	pt-br	Adicionar documento a uma categoria
 added	wiki	pt-br	Adicionado
 administration features are disabled for this wiki.	wiki	pt-br	Recursos administrativos estão desabilitados para este Wiki.
 admins	wiki	pt-br	administradores
+after how many days should old versions of a page be removed (0 for never)	admin	pt-br	Versões antigas de uma página deverão ser removidas após quantos dias? (0 para nunca)
 allow anonymous access	admin	pt-br	permitir acesso anônimo
 anonymous password	admin	pt-br	Senha para usuário Anônimo
 anonymous session type	admin	pt-br	Tipo de Sessão para Anônimo
@@ -54,9 +56,12 @@ locked	wiki	pt-br	Bloqueada
 name wiki home link	admin	pt-br	name wiki Página principal
 newer	wiki	pt-br	Mais recente
 no never	admin	pt-br	Nunca
+no only on request	admin	pt-br	Não apenas a pedido
 not set	wiki	pt-br	não selecionado
 older	wiki	pt-br	Mais antigo
 only if browser supports a richtext-editor	admin	pt-br	Apenas se o navegador suportar o editor richtext
+path of the upload directory (has to be writable by the webserver!)	admin	pt-br	Caminho para o diretório de carregamento (o servidor web deve ter permissões de escrita nele)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	pt-br	Carregar figura através de editor richtext (deixe em branco para desabilitar o carregamento)
 please contact the %1administrator%2 for assistance.	wiki	pt-br	Contate o %1Administrador%2 para ajuda.
 preview	wiki	pt-br	Visualizar
 preview of current version	wiki	pt-br	Visualizar versão atual
@@ -74,10 +79,10 @@ site configuration	wiki	pt-br	Configuração da página
 summary	wiki	pt-br	Sumário
 summary of change	wiki	pt-br	Sumário das alterações
 this page can not be edited.	wiki	pt-br	Esta página não pode ser editada.
-this page cannot be edited.	wiki	pt-br	Esta página não pode ser editada.
 twin pages	wiki	pt-br	Página idênticas
 unblock	wiki	pt-br	Desbloquear
 updates the preview	wiki	pt-br	Atualizar a visualização
+url of the upload directory	admin	pt-br	URL do diretório de carregamento
 users	wiki	pt-br	usuários
 view document history	wiki	pt-br	Ver histórico do documento
 visit %1 to set your user name	wiki	pt-br	Visite %1 para alterar seu nome de usuário
