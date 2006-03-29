@@ -1,579 +1,969 @@
 <?php
-	/**
-	 *@file 
+   /** 
+	* @file 
 	* eGroupWare - iCalendar VTODOS conversion, import and export for egw infolog
-	* application.
 	*
 	* http://www.egroupware.org                                                *
-	* @author Jan van Lieshout                                         *  
-	* $Id$
-	* based on class.boical.inc.php and on class.vcalinfolog.inc.php
-	* originals written by Lars Kneschke <lkneschke@egroupware.org>            *
+	* @author Jan van Lieshout   
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
 	*  Free Software Foundation; either version 2 of the License.              *
 	**************************************************************************/
 
-  /* JVL Todo V0.7:
-   * - add structure and API terminology from class.bovevents.inc.php:DONE
-   * - rewrite all vevent to vtodo strings:  DONE..
-   * - Maybe add a supportFields system as done in calendar.bovevents, to allow for
-   *   handling vtodos for various devices
-   * - if done document the supportFields method and show how it can be used 
-   * - find out how to do deletion based on imported VTODOS ? Can that be done?
-   * - check the usage and conversions of user time and server times
-   * - add compatibility API for the class infolog.vcalinfolog: DONE but UNTESTED
-   * - add ORGANIZER export: DONE (V0.51) removed (dont know map field)
-   * - add ORGANIZER import: ... maybe map t info_responsible
-   * - add CATEGORIES export: DONE (V0.52)
-   * - add CATEGORIE import: DONE (V0.7.01)
-   * - add "subtask" export: DONE (v0.52)
-   * - add "subtask" import: PARTLY
-   * - rewrite PRIORITY export: DONE (V0.52) 
-   * - rewrite PRIORITY import:DONE (V0.7.01)
-   * - repair datecreated: DONT know map field
-   * - repair date modified export: PARTLY done
-   * - repair startdate or enddate without time details: DONE (V0.7.02)
+
+  /** @page pageegwicalveventfeatures A small list of currently implemented VTODO handling in egwical
+   * <PRE>
+   * TODO:
+   * [-] check multiple ATTENDEE import
+   * [-] check multiple ATTENDEE export
+   * [?] add and check 'whole day event' support
+   * [?] check multiple CATEGORY export
+   * [?] have multiple CATEGORY export  depent on supportedFields.
+   * [?]todo: check multiple category import (do they get duplicated?
+   * [-]check recur EXPORT stuff: NOT IMPLEMENTED YET in infolog
+   * [? ]check recur IMPORT stuff: NOT IMPLEMENTED YET in infolog
+   * [? basic] check EXPORT of VALARMS   (only time, no action selectable)
+   * [? basic] check IMPORT of VALARMS     (only time, no action selectable)
+   * [?+/-] todo: add switch to control import of non egw known attendees
+   * [?] X-DELETED import
+   * [?] test the usage and conversions of user time and server times and timezones in
+   *     exported and imported ical files.
+   * </PRE>
+   * the todos on a row:
    */
 
+	require_once EGW_SERVER_ROOT.'/calendar/inc/class.bocalupdate.inc.php';
+    require_once EGW_SERVER_ROOT.'/egwical/inc/class.egwical_resourcehandler.inc.php';
 
-  //     require_once EGW_SERVER_ROOT.'/infolog/inc/class.boinfolog.inc.php';
-     require_once EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php';
-//     require_once EGW_SERVER_ROOT.'/icalsrv/inc/class.egwical.inc.php';
 
     /**
+	 * Concrete subclass resourcehandler for iCal vtodos import and export with a egroupware
+	 * boinfolog infolog resource.
 	 *
-	 * iCal vtodos import and export via Horde iCalendar classes
-	 * @note the routines in this package should be used OO only so that de constructor
-	 *        can initialize the data common to the import and export routines
-	 * @note this package provides compatibilty routines for class infolog.vcalinfolog
-	 *        this can e.g. be used by making infolog.vcalinfolog a simple extension of
-	 *        infolog.bovtodos
+	 * @todo Here should come some text about the workings of this class
+	 * (esp. the uid2id mechanisme the handling of ACL failures and....)
 	 *
-	 * @todo move the compatibility functions for vcalinfolog completely to the compat class.
-	 *  There is no need to have them here anymore.
-	 * @todo rewrite bovtodos to use a ical2egw and supportedFields system
-	 * @todo <b>IMPORTANT</b> rewrite bovtodos to handle uid_matching analogous to bovevents
- 	 *
 	 * @package egwical
-	 * @author Jan van Lieshout <jvl (at)xs4all.nl> This version.
-	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts of reused code)
-	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts of reused code)
-	 * @version 0.9.08utfin utf decoding activated on import
-	 * @since 0.9.07bf1 fix of faulty superfluous ampersand for passed by ref args
-	 * @since 0.9.07 temporarily switch of vtodo import error returns
-	 * @version 0.9.05 First for use with new WURH egwical class
-	 * @license http://opensource.org/licenses/gpl-license.php GPL -
-	 *  GNU General Public License
-	  */
+	 *
+	 * @todo add Lars his VERSION=1.0 handling of events in here.
+	 *
+	 * @author Jan van Lieshout <jvl-AT-xs4all.nl> (This version. new api rewrite,
+	 * refactoring, and extension).
+	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
+	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
+	 * reused here)
+	 * @version 0.9.30  first version for napi3
 
-    class boinfolog_vtodos extends egwical
-	{
-
+	 * license @url  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+	 */
+    class boinfolog_vtodos extends egwical_resourcehandler
+    {
+	  
 	  /**
-	   * @var boinfolog
-	   * The egw infolog object that will be used to transport events from and to
-	   * This is set by setRsc()
+	   * @private
+	   * @var boolean
+	   * Switch to print extra debugging about imported and exported events to the httpd errorlog
+	   * stream.
 	   */
-	  var $myinf = null;
+	  var $tsdebug = true;
+
+	  /** The Bound Egw (Infolog) Resource  that we handle
+	   * @private
+	   * @var boinfolog $rsc
+	   * Registry for the egw resource object (infolog,..) that will be used
+	   * to transport ical elements from and to: The socalled <i>
+	   * Bound Resource</i>
+	   * This can be set by the constructor or later by set_rsc().
+	   */
+	  var $rsc = null;
 
 
-	  /**
-	   * Describe the provided work capabilities of the class.
-	   * @return string The description as entries for the @ref $reg_workers registry
-	   * table.
+
+	  /** conversion of infologtask status to vtodo status
+	   * @private
+	   * @var array $status_task2vtodo 
 	   */
-	  function provides_work()
-	  {
-		return 
-		  array('boinfolog' => array('workerclass' => 'boinfolog_vtodos',
-									 'workerobj'   =>  $null,
-									 'icalsup'   => array('VTODO')),
-				'vcalinfolog' => array('workerclass' => 'boinfolog_vtodos',
-									   'workerobj'   =>  $null,
-									   'icalsup'   => array('VTODO'))
-				);
+	  var $status_task2vtodo =
+		array(
+			  'offer'       => 'NEEDS-ACTION',
+			  'not-started' => 'NEEDS-ACTION',
+			  'ongoing'     => 'IN-PROCESS',
+			  'done'        => 'COMPLETED',
+			  'cancelled'   => 'CANCELLED',
+			  'billed'      => 'DONE',
+			  'call'        => 'NEEDS-ACTION',
+			  'will-call'   => 'IN-PROCESS',
+			  );
+
+	  /** conversion of vtodo status to infolog status
+	   * @private
+	   * @var array 
+	   */
+	  var $status_vtodo2task =
+		array(
+			  'NEEDS-ACTION' => 'not-started',
+			  'IN-PROCESS'   => 'ongoing',
+			  'COMPLETED'    => 'done',
+			  'CANCELLED'    => 'cancelled',
+			  );
 		
-	  }
 
-
-	  /*
-	   * Our Constructor, fills the basic class members
-	   * and set the description of our worker capabilities.
+	  /** mapping from iCalendar VTODO fields to egw infolog task fields
+	   * @private
+	   * @var array $vtodo2taskFields
+	   * An array containing roughly the mapping from iCalendar
+	   * to egw fields. Set by constructor.
+	   * example entry (<i>rn</i> stands for "Resourced_Name"):
+	   * <PRE>
+			'SUMMARY'	=> array('rn' => 'title'),
+  	    </PRE>
+	   * Here <i>rn</i> stands for "Resourced  Name", to indicate the name of the related
+	   * related field in the bound egw resource
+	   * @todo integrate this with the  egwical base $ical2egw conversion table
 	   */
-	  function boinfolog_vtodos() {
+	  var $vtodo2taskFields = array();
 
-		// call superclass constructor by hand
-		//		boinfolog::boinfolog();
 
-		$this->TASKMAGIC = $GLOBALS['egw_info']['server']['install_id']
-		  ? $GLOBALS['egw_info']['server']['install_id']
-		  : 'local'; 
+	  /** Deliver the implemented vtodo to task mapping as provided by this class.
+	   *
+	   * @private
+	   *
+	   * @todo find out the correct conversion between info_owner, info_responsible,
+	   *       and ORGANIZER  and ATTENDEES for tasks
+	   * @todo add support for multiple2single category conversion et vice versa
+	   *
+	   * @todo find out if infolog supports yet ALARMS, if so do conversion
+	   * @todo add routines for resources conversions
+	   * @todo add routines for url conversions
+	   *
+	   * @note when a field is filled with a <code>array('rn' => xxx) </code> this
+	   * means that for conversion the value from xxx can simply be copied to the new field.
+	   * For other values the conversion is more complex and needs to be handled by 
+	   * specific functions.
+	   *
+	   * Produce the array of vtodo to task field mappings that this class implements.
+	   * These are stored on instantiation in the variable $vtodo2taskFields
+	   * @return array The provided vtodo to task fields mapping.
+	   */
+	  function _provided_vtodo2taskFields()
+	  {
+		return
+		  array(
+				// optional once only 
+				'CLASS'		=> array('rn' => 'info_access'),
+				'COMPLETED' => array('rn' =>  'info_datecompleted'),
+				'CREATED'   => array('fn_TSforAction(modify)'),
+				'DESCRIPTION'	=>
+				               array('rn' => 'info_des'),
+				'DTSTAMP'   => array('fn_time()'),
+				'DTSTART'	=> array('rn' => 'info_startdate'),
+				'GEO'       => array(''),
+				'LAST-MODIFIED'   =>
+				               array('rn' => 'info_datemodified'),
+				'LOCATION'	=> array('rn' => 'info_location'),
+				'ORGANIZER'	=> array('rn' => 'info_owner'),
+				'PERCENT-COMPLETE' => array('rn' =>  'info_percent'),
+ 				'PRIORITY'  => array('rn' => 'info_priority'),
+ 	 			'RRULE'     => array('fn_rns' => array('recur_type','recur_interval',
+ 													'recur_data','recur_enddate')),
+				'SEQUENCE'  => array('fn_rns' => array('info_id_parent')),
+				'STATUS'    => array('fn_rns' => array('info_status'
+													)),
+				'SUMMARY'	=> array('rn' => 'info_subject'),
+				'UID'		=> array('fn_rn' => ''),
+//				'URL'       => array('fn_rns' => 'links?'),
 
-		// $this->setSupportedFields(); //not implemented yet
-		return true;
+				// optional once, but exclusive alternatives
+				'DUE'	    => array('fn_rn' => 'info_enddate'),
+				'DURATION'  => array('fn_rns' => array('info_startdate','info_enddate')),
+
+				// optional multiple
+//				'ATTACH'    => array('fn_rns' => array('?')),
+				'ATTENDEE'	=> array('fn_rn' => 'info_responsible'),
+				'CATEGORIES'=> array('fn_rn' => 'category'),
+				'COMMENT'   => array('fn_rn'),
+				'CONTACT'   => array('fn_rns'=> array('info_from','info-addr')),
+// 				'EXDATE'    => array('fn_rn' => 'recur_exception'),
+// 				'??_EXRULE' => array(),
+// 				'??_RSTATUS' => array(),
+// 				'??_RDATE' => array(),
+// 				'RRULE'     => array(),
+// 				'RELATED-TO'=> array('rn' => 'info_id_parent'),
+				'RESOURCES' => array('fn_rn' => ''),
+ 				'TRANSP'    => array('rn' => 'non_blocking'),
+// 				'VALARM'     => array('fn_cn' => 'alarms'),
+// 				'VALARM/TRIGGER'     => array('fn_crn' => 'alarms/time')
+				);
 	  }
 
 
-	  /** 
-	   * Set the egw resource  that this worker will handle.
-	   * This worker is only capable of handling  boinfolog  objects, so it should
-	   * be of that class. This method is mostly called indirectly from a egwical compound
-	   * addRsc() call. But you can call it also directly (if you know what your doing ..)
-	   * @return boolean false on error, true  else
+
+	  /**
+	   * Our Constructor, if given it sets the egw resource $egwrsc is set as
+	   * so called <i>bound egw resource</i>. And $prodid, the product id of the client that
+	   * will use or produce ical data is set to determine which fields to use in coming
+	   * import and exportd conversions between vcalendar and egw data.
+	   * @param egwobj $egwrsc Egroupware data resource object that
+	   * will be used to transport (i.e. import and export) the
+	   * vcalendar elements to and from. This can also later be set
+	   * using the set_rsc() method.
+	   * @param ProductType $devicetype The type identification of the device that is used to
+	   * the transport the ical data to and from. This is used to set the supportedFields already.
+	   * @note These can also later be set using the setSupportedFields() method. 
+	   */
+	  function boinfolog_vtodos($egwrsc = null, $devicetype='all')
+	  {
+		// call our abstract superclass constructor
+		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid);
+		//@todo rewrite supportedFields setting to distribute it over the egwical
+		// baseclass and the subclasses cleverly
+		$this->vtodo2taskFields = $this->_provided_vtodo2taskFields();
+		// add reference to the base table too
+		$this->ical2egwComponents['VTODO'] = $this->vtodo2taskFields;
+		// default initialization
+		$this->setSupportedFields($devicetype);
+		$this->set_rsc($egwrsc);
+
+		return true;		
+	  }
+
+
+	  /** Set the egw infolog resource  that this worker will handle.  
+	   * 
+	   * This worker is only capable of handling  boinfolog task objects, so it should
+	   * be of that class. The $egw_rsc is registered in the $rsc variable and the supported
+	   * ical element is set to be 'vtodo'. This is registered in $rsc_vtypes.
+	   *
+	   * @param egwobj $egw_rsc the resource object of type boinfolog that will be
+	   * used to transport the ical data to and from.
+	   * @return boolean false on error, true if the $egw_rsc was indeed a correct  resource
+	   * of the supported type (boinfolog).
 	  */
-	  function setRsc($egw_rsc)
+	  function set_rsc($egw_rsc)
 	  {
 		if(!is_a($egw_rsc,'boinfolog'))
 		  return false;
-		$this->myinf = $egw_rsc;
+		$this->rsc = $egw_rsc;
+		$this->rsc_vtypes[]= 'vtodo';
 		return true;
 	  }
 
+	  // -------- below only conversion and import/export stuff -----
 
-	  // --- conversion and import code --
 
-	  /**
-	   * @private
-	   * @var $TASKMAGIC
-	   * Magic unique number used for de/encoding our uids.
+	  /** Export infolog task from bound boinfolog resource as VTODO
 	   *
-	   * This string that contains global unique magic number that is
-	   *  unique for our current database installed etc. It is used to recognize
-	   *  earlier exported VTODO or VEVENT UID fields as referring to their eGW counterparts.
-	   */
-	  var $TASKMAGIC='dummy';
-
-
-
-
-	  // Some helper functions first
-
-
-	  /**
-	   * generate a unique id, with the todo id encoded into it, which can be
-	   * used for later synchronisation.
+	   * The eGW task in $task is exported to iCalendar VTODO (of type Horde_iCalendar_vtodo)
+	   * Note that only the set of supported Fields, as indicated by the $supportedFields
+	   * member variable, are exported into the VTODO.
 	   *
-	   * @param $todo_id string|int eGW id of the content
-	   * @use  $TASKMAGIC  string that holds our unique ID
-	   * @return false|string on error: false
-	   *                      on success the global unique id
+	   * The uid field of the generated VTODO will be filled according to the setting of
+	   * the $uid_mapping_export parameter. Either with the task id encoded (ID2UID) or with the
+	   * task uid field copied (UID2UID) or with a completey new generated string (NEWUID).
+	   * .
+	   * For more info see @ref secuidmapping 
+	   *
+	   * The mapping is inspired on rfc 2445 -sec 4.6.2 
+	   *  @bug created field is not fetched oke from db.
+	   * @param TaskId $task id of the eGW task that will be exported
+	   * @param int $uid_mapping_export switch to set the export mode for the uid fields.
+	   * Default UMM_ID2UID is used.
+	   * @return VTODO|false  the iCalendar VTODO object representing the data from the egw
+	   * input task. On error: false
+	   * @ref $supportedFields determines which fields in the VTODO will be filled
 	   */
-	  function _id2guid($todo_id)
+ 	  function export_vtodo(&$task, $uid_mapping_export=ID2UID)
 	  {
-		if (empty($todo_id))
-		  return false;
 
-		return 'infolog_task'.'-'.$todo_id.'-'. $this->TASKMAGIC;
-	  }
+		// decode the mode
+		$euid_export = ($uid_mapping_export == ID2UID) ? false : true; 
+		// auxiliary horde_iCalendar object
+		$hIcal = $this->hi; 
 
-
-
-	  /**
-	   * get the local content id from a global UID
-	   *
-	   * @param string $globalUid the global UID
-	   * @return false|int on error: false
-	   *                   on success: local egw todo id
-	   */
-	  function _guid2id($VTodoUID)
-	  {
-		//		error_log('_guid2id: trying to recover id from' . $VTodoUID);
-		if (!preg_match('/^infolog_task-(\d+)-' .
-						$this->TASKMAGIC . '$/',$VTodoUID,$matches))
-		  return false;
-
-		//		error_log("_guid2id: found (" . $matches[1] . ")");		
-		return $matches[1];
-	  }
-
-
-
-	  /**
-	   * export the  eGW todos in $todos to iCalendar VTODOS and add these to
-	   * the Horde_iCalendar object &$hIcal
-	   * Note: that because eGW does not store uid fields for tasks in its db we
-	   *       are in general not able to recoginize VTODOS by their uid-field.
-	   *      Because of this it is only possible to have a VTODO overwrite an internal
-	   *      eGW todo (task) when this VTODO was in an earlier fase build as export of an 
-	   *      internal eGW todo. In other words to later on change your imported VTODO,
-	   *      you first have export it and in the client make your changes on this exemplar.
-	   *
-	   * @param &$hIcal      Horde_iCalendar   object to wich the produced VTodos are added
-	   * @param $todos      array     with either id s (tids) for a eGW  todoData structs
-	   *                     or an array of such todoData structs, that will be exported
-	   * @param boolean $euid_export if true export the uid field (Note: Currently not available!)
-	   * else generate a uid from with the task id encoded (Default setting) 
-	   * @return $ok/$vcnt boolean/int   on error: false / on success: nof vtodos exported 
-	   * @use members supportedFields(), _id2guid()
-	   */
-	  function exportTodosOntoIcal(&$hIcal, $todos, $euid_export=false)
-	  {
-		//NOTE: $euid_export has currently no effect
-#		  error_log("ical_export_add_Todos here, for " . count($todos) . "todos");
-
-		$todo = array();  // container for each todo to be exported
-		$tid = null;      // id of the todo to be exported
-		$vexpcnt =0; // number of vtodos exported
-		$options = array('CHARSET' => 'UTF-8','ENCODING' => 'QUOTED-PRINTABLE');
-		//		$options = array('CHARSET' => 'UTF-8',
-						 //						 'ENCODING' => 'QUOTED-PRINTABLE'
-		//						 );
-
-		if (!is_array($todos)) $todos = array($todos);
-		  
-		foreach($todos as $todo) {
-		  // some hocuspocus to handle the polymorphy of the $todos arg
-		  if (!is_array($todo)   
-			  && !($todo = $this->myinf->read($todo))){
-			
-			return false;	// no permission to read $tid
-		  }
-		  $tid = $todo['info_id'];
-		  // oke, now sure $todo is a todoData array and $tid its info_id field..
-		  //_debug_array($todo);
-
-		  // do this for the vtodo fields later in addAttributeOntoVevent not here		  
-		  //		  $todo = $GLOBALS['egw']->translation->
-		  //			convert($todo,$GLOBALS['egw']->translation->charset(),'UTF-8');
-
-#		  error_log('todo to export=' . print_r($todo,true));
-
-		  //someday: $this->newComponent() ???
-		  $vtodo = Horde_iCalendar::newComponent('VTODO',$hIcal);
-
-		  $vGUID = $this->_id2guid($tid);
-
-		  //		  if (!$euid_export)
-		  // append Non Recoverable so _guid2id() wont recognize it later
-		  //			$vGUID .= 'NR';  
-		  $vtodo->setAttribute('UID',$vGUID);
-		  // for subtasks set the parent
-		  // egw2vtodo: info_id_parent => pid  -> RELATED-TO:parent_uid
-		  if ($parid = $todo['info_id_parent'])
-			$vtodo->setAttribute('RELATED-TO', $this->_id2guid($parid));
-
-		  $this->addAttributeOntoVevent($vtodo,	'SUMMARY', $todo['info_subject'] );
-		  $this->addAttributeOntoVevent($vtodo,	'DESCRIPTION', $todo['info_des'] );
-		  if($todo['info_startdate'])
-			$vtodo->setAttribute('DTSTART', $todo['info_startdate']);
-		  if($todo['info_enddate'])
-			$vtodo->setAttribute('DUE', $todo['info_enddate']);
-		  $vtodo->setAttribute('DTSTAMP',time());
-
-		  $lastmodDate = $todo['info_datemodified'];
-		  $vtodo->setAttribute('LAST-MODIFIED', $lastmodDate );
-
-		  if ($createDate = $this->get_TSdbAdd($tid,'infolog')){
-			$vtodo->setAttribute( 'CREATED', $createDate);
+		$veExportFields =& $this->supportedFields;
+		
+		  if (!is_array($task)){
+		  // task was passed as an task id
+			$tid = $task;
+			if( !$task = $this->rsc->read($tid)){
+			  // server = timestamp in server-time(!)
+			  return false;	// no permission to read $task_id
+			}
+			// task was passed as an array of fields
 		  } else {
-			$vtodo->setAttribute( 'CREATED', $lastmodDate);
+			$tid = $task['info_id'];
+			// now read it again to get all fields (including our alarms)
+			//			$task = $this->rsc->read($tid);
 		  }
 
-		  // egw2VTOD: owner -> ORGANIZER field 
-		  if ($tfrom_id = $todo['info_owner']){
-			//			$mailtoOrganizer = $GLOBALS['egw']->accounts->id2name($tfrom_id,'account_email');
+#		  error_log('>>>>>>>>>>>' .'task to export=' . print_r($task,true));
+#		  error_log('task sum:'. $task['info_subject'] . ' start:' .$task['info_startdate']);
 
-			$this->addAttributeOntoVevent($vtodo,
-										  'ORGANIZER',
-										  $this->mki_v_CAL_ADDRESS($tfrom_id),
-										  $this->mki_p_CN($tfrom_id)
-										  );
-		  }
-
-		  $vtodo->setAttribute('CLASS',
-							   ($todo['info_access'] == 'public')?'PUBLIC':'PRIVATE');
-		  // CATEGORIES, value= all category names from info_cat field  comma-separated list
-		  // n.b. dont mind catid ==0 (this is none categorie, I think)
-		  if ($catids = $todo['info_cat']){ 
-			$catnamescstr = $this->cats_ids2idnamescstr(explode(',',$catids));
-			$this->addAttributeOntoVevent($vtodo, 'CATEGORIES',  $catnamescstr);
-		  }
-
-
-		  // egw2vtodo status trafo:
-		  //    done -> COMPLETE:lastmoddate, PERCENT-COMPLETE:100, STATUS:COMPLETED 
-		  //    ongoing -> STATUS: IN-PROCESS
-		  //    offer ->  STATUS: NEEDS-ACTION, PERCENT-COMPLETE:0
-		  switch ($todo['info_status']){
-		  case 'done':
-			$vtodo->setAttribute('COMPLETED',$lastmodDate); // for ko35, lastmod?
-			$vtodo->setAttribute('PERCENT-COMPLETE','100');
-			$vtodo->setAttribute('STATUS','COMPLETED');
+		  // now create a UID value
+		  switch ($uid_mapping_export) {
+		  case UMM_UID2UID :
+			error_log('boinfolog_vtodos.export_vtodo(): UMM_UID2UID NOT SUPPORTED YET: ERROR');
+			return false;
+			// put egw uid into VTODO, to allow client to sync with his uids
+			$taskGUID = $task['uid'];
 			break;
-		  case 'ongoing':
-			$vtodo->setAttribute('STATUS','IN-PROCESS');
-			break;
-		  case 'offer':
-			$vtodo->setAttribute('STATUS','NEEDS-ACTION');
-#			$vtodo->setAttribute('PERCENT-COMPLETE',"0");
-			break;
+		  case UMM_NEWUID :
+			// this one should not be decodable by mke_guid2id()
+			$taskGUID = $this->ecu->mki_v_guid($tid,'newidcal');
+		  case UMM_ID2UID :
+			// fall through
 		  default:
-			// check for percentages
-			if (ereg('([0-9]+)%',$todo['info_status'],$matches)){
-			  $vtodo->setAttribute('PERCENT-COMPLETE',$matches[1]);
-			  $vtodo->setAttribute('STATUS','IN-PROCESS');
-			}else{
-			  $vtodo->setAttribute('STATUS','NEEDS-ACTION');			
+			$taskGUID = $this->ecu->mki_v_guid($tid,'infolog');
+		  }
+
+		  $vtodo = Horde_iCalendar::newComponent('VTODO',$this->hi);
+		  $parameters = $attributes = array();
+		  // to important to let supportedFields decide on this
+		  $attributes['UID'] = $taskGUID;				
+
+		  foreach($veExportFields as $veFieldName) {
+
+			  switch($veFieldName) {
+			  case 'UID':
+				// already set
+				break;
+
+ 			  case 'ATTENDEE':
+				foreach((array)$task['info_responsible'] as $pid ) {
+				  if (!is_numeric($pid))
+					continue;
+				  $propval  = $this->ecu->mki_v_CAL_ADDRESS($pid);
+				  $propparams = $this->ecu->mki_p_CN($pid);
+				  // NOTE: we need to add it already: multiple ATTENDEE fields may be occur 
+				  $this->ecu->updi_c_addAttribute($vtodo,'ATTENDEE',$propval,$propparams);
+				}
+				break;
+
+			  case 'CLASS':
+				$attributes['CLASS'] = ($task['info_access'] == 'public') ? 'PUBLIC' : 'PRIVATE';
+				break;
+
+			  case 'CONTACT':
+				if($task['info_from'] || $task['info_addr'])
+				  $attributes['CONTACT'] = $task['info_from'] . '\,' . $task['info_addr'];
+				break;
+
+				// according to rfc, the organizer of the grouptask
+			  case 'ORGANIZER':	
+				if ($task['info_owner']) {
+				  $attributes['ORGANIZER']  = $this->ecu->mki_v_CAL_ADDRESS($task['info_owner']);
+				  $parameters['ORGANIZER']  = $this->ecu->mki_p_CN($task['info_owner']);
+				}
+				break;
+
+				// Note; wholeday detection may change the DUE value later! 
+			  case 'DUE':
+				if($task['info_enddate'])
+				  $attributes[$veFieldName]	= $this->ecu->st_dst_patch($task['info_enddate']);
+				break;
+
+			  case 'COMPLETED':
+				if($task['info_datecompleted'])
+				  $attributes[$veFieldName]	= $this->ecu->st_dst_patch($task['info_datecompleted']);
+				break;
+
+			  case 'PRIORITY':
+				if (is_numeric($eprio = $task['priority']) && ($eprio >0) )
+				  $attributes['PRIORITY'] =  $this->ecu->mki_v_prio($eprio);
+				break;
+
+				// according to rfc this is not a vtodo field!
+			  case 'TRANSP':
+				$attributes['TRANSP'] = $task['non_blocking'] ? 'TRANSPARENT' : 'OPAQUE';
+				break;
+
+			  case 'CATEGORIES':
+				if ($catids = $task['info_cat']){ 
+				  $catnamescstr = $this->ecu->cats_ids2idnamescstr(explode(',',$catids));
+				  $attributes['CATEGORIES'] = $catnamescstr;
+				}
+				break;
+
+				// for subtasks set the parent
+				// egw2vtodo: info_id_parent => pid  -> RELATED-TO:parent_uid
+			  case 'RELATED-TO':
+				if ($parid = $task['info_id_parent'])
+				  $attributes['RELATED-TO'] = $this->ecu->mki_v_guid($parid,'infolog');
+				break;
+
+			  case 'STATUS':	// note: custom field in task
+				$attributes['STATUS'] = ( $vtodo_stat = $this->status_task2vtodo[$task['status']])
+				  ? $vtodo_stat 
+				  : 'NEEDS-ACTION';
+				if($vtodo_stat == 'COMPLETED'){
+				  $attributes['PERCENT-COMPLETE'] ='100';
+				}
+// 				elseif (ereg('([0-9]+)%',$task['info_status'],$matches)){
+// 				  $attributes['PERCENT-COMPLETE'] = $matches[1];
+// 				  $attributes['STATUS'] ='IN-PROCESS';
+// 				}
+				break;
+
+				// use daylight savings time patch, for some dates
+			  case 'DTSTART':
+				if ($task['info_startdate']){
+				  $attributes[$veFieldName]	= $this->ecu->st_dst_patch($task['info_startdate']);
+				}
+				break;
+
+			  case 'CREATED':
+				$created = $this->ecu->get_TSdbAdd($task['info_id'],'infolog_task');
+				$attributes[$veFieldName] = ($created) ? $created : $task['info_datemodified'];
+//				  $attributes[$veFieldName]	= $this->ecu->st_dst_patch($task['info_startdate']);
+				break;
+
+			  case 'LAST-MODIFIED':
+//				$lastdbmod = $this->ecu->get_TSdbMod($task['info_id'],'infolog');
+//				$attributes[$veFieldName] = $task['info_datemodified'];
+				$attributes[$veFieldName]	= $this->ecu->st_dst_patch($task['info_datemodified']);
+				break;
+
+			  case 'DTSTAMP':
+				$attributes[$veFieldName] = time();
+				break;
+
+				// unimplemented by maybe defined conversions
+			  case 'RRULE':
+			  case 'EXDATE':
+			  case 'VALARM':
+				break;
+
+			  default:
+				// only use default for level1 VTODO fields
+				if(strpos($veFieldName, '/') !== false)
+				  break;
+				// use first related field only for the simple conversion
+				$efield = $this->vtodo2taskFields[$veFieldName]['rn'];
+				if ($task[$efield]) {	// dont write empty fields
+					$attributes[$veFieldName]	= $task[$efield];
+				}
+				break;
+			  }
+
+		  } //end foreach
+
+		  // wholeday detector (DUE =23:59:59 && DTSTART = 00:00)
+		  // if detected the times will be exported in VALUE=DATE format
+		  if(((date('H:i:s',$task['info_enddate']) == '23:59:59') ||
+			  (date('H:i:s',$task['info_enddate']) == '00:00:00')) 
+			 && (date('H:i',$task['info_startdate'] == '00:00'))){
+
+			// only replace if supported!
+			if($attributes['DTSTART']){
+			  $attributes['DTSTART'] =
+				$this->hi->_parseDate(date('Ymd',$task['info_startdate']));
+			  $parameters['DTSTART']['VALUE'] = 'DATE';
+			}
+			if($attributes['DUE']){
+			  $attributes['DUE'] =
+				$this->hi->_parseDate(date('Ymd',$task['info_enddate']+1));
+			  $parameters['DUE']['VALUE'] = 'DATE';
+			}
+			//	error_log('WHOLE DAY DETECTED');
+		  }
+
+		  //error_log('attributes={'  . print_r($attributes,true));
+
+		  // add all collected attributes (not yet added) to the vtodo
+		  foreach($attributes as $aname => $avalue) {
+			$this->ecu->updi_c_addAttribute($vtodo,
+											$aname,
+											$avalue,
+											$parameters[$aname]);
+		  }
+		
+		return $vtodo; //return VTODOObj
+	  }
+
+
+
+	  /** Wrapper around export_vtodo() with simplified parameters.
+	   *
+	   * @note the settings of $this->uid_mapping_export is respected
+	   * as to chose the method of UID field generation for the
+	   * VTODO. See @ref secuidmapping in the egwical_resourcehandler
+	   * documentation.
+	   * @param TaskId $tid id of an task in the bound
+	   * boinfolog resource that is to be exported.
+	   * @return VTODO the exported egw task converted to a VTODO
+	   * object.  on error False.
+	   */
+	  function export_velt(&$tid)
+	  {
+		return $this->export_vtodo($tid, $this->uid_mapping_export);
+	  }
+
+
+	  /**
+	   * Import a VTODO as a task into  the Egw infolog 
+	   *
+	   * The ical VTODO component is converted to an eGW task for the
+	   * infolog resource in $rsc and then imported into this eGW infolog resource.
+	   *
+	   * Depending on the value of $uid_mapping_import, the conversion
+	   * will either:
+	   * - generate either an eGW task with a completely new id
+	   * (<code>UMM_NEWID</code>) and fill that with the data. Or
+	   * - search for an existing Egw task based on a id search, with an id search key
+	   *   decoded from the VTODO uid field (<code>UMM_UID2ID</code>) to update with the data. Or
+	   * - use the value in the VTODO uid field a search key for a uid search
+	   *  amongst the Egw tasks (<code>UMM_UID2UID</code>) to use as task to update. Or finally
+	   * - update a specific existing Egw task defined by the $cal_id parameter, with the data
+	   *  (UMM_FIXEDID). 
+	   *
+	   * Default the mode <code>UMM_UID2ID</code> is used. 	 For more info see @ref secuidmapping 
+	   *
+	   * @ref $supportedFields    determines the VTODOS that will be used for import
+	   *
+	   * @todo implement ATTENDEE and ORGANIZER import for VTODOS
+	   *
+	   * @param  VTODO $vtodo   VTODO object (horde_iCalendar_vtodo) 
+	   * @param int $uid_mapping_import uid mapping import mode used. see @ref secuidmapping Default
+	   *  UMM_UID2ID.
+	   * @param boolean $reimport_missing_tasks enable the import of previously exported tasks
+	   * that are now gone in egw (probably deleted by someone else) Default false.
+	   * @param  int $cal_id the id of the egw task that is to be updated when UMM_FIXEDID mode is
+	   * is set for $uid_mapping_import. If set as -1 the uid_mapping_import will switch to
+	   * UMM_NEWID mode, if set as 0 the uid_mapping_import will switch to the default
+	   * UMM_UID2ID mode.
+	   * @return TaskId|Errorstring the id of the imported(or updated) egw infolog task.
+	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
+	   */
+	  function import_vtodo(&$vtodo, $uid_mapping_import, $reimport_missing_tasks=false, $cal_id=0)
+	  {
+		// auxiliary horde_iCalendar object
+		$hIcal = $this->hi; 
+
+		$veImportFields =& $this->supportedFields;
+
+//		error_log('veImportFields::'. print_r($veImportFields,true));
+
+		$tidOk   = false;	// returning false, if file contains no components
+		$user_id = $GLOBALS['egw_info']['user']['account_id'];
+
+		  // HANDLE ONLY VTODOS HERE
+		if(!is_a($vtodo, 'Horde_iCalendar_vtodo')){
+		  error_log('import_vtodo called for non vtodo type');
+		  return false;
+		}
+
+		$task = array('info_subject' => 'Untitled');
+		$task['info_responsible'] = array();
+#		$alarms = array();
+		unset($owner_id);
+		$evduration = false;
+		$nonegw_participants = array();
+		
+		// handle UID field always first according to uid_matching algorithm
+		$cur_tid      = false;  // current egw task id
+		$cur_owner_id = false;  // current egw task owner id
+		$cur_task    = false;  // and the whole array of possibly correspond egw task
+		// import action description (just for fun and debug) : 
+		// NEW|NEW-NONUID|NEW-FOR-MISSING
+		// DEL-MISSING|DEL-READ|DEL-READ-UID|
+		// UPD-MISSING|UPD-READ|UPD-READ-UID 
+		$imp_action    = 'NEW-NONUID';    
+
+		$vuid = null;
+		if($uidval = $vtodo->getAttribute('UID')){
+		  // ad hoc hack: egw hates slashes in a uid so we replace these anyhow with -
+		  $vuid = strtr($uidval,'/','-');
+		  // useless because atm task dont support a uid field!!!!
+		  $task['uid'] = $vuid;
+		}
+
+		switch ($uid_mapping_import) {
+		  
+		case UMM_UID2ID :
+		  // try to decode cur_tid from uid
+		  if(!$vuid){
+			$imp_action = 'NEW';
+			break;
+		  }
+		  if (!($cur_tid = $this->ecu->mke_guid2id($vuid,'infolog'))){
+			$imp_action = 'NEW';
+			break;
+		  }			
+		  // good cur_tid, so fall through
+		case UMM_FIXEDID :
+		  if ( $uid_mapping_import == UMM_FIXEDID){
+			if($cal_id > 0) {
+			  $cur_tid = $cal_id;
+			} else {
+			  return VELT_IMPORT_STATUS_NOELT;
 			}
 		  }
-
-		  if (is_numeric($eprio = $todo['info_priority']) && ($eprio >0) )
-			$vtodo->setAttribute('PRIORITY',
-								 $this->mki_v_prio($eprio) );
-
-#		  $vtodo->setAttribute('TRANSP','OPAQUE');
-			
-		  $hIcal->addComponent($vtodo);
-		  $vexpcnt += 1;
-		}
-
-		return $vexpcnt; //return nof vtodos exported
-	  }
-
-
-
-	  /* @note PART OF COMPATIBILITY API for INFOLOG.VCALINFOLOG
-	   * @note UNTESTED
-	   * Export a single eGW task as a VTODO string
-	   *
-	   * @param $_taskID int/string id of the eGW task to be exported
-	   * @param $_version string   version the produced iCalendar content should get
-	   * @return false|string    on error | content of the resulting VTODO iCal element
-	   */
-	  function exportVTODO($_taskID, $_version)
-	  {
-		$hIcal = &new Horde_iCalendar;
-		$hIcal->setAttribute('VERSION',$_version);
-		$hIcal->setAttribute('METHOD','PUBLISH');
-			
-		if(! $tcnt = $this->exportTodosOntoIcal($hIcal, array($_taskID), true))
-		  return false;
-
-		return $hIcal->exportvCalendar();
-	  }
-
-
-
-	   /**
-	   * Convert the ical VTODOS components that are contained in de $hIcal Horde_iCalendar
-	   * to eGW todos and import these into the eGW calendar.
-	   * Depending on the value of $importMode, the conversion will generate either eGW
-	   * todos with completely new id s (DUPLICATE mode) or try to recover an egw id from
-	   * the  VTODO;UID field (so called OVERWRITE mode). Note that because eGW currently
-	   * does not store todo uid field info in its database, such recovering is only
-	   * possible for previously exported todos.
-	   *
-	   * @param  &$hIcal  Horde_iCalendar   object with ical VTODO objects 
-	   * @param  $importMode string         toggle for duplicate (ICAL_IMODE_DUPLICATE)
-	   *                                    or overwrite (ICAL_IMODE_OVERWRITE) import mode
-	   * @return $false|$timpcnt    on error: false | on success: nof imported elms
-	   * @use .supportedFields()       to steer the VTODOS to eGW todos conversion
-	   * @use members  _guid2id()
-	   */
-	  function importVTodosFromIcal(&$hIcal, $importMode='DUPLICATE')
-	  {
-
-		$overwritemode = stristr($importMode,'overwrite') ? true : false;
-#		$ftid = $fixed_taskId;
-		$timpcnt = 0;    // nof todos imported
-		$tidOk = true;	 // return true, if hIcal contains no vtodo components
-
-		foreach($hIcal->getComponents() as $component) {
-		  // ($ftid < 0) => recover id (overwritemode) or use no id
-		  // ($ftid > 0) => use this value to set the id (compatibility mode) 
-
-		  if(is_a($component, 'Horde_iCalendar_vtodo')){
-			$tidOk = $this->_importVTodoIcalComponent($component, $overwritemode, -1);
-			if (!$tidOk){
-			  error_log('infolog.bovtodos.importVTodosFromIcal(): '
-						. ' ERROR importing VTODO ');
-#			  break;  // stop at first error
-			  continue;
-			} 
-
-
-			$timpcnt += 1; // nof imported ok vtodos
-		  }
-		}
-		return (!$tidOk) ? false : $timpcnt;
-	  }
-
-
-	  /* convert a single vtodo horde icalendar component to a eGW todo and write it to
-	   * the infolog system.
-	   *
-	   * @note this routine should better not be exported
-	   * @param &$hIcalComponent Horde_iCalendar_vtodo element that contains the VTODO
-	   *                          that is to be converted and imported
-	   * @param $overwriteMode boolean  generate a new eGW todo (when false) or allow 
-	   *               overwrite of an existing one (when true)
-	   * @param $newtask_id   int/string  if >0 : the id of the eGW todo that must be
-	   *       overwritten. if <0 : generation of new task or recover taskId from UID field
-	   * @return false | int    on error: false | on success: the id of the eGW todo
-	   *                that was produced/changed
-	   */
-	  function _importVTodoIcalComponent(&$hIcalComponent, $overwriteMode, $newtask_id)
-	  {
-		$ftid = $newtask_id;
-		$todo = array(); //container for eGW todo
-		$user_id = $this->owner; // we logged in?
-
-		if(!is_a($hIcalComponent, 'Horde_iCalendar_vtodo'))
-		  return false;
-
-		if($ftid > 0) {
-		  // just go for a change of the content of the eGW task with id=$ftid
-		  $todo['info_id'] = $ftid;
-		  // we will now ignore a UID field later in this VTodo
-		} 
-
-		// now process all the fields found
-		foreach($hIcalComponent->_attributes as $attributes) {
-#         error_log( $attributes['name'].' - '.$attributes['value']);
-		  $attributes['value'] =
-		  	$GLOBALS['egw']->translation->convert($attributes['value'],'UTF-8');
-		  switch($attributes['name']){
-		  case 'UID':
-			if ($ftid > 0)  // fixed id mode so we got id from $newtask_id
-			  break;
-			$vguid = $attributes['value'];
-			if( $overwriteMode && $tid = $this->_guid2id($vguid)){
-			  // an old id was recovered from the UID field, we will use it
-			  $todo['info_id'] = $tid;
-			  #error_log('import: using existing id:'.$tid);
-			} // else we leave the info_id empty so automatically a new todo gets created
+		  if ($cur_task = $this->rsc->read($cur_tid)){
+			// oke we can read the old task
+			$cur_owner_id = $cur_task['info_owner'];
+			$imp_action  = 'UPD-READ';
+			$task['info_id'] = $cur_tid;
 			break;
-			// rfc s4.8.1.3.egw2vtodo: public|private|confidential 
+		  }
+		  //  a pity couldnot read the corresponding cur_task,
+		  if($reimport_missing_tasks){
+			// maybe it was deleted in egw already..
+			$imp_action = 'UPD-MISSING'; 
+			unset($task['info_id']); // import as a new one
+			$imp_action = 'NEW';
+			break;
+		  } 
+		  // no reimport allowed and task for id not found
+		  return VELT_IMPORT_STATUS_NOELT;
+		  break;
+		  
+		case UMM_UID2UID :
+		  if ((!empty($vuid)) && ($uidmatch_task = $this->rsc->read($vuid)))	{
+			// go do uidmatching, search for a egw task with the vuid as uid field 
+			// is this uid-search really implemented in bocal ??
+			$cur_tid      = $uidmatch_task['info_id'];
+			$cur_owner_id = $uidmatch_task['info_owner'];
+			$imp_action = 'UPD-READ-UID';
+			$task['info_id'] = $cur_tid;
+		  }else{
+			// uidmatch failed, insert as new
+			$imp_action = 'NEW';
+		  }
+		  break;
+		  
+		case UMM_NEWID :
+		  // fall through
+		default:
+		  error_log('boinfolog_vtodos.import_vtodo(): unknow value:' .
+					$uid_mapping_import . ' for uid_mapping_import given.');
+		  $imp_action = 'NEW';
+		}
+
+		// lets see what other supported veImportFields we can get from the vtodo
+		foreach($vtodo->_attributes as $attr) {
+		  $attrval = $GLOBALS['egw']->translation->convert($attr['value'],'UTF-8');
+
+		  // SKIP  UNSUPPORTED VTODO FIELDS
+		  if(!in_array($attr['name'],$veImportFields))
+			continue;
+//			error_log('cnv field:' . $attr['name'] . ' val:' . $attrval);
+
+		  switch($attr['name']) {
+
 		  case 'CLASS':
-			$todo['info_access'] = strtolower($attributes['value']);
-			break;
-#		  case 'ORGANIZER':
-#			$todo['info_from'] = $attributes['value'];
-#           may be put it in info_responsible field ?
-#			// full name + mailto see bovevents on a method to handle this
+			$task['info_access']	= (strtolower($attrval) == 'public')
+			  ? 'public' : 'private';
 			break;
 
-		  case 'DESCRIPTION':
-			$todo['info_des'] = $attributes['value'];
-			break;
 		  case 'DUE':
-			$todo['info_enddate'] = $this->mke_DDT2utime($attributes['value']);
-			break;
-		  case 'DTSTART':
-			$todo['info_startdate']	= $this->mke_DDT2utime($attributes['value']);
-			break;
-		  case 'PRIORITY':
-			$todo['info_priority'] = $this->mke_prio($attributes['value']);
-			break;
-		  // rfc s4.8.1.11 egw2vtodo status trafo: (now use it backwards)
-		  //    done -> COMPLETE:lastmoddate, PERCENT-COMPLETE:100, STATUS:COMPLETED 
-		  //    ongoing -> STATUS: IN-PROCESS
-		  //    offer ->  STATUS: NEEDS-ACTION, PERCENT-COMPLETE:0
-		  case 'STATUS':
-			switch (strtolower($attributes['value'])){
-			case 'completed':
-			  $todo['info_status'] = 'done';
-			  break;
-			case 'cancelled':
-			  $todo['info_status'] = 'done';
-			  break;
-			case 'in-process':
-			  $todo['info_status'] = 'ongoing';
-			   break;
-			default:
-			  // probably == 'needs-action'
-			  $todo['info_status'] = 'offer';
-			}
-			break;
-			// date and  time when completed
-		  case 'COMPLETED':
-			  $todo['info_status'] = 'done';
-			  break;
-		  case 'PERCENT-COMPLETE':
-			$pcnt = (int) $attributes['value'];
-			if ($pcnt < 1) {
-			  $todo['info_status'] = 'offer';
-			}elseif($pcnt > 99) {
-			  $todo['info_status'] = 'done';
-			}else{
-			  $todo['info_status'] = $pcnt . '%'; // better should do rounded to 10s
-			}
-			break;
-		  case 'SUMMARY':
-			$todo['info_subject'] = $attributes['value'];
-			break;
-		  case 'RELATED-TO':
-			$todo['info_id_parent'] = $this->_guid2id($attributes['value']);
-			break;
-			// unfortunately infolog can  handle only one cat atm
-		  case 'CATEGORIES':
-			$catnames = explode(',',$attributes['value']);
-			$catidcstr = $this->cats_names2idscstr($catnames,$user_id,'infolog');
-			$todo['info_cat'] = $catidcstr;
-			//			$todo['info_cat'] .= (!empty($todo['info_cat']))
-			//			  ? ',' . $catidcstr 	: $catidcstr;
+			// will be reviewed after all fields are collected
+			$task['info_enddate']		= $this->ecu->mke_DDT2utime($attrval);
 			break;
 
-		  case 'LAST-MODIFIED':
-			$todo['info_datemodified'] = $attributes['value'];
+			// note: DURATION and DTEND are mutually exclusive
+		  case 'DURATION':
+			// duration after taskstart in secs
+			$evduration = $attrval;
+			break;
+
+		  case 'DTSTART':
+			// will be reviewed after all fields are collected
+			$task['info_startdate']		= $this->ecu->mke_DDT2utime($attrval);
+			break;
+
+// 			case 'TRANSP':
+// 			  $task['non_blocking'] = $attrval == 'TRANSPARENT';
+// 			  break;
+
+		  case 'PRIORITY':
+			$task['info_priority'] = $this->ecu->mke_prio($attrval);
+			break;
+
+		  case 'CATEGORIES':
+			$catnames = explode(',',$attrval);
+			$catidcstr = $this->ecu->cats_names2idscstr($catnames,$user_id,'infolog');
+			$task['info_cat'] .= (!empty($task['info_cat']))
+			  ? ',' . $catidcstr 	: $catidcstr;
+			break;
+
+			// map ATTENDEE to info_responsible list
+			// when we encounter an new valid cal_address but not yet in egw db
+			// should we import it?
+		  case 'ATTENDEE':
+			if ($pid = $this->ecu->mke_CAL_ADDRESS2pid($attrval)){
+			  $task['info_responsible'][] = $pid;
+			  // egw unknown participant, add to nonegw_info_responsible list
+			} else {
+			  $nonegw_info_responsible[] =
+				$this->ecu->mke_ATTENDEE2cneml($attrval,$attr['params']);
+			}
+			break;
+
+		  case 'LAST-MODIFIED':	// will be written direct to the task
+			$task['info_datemodified'] = $attrval;
+			break;
+
+		  case 'RELATED-TO':	// will be written direct to the task
+			$task['info_id_parent'] = $this->ecu->mke_guid2id($attrval,'infolog');
+			break;
+
+		  case 'STATUS':	// note: custom field in task
+			$task['status'] = ($task_stat = $this->status_vtodo2task[$attrval])
+			  ? $task_stat : 'offer';
+			break;
+
+		  case 'COMPLETED':
+			$task['info_datecompleted'] = $this->ecu->mke_DDT2utime($attrval);
+			break;
+
+			// collection of fields that we dont support on input
+		  case 'RRULE':       // not yet implemented in egw
+		  case 'EXDATE':      // not yet implemented in egw
+		  case 'CREATED':     // in egw database, not in task field
+		  case 'ORGANIZER':   // dont influence the ownership in egw by this
 			break;
 
 		  default:
-//			error_log('VTODO field:' .$attributes['name'] .':'
-//					  . $attributes['value'] . 'HAS NO CONVERSION YET');
+			// only use default for level1 VTODO fields
+			if(strpos($attr['name'], '/') !== false)
+			  break;
+			// use first related field only for the simple conversion
+			$efield = $this->vtodo2taskFields[$attr['name']]['rn'];
+			if($efield){
+			  $task[$efield] = $attrval;
+			  break;
+			}
+
+			error_log('VTODO field:' .$attr['name'] .':'
+					  . $attrval . 'HAS NO CONVERSION YET');
 		  }
-		}
-		//		error_log('todo=' . print_r($todo,true));
-		
-		if($todo['info_subject'] == 'X-DELETE' && $tid){
-		  // delete the todo (secret HACK, donot use...)
-		  $tidOk = $this->myinf->delete($tid);
-		  //   error_log(' deleting id:'. $tid .' VTODO UID:' . $vguid . ' result:' . $tidOk);
 
-		}else{
-		  $tidOk = $this->myinf->write($todo,true,false);
-		  //   error_log('ok import id:'. $tidOk .' VTODO UID:' . $vguid);
+		} // end of fields loop
+	
+		  // now all fields are gathered do some checking and combinations
+		  
+		  // build endtime from duration if dtend was not set
+		  if (!isset($task['info_enddate']) && ($evduration !== false)){
+			$task['info_enddate']
+			  = $this->ecu->mke_DDT2utime($task['info_startdate']) + $evduration;
+		  } 
+		  
+#		  // a trick for whole day handling or ...??
+#		  if(date('H:i:s',$task['end']) == '00:00:00')
+#			$task['info_enddate']--;
 
-		}
-		if(!$tidOk)
-		  error_log('error import/deleting id:'. $tidOk .' VTODO UID:' . $vguid);
-		return $tidOk;
+		  // handle no status found
+		  if(!$task['info_status'])
+			$task['info_status'] = 'offer';
 
+		  // AD HOC solution: add nonegw info_responsible to the description
+		  // should be controlable by class member switch
+		  if (count($nonegw_info_responsible) > 0)
+			$this->ecu->upde_nonegwParticipants2description($task['info_desc'],
+														   $nonegw_info_responsible);
+
+		  // handle fixed id call (for boical compatibility)
+		  // @todo test boical compatibility (esp. with $cal_id>0 case) 
+		  if($cal_id > 0)	{
+			$task['info_id'] = $cal_id;
+		  }
+
+
+
+# error_log('<< ok <<<<' . 'task read for import=' . print_r($task,true));
+
+		  // -- finally we come to the import into egw ---
+
+		  if (($task['info_subject'] == 'X-DELETE')
+			  || ($task['info_subject'] == '_DELETED_')){
+
+			// -------- DELETION --------------------
+			//			error_log('delete task=' . print_r($task,true));
+			$imp_action = 'DEL-' . $imp_action;
+			if(! $cur_tid) {
+			  $this->_errorlog_evupd('task', 'ERROR: ' . $imp_action,
+									 $user_id, $task, false);
+			  return VELT_IMPORT_STATUS_ERROR;
+
+			} else {
+			  // task to delete is found readable
+			  if($tidOk = $this->rsc->delete($cur_tid)){
+				// DELETE OK
+				return VELT_IMPORT_STATUS_DELOK;
+
+			  } elseif ($user_id != $cur_owner_id){
+				// DELETE BAD  but it wasnt ours anyway so skip it
+				if ($this->evdebug)
+				  $this->_errorlog_evupd('task',
+										 'SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
+										 $user_id, $task, $cur_task);
+				return VELT_IMPORT_STATUS_NOACC;
+
+			  } else {
+				// DELETE BAD and it was ours
+				$this->_errorlog_evupd('task',
+									   'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
+									   $user_id, $task, $cur_task);
+				return VELT_IMPORT_STATUS_ERROR;
+			  }
+
+			}
+
+			  // -------- UPDATE --------------------
+		  } elseif ($tidOk = $this->rsc->write($task, true, false)){
+
+ 			  // ******** for serious debugging only.. **************
+// 			  if ($this->tsdebug){
+// 				$this->_errorlog_evupd('task', 'OK: ' . $imp_action, 
+// 									   $user_id, $task, $cur_task);
+// 				error_log('task readback dump:' . print_r($updatedTask,true));
+// 			  }
+ 			  // ******** eof serious debugging only.. **************
+
+			return $tidOk;
+
+			//  ---UPDATE BAD --------
+		  } elseif ($user_id != $cur_owner_id){
+			// UPDATE BAD, but other ones task, so skip
+			  if ($this->evdebug)
+				$this->_errorlog_evupd('task',
+									   'SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
+									   $user_id, $task, $cur_task);
+			  return VELT_IMPORT_STATUS_NOACC;
+				
+		  } else {
+			// UPDATE BAD and we own it or it was a new one
+			$this->_errorlog_evupd('task',
+								   'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
+								   $user_id, $task, $cur_task);
+			return VELT_IMPORT_STATUS_ERROR;
+
+		  }
+		  error_log('CODING ERROR: SHOULDNOT GET HERE');
+
+		  return $false;
 	  }
 
 
 
-
-
-	  /* @note PART OF COMPATIBILITY API for INFOLOG.VCALINFOLOG
-	   * @note UNTESTED
-	   * Import a single  iCalendar VTODO string as eGW task(aka: todo)
+	  /** Wrapper around import_vtodo() with simplified set of call parameters.
+	   * @note this function only imports Vtodo elements!
 	   *
-	   * @param $_vcalData string   content of an VTODO iCalender element
-	   * @param $_taskID int/string id of the eGW task to be overwritten
-	   *                          when < 0 a new task will get produced    
-	   * @return false | int    on error: false | on success: the id of the eGW todo
-	   *                that was produced/changed
+	   * The value of the member variable $reimport_missing_elements is used to possibly allow to
+	   * reimport of gone tasks in the infolog.
+	   * 
+	   * The value of the member variable $uid_mapping_import is used to control the set
+	   * of iCalendar fields that are imported.
+	   * @param  VTODO $velt    VTODO object (horde_iCalendar_vtodo) 
+	   * @param  int $tid  id for a selected task to be updated by the info from $velt
+	   *     If left out or set to -1 then uid_mapping_import is switched back to its standard
+	   *  setting as found in the member variable $uid_mapping_import.
+	   *
+	   * @return TaskId|errorstring the id of the imported(or updated) ege infolog task.
+	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
 	   */
-	  function importVTODO(&$_vcalData, $_taskID=-1)
+	  function import_velt(&$velt,$tid=-1)
 	  {
-		$hIcal = &new Horde_iCalendar;
-		if(!$hIcal->parsevCalendar($_vcalData))
-		  return FALSE;
-
-		$components = $hIcal->getComponents();
-		if(count($components) < 1)
-		  return false;
-
-		return $this->_importVTodoIcalComponent($components[0],
-												true, $_taskID);
+		$uid_mapping_import_sel = ($tid > 0) ? UMM_FIXEDID : $this->uid_mapping_import;
+		  
+		return $this->import_vtodo($velt,
+								   $uid_mapping_import_sel,
+								   $this->reimport_missing_elements,
+								   $tid);
 	  }
 
 
-		
- 	}
+
+
+
+	  /**
+	   * Set the list of ical fields that are supported during the next imports and exports.
+	   *
+	   * The list of iCal fields that should be converted during the following imports and exports
+	   * of VTODOS is set. This is done according to a given ProductType as mostly set in the
+	   * $deviceType field of the egwical_resourcehandler. See there for a further description.
+	   *
+	   * In a small lookup table the set of currently supported fields is searched for and then
+	   * and then these are set accordingly in the class member @ref $supportedFields.
+	   *
+	   * @note to find the ProductType for a device (like a iCalendar, browser, a syncml client etc.)
+	   * the egwical_resoucehandler class provides some handy methods, like:
+	   *  icalendarProdId2devicetype(), httpUserAgent2deviceType() and product2devicetype()
+	   *
+	   * @param ProductType $devicetype a string indicating the
+	   * communicating client his type of device
+	   * @return void
+	   */
+	  function setSupportedFields($devicetype = 'all')
+	  {
+		// parse ProducType label into productManufacturer and productName
+		list($_productManufacturer, $_productName) = explode('/',$devicetype);
+
+		$defaultFields =  array('CLASS','SUMMARY','DESCRIPTION','LOCATION','DTSTART',
+								'DSTAMP','CREATED','LAST-MODIFIED',
+								'DUE','STATUS','COMPLETE','PRIORITY','PERCENT-COMPLETE');
+		// not: 'TRANSP','ATTENDEE','ORGANIZER','CATEGORIES','URL','CONTACT'
+		  
+		switch(strtolower($_productManufacturer))	{
+		case 'nexthaus corporation':
+		  switch(strtolower($_productName)){
+		  default:
+			// info_responsible disabled until working correctly
+			// $this->supportedFields = array_merge($defaultFields,array('ATTENDEE'));
+			$this->supportedFields = $defaultFields;
+			break;
+		  }
+		  break;
+			
+		  // multisync does not provide anymore information then the manufacturer
+		  // we suppose multisync with evolution
+		case 'the multisync project':
+		  switch(strtolower($_productName)) {
+		  case 'd750i':
+		  default:
+			$this->supportedFields = $defaultFields;
+			break;
+		  }
+		  break;
+		case 'sonyericsson':
+		  switch(strtolower($_productName)){
+		  default:
+			$this->supportedFields = $defaultFields;
+			break;
+		  }
+		  break;
+			
+		case 'synthesis ag':
+		  switch(strtolower($_productName)){
+		  default:
+			$this->supportedFields = $defaultFields;
+			break;
+		  }
+		  break;
+		  // used outside of SyncML, eg. by the infolog itself ==> all possible fields
+		case 'file':	
+		case 'all':
+		  $this->supportedFields =
+			array_merge($defaultFields,
+						array('ORGANIZER','CATEGORIES','COMPLETED','ATTENDEE','CONTACT',
+							  'RELATED-TO'));
+		  // error_log('OKE setsupportedFields (all)to:'. print_r($this->supportedFields,true));
+		  break;
+			
+		  // the fallback for SyncML
+		default:
+		  error_log("boinfolog_vtodos.setSupportedFields - warning: Devicetype not found:"
+					. " $devicetype");
+		  $this->supportedFields = $defaultFields;
+		  break;
+		}
+
+		// return true;
+	  }
+
+
+	}
 
 
 ?>

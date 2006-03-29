@@ -6,27 +6,27 @@
 	*
 	* http://www.egroupware.org                                                *
 	* @author Jan van Lieshout                                              *
-	* $Id$
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
 	*  Free Software Foundation; either version 2 of the License.              *
-	* @version 0.9.00
+	* @version 0.9.30 (for use with napi3)
 	\**************************************************************************/
+  /* $Id$ */
 
   /* THIS CLASS IS JUST HERE FOR BACKWARD COMPATIBILITY  */
-  /* in future you should rewrite ical handling using the egwical class */
+  /* in future you should rewrite ical handling using the egwical_resourcehandler class */
 
-//	require_once EGW_SERVER_ROOT.'/egwicalsrv/inc/calendar/class.bovevents.inc.php';
+  //	require_once EGW_SERVER_ROOT.'/egwicalsrv/inc/calendar/class.bovevents.inc.php';
 
 
 	class boical extends bocalupdate
 	{
-	  // introduce auxilliary egwical object
-	  var $ei; 
 
-	  // introduce a worker obj (also accessible via $ei but this is shorter..)
-	  var $wkobj;
+	  /** the egwical resource handler object that handles  ical import and export for the calendar.
+	   * @var bocalupdate_vevents $calhnd 
+	   */
+	  var $calhnd;
 
 	  function boical()
 	  {
@@ -34,14 +34,10 @@
 		error_log("warning class: calendar.boical call DEPRECATED," .
 				  "\nplease rewrite your code to use egwical class" .
 				  "\n now temporary code fix used ");
-		// The longer road, using egwicals cleverness:
-				$this->ei =& CreateObject('egwical.egwical');
-				$this->wkobj =& $this->ei->addRsc($this);
-		// alternatively the fast, shortcut, road for knowingly experts only:
-		//$this->wkobj =& CreateObject('egwical.bocalupdate_vevents');
-		//$this->wkobj->setRsc($this);
+		$this->calhnd =& CreateObject('egwical.bocalupdate_vevents');
+		$this->calhnd->set_rsc($this);
 
-		if ($this->wkobj == false){
+		if ($this->calhnd == false){
 		  error_log('boical constructor: couldnot add boical resource to egwical: FATAL');
 		  return false;
 		}
@@ -50,20 +46,54 @@
 
 	  // now implement the compatibility methods, that are all moved to egwical!
 
-	  function &exportVCal($events,$version='1.0',$method='PUBLISH')
+	  /**
+	   * Exports calendar events as an iCalendar string
+	   *
+	   * @note -- PART OF  calendar.boical API COMPATIBILITY INTERFACE -----------
+	   * @todo check if the return value of exportVcal is still compatible..
+	   * @param int|array $events (array of) cal_id or array of the events to be exported.
+	   * @param string $method value for method attribute
+	   * @return string|boolean string with vCal or false on error
+	   */
+	  function &exportVCal($events,$version='2.0',$method='PUBLISH')
 		{
-		  return $this->wkobj->exportVCal($events,$version,$method);
+		  $attribs = array('VERSION' => $version, 'METHOD' => $method);
+		  // alternative 1
+		  return $this->calhnd->export_vcal($events,$attribs);
+		  // alternative 2 should also work
+//		  $vevent = $this->calhnd->export_velts($events);
+//		  return $this->calhnd->render_velt2vcal($vevent,$attribs);
 		}
 
+
+	  /** 
+	   * Convert VEVENT components from an iCalendar string into eGW calendar events
+	   * and write these to the eGW calendar as new events or changes of existing events
+	   *
+	   * @note -- PART OF  calendar.boical API COMPATIBILITY INTERFACE -----------
+	   *
+	   * @todo check if the return value of importVcal is still compatible..
+	   * @bug probably the $cal_id parameter is ignored atm.
+	   * @param string $_vcalData  ical data string to be imported 
+	   * @param int $cal_id  id of the eGW event to fill with the VEvent data      
+	   *    when -1 import the VEvent content to new EGW  events if needed) 
+	   * @return boolean $ok  false on failure | true on success
+	   */
 	  function importVCal($_vcalData, $cal_id=-1)
 	  {
-		return $this->wkobj->importVCal($_vcalData, $cal_id);
+		// alt1 for multiple events in the vcalData
+		return ($this->calhnd->import_vcal($_vcalData) !== false) ? true : false ;
+
+		// alt2 for a single event in the vcalData
+//		$vevent = $this->wkobj->parse_vcal2velt($_vcalData);
+//		return $this->wkobj->import_vevent($vevent, $cal_id);
 	  }
 
 
 	  function setSupportedFields($_productManufacturer='file', $_productName='')
 	  {
-		return $this->wkobj->setSupportedFields($_productManufacturer, $_productName);
+		return $this->calhnd->setSupportedFields($_productManufacturer, $_productName);
+
 	  }
 
 	}

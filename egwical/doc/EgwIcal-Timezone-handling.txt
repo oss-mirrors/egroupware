@@ -55,6 +55,7 @@ descriptions for an event. An event can either be a:
 
 </ul>
 
+
 Timeindications for DT events are often stored using a socalled
 <i>unix timestamp</i>: an integer that counts the seconds gone after
 some initial day in 1970. 
@@ -73,7 +74,7 @@ For handling DT events it can be profitable to use a globally unified standard
 for describing the timingly definitions, like e.g. UTC. 
 And indeed:
 <ul>
-<li>REI.0 <b> EgwIcal tries to handle DATE-TIME events in UTC.</b>
+<li>REI.0 <b> EgwIcal try to handle DATE-TIME events in UTC.</b>
 
 Or of course, equivalently, some (time + UTC offset)-pair description.
 </ul>

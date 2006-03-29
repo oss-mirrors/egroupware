@@ -5,7 +5,6 @@
 	*
 	* http://www.egroupware.org                                                *
 	* @author Jan van Lieshout   
-	* $Id$
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -13,65 +12,63 @@
 	**************************************************************************/
 
 
-  /* JVL Todo V0.7.82
+  /** @page pageegwicalveventfeatures A small list of currently implemented VEVENT handling in egwical
+   * <PRE>
    * TODO:
    * [+] check multiple ATTENDEE import
    * [+] check multiple ATTENDEE export
    * [+] add and check 'whole day event' support
    * [+] check multiple CATEGORY export
-   * [+?] check multiple category import (do they get duplicated?
+   * [+?]todo: check multiple category import (do they get duplicated?
    * [+]check recur EXPORT stuff
-   *    [-/+] ENDDATE egw has other definition of 'end on' than KO3.5
+   *    [+] ENDDATE egw has other definition of 'end on' than KO3.5
    *    [+] by DAY, [+]UNTIL [+]INTERVAL 
    *        NOTE BYDAY was bugged in boical!!!
-   *    [ ] @todo test RRULE export for by MONTH, [ ]YEAR,[+] WEEKLY (probably works?)
+   *    [+] more tests RRULE export for by [+]MONTH, [+]YEAR,[+] WEEKLY (probably works?)
    *    [+] EXDATE fields export
-   *    [-] @todo inform people on COUNT fields import problem: not present in egw yet
    * [ ]check recur IMPORT stuff
    *    [+] by day, recur_interval 
-   *    [ ] @todo test RRULE import by month, interval (probably works?)
+   *    [+] RRULE import by month, interval 
    *    [+] recur_exception (content gets into event correctly, but..)
-   *    [-] COUNT (not supported in egw i think?)
+   *    [+] COUNT converted (partially) to UNTIL
    * [+basic] check EXPORT of VALARMS   (only time, no action selectable)
    * [+basic] check IMPORT of VALARMS     (only time, no action selectable)
-   * [+/-] @todo add switch to control import of non egw known attendees
+   * [+/-] todo: add switch to control import of non egw known attendees
    * [+] X-DELETED import
-   * [ ] find a nicer way to provide a safe importmode parameter usage (now $cal_id==0)
-   * [ ] @todo test the usage and conversions of user time and server times and timezones in
+   * [ ] todo find a nicer way to provide a safe importmode parameter usage (now $cal_id==0)
+   * [+] test the usage and conversions of user time and server times and timezones in
    *     exported and imported ical files.
+   * </PRE>
+   * the todos on a row:
+   * @todo find a nicer way to provide a safe importmode parameter usage (now $cal_id==0)
+   * @todo check multiple category import (do they get duplicated?
    */
 
-  //	require_once EGW_SERVER_ROOT.'/calendar/inc/class.bocalupdate.inc.php';
-  //    require_once EGW_SERVER_ROOT.'/icalsrv/inc/class.egwical.inc.php';
+	require_once EGW_SERVER_ROOT.'/calendar/inc/class.bocalupdate.inc.php';
+    require_once EGW_SERVER_ROOT.'/egwical/inc/class.egwical_resourcehandler.inc.php';
 
-    // these constants should be moved to somewhere global (not used at the moment)
-   define("ICAL_IMODE_DUPLICATE",'DUPLICATE');
-   define("ICAL_IMODE_OVERWRITE",'OVERWRITE');
 
     /**
-	 * Workers class for iCal vevents import and export via Egw bocalupdate calendar objects
+	 * Concrete subclass resourcehandler for iCal vevents import and export with a egroupware
+	 * bocalupdate calendar resource.
 	 *
 	 * @todo Here should come some text about the workings of this class
-	 * (esp. the uid2id mechanisme the handling of ACL failures and....) and its role
-	 * in the WURH pattern
+	 * (esp. the uid2id mechanisme the handling of ACL failures and....)
 	 *
 	 * @package egwical
-	 * @todo move the compatibility functions for vcalinfolog completely to the compat class.
-	 *  There is no need to have them here anymore.
 	 *
-	 * @since V0.7.82 on import the egw event uid field is no longer used unless
-	 *               the switch @ref $uid_matching is set. Default this is off.
+	 * @todo add Lars his VERSION=1.0 handling of events in here.
+	 *
 	 * @author Jan van Lieshout <jvl-AT-xs4all.nl> (This version. new api rewrite,
 	 * refactoring, and extension).
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.06 minor bugfixes for php5 compatibility
-	 * @since 0.9.05 (added the dst patch for DTSTART and DTEND)
-	 * @since 0.9.03 changed mke_RECUR2rar() api
-	 * @license  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+	 * @version 0.9.30  first version for napi3
+
+	 * license @url  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
 	 */
-    class bocalupdate_vevents extends egwical
+    class bocalupdate_vevents extends egwical_resourcehandler
     {
 	  
 	  /**
@@ -82,163 +79,160 @@
 	   */
 	  var $evdebug = true;
 
-	  /**
+	  /** The Bound Egw Resource that we handle
 	   * @private
-	   * @var bocalupdate
-	   * The egw bocal calendar that will be used to transport events from and to
-	   * This is set by setRsc()
+	   * @var bocalupdate $rsc
+	   * Registry for the egw resource object (calendar, infolog,..) that will be used
+	   * to transport ical elements from and to: The socalled <i>
+	   * Bound Resource</i>
+	   * This can be set by the constructor or later by set_rsc().
 	   */
-	  var $mycal = null;
+	  var $rsc = null;
 
-	  /**
-	   * Describe the provided work capabilities of the class.
-	   * @return string The description as entries for the @ref $reg_workers registry
-	   * table.
+
+
+	  /** mapping from iCalendar VEVENT fields to egw calendar fields
+	   * @private
+	   * @var array $vevent2eventFields
+	   * An array containing roughly the mapping from iCalendar
+	   * to egw fields. Set by constructor.
+	   * example entry (<i>rn</i> stands for "Resourced_Name"):
+	   * <PRE>
+			'SUMMARY'	=> array('rn' => 'title'),
+  	    </PRE>
+	   * Here <i>rn</i> stands for "Resourced  Name", to indicate the name of the related
+	   * related field in the bound egw resource
+	   * @todo integrate this with the  egwical base $ical2egw conversion table
 	   */
-	  function provides_work()
+	  var $vevent2eventFields = array();
+
+
+	  /** Deliver the implemented vevent to event mapping as provided by this class.
+	   *
+	   * @private
+	   *
+	   * Produce the array of vevent to event field mappings that this class implements.
+	   * These are stored on instantiation in the variable $vevent2eventFields
+	   * @return array The provided vevent to event fields mapping.
+	   */
+	  function _provided_vevent2eventFields()
 	  {
-		return 
-		  array('bocalupdate' => array('workerclass' => 'bocalupdate_vevents',
-									   'workerobj'   =>  null,
-									   'icalsup'   => array('VEVENT')),
-				// next one is a subclass of bocalupdate, we can work for that too
-				'boical'      => array('workerclass' => 'bocalupdate_vevents',
-									   'workerobj'   =>  null,
-									   'icalsup'   => array('VEVENT')),
+		return
+		  array(
+				'UID'		=> array('rn' => 'uid'),
+				'CLASS'		=> array('rn' => 'public'),
+				'SUMMARY'	=> array('rn' => 'title'),
+				'DESCRIPTION'	=> array('rn' => 'description'),
+				'LOCATION'	=> array('rn' => 'location'),
+				'DTSTART'	=> array('rn' => 'start'),
+				'DTEND'		=> array('rn' => 'end'),
+				'DURATION'  => array('rn' => 'end-duration'),
+				'ORGANIZER'	=> array('rn' => 'owner'),
+				'ATTENDEE'	=> array('rn' => 'participants'),
+				'RRULE'     => array('rns' => array('recur_type','recur_interval',
+													'recur_data','recur_enddate')),
+				'EXDATE'    => array('rn' => 'recur_exception'),
+ 				'PRIORITY'  => array('rn' => 'priority'),
+ 				'TRANSP'    => array('rn' => 'non_blocking'),
+				'CATEGORIES'=> array('rn' => 'category'),
+				'URL'       => array(''),
+				'CONTACT'   => array(''),
+				'GEO'       => array(''),
+				'CREATED'   => array(''),
+				'AALARM'     => array('rn' => 'alarms'), // NON RFC2445!!
+				'DALARM'     => array('rn' => 'alarms'), // NON RFC2445!!
+				'VALARM'     => array('rn' => 'alarms'),
+				'VALARM/TRIGGER'     => array('rn' => 'alarms/time')
 				);
 	  }
 
+
+
 	  /**
-	   * Our Constructor, sets the basic class members @ref $ei , @ref supportedFields
-	   * @ref $ical2egwFields and @ref $iprovide_work
+	   * Our Constructor, if given it sets the egw resource $egwrsc is set as
+	   * so called <i>bound egw resource</i>. And $prodid, the product id of the client that
+	   * will use or produce ical data is set to determine which fields to use in coming
+	   * import and exportd conversions between vcalendar and egw data.
+	   * @param egwobj $egwrsc Egroupware data resource object that
+	   * will be used to transport (i.e. import and export) the
+	   * vcalendar elements to and from. This can also later be set
+	   * using the set_rsc() method.
+	   * @param ProductType $devicetype The type identification of the device that is used to
+	   * the transport the ical data to and from. This is used to set the supportedFields already.
+	   * @note These can also later be set using the setSupportedFields() method. 
 	   */
-	  function bocalupdate_vevents($prodid='all')
+	  function bocalupdate_vevents($egwrsc = null, $devicetype='all')
 	  {
 		// call our abstract superclass constructor
-		egwical::egwical();
+		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid);
 		//@todo rewrite supportedFields setting to distribute it over the egwical
 		// baseclass and the subclasses cleverly
-		$this->_set_ical2egwFields(); // add VEVENT and event pairs only
-		$this->setSupportedFields($prodid);
+		$this->vevent2eventFields = $this->_provided_vevent2eventFields();
+		// add reference to the base table too
+		$this->ical2egwComponents['VEVENT'] = $this->vevent2eventFields;
+		// default initialization
+		$this->setSupportedFields($devicetype);
+		$this->set_rsc($egwrsc);
 
 		return true;		
 	  }
 
-	  /** 
-	   * Set the egw resource  that this worker will handle.
+
+	  /** Set the egw calendar resource  that this worker will handle.  
+	   * 
 	   * This worker is only capable of handling  bocalupdate calendar objects, so it should
-	   * be of that class. This method is mostly called indirectly from a egwical compound
-	   * addRsc() call. But you can call it also directly (if you know what your doing ..)
-	   * @return boolean false on error, true  else
+	   * be of that class. The $egw_rsc is registered in the $rsc variable and the supported
+	   * ical element is set to be 'vevent'. This is registered in $rsc_vtypes.
+	   *
+	   * @param egwobj $egw_rsc the resource object of type bocalupdate that will be
+	   * used to transport the ical data to and from.
+	   * @return boolean false on error, true if the $egw_rsc was indeed a correct  resource
+	   * of the supported type (bocalupdate).
 	  */
-	  function setRsc($egw_rsc)
+	  function set_rsc($egw_rsc)
 	  {
 		if(!is_a($egw_rsc,'bocalupdate'))
 		  return false;
-		$this->mycal = $egw_rsc;
+		$this->rsc = $egw_rsc;
+		$this->rsc_vtypes[]= 'vevent';
 		return true;
 	  }
 
 	  // -------- below only conversion and import/export stuff -----
 
-	  /**
-	   * @private
-	   * @var array $ical2egwFields
-	   * An array containing roughly the mapping from iCalendar
-	   * to egw fields. Set by constructor.
-	   */
-	  var $ical2egwFields;
 
-	  /**
-	   * @private
-	   * @var array $supportedFields
-	   * An array with the current supported fields of the
-	   * importing/exporting device.
-	   * To detect if a certain ical property (eg ORGANIZER)  is supported in the current
-	   * data import/export do a  <code>isset($this->supportedFields['ORGANIZER'])</code>.
-	   * To detect if a certain egw field (eg <code>status</code>)  is supported in the current
-	   * data import/export do a
-	   * <code>in_array(array_flatten(array_values($this->supportedFields)),'status')</code>
-	   * or something like that (not tested, implemented, or needed yet..) Maybe should
-	   * implement a method for this..
-	   * @note This table should probably better be in class @ref egwical
-	   */
-	  var $supportedFields;
-
-	  
-
-
-	  /**
-	   * @var boolean
-	   * Switch that determines if uid matching is tried.
+	  /** Export calendar event from bound bocalupdate resource as VEVENT
 	   *
-	   * For a more on <i>uidmatching</i> @see \secimpumatch 
+	   * The eGW event in $event is exported to iCalendar VEVENT (of type Horde_iCalendar_vevent)
+	   * Note that only the set of supported Fields, as indicated by the $supportedFields
+	   * member variable, are exported into the VEVENT.
 	   *
-	   * If $uid_matching is <b>true</b> then:
-	   * - on import of a vevent the update routines will first try to
-	   *  find an existing egw event with the same uid value as present
-	   *  in the UID field of the newly to be imported vevent. If this
-	   *  succeeds this egw event will get updated with the info from
-	   *  the vevent. If this fails a new event will be generated and
-	   *  the uid taken from the vevent will be stored in its uid
-	   *  field.
-	   *
-	   * if $uid_matching is <b>false</b> then:
-	   * - On import the VEVENT UID field will be checked, if it
-	   *  appears to be a previously exported uid value then the
-	   *  encoded egw id of the old egw event is retrieved and used for
-	   *  update.  If it doesnot have a uid value with a valid egw id
-	   *  encoding, then the its is handled as being a new VEVENT to be
-	   *  imported, and a new egw id will be generated. The old vevent
-	   *  uid will though be saved for possible later use, (just as
-	   *  with uid_matching on).
-	   */
-	  var $uid_matching = false;
-
-	  /**
-	   * @var boolean
-	   * Switch that determines if events not anymore in egw are allowed to be reimported
-	   *
-	   * Default this is on
-	   */
-	  var $reimport_missing_events = true;
-
-
-
-	  /**
-	   * Export Egw events and add them to a Horde_iCalendar.
-	   *
-	   * The eGW events in $events are exported to iCalendar VEVENTS and then these are added to
-	   * the Horde_iCalendar object &$hIcal.
-	   * Note that only supported Fields are exported as VEVENTS to the iCalendar.
-	   *
-	   * @section secexpeuid Egw uid export switch 
-	   * If $euid_export is set, then for each exported event, the current value of the event uid
-	   * as stored in Egw, will be used to produce a value for the vevent its UID field. When off
-	   * a new UID value will generated with the egw event id encoded. 
+	   * The uid field of the generated VEVENT will be filled according to the setting of
+	   * the $uid_mapping_export parameter. Either with the event id encoded (ID2UID) or with the
+	   * event uid field copied (UID2UID) or with a completey new generated string (NEWUID).
+	   * .
+	   * For more info see @ref secuidmapping 
 	   * 
-	   * @param Horde_iCalendar &$hIcal
-	   *  object to wich the produced VEvents are added.
-	   * @param array $events the array with eGW events (or event id's)  that will be exported
-	   * @param boolean $euid_export switch to enable export of the egw uid fields, when off
-	   * default) the vevents uid fields get a value generated with the egw id encoded.
-	   * @return boolean|int $ok/$vcnt    on error: false / on success: nof vevents exported 
-	   * @ref $supportedFields determines which fields of VEVENT will be exported
+	   * @param EventId $event id of the eGW event that will be exported
+	   * @param int $uid_mapping_export switch to set the export mode for the uid fields.
+	   * Default UMM_ID2UID is used.
+	   * @return VEVENT|false  the iCalendar VEVENT object representing the data from the egw
+	   * input event. On error: false
+	   * @ref $supportedFields determines which fields in the VEVENT will be filled
 	   */
-	  function exportEventsOntoIcal(&$hIcal, $events, $euid_export=false,
-									$reimport_missing_events=false)
+ 	  function export_vevent(&$event, $uid_mapping_export=ID2UID)
 	  {
-		$vexpcnt =0; // number of vevents exported
+		// decode the mode
+		$euid_export = ($uid_mapping_export == ID2UID) ? false : true; 
+		// auxiliary horde_iCalendar object
+		$hIcal = $this->hi; 
 
 		$veExportFields =& $this->supportedFields;
 		
-		if (!is_array($events)) $events = array($events);
-		  
-		foreach($events as $event) {
-		  // event was passed as an event id
 		  if (!is_array($event)){
+		  // event was passed as an event id
 			$eid = $event;
-			if( !$event = $this->mycal->read($eid,null,false,'server')){
+			if( !$event = $this->rsc->read($eid,null,false,'server')){
 			  // server = timestamp in server-time(!)
 			  return false;	// no permission to read $cal_id
 			}
@@ -246,20 +240,28 @@
 		  } else {
 			$eid = $event['id'];
 			// now read it again to get all fields (including our alarms)
-			$event = $this->mycal->read($eid);
+			$event = $this->rsc->read($eid);
 		  }
 
- //		  error_log('>>>>>>>>>>>' .'event to export=' . print_r($event,true));
+//		  error_log('>>>>>>>>>>>' .'event to export=' . print_r($event,true));
+//		  error_log('event sum:'. $event['title'] . ' start:' .$event['start']);
 
 		  // now create a UID value
-		  if ($euid_export)	{
+		  switch ($uid_mapping_export) {
+		  case UMM_UID2UID :
 			// put egw uid into VEVENT, to allow client to sync with his uids
 			$eventGUID = $event['uid'];
-		  } else {
-			$eventGUID = $this->mki_v_guid($eid,'calendar');
+			break;
+		  case UMM_NEWUID :
+			// this one should not be decodable by mke_guid2id()
+			$eventGUID = $this->ecu->mki_v_guid($eid,'newidcal');
+		  case UMM_ID2UID :
+			// fall through
+		  default:
+			$eventGUID = $this->ecu->mki_v_guid($eid,'calendar');
 		  }
 
-		  $vevent = Horde_iCalendar::newComponent('VEVENT',$hIcal);
+		  $vevent = Horde_iCalendar::newComponent('VEVENT',$this->hi);
 		  $parameters = $attributes = array();
 		  // to important to let supportedFields decide on this
 		  $attributes['UID'] = $eventGUID;				
@@ -276,9 +278,9 @@
 				  if (!is_numeric($pid)) continue;
 
 				  list($propval,$propparams) =
-					$this->mki_vp_4ATTENDEE($pid,$partstat,$event['owner']);
+					$this->ecu->mki_vp_4ATTENDEE($pid,$partstat,$event['owner']);
 				  // NOTE: we need to add it already: multiple ATTENDEE fields may be occur 
-				  $this->addAttributeOntoVevent($vevent,'ATTENDEE',$propval,$propparams);
+				  $this->ecu-> updi_c_addAttribute($vevent,'ATTENDEE',$propval,$propparams);
 				}
 				break;
 
@@ -290,27 +292,22 @@
 			  case 'ORGANIZER':	
 				if (!isset($event['participants'][$event['owner']])
 					|| count($event['participants']) > 1) {
-				  $attributes['ORGANIZER']  = $this->mki_v_CAL_ADDRESS($event['owner']);
-				  $parameters['ORGANIZER']  = $this->mki_p_CN($event['owner']);
+				  $attributes['ORGANIZER']  = $this->ecu->mki_v_CAL_ADDRESS($event['owner']);
+				  $parameters['ORGANIZER']  = $this->ecu->mki_p_CN($event['owner']);
 				}
-				break;
-
-
-			  case 'DTSTART':
-				$attributes[$veFieldName]	= $this->st_dst_patch($event['start']);
 				break;
 
 				// Note; wholeday detection may change the DTEND value later! 
 			  case 'DTEND':
 				//				if(date('H:i:s',$event['end']) == '23:59:59')
 				// $event['end']++;
-				$attributes[$veFieldName]	= $this->st_dst_patch($event['end']);
+				$attributes[$veFieldName]	= $event['end'];
 				break;
 
 			  case 'RRULE':
 				if ($event['recur_type'] == MCAL_RECUR_NONE)
 				  break;		// no recuring event
-				$attributes['RRULE'] = $this->mki_v_RECUR($event['recur_type'],
+				$attributes['RRULE'] = $this->ecu->mki_v_RECUR($event['recur_type'],
 															  $event['recur_data'],
 															  $event['recur_interval'],
 															  $event['start'],
@@ -320,13 +317,13 @@
 			  case 'EXDATE':
 				if ($event['recur_exception'])	{
 				  list(	$attributes['EXDATE'], $parameters['EXDATE'])=
-					$this->mki_vp_4EXDATE($event['recur_exception'],false);
+					$this->ecu->mki_vp_4EXDATE($event['recur_exception'],false);
 				}
 				break;
 
 			  case 'PRIORITY':
 				if (is_numeric($eprio = $event['priority']) && ($eprio >0) )
-				  $attributes['PRIORITY'] =  $this->mki_v_prio($eprio);
+				  $attributes['PRIORITY'] =  $this->ecu->mki_v_prio($eprio);
 				break;
 
 			  case 'TRANSP':
@@ -335,16 +332,13 @@
 
 			  case 'CATEGORIES':
 				if ($catids = $event['category']){ 
-				  $catnamescstr = $this->cats_ids2idnamescstr(explode(',',$catids));
+				  $catnamescstr = $this->ecu->cats_ids2idnamescstr(explode(',',$catids));
 				  $attributes['CATEGORIES'] = $catnamescstr;
 				}
 				break;
 
 				// @todo find out about AALARM, DALARM, Is this in the RFC !?
 			  case 'AALARM':
-				//for php5 seems picky about the need for an array to iterate on
-				// may try casting to array as alternative to this check, once I use php5
-				if(!is_array($event['alarm'])) break; 
 				foreach($event['alarm'] as $alarmID => $alarmData) {
 				  $attributes['AALARM'] = $hIcal->_exportDateTime($alarmData['time']);
 				  // lets take only the first alarm
@@ -353,7 +347,6 @@
 				break;
 
 			  case 'DALARM':
-				if(!is_array($event['alarm'])) break; 
 				foreach($event['alarm'] as $alarmID => $alarmData) {
 				  $attributes['DALARM'] = $hIcal->_exportDateTime($alarmData['time']);
 				  // lets take only the first alarm
@@ -362,9 +355,8 @@
 				break;
 
 			  case 'VALARM':
-				if(!is_array($event['alarm'])) break; 
 				foreach($event['alarm'] as $alarmID => $alarmData) {
-				  $this->mki_c_VALARM($alarmData, $vevent,
+				  $this->ecu->mki_c_VALARM($alarmData, $vevent,
 										  $event['start'], $veExportFields);
 				}
 				break;
@@ -375,12 +367,21 @@
 				$attributes['STATUS'] = $evstat; 
 				break;
 
+				// use daylight savings time patch, for some dates
+			  case 'DTSTART':
+			  case 'DTEND':
+				$efield = $this->vevent2eventFields[$veFieldName]['rn'];
+				if ($event[$efield]){
+				  $attributes[$veFieldName]	= $this->ecu->st_dst_patch($event[$efield]);
+				}
+				break;
+
 			  default:
 				// only use default for level1 VEVENT fields
 				if(strpos($veFieldName, '/') !== false)
 				  break;
 				// use first related field only for the simple conversion
-				$efield = $this->ical2egwFields[$veFieldName][0];
+				$efield = $this->vevent2eventFields[$veFieldName]['rn'];
 				if ($event[$efield]) {	// dont write empty fields
 					$attributes[$veFieldName]	= $event[$efield];
 				}
@@ -404,7 +405,7 @@
 		  }
 
 		  // handle created and modified field setting
-		  $created = $this->get_TSdbAdd($event['id'],'calendar');
+		  $created = $this->ecu->get_TSdbAdd($event['id'],'calendar');
 		  if (!$created && !$modified)
 			$created = $event['modified'];
 		  if ($created)
@@ -416,75 +417,71 @@
 
 		  // add all collected attributes (not yet added) to the vevent
 		  foreach($attributes as $aname => $avalue) {
-			$this->addAttributeOntoVevent($vevent,
-											  $aname,
-											  $avalue,
-											  $parameters[$aname]);
+			$this->ecu->updi_c_addAttribute($vevent,
+											$aname,
+											$avalue,
+											$parameters[$aname]);
 		  }
-		  $hIcal->addComponent($vevent);
-		  $vexpcnt += 1;
-		}
 		
-		return $vexpcnt; //return nof vevents exported
+		return $vevent; //return VEVENTObj
 	  }
 
 
 
+	  /** Wrapper around export_vevent() with simplified parameters.
+	   *
+	   * @note the settings of $this->uid_mapping_export is respected
+	   * as to chose the method of UID field generation for the
+	   * VEVENT. See @ref secuidmapping in the egwical_resourcehandler
+	   * documentation.
+	   * @param EventId $eid id of an event in the
+	   * bound bocalupdate resource that is to be exported.
+	   * @return VEVENT the exported egw event converted to a VEVENT object.
+	   * on error False.
+	   */
+	  function export_velt(&$eid)
+	  {
+		return $this->export_vevent($eid, $this->uid_mapping_export);
+	  }
+
 
 	  /**
-	   * Import all VEVENTS from a Horde_iCalendar into Egw
+	   * Import a VEVENT as a event into  the Egw calendar 
 	   *
-	   * The ical VEVENTS components that are contained in de $hIcal Horde_iCalendar
-	   * are converted to eGW events and imported  into the eGW calendar.
-	   * Depending on the value of $importMode, the conversion will generate either eGW
-	   * events with completely new id s (DUPLICATE mode) or generate ids created after
-	   * the VEVENT;UID field so that VEVENTS that refer to already existing eGW events
-	   * will be used to update these (OVERWRITE mode).	
+	   * The ical VEVENT component is converted to an eGW event for the
+	   * calendar resource in $rsc and then imported into this eGW calendar resource.
 	   *
-	   * @section secimpumatch Uidmatching
-	   * When $uid_matching is not set, the default situation, the uid field of each vevent
-	   * to be imported will examined to check if it has a valid egw id encoded. If so the import
-	   * will try to update the egw event indicated by this id with the contents of the vevent.
-	   * When this  doesnot succeed an appropiate error or skip (if you had not enough write rights)
-	   * will be the result. If there can be no valid egw id be decoded, the vevent will be considered
-	   * as a new one and an hence a new egw id will automatically be produced.
+	   * Depending on the value of $uid_mapping_import, the conversion
+	   * will either:
+	   * - generate either an eGW event with a completely new id
+	   * (<code>UMM_NEWID</code>) and fill that with the data. Or
+	   * - search for an existing Egw event based on a id search, with an id search key
+	   *   decoded from the VEVENT uid field (<code>UMM_UID2ID</code>) to update with the data. Or
+	   * - use the value in the VEVENT uid field a search key for a uid search
+	   *  amongst the Egw events (<code>UMM_UID2UID</code>) to use as event to update. Or finally
+	   * - update a specific existing Egw event defined by the $cal_id parameter, with the data
+	   *  (UMM_FIXEDID). 
 	   *
-	   * When $uid_matching is enabled, the value of the uid field of the vevent will matched against
-	   * all the uid fields of existing egw events. If a matching egw event with id is found,
-	   * the import
-	   * routine will try to update this event. If no success an appropiate error will be generated.
-	   * If no match is found, the import proceeds, just as without uidmatching, by generating a
-	   * new egw event with a new id. The events uid field will be filled with the vevents uid,
-	   * for possible later re-use.
-	   * 
-	   * @note  <b>Mostly it is best to disable uidmatching.</b> It prevents that multiple duplicates
-	   * of a event will be created in Egw, that may not be accessible anymore via the Ical-Service
-	   * interface. Only use it when you really need to reimport an already once imported calendar
-	   * because you accidentally deleted parts of it in Egw. Better still would be copy these lost 
-	   * events into a downloaded version of your original calendar and then update this one without
-	   * the uid_matching enabled. (It has namely no effect for <i>new</i> events and the old (i.e. 
-	   * already downloaded to the client) events will be recognized without uidmatching.
+	   * Default the mode <code>UMM_UID2ID</code> is used. 	 For more info see @ref secuidmapping 
 	   *
-	   * @param    Horde_iCalendar &$hIcal   object with ical VEVENT objects 
-	   * @param  string $importMode          toggle for duplicate (ICAL_IMODE_DUPLICATE)
-	   *                                    or overwrite (ICAL_IMODE_OVERWRITE) import mode
-	   * @param  int $cal_id           strange parameter, at least for -1  create new events
-	   *                                and if 0 then always add user to participants
-	   *                                JVL: THIS NEEDS TO BE CLARIFIED!
+	   * @ref $supportedFields    determines the VEVENTS that will be used for import
+	   *
+	   * @param  VEVENT $vevent   VEVENT object (horde_iCalendar_vevent) 
+	   * @param int $uid_mapping_import uid mapping import mode used. see @ref secuidmapping Default
+	   *  UMM_UID2ID.
 	   * @param boolean $reimport_missing_events enable the import of previously exported events
 	   * that are now gone in egw (probably deleted by someone else) Default false.
-	   * @return boolean| int $false|$evcnt    on error: false | on success: nof imported elms
-	   * @ref $supportedFields    determins the VEVENTS that will be used for import
+	   * @param  int $cal_id the id of the egw event that is to be updated when UMM_FIXEDID mode is
+	   * is set for $uid_mapping_import. If set as -1 the uid_mapping_import will switch to
+	   * UMM_NEWID mode, if set as 0 the uid_mapping_import will switch to the default
+	   * UMM_UID2ID mode.
+	   * @return EventId|Errorstring the id of the imported(or updated) egw calendar event.
+	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
 	   */
-	  function importVEventsFromIcal(&$hIcal, $importMode='OVERWRITE', $cal_id=0,
-									 $reimport_missing_events=false)
+	  function import_vevent(&$vevent, $uid_mapping_import, $reimport_missing_events=false, $cal_id=0)
 	  {
-		$overwritemode = stristr($importMode,'overwrite') ? true : false;
-		$evokcnt = 0;   // nof events imported ok
-		$everrcnt = 0;  // nof events imported erroneous
-		$evskipcnt = 0; // nof events imported skipped (user !== owner)
-		$evdelcnt = 0;  // nof events deleted ok
-		$evmisskipcnt =0; // nof missing event updates skipped
+		// auxiliary horde_iCalendar object
+		$hIcal = $this->hi; 
 
 		$veImportFields =& $this->supportedFields;
 
@@ -493,89 +490,109 @@
 		$eidOk   = false;	// returning false, if file contains no components
 		$user_id = $GLOBALS['egw_info']['user']['account_id'];
 
-		foreach($hIcal->getComponents() as $vevent) {
 		  // HANDLE ONLY VEVENTS HERE
-		  if(!is_a($vevent, 'Horde_iCalendar_vevent'))
-			continue; 
-
+		if(!is_a($vevent, 'Horde_iCalendar_vevent')){
+		  error_log('import_vevent called for non vevent type');
+		  return false;
+		}
 //		  $event = array('participants' => array());
-		  $event = array('title' => 'Untitled');
-		  $alarms = array();
-		  unset($owner_id);
-		  $evduration = false;
-		  $nonegw_participants = array();
+		$event = array('title' => 'Untitled');
+		$alarms = array();
+		unset($owner_id);
+		$evduration = false;
+		$nonegw_participants = array();
+		
+		// handle UID field always first according to uid_matching algorithm
+		$cur_eid      = false;  // current egw event id
+		$cur_owner_id = false;  // current egw event owner id
+		$cur_event    = false;  // and the whole array of possibly correspond egw event
+		// import action description (just for fun and debug) : 
+		// NEW|NEW-NONUID|NEW-FOR-MISSING
+		// DEL-MISSING|DEL-READ|DEL-READ-UID|
+		// UPD-MISSING|UPD-READ|UPD-READ-UID 
+		$imp_action    = 'NEW-NONUID';    
 
-		  // handle UID field always first according to uid_matching algorithm
-		  $cur_eid      = false;  // current egw event id
-		  $cur_owner_id = false;  // current egw event owner id
-		  $cur_event    = false;  // and the whole array of possibly correspond egw event
-		  // import action description (just for fun and debug) : 
-		  // NEW|NEW-NONUID|NEW-FOR-MISSING
-		  // DEL-MISSING|DEL-READ|DEL-READ-UID|
-		  // UPD-MISSING|UPD-READ|UPD-READ-UID 
-		  $imp_action    = 'NEW-NONUID';    
+		$vuid = null;
+		if($uidval = $vevent->getAttribute('UID')){
+		  // ad hoc hack: egw hates slashes in a uid so we replace these anyhow with -
+		  $vuid = strtr($uidval,'/','-');
+		  $event['uid'] = $vuid;
+		}
 
-		  if($uidval = $vevent->getAttribute('UID')){
-			// ad hoc hack: egw hates slashes in a uid so we replace these anyhow with -
-			$vuid = strtr($uidval,'/','-');
-			$event['uid'] = $vuid;
-			
-			if(!$this->uid_matching){
-			  
-			  // UID_MATCHING DISABLED, try to decode cur_eid from uid
-			  if ($cur_eid = $this->mke_guid2id($vuid,'calendar')){
-				// yes a request to import a previously exported event!
-				if ($cur_event = $this->mycal->read($cur_eid)){
-				  // oke we can read the old event
-				  $cur_owner_id = $cur_event['owner'];
-				  $imp_action  = 'UPD-READ';
-				  $event['id'] = $cur_eid;
-				} elseif($reimport_missing_events){
-				  // else: a pity couldnot read the corresponding cur_event,
-				  // maybe it was deleted in egw already..
-				  $imp_action = 'UPD-MISSING'; 
-				  unset($event['id']); // import as a new one
-				} else{
-				  // go on with next vevent
-				  $evmisskipcnt += 1;
-				  continue; 
-				}
-			  }else{
-				// no decodable egw id there, so per definition no corresponding egw event
-				// so will just import the vevent as a new event
-				$imp_action = 'NEW';
-			  }
-
-			  //UID_MATCHING ENABLED
-			} elseif($overwritemode && $cal_id <= 0 && !empty($vuid)){
-			  // go do uidmatching, search for a egw event with the vuid as uid field 
-			  if ($cur_event = $this->mycal->read($vuid))	{
-				$cur_eid      = $uidmatch_event['id'];
-				$cur_owner_id = $uidmatch_event['owner'];
-				$imp_action = 'UPD-READ-UID';
-				$event['id'] = $cur_eid;
-			  }else{
-				// uidmatch failed, insert as new
-				$imp_action = 'NEW';
-			  }
-			}
-			
+		switch ($uid_mapping_import) {
+		  
+		case UMM_UID2ID :
+		  // try to decode cur_eid from uid
+		  if(!$vuid){
+			$imp_action = 'NEW';
+			break;
 		  }
+		  if (!($cur_eid = $this->ecu->mke_guid2id($vuid,'calendar'))){
+			$imp_action = 'NEW';
+			break;
+		  }			
+		  // good cur_eid, so fall through
+		case UMM_FIXEDID :
+		  if ( $uid_mapping_import == UMM_FIXEDID){
+			if($cal_id > 0) {
+			  $cur_eid = $cal_id;
+			} else {
+			  return VELT_IMPORT_STATUS_NOELT;
+			}
+		  }
+		  if ($cur_event = $this->rsc->read($cur_eid)){
+			// oke we can read the old event
+			$cur_owner_id = $cur_event['owner'];
+			$imp_action  = 'UPD-READ';
+			$event['id'] = $cur_eid;
+			break;
+		  }
+		  //  a pity couldnot read the corresponding cur_event,
+		  if($reimport_missing_events){
+			// maybe it was deleted in egw already..
+			$imp_action = 'UPD-MISSING'; 
+			unset($event['id']); // import as a new one
+			$imp_action = 'NEW';
+			break;
+		  } 
+		  // no reimport allowed and event for id not found
+		  return VELT_IMPORT_STATUS_NOELT;
+		  break;
+		  
+		case UMM_UID2UID :
+		  if ((!empty($vuid)) && ($uidmatch_event = $this->rsc->read($vuid)))	{
+			// go do uidmatching, search for a egw event with the vuid as uid field 
+			// is this uid-search really implemented in bocal ??
+			$cur_eid      = $uidmatch_event['id'];
+			$cur_owner_id = $uidmatch_event['owner'];
+			$imp_action = 'UPD-READ-UID';
+			$event['id'] = $cur_eid;
+		  }else{
+			// uidmatch failed, insert as new
+			$imp_action = 'NEW';
+		  }
+		  break;
+		  
+		case UMM_NEWID :
+		  // fall through
+		default:
+		  error_log('bocalupdate_vevents.import_vevent(): unknow value:' .
+					$uid_mapping_import . ' for uid_mapping_import given.');
+		  $imp_action = 'NEW';
+		}
 
-		  // lets see what other supported veImportFields we can get from the vevent
-		  foreach($vevent->_attributes as $attr) {
-			$attrval = $GLOBALS['egw']->translation->convert($attr['value'],'UTF-8');
+		// lets see what other supported veImportFields we can get from the vevent
+		foreach($vevent->_attributes as $attr) {
+		  $attrval = $GLOBALS['egw']->translation->convert($attr['value'],'UTF-8');
 
-
-			// SKIP  UNSUPPORTED VEVENT FIELDS
-			if(!in_array($attr['name'],$veImportFields))
-			  continue;
-			
+		  // SKIP  UNSUPPORTED VEVENT FIELDS
+		  if(!in_array($attr['name'],$veImportFields))
+			continue;
 //			error_log('cnv field:' . $attr['name'] . ' val:' . $attrval);
 
-			switch($attr['name']) {
+		  switch($attr['name']) {
 			  // oke again these strange ALARM properties...
-			case 'AALARM':
+		    case 'AALARM':
 			case 'DALARM':
 			  if (preg_match('/.*Z$/',$attrval,$matches))	{
 				$alarmTime = $hIcal->_parseDateTime($attrval);
@@ -593,8 +610,8 @@
 
 			case 'DTEND':
 			  // will be reviewed after all fields are collected
-			  $event['end']		= $this->mke_DDT2utime($attrval);
- //			  $event['end']		= $attrval;
+			  $event['end']		= $this->ecu->mke_DDT2utime($attrval);
+			  //			  $event['end']		= $attrval;
 			  break;
 
 			  // note: DURATION and DTEND are mutually exclusive
@@ -618,7 +635,7 @@
 			  $event['RECUR'] = $attrval;
 			  break;
 			case 'EXDATE': 
-			  if (($exdays = $this->mke_EXDATEpv2udays($attr['params'], $attrval))
+			  if (($exdays = $this->ecu->mke_EXDATEpv2udays($attr['params'], $attrval))
 				  !== false ){
 				foreach ($exdays as $day){
 				  $event['recur_exception'][] = $day;
@@ -635,12 +652,12 @@
 			  break;
 			  // JVL: rewrite!
 			case 'PRIORITY':
-			  $event['priority'] = $this->mke_prio($attrval);
+			  $event['priority'] = $this->ecu->mke_prio($attrval);
 			  break;
 
 			case 'CATEGORIES':
 			  $catnames = explode(',',$attrval);
-			  $catidcstr = $this->cats_names2idscstr($catnames,$user_id,'calendar');
+			  $catidcstr = $this->ecu->cats_names2idscstr($catnames,$user_id,'calendar');
 			  $event['category'] .= (!empty($event['category']))
 				? ',' . $catidcstr 	: $catidcstr;
 			  break;
@@ -648,8 +665,8 @@
 			  // when we encounter an new valid cal_address but not yet in egw db
 			  // should we import it?
 			case 'ATTENDEE':
-			  if ($pid = $this->mke_CAL_ADDRESS2pid($attrval)){
-				if( $epartstat = $this->mke_params2partstat($attr['params'])){
+			  if ($pid = $this->ecu->mke_CAL_ADDRESS2pid($attrval)){
+				if( $epartstat = $this->ecu->mke_params2partstat($attr['params'])){
 				  $event['participants'][$pid] = $epartstat;
 				} elseif ($pid == $event['owner']){
 				  $event['participants'][$pid] = 'A';
@@ -659,13 +676,13 @@
 				// egw unknown participant, add to nonegw_participants list
 			  } else {
 				$nonegw_participants[] =
-				  $this->mke_ATTENDEE2cneml($attrval,$attr['params']);
+				  $this->ecu->mke_ATTENDEE2cneml($attrval,$attr['params']);
 			  }
 			  break;
 
 			  // make organizer into a accepting participant
 			case 'ORGANIZER':	// make him 
-			  if ($pid = $this->mke_CAL_ADDRESS2pid($attrval))
+			  if ($pid = $this->ecu->mke_CAL_ADDRESS2pid($attrval))
 				  $event['participants'][$pid] = 'A';
 			      //$event['owner'] = $pid;
 			  break;
@@ -692,8 +709,7 @@
 		  
 		  // we may have a RECUR value set? Then convert to egw recur def
 		  if ($recurval = $event['RECUR']){
-//error_log('recurval=' . $recurval . '=');
-			if(!($recur = $this->mke_RECUR2rar($recurval,$event['start'])) == false){
+			if(!($recur = $this->ecu->mke_RECUR2rar($recurval,$event['start'])) == false){
 			  foreach($recur as $rf => $rfval){
 				$event[$rf] = $rfval;
 			  }
@@ -703,14 +719,10 @@
 
 		  // build endtime from duration if dtend was not set
 		  if (!isset($event['end']) && ($evduration !== false)){
-			$event['end'] = $this->mke_DDT2utime($event['start']) + $evduration;
+			$event['end'] = $this->ecu->mke_DDT2utime($event['start']) + $evduration;
 		  } 
 		  
 		  // a trick for whole day handling or ...??
-		  /**
-		   * @bug php5 detects that event[end] is not always a int.
-		   * Solution use conversion function to utime fromegwical  here
-		   */
 		  if(date('H:i:s',$event['end']) == '00:00:00')
 			$event['end']--;
 
@@ -720,13 +732,13 @@
 			// SKIP anything but a VALARM
 			if(!is_a($valarm, 'Horde_iCalendar_valarm'))
 			  continue; 
-			$this->upde_c_VALARM2alarms($alarms,$valarm,$user_id,$veImportFields);
+			$this->ecu->upde_c_VALARM2alarms($alarms,$valarm,$user_id,$veImportFields);
 		  }
 
 		  // AD HOC solution: add nonegw participants to the description
 		  // should be controlable by class member switch
 		  if (count($nonegw_participants) > 0)
-			$this->upde_nonegwParticipants2description($event['description'],
+			$this->ecu->upde_nonegwParticipants2description($event['description'],
 														   $nonegw_participants);
 
 		  // handle fixed id call (for boical compatibility)
@@ -739,28 +751,25 @@
 		  // so I do the bold solution to add ourself to participants list if we are not on yet
 		  if(!isset($event['participants'][$user_id]))
 			$event['participants'][$user_id] =  'A';
-
  // error_log('<< ok <<<<' . 'event read for import=' . print_r($event,true));
-
 
 		  // -- finally we come to the import into egw ---
 
 		  if (($event['title'] == 'X-DELETE') || ($event['title'] == '_DELETED_')){
 
-
 			// -------- DELETION --------------------
 			//			error_log('delete event=' . print_r($event,true));
 			$imp_action = 'DEL-' . $imp_action;
 			if(! $cur_eid) {
-			  $this->_errorlog_evupd('ERROR: ' . $imp_action,
+			  $this->_errorlog_evupd('event', 'ERROR: ' . $imp_action,
 									 $user_id, $event, false);
-			  $everrcnt += 1; 
-			  continue;
+			  return VELT_IMPORT_STATUS_ERROR;
+
 			} else {
 			  // event to delete is found readable
-			  if($eidOk = $this->mycal->delete($cur_eid)){
+			  if($eidOk = $this->rsc->delete($cur_eid)){
 				// DELETE OK
-				$evdelcnt += 1;
+				return VELT_IMPORT_STATUS_DELOK;
 
 				// ASSUME Alarms are deleted by egw on delete of the event...
 				// otherwise we should use this code:
@@ -768,33 +777,31 @@
 				//foreach($cur_event['alarm'] as $alarmID => $alarmData)	{
 				//  $this->delete_alarm($alarmID);
 				//}
-				continue;
+
 			  } elseif ($user_id != $cur_owner_id){
 				// DELETE BAD  but it wasnt ours anyway so skip it
 				if ($this->evdebug)
-				  $this->_errorlog_evupd('SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
+				  $this->_errorlog_evupd('event', 'SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
 										 $user_id, $event, $cur_event);
-				$evskipcnt += 1; 
-				continue;
+				return VELT_IMPORT_STATUS_NOACC;
+
 			  } else {
 				// DELETE BAD and it was ours
-				$this->_errorlog_evupd('ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
+				$this->_errorlog_evupd('event', 'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
 									   $user_id, $event, $cur_event);
-				$everrcnt += 1; 
-				continue;
+				return VELT_IMPORT_STATUS_ERROR;
 			  }
 
 			}
 
 			  // -------- UPDATE --------------------
-		  } elseif ($eidOk = $this->mycal->update($event, TRUE)){
+		  } elseif ($eidOk = $this->rsc->update($event, TRUE)){
 			// UPDATE OKE ,now update alarms
-			$evokcnt += 1; // nof imported ok vevents
-			// handle the found alarms
+
 			if(in_array('VALARM',$veImportFields)){
 			  // delete the old alarms for the event, note: we could also have used $cur_event
 			  // but jus to be sure
-			  if(!$updatedEvent = $this->mycal->read($eidOk)){
+			  if(!$updatedEvent = $this->rsc->read($eidOk)){
 				error_log('ERROR reading event for Alarm update, will skip update..');
 				continue;
 			  }
@@ -822,134 +829,83 @@
 				$this->save_alarm($eidOk, $alarm);
 			  }
 			}
-			continue;
+			return $eidOk;
 
 			//  ---UPDATE BAD --------
 		  } elseif ($user_id != $cur_owner_id){
 			// UPDATE BAD, but other ones event, so skip
 			  if ($this->evdebug)
-				$this->_errorlog_evupd('SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
+				$this->_errorlog_evupd('event', 'SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
 									   $user_id, $event, $cur_event);
-			  $evskipcnt += 1; 
-			  continue;
+			  return VELT_IMPORT_STATUS_NOACC;
+				
 		  } else {
 			// UPDATE BAD and we own it or it was a new one
-			$this->_errorlog_evupd('ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
+			$this->_errorlog_evupd('event', 'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
 								   $user_id, $event, $cur_event);
-			$everrcnt += 1; 
-			continue;
+			return VELT_IMPORT_STATUS_ERROR;
+
 		  }
 		  error_log('CODING ERROR: SHOULDNOT GET HERE');
-		} // for each
 
-		if (($everrcnt > 0) || $this->evdebug)
-		  error_log('** user[' . $user_id . '] vevents imports: ' . $everrcnt . ' BAD,' .
-					$evskipcnt . ' skip-(insufficient rights), ' . $evmisskipcnt .
-					' skip-(ignore reimport missings), ' . 
-					 $evokcnt . ' upd-ok, ' . $evdelcnt . ' del-ok');
-		return ($everrcnt > 0) ? false : $evokcnt+ $evdelcnt;
+		  return $false;
 	  }
 
 
-	  /**
-	   * @private
-	   * Log event update problems to http errorlog
-	   * @param string $fault description of the fault type
-	   * @param ind $user_id the id of the logged in user
-	   * @param array $new_event the info converted from the vevent to be imported
-	   * @param array|false $cur_event_ids settings of owner, id and uid field of a possibly found
-	   * corresponding egw event. When no such event found: false.
-	   */
-	  function _errorlog_evupd($fault='ERROR', $user_id, &$new_event, $cur_event)
-	  {
-		// ex output:
-		// ** bovevents import for user(12 [pietje]): ERROR
-		// current egw event: id=24, owner=34, uid='adaafa'\n
-		// vevent info event: id=24, owner=--, uid='dfafasdf'\n
 
-		$uname =(is_numeric($user_id))
-		  ? $user_id . '[' . $GLOBALS['egw']->accounts->id2name($user_id) . ']'
-		  : '--';
-		if ($cur_event === false){
-		  $cid = $cown = $cuid = '--';
-		}else{
-		  $cid  = $cur_event['id'];
-		  $cown = $cur_event['owner'];
-		  $cuid = $cur_event['uid'];
-		}
-		$nid  = ($vi = $new_event['id']) ? $vi : '--';
-		$nown = ($vi = $new_event['owner']) ? $vi : '--';
- 		$nuid = ($vi = $new_event['uid']) ? $vi : '--';
-
-		error_log('** bovevents import for user (' . $cur_eid .
-				  '['. $uname . ']):' . $fault . '\n' .
-				  'current egw event: id=' . $cid . ',owner=' . $cown . ',uid=' . $cuid .'\n' .
-				  'vevent info event: id=' . $nid . ',owner=' . $nown . ',uid=' . $nuid .'\n' );
-//		error_log('vevent info event dump:' . print_r($new_event,true) . '\n <<-----------<<\n');
-	  }
-
-
-	  /**
-	   * @private
+	  /** Wrapper around import_vevent() with simplified set of call parameters.
+	   * @note this function only imports VEvent elements!
 	   *
-	   * Fill member var that holds the iCalendar property to Egw fields mapping.
+	   * The value of the member variable $reimport_missing_elements is used to possibly allow to
+	   * reimport of gone events in the calendar.
+	   * 
+	   * The value of the member variable $uid_mapping_import is used to control the set
+	   * of iCalendar fields that are imported.
+	   * @param  VEVENT $velt    VEVENT object (horde_iCalendar_vevent) 
+	   * @param  int $eid  id for a selected event to be updated by the info from $velt
+	   *     If left out or set to -1 then uid_mapping_import is switched back to its standard
+	   *  setting as found in the member variable $uid_mapping_import.
 	   *
-	   * Copy keys from this var to the supportedFields member var to allow import/export
-	   * of the field refered to by the key.
-	   * @todo Maybe someday rethink the ical2egwFields trafo system by rewriting it in paths
-	   *       starting from iCalendar/Component=>Field or iCalendar/Comp/SubComp etc.
-	   * @see $ical2egwFields member var that holds the mapping
+	   * @return EventId|errorstring the id of the imported(or updated) ege calendar event.
+	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
 	   */
-	  function _set_ical2egwFields()
+	  function import_velt(&$velt,$eid=-1)
 	  {
-		$this->ical2egwFields =
-		  array(
-				'UID'		=> array('uid'),
-				'CLASS'		=> array('public'),
-				'SUMMARY'	=> array('title'),
-				'DESCRIPTION'	=> array('description'),
-				'LOCATION'	=> array('location'),
-				'DTSTART'	=> array('start'),
-				'DTEND'		=> array('end'),
-				'DURATION'  => array('end-duration'),
-				'ORGANIZER'	=> array('owner'),
-				'ATTENDEE'	=> array('participants'),
-				'RRULE'     => array('recur_type','recur_interval','recur_data','recur_enddate'),
-				'EXDATE'    => array('recur_exception'),
- 				'PRIORITY'  => array('priority'),
- 				'TRANSP'    => array('non_blocking'),
-				'CATEGORIES'=> array('category'),
-				'URL'       => array(''),
-				'CONTACT'   => array(''),
-				'GEO'       => array(''),
-				'CREATED'   => array(''),
-				'AALARM'     => array('alarms'), // NON RFC2445!!
-				'DALARM'     => array('alarms'), // NON RFC2445!!
-				'VALARM'     => array('alarms'),
-				'VALARM/TRIGGER'     => array('alarms/time')
-				);
-		return true;
+		$uid_mapping_import_sel = ($eid > 0) ? UMM_FIXEDID : $this->uid_mapping_import;
+		  
+		return $this->import_vevent($velt,
+									$uid_mapping_import_sel,
+									$this->reimport_missing_elements,
+									$eid);
 	  }
+
+
+
 
 
 	  /**
 	   * Set the list of ical fields that are supported during the next imports and exports.
 	   *
 	   * The list of iCal fields that should be converted during the following imports and exports
-	   * of VEVENTS is set. This is done by providing a <i>productmanufacturer</i> name and
-	   * (optionally) a <i>prductname</i>. In a small lookup table the set of currently supported
-	   * fields for this is searched and then set thus in the class member @ref $supportedFields.
+	   * of VEVENTS is set. This is done according to a given ProductType as mostly set in the
+	   * $deviceType field of the egwical_resourcehandler. See there for a further description.
 	   *
-	   * @note <i> JVL: I can only  see sense in defining supported fields in iCal fields as
-	   * these are the fields (terminology) that the devices have in common.
-	   * in addressbook this approach is also --correctly-- taken. Why not here?</i>
-	   * @param string $_productManufacturer a string indicating the device manufacturer
-	   * @param string $_productName a further specification of the current device that is used
-	   * for import or export.
+	   * In a small lookup table the set of currently supported fields is searched for and then
+	   * and then these are set accordingly in the class member @ref $supportedFields.
+	   *
+	   * @note to find the ProductType for a device (like a iCalendar, browser, a syncml client etc.)
+	   * the egwical_resoucehandler class provides some handy methods, like:
+	   *  icalendarProdId2devicetype(), httpUserAgent2deviceType() and product2devicetype()
+	   *
+	   * @param ProductType $devicetype a string indicating the communicating client his type of device
+	   * @return void
 	   */
-	  function setSupportedFields($_productManufacturer='file', $_productName='')
+	  function setSupportedFields($devicetype = 'all')
 	  {
-		  $defaultFields =  array('CLASS','SUMMARY','DESCRIPTION','LOCATION','DTSTART',
+		// parse ProducType label into productManufacturer and productName
+		list($_productManufacturer, $_productName) = explode('/',$devicetype);
+
+		$defaultFields =  array('CLASS','SUMMARY','DESCRIPTION','LOCATION','DTSTART',
 								  'DTEND','RRULE','EXDATE','PRIORITY');
 		  // not: 'TRANSP','ATTENDEE','ORGANIZER','CATEGORIES','URL','CONTACT'
 		  
@@ -1005,84 +961,6 @@
 			$this->supportedFields = $defaultFields;
 			break;
 		  }
-	  }
-
-
-	  /**
-	   * 
-	   * Exports calendar events as an iCalendar string
-	   *
-	   * @note -- PART OF  calendar.boical API COMPATIBILITY INTERFACE -----------
-	   * @param int/array $events (array of) cal_id or array of the events
-	   * @param string $method='PUBLISH'
-	   * @return string|boolean string with vCal or false on error
-	   * (eg. no permission to read the event)
-	   *
-	   * @see _hiCal  class member to hold a temporary Horde_iCalendar object 
-	   */
-	  function &exportVCal($events,$version='1.0',$method='PUBLISH')
-		{
-		  $hIcal = &new Horde_iCalendar;
-		  $euid_export = false;
-
-		  // set some header values of the Horde_iCalendar object
-		  $hIcal->setAttribute('PRODID', '-//eGroupWare//NONSGML eGroupWare Calendar '
-							   . $GLOBALS['egw_info']['apps']['calendar']['version'].'//'
-							   . strtoupper($GLOBALS['egw_info']['user']['preferences']['common']['lang']));
-		  $hIcal->setAttribute('VERSION',$version);
-		  $hIcal->setAttribute('METHOD',$method);
-			
-		  // convert the eGW events to VEVENTS and add them to hIcal
-		  if(!$this->exportEventsOntoIcal($hIcal, $events,$euid_export))
-			return false;
-		  
-		  // conversion oke, now let Horde stringify it and deliver as result
-		  $vcal = $hIcal->exportvCalendar();
-		  // JVL:  destroy the object by hand  or does automagic this in php ?
-		  $hIcal = null;
-
-		  return $vcal;
-
-		}
-
-
-
-	  /** 
-	   * Convert VEVENT components from an iCalendar string into eGW calendar events
-	   * and write these to the eGW calendar as new events or changes of existing events
-	   *
-	   * @note -- PART OF  calendar.boical API COMPATIBILITY INTERFACE -----------
-	   * @param string $_vcalData     ical data string to be imported 
-	   * @param int $cal_id      id of the eGW event to fill with the VEvent data      
-	   *    when -1 import the VEvent content to new EGW  events
-	   *  (JVL HACK  when 0 allow change but no deletion user is added to participants
-	   *    if needed) 
-	   * @return boolean $ok  false on failure | true on success
-	   */
-	  function importVCal($_vcalData, $cal_id=-1)
-	  {
-
-		$hIcal = &new Horde_iCalendar;
-		// our (patched) horde classes, do NOT unfold folded lines, 
-		// which causes a lot trouble in the import, so we do it here
-		$_vcalData = preg_replace("/[\r\n]+ /",'',$_vcalData);
-		
-		// let the Horde_iCalendar object parse the Vcal string into its components
-		if(!$hIcal->parsevCalendar($_vcalData)){
-		  return FALSE;
-		}
-		$importMode = 'OVERWRITE';
-		
-		// now import the found VEVENTS into eGW calendar
-		if(!$this->importVEventsFromIcal($hIcal, $importMode, $cal_id))
-		  {
-			//error_log('importVCal(): errors in importVEventsFromIcal');
-			$hIcal = null;
-			return false;
-		  }
-
-		$hIcal = null;
-		return true;
 	  }
 
 

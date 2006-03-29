@@ -1,84 +1,41 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
 
-\section secrel0907catfixbf2 Release 0.9.07-catfix-bf2 category import more robust
+\section secrel0930nga2 Release 0.9.30-ng-a2 First Release with New API
 
-- release date: 20060316
-- file: egwical-with-doc-0.9.07catfix-bf2.tgz
-- via: homepage and egroupware  and (possibly) cvs
+- release date: 20060329 
+- file: egwical-with-doc-0.9.30-ng-a2.tgz
+- via: homepage and (possibly) egroupware cvs
 
-\subsection subsecrel0907catfixbf2 Changes from previous version
+\subsection subsecrel0930nga2changes Changes from previous version
+Complete new more transparent and streamlined Aplication Programmers Interface. 
 
-- in egwical: import now only categories with proper names.
-- activated translation from utf-8 to server charset on vtodo import
+- abandoned WURH implementation pattern, now simpler variant:
+  with resourcehandlers with concrete subclasses for a base class with
+  virtual methods. The collection intelligence that WURH in principe could
+  implement can handier be coded outside the egwical package. As is done 
+   e.g. in IcalSrv virtual calendar classes.
+- new vcb buffer class for collection of icalendar elements
+- new eicnvutils class as a library of conversion routines
+- boinfolog_vtodos and bocalupdate_vevents are implemented with
+  similar structures as concrete egwical_resourcehandler subclases.
+- devicetype and supportFields mechanism available for all classes.
+- added resourcehandler class  bocalupdate_vfreebusy, to export
+  freebusy data from a egw calendar.
+  behaviour.
+- added support of some new vevent fields and vtodo fields (COMPLETED, LOCATION,..)
+- adapted boinfolog_vtodos to 1.2rc8 variant.
+- etc. etc.
 
-\subsection subsecrel0.9.07catfixbf2bugs Found bugs and problems
+\subsection subsecrel0930nga2bugs Found bugs and problems
 
--... more a icalsrv problem: some clients only publish one category
- while they downloaded many, result: multiple categories attributed in egw
- get replaced by a single on publish.
- 
-
-
-\section secrel0907catfixbf1 Release 0.9.07-catfix-bf1 some fixes for category handling
-
-- release date: 20060314
-- file: egwical-with-doc-0.9.07catfix-bf1.tgz
-- via: homepage and egroupware  and (possibly) cvs
-
-\subsection subsecrel0907catfixbf1 Changes from previous version
-
-- in boinfolog_vtodos: fixed 3 erroneous pass by reference function calls in boinfolog_vtodos
-
-\subsection subsecrel0.9.07catfixbf1bugs Found bugs and problems
-
--Roger (jasjar): import of events, once exported with categories, produces many
- bad (empty, space only etc.) categories.
-
-
-\section secrel0907catfix Release 0.9.07-catfix some fixes for category handling
-
-- release date: 20060310
-- file: egwical-with-doc-0.9.07catfix.tgz
-- via: homepage and egroupware  and (possibly) cvs
-
-\subsection subsecrel0907catfix Changes from previous version
-
-- in egwical: fixed import category handling: calendar and infolog categories
-  should now be added to their own category lists 
-- temporarily switched of error handling for vtodo import (= upload into egw)
-  vtodo import errorhandling is rather flaky and will be improved in new api versions (>9.9.20)
-  At this moment, problematic import of vtodos is only reported via errorlog, not to the client.
-
-\subsection subsecrel0.9.07catfixbugs Found bugs and problems
-
--Friedmar: 3 erroneous pass by reference function calls in boinfolog_vtodos
-
-
-
-\section secrel0905php5compat Release 0.9.05-php5compat some fixes to be compatible with php5
-
-- release date: 20060310
-- file: egwical-with-doc-0.9.05php5compat.tgz
-- via: homepage and egroupware  and (possibly) cvs
-
-\subsection subsecrel0905php5compatchanges Changes from previous version
-
-- in egwical: corrected the addAttributeOntoVevent() routine to be php5 compatible
-  (no refs for value and params, added good default arguments for aparams)
-- in bocalupdate_vevents: corrected dtend check for whole days (first convert to utime)
-- in bocalupdate_vevents: check the presence of alarms before processing (array php5 problem)
-- in boinfolog_vtodos: use the addAttributeOntVevent() call for summary and description field export
-  to get utf-8 translation activated for these fields
-- added patches for horde iCalendar.php to get rid of php5 warnings
-
-
-\subsection subsecrel0.9.05php5compatbugs Found bugs and problems
-
-- in boinfolog_vtodos and egwical: the category import is always in the calendar
-  category list, even when it should be in the infolog list
-- boinfolog_vtodos: error, skip handling etc.  on import is weak! breaks after one problem.
-
-
+@note this should be considered an alpha release
+- vcalinfolog.compat is not yet adapted to napi
+- not yet tested for syncml compatibility
+- bocalupdate-vfreebusy is only partially written: import does not
+  work yet
+- many test have to be done
+- SEVERE: documentation is not up to date!!!
+- tested only with php5 and 1.2rc8
 
 
 
@@ -99,15 +56,7 @@
 
 \subsection subsecrel0.9.05bugs Found bugs and problems
 
-- bad compatibility towards php5 (warnings about array_merge without array parameters etc.)
-  reported by (roger ? and omgs)
-- reported (roger ...) bad import of category names for empty categories (could not reproduce..)
-
-
-
-
-
-
+...........
 
 
 \section secrel0904 Release 0.9.04 first public release via cvs and tarball

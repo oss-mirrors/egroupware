@@ -1,12 +1,11 @@
 <?php
     /**
 	 * @file
-	 * eGroupWare API - eGroupWare  specific ICalendar component conversion,
-	 * import and export package.
+	 * eGroupWare API - eGroupWare specific ICalendar component conversion,
+	 * auxiliary utility routines.
 	 *
 	 * @author Jan van Lieshout                                                *
 	 * @package egwical
-	 * $Id$
 	 * ------------------------------------------------------------------------ *
 	 * This library is free software; you can redistribute it and/or modify it  *
 	 * under the terms of the GNU Lesser General Public License as published by *
@@ -24,34 +23,27 @@
 
      require_once EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php';
      require_once EGW_SERVER_ROOT.'/calendar/inc/class.socal.inc.php';  // for MCAL defs
-     require_once EGW_SERVER_ROOT.'/egwical/inc/class.bocalupdate_vevents.inc.php';
-     require_once EGW_SERVER_ROOT.'/egwical/inc/class.boinfolog_vtodos.inc.php';
+//     require_once EGW_SERVER_ROOT.'/egwical/inc/class.bocalupdate_vevents.inc.php';
+//     require_once EGW_SERVER_ROOT.'/egwical/inc/class.boinfolog_vtodos.inc.php';
+
 
     /**
 	 * 
-	 * Common  routines to manipulate iCalendar components and fields in
+	 * Common  utility routines to manipulate iCalendar components and fields in
 	 * an EGroupware context.
 	 *
-	 * -Egwical provides    at the moment routines for easy filling and retrieving
-	 * (property) field values and params from iCal objects (VEVENTS, VTODOS, VALARMS..).
-	 * For thebasic iCalendar handling currently the Horde routines are  used.
-	 * Most of thes routines are used in both the infolog.bovtodos and calendar.bovevents
-	 * classes. To prevent code duplication they were factored out into this package.
 	 *
-	 * @section sectimezones TimeZone handling
-	 *  Currently vtimezones are completely ignored when found in an
-	 * ical file that is to be imported. All times that are not in utc format (end with Z)
-	 * will be interpreted as set in the timezone of the logged in user (UI times).
-	 * From this on the bocalendar and boinfolog classes will do the proper conversion to
-	 * server times.
-	 * On export (all|most) date-time values produced will be in utc format.
-	 * Date values on the contrary (as for 
-	 * whole day events etc) will be in UI time of the logged in user, thus in a likewise
-	 * manner as on import.  The logic here is that wholeday events are to respect daylight
-	 * and not exact time. There will be no VTIMEZONE written in the exported icalendar.
 	 *
-	 * @section secmethodnames Generic method names
-	 * Most of the methods this provides follow a generic naming scheme based on their
+	 * @section secwkcapimethodnames Workerclass API  method names
+	 * Developers of Worker subclasses: that is classes that will handle the transport of
+	 * a specific type of Vcal Element (like <code>VEVENT</code>s) to specific Egw Elements
+	 * (like e.g. calendar	<code>event</code>s), can profitably use the set auxiliary conversion
+	 * methods that the eicnvutils provides.
+	 * This class should be used as a kind of (read only) library: no state is needed. The members
+	 * of this class are only used as constants.
+	 * So one instance should do for multiple worker objects that used it. No need to duplicate it.
+	 *
+	 * Most of the utility methods that are provideda follow a generic naming scheme based on their
 	 * functionality. The generic prefixes are:
 	 * <ul>
 	 * <li><code>mki_</code>
@@ -73,46 +65,44 @@
 	 *  that the Egw entity will be passed by reference to these routines.</li>
 	 * </ul>
 	 *
-	 * @section secworkersubclasses Worker Subclasses
-	 *  Egwical is implemented following the WURH pattern (see @ref pageegwicalwurh).
-	 * Currently there are two worker subclasses available:
-	 * - <code>bocalupdate_vevents</code> to convert between egw calendar events and VEVENTS
-	 *   and allow import and export of these. When added as a resource to an Egwical object,
-	 * the representative member for this subclass is set in the attribute $this->buverpr
-	 *   
-	 * - <code>boinfolog_vtodos</code> to convert between egw infolog tasks events and VTODOS
-	 *   and allow import and export of these. When added as a resource to an Egwical object,
-	 * the representative member for this subclass is set in the attribute $this->ivtrpr
-	 *   
-	 * @note At this moment (V 0.9.01) there is still a little unpleasant piece of extra
-	 * coding needed to get
-	 * it working: when you develop a new workerssubclass you must  enter it manually in
-	 * the egwical constructor,
-	 * so that it can later on automatically be found and matched to the appropiat egw resource.
-	 * (I couldnot find an easy way to search for existing subclasses so therefore it is needed)
+	 * @section sectimezones TimeZone handling
+	 *  Currently vtimezones are completely ignored when found in an
+	 * ical file that is to be imported. All times that are not in utc format (end with Z)
+	 * will be interpreted as set in the timezone of the logged in user (UI times).
+	 * From this on the bocalendar and boinfolog classes will do the proper conversion to
+	 * server times.
+	 * On export (all|most) date-time values produced will be in utc format.
+	 * Date values on the contrary (as for 
+	 * whole day events etc) will be in UI time of the logged in user, thus in a likewise
+	 * manner as on import.  The logic here is that wholeday events are to respect daylight
+	 * and not exact time. There will be no VTIMEZONE written in the exported icalendar.
+	 * For more info on this see @ref pageegwicaltzh
 	 *
-	 * @note in future this package may become a full wrapper around the Horde_iCalendar
-	 * libraries. This way we can keep the relevant egw and ical objects alive between
-	 * calls so that code could be made faster and less memory consuming..
-	 *
-	 * @since 0.9.0 api is incompatible with lower versions
+	 * @since 0.9.31 added some FREEBUSY routines
+	 * @since 0.9.30 using napi3 api
+	 * @since 0.9.22 separated the conversion utilties into eicnvutils class
+	 * @since 0.9.04 RRULE count= impl.
 	 * @author Jan van Lieshout <jvl (at) xs4all.nl> (This version)
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (original code of reused parts)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (original code of reused parts)
 	 *
 	 *
-	 * @since 0.9.07catfix2 made names2cats more robust
-	 * @since 0.9.07  corrected the cats_names2idscstr app_name handling
-	 * @since 0.9.06  small php5 related bugfixes
-	 * @since 0.9.05  added the st_dst_patch function
-	 * @since 0.9.04 (First wurh pattern implementation, with RRULE count= impl.)
-	 * @date 20060313
-	 * @license http://opensource.org/licenses/gpl-license.php GPL -
+	 * @version 0.9.31 napi3 and freebusy routines
+	 * @date 20060325
+	 * license @url http://opensource.org/licenses/gpl-license.php GPL -
 	 *  GNU General Public License
 	 */
-    class egwical
+    class eicnvutils
     {
-	  var $eidebug =false;
+	  
+	  /**
+	   * @private
+	   * @var boolean
+	   * Switch to print extra debugging about imported and exported events to the httpd errorlog
+	   * stream.
+	   */
+	  var $eicnvdebug = false;
+	  
 
 	  /**
 	   * @var Horde_iCalendar
@@ -121,81 +111,6 @@
 	   * by the various routines in the class
 	   */
 	  var $hi;
-
-	  // ----------- first the implementation of the WURH pattern ------------
-
-
-// 	  /** Description of the resource handling capacity this object provides
-// 	   * @var array
-// 	   * Decsription, in the form of an entry for the @ref $reg_rscworkers registry,
-// 	   * of the worker capabilities this object provides.
-// 	   * When an object of this (sub) class is instatiated and added to a egwical object as
-// 	   * a socalled worker representative, this capability description is copied into the
-// 	   * (compounds) reg_rscworkers registry.
-// 	   * @note in genuine worker subclasses this variable must be initialized
-// 	   * by the constructor. 
-// 	   */
-// 	  var $iprovide_work = null;
-
-
-	  /** Registry for Resource Worker classes
-	   *
-	   * @var array
-	   * The resource workers registry is an array that holds 
-	   * an entry for each type of resource class with the appropiate worker class and
-	   * the currently set worker (representative) instantiated object of that class.
-	   * @note the (instantiated) worker representative object in the registry entry is
-	   * firstly set when an appropiate worker subclass is actually instantiated during
-	   * runtime. (This setting then is done by the constructor of the worker class of course.
-	   *  that uses the info from the workerclass its variable @ref $iprovide_rscwork) 
-	   *
-	   * Structure of the registry:
-	   * <pre>
-	   *  $reg_rscworkers = array($rsclass_name =>
-	   *                          array('workerclass' =>$workerclass_name,
-	   *                                'workerobj'   => $worker_obj,
-	   *                                'vcsup'     =>array($velmc1,$velmc2,..)),
-	   *                           ..)
-	   *</pre>
-	   * example of an entry:
-	   * <pre>
-	   *  $reg_rscworkers['boinfolog'] = array('workerclass' =>'boinfolog_vtodos',
-	   *                                       'workerobj'   => null,
-	   *                                       'icalsup'     =>array('VTODO'))
-	   * </pre>
-	   */
-	  var $reg_rscworkers = array();
-
-
-	  /** Registry for Resources
-	   *
-	   * @var array
-	   *
-	   * The resources registry is an array that holds an entry for
-	   * types of icalendar component class ('VEVENT, VTODO etc.)
-	   * with:
-	   *- 1) an appropiate egw resource object for storing and
-	   *  retrieving the info for these components (thus a calendar- or
-	   * infolog- or .. etc. object) and
-	   *- 2) an (instantiated) worker object to handle transport from
-	   * and to the resource.
-	   * The entries of this registry get filled when the
-	   * resources are added to the egwical object by calls to the
-	   * addRsc() method. 
-	   * @note multiple entries for the same icalendar component are allowed.
-	   * This can occur when multiple resources can provide e.g. VEVENT data.
-	   *
-	   * Structure of the registry:
-	   * <pre>
-	   *   reg_rscs = array($icalcompclass_name => array($rsc_obj, $worker_obj),..)
-	   *</pre>
-	   * example of an entry:
-	   * <pre>
-	   *  reg_rscs['VTODO'] = array(null, null)
-	   * </pre>
-	   */
-	  var $reg_rscs = array();
-
 
 
 	  /**
@@ -210,7 +125,7 @@
 	   * yet)
 	   *
 	   */
-	  function egwical()
+	  function eicnvutils()
 	  {
 		// actually this would only be needed by the abstract superclass?
 		$this->hi = &new Horde_iCalendar;
@@ -218,90 +133,6 @@
 		$this->TASKMAGIC = $GLOBALS['egw_info']['server']['install_id']
 		  ? $GLOBALS['egw_info']['server']['install_id']
 		  : 'local'; 
-		// update following list when a new worker subclasses becomes available
-		// (i.e. copy the info from its $iprovide_work var)
-		$this->reg_rscworkers =
- 		  array_merge(
- 					  $this->reg_rscworkers,
- 					  bocalupdate_vevents::provides_work(),	  
- 					  boinfolog_vtodos::provides_work()
- 				);
-		//		error_log('**now reg_workers=' . print_r($this->reg_rscworkers,true));
-		$this->reg_rscs = array();
-	  }
-
-
-	  /**
-	   * Add a egw resource.
-	   *
-	   * The egw resource (calendar, infolog, ..) in $egw_rsc is added
-	   * to egwical. This will be used for storing and retrieving
-	   * types of iCalendar components (VEVENT, VTODO,..) for which it has corresponding
-	   * egw data elements (like egw events or egw tasks.
-	   *
-	   * Following the WURH pattern, adding the egw resource $rsc will result in
-	   * the creation of a dedicated representative "worker" subclass object to handle the
-	   * transport to and from the resource. The appropiate worker class is looked up in the
-	   * $reg_workers registry. When the worker is created, the resource and its worker will
-	   * be entered as a resource worker pair in the egwical $reg_rscs registry.
-	   * This representative worker object will also be
-	   * returned by reference to the caller. Using this reference the caller can later on do
-	   * specific settings for the worker, (like setSupportedFields()).
-	   *
-	   * @param object $egw_rsc egw resource (like calendar or infolog,..) object that will be
-	   *  used by the egwical representative worker class to transport converted
-	   *  ical components to and from.
-	   * @return egwical|false $rpr_worker the representative worker class for handling the
-	   * added egw resource. On error false is returned.
-	   */
-	  function addRsc($egw_rsc)
-	  {
-		//step 1: detect the egw_rsc class  
-		if (!$rsc_classname = get_class($egw_rsc))
-		  // bad value for $egw_rsc
-		  return false;
-
-		//step 1a check that the egwrsc is not already registered
-		foreach($this->reg_rscs as $vc => $rscwkpair){
-		  if($rscwkpair[0] === $egw_rcs){
-			error_log('Warning: egwical.addRsc(): trying add resource multiple times,' .
-					  ' for class: ' . $rsc_classname . ' : ignored');
-			return $rscwkpair[1];
-		  }
-		}
-
-		//step 1: detect the egw_rsc class  
-		if (!$rsc_classname = get_class($egw_rsc))
-		  // bad value for $egw_rsc
-		  return false;
-
-		// step 2a: look in reg_rscworkers for appropiate worker class
-		if (!$wkprov = $this->reg_rscworkers[$rsc_classname]){
-		  error_log('Error: egwical.addRsc(): no workerclass available yet for resourcetype:' .
-					$class_name . ' sorry');
-		  return false;
-		}
-
-		// step 2b create a workerobject of the correct type
-		// note that we dont reuse an already available workerobj of the right type because
-		// probably the workerclasses are not reentrantly coded yet...
-		if(! $wkobj =& CreateObject('egwical.' . $wkprov['workerclass'])){
-		  // workerclass object creation problem
-		  return false;
-		}
-		// step 2c give the workerobj the egw_rsc to handle
-		$wkobj->setRsc($egw_rsc);
-
-		// step3: use the found worker info to register the egw_rsc and workerobj for
-		// each of the supported type of ical elements
-		foreach ($wkprov['icalsup'] as $icomptype ){
-		  //error_log('adding reg_rscs['. $icomptype . '] entry');
-		  $this->reg_rscs = array_merge($this->reg_rscs,
-										array($icomptype => array($egw_rsc, $wkobj)));
-		}
-		// step 4: return the workerclass (representative obj)
-
-		return $wkobj;
 	  }
 
 
@@ -312,6 +143,7 @@
 	  // --- generic conversion auxilliary routines -------------
 	  // --- note: this could be left out in the abstract baseclass instantiation
 	  // but is not that much, so leave it get duplicated...
+
 
 	  /**
 	   * @private
@@ -338,7 +170,7 @@
 			  3 => 1,		// high
 			  );
 	  /**
-	   * @var array $status_ical2egw conversation of the priority ical => egw
+	   * @var array $status_ical2egw conversion of the priority ical => egw
 	   * Conversion of the  icalendar used priority values(0..9) to corresponding egw values (0..3).
 	   * @private
 	   */
@@ -412,15 +244,47 @@
 			  );
 	  
 	  /**
+	   * @private
 	   * @var array
 	   * Get sequential indexes for the daynames in a week. Used for recurrence count
 	   * calculations.
 	   */
 	  var $dowseqid =
-		array('SU' => 1, 'MO' => 2, 'TU' => 3, 'WE' => 4, 'TH' => 5, 'FR' => 6, 'SA' => 7);
+		array('SU' => 1, 'MO' => 2, 'TU' => 3, 'WE' => 4,
+			  'TH' => 5, 'FR' => 6, 'SA' => 7);
 
+// 	  /**
+// 	   * @private
+// 	   * @var array
+// 	   * Vcalendar attributes for a iCalendar string that gets exported from Egw
+// 	   * This variable is set by the constructor to the defaults from 
+// 	   */
+// 	  var $export_vcalendar_attributes = array();
+
+
+	  /** @name  Workerclass API (auxiliary conversion routines)
+	   *
+	   */
+	  //@{
 
 	  // --- generic conversion auxilliary routines -------------
+
+	  /** 
+	   * produce array of default vcalendar attributes
+	   * @return array a hash of the default vcalendar element attributes with values.
+	   * The attributes set are: <code>PRODID</code>, <code>VERSION</code>and
+	   * <code>METHOD</code>
+	   */
+	  function mki_default_vcalendar_attributes()
+	  {
+		return  array('PRODID'  => '-//eGroupWare//NONSGML eGroupWare Calendar '  
+					  . $GLOBALS['egw_info']['apps']['calendar']['version']  . '//'
+					  . strtoupper($GLOBALS['egw_info']['user']['preferences']['common']['lang']),
+					  'VERSION' => '1.0',
+					  'METHOD'  => 'PUBLISH'
+					  );
+	  }
+
 	  
 	  /**
 	   * Parse a vCalendar string into an Horde_iCalendar object.
@@ -498,7 +362,7 @@
 	   */
 	  function get_TSdbAdd($id,$appname='calendar')
 	  {
-		if (!(($appname == 'calendar') || ($appname == 'infolog')))
+		if (!(($appname == 'calendar') || ($appname == 'infolog_task')))
 		  return false;
 		if (! $auid = $GLOBALS['egw']->common->generate_uid($appname,$id))
 		  return false;
@@ -565,8 +429,9 @@
 	   * 
 	   * @note THIS CODE SHOULD BE SOMEWHERE ELSE: IT HAS NOTHING TO DO WITH ICAL!!
 	   * @param array $cnames  list with category names
-	   * @param string $owner_id id of the user whose categories we search
-	   * @param string $app_name name of the application whose categories are searched or added.
+	   * @param string $owner_id the userid of the owner, default to empty string
+	   * @param string $app_name the name of the application on whose list the
+	   * names are to be found.
 	   * @return string $cidscstr   commasep string with ids generated or found for
 	   * the category names.
 	   */
@@ -586,10 +451,9 @@
 		  $catsys->categories($owner_id, $app_name);
 		}
 
-		$cids = array();
 		foreach($cnames as $name) {
 		  if(empty($name) || preg_match('/^\s+$/',$name)){
-			if ($this->eidebug)
+			if ($this->eicnvdebug)
 			  error_log('******detected an empty category! in(' . print_r($cnames,true) . ')');
 			continue;
 		  }
@@ -599,7 +463,7 @@
 			// new cat
 			$cid = $catsys->add(array('name' => $name,'descr' => $name));
 		  }
-		  if ($this->eidebug)
+		  if ($this->eicnvdebug)
 			error_log('found category:' . $name . ':with id:' . $cid);
 
 		  // skip none category or problematic ones
@@ -608,6 +472,7 @@
 
 		  $cids[] = (int)$cid;
 		}
+
 		return implode(',',$cids); 
 	  }
 
@@ -628,7 +493,7 @@
 	  /**
 	   * Convert and egw account id into a iCalendar CN type parameter string
 	   * @param  int $account_id egw account(person) id
-	   * @return string $cnparam CN param value format string. On erro this will be empty.
+	   * @return array CN param in horde_icalendar format. On error this will be empty.
 	   */
 	  function mki_p_CN($account_id)
 	  {
@@ -637,8 +502,36 @@
 					. $GLOBALS['egw']->accounts->id2name($account_id,'account_lastname'));
 		
 		return array('CN' => $cns ? $cns : '');
+
+	  }
+		
+	  /** Convert an egw period with start and end times to a freebusy value
+	   * Generate a simple, single freebusy value according to rfc2445,sec.4.8.2.6
+	   * as start and end dt times
+	   * @param int $utstart start time of period (as unix time)
+	   * @param int $utend end time of period (as unix time)
+	   * @return array period array filled according to horde_iCalender defs
+	   */
+	  function mki_v_FREEBUSY($utstart, $utend)
+	  {
+		return array(array('start' => $utstart, 'end' => $utend));
 	  }
 
+	  /** Convert an egw act-type label to a freebusytype parameter
+	   * Generate parameter a according to rfc2445,sec.4.2.9
+	   * @todo not yet implemented egw activity type to fbtype conversion
+	   * @param string $act-typ egw activity type
+	   * @return string value for ical freebusy property 
+	   */
+	  function mki_p_FBTYPE($fbtype=null)
+	  {
+		if(!$fbtype)
+		  return array();
+
+		// either FREE | BUSY |BUSY-UNAVAILABLE | BUSY-TENTATIVE
+
+		return array('FBTYPE' => 'BUSY');
+	  }
 
 	  /** 
 	   * Convert a horde_icalendar parsed attribute date- or date-time value 
@@ -658,6 +551,7 @@
 		  return @mktime(0,0,0,$ddtval['month'],$ddtval['mday'],$ddtval['year']);
 		}
 	  }
+
 
 	  /**
 	   * Patch the servertime with an DaylightSavingsTime offset, before converting to utc
@@ -1172,16 +1066,16 @@
 	  /**
 	   * Add (append) an new attribute (aka field) to the vevent.
 	   *
-	   * @param horde_iCalendar_vevent $vevent obj to which the attribute is added
+	   * @param VElt $vobj Vcal Element to which the attribute is added
 	   * @param string $aname  name for the new attribute
 	   * @param mixed $avalue  value for the new attribute
-	   * @param array $aparams  optional parameters for the new attribute
+	   * @param array $aparams  optional: parameters for the new attribute
 	   * @return true
 	   */
-	  function addAttributeOntoVevent(&$vevent,$aname,$avalue,$aparams=null)
+	  function updi_c_addAttribute(&$vobj,$aname,$avalue,$aparams)
 	  {
 		
-		if(!isset($aparams) || ($aparams == null))
+		if(!isset($aparams) || ($aparams == null ))
 		  $aparams =array();
 
 		// it appears that translation->convert() can translate an array
@@ -1197,8 +1091,7 @@
 												 $GLOBALS['egw']->translation->charset(),
 												 'UTF-8');
 //		error_log('n:' . $aname . 'v:' . $valueData);
-//		error_log('n: paramData:' . print_r($paramData,true ));
-		$vevent->setAttribute($aname, $valueData, $paramData);
+		$vobj->setAttribute($aname, $valueData, $paramData);
 		$options = array();
 		// JVL:is this really needed?
 		if (is_string($valueData)){
@@ -1213,7 +1106,7 @@
 			$options['CHARSET'] = 'UTF-8';
 		  }
 		}
-		$vevent->setParameter($aname, $options);
+		$vobj->setParameter($aname, $options);
 
 		return true;
 	  }
@@ -1306,9 +1199,15 @@
 
 
 
-
+	  //@}
 
 
 	}
+
+
+
+
+
+
 
 ?>

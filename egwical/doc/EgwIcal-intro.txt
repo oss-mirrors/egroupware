@@ -1,5 +1,10 @@
 /*!  @mainpage EgwIcal package for Egroupware
 
+@todo rewrite the overview, add small synopsis, remove the talk about WURH etc.
+in here talk about the usage of the various routines/classes of the package (eg how to use
+icalvcb to combine retrieving from different resources and etc. Basic handling should be given
+in class descriptions, though.
+ 
 @NOTE this text is not up to date
 @version 0.9.01
 @author jvl
