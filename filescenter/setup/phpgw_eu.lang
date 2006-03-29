@@ -1,0 +1,35 @@
+%1 already exists as a file	filescenter	eu	%1 fitxategi moduan existitzen da
+%1 files were sucessfully copied onto clipboard.	filescenter	eu	%1 fitxategiak zuzen kopiatu dira arbelean
+%1 files were sucessfully cutted onto clipboard.	filescenter	eu	%1 fitxategiak zuzen ebaki dira arbelean
+activate sharing	filescenter	eu	Partekatu aktibatu
+add a new file id prefix	filescenter	eu	Fitxategiako ID-aren aurrezenbaki berri bat gehitu
+add a new file type	filescenter	eu	Fitxategi mota berri bat gehitu
+add a new prefix	filescenter	eu	Aurrezenbaki berri bat gehitu
+add a new type descriptor for file ids	filescenter	eu	Fitxategiaren ID-arentzeko deskribatzaile berri bat gehitu
+add another file	filescenter	eu	Beste fitxategi bat gehitu
+add custom file property	filescenter	eu	Fitxategiari jabetza pertsonalizatua gehitu
+add file property	filescenter	eu	Fitxategiaren jabetza gehitu
+application	filescenter	eu	Aplikazioa
+applications	filescenter	eu	Aplikazioak
+archive name	filescenter	eu	Artxiboaren izena
+archive name cannot contain "%1"	filescenter	eu	Artxiboaren izenak ezin du "%1" eduki
+are you sure you want to delete '"+filename+"'?	filescenter	eu	Ziur zaude "+filename+" ezabatu nahi duzula?
+are you sure you want to delete _filename_?	filescenter	eu	Ziur zaude _filename_ ezabatu nahi duzula?
+authorized groups	filescenter	eu	Baimendutako taldeak
+authorized users	filescenter	eu	Baimendutako erabiltzaileak
+backup	filescenter	eu	Segurtasun kopia
+cannot replace %1 because it is a directory	filescenter	eu	%1 ezin da ordezkatu direktorio bat delako
+change the values here to redefine this	filescenter	eu	Balioak hemen aldatu hau birdefinitzeko
+clean the temporary folder for application	filescenter	eu	Aldi baterako direktorioa hustu aplikaziorako
+click in the row to edit a file type.	filescenter	eu	Egin klik errenkada batean fitxategi mota bat editatzeko
+click in the row to edit an item.	filescenter	eu	Egin klik errenkadan elementu bat editatzeko
+comment	filescenter	eu	Komentario
+compress	filescenter	eu	Konprimitu
+compresses a set of files in an archive	filescenter	eu	Fitxategi talde bat artxibo batean konprimitu
+compression type	filescenter	eu	Konpresio mota
+copied	filescenter	eu	Kopiatuta
+copied %1 to %2	filescenter	eu	Kopiatuta %1 %2
+could not	filescenter	eu	Ezin izan da
+could not copy %1 to %2	filescenter	eu	Ezin izan da %1 %2ra kopiatu
+could not create %1	filescenter	eu	Ezin izan da %1 sortu
+could not delete %1	filescenter	eu	Ezin izan da %1 ezabatu
