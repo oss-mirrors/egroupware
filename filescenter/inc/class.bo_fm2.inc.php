@@ -842,16 +842,17 @@
 					'relatives'	=> array(RELATIVE_NONE)
 				));
 				
+				$content_length = function_exists('mb_strlen') && ini_get('mbstring.func_overload') ? mb_strlen($contents,'latin1') : strlen($content);
 				if(in_array($mime_type,$viewable) && !$_GET['download'])
 				{
-						header('Content-type: ' . $mime_type);
+					header('Content-type: ' . $mime_type);
 					header('Content-disposition: filename="' . basename($file) . '"');//FIXME
-					header('Content-Length: '.strlen($contents));
+					header('Content-Length: '.$content_length);
 					Header("Pragma: public");
 				}
 				else
 				{
-					$GLOBALS['egw']->browser->content_header(basename($file),$mime_type,strlen($contents));//FIXME
+					$GLOBALS['egw']->browser->content_header(basename($file),$mime_type,$contents_length);//FIXME
 				}
 				echo $contents;
 				$GLOBALS['egw']->common->egw_exit();
@@ -1016,94 +1017,94 @@
 		function save_file($params)
 		{
 
-						$filename = $params['string'];
-						$filename = array_pop(explode('/',$params['string']));
+			$filename = $params['string'];
+			$filename = array_pop(explode('/',$params['string']));
 		
 			if($params['string'] != '/' && $params['string'] != $this->fakebase)
 			{
-								if($badchar = $this->bad_chars($filename, True, True))
-								{
-										$this->messages[]= $GLOBALS['egw']->common->error_list(array($this->html_encode(lang('File names cannot contain "%1"', $badchar), 1)));
-										return false;
-								}
+				if($badchar = $this->bad_chars($filename, True, True))
+				{
+						$this->messages[]= $GLOBALS['egw']->common->error_list(array($this->html_encode(lang('File names cannot contain "%1"', $badchar), 1)));
+						return false;
+				}
 
-								# Check to see if the file exists in the database, and get
-								# its info at the same time
-								$ls_array = $this->vfs->ls(array(
-										'string'=> $params['string'],
-										'relatives'	=> array(RELATIVE_ROOT),
-										'checksubdirs'	=> False,
-										'nofiles'	=> True
-								));
+				# Check to see if the file exists in the database, and get
+				# its info at the same time
+				$ls_array = $this->vfs->ls(array(
+						'string'=> $params['string'],
+						'relatives'	=> array(RELATIVE_ROOT),
+						'checksubdirs'	=> False,
+						'nofiles'	=> True
+				));
 
-								$fileinfo = $ls_array[0];
+				$fileinfo = $ls_array[0];
 
-								if($fileinfo['name'])
-								{
-										if($fileinfo['mime_type'] == 'Directory')
-										{
-												$this->messages[]= $GLOBALS['egw']->common->error_list(array(lang('Cannot replace %1 because it is a directory', $fileinfo['name'])));
-												return false;
-										}
-								}
+				if($fileinfo['name'])
+				{
+					if($fileinfo['mime_type'] == 'Directory')
+					{
+						$this->messages[]= $GLOBALS['egw']->common->error_list(array(lang('Cannot replace %1 because it is a directory', $fileinfo['name'])));
+						return false;
+					}
+				}
 
-								if($this->vfs->write(array(
-										'string' => $params['string'],
-										'relatives' => array(RELATIVE_ROOT),
-										'content' => &$params['content']
-										)))
-								{
+				if($this->vfs->write(array(
+					'string' => $params['string'],
+					'relatives' => array(RELATIVE_ROOT),
+					'content' => &$params['content']
+					)))
+				{
 
-										$attr = array(
-							'owner_id' => $this->userinfo['username'],
+					$attr = array(
+						'owner_id' => $this->userinfo['username'],
 						'modifiedby_id' => $this->userinfo['username'],
 						'modified' => $this->now,
 						'size' => strlen($params['content']),
 						'deleteable' => 'Y'
-										);
+					);
 
-										if ($params['mime_type'])
-										{
-												$attr['mime_type'] = $params['mime_type'];
-										}
+					if ($params['mime_type'])
+					{
+						$attr['mime_type'] = $params['mime_type'];
+					}
 
-										if ($params['comment'])
-										{
-												$attr['comment'] = $params['comment'];
-										}
+					if ($params['comment'])
+					{
+						$attr['comment'] = $params['comment'];
+					}
 
-										if ($params['prefix'])
-										{
-												$attr['prefix'] = $params['prefix'];
-										}
+					if ($params['prefix'])
+					{
+						$attr['prefix'] = $params['prefix'];
+					}
 
-										if ($params['ptype'])
-										{
-												$attr['ptype'] = $params['ptype'];
-										}
+					if ($params['ptype'])
+					{
+						$attr['ptype'] = $params['ptype'];
+					}
 
-										$this->vfs->set_attributes(array(
-												'string'=> $params['string'],
-												'relatives'	=> array(RELATIVE_ROOT),
-												'attributes'=> $attr
-											 )
-										);
+					$this->vfs->set_attributes(array(
+							'string'=> $params['string'],
+							'relatives'	=> array(RELATIVE_ROOT),
+							'attributes'=> $attr
+						)
+					);
 
-										$this->messages[]=lang('Created %1', $params['string']);
+					$this->messages[]=lang('Created %1', $params['string']);
 
-								}
-								else
-								{
-										$this->messages[]=lang('Cannot write file $1',$params['string']);
-										return false;
-								}
+				}
+				else
+				{
+					$this->messages[]=lang('Cannot write file $1',$params['string']);
+					return false;
+				}
 			}
-						else
-						{
-								$this->messages[]=lang('No permission to write file $1',$params['string']);
-								return false;
-						}
-						return true;
+			else
+			{
+					$this->messages[]=lang('No permission to write file $1',$params['string']);
+					return false;
+			}
+			return true;
 		}
 
 
