@@ -1,11 +1,12 @@
 /*! @page pagewebcaldiscussion Discussion on iCalendar based protocols for Egroupware
 @todo check text and spell errors
-@version 0.0.01
+@version 0.0.03
 @author JVL
 
-In the egroupware mailinglists there has been some discussion about what features you would like
-to see in a calendar protocol to access the data in Egroupware. Below I will put a small digest of
-this discussion.
+In the egroupware mailinglists there has been some discussion about
+what features you would like to see in a calendar protocol to access
+the data in Egroupware. Below I will put a small digest of this
+discussion.
 
 @section secicalforegw iCalendar based protocols and Egroupware
 
@@ -138,7 +139,7 @@ Jan
 
 ......
 
-@section secxdelete Post scriptum: the X-DELETE feature
+@section secxdelete Post scriptum 1: the X-DELETE feature
 
 As is also mentioned in the mainpage, I introduced in the meanwhile
 the sneaky feature of event/todo deletion by filling the summary field
@@ -150,6 +151,17 @@ browser.  Someone (L. Tullipan if I remember correctly) already
 proposed that this feature could be used, by e.g. a sunbird plugin, to
 make an easy alternative way to do deletions via a client.
 
+@section secvirtcals Post scriptum 2: Virtual Calendars since v 0.9.30
 
+Since version 0.9.30 Icalsrvsupports a first set of so called
+<em>virtual calendars</em>. These virtual calendars are definitions of
+the resource (e.g. the Egroupware Calendar of person X or the
+Egroupware Infologs of person Y) and the periods for which calendar
+data from Egroupware are to be exported. In each virtual calendar you
+can define these settings and then you can access a certain virtual
+calendar (by its URL) from the client.
+
+In this way you have a certain control of what data you will receive
+in your client, when loading a calendar from Egroupware via IcalSrv.
 
 */

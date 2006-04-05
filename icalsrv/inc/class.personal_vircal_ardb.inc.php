@@ -36,7 +36,7 @@
    * - /freebusy.ifb
    *
    * @author jvl
-   * @version 0.9.30-a2 second version
+   * @version 0.9.30-a3 second version
    * @date 20060323
    */ 
 
@@ -152,8 +152,13 @@
 						   'qmeth' => 'search',
 						   'qarg' =>
 						   array(
-								 'col_filter' => array('info_type' => 'task'),
-								 'filter' => 'my',
+								 'col_filter' =>
+								 array('info_type' => 'task',
+									   'info_status' => '',
+									   'info_responsible' => '_fn_cal_owner_id()',
+									   'info_owner' => '',
+									   ),
+								 'filter' => 'own',
 								 'order' => 'id_parent',
 								 'subs' => true,
 								 'sort' => 'DESC'
@@ -179,9 +184,6 @@
 	  * - /tasks.ics
 	  * - /default.ics combined info from /events.ics and /tasks.ics
 	  * - /freebusy.ifb
-	  * @todo take care that only the events from user $user_id are retrieved in bocal
-	  * calendar searches... (see uical...??)
-	  * @todo add /week/calendar.ics, /month/calendar.ics  etc. personal calendars.
 	  *
 	  * @param int $user_id the user (as id) whose personal virtual calendars will 
 	  * are set up.
@@ -207,129 +209,147 @@
 				   . $user_id);
 		 return false;
 	   }
+	   
+	   $rwrule_stdperiod_stduser = array('start' => '_fn_months_away(-2)',
+										 'end' => '_fn_months_away(12)',
+										 'users' => $user_id
+										 );
+	   $rwrule_opentasks_stduser = array('info_status' => '',
+										 'info_responsible' => $user_id
+										 );
 
-		 // events from 1 month back till 12 months after today
+	   // events from 1 month back till 12 months after today
 	   $this->calendars['/events.ics']
 		 =& $this->_cprw_vcdef($this->_events_proto,
-							 $username . '/events.ics',
-							 "events for $username from 1 month back till 1 year from now", 
-							  '_fn_months_away(-3)', '_fn_months_away(12)',
-							  $user_id);
+							   $username . '/events.ics',
+							   "events for $username from 1 month back till 1 year from now", 
+							   $rwrule_stdperiod_stduser
+							   );
 
-		 // tasks from 1 month back till 12 months after today
+	   // tasks from 1 month back till 12 months after today
 	   $this->calendars['/tasks.ics']
 		 =& $this->_cprw_vcdef($this->_tasks_proto,
-							  $username . '/tasks.ics',
-							 "tasks for $username from 1 month back till 1 year from now", 
-							  '_fn_months_away(-1)', '_fn_months_away(12)',
-							  $user_id);
+							   $username . '/tasks.ics',
+							   "open tasks for $username", 
+							   $rwrule_opentasks_stduser
+							   );
 
 
 	   //  /default.ics (combines events and tasks
 	   $this->calendars['/default.ics']
 		 =& $this->_cprw_vcdef($this->_calendar_proto,
 							  $username . '/default.ics',
-							 "events and tasks for $username from 1 month back till 1 year from now", 
-							  '_fn_months_away(-1)', '_fn_months_away(12)',
-							  $user_id);
+						 "events and tasks for $username from 1 month back till 1 year from now", 
+							   array_merge($rwrule_stdperiod_stduser,
+										   $rwrule_opentasks_stduser)
+							   );
 
 		 // freebusy from 1 month back till 12 months after today
 	   $this->calendars['/freebusy.ifb']
 		 =& $this->_cprw_vcdef($this->_freebusy_proto,
 							  $username . '/freebusy.ifb',
 							 "freebusy times for $username , based on events calendar  from 1 month back till 1 year from now", 
-							  '_fn_months_away(-1)', '_fn_months_away(12)',
-							  $user_id);
+							   $rwrule_stdperiod_stduser
+							   );
 
 	   // -- now some weekly calendars
-
-
+	   $rwrule_weekperiod_stduser = array('start' => '_fn_week_start()',
+										  'end' =>  '_fn_week_end()',
+										 'users' => $user_id
+										 );
 
 		 // this weeks events
 	   $this->calendars['/week/events.ics']
 		 =& $this->_cprw_vcdef($this->_events_proto,
-							  $username . '/week/events.ics',
-							 "events in this week for $username", 
-							  '_fn_week_start()', '_fn_week_end()',
-							  $user_id);
+							   $username . '/week/events.ics',
+							   "events in this week for $username", 
+							   $rwrule_weekperiod_stduser
+							   );
 
-		 // this weeks tasks
-	   $this->calendars['/week/tasks.ics']
-		 =& $this->_cprw_vcdef($this->_tasks_proto,
-							  $username . '/week/tasks.ics',
-							 "tasks in this week for $username", 
-							  '_fn_week_start()', '_fn_week_end()',
-							  $user_id);
+// 		 // this weeks tasks
+// 	   $this->calendars['/week/tasks.ics']
+// 		 =& $this->_cprw_vcdef($this->_tasks_proto,
+// 							  $username . '/week/tasks.ics',
+// 							 "tasks in this week for $username", 
+// 							  '_fn_week_start()', '_fn_week_end()',
+// 							  $user_id);
 
 		 // this weeks defaults
 	   $this->calendars['/week/default.ics']
 		 =& $this->_cprw_vcdef($this->calendars['/default.ics'],
 							  $username . '/week/default.ics',
-							 "events and tasks in this week for $username", 
-							  '_fn_week_start()', '_fn_week_end()',
-							  $user_id);
-
+							 "events in this week and open tasks for $username", 
+							   $rwrule_weekperiod_stduser
+							   );
 
 	   // -- now some monthly calendars
-
+	   $rwrule_month_stduser = array('start' =>'_fn_month_start()',
+									 'end' =>  '_fn_month_end()',
+									 'users' => $user_id
+									 );
 		 // this months events
 	   $this->calendars['/month/events.ics']
 		 =& $this->_cprw_vcdef($this->_events_proto,
-							  $username . '/month/events.ics',
-							 "events in this month for $username", 
-							  '_fn_month_start()', '_fn_month_end()',
-							  $user_id);
+							   $username . '/month/events.ics',
+							   "events in this month for $username", 
+							   $rwrule_month_stduser
+							   );
 
-		 // this months tasks
-	   $this->calendars['/month/tasks.ics']
-		 =& $this->_cprw_vcdef($this->_tasks_proto,
-							  $username . '/month/tasks.ics',
-							 "tasks in this month for $username", 
-							  '_fn_month_start()', '_fn_month_end()',
-							  $user_id);
+// 		 // this months tasks
+// 	   $this->calendars['/month/tasks.ics']
+// 		 =& $this->_cprw_vcdef($this->_tasks_proto,
+// 							  $username . '/month/tasks.ics',
+// 							 "tasks in this month for $username", 
+// 							   $rwrule_month_stduser
+// 							   );
+
+
 		 // this weeks defaults
 	   $this->calendars['/month/default.ics']
 		 =& $this->_cprw_vcdef($this->calendars['/default.ics'],
-							  $username . '/month/default.ics',
-							 "events and tasks in this month for $username", 
-							  '_fn_month_start()', '_fn_month_end()',
-							  $user_id);
+							   $username . '/month/default.ics',
+							   "events and tasks in this month for $username", 
+							   $rwrule_month_stduser
+							   );
 	   
 		 // this months freebusy
 	   $this->calendars['/month/freebusy.ifb']
 		 =& $this->_cprw_vcdef($this->_freebusy_proto,
 							  $username . '/month/freebusy.ifb',
 							 "freebusy times for $username in this month (based on events calendar)",
-							  '_fn_month_start()', '_fn_month_end()',
-							  $user_id);
+							   $rwrule_month_stduser
+							   );
 
 
 	   // some next months calendars
+	   $rwrule_nextmonth_stduser = array('start' =>'_fn_month_start(1)',
+										 'end' =>  '_fn_month_end(1)',
+										 'users' => $user_id
+										 );
 
 		 // next months events
 	   $this->calendars['/nextmonth/events.ics']
 		 =& $this->_cprw_vcdef($this->_events_proto,
-							  $username . '/nextmonth/events.ics',
-							 "events in next month for $username", 							 
-							  '_fn_month_start(1)', '_fn_month_end(1)',
-							  $user_id);
+							   $username . '/nextmonth/events.ics',
+							   "events in next month for $username", 							 
+							   $rwrule_nextmonth_stduser
+							   );
 
-		 // next months tasks
-	   $this->calendars['/nextmonth/tasks.ics']
-		 =& $this->_cprw_vcdef($this->_tasks_proto,
-							  $username . '/nextmonth/tasks.ics',
-							 "tasks in next month for $username", 							 
-							  '_fn_month_start(1)', '_fn_month_end(1)',
-							  $user_id);
+// 		 // next months tasks
+// 	   $this->calendars['/nextmonth/tasks.ics']
+// 		 =& $this->_cprw_vcdef($this->_tasks_proto,
+// 							  $username . '/nextmonth/tasks.ics',
+// 							 "tasks in next month for $username", 							 
+// 							  '_fn_month_start(1)', '_fn_month_end(1)',
+// 							  $user_id);
 
 		 // next months freebusy
 	   $this->calendars['/nextmonth/freebusy.ifb']
 		 =& $this->_cprw_vcdef($this->_freebusy_proto,
 							  $username . '/nextmonth/freebusy.ifb',
 							 "freebusy times for $username in next month (based on events calendar)",
-							  '_fn_month_start(1)', '_fn_month_end(1)',
-							  $user_id);
-
+							   $rwrule_nextmonth_stduser
+							   );
 
 
 	   return count($this->calendars);
@@ -382,32 +402,26 @@
 	  * @param VCalDefAr $oldcdf original vcdef array
 	  * @param string $name name for the new calendar
 	  * @param string $desc short description of the new calendar
-	  * @param string $start startdate (directive) for the new calendar
-	  * @param string $end enddate (directive) for the new calendar
-	  * @param id $user_id id of the user
+	  * @param string $rwrules rewrite rules, a hash of keys and new values for the associated
+	  * content fields.
 	  * @return VCalDefAr new deepcoy with some fields changed of $oldcdf 
 	  */
 	  function _cprw_vcdef(&$ofield,
-						$name,
-						$desc,
-						 $start, $end,
-						 $user_id)
+						   $name,
+						   $desc,
+						   &$rwrules)
 	 {
 	   if (is_array($ofield)){
 		 $nfield = array();
 		 foreach($ofield as $key => $val){
 		   if ($key == 'lpath' || $key == 'url'){
 			 $nfield[$key] = $name;
-		   }elseif($key == 'start'){
-			 $nfield[$key] = $start;
 		   }elseif($key == 'description'){
 			 $nfield[$key] = $desc;
-		   }elseif($key == 'end'){
-			 $nfield[$key] = $end;
-		   }elseif($key == 'users'){
-			 $nfield[$key]= $user_id;
+		   }elseif($nv = $rwrules[$key]){
+			 $nfield[$key] = $nv;
 		   }else{
-			 $nfield[$key] = $this->_cprw_vcdef($val,$name, $desc, $start, $end, $user_id);
+			 $nfield[$key] = $this->_cprw_vcdef($val,$name, $desc, $rwrules);
 		   }
 		 }
 		 return $nfield;

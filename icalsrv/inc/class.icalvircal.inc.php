@@ -58,7 +58,7 @@
 	  * the icaldata: most devices only support a selected set of VEVENT or VTODO fields.
 	  *
 	  * @var string $device_type
-	  * @todo this should be derived from the requesting http agent info
+	  * @note this should be derived from the requesting http agent info
 	  */
 	 var $deviceType = 'all';
 
@@ -167,7 +167,7 @@ error_log('icalvircal.export_vcal-search:'. print_r($rh_def['qarg'],true));
 		  if($this->ivdebug)
 			  error_log("\n icalvircal.export: rsc:". $rsc_class . ' '. count($ids)
 					  . " elms to export[");
-error_log('element-ids:[' . print_r($ids, true) . ']');		  
+		  //error_log('element-ids:[' . print_r($ids, true) . ']');		  
 		  $hndarg3 = (!empty($rh_def['hndarg3'])) ? $rh_def['hndarg3'] : null;
 		  $rschnd =& CreateObject($rh_def['hnd'],null,$this->deviceType, $hndarg3);
 		  if (! is_object($rschnd)){
@@ -217,7 +217,6 @@ error_log('element-ids:[' . print_r($ids, true) . ']');
 	   * @return RscUpdateTable|false a hash with for each resource
 	   * (by classname) a list of ids of updated elements in that resource 
 	   * On error: false
-	   * @todo code the function...
 	   */
 	  function import_vcal(&$vcal)
 	  {

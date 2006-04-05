@@ -1,5 +1,63 @@
 /*! \page pageicalsrvreleaselog IcalSrv Release Log
 
+
+\section secrel0933ngb1 Beta Release 0.9.33-ng-a3 of NG (New Generation) version
+
+- release date: 20060403
+- file: icalsrv-with-doc-0.9.33-ng-a3.tgz
+- depends on EgwIcal v0.9.30NG or later
+- via:  cvs head  only and homepage
+
+\subsection subsecrel0933nga3changes Changes from previous version
+ - personal calendars now only deliver data filtered for the calendar of the requested user
+  (as they should!) For events the filtering is by  a 'users' filter. For tasks the
+   filtering is done by a info_responsible filter.
+
+\subsection subsecrel0933nga3bugs Found bugs and problems
+ - <b>PERSONAL CALENDARS DONOT RESPECT THE ACL SETTINGS OF THE USERS
+   AND GROUPS.</b> I have a new version where this works, but the session
+   intialisation is not reliable working
+- icalsrv enabled or not setting is not yet respected..
+- for now only predefined virtual calendar definitions available
+  no user definable configurability yet.
+- freebusy allows only export and only uses the events calendar
+- setup and authentication needs renewal.
+
+
+\section secrel0933nga2 Alpha Release 0.9.33-ng-a2 of NG (New Generation) version
+
+- release date: 20060329
+- file: icalsrv-with-doc-0.9.33-ng-a2.tgz
+- depends on EgwIcal v0.9.30NG or later
+- via:  cvs head  only and homepage
+
+\subsection subsecrel0933nga2changes Changes from previous version
+
+IcalSrv NG version completely rewritten:
+- icalsrv.php new features:
+  - works with virtual (personal- and system) calendars
+  - detects calendar requests based upon request path
+  - detects http_agent to set supportedFields for conversion.
+  - implements a /list.hml path to get a listing of available
+    system virtual calendars
+  - implements a /<user>/list.hml path to get a listing of available
+    personal virtual calendars
+- addition of new virtual calendar classes in icalsrv/inc
+- added freebusy calendars to the standard set of personal 
+ virtual calendars
+
+\subsection subsecrel0933nga2bugs Found bugs and problems
+
+- SEVERE missing: no (adapted) documentation written yet
+- for now only default virtual calendar definitions available
+  no user configurability yet
+- todo: freebusy allows only export and only uses the events calendar
+  no tasks yet.
+- SEVERE bug: personal calendars cannot yet read the calendar of the requested
+ user 
+
+
+
 \section secrel0908 Release 0.9.08 First Release as egw application
 
 - release date: 20060318

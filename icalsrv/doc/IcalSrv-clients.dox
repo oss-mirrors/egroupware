@@ -2,7 +2,7 @@
 @author JVL
 @date 20060314
 @version 0.9.01R2
-@todo edit and update the IcalSrv client information document.
+@todo edit and update the IcalSrv client information document. Especially with info on the two use case scenarios.
 
 On this page you will find some first reports on the use of Egroupware and IcalSrv 
 with specific clients.
@@ -73,6 +73,21 @@ info on local computer" or so and your done.
 Can be configured  as automatic, time triggered or manual.
 
 .....TBW.......
+Below an excerpt from a posting of mine:
+
+- Nevertheless, if you want to use this for synchronisation --at least
+ from KO to EGW-- your mentioned problems stay It can be done by saving
+ your remote EGW calendar resource in KO to local calendar (called
+ export in KO). Going offline and maybe editing the local KO
+ calendar. And later when online again importing this local calendar
+ again in the remote EGW calendar resource and the publishing it to
+ EGW.  Maybe not the easiest of things, but it works!
+ 
+ However for using it as a handy and fast remote (semi online)
+ interface for EGW, as alternative to the webbrowser, icalsrv works
+ great. IMHO...
+
+
 
 
 
@@ -210,6 +225,23 @@ percentage complete is not available in Evolution.
 
 
 ....TBW....
+
+@section secappleical Apple Ical client
+
+The famous client for the mac: <b>iCal</b> see @url http://www.apple.com/macosx/features/ical/
+
+
+
+
+@section secoutlookremcal Outlook with RemoteCalendars plugin
+
+Since a few weeks there is a sourceforge project that leverages the Outlook 
+program by providing a plugin to do ical over http:
+
+Outlook with RemoteCalendars-plugin see @url http://sourceforge.net/projects/remotecalendars
+
+......
+
 
 
 @section secfurtherclients Further Clients

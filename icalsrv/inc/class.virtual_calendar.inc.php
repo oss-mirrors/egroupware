@@ -183,10 +183,11 @@
 
 
 
-
-
-	 /** start: addgroup directive definitions
+	 /**
+	  * \addgroup directivedefs Directive definitions
+	  * @{
 	  */
+
 
 	 /** give start of week, relative to today, in Ymd time
 	  * the start is only roughly calculated, mostly a day before the first day
@@ -272,13 +273,10 @@
 
 	 }
 
-
-	 /** end: addgroup directive definitions
+	 /**
+	  * @}
+	  * end of directivedefs group
 	  */
-
-
-
-
 
 	  /** 
  	   * Convert a unix timestamp to a 6 field hash array in the current active timezone
@@ -338,14 +336,18 @@
 
 
 The virtual calendar is encoded into an array following the structure:
-version VCAE-v0.2
+version VC-0.2
 
 @verbatim
 
  $vcdef = array('lpath' => $lpcname,
                 'auth'  => $auth_needed,
+                'description'  => $descriptive_string,
+                'enabled' => $enabled,
+                'version' => 'vc-0.2',
                 'rscs'  => array($rsc_class => array(
                                                      'hnd' => $rschnd,
+                                                     'hndarg3' => $hnd_argument3,
                                                      'qmeth' => $qmeth,
                                                      'qarg' => $qarg,
                                                      'access' => $rights,
@@ -356,6 +358,12 @@ version VCAE-v0.2
                 );
 @endverbatim
 
+Below a simple example. Note that in this example three rewritable
+directives are used: <code> _fn_month_start()</code> and
+<code>_fn_month_end()</code>, that will expand to specific dates on
+load time of the definitions. That is when some virtual calendar
+<code>$vc</code> does a <code>$vc->fromArray($my_vcdef)</code>
+
 example:
 
 @verbatim
@@ -363,18 +371,22 @@ example:
 $vcdef =
   array('lpath' => 'demoical/personal.ics',
         'auth'  => ':basic',
+        'description'  => 'a calendar with personal events',
+        'enabled' => 1,
+        'version' => 'vc-0.2',
         'rscs'  =>
         array('calendar.bocalupdate' =>
               array(
                     'hnd'   => 'bocalupdate_vevents',
+                    'hndarg3' => null,
                     'qmeth' => 'search',
                     'qarg' =>
                     array(
-                          'start' => $last_year . "-01-01",
-                          'end'   => $next_year . "-12-31",
+                          'start' => '_fn_month_start()',
+                          'end'   => '_fn_month_end()',
                           'enum_recuring' => false,
                           'daywise'       => false,
-                          'owner'         => $GLOBALS['egw_info']['user']['account_id'],
+                          'owner'         => $user_id,
                           'date_format'   => 'server'
                           )
                     'access' => 'RW'
@@ -389,7 +401,7 @@ $vcdef =
                           'end'   => $next_year . "-12-31",
                           'enum_recuring' => false,
                           'daywise'       => false,
-                          'owner'         => '%fn_authuser',
+                          'owner'         => '_fn_authuser',
                           'date_format'   => 'server'
                           )
                     'access' => 'R'
@@ -398,8 +410,9 @@ $vcdef =
         )
 @endverbatim
 
-Each <code>'%fn_keyword()'</code> field will be evaluated (via lookup table for security)
-by a private class function.
+Just so will every directive <code>'_fn_keyword()'</code> field be
+evaluated (via lookup table for security) by a private class function from
+the @ref directivedefs group. 
 
 For example: <code>fn_authuser</code> will be executed by:
 @verbatim
@@ -409,9 +422,6 @@ For example: <code>fn_authuser</code> will be executed by:
    }
 @endverbatim
 
-
-@todo check how access rights in ACL terms are encoded and handled and use this in
- the virtual_calendar definitions
 
 	 */
 

@@ -30,8 +30,11 @@
    * It uses the technique of singleton classes: for each specific virtual calendar
    * a specific subclass of vircal_ardb is defined. When used it should a single
    * instance of it can be initialized and used to build calendars from.
+   * 
+   * To learn about the definitions of virtual calendar defs see
+   * @ref pagvircalarraydef
    *
-   * @sec secvircal_ardbsynopsis Synopsis
+   * @section secvircalardbsynopsis Synopsis
    *
    * To build a virtual_calendar named <code>/uk/holidays.ics</code> from a typical available
    * vircal_ardb subclass named <code>ukstd_vircal_ardb </code> we could use
@@ -85,11 +88,14 @@
 
 	 /** Initialize the storage in $calendars 
 	  * This method should be overwritten in subclasses!
+	  * @virtual
 	  */
 	 function rebuild_calendars()
 	 {
 	   $this->calendars = array();
 	 }
+
+
 
 	 /** Combine the resources of multiple vcdef s into a new rscs list
 	  * @private
@@ -108,117 +114,7 @@
 	  }
 
 
-
-
-
-	 //	  function _set_stdvircals_dummy1 (){
-// 	//   Get events from 3 years (last year, current, next), rather silly..  */
-// 	$last_year = date("Y")-1;
-// 	$next_year = date("Y")+1;
-
-// 	// E1.1: get period to be exported for events 
-// 	// For productivity this should be user configurable e.g. to be set via some sort of user
-// 	// preferences to be set via eGW. (config remote-iCalendar...)
-// 	$events_query = array('start' => $last_year . "-01-01",
-// 						  'end'   => $next_year . "-12-31",
-// 						  'enum_recuring' => false,
-// 						  'daywise'       => false,
-// 						  'owner'         => $GLOBALS['egw_info']['user']['account_id'],
-// 						  // timestamp in server time for boical class
-// 						  'date_format'   => 'server'
-// 						  );
-// 	$todos_query = array('col_filter' => array('type' => 'task'),
-// 						 'filter' => 'none',
-// 						 'order' => 'id_parent'
-// 						 );
-
-
    }
-
-
-
-/**
- * @page pagvircalarraydef Array Encoding of the Virtual Calendar Definitions
-
-
-The virtual calendar is encoded into an array following the structure:
-version VCAE-v0.2
-
-@verbatim
-
- $vcdef = array('lpath' => $lpcname,
-                'auth'  => $auth_needed,
-                'rscs'  => array($rsc_class => array(
-                                                     'hnd' => $rschnd,
-                                                     'qmeth' => $qmeth,
-                                                     'qarg' => $qarg,
-                                                     'access' => $rights,
-                                                     ),
-                                 ....                  ,
-                                 ....                  ,                                    
-                                 )
-                );
-@endverbatim
-
-example:
-
-@verbatim
-
-$vcdef =
-  array('lpath' => 'demoical/personal.ics',
-        'auth'  => ':basic',
-        'rscs'  =>
-        array('calendar.bocalupdate' =>
-              array(
-                    'hnd'   => 'bocalupdate_vevents',
-                    'qmeth' => 'search',
-                    'qarg' =>
-                    array(
-                          'start' => $last_year . "-01-01",
-                          'end'   => $next_year . "-12-31",
-                          'enum_recuring' => false,
-                          'daywise'       => false,
-                          'owner'         => $GLOBALS['egw_info']['user']['account_id'],
-                          'date_format'   => 'server'
-                          )
-                    'access' => 'RW'
-                    )
-              'infolog.boinfolog' =>
-              array(
-                    'hnd'   => 'boinfolog_vtodos',
-                    'qmeth' => 'search',
-                    'qarg' =>
-                    array(
-                          'start' => $last_year . "-01-01",
-                          'end'   => $next_year . "-12-31",
-                          'enum_recuring' => false,
-                          'daywise'       => false,
-                          'owner'         => '%fn_authuser',
-                          'date_format'   => 'server'
-                          )
-                    'access' => 'R'
-                    )
-              )
-        )
-@endverbatim
-
-Each <code>'%fn_keyword()'</code> field will be evaluated (via lookup table for security)
-by a private class function.
-
-For example: <code>fn_authuser</code> will be executed by:
-@verbatim
-   _fn_authuser()
-   {
-        return $GLOBALS['egw_info']['user']['account_id'];
-   }
-@endverbatim
-
-
-@todo check how access rights in ACL terms are encoded and handled and use this in
- the virtual_calendar definitions
-
-	 */
-
 
 
 
