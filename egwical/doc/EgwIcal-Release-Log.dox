@@ -1,5 +1,27 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
 
+\section secrel0930ngb1 Release 0.9.30-ng-b1 Beta1 Release with New API
+
+- release date: 20060404 
+- file: egwical-with-doc-0.9.30-ng-b1.tgz
+- via: homepage and (possibly) egroupware cvs
+
+\subsection subsecrel0930ngb1changes Changes from previous version
+Mostly update of the documentation pages and some minor bugfixes.
+ - ....
+
+\subsection subsecrel0930ngb1bugs Found bugs and problems
+
+@note this should be considered an beta release
+
+- vcalinfolog.compat is not yet tested
+- no version 1.0 recurrence support in bocalupdate-vevents yet
+- nothing yet tested for syncml compatibility
+- bocalupdate-vfreebusy has no import functionality
+- many test have to be done
+- tested only with php5 and 1.2rc8
+
+
 \section secrel0930nga2 Release 0.9.30-ng-a2 First Release with New API
 
 - release date: 20060329 
