@@ -4,6 +4,7 @@ add document to category	wiki	sl	Dodaj dokument v kategorijo
 added	wiki	sl	Dodan
 administration features are disabled for this wiki.	wiki	sl	Oksrbnikove možnosti so v tem wikiju onemogočene.
 admins	wiki	sl	oskrbniki
+after how many days should old versions of a page be removed (0 for never)	admin	sl	Po kolikih dneh se starejše različice strani odstranijo (0 za nikoli)
 allow anonymous access	admin	sl	dovoli anonimni dostop
 anonymous password	admin	sl	Geslo za anonimni dostop
 anonymous session type	admin	sl	Tip anonimnih sej
@@ -59,6 +60,8 @@ no only on request	admin	sl	Ne, samo na zahtevo
 not set	wiki	sl	ni nastavljen
 older	wiki	sl	Starejši
 only if browser supports a richtext-editor	admin	sl	Le, če brskalnik podpira urejevalnik obogatenega besedila
+path of the upload directory (has to be writable by the webserver!)	admin	sl	Mapa za nalaganje (spletni strežnika mora imeti pravico pisanja)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sl	Nalaganje slik z obogatenim urejevalnikom (pustite prazno če želite onemogočiti nalaganje)
 please contact the %1administrator%2 for assistance.	wiki	sl	Prosim, posvetujte se z %1oskrbnikom%2.
 preview	wiki	sl	Predogled
 preview of current version	wiki	sl	Predogled trenutne različice
@@ -79,6 +82,7 @@ this page can not be edited.	wiki	sl	Te strani ni mogoče urejati.
 twin pages	wiki	sl	Dvojne strani
 unblock	wiki	sl	Deblokiraj
 updates the preview	wiki	sl	Osveži predogled
+url of the upload directory	admin	sl	URL mape za nalaganje
 users	wiki	sl	uporabniki
 view document history	wiki	sl	Preglej zgodovino dokumenta
 visit %1 to set your user name	wiki	sl	Obišči %1 za nastavitev uporabniškega imena

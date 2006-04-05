@@ -24,7 +24,6 @@ as a subfolder of	felamimail	sl	kot podmapa v
 attachments	felamimail	sl	Priponke
 auto refresh folder list	felamimail	sl	Samodejno osveži seznam map
 back to folder	felamimail	sl	Nazaj v mapo
-bad reque	felamimail	sl	Napaka pri pošiljanju
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	sl	Glede na podane kriterije imajo prispela sporočila v seznamih različne barve ozadij. To pomaga pri razlikovanju med pošiljatelji sporočil, še posebej v poštnih seznamih.
 bcc	felamimail	sl	BCC
 before headers	felamimail	sl	Pred glavo sporočila
@@ -72,6 +71,7 @@ deleted folder successfully!	felamimail	sl	Mapa je bila uspešno izbrisana!
 disable	felamimail	sl	Onemogoči
 discard message	felamimail	sl	opusti sporočilo
 display message in new window	felamimail	sl	Prikaži obvestilo v novem oknu
+display messages in multiple windows	felamimail	sl	prikaži sporočila v več oknih
 display of html emails	felamimail	sl	Prikazovanje HTML sporočil
 display only when no plain text is available	felamimail	sl	Prikaži le, ko ni na voljo navadnega besedila
 display preferences	felamimail	sl	Prikaži nastavitve
@@ -90,11 +90,13 @@ download this as a file	felamimail	sl	Prenesi kot datoteko
 e-mail	felamimail	sl	E-Pošta
 e-mail address	felamimail	sl	E-Poštni naslov
 e-mail folders	felamimail	sl	E-Poštne mape
+edit email forwarding address	felamimail	sl	uredi posredovalni naslov E-pošte
 edit filter	felamimail	sl	Uredi filter
 edit rule	felamimail	sl	uredi pravilo
 edit selected	felamimail	sl	Uredi označeno
 edit vacation settings	felamimail	sl	uredi nastavitve "Na oddihu"
 email address	felamimail	sl	E-Poštni naslov
+email forwarding address	felamimail	sl	posredovalni naslov E-pošte
 email signature	felamimail	sl	E-poštni podpis
 empty trash	felamimail	sl	izprazni smeti
 enable	felamimail	sl	omogoči
@@ -162,29 +164,21 @@ imap server type	felamimail	sl	Tip IMAP strežnika
 imaps authentication	felamimail	sl	IMAPS avtentikacija
 imaps encryption only	felamimail	sl	Le IMAPS šifriranje
 in	felamimail	sl	v
-in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	sl	Da bo SquirrelMail lahko ponudil celoten nabor opcij, morate izdelati posebne mape, ki so naštete spodaj. Označite stikala in kliknite gumb Ustvari.
-in the center	felamimail	sl	na sredini
 index order	felamimail	sl	Vrstni red kazala
 info	felamimail	sl	Podatki
 invalid user name or password	felamimail	sl	Napačno uporabniško ime ali geslo
 javascript	felamimail	sl	Javascript
-keep a copy of the message in your inbox	felamimail	sl	obdrži kopijo sporočila v mapi dohodna
-kilobytes	felamimail	sl	kilobytov
+keep a copy of the message in your inbox	felamimail	sl	obdrži kopijo sporočila v mapi prejeto
+keep local copy of email	felamimail	sl	obdrži lokalno kopijo E-pošte
+kilobytes	felamimail	sl	kilobajtov
 language	felamimail	sl	Jezik
 last name	felamimail	sl	Priimek
 left	felamimail	sl	Levo
 less	felamimail	sl	manj
 less than	felamimail	sl	manj kot
-let this folder contain subfolders	felamimail	sl	Ta mapa naj vsebuje podmape
-light blue	felamimail	sl	Svetlo modra
-light cyan	felamimail	sl	Svetlo cianidna
 light gray	felamimail	sl	Svetlo siva
-light green	felamimail	sl	Svetlo zelena
-light magenta	felamimail	sl	Svetlo vijolična
-light yellow	felamimail	sl	Svetlo rumena
 list all	felamimail	sl	Izpiši vse
 location of buttons when composing	felamimail	sl	Položaj gumbov pri pisanju novega sporočila
-location of folder list	felamimail	sl	Položaj seznama map
 mail server login type	admin	sl	Način prijave v poštni strežnik
 mail settings	felamimail	sl	Nastavitve mape
 mainmessage	felamimail	sl	glavno sporočilo
@@ -200,28 +194,21 @@ mark selected as unread	felamimail	sl	Označi izbrana sporočila kot neprebrana
 match	felamimail	sl	Ujemanje
 matches	felamimail	sl	se ujema z
 matches regexp	felamimail	sl	se ujema z regularnim izrazom
-medium gray	felamimail	sl	Srednje siva
-message	felamimail	sl	Sporočilo
 message highlighting	felamimail	sl	Poudarjanje sporočil
 message list	felamimail	sl	Seznam sporočil
 messages	felamimail	sl	sporočila
-minute	felamimail	sl	Minuta
-minutes	felamimail	sl	Minut
 mon	felamimail	sl	pon
-more	felamimail	sl	več
 move	felamimail	sl	premakni
 move messages	felamimail	sl	premakni sporočila
 move selected to	felamimail	sl	premakni označeno v
 move to trash	felamimail	sl	Premakni v smeti
 moving messages to	felamimail	sl	premakni sporočilo v
-must be unique	felamimail	sl	Mora biti enolično
 name	felamimail	sl	Ime
 never display html emails	felamimail	sl	Nikoli ne prikaži HTML sporočil
 new	common	sl	Novo
 new filter	felamimail	sl	Nov filter
 next	felamimail	sl	Naslednji
 next message	felamimail	sl	naslednje sporočilo
-nickname	felamimail	sl	Vzdevek
 no filter	felamimail	sl	Brez filtra
 no folders found	felamimail	sl	Ne najdem map
 no folders were found to subscribe to!	felamimail	sl	Ni map za prijavo!
@@ -229,14 +216,9 @@ no folders were found to unsubscribe from!	felamimail	sl	Ni map za odjavo!
 no highlighting is defined	felamimail	sl	Poudarjanje ni definirano
 no messages found...	felamimail	sl	nobeno sporočilo ni najdeno
 no messages were selected.	felamimail	sl	Nobeno sporočilo ni izbrano
-no next message	felamimail	sl	ni naslednjega sporočila
-no notification	felamimail	sl	Brez obvestila
-no personal address book is defined. contact administrator.	felamimail	sl	Nimate osebnega adresarja. Obvestite oskrbnika.
-no persons matching your search was found	felamimail	sl	Ni oseb, ki bi ustrezale kriteriju
 no previous message	felamimail	sl	ni predhodnjega sporočila
 no valid emailprofile selected!!	felamimail	sl	Ni veljavnega E-poštnega profila!
 none	felamimail	sl	prazno
-number of messages to index	felamimail	sl	Število sporočil v kazalu
 on behalf of	felamimail	sl	v imenu
 one address is not valid	felamimail	sl	En naslov ni veljaven
 only inbox	felamimail	sl	Le INBOX nabiralnik
@@ -247,28 +229,20 @@ options	felamimail	sl	Možnosti
 organisation	felamimail	sl	organizacija
 organization	felamimail	sl	organizacija
 organization name	admin	sl	Ime organizacije
-oth	felamimail	sl	Drugo
 participants	felamimail	sl	Soudeleženci
 personal information	felamimail	sl	Osebni podatki
 please select a address	felamimail	sl	Izberite naslov
 please select the number of days to wait between responses	felamimail	sl	Izberite koliko dni naj počakam med odgovori
 please supply the message to send with auto-responses	felamimail	sl	Vpišite sporočilo, ki se bo poslalo pri samodejnem odgovoru
 posting	felamimail	sl	objavljanje
-preference file %1 not found. exiting abnormally	felamimail	sl	Ne najdem datoteke z nastavitvami %1. Nenormalen konec.
-preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	sl	Datoteka %1 z nastavitvami ne obstaja. Odjavite se in se ponovno prijavite, da boste izdelali privzeto datoteko z nastavitvami.
 previous	felamimail	sl	Predhodnji
 previous message	felamimail	sl	predhodnje sporočilo
 print it	felamimail	sl	natisni
 print this page	felamimail	sl	natisni to stran
-purge	felamimail	sl	počisti
 quicksearch	felamimail	sl	Hitro iskanje
 read	felamimail	sl	prebrano
-read da	felamimail	sl	Preberi
 reading	felamimail	sl	berem
-reason giv	felamimail	sl	Dan razlog
 recent	felamimail	sl	nedavno
-refresh folder list	felamimail	sl	Osveži seznam map
-refresh page	felamimail	sl	Osveži stran
 refresh time in minutes	felamimail	sl	Osveži čas v minutah
 remove	felamimail	sl	Odstrani
 remove immediately	felamimail	sl	Takoj odstrani
@@ -287,8 +261,6 @@ return	felamimail	sl	Vrnitev
 return to options page	felamimail	sl	Vrnitev na stran opcij
 right	felamimail	sl	Desno
 rule	felamimail	sl	Pravilo
-running squirrelmail version %1 (c) 1999-2000.	felamimail	sl	Teče na SquirrelMail različici %1 (c)1999-2000.
-same window - not functional yet	felamimail	sl	Isto okno - še ne deluje
 sat	felamimail	sl	sob
 save	felamimail	sl	Shrani
 save changes	felamimail	sl	shrani spremembe
@@ -296,19 +268,14 @@ script name	felamimail	sl	ime skripte
 script status	felamimail	sl	status skripte
 search	felamimail	sl	Iskanje
 search for	felamimail	sl	Išči
-seconds	felamimail	sl	Sekunde
 select	felamimail	sl	Označi
 select all	felamimail	sl	Označi vse
 select emailprofile	felamimail	sl	Izberite E-poštni profil
 select folder	felamimail	sl	izberi mapo
-select home email address	felamimail	sl	Izberite domači E-poštni naslov
-select work email address	felamimail	sl	Izberite službeni E-poštni naslov
 select your mail server type	admin	sl	Izberite tip poštnega strežnika
 send	felamimail	sl	Pošlji
 send a reject message	felamimail	sl	pošlji zavrnjeno sporočilo
-sent fold	felamimail	sl	Poslano
 sent folder	felamimail	sl	Mapa s poslanimi
-server respond	felamimail	sl	Odziv strežnika
 show header	felamimail	sl	pokaži glavo
 show new messages on main screen	felamimail	sl	Prikaži nova sporočila na začetnem zaslonu
 sieve settings	admin	sl	Nastavitve Sieve
@@ -321,10 +288,6 @@ size(...->0)	felamimail	sl	Velikost (... -> 0)
 size(0->...)	felamimail	sl	Velikost (0 -> ...)
 small view	felamimail	sl	skrčen pogled
 smtp settings	admin	sl	SMTP nastavitve
-some or all of the help documents are not present!	felamimail	sl	Nekateri ali vsi dokumenti s pomočjo manjkajo!
-source	felamimail	sl	Vir
-special folder options	felamimail	sl	Posebne nastavitve mape
-squirrelmail	felamimail	sl	SquirrelMail
 subject	felamimail	sl	Zadeva
 subject(a->z)	felamimail	sl	Zadeva (A->Z)
 subject(z->a)	felamimail	sl	Zadeva (Z->A)
@@ -332,38 +295,23 @@ submit	felamimail	sl	Pošlji
 subscribe	felamimail	sl	Prijavi
 subscribed	felamimail	sl	Prijavljen
 subscribed successfully!	felamimail	sl	Uspešno prijavljen!
-successfully saved display preferences!	felamimail	sl	Nastavitve prikaza so bile uspešno shranjene!
-successfully saved folder preferences!	felamimail	sl	Nastavitve mape so bile uspešno shranjene!
-successfully saved personal information!	felamimail	sl	Osebni podatki so bili uspešno shranjeni!
 sun	felamimail	sl	ned
-switch current folder to	felamimail	sl	trenutna mapa naj bo
 table of contents	felamimail	sl	Kazalo
 text only	felamimail	sl	Le besedilo
 the connection to the imap server failed!!	felamimail	sl	Povezava na IMAP strežnik ni uspela.
-the help has not been translated to %1.  it will be displayed in english instead.	felamimail	sl	Pomoč ni bila prevedena v %1. Namesto tega bo prikazana v angleščini.
-the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	sl	Vrstni red v kazalu določa, kako so razvrščena sporočila v kazalu sporočil. Prilagodite si ga lahko z dodajanjem, odstranjevanjem ali premikanjem stolpcev.
-the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	sl	Vrstni red sporočil v kazalu lahko prilagodite, da vsebuje elemente glave v poljubnem zaporedju.
-theme	felamimail	sl	Tema
+the mimeparser can not parse this message.	felamimail	sl	Mime razčlenjevalnik ne more razčleniti tega sporočila.
 then	felamimail	sl	POTEM
-these settings change the way your folders are displayed and manipulated.	felamimail	sl	Te nastavitve spreminjajo način, kako so prikazane in prirejene mape.
-this contains personal information about yourself such as your name, your email address, etc.	felamimail	sl	Tu so shranjeni vaši osebni podatki, npr. vaše ime, E-naslov itd.
 this folder is empty	felamimail	sl	TA MAPA JE PRAZNA
 this php has no imap support compiled in!!	felamimail	sl	Ta PHP ne vsebuje podpore za IMAP!
-this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	sl	Ta aplikacija je osnovana na SquirrelMail, ki je samostojen IMAP klient.<br>
 thu	felamimail	sl	čet
 to	felamimail	sl	Prejemnik
 to mail sent to	felamimail	sl	sporočilo poslano na
-to the left	felamimail	sl	na levo
-to the right	felamimail	sl	na desno
-top	felamimail	sl	Vrh
-translation location	felamimail	sl	Mesto prevodov
 translation preferences	felamimail	sl	Nastavitve prevodov
 translation server	felamimail	sl	Strežnik s prevodi
 trash fold	felamimail	sl	Koš
 trash folder	felamimail	sl	Mapa Koš
 tue	felamimail	sl	tor
 type	felamimail	sl	tip
-unable to list addresses from %1	felamimail	sl	Ne morem prikazati seznama naslovov iz %1.
 unflagged	felamimail	sl	brez zastavice
 unknown err	felamimail	sl	Neznana napaka
 unknown error	felamimail	sl	Neznana napaka
@@ -371,15 +319,11 @@ unknown sender	felamimail	sl	Neznan pošiljatelj
 unknown user or password incorrect.	felamimail	sl	Neznan uporabnik ali napačno geslo.
 unread	common	sl	Neprebrano
 unseen	felamimail	sl	Novo
-unseen and total	felamimail	sl	Nova in vsa
-unseen message notification	felamimail	sl	Obvestilo o novih sporočilih
-unseen message notification type	felamimail	sl	Tip obvestila o novih sporočilih
 unselect all	felamimail	sl	Odznači vse
 unsubscribe	felamimail	sl	Odjavi
 unsubscribed	felamimail	sl	Odjavljen
 unsubscribed successfully!	felamimail	sl	Uspešno odjavljen!
 up	felamimail	sl	gor
-update address	felamimail	sl	Posodobi naslov
 use <a href="%1">emailadmin</a> to create profiles	felamimail	sl	uporabi <a href="%1">EmailAdmin</a> za izdelavo profilov
 use a signature	felamimail	sl	Uporabi podpis
 use a signature?	felamimail	sl	Uporabim podpis?
@@ -398,16 +342,9 @@ viewing messages	felamimail	sl	Prikaz sporočil
 wed	felamimail	sl	sre
 welcome to %1's webmail system	felamimail	sl	Dobrodošli v WebMail sistem %1
 when deleting messages	felamimail	sl	Ob brisanju sporočil
-white	felamimail	sl	Bela
-width of folder list	felamimail	sl	Širina seznama map
 with message	felamimail	sl	s sporočilom
 with message "%1"	felamimail	sl	s sporočilom "%1"
 wrap incoming text at	felamimail	sl	Besedilo prelomi pri
 writing	felamimail	sl	pisanje
 wrote	felamimail	sl	je napisal
-you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	sl	Prilagodite si lahko način izgleda SquirrelMail-a, način prikaza podatkov, kot so barve, jezik in druge nastavitve.
-you can only edit one address at the time	felamimail	sl	Urejate lahko le en naslov naenkrat.
 you must login first.	felamimail	sl	Najprej se morate prijaviti.
-you need a valid user and password to access this page!	felamimail	sl	Za dostop do te strani potrebujete uporabniško ime in geslo!
-your search failed with the following error(s)	felamimail	sl	Vaše iskanje je neuspešno zaradi naslednjih napak:
-1	felamimail	sl	1

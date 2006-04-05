@@ -1,4 +1,4 @@
-a new ticket has been reported.	tts	sk	Bol ohlásený nový problém
+a new ticket has been reported.	tts	sk	Nový problém bol ohlásený.
 accept	tts	sk	PRIJA«
 accept the ticket into verification process.	tts	sk	Hlásenie bolo prijaté. Vyhodnocuje sa ïal¹í postup.
 accepted	tts	sk	PRIJATÝ
@@ -12,8 +12,8 @@ alert for emergency prio setting	tts	sk	Nastavujete prioritu na Havarijnú; prosí
 alert for high prio setting	tts	sk	Prosím zvá¾te, èi netreba zavola» adresátovi problému!
 assign tickets	tts	sk	Prideli»
 assign to	tts	sk	Prideli» (komu)
-assigned from	tts	sk	Pridelené (od)
-assigned to	tts	sk	Pridelené (komu)
+assigned from	tts	sk	Pridelené od
+assigned to	tts	sk	Pridelené komu
 billable hours	tts	sk	Úètovateµné hodiny
 billable hours changed	tts	sk	Úètovateµné hodiny zmenené
 billable hours rate	tts	sk	Hodinová sadzba
@@ -24,7 +24,7 @@ can make full changes	tts	sk	Mô¾e robi» plné zmeny
 category changed	tts	sk	Kategória zmenená
 check here to generate the state's id automatically or enter a particular id below.	tts	sk	Za¹krtnite ak chcete, aby sa ID vytvorilo automaticky. Alebo zadajte ID ruène.
 clear form	tts	sk	Vymaza» formulár
-close the invalid ticket.	tts	sk	UZAVRIE« neplatný problém.
+close the invalid ticket.	tts	sk	Uzavrie» neplatný problém.
 close ticket	tts	sk	Uzavrie» problém
 closed	tts	sk	UZAVRETÝ
 completed	tts	sk	HOTOVO
@@ -50,13 +50,13 @@ duplicate	tts	sk	DUPLIKÁT
 edit the state	tts	sk	Úprava stavu
 edit the transition	tts	sk	Úprava prechodu
 emergency	tts	sk	Havarijná
-error: the subject of the ticket is not specified.	tts	sk	CHYBA: Nezadali ste predmet problému
+error: the subject of the ticket is not specified.	tts	sk	CHYBA: Nezadali ste predmet problému.
 force	tts	sk	Vynúti»
 global categories	tts	sk	Globálne kategórie
 group ownership changed	tts	sk	Vlastnícka skupina zmenená
 history	tts	sk	História
-i worked on the ticket and the work requires validation.	tts	sk	Rie¹il som a potrebujem, aby vlastník problému OVERIL VÝSLEDKY.
-i worked on the ticket, but did not finish.	tts	sk	Rozpracoval som ho, ale zatiaµ NEDORIE©IL.
+i worked on the ticket and the work requires validation.	tts	sk	Rie¹il som a potrebujem, aby vlastník problému overil výsledky.
+i worked on the ticket, but did not finish.	tts	sk	Rozpracoval som ho, ale zatiaµ nedorie¹il.
 in progress	tts	sk	Rozpracovaný
 initial state	tts	sk	Východzí stav
 invalid	tts	sk	NEPLATNÝ
@@ -120,7 +120,7 @@ status/date closed	tts	sk	Stav/Dátum ukonèenia
 subject changed	tts	sk	Predmet zmenený
 target state	tts	sk	Cieµový stav
 test	tts	sk	TEST
-the closed ticket requires more work. reopen it.	tts	sk	Je uzavretý, ale potrebuje dorie¹i». OTVORI«.
+the closed ticket requires more work. reopen it.	tts	sk	Je uzavretý, ale potrebuje dorie¹i». Znovu otvori».
 the owner of the ticket was not able to confirm the issue.	tts	sk	Vlastník nepotvrdil platnos» problému; nebude sa rie¹i».
 the ticket has been accepted by the owner, who is about to work on it.	tts	sk	Hlásenie o probléme bolo preèítané. Vyhodnocuje sa ïal¹í postup.
 the ticket has been closed without resolution.	tts	sk	Problém bol uzavretý bez vyrie¹enia.
@@ -129,14 +129,14 @@ the ticket has been successfully resolved.	tts	sk	Problém bol úspe¹ne vyrie¹ený.
 the ticket has been verified and has to be worked on.	tts	sk	Problém je reálny a bude sa rie¹i».
 the ticket has been worked on and the work requires validation.	tts	sk	Problém bol rie¹ený. Treba e¹te overi», èi bolo rie¹enie úspe¹né.
 the ticket has been worked on, but requires more work.	tts	sk	Na probléme sa pracovalo, ale rie¹enie e¹te nie je dokonèené.
-the ticket is a duplicate of another ticket and should be closed.	tts	sk	DUPLIKÁT iného problému, uzavrie».
-the ticket is essentially not a duplicate of another ticket. reopen it.	tts	sk	Problém nie je duplicitný. ZNOVUOTVORI«.
-the ticket is invalid and cannot be worked on.	tts	sk	NEPLATNÝ, nedá sa spracova».
-the ticket resolution was successfully validated. close the ticket.	tts	sk	Problém bol úspe¹ne VYRIE©ENÝ. UZAVRIE«.
+the ticket is a duplicate of another ticket and should be closed.	tts	sk	Je to duplikát iného problému, uzavrie».
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	sk	Problém nie je duplicitný. Znovu otvori».
+the ticket is invalid and cannot be worked on.	tts	sk	Problém je neplatný, nedá sa spracova».
+the ticket resolution was successfully validated. close the ticket.	tts	sk	Problém bol úspe¹ne vyrie¹ený. Uzavrie».
 the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	sk	Problém bol vytvorený pred definovaním stavového diagramu a musí sa mu priradi» stav.
 the ticket was found a duplicate of another ticket.	tts	sk	Problém je duplikátom iného problému -u¾ bol predtým ohlásený.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	sk	Problémy na zozname sú v stave %1. Prosím, rozhodnite èo s nimi ïalej.
-the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	sk	NEDORIE©ENÝ - vyrie¹enie problému sa nepotvrdilo.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	sk	Vyrie¹enie sa nepotvrdilo, treba zvá¾i» ïal¹í postup a dorie¹i».
 this state means an open ticket	tts	sk	V tomto stave je problém otvorený.
 ticket	tts	sk	Problém
 ticket #	tts	sk	Problém è.
@@ -168,7 +168,7 @@ update ticket state	tts	sk	Aktualizova» stav problému
 updates ticket	tts	sk	Aktualizuje problém
 verified	tts	sk	POTVRDENÝ
 verify	tts	sk	POTVRDI«
-verify the ticket to work on it.	tts	sk	POTVRDI« problém -je reálny a bude sa rie¹i».
+verify the ticket to work on it.	tts	sk	Potvrdi» problém -je reálny a bude sa rie¹i».
 view all tickets	tts	sk	Zobazi» v¹etky problémy
 view job detail	tts	sk	Zobrazi» detail práce
 view only my open tickets	tts	sk	Zobrazi» len moje otvorené problémy

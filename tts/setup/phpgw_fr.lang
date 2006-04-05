@@ -1,3 +1,5 @@
+<div class="stateliststate">%1</div>	tts	fr	<div class="stateliststate">%1</div>
+<div class="stateliststate">%1</div> keep the present state	tts	fr	<div class="stateliststate">%1</div> Garder l'état tel quel
 a new ticket has been reported.	tts	fr	Un nouveau ticket a été créé
 accept	tts	fr	ACCEPTER
 accept the ticket into verification process.	tts	fr	Accepter le ticket pour vérification
@@ -7,6 +9,10 @@ add new ticket	tts	fr	Ajouter un nouveau ticket
 add ticket	tts	fr	Ajouter un ticket
 additional notes	tts	fr	Notes additionelles
 admin options	common	fr	Options d'Administration
+alert for critical prio setting	tts	fr	Vous avez choisi une priorité "Critique"; Assurez vous de savoir ce que cela signifie pour le destinataire du ticket, et n'oubliez pas de l'appeler immédiatement!
+alert for emergency prio setting	tts	fr	Vous avez choisi une priorité "Urgent"; Assurez vous de savoir ce que cela signifie pour le destinataire du ticket, et n'oubliez pas de l'appeler immédiatement!
+alert for high prio setting	tts	fr	Vous devriez appeler le destinataire de ce ticket!
+assign tickets	tts	fr	Assigner
 assign to	tts	fr	Assigner à
 assigned from	tts	fr	Assigné depuis
 assigned to	tts	fr	Assigné à
@@ -15,10 +21,13 @@ billable hours changed	tts	fr	Heures facturables changées
 billable hours rate	tts	fr	Taux d'heures facturables
 billable rate	tts	fr	Taux facturable
 billable rate changed	tts	fr	Taux facturable changé
+can assign to	tts	fr	Peut assigner des tickets
+can make full changes	tts	fr	Peut tout modifier
 category changed	tts	fr	Catégorie changée
 check here to generate the state's id automatically or enter a particular id below.	tts	fr	Cliquer ici pour générer un ID d'état ou entrer un ID ci dessous.
 clear form	tts	fr	Réinitialiser le formulaire
 close the invalid ticket.	tts	fr	Fermer le ticket invalide
+close ticket	tts	fr	Fermer le ticket
 closed	tts	fr	Fermé
 completed	tts	fr	COMPLÉTÉ
 configure the states	common	fr	Configurer les états
@@ -28,6 +37,7 @@ create new ticket	tts	fr	Créer un nouveau ticket
 create new transition	tts	fr	Créer une nouvelle transition
 creates a new ticket, returns ticket_id	tts	fr	Crée un nouveau ticket, retourne l'id du ticket
 creates a struct of tickets	tts	fr	Crée une structure de tickets
+critical	tts	fr	Critique
 date opened	tts	fr	Date d'ouverture
 default assign to	tts	fr	Assigné par défaut à
 default group	tts	fr	Groupe par défaut
@@ -36,9 +46,12 @@ delete the listed tickets.	tts	fr	Supprimer les tickets listés
 deleting the state	tts	fr	Supprimer l'état
 deleting the transition	tts	fr	Supprimer la transition
 detail	tts	fr	Détail
+due date	tts	fr	Date promise
+due date changed	tts	fr	Date promise changée
 duplicate	tts	fr	DUPLIQUÉ
 edit the state	tts	fr	Editer l'état
 edit the transition	tts	fr	Editer la transition
+emergency	tts	fr	Urgence
 error: the subject of the ticket is not specified.	tts	fr	ERREUR: Le sujet du ticket n'est pas spécifié.
 force	tts	fr	Force
 global categories	tts	fr	Catégories Globales
@@ -54,6 +67,8 @@ keep the present state [%1].	tts	fr	Conserver l'état [%1]
 latest note added	tts	fr	Dernière note ajoutée
 list of available tickets' states.	tts	fr	Liste des états disponibles
 list of available tickets' transitions.	tts	fr	Liste des transitions disponibles
+low	tts	fr	Bas
+mail owner on transition	tts	fr	Envoyer un mail au propriétaire à chaque transition
 missing description	tts	fr	Description manquante
 morework	tts	fr	RESTE DU TRAVAIL
 needswork	tts	fr	ENCORE BESOIN DE TRAVAILLER DESSUS
@@ -87,6 +102,8 @@ priority changed	tts	fr	Priorité changée
 put the preexistent ticket into the state %1.	tts	fr	Mettre les tickets précédents en l'état %1.
 re-assigned	tts	fr	Réassigné
 re-opened	tts	fr	Rouvert
+read tickets	tts	fr	Lire les tickets
+read tickets within group only	tts	fr	Lire les tickets du groupe seulement
 refresh every (seconds)	tts	fr	Rafraichir chaque (secondes)
 reopen	tts	fr	ROUVRIR
 reopened	tts	fr	RÉOUVERT
@@ -97,6 +114,7 @@ returns a struct of values of a single ticket	tts	fr	Retourne une structure de v
 returns the additional notes attached to a ticket	tts	fr	Retourne les notes additionnelles attachées à un ticket
 selected	tts	fr	Sélectionné
 show new/updated tickets on main screen	tts	fr	Montrer les nouveaux/modifiés tickets sur la page d'accueil
+small view	tts	fr	Petite vue
 source state	tts	fr	Etat d'origine
 state	tts	fr	Etat
 state changed	tts	fr	Etat changé
@@ -123,8 +141,12 @@ the ticket was existent before the petri net infrastructure was defined and shou
 the ticket was found a duplicate of another ticket.	tts	fr	Ce ticket existe déjà !
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	fr	Les tickets suivants sont dans l'état %1. Merci de décider ce que vous devez faire avec...
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	fr	La validation n'est pas bonne, il faut corriger d'autres choses.
+this state means an open ticket	tts	fr	Dans cet état, le ticket est ouvert
 ticket	tts	fr	Ticket
+ticket #	tts	fr	Ticket Num.
 ticket has been updated	tts	fr	Le ticket a été mis à jour
+ticket is not accessable	tts	fr	Le ticket n'est pas acceptable
+ticket is not accessible	tts	fr	Ce ticket n'est pas accessible
 tickets found %1	tts	fr	Tickets trouvés %1
 tickets open %1	tts	fr	Tickets ouverts %1
 tickets total %1	tts	fr	Tickets total %1
@@ -149,7 +171,6 @@ tts preferences	tts	fr	Système de tickets d'incidents - préférences
 undefined	tts	fr	INDÉFINI
 update ticket state	tts	fr	Mettre à jour l'état du ticket
 updates ticket	tts	fr	Met à jour le ticket
-use email notification	tts	fr	Utiliser la notification par EMail
 verified	tts	fr	VÉRIFIÉ
 verify	tts	fr	EN COURS DE VÉRIFICATION
 verify the ticket to work on it.	tts	fr	Vérifier le ticket pour pouvoir le traiter.
@@ -157,6 +178,7 @@ view all tickets	tts	fr	Voir tous les tickets
 view job detail	tts	fr	Voir le détail du travail
 view only my open tickets	tts	fr	Voir mes tickets ouverts
 view only open tickets	tts	fr	Voir tous les tickets ouverts
+wish	tts	fr	Voeux
 you can only close a ticket if it is assigned to you.	tts	fr	Vous pouvez fermer un ticket s'il vous est assigné.
 you want to delete the state %1 and associated transitions. are you sure?	tts	fr	Vous voulez effacer l'état %1 et ses transitions associées. Etes-vous sûr?
 you want to delete the state %1. are you sure?	tts	fr	Vous souhaitez supprimer l'état %1. Etes-vous sûr ?

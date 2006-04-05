@@ -5,9 +5,13 @@ admin passwort	emailadmin	sl	Oskrbnikovo geslo
 admin username	emailadmin	sl	Oskrbnikovo uporabniško ime
 advanced options	emailadmin	sl	Napredne izbire
 alternate email address	emailadmin	sl	Alternativen E-naslov
+any application	emailadmin	sl	katerakoli aplikacija
+any group	emailadmin	sl	katerakoli skupina
+application	emailadmin	sl	aplikacija
+can be used by application	emailadmin	sl	je lahko uporabljen iz aplikacije
+can be used by group	emailadmin	sl	je lahko uporabljen iz skupine
 cyrus imap server	emailadmin	sl	Cyrus IMAP strežnik
 cyrus imap server administration	emailadmin	sl	Upravljanje Cyrus IMAP strežnika
-cyrus imap server administratione	mailadmin	sl	Upravljanje Cyrus IMAP stre�nika
 default	emailadmin	sl	privzeto
 deliver extern	emailadmin	sl	zunanja dostava
 do you really want to delete this profile	emailadmin	sl	Ali res želite izbrisati ta profil?
@@ -17,10 +21,12 @@ email account active	emailadmin	sl	nabiralnik E-pošte je aktiven
 email address	emailadmin	sl	enaslov
 enable cyrus imap server administration	emailadmin	sl	omogoči upravljanje Cyrus IMAP strežnika
 enable sieve	emailadmin	sl	omogoči sita (Sieve)
+encryption settings	emailadmin	sl	nastavitve šifriranja
 enter your default mail domain (from: user@domain)	emailadmin	sl	vnesi privzeto domeno (oblika: uporabnik@domena)
 forward also to	emailadmin	sl	posreduj tudi
 forward email's to	emailadmin	sl	posreduj sporočila k
 forward only	emailadmin	sl	samo posreduj
+global options	emailadmin	sl	globalne možnosti
 imap admin password	admin	sl	Geslo oskrbnika IMAPa
 imap admin user	admin	sl	Uporabniško ime oskrbnika IMAP-a
 imap c-client version < 2001	emailadmin	sl	IMAP C-klient različica pred 2001
@@ -41,9 +47,12 @@ mail settings	admin	sl	Nastavitve E-pošte
 name of organisation	emailadmin	sl	ime organizacije
 no alternate email address	emailadmin	sl	ni alternativnega E-naslova
 no forwarding email address	emailadmin	sl	ni E-naslova za posredovanje
+order	emailadmin	sl	vrstni red
+organisation	emailadmin	sl	organizacija
 pop3 server hostname or ip address	emailadmin	sl	Ime ali IP POP3 strežnika
 pop3 server port	emailadmin	sl	Vrata POP3 strežnika
 postfix with ldap	emailadmin	sl	Končnica pri LDAP
+profile access rights	emailadmin	sl	pravice dostopa do profila
 profile list	emailadmin	sl	Seznam profilov
 profile name	emailadmin	sl	ime profila
 qmaildotmode	emailadmin	sl	način za qmaildot
@@ -52,10 +61,14 @@ quota settings	emailadmin	sl	Nastavitvev kvote
 remove	emailadmin	sl	odstrani
 select type of imap/pop3 server	emailadmin	sl	Izberite tip IMAP/POP3 strežnika
 select type of smtp server	emailadmin	sl	Izberite tip SMTP strežnika
+server settings	emailadmin	sl	nastavitve strežnika
 sieve server hostname or ip address	emailadmin	sl	IP ali naslov strežnika za sito (Sieve)
 sieve server port	emailadmin	sl	Vrata strežnika za sito (Sieve)
 sieve settings	emailadmin	sl	Nastavitve sita (Sieve)
+smtp authentication	emailadmin	sl	SMTP avtentikacija
+smtp options	emailadmin	sl	SMTP možnosti
 smtp server name	emailadmin	sl	ime SMTP strežnika
+smtp settings	emailadmin	sl	SMTP nastavitve
 smtp-server hostname or ip address	emailadmin	sl	Ime ali IP SMTP strežnika
 smtp-server port	emailadmin	sl	Vrata SMTP strežnika
 standard	emailadmin	sl	standarden
@@ -66,5 +79,8 @@ use ldap defaults	emailadmin	sl	uporabi privzeto za LDAP
 use smtp auth	emailadmin	sl	Uporabi SMTP avtentikacijo
 use tls authentication	emailadmin	sl	Uporabi TLS avtentikacijo
 use tls encryption	emailadmin	sl	Uporabi TLS enkripcijo
+user can edit forwarding address	emailadmin	sl	uporabnik lahko določa posredovalni naslov
+username (standard)	emailadmin	sl	uporabnik (standardno)
+username@domainname (virtual mail manager)	emailadmin	sl	uporabnik@domena (Virtual MAIL ManaGeR)
 users can define their own emailaccounts	emailadmin	sl	Uporabniki lahko določajo lastne E-poštne predale
 virtual mail manager	emailadmin	sl	Virtualni upravljalec E-pošte
