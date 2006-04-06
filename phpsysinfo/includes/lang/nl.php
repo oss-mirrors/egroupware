@@ -19,12 +19,20 @@
 //
 // $Id$
 
+if (PHP_OS == 'WINNT') {
+  $text['locale']         = 'dutch'; // (windows) 
+}
+else {	
+  $text['locale']         = 'nl-NL'; // (Linux and friends(?))
+}
+
 $text['title']          = 'Systeem Informatie';
 
 $text['vitals']         = 'Systeem overzicht';
 $text['hostname']       = 'Toegewezen naam';
 $text['ip']             = 'IP-adres';
 $text['kversion']       = 'Kernelversie';
+$text['dversion']       = 'Distributie';
 $text['uptime']         = 'Uptime';
 $text['users']          = 'Huidige gebruikers';
 $text['loadavg']        = 'Gemiddelde belasting';
@@ -32,12 +40,15 @@ $text['loadavg']        = 'Gemiddelde belasting';
 $text['hardware']       = 'Hardware overzicht';
 $text['numcpu']         = 'Processors';
 $text['cpumodel']       = 'Model';
-$text['mhz']            = 'Chip MHz';
-$text['cache']          = 'Buffergrootte';
+$text['cpuspeed']       = 'CPU snelheid';
+$text['busspeed']       = 'BUS snelheid';
+$text['cache']          = 'Cache grootte';
 $text['bogomips']       = 'Systeem Bogomips';
+
 $text['pci']            = 'PCI Apparaten';
 $text['ide']            = 'IDE Apparaten';
 $text['scsi']           = 'SCSI Apparaten';
+$text['usb']            = 'USB Apparaten';
 
 $text['netusage']       = 'Netwerkgebruik';
 $text['device']         = 'Apparaat';
@@ -68,12 +79,32 @@ $text['none']           = 'geen';
 
 $text['capacity']       = 'Capaciteit';
   
-$text['template']       = 'Model';
-$text['language']       = 'Language';
+$text['template']       = 'Opmaak-model';
+$text['language']       = 'Taal';
 $text['submit']         = 'Toepassen';
 $text['created']        = 'Gegenereerd door';
+$text['gen_time']       = 'op %d %B %Y, om %H:%M';
 
 $text['days']           = 'dagen';
 $text['hours']          = 'uren';
 $text['minutes']        = 'minuten';
+  
+$text['temperature']    = 'Temperatuur';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Waarde';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysterie';
+$text['s_limit']        = 'Limiet';
+$text['s_label']        = 'Omschrijving';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

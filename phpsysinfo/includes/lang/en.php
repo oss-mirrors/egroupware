@@ -25,6 +25,7 @@ $text['vitals']         = 'System Vital';
 $text['hostname']       = 'Canonical Hostname';
 $text['ip']             = 'Listening IP';
 $text['kversion']       = 'Kernel Version';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Uptime';
 $text['users']          = 'Current Users';
 $text['loadavg']        = 'Load Averages';
@@ -32,12 +33,15 @@ $text['loadavg']        = 'Load Averages';
 $text['hardware']       = 'Hardware Information';
 $text['numcpu']         = 'Processors';
 $text['cpumodel']       = 'Model';
-$text['mhz']            = 'Chip MHz';
+$text['cpuspeed']       = 'CPU Speed';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Cache Size';
 $text['bogomips']       = 'System Bogomips';
+
 $text['pci']            = 'PCI Devices';
 $text['ide']            = 'IDE Devices';
 $text['scsi']           = 'SCSI Devices';
+$text['usb']            = 'USB Devices';
 
 $text['netusage']       = 'Network Usage';
 $text['device']         = 'Device';
@@ -45,7 +49,7 @@ $text['received']       = 'Received';
 $text['sent']           = 'Sent';
 $text['errors']         = 'Err/Drop';
 
-$text['connections']	= 'Established Network Connections';
+$text['connections']    = 'Established Network Connections';
 
 $text['memusage']       = 'Memory Usage';
 $text['phymem']         = 'Physical Memory';
@@ -74,8 +78,29 @@ $text['template']       = 'Template';
 $text['language']       = 'Language';
 $text['submit']         = 'Submit';
 $text['created']        = 'Created by';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = 'days';
 $text['hours']          = 'hours';
 $text['minutes']        = 'minutes';
+
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

@@ -19,7 +19,7 @@
 //
 // $Id$
 
-$charset		= 'big5';
+$charset                = 'big5';
 
 $text['title']          = '系統資訊';
 
@@ -27,19 +27,23 @@ $text['vitals']         = '系統主要訊息';
 $text['hostname']       = '主機名稱';
 $text['ip']             = '主機對外 IP';
 $text['kversion']       = '核心版本';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = '開機時間';
 $text['users']          = '線上使用者';
 $text['loadavg']        = '平均負載';
 
 $text['hardware']       = '硬體資訊';
 $text['numcpu']         = '處理器數量';
-$text['cpumodel']       = 'Model';
-$text['mhz']            = '晶片速度';
+$text['cpumodel']       = 'CPU型號';
+$text['cpuspeed']       = '晶片速度';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = '快取大小';
 $text['bogomips']       = '系統 Bogomips';
+
 $text['pci']            = 'PCI 設備';
 $text['ide']            = 'IDE 設備';
 $text['scsi']           = 'SCSI 設備';
+$text['usb']            = 'USB 設備';
 
 $text['netusage']       = '網路使用量';
 $text['device']         = '網路設備';
@@ -68,14 +72,35 @@ $text['gb']             = 'GB';
 
 $text['none']           = '無';
 
-$text['capacity']       = '容量'; 
+$text['capacity']       = '容量';
 
 $text['template']       = '範本';
 $text['language']       = '語言';
 $text['submit']         = '送出';
 $text['created']        = '產生由';
+$text['locale']         = 'zh_TW.Big5';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = '天';
 $text['hours']          = '小時';
 $text['minutes']        = '分鐘';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

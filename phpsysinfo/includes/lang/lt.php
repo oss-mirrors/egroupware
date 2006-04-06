@@ -19,61 +19,91 @@
 //
 // $Id$
 
-$text['title']          = 'Sistemos Informacija';
+$charset                = 'utf-8';
 
-$text['vitals']         = 'Sisteminiai Duomenys';
-$text['hostname']       = 'Unikalus Hostas';
-$text['ip']             = 'IP Adresas';
-$text['kversion']       = 'Kernelio Versija';
+$text['title']          = 'Informacija apie sistemą';
+
+$text['vitals']         = 'Sistema';
+$text['hostname']       = 'Kompiuterio vardas';
+$text['ip']             = 'IP adresas';
+$text['kversion']       = 'Branduolio versija';
+$text['dversion']       = 'Distribucija';
 $text['uptime']         = 'Veikimo laikas';
 $text['users']          = 'Vartotojai';
-$text['loadavg']        = 'U?krovimo vidurkiai';
+$text['loadavg']        = 'Apkrovos vidurkiai';
 
-$text['hardware']       = 'Aparat?riniai duomenys';
-$text['numcpu']         = 'Procesorius';
+$text['hardware']       = 'Aparatūra';
+$text['numcpu']         = 'Procesorių kiekis';
 $text['cpumodel']       = 'Modelis';
-$text['mhz']            = 'Da?nis MHz';
-$text['cache']          = 'Cache Dydis';
-$text['bogomips']       = 'Sistemos "Bogomips"';
-$text['pci']            = 'PCI ?renginiai';
-$text['ide']            = 'IDE ?renginiai';
-$text['scsi']           = 'SCSI ?renginiai';
+$text['cpuspeed']       = 'Procesoriaus dažnis';
+$text['busspeed']       = 'Magistralės dažnis';
+$text['cache']          = 'Spartinančioji atmintinė';
+$text['bogomips']       = 'Sistemos „bogomips“';
 
-$text['netusage']       = 'Tinklo Informacija';
-$text['device']         = '?renginys';
-$text['received']       = 'Parsi?sta';
-$text['sent']           = 'I?si?sta';
-$text['errors']         = 'Klaidos/Numesti Paketai';
+$text['pci']            = 'PCI įrenginiai';
+$text['ide']            = 'IDE įrenginiai';
+$text['scsi']           = 'SCSI įrenginiai';
+$text['usb']            = 'USB įrenginiai';
 
-$text['memusage']       = 'Atminties Informacija';
-$text['phymem']         = 'Operatyvioji Atmintis';
-$text['swap']           = 'Disko Swap Particija';
+$text['netusage']       = 'Tinklas';
+$text['device']         = 'Įrenginys';
+$text['received']       = 'Gauta';
+$text['sent']           = 'Išsiųsta';
+$text['errors']         = 'Klaidos/pamesti paketai';
 
-$text['fs']             = 'HDD informacija';
-$text['mount']          = 'U?montuota';
-$text['partition']      = 'Particija';
+$text['memusage']       = 'Atmintis';
+$text['phymem']         = 'Operatyvioji atmintis';
+$text['swap']           = 'Disko swap skirsnis';
 
-$text['percent']        = 'I?reik?ta Procentais';
+$text['fs']             = 'Bylų sistema';
+$text['mount']          = 'Prijungimo vieta';
+$text['partition']      = 'Skirsnis';
+
+$text['percent']        = 'Apkrova procentais';
 $text['type']           = 'Tipas';
 $text['free']           = 'Laisva';
-$text['used']           = 'U?imta';
+$text['used']           = 'Apkrauta';
 $text['size']           = 'Dydis';
-$text['totals']         = 'I? Viso';
+$text['totals']         = 'Iš viso';
 
 $text['kb']             = 'KB';
 $text['mb']             = 'MB';
 $text['gb']             = 'GB';
 
-$text['none']           = 'none';
+$text['none']           = 'nėra';
 
-$text['capacity']       = 'Capacity';
+$text['capacity']       = 'Talpa';
   
-$text['template']       = 'Template';
-$text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['template']       = 'Šablonas';
+$text['language']       = 'Kalba';
+$text['submit']         = 'Atnaujinti';
+$text['created']        = 'Naudojamas';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
-$text['minutes']        = 'minutes';
+$text['days']           = 'd.';
+$text['hours']          = 'val.';
+$text['minutes']        = 'min.';
+
+$text['temperature']    = 'Temperatūra';
+$text['voltage']        = 'Įtampa';
+$text['fans']           = 'Aušintuvai';
+$text['s_value']        = 'Reikšmė';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Maks';
+$text['s_div']          = 'Div';
+// Hysteresis is the value that defines at which temp
+// the alarm should deactivate. If you have set an
+// alarm to go off when CPU temp reaches 60 degrees,
+// a hysteresis set at, say, 58 degress will deactivate
+// the alarm when temp goes below 58 degrees.
+$text['hysteresis']     = 'Signalizuojama ties';
+$text['s_limit']        = 'Riba';
+$text['s_label']        = 'Pavadinimas';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'aps./min';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

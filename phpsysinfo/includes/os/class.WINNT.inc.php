@@ -55,7 +55,6 @@ class sysinfo {
 
     foreach($arrWEBMCol as $objItem)
     {
-        reset($arrProp);
         $arrInstance = array();
         foreach($arrProp as $propItem)
         {

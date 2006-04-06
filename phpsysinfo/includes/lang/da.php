@@ -24,9 +24,10 @@
 $text['title']          = 'Systeminformation';
 
 $text['vitals']         = 'Systemenheder';
-$text['hostname']       = 'Kanonisk værtsnavn';
+$text['hostname']       = 'Konisk værtsnavn';
 $text['ip']             = 'IP-adresse, der lyttes på';
 $text['kversion']       = 'Kerne-version';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Oppetid';
 $text['users']          = 'Antal brugere logget ind lige nu';
 $text['loadavg']        = 'Ressourceforbrug - gennemsnit';
@@ -34,12 +35,15 @@ $text['loadavg']        = 'Ressourceforbrug - gennemsnit';
 $text['hardware']       = 'Hardwareinformation';
 $text['numcpu']         = 'Processorer';
 $text['cpumodel']       = 'Model';
-$text['mhz']            = 'MHz';
+$text['cpuspeed']       = 'CPU Speed';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Cachestørrelse';
 $text['bogomips']       = 'Bogomips';
+
 $text['pci']            = 'PCI-enheder';
 $text['ide']            = 'IDE-enheder';
 $text['scsi']           = 'SCSI-enheder';
+$text['usb']            = 'USB-enheder';
 
 $text['netusage']       = 'Netværkstrafik';
 $text['device']         = 'Enhed';
@@ -74,8 +78,29 @@ $text['template']       = 'Skabelon';
 $text['language']       = 'Sprog';
 $text['submit']         = 'Okay';
 $text['created']        = 'Lavet af';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = 'dage';
 $text['hours']          = 'timer';
 $text['minutes']        = 'minutter';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

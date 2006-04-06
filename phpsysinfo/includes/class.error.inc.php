@@ -14,7 +14,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // $Id$
 
-class Error {
+class phpsysinfo_Error {
 
   // Array which holds the error messages
   var $arrErrorList 	= array();

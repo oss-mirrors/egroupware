@@ -19,13 +19,14 @@
 //
 // $Id$
 // Translated by Álvaro Reguly - alvaro at reguly dot net
-
+//
 $text['title']          = 'Informações do Sistema';
 
 $text['vitals']         = 'Sistema';
 $text['hostname']       = 'Nome Canônico';
 $text['ip']             = 'Números IP';
 $text['kversion']       = 'Versão do Kernel';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Uptime';
 $text['users']          = 'Usuários Conectados';
 $text['loadavg']        = 'Carga do Sistema';
@@ -33,12 +34,15 @@ $text['loadavg']        = 'Carga do Sistema';
 $text['hardware']       = 'Informações do Hardware';
 $text['numcpu']         = 'Processadores';
 $text['cpumodel']       = 'Modelo';
-$text['mhz']            = 'MHz';
+$text['cpuspeed']       = 'CPU Speed';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Tamanho Cache';
 $text['bogomips']       = 'Bogomips';
+
 $text['pci']            = 'Dispositivos PCI';
 $text['ide']            = 'Dispositivos IDE';
 $text['scsi']           = 'Dispositivos SCSI';
+$text['usb']            = 'Dispositivos USB';
 
 $text['netusage']       = 'Utilização da Rede';
 $text['device']         = 'Dispositivo';
@@ -73,8 +77,29 @@ $text['template']       = 'Molde';
 $text['language']       = 'Língua';
 $text['submit']         = 'Enviar';
 $text['created']        = 'Criado por';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = 'dias';
 $text['hours']          = 'horas';
 $text['minutes']        = 'minutos';
+
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

@@ -27,6 +27,7 @@ $text['vitals']         = 'Perustiedot';
 $text['hostname']       = 'Kanoninen nimi';
 $text['ip']             = 'K&auml;ytett&auml;v&auml; IP';
 $text['kversion']       = 'Kernelin versio';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Toiminta-aika';
 $text['users']          = 'K&auml;ytt&auml;ji&auml;';
 $text['loadavg']        = 'Keskikuormat';
@@ -34,12 +35,15 @@ $text['loadavg']        = 'Keskikuormat';
 $text['hardware']       = 'Laitteisto';
 $text['numcpu']         = 'Prosessoreita';
 $text['cpumodel']       = 'Malli';
-$text['mhz']            = 'Piirin MHz';
+$text['cpuspeed']       = 'Piirin MHz';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'V&auml;limuistin koko';
 $text['bogomips']       = 'J&auml;rjestelm&auml;n Bogomipsit';
+
 $text['pci']            = 'PCI Laitteet';
 $text['ide']            = 'IDE Laitteet';
 $text['scsi']           = 'SCSI Laitteet';
+$text['usb']            = 'USB Laitteet';
 
 $text['netusage']       = 'Verkon k&auml;ytt&ouml;';
 $text['device']         = 'Laite';
@@ -74,8 +78,29 @@ $text['template']       = 'Malli';
 $text['language']       = 'Kieli';
 $text['submit']         = 'Valitse';
 $text['created']        = 'Luonut';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = 'p&auml;iv&auml;&auml;';
 $text['hours']          = 'tuntia';
 $text['minutes']        = 'minuuttia';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

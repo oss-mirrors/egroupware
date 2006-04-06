@@ -27,6 +27,7 @@ $text['vitals']         = 'Stan systemu';
 $text['hostname']       = 'Nazwa kanoniczna hosta';
 $text['ip']             = 'IP nas³uchuj±cy';
 $text['kversion']       = 'Wersja j±dra';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Uptime';
 $text['users']          = 'Obecnych u¿ytkownków';
 $text['loadavg']        = 'Obci±¿enia ¶rednie';
@@ -34,12 +35,15 @@ $text['loadavg']        = 'Obci±¿enia ¶rednie';
 $text['hardware']       = 'Informacja o sprzêcie';
 $text['numcpu']         = 'Procesory';
 $text['cpumodel']       = 'Model';
-$text['mhz']            = 'Chip MHz';
+$text['cpuspeed']       = 'Cz&#281;stotliwo&#347;&#263;';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Cache Size';
 $text['bogomips']       = 'System Bogomips';
+
 $text['pci']            = 'Urz±dzenia PCI';
 $text['ide']            = 'Urz±dzenia IDE';
 $text['scsi']           = 'Urz±dzenia SCSI';
+$text['usb']            = 'Urz±dzenia USB';
 
 $text['netusage']       = 'Sieæ';
 $text['device']         = 'Urz±dzenie';
@@ -68,14 +72,36 @@ $text['gb']             = 'GB';
 
 $text['none']           = 'brak';
 
-$text['capacity']       = 'Rozmiar'; 
+$text['capacity']       = 'Rozmiar';
 
 $text['template']       = 'Szablon';
 $text['language']       = 'Jêzyk';
 $text['submit']         = 'Wy¶lij';
 $text['created']        = 'Utworzone przez';
+$text['locale']         = 'pl_PL'; 
+$text['gen_time']       = " %e %b %Y o godzinie %T";
 
 $text['days']           = 'dni';
 $text['hours']          = 'godzin';
 $text['minutes']        = 'minut';
+
+$text['sensors']        = 'Czujniki (lm_sensors)';
+$text['temperature']    = 'Temperatura';
+$text['voltage']        = 'Napiêcia';
+$text['fans']           = 'Wiatraczki';
+$text['s_value']        = 'Warto¶æ';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hystereza';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Nazwa';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

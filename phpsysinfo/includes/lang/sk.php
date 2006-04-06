@@ -27,6 +27,7 @@ $text['vitals']         = 'Základné informácie';
 $text['hostname']       = 'Meno poèítaèa';
 $text['ip']             = 'IP adresa';
 $text['kversion']       = 'Verzia jadra';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Uptime';
 $text['users']          = 'Prihlásených u¾ívateåov';
 $text['loadavg']        = 'Priemer loadu';
@@ -34,12 +35,15 @@ $text['loadavg']        = 'Priemer loadu';
 $text['hardware']       = 'Hardwarové informácie';
 $text['numcpu']         = 'Procesory';
 $text['cpumodel']       = 'Model';
-$text['mhz']            = 'Frekvencia';
+$text['cpuspeed']       = 'Frekvencia';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Veåkos» cache';
 $text['bogomips']       = 'Bogomipsov';
+
 $text['pci']            = 'PCI zariadenia';
 $text['ide']            = 'IDE zariadenia';
 $text['scsi']           = 'SCSI zariadenia';
+$text['usb']            = 'USB zariadenia';
 
 $text['netusage']       = 'Pou¾ívanie siete';
 $text['device']         = 'Zariadenia';
@@ -74,8 +78,29 @@ $text['template']       = '©ablóna';
 $text['language']       = 'Jazyk';
 $text['submit']         = 'Odosla»';
 $text['created']        = 'Vytvorené pomocou';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = 'dní';
 $text['hours']          = 'hodín';
 $text['minutes']        = 'minút';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

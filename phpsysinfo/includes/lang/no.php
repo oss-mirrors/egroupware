@@ -19,33 +19,37 @@
 //
 // $Id$
 
-$text['title']          = 'System Informasjon';
+$text['title']          = 'Systeminformasjon';
 
 $text['vitals']         = 'Vital Informasjon';
 $text['hostname']       = 'Egentlige Tjenernavn';
-$text['ip']             = 'IP Adresse';
+$text['ip']             = 'IP-Adresse';
 $text['kversion']       = 'Kernel Versjon';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Oppetid';
 $text['users']          = 'Antall Brukere';
 $text['loadavg']        = 'Gj.Snitt Belastning';
 
-$text['hardware']       = 'Hardware Informasjon';
+$text['hardware']       = 'Maskinvareinformasjon';
 $text['numcpu']         = 'Prosessorer';
 $text['cpumodel']       = 'Modell';
-$text['mhz']            = 'Brikke MHz';
+$text['cpuspeed']       = 'Brikke MHz';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Cache St&oslash;rrelse';
 $text['bogomips']       = 'System Bogomips';
+
 $text['pci']            = 'PCI Enheter';
 $text['ide']            = 'IDE Enheter';
 $text['scsi']           = 'SCSI Enheter';
+$text['usb']            = 'USB Enheter';
 
-$text['netusage']       = 'Nettverk Bruk';
+$text['netusage']       = 'Nettverksbruk';
 $text['device']         = 'Enhet';
 $text['received']       = 'Mottatt';
 $text['sent']           = 'Sendt';
 $text['errors']         = 'Feil/Dropp';
 
-$text['memusage']       = 'Minne Bruk';
+$text['memusage']       = 'Minnebruk';
 $text['phymem']         = 'Fysisk Minne';
 $text['swap']           = 'Disk Swap';
 
@@ -53,7 +57,7 @@ $text['fs']             = 'Monterte Filsystemer';
 $text['mount']          = 'Punkt';
 $text['partition']      = 'Partisjon';
 
-$text['percent']        = 'Kapasitet Prosent';
+$text['percent']        = 'Brukt Kapasitet i Prosent';
 $text['type']           = 'Type';
 $text['free']           = 'Ledig';
 $text['used']           = 'Brukt';
@@ -66,14 +70,35 @@ $text['gb']             = 'GB';
 
 $text['none']           = 'Ingen';
 
-$text['capacity']       = 'Capacity';
+$text['capacity']       = 'Kapasitet';
   
-$text['template']       = 'Template';
-$text['language']       = 'Language';
-$text['submit']         = 'Submit';
-$text['created']        = 'Created by';
+$text['template']       = 'Mal';
+$text['language']       = 'Spr&aring;k';
+$text['submit']         = 'Endre';
+$text['created']        = 'Generert av';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
-$text['days']           = 'days';
-$text['hours']          = 'hours';
-$text['minutes']        = 'minutes';
+$text['days']           = 'dager';
+$text['hours']          = 'timer';
+$text['minutes']        = 'minutter';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

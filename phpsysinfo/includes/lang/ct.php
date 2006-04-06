@@ -25,6 +25,7 @@ $text['vitals']         = 'Vitals del Sistema';
 $text['hostname']       = 'Nom Canònic';
 $text['ip']             = 'Adreça IP';
 $text['kversion']       = 'Versi&oacute; del Kernel';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Temps Aixecat';
 $text['users']          = 'Usuaris Actuals';
 $text['loadavg']        = 'Càrrega Promitg';
@@ -32,12 +33,15 @@ $text['loadavg']        = 'Càrrega Promitg';
 $text['hardware']       = 'Informaci&oacute; del Maquinari';
 $text['numcpu']         = 'Processadors';
 $text['cpumodel']       = 'Model';
-$text['mhz']            = 'Xip MHz';
+$text['cpuspeed']       = 'Xip MHz';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Tamany Memòria Cau';
 $text['bogomips']       = 'Bogomips';
+
 $text['pci']            = 'Dispositius PCI';
 $text['ide']            = 'Dispositius IDE';
 $text['scsi']           = 'Dispositius SCSI';
+$text['usb']            = 'Dispositius USB';
 
 $text['netusage']       = 'Ús de la Xarxa';
 $text['device']         = 'Dispositiu';
@@ -71,8 +75,29 @@ $text['template']       = 'Plantilla';
 $text['language']       = 'Llengüa';
 $text['submit']         = 'Enviar';
 $text['created']        = 'Creat per';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = 'dies';
 $text['hours']          = 'hores';
 $text['minutes']        = 'minuts';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

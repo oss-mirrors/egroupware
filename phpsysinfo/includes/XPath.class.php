@@ -9,7 +9,7 @@
  * +======================================================================================================+
  * | What Is XPath:
  * | --------------
- * | - "What SQL is for a rational database, XPath is for an XML document." -- Sam Blum
+ * | - "What SQL is for a relational database, XPath is for an XML document." -- Sam Blum
  * | - "The primary purpose of XPath is to address parts of an XML document. In support of this 
  * |    primary purpose, it also provides basic facilities for manipulting it." -- W3C
  * | 
@@ -27,7 +27,8 @@
  * | Main Active Authors:
  * | --------------------
  * | Nigel Swinson <nigelswinson@users.sourceforge.net>
- * |   Started around 2001-07 and creator of V1.N.x branches.
+ * |   Started around 2001-07, saved phpxml from near death and renamed to Php.XPath
+ * |   Restructured XPath code to stay in line with XPath spec.
  * | Sam Blum <bs_php@infeer.com>
  * |   Started around 2001-09 1st major restruct (V2.0) and testbench initiator.   
  * |   2nd (V3.0) major rewrite in 2002-02
@@ -38,10 +39,10 @@
  * +------------------------------------------------------------------------------------------------------+
  * | Code Structure:
  * | --------------_
- * | In V3.0 the code has been split in 3 main objects. To keep usability easy all 3 
+ * | The class is split into 3 main objects. To keep usability easy all 3 
  * | objects are in this file (but may be split in 3 file in future).
  * |   +-------------+ 
- * |   |  XPathBase  | XPathBase holds general- and debugging-functions. 
+ * |   |  XPathBase  | XPathBase holds general and debugging functions. 
  * |   +------+------+
  * |          v      
  * |   +-------------+ XPathEngine is the implementation of the W3C XPath spec. It contains the 
@@ -54,7 +55,7 @@
  * +------------------------------------------------------------------------------------------------------+
  * | Usage:
  * | ------
- * | Scroll to the end of this file and you will find a little sample code to get you started
+ * | Scroll to the end of this php file and you will find a short sample code to get you started
  * +------------------------------------------------------------------------------------------------------+
  * | Glossary:
  * | ---------
@@ -62,7 +63,7 @@
  * |     
  * | Document: (full node tree, XML-tree)
  * |     After a XML-source has been imported and parsed, it's stored as a tree of nodes sometimes 
- * |     refered as 'document'.
+ * |     refered to as 'document'.
  * |     
  * | AbsoluteXPath: (xPath, xPathSet)
  * |     A absolute XPath is a string. It 'points' to *one* node in the XML-document. We use the
@@ -78,7 +79,7 @@
  * |     
  * | XPathQuery: (xquery, query)
  * |     A xPath-query is a string that is matched against the XML-document. The result of the match 
- * |     is a xPathSet (vector of xPath's). It's always possable to pass a single absolutXPath 
+ * |     is a xPathSet (vector of xPath's). It's always possible to pass a single absoluteXPath 
  * |     instead of a xPath-query. A valid xPathQuery could look like this:
  * |     '//XXX/*[contains(., "foo")]/..' (See the link in 'What Is XPath' to learn more).
  * |     
@@ -100,7 +101,7 @@
  * |             'depth' 1     BBB[1] CCC[1] BBB[2]               (NOTE: Is always size of child nodes+1)
  * | - The Node
  * |   --------
- * | The node itself is an structure desiged mainly to be used in conection with the interface of PHP.XPath.
+ * | The node itself is an structure desiged mainly to be used in connection with the interface of PHP.XPath.
  * | That means it's possible for functions to return a sub-node-tree that can be used as input of an other 
  * | PHP.XPath function.
  * | 
@@ -117,6 +118,7 @@
  * |     'pos'         => 0,       # Is the zero-based position this node has in the parent's 'childNodes'-list.
  * |     'contextPos'  => 1,       # Is the one-based position this node has by counting the siblings tags (tags with same name)
  * |     'xpath'       => ''       # Is the abs. XPath to this node.
+ * |     'generated_id'=> ''       # The id returned for this node by generate-id() (attribute and text nodes not supported)
  * | 
  * | - The NodeIndex
  * |   -------------
@@ -127,25 +129,42 @@
  * | License:
  * | --------
  * | The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
- * | you may Version 1.1 (the "License"); you may not use this file except in compliance with the
- * | License. You may obtain a copy of the License at http://www.mozilla.org/MPL/ .
- * |
- * | Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY 
+ * | you may not use this file except in compliance with the License. You may obtain a copy of the 
+ * | License at http://www.mozilla.org/MPL/ 
+ * | 
+ * | Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY
  * | OF ANY KIND, either express or implied. See the License for the specific language governing 
- * | rights and limitations under the License.
+ * | rights and limitations under the License. 
  * |
- * | The Original Code is <phpXML/>.
- * |
+ * | The Original Code is <phpXML/>. 
+ * | 
  * | The Initial Developer of the Original Code is Michael P. Mehl. Portions created by Michael 
  * | P. Mehl are Copyright (C) 2001 Michael P. Mehl. All Rights Reserved.
+ * |
+ * | Contributor(s): N.Swinson / S.Blum / D.Allen
  * | 
- * +------------------------------------------------------------------------------------------------------+
- * +------------------------------------------------------------------------------------------------------+
+ * | Alternatively, the contents of this file may be used under the terms of either of the GNU 
+ * | General Public License Version 2 or later (the "GPL"), or the GNU Lesser General Public 
+ * | License Version 2.1 or later (the "LGPL"), in which case the provisions of the GPL or the 
+ * | LGPL License are applicable instead of those above.  If you wish to allow use of your version 
+ * | of this file only under the terms of the GPL or the LGPL License and not to allow others to 
+ * | use your version of this file under the MPL, indicate your decision by deleting the 
+ * | provisions above and replace them with the notice and other provisions required by the 
+ * | GPL or the LGPL License.  If you do not delete the provisions above, a recipient may use 
+ * | your version of this file under either the MPL, the GPL or the LGPL License. 
+ * | 
+ * +======================================================================================================+
  *
  * @author  S.Blum / N.Swinson / D.Allen / (P.Mehl)
  * @link    http://sourceforge.net/projects/phpxpath/
- * @version 3.0 beta
+ * @version 3.5
+ * @CVS $Id$
  */
+
+// Include guard, protects file being included twice
+$ConstantName = 'INCLUDED_'.strtoupper(__FILE__);
+if (defined($ConstantName)) return;
+define($ConstantName,1, TRUE);
 
 /************************************************************************************************
 * ===============================================================================================
@@ -158,13 +177,57 @@ class XPathBase {
   // As debugging of the xml parse is spread across several functions, we need to make this a member.
   var $bDebugXmlParse = FALSE;
 
+  // do we want to do profiling?
+  var $bClassProfiling = FALSE;
+
+  // Used to help navigate through the begin/end debug calls
+  var $iDebugNextLinkNumber = 1;
+  var $aDebugOpenLinks = array();
+  var $aDebugFunctions = array(
+          //'_evaluatePrimaryExpr',
+          //'_evaluateExpr',
+          //'_evaluateStep',
+          //'_checkPredicates',
+          //'_evaluateFunction',
+          //'_evaluateOperator',
+          //'_evaluatePathExpr',
+               );
+
   /**
    * Constructor
    */
   function XPathBase() {
     # $this->bDebugXmlParse = TRUE;
     $this->properties['verboseLevel'] = 1;  // 0=silent, 1 and above produce verbose output (an echo to screen). 
+    
+    if (!isSet($_ENV)) {  // Note: $_ENV introduced in 4.1.0. In earlier versions, use $HTTP_ENV_VARS.
+      $_ENV = $GLOBALS['HTTP_ENV_VARS'];
+    }
+    
+    // Windows 95/98 do not support file locking. Detecting OS (Operation System) and setting the 
+    // properties['OS_supports_flock'] to FALSE if win 95/98 is detected. 
+    // This will surpress the file locking error reported from win 98 users when exportToFile() is called.
+    // May have to add more OS's to the list in future (Macs?).
+    // ### Note that it's only the FAT and NFS file systems that are really a problem.  NTFS and
+    // the latest php libs do support flock()
+    $_ENV['OS'] = isSet($_ENV['OS']) ? $_ENV['OS'] : 'Unknown OS';
+    switch ($_ENV['OS']) { 
+      case 'Windows_95':
+      case 'Windows_98':
+      case 'Unknown OS':
+        // should catch Mac OS X compatible environment 
+        if (!empty($_SERVER['SERVER_SOFTWARE']) 
+            && preg_match('/Darwin/',$_SERVER['SERVER_SOFTWARE'])) { 
+           // fall-through 
+        } else { 
+           $this->properties['OS_supports_flock'] = FALSE; 
+           break; 
+        }
+      default:
+        $this->properties['OS_supports_flock'] = TRUE;
+    }
   }
+  
   
   /**
    * Resets the object so it's able to take a new xml sting/file
@@ -181,11 +244,10 @@ class XPathBase {
   //-----------------------------------------------------------------------------------------
   
   /**
-   * This method checks the right ammount and match of brackets
+   * This method checks the right amount and match of brackets
    *
    * @param     $term (string) String in which is checked.
    * @return          (bool)   TRUE: OK / FALSE: KO  
-   * @see       _evaluateStep()
    */
   function _bracketsCheck($term) {
     $leng = strlen($term);
@@ -243,7 +305,6 @@ class XPathBase {
    * @param     $expression (string) String that should be searched.
    * @return                (int)    This method returns -1 if no string was found, 
    *                                 otherwise the offset at which the string was found.
-   * @see       _evaluateStep()
    */
   function _searchString($term, $expression) {
     $bracketCounter = 0; // Record where we are in the brackets. 
@@ -281,7 +342,7 @@ class XPathBase {
     // Note that it doesn't make sense for $separator to itself contain (,),[ or ],
     // but as this is a private function we should be ok.
     $resultArr   = array();
-    $bracketCounter = 0;	// Record where we are in the brackets. 
+    $bracketCounter = 0;  // Record where we are in the brackets. 
     do { // BEGIN try block
       // Check if any separator is in the term
       $sepLeng =  strlen($separator);
@@ -293,7 +354,7 @@ class XPathBase {
       // Make a substitute separator out of 'unused chars'.
       $substituteSep = str_repeat(chr(2), $sepLeng);
       
-      // Now determin the first bracket '(' or '['.
+      // Now determine the first bracket '(' or '['.
       $tmp1 = strpos($term, '(');
       $tmp2 = strpos($term, '[');
       if ($tmp1===FALSE) {
@@ -342,6 +403,93 @@ class XPathBase {
     // Return the results that we found. May be a array with 1 entry.
     return $resultArr;
   }
+
+  /**
+   * Split a string at it's groups, ie bracketed expressions
+   * 
+   * Returns an array of strings, when concatenated together would produce the original
+   * string.  ie a(b)cde(f)(g) would map to:
+   * array ('a', '(b)', cde', '(f)', '(g)')
+   *
+   * @param     $string  (string) The string to process
+   * @param     $open    (string) The substring for the open of a group
+   * @param     $close   (string) The substring for the close of a group
+   * @return             (array)  The parsed string, see above
+   */
+  function _getEndGroups($string, $open='[', $close=']') {
+    // Note that it doesn't make sense for $separator to itself contain (,),[ or ],
+    // but as this is a private function we should be ok.
+    $resultArr   = array();
+    do { // BEGIN try block
+      // Check if we have both an open and a close tag      
+      if (empty($open) and empty($close)) { // no separator found so end now
+        $resultArr[] = $string;
+        break; // try-block
+      }
+
+      if (empty($string)) {
+        $resultArr[] = $string;
+        break; // try-block
+      }
+
+      
+      while (!empty($string)) {
+        // Now determine the first bracket '(' or '['.
+        $openPos = strpos($string, $open);
+        $closePos = strpos($string, $close);
+        if ($openPos===FALSE || $closePos===FALSE) {
+          // Oh, no more groups to be found then.  Quit
+          $resultArr[] = $string;
+          break;
+        }
+
+        // Sanity check
+        if ($openPos > $closePos) {
+          // Malformed string, dump the rest and quit.
+          $resultArr[] = $string;
+          break;
+        }
+
+        // Get prefix string part before the first bracket.
+        $preStr = substr($string, 0, $openPos);
+        // This is the first string that will go in our output
+        if (!empty($preStr))
+          $resultArr[] = $preStr;
+
+        // Skip over what we've proceed, including the open char
+        $string = substr($string, $openPos + 1 - strlen($string));
+
+        // Find the next open char and adjust our close char
+//echo "close: $closePos\nopen: $openPos\n\n";
+        $closePos -= $openPos + 1;
+        $openPos = strpos($string, $open);
+//echo "close: $closePos\nopen: $openPos\n\n";
+
+        // While we have found nesting...
+        while ($openPos && $closePos && ($closePos > $openPos)) {
+          // Find another close pos after the one we are looking at
+          $closePos = strpos($string, $close, $closePos + 1);
+          // And skip our open
+          $openPos = strpos($string, $open, $openPos + 1);
+        }
+//echo "close: $closePos\nopen: $openPos\n\n";
+
+        // If we now have a close pos, then it's the end of the group.
+        if ($closePos === FALSE) {
+          // We didn't... so bail dumping what was left
+          $resultArr[] = $open.$string;
+          break;
+        }
+
+        // We did, so we can extract the group
+        $resultArr[] = $open.substr($string, 0, $closePos + 1);
+        // Skip what we have processed
+        $string = substr($string, $closePos + 1);
+      }
+    } while (FALSE); // End try block
+    // Return the results that we found. May be a array with 1 entry.
+    return $resultArr;
+  }
   
   /**
    * Retrieves a substring before a delimiter.
@@ -383,12 +531,13 @@ class XPathBase {
   //-----------------------------------------------------------------------------------------
   
   /**
-   * Turn verbose (error) output ON or OFF
+   * Alter the verbose (error) level reporting.
    *
-   * Pass a bool. TRUE to turn on, FALSE to turn off.
-   * Pass a int >0 to reach higher levels of verbosity (for future use).
+   * Pass an int. >0 to turn on, 0 to turn off.  The higher the number, the 
+   * higher the level of verbosity. By default, the class has a verbose level 
+   * of 1.
    *
-   * @param $levelOfVerbosity  (mixed) default is 0 = off
+   * @param $levelOfVerbosity (int) default is 1 = on
    */
   function setVerbose($levelOfVerbosity = 1) {
     $level = -1;
@@ -478,18 +627,29 @@ class XPathBase {
    * @author    Nigel Swinson <nigelswinson@users.sourceforge.net>
    * @author    Sam   Blum    <bs_php@infeer.com>
    * @param     $functionName (string) the name of the function we are beginning to debug
+   * @param     $bDebugFlag   (bool) TRUE if we are to draw a call stack, FALSE otherwise
    * @return                  (array)  the output from the microtime() function.
    * @see       _closeDebugFunction()
    */
-  function _beginDebugFunction($functionName) {
-    $fileName = basename(__FILE__);
-    static $color = array('green','blue','red','lime','fuchsia', 'aqua');
-    static $colIndex = -1;
-    $colIndex++;
-    $pre = '<pre STYLE="border:solid thin '. $color[$colIndex % 6] . '; padding:5">';
-    $out = '<div align="left"> ' . $pre . "<STRONG>{$fileName} : {$functionName}</STRONG><HR>";
-    echo $out;
-    return microtime();
+  function _beginDebugFunction($functionName, $bDebugFlag) {
+    if ($bDebugFlag) {
+      $fileName = basename(__FILE__);
+      static $color = array('green','blue','red','lime','fuchsia', 'aqua');
+      static $colIndex = -1;
+      $colIndex++;
+      echo '<div style="clear:both" align="left"> ';
+      echo '<pre STYLE="border:solid thin '. $color[$colIndex % 6] . '; padding:5">';
+      echo '<a style="float:right;margin:5px" name="'.$this->iDebugNextLinkNumber.'Open" href="#'.$this->iDebugNextLinkNumber.'Close">Function Close '.$this->iDebugNextLinkNumber.'</a>';
+      echo "<STRONG>{$fileName} : {$functionName}</STRONG>";
+      echo '<hr style="clear:both">';
+      array_push($this->aDebugOpenLinks, $this->iDebugNextLinkNumber);
+      $this->iDebugNextLinkNumber++;
+    }
+
+    if ($this->bClassProfiling)
+      $this->_ProfBegin($FunctionName);
+
+    return TRUE;
   }
   
   /**
@@ -499,38 +659,148 @@ class XPathBase {
    * is clear to the debugging user.
    *
    * @author    Nigel Swinson <nigelswinson@users.sourceforge.net>
-   * @param     $aStartTime   (array) the time that the function call was started.
+   * @param     $functionName (string) the name of the function we are beginning to debug
    * @param     $return_value (mixed) the return value from the function call that 
    *                                  we are debugging
+   * @param     $bDebugFlag   (bool) TRUE if we are to draw a call stack, FALSE otherwise
    */
-  function _closeDebugFunction($aStartTime, $returnValue = "") {
-    echo "<hr>";
-    if (isSet($returnValue)) {
+  function _closeDebugFunction($functionName, $returnValue = "", $bDebugFlag) {
+    if ($bDebugFlag) {
+      echo "<hr>";
+      $iOpenLinkNumber = array_pop($this->aDebugOpenLinks);
+      echo '<a style="float:right" name="'.$iOpenLinkNumber.'Close" href="#'.$iOpenLinkNumber.'Open">Function Open '.$iOpenLinkNumber.'</a>';
+      if (isSet($returnValue)) {
       if (is_array($returnValue))
         echo "Return Value: ".print_r($returnValue)."\n";
       else if (is_numeric($returnValue)) 
-        echo "Return Value: '$return_value'\n";
+        echo "Return Value: ".(string)$returnValue."\n";
       else if (is_bool($returnValue)) 
         echo "Return Value: ".($returnValue ? "TRUE" : "FALSE")."\n";
       else 
         echo "Return Value: \"".htmlspecialchars($returnValue)."\"\n";
     }
-    $this->_profileFunction($aStartTime, "Function took");
-    echo " \n</pre></div>";
+      echo '<br style="clear:both">';
+      echo " \n</pre></div>";
+    }
+  
+    if ($this->bClassProfiling)
+      $this->_ProfEnd($FunctionName);
+
+    return TRUE;
   }
   
   /**
-   * Call to return time since start of function for Profiling
-   *
-   * @param     $aStartTime  (array)  the time that the function call was started.
-   * @param     $alertString (string) the string to describe what has just finished happening
+    * Profile begin call
+    */
+  function _ProfBegin($sonFuncName) {
+    static $entryTmpl = array ( 'start' => array(),
+                  'recursiveCount' => 0,
+                  'totTime' => 0,
+                  'callCount' => 0  );
+    $now = explode(' ', microtime());
+
+    if (empty($this->callStack)) {
+      $fatherFuncName = '';
+    }
+    else {
+      $fatherFuncName = $this->callStack[sizeOf($this->callStack)-1];
+      $fatherEntry = &$this->profile[$fatherFuncName];
+    }
+    $this->callStack[] = $sonFuncName;
+
+    if (!isSet($this->profile[$sonFuncName])) {
+      $this->profile[$sonFuncName] = $entryTmpl;
+    }
+
+    $sonEntry = &$this->profile[$sonFuncName];
+    $sonEntry['callCount']++;
+    // if we call the t's the same function let the time run, otherwise sum up
+    if ($fatherFuncName == $sonFuncName) {
+      $sonEntry['recursiveCount']++;
+    }
+    if (!empty($fatherFuncName)) {
+      $last = $fatherEntry['start'];
+    $fatherEntry['totTime'] += round( (($now[1] - $last[1]) + ($now[0] - $last[0]))*10000 );
+      $fatherEntry['start'] = 0;
+    }
+    $sonEntry['start'] = explode(' ', microtime());
+  }
+
+  /**
+   * Profile end call
    */
-  function _profileFunction($aStartTime, $alertString) {
-    // Print the time it took to call this function.
-    $now   = explode(' ', microtime());
-    $last  = explode(' ', $aStartTime);
-    $delta = (round( (($now[1] - $last[1]) + ($now[0] - $last[0]))*1000 ));
-    echo "\n{$alertString} <strong>{$delta} ms</strong>";
+  function _ProfEnd($sonFuncName) {
+    $now = explode(' ', microtime());
+
+    array_pop($this->callStack);
+    if (empty($this->callStack)) {
+      $fatherFuncName = '';
+    }
+    else {
+      $fatherFuncName = $this->callStack[sizeOf($this->callStack)-1];
+      $fatherEntry = &$this->profile[$fatherFuncName];
+    }
+    $sonEntry = &$this->profile[$sonFuncName];
+    if (empty($sonEntry)) {
+      echo "ERROR in profEnd(): '$funcNam' not in list. Seams it was never started ;o)";
+    }
+
+    $last = $sonEntry['start'];
+    $sonEntry['totTime'] += round( (($now[1] - $last[1]) + ($now[0] - $last[0]))*10000 );
+    $sonEntry['start'] = 0;
+    if (!empty($fatherEntry)) $fatherEntry['start'] = explode(' ', microtime());
+  }
+
+    /**
+   * Show profile gathered so far as HTML table
+   */
+  function _ProfileToHtml() {
+    $sortArr = array();
+    if (empty($this->profile)) return '';
+    reset($this->profile);
+    while (list($funcName) = each($this->profile)) {
+      $sortArrKey[] = $this->profile[$funcName]['totTime'];
+      $sortArrVal[] = $funcName;
+    }
+    //echo '<pre>';var_dump($sortArrVal);echo '</pre>';
+    array_multisort ($sortArrKey, SORT_DESC, $sortArrVal );
+    //echo '<pre>';var_dump($sortArrVal);echo '</pre>';
+
+    $totTime = 0;
+    $size = sizeOf($sortArrVal);
+    for ($i=0; $i<$size; $i++) {
+      $funcName = &$sortArrVal[$i];
+      $totTime += $this->profile[$funcName]['totTime'];
+    }
+    $out = '<table border="1">';
+    $out .='<tr align="center" bgcolor="#bcd6f1"><th>Function</th><th> % </th><th>Total [ms]</th><th># Call</th><th>[ms] per Call</th><th># Recursive</th></tr>';
+    for ($i=0; $i<$size; $i++) {
+      $funcName = &$sortArrVal[$i];
+      $row = &$this->profile[$funcName];
+      $procent = round($row['totTime']*100/$totTime);
+      if ($procent>20) $bgc = '#ff8080';
+      elseif ($procent>15) $bgc = '#ff9999';
+      elseif ($procent>10) $bgc = '#ffcccc';
+      elseif ($procent>5) $bgc = '#ffffcc';
+      else $bgc = '#66ff99';
+
+      $out .="<tr align='center' bgcolor='{$bgc}'>";
+      $out .='<td>'. $funcName .'</td><td>'. $procent .'% '.'</td><td>'. $row['totTime']/10 .'</td><td>'. $row['callCount'] .'</td><td>'. round($row['totTime']/10/$row['callCount'],2) .'</td><td>'. $row['recursiveCount'].'</td>';
+      $out .='</tr>';
+    }
+    $out .= '</table> Total Time [' . $totTime/10 .'ms]' ;
+
+    echo $out;
+    return TRUE;
+  }
+
+  /**
+   * Echo an XPath context for diagnostic purposes
+   *
+   * @param $context   (array)   An XPath context
+   */
+  function _printContext($context) {
+    echo "{$context['nodePath']}({$context['pos']}/{$context['size']})";
   }
   
   /**
@@ -591,11 +861,11 @@ class XPathEngine extends XPathBase {
   //   -or-     =>     _or_
   //  
   // This array contains a list of all valid axes that can be evaluated in an
-  // XPath expression.
-  var $axes = array ( 'child', 'descendant', 'parent', 'ancestor',
-    'following_sibling', 'preceding_sibling', 'following', 'preceding',
-    'attribute', 'text', 'namespace', 'self', 'descendant_or_self',
-    'ancestor_or_self' );
+  // XPath query.
+  var $axes = array ( 'ancestor', 'ancestor_or_self', 'attribute', 'child', 'descendant', 
+                        'descendant_or_self', 'following', 'following_sibling',  
+                        'namespace', 'parent', 'preceding', 'preceding_sibling', 'self' 
+     );
   
   // List of supported XPath functions.
   // What a stupid idea from W3C to take function name containing a '-' (dash)
@@ -607,20 +877,23 @@ class XPathEngine extends XPathBase {
   //   string-length    => string_length
   //
   // This array contains a list of all valid functions that can be evaluated
-  // in an XPath expression.
+  // in an XPath query.
   var $functions = array ( 'last', 'position', 'count', 'id', 'name',
     'string', 'concat', 'starts_with', 'contains', 'substring_before',
     'substring_after', 'substring', 'string_length', 'normalize_space', 'translate',
     'boolean', 'not', 'true', 'false', 'lang', 'number', 'sum', 'floor',
-    'ceiling', 'round' );
+    'ceiling', 'round', 'x_lower', 'x_upper', 'generate_id' );
     
   // List of supported XPath operators.
   //
   // This array contains a list of all valid operators that can be evaluated
-  // in a predicate of an XPath expression. The list is ordered by the
+  // in a predicate of an XPath query. The list is ordered by the
   // precedence of the operators (lowest precedence first).
   var $operators = array( ' or ', ' and ', '=', '!=', '<=', '<', '>=', '>',
-    '+', '-', '*', ' div ', ' mod ' );
+    '+', '-', '*', ' div ', ' mod ', ' | ');
+
+  // List of literals from the xPath string.
+  var $axPathLiterals = array();
   
   // The index and tree that is created during the analysis of an XML source.
   var $nodeIndex = array();
@@ -637,6 +910,7 @@ class XPathEngine extends XPathBase {
                      'contextPos'  => 1,  // Is the one-based position this node has by counting the siblings tags (tags with same name)
                      'xpath'       => ''  // Is the abs. XPath to this node.
                    );
+  var $_indexIsDirty = FALSE;
 
   
   // These variable used during the parse XML source
@@ -652,7 +926,8 @@ class XPathEngine extends XPathBase {
   // This is the array of error strings, to keep consistency.
   var $errorStrings = array(
     'AbsoluteXPathRequired' => "The supplied xPath '%s' does not *uniquely* describe a node in the xml document.",
-    'NoNodeMatch'           => "The supplied xPath-query '%s' does not match *any* node in the xml document."
+    'NoNodeMatch'           => "The supplied xPath-query '%s' does not match *any* node in the xml document.",
+    'RootNodeAlreadyExists' => "An xml document may have only one root node."
     );
     
   /**
@@ -670,7 +945,7 @@ class XPathEngine extends XPathBase {
    *                                 <optionID>=><value>, ...).  See PHP's
    *                                 xml_parser_set_option() docu for a list of possible
    *                                 options.
-   * @see   importFromFile(), importFromString(), setXmlOption()
+   * @see   importFromFile(), importFromString(), setXmlOptions()
    */
   function XPathEngine($userXmlOptions=array()) {
     parent::XPathBase();
@@ -701,6 +976,8 @@ class XPathEngine extends XPathBase {
     $this->nodeIndex     = array();
     $this->nodeRoot      = array();
     $this->nodeStack     = array();
+    $this->aLiterals     = array();
+    $this->_indexIsDirty = FALSE;
   }
   
   
@@ -731,7 +1008,7 @@ class XPathEngine extends XPathBase {
   }
   
   /**
-   * xml_parser_set_option -- set options in an XML parser.
+   * Set an xml_parser_set_option()
    *
    * @param $optionID (int) The option ID (e.g. XML_OPTION_SKIP_WHITE)
    * @param $value    (int) The option value.
@@ -741,9 +1018,24 @@ class XPathEngine extends XPathBase {
     if (!is_numeric($optionID)) return;
      $this->parseOptions[$optionID] = $value;
   }
-   
+
   /**
-   * Controls whether case-folding is enabled for this XML parser.
+   * Sets a number of xml_parser_set_option()s
+   *
+   * @param  $userXmlOptions (array) An array of parser options.
+   * @see setXmlOption
+   */
+  function setXmlOptions($userXmlOptions=array()) {
+    if (!is_array($userXmlOptions)) return;
+    foreach($userXmlOptions as $key => $val) {
+      $this->setXmlOption($key, $val);
+    }
+  }
+  
+  /**
+   * Alternative way to control whether case-folding is enabled for this XML parser.
+   *
+   * Short cut to setXmlOptions(XML_OPTION_CASE_FOLDING, TRUE/FALSE)
    *
    * When it comes to XML, case-folding simply means uppercasing all tag- 
    * and attribute-names (NOT the content) if set to TRUE.  Note if you
@@ -758,11 +1050,18 @@ class XPathEngine extends XPathBase {
   }
   
   /**
-   * Controls whether skip-white-spaces is enabled for this XML parser.
+   * Alternative way to control whether skip-white-spaces is enabled for this XML parser.
+   *
+   * Short cut to setXmlOptions(XML_OPTION_SKIP_WHITE, TRUE/FALSE)
    *
    * When it comes to XML, skip-white-spaces will trim the tag content.
-   * This will speed up performance, but will make your data less human 
-   * readable when you come to write it out.
+   * An XML file with no whitespace will be faster to process, but will make 
+   * your data less human readable when you come to write it out.
+   *
+   * Running with this option on will slow the class down, so if you want to 
+   * speed up your XML, then run it through once skipping white-spaces, then
+   * write out the new version of your XML without whitespace, then use the
+   * new XML file with skip whitespaces turned off.
    *
    * @param $onOff (bool) (default TRUE) 
    * @see XML parser functions in PHP doc
@@ -780,13 +1079,14 @@ class XPathEngine extends XPathBase {
   function &getNode($absoluteXPath='') {
     if ($absoluteXPath==='/') $absoluteXPath = '';
     if (!isSet($this->nodeIndex[$absoluteXPath])) return FALSE;
+    if ($this->_indexIsDirty) $this->reindexNodeTree();
     return $this->nodeIndex[$absoluteXPath];
   }
-  
+
   /**
    * Get a the content of a node text part or node attribute.
    * 
-   * If the absolute Xpath references an attribute (Xpath ends with attribute::), 
+   * If the absolute Xpath references an attribute (Xpath ends with @ or attribute::), 
    * then the text value of that node-attribute is returned.
    * Otherwise the Xpath is referencing a text part of the node. This can be either a 
    * direct reference to a text part (Xpath ends with text()[<nr>]) or indirect reference 
@@ -815,12 +1115,13 @@ class XPathEngine extends XPathBase {
   function &wholeText($absoluteXPath, $textPartNr=NULL) {
     $status = FALSE;
     $text   = NULL;
+    if ($this->_indexIsDirty) $this->reindexNodeTree();
     
     do { // try-block
-      if ( preg_match(";(.*)/(attribute::|@)([^/]*)$;U", $absoluteXPath, $matches) ) {
+      if (preg_match(";(.*)/(attribute::|@)([^/]*)$;U", $absoluteXPath, $matches)) {
         $absoluteXPath = $matches[1];
         $attribute = $matches[3];
-        if ( !isSet($this->nodeIndex[$absoluteXPath]['attributes'][$attribute]) ) {
+        if (!isSet($this->nodeIndex[$absoluteXPath]['attributes'][$attribute])) {
           $this->_displayError("The $absoluteXPath/attribute::$attribute value isn't a node in this document.", __LINE__, __FILE__, FALSE);
           break; // try-block
         }
@@ -828,24 +1129,26 @@ class XPathEngine extends XPathBase {
         $status = TRUE;
         break; // try-block
       }
-      
-      if ( !isSet($this->nodeIndex[$absoluteXPath]) ) {
-        $this->_displayError("The $absoluteXPath value isn't a node in this document.", __LINE__, __FILE__, FALSE);
-        break; // try-block
-      }
-      
-      // Get the amount of the text parts in the node.
-     $textPartSize = sizeOf($this->nodeIndex[$absoluteXPath]['textParts']);
-      
-      // Xpath contains a 'text()'-function, thus goes right to a text node. If so interpete the Xpath.
-      if ( preg_match(":(.*)/text\(\)(\[(.*)\])?$:U", $absoluteXPath, $matches) ) {
+            
+      // Xpath contains a 'text()'-function, thus goes right to a text node. If so interpret the Xpath.
+      if (preg_match(":(.*)/text\(\)(\[(.*)\])?$:U", $absoluteXPath, $matches)) {
         $absoluteXPath = $matches[1];
+ 
+        if (!isSet($this->nodeIndex[$absoluteXPath])) {
+            $this->_displayError("The $absoluteXPath value isn't a node in this document.", __LINE__, __FILE__, FALSE);
+            break; // try-block
+        }
+
+        // Get the amount of the text parts in the node.
+        $textPartSize = sizeOf($this->nodeIndex[$absoluteXPath]['textParts']);
+
         // default to the first text node if a text node was not specified
         $textPartNr = isSet($matches[2]) ? substr($matches[2],1,-1) : 1;
+
         // Support negative indexes like -1 === last a.s.o.
         if ($textPartNr < 0) $textPartNr = $textPartSize + $textPartNr +1;
         if (($textPartNr <= 0) OR ($textPartNr > $textPartSize)) {
-          $this->_displayError("The $absoluteXPath/text()[$textPartNr] value isn't a node in this document.", __LINE__, __FILE__, FALSE);
+          $this->_displayError("The $absoluteXPath/text()[$textPartNr] value isn't a NODE in this document.", __LINE__, __FILE__, FALSE);
           break; // try-block
         }
         $text =& $this->nodeIndex[$absoluteXPath]['textParts'][$textPartNr - 1];
@@ -855,7 +1158,15 @@ class XPathEngine extends XPathBase {
       
       // At this point we have been given an xpath with neither a 'text()' nor 'attribute::' axis at the end
       // So we assume a get to text is wanted and use the optioanl fallback parameters $textPartNr
-      
+     
+      if (!isSet($this->nodeIndex[$absoluteXPath])) {
+          $this->_displayError("The $absoluteXPath value isn't a node in this document.", __LINE__, __FILE__, FALSE);
+          break; // try-block
+      }
+
+      // Get the amount of the text parts in the node.
+      $textPartSize = sizeOf($this->nodeIndex[$absoluteXPath]['textParts']);
+
       // If $textPartNr == NULL we return a *copy* of the whole concated text-parts
       if (is_null($textPartNr)) {
         unset($text);
@@ -876,6 +1187,24 @@ class XPathEngine extends XPathBase {
     
     if (!$status) return FALSE;
     return $text;
+  }
+
+  /**
+   * Obtain the string value of an object
+   *
+   * http://www.w3.org/TR/xpath#dt-string-value
+   *
+   * "For every type of node, there is a way of determining a string-value for a node of that type. 
+   * For some types of node, the string-value is part of the node; for other types of node, the 
+   * string-value is computed from the string-value of descendant nodes."
+   *
+   * @param $node   (node)   The node we have to convert
+   * @return        (string) The string value of the node.  "" if the object has no evaluatable
+   *                         string value
+   */
+  function _stringValue($node) {
+    // Decode the entitites and then add the resulting literal string into our array.
+    return $this->_addLiteral($this->decodeEntities($this->wholeText($node)));
   }
   
   //-----------------------------------------------------------------------------------------
@@ -925,12 +1254,15 @@ class XPathEngine extends XPathBase {
    *
    * @param     $fileName       (string) 
    * @param     $absoluteXPath  (string) The path to the parent node you want(see text above)
-   * @param     $xmlHeader      (string) default is '< ? xml version="1.0" ? >'
+   * @param     $xmlHeader      (array)  The string that you would like to appear before
+   *                                     the XML content.  ie before the <root></root>.  If you
+   *                                     do not specify this argument, the xmlHeader that was 
+   *                                     found in the parsed xml file will be used instead.
    * @return                    (string) The returned string contains well-formed XML data 
    *                                     or FALSE on error.
    * @see       exportAsXml(), exportAsHtml()
    */
-  function exportToFile($fileName, $absoluteXPath='', $xmlHeader='<?xml version="1.0"?>') {   
+  function exportToFile($fileName, $absoluteXPath='', $xmlHeader=NULL) {   
     $status = FALSE;
     do { // try-block
       if (!($hFile = fopen($fileName, "wb"))) {   // Did we open the file ok?
@@ -938,17 +1270,19 @@ class XPathEngine extends XPathBase {
         break; // try-block
       }
       
-      if (!flock($hFile, LOCK_EX)) {  // Lock the file
-        $errStr = "Couldn't get an exclusive lock on the $fileName file.";
-        break; // try-block
+      if ($this->properties['OS_supports_flock']) {
+        if (!flock($hFile, LOCK_EX + LOCK_NB)) {  // Lock the file
+          $errStr = "Couldn't get an exclusive lock on the $fileName file.";
+          break; // try-block
+        }
       }
-      
       if (!($xmlOut = $this->_export($absoluteXPath, $xmlHeader))) {
         $errStr = "Export failed";
         break; // try-block
       }
       
-      if (!fwrite($hFile, $xmlOut)) {
+      $iBytesWritten = fwrite($hFile, $xmlOut);
+      if ($iBytesWritten != strlen($xmlOut)) {
         $errStr = "Write error when writing back the $fileName file.";
         break; // try-block
       }
@@ -960,6 +1294,12 @@ class XPathEngine extends XPathBase {
     
     @flock($hFile, LOCK_UN);
     @fclose($hFile);
+    // Sanity check the produced file.
+    clearstatcache();
+    if (filesize($fileName) < strlen($xmlOut)) {
+      $errStr = "Write error when writing back the $fileName file.";
+      $status = FALSE;
+    }
     
     if (!$status)  $this->_displayError($errStr, __LINE__, __FILE__, FALSE);
     return $status;
@@ -974,8 +1314,10 @@ class XPathEngine extends XPathBase {
    * document. Default is '', meaning to extract the whole document.
    *
    * You also may pass a 'xmlHeader' (usually something like <?xml version="1.0"? > that will
-   * overwrite any other 'xmlHeader', if there was one in the original source.
-   * Finaly, when exproting to HTML, you may pass a vector xPaths you want to hi-light.
+   * overwrite any other 'xmlHeader', if there was one in the original source.  If there
+   * wasn't one in the original source, and you still don't specify one, then it will
+   * use a default of <?xml version="1.0"? >
+   * Finaly, when exporting to HTML, you may pass a vector xPaths you want to hi-light.
    * The hi-lighted tags and attributes will receive a nice color. 
    * 
    * NOTE I : The output can have 2 formats:
@@ -995,6 +1337,7 @@ class XPathEngine extends XPathBase {
     // Check whether a root node is given.
     if (empty($absoluteXpath)) $absoluteXpath = '';
     if ($absoluteXpath == '/') $absoluteXpath = '';
+    if ($this->_indexIsDirty) $this->reindexNodeTree();
     if (!isSet($this->nodeIndex[$absoluteXpath])) {
       // If the $absoluteXpath was '' and it didn't exist, then the document is empty
       // and we can safely return ''.
@@ -1023,7 +1366,12 @@ class XPathEngine extends XPathBase {
       // If they didn't specify an xml header, use the one in the object
       if (is_null($xmlHeader)) {
         $xmlHeader = $this->parseSkipWhiteCache ? trim($superRoot['textParts'][0]) : $superRoot['textParts'][0];
+        // If we still don't have an XML header, then use a suitable default
+        if (empty($xmlHeader)) {
+            $xmlHeader = '<?xml version="1.0"?>';
+        }
       }
+
       if (isSet($superRoot['childNodes'][0])) $startNode = $superRoot['childNodes'][0];
     } else {
       $startNode = $this->nodeIndex[$absoluteXPath];
@@ -1060,10 +1408,10 @@ class XPathEngine extends XPathBase {
    * @return      (string) The string representation of the node.
    */
   function _InternalExport($node) {
-    $bDebugThisFunction = FALSE;
-
+    $ThisFunctionName = '_InternalExport';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction("_InternalExport");
       echo "Exporting node: ".$node['xpath']."<br>\n";
     }
 
@@ -1074,7 +1422,6 @@ class XPathEngine extends XPathBase {
 
     // The output starts as empty.
     $xmlOut = '';
-
     // This loop will output the text before the current child of a parent then the 
     // current child.  Where the child is a short tag we output the child, then move
     // onto the next child.  Where the child is not a short tag, we output the open tag, 
@@ -1113,15 +1460,18 @@ class XPathEngine extends XPathBase {
 
     // Setup our node stack.  The loop is designed to output children of a parent, 
     // not the parent itself, so we must put the parent on as the starting point.
-    $nodeStack['Parent'] = array($node['parentNode']); 
+    $nodeStack['Parent'] = array($node['parentNode']);
     // And add the childpos of our node in it's parent to our "child index stack".
     $nodeStack['ChildIndex'] = array($node['pos']);
     // We start at 0.
     $nodeStackIndex = 0;
 
-    // We have not to output text before/after our node, so blank it.  (As the nodeStack[]
-    // holds copies of nodes, we can do this ok without affecting the document.)
-    $nodeStack['Parent'][0]['textParts'][$node['pos']] = '';
+    // We have not to output text before/after our node, so blank it.  We will recover it
+    // later
+    $OldPreceedingStringValue = $nodeStack['Parent'][0]['textParts'][$node['pos']];
+    $OldPreceedingStringRef =& $nodeStack['Parent'][0]['textParts'][$node['pos']];
+    $OldPreceedingStringRef = "";
+    $currentXpath = "";
 
     // While we still have data on our stack
     while ($nodeStackIndex >= 0) {
@@ -1139,11 +1489,22 @@ class XPathEngine extends XPathBase {
       // Add the text before our child.
 
       // Add the text part before the current child
-      if (!empty($nodeStack['Parent'][$nodeStackIndex]['textParts'][$currentChild])) {
+      $tmpTxt =& $nodeStack['Parent'][$nodeStackIndex]['textParts'][$currentChild];
+      if (isSet($tmpTxt) AND ($tmpTxt!="")) {
         // Only add CR indent if there were children
         if ($iChildCount)
           $xmlOut .= $CR.$currentIndent;
-        $xmlOut .= $nodeStack['Parent'][$nodeStackIndex]['textParts'][$currentChild];
+        // Hilight if necessary.
+        $highlightStart = $highlightEnd = '';
+        if ($hilightIsActive) {
+          $currentXpath = $nodeStack['Parent'][$nodeStackIndex]['xpath'].'/text()['.($currentChild+1).']';
+          if (in_array($currentXpath, $this->hilightXpathList)) {
+           // Yes we hilight
+            $highlightStart = chr(2);
+            $highlightEnd   = chr(3);
+          }
+        }
+        $xmlOut .= $highlightStart.$nodeStack['Parent'][$nodeStackIndex]['textParts'][$currentChild].$highlightEnd;
       }
       if ($iChildCount && $nodeStackIndex) $xmlOut .= $CR;
 
@@ -1152,8 +1513,22 @@ class XPathEngine extends XPathBase {
       // Are there any more children?
       if ($iChildCount <= $currentChild) {
         // Nope, so output the last text before the closing tag
-        if (!empty($nodeStack['Parent'][$nodeStackIndex]['textParts'][$currentChild+1])) 
-          $xmlOut .= $currentIndent.$nodeStack['Parent'][$nodeStackIndex]['textParts'][$currentChild+1].$CR;
+        $tmpTxt =& $nodeStack['Parent'][$nodeStackIndex]['textParts'][$currentChild+1];
+        if (isSet($tmpTxt) AND ($tmpTxt!="")) {
+          // Hilight if necessary.
+          $highlightStart = $highlightEnd = '';
+          if ($hilightIsActive) {
+            $currentXpath = $nodeStack['Parent'][$nodeStackIndex]['xpath'].'/text()['.($currentChild+2).']';
+            if (in_array($currentXpath, $this->hilightXpathList)) {
+             // Yes we hilight
+              $highlightStart = chr(2);
+              $highlightEnd   = chr(3);
+            }
+          }
+          $xmlOut .= $highlightStart
+                .$currentIndent.$nodeStack['Parent'][$nodeStackIndex]['textParts'][$currentChild+1].$CR
+                .$highlightEnd;
+        }
 
         // Now close this tag, as we are finished with this child.
 
@@ -1258,11 +1633,12 @@ class XPathEngine extends XPathBase {
 
     $result = $xmlOut;
 
+    // Repair what we "undid"
+    $OldPreceedingStringRef = $OldPreceedingStringValue;
+
     ////////////////////////////////////////////
 
-    if ($bDebugThisFunction) {
-      $this->_closeDebugFunction($aStartTime, $result);
-    }
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
 
     return $result;
   }
@@ -1292,7 +1668,7 @@ class XPathEngine extends XPathBase {
         break; // try-block
       }
       // The the source is an url try to fetch it.
-      if ( preg_match(';^http(s)?://;', $fileName) ) {
+      if (preg_match(';^http(s)?://;', $fileName)) {
         // Read the content of the url...this is really prone to errors, and we don't really
         // check for too many here...for now, suppressing both possible warnings...we need
         // to check if we get a none xml page or something of that nature in the future
@@ -1319,7 +1695,7 @@ class XPathEngine extends XPathBase {
         $errStr = "Failed to open '{$fileName}' for read.";
         break; // try-block
       }
-      $xmlString = fread ($fp, filesize($fileName));
+      $xmlString = fread($fp, filesize($fileName));
       @fclose($fp);
       
       $status = TRUE;
@@ -1346,10 +1722,10 @@ class XPathEngine extends XPathBase {
    *                                       (check getLastError())
    */
   function importFromString($xmlString, $absoluteParentPath = '') {
-    $bDebugThisFunction = FALSE;
-
+    $ThisFunctionName = 'importFromString';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction("importFromString");
       echo "Importing from string of length ".strlen($xmlString)." to node '$absoluteParentPath'\n<br>";
       echo "Parser options:\n<br>";
       print_r($this->parseOptions);
@@ -1369,7 +1745,7 @@ class XPathEngine extends XPathBase {
         $status = TRUE;
         // If we were importing to root, build a blank root.
         if (empty($absoluteParentPath)) {
-          $this->nodeRoot = array();
+          $this->_createSuperRoot();
         }
         $this->reindexNodeTree();
 //        $errStr = 'This xml document (string) was empty';
@@ -1385,17 +1761,15 @@ class XPathEngine extends XPathBase {
       // If a parent xpath is given this means that XML data is to be *appended* to that parent.
       if (!empty($absoluteParentPath)) {
         // Check if parent exists
-        if (!isSet($nodeIndex[$absoluteParentPath])) {
+        if (!isSet($this->nodeIndex[$absoluteParentPath])) {
           $errStr = "You tried to append XML data to a parent '$absoluteParentPath' that does not exist.";
           break; // try-block
         } 
         // Add it as the starting point in our array.
-        $this->nodeStack[0] =& $nodeIndex[$absoluteParentPath];
+        $this->nodeStack[0] =& $this->nodeIndex[$absoluteParentPath];
       } else {
         // Build a 'super-root'
-        $this->nodeRoot = $this->emptyNode;
-        $this->nodeRoot['name']      = '';
-        $this->nodeRoot['parentNode'] = NULL;
+        $this->_createSuperRoot();
         // Put it in as the start of our node stack.
         $this->nodeStack[0] =& $this->nodeRoot;
       }
@@ -1416,15 +1790,12 @@ class XPathEngine extends XPathBase {
       }
       
       // Set the object and the element handlers for the XML parser.
-      xml_set_object($parser, &$this);
+      xml_set_object($parser, $this);
       xml_set_element_handler($parser, '_handleStartElement', '_handleEndElement');
       xml_set_character_data_handler($parser, '_handleCharacterData');
       xml_set_default_handler($parser, '_handleDefaultData');
       xml_set_processing_instruction_handler($parser, '_handlePI');
      
-      if ($bDebugThisFunction)
-       $this->_profileFunction($aStartTime, "Setup for parse");
-
       // Parse the XML source and on error generate an error message.
       if (!xml_parse($parser, $xmlString, TRUE)) {
         $source = empty($this->properties['xmlFile']) ? 'string' : 'file ' . basename($this->properties['xmlFile']) . "'";
@@ -1439,14 +1810,12 @@ class XPathEngine extends XPathBase {
       // And we don't need this any more.
       $this->nodeStack = array();
 
-      if ($bDebugThisFunction)
-       $this->_profileFunction($aStartTime, "Parse Object");
-      
       $this->reindexNodeTree();
 
-      if ($bDebugThisFunction)
-       $this->_profileFunction($aStartTime, "Reindex Object");
-      
+      if ($bDebugThisFunction) {
+        print_r(array_keys($this->nodeIndex));
+      }
+
       $status = TRUE;
     } while (FALSE);
     
@@ -1459,9 +1828,7 @@ class XPathEngine extends XPathBase {
 
     ////////////////////////////////////////////
 
-    if ($bDebugThisFunction) {
-      $this->_closeDebugFunction($aStartTime, $bResult);
-    }
+    $this->_closeDebugFunction($ThisFunctionName, $bResult, $bDebugThisFunction);
 
     return $bResult;
   }
@@ -1592,6 +1959,7 @@ class XPathEngine extends XPathBase {
    * @see       _handleStartElement(), _handleEndElement()
    */
   function _handleCharacterData($parser, $text) {
+  
     if ($this->parsInCData >0) $text = $this->_translateAmpersand($text, $reverse=TRUE);
     
     if ($this->bDebugXmlParse) echo "Handling character data: '".htmlspecialchars($text)."'<br>";
@@ -1652,6 +2020,7 @@ class XPathEngine extends XPathBase {
    * @see       PHP's manual "xml_set_processing_instruction_handler"
    */
   function _handlePI($parser, $target, $data) {
+    //echo("pi data=".$data."end"); exit;
     $data = $this->_translateAmpersand($data, $reverse=TRUE);
     $this->parsedTextLocation .= "<?{$target} {$data}?>";
     return TRUE;
@@ -1660,7 +2029,18 @@ class XPathEngine extends XPathBase {
   //-----------------------------------------------------------------------------------------
   // XPathEngine          ------  Node Tree Stuff  ------                                    
   //-----------------------------------------------------------------------------------------
-  
+
+  /**
+   * Creates a super root node.
+   */
+  function _createSuperRoot() {
+    // Build a 'super-root'
+    $this->nodeRoot = $this->emptyNode;
+    $this->nodeRoot['name']      = '';
+    $this->nodeRoot['parentNode'] = NULL;
+    $this->nodeIndex[''] =& $this->nodeRoot;
+  }
+
   /**
    * Adds a new node to the XML document tree during xml parsing.
    *
@@ -1691,20 +2071,21 @@ class XPathEngine extends XPathBase {
     //$bDebugThisFunction = FALSE;
     
     /*
+    $ThisFunctionName = '_internalAppendChild';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction("_internalAppendChild");
       echo "Current Node (parent-index) and the child to append : '{$stackParentIndex}' +  '{$nodeName}' \n<br>";
     }
     */
-   	//////////////////////////////////////
+     //////////////////////////////////////
 
     if (!isSet($this->nodeStack[$stackParentIndex])) {
       $errStr = "Invalid parent. You tried to append the tag '{$nodeName}' to an non-existing parent in our node stack '{$stackParentIndex}'.";
       $this->_displayError('In _internalAppendChild(): '. $errStr, __LINE__, __FILE__, FALSE); 
 
       /*
-      if ($bDebugThisFunction)
-        $this->_closeDebugFunction($aStartTime, FALSE);
+      $this->_closeDebugFunction($ThisFunctionName, FALSE, $bDebugThisFunction);
       */
 
       return FALSE;
@@ -1728,8 +2109,8 @@ class XPathEngine extends XPathBase {
     if ($bDebugThisFunction) {
       echo "The new node received index: '".($stackParentIndex + 1)."'\n";
       foreach($this->nodeStack as $key => $val) echo "$key => ".$val['name']."\n"; 
-      $this->_closeDebugFunction($aStartTime, TRUE);
     }
+    $this->_closeDebugFunction($ThisFunctionName, TRUE, $bDebugThisFunction);
     */
 
     return TRUE;
@@ -1777,6 +2158,7 @@ class XPathEngine extends XPathBase {
    */
   function reindexNodeTree() {
     //return;
+    $this->_indexIsDirty = FALSE;
     $this->nodeIndex = array();
     $this->nodeIndex[''] =& $this->nodeRoot;
     // Quick out for when the tree has no data.
@@ -1784,6 +2166,30 @@ class XPathEngine extends XPathBase {
     return $this->_recursiveReindexNodeTree('');
   }
   
+
+  /**
+   * Create the ids that are accessable through the generate-id() function
+   */
+  function _generate_ids() {
+    // If we have generated them already, then bail.
+    if (isset($this->nodeIndex['']['generate_id'])) return;
+
+    // keys generated are the string 'id0' . hexatridecimal-based (0..9,a-z) index
+    $aNodeIndexes = array_keys($this->nodeIndex);
+    $idNumber = 0;
+    foreach($aNodeIndexes as $index => $key) {
+//      $this->nodeIndex[$key]['generated_id'] = 'id' . base_convert($index,10,36);
+      // Skip attribute and text nodes.
+      // ### Currently don't support attribute and text nodes.
+      if (strstr($key, 'text()') !== FALSE) continue;
+      if (strstr($key, 'attribute::') !== FALSE) continue;
+      $this->nodeIndex[$key]['generated_id'] = 'idPhpXPath' . $idNumber;
+
+      // Make the id's sequential so that we can test predictively.
+      $idNumber++;
+    }
+  }
+
   /**
    * Here's where the work is done for reindexing (see reindexNodeTree)
    *
@@ -1795,42 +2201,80 @@ class XPathEngine extends XPathBase {
     $parentNode =& $this->nodeIndex[$absoluteParentPath];
     
     // Check for any 'dead' child nodes first and concate the text parts if found.
-    for ($i=sizeOf($parentNode['childNodes'])-1; $i>=0; $i--) {
+    for ($iChildIndex=sizeOf($parentNode['childNodes'])-1; $iChildIndex>=0; $iChildIndex--) {
       // Check if the child node still exits (it may have been removed).
-      if (!empty($parentNode['childNodes'][$i])) continue;
+      if (!empty($parentNode['childNodes'][$iChildIndex])) continue;
       // Child node was removed. We got to merge the text parts then.
-      $parentNode['textParts'][$i] .= $parentNode['textParts'][$i+1];
-      array_splice($parentNode['textParts'], $i+1, 1); 
-      array_splice($parentNode['childNodes'], $i, 1);
+      $parentNode['textParts'][$iChildIndex] .= $parentNode['textParts'][$iChildIndex+1];
+      array_splice($parentNode['textParts'], $iChildIndex+1, 1); 
+      array_splice($parentNode['childNodes'], $iChildIndex, 1);
     }
-    
+
     // Now start a reindex.
     $contextHash = array();
     $childSize = sizeOf($parentNode['childNodes']);
-    for ($i=0; $i<$childSize; $i++) {
-      $childNode =& $parentNode['childNodes'][$i];
-      // Make sure that theire is a text-part infornt of every node. (May be empty)
-      if (!isSet($parentNode['textParts'][$i])) $parentNode['textParts'][$i] = '';
-      // Count the nodes with same name (to determin theire context position)
-      $childName = $childNode['name'];
-      if (empty($contextHash[$childName])) { 
-        $contextHash[$childName] = 1;
-      } else {
-        $contextHash[$childName]++;
+
+    // If there are no children, we have to treat this specially:
+    if ($childSize == 0) {
+      // Add a dummy text node.
+      $this->nodeIndex[$absoluteParentPath.'/text()[1]'] =& $parentNode;
+    } else {
+      for ($iChildIndex=0; $iChildIndex<$childSize; $iChildIndex++) {
+        $childNode =& $parentNode['childNodes'][$iChildIndex];
+        // Make sure that there is a text-part in front of every node. (May be empty)
+        if (!isSet($parentNode['textParts'][$iChildIndex])) $parentNode['textParts'][$iChildIndex] = '';
+        // Count the nodes with same name (to determine their context position)
+        $childName = $childNode['name'];
+        if (empty($contextHash[$childName])) { 
+          $contextPos = $contextHash[$childName] = 1;
+        } else {
+          $contextPos = ++$contextHash[$childName];
+        }
+        // Make the node-index hash
+        $newPath = $absoluteParentPath . '/' . $childName . '['.$contextPos.']';
+
+        // ### Note ultimately we will end up supporting text nodes as actual nodes.
+
+        // Preceed with a dummy entry for the text node.
+        $this->nodeIndex[$absoluteParentPath.'/text()['.($childNode['pos']+1).']'] =& $childNode;
+        // Then the node itself
+        $this->nodeIndex[$newPath] =& $childNode;
+
+        // Now some dummy nodes for each of the attribute nodes.
+        $iAttributeCount = sizeOf($childNode['attributes']);
+        if ($iAttributeCount > 0) {
+          $aAttributesNames = array_keys($childNode['attributes']);
+          for ($iAttributeIndex = 0; $iAttributeIndex < $iAttributeCount; $iAttributeIndex++) {
+            $attribute = $aAttributesNames[$iAttributeIndex];
+            $newAttributeNode = $this->emptyNode;
+            $newAttributeNode['name'] = $attribute;
+            $newAttributeNode['textParts'] = array($childNode['attributes'][$attribute]);
+            $newAttributeNode['contextPos'] = $iAttributeIndex;
+            $newAttributeNode['xpath'] = "$newPath/attribute::$attribute";
+            $newAttributeNode['parentNode'] =& $childNode;
+            $newAttributeNode['depth'] =& $parentNode['depth'] + 2;
+            // Insert the node as a master node, not a reference, otherwise there will be 
+            // variable "bleeding".
+            $this->nodeIndex["$newPath/attribute::$attribute"] = $newAttributeNode;
+          }
+        }
+
+        // Update the node info (optimisation)
+        $childNode['parentNode'] =& $parentNode;
+        $childNode['depth'] = $parentNode['depth'] + 1;
+        $childNode['pos'] = $iChildIndex;
+        $childNode['contextPos'] = $contextHash[$childName];
+        $childNode['xpath'] = $newPath;
+        $this->_recursiveReindexNodeTree($newPath);
+
+        // Follow with a dummy entry for the text node.
+        $this->nodeIndex[$absoluteParentPath.'/text()['.($childNode['pos']+2).']'] =& $childNode;
       }
-      // Make the node-index hash
-      $newPath = $absoluteParentPath . '/' . $childName . '['.$contextHash[$childName].']';
-      $this->nodeIndex[$newPath] =& $childNode;
-      // Update the node info (optimisation)
-      $childNode['parentNode'] =& $parentNode;
-      $childNode['depth'] = $parentNode['depth'] +1;
-      $childNode['pos'] = $i;
-      $childNode['contextPos'] = $contextHash[$childName];
-      $childNode['xpath'] = $newPath;
-      $this->_recursiveReindexNodeTree($newPath);
+
+      // Make sure that their is a text-part after the last node.
+      if (!isSet($parentNode['textParts'][$iChildIndex])) $parentNode['textParts'][$iChildIndex] = '';
     }
-    // Make sure that theire is a text-part after the last node.
-    if (!isSet($parentNode['textParts'][$i])) $parentNode['textParts'][$i] = '';
+
     return TRUE;
   }
   
@@ -1846,16 +2290,28 @@ class XPathEngine extends XPathBase {
    *                         the current doc
    * @return        (&array) A node and it's child nodes.
    */
-  function &cloneNode($node) {
+  function &cloneNode($node, $recursive=FALSE) {
     if (is_string($node) AND isSet($this->nodeIndex[$node])) {
       $node = $this->nodeIndex[$node];
+    }
+    // Copy the text-parts ()
+    $textParts = $node['textParts'];
+    $node['textParts'] = array();
+    foreach ($textParts as $key => $val) {
+      $node['textParts'][] = $val;
     }
     
     $childSize = sizeOf($node['childNodes']);
     for ($i=0; $i<$childSize; $i++) {
-      $childNode =& $this->cloneNode($node['childNodes'][$i]);  // copy child 
+      $childNode =& $this->cloneNode($node['childNodes'][$i], TRUE);  // copy child 
       $node['childNodes'][$i] =& $childNode; // reference the copy
       $childNode['parentNode'] =& $node;      // child references the parent.
+    }
+    
+    if (!$recursive) {
+      //$node['childNodes'][0]['parentNode'] = null;
+      //print "<pre>";
+      //var_dump($node);
     }
     return $node;
   }
@@ -1895,23 +2351,27 @@ class XPathEngine extends XPathBase {
   //-----------------------------------------------------------------------------------------
   
   /**
-   * Matches (evaluates) an XPath expression.
+   * Matches (evaluates) an XPath query
    *
-   * This method tries to evaluate an XPath expression by parsing it. A XML source must 
+   * This method tries to evaluate an XPath query by parsing it. A XML source must 
    * have been imported before this method is able to work.
    *
-   * @param     $xPathQuery  (string) XPath expression to be evaluated.
-   * @param     $baseXPath   (string) (default is super-root) Full path of a document node, 
-   *                                  from which the XPath expression should  start evaluating.
-   * @return                 (array)  The returned vector contains a list of the full document 
-   *                                  Xpaths of all nodes that match the evaluated XPath 
-   *                                  expression.  Returns FALSE on error.
+   * @param     $xPathQuery  (string) XPath query to be evaluated.
+   * @param     $baseXPath   (string) (default is super-root) XPath query to a single document node, 
+   *                                  from which the XPath query should  start evaluating.
+   * @return                 (mixed)  The result of the XPath expression.  Either:
+   *                                    node-set (an ordered collection of absolute references to nodes without duplicates) 
+   *                                    boolean (true or false) 
+   *                                    number (a floating-point number) 
+   *                                    string (a sequence of UCS characters) 
    */
   function match($xPathQuery, $baseXPath='') {
+    if ($this->_indexIsDirty) $this->reindexNodeTree();
+    
     // Replace a double slashes, because they'll cause problems otherwise.
     static $slashes2descendant = array(
-        '//@' => '/descendant::*/attribute::', 
-        '//'  => '/descendant::', 
+        '//@' => '/descendant_or_self::*/attribute::', 
+        '//'  => '/descendant_or_self::node()/', 
         '/@'  => '/attribute::');
     // Stupid idea from W3C to take axes name containing a '-' (dash) !!!
     // We replace the '-' with '_' to avoid the conflict with the minus operator.
@@ -1922,7 +2382,10 @@ class XPathEngine extends XPathBase {
         'substring-before' => 'substring_before',
         'substring-after'  => 'substring_after', 
         'string-length'    => 'string_length',
-        'normalize-space'  => 'normalize_space');
+        'normalize-space'  => 'normalize_space',
+        'x-lower'          => 'x_lower',
+        'x-upper'          => 'x_upper',
+        'generate-id'      => 'generate_id');
     
     if (empty($xPathQuery)) return array();
 
@@ -1930,17 +2393,37 @@ class XPathEngine extends XPathBase {
     if (empty($this->nodeRoot)) return array();
 
     if (!isSet($this->nodeIndex[$baseXPath])) {
-      $this->_displayError(sprintf($this->errorStrings['AbsoluteXPathRequired'],$xPathQuery), __LINE__, __FILE__, FALSE);
-      return FALSE;
+            $xPathSet = $this->_resolveXPathQuery($baseXPath,'match');
+            if (sizeOf($xPathSet) !== 1) {
+                $this->_displayError(sprintf($this->errorStrings['NoNodeMatch'], $xPathQuery), __LINE__, __FILE__, FALSE);
+                return FALSE;
+            }
+            $baseXPath = $xPathSet[0];
     }
+
+    // We should possibly do a proper syntactical parse, but instead we will cheat and just
+    // remove any literals that could make things very difficult for us, and replace them with
+    // special tags.  Then we can treat the xPathQuery much more easily as JUST "syntax".  Provided 
+    // there are no literals in the string, then we can guarentee that most of the operators and 
+    // syntactical elements are indeed elements and not just part of a literal string.
+    $processedxPathQuery = $this->_removeLiterals($xPathQuery);
     
     // Replace a double slashes, and '-' (dash) in axes names.
-    $xPathQuery = strtr($xPathQuery, $slashes2descendant);
-    $xPathQuery = strtr($xPathQuery, $dash2underscoreHash);
-    
-    return $this->_internalEvaluate($xPathQuery, $baseXPath);
+    $processedxPathQuery = strtr($processedxPathQuery, $slashes2descendant);
+    $processedxPathQuery = strtr($processedxPathQuery, $dash2underscoreHash);
+
+    // Build the context
+    $context = array('nodePath' => $baseXPath, 'pos' => 1, 'size' => 1);
+
+    // The primary syntactic construct in XPath is the expression.
+    $result = $this->_evaluateExpr($processedxPathQuery, $context);
+
+    // We might have been returned a string.. If so convert back to a literal
+    $literalString = $this->_asLiteral($result);
+    if ($literalString != FALSE) return $literalString;
+    else return $result;
   }
-  
+
   /**
    * Alias for the match function
    *
@@ -1949,75 +2432,1020 @@ class XPathEngine extends XPathBase {
   function evaluate($xPathQuery, $baseXPath='') {
     return $this->match($xPathQuery, $baseXPath);
   }
+
+  /**
+   * Parse out the literals of an XPath expression.
+   *
+   * Instead of doing a full lexical parse, we parse out the literal strings, and then
+   * Treat the sections of the string either as parts of XPath or literal strings.  So
+   * this function replaces each literal it finds with a literal reference, and then inserts
+   * the reference into an array of strings that we can access.  The literals can be accessed
+   * later from the literals associative array.
+   *
+   * Example:
+   *  XPathExpr = /AAA[@CCC = "hello"]/BBB[DDD = 'world'] 
+   *  =>  literals: array("hello", "world")
+   *      return value: /AAA[@CCC = $1]/BBB[DDD = $2] 
+   *
+   * Note: This does not interfere with the VariableReference syntactical element, as these 
+   * elements must not start with a number.
+   *
+   * @param  $xPathQuery  (string) XPath expression to be processed
+   * @return              (string) The XPath expression without the literals.
+   *                              
+   */
+  function _removeLiterals($xPathQuery) {
+    // What comes first?  A " or a '?
+    if (!preg_match(":^([^\"']*)([\"'].*)$:", $xPathQuery, $aMatches)) {
+      // No " or ' means no more literals.
+      return $xPathQuery;
+    }
+    
+    $result = $aMatches[1];
+    $remainder = $aMatches[2];
+    // What kind of literal?
+    if (preg_match(':^"([^"]*)"(.*)$:', $remainder, $aMatches)) {
+      // A "" literal.
+      $literal = $aMatches[1];
+      $remainder = $aMatches[2];
+    } else if (preg_match(":^'([^']*)'(.*)$:", $remainder, $aMatches)) {
+      // A '' literal.
+      $literal = $aMatches[1];
+      $remainder = $aMatches[2];
+    } else {
+      $this->_displayError("The '$xPathQuery' argument began a literal, but did not close it.", __LINE__, __FILE__);
+    }
+
+    // Store the literal
+    $literalNumber = count($this->axPathLiterals);
+    $this->axPathLiterals[$literalNumber] = $literal;
+    $result .= '$'.$literalNumber;
+    return $result.$this->_removeLiterals($remainder);
+  }
+
+  /**
+   * Returns the given string as a literal reference.
+   *
+   * @param $string (string) The string that we are processing
+   * @return        (mixed)  The literal string.  FALSE if the string isn't a literal reference.
+   */
+  function _asLiteral($string) {
+    if (empty($string)) return FALSE;
+    if (empty($string[0])) return FALSE;
+    if ($string[0] == '$') {
+      $remainder = substr($string, 1);
+      if (is_numeric($remainder)) {
+        // We have a string reference then.
+        $stringNumber = (int)$remainder;
+        if ($stringNumber >= count($this->axPathLiterals)) {
+            $this->_displayError("Internal error.  Found a string reference that we didn't set in xPathQuery: '$xPathQuery'.", __LINE__, __FILE__);
+            return FALSE;
+        }
+        return $this->axPathLiterals[$stringNumber];
+      }
+    }
+
+    // It's not a reference then.
+    return FALSE;
+  }
   
   /**
-   * Internal recursive evaluate an-XPath-expression function.
+   * Adds a literal to our array of literals
+   *
+   * In order to make sure we don't interpret literal strings as XPath expressions, we have to
+   * encode literal strings so that we know that they are not XPaths.
+   *
+   * @param $string (string) The literal string that we need to store for future access
+   * @return        (mixed)  A reference string to this literal.
+   */
+  function _addLiteral($string) {
+    // Store the literal
+    $literalNumber = count($this->axPathLiterals);
+    $this->axPathLiterals[$literalNumber] = $string;
+    $result = '$'.$literalNumber;
+    return $result;
+  }
+
+  /**
+   * Look for operators in the expression
+   *
+   * Parses through the given expression looking for operators.  If found returns
+   * the operands and the operator in the resulting array.
+   *
+   * @param  $xPathQuery  (string) XPath query to be evaluated.
+   * @return              (array)  If an operator is found, it returns an array containing
+   *                               information about the operator.  If no operator is found
+   *                               then it returns an empty array.  If an operator is found,
+   *                               but has invalid operands, it returns FALSE.
+   *                               The resulting array has the following entries:
+   *                                'operator' => The string version of operator that was found,
+   *                                              trimmed for whitespace
+   *                                'left operand' => The left operand, or empty if there was no
+   *                                              left operand for this operator.
+   *                                'right operand' => The right operand, or empty if there was no
+   *                                              right operand for this operator.
+   */
+  function _GetOperator($xPathQuery) {
+    $position = 0;
+    $operator = '';
+
+    // The results of this function can easily be cached.
+    static $aResultsCache = array();
+    if (isset($aResultsCache[$xPathQuery])) {
+      return $aResultsCache[$xPathQuery];
+    }
+
+    // Run through all operators and try to find one.
+    $opSize = sizeOf($this->operators);
+    for ($i=0; $i<$opSize; $i++) {
+      // Pick an operator to try.
+      $operator = $this->operators[$i];
+      // Quickcheck. If not present don't wast time searching 'the hard way'
+      if (strpos($xPathQuery, $operator)===FALSE) continue;
+      // Special check
+      $position = $this->_searchString($xPathQuery, $operator);
+      // Check whether a operator was found.
+      if ($position <= 0 ) continue;
+
+      // Check whether it's the equal operator.
+      if ($operator == '=') {
+        // Also look for other operators containing the equal sign.
+        switch ($xPathQuery[$position-1]) {
+          case '<' : 
+            $position--;
+            $operator = '<=';
+            break;
+          case '>' : 
+            $position--;
+            $operator = '>=';
+            break;
+          case '!' : 
+            $position--;
+            $operator = '!=';
+            break;
+          default:
+            // It's a pure = operator then.
+        }
+        break;
+      }
+
+      if ($operator == '*') {
+        // http://www.w3.org/TR/xpath#exprlex:
+        // "If there is a preceding token and the preceding token is not one of @, ::, (, [, 
+        // or an Operator, then a * must be recognized as a MultiplyOperator and an NCName must 
+        // be recognized as an OperatorName."
+
+        // Get some substrings.
+        $character = substr($xPathQuery, $position - 1, 1);
+      
+        // Check whether it's a multiply operator or a name test.
+        if (strchr('/@:([', $character) != FALSE) {
+          // Don't use the operator.
+            $position = -1;
+          continue;
+        } else {
+          // The operator is good.  Lets use it.
+          break;
+        }
+      }
+
+      // Extremely annoyingly, we could have a node name like "for-each" and we should not
+      // parse this as a "-" operator.  So if the first char of the right operator is alphabetic,
+      // then this is NOT an interger operator.
+      if (strchr('-+*', $operator) != FALSE) {
+        $rightOperand = trim(substr($xPathQuery, $position + strlen($operator)));
+        if (strlen($rightOperand) > 1) {
+          if (preg_match(':^\D$:', $rightOperand[0])) {
+            // Don't use the operator.
+            $position = -1;
+            continue;
+          } else {
+            // The operator is good.  Lets use it.
+            break;
+          }
+        }
+      }
+
+      // The operator must be good then :o)
+      break;
+
+    } // end while each($this->operators)
+
+    // Did we find an operator?
+    if ($position == -1) {
+      $aResultsCache[$xPathQuery] = array();
+      return array();
+    }
+
+    /////////////////////////////////////////////
+    // Get the operands
+
+    // Get the left and the right part of the expression.
+    $leftOperand  = trim(substr($xPathQuery, 0, $position));
+    $rightOperand = trim(substr($xPathQuery, $position + strlen($operator)));
+  
+    // Remove whitespaces.
+    $leftOperand  = trim($leftOperand);
+    $rightOperand = trim($rightOperand);
+
+    /////////////////////////////////////////////
+    // Check the operands.
+
+    if ($leftOperand == '') {
+      $aResultsCache[$xPathQuery] = FALSE;
+      return FALSE;
+    }
+
+    if ($rightOperand == '') {
+      $aResultsCache[$xPathQuery] = FALSE;
+      return FALSE;
+    }
+
+    // Package up and return what we found.
+    $aResult = array('operator' => $operator,
+                'left operand' => $leftOperand,
+                'right operand' => $rightOperand);
+
+    $aResultsCache[$xPathQuery] = $aResult;
+
+    return $aResult;
+  }
+
+  /**
+   * Evaluates an XPath PrimaryExpr
+   *
+   * http://www.w3.org/TR/xpath#section-Basics
+   *
+   *  [15]    PrimaryExpr    ::= VariableReference  
+   *                             | '(' Expr ')'  
+   *                             | Literal  
+   *                             | Number  
+   *                             | FunctionCall 
+   *
+   * @param  $xPathQuery  (string)   XPath query to be evaluated.
+   * @param  $context     (array)    The context from which to evaluate
+   * @param  $results     (mixed)    If the expression could be parsed and evaluated as one of these
+   *                                 syntactical elements, then this will be either:
+   *                                    - node-set (an ordered collection of nodes without duplicates) 
+   *                                    - boolean (true or false) 
+   *                                    - number (a floating-point number) 
+   *                                    - string (a sequence of UCS characters) 
+   * @return              (string)    An empty string if the query was successfully parsed and 
+   *                                  evaluated, else a string containing the reason for failing.
+   * @see    evaluate()
+   */
+  function _evaluatePrimaryExpr($xPathQuery, $context, &$result) {
+    $ThisFunctionName = '_evaluatePrimaryExpr';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
+    if ($bDebugThisFunction) {
+      echo "Path: $xPathQuery\n";
+      echo "Context:";
+      $this->_printContext($context);
+      echo "\n";
+    }
+
+    // Certain expressions will never be PrimaryExpr, so to speed up processing, cache the
+    // results we do find from this function.
+    static $aResultsCache = array();
+    
+    // Do while false loop
+    $error = "";
+    // If the result is independant of context, then we can cache the result and speed this function
+    // up on future calls.
+    $bCacheableResult = FALSE;
+    do {
+      if (isset($aResultsCache[$xPathQuery])) {
+        $error = $aResultsCache[$xPathQuery]['Error'];
+        $result = $aResultsCache[$xPathQuery]['Result'];
+        break;
+      }
+
+      // VariableReference 
+      // ### Not supported.
+
+      // Is it a number?
+      // | Number  
+      if (is_numeric($xPathQuery)) {
+        $result = doubleval($xPathQuery);
+        $bCacheableResult = TRUE;
+        break;
+      }
+
+      // If it starts with $, and the remainder is a number, then it's a string.
+      // | Literal  
+      $literal = $this->_asLiteral($xPathQuery);
+      if ($literal !== FALSE) {
+        $result = $xPathQuery;
+        $bCacheableResult = TRUE;
+        break;
+      }
+
+      // Is it a function?
+      // | FunctionCall 
+      {
+        // Check whether it's all wrapped in a function.  will be like count(.*) where .* is anything
+        // text() will try to be matched here, so just explicitly ignore it
+        $regex = ":^([^\(\)\[\]/]*)\s*\((.*)\)$:U";
+        if (preg_match($regex, $xPathQuery, $aMatch) && $xPathQuery != "text()") {
+          $function = $aMatch[1];
+          $data     = $aMatch[2];
+          // It is possible that we will get "a() or b()" which will match as function "a" with
+          // arguments ") or b(" which is clearly wrong... _bracketsCheck() should catch this.
+          if ($this->_bracketsCheck($data)) {
+            if (in_array($function, $this->functions)) {
+              if ($bDebugThisFunction) echo "XPathExpr: $xPathQuery is a $function() function call:\n";
+              $result = $this->_evaluateFunction($function, $data, $context);
+              break;
+            } 
+          }
+        }
+      }
+
+      // Is it a bracketed expression?
+      // | '(' Expr ')'  
+      // If it is surrounded by () then trim the brackets
+      $bBrackets = FALSE;
+      if (preg_match(":^\((.*)\):", $xPathQuery, $aMatches)) {
+        // Do not keep trimming off the () as we could have "(() and ())"
+        $bBrackets = TRUE;
+        $xPathQuery = $aMatches[1];
+      }
+
+      if ($bBrackets) {
+        // Must be a Expr then.
+        $result = $this->_evaluateExpr($xPathQuery, $context);
+        break;
+      }
+
+      // Can't be a PrimaryExpr then.
+      $error = "Expression is not a PrimaryExpr";
+      $bCacheableResult = TRUE;
+    } while (FALSE);
+    //////////////////////////////////////////////    
+
+    // If possible, cache the result.
+    if ($bCacheableResult) {
+        $aResultsCache[$xPathQuery]['Error'] = $error;
+        $aResultsCache[$xPathQuery]['Result'] = $result;
+    }
+
+    $this->_closeDebugFunction($ThisFunctionName, array('result' => $result, 'error' => $error), $bDebugThisFunction);
+
+    // Return the result.
+    return $error;
+  }
+
+  /**
+   * Evaluates an XPath Expr
    *
    * $this->evaluate() is the entry point and does some inits, while this 
    * function is called recursive internaly for every sub-xPath expresion we find.
+   * It handles the following syntax, and calls evaluatePathExpr if it finds that none
+   * of this grammer applies.
    *
-   * @param  $xPathQuery  (string) XPath expression to be evaluated.
-   * @param  $contextPath (mixed) (string or array) Full path of a document node, starting
-   *                              from which the XPath expression should be evaluated.
-   * @return              (array) Vector of absolute XPath's, or FALSE on error.
+   * http://www.w3.org/TR/xpath#section-Basics
+   *
+   * [14]    Expr               ::= OrExpr 
+   * [21]    OrExpr             ::= AndExpr  
+   *                                | OrExpr 'or' AndExpr  
+   * [22]    AndExpr            ::= EqualityExpr  
+   *                                | AndExpr 'and' EqualityExpr  
+   * [23]    EqualityExpr       ::= RelationalExpr  
+   *                                | EqualityExpr '=' RelationalExpr  
+   *                                | EqualityExpr '!=' RelationalExpr  
+   * [24]    RelationalExpr     ::= AdditiveExpr  
+   *                                | RelationalExpr '<' AdditiveExpr  
+   *                                | RelationalExpr '>' AdditiveExpr  
+   *                                | RelationalExpr '<=' AdditiveExpr  
+   *                                | RelationalExpr '>=' AdditiveExpr  
+   * [25]    AdditiveExpr       ::= MultiplicativeExpr  
+   *                                | AdditiveExpr '+' MultiplicativeExpr  
+   *                                | AdditiveExpr '-' MultiplicativeExpr  
+   * [26]    MultiplicativeExpr ::= UnaryExpr  
+   *                                | MultiplicativeExpr MultiplyOperator UnaryExpr  
+   *                                | MultiplicativeExpr 'div' UnaryExpr  
+   *                                | MultiplicativeExpr 'mod' UnaryExpr  
+   * [27]    UnaryExpr          ::= UnionExpr  
+   *                                | '-' UnaryExpr 
+   * [18]    UnionExpr          ::= PathExpr  
+   *                                | UnionExpr '|' PathExpr 
+   *
+   * NOTE: The effect of the above grammar is that the order of precedence is 
+   * (lowest precedence first): 
+   * 1) or 
+   * 2) and 
+   * 3) =, != 
+   * 4) <=, <, >=, > 
+   * 5) +, -
+   * 6) *, div, mod
+   * 7) - (negate)
+   * 8) |
+   *
+   * @param  $xPathQuery  (string)   XPath query to be evaluated.
+   * @param  $context     (array)    An associative array the describes the context from which
+   *                                 to evaluate the XPath Expr.  Contains three members:
+   *                                  'nodePath' => The absolute XPath expression to the context node
+   *                                  'size' => The context size
+   *                                  'pos' => The context position
+   * @return              (mixed)    The result of the XPath expression.  Either:
+   *                                 node-set (an ordered collection of nodes without duplicates) 
+   *                                 boolean (true or false) 
+   *                                 number (a floating-point number) 
+   *                                 string (a sequence of UCS characters) 
    * @see    evaluate()
    */
-  function _internalEvaluate($xPathQuery, $contextPath='') {
-    // If you are having difficulty using this function.  Then set this to TRUE and 
-    // you'll get diagnostic info displayed to the output.
-    $bDebugThisFunction = FALSE;
-    
+  function _evaluateExpr($xPathQuery, $context) {
+    $ThisFunctionName = '_evaluateExpr';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction("evaluate");
-      echo "Path: $xPathQuery\n Context: $contextPath\n";
+      echo "Path: $xPathQuery\n";
+      echo "Context:";
+      $this->_printContext($context);
+      echo "\n";    
+    }
+
+    // Numpty check
+    if (!isset($xPathQuery) || ($xPathQuery == '')) {
+      $this->_displayError("The \$xPathQuery argument must have a value.", __LINE__, __FILE__);
+      return FALSE;
+    }
+
+    // At the top level we deal with booleans.  Only if the Expr is just an AdditiveExpr will 
+    // the result not be a boolean.
+    //
+    //
+    // Between these syntactical elements we get PathExprs.
+
+    // Do while false loop
+    do {
+      static $aKnownPathExprCache = array();
+
+      if (isset($aKnownPathExprCache[$xPathQuery])) {
+        if ($bDebugThisFunction) echo "XPathExpr is a PathExpr\n";
+        $result = $this->_evaluatePathExpr($xPathQuery, $context);
+        break;
+      }
+
+      // Check for operators first, as we could have "() op ()" and the PrimaryExpr will try to
+      // say that that is an Expr called ") op ("
+      // Set the default position and the type of the operator.
+      $aOperatorInfo = $this->_GetOperator($xPathQuery);
+
+      // An expression can be one of these, and we should catch these "first" as they are most common
+      if (empty($aOperatorInfo)) {
+        $error = $this->_evaluatePrimaryExpr($xPathQuery, $context, $result);
+        if (empty($error)) {
+          // It could be parsed as a PrimaryExpr, so look no further :o)
+          break;
+        }
+      }
+
+      // Check whether an operator was found.
+      if (empty($aOperatorInfo)) {
+        if ($bDebugThisFunction) echo "XPathExpr is a PathExpr\n";
+        $aKnownPathExprCache[$xPathQuery] = TRUE;
+        // No operator.  Means we have a PathExpr then.  Go to the next level.
+        $result = $this->_evaluatePathExpr($xPathQuery, $context);
+        break;
+      } 
+
+      if ($bDebugThisFunction) { echo "\nFound and operator:"; print_r($aOperatorInfo); }//LEFT:[$leftOperand]  oper:[$operator]  RIGHT:[$rightOperand]";
+
+      $operator = $aOperatorInfo['operator'];
+
+      /////////////////////////////////////////////
+      // Recursively process the operator
+
+      // Check the kind of operator.
+      switch ($operator) {
+        case ' or ': 
+        case ' and ':
+          $operatorType = 'Boolean';
+          break;
+        case '+': 
+        case '-': 
+        case '*':
+        case ' div ':
+        case ' mod ':
+          $operatorType = 'Integer';
+          break;
+        case ' | ':
+          $operatorType = 'NodeSet';
+          break;
+        case '<=':
+        case '<': 
+        case '>=':
+        case '>':
+        case '=': 
+        case '!=':
+          $operatorType = 'Multi';
+          break;
+        default:
+            $this->_displayError("Internal error.  Default case of switch statement reached.", __LINE__, __FILE__);
+      }
+
+      if ($bDebugThisFunction) echo "\nOperator is a [$operator]($operatorType operator)";
+
+      /////////////////////////////////////////////
+      // Evaluate the operands
+
+      // Evaluate the left part.
+      if ($bDebugThisFunction) echo "\nEvaluating LEFT:[{$aOperatorInfo['left operand']}]\n";
+      $left = $this->_evaluateExpr($aOperatorInfo['left operand'], $context);
+      if ($bDebugThisFunction) {echo "{$aOperatorInfo['left operand']} evals as:\n"; print_r($left); }
+      
+      // If it is a boolean operator, it's possible we don't need to evaluate the right part.
+
+      // Only evaluate the right part if we need to.
+      $right = '';
+      if ($operatorType == 'Boolean') {
+        // Is the left part false?
+        $left = $this->_handleFunction_boolean($left, $context);
+        if (!$left and ($operator == ' and ')) {
+          $result = FALSE;
+          break;
+        } else if ($left and ($operator == ' or ')) {
+          $result = TRUE;
+          break;
+        }
+      } 
+
+      // Evaluate the right part
+      if ($bDebugThisFunction) echo "\nEvaluating RIGHT:[{$aOperatorInfo['right operand']}]\n";
+      $right = $this->_evaluateExpr($aOperatorInfo['right operand'], $context);
+      if ($bDebugThisFunction) {echo "{$aOperatorInfo['right operand']} evals as:\n"; print_r($right); echo "\n";}
+
+      /////////////////////////////////////////////
+      // Combine the operands
+
+      // If necessary, work out how to treat the multi operators
+      if ($operatorType != 'Multi') {
+        $result = $this->_evaluateOperator($left, $operator, $right, $operatorType, $context);
+      } else {
+        // http://www.w3.org/TR/xpath#booleans
+        // If both objects to be compared are node-sets, then the comparison will be true if and 
+        // only if there is a node in the first node-set and a node in the second node-set such 
+        // that the result of performing the comparison on the string-values of the two nodes is 
+        // true. 
+        // 
+        // If one object to be compared is a node-set and the other is a number, then the 
+        // comparison will be true if and only if there is a node in the node-set such that the 
+        // result of performing the comparison on the number to be compared and on the result of 
+        // converting the string-value of that node to a number using the number function is true. 
+        //
+        // If one object to be compared is a node-set and the other is a string, then the comparison 
+        // will be true if and only if there is a node in the node-set such that the result of performing 
+        // the comparison on the string-value of the node and the other string is true. 
+        // 
+        // If one object to be compared is a node-set and the other is a boolean, then the comparison 
+        // will be true if and only if the result of performing the comparison on the boolean and on 
+        // the result of converting the node-set to a boolean using the boolean function is true.
+        if (is_array($left) || is_array($right)) {
+          if ($bDebugThisFunction) echo "As one of the operands is an array, we will need to loop\n";
+          if (is_array($left) && is_array($right)) {
+            $operatorType = 'String';
+          } elseif (is_numeric($left) || is_numeric($right)) {
+            $operatorType = 'Integer';
+          } elseif (is_bool($left)) {
+            $operatorType = 'Boolean';
+            $right = $this->_handleFunction_boolean($right, $context);
+          } elseif (is_bool($right)) {
+            $operatorType = 'Boolean';
+            $left = $this->_handleFunction_boolean($left, $context);
+          } else {
+            $operatorType = 'String';
+          }
+          if ($bDebugThisFunction) echo "Equals operator is a $operatorType operator\n";
+          // Turn both operands into arrays to simplify logic
+          $aLeft = $left;
+          $aRight = $right;
+          if (!is_array($aLeft)) $aLeft = array($aLeft);
+          if (!is_array($aRight)) $aRight = array($aRight);
+          $result = FALSE;
+          if (!empty($aLeft)) {
+            foreach ($aLeft as $leftItem) {
+              if (empty($aRight)) break;
+              // If the item is from a node set, we should evaluate it's string-value
+              if (is_array($left)) {
+                if ($bDebugThisFunction) echo "\tObtaining string-value of LHS:$leftItem as it's from a nodeset\n";
+                $leftItem = $this->_stringValue($leftItem);
+              }
+              foreach ($aRight as $rightItem) {
+                // If the item is from a node set, we should evaluate it's string-value
+                if (is_array($right)) {
+                  if ($bDebugThisFunction) echo "\tObtaining string-value of RHS:$rightItem as it's from a nodeset\n";
+                  $rightItem = $this->_stringValue($rightItem);
+                }
+
+                if ($bDebugThisFunction) echo "\tEvaluating $leftItem $operator $rightItem\n";
+                $result = $this->_evaluateOperator($leftItem, $operator, $rightItem, $operatorType, $context);
+                if ($result === TRUE) break;
+              }
+              if ($result === TRUE) break;
+            }
+          }
+        } 
+        // When neither object to be compared is a node-set and the operator is = or !=, then the 
+        // objects are compared by converting them to a common type as follows and then comparing 
+        // them. 
+        //
+        // If at least one object to be compared is a boolean, then each object to be compared 
+        // is converted to a boolean as if by applying the boolean function. 
+        //
+        // Otherwise, if at least one object to be compared is a number, then each object to be 
+        // compared is converted to a number as if by applying the number function. 
+        //
+        // Otherwise, both objects to be compared are converted to strings as if by applying 
+        // the string function. 
+        //  
+        // The = comparison will be true if and only if the objects are equal; the != comparison 
+        // will be true if and only if the objects are not equal. Numbers are compared for equality 
+        // according to IEEE 754 [IEEE 754]. Two booleans are equal if either both are true or 
+        // both are false. Two strings are equal if and only if they consist of the same sequence 
+        // of UCS characters.
+        else {
+          if (is_bool($left) || is_bool($right)) {
+            $operatorType = 'Boolean';
+          } elseif (is_numeric($left) || is_numeric($right)) {
+            $operatorType = 'Integer';
+          } else {
+            $operatorType = 'String';
+          }
+          if ($bDebugThisFunction) echo "Equals operator is a $operatorType operator\n";
+          $result = $this->_evaluateOperator($left, $operator, $right, $operatorType, $context);
+        }
+      }
+
+    } while (FALSE);
+    //////////////////////////////////////////////
+
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
+
+    // Return the result.
+    return $result;
+  }
+
+  /**
+   * Evaluate the result of an operator whose operands have been evaluated
+   *
+   * If the operator type is not "NodeSet", then neither the left or right operators 
+   * will be node sets, as the processing when one or other is an array is complex,
+   * and should be handled by the caller.
+   *
+   * @param  $left          (mixed)   The left operand
+   * @param  $right         (mixed)   The right operand
+   * @param  $operator      (string)  The operator to use to combine the operands
+   * @param  $operatorType  (string)  The type of the operator.  Either 'Boolean', 
+   *                                  'Integer', 'String', or 'NodeSet'
+   * @param  $context     (array)    The context from which to evaluate
+   * @return              (mixed)    The result of the XPath expression.  Either:
+   *                                 node-set (an ordered collection of nodes without duplicates) 
+   *                                 boolean (true or false) 
+   *                                 number (a floating-point number) 
+   *                                 string (a sequence of UCS characters) 
+   */
+  function _evaluateOperator($left, $operator, $right, $operatorType, $context) {
+    $ThisFunctionName = '_evaluateOperator';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
+    if ($bDebugThisFunction) {
+      echo "left: $left\n";
+      echo "right: $right\n";
+      echo "operator: $operator\n";
+      echo "operator type: $operatorType\n";
+    }
+
+    // Do while false loop
+    do {
+      // Handle the operator depending on the operator type.
+      switch ($operatorType) {
+        case 'Boolean':
+          {
+            // Boolify the arguments.  (The left arg is already a bool)
+            $right = $this->_handleFunction_boolean($right, $context);
+            switch ($operator) {
+              case '=': // Compare the two results.
+                $result = (bool)($left == $right); 
+                break;
+              case ' or ': // Return the two results connected by an 'or'.
+                $result = (bool)( $left or $right );
+                break;
+              case ' and ': // Return the two results connected by an 'and'.
+                $result = (bool)( $left and $right );
+                break;
+              case '!=': // Check whether the two results are not equal.
+                $result = (bool)( $left != $right );
+                break;
+              default:
+                $this->_displayError("Internal error.  Default case of switch statement reached.", __LINE__, __FILE__);
+            }
+          }
+          break;
+        case 'Integer':
+          {
+            // Convert both left and right operands into numbers.
+            if (empty($left) && ($operator == '-')) {
+              // There may be no left operator if the op is '-'
+              $left = 0;
+            } else {
+              $left = $this->_handleFunction_number($left, $context);
+            }
+            $right = $this->_handleFunction_number($right, $context);
+            if ($bDebugThisFunction) echo "\nLeft is $left, Right is $right\n";
+            switch ($operator) {
+              case '=': // Compare the two results.
+                $result = (bool)($left == $right); 
+                break;
+              case '!=': // Compare the two results.
+                $result = (bool)($left != $right); 
+                break;
+              case '+': // Return the result by adding one result to the other.
+                $result = $left + $right;
+                break;
+              case '-': // Return the result by decrease one result by the other.
+                $result = $left - $right;
+                break;
+              case '*': // Return a multiplication of the two results.
+                $result =  $left * $right;
+                break;
+              case ' div ': // Return a division of the two results.
+                $result = $left / $right;
+                break;
+              case ' mod ': // Return a modulo division of the two results.
+                $result = $left % $right;
+                break;
+              case '<=': // Compare the two results.
+                $result = (bool)( $left <= $right );
+                break;
+              case '<': // Compare the two results.
+                $result = (bool)( $left < $right );
+                break;
+              case '>=': // Compare the two results.
+                $result = (bool)( $left >= $right );
+                break;
+              case '>': // Compare the two results.
+                $result = (bool)( $left > $right );
+                break;
+              default:
+                $this->_displayError("Internal error.  Default case of switch statement reached.", __LINE__, __FILE__);
+            }
+          }
+          break;
+        case 'NodeSet':
+          // Add the nodes to the result set
+          $result = array_merge($left, $right);
+          // Remove duplicated nodes.
+          $result = array_unique($result);
+
+          // Preserve doc order if there was more than one query.
+          if (count($result) > 1) {
+            $result = $this->_sortByDocOrder($result);
+          }
+          break;
+        case 'String':
+            $left = $this->_handleFunction_string($left, $context);
+            $right = $this->_handleFunction_string($right, $context);
+            if ($bDebugThisFunction) echo "\nLeft is $left, Right is $right\n";
+            switch ($operator) {
+              case '=': // Compare the two results.
+                $result = (bool)($left == $right); 
+                break;
+              case '!=': // Compare the two results.
+                $result = (bool)($left != $right); 
+                break;
+              default:
+                $this->_displayError("Internal error.  Default case of switch statement reached.", __LINE__, __FILE__);
+            }
+          break;
+        default:
+          $this->_displayError("Internal error.  Default case of switch statement reached.", __LINE__, __FILE__);
+      }
+    } while (FALSE);
+
+    //////////////////////////////////////////////
+
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
+
+    // Return the result.
+    return $result;
+  }
+  
+  /**
+   * Evaluates an XPath PathExpr
+   *
+   * It handles the following syntax:
+   *
+   * http://www.w3.org/TR/xpath#node-sets
+   * http://www.w3.org/TR/xpath#NT-LocationPath
+   * http://www.w3.org/TR/xpath#path-abbrev
+   * http://www.w3.org/TR/xpath#NT-Step
+   *
+   * [19]   PathExpr              ::= LocationPath  
+   *                                  | FilterExpr  
+   *                                  | FilterExpr '/' RelativeLocationPath  
+   *                                  | FilterExpr '//' RelativeLocationPath
+   * [20]   FilterExpr            ::= PrimaryExpr  
+   *                                  | FilterExpr Predicate 
+   * [1]    LocationPath          ::= RelativeLocationPath  
+   *                                  | AbsoluteLocationPath  
+   * [2]    AbsoluteLocationPath  ::= '/' RelativeLocationPath?  
+   *                                  | AbbreviatedAbsoluteLocationPath
+   * [3]    RelativeLocationPath  ::= Step  
+   *                                  | RelativeLocationPath '/' Step  
+   *                                  | AbbreviatedRelativeLocationPath
+   * [4]    Step                  ::= AxisSpecifier NodeTest Predicate*  
+   *                                  | AbbreviatedStep  
+   * [5]    AxisSpecifier         ::= AxisName '::'  
+   *                                  | AbbreviatedAxisSpecifier  
+   * [10]   AbbreviatedAbsoluteLocationPath
+   *                              ::= '//' RelativeLocationPath
+   * [11]   AbbreviatedRelativeLocationPath
+   *                              ::= RelativeLocationPath '//' Step
+   * [12]   AbbreviatedStep       ::= '.'  
+   *                                  | '..'  
+   * [13]   AbbreviatedAxisSpecifier    
+   *                              ::= '@'? 
+   *
+   * If you expand all the abbreviated versions, then the grammer simplifies to:
+   *
+   * [19]   PathExpr              ::= RelativeLocationPath  
+   *                                  | '/' RelativeLocationPath?  
+   *                                  | FilterExpr  
+   *                                  | FilterExpr '/' RelativeLocationPath  
+   * [20]   FilterExpr            ::= PrimaryExpr  
+   *                                  | FilterExpr Predicate 
+   * [3]    RelativeLocationPath  ::= Step  
+   *                                  | RelativeLocationPath '/' Step  
+   * [4]    Step                  ::= AxisName '::' NodeTest Predicate*  
+   *
+   * Conceptually you can say that we should split by '/' and try to treat the parts
+   * as steps, and if that fails then try to treat it as a PrimaryExpr.  
+   * 
+   * @param  $PathExpr   (string) PathExpr syntactical element
+   * @param  $context    (array)  The context from which to evaluate
+   * @return             (mixed)  The result of the XPath expression.  Either:
+   *                               node-set (an ordered collection of nodes without duplicates) 
+   *                               boolean (true or false) 
+   *                               number (a floating-point number) 
+   *                               string (a sequence of UCS characters) 
+   * @see    evaluate()
+   */
+  function _evaluatePathExpr($PathExpr, $context) {
+    $ThisFunctionName = '_evaluatePathExpr';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
+    if ($bDebugThisFunction) {
+      echo "PathExpr: $PathExpr\n";
+      echo "Context:";
+      $this->_printContext($context);
+      echo "\n";
     }
     
     // Numpty check
-    if (empty($xPathQuery)) {
-      $this->_displayError("The $xPathQuery argument must have a value.", __LINE__, __FILE__);
+    if (empty($PathExpr)) {
+      $this->_displayError("The \$PathExpr argument must have a value.", __LINE__, __FILE__);
       return FALSE;
     }
-    
-    // Split the paths that are sparated by '|' into distinct xPath expresions.
-    $xpathQueryList = (strpos($xPathQuery, '|') === FALSE) ? array($xPathQuery) : $this->_bracketExplode('|', $xPathQuery);
-    if ($bDebugThisFunction) { echo "<hr>Split the paths that are sparated by '|'\n"; print_r($xpathQueryList); }
-    
-    // Create an empty set to save the result.
-    $result = array();
-    
-    // Run through all paths.
-    foreach ($xpathQueryList as $xQuery) {
+    //////////////////////////////////////////////
+
+    // Parsing the expression into steps is a cachable operation as it doesn't depend on the context
+    static $aResultsCache = array();
+
+    if (isset($aResultsCache[$PathExpr])) {
+      $steps = $aResultsCache[$PathExpr];
+    } else {
+      // Note that we have used $this->slashes2descendant to simplify this logic, so the 
+      // "Abbreviated" paths basically never exist as '//' never exists.
+
       // mini syntax check
-      if (!$this->_bracketsCheck($xQuery)) {
-        $this->_displayError('While parsing an XPath expression, in the predicate ' .
-        str_replace($xQuery, '<b>'.$xQuery.'</b>', $xPathQuery) .
-        ', there was an invalid number of brackets or a bracket mismatch.', __LINE__, __FILE__);
+      if (!$this->_bracketsCheck($PathExpr)) {
+        $this->_displayError('While parsing an XPath query, in the PathExpr "' .
+        $PathExpr.
+        '", there was an invalid number of brackets or a bracket mismatch.', __LINE__, __FILE__);
       }
       // Save the current path.
-      $this->currentXpathQuery = $xQuery;
+      $this->currentXpathQuery = $PathExpr;
       // Split the path at every slash *outside* a bracket.
-      $steps = $this->_bracketExplode('/', $xQuery);
-      if ($bDebugThisFunction) { echo "<hr>Split the path '$xQuery' at every slash *outside* a bracket.\n "; print_r($steps); }
+      $steps = $this->_bracketExplode('/', $PathExpr);
+      if ($bDebugThisFunction) { echo "<hr>Split the path '$PathExpr' at every slash *outside* a bracket.\n "; print_r($steps); }
       // Check whether the first element is empty.
       if (empty($steps[0])) {
         // Remove the first and empty element. It's a starting  '//'.
         array_shift($steps);
       }
-      // Start to evaluate the steps.
-      $nodes = $this->_evaluateStep($contextPath, $steps);
-      // Remove duplicated nodes.
-      $nodes = array_unique($nodes);
-      // Add the nodes to the result set.
-      $result = array_merge($result, $nodes);
+      $aResultsCache[$PathExpr] = $steps;
+    }
+
+    // Start to evaluate the steps.
+    // ### Consider implementing an evaluateSteps() function that removes recursion from
+    // evaluateStep()
+    $result = $this->_evaluateStep($steps, $context);
+
+    // Preserve doc order if there was more than one result
+    if (count($result) > 1) {
+      $result = $this->_sortByDocOrder($result);
     }
     //////////////////////////////////////////////
-    if ($bDebugThisFunction) {
-      $this->_closeDebugFunction($aStartTime, $result);
-    }
+
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
+
     // Return the result.
     return $result;
   }
-  
+
+  /**
+   * Sort an xPathSet by doc order.
+   *
+   * @param  $xPathSet (array) Array of full paths to nodes that need to be sorted
+   * @return           (array) Array containing the same contents as $xPathSet, but
+   *                           with the contents in doc order
+   */
+  function _sortByDocOrder($xPathSet) {
+    $ThisFunctionName = '_sortByDocOrder';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
+    if ($bDebugThisFunction) {
+      echo "_sortByDocOrder(xPathSet:[".count($xPathSet)."])";
+      echo "xPathSet:\n";
+      print_r($xPathSet);
+      echo "<hr>\n";
+    }
+    //////////////////////////////////////////////
+
+    $aResult = array();
+
+    // Spot some common shortcuts.
+    if (count($xPathSet) < 1) {
+      $aResult = $xPathSet;
+    } else {
+      // Build an array of doc-pos indexes.
+      $aDocPos = array();
+      $nodeCount = count($this->nodeIndex);
+      $aPaths = array_keys($this->nodeIndex);
+      if ($bDebugThisFunction) {
+        echo "searching for path indices in array_keys(this->nodeIndex)...\n";
+        //print_r($aPaths);
+      }
+
+      // The last index we found.  In general the elements will be in groups
+      // that are themselves in order.
+      $iLastIndex = 0;
+      foreach ($xPathSet as $path) {
+        // Cycle round the nodes, starting at the last index, looking for the path.
+        $foundNode = FALSE;
+        for ($iIndex = $iLastIndex; $iIndex < $nodeCount + $iLastIndex; $iIndex++) {
+          $iThisIndex = $iIndex % $nodeCount;
+          if (!strcmp($aPaths[$iThisIndex],$path)) {
+            // we have found the doc-position index of the path 
+            $aDocPos[] = $iThisIndex;
+            $iLastIndex = $iThisIndex;
+            $foundNode = TRUE;
+            break;
+          }
+        }
+        if ($bDebugThisFunction) {
+          if (!$foundNode)
+            echo "Error: $path not found in \$this->nodeIndex\n";
+          else 
+            echo "Found node after ".($iIndex - $iLastIndex)." iterations\n";
+        }
+      }
+      // Now count the number of doc pos we have and the number of results and
+      // confirm that we have the same number of each.
+      $iDocPosCount = count($aDocPos);
+      $iResultCount = count($xPathSet);
+      if ($iDocPosCount != $iResultCount) {
+        if ($bDebugThisFunction) {
+          echo "count(\$aDocPos)=$iDocPosCount; count(\$result)=$iResultCount\n";
+          print_r(array_keys($this->nodeIndex));
+        }
+        $this->_displayError('Results from _InternalEvaluate() are corrupt.  '.
+                                      'Do you need to call reindexNodeTree()?', __LINE__, __FILE__);
+      }
+
+      // Now sort the indexes.
+      sort($aDocPos);
+
+      // And now convert back to paths.
+      $iPathCount = count($aDocPos);
+      for ($iIndex = 0; $iIndex < $iPathCount; $iIndex++) {
+        $aResult[] = $aPaths[$aDocPos[$iIndex]];
+      }
+    }
+
+    // Our result from the function is this array.
+    $result = $aResult;
+
+    //////////////////////////////////////////////
+
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
+
+    // Return the result.
+    return $result;
+  }
+
   /**
    * Evaluate a step from a XPathQuery expression at a specific contextPath.
    *
@@ -2025,97 +3453,98 @@ class XPathEngine extends XPathBase {
    * absolute XPath (or vector of XPaths) to a starting node(s) from which the step should 
    * be evaluated.
    *
-   * @param  $contextPath  (mixed) String or vector.  A absolute XPath OR vector of XPaths 
-   *                               (see above)
    * @param  $steps        (array) Vector containing the remaining steps of the current 
    *                               XPathQuery expression.
+   * @param  $context      (array) The context from which to evaluate
    * @return               (array) Vector of absolute XPath's as a result of the step 
-   *                               evaluation.
-   * @see    evaluate()
+   *                               evaluation.  The results will not necessarily be in doc order
+   * @see    _evaluatePathExpr()
    */
-  function _evaluateStep($contextPath, $steps) {
-    // If you are having difficulty using this function.  Then set this to TRUE and 
-    // you'll get diagnostic info displayed to the output.
-    $bDebugThisFunction = FALSE;
+  function _evaluateStep($steps, $context) {
+    $ThisFunctionName = '_evaluateStep';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction(__LINE__.":_evaluateStep(contextPath:[$contextPath], steps:[$steps])");
-      if (is_array($contextPath)) {
-        echo "Context:\n";
-        print_r($contextPath);
-      } else {
-        echo "Context: $contextPath\n";
-      }
+      echo "Context:";
+      $this->_printContext($context);
+      echo "\n";
       echo "Steps: ";
       print_r($steps);
       echo "<hr>\n";
     }
-    $xPathSet = array(); // Create an empty array for saving the abs. XPath's found.
-    // We may have an "array" of one context.  If so convert it from 
-    // array to single string.  Often, this function will be called with
-    // a /Path1[1]/Path[3]/Path[2] sytle predicate.
-    if (is_array($contextPath) && (count($contextPath) == 1)) $contextPath = $contextPath[0];
-    // Check whether the context is an array of contexts.
-    if (is_array($contextPath)) {
-      // Run through the array.
-      $size = sizeOf($contextPath);
-      for ($i=0; $i<$size; $i++) {
-        if ($bDebugThisFunction) echo __LINE__.":Evaluating step for the {$contextPath[$i]} context...\n";        
-        // Call this method for this single path.
-        $xPathSet = array_merge($xPathSet, $this->_evaluateStep($contextPath[$i], $steps));
+    //////////////////////////////////////////////
+
+    $result = array(); // Create an empty array for saving the abs. XPath's found.
+
+    $contextPaths = array();   // Create an array to save the new contexts.
+    $step = trim(array_shift($steps)); // Get this step.
+    if ($bDebugThisFunction) echo __LINE__.":Evaluating step $step\n";
+    
+    $axis = $this->_getAxis($step); // Get the axis of the current step.
+
+    // If there was no axis, then it must be a PrimaryExpr
+    if ($axis == FALSE) {
+      if ($bDebugThisFunction) echo __LINE__.":Step is not an axis but a PrimaryExpr\n";
+      // ### This isn't correct, as the result of this function might not be a node set.
+      $error = $this->_evaluatePrimaryExpr($step, $context, $contextPaths);
+      if (!empty($error)) {
+        $this->_displayError("Expression failed to parse as PrimaryExpr because: $error"
+                , __LINE__, __FILE__, FALSE);
       }
     } else {
-      $contextPaths = array();   // Create an array to save the new contexts.
-      $step = trim(array_shift($steps)); // Get this step.
-      if ($bDebugThisFunction) echo __LINE__.":Evaluating step $step\n";
-      
-      $axis = $this->_getAxis($step, $contextPath); // Get the axis of the current step.
       if ($bDebugThisFunction) { echo __LINE__.":Axis of step is:\n"; print_r($axis); echo "\n";}
-      
-      // Check whether it's a function.
-      if ($axis['axis'] == 'function') {
-        // Check whether an array was return by the function.
-        if (is_array($axis['node-test'])) {
-          $contextPaths = array_merge($contextPaths, $axis['node-test']);  // Add the results to the list of contexts.
-        } else {
-          $contextPaths[] = $axis['node-test']; // Add the result to the list of contexts.
-        }
-      } else {
-        $method = '_handleAxis_' . $axis['axis']; // Create the name of the method.
-      
-        // Check whether the axis handler is defined. If not display an error message.
-        if (!method_exists(&$this, $method)) {
-          $this->_displayError('While parsing an XPath expression, the axis ' .
-          $axis['axis'] . ' could not be handled, because this version does not support this axis.', __LINE__, __FILE__);
-        }
-        if ($bDebugThisFunction) echo __LINE__.":Calling user method $method\n";        
-        
-        // Perform an axis action.
-        $contextPaths = $this->$method($axis, $contextPath);
-        if ($bDebugThisFunction) { echo __LINE__.":We found these contexts from this step:\n"; print_r( $contextPaths ); echo "\n";}
-        
-        // Check whether there are predicates.
-        if (count($axis['predicate']) > 0) {
-          if ($bDebugThisFunction) echo __LINE__.":Filtering contexts by predicate...\n";        
-          
-          // Check whether each node fits the predicates.
-          $contextPaths = $this->_checkPredicates($contextPaths, $axis['predicate'], $axis['node-test']);
-        }
+      $method = '_handleAxis_' . $axis['axis']; // Create the name of the method.
+    
+      // Check whether the axis handler is defined. If not display an error message.
+      if (!method_exists($this, $method)) {
+        $this->_displayError('While parsing an XPath query, the axis ' .
+        $axis['axis'] . ' could not be handled, because this version does not support this axis.', __LINE__, __FILE__);
       }
+      if ($bDebugThisFunction) echo __LINE__.":Calling user method $method\n";        
       
-      // Check whether there are more steps left.
-      if (count($steps) > 0) {
-        if ($bDebugThisFunction) echo __LINE__.":Evaluating next step given the context of the first step...\n";        
-        // Continue the evaluation of the next steps.
-        $xPathSet = $this->_evaluateStep($contextPaths, $steps);
-      } else {
-        $xPathSet = $contextPaths; // Save the found contexts.
+      // Perform an axis action.
+      $contextPaths = $this->$method($axis, $context['nodePath']);
+      if ($bDebugThisFunction) { echo __LINE__.":We found these contexts from this step:\n"; print_r( $contextPaths ); echo "\n";}
+    }
+
+    // Check whether there are predicates.
+    if (count($contextPaths) > 0 && count($axis['predicate']) > 0) {
+      if ($bDebugThisFunction) echo __LINE__.":Filtering contexts by predicate...\n";
+      
+      // Check whether each node fits the predicates.
+      $contextPaths = $this->_checkPredicates($contextPaths, $axis['predicate']);
+    }
+
+    // Check whether there are more steps left.
+    if (count($steps) > 0) {
+      if ($bDebugThisFunction) echo __LINE__.":Evaluating next step given the context of the first step...\n";        
+      
+      // Continue the evaluation of the next steps.
+
+      // Run through the array.
+      $size = sizeOf($contextPaths);
+      for ($pos=0; $pos<$size; $pos++) {
+        // Build new context
+        $newContext = array('nodePath' => $contextPaths[$pos], 'size' => $size, 'pos' => $pos + 1);
+        if ($bDebugThisFunction) echo __LINE__.":Evaluating step for the {$contextPaths[$pos]} context...\n";
+        // Call this method for this single path.
+        $xPathSetNew = $this->_evaluateStep($steps, $newContext);
+        if ($bDebugThisFunction) {echo "New results for this context:\n"; print_r($xPathSetNew);}
+        $result = array_merge($result, $xPathSetNew);
       }
+
+      // Remove duplicated nodes.
+      $result = array_unique($result);
+    } else {
+      $result = $contextPaths; // Save the found contexts.
     }
     
-    if ($bDebugThisFunction) $this->_closeDebugFunction($aStartTime, $xPathSet);
-    
+    //////////////////////////////////////////////
+
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
+
     // Return the result.
-    return $xPathSet;
+    return $result;
   }
   
   /**
@@ -2126,17 +3555,14 @@ class XPathEngine extends XPathBase {
    *
    * @param  $xPathSet   (array)  Array of full paths of all nodes to be tested.
    * @param  $predicates (array)  Array of predicates to use.
-   * @param  $nodeTest   (string) The node test used to filter the node set.  Passed 
-   *                              to evaluatePredicate()
    * @return             (array)  Vector of absolute XPath's that match the given predicates.
    * @see    _evaluateStep()
    */
-  function _checkPredicates($xPathSet, $predicates, $nodeTest) {
-    // If you are having difficulty using this function.  Then set this to TRUE and 
-    // you'll get diagnostic info displayed to the output.
-    $bDebugThisFunction = FALSE;
+  function _checkPredicates($xPathSet, $predicates) {
+    $ThisFunctionName = '_checkPredicates';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction("_checkPredicates(Nodes:[$xPathSet], Predicates:[$predicates])");
       echo "XPathSet:";
       print_r($xPathSet);
       echo "Predicates:";
@@ -2146,60 +3572,68 @@ class XPathEngine extends XPathBase {
     //////////////////////////////////////////////
     // Create an empty set of nodes.
     $result = array();
-    
-    // Run through all nodes.
-    $nSize = sizeOf($xPathSet);
-    for ($i=0; $i<$nSize; $i++) {
-      $xPath = $xPathSet[$i];
-      // Create a variable whether to add this node to the node-set.
-      $add = TRUE;
+
+    // Run through all predicates.
+    $pSize = sizeOf($predicates);
+    for ($j=0; $j<$pSize; $j++) {
+      $predicate = $predicates[$j]; 
+      if ($bDebugThisFunction) echo "Evaluating predicate \"$predicate\"\n";
+
+      // This will contain all the nodes that match this predicate
+      $aNewSet = array();
       
-      // Run through all predicates.
-      $pSize = sizeOf($predicates);
-      for ($j=0; $j<$pSize; $j++) {
-        $predicate = $predicates[$j]; 
-        if ($bDebugThisFunction) echo "Evaluating predicate \"$predicate\"\n";
+      // Run through all nodes.
+      $contextSize = count($xPathSet);
+      for ($contextPos=0; $contextPos<$contextSize; $contextPos++) {
+        $xPath = $xPathSet[$contextPos];
+
+        // Build the context for this predicate
+        $context = array('nodePath' => $xPath, 'size' => $contextSize, 'pos' => $contextPos + 1);
+      
         // Check whether the predicate is just an number.
         if (preg_match('/^\d+$/', $predicate)) {
           if ($bDebugThisFunction) echo "Taking short cut and calling _handleFunction_position() directly.\n";
           // Take a short cut.  If it is just a position, then call 
           // _handleFunction_position() directly.  70% of the
           // time this will be the case. ## N.S
-          $check = (bool) ($predicate == $this->_handleFunction_position($xPath, '', $nodeTest));
-          // Enhance the predicate.
-          //                    $predicate .= "=position()";
+//          $check = (bool) ($predicate == $context['pos']);
+          $check = (bool) ($predicate == $this->_handleFunction_position('', $context));
         } else {                
-          // Else do the predicate check the long and thorough way.
-          $check = $this->_evaluatePredicate($xPath, $predicate, $nodeTest);
+          // Else do the predicate check the long and through way.
+          $check = $this->_evaluateExpr($predicate, $context);
         }
-        // Check whether it's a string.
-        if (is_string($check) && ( ( $check == '' ) || ( $check == $predicate ) )) {
-          $check = FALSE; // Set the result to FALSE.
-        } 
-        else if (is_bool($check) )  {
-          // 0 and 1 are both bools and ints.  We need to capture the bools
-          // as they might have been the intended result                    ## N.S
+        if ($bDebugThisFunction) {
+          echo "Evaluating the predicate returned "; 
+          var_dump($check); 
+          echo "\n";
+        }
+
+        if (is_int($check)) { // Check whether it's an integer.
+          // Check whether it's the current position.
+          $check = (bool) ($check == $this->_handleFunction_position('', $context));
         } else {
-          if (is_int($check)) { // Check whether it's an integer.
-            // Check whether it's the current position.
-            $check = (bool) ($check == $this->_handleFunction_position($xPath, '', $nodeTest));
-          }
+          $check = (bool) ($this->_handleFunction_boolean($check, $context));
+//          if ($bDebugThisFunction) {echo $this->_handleFunction_string($check, $context);}
         }
+
         if ($bDebugThisFunction) echo "Node $xPath matches predicate $predicate: " . (($check) ? "TRUE" : "FALSE") ."\n";
-        // Check whether the predicate is OK for this node.
-        $add = $add && $check;
+
+        // Do we add it?
+        if ($check) $aNewSet[] = $xPath;
       }
        
-      // Check whether to add this node to the node-set.
-      if ($add) {
-        $result[] = $xPath; // Add the node to the node-set.
-      }            
-      if ($bDebugThisFunction) echo "Node $xPath matches: " . (($add) ? "TRUE" : "FALSE") ."\n\n";        
+      // Use the newly filtered list.
+      $xPathSet = $aNewSet;
+
+      if ($bDebugThisFunction) {echo "Node set now contains : "; print_r($xPathSet); }
     }
+
+    $result = $xPathSet;
+
     //////////////////////////////////////////////
-    if ($bDebugThisFunction) {
-      $this->_closeDebugFunction($aStartTime, $result);
-    }
+
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
+
     // Return the array of nodes.
     return $result;
   }
@@ -2213,25 +3647,26 @@ class XPathEngine extends XPathBase {
    * @param  $function      (string) Name of the function to be evaluated.
    * @param  $arguments     (string) String containing the arguments being
    *                                 passed to the function.
-   * @param  $absoluteXPath (string) Full path to the document node on which the
-   *                                 function should be evaluated.
+   * @param  $context       (array)  The context from which to evaluate
    * @return                (mixed)  This method returns the result of the evaluation of
    *                                 the function. Depending on the function the type of the 
    *                                 return value can be different.
    * @see    evaluate()
    */
-  function _evaluateFunction($function, $arguments, $absoluteXPath, $nodeTest='') {
-    // If you are having difficulty using this function.  Then set this to TRUE and 
-    // you'll get diagnostic info displayed to the output.
-    $bDebugThisFunction = FALSE;
+  function _evaluateFunction($function, $arguments, $context) {
+    $ThisFunctionName = '_evaluateFunction';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction("_evaluateFunction(Function:[$function], Arguments:[$arguments], node:[$absoluteXPath], nodeTest:[$nodeTest])");
       if (is_array($arguments)) {
         echo "Arguments:\n";
         print_r($arguments);
       } else {
         echo "Arguments: $arguments\n";
       }
+      echo "Context:";
+      $this->_printContext($context);
+      echo "\n";
       echo "<hr>\n";
     }
     /////////////////////////////////////
@@ -2242,319 +3677,31 @@ class XPathEngine extends XPathBase {
     $method = '_handleFunction_'. $function;
     
     // Check whether the function handling function is available.
-    if (!method_exists(&$this, $method)) {
+    if (!method_exists($this, $method)) {
       // Display an error message.
-      $this->_displayError("While parsing an XPath expression, ".
+      $this->_displayError("While parsing an XPath query, ".
         "the function \"$function\" could not be handled, because this ".
         "version does not support this function.", __LINE__, __FILE__);
     }
-    if ($bDebugThisFunction) echo "Calling function $method($absoluteXPath, $arguments)\n"; 
+    if ($bDebugThisFunction) echo "Calling function $method($arguments)\n"; 
     
     // Return the result of the function.
-    $result = $this->$method($absoluteXPath, $arguments, $nodeTest);
+    $result = $this->$method($arguments, $context);
     
     //////////////////////////////////////////////
     // Return the nodes found.
-    if ($bDebugThisFunction) {
-      $this->_closeDebugFunction($aStartTime, $result);
-    }
+
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
+
     // Return the result.
     return $result;
   }
-  
-  /**
-   * Evaluates a predicate on a node.
-   *
-   * This method tries to evaluate a predicate on a given node.
-   *
-   * @param  $absoluteXPath (string) Full path of the node on which the predicate
-   *                                 should be evaluated.
-   * @param  $predicate     (string) String containing the predicate expression
-   *                                 to be evaluated.
-   * @param  $nodeTest      (string) The node test used to filter the node set.
-   * @return                (mixed)  This method is called recursively. The first call 
-   *                                 should return a boolean value, whether the node 
-   *                                 matches the predicateor not. Any call to the 
-   *                                 method being made during the recursion
-   *                                 may also return other types for further processing.
-   * @see    evaluate()
-   */
-  function _evaluatePredicate($absoluteXPath, $predicate, $nodeTest) {
-    // If you are having difficulty using this function.  Then set this to TRUE and 
-    // you'll get diagnostic info displayed to the output.
-    $bDebugThisFunction = FALSE;
-    if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction("_evaluatePredicate");
-      echo "Node: [$absoluteXPath]\n";
-      echo "Predicate: [$predicate]\n";
-      echo "Node Test: [$nodeTest]\n";
-      echo "<hr>";
-    }
     
-    do { // try-block
-      // Numpty check
-      if (!is_string($predicate)) {
-        // Display an error message.
-        $this->_displayError("While parsing an XPath expression ".
-          "there was an error in the following predicate, ".
-          "because it was not a string. It was a '".$predicate."'", __LINE__, __FILE__);
-        $result = FALSE;
-        break; // try-block
-      }
-      
-      $predicate = trim($predicate);
-      // Numpty check.  If they give us an empty string, then this is an error. ## N.S
-      if ($predicate === '') { 
-        // Display an error message.
-        $this->_displayError("While parsing an XPath expression ". 
-          "there was an error in the predicate " .
-          "because it was the null string.  If you wish to seach ".
-          "for the empty string, you must use ''.", __LINE__, __FILE__);
-        $result = FALSE;
-        break; // try-block
-      }
-      
-      /////////////////////////////////////////////
-      // Quick ways out.
-      // If it is a literal string, then we return the literal string.  ## N.S. --sb
-      $stringDelimiterMismatsh = 0;
-      if (preg_match(':^"(.*)"$:', $predicate, $regs)) {
-        $result = $regs[1];
-        $stringDelimiterMismatsh = strpos(' ' . $result, '"');
-        if ($bDebugThisFunction) echo "Predicate is literal: \"{$result}\"\n";        
-      } elseif (preg_match(":^'(.*)'$:", $predicate, $regs)) {
-        $result = $regs[1];
-        $stringDelimiterMismatsh = strpos(' ' . $result, "'");
-        if ($bDebugThisFunction) echo "Predicate is literal '{$result}'\n";        
-      }
-      if (isSet($result)) break; // try-block
-      
-      if ($stringDelimiterMismatsh > 0) {
-        $this->_displayError("While parsing an XPath expression ".
-              "there was an string delimiter miss match at pos [{$stringDelimiterMismatsh}] in the predicate string '{$predicate}'.", __LINE__, __FILE__);
-        $result = FALSE;
-        break; // try-block
-      }
-    
-      // Check whether the predicate is just a digit.
-      if (is_numeric($predicate)) {
-        // Return the value of the digit.
-        $result = doubleval($predicate);
-        if ($bDebugThisFunction) echo "Predicate is double: '{$result}'\n";        
-        break; // try-block
-      }
-      
-      /////////////////////////////////////////////
-      // Check for operators.
-      // Set the default position and the type of the operator.
-      $position = 0;
-      $operator = '';
-      
-      // Run through all operators and try to find one.
-      $opSize = sizeOf($this->operators);
-      for ($i=0; $i<$opSize; $i++) {
-        if ($position >0) break;
-        $operator = $this->operators[$i];
-        // Quickcheck. If not present don't wast time searching 'the hard way'
-        if (strpos($predicate, $operator)===FALSE) continue;
-        // Special check
-        $position = $this->_searchString($predicate, $operator);
-        // Check whether a operator was found.
-        if ($position <= 0 ) continue;
-        // Check whether it's the equal operator.
-        if ($operator == '=') {
-          // Also look for other operators containing the equal sign.
-          switch ($predicate[$position-1]) {
-            case '<' : 
-              $position--;
-              $operator = '<=';
-              break;
-            case '>' : 
-              $position--;
-              $operator = '>=';
-              break;
-            case '!' : 
-              $position--;
-              $operator = '!=';
-              break;
-            default:
-          }
-        }
-        if ($operator == '*') {
-          // Get some substrings.
-          $character = substr($predicate, $position - 1, 1);
-          $attribute = substr($predicate, $position - 11, 11);
-        
-          // Check whether it's an attribute selection.
-          if (( $character == '@' ) || ( $attribute == 'attribute::' )) {
-            // Don't use the operator.
-            $operator = '';
-            $position = -1;
-          }
-        }
-      } // end while each($this->operators)
-      
-      // Check whether an operator was found.        
-      if ($position > 0) {
-        if ($bDebugThisFunction) echo "\nPredicate operator is a [$operator] at pos '$position'";        
-        // Get the left and the right part of the expression.
-        $left_predicate  = trim(substr($predicate, 0, $position));
-        $right_predicate = trim(substr($predicate, $position + strlen($operator)));
-        if ($bDebugThisFunction) echo "\nLEFT:[$left_predicate]  oper:[$operator]  RIGHT:[$right_predicate]";        
-      
-        // Remove whitespaces.
-        $left_predicate  = trim($left_predicate);
-        $right_predicate = trim($right_predicate);
-        // Evaluate the left and the right part.
-        if ($bDebugThisFunction) echo "\nEvaluating LEFT:[$left_predicate]";
-        $left = $this->_evaluatePredicate($absoluteXPath, $left_predicate, $nodeTest);
-        if ($bDebugThisFunction) echo "$left_predicate evals as: $left - ";
-        // Only evaluate the right part if we need to.
-        $right = FALSE;
-        if (!$left and ($operator == ' and ')) {
-          if ($bDebugThisFunction) echo "\nNo point in evaluating the right predicate: [$right_predicate]";
-        } else {
-          if ($bDebugThisFunction) echo "\nEvaluating RIGHT:[$right_predicate]";
-          $right = $this->_evaluatePredicate($absoluteXPath, $right_predicate, $nodeTest);
-          if ($bDebugThisFunction) echo "$right_predicate evals as: $right \n";
-        }
-        // Check the kind of operator.
-        $b_result = FALSE;
-        switch ($operator) {
-          case ' or ': // Return the two results connected by an 'or'.
-            $b_result = (bool)( $left or $right );
-            break;
-          case ' and ': // Return the two results connected by an 'and'.
-            $b_result = (bool)( $left and $right );
-            break;
-          case '=': // Compare the two results.
-            $b_result = (bool)( $left == $right ); 
-            break;                    
-          case '!=': // Check whether the two results are not equal.
-            $b_result = (bool)( $left != $right );
-            break;                    
-          case '<=': // Compare the two results.
-            $b_result = (bool)( $left <= $right );
-            break;                    
-          case '<': // Compare the two results.
-            $b_result = (bool)( $left < $right );
-            break;                
-          case '>=': // Compare the two results.
-            $b_result = (bool)( $left >= $right );
-            break;                    
-          case '>': // Compare the two results.
-            $b_result = (bool)( $left > $right );
-            break;                    
-          case '+': // Return the result by adding one result to the other.
-            $b_result = $left + $right;
-            break;                    
-          case '-': // Return the result by decrease one result by the other.
-            $b_result = $left - $right;
-            break;                    
-          case '*': // Return a multiplication of the two results.
-            $b_result =  $left * $right;
-            break;                    
-          case ' div ': // Return a division of the two results.
-            if ($right == 0) {
-              // Display an error message.
-              $this->_displayError('While parsing an XPath '.
-                'predicate, a error due a division by zero '.
-                'occured.', __LINE__, __FILE__);
-            } else {
-              // Return the result of the division.
-              $b_result = $left / $right;
-            }
-            break;
-          case ' mod ': // Return a modulo of the two results.
-            $b_result = $left % $right;
-            break;                    
-        }
-        $result = $b_result;
-      }
-      if (isSet($result)) break; // try-block
-    
-      /////////////////////////////////////////////
-      // Check for functions.
-      // Check whether the predicate is a function.
-      // do not catch the text() node, which looks like a function in its pattern
-      if (preg_match(':\(:U', $predicate) && !preg_match(":text\(\)(\[\d*\])?$:",$predicate) ) {
-        // Get the position of the first bracket.
-        $start = strpos($predicate, '(');
-        // If we search for the right bracket from the end of the string, we can support nested function calls.  
-        // Fix by Andrei Zmievski
-        $end   = strrpos($predicate, ')');
-      
-        // Get everything before, between and after the brackets.
-        $before  = substr($predicate, 0, $start);
-        $between = substr($predicate, $start + 1, $end - $start - 1);
-        $after   = substr($predicate, $end + 1);
-        
-        // Trim each string.
-        $before  = trim($before);
-        $between = trim($between);
-        $after   = trim($after);
-        
-        if ($bDebugThisFunction) echo "\nPredicate is function \"$before\"";        
-        // Check whether there's something after the bracket.
-        if (!empty($after)) {
-          // Display an error message.
-          $this->_displayError('While parsing an XPath expression there was an error in the predicate ' .
-            str_replace($predicate,'<b>'.$predicate.'</b>', $this->currentXpathQuery) .
-            '. After a closing bracket there was something unknown: "'. $after .'"', __LINE__, __FILE__);
-        }
-        
-        // Check whether it's a function.
-        if (empty($before) && empty($after)) {
-          // Evaluate the content of the brackets.
-          $result = $this->_evaluatePredicate($absoluteXPath, $between, $nodeTest);
-        }
-        elseif (in_array($before, $this->functions)) {
-          // Return the evaluated function.
-          $result = $this->_evaluateFunction($before, $between, $absoluteXPath, $nodeTest);
-        } 
-        else {
-          // Display an error message.
-          $this->_displayError('While parsing a predicate in an XPath expression, a function '.
-            str_replace($before, '<b>'.$before.'</b>', $this->currentXpathQuery) . 
-            ' was found, which is not yet supported by the parser.', __LINE__, __FILE__);
-        }
-      }
-      if (isSet($result)) break; // try-block
-      
-      /////////////////////////////////////////////
-      // Else it must just be an XPath expression.
-      // Check whether it's an XPath expression.
-      if ($bDebugThisFunction) echo "\nPredicate is XPath expression that is to be evaluated.";
-      $tmpXpathSet = $this->_internalEvaluate($predicate, $absoluteXPath);
-      if ($bDebugThisFunction) { echo "\nResult of XPath expression"; print_r($tmpXpathSet); }
-      if (count($tmpXpathSet) > 0) {
-        // Convert the array.
-        $tmpXpathSet = explode("|", implode("|", $tmpXpathSet));
-        // Get the value of the first result (which means we want to concat all the text...unless
-        // a specific text() node has been given, and it will switch off to substringData
-        $result = $this->wholeText($tmpXpathSet[0]);            
-      }
-     
-    } while(FALSE);  // END try-block
-    
-    // Else no content so return the empty string.  ## N.S
-    if (!isSet($result)) $result = '';
-    
-    if ($bDebugThisFunction) {
-      echo "<pre>";
-      var_dump($result);
-      echo "</pre>";
-      $this->_closeDebugFunction($aStartTime, $result);
-    }
-    // Return the array of nodes.
-    return $result;
-  }
-  
-  
   /**
    * Checks whether a node matches a node-test.
    *
    * This method checks whether a node in the document matches a given node-test.
+   * A node test is something like text(), node(), or an element name.
    *
    * @param  $contextPath (string)  Full xpath of the node, which should be tested for 
    *                                matching the node-test.
@@ -2564,8 +3711,20 @@ class XPathEngine extends XPathBase {
    * @see    evaluate()
    */
   function _checkNodeTest($contextPath, $nodeTest) {
+    // Empty node test means that it must match
+    if (empty($nodeTest)) return TRUE;
+
     if ($nodeTest == '*') {
-      return TRUE; // Add this node to the node-set.
+      // * matches all element nodes.
+      return (!preg_match(':/[^/]+\(\)\[\d+\]$:U', $contextPath));
+    }
+    elseif (preg_match('/^[\w-:\.]+$/', $nodeTest)) {
+       // http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
+       // The real spec for what constitutes whitespace is quite elaborate, and 
+       // we currently just hope that "\w" catches them all.  In reality it should
+       // start with a letter too, not a number, but we've just left it simple.
+       // It's just a node name test.  It should end with "/$nodeTest[x]"
+       return (preg_match('"/'.$nodeTest.'\[\d+\]$"', $contextPath));
     }
     elseif (preg_match('/\(/U', $nodeTest)) { // Check whether it's a function.
       // Get the type of function to use.
@@ -2605,19 +3764,13 @@ class XPathEngine extends XPathBase {
           break;
 ***********/            
         default:  // Display an error message.
-          $this->_displayError('While parsing an XPath expression there was an undefined function called "' .
+          $this->_displayError('While parsing an XPath query there was an undefined function called "' .
              str_replace($function, '<b>'.$function.'</b>', $this->currentXpathQuery) .'"', __LINE__, __FILE__);
       }
     }
-    elseif (preg_match('/^[a-zA-Z0-9\-_]+/', $nodeTest)) {
-      // Check whether the node-test can be fulfilled.
-      if (!strcmp($this->nodeIndex[$contextPath]['name'],$nodeTest)) {
-        return TRUE; // Add this node to the node-set.
-      }
-    }
     else { // Display an error message.
-      $this->_displayError("While parsing the XPath expression \"{$this->currentXpathQuery}\" ".
-        "an empty and therefore invalid node-test has been found.", __LINE__, __FILE__);
+      $this->_displayError("While parsing the XPath query \"{$this->currentXpathQuery}\" ".
+        "an empty and therefore invalid node-test has been found.", __LINE__, __FILE__, FALSE);
     }
     
     return FALSE; // Don't add this context.
@@ -2628,149 +3781,221 @@ class XPathEngine extends XPathBase {
   //-----------------------------------------------------------------------------------------
   
   /**
-   * Retrieves axis information from an XPath expression step.
+   * Retrieves axis information from an XPath query step.
    *
    * This method tries to extract the name of the axis and its node-test
-   * from a given step of an XPath expression at a given node.
+   * from a given step of an XPath query at a given node.  If it can't parse
+   * the step, then we treat it as a PrimaryExpr.
    *
-   * @param  $step     (string) String containing a step of an XPath expression.
-   * @param  $nodePath (string) Full document path of the node on which the step is executed.
-   * @return           (array)  Contains information about the axis found in the step.
+   * [4]    Step            ::= AxisSpecifier NodeTest Predicate*  
+   *                            | AbbreviatedStep  
+   * [5]    AxisSpecifier   ::= AxisName '::'  
+   *                            | AbbreviatedAxisSpecifier 
+   * [12]   AbbreviatedStep ::= '.'  
+   *                            | '..'  
+   * [13]   AbbreviatedAxisSpecifier    
+   *                        ::=    '@'? 
+   * 
+   * [7]    NodeTest        ::= NameTest  
+   *                            | NodeType '(' ')'  
+   *                            | 'processing-instruction' '(' Literal ')'  
+   * [37]   NameTest        ::= '*'  
+   *                            | NCName ':' '*'  
+   *                            | QName  
+   * [38]   NodeType        ::= 'comment'  
+   *                            | 'text'  
+   *                            | 'processing-instruction'  
+   *                            | 'node' 
+   *
+   * @param  $step     (string) String containing a step of an XPath query.
+   * @return           (array)  Contains information about the axis found in the step, or FALSE
+   *                            if the string isn't a valid step.
    * @see    _evaluateStep()
    */
-  function _getAxis($step, $nodePath) {
+  function _getAxis($step) {
+    // The results of this function are very cachable, as it is completely independant of context.
+    static $aResultsCache = array();
+
     // Create an array to save the axis information.
     $axis = array(
       'axis'      => '',
       'node-test' => '',
       'predicate' => array()
     );
-    
+
+    $cacheKey = $step;
     do { // parse block
       $parseBlock = 1;
-      
+
+      if (isset($aResultsCache[$cacheKey])) {
+        return $aResultsCache[$cacheKey];
+      } else {
+        // We have some danger of causing recursion here if we refuse to parse a step as having an
+        // axis, and demand it be treated as a PrimaryExpr.  So if we are going to fail, make sure
+        // we record what we tried, so that we can catch to see if it comes straight back.
+        $guess = array(
+          'axis' => 'child',
+          'node-test' => $step,
+          'predicate' => array());
+        $aResultsCache[$cacheKey] = $guess;
+      }
+
+      ///////////////////////////////////////////////////
+      // Spot the steps that won't come with an axis
+
       // Check whether the step is empty or only self. 
-      if ( empty($step) OR ($step == '.') OR ($step == 'current()') ) {
+      if (empty($step) OR ($step == '.') OR ($step == 'current()')) {
         // Set it to the default value.
         $step = '.';
         $axis['axis']      = 'self';
         $axis['node-test'] = '*';
         break $parseBlock;
       }
-      
-      // Check whether is an abbreviated syntax.
-      if ($step == '*') {
-        // Use the child axis and select all children.
-        $axis['axis']      = 'child';
-        $axis['node-test'] = '*';
-        break $parseBlock;
-      }
-      
-      // Check whether it's all wrapped in a function.  will be like count(.*) where .* is anything
-      // text() will try to be matched here, so just explicitly ignore it
-      $regex = ":(.*)\s*\((.*)\)$:U";
-      if (preg_match($regex, $step, $match) && $step != "text()") {
-        $function = $match[1];
-        $data    = $match[2];
-        if (in_array($function, $this->functions)) {
-          // Save the evaluated function.
-          $axis['axis']      = 'function';
-          $axis['node-test'] = $this->_evaluateFunction($function, $data, $nodePath);
-        } 
-        else {
-          // Use the child axis and a function.
-          $axis['axis']      = 'child';
-          $axis['node-test'] = $step;
-        }
-        break $parseBlock;
-      }
-      
-      // Check whether there are predicates and add the predicate to the list 
-      // of predicates without []. Get contents of every [] found.
-      $regex = '/\[(.*)\]/';
-      preg_match_all($regex, $step, $regs); 
-      if (!empty($regs[1])) {
-        $axis['predicate'] = $regs[1];
-        // Reduce the step.
-        $step = preg_replace($regex,"",$step); //$this->_prestr($step, '[');
-      }
-      
-      // Check whether the axis is given in plain text.
-      if ($this->_searchString($step, '::') > -1) {
-        // Split the step to extract axis and node-test.
-        $axis['axis']      = $this->_prestr($step, '::');
-        $axis['node-test'] = $this->_afterstr($step, '::');
-        if (!empty($this->parseOptions[XML_OPTION_CASE_FOLDING])) {
-          // Case in-sensitive
-          $axis['node-test'] = strtoupper($axis['node-test']);
-        }
-        break $parseBlock;
-      }
-      
-      if ($step[0] == '@') {
-        // Use the attribute axis and select the attribute.
-        $axis['axis']      = 'attribute';
-        $axis['node-test'] = substr($step, 1);
-        if (!empty($this->parseOptions[XML_OPTION_CASE_FOLDING])) {
-          // Case in-sensitive
-          $axis['node-test'] = strtoupper($axis['node-test']);
-        }
-        break $parseBlock;
-      }
-      
-      if (eregi('\]$', $step)) {
-        // Use the child axis and select a position.
-        $axis['axis']      = 'child';
-        $axis['node-test'] = substr($step, strpos($step, '['));
-        break $parseBlock;
-      }
-      
+
       if ($step == '..') {
         // Select the parent axis.
         $axis['axis']      = 'parent';
         $axis['node-test'] = '*';
         break $parseBlock;
       }
-      
-      if (preg_match('/^[a-zA-Z0-9\-_]+$/', $step)) {
-        // Select the child axis and the child.
-        $axis['axis']      = 'child';
+
+      ///////////////////////////////////////////////////
+      // Pull off the predicates
+
+      // Check whether there are predicates and add the predicate to the list 
+      // of predicates without []. Get contents of every [] found.
+      $groups = $this->_getEndGroups($step);
+//print_r($groups);
+      $groupCount = count($groups);
+      while (($groupCount > 0) && ($groups[$groupCount - 1][0] == '[')) {
+        // Remove the [] and add the predicate to the top of the list
+        $predicate = substr($groups[$groupCount - 1], 1, -1);
+        array_unshift($axis['predicate'], $predicate);
+        // Pop a group off the end of the list
+        array_pop($groups);
+        $groupCount--;
+      }
+
+      // Finally stick the rest back together and this is the rest of our step
+      if ($groupCount > 0) {
+        $step = implode('', $groups);
+      }
+
+      ///////////////////////////////////////////////////
+      // Pull off the axis
+
+      // Check for abbreviated syntax
+      if ($step[0] == '@') {
+        // Use the attribute axis and select the attribute.
+        $axis['axis']      = 'attribute';
+        $step = substr($step, 1);
+      } else {
+        // Check whether the axis is given in plain text.
+        if (preg_match("/^([^:]*)::(.*)$/", $step, $match)) {
+          // Split the step to extract axis and node-test.
+          $axis['axis'] = $match[1];
+          $step         = $match[2];
+        } else {
+          // The default axis is child
+          $axis['axis'] = 'child';
+        }
+      }
+
+      ///////////////////////////////////////////////////
+      // Process the rest which will either a node test, or else this isn't a step.
+
+      // Check whether is an abbreviated syntax.
+      if ($step == '*') {
+        // Use the child axis and select all children.
+        $axis['node-test'] = '*';
+        break $parseBlock;
+      }
+
+      // ### I'm pretty sure our current handling of cdata is a fudge, and we should
+      // really do this better, but leave this as is for now.
+      if ($step == "text()") {
+        // Handle the text node
+        $axis["node-test"] = "cdata";
+        break $parseBlock;
+      }
+
+      // There are a few node tests that we match verbatim.
+      if ($step == "node()"
+          || $step == "comment()"
+          || $step == "text()"
+          || $step == "processing-instruction") {
+        $axis["node-test"] = $step;
+        break $parseBlock;
+      }
+
+      // processing-instruction() is allowed to take an argument, but if it does, the argument
+      // is a literal, which we will have parsed out to $[number].
+      if (preg_match(":processing-instruction\(\$\d*\):", $step)) {
+        $axis["node-test"] = $step;
+        break $parseBlock;
+      }
+
+      // The only remaining way this can be a step, is if the remaining string is a simple name
+      // or else a :* name.
+      // http://www.w3.org/TR/xpath#NT-NameTest
+      // NameTest   ::= '*'  
+      //                | NCName ':' '*'  
+      //                | QName 
+      // QName      ::=  (Prefix ':')? LocalPart 
+      // Prefix     ::=  NCName 
+      // LocalPart  ::=  NCName 
+      //
+      // ie
+      // NameTest   ::= '*'  
+      //                | NCName ':' '*'  
+      //                | (NCName ':')? NCName
+      // NCName ::=  (Letter | '_') (NCNameChar)* 
+      $NCName = "[a-zA-Z_][\w\.\-_]*";
+      if (preg_match("/^$NCName:$NCName$/", $step)
+        || preg_match("/^$NCName:*$/", $step)) {
         $axis['node-test'] = $step;
         if (!empty($this->parseOptions[XML_OPTION_CASE_FOLDING])) {
           // Case in-sensitive
           $axis['node-test'] = strtoupper($axis['node-test']);
         }
+        // Not currently recursing
+        $LastFailedStep = '';
+        $LastFailedContext = '';
         break $parseBlock;
       } 
-      
-      if ( $step == "text()" ) {
-        // Handle the text node
-        $axis["axis"]      = "child";
-        $axis["node-test"] = "cdata";
-        break $parseBlock;
-      }
-      
-      // Default will be to fall back to using the child axis and a name.
-      $axis['axis']      = 'child';
-      $axis['node-test'] = $step;
-      if (!empty($this->parseOptions[XML_OPTION_CASE_FOLDING])) {
-        // Case in-sensitive
-        $axis['node-test'] = strtoupper($axis['node-test']);
+
+      // It's not a node then, we must treat it as a PrimaryExpr
+      // Check for recursion
+      if ($LastFailedStep == $step) {
+        $this->_displayError('Recursion detected while parsing an XPath query, in the step ' .
+              str_replace($step, '<b>'.$step.'</b>', $this->currentXpathQuery)
+              , __LINE__, __FILE__, FALSE);
+        $axis['node-test'] = $step;
+      } else {
+        $LastFailedStep = $step;
+        $axis = FALSE;
       }
       
     } while(FALSE); // end parse block
     
     // Check whether it's a valid axis.
-    if (!in_array($axis['axis'], array_merge($this->axes, array('function')))) {
-      // Display an error message.
-      $this->_displayError('While parsing an XPath expression, in the step ' .
-        str_replace($step, '<b>'.$step.'</b>', $this->currentXpathQuery) .
-        ' the invalid axis ' . $axis['axis'] . ' was found.', __LINE__, __FILE__, FALSE);
+    if ($axis !== FALSE) {
+      if (!in_array($axis['axis'], array_merge($this->axes, array('function')))) {
+        // Display an error message.
+        $this->_displayError('While parsing an XPath query, in the step ' .
+          str_replace($step, '<b>'.$step.'</b>', $this->currentXpathQuery) .
+          ' the invalid axis ' . $axis['axis'] . ' was found.', __LINE__, __FILE__, FALSE);
+      }
     }
+
+    // Cache the real axis information
+    $aResultsCache[$cacheKey] = $axis;
+
     // Return the axis information.
     return $axis;
   }
    
+
   /**
    * Handles the XPath child axis.
    *
@@ -2786,8 +4011,8 @@ class XPathEngine extends XPathBase {
    */
   function _handleAxis_child($axis, $contextPath) {
     $xPathSet = array(); // Create an empty node-set to hold the results of the child matches
-    if ( $axis["node-test"] == "cdata" ) {
-      if ( !isSet($this->nodeIndex[$contextPath]['textParts']) ) return '';
+    if ($axis["node-test"] == "cdata") {
+      if (!isSet($this->nodeIndex[$contextPath]['textParts']) ) return '';
       $tSize = sizeOf($this->nodeIndex[$contextPath]['textParts']);
       for ($i=1; $i<=$tSize; $i++) { 
         $xPathSet[] = $contextPath . '/text()['.$i.']';
@@ -2801,10 +4026,23 @@ class XPathEngine extends XPathBase {
       $cSize = sizeOf($allChildren);
       for ($i=0; $i<$cSize; $i++) {
         $childPath = $contextPath .'/'. $allChildren[$i]['name'] .'['. $allChildren[$i]['contextPos']  .']';
+        $textChildPath = $contextPath.'/text()['.($i + 1).']';
+        // Check the text node
+        if ($this->_checkNodeTest($textChildPath, $axis['node-test'])) { // node test check
+          $xPathSet[] = $textChildPath; // Add the child to the node-set.
+        }
+        // Check the actual node
         if ($this->_checkNodeTest($childPath, $axis['node-test'])) { // node test check
           $xPathSet[] = $childPath; // Add the child to the node-set.
         }
       }
+
+      // Finally there will be one more text node to try
+     $textChildPath = $contextPath.'/text()['.($cSize + 1).']';
+     // Check the text node
+     if ($this->_checkNodeTest($textChildPath, $axis['node-test'])) { // node test check
+       $xPathSet[] = $textChildPath; // Add the child to the node-set.
+     }
     }
     return $xPathSet; // Return the nodeset.
   }
@@ -2842,12 +4080,13 @@ class XPathEngine extends XPathBase {
     
     // Check whether all nodes should be selected.
     $nodeAttr = $this->nodeIndex[$contextPath]['attributes'];
-    if ($axis['node-test'] == '*') {
+    if ($axis['node-test'] == '*'  
+        || $axis['node-test'] == 'node()') {
       foreach($nodeAttr as $key=>$dummy) { // Run through the attributes.
         $xPathSet[] = $contextPath.'/attribute::'.$key; // Add this node to the node-set.
       }
     }
-    elseif (!empty($nodeAttr[$axis['node-test']])) {
+    elseif (isset($nodeAttr[$axis['node-test']])) {
       $xPathSet[] = $contextPath . '/attribute::'. $axis['node-test']; // Add this node to the node-set.
     }
     return $xPathSet; // Return the nodeset.
@@ -2919,7 +4158,7 @@ class XPathEngine extends XPathBase {
         $xPathSet[] = $parentPath; // Add the parent to the list of nodes.
       }
       // Handle all other ancestors.
-      $xPathSet = array_merge($xPathSet, $this->_handleAxis_ancestor($axis, $parentPath));
+      $xPathSet = array_merge($this->_handleAxis_ancestor($axis, $parentPath), $xPathSet);
     }
     return $xPathSet; // Return the nodeset.
   }
@@ -3101,8 +4340,8 @@ class XPathEngine extends XPathBase {
     
     // Read the nodes.
     $xPathSet = array_merge(
-                 $this->_handleAxis_self($axis, $contextPath),
-                 $this->_handleAxis_ancestor($axis, $contextPath)
+                 $this->_handleAxis_ancestor($axis, $contextPath),
+                 $this->_handleAxis_self($axis, $contextPath)
                );
     return $xPathSet; // Return the nodeset.
   }
@@ -3114,77 +4353,50 @@ class XPathEngine extends XPathBase {
   
    /**
     * Handles the XPath function last.
-    *
-    * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+    *    
     * @param  $arguments     (string) String containing the arguments that were passed to the function.
+    * @param  $context       (array)  The context from which to evaluate the function
     * @return                (mixed)  Depending on the type of function being processed
     * @see    evaluate()
     */
-  function _handleFunction_last($absoluteXPath, $arguments, $nodeTest) {
-    // Calculate the size of the context.
-    $parentNode = $this->nodeIndex[$absoluteXPath]['parentNode'];
-    if ($nodeTest == "*") {
-      $contextPos = sizeOf($parentNode['childNodes']);
-    }
-    elseif ($nodeTest == "cdata") {
-      $absoluteXPath = substr($absoluteXPath,0,strrpos($absoluteXPath,"/text()"));
-      $contextPos = sizeOf($this->nodeIndex[$absoluteXPath]['textParts']);
-    }
-    else {
-      $contextPos = 0;
-      $name = $this->nodeIndex[$absoluteXPath]['name'];
-      foreach($parentNode['childNodes'] as $childNode) {
-        $contextPos += ($childNode['name'] === $name) ? 1 : 0;
-      }
-    }
-    return $contextPos; // Return the size.
+  function _handleFunction_last($arguments, $context) {
+    return $context['size'];
   }
   
   /**
    * Handles the XPath function position.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_position($absoluteXPath, $arguments, $nodeTest) {
-    // return the context-position.
-    if ($nodeTest == "*") { // if we are matching all children, then we need to find the position regardless of name
-      // 'pos' is zero-based, not one based.
-      $contextPos = $this->nodeIndex[$absoluteXPath]['pos']+1;
-    }
-    elseif ($nodeTest == "cdata") {  // if we are looking for text nodes, we go about it a bit differently
-      $contextPos = substr($absoluteXPath,strrpos($absoluteXPath,"[")+1,-1);
-    }
-    else {
-      $contextPos = $this->nodeIndex[$absoluteXPath]['contextPos'];
-    }
-    return $contextPos;
+  function _handleFunction_position($arguments, $context) {
+    return $context['pos'];
   }
   
   /**
    * Handles the XPath function count.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_count($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_count($arguments, $context) {
     // Evaluate the argument of the method as an XPath and return the number of results.
-    return count($this->_internalEvaluate($arguments, $absoluteXPath));
+    return count($this->_evaluateExpr($arguments, $context));
   }
   
   /**
    * Handles the XPath function id.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_id($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_id($arguments, $context) {
     $arguments = trim($arguments);         // Trim the arguments.
     $arguments = explode(' ', $arguments); // Now split the arguments into an array.
     // Create a list of nodes.
@@ -3195,7 +4407,7 @@ class XPathEngine extends XPathBase {
     for ($i=0; $i<$kSize; $i++) {
       if (empty($keys[$i])) continue; // skip super-Root
       if (in_array($this->nodeIndex[$keys[$i]]['attributes']['id'], $arguments)) {
-        $resultXPaths[] = $absoluteXPath; // Add this node to the list of nodes.
+        $resultXPaths[] = $context['nodePath']; // Add this node to the list of nodes.
       }
     }
     return $resultXPaths; // Return the list of nodes.
@@ -3203,56 +4415,95 @@ class XPathEngine extends XPathBase {
   
   /**
    * Handles the XPath function name.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_name($absoluteXPath, $arguments, $nodeTest) {
-    return $this->nodeIndex[$absoluteXPath]['name']; // Return the name of the node.
+  function _handleFunction_name($arguments, $context) {
+    // If the argument it omitted, it defaults to a node-set with the context node as its only member.
+    if (empty($arguments)) {
+      return $this->_addLiteral($this->nodeIndex[$context['nodePath']]['name']);
+    }
+
+    // Evaluate the argument to get a node set.
+    $nodeSet = $this->_evaluateExpr($arguments, $context);
+    if (!is_array($nodeSet)) return '';
+    if (count($nodeSet) < 1) return '';
+    if (!isset($this->nodeIndex[$nodeSet[0]])) return '';
+     // Return a reference to the name of the node.
+    return $this->_addLiteral($this->nodeIndex[$nodeSet[0]]['name']);
   }
   
   /**
    * Handles the XPath function string.
    *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   * http://www.w3.org/TR/xpath#section-String-Functions
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_string($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_string($arguments, $context) {
     // Check what type of parameter is given
-    if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $arguments) OR preg_match('/^\.[0-9]+$/', $arguments)) {
+    if (is_array($arguments)) {
+      // Get the value of the first result (which means we want to concat all the text...unless
+      // a specific text() node has been given, and it will switch off to substringData
+      if (!count($arguments)) $result = '';
+      else {
+        $result = $this->_stringValue($arguments[0]);
+        if (($literal = $this->_asLiteral($result)) !== FALSE) {
+          $result = $literal;
+        }
+      }
+    }
+    // Is it a number string?
+    elseif (preg_match('/^[0-9]+(\.[0-9]+)?$/', $arguments) OR preg_match('/^\.[0-9]+$/', $arguments)) {
+      // ### Note no support for NaN and Infinity.
       $number = doubleval($arguments); // Convert the digits to a number.
-      return strval($number); // Return the number.
+      $result = strval($number); // Return the number.
     }
     elseif (is_bool($arguments)) { // Check whether it's TRUE or FALSE and return as string.
-      if ($arguments === TRUE)  return 'TRUE'; else return 'FALSE';
+      // ### Note that we used to return TRUE and FALSE which was incorrect according to the standard.
+      if ($arguments === TRUE) {        
+        $result = 'true'; 
+      } else {
+        $result = 'false';
+      }
+    }
+    elseif (($literal = $this->_asLiteral($arguments)) !== FALSE) {
+      return $literal;
     }
     elseif (!empty($arguments)) {
+      // Spec says:
+      // "An object of a type other than the four basic types is converted to a string in a way that 
+      // is dependent on that type."
       // Use the argument as an XPath.
-      $result = $this->_internalEvaluate($arguments, $absoluteXPath);
-      $result = explode('|', implode('|', $result)); // Get the first argument.
-      return $result[0];          // Return the first result as a string.
-    }
-    elseif (empty($arguments)) {
-      return $absoluteXPath;      // Return the current node.
+      $result = $this->_evaluateExpr($arguments, $context);
+      if (is_string($result) && is_string($arguments) && (!strcmp($result, $arguments))) {
+        $this->_displayError("Loop detected in XPath expression.  Probably an internal error :o/.  _handleFunction_string($result)", __LINE__, __FILE__, FALSE);
+        return '';
+      } else {
+        $result = $this->_handleFunction_string($result, $context);
+      }
     }
     else {
-      return '';  // Return an empty string.
+      $result = '';  // Return an empty string.
     }
+    return $result;
   }
   
   /**
    * Handles the XPath function concat.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_concat($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_concat($arguments, $context) {
     // Split the arguments.
     $arguments = explode(',', $arguments);
     // Run through each argument and evaluate it.
@@ -3260,47 +4511,47 @@ class XPathEngine extends XPathBase {
     for ($i=0; $i<$size; $i++) {
       $arguments[$i] = trim($arguments[$i]);  // Trim each argument.
       // Evaluate it.
-      $arguments[$i] = $this->_evaluatePredicate($absoluteXPath, $arguments[$i], $nodeTest);
+      $arguments[$i] = $this->_handleFunction_string($arguments[$i], $context);
     }
     $arguments = implode('', $arguments);  // Put the string together and return it.
-    return $arguments;
+    return $this->_addLiteral($arguments);
   }
   
   /**
    * Handles the XPath function starts-with.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_starts_with ($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_starts_with($arguments, $context) {
     // Get the arguments.
     $first  = trim($this->_prestr($arguments, ','));
     $second = trim($this->_afterstr($arguments, ','));
     // Evaluate each argument.
-    $first  = $this->_evaluatePredicate($absoluteXPath, $first, $nodeTest);
-    $second = $this->_evaluatePredicate($absoluteXPath, $second, $nodeTest);
+    $first  = $this->_handleFunction_string($first, $context);
+    $second = $this->_handleFunction_string($second, $context);
     // Check whether the first string starts with the second one.
     return  (bool) ereg('^'.$second, $first);
   }
   
   /**
    * Handles the XPath function contains.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_contains($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_contains($arguments, $context) {
     // Get the arguments.
     $first  = trim($this->_prestr($arguments, ','));
     $second = trim($this->_afterstr($arguments, ','));
     //echo "Predicate: $arguments First: ".$first." Second: ".$second."\n";
     // Evaluate each argument.
-    $first = $this->_evaluatePredicate($absoluteXPath, $first, $nodeTest);
-    $second = $this->_evaluatePredicate($absoluteXPath, $second, $nodeTest);
+    $first = $this->_handleFunction_string($first, $context);
+    $second = $this->_handleFunction_string($second, $context);
     //echo $second.": ".$first."\n";
     // If the search string is null, then the provided there is a value it will contain it as
     // it is considered that all strings contain the empty string. ## N.S.
@@ -3315,79 +4566,79 @@ class XPathEngine extends XPathBase {
   
   /**
    * Handles the XPath function substring-before.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_substring_before($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_substring_before($arguments, $context) {
     // Get the arguments.
     $first  = trim($this->_prestr($arguments, ','));
     $second = trim($this->_afterstr($arguments, ','));
     // Evaluate each argument.
-    $first  = $this->_evaluatePredicate($absoluteXPath, $first, $nodeTest);
-    $second = $this->_evaluatePredicate($absoluteXPath, $second, $nodeTest);
+    $first  = $this->_handleFunction_string($first, $context);
+    $second = $this->_handleFunction_string($second, $context);
     // Return the substring.
-    return $this->_prestr(strval($first), strval($second));
+    return $this->_addLiteral($this->_prestr(strval($first), strval($second)));
   }
   
   /**
    * Handles the XPath function substring-after.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_substring_after($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_substring_after($arguments, $context) {
     // Get the arguments.
     $first  = trim($this->_prestr($arguments, ','));
     $second = trim($this->_afterstr($arguments, ','));
     // Evaluate each argument.
-    $first  = $this->_evaluatePredicate($absoluteXPath, $first, $nodeTest);
-    $second = $this->_evaluatePredicate($absoluteXPath, $second, $nodeTest);
+    $first  = $this->_handleFunction_string($first, $context);
+    $second = $this->_handleFunction_string($second, $context);
     // Return the substring.
-    return $this->_afterstr(strval($first), strval($second));
+    return $this->_addLiteral($this->_afterstr(strval($first), strval($second)));
   }
   
   /**
    * Handles the XPath function substring.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_substring($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_substring($arguments, $context) {
     // Split the arguments.
     $arguments = explode(",", $arguments);
     $size = sizeOf($arguments);
     for ($i=0; $i<$size; $i++) { // Run through all arguments.
       $arguments[$i] = trim($arguments[$i]); // Trim the string.
       // Evaluate each argument.
-      $arguments[$i] = $this->_evaluatePredicate($absoluteXPath, $arguments[$i], $nodeTest);
+      $arguments[$i] = $this->_handleFunction_string($arguments[$i], $context);
     }
     // Check whether a third argument was given and return the substring..
     if (!empty($arguments[2])) {
-      return substr(strval($arguments[0]), $arguments[1] - 1, $arguments[2]);
+      return $this->_addLiteral(substr(strval($arguments[0]), $arguments[1] - 1, $arguments[2]));
     } else {
-      return substr(strval($arguments[0]), $arguments[1] - 1);
+      return $this->_addLiteral(substr(strval($arguments[0]), $arguments[1] - 1));
     }
   }
   
   /**
    * Handles the XPath function string-length.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_string_length($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_string_length($arguments, $context) {
     $arguments = trim($arguments); // Trim the argument.
     // Evaluate the argument.
-    $arguments = $this->_evaluatePredicate($absoluteXPath, $arguments, $nodeTest);
+    $arguments = $this->_handleFunction_string($arguments, $context);
     return strlen(strval($arguments)); // Return the length of the string.
   }
 
@@ -3399,117 +4650,142 @@ class XPathEngine extends XPathBase {
    * of whitespace characters by a single space.
    * If the argument is omitted, it defaults to the context node converted to a string,
    * in other words the string-value of the context node
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                 (stri)g trimed string
    * @see    evaluate()
    */
-  function _handleFunction_normalize_space($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_normalize_space($arguments, $context) {
     if (empty($arguments)) {
-      $arguments = $this->getParentXPath($absoluteXPath).'/'.$this->nodeIndex[$absoluteXPath]['name'].'['.$this->nodeIndex[$absoluteXPath]['contextPos'].']';
+      $arguments = $this->getParentXPath($context['nodePath']).'/'.$this->nodeIndex[$context['nodePath']]['name'].'['.$this->nodeIndex[$context['nodePath']]['contextPos'].']';
     } else {
-       $arguments = $this->_evaluatePredicate($absoluteXPath, $arguments, $nodeTest);
+       $arguments = $this->_handleFunction_string($arguments, $context);
     }
     $arguments = trim(preg_replace (";[[:space:]]+;s",' ',$arguments));
-    return $arguments;
+    return $this->_addLiteral($arguments);
   }
 
   /**
    * Handles the XPath function translate.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_translate($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_translate($arguments, $context) {
     $arguments = explode(',', $arguments); // Split the arguments.
     $size = sizeOf($arguments);
     for ($i=0; $i<$size; $i++) { // Run through all arguments.
       $arguments[$i] = trim($arguments[$i]); // Trim the argument.
       // Evaluate the argument.
-      $arguments[$i] = $this->_evaluatePredicate($absoluteXPath, $arguments[$i], $nodeTest);
+      $arguments[$i] = $this->_handleFunction_string($arguments[$i], $context);
     }
-    return strtr($arguments[0], $arguments[1], $arguments[2]);  // Return the translated string.
+    // Return the translated string.
+    return $this->_addLiteral(strtr($arguments[0], $arguments[1], $arguments[2]));
   }
 
   /**
    * Handles the XPath function boolean.
+   *   
+   * http://www.w3.org/TR/xpath#section-Boolean-Functions
    *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_boolean($absoluteXPath, $arguments, $nodeTest) {
-    $arguments = trim($arguments); // Trim the arguments.
-    // Check what type of parameter is given
-    if (preg_match('/^[0-9]+(\.[0-9]+)?$/', $arguments) || preg_match('/^\.[0-9]+$/', $arguments)) {
+  function _handleFunction_boolean($arguments, $context) {
+    if (empty($arguments)) {
+      return FALSE; // Sorry, there were no arguments.
+    }
+    // a bool is dead obvious
+    elseif (is_bool($arguments)) {
+      return $arguments;
+    }
+    // a node-set is true if and only if it is non-empty
+    elseif (is_array($arguments)) {
+      return (count($arguments) > 0);
+    }
+    // a number is true if and only if it is neither positive or negative zero nor NaN 
+    // (Straight out of the XPath spec.. makes no sense?????)
+    elseif (preg_match('/^[0-9]+(\.[0-9]+)?$/', $arguments) || preg_match('/^\.[0-9]+$/', $arguments)) {
       $number = doubleval($arguments);  // Convert the digits to a number.
       // If number zero return FALSE else TRUE.
       if ($number == 0) return FALSE; else return TRUE;
     }
-    elseif (empty($arguments)) {
-      return FALSE; // Sorry, there were no arguments.
+    // a string is true if and only if its length is non-zero
+    elseif (($literal = $this->_asLiteral($arguments)) !== FALSE) {
+      return (strlen($literal) != 0);
     }
+    // an object of a type other than the four basic types is converted to a boolean in a 
+    // way that is dependent on that type
     else {
+      // Spec says:
+      // "An object of a type other than the four basic types is converted to a number in a way 
+      // that is dependent on that type"
       // Try to evaluate the argument as an XPath.
-      $result = $this->_internalEvaluate($arguments, $absoluteXPath);
-      // If we found something return TRUE else FALSE.
-      if (count($result) > 0) return FALSE; else return TRUE;
+      $result = $this->_evaluateExpr($arguments, $context);
+      if (is_string($result) && is_string($arguments) && (!strcmp($result, $arguments))) {
+        $this->_displayError("Loop detected in XPath expression.  Probably an internal error :o/.  _handleFunction_boolean($result)", __LINE__, __FILE__, FALSE);
+        return FALSE;
+      } else {
+        return $this->_handleFunction_boolean($result, $context);
+      }
     }
   }
   
   /**
    * Handles the XPath function not.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_not($absoluteXPath, $arguments, $nodeTest) {
-    $arguments = trim($arguments); // Trim the arguments.
+  function _handleFunction_not($arguments, $context) {
     // Return the negative value of the content of the brackets.
-    return !$this->_evaluatePredicate($absoluteXPath, $arguments, $nodeTest);
+    $bArgResult = $this->_handleFunction_boolean($arguments, $context);
+//echo "Before inversion: ".($bArgResult?"TRUE":"FALSE")."\n";
+    return !$bArgResult;
   }
   
   /**
    * Handles the XPath function TRUE.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_true($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_true($arguments, $context) {
     return TRUE; // Return TRUE.
   }
   
   /**
    * Handles the XPath function FALSE.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_false($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_false($arguments, $context) {
     return FALSE; // Return FALSE.
   }
   
   /**
    * Handles the XPath function lang.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_lang($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_lang($arguments, $context) {
     $arguments = trim($arguments); // Trim the arguments.
-    $currentNode = $this->nodeIndex[$absoluteXPath];
+    $currentNode = $this->nodeIndex[$context['nodePath']];
     while (!empty($currentNode['name'])) { // Run through the ancestors.
       // Check whether the node has an language attribute.
       if (isSet($currentNode['attributes']['xml:lang'])) {
@@ -3523,58 +4799,95 @@ class XPathEngine extends XPathBase {
   
   /**
    * Handles the XPath function number.
+   *   
+   * http://www.w3.org/TR/xpath#section-Number-Functions
    *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_number($absoluteXPath, $arguments, $nodeTest) {
-    if (!is_numeric($arguments)) {
-      $arguments = $this->_evaluatePredicate($absoluteXPath, $arguments, $nodeTest);
-    }
+  function _handleFunction_number($arguments, $context) {
     // Check the type of argument.
+
+    // A string that is a number
     if (is_numeric($arguments)) {
       return doubleval($arguments); // Return the argument as a number.
     }
+    // A bool
     elseif (is_bool($arguments)) {  // Return TRUE/FALSE as a number.
       if ($arguments === TRUE) return 1; else return 0;  
+    }
+    // A node set
+    elseif (is_array($arguments)) {
+      // Is converted to a string then handled like a string
+      $string = $this->_handleFunction_string($arguments, $context);
+      if (is_numeric($string))
+        return doubleval($string);
+    }
+    elseif (($literal = $this->_asLiteral($arguments)) !== FALSE) {
+      if (is_numeric($literal)) {
+        return doubleval($literal);
+      } else {
+        // If we are to stick strictly to the spec, we should return NaN, but lets just
+        // leave PHP to see if can do some dynamic conversion.
+        return $literal;
+      }
+    }
+    else {
+      // Spec says:
+      // "An object of a type other than the four basic types is converted to a number in a way 
+      // that is dependent on that type"
+      // Try to evaluate the argument as an XPath.
+      $result = $this->_evaluateExpr($arguments, $context);
+      if (is_string($result) && is_string($arguments) && (!strcmp($result, $arguments))) {
+        $this->_displayError("Loop detected in XPath expression.  Probably an internal error :o/.  _handleFunction_number($result)", __LINE__, __FILE__, FALSE);
+        return FALSE;
+      } else {
+        return $this->_handleFunction_number($result, $context);
+      }
     }
   }
 
   /**
    * Handles the XPath function sum.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_sum($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_sum($arguments, $context) {
     $arguments = trim($arguments); // Trim the arguments.
-    // Evaluate the arguments as an XPath expression.
-    $result = $this->_internalEvaluate($arguments, $absoluteXPath);
+    // Evaluate the arguments as an XPath query.
+    $result = $this->_evaluateExpr($arguments, $context);
     $sum = 0; // Create a variable to save the sum.
-    // Run through all results.
-    $size = sizeOf($result);
-    for ($i=0; $i<$size; $i++) {
-      $value = $this->substringData($result[$i]); // Get the value of the node.
-      $sum += doubleval($value); // Add it to the sum.
+    // The sum function expects a node set as an argument.
+    if (is_array($result)) {
+      // Run through all results.
+      $size = sizeOf($result);
+      for ($i=0; $i<$size; $i++) {
+        $value = $this->_stringValue($result[$i], $context);
+        if (($literal = $this->_asLiteral($value)) !== FALSE) {
+          $value = $literal;
+        }
+        $sum += doubleval($value); // Add it to the sum.
+      }
     }
     return $sum; // Return the sum.
   }
 
   /**
    * Handles the XPath function floor.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_floor($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_floor($arguments, $context) {
     if (!is_numeric($arguments)) {
-      $arguments = $this->_evaluatePredicate($absoluteXPath, $arguments, $nodeTest);
+      $arguments = $this->_handleFunction_number($arguments, $context);
     }
     $arguments = doubleval($arguments); // Convert the arguments to a number.
     return floor($arguments);           // Return the result
@@ -3582,15 +4895,15 @@ class XPathEngine extends XPathBase {
   
   /**
    * Handles the XPath function ceiling.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_ceiling($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_ceiling($arguments, $context) {
     if (!is_numeric($arguments)) {
-      $arguments = $this->_evaluatePredicate($absoluteXPath, $arguments, $nodeTest);
+      $arguments = $this->_handleFunction_number($arguments, $context);
     }
     $arguments = doubleval($arguments); // Convert the arguments to a number.
     return ceil($arguments);            // Return the result
@@ -3598,31 +4911,167 @@ class XPathEngine extends XPathBase {
   
   /**
    * Handles the XPath function round.
-   *
-   * @param  $absoluteXPath (string) Full xpath of the node on which the function should be processed.
+   *   
    * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
    * @return                (mixed)  Depending on the type of function being processed
    * @see    evaluate()
    */
-  function _handleFunction_round($absoluteXPath, $arguments, $nodeTest) {
+  function _handleFunction_round($arguments, $context) {
     if (!is_numeric($arguments)) {
-      $arguments = $this->_evaluatePredicate($absoluteXPath, $arguments, $nodeTest);
+      $arguments = $this->_handleFunction_number($arguments, $context);
     }
     $arguments = doubleval($arguments); // Convert the arguments to a number.
     return round($arguments);           // Return the result
   }
-  
+
+  //-----------------------------------------------------------------------------------------
+  // XPath                  ------  XPath Extension FUNCTION Handlers  ------                          
+  //-----------------------------------------------------------------------------------------
+
+  /**
+   * Handles the XPath function x-lower.
+   *
+   * lower case a string.
+   *    string x-lower(string) 
+   *   
+   * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
+   * @return                (mixed)  Depending on the type of function being processed
+   * @see    evaluate()
+   */
+  function _handleFunction_x_lower($arguments, $context) {
+    // Evaluate the argument.
+    $string = $this->_handleFunction_string($arguments, $context);
+     // Return a reference to the lowercased string
+    return $this->_addLiteral(strtolower(strval($string)));
+  }
+
+  /**
+   * Handles the XPath function x-upper.
+   *
+   * upper case a string.
+   *    string x-upper(string) 
+   *   
+   * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
+   * @return                (mixed)  Depending on the type of function being processed
+   * @see    evaluate()
+   */
+  function _handleFunction_x_upper($arguments, $context) {
+    // Evaluate the argument.
+    $string = $this->_handleFunction_string($arguments, $context);
+     // Return a reference to the lowercased string
+    return $this->_addLiteral(strtoupper(strval($string)));
+  }
+
+  /**
+   * Handles the XPath function generate-id.
+   *
+   * Produce a unique id for the first node of the node set.
+   * 
+   * Example usage, produces an index of all the nodes in an .xml document, where the content of each
+   * "section" is the exported node as XML.
+   *
+   *   $aFunctions = $xPath->match('//');
+   *   
+   *   foreach ($aFunctions as $Function) {
+   *       $id = $xPath->match("generate-id($Function)");
+   *       echo "<a href='#$id'>$Function</a><br>";
+   *   }
+   *   
+   *   foreach ($aFunctions as $Function) {
+   *       $id = $xPath->match("generate-id($Function)");
+   *       echo "<h2 id='$id'>$Function</h2>";
+   *       echo htmlspecialchars($xPath->exportAsXml($Function));
+   *   }
+   * 
+   * @param  $arguments     (string) String containing the arguments that were passed to the function.
+   * @param  $context       (array)  The context from which to evaluate the function
+   * @return                (mixed)  Depending on the type of function being processed
+   * @author Ricardo Garcia
+   * @see    evaluate()
+   */
+  function _handleFunction_generate_id($arguments, $context) {
+    // If the argument is omitted, it defaults to a node-set with the context node as its only member.
+    if (is_string($arguments) && empty($arguments)) {
+      // We need ids then
+      $this->_generate_ids();
+      return $this->_addLiteral($this->nodeIndex[$context['nodePath']]['generated_id']);
+    }
+
+    // Evaluate the argument to get a node set.
+    $nodeSet = $this->_evaluateExpr($arguments, $context);
+
+    if (!is_array($nodeSet)) return '';
+    if (count($nodeSet) < 1) return '';
+    if (!isset($this->nodeIndex[$nodeSet[0]])) return '';
+     // Return a reference to the name of the node.
+    // We need ids then
+    $this->_generate_ids();
+    return $this->_addLiteral($this->nodeIndex[$nodeSet[0]]['generated_id']);
+  }
+
   //-----------------------------------------------------------------------------------------
   // XPathEngine                ------  Help Stuff  ------                                   
   //-----------------------------------------------------------------------------------------
+
+  /**
+   * Decodes the character set entities in the given string.
+   *
+   * This function is given for convenience, as all text strings or attributes
+   * are going to come back to you with their entities still encoded.  You can
+   * use this function to remove these entites.
+   *
+   * It makes use of the get_html_translation_table(HTML_ENTITIES) php library 
+   * call, so is limited in the same ways.  At the time of writing this seemed
+   * be restricted to iso-8859-1
+   *
+   * ### Provide an option that will do this by default.
+   *
+   * @param $encodedData (mixed) The string or array that has entities you would like to remove
+   * @param $reverse     (bool)  If TRUE entities will be encoded rather than decoded, ie
+   *                             < to &lt; rather than &lt; to <.
+   * @return             (mixed) The string or array returned with entities decoded.
+   */
+  function decodeEntities($encodedData, $reverse=FALSE) {
+    static $aEncodeTbl;
+    static $aDecodeTbl;
+    // Get the translation entities, but we'll cache the result to enhance performance.
+    if (empty($aDecodeTbl)) {
+      // Get the translation entities.
+      $aEncodeTbl = get_html_translation_table(HTML_ENTITIES);
+      $aDecodeTbl = array_flip($aEncodeTbl);
+    }
+
+    // If it's just a single string.
+    if (!is_array($encodedData)) {
+      if ($reverse) {
+        return strtr($encodedData, $aEncodeTbl);
+      } else {
+        return strtr($encodedData, $aDecodeTbl);
+      }
+    }
+
+    $result = array();
+    foreach($encodedData as $string) {
+      if ($reverse) {
+        $result[] = strtr($string, $aEncodeTbl);
+      } else {
+        $result[] = strtr($string, $aDecodeTbl);
+      }
+    }
+
+    return $result;
+  }
   
   /**
-   * Compare to nodes if they are equal
+   * Compare two nodes to see if they are equal (point to the same node in the doc)
    *
-   * 2 nodes are considered equal if the abs. xpath is equal.
+   * 2 nodes are considered equal if the absolute XPath is equal.
    * 
-   * @param  $node1 (mixed) Either a xpath string to an node OR a real tree-node (hash-array)
-   * @param  $node2 (mixed) Either a xpath string to an node OR a real tree-node (hash-array)
+   * @param  $node1 (mixed) Either an absolute XPath to an node OR a real tree-node (hash-array)
+   * @param  $node2 (mixed) Either an absolute XPath to an node OR a real tree-node (hash-array)
    * @return        (bool)  TRUE if equal (see text above), FALSE if not (and on error).
    */
   function equalNodes($node1, $node2) {
@@ -3632,7 +5081,7 @@ class XPathEngine extends XPathBase {
   }
   
   /**
-   * Get the Xpath string of a node that is in a document tree.
+   * Get the absolute XPath of a node that is in a document tree.
    *
    * @param $node (array)  A real tree-node (hash-array)   
    * @return      (string) The string path to the node or FALSE on error.
@@ -3655,13 +5104,13 @@ class XPathEngine extends XPathBase {
   }
   
   /**
-   * Retrieves the absolute parent XPath expression.
+   * Retrieves the absolute parent XPath query.
    *
    * The parents stored in the tree are only relative parents...but all the parent
-   * information is stored in the xPath expression itself...so instead we use a function
-   * to extract the parent from the absolute xpath expression
+   * information is stored in the XPath query itself...so instead we use a function
+   * to extract the parent from the absolute Xpath query
    *
-   * @param  $childPath (string) String containing an absolute XPath expression
+   * @param  $childPath (string) String containing an absolute XPath query
    * @return            (string) returns the absolute XPath of the parent
    */
    function getParentXPath($absoluteXPath) {
@@ -3680,6 +5129,7 @@ class XPathEngine extends XPathBase {
    * @return                (bool)   TRUE if this node exists and has a child, FALSE otherwise
    */
   function hasChildNodes($absoluteXPath) {
+    if ($this->_indexIsDirty) $this->reindexNodeTree();
     return (bool) (isSet($this->nodeIndex[$absoluteXPath]) 
                    AND sizeOf($this->nodeIndex[$absoluteXPath]['childNodes']));
   }
@@ -3725,7 +5175,13 @@ class XPathEngine extends XPathBase {
    * @return            (string) The XML string with translated ampersands.
    */
   function _translateAmpersand($xmlSource, $reverse=FALSE) {
-    return ($reverse ? str_replace('&amp;', '&', $xmlSource) : str_replace('&', '&amp;', $xmlSource));
+    $PHP5 = (substr(phpversion(), 0, 1) == '5');
+    if ($PHP5) {
+      //otherwise we receive  &amp;nbsp;  instead of  &nbsp;
+      return $xmlSource;
+    } else {
+      return ($reverse ? str_replace('&amp;', '&', $xmlSource) : str_replace('&', '&amp;', $xmlSource));
+    }
   }
 
 } // END OF CLASS XPathEngine
@@ -3762,7 +5218,10 @@ class XPath extends XPathEngine {
     $this->properties['modMatch'] = XPATH_QUERYHIT_ALL;
     if ($fileName) {
       if (!$this->importFromFile($fileName)) {
-        $this = FALSE;
+        // Re-run the base constructor to "reset" the object.  If the user has any sense, then
+        // they will have created the object, and then explicitly called importFromFile(), giving
+        // them the chance to catch and handle the error properly.
+        parent::XPathEngine($userXmlOptions);
       }
     }
   }
@@ -3775,7 +5234,6 @@ class XPath extends XPathEngine {
    */
   function reset() {
     parent::reset();
-    $this->xpath   = '';
     $this->properties['modMatch'] = XPATH_QUERYHIT_ALL;
   }
   
@@ -3827,8 +5285,12 @@ class XPath extends XPathEngine {
    *                             not exist, then returns FALSE.
    */
   function nodeName($xPathQuery) {
-    // Check for a valid xPathQuery
-    $xPathSet = $this->_resolveXPathQuery($xPathQuery,'nodeName');
+    if (is_array($xPathQuery)) {
+      $xPathSet = $xPathQuery;
+    } else {
+      // Check for a valid xPathQuery
+      $xPathSet = $this->_resolveXPathQuery($xPathQuery,'nodeName');
+    }
     if (count($xPathSet) == 0) return FALSE;
     // For each node, get it's name
     $result = array();
@@ -3864,13 +5326,15 @@ class XPath extends XPathEngine {
    * @see    setModMatch(), reindexNodeTree()
    */
   function removeChild($xPathQuery, $autoReindex=TRUE) {
-    $NULL = NULL;
-    $bDebugThisFunction = FALSE;  // Get diagnostic output for this function
+    $ThisFunctionName = 'removeChild';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction('removeChild');
       echo "Node: $xPathQuery\n";
       echo '<hr>';
     }
+
+    $NULL = NULL;
     $status = FALSE;
     do { // try-block
       // Check for a valid xPathQuery
@@ -3892,6 +5356,9 @@ class XPath extends XPathEngine {
         }
         // Otherwise remove the node by setting it to NULL. It will be removed on the next reindexNodeTree() call.
         $mustReindex = $autoReindex;
+        // Flag the index as dirty; it's not uptodate. A reindex will be forced (if dirty) when exporting the XML doc
+        $this->_indexIsDirty = TRUE;
+        
         $theNode = $this->nodeIndex[$absoluteXPath];
         $theNode['parentNode']['childNodes'][$theNode['pos']] =& $NULL;
         if ($bDebugThisFunction) echo "We removed the node '$absoluteXPath'.\n";
@@ -3901,7 +5368,8 @@ class XPath extends XPathEngine {
       $status = TRUE;
     } while(FALSE);
     
-    if ($bDebugThisFunction) $this->_closeDebugFunction($aStartTime, $status);
+    $this->_closeDebugFunction($ThisFunctionName, $status, $bDebugThisFunction);
+
     return $status;
   }
   
@@ -3926,12 +5394,14 @@ class XPath extends XPathEngine {
    * @see    setModMatch(), replaceChild(), reindexNodeTree()
    */
   function replaceChildByData($xPathQuery, $data, $autoReindex=TRUE) {
-    $NULL = NULL;
-    $bDebugThisFunction = FALSE;  // Get diagnostic output for this function
+    $ThisFunctionName = 'replaceChildByData';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
     if ($bDebugThisFunction) {
-      $aStartTime = $this->_beginDebugFunction('replaceChildByData');
       echo "Node: $xPathQuery\n";
     }
+
+    $NULL = NULL;
     $status = FALSE;
     do { // try-block
       // Check for a valid xPathQuery
@@ -3943,8 +5413,11 @@ class XPath extends XPathEngine {
       $mustReindex = FALSE;
       // Make chages from 'bottom-up'. In this manner the modifications will not affect itself.
       for ($i=sizeOf($xPathSet)-1; $i>=0; $i--) {
-        $absoluteXPath = $xPathSet[$i];
         $mustReindex = $autoReindex;
+        // Flag the index as dirty; it's not uptodate. A reindex will be forced (if dirty) when exporting the XML doc
+        $this->_indexIsDirty = TRUE;
+        
+        $absoluteXPath = $xPathSet[$i];
         $theNode = $this->nodeIndex[$absoluteXPath];
         $pos = $theNode['pos'];
         $theNode['parentNode']['textParts'][$pos] .= $data;
@@ -3956,7 +5429,8 @@ class XPath extends XPathEngine {
       $status = TRUE;
     } while(FALSE);
     
-    if ($bDebugThisFunction) $this->_closeDebugFunction($aStartTime, ($status) ? 'Success' : '!!! FAILD !!!');
+    $this->_closeDebugFunction($ThisFunctionName, ($status) ? 'Success' : '!!! FAILD !!!', $bDebugThisFunction);
+
     return $status;
   }
   
@@ -3969,7 +5443,9 @@ class XPath extends XPathEngine {
    *       Depending on setModMatch() one, none or multiple nodes are affected.
    *
    * @param  $xPathQuery  (string) Xpath to the node being replaced.
-   * @param  $node        (array)  A doc node.
+   * @param  $node        (mixed)  String or Array (Usually a String)
+   *                               If string: Vaild XML. E.g. "<A/>" or "<A> foo <B/> bar <A/>"
+   *                               If array:  A Node (can be a whole sub-tree) (See comment in header)
    * @param  $autoReindex (bool)   (optional, default=TRUE) Reindex the document to reflect 
    *                               the changes.  A performance helper.  See reindexNodeTree()
    * @return              (array)  The last replaced $node (can be a whole sub-tree)
@@ -3978,10 +5454,15 @@ class XPath extends XPathEngine {
   function &replaceChild($xPathQuery, $node, $autoReindex=TRUE) {
     $NULL = NULL;
     if (is_string($node)) {
-      if (!($node = $this->_xml2Document($node))) return FALSE;
+      if (empty($node)) { //--sam. Not sure how to react on an empty string - think it's an error.
+        return array();
+      } else { 
+        if (!($node = $this->_xml2Document($node))) return FALSE;
+      }
     }
+    
     // Special case if it's 'super root'. We then have to take the child node == top node
-    if (empty($node['name'])) $node = $node['childNodes'][0];
+    if (empty($node['parentNode'])) $node = $node['childNodes'][0];
     
     $status = FALSE;
     do { // try-block
@@ -3992,10 +5473,14 @@ class XPath extends XPathEngine {
         break; // try-block
       }
       $mustReindex = FALSE;
+      
       // Make chages from 'bottom-up'. In this manner the modifications will not affect itself.
       for ($i=sizeOf($xPathSet)-1; $i>=0; $i--) {
-        $absoluteXPath = $xPathSet[$i];
         $mustReindex = $autoReindex;
+        // Flag the index as dirty; it's not uptodate. A reindex will be forced (if dirty) when exporting the XML doc
+        $this->_indexIsDirty = TRUE;
+        
+        $absoluteXPath = $xPathSet[$i];
         $childNode =& $this->nodeIndex[$absoluteXPath];
         $parentNode =& $childNode['parentNode'];
         $childNode['parentNode'] =& $NULL;
@@ -4024,9 +5509,9 @@ class XPath extends XPathEngine {
    *                                  /       \          
    *                              ..BBB[1]..BBB[2] ..    
    *
-   * a) insertChild('/AAA[1]/BBB[1]', <node CCC>)
-   * b) insertChild('/AAA[1]/BBB[1]', <node CCC>, $shiftRight=FALSE)
-   * c) insertChild('/AAA[1]/BBB[1]', <node CCC>, $shiftRight=FALSE, $afterText=FALSE)
+   * a) insertChild('/AAA[1]/BBB[2]', <node CCC>)
+   * b) insertChild('/AAA[1]/BBB[2]', <node CCC>, $shiftRight=FALSE)
+   * c) insertChild('/AAA[1]/BBB[2]', <node CCC>, $shiftRight=FALSE, $afterText=FALSE)
    *
    * a)                          b)                           c)                        
    *          AAA[1]                       AAA[1]                       AAA[1]          
@@ -4036,53 +5521,96 @@ class XPath extends XPathEngine {
    * #### Do a complete review of the "(optional)" tag after several arguments.
    *
    * @param  $xPathQuery  (string) Xpath to the node to append.
-   * @param  $node        (array)  A doc node.
+   * @param  $node        (mixed)  String or Array (Usually a String)
+   *                               If string: Vaild XML. E.g. "<A/>" or "<A> foo <B/> bar <A/>"
+   *                               If array:  A Node (can be a whole sub-tree) (See comment in header)
    * @param  $shiftRight  (bool)   (optional, default=TRUE) Shift the target node to the right.
    * @param  $afterText   (bool)   (optional, default=TRUE) Insert after the text.
    * @param  $autoReindex (bool)   (optional, default=TRUE) Reindex the document to reflect 
    *                                the changes.  A performance helper.  See reindexNodeTree()
-   * @return              (bool)   TRUE on success, FALSE on error.
-   * @see    _xml2Document(), appendChildByXml(), reindexNodeTree()
+   * @return              (mixed)  FALSE on error (or no match). On success we return the path(s) to the newly
+   *                               appended nodes. That is: Array of paths if more then 1 node was added or
+   *                               a single path string if only one node was added.
+   *                               NOTE:  If autoReindex is FALSE, then we can't return the *complete* path
+   *                               as the exact doc-pos isn't available without reindexing. In that case we leave
+   *                               out the last [docpos] in the path(s). ie  we'd return /A[3]/B instead of /A[3]/B[2]
+   * @see    appendChildByXml(), reindexNodeTree()
    */
   function insertChild($xPathQuery, $node, $shiftRight=TRUE, $afterText=TRUE, $autoReindex=TRUE) {
     if (is_string($node)) {
-      if (!($node = $this->_xml2Document($node))) return FALSE;
+      if (empty($node)) { //--sam. Not sure how to react on an empty string - think it's an error.
+        return FALSE;
+      } else { 
+        if (!($node = $this->_xml2Document($node))) return FALSE;
+      }
     }
+
     // Special case if it's 'super root'. We then have to take the child node == top node
-    if (empty($node['name'])) $node = $node['childNodes'][0];
-  
+    if (empty($node['parentNode'])) $node = $node['childNodes'][0];
+    
     // Check for a valid xPathQuery
-    $xPathSet = $this->_resolveXPathQuery($xPathQuery,'appendChild');
+    $xPathSet = $this->_resolveXPathQuery($xPathQuery,'insertChild');
     if (sizeOf($xPathSet) === 0) {
       $this->_displayError(sprintf($this->errorStrings['NoNodeMatch'], $xPathQuery), __LINE__, __FILE__, FALSE);
       return FALSE;
     }
-    
     $mustReindex = FALSE;
+    $newNodes = array();
+    $result = array();
     // Make chages from 'bottom-up'. In this manner the modifications will not affect itself.
     for ($i=sizeOf($xPathSet)-1; $i>=0; $i--) {
       $absoluteXPath = $xPathSet[$i];
-      $mustReindex = $autoReindex;
       $childNode =& $this->nodeIndex[$absoluteXPath];
       $parentNode =& $childNode['parentNode'];
+
+      // We can't insert at the super root or at the root.
+      if (empty($absoluteXPath) || (!$parentNode['parentNode'])) {
+        $this->_displayError(sprintf($this->errorStrings['RootNodeAlreadyExists']), __LINE__, __FILE__, FALSE);
+        return FALSE;
+      }
+
+      $mustReindex = $autoReindex;
+      // Flag the index as dirty; it's not uptodate. A reindex will be forced (if dirty) when exporting the XML doc
+      $this->_indexIsDirty = TRUE;
+      
       //Special case: It not possible to add siblings to the top node.
       if (empty($parentNode['name'])) continue;
       $newNode =& $this->cloneNode($node);
       $pos = $shiftRight ? $childNode['pos'] : $childNode['pos']+1;
       $parentNode['childNodes'] = array_merge(
                                     array_slice($parentNode['childNodes'], 0, $pos),
-                                    array($newNode),
+                                    array(&$newNode),
                                     array_slice($parentNode['childNodes'], $pos)
                                   );
       $pos += $afterText ? 1 : 0;
       $parentNode['textParts'] = array_merge(
                                    array_slice($parentNode['textParts'], 0, $pos),
-                                   '',
+                                   array(''),
                                    array_slice($parentNode['textParts'], $pos)
                                  );
+      
+      // We are going from bottom to top, but the user will want results from top to bottom.
+      if ($mustReindex) {
+        // We'll have to wait till after the reindex to get the full path to this new node.
+        $newNodes[] = &$newNode;
+      } else {
+        // If we are reindexing the tree later, then we can't return the user any
+        // useful results, so we just return them the count.
+        $newNodePath = $parentNode['xpath'].'/'.$newNode['name'];
+        array_unshift($result, $newNodePath);
+      }
     }
-    if ($mustReindex) $this->reindexNodeTree();
-    return TRUE;
+    if ($mustReindex) {
+      $this->reindexNodeTree();
+      // Now we must fill in the result array.  Because until now we did not
+      // know what contextpos our newly added entries had, just their pos within
+      // the siblings.
+      foreach ($newNodes as $newNode) {
+        array_unshift($result, $newNode['xpath']);
+      }
+    }
+    if (count($result) == 1) $result = $result[0];
+    return $result;
   }
   
   /**
@@ -4092,46 +5620,75 @@ class XPath extends XPathEngine {
    * and then call reindexNodeTree() when you are finished all the appending.
    *
    * @param  $xPathQuery  (string) Xpath to the node to append to.
-   * @param  $node        (array)  A doc node.
+   * @param  $node        (mixed)  String or Array (Usually a String)
+   *                               If string: Vaild XML. E.g. "<A/>" or "<A> foo <B/> bar <A/>"
+   *                               If array:  A Node (can be a whole sub-tree) (See comment in header)
    * @param  $afterText   (bool)   (optional, default=FALSE) Insert after the text.
    * @param  $autoReindex (bool)   (optional, default=TRUE) Reindex the document to reflect 
    *                               the changes.  A performance helper.  See reindexNodeTree()
-   * @return              (bool)   TRUE on success, FALSE on error.
-   * @see    reindexNodeTree()
+   * @return              (mixed)  FALSE on error (or no match). On success we return the path(s) to the newly
+   *                               appended nodes. That is: Array of paths if more then 1 node was added or
+   *                               a single path string if only one node was added.
+   *                               NOTE:  If autoReindex is FALSE, then we can't return the *complete* path
+   *                               as the exact doc-pos isn't available without reindexing. In that case we leave
+   *                               out the last [docpos] in the path(s). ie  we'd return /A[3]/B instead of /A[3]/B[2]
+   * @see    insertChild(), reindexNodeTree()
    */
   function appendChild($xPathQuery, $node, $afterText=FALSE, $autoReindex=TRUE) {
     if (is_string($node)) {
-      if (!($node = $this->_xml2Document($node))) return FALSE;
-    }
-    // Special case if it's 'super root'. We then have to take the child node == top node
-    if (empty($node['name'])) $node = $node['childNodes'][0];
-  
-    // Check for a valid xPathQuery
-    $xPathSet = $this->_resolveXPathQuery($xPathQuery,'appendChild');
-    if (sizeOf($xPathSet) === 0) {
-      $this->_displayError(sprintf($this->errorStrings['NoNodeMatch'], $xPathQuery), __LINE__, __FILE__, FALSE);
-      return FALSE;
+      if (empty($node)) { //--sam. Not sure how to react on an empty string - think it's an error.
+        return FALSE;
+      } else { 
+        if (!($node = $this->_xml2Document($node))) return FALSE;
+      }
     }
     
+    // Special case if it's 'super root'. We then have to take the child node == top node
+    if (empty($node['parentNode'])) $node = $node['childNodes'][0];
+
+    // Check for a valid xPathQuery
+    $xPathSet = $this->_resolveXPathQueryForNodeMod($xPathQuery, 'appendChild');
+    if (sizeOf($xPathSet) === 0) return FALSE;
+
     $mustReindex = FALSE;
-    $result = FALSE;
+    $newNodes = array();
+    $result = array();
     // Make chages from 'bottom-up'. In this manner the modifications will not affect itself.
     for ($i=sizeOf($xPathSet)-1; $i>=0; $i--) {
-      $absoluteXPath = $xPathSet[$i];
       $mustReindex = $autoReindex;
+      // Flag the index as dirty; it's not uptodate. A reindex will be forced (if dirty) when exporting the XML doc
+      $this->_indexIsDirty = TRUE;
+      
+      $absoluteXPath = $xPathSet[$i];
       $parentNode =& $this->nodeIndex[$absoluteXPath];
       $newNode =& $this->cloneNode($node);
-      $pos = count($parentNode['childNodes']);
       $parentNode['childNodes'][] =& $newNode;
+      $pos = count($parentNode['textParts']);
       $pos -= $afterText ? 0 : 1;
       $parentNode['textParts'] = array_merge(
                                    array_slice($parentNode['textParts'], 0, $pos),
-                                   '',
+                                   array(''),
                                    array_slice($parentNode['textParts'], $pos)
                                  );
-      $result[] = "$absoluteXPath/{$newNode['name']}";
+      // We are going from bottom to top, but the user will want results from top to bottom.
+      if ($mustReindex) {
+        // We'll have to wait till after the reindex to get the full path to this new node.
+        $newNodes[] = &$newNode;
+      } else {
+        // If we are reindexing the tree later, then we can't return the user any
+        // useful results, so we just return them the count.
+        array_unshift($result, "$absoluteXPath/{$newNode['name']}");
+      }
     }
-    if ($mustReindex) $this->reindexNodeTree();
+    if ($mustReindex) {
+      $this->reindexNodeTree();
+      // Now we must fill in the result array.  Because until now we did not
+      // know what contextpos our newly added entries had, just their pos within
+      // the siblings.
+      foreach ($newNodes as $newNode) {
+        array_unshift($result, $newNode['xpath']);
+      }
+    } 
     if (count($result) == 1) $result = $result[0];
     return $result;
   }
@@ -4143,11 +5700,18 @@ class XPath extends XPathEngine {
    * and then call reindexNodeTree() when you are finished all the appending.
    *
    * @param  $xPathQuery  (string) Xpath to the node to insert new node before
-   * @param  $node        (array)  A doc node.
+   * @param  $node        (mixed)  String or Array (Usually a String)
+   *                               If string: Vaild XML. E.g. "<A/>" or "<A> foo <B/> bar <A/>"
+   *                               If array:  A Node (can be a whole sub-tree) (See comment in header)
    * @param  $afterText   (bool)   (optional, default=FLASE) Insert after the text.
    * @param  $autoReindex (bool)   (optional, default=TRUE) Reindex the document to reflect 
    *                               the changes.  A performance helper.  See reindexNodeTree()
-   * @return              (bool)   TRUE on success, FALSE on error.
+   * @return              (mixed)  FALSE on error (or no match). On success we return the path(s) to the newly
+   *                               appended nodes. That is: Array of paths if more then 1 node was added or
+   *                               a single path string if only one node was added.
+   *                               NOTE:  If autoReindex is FALSE, then we can't return the *complete* path
+   *                               as the exact doc-pos isn't available without reindexing. In that case we leave
+   *                               out the last [docpos] in the path(s). ie  we'd return /A[3]/B instead of /A[3]/B[2]
    * @see    reindexNodeTree()
    */
   function insertBefore($xPathQuery, $node, $afterText=TRUE, $autoReindex=TRUE) {
@@ -4179,10 +5743,14 @@ class XPath extends XPathEngine {
   function getAttributes($absoluteXPath, $attrName=NULL) {
     // Numpty check
     if (!isSet($this->nodeIndex[$absoluteXPath])) {
-      $xPathSet = $this->_resolveXPathQuery($absoluteXPath,'setAttributes');
+      $xPathSet = $this->_resolveXPathQuery($absoluteXPath,'getAttributes');
       if (empty($xPathSet)) return FALSE;
       // only use the first entry
       $absoluteXPath = $xPathSet[0];
+    }
+    if (!empty($this->parseOptions[XML_OPTION_CASE_FOLDING])) {
+        // Case in-sensitive
+        $attrName = strtoupper($attrName);
     }
     
     // Return the complete list or just the desired element
@@ -4207,7 +5775,7 @@ class XPath extends XPathEngine {
    * @param  $value      (string) Attribute value.   
    * @param  $overwrite  (bool)   If the attribute is already set we overwrite it (see text above)
    * @return             (bool)   TRUE on success, FALSE on failure.
-   * @see    getAttribute(), removeAttribute()
+   * @see    getAttributes(), removeAttribute()
    */
   function setAttribute($xPathQuery, $name, $value, $overwrite=TRUE) {
     return $this->setAttributes($xPathQuery, array($name => $value), $overwrite);
@@ -4225,7 +5793,7 @@ class XPath extends XPathEngine {
    * @param  $attributes (array)  associative array of attributes to set.
    * @param  $overwrite  (bool)   If the attributes are already set we overwrite them (see text above)
    * @return             (bool)   TRUE on success, FALSE otherwise
-   * @see    setAttribute(), getAttribute(), removeAttribute()
+   * @see    setAttribute(), getAttributes(), removeAttribute()
    */
   function setAttributes($xPathQuery, $attributes, $overwrite=TRUE) {
     $status = FALSE;
@@ -4265,7 +5833,7 @@ class XPath extends XPathEngine {
    * @param   $xPathQuery (string) xpath to the node (See note above).
    * @param   $attrList   (mixed)  (optional) if not set will delete *all* (see text above)
    * @return              (bool)   TRUE on success, FALSE if the node couldn't be found
-   * @see     getAttribute(), setAttribute()
+   * @see     getAttributes(), setAttribute()
    */
   function removeAttribute($xPathQuery, $attrList=NULL) {
     // Check for a valid xPathQuery
@@ -4298,16 +5866,16 @@ class XPath extends XPathEngine {
    * Sample  
    * Given is: <AA> This <BB\>is <BB\>  some<BB\>text </AA>
    * Return of getData('/AA[1]') would be:  " This is   sometext "
-   * The first param $absoluteXPath must be a valid xpath OR a xpath-query that results 
-   * to *one* xpath. 
+   * The first param $xPathQuery must be a valid xpath OR a xpath-query that 
+   * results to *one* xpath. 
    *
-   * @param  $absoluteXPath (string) Full xpath OR a xpath-query that results to *one* xpath.
-   * @return                (mixed)  The returned string (see above), FALSE if the node 
-   *                                 couldn't be found or is not unique.
+   * @param  $xPathQuery (string) xpath to the node - resolves to *one* xpath.
+   * @return             (mixed)  The returned string (see above), FALSE if the node 
+   *                              couldn't be found or is not unique.
    * @see getDataParts()
    */
-  function getData($absoluteXPath) {
-    $aDataParts = $this->getDataParts($absoluteXPath);
+  function getData($xPathQuery) {
+    $aDataParts = $this->getDataParts($xPathQuery);
     if ($aDataParts === FALSE) return FALSE;
     return implode('', $aDataParts);
   }
@@ -4323,21 +5891,35 @@ class XPath extends XPathEngine {
    * The first param $absoluteXPath must be a valid xpath OR a xpath-query that results 
    * to *one* xpath. 
    *
-   * @param  $absoluteXPath   (string) Full xpath OR a xpath-query that results to *one* xpath.
-   * @return                  (mixed)  The returned array (see above), or FALSE if node is not 
-   *                                   found or is not unique.
+   * @param  $xPathQuery (string) xpath to the node - resolves to *one* xpath.
+   * @return             (mixed)  The returned array (see above), or FALSE if node is not 
+   *                              found or is not unique.
    * @see getData()
    */
-  function getDataParts($absoluteXPath) {
+  function getDataParts($xPathQuery) {
     // Resolve xPath argument
-    $xPathSet = $this->_resolveXPathQuery($absoluteXPath, 'getDataParts');
-    if (count($xPathSet) != 1) {
-      $this->_displayError(sprintf($this->errorStrings['AbsoluteXPathRequired'], $absoluteXPath), __LINE__, __FILE__, FALSE);
+    $xPathSet = $this->_resolveXPathQuery($xPathQuery, 'getDataParts');
+    if (1 !== ($setSize=count($xPathSet))) {
+      $this->_displayError(sprintf($this->errorStrings['AbsoluteXPathRequired'], $xPathQuery) . "Not unique xpath-query, matched {$setSize}-times.", __LINE__, __FILE__, FALSE);
       return FALSE;
     }
     $absoluteXPath = $xPathSet[0];
-    
-    return $this->nodeIndex[$absoluteXPath]['textParts'];
+    // Is it an attribute node?
+    if (preg_match(";(.*)/attribute::([^/]*)$;U", $xPathSet[0], $matches)) {
+      $absoluteXPath = $matches[1];
+      $attribute = $matches[2];
+      if (!isSet($this->nodeIndex[$absoluteXPath]['attributes'][$attribute])) {
+        $this->_displayError("The $absoluteXPath/attribute::$attribute value isn't a node in this document.", __LINE__, __FILE__, FALSE);
+        continue;
+      }
+      return array($this->nodeIndex[$absoluteXPath]['attributes'][$attribute]);
+    } else if (preg_match(":(.*)/text\(\)(\[(.*)\])?$:U", $xPathQuery, $matches)) {
+      $absoluteXPath = $matches[1];
+      $textPartNr = $matches[2];      
+      return array($this->nodeIndex[$absoluteXPath]['textParts'][$textPartNr]);
+    } else {
+      return $this->nodeIndex[$absoluteXPath]['textParts'];
+    }
   }
   
   /**
@@ -4366,7 +5948,10 @@ class XPath extends XPathEngine {
   /**
    * Replace a sub string of a text-part OR attribute-value.
    *
-   * @param  $absoluteXPath (string) Xpath to the node.   
+   * NOTE: When passing a xpath-query instead of an abs. Xpath.
+   *       Depending on setModMatch() one, none or multiple nodes are affected.
+   *
+   * @param  $xPathQuery    (string) xpath to the node (See note above).
    * @param  $replacement   (string) The string to replace with.
    * @param  $offset        (int)    (optional, default is 0) Starting offset. (Just like PHP's substr_replace ())
    * @param  $count         (number) (optional, default is 0=ALL) Character count  (Just like PHP's substr_replace())
@@ -4460,52 +6045,7 @@ class XPath extends XPathEngine {
   //-----------------------------------------------------------------------------------------
   // XPath                      ------  Help Stuff  ------                                   
   //-----------------------------------------------------------------------------------------
- 
-  /**
-   * Decodes the character set entities in the given string.
-   *
-   * This function is given for convenience, as all text strings or attributes
-   * are going to come back to you with their entities still encoded.  You can
-   * use this function to remove these entites.
-   *
-   * ### Provide an option that will do this by default.
-   *
-   * @param $encodedData (mixed) The string or array that has entities you would like to remove
-   * @param $reverse     (bool)  If TRUE entities will be encoded rather than decoded, ie
-   *                             < to &lt; rather than &lt; to <.
-   * @return             (mixed) The string or array returned with entities decoded.
-   */
-  function decodeEntities($encodedData, $reverse=FALSE) {
-    static $aEncodeTbl;
-    static $aDecodeTbl;
-    // Get the translation entities, but we'll cache the result to enhance performance.
-    if (empty($aDecodeTbl)) {
-      // Get the translation entities.
-      $aEncodeTbl = get_html_translation_table(HTML_ENTITIES);
-      $aDecodeTbl = array_flip($aEncodeTbl);
-    }
-
-    // If it's just a single string.
-    if (!is_array($encodedData)) {
-      if ($reverse) {
-        return strtr($encodedData, $aEncodeTbl);
-      } else {
-        return strtr($encodedData, $aDecodeTbl);
-      }
-    }
-
-    $result = array();
-    foreach($encodedData as $string) {
-      if ($reverse) {
-        $result[] = strtr($string, $aEncodeTbl);
-      } else {
-        $result[] = strtr($string, $aDecodeTbl);
-      }
-    }
-
-    return $result;
-  }
-  
+   
   /**
    * Parse the XML to a node-tree. A so called 'document'
    *
@@ -4518,7 +6058,7 @@ class XPath extends XPathEngine {
                     XML_OPTION_SKIP_WHITE   => $this->getProperties('skipWhiteSpaces')
                   );
     $xmlParser =& new XPathEngine($xmlOptions);
-    $xmlParser->setVerbose(FALSE);
+    $xmlParser->setVerbose($this->properties['verboseLevel']);
     // Parse the XML string
     if (!$xmlParser->importFromString($xmlString)) {
       $this->_displayError($xmlParser->getLastError(), __LINE__, __FILE__, FALSE);
@@ -4556,17 +6096,26 @@ class XPath extends XPathEngine {
    * @see XPathEngine::wholeText()
    */
   function _getTextSet($xPathQuery, $textPartNr=1) {
+    $ThisFunctionName = '_getTextSet';
+    $bDebugThisFunction = in_array($ThisFunctionName, $this->aDebugFunctions);
+    $this->_beginDebugFunction($ThisFunctionName, $bDebugThisFunction);
+    if ($bDebugThisFunction) {
+      echo "Node: $xPathQuery\n";
+      echo "Text Part Number: $textPartNr\n";
+      echo "<hr>";
+    }
+    
     $status = FALSE;
     $funcName = '_getTextSet';
     $textSet = array();
     
     do { // try-block
       // Check if it's a Xpath reference to an attribut(s). Xpath ends with attribute::)
-      if ( preg_match(";(.*)/(attribute::|@)([^/]*)$;U", $xPathQuery, $matches) ) {
+      if (preg_match(";(.*)/(attribute::|@)([^/]*)$;U", $xPathQuery, $matches)) {
         $xPathQuery = $matches[1];
         $attribute = $matches[3];
         // Quick out
-        if (isSet($this->nodeIndex[$xPathQuery]) ) {
+        if (isSet($this->nodeIndex[$xPathQuery])) {
           $xPathSet[] = $xPathQuery;
         } else {
           // Try to evaluate the absoluteXPath (since it seems to be an Xquery and not an abs. Xpath)
@@ -4576,7 +6125,7 @@ class XPath extends XPathEngine {
           preg_match(";(.*)/attribute::([^/]*)$;U", $xPathSet[0], $matches);
           $absoluteXPath = $matches[1];
           $attribute = $matches[2];
-          if ( !isSet($this->nodeIndex[$absoluteXPath]['attributes'][$attribute]) ) {
+          if (!isSet($this->nodeIndex[$absoluteXPath]['attributes'][$attribute])) {
             $this->_displayError("The $absoluteXPath/attribute::$attribute value isn't a node in this document.", __LINE__, __FILE__, FALSE);
             continue;
           }
@@ -4587,12 +6136,12 @@ class XPath extends XPathEngine {
       }
       
       // Check if it's a Xpath reference direct to a text-part(s). (xpath ends with text()[<part-number>])
-      if ( preg_match(":(.*)/text\(\)(\[(.*)\])?$:U", $xPathQuery, $matches) ) {
+      if (preg_match(":(.*)/text\(\)(\[(.*)\])?$:U", $xPathQuery, $matches)) {
         $xPathQuery = $matches[1];
         // default to the first text node if a text node was not specified
         $textPartNr = isSet($matches[2]) ? substr($matches[2],1,-1) : 1;
         // Quick check
-        if (isSet($this->nodeIndex[$xPathQuery]) ) {
+        if (isSet($this->nodeIndex[$xPathQuery])) {
           $xPathSet[] = $xPathQuery;
         } else {
           // Try to evaluate the absoluteXPath (since it seams to be an Xquery and not an abs. Xpath)
@@ -4603,7 +6152,7 @@ class XPath extends XPathEngine {
         // At this point we have been given an xpath with neither a 'text()' or 'attribute::' axis at the end
         // So this means to get the text-part of the node. If parameter $textPartNr was not set, use the last
         // text-part.
-        if (isSet($this->nodeIndex[$xPathQuery]) ) {
+        if (isSet($this->nodeIndex[$xPathQuery])) {
           $xPathSet[] = $xPathQuery;
         } else {
           // Try to evaluate the absoluteXPath (since it seams to be an Xquery and not an abs. Xpath)
@@ -4611,21 +6160,75 @@ class XPath extends XPathEngine {
         }
       }
 
+      if ($bDebugThisFunction) {
+        echo "Looking up paths for:\n";
+        print_r($xPathSet);
+      }
+
       // Now fetch all text-parts that match. (May be 0,1 or many)
       foreach($xPathSet as $absoluteXPath) {
         unset($text);
         if ($text =& $this->wholeText($absoluteXPath, $textPartNr)) {
           $textSet[] =& $text;
+        } else {
+          // The node does not yet have any text, so we have to add a '' string so that
+          // if we insert or replace to it, then we'll actually have something to op on.
+          $this->nodeIndex[$absoluteXPath]['textParts'][$textPartNr-1] = '';
+          $textSet[] =& $this->nodeIndex[$absoluteXPath]['textParts'][$textPartNr-1];
         }
       }
 
       $status = TRUE;
     } while (FALSE); // END try-block
     
-    if (!$status) return FALSE;
-    return $textSet;
+    if (!$status) $result = FALSE;
+    else          $result = $textSet;
+
+    $this->_closeDebugFunction($ThisFunctionName, $result, $bDebugThisFunction);
+
+    return $result;
   }
   
+
+  /**
+   * Resolves an xPathQuery vector for a node op for modification
+   *
+   * It is possible to create a brand new object, and try to append and insert nodes
+   * into it, so this is a version of _resolveXPathQuery() that will autocreate the
+   * super root if it detects that it is not present and the $xPathQuery is empty.
+   *
+   * Also it demands that there be at least one node returned, and displays a suitable
+   * error message if the returned xPathSet does not contain any nodes.
+   * 
+   * @param  $xPathQuery (string) An xpath query targeting a single node.  If empty() 
+   *                              returns the root node and auto creates the root node
+   *                              if it doesn't exist.
+   * @param  $function   (string) The function in which this check was called
+   * @return             (array)  Vector of $absoluteXPath's (May be empty)
+   * @see    _resolveXPathQuery()
+   */
+  function _resolveXPathQueryForNodeMod($xPathQuery, $functionName) {
+    $xPathSet = array();
+    if (empty($xPathQuery)) {
+      // You can append even if the root node doesn't exist.
+      if (!isset($this->nodeIndex[$xPathQuery])) $this->_createSuperRoot();
+      $xPathSet[] = '';
+      // However, you can only append to the super root, if there isn't already a root entry.
+      $rootNodes = $this->_resolveXPathQuery('/*','appendChild');
+      if (count($rootNodes) !== 0) {
+        $this->_displayError(sprintf($this->errorStrings['RootNodeAlreadyExists']), __LINE__, __FILE__, FALSE);
+        return array();
+      }
+    } else {
+      $xPathSet = $this->_resolveXPathQuery($xPathQuery,'appendChild');
+      if (sizeOf($xPathSet) === 0) {
+        $this->_displayError(sprintf($this->errorStrings['NoNodeMatch'], $xPathQuery), __LINE__, __FILE__, FALSE);
+        return array();
+      }
+    }
+    return $xPathSet;
+  }
+
   /**
    * Resolves an xPathQuery vector depending on the property['modMatch']
    * 
@@ -4635,7 +6238,8 @@ class XPath extends XPathEngine {
    *   - none (If the query matches more then one node.)
    * see  setModMatch() for details
    * 
-   * @param  $xPathQuery (string) An xpath query targeting a single node
+   * @param  $xPathQuery (string) An xpath query targeting a single node.  If empty() 
+   *                              returns the root node (if it exists).
    * @param  $function   (string) The function in which this check was called
    * @return             (array)  Vector of $absoluteXPath's (May be empty)
    * @see    setModMatch()
@@ -4695,14 +6299,15 @@ function _title($title) {
   echo "<br><hr><b>" . htmlspecialchars($title) . "</b><hr>\n";
 }
 
-if (basename($PHP_SELF) == 'XPath.class.php') {
+$self = isSet($_SERVER) ? $_SERVER['PHP_SELF'] : $PHP_SELF;
+if (basename($self) == 'XPath.class.php') {
   // The sampe source:
   $q = '?';
   $xmlSource = <<< EOD
   <{$q}Process_Instruction test="&copy;&nbsp;All right reserved" {$q}>
-    <AAA> ,,1,,
-      ..1.. <![CDATA[ bal  bla 
-      kkk ]]>
+    <AAA foo="bar"> ,,1,,
+      ..1.. <![CDATA[ bla  bla 
+      newLine blo blo ]]>
       <BBB foo="bar">
         ..2..
       </BBB>..3..<CC/>   ..4..</AAA> 
@@ -4710,7 +6315,7 @@ EOD;
   
   // The sample code:
   $xmlOptions = array(XML_OPTION_CASE_FOLDING => TRUE, XML_OPTION_SKIP_WHITE => TRUE);
-  $xPath =& new XPath($xmlOptions);
+  $xPath =& new XPath(FALSE, $xmlOptions);
   //$xPath->bDebugXmlParse = TRUE;
   if (!$xPath->importFromString($xmlSource)) { echo $xPath->getLastError(); exit; }
   
@@ -4720,12 +6325,13 @@ EOD;
   _title("Get some content");
   echo "Last text part in &lt;AAA&gt;: '" . $xPath->wholeText('/AAA[1]', -1) ."'<br>\n";
   echo "All the text in  &lt;AAA&gt;: '" . $xPath->wholeText('/AAA[1]') ."'<br>\n";
-  echo "The attibute value  in  &lt;BBB&gt;: '" . $xPath->getAttributes('/AAA[1]/BBB[1]', 'FOO') ."'<br>\n";
+  echo "The attibute value  in  &lt;BBB&gt; using getAttributes('/AAA[1]/BBB[1]', 'FOO'): '" . $xPath->getAttributes('/AAA[1]', 'FOO') ."'<br>\n";
+  echo "The attibute value  in  &lt;BBB&gt; using getData('/AAA[1]/@FOO'): '" . $xPath->getData('/AAA[1]/@FOO') ."'<br>\n";
   
   _title("Append some additional XML below /AAA/BBB:");
-  $xPath->appendChild('/AAA[1]/BBB[1]', '<CCC> Step 1. Append new node </CCC>', $afterText=TRUE);
-  $xPath->appendChild('/AAA[1]/BBB[1]', '<CCC> Step 2. Append new node </CCC>', $afterText=FALSE);
-  $xPath->appendChild('/AAA[1]/BBB[1]', '<CCC> Step 3. Append new node </CCC>', $afterText=FALSE);
+  $xPath->appendChild('/AAA[1]/BBB[1]', '<CCC> Step 1. Append new node </CCC>', $afterText=FALSE);
+  $xPath->appendChild('/AAA[1]/BBB[1]', '<CCC> Step 2. Append new node </CCC>', $afterText=TRUE);
+  $xPath->appendChild('/AAA[1]/BBB[1]', '<CCC> Step 3. Append new node </CCC>', $afterText=TRUE);
   echo $xPath->exportAsHtml();
   
   _title("Insert some additional XML below <AAA>:");
@@ -4735,14 +6341,14 @@ EOD;
   $xPath->insertChild('/AAA[1]/BBB[1]', '<BB> Step 3. Insert new node </BB>', $shiftRight=FALSE, $afterText=FALSE);
   echo $xPath->exportAsHtml();
 
-  _title("Replace the last <BB> node with new XML:");
+  _title("Replace the last <BB> node with new XML data '&lt;DDD&gt; Replaced last BB &lt;/DDD&gt;':");
   $xPath->reindexNodeTree();
   $xPath->replaceChild('/AAA[1]/BB[last()]', '<DDD> Replaced last BB </DDD>', $afterText=FALSE);
   echo $xPath->exportAsHtml();
   
   _title("Replace second <BB> node with normal text");
   $xPath->reindexNodeTree();
-  $xPath->replaceChildByData('/AAA[1]/BB[2]', '"Some new text"', $afterText=FALSE);
+  $xPath->replaceChildByData('/AAA[1]/BB[2]', '"Some new text"');
   echo $xPath->exportAsHtml();
 }
 

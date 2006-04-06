@@ -25,6 +25,7 @@ $text['vitals']         = 'Sistem Temel';
 $text['hostname']       = 'Cannonical Host Adresi';
 $text['ip']             = 'IP Adresi';
 $text['kversion']       = 'Kernel Versiyonu';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Açýk Kaldýðý Süre';
 $text['users']          = 'Þu Andaki Kullanýcýlar';
 $text['loadavg']        = 'Yükleme Ortalamasý';
@@ -32,12 +33,15 @@ $text['loadavg']        = 'Yükleme Ortalamasý';
 $text['hardware']       = 'Hardware Bilgisi';
 $text['numcpu']         = 'CPU Sayýsý';
 $text['cpumodel']       = 'Model';
-$text['mhz']            = 'CPU Hýzý( Mhz)';
+$text['cpuspeed']       = 'CPU Hýzý( Mhz)';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Cache Büyüklüðü';
 $text['bogomips']       = 'Sistem Bogomips';
+
 $text['pci']            = 'PCI Araçlar';
 $text['ide']            = 'IDE Araçlar';
 $text['scsi']           = 'SCSI Araçlar';
+$text['usb']            = 'USB Araçlar';
 
 $text['netusage']       = 'Network Kullanýmý';
 $text['device']         = 'Arayüz';
@@ -45,7 +49,7 @@ $text['received']       = 'Alýnan';
 $text['sent']           = 'Gönderilen';
 $text['errors']         = 'Hata/Düþürülen';
 
-$text['connections']	= 'Kurulmuþ Network Baðlantýlarý';
+$text['connections']    = 'Kurulmuþ Network Baðlantýlarý';
 
 $text['memusage']       = 'Hafýza Kullanýmý';
 $text['phymem']         = 'Fiziksel Hafýza';
@@ -68,18 +72,35 @@ $text['gb']             = 'GB';
 
 $text['none']           = 'Hiçbiri';
 
-$text['capacity']       = 'Kapasite'; 
+$text['capacity']       = 'Kapasite';
 
 $text['template']       = 'Arayüz';
 $text['language']       = 'Dil';
 $text['submit']         = 'Gönder';
 $text['created']        = 'Yaratan';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = 'gün';
 $text['hours']          = 'saat';
 $text['minutes']        = 'dakika';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>
-
-
-
-

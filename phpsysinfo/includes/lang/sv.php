@@ -20,26 +20,31 @@
 // $Id$
 //
 // translation by shockzor
+// updated/edited by jetthe
 
 $text['title']          = 'Systeminformation';
 
-$text['vitals']         = 'Elementa';
+$text['vitals']         = 'Allmän information';
 $text['hostname']       = 'Värdnamn';
-$text['ip']             = 'IPaddress';
-$text['kversion']       = 'Kernelversion';
+$text['ip']             = 'IP-adress';
+$text['kversion']       = 'Kernel-version';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Drifttid';
-$text['users']          = 'Antal användare';
-$text['loadavg']        = 'Snittbelastning';
+$text['users']          = 'Aktuella användare';
+$text['loadavg']        = 'Medelbelastning';
 
 $text['hardware']       = 'Hårdvaruinformation';
 $text['numcpu']         = 'Processorer';
 $text['cpumodel']       = 'Modell';
-$text['mhz']            = 'Klockfrekvens';
+$text['cpuspeed']       = 'Klockfrekvens';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Cachestorlek';
 $text['bogomips']       = 'Bogomips';
+
 $text['pci']            = 'PCI-enheter';
 $text['ide']            = 'IDE-enheter';
 $text['scsi']           = 'SCSI-enheter';
+$text['usb']            = 'USB-enheter';
 
 $text['netusage']       = 'Nätverksanvändning';
 $text['device']         = 'Enheter';
@@ -52,30 +57,51 @@ $text['phymem']         = 'Fysiskt minne';
 $text['swap']           = 'Växlingsminne';
 
 $text['fs']             = 'Monterade filsystem';
-$text['mount']          = 'Montera';
+$text['mount']          = 'Monteringspunkt';
 $text['partition']      = 'Partition';
 
 $text['percent']        = 'Kapacitetsutnyttjande';
 $text['type']           = 'Typ';
-$text['free']           = 'Fritt';
+$text['free']           = 'Ledigt';
 $text['used']           = 'Använt';
 $text['size']           = 'Storlek';
 $text['totals']         = 'Totalt';
 
-$text['kb']             = 'KB';
+$text['kb']             = 'kB';
 $text['mb']             = 'MB';
 $text['gb']             = 'GB';
 
-$text['none']           = 'inget';
+$text['none']           = 'inga';
 
 $text['capacity']       = 'Kapacitet';
   
-$text['template']       = 'Förlaga';
+$text['template']       = 'Mall';
 $text['language']       = 'Språk';
 $text['submit']         = 'Skicka';
 
 $text['days']           = 'dagar';
 $text['hours']          = 'timmar';
 $text['minutes']        = 'minuter';
-$text['created']        = 'Från';
+$text['created']        = 'Skapat av';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

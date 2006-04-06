@@ -25,6 +25,7 @@ $text['vitals']         = 'Vitales';
 $text['hostname']       = 'Nombre Del Sistema';
 $text['ip']             = 'Direcci&oacute;n IP';
 $text['kversion']       = 'Versi&oacute;n Del N&uacute;cleo';
+$text['dversion']       = 'Distro Name';
 $text['uptime']         = 'Uptime';
 $text['users']          = 'Usuarios Actuales';
 $text['loadavg']        = 'Promedio De Uso';
@@ -32,12 +33,15 @@ $text['loadavg']        = 'Promedio De Uso';
 $text['hardware']       = 'Informaci&oacute;n Del Hardware';
 $text['numcpu']         = 'Procesadores';
 $text['cpumodel']       = 'Modelo';
-$text['mhz']            = 'Frecuencia';
+$text['cpuspeed']       = 'Frecuencia';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Tama&ntilde;o Del Cach&eacute;';
 $text['bogomips']       = 'Bogomips';
+
 $text['pci']            = 'Dispositivos PCI';
 $text['ide']            = 'Dispositivos IDE';
 $text['scsi']           = 'Dispositivos SCSI';
+$text['usb']            = 'Dispositivos USB';
 
 $text['netusage']       = 'Utilizaci&oacute;n De La Red';
 $text['device']         = 'Dispositivo';
@@ -72,8 +76,29 @@ $text['template']       = 'Plantilla';
 $text['language']       = 'Idioma';
 $text['submit']         = 'Enviar';
 $text['created']        = 'Creado por';
+$text['locale']         = 'en_US';
+$text['gen_time']       = 'on %b %d, %Y at %I:%M %p';
 
 $text['days']           = 'd&iacute;as';
 $text['hours']          = 'horas';
 $text['minutes']        = 'minutos';
+  
+$text['temperature']    = 'Temperature';
+$text['voltage']        = 'Voltage';
+$text['fans']           = 'Fans';
+$text['s_value']        = 'Value';
+$text['s_min']          = 'Min';
+$text['s_max']          = 'Max';
+$text['s_div']          = 'Div';
+$text['hysteresis']     = 'Hysteresis';
+$text['s_limit']        = 'Limit';
+$text['s_label']        = 'Label';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>

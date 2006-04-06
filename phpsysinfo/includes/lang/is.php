@@ -21,40 +21,44 @@
 
 $text['title']          = 'Kerfisupplýsingar';
 
-$text['vitals']         = 'Helstu Upplýsingar';
+$text['vitals']         = 'Helstu upplýsingar';
 $text['hostname']       = 'Vélarnafn';
-$text['ip']             = 'IP Tala';
+$text['ip']             = 'IP-tala';
 $text['kversion']       = 'Útgáfa kjarna';
+$text['dversion']       = 'Nafn dreifingar';
 $text['uptime']         = 'Uppitími';
 $text['users']          = 'Notendur';
-$text['loadavg']        = 'Meðal álag';
+$text['loadavg']        = 'Meðalálag';
 
 $text['hardware']       = 'Upplýsingar um vélbúnað';
-$text['numcpu']         = 'Örgjörvi/Örgjörvar';
-$text['cpumodel']       = 'Týpa';
-$text['mhz']            = 'Hraði';
+$text['numcpu']         = 'Fjöldi örgjörva';
+$text['cpumodel']       = 'Tegund';
+$text['cpuspeed']       = 'Hraði';
+$text['busspeed']       = 'BUS Speed';
 $text['cache']          = 'Stærð flýtiminnis';
-$text['bogomips']       = 'Kerfis Bogomips';
-$text['pci']            = 'PCI Jaðartæki';
-$text['ide']            = 'IDE Jaðartæki';
-$text['scsi']           = 'SCSI Jaðartæki';
+$text['bogomips']       = 'Bogomips';
 
-$text['netusage']       = 'Notkun Nets';
+$text['pci']            = 'PCI jaðartæki';
+$text['ide']            = 'IDE jaðartæki';
+$text['scsi']           = 'SCSI jaðartæki';
+$text['usb']            = 'USB jaðartæki';
+
+$text['netusage']       = 'Netnotkun';
 $text['device']         = 'Jaðartæki';
-$text['received']       = 'Tekið á móti';
+$text['received']       = 'Móttekið';
 $text['sent']           = 'Sent';
-$text['errors']         = 'Villur/Drop';
+$text['errors']         = 'Villur/Hent';
 
 $text['memusage']       = 'Minnisnotkun';
 $text['phymem']         = 'Vinnsluminni';
 $text['swap']           = 'Sýndarminni';
 
-$text['fs']             = 'Tengd Skráarkerfi';
+$text['fs']             = 'Tengd skráarkerfi';
 $text['mount']          = 'Tengipunktur';
 $text['partition']      = 'Disksneið';
 
-$text['percent']        = 'Prósent af Heildarstærð';
-$text['type']           = 'Týpa';
+$text['percent']        = 'Hlutfall af heildarstærð';
+$text['type']           = 'Tegund';
 $text['free']           = 'Laust';
 $text['used']           = 'Notað';
 $text['size']           = 'Stærð';
@@ -68,12 +72,33 @@ $text['none']           = 'ekkert';
 
 $text['capacity']       = 'Heildarstærð'; 
 
-$text['template']       = 'Template';
+$text['template']       = 'Sniðmát';
 $text['language']       = 'Tungumál';
 $text['submit']         = 'Senda';
 $text['created']        = 'Búið til af';
+$text['locale']         = 'is_IS';
+$text['gen_time']       = 'þann %d.%m.%Y kl. %H:%M';
 
 $text['days']           = 'dagar';
 $text['hours']          = 'klukkustundir';
 $text['minutes']        = 'mínútur';
+  
+$text['temperature']    = 'Hitastig';
+$text['voltage']        = 'Volt';
+$text['fans']           = 'Viftur';
+$text['s_value']        = 'Gildi';
+$text['s_min']          = 'Lægst';
+$text['s_max']          = 'Hæst';
+$text['s_div']          = 'Deilir';
+$text['hysteresis']     = 'Aðvörun lýkur';
+$text['s_limit']        = 'Aðvörun byrjar';
+$text['s_label']        = 'Nafn mælis';
+$text['degree_mark']    = '&ordm;C';
+$text['voltage_mark']   = 'V';
+$text['rpm_mark']       = 'RPM';
+
+$text['app']		= 'Kernel + applications';
+$text['buffers']	= 'Buffers';
+$text['cached']		= 'Cached';
+
 ?>
