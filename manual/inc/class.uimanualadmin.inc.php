@@ -1,89 +1,107 @@
 <?php
-	/**************************************************************************\
-	* eGroupWare - Online User manual                                          *
-	* http://www.eGroupWare.org                                                *
-	* Written and (c) by RalfBecker@outdoor-training.de                        *
-	* --------------------------------------------                             *
-	*  This program is free software; you can redistribute it and/or modify it *
-	*  under the terms of the GNU General Public License as published by the   *
-	*  Free Software Foundation; either version 2 of the License, or (at your  *
-	*  option) any later version.                                              *
-	\**************************************************************************/
+/**************************************************************************\
+* eGroupWare - Online User manual                                          *
+* http://www.eGroupWare.org                                                *
+* Written and copyright (c) 2004-6 by RalfBecker@outdoor-training.de       *
+* --------------------------------------------                             *
+*  This program is free software; you can redistribute it and/or modify it *
+*  under the terms of the GNU General Public License as published by the   *
+*  Free Software Foundation; either version 2 of the License, or (at your  *
+*  option) any later version.                                              *
+\**************************************************************************/
 
-	/* $Id$ */
+/* $Id$ */
 
-	include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.xmlwiki.inc.php');
+include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.xmlwiki.inc.php');
 
-	class uimanualadmin extends xmlwiki
+class uimanualadmin extends xmlwiki
+{
+	var $public_functions = array(
+		'import' =>True,
+	);
+	var $manual_config;
+
+	function uimanualadmin()
 	{
-		var $public_functions = array(
-			'import' =>True,
-		);
+		CreateObject('manual.uimanual');	// sets the default config
 
-		function uimanualadmin()
+		$config =& CreateObject('phpgwapi.config','manual');
+		$config->read_repository();
+		$this->manual_config = $config->config_data;
+		unset($config);
+		
+		$this->wiki_id = (int) $this->manual_config['manual_wiki_id'];
+		$this->xmlwiki($this->wiki_id);	// call the constructor of the class we extend
+	}
+
+	function import()
+	{
+		$url = $this->manual_config['manual_update_url'];
+		$from = explode('/',$url);
+		$from = count($from) > 2 ? $from[2] : $url;
+
+		if (($langs = $GLOBALS['egw']->translation->get_installed_langs()))
 		{
-			$this->config =& CreateObject('phpgwapi.config','manual');
-			$this->config->read_repository();
-			
-			foreach(array(
-				'manual_wiki_id' => 1,
-				'manual_update_url' => 'http://egroupware.org/egroupware/wiki/index.php?page=Manual&action=xml',
-			) as $name => $default)
-			{
-				if (!isset($this->config->config_data[$name]))
-				{
-					$this->config->config_data[$name] = $default;
-					$need_save = True;
-				}
-			}
-			if ($need_save)
-			{
-				$this->config->save_repository();
-			}			
-			$this->wiki_id = (int) $this->config->config_data['manual_wiki_id'];
-			$this->xmlwiki($this->wiki_id);	// call the constructor of the class we extend
+			$langs = implode(',',array_keys($langs));
+			$url .= (strstr($url,'?') === False ? '?' : '&').'lang='.$langs;
+		}
+		// only do an incremental update if the langs are unchanged and we already did an update
+		if ($langs == $this->manual_config['manual_langs'] && $this->manual_config['manual_updated'])
+		{
+			$url .= (strstr($url,'?') === False ? '?' : '&').'modified='.(int) $this->manual_config['manual_updated'];
 		}
 
-		function import()
+		$GLOBALS['egw_info']['flags']['app_header'] = lang('manual').' - '.lang('download');
+		$GLOBALS['egw']->common->egw_header();
+		parse_navbar();
+		echo str_pad('<h3>'.lang('Starting import from %1, this might take several minutes (specialy if you start it the first time) ...',
+			'<a href="'.$url.'" target="_blank">'.$from.'</a>')."</h3>\n",4096);	// dirty hack to flushes the buffer;
+		@set_time_limit(0);
+
+		$status = xmlwiki::import($url,True);
+		
+		$this->manual_config['manual_updated'] = $status['meta']['exported'];
+		$this->manual_config['manual_langs'] = $langs;
+		$this->config->save_repository();
+
+		echo '<h3>'.lang('%1 manual page(s) added or updated',count($status['imported']))."</h3>\n";
+
+		$GLOBALS['egw']->common->egw_footer();
+	}
+
+	function menu($args)
+	{
+		display_section('manual','manual',array(
+			'Site Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=admin.uiconfig.index&appname=manual'),
+			'install or update the manual-pages' => $GLOBALS['egw']->link('/index.php',array('menuaction'=>'manual.uimanualadmin.import')),
+		));
+	}
+	
+	function config($args)
+	{
+		$GLOBALS['egw_info']['server']['found_validation_hook'] = True;
+
+		return true;
+	}
+}
+
+function final_validation($settings)
+{
+	//echo "final_validation()"; _debug_array($settings);
+	if ($settings['manual_allow_anonymous'])
+	{
+		// check if anon user set and exists
+		if (!$settings['manual_anonymous_user'] || !($anon_user = $GLOBALS['egw']->accounts->name2id($settings['manual_anonymous_user'])))
 		{
-			$url = $this->config->config_data['manual_update_url'];
-			$from = explode('/',$url);
-			$from = count($from) > 2 ? $from[2] : $url;
-
-			if (($langs = $GLOBALS['egw']->translation->get_installed_langs()))
-			{
-				$langs = implode(',',array_keys($langs));
-				$url .= (strstr($url,'?') === False ? '?' : '&').'lang='.$langs;
-			}
-			// only do an incremental update if the langs are unchanged and we already did an update
-			if ($langs == $this->config->config_data['manual_langs'] && $this->config->config_data['manual_updated'])
-			{
-				$url .= (strstr($url,'?') === False ? '?' : '&').'modified='.(int) $this->config->config_data['manual_updated'];
-			}
-
-			$GLOBALS['egw_info']['flags']['app_header'] = lang('manual').' - '.lang('download');
-			$GLOBALS['egw']->common->egw_header();
-			parse_navbar();
-			echo str_pad('<h3>'.lang('Starting import from %1, this might take several minutes (specialy if you start it the first time) ...',
-				'<a href="'.$url.'" target="_blank">'.$from.'</a>')."</h3>\n",4096);	// dirty hack to flushes the buffer;
-			@set_time_limit(0);
-
-			$status = xmlwiki::import($url,True);
-			
-			$this->config->config_data['manual_updated'] = $status['meta']['exported'];
-			$this->config->config_data['manual_langs'] = $langs;
-			$this->config->save_repository();
-
-			echo '<h3>'.lang('%1 manual page(s) added or updated',count($status['imported']))."</h3>\n";
-
-			$GLOBALS['egw']->common->egw_footer();
+			$GLOBALS['config_error'] = 'Anonymous user does NOT exist!';
 		}
-
-		function menu($args)
+		else	// check if anon user has run-rights for manual
 		{
-			display_section('manual','manual',array(
-//				'Site Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=admin.uiconfig.index&appname=manual'),
-				'install or update the manual-pages' => $GLOBALS['egw']->link('/index.php',array('menuaction'=>'manual.uimanualadmin.import')),
-			));
+			$locations = $GLOBALS['egw']->acl->get_all_location_rights($anon_user,'manual');
+			if (!$locations['run'])
+			{
+				$GLOBALS['config_error'] = 'Anonymous user has NO run-rights for the application!';
+			}
 		}
 	}
+}

@@ -1,146 +1,242 @@
 <?php
-	/**************************************************************************\
-	* eGroupWare - Online User manual                                          *
-	* http://www.eGroupWare.org                                                *
-	* Written and (c) by RalfBecker@outdoor-training.de                        *
-	* --------------------------------------------                             *
-	*  This program is free software; you can redistribute it and/or modify it *
-	*  under the terms of the GNU General Public License as published by the   *
-	*  Free Software Foundation; either version 2 of the License, or (at your  *
-	*  option) any later version.                                              *
-	\**************************************************************************/
+/**************************************************************************\
+* eGroupWare - Online User manual                                          *
+* http://www.eGroupWare.org                                                *
+* Written and copyright (c) 2004-6 by RalfBecker@outdoor-training.de       *
+* --------------------------------------------                             *
+*  This program is free software; you can redistribute it and/or modify it *
+*  under the terms of the GNU General Public License as published by the   *
+*  Free Software Foundation; either version 2 of the License, or (at your  *
+*  option) any later version.                                              *
+\**************************************************************************/
 
-	/* $Id$ */
+/* $Id$ */
 
-	include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
+include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.uiwiki.inc.php');
 
-	class uimanual extends bowiki
+class uimanual extends uiwiki
+{
+	var $public_functions = array(
+		'view'   => True,
+		'search' => True,
+	);
+	var $manual_config;
+
+	function uimanual()
 	{
-		var $public_functions = array(
-			'view' => True,
-		);
-
-		function uimanual()
+		$config =& CreateObject('phpgwapi.config','manual');
+		$config->read_repository();
+		if (!is_array($config->config_data) || !isset($config->config_data['manual_update_url']))	// empty never get's stored
 		{
-			$this->config =& CreateObject('phpgwapi.config','manual');
-			$this->config->read_repository();
-			$this->wiki_id = (int) (isset($this->config->config_data['manual_wiki_id']) ? $this->config->config_data['manual_wiki_id'] : 1);
-
-			$this->bowiki($this->wiki_id);
-
-			$GLOBALS['egw']->common->egw_header();
+			foreach(array(
+				'manual_remote_egw_url'     => 'http://manual.egroupware.org/egroupware',
+				'manual_update_url'         => 'http://manual.egroupware.org/egroupware/wiki/index.php?page=Manual&action=xml',
+				'manual_wiki_id'            => 1,
+				'manual_allow_anonymous'    => '',		// no
+				'manual_anonymous_user'     => 'anonymous',
+				'manual_anonymous_password' => 'anonymous',
+			) as $name => $default)
+			{
+				if (!isset($config->config_data[$name]) ||
+					$name == 'manual_update_url' && $config->config_data[$name] == 'http://egroupware.org/egroupware/wiki/index.php?page=Manual&action=xml')
+				{
+					$config->config_data[$name] = $default;
+					$need_save = True;
+				}
+			}
+			if ($need_save)
+			{
+				$config->save_repository();
+			}
 		}
+		$this->manual_config = $config->config_data;
+		unset($config);
+		$this->wiki_id = (int) $this->manual_config['manual_wiki_id'];
 
-		function viewURL($page, $lang='', $version='', $full = '')
+		// set a language given in the URL as session preference
+		if ($this->manual_config['manual_allow_anonymous'] && isset($_REQUEST['lang']) && preg_match('/^[a-z]{2}(-[a-z]{2})?$/',$_REQUEST['lang']) && 
+			$_REQUEST['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'])
 		{
-			$args = array(
-				'menuaction' => 'manual.uimanual.view',
-			);
-			if ($lang || @$page['lang'])
-			{
-				$args['lang'] = $lang ? $lang : @$page['lang'];
-				if ($args['lang'] == $GLOBALS['egw_info']['user']['prefereces']['common']['lang']) unset($args['lang']);
-			}
-			if ($version)
-			{
-				$args['version'] = $version;
-			}
-			if ($full)
-			{
-				$args['full'] = 1;
-			}
-			// the page-parameter has to be the last one, as the old wiki code only calls it once with empty page and appends the pages later
-			return $GLOBALS['egw']->link('/index.php',$args).'&page='.urlencode(is_array($page) ? $page['name'] : $page);
+			$GLOBALS['egw']->preferences->add('common','lang',$_REQUEST['lang'],'session');
+			$GLOBALS['egw_info']['user']['preferences']['common']['lang']=$_REQUEST['lang'];
 		}
+		$this->lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
+
+		$this->bowiki($this->wiki_id);
 		
-		function editURL()
+		if (!is_object($GLOBALS['egw']->html))
 		{
-			return False;
+			$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
 		}
+		$this->html =& $GLOBALS['egw']->html;
+	}
 
-		function view()
+	/**
+	 * reimplemented that the we stay inside the manual app
+	 */
+	function viewURL($page, $lang='', $version='', $full = '')
+	{
+		$args = array(
+			'menuaction' => 'manual.uimanual.view',
+		);
+		if ($lang || @$page['lang'])
 		{
-			// let the (existing) window pop up
-			echo "<script language=\"JavaScript\">\n\twindow.focus();\n</script>\n";
-			if (!isset($_GET['page']))
+			$args['lang'] = $lang ? $lang : @$page['lang'];
+			if ($args['lang'] == $GLOBALS['egw_info']['user']['prefereces']['common']['lang']) unset($args['lang']);
+		}
+		if ($version)
+		{
+			$args['version'] = $version;
+		}
+		if ($full)
+		{
+			$args['full'] = 1;
+		}
+		// the page-parameter has to be the last one, as the old wiki code only calls it once with empty page and appends the pages later
+		return $GLOBALS['egw']->link('/index.php',$args).'&page='.urlencode(is_array($page) ? $page['name'] : $page);
+	}
+	
+	/**
+	 * reimplemented to disallow editing
+	 */
+	function editURL($page, $lang='',$version = '')
+	{
+		return False;
+	}
+	
+	/**
+	 * Show the page-header for the manual
+	 *
+	 * @param object/boolean $page sowikipage object or false
+	 * @param string $title title of the search
+	 */
+	function header($page=false,$title='')
+	{
+		$GLOBALS['egw']->common->egw_header();
+		
+		// let the (existing) window pop up
+		$html .= "<script language=\"JavaScript\">\n\twindow.focus();\n</script>\n";
+		$html .= '<div id="divMain">'."\n";
+
+		if ($page && ($app = preg_match('/^Manual([A-Z]{1}[a-z]+)[A-Z]+/',$page->name,$matches) ? $matches[1] : false))
+		{
+			$app_page =& $this->page('Manual'.$app);
+			if ($app_page->read() === False) $app = false;
+		}
+		$html .= '<form action="'.$GLOBALS['egw']->link('/index.php',array('menuaction'=>'manual.uimanual.search')).'" method="POST">'.
+			(isset($_GET['referer']) ? $this->html->image('phpgwapi','left-grey',lang('Back')) :
+			$this->html->a_href($this->html->image('phpgwapi','left',lang('Back')),'','','onclick="history.back(); return false;"')).' | '.
+			'<a href="'.htmlspecialchars($this->viewURL('Manual')).'">'.lang('Index').'</a> | '.
+			($app ? '<a href="'.htmlspecialchars($this->viewUrl('Manual'.$app)).'">'.lang($app).'</a> | ' : '').
+			'<input name="search" value="'.$this->html->htmlspecialchars($_REQUEST['search']).'" />&nbsp;'.
+			'<input type="submit" name="go" value="'.$this->html->htmlspecialchars(lang('Search')).'" /></form>'."\n";
+		$html .= "<hr />\n";
+		
+		if ($title) $html .= '<p><b>'.$titel."</b></p>\n";
+		
+		return $html;
+	}
+	
+	/**
+	 * Show the page-footer for the manual
+	 *
+	 * @param object/boolean $page sowikipage object or false
+	 */
+	function footer($page=false)
+	{
+		return "\n</div>\n";
+	}
+	
+	/**
+	 * view a manual page
+	 */
+	function view()
+	{
+		if ($this->manual_config['manual_remote_egw_url'])
+		{
+			if (isset($_GET['referer']))
 			{
-				// use the referer
-				$referer = !isset($_SERVER['HTTP_REFERER']) ? $_GET['referer'] : $_SERVER['HTTP_REFERER'];
-				list($referer,$query) = explode('?',$referer);
-				parse_str($query,$query);
-				// echo "<p>_GET[referer]='$_GET[referer]', referer='$referer', query=".print_r($query,True)."</p>\n";
-				
-				if (isset($query['menuaction']) && $query['menuaction'])
+				$_SERVER['HTTP_REFERER'] = $_GET['referer'];
+			}
+			$referer = $GLOBALS['egw']->common->get_referer();
+			$url = $this->manual_config['manual_remote_egw_url'].'/manual/index.php?referer='.
+				urlencode($this->manual_config['manual_remote_egw_url'].$referer).
+				(isset($_GET['page']) ? '&page='.urlencode($_GET['page']): '').
+				'&lang='.urlencode($GLOBALS['egw_info']['user']['preferences']['common']['lang']);
+			//echo htmlentities($url); exit;
+			$GLOBALS['egw']->redirect($url);
+		}
+		if (isset($_GET['page']))
+		{
+			$pages[] = $_GET['page'];
+		}
+		if (isset($_GET['referer']) || !isset($_GET['page']))
+		{
+			// use the referer
+			$referer = $GLOBALS['egw']->common->get_referer('',$_GET['referer']);
+			list($referer,$query) = explode('?',$referer,2);
+			parse_str($query,$query);
+			//echo "<p>_GET[referer]='$_GET[referer]', referer='$referer', query=".print_r($query,True)."</p>\n";
+			
+			if (isset($query['menuaction']) && $query['menuaction'])
+			{
+				list($app,$class,$function) = explode('.',$query['menuaction']);
+				// for acl-preferences use the app-name from the query and acl as function
+				if ($app == 'preferences' && $class == 'uiaclprefs')
 				{
-					list($app,$class,$function) = explode('.',$query['menuaction']);
-					// for acl-preferences use the app-name from the query and acl as function
-					if ($app == 'preferences' && $class == 'uiaclprefs')
-					{
-						$app = $query['acl_app'] ? $query['acl_app'] : $_GET['acl_app'];
-						$function = 'acl';
-					}
-					elseif ($app == 'preferences' && $class == 'uisettings')
-					{
-						$pages[] = 'Manual'.ucfirst($query['appname'] ? $query['appname'] : $_GET['appname']).'Preferences';
-					}
-					elseif ($app == 'admin' && $class == 'uiconfig')
-					{
-						$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
-					}
-					$pages[] = 'Manual'.ucfirst($app).ucfirst($class).ucfirst($function);
-					$pages[] = 'Manual'.ucfirst($app).ucfirst($function);
-					$pages[] = 'Manual'.ucfirst($app).ucfirst($class);
+					$app = $query['acl_app'] ? $query['acl_app'] : $_GET['acl_app'];
+					$function = 'acl';
 				}
-				else
+				elseif ($app == 'preferences' && $class == 'uisettings')
 				{
-					if ($GLOBALS['egw_info']['server']['webserver_url'] != '/')
-					{
-						list(,$referer) = explode($GLOBALS['egw_info']['server']['webserver_url'],$referer,2);
-					}
-					else
-					{
-						$referer = parse_url($referer);	// remove the protocol + domain
-						$referer = $referer['path'];
-					}
-					$parts = explode('/',$referer);
-					$file = str_replace('.php','',array_pop($parts));
-					if (empty($file)) $file = 'index';
-					$app  = array_pop($parts);
-					if (is_numeric($app)) $app  = array_pop($parts);	// for fudforum
-					// for preferences use the app-name from the query
-					if ($app == 'preferences' && $file == 'preferences')
-					{
-						$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
-					}
-					$pages[] = 'Manual'.ucfirst($app).ucfirst($file);
+					$pages[] = 'Manual'.ucfirst($query['appname'] ? $query['appname'] : $_GET['appname']).'Preferences';
 				}
-				$pages[] = 'Manual'.ucfirst($app);
+				elseif ($app == 'admin' && $class == 'uiconfig')
+				{
+					$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
+				}
+				$pages[] = 'Manual'.ucfirst($app).ucfirst($class).ucfirst($function);
+				$pages[] = 'Manual'.ucfirst($app).ucfirst($function);
+				$pages[] = 'Manual'.ucfirst($app).ucfirst($class);
 			}
 			else
 			{
-				$pages[] = $_GET['page'];
-			}
-			echo '<div id="divMain">'."\n";
-
-			// show the first page-hit
-			$found = False;
-			foreach($pages as $name)
-			{
-				$page = $this->page($name);
-				if ($found = $page->read() !== False)
+				$parts = explode('/',$referer);
+				unset($parts[0]);
+				$app  = array_shift($parts);
+				$file = str_replace('.php','',array_pop($parts));
+				if (empty($file)) $file = 'index';
+				// for preferences use the app-name from the query
+				if ($app == 'preferences' && $file == 'preferences')
 				{
-					break;
+					$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
 				}
+				$pages[] = 'Manual'.ucfirst($app).ucfirst($file);
 			}
-			if (!$found)
-			{
-				echo '<h3>'.lang("Page(s) %1 not found !!!",implode(', ',$pages))."</h3>\n";
-				// show the Manual startpage
-				$page = 'Manual';
-			}
-			echo $this->get($page,'',$this->wiki_id,$this->viewURL(''));
-
-			echo "\n</div>\n";
+			$pages[] = 'Manual'.ucfirst($app);
 		}
+		// show the first page-hit
+		foreach($pages as $name)
+		{
+			$page =& $this->page($name);
+			if ($page->read() !== False)
+			{
+				break;
+			}
+			$page = false;
+		}
+		//echo "<p>page='".(is_object($page) ? $page->name : $page)."' from ".implode(', ',$pages)."</p>\n";
+		if (!$page)
+		{
+			$html = '<p><b>'.lang("Page(s) %1 not found !!!",'<i>'.implode(', ',$pages).'</i>')."</b></p>\n";
+			// show the Manual startpage
+			$page =& $this->page('Manual');
+			if ($page->read() === false) $page = false;
+		}
+		$html = $this->header($page).$html;
+		$html .= $this->get($page,'',$this->wiki_id);
+		$html .= $this->footer();
+		
+		echo $html;
 	}
-?>
+}

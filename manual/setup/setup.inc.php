@@ -27,6 +27,8 @@
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['manual']['hooks']['admin'] = 'manual.uimanualadmin.menu';
+	$setup_info['manual']['hooks']['config'] = 'manual.uimanualadmin.config';
+	$setup_info['manual']['hooks']['config_validate'] = 'manual.uimanualadmin.config';
 
 	/* Dependencies for this app to work */
 	$setup_info['manual']['depends'][] = array(
