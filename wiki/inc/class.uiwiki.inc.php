@@ -278,7 +278,7 @@ class uiwiki extends bowiki
 				
 			$parts[] = '<a href="'.htmlspecialchars($this->historyURL($page->name,false,$page->lang)).'">'.lang('View document history').'</a>';
 
-			$parts[] = lang('Document last modified').': '.html_time($args['timestamp']);
+			$parts[] = lang('Document last modified').': '.html_time($page->time);
 		}
 		return $parts ? "<hr />\n".implode(' | ',$parts) : '';
 	}
