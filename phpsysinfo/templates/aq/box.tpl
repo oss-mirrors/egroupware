@@ -9,7 +9,7 @@
 
   <tr>
    <td width="15" style="background-image: url({webpath}templates/aq/images/g.gif);"><img src="{webpath}templates/aq/images/space15_15.gif" width="15" height="15" alt=""></td>
-   <td style="background-image: url({webpath}templates/aq/images/fond.gif);" align="left" width="100%" dir="{text_dir}">{title}<br/>{content}</td>
+   <td style="background-image: url({webpath}templates/aq/images/fond.gif);" align="left" width="100%" dir="{text_dir}"><font size="-1"><b>{title}</b></font><br/>{content}</td>
    <td width="15" style="background-image: url({webpath}templates/aq/images/d.gif);"><img src="{webpath}templates/aq/images/space15_15.gif" width="15" height="15" alt=""></td>
   </tr>
 
