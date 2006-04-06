@@ -1,4 +1,5 @@
 <!-- BEGIN header -->
+<p style="text-align: center; color: {th_err};">{error}</p>
 <form name=frm method="POST" action="{action_url}">
 {hidden_vars}
 <table border="0" align="left">

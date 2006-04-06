@@ -52,8 +52,9 @@ function template_common_prologue($args)
 <body>
 <?php
 */
+
+/* <link rel="stylesheet" href="<?php echo $GLOBALS['egw_info']['server']['webserver_url'].'/wiki/template/wiki.css'; ?>" type="text/css" /> */
 ?>
-<link rel="stylesheet" href="<?php echo $GLOBALS['egw_info']['server']['webserver_url'].'/wiki/template/wiki.css'; ?>" type="text/css" />
 <div align="left">
 <div id="header">
 	<?php /* removed logo for now: TODO show it on extern site
@@ -86,14 +87,13 @@ function template_common_prologue($args)
 		if(!$args['nosearch']) 
 		{ 
 			echo '<form method="POST" action="'.$FindScript.'" name="thesearch">
-				<input type="hidden" name="action" value="find"/>
 				<div class="form">'."\n";
 		}   
 		print html_toolbar_top();
 		
 		if(!$args['nosearch']) 
 		{
-			echo ' | '.lang('Search').': <input type="text" name="find" size="20" />';
+			echo ' | <input type="text" name="search" size="20" /> <input type="submit" value="'.htmlspecialchars(lang('Search')).'" />';
 		}
 		echo "\n<hr align=left width=99% />\n";
 		
@@ -163,16 +163,14 @@ function template_common_epilogue($args)
 	if($args['history'])
 	{
 		echo '<a href="'.historyURL($args['history']).'">'.lang('View document history').'</a>';
-		echo ' | <a href="' . $PrefsScript . '">'.lang('Preferences').'</a>';
 	
 		if(!$args['nosearch']) {
-			echo '| '.lang('Search').': <input type="text" name="find" size="20" />';
+			echo ' | '.lang('Search').': <input type="text" name="find" size="20" />';
 		}
-	echo "<br />";
 	}
 	if($args['timestamp'])
 	{
-		echo lang('Document last modified').' '.html_time($args['timestamp']).'<br />';
+		echo ' | '.lang('Document last modified').' '.html_time($args['timestamp']);
 	} ?>
 			</div>
 		</form>
@@ -181,7 +179,7 @@ function template_common_epilogue($args)
 	{
 		if(count($twin = $pagestore->twinpages($args['twin'])))
 		{
-			echo lang('Twin pages').': ';
+			echo '<br />'.lang('Twin pages').': ';
 			for($i = 0; $i < count($twin); $i++)
 				{ print html_twin($twin[$i][0], $twin[$i][1]) . ' '; } ?>
 <br /><?php

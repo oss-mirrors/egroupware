@@ -9,15 +9,15 @@ $ScriptBase .= strstr($ScriptBase,'?') ? '&' : '?';
 $AdminScript = $ScriptBase . 'action=admin';
 
 //if(!isset($ViewBase))
-	{ $ViewBase    = $ScriptBase . 'page='; }
+	{ $ViewBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.view')). '&page='; }
 //if(!isset($EditBase))
 	{ $EditBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.edit')).'&page='; }
 //if(!isset($HistoryBase))
 	{ $HistoryBase = $ScriptBase . 'action=history&page='; }
 //if(!isset($FindScript))
-	{ $FindScript  = $ScriptBase . 'action=find'; }
+	{ $FindScript  = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.search')); }
 //if(!isset($FindBase))
-	{ $FindBase    = $FindScript . '&find='; }
+	{ $FindBase    = $FindScript . '&search='; }
 //if(!isset($SaveBase))
 	{ $SaveBase    = $ScriptBase . 'action=save&page='; }
 //if(!isset($DiffScript))

@@ -71,7 +71,7 @@ function html_diff_change()
 function html_diff_delete()
 	{ return html_bold_start() . lang('Deleted').':' . html_bold_end(); }
 function html_table_start()
-	{ return '<table style="border: 1px solid black; border-collapse: collapse;">'; }
+	{ return '<table class="wiki" style="border: 1px solid black; border-collapse: collapse;">'; }
 function html_table_end()
 	{ return '</table>'; }
 function html_table_row_start()
@@ -167,12 +167,14 @@ function html_url($url, $text)
 		$onClick = " onClick=\"document.location='mai'+'lto:$matchs[1]'+unescape('%40')+$domains; return false;\"";
 		$text = str_replace('@',' AT ',str_replace('mailto:','',str_replace('.',' DOT ',$text)));
 	}
+	if ($text{0} == '[' && substr($text,-1) == ']' && !is_numeric($t=substr($text,1,-1))) $text = $t;
+
 	return '<a href="'.$url.'" '.($onClick ? $onClick : 'target="_blank"').">$text</a>";
 }
 
 function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appearance = '')
 {
-	global $db, $SeparateLinkWords;
+	global $SeparateLinkWords,$EditBase;
 
 	if (!is_array($page) && strstr($page,':'))
 	{
@@ -203,7 +205,7 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 		return '<a href="' . viewURL($page) . $anchor . '"' . $hover . ' class="wiki">'
 					 . $appearance . $anchor_appearance . '</a>';
 	}
-	elseif(!$p->acl_check())
+	elseif(!$p->acl_check() || !$EditBase)
 	{
 		if(validate_page($title) == 1        // Normal WikiName
 			 && $appearance == $title)         // ... and is what it appears

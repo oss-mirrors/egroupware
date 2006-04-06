@@ -665,7 +665,7 @@ function parse_table($text)
 	}
 
 	if($pre != '')
-		{ $text =& new_entity(array('raw', $pre)) . $text; }
+		{ $text = new_entity(array('raw', $pre)) . $text; }
 	if($post != '')
 		{ $text = $text . new_entity(array('raw', $post)); }
 
