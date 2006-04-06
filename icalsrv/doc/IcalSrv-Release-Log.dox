@@ -23,6 +23,9 @@
 - freebusy allows only export and only uses the events calendar
 - setup and authentication needs renewal.
 
+@todo add icalsrv/index.php page
+@todo add icalsrv about info.
+
 
 \section secrel0933nga2 Alpha Release 0.9.33-ng-a2 of NG (New Generation) version
 

@@ -15,7 +15,7 @@
 	/* Basic information about this app */
 	$setup_info['icalsrv']['name']      = 'icalsrv';
 	$setup_info['icalsrv']['title']     = 'Ical Server';
-	$setup_info['icalsrv']['version']   = '0.9.30';
+	$setup_info['icalsrv']['version']   = '0.9.33';
 	$setup_info['icalsrv']['app_order'] = 3;
 	$setup_info['icalsrv']['enable']    = 1;
 

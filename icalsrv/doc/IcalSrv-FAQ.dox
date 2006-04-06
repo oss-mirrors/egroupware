@@ -1,8 +1,8 @@
 /*! \page pageicalsrvfaq IcalSrv FAQ - some questions and answers
 
 @author JVL
-@version 0.9.30 (icalsrv)
-@date 20060401
+@version 0.9.33-a3 (icalsrv)
+@date 20060406
 
 \section secicalsrvfaqintro FAQ Intro
 Hi, this is the first, very rudimentary version of a Frequently Asked
@@ -28,7 +28,7 @@ As soon as you have Icalsrv running and setup properly, there maybe
 many icalendars available to be accessed from a client like Sunbird.
 As explained in the overview in @ref icalsrvsecabout you can
 see what virtual calendars are provided by IcalSrv in your Egroupware
-server using a special url. TYou should note that he virtual calendars come in two variants:
+server using a special url. You should note that he virtual calendars come in two variants:
 - system virtual calendars that are independent of a user for their definition.
   You get a listing of these via the url: 
   @url http://myserver.com/egroupware/icalsrv.php/list.html
@@ -42,11 +42,11 @@ After you have found in these listings a certain calendar that you
 want to use in your client. Copy its url (e.g. using the <em> copy
 links </em> actions of you browser when right mouse clicking on the
 hyperlink in the listing. And put this url in de appropiate subscribe
-field in your client (see @ref pageicalsrvclients ). If you also want
+field in your client. If you also want
 to publish this calendar later again to Egw you may need, dependant on
 your client, to put this url also in a <em>publish</em> field of the
-client setup (again: see the @ref pageicalsrvclients for more specific
-details on this).
+client setup (see the @ref pageicalsrvclients for more specific
+client details on this).
 
 Now you should be able to use the client to download and publish the
 (virtual) calendar.
@@ -55,15 +55,16 @@ Now you should be able to use the client to download and publish the
 \section icalsrvqa_personalvc UB: I cannot see MrX his personal calendar?
 
 To see somebodies personal calendar you have to access it using the
-correct url (see @ref secicalsrvqa_access) Then you it is needed that
-this user, lets say MrX, has granted you (i.e. the user that accesses
-Egw icalsrv via the Sunbird or other client using http basic
+correct url (see @ref secicalsrvqa_access). Next thing is that need
+to have sufficient rights to read it. This means that
+the calendar owner, lets say MrX, must have  granted you (i.e. the user that accesses
+Egw icalsrv via e.g. Sunbird using http basic
 authentication), access to his calendar (if the requested virtual
 calendar refers to his Egw calendar events) or his infolog (if the
 requested virtual calendar refers to MrX his infolog tasks).
 This granting of access is something MrX has to do using the "grants"
 menu in his calendar and/or infolog pages. It can be played by either
-setting these ACL grants for you individually by using your username
+setting these ACL grants for you individually
 of by setting them for a specific group that you are member of. (see
 also @ref icalsrvqa_bossandsecretary).
 
@@ -78,10 +79,10 @@ Can this be done via IcalSrv? Yes, it can, just as with browser based
 usage of Egw, using the correct ACL rights settings by the MrBoss. 
 
 The steps are as follows. Lets assume we have a group of secretaries
-<code>MrS1</code> and <code>MissS2</code>.
+<code>MrSec1</code> and <code>MissSec2</code>.
  - first create (as Admin) a secretaries group, lets say:
    <code>topsecretaries</code>
- - As Admin add <code>MrS1</code> and <code>MissS2</code> to the group	
+ - As Admin add <code>MrSec1</code> and <code>MissSec2</code> to the group	
 	<code>topsecretaries</code>	 
  - Now, as MrBoss go to the Egw Calendar and set read (and if desired
    write, etc...) grants allowed to the group <code>topsecretaries</code>	 
@@ -89,10 +90,10 @@ The steps are as follows. Lets assume we have a group of secretaries
    go to the Egw Infolog and set read (and if desired 
    write, etc...) grants allowed to the group
    <code>topsecretaries</code> for this application too.
- - Now a secretary like MrS1 that accesses (using his own credentials)
+ - Now a secretary like MrSec1 that accesses (using his own credentials)
    via Sunbird the virtual calendar http://.....icalsrv.php/MrBoss/events.ics
    should be able to see (and possible change) MrBoss events
-   (for the tasks he might use the virtual calendar  .../tasks.ics or
+   To view or manipulate the  tasks of MrBoss he might use the virtual calendar  .../tasks.ics or
    the combined calendar  ..../defaults.ics
   
 
@@ -168,8 +169,8 @@ version. This is either from the contrib or via an rpm package.
  
 <code>SINCE version 0.9.33/egw-1.2 </code>
 
-Not known yet where we will have the IcalSrv and Egwical packages in
-this release....
+I dont know yet where we will have the IcalSrv and Egwical packages in
+the final 1.2 release....
 
 
 \subsection icalsrv_installing UT: How to Install IcalSrv from the sources?
@@ -201,7 +202,7 @@ Yes, many things can go wrong ;-) Here some general tips to check:
 \section icalsrvqa_notworkdebug UT,DEV: Help: I installed  IcalSrv it doesnot work? How to debug?.
 
 IcalSrv is a sevice  that does not generate webpages, so to see any error or debug
-information, there a just three other places to look at:
+information, there are just three other places to look at:
 
 -# The HTTP error message. <br>
   If you have a really problematic error, IcalSrv will answer your http
@@ -215,7 +216,7 @@ information, there a just three other places to look at:
   Most problematic errors are reported
   to this file of the egw server. So this is indeed the best source for
   debug info. But to read it, you need access to the
-  server and to this log file. So only egw administrators are likely
+  server and to this log file. So egw administrators are likely
   the only ones for who this can be of help.
 -# The ical.log files and ical.exportxxxx plus ical.importxxxx <br>
   files.
@@ -260,7 +261,7 @@ See the egwical documentation for more on this.
 Currently these classes provide more or less the same functionality,
 and in future they might merge, but as the syncml package that is
 currently being actively developed, is using the first two too, there
-is now this slight difference in icalendar handling between IcalSrv
+we may have, at the moment, a slight difference in icalendar handling between IcalSrv
 and the manual import or export of a icalendar file via the calendar menu.
 
 

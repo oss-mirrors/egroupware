@@ -2,12 +2,12 @@
 
 @note this is still <b>EXPERIMENTAL, USE AT YOUR OWN RISK! </b> and better not yet in a
 production environment.
-@version 0.9.33-b1-ng
+@version 0.9.33-ng-a4
 @author jvl 
-@date 20060329
+@date 20060406
 
-@note you need package EgwIcal in version >= 0.9.30-ng have installed to be able to
- use this icalsrv-ng version!
+@note <b>you need to have package EgwIcal in version >= 0.9.30-ng to be able to
+ use this icalsrv-ng version!</b>
 
 @section icalsrvsecabout About IcalSrv NG
 
@@ -42,19 +42,22 @@ Egroupware in two typical use cases:
 - ical client used as a <b>semi connected mobile Client</b> for Egw
   <br/>
   In this case the client is not constantly connected to the Egw
-  Server, but only at some times, when the it synchronyzes its data with
+  Server, but only at some times, when it synchronyzes its data with
   the Egw server.
   Using your client this way obviously puts an extra functionality to
   your Egw calendar: you can work with it while not connected to it!
  <br/>
   Though nice at it seems, this is certainly not without problems. Some of these
-  are mentioned in @ref pagewebcaldiscussion and a few tricks of how you
-  can make use of some features provided by the clients especially in
- this use can be found in @ref  pageicalsrvclients
+  problems are mentioned in @ref pagewebcaldiscussion . However by clever use
+  of the features of a client (like e.g. multiple calendars, local calendars etc.)
+  you probably overcome these problems and use you client benificially in this semi 
+  connected mode. See for client specific details the info @ref pageicalsrvclients .
 
 At the moment, the IcalSrv service is still a simple --experimental-- variant
 that is not based on webdav (as most of these services), but that can
 prove evertheless  to be quite practical. 
+
+@section secoverviewvcs Virtual Calendars
 
 In the current NG (new generation) version it is based on the idea that you access
 a <em> Virtual Calendar </em> that defines a set of events and tasks found
@@ -63,7 +66,7 @@ by IcalSrv in your Egroupware server you can acces the Egroupware
 server via a special url. This gives you, possibly after some form of
 authentication, an overview of the available virtual calendars. 
 These virtual calendars come in two variants:
-- system virtual calendars that are independent of a user for their definition.
+- system virtual calendars that do not dependent on a user for their definition.
   For these you can get a listing  via the url: 
   @url http://myserver.com/egroupware/icalsrv.php/list.html
 
@@ -111,7 +114,7 @@ For behaviour of the various clients see futher in @ref pageicalsrvclients
    .
    There you can find the current status of the project and see what
    the latest available versions are and where to find them. In @ref pageicalsrvreleaselog
-   you find a small release notes document that tells of about the changes in
+   you find a release notes document that tells about bugs and changes in
    the releases.
 
  - Install the latest icalsrv package by either untarring some tarball icalsrv-vx.y.x.tgz of the
@@ -127,7 +130,7 @@ cvs. Or just use the version available in the standard Egroupware install
    egwical-vx.y.z.tgz tarball or by checking out the <i> egwical</i> module from cvs (HEAD).
    
  - Take care that icalsrv.php is <code>.../egroupware/icalsrv.php</code>
-   (and the other files from the icalsrv package also in their appropiate places)
+   (and that the other files from the icalsrv package are also in their appropiate places)
 
 - If your install (shouldnot be needed anymore after egw1.2RC8) didnot provide a icalsrv
   catered version of the
@@ -158,21 +161,21 @@ cvs. Or just use the version available in the standard Egroupware install
 - To use this virtual calendar, connect your ical client (e.g: Sunbird)
 	   with http://your.host.com/egroupware/icalsrv.php/defaults.ics
         
-- now you should need to authenticate (with your normal EGW login and password)
+- now you probably need to authenticate (with your normal EGW login and password)
   and when done you receive the calendar on doing a "reload remote calendars" or so.
   This should give you a default calendar of your personal events and tasks
 
-- using the "publish" calendar action, and setting there the same url,
-  you can write the (modified) calendar from the sunbird client back to
+- if you use the same url in your clients settings for "calendar publishing",
+  you should be able to write the (modified) calendar from the sunbird client back to
   EGW.
 
 
 @section secicalsrvclients Clients for IcalSrv
 
 In @ref pageicalsrvclients you can find some details on how to use the
-various ical clients together with IcalSrv. User experiences, a bit on
-supported features, and hints on how to use a client for online and
-offline usage may be found here.  It now comes with  some <i> screenshots too!!</i>
+various ical clients together with IcalSrv. Screenshots, User experiences, a bit on
+supported features and hints on how to use a client for online and
+offline usage may be found there.
 
 A short list of known ical clients (some tested some not) is:
 
@@ -216,7 +219,7 @@ Release Notes in @ref pageicalsrvreleaselog and the Clients Overview in
 
 As IcalSrv is still a young and experimental new service for
 Egroupware, that must mediate between a multitude of clients, each
-with their own peculiarities and various internal applications of Egw,
+with their own peculiarities and the various internal applications of Egw,
 it is very likely that a lot of problems, deficiencies and bugs will
 appear. 
 
