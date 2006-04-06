@@ -1,7 +1,7 @@
-
+{errors}
 <center><h1>{title}</h1></center>
 
-<table width="100%" align="center" cellpadding="0" cellspacing="2">
+<table width="100%" align="center">
  <tr>
   <td width="50%" valign="top">
    {vitals}
@@ -26,3 +26,18 @@
   </td>
  </tr>
 </table>
+
+<table width="100%">
+ <tr>
+  <td width="55%" valign="top">
+   {mbtemp}
+   <br>
+   {mbfans}
+  </td>
+
+  <td width="45%" valign="top">
+   {mbvoltage}
+  </td>
+ </tr>
+</table>
+
