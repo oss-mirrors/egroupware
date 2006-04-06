@@ -3,10 +3,10 @@
 	 * @file
 	 * eGroupWare API - eGroupWare specific ICalendar component conversion,
 	 * auxiliary utility routines.
-	 *
-	 * @author Jan van Lieshout                                                *
+	 * @author Jan van Lieshout 
 	 * @package egwical
-	 * ------------------------------------------------------------------------ *
+	 */
+	/* ------------------------------------------------------------------------ *
 	 * This library is free software; you can redistribute it and/or modify it  *
 	 * under the terms of the GNU Lesser General Public License as published by *
 	 * the Free Software Foundation; either version 2.1 of the License,         *
@@ -23,19 +23,63 @@
 
      require_once EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php';
      require_once EGW_SERVER_ROOT.'/calendar/inc/class.socal.inc.php';  // for MCAL defs
-//     require_once EGW_SERVER_ROOT.'/egwical/inc/class.bocalupdate_vevents.inc.php';
-//     require_once EGW_SERVER_ROOT.'/egwical/inc/class.boinfolog_vtodos.inc.php';
-
 
     /**
-	 * 
 	 * Common  utility routines to manipulate iCalendar components and fields in
 	 * an EGroupware context.
+	 * 
+	 * @section eicnv_synopsis Synopsis
+	 * To illustrate just a few of the many conversion routines in this library, lets take
+	 * as example a piece from a task to VTODO conversion routine. In this
+	 * piece of code the 'info_responsible' field from an Egw task element is
+	 * used to set the ATTENDEE field of a newly constructed VTODO element.
+	 *
+	 * First setup the basic objects we need: we create an egw resource, read
+	 * a task from it, create a vtodo object and create a conversion
+	 * library object (because not all the conversion routines can yet be called
+	 * as class methods):
+@verbatim
+  $binf =& CreateObject('infolog.boinfolog');        
+  $task = $binf->read(1233);
+  ....
+  $vtodo = Horde_iCalendar::newComponent('VTODO',....);
+  ...
+  $eicnv =& CreateObject('egwical.eicnvutils');
+@endverbatim
+
+  Now we use three routines from our class to fill the ATTENDEE attribute
+  of <code>$vtodo</code> with info for the first responsible person
+  we found in the  task in <code>$task</code>. 
+
+@verbatim
+ $actor1_id  = $task['info_responsible'][0];
+
+ $propval    = $eicnv->mki_v_CAL_ADDRESS($actor1_id);
+ $propparams = $eicnv->mki_p_CN($actor1_id);
+
+ $eicnv->updi_c_addAttribute($vtodo,'ATTENDEE',$propval,$propparams);
+@endverbatim
+     * It is done by reading the first person identifier from the info_responsible field
+	 * of the task and then using this id to get an email address as vtodo property value
+	 * (by use of the method <code>mki_v_CAL_ADDRESS()</code>) and a full Calendar Name as
+	 * vtodo parameter (by use of the method <code>mki_p_CN()</code>). Finally the property value
+	 * and the property parameters are added to the new vtodo element by use of the
+	 * <code>updi_c_addAttribute()</code> routine. 
+	 * 
+	 * As a result of this code you might find in the printed variant of
+	 * <code>$vtodo</code> a line added like:
+@verbatim
+BEGIN:VTODO
+...
+ATTENDEE;CN=Paul Demoman:MAILTO:paul@demoland.org
+...
+END:VTODO
+@endverbatim
 	 *
 	 *
-	 *
-	 * @section secwkcapimethodnames Workerclass API  method names
-	 * Developers of Worker subclasses: that is classes that will handle the transport of
+	 * @section secwkcapimethodnames Conversion Routines API  method names
+	 * Developers of Concrete subclasses of egwical_resourcehandler: that is classes that
+	 * will handle the transport of
 	 * a specific type of Vcal Element (like <code>VEVENT</code>s) to specific Egw Elements
 	 * (like e.g. calendar	<code>event</code>s), can profitably use the set auxiliary conversion
 	 * methods that the eicnvutils provides.
@@ -46,7 +90,7 @@
 	 * Most of the utility methods that are provideda follow a generic naming scheme based on their
 	 * functionality. The generic prefixes are:
 	 * <ul>
-	 * <li><code>mki_</code>
+	 * <li>For Vcalendar Element Building Routines: <code>mki_</code><br/>
 	 *  This is for methods that MaKe a Ical thing like a component, field, fieldvalue or
 	 *    fieldparameter. Thus these are subdived in:</li>
 	 *  <ul>
@@ -55,15 +99,31 @@
 	 *   <li><code>mki_vp</code> to make both ical field Values and Parameters </li>
 	 *  </ul>
 	 * </li>
-	 * <li><code>mke_</code>
+	 * <li>For Egw Element Building Routines: <code>mke_</code><br/>
 	 *  This is for methods that MaKe a Egw things like a field of egw event or task.</li>
-	 * <li><code>updi_</code>
+	 * <li>For Vcalendar Element Updating Routines:<code>updi_</code><br/>
 	 *  This is for methods that UPDate an Ical component or field. Note that the Ical component
 	 *  to be updated will be passed by reference to these routines</li>
-	 * <li><code>upde_</code>
+	 * <li>For Egw Element Updating Routines:<code>upde_</code><br/>
 	 *  This is for methods that UPDate an Egw entity like an event or task or.... Note again
 	 *  that the Egw entity will be passed by reference to these routines.</li>
 	 * </ul>
+	 *
+	 * @note many of the conversion methods can be called as class methods, i.e. without
+	 * the need for an instance of this class. Some though use data in the instance variables
+	 * (like conversion tables) that need to be initializes by the constructor. In the
+	 * the functions callable as class method (i.e. as <code>eicnvutils::method_x(...)</code>)
+	 * are labeled as such.
+	 * You dont need more than a singleton of the class  egwical.eicnvutils though, as it carries
+	 * no state. 
+	 *
+	 * @section secrfc Background literature for ICalendar conversions
+	 * When you start using the iCalendar format the infamous RFC 2445 is indispensible
+	 * You can access if for example via @url http://www.faqs.org/rfcs/rfc2445.html that has
+	 * also a pdf version.  Or via @url http://rfc-ref.org/RFC-TEXTS/2445/index.html
+	 * that is indexed with online links to the various sections.
+	 * In future I hope to annotate the conversion methods in this class with references
+	 * to the appropiate sections of the rfc.
 	 *
 	 * @section sectimezones TimeZone handling
 	 *  Currently vtimezones are completely ignored when found in an
@@ -78,6 +138,8 @@
 	 * and not exact time. There will be no VTIMEZONE written in the exported icalendar.
 	 * For more info on this see @ref pageegwicaltzh
 	 *
+	 * @version 0.9.34 updated documentation
+	 * @date 20060404
 	 * @since 0.9.31 added some FREEBUSY routines
 	 * @since 0.9.30 using napi3 api
 	 * @since 0.9.22 separated the conversion utilties into eicnvutils class
@@ -86,11 +148,8 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (original code of reused parts)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (original code of reused parts)
 	 *
-	 *
-	 * @version 0.9.31 napi3 and freebusy routines
-	 * @date 20060325
 	 * license @url http://opensource.org/licenses/gpl-license.php GPL -
-	 *  GNU General Public License
+	 *  GNU General Public ssssLicense
 	 */
     class eicnvutils
     {
@@ -118,12 +177,6 @@
 	   * and instantiate the @ref $reg_rscworkers workers registry and the
 	   * @ref $reg_rscs resources
 	   * registry.
-	   * @note <b>At this moment (V 0.9.01): when you develop a new workerssubclass you must
-	   * manually add its characteristics via a class call to its provides_work() function
-	   * from within the constructor code.</b>
-	   * (It is needed  because I couldnot find an easy way to search for existing subclasses
-	   * yet)
-	   *
 	   */
 	  function eicnvutils()
 	  {
@@ -138,12 +191,6 @@
 
 
 	  // ------------- second: below only generic conversion stuff --------------
-
-
-	  // --- generic conversion auxilliary routines -------------
-	  // --- note: this could be left out in the abstract baseclass instantiation
-	  // but is not that much, so leave it get duplicated...
-
 
 	  /**
 	   * @private
@@ -262,15 +309,133 @@
 // 	  var $export_vcalendar_attributes = array();
 
 
-	  /** @name  Workerclass API (auxiliary conversion routines)
+	  // --- generic conversion auxilliary routines -------------
+
+	  /** @name  Generic Conversion Auxiliary routines
 	   *
 	   */
 	  //@{
 
-	  // --- generic conversion auxilliary routines -------------
+	  /** 
+ 	   * Convert a 6 field hash array in the current active timezone to a unix servertime timestamp. --Class method--
+ 	   * 
+	   *  This is basically the inverseof php getdate() function.
+	   * 
+	   *  The a6date array has fields as in the php getdate() function:
+	   * - <code>year</code> four digit year field
+	   * - <code>month</code> integer month number <b> note: mon, not month!! </b> 
+	   * - <code>mday</code> integer day of month number 
+	   * - <code>hour</code> integer hour
+	   * - <code>minute</code> integer minutes
+	   * - <code>second</code> integer seconds
+	   *
+	   * @param array  $a6 The date in a6date in local timezone format.
+	   * @return int  a unixtimestamp assumed in servertime timezone
+	   */
+	  function a6toutime ($a6)
+	  {
+		return mktime($a6['hour'],$a6['minute'],$a6['second'],
+					  $a6['month'],$a6['mday'],$a6['year']);
+	  }
 
 	  /** 
-	   * produce array of default vcalendar attributes
+ 	   * Convert a unix timestamp to a 6 field hash array in the current active timezone. --Class method--
+ 	   * 
+	   *  This is basically alike the php getdate() function but with different field names
+	   * 
+	   *  The a6date array has fields as in the php getdate() function:
+	   * - <code>year</code> four digit year field
+	   * - <code>month</code> integer month number
+	   * - <code>mday</code> integer day of month number 
+	   * - <code>hour</code> integer hour
+	   * - <code>minute</code> integer minutes
+	   * - <code>second</code> integer seconds
+	   * 
+	   * @param int  $utime   a unixtimestamp assumed in servertime
+	   * @return array The date in a6date in local timezone format.
+	   */
+ 	  function utimetoa6($utime)
+ 	  {
+		$t=getdate($utime);
+ 		return array('hour' => $t['hours'], 'minute' => $t['minutes'],
+					 'second' => $t['seconds'],'month' => $t['mon'],
+					 'mday' => $t['mday'],'year' => $t['year']);
+ 	  }
+
+
+
+
+	  /**
+	   * Get database add date of event or todo. --Class method-- 
+	   * @private
+	   * @param int $id id of event or todo
+	   * @param string $appname  name of the application (='calendar' or 'infolog')
+	   * @return int $createdate  of db insert or false on error
+	   */
+	  function get_TSdbAdd($id,$appname='calendar')
+	  {
+		if (!(($appname == 'calendar') || ($appname == 'infolog_task')))
+		  return false;
+		if (! $auid = $GLOBALS['egw']->common->generate_uid($appname,$id))
+		  return false;
+		
+		return $GLOBALS['egw']->contenthistory->getTSforAction($auid,'add');
+	  }
+
+	  /**
+	   * Patch a servertime timestamp with a DaylightSavingsTime offset. --Class method--
+	   *
+	   * As the current export of servertime to UTC routine from Horde does not respect
+	   * daylight savings time, the conversion from a server time, for a server working in a
+	   * locale with day savings time, to a UTC value wont work correctly.
+	   * This function returns the the time value in $so_utime patched (i.e. added
+	   * or subtracted) by an offset based on the DST setting of the server time zone
+	   * servertime for the date in $so_utime.
+	   * @param int $so_utime the utime in the server timezone, to be corrected with
+	   * the timezones DST setting at that date
+	   * @return int the patched, i.e. server timezone DST corrected, utime value.
+	   */
+	  function st_dst_patch($so_utime)
+	  {
+		return $so_utime + -3600 * date("I",$so_utime);
+	  }
+
+	  // end of  Generic Conversion Auxiliary routines group
+	  //@}
+
+
+
+	  /** @name Vcalendar Element Building Help Routines
+	   * Routines to add parts to VElts
+	   */
+	  //@{
+
+
+	  /**
+	   * Generate ical UID from egw id.
+	   *
+	   * generate a unique id, with the egw id encoded into it, which can be
+	   * used for later synchronisation.
+	   * @param string|int $egw_id  eGW id of the egw entity (event, task,..)
+	   * @param string $app_prefix prefix to use in ecnoding the name
+	   * 
+	   * @return string|false  on success the global unique id. On error: false.
+	   *                     
+	   * Uses @ref $TASKMAGIC  string that holds our unique ID
+	   */
+	  function mki_v_guid($egw_id,$app_prefix='egw')
+	  {
+		if (empty($egw_id))
+		  return false;
+		return $app_prefix .'-' . $egw_id. '-' . $this->TASKMAGIC;
+	  }
+
+
+
+
+
+	  /** 
+	   * produce array of default vcalendar attributes. --Class method-- 
 	   * @return array a hash of the default vcalendar element attributes with values.
 	   * The attributes set are: <code>PRODID</code>, <code>VERSION</code>and
 	   * <code>METHOD</code>
@@ -309,67 +474,6 @@
 	  }
 
 
-
-
-	  /**
-	   * Generate ical UID from egw id.
-	   *
-	   * generate a unique id, with the egw id encoded into it, which can be
-	   * used for later synchronisation.
-	   * @param string|int $egw_id  eGW id of the egw entity (event, task,..)
-	   * @param string $app_prefix prefix to use in ecnoding the name
-	   * 
-	   * @return string|false  on success the global unique id. On error: false.
-	   *                     
-	   * Uses @ref $TASKMAGIC  string that holds our unique ID
-	   */
-	  function mki_v_guid($egw_id,$app_prefix='egw')
-	  {
-		if (empty($egw_id))
-		  return false;
-		return $app_prefix .'-' . $egw_id. '-' . $this->TASKMAGIC;
-	  }
-
-
-
-	  /**
-	   * Try to decode an egw id from a ical UID
-	   *
-	   * @param string $guid the global Icalendar UID value
-	   * @param string $app_prefix prefix to be found in the encoding
-	   * @return false|int On error: false. 
-	   *                   On success: local egw todo id.
-	   */
-	  function mke_guid2id($guid,$app_prefix='egw')
-	  {
-		//		error_log('mke_guid2id: trying to recover id from' . $guid);
-		if (!preg_match('/^' . $app_prefix . '-(\d+)-' .
-						$this->TASKMAGIC . '$/',$guid,$matches))
-		  return false;
-
-		//		error_log("mke_guid2id: found (" . $matches[1] . ")");		
-		return $matches[1];
-	  }
-
-
-
-	  /**
-	   * Get database add date of event or todo
-	   * @private
-	   * @param int $id id of event or todo
-	   * @param string $appname  name of the application (='calendar' or 'infolog')
-	   * @return int $createdate  of db insert or false on error
-	   */
-	  function get_TSdbAdd($id,$appname='calendar')
-	  {
-		if (!(($appname == 'calendar') || ($appname == 'infolog_task')))
-		  return false;
-		if (! $auid = $GLOBALS['egw']->common->generate_uid($appname,$id))
-		  return false;
-		
-		return $GLOBALS['egw']->contenthistory->getTSforAction($auid,'add');
-	  }
-
 	   
 	  /**
 	   * Convert a egw prio into a value for the ical property PRIORITY
@@ -381,20 +485,9 @@
 		return $this->priority_egw2ical[$eprio];
 	  }
 
-	  /**
-	   * Convert a ical prio into a value for egw
-	   * @param int $iprio  priority in ical (0..9)
-	   * @return int $eprio conversion of $iprio as value (0..3) for egw
-	   */
-	  function mke_prio($iprio = 0)
-	  {
-		return $this->priority_ical2egw[$iprio];
-	  }
-
-
 
 	  /** 
-	   * Translate cat-ids to array with id-name pairs
+	   * Translate cat-ids to commasepstingh cat-names. --Class method--
 	   *
 	   * <i>JVLNOTE: boldly copied from class.xmlrpc_server.inc.php because I donot know how
 	   * to instantiate $GLOBALS['server'] (that provides this method) atm.</i>
@@ -420,65 +513,9 @@
 	  }
 
 
-	  // ************ JVL CHECK THE CODE BENEATH *****************
-	  // oke: seems to work for a single categorie (tested form bovtodos calls)
-
-	  /** 
-	   * Translate catnames back to cat-ids creating/modifying cats on the fly
-	   *
-	   * 
-	   * @note THIS CODE SHOULD BE SOMEWHERE ELSE: IT HAS NOTHING TO DO WITH ICAL!!
-	   * @param array $cnames  list with category names
-	   * @param string $owner_id the userid of the owner, default to empty string
-	   * @param string $app_name the name of the application on whose list the
-	   * names are to be found.
-	   * @return string $cidscstr   commasep string with ids generated or found for
-	   * the category names.
-	   */
-	  function cats_names2idscstr($cnames,$owner_id,$app_name='infolog')
-	  {
-		if (empty($cnames))
-		  return false;
-
-		if (!is_object($catsys =& $GLOBALS['egw']->categories)) {
-		  $GLOBALS['egw']->categories =& CreateObject('phpgwapi.categories',
-													  $owner_id,$app_name);
-		}
-
-		$catsys =& $GLOBALS['egw']->categories;
-		// change the app_name to the request app if needed
-		if (! ($catsys->app_name == $app_name)){
-		  $catsys->categories($owner_id, $app_name);
-		}
-
-		foreach($cnames as $name) {
-		  if(empty($name) || preg_match('/^\s+$/',$name)){
-			if ($this->eicnvdebug)
-			  error_log('******detected an empty category! in(' . print_r($cnames,true) . ')');
-			continue;
-		  }
-
-		  if (!($cid = $catsys->name2id($name))) {
-			// existing cat-name use the id
-			// new cat
-			$cid = $catsys->add(array('name' => $name,'descr' => $name));
-		  }
-		  if ($this->eicnvdebug)
-			error_log('found category:' . $name . ':with id:' . $cid);
-
-		  // skip none category or problematic ones
-		  if (!((int)$cid > 0))
-			  continue;
-
-		  $cids[] = (int)$cid;
-		}
-
-		return implode(',',$cids); 
-	  }
-
 
 	  /**
-	   * Convert and egw account id into a iCalendar CAL-ADDRESS type value string
+	   * Convert and egw account id into a iCalendar CAL-ADDRESS type value string. --Class method--
 	   * @param int $aid egw account(person) id
 	   * @return string $cls cal_address format string (mailto:<emailadr>. On error
 	   * the emailadr part will stay empty.
@@ -491,7 +528,7 @@
 
 
 	  /**
-	   * Convert and egw account id into a iCalendar CN type parameter string
+	   * Convert and egw account id into a iCalendar CN type parameter string. --Class method--
 	   * @param  int $account_id egw account(person) id
 	   * @return array CN param in horde_icalendar format. On error this will be empty.
 	   */
@@ -505,7 +542,7 @@
 
 	  }
 		
-	  /** Convert an egw period with start and end times to a freebusy value
+	  /** Convert an egw period with start and end times to a freebusy value. --Class method-- 
 	   * Generate a simple, single freebusy value according to rfc2445,sec.4.8.2.6
 	   * as start and end dt times
 	   * @param int $utstart start time of period (as unix time)
@@ -517,7 +554,7 @@
 		return array(array('start' => $utstart, 'end' => $utend));
 	  }
 
-	  /** Convert an egw act-type label to a freebusytype parameter
+	  /** Convert an egw act-type label to a freebusytype parameter. --Class method--
 	   * Generate parameter a according to rfc2445,sec.4.2.9
 	   * @todo not yet implemented egw activity type to fbtype conversion
 	   * @param string $act-typ egw activity type
@@ -533,91 +570,7 @@
 		return array('FBTYPE' => 'BUSY');
 	  }
 
-	  /** 
-	   * Convert a horde_icalendar parsed attribute date- or date-time value 
-	   * to a unix timestamp. 
-	   * @note this is just a hack because horde_icalendar converts only date-times to utime
-	   * @param array|string $ddtval DATE array or DATE-TIME utime string
-	   * @return int $utime  unix time of the date or date time
-	   */
-	  function mke_DDT2utime($ddtval)
-	  {
-		if(!is_array($ddtval)){
-		  // assume an already parsed(by Horde_iCalendar) date-time value
-		  return $ddtval; 
-		} else {
-		  //assume a DATE, BUT WHERE DO I GET A POSSIBLE TIMEZONE FROM?
-		  // assume user time zone (for utc use gmmktime()
-		  return @mktime(0,0,0,$ddtval['month'],$ddtval['mday'],$ddtval['year']);
-		}
-	  }
 
-
-	  /**
-	   * Patch the servertime with an DaylightSavingsTime offset, before converting to utc
-	   *
-	   * As the current export of servertime to UTC routine from Horde does not respect
-	   * daylight savings time, the conversion from a server time, for a server working in a
-	   * locale with day savings time, to a UTC value wont work correctly.
-	   * This function returns the the time value in $so_utime patched (i.e. added
-	   * or subtracted) by an offset based on the DST setting of the server time zone
-	   * servertime for the date in $so_utime.
-	   * @param int $so_utime the utime in the server timezone, to be corrected with
-	   * the timezones DST setting at that date
-	   * @return int the patched, i.e. server timezone DST corrected, utime value.
-	   */
-	  function st_dst_patch($so_utime)
-	  {
-		return $so_utime + -3600 * date("I",$so_utime);
-	  }
-
-
-	  /** 
- 	   * Convert a unix timestamp to a 6 field hash array in the current active timezone
- 	   * 
-	   *  This is basically alike the php getdate() function but with different field names
-	   * 
-	   *  The a6date array has fields as in the php getdate() function:
-	   * - <code>year</code> four digit year field
-	   * - <code>month</code> integer month number
-	   * - <code>mday</code> integer day of month number 
-	   * - <code>hour</code> integer hour
-	   * - <code>minute</code> integer minutes
-	   * - <code>second</code> integer seconds
-	   * 
-	   * @param int  $utime   a unixtimestamp assumed in utc timezone
-	   * @return array The date in a6date in local timezone format.
-	   */
- 	  function utimetoa6($utime)
- 	  {
-		$t=getdate($utime);
- 		return array('hour' => $t['hours'], 'minute' => $t['minutes'],
-					 'second' => $t['seconds'],'month' => $t['mon'],
-					 'mday' => $t['mday'],'year' => $t['year']);
- 	  }
-
-
-	  /** 
- 	   * Convert  a 6 field hash array in the current active timezone to a unix timestamp.
- 	   * 
-	   *  This is basically the inverseof php getdate() function.
-	   * 
-	   *  The a6date array has fields as in the php getdate() function:
-	   * - <code>year</code> four digit year field
-	   * - <code>month</code> integer month number <b> note: mon, not month!! </b> 
-	   * - <code>mday</code> integer day of month number 
-	   * - <code>hour</code> integer hour
-	   * - <code>minute</code> integer minutes
-	   * - <code>second</code> integer seconds
-	   *
-	   * @param array  $a6 The date in a6date in local timezone format.
-	   * @return int  a unixtimestamp assumed in utc timezone
-	   */
-	  function a6toutime ($a6)
-	  {
-		return mktime($a6['hour'],$a6['minute'],$a6['second'],
-					  $a6['month'],$a6['mday'],$a6['year']);
-	  }
 
 
 	  /**
@@ -711,7 +664,7 @@
 	  }
 
 	  /**
-	   * Make a value (commasep string of dates) for the EXDATE property
+	   * Make a value (commasep string of dates) for the EXDATE property. --Class method--
 	   *
 	   * In the conversion you can chose between a commastring of DATES or DATE-TIMES
 	   * @param array $recur_exceptions  list with utime exception dates
@@ -731,10 +684,216 @@
 		return array( implode(',',$days), $exdparams);
 	  }
 
+
+
+	  /**
+	   * Convert egw alarm info to a ical VALARM object. --Class method--
+	   *
+	   * Make a VALARM object form data in $alarms and $utstart (in utc)
+	   * and with $vevent as container
+	   * @param array &$alarm a single egw alarm array to be used
+	   * @param horde_object &$vcomp  that will be the container for the valarm
+	   *        mostly vevent or vtodo.
+	   * @param array &$veExportFields  list with fields that may get imported
+	   * @return horde_iCalendar_valarm|false valarm object or, on error, false.
+	   */
+	  function mki_c_VALARM(&$alarm, &$vcomp, $utstart,&$veExportFields){
+
+//		error_log('export comp-alarm-field:' . print_r($alarm,true));
+
+		$valarm = Horde_iCalendar::newComponent('VALARM',$vevent);
+
+		//try first an offset
+		if($durtime = -$alarm['offset']){
+		  $valarm->setAttribute('TRIGGER',
+								$durtime,
+								array('VALUE' => 'DURATION',
+									  'RELATED' => 'START'));
+		  // no success then try a date-time
+		} elseif($dtime = $alarm['time']){
+		  $valarm->setAttribute('TRIGGER',
+								$ddtime,
+								array('VALUE' => 'DATE-TIME'));
+		} else{
+		  $valarm = null;
+		  return false;
+		}
+		$vcomp->addComponent($valarm);
+
+		return $valarm;
+	  }
+
+
+	  /**
+	   * Add (append) an new attribute (aka field) to the vevent. --Class method--
+	   *
+	   * @param VElt $vobj Vcal Element to which the attribute is added
+	   * @param string $aname  name for the new attribute
+	   * @param mixed $avalue  value for the new attribute
+	   * @param array $aparams  optional: parameters for the new attribute
+	   * @return true
+	   */
+	  function updi_c_addAttribute(&$vobj,$aname,$avalue,$aparams)
+	  {
+		
+		if(!isset($aparams) || ($aparams == null ))
+		  $aparams =array();
+
+		// it appears that translation->convert() can translate an array
+		// (that is: the values!, not the keys though)
+		// so lets apply it to the avalue and aparams, that should be enough!
+//		error_log('n:' . $aname . 'v:' . $avalue);
+		$valueData = 
+		  $GLOBALS['egw']->translation->convert($avalue,
+												$GLOBALS['egw']->translation->charset(),
+												'UTF-8');
+		$paramData =
+		  $GLOBALS['egw']->translation->convert( $aparams,
+												 $GLOBALS['egw']->translation->charset(),
+												 'UTF-8');
+//		error_log('n:' . $aname . 'v:' . $valueData);
+		$vobj->setAttribute($aname, $valueData, $paramData);
+		$options = array();
+		// JVL:is this really needed?
+		if (is_string($valueData)){
+
+// // JVL: TEMPORARY SWITCHED OFF... TURN ON AGAIN!!!
+// 		  if(!(in_array($aname, array('RRULE')))
+// 			 && preg_match('/([\000-\012\015\016\020-\037\075])/',$valueData)) {
+// 			$options['ENCODING'] = 'QUOTED-PRINTABLE';
+// 		  }
+
+		  if(  (preg_match('/([\177-\377])/',$valueData))) {
+			$options['CHARSET'] = 'UTF-8';
+		  }
+		}
+		$vobj->setParameter($aname, $options);
+
+		return true;
+	  }
+
+
+	  // end of vcalendar building help group
+	  //@}
+
+
+
+
+	  /** @name  Egw Element Building Help Routines
+	   * Routines to add parts to EElts	
+	   */
+	  //@{
+
+	  /**
+	   * Try to decode an egw id from a ical UID
+	   *
+	   * @param string $guid the global Icalendar UID value
+	   * @param string $app_prefix prefix to be found in the encoding
+	   * @return false|int On error: false. 
+	   *                   On success: local egw todo id.
+	   */
+	  function mke_guid2id($guid,$app_prefix='egw')
+	  {
+		//		error_log('mke_guid2id: trying to recover id from' . $guid);
+		if (!preg_match('/^' . $app_prefix . '-(\d+)-' .
+						$this->TASKMAGIC . '$/',$guid,$matches))
+		  return false;
+
+		//		error_log("mke_guid2id: found (" . $matches[1] . ")");		
+		return $matches[1];
+	  }
+
+	  /**
+	   * Convert a ical prio into a value for egw
+	   * @param int $iprio  priority in ical (0..9)
+	   * @return int $eprio conversion of $iprio as value (0..3) for egw
+	   */
+	  function mke_prio($iprio = 0)
+	  {
+		return $this->priority_ical2egw[$iprio];
+	  }
+
+	  // ************ JVL CHECK THE CODE BENEATH *****************
+	  // oke: seems to work for a single categorie (tested form bovtodos calls)
+
+	  /** 
+	   * Translate catnames back to cat-ids creating/modifying cats on the fly. --Class method--
+	   *
+	   * 
+	   * @note THIS CODE SHOULD BE SOMEWHERE ELSE: IT HAS NOTHING TO DO WITH ICAL!!
+	   * @param array $cnames  list with category names
+	   * @param string $owner_id the userid of the owner, default to empty string
+	   * @param string $app_name the name of the application on whose list the
+	   * names are to be found.
+	   * @return string $cidscstr   commasep string with ids generated or found for
+	   * the category names.
+	   */
+	  function cats_names2idscstr($cnames,$owner_id,$app_name='infolog')
+	  {
+		if (empty($cnames))
+		  return false;
+
+		if (!is_object($catsys =& $GLOBALS['egw']->categories)) {
+		  $GLOBALS['egw']->categories =& CreateObject('phpgwapi.categories',
+													  $owner_id,$app_name);
+		}
+
+		$catsys =& $GLOBALS['egw']->categories;
+		// change the app_name to the request app if needed
+		if (! ($catsys->app_name == $app_name)){
+		  $catsys->categories($owner_id, $app_name);
+		}
+
+		foreach($cnames as $name) {
+		  if(empty($name) || preg_match('/^\s+$/',$name)){
+// 			if ($this->eicnvdebug)
+// 			  error_log('******detected an empty category! in(' . print_r($cnames,true) . ')');
+			continue;
+		  }
+
+		  if (!($cid = $catsys->name2id($name))) {
+			// existing cat-name use the id
+			// new cat
+			$cid = $catsys->add(array('name' => $name,'descr' => $name));
+		  }
+// 		  if ($this->eicnvdebug)
+// 			error_log('found category:' . $name . ':with id:' . $cid);
+
+		  // skip none category or problematic ones
+		  if (!((int)$cid > 0))
+			  continue;
+
+		  $cids[] = (int)$cid;
+		}
+
+		return implode(',',$cids); 
+	  }
+
+
+	  /** 
+	   * Convert a horde_icalendar parsed attribute date- or date-time value 
+	   * to a unix timestamp.  --Class method--
+	   * @note this is just a hack because horde_icalendar converts only date-times to utime
+	   * @param array|string $ddtval DATE array or DATE-TIME utime string
+	   * @return int $utime  unix time of the date or date time
+	   */
+	  function mke_DDT2utime($ddtval)
+	  {
+		if(!is_array($ddtval)){
+		  // assume an already parsed(by Horde_iCalendar) date-time value
+		  return $ddtval; 
+		} else {
+		  //assume a DATE, BUT WHERE DO I GET A POSSIBLE TIMEZONE FROM?
+		  // assume user time zone (for utc use gmmktime()
+		  return @mktime(0,0,0,$ddtval['month'],$ddtval['mday'],$ddtval['year']);
+		}
+	  }
+
+
 	  /**
 	   * Convert DDT possible DATE|DATE-TIME params and a value commalist
-	   * into an array of utime dates.
-	   *
+	   * into an array of utime dates. --Class method--
+	   * @todo update this documentation!
 	   * Some examples
 	   * <PRE>
 	   * ex1: ...;VALUE=DATE:20060123,20060124
@@ -977,7 +1136,7 @@
 
 
 	  /**
-	   * Parse a CAL_ADDRESS and try to find the associated egw person_id
+	   * Parse a CAL_ADDRESS and try to find the associated egw person_id. --Class method--
 	   * @param  string $attrval CAL_ADDRESS type value string
 	   * @return int|false $pid  associated (by email) egw pid. On error: false.
 	   */
@@ -992,7 +1151,7 @@
 	  }
 
 	  /**
-	   * Parse a CAL_ADDRESS and PARAMS to find the CN name and email
+	   * Parse a CAL_ADDRESS and PARAMS to find the CN name and email. --Class method--
 	   * @param string $aval CAL_ADDRESS type value string
 	   * @param array  $aparams parameters for a ATTENDEE
 	   * @return array $cneml  assoc array with 'cn' and 'mailto' field
@@ -1019,7 +1178,7 @@
 	  }
 
  	  /**
-	   * Update an egw event description with a list of nonegw participants.
+	   * Update an egw event description with a list of nonegw participants. --Class method--
 	   *
 	   * note: this is a adhoc solution, preferably the nonegw participants
 	   * should be added automatically to the addressbook
@@ -1063,95 +1222,10 @@
 		return $this->partstatus_ical2egw[strtoupper($params['PARTSTAT'])];
 	  }
 
-	  /**
-	   * Add (append) an new attribute (aka field) to the vevent.
-	   *
-	   * @param VElt $vobj Vcal Element to which the attribute is added
-	   * @param string $aname  name for the new attribute
-	   * @param mixed $avalue  value for the new attribute
-	   * @param array $aparams  optional: parameters for the new attribute
-	   * @return true
-	   */
-	  function updi_c_addAttribute(&$vobj,$aname,$avalue,$aparams)
-	  {
-		
-		if(!isset($aparams) || ($aparams == null ))
-		  $aparams =array();
-
-		// it appears that translation->convert() can translate an array
-		// (that is: the values!, not the keys though)
-		// so lets apply it to the avalue and aparams, that should be enough!
-//		error_log('n:' . $aname . 'v:' . $avalue);
-		$valueData = 
-		  $GLOBALS['egw']->translation->convert($avalue,
-												$GLOBALS['egw']->translation->charset(),
-												'UTF-8');
-		$paramData =
-		  $GLOBALS['egw']->translation->convert( $aparams,
-												 $GLOBALS['egw']->translation->charset(),
-												 'UTF-8');
-//		error_log('n:' . $aname . 'v:' . $valueData);
-		$vobj->setAttribute($aname, $valueData, $paramData);
-		$options = array();
-		// JVL:is this really needed?
-		if (is_string($valueData)){
-
-// // JVL: TEMPORARY SWITCHED OFF... TURN ON AGAIN!!!
-// 		  if(!(in_array($aname, array('RRULE')))
-// 			 && preg_match('/([\000-\012\015\016\020-\037\075])/',$valueData)) {
-// 			$options['ENCODING'] = 'QUOTED-PRINTABLE';
-// 		  }
-
-		  if(  (preg_match('/([\177-\377])/',$valueData))) {
-			$options['CHARSET'] = 'UTF-8';
-		  }
-		}
-		$vobj->setParameter($aname, $options);
-
-		return true;
-	  }
-
-
-	  /**
-	   * Convert egw alarm info to a ical VALARM object.
-	   *
-	   * Make a VALARM object form data in $alarms and $utstart (in utc)
-	   * and with $vevent as container
-	   * @param array &$alarm a single egw alarm array to be used
-	   * @param horde_object &$vcomp  that will be the container for the valarm
-	   *        mostly vevent or vtodo.
-	   * @param array &$veExportFields  list with fields that may get imported
-	   * @return horde_iCalendar_valarm|false valarm object or, on error, false.
-	   */
-	  function mki_c_VALARM(&$alarm, &$vcomp, $utstart,&$veExportFields){
-
-//		error_log('export comp-alarm-field:' . print_r($alarm,true));
-
-		$valarm = Horde_iCalendar::newComponent('VALARM',$vevent);
-
-		//try first an offset
-		if($durtime = -$alarm['offset']){
-		  $valarm->setAttribute('TRIGGER',
-								$durtime,
-								array('VALUE' => 'DURATION',
-									  'RELATED' => 'START'));
-		  // no success then try a date-time
-		} elseif($dtime = $alarm['time']){
-		  $valarm->setAttribute('TRIGGER',
-								$ddtime,
-								array('VALUE' => 'DATE-TIME'));
-		} else{
-		  $valarm = null;
-		  return false;
-		}
-		$vcomp->addComponent($valarm);
-
-		return $valarm;
-	  }
 
 	  
  	  /**
-	   * Update the egw alarms array with info from a VALARM
+	   * Update the egw alarms array with info from a VALARM. --Class method--
 	   * @param array &$alarms  the the egw alarms array to be updated
 	   * @param horde_iCalendar_valarm $valarm ref to the valarm  component to be updated
 	   * @param int $user_id  the user that will own the alarms found
@@ -1197,9 +1271,11 @@
 		return true;
 	  }
 
-
-
+	  // end of egw element building help group
 	  //@}
+
+
+
 
 
 	}

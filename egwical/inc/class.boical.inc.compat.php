@@ -32,19 +32,19 @@
 	  {
 		bocalupdate::bocalupdate(); // call superclass constructor
 		error_log("warning class: calendar.boical call DEPRECATED," .
-				  "\nplease rewrite your code to use egwical class" .
+				  "\nplease rewrite your code to use egwical.bocalupdate_vevents class" .
 				  "\n now temporary code fix used ");
 		$this->calhnd =& CreateObject('egwical.bocalupdate_vevents');
 		$this->calhnd->set_rsc($this);
 
 		if ($this->calhnd == false){
-		  error_log('boical constructor: couldnot add boical resource to egwical: FATAL');
+		  error_log('boical constructor: couldnot add boical resource to egwical rschnd: FATAL');
 		  return false;
 		}
 	  }
 
 
-	  // now implement the compatibility methods, that are all moved to egwical!
+	  // now implement the compatibility methods
 
 	  /**
 	   * Exports calendar events as an iCalendar string
@@ -60,6 +60,7 @@
 		  $attribs = array('VERSION' => $version, 'METHOD' => $method);
 		  // alternative 1
 		  return $this->calhnd->export_vcal($events,$attribs);
+
 		  // alternative 2 should also work
 //		  $vevent = $this->calhnd->export_velts($events);
 //		  return $this->calhnd->render_velt2vcal($vevent,$attribs);
@@ -79,21 +80,21 @@
 	   *    when -1 import the VEvent content to new EGW  events if needed) 
 	   * @return boolean $ok  false on failure | true on success
 	   */
-	  function importVCal($_vcalData, $cal_id=-1)
+	  function importVCal(&$_vcalData, $cal_id=-1)
 	  {
 		// alt1 for multiple events in the vcalData
 		return ($this->calhnd->import_vcal($_vcalData) !== false) ? true : false ;
 
 		// alt2 for a single event in the vcalData
-//		$vevent = $this->wkobj->parse_vcal2velt($_vcalData);
-//		return $this->wkobj->import_vevent($vevent, $cal_id);
+//		$vevent_ical = $this->calhnd->parse_vcal2velt($_vcalData);
+//		return $this->calhnd->import_velt($vevent_ical, $cal_id);
 	  }
 
 
 	  function setSupportedFields($_productManufacturer='file', $_productName='')
 	  {
-		return $this->calhnd->setSupportedFields($_productManufacturer, $_productName);
-
+		$devicetype = implode('/',array($_productManufacturer, $_productName));
+		return $this->calhnd->setSupportedFields($devicetype);
 	  }
 
 	}

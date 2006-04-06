@@ -2,17 +2,19 @@
    /** 
 	* @file 
 	* eGroupWare - iCalendar VEVENTS conversion, import and export for egw calendar.
-	*
-	* http://www.egroupware.org                                                *
 	* @author Jan van Lieshout   
+	* @package Egwical
+	*/
+
+   /* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
 	*  Free Software Foundation; either version 2 of the License.              *
-	**************************************************************************/
+	****************************************************************************/
 
 
-  /** @page pageegwicalveventfeatures A small list of currently implemented VEVENT handling in egwical
+  /** @page pageegwicalveventfeatures Currently implemented VEVENT handling in egwical
    * <PRE>
    * TODO:
    * [+] check multiple ATTENDEE import
@@ -40,7 +42,6 @@
    *     exported and imported ical files.
    * </PRE>
    * the todos on a row:
-   * @todo find a nicer way to provide a safe importmode parameter usage (now $cal_id==0)
    * @todo check multiple category import (do they get duplicated?
    */
 
@@ -52,20 +53,92 @@
 	 * Concrete subclass resourcehandler for iCal vevents import and export with a egroupware
 	 * bocalupdate calendar resource.
 	 *
-	 * @todo Here should come some text about the workings of this class
-	 * (esp. the uid2id mechanisme the handling of ACL failures and....)
+	 *@section secbocveventssynopsis Synopsis
+	 * Some simple examples. Firs we need a couple of egw events and an instance of our
+	 * (concrete) calendarresource handler class:
+@verbatim
+  $boc =& CreateObject('calendar.bocalupdate');
+
+  $ev1 = $boc->read(1233);                    // get two events
+  $ev2 = $boc->read(4011);
+
+  $calhnd =& CreateObject('egwical.bocalupdate_vevents',$boc);
+@endverbatim
+     * Now export an event as VEVENT and render it as iCalendar string
+@verbatim
+   // alternative 1
+   $vevent1 = $calhnd->export_vevent($ev1,UMM_ID2UID);
+   $vcalstr1 = egwical_resourcehandler::render_velt2vcal($vevent1);
+
+   // alternative 2 (generic for all resourcehandlers)
+   $calhnd->uid_mapping_export = UMM_ID2UID;
+   $vevent1  = $calhnd->export_ncvelt($ev1);
+   $vcalstr1 = egwical_resourcehandler::render_velt2vcal($vevent1);
+
+   // alternative 3 (via baseclass, without intermediate vevent)
+   $vcalstr1 = $calhnd->export_vcal($ev1);
+@endverbatim
+     * An example for importing the vevents
+@verbatim
+    // alternative 1 (via the concrete method)
+    $vevent1  = ..... a good vevent
+    $ev_id1 = $calhnd->import_vevent($vevent1, UMM_UID2ID,1);
+    if ($ev_id1 > 0)    {
+      echo "imported vevent1 as event with id $ev_id1";
+    }
+
+    // alternative 2 (generic for all resourcehandlers)
+    $calhnd->uid_mapping_import = UMM_UID2ID;
+    $ev_id1  = $calhnd->import_ncvelt($vevent1);
+    if ($ev_id1 > 0)    {
+      echo "imported vevent1 as event with id $ev_id1";
+    }
+
+    // alternative 3 (via base class, easier for multiple vevents)
+    $my_vevents = array($vevent1,$event2,..);
+    $calhnd->uid_mapping_import = UMM_UID2ID;
+    $eids = $calhnd->import_velts($my_vevents);
+    echo "we imported" . count($eids) . "vevents";
+
+@endverbatim
+    * And finally an example of importing all the vevents from a vcalstring
+@verbatim
+    // alternative 1
+    $vcalstr = .. an vcalendar format string with multiple vevents
+
+    $compvelt  = egwical_resourcehandler::parse_vcal2velt($vcalstr);
+    if($compvelt === false) exit;
+
+    $eids = $calhnd->import_velts($compvelt);
+    if ($eids)
+    {
+       echo "we imported" . count($eids) . "vevents";
+    }
+
+    // alternative 2 (using the baseclass its methods)
+   $eids = $calhnd->import_vcal($vcalstr);
+   if ($eids)   echo "we imported" . count($eids) . "vevents";
+
+@endverbatim
+     * @note Warning: When importing a vevent resulting from parsing a vcalstring
+     * or any other VElt for which you do not know if it is a single vevent
+     * or possibily a compound element with multiple vevents in it, you should preferable use
+	 * the import_velts(0 routine of the baseclass instead of the import_ncvelt()
+	 * or the import_vevent() routines. This is because the former can handle compound VElts,
+	 * while the latter two cannot!
 	 *
 	 * @package egwical
 	 *
-	 * @todo add Lars his VERSION=1.0 handling of events in here.
+	 * @todo add Lars his VERSION=1.0 handling of recur events in here.
 	 *
 	 * @author Jan van Lieshout <jvl-AT-xs4all.nl> (This version. new api rewrite,
 	 * refactoring, and extension).
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.30  first version for napi3
-
+	 * @version 0.9.34  update docs and usinig ncvelt
+	 * @date 20060405
+	 * @sincen 0.9.30  first version for napi3
 	 * license @url  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
 	 */
     class bocalupdate_vevents extends egwical_resourcehandler
@@ -213,7 +286,7 @@
 	   * .
 	   * For more info see @ref secuidmapping 
 	   * 
-	   * @param EventId $event id of the eGW event that will be exported
+	   * @param EventId|EventData $event array data (or id) of the eGW event that will be exported
 	   * @param int $uid_mapping_export switch to set the export mode for the uid fields.
 	   * Default UMM_ID2UID is used.
 	   * @return VEVENT|false  the iCalendar VEVENT object representing the data from the egw
@@ -434,12 +507,12 @@
 	   * as to chose the method of UID field generation for the
 	   * VEVENT. See @ref secuidmapping in the egwical_resourcehandler
 	   * documentation.
-	   * @param EventId $eid id of an event in the
+	   * @param EventId|EventData $eid eventdata or event id in the
 	   * bound bocalupdate resource that is to be exported.
 	   * @return VEVENT the exported egw event converted to a VEVENT object.
 	   * on error False.
 	   */
-	  function export_velt(&$eid)
+	  function export_ncvelt(&$eid)
 	  {
 		return $this->export_vevent($eid, $this->uid_mapping_export);
 	  }
@@ -476,7 +549,7 @@
 	   * UMM_NEWID mode, if set as 0 the uid_mapping_import will switch to the default
 	   * UMM_UID2ID mode.
 	   * @return EventId|Errorstring the id of the imported(or updated) egw calendar event.
-	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
+	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT | BTYPE
 	   */
 	  function import_vevent(&$vevent, $uid_mapping_import, $reimport_missing_events=false, $cal_id=0)
 	  {
@@ -493,7 +566,7 @@
 		  // HANDLE ONLY VEVENTS HERE
 		if(!is_a($vevent, 'Horde_iCalendar_vevent')){
 		  error_log('import_vevent called for non vevent type');
-		  return false;
+		  return BTYPE;
 		}
 //		  $event = array('participants' => array());
 		$event = array('title' => 'Untitled');
@@ -861,7 +934,7 @@
 	   * 
 	   * The value of the member variable $uid_mapping_import is used to control the set
 	   * of iCalendar fields that are imported.
-	   * @param  VEVENT $velt    VEVENT object (horde_iCalendar_vevent) 
+	   * @param  VEVENT $ncvelt    VEVENT object (horde_iCalendar_vevent) 
 	   * @param  int $eid  id for a selected event to be updated by the info from $velt
 	   *     If left out or set to -1 then uid_mapping_import is switched back to its standard
 	   *  setting as found in the member variable $uid_mapping_import.
@@ -869,11 +942,11 @@
 	   * @return EventId|errorstring the id of the imported(or updated) ege calendar event.
 	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
 	   */
-	  function import_velt(&$velt,$eid=-1)
+	  function import_ncvelt(&$ncvelt,$eid=-1)
 	  {
 		$uid_mapping_import_sel = ($eid > 0) ? UMM_FIXEDID : $this->uid_mapping_import;
 		  
-		return $this->import_vevent($velt,
+		return $this->import_vevent($ncvelt,
 									$uid_mapping_import_sel,
 									$this->reimport_missing_elements,
 									$eid);

@@ -1,12 +1,11 @@
 <?php
-    /**
-	 * @file
-	 *  ICalendar component import and export from Egroupware Resources
-	 * 
-	 * @author Jan van Lieshout                                                *
+    /** @file
+	 * ICalendar component import and export from Egroupware Resources
+	 * @author Jan van Lieshout
 	 * @package egwical
-	 *
-	 * ------------------------------------------------------------------------ *
+	 */
+
+    /* ------------------------------------------------------------------------ *
 	 * This code is free software; you can redistribute it and/or modify it  *
 	 * under the terms of the GNU Lesser General Public License as published by *
 	 * the Free Software Foundation; either version 2.1 of the License,         *
@@ -22,9 +21,6 @@
 
 
      require_once EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php';
-//     require_once EGW_SERVER_ROOT.'/calendar/inc/class.socal.inc.php';  // for MCAL defs
-//     require_once EGW_SERVER_ROOT.'/egwical/inc/class.bocalupdate_vevents.inc.php';
-//     require_once EGW_SERVER_ROOT.'/egwical/inc/class.boinfolog_vtodos.inc.php';
      require_once EGW_SERVER_ROOT.'/egwical/inc/class.eicnvutils.inc.php';
 
     /** defines for result status of import routines
@@ -35,6 +31,7 @@
 	 define('VELT_IMPORT_STATUS_ERROR', '-1');  // something went wrong
 	 define('VELT_IMPORT_STATUS_NOACC', '-2');  // no rights to write: skip?
 	 define('VELT_IMPORT_STATUS_NOELT', '-3');  // element not found: skip?
+	 define('VELT_IMPORT_STATUS_BTYPE', '-4');  // element is of bad type: skip?
 
     /** defines for uid_mapping_mode (import and export)
 	 * These are the allowed values for the variables $uid_mapping_import and
@@ -49,37 +46,76 @@
      define('UMM_FIXEDUID', '3'); // ignore egw id/uid, use a fixed ical uid (ext. uid gen. on export)
 
     /**
-	 * 
-	 * Abstract Base class with routines to transport and convert iCalendar components to and from
-	 * Egroupware resources (calendar, infolog, ..)
+	 * Abstract Base class with routines to transport and convert
+	 * iCalendar components to and from Egroupware resources
+	 * (calendar, infolog, ). 
+ 	 * An egwical object is used in an application to
+	 * transport Ical information to Egw data elements and vice
+	 * versa. 
+	 * @section secegwicalsynopsis Synopsis
+	 * See the overview in @ref mainpage
+	 *
+	 * @section secegwicalmiscelts Egw Elements (EElts) vs. iCalendar Elements (VElts)
+	 * The Ical information can consist of components like VEVENTS
+	 * VTODOS, VFREEBUSYs etc. We will denote these Vcalendar Elements
+	 * with the general term <b>VElt</b>. <br/>
+	 * In the current implementation we use Horde_iCalendar objects for
+	 * these VElts. In this Horde_iCalendar class a complete icalendar
+	 * is represented by a VCALENDAR element object (in Horde terminology a Horde_iCalendar object)
+	 * and non compound elements of such a VCalendar object like VTODO's or
+	 * or VEVENTS are represented by subclasses of this (in Horde terminology
+	 * Horde_iCalendar_XYZ objects). In the EgwIcal package we will denote these
+	 * Non Compound vcalendar elements by the term: <b>NCVElt</b>
+	 * The Egw data elements (events, task etc.) that reside in
+	 * different Egw resources (calendar, infolog,...) are denoted
+	 * with the general term <b>EElts</b>.
+	 * In the current implementation the Egw resources dont use objects (yet?) to
+	 * represent EElts (tasks, events,..) but rather manipulate them either as
+	 * an array of data fields or by an integer that represents the id of the EEltData
+	 * in the database.<br/>
+	 * @note for this reason many of the export methods in this class can handle
+	 * polymorphic parameters for EElt. That is the EElt can be passed either as
+	 * an array (of type EEltData) or as an identifier (of type EEltId).
 	 *
 	 * @section secbabsandconc Abstract Base class and Concrete subclasses
-	 * An egwical object is used in an application to
-	 * transport Ical information to Egw data elements and vice
-	 * versa. These Egw data elements (events, task etc.) reside in
+	 * The Egw data elements (events, task etc.)  we thus call
+	 * <b>EElts</b>, reside in
 	 * different Egw resources (calendar, infolog,...) that handle
-	 * them. The code for these resources is contained in specific Egw
-	 * classes (like bocalupdate, boinfolog,...).
+	 * them. The code for specifically handling such a resources
+	 * is within Egw contained in specific Egw classes (like bocalupdate, boinfolog,...).
 	 *
-	 * The class egwical_resourcehandler is a base class that holds
-	 * generic code to handle these Egw resources.
-	 * In the current implementation (v0.9.30) that uses the
-	 * <i> ical accessors as egwical_resourcehandler subclasses </i>
-	 * it acts as a Abstract Base Class in the sense that it should
+	 * The base class egwical_resourcehandler is a base class that implements
+	 * generic code to handle these Egw resources. For example parsing
+	 * or rendering from/to an iCalendar string, or handling sets of EElts and VElts
+	 * For actual work with the NonCompound Vcalendar Elements (<b>NCElts</b>)
+	 * it has no code by itself but relies on  code within a socalled <i>concrete</i> subclass
+	 * that is dedicated towards handling a specific Egw resource.
+	 * These subclass must implement the virtual methods of the base class. 
+	 *
+	 * In the current implementation (>= v0.9.30) that uses the pattern of
+	 * <i> ical accessors as egwical_resourcehandler subclasses </i> 
+	 * the class acts as a Abstract Base Class in the sense that it should
 	 * not be instantiated directly but rather be used by
-	 * instantiating one of its <i>concrete</i> subclasses that are
-	 * dedicated towards handling a specific Egw resource.
+	 * instantiating one of its <i>concrete</i> subclasses.
 	 *
-	 * Currently there are two such concrete resource handling subclasses available:
+	 * Currently there are three such concrete resource handling subclasses available:
 	 * - <code>bocalupdate_vevents</code> to convert between egw calendar events and VEVENTS
 	 *   and allow import and export of these.
+	 * - <code>bocalupdate_vfreebusy</code> to convert between egw calendar events and VFREEBUSY
+	 *   components. At the moment  only export of these is implemented.
 	 * - <code>boinfolog_vtodos</code> to convert between egw infolog tasks events and VTODOS
 	 *   and allow import and export of these. 
 	 * See the add_rsc() routine for more info on how to use these.
 	 *   
 	 * @section secuidmapping UID to ID Mapping and Matching. 
-	 * ...TBW .. A explanation on uid_mapping the possible values and the variables involved .....
-	 * @todo rewrite this section (use general VElt and EElt iso VEvent and event)
+	 * A short explanation about the uid_mapping used in the conversion between icalendar
+	 * elements (aka VElts) on the one hand and Egw Resource Elements (aka EElts) on
+	 * the other hand. Uid_mapping is the mechanismn to relate the EElts (identified either
+	 * by their id or uid fields) to VElts (identified by their UID field).
+	 * In EgwIcal this <i>Uid-Mapping-Mode</i> can be controlled by three variables.
+	 * Here a short intro into their working. As example of a EElt and VElt an event
+	 * resp. a VEVENT are taken, but for tasks and VTODO's and other EElt-VElt pairs
+	 * the situation is the same of course.
 	 *
 	 * If $uid_mapping_export is <code>UMM_ID2UID</code>, then:
 	 *  - On export for each exported event, a new UID value will generated with the id of
@@ -88,7 +124,6 @@
 	 * If $uid_mapping_export is <code>UMM_UID2UID</code>, then:
 	 *  - On export for each exported event, the UID field of the exported VEVENT will contain a copy
 	 *   the value of the event uid field as stored in the Egw resource.
-	 * 
 	 *  
 	 * if $uid_mapping_import is <code>UMM_UID2ID</code> then:
 	 * - On import the VEVENT UID field will be checked, if it
@@ -122,24 +157,36 @@
 	 * uid_mapping_import set still to UID2ID.  (This is because UID2UID has namely no effect
 	 * for <i>new</i> (i.e. not yet know by egw) events on the one hand and on the hand, the old
 	 * (i.e.  already once downloaded to the client) events will be recognized already with
-	 * the $uid_mapping_import = UID2ID setting.
+	 * the $uid_mapping_import = UMM_UID2ID setting.
 	 *
-	 * @section seccnvmethods Conversion Methods  API
+	 * @section secegwicaldevicetype The DeviceType system
+	 * The Egwical package allows it to tune the conversion between EElts and
+	 * VElts to the capabilities of the device that is tranferring iCalendar
+	 * data to and from Egw. This steering of the conversion is done via
+	 * the deviceType member that determines wich VElt fields are supported for
+	 * for import and export. 
+	 * @todo write some doc about the devicType steering and supportedFields
+	 *
+	 * @section seccnvmethods Auxiliary Conversion Functions
 	 * Developers of Concrete resource handler subclasses, can
 	 * profitably use the set of  auxiliary conversion
-	 * methods that the class @ref eicnvutils provides.
+	 * routines that the library class @ref eicnvutils provides.
 	 * These methods must be accessed via the $ecu member variable. 
 	 *
+	 * @version 0.9.34 updated to ncvelt and new documentation
+	 * @date 20060405
 	 * @since 0.9.30 new api: ical accessors as egwical_resourcehandler subclasses
 	 * @since 0.9.22 new api2 using eicnvutils via $ecu
 	 * @author Jan van Lieshout <jvl (at) xs4all.nl> (This version)
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (original code of reused parts)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (original code of reused parts)
 	 *
-	 * @version 0.9.30 first version in napi3 scheme
-	 * @date 20060321
 	 * @license see @url http://opensource.org/licenses/gpl-license.php GPL -
 	 *  GNU General Public License
+	 * 
+	 * @todo check signatures of various EElt export methods to see if we should allow
+	 * both array_of_EElt and array_of_EEltId arguments. The first might be profitable
+	 * to handle large queries (only one DB search needed)
 	 */
     class egwical_resourcehandler
     {
@@ -175,7 +222,7 @@
 	  var $eidebug = 1;
 	  
 
-	  /**
+	  /** Horde calendar used for various conversions
 	   * @private
 	   * @var Horde_iCalendar Horde_iCalendar that is used for various things.
 	   * Placeholder object used to access various Horde_iCalendar methods
@@ -187,7 +234,6 @@
 
 	  /** The library object with the conversion utilities
 	   * @private
-	   * 
 	   * @var eicnvutils
 	   * This object can be reused in other egwical objects, it is used readonly.
 	   * Therefore you can pass an instantion of it via the class constructor, if you
@@ -198,7 +244,6 @@
 
 	  /** Standard attributes values used in rendering a iCalendar string
 	   * @private
-	   *
 	   * @var array
 	   * Hash of some standard attributes of a VCALENDAR element.
 	   * These used for rendering a Vcal formatted string.
@@ -222,7 +267,7 @@
 	   *  a workerclass  egwical object. or:
 	   * - the  add_rsc() routine if we add a resource and associated workerobj to
 	   *  a base egwical class.
-	   * @note in the workerclasses the supportedFields system will copy keys from
+	   * @note in the concrete subclasses the supportedFields system will copy keys from
 	   * this table to indicate if some mapping is supported.
 	   */
 	  var $ical2egwComponents = array();
@@ -255,7 +300,6 @@
 
 	  /** supported fields of the importing/exporting device
 	   * @private
-	   * 
 	   * @var array $supportedFields
 	   * An array with the current supported fields of the
 	   * importing/exporting device.
@@ -269,20 +313,6 @@
 	   * @note this variable is only set and used in real worker classes
 	   */
 	  var $supportedFields;
-
-
-
-	  /**
-	   * @private
-	   * @var string Magic unique number used for de/encoding our uids.
-	   * @deprecated this TASKMAGIC is moved to eicnvutils i think...
-	   *
-	   * This string that contains global unique magic number that is
-	   *  unique for our current database installed etc. It is used to recognize
-	   *  earlier exported VTODO or VEVENT UID fields as referring to their eGW counterparts.
-	   */
-	  var $TASKMAGIC='dummy';
-
 
 	  
 	  /** Switch that determines how uid fields are used for import
@@ -332,7 +362,7 @@
 
 	  /** Constructor that inits the handler object.
 	   *
-	   * The auxiliary object @ref $hi, @ref $TASKMAGIC ,
+	   * The auxiliary object @ref $hi, 
 	   * @ref $ecu ,  @ref $ical2egwComponents and $vcalendar2egwAttributes are all initialized.
 	   * Optionally an egwresource (like calendar- or infolog object) can already be passed
 	   * and a devicetype.
@@ -349,6 +379,7 @@
 		// actually this would only be needed by the abstract superclass?
 		$this->hi = &new Horde_iCalendar;
 
+		// deprecated? now only via $ecu done?
 		$this->TASKMAGIC = $GLOBALS['egw_info']['server']['install_id']
 		  ? $GLOBALS['egw_info']['server']['install_id']
 		  : 'local'; 
@@ -363,6 +394,12 @@
 			error_log('egwical_resourcehandler() bad arg for $rsc');
 		}
 	  }
+
+	  
+	  /**  @name Class Methods
+	   * Methods that can be called without an instance of class egwical_resourcehandler
+	   */
+	  //@{
 
 	  /** Deliver the implemented ical to egw components mapping. --Class Method--
 	   * @private
@@ -404,7 +441,7 @@
 	  }
 
 	  /** Derive the deviceType for an iCalendar. --Class method-- 
-	   * 
+	   * @todo implement icalendarProdId2devicetype()
 	   * @param string $prodidstr stringvalue of a iCalendar PRODID field
 	   * @return ProductType|False the productype derived from the PRODID label
 	   * On failure: False
@@ -415,7 +452,7 @@
 	  }
 
 	  /** Derive the deviceType from a http request agent field. --Class method--
-	   * 
+	   * @todo implement httpUserAgent2deviceType()
 	   * @param string $agentid stringvalue http user agent id field of a http request
 	   * @return ProductType|False the productype derived from the PRODID label
 	   * On failure: False
@@ -426,111 +463,21 @@
 	  }
 
 	  /** Derive the deviceType from a product manufacturer and name description. --Class method--
+	   * @todo implement product2devicetype
 	   * @param string $_productManufacturer a string indicating the device manufacturer
 	   * @param string $_productName a further specification of the current device that is used
 	   * for import or export.
+	   * @return ProductType|False the productype derived from the input strings
+	   * On failure: False
 	   */
-	  function product2devicetype($productManufacturer='all', $productName='')
+	  function product2deviceType($productManufacturer='all', $productName='')
 	  {
 		return 'all';
 	  }
 
 
-
-	  /**  Set the egw resource and ical element types  to handle. (Virtual Method)
-	   *
-	   * The egw resource and ical element types that are used to
-	   * handle are registered in the variable $rsc and $rsc_vtypes.
-	   * @note this method needs to be implemented in a concrete
-	   * subclass of egwical_resourcehandler as these only these classes
-	   * can check if the $egw_rsc passed is of the correct (supported) type for the handler.
-	   * And they are also the only ones thatknow what the vtypes associated with the resource are!
-	   *
-	   * @param obj $egw_rsc the resource that will be used to transport the ical data to and from.
-	   * 
-	   * @return boolean false  always as this abstract version should
-	   * never be called from this base class directly.
-	   */
-	  function set_rsc($egw_rsc)
-	  {
-		//$this->rsc = $egw_rsc;
-		//$this->rsc_vtypes[] = 'vevent';
-		error_log('egwical_resourcehandler.set_rsc(): ERROR: Empty Abstract Method called' .
-				  ' -call this method only on a concrete subclass!');
-		return false;
-	  }
-
-
 	  /**
-	   * Import all suited elements  from an iCalendar string into the
-	   * bound Egw resource.
-	   *
-	   * This import routine parses the Vcal string and then tries to
-	   * import into the egw resource bound in $this->rsc all
-	   * vcalendar elements of the supported type (VEVENTS or VTODOS,
-	   * ..) for this resource. This supported type is found in $this->?? 
-	   *
-	   * @param VcalStr $vcal a iCalendar formatted string with either a single VElt or a VCALENDAR
-	   * that contains multiple VElts.
-	   * @return array_of_EEltId|false a list of id s of the resulting
-	   * egw elements imported or updated in the bound egw resource.
-	   * On error: false
-	   */
-	  function import_vcal(&$vcal)
-	  {
-
-		if(($velt = $this->parse_vcal2velt($vcal)) == false){
-		  error_log('egwical..import_vcal: error parsing');
-		  return false;
-		}
-
-		// rest should be done by the by import_velt()
-		return $this->import_velts(array($velt));
-	  }
-
-
-	  /**
-	   * Export egw elements from bound egw resource as an iCalendar string.
-	   *  
-	   * All the egw elements in the bound egw resource, refered to by
-	   * the ids in $eids are exported as Vcalendar elements and then
-	   * rendered into a iCalendar formatted string.
-	   * Specific global attributes settings  for this string are
-	   * taken from .....
-	   *
-	   * @param  array_of_EEltId $eids a list of egw element id s for
-	   * the bound egw resource that are to be exported.
-	   * @param array $attribs optional hash with global iCalendar
-	   * attributes settings. These attributes will be added and
-	   * possibly override the standard attributes as found in $this->vcalendar2egwAttributes
-	   * @return VcalStr a iCalendar formatted string  corresponding
-	   * to the VElt data converted from egw elemenent refered to by $eids
-	   * On error: false
-	   */
-	  function export_vcal(&$eids, $attribs = null)
-	  {
-
-		// be tolerant towards a single eid
-		if(!is_array($eids))
-		  $eids = array($eids);
-
-		// get a new horde_iCalendar to gather and render
-		// this to not interfere with render_velt2vcal
-		$myhi =& new Horde_iCalendar;
-
-		foreach($eids as $eid){
-		  if(($velt = $this->export_velt($eid)) !== false){
-			$myhi->addComponent($velt);
-		  }
-		}
-
-		return $this->render_velt2vcal($myhi, $attribs);
-
-	  }
-
-
-	  /**
-	   * Parse  Vcalstring into a Vcal Element --Class Method--.
+	   * Parse  Vcalstring into a Vcal Element. --Class Method--
 	   *  
 	   * The Vcalstring should form a single Vcal element, thus it should be of the form
 	   * <code>BEGIN:veltype ...... END:veltype </code> with veltype the name of a valid
@@ -565,7 +512,7 @@
 
 
 	  /**
-	   * Render a Vcal Element as a VcalString  --Class Method--.. 
+	   * Render a Vcal Element as a VcalString.  --Class Method-- 
 	   *
 	   * @note if the $vobj is a iCalendar sub element, a Vcalendar container
 	   * is put around it.
@@ -610,9 +557,40 @@
 	  }
 
 
-	  /** Import a Vcalendar Element into the bound resource --Virtual Method--.
+	  // end of class methods group
+	  //@}
+
+	  /** @name Virtual Methods
+	   * These methods must be overridden in concrete subclasses
+	   */
+	  //@{
+
+	  /**  Set the egw resource and ical element types  to handle.
+	   * @virtual
+	   * The egw resource and ical element types that are used to
+	   * handle are registered in the variable $rsc and $rsc_vtypes.
+	   * @note this method needs to be implemented in a concrete
+	   * subclass of egwical_resourcehandler as these only these classes
+	   * can check if the $egw_rsc passed is of the correct (supported) type for the handler.
+	   * And they are also the only ones thatknow what the vtypes associated with the resource are!
+	   *
+	   * @param obj $egw_rsc the resource that will be used to transport the ical data to and from.
 	   * 
-	   * @param VElt $velt a vcalendar element that is to be imported
+	   * @return boolean false  always as this abstract version should
+	   * never be called from this base class directly.
+	   */
+	  function set_rsc($egw_rsc)
+	  {
+		//$this->rsc = $egw_rsc;
+		//$this->rsc_vtypes[] = 'vevent';
+		error_log('egwical_resourcehandler.set_rsc(): ERROR: Empty Abstract Method called' .
+				  ' -call this method only on a concrete subclass!');
+		return false;
+	  }
+
+	  /** Import a Non Compound Vcalendar Element into the bound resource.
+	   * @virtual
+	   * @param VElt $ncvelt a Non Compound vcalendar element that is to be imported
 	   * in the bound resource. This should not be a full compound VCALENDAR obj!
 	   * @param EEltId $eid a fixed id indicating a specific egw
 	   * element in the bound resource that should be
@@ -620,14 +598,102 @@
 	   * done on some form of uid-to-id mapping.
 	   * @return false as it is a non allowed abstract dummy
 	   */
-	  function import_velt($velt,$eid=-1)
+	  function import_ncvelt($ncvelt,$eid=-1)
 	  {
-		error_log('egwical_resourcehandler.import_velt()' .
+		error_log('egwical_resourcehandler.import_ncvelt()' .
 				  ': ERROR: Virtual Method called - this function should be overwritten in subclass!');
 		return false;
 
 	  }
 
+
+	  /** Export Egw element from bound resource as NonCompound Vcal Element.
+	   * @virtual
+	   * @param EEltId|EEltData $eid a egw element for the bound resource that is to be exported 
+	   * @return NCVElt the exported egw element converted to a Non Compound Vcalendar object
+	   */
+	  function export_ncvelt(&$eid)
+	  {
+		error_log('egwical_resourcehandler.export_ncvelt()' .
+				  ': ERROR: Virtual Method called - this function should be overwritten in subclass!');
+		return false;
+
+	  }
+
+	  // end of virtual methods group
+	  //@}
+
+
+
+
+	  /**
+	   * Import all suited elements  from an iCalendar string into the
+	   * bound Egw resource.
+	   *
+	   * This import routine parses the Vcal string and then tries to
+	   * import into the egw resource bound in $this->rsc all
+	   * vcalendar elements of the supported type (VEVENTS or VTODOS,
+	   * ..) for this resource. This supported type is found in $this->?? 
+	   *
+	   * @param VcalStr $vcal a iCalendar formatted string with either a single VElt or a VCALENDAR
+	   * that contains multiple VElts.
+	   * @return array_of_EEltId|false a list of id s of the resulting
+	   * egw elements imported or updated in the bound egw resource.
+	   * On error: false
+	   */
+	  function import_vcal(&$vcal)
+	  {
+
+		if(($velt = $this->parse_vcal2velt($vcal)) == false){
+		  error_log('egwical..import_vcal: error parsing');
+		  return false;
+		}
+
+		// rest should be done by the by import_velts()
+		// that dissassembles the icalendar obj
+		//$va = array($velt);
+		return $this->import_velts($velt);
+	  }
+
+
+	  /**
+	   * Export egw elements from bound egw resource as an iCalendar string.
+	   *  
+	   * All the egw elements in the bound egw resource, refered to by
+	   * the ids in $eids are exported as Vcalendar elements and then
+	   * rendered into a iCalendar formatted string.
+	   * Specific global attributes settings  for this string are
+	   * taken from .....
+	   *
+	   * @param  array_of_EEltId|array_of_EEltData $eids a list of egw elements (ids) for
+	   * the bound egw resource that are to be exported.
+	   * @param array $attribs optional hash with global iCalendar
+	   * attributes settings. These attributes will be added and
+	   * possibly override the standard attributes as found in $this->vcalendar2egwAttributes
+	   * @return VcalStr a iCalendar formatted string  corresponding
+	   * to the VElt data converted from egw elemenent refered to by $eids
+	   * On error: false
+	   */
+	  function export_vcal(&$eids, $attribs = null)
+	  {
+
+		// be tolerant towards a single eid
+		if(!is_array($eids))
+		  $eids = array($eids);
+
+		// get a new horde_iCalendar to gather and render
+		// this to not interfere with render_velt2vcal
+		$myhi =& new Horde_iCalendar;
+
+		foreach($eids as $eid){
+		  if(($velt = $this->export_ncvelt($eid)) !== false){
+			$myhi->addComponent($velt);
+		  }
+		}
+
+		return $this->render_velt2vcal($myhi, $attribs);
+
+	  }
 
 
 	  /**
@@ -687,7 +753,7 @@
 						' of total:' . count($velts));
 			if(!is_a($ve, $hordevtype))
 			  continue;
-			if(($eidStat = $this->import_velt($ve)) > 0){
+			if(($eidStat = $this->import_ncvelt($ve)) > 0){
 			  $eelt_ids[] = $eidStat;
 			  $impstats[VELT_IMPORT_STATUS_UPDOK]++;
 			} else{
@@ -712,23 +778,11 @@
 	  }
 
 
-	  /** Export Egw element from bound resource as Vcal Element - Virtual Method -
-	   *
-	   * @param EEltId $eid a egw elemt id for the bound resource that is to be exported 
-	   * @return VElt the exported egw element converted to a Vcalendar object
-	   */
-	  function export_velt(&$eid)
-	  {
-		error_log('egwical_resourcehandler.export_velt()' .
-				  ': ERROR: Virtual Method called - this function should be overwritten in subclass!');
-		return false;
-
-	  }
-
 
 	  /** Export Egw elements from bound resource as Vcalendar Elements
 	   *
-	   * @param array_of_EEltId $eids a list of egw element id s that are to be used for export.
+	   * @param array_of_EEltId|array_of_EEltData $eids a list of egw elements (ids)
+	   * that are to be used for export.
 	   * @return array_of_VElt a list of  Vcal objects that were exported
 	   * On error: false (currently error handling not implemented!)
 	   */
@@ -740,7 +794,7 @@
 
 		$velts = array();
 		foreach($eids as $eid){
-		  if(($velt = $this->export_velt($eid)) !== false){
+		  if(($velt = $this->export_ncvelt($eid)) !== false){
 			$velts[] = $velt;
 		  }
 		}
@@ -749,7 +803,6 @@
 
 	  /** Log Egw and Velt update problems to errorlog
 	   * @private
-	   * Log egwelt update problems to http errorlog
 	   * @param string $vtype type of egw elements that is updated (event ,task,..)
 	   * @param string $fault description of the fault type
 	   * @param ind $user_id the id of the logged in user

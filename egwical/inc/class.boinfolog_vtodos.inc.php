@@ -2,9 +2,10 @@
    /** 
 	* @file 
 	* eGroupWare - iCalendar VTODOS conversion, import and export for egw infolog
-	*
-	* http://www.egroupware.org                                                *
 	* @author Jan van Lieshout   
+	*/
+
+   /* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -12,7 +13,7 @@
 	**************************************************************************/
 
 
-  /** @page pageegwicalveventfeatures A small list of currently implemented VTODO handling in egwical
+  /** @page pageegwicalvtodofeatures Currently implemented VTODO handling in egwical
    * <PRE>
    * TODO:
    * [-] check multiple ATTENDEE import
@@ -30,7 +31,6 @@
    * [?] test the usage and conversions of user time and server times and timezones in
    *     exported and imported ical files.
    * </PRE>
-   * the todos on a row:
    */
 
 	require_once EGW_SERVER_ROOT.'/calendar/inc/class.bocalupdate.inc.php';
@@ -41,19 +41,90 @@
 	 * Concrete subclass resourcehandler for iCal vtodos import and export with a egroupware
 	 * boinfolog infolog resource.
 	 *
-	 * @todo Here should come some text about the workings of this class
-	 * (esp. the uid2id mechanisme the handling of ACL failures and....)
+	 *@section secboivtodossynopsis Synopsis
+	 * Some simple examples. Firs we need a couple of egw tasks and an instance of our
+	 * (concrete) infologresource handler class:
+@verbatim
+  $binf =& CreateObject('infolog.boinfolog');
+
+  $tsk1 = $binf->read(1233);                    // get 3 tasks
+  $tsk2 = $binf->read(4011);
+  $tsk3 = $binf->read(4012);
+
+  $binfhnd =& CreateObject('egwical.boinfolog_vtodos',$binf);
+@endverbatim
+     * Now export a task as VTODO and render it as iCalendar string
+@verbatim
+   // alternative 1
+   $vtodo1 = $binfhnd->export_vtodo($ev1,UMM_ID2UID);
+   $vcalstr1 = egwical_resourcehandler::render_velt2vcal($vtodo1);
+
+   // alternative 2 (generic for all resourcehandlers)
+   $binfhnd->uid_mapping_export = UMM_ID2UID;
+   $vtodo2  = $binfhnd->export_ncvelt($tsk2);
+   $vcalstr2 = egwical_resourcehandler::render_velt2vcal($vtodo2);
+
+   // alternative 3 (via baseclass, without intermediate vtodo)
+   $vcalstr3 = $binfhnd->export_vcal($tsk3);
+@endverbatim
+     * An example for importing the vtodos
+@verbatim
+    // alternative 1 (via the concrete method)
+    $vtodo1  = ..... a good vtodo
+    $tsk_id1 = $binfhnd->import_vtodo($vtodo1, UMM_UID2ID,1);
+    if ($tsk_id1 > 0)    {
+      echo "imported vtodo1 as task with id $tsk_id1";
+    }
+
+    // alternative 2 (generic for all resourcehandlers)
+    $binfhnd->uid_mapping_import = UMM_UID2ID;
+    $tsk_id2  = $binfhnd->import_ncvelt($vtodo2);
+    if ($tsk_id2 > 0)    {
+      echo "imported vtodo2 as task with id $tsk_id2";
+    }
+
+    // alternative 3 (via base class, easier for multiple vtodos)
+    $my_vtodos = array($vtodo1, $vtodo2,..);
+    $binfhnd->uid_mapping_import = UMM_UID2ID;
+    $tids = $binfhnd->import_velts($my_vtodos);
+    echo "we imported" . count($tids) . "vtodos";
+
+@endverbatim
+    * And finally an example of importing all the vtodos from a vcalstring
+@verbatim
+    // alternative 1
+    $vcalstr = .. an vcalendar format string with multiple vtodos
+
+    $compvelt  = egwical_resourcehandler::parse_vcal2velt($vcalstr);
+    if($compvelt === false) exit;
+
+    $tids = $binfhnd->import_velts($compvelt);
+    if ($tids)
+    {
+       echo "we imported" . count($tids) . "tasks";
+    }
+
+    // alternative 2 (using the baseclass its methods)
+   $tids = $binfhnd->import_vcal($vcalstr);
+   if ($tids)   echo "we imported" . count($tids) . "tasks";
+
+@endverbatim
+     * @note Warning: When importing a vtodo resulting from parsing a vcalstring
+     * or any other VElt for which you do not know if it is a single vtodo
+     * or possibily a compound element with multiple vtodos in it, you should preferable use
+	 * the import_velts() routine of the baseclass instead of the import_ncvelt()
+	 * or the import_vtodo() routines. This is because the former can handle compound VElts,
+	 * while the latter two cannot!
 	 *
 	 * @package egwical
-	 *
-	 * @todo add Lars his VERSION=1.0 handling of events in here.
 	 *
 	 * @author Jan van Lieshout <jvl-AT-xs4all.nl> (This version. new api rewrite,
 	 * refactoring, and extension).
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.30  first version for napi3
+	 * @version 0.9.34 updated to _ncvelt() routines and with synopsis
+	 * @since 0.9.30  first version for napi3
 
 	 * license @url  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
 	 */
@@ -63,7 +134,7 @@
 	  /**
 	   * @private
 	   * @var boolean
-	   * Switch to print extra debugging about imported and exported events to the httpd errorlog
+	   * Switch to print extra debugging about imported and exported todos to the httpd errorlog
 	   * stream.
 	   */
 	  var $tsdebug = true;
@@ -148,7 +219,7 @@
 	   */
 	  function _provided_vtodo2taskFields()
 	  {
-		return
+		static $v2t =
 		  array(
 				// optional once only 
 				'CLASS'		=> array('rn' => 'info_access'),
@@ -195,6 +266,8 @@
 // 				'VALARM'     => array('fn_cn' => 'alarms'),
 // 				'VALARM/TRIGGER'     => array('fn_crn' => 'alarms/time')
 				);
+
+		return $v2t;
 	  }
 
 
@@ -266,7 +339,7 @@
 	   *
 	   * The mapping is inspired on rfc 2445 -sec 4.6.2 
 	   *  @bug created field is not fetched oke from db.
-	   * @param TaskId $task id of the eGW task that will be exported
+	   * @param TaskId|TaskData $task id or data of the eGW task that will be exported
 	   * @param int $uid_mapping_export switch to set the export mode for the uid fields.
 	   * Default UMM_ID2UID is used.
 	   * @return VTODO|false  the iCalendar VTODO object representing the data from the egw
@@ -489,12 +562,12 @@
 	   * as to chose the method of UID field generation for the
 	   * VTODO. See @ref secuidmapping in the egwical_resourcehandler
 	   * documentation.
-	   * @param TaskId $tid id of an task in the bound
+	   * @param TaskId|TaskData $tid id or arraydata of an task in the bound
 	   * boinfolog resource that is to be exported.
 	   * @return VTODO the exported egw task converted to a VTODO
 	   * object.  on error False.
 	   */
-	  function export_velt(&$tid)
+	  function export_ncvelt(&$tid)
 	  {
 		return $this->export_vtodo($tid, $this->uid_mapping_export);
 	  }
@@ -533,7 +606,7 @@
 	   * UMM_NEWID mode, if set as 0 the uid_mapping_import will switch to the default
 	   * UMM_UID2ID mode.
 	   * @return TaskId|Errorstring the id of the imported(or updated) egw infolog task.
-	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
+	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT | BTYPE
 	   */
 	  function import_vtodo(&$vtodo, $uid_mapping_import, $reimport_missing_tasks=false, $cal_id=0)
 	  {
@@ -550,7 +623,7 @@
 		  // HANDLE ONLY VTODOS HERE
 		if(!is_a($vtodo, 'Horde_iCalendar_vtodo')){
 		  error_log('import_vtodo called for non vtodo type');
-		  return false;
+		  return BTYPE;
 		}
 
 		$task = array('info_subject' => 'Untitled');
@@ -757,6 +830,10 @@
 		  if(!$task['info_status'])
 			$task['info_status'] = 'offer';
 
+		  // hack for infolog bug: reset info_datecompleted for a not-done status value
+		  if($task['info_status'] !== 'done')
+			$task['info_datecompleted'] = null;
+
 		  // AD HOC solution: add nonegw info_responsible to the description
 		  // should be controlable by class member switch
 		  if (count($nonegw_info_responsible) > 0)
@@ -855,7 +932,7 @@
 	   * 
 	   * The value of the member variable $uid_mapping_import is used to control the set
 	   * of iCalendar fields that are imported.
-	   * @param  VTODO $velt    VTODO object (horde_iCalendar_vtodo) 
+	   * @param  VTODO $ncvelt    VTODO object (horde_iCalendar_vtodo) 
 	   * @param  int $tid  id for a selected task to be updated by the info from $velt
 	   *     If left out or set to -1 then uid_mapping_import is switched back to its standard
 	   *  setting as found in the member variable $uid_mapping_import.
@@ -863,7 +940,7 @@
 	   * @return TaskId|errorstring the id of the imported(or updated) ege infolog task.
 	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
 	   */
-	  function import_velt(&$velt,$tid=-1)
+	  function import_ncvelt(&$velt,$tid=-1)
 	  {
 		$uid_mapping_import_sel = ($tid > 0) ? UMM_FIXEDID : $this->uid_mapping_import;
 		  

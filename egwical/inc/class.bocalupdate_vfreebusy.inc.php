@@ -2,26 +2,28 @@
    /** 
 	* @file 
 	* eGroupWare - iCalendar VFREEBUSY conversion,  export and import for egw calendar.
-	*
-	* http://www.egroupware.org                                                *
 	* @author Jan van Lieshout   
+	*/
+
+   /* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
 	*  Free Software Foundation; either version 2 of the License.              *
-	**************************************************************************/
+	****************************************************************************/
 
 
   /** @page pageegwicalvfreebusyfeatures Currently implemented VFREEBUSY handling in egwical
    * <PRE>
+   * @todo various features, see below
    * TODO:
-   * @todo [+] export
+   *  [+] export
    *    [-] export calendar owner as ATTENDEE
    *    [+] export ... type events as FBTYPE= ...
    *    [+/-] export url as call adres for this calendark
    *    [-] report the requestor as ORGANIZER (we should have his id then..)
    *  
-   * @todo [-] import
+   *  [-] import
    *    [-] parse the import VFEEBUSY data, 
    *    [-] determine a set of request period from this
    *    [-] generate VFREEBUSY elements for each of these fb_periods
@@ -37,11 +39,51 @@
 	 * Concrete subclass resourcehandler for iCal vfreebusy import and export with a egroupware
 	 * bocalupdate calendar resource.
 	 *
-	 * @todo Here should come some text about the workings of this class
+	 *@section secbocvfreebusysynopsis Synopsis
+	 * A simple export of a freebusy calendar example. First we need a couple
+	 * of egw events, a request period, for which we want to know the freebusy times and
+	 * an instance of our vfreebusy calendarresource handler class:
+@verbatim
+  $boc =& CreateObject('calendar.bocalupdate');
+
+  $ev1 = $boc->read(1233);                    // get two events
+  $ev2 = $boc->read(4011);
+
+  $fbreq = array('url'=> '/myfreebusy.vfb',
+                 'start' => '20060201',
+                 'end'   => '20061231'
+                 );
+  $devicetype = 'all';               
+  $calhnd =& CreateObject( 'egwical.bocalupdate_vfreebusy',
+                           $boc,
+                           $devicetype,
+                           $fbreq );
+
+@endverbatim
+     * Now export all the freebusy times from the two events as a VFREEBUSY
+     * element and render it as iCalendar string
+@verbatim
+   // alternative 1
+   $events = array($ev1, $ev2);
+   $vfreebusies =& $calhnd->export_velts($events);
+   if($vfreebusies === false) exit;
+
+   $vcalstr1 = egwical_resourcehandler::render_velt2vcal($vfreebusies);
+@endverbatim 
+    * In the current implementation all the freebusy times are collected and
+	* added to a single VFREEBUSY element as FBTYPE field, so the name
+	* <code>$vfreebusies</code> in the example may be a bit misleading.
+	*
+	 * @todo Here should come some more text about the workings of this class
+	 * especially about how this class ovewrites some extra methods of the baseclass
+	 * egwical-resourcehandler, because in the vfreebusy multiple events are converted
+	 * into a single vfreebusy element.
 	 * @todo get import of freebusy working....
 	 * @package egwical
 	 * @author Jan van Lieshout <jvl-AT-xs4all.nl> (This version. new api rewrite,
 	 * refactoring, and extension).
+	 * @version 0.9.34 updated doc and _ncvelt usage
+	 * @date 20060405
 	 * @version 0.9.30a1  first version for napi3
 	 * license @url  http://opensource.org/licenses/gpl-license.php GPL -
 	 * GNU General Public License
@@ -71,13 +113,13 @@
 	  /** Request Info hash - some of the fields from the request
 	   * This is to be set by the constructor of this handler.
 	   * Fields that can be set in this hash are:
-	   <PRE>
-	    $fb_req = array( 'start'     => <Start time of the request period for the freebusies>, 
-		                 'end'       => <End time of the request period for the freebusies>,
-						 'requestor' => <Requestor of the freebusy output (by egw id)>,
-						 'cal_owner' => <Owner of the calendar (by egw id)>,
-						 );
-      </PRE>
+@verbatim
+ $fb_req = array('start'     => <Start time of the request period for the freebusies>, 
+                 'end'       => <End time of the request period for the freebusies>,
+                 'requestor' => <Requestor of the freebusy output (by egw id)>,
+                 'cal_owner' => <Owner of the calendar (by egw id)>,
+                 );
+@endverbatim
 	   * @var array $fb_req
 	   */
 	  var $fb_req = array();
@@ -89,9 +131,9 @@
 	   * An array containing roughly the mapping from iCalendar
 	   * to egw fields. Set by constructor.
 	   * example entry (<i>rn</i> stands for "Resourced_Name"):
-	   * <PRE>
-			'SUMMARY'	=> array('rn' => 'title'),
-  	    </PRE>
+@verbatim
+	'SUMMARY'	=> array('rn' => 'title'),
+@endverbatim
 	   * Here <i>rn</i> stands for "Resourced  Name", to indicate the name of the related
 	   * related field in the bound egw resource
 	   * @todo integrate this with the  egwical base $ical2egw conversion table
@@ -133,7 +175,6 @@
 	  }
 
 
-
 	  /**
 	   * Our Constructor, if given it sets the egw resource $egwrsc is set as
 	   * so called <i>bound egw resource</i>. And $prodid, the product id of the client that
@@ -141,17 +182,13 @@
 	   * import and exportd conversions between vcalendar and egw data.
 	   * @param egwobj $egwrsc Egroupware data resource object that
 	   * will be used to transport (i.e. import and export) the
-	   * vcalendar elements to and from. This can also later be set
+	   * vfreebusy elements from. This can also later be set
 	   * using the set_rsc() method.
 	   * @param ProductType $devicetype The type identification of the device that is used to
 	   * @param array $fb_req hash with e.g. start, end and requestor for the freebusy request.
-	   * @param Utime $fb_end  end time of the request period for the freebusies.
-	   * the transport the ical data to and from. This is used to set the supportedFields already.
-	   * @note These can also later be set using the setSupportedFields() method. 
+	   * See also @ref$fb_req
 	   */
-	  function bocalupdate_vfreebusy($egwrsc = null, $devicetype='all',
-									 &$fb_req = null)
-		
+	  function bocalupdate_vfreebusy($egwrsc = null, $devicetype='all', &$fb_req = null)
 	  {
 		// call our abstract superclass constructor
 		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid);
@@ -192,7 +229,7 @@
 	  // -------- below only conversion and import/export stuff -----
 
 
-	  /** Export calendar event from bound bocalupdate resource as FREEBUSY field
+	  /** Export calendar events from bound bocalupdate resource as FREEBUSY field
 	   *
 	   * The eGW events in $eids are exported to a iCalendar FREEBUSY (of type
 	   * Horde_iCalendar_vfreebusyd). For each event a FREEBUSY field is set.
@@ -203,10 +240,9 @@
 	   * $fb_start and $fb-end.
 	   * @todo should the VFREEBUSY element get a uid? and if so: what and why?
 	   * @bug export_vfreebusy is currently very rudimentary....
-	   * @bug export_vfreebusy doesnot incorporate busytimes resulting from recurring events yet
 	   *
-	   * @param array_of_EventId $eids list of the eGW events by id, whose freebusy times will
-	   * be exported.
+	   * @param array_of_EventId|array_of_EventData $eids list of the eGW events by id or
+	   * as arraydata, whose freebusy times will be exported.
 	   * @return VFREEBUSY|false  an iCalendar VFREEBUSY object that collects all the freebusy
 	   * times from the events in $eids. With a period set according the $fb_start and $fb_end
 	   * member vars.
@@ -363,7 +399,7 @@
 
 	  /** Export all events as a VFREEBUSY element --overwrites baseclass method--
 	   *
-	   * @param array_of_EventId $eids list of event id in the bound bocalupdate resource
+	   * @param array_of_EventId|array_of_EventData $eids list of event id in the bound bocalupdate resource
 	   * that are to be exported in VFREEBUSY elements. 
 	   * @return VFREEBUSY the exported egw events converted to one or more VFREEBUSY objects.
 	   * on error False.
@@ -382,7 +418,7 @@
 	   * Specific global attributes settings  for this string are
 	   * taken from .....
 	   *
-	   * @param  array_of_EventId $eids a list of events id s for
+	   * @param  array_of_EventId|array_of_EventData $eids a list of events ids or arraydata for
 	   * the bound calendar resource whose freebusy time are to be exported.
 	   * @param array $attribs optional hash with global iCalendar
 	   * attributes settings. These attributes will be added and
@@ -427,233 +463,30 @@
 	  function import_vfreebusy(&$vfreebusy)
 	  {
 		return false;
-//-----------------------------------------to be recoded start ---------------
-		// auxiliary horde_iCalendar object
-		$hIcal = $this->hi; 
-
-		$veImportFields =& $this->supportedFields;
-
-//		error_log('veImportFields::'. print_r($veImportFields,true));
-
-		$eidOk   = false;	// returning false, if file contains no components
-		$user_id = $GLOBALS['egw_info']['user']['account_id'];
-
-		  // HANDLE ONLY VEVENTS HERE
-		if(!is_a($vevent, 'Horde_iCalendar_vevent')){
-		  error_log('import_vevent called for non vevent type');
-		  return false;
-		}
-//		  $event = array('participants' => array());
-		$event = array('title' => 'Untitled');
-		$alarms = array();
-		unset($owner_id);
-		$evduration = false;
-		$nonegw_participants = array();
-
-
-		// lets see what other supported veImportFields we can get from the vevent
-		foreach($vevent->_attributes as $attr) {
-		  $attrval = $GLOBALS['egw']->translation->convert($attr['value'],'UTF-8');
-
-		  // SKIP  UNSUPPORTED VEVENT FIELDS
-		  if(!in_array($attr['name'],$veImportFields))
-			continue;
-//			error_log('cnv field:' . $attr['name'] . ' val:' . $attrval);
-
-		  switch($attr['name']) {
-
-			case 'DTEND':
-			  // will be reviewed after all fields are collected
-			  $event['end']		= $this->ecu->mke_DDT2utime($attrval);
-			  //			  $event['end']		= $attrval;
-			  break;
-
-			  // note: DURATION and DTEND are mutually exclusive
-			case 'DURATION':
-			  // duration after eventstart in secs
-			  $evduration = $attrval;
-			  break;
-
-			case 'DTSTART':
-			  // will be reviewed after all fields are collected
-			  $event['start']		= $attrval;
-			  break;
-
-			  // when we encounter an new valid cal_address but not yet in egw db
-			  // should we import it?
-			case 'ATTENDEE':
-			  if ($pid = $this->ecu->mke_CAL_ADDRESS2pid($attrval)){
-				if( $epartstat = $this->ecu->mke_params2partstat($attr['params'])){
-				  $event['participants'][$pid] = $epartstat;
-				} elseif ($pid == $event['owner']){
-				  $event['participants'][$pid] = 'A';
-				} else {
-				  $event['participants'][$pid] = 'U';
-				}
-				// egw unknown participant, add to nonegw_participants list
-			  } else {
-				$nonegw_participants[] =
-				  $this->ecu->mke_ATTENDEE2cneml($attrval,$attr['params']);
-			  }
-			  break;
-
-			  // make organizer into a accepting participant
-			case 'ORGANIZER':	// make him 
-			  if ($pid = $this->ecu->mke_CAL_ADDRESS2pid($attrval))
-				  $event['participants'][$pid] = 'A';
-			      //$event['owner'] = $pid;
-			  break;
-
-			default:
-			error_log('VEVENT field:' .$attr['name'] .':'
-					  . $attrval . 'HAS NO CONVERSION YET');
-			}
-		  } // end of fields loop
-	
-		  // now all fields are gathered do some checking and combinations
-		  
-
-		  // build endtime from duration if dtend was not set
-		  if (!isset($event['end']) && ($evduration !== false)){
-			$event['end'] = $this->ecu->mke_DDT2utime($event['start']) + $evduration;
-		  } 
-		  
-		  // a trick for whole day handling or ...??
-		  if(date('H:i:s',$event['end']) == '00:00:00')
-			$event['end']--;
-
-
-		  // handle fixed id call (for boical compatibility)
-		  // @todo test boical compatibility (esp. with $cal_id>0 case) 
-		  if($cal_id > 0)	{
-			$event['id'] = $cal_id;
-		  }
-
-		  // SORRY THE PARTICPANTS HANDLING OF EGW IS NOT YET CLEAR TO ME (JVL)
-		  // so I do the bold solution to add ourself to participants list if we are not on yet
-		  if(!isset($event['participants'][$user_id]))
-			$event['participants'][$user_id] =  'A';
- // error_log('<< ok <<<<' . 'event read for import=' . print_r($event,true));
-
-		  // -- finally we come to the import into egw ---
-
-		  if (($event['title'] == 'X-DELETE') || ($event['title'] == '_DELETED_')){
-
-			// -------- DELETION --------------------
-			//			error_log('delete event=' . print_r($event,true));
-			$imp_action = 'DEL-' . $imp_action;
-			if(! $cur_eid) {
-			  $this->_errorlog_evupd('event', 'ERROR: ' . $imp_action,
-									 $user_id, $event, false);
-			  return VELT_IMPORT_STATUS_ERROR;
-
-			} else {
-			  // event to delete is found readable
-			  if($eidOk = $this->rsc->delete($cur_eid)){
-				// DELETE OK
-				return VELT_IMPORT_STATUS_DELOK;
-
-				// ASSUME Alarms are deleted by egw on delete of the event...
-				// otherwise we should use this code:
-				//  delete the old alarms
-				//foreach($cur_event['alarm'] as $alarmID => $alarmData)	{
-				//  $this->delete_alarm($alarmID);
-				//}
-
-			  } elseif ($user_id != $cur_owner_id){
-				// DELETE BAD  but it wasnt ours anyway so skip it
-				if ($this->evdebug)
-				  $this->_errorlog_evupd('event', 'SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
-										 $user_id, $event, $cur_event);
-				return VELT_IMPORT_STATUS_NOACC;
-
-			  } else {
-				// DELETE BAD and it was ours
-				$this->_errorlog_evupd('event', 'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
-									   $user_id, $event, $cur_event);
-				return VELT_IMPORT_STATUS_ERROR;
-			  }
-
-			}
-
-			  // -------- UPDATE --------------------
-		  } elseif ($eidOk = $this->rsc->update($event, TRUE)){
-			// UPDATE OKE ,now update alarms
-
-			if(in_array('VALARM',$veImportFields)){
-			  // delete the old alarms for the event, note: we could also have used $cur_event
-			  // but jus to be sure
-			  if(!$updatedEvent = $this->rsc->read($eidOk)){
-				error_log('ERROR reading event for Alarm update, will skip update..');
-				continue;
-			  }
-
-			  // ******** for serious debugging only.. **************
-			  //			  if ($this->evdebug){
-			  //				$this->_errorlog_evupd('OK: ' . $imp_action, 
-			  //									   $user_id, $event, $cur_event);
-			  //error_log('event readback dump:' . print_r($updatedEvent,true));
-			  //			  }
-			  // ******** eof serious debugging only.. **************
-
-			}
-			return $eidOk;
-
-			//  ---UPDATE BAD --------
-		  } elseif ($user_id != $cur_owner_id){
-			// UPDATE BAD, but other ones event, so skip
-			  if ($this->evdebug)
-				$this->_errorlog_evupd('event', 'SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
-									   $user_id, $event, $cur_event);
-			  return VELT_IMPORT_STATUS_NOACC;
-				
-		  } else {
-			// UPDATE BAD and we own it or it was a new one
-			$this->_errorlog_evupd('event', 'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
-								   $user_id, $event, $cur_event);
-			return VELT_IMPORT_STATUS_ERROR;
-
-		  }
-		  error_log('CODING ERROR: SHOULDNOT GET HERE');
-
-		  return $false;
-//-----------------------------------------to be recoded end ---------------
 	  }
 
 
-
-	  /** Wrapper around import_vevent() with simplified set of call parameters.
-	   * @note this function only imports VEvent elements!
-	   *
-	   * The value of the member variable $reimport_missing_events is used to possibly allow to
-	   * reimport of gone events in the calendar.
-	   * @deprecated I guess this code can be deleted??/
-	   *
-	   * The value of the member variable $uid_mapping_import is used to control the set
-	   * of iCalendar fields that are imported.
-	   * @param  VEVENT $velt    VEVENT object (horde_iCalendar_vevent) 
-	   * @param  int $eid  id for a selected event to be updated by the info from $velt
-	   *     If left out or set to -1 then uid_mapping_import is switched back to its standard
-	   *  setting as found in the member variable $uid_mapping_import.
-	   *
-	   * @return EventId|errorstring the id of the imported(or updated) ege calendar event.
-	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
-	   */
-	  function import_velt($velt,$eid=-1)
-	  {
-//-----------------------------------------to be recoded start ---------------
-
-		$uid_mapping_import_sel = ($eid > 0) ? UMM_FIXEDID : $this->uid_mapping_import;
-		  
-		return $this->import_vevent($velt,
-									$uid_mapping_import_sel,
-									$this->reimport_missing_events,
-									$eid);
-//-----------------------------------------to be recoded end ---------------
-	  }
-
-
-
+// 	  /** Wrapper around import_vevent() with simplified set of call parameters.
+// 	   * @note this function only imports VEvent elements!
+// 	   *
+// 	   * The value of the member variable $reimport_missing_events is used to possibly allow to
+// 	   * reimport of gone events in the calendar.
+// 	   * @deprecated I guess this code can be deleted??/
+// 	   *
+// 	   * The value of the member variable $uid_mapping_import is used to control the set
+// 	   * of iCalendar fields that are imported.
+// 	   * @param  VEVENT $velt    VEVENT object (horde_iCalendar_vevent) 
+// 	   * @param  int $eid  id for a selected event to be updated by the info from $velt
+// 	   *     If left out or set to -1 then uid_mapping_import is switched back to its standard
+// 	   *  setting as found in the member variable $uid_mapping_import.
+// 	   *
+// 	   * @return EventId|errorstring the id of the imported(or updated) ege calendar event.
+// 	   * On error: a string indicating the error: ERROR | NOACC | DELOK | NOELT
+// 	   */
+// 	  function import_ncvelt($ncvelt,$eid=-1)
+// 	  {
+// 		return false;
+// 	  }
 
 
 	  /**
@@ -743,7 +576,6 @@
 		  }
 	  }
 
-//-----------------------------------------to be recoded end ---------------
 
 	}
 
