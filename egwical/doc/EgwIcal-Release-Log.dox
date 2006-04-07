@@ -1,17 +1,39 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
 
+
+\section secrel0934ngb3 Release 0.9.34-ng-b3 Beta3 Release with New API
+
+- release date: 20060407 
+- file: egwical-with-doc-0.9.34-ng-b3.tgz
+- via: homepage and (possibly) egroupware cvs
+
+\subsection subsecrel0934ngb3changes Changes from previous version
+Thanks to Paul Smith who detected bugs:
+ - corrected the wrongly named parameter of import_velt(), now
+   event import works  again.
+ - fixed the st_dst_patch to (hopefully) correctly patch Daylights saving
+   within DST periods and outside (as already noted by Andreas..)
+ - made the RECUR UNTIL day more robust, so that the last occurrence
+   of a recurring event when exported wont be missing.
+ - added the exdate-patch in the tarball for iCalendar.php once again, as it seemed
+   still lacking in CVS. And sent it to Lars for cvs commitance..
+
+\subsection subsecrel0930ngb1bugs Found bugs and problems
+.... iCalendar.php needs to be patched
+
+
+
 \section secrel0930ngb1 Release 0.9.30-ng-b1 Beta1 Release with New API
 
 - release date: 20060404 
-- file: egwical-with-doc-0.9.30-ng-b1.tgz
+- file: egwical-with-doc-0.9.34-ng-b1.tgz
 - via: homepage and (possibly) egroupware cvs
 
-\subsection subsecrel0930ngb1changes Changes from previous version
+\subsection subsecrel0934ngb1changes Changes from previous version
 Mostly update of the documentation pages and some minor bugfixes.
- - ....
 
-\subsection subsecrel0930ngb1bugs Found bugs and problems
 
+\subsection subsecrel0934ngb1bugs Found bugs and problems
 @note this should be considered an beta release
 
 - vcalinfolog.compat is not yet tested
@@ -20,6 +42,13 @@ Mostly update of the documentation pages and some minor bugfixes.
 - bocalupdate-vfreebusy has no import functionality
 - many test have to be done
 - tested only with php5 and 1.2rc8
+
+And found by testers after release:
+ - vevent import broken (ncvelt parameter)
+ - bad start and enddate to utc conversions (Andreas, me and Paul)
+ - missing last occurence of exported recur events (Paul Smith)
+ - EXDATE import of recur events is broken
+
 
 
 \section secrel0930nga2 Release 0.9.30-ng-a2 First Release with New API

@@ -138,8 +138,8 @@ END:VTODO
 	 * and not exact time. There will be no VTIMEZONE written in the exported icalendar.
 	 * For more info on this see @ref pageegwicaltzh
 	 *
-	 * @version 0.9.34 updated documentation
-	 * @date 20060404
+	 * @version 0.9.34-b3 dst-patch fixed
+	 * @date 20060406
 	 * @since 0.9.31 added some FREEBUSY routines
 	 * @since 0.9.30 using napi3 api
 	 * @since 0.9.22 separated the conversion utilties into eicnvutils class
@@ -397,7 +397,10 @@ END:VTODO
 	   */
 	  function st_dst_patch($so_utime)
 	  {
-		return $so_utime + -3600 * date("I",$so_utime);
+		$dst_target = date("I",$so_utime);
+		$dst_now = date("I");
+		
+		return $so_utime + 3600 *($dst_now - $dst_target);
 	  }
 
 	  // end of  Generic Conversion Auxiliary routines group
@@ -654,8 +657,11 @@ END:VTODO
 
 // $expdt= $this->hi->_exportDateTime($recur_enddate);	
 // error_log('EXPORT UNTIL=' . $recur_enddate . ' expdDT:' .  $expdt);
+		  // egw sets recur_enddate on 00:00, most clients want also the hour of start inthere
+		  $untilday = $recur_enddate + 3600*(date('G',$recur_start)+1);
+		  $recur['UNTIL'] = $this->hi->_exportDateTime($this->st_dst_patch($untilday));
 
-		  $recur['UNTIL'] = $this->hi->_exportDateTime($recur_enddate);	
+//		  $recur['UNTIL'] = $this->hi->_exportDateTime($recur_enddate);	
 		}
 		foreach($recur as $parnam => $parval){
 		  $recurval .= ';' . $parnam . '=' . $parval;
@@ -903,6 +909,7 @@ END:VTODO
 	   * @note unfortunately horde_icalendar will parse ex1 into an array of
 	   *  array(month => .. , mday => .. ,  year=> )
 	   * @param array $dvals list of dates
+	   * @param array $params the parameters of the field
 	   * @return array $udays list with the days from the input list in utime format
 	   */
 	  function mke_EXDATEpv2udays($params, $dvals)
@@ -912,8 +919,8 @@ END:VTODO
 
 		if (count($exdays) < 1)
 		  return false;
-//error_log('EXDAYS params=' . print_r($params,true));
-//error_log('EXDAYS exploded=' . print_r($exdays,true));
+// error_log('EXDAYS params=' . print_r($params,true));
+// error_log('EXDAYS exploded=' . print_r($exdays,true));
 		if($params['VALUE'] == 'DATE'){
 		  // list is in awful horde DATE mode
 		  // convert the date somehow to udays

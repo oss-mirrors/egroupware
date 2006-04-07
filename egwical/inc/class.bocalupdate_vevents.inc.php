@@ -313,7 +313,7 @@
 		  } else {
 			$eid = $event['id'];
 			// now read it again to get all fields (including our alarms)
-			$event = $this->rsc->read($eid);
+			$event = $this->rsc->read($eid,null,false,'server');
 		  }
 
 //		  error_log('>>>>>>>>>>>' .'event to export=' . print_r($event,true));
@@ -371,11 +371,12 @@
 				break;
 
 				// Note; wholeday detection may change the DTEND value later! 
-			  case 'DTEND':
-				//				if(date('H:i:s',$event['end']) == '23:59:59')
-				// $event['end']++;
-				$attributes[$veFieldName]	= $event['end'];
-				break;
+// we will do it together with DTSTART
+// 			  case 'DTEND':
+// 				//				if(date('H:i:s',$event['end']) == '23:59:59')
+// 				// $event['end']++;
+// 				$attributes[$veFieldName]	= $event['end'];
+// 				break;
 
 			  case 'RRULE':
 				if ($event['recur_type'] == MCAL_RECUR_NONE)
