@@ -6,7 +6,8 @@
    * $Id$
    * @author Jan van Lieshout                                                *
    * @package icalsrv
-   * ------------------------------------------------------------------------ *
+   */
+   /* ------------------------------------------------------------------------ *
    * This library is free software; you can redistribute it and/or modify it  *
    * under the terms of the GNU Lesser General Public License as published by *
    * the Free Software Foundation; either version 2.1 of the License,         *
@@ -44,8 +45,8 @@
    * - store to database (to array) and retrieve/build from database (array)
    *
    * @author jvl
-   * @version 0.9.30-a1 first version
-   * @date 20060322 
+   * @version 0.9.30-a2
+   * @date 20060406 
    */ 
 
    class virtual_calendar
@@ -120,12 +121,15 @@
 	  * @private
 	  * @var array $rwdirtable
 	  */
-	 var $rwdirtable = array(
-							 '_fn_week_start', '_fn_week_end',
-							 '_fn_month_start', '_fn_month_end',
-							 '_fn_months_away', 
-							 '_cal_owner_id'
-							 );
+     var $rwdirtable =
+	   array(
+			 '_fn_week_start',
+			 '_fn_week_end',
+			 '_fn_month_start',
+			 '_fn_month_end',
+			 '_fn_months_away', 
+			 '_cal_owner_id'
+			 );
 
 	 /** Rewrite recursively any array value string starting fn_ into a eval
 	  * of a namelike member function.
@@ -133,7 +137,7 @@
 	  * @param mixed $rwfield field or array to rewrite
 	  * @param boolean $oke error status of rewrite (on problems: false)
 	  * @param array $rwdirtab table of allowed rewrite directives
-	  * @return rewritten input if recursive rewrite went ok. False on error
+	  * @return array rewritten input if recursive rewrite went ok. False on error
 	  */
 	 function rewrite_directives(&$field, &$oke, &$rwdirtable = null )
 	 {
@@ -183,8 +187,7 @@
 
 
 
-	 /**
-	  * \addgroup directivedefs Directive definitions
+	 /** @name Directive definitions
 	  * @{
 	  */
 
@@ -273,9 +276,12 @@
 
 	 }
 
-	 /**
-	  * @}
-	  * end of directivedefs group
+	 //@}
+	 // end of directivedefs group
+
+	 
+	 /** @name Auxiliary functions
+	  * @{
 	  */
 
 	  /** 
@@ -325,8 +331,8 @@
 					  $a6['month'],$a6['mday'],$a6['year']);
 	  }
 
-
-
+	  //@}
+	  // end of auxfunc group
 
 
 

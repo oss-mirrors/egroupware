@@ -6,7 +6,8 @@
    * $Id$
    * @author Jan van Lieshout                                                *
    * @package icalsrv
-   * ------------------------------------------------------------------------ *
+   */
+   /* ------------------------------------------------------------------------ *
    * This library is free software; you can redistribute it and/or modify it  *
    * under the terms of the GNU Lesser General Public License as published by *
    * the Free Software Foundation; either version 2.1 of the License,         *
@@ -72,101 +73,98 @@
 	  * @var VCalDefAR $_freebusy_proto
 	  */
 	 var $_freebusy_proto
-	   = array('lpath' => '_s_calname',
-			   'version' => 'vc-1.0',
-			   'description' => 'a proto for a personal freebusy calendar',
-			   'enabled' => 1,
-			   'auth'  => ':basic',
-			   'rscs'  =>
-			   array('calendar.bocalupdate' =>
-					 array(
-						   'hnd'   => 'egwical.bocalupdate_vfreebusy',
-						   'hndarg3' => array(
-											 'url'=> '_s_calname',
-											 'start' => '_fn_month_start()',
-											 'end'   => '_fn_month_end()'
-											 ),
-						   'qmeth' => 'search',
-						   'qarg' =>
-						   array(
-								 'start' => '_fn_month_start()',
-								 'end'   => '_fn_month_end()',
-								 'enum_recuring' => true,
-								 'daywise'       => false,
-								 'users'         => '_fn_cal_owner_id()',
-								 'date_format'   => 'server'
-								 ),
-						   'access' => 'R'
-						   )
-					 )
-			   );
+       = array('lpath' => '_s_calname',
+               'version' => 'vc-1.0',
+               'description' => 'a proto for a personal freebusy calendar',
+               'enabled' => 1,
+               'auth'  => ':basic',
+               'rscs'  =>
+               array('calendar.bocalupdate' =>
+                     array(
+                           'hnd'   => 'egwical.bocalupdate_vfreebusy',
+                           'hndarg3' => array(
+                                             'url'=> '_s_calname',
+                                             'start' => '_fn_month_start()',
+                                             'end'   => '_fn_month_end()'
+                                             ),
+                           'qmeth' => 'search',
+                           'qarg' =>
+                           array(
+                                 'start' => '_fn_month_start()',
+                                 'end'   => '_fn_month_end()',
+                                 'enum_recuring' => true,
+                                 'daywise'       => false,
+                                 'users'         => '_fn_cal_owner_id()',
+                                 'date_format'   => 'server'
+                                 ),
+                           'access' => 'R'
+                           )
+                     )
+               );
 
 	 /** Prototype of a events calendar
 	  * @note events are entries from egw calendar
 	  * @var VCalDefAR $_events_proto
 	  */
-	 var $_events_proto
-	   = array('lpath' => '_s_calname',
-			   'version' => 'vc-1.0',
-			   'description' => 'a proto for a personal events calendar',
-			   'enabled' => 1,
-			   'auth'  => ':basic',
-			   'rscs'  =>
-			   array('calendar.bocalupdate' =>
-					 array(
-						   'hnd'   => 'egwical.bocalupdate_vevents',
-// 						   'hndarg3' => array(
-// 											 'url'=> '_s_calname',
-// 											 'start' => '_fn_month_start()',
-// 											 'end'   => '_fn_month_end()'
-// 											 ),
-						   'qmeth' => 'search',
-						   'qarg' =>
-						   array(
-								 'start' => '_fn_month_start()',
-								 'end'   => '_fn_month_end()',
-								 'enum_recuring' => false,
-								 'daywise'       => false,
-								 'users'         => '_fn_cal_owner_id()',
-								 'date_format'   => 'server'
-								 ),
-						   'access' => 'RW'
-						   )
-					 )
-			   );
+     var $_events_proto
+       = array('lpath' => '_s_calname',
+               'version' => 'vc-1.0',
+               'description' => 'a proto for a personal events calendar',
+               'enabled' => 1,
+               'auth'  => ':basic',
+               'rscs'  =>
+               array('calendar.bocalupdate' =>
+                     array(
+                           'hnd'   => 'egwical.bocalupdate_vevents',
+                           'qmeth' => 'search',
+						   'hndarg3' => null,
+                           'qarg' =>
+                           array(
+                                 'start' => '_fn_month_start()',
+                                 'end'   => '_fn_month_end()',
+                                 'enum_recuring' => false,
+                                 'daywise'       => false,
+                                 'users'         => '_fn_cal_owner_id()',
+                                 'date_format'   => 'server'
+                                 ),
+                           'access' => 'RW'
+                           )
+                     )
+               );
 
 	 /** Prototype of a tasks calendar
 	  * @note tasks are task entries from egw infolog
 	  * @var VCalDefAR $_tasks_proto
 	  */
-	 var $_tasks_proto
-	   =  array('lpath' =>  '_s_calname',
-			   'version' => 'vc-1.0',
-			   'description' => 'a proto for a personal tasks calendar',
-			   'enabled' => 1,
-			   'auth'  => ':basic',
-			   'rscs'  =>
-			   array('infolog.boinfolog' =>
-					 array(
-						   'hnd'   => 'egwical.boinfolog_vtodos',
-						   'qmeth' => 'search',
-						   'qarg' =>
-						   array(
-								 'col_filter' =>
-								 array('info_type' => 'task',
-									   'info_status' => '',
-									   'info_responsible' => '_fn_cal_owner_id()',
-									   'info_owner' => '',
-									   ),
-								 'filter' => 'own',
-								 'order' => 'id_parent',
-								 'subs' => true,
-								 'sort' => 'DESC'
-								 ),
-						   'access' => 'RW'
-						   )
-					 )
-				);
+     var $_tasks_proto
+       =  array('lpath' =>  '_s_calname',
+               'version' => 'vc-1.0',
+               'description' => 'a proto for a personal tasks calendar',
+               'enabled' => 1,
+               'auth'  => ':basic',
+               'rscs'  =>
+               array('infolog.boinfolog' =>
+                     array(
+                           'hnd'   => 'egwical.boinfolog_vtodos',
+                           'qmeth' => 'search',
+                           'qarg' =>
+                           array(
+                                 'col_filter' =>
+                                 array('info_type' => 'task',
+                                       'info_status' => '',
+                                       'info_responsible' => '_fn_cal_owner_id()',
+                                       'info_owner' => '',
+                                       ),
+                                 'filter' => 'own',
+                                 'order' => 'id_parent',
+                                 'subs' => true,
+                                 'sort' => 'DESC'
+                                 ),
+                           'access' => 'RW'
+                           )
+                     )
+                );
+
 	 /** Prototype of a calendar.ics: events and tasks calendar
 	  * In this calendar a egw bocal is searched for events and an egw
 	  * boinfolog resource is used for tasks

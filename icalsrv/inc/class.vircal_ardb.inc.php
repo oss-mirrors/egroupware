@@ -2,11 +2,12 @@
   /**
    * @file vircal_ardb
    * class that provides an array storage for virtual calendars
-   *
    * $Id$
    * @author Jan van Lieshout                                                *
    * @package icalsrv
-   * ------------------------------------------------------------------------ *
+   */
+
+   /* ------------------------------------------------------------------------ *
    * This library is free software; you can redistribute it and/or modify it  *
    * under the terms of the GNU Lesser General Public License as published by *
    * the Free Software Foundation; either version 2.1 of the License,         *
@@ -37,14 +38,14 @@
    * @section secvircalardbsynopsis Synopsis
    *
    * To build a virtual_calendar named <code>/uk/holidays.ics</code> from a typical available
-   * vircal_ardb subclass named <code>ukstd_vircal_ardb </code> we could use
+   * vircal_ardb subclass named <code>world_vircal_ardb </code> we could use
    * use the following code:
  @verbatim
- // search the uk_vircal_db class to see if it provides a virtual calendar 
+ // search the world_vircal_db class to see if it provides a virtual calendar 
  // called /uk/holidays.ics
- $uk_vc_ardb =& new uk_vircal_ardb();
+ $wvcdb =& new world_vircal_ardb();
 
- if(! $ukholidays_vc_arstore = $uk_vc_ardb->calendars['/uk/holidays.ics'])
+ if(! $ukholidays_vc_ar = $wvcdb->calendars['/uk/holidays.ics'])
  {
      echo 'couldnot find virtual calendar /uk/holidays.ics';
 	 exit();
@@ -52,7 +53,7 @@
  
  // create a virtual calendar  and restore from the found array    
  $ukholidays_vircal =& new virtual_calendar;
- $ukholidays_vircal->fromArray($ukholiday_vc_arstore);
+ $ukholidays_vircal->fromArray($ukholiday_vc_ar);
 
 @endverbatim
 
@@ -61,8 +62,8 @@
    * - NONE because only subclasses of vircal_ardb define calendars!
    *
    * @author jvl
-   * @version 0.9.30-a1 first version
-   * @date 20060322 
+   * @version 0.9.30-a2
+   * @date 20060406 
    */ 
 
    class vircal_ardb

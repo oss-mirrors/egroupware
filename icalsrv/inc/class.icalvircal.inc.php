@@ -50,7 +50,7 @@
 
    class icalvircal extends virtual_calendar
    {
-	 var $ivdebug =true;
+	 var $ivdebug =false;
 
 	 /** The devicetype of the kind of client that is currently exporting or importing
 	  *
@@ -147,7 +147,8 @@
 			return false;
 		  }
 		  if($rh_def['qmeth'] == 'search'){
-error_log('icalvircal.export_vcal-search:'. print_r($rh_def['qarg'],true));
+			if($this->ivdebug)
+			  error_log('icalvircal.export_vcal-search:'. print_r($rh_def['qarg'],true));
 			$ids = $rsc->search($rh_def['qarg']);
 		  }else{
 			error_log('icalvircal.export_vcal: no good search method found');
@@ -246,7 +247,6 @@ error_log('icalvircal.export_vcal-search:'. print_r($rh_def['qarg'],true));
 			error_log('icalvircal.import_vcal: couldnot create rschnd:' . $rh_def['hnd']);
 			return false;
 		  }
-
 
 		  if($this->ivdebug > 2)
 			error_log('icalvircal.import_vcal: uid_mapping_import=' . $this->uid_mapping_import);
