@@ -979,16 +979,19 @@
 				}
 			}
 			if($structure->type == TYPETEXT) {
-				// only text or html email
-				if($_partID == '') $_partID=1;
-				$mimePartBody = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
-				$bodyPart = array(
-					array(
-						'body'		=> $this->decodeMimePart($mimePartBody, $structure->encoding),
-						'mimeType'	=> (strtolower($structure->subtype) == 'html') ? 'text/html' : 'text/plain',
-						'charSet'	=> $this->getMimePartCharset($structure),
-					)
-				);
+				$bodyPart = array();
+                                if ($structure->subtype == 'HTML' || $structure->subtype == 'PLAIN') {
+					// only text or html email
+					if($_partID == '') $_partID=1;
+					$mimePartBody = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
+					$bodyPart = array(
+						array(
+							'body'		=> $this->decodeMimePart($mimePartBody, $structure->encoding),
+							'mimeType'	=> $structure->subtype == 'HTML' ? 'text/html' : 'text/plain',
+							'charSet'	=> $this->getMimePartCharset($structure),
+						)
+					);
+				}
 				return $bodyPart;
 
 			} elseif ($structure->type == TYPEMULTIPART && $structure->subtype == 'ALTERNATIVE') {
