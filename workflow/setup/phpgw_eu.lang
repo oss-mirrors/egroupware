@@ -1,0 +1,94 @@
+%1 aborted	workflow	eu	%1 bertan behera utzita
+%1 active	workflow	eu	%1 aktibatuta
+%1 completed	workflow	eu	%1 osatuta
+%1 configuration	workflow	eu	%1en konfigurazioa
+%1 days, %2:%3:%4	workflow	eu	%1 egun, %2: %3: %4
+%1 exception	workflow	eu	%1 salbuespen
+%1 menu	workflow	eu	%1 menu
+%1 monitoring	workflow	eu	%1en monitorizazioa
+%1 processes (%2 active) (%3 being_run)	workflow	eu	%1 prozesuak (%2 aktibatuta) (%3 gauzatzen)
+abort instance	workflow	eu	bertan behera utzi instantzia
+abort this instance	workflow	eu	Bertan behera utzi instantzia hau
+aborted	workflow	eu	Bertan behera utzia
+act	workflow	eu	aktibitate
+act. status	workflow	eu	Ekintzaren egoera
+act. status:	workflow	eu	Ekintzaren egoera:
+action %1 is impossible, another user is already in place	workflow	eu	%1 ekintza ezinezkoa da, beste erabiltzaile bat dago lekuan
+action %1 needs an activity and activity %2 does not exists	workflow	eu	%1 ekintzak aktibitate bat behar du, eta %2 aktibitatea ez da existitzen
+action %1 needs an instance and instance %2 does not exists	workflow	eu	%1 ekintzak instantzia bat behar du, eta %2 instantzia ez da existitzen
+actions	workflow	eu	Ekintzak
+activate	workflow	eu	aktibatu
+active	workflow	eu	Aktibatua
+active:	workflow	eu	aktibatua:
+activities	workflow	eu	Aktibitateak
+activities selection	workflow	eu	Aktibitateen aukeraketa
+activities updated	workflow	eu	Aktibitateak eguneratu dira
+activity	workflow	eu	aktibitatea
+activity  status	workflow	eu	Aktibitatearen egoera
+activity %1	workflow	eu	%1 aktibitatea
+activity %1 code is not avaible	workflow	eu	%1 aktibitatearen kodea ez dago erabilgarri
+activity %1 is interactive but has no role assigned	workflow	eu	%1 aktibitatea interaktiboa da baina ez du rolik esleituta
+activity %1 is standalone but has transitions	workflow	eu	%1 aktibitatea independientea da baina trantsizioa du
+activity agent removed	workflow	eu	Aktibitatearen agentea ezabatua
+activity completed	workflow	eu	Aktibitate osatua
+activity failure	workflow	eu	hutsegitea aktibitatean
+activity in inexistent process	workflow	eu	Aktibitatea existitzen ez den prozesu batean
+activity name already exists	workflow	eu	Aktibitatearen izena existitzen da
+activity role removed	workflow	eu	Aktibitatearen rola ezabatua izan da
+activity saved	workflow	eu	Aktibitatea gorde da
+activity:	workflow	eu	aktibitatea:
+add a transition	workflow	eu	Trantsizioa gehitu
+add aborted instances	workflow	eu	Bertan behera utzitako instantziak gehitu
+add advanced actions	workflow	eu	Aurreratutako ekintzak gehitu
+add agent	workflow	eu	Agentea gehitu
+add completed instances	workflow	eu	Osatutako instantziak gehitu
+add instances in exception	workflow	eu	Salbuespenean dauden instantziak gehitu
+add new	workflow	eu	berria gehitu
+add new role	workflow	eu	Rol berri bat gehitu
+add or edit a process	workflow	eu	Prozesu bat editatu edo gehitu
+add or edit a role	workflow	eu	Rol bat editatu edo gehitu
+add or edit an activity	workflow	eu	Aktibitate bat editatu edo gehitu
+add property	workflow	eu	Propietatea gehitu
+add role	workflow	eu	Rola gehitu
+add role to process	workflow	eu	Prozesuari rol bat gehitu
+add transition	workflow	eu	trantsizioa gehitu
+add transitions	workflow	eu	Trantsizioak gehitu
+admin instance	workflow	eu	Instantzia kudeatu
+admin process activities	workflow	eu	Prozesuaren aktibitateak kudeatu
+admin process roles	workflow	eu	Prozesuaren rolak kudeatu
+admin processes	workflow	eu	Prozesuak kudeatu
+administer instances	admin	eu	Instantziak kudeatu
+administer processes	admin	eu	Prozesuak kudeatu
+agent without activity	workflow	eu	Agenteak ez du aktibitaterik
+agents assigned to this activity	workflow	eu	Aktibitate hau esleitu zaien agenteak
+all	workflow	eu	Guztiak
+always show advanced actions	workflow	eu	Ekintza aurreratuak beti erakutsi
+always show advanced mode	workflow	eu	Modu aurreratuak beti erakutsi
+assign me this activity	workflow	eu	Aktibitate hau niri esleitu
+automatic	workflow	eu	Automatikoa
+bad role type	workflow	eu	Rol mota ezegokia
+bad user	workflow	eu	Erabiltzaile ezegokia
+being run	workflow	eu	exekutatua izaten ari da
+cannot run the activity	workflow	eu	Aktibitatea ezin da exekutatu
+cannot run the activity without instance	workflow	eu	Instantziarik gabe ezin da aktibitatea exekutatu
+cannot run unknown activity	workflow	eu	Ezezaguna den aktibitate bat ezin da exekutatu
+cc:	workflow	eu	Cc:
+cleanup aborted instances	admin	eu	Bertan behera utzitako instantziak garbitu
+cleanup actions	workflow	eu	ekintzak garbitu
+close and get back later	workflow	eu	Itxi eta geroago itzuli
+close printer friendly mode	workflow	eu	Inprimitzera zuzendutako modua itxi
+code	workflow	eu	kodea
+complete	workflow	eu	Osatua
+completed	workflow	eu	osatua
+config values	common	eu	Konfigurazaio baloreak
+couldn't add transition	workflow	eu	Trantsizioa ezin izan da gehitu
+create	workflow	eu	sortu
+created	workflow	eu	Sortua
+date:	workflow	eu	data:
+default config values	workflow	eu	Konfigurazio baloreak lehenetsiak
+default next user	workflow	eu	Hurrengo erabiltzailea lehenetsi
+default owner	workflow	eu	Jabe lehenetsia
+default settings for processes	admin	eu	Prozesuetara lehenetsitako konfigurazioa
+default user	workflow	eu	Erabiltzaile lehenetsia
+delete selected	workflow	eu	Aukeraketa ezabatu
+delete transition	workflow	eu	trantsizioa ezabatu
