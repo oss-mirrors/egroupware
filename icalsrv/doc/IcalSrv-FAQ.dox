@@ -1,8 +1,8 @@
 /*! \page pageicalsrvfaq IcalSrv FAQ - some questions and answers
 
 @author JVL
-@version 0.9.33-a3 (icalsrv)
-@date 20060406
+@version 0.9.34-a5x (icalsrv)
+@date 20060408
 
 \section secicalsrvfaqintro FAQ Intro
 Hi, this is the first, very rudimentary version of a Frequently Asked
@@ -95,7 +95,14 @@ The steps are as follows. Lets assume we have a group of secretaries
    should be able to see (and possible change) MrBoss events
    To view or manipulate the  tasks of MrBoss he might use the virtual calendar  .../tasks.ics or
    the combined calendar  ..../defaults.ics
-  
+
+@note  At the moment (version v0.9.34-ng-a5x) there are some problems with
+writing into the calendars that you do not own. Therefore this feature is by
+default disabled. You can toggle this $disable_nonowner_import switch in icalsrv.php
+if you want to experiment with this feature. But be prepared that events and tasks may
+unintentionally getmoved from somebodies calendar into your own! We are examining it.
+
+
 
 \section icalsrvqa_deletions UB: Help, I cannot delete events or todos via IcalSrv
 
@@ -134,6 +141,16 @@ is done though.
 <PRE>
 SINCE: version 0.9.33-ng-b1 : ...
 </PRE>
+
+
+
+\section icalsrvqa_nonegwparticipants UB: Help, exported event participants get lost and strange text appears in the event desciption.
+
+Icalsrv can, on import from a client, only recognize valid eGroupware participants if
+they have an email address associated with them (at the time of export and now).
+For other detected participants of an event, on import a short note is written in
+the event its description, telling that there are some <em>Non EGW participants</em> and
+then listing them.
 
 
 \section icalsrvqa_install UT: How do I install IcalSrv?

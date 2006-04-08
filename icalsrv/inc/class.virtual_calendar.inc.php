@@ -2,10 +2,9 @@
   /**
    * @file
    * class that provides virtual calendars across egw infolog and calendar resources
-   *
-   * $Id$
    * @author Jan van Lieshout                                                *
    * @package icalsrv
+   * $Id$
    */
    /* ------------------------------------------------------------------------ *
    * This library is free software; you can redistribute it and/or modify it  *
@@ -92,17 +91,17 @@
 	 
 	 /** Retrieve definitions of the virtual calendar from an array
 	  *  and set object accordingly.
-	  * @note that the special directives (starting witn _fn_) are tried to be evaluated,
-	  * using private member functions (starting with _fn_).
-	  * See @ref pagvircalarraydef for a description of the array format
-	  * @param VCalDefAr $vcar the array with all definitions of the virtual calendar
+	  * Note that the special directives (starting with _fn_) are tried to be evaluated,
+	  * using private member funcs(starting with _fn_)
+ 	  * See @ref pagvircalarraydef for description of the array format
+	  * @param VCalDefAr $vcar the array with all definitions of the virtual calendar.
 	  * @return int number of calendars restored. On error false
 	  */
-	 function fromArray(&$vcar ) 
+	 function fromArray(&$vcar) 
 	 {
 	   $this->_caldef = $vcar;
-#		 error_log('virtual_calendar.fromArray(): starting rewriting caldef'
-#				   . print_r($this->_caldef, true));
+//		 error_log('virtual_calendar.fromArray(): starting rewriting caldef'
+//				   . print_r($this->_caldef, true));
 
 	   // use the recursive rewriter
 	   $this->_caldef = $this->rewrite_directives($this->_caldef, $oke, $this->rwdirtable);
@@ -134,9 +133,9 @@
 	 /** Rewrite recursively any array value string starting fn_ into a eval
 	  * of a namelike member function.
 	  * If a no good eval function is found an error is returned
-	  * @param mixed $rwfield field or array to rewrite
+	  * @param mixed $field field or array to rewrite
 	  * @param boolean $oke error status of rewrite (on problems: false)
-	  * @param array $rwdirtab table of allowed rewrite directives
+	  * @param array $rwdirtable table of allowed rewrite directives
 	  * @return array rewritten input if recursive rewrite went ok. False on error
 	  */
 	 function rewrite_directives(&$field, &$oke, &$rwdirtable = null )
@@ -194,7 +193,7 @@
 
 	 /** give start of week, relative to today, in Ymd time
 	  * the start is only roughly calculated, mostly a day before the first day
-	  * of the week..
+	  * of the week.
 	  * @bug week_start currently implemented as  4days before today
 	  * @param int $offset offset (+ ro -) from this week (in weeks) 
 	  * (so ex. lastmonth -> offset=-1 etc)
@@ -209,7 +208,7 @@
 
 	 /** give end of week, relative to today, in Ymd time
 	  * the end is only roughly calculated, mostly a day or so after the last day
-	  * of the week..
+	  * of the week.
 	  * @bug week_end currently implemented as  4days before today
 	  * @param int $offset offset (+ ro -) from this month (in months) 
 	  * (so ex. lastmonth -> offset=-1 etc)
@@ -225,7 +224,7 @@
 
 	 /** give start of month, relative to today, in Ymd time
 	  * the start is only roughly calculated, mostly a day before the first day
-	  * of the month..
+	  * of the month.
 	  * @param int $offset offset (+ ro -) from this month (in months) 
 	  * (so ex. lastmonth -> offset=-1 etc)
 	  * @return string Ymd time start of current month
@@ -240,7 +239,7 @@
 
 	 /** give end of month, relative to today, in Ymd time
 	  * the end is only roughly calculated, mostly a day or so after the last day
-	  * of the month..
+	  * of the month.
 	  * @param int $offset offset (+ ro -) from this month (in months) 
 	  * (so ex. lastmonth -> offset=-1 etc)
 	  * @return string Ymd time end of current month

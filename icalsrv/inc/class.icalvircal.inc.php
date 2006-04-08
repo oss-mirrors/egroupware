@@ -3,11 +3,11 @@
    * @file
    * class that extends virtual calendars with methods to import and
    * export ical data
-   *
-   * $Id$
-   * @author Jan van Lieshout                                                *
+   * @author Jan van Lieshout 
    * @package icalsrv
-   * ------------------------------------------------------------------------ *
+   * $Id$
+   */
+   /* ------------------------------------------------------------------------ *
    * This library is free software; you can redistribute it and/or modify it  *
    * under the terms of the GNU Lesser General Public License as published by *
    * the Free Software Foundation; either version 2.1 of the License,         *
@@ -70,8 +70,8 @@
 	  * determine how the search for a matching egw element is done. The choices are:
 	  * - no search for a related egw element id is done, Just a new element is added to the
 	  *   bound egw resource (<code>UMM_NEWID</code>) or  
-	  * - a related egw element is searched for based on a egw id decoded from the uid field of the
-	  *   ical element(<code>UMM_ID2UID</code> Note: <b>Default situation!</b>). 
+	  * - a related egw element is searched for based on a egw id decoded from the uid
+	  *   field of the ical element(<code>UMM_ID2UID</code> Note: <b>Default situation!</b>). 
 	  *   .
 	  *   This requires of course that at some earlier (exportd) moment an actual
 	  *   egw id was encoded  in this uid field.
@@ -92,7 +92,8 @@
 	  * @var int $uid_mapping_export
 	  * According to the value, on export, a uid will be generated:
 	  * - completely unrelated to the related egw element id (<code>UMM_NEWUID</code>) or  
-	  * - with the related egw element id  encoded (<code>UMM_ID2UID</code> Default situation!) or  
+	  * - with the related egw element id  encoded (<code>UMM_ID2UID</code>
+	      Default situation!) or  
 	  * - directly copied from the uid field of the related egw element
 	  *   (<code>UMM_UID2UID</code> Strongly discouraged!).
 	  * For more info see @ref secuidmappping
