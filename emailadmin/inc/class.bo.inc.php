@@ -121,6 +121,12 @@
 		
 		function addAccount($_hookValues)
 		{
+			$this->profileData	= $this->getUserProfile('felamimail', $_hookValues['account_groups']);
+
+			$this->imapClass	= $this->IMAPServerType[$this->profileData['imapType']]['classname'];
+			$this->smtpClass	= $this->SMTPServerType[$this->profileData['smtpType']]['classname'];
+			
+
 			if (!empty($this->imapClass))
 			{
 				ExecMethod("emailadmin.".$this->imapClass.".addAccount",$_hookValues,3,$this->profileData);
@@ -134,6 +140,11 @@
 		
 		function deleteAccount($_hookValues)
 		{
+			$this->profileData	= $this->getUserProfile('felamimail', $_hookValues['account_groups']);
+
+			$this->imapClass	= $this->IMAPServerType[$this->profileData['imapType']]['classname'];
+			$this->smtpClass	= $this->SMTPServerType[$this->profileData['smtpType']]['classname'];
+			
 			if (!empty($this->imapClass))
 			{
 				ExecMethod("emailadmin.".$this->imapClass.".deleteAccount",$_hookValues,3,$this->profileData);
@@ -354,7 +365,7 @@
 			{
 				$groups = $_groups;
 			}
-			
+
 			return $this->soemailadmin->getUserProfile($appName, $groups);
 		}
 		
@@ -638,6 +649,11 @@
 
 		function updateAccount($_hookValues)
 		{
+			$this->profileData	= $this->getUserProfile('felamimail', $_hookValues['account_groups']);
+
+			$this->imapClass	= $this->IMAPServerType[$this->profileData['imapType']]['classname'];
+			$this->smtpClass	= $this->SMTPServerType[$this->profileData['smtpType']]['classname'];
+			
 			if (!empty($this->imapClass))
 			{
 				ExecMethod("emailadmin.".$this->imapClass.".updateAccount",$_hookValues,3,$this->profileData);

@@ -6,8 +6,7 @@
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; either version 2 of the License, or (at your    *
-	* option) any later version.                                                *
+	* Free Software Foundation; version 2 of the License.                       *
 	\***************************************************************************/
 	/* $Id$ */
 	
@@ -21,6 +20,12 @@
 		
 		function addAccount($_hookValues)
 		{
+			if($this->profileData['imapEnableCyrusAdmin'] != 'yes' ||
+			   empty($this->profileData['imapAdminUsername']) || 
+			   empty($this->profileData['imapAdminPW']) ) {
+				return false;
+			}
+			
 			#_debug_array($_hookValues);
 			$username 	= $_hookValues['account_lid'];
 			$userPassword	= $_hookValues['new_passwd'];
@@ -29,16 +34,20 @@
 			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
 			$imapAdminPW		= $this->profileData['imapAdminPW'];
 
-			$folderNames = array(
-				"user.$username",
-				"user.$username.Trash",
-				"user.$username.Sent"
-			);
 			
 			// create the mailbox
 			if($mbox = @imap_open ($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
 			{
+				$list = imap_getmailboxes($mbox, $this->getMailboxString(), "INBOX");
+				$delimiter = isset($list[0]->delimiter) ? $list[0]->delimiter : '.';
 				// create the users folders
+
+				$folderNames = array(
+					'user'.$delimiter.$username ,
+					'user'.$delimiter.$username.$delimiter.'Trash' ,
+					'user'.$delimiter.$username.$delimiter.'Sent'
+				);
+	
 				foreach($folderNames as $mailBoxName)
 				{
 					if(imap_createmailbox($mbox,imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
@@ -53,7 +62,7 @@
 			}
 			else
 			{
-				_debug_array(imap_errors());
+				#_debug_array(imap_errors());
 				return false;
 			}
 			
@@ -73,6 +82,12 @@
 		
 		function deleteAccount($_hookValues)
 		{
+			if($this->profileData['imapEnableCyrusAdmin'] != 'yes' ||
+			   empty($this->profileData['imapAdminUsername']) || 
+			   empty($this->profileData['imapAdminPW']) ) {
+				return false;
+			}
+			
 			$username		= $_hookValues['account_lid'];
 		
 			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
@@ -80,7 +95,10 @@
 
 			if($mbox = @imap_open($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
 			{
-				$mailBoxName = "user.$username";
+				$list = imap_getmailboxes($mbox, $this->getMailboxString(), "INBOX");
+				$delimiter = isset($list[0]->delimiter) ? $list[0]->delimiter : '.';
+				
+				$mailBoxName = 'user'.$delimiter.$username;
 				// give the admin account the rights to delete this mailbox
 				if(imap_setacl($mbox, $mailBoxName, $imapAdminUsername, "lrswipcda"))
 				{
@@ -110,7 +128,12 @@
 
 		function updateAccount($_hookValues)
 		{
-			#_debug_array($_hookValues);
+			if($this->profileData['imapEnableCyrusAdmin'] != 'yes' ||
+			   empty($this->profileData['imapAdminUsername']) || 
+			   empty($this->profileData['imapAdminPW']) ) {
+				return false;
+			}
+			
 			$username 	= $_hookValues['account_lid'];
 			if(isset($_hookValues['new_passwd']))
 				$userPassword	= $_hookValues['new_passwd'];
@@ -119,21 +142,29 @@
 			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
 			$imapAdminPW		= $this->profileData['imapAdminPW'];
 
-			$folderNames = array(
-				"user.$username",
-				"user.$username.Trash",
-				"user.$username.Sent"
-			);
-			
 			// create the mailbox
 			if($mbox = @imap_open ($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
 			{
+				$list = imap_getmailboxes($mbox, $this->getMailboxString(), "INBOX");
+				$delimiter = isset($list[0]->delimiter) ? $list[0]->delimiter : '.';
+				// create the users folders
+				
+				if($_hookValues['account_lid'] != $_hookValues['old_loginid']){
+					@imap_renamemailbox($mbox, $this->getMailboxString('user'.$delimiter.$_hookValues['old_loginid']), $this->getMailboxString('user'.$delimiter.$username));
+				}
+
+				$folderNames = array(
+					'user'.$delimiter.$username ,
+					'user'.$delimiter.$username.$delimiter.'Trash' ,
+					'user'.$delimiter.$username.$delimiter.'Sent'
+				);
+	
 				// create the users folders
 				foreach($folderNames as $mailBoxName)
 				{
 					if(imap_createmailbox($mbox,imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
 					{
-						if(!imap_setacl($mbox, $mailBoxName, $username, "lrswipcd"))
+						if(!imap_setacl($mbox, $mailBoxName, $username, "lrswipcda"))
 						{
 							# log error message
 						}
@@ -152,8 +183,8 @@
 				if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword))
 				{
 					imap_subscribe($mbox,$this->getMailboxString('INBOX'));
-					imap_subscribe($mbox,$this->getMailboxString('INBOX.Sent'));
-					imap_subscribe($mbox,$this->getMailboxString('INBOX.Trash'));
+					imap_subscribe($mbox,$this->getMailboxString('INBOX' .$delimiter. 'Sent'));
+					imap_subscribe($mbox,$this->getMailboxString('INBOX' .$delimiter. 'Trash'));
 					imap_close($mbox);
 				}
 				else
