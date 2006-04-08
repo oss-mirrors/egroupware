@@ -122,3 +122,31 @@ search results	filescenter	eu	Bilaketaren emaitzak
 shared	filescenter	eu	Konpartitua
 sharing	filescenter	eu	Konpartitu
 show ..	filescenter	eu	Erakutsi
+show .files	filescenter	eu	Ezkutatutako fitxategiak erakutsi
+show command line (experimental. dangerous.)	filescenter	eu	Komando lerroa erakutsi (ESPERIMENTALA. ARRISKUTSUA)
+show help	filescenter	eu	Laguntza erakutsi
+size	filescenter	eu	Tamaina
+size of folder	filescenter	eu	Direktorioaren tamaina
+source	filescenter	eu	Jatorria
+subscribe	filescenter	eu	Harpidetu
+subscribe some files	filescenter	eu	Fitxategi batzuk harpidetu
+subscribed successfully	filescenter	eu	Harpidetza zuzena
+subscriptions	filescenter	eu	Harpidetzak
+the temporary directory could not be deleted.	filescenter	eu	Ezin izan da aldi baterako direktorioa ezabatu.
+type	filescenter	eu	Mota
+type description	filescenter	eu	Motaren deskribapena
+type identifier for file ids	filescenter	eu	Motaren identifikatzailea fitxategien IDentzat
+unsubscribe	filescenter	eu	Harpidetza kendu
+unsubscribed successfully	filescenter	eu	Harpidetza zuzen kendu da
+upload	filescenter	eu	Zerbitzarira kopiatu
+upload files in folder	filescenter	eu	Fitxategiak igo direktorioan
+use new experimental filemanager?	filescenter	eu	Fitxategi administratzaile espeimental berri bat erabili?
+use this file	filescenter	eu	Fitxategi hau erabili
+view documents in new window	filescenter	eu	Dokumentuak leiho berri batean ikusi
+view documents on server (if available)	filescenter	eu	Dokumentuak zerbitzarian ikusi (erabilgarri badago)
+view history	filescenter	eu	Historia ikusi
+view permissions - groups	filescenter	eu	Baimenak ikusi - taldeak
+view permissions - users	filescenter	eu	Baimenak ikusi - erabiltzaileak
+wait. uploading...	filescenter	eu	Itxaron, zerbitzarira kopiatzen...
+write permissions	filescenter	eu	Baimenak idatzi
+you can\'t select more than one item with this option	filescenter	eu	Ezin duzu elementu bat baina gehiago aukeratu aukera hau erabiliz

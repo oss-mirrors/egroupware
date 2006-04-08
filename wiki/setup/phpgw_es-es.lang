@@ -59,7 +59,10 @@ no never	admin	es-es	No, nunca
 no only on request	admin	es-es	No, sólo si se pide
 not set	wiki	es-es	no especificado
 older	wiki	es-es	Anterior
+on all pages	wiki	es-es	en todas las páginas
 only if browser supports a richtext-editor	admin	es-es	Sólo si el navegador soporta un editor de texto enriquecido
+only on the first page	wiki	es-es	sólo en la primera página
+page '%1' not found !!!	wiki	es-es	¡No se encontró la página '%1'!
 path of the upload directory (has to be writable by the webserver!)	admin	es-es	Ruta al directorio de subir ficheros (el servidor web debe tener derecho de escritura)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	es-es	Subir ficheros con el editor de texto enriquecido (dejar el directorio de subir en blanco para desactivar)
 please contact the %1administrator%2 for assistance.	wiki	es-es	Por favor, póngase en contacto con el %1Administrator%2 para obtener ayuda.
@@ -74,15 +77,20 @@ richtext	wiki	es-es	Texto enriquecido
 rows	wiki	es-es	Filas
 save the changes and exit	wiki	es-es	Guardar los cambios y salir
 saves and continues editing	wiki	es-es	Guarda y continúa editando
+search for	wiki	es-es	Buscar por
 see complete list (%1 entries)	wiki	es-es	Ver la lista completa (%1 entradas)
+show a search	wiki	es-es	Mostrar una búsqueda
+show the title of the wiki page	wiki	es-es	Mostrar el título de la página del wiki
 site configuration	wiki	es-es	Configuración del sitio
 summary	wiki	es-es	Resumen
 summary of change	wiki	es-es	Resumen de cambios
+the search returned no result!	wiki	es-es	¡La búsqueda no produjo resultados!
 this page can not be edited.	wiki	es-es	Esta página no se puede editar
 twin pages	wiki	es-es	Páginas gemelas
 unblock	wiki	es-es	Desbloquear
 updates the preview	wiki	es-es	Actualiza la vista previa
 url of the upload directory	admin	es-es	URL del directorio para subir ficheros
+use this module for displaying wiki-pages	wiki	es-es	Use este módulo para mostrar las páginas del wiki
 users	wiki	es-es	usuarios
 view document history	wiki	es-es	Ver el historial del documento
 visit %1 to set your user name	wiki	es-es	Visite %1 para poner su nombre de usuario
@@ -92,10 +100,12 @@ who should be able to read this page	wiki	es-es	quén debe poder leer esta página
 wiki	common	es-es	Wiki
 wiki administration	wiki	es-es	Administración del wiki
 wiki menu	wiki	es-es	Menú wiki
+wiki startpage	wiki	es-es	Página de inicio del wiki
 writable by	wiki	es-es	De escritura para
 yes always	admin	es-es	Sí, siempre
 you have been denied access to this site.	wiki	es-es	Le ha sido denegado el acceso a este sitio
 you have entered an invalid user name.	wiki	es-es	Ha introducido un nombre de usuario que no es válido
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	es-es	Ha excedido el número de páginas que se permite visitar durante un período de tiempo. Por favor, vuelva más tarde.
+you have no rights to view wiki content !!!	wiki	es-es	¡No tiene derechos para ver el contenido del wiki!
 your changes	wiki	es-es	Sus modificaciones
 your user name is "%1".	wiki	es-es	Su nombre de usuario es "%1"
