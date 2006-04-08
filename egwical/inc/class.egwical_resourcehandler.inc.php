@@ -173,8 +173,8 @@
 	 * routines that the library class @ref eicnvutils provides.
 	 * These methods must be accessed via the $ecu member variable. 
 	 *
-	 * @version 0.9.34 updated to ncvelt and new documentation
-	 * @date 20060405
+	 * @version 0.9.34-b4 updated to ncvelt and new documentation attribs as nonref
+	 * @date 20060407
 	 * @since 0.9.30 new api: ical accessors as egwical_resourcehandler subclasses
 	 * @since 0.9.22 new api2 using eicnvutils via $ecu
 	 * @author Jan van Lieshout <jvl (at) xs4all.nl> (This version)
@@ -527,7 +527,7 @@
 	   *@return VcalStr|false the rendered Vcal formatted string.
 	   * On error: false
 	   */
-	  function render_velt2vcal($vobj, &$attribs=null)
+	  function render_velt2vcal($vobj, $attribs = null)
 	  {
 		if($attribs == null)
 		  $attribs = array();
@@ -807,7 +807,8 @@
 	   * @param string $fault description of the fault type
 	   * @param ind $user_id the id of the logged in user
 	   * @param array $new_egwelt the info converted from the vegwelt to be imported
-	   * @param array|false $cur_egwelt_ids settings of owner, id and uid field of a possibly found
+	   * @param array|false $cur_egwelt_ids settings of owner, id and uid
+	   * field of a possibly found
 	   * corresponding egw egwelt. When no such egwelt found: false.
 	   */
 	  function _errorlog_evupd($vtype, $fault='ERROR', $user_id, &$new_egwelt, $cur_egwelt)
