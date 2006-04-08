@@ -2,7 +2,7 @@
 
 @note this is still <b>EXPERIMENTAL, USE AT YOUR OWN RISK! </b> and better not yet in a
 production environment.
-@version 0.9.33-ng-a4
+@version 0.9.34-ng-a5x
 @author jvl 
 @date 20060406
 
@@ -84,6 +84,9 @@ These virtual calendars come in two variants:
 
 \subsection secwarning Some important issues and warnings
 
+For the latest state of bugs and problems please have a look at the
+info in @ref pageicalsrvreleaselog
+
 At the moment IcaSrv allows only upload and download of complete
 (virtual) calendars (with events and todos) and no direct deletions of
 events. (Read more on this in the FAQ  at @ref icalsrvqa_deletions )
@@ -96,15 +99,23 @@ your egroupware data. But, <b> be warned: when you use the service for
 in the egroupware server, and thus you have a potential risk of damaging
 or losing egroupware data!</b>
 
-One well know danger is the loss of multiple egroupware categories
+One well known danger is the loss of multiple egroupware categories
 attributed to an event or task when you publish calendars from a
 client that doesnot allow multiple categories. In this case the
 single, client attributed, category will replace the original egw
-attributed set.  See further in the warnings related-page. Mozilla
-Sunbird is notably such a 'single category only" client.
+attributed set.   Mozilla Sunbird is notably such a 'single category only" client.
 
 For behaviour of the various clients see futher in @ref pageicalsrvclients
 
+@note At the moment (v 0.9.3X) the development of the virtual calendars (see
+@ref secoverviewvcs ) has just started, so be sure to check to current
+state of these in the releaselog.
+
+@note The latest versions (>v0.9.30) have been developed with php5 and
+apache2. Al though we try to keep it all compatible with php4, it may
+be the case that some problems come up if you use icalsrv with
+php4. Please report via mailinglist or bug list if you found some. See
+below for bug reporting.
 
 @section secinstall SHORT experimental Install How-To:
 		 
