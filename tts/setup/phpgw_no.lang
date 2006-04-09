@@ -7,6 +7,10 @@ add new ticket	tts	no	Lag ny sak
 add ticket	tts	no	Lag sak
 additional notes	tts	no	Ekstra notater
 admin options	common	no	Administrator opsjoner
+alert for critical prio setting	tts	no	Du setter prioritet til kritisk. Forvis deg om at mottaker av saken oppfatter dette ved å ringe straks.
+alert for emergency prio setting	tts	no	Du setter prioritet til øyeblikkelig. Forvis deg om at mottaker av saken oppfatter dette ved å ringe straks.
+alert for high prio setting	tts	no	Vurder å ringe mottaker av denne saken.
+assign tickets	tts	no	Fordel
 assign to	tts	no	Fordel til
 assigned from	tts	no	Fordelt av
 assigned to	tts	no	Fordelt til
@@ -15,6 +19,7 @@ billable hours changed	tts	no	Fakturerbare timer endret
 billable hours rate	tts	no	Fakturerbar timepris
 billable rate	tts	no	Fakturerbar pris
 billable rate changed	tts	no	Fakturerbar pris endret
+can assign to	tts	no	Kan fordele saker
 can make full changes	tts	no	Kan utføre alle endringer
 category changed	tts	no	Kategori endret
 check here to generate the state's id automatically or enter a particular id below.	tts	no	Huk av her for å lage tilstands-ID automatisk, eller skriv inn ønsker ID under.
@@ -30,6 +35,7 @@ create new ticket	tts	no	Lag ny sak
 create new transition	tts	no	Lag ny overgang
 creates a new ticket, returns ticket_id	tts	no	Lager ny sak, returnerer sak_id
 creates a struct of tickets	tts	no	Lager struktur på sakene
+critical	tts	no	Kristisk
 date opened	tts	no	Åpnet dato
 default assign to	tts	no	Standard tildeling til
 default group	tts	no	Standard gruppe
@@ -38,9 +44,12 @@ delete the listed tickets.	tts	no	Slett de listede sakene.
 deleting the state	tts	no	Sletter tilstand
 deleting the transition	tts	no	Sletter overgang
 detail	tts	no	Detalj
+due date	tts	no	Forfallsdato
+due date changed	tts	no	Forfallsdato endret
 duplicate	tts	no	KOPI
 edit the state	tts	no	Endre tilstand
 edit the transition	tts	no	Endre overgang
+emergency	tts	no	Øyeblikkelig
 error: the subject of the ticket is not specified.	tts	no	FEIL : Du må ha en overskrift på saken
 force	tts	no	Tving
 global categories	tts	no	Globale kategorier
@@ -56,6 +65,7 @@ keep the present state [%1].	tts	no	Behold nåværende tilstand [%1].
 latest note added	tts	no	Siste notat lagt til
 list of available tickets' states.	tts	no	Vis tilgjengelige saks-tilstander.
 list of available tickets' transitions.	tts	no	Vis tilgjengelige saks-overganger.
+low	tts	no	Lav
 missing description	tts	no	Mangler beskrivelse
 morework	tts	no	MERARBEID
 needswork	tts	no	TRENGERMERARBEID
@@ -89,6 +99,7 @@ priority changed	tts	no	Prioritet endret
 put the preexistent ticket into the state %1.	tts	no	Sett den eksisterende saken til tilstand %1.
 re-assigned	tts	no	Gjen-tildelt
 re-opened	tts	no	Gjenåpnet
+read tickets	tts	no	Les saker
 read tickets within group only	tts	no	Bare lese saker innen gruppen
 refresh every (seconds)	tts	no	Oppdater hver (sekunder)
 reopen	tts	no	GJENÅPNE
@@ -126,9 +137,11 @@ the ticket was existent before the petri net infrastructure was defined and shou
 the ticket was found a duplicate of another ticket.	tts	no	Saken er en kopi av en annen sak.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	no	Følgende saker har tilstand %1. Vennligst avgjør hva som skal gjøres.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	no	Validering av saken feilet. Saken krever mer arbeid.
+this state means an open ticket	tts	no	Saken er åpen ved denne tilstand
 ticket	tts	no	Sak
 ticket #	tts	no	Saksnr.
 ticket has been updated	tts	no	Saken har blitt oppdatert
+ticket is not accessible	tts	no	Saken er ikke tilgjengelig
 tickets found %1	tts	no	Saker funnet %1
 tickets open %1	tts	no	Saker åpnet %1
 tickets total %1	tts	no	Totale saker %1
@@ -160,6 +173,7 @@ view all tickets	tts	no	Vis alle saker
 view job detail	tts	no	Vis jobbdetaljer
 view only my open tickets	tts	no	Vis bare mine åpne saker
 view only open tickets	tts	no	Vis kun åpne saker
+wish	tts	no	Ønske
 you can only close a ticket if it is assigned to you.	tts	no	Du kan kun lukke en sak hvis den er tildelt deg.
 you want to delete the state %1 and associated transitions. are you sure?	tts	no	Du vil slette tilstand %1 og tilhørende overganger. Er du sikker?
 you want to delete the state %1. are you sure?	tts	no	Du vil slette tilstand %1. Er du sikker?
