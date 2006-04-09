@@ -76,6 +76,8 @@
 		*/
 		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox)
 		{
+			$allFolders = array();
+			
 			// create a list of all folders, also the ones which are not subscribed
  			foreach($_folders as $key => $obj)
 			{

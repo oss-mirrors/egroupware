@@ -797,7 +797,9 @@
 			{
 				$displayHeaders = $caching->getHeaders();
 				$messagesToRemove = count($displayHeaders) - $status->messages;
-				reset($displayHeaders);
+				if ($displayHeaders) {
+					reset($displayHeaders);
+				}
 				for($i=0; $i<count($displayHeaders); $i++)
 				{
 					$header = imap_fetch_overview($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
