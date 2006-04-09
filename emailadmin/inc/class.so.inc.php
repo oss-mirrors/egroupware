@@ -145,7 +145,7 @@
 				' OR ea_appname IS NULL or ea_appname = \'\') and ',
 				'(',
 				array('ea_group'=>$_groups),
-				' OR ea_group IS NULL or ea_group = \'\')'
+				' OR ea_group IS NULL or ea_group = \'\' or ea_group = \'0\')'
 			);
 
 			$this->db->select($this->table,'ea_profile_id',$where, __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
