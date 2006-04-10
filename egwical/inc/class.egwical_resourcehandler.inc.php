@@ -172,8 +172,9 @@
 	 * profitably use the set of  auxiliary conversion
 	 * routines that the library class @ref eicnvutils provides.
 	 * These methods must be accessed via the $ecu member variable. 
-	 *
-	 * @version 0.9.34-b4 updated to ncvelt and new documentation attribs as nonref
+	 * 
+	 * @version 0.9.36-a1 first trial version for NAPI-3.1
+	 * @since 0.9.36 first version with NAPI-3.1 (rsc-owner_id handling)
 	 * @date 20060407
 	 * @since 0.9.30 new api: ical accessors as egwical_resourcehandler subclasses
 	 * @since 0.9.22 new api2 using eicnvutils via $ecu
@@ -211,6 +212,14 @@
 	   * subclass has this knowledge, it should be set by such a subclass!
 	   */
 	  var $rsc_vtypes = array();
+
+	  /** Owner of the (virtual) resource is used to add or delete Egw Elements
+	   * @private
+	   * This variable can be set via the constructor. When not used it has the
+	   * default value 0, meaning that the resource owned by the authenticated user is taken.
+	   * @var int $rsc_owner_id
+	   */
+	  var $rsc_owner_id = 0;
 
 	  
 	  /** extra debugging switch
@@ -298,6 +307,7 @@
 	  var $deviceType = 'all';
 
 
+
 	  /** supported fields of the importing/exporting device
 	   * @private
 	   * @var array $supportedFields
@@ -373,8 +383,11 @@
 	   * using the set_rsc() method.
 	   * @param string $prodid The type identification of the device is used to transport
 	   * ical data to and from. This can later be set using the set_supportedfields() method. 
+	   * @param string $rscowernid the id of the resource owner. This is only needed for import
+	   * in resources not owned by the authenticated user. Default (0) the id of the
+	   * authenticated user is used.
 	   */
-	  function egwical_resourcehandler($egwrsc = null, $devicetype='all')
+	  function egwical_resourcehandler($egwrsc = null, $devicetype='all', $rscownerid=null)
 	  {
 		// actually this would only be needed by the abstract superclass?
 		$this->hi = &new Horde_iCalendar;
@@ -386,12 +399,18 @@
 
 		$this->ecu =& new eicnvutils;
 
+		$this->rsc_owner_id = ($rscownerid == '0')
+		  ? $GLOBALS['egw_info']['user']['account_id'] : $rscownerid;
+
 		$this->vcalendar2egwAttributes  = $this->_provided_vcalendar2egwAttributes();
 		$this->ical2egwComponents = $this->_provided_ical2egwComponents();
 
 		if (! $egwrsc === null) {
 		  ($this->set_src($egwrsc) !== false) ||
 			error_log('egwical_resourcehandler() bad arg for $rsc');
+		}
+		if (! $rscownerid === null) {
+		  $this->set_src_owner_id($rscownerid);
 		}
 	  }
 
@@ -587,6 +606,17 @@
 				  ' -call this method only on a concrete subclass!');
 		return false;
 	  }
+
+	  /**  Define owner (by account_id) for new to import egw elements.
+	   * Just fill the member variable $this->rsc_owner_id by the appropiae value
+	   * @param int $account_id the id of the egw account that will be used to set ownership
+	   * for new to create egw elements in the egw resource.
+	   */
+	  function set_rsc_owner_id($account_id='0')
+	  {
+		$this->rsc_owner_id = $account_id;
+	  }
+
 
 	  /** Import a Non Compound Vcalendar Element into the bound resource.
 	   * @virtual

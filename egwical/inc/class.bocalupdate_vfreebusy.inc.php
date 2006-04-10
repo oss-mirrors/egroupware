@@ -82,8 +82,8 @@
 	 * @package egwical
 	 * @author Jan van Lieshout <jvl-AT-xs4all.nl> (This version. new api rewrite,
 	 * refactoring, and extension).
-	 * @version 0.9.34 updated doc and _ncvelt usage
-	 * @date 20060405
+	 * @version 0.9.36-a1 first version for NAPI-3.1
+	 * @date 20060410
 	 * @version 0.9.30a1  first version for napi3
 	 * license @url  http://opensource.org/licenses/gpl-license.php GPL -
 	 * GNU General Public License
@@ -185,13 +185,16 @@
 	   * vfreebusy elements from. This can also later be set
 	   * using the set_rsc() method.
 	   * @param ProductType $devicetype The type identification of the device that is used to
+	   * @param string $rscownid the id of the calendar owner. This is only needed for import
+	   * in calendars not owned by the authenticated user. Default (0) the id of the
+	   * authenticated user is used.
 	   * @param array $fb_req hash with e.g. start, end and requestor for the freebusy request.
 	   * See also @ref$fb_req
 	   */
-	  function bocalupdate_vfreebusy($egwrsc = null, $devicetype='all', &$fb_req = null)
+	  function bocalupdate_vfreebusy($egwrsc = null, $devicetype='all', $rscownid, &$fb_req = null)
 	  {
 		// call our abstract superclass constructor
-		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid);
+		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid, $rscownid);
 		//@todo rewrite supportedFields setting to distribute it over the egwical
 		// baseclass and the subclasses cleverly
 		$this->vfreebusy2eventFields = $this->_provided_vfreebusy2eventFields();

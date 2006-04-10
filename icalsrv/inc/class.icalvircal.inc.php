@@ -44,8 +44,8 @@
    * @uses egwical_resourcehandler
    *
    * @author jvl
-   * @version 0.9.30 first version
-   * @date 20060322 
+   * @version 0.9.36 first version adapted to NAPI-3.1
+   * @date 20060410
    */ 
 
    class icalvircal extends virtual_calendar
@@ -169,9 +169,10 @@
 		  if($this->ivdebug)
 			  error_log("\n icalvircal.export: rsc:". $rsc_class . ' '. count($ids)
 					  . " elms to export[");
-		  //error_log('element-ids:[' . print_r($ids, true) . ']');		  
-		  $hndarg3 = (!empty($rh_def['hndarg3'])) ? $rh_def['hndarg3'] : null;
-		  $rschnd =& CreateObject($rh_def['hnd'],null,$this->deviceType, $hndarg3);
+		  //error_log('element-ids:[' . print_r($ids, true) . ']');
+		  // hndnarg4 is the special for vfreebusy and ...
+		  $hndarg4 = (!empty($rh_def['hndarg4'])) ? $rh_def['hndarg4'] : null;
+		  $rschnd =& CreateObject($rh_def['hnd'],null,$this->deviceType, null, $hndarg4);
 		  if (! is_object($rschnd)){
 			error_log('icalvircal.export_vcal: couldnot create rschnd:' . $rh_def['hnd']);
 			return false;
@@ -180,6 +181,8 @@
 		  $rschnd->uid_mapping_export =  $this->uid_mapping_export;
 		  $rschnd->set_rsc($rsc);
 		  $rschnd->deviceType = $this->deviceType;
+		  if(!empty($rh_def['owner_id']))
+			$rschnd->set_rsc_owner_id($rh_def['owner_id']);
 
 		  if(($velts =& $rschnd->export_velts($ids)) === False)
 			return false;
@@ -243,7 +246,9 @@
 			return false;
 		  }
 
-		  $rschnd =& CreateObject($rh_def['hnd']);
+		  // hndnarg4 is the special for vfreebusy and ...
+		  $hndarg4 = (!empty($rh_def['hndarg4'])) ? $rh_def['hndarg4'] : null;
+		  $rschnd =& CreateObject($rh_def['hnd'],null,$this->deviceType, null, $hndarg4);
 		  if (! is_object($rschnd)){
 			error_log('icalvircal.import_vcal: couldnot create rschnd:' . $rh_def['hnd']);
 			return false;
@@ -256,6 +261,8 @@
 		  $rschnd->reimport_missing_elements =  $this->reimport_missing_elements;
 		  $rschnd->set_rsc($rsc);
 		  $rschnd->deviceType = $this->deviceType;
+		  if(!empty($rh_def['owner_id']))
+			$rschnd->set_rsc_owner_id($rh_def['owner_id']);
 
 		  if(($rids  =& $rschnd->import_velts($vcalelm)) === False)
 			return false;

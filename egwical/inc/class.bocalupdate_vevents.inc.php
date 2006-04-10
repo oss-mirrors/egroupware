@@ -33,11 +33,13 @@
    *    [+] RRULE import by month, interval 
    *    [+] recur_exception (content gets into event correctly, but..)
    *    [+] COUNT converted (partially) to UNTIL
+   *    [+] EDIT/DELETE in non owned calendars (>=NAPI-3.1)
+   *    [ ] ADD into non owned calendar (>=NAPI-3.1)
    * [+basic] check EXPORT of VALARMS   (only time, no action selectable)
    * [+basic] check IMPORT of VALARMS     (only time, no action selectable)
    * [+/-] todo: add switch to control import of non egw known attendees
    * [+] X-DELETED import
-   * [ ] todo find a nicer way to provide a safe importmode parameter usage (now $cal_id==0)
+   * [ ] todo find a nicer way to provide a safe importmode parameter usage (was $cal_id==0)
    * [+] test the usage and conversions of user time and server times and timezones in
    *     exported and imported ical files.
    * </PRE>
@@ -136,9 +138,10 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.34  update docs and usinig ncvelt
-	 * @date 20060405
-	 * @sincen 0.9.30  first version for napi3
+	 * @version 0.9.36  update does not change owner anymore
+	 * @since 0.9.36  first version with NAPI-3.1 (rsc_owner_id parameter)
+	 * @date 20060410
+	 * @since 0.9.30  first version for napi3
 	 * license @url  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
 	 */
     class bocalupdate_vevents extends egwical_resourcehandler
@@ -220,7 +223,6 @@
 	  }
 
 
-
 	  /**
 	   * Our Constructor, if given it sets the egw resource $egwrsc is set as
 	   * so called <i>bound egw resource</i>. And $prodid, the product id of the client that
@@ -233,11 +235,14 @@
 	   * @param ProductType $devicetype The type identification of the device that is used to
 	   * the transport the ical data to and from. This is used to set the supportedFields already.
 	   * @note These can also later be set using the setSupportedFields() method. 
+	   * @param string $rscownid the id of the calendar owner. This is only needed for import
+	   * in calendars not owned by the authenticated user. Default (0) the id of the
+	   * authenticated user is used.
 	   */
-	  function bocalupdate_vevents($egwrsc = null, $devicetype='all')
+	  function bocalupdate_vevents($egwrsc = null, $devicetype='all',$rscownid='0')
 	  {
 		// call our abstract superclass constructor
-		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid);
+		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid, $rscownid);
 		//@todo rewrite supportedFields setting to distribute it over the egwical
 		// baseclass and the subclasses cleverly
 		$this->vevent2eventFields = $this->_provided_vevent2eventFields();
@@ -251,7 +256,7 @@
 	  }
 
 
-	  /** Set the egw calendar resource  that this worker will handle.  
+	  /** Set the egw calendar resource  that this class will handle.  
 	   * 
 	   * This worker is only capable of handling  bocalupdate calendar objects, so it should
 	   * be of that class. The $egw_rsc is registered in the $rsc variable and the supported
@@ -520,7 +525,7 @@
 
 
 	  /**
-	   * Import a VEVENT as a event into  the Egw calendar 
+	   * Import a VEVENT as a event into the bound Egw calendar resource
 	   *
 	   * The ical VEVENT component is converted to an eGW event for the
 	   * calendar resource in $rsc and then imported into this eGW calendar resource.
@@ -539,7 +544,11 @@
 	   * Default the mode <code>UMM_UID2ID</code> is used. 	 For more info see @ref secuidmapping 
 	   *
 	   * @ref $supportedFields    determines the VEVENTS that will be used for import
-	   *
+	   *  
+	   * For importing vevents the calendar of $this->rsc_owner_id is taken. That is the ownership
+	   * of the new event is set to that owner. For editing(and deleting) of existing events
+	   * the id of the current owner is always (re-) used.
+	   * 
 	   * @param  VEVENT $vevent   VEVENT object (horde_iCalendar_vevent) 
 	   * @param int $uid_mapping_import uid mapping import mode used. see @ref secuidmapping Default
 	   *  UMM_UID2ID.
@@ -821,11 +830,27 @@
 			$event['id'] = $cal_id;
 		  }
 
-		  // SORRY THE PARTICPANTS HANDLING OF EGW IS NOT YET CLEAR TO ME (JVL)
-		  // so I do the bold solution to add ourself to participants list if we are not on yet
-		  if(!isset($event['participants'][$user_id]))
-			$event['participants'][$user_id] =  'A';
  // error_log('<< ok <<<<' . 'event read for import=' . print_r($event,true));
+
+		  // handle the ownersettings for virtual calendars
+		  // nothing set would do update as current auth user
+		  if($cur_owner_id){
+			// UPD-READ or UPD-READ-UID
+			$event['owner'] = $cur_owner_id;
+		  } elseif($this->rsc_owner_id > 0){
+			// to accomodate NEW in non owned calendars
+			$event['owner'] = $this->rsc_owner_id;
+			// just do our own calendar
+		  } else {
+			$event['owner'] = $user_id;
+		  }
+
+		  // SORRY THE PARTICPANTS HANDLING OF EGW IS NOT YET CLEAR TO ME (JVL)
+		  // for now the bold solution to add the event owner always to the participants
+		  // list if not yet on it
+		  if(!isset($event['participants'][$event['owner']]))
+			$event['participants'][$event['owner']] =  'A';
+
 
 		  // -- finally we come to the import into egw ---
 

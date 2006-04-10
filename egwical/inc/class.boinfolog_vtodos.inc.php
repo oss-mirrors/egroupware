@@ -123,7 +123,8 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.34 updated to _ncvelt() routines and with synopsis
+	 * @version 0.9.36-a1 first version with NAPI-3.1
+	 * @since 0.9.36  first version for napi3.1 (with rsc_owner_id parameter)
 	 * @since 0.9.30  first version for napi3
 
 	 * license @url  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
@@ -284,11 +285,14 @@
 	   * @param ProductType $devicetype The type identification of the device that is used to
 	   * the transport the ical data to and from. This is used to set the supportedFields already.
 	   * @note These can also later be set using the setSupportedFields() method. 
+	   * @param string $rscownid the id of the calendar owner. This is only needed for import
+	   * in calendars not owned by the authenticated user. Default (0) the id of the
+	   * authenticated user is used.
 	   */
-	  function boinfolog_vtodos($egwrsc = null, $devicetype='all')
+	  function boinfolog_vtodos($egwrsc = null, $devicetype='all', $rscownid='0')
 	  {
 		// call our abstract superclass constructor
-		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid);
+		egwical_resourcehandler::egwical_resourcehandler($egwrsc, $prodid, $rscownid);
 		//@todo rewrite supportedFields setting to distribute it over the egwical
 		// baseclass and the subclasses cleverly
 		$this->vtodo2taskFields = $this->_provided_vtodo2taskFields();
@@ -846,6 +850,15 @@
 			$task['info_id'] = $cal_id;
 		  }
 
+		  // handle the ownersettings for virtual calendars
+		  // nothing set would do update as current auth user
+		  if($cur_owner_id){
+			// UPD-READ or UPD-READ-UID
+			$task['info_owner'] = $cur_owner_id;
+		  } elseif($this->rsc_owner_id > 0){
+			// to accomodate NEW in non owned calendars
+			$task['info_owner'] = $this->rsc_owner_id;
+		  } 
 
 
 # error_log('<< ok <<<<' . 'task read for import=' . print_r($task,true));

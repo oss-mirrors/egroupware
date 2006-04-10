@@ -38,9 +38,9 @@
    *   of the logged_in user?
    * - /freebusy.ics (TBI) 
    *
+   * @version 0.9.36-a1 first version adapted for NAPI 3.1
    * @author jvl
-   * @version 0.9.30-a1 first version
-   * @date 20060323
+   * @date 20060410
    */ 
 
    class system_vircal_ardb extends vircal_ardb
@@ -87,6 +87,7 @@
 			   array('calendar.bocalupdate' =>
 					 array(
 						   'hnd'   => 'egwical.bocalupdate_vevents',
+						   'hndarg3' => '0',
 						   'qmeth' => 'search',
 						   'qarg' =>
 						   array(
@@ -112,6 +113,7 @@
 			   array('infolog.boinfolog' =>
 					 array(
 						   'hnd'   => 'egwical.boinfolog_vtodos',
+						   'hndarg3' => '0',
 						   'qmeth' => 'search',
 						   'qarg' =>
 						   array(

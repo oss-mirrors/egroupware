@@ -37,8 +37,9 @@
    * - /freebusy.ifb
    *
    * @author jvl
-   * @version 0.9.30-a3 second version
-   * @date 20060323
+   * @version 0.9.36-a1 first release adapted for NAPI-3.1
+   * @date 20060410
+   * @since version 0.9.36 initialize resources with hndarg3 set (NAPI-3.1)
    */ 
 
    class personal_vircal_ardb extends vircal_ardb
@@ -82,7 +83,8 @@
                array('calendar.bocalupdate' =>
                      array(
                            'hnd'   => 'egwical.bocalupdate_vfreebusy',
-                           'hndarg3' => array(
+                           'owner_id' => '_fn_cal_owner_id()',
+                           'hndarg4' => array(
                                              'url'=> '_s_calname',
                                              'start' => '_fn_month_start()',
                                              'end'   => '_fn_month_end()'
@@ -116,8 +118,8 @@
                array('calendar.bocalupdate' =>
                      array(
                            'hnd'   => 'egwical.bocalupdate_vevents',
+                           'owner_id' => '_fn_cal_owner_id()',
                            'qmeth' => 'search',
-						   'hndarg3' => null,
                            'qarg' =>
                            array(
                                  'start' => '_fn_month_start()',
@@ -146,6 +148,7 @@
                array('infolog.boinfolog' =>
                      array(
                            'hnd'   => 'egwical.boinfolog_vtodos',
+                           'owner_id' => '_fn_cal_owner_id()',
                            'qmeth' => 'search',
                            'qarg' =>
                            array(
@@ -210,10 +213,12 @@
 	   
 	   $rwrule_stdperiod_stduser = array('start' => '_fn_months_away(-2)',
 										 'end' => '_fn_months_away(12)',
+										 'owner_id' => $user_id,
 										 'users' => $user_id
 										 );
 	   $rwrule_opentasks_stduser = array('info_status' => '',
-										 'info_responsible' => $user_id
+										 'info_responsible' => $user_id,
+										 'owner_id' => $user_id,
 										 );
 
 	   // events from 1 month back till 12 months after today

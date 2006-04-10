@@ -1,5 +1,18 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
 
+\section secrel0936nga1 Release 0.9.36-ng-a1 Beta1 Release with New API 3.1
+- NB. This is the first release that provides NAPi-3.1 a slight update of NAPI-3
+  to allow correct import into non owned resources
+- release date: 20060410 
+- file: egwical-with-doc-0.9.36-ng-a1.tgz
+- via: homepage and (possibly) egroupware cvs
+
+\subsection subsecrel0936nga1changes Changes from previous version
+- extended the API to have allow import/ export to and from non owner
+ resources. This is now in NAPI-3.1 (mainly the set_rsc_owner_id() method)
+
+\subsection subsecrel0936nga1bugs Found bugs and problems
+.... 
 
 \section secrel0934ngb3 Release 0.9.34-ng-b3 Beta3 Release with New API
 

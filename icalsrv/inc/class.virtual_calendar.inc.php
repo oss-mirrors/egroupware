@@ -44,7 +44,7 @@
    * - store to database (to array) and retrieve/build from database (array)
    *
    * @author jvl
-   * @version 0.9.30-a2
+   * @version 0.9.36-a1 first version adapted to NAPi-3.1
    * @date 20060406 
    */ 
 
@@ -111,6 +111,7 @@
 		 return false;
 	   }
 	   $this->auth = (!empty( $this->_caldef['auth'])) ? $this->_caldef['auth'] : 'NOT SET';
+	   $this->cal_owner_id = (!isset( $this->_caldef['pw'])) ? $this->_caldef['pw'] : null;
 	   $this->pw = (!isset( $this->_caldef['pw'])) ? $this->_caldef['pw'] : null;
 	   return count($vcar);
 	 }
@@ -352,7 +353,8 @@ version VC-0.2
                 'version' => 'vc-0.2',
                 'rscs'  => array($rsc_class => array(
                                                      'hnd' => $rschnd,
-                                                     'hndarg3' => $hnd_argument3,
+                                                     'owner_id' => $cal_owner_id,
+                                                     'hndarg4' => $hnd_argument4,
                                                      'qmeth' => $qmeth,
                                                      'qarg' => $qarg,
                                                      'access' => $rights,
@@ -383,7 +385,7 @@ $vcdef =
         array('calendar.bocalupdate' =>
               array(
                     'hnd'   => 'bocalupdate_vevents',
-                    'hndarg3' => null,
+                    'owner_id' => $user_id,
                     'qmeth' => 'search',
                     'qarg' =>
                     array(
@@ -399,6 +401,7 @@ $vcdef =
               'infolog.boinfolog' =>
               array(
                     'hnd'   => 'boinfolog_vtodos',
+                    'owner_id' => $user_id,
                     'qmeth' => 'search',
                     'qarg' =>
                     array(
