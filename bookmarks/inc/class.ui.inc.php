@@ -768,7 +768,7 @@ function add(catid)
 
 function remove(catid)
 {
-	var now =& new Date();
+	var now =new Date();
 	document.cookie = 'menutree[' + catid + ']=; expires=' + now.toGMTString();
 }
 
