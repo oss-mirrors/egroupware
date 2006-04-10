@@ -59,7 +59,10 @@ no never	admin	zh-tw	從未
 no only on request	admin	zh-tw	否,只有在發出請求時
 not set	wiki	zh-tw	未設定
 older	wiki	zh-tw	更舊
+on all pages	wiki	zh-tw	在全部頁面
 only if browser supports a richtext-editor	admin	zh-tw	請確認您的瀏覽器支援所見即所得編輯器
+only on the first page	wiki	zh-tw	只在首頁
+page '%1' not found !!!	wiki	zh-tw	找不到 '%1' 頁面！
 path of the upload directory (has to be writable by the webserver!)	admin	zh-tw	上傳檔案的路徑（網頁伺服器要能夠寫入！）
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	zh-tw	透過所見即所得編輯器上傳圖片（上傳資料夾空白表示停用上傳功能）
 please contact the %1administrator%2 for assistance.	wiki	zh-tw	請聯絡%1管理員%2。
@@ -74,15 +77,20 @@ richtext	wiki	zh-tw	網頁
 rows	wiki	zh-tw	列
 save the changes and exit	wiki	zh-tw	儲存後離開
 saves and continues editing	wiki	zh-tw	儲存後繼續編輯
+search for	wiki	zh-tw	搜尋
 see complete list (%1 entries)	wiki	zh-tw	顯示完整列表(%1 筆資料)
+show a search	wiki	zh-tw	顯示搜尋
+show the title of the wiki page	wiki	zh-tw	顯示 wiki 頁面的標題
 site configuration	wiki	zh-tw	網站設定
 summary	wiki	zh-tw	概要
 summary of change	wiki	zh-tw	異動概要
+the search returned no result!	wiki	zh-tw	沒有找到任何資料！
 this page can not be edited.	wiki	zh-tw	這篇文章無法邊擊
 twin pages	wiki	zh-tw	重複頁
 unblock	wiki	zh-tw	取消鎖定
 updates the preview	wiki	zh-tw	更新預覽
 url of the upload directory	admin	zh-tw	上傳資料夾對應的網址
+use this module for displaying wiki-pages	wiki	zh-tw	用這個模組來顯示 wiki 頁面
 users	wiki	zh-tw	使用者
 view document history	wiki	zh-tw	顯示文件歷史
 visit %1 to set your user name	wiki	zh-tw	在 %1 設定您的名稱
@@ -92,10 +100,12 @@ who should be able to read this page	wiki	zh-tw	誰能夠閱讀這份文件
 wiki	common	zh-tw	Wiki
 wiki administration	wiki	zh-tw	Wiki管理
 wiki menu	wiki	zh-tw	Wiki選單
+wiki startpage	wiki	zh-tw	wiki 首頁
 writable by	wiki	zh-tw	可修改
 yes always	admin	zh-tw	全部皆是
 you have been denied access to this site.	wiki	zh-tw	您沒有權限瀏覽這個網站！
 you have entered an invalid user name.	wiki	zh-tw	您輸入了一個錯誤的名稱
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	zh-tw	您在同一段時間裡存取了超過系統設定的資料量，請稍後再回來繼續閱讀。
+you have no rights to view wiki content !!!	wiki	zh-tw	您沒有檢視這個頁面的權限！
 your changes	wiki	zh-tw	您做的修正
 your user name is "%1".	wiki	zh-tw	您的帳號是 "%1"
