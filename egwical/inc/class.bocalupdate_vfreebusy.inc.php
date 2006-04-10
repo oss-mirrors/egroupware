@@ -97,7 +97,7 @@
 	   * Switch to print extra debugging about imported and exported elements to the httpd errorlog
 	   * stream.
 	   */
-	  var $vfdebug = true;
+	  var $vfdebug = false;
 
 	  /** The Bound Egw Resource that we handle
 	   * @private
