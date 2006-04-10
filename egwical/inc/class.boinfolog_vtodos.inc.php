@@ -858,9 +858,11 @@
 		  } elseif($this->rsc_owner_id > 0){
 			// to accomodate NEW in non owned calendars
 			$task['info_owner'] = $this->rsc_owner_id;
-		  } 
+		  } else {
+			$task['info_owner'] = $user_id;
+		  }
 
-
+# error_log('rsc_owner:'. $this_rsc_owner_id . 'curowner:' . $cur_owner_id . 'user:'.$user_id);
 # error_log('<< ok <<<<' . 'task read for import=' . print_r($task,true));
 
 		  // -- finally we come to the import into egw ---
