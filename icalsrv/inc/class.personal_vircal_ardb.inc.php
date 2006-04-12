@@ -37,8 +37,9 @@
    * - /freebusy.ifb
    *
    * @author jvl
-   * @version 0.9.36-a1 first release adapted for NAPI-3.1
-   * @date 20060410
+   * @version 0.9.36-a1-bf01 small bugfix of personal calendars
+   * @since 0.9.36-a1 first release adapted for NAPI-3.1
+   * @date 20060413
    * @since version 0.9.36 initialize resources with hndarg3 set (NAPI-3.1)
    */ 
 
@@ -258,7 +259,8 @@
 	   // -- now some weekly calendars
 	   $rwrule_weekperiod_stduser = array('start' => '_fn_week_start()',
 										  'end' =>  '_fn_week_end()',
-										 'users' => $user_id
+										  'users' => $user_id,
+										  'owner_id' => $user_id,
 										 );
 
 		 // this weeks events
@@ -288,6 +290,7 @@
 	   // -- now some monthly calendars
 	   $rwrule_month_stduser = array('start' =>'_fn_month_start()',
 									 'end' =>  '_fn_month_end()',
+									 'owner_id' => $user_id,
 									 'users' => $user_id
 									 );
 		 // this months events
@@ -327,6 +330,7 @@
 	   // some next months calendars
 	   $rwrule_nextmonth_stduser = array('start' =>'_fn_month_start(1)',
 										 'end' =>  '_fn_month_end(1)',
+										 'owner_id' => $user_id,
 										 'users' => $user_id
 										 );
 
