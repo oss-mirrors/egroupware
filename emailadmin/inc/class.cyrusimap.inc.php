@@ -151,6 +151,26 @@
 				
 				if($_hookValues['account_lid'] != $_hookValues['old_loginid']){
 					@imap_renamemailbox($mbox, $this->getMailboxString('user'.$delimiter.$_hookValues['old_loginid']), $this->getMailboxString('user'.$delimiter.$username));
+
+					if(strpos($_hookValues['account_lid'],'.') && function_exists('imap_getacl')) {
+						// this is a hack for some broken cyrus imap server versions
+						// after the account rename to l.kneschke for example, the acl got renamed to l^kneschke
+						// which is wrong! also the acl need to be renamed to l.kneschke too
+						// l^kneschke is only the name for the folder in the filesystem
+						// we search for broken acl entries and replace them with the correct ones
+						$list = imap_list($mbox, $this->getMailboxString('user'.$delimiter.$username), '*');
+						foreach($list as $longMailboxName) {
+							$shortMailboxName = preg_replace("/{.*}/",'',$longMailboxName);
+							$currentACL = imap_getacl ($mbox, $shortMailboxName);
+							foreach((array)$currentACL as $accountName => $acl) {
+								$pos = strpos($accountName, '^');
+								if($pos !== false) {
+									imap_setacl ($mbox, $shortMailboxName, $accountName, "");
+									imap_setacl ($mbox, $shortMailboxName, $_hookValues['account_lid'], $acl);
+								}
+							}
+						}
+					}
 				}
 
 				$folderNames = array(
