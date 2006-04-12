@@ -977,7 +977,7 @@
 			#_debug_array($structure);
 			if($structure->type == TYPETEXT) {
 				$bodyPart = array();
-                                if ($structure->subtype == 'HTML' || $structure->subtype == 'PLAIN') {
+                                if (($structure->subtype == 'HTML' || $structure->subtype == 'PLAIN') && $structure->disposition != 'ATTACHMENT') {
 					// only text or html email
 					#print "_patrID = $_partID";
 					if($_partID == '') 
