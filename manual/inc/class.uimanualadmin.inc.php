@@ -20,15 +20,15 @@ class uimanualadmin extends xmlwiki
 		'import' =>True,
 	);
 	var $manual_config;
+	var $mconfig;
 
 	function uimanualadmin()
 	{
 		CreateObject('manual.uimanual');	// sets the default config
 
-		$config =& CreateObject('phpgwapi.config','manual');
-		$config->read_repository();
-		$this->manual_config = $config->config_data;
-		unset($config);
+		$this->mconfig =& CreateObject('phpgwapi.config','manual');
+		$this->mconfig->read_repository();
+		$this->manual_config =& $this->mconfig->config_data;
 		
 		$this->wiki_id = (int) $this->manual_config['manual_wiki_id'];
 		$this->xmlwiki($this->wiki_id);	// call the constructor of the class we extend
@@ -62,7 +62,7 @@ class uimanualadmin extends xmlwiki
 		
 		$this->manual_config['manual_updated'] = $status['meta']['exported'];
 		$this->manual_config['manual_langs'] = $langs;
-		$this->config->save_repository();
+		$this->mconfig->save_repository();
 
 		echo '<h3>'.lang('%1 manual page(s) added or updated',count($status['imported']))."</h3>\n";
 
