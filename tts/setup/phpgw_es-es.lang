@@ -1,3 +1,5 @@
+<div class="stateliststate">%1</div>	tts	es-es	<div class="stateliststate">%1</div>
+<div class="stateliststate">%1</div> keep the present state	tts	es-es	<div class="stateliststate">%1</div> Mantener el estado actual
 a new ticket has been reported.	tts	es-es	Se ha creado una nueva incidencia
 accept	tts	es-es	ACEPTAR
 accept the ticket into verification process.	tts	es-es	Aceptar la incidencia en el proceso de verificación
@@ -66,6 +68,7 @@ latest note added	tts	es-es	Ultima nota añadida
 list of available tickets' states.	tts	es-es	Lista de los estados de las incidencias disponibles
 list of available tickets' transitions.	tts	es-es	Lista de las transiciones de las incidencias disponibles
 low	tts	es-es	Baja
+mail owner on transition	tts	es-es	propietario del correo en la transición
 missing description	tts	es-es	Falta la descripción
 morework	tts	es-es	MAS TRABAJO
 needswork	tts	es-es	NECESITA TRABAJO
@@ -111,6 +114,7 @@ returns a struct of values of a single ticket	tts	es-es	Devuelve una estructura 
 returns the additional notes attached to a ticket	tts	es-es	Devuelve las notas adicionales adjuntas a una incidencia
 selected	tts	es-es	selected
 show new/updated tickets on main screen	tts	es-es	mostrar incidencias nuevas o actualizadas en la pantalla principal
+small view	tts	es-es	vista reducida
 source state	tts	es-es	Estado de origen
 state	tts	es-es	Estado
 state changed	tts	es-es	Estado modificado
@@ -141,6 +145,7 @@ this state means an open ticket	tts	es-es	En este estado, la incidencia está abi
 ticket	tts	es-es	Incidencia
 ticket #	tts	es-es	Incidencia nº
 ticket has been updated	tts	es-es	La incidencia ha sido actualizada
+ticket is not accessable	tts	es-es	La incidencia no está accesible
 ticket is not accessible	tts	es-es	Esta incidencia no está accesible
 tickets found %1	tts	es-es	Incidencias encontradas: %1
 tickets open %1	tts	es-es	Incidencias abiertas: %1
