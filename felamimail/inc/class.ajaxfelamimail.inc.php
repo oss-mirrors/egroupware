@@ -48,14 +48,18 @@
 		{
 			$folderData = $this->bofelamimail->getFolderStatus('INBOX');
 			$folderName = ($_parentFolder == '--topfolder--'?$_newSubFolder:$_parentFolder.$folderData['delimiter'].$_newSubFolder);
+			$response =& new xajaxResponse();
 			if($this->bofelamimail->imap_createmailbox($folderName))
 			{
-				$response =& new xajaxResponse();
 				$response->addScript("tree.insertNewItem('$_parentFolder','$folderName','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
 				$response->addScript("tree.setCheck('$folderName','0');");
 				$response->addAssign("newSubFolder", "value", '');
-				return $response->getXML();
 			}
+			else
+			{
+				$response->addScript("alert('".addslashes(lang("Could not add folder %1 (%2) !!!",$folderName,imap_last_error()))."');");
+			}
+			return $response->getXML();
 		}
 		
 		function changeSorting($_sortBy)
@@ -165,12 +169,20 @@
 			if($_folderName == 'INBOX' || $_folderName == '--topfolder--')
 				return false;
 
+			// we need to select a different fold first, as Courier wont delete the open folder
+			$this->bofelamimail->openConnection($this->sessionDataAjax['folderName']='INBOX');
+			$this->saveSessionData();
+
+			$response =& new xajaxResponse();
 			if($this->bofelamimail->imap_deletemailbox($_folderName))
 			{
-				$response =& new xajaxResponse();
 				$response->addScript("tree.deleteItem('$_folderName',1);");
-				return $response->getXML();
 			}
+			else
+			{
+				$response->addScript("alert('".addslashes(lang("Could not delete folder %1 (%2) !!!",$_folderName,imap_last_error()))."');");
+			}
+			return $response->getXML();
 		}
 		
 		function deleteMessages($_messageList)
@@ -201,7 +213,7 @@
 			$this->sessionData['activeFilter']	= (int)$_filterID;
 			$this->saveSessionData();
 			
-			// generate the new messageview                
+			// generate the new messageview
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
@@ -356,7 +368,7 @@
 			#return $response->getXML();
 			$this->saveSessionData();
 			
-			// generate the new messageview                
+			// generate the new messageview
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 		
@@ -368,13 +380,24 @@
 		function renameFolder($_oldName, $_newParent, $_newName)
 		{
 			$newName = $_newParent.'.'.$_newName;
+
+			// we need to select a different fold first, as Courier wont delete the open folder
+			$this->bofelamimail->openConnection($this->sessionDataAjax['folderName']='INBOX');
+
+			$response =& new xajaxResponse();
 			if($this->bofelamimail->imap_renamemailbox($_oldName, $newName))
 			{
-				$response =& new xajaxResponse();
+				$this->sessionDataAjax['folderName']=$newName;
+				$this->saveSessionData();
+
 				$response->addScript("tree.deleteItem('$_oldName',0);");
-				$response->addScript("tree.insertNewItem('$_newParent','$newName','$_newName',onNodeSelect,0,0,0,'CHILD,CHECKED,SELECT,CALL');");
-				return $response->getXML();
+				$response->addScript("tree.insertNewItem('$_newParent','$newName','$_newName',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
 			}
+			else
+			{
+				$response->addScript("alert('".addslashes(lang("Could not rename folder %1 to %2 (%3) !!!",$_oldName,$newName,imap_last_error()))."');");
+			}
+			return $response->getXML();
 		}
 		
 		function saveSessionData()
@@ -464,11 +487,11 @@
 		function xajaxFolderInfo($_formValues)
 		{
 			$response =& new xajaxResponse();
-												$response->addAssign("field1", "value", $_formValues['num1']);
-												$response->addAssign("field2", "value", $_formValues['num2']);
-												$response->addAssign("field3", "value", $_formValues['num1'] * $_formValues['num2']);
+			$response->addAssign("field1", "value", $_formValues['num1']);
+			$response->addAssign("field2", "value", $_formValues['num2']);
+			$response->addAssign("field3", "value", $_formValues['num1'] * $_formValues['num2']);
 
-												return $response->getXML();
+			return $response->getXML();
 		}
 	}
 ?>
