@@ -115,10 +115,11 @@
 		
 		function adminMenu()
 		{
- 			if ($GLOBALS['egw_info']['server']['account_repository'] == "ldap")
+ 			if ($GLOBALS['egw_info']['server']['account_repository'] == "ldap" ||
+ 				$this->mailPreferences['imapType'] == 4 || $this->mailPreferences['smtpType'] == 3)	// Plesk
 			{
-									$data = Array
-							(
+				$data = Array
+				(
 					'description'   => 'email settings',
 					'url'           => '/index.php',
 					'extradata'     => 'menuaction=emailadmin.uiuserdata.editUserData'

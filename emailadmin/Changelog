@@ -1,3 +1,8 @@
+20060416 RalfBecker-AT-outdoor-training.de:
+
+- added plesk plugin to create mail accounts and manage passwords, aliases
+  forwards and quota on a plesk system (tested with plesk7.5 Linux)
+
 20051128
 
 - added function to retrieve users profile based on applicationname and

@@ -94,8 +94,7 @@
 			</td>
 			<td width="50%" align="right" cclass="td_right">
 				<select  style="width: 250px;" name="smtpsettings[smtpType]" id="smtpselector" size="1" onchange="javascript:smtp.display(this.value);">
-					<option value="1" {selected_smtpType_1}>{lang_smtp_option_1}</option>
-					<option value="2" {selected_smtpType_2}>{lang_smtp_option_2}</option>
+					{smtpType_options}
 				</select>
 			</td>
 		</tr>
@@ -194,46 +193,59 @@
 			</tr>
 		</table>
 		</fieldset>
-<!--		<table>
+	</div>
+	
+	
+	<!-- The code for Plesk7.5 Linux -->
+	
+	<div id="smtpcontent3" class="inactivetab">
+		<fieldset style="width:650px;" class="row_on"><legend>{lang_smtp_settings}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
 			<tr>
-				<td colspan="2">&nbsp;</td>
+				<td width="300px">{lang_SMTP_server_hostname_or_IP_address}:</td>
+				<td><input name="smtpsettings[3][smtpServer]" size="40" value="{value_smtpServer}"></td>
+			</tr>
+			
+			<tr>
+				<td>{lang_SMTP_server_port}:</td>
+				<td><input name="smtpsettings[3][smtpPort]" maxlength="5" size="5" value="{value_smtpPort}"></td>
 			</tr>
 		</table>
-		<table width="90%" border="0" cellspacing="0" cellpading="1">
-			<tr class="th">
-				<td width="50%" class="td_left">
-					<b>{lang_LDAP_settings}<b>
-				</td>
-				<td class="td_right">
-					&nbsp;
-				</td>
-			</tr>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_smtp_auth}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
 			<tr class="row_off">
-				<td class="td_left">{lang_use_LDAP_defaults}:</td>
-				<td class="td_right">
-					<input type="checkbox" name="smtpsettings[2][smtpLDAPUseDefault]" {selected_smtpLDAPUseDefault} value="yes">
+				<td width="300px">{lang_Use_SMTP_auth}:</td>
+				<td>
+					<input type="checkbox" name="smtpsettings[1][smtpAuth]" {selected_smtpAuth} value="yes">
 				</td>
 			</tr>
-			<tr class="row_on">
-				<td width="50%" class="td_left">{lang_LDAP_server_hostname_or_IP_address}:</td>
-				<td width="50%" class="td_right"><input name="smtpsettings[2][smtpLDAPServer]" maxlength="80" size="40" value="{value_smtpLDAPServer}"></td>
+			<tr>
+				<td>{lang_username}:</td>
+				<td>
+					<input type="text" name="smtpsettings[1][smtpauthusername]" style="width: 350px;" value="{value_smtpauthusername}">
+				</td>
 			</tr>
-			
-			<tr class="row_off">
-				<td class="td_left">{lang_LDAP_server_admin_dn}:</td>
-				<td class="td_right"><input name="smtpsettings[2][smtpLDAPAdminDN]" maxlength="200" size="40" value="{value_smtpLDAPAdminDN}"></td>
+			<tr>
+				<td>{lang_password}:</td>
+				<td>
+					<input type="password" name="smtpsettings[1][smtpauthpassword]" style="width: 350px;" value="{value_smtpauthpassword}">
+				</td>
 			</tr>
-			
-			<tr class="row_on">
-				<td class="td_left">{lang_LDAP_server_admin_pw}:</td>
-				<td class="td_right"><input type="password" name="smtpsettings[2][smtpLDAPAdminPW]" maxlength="30" size="40" value="{value_smtpLDAPAdminPW}"></td>
+		</table>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_smtp_options}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
+			<tr>
+				<td width="300px">{lang_user_can_edit_forwarding_address}:</td>
+				<td>
+					<input type="checkbox" name="smtpsettings[3][editforwardingaddress]" {selected_editforwardingaddress} value="yes">
+				</td>
 			</tr>
-
-			<tr class="row_off">
-				<td class="td_left">{lang_LDAP_server_base_dn}:</td>
-				<td class="td_right"><input name="smtpsettings[2][smtpLDAPBaseDN]" maxlength="200" size="40" value="{value_smtpLDAPBaseDN}"></td>
-			</tr>
-		</table> -->
+		</table>
+		</fieldset>
 	</div>
 </div>
 
@@ -248,9 +260,7 @@
 			</td>
 			<td width="50%" align="right">
 				<select  style="width: 250px;" name="imapsettings[imapType]" id="imapselector" size="1" onchange="javascript:imap.display(this.value);">
-					<option value="1" {selected_imapType_1}>{lang_imap_option_1}</option>
-					<option value="2" {selected_imapType_2}>{lang_imap_option_2}</option>
-					<option value="3" {selected_imapType_3}>{lang_imap_option_3}</option>
+					{imapType_options}
 				</select>
 			</td>
 		</tr>
@@ -464,7 +474,61 @@
 		</fieldset>
 	</div>
 	
+
+	<!-- The code for Plesk7.5 Linux -->
 	
+	<div id="imapcontent4" class="inactivetab">
+		<fieldset style="width:650px;" class="row_on"><legend>{lang_server_settings}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
+			<tr>
+				<td width="300px">{lang_imap_server_hostname_or_IP_address}:</td>
+				<td><input name="imapsettings[4][imapServer]" maxlength="80" style="width: 350px;" value="{value_imapServer}"></td>
+			</tr>
+			
+			<tr>
+				<td>{lang_imap_server_port}:</td>
+				<td><input name="imapsettings[4][imapPort]" maxlength="5" size="5" value="{value_imapPort}"></td>
+			</tr>
+			
+			<tr>
+				<td>{lang_imap_server_logintyp}:</td>
+				<td>
+					<select name="imapsettings[4][imapLoginType]" style="width: 350px;" size="1">
+						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
+						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+					</select>
+				</td>
+
+			</tr>
+		</table>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
+                <table width="100%" border="0" cellspacing="0" cellpading="1">
+
+			<tr>
+				<td width="300px">{lang_use_tls_encryption}:</td>
+				<td>
+					<input type="checkbox" name="imapsettings[4][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+				</td>
+			</tr>
+
+			<tr>
+				<td>{lang_use_tls_authentication}:</td>
+				<td>
+					<input type="checkbox" name="imapsettings[4][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+				</td>
+			</tr>
+
+			<tr>
+				<td>{lang_pre_2001_c_client}:</td>
+				<td>
+					<input type="checkbox" name="imapsettings[4][imapoldcclient]" {selected_imapoldcclient} value="yes">
+				</td>
+			</tr>
+		</table>
+		</fieldset>
+	</div>
 </div>
 
 

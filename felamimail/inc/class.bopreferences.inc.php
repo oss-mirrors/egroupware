@@ -47,6 +47,8 @@
 			
 			// set values to the global values
 			$data['profileID']		= $profileData['profileID'];
+			$data['imapType']		= $profileData['imapType'];
+			$data['smtpType']		= $profileData['smtpType'];
 			$data['imapServerAddress']	= $profileData['imapServer'];
 			$data['key']			= $GLOBALS['egw_info']['user']['passwd'];
 			if ($profileData['imapLoginType'] == 'vmailmgr')

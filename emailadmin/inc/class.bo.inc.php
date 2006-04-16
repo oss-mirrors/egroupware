@@ -52,7 +52,18 @@
 					),
 					'description'	=> lang('Postfix with LDAP'),
 					'classname'	=> 'postfixldap'
-				)
+				),
+				'3' 	=> array(
+					'fieldNames'	=> array(
+						'smtpServer',
+						'smtpPort',
+						'smtpAuth',
+						'smtpType',
+						'editforwardingaddress',
+					),
+					'description'	=> lang('Plesk SMTP-Server (Qmail)'),
+					'classname'	=> 'smtpplesk'
+				),
 			);
 
 			$this->IMAPServerType = array(
@@ -103,7 +114,21 @@
 					'description'	=> lang('Cyrus IMAP Server'),
 					'protocol'	=> 'imap',
 					'classname'	=> 'cyrusimap'
-				)
+				),
+				'4' 	=> array(
+					'fieldNames'	=> array(
+						'imapServer',
+						'imapPort',
+						'imapType',
+						'imapLoginType',
+						'imapTLSEncryption',
+						'imapTLSAuthentication',
+						'imapoldcclient',
+					),
+					'description'	=> lang('Plesk IMAP Server (Courier)'),
+					'protocol'	=> 'imap',
+					'classname'	=> 'pleskimap'
+				),
 			); 
 			
 			if ($_restoreSesssion) $this->restoreSessionData();
@@ -377,7 +402,21 @@
 			}
 			else
 			{
-				$userData = $this->soemailadmin->getUserData($_accountID);
+				if ($GLOBALS['egw_info']['server']['account_repository'] == 'ldap')
+				{
+					$userData = $this->soemailadmin->getUserData($_accountID);
+				}
+				else	// plesk
+				{
+					if (!$this->profileID)
+					{
+						$this->profileID   = $this->getUserProfile();
+						$this->profileData = $this->getProfile($this->profileID);
+						$this->imapClass   = $this->IMAPServerType[$this->profileData['imapType']]['classname'];
+						$this->smtpClass   = $this->SMTPServerType[$this->profileData['smtpType']]['classname'];
+					}
+					$userData = ExecMethod('emailadmin.pleskimap.getUserData',$_accountID,3,$this->profileData);
+				}
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection('','',true);
 				$userQuota = 
@@ -401,9 +440,18 @@
 		
 		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
 		{
+			if (!$this->profileID)
+			{
+				$this->profileID   = $this->getUserProfile();
+				$this->profileData = $this->getProfile($this->profileID);
+				$this->imapClass   = $this->IMAPServerType[$this->profileData['imapType']]['classname'];
+				$this->smtpClass   = $this->SMTPServerType[$this->profileData['smtpType']]['classname'];
+			}
+			//echo "<p>boemailadmin::saveSMTPForwarding($_accountID,'$_forwardingAddress',$_keepLocalCopy) smtpClass='$this->smtpClass'</p>\n";
+
 			if (!empty($this->smtpClass))
 			{
-				$smtpClass = &CreateObject('emailadmin.'.$this->smtpClass,$this->profileID);
+				$smtpClass =& CreateObject('emailadmin.'.$this->smtpClass,$this->profileData);
 				$smtpClass->saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy);
 			}
 			
@@ -609,7 +657,6 @@
 					
 				case 'remove_mailRoutingAddress':
 					$i=0;
-					
 					while(list($key, $value) = @each($this->userSessionData[$_accountID]['mailRoutingAddress']))
 					{
 						if ($key != $_formData['remove_mailRoutingAddress'])
@@ -625,17 +672,30 @@
 					break;
 					
 				case 'save':
-					$this->soemailadmin->saveUserData(
-						$_accountID, 
-						$this->userSessionData[$_accountID]);
+					if ($GLOBALS['egw_info']['server']['account_repository'] == 'ldap')
+					{
+						$this->soemailadmin->saveUserData($_accountID,$this->userSessionData[$_accountID]);
+					}
+					else	// plesk
+					{
+						if (!$this->profileID)
+						{
+							$this->profileID   = $this->getUserProfile();
+							$this->profileData = $this->getProfile($this->profileID);
+							$this->imapClass   = $this->IMAPServerType[$this->profileData['imapType']]['classname'];
+							$this->smtpClass   = $this->SMTPServerType[$this->profileData['smtpType']]['classname'];
+						}
+						$pleskimap =& CreateObject('emailadmin.pleskimap.saveUserData',$this->profileData);
+						$pleskimap->saveUserData($_accountID,$this->userSessionData[$_accountID]);
+					}
 					$bofelamimail =& CreateObject('felamimail.bofelamimail');
 					$bofelamimail->openConnection('','',true);
 					$bofelamimail->imapSetQuota($GLOBALS['egw']->accounts->id2name($_accountID),
 										$this->userSessionData[$_accountID]['quotaLimit']);
 					$bofelamimail->closeConnection();
+
 					$GLOBALS['egw']->accounts->cache_invalidate($_accountID);
-					
-					
+
 					break;
 			}
 		}
