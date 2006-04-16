@@ -44,6 +44,9 @@ compose	felamimail	en	Compose
 compress folder	felamimail	en	Compress folder
 configuration	felamimail	en	Configuration
 contains	felamimail	en	contains
+could not add folder %1 (%2) !!!	felamimail	en	Could not add folder %1 (%2) !!!
+could not delete folder %1 (%2) !!!	felamimail	en	Could not delete folder %1 (%2) !!!
+could not rename folder %1 to %2 (%3) !!!	felamimail	en	Could not rename folder %1 to %2 (%3) !!!
 create	felamimail	en	Create
 create folder	felamimail	en	Create Folder
 create sent	felamimail	en	Create Sent
@@ -70,7 +73,6 @@ deleted	felamimail	en	deleted
 deleted folder successfully!	felamimail	en	Deleted folder successfully!
 disable	felamimail	en	Disable
 discard message	felamimail	en	discard message
-display message in new window	felamimail	en	Display message in new window
 display messages in multiple windows	felamimail	en	display messages in multiple windows
 display of html emails	felamimail	en	Display of HTML emails
 display only when no plain text is available	felamimail	en	Display only when no plain text is available
@@ -136,6 +138,7 @@ for mail to be send - not functional yet	felamimail	en	For mail to be send - not
 for received mail	felamimail	en	For received mail
 forward	felamimail	en	Forward
 forward to address	felamimail	en	forward to address
+forwarding	felamimail	en	Forwarding
 found	felamimail	en	Found
 fri	felamimail	en	Fri
 from	felamimail	en	From
