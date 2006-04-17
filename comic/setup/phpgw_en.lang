@@ -20,10 +20,8 @@ egroupware daily comics	comic	en	eGroupWare Daily Comics
 front page comic	comic	en	Front Page Comic
 front page comic scaled	comic	en	Front Page Comic Scaled
 genre	comic	en	Genre
-global comics	admin	en	Global Comics
-global comics	comic	en	Global Comics
-global options	admin	en	Global Options
-global options	comic	en	Global Options
+global comics	common	en	Global Comics
+global options	common	en	Global Options
 global options updated	comic	en	Global Options Updated
 image source	comic	en	Image source
 max file size	comic	en	Max file size

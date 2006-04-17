@@ -38,8 +38,7 @@
         
         $phpgw->template->
             set_var("question",
-                    lang("Are you sure you want to reset all "
-                         ."comic dates and resolved image urls?"));
+                    lang("Are you sure you want to reset all comic dates and resolved image urls?"));
         
         $nolinkf = $phpgw->link("/admin/index.php");
         $nolink = '<a href="' . $nolinkf . '">' . lang("No") ."</a>";

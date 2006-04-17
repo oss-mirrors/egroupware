@@ -1,6 +1,5 @@
 %1 by %2	comic	es-es	%1 por %2
 %1 by %2 (%3)	comic	es-es	%1 por %2 (%3)
-are you sure you want to reset all	comic	es-es	¿Seguro que quiere restablecer todo?
 are you sure you want to reset all comic dates and resolved image urls?	comic	es-es	¿Seguro que quiere restablecer todas las fechas de las tiras cómicas y urls de imágenes resueltas?
 censorship level	comic	es-es	Nivel de censura
 censorship override enabled	comic	es-es	Ignorar censura activado
@@ -21,8 +20,8 @@ egroupware daily comics	comic	es-es	Tiras cómicas diairias de eGroupWare
 front page comic	comic	es-es	Tira cómica de la página de portada
 front page comic scaled	comic	es-es	Tira cómica de la página de portada a escala
 genre	comic	es-es	Género
-global comics	comic	es-es	Tiras cómicas globales
-global options	comic	es-es	Opciones globales
+global comics	common	es-es	Tiras cómicas globales
+global options	common	es-es	Opciones globales
 global options updated	comic	es-es	Opciones globales actualizadas
 image source	comic	es-es	Origen de la imagen
 max file size	comic	es-es	Tamaño máximo del fichero
