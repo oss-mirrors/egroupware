@@ -85,7 +85,7 @@ add transitions to	workflow	en	Add transitions to
 admin instance	workflow	en	Admin Instance
 admin process activities	workflow	en	Admin Process Activities
 admin process roles	workflow	en	Admin Process Roles
-admin processes	workflow	en	Admin Processes
+admin processes	common	en	Admin Processes
 admin processes sources	workflow	en	Admin Processes Sources
 administer instances	admin	en	Administer instances
 administer processes	admin	en	Administer processes
@@ -588,7 +588,6 @@ workflow configuration	admin	en	Workflow configuration
 workflow navigation	workflow	en	Workflow navigation
 workflow preferences	workflow	en	Workflow Preferences
 workflow site configuration	workflow	en	Workflow Site Configuration
-workflow.ui_useractivities	workflow	en	workflow.ui_useractivities
 workitem information	workflow	en	Workitem information
 workitems	workflow	en	Workitems
 you are not allowed to abort instance %1	workflow	en	You are not allowed to abort instance %1

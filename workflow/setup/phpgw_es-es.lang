@@ -85,7 +85,7 @@ add transitions to	workflow	es-es	Añadir transiciones a
 admin instance	workflow	es-es	Admnistrar instancia
 admin process activities	workflow	es-es	Administrar actividades del proceso
 admin process roles	workflow	es-es	Administrar roles del proceso
-admin processes	workflow	es-es	Administrar procesos
+admin processes	common	es-es	Administrar procesos
 admin processes sources	workflow	es-es	Administrar código fuente de los procesos
 administer instances	admin	es-es	Administrar instancias
 administer processes	admin	es-es	Administrar procesos
@@ -174,7 +174,7 @@ do you want the search instance button in the last row of instances list.	workfl
 do you want the started date column on instances lists.	workflow	es-es	¿Desea la columna de fecha de inicio en las listas de instancias?
 don't move	workflow	es-es	No mover
 draw roles	common	es-es	Dibujar roles
-draw roles on the graph beside activity name like [that]	admin	es-es	dibujar roles en el gráfico junto al nombre, [así]
+draw roles on the graph beside activity name like [that]	admin	es-es	Dibujar roles en el gráfico junto al nombre, [así]
 duration	workflow	es-es	Duración
 empty agent type	workflow	es-es	vaciar el tipo de agente
 end	workflow	es-es	fin
@@ -233,11 +233,12 @@ graph	workflow	es-es	Gráfico
 graphic options	common	es-es	Opciones de gráfico
 group	workflow	es-es	Grupo
 id	workflow	es-es	Id
-if automatic parsing is disabled next options will be useless	admin	es-es	si la interpretación automática está desactivada, las siguientes opciones no tienen efecto
+if automatic parsing is disabled next options will be useless	admin	es-es	Si la interpretación automática está desactivada, las siguientes opciones no tienen efecto
 if not in debug mail_smtp agent would have sent this email:	workflow	es-es	si no se está depurando, el agente mail_smtp habría enviado este correo:
-if user is in a role for an activity he will have the right to abort the related instance	admin	es-es	si el usuario está en un rol para una actividad, tendrá el derecho de abortar la instancia relacionada
-if user is in a role for an activity he will have the right to exception or resume the related instance	admin	es-es	si un usuario está en un rol para una actividad, tendrá el derecho para una excepción o continuar la instancia relacionada
-if user is in a role for an activity he will have the right to release (un-assign) the related instance	admin	es-es	si un usuario está en un rol para una actividad, tendrá el derecho para liberar (desasignar) la instancia relacionada.
+if user is in a role for an activity he will have the right to abort the related instance	admin	es-es	Si el usuario está en un rol para una actividad, tendrá el derecho de abortar la instancia relacionada
+if user is in a role for an activity he will have the right to exception or resume the related instance	admin	es-es	Si un usuario está en un rol para una actividad, tendrá el derecho para una excepción o continuar la instancia relacionada
+if user is in a role for an activity he will have the right to release (un-assign) the related instance	admin	es-es	Si un usuario está en un rol para una actividad, tendrá el derecho para liberar (desasignar) la instancia relacionada.
+if:setnextact	workflow	es-es	Si:Establecer actividad siguiente
 import aborted	workflow	es-es	Importación abortada
 import successfull	workflow	es-es	Importación realizada correctamente
 in role mappings user #%1 is specified as a "%2" but is maybe a "%3"	workflow	es-es	En mapeos de rol, el usuario nº%1 está especificado como '%2', pero QUIZAS sea '%3'
@@ -431,7 +432,7 @@ run	workflow	es-es	ejecutar
 run activity	workflow	es-es	ejecutar actividad
 run instance	workflow	es-es	ejecutar instancia
 running	workflow	es-es	en ejecución
-running activities options	common	es-es	Ejecutando opciones de las actividades
+running activities options	common	es-es	Opciones de las actividades en ejecución
 running activity	workflow	es-es	Ejecutando actividad
 scan activities	workflow	es-es	Explorar actividades
 scan agents	workflow	es-es	Explorar agentes
@@ -463,12 +464,12 @@ shared code	workflow	es-es	Código compartido
 should we always give you the advanced search row on instances lists?	workflow	es-es	Debemos mostrar siempre la fila de búsqueda avanzada en las listas de instancias?
 show activity info zone	common	es-es	Mostrar zona de información de actividad
 show activity title	common	es-es	Mostrar el título de la actividad
-show code	workflow	es-es	mostrar código
+show code	workflow	es-es	Mostrar código
 show instance name	common	es-es	Mostrar nombre de la instancia
 show instance owner	common	es-es	Mostrar propietario de la instancia
 show multiple submit as select	common	es-es	Mostrar multiples submit como selección
 show template	workflow	es-es	Mostrar plantilla
-size of the font used on the graph 12 should be a good default value	admin	es-es	el tamaño del tipo de letra usado en el gráfico 12 debe ser un buen valor predeterminado
+size of the font used on the graph 12 should be a good default value	admin	es-es	El tamaño del tipo de letra usado en el gráfico 12 debe ser un buen valor predeterminado
 smtp agent has detected some errors when sending email after completion of the activity	workflow	es-es	El agente smtp ha detectado algunos errores al enviar correo después de completar la actividad
 smtp agent has detected some errors when sending email at the beginning of the activity	workflow	es-es	El agente smtp ha detectado algunos errores al enviar correo al principio de la actividad
 smtp agent has detected some errors when sending email at the end of this activity	workflow	es-es	El agente smtp ha detectado algunos errores al enviar correo al final de la actividad
@@ -503,7 +504,7 @@ the /workflow directory does not exist and could not be created. please ask your
 the activity was not completed	workflow	es-es	No se completó la actividad
 the default user will only be set if he is mapped to a role on the activity	workflow	es-es	Sólo se establecerá el usuario predeterminado si tiene asignado un rol en la actividad
 the following items must be corrected to be able to activate this process	workflow	es-es	Deben corregirse los siguientes elementos para poder activar este proceso
-the instance title is shown on top of the form	admin	es-es	el título de la instancia se muestra en la parte superior del formulario
+the instance title is shown on top of the form	admin	es-es	El título de la instancia se muestra en la parte superior del formulario
 the label you want	workflow	es-es	la etiqueta que desea
 the smtp configuration cannot be loaded by the mail_smtp workflow agent	workflow	es-es	El agente mail_smtp de flujos del trabajo no puede cargar la configuración SMTP
 there are no activities available	workflow	es-es	No hay actividades disponibles
@@ -531,8 +532,8 @@ this form will test your local workflow installation to detect potential issues	
 this is the first screen shown when you click on the workflow application icon	workflow	es-es	Esta es la primera pantalla que se muestra al pulsar en el icono de la aplicación flujos de trabajo
 this process has a view activity. access in view mode is granted only for this view activty.	workflow	es-es	Este proceso tiene una actividad de vista. El acceso en modo vista se concede sólo para esta actividad de vista.
 this process has no end activity	workflow	es-es	este proceso no tiene actividad de fin
-this will automatically release the instance when leaving an activity without completing	admin	es-es	esto liberará automáticamente la instancia al abandonar una actividad sin completarla
-this will display an activity footer when any activity is runned with workflow engine related informations	admin	es-es	esto mostrará un pie de actividad cuando cualquier actividad se ejecute con información relacionada con el motor de flujos de trabajo
+this will automatically release the instance when leaving an activity without completing	admin	es-es	Esto liberará automáticamente la instancia al abandonar una actividad sin completarla
+this will display an activity footer when any activity is runned with workflow engine related informations	admin	es-es	Esto mostrará un pie de actividad cuando cualquier actividad se ejecute con información relacionada con el motor de flujos de trabajo
 to	workflow	es-es	A
 to:	workflow	es-es	Para:
 transition	workflow	es-es	transición

@@ -53,7 +53,7 @@ class fake_translation
                 $nothing = lang('Monitor workitems');
                 $nothing = lang('List of monitors');
                 $nothing = lang('cleanup actions');
-                $nothing = lang('remove all instance for this process');
+                $nothing = lang('remove all instances for this process');
                 
                 //sidebox
                 $nothing = lang('Monitors');
