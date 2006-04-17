@@ -9,7 +9,7 @@
 %1 site objects have been imported.	jinn	en	%1 Site Objects have been imported.
 %3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	en	%3: event <b>%1</b> triggers plugin <b>%2</b>
 4 (default)	jinn	en	4 (default)
-access rights	jinn	en	Access Rights
+access rights	common	en	Access Rights
 access rights for site not succesfully editted	jinn	en	Access rights for Site NOT succesfully editted
 access rights for site not succesfully saved	jinn	en	Access rights for Site NOT succesfully saved
 access rights for site succesfully editted	jinn	en	Access rights for site succesfully editted
@@ -46,7 +46,7 @@ add new one with many	jinn	en	Add new ONE WITH MANY
 add new one-to-one relation	jinn	en	Add new one-to-one relation
 add object	jinn	en	add object
 add or remove	jinn	en	add or remove
-add site	jinn	en	Add Site
+add site	common	en	Add Site
 add site object	jinn	en	add site object
 add site-object	jinn	en	add site-object
 add slot	jinn	en	add slot
@@ -210,7 +210,7 @@ general settings	admin	en	General Settings
 generate html start en end tags	jinn	en	Generate html start en end tags
 give a new timestamp	jinn	en	Give a new timestamp
 give new timestamp	jinn	en	Give new timestamp
-global configuration	jinn	en	Global Configuration
+global configuration	common	en	Global Configuration
 global site configuration	admin	en	Global site configuration
 go	jinn	en	go
 has a many to many relation with	jinn	en	has a MANY TO MANY relation with
@@ -235,7 +235,7 @@ import jinn site	jinn	en	Import JiNN Site
 import jinn-object	jinn	en	Import JiNN-Object
 import jinn-site	jinn	en	Import JiNN-Site
 import object from file to this site	jinn	en	Import object from file to this site
-import site	jinn	en	import site
+import site	common	en	import site
 import was succesfull	jinn	en	Import was succesfull
 import was succesfull<br>imported one site with	jinn	en	import was succesfull<br>Imported one site with
 incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	en	incompatibility result: Object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file
@@ -257,6 +257,7 @@ jinn editors menu	jinn	en	JiNN Editors Menu
 jinn main	jinn	en	JiNN Main
 jinn main menu	jinn	en	JiNN Main Menu
 jinn preferences	jinn	en	JiNN Preferences
+jinn version	common	en	Jinn version
 jinn-description	common	en	JiNN is a recursive acronime meaning 'JiNN is Not Nuke' because the main author doesn't like the Nuke-method to create a Content Management System. With JiNN you can build your own CMS's completely adapted to your database-structure and webdesign. For configuring user input forms we make use of plugins to show/process the field data. For more information please visit: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>. <p>Here's our <a href="jinn/CHANGELOG" target="_blank">changelog</a>.</p>
 keep current timestamp	jinn	en	Keep current timestamp
 keep this empty to let is auto increment	jinn	en	keep this empty to let is auto increment
@@ -307,6 +308,7 @@ object configuration: <li>select a object name for display</li> <li>select a dat
 object event configuration	jinn	en	Object event configuration
 object events configuration	jinn	en	Object Events Configuration
 object id	jinn	en	Object id
+object scan prefix	common	en	Object Scan Prefix
 object serialnumber	jinn	en	Object serialnumber
 on_update	jinn	en	on_update
 one or more records not succesfully added.	jinn	en	One or more records NOT succesfully added.

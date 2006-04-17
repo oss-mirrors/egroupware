@@ -9,7 +9,7 @@
 %1 site objects have been imported.	jinn	es-es	Los objetos del sitio %1 han sido importados.
 %3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	es-es	%3: el evento <b>%1</b> lanza el plugin <b>%2</b>
 4 (default)	jinn	es-es	(predeterminado)
-access rights	jinn	es-es	Derechos de acceso
+access rights	common	es-es	Derechos de acceso
 access rights for site not succesfully editted	jinn	es-es	Los derechos de acceso para el sitio NO fueron editados correctamente
 access rights for site not succesfully saved	jinn	es-es	Los derechos de acceso para el sitio NO fueron guardados correctamente
 access rights for site succesfully editted	jinn	es-es	Los derechos de acceso para el sitio fueron editados correctamente
@@ -46,7 +46,7 @@ add new one with many	jinn	es-es	Añadir nueva UNO A VARIOS
 add new one-to-one relation	jinn	es-es	Añadir nueva relación uno a uno
 add object	jinn	es-es	Añadir objeto
 add or remove	jinn	es-es	Añadir o quitar
-add site	jinn	es-es	Añadir sitio
+add site	common	es-es	Añadir sitio
 add site object	jinn	es-es	Añadir objeto del sitio
 add site-object	jinn	es-es	Añadir objeto del sitio
 add slot	jinn	es-es	añadir ranura
@@ -210,7 +210,7 @@ general settings	admin	es-es	Configuración general
 generate html start en end tags	jinn	es-es	Generar etiquetas html de inicio y fin
 give a new timestamp	jinn	es-es	Dar una marca de tiempo nueva
 give new timestamp	jinn	es-es	Dar nueva marca de tiempo
-global configuration	jinn	es-es	Configuración global
+global configuration	common	es-es	Configuración global
 global site configuration	admin	es-es	Conifguración global del sitio
 go	jinn	es-es	ir
 has a many to many relation with	jinn	es-es	tiene una relación MUCHOS A MUCHOS con
@@ -235,7 +235,7 @@ import jinn site	jinn	es-es	Importar sitio de JINN
 import jinn-object	jinn	es-es	Importar objeto de JINN
 import jinn-site	jinn	es-es	Importar sitio de JINN
 import object from file to this site	jinn	es-es	Importar objeto de un fichero a este sitio
-import site	jinn	es-es	Importar sitio
+import site	common	es-es	Importar sitio
 import was succesfull	jinn	es-es	Se importó correctamente
 import was succesfull<br>imported one site with	jinn	es-es	Se importó correctamente<br>Se importó un sitio con
 incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	es-es	resultado de incompatibilidad: el objeto <b>'%2'</b>, campo <b>'%1'</b>, propiedad <b>'%3'</b> no estaba presente en el fichero
@@ -257,6 +257,7 @@ jinn editors menu	jinn	es-es	Menú de editor de JiNN
 jinn main	jinn	es-es	Principal de JiNN
 jinn main menu	jinn	es-es	Menú principal de JiNN
 jinn preferences	jinn	es-es	Preferencias de JiNN
+jinn version	common	es-es	Versión de Jinn
 jinn-description	common	es-es	JiNN es un acrónimo recursivo que signifca 'JiNN is Not Nuke', porque al autor principal no le gusta la forma tipo Nuke de crear un sistema de gestión de contenidos (CMS). Con JiNN, usted puede construir sus CMS adaptados completamente a su estructura de base de datos y diseño web. Para configurar formularios de entrada de usuario, usamos plugins para mostrar o procesar los datos de los campos. Para más información, por favor visite <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>. <p>Aquí está nuestro <a href="jinn/CHANGELOG" target="_blank">changelog</a>.</p>
 keep current timestamp	jinn	es-es	Mantener la marca de tiempo actual
 keep this empty to let is auto increment	jinn	es-es	Mantener vacío para incrementar automáticamente
@@ -307,7 +308,9 @@ object configuration: <li>select a object name for display</li> <li>select a dat
 object event configuration	jinn	es-es	Configuración del evento del objeto
 object events configuration	jinn	es-es	Configuración de eventos del objeto
 object id	jinn	es-es	Id de objeto
+object scan prefix	common	es-es	Prefijo de escaneo de objetos
 object serialnumber	jinn	es-es	Número de serie del objeto
+on_update	jinn	es-es	Al actualizar
 one or more records not succesfully added.	jinn	es-es	Uno o mas objetos NO se añadieron correctamente
 one or more records not succesfully saved.	jinn	es-es	Uno o mas objetos NO se guardaron correctamente
 one or more records not succesfully saved. (error code 106)	jinn	es-es	Uno o mas objetos NO se guardaron correctamente (código de error 106)
