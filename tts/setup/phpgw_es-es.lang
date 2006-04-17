@@ -1,5 +1,3 @@
-<div class="stateliststate">%1</div>	tts	es-es	<div class="stateliststate">%1</div>
-<div class="stateliststate">%1</div> keep the present state	tts	es-es	<div class="stateliststate">%1</div> Mantener el estado actual
 a new ticket has been reported.	tts	es-es	Se ha creado una nueva incidencia
 accept	tts	es-es	ACEPTAR
 accept the ticket into verification process.	tts	es-es	Aceptar la incidencia en el proceso de verificación
@@ -63,6 +61,7 @@ in progress	tts	es-es	En progreso
 initial state	tts	es-es	Estado inicial
 invalid	tts	es-es	NO VALIDA
 invalidate	tts	es-es	INVALIDAR
+keep the present state	tts	es-es	Mantener el estado actual
 keep the present state [%1].	tts	es-es	Mantener el estado actual [%1]
 latest note added	tts	es-es	Ultima nota añadida
 list of available tickets' states.	tts	es-es	Lista de los estados de las incidencias disponibles

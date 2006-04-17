@@ -5,11 +5,6 @@ admin passwort	emailadmin	es-es	contraseña del administrador
 admin username	emailadmin	es-es	usuario del administrador
 advanced options	emailadmin	es-es	opciones avanzadas
 alternate email address	emailadmin	es-es	dirección de correo alternativa
-any application	emailadmin	es-es	Cualquier aplicación
-any group	emailadmin	es-es	Cualquier grupo
-application	emailadmin	es-es	Aplicación
-can be used by application	emailadmin	es-es	La aplicación puede usarlo
-can be used by group	emailadmin	es-es	El grupo puede usarlo
 cyrus imap server	emailadmin	es-es	Servidor IMAP Cyrus
 cyrus imap server administration	emailadmin	es-es	Administración del servidor IMAP Cyrus
 default	emailadmin	es-es	predeterminada
@@ -21,12 +16,10 @@ email account active	emailadmin	es-es	cuenta de correo electrónico activa
 email address	emailadmin	es-es	dirección de correo electrónico
 enable cyrus imap server administration	emailadmin	es-es	activar administración del servidor Cyrus IMAP
 enable sieve	emailadmin	es-es	activar Sieve
-encryption settings	emailadmin	es-es	Configurar cifrado
 enter your default mail domain (from: user@domain)	emailadmin	es-es	introduzca el dominio predeterminado (de usuario@dominio)
-forward also to	emailadmin	es-es	reeenviar también a
+forward also to	emailadmin	es-es	reenviar también a
 forward email's to	emailadmin	es-es	reenviar correos a
 forward only	emailadmin	es-es	sólo reenviar
-global options	emailadmin	es-es	Opciones globales
 imap admin password	admin	es-es	contraseña del administrador IMAP
 imap admin user	admin	es-es	usuario administrador IMAP
 imap c-client version < 2001	emailadmin	es-es	Versión C-Cliente IMAP < 2001
@@ -47,12 +40,9 @@ mail settings	admin	es-es	Configuración del correo.
 name of organisation	emailadmin	es-es	Nombre de la organización
 no alternate email address	emailadmin	es-es	Sin dirección de correo alternativa
 no forwarding email address	emailadmin	es-es	Sin dirección de correo para reenviar
-order	emailadmin	es-es	Orden
-organisation	emailadmin	es-es	Organización
 pop3 server hostname or ip address	emailadmin	es-es	Nombre del servidor POP3 o dirección IP
 pop3 server port	emailadmin	es-es	Puerto del servidor POP3
 postfix with ldap	emailadmin	es-es	Postfix con LDAP
-profile access rights	emailadmin	es-es	Derechos de acceso del perfil
 profile list	emailadmin	es-es	Lista de perfiles
 profile name	emailadmin	es-es	Nombre del perfil
 qmaildotmode	emailadmin	es-es	Modo de punto de qmail
@@ -61,14 +51,10 @@ quota settings	emailadmin	es-es	Configuración de las cuotas
 remove	emailadmin	es-es	borrar
 select type of imap/pop3 server	emailadmin	es-es	Seleccione el tipo de servidor IMAP/POP3
 select type of smtp server	emailadmin	es-es	Seleccione el tipo de servidor SMTP
-server settings	emailadmin	es-es	Configuración del servidor
 sieve server hostname or ip address	emailadmin	es-es	Nombre del servidor Sieve o dirección IP
 sieve server port	emailadmin	es-es	Puerto del servidor Sieve
 sieve settings	emailadmin	es-es	Configuración de Sieve
-smtp authentication	emailadmin	es-es	Identificación SMTP
-smtp options	emailadmin	es-es	Opciones SMTP
 smtp server name	emailadmin	es-es	Nombre del servidor SMTP
-smtp settings	emailadmin	es-es	Configuración SMTP
 smtp-server hostname or ip address	emailadmin	es-es	Nombre del servidor SMTP o dirección IP
 smtp-server port	emailadmin	es-es	Puerto del servidor SMTP
 standard	emailadmin	es-es	Estándar
@@ -79,8 +65,5 @@ use ldap defaults	emailadmin	es-es	usar las opciones predeterminadas para LDAP
 use smtp auth	emailadmin	es-es	Usar identificación SMTP
 use tls authentication	emailadmin	es-es	Usar identificación TLS
 use tls encryption	emailadmin	es-es	Usar cifrado TLS
-user can edit forwarding address	emailadmin	es-es	El usuario puede editar la dirección de reenvío
-username (standard)	emailadmin	es-es	Nombre de usuario (estándar)
-username@domainname (virtual mail manager)	emailadmin	es-es	usuario@dominio (Gestor de correo virtual)
 users can define their own emailaccounts	emailadmin	es-es	Los usuarios pueden definir sus propias cuentas de correo
 virtual mail manager	emailadmin	es-es	Gestor de correo virtual

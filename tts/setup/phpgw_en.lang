@@ -1,5 +1,3 @@
-<div class="stateliststate">%1</div>	tts	en	<div class="stateliststate">%1</div>
-<div class="stateliststate">%1</div> keep the present state	tts	en	<div class="stateliststate">%1</div> Keep the present state
 a new ticket has been reported.	tts	en	A new ticket has been reported.
 accept	tts	en	ACCEPT
 accept the ticket into verification process.	tts	en	Accept the ticket into verification process.
@@ -63,6 +61,7 @@ in progress	tts	en	In progress
 initial state	tts	en	Initial State
 invalid	tts	en	INVALID
 invalidate	tts	en	INVALIDATE
+keep the present state	tts	en	Keep the present state
 keep the present state [%1].	tts	en	Keep the present state [%1].
 latest note added	tts	en	Latest Note Added
 list of available tickets' states.	tts	en	List of available tickets' states.

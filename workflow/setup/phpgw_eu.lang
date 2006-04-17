@@ -220,3 +220,183 @@ ownership give exception right	common	eu	Jabea izateak salbuespenentzeko eskubid
 ownership give release right	common	eu	Jabea izateak askatzeko eskubidea ematen du
 please wait, task in progress ...	workflow	eu	Mesedez, itxaron egitekoa aurrerapenean...
 pr.	workflow	eu	Lehentasuna
+printer friendly	workflow	eu	Inprimitzera zuzendua
+priority level:	workflow	eu	Lehentasun maila:
+process	workflow	eu	Prozesua
+process %1	workflow	eu	%1 prozesua
+process %1 %2 is not active, action %3 is impossible	workflow	eu	%1 %2 prozesua ez dago aktibatua, %3 ekintza ez da posible
+process %1 v%2 as no related activity	workflow	eu	%1v%2 prozesuak ez du aktibitaterik lotuta
+process %d has been activated	workflow	eu	%d prozesua aktibatua izan da
+process %d has been deactivated	workflow	eu	%d prozesua desaktibatua izan da
+process %s %s imported	workflow	eu	%s %s prozesua inportatua
+process %s has been created	workflow	eu	%s prozesua sortua izan da
+process %s has been updated	workflow	eu	%s prozesua eguneratua izan da
+process %s removed	workflow	eu	%s prozesua ezabatua izan da
+process activities	workflow	eu	Aktibitateak prozesatu
+process alone	workflow	eu	Bereizita prozesatu
+process does not have a start activity	workflow	eu	Prozesuak ez hasiera aktibitate bat
+process does not have exactly one end activity	workflow	eu	Prozesuak ez du zehazki bukaera aktibitate bat
+process form	workflow	eu	Formularioa prozesatu
+process name	workflow	eu	Prozesuaren izena
+process name already exists	workflow	eu	Prozesuaren izena existitzen da
+process roles	workflow	eu	Prozesuko rolak
+process saved	workflow	eu	Prozesua gorde da
+process transitions	workflow	eu	Prozesuko trantsizioak
+process version:	workflow	eu	prozesuaren bertsioa:
+process:	workflow	eu	prozesua:
+processes	workflow	eu	Prozesuak
+properties	workflow	eu	Propietateak
+property	workflow	eu	Propietatea
+property %1 already exists	workflow	eu	%1 propietatea existitzen da
+property %1 not found	workflow	eu	%1 propietatea ez da aurkitu
+quit without saving	workflow	eu	Irten gorde gabe
+read-only	workflow	eu	irakurtzeko soilik
+release access to this activity	workflow	eu	Aktibitate honetarako sarbidea liberatu
+release activity for this instance	workflow	eu	aktibitatea instantzia honetarako liberatu
+release instance	workflow	eu	instantzia liberatu
+reload filter	workflow	eu	Iragazkia kargatu
+remove active instances	workflow	eu	Instantzia aktiboak ezabatu
+remove all instances for this process	workflow	eu	porzesu honetarako instantzia guztiak ezabatu
+remove selected roles	workflow	eu	aukeratutako rolak ezabatu
+replyto:	workflow	eu	Erantzun honi:
+restart	workflow	eu	berabiarazi
+restart activity	workflow	eu	aktibitatea berabiarazi
+resume this exception instance	workflow	eu	Salbuespenezko instantzia hau jarraitu
+role	workflow	eu	Rola
+role %1 is not mapped	workflow	eu	%1 rola ez dago mapeatuta
+role added to activity	workflow	eu	Aktibitateari rola gehitu zaio
+role added to process	workflow	eu	Prozesuari rola gehitu zaio
+role give abort right	common	eu	Rolak abortatzeko eskubidea ematen du
+role give exception right	common	eu	Rolak salbuespenetarako eskubidea ematen du
+role give release right	common	eu	Rolak askatzeko eskubidea ematen du
+role in inexistent process	workflow	eu	Rola existitzen ez den prozesu batean
+role mapping in inexistent process	workflow	eu	Rolaren mapeaketa existitzen ez den prozesu batean
+role name	workflow	eu	Rolaren izena
+role not saved (maybe a name collision)	workflow	eu	Rola ez da gorde (baliteke izenararekin talka egiten egotea)
+role saved	workflow	eu	Rola gorde da
+roles	workflow	eu	Rolak
+roles assigned to this activity	workflow	eu	Aktibitate honi esleitutako rolak
+roles deleted	workflow	eu	Rolak ezabatuta
+run	workflow	eu	exekutatu
+run activity	workflow	eu	aktibitatea exekutatu
+run instance	workflow	eu	instantzia exekutatu
+running	workflow	eu	exekutatzen
+running activities options	common	eu	Aktibitateen aukerak exekutatzen
+running activity	workflow	eu	Aktibitatea exekutatu
+scan activities	workflow	eu	Aktibitatea eskaneatu
+scan agents	workflow	eu	Agenteak eskaneatu
+scan instances	workflow	eu	Instantziak eskaneatu
+scan processes	workflow	eu	Prozesuak eskaneatu
+scan roles	workflow	eu	Rolak eskaneatu
+scan transitions	workflow	eu	Trantsizioak eskaneatu
+search:	workflow	eu	bilatu:
+select a transition to remove	workflow	eu	Trantsizio bat aukeratu ezabatzeko
+select source	workflow	eu	aukeratu iturburu-kodea
+send all to	workflow	eu	Guztiei bidali
+send an email	workflow	eu	e-posta bat bidali
+send instance	workflow	eu	instantzia bidali
+send this instance to the next activity	workflow	eu	Instantzia hau hurrengo aktibitatera bidali
+send transition	workflow	eu	trantsizioa bidali
+send when the activity is ending	workflow	eu	bidali aktibitatea bukatzeko dagoenean
+send when the activity is starting	workflow	eu	bidali aktibitatea hasteko dagoenean
+set next act	workflow	eu	Hurrengo aktibitatea ezarri
+set next user	workflow	eu	Hurrengo erabiltzailea ezarri
+set property	workflow	eu	Jabetza ezarri
+shared code	workflow	eu	Partekatutako kodea
+show activity info zone	common	eu	Aktibitatearen informazio gunea erakutsi
+show activity title	common	eu	Aktibitatearen izenburua erakutsi
+show code	workflow	eu	kodea erakutsi
+show instance name	common	eu	Instantziaren izena erakutsi
+show instance owner	common	eu	Instantziaren jabea erakutsi
+show template	workflow	eu	plantilla erakutsi
+source code file for activity %1 is not avaible	workflow	eu	%1 aktibitatearen kode-iturburuaren fitxategia ez dago erabilgarri
+source code for activity %1 is not avaible	workflow	eu	%1 aktibitatearentzeko kode iturburua ez dago erabilgarri
+source saved	workflow	eu	Jatorria gordeta
+split	workflow	eu	adarkatzea
+standalone	workflow	eu	independientea
+start	workflow	eu	Hasiera
+start activities must be interactive	workflow	eu	Hasiera aktibitateak interaktiboak izan behar dira
+start activity	workflow	eu	Hasiera aktibitatea
+start process	workflow	eu	prozesua hasi
+started	workflow	eu	Hasita
+started:	workflow	eu	Hasita:
+starting page	workflow	eu	Hasierako orria
+status	workflow	eu	Egoera
+status:	workflow	eu	egoera:
+stop	workflow	eu	gelditu
+subject:	workflow	eu	Gaia:
+template	workflow	eu	plantilla
+test concistency	workflow	eu	Koherentzia froga
+test consistency of datas in the database	workflow	eu	Koherentzia froga egin datu baseko datuetan
+test local installation	workflow	eu	Instalazio lokala frogatu
+the activity was not completed	workflow	eu	Aktibitatea ez da osatu
+the label you want	workflow	eu	nahi duzun etiketa
+there are no activities available	workflow	eu	Ez dago aktibitaterik erabilgarri
+there are no config value defined	workflow	eu	Ez dago konfigurazio balio bat definituta
+there are no instances available	workflow	eu	Ez dago instantziarik erabilgarri
+there are no mappings defined for this process	workflow	eu	Ez dago mapeaketarik definituta prozesu honetarako
+there are no process available	workflow	eu	Ez dago prozesurik erabilgarri
+there are no processes	workflow	eu	Ez dago prozesurik
+there are no processes available	workflow	eu	Ez dago prozesurik erabilgarri
+there are no processes defined	workflow	eu	Ez dago prozesurik definituta
+there are no processes with the current filter	workflow	eu	Ez dago prozesurik momentuko iragazkiarekin
+there are no properties available	workflow	eu	Ez dago propietaterik erabilgarri
+there are no roles defined for this process	workflow	eu	Ez dago rolik definituta prozesu honetarako
+there are no transitions defined	workflow	eu	Ez dago trantsiziorik definituta
+there are no user activites available	workflow	eu	Ez dago erabiltzaile aktibitaterik erabilgarri
+there are no workitems available	workflow	eu	Ez dago lan elementurik erabilgarri
+this process has no end activity	workflow	eu	prozesu honek ez du bukaera aktibitaterik
+to	workflow	eu	Nori
+to:	workflow	eu	Norentzako:
+transition	workflow	eu	trantsizioa
+transition mode	workflow	eu	trantsizio modua
+transition to %1	workflow	eu	trantsizioa %1entzat
+transition waiting for human interaction	workflow	eu	trantsizioa giza interakzioaren zain
+transitions	workflow	eu	trantsizioak
+transitions removed successfully	workflow	eu	Trantsizioak zuzen ezabatu dira
+type	workflow	eu	mota
+type:	workflow	eu	mota:
+unknow fix instruction :%1	workflow	eu	zuzenketa jarraibide ezezaguna: %1
+unknown status	workflow	eu	egoera ezezaguna
+update	workflow	eu	eguneratu
+upload file	workflow	eu	Fitxategia igo
+use automatic parsing	common	eu	ezagutze-froga automatikoa erabili
+use default	workflow	eu	Lehenetsia erabili
+use existing roles	workflow	eu	Existitzen diren rolak erabili
+user	workflow	eu	Erabiltzailea
+user activities	workflow	eu	Erabiltzaile aktibitateak
+user instances	workflow	eu	Erabiltzaile instantziak
+user instances form: columns	workflow	eu	Erabiltzaile instantzien formularioa: zutabeak
+user instances form: filters and actions	workflow	eu	Erabiltzaile instantzien formularioa: iragazkiak eta ekintzak
+user is not authorized to delete instances	workflow	eu	Erabiltzaileak ez du instantziak ezabatzeko baimenik
+user processes	workflow	eu	Erabiltzaile prozesuak
+user/group	workflow	eu	Erabiltzailea/Taldea
+user:	workflow	eu	erabiltzailea:
+users/groups	workflow	eu	Erabiltzaileak/Taldeak
+valid	workflow	eu	Baliozkoa
+valid process	workflow	eu	Bliozko prozesua
+valid:	workflow	eu	baliozkoa:
+validity:	workflow	eu	Baliagarritasuna:
+value	workflow	eu	Balioa
+version	workflow	eu	Bertsioa
+view details	workflow	eu	detaileak ikusi
+view this instance	workflow	eu	Instantzia hau ikusi
+view workitem	workflow	eu	Laneko elementua ikusi
+warning this filter override all others filters	workflow	eu	abisua: iragazki honek gainontzeko iragazkiei ezikusiarena egiten die
+we were not able to build the message	workflow	eu	Ezin izan dugu mezua eraiki
+when to send the message:	workflow	eu	Noiz bidali mezua:
+workflow	common	eu	Lan-Fluxuak
+workflow configuration	admin	eu	Lan fxuen konfigurazioa
+workflow navigation	workflow	eu	Lan flxuetatik nabigatu
+workflow preferences	workflow	eu	Lan fluxuetako hobespenak
+workitem information	workflow	eu	Lan elementuen informazioa
+workitems	workflow	eu	Lan elementuak
+you are not allowed to abort instance %1	workflow	eu	Ez duzu baimenik %1 instantzia abortatzeko
+you are not allowed to exception instance %1	workflow	eu	Ez duzu baimenik %1 salbuespeneko instantzia askatzeko
+you are not allowed to grab instance %1	workflow	eu	Ez duzu baimenik %1 instantzia hartzeko
+you are not allowed to release instance %1	workflow	eu	Ez duzu baimenik %1 instantzia askatzeko
+you are not allowed to restart instance %1	workflow	eu	Ez duzu baimenik %1 instantzia berabiarazteko
+you are not allowed to resume instance %1	workflow	eu	Ez duzu baimenik %1 instantzia jarraitzeko
+you are not allowed to send instance %1	workflow	eu	Ez duzu baimenik %1 instantzia bidaltzeko
+you have not permission to execute this activity	workflow	eu	Ez duzu baimenik aktibitate hau exekutatzeko
+you were not allowed to complete the activity	workflow	eu	Ez duzu baimenik aktibitatea osatzeko
