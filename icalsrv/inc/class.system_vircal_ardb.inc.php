@@ -38,6 +38,7 @@
    *   of the logged_in user?
    * - /freebusy.ics (TBI) 
    *
+   * @version 0.9.36-a4 added detection of http or https for list
    * @version 0.9.36-a1 first version adapted for NAPI 3.1
    * @author jvl
    * @date 20060410
@@ -166,7 +167,9 @@
 		 . "<body><h2>System Virtual Calendars available</h2>\n"
 		 . "</p><dl>";
 
-	   $basepath = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']; 
+	   $curscheme = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')
+		 ? 'https' : 'http';
+	   $basepath = $curscheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']; 
 	   foreach($this->calendars as $vcname => $vcdef){
 		 $str .= "\n<dt><a href=\"" . $basepath . '/'. $vcdef['lpath'] . "\">"
 		   . $vcdef['lpath'] . "</a></dt>";

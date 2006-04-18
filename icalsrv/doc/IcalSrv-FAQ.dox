@@ -267,6 +267,14 @@ Notably missing features at moment are though;
 - recurring tasks for todos (egw does not support this yet)
 
 
+\section icalsrvqa_https UT: Does IcalSrv work with https?
+
+Yes, since version 0.9.36-ng-a4 it is checked to work with both http and https (checked on
+apache2 under linux). In earlier versions it worked to but the content of .../list.html
+didnot adopt the links in the file to the appropiate connection. After this version it
+was fixed.
+
+
 \section icalsrvqa_iocompat UT: Is the icalsrv output/input the same as the ical file import/export via the sidebar menu in the calendar app?
 
 At the moment (egw1.2rc8) not, unless you replaced the files

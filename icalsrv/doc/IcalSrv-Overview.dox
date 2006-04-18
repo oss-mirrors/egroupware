@@ -2,9 +2,9 @@
 
 @note this is still <b>EXPERIMENTAL, USE AT YOUR OWN RISK! </b> and better not yet in a
 production environment.
-@version 0.9.34-ng-a5x
+@version 0.9.34-ng-a6x
 @author jvl 
-@date 20060406
+@date 20060414
 
 @note <b>you need to have package EgwIcal in version >= 0.9.30-ng to be able to
  use this icalsrv-ng version!</b>
@@ -160,6 +160,11 @@ cvs. Or just use the version available in the standard Egroupware install
  </Location>
 </PRE>
 
+- In apache you need to make sure that you have a @em mod_actions moduler enabled,
+  to get the Script directive to work.
+  See e.g. the apache manual in @url http://www.apachefreaks.com/apache2/mod/mod_actions.html
+  In Debian you can do this by <code>a2enmod actions</code>
+
 - Restart apache (or other webserver) ( /etc/init.d/httpd restart )
 
 - Now you can get an overview of the available virtual calendars by
@@ -167,10 +172,10 @@ cvs. Or just use the version available in the standard Egroupware install
   http://your.host.com/egroupware/icalsrv.php/list.html .
   <br/>
   In there you will probably find that under
-  <code>/defaults.ics</code> there is a standard virtual calendar available.		
+  <code>/default.ics</code> there is a standard virtual calendar available.		
 		
 - To use this virtual calendar, connect your ical client (e.g: Sunbird)
-	   with http://your.host.com/egroupware/icalsrv.php/defaults.ics
+	   with http://your.host.com/egroupware/icalsrv.php/default.ics
         
 - now you probably need to authenticate (with your normal EGW login and password)
   and when done you receive the calendar on doing a "reload remote calendars" or so.

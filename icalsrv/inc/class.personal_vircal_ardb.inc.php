@@ -37,7 +37,7 @@
    * - /freebusy.ifb
    *
    * @author jvl
-   * @version 0.9.36-a1-bf01 small bugfix of personal calendars
+   * @version 0.9.36-a4 added detection of http or https for list
    * @since 0.9.36-a1 first release adapted for NAPI-3.1
    * @date 20060413
    * @since version 0.9.36 initialize resources with hndarg3 set (NAPI-3.1)
@@ -383,7 +383,9 @@
 		 . "<body><h2>Personal Virtual Calendars defined for</h2>\n"
 		 . "</p><h1>&nbsp;&nbsp; $username </h1><dl>";
 
-	   $basepath = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']; 
+	   $curscheme = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')
+		 ? 'https' : 'http';
+	   $basepath = $curscheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']; 
 	   foreach($this->calendars as $vcname => $vcdef){
 		 $str .= "\n<dt><a href=\"" . $basepath . '/'. $vcdef['lpath'] . "\">"
 		   . $vcdef['lpath'] . "</a></dt>";
