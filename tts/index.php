@@ -250,7 +250,7 @@
 
       if (! $ticket_read)
       {
-        $GLOBALS['phpgw']->template->set_var('row_status','<img src="templates/default/images/updated.gif" />');
+        $GLOBALS['phpgw']->template->set_var('row_status','<img src="templates/default/images/updated.png" />');
       }
       else
       {
