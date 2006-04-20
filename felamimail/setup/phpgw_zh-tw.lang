@@ -44,6 +44,9 @@ compose	felamimail	zh-tw	建立
 compress folder	felamimail	zh-tw	壓縮資料夾
 configuration	felamimail	zh-tw	設定
 contains	felamimail	zh-tw	包含
+could not add folder %1 (%2) !!!	felamimail	zh-tw	無法新增資料夾 %1 (%2) ！
+could not delete folder %1 (%2) !!!	felamimail	zh-tw	無法刪除資料夾 %1 (%2) ！
+could not rename folder %1 to %2 (%3) !!!	felamimail	zh-tw	無法重新命名資料夾 %1 (%2) ！
 create	felamimail	zh-tw	建立
 create folder	felamimail	zh-tw	建立資料夾
 create sent	felamimail	zh-tw	建立寄件備份
@@ -70,7 +73,6 @@ deleted	felamimail	zh-tw	刪除日期
 deleted folder successfully!	felamimail	zh-tw	刪除資料夾完成！
 disable	felamimail	zh-tw	停用
 discard message	felamimail	zh-tw	取消郵件
-display message in new window	felamimail	zh-tw	在新視窗顯示訊息
 display messages in multiple windows	felamimail	zh-tw	開啟多個視窗顯示訊息
 display of html emails	felamimail	zh-tw	顯示HTML郵件
 display only when no plain text is available	felamimail	zh-tw	只有在不包含存文字時顯示
@@ -136,6 +138,7 @@ for mail to be send - not functional yet	felamimail	zh-tw	要寄出的郵件 - �
 for received mail	felamimail	zh-tw	收到的郵件
 forward	felamimail	zh-tw	轉寄
 forward to address	felamimail	zh-tw	轉寄到信箱
+forwarding	felamimail	zh-tw	轉寄中
 found	felamimail	zh-tw	找到
 fri	felamimail	zh-tw	五
 from	felamimail	zh-tw	來自

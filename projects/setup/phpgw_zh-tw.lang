@@ -128,7 +128,7 @@ entry	projects	zh-tw	資料
 event	projects	zh-tw	事件
 event %1 has been saved	projects	zh-tw	%1事件已經儲存
 event %1 has been updated	projects	zh-tw	%1事件已經更新
-events	projects	zh-tw	事件
+events	common	zh-tw	事件
 exact accounting [hh.mm]	admin	zh-tw	確實的會計時間[hh.mm]
 export as	projects	zh-tw	匯出成
 external reference	projects	zh-tw	外部參考
@@ -157,6 +157,7 @@ hours of work day	admin	zh-tw	每個工作天計算時數
 hours used total	projects	zh-tw	已使用時數總合
 id can not exceed 20 characters in length	projects	zh-tw	代碼不能夠超過20個字元
 id can not exceed 250 characters in length	projects	zh-tw	代碼不能夠超過250個字元
+id is already taken, choose an other one	projects	zh-tw	編號重複，請重新輸入
 if using activities	admin	zh-tw	如果使用活動
 investment nr	projects	zh-tw	投資數
 invoicing method	projects	zh-tw	發票形式
@@ -179,7 +180,7 @@ main project	projects	zh-tw	主要專案
 main project:	projects	zh-tw	主要專案：
 manager	projects	zh-tw	管理
 manager list	projects	zh-tw	管理員清單
-managing committee	projects	zh-tw	管理委員會
+managing committee	common	zh-tw	管理委員會
 manuell entries	projects	zh-tw	手冊資料
 milestone	projects	zh-tw	階段
 milestone date due	projects	zh-tw	預訂階段日期
@@ -261,6 +262,7 @@ project url	projects	zh-tw	專案網址
 projects	common	zh-tw	專案管理
 projects, which are assigned as sequencing	projects	zh-tw	專案，依序被指定
 quality check	projects	zh-tw	品質查核
+read a list / search for entries.	projects	zh-tw	檢視清單、搜尋資料。
 reference	projects	zh-tw	參考
 remark	projects	zh-tw	註記
 remark can not exceed 8000 characters in length	projects	zh-tw	註記不能夠超過8000個字元。
@@ -271,9 +273,9 @@ role	projects	zh-tw	角色
 role %1 has been saved	projects	zh-tw	角色 %1 已經儲存
 role %1 has been updated	projects	zh-tw	角色 %1 已經更新
 role has been deleted	projects	zh-tw	角色已經刪除
-roles	projects	zh-tw	角色
+roles	common	zh-tw	角色
 roles list	projects	zh-tw	角色清單
-sales department	projects	zh-tw	業務部
+sales department	common	zh-tw	業務部
 save factor	projects	zh-tw	儲存要素
 save milestone	projects	zh-tw	儲存階段
 select factor	projects	zh-tw	選擇要素

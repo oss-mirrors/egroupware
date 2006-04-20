@@ -128,7 +128,7 @@ entry	projects	es-es	entrada
 event	projects	es-es	Evento
 event %1 has been saved	projects	es-es	se ha guardado el evento %1
 event %1 has been updated	projects	es-es	se ha actualizado el evento %º
-events	projects	es-es	Eventos
+events	common	es-es	Eventos
 exact accounting [hh.mm]	admin	es-es	Contabilidad exacta [hh.mm]
 export as	projects	es-es	exportar como
 external reference	projects	es-es	Referencia externa
@@ -180,7 +180,7 @@ main project	projects	es-es	Proyecto principal
 main project:	projects	es-es	Proyecto principal:
 manager	projects	es-es	Gestor
 manager list	projects	es-es	Lista de gestores
-managing committee	projects	es-es	Comité de gestión
+managing committee	common	es-es	Comité de gestión
 manuell entries	projects	es-es	Entradas manuales
 milestone	projects	es-es	Previsión
 milestone date due	projects	es-es	Fecha de fin de la previsión
@@ -273,9 +273,9 @@ role	projects	es-es	Rol
 role %1 has been saved	projects	es-es	se ha guardado el rol %1
 role %1 has been updated	projects	es-es	se ha actualizado  el rol %1
 role has been deleted	projects	es-es	se ha borrado el rol %1
-roles	projects	es-es	Roles
+roles	common	es-es	Roles
 roles list	projects	es-es	lista de roles
-sales department	projects	es-es	Departamento de ventas
+sales department	common	es-es	Departamento de ventas
 save factor	projects	es-es	Guardar factor
 save milestone	projects	es-es	guardar previsión
 select factor	projects	es-es	Seleccione factor

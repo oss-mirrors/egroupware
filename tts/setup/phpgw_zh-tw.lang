@@ -61,11 +61,13 @@ in progress	tts	zh-tw	處理中
 initial state	tts	zh-tw	初始狀態
 invalid	tts	zh-tw	無效
 invalidate	tts	zh-tw	使無效
+keep the present state	tts	zh-tw	維持目前狀態
 keep the present state [%1].	tts	zh-tw	維持目前狀態[%1]。
 latest note added	tts	zh-tw	最新記事新增
 list of available tickets' states.	tts	zh-tw	列出有效傳票狀態
 list of available tickets' transitions.	tts	zh-tw	列出有效傳票轉換
 low	tts	zh-tw	低
+mail owner on transition	tts	zh-tw	通知擁有者轉換訊息
 missing description	tts	zh-tw	沒有輸入說明
 morework	tts	zh-tw	更多工作
 needswork	tts	zh-tw	需要工作
@@ -111,6 +113,7 @@ returns a struct of values of a single ticket	tts	zh-tw	傳回單一傳票數值
 returns the additional notes attached to a ticket	tts	zh-tw	傳回傳票的附加訊息
 selected	tts	zh-tw	已被選擇
 show new/updated tickets on main screen	tts	zh-tw	顯示最新及更新過的傳票在主畫面
+small view	tts	zh-tw	小型圖示
 source state	tts	zh-tw	來源狀態
 state	tts	zh-tw	狀態
 state changed	tts	zh-tw	狀態已改變
@@ -141,6 +144,7 @@ this state means an open ticket	tts	zh-tw	這個狀態表示傳票還在處理�
 ticket	tts	zh-tw	傳票
 ticket #	tts	zh-tw	傳票編號
 ticket has been updated	tts	zh-tw	傳票已經更新
+ticket is not accessable	tts	zh-tw	無法存取這個傳票
 ticket is not accessible	tts	zh-tw	這個傳票無法存取
 tickets found %1	tts	zh-tw	找到 %1 張傳票
 tickets open %1	tts	zh-tw	未處理的傳票有 %1

@@ -1,8 +1,8 @@
 % to	projects	en	% to
 + jobs	projects	en	+ Jobs
 a new project has been created	projects	en	A new project has been created on:
-a project has been updated	projects	en	A project has been updated on:
 a project has been deleted	projects	en	A project has been deleted on:
+a project has been updated	projects	en	A project has been updated on:
 account	projects	en	Account
 accounting	common	en	Accounting
 accounting factor	projects	en	Accounting factor
@@ -128,7 +128,7 @@ entry	projects	en	entry
 event	projects	en	Event
 event %1 has been saved	projects	en	event %1 has been saved
 event %1 has been updated	projects	en	event %1 has been updated
-events	projects	en	Events
+events	common	en	Events
 exact accounting [hh.mm]	admin	en	Exact accounting [hh.mm]
 export as	projects	en	export as
 external reference	projects	en	External reference
@@ -157,6 +157,7 @@ hours of work day	admin	en	Number of hours per work day
 hours used total	projects	en	hours used total
 id can not exceed 20 characters in length	projects	en	id can not exceed 20 characters in length
 id can not exceed 250 characters in length	projects	en	ID can not exceed 250 characters in length.
+id is already taken, choose an other one	projects	en	id is already taken, choose an other one
 if using activities	admin	en	If using activities
 investment nr	projects	en	Investment Nr.
 invoicing method	projects	en	Invoicing method
@@ -179,7 +180,7 @@ main project	projects	en	Main project
 main project:	projects	en	Main project:
 manager	projects	en	Manager
 manager list	projects	en	Manager list
-managing committee	projects	en	Managing Committee
+managing committee	common	en	Managing Committee
 manuell entries	projects	en	Manual entries
 milestone	projects	en	Milestone
 milestone date due	projects	en	Milestone date due
@@ -261,6 +262,7 @@ project url	projects	en	Project URL
 projects	common	en	Projects
 projects, which are assigned as sequencing	projects	en	Projects, which are assigned as sequencing
 quality check	projects	en	Quality check
+read a list / search for entries.	projects	en	Read a list / search for entries.
 reference	projects	en	Reference
 remark	projects	en	Remark
 remark can not exceed 8000 characters in length	projects	en	Remark can not exceed 8000 characters in length.
@@ -271,9 +273,9 @@ role	projects	en	Role
 role %1 has been saved	projects	en	Role %1 has been saved
 role %1 has been updated	projects	en	Role %1 has been updated
 role has been deleted	projects	en	Role has been deleted
-roles	projects	en	Roles
+roles	common	en	Roles
 roles list	projects	en	Roles list
-sales department	projects	en	Sales Department
+sales department	common	en	Sales Department
 save factor	projects	en	Save factor
 save milestone	projects	en	save milestone
 select factor	projects	en	Select factor

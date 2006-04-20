@@ -44,6 +44,9 @@ compose	felamimail	es-es	Redactar
 compress folder	felamimail	es-es	Comprimir carpeta
 configuration	felamimail	es-es	Configuración
 contains	felamimail	es-es	contiene
+could not add folder %1 (%2) !!!	felamimail	es-es	¡No se pudo añadir la carpeta %1 (%2)!
+could not delete folder %1 (%2) !!!	felamimail	es-es	¡No se pudo borrar la carpeta %1 (%2)!
+could not rename folder %1 to %2 (%3) !!!	felamimail	es-es	¡No se pudo renombrar la carpeta %1 a %2 (%3)!
 create	felamimail	es-es	Crear
 create folder	felamimail	es-es	Crear carpeta
 create sent	felamimail	es-es	Crear carpeta Enviados
@@ -70,7 +73,6 @@ deleted	felamimail	es-es	Borrado
 deleted folder successfully!	felamimail	es-es	Carpeta borrada correctamente
 disable	felamimail	es-es	Deshabilitar
 discard message	felamimail	es-es	descartar mensaje
-display message in new window	felamimail	es-es	Mostrar el mensaje en una ventana nueva
 display messages in multiple windows	felamimail	es-es	mostrar los mensajes en múltiples ventanas
 display of html emails	felamimail	es-es	Mostrar los mensajes HTML
 display only when no plain text is available	felamimail	es-es	Mostrar sólo cuando no hay texto simple disponible
@@ -136,6 +138,7 @@ for mail to be send - not functional yet	felamimail	es-es	Para el correo pendien
 for received mail	felamimail	es-es	Para el correo recibido
 forward	felamimail	es-es	Reenviar
 forward to address	felamimail	es-es	reenviar a la dirección
+forwarding	felamimail	es-es	Reenviando
 found	felamimail	es-es	Encontrado
 fri	felamimail	es-es	Vie
 from	felamimail	es-es	De
