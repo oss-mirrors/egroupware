@@ -11,6 +11,7 @@ collapse threads	forum	en	Collapse Threads
 collapsed	forum	en	collapsed
 create new category	forum	en	Create New Category
 current categories and sub forums	forum	en	Current Categories and Sub Forums
+default view	forum	en	Default view
 edit forum	forum	en	Edit Forum
 email replies to this thread, to the address above	forum	en	Email replies to this thread, to the address above
 forum	common	en	Forum
@@ -31,6 +32,7 @@ return to forums	forum	en	Return to Forums
 sub category	forum	en	Sub Category
 there are no forums in this category	forum	en	There are no forums in this category
 threaded	forum	en	Threaded
+threads	forum	en	Threads
 topic	forum	en	Topic
 update category	forum	en	Update Category
 update forum	forum	en	Update Forum

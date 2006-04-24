@@ -10,6 +10,7 @@ book marks	common	en	Book marks
 bookmark changed sucessfully	bookmarks	en	Bookmark changed sucessfully
 bookmark created successfully.	bookmarks	en	Bookmark created successfully.
 bookmark deleted successfully	bookmarks	en	Bookmark deleted successfully.
+bookmark deleted successfully.	bookmarks	en	bookmark deleted successfully.
 bookmark not editable	bookmarks	en	Bookmark not editable
 bookmark not readable	bookmarks	en	Bookmark not readable
 bookmarks	common	en	Bookmarks
@@ -32,6 +33,7 @@ filter by	bookmarks	en	Filter by
 found a link you might like	bookmarks	en	Found a link you might like
 from	bookmarks	en	From
 from category %1	bookmarks	en	from category %1
+global categories	bookmarks	en	Global Categories
 highest	bookmarks	en	Highest
 i thought you would be interested in the following link(s):	bookmarks	en	I thought you would be interested in the following link(s):
 import bookmarks	common	en	Import bookmarks
@@ -57,6 +59,7 @@ rating	bookmarks	en	Rating
 search for:	bookmarks	en	Search for:
 select the format you would like to export to	bookmarks	en	Select the format you would like to export to
 send bookmark	bookmarks	en	Send bookmark
+site configuration	bookmarks	en	Site Configuration
 sub category	bookmarks	en	Sub Category
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	en	To address %1 invalid. Format must be <strong>user@domain</strong> and domain must exist!
 to e-mail addresses	bookmarks	en	To E-Mail Addresses
@@ -70,3 +73,4 @@ view this bookmark	bookmarks	en	View this bookmark
 warning	bookmarks	en	Warning
 you are viewing this site outside of egroupware	bookmarks	en	You are viewing this site outside of eGroupWare
 you must select a category	bookmarks	en	You must select a category
+you need to select a category!	bookmarks	en	You need to select a category!

@@ -9,7 +9,7 @@ allow anonymous access	admin	pt-br	permitir acesso anônimo
 anonymous password	admin	pt-br	Senha para usuário Anônimo
 anonymous session type	admin	pt-br	Tipo de Sessão para Anônimo
 anonymous username	admin	pt-br	Nome do usuário anônimo
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	pt-br	Converter automáticamente páginas com sintax-wiki para richtext (quando editáveis)?
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	pt-br	Converter automaticamente páginas com sintax-wiki para richtext (se editada)?
 block	wiki	pt-br	Bloquear
 block / unblock hosts	common	pt-br	Bloquear / Desbloquear hosts
 blocked ip address ranges	wiki	pt-br	Faixa de endereço IP bloqueada
@@ -59,7 +59,10 @@ no never	admin	pt-br	Nunca
 no only on request	admin	pt-br	Não apenas a pedido
 not set	wiki	pt-br	não selecionado
 older	wiki	pt-br	Mais antigo
+on all pages	wiki	pt-br	em todas as páginas
 only if browser supports a richtext-editor	admin	pt-br	Apenas se o navegador suportar o editor richtext
+only on the first page	wiki	pt-br	somente para a primeira página
+page '%1' not found !!!	wiki	pt-br	Página '%1' não encontrada !!!
 path of the upload directory (has to be writable by the webserver!)	admin	pt-br	Caminho para o diretório de carregamento (o servidor web deve ter permissões de escrita nele)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	pt-br	Carregar figura através de editor richtext (deixe em branco para desabilitar o carregamento)
 please contact the %1administrator%2 for assistance.	wiki	pt-br	Contate o %1Administrador%2 para ajuda.
@@ -74,15 +77,20 @@ richtext	wiki	pt-br	Richtext
 rows	wiki	pt-br	Fileiras
 save the changes and exit	wiki	pt-br	Salvar alterações e sair
 saves and continues editing	wiki	pt-br	Salvar e continuar editando
+search for	wiki	pt-br	Pesquisar por
 see complete list (%1 entries)	wiki	pt-br	Ver lista completa (%1 registros)
+show a search	wiki	pt-br	Exibir uma pesquisa
+show the title of the wiki page	wiki	pt-br	Exibir o título da página wiki
 site configuration	wiki	pt-br	Configuração da página
 summary	wiki	pt-br	Sumário
 summary of change	wiki	pt-br	Sumário das alterações
+the search returned no result!	wiki	pt-br	A pesquisa não retornou nenhum resultado!
 this page can not be edited.	wiki	pt-br	Esta página não pode ser editada.
 twin pages	wiki	pt-br	Página idênticas
 unblock	wiki	pt-br	Desbloquear
 updates the preview	wiki	pt-br	Atualizar a visualização
 url of the upload directory	admin	pt-br	URL do diretório de carregamento
+use this module for displaying wiki-pages	wiki	pt-br	Use este módulo para exibir páginas wiki
 users	wiki	pt-br	usuários
 view document history	wiki	pt-br	Ver histórico do documento
 visit %1 to set your user name	wiki	pt-br	Visite %1 para alterar seu nome de usuário
@@ -92,10 +100,12 @@ who should be able to read this page	wiki	pt-br	quem pode ler esta página
 wiki	common	pt-br	Wiki
 wiki administration	wiki	pt-br	Administração Wiki
 wiki menu	wiki	pt-br	Menu Wiki
+wiki startpage	wiki	pt-br	Página wiki inicial
 writable by	wiki	pt-br	Edição
 yes always	admin	pt-br	Sim sempre
 you have been denied access to this site.	wiki	pt-br	Você está bloqueado para acesso a esta página.
 you have entered an invalid user name.	wiki	pt-br	Você informou um nome de usuário inválido.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	pt-br	Você excedeu o número de páginas permitidos à você para visitação dentro do período. Por favor retorne mais tarde.
+you have no rights to view wiki content !!!	wiki	pt-br	Você não tem permissão para exibir este conteúdo wiki !!!
 your changes	wiki	pt-br	Suas alterações
 your user name is "%1".	wiki	pt-br	Seu nome de usuário é "%1".

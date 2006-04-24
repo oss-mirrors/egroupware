@@ -2,6 +2,7 @@
 add workstation	sambaadmin	pt-br	Adicionar estação de trabalho
 check ldap setup (experimental!!!)	admin	pt-br	Checar configuração LDAP (Experimental!!)
 computer group	admin	pt-br	Grupo de computadores
+computer ou	admin	pt-br	computador ou
 displayname	sambaadmin	pt-br	Exibir nome
 do you really want to delete selected workstation accounts?	sambaadmin	pt-br	Tem certeza que deseja remover as contas das estações de trabalho selecionadas?
 homedrive	admin	pt-br	Driver para Home

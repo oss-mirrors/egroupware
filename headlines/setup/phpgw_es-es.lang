@@ -1,3 +1,4 @@
+add a single entry by passing the fields.	headlines	es-es	Añadir una única entrada añadiendo los campos.
 are you sure you want to delete this news site ?	headlines	es-es	¿Seguro que desea borrar este sitio de noticias?
 base url	headlines	es-es	URL base
 basic	headlines	es-es	Básica
@@ -5,7 +6,9 @@ choose layout	headlines	es-es	Elegir formato
 color	headlines	es-es	Color
 create new headline	headlines	es-es	Crear nuevo titulare
 current headlines in cache	headlines	es-es	Titulares actualmente en caché
+delete a single entry by passing the id.	headlines	es-es	Borrar una única entrada pasando el id.
 display	headlines	es-es	Mostrar
+edit a single entry by passing the fields including the id.	headlines	es-es	Editar una única entrada pasando los campos, incluyendo el id.
 edit headline sites	headlines	es-es	Editar sitios de titulares
 edit headlines shown by default	headlines	es-es	Editar el titular mostrado por defecto
 grab new news sites	common	es-es	Obtener nuevos sitios de noticias
@@ -22,10 +25,14 @@ minutes between refresh	headlines	es-es	Minutos entre refresco
 minutes between reloads	headlines	es-es	Minutos entre recargas
 monitor	common	es-es	Monitorizar
 news file	headlines	es-es	Fichero de noticias
+news from x	headlines	es-es	Noticias de x
 news headlines	common	es-es	Titulares de noticia
 news type	headlines	es-es	Tipo de noticia
 no headlines found	headlines	es-es	No se encontraron titulares
 other preferences	preferences	es-es	Otras preferencias
+read a list / search for entries.	headlines	es-es	Leer una lista / buscar entradas
+read cached site data for a single site by passing the id.	headlines	es-es	Leer los datos en caché del sitio para un único sitio pasando el id.
+read site data for a single site by passing the id.	headlines	es-es	Leer los datos del sitio para un único sitio pasando el id.
 reload news sites	headlines	es-es	Recargar sitios de noticias
 reset	headlines	es-es	Restablecer
 sample	headlines	es-es	Muestra

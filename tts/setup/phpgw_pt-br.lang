@@ -31,7 +31,7 @@ close ticket	tts	pt-br	Fechar ticket
 closed	tts	pt-br	Fechado
 completed	tts	pt-br	COMPLETO
 configure the states	common	pt-br	Configurar estados
-configure the transitions	common	pt-br	Configurar Transições
+configure the transitions	common	pt-br	Configurar transições
 create new state	tts	pt-br	Criar novo estado
 create new ticket	tts	pt-br	Criar novo ticket
 create new transition	tts	pt-br	Criar nova transição
@@ -41,11 +41,11 @@ critical	tts	pt-br	Crítica
 date opened	tts	pt-br	Data da abertura
 default assign to	tts	pt-br	Atribuir por padrão a
 default group	tts	pt-br	Grupo padrão
-default priority	tts	pt-br	Prioridade Padrão
-delete the listed tickets.	tts	pt-br	Lista de tickets apagados.
-deleting the state	tts	pt-br	Apagando estado
-deleting the transition	tts	pt-br	Apagando transição
-detail	tts	pt-br	Detalhes
+default priority	tts	pt-br	Prioridade padrão
+delete the listed tickets.	tts	pt-br	Remover os tickets listados
+deleting the state	tts	pt-br	Apagando o estado
+deleting the transition	tts	pt-br	Apagando a transição
+detail	tts	pt-br	Detalhe
 due date	tts	pt-br	Data de Término
 due date changed	tts	pt-br	Data de Término alterada
 duplicate	tts	pt-br	DUPLICADO
@@ -61,19 +61,21 @@ i worked on the ticket and the work requires validation.	tts	pt-br	Eu trabalhei 
 i worked on the ticket, but did not finish.	tts	pt-br	Eu trabalhei no ticket, mas não finalizei.
 in progress	tts	pt-br	Em progresso
 initial state	tts	pt-br	Estado inicial
-invalid	tts	pt-br	INVáLIDO
+invalid	tts	pt-br	INVÁLIDO
 invalidate	tts	pt-br	INVALIDAR
+keep the present state	tts	pt-br	Manter o estado atual
 keep the present state [%1].	tts	pt-br	Manter estado atual [%1].
 latest note added	tts	pt-br	Última nota adicionada
 list of available tickets' states.	tts	pt-br	Lista de estados disponíveis para tickets
 list of available tickets' transitions.	tts	pt-br	Lista de transições disponíveis para tickets
 low	tts	pt-br	Baixa
-missing description	tts	pt-br	Descrição Inexistente
+mail owner on transition	tts	pt-br	notificar o proprietário na transição
+missing description	tts	pt-br	Descrição inexistente
 morework	tts	pt-br	RETRABALHO
 needswork	tts	pt-br	COMEÇAR
 new	tts	pt-br	NOVO
 new ticket	tts	pt-br	Novo ticket
-new tickets can be put into this state.	tts	pt-br	Novos tickets podem ser postos nesse estado.
+new tickets can be put into this state.	tts	pt-br	Novos tickets podem ser criados neste estado.
 new value	tts	pt-br	Novo valor
 no additional notes	tts	pt-br	Nenhuma nota adicional
 no duplicate	tts	pt-br	SEM DUPLICAÇÃO
@@ -83,16 +85,16 @@ no tickets found	tts	pt-br	Nenhum ticket encontrado
 no transitions found	tts	pt-br	Nenhuma transição encontrada
 not assigned	tts	pt-br	Não designado
 not completed	tts	pt-br	INCOMPLETO
-notify changes to ticket assignee by e-mail	tts	pt-br	Notificar alterações na atribuição do ticket por email
-notify changes to ticket group by e-mail	tts	pt-br	Notificar alterações no grupo do ticket por email
-notify changes to ticket owner by e-mail	tts	pt-br	Notificar alterações no propietário do ticket por email
+notify changes to ticket assignee by e-mail	tts	pt-br	Notificar, por e-mail, o responsável quando houver alterações
+notify changes to ticket group by e-mail	tts	pt-br	Notificar, por e-mail, o grupo quando houver alterações
+notify changes to ticket owner by e-mail	tts	pt-br	Notificar, por e-mail, o proprietário quando houver alterações
 old value	tts	pt-br	Valor Antigo
 open	tts	pt-br	Abrir
 open / closed	tts	pt-br	Aberto / Fechado
 open date	tts	pt-br	Data de abertura
 opened	tts	pt-br	Aberto
 opened by	tts	pt-br	Aberto por
-original ticket details	tts	pt-br	Detalhes originais do Ticket
+original ticket details	tts	pt-br	Detalhes iniciais do Ticket
 perform irregular transition into the following state	tts	pt-br	Realizar transição irregular para o estado seguinte
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	pt-br	Por favor, informe o assunto do ticket, senão o mesmo não será salvo.
 prio	tts	pt-br	Prioridade
@@ -144,8 +146,8 @@ this state means an open ticket	tts	pt-br	Neste estado o ticket está aberto.
 ticket	tts	pt-br	Ticket
 ticket #	tts	pt-br	Ticket #
 ticket has been updated	tts	pt-br	Ticket foi atualizado
-ticket is not accessable	tts	pt-br	Ticket não é acessível
-ticket is not accessible	tts	pt-br	Este ticket não é aceitável
+ticket is not accessable	tts	pt-br	Ticket não está acessível
+ticket is not accessible	tts	pt-br	Este ticket não está acessível
 tickets found %1	tts	pt-br	Tickets encontrados: %1
 tickets open %1	tts	pt-br	Tickets abertos: %1
 tickets total %1	tts	pt-br	Total de tickets: %1
@@ -169,10 +171,10 @@ tts	common	pt-br	Tickets
 tts preferences	tts	pt-br	Tickets - Preferências
 undefined	tts	pt-br	INDEFINIDO
 update ticket state	tts	pt-br	Atualizar o estado do ticket
-updates ticket	tts	pt-br	atualizar ticket
+updates ticket	tts	pt-br	Atualizar ticket
 verified	tts	pt-br	VERIFICADO
 verify	tts	pt-br	VERIFICAR
-verify the ticket to work on it.	tts	pt-br	Veifica o ticket a ser trabalhado
+verify the ticket to work on it.	tts	pt-br	Verifica o ticket a ser trabalhado
 view all tickets	tts	pt-br	Exibir todos tickets
 view job detail	tts	pt-br	Exibir detalhe da tarefa
 view only my open tickets	tts	pt-br	Exibir apenas meus tickets abertos

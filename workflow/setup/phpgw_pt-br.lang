@@ -6,7 +6,7 @@
 %1 days, %2:%3:%4	workflow	pt-br	%1 dias, %2:%3:%4
 %1 exception	workflow	pt-br	%1 exceções
 %1 menu	workflow	pt-br	%1 Menu
-%1 monitoring	workflow	pt-br	%1 Monitoramento
+%1 monitoring	workflow	pt-br	%1 Monitorando
 %1 processes (%2 active) (%3 being_run)	workflow	pt-br	%1 processos (%2 ativos) (%3 em execução)
 /workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	pt-br	O diretório /workflow não existe e não pode ser criado, por favor solicite ao administrador para verificar a configuração global
 <strong>%owner%</strong> is the instance owner email	workflow	pt-br	<strong>%owner%</strong> é o email do proprietário da instância
@@ -85,7 +85,7 @@ add transitions to	workflow	pt-br	Adicionar transições para
 admin instance	workflow	pt-br	Administrar Instância
 admin process activities	workflow	pt-br	Administrar Atividades de Processos
 admin process roles	workflow	pt-br	Administrar Perfis de Processos
-admin processes	workflow	pt-br	Administrar Processos
+admin processes	common	pt-br	Administrar Processos
 admin processes sources	workflow	pt-br	Administrar Código Fonte de Processos
 administer instances	admin	pt-br	Administrar instâncias
 administer processes	admin	pt-br	administrar processos
@@ -588,7 +588,6 @@ workflow configuration	admin	pt-br	Configuração do Workflow
 workflow navigation	workflow	pt-br	Navegação do Workflow
 workflow preferences	workflow	pt-br	Preferências do Workflow
 workflow site configuration	workflow	pt-br	Configuração do Site Workflow
-workflow.ui_useractivities	workflow	pt-br	workflow.ui_useractivities
 workitem information	workflow	pt-br	Informação de Workitem
 workitems	workflow	pt-br	Workitems
 you are not allowed to abort instance %1	workflow	pt-br	Você não tem permissão para abortar a instância %1

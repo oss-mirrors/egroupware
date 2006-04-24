@@ -1,3 +1,4 @@
+account '%1' not found !!!	emailadmin	en	Account '%1' not found !!!
 add profile	emailadmin	en	Add Profile
 admin dn	emailadmin	en	admin dn
 admin password	emailadmin	en	admin password
@@ -5,6 +6,10 @@ admin passwort	emailadmin	en	admin passwort
 admin username	emailadmin	en	admin username
 advanced options	emailadmin	en	advanced options
 alternate email address	emailadmin	en	alternate email address
+any application	emailadmin	en	any application
+any group	emailadmin	en	any group
+can be used by application	emailadmin	en	can be used by application
+can be used by group	emailadmin	en	can be used by group
 cyrus imap server	emailadmin	en	Cyrus IMAP Server
 cyrus imap server administration	emailadmin	en	Cyrus IMAP server administration
 default	emailadmin	en	default
@@ -16,12 +21,15 @@ email account active	emailadmin	en	email account active
 email address	emailadmin	en	email address
 enable cyrus imap server administration	emailadmin	en	enable Cyrus IMAP server administration
 enable sieve	emailadmin	en	enable Sieve
+encryption settings	emailadmin	en	encryption settings
 enter your default mail domain (from: user@domain)	emailadmin	en	Enter your default mail domain (from: user@domain)
 forward also to	emailadmin	en	forward also to
 forward email's to	emailadmin	en	forward email's to
 forward only	emailadmin	en	forward only
+global options	emailadmin	en	global options
 imap admin password	admin	en	IMAP admin password
 imap admin user	admin	en	IMAP admin user
+imap c-client version < 2001	emailadmin	en	IMAP C-Client Version < 2001
 imap server hostname or ip address	emailadmin	en	IMAP server hostname or ip address
 imap server logintyp	emailadmin	en	IMAP server login type
 imap server port	emailadmin	en	IMAP server port
@@ -39,9 +47,17 @@ mail settings	admin	en	Mail settings
 name of organisation	emailadmin	en	Name of organization
 no alternate email address	emailadmin	en	no alternate email address
 no forwarding email address	emailadmin	en	no forwarding email address
+order	emailadmin	en	order
+organisation	emailadmin	en	organisation
+plesk can't rename users --> request ignored	emailadmin	en	Plesk can't rename users --> request ignored
+plesk imap server (courier)	emailadmin	en	Plesk IMAP Server (Courier)
+plesk mail script '%1' not found !!!	emailadmin	en	Plesk mail script '%1' not found !!!
+plesk requires passwords to have at least 5 characters and not contain the account-name --> password not set!!!	emailadmin	en	Plesk requires passwords to have at least 5 characters and not contain the account-name --> password NOT set!!!
+plesk smtp-server (qmail)	emailadmin	en	Plesk SMTP-Server (Qmail)
 pop3 server hostname or ip address	emailadmin	en	POP3 server hostname or ip address
 pop3 server port	emailadmin	en	POP3 server port
 postfix with ldap	emailadmin	en	Postfix with LDAP
+profile access rights	emailadmin	en	profile access rights
 profile list	emailadmin	en	Profile List
 profile name	emailadmin	en	Profile Name
 qmaildotmode	emailadmin	en	qmaildotmode
@@ -50,20 +66,27 @@ quota settings	emailadmin	en	quota settings
 remove	emailadmin	en	remove
 select type of imap/pop3 server	emailadmin	en	Select type of IMAP/POP3 server
 select type of smtp server	emailadmin	en	Select type of SMTP Server
+server settings	emailadmin	en	server settings
 sieve server hostname or ip address	emailadmin	en	Sieve server hostname or ip address
 sieve server port	emailadmin	en	Sieve server port
 sieve settings	emailadmin	en	Sieve settings
+smtp authentication	emailadmin	en	smtp authentication
+smtp options	emailadmin	en	smtp options
 smtp server name	emailadmin	en	SMTP server name
+smtp settings	emailadmin	en	smtp settings
 smtp-server hostname or ip address	emailadmin	en	SMTP server hostname or IP address
 smtp-server port	emailadmin	en	SMTP server port
 standard	emailadmin	en	Standard
 standard imap server	emailadmin	en	Standard IMAP server
 standard pop3 server	emailadmin	en	Standard POP3 server
 standard smtp-server	emailadmin	en	Standard SMTP server
+unsupported action '%1' !!!	emailadmin	en	Unsupported action '%1' !!!
 use ldap defaults	emailadmin	en	use LDAP defaults
 use smtp auth	emailadmin	en	Use SMTP auth
 use tls authentication	emailadmin	en	Use TLS authentication
 use tls encryption	emailadmin	en	Use TLS encryption
+user can edit forwarding address	emailadmin	en	user can edit forwarding address
+username (standard)	emailadmin	en	username (standard)
+username@domainname (virtual mail manager)	emailadmin	en	username@domainname (Virtual MAIL ManaGeR)
 users can define their own emailaccounts	emailadmin	en	Users can define their own email accounts
 virtual mail manager	emailadmin	en	Virtual MAIL ManaGeR
-IMAP C-Client Version < 2001	emailadmin	en	IMAP C-Client Version < 2001

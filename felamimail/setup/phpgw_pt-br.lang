@@ -44,6 +44,9 @@ compose	felamimail	pt-br	Compor
 compress folder	felamimail	pt-br	Compactar pasta
 configuration	felamimail	pt-br	Configuração
 contains	felamimail	pt-br	contém
+could not add folder %1 (%2) !!!	felamimail	pt-br	Não foi possível adicionar pasta %1 (%2) !!!
+could not delete folder %1 (%2) !!!	felamimail	pt-br	Não foi possível remover pasta %1 (%2) !!!
+could not rename folder %1 to %2 (%3) !!!	felamimail	pt-br	Não foi possível renomear pasta %1 to %2 (%3) !!!
 create	felamimail	pt-br	Criar
 create folder	felamimail	pt-br	Criar pasta
 create sent	felamimail	pt-br	Criar Enviadas
@@ -70,7 +73,6 @@ deleted	felamimail	pt-br	Removido
 deleted folder successfully!	felamimail	pt-br	Pasta removida com sucesso!
 disable	felamimail	pt-br	Desabilitada
 discard message	felamimail	pt-br	Descartar mensagem
-display message in new window	felamimail	pt-br	Exibir mensagens em uma nova janela
 display messages in multiple windows	felamimail	pt-br	Exibir mensagens em múltiplas janelas
 display of html emails	felamimail	pt-br	Exibir emails em HTML
 display only when no plain text is available	felamimail	pt-br	Exibir somente quando não possuir versão em texto plano disponível
@@ -136,6 +138,7 @@ for mail to be send - not functional yet	felamimail	pt-br	Para mensagem a ser en
 for received mail	felamimail	pt-br	Para email recebido
 forward	felamimail	pt-br	Encaminhar
 forward to address	felamimail	pt-br	Encaminhar para endereço
+forwarding	felamimail	pt-br	Encaminhando
 found	felamimail	pt-br	Encontrado
 fri	felamimail	pt-br	Sex
 from	felamimail	pt-br	De

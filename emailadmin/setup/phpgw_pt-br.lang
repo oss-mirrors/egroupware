@@ -1,3 +1,4 @@
+account '%1' not found !!!	emailadmin	pt-br	Conta '%1' não encontrada !!!
 add profile	emailadmin	pt-br	Adicionar Perfil
 admin dn	emailadmin	pt-br	dn do administrador
 admin password	emailadmin	pt-br	senha do administrador
@@ -7,7 +8,6 @@ advanced options	emailadmin	pt-br	opções avançadas
 alternate email address	emailadmin	pt-br	endereço de e-mail alternativo
 any application	emailadmin	pt-br	qualquer aplicação
 any group	emailadmin	pt-br	qualquer grupo
-application	emailadmin	pt-br	aplicação
 can be used by application	emailadmin	pt-br	pode ser usado pela aplicação
 can be used by group	emailadmin	pt-br	pode ser usado pelo grupo
 cyrus imap server	emailadmin	pt-br	Servidor Cyrus IMAP
@@ -49,6 +49,11 @@ no alternate email address	emailadmin	pt-br	sem conta de e-mail alternativa
 no forwarding email address	emailadmin	pt-br	sem conta de e-mail para encaminhar
 order	emailadmin	pt-br	ordem
 organisation	emailadmin	pt-br	organização
+plesk can't rename users --> request ignored	emailadmin	pt-br	Plesk não pode renomear usuários --> solicitação ignorada
+plesk imap server (courier)	emailadmin	pt-br	Servidor IMAP Plesk (Courier)
+plesk mail script '%1' not found !!!	emailadmin	pt-br	Script de e-mail Plesk '%1' não encontrado !!!
+plesk requires passwords to have at least 5 characters and not contain the account-name --> password not set!!!	emailadmin	pt-br	Plesk exige que senhas tenha no mínimo 5 caracteres e não contenham o nome da conta --> senha NÃO configurada!!!
+plesk smtp-server (qmail)	emailadmin	pt-br	Servidor SMTP Plesk (Qmail)
 pop3 server hostname or ip address	emailadmin	pt-br	Nome ou endereço IP do servidor POP3
 pop3 server port	emailadmin	pt-br	Porta do servidor POP3
 postfix with ldap	emailadmin	pt-br	Postfix com LDAP
@@ -75,6 +80,7 @@ standard	emailadmin	pt-br	Padrão
 standard imap server	emailadmin	pt-br	Servidor IMAP padrão
 standard pop3 server	emailadmin	pt-br	Servidor POP3 padrão
 standard smtp-server	emailadmin	pt-br	Servidor SMTP padrão
+unsupported action '%1' !!!	emailadmin	pt-br	Ação não suportada: '%1' !!!
 use ldap defaults	emailadmin	pt-br	usar padrões LDAP
 use smtp auth	emailadmin	pt-br	usar SMTP Autenticado
 use tls authentication	emailadmin	pt-br	Usar autenticação TLS
