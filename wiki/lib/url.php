@@ -38,6 +38,11 @@ if(!function_exists('viewURL'))
 			$lang = @$page['lang'] && $page['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'] ? '&lang='.$page['lang'] : '';
 			$page = $page['name'];
 		}
+		elseif (is_object($page))
+		{
+			$lang = @$page->lang && $page->lang != $GLOBALS['egw_info']['user']['preferences']['common']['lang'] ? '&lang='.$page->lang : '';
+			$page = $page->name;
+		}
 		return $ViewBase . urlencode($page) . @$lang .
 				($version == '' ? '' : "&version=$version") .
 				($full == '' ? '' : '&full=1');
