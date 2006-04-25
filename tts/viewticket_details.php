@@ -468,10 +468,13 @@
 
     $GLOBALS['phpgw']->template->set_var('value_subject', $ticket['subject']);
 
-    $GLOBALS['phpgw']->template->set_var('lang_additional_notes',lang('Additional notes'));
-    $GLOBALS['phpgw']->template->set_var('lang_save', lang('Save'));
-    $GLOBALS['phpgw']->template->set_var('lang_apply', lang('Apply'));
-    $GLOBALS['phpgw']->template->set_var('lang_cancel', lang('Cancel'));
+    $GLOBALS['phpgw']->template->set_var(array(
+	    'lang_additional_notes'	=> lang('Additional notes'),
+	    'lang_save'			=> lang('Save'),
+	    'lang_apply'	=> lang('Apply'),
+	    'lang_cancel'	=> lang('Cancel')
+	    )
+	);
 
     $GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
     $GLOBALS['phpgw']->template->set_var('value_category',$GLOBALS['phpgw']->categories->id2name($ticket['category']));
@@ -481,9 +484,12 @@
     
     // Ticket state transitions
     
-    $GLOBALS['phpgw']->template->set_var('lang_update_state',lang('Update ticket state'));
-    $GLOBALS['phpgw']->template->set_var('lang_keep_present_state',
-      lang('<div class="stateliststate">%1</div> Keep the present state',id2field('phpgw_tts_states','state_name','state_id',$ticket['state'])));
+    $GLOBALS['phpgw']->template->set_var(array(
+	    'lang_update_state' 	=> lang('Update ticket state'),
+	    'lang_keep_present_state'	=> lang('Keep the present state'),
+	    'lang_present_state'	=> try_lang(id2field('phpgw_tts_states','state_name','state_id',$ticket['state']))
+	    )
+	);
 
     $db = clone($GLOBALS['phpgw']->db);
     $db->query("select * from phpgw_tts_transitions where transition_source_state='".$ticket['state']."'",__LINE__,__FILE__);
@@ -493,10 +499,11 @@
 	$GLOBALS['phpgw']->template->set_var('update_state_value',
 		$db->f('transition_email').$db->f('transition_target_state')	# this is ugly, but simple -- MSc
 		);
-	$GLOBALS['phpgw']->template->set_var('update_state_text',
-		try_lang('<div class="stateliststate">%1</div> '.$db->f('transition_description'),
-		    id2field('phpgw_tts_states','state_name','state_id',$db->f('transition_target_state')))
-		);
+	$GLOBALS['phpgw']->template->set_var(array(
+		'lang_state'		=> try_lang(id2field('phpgw_tts_states','state_name','state_id',$db->f('transition_target_state'))),
+		'update_state_text'	=> lang($db->f('transition_description'))
+		)
+	);
 	$GLOBALS['phpgw']->template->parse('update_state_group', 'update_state_items', True);
     }
 
