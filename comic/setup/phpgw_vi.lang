@@ -1,0 +1,39 @@
+%1 by %2	comic	vi	%1 b&#7903;i %2
+%1 by %2 (%3)	comic	vi	%1 b&#7903;i %2 (%3)
+are you sure you want to reset all comic dates and resolved image urls?	comic	vi	B&#7841;n c&#243; ch&#7855;c ch&#7855;n r&#7857;ng m&#236;nh mu&#7889;n thi&#7871;t l&#7853;p l&#7841;i t&#7845;t c&#7843; thu&#7897;c t&#237;nh ng&#224;y c&#7911;a h&#253; h&#7885;a v&#224; url c&#7911;a &#7843;nh?
+censorship level	comic	vi	M&#7913;c ki&#7875;m duy&#7879;t
+censorship override enabled	comic	vi	Cho ph&#233;p ki&#7875;m duy&#7879;t l&#7841;i
+comic	common	vi	H&#253; h&#7885;a
+comic preferences updated	comic	vi	C&#225;c t&#249;y ch&#7885;n h&#253; h&#7885;a &#273;&#432;&#7907;c c&#7853;p nh&#7853;t
+comics	common	vi	H&#253; h&#7885;a
+comics per page	comic	vi	S&#7889; tranh h&#253; h&#7885;a tr&#234;n m&#7895;i trang
+comics scaled	comic	vi	C&#225;c tranh h&#253; h&#7885;a &#273;&#432;&#7907;c co gi&#227;n t&#7927; l&#7879;
+daily comic	common	vi	H&#253; h&#7885;a h&#224;ng ng&#224;y
+daily comic preferences	comic	vi	C&#225;c t&#249;y ch&#7885;n cho H&#253; h&#7885;a h&#224;ng ng&#224;y
+daily comics	admin	vi	H&#253; h&#7885;a h&#224;ng ng&#224;y
+daily comics - global options	comic	vi	H&#253; h&#7885;a h&#224;ng ng&#224;y - C&#225;c t&#249;y ch&#7885;n chung
+daily comics data	comic	vi	D&#7919; li&#7879;u c&#7911;a c&#225;c h&#253; h&#7885;a h&#224;ng ng&#224;y
+daily comics global options	comic	vi	C&#225;c t&#249;y ch&#7885;n c&#7911;a H&#253; h&#7885;a h&#224;ng ng&#224;y
+display layout	comic	vi	Hi&#7875;n th&#7883; b&#7889; c&#7909;c
+display options	comic	vi	C&#225;c t&#249;y ch&#7885;n hi&#7875;n th&#7883;
+egroupware daily comics	comic	vi	C&#225;c h&#253; h&#7885;a h&#224;ng ng&#224;y c&#7911;a eGroupWare
+front page comic	comic	vi	H&#253; h&#7885;a trang n&#7873;n
+front page comic scaled	comic	vi	H&#253; h&#7885;a trang n&#7873;n &#273;&#432;&#7907;c co gi&#227;n t&#7927; l&#7879;
+genre	comic	vi	Th&#7875; lo&#7841;i
+global comics	common	vi	H&#253; h&#7885;a t&#7893;ng th&#7875;
+global options	common	vi	C&#225;c t&#249;y ch&#7885;n chung
+global options updated	comic	vi	C&#225;c t&#249;y ch&#7885;n chung &#273;&#432;&#7907;c c&#7853;p nh&#7853;t
+image source	comic	vi	Ngu&#7891;n &#7843;nh
+max file size	comic	vi	K&#237;ch th&#432;&#7899;c l&#7899;n nh&#7845;t c&#7911;a t&#7853;p tin
+my comics	comic	vi	C&#225;c h&#253; h&#7885;a c&#7911;a t&#244;i
+no_entries	comic	vi	kh&#244;ng_c&#243;_m&#7909;c_n&#224;o
+parser	comic	vi	B&#7897; ph&#226;n t&#237;ch
+performed %1 of element	comic	vi	&#272;&#227; th&#7921;c hi&#7879;n %1 c&#7911;a th&#224;nh ph&#7847;n
+random	comic	vi	Ng&#7851;u nhi&#234;n
+rated	comic	vi	&#272;&#225;nh gi&#225;
+reset	comic	vi	Thi&#7871;t l&#7853;p l&#7841;i
+reset comic data	admin	vi	Thi&#7871;t l&#7853;p l&#7841;i d&#7919; li&#7879;u h&#253; h&#7885;a
+resolve	comic	vi	X&#7917; l&#253;
+showing %1 (%2 - %3 of %4)	comic	vi	&#273;ang hi&#7879;n %1 (%2 - %3 c&#7911;a %4)
+template	comic	vi	M&#7851;u
+visit %1	comic	vi	Xem %1

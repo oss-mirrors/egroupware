@@ -11,6 +11,7 @@ collapse threads	forum	zh-tw	一般檢視
 collapsed	forum	zh-tw	摺疊
 create new category	forum	zh-tw	建立新的分類
 current categories and sub forums	forum	zh-tw	目前的分類及子討論區
+default view	forum	zh-tw	全文
 edit forum	forum	zh-tw	編輯討論區
 email replies to this thread, to the address above	forum	zh-tw	這個討論串的所有回覆皆使用電子郵件送至上列地址
 forum	common	zh-tw	討論區
@@ -31,6 +32,7 @@ return to forums	forum	zh-tw	回到討論區
 sub category	forum	zh-tw	子類別
 there are no forums in this category	forum	zh-tw	這個類別中沒有任何討論區
 threaded	forum	zh-tw	主題追蹤
+threads	forum	zh-tw	討論
 topic	forum	zh-tw	主題
 update category	forum	zh-tw	更新分類
 update forum	forum	zh-tw	更新討論區

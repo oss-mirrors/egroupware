@@ -10,6 +10,7 @@ book marks	common	sk	Zálo¾ky
 bookmark changed sucessfully	bookmarks	sk	Zálo¾ka úspe¹ne zmenená
 bookmark created successfully.	bookmarks	sk	Zálo¾ka úspe¹ne vytvorená.
 bookmark deleted successfully	bookmarks	sk	Zálo¾ka úspe¹ne zmazaná.
+bookmark deleted successfully.	bookmarks	sk	Zálo¾ka úspe¹ne zmazaná.
 bookmark not editable	bookmarks	sk	Zálo¾ka sa nedá upravova»
 bookmark not readable	bookmarks	sk	Zálo¾ka sa nedá èíta»
 bookmarks	common	sk	Zálo¾ky
@@ -32,6 +33,7 @@ filter by	bookmarks	sk	Filtrova» podµa
 found a link you might like	bookmarks	sk	Na¹iel sa odkaz ktorý by vás mohol zaujíma»
 from	bookmarks	sk	Od
 from category %1	bookmarks	sk	z kategórie %1
+global categories	bookmarks	sk	Globálne kategórie
 highest	bookmarks	sk	Najvy¹¹ie
 i thought you would be interested in the following link(s):	bookmarks	sk	Myslím, ¾e by vás mohli zaujíma» nasledujúce odkazy:
 import bookmarks	common	sk	Naimportova» zálo¾ky
@@ -57,6 +59,7 @@ rating	bookmarks	sk	Hodnotenie
 search for:	bookmarks	sk	Vyhµada»:
 select the format you would like to export to	bookmarks	sk	Vyberte formát do ktorého chcete exportova»
 send bookmark	bookmarks	sk	Posla» zálo¾ku
+site configuration	bookmarks	sk	Nastavenia Stránky
 sub category	bookmarks	sk	Podkategória
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sk	Adresa Kmou %1 je chybná. Formát musí by» <strong>user@domain</strong> a doména musí by» spomedzi existujúcich!
 to e-mail addresses	bookmarks	sk	Adresa Komu
@@ -70,3 +73,4 @@ view this bookmark	bookmarks	sk	Zobrazi» túto zálo¾ku
 warning	bookmarks	sk	Pozor
 you are viewing this site outside of egroupware	bookmarks	sk	Stránka, na ktorú sa pozeráte, je u¾ mimo eGroupWare
 you must select a category	bookmarks	sk	Musíte vybra» kategóriu
+you need to select a category!	bookmarks	sk	Najprv musíte vybra» kategóriu!
