@@ -173,9 +173,9 @@
 	 * routines that the library class @ref eicnvutils provides.
 	 * These methods must be accessed via the $ecu member variable. 
 	 * 
-	 * @version 0.9.36-a1 first trial version for NAPI-3.1
+	 * @version 0.9.37-ng-a1 added deviceType2contentType method.
+	 * @date 20060427
 	 * @since 0.9.36 first version with NAPI-3.1 (rsc-owner_id handling)
-	 * @date 20060407
 	 * @since 0.9.30 new api: ical accessors as egwical_resourcehandler subclasses
 	 * @since 0.9.22 new api2 using eicnvutils via $ecu
 	 * @author Jan van Lieshout <jvl (at) xs4all.nl> (This version)
@@ -300,6 +300,7 @@
 		   sonyericsson/
 		   multisync/
 		   ...
+		   remotecalendars/
 		</PRE>
 	   * See icalendarProdId2devicetype() and httpAgent2deviceType() to derive the ProductType
 	   * from a iCalendar resp. a http request.
@@ -467,7 +468,12 @@
 	   */
 	  function	icalendarProdId2devicetype($prodidstr)
 	  {
-		return 'all';
+		$devtype= 'all';
+		if(preg_match('#remotecalendars#i',$prodidstr)){
+		  $devtype = 'remotecalendars';
+		}
+		
+		return $devtype;
 	  }
 
 	  /** Derive the deviceType from a http request agent field. --Class method--
@@ -478,7 +484,11 @@
 	   */
 	  function httpUserAgent2deviceType($agentidstr)
 	  {
-		return 'all';
+		$devtype= 'all';
+		if(preg_match('#remotecalendars#i',$agentidstr)){
+		  $devtype = 'remotecalendars';
+		}
+		return $devtype;
 	  }
 
 	  /** Derive the deviceType from a product manufacturer and name description. --Class method--
@@ -492,6 +502,35 @@
 	  function product2deviceType($productManufacturer='all', $productName='')
 	  {
 		return 'all';
+	  }
+
+
+	  /** Derive the contentType for export to a devictype. --Class method--
+	   * @todo implement deviceType2contentType
+	   * @param ProductType $devtype the productype of the device that will receive or
+	   * produce the icaldata content.
+	   * @return string the required http contenttype setting(as per HTTP / mimetype definition)
+	   * that the devicetype likes to see for the produced icaldata.
+	   * On failure: False
+	   */
+	  function deviceType2contentType($devtyp='all')
+	  {
+		switch ($devtyp) {
+		case 'remotecalendars':     // remotecalendars
+		  $ct ='text/calendar';
+		  break;
+		case 'moz':
+		  $ct ='text/html';  // check this!!
+		  break;
+
+		case 'all':
+		  $ct ='';
+		  break;
+
+		default:
+		}
+
+		return $ct;
 	  }
 
 
