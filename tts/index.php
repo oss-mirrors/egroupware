@@ -17,8 +17,6 @@
   $GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
   include('../header.inc.php');
 
-  require_once (EGW_INCLUDE_ROOT.'/tts/inc/acl_funcs.inc.php');
-
   $GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
   // select what tickets to view
@@ -186,7 +184,7 @@
     {
 	
 	// If the user is not allow to READ the ticket, don't view it in this list
-	if (! check_ticket_right($db->f('ticket_assignedto'), $db->f('ticket_owner'), $db->f('ticket_group'), PHPGW_ACL_READ)) {
+	if (! check_read_right($db->f('ticket_owner'), $db->f('ticket_assignedto'), $db->f('ticket_group'))) {
 	    continue;
 	}
 
@@ -223,13 +221,6 @@
 	      $tr_color = $GLOBALS['phpgw_info']['theme']['bg'.sprintf('%02s',(5-$priority)*2)];
 	  }
       }
-
-      // the following will not work here, let's do this later	-- MSc 050830
-/*    if ($filter!="viewopen" && $db->f('t_timestamp_closed'))
-      {
-        $tr_color = $GLOBALS['phpgw_info']['theme']['th_bg'];
-      }
-*/
 
       $db2->query("select count(*) from phpgw_tts_views where view_id='" . $db->f('ticket_id')
         . "' and view_account_id='" . $GLOBALS['phpgw_info']['user']['account_id'] . "'",__LINE__,__FILE__);
@@ -280,15 +271,6 @@
       }
       elseif ($filter != 'viewopen' && $filter != 'viewmyopen')
       {
-//        if ($db->f('ticket_assignedto') != -1)
-//        {
-//          $assigned_to = lang('Not assigned');
-//        }
-//        else
-//        {
-//          $assigned_to = $GLOBALS['phpgw']->accounts->id2name($db->f('ticket_assignedto'));
-//        }
-//        $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$assigned_to);
 	  $GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
 	  $GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
       }

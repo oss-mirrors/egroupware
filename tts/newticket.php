@@ -22,8 +22,6 @@
   );
 
   include('../header.inc.php');
-  require_once (EGW_INCLUDE_ROOT.'/tts/inc/acl_funcs.inc.php');
-  require_once (EGW_INCLUDE_ROOT.'/tts/inc/prio.inc.php');
 
   $GLOBALS['phpgw']->config->read_repository();
 
@@ -160,24 +158,19 @@
   } else {
       $GLOBALS['phpgw']->template->set_var('value_duedate', date('Y-'));
   }
-
   
-  //produce the list of groups	-- MSc 050824
-  // This used to be a list of all groups the user is a member of
-  // but now we want a list of all groups the user can assign tickets to
-
+  //produce the list of groups
   $group_list = array();
-  $group_list = $GLOBALS['phpgw']->accounts->search (array('type'=>'groups'));
-//  $group_list = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
-
+//  $group_list = $GLOBALS['phpgw']->accounts->search (array('type'=>'groups'));
+  $group_list = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
   while(list($key,$entry) = each($group_list))
   {
-      if (check_ticket_right(-1, -1, $entry['account_id'], PHPGW_ACL_ADD)) {
-	  $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_lid']);
+//      if (check_assign_right(-1, $entry['account_id'], 1)) {
+	  $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_name']);
 	  $GLOBALS['phpgw']->template->set_var('optionvalue', $entry['account_id']);
 	  $GLOBALS['phpgw']->template->set_var('optionselected', $entry['account_id']==$_POST['ticket_group']?' SELECTED ':'');
 	  $GLOBALS['phpgw']->template->parse('options_group','options_select',true);
-      }
+//      }
   }
 
 
@@ -188,19 +181,17 @@
 
   
   
-  //produce the list of accounts for assigned to   -- MSc 050824
-  // This used to be a list of all users (it used a undefined variable, though, so
-  //   maybe it was broken anyways)
-  // Now we want a list of all users that the current user can assign tickets to
+  //produce the list of accounts for assigned to
   $s = '<option value="0">' . lang('None') . '</option>';
   $account_list = array();
-  $account_list = $GLOBALS['phpgw']->accounts->search (array('type'=>'accounts'));
+
+  $account_list = $GLOBALS['egw']->accounts->get_list('accounts');
   while(list($key,$entry) = each($account_list))
   {
-      if (check_ticket_right($entry['account_id'], -1, -1, PHPGW_ACL_ADD)) {
+      if (check_assign_right($entry['account_id'], 1, 1)) {
 	  $s .= '<option value="' . $entry['account_id'] . '"' 
 	      . ($entry['account_id']==$_POST['ticket_assignedto']?' SELECTED ':'')
-	      . '>' . $entry['account_lid'] . '</option>';
+	      . '>' . $GLOBALS['egw']->common->grab_owner_name($entry['account_id']) . '</option>';
       }
   }
   $GLOBALS['phpgw']->template->set_var('value_assignedto','<select name="ticket_assignedto">' . $s . '</select>');

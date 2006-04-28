@@ -11,6 +11,9 @@
 
 	/* $Id$ */
 
+	require_once (EGW_INCLUDE_ROOT.'/tts/inc/acl_funcs.inc.php');
+	require_once (EGW_INCLUDE_ROOT.'/tts/inc/prio.inc.php');
+
 	$d1 = strtolower(substr($GLOBALS['phpgw_info']['server']['app_inc'],0,3));
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
@@ -28,12 +31,22 @@
 		$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
 		// this will be an user option
+/* Outcommented for now; this would only list my own tickets (as owner or assignee).
+ * We'll use the list where all tickets I'm allowed to see will be shown.
+ * A preference for this can be added later, OvE
+ *
 		$filtermethod="where ticket_status='O' and (ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."' "
 				. "or ticket_owner='".$GLOBALS['phpgw_info']['user']['account_id']."') ";
+ *
+ * The filtermethod below shows the same as above, plus all tickets that have not yet been assigned.
+ * ACL will be checked futher on, OvE
+ */
+		$filtermethod="where ticket_status='O' and ((ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."' OR ticket_assignedto=0)"
+				. "or (ticket_owner='".$GLOBALS['phpgw_info']['user']['account_id']."')) ";
 		$sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due IS NOT NULL THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
 
 		$GLOBALS['phpgw']->db->query('select ticket_id, ticket_category, ticket_priority,'.
-			' ticket_assignedto, ticket_owner, ticket_subject, ticket_due ' .
+			' ticket_assignedto, ticket_owner, ticket_group, ticket_subject, ticket_due ' .
 			' from phpgw_tts_tickets ' . $filtermethod . ' ' . $sortmethod,__LINE__,__FILE__);
 
 		$tmp_app_tpl = $GLOBALS['phpgw']->common->get_tpl_dir('tts');
@@ -54,6 +67,12 @@
 		);
 		while ($GLOBALS['phpgw']->db->next_record())
 		{
+
+			if (!check_read_right($GLOBALS['phpgw']->db->f('ticket_owner')
+			  , $GLOBALS['phpgw']->db->f('ticket_assignedto')
+			  , $GLOBALS['phpgw']->db->f('ticket_group'))) {
+				continue;
+			}
 
 			$p->set_var('tts_col_status','');
 

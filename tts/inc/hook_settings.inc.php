@@ -11,21 +11,27 @@
 
   /* $Id$ */
 
+	require_once (EGW_INCLUDE_ROOT.'/tts/inc/acl_funcs.inc.php');
+	require_once (EGW_INCLUDE_ROOT.'/tts/inc/prio.inc.php');
+
+
 	$yes_and_no = array(
 		'True'  => lang('Yes'),
 		'False' => lang('No')
 	);
 
 	$_groups = array();
-	foreach($GLOBALS['egw']->accounts->get_list('groups') as $entry)
+	foreach($GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']) as $entry)
 	{
-	  $_groups[$entry['account_id']] = $entry['account_lid'];
+		$_groups[$entry['account_id']] = $entry['account_name'];
 	}
 
 	$_accounts = array();
 	foreach($GLOBALS['egw']->accounts->get_list('accounts') as $entry)
 	{
-	  $_accounts[$entry['account_id']] = $GLOBALS['egw']->common->grab_owner_name($entry['account_id']);
+		if (check_assign_right($entry['account_id'], 1, 1)) {
+			$_accounts[$entry['account_id']] = $GLOBALS['egw']->common->grab_owner_name($entry['account_id']);
+		}
 	}
 
 	// Choose the correct priority to display

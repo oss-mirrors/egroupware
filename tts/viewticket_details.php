@@ -25,9 +25,6 @@
 
   include('../header.inc.php');
   
-  require_once (EGW_INCLUDE_ROOT.'/tts/inc/acl_funcs.inc.php');
-  require_once (EGW_INCLUDE_ROOT.'/tts/inc/prio.inc.php');
-
   $filter = reg_var('filter','GET');
   $start  = reg_var('start','GET','numeric',0);
   $sort   = reg_var('sort','GET');
@@ -125,13 +122,13 @@
 
     $GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'] . ' - ' . lang('View Job Detail');
 
-    # The following sets up jsCalendar  -- MSc
+    // The following sets up jsCalendar  -- MSc
     $jscal = CreateObject('phpgwapi.jscalendar');	// before phpgw_header() !!!
 
     $GLOBALS['phpgw']->common->phpgw_header();
     echo parse_navbar();
 
-    # Did we get the ticket_id? If not, there is some problem  -- MSc 050829
+    // Did we get the ticket_id? If not, there is some problem
     if ( (! isset($ticket_id)) || $ticket_id == 0) {
        echo 'Error --- no ticket ID';
        $GLOBALS['phpgw']->common->phpgw_footer();
@@ -179,7 +176,7 @@
     $GLOBALS['phpgw']->template->set_block('form','update_state_items','update_state_group');
 
     // Someone without permission tries to get direct access to the ticket
-    if (! check_ticket_right($ticket['assignedto'], $ticket['owner'], $ticket['group'], PHPGW_ACL_READ)) {
+    if (! check_read_right($ticket['owner'], $ticket['assignedto'], $ticket['group'])) {
        echo lang('ticket is not accessable');
        $GLOBALS['phpgw']->common->phpgw_footer();
        exit ();
@@ -204,28 +201,25 @@
       $GLOBALS['phpgw']->template->parse('options_priority','options_select',true);
     }
 
-  //produce the list of groups	-- MSc 050824
-  // This used to be a list of all groups the user is a member of
-  // but now we want a list of all groups the user can assign tickets to
+  //produce the list of groups
   $group_list = array();
-  $group_list = $GLOBALS['phpgw']->accounts->search (array('type'=>'groups'));
+//  $group_list = $GLOBALS['phpgw']->accounts->search (array('type'=>'groups'));
+  $group_list = $GLOBALS['phpgw']->accounts->membership($ticket['owner']);
 
   while(list($key,$entry) = each($group_list))
   {
-      if (check_ticket_right(-1, -1, $entry['account_id'], PHPGW_ACL_ADD) || $entry['account_id'] == $ticket['group']) {
-	  $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_lid']);
+//      if (check_assign_right(-1, $entry['account_id'], $ticket['group'])) {
+	  $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_name']);
 	  $GLOBALS['phpgw']->template->set_var('optionvalue', $entry['account_id']);
 	  $GLOBALS['phpgw']->template->set_var('optionselected', $entry['account_id']==$ticket['group']?' SELECTED ':'');
 	  $GLOBALS['phpgw']->template->parse('options_group','options_select',true);
-      }
+//      }
   }
  
-  //produce the list of accounts for assigned to   -- MSc 050824
-  // This used to be a list of all users (it used a undefined variable, though, so
-  //   maybe it was broken anyways)
-  // Now we want a list of all users that the current user can assign tickets to
+  //produce the list of accounts for assigned to
     $account_list = array();
-    $account_list = $GLOBALS['phpgw']->accounts->member($ticket['group']);
+    $account_list = $GLOBALS['egw']->accounts->get_list('accounts');
+
     $GLOBALS['phpgw']->template->set_var('optionname',lang('None'));
     $GLOBALS['phpgw']->template->set_var('optionvalue','0');
     $GLOBALS['phpgw']->template->set_var('optionselected','');
@@ -233,16 +227,11 @@
     while(list($key,$entry) = @each($account_list))
     {
 	// Check ACL for ADD (== assign to)
-	if (check_ticket_right($entry['account_id'], -1, $ticket['group'], PHPGW_ACL_ADD) || 
-	        // we also have to be able to /not/ change the asignee
-		$entry['account_id'] == $ticket['assignedto'] ||
-		// ... or give back the ticket to the owner
-		$entry['account_id'] == $ticket['owner']
-		) {
+	if (check_assign_right($entry['account_id'], 1, $ticket['group'])) {
 	    if (!array_key_exists ('account_lid', $entry)) {
 	    	$entry['account_lid'] = $entry['account_name'];
 	    }
-	    $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_lid']);
+	    $GLOBALS['phpgw']->template->set_var('optionname', $GLOBALS['egw']->common->grab_owner_name($entry['account_id']));
 	    $GLOBALS['phpgw']->template->set_var('optionvalue', $entry['account_id']);
 	    $GLOBALS['phpgw']->template->set_var('optionselected',
 		    ($entry['account_id']==$ticket['assignedto']?'selected="selected"':''));
@@ -407,7 +396,7 @@
     $GLOBALS['phpgw']->template->set_var('ticket_id', $ticket_id);
 
     $GLOBALS['phpgw']->template->set_var('lang_assignedfrom', lang('Assigned from'));
-    $GLOBALS['phpgw']->template->set_var('value_owner',$GLOBALS['phpgw']->accounts->id2name($ticket['owner']));
+    $GLOBALS['phpgw']->template->set_var('value_owner',$GLOBALS['egw']->common->grab_owner_name($ticket['owner']));
 
     $GLOBALS['phpgw']->template->set_var('lang_opendate', lang('Open Date'));
     $GLOBALS['phpgw']->template->set_var('value_opendate',$ticket['opened']);
@@ -446,7 +435,7 @@
     $GLOBALS['phpgw']->template->set_var('lang_assignedto',lang('Assigned to'));
     if($ticket['assignedto'])
     {
-      $assignedto = $GLOBALS['phpgw']->accounts->id2name($ticket['assignedto']);
+      $assignedto = $GLOBALS['egw']->common->grab_owner_name($ticket['assignedto']);
     }
     else
     {
@@ -665,12 +654,6 @@
     if($ticket['note'])
     {
       $fields_updated = True;
-      
-      /* This is the wrong place to do this
-       * MSc 060131
-       */
-      // $ticket['note'] = html_activate_urls($ticket['note']);
-      
       $GLOBALS['phpgw']->historylog->add('C',$ticket_id,$ticket['note'],'');
 
       // Do this before we go into mail_ticket()

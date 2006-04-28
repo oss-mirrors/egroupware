@@ -1,5 +1,8 @@
 <?php
   /* $Id$ */
+	require_once (EGW_INCLUDE_ROOT.'/tts/inc/acl_funcs.inc.php');
+	require_once (EGW_INCLUDE_ROOT.'/tts/inc/prio.inc.php');
+
 
   function try_lang($phrase,$param=False,$upcase=False)
   {
