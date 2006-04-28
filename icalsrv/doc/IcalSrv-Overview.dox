@@ -2,9 +2,9 @@
 
 @note this is still <b>EXPERIMENTAL, USE AT YOUR OWN RISK! </b> and better not yet in a
 production environment.
-@version 0.9.34-ng-a6x
+@version 0.9.37-ng-a1
 @author jvl 
-@date 20060414
+@date 20060427
 
 @note <b>you need to have package EgwIcal in version >= 0.9.30-ng to be able to
  use this icalsrv-ng version!</b>
@@ -15,7 +15,8 @@ IcalSrv NG is a rewrite of the old IcalSrv service that allows an
 <i>ical client</i> (see @ref secicalsrvclients) like Mozilla Sunbird,
 Apple iCal or Korganizer to access the events and tasks from a persons
 egroupware calendar and infolog application, remotely via a "icalendar
-over http" connection.
+over http" connection. See @url http://en.wikipedia.org/wiki/ICalendar for
+more info on this format.
 
 This means that in the client you can download (aka <i> reload </i>)
 the data from an a socalled <i> subscribed </i> virtual calendar on the
@@ -138,7 +139,7 @@ cvs. Or just use the version available in the standard Egroupware install
  - @note The IcalSrv package depends on the availability of an
    EgwIcal (>= 0.9.30) package. So if you dont have this already, be sure
    to install that too. Likewise this can be installed by untarring an appropiate
-   egwical-vx.y.z.tgz tarball or by checking out the <i> egwical</i> module from cvs (HEAD).
+   egwical-vx.y.z.tgz tarball or by checking out the <i> egwical</i> module from cvs.
    
  - Take care that icalsrv.php is <code>.../egroupware/icalsrv.php</code>
    (and that the other files from the icalsrv package are also in their appropiate places)
@@ -155,6 +156,7 @@ cvs. Or just use the version available in the standard Egroupware install
     Script PUT /var/www/egroupware/icalsrv.php
     AddHandler ical/ics .ics
     Action ical/ics /var/www/egroupware/icalsrv.php
+    AcceptPathInfo On
     Order allow,deny
     Allow from all
  </Location>
@@ -180,6 +182,10 @@ cvs. Or just use the version available in the standard Egroupware install
 - now you probably need to authenticate (with your normal EGW login and password)
   and when done you receive the calendar on doing a "reload remote calendars" or so.
   This should give you a default calendar of your personal events and tasks
+  @note If have not set your egw domain to default (in header.inc.php), authentication
+  probably wont succeed. In this case you can add your domain to the url by a domain parameter.
+  The url for the list will then become something like:
+   http://your.host.com/egroupware/icalsrv.php/list.html?domain=myegwdomain 
 
 - if you use the same url in your clients settings for "calendar publishing",
   you should be able to write the (modified) calendar from the sunbird client back to

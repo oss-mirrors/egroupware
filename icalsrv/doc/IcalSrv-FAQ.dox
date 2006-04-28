@@ -1,8 +1,10 @@
 /*! \page pageicalsrvfaq IcalSrv FAQ - some questions and answers
 
 @author JVL
-@version 0.9.34-a5x (icalsrv)
-@date 20060408
+
+Mostly updated to:
+@version 0.9.37-a1 (icalsrv)
+@date 20060427
 
 \section secicalsrvfaqintro FAQ Intro
 Hi, this is the first, very rudimentary version of a Frequently Asked
@@ -96,11 +98,7 @@ The steps are as follows. Lets assume we have a group of secretaries
    To view or manipulate the  tasks of MrBoss he might use the virtual calendar  .../tasks.ics or
    the combined calendar  ..../defaults.ics
 
-@note  At the moment (version v0.9.34-ng-a5x) there are some problems with
-writing into the calendars that you do not own. Therefore this feature is by
-default disabled. You can toggle this $disable_nonowner_import switch in icalsrv.php
-if you want to experiment with this feature. But be prepared that events and tasks may
-unintentionally getmoved from somebodies calendar into your own! We are examining it.
+@since v0.9.36-ng working
 
 
 
@@ -144,13 +142,25 @@ SINCE: version 0.9.33-ng-b1 : ...
 
 
 
-\section icalsrvqa_nonegwparticipants UB: Help, exported event participants get lost and strange text appears in the event desciption.
+\section icalsrvqa_nonegwparticipants UB: Help, published event participants get lost and strange text appears in the event desciption.
 
 Icalsrv can, on import from a client, only recognize valid eGroupware participants if
 they have an email address associated with them (at the time of export and now).
 For other detected participants of an event, on import a short note is written in
 the event its description, telling that there are some <em>Non EGW participants</em> and
 then listing them.
+
+\section icalsrvqa_commaesc  UB: Help, I put a comma in my field text and now its half missing!
+
+Using a COMMA or COLON or SEMICOLON in icalfields like SUMMARY, DESCRIPTION or LOCATION may
+easily lead to wrong results when importing and exporting. Although the RFC says that in this
+case the program should double-quote the values of the fields, it appears that various
+clients react differently when confronted with these.
+
+In versions before v0.9.37 of egwical, use of commas would lead to loss of a part of the field.
+Since v0.9.37 there is modest escaping built in for commas appearing in one of the fields
+mentioned above. This is done by prepending backslashes (as rfc 2426 sec2.4.2 suggests).
+At least in recent versions of Sunbird and Korganizer this appears to work reasonable.
 
 
 \section icalsrvqa_install UT: How do I install IcalSrv?
@@ -262,10 +272,13 @@ documentation, as this is the working engine that does all the conversions.
 Notably missing features at moment are though;
 - no import or export of URL fields in events or todos (will come at
   some time)
-- no import or export of ATTACHEMENTS in events or todos (need funding
- if to implement it)
+- no import or export of ATTACHMENTS in events or todos (funding might help
+  to implement it)
 - recurring tasks for todos (egw does not support this yet)
-
+- VTIMEZONE components are not supported (neither references to them) so
+  any timesettings defined with them  are interpreted as local time (see
+  further the timezone handling page in the egwical documentation).
+  (here too: funding might help to implement it)
 
 \section icalsrvqa_https UT: Does IcalSrv work with https?
 
@@ -277,7 +290,7 @@ was fixed.
 
 \section icalsrvqa_iocompat UT: Is the icalsrv output/input the same as the ical file import/export via the sidebar menu in the calendar app?
 
-At the moment (egw1.2rc8) not, unless you replaced the files
+At the moment (egw1.2.1) not, unless you replaced the files
 calendar/class.boical.inc.php and infolog/class.vcalinfolog.inc.php by
 the compat classes files egwical/class.boical.inc.compat.php
 and resp. egwical/class.vcalinfolog.inc.compat.php 
@@ -289,6 +302,20 @@ currently being actively developed, is using the first two too, there
 we may have, at the moment, a slight difference in icalendar handling between IcalSrv
 and the manual import or export of a icalendar file via the calendar menu.
 
+\section icalsrvqa_php4compat UT: Is IcalSRV still working with php4? What problems to expect?
+
+Unfortunately I did no thorough checking anymore, to test the icalsrv and egwical compliancy
+to php4 for the NG versions (say >v0.9.30). We had reports from people that it still works
+mostly with php4, after a few offending constructs are removed to get rid of a lot of warnings.
+These constructs are mainly:
+ - the  <code> &$arg = null </code> function argument declarations. Mostly the ampersand
+   can be removed, as this only means a slight decrease in efficiency. Be warned: there are
+   a couple of places in the code where this should not be done.
+ - and <code> foreach </code> loops that are confronted with empty arrays. Php4 doesnot like this
+   and will produce warnings.
+
+As some important features of Egw in the current release require php5 anyway, I wont spend
+much time on making it fully php4 compliant. That is, unless specifically requested ;-)
 
 
 */

@@ -1,7 +1,7 @@
 /*! @page pageicalsrvclients IcalSrv clients status and supported features
 @author JVL
-@date 20060314
-@version 0.9.01R2
+@date 20060427
+@version 0.9.37
 @todo edit and update the IcalSrv client information document. Especially with info on the two use case scenarios.
 
 On this page you will find some first reports on the use of Egroupware and IcalSrv 
@@ -231,11 +231,27 @@ percentage complete is not available in Evolution.
 The famous client for the mac: <b>iCal</b> see @url http://www.apple.com/macosx/features/ical/
 
 
+@section secappleicalwarnings Apple Ical client warnings
+Here are some observations (thanks to sfque)
+- OSX- iCal seems in its standard configuration to produce iCalendar data version 2.0.
+- OSX iCal 2.0 produces various extenstion fields in its ical data like X-WR-RELCALID,
+  X-WR-CALNAME and X-WR-TIMEZONE. These are all ignored by icalsrv!
+- OSX iCal 2.0 produces (apparently in its standards settings) date-times with times set
+  relative to timezone definitions that are defined in the icaldata. (so called VTIMEZONE
+  components). In icalsrv (or better egwical)  timezone component parsing is not yet
+  supported (at least till v0.9.37-ng-a1). So these timesettings will be interpreted as
+  being in localtime (of the server  in case of icalsrv).
+  @note if you have the opportunity to let iCal produce UTC time settings,  this would
+  be a solution.
+  @note until release 1.2.1 of Egw, the iCalendar.php has a bug that lets icaldata with
+  VTIMEZONE elements in it produce warnings. You can apply the
+  iCalendar-vtimezone-component-warning-removal-jvl20060117.diff patch to solve this.
+
 
 
 @section secoutlookremcal Outlook with RemoteCalendars plugin
 
-Since a few weeks there is a sourceforge project that leverages the Outlook 
+Since early 2006 there is a sourceforge project that leverages the Outlook2003 
 program by providing a plugin to do ical over http:
 
 Outlook with RemoteCalendars-plugin see @url http://sourceforge.net/projects/remotecalendars

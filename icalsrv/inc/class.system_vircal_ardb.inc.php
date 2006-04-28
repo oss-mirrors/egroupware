@@ -38,10 +38,11 @@
    *   of the logged_in user?
    * - /freebusy.ics (TBI) 
    *
+   * @verion 0.9.37-a1 
+   * @date 20060427
    * @version 0.9.36-a4 added detection of http or https for list
    * @version 0.9.36-a1 first version adapted for NAPI 3.1
    * @author jvl
-   * @date 20060410
    */ 
 
    class system_vircal_ardb extends vircal_ardb
@@ -171,7 +172,7 @@
 		 ? 'https' : 'http';
 	   $basepath = $curscheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']; 
 	   foreach($this->calendars as $vcname => $vcdef){
-		 $str .= "\n<dt><a href=\"" . $basepath . '/'. $vcdef['lpath'] . "\">"
+		 $str .= "\n<dt><a href=\"" . $basepath .  $vcdef['lpath'] . "\">"
 		   . $vcdef['lpath'] . "</a></dt>";
 		 if($detail >= 1 && $detail < 100){
 		   $str .= "\n<dd>" . $vcdef['description'] . "</dd>";

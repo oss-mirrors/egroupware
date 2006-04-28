@@ -1,4 +1,22 @@
 /*! \page pageicalsrvreleaselog IcalSrv Release Log
+\section secrel0937ng-a1 Release 0.9.37-ng-a1. Bugfix for egw release 1.2.1
+- release date: 20060428
+- file: icalsrv-with-doc-0.9.37-ng-a1.tgz
+- depends on EgwIcal v0.9.37 or later (NAPI-3.1)
+- via:  cvs head and 1.2(at some moment) and homepage and probably in 1.2.1 bugfix release
+
+\subsection subsecrel0937nga1changes Changes from previous version
+- fixed authentication for non default domain users via url domain parameter
+- fixed https urls to virtual calendars in list.html
+- added provisions for device dependant contenttype (mimetype) settings
+- mentioned use of AcceptInfo On in documentation overview
+- added comma escaping feature for SUMMARY, DESCRIPTION, LOCATION and CATEGORIES fields
+
+\subsection subsecrel0937nga1bugs Found bugs and problems
+...
+- four old open minors  from 0.9.34-ng-a4x version.
+
+
 \section secrel0936ng-a1 Release 0.9.36-ng-a1 experimental with writing non owned resources
 - NB. you need a version > 0.9.36
   of EgwIcal as the new features require a EgwIcal package with NAPI-3.1
@@ -13,7 +31,19 @@
 - prevention importing into virtual group calendars
   
 \subsection subsecrel0936nga1xbugs Found bugs and problems
-- old open ones from previous version.
+- mime type of exported calendar is not set (detected by ldeviator)
+  (This seems needed by RemoteCalendars, not by Sunbird?)	
+- commas and other symbols are not escaped in export (hit by jvl.
+  to be fixed in egwical)
+- (wish:) older apache versions have problems supporting PUT to php scripts
+ when using php as module. Add a line in the httpd.conf
+- authentication for nondefault domains should be possible (hit upon by sfque
+  and omgs. fixed in a4?)
+- a few null as default for passed by ref arguments cause php4 incompatibility.
+- (wish:) Remote Calendars seems to duplicate events on (re-) publish.
+-  OSX iCal import give rise to the old X- and standard.php Horde iCalendar bug.
+- (wish:) allow timezone definition elements?
+- four old open minors  from 0.9.34-ng-a4x version.
 
 
 \section secrel0934ng-a5x Emegency fix Release 0.9.34-ng-a5x of NG (New Generation)
