@@ -398,8 +398,9 @@
 	   }
 	   $str .= "\n</dl>";
 	   $str .= "\n<p/> Note: when using https access to this egroupware system, "
-		 . "the links for the virtual calendars above should start with https"
-		 . " (on some servers the ssl detection does not work when generating the listing)";
+		 . "the locations (urls) for the virtual calendars above should start with https"
+		 . " (on some servers the ssl detection does not work when generating the listing,"
+		 . " so you should correct the locations for this when using them)";
 	   $str .= "\n<p/>\nFor a list of available system calendars see <a href=\""
 		 . $basepath . "/list.html\">/list.html</a>";
 	   $str .= "\n</body></html>";

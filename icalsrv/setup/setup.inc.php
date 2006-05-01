@@ -18,7 +18,7 @@
 	/* Basic information about this app */
 	$setup_info['icalsrv']['name']      = 'icalsrv';
 	$setup_info['icalsrv']['title']     = 'Ical Server';
-	$setup_info['icalsrv']['version']   = '0.9.36';
+	$setup_info['icalsrv']['version']   = '0.9.37';
 	$setup_info['icalsrv']['app_order'] = 8;
     $setup_info['icalsrv']['enable']    = 1;
 	$setup_info['icalsrv']['author'] = 'Jan van Lieshout (JVL)';

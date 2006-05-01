@@ -168,11 +168,15 @@
 		 . "<body><h2>System Virtual Calendars available</h2>\n"
 		 . "</p><dl>";
 
-	   $curscheme = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')
-		 ? 'https' : 'http';
+	   if(isset($_SERVER['HTTPS'])){
+		 $curscheme = (strtolower($_SERVER['HTTPS']) == 'on') ? 'https' : 'http';
+	   }else {
+		 $curscheme = 'http[s]';
+	   }
 	   $basepath = $curscheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']; 
+
 	   foreach($this->calendars as $vcname => $vcdef){
-#		 $str .= "\n<dt><a href=\"" . $basepath .  $vcdef['lpath'] . "\">"
+		 //		 $str .= "\n<dt><a href=\"" . $basepath .  $vcdef['lpath'] . "\">"
 		 $str .= "\n<dt><a href=\"." .  $vcdef['lpath'] . "\">"
 		   . $vcdef['lpath'] . "</a></dt>";
 		 if($detail >= 1 && $detail < 100){
