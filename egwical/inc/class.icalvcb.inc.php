@@ -45,7 +45,7 @@
    * VCB.
    *
    * @auth jvl
-   * @version 0.9.30 first version
+   * @version 0.9.37-a2
    */ 
 
    class icalvcb extends Horde_iCalendar
@@ -151,7 +151,7 @@
 	   * @return Vcalstr|false the rendered Vcal formatted string.
 	   * On error: false
 	   */
-	 function render_vcal(&$vcal_attributes=null)
+	 function render_vcal(&$vcal_attributes)
 	 {
 	   return egwical_resourcehandler::render_velt2vcal($this,$vcal_attributes);
 	 }

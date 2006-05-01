@@ -138,9 +138,11 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.36  update does not change owner anymore
+	 * @version 0.9.37-ng-a2 removed double charset translation
+	 * @date 20060501 
+	 * @since 0.9.36  update does not change owner anymore
 	 * @since 0.9.36  first version with NAPI-3.1 (rsc_owner_id parameter)
-	 * @date 20060410
+
 	 * @since 0.9.30  first version for napi3
 	 * license @url  http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
 	 */
@@ -666,7 +668,7 @@
 
 		// lets see what other supported veImportFields we can get from the vevent
 		foreach($vevent->_attributes as $attr) {
-		  $attrval = $GLOBALS['egw']->translation->convert($attr['value'],'UTF-8');
+		  $attrval = $attr['value'];
 
 		  // SKIP  UNSUPPORTED VEVENT FIELDS
 		  if(!in_array($attr['name'],$veImportFields))

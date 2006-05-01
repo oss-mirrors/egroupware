@@ -123,7 +123,7 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.36-a1 first version with NAPI-3.1
+	 * @version 0.9.37-ng-a2  removed double charset translation
 	 * @since 0.9.36  first version for napi3.1 (with rsc_owner_id parameter)
 	 * @since 0.9.30  first version for napi3
 
@@ -719,7 +719,7 @@
 
 		// lets see what other supported veImportFields we can get from the vtodo
 		foreach($vtodo->_attributes as $attr) {
-		  $attrval = $GLOBALS['egw']->translation->convert($attr['value'],'UTF-8');
+		  $attrval = $attr['value'];
 
 		  // SKIP  UNSUPPORTED VTODO FIELDS
 		  if(!in_array($attr['name'],$veImportFields))
