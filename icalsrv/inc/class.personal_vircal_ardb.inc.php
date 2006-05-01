@@ -37,9 +37,10 @@
    * - /freebusy.ifb
    *
    * @author jvl
-   * @version 0.9.36-a4 added detection of http or https for list
+   * @version 0.9.37-a3 added a php4 compat fix in _cpw...
+   * @date 20060501
+   * @since 0.9.37-a2 added detection of http or https for list and a note
    * @since 0.9.36-a1 first release adapted for NAPI-3.1
-   * @date 20060413
    * @since version 0.9.36 initialize resources with hndarg3 set (NAPI-3.1)
    */ 
 
@@ -396,6 +397,9 @@
 		 }
 	   }
 	   $str .= "\n</dl>";
+	   $str .= "\n<p/> Note: when using https access to this egroupware system, "
+		 . "the links for the virtual calendars above should start with https"
+		 . " (on some servers the ssl detection does not work when generating the listing)";
 	   $str .= "\n<p/>\nFor a list of available system calendars see <a href=\""
 		 . $basepath . "/list.html\">/list.html</a>";
 	   $str .= "\n</body></html>";
@@ -418,7 +422,7 @@
 	  function _cprw_vcdef(&$ofield,
 						   $name,
 						   $desc,
-						   &$rwrules)
+						   $rwrules)
 	 {
 	   if (is_array($ofield)){
 		 $nfield = array();

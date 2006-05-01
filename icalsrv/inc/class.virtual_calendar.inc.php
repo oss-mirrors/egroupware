@@ -44,8 +44,9 @@
    * - store to database (to array) and retrieve/build from database (array)
    *
    * @author jvl
-   * @version 0.9.36-a1 first version adapted to NAPi-3.1
-   * @date 20060406 
+   * @since 0.9.36-a1 first version adapted to NAPi-3.1
+   * @version 0.9.37-a2 added some php4 compatibility
+   * @date 20060427
    */ 
 
    class virtual_calendar
@@ -139,9 +140,9 @@
 	  * @param array $rwdirtable table of allowed rewrite directives
 	  * @return array rewritten input if recursive rewrite went ok. False on error
 	  */
-	 function rewrite_directives(&$field, &$oke, &$rwdirtable = null )
+	 function rewrite_directives(&$field, &$oke, &$rwdirtable )
 	 {
-	   if ($rwdirtable == null)
+	   if (!isset($rwdirtable))
 		 $rwdirtable = $this->rwdirtable;
 
 	   // string handling

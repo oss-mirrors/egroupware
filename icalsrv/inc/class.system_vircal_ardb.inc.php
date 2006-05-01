@@ -172,7 +172,8 @@
 		 ? 'https' : 'http';
 	   $basepath = $curscheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME']; 
 	   foreach($this->calendars as $vcname => $vcdef){
-		 $str .= "\n<dt><a href=\"" . $basepath .  $vcdef['lpath'] . "\">"
+#		 $str .= "\n<dt><a href=\"" . $basepath .  $vcdef['lpath'] . "\">"
+		 $str .= "\n<dt><a href=\"." .  $vcdef['lpath'] . "\">"
 		   . $vcdef['lpath'] . "</a></dt>";
 		 if($detail >= 1 && $detail < 100){
 		   $str .= "\n<dd>" . $vcdef['description'] . "</dd>";
