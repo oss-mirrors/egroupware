@@ -33,6 +33,7 @@ filter by	bookmarks	pt-br	Filtrar por
 found a link you might like	bookmarks	pt-br	Encontrei um endereço que você deverá gostar
 from	bookmarks	pt-br	De
 from category %1	bookmarks	pt-br	da categoria %1
+global categories	bookmarks	pt-br	Categorias Globais
 highest	bookmarks	pt-br	Maior
 i thought you would be interested in the following link(s):	bookmarks	pt-br	Achei que você poderia se interessar pelos seguinte(s) endereço(s):
 import bookmarks	common	pt-br	Importar Favoritos
@@ -58,6 +59,7 @@ rating	bookmarks	pt-br	Classificação
 search for:	bookmarks	pt-br	Pesquisar  por:
 select the format you would like to export to	bookmarks	pt-br	Selecione para qual formato você gostaria de exportar
 send bookmark	bookmarks	pt-br	Enviar Favorito
+site configuration	bookmarks	pt-br	Configuração do site
 sub category	bookmarks	pt-br	Subcategoria
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	pt-br	Destinatário %1 inválido. O Formato deve ser <strong> usuario@dominio.com.br</strong> e o domínio deve existir!
 to e-mail addresses	bookmarks	pt-br	Correio eletrônico do destinatário
