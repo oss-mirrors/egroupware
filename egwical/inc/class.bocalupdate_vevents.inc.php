@@ -138,8 +138,9 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.37-ng-a2 removed double charset translation
-	 * @date 20060501 
+	 * @version 0.9.37-ng-a4 fixed alarm saving and deleting
+	 * @date 20060502
+	 * @since 0.9.37-ng-a2 removed double charset translation
 	 * @since 0.9.36  update does not change owner anymore
 	 * @since 0.9.36  first version with NAPI-3.1 (rsc_owner_id parameter)
 
@@ -916,7 +917,7 @@
 			  // ******** eof serious debugging only.. **************
 
 			  foreach($updatedEvent['alarm'] as $alarmID => $alarmData)	{
-				$this->delete_alarm($alarmID);
+				$this->rsc->delete_alarm($alarmID);
 			  }
 			  //  set new alarms 						
 			  foreach($alarms as $alarm) {
@@ -927,7 +928,7 @@
 				}
 				$alarm['owner'] = $user_id;
 //				error_log('setting egw alarm as:' . print_r($alarm,true));
-				$this->save_alarm($eidOk, $alarm);
+				$this->rsc->save_alarm($eidOk, $alarm);
 			  }
 			}
 			return $eidOk;

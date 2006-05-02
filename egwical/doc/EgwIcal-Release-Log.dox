@@ -1,4 +1,17 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
+\section secrel0937nga4 Release 0.9.37-ng-a4 Bugfix Release
+- release date: 20060502 
+- file: egwical-with-doc-0.9.37-ng-a4.tgz
+- via: homepage and (possibly) egroupware cvs
+
+\subsection subsecrel0937nga4changes Changes from previous version
+- fixed the save_alarm() an delete_alarm() routines in bocalupdate_vevents.
+- added the iCalendar-vtimezone pach again in the PATCHES folder of the package,
+  as it iCalendar.php seems still not to be fixed against for this.
+  (see Icalsrv-clients doc, apple iCal section)
+
+\subsection subsecrel0936nga1bugs Found bugs and problems
+....
 
 \section secrel0936nga1 Release 0.9.36-ng-a1 Beta1 Release with New API 3.1
 - NB. This is the first release that provides NAPi-3.1 a slight update of NAPI-3
@@ -12,7 +25,10 @@
  resources. This is now in NAPI-3.1 (mainly the set_rsc_owner_id() method)
 
 \subsection subsecrel0936nga1bugs Found bugs and problems
-.... 
+- bocalupdate_vevents() has bad save_alarm() and delete_alarm() calls.
+- VTIMEZONE component handling is still not fixed in iCalendar.php
+- Category handling on publishing (import into egw) again seems to produce
+  duplicates under some circumstances.
 
 \section secrel0934ngb3 Release 0.9.34-ng-b3 Beta3 Release with New API
 

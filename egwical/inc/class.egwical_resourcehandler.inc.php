@@ -903,8 +903,8 @@
 
 		error_log('** egwical_resourcehandler import for user (' . $cur_eid .
 				  '['. $uname . ']):' . $fault . '\n' .
-				  'current egw ' . $vtype . ': id=' . $cid . ',owner=' . $cown . ',uid=' . $cuid .'\n' .
-				  'vevent info ' . $vtype . ': id=' . $nid . ',owner=' . $nown . ',uid=' . $nuid .'\n' );
+				  'info in current egw ' . $vtype . ': id=' . $cid . ',owner=' . $cown . ',uid=' . $cuid .'\n' .
+				  'info in velt for ' . $vtype . ': id=' . $nid . ',owner=' . $nown . ',uid=' . $nuid .'\n' );
 //		error_log('vevent info egwelt dump:' . print_r($new_egwelt,true) . '\n <<-----------<<\n');
 	  }
 
