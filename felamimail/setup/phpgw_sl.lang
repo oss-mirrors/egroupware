@@ -44,6 +44,9 @@ compose	felamimail	sl	Novo sporočilo
 compress folder	felamimail	sl	Stisni mapo
 configuration	felamimail	sl	Nastavitev
 contains	felamimail	sl	vsebuje
+could not add folder %1 (%2) !!!	felamimail	sl	Mape %1 (%2) ni bilo mogoče dodati!
+could not delete folder %1 (%2) !!!	felamimail	sl	Mape %1 (%2) ni bilo mogoče zbrisati!
+could not rename folder %1 to %2 (%3) !!!	felamimail	sl	Mape %1 (%2) ni bilo mogoče preimenovati!
 create	felamimail	sl	Ustvari
 create folder	felamimail	sl	Ustvari mapo
 create sent	felamimail	sl	Ustvari mapo Poslano (Sent)
@@ -70,7 +73,6 @@ deleted	felamimail	sl	izbrisano
 deleted folder successfully!	felamimail	sl	Mapa je bila uspešno izbrisana!
 disable	felamimail	sl	Onemogoči
 discard message	felamimail	sl	opusti sporočilo
-display message in new window	felamimail	sl	Prikaži obvestilo v novem oknu
 display messages in multiple windows	felamimail	sl	prikaži sporočila v več oknih
 display of html emails	felamimail	sl	Prikazovanje HTML sporočil
 display only when no plain text is available	felamimail	sl	Prikaži le, ko ni na voljo navadnega besedila
@@ -136,6 +138,7 @@ for mail to be send - not functional yet	felamimail	sl	Za pošiljanje sporočila
 for received mail	felamimail	sl	Za prejeto pošto
 forward	felamimail	sl	Posreduj
 forward to address	felamimail	sl	Posreduj na naslov
+forwarding	felamimail	sl	Posredovanje
 found	felamimail	sl	Najdenih
 fri	felamimail	sl	pet
 from	felamimail	sl	Pošiljatelj
