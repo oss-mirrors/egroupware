@@ -994,7 +994,7 @@ class ProcessManager extends BaseManager {
     }
     // Create shared file
     $file = GALAXIA_PROCESSES.SEP.$name.SEP."code".SEP."shared.php";
-    if (!file_exists($path))
+    if (!file_exists($file))
     {
       $fp = fopen(GALAXIA_PROCESSES.SEP.$name.SEP."code".SEP."shared.php","w");
       if (!fp) return false;
