@@ -58,7 +58,7 @@ class InstanceManager extends BaseManager {
     if (!(empty($result)))
     {
       $res = $result->fetchRow();
-      $result['wf_next_activity']=unserialize(base64_decode($result['wf_next_activity']));
+      $res['wf_next_activity']=unserialize(base64_decode($res['wf_next_activity']));
       $res['wf_workitems']=$this->getOne('select count(*) from '.GALAXIA_TABLE_PREFIX.'workitems where wf_instance_id=?', array($iid));
     }
     return $res;
