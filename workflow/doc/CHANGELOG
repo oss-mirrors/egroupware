@@ -8,6 +8,7 @@ regis_glc is Regis Leroy
 
 [1.2.01.006] bugfixes release ** LATEST STABLE RELEASE **
         * fix error on InstanceManager->get_instance thanks to Gareth Walter <Gareth@irrational.com.au>
+	* fix SQL error on InstanceManager->get_instance_activities thanks to Gareth Walter <Gareth@irrational.com.au>
 
 [1.2.01.005] on egroupware 1.2 RC8
 	* fix hard-coded link on app.css (regis_glc)

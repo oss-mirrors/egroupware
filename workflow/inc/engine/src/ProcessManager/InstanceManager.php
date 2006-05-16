@@ -29,8 +29,8 @@ class InstanceManager extends BaseManager {
             gi.wf_p_id,gi.wf_instance_id,gi.wf_status,gi.wf_started,
             gia.wf_activity_id,gia.wf_user,gia.wf_status as wf_act_status 
             from '.GALAXIA_TABLE_PREFIX.'activities ga,
-            INNER JOIN '.GALAXIA_TABLE_PREFIX.'instances gi ON ga.wf_instance_id=gi.wf_instance_id,
-            INNER JOIN '.GALAXIA_TABLE_PREFIX.'instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
+            INNER JOIN '.GALAXIA_TABLE_PREFIX.'instance_activities gia ON ga.wf_activity_id=gia.wf_activity_id
+            INNER JOIN '.GALAXIA_TABLE_PREFIX.'instances gi ON gia.wf_instance_id=gi.wf_instance_id,
             where gi.wf_instance_id=?';
     $result = $this->query($query, array($iid));
     $ret = Array();
