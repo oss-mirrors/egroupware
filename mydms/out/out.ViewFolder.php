@@ -134,9 +134,9 @@ printStartBox(getMLText("subfolder_list"));
 				print "<td class=\"filelist\">".$owner->getFullName()."</td>";
 				print "</tr>";
 			}
-		}
-		else
+		} else {
 			print "<tr><td class=\"filelist\">".getMLText("no_documents")."</td></tr>";
+		}
 	?>
 	</table>
 		
