@@ -1,18 +1,38 @@
 /*! \page egwicalreleaselog Small EgwIcal Release Log
-\section secrel0937nga4 Release 0.9.37-ng-a4 Bugfix Release
-- release date: 20060502 
-- file: egwical-with-doc-0.9.37-ng-a4.tgz
+\section secrel0937nga6 Release 0.9.37-ng-a6 Bugfix Release (replaces a5)
+- release date: 20060508  and to svn on 20060517
+- file: egwical-with-doc-0.9.37-ng-a6.tgz
+- via: homepage and  egroupware svn
+
+\subsection subsecrel0937nga6changes Changes from previous version
+- fixed the recurrence WEEKLY without BYDAY
+- fixed the import of vevents and vtodos with empty SUMMARY field (egw
+  doesnot like that)
+- left in PATCHES folder a patch for the CATEGORY duplication on import. 
+  (for stable 1.2.100 user, as this is in cvs already too)
+
+\subsection subsecrel0936nga6bugs Found bugs and problems
+....
+
+
+\section secrel0937nga5 Release 0.9.37-ng-a5 Bugfix Release (replaces a4)
+- release date: 20060503 
+- file: egwical-with-doc-0.9.37-ng-a5.tgz
 - via: homepage and (possibly) egroupware cvs
 
-\subsection subsecrel0937nga4changes Changes from previous version
+\subsection subsecrel0937nga5changes Changes from previous version
 - fixed the save_alarm() an delete_alarm() routines in bocalupdate_vevents.
 - added the iCalendar-vtimezone pach again in the PATCHES folder of the package,
   as it iCalendar.php seems still not to be fixed against for this.
   (see Icalsrv-clients doc, apple iCal section)
+- added in PATCHES folder a patch for the CATEGORY duplication on import. 
+  (this is for file phpgwapi/inc/class.categories.inc.php
 
-\subsection subsecrel0936nga1bugs Found bugs and problems
-....
-
+\subsection subsecrel0936nga5bugs Found bugs and problems
+- import of vevents with empty SUMMARY cause (INSUFFICIENT RIGHTS) problems.
+  (detected Erics)
+- import of recur events with FREQ=WEEKLY without a BYDAY field dont work.
+  (detected Erics)
 \section secrel0936nga1 Release 0.9.36-ng-a1 Beta1 Release with New API 3.1
 - NB. This is the first release that provides NAPi-3.1 a slight update of NAPI-3
   to allow correct import into non owned resources
