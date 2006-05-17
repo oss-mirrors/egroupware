@@ -1,4 +1,17 @@
 /*! \page pageicalsrvreleaselog IcalSrv Release Log
+\section secrel0937ng-a5 Release 0.9.37-ng-a5. First IcalSRV in SVN for egw release 1.2.1
+- release date: 20060517
+- file: icalsrv-with-doc-0.9.37-ng-a5.tgz
+- depends on EgwIcal v0.9.37 or later (NAPI-3.1)
+- via:  svn head and 1.2 and homepage and probably in 1.2.2 bugfix release
+
+\subsection subsecrel0937nga5changes Changes from previous version
+- only this documentation
+
+\subsection subsecrel0937nga5bugs Found bugs, problems and wishes
+- four old open minors  from 0.9.34-ng-a4x version:
+(enabling not respected, only fixed vc's, freebusy export only, doc needs update)
+
 \section secrel0937ng-a1 Release 0.9.37-ng-a1. Bugfix for egw release 1.2.1
 - release date: 20060428
 - file: icalsrv-with-doc-0.9.37-ng-a1.tgz
@@ -10,7 +23,7 @@
 - fixed https urls to virtual calendars in list.html
 - added provisions for device dependant contenttype (mimetype) settings
 - mentioned use of AcceptInfo On in documentation overview
-- added comma escaping feature for SUMMARY, DESCRIPTION, LOCATION and CATEGORIES fields
+- added comma escaping feature for SUMMARY, DESCRIPTION, LOCATION and CATEGORIES fields (egwical changes)
 
 \subsection subsecrel0937nga1bugs Found bugs and problems
 ...
