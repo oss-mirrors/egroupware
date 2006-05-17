@@ -187,15 +187,17 @@ function _egwsifcalendarsync_search($content, $contentType)
 	}
 	
 	if (is_a($eventId, 'PEAR_Error')) {
-		return $contactId;
+		return $eventId;
 	}
 
-	#error_log("SymcML: egwsifcalendarsync search found: $contactId");
-	#Horde::logMessage("SymcML: egwsifcalendarsync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	if(!$eventId) {
 		return false;
 	} else {
-		return $GLOBALS['egw']->common->generate_uid('calendar',$eventId);
+		$eventId = $GLOBALS['egw']->common->generate_uid('calendar', $eventId);
+
+		Horde::logMessage('SymcML: egwsifcalendarsync search found: '. $eventId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+		return $eventId;
 	}
 }
 

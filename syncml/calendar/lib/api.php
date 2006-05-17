@@ -25,6 +25,11 @@ $_services['import'] = array(
     'type' => 'integer'
 );
 
+$_services['search'] = array(
+    'args' => array('content', 'contentType'),
+    'type' => 'integer'
+);
+
 $_services['export'] = array(
     'args' => array('guid', 'contentType'),
     'type' => 'string'
@@ -163,6 +168,49 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 }
 
 /**
+ * Import a memo represented in the specified contentType.
+ *
+ * @param string $content      The content of the memo.
+ * @param string $contentType  What format is the data in? Currently supports:
+ *                             text/plain
+ *                             text/x-vnote
+ * @param string $notepad      (optional) The notepad to save the memo on.
+ *
+ * @return string  The new GUID, or false on failure.
+ */
+function _egwcalendarsync_search($content, $contentType)
+{
+	#error_log("SymcML: egwsifcalendarsync search content contentType: $contentType");
+	#Horde::logMessage("SymcML: egwsifcalendarsync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync search contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	switch ($contentType) {
+		case 'text/x-vcalendar':
+		case 'text/calendar':
+			$boical		=& CreateObject('calendar.boical');
+			$eventId	=  $boical->search($content);
+			break;
+			
+		default:
+			return PEAR::raiseError(_("Unsupported Content-Type."));
+	}
+
+	if (is_a($eventId, 'PEAR_Error')) {
+		return $eventId;
+	}
+
+	if(!$eventId) {
+		return false;
+	} else {
+		$eventId = $GLOBALS['egw']->common->generate_uid('calendar', $eventId);
+
+		Horde::logMessage('SymcML: egwcalendarsync search found: '. $eventId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+		return $eventId;
+	}
+}
+
+/**
  * Export a memo, identified by GUID, in the requested contentType.
  *
  * @param string $guid         Identify the memo to export.
@@ -275,7 +323,7 @@ function _egwcalendarsync_delete($guid)
  */
 function _egwcalendarsync_replace($guid, $content, $contentType)
 {
-	Horde::logMessage("SymcML: egwcalendarsync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync replace guid: $guid content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state = $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
 

@@ -123,8 +123,8 @@ function &_egwcontactssync_listBy($action, $timestamp)
  */
 function _egwcontactssync_import($content, $contentType, $notepad = null)
 {
-	error_log("SymcML: egwcontactssync import content: ".base64_decode($ccontent)." contentType: $contentType");
-	#Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#error_log("SymcML: egwcontactssync import content: ".base64_decode($ccontent)." contentType: $contentType");
+	Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
@@ -168,8 +168,8 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
  */
 function _egwcontactssync_search($content, $contentType)
 {
-	error_log("SymcML: egwcontactssync search content contentType: $contentType");
-	#Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#error_log("SymcML: egwcontactssync search content contentType: $contentType");
+	Horde::logMessage("SymcML: egwcontactssync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
@@ -196,8 +196,8 @@ function _egwcontactssync_search($content, $contentType)
 		return $contactId;
 	}
 
-	error_log("SymcML: egwcontactssync search found: $contactId");
-	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#error_log("SymcML: egwcontactssync search found: $contactId");
+	Horde::logMessage("SymcML: egwcontactssync search found: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	if(!$contactId) {
 		return false;
 	} else {
@@ -302,8 +302,8 @@ function _egwcontactssync_delete($guid)
  */
 function _egwcontactssync_replace($guid, $content, $contentType)
 {
-	#Horde::logMessage("SymcML: egwcontactssync replace guid: $guid content: $content", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	error_log("SymcML: egwcontactssync replace guid: $guid content: $ccontent contentType: $contentType");
+	Horde::logMessage("SymcML: egwcontactssync replace guid: $guid with content: $content", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#error_log("SymcML: egwcontactssync replace guid: $guid content: $ccontent contentType: $contentType");
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_EDIT))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
