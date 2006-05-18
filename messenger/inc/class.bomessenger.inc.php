@@ -58,7 +58,7 @@
 			//	$this->so->db->transaction_begin();
 				while(list(,$account) = @each($account_info))
 				{
-					$message['to'] = $account['account_lid'];
+					$message['recipient'] = array($account['account_id']);
 					$this->so->send_message($message,True);
 				}
 			//	$this->so->db->transaction_commit();

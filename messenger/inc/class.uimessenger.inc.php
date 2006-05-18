@@ -213,7 +213,7 @@
 
 			$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
 			$tobox = $uiaccountsel->selection(
-				"message[recipient][]",    // name of the element used in form to repersent selected users
+				"n_message[recipient][]",    // name of the element used in form to repersent selected users
 				"uimessage_userselection", // id of this element, makes little sense
 				array(),     //no pre-selected user/group
 				'messenger+', //only show users who have 'run' permission in messenger app
@@ -367,7 +367,7 @@
 				//modified by wbshang @ 2005.6.6
 				$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
 				$tobox = $uiaccountsel->selection(
-					"message[recipient][]",    // name of the element used in form to repersent selected users
+					"n_message[recipient][]",    // name of the element used in form to repersent selected users
 					"uimessage_userselection", // id of this element, makes little sense
 					$sndid,     //pre-selected user/group
 					'messenger+', //only show users who have 'run' permission in messenger app
@@ -447,7 +447,7 @@
 				//modified by wbshang @ 2005.6.3
 				$uiaccountsel=CreateObject('phpgwapi.uiaccountsel');
 				$tobox = $uiaccountsel->selection(
-					"message[recipient][]",    // name of the element used in form to repersent selected users
+					"n_message[recipient][]",    // name of the element used in form to repersent selected users
 					"uimessage_userselection", // id of this element, makes little sense
 					array(),     //no pre-selected user/group
 					'messenger+', //only show users who have 'run' permission in messenger app
