@@ -3,6 +3,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 	[_] 16% RELEASE 0.9 stable
 		[_] 33% SHOWSTOPPERS BUGS/TASKS
 			[X] after creating new object it show another new object screen in stead of the just made object
+			[_] walk list does not work on egw_access_log: has something to do with primaries 
 			[_] als je een record kopieerd en vervolgens delete wordt ook het origineel verwijderd (zie Lingewoud NIEUW) 
 			:dit was voorgekomen omdat de id was disabled. In dit geval is er geen mogelijkheid om een enkel record te selecteren met de juiste where. 
 			:ROB: dit gebeurd ook bij bewerken Relaties met record mee kopieren

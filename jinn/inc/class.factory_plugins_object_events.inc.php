@@ -38,10 +38,9 @@
 	  */
 	  function factory_plugins_object_events()
 	  {
-		 //$this->local_bo = 
 		 $this->include_plugins();
+		 $this->include_custom_plugins();
 	  }
-
 
   	  function call_event_action($post, $config)
 	  {
@@ -74,7 +73,27 @@
 		 }
 	  }
 
-	  
+	  function include_custom_plugins()
+	  {
+		 global $local_bo;
+		 $local_bo=$this->local_bo;
+		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins')) {
+
+			/* This is the correct way to loop over the directory. */
+
+			while (false !== ($file = readdir($handle))) 
+			{ 
+			   if (substr($file,0,7)=='plugin.')
+			   {
+
+				  include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins/'.$file);
+			   }
+			}
+			closedir($handle); 
+		 }
+	  }
+
+
 	  /**
 	  @function plugin_hooks
 	  @abstract get plugins that hook with the given event type
