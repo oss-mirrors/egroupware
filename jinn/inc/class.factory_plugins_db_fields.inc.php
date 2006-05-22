@@ -43,6 +43,7 @@
 	  function factory_plugins_db_fields()
 	  {
 		 $this->include_plugins();
+		 $this->include_custom_plugins();
 	  }
 
 	  /**
@@ -276,6 +277,33 @@
 		 }
 	  }
 
+	  /**
+	  * include_custom_plugins: these plugins do not come with the official JiNN software
+	  * 
+	  * @access public
+	  * @return void
+	  */
+	  function include_custom_plugins()
+	  {
+		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/')) 
+		 {
+			while (false !== ($file = readdir($handle))) 
+			{ 
+			   // OLD STYLE plugins
+			   if (substr($file,0,7)=='plugin.')
+			   {
+				  include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file);
+			   }
+			   // NEW STYLE plugins (classes)
+			   elseif(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
+			   {
+				  include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
+			   }
+			}
+			closedir($handle); 
+		 }
+	  }
+
 	  function get_layout_plugins()
 	  {
 		 // NEW STYLE plugins (classes)
@@ -438,7 +466,6 @@
 
 	  function loaded($pluginname)
 	  {
-///		 _debug_array($this->registry->plugins);	
 		 if($this->registry->plugins[$pluginname]) //is this a NEW STYLE class type plugin?
 		 {
 			if(is_object($this->_plugins[$pluginname])) //is it already loaded?
@@ -446,13 +473,25 @@
 			   return true;
 			}
 			else
-			{
-			   include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php');
+			{ 
+			   if(file_exists(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php'))
+			   {
+				  $inc_file=PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php';
+				  $plug_dir=PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/';
+			   }
+			   elseif(file_exists(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php'))
+			   {
+				  $inc_file=PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php';
+				  $plug_dir=PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/';
+			   }
+			   include_once($inc_file);
+			   //include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php');
+			   
 			   if(class_exists('db_fields_plugin_'.$pluginname))
 			   {
 				  eval('$this->_plugins['.$pluginname.'] = new db_fields_plugin_'.$pluginname.'();');	
 				  $this->_plugins[$pluginname]->local_bo = &$this->local_bo;
-				  $this->_plugins[$pluginname]->plug_root = PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname;
+				  $this->_plugins[$pluginname]->plug_root = $plug_dir.'jinn/plugins/db_fields_plugins/__'.$pluginname;
 				  return true;
 			   }
 			   else
