@@ -1370,10 +1370,6 @@
 
 		 if($_GET[close_me]=='true') $body_tags = 'onLoad="self.close()"';
 
-		 $screenshot_file=$GLOBALS['phpgw']->common->get_app_dir('jinn').'/plugins/plugin_images/'.$plugin_name.'.png';
-		 if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" src="jinn/plugins/plugin_images/'.$plugin_name.'.png" alt="'.lang('screenshot').'"  />';
-
-
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
 		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
 
@@ -1405,7 +1401,6 @@
 		 $this->tplsav2->assign('plug_version',$plug_reg_arr['version']);
 		 $this->tplsav2->assign('plug_descr',$plug_reg_arr['description']);
 		 $this->tplsav2->assign('plug_help',$plug_reg_arr['help']);
-		 $this->tplsav2->assign('screenshot',$screenshot);
 		 $this->tplsav2->assign('jinn_sitefile_path',$this->bo->site_fs->get_jinn_sitefile_path($object_arr[parent_site_id]));
 
 		 /* display shouldnt be in this if construction */

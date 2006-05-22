@@ -45,7 +45,7 @@
    class db_fields_plugin_filemanager
    {
 	  var $javascript_inserted = false;
-	  var $spacer = 'jinn/plugins/db_fields_plugins/plugin_images/spacer.gif';
+	  var $spacer = 'jinn/plugins/db_fields_plugins/__filemanager/img/spacer.gif';
 	  var $unknown = "jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/unknown.png";
 	  var $unknown_style = '';
 	  var $filetypes;

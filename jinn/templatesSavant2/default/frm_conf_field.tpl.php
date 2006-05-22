@@ -342,7 +342,6 @@
 						   <td><?=$this->plug_version?></td>
 						</tr>
 					 </table>
-					 <!-- <?=$this->screenshot?>-->
 					 <p><?=$this->plug_descr?></p>
 					 <p><?=$this->plug_help?></p><br/>
 					 <?php //_debug_array($this->plug_reg_conf_arr);?>
