@@ -34,43 +34,40 @@
 	   */
 	   function formview_edit($field_name, $value, $config,$attr_arr)
 	   {
-		  global $local_bo;
-	
-		  if($local_bo->read_preferences('disable_tinymce')=='yes')
-		  {
-			 return;
-		  }
-		  
 		  if($config[custom_css]) 
 		  {
 			 $style = $config[custom_css];
 		  }
 	
-		  if(!eregi('height',$config[custom_css]))
+		  if($config[size_of_area]!='Custom')
 		  {
-			 if($config[size_of_area])
+			 switch($config[size_of_area])	
 			 {
-				switch($config[size_of_area])	
-				{
-				   case 'Small': $style.='width:100%;  height:200px;';Break;
-				   case 'Medium': $style.='width:100%; height:400px;';Break;
-				   case 'Large': $style.='width:100%;  height:600px;';Break;
-				   case 'XXL': $style.='width:800px; min-width:500px; height:1200px;';Break;
-				}
+				case 'Small': $style.='width:100%;  height:200px;';Break;
+				case 'Medium': $style.='width:100%; height:400px;';Break;
+				case 'Large': $style.='width:100%;  height:600px;';Break;
+				case 'XXL': $style.='width:800px; min-width:500px; height:1200px;';Break;
 			 }
 		  }
-			
-		  
+		  elseif($config[custom_width] && $config[custom_height])
+		  {
+			 $style.='width:'.$config[custom_width].'; height:'.$config[custom_height].';';
+		  }
+		  else
+		  {
+			 $style.='width:100%; height:400px;';
+		  }
+
+		  if($this->local_bo->read_preferences('disable_tinymce')=='yes')
+		  {
+			 return $input='<textarea name="'.$field_name.'" style="'.$style.'">'.$value.'</textarea>';
+		  }
+
 		  if (!is_object($GLOBALS['phpgw']->html))
 		  {
 			 $GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
 		  }
 	
-		  /* Make sure no plugins are loaded by setting a space */
-		  if(!$plugins) $plugins=' ';
-		 
-		  //		  $input = $GLOBALS['phpgw']->html->tinymce($field_name, $value,$style,false,$plugins,$custom_toolbar);
-
 		  $options=$this->setOptions($config);
 
 		  $input = $GLOBALS['phpgw']->html->tinymce($field_name,$value,$style,$options);
@@ -87,11 +84,13 @@
 	   {
 		  if(strlen($value)>20)
 		  {
-			  $value = strip_tags(htmlentities($value));
-	
+			 //  $value = strip_tags(htmlentities($value));
+
+			 $value = strip_tags($value);
+			 $value = trim($value);
 			 $title = substr($value,0,200);
-			 
-			  $value = '<span title="'.$title.'">' . substr($value,0,20). ' ...' . '</span>';
+
+			 $value = '<span title="'.$title.'">' . substr($value,0,20). ' ...' . '</span>';
 		  }
 		  return $value;   		
 	   }
@@ -99,244 +98,171 @@
    
 	   function setOptions($config)
 	   {
-
 		  //font family
-		  if($config[enable_font_selection_options]	!='No') 
+		  if($config[standard_options][enable_font_properties])
 		  {
 			 $bar.= 'theme_advanced_buttons1_add_before : "fontselect",';
 			 $bar.="\n";
-		  }
-		  else
-		  {
-		 	$disable[]='fontselect'; 
-		  }
-
-		 //font size 
-		  if($config[enable_font_size_options]			!='No') 
-		  {
 			 $bar.= 'theme_advanced_buttons1_add: "fontsizeselect",';
 			 $bar.="\n";
 		  }
 		  else
 		  {
-			 $disable[]='fontsizeselect'; 
-		  }
+		 	$disable[]='fontselect'; 
+			$disable[]='fontsizeselect'; 
+			$disable[]='bold'; 
+			$disable[]='italic'; 
+			$disable[]='underline'; 
+			$disable[]='strikethrough'; 
+			$disable[]='sub'; 
+			$disable[]='sup'; 
+		 }
 
 		  //tables
-		  if($config[enable_tables_button]				!='No') {
-			 $bar.= 'theme_advanced_buttons3_add_before : "tablecontrols,separator",';
+		  if($config[standard_options][enable_tables])
+		  {
+			 $bar.= 'theme_advanced_buttons3_add_before : "tablecontrols",';
 			 $bar.="\n";
 			 $plugins[]='table';
 		  }
 
-		 //fullscreen
-		  if($config[enable_fullscreen_editor_button]	!='No') 
+		  //fullscreen
+		  if($config[standard_options][enable_fullscreen])
 		  {
 			 $plugins[]='fullscreen';
 		  }
 
-		  //contextmenu
-		  if($config[enable_context_menu] == 'Yes')
-		  {
-			 $plugins[]='contextmenu ';
-		  }
-
-		  //font_mode
-		  if($config[enable_font_mode]	!='No') 
-		  {
-		  	//
-		  }
-		  else
-		  {
-		 	$disable[]='bold'; 
-			$disable[]='italic'; 
-			$disable[]='underline'; 
-		  }
-
-		  //font_special
-		  if($config[enable_font_special] !='No')
-		  {
-			 //
-		  }
-		  else
-		  {
-			 $disable[]='strikethrough'; 
-			 $disable[]='sub'; 
-			 $disable[]='sup'; 
-		  }
-
-		  if($config[enable_justify] !='No')
-		  {
-		  	//
-		  }
-		  else
+		  //not working
+		  if($config[notworking])
 		  {
 			 $disable[]='justifyleft'; 
 			 $disable[]='justifyright'; 
 			 $disable[]='justifycenter'; 
 			 $disable[]='justifyfull'; 
-		  }
-
-		  if($config[enable_styles] !='No')
-		  {
-			 //
-		  }
-		  else
-		  {
-			 $disable[]='styleselect'; 
-		  }
-
-		  if($config[enable_block_formatting_options] !='No')
-		  {
-			 //
-		  }
-		  else
-		  {
 			 $disable[]='formatselect'; 
-		  }
-
-		  //fixme doesnt work
-		  if($config[enable_copy_paste]	!='No') 
-		  {
-			 $plugins[]='paste';
-		  }
-		  else
-		  {
 			 $disable[]='cut'; 
 			 $disable[]='copy'; 
 			 $disable[]='paste'; 
-
-		  }
-		
-		  if($config[enable_undo_redo]					!='No') 
-		  {
-			 //
-		  }
-		  else
-		  {
 			 $disable[]='undo'; 
 			 $disable[]='redo'; 
-		  }
-		  if($config[enable_lists]						!='No') 
-		  {
-			 //
-		  }
-		  else
-		  {
 			 $disable[]='bullist'; 
 			 $disable[]='numlist'; 
-		  }
-
-		  if($config[enable_indent]						!='No') 
-		  {
-			 //
-		  }
-		  else
-		  {
 			 $disable[]='indent'; 
 			 $disable[]='outdent'; 
+			 $disable[]='hr'; 
+		  	 $disable[]='code'; 
 		  }
-		 
+	
 		  //fixme doesnt work
-		  if($config[enable_colors]						!='No') 
-		  {
-			 //
-		  }
-		  else
+		  if(!$config[standard_options][enable_colors])
 		  {
 			 $disable[]='forecolor'; 
 			 $disable[]='backcolor'; 
 		  }
 
-		  if($config[enable_hr]	!='No') 
-		  {
-			 //
-		  }
-		  else
-		  {
-			 $disable[]='hr'; 
-		  }
-
-		  if($config[enable_link]	!='No') 
-		  {
-			 //
-		  }
-		  else
+		  if(!$config[standard_options][enable_link])
 		  {
 			 $disable[]='link'; 
 			 $disable[]='unlink'; 
 			 $disable[]='anchor'; 
 		  }
 
-		  if($config[enable_image_button]!='No')
-		  {
-			 //
-		  }
-		  else
+		  if(!$config[standard_options][enable_simple_image])
 		  {
 			 $disable[]='image'; 
 		  }
 
-			//fixme doesnt work
-		  if($config[enable_html_mode]!='No') 
+		  if(is_array($config[plugins]))
 		  {
-			 //
+			 foreach($config[plugins] as $plugin)
+			 {
+				$plugins[]=$plugin; 
+			 }
 		  }
-		  else
+
+		  if($config[plugins][ibrowser])
 		  {
-			 $disable[]='code'; 
+			 if($this->local_bo->so->config[server_type]=='dev')
+			 {
+				$field_prefix='dev_';
+			 }
+			 if($this->local_bo->site_object[$field_prefix.'upload_path'])
+			 {
+				$upload_path=$this->local_bo->site_object[$field_prefix.'upload_path'];
+				$upload_url=$this->local_bo->site_object[$field_prefix.'upload_url'];
+			 }
+			 elseif($this->local_bo->site[$field_prefix.'upload_path'])
+			 {
+				$upload_path=$this->local_bo->site[$field_prefix.'upload_path'];
+				$upload_url=$this->local_bo->site[$field_prefix.'upload_url'];
+			 }
+
+			 $sessdata = array(
+				'upload_dir' =>   $upload_path, 
+				'upload_url' =>   $upload_url,
+			 );
+
+			 $GLOBALS['phpgw']->session->appsession('iBrowser','phpgwapi',$sessdata);
 		  }
 
 
-		  if(!$config[select_theme]) $config[select_theme]='advanced';
-		  $bar.=  'theme : "'.$config[select_theme].'",'; $bar.="\n";
+
+
+
+		  if(!$config[select_theme])
+		  {
+			 $config[select_theme]='advanced';
+		  }
+
+		  if(is_array($plugins))
+		  {
+			 $plug_str.=implode(',',$plugins);
+		  }
+
+		  $bar.='plugins : "'.$plug_str.'",'; $bar.="\n";
+
+		  $bar.= 'theme : "'.$config[select_theme].'",'; $bar.="\n";
 
 		  $bar.= 'theme_advanced_toolbar_location : "top",'; $bar.="\n";
 		  $bar.= 'theme_advanced_path_location : "bottom",'; $bar.="\n";
 		  $bar.= 'theme_advanced_layout_manager : "SimpleLayout",'; $bar.="\n";
 		  $bar.= 'theme_advanced_toolbar_align : "left",'; 
 
-		  $plugins[]='advhr';
-		  $plugins[]='advlink';
-		  $plugins[]='insertdatetime';
-		  $plugins[]='preview';
-		  $plugins[]='zoom';
-		  $plugins[]='searchreplace';
-		  $plugins[]='print';
-		  $plugins[]='directionality';
-		  
-		  if(is_array($plugins))
-		  {
-			 $plug_str.=implode(',',$plugins);
-		  }
-
-		  $bar.="\n";
-		  $bar.='plugins : "'.$plug_str.'",';
-		  
 		  if(is_array($disable))
 		  {
 			 $disab_str.=implode(',',$disable);
 		  }
 
+		  if($config[content_css_file]) 
+		  {
+			 $site_fs= createobject('jinn.site_fs');
+			 $siterootdir=$site_fs->get_jinn_sitefile_url($this->local_bo->site[site_id]);
+			 $content_css_file=$siterootdir . SEP .'tinymce'.SEP.$config[content_css_file];
 
-		  $bar.='	  
-		  // theme_advanced_buttons1_add_before : "save,newdocument,separator",
-		  theme_advanced_buttons1_add : "fontselect,fontsizeselect",
+			 $bar.= 'content_css : "'.$content_css_file.'",'; 
+		  }
+
+/*		  $bar.='	  
 		  theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,zoom,separator,forecolor,backcolor",
 		  theme_advanced_buttons2_add_before: "cut,copy,paste,pastetext,pasteword,separator,search,replace,separator",
-		  theme_advanced_buttons3_add_before : "tablecontrols,separator",
-		  theme_advanced_buttons3_add : "emotions,iespell,flash,advhr,separator,print,separator,ltr,rtl,separator,fullscreen",
-		  // content_css : "example_full.css",
+		  theme_advanced_buttons3_add : "ibrowser,emotions,iespell,flash,advhr,separator,print,separator,ltr,rtl,separator,fullscreen",
 		  plugin_insertdate_dateFormat : "%Y-%m-%d",
 		  plugin_insertdate_timeFormat : "%H:%M:%S",
-		  // extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-		  // external_link_list_url : "example_link_list.js",
-		  // external_image_list_url : "example_image_list.js",
-		  // flash_external_list_url : "example_flash_list.js",
-		  // file_browser_callback : "fileBrowserCallBack"
+		  ';*/
+		  $bar.='	  
+		  theme_advanced_buttons2_add : "insertdate,inserttime,preview,zoom,forecolor,backcolor",
+		  theme_advanced_buttons2_add_before: "cut,copy,paste,pastetext,pasteword,search,replace",
+		  theme_advanced_buttons3_add : "ibrowser,emotions,iespell,flash,advhr,print,ltr,rtl,fullscreen",
+		  plugin_insertdate_dateFormat : "%Y-%m-%d",
+		  plugin_insertdate_timeFormat : "%H:%M:%S",
 		  ';
 
 		  $bar.='theme_advanced_disable : "'.$disab_str.'"';
+		  
+		  if(!$config['advanced_settings']['relative_urls'])
+		  {
+			 $bar.="\n,relative_urls : false";
+		  }
 		  
 		  return $bar;
 

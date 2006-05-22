@@ -50,8 +50,11 @@
 	
 			  $max='size="'.$size.'" maxlength="'.$attr_arr['max_size'].'"';	
 		   }
-	
-		   $input='<input type="text" name="'.$field_name.'" '.$max.' value="'.strip_tags($value).'">';
+
+		   $value=strip_tags($value);
+		   $value=str_replace('"','&quot;',$value);
+
+		   $input='<input type="text" name="'.$field_name.'" '.$max.' value="'.$value.'">';
 	
 			return $input;
 		}	

@@ -9,10 +9,19 @@ abstract
 
 	entities
 		sites
-		(host profiles)
-		(apps)
-		objects
-		fields
+			host profiles
+				database settings
+				filesystem settings
+		data-objects
+			db table objects
+			virtual table object
+				fields
+					plugins
+					relations
+		forms/lists
+			dataobjects:fields
+				plugins
+				relations
 
 	examples
 		sites.object.field.value="string"

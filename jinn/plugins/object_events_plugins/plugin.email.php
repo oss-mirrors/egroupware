@@ -32,7 +32,8 @@
    $this->object_events_plugins['email']['description']		= 'send an email triggered by an event';
    $this->object_events_plugins['email']['event_hooks']		= array
    (
-	  'on_update'
+	  'on_update',
+	  'on_export'
    );
    
    $this->object_events_plugins['email']['help']		=  'Substitute table fields with $$field$$, substitute foreign values with %%field%%.';

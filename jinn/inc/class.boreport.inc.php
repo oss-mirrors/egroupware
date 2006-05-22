@@ -46,7 +46,6 @@
 
 	  var $current_config;
 	  var $action;
-	  var $common;
 
 	  var $where_key;
 	  var $where_value;
@@ -60,17 +59,10 @@
 
 	  function boreport()
 	  {
-		 $this->common = CreateObject('jinn.bocommon');
 		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
 		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
 		 
-		 $this->current_config=$this->common->get_config();		
-
 		 $this->so = CreateObject('jinn.sojinn');
-
-		 $this->use_session = True; //fixme: what does this do?
-		
-		
 
 		 // get array of site and object
 		 $this->site = $this->so->get_site_values($this->session['site_id']);
@@ -91,8 +83,8 @@
 
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 
-		 global $local_bo;
-		 $local_bo=$this;
+//		 global $local_bo;
+//		 $local_bo=$this;
 	  }
 	  
 	  function read_preferences($key)
@@ -125,11 +117,11 @@
 		 {
 		 	if($this->so->insert_report($_POST[name],$_POST[obj_id] ,$_POST[text1] ,$_POST[text2] ,$_POST[text3],$_POST[r_html_title],$_POST[g_html]) ==1)
 		 	{
-				echo(lang('Report saved succesfull').'<br><br><input type="button" onClick="self.close()" value="'.lang('close').'"/>');
+				echo(lang('Report saved succesfull').'<br><br><input class="egwbutton" type="button" onClick="self.close()" value="'.lang('close').'"/>');
 			 }
 			 else
 			 {
-				echo(lang('Report NOT saved succesfull').'<br><br><input type="button" onClick="self.close()" value="'.lang('close').'"/>');
+				echo(lang('Report NOT saved succesfull').'<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
 			 }
 		  }
 		  else
@@ -155,7 +147,7 @@
 			 			 
 				 $pref_arr2[] = $pref_arr;
 			 $this->save_preferences($key, $pref_arr2);
-			 echo('Report saved succesfull<br><br><input type="button" onClick="self.close()" value="'.lang('close').'"/>');
+			 echo('Report saved succesfull<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
 
 		  }
 		 
@@ -240,11 +232,11 @@
 		 {
 		 	if($this->so->update_report($_POST[name], $_POST[obj_id], $_POST[text1], $_POST[text2], $_POST[text3],$_POST[r_html_title],$_POST[g_html], $_POST['report_id']))
 		 	{
-				echo('Report updated succesfull<br><br><input type="button" onClick="self.close()" value="'.lang('close').'"/>');
+				echo('Report updated succesfull<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
 		 	}
 		 	else
 		 	{
-				echo('Report NOT updated succesfull<br><br><input type="button" onClick="self.close()" value="'.lang('close').'"/>');
+				echo('Report NOT updated succesfull<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
 			 }
 		  }
 		  else
@@ -268,7 +260,7 @@
 				$i++;
 			 }
 			 $this->save_preferences('reports',$pref_arr);
-			 echo('Report updated succesfull<br><br><input type="button" onClick="self.close()" value="'.lang('close').'"/>');
+			 echo('Report updated succesfull<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
 		  }
 	  } 
 
@@ -278,7 +270,7 @@
 	  function delete_report()
 	  {
 		 $this->so->delete_report($_GET[report_id]);
-		 header('location:jinn/index.php?menuaction=jinn.uiadmin.edit_this_jinn_site_object');
+		 header('location:'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.dev_edit_record'));
 	  }
 	 
 	  /*

@@ -25,86 +25,95 @@
    \*******************************************************************/
 
 
-	class db_fields_plugin_switchboard
-	{
-	
-		function db_fields_plugin_switchboard()
-		{
-		}
-	
-	   function formview_edit($field_name, $value, $config, $attr_arr)
-	   {
-		  if($value)
-		  {
-			 $val_arr=unserialize($value);
-		  }
-	
-		  $switches_arr=explode(';',$config[Switchboard_data]);
-	
-		  if(is_array($switches_arr))
-		  {
-			 $input.= '<table><input type="hidden" name="'.$field_name.'" value="TRUE" />';
-				foreach($switches_arr as $switch)
-				{
-				   $switch_tmp_arr=explode(':',$switch);
-				   list($option_name,$options_tmp) = $switch_tmp_arr;
-				   $option_arr=explode('/',$options_tmp);
-					
-				   $option_name=trim($option_name);
-	
-				   if($option_name)
-				   {
-					  $input.= '<tr><td>'.$option_name.':<input type="hidden" name="SWINAM'.$field_name.$option_name.'" value="'.$option_name.'"></td><td>';
-	
-							if(is_array($option_arr))
-							foreach($option_arr as $option)
-							{ 
-							   unset($checked);
-							   if($val_arr[$option_name]==$option)
-							   {
-								  $checked='checked="checked"'; 
-							   }
-							   
-							   $input.='<input type="radio" '.$checked.' name="SWIOPT'.$field_name.$option_name.'" value="'.$option.'" />'.$option.'';
-							}
-							$input.= '</td></tr>';
-				   }
-	
-				}
-				$input.= '</table>';
-		  }
-	
-		  return $input;
-	   }
-	
-	   function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
-	   {
-		  global $local_bo;
-	
-		  $names=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'SWINAM'.$field_name);
-	
-		  foreach($names as $name) 
-		  {
-			 $ret_arr[$name]=$HTTP_POST_VARS['SWIOPT'.$field_name.$name];
-		  }
-	
-		  if(is_array($ret_arr))
-		  {
-			 return serialize($ret_arr);
-		  }
-	
-		  return '-1'; /* return -1 when there no value to give but the function finished succesfully */
-	   }
-	
-	
-	   function formview_read($value, $config)
-	   {
-		  return $this->listview_read($value, $config,'');
-	   }
-	
-	   function listview_read($value, $config,$where_val_enc)
-	   {
-		  return lang('Switchboard');
-	   }
-	}	
+   class db_fields_plugin_switchboard
+   {
+
+	  function db_fields_plugin_switchboard()
+	  {
+	  }
+
+	  function formview_edit($field_name, $value, $config, $attr_arr)
+	  {
+
+		 $stripped_name=substr($field_name,6);  //the real field name
+		 $helper_id		= $this->local_bo->plug->registry->plugins['switchboard']['helper_fields_substring'];
+		 $prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
+		 $prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
+
+		 if($value)
+		 {
+			$val_arr=unserialize($value);
+		 }
+
+		 $switches_arr=explode(';',$config[Switchboard_data]);
+
+		 if(is_array($switches_arr))
+		 {
+			$input.= '<table><input type="hidden" name="'.$field_name.'" value="TRUE" />';
+			   foreach($switches_arr as $switch)
+			   {
+				  $switch_tmp_arr=explode(':',$switch);
+				  list($option_name,$options_tmp) = $switch_tmp_arr;
+				  $option_arr=explode('/',$options_tmp);
+
+				  $option_name=trim($option_name);
+
+				  if($option_name)
+				  {
+					 $input.= '<tr><td>'.$option_name.':<input type="hidden" name="'.$prefix.'SWINAM'.$stripped_name.$option_name.'" value="'.$option_name.'"></td><td>';
+
+						   if(is_array($option_arr))
+						   foreach($option_arr as $option)
+						   { 
+							  unset($checked);
+							  if($val_arr[$option_name]==$option)
+							  {
+								 $checked='checked="checked"'; 
+							  }
+
+							  $input.='<input type="radio" '.$checked.' name="'.$prefix.'SWIOPT'.$stripped_name.$option_name.'" value="'.$option.'" />'.$option.'';
+						   }
+						   $input.= '</td></tr>';
+				  }
+
+			   }
+			   $input.= '</table>';
+		 }
+
+		 return $input;
+	  }
+
+	  function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
+	  {
+		 $stripped_name=substr($field_name,6);  //the real field name
+		 $helper_id		= $this->local_bo->plug->registry->plugins['switchboard']['helper_fields_substring'];
+		 $prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
+		 $prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
+		 $names=$this->local_bo->filter_array_with_prefix($HTTP_POST_VARS,$prefix.'SWINAM'.$stripped_name);
+
+		 foreach($names as $name) 
+		 {
+			$_name=str_replace(' ','_',$name);
+			$ret_arr[$name]=$HTTP_POST_VARS[$prefix.'SWIOPT'.$stripped_name.$_name];
+		 }
+
+		 if(is_array($ret_arr))
+		 {
+			return serialize($ret_arr);
+		 }
+
+		 return '-1'; /* return -1 when there no value to give but the function finished succesfully */
+	  }
+
+
+	  function formview_read($value, $config)
+	  {
+		 return $this->listview_read($value, $config,'');
+	  }
+
+	  function listview_read($value, $config,$where_val_enc)
+	  {
+		 return lang('Switchboard');
+	  }
+   }	
 ?>

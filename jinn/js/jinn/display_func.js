@@ -81,13 +81,13 @@ function returnSelectedCheckbox()
 	  {
 		 if (document.frm.elements[i].checked)
 		 {
-		 	if(checkednum = 0)
+		 	if(checkednum == 0)
 			{
 				values = document.frm.elements[i].value;
 			}
 			else
 			{
-				values = ','+document.frm.elements[i].value;
+				values = values+','+document.frm.elements[i].value;
 			}
 			checkednum++;
 		 }
@@ -298,73 +298,78 @@ function jinnHideFields()
 	{
 		for (var i=0; i < param.length; i++) 
 		{
-			if(document.getElementById(param[i]))
-			{
-				document.getElementById(param[i]).style.display='none'	
-			}
-			//to make it easier for users ;)
-			if(document.getElementById('TR'+param[i]))
-			{
-				document.getElementById('TR'+param[i]).style.display='none';	
-
-			}
+		   for (j=0; j<document.frm.elements.length; j++)
+		   {
+			  //to make it easier for users ;)
+			  if(document.frm.elements[j].name.substring(6) == param[i])
+			  {
+				 el = document.frm.elements[j];//document.frm.elements['MLTX00'+param[i]];
+				 tr = el.parentNode.parentNode;
+				 tr.style.display="none";
+				 el.name = "DEL"+el.name;
+			  }
+		   }
 		}
 	}
-}
+	}
 
 /*
-* @function jinnShowFields
-* @abstract unhides all given id's
+ * @function jinnShowFields
+ * @abstract unhides all given id's
  */
 function jinnShowFields()
 {
-	param=jinnShowFields.arguments; 
-	if (param.length)
-	{
-		for (var i=0; i < param.length; i++) 
-		{
-			if(document.getElementById(param[i]))
-			{
-				document.getElementById(param[i]).style.display=''	
-			}
+   param=jinnShowFields.arguments; 
+   if (param.length)
+   {
+	  for (var i=0; i < param.length; i++) 
+	  {
+		 for (j=0; j<document.frm.elements.length; j++)
+		 {
 			//to make it easier for users ;)
-			if(document.getElementById('TR'+param[i]))
+			if(document.frm.elements[j].name.substring(6) == param[i])
 			{
-				document.getElementById('TR'+param[i]).style.display='';	
-
+			   el = document.frm.elements[j];//document.frm.elements['MLTX00'+param[i]];
+			   tr = el.parentNode.parentNode;
+			   tr.style.display="";
+			   if (el.name.substring(0,3) =="DEL")
+			   {
+				  el.name = el.name.substring(3);
+			   }
 			}
-		}
-	}
+		 }
+	  }
+   }
 }
 
 /*
 * @function jinnShowHideFields
 * @abstract used by selectbox plugin to hide fields based on just selected value
-* @example  jinnShowHideFields(self,'Show','two:lang_code,title','three:type')
+* @example  jinnShowHideFields(this.name,'Show','two:lang_code,title','three:type')
 */
 function jinnShowHideFields()
 {
-	param=jinnShowHideFields.arguments; 
-	if (param.length)
-	{
-		var selval=param[0].options[param[0].selectedIndex].value;
-		var field_arr2 = new Array();
-		for (var i=2; i < param.length; i++) 
-		{
-			var option_arr = param[i].split(':');
+   param=jinnShowHideFields.arguments; 
+   if (param.length)
+   {
+	  var selval=param[0].options[param[0].selectedIndex].value;
+	  var field_arr2 = new Array();
+	  for (var i=2; i < param.length; i++) 
+	  {
+		 var option_arr = param[i].split(':');
 
-			if(selval == option_arr[0])
+		 if(selval == option_arr[0])
+		 {
+			var field_arr = option_arr[1].split(',');
+			for (var ii=0; ii < field_arr.length; ii++) 
 			{
-				var field_arr = option_arr[1].split(',');
-				for (var ii=0; ii < field_arr.length; ii++) 
-				{
-					field_arr[ii]='\''+field_arr[ii]+'\'';
-				}
-				eval('jinn'+param[1]+'Fields('+field_arr.join(',')+')');
-						}
-						}
-						}
-						}
+			   field_arr[ii]='\''+field_arr[ii]+'\'';
+			}
+			eval('jinn'+param[1]+'Fields('+field_arr.join(',')+')');
+				  }
+				  }
+				  }
+				  }
 
 
 function jinnIgnoreSpaces(string) {

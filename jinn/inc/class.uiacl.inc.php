@@ -23,7 +23,19 @@
 
    /* $Id$ */
 
-   class uiacl// extends uiadmin
+   include_once(PHPGW_INCLUDE_ROOT.'/jinn/inc/class.uijinn.inc.php');
+
+   /**
+   * uiacl 
+   * 
+   * @uses uijinn
+   * @package 
+   * @version $Id$
+   * @copyright Lingewoud B.V.
+   * @author Pim Snel <pim-AT-lingewoud-DOT-nl> 
+   * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+   */
+   class uiacl extends uijinn
    {
 	  var $public_functions = Array(
 		 'main_screen' => True,
@@ -31,40 +43,38 @@
 		 'set_access_rights_site_objects'=> True,
 		 'set_access_rights_sites'=> True,
 	  );
-	  var $nextmatch;
-	  var $common;
 
+	  /**
+	  * uiacl 
+	  * 
+	  * @access public
+	  * @return void
+	  */
 	  function uiacl()
 	  {
-		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
-		 $this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
-		 $this->template = $GLOBALS['phpgw']->template;
-		 $this->common = CreateObject('jinn.bocommon');
-
 		 $this->bo = CreateObject('jinn.boacl.inc.php');
+		 parent::uijinn();
 
 		 /* check if user is egw-admin or siteadmin of at least one site else redirect */
 		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && count($this->bo->so->get_sites_for_user2($GLOBALS['phpgw_info']['user']['account_id']))==0)
 		 {
-			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
-			$this->bo->session['message'][error_code]=112;
+			$this->bo->addError(lang('You don\'t have access to this page.'));
+			$this->bo->addDebug(__LINE__,__FILE__);
 
-			$this->bo->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
+			$this->bo->exit_and_open_screen('jinn.uiuser.index');
 		 }
 	  }
 
-	  /*!
-	  @function main_screen
-	  @abstract accessrights mainscreen
+	  /**
+	  * main_screen: accessrights mainscreen 
+	  * 
+	  * @access public
+	  * @return void
 	  */
 	  function main_screen()
 	  {
-		 $this->ui->header(lang('Set Access Rights'));
-		 $this->ui->msg_box($this->bo->session['message']);
-
-		 unset($this->bo->session['message']);
-		 $this->bo->sessionmanager->save();
+		 $this->header(lang('Set Access Rights'));
+		 $this->msg_box();
 
 		 $this->template->set_file(array(
 			'access_rights_main' => 'access_rights.tpl'
@@ -78,7 +88,7 @@
 			{
 			   unset($object_rows);
 
-			   $objects=$this->bo->common->get_objects_allowed($site_id,$GLOBALS['phpgw_info']['user']['account_id']);
+			   $objects=$this->bo->get_objects_allowed($site_id,$GLOBALS['phpgw_info']['user']['account_id']);
 			   if (count($objects)>0)
 			   {
 				  foreach($objects as $object_id)
@@ -110,37 +120,30 @@
 
 	  }
 
-
-	  /*!
-	  @function set_access_rights_site_objects
-	  @abstract adding and removing users to an object
-	  @fixme do a site and object exist check
+	  /**
+	  * set_access_rights_site_objects: adding and removing users to an object
+	  * 
+	  * @fixme do a site and object exist check
+	  * @access public
+	  * @return void
 	  */
 	  function set_access_rights_site_objects()
 	  {
-
 		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && !$this->bo->user_is_site_admin($_GET[site_id]))
 		 {
-			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
-			$this->bo->session['message'][error_code]=112;
-
-			$this->bo->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiacl.main_screen');
+			$this->bo->addError(lang('You don\'t have access to this page.'));
+			$this->bo->addDebug(__LINE__,__FILE__);
+			$this->bo->exit_and_open_screen('jinn.uiacl.main_screen');
 		 }
-		 
-		 $this->ui->header(lang('Set Access Right for Site Objects'));
-		 $this->ui->msg_box($this->bo->session['message']);
-		 unset($this->bo->session['message']);
 
-		 $this->bo->sessionmanager->save();
-	
+		 $this->header(lang('Set Access Right for Site Objects'));
+		 $this->msg_box();
+
 		 $this->template->set_file(array(
 			'accounts' => 'accounts.tpl'
 		 ));
 
-		 //FIXME replace with _GETS
-		 list($site_id,$object_id,$sort, $order,$total,$start,$query)=$this->common->get_global_vars(array('site_id','object_id','sort','order','total','start','query'));
-
+		 list($site_id,$object_id,$sort, $order,$total,$start,$query)=$this->bo->get_global_vars(array('site_id','object_id','sort','order','total','start','query'));
 		 $object_name =$this->bo->so->get_object_name($_GET[object_id]);
 		 $site_name = $this->bo->so->get_site_name($_GET[site_id]);
 
@@ -176,7 +179,7 @@
 
 		 if (! $GLOBALS['phpgw']->acl->check('account_access',4,'admin'))
 		 {
-			$this->template->set_var('input_add','<input type="submit" value="' . lang('save') . '">');
+			$this->template->set_var('input_add','<input class="egwbutton"  class="egwbutton"  type="submit" value="' . lang('save') . '">');
 		 }
 
 		 if (! $GLOBALS['phpgw']->acl->check('account_access',2,'admin'))
@@ -254,20 +257,15 @@
 	  {
 		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && !$this->bo->user_is_site_admin($_GET[site_id]))
 		 {
-			$this->bo->session['message'][error]=lang('You don\'t have access to this page.');
-			$this->bo->session['message'][error_code]=112;
-
-			$this->bo->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiacl.main_screen');
+			$this->bo->addError(lang('You don\'t have access to this page.'));
+			$this->bo->addDebug(__LINE__,__FILE__);
+			$this->bo->exit_and_open_screen('jinn.uiacl.main_screen');
 		 }
-		 
-		 $this->ui->header(lang('Set Access Rights for Sites'));
-		 $this->ui->msg_box($this->bo->session['message']);
-		 unset($this->bo->session['message']);
 
-		 $this->bo->sessionmanager->save();
+		 $this->header(lang('Set Access Rights for Sites'));
+		 $this->msg_box();
 
-		 list($site_id,$total,$start,$sort,$order,$query)=$this->common->get_global_vars(array('site_id','total','start','sort','order','query'));
+		 list($site_id,$total,$start,$sort,$order,$query)=$this->bo->get_global_vars(array('site_id','total','start','sort','order','query'));
 
 		 $this->template->set_file(array
 		 (
@@ -289,7 +287,6 @@
 
 		 $url = $GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiacl.set_access_rights_sites&site_id=$site_id");
 
-		 // FIXME clean this up
 		 $var = Array(
 			'bg_color' => $GLOBALS['phpgw_info']['theme']['bg_color'],
 			'th_bg'    => $GLOBALS['phpgw_info']['theme']['th_bg'],
@@ -310,14 +307,13 @@
 
 		 if (! $GLOBALS['phpgw']->acl->check('account_access',4,'admin'))
 		 {
-			$this->template->set_var('input_add','<input type="submit" value="' . lang('save') . '">');
+			$this->template->set_var('input_add','<input class="egwbutton"  type="submit" value="' . lang('save') . '">');
 		 }
 
 		 if (! $GLOBALS['phpgw']->acl->check('account_access',2,'admin'))
 		 {
 			$this->template->set_var('input_search',lang('Search') . '&nbsp;<input type="text" name="query">');
 		 }
-
 
 		 if (!count($account_info) || !$total)
 		 {
@@ -350,11 +346,10 @@
 
 			foreach($account_info as $account)
 			{
-
 			   unset($checked);
 			   $this->nextmatchs->template_alternate_row_color($this->template);
 
-			   // kijk of account_id in acl voorkomt
+			   // look if an account is found in the ACL
 			   $account_sites=$this->bo->so->get_sites_for_user2($account['account_id']);
 
 			   if ($account_sites){

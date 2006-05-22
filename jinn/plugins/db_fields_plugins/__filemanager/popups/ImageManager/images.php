@@ -21,7 +21,7 @@
    * - use cached thumbnail views                                             *
    \**************************************************************************/
 
-   /* $id */
+   /* $Id */
 
    // FIXME move all php functions to a main file
    // FIXME better directory-structure
@@ -31,10 +31,19 @@
    require_once '../ImageEditor/Transform.php';
    require_once '../../class.filetypes.php';
 
+ 
+   //for thumbs funcs
+   $img = $BASE_DIR.urldecode($_GET['img']);
+
+   if(is_file($img)) {
+	  make_thumbs(urldecode($_GET['img']));
+	  exit;
+   }
+   //end for thumbs funcs
+
    $filetypes = new filetypes();
    $extensions = $filetypes->get_extensions($config['Filetype']);
 
-   //_debug_array($IMG_ROOT);
    if(isset($_GET['dir'])) {
 	  $dirParam = $_GET['dir'];
 
@@ -46,7 +55,6 @@
 		 $IMG_ROOT = $dirParam;			
 	  }	
    }
-   //_debug_array($IMG_ROOT);
 
    $refresh_dirs = false;
    $clearUploads = false;
@@ -90,10 +98,72 @@
 	  do_upload($_FILES['upload'], $BASE_DIR.$dirPathPost.'/');
    }
 
+   function make_thumbs($img) 
+   {
+	  global $BASE_DIR, $BASE_URL;
+
+	  $path_info = pathinfo($img);
+	  $path = $path_info['dirname']."/";
+	  $img_file = $path_info['basename'];
+
+	  $thumb = $path.'.'.$img_file;
+
+	  $img_info = getimagesize($BASE_DIR.$path.$img_file);
+	  $w = $img_info[0]; $h = $img_info[1];
+
+	  $nw = 96; $nh = 96;
+
+	  //createminithumb
+
+	  if($w <= $nw && $h <= $nh) 
+	  {
+		 if(!is_file($BASE_PATH.$path.'.'.$img_file));
+		 {
+			copy($BASE_DIR.$path.$img_file,$BASE_DIR.$path.'.'.$img_file);
+		 }
+		 header('Location: '.$BASE_URL.$path.'.'.$img_file);
+		 exit();		
+	  }
+
+	  if(is_file($BASE_DIR.$thumb)) {
+
+		 $t_mtime = filemtime($BASE_DIR.$thumb);
+		 $o_mtime = filemtime($BASE_DIR.$img);
+
+		 if($t_mtime > $o_mtime) {
+			header('Location: '.$BASE_URL.$path.'.'.$img_file);
+			exit();		
+		 }
+	  }
+
+	  $img_thumbs = Image_Transform::factory(IMAGE_CLASS);
+	  $img_thumbs->load($BASE_DIR.$path.$img_file);
+
+	  if ($w > $h) 
+	  $nh = unpercent(percent($nw, $w), $h);          
+	  else if ($h > $w) 
+	  $nw = unpercent(percent($nh, $h), $w); 
+
+	  $img_thumbs->resize($nw, $nh);
+
+	  $img_thumbs->save($BASE_DIR.$thumb);
+	  $img_thumbs->free();
+
+	  chmod($BASE_DIR.$thumb, 0666);
+
+	  if(is_file($BASE_DIR.$thumb)) {
+		 header('Location: '.$BASE_URL.$path.'.'.$img_file);
+		 exit();
+	  }
+   }
+
    function do_upload($file, $dest_dir) 
    {
 	  global $clearUploads, $config, $select_image_after_upload, $select_other_after_upload, $dirPathPost, $BASE_URL;
 
+	  //_debug_array($config);
+	  //die();
+	  //_debug_array($file);
 	  if(is_file($file['tmp_name'])) 
 	  {
 		 $img_info = getimagesize($file['tmp_name']);
@@ -103,6 +173,9 @@
 		 {
 			global $filetypes;
 			$type = $filetypes->GD_type($config['Image_filetype']);
+			//_debug_array($config);
+			//echo $config['Image_filetype'];
+			//die( $type);
 
 			$w = $img_info[0]; 
 			$h = $img_info[1];
@@ -362,7 +435,7 @@
 
 	  $img_path = dir_name($img);
 	  $img_file = basename($img);
-	  $thumb_image = 'thumbs.php?img='.urlencode($img);
+	  $thumb_image = 'images.php?img='.urlencode($img);
 	  $img_url = $BASE_URL.$img_path.'/'.$img_file;
 	  $filesize = parse_size($size);
 	  $file_arr = explode('.', $file);
@@ -382,7 +455,7 @@
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
 						   <a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="edit_pencil.gif" width="15" height="15" border="0"></a></td>
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="images.php?field=<?php echo($_GET['field']); ?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+						   <a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
 						<td width="98%" class="imgCaption"><? echo $info[0].'x'.$info[1]; ?> <? //echo $file_ext; ?></td>
 					 </tr>
 			   </table></td>
@@ -393,7 +466,7 @@
 	  }
    }
 
-     function show_flash($img, $file, $info, $size)
+   function show_flash($img, $file, $info, $size)
    {
 	  global $BASE_DIR, $BASE_URL, $newPath, $extensions;
 
@@ -412,47 +485,47 @@
 		 <table width="102" border="0" cellpadding="0" cellspacing="2">
 			<tr> 
 			   <td align="center" class="imgBorder" onMouseOver="pviiClassNew(this,'imgBorderHover')" onMouseOut="pviiClassNew(this,'imgBorder')">
-		   		<a href="javascript:;" onClick="javascript:otherSelected('<? echo $img_url; ?>');"><div>
-				<script language="JavaScript" type="text/JavaScript" src="../flash.js"></script>
-				<script language="JavaScript" type="text/JavaScript">
-				<!--
-        			if(flashcompattest()==true)
-			        {
-					document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'+
-                              			 		'codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"'+
-                                            		 	'width="<? echo $file_width; ?>"'+
-                                            	 	 	'height="<? echo $file_height; ?>"'+
-                                            		 	'id="<? echo $file; ?>">'+
-							'<param name="movie"   	value="<? echo $img_url; ?>">'+
-                                    			'<param name="menu"    	value="false">'+
-                                    			'<param name="quality" 	value="high">'+
-                                    			'<param name="loop" 	value="true">'+
-                                    			'<param name="scale" 	value="exactfit">'+
-	                                  		'<param name"wmode" 	value="transparent">'+
-							'<param name="play" 	value="false">'+
-                                    			'<embed src="<? echo $img_url; ?>"'+
-                                           			'menu="false"'+
-                                           			'quality="high"'+
-                                           			'loop="true"'+
-                                           			'scale="exactfit"'+
-	                                           		'wmode="transparent"'+
-				                                'play="false"'+								 
-								'swLiveConnect="true"'+
-                                           			'width="<? echo $file_width; ?>"'+
-                                           		  	'height="<? echo $file_height; ?>"'+
-                                           		 	'name="<? echo $file; ?>"'+
-                                           		 	'type="application/x-shockwave-flash"'+
-                                           		 	'pluginspage="http://www.macromedia.com/go/getflashplayer">'+
-                                    		 	 '</embed>'+
-                                    			 '</object>');
-        			}
-				else
-				{
-					document.write('<img src="<? echo $thumb_image; ?>" alt="<? echo $file; ?> - <? echo $filesize; ?>" border="0">');
-				}
-				-->
-				</script></div>
-				</a>
+				  <a href="javascript:;" onClick="javascript:otherSelected('<? echo $img_url; ?>');"><div>
+						<script language="JavaScript" type="text/JavaScript" src="../flash.js"></script>
+						<script language="JavaScript" type="text/JavaScript">
+						   <!--
+						   if(flashcompattest()==true)
+						   {
+								 document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'+
+									'codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"'+
+									'width="<? echo $file_width; ?>"'+
+									'height="<? echo $file_height; ?>"'+
+									'id="<? echo $file; ?>">'+
+									'<param name="movie"   	value="<? echo $img_url; ?>">'+
+									'<param name="menu"    	value="false">'+
+									'<param name="quality" 	value="high">'+
+									'<param name="loop" 	value="true">'+
+									'<param name="scale" 	value="exactfit">'+
+									'<param name"wmode" 	value="transparent">'+
+									'<param name="play" 	value="false">'+
+									'<embed src="<? echo $img_url; ?>"'+
+									'menu="false"'+
+									'quality="high"'+
+									'loop="true"'+
+									'scale="exactfit"'+
+									'wmode="transparent"'+
+									'play="false"'+								 
+									'swLiveConnect="true"'+
+									'width="<? echo $file_width; ?>"'+
+									'height="<? echo $file_height; ?>"'+
+									'name="<? echo $file; ?>"'+
+									'type="application/x-shockwave-flash"'+
+									'pluginspage="http://www.macromedia.com/go/getflashplayer">'+
+									'</embed>'+
+									'</object>');
+						   }
+						   else
+						   {
+								 document.write('<img src="<? echo $thumb_image; ?>" alt="<? echo $file; ?> - <? echo $filesize; ?>" border="0">');
+						   }
+						   -->
+					 </script></div>
+				  </a>
 			   </td>
 			</tr>
 			<tr> 
@@ -460,41 +533,41 @@
 					 <tr> 
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
 						   <script language="JavaScript" type="text/JavaScript">
-						   <!--
-        					   if(flashcompattest()==true)
-			        		   {
-							document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'+
-                              			 				'codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"'+
-                                            		 			'width="15"'+
-                                            	 	 			'height="15"'+
-                                            		 			'id="startstop">'+
-									'<param name="movie"   	value="startstop.swf?movieName=<? echo $file; ?>">'+
-                        			            		'<param name="menu"    	value="false">'+
-                                    					'<param name="quality" 	value="high">'+
-			                                    		'<param name="loop" 	value="false">'+
-                        			            		'<param name="scale" 	value="exactfit">'+
-	                                  				'<param name="wmode" 	value="transparent">'+
-									'<param name="play" 	value="false">'+
-                                    					'<embed src="startstop.swf?movieName=<? echo $file; ?>"'+
-                                           					'menu="false"'+
-		                                           			'quality="high"'+
-                		                           			'loop="false"'+
-                                		           			'scale="exactfit"'+
-	                                        		   		'wmode="transparent"'+
-				                                		'play="false"'+																		
-		                                           			'width="15"'+
-                		                           		  	'height="15"'+
-                                		           		 	'name="startstop"'+
-                                           				 	'type="application/x-shockwave-flash"'+
-                                           		 			'pluginspage="http://www.macromedia.com/go/getflashplayer">'+
-		                                    		 	 '</embed>'+
-                		                    			 '</object>');
-        			}
-				-->
-				</script>
-				</td>
+							  <!--
+							  if(flashcompattest()==true)
+							  {
+									document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'+
+									   'codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"'+
+									   'width="15"'+
+									   'height="15"'+
+									   'id="startstop">'+
+									   '<param name="movie"   	value="startstop.swf?movieName=<? echo $file; ?>">'+
+									   '<param name="menu"    	value="false">'+
+									   '<param name="quality" 	value="high">'+
+									   '<param name="loop" 	value="false">'+
+									   '<param name="scale" 	value="exactfit">'+
+									   '<param name="wmode" 	value="transparent">'+
+									   '<param name="play" 	value="false">'+
+									   '<embed src="startstop.swf?movieName=<? echo $file; ?>"'+
+									   'menu="false"'+
+									   'quality="high"'+
+									   'loop="false"'+
+									   'scale="exactfit"'+
+									   'wmode="transparent"'+
+									   'play="false"'+																		
+									   'width="15"'+
+									   'height="15"'+
+									   'name="startstop"'+
+									   'type="application/x-shockwave-flash"'+
+									   'pluginspage="http://www.macromedia.com/go/getflashplayer">'+
+									   '</embed>'+
+									   '</object>');
+							  }
+							  -->
+						   </script>
+						</td>
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="images.php?field=<?php echo($_GET['field']); ?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+						   <a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
 						<td width="98%" class="imgCaption"><a href="javascript:;" onClick="javascript:otherSelected('<? echo $img_url; ?>');"><? echo $file; ?> <? //echo $file_ext; ?></a></td>
 					 </tr>
 			   </table></td>
@@ -505,15 +578,15 @@
 	  }
    }
 
- 
-   
+
+
    function show_other($img, $file, $info, $size) 
    {
 	  global $BASE_DIR, $BASE_URL, $newPath, $extensions;
 
 	  $img_path = dir_name($img);
 	  $img_url = $BASE_URL.$img_path.'/'.$file;
-	  $thumb_image = 'unknown.gif';
+	  $thumb_image = 'unknown.png';
 	  $file_arr = explode('.', $file);
 	  $file_ext = $file_arr[count($file_arr)-1];
 	  if($extensions[$file_ext] || $extensions['*'])
@@ -531,7 +604,7 @@
 						<!--td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
 						<a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="edit_pencil.gif" width="15" height="15" border="0"></a></td-->
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="images.php?field=<?php echo($_GET['field']); ?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+						   <a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
 						<td width="98%" class="imgCaption"><? echo $file; ?> <? //echo $file_ext; ?></td>
 					 </tr>
 			   </table></td>
@@ -552,7 +625,7 @@
 	  <table width="102" border="0" cellpadding="0" cellspacing="2">
 		 <tr> 
 			<td align="center" class="imgBorder" onMouseOver="pviiClassNew(this,'imgBorderHover')" onMouseOut="pviiClassNew(this,'imgBorder')">
-			   <a href="images.php?field=<?php echo($_GET['field']); ?>&dir=<? echo $path; ?>" onClick="changeLoadingStatus('load')">
+			   <a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir=<? echo $path; ?>" onClick="changeLoadingStatus('load')">
 				  <img src="folder.gif" width="80" height="80" border=0 alt="<? echo $dir; ?>">
 			   </a>
 			</td>
@@ -561,7 +634,7 @@
 			<td><table width="100%" border="0" cellspacing="1" cellpadding="2">
 				  <tr> 
 					 <td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						<a href="images.php?field=<?php echo($_GET['field']); ?>&delFolder=<? echo $path; ?>&dir=<? echo $newPath; ?>" onClick="return deleteFolder('<? echo $dir; ?>', <? echo $num_files; ?>);"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+						<a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFolder=<? echo $path; ?>&dir=<? echo $newPath; ?>" onClick="return deleteFolder('<? echo $dir; ?>', <? echo $num_files; ?>);"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
 					 <td width="99%" class="imgCaption"><? echo $dir; ?></td>
 				  </tr>
 			</table></td>
@@ -684,18 +757,18 @@ function draw_table_header()
 
 	  function goUp() 
 	  {
-			location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&dir=<? echo $upDirPath; ?>";
+			location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir=<? echo $upDirPath; ?>";
 	  }
 
 	  function changeDir(newDir) 
 	  {
-			location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&dir="+newDir;
+			location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+newDir;
 	  }
 
 	  function newFolder(oldDir, newFolder) 
 	  {
 			//location.href = "ImageManager/images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
-			location.href = "images.php?field=<?php echo($_GET['field']); ?>&dir="+oldDir+'&create=folder&foldername='+newFolder;
+			location.href = "images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+oldDir+'&create=folder&foldername='+newFolder;
 	  }
 
 	  function updateDir() 
@@ -734,245 +807,244 @@ function draw_table_header()
 			   }
 			?>
 
-		 }
-
 	  }
 
-	  <? if ($refresh_dirs) { ?>
-	  function refreshDirs() 
-	  {
-		 var allPaths = window.top.document.forms[0].dirPath.options;
-		 var fields = ["/" <? dirs($BASE_DIR,'');?>];
+}
 
-		 var newPath = "<? echo $newPath; ?>";
+<? if ($refresh_dirs) { ?>
+function refreshDirs() 
+{
+   var allPaths = window.top.document.forms[0].dirPath.options;
+   var fields = ["/" <? dirs($BASE_DIR,'');?>];
 
-		 allPaths.length=0;
+   var newPath = "<? echo $newPath; ?>";
 
-		 for(i=0; i<fields.length; i++) 
-		 {
-			var newElem =	document.createElement("OPTION");
-			var newValue = fields[i];
-			newElem.text = newValue;
-			newElem.value = newValue;
+   allPaths.length=0;
 
-			if(newValue == newPath) 
-			newElem.selected = true;	
-			else
-			newElem.selected = false;
+   for(i=0; i<fields.length; i++) 
+   {
+		 var newElem =	document.createElement("OPTION");
+		 var newValue = fields[i];
+		 newElem.text = newValue;
+		 newElem.value = newValue;
 
-			allPaths.add(newElem);
-		 }
+		 if(newValue == newPath) 
+		 newElem.selected = true;	
+		 else
+		 newElem.selected = false;
+
+		 allPaths.add(newElem);
+   }
 	  }
 	  refreshDirs();
 	  <? } ?>
 
 	  function imageSelected(filename, width, height, alt) 
 	  {
-		 var topDoc = window.top.document.forms[0];
-		 topDoc.f_url.value = filename;
-		 topDoc.f_type.value = '<?php echo $filetypes->type_id_image; ?>';
-		 //topDoc.f_width.value= width;
-		 //topDoc.f_height.value = height;
-		 //topDoc.f_alt.value = alt;
-		 //topDoc.orginal_width.value = width;
-		 //topDoc.orginal_height.value = height;
+			var topDoc = window.top.document.forms[0];
+			topDoc.f_url.value = filename;
+			topDoc.f_type.value = '<?php echo $filetypes->type_id_image; ?>';
+			//topDoc.f_width.value= width;
+			//topDoc.f_height.value = height;
+			//topDoc.f_alt.value = alt;
+			//topDoc.orginal_width.value = width;
+			//topDoc.orginal_height.value = height;
 
 	  }
 	  function otherSelected(filename) 
 	  {
-		 var topDoc = window.top.document.forms[0];
-		 topDoc.f_url.value = filename;
-		 topDoc.f_type.value = '<?php echo $filetypes->type_id_other; ?>';
+			var topDoc = window.top.document.forms[0];
+			topDoc.f_url.value = filename;
+			topDoc.f_type.value = '<?php echo $filetypes->type_id_other; ?>';
 	  }
 
 	  function preview(file, image, size, width, height) 
 	  {
 
 
-		 alert('Not implemented yet,sorry');
-		 return;	
+			alert('Not implemented yet,sorry');
+			return;	
 
 
-		 /*
-		 var predoc = '<img src="'+file+'" alt="'+image+' ('+width+'x'+height+', '+size+')">';
-		 var w = 450;
-		 var h = 400;
-		 var LeftPosition=(screen.width)?(screen.width-w)/2:100;
-		 var TopPosition=(screen.height)?(screen.height-h)/2:100;
+			/*
+			var predoc = '<img src="'+file+'" alt="'+image+' ('+width+'x'+height+', '+size+')">';
+			var w = 450;
+			var h = 400;
+			var LeftPosition=(screen.width)?(screen.width-w)/2:100;
+			var TopPosition=(screen.height)?(screen.height-h)/2:100;
 
-		 var win = window.open('','image_preview','toolbar=no,location=no,menubar=no,status=yes,scrollbars=yes,resizable=yes,width='+w+',height='+h+',top='+TopPosition+',left='+LeftPosition);
-		 var doc=win.document.open();
+			var win = window.open('','image_preview','toolbar=no,location=no,menubar=no,status=yes,scrollbars=yes,resizable=yes,width='+w+',height='+h+',top='+TopPosition+',left='+LeftPosition);
+			var doc=win.document.open();
 
-		 doc.writeln('<html>\n<head>\n<title>Image Preview - '+image+' ('+width+'x'+height+', '+size+')</title>');
-			   doc.writeln('</head>\n<body>');
-			   doc.writeln(predoc);
-			   doc.writeln('</body>\n</html>\n');
-		 doc=win.document.close();
-		 win.focus();*/
-		 //alert(file);
-		 Dialog("../ImageEditor/ImageEditor.php?img="+escape(file), function(param) {
-			if (!param) {	// user must have pressed Cancel
-			return false;
-		 }
-	  }, null);
-	  return;
+			doc.writeln('<html>\n<head>\n<title>Image Preview - '+image+' ('+width+'x'+height+', '+size+')</title>');
+				  doc.writeln('</head>\n<body>');
+				  doc.writeln(predoc);
+				  doc.writeln('</body>\n</html>\n');
+			doc=win.document.close();
+			win.focus();*/
+			//alert(file);
+			Dialog("../ImageEditor/ImageEditor.php?img="+escape(file), function(param) {
+				  if (!param) {	// user must have pressed Cancel
+					 return false;
+			   }
+		 }, null);
+		 return;
    }
 
    function deleteImage(file) 
    {
-	  if(confirm("Delete image \""+file+"\"?")) 
-	  return true;
+		 if(confirm("Delete image \""+file+"\"?")) 
+		 return true;
 
-	  return false;
+		 return false;
    }
 
    function deleteFolder(folder, numFiles) 
    {
-	  if(numFiles > 0) {
-		 alert("There are "+numFiles+" files/folders in \""+folder+"\".\n\nPlease delete all files/folder in \""+folder+"\" first.");
+		 if(numFiles > 0) {
+			   alert("There are "+numFiles+" files/folders in \""+folder+"\".\n\nPlease delete all files/folder in \""+folder+"\" first.");
+			   return false;
+		 }
+
+		 if(confirm("Delete folder \""+folder+"\"?")) 
+		 return true;
+
 		 return false;
-	  }
-
-	  if(confirm("Delete folder \""+folder+"\"?")) 
-	  return true;
-
-	  return false;
    }
 
    function MM_findObj(n, d) { //v4.01
-   var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
-	  d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
-	  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
-	  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
-	  if(!x && d.getElementById) x=d.getElementById(n); return x;
+	  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+			d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+		 if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+		 for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+		 if(!x && d.getElementById) x=d.getElementById(n); return x;
    }
 
    function MM_showHideLayers() { //v6.0
-   var i,p,v,obj,args=MM_showHideLayers.arguments;
-   for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i],window.top.document))!=null) { v=args[i+2];
-   if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
-   obj.visibility=v; }
-}
-
-function changeLoadingStatus(state) 
-{
-   var statusText = null;
-   if(state == 'load') {
-	  statusText = 'Loading Images';	
+	  var i,p,v,obj,args=MM_showHideLayers.arguments;
+	  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i],window.top.document))!=null) { v=args[i+2];
+		 if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+		 obj.visibility=v; }
    }
-   else if(state == 'upload') {
-	  statusText = 'Uploading Files';
-   }
-   if(statusText != null) {
-	  var obj = MM_findObj('loadingStatus', window.top.document);
-	  //alert(obj.innerHTML);
-	  if (obj != null && obj.innerHTML != null)
-	  obj.innerHTML = statusText;
-	  MM_showHideLayers('loading','','show')		
-   }
-}
 
-//-->
-						   </script>
-						</head>
-						<body onLoad="updateDir();" bgcolor="#FFFFFF">
+   function changeLoadingStatus(state) 
+   {
+		 var statusText = null;
+		 if(state == 'load') {
+			   statusText = 'Loading Images';	
+		 }
+		 else if(state == 'upload') {
+			   statusText = 'Uploading Files';
+		 }
+		 if(statusText != null) {
+			   var obj = MM_findObj('loadingStatus', window.top.document);
+			   //alert(obj.innerHTML);
+			   if (obj != null && obj.innerHTML != null)
+			   obj.innerHTML = statusText;
+			   MM_showHideLayers('loading','','show')		
+		 }
+	  }
 
-						   <?
-						   //var_dump($_GET);
-						   //echo $dirParam.':'.$upDirPath;
-						   //echo '<br>';
-						   $d = @dir($BASE_DIR.$IMG_ROOT);
+	  //-->
+   </script>
+</head>
+<body onLoad="updateDir();" bgcolor="#FFFFFF">
 
-						   if($d) 
-						   {
-							  //var_dump($d);
-							  $images = array();
-							  $folders = array();
-							  $other = array();
-							  $flash = array();
-							  while (false !== ($entry = $d->read())) 
-							  {
-								 $img_file = $IMG_ROOT.$entry; 
+   <?php
+	  $d = @dir($BASE_DIR.$IMG_ROOT);
 
-								 if(is_file($BASE_DIR.$img_file) && substr($entry,0,1) != '.') 
-								 {
-									$image_info = @getimagesize($BASE_DIR.$img_file);
-									if(is_array($image_info) && $image_info['mime'] != 'application/x-shockwave-flash') 
-									//									if(is_array($image_info)) 
-									{
-									   $file_details['file'] = $img_file;
-									   $file_details['img_info'] = $image_info;
-									   $file_details['size'] = filesize($BASE_DIR.$img_file);
-									   $images[$entry] = $file_details;
-									   //show_image($img_file, $entry, $image_info);
-									}
-									elseif($image_info['mime']=='application/x-shockwave-flash')
-									// flash files
-									{
-									   $flash[$entry] = $img_file;
+	  if($d) 
+	  {
+		 $images = array();
+		 $folders = array();
+		 $other = array();
+		 $flash = array();
+		 while (false !== ($entry = $d->read())) 
+		 {
+			//echo $img_file;
+			$img_file = $IMG_ROOT.$entry; 
 
-									}
-									else
-									{
-									   $other[$entry] = $img_file;
-									}
-								 }
-								 elseif(is_dir($BASE_DIR.$img_file) && substr($entry,0,1) != '.') 
-								 {
-									$folders[$entry] = $img_file;
-									//show_dir($img_file, $entry);	
-								 }
-							  }
-							  $d->close();	
+			if(is_dir($BASE_DIR.$img_file) && substr($entry,0,1) != '.') 
+			{
+			   $folders[$entry] = $img_file;
+			   //show_dir($img_file, $entry);	
+			}
+			elseif(is_file($BASE_DIR.$img_file) && substr($entry,0,1) != '.') 
+			{
+			   $image_info = @getimagesize($BASE_DIR.$img_file);
+			   if(is_array($image_info) && $image_info['mime'] != 'application/x-shockwave-flash') 
+			   {
+				  $file_details['file'] = $img_file;
+				  $file_details['img_info'] = $image_info;
+				  $file_details['size'] = filesize($BASE_DIR.$img_file);
+				  $images[$entry] = $file_details;
+				  //show_image($img_file, $entry, $image_info);
+			   }
+			   elseif($image_info['mime']=='application/x-shockwave-flash')
+			   // flash files
+			   {
+				  $flash[$entry] = $img_file;
 
-							  if(count($images) > 0 || count($folders) > 0) 
-							  {	
-								 //now sort the folders and images by name.
-								 ksort($images);
-								 ksort($folders);
-								 ksort($other);
+			   }
+			   else
+			   {
+				  $other[$entry] = $img_file;
+			   }
+			}
+		 }
+		 
+		 $d->close();	
 
-								 draw_table_header();
+		 if(count($images) > 0 || count($folders) > 0 || count($other) > 0) 
+		 {	
+			//now sort the folders and images by name.
+			ksort($images);
+			ksort($folders);
+			ksort($other);
 
-								 for($i=0; $i<count($folders); $i++) 
-								 {
-									$folder_name = key($folders);		
-									show_dir($folders[$folder_name], $folder_name);
-									next($folders);
-								 }
-								 for($i=0; $i<count($images); $i++) 
-								 {
-									$image_name = key($images);
-									show_image($images[$image_name]['file'], $image_name, $images[$image_name]['img_info'], $images[$image_name]['size']);
-									next($images);
-								 }
-								 for($i=0; $i<count($flash); $i++) 
-								 {
-									$name = key($flash);
-									show_flash($flash[$name], $name, $flash[$name]['img_info'], $flash[$name]['size']);
-									next($flash);
-								 }
-								 for($i=0; $i<count($other); $i++) 
-								 {
-									$name = key($other);
-									show_other($other[$name], $name, $other[$name]['img_info'], $other[$name]['size']);
-									next($other);
-								 }
-								 draw_table_footer();
-							  }
-							  else
-							  {
-								 draw_no_results();
-							  }
-						   }
-						   else
-						   {
-							  draw_no_dir();
-						   }
+			//_debug_array($other);
+			//die();
+			draw_table_header();
 
-						?>
-						<script language="JavaScript" type="text/JavaScript">
-						   MM_showHideLayers('loading','','hide')
-						</script>
-					 </body>
+			for($i=0; $i<count($folders); $i++) 
+			{
+			   $folder_name = key($folders);		
+			   show_dir($folders[$folder_name], $folder_name);
+			   next($folders);
+			}
+			for($i=0; $i<count($images); $i++) 
+			{
+			   $image_name = key($images);
+			   show_image($images[$image_name]['file'], $image_name, $images[$image_name]['img_info'], $images[$image_name]['size']);
+			   next($images);
+			}
+			for($i=0; $i<count($flash); $i++) 
+			{
+			   $name = key($flash);
+			   show_flash($flash[$name], $name, $flash[$name]['img_info'], $flash[$name]['size']);
+			   next($flash);
+			}
+			for($i=0; $i<count($other); $i++) 
+			{
+			   $name = key($other);
+			   show_other($other[$name], $name, $other[$name]['img_info'], $other[$name]['size']);
+			   next($other);
+			}
+			draw_table_footer();
+		 }
+		 else
+		 {
+			draw_no_results();
+		 }
+	  }
+	  else
+	  {
+		 draw_no_dir();
+	  }
+
+   ?>
+   <script language="JavaScript" type="text/JavaScript">
+	  MM_showHideLayers('loading','','hide')
+   </script>
+</body>
 				  </html>

@@ -37,12 +37,24 @@
    //In safe mode, directory creation is not permitted.
    $SAFE_MODE = false;
 
-   $sessdata =	  $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
-
+   $sessdata =	$GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
+   
    $bo = CreateObject('jinn.bouser');
-   $field_config = $bo->so->get_field_values($bo->session['site_object_id'],$_GET[field]);
+
+   if($_GET[curr_obj_id])
+   {
+
+	  $field_config = $bo->so->get_field_values($_GET[curr_obj_id],$_GET[field]);
+   }
+   else
+   {
+	  $field_config = $bo->so->get_field_values($bo->session['site_object_id'],$_GET[field]);
+   }
+//   	_debug_array($bo->session);
+//	_debug_array($_GET);
    $config = unserialize(base64_decode($field_config[field_plugins]));
    $config = $config[conf];
+   //_debug_array($config);
 
    $BASE_DIR = $sessdata[UploadImageBaseDir];
    if($BASE_DIR == '') $BASE_DIR = $bo->cur_upload_path();

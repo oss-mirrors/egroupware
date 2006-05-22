@@ -33,7 +33,6 @@
 		 
 		function formview_edit($field_name,$value,$config,$attr_arr)
 		{	
-			global $local_bo;
 			$color_arr[1]='#ffffff';
 			$color_arr[2]='#ffebeb';
 			$color_arr[3]='#ffd2d2';

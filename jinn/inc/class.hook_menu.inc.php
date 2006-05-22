@@ -17,7 +17,7 @@
 		{
 			$menu = Array();
 			$menu['Records'] = Array(
-			   'Add new entry'   => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.display_form'),
+			   'Add new entry'   => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.new_record'),
 				);
 				
 			$menu['Preferences'] = Array(

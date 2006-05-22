@@ -1,7 +1,7 @@
 <?php
    /**************************************************************************\
    JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
-   Copyright (C)2002, 2004 Pim Snel <pim@lingewoud.nl>
+   Copyright (C)2002, 2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
 
@@ -21,15 +21,21 @@
    along with JiNN; if not, write to the Free Software Foundation, Inc.,
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    \**************************************************************************/
-
-   /*!
-   @class dbfieldtypes  
-   @abstract dbfieldtypes class that help resolving db-native fieldtypes
-   to field types JiNN understands.
-   */
+   
+   /**
+    * dbfieldtypes 
+    * 
+    * dbfieldtypes class that help resolving db-native fieldtypes
+	* to field types JiNN understands.
+	*
+	* @package 
+    * @version $Id$
+    * @copyright Lingewoud B.V.
+    * @author Pim Snel <pim-AT-lingewoud-DOT-nl> 
+    * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+    */
    class dbfieldtypes
    {
-	  
 	  var $field_types_arr = array();
 
 	  /*!
@@ -63,6 +69,7 @@
 			'timestamp'		=>		'timestamp',
 			'blob'			=>		'blob',
 			'longtext'		=>		'blob',
+			'mediumtext'	=>		'blob',
 			'text'			=>		'blob',
 			'auto'			=>		'auto',
 		 );

@@ -27,10 +27,31 @@
 
 	$this->registry->plugins['date']['name']			= 'date';
 	$this->registry->plugins['date']['title']			= 'Date plugin';
-	$this->registry->plugins['date']['version']			= '0.1.2';
-	$this->registry->plugins['date']['author']			= 'Pim Snel';
+	$this->registry->plugins['date']['version']			= '0.1.3';
+	$this->registry->plugins['date']['author']			= 'Pim Snel, Rob van Kraanen';
 	$this->registry->plugins['date']['description']		= 'create date input box and date storage method, (At this time Dutch only)';
 	$this->registry->plugins['date']['enable']			= 1;
 	$this->registry->plugins['date']['db_field_hooks']	= array('date');
+ 
+    $option=array(
+	   '0'=>'OldWay',
+	   '1'=>'DHTML-Calendar'
+   );
 
-?>
+   // We need a template in stead of this auto configure array
+  /* $this->registry->plugins['date']['config2']		= array
+   (
+	  'style' => array(
+		 'name' => 'style',
+		 'label' => lang('The old style or the new way with the DHTML calendar'),
+		 'type' => 'select',
+		 'select_arr' => $option
+	  )
+   );*/
+   $this->registry->plugins['date']['config']		= array
+   (
+	  'style'=> array( array('OldWay','DHTML-Calendar'),'select','')  
+   );
+
+ 
+ ?>

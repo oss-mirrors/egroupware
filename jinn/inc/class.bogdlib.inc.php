@@ -29,8 +29,8 @@
 
 	  function bogdlib() 
 	  {
-		 $this->common = CreateObject('jinn.bocommon');
-		 $this->current_config=$this->common->get_config();
+		 #		 $this->common = CreateObject('jinn.bocommon');
+		 #$this->current_config=$this->common->get_config();
 	  }
 
 	

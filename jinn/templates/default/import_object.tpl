@@ -7,7 +7,7 @@
 <td><input type="hidden" value="{parent_site_id}" name="parent_site_id" /><input name="importfile" type="file" /></td>
 </tr>
 <tr>
-<td colspan=2><input type=submit value="{lang_submit_and_import}"></td>
+<td colspan=2><input class="egwbutton" type=submit value="{lang_submit_and_import}"></td>
 </tr>
 </table>
 </form>

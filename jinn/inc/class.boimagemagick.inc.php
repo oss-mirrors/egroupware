@@ -22,9 +22,7 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-
-
-   class boimagemagick extends bouser
+   class boimagemagick 
    {
 	  var $targetdir      = '';
 	  var $imagemagickdir = '/usr/local/bin';
@@ -41,9 +39,7 @@
 	  {
 		 //FIXME check version and leave without doing nothing when lower then 5.4.9
 
-		 $this->common = CreateObject('jinn.bocommon');
-		 $this->current_config=$this->common->get_config();
-		 $this->imagemagickdir=$this->current_config['imagemagickdir'];
+//		 $this->common = CreateObject('jinn.bocommon');
 	  }
 
 	  /*

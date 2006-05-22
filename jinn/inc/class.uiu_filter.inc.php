@@ -1,7 +1,7 @@
 <?php
    /*
    JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
+   Copyright (C)2002, 2003, 2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
 
@@ -22,12 +22,19 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   /* $Id$ */
+   include_once(PHPGW_INCLUDE_ROOT.'/jinn/inc/class.uijinn.inc.php');
 
    /**
-   @package jinn_users_classes
-   */
-   class uiu_filter
+    * uiu_filter 
+    * 
+    * @uses uijinn
+    * @package 
+    * @version $Id$
+    * @copyright Lingewoud B.V.
+    * @author Pim Snel <pim-AT-lingewoud-DOT-nl> 
+    * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+    */
+   class uiu_filter extends uijinn
    {
 	  var $public_functions = Array
 	  (
@@ -35,41 +42,56 @@
 		 'delete'	=> True,
 		 'save'		=> True
 	  );
-	  var $bo;
-	  var $template;
-	  var $ui;
 	  var $filterdata;
 	  var $filterstore;
 	  var $sessionfilter;
 
-	  
+	  /**
+	   * uiu_filter 
+	   * 
+	   * @access public
+	   * @return void
+	   */
+	  function uiu_filter()
+	  {
+		 $this->bo = CreateObject('jinn.bouser');
+		 parent::uijinn();
+		 
+		 // get all available filters from preferences and session
+		 $this->filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object[unique_id]); 
+		 $this->sessionfilter = $this->bo->read_session_filter($this->bo->site_object[unique_id]);
+	  }
 
+	  /**
+  	   * init_bo 
+  	   * 
+  	   * @param mixed $bo 
+  	   * @access public
+  	   * @return void
+  	   */
   	  function init_bo(&$bo)
 	  {
 		$this->bo = &$bo;
 	  }
 
-	  function uiu_filter()
-	  {
-		 $this->bo = CreateObject('jinn.bouser');
-		 $this->template = $GLOBALS['phpgw']->template;
-		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
-		 
-		 // get all available filters from preferences and session
-		 $this->filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object[unique_id]); 
-		 $this->sessionfilter = $this->bo->read_session_filter($this->bo->site_object[unique_id]);
-		 if($this->bo->so->config[server_type]=='dev')
-		 {
-			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
-		 }
-		 $this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
-	  }
 	  
+	  /**
+	   * save_filterstore 
+	   * 
+	   * @access public
+	   * @return void
+	   */
 	  function save_filterstore()
 	  {
 		$this->bo->save_preferences('filterstore'.$this->bo->site_object[unique_id], $this->filterstore); 
 	  }
 
+	  /**
+	   * save_sessionfilter 
+	   * 
+	   * @access public
+	   * @return void
+	   */
 	  function save_sessionfilter()
 	  {
 		 $this->bo->save_session_filter($this->bo->site_object[unique_id], $this->sessionfilter);
@@ -77,8 +99,12 @@
 	  }
 	  
 	  /**
-	  @function format_filter_options
-	  */
+	   * format_filter_options 
+	   * 
+	   * @param mixed $selected 
+	   * @access public
+	   * @return void
+	   */
 	  function format_filter_options($selected)
 	  {
 		 $options  = '<option value="NO_FILTER">'.lang('empty filter').'</option>';
@@ -109,6 +135,12 @@
 		 return $options;
 	  }
 	  
+	  /**
+	   * get_filter_where 
+	   * 
+	   * @access public
+	   * @return void
+	   */
 	  function get_filter_where()
 	  {
 	  // if not specified, get the current filter from the session, or specify empty
@@ -156,9 +188,11 @@
 
 
 	  /**
-	  @function delete
-	  @abstract public function to delete the filter
-	  */
+	   * delete: public function to delete the filter
+	   * 
+	   * @access public
+	   * @return void
+	   */
 	  function delete()
 	  {
 		if($_POST[filtername])
@@ -169,14 +203,16 @@
 		
 			//redirect to list
 		 $this->bo->sessionmanager->save();
-		 $this->bo->common->exit_and_open_screen('jinn.uiu_list_records.display');
+		 $this->bo->exit_and_open_screen('jinn.uiu_list_records.display');
 
 	  }
 	  
 	  /**
-	  @function save 
-	  @abstract public function to save the filter data
-	  */
+	   * save: public function to save the filter data
+	   * 
+	   * @access public
+	   * @return void
+	   */
 	  function save()
 	  {
 				//start compiling this filter from the post form
@@ -264,10 +300,9 @@
  		 $this->template->set_block('frm_edit_filter','post_block','');
 
 		  
-		 $this->ui->header('edit filter');
+		 $this->header('edit filter');
 		  
-		 $this->ui->msg_box($this->bo->session['message']);
-		 unset($this->bo->session['message']);
+		 $this->msg_box();
 
 		 
 		 /////////////////////////
@@ -347,6 +382,14 @@
 		 $this->bo->sessionmanager->save();
 	  }
 
+	/**
+	 * getFieldOptions 
+	 * 
+	 * @param mixed $fields_arr 
+	 * @param mixed $selected 
+	 * @access public
+	 * @return void
+	 */
 	function getFieldOptions($fields_arr, $selected)
 	{
 		 $fields='<option value="">------------</option>';
@@ -364,11 +407,21 @@
 		 return $fields;
 	}			 
 
+	/**
+	 * getOperatorOptions 
+	 * 
+	 * @param mixed $selected 
+	 * @access public
+	 * @return void
+	 */
 	function getOperatorOptions($selected)
 	{
 		 $supported_operators = array
 		 (
-			'=', '>', '<'
+			'=',
+			'!=',
+			'>', 
+			'<',
 		 );
 
 		 $operators='<option value="">------------</option>';

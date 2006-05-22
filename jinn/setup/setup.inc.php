@@ -19,11 +19,13 @@
    You should have received a copy of the GNU General Public License 
    along with JiNN; if not, write to the Free Software Foundation, Inc.,
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+
+   $Id$
    */
 
    $setup_info['jinn']['name']		= 'jinn';
-   $setup_info['jinn']['title']		= 'JiNN CMS / Database Manager';
-   $setup_info['jinn']['version']	= '0.8.219';
+   $setup_info['jinn']['title']		= 'JiNN DB App Builder';
+   $setup_info['jinn']['version']	= '0.9.021';
    $setup_info['jinn']['app_order']	= 15;
    $setup_info['jinn']['author'] 	= 'Pim Snel';
    $setup_info['jinn']['license']  	= 'GPL';
@@ -84,53 +86,17 @@
 	  $setup_info['jinn']['hooks']		= array
 	  (
 		 'admin',
-		 'sidebox_menu',
 		 'preferences',
 		 'settings'
 	  );
+	  $setup_info['jinn']['hooks']['sidebox_menu'] = 'jinn.uisidebox.sidebox_menu';
 
 	  /* Dependencies for this app to work */
 	  $setup_info['jinn']['depends'][]	= array
 	  (
 		 'appname'  => 'phpgwapi',
-		 'versions' => Array('1.0.0','1.0.1','1.2','1.3')
+		 'versions' => Array('1.2.0','1.3.0','1.3.004','1.3.1')
 	  );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

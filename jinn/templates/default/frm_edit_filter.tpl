@@ -37,7 +37,7 @@
 				<input type="text" name="filtername" value="{filtername}"/>
 			</td>
 			<td align="center" style="padding-left:20px;">
-				<input type="submit" name="submit" value="{submit}"/>
+				<input class="egwbutton"  type="submit" name="submit" value="{submit}"/>
 			</td>
 		</tr>
 		<tr height="50">
@@ -47,8 +47,8 @@
 			<td colspan="3" align="left">
 				<input type="hidden" name="listurl" value="{list_url}"/>
 				<input type="hidden" name="deleteurl" value="{delete_url}"/>
-				<input type="submit" name="submit" value="{delete}" onClick="return onDelete();"/>
-				<input type="submit" name="submit" value="{submit_exit}" onClick="document.filterform.action = document.filterform.listurl.value;"/>
+				<input class="egwbutton"  type="submit" name="submit" value="{delete}" onClick="return onDelete();"/>
+				<input class="egwbutton"  type="submit" name="submit" value="{submit_exit}" onClick="document.filterform.action = document.filterform.listurl.value;"/>
 			</td>
 		</tr>
 	</table>

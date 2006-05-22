@@ -24,25 +24,13 @@
 
 	---------------------------------------------------------------------
 */
-   $this->registry->plugins['removespaces']['name']			= 'removespaces';
+   $this->registry->plugins['removespaces']['name']				= 'removespaces';
    $this->registry->plugins['removespaces']['title']			= 'Remove Spaces';
    $this->registry->plugins['removespaces']['author']			= 'Pim Snel';
-   $this->registry->plugins['removespaces']['version']			= '1.0.0rc';
-   $this->registry->plugins['removespaces']['description']		= 'Make the user choose for a new stamp of saving the exiting stamp';
+   $this->registry->plugins['removespaces']['version']			= '1.0.0rc2';
+   $this->registry->plugins['removespaces']['description']		= 'Use javascript to remove spaces from string';
    $this->registry->plugins['removespaces']['enable']			= 1;
    $this->registry->plugins['removespaces']['db_field_hooks']	= array('string');
 
-   $this->registry->plugins['removespaces']['config']		= array
-   (
-	  'Default_action'=> array( array('Leave value untouched','New Time Stamp')  ,'select',''),
-	  'Display_format'=> array( array('Y-M-d H:i:s','y-m-d H:i:s','d-M-Y H:i:s','d-m-y H:i:s')  ,'select',''),
-	  'Allow_users_to_choose_action'=> array( array('False','True')  ,'select',''),
-   );
-
-   $this->registry->plugins['removespaces']['config_help'] = array
-   (
-	  'Default_action'=>'Leave untouched keeps the save removespaces when the record is updated, else always a new stamp is given to the record.',
-	  'Allow_users_to_choose_action' =>'Let users choose the to leave is untouched or not.'
-   );
 
 ?>

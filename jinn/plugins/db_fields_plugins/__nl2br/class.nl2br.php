@@ -52,5 +52,23 @@
 	
 			return $output;
 		 }
+
+		 function listview_read($value, $config,$attr_arr)
+		 {
+			if(strlen($value)>30)
+			{
+			   $value = strip_tags($value);
+			   $value = trim($value);
+			   $title = substr($value,0,200);
+
+			   $value = '<span title="'.$title.'">' . substr($value,0,30). ' ...' . '</span>';
+			}
+			return $value;   		
+		 }
+
+
+
+
+
 	}	
  ?>

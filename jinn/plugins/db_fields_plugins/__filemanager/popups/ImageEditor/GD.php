@@ -340,7 +340,25 @@ Class Image_Transform_Driver_GD extends Image_Transform
             return false; /*PEAR::raiseError('You have already resized the image without saving it.  Your previous resizing will be overwritten', null, PEAR_ERROR_TRIGGER, E_USER_NOTICE);*/
         }
         if(function_exists('ImageCreateTrueColor')){
-            $new_img =ImageCreateTrueColor($new_x,$new_y);
+
+		   $new_img =ImageCreateTrueColor($new_x,$new_y);
+
+		   if(function_exists('imageAntiAlias')) imageAntiAlias($new_img, true);
+		   if(function_exists('imagealphablending')) imagealphablending($new_img, false);
+		   if(function_exists('imagesavealpha')) imagesavealpha($new_img, true);
+		   /*
+		   $transparent = imagecolorallocatealpha($new_img, 128, 128, 128, 0);
+		   for($x = 0; $x < $xyresize; $x++) {
+			  for($y = 0; $y < $xyresize; $y++) {
+				 imageSetPixel($new_img, $x, $y, $transparent);
+			  }
+		   }
+		   */
+
+		   //ImageCopyResampled($new_img, $image, 0, 0, 0, 0, $xyresize, $xyresize, 80, 80);
+		   //$image = $new_img;
+
+
         } else {
             $new_img =ImageCreate($new_x,$new_y);
         }
@@ -441,8 +459,9 @@ Class Image_Transform_Driver_GD extends Image_Transform
      * @return none
      */
     function save($filename, $type = '', $quality = 85)
-    {
-        $type           = $type==''? $this->type : $type;
+	{
+	   $type           = $type==''? $this->type : $type;
+	   #	   $type='jpeg';
         $functionName   = 'image' . $type;
         $this->old_image = $this->imageHandle;
         $functionName($this->imageHandle, $filename) ;

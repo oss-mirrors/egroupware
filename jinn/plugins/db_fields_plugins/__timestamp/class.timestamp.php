@@ -31,13 +31,11 @@
 	
 	   function formview_edit($field_name,$value,$config,$attr_arr)
 	   {	
-		  global $local_bo;
 		  $stripped_name=substr($field_name,6);	
 	
-		  global $local_bo;
 		  if ($value)
 		  {
-			 $input=$local_bo->so->site_db->Link_ID->UserTimeStamp($value);
+			 $input=$this->local_bo->so->site_db->Link_ID->UserTimeStamp($value);
 		  }
 		  else
 		  {
@@ -70,11 +68,10 @@
 	
 	   function listview_read($value,$config,$attr_arr)
 	   {	
-		  global $local_bo;
 	
 		  $fmt=($config[Display_format]?$config[Display_format]:'y-M-d H:i:s');
-		  $input=$local_bo->so->site_db->Link_ID->UserTimeStamp($value,$fmt);
-	
+		  $input=$this->local_bo->so->site_db->Link_ID->UserTimeStamp($value,$fmt);
+		  
 		  return $input;
 	   }
 	

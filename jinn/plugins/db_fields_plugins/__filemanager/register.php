@@ -26,9 +26,9 @@
 */
 
    $this->registry->plugins['filemanager']['name']			= 'filemanager';
-   $this->registry->plugins['filemanager']['title']			= 'filemanager plugin';
+   $this->registry->plugins['filemanager']['title']			= 'Filemanager';
    $this->registry->plugins['filemanager']['author']			= 'Pim Snel/Lex Vogelaar';
-   $this->registry->plugins['filemanager']['version']			= '0.1';
+   $this->registry->plugins['filemanager']['version']			= '0.2';
    $this->registry->plugins['filemanager']['enable']			= 1;
 
    $this->registry->plugins['filemanager']['description']		= '
@@ -60,4 +60,8 @@
 	  'Max_thumbnail_height'=> array('100','text','maxlength=3 size=3'),
 	  'Allow_other_images_sizes'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
    );
+
+
+
+
 ?>

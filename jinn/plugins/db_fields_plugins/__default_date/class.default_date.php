@@ -41,10 +41,9 @@
 		*/
 		function formview_edit($field_name,$value, $config,$attr_arr)
 		{
-		   global $local_bo;
 		   if ($value)
 		   {
-			  $input='<input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$local_bo->so->site_db->Link_ID->UserDate($value);
+			  $input='<input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$this->local_bo->so->site_db->Link_ID->UserDate($value);
 		   }
 		   else
 		   {

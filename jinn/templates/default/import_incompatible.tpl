@@ -11,7 +11,7 @@
 <td><input name="replace_existing" type="checkbox" {checked}></td>
 </tr>
 <tr>
-<td colspan="2"><input type="submit" name="incompatibility_ok" value="{lang_submit_and_import}"><input onClick="location='{cancel_redirect}'"  type="button" value="{lang_cancel}"></td>
+<td colspan="2"><input class="egwbutton" type="submit" name="incompatibility_ok" value="{lang_submit_and_import}"><input onClick="location='{cancel_redirect}'" class="egwbutton"   type="button" value="{lang_cancel}"></td>
 </tr>
 </table>
 </form>

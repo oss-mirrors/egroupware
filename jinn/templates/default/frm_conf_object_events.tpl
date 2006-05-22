@@ -55,9 +55,9 @@
 		
 		<!-- BEGIN post_block -->
 		<br/>
-		<input type="submit" value="{submit}">
-		<input type="button" value="{close}" onClick="self.close()">
-		<input type="button" value="{back}" onclick="history.back()">
+		<input class="egwbutton"  type="submit" value="{submit}">
+		<input class="egwbutton"  type="button" value="{close}" onClick="self.close()">
+		<input  class="egwbutton" type="button" value="{back}" onclick="history.back()">
 		<br/>
 		</form>
 	</body>

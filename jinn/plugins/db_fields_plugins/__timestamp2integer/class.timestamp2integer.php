@@ -24,17 +24,10 @@
 
 	class db_fields_plugin_timestamp2integer
 	{
-	
-		function db_fields_plugin_timestamp2integer()
-		{
-		}
-		
+		function db_fields_plugin_timestamp2integer() {}
 		
 		function formview_edit($field_name,$value,$config,$attr_arr)
 		{	
-			global $local_bo;
-	//		$stripped_name=substr($field_name,6);	
-			
 			if($value)
 			{
 			   $input.='<strong>'.$value.'</strong><br/>';
@@ -53,8 +46,6 @@
 	
 		function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 		{
-			global $local_bo;
-	
 			$field_1=$_POST['ST2IN1'.$field_name];//real value
 			$field_2=$_POST['ST2IN2'.$field_name];// boolian for new timestamp
 			

@@ -23,12 +23,19 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   /* $Id$ */
+   include_once(PHPGW_INCLUDE_ROOT.'/jinn/inc/class.uijinn.inc.php');
 
    /**
-   @package jinn_users_classes
-   */
-   class uireport
+    * uireport 
+    * 
+    * @uses uijinn
+    * @package 
+    * @version $Id$
+    * @copyright Lingewoud B.V.
+	* @author Rob van Kraanen <rob-AT-lingewoud-DOT-nl> 
+    * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+    */
+   class uireport extends uijinn
    {
 	  var $public_functions = Array
 	  (
@@ -49,21 +56,20 @@
 	  var $init_options;
 
 	  /**
-	  @function uiu_edit_record
-	  @abstract class contructor that set header and inits bo
-	  */
-
+	   * uireport: class contructor that set header and inits bo
+	   * 
+	   * @access public
+	   * @return void
+	   */
 	  function uireport()
 	  {
 		 $this->bo = CreateObject('jinn.bouser');
-		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
+		 parent::uijinn();
+		 
+		 //fixme kan via bo
 		 $this->boreport = CreateObject('jinn.boreport');
-		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
-		 if($this->bo->so->config[server_type]=='dev')
-		 {
-			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
-		 }
-		 $this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
+
+		 $this->app_title=$dev_title_string;//.lang('Moderator Mode');
 
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 		 $this->report_id ='';
@@ -76,11 +82,9 @@
 	  function add_report_popup()
 	  {
 		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
-		 //	 $GLOBALS['phpgw_info']['flags']['noheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 //		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
 		 $fields=$this->boreport->so->site_table_metadata($_GET[parent_site_id], $_GET[table_name]);
 		 foreach($fields as $field)
 		 {
@@ -107,17 +111,23 @@
 		 $tplsav2->display('pop_add_report.tpl.php');
 		 $GLOBALS['egw']->common->phpgw_footer();
 	  }
-	  /*
-	  Shows the pop-up for adding data, with the preferences set on the user-specific templates
-	  */
+	  
+	  /**
+	   * add_report_user 
+	   *
+	   * Shows the pop-up for adding data, with the preferences set on the user-specific templates
+	   * 
+	   * @access public
+	   * @return void
+	   */
 	  function add_report_user()
 	  {
 		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
-		 //	 $GLOBALS['phpgw_info']['flags']['noheader']=True;
+
 		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 //		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
+
 		 $fields=$this->boreport->so->site_table_metadata($_GET[parent_site_id], $_GET[table_name]);
 		 foreach($fields as $field)
 		 {
@@ -146,9 +156,15 @@
 		 $GLOBALS['egw']->common->phpgw_footer();
 
 	  }
-	  /*
-	  sets the variables to make a new erport, but with the excisting data will be used for this report
-	  */
+ 
+	  /**
+	   * add_report_from_selected 
+	   *
+	   * sets the variables to make a new erport, but with the excisting data will be used for this report
+	   *
+	   * @access public
+	   * @return void
+	   */
 	  function add_report_from_selected()
 	  {
 		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
@@ -181,17 +197,21 @@
 		 $tplsav2->assign('val',$val);
 		 $tplsav2->display('pop_add_report.tpl.php');
 	  }
-	  /*
-	  This function shows the popup to edit a saved record
+
+	  /**
+	  * edit_report_popup 
+	  *
+	  * This function shows the popup to edit a saved record 
+	  *
+	  * @access public
+	  * @return void
 	  */
 	  function edit_report_popup()
 	  {
 		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
-		 //	 $GLOBALS['phpgw_info']['flags']['noheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 //	 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
 		 $fields=$this->bo->so->site_table_metadata($_GET[parent_site_id], $_GET[table_name]);
 		 foreach($fields as $field)
 		 {
@@ -217,17 +237,22 @@
 		 $tplsav2->display('pop_add_report.tpl.php');
 	  }
 	  /*
- 	  This funciton shows the popup witch will show the merged report
 	  */
 	 
+	  /**
+	   * merge_report 
+	   * 
+	   * This funciton shows the popup witch will show the merged report
+	   *
+	   * @access public
+	   * @return void
+	   */
 	  function merge_report()
 	  {
 		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
-		 //	 $GLOBALS['phpgw_info']['flags']['noheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 //		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
 		 $GLOBALS['egw']->common->phpgw_header();
 		 $this->tplsav2->assign('sel_val',$_GET[selvalues]);
 		 $this->tplsav2->assign('obj_id', $_GET[obj_id]);
@@ -236,12 +261,18 @@
 		 $this->tplsav2->display('frm_merge_report.tpl.php');
 	  }
 	  
-	  /*
-	  This function parses the template, with depending on the setting the selected records, or the files from theapplied filter, 
-	  or just all records.
-	  It inserts the right php-code
-	  It replaces the %%var%% with the php-code
-	  */				   
+	  /**
+	  * show_merged_report 
+	  * 
+	  * This function parses the template, with depending on the setting the selected records, or the files from theapplied filter, 
+	  * or just all records.
+	  * It inserts the right php-code
+	  * It replaces the %%var%% with the php-code
+	  *
+	  * @param string $bodytags 
+	  * @access public
+	  * @return void
+	  */
 	  function show_merged_report( $bodytags = '')
 	  {
 		 if($_GET[selection] == 'all' or $_GET[selection] == '')
@@ -259,7 +290,6 @@
 			   	$arr2[]=base64_decode($sel);
 			   }
 			}
-		//	print_r($arr2);
 			if(trim($where_condition) !='')
 			{
 			   $where_condition .=implode($arr2,' OR ');
@@ -332,9 +362,14 @@
 		 echo $output;
 	  }
 	  
-	  /*
-	  This functions runs the same merge script, and the headers for the save option will be set
-	  */
+	  /**
+	   * save_merged_report 
+	   *
+	   * This functions runs the same merge script, and the headers for the save option will be set
+	   *
+	   * @access public
+	   * @return void
+	   */
 	  function save_merged_report()
 	  {
 		 $id = $_GET[report_id];
@@ -349,9 +384,14 @@
 		 $this->show_merged_report();
 	  }
 	
-	  /*
-	  This functions runs the same merge script, but now with the script to print
-	  */
+  	  /**
+  	   * print_merged_report 
+	   *
+  	   * This functions runs the same merge script, but now with the script to print
+	   *
+  	   * @access public
+  	   * @return void
+  	   */
   	  function print_merged_report()
 	  {
 		 $this->show_merged_report('onload="javascript:window.print()"');

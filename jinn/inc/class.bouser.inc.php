@@ -2,7 +2,7 @@
    /*
    JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare
    Authors: Pim Snel <pim@lingewoud.nl>, 
-			Lex Vogelaar <lex_vogelaar@users.sourceforge.net>
+   Lex Vogelaar <lex_vogelaar@users.sourceforge.net>
    Copyright (C)2002, 2003, 2004, 2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
@@ -23,9 +23,19 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   /* $Id$ */
+   include_once(PHPGW_INCLUDE_ROOT.'/jinn/inc/class.bojinn.inc.php');
 
-   class bouser 
+   /**
+   * bouser 
+   * 
+   * @uses bojinn
+   * @package 
+   * @version $Id$
+   * @copyright Lingewoud B.V.
+   * @author Pim Snel <pim-AT-lingewoud-DOT-nl> 
+   * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+   */
+   class bouser extends bojinn
    {
 	  var $public_functions = Array
 	  (
@@ -37,62 +47,29 @@
 		 'del_record'				=> True,
 		 'save_object_config'		=> True,
 		 'multiple_actions'			=> True,
-		 'get_plugin_afa'			=> True,
 		 'mult_change_num_records'	=> True,
-		 'submit_to_plugin_afa'		=> True,
 		 'copy_record'				=> True,
-		 'scan_new_objects'			=> True
+		 'scan_new_objects'			=> True,
+		 'get_plugin_afa'			=> True,
+		 'submit_to_plugin_afa'		=> True,
 	  );
 
-	  var $so;
-	  var $session;
-	  var $sessionmanager;
-
-	  var $site_object; 
-	  var $site; 
-	  var $local_bo;
-	  var $magick;
-
-	  var $acl;
-
-	  var $plug;
-	  var $object_events_plugin_manager;
-
-	  var $current_config;
-	  var $action;
-	  var $common;
-	  
-	  var $repeat_input;
-	  var $where_key;
-	  var $where_value;
-	  var $where_string;
-
-	  /* debugging vars set them in preferences */
-	  var $debug_sql = false;
-	  var $debug_session = false;
-	  var $debug_site_arr =false;
-	  var $debug_object_arr =false;
-
-
-
+	  /**
+	  * bouser 
+	  * 
+	  * @access public
+	  * @return void
+	  */
 	  function bouser()
 	  {
-//_debug_array('   1');
-		 $this->common = CreateObject('jinn.bocommon');
-		 $this->session 		= &$this->common->session->sessionarray;	//reference to session array
-		 $this->sessionmanager	= &$this->common->session;					//reference to session manager object
+		 parent::bojinn();
 
-		 $this->current_config=$this->common->get_config();		
-
-		 $this->so = CreateObject('jinn.sojinn');
-
-//_debug_array('   2');
+		 /**
+		 * fixme make a better structure for acl
+		 */
 		 $this->acl = CreateObject('jinn.boacl');
 
-//_debug_array('   3');
-		 $this->magick = CreateObject('jinn.boimagemagick.inc.php');	
-
-		 list($_where_string,$_where_key,$_where_value,$_repeat_input)=$this->common->get_global_vars(array('where_string','where_key','where_value','repeat_input'));
+		 list($_where_string,$_where_key,$_where_value,$_repeat_input)=$this->get_global_vars(array('where_string','where_key','where_value','repeat_input'));
 
 		 if(!empty($_repeat_input)) $this->repeat_input  = $_repeat_input;
 
@@ -107,120 +84,155 @@
 			$this->session['last_where_string'] = $this->where_string_encoded; //fixme: is this used at all??
 		 }
 
-		 if ($this->session['site_id']) $this->site = $this->so->get_site_values($this->session['site_id']);
-		 if ($this->session['site_object_id']) $this->site_object = $this->so->get_object_values($this->session['site_object_id']);
-		 
 		 $this->plug = CreateObject('jinn.factory_plugins_db_fields');
 		 $this->plug->local_bo = &$this;
 
-		 $this->object_events_plugin_manager = CreateObject('jinn.factory_plugins_object_events'); //$this->include_plugins();
-		 $this->object_events_plugin_manager->local_bo = $this;
+		 $this->object_events_plugin_manager = CreateObject('jinn.factory_plugins_object_events'); 	
+		 $this->object_events_plugin_manager->local_bo = &$this;
 
 		 /* this is for the sidebox */
-		 global $local_bo;
-		 $local_bo=$this;
+		 /* fixme remove these two lines */
+		 //global $local_bo;
+		 //$local_bo=$this;
 
-		 /* do stuff for debugging */
-		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
-		 {
-			if($this->read_preferences('debug_sql')=='yes') $this->debug_sql=true;
-
-			if($this->read_preferences('debug_site_arr')=='yes') 
-			{
-			   $this->session['message']['debug'][]='SITE_ARRAY: '._debug_array($this->site,false);
-			}
-		
-			if($this->read_preferences('debug_object_arr')=='yes')
-			{
-			   $this->session['message']['debug'][]='OBJECT_ARRAY: '._debug_array($this->site_object,false);
-			}
-		 }
-
-			//backwards compatibility: check if unique id field is filled. If not: fill it now.
+		 //backwards compatibility: check if unique id field is filled. If not: fill it now.
 		 if($this->session['site_object_id'] && $this->site_object[unique_id] == '')
 		 {
 			$status = $this->so->set_unique_id($this->session['site_object_id']);
 			$this->site_object[unique_id] = $status[uid];
 		 }
-		 
-			//if user changes site, check if new objects need to be created for user generated tables
- 		 if($_POST['site_id'])
+
+		 // if user changes site:
+		 // check if a connection with database is possible
+		 // check if new objects need to be created for user generated tables
+		 if($this->session['site_id'] && !$this->session['site_object_id'])
 		 {
-			$this->scan_new_objects_silent();
-		 }
-//_debug_array('bouser constructor end');
-//_debug_array($this->session['mult_where_array']);
-	  }
-
-	  
-	  /* 
-	  @function field_is_enabled
-	  @abstract this function asserts that the DisableField plugin is not in use on this field
-	  */
-	  function field_is_enabled($objectID, $fieldname)
-	  {
-		$field_conf_arr=$this->so->get_field_values($objectID,$fieldname);
-		if($this->site_object[plugins])
-		{
-		   $testvalue=$this->get_plugin_bv($fieldname,'x','',$fieldname);
-		}
-		else
-		{
-		   $testvalue=$this->plug->call_plugin_bv($fieldname,'x','',$field_conf_arr);
-		}
-
-		return ($testvalue != '__disabled__');
-		
-	  }
-	  
-		//todo: these functions must be moved to sojinn
-	  function cur_upload_path()
-	  {
-		return $this->cur_upload('path');
-	  }
-	  
-	  function cur_upload_url()
-	  {
-		return $this->cur_upload('url');
-	  }
-
-	  function cur_upload($path_or_url)
-	  {
-		$path_or_url = 'cur_upload_'.$path_or_url;
-		if($this->site_object[$path_or_url] == '')
-		{
-			if($this->site[$path_or_url] == '')
+			if(!$this->so->test_site_db_by_id($this->session['site_id']))
 			{
-				return '' ; //FIXME
+			   $this->addError(lang('ERROR: Connection with database failed. Please check if database connection settings are correct'));
 			}
 			else
 			{
-				return $this->site[$path_or_url];
+			   $this->scan_new_objects_silent();
 			}
-		}
-		else
-		{
-			return $this->site_object[$path_or_url];
-		}
+		 }
 	  }
-	  
-		function read_session_filter($obj_id)
-		{
-			return $this->session['filter_settings'][$obj_id];
-		}
 
-		function save_session_filter($obj_id, $data)
-		{
-			$this->session['filter_settings'][$obj_id] = $data;
-		}
 
 	  /**
-	  @function records_per_page
-	  @abstract get number of records per page from user preferences
-	  @description first get object defines prefs and if there none 
-	  get general user defined and if none set to 10
-	  @todo implement object specific preferences
-	  **/
+	  * field_is_enabled 
+	  *
+	  * this function checks if a field is enabled
+	  *
+	  * @param mixed $objectID 
+	  * @param mixed $fieldname 
+	  * @access public
+	  * @return void
+	  */
+	  function field_is_enabled($objectID, $fieldname)
+	  {
+		 $field_conf_arr=$this->so->get_field_values($objectID,$fieldname);
+
+		 if($field_conf_arr[field_enabled]!=null && $field_conf_arr[field_enabled]==0)
+		 {
+			return false;
+		 }
+		 else
+		 {
+			return true;
+		 }
+
+	  }
+
+	  /**
+	  * cur_upload_path 
+	  * 
+	  * @todo: these functions must be moved to sojinn
+	  * @access public
+	  * @return void
+	  */
+	  function cur_upload_path()
+	  {
+		 return $this->cur_upload('path');
+	  }
+
+	  /**
+	  * cur_upload_url 
+	  * 
+	  * @todo: these functions must be moved to sojinn
+	  * @access public
+	  * @return void
+	  */
+	  function cur_upload_url()
+	  {
+		 return $this->cur_upload('url');
+	  }
+
+	  /**
+	  * cur_upload 
+	  * 
+	  * @todo: these functions must be moved to sojinn
+	  * @param mixed $path_or_url 
+	  * @access public
+	  * @return void
+	  */
+	  function cur_upload($path_or_url)
+	  {
+		 $path_or_url_key = 'cur_upload_'.$path_or_url;
+		 if($this->site_object[$path_or_url_key] == '')
+		 {
+			if($this->site[$path_or_url_key] == '')
+			{
+			   return '' ; //FIXME
+			}
+			else
+			{
+			   $url = $this->site[$path_or_url_key];
+			}
+		 }
+		 else
+		 {
+			$url = $this->site_object[$path_or_url_key];
+		 }
+
+		 return $url;
+	  }
+
+	  /**
+	  * read_session_filter 
+	  * 
+	  * @param mixed $obj_id 
+	  * @access public
+	  * @return void
+	  */
+	  function read_session_filter($obj_id)
+	  {
+		 return $this->session['filter_settings'][$obj_id];
+	  }
+
+	  /**
+	  * save_session_filter 
+	  * 
+	  * @param mixed $obj_id 
+	  * @param mixed $data 
+	  * @access public
+	  * @return void
+	  */
+	  function save_session_filter($obj_id, $data)
+	  {
+		 $this->session['filter_settings'][$obj_id] = $data;
+	  }
+
+	  /**
+	  * records_per_page: get number of records per page from user preferences
+	  *
+	  * first get object defines prefs and if there none 
+	  * get general user defined and if none set to 10
+	  * 
+	  * @todo implement object specific preferences
+	  * @access public
+	  * @return void
+	  */
 	  function records_per_page()
 	  {
 		 $pref_default_record_num=intval($this->read_preferences('default_record_num'));
@@ -238,29 +250,48 @@
 	  }
 
 	  /**
-	  @abstract get_offset
-	  @abstract simple calculation to get sql-offset from current page and record per page
+	  * get_offset: simple calculation to get sql-offset from current page and record per page
+	  * 
+	  * @param mixed $current_page 
+	  * @param mixed $rec_per_page 
+	  * @access public
+	  * @return void
 	  */
 	  function get_offset($current_page,$rec_per_page)
 	  {
-		 // (1 - 1) * 8 = 0 -> LIMIT 0,8
-		 // (2 - 1) * 8 = 8 -> LIMIT 8,8
 		 $offset = ($current_page-1)*$rec_per_page;
 
 		 return $offset;	
 	  }
 
-
+	  /**
+	  * mult_change_num_records 
+	  * 
+	  * @access public
+	  * @return void
+	  */
 	  function mult_change_num_records()
 	  {
 		 if(is_numeric)	$this->session['mult_records_amount']=intval($_POST['num_records']);
 
 		 $this->sessionmanager->save();
-
-		 $this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries&insert=yes');
 	  }
 
-	  //remove this one
+	  /**
+	  * get_records 
+	  * 
+	  * @param mixed $table 
+	  * @param mixed $where_key 
+	  * @param mixed $where_value 
+	  * @param mixed $offset 
+	  * @param mixed $range 
+	  * @param mixed $value_reference 
+	  * @param string $order_by 
+	  * @param string $field_list 
+	  * @param string $where_condition 
+	  * @access public
+	  * @return void
+	  */
 	  function get_records($table,$where_key,$where_value,$offset,$range,$value_reference,$order_by='',$field_list='*',$where_condition='')
 	  {
 		 if (!$value_reference)
@@ -270,55 +301,21 @@
 
 		 $records = $this->so->get_record_values($this->session['site_id'],$table,$where_key,$where_value,$offset,$range,$value_reference,$order_by,$field_list,$where_condition);
 
-
 		 return $records;
 	  }
 
-	  function record_insert()
-	  {
-		 $data = $this->remove_helper_fields($this->http_vars_pairs($_POST, $_FILES));
-		 $status=$this->so->insert_object_data($this->session['site_id'],$this->site_object[table_name],$data);
-		 $m2m_data=$this->http_vars_pairs_m2m($_POST);
-		 $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
-		 $status_relations=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
-
-		 if ($status[ret_code])	
-		 {
-			$this->session['message']['error']=lang('Record NOT succesfully saved. Unknown error');
-			$this->session['message']['error_code']=111;
-		 }
-		 else
-		 {
-		 $this->session['message']['info'][]='Record successfully added';
-		 }
-
-		 if($this->debug_sql==true)
-		 {
-			$this->session['message']['debug'][]='SQL: '.$status[sql];
-		 }
-
-		 $this->sessionmanager->save();
-
-		 if($_POST['reopen'] && $status[where_string])
-		 {
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
-		 }
-		 elseif($_POST['add_new'])
-		 {
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form');
-		 }
-		 else
-		 {
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
-
-
-	  /* 
-	  @function mult_to_fld
-	  @abstract when multiple records are updated this function translates all fields 
-	  to single records so the records can be processed normally.
-	  @note  If a plugin developer wants to use a prefix it must be exactly charachter long
+	  /**
+	  * mult_to_fld 
+	  * 
+	  * when multiple records are updated this function translates all fields
+	  * to single records so the records can be processed normally.
+	  * 
+	  * @param mixed $i 
+	  * @param string $type 
+	  * @note If a plugin developer wants to use a prefix it must be exactly charachter long
+	  * @todo can't we remove this function 
+	  * @access private
+	  * @return array with single record fields
 	  */
 	  function mult_to_fld($i,$type = '_POST')
 	  {
@@ -348,8 +345,10 @@
 			   {
 				  $post_arr['M2M'.substr($key,3,1).'XX'.substr($key,6)]=$val;
 			   }
-			   else
+			   // m2o relation fields
+			   elseif(substr($key,0,3)=='M2O' && intval(substr($key,4,2)) == $i)
 			   {
+				  $post_arr['FLDXXX'.substr($key,6)]=$val;
 			   }
 			}
 		 }
@@ -372,1123 +371,879 @@
 		 return $post_arr;
 	  }
 
+	  /**
+	  * multiple_actions: handler for multiple actions called from the list view
+	  * 
+	  * @access public
+	  * @todo when we modernize the uilist class this function must go to the ui class
+	  * @return void
+	  */
 	  function multiple_actions()
 	  {
 		 switch($_POST['action'])
 		 {
 			case 'del':
-			$where_arr=$this->set_multiple_where();
-			$this->multiple_records_delete($where_arr);
-			break;
+			   $where_arr=$this->set_multiple_where();
+			   $this->multiple_records_delete($where_arr,$this->site_object);
+			   break;
 			case 'edit':
-			$this->session['mult_where_array']=$this->set_multiple_where();
-			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
-			break;
+			   $this->session['mult_where_array']=$this->set_multiple_where();
+			   $this->sessionmanager->save();
+			   $this->exit_and_open_screen('jinn.uiu_edit_record.edit_record');
+			   break;
 			case 'view':
-			$this->session['mult_where_array']=$this->set_multiple_where();
-			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.view_multiple_records');
-			break;
+			   $this->session['mult_where_array']=$this->set_multiple_where();
+			   $this->sessionmanager->save();
+			   $this->exit_and_open_screen('jinn.uiu_edit_record.read_record');
+			   break;
 			case 'export':
-			$this->session['mult_where_array']=$this->set_multiple_where();
-			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiu_export.export');
-			break;
+			   $this->session['mult_where_array']=$this->set_multiple_where();
+			   $this->sessionmanager->save();
+			   $this->exit_and_open_screen('jinn.uiu_export.export');
+			   break;
 			default:
-			$this->session['message'][error]=lang('Operation on multiple records failed.');
-			$this->session['message'][error_code]=100;
-			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
+			   $this->addError(lang('Operation on multiple records failed.'));
+			   $this->addDebug(__LINE__,__FILE__);
 
-	  function set_multiple_where()
-	  {
-		 reset($_POST);
-		 while (list($key, $val) = each($_POST))
-		 {
-			if(substr($key,0,3)=='SEL')
-			{
-			   $where_arr[]=base64_decode($val);
+			   $this->exit_and_open_screen('jinn.uiuser.index');
 			}
 		 }
-		 return $where_arr;
-	  }
 
-	  function multiple_records_insert()
-	  {
-		 unset($this->session['mult_where_array']);
-		 if(is_numeric($_POST[MLTNUM]) and intval($_POST[MLTNUM])>0)
+		 /**
+		 * set_multiple_where 
+		 *
+		 * @todo create documentation
+		 * @access public
+		 * @return void
+		 */
+		 function set_multiple_where()
 		 {
-			for($i=0;$i<$_POST[MLTNUM];$i++)
+			reset($_POST);
+			while (list($key, $val) = each($_POST))
 			{
-			   $post_arr=$this->mult_to_fld($i,'_POST');
-			   $files_arr=$this->mult_to_fld($i,'_FILES');
-
-			   $data=$this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr));
-			   $status=$this->so->insert_object_data($this->session['site_id'],$this->site_object[table_name],$data);
-			   if($this->debug_sql==true)
+			   if(substr($key,0,3)=='SEL')
 			   {
-				  $this->session['message']['debug'][]='SQL: '.$status[sql];
-			   }
-
-			   $this->session['mult_where_array'][]=$status[where_string];
-			   $m2m_data=$this->http_vars_pairs_m2m($post_arr);
-			   $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
-			   $status_relations=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
-			}
-		 }
-
-		 if ($status[ret_code]==0)
-		 {
-			$this->session['message']['info']='Records successfully added';
-		 }
-		 else 
-		 {
-			$this->session['message'][error]=lang('One or more records NOT succesfully added.');
-			$this->session['message'][error_code]=107;
-		 }
-
-
-		 $this->sessionmanager->save();
-
-		 if($_POST['continue'] && is_array($this->session['mult_where_array']) )
-		 {
-
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries'); //mult_where_string
-		 }
-		 elseif($_POST['add_new'])
-		 {
-			unset($this->session['mult_where_array']);
-			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
-		 }
-		 else
-		 {
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
-
-
-	  function remove_helper_fields($data)
-	  {
-			//removes helper form fields created by plugins
-		foreach($this->plug->registry->plugins as $plugin)
-		{
-			foreach($data as $key => $field)
-			{
-				if(strpos($field[name], $plugin['helper_fields_substring']) === false)
-				{
-				}
-				else
-				{
-					unset($data[$key]);
-				}
-			}
-		}
-		return $data;
-	  }
-	  
-	  function multiple_records_update()
-	  {
-		 /* exit and go to del function */
-		 if($_POST['delete'])
-		 {
-			$this->multiple_records_delete($this->session['mult_where_array']);
-		 }
-		 unset($this->session['mult_where_array']);
-
-		 if(is_numeric($_POST[MLTNUM]) and intval($_POST[MLTNUM])>0)
-		 {
-			for($i=0;$i<$_POST[MLTNUM];$i++)
-			{
-			   $post_arr=$this->mult_to_fld($i,'_POST');
-			   $files_arr=$this->mult_to_fld($i,'_FILES');
-			   $data = $this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr));
-			   $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
-			   $this->session['mult_where_array'][]=$where_string;
-			   $table=$this->site_object[table_name];
-			   $m2m_data=$this->http_vars_pairs_m2m($post_arr);
-			   $status=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
-			   $status=$this->so->update_object_data($this->session['site_id'], $table, $data, $where_key,$where_value,$where_string);
-			   $eventstatus = $this->run_event_plugins('on_update', $post_arr);
-			}
-		 }
-
-		 if ($status[status]==1)	
-		 {
-			$this->session['message']['info']='Records successfully saved';
-			if($eventstatus) $this->session['message'][info].=', but error in event plugin';
-		 }
-		 else 
-		 {
-			$this->session['message'][error]=lang('One or more records NOT succesfully saved.');
-			$this->session['message'][error_code]=106;
-		 }
-
-		 $this->sessionmanager->save();
-
-		 if($_POST['continue'] && is_array($this->session['mult_where_array']) )
-		 {
-
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries'); //mult_where_string
-		 }
-		 elseif($_POST['add_new'])
-		 {
-			unset($this->session['mult_where_array']);
-			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
-		 }
-		 else
-		 {
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
-
-
-	  function multiple_records_delete($where_arr)
-	  {
-		 $status=1;
-		 foreach ($where_arr as $where_string)
-		 {
-			$where_string =stripslashes($where_string);
-
-			$stat=$this->so->delete_object_data($this->session['site_id'], $this->site_object['table_name'], false, false,$where_string);
-			if($stat!=1) $status=0;
-		 }
-
-		 if ($status==1) $this->session['message'][info]=lang('Records succesfully deleted');
-		 else 
-		 {
-			$this->session['message'][error]=lang('Records NOT succesfully deleted.');
-			$this->session['message'][error_code]=101;
-		 }
-
-		 $this->sessionmanager->save();
-		 $this->common->exit_and_open_screen('jinn.uiuser.index');
-	  }
-
-
-	  function run_event_plugins($event, $post)
-	  {
-		 //get all events plugins configured to this object
-		 $object_arr=$this->so->get_object_values($this->site_object[object_id]);
-		 $stored_configs = unserialize(base64_decode($object_arr[events_config]));
-		 //_debug_array($stored_configs);
-		 if(is_array($stored_configs))
-		 {
-			foreach($stored_configs as $config)
-			{
-			   if($event == $config[conf][event])
-			   {
-				  //_debug_array("valid configuration found");
-				  /*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
-				  met als argumenten de _POST array en de plugin configuratie. 
-				  Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
-				  De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
-
-				  $status = $this->object_events_plugin_manager->call_event_action($post, $config);
+				  $where_arr[]=base64_decode($val);
 			   }
 			}
-		 }
-	  }
-
-	  function record_update()
-	  {
-		 if($_POST['delete'])
-		 {
-			$this->del_record();
+			return $where_arr;
 		 }
 
-		 $where_key = $this->where_key;
-		 $where_value = $this->where_value;
-		 $where_string=$this->where_string;
-		 $table=$this->site_object[table_name];
-
-		 $m2m_data=$this->http_vars_pairs_m2m($_POST);
-		 $status[o2o]=$this->o2o_update();
-
-		 $status=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
-		 $data = $this->remove_helper_fields($this->http_vars_pairs($_POST, $_FILES));
-		 $status=$this->so->update_object_data($this->session['site_id'], $table, $data, $where_key,$where_value,$where_string);
-
-		 if ($status[ret_code])
+		 /**
+		 * multiple_records_insert 
+		 * 
+		 * @param mixed $numrecs 
+		 * @param mixed $object_arr 
+		 * @access public
+		 * @todo maybe combine insert and update
+		 * @return void
+		 */
+		 function multiple_records_insert($numrecs,$object_arr)
 		 {
-			$this->addtoErrorArr(lang('Record NOT succesfully saved'),104);
-		 }
-		 else 
-		 {
-			$this->session['message'][info]='Record succesfully saved';
-			$eventstatus = $this->run_event_plugins('on_update', $_POST);
-			if($eventstatus) $this->session['message'][info].=', but error in On Update event plugin';
-		 }
+			//unset($this->session['mult_where_array']);
 
-		 $this->addtoDebugArr('SQL: '.$status[sql]);
-
-		 $this->sessionmanager->save();
-
-		 if($_POST['continue'] || $_POST['reopen'])
-		 {
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
-		 }
-		 elseif($_POST['add_new'])
-		 {
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form');
-		 }
-		 else
-		 {
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
-
-		/* fixme move to common */
-	  function addtoErrorArr($msg,$error_code)
-	  {
-		 $this->session['message'][error][]=$msg;
-		 $this->session['message'][error_code][]=$error_code;
-	  }
-
-
-		/* fixme move to common */
-	  function addtoDebugArr($msg)
-	  {
-		 if($this->debug_sql==true)
-		 {
-			$this->session['message']['debug'][]='SQL: '.$msg;
-		 }
-	  }
-
-	  function o2o_update()
-	  {		 
-		 $o2o_data=$this->http_vars_pairs_o2o($_POST, $_FILES);
-
-		 if(is_array($o2o_data))
-		 {
-			// FIXME implement m2m relations for o2o related objects
-			foreach($o2o_data as $o2o_entry)
+			if(is_numeric($numrecs) and intval($numrecs)>0)
 			{
-			   if($o2o_entry[meta][O2OW])
+			   for($i=0;$i<$numrecs;$i++)
 			   {
+				  $post_arr=$this->mult_to_fld($i,'_POST');
+				  $files_arr=$this->mult_to_fld($i,'_FILES');
 
-				  //_debug_array($o2o_data);
-				  //die();
-				  // update
-				  $status=$this->so->update_object_data($this->session['site_id'], $o2o_entry[meta][O2OT], $o2o_entry[data], '','',$this->so->strip_magic_quotes_gpc($o2o_entry[meta][O2OW]));	   
+				  $data=$this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr,$object_arr[object_id]));
+				  $status=$this->so->insert_object_data($this->session['site_id'],$object_arr[table_name],$data);
+
+				  $status['mult_where_array'][]=$status[where_string];
+
+				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
+				  $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
+				  $status[relations]=$this->so->update_object_many_data($object_arr['parent_site_id'], $m2m_data);
 			   }
-			   else
-			   {
-				  // insert
-				  $status=$this->so->insert_object_data($this->session['site_id'],$o2o_entry[meta][O2OT],$o2o_entry[data]);
-			   }			   
 			}
-		 }
-		 return $status;
-	  }
 
+			return $status;
 
-
-	  function del_record() 
-	  {
-		 $table=$this->site_object[table_name];
-		 $where_key=stripslashes($this->where_key);
-		 $where_value=stripslashes($this->where_value);
-		 $where_string=stripslashes($this->where_string);
-
-		 $status=$this->so->delete_object_data($this->session['site_id'], $table, $where_key,$where_value,$where_string);
-
-		 if ($status==1)	$this->session['message'][info]=lang('Record succesfully deleted');
-		 else 			
-		 {
-			$this->session['message'][error]=lang('Record NOT succesfully deleted.');
-			$this->session['message'][error_code]=105;
 		 }
 
-		 $this->sessionmanager->save();
-		 $this->common->exit_and_open_screen('jinn.uiuser.index');
-	  }
-
-
-	  function copy_record()
-	  {
-		 // check if id is autoincrementing
-		 $autokey= $this->so->check_auto_incr($this->session['site_id'],$this->site_object['table_name']);
-		 if($autokey)
+		 /**
+		 * multiple_records_update: the main update record function
+		 *
+		 *
+		 * @todo make more efficient multiple vs single
+		 * @param mixed $mult_where_array 
+		 * @access public
+		 * @return void
+		 */
+		 function multiple_records_update($mult_where_array=false,$numrecs,$object_arr,$illegal_prefix_arr=false)
 		 {
-			$status=$this->so->copy_record($this->session['site_id'],$this->site_object[table_name],$this->where_string,$autokey);
-			if ($status[ret_code])
+			/* exit and go to del function */
+			if($_POST['delete'])
 			{
-			   $this->addtoErrorArr(lang('Record NOT succesfully copied'),102);
+			   $this->multiple_records_delete($mult_where_array,$object_arr);
+			}
+
+			//			unset($this->session['mult_where_array']);
+
+			if(is_array($illegal_prefix_arr))
+			{
+			   foreach($illegal_prefix_arr as $ill_prefix)
+			   {
+				  $_POST = $this->filter_array_with_prefix($_POST,$ill_prefix,true,true);
+				  // reset($_POST);
+			   }
+			}
+
+			//so its multiple
+			if($numrecs>0)
+			{
+			   for($i=0;$i<$numrecs;$i++)
+			   {
+				  $post_arr=$this->mult_to_fld($i,'_POST');
+				  $files_arr=$this->mult_to_fld($i,'_FILES');
+
+				  $data = $this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr,$object_arr[object_id]));
+				  $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
+				  // $this->session['mult_where_array'][]=$where_string;
+				  $status['mult_where_array'][]=$where_string;
+				  
+				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
+
+				  $status[m2m]=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
+				  $status[record]=$this->so->update_object_data($object_arr['parent_site_id'], $object_arr[table_name], $data, $where_key,$where_value,$where_string);
+
+				  //_debug_array($post_arr);
+				  $status[eventstatus] = $this->run_event_plugins('on_update', $post_arr);
+			   }
+			}
+
+			return $status;	
+
+
+		 }
+
+		 /**
+		 * multiple_records_delete 
+		 * 
+		 * @param mixed $where_arr 
+		 * @param mixed $object_arr 
+		 * @param mixed $redirect 
+		 * @access public
+		 * @return void
+		 */
+		 function multiple_records_delete($where_arr,$object_arr,$redirect=true)
+		 {
+			foreach ($where_arr as $where_string)
+			{
+			   $where_string =stripslashes($where_string);
+			   $status=$this->so->delete_object_data($object_arr['parent_site_id'], $object_arr['table_name'], false, false,$where_string);
+			}
+
+			if($redirect)
+			{
+			   if ($status[error])
+			   {
+				  $this->addError(lang('Records NOT succesfully deleted.'));
+			   }
+			   else 
+			   {
+				  $this->addInfo(lang('Records succesfully deleted'));
+			   }
+			   $this->addDebug(__LINE__,__FILE__);
+
+			   $this->exit_and_open_screen('jinn.uiuser.index');
 			}
 			else
 			{
-			   $this->session['message'][info]=lang('Record succesfully copied');
-			}
-			$this->addtoDebugArr('SQL: '.$status[sql]);
-
-
-			if($status[where_string])
-			{
-			   $this->sessionmanager->save();
-			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
+			   return $status;
 			}
 		 }
-		 else
+
+		 /**
+		 * remove_helper_fields 
+		 * 
+		 * @param mixed $data 
+		 * @access public
+		 * @return void
+		 */
+		 function remove_helper_fields($data)
 		 {
-			// FIXME disable copy icon when its not possible
-			$this->addtoErrorArr(lang('Cannot copy a record from this table.'),103);
+			//removes helper form fields created by plugins
+			foreach($this->plug->registry->plugins as $plugin)
+			{
+			   foreach($data as $key => $field)
+			   {
+				  if(strpos($field[name], $plugin['helper_fields_substring']) === false)
+				  {
+					 //
+				  }
+				  else
+				  {
+					 unset($data[$key]);
+				  }
+			   }
+			}
+			return $data;
 		 }
 
-		 $this->sessionmanager->save();
-		 $this->common->exit_and_open_screen('jinn.uiuser.index');
-	  }
+		 /**
+		 * run_event_plugins 
+		 * 
+		 * @param mixed $event 
+		 * @param mixed $post 
+		 * @access public
+		 * @return void
+		 * @todo move to enent plugin class
+		 */
+		 function run_event_plugins($event, $post)
+		 {
+			//get all events plugins configured to this object
+			$object_arr=$this->so->get_object_values($this->site_object[object_id]);
+			$stored_configs = unserialize(base64_decode($object_arr[events_config]));
+			if(is_array($stored_configs))
+			{
+			   foreach($stored_configs as $config)
+			   {
+				  if($event == $config[conf][event])
+				  {
+					 //_debug_array("valid configuration found");
+					 /*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
+					 met als argumenten de _POST array en de plugin configuratie. 
+					 Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
+					 De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
 
-	  function get_data($columns_arr, $filter_where)
-	  {
+					 $status = $this->object_events_plugin_manager->call_event_action($post, $config);
+				  }
+			   }
+			}
+		 }
+
+		 /**
+		 * o2o_update: inserts or updates a record which from the object that has a one to one relation
+		 * 
+		 * @note: this thing only worx at the moment with auto incrementing primaries, inform the developer
+		 * @param mixed $primary_val 
+		 * @access public
+		 * @return void
+		 */
+		 function o2o_update($primary_val)
+		 {		 
+			if(!$primary_val)
+			{
+			   return;
+			}
+			$o2o_data=$this->http_vars_pairs_o2o($_POST, $_FILES,$primary_val);
+
+			if(is_array($o2o_data))
+			{
+			   // FIXME implement m2m relations for o2o related objects
+			   foreach($o2o_data as $o2o_entry)
+			   {
+				  $where= "{$o2o_entry[data][0][name]}={$o2o_entry[data][0][value]}";
+
+				  $status=$this->so->update_object_record($this->session['site_id'], $o2o_entry[meta][O2OT], $o2o_entry[data], '','',$where,true);	   
+			   }
+			}
+			return $status;
+		 }
+
+		 /**
+		 * del_record 
+		 * 
+		 * @fixme: move this record to a gui class
+		 * @access public
+		 * @return void
+		 */
+		 function del_record() 
+		 {
+			$table=$this->site_object[table_name];
+			$where_key=stripslashes($this->where_key);
+			$where_value=stripslashes($this->where_value);
+			$where_string=stripslashes($this->where_string);
+
+			$status=$this->so->delete_object_data($this->session['site_id'], $table, $where_key,$where_value,$where_string);
+
+			if ($status[error])
+			{
+			   $this->addError(lang('Record NOT succesfully deleted'));
+			}
+			else
+			{
+			   $this->addInfo(lang('Record succesfully deleted'));
+			}
+			$this->addDebug(__LINE__,__FILE__,$status[sql]);
+
+			$this->exit_and_open_screen($this->japielink.'jinn.uiuser.index');
+		 }
+
+
+		 /**
+		 * copy_record 
+		 * 
+		 * @access public
+		 * @return void
+		 */
+		 function copy_record()
+		 {
+			// check if id is autoincrementing
+			$autokey= $this->so->check_auto_incr($this->session['site_id'],$this->site_object['table_name']);
+			if($autokey)
+			{
+			   $status=$this->so->copy_record($this->session['site_id'],$this->site_object[table_name],$this->where_string,$autokey);
+			   if ($status[ret_code])
+			   {
+				  $this->addError(lang('Record NOT succesfully copied'));
+			   }
+			   else
+			   {
+				  $this->addInfo(lang('Record succesfully copied'));
+			   }
+			   $this->addDebug(__LINE__,__FILE__,$status[sql]);
+
+			   if($status[where_string])
+			   {
+				  $this->exit_and_open_screen($this->japielink.'jinn.uiu_list_records.display_last_records_page');
+				  #$this->exit_and_open_screen('jinn.uiu_edit_record.edit_record&where_string='.base64_encode($status[where_string]));
+			   }
+			}
+			else
+			{
+			   // FIXME disable copy icon when its not possible
+			   $this->addError(lang('Cannot copy a record from this table.'));
+			   $this->addDebug(__LINE__,__FILE__);
+			}
+
+			$this->exit_and_open_screen($this->japielink.'jinn.uiuser.index');
+		 }
+
+		 /**
+		 * get_data 
+		 * 
+		 * @param mixed $columns_arr 
+		 * @param mixed $filter_where 
+		 * @access public
+		 * @return void
+		 */
+		 function get_data($columns_arr, $filter_where)
+		 {
 			//new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
 			//partly implemented in bouser, partly in sojinn
-			
-		$site_id = $this->session['site_id'];
-		$table_name = $this->site_object['table_name'];
+
+			$site_id = $this->session['site_id'];
+			$table_name = $this->site_object['table_name'];
 
 			//get 1-many relations and replace straight columns with relation definitions
-		$relation_array = $this->extract_O2M_relations($this->site_object['relations']);
-		foreach($columns_arr as $key => $column)
-		{
-			if(is_array($relation_array[$column]))
+			$relation_array = $this->extract_O2M_relations($this->site_object['relations']);
+			foreach($columns_arr as $key => $column)
 			{
-				$columns_arr[$key] = $relation_array[$column];
-			}
-		}
-
-		$relation_array = $this->extract_M2M_relations($this->site_object['relations']);
-		if(is_array($relation_array))
-		{
-			foreach(array_values($relation_array) as $key => $relation)
-			{
-				$relation[name] = 'relation_'.($key+1);
-				$columns_arr[] = $relation;
-			}
-		}
-		return $this->so->get_data($site_id, $table_name, $columns_arr, $filter_where);
-
-	  }
-
-	  // one-to-one relations
-	  function extract_O2O_relations($string)
-	  {
-		 $relations_arr = unserialize(base64_decode($string));
-
-		if(is_array($relations_arr) && $relations_arr)
-		{
-			 foreach($relations_arr as $relation)
-			 {
-				if ($relation[type]=='3')
-				{
-					$O2O_relations[$relation[org_field]]=$relation;
-				}
-			 }
-			 return $O2O_relations;
-		}
-		else //old format compatibility
-		{
-			 $relations_array = explode('|',$string);
-	
-			 foreach($relations_array as $relation)
-			 {
-				$relation_part=explode(':',$relation);
-				if ($relation_part[0]=='3')
-				{
-				   $relation_arr[$relation_part[1]] = array
-				   (
-					  'type'=>$relation_part[0],
-					  'org_field'=>$relation_part[1],
-					  'related_with'=>$relation_part[3],
-					  'object_conf'=>$relation_part[4]
-				   );
-				}
-	
-			 }
-			 return $relation_arr;
-		}
-	  }
-
-	  // one-to-many relations
-	  function extract_O2M_relations($string)
-	  {
-		 $relations_arr = unserialize(base64_decode($string));
-
-		if(is_array($relations_arr) && $relations_arr)
-		{
-			 foreach($relations_arr as $relation)
-			 {
-				if ($relation[type]=='1')
-				{
-					$O2M_relations[$relation[org_field]]=$relation;
-				}
-			 }
-			 return $O2M_relations;
-		}
-		else //old format compatibility
-		{
-			 $relations_array = explode('|',$string);
-	
-			 foreach($relations_array as $relation)
-			 {
-				$relation_part=explode(':',$relation);
-				if ($relation_part[0]=='1')
-				{
-				   $relation_arr[$relation_part[1]] = array
-				   (
-					  'type'=>$relation_part[0],
-					  'org_field'=>$relation_part[1],
-					  'related_with'=>$relation_part[3],
-					  'display_field'=>$relation_part[4]
-				   );
-				}
-	
-			 }
-			 return $relation_arr;
-		}
-	  }
-
-
-	  // many-to-many relations
-	  function extract_M2M_relations($string)
-	  {
-		 $relations_arr = unserialize(base64_decode($string));
-
-		if(is_array($relations_arr) && $relations_arr)
-		{
-			 $i=0;
-			 foreach($relations_arr as $relation)
-			 {
-				if ($relation[type]=='2')
-				{
-				   $tmp=explode('.',$relation[via_primary_key]);
-				   $relation[via_table]=$tmp[0];
-				   $tmp=explode('.',$relation[display_field]);
-				   $relation[display_table]=$tmp[0];
-				   
-					$M2M_relations[$i]=$relation;
-				}
-				$i++;
-			 }
-			 return $M2M_relations;
-		}
-		else //old format compatibility
-		{
-			 $relations_array = explode('|',$string);
-	
-			 foreach($relations_array as $relation)
-			 {
-				$relation_part=explode(':',$relation);
-				if ($relation_part[0]=='2')
-				{
-				   $tmp=explode('.',$relation_part[1]);
-				   $via_table=$tmp[0];
-				   $tmp=explode('.',$relation_part[4]);
-				   $display_table=$tmp[0];
-	
-				   $relation_arr[] = array
-				   (
-					  'type'=>$relation_part[0],
-					  'via_primary_key'=>$relation_part[1],
-					  'via_foreign_key'=>$relation_part[2],
-					  'via_table'=>$via_table,
-					  'foreign_key'=>$relation_part[3],
-					  'display_field'=>$relation_part[4],
-					  'display_table'=>$display_table
-				   );
-				}
-			 }
-			 return $relation_arr;
-		}
-	  }
-
-
-
-	  function get_related_field($relation_array)
-	  {
-		 $table_info=explode('.',$relation_array[related_with]);
-		 $table=$table_info[0];
-		 $related_field=$table_info[1];
-
-		 $table_info_DF1=explode('.',$relation_array[display_field]);
-		 $table_display=$table_info_DF1[0];
-		 $display_field=$table_info_DF1[1];
-
- 		 $table_info_DF2=explode('.',$relation_array[display_field_2]);
-		 $display_field_2=$table_info_DF2[1];
-
-  		 $table_info_DF3=explode('.',$relation_array[display_field_3]);
-		 $display_field_3=$table_info_DF3[1];
-
-		 $allrecords=$this->get_records($table,'','','','','name',$display_field);
-
-		 if(is_array($allrecords))
-		 {
-			 foreach ($allrecords as $record)
-			 {
-			   $displaystring = $record[$display_field];
-			   if($display_field_2!='') $displaystring .= ' '.$record[$display_field_2];
-			   if($display_field_3!='') $displaystring .= ' '.$record[$display_field_3];
-
-			   $related_fields[]=array
-				(
-				   'value'=>$record[$related_field],
-				   'name'=>$displaystring
-				);
-			 }
-		 }
-		 return $related_fields;
-	  }
-
-	  function get_related_value($relation_array,$value)
-	  {
-		 $table_info=explode('.',$relation_array[related_with]);
-		 $table=$table_info[0];
-		 $related_field=$table_info[1];
-
-		 $table_info2=explode('.',$relation_array[display_field]);
-		 $table_display=$table_info2[0];
-		 $display_field=$table_info2[1];
-
-		 $allrecords=$this->get_records($table,'','','','','name',$display_field);
-
-
-		 if(is_array($allrecords))
-		 foreach ($allrecords as $record)
-		 {
-			if($record[$related_field]==$value) return $record[$display_field];
-		 }
-	  }
-
-	  function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
-	  {
-		 while(list($key, $val) = each($HTTP_POST_VARS)) 
-		 {
-			if(substr($key,0,6)=='FLDXXX')
-			{
-			   // being backwards compatible, check for old method 
-			   if($this->site_object['plugins'])
+			   if(is_array($relation_array[$column]))
 			   {
-				  $filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES,$this->site_object['plugins']);
+				  $columns_arr[$key] = $relation_array[$column];
 			   }
-			   else
+			}
+
+			$relation_array = $this->extract_M2M_relations($this->site_object['relations']);
+			if(is_array($relation_array))
+			{
+			   foreach(array_values($relation_array) as $key => $relation)
 			   {
-				  $field_values=$this->so->get_field_values($this->site_object[object_id],substr($key,6));
-				  //_debug_array($field_values);
+				  $relation[name] = 'relation_'.($key+1);
+				  $columns_arr[] = $relation;
+			   }
+			}
+			return $this->so->get_data($site_id, $table_name, $columns_arr, $filter_where);
+
+		 }
+
+		 /**
+		 * extract_m2o_relations 
+		 * 
+		 * @param mixed $string 
+		 * @access public
+		 * @return void
+		 */
+		 function extract_m2o_relations($string)
+		 {
+			$relations_arr = unserialize(base64_decode($string));
+
+			if(is_array($relations_arr) && $relations_arr)
+			{
+			   foreach($relations_arr as $relation)
+			   {
+				  if ($relation[type]=='4')
+				  {
+					 $m2o_relations[]=$relation;
+				  }
+			   }
+			   return $m2o_relations;
+			}
+		 }
+
+		 /**
+		 * extract_O2O_relations 
+		 * 
+		 * @param mixed $string 
+		 * @access public
+		 * @return void
+		 */
+		 function extract_O2O_relations($string)
+		 {
+			$relations_arr = unserialize(base64_decode($string));
+
+			if(is_array($relations_arr) && $relations_arr)
+			{
+			   foreach($relations_arr as $relation)
+			   {
+				  if ($relation[type]=='3')
+				  {
+					 $O2O_relations[$relation[org_field]]=$relation;
+				  }
+			   }
+			   return $O2O_relations;
+			}
+			else //old format compatibility
+			{
+			   $relations_array = explode('|',$string);
+
+			   foreach($relations_array as $relation)
+			   {
+				  $relation_part=explode(':',$relation);
+				  if ($relation_part[0]=='3')
+				  {
+					 $relation_arr[$relation_part[1]] = array
+					 (
+						'type'=>$relation_part[0],
+						'org_field'=>$relation_part[1],
+						'related_with'=>$relation_part[3],
+						'object_conf'=>$relation_part[4]
+					 );
+				  }
+
+			   }
+			   return $relation_arr;
+			}
+		 }
+
+
+		 /**
+		 * extract_O2M_relations 
+		 * 
+		 * @param mixed $string 
+		 * @access public
+		 * @return void
+		 */
+		 function extract_O2M_relations($string)
+		 {
+			if(!$string) return;
+			$relations_arr=$this->bcompat->relations_up2date($string);	
+
+			if(is_array($relations_arr))
+			{
+			   foreach($relations_arr as $relation)
+			   {
+				  if ($relation[type]=='1')
+				  {
+					 $O2M_relations[$relation[local_key]]=$relation;
+				  }
+			   }
+			   return $O2M_relations;
+			}
+			else // ERROR
+			{
+			   return; //die('FIXME do an automatic update of all relation');
+			}
+		 }
+
+		 /**
+		 * extract_M2M_relations 
+		 * 
+		 * @param mixed $string 
+		 * @access public
+		 * @return void
+		 */
+		 function extract_M2M_relations($string)
+		 {
+			if(!$string) return;
+			$relations_arr=$this->bcompat->relations_up2date($string);	
+
+			if(is_array($relations_arr))
+			{
+			   foreach($relations_arr as $relation)
+			   {
+				  if ($relation[type]=='2')
+				  {
+					 $M2M_relations[]=$relation;
+				  }
+			   }
+			   return $M2M_relations;
+			}
+			else //error but pretend its empty ;)
+			{
+			   return;
+			}
+		 }
+
+		 /**
+		 * get_related_field: used by the one tro many relation widget for creating the selectbox  
+		 * 
+		 * @param mixed $relation_array 
+		 * @access public
+		 * @return void
+		 */
+		 function get_related_field($relation_array)
+		 {
+			$displ_arr=unserialize($relation_array[foreign_showfields]);		
+
+			$allrecords=$this->get_records($relation_array[foreign_table],'','','','','name');
+
+			if(is_array($allrecords))
+			{
+			   foreach ($allrecords as $record)
+			   {
+				  unset($displaystring);
+				  foreach($displ_arr as $displ_str)
+				  {
+					 if( $displaystring)
+					 {
+						$displaystring.=' ';							  
+					 }
+					 $displaystring .= $record[$displ_str];
+				  }
+				  $related_fields[]=array
+				  (
+					 'value'=>$record[$relation_array[foreign_key]],
+					 'name'=>$displaystring
+				  );
+			   }
+			}
+			return $related_fields;
+		 }
+
+
+
+		 /**
+		 * get_related_value 
+		 * 
+		 * @param mixed $relation_array 
+		 * @param mixed $value 
+		 * @access public
+		 * @fixme optimize use smarter sql!!!
+		 * @return void
+		 */
+		 function get_related_value($relation_array,$value)
+		 {
+			$displ_arr=unserialize($relation_array[foreign_showfields]);		
+			$table=$relation_array[foreign_table];
+			$related_field=$relation_array[foreign_key];
+
+			$allrecords=$this->get_records($table,'','','','','name');
+
+			if(is_array($allrecords))
+
+			foreach ($allrecords as $record)
+			{
+			   if($record[$related_field]==$value)
+			   {
+				  unset($displaystring);
+				  foreach($displ_arr as $displ_str)
+				  {
+					 if( $displaystring)
+					 {
+						$displaystring.=' ';							  
+					 }
+					 $displaystring .= $record[$displ_str];
+				  }
+
+				  return $displaystring;
+			   }
+			}
+		 }
+
+		 /**
+		 * http_vars_pairs: function which creata data pairs to store in the database 
+		 * 
+		 * @param mixed $HTTP_POST_VARS 
+		 * @param mixed $HTTP_POST_FILES 
+		 * @param string $prefix 
+		 * @access private
+		 * @return array with data pairs
+		 */
+		 function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES,$object_id,$prefix='FLDXXX') 
+		 {
+			$prefix_len=strlen($prefix);
+			while(list($key, $val) = each($HTTP_POST_VARS)) 
+			{
+			   if(substr($key,0,$prefix_len)==$prefix)
+			   {
+				  $field_values=$this->so->get_field_values($object_id,substr($key,6));
+
 				  $filtered_data=$this->plug->call_plugin_sf($key,$field_values,$HTTP_POST_VARS,$HTTP_POST_FILES);
-			   }
-			   if ($filtered_data)				
-			   {
-				  if ($filtered_data==-1) $filtered_data='';
-				  $data[] = array
-				  (
-					 'name' => substr($key,6),
-					 'value' =>  $filtered_data  //addslashes($val)
-				  );
-			   }
-			   else // if there's no plugin, just save the vals
-			   {
-				  $data[] = array
-				  (
-					 'name' => substr($key,6),
-					 'value' => addslashes($val) 
-				  );
-			   }
 
-
+				  if ($filtered_data)				
+				  {
+					 if ($filtered_data==-1) $filtered_data='';
+					 $data[] = array
+					 (
+						'name' => substr($key,$prefix_len),
+						'value' =>  $filtered_data  //addslashes($val)
+					 );
+				  }
+				  else // if there's no plugin, just save the vals
+				  {
+					 $data[] = array
+					 (
+						'name' => substr($key,$prefix_len),
+						'value' => addslashes($val) 
+					 );
+				  }
+			   }
 			}
+
+			return $data;
 		 }
 
-
-		 return $data;
-
-	  }
-
-	  function http_vars_pairs_o2o($HTTP_POST_VARS,$HTTP_POST_FILES) 
-	  {
-
-		 while(list($key, $val) = each($HTTP_POST_VARS)) 
+		 /**
+		 * http_vars_pairs_o2o 
+		 * 
+		 * @param mixed $HTTP_POST_VARS 
+		 * @param mixed $HTTP_POST_FILES 
+		 * @param mixed $primary_val 
+		 * @access public
+		 * @return void
+		 */
+		 function http_vars_pairs_o2o($HTTP_POST_VARS,$HTTP_POST_FILES,$primary_val) 
 		 {
-			if(substr($key,0,4)=='O2OO')
+			while(list($key, $val) = each($HTTP_POST_VARS)) 
 			{
-			   $curr_object_arr=$this->so->get_object_values($val);
-			}
-
-			if(substr($key,0,4)=='O2OW' || substr($key,0,4)=='O2OT' || substr($key,0,4)=='O2OO')
-			{
-			   $idx=intval(substr($key,4,2));
-			   $o2o_data_arr[$idx]['meta'][substr($key,0,4)]=$val;
-			}
-			elseif(substr($key,0,3)=='O2O')
-			{
-
-			   // being backwards compatible, check for old method 
-			   if($curr_object_arr[plugins])
+			   if(substr($key,0,4)=='O2OO')
 			   {
-				  $filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES,$curr_object_arr[plugins]);
-				  // $filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES,$this->site_object['plugins']);
+				  $curr_object_arr=$this->so->get_object_values_by_uniq($val);
 			   }
-			   else
+
+			   if(substr($key,0,4)=='O2OW' || substr($key,0,4)=='O2OT'  || substr($key,0,4)=='O2OO')
 			   {
-				  //					 echo ($curr_object_arr[plugins].substr($key,6));
+				  $idx=intval(substr($key,4,2));
+				  $o2o_data_arr[$idx]['meta'][substr($key,0,4)]=$val;
+
+			   }
+			   // this setss the primary val 
+			   elseif(substr($key,0,4)=='O2OR')
+			   {
+				  $idx=intval(substr($key,4,2));
+				  $_o2o_info=unserialize(base64_decode($val));	
+
+
+				  $data = array
+				  (
+					 'name' => $_o2o_info[foreign_key],
+					 'value' =>  $primary_val  //addslashes($val)
+				  );
+
+				  $o2o_data_arr[$idx]['data'][]=$data;
+			   }
+			   elseif(substr($key,0,3)=='O2O')
+			   {
+
 				  $field_values=$this->so->get_field_values($curr_object_arr[object_id],substr($key,6));
 				  $filtered_data=$this->plug->call_plugin_sf($key,$field_values,$HTTP_POST_VARS,$HTTP_POST_FILES);
 
+				  /* Check for plugin need and plugin availability */
+				  if($filtered_data)				
+				  {
+					 if ($filtered_data==-1) $filtered_data='';
+					 $data = array
+					 (
+						'name' => substr($key,6),
+						'value' =>  $filtered_data  //addslashes($val)
+					 );
+				  }
+				  else // if there's no plugin, just save the vals
+				  {
+					 $data = array
+					 (
+						'name' => substr($key,6),
+						'value' => addslashes($val) 
+					 );
+				  }
+				  $idx=intval(substr($key,4,2));
+				  $o2o_data_arr[$idx]['data'][]=$data;
+
 			   }
 
-			   /* Check for plugin need and plugin availability */
-			   if($filtered_data)				
+			}
+
+			return $o2o_data_arr;
+		 }
+
+
+
+		 /**
+		 * http_vars_pairs_m2m 
+		 * 
+		 * @fixme autodetect primary val
+		 * @param mixed $HTTP_POST_VARS 
+		 * @access public
+		 * @return void
+		 */
+		 function http_vars_pairs_m2m($HTTP_POST_VARS) 
+		 {
+			while(list($key, $val) = each($HTTP_POST_VARS)) 
+			{
+			   if(substr($key,0,3)=='M2M' || substr($key,0,8)=='FLDXXXid')
 			   {
-				  if ($filtered_data==-1) $filtered_data='';
-				  $data = array
-				  (
-					 'name' => substr($key,6),
-					 'value' =>  $filtered_data  //addslashes($val)
-				  );
+				  $data = array_merge($data,array($key=> $val));
 			   }
-			   else // if there's no plugin, just save the vals
+			}
+			return $data;
+		 }		
+
+		 /**
+		 * save_object_config 
+		 * 
+		 * @access public
+		 * @return void
+		 */
+		 function save_object_config()
+		 {
+			$prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
+			$prefs_show_hide_read=$this->read_preferences('show_fields'.$this->site_object[unique_id]);
+
+			$show_fields_entry=$this->site_object[object_id];
+
+			while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
+			{
+			   if(substr($key,0,4)=='SHOW')
+			   $show_fields_entry.=','.substr($key,4);
+			}
+
+			if($prefs_show_hide_read) 
+			{
+			   $prefs_show_hide_arr=explode('|',$prefs_show_hide_read);
+
+			   foreach($prefs_show_hide_arr as $pref_s_h)
 			   {
-				  $data = array
-				  (
-					 'name' => substr($key,6),
-					 'value' => addslashes($val) 
-				  );
+
+				  $pref_array=explode(',',$pref_s_h);
+				  if($pref_array[0]!=$this->site_object[object_id])
+				  {
+					 $prefs_show_hide_new.=implode(',',$pref_array);
+				  }
 			   }
-			   $idx=intval(substr($key,4,2));
-			   $o2o_data_arr[$idx]['data'][]=$data;
 
-			}
-
-		 }
-
-		 return $o2o_data_arr;
-	  }
-
-
-
-
-	  function http_vars_pairs_m2m($HTTP_POST_VARS) 
-	  {
-		 while(list($key, $val) = each($HTTP_POST_VARS)) 
-		 {
-			if(substr($key,0,3)=='M2M' || substr($key,0,8)=='FLDXXXid')
-			{
-			   $data = array_merge($data,array($key=> $val));
-			}
-		 }
-		 return $data;
-	  }		
-
-
-
-	  function read_preferences($key)
-	  {
-		 $GLOBALS['phpgw']->preferences->read_repository();
-
-		 $prefs = array();
-
-		 if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
-		 {
-			$prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'][$key];
-		 }
-		 return $prefs;
-	  }
-
-	  function save_preferences($key,$prefs)
-	  {
-		 $GLOBALS['phpgw']->preferences->read_repository();
-
-		 $GLOBALS['phpgw']->preferences->change('jinn',$key,$prefs);
-		 $GLOBALS['phpgw']->preferences->save_repository(True);
-	  }
-
-	  /****************************************************************************\
-	  * 	Config site_objects                                              *
-	  \****************************************************************************/
-
-	  function save_object_config()
-	  {
-
-		 $prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
-		 $prefs_show_hide_read=$this->read_preferences('show_fields'.$this->site_object[unique_id]);
-
-		 $show_fields_entry=$this->site_object[object_id];
-
-		 while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
-		 {
-			if(substr($key,0,4)=='SHOW')
-			$show_fields_entry.=','.substr($key,4);
-		 }
-
-		 if($prefs_show_hide_read) 
-		 {
-			$prefs_show_hide_arr=explode('|',$prefs_show_hide_read);
-
-			foreach($prefs_show_hide_arr as $pref_s_h)
-			{
-
-			   $pref_array=explode(',',$pref_s_h);
-			   if($pref_array[0]!=$this->site_object[object_id])
-			   {
-				  $prefs_show_hide_new.=implode(',',$pref_array);
-			   }
-			}
-
-			if($prefs_show_hide_new) $prefs_show_hide_new.='|';
-			$prefs_show_hide_new.=$show_fields_entry;
-		 }
-		 else
-		 {
-			$prefs_show_hide_new=$show_fields_entry;
-		 }
-
-		 $this->save_preferences('show_fields'.$this->site_object[unique_id],$prefs_show_hide_new);
-		 $this->save_preferences('default_order'.$this->site_object[unique_id],$prefs_order_new);
-			//the browse settings overrule the preferences, so kill them. Otherwise we will not see any results until we chamge the Object and return
-		 unset($this->session['browse_settings']['orderby']);
-		 $this->sessionmanager->save();
-
-		 $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
-	  }
-
-
-	  /*--------------------------------------------------
-	  FIXME all field related plugins must move to dedicated class
-	  -------------------------------------------*
-
-	  /**
-	  * get storage filter from plugin 
-	  */
-	  function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES,$plugin_string=false)
-	  {
-		 global $local_bo;
-
-		 $local_bo=$this;
-
-		 if(!$plugin_string)
-		 {
-			$plugin_string=$this->site_object['plugins'];
-		 }
-
-		 $plugins=explode('|',str_replace('~','=',$plugin_string));
-
-		 foreach($plugins as $plugin)
-		 {
-			$sets=explode(':',$plugin);
-
-			/* make plug config array for this field */
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-
-			if(is_array($conf_str))
-			{
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($conf_key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$conf_key]=$val;
-			   }
-			}
-
-			if ( substr($key,-strlen($sets[0]))==$sets[0] )
-			{
-
-			   $data=@call_user_func('plg_sf_'.$sets[1],$key,$HTTP_POST_VARS,$HTTP_POST_FILES,$conf_arr);
-			   if(!$data) return;
-			}
-		 }
-		 return $data;
-
-	  }
-
-
-	  /**
-	  * get readonly view function from plugin 
-	  */
-	  function get_plugin_ro($fieldname,$value,$where_val_encoded,$attr)
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-		 foreach($plugins as $plugin)
-		 {	
-			$sets=explode(':',$plugin);
-
-			/* make plug config array for this field */
-			if($sets[3]) 
-			{
-			   $conf_str = explode(';',$sets[3]);
-			}
-			if(is_array($conf_str))
-			{
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$key]=$val;		
-			   }
-			}
-
-			if ($fieldname==$sets[0])
-			{
-			   $new_value=@call_user_func('plg_ro_'.$sets[1],$value,$conf_arr,$where_val_en);
-			}
-		 }
-		 if (!$new_value)
-		 {
-			$new_value=$value;
-		 }
-
-		 return $new_value;
-	  }
-
-
-	  /**
-	  * get browse view function from plugin 
-	  */
-	  function get_plugin_bv($fieldname,$value,$where_val_encoded,$fieldname)
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-		 foreach($plugins as $plugin)
-		 {	
-			$sets=explode(':',$plugin);
-
-			/* make plug config array for this field */
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-			if(is_array($conf_str))
-			{
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$key]=$val;		
-			   }
-			}
-
-			if ($fieldname==$sets[0])
-			{
-			   $new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname);
-			}
-		 }
-
-		 if (!$new_value)
-		 {
-			$new_value=$value;
-			if(strlen($new_value)>15)
-			{
-			   $new_value=strip_tags($new_value);
-			   $new_value = substr($new_value,0,15). ' ...';
-			}
-		 }
-		 return $new_value;
-
-	  }
-
-	  /**
-	  * get input function from plugin 
-	  */
-	  function get_plugin_fi($input_name,$value,$type,$attr_arr,$plugin_string=false)
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-
-		 if(!$plugin_string)
-		 {
-			$this->session['message']['error'] = 'Warning: get_plugin_fi called with old behaviour';
-			$plugin_string = $this->site_object['plugins'];
-		 }
-
-		 $plugins=explode('|',str_replace('~','=',$plugin_string));
-		 foreach($plugins as $plugin)
-		 {	
-			$sets=explode(':',$plugin);
-
-			/* make plug config array for this field */
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-			if(is_array($conf_str))
-			{
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$key]=$val;		
-			   }
-			}
-
-			// test for valid field-prefixes (MLTX##,FLDXXX,O2OX##)
-			if ( (substr($input_name,0,4)=='MLTX' && substr($input_name,6)==$sets[0]) || (substr($input_name,0,6)=='FLDXXX' && substr($input_name,6)==$sets[0]) || (substr($input_name,0,4)=='O2OX' && substr($input_name,6)==$sets[0]))
-			{
-			   //FIXME all plugins must get an extra argument in the sf_func
-			   $input=@call_user_func('plg_fi_'.$sets[1],$input_name,$value,$conf_arr,$attr_arr);
-			}
-		 }
-
-		 if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
-
-		 return $input;
-
-	  }
-
-	  /*!
-	  @function submit_to_plugin_afa
-	  @abstract wrapper for the autonome form action plugin caller which resides in the class plugins
-	  */
-	  function submit_to_plugin_afa()
-	  {
-		 if($this->site_object[plugins])
-		 {
-			$this->get_plugin_afa();
-		 }
-		 else 
-		 {
-			$field_values=$this->so->get_field_values($this->site_object[object_id],$_GET[field_name]);
-			$this->plug->call_plugin_afa($field_values);
-		 }
-	  }
-
-	  /**
-	  @function get_plugin_afa
-	  @abstract get autonome form action function from plugin see visual ordering plugin how it works
-	  @note this function is here for backwards compatibility it will be removed someday
-	  @depreciated
-	  */
-	  function get_plugin_afa()
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-
-		 $action_plugin_name=$_GET[plg];
-
-		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-		 foreach($plugins as $plugin)
-		 {	
-			$sets=explode(':',$plugin);
-
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-			if(is_array($conf_str))
-			{
-			   unset($conf_arr);
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$key]=$val;		
-			   }
-			}
-
-			if ($action_plugin_name==$sets[1])
-			{
-			   $call_plugin=$sets[1];
-			   break;
-			}
-		 }
-
-		 if($call_plugin)
-		 {
-			//FIXME all plugins must get an extra argument in the sf_func
-			$success=@call_user_func('plg_afa_'.$sets[1],$_GET[where],$_GET[attributes],$conf_arr);
-		 }
-
-		 if ($succes)
-		 {
-			$this->session['message'][info]=lang('Action was succesful.');
-
-			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-		 else
-		 {
-			$this->session['message'][error]=lang('Action was not succesful. Unknown error');
-
-			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
-
-		function set_adv_filter()
-		{
-		   $this->session['browse_settings'][adv_filter_str]=$_POST[adv_filter];  
-		   $this->sessionmanager->save();
-		   $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
-		}
-
-		/*! 
-		@function scan_new_objects_silent
-		@abstract check if users have created new tables that need to become accessible as objects
-		*/
-		function scan_new_objects_silent()
-		{
-			$status = array();
-			if($this->site[object_scan_prefix] != '')
-			{
-				$prefix_arr = explode(',', $this->site[object_scan_prefix]);
-				if(is_array($prefix_arr))
-				{
-					$tables = $this->so->site_tables_names($this->session['site_id']);
-					$status = array();
-					foreach($tables as $table)
-					{
-						//is this table wrapped by an object?
-						$objects = $this->so->get_objects_by_table($table[table_name], $this->session['site_id']);
-						if(count($objects) == 0)
-						{
-							//if no, do we want ALL tables wrapped by an object?
-							if($prefix_arr[0] == '*')
-							{
-								//if yes, create an object from this table
-								$status[] = $this->save_scanned_object($this->session['site_id'], $table[table_name]);
-							}
-							//or does the table name start with one of the prefixes?
-							else
-							{
-								foreach($prefix_arr as $prefix)
-								{
-									if(substr($table[table_name], 0, strlen($prefix)) == $prefix)
-									{
-										$status[] = $this->save_scanned_object($this->session['site_id'], $table[table_name]);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			return $status;
-		}
-		/*! 
-		@function scan_new_objects 
-		@abstract scan for new objects, create messages and redirect to index
-		*/
-		function scan_new_objects()
-		{
-			$status = $this->scan_new_objects_silent();
-			$endl = "<br>";
-			if(count($status) > 0)
-			{
-				$this->session['message'][info]=lang('%1 new objects where successfully created%2', count($status), $endl);
-				foreach($status as $new)
-				{
-					if($new[ret_code] != 0)
-					{
-						$this->session['message'][error]=lang('Error creating one or more new Objects%1', $endl);
-						$this->session['message'][info]=lang('%1 new objects where successfully created%2', count($status), $endl);
-					}
-				}
+			   if($prefs_show_hide_new) $prefs_show_hide_new.='|';
+			   $prefs_show_hide_new.=$show_fields_entry;
 			}
 			else
 			{
-				$this->session['message'][info]=lang('no new objects created%1', $endl);
+			   $prefs_show_hide_new=$show_fields_entry;
 			}
+
+			$this->save_preferences('show_fields'.$this->site_object[unique_id],$prefs_show_hide_new);
+			$this->save_preferences('default_order'.$this->site_object[unique_id],$prefs_order_new);
+			//the browse settings overrule the preferences, so kill them. Otherwise we will not see any results until we chamge the Object and return
+			unset($this->session['browse_settings']['orderby']);
 			$this->sessionmanager->save();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		}
-		
-		/*! 
-		@function save_scanned_object
-		@abstract wraps an (empty) site object around a given table
-		*/
-		function save_scanned_object($site_id, $table_name)
-		{
+
+			$this->exit_and_open_screen('jinn.uiu_list_records.display');
+		 }
+
+
+		 /**
+		 * set_adv_filter 
+		 * 
+		 * @access public
+		 * @return void
+		 */
+		 function set_adv_filter()
+		 {
+			$this->session['browse_settings'][adv_filter_str]=$_POST[adv_filter];  
+			$this->sessionmanager->save();
+			$this->exit_and_open_screen('jinn.uiu_list_records.display');
+		 }
+
+		 /**
+		 * scan_new_objects_silent: check if users have created new tables that need to become accessible as objects
+		 * 
+		 * @access public
+		 * @return void
+		 */
+		 function scan_new_objects_silent()
+		 {
+			$status = array();
+			if($this->site[object_scan_prefix] != '')
+			{
+			   $prefix_arr = explode(',', $this->site[object_scan_prefix]);
+			   if(is_array($prefix_arr))
+			   {
+
+				  $tables = $this->so->site_tables_names($this->session['site_id']);
+				  $status = array();
+				  foreach($tables as $table)
+				  {
+					 //is this table wrapped by an object?
+					 $objects = $this->so->get_objects_by_table($table[table_name], $this->session['site_id']);
+					 if(count($objects) == 0)
+					 {
+						//if no, do we want ALL tables wrapped by an object?
+						if($prefix_arr[0] == '*')
+						{
+						   //if yes, create an object from this table
+						   $status[] = $this->save_scanned_object($this->session['site_id'], $table[table_name]);
+						}
+						//or does the table name start with one of the prefixes?
+						else
+						{
+						   foreach($prefix_arr as $prefix)
+						   {
+							  if(substr($table[table_name], 0, strlen($prefix)) == $prefix)
+							  {
+								 $status[] = $this->save_scanned_object($this->session['site_id'], $table[table_name]);
+							  }
+						   }
+						}
+					 }
+				  }
+			   }
+			}
+			return $status;
+		 }
+
+		 /**
+		 * scan_new_objects: scan for new objects, create messages and redirect to index 
+		 * 
+		 * @access public
+		 * @return void
+		 */
+		 function scan_new_objects()
+		 {
+			$status = $this->scan_new_objects_silent();
+			if(count($status) > 0)
+			{
+			   $this->addInfo(lang('%1 new objects where successfully created', count($status)));
+			   foreach($status as $new)
+			   {
+				  if($new[ret_code] != 0)
+				  {
+					 $this->addError(lang('Error creating one or more new Objects'));
+					 $this->addInfo(lang('%1 new objects where successfully created', count($status)));
+				  }
+			   }
+			}
+			else
+			{
+			   $this->addInfo(lang('No new objects created'));
+			}
+			$this->exit_and_open_screen('jinn.uiuser.index');
+		 }
+
+		 /**
+		 * save_scanned_object: wraps an (empty) site object around a given table
+		 * 
+		 * @param mixed $site_id 
+		 * @param mixed $table_name 
+		 * @access public
+		 * @return void
+		 */
+		 function save_scanned_object($site_id, $table_name)
+		 {
 			$data = array();
 			$data[] = array('name' => 'name'			, 'value' => $table_name);
 			$data[] = array('name' => 'table_name'		, 'value' => $table_name);
@@ -1497,6 +1252,87 @@
 			$data[] = array('name' => 'serialnumber'	, 'value' => ''			);
 			$data[] = array('name' => 'unique_id'		, 'value' => ''			);
 			return $this->so->insert_new_object($data);
-		}
-   }
-?>
+		 }
+
+		 /*!
+		 @function submit_to_plugin_afa
+		 @abstract wrapper for the autonome form action plugin caller which resides in the class plugins
+		 */
+		 function submit_to_plugin_afa()
+		 {
+			if($this->site_object[plugins])
+			{
+			   $this->get_plugin_afa();
+			}
+			else 
+			{
+			   //die('hallo');
+			   $field_values=$this->so->get_field_values($this->site_object[object_id],$_GET[field_name]);
+			   $this->plug->call_plugin_afa($field_values);
+			}
+		 }
+
+		 /**
+		 @function get_plugin_afa
+		 @abstract get autonome form action function from plugin see visual ordering plugin how it works
+		 @note this function is here for backwards compatibility it will be removed someday
+		 @depreciated
+		 */
+		 function get_plugin_afa()
+		 {
+			global $local_bo;
+			$local_bo=$this;
+
+			$action_plugin_name=$_GET[plg];
+
+			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+			foreach($plugins as $plugin)
+			{	
+			   $sets=explode(':',$plugin);
+
+			   if($sets[3]) $conf_str = explode(';',$sets[3]);
+			   if(is_array($conf_str))
+			   {
+				  unset($conf_arr);
+				  foreach($conf_str as $conf_entry)
+				  {
+					 list($key,$val)=explode('=',$conf_entry);	
+					 $conf_arr[$key]=$val;		
+				  }
+			   }
+
+			   if ($action_plugin_name==$sets[1])
+			   {
+				  $call_plugin=$sets[1];
+				  break;
+			   }
+			}
+
+			if($call_plugin)
+			{
+			   //FIXME all plugins must get an extra argument in the sf_func
+			   $success=@call_user_func('plg_afa_'.$sets[1],$_GET[where],$_GET[attributes],$conf_arr);
+			}
+
+			if ($succes)
+			{
+			   $this->session['message'][info]=lang('Action was succesful.');
+
+			   $this->sessionmanager->save();
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
+			}
+			else
+			{
+			   $this->session['message'][error]=lang('Action was not succesful. Unknown error');
+
+			   $this->sessionmanager->save();
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
+			}
+		 }
+
+
+
+
+
+	  }
+   ?>

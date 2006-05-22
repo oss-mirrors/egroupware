@@ -84,7 +84,7 @@
 				  <select name="sel1" multiple="multiple" size="6" id='sel1'>
 					 <?=$this->attibutes?>
 				  </select><br><br>
-				  <input type='button' value='<<' onclick="insertValue('1')">
+				  <input class="egwbutton"  type='button' value='<<' onclick="insertValue('1')">
 				  
 			   </td>
 			</tr>
