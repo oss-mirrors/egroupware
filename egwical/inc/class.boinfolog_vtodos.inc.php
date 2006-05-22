@@ -123,7 +123,8 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.37-ng-a2  removed double charset translation
+	 * @version 0.9.37-ng-a6 fixed empty summary field (semi)
+	 * @since 0.9.37-ng-a2  removed double charset translation
 	 * @since 0.9.36  first version for napi3.1 (with rsc_owner_id parameter)
 	 * @since 0.9.30  first version for napi3
 
@@ -788,6 +789,11 @@
 		  case 'STATUS':	// note: custom field in task
 			$task['status'] = ($task_stat = $this->status_vtodo2task[$attrval])
 			  ? $task_stat : 'offer';
+			break;
+			
+			// this is needed, because empty subject is not allowed by egw
+		  case 'SUMMARY':
+			$task['info_subject'] = ($attrval) ? $attrval : 'Untitled';
 			break;
 
 		  case 'COMPLETED':
