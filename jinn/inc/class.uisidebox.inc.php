@@ -231,7 +231,7 @@
 			   'icon'=>'browse'
 			);
 			$file['Load site conf from file'] = array(
-			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'),
+			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'),
 			   'text'=>lang('Load site conf from file'),
 			   'no_lang' => True,
 			   'icon'=>'fileopen'

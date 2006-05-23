@@ -29,7 +29,7 @@
 		'Global Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
 		'Add Site' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_site'),
 		'Browses Through Sites' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites'),
-		'Import Site' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'),
+		'Import Site' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'),
 		'Access Rights' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiacl.main_screen')
 	);
 	//Do not modify below this line

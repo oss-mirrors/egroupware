@@ -59,7 +59,7 @@
 		 header("Content-type: text");
 		 header("Content-Disposition:attachment; filename=$filename");
 
-		 $xml_arr['filename']=$filename;
+		 $xml_arr['export_filename']=$filename;
 		 $xml_arr['date']=$date;
 		 $xml_arr['jinn_version']=$GLOBALS['phpgw_info']['apps']['jinn']['version'];
 		 $xml_arr['site']=array();
@@ -92,12 +92,11 @@
 			{
 			   while (list ($key, $val) = each ($object)) 
 			   { 
-				  if($key != 'object_id') // keep if needed for static egroupware apps
+				  if($key != 'object_idxxx' && $key != 'parent_site_id') // keep if needed for static egroupware apps
 				  {
 					 $obj_arr[$key]=$val;
 				  }
 			   }
-			   //$xml_arr['objects']=array();
 
 			   /*
 			   get array whith fielddata
@@ -117,7 +116,8 @@
 						   // fix problem with wrong storage of null values causing a 0 value with mean something different
 						   if($val!=null)
 						   {
-							  $val= "'".ereg_replace("'","\'",$val)."'";
+							  //$val= "'".ereg_replace("'","\'",$val)."'";
+							  //$val = $val;
 						   }
 						   else
 						   {
@@ -149,73 +149,78 @@
 			   }
 			   /*reports*/
 
-			   $xml_arr['objects'][]=$obj_arr;
+			   $xml_arr['site']['objects'][]=$obj_arr;
 			}
 			//endforeach
 		 }
 
-		 echo $this->s_array2xml($xml_arr);
-		 //_debug_array($xml_arr);
+		 $jinn_site['jinn']=$xml_arr;
+		 
+		 //$humanread=true;
 
-
+		 $this->xmlversion = '1.0';
+		 echo '<?xml version="'.$this->xmlversion.'"?>'.($humanread?"\n":'');
+		 echo $this->s_array2xml($jinn_site,array('objects','fields'),0,false,($humanread?'  ':''),$humanread);
 	  }
 
-
-	  ////  Function:   s_array2xml  /////////////////////////////////////// 
 	  /**  
-	  *    Converts an array into XML using array keys as the XML tokens. 
+	  * s_array2xml: Converts an array into XML using array keys as the XML tokens. 
 	  * 
-	  *    @param   mixed    $p_array       multi-dimentional array to 
-	  *    @param   mixed    $p_lists       array of keys that should have 
-	  *                                     their contents treated as lists 
-	  *    @param   integer  $p_iteration   recursive iteration count 
-	  *                                     (do not send) 
-	  *    @param   bool     $p_list        list key when working on list 
-	  *                                     contents (do not send) 
-	  *    @return  mixed                   string of xml values 
+	  * @param mixed     $p_array       multi-dimentional array to 
+	  * @param mixed     $p_lists       array of keys that should have their contents treated as lists 
+	  * @param integer   $p_iteration   recursive iteration count (do not send) 
+	  * @param bool      $p_list        list key when working on list contents (do not send) 
+	  * @return mixed                   string of xml values 
 	  */ 
-	  ////////////////////////////////////////////////////////////////////// 
-
-	  function s_array2xml($p_array, $p_lists = array(), $p_iteration = 0,  
-	  $p_list = false) { 
-
+	  function s_array2xml($p_array, $p_lists = array(), $p_iteration = 0,  $p_list = false, $indent_string='   ',$line_breaks=true) 
+	  {
 		 $l_xml = ''; 
+		 if($line_breaks) $l_break_str="\n";
 
-		 foreach ($p_array as $l_key => $l_value) { 
-
+		 foreach ($p_array as $l_key => $l_value) 
+		 { 
 			// check if this is a list 
 			$l_list = false; 
 			if (in_array($l_key, $p_lists) && ($l_key != '0')) 
-			$l_list = $l_key; 
+			{
+			   $l_list = $l_key; 
+			}
 
 			// set indent string 
 			$l_indent = ''; 
-			for ($l_count = 0; $l_count < ($p_iteration - ($p_list ? 1 : 0));  
-			$l_count++) { 
-			   $l_indent .= '   '; 
+			for ($l_count = 0; $l_count < ($p_iteration - ($p_list ? 1 : 0)); $l_count++) 
+			{ 
+			   $l_indent .= $indent_string; 
 			} 
 
-			$l_key = (($p_list !== false) ? $p_list  
-			: (($l_list === $l_key) ? false : $l_key) ); 
-			$l_this_xml = (is_array($l_value)  
-		 ? ($l_list ? '' : "\n")  
-		 . $this->s_array2xml($l_value, $p_lists,  
-		 $p_iteration + (($p_list === false)  
-	  ? 1 : 0),  
-	  $l_list)  
-	  . ($l_list ? '' : $l_indent)  
-	  : $l_value); 
+			$l_key = (($p_list !== false) ? $p_list  : (($l_list === $l_key) ? false : $l_key) ); 
 
-	  if ($l_key !== false) 
-	  $l_xml .= $l_indent . "<$l_key>$l_this_xml</$l_key>\n"; 
-	  else 
-	  $l_xml .= $l_this_xml; 
+			//$l_this_xml = (is_array($l_value)  ? ($l_list ? '' : $l_break_str)  . $this->s_array2xml($l_value, $p_lists,  $p_iteration + (($p_list === false)  ? 1 : 0),  $l_list, $indent_string,$line_breaks)  . ($l_list ? '' : $l_indent)  : $l_value); 
 
-   } 
+			if(is_array($l_value))
+			{
+			   $l_this_xml  = ($l_list ? '' : $l_break_str);
+			   $l_this_xml .= $this->s_array2xml($l_value, $p_lists,  $p_iteration + (($p_list === false)  ? 1 : 0),  $l_list, $indent_string,$line_breaks);
+			   $l_this_xml .= ($l_list ? '' : $l_indent);
+			}
+			else
+			{
+			   $l_this_xml=$l_value;
+			}
+			
+			if ($l_key !== false)
+			{
+			   $l_xml .= $l_indent . "<$l_key>$l_this_xml</$l_key>$l_break_str"; 
+			}
+			else
+			{
+			   $l_xml .= $l_this_xml; 
+			}
+		 } 
 
-   return $l_xml; 
+		 return $l_xml; 
 
-} 
+	  } 
 
 
 
