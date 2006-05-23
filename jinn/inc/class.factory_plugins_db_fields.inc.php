@@ -285,22 +285,25 @@
 	  */
 	  function include_custom_plugins()
 	  {
-		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/')) 
+		 if(is_dir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'))
 		 {
-			while (false !== ($file = readdir($handle))) 
-			{ 
-			   // OLD STYLE plugins
-			   if (substr($file,0,7)=='plugin.')
-			   {
-				  include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file);
+			if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/')) 
+			{
+			   while (false !== ($file = readdir($handle))) 
+			   { 
+				  // OLD STYLE plugins
+				  if (substr($file,0,7)=='plugin.')
+				  {
+					 include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file);
+				  }
+				  // NEW STYLE plugins (classes)
+				  elseif(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
+				  {
+					 include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
+				  }
 			   }
-			   // NEW STYLE plugins (classes)
-			   elseif(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
-			   {
-				  include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
-			   }
+			   closedir($handle); 
 			}
-			closedir($handle); 
 		 }
 	  }
 

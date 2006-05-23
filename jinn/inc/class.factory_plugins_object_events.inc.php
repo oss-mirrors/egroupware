@@ -77,19 +77,22 @@
 	  {
 		 global $local_bo;
 		 $local_bo=$this->local_bo;
-		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins')) {
+		 if(is_dir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins/'))
+		 {
+			if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins')) {
 
-			/* This is the correct way to loop over the directory. */
+			   /* This is the correct way to loop over the directory. */
 
-			while (false !== ($file = readdir($handle))) 
-			{ 
-			   if (substr($file,0,7)=='plugin.')
-			   {
+			   while (false !== ($file = readdir($handle))) 
+			   { 
+				  if (substr($file,0,7)=='plugin.')
+				  {
 
-				  include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins/'.$file);
+					 include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins/'.$file);
+				  }
 			   }
+			   closedir($handle); 
 			}
-			closedir($handle); 
 		 }
 	  }
 
