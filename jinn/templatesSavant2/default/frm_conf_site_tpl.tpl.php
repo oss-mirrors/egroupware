@@ -318,10 +318,11 @@
 	  <div style="float:left;width:auto;"><input class="egwbutton" name="continue" value="<?=lang('Save')?>" type="submit"></div>
 	  <div style="float:left;width:auto;">
 		 <input name="testdbvals" type="hidden">
-		 <input class="egwbutton" onclick="testdbfield()" value="test database and paths" type="button">
+		 <input class="egwbutton" onclick="testdbfield()" value="<?=lang('test database and paths')?>" type="button">
 	  </div>
 	  <div style="float:left;width:auto;">
-		 <input class="egwbutton" onclick="location='<?=$this->onclick_export?>'" value="export this site" type="button">
+		 <input class="egwbutton" onclick="location='<?=$this->onclick_export?>'" value="<?=lang('export this site')?>" type="button">
+		 <input class="egwbutton" onclick="location='<?=$this->onclick_export_to_xml?>'" value="<?= lang('save site to xml')?>" type="button">
 	  </div>
 
 	  <div style="float:right;width:auto;"><input type="button" name="reopen" class="egwbutton" value="<?=lang('help')?>" onClick="openhelp();" /></div>

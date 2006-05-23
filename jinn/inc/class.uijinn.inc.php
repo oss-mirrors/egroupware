@@ -141,6 +141,24 @@
 	  }
 
 	  /**
+	  * permissionCheck: check is user is admin else redirect to index 
+	  * 
+	  * @todo in the future also site owners may pass this check
+	  * 
+	  * @access public
+	  * @return void
+	  */
+	  function permissionCheck()
+	  {
+		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+		 {
+			$this->bo->addError(lang('You\'re not allowed to acces this screen.'));
+			$this->bo->exit_and_open_screen('jinn.uiuser.index');
+		 }
+	  }
+
+
+	  /**
 	  * main_menu 
 	  * 
 	  * DEPRECIATED 
@@ -152,5 +170,10 @@
 	  {
 		 return;
 	  }
+
+
+
+
+
    }
 ?>

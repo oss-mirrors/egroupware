@@ -58,7 +58,7 @@
 		 'xmlhttp_req_toggle_field_visible'=>True,
 		 'xmlhttp_req_toggle_field_listvisible'=>True,
 		 'xmlhttp_req_toggle_field_enabled'=>True,
-		 'field_help_config'=>True
+		 'field_help_config'=>True,
 	  );
 
 	  /**
@@ -76,25 +76,6 @@
 
 		 $this->permissionCheck();
 	  }
-
-
-	  /**
-	  * permissionCheck: check is user is admin else redirect to index 
-	  * 
-	  * @todo in the future also site owners may pass this check
-	  * 
-	  * @access public
-	  * @return void
-	  */
-	  function permissionCheck()
-	  {
-		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
-		 {
-			$this->bo->addError(lang('You\'re not allowed to acces this screen.'));
-			$this->bo->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
-
 	  
 	  /**
 	  * index 
@@ -214,6 +195,7 @@
 		 $this->tplsav2->form_action=$GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiadmin.add_edit_site");
 		 $this->tplsav2->test_access_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access');
 		 $this->tplsav2->onclick_export=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
+		 $this->tplsav2->onclick_export_to_xml=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
 
 		 /* list objects for this site */
 		 if ($where_key && $where_value)
@@ -1155,6 +1137,116 @@
 			if(!is_array($temp)) return $temp;
 		 }
 		 return $array;
+	  }
+
+	  /**
+	  * object_events_config 
+	  * 
+	  * @access public
+	  * @return void
+	  * @todo: implement the same widget which form plugin use
+	  * @todo: rewrite config array in the register of the plugins
+	  * @todo: rewrite plugins so that it are classes
+	  * @todo: better flow
+	  */
+	  function object_events_config()
+	  {
+		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
+		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+
+		 $this->tplsav2->assign('theme_css',$theme_css);
+		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
+		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
+		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
+
+		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+
+		 if($_GET[close_me]=='true')
+		 {
+			$this->tplsav2->set_var('close', ' onLoad="self.close()"');		 
+		 }
+		 else
+		 {
+			$this->tplsav2->set_var('close', '');		 
+		 }
+
+		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+		 $stored_configs = unserialize(base64_decode($object_arr[events_config]));
+
+		 $this->tplsav2->stored_events_arr=array(); 
+		 if(is_array($stored_configs))
+		 {
+			foreach($stored_configs as $key => $config)
+			{
+			   $stored_events_arr['edit_url']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id].'&edit='.$key);
+			   $stored_events_arr['config_id']=$key;
+			   $stored_events_arr['config_description']=lang('%3: event <b>%1</b> triggers plugin <b>%2</b>', $config[conf][event], $config[conf][plugin], $key+1);
+
+			   $this->tplsav2->stored_events_arr[]=$stored_events_arr;
+			}
+		 }
+
+		 if($_GET[edit]=='')
+		 {
+			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id]));
+
+			$this->tplsav2->set_var('event_options', $this->getEventOptions($_POST[event]));		 
+			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
+			$this->tplsav2->set_var('option_selected', 'document.events_config.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; submit();');
+
+			if($_POST[plugin] != '')
+			{
+			   $this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$_POST[plugin]]['title']);
+
+			   $cfg=$this->bo->object_events_plugins[$_POST[plugin]]['config'];
+			   $cfg_help=$this->bo->object_events_plugins[$_POST[plugin]]['config_help'];
+			}
+		 }
+		 else
+		 {
+			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id].'&edit='.$_GET[edit]));
+
+			if(is_array($stored_configs))
+			{
+			   $edit_conf = $stored_configs[$_GET[edit]];
+			}
+
+			$this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$edit_conf[name]]['title']);
+
+			$cfg=$this->bo->object_events_plugins[$edit_conf[name]]['config'];
+			$cfg_help=$this->bo->object_events_plugins[$edit_conf[name]]['config_help'];
+		 }
+
+		 if(is_array($cfg))
+		 {
+			foreach($cfg as $key => $val)
+			{
+			   $cfg_arr=array(
+				  'name'=>$key,
+				  'label'=>ereg_replace('_',' ',$key),
+				  'help'=>$cfg_help[$key],
+				  'type'=>$val[1],
+				  'attrib'=>$val[2],
+			   );
+			   if(!$edit_conf)
+			   {
+				  $cfg_arr['value']=$val[0];
+			   }
+			   else
+			   {
+				  $cfg_arr['value']=$edit_conf['conf'][$key];
+			   }
+
+			   $this->tplsav2->cfg_arr[]=$cfg_arr;
+			}
+		 }
+		 $this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+
+		 $this->tplsav2->display('frm_conf_object_events.tpl.php');
+
+		 $this->bo->sessionmanager->save();
 	  }
 
 	  /**
@@ -2243,114 +2335,9 @@
 		 echo $out;
 	  }
 
-	  /**
-	  * object_events_config 
-	  * 
-	  * @access public
-	  * @return void
-	  * @todo: implement the same widget which form plugin use
-	  * @todo: rewrite config array in the register of the plugins
-	  * @todo: rewrite plugins so that it are classes
-	  * @todo: better flow
-	  */
-	  function object_events_config()
-	  {
-		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
-		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
 
-		 $this->tplsav2->assign('theme_css',$theme_css);
-		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
 
-		 if($_GET[close_me]=='true')
-		 {
-			$this->tplsav2->set_var('close', ' onLoad="self.close()"');		 
-		 }
-		 else
-		 {
-			$this->tplsav2->set_var('close', '');		 
-		 }
 
-		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
-		 $stored_configs = unserialize(base64_decode($object_arr[events_config]));
-
-		 $this->tplsav2->stored_events_arr=array(); 
-		 if(is_array($stored_configs))
-		 {
-			foreach($stored_configs as $key => $config)
-			{
-			   $stored_events_arr['edit_url']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id].'&edit='.$key);
-			   $stored_events_arr['config_id']=$key;
-			   $stored_events_arr['config_description']=lang('%3: event <b>%1</b> triggers plugin <b>%2</b>', $config[conf][event], $config[conf][plugin], $key+1);
-
-			   $this->tplsav2->stored_events_arr[]=$stored_events_arr;
-			}
-		 }
-
-		 if($_GET[edit]=='')
-		 {
-			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id]));
-
-			$this->tplsav2->set_var('event_options', $this->getEventOptions($_POST[event]));		 
-			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
-			$this->tplsav2->set_var('option_selected', 'document.events_config.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; submit();');
-
-			if($_POST[plugin] != '')
-			{
-			   $this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$_POST[plugin]]['title']);
-
-			   $cfg=$this->bo->object_events_plugins[$_POST[plugin]]['config'];
-			   $cfg_help=$this->bo->object_events_plugins[$_POST[plugin]]['config_help'];
-			}
-		 }
-		 else
-		 {
-			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id].'&edit='.$_GET[edit]));
-
-			if(is_array($stored_configs))
-			{
-			   $edit_conf = $stored_configs[$_GET[edit]];
-			}
-
-			$this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$edit_conf[name]]['title']);
-
-			$cfg=$this->bo->object_events_plugins[$edit_conf[name]]['config'];
-			$cfg_help=$this->bo->object_events_plugins[$edit_conf[name]]['config_help'];
-		 }
-
-		 if(is_array($cfg))
-		 {
-			foreach($cfg as $key => $val)
-			{
-			   $cfg_arr=array(
-				  'name'=>$key,
-				  'label'=>ereg_replace('_',' ',$key),
-				  'help'=>$cfg_help[$key],
-				  'type'=>$val[1],
-				  'attrib'=>$val[2],
-			   );
-			   if(!$edit_conf)
-			   {
-				  $cfg_arr['value']=$val[0];
-			   }
-			   else
-			   {
-				  $cfg_arr['value']=$edit_conf['conf'][$key];
-			   }
-
-			   $this->tplsav2->cfg_arr[]=$cfg_arr;
-			}
-		 }
-		 $this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
-
-		 $this->tplsav2->display('frm_conf_object_events.tpl.php');
-
-		 $this->bo->sessionmanager->save();
-	  }
    }
 ?>
