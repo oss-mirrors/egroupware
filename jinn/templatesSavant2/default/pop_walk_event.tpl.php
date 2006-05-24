@@ -16,11 +16,10 @@
 	  <link href="<?=$this->theme_css?>" type="text/css" rel="StyleSheet" />
    </head>
    <body>
-
 		 <div id="divMain">
 			<div id="divAppboxHeader"><?=lang('Walk Records')?></div>
 			<div id="divAppbox">
-			   <form name='sel' action ="<?=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.popwalkevent');?>" method="post">
+			   <form name='sel' action ="<?=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.do_loop_walk_events');?>" method="post">
 				  <input type='hidden' id='sel' name ='sel' value='all'>
 				  <input type='hidden' name ='selvalues' value='<?=$this->selval?>'>
 				  <input type='hidden' name ='submitted' value='true'>

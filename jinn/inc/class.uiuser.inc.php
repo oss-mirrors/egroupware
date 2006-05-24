@@ -35,6 +35,7 @@
 		 'config_objects'		=> True,
 		 'img_popup'			=> True,
 		 'popwalkevent'			=> True,
+		 'do_loop_walk_events'	=> True
 	  );
 
 
@@ -176,9 +177,6 @@
 
 	  function popwalkevent()
 	  {
-		 $this->filter = CreateObject('jinn.uiu_filter');
-         $this->filter->init_bo(&$this->bo);
-
 		 #_debug_array($_GET['selvalues']);
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
 		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
@@ -192,8 +190,36 @@
 
 		 //$this->header(lang('Walk all records'));
 		 //$this->msg_box();
-		 if($_POST[submitted]=='true')
+		 $this->tplsav2->assign('selval',$_GET[selvalues]);
+		 $this->tplsav2->display('pop_walk_event.tpl.php');
+	  }
+
+	  function do_loop_walk_events()
+	  {
+		 $start_time = time();
+		 //TODO get it from the configuration
+		 if($this->bo->so->config[loop_numbers] != '' or !empty( $this->bo->so->config[loop_numbers]))
 		 {
+			$items=$this->bo->so->config[loop_numbers];
+		 }
+		 else
+		 {
+		 $items=20;
+		 }
+		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
+		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+
+		 $this->tplsav2->assign('theme_css',$theme_css);
+		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
+		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
+		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
+		 if(!$_GET['where'])
+		 {
+			$this->filter = CreateObject('jinn.uiu_filter');
+			$this->filter->init_bo(&$this->bo);
+
 			#_debug_array($_POST);
 			#die($_POST);
 			switch($_POST[data_source])
@@ -225,59 +251,81 @@
 			   $filter_where = 'all';
 			   break;
 			}
-			$columns = $this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
-			if(is_array($columns))
-			{
-			   $columns_arr = array();
-			   foreach($columns as $column)
-			   {
-				  $columns_arr[] = $column[name];
-			   }
-			}
-			//get data
+			$limit = " LIMIT 0, $items" ;
 			#_debug_array($filter_where);
 			#die();
-			$data = $this->bo->get_data($columns_arr, $filter_where);
-
-			   foreach($data as $row)
-			   {
-				  //EVENT ON EXPORT
-				  while(list($key, $val) = each($row))
-				  {
-					 $_row['FLDXXX'.$key]=$val;
-				  }
-				  $status[eventstatus] = $this->bo->run_event_plugins('on_walk_list_button', $_row);
-
-			   }
-			   $this->tplsav2->assign('amount',count($data));
-			   $this->tplsav2->display('pop_walk_succes.tpl.php');
-			}
-			else
-			{
-			$this->tplsav2->assign('selval',$_GET[selvalues]);
-			$this->tplsav2->display('pop_walk_event.tpl.php');
-			}
-
-			// todo
-			// write manipulation plugin for Rieks
-			// foreach recordset loop
-			// Run Plugin button
-			// don't close this popup message
-			// enter amount of records to process before reload
-			// reload javascript
 		 }
-
-		 /**
-		 * config_objects 
-		 * 
-		 * @access public
-		 * @return void
-		 */
-		 function config_objects()
+		 else
 		 {
-			$this->header(lang('configure browse view'));
+			$start = intval($_GET[start]);
+			$end = $start + $items;
+			$filter_where = unserialize(base64_decode($_GET['where']));
+			$limit = " LIMIT $start, $end";
+		 }
+		 
+		 $columns = $this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
+		 if(is_array($columns))
+		 {
+			$columns_arr = array();
+			foreach($columns as $column)
+			{
+			   $columns_arr[] = $column[name];
+			}
+		 }
+		 if($_GET[amount] != '')
+		 {
+			$count = $_GET[amount];
+		 }
+		 else
+		 {
+			$data = $this->bo->get_data($columns_arr, $filter_where);
+			$count = count($data);
+		 }
+ //get data
+		 #_debug_array($filter_where);
+		 #die();
+		 //add limit
+		 $data = $this->bo->get_data($columns_arr, $filter_where, $limit);
 
-			if(!$this->bo->session['site_object_id'])
+		 foreach($data as $row)
+		 {
+			//EVENT ON WALK LIST
+			while(list($key, $val) = each($row))
+			{
+			   $_row['FLDXXX'.$key]=$val;
+			}
+			$status[eventstatus] = $this->bo->run_event_plugins('on_walk_list_button', $_row);
+
+		 }
+		 if($_GET[start]+$items < $count)
+		 {
+				  $this->tplsav2->assign('items',$items);
+				  $this->tplsav2->assign('amount',$count);
+				  $this->tplsav2->assign('where',base64_encode(serialize($filter_where)));
+				  $this->tplsav2->assign('number',$_GET[start]+$items);
+				  $spend= time() - $start_time;
+				  $this->tplsav2->assign('time_spend',$spend);
+				  $this->tplsav2->display('pop_walk.tpl.php');
+			   }
+			   else
+			   {
+				  $this->tplsav2->assign('amount',$count);
+				  $this->tplsav2->display('pop_walk_succes.tpl.php');
+			   }
+			   return "false";
+			}
+
+	  /**
+	  * config_objects 
+	  * 
+	  * @access public
+	  * @return void
+	  */
+	  function config_objects()
+	  {
+		 $this->header(lang('configure browse view'));
+
+		 if(!$this->bo->session['site_object_id'])
 			{
 			   $this->bo->addError(lang('No object selected. No able to configure this view'));
 			   $this->msg_box();

@@ -722,7 +722,7 @@
 		 * @access public
 		 * @return void
 		 */
-		 function get_data($columns_arr, $filter_where)
+		 function get_data($columns_arr, $filter_where, $limit=false)
 		 {
 			//new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
 			//partly implemented in bouser, partly in sojinn
@@ -749,7 +749,7 @@
 				  $columns_arr[] = $relation;
 			   }
 			}
-			return $this->so->get_data($site_id, $table_name, $columns_arr, $filter_where);
+			return $this->so->get_data($site_id, $table_name, $columns_arr, $filter_where, $limit);
 
 		 }
 

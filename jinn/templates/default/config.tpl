@@ -33,7 +33,14 @@
    <br/>{lang_Path_to_convert_from_ImageMagick_(_e.g._/usr/X11R6/bin_)}:</td>
    <td><input name="newsettings[imagemagickdir]" size="30" value="{value_imagemagickdir}"></td>
    </tr>
-	<tr >
+   
+	<tr bgcolor="{row_off}">
+	<td>
+	{lang_Walk_events_plugin_max_numbers_to_loop}:</td>
+	<td><input name="newsettings[loop_numbers]" size="30" value="{value_loop_numbers}"></td>
+	</tr>
+	
+	 <tr >
    <td>
    {lang_Use_reports}
    <br/>{lang_This_allows_the_users_to_use_the_report_functionalitie}:</td>

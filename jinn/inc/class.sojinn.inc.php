@@ -1199,7 +1199,7 @@
 		 }
 	  }
 
-	  function get_data($site_id, $table, $columns_arr, $filter_where)
+	  function get_data($site_id, $table, $columns_arr, $filter_where, $limit = false)
 	  {
 		 //new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
 		 //partly implemented in bouser, partly in sojinn
@@ -1261,8 +1261,13 @@
 
 		 //order
 		 $order = "";
+		 if(!$limit)
+		 {
+			$limit="";
+			
+			}
 
-		 $sql = "$select $from $where $order";
+		 $sql = "$select $from $where $order $limit";
 		 if($sql)
 		 {
 			$this->site_db_connection($site_id);
