@@ -31,7 +31,7 @@
 		function workflow()
 		{
 			// check version
-			if (substr($GLOBALS['egw_info']['apps']['workflow']['version'],0,6) != '1.2.01')
+			if (substr($GLOBALS['egw_info']['apps']['workflow']['version'],0,6) != '1.3.00')
 			{
 				$GLOBALS['egw']->common->egw_header();
 				echo parse_navbar();
