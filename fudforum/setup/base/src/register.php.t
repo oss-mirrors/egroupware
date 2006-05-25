@@ -236,30 +236,28 @@ function decode_uent(&$uent)
 		$avatar_arr = null;
 	} else if (($FUD_OPT_1 & 8) && isset($_FILES['avatar_upload']) && $_FILES['avatar_upload']['size'] > 0) { /* new upload */
 		if ($_FILES['avatar_upload']['size'] >= $CUSTOM_AVATAR_MAX_SIZE) {
-			set_err('avatar', '{TEMPLATE: register_err_avatartobig}');
-		} else {
-			/* [user_id].[file_extension]_'random data' */
-			$file_name = $uent->id . strrchr($_FILES['avatar_upload']['name'], '.') . '_';
-			$tmp_name = safe_tmp_copy($_FILES['avatar_upload']['tmp_name'], 0, $file_name);
-
-			if (!($img_info = @getimagesize($TMP . $tmp_name))) {
-				set_err('avatar', '{TEMPLATE: register_err_not_valid_img}');
-				unlink($TMP . $tmp_name);
-			}
-
-			list($max_w, $max_y) = explode('x', $CUSTOM_AVATAR_MAX_DIM);
-			if ($img_info[2] > ($FUD_OPT_1 & 64 ? 4 : 3)) {
-				set_err('avatar', '{TEMPLATE: register_err_avatarnotallowed}');
-				unlink($TMP . $tmp_name);
-			} else if ($img_info[0] >$max_w || $img_info[1] >$max_y) {
-				set_err('avatar', '{TEMPLATE: register_err_avatardimtobig}');
-				unlink($TMP . $tmp_name);
+				set_err('avatar', '{TEMPLATE: register_err_avatartobig}');
 			} else {
-				/* remove old uploaded file, if one exists & is not in DB */
-				if (empty($avatar_arr['leave']) && @file_exists($avatar_arr['file'])) {
+				$ext = array(1=>'gif', 2=>'jpg', 3=>'png', 4=>'swf');
+				if (!($img_info = @getimagesize($_FILES['avatar_upload']['tmp_name']))) {
+				       set_err('avatar', '{TEMPLATE: register_err_not_valid_img}');
+				}
+				/* [user_id].[file_extension]_'random data' */
+				$file_name = $uent->id . '.' . $ext[$img_info[2]] . '_';
+				$tmp_name = safe_tmp_copy($_FILES['avatar_upload']['tmp_name'], 0, $file_name);
+				
+				list($max_w, $max_y) = explode('x', $CUSTOM_AVATAR_MAX_DIM);
+				if ($img_info[2] > ($FUD_OPT_1 & 64 ? 4 : 3)) {
+					set_err('avatar', '{TEMPLATE: register_err_avatarnotallowed}');
+					unlink($TMP . $tmp_name);
+				} else if ($img_info[0] >$max_w || $img_info[1] >$max_y) {
+					set_err('avatar', '{TEMPLATE: register_err_avatardimtobig}');
+					unlink($TMP . $tmp_name);
+				} else {
+					/* remove old uploaded file, if one exists & is not in DB */
+					if (empty($avatar_arr['leave']) && @file_exists($avatar_arr['file'])) {
 					@unlink($TMP . $avatar_arr['file']);
 				}
-
 				$avatar_arr['file'] = $tmp_name;
 				$avatar_arr['del'] = 0;
 				$avatar_arr['leave'] = 0;
