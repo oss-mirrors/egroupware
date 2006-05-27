@@ -194,7 +194,6 @@
    <input type="hidden" name="action" value="true">
    <input type="hidden" name="where_key" value="<?=$this->where_key?>">
    <input type="hidden" name="where_value" value="<?=$this->where_value?>">
-   <input type="hidden" name="FLDserialnumber" value="<?=($this->site_values['serialnumber']?$this->site_values['serialnumber']:time())?>">
    <input type="hidden" name="currenttab" id="currenttab" value="<?=$_POST[currenttab]?>">
    <table style="border-spacing: 15px;">
 	  <tr>
@@ -202,27 +201,27 @@
 		 <td ><?=lang('Site id')?></td><td ><input name="FLDsite_id" value="<?=$this->site_values['site_id']?>" type="hidden"><?=($this->site_values['site_id']?$this->site_values['site_id']:lang('New'))?></td>
 	  </tr>
 	  <tr>
-		 <td><?=lang('Table prefix for data objects')?></td><td ><input name="FLDobject_scan_prefix" size="40"  value="<?=$this->site_values['object_scan_prefix']?>" type="text"></td>
-		 <td ><?=lang('Saved with version')?></td><td ><?=$this->site_values['jinn_version']?></td></tr>
+		 <td ><?=lang('Environment profile to use')?></td><td>
+		 <?php
+			if($this->site_values['host_profile']=='development') 
+			{
+			   $hp_dev_selected='selected="selected"';
+			}
+			else
+			{
+			   $hp_prod_selected='selected="selected"';
+			}
+		 ?>
+		 <select name="FLDhost_profile">
+			<option value="production" <?=$hp_prod_selected?>><?=lang('Production')?></option>
+			<option value="development" <?=$hp_dev_selected?>><?=lang('Development')?></option>
+		 </select>
+	  </td>
+	  <td><?=lang('Site version')?></td><td><?=($this->site_values['site_version']?$this->site_values['site_version']:0)?></td>
 	  <tr>
-		 <td ><?=lang('Website url for previewing')?></td><td ><input name="FLDwebsite_url" size="40"  value="<?=$this->site_values['website_url']?>" type="text"></td>
+		 <td><?=lang('Table prefix for data objects')?></td><td ><input name="FLDobject_scan_prefix" size="10"  value="<?=$this->site_values['object_scan_prefix']?>" type="text"></td>
 
-		 <td ><?=lang('Environment profile to use')?></td><td >
-			<?php
-			   if($this->site_values['host_profile']=='development') 
-			   {
-				  $hp_dev_selected='selected="selected"';
-			   }
-			   else
-			   {
-				  $hp_prod_selected='selected="selected"';
-			   }
-			?>
-			<select name="FLDhost_profile">
-			   <option value="production" <?=$hp_prod_selected?>><?=lang('Production')?></option>
-			   <option value="development" <?=$hp_dev_selected?>><?=lang('Development')?></option>
-			</select>
-		 </td>
+		 <td ><?=lang('Saved with JiNN version')?></td><td ><?=$this->site_values['jinn_version']?></td></tr>
 
 	  </tr>
    </table>

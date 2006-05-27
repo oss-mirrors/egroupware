@@ -100,9 +100,132 @@
 
 	  function load_site_from_xml($buffer='')
 	  {
-		 _debug_array($buffer);
-		 echo "hallo"; 
+		 $xmlObj    = CreateObject('jinn.xmltoarray',$buffer);
+		 $check_versions = true;
+		 
+		 //Creating Array
+		 $xmlarray = $xmlObj->createArray();
+		 $import_site=$xmlarray['jinn']['site'][0];
+		 
+		 //_debug_array($import_site);
+		 //_debug_array($arrayData);
+		 
+		 $info = $GLOBALS[egw_info][apps][jinn];
+		 if(!$import_site['jinn_version']) $import_site['jinn_version']='?';
+
+		 if(($import_site['jinn_version'] != $info['version']) && $check_versions)
+		 {
+			//admin must click OK to continue
+			$this->bo->addInfo(lang('This siteconfiguration, saved using JiNN version %1, may be incompatible with this JiNN version %2', $import_site['jinn_version'], $info['version']));
+		 }
+
+		 $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_sites');
+		 unset($validfields['site_id']);
+		 unset($imported);
+		 while(list($key, $val) = each($import_site)) 
+		 {
+			if($key=='objects')
+			{
+			   continue;
+			}
+			
+			if(array_key_exists($key, $validfields))
+			{
+			   $imported[$key] = true;
+			   $site_data[] = array
+			   (
+				  'name' => $key,
+				  'value' => addslashes($val) 
+			   );
+			}
+			else
+			{
+			   $this->bo->addError(lang('incompatibility result: Site <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $import_site['site_name']));
+			}
+		 }
+
+		 foreach($validfields as $fieldname => $yes)
+		 {
+			if(!array_key_exists($fieldname, $imported))
+			{
+			   $this->bo->addError(lang('incompatibility result: Site <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $import_site['site_name']));
+			}
+		 }
+		 
+		 //	 $new_site_name=$site_data[0][value];	
+		 //	 $thissitename=$this->bo->so->get_sites_by_name($new_site_name);
+
+		 //todo 
+		 //insert or replace site, object field and report data 
+
+		 $save_site=$this->save_site($site_data);
+
+		 if($save_site) $this->bo->addInfo(lang('Import was succesfull'));
+
+		 $this->header(lang('Import JiNN-Site'.$table));
+		 $this->msg_box();
+
+		 $this->tplsav2->form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site');
+		 $this->tplsav2->display('importsite.tpl.php');		
 	  }
+
+	  function site_name_exist($site_name)
+	  {
+		 $thissitename=$this->bo->so->get_sites_by_name($site_name);
+		 if(count($thissitename)>=1)
+		 {
+			return true;
+		 }
+	  }
+
+	  function save_site($data)
+	  {
+		 $new_site_name=$data[0][value];	
+
+		 if($_POST[replace_existing] && $this->site_name_exist($new_site_name))
+		 {
+			$new_site_id=$thissitename[0];
+			$this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
+
+			// remove all existing objects
+			$this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
+			$this->bo->addInfo(lang('Replaced existing site named <strong>%1</strong>.',$new_site_name));
+		
+			return true;
+		 }
+		 elseif($status=$this->bo->so->insert_phpgw_data('egw_jinn_sites',$data))
+		 {
+			$new_site_id=$status[where_value];
+
+			if($this->site_name_exist($new_site_name))
+			{
+			   while($this->site_name_exist($new_site_name))
+			   {
+				  if(is_numeric(trim(substr($new_site_name,-2))))
+				  {
+					 $new_site_name= substr($new_site_name,0,strlen($new_site_name)-2)),' '.intval(trim(substr($new_site_name,-2)))+1; 
+				  }
+				  else
+				  {
+					 $new_site_name= trim($new_site_name).' 2';
+				  }
+			   }
+			   $datanew[]=array(
+				  'name'=>'site_name',
+				  'value'=>$new_site_name
+			   );
+			   $this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$datanew,'site_id',$new_site_id);
+			}
+			
+			$this->bo->addInfo(lang('The name of the new site is <strong>%1</strong>.',$new_site_name));
+			
+			return true;
+		 }
+
+
+	  }
+
+
 
 	  /**
 	  * load_site_from_file: create a new site or replace an existing from a JiNN file
@@ -123,7 +246,7 @@
 
 		 @include($import[tmp_name]);
 		 $check_versions = true;
-		 if (!($import_site && $checkbit))
+		 if(!($import_site && $checkbit))
 		 {	
 			if($this->bo->session['tmp']['import_site'] && $this->bo->session['tmp']['checkbit'])
 			{
@@ -138,7 +261,7 @@
 			}
 		 }
 
-		 if ($import_site && $checkbit)
+		 if($import_site && $checkbit)
 		 {
 			$info = $GLOBALS[egw_info][apps][jinn];
 			if(!$import_site['jinn_version']) $import_site['jinn_version']='?';

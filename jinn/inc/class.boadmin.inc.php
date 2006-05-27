@@ -311,29 +311,35 @@
 	  {
 		 $data=$this->http_vars_pairs($_POST,$_FILES);
 
-		 include_once (PHPGW_INCLUDE_ROOT . "/jinn/setup/setup.inc.php");
-		 $info = $setup_info['jinn'];
-		 $data[] = array('name' => 'jinn_version', 'value' => $info['version']);
-
 		 if($_POST[where_value])
 		 {
 			$status=$this->so->update_phpgw_data('egw_jinn_sites',$data, $this->where_key,$this->where_value);
 		 }
 		 else
 		 {
+			unset($this->site);
 			$status=$this->so->insert_phpgw_data('egw_jinn_sites',$data);
 		 }
 
-		 if ($status[error])	
+		 if($status[error])	
 		 {
 			$this->addError(lang('Site NOT succesfully saved, unknown error'));
 		 }
 		 else 
 		 {
+			$this->set_site_version_info($status[where_value]);
 			$this->addInfo(lang('Site succesfully saved'));
 		 }
 
 		 return $status;
+	  }
+
+	  function set_site_version_info($site_id)
+	  {
+		 $data[] = array('name' => 'jinn_version', 'value' => $GLOBALS['phpgw_info']['apps']['jinn']['version']);
+		 $data[] = array('name' => 'site_version', 'value' => ($this->site['site_version']+1));
+		 
+		 $status=$this->so->update_phpgw_data('egw_jinn_sites',$data, 'site_id',$site_id);
 	  }
 
 	  /**
@@ -378,10 +384,6 @@
 		 $table='egw_jinn_sites';
 
 		 $data=$this->http_vars_pairs($_POST,$_FILES);
-
-		 include_once (PHPGW_INCLUDE_ROOT . "/jinn/setup/setup.inc.php");
-		 $info = $setup_info['jinn'];
-		 $data[] = array('name' => 'jinn_version', 'value' => $info['version']);
 
 		 $status=$this->so->update_phpgw_data($table,$data, $this->where_key,$this->where_value);
 
@@ -506,24 +508,15 @@
 			   $lkeyprim_arr=$this->get_fieldnames_by_table($object_arr['table_name'],true);
 			   if(is_array($lkeyprim_arr))
 			   {
-				  //$type2[local_key]=$post_type2['LOCAL_KEY'.$idval];
 				  $type2[local_key]=$lkeyprim_arr[0];
 			   }
 
 			   $rkeyprim_arr=$this->get_fieldnames_by_table($type2[foreign_table],true);
 			   if(is_array($rkeyprim_arr))
 			   {
-				  //$type2[local_key]=$post_type2['LOCAL_KEY'.$idval];
 				  $type2[foreign_key]=$rkeyprim_arr[0];
 			   }
 
-			   //$type2[foreign_key]=$post_type2['FOREIGN_KEY'.$idval];
-
-			/*   $post_type2['REL2XXX_CONNECT_KEY_LOCAL'.$idval];
-			   $post_type2['REL2XXX_CONNECT_KEY_FOREIGN'.$idval];
-			   $post_type2['REL2XXX_CONNECT_TABLE'.$idval];
-			 */  
-			   //todo give extra field to tell that old connection table is used to give warning when the foreign-keys are changed
 
 			   //must we reset the connection table yes or no
 			   //disblable this automatic block
@@ -635,6 +628,7 @@
 		 }
 		 else 
 		 {
+			$this->set_site_version_info($this->site['site_id']);
 			$this->addInfo(lang('Relation succesfully saved'));
 		 }
 

@@ -1518,4 +1518,88 @@
 
 		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.021';
 	}
+
+
+	$test[] = '0.9.021';
+	function jinn_upgrade0_9_021()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_sites','serialnumber','site_version');
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.022';
+	}
+
+
+	$test[] = '0.9.022';
+	function jinn_upgrade0_9_022()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_sites','uniqid',array(
+			'type' => 'varchar',
+			'precision' => '30',
+			'nullable' => False
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.023';
+	}
+
+
+	$test[] = '0.9.023';
+	function jinn_upgrade0_9_023()
+	{
+		$GLOBALS['egw_setup']->oProc->DropColumn('egw_jinn_sites',array(
+			'fd' => array(
+				'site_id' => array('type' => 'auto','nullable' => False),
+				'site_name' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'site_db_name' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'site_db_host' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'site_db_user' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'site_db_password' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'site_db_type' => array('type' => 'varchar','precision' => '10','nullable' => False),
+				'upload_path' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'dev_site_db_name' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'dev_site_db_host' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'dev_site_db_user' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'dev_site_db_password' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'dev_site_db_type' => array('type' => 'varchar','precision' => '10','nullable' => False),
+				'dev_upload_path' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'website_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'object_scan_prefix' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'jinn_version' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'host_profile' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'uniqid' => array('type' => 'varchar','precision' => '30','nullable' => False)
+			),
+			'pk' => array('site_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),'site_version');
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.024';
+	}
+
+
+	$test[] = '0.9.024';
+	function jinn_upgrade0_9_024()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_sites','site_version',array(
+			'type' => 'int',
+			'precision' => '4'
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.025';
+	}
+
+
+	$test[] = '0.9.025';
+	function jinn_upgrade0_9_025()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_sites','site_version',array(
+			'type' => 'int',
+			'precision' => '4',
+			'nullable' => False
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.026';
+	}
 ?>

@@ -101,6 +101,7 @@
 
 		 if ($status==1)	
 		 {
+			$this->bo->set_site_version_info($this->bo->site['site_id']);
 			$this->bo->addInfo(lang('Site Object succesfully deleted'));
 		 }
 		 else 
@@ -649,6 +650,7 @@
 		 );
 		 $where_string="`field_parent_object`='{$_GET[object_id]}' AND  `field_name`='{$_GET[field_name]}'";
 		 $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true);
+		 $this->bo->set_site_version_info($this->bo->site['site_id']);
 
 		 header( "Content-type: text/xml" );
 		 header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); // fix me kan nooit goed zijn
@@ -701,6 +703,7 @@
 
 		 $where_string="`field_parent_object`='{$_GET[object_id]}' AND  `field_name`='{$_GET[field_name]}'";
 		 $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true);
+		 $this->bo->set_site_version_info($this->bo->site['site_id']);
 
 		 header( "Content-type: text/xml" );
 		 header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); // fix me kan nooit goed zijn
@@ -754,6 +757,7 @@
 
 		 $where_string="`field_parent_object`='{$_GET[object_id]}' AND  `field_name`='{$_GET[field_name]}'";
 		 $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true);
+		 $this->bo->set_site_version_info($this->bo->site['site_id']);
 
 		 header( "Content-type: text/xml" );
 		 header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); 
@@ -797,6 +801,9 @@
 			   $status = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data); // do insert when not existing
 			   $_GET[object_id]=$status['where_value'];
 			}
+
+			$this->bo->set_site_version_info($this->bo->site['site_id']);
+			
 		 }
 
 		 //for general sets
@@ -1383,7 +1390,6 @@
 						$_conf[$key]=$val;
 					 }
 				  }
-
 			   }
 			   //FORM CAN BE STORED IN DB
 			   else
@@ -1405,7 +1411,7 @@
 				  $where_string="`field_parent_object`='{$_GET[object_id]}' AND  `field_name`='$_GET[field_name]'";
 
 				  $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true); // do insert when not existing
-				  //_debug_array($status);
+				  $this->bo->set_site_version_info($this->bo->site['site_id']);
 
 				  // end general fields	
 

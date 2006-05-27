@@ -58,9 +58,6 @@
 	  {
 		 $site_metadata=$this->phpgw_db->metadata('egw_jinn_sites');
 		 
-		 //FIXME psql error;
-		 //if($site_id=='') $site_id=-1;
-
 		 $this->phpgw_db->select('egw_jinn_sites','*',"site_id=$site_id",__LINE__,__FILE__);
 		 $this->phpgw_db->next_record();
 
@@ -301,11 +298,10 @@
 	  }
 
 	  /**
-	  * get objectvalues by object id or serialnumber
+	  * get objectvalues by object id or uniqid
 	  *
 	  * @param int $object_id default behaviour to look by object_id
-	  * @param int $serialnumber optional
-	  * @fixme serialnumber is depreciated and must be removed
+	  * @param string $uniqid optional
 	  */
 	  function get_object_values($object_id,$uniqid=false)
 	  {
@@ -2013,11 +2009,12 @@
 		 return $status;
 	  }
 
-
-	  
 	  function insert_new_site($data)
 	  {
 		 $meta=$this->phpgw_table_metadata('egw_jinn_sites',true);
+
+		 $uniqid=uniqid('');
+		 $data[] = array('name' => 'uniqid', 'value' => $uniqid);
 
 		 foreach($data as $field)
 		 {
@@ -2032,12 +2029,6 @@
 			   continue;
 			}
 
-			if(trim($field[name])=='serialnumber')
-			{
-			   $serial=time();
-			   $field[value]=$serial;
-			}
-
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
@@ -2045,12 +2036,14 @@
 			$SQLvalues .= "'".$field[value]."'";
 		 }
 
+
 		 $SQL='INSERT INTO egw_jinn_sites (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+///		 echo $SQL;
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status[ret_code]=0;
 
-			$SQL='SELECT * FROM egw_jinn_sites WHERE serialnumber='.$serial;
+			$SQL="SELECT * FROM egw_jinn_sites WHERE uniqid='$uniqid'";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
@@ -2078,29 +2071,7 @@
 
 		 foreach($data as $field)
 		 {
-			//_debug_array($field);
-			/*if($meta[$field['name']]['auto_increment'] || eregi('seq_egw_jinn_objects',$meta[$field['name']]['default'])) 
-			{
-			   $last_insert_id_col=$field['name'];
-			   continue;
-			}
-			*/
-
-			//$serial=time();
-			/*if( $field['name'] == 'object_id') 
-			{
-			   continue;
-			}
-			*/
-
-		/*	if($serial && $field[name]=='serialnumber')
-			{
-			   $field[value]=$serial;
-			}
-			*/
-
 			if($field['name']=='unique_id' || $field['name']=='object_id')
-			//if($field[name]=='unique_id' && $field[value]=='')
 			{
 			   $field[value] = $this_unique;
 			}
@@ -2130,12 +2101,9 @@
 		 $SQLvalues = "'".$this_unique."',".$SQLvalues;
 
 		 $SQL='INSERT INTO egw_jinn_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-		 //die( $SQL);
+		 
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
-			//$SQL="SELECT * FROM egw_jinn_objects WHERE object_id='$this_unique'";
-			//$this->phpgw_db->query($SQL,__LINE__,__FILE__);
-			//		function select($table,$cols,$where,$line,$file,$offset=False,$append='',$app=False,$num_rows=0,$join='')
 			$this->phpgw_db->select('egw_jinn_objects','*',"object_id='$this_unique'",__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
@@ -2333,11 +2301,13 @@
 		 //update
 		 $sql = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $WHERE;
 
+		 //echo $sql;
 		 if (!$this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
 			$status[error]=true;
 		 }
 		 $status[sql]=$sql;	 
+		 $status[where_value]=$where_value;	 
 
 		 return $status;
 	  }
@@ -2642,6 +2612,21 @@
 		 return $report_arr;
 
 	  }
+	
+	  function increase_site_version($site_id)
+	  {
+		 //function update($table,$data,$where,$line,$file,$app=False,$use_prepared_statement=false)
 
+		 $data['site_version']='site_version+1';
+		 $where='site_id='.$site_id;
+		 ///		 $status=$this->phpgw_db->update('egw_jinn_sites',$data,$where,__LINE__,__FILE__);
+		 $sql="UPDATE egw_jinn_sites SET site_version=site_version+1 WHERE site_id=$site_id";
+		 echo $sql;
+		 $status=$this->phpgw_db->query("$sql",__LINE__,__FILE__);
+
+		 return $status;
+		 
+		 //$this->so->increase_site_version(); 
+	  }
    }
 ?>

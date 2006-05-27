@@ -40,7 +40,7 @@
 	  <input type="hidden" name="action" value="true">
 	  <table border="0" cellspacing="1" cellpadding="0" style="background-color:#ffffff;border:solid 1px #cccccc;margin:3px 0px 3px 0px;">
 		 <tr>
-			<td colspan="6" style="font-size:12px;font-weight:bold;padding:2px;border-bottom:solid 1px #006699" align="left"><?=lang('Sites');?></td>
+			<td colspan="7" style="font-size:12px;font-weight:bold;padding:2px;border-bottom:solid 1px #006699" align="left"><?=lang('Sites');?></td>
 		 </tr>
 		 <tr>
 			<td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Actions')?></td>
@@ -48,7 +48,8 @@
 			<td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Production Database');?></td>
 			<td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Development Database');?></td>
 			<td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Objects');?></td>
-			<td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Saved Version');?></td>
+			<td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Site Version');?></td>
+			<td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('JiNN Version');?></td>
 		 </tr>
 
 		 <?php if(count($this->site_records)>0):?>
@@ -68,18 +69,19 @@
 			<td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>" align="left"><?=$site_row[site_db_name]?></td>
 			<td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>" align="left"><?=$site_row[dev_site_db_name]?></td>
 			<td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>" align="left"><?=$site_row[num_objects]?></td>
+			<td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>" align="left"><?=$site_row[site_version]?></td>
 			<td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>" align="left"><?=$site_row[jinn_version]?></td>
 		 </tr>
 		 <?php endforeach?>
 		 <?php endif?>
 		 <tr>
-			<td colspan="6" style="border-top:solid 1px #006699;height:1px;" ></td>
+			<td colspan="7" style="border-top:solid 1px #006699;height:1px;" ></td>
 		 </tr>
 		 <tr>
 			<td align="left" style="width:90px;padding:0px 4px 0px 2px;background-color:#d3dce3">
 			   <input title="toggle all above checkboxes" name="CHECKALL" id="CHECKALL" value="TRUE" onclick="doCheckAll(this)" type="checkbox" />
 			   <a title="delete all selected records" href="javascript:submit_multi_del()"><img src="<?=$this->icon_del?>" alt="delete all selected records" width="16"></a></td>
-			<td colspan="5" style="padding:0px 4px 0px 2px;background-color:#d3dce3"><?=lang('Actions to apply on all selected sites')?></td>
+			<td colspan="6" style="padding:0px 4px 0px 2px;background-color:#d3dce3"><?=lang('Actions to apply on all selected sites')?></td>
 
 		 </tr>
 	  </table>

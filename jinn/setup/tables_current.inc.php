@@ -47,12 +47,13 @@
 				'dev_site_db_type' => array('type' => 'varchar','precision' => '10','nullable' => False),
 				'dev_upload_path' => array('type' => 'varchar','precision' => '250','nullable' => False),
 				'website_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
-				'serialnumber' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
 				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
 				'object_scan_prefix' => array('type' => 'varchar','precision' => '100','nullable' => False),
 				'jinn_version' => array('type' => 'varchar','precision' => '30','nullable' => False),
-				'host_profile' => array('type' => 'varchar','precision' => '30','nullable' => False)
+				'host_profile' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'uniqid' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'site_version' => array('type' => 'int','precision' => '4','nullable' => False)
 			),
 			'pk' => array('site_id'),
 			'fk' => array(),

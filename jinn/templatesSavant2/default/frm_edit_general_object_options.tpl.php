@@ -241,12 +241,6 @@
 						   </select>
 						</td>
 					 </tr>
-					 <!--					
-					 <tr>
-						<td  ><?= lang('Object serialnumber');?></td>
-						<td ><input type="hidden" name="FLDserialnumber" value="<?=$this->global_values['serialnumber']?>"><?=$this->global_values['serialnumber']?></td>
-					 </tr>
-					 -->
 					 <tr>
 						<td  ><?= lang('Hide from object menu');?></td>
 						<td >

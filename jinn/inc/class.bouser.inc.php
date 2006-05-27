@@ -1249,7 +1249,6 @@
 			$data[] = array('name' => 'table_name'		, 'value' => $table_name);
 			$data[] = array('name' => 'parent_site_id'	, 'value' => $site_id	);
 			$data[] = array('name' => 'hide_from_menu'	, 'value' => ''			);
-			$data[] = array('name' => 'serialnumber'	, 'value' => ''			);
 			$data[] = array('name' => 'unique_id'		, 'value' => ''			);
 			return $this->so->insert_new_object($data);
 		 }

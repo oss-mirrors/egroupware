@@ -1,7 +1,7 @@
 ## J I N N   T A S K S ##
 Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
-	[_] 16% RELEASE 0.9 stable
-		[_] 33% SHOWSTOPPERS BUGS/TASKS
+	[_] 12% RELEASE 0.9 stable
+		[_] 25% SHOWSTOPPERS BUGS/TASKS
 			[X] after creating new object it show another new object screen in stead of the just made object
 			[_] walk list does not work on egw_access_log: has something to do with primaries 
 			[_] als je een record kopieerd en vervolgens delete wordt ook het origineel verwijderd (zie Lingewoud NIEUW) 
@@ -48,7 +48,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] gen menu plugin geeft foutmedingen wanneer het niet goed is geconfigureerd
 			[_] Filemannager laat geen plaatjes zien maar bestandnamen
 			[_] tinymce flikkert
-		[_] 6% TASKS
+		[_] 5% TASKS
 			[_] NEW CLASS LAY-OUT  
 				[_] alle posts moeten terugkomen in ui
 				[_] ACL meer globaal maken
@@ -68,26 +68,36 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] event on delete record
 				[_] invoer verplicht tijdelijk uitgeschakeld
 				[_] invoer verplicht vervangen met invoer controle op inhoud (wellicht te definieren in plugin zelf)
-			[_] 37% JAPIE JiNN API Enterprise
-				[X] BUG!!!: when saving in edit record its add's a new record
-				[_] search
-				[_] filters
-				[X] list
-				[X] create single
-				[X] delete single
-				[X] copy single
-				[X] read single
-				[_] edit single
-					[X] open
-					[X] save
-					[_] tinymce javascript include probleem
-				[_] multi
-					[_] del
-					[_] edit
-					[_] create
-					[_] read
-				[_] export?
-				[_] import?
+			[_] 35% JAPIE JiNN API Enterprise
+				[_] set version info when jinn meta data is updated
+					[X] add/edit site
+					[X] add/edit gen object props
+					[X] edit field info
+					[X] edit relation info
+					[_] event plugins
+					[_] add/edit report info
+					[_] make more generic
+				[_] export xml
+					[_] basic impl
+					[_] site_files
+				[_] import xml
+				[_] japie jinn features
+					[_] search
+					[_] filters
+					[X] list
+					[X] create single
+					[X] delete single
+					[X] copy single
+					[X] read single
+					[_] edit single
+						[X] open
+						[X] save
+						[_] tinymce javascript include probleem
+					[_] multi
+						[_] del
+						[_] edit
+						[_] create
+						[_] read
 				[_] enable disable functions
 					[_] edit
 					[_] del
