@@ -3,7 +3,8 @@
 	$GLOBALS['egw_info']['flags'] = array(
 		'currentapp' => 'workflow',
 		'noheader'   => True,
-		'nonavbar'   => True
+		'nonavbar'   => True,
+		'include_xajax' => True,
 	);
 	require_once('../header.inc.php');
 	
@@ -28,9 +29,4 @@
 	}
 	ExecMethod($startscreen.'.form',$form_args);
 				
-//	$obj =& CreateObject($startscreen);
-//	$obj->form();
-
-//	$GLOBALS['egw']->common->egw_footer();
-
 ?>

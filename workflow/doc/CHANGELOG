@@ -5,6 +5,7 @@ alpeb is Alejandro Pedraza
 regis_glc is Regis Leroy
 
 [1.3.00.000] unstable development version ** WARNING USE IT FOR TEST PURPOSE ONLY **
+	* start xajax support in the workflow
 
 [1.2.01.006] bugfixes release ** LATEST STABLE RELEASE **
         * fix error on InstanceManager->get_instance thanks to Gareth Walter <Gareth@irrational.com.au>
