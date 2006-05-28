@@ -143,8 +143,8 @@
 					)) .'">';
 				$act_name .= $activity['wf_name'];
 				if ($activity['wf_instances'] > 0) $act_name .= '</a>';
-
 				$this->t->set_var(array(
+					'process_css_name'	=> $activity['wf_normalized_name'],
 					'act_wf_procname'	=> $activity['wf_procname'],
 					'act_proc_version'	=> $activity['wf_version'],
 					'act_icon'		=> $this->act_icon($activity['wf_type'],$activity['wf_is_interactive']),

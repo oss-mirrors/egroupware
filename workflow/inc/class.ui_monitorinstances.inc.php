@@ -126,6 +126,7 @@
 						'inst_status'		=> $instance['wf_status'],
 						'inst_owner'		=> $GLOBALS['egw']->common->grab_owner_name($instance['wf_owner']), 
 						'inst_user'		=> $GLOBALS['egw']->common->grab_owner_name($instance['wf_user']), 
+						'process_css_name'	=> $instance['wf_proc_normalized_name'],
 						'inst_procname'		=> $instance['wf_procname'],
 						'inst_version'		=> $instance['wf_version'],
 						'class_alternate_row'	=> $this->nextmatchs->alternate_row_color($tr_color, true),

@@ -1,3 +1,4 @@
+{processes_css}
 <LINK href="{monitors_css_link}"  type="text/css" rel="StyleSheet">
 <div class="message">{message}</div>
 {monitor_tabs}
@@ -83,8 +84,8 @@
 	</tr>
 	<!-- BEGIN block_listing -->
 	<tr class="{class_alternate_row}">
-		<td class="td_mp_name">
-		  <a href="{process_href}">{process_name} {process_version}</a>
+		<td class="td_mp_name row_{process_css_name}">
+			<span class="{process_css_name}"><a href="{process_href}">{process_name} {process_version}</a></span>
 		</td>
 		<td class="td_mp_activities">
 			<a href="{process_href_activities}">{process_activities}</a>

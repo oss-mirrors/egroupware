@@ -1,3 +1,4 @@
+{processes_css}
 <LINK href="{monitors_css_link}"  type="text/css" rel="StyleSheet">
 <div class="message">{message}</div>
 {monitor_tabs}
@@ -116,8 +117,8 @@
 		<td class="td_mi_name">
 			{instance_name}
 		</td>
-		<td class="td_mi_procname">
-			{inst_procname}&nbsp;{inst_version}
+		<td class="td_mi_procname row_{process_css_name}">
+			<span class="process_css_name"}>{inst_procname}&nbsp;{inst_version}</span>
 		</td>
 		<td class="td_mi_actname">
 			{activity_name}

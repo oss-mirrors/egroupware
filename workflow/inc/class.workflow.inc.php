@@ -249,35 +249,43 @@
 		*  * @param $css_name is the name of the css file, without the .css extension
 		*  * @param $print_mode is false by default, if true '_print.css' is appended to the name if this 
 		*  * css print file exists
+		*  * @return a string containing the link to a css file that you can use in a href, you'll have at least a link
+		*  * to a non-existent css in template/default/css/
 		 */
 		function get_css_link($css_name, $print_mode=false)
 		{
+			$actual_template = $GLOBALS['egw_info']['server']['template_set'];
 			if (!!($print_mode))
 			{
-				$css_file = SEP.'workflow'.SEP.'templates'.SEP
-					.$GLOBALS['egw_info']['server']['template_set'].SEP.'css'.SEP.$css_name.'_print.css';
+				// in print mode:
+				//first test template/actual_template/css/foo_print.css
+				$css_file = SEP.'workflow'.SEP.'templates'.SEP.$actual_template
+						.SEP.'css'.SEP.$css_name.'_print.css';
 				if(file_exists(EGW_SERVER_ROOT.$css_file))
 				{
 					return $GLOBALS['egw_info']['server']['webserver_url'].$css_file;
 				}
 				else
 				{
+					//then test template/default/css/foo_print.css
 					$css_file = SEP.'workflow'.SEP.'templates'.SEP.'default'
-						.SEP.'css'.SEP.$css_name.'_print.css';
+							.SEP.'css'.SEP.$css_name.'_print.css';
 					if(file_exists(EGW_SERVER_ROOT.$css_file))
 					{
 						return $GLOBALS['egw_info']['server']['webserver_url'].$css_file;
 					}
 				}
 			}
+			// test template/actual_template/css/foo.css
 			$css_file = SEP.'workflow'.SEP.'templates'.SEP
-					.$GLOBALS['egw_info']['server']['template_set'].SEP.'css'.SEP.$css_name.'.css';
+					.$actual_template.SEP.'css'.SEP.$css_name.'.css';
 			if(file_exists(EGW_SERVER_ROOT.$css_file))
 			{
 				return $GLOBALS['egw_info']['server']['webserver_url'].$css_file;
 			}
 			else
 			{
+				//finally return template/default/css/foo.css without any test
 				return $GLOBALS['egw_info']['server']['webserver_url'].SEP.'workflow'
 						.SEP.'templates'.SEP.'default'.SEP.'css'.SEP.$css_name.'.css';
 			}

@@ -1,5 +1,6 @@
 {priority_css}
 {category_css}
+{processes_css}
 <div style="color:red; text-align:center">{message}</div>
 {user_tabs}
 <form name="userInstancesForm" action="{form_action}" method="post">

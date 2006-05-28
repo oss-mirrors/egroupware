@@ -817,9 +817,10 @@
 			// Process Name
 			if($this->show_procname_column)
 			{
+				$css_procname = $instance['wf_normalized_name'];
 				$this->t->set_var(array(
-					'column_value'	=> $instance['wf_procname'].':'.$instance['wf_version'],
-					'class_column'	=> 'class="procname_'.$instance['wf_procname'].'"',
+					'column_value'	=> '<span class="'.$css_procname.'">'.$instance['wf_procname'].':'.$instance['wf_version'].'</span>',
+					'class_column'	=> 'class="row_'.$css_procname.'"',
 				));
 				$this->t->parse('columns','block_instance_column',true);
 			}

@@ -57,11 +57,12 @@
 			{
 				$runlink = $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.run_activity.go&activity_id=' . $activity_data['wf_activity_id']);
 				$this->t->set_var(array(
-					'link_starting'	=> $runlink,
-					'wf_procname'	=> $activity_data['wf_procname'].':'.$activity_data['wf_version'],
-					'actname'	=> $activity_data['wf_name'],
-					'arrow'		=> '<a href="'.$runlink.'">'.$arrowimg.'</a>',
-					'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color, true)
+					'link_starting'		=> $runlink,
+					'process_css_name'	=> $activity_data['wf_normalized_name'],
+					'wf_procname'		=> $activity_data['wf_procname'].':'.$activity_data['wf_version'],
+					'actname'		=> $activity_data['wf_name'],
+					'arrow'			=> '<a href="'.$runlink.'">'.$arrowimg.'</a>',
+					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color, true)
 				));
 				$this->t->parse('table', 'block_table', true);
 			}

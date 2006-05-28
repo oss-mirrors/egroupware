@@ -1,3 +1,4 @@
+{processes_css}
 <div style="color:red; text-align:center">{message}</div>
 <form action="{form_action}" method="post" id='fform'>
 <input type="hidden" name="start" value="0" />
@@ -69,8 +70,8 @@
 	</tr>
 	<!-- BEGIN block_activities_list -->
 	<tr class="{color_line}">
-		<td>
-		  {act_wf_procname} {act_proc_version}
+		<td class="row_{process_css_name}">
+			<span class="{process_css_name}">{act_wf_procname} {act_proc_version}</span>
 		</td>
 		<td style="text-align:left;">
 			{act_icon} {act_name} {run_act}

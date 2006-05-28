@@ -50,6 +50,7 @@
 			foreach ($processes_list_data as $process_data)
 			{
 				$this->t->set_var(array(
+					'process_css_name'	=> $process_data['normalized_name'],
 					'link_wf_procname'	=> $GLOBALS['egw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form&filter_process='. $process_data['wf_p_id']),
 					'item_wf_procname'	=> $process_data['wf_procname'],
 					'item_version'		=> $process_data['wf_version'],

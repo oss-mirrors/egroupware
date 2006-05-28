@@ -1,3 +1,4 @@
+{processes_css}
 <div style="color:red; text-align:center">{message}</div>
 {user_tabs}
 <table style="border: 0;width:100%;" cellspacing="0">
@@ -42,8 +43,8 @@
 	</tr>
 	<!-- BEGIN block_table -->
 	<tr class="{color_line}">
-		<td>
-		  <a href="{link_wf_procname}">{item_wf_procname} {item_version}</a>
+		<td class="row_{process_css_name}">
+			<span class="{process_css_name}"><a href="{link_wf_procname}">{item_wf_procname} {item_version}</a></span>
 		</td>
 		<td style="text-align:right;">
 			<a  href="{link_activities}">{item_activities}</a>

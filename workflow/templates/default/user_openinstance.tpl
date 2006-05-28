@@ -1,3 +1,4 @@
+{processes_css}
 <div style="color:red; text-align:center">{message}</div>
 {user_tabs}
 <table style="border: 0px;width:100%;" cellspacing="0">
@@ -50,8 +51,8 @@
 	</tr>
 	<!-- BEGIN block_table -->
 	<tr class="{color_line}">
-		<td>
-		  {wf_procname}
+		<td class="row_{process_css_name}">
+		  <span class="{process_css_name}">{wf_procname}</span>
 		</td>
 		<td>
 		  <a href="{link_starting}">{actname}</a>{arrow}

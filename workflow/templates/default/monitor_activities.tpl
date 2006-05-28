@@ -1,3 +1,4 @@
+{processes_css}
 <LINK href="{monitors_css_link}"  type="text/css" rel="StyleSheet">
 <div class="message">{message}</div>
 {monitor_tabs}
@@ -108,8 +109,8 @@
 	</tr>
 	<!-- BEGIN block_act_table -->
 	<tr class="{class_alternate_row}">
-		<td class="td_ma_procname">
-		  {act_process}&nbsp;{act_process_version}
+		<td class="td_ma_procname row_{process_css_name}">
+			<span class="{process_css_name}">{act_process}&nbsp;{act_process_version}</span>
 		</td>
 		<td class="td_ma_name">
 		  <a href="{act_href}">{act_name}</a> {act_run}

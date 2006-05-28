@@ -1,3 +1,4 @@
+{processes_css}
 <LINK href="{monitors_css_link}"  type="text/css" rel="StyleSheet">
 <div class="message">{message}</div>
 {monitor_tabs}
@@ -101,8 +102,8 @@
 		<td class="td_mw_details">
 			{link_view_details}
 		</td>
-		<td class="td_mw_procname">
-			{wi_wf_procname} {wi_version}
+		<td class="td_mw_procname row_{process_css_name}">
+			<span class="{process_css_name}">{wi_wf_procname} {wi_version}</span>
 		</td>
 		<td class="td_mw_actname">
 			{act_icon} {wi_actname}

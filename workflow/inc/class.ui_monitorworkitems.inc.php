@@ -109,6 +109,7 @@
 				$this->t->set_var(array(
 					'wi_href'		=> $link_view_workitem,
 					'wi_id'			=> $workitem['wf_item_id'],
+					'process_css_name'      => $workitem['wf_proc_normalized_name'],
 					'wi_wf_procname'	=> $workitem['wf_procname'],
 					'wi_version'		=> $workitem['wf_version'],
 					'act_icon'		=> $this->act_icon($workitem['wf_type'],$workitem['wf_is_interactive']),
