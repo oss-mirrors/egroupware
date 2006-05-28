@@ -294,7 +294,7 @@ class ProcessMonitor extends Base
   * 'data' key. each row is of this form:
   *	* key : activity_id
   *	* value : an array of infos:, 
-  *		* keys are : wf_procname, wf_version, wf_activity_id, wf_name, wf_normalized_name, wf_p_id, wf_type
+  *		* keys are : wf_procname, wf_version, wf_proc_normalized_name, wf_activity_id, wf_name, wf_normalized_name, wf_p_id, wf_type
   *		wf_is_autorouted, wf_flow_num, wf_is_interactive, wf_last_modif, wf_description, wf_default_user
   *		and for the stats part: active_instances, completed_instances ,aborted_instances, exception_instances
   *		act_running_instances, act_completed_instances
@@ -319,7 +319,7 @@ class ProcessMonitor extends Base
         $mid.= " where ($where) ";
       }
     }
-    $query = "select gp.`wf_name` as `wf_procname`, gp.`wf_version`, ga.*
+    $query = "select gp.`wf_name` as `wf_procname`, gp.`wf_version`, gp.wf_normalized_name as wf_proc_normalized_name, ga.*
               from ".GALAXIA_TABLE_PREFIX."activities ga
                 left join ".GALAXIA_TABLE_PREFIX."processes gp on gp.wf_p_id=ga.wf_p_id
               $mid order by $sort_mode";
@@ -395,8 +395,8 @@ class ProcessMonitor extends Base
       }
     }
 
-    $query = 'select gp.`wf_p_id`, ga.`wf_is_interactive`, gi.`wf_owner`, gp.`wf_name` as `wf_procname`, gp.`wf_version`, ga.`wf_type`,';
-    $query.= ' ga.`wf_activity_id`, ga.`wf_name` as `wf_activity_name`, gi.`wf_instance_id`, gi.`wf_name` as `wf_instance_name`, gi.`wf_status`, gia.`wf_activity_id`, gia.`wf_user`, gi.`wf_started`, gi.`wf_ended`, gia.`wf_status` as wf_act_status ';
+    $query = 'select gp.wf_p_id, ga.wf_is_interactive,gp.wf_normalized_name as wf_proc_normalized_name, gi.wf_owner, gp.wf_name as wf_procname, gp.wf_version, ga.wf_type,';
+    $query.= ' ga.wf_activity_id, ga.wf_name as wf_activity_name, gi.wf_instance_id, gi.wf_name as wf_instance_name, gi.wf_status, gia.wf_activity_id, gia.wf_user, gi.wf_started, gi.wf_ended, gia.wf_status as wf_act_status ';
     $query.= ' from `'.GALAXIA_TABLE_PREFIX.'instances` gi LEFT JOIN `'.GALAXIA_TABLE_PREFIX.'instance_activities` gia ON gi.`wf_instance_id`=gia.`wf_instance_id` ';
     $query.= 'LEFT JOIN `'.GALAXIA_TABLE_PREFIX.'activities` ga ON gia.`wf_activity_id` = ga.`wf_activity_id` ';
     $query.= 'LEFT JOIN `'.GALAXIA_TABLE_PREFIX."processes` gp ON gp.`wf_p_id`=gi.`wf_p_id` $mid";
@@ -530,7 +530,7 @@ class ProcessMonitor extends Base
       $mid.=" and ((`wf_properties` like $findesc) or (gp.wf_name like $findesc) or (ga.wf_name like $findesc))";
     }
 // TODO: retrieve instance status as well
-    $query = 'select wf_item_id,wf_ended-wf_started as wf_duration,ga.wf_is_interactive, ga.wf_type,gp.wf_name as wf_procname,gp.wf_version,ga.wf_name as wf_act_name,';
+    $query = 'select wf_item_id,wf_ended-wf_started as wf_duration,ga.wf_is_interactive, ga.wf_type,gp.wf_name as wf_procname,gp.wf_version,gp.wf_normalized_name as wf_proc_normalized_name,ga.wf_name as wf_act_name,';
     $query.= 'ga.wf_activity_id,wf_instance_id,wf_order_id,wf_properties,wf_started,wf_ended,wf_user';
     $query.= ' from '.GALAXIA_TABLE_PREFIX.'workitems gw,'.GALAXIA_TABLE_PREFIX.'activities ga,'.GALAXIA_TABLE_PREFIX.'processes gp';
     $query.= ' where gw.wf_activity_id=ga.wf_activity_id and ga.wf_p_id=gp.wf_p_id '.$mid.' order by '.$this->convert_sortmode($sort_mode);

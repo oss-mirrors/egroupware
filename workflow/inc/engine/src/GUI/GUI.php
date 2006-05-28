@@ -233,7 +233,8 @@ class GUI extends Base {
                      ga.wf_activity_id,
                      gp.wf_version as wf_version,
                      gp.wf_p_id,
-                     gp.wf_is_active
+                     gp.wf_is_active,
+		     gp.wf_normalized_name
                 from ".GALAXIA_TABLE_PREFIX."processes gp
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
                 INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
@@ -420,7 +421,8 @@ class GUI extends Base {
                               ga.wf_is_autorouted,
                               gp.wf_p_id,
                               gp.wf_name as wf_procname,
-                              gp.wf_version
+                              gp.wf_version,
+			      gp.wf_normalized_name
         from ".GALAXIA_TABLE_PREFIX."processes gp
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gp.wf_p_id=ga.wf_p_id
 	INNER JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gar.wf_activity_id=ga.wf_activity_id
@@ -521,6 +523,7 @@ class GUI extends Base {
                      ga.wf_activity_id,
                      gp.wf_version as wf_version,
                      gp.wf_p_id,
+		     gp.wf_normalized_name,
                      gi.wf_name as insname,
                      gi.wf_priority,
                      MIN(gar.wf_readonly) as wf_readonly';
@@ -534,7 +537,7 @@ class GUI extends Base {
               $mid 
               GROUP BY gi.wf_instance_id, gi.wf_started, gi.wf_owner, gia.wf_user, gi.wf_status, gi.wf_category, 
               gia.wf_status, ga.wf_name, ga.wf_type, gp.wf_name, ga.wf_is_interactive, ga.wf_is_autorouted, 
-              ga.wf_activity_id, gp.wf_version, gp.wf_p_id, gi.wf_name, gi.wf_priority";
+              ga.wf_activity_id, gp.wf_version, gp.wf_p_id, gp.wf_normalized_name, gi.wf_name, gi.wf_priority";
     $query .= ($add_properties)? ', gi.wf_properties' : '';
     // (regis) this count query as to count global -unlimited- (instances/activities) not just instances
     // as we can have multiple activities for one instance and we will show all of them and the problem is 
