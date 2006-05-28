@@ -1,4 +1,4 @@
-<table style="border: opx;width:100%;">
+<table style="border: 0px;width:100%;">
 	<tr class="row_on">
 		<td colspan="4">
 			{lang_Instances_selection}

@@ -106,7 +106,7 @@ th.th_ma_autorouted
 }
 th.th_ma_instances
 {
-	text-align;center;
+	text-align:center;
 }
 td.td_ma_procname {}
 td.td_ma_name {}
@@ -128,7 +128,7 @@ td.td_ma_autorouted
 }
 td.td_ma_instances
 {
-	text-align;center;
+	text-align:center;
 }
 table.table_ma_instances_stats
 {
