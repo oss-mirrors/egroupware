@@ -779,7 +779,7 @@
 				}
 				$this->t->set_var(array(
 					'column_value'	=> $graphical_status,
-					'class_column'	=> 'class="inst_status_"'.$instance['wf_status'].'"',
+					'class_column'	=> 'class="inst_status_'.$instance['wf_status'].'"',
 				));
 				$this->t->parse('columns','block_instance_column',true);
 			}
