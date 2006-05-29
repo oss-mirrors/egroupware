@@ -37,13 +37,10 @@
    {
 	  var $public_functions = Array(
 		 'index' => True,
-		 'import_object' => True,
 		 'add_edit_site' => True,
 		 'add_edit_object' => True,
 		 'del_egw_jinn_object'=>True,
 		 'browse_egw_jinn_sites' => True,
-		 'export_site'=> True,
-		 'export_object'=> True,
 		 'edit_field_props'=> True,
 		 'object_events_config'=> True,
 		 'add_element' => True,
@@ -193,7 +190,7 @@
 		 $this->tplsav2->assign('helplink',$GLOBALS[phpgw]->link('/manual/index.php'));
 		 $this->tplsav2->form_action=$GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiadmin.add_edit_site");
 		 $this->tplsav2->test_access_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access');
-		 $this->tplsav2->onclick_export=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
+		 $this->tplsav2->onclick_export=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
 		 $this->tplsav2->onclick_export_to_xml=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
 
 		 /* list objects for this site */
@@ -202,7 +199,7 @@
 			$new_where_key='parent_'.$where_key;
 
 			$this->tplsav2->link_add_object=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_gen_obj_options&new=true&reloadparent=true&parent_site_id='.$where_value);
-			$this->tplsav2->link_import_object=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_object&where_key=site_id&where_value='.$where_value);
+			$this->tplsav2->link_import_object=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_object&where_key=site_id&where_value='.$where_value);
 
 			$this->tplsav2->icon_del=$GLOBALS[phpgw]->common->image('phpgwapi','delete');
 			$this->tplsav2->icon_edit=$GLOBALS[phpgw]->common->image('phpgwapi','edit');
@@ -279,7 +276,7 @@
 				  //$recordvalues[link_del]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_object&where_key=object_id&where_value=".$recordvalues[object_id]);
 				  $recordvalues[link_del]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.del_egw_jinn_object&where_key=object_id&where_value=".$recordvalues[object_id]);
 
-				  $recordvalues[link_export]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.export_object&where_key=object_id&where_value=".$recordvalues[object_id]);
+				  $recordvalues[link_export]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.exportsite.save_object_to_file&where_key=object_id&where_value=".$recordvalues[object_id]);
 
 				  $this->tplsav2->object_records[]=$recordvalues;
 			   }
@@ -336,7 +333,7 @@
 
 			   $recordvalues[link_edit] = $GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_site&site_id=".$recordvalues[site_id]."&where_value=".$recordvalues[site_id]."&where_key=site_id");
 			   $recordvalues[link_del]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_site&where_key=site_id&where_value=".$recordvalues[site_id]);
-			   $recordvalues[link_export]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value=".$recordvalues[site_id]);
+			   $recordvalues[link_export]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value=".$recordvalues[site_id]);
 
 			   $this->tplsav2->site_records[]=$recordvalues;
 			}
@@ -1518,464 +1515,8 @@
 	  }
 
 
-	  /**
-	  * import_object 
-	  * 
-	  * @access public
-	  * @return void
-	  */
-	  function import_object()
-	  {
-		 if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
-		 {
-			$num_objects=0;
-			$import=$GLOBALS[HTTP_POST_FILES][importfile];
 
-			@include($import[tmp_name]);
-			if ($import_object && $checkbit)
-			{
-			   $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
-			   unset($validfields[object_id]);
-			   $imported = array();
-
-			   while(list($key, $val) = each($import_object)) 
-			   {
-				  if(array_key_exists($key, $validfields))
-				  {
-					 $imported[$key] = true;
-					 if ($key=='parent_site_id') $val=$_POST[parent_site_id];
-					 $data[] = array
-					 (
-						'name' => $key,
-						'value' => addslashes($val) 
-					 );
-				  }
-				  else
-				  {
-					 $this->bo->addError(lang('incompatibility result: Object <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $import_object['name']));
-				  }
-			   }
-			   foreach($validfields as $fieldname => $yes)
-			   {
-				  if(!array_key_exists($fieldname, $imported))
-				  {
-					 $this->bo->addError(lang('incompatibility result: Object <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $import_object['name']));
-				  }
-			   }
-
-			   $new_object_name=$data[1][value];	
-			   $thisobjectname=$this->bo->so->get_objects_by_name($new_object_name,$_POST[parent_site_id]);
-
-			   /* insert as new object */
-			   if($status=$this->bo->so->insert_phpgw_data('egw_jinn_objects',$data))
-			   {
-				  $new_object_id=$status[where_value];
-
-				  if(count($thisobjectname)>=1)
-				  {
-					 $new_name=$new_object_name.' ('.lang('another').')';
-
-					 $datanew[]=array(
-						'name'=>'name',
-						'value'=>$new_name
-					 );
-					 $this->bo->so->upAndValidate_phpgw_data('egw_jinn_objects',$datanew,'object_id',$new_object_id);
-				  }
-				  else
-				  {
-					 $new_name=$new_object_name;
-				  }
-				  $proceed=true;
-				  $this->bo->addInfo(lang('Import was succesfull'));
-				  $this->bo->addInfo(lang('The name of the new object is <strong>%1</strong>.',$new_name));
-			   }
-
-			   if($proceed)
-			   {
-				  /* objects are imported , go on with obj-fields */
-				  if(is_array($import_obj_fields))
-				  {
-					 $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_obj_fields');
-					 unset($validfields['field_id']);
-					 foreach($import_obj_fields as $obj_field)
-					 {
-						$obj_field['field_parent_object'] = $new_object_id; // no matching by unique_id is required here (like in load_site_from_file()), because only one object is imported
-
-						unset($data_fields);
-						unset($imported);
-						while(list($key2, $val2) = each($obj_field)) 
-						{
-						   if ($key2 == 'obj_serial') 
-						   {
-							  continue;  
-						   }
-						   if ($key2 == 'unique_id') 
-						   {
-							  continue;  
-						   }
-
-						   if(array_key_exists($key2, $validfields))
-						   {
-							  $imported[$key2] = true;
-							  $data_fields[] = array
-							  (
-								 'name' => $key2,
-								 'value' => addslashes($val2) 
-							  );
-						   }
-						   else
-						   {
-							  $this->bo->addError(lang('incompatibility result: Object <strong>\'%3\'</strong>, field <strong>\'%1\'</strong>, property <strong>\'%2\'</strong> could not be imported because it does not exist in this JiNN version', $obj_field['field_name'], $key2, $import_object['name']));
-						   }
-						}
-						foreach($validfields as $fieldname => $yes)
-						{
-						   if(!array_key_exists($fieldname, $imported))
-						   {
-							  $this->bo->addError(lang('incompatibility result: Object <strong>\'%2\'</strong>, field <strong>\'%1\'</strong>, property <strong>\'%3\'</strong> was not present in the file', $obj_field['field_name'], $import_object['name'], $fieldname));
-						   }
-						}
-
-						if ($field_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_obj_fields',$data_fields))
-						{
-						   $num_fields=count($field_id);
-						} 
-					 }
-				  }
-
-				  $this->bo->addInfo(lang('%1 Site Objects have been imported.',1));
-				  $this->bo->addInfo(lang('%1 Site Obj-fields have been imported.',$num_fields));
-			   }
-			   else
-			   {
-				  $this->bo->addError(lang('Import failed'));
-			   }
-
-			   $this->bo->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$_POST[parent_site_id]);
-			}
-
-		 }
-		 else
-		 {
-			$this->template->set_file(array(
-			   'import_form' => 'import_object.tpl',
-			));
-
-			$this->header(lang('Import JiNN-Object'.$table));
-			$this->msg_box();
-
-			$this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_object'));
-			$this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN object file (*.jobj'));
-			//			   $this->template->set_var('lang_Replace_existing_Site_with_the_same_name',lang('Replace existing site with the same name?'));
-			$this->template->set_var('parent_site_id',$this->bo->where_value);
-			$this->template->set_var('lang_submit_and_import',lang('submit and import'));
-			$this->template->pparse('out','import_form');
-		 }
-
-		 $this->bo->sessionmanager->save();
-
-	  }
-
-		  /**
-	  * export_site 
-	  * 
-	  * @depreciated
-	  * @access public
-	  * @return void
-	  */
-	  function export_site()
-	  {
-		 $this->save_site_to_file();
-	  }
-
-	  /**
-	  * export_object 
-	  * 
-	  * @access public
-	  * @return void
-	  */
-	  function export_object()
-	  {
-		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
-
-		 $object_data=$this->bo->so->get_phpgw_record_values('egw_jinn_objects',$this->bo->where_key,$this->bo->where_value,'','','name');
-
-		 $filename=ereg_replace(' ','_',$object_data[0][name]).'.jobj';
-		 $date=date("d-m-Y",time());
-		 $version=$GLOBALS[egw_info][apps][jinn][version];
-		 header("Content-type: text");
-		 header("Content-Disposition:attachment; filename=$filename");
-
-		 for($s=0;$s<(50-strlen($filename));$s++)
-		 {
-			$spaces1.=' ';
-		 }
-		 $spaces1.='**'."\n";
-
-		 for($s=0;$s<(50-strlen($date));$s++)
-		 {
-			$spaces2.=' ';
-		 }
-		 $spaces2.='**'."\n";
-
-		 for($s=0;$s<(50-strlen($version));$s++)
-		 {
-			$spaces3.=' ';
-		 }
-		 $spaces3.='**'."\n";
-
-		 $out='<'.'?p'.'hp'."\n\n"; 
-		 /* strange but for nice vim indent file */
-		 $out.='	/***************************************************************************'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.="	** JiNN Object Export : ".$filename.$spaces1;
-		 $out.="	** Date               : ".$date.$spaces2;
-		 $out.="	** JiNN Version       : ".$version.$spaces3;
-		 $out.='	** ---------------------------------------------------------------------- **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare   **'."\n";
-		 $out.='	** Copyright (C)2002, 2004 Pim Snel <pim.jinn@lingewoud.nl>               **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** JiNN - http://linuxstart.nl/jinn                                       **'."\n";
-		 $out.='	** eGroupWare - http://www.egroupware.org                                 **'."\n";
-		 $out.='	** This file is part of JiNN                                              **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** JiNN is free software; you can redistribute it and/or modify it under  **'."\n";
-		 $out.='	** the terms of the GNU General Public License as published by the Free   **'."\n";
-		 $out.='	** Software Foundation; either version 2 of the License.                  **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** JiNN is distributed in the hope that it will be useful,but WITHOUT ANY **'."\n";
-		 $out.='	** WARRANTY; without even the implied warranty of MERCHANTABILITY or      **'."\n";
-		 $out.='	** FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License  **'."\n";
-		 $out.='	** for more details.                                                      **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** You should have received a copy of the GNU General Public License      **'."\n";
-		 $out.='	** along with JiNN; if not, write to the Free Software Foundation, Inc.,  **'."\n";
-		 $out.='	** 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA                 **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	***************************************************************************/'."\n";
-		 $out.="\n";
-
-		 $out.= "\n/* OBJECT ARRAY */\n";
-
-		 if(is_array($object_data))
-		 {
-			foreach($object_data as $object)
-			{
-			   $out.= '$import_object=array('."\n";
-
-			   while (list ($key, $val) = each ($object)) 
-			   { 
-				  $field[value]=$serial;
-
-				  if ($key != 'object_id')
-				  {
-					 $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
-				  }
-			   }
-			   $out.=");\n\n";
-
-			   /*
-			   get array whith fielddata
-			   store them as array
-			   */
-			   $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
-			   if(is_array($object_field_data))
-			   {
-				  foreach ($object_field_data as $field)
-				  {
-					 $out.= '$import_obj_fields[]=array('."\n";
-
-					 while (list ($key, $val) = each ($field)) 
-					 { 
-						if ($key != 'field_id' && $key !='field_parent_object') 
-						{
-						   // fix problem with wrong storage of null values causing a 0 value with mean something different
-						   if($val!=null)
-						   {
-							  $val= "'".ereg_replace("'","\'",$val)."'";
-						   }
-						   else
-						   {
-							  $val='null';
-						   }
-						   $out .= "	'$key' => $val,\n"; 
-						}
-					 }
-					 $out.=");\n\n";
-				  }
-			   }
-			}
-		 }
-
-		 $out.='$checkbit=true;'."\n";
-		 $out.='?>';
-		 echo $out;
-
-	  }
-
-	  /**
-	  * save_site_to_file: save site-, objects- and fields-configuration to a JiNN-file
-	  * 
-	  * @access public
-	  * @return void
-	  */
-	  function save_site_to_file()
-	  {
-		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
-
-		 $site_data=$this->bo->so->get_phpgw_record_values('egw_jinn_sites',$this->bo->where_key,$this->bo->where_value,'','','name');
-		 $filename=ereg_replace(' ','_',$site_data[0][site_name]).'.JiNN';
-		 $date=date("d-m-Y",time());
-
-		 header("Content-type: text");
-		 header("Content-Disposition:attachment; filename=$filename");
-
-		 $out='<'.'?p'.'hp'."\n\n"; 
-		 /* strange but for nice vim indent file */
-		 $out.='	/***************************************************************************'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.="	** JiNN Site Export : ".$filename."\n";
-		 $out.="	** Date             : ".$date."\n";
-		 $out.="	** JiNN Version     : ".$GLOBALS[phpgw_info][apps][jinn][version]."\n";
-		 $out.='	** ---------------------------------------------------------------------- **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare   **'."\n";
-		 $out.='	** Copyright (C)2002, 2004 Pim Snel <pim.jinn@lingewoud.nl>               **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** JiNN - http://linuxstart.nl/jinn                                       **'."\n";
-		 $out.='	** eGroupWare - http://www.egroupware.org                                 **'."\n";
-		 $out.='	** This file is part of JiNN                                              **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** JiNN is free software; you can redistribute it and/or modify it under  **'."\n";
-		 $out.='	** the terms of the GNU General Public License as published by the Free   **'."\n";
-		 $out.='	** Software Foundation; either version 2 of the License.                  **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** JiNN is distributed in the hope that it will be useful,but WITHOUT ANY **'."\n";
-		 $out.='	** WARRANTY; without even the implied warranty of MERCHANTABILITY or      **'."\n";
-		 $out.='	** FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License  **'."\n";
-		 $out.='	** for more details.                                                      **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	** You should have received a copy of the GNU General Public License      **'."\n";
-		 $out.='	** along with JiNN; if not, write to the Free Software Foundation, Inc.,  **'."\n";
-		 $out.='	** 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA                 **'."\n";
-		 $out.='	**                                                                        **'."\n";
-		 $out.='	***************************************************************************/'."\n";
-		 $out.="\n";
-
-		 $out.= "/* SITE ARRAY */\n";
-
-		 $out.= '$import_site=array('."\n";
-
-		 while (list ($key, $val) = each($site_data[0])) 
-		 {
-			if($key!='site_id') $out.= "	'$key' => '$val',\n";
-		 }
-		 $out.=");\n\n";
-
-		 $sitefilespath=$this->bo->site_fs->get_jinn_sitefile_path($site_data[0][site_id]);
-		 if(is_dir($sitefilespath))
-		 {
-			$tempfile=$this->bo->site_fs->create_archive($site_data[0][site_id]); 
-			// Encode the file ready to send it off
-			$handle = fopen($tempfile,'rb');
-			$file_content = fread($handle,filesize($tempfile));
-			fclose($handle);
-			$out.= '$import_site_files="'."\n";
-			$out.= chunk_split(base64_encode($file_content)); 
-			$out.='";'."\n\n";
-			unlink($tempfile);
-		 }
-
-		 $site_object_data=$this->bo->so->get_phpgw_record_values('egw_jinn_objects','parent_site_id', $this->bo->where_value ,'','','name');
-		 $out.= "\n/* SITE_OBJECT ARRAY */\n";
-
-		 if(is_array($site_object_data))
-		 {
-			foreach($site_object_data as $object)
-			{
-			   $out.= '$import_site_objects[]=array('."\n";
-
-			   while (list ($key, $val) = each ($object)) 
-			   { 
-				  $field[value]=$serial;
-
-				  if ($key != 'object_id')
-				  {
-					 $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
-				  }
-			   }
-			   $out.=");\n\n";
-
-			   /*
-			   get array whith fielddata
-			   store them as array with unique_id as parent object identifier
-			   */
-			   $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
-			   if(is_array($object_field_data))
-			   {
-				  foreach ($object_field_data as $field)
-				  {
-					 $out.= '$import_obj_fields[]=array('."\n";
-
-					 while (list ($key, $val) = each ($field)) 
-					 { 
-						if ($key != 'field_id' && $key !='field_parent_object') 
-						{
-						   // fix problem with wrong storage of null values causing a 0 value with mean something different
-						   if($val!=null)
-						   {
-							  $val= "'".ereg_replace("'","\'",$val)."'";
-						   }
-						   else
-						   {
-							  $val='null';
-						   }
-						   $out .= "	'$key' => $val,\n"; 
-						}
-					 }
-					 $out .= "	'unique_id' => '".$object['unique_id']."',\n"; 
-					 $out.=");\n\n";
-				  }
-			   }
-			   /*reports*/
-			   $object_reports=$this->bo->so->get_phpgw_record_values('egw_jinn_report','report_object_id', $object['unique_id'],'','','name');
-			   if(is_array($object_reports))
-			   {
-				  foreach($object_reports as $report_single)
-				  {
-					 //print_r($report);
-					 $report.= '$import_reports[]=array('."\n";
-
-					 while (list ($key, $val) = each ($report_single))
-					 {
-						if ($key != 'report_id' )
-						{
-						   $report .= "    '$key' => '".ereg_replace("'","\'",$val)."',\n";
-						}
-					 }
-					 $report .=");\n\n";
-				  }
-			   }
-			   /*reports*/
-
-			}
-		 }
-		 $out .= $report;
-		 $out.='$checkbit=true;'."\n";
-		 $out.='?>';
-		 echo $out;
-	  }
-
-
+	  
 
 
 

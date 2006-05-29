@@ -240,7 +240,7 @@
 			if ($this->bo->session['site_id'])
 			{
 			   $file['Save site conf to file'] = array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$this->bo->site[site_id]),
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value='.$this->bo->site[site_id]),
 				  'text'=>lang('Save site conf to file'),
 				  'no_lang' => True,
 				  'icon'=>'filesave'

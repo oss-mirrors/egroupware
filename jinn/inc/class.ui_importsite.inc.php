@@ -28,6 +28,7 @@
 	  var $public_functions = Array(
 		 'import_egw_jinn_site' => True,
 		 'import_incompatible_egw_jinn_site' => True,
+		 'import_object' => True
 	  );
 
 	  function ui_importsite()
@@ -158,9 +159,13 @@
 		 //todo 
 		 //insert or replace site, object field and report data 
 
-		 $save_site=$this->save_site($site_data);
+		 $save_site=$this->save_site($site_data,$_POST[replace_existing]);
 
-		 if($save_site) $this->bo->addInfo(lang('Import was succesfull'));
+		 //if all steps went well
+		 if($save_site)
+		 {
+			$this->bo->addInfo(lang('Import was succesfull'));
+		 }
 
 		 $this->header(lang('Import JiNN-Site'.$table));
 		 $this->msg_box();
@@ -178,11 +183,34 @@
 		 }
 	  }
 
-	  function save_site($data)
+	  function extract_site_files($import_site_files)
+	  {
+		 if(trim($import_site_files))
+		 {
+			$zipinstring = base64_decode(str_replace( "\r\n", "", $import_site_files ));
+
+			$tmpfile = tempnam("","");
+
+			if (!$handle = fopen($tmpfile, 'a')) {
+			   //error
+			}
+
+			if (!fwrite($handle, $zipinstring)) {
+			   //error
+			}
+			fclose($handle);
+
+			$proceed=$this->bo->site_fs->extract_archive($tmpfile,$new_site_id); 
+			$this->bo->addInfo(lang('Site files succesfully extracted.'));
+			unlink($tmpfile);
+		 }
+	  }
+
+	  function save_site($data,$replace)
 	  {
 		 $new_site_name=$data[0][value];	
 
-		 if($_POST[replace_existing] && $this->site_name_exist($new_site_name))
+		 if($replace && $this->site_name_exist($new_site_name))
 		 {
 			$new_site_id=$thissitename[0];
 			$this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
@@ -190,10 +218,10 @@
 			// remove all existing objects
 			$this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
 			$this->bo->addInfo(lang('Replaced existing site named <strong>%1</strong>.',$new_site_name));
-		
+
 			return true;
 		 }
-		 elseif($status=$this->bo->so->insert_phpgw_data('egw_jinn_sites',$data))
+		 elseif($status=$this->bo->so->insert_new_site($data))
 		 {
 			$new_site_id=$status[where_value];
 
@@ -203,7 +231,9 @@
 			   {
 				  if(is_numeric(trim(substr($new_site_name,-2))))
 				  {
-					 $new_site_name= substr($new_site_name,0,strlen($new_site_name)-2)),' '.intval(trim(substr($new_site_name,-2)))+1; 
+					 $new_postfix=intval(trim(substr($new_site_name,-2)))+1;
+					 $new_site_name = substr($new_site_name,0,strlen($new_site_name)-2); 
+					 $new_site_name.=' ' . $new_postfix;
 				  }
 				  else
 				  {
@@ -216,13 +246,11 @@
 			   );
 			   $this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$datanew,'site_id',$new_site_id);
 			}
-			
+
 			$this->bo->addInfo(lang('The name of the new site is <strong>%1</strong>.',$new_site_name));
-			
+
 			return true;
 		 }
-
-
 	  }
 
 
@@ -559,6 +587,166 @@
 
 		 $this->bo->sessionmanager->save();
 	  }
+
+	  /**
+	  * import_object 
+	  * 
+	  * @access public
+	  * @return void
+	  */
+	  function import_object()
+	  {
+		 if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
+		 {
+			$num_objects=0;
+			$import=$GLOBALS[HTTP_POST_FILES][importfile];
+
+			@include($import[tmp_name]);
+			if ($import_object && $checkbit)
+			{
+			   $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
+			   unset($validfields[object_id]);
+			   $imported = array();
+
+			   while(list($key, $val) = each($import_object)) 
+			   {
+				  if(array_key_exists($key, $validfields))
+				  {
+					 $imported[$key] = true;
+					 if ($key=='parent_site_id') $val=$_POST[parent_site_id];
+					 $data[] = array
+					 (
+						'name' => $key,
+						'value' => addslashes($val) 
+					 );
+				  }
+				  else
+				  {
+					 $this->bo->addError(lang('incompatibility result: Object <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $import_object['name']));
+				  }
+			   }
+			   foreach($validfields as $fieldname => $yes)
+			   {
+				  if(!array_key_exists($fieldname, $imported))
+				  {
+					 $this->bo->addError(lang('incompatibility result: Object <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $import_object['name']));
+				  }
+			   }
+
+			   $new_object_name=$data[1][value];	
+			   $thisobjectname=$this->bo->so->get_objects_by_name($new_object_name,$_POST[parent_site_id]);
+
+			   /* insert as new object */
+			   if($status=$this->bo->so->insert_phpgw_data('egw_jinn_objects',$data))
+			   {
+				  $new_object_id=$status[where_value];
+
+				  if(count($thisobjectname)>=1)
+				  {
+					 $new_name=$new_object_name.' ('.lang('another').')';
+
+					 $datanew[]=array(
+						'name'=>'name',
+						'value'=>$new_name
+					 );
+					 $this->bo->so->upAndValidate_phpgw_data('egw_jinn_objects',$datanew,'object_id',$new_object_id);
+				  }
+				  else
+				  {
+					 $new_name=$new_object_name;
+				  }
+				  $proceed=true;
+				  $this->bo->addInfo(lang('Import was succesfull'));
+				  $this->bo->addInfo(lang('The name of the new object is <strong>%1</strong>.',$new_name));
+			   }
+
+			   if($proceed)
+			   {
+				  /* objects are imported , go on with obj-fields */
+				  if(is_array($import_obj_fields))
+				  {
+					 $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_obj_fields');
+					 unset($validfields['field_id']);
+					 foreach($import_obj_fields as $obj_field)
+					 {
+						$obj_field['field_parent_object'] = $new_object_id; // no matching by unique_id is required here (like in load_site_from_file()), because only one object is imported
+
+						unset($data_fields);
+						unset($imported);
+						while(list($key2, $val2) = each($obj_field)) 
+						{
+						   if ($key2 == 'obj_serial') 
+						   {
+							  continue;  
+						   }
+						   if ($key2 == 'unique_id') 
+						   {
+							  continue;  
+						   }
+
+						   if(array_key_exists($key2, $validfields))
+						   {
+							  $imported[$key2] = true;
+							  $data_fields[] = array
+							  (
+								 'name' => $key2,
+								 'value' => addslashes($val2) 
+							  );
+						   }
+						   else
+						   {
+							  $this->bo->addError(lang('incompatibility result: Object <strong>\'%3\'</strong>, field <strong>\'%1\'</strong>, property <strong>\'%2\'</strong> could not be imported because it does not exist in this JiNN version', $obj_field['field_name'], $key2, $import_object['name']));
+						   }
+						}
+						foreach($validfields as $fieldname => $yes)
+						{
+						   if(!array_key_exists($fieldname, $imported))
+						   {
+							  $this->bo->addError(lang('incompatibility result: Object <strong>\'%2\'</strong>, field <strong>\'%1\'</strong>, property <strong>\'%3\'</strong> was not present in the file', $obj_field['field_name'], $import_object['name'], $fieldname));
+						   }
+						}
+
+						if ($field_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_obj_fields',$data_fields))
+						{
+						   $num_fields=count($field_id);
+						} 
+					 }
+				  }
+
+				  $this->bo->addInfo(lang('%1 Site Objects have been imported.',1));
+				  $this->bo->addInfo(lang('%1 Site Obj-fields have been imported.',$num_fields));
+			   }
+			   else
+			   {
+				  $this->bo->addError(lang('Import failed'));
+			   }
+
+			   $this->bo->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$_POST[parent_site_id]);
+			}
+
+		 }
+		 else
+		 {
+			$this->template->set_file(array(
+			   'import_form' => 'import_object.tpl',
+			));
+
+			$this->header(lang('Import JiNN-Object'.$table));
+			$this->msg_box();
+
+			$this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.ui_importsite.import_object'));
+			$this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN object file (*.jobj'));
+			//			   $this->template->set_var('lang_Replace_existing_Site_with_the_same_name',lang('Replace existing site with the same name?'));
+			$this->template->set_var('parent_site_id',$this->bo->where_value);
+			$this->template->set_var('lang_submit_and_import',lang('submit and import'));
+			$this->template->pparse('out','import_form');
+		 }
+
+		 $this->bo->sessionmanager->save();
+
+	  }
+
+
 
    }
 

@@ -10,11 +10,10 @@
 	  function create_archive($site_id)
 	  {
 		 $tmpname = tempnam("","");
-		 #$tmpname='/tmp/tmp.zip';
 		 $archive = CreateObject('phpgwapi.PclZip',$tmpname);
 		 $v_list = $archive->create($this->get_jinn_sitefile_path($site_id), PCLZIP_OPT_REMOVE_PATH, $this->get_jinn_sitefile_path($site_id));
 		 if ($v_list == 0) {
-			//die("Error : ".$archive->errorInfo(true));
+			die("Error : ".$archive->errorInfo(true));
 			return false;
 		 }
 		 else

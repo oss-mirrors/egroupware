@@ -2009,14 +2009,57 @@
 		 return $status;
 	  }
 
+	  /**
+	  * $oldData2newData: convert old sql data array to new sql data array
+	  * 
+	  * old array was like $data['name']='id';$data['value']=2;
+	  * new array is like $data['id']=2;
+	  * @access public
+	  * @param array $olddata  old data array
+	  * @return array new data array
+	  */
+	  function oldData2newData($olddata)
+	  {
+		 foreach($olddata as $old_el)
+		 {
+			$newdata[$old_el['name']]=$value;
+		 }
+		 return $newdata;
+	  }
+
 	  function insert_new_site($data)
 	  {
 		 $meta=$this->phpgw_table_metadata('egw_jinn_sites',true);
+			
+		 $newdata=$this->oldData2newData($data);
+		 if(!$newdata['uniqid'])
+		 {
+			$uniqid=uniqid('');
+			$newdata['uniqid'] = $uniqid;
+//			array('name' => 'uniqid', 'value' => $uniqid);
+		 }
 
-		 $uniqid=uniqid('');
-		 $data[] = array('name' => 'uniqid', 'value' => $uniqid);
+		 foreach($newdata as $colname => $colval)
+		 {
+			if($meta[$colname]['auto_increment'] || eregi('seq_egw_jinn_sites',$meta[$colval]['default'])) 
+			{
+			   $last_insert_id_col=$colname;
+			   continue;
+			}
 
-		 foreach($data as $field)
+			if( $colname == 'site_id') 
+			{
+			   continue;
+			}
+
+			if ($SQLfields) $SQLfields .= ',';
+			if ($SQLvalues) $SQLvalues .= ',';
+
+			$SQLfields .= $colname;
+			$SQLvalues .= "'".$colval."'"; //FIXME check for integers //FIXME POSTGRESQL
+		 }
+
+	/*	 foreach($data as $field)
 		 {
 			if($meta[$field['name']]['auto_increment'] || eregi('seq_egw_jinn_sites',$meta[$field['name']]['default'])) 
 			{
@@ -2035,10 +2078,10 @@
 			$SQLfields .= $field[name];
 			$SQLvalues .= "'".$field[value]."'";
 		 }
-
+*/
 
 		 $SQL='INSERT INTO egw_jinn_sites (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-///		 echo $SQL;
+		 echo $SQL;
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status[ret_code]=0;
@@ -2048,9 +2091,7 @@
 
 			$this->phpgw_db->next_record();
 
-
 			$status[where_value]=$this->phpgw_db->f('site_id');
-
 		 }
 
 		 return $status;
