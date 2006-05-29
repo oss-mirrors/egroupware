@@ -299,7 +299,7 @@
 
 <input class="egwbutton"  type='button' value='<?=lang('Delete');?>' onClick="if(window.confirm('<?=lang('Are you sure?');?>'))location='<?=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boreport.delete_report').'&report_id=';?>'+document.getElementById('report_list').value;">
 
-<input class="egwbutton"  type="button" value="<?=lang('Add');?>" onClick="parent.window.open('<?=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.add_report_popup').'&parent_site_id='.$this->report_vals['parent_site_id'].'&table_name='.$this->report_vals['table_name'].'&obj_id='.$this->report_vals['unique_id'];?>', 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')"/>
+<input class="egwbutton"  type="button" value="<?=lang('Add');?>" onClick="parent.window.open('<?=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.add_report_popup').'&parent_site_id='.$this->report_vals['parent_site_id'].'&table_name='.$this->report_vals['table_name'].'&obj_id='.$this->site_object_arr[object_id];?>', 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')"/>
 
 </div>
 <?php endif?>

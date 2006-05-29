@@ -7,6 +7,9 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] als je een record kopieerd en vervolgens delete wordt ook het origineel verwijderd (zie Lingewoud NIEUW) 
 			:dit was voorgekomen omdat de id was disabled. In dit geval is er geen mogelijkheid om een enkel record te selecteren met de juiste where. 
 			:ROB: dit gebeurd ook bij bewerken Relaties met record mee kopieren
+			[_] The site object unique_id must completely be removed
+				[_] relations must therefor have their own table so at the moment of importing the unique id's and remote unique id can be set 
+				[_] while creating an jinn file a temp parent id must be used; 
 			[_] help schermen zijn nog niet ingevuld
 		[_] 0% BIJNA AF, TESTEN
 			[_] als er geen tabellen zijn faalt de connectie test
@@ -78,9 +81,11 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 					[_] add/edit report info
 					[_] make more generic
 				[_] export xml
-					[_] basic impl
-					[_] site_files
+					[_] cleanup code
 				[_] import xml
+					[_] test/impl replace
+					[_] finish import xml
+					[_] automate from japie calls
 				[_] japie jinn features
 					[_] search
 					[_] filters

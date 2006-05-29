@@ -101,6 +101,12 @@
 		 {
 			foreach($site_object_data as $object)
 			{
+			   //to prevent confusion we now generate the unique_id field 
+			   //so we can use this as temporary identifier when we import 
+			   //the file. After this, this field has no function and it 
+			   //is not necesary to store it in the database
+			   $temp_id=uniqid('');
+
 			   while (list ($key, $val) = each ($object)) 
 			   { 
 				  if($key != 'object_idxxx' && $key != 'parent_site_id') // keep if needed for static egroupware apps
@@ -118,7 +124,7 @@
 			   {
 				  foreach ($object_field_data as $field)
 				  {
-					 $out.= '$import_obj_fields[]=array('."\n";
+					 //$out.= '$import_obj_fields[]=array('."\n";
 
 					 while (list ($key, $val) = each ($field)) 
 					 { 
@@ -137,24 +143,26 @@
 						   $field_arr[$key]=$val;
 						}
 					 }
-					 $field_arr['unique_id']=$object['unique_id'];
+					 //$field_arr['unique_id']=$temp_id;
+					 $field_arr['temp_id']=$temp_id;
 					 $obj_arr['fields'][]=$field_arr;
 				  }
 			   }
 
 			   /*reports*/
-			   $object_reports=$this->bo->so->get_phpgw_record_values('egw_jinn_report','report_object_id', $object['unique_id'],'','','name');
+			   $object_reports=$this->bo->so->get_phpgw_record_values('egw_jinn_report','report_object_id', $object['object_id'],'','','name');
 			   if(is_array($object_reports))
 			   {
 				  foreach($object_reports as $report_single)
 				  {
 					 while (list ($key, $val) = each ($report_single))
 					 {
-						if ($key != 'report_id' )
+						if ($key != 'report_id' && $key != 'report_object_id')
 						{
-						   $report_arr[$key]=$val;
+						   $report_arr[$key]='<![CDATA['.$val.']]>';
 						}
 					 }
+					 $report_arr['temp_id']=$temp_id;
 					 $obj_arr['reports'][]=$report_arr;
 				  }
 			   }
@@ -311,6 +319,13 @@
 		 {
 			foreach($site_object_data as $object)
 			{
+			   //to prevent confusion we now generate the unique_id field 
+			   //so we can use this as temporary identifier when we import 
+			   //the file. After this, this field has no function and it 
+			   //is not necesary to store it in the database
+			   $temp_id=uniqid('');
+			   //$temp_id=$object['unique_id']=uniqid('');
+			   
 			   $out.= '$import_site_objects[]=array('."\n";
 
 			   while (list ($key, $val) = each ($object)) 
@@ -322,11 +337,14 @@
 					 $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
 				  }
 			   }
+
+			   //$out .= "	'unique_id' => '$temp_id',\n";  //depreciated
+			   $out .= "	'temp_id' => '$temp_id',\n"; 
+
 			   $out.=");\n\n";
 
 			   /*
 			   get array whith fielddata
-			   store them as array with unique_id as parent object identifier
 			   */
 			   $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
 			   if(is_array($object_field_data))
@@ -351,12 +369,13 @@
 						   $out .= "	'$key' => $val,\n"; 
 						}
 					 }
-					 $out .= "	'unique_id' => '".$object['unique_id']."',\n"; 
+					 $out .= "	'unique_id' => '".$temp_id."',\n"; //depreciated
+					 $out .= "	'temp_id' => '".$temp_id."',\n"; 
 					 $out.=");\n\n";
 				  }
 			   }
 			   /*reports*/
-			   $object_reports=$this->bo->so->get_phpgw_record_values('egw_jinn_report','report_object_id', $object['unique_id'],'','','name');
+			   $object_reports=$this->bo->so->get_phpgw_record_values('egw_jinn_report','report_object_id', $object['object_id'],'','','name');
 			   if(is_array($object_reports))
 			   {
 				  foreach($object_reports as $report_single)
@@ -366,11 +385,13 @@
 
 					 while (list ($key, $val) = each ($report_single))
 					 {
-						if ($key != 'report_id' )
+						if ($key != 'report_id' && $key != 'report_object_id')
 						{
 						   $report .= "    '$key' => '".ereg_replace("'","\'",$val)."',\n";
 						}
 					 }
+					 $report_arr['temp_id']=$temp_id;
+					 $report .= "    'temp_id' => '$temp_id',\n";
 					 $report .=");\n\n";
 				  }
 			   }

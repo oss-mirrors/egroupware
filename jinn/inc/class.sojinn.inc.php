@@ -2022,7 +2022,7 @@
 	  {
 		 foreach($olddata as $old_el)
 		 {
-			$newdata[$old_el['name']]=$value;
+			$newdata[$old_el['name']]=$old_el['value'];
 		 }
 		 return $newdata;
 	  }
@@ -2081,7 +2081,7 @@
 */
 
 		 $SQL='INSERT INTO egw_jinn_sites (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-		 echo $SQL;
+//		 echo $SQL;
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status[ret_code]=0;
@@ -2107,12 +2107,18 @@
 	  */
 	  function insert_new_object($data)
 	  {
+		 //_debug_array($data);
 		 $meta=$this->phpgw_table_metadata('egw_jinn_objects',true);
 		 $this_unique=$this->generate_unique_id();
 
 		 foreach($data as $field)
 		 {
-			if($field['name']=='unique_id' || $field['name']=='object_id')
+			if($field['name']=='object_id')
+			{
+			   $field[value] = $this_unique;
+			}
+
+			if($field['name']=='unique_id' && !$field['value'])
 			{
 			   $field[value] = $this_unique;
 			}
@@ -2142,6 +2148,7 @@
 		 $SQLvalues = "'".$this_unique."',".$SQLvalues;
 
 		 $SQL='INSERT INTO egw_jinn_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 //echo $SQL;
 		 
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
@@ -2202,6 +2209,7 @@
 		 }
 
 		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 ///echo $SQL;
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status=$this->phpgw_db->get_last_insert_id($table,$last_insert_id_col);
@@ -2662,7 +2670,7 @@
 		 $where='site_id='.$site_id;
 		 ///		 $status=$this->phpgw_db->update('egw_jinn_sites',$data,$where,__LINE__,__FILE__);
 		 $sql="UPDATE egw_jinn_sites SET site_version=site_version+1 WHERE site_id=$site_id";
-		 echo $sql;
+		 //echo $sql;
 		 $status=$this->phpgw_db->query("$sql",__LINE__,__FILE__);
 
 		 return $status;

@@ -218,8 +218,8 @@
 		 $this->boreport = CreateObject('jinn.boreport');
 		 $this->tplsav2->report_vals[table_name]=$this->bo->site_object[table_name];
 		 $this->tplsav2->report_vals[parent_site_id]=$this->bo->site_object[parent_site_id];
-		 $this->tplsav2->report_vals[unique_id]=$this->bo->site_object[unique_id];
-		 $this->tplsav2->assign('report_list',$this->boreport->get_report_list($this->bo->site_object[unique_id],2));
+		 //$this->tplsav2->report_vals['object_id']=$this->bo->site_object[unique_id];
+		 $this->tplsav2->assign('report_list',$this->boreport->get_report_list($this->bo->site_object['object_id'],2));
 
 		 $this->tplsav2->edit_object=True;
 
