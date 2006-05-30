@@ -494,7 +494,10 @@
 			   {
 				  eval('$this->_plugins['.$pluginname.'] = new db_fields_plugin_'.$pluginname.'();');	
 				  $this->_plugins[$pluginname]->local_bo = &$this->local_bo;
-				  $this->_plugins[$pluginname]->plug_root = $plug_dir.'jinn/plugins/db_fields_plugins/__'.$pluginname;
+				  $this->_plugins[$pluginname]->plug_root = $plug_dir.'__'.$pluginname;
+
+   //				  $this->_plugins[$pluginname]->tplsav2->addPath('template',$this->plug_root.'/tpl');
+
 				  return true;
 			   }
 			   else
