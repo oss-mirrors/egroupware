@@ -16,10 +16,12 @@
 			<td><?=lang('Don\'t allow unsafe old .JiNN files.');?></td>
 			<td><input name="disallow_oldjinn" type="checkbox"></td>
 		 </tr>
+		 <!--
 		 <tr>
 			<td><?=lang('Keep object id\'s and replace existing objects with the same id');?></td>
 			<td><input name="keep_object_ids" type="checkbox"></td>
 		 </tr>
+		 -->
 	  </table>
    </fieldset>
    <div style="clear:both">

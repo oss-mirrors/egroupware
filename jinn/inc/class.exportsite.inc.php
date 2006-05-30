@@ -109,6 +109,8 @@
 
 			   while (list ($key, $val) = each ($object)) 
 			   { 
+				  $obj_arr['temp_id']=$temp_id;
+
 				  if($key != 'object_idxxx' && $key != 'parent_site_id') // keep if needed for static egroupware apps
 				  {
 					 $obj_arr[$key]=$val;
@@ -124,22 +126,21 @@
 			   {
 				  foreach ($object_field_data as $field)
 				  {
-					 //$out.= '$import_obj_fields[]=array('."\n";
-
 					 while (list ($key, $val) = each ($field)) 
 					 { 
 						if ($key != 'field_id' && $key !='field_parent_object') 
 						{
 						   // fix problem with wrong storage of null values causing a 0 value with mean something different
-						   if($val!=null)
+						   
+						   if($val==null)
 						   {
+							  //$val='null';
 							  //$val= "'".ereg_replace("'","\'",$val)."'";
 							  //$val = $val;
 						   }
-						   else
-						   {
-							  $val='null';
-						   }
+						   //else
+						   //{
+						   //}
 						   $field_arr[$key]=$val;
 						}
 					 }
@@ -159,11 +160,15 @@
 					 {
 						if ($key != 'report_id' && $key != 'report_object_id')
 						{
-						   $report_arr[$key]='<![CDATA['.$val.']]>';
+						   $report_arr[$key]=$val;
+						   //$report_arr[$key]='<![CDATA['.$val.']]>';
 						}
 					 }
 					 $report_arr['temp_id']=$temp_id;
-					 $obj_arr['reports'][]=$report_arr;
+				
+					 //FIXME exporting reports is disabled till it's better supported
+					 //uncomment below to enable it again
+					 //$obj_arr['reports'][]=$report_arr;
 				  }
 			   }
 			   /*reports*/

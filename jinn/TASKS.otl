@@ -11,6 +11,12 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] relations must therefor have their own table so at the moment of importing the unique id's and remote unique id can be set 
 				[_] while creating an jinn file a temp parent id must be used; 
 			[_] help schermen zijn nog niet ingevuld
+			[_] site import/export
+				[_] old file format is buggy
+				[_] not well tested
+				[_] single objects not implemented in xml
+				[_] relations have to have an own table
+				[_] reports are not finished in xml file formal
 		[_] 0% BIJNA AF, TESTEN
 			[_] als er geen tabellen zijn faalt de connectie test
 			[_] sommige jinn links geven na het inloggen een lelijke foutmelding

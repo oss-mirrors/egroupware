@@ -1965,7 +1965,7 @@
 		 }
 		 elseif($table == 'egw_jinn_objects')
 		 {
-				$SQL = 'SELECT * FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
+			$SQL = 'SELECT * FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
 			//echo $SQL;
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
@@ -2036,7 +2036,6 @@
 		 {
 			$uniqid=uniqid('');
 			$newdata['uniqid'] = $uniqid;
-//			array('name' => 'uniqid', 'value' => $uniqid);
 		 }
 
 		 foreach($newdata as $colname => $colval)
@@ -2059,29 +2058,8 @@
 			$SQLvalues .= "'".$colval."'"; //FIXME check for integers //FIXME POSTGRESQL
 		 }
 
-	/*	 foreach($data as $field)
-		 {
-			if($meta[$field['name']]['auto_increment'] || eregi('seq_egw_jinn_sites',$meta[$field['name']]['default'])) 
-			{
-			   $last_insert_id_col=$field['name'];
-			   continue;
-			}
-
-			if( $field['name'] == 'site_id') 
-			{
-			   continue;
-			}
-
-			if ($SQLfields) $SQLfields .= ',';
-			if ($SQLvalues) $SQLvalues .= ',';
-
-			$SQLfields .= $field[name];
-			$SQLvalues .= "'".$field[value]."'";
-		 }
-*/
 
 		 $SQL='INSERT INTO egw_jinn_sites (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-//		 echo $SQL;
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status[ret_code]=0;
@@ -2107,24 +2085,31 @@
 	  */
 	  function insert_new_object($data)
 	  {
-		 //_debug_array($data);
 		 $meta=$this->phpgw_table_metadata('egw_jinn_objects',true);
-		 $this_unique=$this->generate_unique_id();
 
-		 foreach($data as $field)
+		 $uniqid=uniqid('');
+		 $newdata=$this->oldData2newData($data);
+
+		 if(!$newdata['object_id'])
 		 {
-			if($field['name']=='object_id')
-			{
-			   $field[value] = $this_unique;
-			}
+			$newdata['object_id'] = $uniqid;
+		 }
+		 else
+		 {
+			$uniqid = $newdata['object_id'];
+		 }
 
-			if($field['name']=='unique_id' && !$field['value'])
-			{
-			   $field[value] = $this_unique;
-			}
+
+		 if(!$newdata['unique_id'])
+		 {
+			$newdata['unique_id'] = $uniqid;
+		 }
+
+		 foreach($newdata as $colname => $colval)
+		 {
 
 			// safety hack for pgsql which doesn't allow '' for integers
-			if($field[value]=='' && eregi('int',$meta[$field['name']]['type']) )
+			if($colval=='' && eregi('int',$meta[$colname]['type']) )
 			{
 			   continue;
 			}
@@ -2132,33 +2117,38 @@
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
-			$SQLfields .= $field[name];
+			$SQLfields .= $colname;
 			
-			if( !$meta[$field['name']]['not_null']&& $field[value]==null)
+			if( !$meta[$colname]['not_null']&& $colval==null)
 			{
 			   $SQLvalues .= "NULL";
 			}
 			else
 			{
-			   $SQLvalues .= "'".$field[value]."'";
+			   $SQLvalues .= "'".$colval."'";
 			}
 		 }
-		 //TODO dit kan mooier
-		 $SQLfields ='object_id,'.$SQLfields;
-		 $SQLvalues = "'".$this_unique."',".$SQLvalues;
-
-		 $SQL='INSERT INTO egw_jinn_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-		 //echo $SQL;
-		 
-		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+	
+		 if(!$newmethod)
 		 {
-			$this->phpgw_db->select('egw_jinn_objects','*',"object_id='$this_unique'",__LINE__,__FILE__);
+			$SQL='INSERT INTO egw_jinn_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 
-			$this->phpgw_db->next_record();
+			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+			{
+			   $status[where_value]=$uniqid;
+			   $status[ret_code]=0;
+			}
+		
+		 }
+		 else
+		 {
+			$where="object_id='$uniqid'";
 
-			$status[where_value]=$this->phpgw_db->f('object_id');
-
-			$status[ret_code]=0;
+			if($this->phpgw_db->insert('egw_jinn_objects',$newdata,$where,__LINE__,__FILE__))
+			{
+			   $status[where_value]=$uniqid;
+			   $status[ret_code]=0;
+			}
 		 }
 
 		 return $status;

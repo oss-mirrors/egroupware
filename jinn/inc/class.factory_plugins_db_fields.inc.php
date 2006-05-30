@@ -481,13 +481,15 @@
 			   {
 				  $inc_file=PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php';
 				  $plug_dir=PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/';
+				  include_once($inc_file);
 			   }
 			   elseif(file_exists(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php'))
 			   {
 				  $inc_file=PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php';
 				  $plug_dir=PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/';
+				  include_once($inc_file);
 			   }
-			   include_once($inc_file);
+			   //echo $inc_file;
 			   //include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php');
 			   
 			   if(class_exists('db_fields_plugin_'.$pluginname))
