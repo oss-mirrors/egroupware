@@ -192,6 +192,7 @@
 		 $this->tplsav2->test_access_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access');
 		 $this->tplsav2->onclick_export=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
 		 $this->tplsav2->onclick_export_to_xml=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
+		 $this->tplsav2->onclick_export_xml_to_egw_app=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_egwapp&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
 
 		 /* list objects for this site */
 		 if ($where_key && $where_value)

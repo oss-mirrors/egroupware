@@ -320,8 +320,9 @@
 		 <input class="egwbutton" onclick="testdbfield()" value="<?=lang('test database and paths')?>" type="button">
 	  </div>
 	  <div style="float:left;width:auto;">
-		 <input class="egwbutton" onclick="location='<?=$this->onclick_export?>'" value="<?=lang('export this site')?>" type="button">
-		 <input class="egwbutton" onclick="location='<?=$this->onclick_export_to_xml?>'" value="<?= lang('save site to xml')?>" type="button">
+		 <input class="egwbutton" onclick="location='<?=$this->onclick_export?>'" value="<?=lang('Export this Site')?>" type="button">
+		 <input class="egwbutton" onclick="location='<?=$this->onclick_export_to_xml?>'" value="<?= lang('Save Site to XML')?>" type="button">
+		 <input class="egwbutton" onclick="location='<?=$this->onclick_export_xml_to_egw_app?>'" value="<?= lang('Save XML to eGroupWare App')?>" type="button">
 	  </div>
 
 	  <div style="float:right;width:auto;"><input type="button" name="reopen" class="egwbutton" value="<?=lang('help')?>" onClick="openhelp();" /></div>

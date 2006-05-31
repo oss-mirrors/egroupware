@@ -389,17 +389,17 @@
 			case 'edit':
 			   $this->session['mult_where_array']=$this->set_multiple_where();
 			   $this->sessionmanager->save();
-			   $this->exit_and_open_screen('jinn.uiu_edit_record.edit_record');
+			   $this->exit_and_open_screen($this->japielink.'jinn.uiu_edit_record.edit_record');
 			   break;
 			case 'view':
 			   $this->session['mult_where_array']=$this->set_multiple_where();
 			   $this->sessionmanager->save();
-			   $this->exit_and_open_screen('jinn.uiu_edit_record.read_record');
+			   $this->exit_and_open_screen($this->japielink.'jinn.uiu_edit_record.read_record');
 			   break;
 			case 'export':
 			   $this->session['mult_where_array']=$this->set_multiple_where();
 			   $this->sessionmanager->save();
-			   $this->exit_and_open_screen('jinn.uiu_export.export');
+			   $this->exit_and_open_screen($this->japielink.'jinn.uiu_export.export');
 			   break;
 			default:
 			   $this->addError(lang('Operation on multiple records failed.'));
@@ -481,14 +481,11 @@
 			   $this->multiple_records_delete($mult_where_array,$object_arr);
 			}
 
-			//			unset($this->session['mult_where_array']);
-
 			if(is_array($illegal_prefix_arr))
 			{
 			   foreach($illegal_prefix_arr as $ill_prefix)
 			   {
 				  $_POST = $this->filter_array_with_prefix($_POST,$ill_prefix,true,true);
-				  // reset($_POST);
 			   }
 			}
 
@@ -516,7 +513,6 @@
 			}
 
 			return $status;	
-
 
 		 }
 
@@ -549,7 +545,7 @@
 			   }
 			   $this->addDebug(__LINE__,__FILE__);
 
-			   $this->exit_and_open_screen('jinn.uiuser.index');
+			   $this->exit_and_open_screen($this->japielink.'jinn.uiuser.index');
 			}
 			else
 			{

@@ -31,17 +31,18 @@
 		 'debugwindow' => True
 	  );
 
-/**
-	   * uijinn: constructor
-	   * 
-	   * @access public
-	   * @return void
-	   */
+	  /**
+	  * uijinn: constructor
+	  * 
+	  * @access public
+	  * @return void
+	  */
 	  function uijinn()
 	  {
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
 		 $this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
+
 	  }
 
 	  /**

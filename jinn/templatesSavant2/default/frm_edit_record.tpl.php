@@ -1,11 +1,11 @@
 <script language="javascript" type="text/javascript">
-
    function img_popup(img,pop_width,pop_height,attr)
    {
 		 options="width="+pop_width+",height="+pop_height+",location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no";
 		 parent.window.open("<?=$this->popuplink?>&path="+img+"&attr="+attr, "pop", options);
    }
 
+   //FIXME: move to general js file
    function openhelp()
    {
 		 window.open('<?=$this->helplink?>?referer='+encodeURI(location),this.target,'width=800,height=600,scrollbars=yes,resizable=yes'); 
@@ -268,9 +268,8 @@
    }
 ?>
 
-
 <!-- edit this record button -->
-<?php if(!$this->edit_object):?>
+<?php if(!$this->edit_object && !$this->japie):?>
 <div style="text-align:right;"><a href="<?=$this->edit_object_link?>"><img src="<?=$this->img_edit?>" alt="" /></a></div>
 <?php endif?>
 
@@ -284,7 +283,6 @@
    <input type="button" value="<?=lang('object event plugins')?>" class="egwbutton" onclick="parent.window.open('<?=$this->obj_event_plugins_link?>' , 'genobjoptions', 'width=980,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')" />
 
    <input type="button" value="<?=lang('relation widgets')?>" class="egwbutton" onclick="parent.window.open('<?=$this->relation_link?>' , 'relwidget', 'width=980,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')" />
-
 </div>
 
 <div style="background-color:#ffdbb3;padding:3px;margin-top:1px;">
@@ -577,7 +575,9 @@
 	  <div style="float:left;width:auto;"><input type="button" onclick="location='<?=$this->listing_link?>'" name="reopen" class="egwbutton" value="<?=lang('Back to list')?>"></div>
 	  <?php endif?>
 
+	  <?php if(!$this->japie):?>
 	  <div style="float:right;width:auto;"><input type="button" onclick="openhelp()" name="reopen" class="egwbutton" value="<?=lang('Help')?>"></div>
+	  <?php endif?>
 
 	  <div style="clear:both;height:10px;"></div>
 	  <!-- ############################# edit record buttons ############################## -->

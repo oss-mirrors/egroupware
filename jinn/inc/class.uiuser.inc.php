@@ -517,13 +517,16 @@
 		 {
 			$attributes=base64_decode($_GET[attr]);
 			$new_path=base64_decode($_GET[path]);
+			
+			/*
 			$this->template->set_file(array(
 			   'imgpopup' => 'imgpopup.tpl'
 			));
+			*/
 
-			$this->template->set_var('img',$new_path);
-			$this->template->set_var('ctw',lang('close this window'));
-			$this->template->pparse('out','imgpopup');
+			$this->tplsav2->set_var('img',$new_path);
+			//$this->tplsav2->set_var('ctw',);
+			$this->tplsav2->display('imgpopup.tpl.php');
 		 }
 
 	  }

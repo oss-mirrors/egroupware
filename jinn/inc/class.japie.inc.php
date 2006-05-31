@@ -25,19 +25,11 @@
 		 //_debug_array($this->site_id);
 		 //_debug_array($this->site_object_id);
 
-		 /*
-		 if($this->site_id)
-		 {
-			
-			}
-			*/
 		 $this->check_or_upgrade();
 	  }
 
 	  function check_or_upgrade()
 	  {
-		 // als object id niet bestaat installeren
-
 		 //read app jsxl / jaxl
 		 if($this->set_app_jsxml_to_array($this->calling_app))
 		 {
@@ -83,9 +75,6 @@
 
 	  function check_site_version_ok()
 	  {
-		 //echo $this->xmlarray['jinn']['site'][0]['site_version'];
-		 //echo $this->site_arr['site_version'];
-
 		 if( intval($this->xmlarray['jinn']['site'][0]['site_version']) > intval($this->site_arr['site_version']) )
 		 {
 			return false;	
@@ -136,6 +125,11 @@
 		 {
 			$this->copy_record();	
 		 }
+		 elseif($_GET['jma']=='jinn.bouser.multiple_actions')
+		 {
+			$this->multiple_actions();	
+		 }
+
 		 else
 		 {
 			$this->list_records();
@@ -169,15 +163,12 @@
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japie_functions=$this->japie_functions;
 		 $this->uijapie->japielink=$this->make_japie_link();
+		 $this->uijapie->tplsav2->japie=true;
 		 $this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(false,'jinn'));
-
 	  }
 
 	  function list_records()
 	  {
-		 //	 $this->setSession();
-//		 _debug_array();
-
 		 $this->uijapie = CreateObject('jinn.uiu_list_records');
 
 		 $this->doClassStuff();
@@ -188,8 +179,6 @@
 
 	  function read_record()
 	  {
-//		 $this->setSession();
-
 		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
 		 $this->doClassStuff();
 
@@ -198,8 +187,6 @@
 
 	  function edit_record()
 	  {
-//		 $this->setSession();
-
 		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
 		 $this->doClassStuff();
 
@@ -218,32 +205,37 @@
 
 	  function del_record()
 	  {
-	//	 $this->setSession();
-
 		 $this->uijapie = CreateObject('jinn.bouser');
 		 
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japie_functions=$this->japie_functions;
 		 $this->uijapie->japielink=$this->make_japie_link();
-		 //$this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(false,'jinn'));
-
 
 		 $this->uijapie->del_record();		 
 	  }
 	  function copy_record()
 	  {
-	//	 $this->setSession();
-
 		 $this->uijapie = CreateObject('jinn.bouser');
 		 
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japie_functions=$this->japie_functions;
 		 $this->uijapie->japielink=$this->make_japie_link();
-		 //$this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(false,'jinn'));
-
 
 		 $this->uijapie->copy_record();		 
 	  }
+
+	  function multiple_actions()
+	  {
+		 $this->uijapie = CreateObject('jinn.bouser');
+		 
+		 $this->uijapie->no_header=true;
+		 $this->uijapie->japie_functions=$this->japie_functions;
+		 $this->uijapie->japielink=$this->make_japie_link();
+
+		 $this->uijapie->multiple_actions();		 
+	  }
+
+	  
    }
 
 

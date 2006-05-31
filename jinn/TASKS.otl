@@ -1,22 +1,21 @@
 ## J I N N   T A S K S ##
 Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
-	[_] 12% RELEASE 0.9 stable
-		[_] 25% SHOWSTOPPERS BUGS/TASKS
+	[_] 8% RELEASE 0.9 stable
+		[_] 16% SHOWSTOPPERS BUGS/TASKS
 			[X] after creating new object it show another new object screen in stead of the just made object
 			[_] walk list does not work on egw_access_log: has something to do with primaries 
 			[_] als je een record kopieerd en vervolgens delete wordt ook het origineel verwijderd (zie Lingewoud NIEUW) 
 			:dit was voorgekomen omdat de id was disabled. In dit geval is er geen mogelijkheid om een enkel record te selecteren met de juiste where. 
 			:ROB: dit gebeurd ook bij bewerken Relaties met record mee kopieren
-			[_] The site object unique_id must completely be removed
-				[_] relations must therefor have their own table so at the moment of importing the unique id's and remote unique id can be set 
-				[_] while creating an jinn file a temp parent id must be used; 
 			[_] help schermen zijn nog niet ingevuld
 			[_] site import/export
 				[_] old file format is buggy
 				[_] not well tested
-				[_] single objects not implemented in xml
-				[_] relations have to have an own table
 				[_] reports are not finished in xml file formal
+				[_] while creating an jinn file a temp parent id must be used; 
+			[_] Edit record
+				[_] order not well working
+				[_] new features not tested
 		[_] 0% BIJNA AF, TESTEN
 			[_] als er geen tabellen zijn faalt de connectie test
 			[_] sommige jinn links geven na het inloggen een lelijke foutmelding
@@ -25,7 +24,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
 			[_] htmlarea plugin werkt niet meer?
 			[_] ??? verbergen in formulierweergave werkt niet of niet lekker
-	[_] 35% RELEASE 1.0 stable of later
+	[_] 27% RELEASE 1.0 stable of later
 		[_] 0% BUGS 
 			[_] bij het weggooien van meerdere sites worden de site files niet weggegooid
 			[_] worden rapporten weggegooit?
@@ -57,7 +56,28 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] gen menu plugin geeft foutmedingen wanneer het niet goed is geconfigureerd
 			[_] Filemannager laat geen plaatjes zien maar bestandnamen
 			[_] tinymce flikkert
-		[_] 5% TASKS
+		[_] CODE CLEANUP
+			[_] replace SQL sojinn with native eGroupware database functions
+			[_] cleanup javascript move to central place
+			[_] cleanup css move to central place
+			[_] move css styles in html attributes to sheet
+			[_] replace old PHPLIB templates with tplsavant2
+				[_] access_rights.tpl
+				[_] accounts.tpl
+				[_] config.tpl
+				[_] config_browse_view.tpl
+				[_] frm_edit_filter.tpl
+				[_] import_object.tpl
+				[X] list_records.tpl
+		[_] 6% TASKS
+			[_] 11% SAVE/OPEN JINN DATA	
+				[_] single objects not implemented in xml
+				[_] export xml
+					[_] cleanup code
+				[_] import xml
+					[_] test/impl replace
+					[_] finish import xml
+					[X] automate from japie calls
 			[_] NEW CLASS LAY-OUT  
 				[_] alle posts moeten terugkomen in ui
 				[_] ACL meer globaal maken
@@ -77,7 +97,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] event on delete record
 				[_] invoer verplicht tijdelijk uitgeschakeld
 				[_] invoer verplicht vervangen met invoer controle op inhoud (wellicht te definieren in plugin zelf)
-			[_] 35% JAPIE JiNN API Enterprise
+			[_] 33% JAPIE JiNN API Enterprise
 				[_] set version info when jinn meta data is updated
 					[X] add/edit site
 					[X] add/edit gen object props
@@ -86,16 +106,11 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 					[_] event plugins
 					[_] add/edit report info
 					[_] make more generic
-				[_] export xml
-					[_] cleanup code
-				[_] import xml
-					[_] test/impl replace
-					[_] finish import xml
-					[_] automate from japie calls
-				[_] japie jinn features
+				[_] 60% japie jinn features
 					[_] search
 					[_] filters
-					[X] list
+					[_] list
+						[_] custom action links
 					[X] create single
 					[X] delete single
 					[X] copy single
@@ -105,11 +120,12 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 						[X] save
 						[_] tinymce javascript include probleem
 					[_] multi
-						[_] del
-						[_] edit
-						[_] create
-						[_] read
-				[_] enable disable functions
+						[X] del
+						[X] edit
+						[X] create
+						[X] read
+						[_] export CSV
+				[_] enable/disable functions
 					[_] edit
 					[_] del
 					[_] read
@@ -123,27 +139,35 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] default screen
 				[_] custom return links
 				[_] setup application including JAPIE stuff
-					[_] add japie info in setup.inc.php
-						[_] objects unique id's
-						[_] version
-					[_] When app is opened
-						[_] check if jinn object is available
-						[_] run app if object info in db is correct with object info in setup
-						[_] install site and objects if this is not the case 
-					[_] if Jinn see a object which is registered in the egw info array 
+					[X] add japie info in setup/appname.jsxl
+						[X] objects unique id's
+						[X] version
+					[X] When app is opened
+						[X] check if jinn object is available
+						[X] run app if object info in db is correct with object info in setup
+						[X] install site and objects if this is not the case 
+					[_] JiNN
 						[_] show info about application
-						[_] make if possible to save over new mods
-					[_] if an app is not a registered egw app
-						[_] make it possible to select current installed apps
-						[_] list current registered objects of selected app
-				[_] make sure hardcoded uniq id's stay as reference
+						[_] show object id
+						[X] make if possible to save over new mods
+				[X] make sure hardcoded uniq id's stay as reference
 				[_] disable normal jinn ACL
+				[_] create parallel session handling
 			[_] 0% RELATIES
+				[_] relations have to have an own table
 				[_] o2o en m2o relaties hoeven geen remote tabel te hebben
 				[_] O2O je kunt nu kiezen voor tabel 1 met configuratie 2, dus of alleen een confuguratie kiezen of alleen een tabel
 			[_] 0% DOCUMENTATION, TRANSLATIONS INFO
 				[_] Vertalen
 				[_] Meer info geven in object overzicht: type relaties, problemen objecten, geconf. velden, totaal db velden
+			[_] 14% LIST RECORDS
+				[_] optimize search code
+				[_] optimize columnames code
+				[_] improve speed in many ways
+				[_] improve lay-out
+				[_] add more browsing functionality
+				[_] remove all doc html
+				[X] port to tplsav2
 			[_] 0% REPORTS
 				[_] rapporten pdf
 				[_] rapporten delen met andere gebruikers
@@ -193,7 +217,6 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] optional record toevoegen aan 1op Veel relatie zodat de link "voeg toe kan worden weer gegeven achter een 1toM relatie
 				[_] navigatie nog duidelijker maken en meer mogelijkheden
 				[_] rijen verkleuren bij muisoover en muisklik selecteerd
-				[_] list view scherm herzien en in tplsav herschrijven
 				[_] Andere databases ondersteunen
 				[_] gebruikers met genoeg rechten moeten een eigen site kunnen opzetten
 				[_] excel importeren en importeren
