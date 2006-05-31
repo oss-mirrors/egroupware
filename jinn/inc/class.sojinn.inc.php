@@ -724,22 +724,24 @@
 
 	  }
 
-	  /****************************************************************************\
-	  * get sitename for site id                                                   *
-	  \****************************************************************************/
+	  /**
+	  * get_sites_by_name 
+	  * 
+	  * @param mixed $name 
+	  * @access public
+	  * @return void
+	  */
+	 function get_sites_by_name($name)
+	 {
+		$this->phpgw_db->query("SELECT * FROM egw_jinn_sites WHERE site_name='$name'",__LINE__,__FILE__);
 
-	  function get_sites_by_name($name)
-	  {
-		 $this->phpgw_db->query("SELECT * FROM egw_jinn_sites WHERE site_name='$name'",__LINE__,__FILE__);
-
-		 while($this->phpgw_db->next_record())
-		 {
-			$ids[]=$this->phpgw_db->f('site_id');
-		 }
-		 return $ids;
-
-	  }	
-
+		while($this->phpgw_db->next_record())
+		{
+		   $ids[]=$this->phpgw_db->f('site_id');
+		}
+		return $ids;
+	 }
+	
 	  function get_objects_by_name($name,$parent_site_id)
 	  {
 		 $SQL="SELECT * FROM egw_jinn_objects WHERE name='$name' AND parent_site_id='$parent_site_id'";

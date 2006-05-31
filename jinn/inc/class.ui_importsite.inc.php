@@ -82,7 +82,10 @@
 					 $buffer .= fgets($dataFile, 4096);
 				  }
 
-				  if($this->load_site_from_xml($buffer))
+				  $xmlObj   = CreateObject('jinn.xmltoarray',$buffer);
+				  $xmlarray = $xmlObj->createArray();
+
+				  if($this->load_site_from_xml($xmlarray))
 				  {
 					 $this->bo->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
@@ -138,10 +141,13 @@
 		 }
 	  }
 
-	  function load_site_from_xml($buffer='')
+	  function load_site_from_xml($xmlarray,$f_replace=false)
 	  {
-		 $xmlObj   = CreateObject('jinn.xmltoarray',$buffer);
-		 $xmlarray = $xmlObj->createArray();
+		 if($f_replace)
+		 {
+			$replace=$f_replace;
+			$_POST['replace_existing']=$f_replace;
+		 }
 
 		 $import_site			= $xmlarray['jinn']['site'][0];
 		 $import_site_files		= $xmlarray['jinn']['site_files'];
@@ -153,7 +159,7 @@
 			//load incompatible;
 		 }
 
-		 $new_site_id = $this->save_site($import_site,$_POST['replace_existing']);
+		 $new_site_id = $this->save_site($import_site,$replace);
 		 if(!$new_site_id)
 		 {
 			$this->bo->addError(lang('An error occured while importing site data.'));

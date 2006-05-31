@@ -4,14 +4,97 @@
    {
 	  var $bo;
 	  var $site_id=false;
+	  var $site_arr;
 	  var $site_object_id=false;
 	  var $default_view='list'; //possible: create,list
 	  var $japie_functions=array();
 	  var $baselink;
+	  var $calling_app;
+	  var $xmlarray;
 
-	  function japie()
+	  function japie($object_id)
 	  {
+		 $this->calling_app = $GLOBALS['egw_info']['flags']['currentapp'];
+
+		 $this->site_object_id=$object_id;
+		 
+		 $this->setSession();
+
 		 $this->set_default_functions();
+		 
+		 //_debug_array($this->site_id);
+		 //_debug_array($this->site_object_id);
+
+		 /*
+		 if($this->site_id)
+		 {
+			
+			}
+			*/
+		 $this->check_or_upgrade();
+	  }
+
+	  function check_or_upgrade()
+	  {
+		 // als object id niet bestaat installeren
+
+		 //read app jsxl / jaxl
+		 if($this->set_app_jsxml_to_array($this->calling_app))
+		 {
+			if(!$this->check_site_version_ok())
+			{
+			   $this->do_upgrade();
+			}
+		 }
+	  }
+
+	  function do_upgrade()
+	  {
+		 $this->uiimport = CreateObject('jinn.ui_importsite');
+		 $upgrade_ok = $this->uiimport->load_site_from_xml($this->xmlarray,true);
+		 unset($this->uiimport);
+		 //_debug_array($this->site_id);
+		 //_debug_array($this->site_object_id);
+		 //$this->setSession();
+	  }
+
+	  function set_app_jsxml_to_array($appname)
+	  {
+		 $filename=PHPGW_SERVER_ROOT.'/'.$appname.'/setup/'.$appname.'.jsxl';
+		 if(file_exists($filename))
+		 {
+			$dataFile = fopen( $filename, "r" ) ;
+			if($dataFile)
+			{
+			   $buffer = fgets($dataFile, 4096);
+			   while (!feof($dataFile)) 
+			   {
+				  $buffer .= fgets($dataFile, 4096);
+			   }
+			   fclose($dataFile);
+			}
+
+			$xmlObj   = CreateObject('jinn.xmltoarray',$buffer);
+			$this->xmlarray = $xmlObj->createArray();
+
+			return true;
+		 }
+	  }
+
+	  function check_site_version_ok()
+	  {
+		 //echo $this->xmlarray['jinn']['site'][0]['site_version'];
+		 //echo $this->site_arr['site_version'];
+
+		 if( intval($this->xmlarray['jinn']['site'][0]['site_version']) > intval($this->site_arr['site_version']) )
+		 {
+			return false;	
+		 }
+		 else 
+		 {
+			return true;
+		 }
+		 
 	  }
 
 	  function set_default_functions()
@@ -67,7 +150,8 @@
 	  function setSession()
 	  {
 		 $tmpso = CreateObject('jinn.sojinn');
-		 $this->site_id = $tmpso->get_site_id_by_object_id($this->site_object_id);
+		 $this->site_id  = $tmpso->get_site_id_by_object_id($this->site_object_id);
+		 $this->site_arr = $tmpso->get_site_values($this->site_id);
 		 unset($tmpso);
 
 		 //fixme destroy current session??
@@ -91,9 +175,11 @@
 
 	  function list_records()
 	  {
-		 $this->setSession();
+		 //	 $this->setSession();
+//		 _debug_array();
 
 		 $this->uijapie = CreateObject('jinn.uiu_list_records');
+
 		 $this->doClassStuff();
 
 		 $this->uijapie->template->set_root($GLOBALS['egw']->common->get_tpl_dir('jinn'));
@@ -102,7 +188,7 @@
 
 	  function read_record()
 	  {
-		 $this->setSession();
+//		 $this->setSession();
 
 		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
 		 $this->doClassStuff();
@@ -112,7 +198,7 @@
 
 	  function edit_record()
 	  {
-		 $this->setSession();
+//		 $this->setSession();
 
 		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
 		 $this->doClassStuff();
@@ -122,7 +208,7 @@
   
 	  function new_record()
 	  {
-		 $this->setSession();
+//		 $this->setSession();
 
 		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
 		 $this->doClassStuff();
@@ -132,7 +218,7 @@
 
 	  function del_record()
 	  {
-		 $this->setSession();
+	//	 $this->setSession();
 
 		 $this->uijapie = CreateObject('jinn.bouser');
 		 
@@ -146,7 +232,7 @@
 	  }
 	  function copy_record()
 	  {
-		 $this->setSession();
+	//	 $this->setSession();
 
 		 $this->uijapie = CreateObject('jinn.bouser');
 		 
