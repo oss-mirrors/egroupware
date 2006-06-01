@@ -428,16 +428,20 @@
 	  function num_rows_table($site_id,$table,$where_condition=false)
 	  {
 		 $this->site_db_connection($site_id);
+		 
+		 $meta=$this->site_db->metadata($table);
 
 		 if($where_condition)
 		 {
 			$WHERE='WHERE '.$where_condition;
 		 }
 
-		 $sql="SELECT * FROM $table $WHERE";
+		 $sql="SELECT COUNT({$meta[0]['name']}) AS firstcol FROM $table $WHERE";
+		 //$sql="SELECT * FROM $table $WHERE";
 		 $this->site_db->query($sql,__LINE__,__FILE__);
+		 $this->site_db->next_record();
 
-		 $num_rows=$this->site_db->num_rows();
+		 $num_rows=$this->site_db->f('firstcol');
 
 		 $this->site_close_db_connection();
 		 return $num_rows;

@@ -345,7 +345,6 @@
 		 //		 _debug_array($filter_where);
 
 		 $this->tplsav2->set_var('filter_list',$this->filtermanager->format_filter_options($_POST[filtername]));
-
 		 $this->tplsav2->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
 		 $this->tplsav2->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
 		 $this->tplsav2->set_var('filter_text',lang('activate filter'));
@@ -363,7 +362,6 @@
 		 (
 			'orderby'=>$order_by_arr,
 			'quick_filter'=>$quick_filter_arr,
-			//			'filter_arr'=>$filter_arr,
 			'current_page'=>$current_page_arr
 		 );
 
@@ -455,6 +453,7 @@
 			}
 
 		 }
+		 
 
 		 //fixme start of object filters
 		 if($this->bo->site_object[extra_where_sql_filter])
@@ -483,11 +482,7 @@
 		 }
 
 		 $num_rows=$this->bo->so->num_rows_table($this->bo->session['site_id'],$this->bo->site_object['table_name'],$where_condition);
-
-		 //todo create function total pages but first cleanup all code
-		 #$total_pages=$this-bo->get_totalpages($num_rows,$rec_per_page);
-
-		 // get pager code
+		 
 		 $pager=$this->pager($current_page_arr[$this->bo->site_object[object_id]],$num_rows,$rec_per_page);
 
 		 if($current_page_arr[$this->bo->site_object[object_id]]=='last')
@@ -636,6 +631,10 @@
 		 {
 			$this->tplsav2->reportblock = $this->getReportBlock();
 		 }
+
+
+			   //			   echo " colums <br/>".$iii++.uniqid('');
+//		 die('snelheid tester');
 		 
 		 if($record_count>0)
 		 {
@@ -686,6 +685,7 @@
 
 				  foreach($col_names_list  as $onecolname)
 				  {
+					 
 					 $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecolname);
 					 $recordvalue=$recordvalues[$onecolname];
 					 if ($recordvalue && is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
