@@ -429,19 +429,16 @@
 	  {
 		 $this->site_db_connection($site_id);
 		 
-		 $meta=$this->site_db->metadata($table);
-
 		 if($where_condition)
 		 {
 			$WHERE='WHERE '.$where_condition;
 		 }
 
-		 $sql="SELECT COUNT({$meta[0]['name']}) AS firstcol FROM $table $WHERE";
-		 //$sql="SELECT * FROM $table $WHERE";
+		 $sql="SELECT COUNT(*) AS num FROM $table $WHERE";
 		 $this->site_db->query($sql,__LINE__,__FILE__);
 		 $this->site_db->next_record();
 
-		 $num_rows=$this->site_db->f('firstcol');
+		 $num_rows=$this->site_db->f('num');
 
 		 $this->site_close_db_connection();
 		 return $num_rows;
