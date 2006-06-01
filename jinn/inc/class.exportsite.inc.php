@@ -69,13 +69,37 @@
 		 $site_data=$this->bo->so->get_phpgw_record_values('egw_jinn_sites',$this->bo->where_key,$this->bo->where_value,'','','name');
 
 		 $appname=$site_data[0]['site_name'];
+		 $site_version=$site_data[0]['site_version'];
 
 		 $filename=PHPGW_SERVER_ROOT.'/'.$appname.'/setup/'.$appname.'.jsxl';
+		 $info_filename=PHPGW_SERVER_ROOT.'/'.$appname.'/setup/japie.info.php';
 
 		 if(file_exists($filename))
 		 {
 			//move
 			$rn_ok=rename($filename, $filename.'.old');
+		 }
+
+		 if($dataFile = fopen( $info_filename, "w" ))
+		 {
+			$japie_info=$this->generate_japie_info($site_data);
+			if($dataFile)
+			{
+			   if(!fwrite($dataFile, $japie_info))
+			   {
+				  echo lang('could not write'); 
+			   }
+			   else
+			   {
+				  $this->bo->addInfo(lang('Saved JAPIe Info to %1.',$info_filename));
+
+			   }
+			   fclose($dataFile);
+			}
+		 }
+		 else
+		 {
+			die(lang('Wrong file permissions'));
 		 }
 
 		 if($dataFile = fopen( $filename, "w" ))
@@ -104,7 +128,6 @@
 		 }
 
 		 $this->bo->exit_and_open_screen('jinn.uiadmin.edit_this_jinn_site');
-		 //die();
 		 //return true;
 	  }
 
@@ -130,6 +153,13 @@
 
 		 echo $this->generate_site_xml();
 
+	  }
+
+	  function generate_japie_info($site_data)
+	  {
+		 $japie_info= '<?php'."\n";
+		 $japie_info.= '$japie_info[\'site_version\']='.$site_data[0]['site_version'].';'."\n";
+		 return $japie_info;
 	  }
 
 	  function generate_site_xml()

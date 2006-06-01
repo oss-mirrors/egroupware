@@ -31,23 +31,21 @@
 	  function check_or_upgrade()
 	  {
 		 //read app jsxl / jaxl
-		 if($this->set_app_jsxml_to_array($this->calling_app))
+		 if(!$this->check_site_version_ok($this->calling_app))
 		 {
-			if(!$this->check_site_version_ok())
-			{
-			   $this->do_upgrade();
-			}
+			$this->set_app_jsxml_to_array($this->calling_app);
+			$this->do_upgrade();
 		 }
 	  }
 
 	  function do_upgrade()
 	  {
+		 
 		 $this->uiimport = CreateObject('jinn.ui_importsite');
 		 $upgrade_ok = $this->uiimport->load_site_from_xml($this->xmlarray,true);
 		 unset($this->uiimport);
-		 //_debug_array($this->site_id);
-		 //_debug_array($this->site_object_id);
-		 //$this->setSession();
+
+		 $this->setSession();
 	  }
 
 	  function set_app_jsxml_to_array($appname)
@@ -73,17 +71,24 @@
 		 }
 	  }
 
-	  function check_site_version_ok()
+	  function check_site_version_ok($appname)
 	  {
-		 if( intval($this->xmlarray['jinn']['site'][0]['site_version']) > intval($this->site_arr['site_version']) )
+		 if(@include(PHPGW_SERVER_ROOT.'/'.$appname.'/setup/japie.info.php'))
 		 {
-			return false;	
+			//if( intval($this->xmlarray['jinn']['site'][0]['site_version']) > intval($this->site_arr['site_version']) )
+			if( $japie_info['site_version'] > intval($this->site_arr['site_version']) )
+			{
+			   return false;	
+			}
+			else
+			{
+			   return true;
+			}
 		 }
 		 else 
 		 {
-			return true;
+			return false;
 		 }
-		 
 	  }
 
 	  function set_default_functions()

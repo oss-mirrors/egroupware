@@ -148,6 +148,10 @@
 			$replace=$f_replace;
 			$_POST['replace_existing']=$f_replace;
 		 }
+		 else
+		 {
+			$replace=$_POST['replace_existing'];
+		 }
 
 		 $import_site			= $xmlarray['jinn']['site'][0];
 		 $import_site_files		= $xmlarray['jinn']['site_files'];
@@ -173,7 +177,7 @@
 
 		 if(is_array($import_site_objects))
 		 {
-			$this->save_objects($import_site_objects,$import_obj_fields,$import_reports,$new_site_id);
+			$this->save_objects($import_site_objects,$import_obj_fields,$import_reports,$new_site_id,$replace);
 		 }
 
 		 $this->bo->addInfo(lang('%1 Site Objects have been imported.',$this->num_objects));
@@ -246,7 +250,7 @@
 
 			   if(is_array($import_site_objects))
 			   {
-				  $this->save_objects($import_site_objects,$import_obj_fields,$import_reports,$new_site_id);
+				  $this->save_objects($import_site_objects,$import_obj_fields,$import_reports,$new_site_id,$_POST['replace_existing']);
 			   }
 
 			   $this->bo->addInfo(lang('%1 Site Objects have been imported.',$this->num_objects));
@@ -282,7 +286,7 @@
 
 		 while(list($key, $val) = each($import_site)) 
 		 {
-			if($key=='objects')
+			if($key=='objects' || $key=='uniqid')
 			{
 			   continue;
 			}
@@ -310,24 +314,40 @@
 			}
 		 }
 
-		 $new_site_name=$data[0][value];	
+		 $new_site_name=$data[0]['value'];	
 
-		 if($replace && $this->site_name_exist($new_site_name))
+		 //if replace remove alles wat lijkt op wat we willlen saven
+		 	
+		 //if($replace && $this->site_name_exist($new_site_name))
+		 if($replace)
 		 {
-			$thissitename=$this->bo->so->get_sites_by_name($new_site_name);
-			$new_site_id=$thissitename[0];
-			$this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
+			//new method: no update but remove
+			$site_with_this_name_arr=$this->bo->so->get_sites_by_name($new_site_name);
+			$new_site_id=$site_with_this_name_arr[0];
+
+			$this->bo->so->delete_phpgw_data('egw_jinn_sites','site_id',$new_site_id);
+			$this->bo->so->delete_phpgw_data('egw_jinn_objects','parent_site_id',$new_site_id);
+
+			//die('hallo');
+//			$thissitename=$this->bo->so->get_sites_by_name($new_site_name);
+//			$this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
 
 			// remove all existing objects
-			$this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
 			$this->bo->addInfo(lang('Replaced existing site named <strong>%1</strong>.',$new_site_name));
 
-			return $new_site_id;
-		 }
-		 elseif($status=$this->bo->so->insert_new_site($data))
-		 {
+			$status=$this->bo->so->insert_new_site($data);
 			$new_site_id=$status[where_value];
+			
+			/*
+			echo $new_site_id;
+			echo $new_site_name;
+			_debug_array($data);	
+			die('hallo');
+			*/
 
+		 }
+		 else
+		 {
 			if($this->site_name_exist($new_site_name))
 			{
 			   while($this->site_name_exist($new_site_name))
@@ -347,14 +367,21 @@
 				  'name'=>'site_name',
 				  'value'=>$new_site_name
 			   );
+			}
 
+			$status=$this->bo->so->insert_new_site($data);
+			$new_site_id=$status[where_value];
+
+			if(is_array($datanew))
+			{
 			   $this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$datanew,'site_id',$new_site_id);
 			}
 
 			$this->bo->addInfo(lang('The name of the new site is <strong>%1</strong>.',$new_site_name));
 
-			return $new_site_id;
 		 }
+
+		 return $new_site_id;
 	  }
 
 	  function save_site_files($import_site_files,$new_site_id)
@@ -380,29 +407,41 @@
 		 }
 	  }
 
-	  function save_objects($import_site_objects,$import_obj_fields,$import_reports,$parent_site_id)
+	  function save_objects($import_site_objects,$import_obj_fields,$import_reports,$parent_site_id,$replace)
 	  {
+
 		 $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
 		 $ignorefields = array('fields','reports','parent_site_id');
 
 		 //check for keep id's
 		 //	 unset($validfields[object_id]);
-		 
+//		 _debug_array($import_site_objects); 
 		 foreach($import_site_objects as $object)
 		 {
 
 			unset($data_objects);
 			unset($imported);
-			while(list($key, $val) = each($object)) 
+		
+			//while(list($key, $val) = each($object)) 
+			foreach($object as $key => $val)
 			{
-			   if(!$_POST['replace_existing'] && $key=='object_id' )
+			   if(!$replace && $key=='object_id' )
 			   {
 				  continue;
 			   }
-			   else
+			   
+			   if($replace && $key=='object_id')
 			   {
+				  /*
+				  echo "HALLO";
+				  
+				  _debug_array($validfields);
+				  echo $key;
+				  echo $val;
+				  // die('hallo');
+				  */
+				  
 				  $this->bo->so->delete_phpgw_data('egw_jinn_objects', 'object_id', $val);
-				  //delete object
 			   }
 			   
 			   if($key=='temp_id' || $key=='parent_site_id')
@@ -434,6 +473,8 @@
 			}
 
 			$data_objects[] = array ( 'name' => 'parent_site_id', 'value' => $parent_site_id);
+//			_debug_array($data_objects);
+//			die();
 
 			if($status = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
 			{
