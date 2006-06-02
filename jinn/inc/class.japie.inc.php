@@ -105,6 +105,12 @@
 		 $this->japie_functions['filter']=false;
 	  }
 
+	  function addExtraWhere($extra_where)
+	  {
+	//	 die('hallo');
+		 $this->extra_where=$extra_where; 
+	  }
+
 	  function display()
 	  {
 		 if(!$this->site_object_id)
@@ -185,6 +191,13 @@
 	//	 $this->setSession();
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japie_functions=$this->japie_functions;
+
+		 if($this->extra_where)
+		 {
+//			echo "halloa";
+			$this->uijapie->bo->site_object['extra_where_sql_filter']=$this->extra_where;
+		 }
+
 		 $this->uijapie->japielink=$this->make_japie_link();
 		 $this->uijapie->tplsav2->japie=true;
 		 $this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(false,'jinn'));

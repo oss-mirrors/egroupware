@@ -128,7 +128,6 @@
 
 			   $this->bo->exit_and_open_screen($this->japielink.'jinn.uiu_edit_record.read_record&site_id='.$this->bo->site_object['parent_site_id'].'&site_object_id='.$this->bo->site_object['object_id'].'&where_string='.$where_string);
 			   //die('jinn.uiu_edit_record.read_record&object_id='.$this->bo->site_object['object_id'].'&where_string='.$where_string);
-
 			}
 			else
 			{
@@ -631,10 +630,9 @@
 		 {
 			$this->tplsav2->reportblock = $this->getReportBlock();
 		 }
-
-
-			   //			   echo " colums <br/>".$iii++.uniqid('');
-//		 die('snelheid tester');
+		 
+		 //			   echo " colums <br/>".$iii++.uniqid('');
+		 //		 die('snelheid tester');
 		 
 		 if($record_count>0)
 		 {
