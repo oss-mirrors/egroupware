@@ -220,7 +220,15 @@ function tts_upgrade1_0_002()
 	// set this for all states we consider "closed" to 'X' (guesswork right now)
 	$GLOBALS['egw_setup']->oProc->query("UPDATE phpgw_tts_states SET state_open='X' WHERE state_name IN ('RESOLVED','DONE','CLOSED','FINISHED')",__LINE__,__FILE__);
 
-	return $GLOBALS['setup_info']['tts']['currentver'] = '1.2.009';
+	return $GLOBALS['setup_info']['tts']['currentver'] = '1.2.008';
+}
+
+
+$test[] = '1.0.008';
+function tts_upgrade1_0_008()
+{
+	$GLOBALS['setup_info']['tts']['currentver'] = '1.2.009';
+	return $GLOBALS['setup_info']['tts']['currentver'];
 }
 
 ?>
