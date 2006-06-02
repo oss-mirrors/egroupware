@@ -207,7 +207,7 @@
 
 				  if($key != 'object_idxxx' && $key != 'parent_site_id') // keep if needed for static egroupware apps
 				  {
-					 if(in_array('$key',$cdata_array))
+					 if(in_array($key,$cdata_array))
 					 {
 						$obj_arr[$key]='<![CDATA['.$val.']]>';
 					 }
@@ -232,7 +232,7 @@
 					 { 
 						if ($key != 'field_id' && $key !='field_parent_object') 
 						{
-						   if(in_array('$key',$cdata_array))
+						   if(in_array($key,$cdata_array))
 						   {
 							  $field_arr[$key]='<![CDATA['.$val.']]>';
 						   }
