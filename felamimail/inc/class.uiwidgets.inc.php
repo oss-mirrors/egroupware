@@ -241,6 +241,14 @@
 				#_debug_array($GLOBALS[phpgw_info]);
 				if (!empty($header['subject']))
 				{
+					// filter out undisplayable characters
+					$search = array('[\016]','[\017]',
+						'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
+						'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
+					$replace = '';
+			
+					$header['subject'] = preg_replace($search,$replace,$header['subject']);
+
 					// make the subject shorter if it is to long
 					$fullSubject = $header['subject'];
 					#if(strlen($header['subject']) > $maxSubjectLength)
