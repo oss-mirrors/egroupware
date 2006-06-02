@@ -53,8 +53,17 @@
 
 		 $this->session	= &$this->sessionmanager->sessionarray;	//reference to session array
 
-		 if ($this->session['site_id']) $this->site = $this->so->get_site_values($this->session['site_id']);
-		 if ($this->session['site_object_id']) $this->site_object = $this->so->get_object_values($this->session['site_object_id']);
+		 if($this->session['site_id'])
+		 {
+			$this->site = $this->so->get_site_values($this->session['site_id']);
+			if ($this->session['site_object_id']) $this->site_object = $this->so->get_object_values($this->session['site_object_id']);
+		 }
+		 else
+		 {
+			unset($this->session);
+			$this->sessionmanager->save();
+		 }
+		 //_debug_array($this->session);
 
 		 $this->prefs = $this->read_preferences_all();
 

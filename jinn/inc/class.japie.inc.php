@@ -26,6 +26,8 @@
 		 //_debug_array($this->site_object_id);
 
 		 $this->check_or_upgrade();
+		 
+		 
 	  }
 
 	  function check_or_upgrade()
@@ -40,12 +42,11 @@
 
 	  function do_upgrade()
 	  {
-		 
 		 $this->uiimport = CreateObject('jinn.ui_importsite');
 		 $upgrade_ok = $this->uiimport->load_site_from_xml($this->xmlarray,true);
 		 unset($this->uiimport);
 
-		 $this->setSession();
+//		 $this->setSession();
 	  }
 
 	  function set_app_jsxml_to_array($appname)
@@ -78,6 +79,7 @@
 			//if( intval($this->xmlarray['jinn']['site'][0]['site_version']) > intval($this->site_arr['site_version']) )
 			if( $japie_info['site_version'] > intval($this->site_arr['site_version']) )
 			{
+//			   die('hallo');
 			   return false;	
 			}
 			else
@@ -149,7 +151,22 @@
 	  function setSession()
 	  {
 		 $tmpso = CreateObject('jinn.sojinn');
-		 $this->site_id  = $tmpso->get_site_id_by_object_id($this->site_object_id);
+
+		 //FIXME Workaround
+		 //		 $this->site_id = $tmpso->get_site_id_by_object_id($this->site_object_id);
+//		 _debug_array($this->calling_app);
+		 $site_with_this_name_arr=$tmpso->get_sites_by_name($this->calling_app);
+		 $this->site_id=$site_with_this_name_arr[0];
+
+		 ///		 $this->site_id = $GLOBALS['egw_info']['flags']['currentapp']
+
+		 /*
+		 if(!$this->site_id)
+		 {
+			die(lang('Error calling Japie function: no site id')); 
+		 }
+		 */
+
 		 $this->site_arr = $tmpso->get_site_values($this->site_id);
 		 unset($tmpso);
 
@@ -165,6 +182,7 @@
 
 	  function doClassStuff()
 	  {
+	//	 $this->setSession();
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japie_functions=$this->japie_functions;
 		 $this->uijapie->japielink=$this->make_japie_link();

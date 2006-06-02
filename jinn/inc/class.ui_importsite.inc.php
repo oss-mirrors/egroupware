@@ -473,6 +473,8 @@
 			}
 
 			$data_objects[] = array ( 'name' => 'parent_site_id', 'value' => $parent_site_id);
+			
+			$this->bo->addError(_debug_array($data_objects,false));
 //			_debug_array($data_objects);
 //			die();
 
