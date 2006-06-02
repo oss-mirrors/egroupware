@@ -579,7 +579,7 @@
 
 			if(is_array($_mimePartObject->parameters)) {
 				foreach($_mimePartObject->parameters as $parameters) {
-					if($parameters->attribute == 'CHARSET') {
+					if(strtoupper($parameters->attribute) == 'CHARSET') {
 						$charSet = $parameters->value;
 					}
 				}
