@@ -1,0 +1,36 @@
+compose	messenger	sk	Vytvori»
+compose global message	common	sk	Vytvori» verejnú správu
+compose message	messenger	sk	Vytvori» správu
+delete a message.	messenger	sk	Vymaza» správu.
+delete selected	messenger	sk	Vymaza» vybrané
+forward	messenger	sk	Odosla» ïalej
+forward a message	messenger	sk	Odosla» správu ïalej
+forward a message to another user.	messenger	sk	Odosla» správu ïalej inému pou¾ívateµovi.
+forwarded	messenger	sk	Odoslané ïalej
+from	messenger	sk	Od
+global message	messenger	sk	Verejná správa
+i can't find the username %1 on the system	messenger	sk	Pou¾ívateµa %1 som v systéme nena¹iel
+inbox	messenger	sk	Do¹lé
+message from	messenger	sk	Správa od
+messenger	common	sk	Správy
+new	messenger	sk	Nové
+read a list of messages.	messenger	sk	Naèíta» zoznam správ.
+read a single message.	messenger	sk	Naèíta» jednotlivú správu.
+read message	messenger	sk	Naèíta» správu
+replied	messenger	sk	Odpovedané
+reply	messenger	sk	Odpoveï
+reply to a message	messenger	sk	Odpoveda» na správu
+reply to a received message.	messenger	sk	Odpoveda» na prijatú správu.
+send	messenger	sk	Odosla»
+send a global message.	messenger	sk	Odosla» verejnú správu.
+send a message to a single recipient.	messenger	sk	Odosla» správu jednotlivému adresátovi.
+send message to	messenger	sk	Odosla» správu (komu)
+sorry, %1's account is not currently active	messenger	sk	¥utujem, úèet %1 v súèasnosti nie je aktívny
+update a message status	messenger	sk	Upravi» stav správy
+use select box for user list in compose	common	sk	Pou¾ite výberové menu pre zoznam pou¾ívateµov poèas vytvárania
+you didn't enter anything for the message	messenger	sk	Pre danú správu ste nezadali vôbec niè
+you have %1 new message	common	sk	Máte %1 nových správ
+you have %1 new messages	common	sk	Máte %1 nových správ
+you have no messages	messenger	sk	Nemáte ¾iadne správy
+you must enter a subject	messenger	sk	Musíte zada» predmet
+you must enter the username this message is for	messenger	sk	Musíte zada», pre koho je táto správa

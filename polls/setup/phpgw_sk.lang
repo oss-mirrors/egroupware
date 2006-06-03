@@ -1,0 +1,33 @@
+actions	polls	sk	Akcie
+add answer to poll	polls	sk	Prida» odpoveï pre voµbu
+add answers	polls	sk	Prida» odpovede
+add new poll question	polls	sk	Prida» novú otázku pre voµbu
+add questions	polls	sk	Prida» otázky
+allow users to vote more then once	polls	sk	Prida» pou¾ívateµov s mo¾nos»ou opakovanej voµby
+answer	polls	sk	Odpoveï
+answer has been added to poll	polls	sk	Odpoveï bola pridaná do voµby
+answer has been updated	polls	sk	Odpoveï bola aktualizovaná
+answers	polls	sk	Odpovede
+are you sure want to delete this answer ?	polls	sk	Naozaj chcete zmaza» túto odpoveï?
+are you sure want to delete this question ?	polls	sk	Naozaj chcete zmaza» túto otázku?
+current poll	polls	sk	Aktuálna voµba
+edit answer	polls	sk	Upravi» odpoveï
+edit poll question	polls	sk	Upravi» otázku pre voµbu
+enter poll question	polls	sk	Zada» otázku pre voµbu
+new poll has been added.  you should now add some answers for this poll	polls	sk	Nová voµba bola pridaná. Mali by ste teraz zada» nejaké odpovede pre túto voµbu
+poll question	polls	sk	Otázka pre voµbu
+poll settings	common	sk	Nastavenia voµby
+polls	common	sk	Voµby
+question has been updated	polls	sk	Otázka bola aktualizovaná
+select current poll	polls	sk	Vyberte aktuálnu voµbu
+settings	polls	sk	Nastavenia
+settings updated	polls	sk	Nastavenia aktualizované
+show answers	polls	sk	Zobrazi» odpovede
+show questions	common	sk	Zobrazi» otázky
+total votes	polls	sk	Celkovo
+view poll	polls	sk	Zobrazi» voµbu
+view results	polls	sk	Zobrazi» výsledky
+vote	polls	sk	Voli»
+voting booth admin	admin	sk	Volebná kabína
+voting booth administration	polls	sk	Správa volebnej kabíny
+which poll	polls	sk	Ktorá voµba

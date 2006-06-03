@@ -44,6 +44,9 @@ compose	felamimail	nl	Schrijf nieuw bericht
 compress folder	felamimail	nl	Comprimeer map
 configuration	felamimail	nl	Configuratie
 contains	felamimail	nl	bevat
+could not add folder %1 (%2) !!!	felamimail	nl	Kon folder %1 (%2) niet toevoegen !!!
+could not delete folder %1 (%2) !!!	felamimail	nl	Kon folder %1 (%2) niet verwijderen !!!
+could not rename folder %1 to %2 (%3) !!!	felamimail	nl	Kon folder %1 niet hernoemen in %2 (%3)  !!!
 create	felamimail	nl	Aanmaken
 create folder	felamimail	nl	Map aanmaken
 create sent	felamimail	nl	Verzondenmap aanmaken
@@ -70,7 +73,6 @@ deleted	felamimail	nl	verwijderde
 deleted folder successfully!	felamimail	nl	Map met succes verwijderd!
 disable	felamimail	nl	Deactiveren
 discard message	felamimail	nl	bericht negeren
-display message in new window	felamimail	nl	Bericht in nieuw venster weergeven
 display messages in multiple windows	felamimail	nl	berichten in meerdere vensters weergeven
 display of html emails	felamimail	nl	Weergave van HTML-emails
 display only when no plain text is available	felamimail	nl	Alleen weergeven als platte tekst niet beschikbaar is.
@@ -136,6 +138,7 @@ for mail to be send - not functional yet	felamimail	nl	Voor nog te vezenden emai
 for received mail	felamimail	nl	Voor ontvangen email
 forward	felamimail	nl	Doorsturen
 forward to address	felamimail	nl	doorsturen naar adres
+forwarding	felamimail	nl	Wordt doorgezonden
 found	felamimail	nl	Gevonden
 fri	felamimail	nl	Vri
 from	felamimail	nl	Van

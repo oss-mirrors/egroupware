@@ -61,11 +61,13 @@ in progress	tts	nl	In uitvoering
 initial state	tts	nl	Initiële status
 invalid	tts	nl	ONGELDIG
 invalidate	tts	nl	ONGELDIG
+keep the present state	tts	nl	Behoud de huidige status
 keep the present state [%1].	tts	nl	Behoud de huidige status [%1].
 latest note added	tts	nl	Laatste notitie  toegevoegd
 list of available tickets' states.	tts	nl	Lijst van beschikbare meldingstatussen.
 list of available tickets' transitions.	tts	nl	Lijst van beschikbare meldingovergangen.
 low	tts	nl	Laag
+mail owner on transition	tts	nl	stuur email naar eigenaar bij overgang
 missing description	tts	nl	Beschrijving ontbreekt
 morework	tts	nl	MEERWERK
 needswork	tts	nl	WERKNODIG
@@ -111,6 +113,7 @@ returns a struct of values of a single ticket	tts	nl	Geeft een stuctuur van waar
 returns the additional notes attached to a ticket	tts	nl	Geeft de extra notities van een melding terug
 selected	tts	nl	geselecteerd
 show new/updated tickets on main screen	tts	nl	Nieuwe en gewijzigde meldingen op startscherm weergeven
+small view	tts	nl	kleine weergave
 source state	tts	nl	Bronstatus
 state	tts	nl	Status
 state changed	tts	nl	Status gewijzigd
@@ -141,6 +144,7 @@ this state means an open ticket	tts	nl	Bij deze status staat de melding open.
 ticket	tts	nl	melding
 ticket #	tts	nl	melding #
 ticket has been updated	tts	nl	melding is bijgewerkt
+ticket is not accessable	tts	nl	melding is niet toegankelijk
 ticket is not accessible	tts	nl	Deze melding is niet toegankelijk
 tickets found %1	tts	nl	Gevonden meldingen %1
 tickets open %1	tts	nl	Geopende meldingen %1

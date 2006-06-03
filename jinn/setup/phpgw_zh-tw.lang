@@ -1,8 +1,10 @@
 "you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	zh-tw	"您無法存取任何網站，詢問您的管理員來取得存取權限或是確認是否有網站資料存在
 %1 has a one-to-many with %2 (default:%4) showing %3	jinn	zh-tw	%1 與 %2 有個一對多關係（預設：%4）顯示中 %3
 %1 has a one-to-many with %2 showing %3	jinn	zh-tw	%1 與 %2 有一個一對多顯示 %3
-%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	zh-tw	%1 與 %2 有個一對一關係使用物件 %3 的設定
+%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	zh-tw	%1 與 %2 有個一對一關聯使用物件 %3 的設定
+%1 new objects where successfully created	jinn	zh-tw	%1 個新物件成功建立
 %1 new objects where successfully created%2	jinn	zh-tw	%1 個新物件成功建立%2
+%1 objects available	jinn	zh-tw	%1 個可用物件
 %1 records	jinn	zh-tw	%1筆資料
 %1 records per page	jinn	zh-tw	每頁%1筆資料
 %1 site obj-fields have been imported.	jinn	zh-tw	匯入了 %1 個網站物件
@@ -23,9 +25,13 @@ access_rights	jinn	zh-tw	存取權限
 action was not succesful. unknown error	jinn	zh-tw	動作未完成，不知名的錯誤
 action was succesful.	jinn	zh-tw	動作完成
 actions	jinn	zh-tw	動作
+actions to apply on all selected objects	jinn	zh-tw	所有選取物件要使用的動作
 actions to apply on all selected record	jinn	zh-tw	所有選取項目要使用的動作
+actions to apply on all selected sites	jinn	zh-tw	所有選取網站要使用的動作
 activate experimental features which are in development	jinn	zh-tw	這個功能還在開發當中
 activate filter	jinn	zh-tw	啟用規則
+activated plugins	jinn	zh-tw	啟用的外掛
+active tabs	jinn	zh-tw	啟用標籤
 add	jinn	zh-tw	新增
 add %1st image	jinn	zh-tw	新增第 %1 張圖片
 add a new configuration:	jinn	zh-tw	新增設定：
@@ -36,15 +42,20 @@ add edit	jinn	zh-tw	新增編輯
 add egw_jinn_sites	jinn	zh-tw	新增網站
 add image	jinn	zh-tw	新增圖片
 add image %1	jinn	zh-tw	新增圖片 %1
+add many-to-many relation(s)	jinn	zh-tw	新增多對多關聯
+add many-to-one relation(s)	jinn	zh-tw	新增多對一關聯
 add multiple records	jinn	zh-tw	新增多筆資料
 add new	jinn	zh-tw	新增資料
 add new entry	jinn	zh-tw	新增資料
-add new many to many relation	jinn	zh-tw	新增多對多關係
-add new many with many relation	jinn	zh-tw	新增多對多關係
-add new one to many	jinn	zh-tw	新增一對多關係
-add new one with many	jinn	zh-tw	新增一對多關係
-add new one-to-one relation	jinn	zh-tw	新增一對一關係
+add new many to many relation	jinn	zh-tw	新增多對多關聯
+add new many with many relation	jinn	zh-tw	新增多對多關聯
+add new one to many	jinn	zh-tw	新增一對多
+add new one with many	jinn	zh-tw	新增一對多
+add new one-to-one relation	jinn	zh-tw	新增一對一關聯
 add object	jinn	zh-tw	新增物件
+add one-to-many relation(s)	jinn	zh-tw	新增一對多關聯
+add one-to-one relation(s)	jinn	zh-tw	新增一對一關聯
+add optional extra palets	jinn	zh-tw	新增其他調色盤
 add or remove	jinn	zh-tw	新增或移除
 add site	jinn	zh-tw	新增網站
 add site object	jinn	zh-tw	新增網站物件
@@ -55,9 +66,14 @@ admin:: edit site	jinn	zh-tw	管理 - 編輯網站
 administrator mode	jinn	zh-tw	管理者模式
 administrators for site %1	jinn	zh-tw	%1 的網站管理員
 advanced configuration	jinn	zh-tw	進階設定
+advanced settings	jinn	zh-tw	進街設定
+advhr	jinn	zh-tw	進階分隔線
+advlink	jinn	zh-tw	進階連結
 all from	jinn	zh-tw	全部來自
+all possible entries from %1	jinn	zh-tw	所有來自 %1 的可能資料
 all records	jinn	zh-tw	所有資料
 all records (unfiltered)	jinn	zh-tw	所有資料（未過濾）
+all relations	jinn	zh-tw	所有關聯
 all tests were successful. you can go on with the site-objects	jinn	zh-tw	所有的測試都成功，您可以繼續存取網站物件
 alternative fieldname for display	jinn	zh-tw	顯示的替換欄位
 an error occured.	jinn	zh-tw	發生錯誤
@@ -65,10 +81,12 @@ an unknown error has occured (error code 109)	jinn	zh-tw	不知名的錯誤發�
 an unknown error has occured (error code 110)	jinn	zh-tw	不知名的錯誤發生(錯誤編號110)
 another	jinn	zh-tw	另一個
 are you sure you want to delete these multiple records?	jinn	zh-tw	您確定要刪除多筆資料？
+are you sure you want to delete these selected sites?	jinn	zh-tw	您確定要刪除選擇的網站？
 are you sure you want to delete this filter?	jinn	zh-tw	您確定要刪除這個規則？
 are you sure you want to delete this record?	jinn	zh-tw	您確定要刪除這筆資料？
 are you sure your want to edit these records?	jinn	zh-tw	您確定要修改這些資料？
 are you sure?	jinn	zh-tw	您確定？
+area size	jinn	zh-tw	區域大小
 ascending	jinn	zh-tw	升冪
 attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	zh-tw	附加檔案資料夾不存在或是不正確，或是尚未建立<br>請檢查您物件的上傳資料夾：
 automatic	jinn	zh-tw	自動
@@ -76,7 +94,11 @@ automaticly add objects for all tables	jinn	zh-tw	自動為所有表格新增物
 automaticly incrementing	jinn	zh-tw	自動增加
 available for events	jinn	zh-tw	可以使用的事件
 available for field types	common	zh-tw	可以使用的欄位類型
+back to normal mode	jinn	zh-tw	回到一般模式
 back to record list	jinn	zh-tw	回到資料清單
+back to record listing	jinn	zh-tw	回到紀錄列表
+background color %1	jinn	zh-tw	背景顏色 %1
+background image %1	jinn	zh-tw	背景圖片 %1
 binary	jinn	zh-tw	二進位
 binary, contains data	jinn	zh-tw	二進位，包含資料
 binary, empty	jinn	zh-tw	二進位，無資料
@@ -87,13 +109,18 @@ browse sites	jinn	zh-tw	瀏覽網站
 browse through object settings	admin	zh-tw	從物件設定瀏覽
 browse through sites	jinn	zh-tw	從網站瀏覽
 browses through sites	admin	zh-tw	從網站瀏覽
+can't edit more then 99 record at once	jinn	zh-tw	無法一次編輯超過99筆資料
 can't edit more then 99 record at once (error code 108)	jinn	zh-tw	無法一次編輯超過99筆資料(錯誤編號108)
+can't write in sites directory	jinn	zh-tw	無法寫入網站資料夾
 cancel	jinn	zh-tw	取消
 cannot copy a record from this table.	jinn	zh-tw	無法從這個資料表複製記錄
+canvas	jinn	zh-tw	框架大小
 category	jinn	zh-tw	類別
 change number of records	jinn	zh-tw	修改記錄數
+change plugin	jinn	zh-tw	修改外掛
 check:	jinn	zh-tw	檢查：
 choose	jinn	zh-tw	選擇
+click to select a new color	jinn	zh-tw	點選這裡來選擇新顏色
 close this window	jinn	zh-tw	關閉視窗
 column	jinn	zh-tw	欄位
 column name	jinn	zh-tw	欄位名稱
@@ -104,24 +131,39 @@ come back in edit mode to enter one-to-one fields for this record.	jinn	zh-tw	�
 configure	jinn	zh-tw	設定
 configure browse view	jinn	zh-tw	設定瀏覽模式
 configure field plugin	jinn	zh-tw	設定欄位外掛
-configure this object list view	jinn	zh-tw	設定這個物件清單瀏覽模式
+configure list	jinn	zh-tw	設定清單
+configure list view	jinn	zh-tw	設定清單檢視
 configure this tableview	jinn	zh-tw	設定這個資料表瀏覽模式
 configure this view	jinn	zh-tw	設定這個瀏覽模式
 configure view of	jinn	zh-tw	設定瀏覽模式
 convert exec ( e.g. /usr/x11r6/bin/convert )	admin	zh-tw	從ImageMagick轉換的路徑(例如/usr/X11R6/bin/convert )
 copy	jinn	zh-tw	複製
 copy and edit the new record	jinn	zh-tw	複製與編輯新紀錄
+copy record	jinn	zh-tw	複製資料
+copy this record?	jinn	zh-tw	複製這筆資料？
+could not delete site files. please remove manually	jinn	zh-tw	無法刪除網站檔案，請手動移除。
 could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	zh-tw	找不到任何資料表！請檢查您的資料庫名稱、帳號或密碼或是在資料庫中建立一或多個資料表。
 create a new site now	jinn	zh-tw	立刻建立一個新網站
+create new relation	jinn	zh-tw	建立新關聯
 criterium	jinn	zh-tw	軌範
 current color:	jinn	zh-tw	目前顏色：
 current session filter	jinn	zh-tw	目前連線規則
+custom css file for area content	jinn	zh-tw	自訂區域內容的 CSS 檔案
+custom height (e.g. 100%, 300px, 70em)	jinn	zh-tw	自訂高度（例如 100%, 300px, 70em）
+custom width (e.g. 100%, 300px, 70em)	jinn	zh-tw	自訂寬度（例如 100%, 300px, 70em）
+database connection	jinn	zh-tw	資料庫連線
 database connection failed! <p>please recheck your settings.	jinn	zh-tw	資料庫連線錯誤！<P>請檢查您的設定
 database connection was succesful.	jinn	zh-tw	資料庫連線成功。
 database connection was succesfull. <p>you can go on with the site-objects	jinn	zh-tw	資料庫連線成功！<P>您可以繼續使用網站物件
+database hostname	jinn	zh-tw	資料庫主機
+database name	jinn	zh-tw	資料庫名稱
+database password	jinn	zh-tw	資料庫密碼
+database type	jinn	zh-tw	資料庫類型
+database username	jinn	zh-tw	資料庫使用者
 days	jinn	zh-tw	日
 debug	jinn	zh-tw	偵錯
 default	jinn	zh-tw	預設
+default image to choose from	jinn	zh-tw	預設選擇圖片來源
 default image type (jpg, gif, png)	admin	zh-tw	預設圖片格式(jpg, gif, png)
 default image width	admin	zh-tw	預設圖片寬度
 default number of visable columns	jinn	zh-tw	預設顯示欄位數量
@@ -132,7 +174,9 @@ default value:	jinn	zh-tw	預設值：
 default:	jinn	zh-tw	預設：
 delete	jinn	zh-tw	刪除
 delete all selected records	jinn	zh-tw	刪除所有選取的記錄
+delete file	jinn	zh-tw	刪除檔案
 delete filter	jinn	zh-tw	刪除規則
+delete this record?	jinn	zh-tw	刪除這筆資料？
 descending	jinn	zh-tw	降冪
 descrition	common	zh-tw	說明
 dev site db host	jinn	zh-tw	開發(測試)網站資料庫主機名稱
@@ -145,17 +189,27 @@ dev upload url	jinn	zh-tw	開發(測試)網站上傳網址
 developer links	jinn	zh-tw	開發中連結
 development	admin	zh-tw	開發
 development (test) site upload path	jinn	zh-tw	開發（測試）網站上傳路徑
+development database	jinn	zh-tw	開發環境資料庫
+development environment profile	jinn	zh-tw	開發環境資料
 development server	jinn	zh-tw	開發用伺服器
 dimensions	jinn	zh-tw	尺寸
+directionality	jinn	zh-tw	方向
 disable the wysiwyg/htmlarea plugin	jinn	zh-tw	停用所見即所得編輯器
+display fields	jinn	zh-tw	顯示欄位
+do you really want to delete this site object?	jinn	zh-tw	您確定要刪除這個網站物件？
+do you really want to delete this site?	jinn	zh-tw	您確定要刪除這個網站？
 do you want to copy and then edit this record?	jinn	zh-tw	是否要複製並且接著編輯這筆記錄？
+do you want to copy this record?	jinn	zh-tw	您確定要複製這筆資料？
+don't save / back to list	jinn	zh-tw	不儲存/回到列表
 edit	jinn	zh-tw	編輯
 edit all selected records	jinn	zh-tw	編輯所有選取的記錄
 edit egw_jinn_sites	jinn	zh-tw	編輯網站
+edit field properties	jinn	zh-tw	編輯欄位屬性
 edit filter	jinn	zh-tw	編輯規則
-edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	zh-tw	編輯JiNN網站物件參數：<li>選擇一個要顯示的JiNN物件名稱</li> <li>選擇這個物件要使用的資料庫資料表</li> <li>如果需要就修正上傳的絕對路徑</li><li>如果需要一個與上傳元件一致的預覽網址</li><br><li>定義欄位關係</li><li>設定欄位外掛</li>
+edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	zh-tw	編輯JiNN網站物件參數：<li>選擇一個要顯示的JiNN物件名稱</li> <li>選擇這個物件要使用的資料庫資料表</li> <li>如果需要就修正上傳的絕對路徑</li><li>如果需要一個與上傳元件一致的預覽網址</li><br><li>定義欄位關聯</li><li>設定欄位外掛</li>
 edit object	jinn	zh-tw	編輯物件
-edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	zh-tw	編輯物件設定： <li>選擇要顯示的物件名稱</li> <li>選擇這個物件要使用的資料表</li> <li>需要時可以輸入一個替換的上傳絕對路徑</li><li>需要時也可以輸入一個預覽上傳元件的路徑</li><br><li>定義欄位關係</li><li>設定欄位外掛</li>
+edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	zh-tw	編輯物件設定： <li>選擇要顯示的物件名稱</li> <li>選擇這個物件要使用的資料表</li> <li>需要時可以輸入一個替換的上傳絕對路徑</li><li>需要時也可以輸入一個預覽上傳元件的路徑</li><br><li>定義欄位關聯</li><li>設定欄位外掛</li>
+edit relations of %1	jinn	zh-tw	編輯 %1 的關聯
 edit site	jinn	zh-tw	編輯網站
 edit this record	jinn	zh-tw	編輯這筆記錄
 edit this site	jinn	zh-tw	編輯這個網站
@@ -163,21 +217,36 @@ edit this site object	jinn	zh-tw	編輯這個網站物件
 editors for object %1 in site %2	jinn	zh-tw	在網站%2的物件%1編輯器
 empty	jinn	zh-tw	清空
 empty filter	jinn	zh-tw	清空規則
+enable colors	jinn	zh-tw	啟用顏色
+enable font properties	jinn	zh-tw	啟用字型屬性
+enable fullscreen mode	jinn	zh-tw	啟用全螢幕模式
+enable links	jinn	zh-tw	啟用連結
+enable simple image	jinn	zh-tw	啟用簡單圖片
+enable styles	jinn	zh-tw	啟用風格
+enable tables	jinn	zh-tw	啟用表格
+environment profile to use	jinn	zh-tw	要使用的環境資料
 error code %1	jinn	zh-tw	錯誤編號 %1
+error creating one or more new objects	jinn	zh-tw	建立一或多個新物件時發生錯誤
 error creating one or more new objects%1	jinn	zh-tw	建立一或多個新物件時發生錯誤 %1
+error in event plugin	jinn	zh-tw	事件外掛錯誤
 error path_open %1	jinn	zh-tw	錯誤的路徑 %1
+error, field info not saved.	jinn	zh-tw	錯誤，欄位資訊沒有儲存。
+error: connection with database failed. please check if database connection settings are correct	jinn	zh-tw	錯誤： 資料庫連線錯誤，請檢查您的設定。
 error: the file %1 doesn't exists, please contact the webmaster	jinn	zh-tw	錯誤： 檔案%1不存在，請聯絡管理員
 events config	jinn	zh-tw	事件設定
 existing plugin configuration	jinn	zh-tw	已存在的外掛設定
 export	jinn	zh-tw	匯出
 export all columns	jinn	zh-tw	匯出所有欄位
 export all selected records	jinn	zh-tw	匯出所有選擇的紀錄
+export records	jinn	zh-tw	匯出資料
 export selection below	jinn	zh-tw	匯出下面選擇的
 export source	jinn	zh-tw	匯出來源
 export this site	jinn	zh-tw	匯出這個網站
 exporteer object	jinn	zh-tw	匯出者物件
 extra help information for this field	jinn	zh-tw	這個欄位的附加資訊
+extra palets	jinn	zh-tw	其他調色盤
 extra where sql filter	jinn	zh-tw	其他資料庫過濾條件
+failed	jinn	zh-tw	錯誤
 failed to copy: %1 to %2 ...	jinn	zh-tw	無法複製： %1 到 %2 ...
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	zh-tw	無法開啟資料表，請檢查資料表<i>%1</i>是否存在於資料庫中
 field	jinn	zh-tw	欄位
@@ -189,22 +258,44 @@ field plugin	jinn	zh-tw	欄位外掛
 field plugin configuration	jinn	zh-tw	欄位外掛設定
 field plugins	jinn	zh-tw	欄位外掛
 field position	jinn	zh-tw	欄位位置
+field properties	jinn	zh-tw	欄位屬性
 field to display	jinn	zh-tw	顯示的欄位
 field to display:	jinn	zh-tw	顯示的欄位：
 field:	jinn	zh-tw	欄位：
+fieldconfiguration	jinn	zh-tw	欄位設定
 fieldname	jinn	zh-tw	欄位名稱
 fields	jinn	zh-tw	欄位
 fields enclosed by	jinn	zh-tw	欄位包圍自
 fields escaped by	jinn	zh-tw	欄位排除自
 fields terminated by	jinn	zh-tw	欄位中止自
+file	jinn	zh-tw	檔案
+file %1	jinn	zh-tw	檔案 %1
 filename	jinn	zh-tw	欄位名稱
 filesize	jinn	zh-tw	檔案大小
 filter operator	jinn	zh-tw	規則變數
 filterd list	jinn	zh-tw	過濾後的清單
 filtered list	jinn	zh-tw	過濾後的清單
 first row has field names	jinn	zh-tw	第一列有欄位名稱
+font file for image %1	jinn	zh-tw	圖片 %1 的字型檔案
+font for image %1	jinn	zh-tw	圖片 %1 的字型
+font padding on left of the image in pixels %1	jinn	zh-tw	文字在圖片中的左邊間距（畫素） %1
+font padding on right of the image in pixels %1	jinn	zh-tw	文字在圖片中的右邊間距（畫素） %1
+font padding on top of the image in pixels %1	jinn	zh-tw	文字在圖片中的上方間距（畫素） %1
+font size for image %1	jinn	zh-tw	圖片 %1 的字型大小
 footer	jinn	zh-tw	頁尾
+foreigh tables	jinn	zh-tw	外部資料表
+foreign fields	jinn	zh-tw	外部欄位
+form	jinn	zh-tw	表單
+form height	jinn	zh-tw	表單高度
 form input plugin	jinn	zh-tw	輸入表單外掛
+form type	jinn	zh-tw	表單類型
+form visibility	jinn	zh-tw	表單顯示
+form width	jinn	zh-tw	表單寬度
+free	jinn	zh-tw	自由
+free picker	jinn	zh-tw	自由選取器
+from image	jinn	zh-tw	從圖片
+general objects settings	jinn	zh-tw	一般物件設定
+general options	jinn	zh-tw	一般選項
 general preferences	jinn	zh-tw	一般偏好
 general settings	admin	zh-tw	一般設定
 generate html start en end tags	jinn	zh-tw	產生 HTML 的開始與結束標籤
@@ -213,20 +304,27 @@ give new timestamp	jinn	zh-tw	使用新的時區
 global configuration	jinn	zh-tw	全域設定
 global site configuration	admin	zh-tw	全域網站設定
 go	jinn	zh-tw	GO
-has a many to many relation with	jinn	zh-tw	有一個多對多關係於
-has a many to many relation with:	jinn	zh-tw	有一個多對多關係於：
-has a one to many relation with	jinn	zh-tw	有一個一對多關係於
-has a one to many relation with:	jinn	zh-tw	有一個一對多關係於：
-has a one-to-one relation with	jinn	zh-tw	有一個一對一關係於
-has a one-to-one relation with:	jinn	zh-tw	有一個一對一關係於：
+has a many to many relation with	jinn	zh-tw	有一個多對多關聯於
+has a many to many relation with:	jinn	zh-tw	有一個多對多關聯於：
+has a one to many relation with	jinn	zh-tw	有一個一對多關聯於
+has a one to many relation with:	jinn	zh-tw	有一個一對多關聯於：
+has a one-to-one relation with	jinn	zh-tw	有一個一對一關聯於
+has a one-to-one relation with:	jinn	zh-tw	有一個一對一關聯於：
 header	jinn	zh-tw	頁首
+height image  %1	jinn	zh-tw	圖片高度 %1
 height:	jinn	zh-tw	高度：
+help infomation	jinn	zh-tw	說明資訊
 hidden	jinn	zh-tw	隱藏
 hide from menu	jinn	zh-tw	從物件選單隱藏
 hide from object menu	jinn	zh-tw	從物件選單隱藏
+host profile	jinn	zh-tw	主機資料
 how many columns do you want to be visible by default in list view?	jinn	zh-tw	在清單顯示時預設要出現多少欄位？
 how many records do you want to list per page?	jinn	zh-tw	您希望每頁顯示多少筆紀錄？
+ibrowser	jinn	zh-tw	iBrowser
+if you change the table of this object you\n may loose field configuration data.\n\n\n think of this before you save these settings.	jinn	zh-tw	如果您修改了這個物件的資料表，您也許會因此遺失欄位設定資料。\n\n\n請在儲存前確認這個操作是否正確。
+image 1	jinn	zh-tw	圖片 1
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	zh-tw	圖片資料夾不存在或是不正確 ...<br>請檢查物件的上傳資料夾
+image picker	jinn	zh-tw	圖片選取器
 image settings	admin	zh-tw	圖片設定
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	zh-tw	ImageMagick路徑(例如/usr/X11R6/bin )
 import anyway	jinn	zh-tw	匯入（忽略錯誤）
@@ -234,20 +332,27 @@ import failed	jinn	zh-tw	匯入錯誤
 import jinn site	jinn	zh-tw	匯入JiNN網站
 import jinn-object	jinn	zh-tw	匯入JiNN物件
 import jinn-site	jinn	zh-tw	匯入JiNN網站
+import object from file	jinn	zh-tw	從檔案匯入物件
 import object from file to this site	jinn	zh-tw	從檔案匯入物件到這個網站
 import site	jinn	zh-tw	匯入網站
+import site from file	jinn	zh-tw	從檔案匯入網站
 import was succesfull	jinn	zh-tw	匯入成功
 import was succesfull<br>imported one site with	jinn	zh-tw	匯入成功<br>匯入一個網站
+in menu	jinn	zh-tw	在選單中
 incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	zh-tw	不相容的結果： 物件 <b>'%2'</b>、欄位<b>'%1'</b>、屬性<b>'%3'</b>並未出現在檔案中
 incompatibility result: object <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	zh-tw	不相容的結果： 物件 <b>'%2'</b>、屬性<b>'%1'</b>並未出現在檔案中
 incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	zh-tw	不相容的結果： 物件 <b>'%3'</b>、欄位<b>'%1'</b>、屬性<b>'%2'</b>無法匯入，因為不存在於目前 JiNN 版本
 incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	zh-tw	不相容的結果： 物件 <b>'%3'</b>、屬性<b>'%1'</b>、數值<b>'%2'</b>無法匯入，因為不存在於目前 JiNN 版本
+incompatibility result: object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> was not present in the file	jinn	zh-tw	不相容的結果： 物件 <b>'%2'</b>、欄位<b>'%1'</b>、屬性<b>'%3'</b>不存在於檔案
+incompatibility result: object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> could not be imported because it does not exist in this jinn version	jinn	zh-tw	不相容的結果： 物件 <b>'%3'</b>、欄位<b>'%1'</b>、屬性<b>'%2'</b>無法匯入，因為不存在於目前 JiNN 版本
 incompatibility result: site <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	zh-tw	不相容的結果： 網站 <b>'%2'</b>、屬性<b>'%1'</b>並未出現在檔案中
 incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	zh-tw	不相容的結果： 網站 <b>'%3'</b>、屬性<b>'%1'</b>、數值<b>'%2'</b>無法匯入，因為不存在於目前 JiNN 版本
 index	jinn	zh-tw	索引
 info	jinn	zh-tw	資訊
 information	jinn	zh-tw	資訊
+input mandatory	jinn	zh-tw	必須輸入
 insert another record after saving	jinn	zh-tw	儲存後新增另一個設定
+insert date / time	jinn	zh-tw	輸入日期/時間
 insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	zh-tw	插入 JiNN 網站參數：<li>插入一個要顯示的JiNN物件名稱</li> <li>插入正確的資料庫設定</li> <li>插入上傳的絕對路徑</li><li>插入一個與上傳元件一致的預覽網址</li>
 insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	zh-tw	插入/選取 JiNN 網站參數：<li>選取一個要顯示的JiNN物件名稱</li> <li>選取這個物件要使用的資料庫資料表</li> <li>需要時設定一個上傳的絕對路徑</li><li>需要時選取一個與上傳元件一致的預覽網址</li>
 jinn	common	zh-tw	JiNN 網站管理
@@ -256,6 +361,7 @@ jinn - add report from selected	jinn	zh-tw	JiNN - 從選擇項目新增報表
 jinn editors menu	jinn	zh-tw	JiNN編輯器選單
 jinn main	jinn	zh-tw	JiNN主要選單
 jinn main menu	jinn	zh-tw	JiNN主要選單
+jinn navigator	jinn	zh-tw	JiNN導覽器
 jinn preferences	jinn	zh-tw	JiNN設定
 jinn-description	common	zh-tw	JiNN 是一個遞迴的縮寫，意思是 'JiNN is Not Nuke'。因為主要的設計者並不喜歡 Nuke 類型的內容管理系統。透過 JiNN 您依據自己的資料庫結構與網頁設計來來建立自己的網站。相關資訊可以參觀： <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>
 keep current timestamp	jinn	zh-tw	沿用目前時區
@@ -263,15 +369,24 @@ keep this empty to let is auto increment	jinn	zh-tw	不填入資料將會自動�
 last edited record	jinn	zh-tw	最後編輯資料
 license	common	zh-tw	授權
 lines terminated by	jinn	zh-tw	行中止於
+linked entries	jinn	zh-tw	連結的資料
+list record(s)	jinn	zh-tw	列出資料
 list record(s) in current object	jinn	zh-tw	目前物件的記錄表
 list sites	jinn	zh-tw	網站列表
+list visibility	jinn	zh-tw	顯示列表
 load export profile	jinn	zh-tw	讀取匯出資料
 load site conf from file	jinn	zh-tw	從檔案讀取網站設定
 loaded jinn site file	jinn	zh-tw	已經載入的 JiNN 網站設定檔
+local fields	jinn	zh-tw	本地端欄位
+main settings	jinn	zh-tw	主要設定
 maintainer	common	zh-tw	維護者
 mandatory	jinn	zh-tw	委託人
 manually enter a new relative file path	jinn	zh-tw	手動輸入一個新的相對檔案路徑
-many 2 many relations will not work	jinn	zh-tw	多對多關係將無法運作
+many 2 many relations will not work	jinn	zh-tw	多對多關聯將無法運作
+many-to-many	jinn	zh-tw	多對多
+many-to-many relations	jinn	zh-tw	多對多關聯
+many-to-one	jinn	zh-tw	多對一
+many-to-one relations	jinn	zh-tw	多對一關聯
 max records	jinn	zh-tw	資料數上限
 max. number of previews in form	jinn	zh-tw	在表單預覽的項目數上限
 max. records	jinn	zh-tw	資料數上限
@@ -287,36 +402,58 @@ moved record one row down.	jinn	zh-tw	移動的資料向下一列
 moved record one row up.	jinn	zh-tw	移動的資料向上一列
 moved record to last row.	jinn	zh-tw	移動的資料到最後一列
 name and help info	jinn	zh-tw	名稱與求助訊息
+new	jinn	zh-tw	新增
 new from selected	jinn	zh-tw	從選擇的項目新增
 new image size limits.	jinn	zh-tw	新圖片大小限制
+new object	jinn	zh-tw	新增物件
+new record	jinn	zh-tw	新增資料
+new record(s)	jinn	zh-tw	新增多筆資料
 new report	jinn	zh-tw	新增報表
+new site	jinn	zh-tw	新增網站
+new sub entry	jinn	zh-tw	新增子資料
 no filter	jinn	zh-tw	沒有規則
 no matchs found	jinn	zh-tw	找不到符合條件的資料
 no max. number	jinn	zh-tw	沒有最大數字
+no new objects created	jinn	zh-tw	沒有新建物件
 no new objects created%1	jinn	zh-tw	沒有建立新物件 %1
 no object selected. no able to configure this view	jinn	zh-tw	沒有選取物件，無法設定這個瀏覽模式
+no objects available	jinn	zh-tw	沒有可用物件
 no objects found for this site.	jinn	zh-tw	這個網站沒有任何物件
+no palet defined	jinn	zh-tw	找不到已經定義的調色盤
 no records found	jinn	zh-tw	找不到記錄
+no records linked	jinn	zh-tw	沒有連結的資料
 normal view	jinn	zh-tw	一般瀏覽模式
 not yet implemented	jinn	zh-tw	未配置
 nothing to save. please select a plugin to delete or configure a new plugin	jinn	zh-tw	沒有可以儲存的資料，請選擇一個外掛來刪除或設定一個新的外掛
 notice that jinn needs imagemagick 5.4.9 or a later version	admin	zh-tw	注意：JiNN需要ImageMagick 5.4.9 或更新的版本
+number of images to create	jinn	zh-tw	要建立的圖片數量
+number of images to generate.	jinn	zh-tw	要產生的圖片數量
 number of objects	jinn	zh-tw	物件數量
 number of records per page	jinn	zh-tw	每頁顯示資料數量
+object configuration	jinn	zh-tw	物件設定
 object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	zh-tw	物件設定： <li>選取一個要顯示的JiNN物件名稱</li> <li>選取這個物件要使用的資料庫資料表</li> <li>需要時設定一個上傳的絕對路徑</li><li>需要時選取一個與上傳元件一致的預覽網址</li>
 object event configuration	jinn	zh-tw	物件事件設定
+object event plugins	jinn	zh-tw	物件事件外掛
 object events configuration	jinn	zh-tw	物件事件設定
 object id	jinn	zh-tw	物件編號
 object serialnumber	jinn	zh-tw	物件序號
+objects	jinn	zh-tw	物件
+old relation method	jinn	zh-tw	舊有關聯方式
 on_update	jinn	zh-tw	更新時
 one or more records not succesfully added.	jinn	zh-tw	一或多筆資料新增失敗
 one or more records not succesfully saved.	jinn	zh-tw	一或多筆資料儲存失敗
 one or more records not succesfully saved. (error code 106)	jinn	zh-tw	一或多筆記錄儲存失敗(錯誤編號106)
 one page backwards	jinn	zh-tw	回上頁
 one page forward	jinn	zh-tw	下一頁
+one-to-many	jinn	zh-tw	一對多
+one-to-many relations	jinn	zh-tw	一對多關聯
+one-to-one	jinn	zh-tw	一對一
+one-to-one relation is broken, please fix it or contact site-developer.<br/>%1	jinn	zh-tw	一對一關聯失效了，請修正或是聯繫網站開發人員。<br/>%1
+one-to-one relations	jinn	zh-tw	一對一關聯
 only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	zh-tw	請確認您清楚技術問題才啟用這個項目，這可能會造成資料遺失。
 only if thumnails exits	jinn	zh-tw	只有在縮圖存在時
 only one	jinn	zh-tw	只有一個
+open debugging window.	jinn	zh-tw	開啟偵錯視窗。
 operation on multiple records failed.	jinn	zh-tw	在多筆資料的操作錯誤
 operation on multiple records failed. (error code 100)	jinn	zh-tw	在多筆資料的操作錯誤(錯誤編號100)
 optional max. height	jinn	zh-tw	附加的高度上限
@@ -324,25 +461,40 @@ optional max. width	jinn	zh-tw	附加的寬度上限
 page %1	jinn	zh-tw	第 %1 頁
 parent site id	jinn	zh-tw	上層網站編號
 path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	zh-tw	ImageMagick路徑(例如/usr/X11R6/bin )
+please comlete all relation elements.	jinn	zh-tw	請完成所有關聯元件。
 please contact administrator with this message	jinn	zh-tw	請將這個訊息帶給管理員
 please contact administrator with this message.	jinn	zh-tw	請將這個訊息帶給管理員
 please fill in all mandatory fields	jinn	zh-tw	請填入所有必填欄位
+please select a site	jinn	zh-tw	請選擇一個網站
 please set your preferences for this application	jinn	zh-tw	請設定這個應用程式的偏好
+please upgrade	jinn	zh-tw	請升級
 plugin configuration	jinn	zh-tw	外掛設定
+plugin configuration not saved.	jinn	zh-tw	外掛設定沒有儲存
 plugin configuration successfully saved	jinn	zh-tw	外掛設定儲存成功
 plugin name	jinn	zh-tw	外掛名稱
+plugins	jinn	zh-tw	外掛
 postgresql support is not stable. wanna help?	common	zh-tw	PostgreSQL的支援還未穩定，想要幫忙嗎？
 preset: ms excel	jinn	zh-tw	預設格式：MS Excel
 preset: open office spreadsheet	jinn	zh-tw	預設格式：Open Office試算表
+preview	jinn	zh-tw	預覽
 preview thumbs or images in form	jinn	zh-tw	在表單預覽縮圖或圖片
 preview website	jinn	zh-tw	預覽網站
+primary palet	jinn	zh-tw	主要調色盤
+primary palet colors in hex seperated by commas	jinn	zh-tw	主要調色盤請透過逗點分隔十六進位數字
 production	admin	zh-tw	產品
+production database	jinn	zh-tw	正式資料庫
+production environment profile	jinn	zh-tw	正式環境資料
 real value	jinn	zh-tw	實際值
 record	jinn	zh-tw	記錄
+record %1	jinn	zh-tw	資料 %1
 record added succesfully	jinn	zh-tw	新增記錄成功
 record deleted succesfully	jinn	zh-tw	刪除記錄成功
+record is not succesfully added.	jinn	zh-tw	新增記錄失敗
+record is succesfully added.	jinn	zh-tw	新增記錄成功
+record list	jinn	zh-tw	資料列表
 record not succesfully copied	jinn	zh-tw	複製記錄失敗
 record not succesfully copied. unknown error	jinn	zh-tw	複製記錄失敗，不知名的錯誤
+record not succesfully deleted	jinn	zh-tw	刪除記錄失敗
 record not succesfully deleted.	jinn	zh-tw	刪除記錄失敗
 record not succesfully deleted. unknown error	jinn	zh-tw	刪除記錄失敗，不知名的錯誤
 record not succesfully saved	jinn	zh-tw	儲存記錄失敗
@@ -350,19 +502,32 @@ record not succesfully saved. unknown error	jinn	zh-tw	儲存記錄失敗，不�
 record succesfully copied	jinn	zh-tw	複製記錄成功
 record succesfully deleted	jinn	zh-tw	刪除記錄成功
 record succesfully editted	jinn	zh-tw	編輯記錄成功
+record successfully added	jinn	zh-tw	新增記錄成功
+record was not succesfully saved.	jinn	zh-tw	資料儲存失敗
+record was succesfully saved.	jinn	zh-tw	資料儲存成功
 records not succesfully deleted.	jinn	zh-tw	刪除記錄失敗
 records not succesfully deleted. (error code 101)	jinn	zh-tw	刪除記錄失敗(錯誤編號101)
 records succesfully deleted	jinn	zh-tw	刪除記錄成功
+records were not succesfully added.	jinn	zh-tw	資料新增失敗
+records were not succesfully saved.	jinn	zh-tw	資料儲存失敗
+records were succesfully added.	jinn	zh-tw	資料新增成功
+records were succesfully saved.	jinn	zh-tw	資料儲存成功
 registered field plugins	common	zh-tw	註冊的欄位外掛
 registered object event plugins	jinn	zh-tw	已註冊的物件事件外掛
 related	jinn	zh-tw	相關的
 related entries from table %1	jinn	zh-tw	表格 %1 的相關資料
-relation %1	jinn	zh-tw	關係 %1
-relations	jinn	zh-tw	關係
-relations for this object	jinn	zh-tw	這個物件的關係
+relation %1	jinn	zh-tw	關聯 %1
+relation not succesfully saved, unknown error	jinn	zh-tw	關聯儲存失敗，不知名的錯誤
+relation succesfully saved	jinn	zh-tw	關聯儲存成功
+relation widgets	jinn	zh-tw	關聯容器
+relations	jinn	zh-tw	關聯
+relations for this object	jinn	zh-tw	這個物件的關聯
+relative paths to images	jinn	zh-tw	圖片的相對路徑
+reload parent window	jinn	zh-tw	重新讀取父視窗
 remote	admin	zh-tw	遠端
 remove	jinn	zh-tw	移除
 remove all	jinn	zh-tw	全部移除
+replace	jinn	zh-tw	置換
 replace existing site with the same name?	jinn	zh-tw	用同樣的名稱置換已經存在的網站？
 replaced existing site named <strong>%1</strong>.	jinn	zh-tw	置換已經存在的網站名稱<strong>%1</strong>
 report not saved succesfull	jinn	zh-tw	報表沒有儲存成功
@@ -371,6 +536,7 @@ reports	jinn	zh-tw	報表
 represented by:	jinn	zh-tw	代表：
 reset	jinn	zh-tw	重設
 reset form	jinn	zh-tw	重設表單
+right button content menu	jinn	zh-tw	右方按鈕內容選單
 save	jinn	zh-tw	儲存
 save and add new record	jinn	zh-tw	儲存後新增資料
 save and add new records	jinn	zh-tw	儲存後新增資料
@@ -380,19 +546,30 @@ save and finish	jinn	zh-tw	儲存後完成
 save and return to list	jinn	zh-tw	儲存後回到列表
 save as	jinn	zh-tw	另存
 save export profile	jinn	zh-tw	儲存匯出資料
+save form lay-out	jinn	zh-tw	儲存表單配置
 save profile	jinn	zh-tw	儲存資料
+save relation	jinn	zh-tw	儲存關聯
 save site conf to file	jinn	zh-tw	儲存網站設定到檔案
+saved version	jinn	zh-tw	儲存的版本
+saved with version	jinn	zh-tw	儲存於版本
 screenshot	jinn	zh-tw	畫面擷取
 search	jinn	zh-tw	搜尋
+search and replace	jinn	zh-tw	搜尋與取代
 search for string	jinn	zh-tw	搜尋字串
 select a plugin	jinn	zh-tw	選擇一個外掛
 select an event	jinn	zh-tw	選擇一個事件
 select directory	jinn	zh-tw	搜尋資料夾
+select fields to display from foreign table	jinn	zh-tw	選擇從外部資料表顯示的欄位
+select foreign key	jinn	zh-tw	選擇外部鍵值
+select foreign table	jinn	zh-tw	選擇外部資料表
 select jinn object file (*.jobj	jinn	zh-tw	選擇JiNN物件檔案(*.jobj)
 select jinn site file	jinn	zh-tw	選取JiNN網站檔案
+select local key	jinn	zh-tw	選擇本地鍵值
+select object configuration to use	jinn	zh-tw	選擇要使用的物件設定
 select site	jinn	zh-tw	選取網站
 select site to moderate	jinn	zh-tw	選取要管理的網站
 select site-object to moderate	jinn	zh-tw	選取要管理的網站物件
+select theme	jinn	zh-tw	選擇佈景
 select which graphic library jinn must use	admin	zh-tw	選擇JiNN要使用的圖片資料庫
 select_object	jinn	zh-tw	選取物件
 selected records	jinn	zh-tw	選擇的資料
@@ -415,11 +592,13 @@ show colomn	jinn	zh-tw	顯示欄位
 show extra table debugging information	jinn	zh-tw	顯示表格的其他偵錯訊息
 show in form	jinn	zh-tw	顯示於表單
 show object_arr in msgbox	jinn	zh-tw	在訊息方塊顯示物件參數
+show site navigation menu on top of the page?	jinn	zh-tw	在頁面上方顯示網站導引選單？
 show site_arr in msgbox	jinn	zh-tw	在訊息方塊顯示網站參數
 show sql-statements in msgbox	jinn	zh-tw	在訊息方塊顯示SQL描述
 show upload path	admin	zh-tw	顯示上傳路徑
 showing	jinn	zh-tw	顯示
 showing:	jinn	zh-tw	顯示：
+site	jinn	zh-tw	網站
 site beheerders	jinn	zh-tw	網站管理員
 site db host	jinn	zh-tw	網站資料庫主機
 site db name	jinn	zh-tw	網站資料庫名稱
@@ -427,6 +606,8 @@ site db password	jinn	zh-tw	網站資料庫密碼
 site db type	jinn	zh-tw	網站資料庫類型
 site db user	jinn	zh-tw	網站資料庫帳號
 site description	admin	zh-tw	網站介紹
+site files succesfully deleted	jinn	zh-tw	網站檔案成功刪除
+site files succesfully extracted.	jinn	zh-tw	網站檔案成功解開
 site id	jinn	zh-tw	網站編號
 site media and documents	jinn	zh-tw	網站多媒體與文件
 site name	jinn	zh-tw	網站名稱
@@ -439,24 +620,36 @@ site object not succesfully saved, unknown error	jinn	zh-tw	網站物件儲存�
 site object succesfully added	jinn	zh-tw	網站物件新增成功
 site object succesfully deleted	jinn	zh-tw	網站物件刪除成功
 site object succesfully saved	jinn	zh-tw	網站物件儲存成功
+site objects in %1	jinn	zh-tw	%1 的網站物件
+site objects not succesfully deleted, unknown error	jinn	zh-tw	網站物件刪除失敗，不知名的錯誤
+site objects succesfully deleted	jinn	zh-tw	網站物件刪除成功
 site succesfully added	jinn	zh-tw	網站新增成功
 site succesfully deleted	jinn	zh-tw	網站刪除成功
 site succesfully saved	jinn	zh-tw	網站儲存成功
 site title	admin	zh-tw	網站標題
 site-objects	jinn	zh-tw	網站物件
 sites	jinn	zh-tw	網站
+sites not succesfully deleted, unknown error	jinn	zh-tw	網站刪除失敗，不知名的錯誤
+sites succesfully deleted	jinn	zh-tw	網站刪除成功
 some errors accured while upgrading. we have not touched the old settings so you can try again. if this error keeps coming back please contact your administrator or the jinn developers<br/><br/>	jinn	zh-tw	升級時發生了一些錯誤，原本的設定被保留下來，您可以重試；如果這個問題持續發生，請將錯誤訊息寄給您的管理員或是 JiNN 開發人員<br/><br/>
+standard editor options	jinn	zh-tw	標準編輯器選項
 start	admin	zh-tw	開始
 start at record	jinn	zh-tw	開始記錄
 stop at record	jinn	zh-tw	結束記錄
 store filter	jinn	zh-tw	儲存規則
 submit and import	jinn	zh-tw	送出與匯入
+successful	jinn	zh-tw	成功的
 switchboard	jinn	zh-tw	切換板
-t/m	jinn	zh-tw	t/m
-table name	jinn	zh-tw	表格名稱
+t/m	jinn	zh-tw	商標
+table	jinn	zh-tw	資料表
+table name	jinn	zh-tw	資料表名稱
+table prefix for data objects	jinn	zh-tw	資料物件的資料表前置字元
 tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	zh-tw	資料表名稱 <i>%1</i> 不正確，或許資料表名稱有改變或是已經刪除了，請選取一個新的資料表或是刪除這個物件
 test database access	jinn	zh-tw	測試資料庫存取
 test database and paths	jinn	zh-tw	測試資料庫與路徑
+test site settings	jinn	zh-tw	測試網站設定
+text color %1	jinn	zh-tw	文字顏色 %1
+text label	jinn	zh-tw	文字標籤
 the administrator set an invalid max. file upload size. for safety reasons we now use a max. filesize of 1mb. please contact your jinn administrator.	jinn	zh-tw	管理者設定了一個錯誤的檔案上傳上限，基於安全理由目前系統自動設定檔案上傳上限為1MB，請聯絡您的管理員。
 the attachments subdirectory does not exist and cannot be created ...	jinn	zh-tw	附加檔案的目錄不存在或是無法建立
 the attachments subdirectory is not writable by the webserver ...	jinn	zh-tw	附加檔案的目錄網頁伺服器無法寫入
@@ -473,6 +666,7 @@ the max. file upload size is %1 mb.	jinn	zh-tw	檔案上傳上限為 %1 MB
 the name of the new object is <strong>%1</strong>.	jinn	zh-tw	新物件的名稱是 <strong>%1</strong> 。
 the name of the new site is <strong>%1</strong>.	jinn	zh-tw	新網站的名稱<strong>%1</strong>
 the old confguration data is replaced<br/><br/>	jinn	zh-tw	舊的設定已經被替換了<br/><br/>
+the old style or the new way with the dhtml calendar	jinn	zh-tw	舊的風格或是新的 DHTML 月曆
 the path to upload files is not correct, please contact your jinn administrator.	jinn	zh-tw	檔案上傳的路徑不正確，請聯絡您的JINN管理員
 the path to upload files is not set, please contact your jinn administrator.	jinn	zh-tw	檔案上傳的路徑未設定，請聯絡您的JINN管理員
 the path to upload images is not correct, please contact your jinn administrator.	jinn	zh-tw	圖片上傳的路徑不正確，請聯絡您的JINN管理員
@@ -486,6 +680,7 @@ there are no records found for this object. you can now at a new record.	jinn	zh
 there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	zh-tw	您無法存取這個網站，請聯絡您的管理員
 this allows the users to use the report functionalitie	admin	zh-tw	這讓使用者能夠使用報表功能
 this is for debugging purposes.	jinn	zh-tw	這是用來偵錯
+this navigation is also available in the sitebox menu	jinn	zh-tw	導覽列也會出現在旁邊區塊中的選單
 this object can only have one record.	jinn	zh-tw	這個物件只能夠有一筆資料
 this siteconfiguration, saved using jinn version %1, may be incompatible with this jinn version %2	jinn	zh-tw	這個網站設定檔案的 JiNN 版本為 %1 ，也許無法與目前版本（%2）相容
 this table has not unique identifier field	jinn	zh-tw	這個資料表沒有不可重複的編號欄位
@@ -494,20 +689,31 @@ thumb directory does not exist or is not correct ...	jinn	zh-tw	縮圖資料夾�
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	zh-tw	縮圖資料夾不存在或是不正確...<br>請檢查物件的上傳資料夾
 thumbnail	jinn	zh-tw	縮圖
 title for html-page	jinn	zh-tw	HTML網頁標題
+to see changed previews you have to safe this record first.	jinn	zh-tw	要預覽異動結果，您必須先儲存這筆資料。
 toggle all above checkboxes	jinn	zh-tw	全部勾選
+tooltip text	jinn	zh-tw	說明文字
 unexpected error	jinn	zh-tw	無法預期的錯誤
 unique id	jinn	zh-tw	序號
 unlimited	jinn	zh-tw	無限制
 upgrade	jinn	zh-tw	升級
+upload	jinn	zh-tw	上傳
+upload new font (reload to select this font)	jinn	zh-tw	上傳新字型（重新讀取來選擇）
 upload path	jinn	zh-tw	上傳路徑
+upload path exist	jinn	zh-tw	上傳路徑已經存在
+upload path writable	jinn	zh-tw	上傳路徑可以寫入
+upload path write test	jinn	zh-tw	上傳路徑寫入測試
 upload url	jinn	zh-tw	上傳網址
+upload url location correct	jinn	zh-tw	上傳網址位置正確
 use reports	admin	zh-tw	使用報表
 using object configuration	jinn	zh-tw	使用物件設定
 using object configuration:	jinn	zh-tw	使用物件設定
 version	jinn	zh-tw	版本
+very experimental	jinn	zh-tw	非常實驗性的
 view all selected records	jinn	zh-tw	瀏覽所有選取的記錄
+visible	jinn	zh-tw	顯示
 we must upgrade your plugin configuration. <p>please don't click on back or stop untill i'm finished and a close button appears</p>	jinn	zh-tw	我們必須更新您的外掛設定<p>在完成前，也就是關閉的按鈕還沒出現前，請不要中斷或是回上頁</p>
 website url	jinn	zh-tw	預覽的網站網址
+website url for previewing	jinn	zh-tw	預覽的網站網址
 when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	zh-tw	當許多圖片附加到同一筆記錄時，表單的讀取會非常緩慢。您可以設定表單顯示圖片數量的上限。
 when this is enables information like field length and field type is shown when editing record	jinn	zh-tw	當您啟用了像是欄位長度等資訊，欄位類型將會在編輯時顯示
 when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	zh-tw	當您選擇'從不'，只有連到這個圖片的連結會顯示；當您選擇'只有在縮圖存在時'則只有在縮圖存在時才會顯示預覽；如果您選擇'是'，所有的圖片都會顯示
@@ -522,4 +728,7 @@ you don't have access to this page.	jinn	zh-tw	您沒有權限存取這個頁面
 you have no access to this file.	jinn	zh-tw	您沒有權限存取這個檔案
 you have no access to this object	jinn	zh-tw	您沒有權限存取這個物件
 you must select one or more records for this function.	jinn	zh-tw	使用這個功能必須選取一或多筆記錄
+you must select one or more sites for this function.	jinn	zh-tw	要使用這個功能前必須先選擇一或多個網站。
+you're not allowed to acces this screen.	jinn	zh-tw	您沒有權限檢視這個畫面。
 you're not allowed to administrate media files	jinn	zh-tw	您無法管理多媒體檔案
+zoom	jinn	zh-tw	放大

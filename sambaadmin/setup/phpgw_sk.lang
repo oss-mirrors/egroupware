@@ -1,0 +1,13 @@
+%1 - %2 of %3	sambaadmin	sk	%1 - %2 z %3
+add workstation	sambaadmin	sk	prida» stanicu
+check ldap setup (experimental!!!)	admin	sk	skontrolova» ldap nastavenie (experimentálne!!!)
+do you really want to delete selected workstation accounts?	sambaadmin	sk	Naozaj chcete zlaza» vybrané úèty staníc?
+new account defaults	admin	sk	predvoµby novıch úètov
+participants	sambaadmin	sk	Úèastníci
+samba settings	common	sk	Nastavenia Samby
+workstation account for	sambaadmin	sk	úèet stanice pre
+workstation configuration	sambaadmin	sk	konfigurácia stanice
+workstation list	sambaadmin	sk	zoznam staníc
+workstation name	sambaadmin	sk	názov stanice
+workstationaccount active	sambaadmin	sk	úèet stanice aktívny
+workstations	sambaadmin	sk	stanice
