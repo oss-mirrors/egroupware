@@ -10,6 +10,7 @@ book marks	common	nl	Favorieten
 bookmark changed sucessfully	bookmarks	nl	Favoriet met succes gewijzigd
 bookmark created successfully.	bookmarks	nl	Favoriet met succes gemaakt
 bookmark deleted successfully	bookmarks	nl	Favoriet met succes verwijderd.
+bookmark deleted successfully.	bookmarks	nl	favoriet met succes verwijderd.
 bookmark not editable	bookmarks	nl	Favoriet niet te wijzigen
 bookmark not readable	bookmarks	nl	Favoriet niet leesbaar
 bookmarks	common	nl	Favorieten
@@ -32,6 +33,7 @@ filter by	bookmarks	nl	Filteren op
 found a link you might like	bookmarks	nl	Link gevonden die u wellicht interesseert
 from	bookmarks	nl	Van
 from category %1	bookmarks	nl	uit categorie %1
+global categories	bookmarks	nl	Globale categoriën
 highest	bookmarks	nl	Hoogste
 i thought you would be interested in the following link(s):	bookmarks	nl	I dacht dat u geïntereseerd zou zijn in de volgende link(s):
 import bookmarks	common	nl	Importeer favorieten
@@ -57,6 +59,7 @@ rating	bookmarks	nl	Waardering
 search for:	bookmarks	nl	Zoeken op:
 select the format you would like to export to	bookmarks	nl	Selecteer het formaat waarnaar u wilt exporteren
 send bookmark	bookmarks	nl	Verzend favoriet
+site configuration	bookmarks	nl	Site configuratie
 sub category	bookmarks	nl	Subcategorie
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	nl	Het <B>Aan E-Mailadres</B> %1 is ongeldig. Het adres moet als volgt eruit zien <strong>gebruiker@domein</strong>
 to e-mail addresses	bookmarks	nl	Het <B>Aan E-Mailadres</B>
@@ -70,3 +73,4 @@ view this bookmark	bookmarks	nl	Deze favoriet weergeven
 warning	bookmarks	nl	Waarschuwing
 you are viewing this site outside of egroupware	bookmarks	nl	U bekijkt deze website buiten eGroupWare
 you must select a category	bookmarks	nl	U moet een categorie selecteren
+you need to select a category!	bookmarks	nl	Het is nodig dat u een categorie selecteert!
