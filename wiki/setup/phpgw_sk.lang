@@ -1,0 +1,45 @@
+(don't offer the possibility)	admin	sk	(neponúka» mo¾nos»)
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	sk	<em>Ale</em> zobrazi» aspoò toµkoto záznamov v Najnov¹ích Zmenách a ïal¹ích prihlasovaných zoznamoch:
+add document to category	wiki	sk	Prida» dokument do kategórie
+added	wiki	sk	Pridané
+administration features are disabled for this wiki.	wiki	sk	Správcovské funkcie sú zakázané pre túto wiki.
+admins	wiki	sk	Správcovia
+after how many days should old versions of a page be removed (0 for never)	admin	sk	Po koµkých dòoch treba odstráni» staré verzie stránky (0 pre nikdy)
+allow anonymous access	admin	sk	povoli» anonymný prístup
+anonymous password	admin	sk	Heslo anonymného pou¾ívateµa
+anonymous session type	admin	sk	Typ sedenia anonymného pou¾ívateµa
+anonymous username	admin	sk	Pou¾ívateµské meno anonymného pou¾ívateµa
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	sk	Automaticky konvertova» stránky s wiki-syntaxou na richtext (pri úpravách)?
+block	wiki	sk	Blokova»
+block / unblock hosts	common	sk	Blokova» / Odblokova» host-ov
+blocked ip address ranges	wiki	sk	Blokované rozsahy IP
+cancel without saving	wiki	sk	Zru¹i» bez ulo¾enia
+changed	wiki	sk	Zmenené
+changes by last author	wiki	sk	Zmeny od posledného autora
+choose your current time here, so the server may figure out what time zone you are in.	wiki	sk	Vyberte Vá¹ aktuálny èas, aby mohol server zisti», v akej èasovej zóne sa nachádzate.
+columns	wiki	sk	Ståpce
+compute difference	wiki	sk	Vypoèíta» rozdiel
+converts the page to richtext	wiki	sk	Skonvertuje stránku na richtext
+current version	wiki	sk	Súèasná verzia
+deleted	wiki	sk	Vymazané
+deletes this page	wiki	sk	Vyma¾e túto stránku
+difference between versions	wiki	sk	Rozdiely medzi verziami
+differences in	wiki	sk	Rozdiely v
+different languages can have different titles	wiki	sk	Rozlièné jazyky mô¾u ma» rozlièné titulky
+document last modified	wiki	sk	Dokument naposledy zmenený
+edit this <em>archive version</em> of this document	wiki	sk	Upravi» túto <em>ARCHÍVNU VERZIU</em> tohto dokumentu
+edit this document	wiki	sk	Upravi» tento dokument
+edit with preview	admin	sk	Upravi» s náhµadom
+editable	admin	sk	Upravovateµné
+editing	wiki	sk	Úpravy
+emailaddress administrator	admin	sk	Správca emailových adries
+enable free links	admin	sk	Zapnú» voµné odkazy
+enable wiki links	admin	sk	Zapnú» Wiki odkazy
+enter here the maximum number of entries to display in a document's history list.	wiki	sk	Zadajte maximálny poèet polo¾iek, ktoré sa zobrazia v zozname histórie dokumentu.
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	sk	Zadajte poèet dní úprav, ktoré sa zobrazia v Najnov¹ích Zmenách alebo inom prihlasovanom zozname. Nastavte 0 ak tam chcete vidie» v¹etky stránky, nezávisle na dátume úprav.
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	sk	Zadajte rozsah IP v tvare <tt>12.*</tt>, <tt>34.56.*</tt>, alebo <tt>78.90.123.*</tt>
+error creating temporary file.	wiki	sk	Chyba pri vytváraní doèasného súboru.
+error writing to temporary file.	wiki	sk	Chyba pri zápise do doèasného súboru.
+everyone	wiki	sk	Ka¾dý
+find	wiki	sk	Hµada»
+history	wiki	sk	História
