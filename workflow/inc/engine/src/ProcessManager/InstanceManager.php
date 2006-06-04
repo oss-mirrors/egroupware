@@ -118,14 +118,8 @@ class InstanceManager extends BaseManager {
   function set_instance_properties($iid,&$prop)
   {
     $this->lockAndStartTrans($iid);
-    //no more serialize, done by the core security_cleanup
-    //$props = addslashes(serialize($prop));
-    foreach ($prop as $property_name => $property_value)
-    {
-      //we do not check proprty name as this is an admin form
-      //but we check the values for special html chars
-      $prop[$property_name]= $this->security_cleanup($property_value);
-    }
+    //no more serialize, done by the core security_cleanup, empty array and bad properties names handled
+    $prop = $this->security_cleanup($prop, false);
     $query = 'update '.GALAXIA_TABLE_PREFIX.'instances set wf_properties=? where wf_instance_id=?';
     $this->query($query, array($prop,$iid));
     return $this->db->CompleteTrans();

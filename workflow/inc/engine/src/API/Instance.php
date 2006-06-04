@@ -330,9 +330,9 @@ class Instance extends Base {
     $this->setOwner($user);
     
     $query = 'insert into '.GALAXIA_TABLE_PREFIX.'instances
-      (wf_started,wf_ended,wf_status,wf_p_id,wf_owner) 
-      values(?,?,?,?,?)';
-    $this->query($query,array($now,0,'active',$pid,$user));
+      (wf_started,wf_ended,wf_status,wf_p_id,wf_owner,wf_properties) 
+      values(?,?,?,?,?,?)';
+    $this->query($query,array($now,0,'active',$pid,$user,$this->security_cleanup(Array(),false)));
     $this->instanceId = $this->getOne('select max(wf_instance_id) from '.GALAXIA_TABLE_PREFIX.'instances 
                       where wf_started=? and wf_owner=?',array((int)$now,$user));
     $iid=$this->instanceId;
@@ -432,7 +432,7 @@ class Instance extends Base {
   /*! 
   * Sets several properties in this instance. This method is used in activities to
   * set instance properties. Use this method if you have several properties to set
-  * as it will avoid
+  * as it will avoid to re-call the SQL engine for each property.
   * all property names are normalized for security reasons and to avoid localisation
   * problems (A->z, digits and _ for spaces). 
   * @param $properties_array is an associative array containing for each record the
@@ -977,7 +977,7 @@ class Instance extends Base {
       }
     }
     //no more serialize, done by the core security_cleanup
-    $properties = $this->properties; //serialize($this->properties);
+    $properties = $this->security_cleanup($this->properties, false); //serialize($this->properties);
     $query='insert into '.GALAXIA_TABLE_PREFIX.'workitems
         (wf_instance_id,wf_order_id,wf_activity_id,wf_started,wf_ended,wf_properties,wf_user) values(?,?,?,?,?,?,?)';    
     $this->query($query,array((int)$iid,(int)$max,(int)$activityId,(int)$started,(int)$ended,$properties,$putuser));
