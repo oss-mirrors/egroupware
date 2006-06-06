@@ -103,8 +103,8 @@
 	  */
 	  function on_save_filter($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	  {
-		 _debug_array($HTTP_POST_VARS);
-		 die();
+		 #_debug_array($HTTP_POST_VARS);
+		 #die();
 		 return $HTTP_POST_VARS[$key][value];
 	  }
 
@@ -123,12 +123,11 @@
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 		 if($value != '')
 		 {
-			foreach($config as $key=>$val)
+			foreach($config[multi1] as $key=>$val)
 			{
-			   if($val == $value)
+			   if($val[option_value] == $value)
 			   {
-				  $id = substr($key,strlen($key)-1);
-				  $img = $config["imgfile$id"];
+				  $img = $val[imgfile];
 				  $site_fs= createobject('jinn.site_fs');
 
 				  $siterootdir=$site_fs->get_jinn_sitefile_url($this->local_bo->site[site_id]);
@@ -160,12 +159,11 @@
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 		 if($value != '')
 		 {
-			foreach($config as $key=>$val)
+			foreach($config[multi1] as $key=>$val)
 			{
-			   if($val == $value)
+			   if($val[option_value] == $value)
 			   {
-				  $id = substr($key,strlen($key)-1);
-				  $img = $config["imgfile$id"];
+				  $img = $val[imgfile];
 				  $site_fs= createobject('jinn.site_fs');
 
 				  $siterootdir=$site_fs->get_jinn_sitefile_url($this->local_bo->site[site_id]);
