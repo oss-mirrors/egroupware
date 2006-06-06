@@ -461,7 +461,7 @@
 		 * called by the validation hook in setup
 		 *
 		 * @param array $settings following keys: mail_server, mail_server_type {IMAP|IMAPS|POP-3|POP-3S}, 
-		 *	mail_login_type {standard|vmailmgr}, mail_suffix (domain), smtp_server, smpt_port, smtp_auth_user, smtp_auth_passwd
+		 *	mail_login_type {standard|vmailmgr}, mail_suffix (domain), smtp_server, smtp_port, smtp_auth_user, smtp_auth_passwd
 		 */
 		function setDefaultProfile($settings)
 		{
@@ -555,7 +555,7 @@
 					'imapLoginType' => 'mail_login_type',
 					'defaultDomain' => 'mail_suffix',
 					'smtpServer'    => 'smtp_server',
-					'smtpPort'      => 'smpt_port',
+					'smtpPort'      => 'smtp_port',
 				) as $ea_name => $config_name)
 				{
 					if (isset($all[$ea_name]))
