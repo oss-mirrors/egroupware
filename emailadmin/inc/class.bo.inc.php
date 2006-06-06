@@ -503,9 +503,9 @@
 					),
 				),
 				'mail_login_type' => 'imapLoginType',
-				'mail_suffix' => 'defaultDomain',
-				'smtp_server' => 'smtpServer',
-				'smpt_port' => 'smtpPort',
+				'mail_suffix'	=> 'defaultDomain',
+				'smtp_server'	=> 'smtpServer',
+				'smtp_port'	=> 'smtpPort',
 			) as $setup_name => $ea_name_data)
 			{
 				if (!is_array($ea_name_data))
