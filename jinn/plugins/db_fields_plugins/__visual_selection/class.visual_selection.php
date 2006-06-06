@@ -103,9 +103,7 @@
 	  */
 	  function on_save_filter($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	  {
-		 #_debug_array($HTTP_POST_VARS);
-		 #die();
-		 return $HTTP_POST_VARS[$key][value];
+		 return $HTTP_POST_VARS[$key];
 	  }
 
 	  /**
