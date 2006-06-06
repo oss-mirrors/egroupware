@@ -328,6 +328,7 @@
 	  * @param boolean $keep_keys when true it keeps the keys else numeric keys are used
 	  * @param boolean $inverse if true the only elements that not match the prefix are returned
 	  * @return array filtered array
+	  * @fixme inverse seem to work focked up!!! check trhough all the jinn code
 	  */
 	  function filter_array_with_prefix($array,$prefix,$keep_keys=false,$inverse=false)
 	  {

@@ -2,7 +2,7 @@
    /**************************************************************************\
    JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for phpGroupWare
    Authors:	Pim Snel, Lex Vogelaar for Lingewoud
-   Copyright (C)2002, 2004 Pim Snel <pim@lingewoud.nl>
+   Copyright (C)2002, 2006 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
 
@@ -30,6 +30,7 @@
    class factory_plugins_object_events
    {
 	  var $local_bo;
+	  var $event_arr=array();
 	  var $test;
 	  
 	  /*!
@@ -38,8 +39,19 @@
 	  */
 	  function factory_plugins_object_events()
 	  {
+		 $this->set_event_arr();
 		 $this->include_plugins();
 		 $this->include_custom_plugins();
+	  }
+
+	  function set_event_arr()
+	  {
+		 $this->event_arr=array(
+			'on_update',
+			'on_export',
+			'on_walk_list_button',
+			'run_on_record',
+		 );
 	  }
 
   	  function call_event_action($post, $config)

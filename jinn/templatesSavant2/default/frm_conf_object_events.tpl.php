@@ -3,7 +3,6 @@
 <html xml:lang="<?=$this->lang?>" xmlns="http://www.w3.org/1999/xhtml">
    <head>
 	  <title><?=lang('Event Plugin Configuration')?></title>
-
 	  <meta http-equiv="content-type" content="text/html; charset=<?=$this->charset?>" />
 	  <meta name="keywords" content="eGroupWare" />
 	  <meta name="description" content="eGroupware" />
@@ -17,16 +16,17 @@
    </head>
    <body <?=$this->close?>>
 
-	  <form method="post" name="events_config" action=<?=$this->action?>>
+	  <form method="post" name="frm" action=<?=$this->action?>>
 		 <div id="divMain">
 			<div id="divAppboxHeader"><?=lang('Event Plugin Configuration')?></div>
 			<div id="divAppbox">
-			   
-			   <?php if($_GET[edit]==''):?>
+
+			   <?php  if($_GET[edit]==''):?>
+			   <?php //if(!$xxxx):?>
 
 			   <?php if(count($this->stored_events_arr)>0):?>
 			   <h2><?=lang('Stored Events')?></h2>
-			   <table>
+			   <table >
 				  <thead>
 					 <tr>
 						<th>
@@ -67,12 +67,45 @@
 			   </table>
 			   <?php endif?>
 
-			   <?php if(is_array($this->cfg_arr)):?>
+			   <?php if($_POST['plugin'] || $_GET['edit']!=''):?>
 
 			   <h2><?=lang('Plugin Configuration')?> - <?=$this->plug_name?></h2>
+			   <?php if(!$_POST['plugin']):?>
+			   <input type="hidden" name="plugin" value="<?=$this->plugin?>" />
+			   <?php endif?>
+			   <?php if(!$_POST['event']):?>
+			   <input type="hidden" name="event" value="<?=$this->event?>" />
+			   <?php endif?>
 
 			   <table style="border-spacing:15px;">
-				  <?php foreach($this->cfg_arr as $cfg):?>
+				  <tr>
+					 <td style="vertical-align:top;width:170px;">
+						<strong><?=lang('Event label');?></strong>
+						<br/>
+						<?=lang('Name of this event setup which will appear in buttons, icons')?>
+					 </td>
+					 <td style="vertical-align:top;">
+						<input type="text" name="eventlabel" value="<?=$this->complete_conf_arr['eventlabel']?>" />
+					 </td>
+				  </tr>
+				  <tr style="">
+					 <td style="vertical-align:top;width:170px;">
+						<strong><?=lang('Icon');?></strong>
+						<br/>
+						<?=lang('Icon used by some event types.')?>
+					 </td>
+					 <td style="vertical-align:top;">
+						<input type="file" name="iconupload" value="<?=$this->label?>" />
+						<input type="hidden" name="iconfile" value="<?=$this->iconfile?>"/>
+					 </td>
+				  </tr>
+				  <tr>
+					 <td colspan="2" style="border-bottom:solid 1px #bbbbbb">
+						&nbsp;
+				  </td>
+			   </tr>
+			   <?php if(is_array($this->cfg_arr)):?>
+			   <?php foreach($this->cfg_arr as $cfg):?>
 				  <tr>
 					 <td style="vertical-align:top;width:170px;">
 						<strong><?=$cfg['label']?></strong>
@@ -82,28 +115,29 @@
 					 <td style="vertical-align:top;">
 						<?php if($cfg['type']=='radio'):?>
 						<?php foreach($cfg['value'] as $radio):?>
-						<input name="<?=$cfg['name']?>" type="radio" value="<?=$radio?>" /><?=$radio?><br/>
+						<input name="EPL<?=$cfg['name']?>" type="radio" value="<?=$radio?>" /><?=$radio?><br/>
 						<?php endforeach?>
 						<?php elseif($cfg['type']=='text'):?>
-						<input name="<?=$cfg['name']?>" type="text" value="<?=$cfg['value']?>">
+						<input name="EPL<?=$cfg['name']?>" type="text" value="<?=$cfg['value']?>">
 						<?php elseif($cfg['type']=='area'):?>
-						<textarea name="<?=$cfg['name']?>" rows="5" cols="50"><?=$cfg['value']?></textarea>
+						<textarea name="EPL<?=$cfg['name']?>" rows="5" cols="50"><?=$cfg['value']?></textarea>
 						<?php elseif($cfg['type']=='select'):?>
-						<select name="<?=$cfg['name']?>">
+						<select name="EPL<?=$cfg['name']?>">
 						   <?php foreach($cfg['value'] as $option):?>
 						   <option value="<?=$option?>"><?=$option?></option>
 						   <?php endforeach?>
 						</select>
 					 </td>
 					 <?php endif?>
+					 </tr>
 					 <?php endforeach?>
-				  </tr>
+			   <?php endif?>
 			   </table>
 			   <?php endif?>
 			   <br/>
-			   <input class="egwbutton"  type="submit" value="<?=lang('submit')?>">
+			   <input class="egwbutton"  type="submit" name="submitted" value="<?=lang('submit')?>">
 			   <input class="egwbutton"  type="button" value="<?=lang('close')?>" onClick="self.close()">
-			   <input  class="egwbutton" type="button" value="<?=lang('back')?>" onclick="history.back()">
+			   <input  class="egwbutton" type="button" value="<?=lang('back')?>" onclick="location.href='<?=$this->startlink?>'">
 			   <br/>
 			</div>
 		 </div>

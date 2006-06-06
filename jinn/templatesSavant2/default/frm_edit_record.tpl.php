@@ -557,6 +557,8 @@
 
 	  <!-- ############################# edit record buttons ############################## -->
 	  <?php if(!$this->edit_object):?>
+	  
+
 	  <div style="clear:both;height:20px;"></div>
 
 	  <?php if($this->readonly):?>
@@ -578,6 +580,8 @@
 	  <?php if(!$this->japie):?>
 	  <div style="float:right;width:auto;"><input type="button" onclick="openhelp()" name="reopen" class="egwbutton" value="<?=lang('Help')?>"></div>
 	  <?php endif?>
+	  
+	  <?=$this->runonrecordbuttons?>
 
 	  <div style="clear:both;height:10px;"></div>
 	  <!-- ############################# edit record buttons ############################## -->

@@ -35,7 +35,8 @@
 		 'config_objects'		=> True,
 		 'img_popup'			=> True,
 		 'popwalkevent'			=> True,
-		 'do_loop_walk_events'	=> True
+		 'do_loop_walk_events'	=> True,
+		 'runonrecord'			=> True
 	  );
 
 
@@ -173,6 +174,13 @@
 		 }
 
 
+	  }
+
+	  function runonrecord()
+	  {
+		 //run event on current record
+		 //redirect to correct screen
+		 echo "hallo";
 	  }
 
 	  function popwalkevent()

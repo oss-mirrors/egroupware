@@ -205,7 +205,8 @@
 	  * @access public
 	  * @return void
 	  */
-	  function save_object_events_conf()
+	  //todo post via argument
+	  function save_object_events_conf($obj_id,$edit)
 	  {
 		 if(!$_GET[object_id] && !$_GET[edit])
 		 {
@@ -214,6 +215,16 @@
 
 		 if(is_array($_POST))
 		 {
+			// make array with conf values
+			$plg_post_arr=$this->filter_array_with_prefix($_POST,'EPL',true);
+			$plg_post_arr=$this->strip_prefix_from_keys($plg_post_arr,'EPL');
+			$plg_post_arr['event']=$_POST['event']; 
+			$plg_post_arr['plugin']=$_POST['plugin'];
+
+			//_debug_array($plg_post_arr);
+			//_debug_array($_POST);
+			//die();
+
 			$dirty = false;
 
 			//get the already stored configurations
@@ -239,13 +250,14 @@
 			   }
 
 			   //if a new plugin was configured, add it to the store
-			   if($_POST[event] != '' && $_POST[plugin] != '')
+			   if($plg_post_arr['event'] != '' && $plg_post_arr['plugin'] != '')
 			   {
 				  if(!is_array($stored_configs)) $stored_configs = array();
 				  $conf=array
 				  (
-					 'name'=>$_POST[plugin],
-					 'conf'=>$_POST
+					 'name'=>$plg_post_arr['plugin'],
+					 'conf'=>$plg_post_arr,
+					 'eventlabel'=>$_POST['eventlabel'],
 				  );
 				  $stored_configs[] = $conf;
 				  $dirty=true;
@@ -255,15 +267,18 @@
 			{
 			   if(is_array($stored_configs)) 
 			   {
-				  $_POST[event]  = $stored_configs[$_GET[edit]][conf][event];
-				  $_POST[plugin] = $stored_configs[$_GET[edit]][conf][plugin];
+				  //todo test
+				  //$_POST[event]  = $stored_configs[$_GET[edit]][conf][event];
+				  //$_POST[plugin] = $stored_configs[$_GET[edit]][conf][plugin];
 
 				  //replace the existing config with this one
 				  if(!is_array($stored_configs)) $stored_configs = array();
 				  $conf=array
 				  (
-					 'name'=>$_POST[plugin],
-					 'conf'=>$_POST
+					 'name'=>$plg_post_arr['plugin'],
+					 'conf'=>$plg_post_arr,
+					 'eventlabel'=>$_POST['eventlabel'],
+					 'iconfile'=>$_POST['iconfile']
 				  );
 				  $stored_configs[$_GET[edit]] = $conf;
 				  $dirty=true;
@@ -290,12 +305,15 @@
 			}
 		 }
 
+		 //fixme give correct status
+		 return true;
+
 
 		 //fixme: this gives a strange error:
 		 //$this->common->exit_and_open_screen('menuaction=jinn.uiadmin.object_events_config&close_me=true&object_id='.$_GET[object_id]);
 
 		 //VERY dirty hack to solve this problem:		 
-		 echo('<input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
+		 //echo('<input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
 		 //obviously this needs to be fixed. Then also the above _debug_arrays can be removed.
 
 	  }

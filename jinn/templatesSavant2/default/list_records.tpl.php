@@ -64,7 +64,6 @@
 <?php endif?>
 <!-- END SEARCH & FILTERS BLOCK -->
 
-<?=$this->walklistblock?>
 <?=$this->reportblock?>
 
 <!-- BEGIN header_end -->
@@ -83,6 +82,7 @@
 </style>
 <br/>
 <input type="button" value="<?=lang('Add new Record') ?>" onClick="location.href='<?=$this->newrec_link ?>'" style="width:150px;"/>
+<?=$this->walklistblock?>
 <div class="jinnListBlock">
    <table border="0" style="border-spacing:1px;" align="center" width="100%" >
 	  <tr>

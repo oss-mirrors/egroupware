@@ -124,6 +124,7 @@
 			$this->bo->exit_and_open_screen($this->japielink.'jinn.uiuser.index');
 		 }
 
+		 
 		 $this->test_object();
 	  }
 
@@ -253,9 +254,9 @@
 	  */
 	  function read_record()
 	  {
-
 		 $this->readonly=true;
 		 $this->tplsav2->readonly=true;
+		 $this->tplsav2->viewrecord=true;
 		 $this->tplsav2->edit_record_link=$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.edit_record&where_string='.$this->bo->where_string_encoded);
 
 		 $this->edit_record(); 
@@ -298,6 +299,9 @@
 	  */
 	  function edit_record()
 	  {
+		 
+		 $this->tplsav2->runonrecordbuttons=$this->getRunOnRecordEventButtons();
+		 
 		 if($_POST[submitted])
 		 {
 			if($_POST[num_records] && $_POST[changerecnumbers]=='true')
@@ -1357,6 +1361,35 @@
 			$this->bo->addError(lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']));
 			$this->bo->exit_and_open_screen('jinn.uiuser.index');
 		 }				
+	  }
+
+	  function getRunOnRecordEventButtons()
+	  {
+//		_debug_array($_SERVER);
+/*		 if($this->viewrecord)
+		 {
+			$returnlink='viewrecord';
+		 }
+		 */
+		 // Get Walk Events
+		 $stored_configs = unserialize(base64_decode($this->bo->site_object['events_config']));
+		 if(is_array($stored_configs))
+		 {
+			//_debug_array($stored_configs);
+			foreach($stored_configs as $key => $conf_arr)
+			{
+//			   echo $key;
+			   
+			   if($conf_arr['conf']['event']=='run_on_record')
+			   {
+				  $conf_arr['runonrecordevent_link']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.runonrecord&plgkey='.$key);
+				  $this->tplsav2->runonrecordbuttons_arr[]=$conf_arr;
+			   }
+			}
+		 }
+
+		 $buttonrow=$this->tplsav2->fetch('runonrecord_buttons.tpl.php');
+		 return $buttonrow;
 	  }
 
    }

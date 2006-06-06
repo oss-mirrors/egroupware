@@ -33,6 +33,7 @@
    (
 	  'on_update',
 	  'on_export',
+	  'run_on_record',
 	  'on_walk_list_button'
    );
    

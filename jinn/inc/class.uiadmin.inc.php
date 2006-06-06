@@ -523,12 +523,8 @@
 	  function getEventOptions($selected)
 	  {
 		 $sel_arr[$selected]='selected="selected"';
-
-		 $event_arr=array(
-			'on_update',
-			'on_export',
-			'on_walk_list_button',
-		 );
+		 
+		 $event_arr=$this->bo->object_events_plugin_manager->event_arr;
 
 		 $this->tplsav2->optval = '';
 		 $this->tplsav2->optselected = '';
@@ -1151,18 +1147,32 @@
 	  * @todo: rewrite config array in the register of the plugins
 	  * @todo: rewrite plugins so that it are classes
 	  * @todo: better flow
+	  * @todo: implement names
+	  * @todo: implement icons
+	  * @todo: implement applyrecord event / single record event? 
+	  * @todo: implement human input in plugin 
 	  */
 	  function object_events_config()
 	  {
+		 if($_POST['submitted'])
+		 {
+			$save_status = $this->bo->save_object_events_conf($_GET[object_id],$_GET[edit]);
+
+			//unset($_GET[edit]);
+			//unset($_POST[plugin]);
+		 }
+
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
 		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
 
+		 $this->tplsav2->startlink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]);
 		 $this->tplsav2->assign('theme_css',$theme_css);
 		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
+		 $this->msg_box();
 
 		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
 
@@ -1191,13 +1201,15 @@
 			}
 		 }
 
+		 //new?
 		 if($_GET[edit]=='')
+		 //if($xxxx)
 		 {
-			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id]));
+			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]));
 
 			$this->tplsav2->set_var('event_options', $this->getEventOptions($_POST[event]));		 
 			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
-			$this->tplsav2->set_var('option_selected', 'document.events_config.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; submit();');
+			$this->tplsav2->set_var('option_selected', 'document.frm.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; document.frm.submit();');
 
 			if($_POST[plugin] != '')
 			{
@@ -1209,18 +1221,37 @@
 		 }
 		 else
 		 {
-			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id].'&edit='.$_GET[edit]));
+			$this->tplsav2->set_var('event_options', $this->getEventOptions($_POST[event]));		 
+			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
+			$this->tplsav2->set_var('option_selected', 'document.frm.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; document.frm.submit();');
+
+/*			if($_POST[plugin] != '')
+			{
+			   $this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$_POST[plugin]]['title']);
+
+			   $cfg=$this->bo->object_events_plugins[$_POST[plugin]]['config'];
+			   $cfg_help=$this->bo->object_events_plugins[$_POST[plugin]]['config_help'];
+			}
+*/
+			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id].'&edit='.$_GET[edit]));
 
 			if(is_array($stored_configs))
 			{
 			   $edit_conf = $stored_configs[$_GET[edit]];
 			}
+//			_debug_array($edit_conf);
+			$this->tplsav2->plugin=$edit_conf['name'];
+			$this->tplsav2->event=$edit_conf['conf']['event'];
 
-			$this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$edit_conf[name]]['title']);
+			$this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$edit_conf['name']]['title']);
+
+			$this->tplsav2->complete_conf_arr=$edit_conf;
 
 			$cfg=$this->bo->object_events_plugins[$edit_conf[name]]['config'];
 			$cfg_help=$this->bo->object_events_plugins[$edit_conf[name]]['config_help'];
 		 }
+
+		 //_debug_array($cfg);
 
 		 if(is_array($cfg))
 		 {
