@@ -47,7 +47,7 @@
 		 'save_field_plugin_conf' => True,
 		 'save_field_info_conf' => True,
 		 'upgrade_plugins'=>True,
-		 'save_object_events_conf' => True
+//		 'save_object_events_conf' => True
 	  );
 
 	  /**
