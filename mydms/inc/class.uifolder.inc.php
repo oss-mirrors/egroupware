@@ -163,8 +163,11 @@
 			$path = $folderObject->getPathNew();
 			
 			$xmlContent	= '';
-			$clientID	= -1;
+			$clientID	= $folderID;
 			
+			// skip the last path part
+			array_pop($path);
+
 			while($subFolder = array_pop($path))
 			{
 				$xmlContent	= $this->generateXML($subFolder, $clientID, $folderID, $xmlContent);
