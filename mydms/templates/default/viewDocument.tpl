@@ -47,22 +47,22 @@
 <div id="tabcontent3" class="inactivetab">
 <!--
 <table cellspacing="5" cellpadding="0" border="1">
-	<?
+	<?php
 	if ($rownum > 1)
 	{
 		?>
 		<tr>
 		<td></td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?printMLText("name");?></i></td>
-		<td rowspan="<?print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?printMLText("comment");?></i></td>
-		<td rowspan="<?print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?printMLText("document_link_by");?></i></td>
-		<td rowspan="<?print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?printMLText("document_link_public");?></i></td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("name");?></i></td>
+		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("comment");?></i></td>
+		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("document_link_by");?></i></td>
+		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("document_link_public");?></i></td>
 		<td></td>
 		</tr>
-		<?
+		<?php 
 		foreach($links as $link)
 		{
 			$responsibleUser = $link->getUser();
@@ -90,13 +90,13 @@
 if ($user->getID() != $settings->_guestID)
 
 	<form action="../op/op.AddDocumentLink.php" name="form1">
-	<input type="Hidden" name="documentid" value="<?print $documentid;?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
 	<table>
 		<tr>
-			<td class="inputDescription"><?printMLText("choose_target_document");?>:</td>
-			<td><?printDocumentChooser("form1");?></td>
+			<td class="inputDescription"><?php printMLText("choose_target_document");?>:</td>
+			<td><?php printDocumentChooser("form1");?></td>
 		</tr>
-		<?
+		<?php 
 			if ($document->getAccessMode($user) >= M_READWRITE)
 			{
 				print "<tr><td class=\"inputDescription\">".getMLText("document_link_public")."</td><td class=\"inputDescription\">";
@@ -106,7 +106,7 @@ if ($user->getID() != $settings->_guestID)
 			}
 		?>
 		<tr>
-			<td colspan="2"><br><input type="Submit" value="<?printMLText("add_document_link");?>"></td>
+			<td colspan="2"><br><input type="Submit" value="<?php printMLText("add_document_link");?>"></td>
 		</tr>
 	</table>
 	</form>-->
@@ -275,7 +275,7 @@ if ($user->getID() != $settings->_guestID)
 		<tr>
 			<td class="infos" valign="top">{lang_mime_type}:</td>
 			<td class="infos">
-				<img align="absmiddle" src="images/icons/<?print getMimeIcon($latestContent->getFileType());?>"> 
+				<img align="absmiddle" src="images/icons/<?php print getMimeIcon($latestContent->getFileType());?>"> 
 				{mime_type}
 			</td>
 		</tr>
@@ -365,7 +365,7 @@ if ($user->getID() != $settings->_guestID)
 		<tr>
 			<td class="description_small" valign="top">{lang_mime_type}:</td>
 			<td class="infos" colspan="3">
-				<img align="absmiddle" src="images/icons/<?print getMimeIcon($latestContent->getFileType());?>"> 
+				<img align="absmiddle" src="images/icons/<?php print getMimeIcon($latestContent->getFileType());?>"> 
 				{mime_type}
 			</td>
 		</tr>
@@ -446,7 +446,7 @@ if ($user->getID() != $settings->_guestID)
 			<tr>
 				<td></td>
 				<td class="accessList" style="border-bottom: 1pt solid #000080;"><i>{lang_name}</i></td>
-				<!-- <td rowspan="<?print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td> -->
+				<!-- <td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td> -->
 				<td class="accessList" style="border-bottom: 1pt solid #000080;"><i>{lang_access_mode}</i></td>
 				<td></td>
 				<td></td>

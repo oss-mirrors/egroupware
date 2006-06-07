@@ -1,4 +1,4 @@
-<?
+<?php
 $text = array();
 $text["folder_title"] = "文档管理 - 文件夹 [foldername]";
 $text["document_title"] = "文档管理 - 文件 [documentname]";

@@ -1,4 +1,4 @@
-<?
+<?php
 $text = array();
 $text["login"] = "Anmeldung";
 $text["login_not_found"] = "Fehler: Benutzername nicht gefunden";

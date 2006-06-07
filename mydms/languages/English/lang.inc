@@ -1,4 +1,4 @@
-<?
+<?php
 $text = array();
 $text["folder_title"] = "MyDMS - Folder [foldername]";
 $text["document_title"] = "MyDMS - Document [documentname]";
