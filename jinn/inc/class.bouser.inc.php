@@ -610,6 +610,7 @@
 					 De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
 
 					 $status = $this->object_events_plugin_manager->call_event_action($post, $config);
+//					 _debug_array($status);
 				  }
 			   }
 			}

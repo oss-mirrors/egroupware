@@ -300,7 +300,6 @@
 	  function edit_record()
 	  {
 		 
-		 $this->tplsav2->runonrecordbuttons=$this->getRunOnRecordEventButtons();
 		 
 		 if($_POST[submitted])
 		 {
@@ -440,6 +439,8 @@
 
 			   $where_string_record_arr['MLTWHR'.$this->mult_index]=base64_encode($this->bo->where_string);
 			}
+
+			$this->tplsav2->runonrecordbuttons=$this->getRunOnRecordEventButtons($this->bo->where_string);
 
 			// FIXME make this standard available via GET
 			if($this->bo->where_string)
@@ -1363,26 +1364,16 @@
 		 }				
 	  }
 
-	  function getRunOnRecordEventButtons()
+	  function getRunOnRecordEventButtons($where_string)
 	  {
-//		_debug_array($_SERVER);
-/*		 if($this->viewrecord)
-		 {
-			$returnlink='viewrecord';
-		 }
-		 */
-		 // Get Walk Events
 		 $stored_configs = unserialize(base64_decode($this->bo->site_object['events_config']));
 		 if(is_array($stored_configs))
 		 {
-			//_debug_array($stored_configs);
 			foreach($stored_configs as $key => $conf_arr)
 			{
-//			   echo $key;
-			   
 			   if($conf_arr['conf']['event']=='run_on_record')
 			   {
-				  $conf_arr['runonrecordevent_link']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.runonrecord&plgkey='.$key);
+				  $conf_arr['runonrecordevent_link']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.runonrecord&where_string='.$where_string.'&plgkey='.$key);
 				  $this->tplsav2->runonrecordbuttons_arr[]=$conf_arr;
 			   }
 			}

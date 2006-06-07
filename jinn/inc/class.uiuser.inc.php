@@ -172,15 +172,49 @@
 			$this->tplsav2->assign('object_arr',$object_arr);
 			$this->tplsav2->display('list_all_objects.tpl.php');
 		 }
-
-
 	  }
 
+	  //FIXME implement icons
+	  //FIXME make sure it only runs the choosen event
+	  //FIXME render buttons per record in edit record
+	  //FIXME add GET Arg with return link
+	  //FIXME test with JAPIE
+	  //FIXME don't show button on new records
 	  function runonrecord()
 	  {
 		 //run event on current record
+		 $this->bo->addInfo(lang('Run On Record event ...'));
+			 
+		 if($_GET['base64_where_string'])
+		 {
+			$where_string=base64_decode($_GET['base64_where_string']);
+		 }
+		 else
+		 {
+			$where_string=$_GET[where_string];
+		 }
+
+		 $rows=$this->bo->so->get_record_values($this->bo->session['site_id'],$this->bo->site_object['table_name'],'','','','','name','','*',$where_string);
+
+		 foreach($rows as $recvals)
+		 {
+			while(list($key, $val) = each($recvals))
+			{
+			   $_row['FLDXXX'.$key]=$val;
+			}
+		 }
+		 $status[eventstatus] = $this->bo->run_event_plugins('run_on_record', $_row);
+
 		 //redirect to correct screen
-		 echo "hallo";
+		 //TODO test on apache 1.3
+		 if(strstr ($_SERVER['HTTP_REFERER'], 'jinn.uiu_edit_record.edit_record'))
+		 {
+			$this->bo->exit_and_open_screen($this->japielink.'jinn.uiu_edit_record.edit_record');
+		 }
+		 else
+		 {
+			$this->bo->exit_and_open_screen($this->japielink.'jinn.uiu_list_records.display');
+		 }
 	  }
 
 	  function popwalkevent()
@@ -488,14 +522,12 @@
 			{
 			   $this->bo->addError(lang('You have no access to this file.'));
 			   $this->bo->exit_and_open_screen('jinn.uiuser.index');
-
 			}
 
 			$file_name=$_GET['file'];
 
 			if(file_exists($file_name))
 			{
-
 			   $browser = CreateObject('phpgwapi.browser'); 
 
 			   $browser->content_header(basename($file_name));

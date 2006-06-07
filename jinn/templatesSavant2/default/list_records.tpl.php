@@ -105,7 +105,7 @@
 	  <input type="hidden" name="action" value="none">
 	  <table border="0" cellspacing="1" cellpadding="0" width="100%" style="padding-bottom:3px;border-bottom:solid 1px #006699">
 		 <tr>
-			<td bgcolor="<?=$this->th_bg ?>" colspan="5"  valign="top" style="width:1%;font-weight:bold;padding:3px 5px 3px 5px;"><?=lang('Actions')?></td>
+			<td bgcolor="<?=$this->th_bg ?>" colspan="<?=(5+$this->runonrec_amount)?>"  valign="top" style="width:1%;font-weight:bold;padding:3px 5px 3px 5px;"><?=lang('Actions')?></td>
 
 			<?php if(is_array($this->colnames)):?>
 			<?php foreach($this->colnames as $colname):?> 
@@ -130,12 +130,19 @@
 			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" align="left"><a title="<?=lang('copy record') ?>" href="<?=$recrow_arr['colfield_copy_link'] ?>" onClick="return window.confirm('<?=lang('Do you want to copy this record?') ?>')"><img width="19" src="<?=$this->colfield_copy_img_src ?>" alt="<?=lang('copy record') ?>" /></a></td>
 
 			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" align="left"><a title="<?=lang('delete') ?>" href="<?=$recrow_arr['colfield_delete_link'] ?>" onClick="return window.confirm('<?=$this->colfield_lang_confirm_delete_one ?>')"><img width="16" src="<?=$this->colfield_delete_img_src ?>" alt="<?=lang('delete') ?>" /></a></td>
-
-			<?php foreach($recrow_arr['fields'] as $field_arr):?>
-			<!-- BEGIN column_field -->
-			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" valign="top" style="padding:0px 2px 0px 2px"><?=$field_arr['value'] ?></td>
-			<!-- END column_field -->
+			<!-- RunOnRec Icons -->
+			<?php if(is_array($recrow_arr['runonrec_arr'])):?>
+			<?php foreach($recrow_arr['runonrec_arr'] as $runonrec_arr):?>
+			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" valign="top" style="padding:0px 2px 0px 2px"><?=$runonrec_arr ?></td>
 			<?php endforeach?>
+			<?php endif?>
+
+			<!-- Field values -->
+			<?php if(is_array($recrow_arr['fields'])):?>
+			<?php foreach($recrow_arr['fields'] as $field_arr):?>
+			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" valign="top" style="padding:0px 2px 0px 2px"><?=$field_arr['value'] ?></td>
+			<?php endforeach?>
+			<?php endif?>
 
 		 </tr>
 		 <!-- END row -->

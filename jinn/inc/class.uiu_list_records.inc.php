@@ -307,8 +307,10 @@
 		 $this->header('browse through records');
 		 $this->msg_box();
 
-		 $show_fields_str=$this->bo->read_preferences('show_fields'.$this->bo->site_object[unique_id]); 
-		 $default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object[unique_id]);
+		 $this->setRunOnRecordEvents();
+
+		 $show_fields_str=$this->bo->read_preferences('show_fields'.$this->bo->site_object['unique_id']); 
+		 $default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object['unique_id']);
 		 $default_col_num=$this->bo->read_preferences('default_col_num');
 		 $rec_per_page = $this->bo->records_per_page();
 
@@ -679,6 +681,13 @@
 				  $recrow_arr['colfield_delete_link']=$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.del_record&where_string='.$where_string);
 				  $recrow_arr['colfield_copy_link']=$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.copy_record&where_string='.$where_string);
 
+				  //for keeping performance only run when plugins are attached
+				  if($this->tplsav2->runonrec_amount>0)
+				  {
+					 //foreach record render a run on record link
+					 $recrow_arr['runonrec_arr']=$this->getRunOnRecordEventIcons($where_string);
+				  }
+
 				  $fields_arr=array();
 
 				  foreach($col_names_list  as $onecolname)
@@ -773,7 +782,37 @@
 
 		 $reportblock=$this->tplsav2->fetch('list_rec_reportsblock.tpl.php');
 		 return $reportblock;
+	  }
 
+	  function setRunOnRecordEvents()
+	  {
+		 $stored_configs = unserialize(base64_decode($this->bo->site_object['events_config']));
+		 $this->tplsav2->runonrec_amount = 0;
+		 if(is_array($stored_configs))
+		 {
+			foreach($stored_configs as $key => $conf_arr)
+			{
+			   if($conf_arr['conf']['event']=='run_on_record')
+			   {
+				  $conf_arr['runonrecordevent_link']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.runonrecord&plgkey='.$key);
+				  $this->runonrecord_arr[]=$conf_arr;
+				  $this->tplsav2->runonrec_amount ++;
+			   }
+			}
+		 }
+	  }
+	  
+	  function getRunOnRecordEventIcons($where_string)
+	  {
+		 foreach($this->runonrecord_arr as $key => $conf_arr)
+		 {
+			$conf_arr['runonrecordevent_link'].='&base64_where_string='.$where_string;
+			$this->tplsav2->runonrecordbuttons=$conf_arr;
+			
+			$buttonrow[]=$this->tplsav2->fetch('runonrecord_icons.tpl.php');
+		 }
+
+		 return $buttonrow;
 	  }
 
    }

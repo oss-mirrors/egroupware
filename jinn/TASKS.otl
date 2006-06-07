@@ -97,6 +97,8 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] event on delete record
 				[_] invoer verplicht tijdelijk uitgeschakeld
 				[_] invoer verplicht vervangen met invoer controle op inhoud (wellicht te definieren in plugin zelf)
+				[_] run on record event
+					[_] make complete see uiuser.inc.php
 			[_] 33% JAPIE JiNN API Enterprise
 				[_] set version info when jinn meta data is updated
 					[X] add/edit site
@@ -126,16 +128,17 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 						[X] read
 						[_] export CSV
 				[_] enable/disable functions
-					[_] edit
-					[_] del
-					[_] read
-					[_] copy
-					[X] reports
-					[_] search
-					[_] filters
-					[_] import
-					[_] export
-					[_] list
+					[_] implement these in JiNN General Objecte configuration
+						[_] edit
+						[_] del
+						[_] read
+						[_] copy
+						[X] reports
+						[_] search
+						[_] filters
+						[_] import
+						[_] export
+						[_] list
 				[_] default screen
 				[_] custom return links
 				[_] setup application including JAPIE stuff
