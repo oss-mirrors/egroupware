@@ -192,8 +192,8 @@
 			// resume an exception instance
 			if ($askResume)
 			{
-							//TODO: add a $system_comments = lang('exception resumed by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
-							// to the instance activity history  
+				//TODO: add a $system_comments = lang('exception resumed by %1 %2: %3',$user_fname, $user_lname,$exception_comment);
+				// to the instance activity history  
 				if (!$this->GUI->gui_resume_instance($activity_id, $instance_id)) 
 				{
 					$this->message[]=$this->GUI->get_error(false, _DEBUG);
@@ -281,8 +281,8 @@
 				//filling our query special string with all our filters
 				$this->fill_where_data();
 
-				// retrieve user instances
-				$instances =& $this->GUI->gui_list_user_instances($GLOBALS['egw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str,$this->where);
+				// retrieve user instances 
+				$instances =& $this->GUI->gui_list_user_instances($GLOBALS['egw_info']['user']['account_id'], $this->start, $this->offset, $this->sort_mode, $this->search_str,$this->where,false,(int)$this->filter_process,(!($this->remove_active_instances=='on')),($this->add_completed_instances=='on'), ($this->add_exception_instances=='on'), ($this->add_aborted_instances=='on'));
 				$this->total_records = $instances['cant'];
 				//echo "instances: <pre>";print_r($instances);echo "</pre>";
 				
@@ -415,12 +415,12 @@
 				// run the instance, the grab stuff is done in the run function
 				if (isset($actions['run']))
 				{
-								$this->t->set_var('run',
-																	'<a href="'. $GLOBALS['egw']->link('/index.php', 
-																			'menuaction=workflow.run_activity.go&iid='.$instance['wf_instance_id'] 
-																			.'&activity_id='.$instance['wf_activity_id']).'"><img src="'
-																			.$GLOBALS['egw']->common->image('workflow', 'runform').'" alt="'.$actions['run'] 
-																			.'" title="'.$actions['run'].'"></a>');
+					$this->t->set_var('run',
+						'<a href="'. $GLOBALS['egw']->link('/index.php', 
+						'menuaction=workflow.run_activity.go&iid='.$instance['wf_instance_id'] 
+						.'&activity_id='.$instance['wf_activity_id']).'"><img src="'
+						.$GLOBALS['egw']->common->image('workflow', 'runform').'" alt="'.$actions['run'] 
+						.'" title="'.$actions['run'].'"></a>');
 				}
 				else
 				{
@@ -431,10 +431,10 @@
 				//and the ui_userviewinstance if not
 				if (isset($actions['viewrun']))
 				{
-								$this->t->set_var('view',
-																'<a href="'.$GLOBALS['egw']->link('/index.php',array(
-																	'menuaction'	=> 'workflow.run_activity.go',
-																	'iid'		=> $instance['wf_instance_id'],
+					$this->t->set_var('view',
+						'<a href="'.$GLOBALS['egw']->link('/index.php',array(
+							'menuaction'	=> 'workflow.run_activity.go',
+							'iid'		=> $instance['wf_instance_id'],
 							'activity_id'	=> $actions['viewrun']['link'],
 							)).'"><img src="'.$GLOBALS['egw']->common->image('phpgwapi', 'view').'" alt="'.$actions['viewrun']['lang'].'" title="'.$actions['viewrun']['lang'].'"></a>'
 					);
@@ -442,9 +442,9 @@
 				elseif (isset($actions['view']))
 				{
 					$this->t->set_var('view',
-														 '<a href="'.$GLOBALS['egw']->link('/index.php',array(
-																'menuaction'	=> 'workflow.ui_userviewinstance.form',
-																'iid'		=> $instance['wf_instance_id'],
+						'<a href="'.$GLOBALS['egw']->link('/index.php',array(
+						'menuaction'	=> 'workflow.ui_userviewinstance.form',
+						'iid'		=> $instance['wf_instance_id'],
 						)).'"><img src="'.$GLOBALS['egw']->common->image('phpgwapi', 'view').'" alt="'.$actions['view'].'" title="'.$actions['view'].'"></a>'
 					);
 				}
@@ -472,23 +472,23 @@
 				// Resume exception instance
 					if (isset($actions['resume']))
 					{
-								$this->t->set_var('resume', 
-									'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'resume') 
-									.'" name="resume_instance" alt="'.$actions['resume'].'" title="'.$actions['resume'] 
-									.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-									.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'resume\')">');
+						$this->t->set_var('resume', 
+							'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'resume') 
+							.'" name="resume_instance" alt="'.$actions['resume'].'" title="'.$actions['resume'] 
+							.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+							.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'resume\')">');
 					} else {
-									$this->t->set_var('resume', '');
+						$this->t->set_var('resume', '');
 					}
 					
 				// Exception instance
 					if (isset($actions['exception']))
 					{
-									$this->t->set_var('exception', 
-										'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'tostop') 
-										.'" name="exception_instance" alt="'.$actions['exception'].'" title="'.$actions['exception'] 
-										.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-										.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'exception\')">');
+						$this->t->set_var('exception', 
+							'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'tostop') 
+							.'" name="exception_instance" alt="'.$actions['exception'].'" title="'.$actions['exception'] 
+							.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+							.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'exception\')">');
 					}
 					else
 					{
@@ -500,11 +500,11 @@
 					// aborting an instance is avaible for the owner or the user of an instance
 					if (isset($actions['abort']))
 					{
-									$this->t->set_var('abort', 
-										'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'totrash') 
-										.'" name="abort_instance" alt="'.$actions['abort'].'" title="'.$actions['abort'] 
-										.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-										.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'abort\')">');
+						$this->t->set_var('abort', 
+							'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'totrash') 
+							.'" name="abort_instance" alt="'.$actions['abort'].'" title="'.$actions['abort'] 
+							.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+							.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'abort\')">');
 					}
 					else
 					{
@@ -514,22 +514,22 @@
 				// Grabb or Release instance
 					if (isset($actions['grab']))
 					{//the instance is not yet grabbed by anyone and we have rights to grabb it (if we don't we wont be able to do it)
-									//(regis) seems better for me to show a float status when you want to grab, cause this is the actual state
-									// and the user understand better this way the metaphore
-									$this->t->set_var('grab_or_release', 
-										'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'float') 
-										.'" name="grab_instance" alt="'.$actions['grab'].'" title="'.$actions['grab'] 
-										.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-										.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'grab\')">');
+						//(regis) seems better for me to show a float status when you want to grab, cause this is the actual state
+						// and the user understand better this way the metaphore
+						$this->t->set_var('grab_or_release', 
+							'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'float') 
+							.'" name="grab_instance" alt="'.$actions['grab'].'" title="'.$actions['grab'] 
+							.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+							.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'grab\')">');
 					}
 					elseif (isset($actions['release']))
 					{
-									//(regis) seems better for me to show a fix status when you want to release, cause this is the actual state
-									$this->t->set_var('grab_or_release', 
-										'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'fix') 
-										.'" name="release_instance" alt="'.$actions['release'].'" title="'.$actions['release']
-										.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
-										.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'release\')">');
+						//(regis) seems better for me to show a fix status when you want to release, cause this is the actual state
+						$this->t->set_var('grab_or_release', 
+							'<input type="image" src="'. $GLOBALS['egw']->common->image('workflow', 'fix') 
+							.'" name="release_instance" alt="'.$actions['release'].'" title="'.$actions['release']
+							.'" width="16" onClick="submitAnInstanceLine('. $instance['wf_instance_id'] .','
+							.((empty($instance['wf_activity_id']))? '0':$instance['wf_activity_id']).',\'release\')">');
 					}
 					else
 					{
@@ -975,11 +975,7 @@
 				$this->where = '';
 				$wheres = array();
 				$or_wheres = array();
-				if(!($this->filter_process==''))
-				{
-						// warning, need to filter process on instance table, not activity
-					$wheres[] = "gi.wf_p_id=" .(int)$this->filter_process. "";
-				}
+
 				if(!($this->filter_activity_name==''))
 				{
 					$wheres[] = "ga.wf_name='" .$this->GUI->security_cleanup($this->filter_activity_name, false, true). "'";
@@ -1004,32 +1000,6 @@
 					$wheres[] = "(gi.wf_instance_id='".(int)$this->filter_instance."')";
 				}
 				
-				//instance selection :: instances can be active|exception|aborted|completed
-				if ($this->remove_active_instances) 
-				{
-					// no active instances, it's an AND
-					$wheres[] = "(gi.wf_status<>'active')";
-				}
-				else 
-				{
-					// default: we need active instances it's an OR with further instance selection	
-					$or_wheres[]= "(gi.wf_status='active')";
-				}
-				// others are in OR mode
-				if ($this->add_exception_instances) 
-				{
-					$or_wheres[] = "(gi.wf_status='exception')";
-				}
-				if ($this->add_aborted_instances) 
-				{
-					$or_wheres[] = "(gi.wf_status='aborted')";
-				}
-				if ($this->add_completed_instances) 
-				{
-					$or_wheres[] = "(gi.wf_status='completed')";
-				}
-				$wheres[] = "(".implode(' or ', $or_wheres).")";
-
 				//activities selection :: activities are running OR completed OR NULL (for aborted instances for example) 
 				// and by default we keep all activities
 				if ($this->filter_act_status =='running') 

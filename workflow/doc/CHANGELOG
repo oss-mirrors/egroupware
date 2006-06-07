@@ -7,6 +7,7 @@ regis_glc is Regis Leroy
 [1.3.00.000] unstable development version ** WARNING USE IT FOR TEST PURPOSE ONLY **
 	* start xajax support in the workflow
 	* use processes.css to decorate process names in all listings
+	* integrate patch 1497085 new method gui_list_instance_by_owner by Mauricio Luiz Viani, integration with gui_list_user_instance
 
 [1.2.01.006] bugfixes release ** LATEST STABLE RELEASE **
         * fix error on InstanceManager->get_instance thanks to Gareth Walter <Gareth@irrational.com.au>

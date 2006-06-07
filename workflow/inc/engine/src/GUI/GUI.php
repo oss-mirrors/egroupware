@@ -463,36 +463,62 @@ class GUI extends Base {
   * @param $find is a string to look at in activity name, activity description or instance name
   * @param $where is an empty string by default, the string let you add a string to the SQL statement -please be carefull with it.
   * @param $add_properties, false by default, will add properties in the returned instances
+  * @param $pId is the process id, 0 by default, in such case it is ignored
+  * @param $add_completed_instances false by default, if true we add completed instances in the result
+  * @param $add_exception_instances false by default, if true we add instances in exception in the result
+  * @param $add_aborted_instances false by default, if true we add aborted instances in the result
+  * @param $restrict_to_owner false by default, if true we restrict to instance for which the user is the owner even if it gives no special rights (that can give more or less results -- you'll have ownership but no rights but you wont get rights without ownership)
   * @return an array with number of records in the 'cant key and instances in the 'data' key. Each instance 
-  * is an array containing theses keys: wf_instance_id, wf_started, wf_owner, wf_user, wf_status (instance status), wf_category, 
-  * wf_act_status, wf_name (activity name), wf_type, wf_procname, wf_is_interactive, wf_is_autorouted, wf_activity_id, 
+  * is an array containing theses keys: wf_instance_id, wf_started (instance), wf_ended (instance), wf_owner, wf_user, wf_status (instance status),
+  * wf_category, wf_act_status, wf_act_started, wf_name (activity name), wf_type, wf_procname, wf_is_interactive, wf_is_autorouted, wf_activity_id, 
   * wf_version (process version), wf_p_id, insname (instance name), wf_priority and wf_readonly (which is true if the user only have 
   * read-only roles associated with this activity).
   */
-  function gui_list_user_instances($user,$offset,$maxRecords,$sort_mode,$find,$where='',$add_properties=false)
+  function gui_list_user_instances($user, $offset, $maxRecords, $sort_mode, $find, $where='', $add_properties=false, $pId=0, $add_active_instances=true, $add_completed_instances=false, $add_exception_instances=false, $add_aborted_instances=false, $restrict_to_owner=false)
   {
     // FIXME: this doesn't support multiple sort criteria
     //$sort_mode = $this->convert_sortmode($sort_mode);
     $sort_mode = str_replace("__"," ",$sort_mode);
 
+    //process restriction
     $mid = 'where gp.wf_is_active=?';
-    // add group mapping, warning groups and user can have the same id
-    $groups = galaxia_retrieve_user_groups($user);
-    $mid .= " and (  ((gur.wf_user=? and gur.wf_account_type='u')";
-    if (is_array($groups))
+    $bindvars = array('y');
+    if (!($pId==0))
     {
-      $mid .= '	or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+        $mid.= " and gp.wf_p_id=?";
+        $bindvars[] = $pId;
     }
-    $mid .= ')';
 
-    // this collect non interactive instances we are owner of
-    $mid .= " 	or ((gi.wf_owner=?) and ga.wf_is_interactive = 'n')"; 
-    // and this collect completed instances when asked which haven't got any user anymore
-    $mid .= '   or (gur.wf_user is NULL) )';
+    //look for a owner restriction
+    if ($restrict_to_owner)
+    {
+        $mid .= "  and gi.wf_owner=?";
+        $bindvars[] = $user;
+    }
+    else //no restriction on ownership, look for user and/or owner
+    {
+      // add group mapping, warning groups and user can have the same id
+      $groups = galaxia_retrieve_user_groups($user);
+      $mid .= " and (  ((gur.wf_user=? and gur.wf_account_type='u')";
+      if (is_array($groups))
+      {
+        $mid .= '	or (gur.wf_user in ('.implode(',',$groups).") and gur.wf_account_type='g')";
+      }
+      $mid .= ')';
 
-    
-    $bindvars = array('y', $user, $user);
-    
+      // this collect non interactive instances we are owner of
+      $mid .= " 	or ((gi.wf_owner=?) and ga.wf_is_interactive = 'n')"; 
+      // and this collect completed/aborted instances when asked which haven't got any user anymore
+      if ($add_completed_instances || add_aborted_instances) 
+      {
+          $mid .= ' or (gur.wf_user is NULL)';
+      }
+      $mid .= ')';    
+
+      $bindvars[] = $user;
+      $bindvars[] = $user;
+    }
+
     if($find) {
       $findesc = '%'.$find.'%';
       $mid .= " and ( (upper(ga.wf_name) like upper(?))";
@@ -506,15 +532,34 @@ class GUI extends Base {
       $mid.= " and ($where) ";
     }
 
+    //instance selection :: instances can be active|exception|aborted|completed
+    $or_status = Array();
+    if ($add_active_instances) $or_status[] = "(gi.wf_status='active')";
+    if ($add_exception_instances) $or_status[] = "(gi.wf_status='exception')";
+    if ($add_aborted_instances) $or_status[] = "(gi.wf_status='aborted')";
+    if ($add_completed_instances) $or_status[] = "(gi.wf_status='completed')";
+    if (!(empty($or_status))) 
+    {
+        $mid .= 'and ('.implode(' or ', $or_status).')';
+    }
+    else
+    { //special case, we want no active instance, and we do not want exception/aborted and completed, so what?
+      // maybe a special new status or some bad record in database...
+      $mid .= " and (gi.wf_status NOT IN ('active','exception','aborted','completed'))";
+    }
+
+
     // (regis) we need LEFT JOIN because aborted and completed instances are not showned 
     // in instance_activities, they're only in instances
     $query = 'select distinct(gi.wf_instance_id),
                      gi.wf_started,
+                     gi.wf_ended,
                      gi.wf_owner,
                      gia.wf_user,
                      gi.wf_status,
                      gi.wf_category,
                      gia.wf_status as wf_act_status,
+                     gia.wf_started as wf_act_started,
                      ga.wf_name,
                      ga.wf_type,
                      gp.wf_name as wf_procname, 
@@ -528,31 +573,31 @@ class GUI extends Base {
                      gi.wf_priority,
                      MIN(gar.wf_readonly) as wf_readonly';
     $query .= ($add_properties)? ', gi.wf_properties' : '';
-    $query .= ' from '.GALAXIA_TABLE_PREFIX."instances gi 
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gia.wf_activity_id = ga.wf_activity_id
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gar.wf_role_id
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
-              $mid 
-              GROUP BY gi.wf_instance_id, gi.wf_started, gi.wf_owner, gia.wf_user, gi.wf_status, gi.wf_category, 
-              gia.wf_status, ga.wf_name, ga.wf_type, gp.wf_name, ga.wf_is_interactive, ga.wf_is_autorouted, 
-              ga.wf_activity_id, gp.wf_version, gp.wf_p_id, gp.wf_normalized_name, gi.wf_name, gi.wf_priority";
+    $query .= ' from '.GALAXIA_TABLE_PREFIX.'instances gi 
+                LEFT JOIN '.GALAXIA_TABLE_PREFIX.'instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
+                LEFT JOIN '.GALAXIA_TABLE_PREFIX.'activities ga ON gia.wf_activity_id = ga.wf_activity_id
+                LEFT JOIN '.GALAXIA_TABLE_PREFIX.'activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id';
+    $query .= ($restrict_to_owner)? '': ' LEFT JOIN '.GALAXIA_TABLE_PREFIX.'user_roles gur ON gur.wf_role_id=gar.wf_role_id';
+    $query .= ' INNER JOIN '.GALAXIA_TABLE_PREFIX.'processes gp ON gp.wf_p_id=gi.wf_p_id 
+              '.$mid.' 
+              GROUP BY gi.wf_instance_id, gi.wf_started, gi.wf_ended, gi.wf_owner, gia.wf_user, gi.wf_status, gi.wf_category, 
+              gia.wf_status, gia.wf_started, ga.wf_name, ga.wf_type, gp.wf_name, ga.wf_is_interactive, ga.wf_is_autorouted, 
+              ga.wf_activity_id, gp.wf_version, gp.wf_p_id, gp.wf_normalized_name, gi.wf_name, gi.wf_priority';
     $query .= ($add_properties)? ', gi.wf_properties' : '';
     // (regis) this count query as to count global -unlimited- (instances/activities) not just instances
     // as we can have multiple activities for one instance and we will show all of them and the problem is 
     // that a user having memberships in several groups having the rights is counted several times. 
     // If we count instance_id without distinct we'll have several time the same line.
     // the solution is to count distinct instance_id for each activity and to sum theses results
-    $query_cant = "select count(distinct(gi.wf_instance_id)) as cant, gia.wf_activity_id
-              from ".GALAXIA_TABLE_PREFIX."instances gi 
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."activities ga ON gia.wf_activity_id = ga.wf_activity_id
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id
-                LEFT JOIN ".GALAXIA_TABLE_PREFIX."user_roles gur ON gur.wf_role_id=gar.wf_role_id
-                INNER JOIN ".GALAXIA_TABLE_PREFIX."processes gp ON gp.wf_p_id=gi.wf_p_id
-              $mid
-                GROUP BY gia.wf_activity_id";
+    $query_cant = 'select count(distinct(gi.wf_instance_id)) as cant, gia.wf_activity_id
+              from '.GALAXIA_TABLE_PREFIX.'instances gi 
+                LEFT JOIN '.GALAXIA_TABLE_PREFIX.'instance_activities gia ON gi.wf_instance_id=gia.wf_instance_id
+                LEFT JOIN '.GALAXIA_TABLE_PREFIX.'activities ga ON gia.wf_activity_id = ga.wf_activity_id
+                LEFT JOIN '.GALAXIA_TABLE_PREFIX.'activity_roles gar ON gia.wf_activity_id=gar.wf_activity_id';
+    $query_cant .= ($restrict_to_owner)? '': ' LEFT JOIN '.GALAXIA_TABLE_PREFIX.'user_roles gur ON gur.wf_role_id=gar.wf_role_id';
+    $query_cant .=' INNER JOIN '.GALAXIA_TABLE_PREFIX.'processes gp ON gp.wf_p_id=gi.wf_p_id
+              '.$mid.'
+                GROUP BY gia.wf_activity_id';
     //echo "<br> query => ".$query; _debug_array($bindvars);
      
     $result = $this->query($query,$bindvars,$maxRecords,$offset, true, $sort_mode);
@@ -583,6 +628,31 @@ class GUI extends Base {
     return $retval;
   }
   
+/*!
+* List all instances where the user is the owner (active, completed, aborted, exception)
+  * @param $user is the given user id
+  * @param $offset is the starting number for the returned records
+  * @param $maxRecords is the limit of records to return in data (but the 'cant' key count the total number without limits)
+  * @param $sort_mode is the sort mode for the query
+  * @param $find is a string to look at in activity name, activity description or instance name
+  * @param $where is an empty string by default, the string let you add a string to the SQL statement -please be carefull with it.
+  * @param $add_properties, false by default, will add properties in the returned instances
+  * @param $pId is the process id, 0 by default, in such case it is ignored
+  * @param $add_completed_instances false by default, if true we add completed instances in the result
+  * @param $add_exception_instances false by default, if true we add instances in exception in the result
+  * @param $add_aborted_instances false by default, if true we add aborted instances in the result
+  * @return an associative array, key cant gives the number of results, key data is an array of instances and each instance
+  * an array containing theses keys: wf_instance_id, wf_started (instance), wf_ended (instance), wf_owner, wf_user,
+  * wf_status (instance status), wf_category, wf_act_status (activity), wf_act_started (activity), wf_name (activity name),
+  * wf_type, wf_procname, wf_is_interactive, wf_is_autorouted, wf_activity_id, wf_version (process version), wf_p_id,
+  * insname (instance name), wf_priority and wf_readonly (which is true if the user only have read-only roles associated
+  * with this activity).
+  */
+  function gui_list_instances_by_owner($user, $offset, $maxRecords, $sort_mode, $find, $where='', $add_properties=false, $pId=0, $add_active_instances=true, $add_completed_instances=false, $add_exception_instances=false, $add_aborted_instances=false)
+  {
+	return $this->gui_list_user_instances($user,$offset,$maxRecords,$sort_mode,$find,$where,$add_properties, $pId,add_active_instances,$add_completed_instances,$add_exception_instances, $add_aborted_instances,true);
+  }
+
   /*! Get the view activity id avaible for a given process
   * No test is done on real access to this activity for users, this access will be check at runtime (when clicking)
   * @param $pId is the process Id
