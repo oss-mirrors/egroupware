@@ -186,122 +186,208 @@
 			   <div id="subnav">
 				  <div id="tabcontent1" class="inactivetab" >
 
-						   <input type="hidden" name="where_key" value="<?= $this->where_key;?>">
-						   <input type="hidden" name="where_value" value="<?= $this->where_value;?>">
+					 <input type="hidden" name="where_key" value="<?= $this->where_key;?>">
+					 <input type="hidden" name="where_value" value="<?= $this->where_value;?>">
 
-						   <table align="" cellspacing="2" cellpadding="2" style="border-spacing: 15px;">
-					<!--		  <tr>
-								 <td><?= lang('Object id');?></td>
-								 <td><input type="hidden" name="FLDobject_id" value="<?=$this->where_value;?>"><?=$this->where_value;?></td>
-							  </tr>
-							  <tr>
-								 <td  ><?= lang('Parent site id');?></td>
-								 <td ><input type=hidden name="FLDparent_site_id" value="<?=$this->global_values['parent_site_id'];?>"><?=$this->global_values['parent_site_id'];?></td>
-							  </tr>
-							  -->
-							  <tr>
-								 <td  ><?= lang('Name');?></td>
-								 <td ><input type="text" name="FLDname" size="40" input_max_length value="<?= $this->global_values['name']?>"></td>
-							  </tr>
-							  <tr>
-								 <td  ><?= lang('Table name');?></td>
-								 <td >
-									<select name="FLDtable_name" onchange="<?php if($_GET['new']) echo 'return;';?>alert('<?=lang('If you change the table of this object you\n may loose field configuration data.\n\n\n Think of this before you save these settings.')?>')">
-									   <?php  foreach($this->tables as $table):?>
-									   <?php if($table['table_name']==$this->global_values[table_name]):?>
-									   <option value="<?=$table['table_name'];?>" selected="selected"><?=$table['table_name'];?></option>
-									   <?php  else:?>
-									   <option value="<?=$table['table_name'];?>"><?=$table['table_name'];?></option>
-									   <?php endif?>
-									   <?php endforeach?>
-									</select>
-								 </td>
-							  </tr>
-							  <!--				
-							  <tr>
-						<td  ><?= lang('Upload path');?></td>
-						<td ><input type="text" name="FLDupload_path" size="40" $input_max_length value="<?=$this->global_values['upload_path']?>"></td>
-					 </tr>
-					 <tr>
-						<td  ><?= lang('Development (Test) site upload path');?></td>
-						<td ><input type="text" name="FLDdev_upload_path" size="40" input_max_length value="<?=$this->global_values['dev_upload_path']?>"></td>
-					 </tr>
-					 -->
-					 <tr>
-						<td  ><?= lang('Max. records');?></td>
-						<td >
-						   <select name="FLDmax_records">
-							  <?php if($this->global_values['max_records'] == 1): ?>
-							  <option value=""><?= lang('unlimited');?></option>
-							  <option  value="1"selected="selected"><?= lang('only one');?></option>
-							  <?php  else: ?>
-							  <option value=""  selected="selected"><?= lang('unlimited');?></option>
-							  <option  value="1"><?= lang('only one');?></option>			 
-							  <?php endif?>
-						   </select>
-						</td>
-					 </tr>
-					 <tr>
-						<td  ><?= lang('Hide from object menu');?></td>
-						<td >
-						   <select name="FLDhide_from_menu">
-							  <?  if($this->global_values['hide_from_menu'] == 1):?>
-							  <option value=""><?= lang('No');?></option>
-							  <option  value="1" selected="selected"><?= lang('Yes, hide from menu');?></option>
-							  <?php  else:?>
-							  <option value=""selected="selected"><?= lang('No');?></option>
-							  <option  value="1" ><?= lang('Yes, hide from menu');?></option>
-							  <?php endif?>
-						   </select>
-						</td>
-					 </tr>
-					 <!--
-					 <tr>
-						<td  ><?= lang('Upload url');?></td>
-						<td ><input type="text" name="FLDupload_url" size="40" input_max_length value="<?=$this->global_values['upload_url']?>"></td>
-					 </tr>
-					 <tr>
-						<td  ><?= lang('Dev upload url');?></td>
-						<td ><input type="text" name="FLDdev_upload_url" size="40" input_max_length value="<?=$this->global_values['dev_upload_url']?>"></td>
-					 </tr>
-					 -->
-					 <tr>
-						<td  ><?= lang('Extra where sql filter');?></td>
-						<td ><textarea name="FLDextra_where_sql_filter" cols="60" rows="2"><?=$this->global_values['extra_where_sql_filter']?></textarea></td>
-					 </tr>
-					 <tr>
-						<td  ><?= lang('Informative description');?></td>
-				  <td ><textarea name="FLDhelp_information" cols="60" rows="2"><?=$this->global_values['help_information']?></textarea></td>
-			   </tr>
-		</table> 
-					 
-			   </div>
+					 <table align="" cellspacing="2" cellpadding="2" style="border-spacing: 15px;">
+						<!--		  <tr>
+						   <td><?= lang('Object id');?></td>
+						   <td><input type="hidden" name="FLDobject_id" value="<?=$this->where_value;?>"><?=$this->where_value;?></td>
+						</tr>
+						<tr>
+						   <td  ><?= lang('Parent site id');?></td>
+						   <td ><input type=hidden name="FLDparent_site_id" value="<?=$this->global_values['parent_site_id'];?>"><?=$this->global_values['parent_site_id'];?></td>
+						</tr>
+						-->
+						<tr>
+						   <td  ><?= lang('Name');?></td>
+						   <td ><input type="text" name="FLDname" size="40" input_max_length value="<?= $this->global_values['name']?>"></td>
+						</tr>
+						<tr>
+						   <td  ><?= lang('Table name');?></td>
+						   <td >
+							  <select name="FLDtable_name" onchange="<?php if($_GET['new']) echo 'return;';?>alert('<?=lang('If you change the table of this object you\n may loose field configuration data.\n\n\n Think of this before you save these settings.')?>')">
+								 <?php  foreach($this->tables as $table):?>
+								 <?php if($table['table_name']==$this->global_values[table_name]):?>
+								 <option value="<?=$table['table_name'];?>" selected="selected"><?=$table['table_name'];?></option>
+								 <?php  else:?>
+								 <option value="<?=$table['table_name'];?>"><?=$table['table_name'];?></option>
+								 <?php endif?>
+								 <?php endforeach?>
+							  </select>
+						   </td>
+						</tr>
+						<!--				
+						<tr>
+						   <td  ><?= lang('Upload path');?></td>
+						   <td ><input type="text" name="FLDupload_path" size="40" $input_max_length value="<?=$this->global_values['upload_path']?>"></td>
+						</tr>
+						<tr>
+						   <td  ><?= lang('Development (Test) site upload path');?></td>
+						   <td ><input type="text" name="FLDdev_upload_path" size="40" input_max_length value="<?=$this->global_values['dev_upload_path']?>"></td>
+						</tr>
+						-->
+						<tr>
+						   <td  ><?= lang('Max. records');?></td>
+						   <td >
+							  <select name="FLDmax_records">
+								 <?php if($this->global_values['max_records'] == 1): ?>
+								 <option value=""><?= lang('unlimited');?></option>
+								 <option  value="1"selected="selected"><?= lang('only one');?></option>
+								 <?php  else: ?>
+								 <option value=""  selected="selected"><?= lang('unlimited');?></option>
+								 <option  value="1"><?= lang('only one');?></option>			 
+								 <?php endif?>
+							  </select>
+						   </td>
+						</tr>
+						<tr>
+						   <td  ><?= lang('Hide from object menu');?></td>
+						   <td >
+							  <select name="FLDhide_from_menu">
+								 <?  if($this->global_values['hide_from_menu'] == 1):?>
+								 <option value=""><?= lang('No');?></option>
+								 <option  value="1" selected="selected"><?= lang('Yes, hide from menu');?></option>
+								 <?php  else:?>
+								 <option value=""selected="selected"><?= lang('No');?></option>
+								 <option  value="1" ><?= lang('Yes, hide from menu');?></option>
+								 <?php endif?>
+							  </select>
+						   </td>
+						</tr>
+						<!--
+						<tr>
+						   <td  ><?= lang('Upload url');?></td>
+						   <td ><input type="text" name="FLDupload_url" size="40" input_max_length value="<?=$this->global_values['upload_url']?>"></td>
+						</tr>
+						<tr>
+						   <td  ><?= lang('Dev upload url');?></td>
+						   <td ><input type="text" name="FLDdev_upload_url" size="40" input_max_length value="<?=$this->global_values['dev_upload_url']?>"></td>
+						</tr>
+						-->
+						<tr>
+						   <td  ><?= lang('Extra where sql filter');?></td>
+						   <td ><textarea name="FLDextra_where_sql_filter" cols="60" rows="2"><?=$this->global_values['extra_where_sql_filter']?></textarea></td>
+						</tr>
+						<tr>
+						   <td  ><?= lang('Informative description');?></td>
+						   <td ><textarea name="FLDhelp_information" cols="60" rows="2"><?=$this->global_values['help_information']?></textarea></td>
+						</tr>
+
+						<?php
+						   $chk='checked="checked"';
+//						   _debug_array($this->global_values);
+						   if(!$this->global_values['disable_del'])			  	$checked_disable_del = $chk;
+						   if(!$this->global_values['disable_multi']) 			$checked_disable_multi = $chk;
+						   if(!$this->global_values['disable_edit_rec'])		$checked_disable_edit_rec = $chk;
+						   if(!$this->global_values['disable_view_rec'])		$checked_disable_view_rec = $chk;
+						   if(!$this->global_values['disable_copy_rec'])		$checked_disable_copy_rec = $chk;
+						   if(!$this->global_values['disable_reports']) 		$checked_disable_reports = $chk;
+						   if(!$this->global_values['disable_simple_search'])  	$checked_disable_simple_search = $chk;
+						   if(!$this->global_values['disable_filters']) 		$checked_disable_filters = $chk;
+						   if(!$this->global_values['disable_export'])  		$checked_disable_export = $chk;
+						   if(!$this->global_values['disable_import'])  		$checked_disable_import = $chk;
+						?>
+						<tr>
+						   <td><?= lang('Enable Delete Record');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_del" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_del?> name="FLDdisable_del" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Multiple Record Actions');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_multi" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_multi?>  name="FLDdisable_multi" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Edit Record');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_edit_rec" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_edit_rec?> name="FLDdisable_edit_rec" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable View Records');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_view_rec" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_view_rec?>  name="FLDdisable_view_rec" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Copy Record');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_copy_rec" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_copy_rec?> name="FLDdisable_copy_rec" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Reports');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_reports" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_reports?>  name="FLDdisable_reports" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Simple Search');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_simple_search" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_simple_search?> name="FLDdisable_simple_search" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Filters');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_filters" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_filters?>  name="FLDdisable_filters" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Exports');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_export" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_export?> name="FLDdisable_export" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Imports');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_import" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_import?>  name="FLDdisable_import" value="0"/>
+						   </td>
+						</tr>
+
+					 </table> 
+
+				  </div>
 				  <!-- endtab-->
 
-			   <!--
-			   <div id="tabcontent3" class="inactivetab">
-				  <h1>TAB 3</h1>
+				  <!--
+				  <div id="tabcontent3" class="inactivetab">
+					 <h1>TAB 3</h1>
+				  </div>
+
+				  <div id="tabcontent4" class="inactivetab">
+					 <h1>TAB 4</h1>
+				  </div>
+				  -->
+
 			   </div>
 
-			   <div id="tabcontent4" class="inactivetab">
-				  <h1>TAB 4</h1>
+			   <script type="text/JavaScript">
+			   </script>
+			   <br/>
+			   <div align="center" style="<?=$this->buttons_visibility?>">
+				  <input class="egwbutton"  type="submit" value="<?=lang('save')?>"  onclick="" />
+				  <input class="egwbutton"  type="button" value="<?=lang('close')?>" onClick="self.close()" />
 			   </div>
-			   -->
-
 			</div>
-
-			<script type="text/JavaScript">
-			</script>
-			<br/>
-			<div align="center" style="<?=$this->buttons_visibility?>">
-			   <input class="egwbutton"  type="submit" value="<?=lang('save')?>"  onclick="" />
-			   <input class="egwbutton"  type="button" value="<?=lang('close')?>" onClick="self.close()" />
-			</div>
-		 </div>
-		 <!-- end maindiv -->
+			<!-- end maindiv -->
 
 
-	  </form>
-   </body>
-</html>
+		 </form>
+	  </body>
+   </html>
 

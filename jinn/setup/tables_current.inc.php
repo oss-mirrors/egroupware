@@ -80,7 +80,17 @@
 				'unique_id' => array('type' => 'varchar','precision' => '13','nullable' => False),
 				'layoutmethod' => array('type' => 'char','precision' => '1','nullable' => False),
 				'formwidth' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'formheight' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
+				'formheight' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+				'disable_del' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_multi' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_edit_rec' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_view_rec' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_copy_rec' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_reports' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_simple_search' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_filters' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_export' => array('type' => 'bool','nullable' => False,'default' => '0'),
+				'disable_import' => array('type' => 'bool','nullable' => False,'default' => '0')
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),
