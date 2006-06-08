@@ -66,6 +66,7 @@
 			'tinyint'		=>		'int',
 			'float'			=>		'float',
 			'date'			=>		'date',
+			'datetime'		=>		'date',
 			'timestamp'		=>		'timestamp',
 			'blob'			=>		'blob',
 			'longtext'		=>		'blob',

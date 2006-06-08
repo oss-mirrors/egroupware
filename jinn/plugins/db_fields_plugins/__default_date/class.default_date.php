@@ -43,7 +43,7 @@
 		{
 		   if ($value)
 		   {
-			  $input='<input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$this->local_bo->so->site_db->Link_ID->UserDate($value);
+			  $input = '<input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$this->local_bo->so->site_db->Link_ID->UserDate($value);
 		   }
 		   else
 		   {

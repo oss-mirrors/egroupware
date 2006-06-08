@@ -31,7 +31,7 @@
 	$this->registry->plugins['date']['author']			= 'Pim Snel, Rob van Kraanen';
 	$this->registry->plugins['date']['description']		= 'create date input box and date storage method, (At this time Dutch only)';
 	$this->registry->plugins['date']['enable']			= 1;
-	$this->registry->plugins['date']['db_field_hooks']	= array('date');
+	$this->registry->plugins['date']['db_field_hooks']	= array('date','datetime');
  
     $option=array(
 	   '0'=>'OldWay',

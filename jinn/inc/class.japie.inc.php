@@ -105,10 +105,31 @@
 		 $this->japie_functions['filter']=false;
 	  }
 
+	  /**
+	  * addExtraWhere: merge the extra_where filter SQL with an additional extra where
+	  * 
+	  * @param mixed $extra_where 
+	  * @access public
+	  * @return void
+	  */
 	  function addExtraWhere($extra_where)
 	  {
-	//	 die('hallo');
+		 //fixme start of object filters
+		 if($this->bo->site_object[extra_where_sql_filter])
+		 {
+			if ($extra_where) 
+			{
+			   $extra_where.= " AND ({$this->bo->site_object[extra_where_sql_filter]})"; 	
+			}
+			else
+			{
+			   $extra_where= " ({$this->bo->site_object[extra_where_sql_filter]})"; 	
+			}
+		 }
+
 		 $this->extra_where=$extra_where; 
+//		 _debug_array($this->extra_where);
+
 	  }
 
 	  function display()
@@ -142,7 +163,10 @@
 		 {
 			$this->multiple_actions();	
 		 }
-
+		 elseif($_GET['jma']=='jinn.uiuser.runonrecord')
+		 {
+			$this->run_on_record();	
+		 }
 		 else
 		 {
 			$this->list_records();
@@ -159,12 +183,8 @@
 		 $tmpso = CreateObject('jinn.sojinn');
 
 		 //FIXME Workaround
-		 //		 $this->site_id = $tmpso->get_site_id_by_object_id($this->site_object_id);
-//		 _debug_array($this->calling_app);
 		 $site_with_this_name_arr=$tmpso->get_sites_by_name($this->calling_app);
 		 $this->site_id=$site_with_this_name_arr[0];
-
-		 ///		 $this->site_id = $GLOBALS['egw_info']['flags']['currentapp']
 
 		 /*
 		 if(!$this->site_id)
@@ -181,20 +201,17 @@
 		 $sessionmanager = CreateObject('jinn.sojinnsession');
 		 $sessionmanager->sessionarray['site_object_id']=$this->site_object_id;
 		 $sessionmanager->sessionarray['site_id']=$this->site_id;
-		 //_debug_array($sessionmanager->sessionarray);
 		 $sessionmanager->save();
 		 unset($sessionmanager);
 	  }
 
 	  function doClassStuff()
 	  {
-	//	 $this->setSession();
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japie_functions=$this->japie_functions;
 
 		 if($this->extra_where)
 		 {
-//			echo "halloa";
 			$this->uijapie->bo->site_object['extra_where_sql_filter']=$this->extra_where;
 		 }
 
@@ -231,7 +248,6 @@
   
 	  function new_record()
 	  {
-//		 $this->setSession();
 
 		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
 		 $this->doClassStuff();
@@ -271,7 +287,18 @@
 		 $this->uijapie->multiple_actions();		 
 	  }
 
-	  
+	  function run_on_record()
+	  {
+		 $this->uijapie = CreateObject('jinn.uiuser');
+
+		 $this->uijapie->no_header=true;
+		 $this->uijapie->japie_functions=$this->japie_functions;
+		 $this->uijapie->japielink=$this->make_japie_link();
+
+		 $this->uijapie->runonrecord();		 
+	  }
+
+
    }
 
 

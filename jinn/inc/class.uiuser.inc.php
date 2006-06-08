@@ -178,8 +178,8 @@
 	  //FIXME make sure it only runs the choosen event
 	  //FIXME render buttons per record in edit record
 	  //FIXME add GET Arg with return link
-	  //FIXME test with JAPIE
 	  //FIXME don't show button on new records
+	  //implement multiple
 	  function runonrecord()
 	  {
 		 //run event on current record
@@ -230,8 +230,6 @@
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-		 //$this->header(lang('Walk all records'));
-		 //$this->msg_box();
 		 $this->tplsav2->assign('selval',$_GET[selvalues]);
 		 $this->tplsav2->display('pop_walk_event.tpl.php');
 	  }

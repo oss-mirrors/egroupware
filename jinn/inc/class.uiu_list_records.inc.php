@@ -794,7 +794,7 @@
 			{
 			   if($conf_arr['conf']['event']=='run_on_record')
 			   {
-				  $conf_arr['runonrecordevent_link']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.runonrecord&plgkey='.$key);
+				  $conf_arr['runonrecordevent_link']=$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiuser.runonrecord&plgkey='.$key);
 				  $this->runonrecord_arr[]=$conf_arr;
 				  $this->tplsav2->runonrec_amount ++;
 			   }
