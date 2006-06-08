@@ -224,8 +224,8 @@ function tts_upgrade1_0_002()
 }
 
 
-$test[] = '1.0.008';
-function tts_upgrade1_0_008()
+$test[] = '1.2.008';
+function tts_upgrade1_2_008()
 {
 	$GLOBALS['setup_info']['tts']['currentver'] = '1.2.009';
 	return $GLOBALS['setup_info']['tts']['currentver'];
