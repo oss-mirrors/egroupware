@@ -4,7 +4,7 @@
    * class that provides virtual calendars across egw infolog and calendar resources
    * @author Jan van Lieshout                                                *
    * @package icalsrv
-   * $Id$
+   * Id$
    */
    /* ------------------------------------------------------------------------ *
    * This library is free software; you can redistribute it and/or modify it  *

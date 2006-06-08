@@ -5,7 +5,7 @@
    * export ical data
    * @author Jan van Lieshout 
    * @package icalsrv
-   * $Id$
+   * Id$
    */
    /* ------------------------------------------------------------------------ *
    * This library is free software; you can redistribute it and/or modify it  *

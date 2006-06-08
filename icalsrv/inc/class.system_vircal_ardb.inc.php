@@ -3,7 +3,7 @@
    * @file system_vircal_ardb
    * class that provides an array storage for virtual calendars
    *
-   * $Id$
+   *  Id$
    * @author Jan van Lieshout                                                *
    * @package icalsrv
    * ------------------------------------------------------------------------ *
