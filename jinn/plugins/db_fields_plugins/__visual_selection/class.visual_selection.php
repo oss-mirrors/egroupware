@@ -53,6 +53,7 @@
 		 #_debug_array($field_name);
 		 #_debug_array($value);
 		 #_debug_array($config);
+		 #die();
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 		 if(is_array($config))
 		 {

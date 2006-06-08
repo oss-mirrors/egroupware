@@ -17,10 +17,10 @@
    <?php if(is_array($this->config)):?>
    <?php foreach($this->config as $config):?>
    <?if($this->value == $config['option_value']):?>
-   <img style="margin:10px;border:1px solid black" src="<?php echo($this->upload_url);?>/visual_selection/<?php echo($config[imgfile]['value']);?>" onclick="change_selection('<?php echo($config['option_value']);?>',<?php echo($i);?>);" id="<?php echo($i);?>">
+   <img style="margin:10px;border:1px solid black" src="<?php echo($this->upload_url);?>/visual_selection/<?php echo($config['imgfile']);?>" onclick="change_selection('<?php echo($config['option_value']);?>',<?php echo($i);?>);" id="<?php echo($i);?>">
    
    <?else:?>
-   <img style="margin:10px;" src="<?php echo($this->upload_url);?>/visual_selection/<?php echo($config[imgfile][value]);?>" onclick="change_selection('<?php echo($config['option_value']);?>',<?php echo($i);?>);" id="<?php echo($i);?>">
+   <img style="margin:10px;" src="<?php echo($this->upload_url);?>/visual_selection/<?php echo($config['imgfile']);?>" onclick="change_selection('<?php echo($config['option_value']);?>',<?php echo($i);?>);" id="<?php echo($i);?>">
    <?endif?>
 <?php $i++;?>
    <?php endforeach?>
