@@ -12,7 +12,7 @@
 	*  Free Software Foundation; either version 2 of the License.              *
 	* @version 0.9.30 (for use with napi3)
 	\**************************************************************************/
-  /* $Id$ */
+  /* Id$ */
 
   /* THIS CLASS IS JUST HERE FOR BACKWARD COMPATIBILITY  */
   /* in future you should rewrite ical handling using the egwical_resourcehandler class */

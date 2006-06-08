@@ -3,7 +3,7 @@
    * @file
    * simple class that provides manipulating a collection of iCalendar objects (aka VElts)
    *
-   * $Id$
+   * Id$
    * @author Jan van Lieshout                                                *
    * @package egwical
    * ------------------------------------------------------------------------ *

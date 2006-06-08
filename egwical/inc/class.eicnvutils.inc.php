@@ -138,9 +138,10 @@ END:VTODO
 	 * and not exact time. There will be no VTIMEZONE written in the exported icalendar.
 	 * For more info on this see @ref pageegwicaltzh
 	 *
-	 * @version 0.9.37-ng-a1 a small experimental fix for comma escaping in values
-	 * @date 20060427
-	 * @sinve 0.9.34-b3 dst-patch fixed
+	 * @version 0.9.37-ng-a6 fix for RRULE by WEEKLY without BYDAY param
+	 * @date 20060508
+	 * @since 0.9.37-ng-a1 a small experimental fix for comma escaping in values
+	 * @since 0.9.34-b3 dst-patch fixed
 	 * @since 0.9.31 added some FREEBUSY routines
 	 * @since 0.9.30 using napi3 api
 	 * @since 0.9.22 separated the conversion utilties into eicnvutils class
@@ -767,9 +768,9 @@ END:VTODO
 //		error_log('n:' . $aname . 'v:' . $valueData);
 		$vobj->setAttribute($aname, $valueData, $paramData);
 		$options = array();
+
 		// JVL:is this really needed?
 		if (is_string($valueData)){
-
 // // JVL: TEMPORARY SWITCHED OFF... TURN ON AGAIN!!!
 //  		  if(!(in_array($aname, array('RRULE')))
 //  			 && preg_match('/([\000-\012\015\016\020-\037\075])/',$valueData)) {
@@ -1010,7 +1011,8 @@ END:VTODO
 
 		case 'W':
 		case 'WEEKLY':
-		  $days = array();
+		  // take as default the start day of week
+		  $days = array(strtoupper(substr(date('D',$ustart),0,2)));
 		  if(preg_match('/W(\d+) (.*) (.*)/',$recur, $recurMatches)) {		// 1.0
 			$r_interval = $recurMatches[1];
 			$c_interval = $r_interval;
