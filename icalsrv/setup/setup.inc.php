@@ -14,7 +14,7 @@
    *  option) any later version.                                              *
    **************************************************************************/
 
-    /* $Id$ */
+    /* Id$ */
 	/* Basic information about this app */
 	$setup_info['icalsrv']['name']      = 'icalsrv';
 	$setup_info['icalsrv']['title']     = 'Ical Server';
