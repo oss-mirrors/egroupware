@@ -1607,57 +1607,6 @@
 	$test[] = '0.9.026';
 	function jinn_upgrade0_9_026()
 	{
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_list_del',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_list_multi',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_edit_rec',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_view_rec',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_copy_rec',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_reports',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_simple_search',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_filters',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_export',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_import',array(
-			'type' => 'bool',
-			'nullable' => False,
-			'default' => '0'
-		));
-
 		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.027';
 	}
 
@@ -1665,9 +1614,101 @@
 	$test[] = '0.9.027';
 	function jinn_upgrade0_9_027()
 	{
-		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_objects','disable_list_del','disable_del');
-		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_objects','disable_list_multi','disable_multi');
+//		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_objects','disable_list_del','disable_del');
+//		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_objects','disable_list_multi','disable_multi');
 
 		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.028';
 	}
-?>
+
+	$test[] = '0.9.028';
+	function jinn_upgrade0_9_028()
+	{
+//		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_objects','disable_del','disable_multi');
+/*		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_multi',array(
+			'type' => 'bool',
+			'nullable' => False,
+			'default' => '0'
+		 ));
+		 
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_reports',array(
+			'type' => 'bool',
+			'nullable' => False,
+			'default' => '0'
+		));
+*/
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.029';
+	}
+
+	$test[] = '0.9.029';
+	function jinn_upgrade0_9_029()
+	{
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_multi_rec',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_del_rec',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_edit_rec',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_view_rec',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_copy_rec',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_reports',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_simple_search',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_filters',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_export',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_import',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+
+	   //$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_objects','disable_multi','disable_multi_rec');
+
+	   return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.030';
+	}
+ 
+
+	$test[] = '0.9.030';
+	function jinn_upgrade0_9_030()
+	{
+	   $GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_objects','disable_create_rec',array(
+		  'type' => 'bool',
+		  'nullable' => False,
+		  'default' => '0'
+	   ));
+	   $GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_objects','disable_multi_rec','disable_multi');
+
+	   return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.031';
+	}
+ ?>

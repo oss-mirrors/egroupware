@@ -38,6 +38,7 @@
 	  var $public_functions = Array
 	  (
 		 'display'						=> True,
+		 'display_dev'					=> True,
 		 'browse_objects'				=> True,
 		 'display_last_records_page'	=> True
 	  );
@@ -72,8 +73,17 @@
 		 {
 			$this->bo->exit_and_open_screen('jinn.uiuser.index');
 		 }
+
+		$this->set_activated_elements();
+		 
 	  }
 
+	  function display_dev()
+	  {
+		 $this->tplsav2->devtoolbar=$this->get_developer_object_toolbar();
+		 $this->display();
+	  }
+	  
 	  /**
 	  * display: wrapper function for listing one or more record
 	  * 
@@ -284,6 +294,8 @@
 	  */
 	  function list_records()
 	  {
+
+		 
 		 unset($this->bo->session['mult_where_array']);
 
 		 // check if table exists
@@ -692,8 +704,7 @@
 
 				  foreach($col_names_list  as $onecolname)
 				  {
-					 
-					 $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecolname);
+					 $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object['object_id'],$onecolname);
 					 $recordvalue=$recordvalues[$onecolname];
 					 if ($recordvalue && is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
 					 {
@@ -739,6 +750,62 @@
 		 $this->display();
 	  }
 
+	  function set_activated_elements()
+	  {
+		 $this->tplsav2->action_colspan=0;
+		 $this->tplsav2->multi_colspan=0;
+		 //_debug_array($this->bo->site_object);
+
+		 if(!$this->bo->site_object['disable_create_rec']) // ready for ACL
+		 {
+			$this->tplsav2->enable_create_rec=true;
+		 }
+
+		 if(!$this->bo->site_object['disable_del_rec']) // ready for ACL
+		 {
+			$this->tplsav2->enable_del=true;
+			$this->tplsav2->action_colspan++;
+			$this->tplsav2->multi_colspan++;
+		 }
+
+		 if(!$this->bo->site_object['disable_edit_rec']) // ready for ACL
+		 {
+			$this->tplsav2->enable_edit_rec=true;
+			$this->tplsav2->action_colspan++;
+			$this->tplsav2->multi_colspan++;
+		 }
+
+		 if(!$this->bo->site_object['disable_export']) // ready for ACL
+		 {
+			$this->tplsav2->enable_export=true;
+//			$this->tplsav2->action_colspan++;
+			$this->tplsav2->multi_colspan++;
+		 }
+
+		 if(!$this->bo->site_object['disable_view_rec']) // ready for ACL
+		 {
+			$this->tplsav2->enable_view_rec=true;
+			$this->tplsav2->action_colspan++;
+			$this->tplsav2->multi_colspan++;
+		 }
+
+		 if(!$this->bo->site_object['disable_copy_rec']) // ready for ACL
+		 {
+			$this->tplsav2->enable_copy_rec=true;
+			$this->tplsav2->action_colspan++;
+//			$this->tplsav2->multi_colspan++;
+		 }
+
+		 if(!$this->bo->site_object['disable_multi'] && $this->tplsav2->multi_colspan > 0) // ready for ACL
+		 {
+			$this->tplsav2->enable_multi=true;
+			$this->tplsav2->action_colspan++;
+			$this->tplsav2->multi_colspan++;
+		 }
+
+		 
+	  }
+	  
 	  function getWalkListEventButtons()
 	  {
 		 // Get Walk Events

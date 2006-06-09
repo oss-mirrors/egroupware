@@ -1,3 +1,9 @@
+<?=$this->devtoolbar?>
+<!-- edit this record button -->
+<?php if(!$this->edit_object && !$this->japie):?>
+<div style="text-align:right;"><a href="<?=$this->edit_object_link?>"><img src="<?=$this->img_edit?>" alt="" /></a></div>
+<?php endif?>
+
 <script language=JavaScript src="jinn/js/jinn/display_func.js" type=text/javascript></script>
 <script language="javascript" type="text/javascript">
    <!--
@@ -81,7 +87,9 @@
    }
 </style>
 <br/>
+<?php if($this->enable_multi):?>
 <input type="button" value="<?=lang('Add new Record') ?>" onClick="location.href='<?=$this->newrec_link ?>'" style="width:150px;"/>
+<?php endif?>
 <?=$this->walklistblock?>
 <div class="jinnListBlock">
    <table border="0" style="border-spacing:1px;" align="center" width="100%" >
@@ -105,7 +113,7 @@
 	  <input type="hidden" name="action" value="none">
 	  <table border="0" cellspacing="1" cellpadding="0" width="100%" style="padding-bottom:3px;border-bottom:solid 1px #006699">
 		 <tr>
-			<td bgcolor="<?=$this->th_bg ?>" colspan="<?=(5+$this->runonrec_amount)?>"  valign="top" style="width:1%;font-weight:bold;padding:3px 5px 3px 5px;"><?=lang('Actions')?></td>
+			<td bgcolor="<?=$this->th_bg ?>" colspan="<?=($this->action_colspan+$this->runonrec_amount)?>"  valign="top" style="width:1%;font-weight:bold;padding:3px 5px 3px 5px;"><?=lang('Actions')?></td>
 
 			<?php if(is_array($this->colnames)):?>
 			<?php foreach($this->colnames as $colname):?> 
@@ -122,14 +130,26 @@
 		 <!-- BEGIN row -->
 		 <tr valign="top">
 
+			<?php if($this->enable_multi):?>
 			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" align="left"><input style="border-style:none;" type="checkbox" name="<?=$recrow_arr['colfield_check_name'] ?>" value="<?=$recrow_arr['colfield_check_val'] ?>"/></td>
+			<?php endif?>
+
+			<?php if($this->enable_view_rec):?>
 			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" align="left"><a title="<?=lang('view') ?>" href="<?=$recrow_arr['colfield_view_link'] ?>"><img width="16" src="<?=$this->colfield_view_img_src ?>" alt="<?=lang('view') ?>" /></a></td>
+			<?php endif?>
 
+			<?php if($this->enable_edit_rec):?>
 			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" align="left"><a title="<?=lang('edit')?>" href="<?=$recrow_arr['colfield_edit_link'] ?>"><img width="16" src="<?=$this->colfield_edit_img_src ?>" alt="<?=lang('edit')?>" /></a></td>
+			<?php endif?>
 
+			<?php if($this->enable_copy_rec):?>
 			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" align="left"><a title="<?=lang('copy record') ?>" href="<?=$recrow_arr['colfield_copy_link'] ?>" onClick="return window.confirm('<?=lang('Do you want to copy this record?') ?>')"><img width="19" src="<?=$this->colfield_copy_img_src ?>" alt="<?=lang('copy record') ?>" /></a></td>
+			<?php endif?>
 
+			<?php if($this->enable_del):?>
 			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" align="left"><a title="<?=lang('delete') ?>" href="<?=$recrow_arr['colfield_delete_link'] ?>" onClick="return window.confirm('<?=$this->colfield_lang_confirm_delete_one ?>')"><img width="16" src="<?=$this->colfield_delete_img_src ?>" alt="<?=lang('delete') ?>" /></a></td>
+			<?php endif?>
+
 			<!-- RunOnRec Icons -->
 			<?php if(is_array($recrow_arr['runonrec_arr'])):?>
 			<?php foreach($recrow_arr['runonrec_arr'] as $runonrec_arr):?>
@@ -160,16 +180,31 @@
 		 <?php if(count($this->records_rows_arr)>0):?>
 		 <tr valign="top" bgcolor="<?=$this->colhead_bg_color ?>">
 
+			<?php if($this->enable_multi):?>
 			<td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><input title="<?=lang('toggle all above checkboxes') ?>" type="checkbox" name="CHECKALL" id="CHECKALL" value="TRUE" onclick="doCheckAll(this)" /></td>
+			<?php endif?>
+
+			<?php if($this->enable_view_rec):?>
 			<td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><a title="<?=lang('view all selected records') ?>" href="javascript:submit_multi('view')"><img width="16" src="<?=$this->colfield_view_img_src ?>" alt="<?=lang('view all selected records') ?>" /></a></td>
+			<?php endif?>
 
+			<?php if($this->enable_edit_rec):?>
 			<td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><a title="<?=lang('edit all selected records') ?>" href="javascript:submit_multi('edit')"><img width="16" src="<?=$this->colfield_edit_img_src ?>" alt="<?=lang('edit all selected records') ?>" /></a></td>
+			<?php endif?>
 
+			<?php if($this->enable_del):?>
 			<td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><a title="<?=lang('delete all selected records') ?>" href="javascript:submit_multi('del')" ><img width="16" src="<?=$this->colfield_delete_img_src ?>" alt="<?=lang('delete all selected records') ?>" /></a></td>
+			<?php endif?>
 
+			<?php if($this->enable_export):?>
 			<td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><a title="<?=lang('export all selected records') ?>" href="javascript:submit_multi('export')" ><img width="16" src="<?=$this->colfield_export_img_src ?>" alt="<?=lang('export all selected records') ?>" /></a></td>
+			<?php endif?>
 
-			<td >&nbsp;<?=lang('Actions to apply on all selected record')?></td>
+			<?php if($this->enable_multi):?>
+			<td>&nbsp;<?=lang('Actions to apply on all selected record')?></td>
+			<?php else:?>
+			<td>&nbsp;</td>
+			<?php endif?>
 		 </tr>
 
 		 <?php else:?>

@@ -276,9 +276,11 @@
 
 						<?php
 						   $chk='checked="checked"';
-//						   _debug_array($this->global_values);
-						   if(!$this->global_values['disable_del'])			  	$checked_disable_del = $chk;
-						   if(!$this->global_values['disable_multi']) 			$checked_disable_multi = $chk;
+						   _debug_array($this->global_values);
+						   _debug_array($_POST);
+						   if(!$this->global_values['disable_multi']) 		$checked_disable_multi = $chk;
+						   if(!$this->global_values['disable_create_rec'])		$checked_disable_create_rec = $chk;
+						   if(!$this->global_values['disable_del_rec'])			$checked_disable_del_rec = $chk;
 						   if(!$this->global_values['disable_edit_rec'])		$checked_disable_edit_rec = $chk;
 						   if(!$this->global_values['disable_view_rec'])		$checked_disable_view_rec = $chk;
 						   if(!$this->global_values['disable_copy_rec'])		$checked_disable_copy_rec = $chk;
@@ -289,17 +291,24 @@
 						   if(!$this->global_values['disable_import'])  		$checked_disable_import = $chk;
 						?>
 						<tr>
-						   <td><?= lang('Enable Delete Record');?></td>
-						   <td>
-							  <input type="hidden" name="FLDdisable_del" value="1"/>
-							  <input type="checkbox" <?=$checked_disable_del?> name="FLDdisable_del" value="0"/>
-						   </td>
-						</tr>
-						<tr>
-						   <td><?= lang('Enable Multiple Record Actions');?></td>
+						   <td><?=lang('Enable Multiple Record Actions');?></td>
 						   <td>
 							  <input type="hidden" name="FLDdisable_multi" value="1"/>
 							  <input type="checkbox" <?=$checked_disable_multi?>  name="FLDdisable_multi" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Create Record');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_create_rec" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_create_rec?> name="FLDdisable_create_rec" value="0"/>
+						   </td>
+						</tr>
+						<tr>
+						   <td><?= lang('Enable Delete Record');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_del_rec" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_del_rec?> name="FLDdisable_del_rec" value="0"/>
 						   </td>
 						</tr>
 						<tr>

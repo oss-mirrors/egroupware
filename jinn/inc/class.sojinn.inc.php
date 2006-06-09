@@ -2342,8 +2342,7 @@
 
 		 //update
 		 $sql = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $WHERE;
-
-		 //echo $sql;
+		  
 		 if (!$this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
 			$status[error]=true;

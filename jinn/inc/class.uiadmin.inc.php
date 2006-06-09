@@ -572,14 +572,6 @@
 		 return $options;
 	  }
 
-	  /**
-	  * object_events_config: make form to set event plugin configuration
-	  * 
-	  * @access public
-	  * @fixme tplsav
-	  * @fixme parse config options and help info through lang()
-	  * @return void
-	  */
 
 	  /**
 	  * xmlhttpreq_get_fields 

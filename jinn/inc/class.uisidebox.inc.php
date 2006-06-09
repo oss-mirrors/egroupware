@@ -249,7 +249,7 @@
 
 			if ($this->bo->session['site_id'])
 			{
-			   /*			   $file['_NewLine_']=array(
+			   /* $file['_NewLine_']=array(
 				  'text'=>'',
 				  'no_lang' => True,
 				  'link'=>false
@@ -265,8 +265,17 @@
 
 			if ($this->bo->session['site_object_id'])
 			{
+			   if($_GET['menuaction']=='jinn.uiu_list_records.display') 
+			   {
+				  $devlink = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display_dev&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']);
+			   }
+			   else
+			   {
+				  $devlink = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.dev_edit_record&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']);
+			   }
+
 			   $file['Edit this Site Object'] = array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.dev_edit_record&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']),
+				  'link'=>$devlink,
 				  'text'=>lang('Edit this Site Object'),
 				  'no_lang' => True,
 				  'icon'=>'edit'
