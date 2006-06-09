@@ -17,7 +17,7 @@ after	email	sk	Po
 all messages	email	sk	V¹etky správy
 and	email	sk	a
 and stop filtering	email	sk	a zru¹ filter
-answered	email	sk	odpovedané
+answered	email	sk	Odpovedané
 apply filters report:	email	sk	Pou¾i filtrovaný výstup:
 apr	email	sk	Apr
 aqua fusion	email	sk	Aqua Fusion
@@ -27,7 +27,7 @@ attach file	email	sk	Pripoj súbor
 attach signature	email	sk	Pripoj podpis
 attachment	email	sk	Príloha
 aug	email	sk	Aug
-bcc	email	sk	skrytá kópia
+bcc	email	sk	Skrytá kópia
 bcc address	email	sk	Adresa skrytej kópie
 before	email	sk	Pred
 big	email	sk	Veµké
@@ -66,7 +66,7 @@ default:	common	sk	¹tandardné:
 delete (expert)	email	sk	Vyma¾ (expert)
 delete a folder	email	sk	Vyma¾ prieèinok
 delete account	common	sk	Vyma¾ úèet
-deleted	email	sk	vymazaný
+deleted	email	sk	Vymazané
 deleted messages (trash) folder	email	sk	Prieèinok Vymazaných správ (Odpadkový kô¹)
 deleted messages folder name	email	sk	Názov prieèinka vymazaných správ
 deleted messages go to trash	email	sk	Vymazané správy idú do Odpadkového ko¹a
@@ -74,13 +74,13 @@ deleted messages saved to folder:	email	sk	Vymazané správy ulo¾ené do prieèinka:
 discard	email	sk	Zahodi»
 does not contain	email	sk	Neobsahuje
 draft	email	sk	Návrh
-e-mail clear cache	preferences	sk	E-mail vyma¾ cache
-e-mail extra account	email	sk	E-mail dodatoèný úèet
-e-mail extra accounts	email	sk	E-mail dodatoèné úèty
-e-mail extra accounts list	email	sk	E-mail zoznam dodatoèných úètov
+e-mail clear cache	preferences	sk	E-mail - vyma¾ cache
+e-mail extra account	email	sk	E-mail - dodatoèný úèet
+e-mail extra accounts	email	sk	E-mail - dodatoèné úèty
+e-mail extra accounts list	email	sk	E-mail - zoznam dodatoèných úètov
 e-mail filters	common	sk	E-mail filtre
 e-mail folders	common	sk	E-mail prieèinky
-e-mail inbox filters list	email	sk	E-mail zoznam filtrov pre Doruèenú po¹tu
+e-mail inbox filters list	email	sk	E-mail - zoznam filtrov pre Doruèenú po¹tu
 e-mail preferences	common	sk	E-mail nastavenia
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	sk	Ka¾dý pou¾ívateµ má sumárnu stránku ktorá doká¾e zobrazi» rozlièné informácie. Táto voµba zobrazí malý zoznam po¹tových správ v pou¾ívateµovom prieèinku [Doruèené] v jeho predvolenom po¹tovom úète na jeho sumárnej domovskej stránke.
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	sk	Ka¾dý pou¾ívateµ má sumárnu stránku ktorá doká¾e zobrazi» rozlièné informácie. Táto voµba zobrazí malý zoznam po¹tových správ v pou¾ívateµovom prieèinku [Doruèené] v jeho predvolenom po¹tovom úète na jeho sumárnej domovskej stránke.
@@ -204,7 +204,7 @@ move this message into	email	sk	Presuò túto správu do
 move up	email	sk	Posun nahor
 mozilla modern style	email	sk	©týl Mozilla Modern
 name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	sk	Názov po¹tového servera ktorý chcete pou¾i». Malo by by» v tvare &quot;mail.example.com&quot;. Ak ponecháte prázdne, pou¾ije sa predvolená hodnota.
-new	email	sk	Nové
+new	email	sk	Nových
 new account	email	sk	Nový úèet
 new filter	email	sk	Nový filter
 new message	email	sk	Nová správa
@@ -226,7 +226,7 @@ number of matches:	email	sk	Na¹lo sa:
 oct	email	sk	Okt
 old	email	sk	Staré
 oldest	common	sk	Najstar¹ie
-on	email	sk	Zapnuté
+on	email	sk	V urèitý deò
 only needed with the university of washington &quot;uwash&quot; imap server. the default value is &quot;mail&quot; which means your mail folders, other then inbox, are located in a directory called &quot;mail&quot; directly under your &quot;home&quot; directory. this box may be left empty, which means your mail folders are located in your &quot;home&quot; directory, not a subdirectory. if your mail folders are located in a subdirectory of &quot;home&quot; then put the name of that subdirectory here. generally, it is not necessary to use any special slashes or tildes, &quot;home&quot; is always considered the base directory, and the slash bewteen &quot;home&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.	email	sk	Potrebné iba pri IMAP serveri University of Washington &quot;UWash&quot;. Predvolená hodnota je &quot;mail&quot; èo znamená, ¾e va¹e po¹tové prieèinky, okrem INBOX-u, sa nachádzajú v adresári &quot;mail&quot; priamo vo va¹om domovskom (&quot;HOME&quot;) adresári, nie v nejakom podadresári. Ak sa va¹e po¹tové prieèinky nachádzajú v podadresári domovského (&quot;HOME&quot;) adresára, tak sem zadajte názov toho podadresára. Vcelku netreba pou¾íva» ¾iadne ¹peciálne lomítka alebo tildy, preto¾e domovský (&quot;HOME&quot;) adresár sa v¾dy pova¾uje za základný, a lomítko medzi &quot;HOME&quot; a podadresárom sa doplní automaticky, tak¾e ho sem nepí¹te. Zadajte len názov adresára a je to.
 or	common	sk	alebo
 or enter text	email	sk	alebo vlo¾ text
@@ -243,7 +243,7 @@ previous	email	sk	Predchádzajúca
 previous message	email	sk	Predchádzajúca správa
 printable	email	sk	pre tlaèiareò
 raw message	email	sk	Správa v surovom tvare
-read mail	email	sk	Èítaj správu
+read mail	email	sk	Èíta» správu
 received headers	email	sk	Prijaté hlavièky
 recent	email	sk	Súèasné
 recipient	email	sk	Adresát
@@ -259,7 +259,7 @@ requested filter action:	email	sk	Po¾adovaná akcia filtra:
 required	email	sk	Povinné
 reset	email	sk	Vynulova»
 result	email	sk	Výsledok
-return mails during this time period	email	sk	Vrá» správy poèas tohoto èasového intervalu
+return mails during this time period	email	sk	Hµadaj správy v rámci tohoto èasového intervalu:
 save deleted messages in folder named below	email	sk	Ulo¾ Vymazané správy do prieèinka s názvom
 save sent messages in folder named below	email	sk	Ulo¾ Odoslané správy do prieèinka s názvom
 search for mails in these folders	email	sk	Hµadaj správy  v týchto prieèinkoch
@@ -356,7 +356,7 @@ unanswered	email	sk	Neodpovedané
 undeleted	email	sk	Nevymazané
 undisclosed recipients	email	sk	Nepripojení adresáti
 undisclosed sender	email	sk	Nepripojený odosielateµ
-unflagged	email	sk	Neoznaèená
+unflagged	email	sk	Neoznaèené
 unknown action	email	sk	Neznáma akcia
 unknown error	email	sk	Neznáma chyba
 unknown translation	email	sk	Neznámy preklad

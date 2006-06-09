@@ -2,6 +2,7 @@ $ change	common	fr	Change
 %	stocks	fr	%
 % change	common	fr	Change %
 add new stock	stocks	fr	Ajouter une nouvelle action
+company name	stocks	fr	Entreprise
 disable	stocks	fr	désactiver
 display stocks on main screen is disabled	stocks	fr	Afficher les actions sur l'écran principal est désactivé
 display stocks on main screen is enabled	stocks	fr	Afficher les actions sur l'écran principal est activé

@@ -1,8 +1,8 @@
 add	developer_tools	sk	prida»
 add change	developer_tools	sk	Prida» zmenu
 add more	developer_tools	sk	Prida» viacero
-add new phrase	developer_tools	sk	Pridaj novú frázu
-add phrase	developer_tools	sk	prida» frázu
+add new phrase	developer_tools	sk	Prida» novú frázu
+add phrase	developer_tools	sk	Prida» frázu
 allows you to add a single phrase	developer_tools	sk	Umo¾ní vám prida» jednu frázu
 application	developer_tools	sk	Aplikácia
 back	developer_tools	sk	Spä»
@@ -41,9 +41,9 @@ removed %1 phrases from the target language, as they are not present in the sour
 returns to the application list, not saved changes get lost !!!	developer_tools	sk	Návrat do zoznamu aplikácií -neulo¾ené zmeny sa stratia!!!
 revert	developer_tools	sk	Naspä»
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sk	Ulo¾í pridané/zmenené preklady do vnútorného bufera, pre pou¾itie v ïal¹ích krokoch
-search changelogs	developer_tools	sk	Hµadaj v záznamoch o zmenách
-search for missing phrase	developer_tools	sk	Hµadaj chýbajúcu frázu
-search new phrases	developer_tools	sk	Hµadaj nové frázy
+search changelogs	developer_tools	sk	Hµada» v záznamoch o zmenách
+search for missing phrase	developer_tools	sk	Hµada» chýbajúcu frázu
+search new phrases	developer_tools	sk	Hµada» nové frázy
 searches the source-code for phrases not in the actual source-lang-file	developer_tools	sk	Prehµadá zdrojové kódy pre frázy, ktoré nie sú uvedené v súèasnom zdrojovom jazykovom súbore
 select project	developer_tools	sk	Vyberte projekt
 sf project tracker	developer_tools	sk	SF sledovaè projektov
@@ -53,17 +53,17 @@ sourceforge project id	developer_tools	sk	Projektové ID pre Sourceforge
 sourceforge project tracker	developer_tools	sk	Sourceforge sledovaè projektov
 sourceforge project tracker preferences	developer_tools	sk	Nastavenia Sourceforge sledovaèa projektov
 step	developer_tools	sk	Krok
-submit	developer_tools	sk	Odo¹li
+submit	developer_tools	sk	Odosla»
 target language	developer_tools	sk	Cieµový jazyk
 title	developer_tools	sk	Titul
-translate	developer_tools	sk	Prelo¾
+translate	developer_tools	sk	Prelo¾i»
 translation	developer_tools	sk	Preklad
 translation of phrase	developer_tools	sk	Preklad frázy
-update	developer_tools	sk	Aktualizuj
-update database	developer_tools	sk	Aktualizuj databázu
+update	developer_tools	sk	Aktualizova»
+update database	developer_tools	sk	Aktualizova» databázu
 updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	sk	Aktualizuje preklady oboch jazykových súborov vo va¹ej databáze, tak¾e mô¾ete okam¾ite skontrolova» va¹u prácu
 version	developer_tools	sk	Verzia
-write	developer_tools	sk	Zápis
+write	developer_tools	sk	Zapísa»
 write the lang-file to the apps setup-dir	developer_tools	sk	Zapísa» jazykový súbor do setup adresára aplikácie
 write to lang table	developer_tools	sk	Zapísa» do jazykovej tabuµky
 writing langfile for '%1' ...	developer_tools	sk	Zapisujem jazykový súbor pre '%1' ...
