@@ -84,7 +84,7 @@ class pleskimap extends defaultimap
 			$aliases[] = $hookValues['account_email'];
 		}
 		// add a default alias with Firstname.Lastname
-		if (!in_array($alias=$hookValues['firstname'].'.'.$hookValues['lastname'],$aliases) &&
+		if (!in_array($alias=$hookValues['account_firstname'].'.'.$hookValues['account_lastname'],$aliases) &&
 			$this->is_email($alias))
 		{
 			$aliases[] = $alias;
@@ -132,9 +132,6 @@ class pleskimap extends defaultimap
 			$this->error = lang("Plesk can't rename users --> request ignored");
 			return false;
 		}
-		// as it does the same as add, we just call that
-		$hookValues['account_email'] = $hookValues['email'];
-
 		return $this->addAccount($hookValues,'update');
 	}
 
