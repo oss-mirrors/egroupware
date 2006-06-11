@@ -1,5 +1,5 @@
+{processes_css}
 <div style="color:red; text-align:center">{message}</div>
-
 <div>
 	<div>
 		{proc_bar}
