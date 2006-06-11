@@ -291,7 +291,8 @@ form input plugin	jinn	pt-br	formulário para entrar com plugin
 form type	jinn	pt-br	Tipo do formulário
 form visibility	jinn	pt-br	Visibilidade do formulário
 form width	jinn	pt-br	Lagura do formulário
-free	jinn	pt-br	Livre
+free	jinn	pt-br	Liberar
+free picker	jinn	pt-br	Liberar Seletor
 from image	jinn	pt-br	Da imagem
 general objects settings	jinn	pt-br	Configurações gerais dos objetos
 general options	jinn	pt-br	Opções gerais
@@ -323,6 +324,7 @@ ibrowser	jinn	pt-br	iBrowser
 if you change the table of this object you\n may loose field configuration data.\n\n\n think of this before you save these settings.	jinn	pt-br	Se você alterar a tabela deste objeto\n você poderá perder os dados de configuração do campo.\n\n\n Pense nisso antes de salvar as configurações.
 image 1	jinn	pt-br	Imagem 1
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	pt-br	diretório de imagem não existe ou não está correto...<br>por favor verifique.
+image picker	jinn	pt-br	Seletor de imagens
 image settings	admin	pt-br	Configurações da imagem
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	pt-br	Diretório ImageMagick (ex: /usr/X11R6/bin)
 import anyway	jinn	pt-br	importar assim mesmo
@@ -517,6 +519,7 @@ related entries from table %1	jinn	pt-br	Entradas relacionadas da tabela %1
 relation %1	jinn	pt-br	relação %1
 relation not succesfully saved, unknown error	jinn	pt-br	Relação não foi salva com sucesso, erro desconhecido.
 relation succesfully saved	jinn	pt-br	Relação foi salva com sucesso.
+relation widgets	jinn	pt-br	Controles de relação
 relations	jinn	pt-br	relações
 relations for this object	jinn	pt-br	Relações para este objeto
 relative paths to images	jinn	pt-br	Caminho relativo para imagens
