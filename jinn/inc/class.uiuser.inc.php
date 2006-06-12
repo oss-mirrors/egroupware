@@ -244,7 +244,7 @@
 		 }
 		 else
 		 {
-		 $items=20;
+			 $items=20;
 		 }
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
 		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
@@ -318,13 +318,13 @@
 		 }
 		 else
 		 {
-			$data = $this->bo->get_data($columns_arr, $filter_where);
-			$count = count($data);
+			$site_id = $this->bo->session['site_id'];
+			$table_name = $this->bo->site_object['table_name'];
+
+			#$data = $this->bo->get_data($columns_arr, $filter_where);
+			$count = $this->bo->so->num_rows_table($site_id, $table_name);
+			#$count = count($data);
 		 }
- //get data
-		 #_debug_array($filter_where);
-		 #die();
-		 //add limit
 		 $data = $this->bo->get_data($columns_arr, $filter_where, $limit);
 
 		 foreach($data as $row)
@@ -339,21 +339,21 @@
 		 }
 		 if($_GET[start]+$items < $count)
 		 {
-				  $this->tplsav2->assign('items',$items);
-				  $this->tplsav2->assign('amount',$count);
-				  $this->tplsav2->assign('where',base64_encode(serialize($filter_where)));
-				  $this->tplsav2->assign('number',$_GET[start]+$items);
-				  $spend= time() - $start_time;
-				  $this->tplsav2->assign('time_spend',$spend);
-				  $this->tplsav2->display('pop_walk.tpl.php');
-			   }
-			   else
-			   {
-				  $this->tplsav2->assign('amount',$count);
-				  $this->tplsav2->display('pop_walk_succes.tpl.php');
-			   }
-			   return "false";
-			}
+			$this->tplsav2->assign('items',$items);
+			$this->tplsav2->assign('amount',$count);
+			$this->tplsav2->assign('where',base64_encode(serialize($filter_where)));
+			$this->tplsav2->assign('number',$_GET[start]+$items);
+			$spend= time() - $start_time;
+			$this->tplsav2->assign('time_spend',$spend);
+			$this->tplsav2->display('pop_walk.tpl.php');
+		 }
+		 else
+		 {
+			$this->tplsav2->assign('amount',$count);
+			$this->tplsav2->display('pop_walk_succes.tpl.php');
+		 }
+		 return "false";
+	  }
 
 	  /**
 	  * config_objects 

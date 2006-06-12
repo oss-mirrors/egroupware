@@ -1203,7 +1203,6 @@
 		 //new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
 		 //partly implemented in bouser, partly in sojinn
 
-
 		 //select
 		 if($columns_arr == 'all' || $columns_arr == '*')
 		 {
@@ -1263,8 +1262,7 @@
 		 if(!$limit)
 		 {
 			$limit="";
-			
-			}
+		 }
 
 		 $sql = "$select $from $where $order $limit";
 		 if($sql)
@@ -1272,6 +1270,7 @@
 			$this->site_db_connection($site_id);
 			$this->site_db->query($sql,__LINE__,__FILE__); // returns a result
 			$data = array();
+//			die($sql);
 			while ($this->site_db->next_record())
 			{
 			   $row = $this->site_db->row();

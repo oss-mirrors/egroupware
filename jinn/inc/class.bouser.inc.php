@@ -595,8 +595,8 @@
 		 function run_event_plugins($event, $post)
 		 {
 			//get all events plugins configured to this object
-			$object_arr=$this->so->get_object_values($this->site_object[object_id]);
-			$stored_configs = unserialize(base64_decode($object_arr[events_config]));
+			$object_arr=$this->so->get_object_values($this->site_object['object_id']);
+			$stored_configs = unserialize(base64_decode($object_arr['events_config']));
 			if(is_array($stored_configs))
 			{
 			   foreach($stored_configs as $config)
