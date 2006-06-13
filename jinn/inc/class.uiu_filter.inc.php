@@ -107,28 +107,41 @@
 	   */
 	  function format_filter_options($selected)
 	  {
-		 $options  = '<option value="NO_FILTER">'.lang('empty filter').'</option>';
-		 $options .= '<option value="NO_FILTER">------------</option>';
+		 $this->tplsav2->optval = 'NO_FILTER';
+		 $this->tplsav2->optselected = '';
+		 $this->tplsav2->optdisplay = '-------';
+		 $options .= $this->tplsav2->fetch('form_el_option.tpl.php');
 		 if($selected == 'sessionfilter')
 		 {
-			$options .= '<option value="sessionfilter" selected>'.lang('session filter').'</option>';
+			$this->tplsav2->optval = 'sessionfilter';
+			$this->tplsav2->optselected = 'selected="selected"';
+			$this->tplsav2->optdisplay = lang('session filter');
+			$options .= $this->tplsav2->fetch('form_el_option.tpl.php');
 		 }
 		 else
 		 {
-			$options .= '<option value="sessionfilter">'.lang('session filter').'</option>';
+			$this->tplsav2->optval = 'sessionfilter';
+			$this->tplsav2->optselected = '';
+			$this->tplsav2->optdisplay = lang('session filter');
+			$options .= $this->tplsav2->fetch('form_el_option.tpl.php');
 		 }
-		 $options .= '<option value="NO_FILTER">------------</option>';
 		 if(is_array($this->filterstore))
 		 {
 			foreach($this->filterstore as $filter)
 			{
 			   if($filter[name] == $selected)
 			   {
-				  $options .= '<option value="'.$filter[name].'" selected>'.$filter[name].'</option>';
+				  $this->tplsav2->optval = $filter[name];
+				  $this->tplsav2->optselected = 'selected="selected"';
+				  $this->tplsav2->optdisplay = $filter[name];
+				  $options .= $this->tplsav2->fetch('form_el_option.tpl.php');
 			   }
 			   else
 			   {
-				  $options .= '<option value="'.$filter[name].'">'.$filter[name].'</option>';
+				  $this->tplsav2->optval = $filter[name];
+				  $this->tplsav2->optselected = '';
+				  $this->tplsav2->optdisplay = $filter[name];
+				  $options .= $this->tplsav2->fetch('form_el_option.tpl.php');
 			   }
 			}
 		 }
@@ -298,30 +311,14 @@
  		 $this->template->set_block('frm_edit_filter','pre_block','');
  		 $this->template->set_block('frm_edit_filter','column_block','');
  		 $this->template->set_block('frm_edit_filter','post_block','');
-
 		  
 		 $this->header('edit filter');
 		  
 		 $this->msg_box();
-
 		 
-		 /////////////////////////
-		 //process the first block
-		 /////////////////////////
-			
-  		 $this->template->set_var('field_label',lang('column'));
- 		 $this->template->set_var('operator_label',lang('filter operator'));
- 		 $this->template->set_var('value_label',lang('criterium'));
-		 $this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.save'));
+		 $this->tplsav2->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.save'));
 
- 		 $this->template->parse('pre','pre_block');	//parses the right argument block into the left argument variable ('fetch')
-		 $this->template->pparse('out','pre'); 		//prints the right argument into the left argument buffer ('parse')
-
-		 /////////////////////////
-		 //process the filter elements block
-		 /////////////////////////
-
-			//get the columns info
+		 //get the columns info
 		 $fields_arr=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 		 
 			//get the filter data
@@ -339,45 +336,34 @@
 			$this->filterdata = $this->filterstore[$_POST[filtername]];
 		 }
 
-			//loop each filter element
+		 //loop each filter element
 		 $num=0;
+		 $this->tplsav2->filterdata_elements=array();
 		 if(is_array($this->filterdata[elements]))
 		 {
 			 foreach($this->filterdata[elements] as $element)
 			 {
-				 $this->template->set_var('element', '_'.$num);
-				 $this->template->set_var('fields', $this->getFieldOptions($fields_arr, $element[field]));
-				 $this->template->set_var('operators', $this->getOperatorOptions($element[operator]));
-				 $this->template->set_var('value', $element[value]);
-				 $this->template->parse('column', 'column_block');	//parses the right argument block into the left argument variable ('fetch')
-				 $this->template->pparse('out', 'column'); 		//prints the right argument into the left argument buffer ('parse')
-				 $num++;
+				$f_el['element']=$num;
+				$f_el['fields']=$this->getFieldOptions($fields_arr, $element[field]);
+				$f_el['operators']=$this->getOperatorOptions($element[operator]);
+				$f_el['value']=$element['value'];
+
+				$this->tplsav2->filterdata_elements[]=$f_el;
+				$num++;
 			 }
-		 }
-		 
-			//add one empty row for more filter elements
-		 $this->template->set_var('element','');
-		 $this->template->set_var('fields', $this->getFieldOptions($fields_arr, ''));
-		 $this->template->set_var('operators', $this->getOperatorOptions(''));
-		 $this->template->set_var('value','');
-		 $this->template->parse('column','column_block');	//parses the right argument block into the left argument variable ('fetch')
-		 $this->template->pparse('out','column'); 			//prints the right argument into the left argument buffer ('parse')
+		  }
+		  $f_el['element']=$num;
+		  $f_el['fields']=$this->getFieldOptions($fields_arr, '');
+		  $f_el['operators']=$this->getOperatorOptions('');
+		  $f_el['value']='';
 
-		 /////////////////////////
-		 //process the last block
-		 /////////////////////////
+		  $this->tplsav2->filterdata_elements[]=$f_el;
 
- 		 $this->template->set_var('name_label',lang('save as'));
-		 $this->template->set_var('filtername',$this->filterdata[name]);
- 		 $this->template->set_var('submit',lang('store filter'));
- 		 $this->template->set_var('submit_exit',lang('activate filter'));
-		 $this->template->set_var('list_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
-		 $this->template->set_var('delete_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.delete'));
- 		 $this->template->set_var('delete',lang('delete filter'));
- 		 $this->template->set_var('delete_confirm',lang('are you sure you want to delete this filter?'));
- 		 $this->template->set_var('sessionfilter_alert',lang('you cannot delete the session filter'));
-		 $this->template->parse('post','post_block');	//parses the right argument block into the left argument variable ('fetch')
-		 $this->template->pparse('out','post'); 		//prints the right argument into the left argument buffer ('parse')
+		 $this->tplsav2->set_var('filtername',$this->filterdata[name]);
+		 $this->tplsav2->set_var('list_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
+		 $this->tplsav2->set_var('delete_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.delete'));
+
+		 $this->tplsav2->display('frm_edit_filters.tpl.php');
 
 		 $this->bo->sessionmanager->save();
 	  }
