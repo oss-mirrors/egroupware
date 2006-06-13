@@ -12,7 +12,7 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-$folderid = (int)$_GET['folderid'];
+$folderid	= (isset($_GET['folderid'])) ? (int) $_GET['folderid'] : NULL;
 $folder = getFolder($folderid);
 
 $fname		= $_GET['fname'];

@@ -24,8 +24,9 @@ function printAccessModeSelection($defMode)
 	print "</select>\n";
 }
 
-$folderid	= (int)$_GET['folderid'];
+$folderid	= (isset($_GET['folderid'])) ? (int) $_GET['folderid'] : NULL;
 $folder		= getFolder($folderid);
+
 $allUsers = getAllUsers();
 
 if ($folder->getAccessMode($user) < M_ALL)

@@ -13,7 +13,7 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 $comment	= $_POST['comment'];
-$documentid	= (int)$_POST['documentid'];
+$documentid	= (isset($_GET['documentid'])) ? (int) $_GET['documentid'] : NULL;
 $expires	= $_POST['expires'];
 $expday		= (int)$_POST['expday'];
 $expmonth	= (int)$_POST['expmonth'];

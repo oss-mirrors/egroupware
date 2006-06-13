@@ -13,10 +13,8 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 
-$folderid = $_GET['folderid'];
+$folderid	= (isset($_GET['folderid'])) ? (int) $_GET['folderid'] : NULL;
 $folder = getFolder($folderid);
-
-
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );
 printTitleBar($folder);

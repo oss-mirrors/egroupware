@@ -12,12 +12,12 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-$documentid = (int)$_GET['documentid'];
-$userid = $_GET['userid'];
-$groupid = $_GET['groupid'];
+$documentid	= (isset($_GET['documentid'])) ? (int) $_GET['documentid'] : NULL;
+$userid = (isset($_GET['userid'])) ? (int) $_GET['userid'] : NULL;
+$groupid = (isset($_GET['groupid'])) ? (int) $_GET['groupid'] : NULL;
 $action = $_GET['action'];
-$document = getDocument($documentid);
 
+$document = getDocument($documentid);
 
 printHTMLHead( getMLText("document_title", array("documentname" => $document->getName()) ) );
 printTitleBar($document->getFolder());

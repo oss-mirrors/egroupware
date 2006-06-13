@@ -12,9 +12,8 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-
-$documentid = (int)$_GET['documentid'];
-$targetid = (int)$_GET['targetid'];
+$documentid	= (isset($_GET['documentid'])) ? (int) $_GET['documentid'] : NULL;
+$targetid	= (isset($_GET['targetid'])) ? (int) $_GET['targetid'] : NULL;
 
 $document = getDocument($documentid);
 $oldFolder = $document->getFolder();

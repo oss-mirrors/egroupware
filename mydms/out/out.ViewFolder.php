@@ -14,8 +14,7 @@ include("../inc/inc.OutUtils.php");
 
 include("../inc/inc.Authentication.php");
 
-
-$folderid = ((int)$_GET['folderid'] > 1) ? (int)$_GET['folderid'] : 1;
+$folderid = (isset($_GET['folderid'])) ? (int) $_GET['folderid'] : 1;
 $folder = getFolder($folderid);
 
 if ($folder->getAccessMode($user) < M_READ)

@@ -14,7 +14,7 @@ include("../inc/inc.OutUtils.php");
 
 include("../inc/inc.Authentication.php");
 
-$documentid	= (int)$_GET['documentid'];
+$documentid	= (isset($_GET['documentid'])) ? (int) $_GET['documentid'] : NULL;
 
 $document = getDocument($documentid);
 $folder = $document->getFolder();
@@ -22,11 +22,16 @@ $folder = $document->getFolder();
 if ($document->getAccessMode($user) < M_READ)
 	die ("Access denied");
 
-
 $latestContent = $document->getLatestContent();
 
+printHTMLHead(
+	getMLText("document_title",
+		array(
+			"documentname" => $document->getName()
+		)
+	)
+);
 
-printHTMLHead( getMLText("document_title", array("documentname" => $document->getName()) ) );
 printTitleBar($folder);
 printDocumentPageStart($document);
 
@@ -110,7 +115,6 @@ printStartBox(getMLText("document_infos"));
 		<tr>
 			<td class="infos" valign="top"><?php printMLText("mime_type");?>:</td>
 			<td class="infos">
-				<img align="absmiddle" src="images/icons/<?php print getMimeIcon($latestContent->getFileType());?>"> 
 				<?php print $latestContent->getMimeType();?>
 			</td>
 		</tr>

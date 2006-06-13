@@ -12,9 +12,9 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+$documentid = (isset($_GET['documentid'])) ? (int) $_GET['documentid'] : NULL;
+$version = (isset($_GET['version'])) ? (int) $_GET['version'] : NULL;
 
-$documentid = (int)$_GET['documentid'];
-$version = (int)$_GET['version'];
 $document = getDocument($documentid);
 
 if ($document->getAccessMode($user) < M_READ)

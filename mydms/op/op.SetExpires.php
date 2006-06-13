@@ -12,7 +12,7 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-$documentid	= (int)$_GET['documentid'];
+$documentid	= (isset($_GET['documentid'])) ? (int) $_GET['documentid'] : NULL;
 $expires	= $_GET['expires'];
 $expday		= $_GET['expday'];
 $expmonth	= $_GET['expmonth'];

@@ -13,7 +13,8 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-$folderid	= (int)$_POST['folderid'];
+$folderid	= (isset($_POST['folderid'])) ? (int) $_POST['folderid'] : NULL;
+
 $folder		= getFolder($folderid);
 
 // form data

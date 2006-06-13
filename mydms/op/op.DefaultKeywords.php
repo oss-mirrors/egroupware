@@ -13,11 +13,11 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-$action		= (!empty($_POST['action']) ? $_POST['action'] : $_GET['action']);
-$name		= (!empty($_POST['name']) ? $_POST['name'] : $_GET['name']);
-$categoryid	= (!empty($_POST['categoryid']) ? (int) $_POST['categoryid'] : (int)$_GET['categoryid']);
-$keywords	= (!empty($_POST['keywords']) ? $_POST['keywords'] : $_GET['keywords']);
-$keywordsid	= (!empty($_POST['keywordsid']) ? (int) $_POST['keywordsid'] : (int)$_GET['keywordsid']);
+$action		= (isset($_POST['action']) ? $_POST['action'] : $_GET['action']);
+$name		= (isset($_POST['name']) ? $_POST['name'] : $_GET['name']);
+$categoryid	= sprintf("%d", (isset($_POST['categoryid']) ? $_POST['categoryid'] : $_GET['categoryid']));
+$keywords	= (isset($_POST['keywords']) ? $_POST['keywords'] : $_GET['keywords']);
+$keywordsid	= sprintf("%d", (isset($_POST['keywordsid']) ? $_POST['keywordsid'] : $_GET['keywordsid']));
 
 if ($user->isAdmin())
 	printHTMLHead( getMLText("global_default_keywords") );

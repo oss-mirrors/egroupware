@@ -12,8 +12,8 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-$documentid	= (int)$_GET['documentid'];
-$version 	= (int)$_GET['version'];
+$documentid = (isset($_GET['documentid'])) ? (int) $_GET['documentid'] : NULL;
+$version = (isset($_GET['version'])) ? (int) $_GET['version'] : NULL;
 
 $document = getDocument($documentid);
 

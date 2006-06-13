@@ -12,13 +12,12 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
-$folderid = (int)$_GET['folderid'];
-$folder = getFolder($folderid);
-
+$folderid	= (isset($_GET['folderid'])) ? (int) $_GET['folderid'] : NULL;
 $action		= $_GET['action'];
-$userid		= $_GET['userid'];
-$groupid	= $_GET['groupid'];
+$userid		= (isset($_GET['userid'])) ? (int) $_GET['userid'] : NULL;
+$groupid	= (isset($_GET['groupid'])) ? (int) $_GET['groupid'] : NULL;
 
+$folder = getFolder($folderid);
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );
 printTitleBar($folder);

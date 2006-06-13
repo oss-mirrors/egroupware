@@ -13,9 +13,8 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 
-$documentid = $_GET['documentid'];
+$documentid	= (isset($_GET['documentid'])) ? (int) $_GET['documentid'] : NULL;
 $document = getDocument($documentid);
-
 
 printHTMLHead( getMLText("document_title", array("documentname" => $document->getName()) ) );
 printTitleBar($document->getFolder());
