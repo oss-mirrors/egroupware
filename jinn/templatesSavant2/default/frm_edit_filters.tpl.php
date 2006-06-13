@@ -1,4 +1,13 @@
 <form name="filterform" action="<?=$this->form_action?>" method="post">
+   <div style="margin:10px 0px 20px 0px">
+	  <span style="font-weight:bold"><?=lang('Operator to use between comparisons');?></span>
+	  &nbsp;
+	  <input type="radio" name="ANDOR" <?=$this->andor_and_chk?> value="AND" /><?=lang('AND');?>
+	  &nbsp;
+	  &nbsp;
+	  <input type="radio" name="ANDOR" <?=$this->andor_or_chk?> value="OR" /><?=lang('OR');?>
+
+   </div>
    <table cellpadding="0" cellspacing="0" style="border:solid 0px #cccccc">
 	  <tr>
 		 <td style="font-weight:bold" align="center"></td>
@@ -12,12 +21,18 @@
 	  </tr>
 	  <?php foreach($this->filterdata_elements as $element):?>
 	  <tr>
+		 <?php if($element['set']):?>
 		 <td align="center" style="width:10px">
 			<?=$element['element']?>
 		 </td>
 		 <td align="center" style="width:10px">
 			<input type="checkbox" name="delete_<?=$element['element']?>" value="true" />
 		 </td>
+		 <?php else:?>
+		 <td colspan="2" align="center" style="width:10px">
+			<?= lang('New')?>
+		 </td>
+		 <?php endif?>
 		 <td align="center" style="padding-left:20px;">
 			<select name="field_<?=$element['element']?>">
 			   <?=$element['fields']?>
@@ -56,7 +71,7 @@
 		 <input type="hidden" name="listurl" value="<?=$this->list_url?>"/>
 		 <input type="hidden" name="deleteurl" value="<?=$this->delete_url?>"/>
 		 <input class="egwbutton"  type="submit" name="submit" value="<?=lang('Delete Filter');?>" onClick="return onDelete();"/>
-		 <input class="egwbutton"  type="submit" name="submit" value="<?=lang('Activate Filters and Exit');?>" onClick="document.filterform.action = document.filterform.listurl.value;"/>
+		 <input class="egwbutton"  type="submit" name="submit" value="<?=lang('Activate Filters and Return');?>" onClick="document.filterform.action = document.filterform.listurl.value;"/>
 	  </td>
    </tr>
 </table>

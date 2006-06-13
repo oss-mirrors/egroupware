@@ -355,7 +355,7 @@
 
 		 //the filter class takes care of detecting the current filter, compiling a where statement and compiling the filter options for the listbox
 		 $filter_where = $this->filtermanager->get_filter_where();
-		 //		 _debug_array($filter_where);
+		 //_debug_array($filter_where);
 
 		 $this->tplsav2->set_var('filter_list',$this->filtermanager->format_filter_options($_POST[filtername]));
 		 $this->tplsav2->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
