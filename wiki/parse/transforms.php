@@ -357,7 +357,7 @@ function parse_raw_html($text)
 	}
 	else
 	{
-		if(strtolower($text) == "<html>\n")
+		if(substr(strtolower($text),0,6) == '<html>')
 		{
 			$in_html = 1;
 			return '';
@@ -542,11 +542,11 @@ function parse_htmlisms_outside_html($text)
 	global $htmlisms_outside_in_html;
 
 	$ltext = strtolower($text);
-	if ($ltext == "<html>\n")
+	if (substr($ltext,0,6) == '<html>')
 	{
 		$htmlisms_outside_in_html = True;
 	}
-	elseif ($ltext == "</html>\n")
+	elseif (substr($ltext,0,7) == '</html>')
 	{
 		$htmlisms_outside_in_html = False;
 	}
