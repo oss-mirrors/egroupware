@@ -767,7 +767,9 @@
 	  * @return void
 	  */
 	  function edit_gen_obj_options()
-	  {
+	  {	
+		 //$this->template->set_var('css_file','');
+
 		 // if we have to save the new data
 		 if($_POST[submitted])
 		 {
@@ -1150,8 +1152,9 @@
 		 {
 			$save_status = $this->bo->save_object_events_conf($_GET[object_id],$_GET[edit]);
 
-			//unset($_GET[edit]);
+				//unset($_GET[edit]);
 			//unset($_POST[plugin]);
+		//	_debug_array($_FILES);
 		 }
 
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
@@ -1164,6 +1167,7 @@
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
+		 
 		 $this->msg_box();
 
 		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
@@ -1179,6 +1183,7 @@
 
 		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
 		 $stored_configs = unserialize(base64_decode($object_arr[events_config]));
+//		 _debug_array($stored_configs);
 
 		 $this->tplsav2->stored_events_arr=array(); 
 		 if(is_array($stored_configs))
@@ -1238,6 +1243,11 @@
 			$this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$edit_conf['name']]['title']);
 
 			$this->tplsav2->complete_conf_arr=$edit_conf;
+
+			if($edit_conf['iconfile'])
+			{
+			   $this->tplsav2->iconfilepath=$this->bo->site_fs->get_jinn_sitefile_url($object_arr[parent_site_id]).SEP.'object_events'.SEP.$edit_conf['name'].SEP.$edit_conf['iconfile'];
+			}
 
 			$cfg=$this->bo->object_events_plugins[$edit_conf[name]]['config'];
 			$cfg_help=$this->bo->object_events_plugins[$edit_conf[name]]['config_help'];
@@ -1371,7 +1381,7 @@
 						if($post_plugins[$key.'_plgupload']) 
 						{
 						   //TODO ??? set key to new file name in POST
-						   $stored_files_arr=$this->bo->site_fs->save_site_file_from_post($this->bo->so->get_site_id_by_object_id($_GET[object_id]),'PLGXXX'.$key,$plug_reg_conf_arr[$key][subdir]);	
+						   $stored_files_arr=$this->bo->site_fs->save_db_field_plugin_file_from_post($this->bo->so->get_site_id_by_object_id($_GET[object_id]),'PLGXXX'.$key,$plug_reg_conf_arr[$key][subdir]);	
 						}
 						elseif($post_plugins[$key.'_plgdelete']) 
 						{
@@ -1394,7 +1404,7 @@
 						{
 						   //TODO ??? set key to new file name in POST
 						   $arr = explode("_SEP_",$key);
-						   $stored_files_arr=$this->bo->site_fs->save_site_file_from_post($this->bo->so->get_site_id_by_object_id($_GET[object_id]),'MLT'.$key,$plug_reg_conf_arr[substr($arr[0],3)]['items'][$arr[1]][subdir]);
+						   $stored_files_arr=$this->bo->site_fs->save_db_field_plugin_file_from_post($this->bo->so->get_site_id_by_object_id($_GET[object_id]),'MLT'.$key,$plug_reg_conf_arr[substr($arr[0],3)]['items'][$arr[1]][subdir]);
 						}
 						elseif($post_multi[$key.'_plgdelete'])
 						{

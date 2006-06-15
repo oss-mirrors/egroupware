@@ -79,6 +79,9 @@
 		 {
 			if($this->read_preferences('debug_sql')=='yes') $this->debug_sql=true;
 		 }
+
+		 $this->site_fs = createObject('jinn.site_fs');
+
 	  }
 
 	  /**

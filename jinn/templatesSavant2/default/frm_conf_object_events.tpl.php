@@ -16,7 +16,7 @@
    </head>
    <body <?=$this->close?>>
 
-	  <form method="post" name="frm" action=<?=$this->action?>>
+	  <form method="post" name="frm" action=<?=$this->action?> enctype="multipart/form-data">
 		 <div id="divMain">
 			<div id="divAppboxHeader"><?=lang('Event Plugin Configuration')?></div>
 			<div id="divAppbox">
@@ -95,8 +95,13 @@
 						<?=lang('Icon used by some event types.')?>
 					 </td>
 					 <td style="vertical-align:top;">
-						<input type="file" name="iconupload" value="<?=$this->label?>" />
-						<input type="hidden" name="iconfile" value="<?=$this->iconfile?>"/>
+						<?php if($this->complete_conf_arr['iconfile']):?>
+						<?=lang('Delete')?><input type="checkbox" name="icondelete" value="true" />&nbsp;
+						<input type="hidden" name="iconfile" value="<?=$this->complete_conf_arr['iconfile']?>"/>
+						<img src="<?=$this->iconfilepath?>" alt="" />
+						&nbsp;
+						<?php endif?>
+						<input type="file" name="iconupload" value="" /> 
 					 </td>
 				  </tr>
 				  <tr>

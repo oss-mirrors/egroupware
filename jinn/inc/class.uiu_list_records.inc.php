@@ -871,14 +871,23 @@
 	  
 	  function getRunOnRecordEventIcons($where_string)
 	  {
+//		 $this->tplsav2->iconfilepath=$this->bo->site_fs->get_jinn_sitefile_url($object_arr[parent_site_id]).SEP.'object_events'.SEP.$edit_conf['name'].SEP.$edit_conf['iconfile'];
+//		 $this->tplsav2->objevent_file_path=$this->bo->site_fs->get_jinn_sitefile_url($object_arr[parent_site_id]).SEP.'object_events';
 		 foreach($this->runonrecord_arr as $key => $conf_arr)
 		 {
 			$conf_arr['runonrecordevent_link'].='&base64_where_string='.$where_string;
+			if($conf_arr['iconfile'])
+			{
+			   $conf_arr['iconfilepath'] = $this->bo->site_fs->get_jinn_sitefile_url($this->bo->site_object['parent_site_id']).SEP.'object_events'.SEP.$conf_arr['name'].SEP.$conf_arr['iconfile'];
+			}
 			$this->tplsav2->runonrecordbuttons=$conf_arr;
 			
 			$buttonrow[]=$this->tplsav2->fetch('runonrecord_icons.tpl.php');
 		 }
-
+/*		 _debug_array($buttonrow);
+		 echo "hallo";
+		 die();
+*/
 		 return $buttonrow;
 	  }
 

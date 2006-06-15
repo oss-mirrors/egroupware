@@ -1,7 +1,7 @@
 ## J I N N   T A S K S ##
 Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
-	[_] 8% RELEASE 0.9 stable
-		[_] 16% SHOWSTOPPERS BUGS/TASKS
+	[_] 7% RELEASE 0.9 stable
+		[_] 14% SHOWSTOPPERS BUGS/TASKS
 			[X] after creating new object it show another new object screen in stead of the just made object
 			[_] walk list does not work on egw_access_log: has something to do with primaries 
 			[_] als je een record kopieerd en vervolgens delete wordt ook het origineel verwijderd (zie Lingewoud NIEUW) 
@@ -16,6 +16,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] Edit record
 				[_] order not well working
 				[_] new features not tested
+			[_] sometimes error message in site overview screen
 		[_] 0% BIJNA AF, TESTEN
 			[_] als er geen tabellen zijn faalt de connectie test
 			[_] sommige jinn links geven na het inloggen een lelijke foutmelding
@@ -66,7 +67,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] accounts.tpl
 				[_] config.tpl
 				[_] config_browse_view.tpl
-				[_] frm_edit_filter.tpl
+				[X] frm_edit_filter.tpl
 				[_] import_object.tpl
 				[X] list_records.tpl
 		[_] 6% TASKS
@@ -92,6 +93,9 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] in class.site_fs.inc.php staat ook een vreemde foutafhandeling
 				[_] alle plugins nalopen
 			[_] EVENT PLUGINS
+				[_] strange bug event looses name while configuring
+				[_] delete must really delete site files
+				[_] existing site files must be possible to select
 				[_] mandatory moet geen property van een veld zijn maar afgehandelt worden door een eventplugin.
 				[_] event on new record
 				[_] event on delete record

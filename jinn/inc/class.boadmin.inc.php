@@ -96,8 +96,6 @@
 
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 
-		 // move to bojinn?
-		 $this->site_fs = createObject('jinn.site_fs');
 
 		 global $local_bo;
 		 $local_bo=$this;
@@ -230,6 +228,21 @@
 			//get the already stored configurations
 			$object_arr=$this->so->get_object_values($_GET[object_id]);
 			$stored_configs = unserialize(base64_decode($object_arr[events_config]));
+			
+			if($_FILES['iconupload']['tmp_name'])
+			{
+			   $stored_file_arr=$this->site_fs->save_obj_event_plugin_file_from_post($this->so->get_site_id_by_object_id($_GET[object_id]),$plg_post_arr['plugin']);	
+			   $iconfile=$_FILES['iconupload']['name'];
+			}
+			elseif($_POST['icondelete']) 
+			{
+			   $iconfile='';
+			   // $this->site_fs->remove_file($this->so->get_site_id_by_object_id($_GET[object_id]),$val,$plug_reg_conf_arr[$key][subdir]);	
+			}
+			else
+			{
+			   $iconfile=$_POST['iconfile'];
+			}
 
 			if($_GET[edit]=='')
 			{
@@ -252,6 +265,8 @@
 			   //if a new plugin was configured, add it to the store
 			   if($plg_post_arr['event'] != '' && $plg_post_arr['plugin'] != '')
 			   {
+
+				  
 				  if(!is_array($stored_configs)) $stored_configs = array();
 				  $conf=array
 				  (
@@ -259,6 +274,7 @@
 					 'conf'=>$plg_post_arr,
 					 'eventlabel'=>$_POST['eventlabel'],
 				  );
+				  if($iconfile) $conf['iconfile']=$iconfile;
 				  $stored_configs[] = $conf;
 				  $dirty=true;
 			   }
@@ -278,8 +294,9 @@
 					 'name'=>$plg_post_arr['plugin'],
 					 'conf'=>$plg_post_arr,
 					 'eventlabel'=>$_POST['eventlabel'],
-					 'iconfile'=>$_POST['iconfile']
+//					 'iconfile'=>$_POST['iconfile']
 				  );
+				  if($iconfile) $conf['iconfile']=$iconfile;
 				  $stored_configs[$_GET[edit]] = $conf;
 				  $dirty=true;
 			   }
@@ -305,6 +322,8 @@
 			}
 		 }
 
+		 //_debug_array($stored_configs);
+		 
 		 //fixme give correct status
 		 return true;
 

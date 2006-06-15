@@ -153,7 +153,7 @@
 			<!-- RunOnRec Icons -->
 			<?php if(is_array($recrow_arr['runonrec_arr'])):?>
 			<?php foreach($recrow_arr['runonrec_arr'] as $runonrec_arr):?>
-			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" valign="top" style="padding:0px 2px 0px 2px"><?=$runonrec_arr ?></td>
+			<td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" valign="top"><?=$runonrec_arr ?></td>
 			<?php endforeach?>
 			<?php endif?>
 
