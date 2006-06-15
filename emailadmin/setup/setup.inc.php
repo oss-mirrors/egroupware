@@ -38,7 +38,7 @@
 	/* Dependencies for this app to work */
 	$setup_info['emailadmin']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('1.0.0','1.0.1','1.2')
+		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
 	);
 
 
