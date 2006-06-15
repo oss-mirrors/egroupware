@@ -47,6 +47,8 @@
 			'ea_order'			=> 'ea_order',
 			'ea_group'			=> 'ea_group',
 			'ea_appname'			=> 'ea_appname',
+			'ea_smtp_auth_username'		=> 'ea_smtp_auth_username',
+			'ea_smtp_auth_password'		=> 'ea_smtp_auth_password',
 		);
 
 		function so()
@@ -145,7 +147,7 @@
 				' OR ea_appname IS NULL or ea_appname = \'\') and ',
 				'(',
 				array('ea_group'=>$_groups),
-				' OR ea_group IS NULL or ea_group = \'\' or ea_group = \'0\')'
+				' OR ea_group IS NULL or ea_group = \'\')'
 			);
 
 			$this->db->select($this->table,'ea_profile_id',$where, __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);

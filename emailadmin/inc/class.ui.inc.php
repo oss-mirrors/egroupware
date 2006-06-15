@@ -231,9 +231,9 @@
 						if($value == 'yes')
 							$this->t->set_var('selected_'.$key,'checked="1"');
 						break;
-					case 'imapLoginType':
 					case 'imapType':
 					case 'smtpType':
+					case 'imapLoginType':
 						$this->t->set_var('selected_'.$key.'_'.$value,'selected="1"');
 						break;
 					case 'ea_appname':
@@ -260,20 +260,16 @@
 				'menuaction'	=> 'emailadmin.ui.listProfiles'
 			);
 			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
-			
-			$options = '';
+
 			foreach($this->boemailadmin->getSMTPServerTypes() as $key => $value)
 			{
-				$options .= '<option value="'.$key.'"'.($profileData['smtpType'] == $key ? ' selected="1"' : '').'>'.$value."</option>\n";
-			}
-			$this->t->set_var('smtpType_options',$options);
+				$this->t->set_var("lang_smtp_option_$key",$value);
+			};
 
-			$options = '';
 			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value)
 			{
-				$options .= '<option value="'.$key.'"'.($profileData['imapType'] == $key ? ' selected="1"' : '').'>'.$value['description']."</option>\n";
-			}
-			$this->t->set_var('imapType_options',$options);
+				$this->t->set_var("lang_imap_option_$key",$value['description']);
+			};
 						
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -477,7 +473,7 @@
 			}
 			$smtpSettings['smtpType'] = $smtpType;
 			
-			#_debug_array($smtpSettings);
+			#_debug_array($smtpSettings); exit;
 			
 			// get the settings for the imap/pop3 server
 			$imapType = $_POST['imapsettings']['imapType'];

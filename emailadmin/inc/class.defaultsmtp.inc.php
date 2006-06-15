@@ -13,13 +13,23 @@
 
 	class defaultsmtp
 	{
-		var $profileData;
-	
-		// the constructor
-		function defaultsmtp($_profileData)
-		{
-			$this->profileData = $_profileData;
-		}
+		var $smtpAuth = false;
+		
+		var $editForwardingAddress = false;		
+
+		var $host;
+		
+		var $port;
+		
+		var $username;
+		
+		var $password;
+		
+		#// the constructor
+		#function defaultsmtp($_profileData)
+		#{
+		#	$this->profileData = $_profileData;
+		#}
 		
 		// add a account
 		function addAccount($_hookValues)

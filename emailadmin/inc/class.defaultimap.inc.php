@@ -11,14 +11,53 @@
 	\***************************************************************************/
 	/* $Id$ */
 
+	include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.imap_client.inc.php");
+	
+	define('IMAP_NAMESPACE_PERSONAL', 'personal');
+	define('IMAP_NAMESPACE_OTHERS'	, 'others');
+	define('IMAP_NAMESPACE_SHARED'	, 'shared');
+	define('IMAP_NAMESPACE_ALL'	, 'all');
+
 	class defaultimap
 	{
-		var $profileData;
+		// password for imap admin account
+		var $adminPassword;
 		
-		function defaultimap($_profileData)
+		// username for imap admin account
+		var $adminUsername;
+		
+		// enable encryption
+		var $encryption;
+		
+		// address/name of the incoming server
+		var $host;
+		
+		// password to login into incoming server
+		var $password;
+		
+		// port of the incoming server
+		var $port = 143;
+
+		// username to login into incoming server
+		var $username;
+
+		// validate certificate
+		var $validatecert;
+		
+		// mailbox delimiter
+		var $mailboxDelimiter = '/';
+
+		// mailbox prefix
+		var $mailboxPrefix = '~/mail';
+
+		// is mbstring support available
+		var $mbAvailable;
+		
+		function defaultimap()
 		{
-			$this->profileData = $_profileData;
 			if (function_exists('mb_convert_encoding')) $this->mbAvailable = TRUE;
+			
+			$this->restoreSessionData();
 		}
 		
 		function addAccount($_hookValues)
@@ -35,67 +74,158 @@
 		{
 			if($this->mbAvailable)
 			{
-				return mb_convert_encoding( $_folderName, "UTF7-IMAP", $GLOBALS['egw']->translation->charset());
+				return mb_convert_encoding($_folderName, "UTF7-IMAP", $GLOBALS['egw']->translation->charset());
 			}
-			
+
 			// if not
-			// can encode only from ISO 8859-1
+			// we can encode only from ISO 8859-1
 			return imap_utf7_encode($_folderName);
 		}
-
-		function getMailboxString($_folderName='')
-		{
-			if($this->profileData['imapTLSEncryption'] == 'yes' &&
-				 $this->profileData['imapTLSAuthentication'] == 'yes')
-			{
-				if(empty($this->profileData['imapPort']))
-					$port = '993';
-				else
-					$port = $this->profileData['imapPort'];
-					
-				$mailboxString = sprintf("{%s:%s/imap/ssl}%s",
-					$this->profileData['imapServer'],
-					$port,
-					$_folderName);
+		
+		function getCapabilities() {
+			if(!is_array($this->sessionData['capabilities'][$this->host])) {
+				return false;
 			}
-			// don't check cert
-			elseif($this->profileData['imapTLSEncryption'] == 'yes')
-			{
-				if(empty($this->profileData['imapPort']))
-					$port = '993';
-				else
-					$port = $this->profileData['imapPort'];
-					
-				$mailboxString = sprintf("{%s:%s/imap/ssl/novalidate-cert}%s",
-					$this->profileData['imapServer'],
-					$port,
+			
+			return $this->sessionData['capabilities'][$this->host];
+		}
+		
+		function getDelimiter() {
+			return isset($this->sessionData['delimiter'][$this->host]) ? $this->sessionData['delimiter'][$this->host] : $this->mailboxDelimiter;
+		}
+		
+		function getMailboxString($_folderName='') {
+			#$mailboxPrefix = ($_folderName == 'INBOX' ? '' : $this->mailboxPrefix.$this->mailboxDelimiter);
+			
+			#if($_folderName == 'INBOX') {
+				$mailboxPrefix = '';
+			#} else {
+			#	$mailboxPrefix = (!empty($this->mailboxPrefix) ? $this->mailboxPrefix.$this->mailboxDelimiter : '');
+			#}
+			
+			if($this->encryption && $this->validatecert) {
+				$mailboxString = sprintf("{%s:%s/imap/ssl}%s%s",
+					$this->host,
+					$this->port,
+					$mailboxPrefix,
 					$_folderName);
-			}
-			// no tls
-			else
-			{
-				if(empty($this->profileData['imapPort']))
-					$port = '143';
-				else
-					$port = $this->profileData['imapPort'];
-					
-				if($this->profileData['imapoldcclient'] == 'yes')
-				{
-					$mailboxString = sprintf("{%s:%s/imap}%s",
-						$this->profileData['imapServer'],
-						$port,
-						$_folderName);
-				}
-				else
-				{
-					$mailboxString = sprintf("{%s:%s/imap/notls}%s",
-						$this->profileData['imapServer'],
-						$port,
-						$_folderName);
-				}
+			} elseif($this->encryption) {
+				// don't check cert
+				$mailboxString = sprintf("{%s:%s/imap/ssl/novalidate-cert}%s%s",
+					$this->host,
+					$this->port,
+					$mailboxPrefix,
+					$_folderName);
+			} else {
+				// no tls
+				$mailboxString = sprintf("{%s:%s/imap/notls}%s%s",
+					$this->host,
+					$this->port,
+					$mailboxPrefix,
+					$_folderName);
 			}
 
 			return $this->encodeFolderName($mailboxString);
+		}
+
+		function getNameSpace($_nameSpace) {
+			if(!is_array($this->sessionData['nameSpace'][$this->host][$this->username])) {
+				return false;
+			}
+
+			switch($_nameSpace) {
+				case IMAP_NAMESPACE_OTHERS:
+				case IMAP_NAMESPACE_PERSONAL:
+				case IMAP_NAMESPACE_SHARED:
+					foreach($this->sessionData['nameSpace'][$this->host][$this->username] as $singleNameSpace) {
+						if($singleNameSpace['type'] == $_nameSpace) {
+							return $singleNameSpace;
+						}
+					}
+					break;
+
+				default:
+					return $this->sessionData['nameSpace'][$this->host][$this->username];
+					break;
+			}
+			
+			// namespace not found
+			return false;
+		}
+		
+		function getQuota($_folderName) {
+			if(!is_resource($this->mbox)) {
+				$this->openConnection();
+			}
+			
+			if(function_exists('imap_get_quotaroot') && $this->supportsCapability('QUOTA')) {
+				$quota = @imap_get_quotaroot($this->mbox, $this->encodeFolderName($_folderName));
+				if(is_array($quota) && isset($quota['STORAGE'])) {
+					return $quota['STORAGE'];
+				}
+			} 
+
+			return false;
+		}
+		
+		function openConnection($_options=0, $_adminConnection=false) {
+			if(!function_exists('imap_open')) {
+				return lang('This PHP has no IMAP support compiled in!!');
+			}
+
+			if($_adminConnection) {
+				$folderName	= '';
+				$username	= $this->adminUsername;
+				$password	= $this->adminPassword;
+				$options	= '';
+			} else {
+				$folderName	= $_folderName;
+				$username	= $this->username;
+				$password	= $this->password;
+				$options	= $_options;
+			}
+
+			$mailboxString = $this->getMailboxString();
+
+			if(!$this->mbox = imap_open ($mailboxString, $username, $password, $options)) {
+				return PEAR::raiseError(imap_last_error(), 'horde.error');
+			} else {
+				if(!isset($this->sessionData['capabilities'][$this->host]) || 
+					!isset($this->sessionData['nameSpace'][$this->host][$username]) ||
+					!isset($this->sessionData['delimiter'][$this->host])) {
+
+					$imapClient = CreateObject('emailadmin.imap_client',$this->host, $this->port, ($this->encryption ? 'ssl' : ''));
+					$imapClient->login($username, $password);
+					
+					$this->sessionData['capabilities'][$this->host] = $imapClient->_capability;
+					$this->sessionData['nameSpace'][$this->host][$username] = $imapClient->namespace();
+					
+					// try to find the find the delimiter
+					foreach($this->sessionData['nameSpace'][$this->host][$username] as $singleNameSpace) {
+						if(isset($singleNameSpace['delimiter'])) {
+							$this->sessionData['delimiter'][$this->host] = $singleNameSpace['delimiter'];
+							break;
+						}
+					}
+
+					$this->saveSessionData();
+				}
+				
+				return $this->mbox;
+			}
+			
+		}		
+		
+		function restoreSessionData() {
+			$this->sessionData = $GLOBALS['egw']->session->appsession('imap_session_data');
+		}
+		
+		function saveSessionData() {
+			$GLOBALS['egw']->session->appsession('imap_session_data','',$this->sessionData);
+		}
+
+		function supportsCapability($_capability) {
+			return isset($this->sessionData['capabilities'][$this->host][$_capability]) ? true : false;
 		}
 
 		function updateAccount($_hookValues)
