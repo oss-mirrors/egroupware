@@ -34,20 +34,13 @@
 		var $moveNeeded;	// do we need to move some messages?
 
 		var $timeCounter;
-
+		
+		// the object storing the data about the incoming imap server
+		var $icServer=0;
+		
 		function uifelamimail()
 		{
 			$this->timeCounter = microtime(true);
-/*			if(isset($_POST["mark_unread_x"])) 
-				$_POST["mark_unread"] = "true";
-			if(isset($_POST["mark_read_x"])) 
-				$_POST["mark_read"] = "true";
-			if(isset($_POST["mark_unflagged_x"])) 
-				$_POST["mark_unflagged"] = "true";
-			if(isset($_POST["mark_flagged_x"])) 
-				$_POST["mark_flagged"] = "true";
-			if(isset($_POST["mark_deleted_x"])) 
-				$_POST["mark_deleted"] = "true"; */
 
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 			$this->bofelamimail     =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
@@ -57,15 +50,13 @@
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
-			if(isset($_POST["filter"]) || isset($_GET["filter"]))
-			{
+			if(isset($_POST["filter"]) || isset($_GET["filter"])) {
 				// new search filter defined, lets start with message 1
 				$this->bofelamimail->sessionData['startMessage']= 1;
 			}
 
 			// navigate for and back
-			if(isset($_GET["startMessage"]))
-			{
+			if(isset($_GET["startMessage"])) {
 				$this->bofelamimail->sessionData['startMessage'] = $_GET["startMessage"];
 			}
 			
@@ -903,6 +894,9 @@
 			$this->t->set_var('lang_no_filter',lang("no filter"));
 			$this->t->set_var('lang_connection_failed',lang("The connection to the IMAP Server failed!!"));
 			$this->t->set_var('lang_select_target_folder',lang("Simply click the target-folder"));
+			$this->t->set_var('lang_updating_message_status',lang("updating message status"));
+			$this->t->set_var('lang_loading',lang('loading'));
+			$this->t->set_var('lang_deleting_messages',lang('deleting messages'));
 			$this->t->set_var('lang_open_all',lang("open all"));
 			$this->t->set_var('lang_close_all',lang("close all"));
 			$this->t->set_var('lang_moving_messages_to',lang('moving messages to'));

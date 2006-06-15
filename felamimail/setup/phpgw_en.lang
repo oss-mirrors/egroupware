@@ -80,6 +80,7 @@ delete selected	felamimail	en	Delete selected
 delete selected messages	felamimail	en	delete selected messages
 deleted	felamimail	en	deleted
 deleted folder successfully!	felamimail	en	Deleted folder successfully!
+deleting messages	felamimail	en	deleting messages
 disable	felamimail	en	Disable
 discard	felamimail	en	discard
 discard message	felamimail	en	discard message
@@ -205,6 +206,7 @@ less	felamimail	en	less
 less than	felamimail	en	less than
 light gray	felamimail	en	Light Gray
 list all	felamimail	en	List all
+loading	felamimail	en	loading
 location of buttons when composing	felamimail	en	Location of buttons when composing
 mail server login type	admin	en	Mail server login type
 mail settings	felamimail	en	Mail Settings
@@ -296,6 +298,7 @@ respond to mail sent to	felamimail	en	respond to mail sent to
 return	felamimail	en	Return
 return to options page	felamimail	en	Return to options page
 right	felamimail	en	Right
+row order style	felamimail	en	row order style
 rule	felamimail	en	Rule
 sat	felamimail	en	Sat
 save	felamimail	en	Save
@@ -365,6 +368,7 @@ unsubscribe	felamimail	en	Unsubscribe
 unsubscribed	felamimail	en	Unsubscribed
 unsubscribed successfully!	felamimail	en	Unsubscribed successfully!
 up	felamimail	en	up
+updating message status	felamimail	en	updating message status
 use <a href="%1">emailadmin</a> to create profiles	felamimail	en	use <a href="%1">EmailAdmin</a> to create profiles
 use a signature	felamimail	en	Use a signature
 use a signature?	felamimail	en	Use a signature?

@@ -16,9 +16,9 @@
 
 	class ajaxfelamimail {
 		// which profile to use(currently only 0 is supported)
-		var $imapServerID;
+		var $imapServerID=0;
 		
-		// the object storing the date about the incoming imap server
+		// the object storing the data about the incoming imap server
 		var $icServer;
 		
 		function ajaxfelamimail() {
@@ -210,7 +210,7 @@
 			$this->bofelamimail->restoreSessionData();
 			
 			$isSentFolder = $this->bofelamimail->isSentFolder($_folderName);
-			
+
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			$headers = $this->bofelamimail->getHeaders($this->sessionData['startMessage'], $maxMessages, $this->sessionData['sort']);
 
@@ -240,7 +240,14 @@
 			
 			$response->addAssign("divMessageList", "innerHTML", $headerTable);
 
-			$response->addScript("tree.selectItem('".$_folderName. "',false);");
+			$folderStatus = $this->bofelamimail->getFolderStatus($_folderName);
+			if($folderStatus['unseen'] > 0) {
+				$response->addScript("tree.setItemText('$_folderName', '<b>". $folderStatus['shortName'] ." (". $folderStatus['unseen'] .")</b>');");
+			} else {
+				$response->addScript("tree.setItemText('$_folderName', '". $folderStatus['shortName'] ."');");
+			}
+
+			//$response->addScript("tree.selectItem('".$_folderName. "',false);");
 
 			return $response->getXML();
 		}
@@ -487,7 +494,7 @@
 				$this->icServer->host,
 				$this->icServer->username,
 				$this->sessionData['mailbox']);
-			
+
 			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
 			// $lastPage is the first message ID of the last page
 			if($messageCounter > $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) {

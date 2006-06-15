@@ -37,6 +37,9 @@
 			'showHeader'	=> 'True',
 			'getAttachment'	=> 'True'
 		);
+		
+		// the object storing the data about the incoming imap server
+		var $icServer=0;
 
 		function uidisplay()
 		{
@@ -62,9 +65,7 @@
 				is_numeric($_GET['part']))
 			{
 				$this->partID = $_GET['part'];
-			}
-			else
-			{
+			} else {
 				$this->partID = 0;
 			}
 
@@ -78,18 +79,15 @@
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 
-			if($_GET['showHeader'] == "false")
-			{
+			if($_GET['showHeader'] == "false") {
 				$this->bofelamimail->sessionData['showHeader'] = 'False';
 				$this->bofelamimail->saveSessionData();
 			}
 			
 		}
 		
-		function createLinks($_data)
-		{
-			
-		}
+#		function createLinks($_data) {
+#		}
 		
 		function highlightQuotes($text, $level = 5)
 		{
@@ -139,7 +137,7 @@
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
-			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
+			$headers	= $this->bofelamimail->getMessageHeader($this->mailbox, $this->uid, $partID);
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid,$partID);
@@ -184,20 +182,16 @@
 			$rawheaders 	= "";
 			// create it new, with good line breaks
 			reset($newRawHeaders);
-			while(list($key,$value) = @each($newRawHeaders))
-			{
-				$rawheaders .= wordwrap($value,90,"\n     ");
+			while(list($key,$value) = @each($newRawHeaders)) {
+				$rawheaders .= wordwrap($value, 90, "\n     ");
 			}
 			
 			$this->bofelamimail->closeConnection();
 			
 			$this->display_app_header();
-			if(!isset($_GET['printable']))
-			{
+			if(!isset($_GET['printable'])) {
 				$this->t->set_file(array("displayMsg" => "view_message.tpl"));
-			}
-			else
-			{
+			} else {
 				$this->t->set_file(array("displayMsg" => "view_message_printable.tpl"));
 				$this->t->set_var('charset',$GLOBALS['egw']->translation->charset());
 			}
@@ -221,40 +215,46 @@
 //			{
 			// navbar start
 				// reply url
-				$linkData = array
-				(
+				$linkData = array (
 					'menuaction'	=> 'felamimail.uicompose.reply',
+					'icServer'	=> $this->icServer,
+					'folder'	=> base64_encode($this->mailbox),
 					'reply_id'	=> $this->uid,
 				);
-				if($partID != '')
+				if($partID != '') {
 					$linkData['part_id'] = $partID;
+				}
 				$replyURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
 				// reply all url
-				$linkData = array
-				(
+				$linkData = array (
 					'menuaction'	=> 'felamimail.uicompose.replyAll',
+					'icServer'	=> $this->icServer,
+					'folder'	=> base64_encode($this->mailbox),
 					'reply_id'	=> $this->uid,
 				);
-				if($partID != '')
+				if($partID != '') {
 					$linkData['part_id'] = $partID;
+				}
 				$replyAllURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
 				// forward url
-				$linkData = array
-				(
+				$linkData = array (
 					'menuaction'	=> 'felamimail.uicompose.forward',
-					'reply_id'	=> $this->uid
+					'reply_id'	=> $this->uid,
+					'folder'	=> base64_encode($this->mailbox),
 				);
-				if($partID != '')
+				if($partID != '') {
 					$linkData['part_id'] = $partID;
+				}
 				$forwardURL = $GLOBALS['egw']->link('/index.php',$linkData);	
 
 				//delete url
-				$linkData = array
-				(
+				$linkData = array (
 					'menuaction'	=> 'felamimail.uifelamimail.deleteMessage',
-					'message'	=> $this->uid
+					'icServer'	=> $this->icServer,
+					'folder'	=> base64_encode($this->mailbox),
+					'message'	=> $this->uid,
 				);
 				$deleteURL = $GLOBALS['egw']->link('/index.php',$linkData);
 

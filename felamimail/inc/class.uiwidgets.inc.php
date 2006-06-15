@@ -181,57 +181,10 @@
 				
 				$this->t->set_var('row_text', '');
 
-				switch($flagss) {
-					case "":
-						#$this->t->set_var('imageName','unread_small.png');
-						#$this->t->set_var('row_text',lang('new'));
-						$maxAddressLength = $maxAddressLengthBold;
-						$maxSubjectLength = $maxSubjectLengthBold;
-						$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgunseen'));
-						break;
-					case "D":
-					case "DS":
-					case "ADS":
-						#$this->t->set_var('imageName','unread_small.png');
-						#$this->t->set_var('row_text',lang('deleted'));
-						break;
-					case "F":
-						#$this->t->set_var('imageName','unread_flagged_small.png');
-						#$this->t->set_var('row_text',lang('new'));
-						$maxAddressLength = $maxAddressLengthBold;
-						break;
-					case "FS":
-						#$this->t->set_var('imageName','read_flagged_small.png');
-						#$this->t->set_var('row_text',lang('replied'));
-						break;
-					case "FAS":
-						#$this->t->set_var('imageName','read_answered_flagged_small.png');
-						#$this->t->set_var('row_text',lang('replied'));
-						break;
-					case "S":
-					case "RS":
-						#$this->t->set_var('imageName','read_small.png');
-						#$this->t->set_var('row_text',lang('read'));
-						#$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgread'));
-						break;
-					case "R":
-						#$this->t->set_var('imageName','recent_small.gif');
-						#$this->t->set_var('row_text','*'.lang('recent').'*');
-						$maxAddressLength = $maxAddressLengthBold;
-						#$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgnew'));
-						break;
-					case "RAS":
-					case "AS":
-						#$this->t->set_var('imageName','read_answered_small.png');
-						#$this->t->set_var('row_text',lang('replied'));
-						#$maxAddressLength = $maxAddressLengthBold;
-						break;
-					default:
-						#$this->t->set_var('row_text',$flags);
-						break;
-				}
-#_debug_array($header);
-				if($header['recent']) {
+				// the status icon
+				if($header['deleted']) {
+					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgdel'));
+				} elseif($header['recent']) {
 					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgnew'));
 				} elseif($header['answered']) {
 					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgreplied'));
@@ -241,20 +194,24 @@
 					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgunseen'));
 				}
 
+				// the css for this row
 				if($header['deleted']) {
 					$this->t->set_var('row_css_class','header_row_D');
 				} elseif($header['recent'] && !$header['seen']) {
 					$this->t->set_var('row_css_class','header_row_R');
 				} elseif($header['flagged']) {
-					$this->t->set_var('row_css_class','header_row_F');
+					if($header['seen']) {
+						$this->t->set_var('row_css_class','header_row_FS');
+					} else {
+						$this->t->set_var('row_css_class','header_row_F');
+					}
 				} elseif($header['seen']) {
 					$this->t->set_var('row_css_class','header_row_S');
 				} else {
 					$this->t->set_var('row_css_class','header_row_');
 				}
 				
-				if (!empty($header['subject']))
-				{
+				if (!empty($header['subject'])) {
 					// filter out undisplayable characters
 					$search = array('[\016]','[\017]',
 						'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
@@ -270,20 +227,18 @@
 					#	$header['subject'] = substr($header['subject'],0,$maxSubjectLength)."...";
 					#}
 					$header['subject'] = @htmlspecialchars($header['subject'],ENT_QUOTES,$this->displayCharset);
-					if($header['attachments'] == "true")
-					{
-						$image = '<img src="'.$GLOBALS['egw']->common->image('felamimail','attach').'" border="0" style="width:12px;">';
-
-						$header['attachment'] = $image;
-					}
-					#$this->t->set_var('header_subject', "($flags) ".$header['subject']);
 					$this->t->set_var('header_subject', $header['subject']);
-					$this->t->set_var('attachments', $header['attachment']);
+					#$this->t->set_var('attachments', $header['attachment']);
 					$this->t->set_var('full_subject',@htmlspecialchars($fullSubject,ENT_QUOTES,$this->displayCharset));
-				}
-				else
-				{
+				} else {
 					$this->t->set_var('header_subject',@htmlentities("(".lang('no subject').")",ENT_QUOTES,$this->displayCharset));
+				}
+
+				if($header['attachments'] == 'true') {
+					$image = '<img src="'.$GLOBALS['egw']->common->image('felamimail','attach').'" border="0" style="width:12px;">';
+					$this->t->set_var('attachment_image', $image);
+				} else {
+					$this->t->set_var('attachment_image', '&nbsp;');
 				}
 			
 				if ($_isSentFolder)
@@ -331,7 +286,7 @@
 				(
 					'menuaction'    => 'felamimail.uidisplay.display',
 					'showHeader'	=> 'false',
-					'uid'			=> $header['uid']
+					'uid'		=> $header['uid']
 				);
 				$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
 				$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));

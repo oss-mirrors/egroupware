@@ -302,16 +302,16 @@
 			$this->t->pparse("out","fileSelector");
 		}
 
-		function forward()
-		{
+		function forward() {
+			$icServer = (int)$_GET['icServer'];
+			$folder = base64_decode($_GET['folder']);
 			$replyID = $_GET['reply_id'];
 			$partID  = $_GET['part_id'];
 
 			if (!empty($replyID))
 			{
 				// this fill the session data with the values from the original email
-				$this->bocompose->getForwardData($replyID, $partID, 
-					$this->bofelamimail->sessionData['mailbox']);
+				$this->bocompose->getForwardData($icServer, $folder, $replyID, $partID);
 			}
 			$this->compose();
 		}
@@ -346,32 +346,31 @@
 			print $folderTree;
 		}
 
-		function reply()
-		{
+		function reply() {
+			$icServer = (int)$_GET['icServer'];
+			$folder = base64_decode($_GET['folder']);
 			$replyID = $_GET['reply_id'];
 			$partID	 = $_GET['part_id'];
-			if (!empty($replyID))
-			{
+			if (!empty($folder) && !empty($replyID) ) {
 				// this fill the session data with the values from the original email
-				$this->bocompose->getReplyData('single', $replyID, $partID);
+				$this->bocompose->getReplyData('single', $icServer, $folder, $replyID, $partID);
 			}
 			$this->compose(@htmlentities('body'));
 		}
 		
-		function replyAll()
-		{
+		function replyAll() {
+			$icServer = (int)$_GET['icServer'];
+			$folder = base64_decode($_GET['folder']);
 			$replyID = $_GET['reply_id'];
 			$partID	 = $_GET['part_id'];
-			if (!empty($replyID))
-			{
+			if (!empty($folder) && !empty($replyID) ) {
 				// this fill the session data with the values from the original email
-				$this->bocompose->getReplyData('all', $replyID, $partID);
+				$this->bocompose->getReplyData('all', $icServer, $folder, $replyID, $partID);
 			}
 			$this->compose('body');
 		}
 		
-		function translate()
-		{
+		function translate() {
 			$this->t->set_var("lang_message_list",lang('Message List'));
 			$this->t->set_var("lang_to",lang('to'));
 			$this->t->set_var("lang_cc",lang('cc'));

@@ -5,9 +5,12 @@ var sURL = unescape(window.location.pathname);
 // some translations needed for javascript functions
 
 var movingMessages		= '{lang_moving_messages_to}';
-var msg_emptyTrashFolder	= '{lang_empty_trash}';
-var msg_compressingFolder	= '{lang_compress_folder}';
+var lang_emptyTrashFolder	= '{lang_empty_trash}';
+var lang_compressingFolder	= '{lang_compress_folder}';
 var lang_select_target_folder	= '{lang_select_target_folder}';
+var lang_updating_message_status = '{lang_updating_message_status}';
+var lang_loading 		= '{lang_loading}';
+var lang_deleting_messages 	= '{lang_deleting_messages}';
 
 // how many row are selected currently
 var checkedCounter=0;
@@ -37,7 +40,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			{lang_search}:
 		</td>
 		<td align="left" wwidth="100px">
-			<input class="input_text" type="text" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch(this.value);" onFocus="this.select();" style="font-size:11px; width:98%; max-width:200px;">
+			<input class="input_text" type="text" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch(this.value);" onFocus="this.select();" style="font-size:11px; width:98%; max-width:300px;">
 		</td>
 		<td align="left" width="10px" valign="bottom">
 			<a href="{url_filter}" valign="bottom"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;
@@ -90,39 +93,14 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			</div>
 		</td>
 		
-<!-- ToDo: ResizeVerticalRule -->		
+		<!-- ToDo: ResizeVerticalRule -->		
 		
 		<TD valign="top" colspan="2">
 
 			<!-- Start Header MessageList -->
-<!--
-			<table WIDTH=100% BORDER="0" CELLSPACING="0" style="table-layout:fixed;">
-				<tr class="th">
-					<td width="20px" align="left">
-						<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">
-					</td>
-					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
-						&nbsp;
-					</td>
-					<td bgcolor="{th_bg}" align="center" class="{css_class_subject}">
-						<a href="javascript:changeSorting('subject');">{lang_subject}</a>
-					</td>
-					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
-						&nbsp;&nbsp;<a href="javascript:changeSorting('date');">{lang_date}</a>
-					</td>
-					<td width="120px" bgcolor="{th_bg}" align="center" class="{css_class_from}">
-						&nbsp;<a href="javascript:changeSorting('from');"><span id='from_or_to'>{lang_from}</span></a>
-					</td>
-					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
-						<a href="javascript:changeSorting('size');">{lang_size}</a>&nbsp;
-					</td>
-					<td width="20px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
-						&nbsp;
-					</td>
-				</tr>
-			</table>
--->
+
 			{messageListTableHeader}
+
 			<!-- End Header MessageList -->			
 
 
@@ -184,9 +162,11 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td class="mainscreenRow" width="20px" align="center">
 			<img src="{image_url}">
 		</td>
+		<td class="mainscreenRow" width="20px" align="center">
+			<img src="{attachment_image_url}" border="0" style="width:12px;>
+		</td>
 		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;"><nobr>
-			{attachments}
-			{flagged}<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); return false;" title="{full_subject}">{header_subject}</a>
+			<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); return false;" title="{full_subject}">{header_subject}</a>
 		</td>
 		<td class="mainscreenRow" width="95px" align="center">
 			<nobr><span style="font-size:10px">{date}</span>
@@ -210,12 +190,14 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td class="mainscreenRow" width="20px" align="center">
 			<img src="{image_url}">
 		</td>
+		<td class="mainscreenRow" width="20px" align="center">
+			{attachment_image}
+		</td>
 		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
 			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
 		</td>
 		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;"><nobr>
-			{attachments}
-			{flagged}<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); parentNode.parentNode.parentNode.style.fontWeight='normal'; return false;" title="{full_subject}">{header_subject}</a>
+			<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); parentNode.parentNode.parentNode.style.fontWeight='normal'; return false;" title="{full_subject}">{header_subject}</a>
 		</td>
 		<td class="mainscreenRow" width="95px" align="center">
 			<nobr><span style="font-size:10px">{date}</span>
@@ -270,6 +252,9 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;
 					</td>
+					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
+						&nbsp;
+					</td>
 					<td bgcolor="{th_bg}" align="center" class="{css_class_subject}">
 						<a href="javascript:changeSorting('subject');">{lang_subject}</a>
 					</td>
@@ -294,6 +279,9 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 				<tr class="th">
 					<td width="20px" align="left">
 						<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">
+					</td>
+					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
+						&nbsp;
 					</td>
 					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;

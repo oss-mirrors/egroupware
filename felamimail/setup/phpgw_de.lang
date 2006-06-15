@@ -72,6 +72,7 @@ delete selected	felamimail	de	ausgewählte Nachrichten löschen
 delete selected messages	felamimail	de	ausgewählte Nachrichten löschen
 deleted	felamimail	de	gelöscht
 deleted folder successfully!	felamimail	de	Ordner erfolgreich gelöscht
+deleting messages	felamimail	de	Lösche Nachrichten
 disable	felamimail	de	Deaktivieren
 discard	felamimail	de	verwerfen
 discard message	felamimail	de	Nachricht verwerfen
@@ -192,6 +193,7 @@ less	felamimail	de	kleiner
 less than	felamimail	de	kleiner als
 light gray	felamimail	de	Hellgrau
 list all	felamimail	de	Alle anzeigen
+loading	felamimail	de	Lade
 location of buttons when composing	felamimail	de	Ort der Knöpfe beim EMail schreiben
 mail server login type	admin	de	Typ der Mailserver Anmeldung
 mail settings	felamimail	de	EMail Einstellungen
@@ -231,6 +233,7 @@ no folders found	felamimail	de	Keine Ordner gefunden
 no folders were found to subscribe to!	felamimail	de	Keine Order gefunden, die bestellt werden können!
 no folders were found to unsubscribe from!	felamimail	de	Keine Order gefunden, die abbestellt werden können!
 no highlighting is defined	felamimail	de	keine Hervorhebung definiert
+no message returned.	felamimail	de	Keine Nachrichten gefunden.
 no messages found...	felamimail	de	keine Nachrichten gefunden...
 no messages were selected.	felamimail	de	Es wurde keine NAchricht ausgewählt
 no previous message	felamimail	de	Keine vorherige Nachricht vorhanden
@@ -281,6 +284,7 @@ respond to mail sent to	felamimail	de	Anworte auf EMails die gesendet werden an
 return	felamimail	de	Zurück
 return to options page	felamimail	de	zurück zu Einstellungen
 right	felamimail	de	Rechts
+row order style	felamimail	de	Spaltenanordnung
 rule	felamimail	de	Regel
 sat	felamimail	de	Sa
 save	felamimail	de	Speichern
@@ -344,6 +348,7 @@ unsubscribe	felamimail	de	Abbestellen
 unsubscribed	felamimail	de	abbestellt
 unsubscribed successfully!	felamimail	de	Erfolgreich abbestellt
 up	felamimail	de	hoch
+updating message status	felamimail	de	Aktualisiere Nachrichtenstatus
 use <a href="%1">emailadmin</a> to create profiles	felamimail	de	benutzen Sie <a href="%1">EmailAdmin</a> um Profile zu erstellen
 use a signature	felamimail	de	Signatur benutzen
 use a signature?	felamimail	de	Eine Signatur benutzen?

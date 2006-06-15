@@ -140,8 +140,7 @@
 		
 		function getErrorInfo()
 		{
-			if(isset($this->errorInfo))
-			{
+			if(isset($this->errorInfo)) {
 				$errorInfo = $this->errorInfo;
 				unset($this->errorInfo);
 				return $errorInfo;
@@ -149,13 +148,12 @@
 			return false;
 		}
 		
-		function getForwardData($_uid, $_partID, $_folder)
-		{
+		function getForwardData($_icServer, $_folder, $_uid, $_partID) {
 			$bofelamimail    =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$bofelamimail->openConnection();
 
 			// get message headers for specified message
-			$headers	= $bofelamimail->getMessageHeader($_uid, $_partID);
+			$headers	= $bofelamimail->getMessageHeader($_folder, $_uid, $_partID);
 			// check for Re: in subject header
 			$this->sessionData['subject'] 	= "[FWD] " . $bofelamimail->decode_header($headers->Subject);
 			if($headers->Size)
@@ -164,9 +162,9 @@
 				$size				= lang('unknown');
 
 			$this->addMessageAttachment($_uid, $_partID, 
-							$_folder, 
-							$bofelamimail->decode_header($headers->Subject), 
-							$size);
+				$_folder, 
+				$bofelamimail->decode_header($headers->Subject), 
+				$size);
 			
 			$bofelamimail->closeConnection();
 			
@@ -181,53 +179,56 @@
 		// $_mode can be:
 		// single: for a reply to one address
 		// all: for a reply to all
-		function getReplyData($_mode, $_uid, $_partID)
-		{
+		function getReplyData($_mode, $_icServer, $_folder, $_uid, $_partID) {
 			$bofelamimail    =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$bofelamimail->openConnection();
 			
+			$userEMailAddresses = $this->preferences->getUserEMailAddresses();
+
 			// get message headers for specified message
-			$headers	= $bofelamimail->getMessageHeader($_uid, $_partID);
+			$headers	= $bofelamimail->getMessageHeader($_folder, $_uid, $_partID);
 
 			$this->sessionData['uid'] = $_uid;
-			
+
 			// check for Reply-To: header and use if available
-			if($headers->reply_toaddress)
-			{
-				$this->sessionData['to'] = $bofelamimail->decode_header(trim($headers->reply_toaddress));
+			if($headers->reply_toaddress) {
+				$oldTo		= $bofelamimail->decode_header(trim($headers->reply_toaddress));
+				$oldToAddress	= $headers->reply_to[0]->mailbox.'@'.$headers->reply_to[0]->host;
+			} else {
+				$oldTo = $bofelamimail->decode_header(trim($headers->fromaddress));
+				$oldToAddress	= $headers->from[0]->mailbox.'@'.$headers->from[0]->host;
 			}
-			else
-			{
-				$this->sessionData['to'] = $bofelamimail->decode_header(trim($headers->fromaddress));
+			if($_mode == 'all' && !$userEMailAddresses[$oldToAddress]) {
+				$this->sessionData['to'] = $oldTo;
 			}
 			
-			if($_mode == 'all')
-			{
-				#_debug_array($this->preferences);
+			if($_mode == 'all') {
 				// reply to any address which is cc, but not to my self
 				$oldCC = $bofelamimail->decode_header(trim($headers->ccaddress));
 				$addressParts = imap_rfc822_parse_adrlist($oldCC, '');
-				if (count($addressParts)>0)
-				{
-					while(list($key,$val) = each($addressParts))
-					{
-						if($val->mailbox.'@'.$val->host == $this->preferences['emailAddress'])
-						{
+				if (count($addressParts)>0) {
+					while(list($key,$val) = each($addressParts)) {
+						if($userEMailAddresses[$val->mailbox.'@'.$val->host]) {
 							continue;
 						}
+
+						if($val->mailbox == 'undisclosed-recipients' || (empty($val->mailbox) && empty($val->host)) ) {
+							continue;
+						}
+
 						if(!empty($this->sessionData['cc'])) $this->sessionData['cc'] .= ",";
-						if(!empty($val->personal))
-						{
+
+						if(!empty($val->personal) && !empty($val->mailbox) && !empty($val->host)) {
 							$this->sessionData['cc'] .= sprintf('"%s" <%s@%s>',
 											$val->personal,
 											$val->mailbox,
 											$val->host);
-						}
-						else
-						{
+						} elseif(!empty($val->mailbox) && !empty($val->host)) {
 							$this->sessionData['cc'] .= sprintf("%s@%s",
 											$val->mailbox,
 											$val->host);
+						} else {
+							$this->sessionData['cc'] .= $val->mailbox;
 						}
 					}
 				}
@@ -237,30 +238,28 @@
 				$oldTo = $bofelamimail->decode_header(trim($headers->toaddress));
 				$addressParts = imap_rfc822_parse_adrlist($oldTo, '');
 
-				$userEMailAddresses = $this->preferences->getUserEMailAddresses();
-
-				if (count($addressParts)>0)
-				{
-					while(list($key,$val) = each($addressParts))
-					{
-						if($userEMailAddresses[$val->mailbox.'@'.$val->host])
-						{
+				if (count($addressParts)>0) {
+					while(list($key,$val) = each($addressParts)) {
+						if($userEMailAddresses[$val->mailbox.'@'.$val->host]) {
 							continue;
 						}
-						#print $val->mailbox.'@'.$val->host."<br>";
+						
+						if($val->mailbox == 'undisclosed-recipients' || (empty($val->mailbox) && empty($val->host)) ) {
+							continue;
+						}
+
 						if(!empty($this->sessionData['to'])) $this->sessionData['to'] .= ", ";
-						if(!empty($val->personal))
-						{
+						if(!empty($val->personal) && !empty($val->mailbox) && !empty($val->host)) {
 							$this->sessionData['to'] .= sprintf('"%s" <%s@%s>',
 											$val->personal,
 											$val->mailbox,
 											$val->host);
-						}
-						else
-						{
+						} elseif(!empty($val->mailbox) && !empty($val->host)) {
 							$this->sessionData['to'] .= sprintf("%s@%s",
 											$val->mailbox,
 											$val->host);
+						} else {
+							$this->sessionData['to'] .= $val->mailbox;
 						}
 					}
 				}
@@ -268,16 +267,9 @@
 			
 			
 			// check for Re: in subject header
-			#if(!strncmp())
-			#{
-			#	print "don't match";
-			#}
-			if(strtolower(substr(trim($bofelamimail->decode_header($headers->Subject)), 0, 3)) == "re:")
-			{
+			if(strtolower(substr(trim($bofelamimail->decode_header($headers->Subject)), 0, 3)) == "re:") {
 				$this->sessionData['subject'] = $bofelamimail->decode_header($headers->Subject);
-			}
-			else
-			{
+			} else {
 				$this->sessionData['subject'] = "Re: " . $bofelamimail->decode_header($headers->Subject);
 			}
 

@@ -950,7 +950,7 @@
 					mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"));
 
 				// date from the future
-				if($timestamp > $timestampNow) {
+				if($timestamp > $timestampNow+86400) {
 					$retValue['header'][$sortOrder[$uid]]['date'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],$timestamp);
 				} elseif (date("Y-m-d") == date("Y-m-d",$timestamp)) {
 					// email from today, show only time
@@ -1167,33 +1167,26 @@
 		}
 
 
-		function getMessageHeader($_uid, $_partID = '')
-		{
+		function getMessageHeader($_folder, $_uid, $_partID = '') {
+			$this->reopen($_folder);
 			$msgno = imap_msgno($this->mbox, $_uid);
-			if($_partID == '')
-			{
-			
+			if($_partID == '') {
 				$retValue = imap_header($this->mbox, $msgno);
-			}
-			else
-			{
+			} else {
 				// do it the hard way
 				// we need to fetch the headers of another part(message/rfcxxxx)
 				$headersPart = imap_fetchbody($this->mbox, $_uid, $_partID.".0", FT_UID);
 				$retValue = imap_rfc822_parse_headers($headersPart);
 			}
-			#_debug_array($retValue);
+
 			return $retValue;
 		}
 
 		function getMessageRawBody($_uid, $_partID = '')
 		{
-			if($_partID != '')
-			{
+			if($_partID != '') {
 				$body = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
-			}
-			else
-			{
+			} else {
 				$header = imap_fetchheader($this->mbox, $_uid, FT_UID);
 				$body = $header.imap_body($this->mbox, $_uid, FT_UID);
 			}
