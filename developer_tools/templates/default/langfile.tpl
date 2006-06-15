@@ -134,7 +134,7 @@
    </td>
    <td width="25%">
      <input type="submit" name="loaddb" value="{lang_loaddb}" {loaddb_help}>
-     <input type="checkbox" name="loaddb_too" value="1" {loaddb_help}>
+     <input checked type="checkbox" name="loaddb_too" {loaddb_help}>
    </td>
    <td>
     <input type="submit" name="cancel" value="{lang_cancel}" {cancel_help}>
