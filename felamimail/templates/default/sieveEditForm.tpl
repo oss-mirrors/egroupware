@@ -14,33 +14,13 @@ function SubmitForm(a)
 </script>
 <form ACTION="{action_url}" METHOD="post" NAME="thisRule">
 
-<table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
-	<tr CLASS="th">
-		<td>
-						{lang_edit_rule}      
-		</td>
-	</tr>
-	<tr CLASS="sieveRowActive">
-		<td>
-			<input TYPE="checkbox" NAME="continue" id="continue" VALUE="continue" {continue_checked}><label for="continue">{lang_check_message_against_next_rule_also}</label><br>
-			<input TYPE="checkbox" NAME="keep" id="keep" VALUE="keep" {keep_checked}><label for="keep">{lang_keep_a_copy_of_the_message_in_your_inbox}</label><br>
-			<input TYPE="checkbox" NAME="regexp" id="regexp" VALUE="regexp" {regexp_checked}><label for="regexp">{lang_use_regular_expressions}</label>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			&nbsp;
-		</td>
-	<tr>
-	<tr>
-		<td>
+	<fieldset style="width:680px;" class="row_on"><legend>{lang_condition}</legend>
 			<table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
 				<tr CLASS="th">
 					<td style="width:30%;">
-						CONDITIONS:
+						{lang_match}:
 					</td>
 					<td style="width:70%; text-align:left;">
-						{lang_match}
 						<select class="input_text" NAME="anyof">
 							<option VALUE="0" {anyof_selected0}> {lang_all_of}
 							<option VALUE="1" {anyof_selected4}> {lang_any_of}
@@ -94,80 +74,62 @@ function SubmitForm(a)
 					</td>
 				</tr>
 			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
-				<tr CLASS="th">
-					<td colspan="2">
-						ACTIONS:
-					</td>
-				</tr>
-				<tr CLASS="sieveRowActive">
-					<td style="width:30%;">
-						<input TYPE="radio" NAME="action" VALUE="folder" id="action_folder" {checked_action_folder}> <label for="action_folder">{lang_file_into}:</label>
-					</td>
-					<td style="width:70%;">
-						<input type="text" value="{folderName}" id="folderName" name="folder" style="width:250px;" onchange="document.getElementById('action_folder').checked = true;">
-						<a href="#" onclick="javascript:window.open('{folder_select_url}', 'windowName', 'width=400,height=500,toolbar=no,resizable=yes'); return false;">{lang_select_folder}...</a>
-					</td>
-				</tr>
-				<tr CLASS="sieveRowActive">
-					<td>
-						<input TYPE="radio" NAME="action" VALUE="address" id="action_address" {checked_action_address}> <label for="action_address">{lang_forward_to_address}:</label>
-					</td>
-					<td>
-						<input class="input_text" TYPE="text" NAME="address" style="width:250px;" onchange="document.getElementById('action_address').checked = true;" SIZE="40" value="{value_address}">
-					</td>
-				</tr>
-				<tr CLASS="sieveRowActive">
-					<td>
-						<input TYPE="radio" NAME="action" VALUE="reject" id="action_reject" {checked_action_reject}> <label for="action_reject">{lang_send_reject_message}:</label>
-					</td>
-					<td>
-						<textarea class="input_text" NAME="reject" style="width:400px;" onchange="document.getElementById('action_reject').checked = true;" ROWS="3" COLS="40" WRAP="hard" TABINDEX="14">{value_reject}</textarea>
-					</td>
-				</tr>
-				<tr CLASS="sieveRowActive">
-					<td>
-						<input TYPE="radio" NAME="action" VALUE="discard" id="action_discard" {checked_action_discard}> <label for="action_discard">{lang_discard_message}</label>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table WIDTH="100%" CELLPADDING="2" BORDER="0" CELLSPACING="0">
-				<tr>
-					<td>
-						<a href="{url_back}">{lang_back}</a>
-					</td>
-					<td CLASS="options" style="text-align : right;">
-						<a CLASS="option" HREF="javascript:SubmitForm('save');" onmouseover="window.status='Save Changes';" onmouseout="window.status='';">{lang_save}</a>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
-<input type="hidden" name="ruleID" value="{value_ruleID}">
+	</fieldset>
+	<fieldset style="width:680px;" class="row_on"><legend>{lang_action}</legend>
+		<table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
+			<tr CLASS="sieveRowActive">
+				<td style="width:30%;">
+					<input TYPE="radio" NAME="action" VALUE="folder" id="action_folder" {checked_action_folder}> <label for="action_folder">{lang_file_into}:</label>
+				</td>
+				<td style="width:70%;">
+					<input type="text" value="{folderName}" id="folderName" name="folder" style="width:250px;" onchange="document.getElementById('action_folder').checked = true;">
+					<a href="#" onclick="javascript:window.open('{folder_select_url}', 'windowName', 'width=400,height=500,toolbar=no,resizable=yes'); return false;">{lang_select_folder}...</a>
+				</td>
+			</tr>
+			<tr CLASS="sieveRowActive">
+				<td>
+					<input TYPE="radio" NAME="action" VALUE="address" id="action_address" {checked_action_address}> <label for="action_address">{lang_forward_to_address}:</label>
+				</td>
+				<td>
+					<input class="input_text" TYPE="text" NAME="address" style="width:250px;" onchange="document.getElementById('action_address').checked = true;" SIZE="40" value="{value_address}">
+				</td>
+			</tr>
+			<tr CLASS="sieveRowActive">
+				<td>
+					<input TYPE="radio" NAME="action" VALUE="reject" id="action_reject" {checked_action_reject}> <label for="action_reject">{lang_send_reject_message}:</label>
+				</td>
+				<td>
+					<textarea class="input_text" NAME="reject" style="width:400px;" onchange="document.getElementById('action_reject').checked = true;" ROWS="3" COLS="40" WRAP="hard" TABINDEX="14">{value_reject}</textarea>
+				</td>
+			</tr>
+			<tr CLASS="sieveRowActive">
+				<td>
+					<input TYPE="radio" NAME="action" VALUE="discard" id="action_discard" {checked_action_discard}> <label for="action_discard">{lang_discard_message}</label>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+	</fieldset>
+	<fieldset style="width:680px;" class="row_on"><legend>{lang_extended}</legend>
+		<table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
+			<tr CLASS="sieveRowActive">
+				<td>
+					<input TYPE="checkbox" NAME="continue" id="continue" VALUE="continue" {continue_checked}><label for="continue">{lang_check_message_against_next_rule_also}</label><br>
+					<input TYPE="checkbox" NAME="keep" id="keep" VALUE="keep" {keep_checked}><label for="keep">{lang_keep_a_copy_of_the_message_in_your_inbox}</label><br>
+					<input TYPE="checkbox" NAME="regexp" id="regexp" VALUE="regexp" {regexp_checked}><label for="regexp">{lang_use_regular_expressions}</label>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+	<table style="width:680px; border: 0px solid silver;">
+		<tr height="30" valign="bottom">
+			<td align="left">
+				<input name="save" value="{lang_save}" type="submit" onclick="delete window.onunload;"> &nbsp;
+				<input name="apply" value="{lang_apply}" type="submit" onclick="delete window.onunload;"> &nbsp;
+				<input name="cancel" value="{lang_cancel}" type="submit" onclick="opener.fm_sieve_cancelReload(); window.close()">
+			</td>
+		</tr>
+	</table>
+	<input type="hidden" name="ruleID" value="{value_ruleID}">
 </form>
 <!-- END main -->
-
-<!-- BEGIN folder -->
-							<option VALUE="{folderName}">{folderDisplayName}</option>
-<!-- END folder -->
-	

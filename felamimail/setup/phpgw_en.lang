@@ -3,12 +3,14 @@
 (unknown sender)	felamimail	en	(unknown sender)
 activate	felamimail	en	Activate
 activate script	felamimail	en	activate script
+add acl	felamimail	en	add acl
 add address	felamimail	en	Add address
 add rule	felamimail	en	Add Rule
 add script	felamimail	en	Add Script
 add to %1	felamimail	en	Add to %1
 add to address book	felamimail	en	Add to address book
 add to addressbook	felamimail	en	add to addressbook
+adding file to message. please wait!	felamimail	en	Adding file to message. Please wait!
 additional info	felamimail	en	Additional info
 address book	felamimail	en	Address Book
 address book search	felamimail	en	Address Book Search
@@ -18,12 +20,17 @@ all folders	felamimail	en	All Folders
 all of	felamimail	en	all of
 allways a new window	felamimail	en	allways a new window
 always show html emails	felamimail	en	Always show HTML emails
+and	felamimail	en	and
 any of	felamimail	en	any of
 anyone	felamimail	en	anyone
 as a subfolder of	felamimail	en	as a subfolder of
 attachments	felamimail	en	Attachments
+authentication required	felamimail	en	authentication required
 auto refresh folder list	felamimail	en	Auto refresh folder list
 back to folder	felamimail	en	Back to folder
+bad login name or password.	felamimail	en	Bad login name or password.
+bad or malformed request. server responded: %s	felamimail	en	Bad or malformed request. Server Responded: %s
+bad request: %s	felamimail	en	Bad request: %s
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	en	Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.
 bcc	felamimail	en	BCC
 before headers	felamimail	en	Before headers
@@ -42,11 +49,13 @@ close window	felamimail	en	Close window
 color	felamimail	en	Color
 compose	felamimail	en	Compose
 compress folder	felamimail	en	Compress folder
+condition	felamimail	en	condition
 configuration	felamimail	en	Configuration
+connection dropped by imap server.	felamimail	en	Connection dropped by IMAP server.
 contains	felamimail	en	contains
-could not add folder %1 (%2) !!!	felamimail	en	Could not add folder %1 (%2) !!!
-could not delete folder %1 (%2) !!!	felamimail	en	Could not delete folder %1 (%2) !!!
-could not rename folder %1 to %2 (%3) !!!	felamimail	en	Could not rename folder %1 to %2 (%3) !!!
+could not complete request. reason given: %s	felamimail	en	Could not complete request. Reason Given: %s
+could not open secure connection to the imap server. %s : %s.	felamimail	en	Could not open secure connection to the IMAP server. %s : %s.
+cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	en	CRAM-MD5 or DIGEST-MD5 requires the Auth_SASL package to be installed.
 create	felamimail	en	Create
 create folder	felamimail	en	Create Folder
 create sent	felamimail	en	Create Sent
@@ -72,7 +81,9 @@ delete selected messages	felamimail	en	delete selected messages
 deleted	felamimail	en	deleted
 deleted folder successfully!	felamimail	en	Deleted folder successfully!
 disable	felamimail	en	Disable
+discard	felamimail	en	discard
 discard message	felamimail	en	discard message
+display message in new window	felamimail	en	Display message in new window
 display messages in multiple windows	felamimail	en	display messages in multiple windows
 display of html emails	felamimail	en	Display of HTML emails
 display only when no plain text is available	felamimail	en	Display only when no plain text is available
@@ -100,8 +111,10 @@ edit vacation settings	felamimail	en	edit vacation settings
 email address	felamimail	en	E-Mail Address
 email forwarding address	felamimail	en	email forwarding address
 email signature	felamimail	en	Email signature
+emailaddress	felamimail	en	emailaddress
 empty trash	felamimail	en	empty trash
 enable	felamimail	en	enable
+encrypted connection	felamimail	en	encrypted connection
 enter your default mail domain ( from: user@domain )	admin	en	Enter your default mail domain ( From: user@domain )
 enter your imap mail server hostname or ip address	admin	en	Enter your IMAP mail server hostname or IP address
 enter your sieve server hostname or ip address	admin	en	Enter your SIEVE server hostname or IP address
@@ -110,10 +123,13 @@ enter your smtp server hostname or ip address	admin	en	Enter your SMTP server ho
 enter your smtp server port	admin	en	Enter your SMTP server port
 error	felamimail	en	ERROR
 error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
+error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
+error connecting to imap server: [%s] %s.	felamimail	en	Error connecting to IMAP server: [%s] %s.
 error opening	felamimail	en	Error opening
 every	felamimail	en	every
 every %1 days	felamimail	en	every %1 days
 expunge	felamimail	en	Expunge
+extended	felamimail	en	extended
 felamimail	common	en	FelaMiMail
 file into	felamimail	en	file into
 files	felamimail	en	files
@@ -137,8 +153,8 @@ follow	felamimail	en	follow
 for mail to be send - not functional yet	felamimail	en	For mail to be send - not functional yet
 for received mail	felamimail	en	For received mail
 forward	felamimail	en	Forward
+forward to	felamimail	en	forward to
 forward to address	felamimail	en	forward to address
-forwarding	felamimail	en	Forwarding
 found	felamimail	en	Found
 fri	felamimail	en	Fri
 from	felamimail	en	From
@@ -149,24 +165,32 @@ greater than	felamimail	en	greater than
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	en	Have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about Squirrelmail.<br>
 header lines	felamimail	en	Header Lines
 hide header	felamimail	en	hide header
+hostname / address	felamimail	en	hostname / address
 html	felamimail	en	HTML
 icons and text	felamimail	en	Icons and text
 icons only	felamimail	en	Icons only
 identifying name	felamimail	en	Identifying name
+identity	felamimail	en	identity
 if	felamimail	en	IF
 if from contains	felamimail	en	if from contains
 if mail header	felamimail	en	if mail header
 if message size	felamimail	en	if message size
 if subject contains	felamimail	en	if subject contains
 if to contains	felamimail	en	if to contains
+if using ssl or tls, you must have the php openssl extension loaded.	felamimail	en	If using SSL or TLS, you must have the PHP openssl extension loaded.
 illegal folder name.  please select a different name.	felamimail	en	Illegal folder name.  Please select a different name.
 imap	felamimail	en	IMAP
 imap server	felamimail	en	IMAP Server
 imap server address	felamimail	en	IMAP Server Address
+imap server closed the connection.	felamimail	en	IMAP server closed the connection.
+imap server closed the connection. server responded: %s	felamimail	en	IMAP Server closed the connection. Server Responded: %s
+imap server password	felamimail	en	imap server password
 imap server type	felamimail	en	IMAP Server type
+imap server username	felamimail	en	imap server username
 imaps authentication	felamimail	en	IMAPS Authentication
 imaps encryption only	felamimail	en	IMAPS Encryption only
 in	felamimail	en	in
+incoming mail server(imap)	felamimail	en	incoming mail server(IMAP)
 index order	felamimail	en	Index Order
 info	felamimail	en	Info
 invalid user name or password	felamimail	en	Invalid user name or password
@@ -185,6 +209,7 @@ location of buttons when composing	felamimail	en	Location of buttons when compos
 mail server login type	admin	en	Mail server login type
 mail settings	felamimail	en	Mail Settings
 mainmessage	felamimail	en	mainmessage
+manage emailaccounts	felamimail	en	Manage EMailaccounts
 manage emailfilter / vacation	preferences	en	Manage EMailfilter / Vacation
 manage folders	common	en	Manage Folders
 manage sieve	common	en	Manage Sieve scripts
@@ -197,6 +222,7 @@ mark selected as unread	felamimail	en	Mark selected as unread
 match	felamimail	en	Match
 matches	felamimail	en	matches
 matches regexp	felamimail	en	matches regexp
+max uploadsize	felamimail	en	max uploadsize
 message highlighting	felamimail	en	Message Highlighting
 message list	felamimail	en	Message List
 messages	felamimail	en	messages
@@ -212,14 +238,17 @@ new	common	en	New
 new filter	felamimail	en	New filter
 next	felamimail	en	Next
 next message	felamimail	en	next message
+no active imap server found!!	felamimail	en	No active IMAP server found!!
 no filter	felamimail	en	No Filter
 no folders found	felamimail	en	No folders found
 no folders were found to subscribe to!	felamimail	en	No folders were found to subscribe to!
 no folders were found to unsubscribe from!	felamimail	en	No folders were found to unsubscribe from!
 no highlighting is defined	felamimail	en	No highlighting is defined
+no message returned.	felamimail	en	No message returned.
 no messages found...	felamimail	en	no messages found...
 no messages were selected.	felamimail	en	No messages were selected.
 no previous message	felamimail	en	no previous Message
+no supported imap authentication method could be found.	felamimail	en	No supported IMAP authentication method could be found.
 no valid emailprofile selected!!	felamimail	en	No Valid Email Profile Selected!!
 none	felamimail	en	none
 on behalf of	felamimail	en	on behalf of
@@ -229,14 +258,17 @@ only one window	felamimail	en	only one window
 only unseen	felamimail	en	Only unseen
 open all	felamimail	en	open all
 options	felamimail	en	Options
+or	felamimail	en	or
 organisation	felamimail	en	organisation
 organization	felamimail	en	organization
 organization name	admin	en	Organization name
+outgoing mail server(smtp)	felamimail	en	outgoing mail server(SMTP)
 participants	felamimail	en	Participants
 personal information	felamimail	en	Personal Information
 please select a address	felamimail	en	Please select a address
 please select the number of days to wait between responses	felamimail	en	Please select the number of days to wait between responses
 please supply the message to send with auto-responses	felamimail	en	Please supply the message to send with auto-responses
+port	felamimail	en	port
 posting	felamimail	en	posting
 previous	felamimail	en	Previous
 previous message	felamimail	en	previous message
@@ -247,6 +279,7 @@ read	felamimail	en	read
 reading	felamimail	en	reading
 recent	felamimail	en	recent
 refresh time in minutes	felamimail	en	Refresh time in minutes
+reject with	felamimail	en	reject with
 remove	felamimail	en	remove
 remove immediately	felamimail	en	Remove immediately
 rename	felamimail	en	Rename
@@ -302,22 +335,27 @@ sun	felamimail	en	Sun
 table of contents	felamimail	en	Table of Contents
 text only	felamimail	en	Text only
 the connection to the imap server failed!!	felamimail	en	The connection to the IMAP Server failed!!
-the mimeparser can not parse this message.	felamimail	en	The mimeparser can not parse this message.
+the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	en	The IMAP server does not appear to support the authentication method selected. Please contact your system administrator.
 then	felamimail	en	THEN
 this folder is empty	felamimail	en	THIS FOLDER IS EMPTY
 this php has no imap support compiled in!!	felamimail	en	This PHP has no IMAP support compiled in!!
 thu	felamimail	en	Thu
 to	felamimail	en	To
 to mail sent to	felamimail	en	to mail sent to
+to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.
 translation preferences	felamimail	en	Translation Preferences
 translation server	felamimail	en	Translation server
 trash fold	felamimail	en	Trash Fold
 trash folder	felamimail	en	Trash Folder
 tue	felamimail	en	Tue
 type	felamimail	en	type
+unexpected response from server to authenticate command.	felamimail	en	Unexpected response from server to AUTHENTICATE command.
+unexpected response from server to digest-md5 response.	felamimail	en	Unexpected response from server to Digest-MD5 response.
+unexpected response from server to login command.	felamimail	en	Unexpected response from server to LOGIN command.
 unflagged	felamimail	en	unflagged
 unknown err	felamimail	en	Unknown err
 unknown error	felamimail	en	Unknown error
+unknown imap response from the server. server responded: %s	felamimail	en	Unknown IMAP response from the server. Server Responded: %s
 unknown sender	felamimail	en	Unknown Sender
 unknown user or password incorrect.	felamimail	en	Unknown user or password incorrect.
 unread	common	en	Unread
@@ -337,6 +375,7 @@ use regular expressions	felamimail	en	use regular expressions
 use smtp auth	admin	en	Use SMTP auth
 users can define their own emailaccounts	admin	en	Users can define their own emailaccounts
 vacation notice	felamimail	en	vacation notice
+validate certificate	felamimail	en	validate certificate
 view full header	felamimail	en	View full header
 view message	felamimail	en	View message
 viewing full header	felamimail	en	Viewing full header

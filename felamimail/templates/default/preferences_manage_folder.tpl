@@ -90,16 +90,16 @@
 		<div id="tabcontent2" class="inactivetab">
 			<table border="0" width="100%" cellpadding=2 cellspacing=0>
 				<tr>
-					<td align="left">
-						ACL <a href="#" onclick="javascript:egw_openWindowCentered('{url_addACL}','felamiMailACL','400','200'); return false;">add ACL</a>
-					</td>
-					<td>
+					<td colspan="3">
 						<form id="editACL">
 						<span id="aclTable"></span>
 					</td>
-					<td align="center">
+				</tr>
+				<tr>
+					<td align="left" colspan="3">
+						<button type="button" onclick="javascript:egw_openWindowCentered('{url_addACL}','felamiMailACL','400','200');">{lang_add_acl}</button>
 						<button type="button" onClick="javascript:xajax_doXMLHTTP('felamimail.ajaxfelamimail.deleteACL', xajax.getFormValues('editACL'));">{lang_delete}</button>
-						<form>
+						</form>
 					</td>
 				</tr>
 <tr><td colspan="3">

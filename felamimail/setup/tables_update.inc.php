@@ -252,4 +252,67 @@
 	}
 	
 	// next version should be 1.2.001
+
+
+	$test[] = '1.2';
+	function felamimail_upgrade1_2()
+	{
+		$GLOBALS['egw_setup']->oProc->CreateTable('fm_accounts',array(
+			'fd' => array(
+				'fm_owner' => array('type' => 'int','precision' => '4','nullable' => False),
+				'fm_id' => array('type' => 'auto'),
+				'fm_realname' => array('type' => 'varchar','precision' => '128'),
+				'fm_organization' => array('type' => 'varchar','precision' => '128'),
+				'fm_emailaddress' => array('type' => 'varchar','precision' => '128','nullable' => False),
+				'fm_ic_hostname' => array('type' => 'varchar','precision' => '128','nullable' => False),
+				'fm_ic_port' => array('type' => 'int','precision' => '4','nullable' => False),
+				'fm_ic_username' => array('type' => 'varchar','precision' => '128','nullable' => False),
+				'fm_ic_password' => array('type' => 'varchar','precision' => '128'),
+				'fm_ic_encryption' => array('type' => 'bool','nullable' => False),
+				'fm_og_hostname' => array('type' => 'varchar','precision' => '128','nullable' => False),
+				'fm_og_port' => array('type' => 'int','precision' => '4','nullable' => False),
+				'fm_og_smtpauth' => array('type' => 'bool','nullable' => False),
+				'fm_og_username' => array('type' => 'varchar','precision' => '128'),
+				'fm_og_password' => array('type' => 'varchar','precision' => '128')
+			),
+			'pk' => array('fm_id'),
+			'fk' => array(),
+			'ix' => array('fm_owner'),
+			'uc' => array()
+		));
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.2.001';
+	}
+
+
+	$test[] = '1.2.001';
+	function felamimail_upgrade1_2_001()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('fm_accounts','fm_active',array(
+			'type' => 'bool',
+			'nullable' => False
+		));
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.2.002';
+	}
+
+
+	$test[] = '1.2.002';
+	function felamimail_upgrade1_2_002()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('fm_accounts','fm_validatecertificate',array(
+			'type' => 'bool',
+			'nullable' => False
+		));
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.2.003';
+	}
+
+	$test[] = '1.2.003';
+	function felamimail_upgrade1_2_003()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameColumn('fm_accounts','fm_validatecertificate','fm_ic_validatecertificate');
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.2.004';
+	}
 ?>

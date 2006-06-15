@@ -20,6 +20,7 @@
 		var $public_functions = array
 		(
 			'addACL'		=> 'True',
+			'editAccountData'	=> 'True',
 			'editForwardingAddress'	=> 'True',
 			'listFolder'		=> 'True',
 			'showHeader'		=> 'True',
@@ -37,7 +38,6 @@
 			
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
-
 		}
 		
 		function addACL()
@@ -61,11 +61,22 @@
 			{
 				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['egw']->js->validate_file('tabs','tabs');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
-			$GLOBALS['egw']->js->validate_file('jscode','listFolder','felamimail');
-			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
+			
+			switch($_GET['menuaction'])
+			{
+				case 'felamimail.uipreferences.editAccountData':
+					$GLOBALS['egw']->js->validate_file('jscode','editAccountData','felamimail');
+					$GLOBALS['egw']->js->set_onload('javascript:initEditAccountData();');
+					break;
+
+				case 'felamimail.uipreferences.listFolder':
+					$GLOBALS['egw']->js->validate_file('tabs','tabs');
+					$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+					$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
+					$GLOBALS['egw']->js->validate_file('jscode','listFolder','felamimail');
+					$GLOBALS['egw']->js->set_onload('javascript:initAll();');
+					break;
+			}
 			
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['egw']->common->egw_header();
@@ -110,6 +121,115 @@
 			if($userData['deliveryMode'] != 'forwardOnly')
 				$this->t->set_var('checked_keep_local_copy','checked');
 
+
+			$this->t->parse("out","main");
+			print $this->t->get('out','main');
+		}
+		
+		function editAccountData()
+		{
+			$boPreferences	=& CreateObject('felamimail.bopreferences');
+			$preferences =& $boPreferences->getPreferences();
+			
+			if(!$preferences->userDefinedAccounts)
+			{
+				die('you are not allowed to be here');
+			}
+
+			if($_POST['save'] || $_POST['apply'])
+			{
+				// IMAP connection settings
+				$icServer =& CreateObject('emailadmin.defaultimap');
+				foreach($_POST['ic'] as $key => $value)
+				{
+					$icServer->$key = $value;
+				}
+				
+				// SMTP connection settings
+				$ogServer =& CreateObject('emailadmin.defaultsmtp');
+				foreach($_POST['og'] as $key => $value)
+				{
+					$ogServer->$key = $value;
+				}
+
+				// identity settings
+				$identity =& CreateObject('emailadmin.ea_identity');
+				foreach($_POST['identity'] as $key => $value)
+				{
+					$identity->$key = $value;
+				}
+
+				if((int)$_POST['active'])
+				{
+					$boPreferences->saveAccountData($icServer, $ogServer, $identity);
+					$boPreferences->setProfileActive(true);
+				}
+				else
+				{
+					$boPreferences->setProfileActive(false);
+				}
+				if($_POST['save'])
+				{
+					ExecMethod('felamimail.uifelamimail.viewMainScreen');
+					return;
+				}
+			}
+			elseif($_POST['cancel'])
+			{
+				ExecMethod('felamimail.uifelamimail.viewMainScreen');
+				return;
+			}
+
+			$this->display_app_header(TRUE);
+			
+			$this->t->set_file(array("body" => "edit_account_data.tpl"));
+			$this->t->set_block('body','main');
+
+			$this->translate();
+
+			$accountData	= $boPreferences->getAccountData($preferences);
+			$icServer =& $accountData['icServer'];
+			$ogServer =& $accountData['ogServer'];
+			$identity =& $accountData['identity'];
+#			_debug_array($ogServer);
+			foreach($icServer as $key => $value) {
+				switch($key)
+				{
+					case 'encryption':
+					case 'validatecert':
+						$this->t->set_var('checked_ic_'.$key,($value ? 'checked' : ''));
+					default:
+						$this->t->set_var("ic[$key]", $value);
+				}
+			}
+
+			foreach($ogServer as $key => $value) {
+#				print "$key => $value<bR>";
+				switch($key)
+				{
+					case 'encryption':
+					case 'validatecert':
+						$this->t->set_var('checked_og_'.$key,($value ? 'checked' : ''));
+					default:
+						$this->t->set_var("og[$key]", $value);
+				}
+			}
+
+			foreach($identity as $key => $value) {
+				switch($key)
+				{
+					default:
+						$this->t->set_var("identity[$key]", $value);
+				}
+			}
+
+			$this->t->set_var('checked_active',($accountData['active'] ? 'checked' : ''));
+			
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.editAccountData'
+			);
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -229,12 +349,14 @@
 			#$this->t->set_var('acl_url',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			// folder select box
+			$icServer = $mailPrefs->getIncomingServer(0);
 			$folderTree = $this->uiwidgets->createHTMLFolder
 			(
 				$folderList, 
 				$this->selectedFolder, 
+				0,
 				lang('IMAP Server'), 
-				$mailPrefs['username'].'@'.$mailPrefs['imapServerAddress'],
+				$icServer->username.'@'.$icServer->host,
 				'divFolderTree',
 				TRUE
 			);
@@ -301,7 +423,7 @@
 			$this->t->set_var('mailboxNameShort',$mailBoxName);
 			$this->t->set_var('mailboxName',$mailBoxName);			
 			$this->t->set_var('folderName',$this->selectedFolder);
-			$this->t->set_var('imap_server',$mailPrefs['imapServerAddress']);
+			$this->t->set_var('imap_server',$icServer->host);
 			
 			$this->t->pparse("out","main");			
 			$this->bofelamimail->closeConnection();
@@ -338,19 +460,35 @@
 			$this->t->set_var('lang_add',lang("add"));
 			$this->t->set_var('lang_delete_selected',lang("delete selected"));
 			$this->t->set_var('lang_cancel',lang("close"));
-			$this->t->set_var('lang_ACL',lang("ACL"));
+			$this->t->set_var('lang_ACL',lang('ACL'));
 			$this->t->set_var('lang_save',lang('save'));
 			$this->t->set_var('lang_cancel',lang('cancel'));
-			$this->t->set_var('lang_Overview',lang("Overview"));
+			$this->t->set_var('lang_Overview',lang('Overview'));
 			$this->t->set_var('lang_edit_forwarding_address',lang('edit email forwarding address'));
-			$this->t->set_var('lang_forwarding_address',lang("email forwarding address"));
-			$this->t->set_var('lang_keep_local_copy',lang("keep local copy of email"));
+			$this->t->set_var('lang_forwarding_address',lang('email forwarding address'));
+			$this->t->set_var('lang_keep_local_copy',lang('keep local copy of email'));
+			$this->t->set_var('hostname_address',lang('hostname / address'));
+			$this->t->set_var('lang_username',lang('username'));
+			$this->t->set_var('lang_password',lang('password'));
+			$this->t->set_var('lang_port',lang('port'));
+			$this->t->set_var('lang_apply',lang('apply'));
+			$this->t->set_var('lang_use_costum_settings',lang('use custom settings'));
+			$this->t->set_var('lang_identity',lang('identity'));
+			$this->t->set_var('lang_name',lang('name'));
+			$this->t->set_var('lang_organization',lang('organization'));
+			$this->t->set_var('lang_emailaddress',lang('emailaddress'));
+			$this->t->set_var('lang_encrypted_connection',lang('encrypted connection'));
+			$this->t->set_var('lang_validate_certificate',lang('validate certificate'));
+			$this->t->set_var("lang_incoming_server",lang('incoming mail server(IMAP)'));
+			$this->t->set_var("lang_outgoing_server",lang('outgoing mail server(SMTP)'));
+			$this->t->set_var("auth_required",lang('authentication required'));
+			$this->t->set_var('lang_add_acl',lang('add acl'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
 			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);
 			$this->t->set_var("bg03",$GLOBALS['egw_info']["theme"]["bg03"]);
 		}
-}
+	}
 
 ?>

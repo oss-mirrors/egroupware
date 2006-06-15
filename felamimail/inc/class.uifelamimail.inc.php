@@ -33,9 +33,12 @@
 		var $sort;		// how to sort the messages
 		var $moveNeeded;	// do we need to move some messages?
 
+		var $timeCounter;
+
 		function uifelamimail()
 		{
-			if(isset($_POST["mark_unread_x"])) 
+			$this->timeCounter = microtime(true);
+/*			if(isset($_POST["mark_unread_x"])) 
 				$_POST["mark_unread"] = "true";
 			if(isset($_POST["mark_read_x"])) 
 				$_POST["mark_read"] = "true";
@@ -44,7 +47,7 @@
 			if(isset($_POST["mark_flagged_x"])) 
 				$_POST["mark_flagged"] = "true";
 			if(isset($_POST["mark_deleted_x"])) 
-				$_POST["mark_deleted"] = "true";
+				$_POST["mark_deleted"] = "true"; */
 
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 			$this->bofelamimail     =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
@@ -52,50 +55,9 @@
 			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 			$this->preferences	= $this->bopreferences->getPreferences();
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
-			if(isset($_POST["mailbox"]) && 
-				$_GET["menuaction"] == "felamimail.uifelamimail.handleButtons" &&
-				empty($_POST["mark_unread"]) &&
-				empty($_POST["mark_read"]) &&
-				empty($_POST["mark_unflagged"]) &&
-				empty($_POST["mark_flagged"]) &&
-				empty($_POST["mark_deleted"]))
-			{
-				if ($_POST["folderAction"] == "changeFolder")
-				{
-					// change folder
-					$this->bofelamimail->sessionData['mailbox']	= $_POST["mailbox"];
-					$this->bofelamimail->sessionData['startMessage']= 1;
-					$this->bofelamimail->sessionData['sort']	= $this->preferences['sortOrder'];
-					$this->bofelamimail->sessionData['activeFilter']= -1;
-				}
-				elseif($_POST["folderAction"] == "moveMessage")
-				{
-					//print "move messages<br>";
-					$this->bofelamimail->sessionData['mailbox'] 	= urldecode($_POST["oldMailbox"]);
-
-//					$this->bofelamimail->sessionData['startMessage']= 1;
-					if (is_array($_POST["msg"]))
-					{
-						// we need to initialize the classes first
-						$this->moveNeeded = "1";
-					}
-				}
-			}
-
-//			elseif(isset($_POST["mailbox"]) &&
-//				$_GET["menuaction"] == "felamimail.uifelamimail.handleButtons" &&
-//				!empty($_POST["mark_deleted"]))
-//			{
-				// delete messages
-//				$this->bofelamimail->sessionData['startMessage']= 1;
-//			}
-//			elseif($_GET["menuaction"] == "felamimail.uifelamimail.deleteMessage")
-//			{
-				// delete 1 message from the mail reading window
-//				$this->bofelamimail->sessionData['startMessage']= 1;
-//			}
-			elseif(isset($_POST["filter"]) || isset($_GET["filter"]))
+			if(isset($_POST["filter"]) || isset($_GET["filter"]))
 			{
 				// new search filter defined, lets start with message 1
 				$this->bofelamimail->sessionData['startMessage']= 1;
@@ -120,6 +82,7 @@
 			#$this->grants[$this->account]	= EGW_ACL_READ + EGW_ACL_ADD + EGW_ACL_EDIT + EGW_ACL_DELETE;
 			// this need to fixed
 			// this does not belong to here
+
 			if($_GET['menuaction'] != 'felamimail.uifelamimail.hookAdmin' &&
 				 $_GET['menuaction'] != 'felamimail.uifelamimail.changeFolder')
 			{
@@ -131,6 +94,7 @@
 
 			$this->dataRowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->dataRowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 		}
 
 		function addVcard()
@@ -139,7 +103,7 @@
 			$partID 	= $_GET['partID'];
 			$attachment = $this->bofelamimail->getAttachment($messageID,$partID);
 			
-			$tmpfname = tempnam ($GLOBALS['egw_info']['server']['temp_dir'], "phpgw_");
+			$tmpfname = tempnam ($GLOBALS['egw_info']['server']['temp_dir'], "egw_");
 			$fp = fopen($tmpfname, "w");
 			fwrite($fp, $attachment['attachment']);
 			fclose($fp);
@@ -150,15 +114,7 @@
 			$entry['access'] = 'private';
 			$entry['tid'] = 'n';
 			
-			#_debug_array($entry);
-			#print "<br><br>";
-			
 			print quoted_printable_decode($entry['fn'])."<br>";
-			
-			#$boaddressbook =& CreateObject('addressbook.boaddressbook');
-			#$soaddressbook =& CreateObject('addressbook.soaddressbook');
-			#$soaddressbook->add_entry($entry);
-			#$ab_id = $boaddressbook->get_lastid();
 			
 			unlink($tmpfname);
 			
@@ -237,7 +193,7 @@
 			$refreshURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
 			print "<script type=\"text/javascript\">
-			opener.location.href = '".$refreshURL."';
+			opener.location.href = '" .$refreshURL. "';
 			window.close();</script>";
 		}
 		
@@ -252,7 +208,9 @@
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
 			$GLOBALS['egw']->js->validate_file('jscode','viewMainScreen','felamimail');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+
 			$GLOBALS['egw']->common->egw_header();
+
 			echo parse_navbar();
 		}
 	
@@ -375,22 +333,22 @@
 		{
 			#printf ("this->uifelamimail->viewMainScreen() start: %s<br>",date("H:i:s",mktime()));
 			$bopreferences		=& CreateObject('felamimail.bopreferences');
-			$preferences		= $bopreferences->getPreferences();
 			$bofilter		=& CreateObject('felamimail.bofilter');
-			$mailPreferences	= $bopreferences->getPreferences();
 			$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 
-			$urlMailbox = urlencode($this->mailbox);
+			$preferences		=& $bopreferences->getPreferences();
+			$urlMailbox		=  urlencode($this->mailbox);
 			
-			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
+			$maxMessages		=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
+			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			
-		
 			$this->display_app_header();
 			
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
 			$this->t->set_block('body','main');
 			$this->t->set_block('body','status_row_tpl');
-			$this->t->set_block('body','header_row');
+			$this->t->set_block('body','table_header_felamimail');
+			$this->t->set_block('body','table_header_outlook');
 			$this->t->set_block('body','error_message');
 			$this->t->set_block('body','quota_block');
 			$this->t->set_block('body','subject_same_window');
@@ -402,40 +360,30 @@
 			$this->t->set_var('image_path',EGW_IMAGES);
 			#printf ("this->uifelamimail->viewMainScreen() Line 272: %s<br>",date("H:i:s",mktime()));
 			// ui for the quotas
-			if($quota = $this->bofelamimail->getQuotaRoot())
-			{
-				if($quota['limit'] == 0)
-				{
+			if($quota = $this->bofelamimail->getQuotaRoot()) {
+				if($quota['limit'] == 0) {
 					$quotaPercent=100;
-				}
-				else
-				{
+				} else {
 					$quotaPercent=round(($quota['usage']*100)/$quota['limit']);
 				}
+				
 				$quotaLimit=$this->show_readable_size($quota['limit']*1024);
 				$quotaUsage=$this->show_readable_size($quota['usage']*1024);
 
 				$this->t->set_var('leftWidth',$quotaPercent);
-				if($quotaPercent > 90)
-				{
+
+				if($quotaPercent > 90) {
 					$this->t->set_var('quotaBG','red');
-				}
-				elseif($quotaPercent > 80)
-				{
+				} elseif($quotaPercent > 80) {
 					$this->t->set_var('quotaBG','yellow');
-				}
-				else
-				{
+				} else {
 					$this->t->set_var('quotaBG','#66ff66');
 				}
 				
-				if($quotaPercent > 50)
-				{
+				if($quotaPercent > 50) {
 					$this->t->set_var('quotaUsage_right','');
 					$this->t->set_var('quotaUsage_left',$quotaUsage .'/'.$quotaLimit);
-				}
-				else
-				{
+				} else {
 					$this->t->set_var('quotaUsage_left','');
 					$this->t->set_var('quotaUsage_right',$quotaUsage .'/'.$quotaLimit);
 				}
@@ -451,7 +399,7 @@
 			(
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','test',700,750);";
+			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose',680,750);";
 
 			$navbarImages = array(
 				'mail_new'	=> array(
@@ -536,7 +484,7 @@
 				$this->t->set_var($image,$GLOBALS['egw']->common->image('felamimail',$image));
 			}
 			// refresh settings
-			$refreshTime = $preferences['refreshTime'];
+			$refreshTime = $userPreferences['refreshTime'];
 			$this->t->set_var('refreshTime',$refreshTime*60*1000);
 			
 			#// set the url to open when refreshing
@@ -671,8 +619,10 @@
 			else
 			{
 				#$folders = $this->bofelamimail->getFolderList('true');
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
-				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
+				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $userPreferences['sortOrder']);
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
  				$headerCount = count($headers['header']);
 					
@@ -681,12 +631,12 @@
  				if ($headerCount==0 && $this->startMessage > $maxMessages)
  				{
  					$this->startMessage = $this->startMessage - $maxMessages;
-					$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
+					$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $userPreferences['sortOrder']);
 					$headerCount = count($headers['header']);
 				}
 				
 
-				if ($mailPreferences['sent_folder'] == $this->mailbox)
+				if ($userPreferences['sentFolder'] == $this->mailbox)
 				{
 					$this->t->set_var('lang_from',lang("to"));
 				}
@@ -695,9 +645,15 @@
 					$this->t->set_var('lang_from',lang("from"));
 				}
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
-		
-				$this->t->set_var('header_rows',$uiwidgets->messageTable($headers,
-					$mailPreferences['sent_folder'] == $this->mailbox,$preferences['messageNewWindow']));
+
+				$this->t->set_var('header_rows',
+					$uiwidgets->messageTable(
+						$headers,
+						$userPreferences['sentFolder'] == $this->mailbox,
+						$userPreferences['message_newwindow'],
+						$userPreferences['rowOrderStyle']
+					)
+				);
 
 				$firstMessage = $headers['info']['first'];
 				$lastMessage = $headers['info']['last'];
@@ -745,36 +701,6 @@
 			}
 			$this->t->set_var('select_all_link',$selectLink);
 			
-
-			// create the links for the delete options
-			// "delete all" in the trash folder
-			// "compress folder" in normal folders
-/*			if ($mailPreferences['trash_folder'] == $this->mailbox &&
-					$mailPreferences['deleteOptions'] == "move_to_trash")
-			{
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uifelamimail.compressFolder'
-				);
-				$trashLink = sprintf("<a class=\"body_link\" href=\"%s\">%s</a>",
-							$GLOBALS['egw']->link('/index.php',$linkData),
-							lang("delete all"));
-				
-				$this->t->set_var('trash_link',$trashLink);
-			}
-			elseif($mailPreferences['deleteOptions'] == "mark_as_deleted")
-			{
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uifelamimail.compressFolder'
-				);
-				$trashLink = sprintf("<a class=\"body_link\" href=\"%s\">%s</a>",
-							$GLOBALS['egw']->link('/index.php',$linkData),
-							lang("compress folder"));
-				$this->t->set_var('trash_link',$trashLink);
-			}*/
-			
-			
 			$this->t->set_var('message',lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)");
 			if($firstMessage > 1)
 			{
@@ -806,17 +732,26 @@
 				$this->t->set_var('link_next',lang("next"));
 			}
 			$this->t->parse('status_row','status_row_tpl',True);
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+
+			$imapServer		=& $preferences->getIncomingServer(0);
 			
 			$folderObjects = $this->bofelamimail->getFolderObjects(true, false);
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+			$folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox);
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+
 			$folderTree = $uiwidgets->createHTMLFolder
 			(
 				$folderObjects, 
 				$this->mailbox, 
+				$folderStatus['unseen'],
 				lang('IMAP Server'), 
-				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
+				$imapServer->username.'@'.$imapServer->host,
 				'divFolderTree',
 				FALSE
 			);
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
 			$this->t->set_var('current_mailbox',$current_mailbox);
 			$this->t->set_var('folder_tree',$folderTree);
@@ -827,16 +762,7 @@
 			(
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			#if($preferences['messageNewWindow'])
-			#{
-				#$this->t->set_var('url_compose_empty',"javascript:displayMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."','".
-				#	($preferences['messageNewWindow'] == 1 ? 'displayMessage' : '_blank')."');");
-				$this->t->set_var('url_compose_empty',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','test',700,egw_getWindowOuterHeight());");
-			#}
-			#else
-			#{
-			#	$this->t->set_var('url_compose_empty',$GLOBALS['egw']->link('/index.php',$linkData));
-			#}
+			$this->t->set_var('url_compose_empty',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','test',700,egw_getWindowOuterHeight());");
 
 
 			$linkData = array
@@ -859,7 +785,17 @@
 
 			$this->t->set_var('lang_mark_messages_as',lang('mark messages as'));
 			$this->t->set_var('lang_delete',lang('delete'));
-																																																																																							
+
+			switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']) {
+				case 'outlook':
+					$this->t->parse('messageListTableHeader','table_header_outlook',True);
+					break;
+				default:
+					$this->t->parse('messageListTableHeader','table_header_felamimail',True);
+					break;
+			}
+			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+			
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
 			
@@ -954,7 +890,7 @@
 			$this->t->set_var('lang_date',lang("date"));
 			$this->t->set_var('lang_status',lang('status'));
 			$this->t->set_var('lang_size',lang("size"));
-			$this->t->set_var('lang_quicksearch',lang("Quicksearch"));
+			$this->t->set_var('lang_search',lang("search"));
 			$this->t->set_var('lang_replied',lang("replied"));
 			$this->t->set_var('lang_read',lang("read"));
 			$this->t->set_var('lang_unread',lang("unread"));

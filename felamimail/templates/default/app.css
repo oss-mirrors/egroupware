@@ -67,7 +67,6 @@ TR.header_row_D
 	padding: 0;
 	color: silver;
 	text-decoration : line-through;
-	font-weight : bold;
 	background : White;
 	white-space: nowrap;
 }
@@ -339,3 +338,72 @@ div.navSeparator {
 	position: relative;
 }
 
+div.inactiveResultRow {
+	background-color: white;
+	text-align: left;
+}
+
+div.activeResultRow {
+	background-color: silver;
+	text-align: left;
+}
+
+div.resultBoxHidden {
+	width: 450px; 
+	position: absolute; 
+	display: none; 
+}
+
+div.resultBoxVisible {
+	border: solid 1px black;
+	width: 450px; 
+	position: absolute; 
+	display: block; 
+	background: white;
+}
+
+button.menuButton {
+	float:left;
+	padding: 2px;
+	margin: 2px;
+	border: solid #dddddd 1px;
+	position: relative;
+	height: 25px;
+	width: 26px;
+	background-color:#dddddd;
+}
+
+button.menuButton:hover {
+	background-color:#eeeeee;
+	float:left;
+	padding: 2px;
+	margin: 2px;
+	border: solid white 1px;
+	border-right: solid black 1px;
+	border-bottom: solid black 1px;
+	position: relative;
+	height: 25px;
+	width: 26px;
+}
+
+button.menuButton:active { 
+	background-color:#dddddd;
+	float:left;
+	padding: 2px;
+	margin: 2px;
+	border: solid white 1px;
+	border-left: solid black 1px;
+	border-top: solid black 1px;
+	position: relative;
+}
+
+fieldset.bordertop {
+	border-left:0px;
+	border-right:0px;
+	border-bottom:0px;
+	border-top:1px solid silver;
+}
+
+TD.mainscreenRow {
+	border-bottom:1px solid #CCCCEE;
+}

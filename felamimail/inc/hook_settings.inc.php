@@ -10,11 +10,9 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
 	$this->bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 	$this->bofelamimail->openConnection('',OP_HALFOPEN);
 	$folderObjects = $this->bofelamimail->getFolderObjects();
-	$folderList = array();
 	foreach($folderObjects as $folderName => $folderInfo)
 	{
 		#_debug_array($folderData);
@@ -27,7 +25,16 @@
 
 	$this->bofelamimail->closeConnection();
 
-	$felamimailConfig = ExecMethod('emailadmin.bo.getUserProfile');
+	$config =& CreateObject('phpgwapi.config','felamimail');
+	$config->read_repository();
+	$felamimailConfig = $config->config_data;
+	#_debug_array($felamimailConfig);
+	unset($config);
+
+	#$boemailadmin =& CreateObject('emailadmin.bo');
+	#$methodData = array($felamimailConfig['profileID']);
+	#_debug_array($methodData);
+	$felamimailConfig = ExecMethod('emailadmin.bo.getProfile',$felamimailConfig['profileID']);
 
 	$refreshTime = array(
 		'0' => lang('disabled'),
@@ -69,15 +76,20 @@
 	);
 
 	$deleteOptions = array(
-		'move_to_trash'   => lang('move to trash'),
-		'mark_as_deleted' => lang('mark as deleted'),
-		'remove_immediately' => lang('remove immediately')
+		'move_to_trash'		=> lang('move to trash'),
+		'mark_as_deleted'	=> lang('mark as deleted'),
+		'remove_immediately'	=> lang('remove immediately')
 	);
 
 	$htmlOptions = array(
-		'never_display'   => lang('never display html emails'),
-		'only_if_no_text' => lang('display only when no plain text is available'),
-		'always_display'  => lang('always show html emails')
+		'never_display'		=> lang('never display html emails'),
+		'only_if_no_text'	=> lang('display only when no plain text is available'),
+		'always_display'	=> lang('always show html emails')
+	);
+
+	$rowOrderStyle = array(
+		'felamimail'	=> lang('FeLaMiMail'),
+		'outlook'	=> 'Outlook',
 	);
 
 	$trashOptions = array_merge(
@@ -119,6 +131,14 @@
 			'label'  => 'Default sorting order',
 			'name'   => 'sortOrder',
 			'values' => $sortOrder,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'rowOrderStyle' => array(
+			'type'   => 'select',
+			'label'  => 'row order style',
+			'name'   => 'rowOrderStyle',
+			'values' => $rowOrderStyle,
 			'xmlrpc' => True,
 			'admin'  => False
 		),

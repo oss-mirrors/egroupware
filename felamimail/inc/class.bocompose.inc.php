@@ -8,8 +8,7 @@
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; either version 2 of the License, or (at your    *
-	* option) any later version.                                                *
+	* Free Software Foundation; version 2 of the License.                       *
 	\***************************************************************************/
 	/* $Id$ */
 
@@ -48,21 +47,7 @@
 		 */
 		function addAttachment($_formData)
 		{
-			$this->sessionData['to']	= $_formData['to'];
-			$this->sessionData['cc']	= $_formData['cc'];
-			$this->sessionData['bcc']	= $_formData['bcc'];
-			$this->sessionData['reply_to']	= $_formData['reply_to'];
-			$this->sessionData['subject']	= $_formData['subject'];
-			$this->sessionData['body']	= $_formData['body'];
-			$this->sessionData['priority']	= $_formData['priority'];
-			$this->sessionData['signature'] = $_formData['signature'];
-			
-			#while(list($key,$value) = each($GLOBALS['egw_info']['user']))
-			#{
-			#	print "$key: $value<br>";
-			#}
-			
-			// to gard against exploidts the file must be either uploaded or be in the temp_dir
+			// to gard against exploits the file must be either uploaded or be in the temp_dir
 			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) || 
 				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir'])))
 			{
@@ -107,7 +92,9 @@
 				{
 					rename($_formData['file'],$tmpFileName);
 				}
-				$this->sessionData['attachments'][]=array
+				$attachmentID = $this->getRandomString();
+
+				$this->sessionData['attachments'][$attachmentID]=array
 				(
 					'name'	=> $_formData['name'],
 					'type'	=> $_formData['type'],
@@ -115,9 +102,9 @@
 					'size'	=> $_formData['size']
 				);
 			}
-			
+
 			$this->saveSessionData();
-			#print"<pre>";print_r($this->sessionData);print"</pre>";
+			#print"<pre>";print_r($this->sessionData);print"</pre>";exit;
 		}
 		
 		function addMessageAttachment($_uid, $_partID, $_folder, $_name, $_size)
@@ -144,9 +131,8 @@
 		// if you do this, you are creating a new email
 		function getComposeID()
 		{
-			mt_srand((float) microtime() * 1000000);
-			$this->composeID = mt_rand (100000, 999999);
-			
+			$this->composeID = $this->getRandomString();
+
 			$this->setDefaults();
 			
 			return $this->composeID;
@@ -187,6 +173,11 @@
 			$this->saveSessionData();
 		}
 
+		function getRandomString() {
+			mt_srand((float) microtime() * 1000000);
+			return md5(mt_rand (100000, 999999));
+		}
+		
 		// $_mode can be:
 		// single: for a reply to one address
 		// all: for a reply to all
@@ -245,11 +236,14 @@
 				// reply to any address which is to, but not to my self
 				$oldTo = $bofelamimail->decode_header(trim($headers->toaddress));
 				$addressParts = imap_rfc822_parse_adrlist($oldTo, '');
+
+				$userEMailAddresses = $this->preferences->getUserEMailAddresses();
+
 				if (count($addressParts)>0)
 				{
 					while(list($key,$val) = each($addressParts))
 					{
-						if($val->mailbox.'@'.$val->host == $this->preferences['emailAddress'])
+						if($userEMailAddresses[$val->mailbox.'@'.$val->host])
 						{
 							continue;
 						}
@@ -329,31 +323,11 @@
 			return $retData;
 		}
 		
-		function removeAttachment($_formData)
+		function removeAttachment($_attachmentID)
 		{
-			$this->sessionData['to']	= $_formData['to'];
-			$this->sessionData['cc']	= $_formData['cc'];
-			$this->sessionData['bcc']	= $_formData['bcc'];
-			$this->sessionData['reply_to']	= $_formData['reply_to'];
-			$this->sessionData['subject']	= $_formData['subject'];
-			$this->sessionData['body']	= $_formData['body'];
-			$this->sessionData['priority']	= $_formData['priority'];
-			$this->sessionData['signature']	= $_formData['signature'];
+			unlink($this->sessionData['attachments'][$_attachmentID]['file']);
+			unset($this->sessionData['attachments'][$_attachmentID]);
 
-			while(list($key,$value) = each($_formData['removeAttachments']))
-			{
-				#print "$key: $value<br>";
-				unlink($this->sessionData['attachments'][$key]['file']);
-				unset($this->sessionData['attachments'][$key]);
-			}
-			reset($this->sessionData['attachments']);
-			
-			// if it's empty, clear it totaly
-			if (count($this->sessionData['attachments']) == 0) 
-			{
-				$this->sessionData['attachments'] = '';
-			}
-			
 			$this->saveSessionData();
 		}
 		
@@ -373,14 +347,17 @@
 			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$mail 		=& CreateObject('phpgwapi.phpmailer');
 			
-			$this->sessionData['to']	= trim($_formData['to']);
-			$this->sessionData['cc']	= trim($_formData['cc']);
-			$this->sessionData['bcc']	= trim($_formData['bcc']);
+			$this->sessionData['identity']	= $_formData['identity'];
+			$this->sessionData['to']	= $_formData['to'];
+			$this->sessionData['cc']	= $_formData['cc'];
+			$this->sessionData['bcc']	= $_formData['bcc'];
+			$this->sessionData['folder']	= $_formData['folder'];
 			$this->sessionData['reply_to']	= trim($_formData['reply_to']);
 			$this->sessionData['subject']	= trim($_formData['subject']);
 			$this->sessionData['body']	= $_formData['body'];
 			$this->sessionData['priority']	= $_formData['priority'];
 			$this->sessionData['signature']	= $_formData['signature'];
+			$this->sessionData['disposition'] = $_formData['disposition'];
 
 
 			$userLang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
@@ -403,21 +380,27 @@
 			
 			#include(EGW_APP_ROOT . "/config/config.php");
 				
+			$identity = $this->preferences->getIdentity((int)$this->sessionData['identity']);
+			$ogServer = $this->preferences->getOutgoingServer(0);
+
 			$mail->IsSMTP();
-			$mail->From 	= $this->preferences['emailAddress'][0]['address'];
-			$mail->FromName = $bofelamimail->encodeHeader($this->preferences['emailAddress'][0]['name'],'q');
-			$mail->Host 	= $this->preferences['smtpServerAddress'];
-			$mail->Port	= $this->preferences['smtpPort'];
+			$mail->From 	= $identity->emailAddress;
+			$mail->FromName = $bofelamimail->encodeHeader($identity->realName,'q');
+			$mail->Host 	= $ogServer->host;
+			$mail->Port	= $ogServer->port;
 			$mail->Priority = $this->sessionData['priority'];
 			$mail->Encoding = 'quoted-printable';
 			$mail->CharSet	= $this->displayCharset;
 			$mail->AddCustomHeader("X-Mailer: FeLaMiMail version 0.9.5");
-			if(isset($this->preferences['organizationName']))
-				$mail->AddCustomHeader("Organization: ".$bofelamimail->encodeHeader($this->preferences['organizationName'],'q'));
+			if($this->sessionData['disposition']) {
+				$mail->AddCustomHeader("Disposition-Notification-To: $mail->From");
+			}
+			if(!empty($identity->organization))
+				$mail->AddCustomHeader("Organization: ".$bofelamimail->encodeHeader($identity->organization,'q'));
 
-			if (!empty($this->sessionData['to']))
+			foreach((array)$this->sessionData['to'] as $address)
 			{
-				$address_array	= imap_rfc822_parse_adrlist($this->sessionData['to'],'');
+				$address_array	= imap_rfc822_parse_adrlist($address,'');
 				if(count($address_array)>0)
 				{
 					for($i=0;$i<count($address_array);$i++)
@@ -429,9 +412,9 @@
 				}
 			}
 
-			if (!empty($this->sessionData['cc']))
+			foreach((array)$this->sessionData['cc'] as $address)
 			{
-				$address_array	= imap_rfc822_parse_adrlist($this->sessionData['cc'],'');
+				$address_array	= imap_rfc822_parse_adrlist($address,'');
 				if(count($address_array)>0)
 				{
 					for($i=0;$i<count($address_array);$i++)
@@ -443,9 +426,9 @@
 				}
 			}
 			
-			if (!empty($this->sessionData['bcc']))
+			foreach((array)$this->sessionData['bcc'] as $address)
 			{
-				$address_array	= imap_rfc822_parse_adrlist($this->sessionData['bcc'],'');
+				$address_array	= imap_rfc822_parse_adrlist($address,'');
 				if(count($address_array)>0)
 				{
 					for($i=0;$i<count($address_array);$i++)
@@ -510,31 +493,39 @@
 			#$mail->AltBody = $this->sessionData['body'];
 
 			// SMTP Auth??
-			if($this->preferences['smtpAuth'] == 'yes')
+			if($ogServer->smtpAuth)
 			{
 				$mail->SMTPAuth	= true;
-				$mail->Username	= $this->preferences['username'];
-				$mail->Password	= $this->preferences['key'];
+				$mail->Username	= $ogServer->username;
+				$mail->Password	= $ogServer->password;
 			}
 			
 			// set a higher timeout for big messages
 			@set_time_limit(120);
 			#$mail->SMTPDebug = 10;
-			if(!$mail->Send())
-			{
-				$this->errorInfo = $mail->ErrorInfo;
-				return false;
+			if(count((array)$this->sessionData['to']) > 0 || count((array)$this->sessionData['to']) > 0 || count((array)$this->sessionData['to']) > 0) {
+				if(!$mail->Send()) {
+					$this->errorInfo = $mail->ErrorInfo;
+					return false;
+				}
 			}
 
-			if (isset($this->preferences['sentFolder']))
-			{
+			$folder = (array)$this->sessionData['folder'];
+			if($GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'] != 'none') {
+				$folder[] = $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'];
+			}
+			$folder = array_unique($folder);
+
+			if (count($folder) > 0) {
 				// mark message as answered
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
-				$bofelamimail->openConnection($this->preferences['sentFolder']);
-				$bofelamimail->appendMessage($this->preferences['sentFolder'],
-								$mail->sentHeader,
-								$mail->sentBody,
+				foreach($folder as $folderName) {
+					$bofelamimail->openConnection($folderName);
+					$bofelamimail->appendMessage($folderName,
+								$mail->getMessageHeader(),
+								$mail->getMessageBody(),
 								'\\Seen');
+				}
 				$bofelamimail->closeConnection();
 			}
 
@@ -568,7 +559,7 @@
 		
 		function setDefaults()
 		{
-			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify($this->preferences['signature']);
+			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify($GLOBALS['egw_info']['user']['preferences']['felamimail']['signature']);
 			
 			$this->saveSessionData();
 		}

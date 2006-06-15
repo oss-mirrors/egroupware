@@ -8,8 +8,7 @@
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; either version 2 of the License, or (at your    *
-	* option) any later version.                                                *
+	* Free Software Foundation; version 2 of the License.                       *
 	\***************************************************************************/
 	/* $Id$ */
 
@@ -25,13 +24,17 @@
 			'deleteScript'		=> True,
 			'editRule'		=> True,
 			'editScript'		=> True,
+			'editVacation'		=> True,
 			'increaseFilter'	=> True,
 			'listScripts'		=> True,
+			'listRules'		=> True,
 			'updateRules'		=> True,
 			'updateVacation'	=> True,
 			'saveVacation'		=> True,
 			'selectFolder'		=> True,
 		);
+		
+		var $scriptName = 'felamimail';
 
 		function uisieve()
 		{
@@ -50,14 +53,12 @@
 			
 			$this->restoreSessionData();
 
-			$sieveHost		= $this->mailPreferences["imapSieveServer"];
-			$sievePort		= $this->mailPreferences["imapSievePort"];
-			$username		= $this->mailPreferences['username'];
-			$password		= $this->mailPreferences['key'];
-			$this->sieve		=& CreateObject('felamimail.SieveSession',$sieveHost, $sievePort, $username, $password);
-			if(!$this->sieve->start())
-			{
-				print "bad thing: ".$this->sieve->errstr."!!<br>";
+			$icServer = $this->mailPreferences->getIncomingServer(0);
+			
+			if(is_a($icServer,'cyrusimap') && $icServer->enableSieve) {
+				$this->bosieve		=& CreateObject('felamimail.bosieve',$icServer);
+			} else {
+				die('Sieve not activated');
 			}
 			
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
@@ -65,53 +66,52 @@
 
 		}
 		
-		function addScript()
-		{
-			if($scriptName = get_var('newScriptName',Array('POST')))
-			{
-				$script	=& CreateObject('felamimail.Script',$scriptName);
-				$script->updateScript($this->sieve);
+		function addScript() {
+			if($scriptName = $_POST['newScriptName']) {
+				#$script	=& CreateObject('felamimail.Script',$scriptName);
+				#$script->updateScript($this->sieve);
+				$this->bosieve->installScript($scriptName, '');
 
 				// always activate and then edit the first script added
-				if ($this->sieve->listscripts() && count($this->sieve->scriptlist) == 1)
-				{
-					if ($this->sieve->activatescript($scriptName))
-					{
-						$GLOBALS['egw']->redirect_link('/index.php',array(
-							'menuaction' => 'felamimail.uisieve.editScript',
-							'scriptname' => $scriptName,
-						));
-					}
-				}
+				#if ($this->sieve->listscripts() && count($this->sieve->scriptlist) == 1)
+				#{
+				#	if ($this->sieve->activatescript($scriptName))
+				#	{
+				#		$GLOBALS['egw']->redirect_link('/index.php',array(
+				#			'menuaction' => 'felamimail.uisieve.editScript',
+				#			'scriptname' => $scriptName,
+				#		));
+				#	}
+				#}
 			}
 			
 			$this->listScripts();
 		}
 
-		function activateScript()
-		{
-			$scriptName = get_var('scriptname',array('GET'));
-			if(!empty($scriptName))
-			{
-				if($this->sieve->activatescript($scriptName))
-				{
-					#print "Successfully changed active script!<br>";
-				}
-				else
-				{
-					#print "Unable to change active script!<br>";
-					/* we could display the full output here */
-				}
-			}
-										
-			$this->listScripts();
-		}
+#		function activateScript()
+#		{
+#			$scriptName = $_GET['scriptname'];
+#			if(!empty($scriptName))
+#			{
+#				if($this->bosieve->setActive($scriptName))
+#				{
+#					#print "Successfully changed active script!<br>";
+#				}
+#				else
+#				{
+#					#print "Unable to change active script!<br>";
+#					/* we could display the full output here */
+#				}
+#			}
+#										
+#			$this->listScripts();
+#		}
 		
 		function buildRule($rule) 
 		{
-			$andor = " AND ";
+			$andor = ' '. lang('and') .' ';
 			$started = 0;
-			if ($rule['anyof']) $andor = " OR ";
+			if ($rule['anyof']) $andor = ' '. lang('or') .' ';
 			$complete = lang('IF').' ';
 			if ($rule['unconditional']) $complete = "[Unconditional] ";
 			
@@ -154,11 +154,11 @@
 			if (preg_match("/folder/i",$rule['action']))
 				$complete .= lang('file into')." '" . $rule['action_arg'] . "';";
 			if (preg_match("/reject/i",$rule['action']))
-				$complete .= "reject '" . $rule['action_arg'] . "';";
+				$complete .= lang('reject with')." '" . $rule['action_arg'] . "'.";
 			if (preg_match("/address/i",$rule['action']))
-				$complete .= "forward to '" . $rule['action_arg'] . "';";
+				$complete .= lang('forward to').' ' . $rule['action_arg'] .'.';
 			if (preg_match("/discard/i",$rule['action']))
-				$complete .= "discard;";
+				$complete .= lang('discard').'.';
 			if ($rule['continue']) $complete .= " [Continue]";
 			if ($rule['keep']) $complete .= " [Keep a copy]";
 
@@ -172,7 +172,7 @@
 			$vacation_str = '';
 			if (!is_array($_vacation))
 			{ 
-				return @htmlspecialchars($vacation_str); 
+				return @htmlspecialchars($vacation_str, ENT_QUOTES, $GLOBALS['egw']->translation->charset()); 
 			}
 			
 			$vacation_str .= lang('Respond');
@@ -192,7 +192,7 @@
 				$vacation_str .= ' ' . lang("every %1 days",$_vacation['days']);
 			}
 			$vacation_str .= ' ' . lang('with message "%1"',$_vacation['text']);
-			return @htmlspecialchars($vacation_str);
+			return @htmlspecialchars($vacation_str, ENT_QUOTES, $GLOBALS['egw']->translation->charset());
 		}
 		
 		function checkRule($_vacation)
@@ -224,7 +224,7 @@
 			{
 				$this->errorStack['addresses'] = lang('Please select a address'.'!');
 			}
-			
+
 			if(count($this->errorStack) == 0)
 			{
 				return true;
@@ -235,25 +235,25 @@
 			}
 		}
 
-		// RalfBecker: that does obviously nothing
-		function deactivateScript()
-		{
-			$scriptName = get_var('scriptname',array('GET'));
-			if(!empty($scriptName))
-			{
-				#if($this->sieve->activatescript($scriptName))
-				#{
-				#	#print "Successfully changed active script!<br>";
-				#}
-				#else
-				#{
-				#	#print "Unable to change active script!<br>";
-				#	/* we could display the full output here */
-				#}
-			}
-										
-			$this->listScripts();
-		}
+#		// RalfBecker: that does obviously nothing
+#		function deactivateScript()
+#		{
+#			$scriptName = get_var('scriptname',array('GET'));
+#			if(!empty($scriptName))
+#			{
+#				#if($this->sieve->activatescript($scriptName))
+#				#{
+#				#	#print "Successfully changed active script!<br>";
+#				#}
+#				#else
+#				#{
+#				#	#print "Unable to change active script!<br>";
+#				#	/* we could display the full output here */
+#				#}
+#			}
+#										
+#			$this->listScripts();
+#		}
 		
 		function decreaseFilter()
 		{
@@ -272,22 +272,7 @@
 			$this->editScript();
 		}
 
-		function deleteScript()
-		{
-			$scriptName = get_var('scriptname',array('GET'));
-			if(!empty($scriptName))
-			{
-				if($this->sieve->deletescript($scriptName))
-				{
-					# alles ok!
-				}
-			}
-			
-			$this->listScripts();
-		}
-
-		function display_app_header()
-		{
+		function display_app_header() {
 			if(preg_match('/^(vacation|filter)$/',get_var('editmode',array('GET'))))
 				$editMode	= get_var('editmode',array('GET'));
 			else
@@ -299,41 +284,41 @@
 			}
 			$GLOBALS['egw']->js->validate_file('tabs','tabs');
 			$GLOBALS['egw']->js->validate_file('jscode','editProfile','felamimail');
+			$GLOBALS['egw']->js->validate_file('jscode','listSieveRules','felamimail');
 			$GLOBALS['egw']->js->set_onload("javascript:initAll('$editMode');");
+			if($_GET['menuaction'] == 'felamimail.uisieve.editRule') {
+				$GLOBALS['egw']->js->set_onunload('opener.fm_sieve_cancelReload();');
+			}
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['egw']->common->egw_header();
-			echo parse_navbar();
+
+			switch($_GET['menuaction']) {
+				case 'felamimail.uisieve.editRule':
+					break;
+				default:
+					echo parse_navbar();
+					break;
+			}
 		}
 		
-		function displayRule($_scriptName, $_ruleID, $_ruleData)
-		{
-			#_debug_array($_ruleData);
+		function displayRule($_ruleID, $_ruleData) {
 			// display the header
 			$this->display_app_header();
 
 			// initialize the template
 			$this->t->set_file(array("filterForm" => "sieveEditForm.tpl"));
 			$this->t->set_block('filterForm','main');
-			$this->t->set_block('filterForm','folder');
 
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uisieve.editRule',
-				'scriptname'	=> $_scriptName
+				'ruleID'	=> $_ruleID
 			);
 			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$linkData = array
 			(
-				'menuaction'	=> 'felamimail.uisieve.editScript',
-				'scriptname'	=> $_scriptName
-			);
-			$this->t->set_var('url_back',$GLOBALS['egw']->link('/index.php',$linkData));
-
-			$linkData = array
-			(
 				'menuaction'	=> 'felamimail.uisieve.selectFolder',
-				'scriptname'	=> $_scriptName
 			);
 			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -347,13 +332,13 @@
 				if($_ruleData['regexp']) 
 					$this->t->set_var('regexp_checked','checked');
 				$this->t->set_var('anyof_selected'.intval($_ruleData['anyof']),'selected');
-				$this->t->set_var('value_from',$_ruleData['from']);
-				$this->t->set_var('value_to',$_ruleData['to']);
-				$this->t->set_var('value_subject',$_ruleData['subject']);
+				$this->t->set_var('value_from',htmlspecialchars($_ruleData['from'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
+				$this->t->set_var('value_to',htmlspecialchars($_ruleData['to'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
+				$this->t->set_var('value_subject',htmlspecialchars($_ruleData['subject'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
 				$this->t->set_var('gthan_selected'.intval($_ruleData['gthan']),'selected');
 				$this->t->set_var('value_size',$_ruleData['size']);
-				$this->t->set_var('value_field',$_ruleData['field']);
-				$this->t->set_var('value_field_val',$_ruleData['field_val']);
+				$this->t->set_var('value_field',htmlspecialchars($_ruleData['field'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
+				$this->t->set_var('value_field_val',htmlspecialchars($_ruleData['field_val'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
 				$this->t->set_var('checked_action_'.$_ruleData['action'],'checked');
 				$this->t->set_var('value_'.$_ruleData['action'],$_ruleData['action_arg']);
 				if($_ruleData['action'] == 'folder')
@@ -382,33 +367,32 @@
 		
 		function editRule()
 		{
-			$scriptName = get_var('scriptname',array('GET'));
 			$ruleType = get_var('ruletype',array('GET'));
 			
-			if(isset($_POST[anyof]))
+			if(isset($_POST['anyof']))
 			{
 				if(get_var('priority',array('POST')) != 'unset')
 				{
-					$newRule[prioritiy]	= get_var('priority',array('POST'));
+					$newRule['priority']	= get_var('priority',array('POST'));
 				}
 				$ruleID 		= get_var('ruleID',array('POST'));
 				if($ruleID == 'unset')
 					$ruleID = count($this->rules);
-				$newRule[prioritiy]	= $ruleID*2+1;
-				$newRule[status]	= 'ENABLED';
-				$newRule[from]		= get_var('from',array('POST'));
-				$newRule[to]		= get_var('to',array('POST'));
-				$newRule[subject]	= get_var('subject',array('POST'));
+				$newRule['priority']	= $ruleID*2+1;
+				$newRule['status']	= 'ENABLED';
+				$newRule['from']	= get_var('from',array('POST'));
+				$newRule['to']		= get_var('to',array('POST'));
+				$newRule['subject']	= get_var('subject',array('POST'));
 				//$newRule[flg]		= get_var('???',array('POST'));
-				$newRule[field]		= get_var('field',array('POST'));
-				$newRule[field_val]	= get_var('field_val',array('POST'));
-				$newRule[size]		= intval(get_var('size',array('POST')));
+				$newRule['field']	= get_var('field',array('POST'));
+				$newRule['field_val']	= get_var('field_val',array('POST'));
+				$newRule['size']	= intval(get_var('size',array('POST')));
 				$newRule['continue']	= get_var('continue',array('POST'));
-				$newRule[gthan]		= intval(get_var('gthan',array('POST')));
-				$newRule[anyof]		= intval(get_var('anyof',array('POST')));
-				$newRule[keep]		= get_var('keep',array('POST'));
-				$newRule[regexp]	= get_var('regexp',array('POST'));
-				$newRule[unconditional]	= '0';		// what's this???
+				$newRule['gthan']	= intval(get_var('gthan',array('POST')));
+				$newRule['anyof']	= intval(get_var('anyof',array('POST')));
+				$newRule['keep']	= get_var('keep',array('POST'));
+				$newRule['regexp']	= get_var('regexp',array('POST'));
+				$newRule['unconditional'] = '0';		// what's this???
 				
 				$newRule[flg] = 0 ;
 				if( $newRule['continue'] ) { $newRule[flg] += 1; }
@@ -420,18 +404,18 @@
 				switch(get_var('action',array('POST')))
 				{
 					case 'reject':
-						$newRule[action]	= 'reject';
-						$newRule[action_arg]	= get_var('reject',array('POST'));
+						$newRule['action']	= 'reject';
+						$newRule['action_arg']	= get_var('reject',array('POST'));
 						break;
 						
 					case 'folder':
-						$newRule[action]	= 'folder';
-						$newRule[action_arg]	= get_var('folder',array('POST'));
+						$newRule['action']	= 'folder';
+						$newRule['action_arg']	= get_var('folder',array('POST'));
 						break;
 
 					case 'address':
-						$newRule[action]	= 'address';
-						$newRule[action_arg]	= get_var('address',array('POST'));
+						$newRule['action']	= 'address';
+						$newRule['action_arg']	= get_var('address',array('POST'));
 						break;
 
 					case 'discard':
@@ -439,16 +423,20 @@
 						break;
 				}
 
-				if($newRule[action])
-				{
+				if($newRule['action']) {
+
 					$this->rules[$ruleID] = $newRule;
-				
-					$this->updateScript();
+
+					$this->bosieve->setRules($this->scriptName, $this->rules);
 					
 					$this->saveSessionData();
 				}
-			
-				$this->editScript();
+				
+				if(isset($_POST['save'])) {
+					print "<script type=\"text/javascript\">window.close();</script>";
+				} else {
+					$this->displayRule($ruleID, $newRule);
+				}
 			}
 			else
 			{
@@ -456,75 +444,165 @@
 				{
 					$ruleID = get_var('ruleID',Array('GET'));
 					$ruleData = $this->rules[$ruleID];
-					$this->displayRule($scriptName, $ruleID, $ruleData);
+					$this->displayRule($ruleID, $ruleData);
 				}
 				else
 				{
-					$this->displayRule($scriptName, 'unset', false);
+					$this->displayRule('unset', false);
 				}
-				$this->sieve->close();
+			#LK	$this->sieve->disconnet();
 			}
 		}
 		
-		function editScript()
-		{
-			$scriptName	= get_var('scriptname',array('GET'));
-			if(empty($scriptName))
-			{
-				$this->sieve->listscripts();
-				if(!empty($this->sieve->activescript))
-				{
-					$scriptName = $this->sieve->activescript;
-				}
-				else
-				{
-					$this->listScripts();
-					$GLOBALS['egw']->common->egw_exit();
-				}
-			}
-
-			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
-			$script		=& CreateObject('felamimail.Script',$scriptName);
-			$boemailadmin	=& CreateObject('emailadmin.bo');
+		function editVacation() {
+			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			
+			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
+			$boemailadmin	=& CreateObject('emailadmin.bo');
 
-			if($this->sieve->getscript($scriptName))
-			{
-				$this->scriptToEdit 	= $scriptName;
-				if (!$script->retrieveRules($this->sieve))
-				{
-					//print "can't receive script<br>";
-					$this->rules = $this->vacations = array();
+			if($this->bosieve->getScript($this->scriptName)) {
+				if(PEAR::isError($error = $this->bosieve->retrieveRules($this->scriptName)) ) {
+					$rules		= array();
+					$vacation	= array();
+				} else {
+					$rules		= $this->bosieve->getRules($this->scriptName);
+					$vacation	= $this->bosieve->getVacation($this->scriptName);
 				}
-				else
-				{
-					$this->rules	= $script->rules;
-					$this->vacation	= $script->vacation;
-				}
-			}
-			else
-			{
-				#print "Unable to change active script!<br>";
-				/* we could display the full output here */
-				$this->listScripts();
-				$GLOBALS['egw']->common->egw_exit();
+			} else {
+				// something got wrong
 			}
 
-											$this->saveSessionData();
+			if(isset($_POST["vacationStatus"])) {
+				if(isset($_POST['save']) || isset($_POST['apply'])) {
+					$newVacation['text']		= get_var('vacation_text',array('POST'));
+					$newVacation['text']		= $this->botranslation->convert($newVacation['text'],$this->displayCharset,'UTF-8');
+					$newVacation['days']		= get_var('days',array('POST'));
+					$newVacation['addresses']	= get_var('vacationAddresses',array('POST'));
+					$newVacation['status']		= get_var('vacationStatus',array('POST')) == 'disabled' ? 'off' : 'on';
+					if($this->checkRule($newVacation)) { 
+						if (!$this->bosieve->setVacation($this->scriptName, $newVacation)) {
+							print "vacation update failed<br>";
+							#print $script->errstr."<br>";
+						}
+					}
+
+					$vacation = $newVacation;
+				}
+				
+				if(isset($_POST['save']) || isset($_POST['cancel'])) {
+					$GLOBALS['egw']->redirect_link('/felamimail/index.php');
+				}
+			}
+
+			$this->saveSessionData();
 
 			// display the header
 			$this->display_app_header();
 			
 			// initialize the template
 			$this->t->set_file(array("filterForm" => "sieveForm.tpl"));
+			$this->t->set_block('filterForm','vacation');
+			
+			// translate most of the parts
+			$this->translate();
+			
+			// vacation status
+			if($vacation[status] == 'on') {
+				$this->t->set_var('checked_active', 'checked');
+			} else {
+				$this->t->set_var('checked_disabled', 'checked');
+			}
+				
+			// vacation text
+			$this->t->set_var('vacation_text',$this->botranslation->convert($vacation['text'],'UTF-8'));
+
+			//vacation days
+			$this->t->set_var('selected_'.$vacation['days'],'selected="selected"');
+
+			// vacation addresses
+			if(is_array($vacation['addresses'])) {
+				foreach($vacation['addresses'] as $address) {
+					$selectedAddresses[$address] = $address;
+				}
+				asort($selectedAddresses);
+			}
+
+			$allIdentities = $preferences->getIdentity();
+			foreach($allIdentities as $key => $singleIdentity) {
+				$predefinedAddresses[$singleIdentity->emailAddress] = $singleIdentity->emailAddress;
+			}
+			asort($predefinedAddresses);
+
+			$this->t->set_var('multiSelectBox',$uiwidgets->multiSelectBox(
+					$selectedAddresses,
+					$predefinedAddresses,
+					'vacationAddresses',
+					'400px'
+				)
+			);
+
+			$linkData = array (
+				'menuaction'	=> 'felamimail.uisieve.editVacation',
+			);
+			
+			$this->t->set_var('vacation_action_url',$GLOBALS['egw']->link('/index.php',$linkData));
+
+			$this->t->pfp('out','vacation');
+			
+		#LK	$this->bosieve->disconnect();
+		}
+
+		function increaseFilter()
+		{
+			$ruleID = get_var('ruleID',array('GET'));
+			if ($this->rules[$ruleID] && $this->rules[$ruleID-1]) 
+			{
+				$tmp = $this->rules[$ruleID-1];
+				$this->rules[$ruleID-1] = $this->rules[$ruleID];
+				$this->rules[$ruleID] = $tmp;
+			}
+			
+			$this->updateScript();
+			
+			$this->saveSessionData();
+			
+			$this->editScript();
+		}
+		
+		function listRules() {
+			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
+			
+			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
+			$boemailadmin	=& CreateObject('emailadmin.bo');
+
+			if($script = $this->bosieve->getScript($this->scriptName)) {
+				$this->scriptToEdit 	= $this->scriptName;
+				if(PEAR::isError($error = $this->bosieve->retrieveRules($this->scriptName)) ) {
+					$this->rules	= array();
+					$this->vacation	= array();
+				} else {
+					$this->rules	= $this->bosieve->getRules($this->scriptName);
+					$this->vacation	= $this->bosieve->getVacation($this->scriptName);
+				}
+			} else {
+				// something got wrong
+			}
+
+			$this->saveSessionData();
+
+			// display the header
+			$this->display_app_header();
+			
+			// initialize the template
+			$this->t->set_file(array('filterForm' => 'listRules.tpl'));
 			$this->t->set_block('filterForm','header');
 			$this->t->set_block('filterForm','filterrow');
 			
 			// translate most of the parts
 			$this->translate();
 			
-			if(!empty($this->scriptToEdit))
-			{
+			#if(!empty($this->scriptToEdit))
+			#{
 				$listOfImages = array(
 					'up',
 					'down'
@@ -537,7 +615,6 @@
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uisieve.editRule',
-					'scriptname'	=> $scriptName,
 					'ruletype'	=> 'filter'
 				);
 				$this->t->set_var('url_add_rule',$GLOBALS['egw']->link('/index.php',$linkData));
@@ -545,7 +622,6 @@
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uisieve.editRule',
-					'scriptname'	=> $scriptName,
 					'ruletype'	=> 'vacation'
 				);
 				$this->t->set_var('url_add_vacation_rule',$GLOBALS['egw']->link('/index.php',$linkData));
@@ -569,7 +645,6 @@
 					(
 						'menuaction'	=> 'felamimail.uisieve.editRule',
 						'ruleID'	=> $ruleID,
-						'scriptname'	=> $scriptName
 					);
 					$this->t->set_var('url_edit_rule',$GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -577,7 +652,6 @@
 					(
 						'menuaction'	=> 'felamimail.uisieve.increaseFilter',
 						'ruleID'	=> $ruleID,
-						'scriptname'	=> $scriptName
 					);
 					$this->t->set_var('url_increase',$GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -585,92 +659,29 @@
 					(
 						'menuaction'	=> 'felamimail.uisieve.decreaseFilter',
 						'ruleID'	=> $ruleID,
-						'scriptname'	=> $scriptName
 					);
 					$this->t->set_var('url_decrease',$GLOBALS['egw']->link('/index.php',$linkData));
 					
 					$linkData = array
 					(
 						'menuaction'	=> 'felamimail.uisieve.updateRules',
-						'scriptname'	=> $scriptName
 					);
 					$this->t->set_var('action_rulelist',$GLOBALS['egw']->link('/index.php',$linkData));
 
 					$this->t->parse('filterrows','filterrow',true);
 				}
 
-				// vacation settings
-				
-				// vacation status
-				if($this->vacation[status] == 'on')
-				{
-					$this->t->set_var('ruleCSS','sieveRowActive');
-					$this->t->set_var('lang_vacation_status',lang('enabled'));
-					$this->t->set_var('css_enabled','sieveRowInActive');
-					$this->t->set_var('css_disabled','sieveRowActive');
-				}
-				else
-				{
-					$this->t->set_var('ruleCSS','sieveRowInActive');
-					$this->t->set_var('lang_vacation_status',lang('disabled'));
-					$this->t->set_var('css_enabled','sieveRowActive');
-					$this->t->set_var('css_disabled','sieveRowInActive');
-				}
-				
-				// vacation text
-				$this->t->set_var('vacation_text',$this->botranslation->convert($this->vacation['text'],'UTF-8'));
-				
-				//vacation days
-				$this->t->set_var('selected_'.$this->vacation['days'],'selected="selected"');
-					
-				// vacation addresses
-				if(is_array($this->vacation['addresses']))
-				{
-					foreach($this->vacation['addresses'] as $address)
-					{
-						$selectedAddresses[$address] = $address;
-					}
-					asort($selectedAddresses);
-				}
-
-				// all local addresses
-				if($emailAddresses = $boemailadmin->getAccountEmailAddress($GLOBALS['egw_info']['user']['userid'], $this->felamimailConfig['profileID']))
-				{
-					foreach($emailAddresses as $addressData)
-					{
-						$predefinedAddresses[$addressData['address']] = $addressData['address'];
-					}
-					asort($predefinedAddresses);
-				}
-
-				$this->t->set_var('multiSelectBox',$uiwidgets->multiSelectBox(
-						$selectedAddresses,
-						$predefinedAddresses,
-						'vacationAddresses',
-						'400px'
-					)
-				);
-
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uisieve.updateVacation',
-					'editmode'	=> 'vacation',
-					'scriptname'	=> $scriptName
-				);
-				$this->t->set_var('vacation_action_url',$GLOBALS['egw']->link('/index.php',$linkData));
-
-			}
-
-									$linkData = array
-									(
-													'menuaction'    => 'felamimail.uisieve.saveScript'
-									);
+			#}
+			
+			$linkData = array (
+				'menuaction'    => 'felamimail.uisieve.saveScript'
+			);
 			$this->t->set_var('formAction',$GLOBALS['egw']->link('/index.php',$linkData));
-									$linkData = array
-									(
-													'menuaction'    => 'felamimail.uisieve.mainScreen'
-									);
-			$this->t->set_var('link_newScript',$GLOBALS['egw']->link('/index.php',$linkData));
+			
+			$linkData = array (
+				'menuaction'    => 'felamimail.uisieve.listRules'
+			);
+			$this->t->set_var('refreshURL',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			$linkData = array
 			(
@@ -681,102 +692,9 @@
 
 			$this->t->pfp("out","header");
 			
-			$this->sieve->close();
+		#LK	$this->bosieve->disconnect();
 		}
 
-		function increaseFilter()
-		{
-			$ruleID = get_var('ruleID',array('GET'));
-			if ($this->rules[$ruleID] && $this->rules[$ruleID-1]) 
-			{
-				$tmp = $this->rules[$ruleID-1];
-				$this->rules[$ruleID-1] = $this->rules[$ruleID];
-				$this->rules[$ruleID] = $tmp;
-			}
-			
-			$this->updateScript();
-			
-			$this->saveSessionData();
-			
-			$this->editScript();
-		}
-		
-		function listScripts()
-		{
-			$this->display_app_header();
-
-			$this->t->set_file(array("filterForm" => "sieveScriptList.tpl"));
-			$this->t->set_block('filterForm','header');
-			$this->t->set_block('filterForm','scriptrow');
-
-			// translate most of the parts
-			$this->translate();
-
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uisieve.addScript'
-			);
-			$this->t->set_var('action_add_script',$GLOBALS['egw']->link('/index.php',$linkData));
-
-			if($this->sieve->listscripts())
-			{
-				foreach($this->sieve->scriptlist as $scriptID => $scriptName)
-				{
-					$this->t->set_var("scriptnumber",$scriptID);
-					$this->t->set_var("scriptname",$scriptName);
-
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.deleteScript',
-						'scriptname'	=> $scriptName
-					);
-					$this->t->set_var('link_deleteScript',$GLOBALS['egw']->link('/index.php',$linkData));
-					
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uisieve.editScript',
-						'scriptname'	=> $scriptName
-					);
-					$this->t->set_var('link_editScript',$GLOBALS['egw']->link('/index.php',$linkData));
-					
-					if($this->sieve->activescript == $scriptName)
-					{
-						$linkData = array
-						(
-							'menuaction'	=> 'felamimail.uisieve.deactivateScript',
-							'scriptname'	=> $scriptName
-						);
-						// show only active label and no (not working/existing) deactivate link
-						$this->t->set_var('lang_activate',''/*lang('deactivate script')*/);
-						$this->t->set_var('active',lang('active'));
-						$this->t->set_var('ruleCSS','sieveRowActive');
-					}
-					else
-					{
-						$linkData = array
-						(
-							'menuaction'	=> 'felamimail.uisieve.activateScript',
-							'scriptname'	=> $scriptName
-						);
-						$this->t->set_var('lang_activate',lang('activate script'));
-						$this->t->set_var('active','');
-						$this->t->set_var('ruleCSS','sieveRowInActive');
-					}
-					$this->t->set_var('link_activateScript',$GLOBALS['egw']->link('/index.php',$linkData));
-
-					$this->t->parse('scriptrows','scriptrow',true);
-				}
-			}
-			#else
-			#{
-			#	$this->t->set_var("scriptrows",'');
-			#}
-
-			$this->t->pfp("out","header");
-			
-			$this->sieve->close();
-		}
-		
 		function restoreSessionData()
 		{
 			$sessionData = $GLOBALS['egw']->session->appsession('sieve_session_data');
@@ -805,6 +723,7 @@
 			(
 				$folderObjects,
 				'INBOX',
+				0,
 				lang('IMAP Server'),
 				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
 				'divFolderTree',
@@ -836,13 +755,7 @@
 			return $match;
 		}
 		
-		function saveVacation()
-		{
-			
-		}
-		
-		function saveScript()
-		{
+		function saveScript() {
 			$scriptName 	= $_POST['scriptName'];
 			$scriptContent	= $_POST['scriptContent'];
 			if(isset($scriptName) and isset($scriptContent))
@@ -868,8 +781,7 @@
 			$this->mainScreen();
 		}
 
-		function saveSessionData()
-		{
+		function saveSessionData() {
 			$sessionData['sieve_rules']		= $this->rules;
 			$sessionData['sieve_scriptToEdit']	= $this->scriptToEdit;
 			
@@ -882,11 +794,18 @@
 			$this->t->set_var("lang_from",lang('from'));
 			$this->t->set_var("lang_to",lang('to'));
 			$this->t->set_var("lang_save",lang('save'));
+			$this->t->set_var("lang_apply",lang('apply'));
+			$this->t->set_var("lang_cancel",lang('cancel'));
+			$this->t->set_var("lang_active",lang('active'));
+			$this->t->set_var('lang_disabled',lang('disabled'));
+			$this->t->set_var('lang_status',lang('status'));
 			$this->t->set_var("lang_edit",lang('edit'));
 			$this->t->set_var("lang_delete",lang('delete'));
 			$this->t->set_var("lang_enable",lang('enable'));
 			$this->t->set_var("lang_rule",lang('rule'));
 			$this->t->set_var("lang_disable",lang('disable'));
+			$this->t->set_var("lang_action",lang('action'));
+			$this->t->set_var("lang_condition",lang('condition'));
 			$this->t->set_var("lang_subject",lang('subject'));
 			$this->t->set_var("lang_filter_active",lang('filter active'));
 			$this->t->set_var("lang_filter_name",lang('filter name'));
@@ -897,7 +816,7 @@
 			$this->t->set_var("lang_back",lang('back'));
 			$this->t->set_var("lang_days",lang('days'));
 			$this->t->set_var("lang_save_changes",lang('save changes'));
-			$this->t->set_var("lang_edit_rule",lang('edit rule'));
+			$this->t->set_var("lang_extended",lang('extended'));
 			$this->t->set_var("lang_edit_vacation_settings",lang('edit vacation settings'));
 			$this->t->set_var("lang_every",lang('every'));
 			$this->t->set_var('lang_respond_to_mail_sent_to',lang('respond to mail sent to'));
@@ -976,107 +895,81 @@
 			
 			$this->saveSessionData();
 			
-			$this->editScript();
+			$this->listRules();
 		}
 
 		function updateScript()
 		{
-			$scriptName		= $this->scriptToEdit;
-			$script			=& CreateObject('felamimail.Script',$this->scriptToEdit);
-
-			if(!empty($scriptName))
-			{
-				if($this->sieve->getscript($scriptName))
-				{
-					// fetch the rules to the internal structure inside
-					// the $script object
-					if (!$script->retrieveRules($this->sieve))
-					{
-						#print "can't receive script<br>";
-						$this->editScript();
-					}
-				}
-				else
-				{
-					#print "Unable to change active script!<br>";
-					/* we could display the full output here */
-					$this->listScripts();
-					$GLOBALS['egw']->common->egw_exit();
-				}
-			}
-
-			$script->rules		= $this->rules;
-			if (!$script->updateScript($this->sieve)) 
-			{
-				print "update failed<br>";
-				print $script->errstr."<br>";
+			if (!$this->bosieve->updateScript($this->scriptToEdit, $this->rules)) {
+				print "update failed<br>";exit;
+		#LK		print $script->errstr."<br>";
 			}
 		}
 		
-		function updateVacation()
-		{
-			#phpinfo();exit;
-
-			$scriptName = get_var('scriptname',array('GET'));
- 			$script =& CreateObject('felamimail.Script',$scriptName);
-
-			if(!empty($scriptName))
-			{
-				if($this->sieve->getscript($scriptName))
-				{
-					// fetch the rules to the internal structure inside
-					// the $script object
-					if (!$script->retrieveRules($this->sieve))
-					{
-						#print "can't receive script<br>";
-						$this->editScript();
-					}
-				}
-				else
-				{
-					#print "Unable to change active script!<br>";
-					/* we could display the full output here */
-					$this->listScripts();
-					$GLOBALS['egw']->common->egw_exit();
-				}
-			}
-
-			switch(get_var('vacationRule_action',array('POST')))
-			{
-				case 'enable':
-				case 'save':
-				case 'disable':
-					$vacation['text']	= get_var('vacation_text',array('POST'));
-					$vacation['text']	= $this->botranslation->convert($vacation['text'],$this->displayCharset,'UTF-8');
-					$vacation['days']	= get_var('days',array('POST'));
-					$vacation['addresses']	= get_var('vacationAddresses',array('POST'));
-					$vacation['status']	= get_var('vacationRule_action',array('POST')) == 'disable' ? 'off' : 'on';
-					if($this->checkRule($vacation))
-					{
-						$script->vacation	= $vacation;
-						if (!$script->updateScript($this->sieve)) 
-						{
-							print "update failed<br>";
-							print $script->errstr."<br>";
-						}
-					}
-					break;
-				
-				case 'delete':
-					$script->vacation	= array();
-					if (!$script->updateScript($this->sieve)) 
-					{
-						print "update failed<br>";
-						print $script->errstr."<br>";
-					}
-					break;
-
-				default:
-					print "unhandeld vacationRule_action:". get_var('vacationRule_action',array('POST')) ."<br>";
-					break;
-			}
-			
-			$this->editScript();
-		}
+#		function updateVacation()
+#		{
+#			#phpinfo();exit;
+#
+#			$scriptName = get_var('scriptname',array('GET'));
+#			$script =& CreateObject('felamimail.Script',$scriptName);
+#
+#			if(!empty($scriptName))
+#			{
+#				if($this->sieve->getscript($scriptName))
+#				{
+#					// fetch the rules to the internal structure inside
+#					// the $script object
+#					if (!$script->retrieveRules($this->sieve))
+#					{
+#						#print "can't receive script<br>";
+#						$this->editScript();
+#					}
+#				}
+#				else
+#				{
+#					#print "Unable to change active script!<br>";
+#					/* we could display the full output here */
+#					$this->listScripts();
+#					$GLOBALS['egw']->common->egw_exit();
+#				}
+#			}
+#
+#			switch(get_var('vacationRule_action',array('POST')))
+#			{
+#				case 'enable':
+#				case 'save':
+#				case 'disable':
+#					$vacation['text']	= get_var('vacation_text',array('POST'));
+#					$vacation['text']	= $this->botranslation->convert($vacation['text'],$this->displayCharset,'UTF-8');
+#					$vacation['days']	= get_var('days',array('POST'));
+#					$vacation['addresses']	= get_var('vacationAddresses',array('POST'));
+#					$vacation['status']	= get_var('vacationRule_action',array('POST')) == 'disable' ? 'off' : 'on';
+#					if($this->checkRule($vacation))
+#					{
+#						$script->vacation	= $vacation;
+#						if (!$script->updateScript($this->sieve)) 
+#						{
+#							print "update failed<br>";
+#							print $script->errstr."<br>";
+#						}
+#					}
+#					break;
+#				
+#				case 'delete':
+#					$script->vacation	= array();
+#					if (!$script->updateScript($this->sieve)) 
+#					{
+#						print "update failed<br>";
+#						print $script->errstr."<br>";
+#					}
+#					break;
+#
+#				default:
+#					print "unhandeld vacationRule_action:". get_var('vacationRule_action',array('POST')) ."<br>";
+#					break;
+#			}
+#			
+#			$this->editScript();
+#		}
 	}
 ?>

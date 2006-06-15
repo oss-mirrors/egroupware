@@ -34,7 +34,7 @@
 		'Compose' => "javascript:openComposeWindow('".$GLOBALS['egw']->link('/index.php',$linkData)."');",
 	);
 
-	if($preferences['deleteOptions'] == 'move_to_trash')
+	if($preferences->preferences['deleteOptions'] == 'move_to_trash')
 	{
 		$file += Array(
 			'_NewLine_'	=> '', // give a newline
@@ -42,7 +42,7 @@
 		);
 	}
 	
-	if($preferences['deleteOptions'] == 'mark_as_deleted')
+	if($preferences->preferences['deleteOptions'] == 'mark_as_deleted')
 	{
 		$file += Array(
 			'_NewLine_'		=> '', // give a newline
@@ -54,41 +54,56 @@
 
 	if ($GLOBALS['egw_info']['user']['apps']['preferences'])
 	{
-		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
+		#$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
 		$menu_title = lang('Preferences');
 		$file = array(
 			'Preferences'		=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
-			'Manage Folders'	=> $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')
 		);
 
-		if($mailPreferences['imapEnableSieve'] == true)
+		if($preferences->userDefinedAccounts)
 		{
 			$linkData = array
 			(
-				'menuaction'	=> 'felamimail.uisieve.editScript',
-				'editmode'	=> 'filter'
+				'menuaction' => 'felamimail.uipreferences.editAccountData',
 			);
-			$file['EMailfilter']	= $GLOBALS['egw']->link('/index.php',$linkData);
-
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uisieve.editScript',
-				'editmode'	=> 'vacation'
-			);
-			$file['Vacation']	= $GLOBALS['egw']->link('/index.php',$linkData);
+			$file['Manage EMailaccounts'] = $GLOBALS['egw']->link('/index.php',$linkData);
 		}
-		if($mailPreferences['editForwardingAddress'] == true)
-		{
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uipreferences.editForwardingAddress',
-			);
-			$file['Forwarding']	= $GLOBALS['egw']->link('/index.php',$linkData);
+		
+		$file['Manage Folders']	= $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');
+		
+		$icServer = $preferences->getIncomingServer(0);
+		if(is_a($icServer, 'defaultimap')) {
+			if($icServer->enableSieve) 
+			{
+				$linkData = array
+				(
+					'menuaction'	=> 'felamimail.uisieve.listRules',
+				);
+				$file['filter rules']	= $GLOBALS['egw']->link('/index.php',$linkData);
+
+				$linkData = array
+				(
+					'menuaction'	=> 'felamimail.uisieve.editVacation',
+				);
+				$file['vacation notice']	= $GLOBALS['egw']->link('/index.php',$linkData);
+			}
+		}
+
+		$ogServer = $preferences->getOutgoingServer(0);
+		if(is_a($ogServer, 'defaultsmtp')) {
+			if($ogServer->editForwardingAddress)
+			{
+				$linkData = array
+				(
+					'menuaction'	=> 'felamimail.uipreferences.editForwardingAddress',
+				);
+				$file['Forwarding']	= $GLOBALS['egw']->link('/index.php',$linkData);
+			}
 		}
 
 		display_sidebox($appname,$menu_title,$file);
 	}
-/* There is nothing to configure in felamimail anymore
+
 	if ($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
 		$menu_title = lang('Administration');
@@ -97,6 +112,5 @@
 		);
 		display_sidebox($appname,$menu_title,$file);
 	}
-*/
 }
 ?>

@@ -13,18 +13,18 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.2';
+	$setup_info['felamimail']['version']     	= '1.2.004';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
 	$setup_info['felamimail']['author']		= 'Lars Kneschke';
 	$setup_info['felamimail']['license']		= 'GPL';
 	$setup_info['felamimail']['description']	=
-		'IMAP emailclient for EGroupware';
+		'IMAP emailclient for eGroupWare';
 	$setup_info['felamimail']['maintainer'] 	= 'Lars Kneschke';
-	$setup_info['felamimail']['maintainer_email'] 	= 'lkneschke@linux-at-work.de';
+	$setup_info['felamimail']['maintainer_email'] 	= 'l.kneschke@metaways.de';
 
-	$setup_info['felamimail']['tables']    = array('egw_felamimail_cache','egw_felamimail_folderstatus','egw_felamimail_displayfilter');
+	$setup_info['felamimail']['tables']    = array('egw_felamimail_cache','egw_felamimail_folderstatus','egw_felamimail_displayfilter','fm_accounts');
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['felamimail']['hooks'][] = 'preferences';
@@ -41,10 +41,13 @@
 	/* Dependencies for this app to work */
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
+		'versions' => Array('1.2')
 	);
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'emailadmin',
 		'versions' => Array('1.2')
 	);
+
+
+
 

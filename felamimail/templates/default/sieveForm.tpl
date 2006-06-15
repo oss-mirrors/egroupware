@@ -1,4 +1,5 @@
 <!-- BEGIN header -->
+<!-- TEMPLATE: sieveForm.tpl -->
 <script language="JavaScript1.2">
 
 function submitRuleList(action)
@@ -179,7 +180,7 @@ function createScript()
 		{filter_status}
 	</td>
 	<td>
-		<a class="{ruleCSS}" href="{url_edit_rule}" onmouseover="window.status='Edit This Rule'; return true;" onmouseout="window.status='';">{filter_text}</a>
+		<a class="{ruleCSS}" href="javascript:alert('buh');" onmouseover="window.status='Edit This Rule'; return true;" onmouseout="window.status='';">{filter_text}</a>
 	</td>
 	<td nowrap="nowrap" style="text-align: center;">
 		<a href="{url_increase}"><img src="{url_up}" alt="Move rule up" border="0" onmouseover="window.status='Move rule up'; return true;" onmouseout="window.status='';"></a>
@@ -187,3 +188,99 @@ function createScript()
 	</td>
 </tr>
 <!-- END filterrow -->
+
+<!-- BEGIN vacation -->
+
+<form ACTION="{vacation_action_url}" METHOD="post" NAME="editVacation">
+<table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
+	<tr CLASS="th">
+		<td colspan="2">
+						{lang_edit_vacation_settings}      
+		</td>
+	</tr>
+	<tr CLASS="sieveRowActive">
+		<td>
+			{lang_status}:
+		</td>
+		<td>
+			<input type="radio" name="vacationStatus" {checked_active} value="active"> {lang_active}
+			<input type="radio" name="vacationStatus" {checked_disabled} value="disabled"> {lang_disabled}
+		</td>
+	</tr>
+	<tr CLASS="sieveRowActive">
+		<td>
+			{lang_respond_to_mail_sent_to}:
+		</td>
+		<td nowrap="nowrap">
+			{multiSelectBox}
+		</td>
+	</tr>
+	<tr CLASS="sieveRowActive">
+		<td>
+			{lang_every}:
+		</td>
+		<td>
+			<select name="days">
+				<option value="0"></option>
+				<option value="1" {selected_1}>1</option>
+				<option value="2" {selected_2}>2</option>
+				<option value="3" {selected_3}>3</option>
+				<option value="4" {selected_4}>4</option>
+				<option value="5" {selected_5}>5</option>
+				<option value="6" {selected_6}>6</option>
+				<option value="7" {selected_7}>7</option>
+				<option value="8" {selected_8}>8</option>
+				<option value="9" {selected_0}>9</option>
+				<option value="10" {selected_10}>10</option>
+				<option value="11" {selected_11}>11</option>
+				<option value="12" {selected_12}>12</option>
+				<option value="13" {selected_13}>13</option>
+				<option value="14" {selected_14}>14</option>
+				<option value="15" {selected_15}>15</option>
+				<option value="16" {selected_16}>16</option>
+				<option value="17" {selected_17}>17</option>
+				<option value="18" {selected_18}>18</option>
+				<option value="19" {selected_19}>19</option>
+				<option value="20" {selected_20}>20</option>
+				<option value="21" {selected_21}>21</option>
+				<option value="22" {selected_22}>22</option>
+				<option value="23" {selected_23}>23</option>
+				<option value="24" {selected_24}>24</option>
+				<option value="25" {selected_25}>25</option>
+				<option value="26" {selected_26}>26</option>
+				<option value="27" {selected_27}>27</option>
+				<option value="28" {selected_28}>28</option>
+				<option value="29" {selected_29}>29</option>
+				<option value="30" {selected_30}>30</option>
+			</select>
+			{lang_days}
+		</td>
+	</tr>
+	<tr CLASS="sieveRowActive">
+		<td>
+			{lang_with_message}:
+		</td>
+		<td nowrap="nowrap">
+			<textarea class="input_text" name="vacation_text" rows="5" cols="75" wrap="hard" tabindex="1">{vacation_text}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+	<tr height="30" valign="bottom">
+		<td align="left">
+			<input name="save" value="{lang_save}" type="submit"> &nbsp;
+			<input name="apply" value="{lang_apply}" type="submit"> &nbsp;
+			<input name="cancel" value="{lang_cancel}" type="submit">
+		</td>
+	</tr>
+</table>
+</form>
+<!-- END vacation -->
+
+</table>
+<input type="hidden" name="ruleID" value="{value_ruleID}">
+</form>
+<!-- END vacation -->

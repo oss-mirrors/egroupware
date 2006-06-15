@@ -8,8 +8,7 @@
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
-	* Free Software Foundation; either version 2 of the License, or (at your    *
-	* option) any later version.                                                *
+	* Free Software Foundation; version 2 of the License.                       *
 	\***************************************************************************/
 	/* $Id$ */
 
@@ -18,11 +17,20 @@
 
 		var $public_functions = array
 		(
-			'compose'	=> 'True',
-			'reply'		=> 'True',
-			'replyAll'	=> 'True',
-			'forward'	=> 'True',
-			'action'	=> 'True'
+			'action'		=> True,
+			'compose'		=> True,
+			'fileSelector'		=> True,
+			'forward'		=> True,
+			'reply'			=> True,
+			'replyAll'		=> True,
+			'selectFolder'		=> True,
+		);
+		
+		var $destinations = array(
+			'to' 		=> 'to',
+			'cc'		=> 'cc',
+			'bcc'		=> 'bcc',
+			'folder'	=> 'folder'
 		);
 
 		function uicompose()
@@ -64,64 +72,30 @@
 
 		function action()
 		{
-			$formData['to'] 	= $this->bocompose->stripSlashes($_POST['to']);
-			$formData['cc'] 	= $this->bocompose->stripSlashes($_POST['cc']);
-			$formData['bcc'] 	= $this->bocompose->stripSlashes($_POST['bcc']);
+			$formData['identity']	= (int)$_POST['identity'];
+
+			foreach($_POST['destination'] as $key => $destination) {
+				if(!empty($_POST['address'][$key])) {
+					$formData[$destination][] = $_POST['address'][$key];
+				}
+			}
+
 			$formData['reply_to'] 	= $this->bocompose->stripSlashes($_POST['reply_to']);
 			$formData['subject'] 	= $this->bocompose->stripSlashes($_POST['subject']);
 			$formData['body'] 	= $this->bocompose->stripSlashes($_POST['body']);
 			$formData['priority'] 	= $this->bocompose->stripSlashes($_POST['priority']);
 			$formData['signature'] 	= $this->bocompose->stripSlashes($_POST['signature']);
-			$formData['mailbox']	= $_GET['mailbox'];
+			$formData['disposition'] = (bool)$_POST['disposition'];
+			//$formData['mailbox']	= $_GET['mailbox'];
 
-			if (isset($_POST['send'])) 
+			if(!$this->bocompose->send($formData))
 			{
-				$action="send";
+				$this->compose();
+				return;
 			}
-			elseif (isset($_POST['addfile'])) 
-			{
-				$action="addfile";
-			}
-			elseif (isset($_POST['removefile']))
-			{
-				$action="removefile";
-			}
-			
-			switch ($action)
-			{
-				case "addfile":
-					$formData['name']	= $_FILES['attachfile']['name'];
-					$formData['type']	= $_FILES['attachfile']['type'];
-					$formData['file']	= $_FILES['attachfile']['tmp_name'];
-					$formData['size']	= $_FILES['attachfile']['size'];
-					$this->bocompose->addAttachment($formData);
-					$this->compose();
-					break;
-
-				case "removefile":
-					$formData['removeAttachments']	= $_POST['attachment'];
-					$this->bocompose->removeAttachment($formData);
-					$this->compose();
-					break;
 					
-				case "send":
-					if(!$this->bocompose->send($formData))
-					{
-						$this->compose();
-						return;
-					}
-					
-					#$linkData = array
-					#(
-					#	'mailbox'	=> $_GET['mailbox'],
-					#	'startMessage'	=> '1'
-					#);
-					#$link = $GLOBALS['egw']->link('/felamimail/index.php',$linkData);
-					#$GLOBALS['egw']->redirect($link);
-					#$GLOBALS['egw']->common->egw_exit();
-					print "<script type=\"text/javascript\">window.close();</script>";
-					break;
-			}
+			#$GLOBALS['egw']->common->egw_exit();
+			print "<script type=\"text/javascript\">window.close();</script>";
 		}
 
 		function compose($_focusElement="to")
@@ -150,6 +124,7 @@
 			$this->t->set_block('composeForm','attachment','attachment');
 			$this->t->set_block('composeForm','attachment_row','attachment_row');
 			$this->t->set_block('composeForm','attachment_row_bold');
+			$this->t->set_block('composeForm','destination_row');
 			
 			$this->translate();
 			
@@ -158,8 +133,21 @@
 
 			$linkData = array
 			(
-				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
+				'menuaction'	=> 'felamimail.uicompose.selectFolder',
 			);
+			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uicompose.fileSelector',
+				'composeid'	=> $this->composeID
+			);
+			$this->t->set_var('file_selector_url',$GLOBALS['egw']->link('/index.php',$linkData));
+
+			#$linkData = array
+			#(
+			#	'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
+			#);
 
 			$linkData = array
 			(
@@ -168,6 +156,7 @@
 			);
 			$this->t->set_var("link_action",$GLOBALS['egw']->link('/index.php',$linkData));
 			$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
+			$this->t->set_var('compose_id',$this->composeID);
 
 			// check for some error messages from last posting attempt
 			if($errorInfo = $this->bocompose->getErrorInfo())
@@ -180,9 +169,36 @@
 			}
 			
 			// header
-			$displayFrom = @htmlentities($preferences['emailAddress'][0][name].' <'.$preferences['emailAddress'][0][address].'>',ENT_QUOTES,$this->displayCharset);
-			$this->t->set_var("from",$displayFrom);
-			$this->t->set_var("to",@htmlentities($sessionData['to'],ENT_QUOTES,$this->displayCharset));
+			$allIdentities = $preferences->getIdentity();
+			#_debug_array($allIdentities);
+			$defaultIdentity = 0;
+			foreach($allIdentities as $key => $singleIdentity) {
+				$identities[$key] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
+				if($singleIdentity->default)
+					$defaultIdentity = $key;
+			}
+			$selectFrom = $GLOBALS['egw']->html->select('identity', $defaultIdentity, $identities, true, "style='width: 450px;'");			
+			$this->t->set_var('select_from', $selectFrom);
+			
+			// from, to, cc
+			$this->t->set_var('img_clear_left', $GLOBALS['egw']->common->image('felamimail','clear_left'));
+			$this->t->set_var('img_fileopen', $GLOBALS['egw']->common->image('phpgwapi','fileopen'));
+			$this->t->set_var('img_mail_send', $GLOBALS['egw']->common->image('felamimail','mail_send'));
+			$this->t->set_var('img_attach_file', $GLOBALS['egw']->common->image('felamimail','attach'));
+			foreach(array('to','cc','bcc') as $destination) {
+				foreach((array)$sessionData[$destination] as $key => $value) {
+					$selectDestination = $GLOBALS['egw']->html->select('destination[]', $destination, $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+					$this->t->set_var('select_destination', $selectDestination);
+					$this->t->set_var('address', @htmlentities($value,ENT_QUOTES,$this->displayCharset));
+					$this->t->parse('destinationRows','destination_row',True);
+				}
+			}
+			// and always add one empty row
+			$selectDestination = $GLOBALS['egw']->html->select('destination[]', 'to', $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+			$this->t->set_var('select_destination', $selectDestination);
+			$this->t->set_var('address', '');
+			$this->t->parse('destinationRows','destination_row',True);
+
 			$this->t->set_var("cc",@htmlentities($sessionData['cc'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("bcc",@htmlentities($sessionData['bcc'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("reply_to",@htmlentities($sessionData['reply_to'],ENT_QUOTES,$this->displayCharset));
@@ -198,21 +214,25 @@
 			// attachments
 			if (is_array($sessionData['attachments']) && count($sessionData['attachments']) > 0)
 			{
-				$this->t->set_var('row_color',$this->rowColor[0]);
-				$this->t->set_var('name',lang('name'));
-				$this->t->set_var('type',lang('type'));
-				$this->t->set_var('size',lang('size'));
-				$this->t->parse('attachment_rows','attachment_row_bold',True);
-				while (list($key,$value) = each($sessionData['attachments']))
-				{
-					#print "$key : $value<br>";
-					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
-					$this->t->set_var('name',$value['name']);
-					$this->t->set_var('type',$value['type']);
-					$this->t->set_var('size',$value['size']);
-					$this->t->set_var('attachment_number',$key);
-					$this->t->parse('attachment_rows','attachment_row',True);
+				$imgClearLeft	=  $GLOBALS['egw']->common->image('felamimail','clear_left');
+	
+				foreach((array)$sessionData['attachments'] as $id => $attachment) {
+					$tempArray = array (
+						'1' => $attachment['name'],
+						'2' => $attachment['type'], '.2' => "style='text-align:center;'",
+						'3' => $attachment['size'],
+						'4' => "<img src='$imgClearLeft' onclick=\"fm_compose_deleteAttachmentRow(this,'$_composeID','$id')\">"
+					);
+					$tableRows[] = $tempArray;
 				}
+				
+				if(count($tableRows) > 0) {
+					if(!is_object($GLOBALS['egw']->html)) {
+						$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
+					}
+					$table = $GLOBALS['egw']->html->table($tableRows, "style='width:100%'");
+				}
+				$this->t->set_var('attachment_rows',$table);
 			}
 			else
 			{
@@ -224,9 +244,64 @@
 
 		function display_app_header()
 		{
+			if(!@is_object($GLOBALS['egw']->js))
+			{
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
+			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+			
 			$GLOBALS['egw']->common->egw_header();
 		}
 		
+		function fileSelector()
+		{
+			if(is_array($_FILES["addFileName"])) {
+				#phpinfo();
+				#_debug_array($_FILES);
+				if($_FILES['addFileName']['error'] == $UPLOAD_ERR_OK) {
+					$formData['name']	= $_FILES['addFileName']['name'];
+					$formData['type']	= $_FILES['addFileName']['type'];
+					$formData['file']	= $_FILES['addFileName']['tmp_name'];
+					$formData['size']	= $_FILES['addFileName']['size'];
+					$this->bocompose->addAttachment($formData);
+					print "<script type='text/javascript'>window.close();</script>";
+				} else {
+					print "<script type='text/javascript'>document.getElementById('fileSelectorDIV1').style.display = 'inline';document.getElementById('fileSelectorDIV2').style.display = 'none';</script>";
+				}
+			}
+			
+			if(!@is_object($GLOBALS['egw']->js))
+			{
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');                        
+			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
+			$GLOBALS['egw']->common->egw_header();
+
+			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
+			
+			$this->t->set_file(array("composeForm" => "composeForm.tpl"));
+			$this->t->set_block('composeForm','fileSelector','fileSelector');
+			
+			$this->translate();
+
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uicompose.fileSelector',
+				'composeid'	=> $this->composeID
+			);
+			$this->t->set_var('file_selector_url', $GLOBALS['egw']->link('/index.php',$linkData));
+
+			$maxUploadSize = ini_get('upload_max_filesize');
+			$this->t->set_var('max_uploadsize', $maxUploadSize);
+			
+
+			$this->t->pparse("out","fileSelector");
+		}
+
 		function forward()
 		{
 			$replyID = $_GET['reply_id'];
@@ -239,6 +314,36 @@
 					$this->bofelamimail->sessionData['mailbox']);
 			}
 			$this->compose();
+		}
+
+		function selectFolder()
+		{
+			if(!@is_object($GLOBALS['egw']->js))
+			{
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');                        
+			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
+			$GLOBALS['egw']->common->egw_header();
+
+			$bofelamimail		=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$uiwidgets		=& CreateObject('felamimail.uiwidgets');
+			$connectionStatus	= $bofelamimail->openConnection();
+
+			$folderObjects = $bofelamimail->getFolderObjects(false);
+			$folderTree = $uiwidgets->createHTMLFolder
+			(
+				$folderObjects,
+				'INBOX',
+				0,
+				lang('IMAP Server'),
+				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
+				'divFolderTree',
+				false
+			);
+			print '<div id="divFolderTree" style="overflow:auto; width:320px; height:450px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;"></div>';
+			print $folderTree;
 		}
 
 		function reply()
@@ -286,6 +391,9 @@
 			$this->t->set_var("lang_high",lang('high'));
 			$this->t->set_var("lang_low",lang('low'));
 			$this->t->set_var("lang_signature",lang('signature'));
+			$this->t->set_var("lang_select_folder",lang('select folder'));
+			$this->t->set_var('lang_max_uploadsize',lang('max uploadsize'));
+			$this->t->set_var('lang_adding_file_please_wait',lang('Adding file to message. Please wait!'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);

@@ -116,26 +116,31 @@
 			$where = $this->host_account_folder;
 			$filter = $this->getFilterSQL($_filter);
 			if ($filter) $where[] = $filter;
+			$foundSomething = false;
 				
 			$this->db->select($this->cache_table,'fmail_uid,fmail_date,fmail_subject,fmail_sender_name,fmail_sender_address,fmail_to_name,fmail_to_address,fmail_size,fmail_attachments',
 				$where,__LINE__,__FILE__,$_firstMessage?$_firstMessage-1:False,$this->getSortSQL($_sort),False,$_numberOfMessages);
 				
-			while($this->db->next_record())
-			{
-				//(regis) add subject and size
-				$retValue[] = array(
-					'uid'		=> $this->db->f('fmail_uid'),
+			while($this->db->next_record()) {
+				$foundSomething = true;
+				$retValue[$this->db->f('fmail_uid')] = array(
+					'uid'				=> $this->db->f('fmail_uid'),
 					'sender_name'	=> $this->db->f('fmail_sender_name'), 
-					'subject'	=> $this->db->f('fmail_subject'), 
-					'size'		=> $this->db->f('fmail_size'), 
-					'sender_address'=> $this->db->f('fmail_sender_address'), 
-					'to_name'	=> $this->db->f('fmail_to_name'), 
-					'to_address'	=> $this->db->f('fmail_to_address'),
-					'attachments'	=> $this->db->f('fmail_attachments'),
-					'date'		=> $this->db->f('fmail_date')
+					'subject'			=> $this->db->f('fmail_subject'), 
+					'size'			=> $this->db->f('fmail_size'), 
+					'sender_address'	=> $this->db->f('fmail_sender_address'), 
+					'to_name'		=> $this->db->f('fmail_to_name'), 
+					'to_address'		=> $this->db->f('fmail_to_address'),
+					'attachments'		=> $this->db->f('fmail_attachments'),
+					'date'			=> $this->db->f('fmail_date')
 				);
 			}
-			return $retValue;
+			
+			if($foundSomething) {
+				return $retValue;
+			}
+
+			return false;
 		}
 		
 		/**

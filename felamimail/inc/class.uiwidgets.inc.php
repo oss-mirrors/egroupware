@@ -67,6 +67,7 @@
 		*
 		* @param _folders array containing the list of folders
 		* @param _selected string containing the selected folder
+		* @param _selectedFolderCount integer contains the count of unread messages in the selected folder
 		* @param _topFolderName string containing the top folder name
 		* @param _topFolderDescription string containing the description for the top folder
 		* @param _formName string name of the sorounding form
@@ -74,24 +75,17 @@
 		*
 		* @return string the html code, to be added into the template
 		*/
-		function createHTMLFolder($_folders, $_selected, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox)
-		{
-			$allFolders = array();
-			
+		function createHTMLFolder($_folders, $_selected, $_selectedFolderCount, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox) {
 			// create a list of all folders, also the ones which are not subscribed
- 			foreach($_folders as $key => $obj)
-			{
+ 			foreach($_folders as $key => $obj) {
 				$folderParts = explode($obj->delimiter,$key);
-				if(is_array($folderParts))
-				{
+				if(is_array($folderParts)) {
 					$partCount = count($folderParts);
 					$string = '';
-					for($i = 0; $i < $partCount-1; $i++)
-					{
+					for($i = 0; $i < $partCount-1; $i++) {
 						if(!empty($string)) $string .= $obj->delimiter;
 						$string .= $folderParts[$i];
-						if(!$allFolders[$string])
-						{	
+						if(!$allFolders[$string]) {	
 							$allFolders[$string] = $obj;
 							unset($allFolders[$string]->name);
 							unset($allFolders[$string]->attributes);
@@ -108,8 +102,7 @@
 			$folder_tree_new .= "<script type='text/javascript'>";
 			$folder_tree_new .= "tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');";
-			if($_displayCheckBox)
-			{
+			if($_displayCheckBox) {
 				$folder_tree_new .= "tree.enableCheckBoxes(1);";
 				$folder_tree_new .= "tree.setOnCheckHandler('onCheckHandler');";
 			}
@@ -117,8 +110,8 @@
 			$folder_tree_new .= "tree.insertNewItem(0,'--topfolder--','$_topFolderName',onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
 			
 			#foreach($_folders as $key => $obj)
-			foreach($allFolders as $longName => $obj)
-			{	
+			foreach($allFolders as $longName => $obj) {	
+				$messageCount = '';
 				$image1 = "'folderClosed.gif'";
 				$image2 = "0";
 				$image3 = "0";
@@ -132,28 +125,21 @@
 				$parentName = implode((array)$folderParts,$obj->delimiter);
 				if(empty($parentName)) $parentName = '--topfolder--';
 				
- 				if( @$obj->counter->unseen > 0 )
-				{
- 					$messageCount = "&nbsp;(".$obj->counter->unseen.")";
-				}
- 				else
- 				{
-					$messageCount = "";
-				}
-
 				$entryOptions = 'CHILD,CHECKED';
 
+				$folder_name = $shortName;
+
 				// highlight currently selected mailbox
-				if ($_selected == $longName)
-				{
+				if ($_selected == $longName) {
 					$entryOptions .= ',SELECT';
+					if($_selectedFolderCount > 0) {
+						$messageCount = "&nbsp;($_selectedFolderCount)";
+						$folder_name = "<b>$shortName&nbsp;($_selectedFolderCount)</b>";
+					}
 				}
 				
-				$folder_name = $shortName.$messageCount;
-				
 				// give INBOX a special foldericon
-				if ($longName == 'INBOX')
-				{
+				if ($longName == 'INBOX') {
 					$image1 = "'kfm_home.png'";
 					$image2 = "'kfm_home.png'";
 					$image3 = "'kfm_home.png'";
@@ -169,11 +155,13 @@
 			return $folder_tree_new;
 		}
 
-		function messageTable($_headers, $_isSentFolder, $_readInNewWindow)
+		// $_rowStyle felamimail or outlook
+		function messageTable($_headers, $_isSentFolder, $_readInNewWindow, $_rowStyle='felamimail')
 		{
 			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
-			$this->t->set_block('body','header_row');
+			$this->t->set_block('body','header_row_felamimail');
+			$this->t->set_block('body','header_row_outlook');
 			$this->t->set_block('body','message_table');
 
 			foreach((array)$_headers['header'] as $header)
@@ -190,55 +178,81 @@
 				if(!empty($header['answered'])) $flags .= "A";
 				if(!empty($header['deleted'])) $flags .= "D";
 				if(!empty($header['seen'])) $flags .= "S";
+				
+				$this->t->set_var('row_text', '');
 
-				switch($flags)
-				{
+				switch($flagss) {
 					case "":
-						$this->t->set_var('imageName','unread_small.png');
-						$this->t->set_var('row_text',lang('new'));
+						#$this->t->set_var('imageName','unread_small.png');
+						#$this->t->set_var('row_text',lang('new'));
 						$maxAddressLength = $maxAddressLengthBold;
 						$maxSubjectLength = $maxSubjectLengthBold;
+						$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgunseen'));
 						break;
 					case "D":
 					case "DS":
 					case "ADS":
-						$this->t->set_var('imageName','unread_small.png');
-						$this->t->set_var('row_text',lang('deleted'));
+						#$this->t->set_var('imageName','unread_small.png');
+						#$this->t->set_var('row_text',lang('deleted'));
 						break;
 					case "F":
-						$this->t->set_var('imageName','unread_flagged_small.png');
-						$this->t->set_var('row_text',lang('new'));
+						#$this->t->set_var('imageName','unread_flagged_small.png');
+						#$this->t->set_var('row_text',lang('new'));
 						$maxAddressLength = $maxAddressLengthBold;
 						break;
 					case "FS":
-						$this->t->set_var('imageName','read_flagged_small.png');
-						$this->t->set_var('row_text',lang('replied'));
+						#$this->t->set_var('imageName','read_flagged_small.png');
+						#$this->t->set_var('row_text',lang('replied'));
 						break;
 					case "FAS":
-						$this->t->set_var('imageName','read_answered_flagged_small.png');
-						$this->t->set_var('row_text',lang('replied'));
+						#$this->t->set_var('imageName','read_answered_flagged_small.png');
+						#$this->t->set_var('row_text',lang('replied'));
 						break;
 					case "S":
 					case "RS":
-						$this->t->set_var('imageName','read_small.png');
-						$this->t->set_var('row_text',lang('read'));
+						#$this->t->set_var('imageName','read_small.png');
+						#$this->t->set_var('row_text',lang('read'));
+						#$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgread'));
 						break;
 					case "R":
-						$this->t->set_var('imageName','recent_small.gif');
-						$this->t->set_var('row_text','*'.lang('recent').'*');
+						#$this->t->set_var('imageName','recent_small.gif');
+						#$this->t->set_var('row_text','*'.lang('recent').'*');
 						$maxAddressLength = $maxAddressLengthBold;
+						#$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgnew'));
 						break;
 					case "RAS":
 					case "AS":
-						$this->t->set_var('imageName','read_answered_small.png');
-						$this->t->set_var('row_text',lang('replied'));
+						#$this->t->set_var('imageName','read_answered_small.png');
+						#$this->t->set_var('row_text',lang('replied'));
 						#$maxAddressLength = $maxAddressLengthBold;
 						break;
 					default:
-						$this->t->set_var('row_text',$flags);
+						#$this->t->set_var('row_text',$flags);
 						break;
 				}
-				#_debug_array($GLOBALS[phpgw_info]);
+#_debug_array($header);
+				if($header['recent']) {
+					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgnew'));
+				} elseif($header['answered']) {
+					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgreplied'));
+				} elseif($header['seen']) {
+					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgread'));
+				} else {
+					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgunseen'));
+				}
+
+				if($header['deleted']) {
+					$this->t->set_var('row_css_class','header_row_D');
+				} elseif($header['recent'] && !$header['seen']) {
+					$this->t->set_var('row_css_class','header_row_R');
+				} elseif($header['flagged']) {
+					$this->t->set_var('row_css_class','header_row_F');
+				} elseif($header['seen']) {
+					$this->t->set_var('row_css_class','header_row_S');
+				} else {
+					$this->t->set_var('row_css_class','header_row_');
+				}
+				
 				if (!empty($header['subject']))
 				{
 					// filter out undisplayable characters
@@ -262,6 +276,7 @@
 
 						$header['attachment'] = $image;
 					}
+					#$this->t->set_var('header_subject', "($flags) ".$header['subject']);
 					$this->t->set_var('header_subject', $header['subject']);
 					$this->t->set_var('attachments', $header['attachment']);
 					$this->t->set_var('full_subject',@htmlspecialchars($fullSubject,ENT_QUOTES,$this->displayCharset));
@@ -319,7 +334,8 @@
 					'uid'			=> $header['uid']
 				);
 				$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
-				$this->t->set_var('url_read_message',"egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());");
+				$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
+				$this->t->set_var('read_message_windowName', $windowName);
 			
 				if($_isSentFolder)
 				{
@@ -371,9 +387,15 @@
 				$this->t->set_var('msg_icon_sm',$msg_icon_sm);
 				
 				$this->t->set_var('phpgw_images',EGW_IMAGES);
-				$this->t->set_var('row_css_class','header_row_'.$flags);
 		
-				$this->t->parse('message_rows','header_row',True);
+				switch($_rowStyle) {
+					case 'outlook':
+						$this->t->parse('message_rows','header_row_outlook',True);
+						break;
+					default:
+						$this->t->parse('message_rows','header_row_felamimail',True);
+						break;
+				}
 			}
 			$this->t->parse("out","message_table");
 			
