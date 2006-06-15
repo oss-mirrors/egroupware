@@ -46,11 +46,13 @@
 				'ea_imapoldcclient' => array('type' => 'varchar','precision' => '3'),
 				'ea_order' => array('type' => 'int','precision' => '4'),
 				'ea_appname' => array('type' => 'varchar','precision' => '80'),
-				'ea_group' => array('type' => 'varchar','precision' => '80')
+				'ea_group' => array('type' => 'varchar','precision' => '80'),
+				'ea_smtp_auth_username' => array('type' => 'varchar','precision' => '80'),
+				'ea_smtp_auth_password' => array('type' => 'varchar','precision' => '80')
 			),
 			'pk' => array('ea_profile_id'),
 			'fk' => array(),
-			'ix' => array(),
+			'ix' => array('ea_appname','ea_group'),
 			'uc' => array()
 		)
 	);
