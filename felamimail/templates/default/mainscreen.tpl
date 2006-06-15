@@ -163,7 +163,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			<img src="{image_url}">
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
-			<img src="{attachment_image_url}" border="0" style="width:12px;>
+			{attachment_image}
 		</td>
 		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;"><nobr>
 			<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); return false;" title="{full_subject}">{header_subject}</a>
