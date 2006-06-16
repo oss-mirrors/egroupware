@@ -24,7 +24,7 @@
 		var $charset;
 		
 		function ajax_contacts() {
-			$this->charset	= $this->charset;
+			$this->charset	= $GLOBALS['egw']->translation->charset();
 		}
 		
 		function searchAddress($_searchString) {
