@@ -19,7 +19,6 @@
 		 
 		 $this->setSession();
 
-		 $this->set_default_functions();
 		 
 		 //_debug_array($this->site_id);
 		 //_debug_array($this->site_object_id);
