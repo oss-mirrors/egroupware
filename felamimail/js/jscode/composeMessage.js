@@ -39,6 +39,31 @@ function initAll()
 	//alert(document.onkeydown);
 }
 
+function addEmail(to,email)
+{
+	//alert(to+': '+email);
+	
+	var tableBody = document.getElementById('addressRows');
+	var tableRows = tableBody.getElementsByTagName('tr');
+	
+	var lastRow = tableRows[tableRows.length-1];
+	var inputElements	= lastRow.getElementsByTagName('input');
+	
+	if (inputElements[0].value != '')	// last row not empty --> create new
+	{
+		addAddressRow(lastRow);
+		lastRow = tableRows[tableRows.length-1];
+		inputElements = lastRow.getElementsByTagName('input');
+	}
+	// fill with email and set selectbox
+	inputElements[0].value = email;
+	var selectElements = lastRow.getElementsByTagName('select');
+	selectElements[0].selectedIndex = to == 'cc' ? 1 : (to == 'bcc' ? 2 : 0);
+	
+	// add a new empty last row
+	addAddressRow(lastRow);
+}
+
 function addAddressRow(_tableRow)
 {
 	// the table body
@@ -57,7 +82,7 @@ function addAddressRow(_tableRow)
 	inputElements[0].disabled	= false;
 	inputElements[0].style.width	= '450px';
 	spanElements[0].style.display	= 'none';
-
+	
 	tableBody.appendChild(newTableRow);
 
 //	inputElements[0].focus();
@@ -171,6 +196,8 @@ function hideResultBox()
 
 	resultBox = document.getElementById('resultBox');
 	resultBox.className = 'resultBoxHidden';
+
+	document.title='Search finnished';
 
 	resultboxVisible=false;
 }
@@ -296,7 +323,7 @@ function startLiveSearch() {
 	if(currentInputField.value.length > 2) {
 		searchActive=true;
 		document.title='Search started';
-		xajax_doXMLHTTP("felamimail.ajaxfelamimail.searchAddress",currentInputField.value);
+		xajax_doXMLHTTP("felamimail.ajax_contacts.searchAddress",currentInputField.value);
 	}
 }
 

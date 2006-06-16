@@ -9,7 +9,7 @@
 	self.name="first_Window";
   function addybook()
   {
-	Window1=window.open('{link_addressbook}',"{lang_search}","width=800,height=480,toolbar=no,scrollbars=yes,resizable=yes");
+	Window1=window.open('{link_addressbook}',"{lang_search}","width=800,height=600,toolbar=no,scrollbars=yes,status=yes,resizable=yes");
   }
   function attach_window(url)
   {
@@ -36,8 +36,7 @@
 			</div>
 		</td>
 		<td align="right">
-			Empfangsbestätigung:
-			<input type="checkbox" name="disposition" value="1">
+			<label>Empfangsbestätigung: <input type="checkbox" name="disposition" value="1" /></label>
 			&nbsp;
 			{lang_priority}
 			<select name="priority">

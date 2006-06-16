@@ -128,7 +128,9 @@
 			
 			$this->translate();
 			
-			$this->t->set_var("link_addressbook",$GLOBALS['egw']->link('/felamimail/addressbook.php'));
+			$this->t->set_var("link_addressbook",$GLOBALS['egw']->link('/index.php',array(
+				'menuaction' => 'addressbook.uicontacts.emailpopup',
+			)));
 			$this->t->set_var("focusElement",$_focusElement);
 
 			$linkData = array
