@@ -73,8 +73,8 @@
 		 {
 			$this->bo->exit_and_open_screen('jinn.uiuser.index');
 		 }
-
-		$this->set_activated_elements();
+		 
+		 $this->set_activated_list_elements();
 		 
 	  }
 
@@ -429,7 +429,8 @@
 
 			if($field_conf_arr[list_visibility]!='0')
 			{
-			   $fields_show_default[] = $onecol;
+			   //continue; 
+			   $fields_show_default[] = $onecol; //fields allowed
 			}
 
 			//create more simple col_list with only names //why
@@ -513,6 +514,10 @@
 
 		 $record_count = count($records);
 
+
+		 //$column zijn alle columns
+		 //
+
 		 /* which/how many column to show: all, the preferred, the default fields set by the site admin, the default first X, or the default first 4 */
 		 if ($show_all_cols=='True' || $default_col_num=='-1')
 		 {
@@ -534,6 +539,19 @@
 		 {
 			$col_list=array_slice($columns,0,4);
 		 }
+
+		 /*
+		 if( count($fields_show_default) > count($col_list) )
+		 {
+			$showextrafieldconf;
+		 }
+		 */
+
+		 //if pref is less then allowed
+		 //if no pref is set and allowed is more then 4
+
+
+
 
 		 /*	check if orderbyfield exist else drop orderby it	*/
 		 if(!in_array(trim(substr($orderby,0,(strlen($orderby)-4))),$all_col_names_list)) unset($orderby);
@@ -599,7 +617,7 @@
 		 }
 
 		 $lang_total_records= lang('%1 records',$num_rows);
-		 $lang_rec_per_page= lang('%1 records per page', $rec_per_page);
+//		 $lang_rec_per_page= lang('%1 records per page', $rec_per_page);
 
 		 $this->tplsav2->set_var('list_form_action',$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.multiple_actions'));
 		 $this->tplsav2->set_var('menu_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
@@ -613,9 +631,11 @@
 		 {
 			$this->tplsav2->set_var('adv_filter_bgcolor','background-color:#ffcccc;');
 		 }
+		 
+		 $this->tplsav2->config_columns_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects');
 
 		 $this->tplsav2->set_var('total_records',$lang_total_records);
-		 $this->tplsav2->set_var('rec_per_page',$lang_rec_per_page);
+		 $this->tplsav2->set_var('rec_per_page',$rec_per_page);
 		 $this->tplsav2->set_var('pager',$pager);
 		 $this->tplsav2->set_var('newrec_link',$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.new_record'));
 
@@ -633,20 +653,10 @@
 		 // Echo the WALK EVENT BUTTONS
 		 $this->tplsav2->walklistblock = $this->getWalkListEventButtons();
 
-		 if(is_array($this->japie_functions))
-		 {
-			if($this->japie_functions['reports'])
-			{
-			   $this->tplsav2->reportblock = $this->getReportBlock();
-			}
-		 }
-		 elseif($this->bo->so->config['report_on'] != 'Off')
+		 if($this->tplsav2->enable_reports)
 		 {
 			$this->tplsav2->reportblock = $this->getReportBlock();
 		 }
-		 
-		 //			   echo " colums <br/>".$iii++.uniqid('');
-		 //		 die('snelheid tester');
 		 
 		 if($record_count>0)
 		 {
@@ -750,62 +760,74 @@
 		 $this->display();
 	  }
 
-	  function set_activated_elements()
+	  function set_activated_list_elements()
 	  {
 		 $this->tplsav2->action_colspan=0;
 		 $this->tplsav2->multi_colspan=0;
-		 //_debug_array($this->bo->site_object);
+		 //_debug_array($this->bo->objectelements);
 
-		 if(!$this->bo->site_object['disable_create_rec']) // ready for ACL
+		 if($this->bo->objectelements['enable_filters'])
+		 {
+			$this->tplsav2->enable_filters=true;
+		 }
+
+		 if($this->bo->objectelements['enable_simple_search'])
+		 {
+			$this->tplsav2->enable_simple_search=true;
+		 }
+
+		 if($this->bo->objectelements['enable_reports'])
+		 {
+			$this->tplsav2->enable_reports=true;
+		 }
+
+		 if($this->bo->objectelements['enable_create_rec']) 
 		 {
 			$this->tplsav2->enable_create_rec=true;
 		 }
 
-		 if(!$this->bo->site_object['disable_del_rec']) // ready for ACL
+		 if($this->bo->objectelements['enable_del']) 
 		 {
 			$this->tplsav2->enable_del=true;
 			$this->tplsav2->action_colspan++;
 			$this->tplsav2->multi_colspan++;
 		 }
 
-		 if(!$this->bo->site_object['disable_edit_rec']) // ready for ACL
+		 if($this->bo->objectelements['enable_edit_rec']) 
 		 {
 			$this->tplsav2->enable_edit_rec=true;
 			$this->tplsav2->action_colspan++;
 			$this->tplsav2->multi_colspan++;
 		 }
 
-		 if(!$this->bo->site_object['disable_export']) // ready for ACL
+		 if($this->bo->objectelements['enable_export']) 
 		 {
 			$this->tplsav2->enable_export=true;
-//			$this->tplsav2->action_colspan++;
 			$this->tplsav2->multi_colspan++;
 		 }
 
-		 if(!$this->bo->site_object['disable_view_rec']) // ready for ACL
+		 if($this->bo->objectelements['enable_view_rec'])
 		 {
 			$this->tplsav2->enable_view_rec=true;
 			$this->tplsav2->action_colspan++;
 			$this->tplsav2->multi_colspan++;
 		 }
 
-		 if(!$this->bo->site_object['disable_copy_rec']) // ready for ACL
+		 if($this->bo->objectelements['enable_copy_rec']) 
 		 {
 			$this->tplsav2->enable_copy_rec=true;
 			$this->tplsav2->action_colspan++;
-//			$this->tplsav2->multi_colspan++;
 		 }
 
-		 if(!$this->bo->site_object['disable_multi'] && $this->tplsav2->multi_colspan > 0) // ready for ACL
+		 if($this->bo->objectelements['enable_multi'] && $this->tplsav2->multi_colspan > 0) // ready for ACL
 		 {
 			$this->tplsav2->enable_multi=true;
 			$this->tplsav2->action_colspan++;
 			$this->tplsav2->multi_colspan++;
 		 }
-
-		 
+		 //echo $this->tplsav2->action_colspan;
 	  }
-	  
+
 	  function getWalkListEventButtons()
 	  {
 		 // Get Walk Events

@@ -238,16 +238,23 @@
 	  */
 	  function records_per_page()
 	  {
-		 $pref_default_record_num=intval($this->read_preferences('default_record_num'));
+		 $pref_key='_'.$this->site_object['parent_site_id'].'_'.$this->site_object['object_id'];
+		 
+		 $pref_default_record_num=intval($this->read_preferences($pref_key));
 
-		 if(is_int($pref_default_record_num) 
-		 && $pref_default_record_num > 0)
+		 if($_GET['recperpage'])
+		 {
+			$this->save_preferences($pref_key,$_GET['recperpage']);
+
+			return $_GET['recperpage'];
+		 }
+		 elseif(is_int($pref_default_record_num) && $pref_default_record_num > 0)
 		 {
 			return $pref_default_record_num;
 		 }
 		 else
 		 {
-			return 20;
+			return 25;
 		 }
 
 	  }

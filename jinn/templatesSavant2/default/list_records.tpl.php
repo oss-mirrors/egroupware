@@ -45,17 +45,19 @@
 </script>
 
 <!-- SEARCH & FILTERS BLOCK -->
-<?php if(!$this->japie || $this->japie_functions['search']):?>
 
-<table cellpadding="0" cellspacing="0" style="border:solid 1px #cccccc">
+<table cellpadding="0" cellspacing="0" style="border:solid 0px #cccccc">
    <tr>
-	  <td align="center" style="padding-left:20px;">
+	  <td align="" style="padding-left:0px;">
+		 <?php if($this->enable_simple_search):?>
 		 <form action="<?=$this->menu_action ?>" method="post"><?=lang('search for string') ?>&nbsp;<input style="<?=$this->quick_filter_bgcolor ?>" type="text" size="20" name="quick_filter" value="<?=$this->search_string ?>">
 			<input type="hidden" name="quick_filter_hidden" value="1">
-			<input type='submit'  value='<?=lang('Search'); ?>' class="egwbutton">
+			<input type='submit'  value='<?=lang('Search'); ?>' class="egwbutton">&nbsp;&nbsp;&nbsp;
 		 </form>	
+		 <?php endif?>
 	  </td>
-	  <td align="center" style="padding-left:20px;">
+	  <td align="center" style="padding-left:0px;">
+		 <?php if($this->enable_filters):?>
 		 <form name="filterform" action="<?=$this->filter_action ?>" method="post"><?=$this->filter_text ?>&nbsp;
 			<select name="filtername" style="<?=$this->adv_filter_bgcolor ?>" onChange="document.filterform.action = document.filterform.refresh_url.value; submit();">
 			   <?=$this->filter_list ?>
@@ -63,11 +65,11 @@
 			<input type="hidden" name="refresh_url" value="<?=$this->refresh_url ?>">
 			<input type="submit" value="<?=$this->filter_edit ?>" class="egwbutton">
 		 </form>	
+		 <?php endif?>
 	  </td>
    </tr>
 </table>
 
-<?php endif?>
 <!-- END SEARCH & FILTERS BLOCK -->
 
 <?=$this->reportblock?>
@@ -87,7 +89,7 @@
    }
 </style>
 <br/>
-<?php if($this->enable_multi):?>
+<?php if($this->enable_create_rec):?>
 <input type="button" value="<?=lang('Add new Record') ?>" onClick="location.href='<?=$this->newrec_link ?>'" style="width:150px;"/>
 <?php endif?>
 <?=$this->walklistblock?>
@@ -97,12 +99,27 @@
 		 <td style="padding:2px;border-bottom:solid 1px #006699" align="left">
 			<table cellspacing="0" cellpadding="0" width="100%">
 			   <tr>
-				  <td style="padding:5px;font-size:16px;font-weight:bold;" colspan="3"><?=$this->table_title ?></td>
+				  <td style="padding:5px;font-size:16px;font-weight:bold;" colspan="2"><?=$this->table_title ?></td>
+				  <td style="text-align:right;padding:5px;">
+					 <?=lang('Records per page');?>
+					 <?php
+						$recperpagechecked[$this->rec_per_page]='selected="selected"';
+//						_debug_array($recperpagechecked);
+					 ?>
+					 <select id="recperpage" name="recperpage" onchange="location.href=location.href+'&recperpage='+document.getElementById('recperpage').value">
+						<option <?=$recperpagechecked[10] ?>>10</option>
+						<option <?=$recperpagechecked[25] ?>>25</option>
+						<option <?=$recperpagechecked[50] ?>>50</option>
+						<option <?=$recperpagechecked[100] ?>>100</option>
+					 </select>&nbsp;&nbsp;&nbsp;
+					 <a href="<?=$this->config_columns_link?>" title="<?=lang('Show/Hide Columns')?>">&gt;&gt;</a>
+					 
+				  </td>
 			   </tr>
 			   <tr>
 				  <td style="padding:5px;font-size:12px;font-weight:normal;"><?=$this->table_descr ?></td>
 				  <td style="font-size:10px;font-weight:normal" align="center"><?=$this->pager ?></td>
-				  <td style="font-size:10px;font-weight:normal" align="right"><?=$this->total_records ?> - <?=$this->rec_per_page ?></td>
+				  <td style="font-size:10px;font-weight:normal" align="right"><?=$this->total_records ?></td>
 			   </tr>
 			</table>
 		 </td>
@@ -182,7 +199,6 @@
 
 			<?php if($this->enable_multi):?>
 			<td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><input title="<?=lang('toggle all above checkboxes') ?>" type="checkbox" name="CHECKALL" id="CHECKALL" value="TRUE" onclick="doCheckAll(this)" /></td>
-			<?php endif?>
 
 			<?php if($this->enable_view_rec):?>
 			<td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><a title="<?=lang('view all selected records') ?>" href="javascript:submit_multi('view')"><img width="16" src="<?=$this->colfield_view_img_src ?>" alt="<?=lang('view all selected records') ?>" /></a></td>
@@ -200,7 +216,7 @@
 			<td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><a title="<?=lang('export all selected records') ?>" href="javascript:submit_multi('export')" ><img width="16" src="<?=$this->colfield_export_img_src ?>" alt="<?=lang('export all selected records') ?>" /></a></td>
 			<?php endif?>
 
-			<?php if($this->enable_multi):?>
+			<?php //if($this->enable_multi):?>
 			<td>&nbsp;<?=lang('Actions to apply on all selected record')?></td>
 			<?php else:?>
 			<td>&nbsp;</td>

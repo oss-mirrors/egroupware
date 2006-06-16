@@ -7,7 +7,6 @@
 	  var $site_arr;
 	  var $site_object_id=false;
 	  var $default_view='list'; //possible: create,list
-	  var $japie_functions=array();
 	  var $baselink;
 	  var $calling_app;
 	  var $xmlarray;
@@ -26,8 +25,6 @@
 		 //_debug_array($this->site_object_id);
 
 		 $this->check_or_upgrade();
-		 
-		 
 	  }
 
 	  function check_or_upgrade()
@@ -91,18 +88,6 @@
 		 {
 			return false;
 		 }
-	  }
-
-	  function set_default_functions()
-	  {
-		 $this->japie_functions['list']=true;
-		 $this->japie_functions['read']=true;
-		 $this->japie_functions['edit']=true;
-		 $this->japie_functions['copy']=true;
-		 $this->japie_functions['delete']=true;
-
-		 $this->japie_functions['reports']=false;
-		 $this->japie_functions['filter']=false;
 	  }
 
 	  /**
@@ -208,7 +193,6 @@
 	  function doClassStuff()
 	  {
 		 $this->uijapie->no_header=true;
-		 $this->uijapie->japie_functions=$this->japie_functions;
 
 		 if($this->extra_where)
 		 {
@@ -260,7 +244,6 @@
 		 $this->uijapie = CreateObject('jinn.bouser');
 		 
 		 $this->uijapie->no_header=true;
-		 $this->uijapie->japie_functions=$this->japie_functions;
 		 $this->uijapie->japielink=$this->make_japie_link();
 
 		 $this->uijapie->del_record();		 
@@ -270,7 +253,6 @@
 		 $this->uijapie = CreateObject('jinn.bouser');
 		 
 		 $this->uijapie->no_header=true;
-		 $this->uijapie->japie_functions=$this->japie_functions;
 		 $this->uijapie->japielink=$this->make_japie_link();
 
 		 $this->uijapie->copy_record();		 
@@ -281,7 +263,6 @@
 		 $this->uijapie = CreateObject('jinn.bouser');
 		 
 		 $this->uijapie->no_header=true;
-		 $this->uijapie->japie_functions=$this->japie_functions;
 		 $this->uijapie->japielink=$this->make_japie_link();
 
 		 $this->uijapie->multiple_actions();		 
@@ -292,7 +273,6 @@
 		 $this->uijapie = CreateObject('jinn.uiuser');
 
 		 $this->uijapie->no_header=true;
-		 $this->uijapie->japie_functions=$this->japie_functions;
 		 $this->uijapie->japielink=$this->make_japie_link();
 
 		 $this->uijapie->runonrecord();		 

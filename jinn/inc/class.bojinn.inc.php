@@ -40,6 +40,8 @@
 
 	  var $bcompat;
 
+	  var $objectelements = array();
+
 	  /**
 	  * bojinn 
 	  * 
@@ -81,6 +83,9 @@
 		 }
 
 		 $this->site_fs = createObject('jinn.site_fs');
+
+
+		 $this->set_activated_object_elements();
 
 	  }
 
@@ -148,7 +153,7 @@
 	  */
 	  function addError($msg)
 	  {
-	//	 $error['msg']=$msg;
+		 //	 $error['msg']=$msg;
 		 $this->session['message']['error'][]=$msg;
 		 $this->sessionmanager->save();
 	  }
@@ -521,6 +526,59 @@
 	  function clearmsg()
 	  {
 		 $this->sessionmanager->sessionarray['message']=array();
+	  }
+
+	  function set_activated_object_elements()
+	  {
+
+		 if(!$this->site_object['disable_filters']) // ready for ACL
+		 {
+			$this->objectelements['enable_filters']=true;
+		 }
+		 if(!$this->site_object['disable_simple_search']) // ready for ACL
+		 {
+			$this->objectelements['enable_simple_search']=true;
+		 }
+
+		 if(!$this->site_object['disable_reports']) // ready for ACL
+		 {
+			$this->objectelements['enable_reports']=true;
+		 }
+
+		 if(!$this->site_object['disable_create_rec']) // ready for ACL
+		 {
+			$this->objectelements['enable_create_rec']=true;
+		 }
+
+		 if(!$this->site_object['disable_del_rec']) // ready for ACL
+		 {
+			$this->objectelements['enable_del']=true;
+		 }
+
+		 if(!$this->site_object['disable_edit_rec']) // ready for ACL
+		 {
+			$this->objectelements['enable_edit_rec']=true;
+		 }
+
+		 if(!$this->site_object['disable_export']) // ready for ACL
+		 {
+			$this->objectelements['enable_export']=true;
+		 }
+
+		 if(!$this->site_object['disable_view_rec']) // ready for ACL
+		 {
+			$this->objectelements['enable_view_rec']=true;
+		 }
+
+		 if(!$this->site_object['disable_copy_rec']) // ready for ACL
+		 {
+			$this->objectelements['enable_copy_rec']=true;
+		 }
+
+		 if(!$this->site_object['disable_multi']) // ready for ACL
+		 {
+			$this->objectelements['enable_multi']=true;
+		 }
 	  }
 
 

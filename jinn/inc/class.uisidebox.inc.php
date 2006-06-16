@@ -130,36 +130,52 @@
 		 {
 			$menu_title = $this->bo->site_object[name];
 
-			$file['Browse current object'] = array(
-			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'),
-			   'icon'=>'browse',
-			   'no_lang' => True,
-			   'text'=>lang('List record(s)')
-			);
-			
-			$file['ImportCSV'] = array(
-			   'text'=>lang('Import CSV'),
-			   'icon'=>'filesave',
-			   'no_lang' => True,
-			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_import.import')
-			);
+			//if list, if more then one record
+			if($this->bo->site_object[max_records]!=1)
+			{
+			   $file['Browse current object'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'),
+				  'icon'=>'browse',
+				  'no_lang' => True,
+				  'text'=>lang('List records')
+			   );
+			}
 
-			$file['Export current object'] = array(
-			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_export.export'),
-			   'icon'=>'filesave',
-			   'no_lang' => True,
-			   'text'=>lang('Export')
-			);
+			//if import
+			if($this->bo->objectelements['enable_import']) 
+			{
+			   $file['ImportCSV'] = array(
+				  'text'=>lang('Import CSV'),
+				  'icon'=>'filesave',
+				  'no_lang' => True,
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_import.import')
+			   );
+			}
 
-			$file['Configure this Object List View']= Array(
+			//if export
+			if($this->bo->objectelements['enable_export']) 
+			{
+			   $file['Export current object'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_export.export'),
+				  'icon'=>'filesave',
+				  'no_lang' => True,
+				  'text'=>lang('Export CSV')
+			   );
+			}
+
+			//if list, if more then one record
+/*			$file['Configure this Object List View']= Array(
 			   'link'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects'),
 			   'no_lang' => True,
 			   'text'=>lang('Configure List'),
 			   'icon'=>'configure_toolbars'
 			);
+*/
 		 }
 
-		 if ($this->bo->session['site_id'] && $this->bo->site_object[object_id] && $this->bo->site_object[max_records]!=1)
+		 //if create 
+		 if($this->bo->objectelements['enable_create_rec'] && $this->bo->session['site_id'] 
+		 && $this->bo->site_object['object_id'] && $this->bo->site_object['max_records']!=1)
 		 {
 			$file['Add new entry'] = Array(
 			   'text'=>lang('New record(s)'),
@@ -175,8 +191,8 @@
 			$file=array();
 		 }
 
-
-		 $menu_title = lang('JiNN Preferences');
+		 // NOTE removed preferences link as these are not very helpfull, technically prefs are still enabled and accessible via the main prefs screen
+		 /*		 $menu_title = lang('JiNN Preferences');
 		 $file = Array(
 			'General Preferences' => array(
 			   'link'=>$GLOBALS['phpgw']->link('/preferences/preferences.php','appname=jinn'),
@@ -185,6 +201,7 @@
 			   'text'=>lang('General Preferences')
 			),
 		 );
+		 */
 
 		 display_sidebox($appname,$menu_title,$file);
 		 $file=array();

@@ -45,7 +45,7 @@
 			   document.popfrm.submit();
 		 }
 	  </script>
-	  <?=$this->css?>
+	  <?=//$this->css?>
 	  <style type="text/css">
 
 		 div.activetab
@@ -274,6 +274,10 @@
 						   <td ><textarea name="FLDhelp_information" cols="60" rows="2"><?=$this->global_values['help_information']?></textarea></td>
 						</tr>
 
+					 </table>
+
+					 <table align="" cellspacing="2" cellpadding="2" style="border-spacing: 15px;">
+
 						<?php
 						   $chk='checked="checked"';
 						   //_debug_array($this->global_values);
@@ -296,12 +300,22 @@
 							  <input type="hidden" name="FLDdisable_multi" value="1"/>
 							  <input type="checkbox" <?=$checked_disable_multi?>  name="FLDdisable_multi" value="0"/>
 						   </td>
+						   <td><?= lang('Enable Reports');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_reports" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_reports?>  name="FLDdisable_reports" value="0"/>
+						   </td>
 						</tr>
 						<tr>
 						   <td><?= lang('Enable Create Record');?></td>
 						   <td>
 							  <input type="hidden" name="FLDdisable_create_rec" value="1"/>
 							  <input type="checkbox" <?=$checked_disable_create_rec?> name="FLDdisable_create_rec" value="0"/>
+						   </td>
+						   <td><?= lang('Enable Simple Search');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_simple_search" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_simple_search?> name="FLDdisable_simple_search" value="0"/>
 						   </td>
 						</tr>
 						<tr>
@@ -310,6 +324,11 @@
 							  <input type="hidden" name="FLDdisable_del_rec" value="1"/>
 							  <input type="checkbox" <?=$checked_disable_del_rec?> name="FLDdisable_del_rec" value="0"/>
 						   </td>
+						   <td><?= lang('Enable Filters');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_filters" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_filters?>  name="FLDdisable_filters" value="0"/>
+						   </td>
 						</tr>
 						<tr>
 						   <td><?= lang('Enable Edit Record');?></td>
@@ -317,12 +336,22 @@
 							  <input type="hidden" name="FLDdisable_edit_rec" value="1"/>
 							  <input type="checkbox" <?=$checked_disable_edit_rec?> name="FLDdisable_edit_rec" value="0"/>
 						   </td>
+						   <td><?= lang('Enable Exports');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_export" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_export?> name="FLDdisable_export" value="0"/>
+						   </td>
 						</tr>
 						<tr>
 						   <td><?= lang('Enable View Records');?></td>
 						   <td>
 							  <input type="hidden" name="FLDdisable_view_rec" value="1"/>
 							  <input type="checkbox" <?=$checked_disable_view_rec?>  name="FLDdisable_view_rec" value="0"/>
+						   </td>
+						   <td><?= lang('Enable Imports');?></td>
+						   <td>
+							  <input type="hidden" name="FLDdisable_import" value="1"/>
+							  <input type="checkbox" <?=$checked_disable_import?>  name="FLDdisable_import" value="0"/>
 						   </td>
 						</tr>
 						<tr>
@@ -333,39 +362,14 @@
 						   </td>
 						</tr>
 						<tr>
-						   <td><?= lang('Enable Reports');?></td>
-						   <td>
-							  <input type="hidden" name="FLDdisable_reports" value="1"/>
-							  <input type="checkbox" <?=$checked_disable_reports?>  name="FLDdisable_reports" value="0"/>
-						   </td>
 						</tr>
 						<tr>
-						   <td><?= lang('Enable Simple Search');?></td>
-						   <td>
-							  <input type="hidden" name="FLDdisable_simple_search" value="1"/>
-							  <input type="checkbox" <?=$checked_disable_simple_search?> name="FLDdisable_simple_search" value="0"/>
-						   </td>
 						</tr>
 						<tr>
-						   <td><?= lang('Enable Filters');?></td>
-						   <td>
-							  <input type="hidden" name="FLDdisable_filters" value="1"/>
-							  <input type="checkbox" <?=$checked_disable_filters?>  name="FLDdisable_filters" value="0"/>
-						   </td>
 						</tr>
 						<tr>
-						   <td><?= lang('Enable Exports');?></td>
-						   <td>
-							  <input type="hidden" name="FLDdisable_export" value="1"/>
-							  <input type="checkbox" <?=$checked_disable_export?> name="FLDdisable_export" value="0"/>
-						   </td>
 						</tr>
 						<tr>
-						   <td><?= lang('Enable Imports');?></td>
-						   <td>
-							  <input type="hidden" name="FLDdisable_import" value="1"/>
-							  <input type="checkbox" <?=$checked_disable_import?>  name="FLDdisable_import" value="0"/>
-						   </td>
 						</tr>
 
 					 </table> 
