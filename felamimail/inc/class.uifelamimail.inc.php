@@ -61,7 +61,7 @@
 			}
 			
 			$this->bofelamimail->saveSessionData();
-			
+
 			$this->mailbox 		= $this->bofelamimail->sessionData['mailbox'];
 			$this->startMessage 	= $this->bofelamimail->sessionData['startMessage'];
 			$this->sort 		= $this->bofelamimail->sessionData['sort'];
@@ -612,7 +612,7 @@
 				#$folders = $this->bofelamimail->getFolderList('true');
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
-				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $userPreferences['sortOrder']);
+				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
  				$headerCount = count($headers['header']);
@@ -622,7 +622,7 @@
  				if ($headerCount==0 && $this->startMessage > $maxMessages)
  				{
  					$this->startMessage = $this->startMessage - $maxMessages;
-					$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $userPreferences['sortOrder']);
+					$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 					$headerCount = count($headers['header']);
 				}
 				

@@ -24,7 +24,7 @@
 		var $charset;
 		
 		function ajaxfelamimail() {
-			$this->charset	= $this->charset;
+			$this->charset		=  $GLOBALS['egw']->translation->charset();
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->charset);
 			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
 			$this->bofelamimail->openConnection();
