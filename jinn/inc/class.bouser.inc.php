@@ -615,7 +615,6 @@
 					 met als argumenten de _POST array en de plugin configuratie. 
 					 Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
 					 De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
-
 					 $status = $this->object_events_plugin_manager->call_event_action($post, $config);
 //					 _debug_array($status);
 				  }
@@ -733,7 +732,14 @@
 		 {
 			//new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
 			//partly implemented in bouser, partly in sojinn
-
+			if(($filter_where == "" or $filter_where == "all"))
+			{
+			   $filter_where = $this->site_object['extra_where_sql_filter'];
+			}
+			elseif($this->site_object['extra_where_sql_filter'] != "")
+			{
+			   $filter_where .= "AND ".$this->site_object['extra_where_sql_filter'];
+			}
 			$site_id = $this->session['site_id'];
 			$table_name = $this->site_object['table_name'];
 

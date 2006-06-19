@@ -429,7 +429,7 @@
 	  {
 		 $this->site_db_connection($site_id);
 		 
-		 if($where_condition)
+		 if($where_condition and $where_condition != 'all')
 		 {
 			$WHERE='WHERE '.$where_condition;
 		 }
@@ -1263,7 +1263,6 @@
 		 {
 			$limit="";
 		 }
-
 		 $sql = "$select $from $where $order $limit";
 		 if($sql)
 		 {

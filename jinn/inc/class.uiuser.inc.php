@@ -322,7 +322,7 @@
 			$table_name = $this->bo->site_object['table_name'];
 
 			#$data = $this->bo->get_data($columns_arr, $filter_where);
-			$count = $this->bo->so->num_rows_table($site_id, $table_name);
+			$count = $this->bo->so->num_rows_table($site_id, $table_name, $filter_where);
 			#$count = count($data);
 		 }
 		 $data = $this->bo->get_data($columns_arr, $filter_where, $limit);
