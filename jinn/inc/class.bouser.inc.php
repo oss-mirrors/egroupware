@@ -602,13 +602,17 @@
 		 function run_event_plugins($event, $post)
 		 {
 			//get all events plugins configured to this object
-			$object_arr=$this->so->get_object_values($this->site_object['object_id']);
-			$stored_configs = unserialize(base64_decode($object_arr['events_config']));
+			
+//			$object_arr=$this->so->get_object_values($this->site_object['object_id']);
+			//_debug_array($object_arr);
+//			_debug_array($this->site_object);
+			
+			$stored_configs = unserialize(base64_decode($this->site_object['events_config']));
 			if(is_array($stored_configs))
 			{
 			   foreach($stored_configs as $config)
 			   {
-				  if($event == $config[conf][event])
+				  if($event == $config['conf']['event'])
 				  {
 					 //_debug_array("valid configuration found");
 					 /*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
@@ -728,7 +732,7 @@
 		 * @access public
 		 * @return void
 		 */
-		 function get_data($columns_arr, $filter_where, $limit=false)
+		 function get_data($columns_arr, $filter_where, $limit=false,$key_prefix='')
 		 {
 			//new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
 			//partly implemented in bouser, partly in sojinn
@@ -762,8 +766,7 @@
 				  $columns_arr[] = $relation;
 			   }
 			}
-			return $this->so->get_data($site_id, $table_name, $columns_arr, $filter_where, $limit);
-
+			return $this->so->get_data($site_id, $table_name, $columns_arr, $filter_where, $limit,$key_prefix);
 		 }
 
 		 /**

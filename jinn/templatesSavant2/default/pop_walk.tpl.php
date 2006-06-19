@@ -29,6 +29,21 @@
 			   <?=lang('DO NOT CLOSE ME');?><br>
 			   <br>
 			   <br>
+			   <table style="background-color:#cdcdcd">
+				  <tr style="background-color:#acacac">
+					 <td  colspan="2" style="font-size:14px;font-weight:bold"><?=lang('Statistics')?></td>
+			   </tr>
+			   <tr style="background-color:#acacac">
+				  <td style="width:100px;font-weight:bold"><?=lang('Task')?></td>
+				  <td style="font-weight:bold"><?=lang('Time in sec')?></td>
+				  </tr>
+				  <?php foreach($this->timesec as $timekey=>$timeval):?>
+				  <tr>
+					 <td><?=$timekey?></td>
+					 <td><?=$timeval?></td>
+				  </tr>
+				  <?php endforeach?>
+			   </table>
 			   <font color="red"><?=$this->time_spend?></font>
 
 			</div>

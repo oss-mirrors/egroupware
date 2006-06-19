@@ -207,6 +207,8 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] plugins geven aan of ze genest mogen worden of kunnen nesten zoals tabbladen en kaders groupboxen
 				[_] field_name wordt datasource. 
 				[_] element_type: table_field of layout. Geschikt voor afbeeldingen, tabbalden lijnen, kaders, etc......
+			[_] OPTIMIZATION
+				remove unneeded db connections
 			[_] 3% DIVERS
 				[_] globale configuratie herzien
 				[_] weergeven records is vaak niet uitgewerkt

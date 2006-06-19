@@ -298,11 +298,15 @@
 		 else
 		 {
 			$start = intval($_GET[start]);
-			$end = $start + $items;
+			//$end = $start + $items;
 			$filter_where = unserialize(base64_decode($_GET['where']));
-			$limit = " LIMIT $start, $end";
+			$limit = " LIMIT $start, $items";
 		 }
 		 
+		 
+		 //colums can be cached in session
+
+		 $colstart_time=time();
 		 $columns = $this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 		 if(is_array($columns))
 		 {
@@ -312,6 +316,11 @@
 			   $columns_arr[] = $column[name];
 			}
 		 }
+
+		 $this->tplsav2->timesec['cols']=time() - $colstart_time;
+
+		 $numrowsstart_time=time();
+		 //num rows is cached
 		 if($_GET[amount] != '')
 		 {
 			$count = $_GET[amount];
@@ -325,26 +334,46 @@
 			$count = $this->bo->so->num_rows_table($site_id, $table_name, $filter_where);
 			#$count = count($data);
 		 }
-		 $data = $this->bo->get_data($columns_arr, $filter_where, $limit);
 
+		 $this->tplsav2->timesec['numrows']=time() - $numrowsstart_time;
+
+
+		 $get_data_starttime=time();
+		 
+		 $data = $this->bo->get_data($columns_arr, $filter_where, $limit);
+		 $this->tplsav2->timesec['getrecdata']=time() - $get_data_starttime;
+
+		 //		 _debug_array($limit);
+		 //		 echo "hallo";
+
+		 //		 die();
 		 foreach($data as $row)
 		 {
 			//EVENT ON WALK LIST
+			//this is stupid
+			$plg_exec_time=time();
 			while(list($key, $val) = each($row))
 			{
 			   $_row['FLDXXX'.$key]=$val;
 			}
 			$status[eventstatus] = $this->bo->run_event_plugins('on_walk_list_button', $_row);
 
+			$plugtimeperrec[]=time() - $plg_exec_time;
 		 }
+		 
+		 $this->tplsav2->timesec['avg_plg_exec_time']=(array_sum($plugtimeperrec)/count($plugtimeperrec));
+
+		 $this->tplsav2->timesec['getrecdata']=time() - $start_time;
+
+		 
+//		 _debug_array($spend_arr);
 		 if($_GET[start]+$items < $count)
 		 {
 			$this->tplsav2->assign('items',$items);
 			$this->tplsav2->assign('amount',$count);
 			$this->tplsav2->assign('where',base64_encode(serialize($filter_where)));
 			$this->tplsav2->assign('number',$_GET[start]+$items);
-			$spend= time() - $start_time;
-			$this->tplsav2->assign('time_spend',$spend);
+			$this->tplsav2->timesec['total']= time() - $start_time;
 			$this->tplsav2->display('pop_walk.tpl.php');
 		 }
 		 else
@@ -352,6 +381,7 @@
 			$this->tplsav2->assign('amount',$count);
 			$this->tplsav2->display('pop_walk_succes.tpl.php');
 		 }
+//		 _debug_array($this->tplsav2->timesec);
 		 return "false";
 	  }
 
