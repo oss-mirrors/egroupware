@@ -14,13 +14,11 @@ include("../inc/inc.Authentication.php");
 
 $folderid = (isset($_GET['folderid'])) ? (int) $_GET['folderid'] : NULL;
 
-$fname		= $_GET['fname'];
-$comment	= $_GET['comment'];
+$fname		= get_var('fname', array('GET'));
+$comment	= get_var('comment', array('GET'));
 $sequence	= $_GET['sequence'];
 
 $folder = getFolder($folderid);
-
-
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );
 printTitleBar($folder);
