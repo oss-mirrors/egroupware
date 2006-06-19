@@ -560,6 +560,11 @@
 			$this->objectelements['enable_edit_rec']=true;
 		 }
 
+		 if(!$this->site_object['disable_import']) // ready for ACL
+		 {
+			$this->objectelements['enable_import']=true;
+		 }
+
 		 if(!$this->site_object['disable_export']) // ready for ACL
 		 {
 			$this->objectelements['enable_export']=true;
