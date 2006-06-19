@@ -10,13 +10,13 @@ function getLongReadableDate($timestamp) {
 }
 
 function sanitizeString($string) {
-	$string = str_replace("'",  "", $string);
+	#$string = str_replace("'",  "", $string);
 	$string = str_replace("--", "", $string);
 	$string = str_replace("<",  "", $string);
 	$string = str_replace(">",  "", $string);
 	$string = str_replace("/*", "", $string);
 	$string = str_replace("*/", "", $string);
-	$string = str_replace("\"", "", $string);
+	#$string = str_replace("\"", "", $string);
 	
 	return $string;
 }

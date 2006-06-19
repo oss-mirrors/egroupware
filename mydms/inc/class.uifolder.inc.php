@@ -31,6 +31,10 @@
 			'getSubFolder'		=> 'true',
 		);
 		
+		function uifolder() {
+			$this->charset  = $GLOBALS['egw']->translation->charset();
+		}
+		
 		function copyFolder()
 		{
 			if(isset($_GET['folderid']) && isset($_POST['targetid']) && isset($_POST['copy']))
@@ -128,16 +132,13 @@
 			echo parse_navbar();
 		}
 
-		function generateXML($_folder, $_childID, $_targetID, $_childContent)
-		{
+		function generateXML($_folder, $_childID, $_targetID, $_childContent) {
+			
 			$subFolders = $_folder->getSubFolders();
 			
-			#$retValue = "<tree id='".$folderID."'>";
-
-			foreach((array)$subFolders as $subFolderObject)
-			{
+			foreach((array)$subFolders as $subFolderObject) {
 				$subFolderID	= $subFolderObject->getID();
-				$subFolderName	= $subFolderObject->getName();
+				$subFolderName	= htmlentities($subFolderObject->getName(), ENT_QUOTES, $this->charset);
 				$hasSubfolder	= ($subFolderObject->getSubFolders() ? 1 : 0);
 				$childContent	= ($subFolderID == $_childID ? $_childContent : '');
 				$selectedNode	= ($subFolderID == $_targetID ? " select='1'" : '');
@@ -145,8 +146,6 @@
 				$retValue .="<item child='$hasSubfolder' id='$subFolderID' text='$subFolderName' im0='folderClosed.gif'$selectedNode$openNode>$childContent</item>";
 			}
 
-			#$retValue .= "</tree>";
-			
 			return $retValue;
 		}
 		
@@ -196,7 +195,7 @@
 			foreach((array)$subFolders as $subFolderObject)
 			{
 				$subFolderID	= $subFolderObject->getID();
-				$subFolderName	= $subFolderObject->getName();
+				$subFolderName	= htmlentities($subFolderObject->getName(), ENT_QUOTES, $this->charset);
 				$hasSubfolder	= ($subFolderObject->getSubFolders() ? 1 : 0);
 				print("<item child='$hasSubfolder' id='$subFolderID' text='$subFolderName' im0='folderClosed.gif'></item>");
 			}

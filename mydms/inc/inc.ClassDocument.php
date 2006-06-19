@@ -440,16 +440,15 @@ class Document
 		if (is_bool($res) && !$res)
 			return false;
 		
-		if (count($this->_content) == 0)
+		if (count($this->_content) == 0) {
 			$newVersion = 1;
-		else
-		{
+		} else {
 			$res = $this->getLatestContent();
 			if (is_bool($res) && !$res)
 				return false;
 			$newVersion = $this->_latestContent->getVersion()+1;
 		}
-		
+
 		$dir = getSuitableDocumentDir();
 		if (is_bool($res) && !$res)
 			return false;

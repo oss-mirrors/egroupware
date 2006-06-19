@@ -339,7 +339,7 @@ class Folder
 
 		if (!$res)
 			return false;
-		
+
 		#unset($this->_subFolders);
 		
 		#return getFolder($this->db->get_last_insert_id('phpgw_mydms_Folders','id'));
