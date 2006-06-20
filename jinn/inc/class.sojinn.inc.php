@@ -944,22 +944,23 @@
 	  {
 		 // check if order is consistant
 		 //quick check on doubles
-		 $sql="SELECT field_id,COUNT(field_id) AS numrecs FROM `egw_jinn_obj_fields` WHERE `field_parent_object`=$obj_id GROUP BY form_listing_order HAVING COUNT(field_id)>1";
+		 $sql="SELECT field_id,COUNT(field_id) AS numrecs FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id' GROUP BY form_listing_order HAVING COUNT(field_id)>1";
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query($sql, __LINE__, __FILE__); 
 		
+		 echo $sql;
 		 //we must reorder the records
 		 if($this->phpgw_db->num_rows()>0)
 		 {
 			//get max order
-			$sql2="SELECT max(`form_listing_order`) as maxorder FROM `egw_jinn_obj_fields` WHERE `field_parent_object`=$obj_id";
+			$sql2="SELECT max(`form_listing_order`) as maxorder FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id'";
 			$this->phpgw_db->free();	
 			$this->phpgw_db->query("$sql2",__LINE__,__FILE__);
 			$this->phpgw_db->next_record();
 			$maxorder=$this->phpgw_db->f('maxorder');
 
 			//select all doubles
-			$sql3="SELECT field_name FROM `egw_jinn_obj_fields` WHERE `field_parent_object`=$obj_id AND `form_listing_order` IN (SELECT `form_listing_order` FROM `egw_jinn_obj_fields` WHERE `field_parent_object`=$obj_id GROUP BY form_listing_order HAVING COUNT(field_id)>1 ORDER BY form_listing_order ASC)";
+			$sql3="SELECT field_name FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id' AND `form_listing_order` IN (SELECT `form_listing_order` FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id' GROUP BY form_listing_order HAVING COUNT(field_id)>1 ORDER BY form_listing_order ASC)";
 			$this->phpgw_db->free();	
 			$this->phpgw_db->query("$sql3",__LINE__,__FILE__);
 			while ($this->phpgw_db->next_record())
@@ -971,14 +972,14 @@
 			foreach($field_names_arr as $field_name)
 			{
 			  $maxorder++;
-			  $sql4="UPDATE `egw_jinn_obj_fields` SET `form_listing_order`=$maxorder WHERE `field_parent_object`=$obj_id AND field_name='$field_name'";
+			  $sql4="UPDATE `egw_jinn_obj_fields` SET `form_listing_order`=$maxorder WHERE `field_parent_object`='$obj_id' AND field_name='$field_name'";
 			  $this->phpgw_db->free();	
 			  $this->phpgw_db->query("$sql4",__LINE__,__FILE__);
 		   }
 		 }
 		 
 		 //select order from movefield
-		 $sql5="SELECT `form_listing_order` FROM `egw_jinn_obj_fields` WHERE `field_parent_object`=$obj_id AND field_name='$movefield_name'";
+		 $sql5="SELECT `form_listing_order` FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id' AND field_name='$movefield_name'";
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query("$sql5",__LINE__,__FILE__);
 		 $this->phpgw_db->next_record();
@@ -989,7 +990,7 @@
 		 
 		 //select neighbour record and set it form_listing_order to myorder
 		 $sql6="SELECT field_name,form_listing_order FROM `egw_jinn_obj_fields` 
-		 WHERE `field_parent_object`=$obj_id AND `form_listing_order` {$nbr_search['operator']} $myorder ORDER BY `form_listing_order` {$nbr_search['orderdir']} LIMIT 1";
+		 WHERE `field_parent_object`='$obj_id' AND `form_listing_order` {$nbr_search['operator']} $myorder ORDER BY `form_listing_order` {$nbr_search['orderdir']} LIMIT 1";
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query("$sql6",__LINE__,__FILE__);
 		 $this->phpgw_db->next_record();
@@ -997,12 +998,12 @@
 		 $neworder=$this->phpgw_db->f('form_listing_order'); // get my current order
 
 		 $sql7="UPDATE `egw_jinn_obj_fields` SET `form_listing_order` = $myorder 
-		 WHERE `field_parent_object`=$obj_id AND field_name = '$swaprecord'";
+		 WHERE `field_parent_object`='$obj_id' AND field_name = '$swaprecord'";
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query("$sql7",__LINE__,__FILE__);
 	   
 		 //increase or decrease our `form_listing_order`
-		 $sql8="UPDATE `egw_jinn_obj_fields` SET `form_listing_order` = $neworder  WHERE `field_parent_object`=$obj_id AND field_name='$movefield_name'"; 
+		 $sql8="UPDATE `egw_jinn_obj_fields` SET `form_listing_order` = $neworder  WHERE `field_parent_object`='$obj_id' AND field_name='$movefield_name'"; 
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query("$sql8",__LINE__,__FILE__);
 			 
@@ -2376,11 +2377,11 @@
 		 if($this->phpgw_db->num_rows()>0)
 		 {
 			$this->phpgw_db->next_record();
-			$sql="UPDATE egw_jinn_obj_fields SET list_visibility='$show_default', form_visibility='$show_in_form',field_position='$position' WHERE (field_parent_object=$object_ID) AND (field_name='$fieldname')";
+			$sql="UPDATE egw_jinn_obj_fields SET list_visibility='$show_default', form_visibility='$show_in_form',field_position='$position' WHERE (field_parent_object='$object_ID') AND (field_name='$fieldname')";
 		 }
 		 else
 		 {
-			$sql="INSERT INTO egw_jinn_obj_fields (field_parent_object,field_name,list_visibility,field_position) VALUES ($object_ID, '$fieldname', '$show_default', '$position')";
+			$sql="INSERT INTO egw_jinn_obj_fields (field_parent_object,field_name,list_visibility,field_position) VALUES ('$object_ID', '$fieldname', '$show_default', '$position')";
 		 }
 
 		 $status[sql]=$sql;

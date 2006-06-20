@@ -474,15 +474,25 @@
 
 			$complete_elements_array=array_merge($fields_arr,$elements_arr,$o2o_arr,$m2m_arr,$m2o_arr,$o2o_arr);
 
+			$_tmp_order_arr=array();
 			$big=100000;
+			//_debug_array($complete_elements_array);
 			foreach($complete_elements_array as $one_el)
 			{
-			   if($one_el['form_listing_order']==0 || $one_el['form_listing_order']==999) 
+			   $one_el['orig_list_order']=$one_el['form_listing_order'];
+			   //make array with existing numbers
+			   //set pointer
+
+			   //if($one_el['form_listing_order']==0 || $one_el['form_listing_order']==999) 
+			   if(in_array($one_el['form_listing_order'],$_tmp_order_arr)) 
 			   {
+			//	  echo 'hallo';
 				  $one_el['form_listing_order']=$big;
 				  $big++;
 			   }
-			   
+			   $_tmp_order_arr[]=$one_el['form_listing_order'];
+
+
 			   $new_elements_array[$one_el['form_listing_order']]=$one_el;
 			}
 			ksort($new_elements_array);
@@ -645,6 +655,7 @@
 
 			if($this->tplsav2->edit_object)
 			{
+			   //_debug_array($all_fields_conf_arr);
 			   //check if obj_field record exist and make one if not
 			   if(!is_array($all_fields_conf_arr[$fprops['name']]))
 			   {
@@ -706,8 +717,8 @@
 			// fixme move to a more logical place e.g. constructor
 			if ($ftype=='auto')
 			{
-			   $this->record_id_key=$single_fld_arr[input_name]; // this one is very needed by m2m relations FIXME
-			   $this->record_id_val=$single_fld_arr[value];
+			   $this->record_id_key=$single_fld_arr['input_name']; // this one is very needed by m2m relations FIXME
+			   $this->record_id_val=$single_fld_arr['value'];
 			}
 
 			/* If this field has a relation, get that options */
@@ -718,7 +729,6 @@
 			}
 			else
 			{
-
 			   if($fprops[len] && $fprops[len]!=-1)
 			   {
 				  $attr_arr=array(
@@ -746,8 +756,8 @@
 				  }
 				  else
 				  {
-					 $single_fld_arr[input]=$plug_arr[html];
-					 $single_fld_arr['eval']=$plug_arr['eval']; //fixme hmmmm
+					 $single_fld_arr['input']=$plug_arr['html'];
+					 $single_fld_arr['eval']=$plug_arr['eval']; //fixme what does this? hmmmm
 				  }
 			   }
 			}
@@ -760,6 +770,7 @@
 			}
 		 }
 
+		 //_debug_array($return_fld_arr);
 		 return $return_fld_arr;
 	  }
 

@@ -520,7 +520,7 @@
 			   </td>
 			   <td style="" class="propertiescell">
 				  <a href="<?=$this->change_field_order_link?>&movefield=<?=$r['fieldname']?>&up=true"><img src="<?=$GLOBALS[egw]->common->image('phpgwapi','up2')?>" alt="<?=lang('move up')?>" title="<?=lang('move up')?>" /></a>
-				  <a href="<?=$this->change_field_order_link?>&movefield=<?=$r['fieldname']?>&down=true"><img src="<?=$GLOBALS[egw]->common->image('phpgwapi','down2')?>" alt="<?=lang('move down')?>" title="<?=lang('move down')?>" /></a><?=//$r['form_listing_order']?>
+				  <a href="<?=$this->change_field_order_link?>&movefield=<?=$r['fieldname']?>&down=true"><img src="<?=$GLOBALS[egw]->common->image('phpgwapi','down2')?>" alt="<?=lang('move down')?>" title="<?=lang('move down')?>" /></a><?=//$r['form_listing_order'].' '.$r['orig_list_order']?>
 			   </td>
 			   <?php endif?>
 
@@ -558,10 +558,8 @@
 	  </div>
 	  <?php endforeach?>
 
-
 	  <!-- ############################# edit record buttons ############################## -->
 	  <?php if(!$this->edit_object):?>
-	  
 
 	  <div style="clear:both;height:20px;"></div>
 
