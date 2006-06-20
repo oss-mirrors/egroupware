@@ -47,6 +47,25 @@
 		'appname'  => 'emailadmin',
 		'versions' => Array('1.2')
 	);
+	// installation checks for felamimail
+	$setup_info['felamimail']['check_install'] = array(
+		'' => array(
+			'func' => 'pear_check',
+			'from' => 'FeLaMiMail',
+		),
+		'Net_Sieve' => array(
+			'func' => 'pear_check',
+			'from' => 'FeLaMiMail',
+		),
+		'Auth_SASL' => array(
+			'func' => 'pear_check',
+			'from' => 'FeLaMiMail',
+		),
+		'imap' => array(
+			'func' => 'extension_check',
+			'from' => 'FeLaMiMail',
+		),
+	);	
 
 
 
