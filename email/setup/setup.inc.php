@@ -42,4 +42,11 @@
 		'appname' => 'phpgwapi',
 		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
 	);
+	// installation checks for email
+	$setup_info['email']['check_install'] = array(
+		'imap' => array(
+			'func' => 'extension_check',
+			'from' => 'Email',
+		),
+	);
 ?>
