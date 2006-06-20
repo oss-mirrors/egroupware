@@ -41,4 +41,14 @@
 		'appname' => 'phpgwapi',
 		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
 	);
+	
+	// installation checks for fudforum:
+	$setup_info['fudforum']['check_install'] = array(
+		// check if fudforum dir is writable by the webserver
+		'fudforum' => array(
+			'func' => 'permission_check',
+			'is_writable' => True,
+			'only_if_exists' => True
+		),
+	);
 ?>
