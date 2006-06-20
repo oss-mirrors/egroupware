@@ -40,5 +40,20 @@
 		'appname'  => 'phpgwapi',
 		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
 	);
+	// installation checks for felamimail
+	$setup_info['emailadmin']['check_install'] = array(
+		'' => array(
+			'func' => 'pear_check',
+			'from' => 'EMailAdmin',
+		),
+		'Auth_SASL' => array(
+			'func' => 'pear_check',
+			'from' => 'EMailAdmin',
+		),
+		'imap' => array(
+			'func' => 'extension_check',
+			'from' => 'EMailAdmin',
+		),
+	);	
 
 
