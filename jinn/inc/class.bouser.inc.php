@@ -742,8 +742,10 @@
 			}
 			elseif($this->site_object['extra_where_sql_filter'] != "")
 			{
-			   $filter_where .= "AND ".$this->site_object['extra_where_sql_filter'];
+			   $filter_where = "($filter_where) AND ".$this->site_object['extra_where_sql_filter'];
 			}
+			#_debug_array($filter_where);
+			#die();
 			$site_id = $this->session['site_id'];
 			$table_name = $this->site_object['table_name'];
 

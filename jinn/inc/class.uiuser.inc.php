@@ -286,6 +286,7 @@
 			   {
 				  $filter_where = 'all';
 			   }
+			   //die($filter_where );
 			   break;
 			   default:
 			   $filter_where = 'all';
@@ -360,10 +361,12 @@
 
 			$plugtimeperrec[]=time() - $plg_exec_time;
 		 }
-		 
-		 $this->tplsav2->timesec['avg_plg_exec_time']=(array_sum($plugtimeperrec)/count($plugtimeperrec));
+		 if(is_array($plugtimeperrec))
+		 {
+			$this->tplsav2->timesec['avg_plg_exec_time']=(array_sum($plugtimeperrec)/count($plugtimeperrec));
+		 }
 
-		 $this->tplsav2->timesec['getrecdata']=time() - $start_time;
+		 #$this->tplsav2->timesec['getrecdata']=time() - $start_time;
 
 		 
 //		 _debug_array($spend_arr);
