@@ -301,9 +301,6 @@
 	  */
 	  function edit_record()
 	  {
-
-		 
-		 
 		 if($_POST[submitted])
 		 {
 			if($_POST[num_records] && $_POST[changerecnumbers]=='true')
@@ -486,7 +483,6 @@
 			   //if($one_el['form_listing_order']==0 || $one_el['form_listing_order']==999) 
 			   if(in_array($one_el['form_listing_order'],$_tmp_order_arr)) 
 			   {
-			//	  echo 'hallo';
 				  $one_el['form_listing_order']=$big;
 				  $big++;
 			   }

@@ -540,8 +540,10 @@
 			   <td style="line-height:130%;width:130px;" valign="top" >
 				  <?php if($r[label_visibility]!=0 || $r[label_visibility]==null):?>
 				  <span style="font-weight:bold;"><?=$r[display_name]?></span>
+				  <?php elseif($this->edit_object):?>
+				  <span style="font-weight:bold;font-style:italic"><?=$r[display_name]?></span><br/>(<?=lang('Label hidden')?>)
 				  <?php endif?>
-				  <?php if($r[field_help_info]):?>
+				  <?php if($r['field_help_info']):?>
 				  <br/>
 				  <div style=""><?=$r[field_help_info]?></div>
 				  <!-- <img src="<?=$this->tooltip_img?>" <?=$r[tooltip_mouseover]?> alt="" />-->

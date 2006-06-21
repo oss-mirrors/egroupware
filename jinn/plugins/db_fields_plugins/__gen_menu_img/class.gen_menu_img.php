@@ -82,6 +82,9 @@
 		 $this->tplsav2->assign('upload_url',$upload_url.SEP);
 		 $this->tplsav2->assign('img_src_arr',array_slice($img_arr,1));
 
+		 $this->tplsav2->transbggrid=$GLOBALS['phpgw']->common->image('jinn','transbggrid.png');
+		 
+
 		 $input=$this->tplsav2->fetch('gen_menu_img.formview_edit.tpl.php');
 		 return $input;
 	  }
@@ -250,8 +253,11 @@
 		 $_fcolor=$this->hex2RGB($FONTCOLOR);
 
 		 $_fontcolor = imagecolorallocate($image, $_fcolor[0], $_fcolor[1], $_fcolor[2]);
-
+		 
 		 $newbgimg= ImageCreateTrueColor($new_width,$IMGHEIGHT);
+		 imageSaveAlpha($newbgimg, true);
+		 ImageAlphaBlending($newbgimg, false);
+
 		 if(trim($BGIMG))
 		 {
 			$_bgimg = imagecreatefrompng($BGIMG); 
@@ -264,9 +270,27 @@
 		 }
 		 elseif($BGCOLOR)
 		 {
-			$_bcolor=$this->hex2RGB($BGCOLOR);
-			$_backgcolor = ImageColorAllocate($image,$_bcolor[0],$_bcolor[1],$_bcolor[2]);
+			if($BGCOLOR='none')
+			{
+			   $white = imagecolorallocate($image, 255, 255, 255);
+			   $_backgcolor = imagecolortransparent($image, $white);
+			}
+			else
+			{
+			   $_bcolor=$this->hex2RGB($BGCOLOR);
+			   $_backgcolor = ImageColorAllocate($image,$_bcolor[0],$_bcolor[1],$_bcolor[2]);
+			}
 			//TODO proper numbers in retangle function
+			ImageFilledRectangle($newbgimg,0,0,$new_width,$IMGHEIGHT,$_backgcolor);
+		 }
+		 else
+		 {
+
+			
+			$white = imagecolorallocate($newbgimg, 5, 5, 5);
+			#			$_backgcolor = imagecolortransparent($newbgimg, $white);
+			$_backgcolor = imagecolorallocatealpha($newbgimg, 255,255, 255, 127);
+			#$_backgcolor = imagecolortransparent($newbgimg);
 			ImageFilledRectangle($newbgimg,0,0,$new_width,$IMGHEIGHT,$_backgcolor);
 		 }
 
