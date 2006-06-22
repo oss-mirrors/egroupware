@@ -430,7 +430,7 @@ class imap_client {
         if ($this->_usetls) {
             $this->_stream = stream_socket_client($this->_host, $error_number, $error_string, $timeout);
             if (!$this->_stream) {
-                return PEAR::raiseError(sprintf(lang("Error connecting to IMAP server: [%s] %s."), $error_number, $error_string), 'horde.error');
+                return PEAR::raiseError(sprintf(lang("Error connecting to IMAP server. %s : %s."), $error_number, $error_string), 'horde.error');
             }
 
             /* Disregard any server information returned. */

@@ -545,7 +545,7 @@
 			$this->t->set_var('lang_enable_cyrus_imap_administration',lang('enable Cyrus IMAP server administration'));
 			$this->t->set_var('lang_cyrus_imap_administration',lang('Cyrus IMAP server administration'));
 			$this->t->set_var('lang_admin_username',lang('admin username'));
-			$this->t->set_var('lang_admin_password',lang('admin passwort'));
+			$this->t->set_var('lang_admin_password',lang('admin password'));
 			$this->t->set_var('lang_imap_server_logintyp',lang('imap server logintyp'));
 			$this->t->set_var('lang_standard',lang('username (standard)'));
 			$this->t->set_var('lang_vmailmgr',lang('username@domainname (Virtual MAIL ManaGeR)'));
