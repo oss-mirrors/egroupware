@@ -547,9 +547,25 @@
 				'mail_login_type' => 'imapLoginType',
 				'mail_suffix' => 'defaultDomain',
 				'smtp_server' => 'smtpServer',
-				'smpt_port' => 'smtpPort',
+				'smtp_port' => 'smtpPort',
+				'smtp_auth_user' => 'ea_smtp_auth_username',
+				'smtp_auth_passwd' => 'ea_smtp_auth_password',
+				// some more settings for the setup-cli only
+				'smtpType',	// 1 = standard, 2 = postfix with LDAP
+				'smtpAuth',	// null or yes
+				'editforwardingaddress',	// null or yes
+				'imapType',	// 1 = pop3, 2 = standard imap, 3 = Cyrus
+				'imapEnableCyrusAdmin',	// null or yes
+				'imapAdminUsername',
+				'imapAdminPW',
+				'imapEnableSieve',	// null or yes
+				'imapSieveServer',	// 
+				'imapSievePort',	// 2000
 			) as $setup_name => $ea_name_data)
 			{
+				if (is_int($setup_name)) $setup_name = $ea_name_data;
+				if (!isset($settings[$setup_name])) continue;
+
 				if (!is_array($ea_name_data))
 				{
 					$profile[$ea_name_data] = $settings[$setup_name];
@@ -572,6 +588,8 @@
 					}
 				}
 			}
+			if ($settings['smtp_auth_user']) $profile['smtpAuth'] = 'yes';
+
 			$this->soemailadmin->updateProfile($profile);
 			//echo "<p>EMailAdmin profile update: ".print_r($profile,true)."</p>\n"; exit;
 		}
