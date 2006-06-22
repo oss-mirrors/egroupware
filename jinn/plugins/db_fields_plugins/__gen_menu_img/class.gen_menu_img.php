@@ -177,6 +177,7 @@
 		 $this->tplsav2->assign('upload_url',$upload_url.SEP);
 		 $this->tplsav2->assign('img_src_arr',array_slice($img_arr,1));
 
+		 $this->tplsav2->transbggrid=$GLOBALS['phpgw']->common->image('jinn','transbggrid.png');
 		 $input=$this->tplsav2->fetch('gen_menu_img.listview_read.tpl.php');
 		 return $input;
 	  }
@@ -210,6 +211,8 @@
 
 		  $this->tplsav2->assign('upload_url',$upload_url.SEP);
 		  $this->tplsav2->assign('img_src_arr',array_slice($img_arr,1));
+
+		  $this->tplsav2->transbggrid=$GLOBALS['phpgw']->common->image('jinn','transbggrid.png');
 
 		  $input=$this->tplsav2->fetch('gen_menu_img.formview_read.tpl.php');
 		  return $input;
@@ -255,8 +258,6 @@
 		 $_fontcolor = imagecolorallocate($image, $_fcolor[0], $_fcolor[1], $_fcolor[2]);
 		 
 		 $newbgimg= ImageCreateTrueColor($new_width,$IMGHEIGHT);
-		 imageSaveAlpha($newbgimg, true);
-		 ImageAlphaBlending($newbgimg, false);
 
 		 if(trim($BGIMG))
 		 {
@@ -268,30 +269,37 @@
 			
 			imagecopyresized($newbgimg, $_bgimg, 0, 0, 0, 0, $new_width, $IMGHEIGHT, $bgimgwidth, $IMGHEIGHT);
 		 }
-		 elseif($BGCOLOR)
+		 elseif(!$BGCOLOR || $BGCOLOR=='none')
 		 {
-			if($BGCOLOR='none')
-			{
+		//	if($BGCOLOR=='none')
+		//	{
+			   imageSaveAlpha($newbgimg, true);
+			   ImageAlphaBlending($newbgimg, false);
 			   $white = imagecolorallocate($image, 255, 255, 255);
-			   $_backgcolor = imagecolortransparent($image, $white);
-			}
-			else
-			{
-			   $_bcolor=$this->hex2RGB($BGCOLOR);
-			   $_backgcolor = ImageColorAllocate($image,$_bcolor[0],$_bcolor[1],$_bcolor[2]);
-			}
+			   $_backgcolor = imagecolorallocatealpha($newbgimg, 255,255, 255, 127);
+			   //$_backgcolor = imagecolortransparent($image, $white);
+		//	}
+		//	else
+		//	{
+//			   $_bcolor=$this->hex2RGB($BGCOLOR);
+//			   $_backgcolor = ImageColorAllocate($image,$_bcolor[0],$_bcolor[1],$_bcolor[2]);
+		//	}
 			//TODO proper numbers in retangle function
 			ImageFilledRectangle($newbgimg,0,0,$new_width,$IMGHEIGHT,$_backgcolor);
 		 }
 		 else
 		 {
-
-			
+			$_bcolor=$this->hex2RGB($BGCOLOR);
+			$_backgcolor = ImageColorAllocate($image,$_bcolor[0],$_bcolor[1],$_bcolor[2]);
+			ImageFilledRectangle($newbgimg,0,0,$new_width,$IMGHEIGHT,$_backgcolor);
+			/*			imageSaveAlpha($newbgimg, true);
+			ImageAlphaBlending($newbgimg, false);
 			$white = imagecolorallocate($newbgimg, 5, 5, 5);
 			#			$_backgcolor = imagecolortransparent($newbgimg, $white);
 			$_backgcolor = imagecolorallocatealpha($newbgimg, 255,255, 255, 127);
 			#$_backgcolor = imagecolortransparent($newbgimg);
 			ImageFilledRectangle($newbgimg,0,0,$new_width,$IMGHEIGHT,$_backgcolor);
+			*/
 		 }
 
 		 imagettftext($newbgimg, $getsize, 0, $LEFTPADDING, $getsize+$TOPPADDING, $_fontcolor, $FONTFILE, $TEXT);
