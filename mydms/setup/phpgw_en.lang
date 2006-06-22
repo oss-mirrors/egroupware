@@ -46,7 +46,7 @@ lock status	mydms	en	lock status
 mime type	mydms	en	Mime Type
 move document	mydms	en	move document
 move folder	mydms	en	move folder
-mydms	common	en	mydms
+mydms	common	en	MyDMS
 notifications	mydms	en	notifications
 permission	mydms	en	permission
 select folder	mydms	en	select folder
