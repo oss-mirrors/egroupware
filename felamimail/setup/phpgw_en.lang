@@ -125,7 +125,6 @@ enter your smtp server port	admin	en	Enter your SMTP server port
 error	felamimail	en	ERROR
 error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
-error connecting to imap server: [%s] %s.	felamimail	en	Error connecting to IMAP server: [%s] %s.
 error opening	felamimail	en	Error opening
 every	felamimail	en	every
 every %1 days	felamimail	en	every %1 days
@@ -279,6 +278,7 @@ print this page	felamimail	en	print this page
 quicksearch	felamimail	en	Quicksearch
 read	felamimail	en	read
 reading	felamimail	en	reading
+receive notification	felamimail	en	Receive notification
 recent	felamimail	en	recent
 refresh time in minutes	felamimail	en	Refresh time in minutes
 reject with	felamimail	en	reject with

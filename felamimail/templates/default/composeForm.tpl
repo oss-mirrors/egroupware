@@ -36,7 +36,7 @@
 			</div>
 		</td>
 		<td align="right">
-			<label>Empfangsbestätigung: <input type="checkbox" name="disposition" value="1" /></label>
+			<label>{lang_receive_notification} <input type="checkbox" name="disposition" value="1" /></label>
 			&nbsp;
 			{lang_priority}
 			<select name="priority">

@@ -3,6 +3,7 @@
 (unknown sender)	felamimail	de	(unbekannter Absender)
 activate	felamimail	de	aktivieren
 activate script	felamimail	de	Script aktivieren
+add acl	felamimail	de	ACL zufügen
 add address	felamimail	de	Addresse zufügen
 add rule	felamimail	de	Regel hinzufügen
 add script	felamimail	de	Script hinzufügen
@@ -27,6 +28,9 @@ attachments	felamimail	de	Anlagen
 authentication required	felamimail	de	Anmeldung erforderlich
 auto refresh folder list	felamimail	de	Ordnerliste automatisch aktualisieren
 back to folder	felamimail	de	zurück zu Ordner
+bad login name or password.	felamimail	de	Falscher Benutzername oder Passwort.
+bad or malformed request. server responded: %s	felamimail	de	Falsche oder ungültige Anfrage. Server antwortet: %s
+bad request: %s	felamimail	de	Falsche Anfrage: %s
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	de	Eingehende Nachrichten können, basierend auf angegebenen Kriterien, unterschiedliche Hintergrundfarben in der Nachrichtenliste haben. Das kann helfen einfach zu unterscheiden woher die Nachricht kommt, speziell für Mailinglisten.
 bcc	felamimail	de	Blindkopie
 before headers	felamimail	de	vor den Kopfzeilen
@@ -47,7 +51,11 @@ compose	felamimail	de	EMail schreiben
 compress folder	felamimail	de	Ordner komprimieren
 condition	felamimail	de	Bedingung
 configuration	felamimail	de	Konfiguration
+connection dropped by imap server.	felamimail	de	Verbindung von IMAP Server beendet.
 contains	felamimail	de	enthält
+could not complete request. reason given: %s	felamimail	de	Konnte Anfrage nicht beenden. Grund: %s
+could not open secure connection to the imap server. %s : %s.	felamimail	de	Konnte sichere Verbindung zum IMAP Server nicht öffnen. %s : %s.
+cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	de	CRAM-MD5 oder DIGEST-MD5 benötigt das Auth_SASL Packet.
 create	felamimail	de	Erzeugen
 create folder	felamimail	de	Ordner anlegen
 create sent	felamimail	de	Gesendete Objekte (Sent) Ordner anlegen
@@ -116,6 +124,7 @@ enter your smtp server hostname or ip address	admin	de	SMTP-Server Hostname oder
 enter your smtp server port	admin	de	Port Adresse des SMTP Servers
 error	felamimail	de	FEHLER
 error connecting to imap serv	felamimail	de	Konnte den IMAP Server (Mailserver) nicht erreichen
+error connecting to imap server. %s : %s.	felamimail	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
 error opening	felamimail	de	Fehler beim Öffnen
 every	felamimail	de	alle
 every %1 days	felamimail	de	alle %1 Tage
@@ -168,10 +177,13 @@ if mail header	felamimail	de	wenn EMail Header enthält
 if message size	felamimail	de	wenn Nachrichtengröße
 if subject contains	felamimail	de	wenn Betreff enthält
 if to contains	felamimail	de	wenn An enthält
+if using ssl or tls, you must have the php openssl extension loaded.	felamimail	de	Wenn Sie SSL oder TLS benützen, muss die openssl PHP Erweiterung geladen sein.
 illegal folder name.  please select a different name.	felamimail	de	Ilegaler Ordnername. Bitte wählen Sie einen anderen Namen
 imap	felamimail	de	IMAP
 imap server	felamimail	de	IMAP Server
 imap server address	felamimail	de	IMAP Server Adresse
+imap server closed the connection.	felamimail	de	IMAP Server hat die Verbindung beendet.
+imap server closed the connection. server responded: %s	felamimail	de	IMAP Server hat die Verbindung beendet. Server antworted: %s
 imap server password	felamimail	de	IMAP Server Password
 imap server type	felamimail	de	IMAP-Servertyp
 imap server username	felamimail	de	IMAP Server Benutzername
@@ -237,6 +249,7 @@ no message returned.	felamimail	de	Keine Nachrichten gefunden.
 no messages found...	felamimail	de	keine Nachrichten gefunden...
 no messages were selected.	felamimail	de	Es wurde keine NAchricht ausgewählt
 no previous message	felamimail	de	Keine vorherige Nachricht vorhanden
+no supported imap authentication method could be found.	felamimail	de	Keine unterstützte IMAP Authentifizierungsmethode gefunden.
 no valid emailprofile selected!!	felamimail	de	Sie haben kein gültiges Email Profil ausgewählt!
 none	felamimail	de	kein
 on behalf of	felamimail	de	im Auftrag von
@@ -265,6 +278,7 @@ print this page	felamimail	de	Diese Seite drucken
 quicksearch	felamimail	de	Schnellsuche
 read	felamimail	de	gelesen
 reading	felamimail	de	lese
+receive notification	felamimail	de	Empfangsbestätigung
 recent	felamimail	de	neu
 refresh time in minutes	felamimail	de	Aktualisierungsinterval in Minuten
 reject with	felamimail	de	zurückweisen mit
@@ -324,21 +338,27 @@ sun	felamimail	de	So
 table of contents	felamimail	de	Inhaltsverzeichnis
 text only	felamimail	de	Nur Text
 the connection to the imap server failed!!	felamimail	de	Die Verbindung zum IMAP Server ist fehlgeschlagen
+the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	de	Der IMAP Server scheint die ausgewählte Authentifizierungsmethode nicht zu unterstützen. Bitte sprechen Sie mit Ihrem Systemadministrator.
 then	felamimail	de	dann
 this folder is empty	felamimail	de	DIESER ORDNER IST LEER
 this php has no imap support compiled in!!	felamimail	de	Dieses PHP hat keine IMAP Unterstützung!!
 thu	felamimail	de	Do
 to	felamimail	de	An
 to mail sent to	felamimail	de	Mail an senden an
+to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	de	Für eine TLS Verbindung, benötigen Sie PHP 5.1.0 oder neuer.
 translation preferences	felamimail	de	Übersetzungseinstellungen
 translation server	felamimail	de	Übersetzungsserver
 trash fold	felamimail	de	Abfall Ordner
 trash folder	felamimail	de	Ordner für gelöschte Nachrichten
 tue	felamimail	de	Di
 type	felamimail	de	Typ
+unexpected response from server to authenticate command.	felamimail	de	Unerwartete Antwort vom Server auf das AUTHENTICATE Kommando.
+unexpected response from server to digest-md5 response.	felamimail	de	Unerwartete Antwort vom Server auf die Digest-MD5 Antwort.
+unexpected response from server to login command.	felamimail	de	Unerwartete Antwort vom Server auf das LOGIN Kommando.
 unflagged	felamimail	de	unwichtig
 unknown err	felamimail	de	Unbekannter Fehler
 unknown error	felamimail	de	Unbekannter Fehler
+unknown imap response from the server. server responded: %s	felamimail	de	Unbekannte IMAP Antwort vom Server. Server antworted: %s
 unknown sender	felamimail	de	Unbekannter Absender
 unknown user or password incorrect.	felamimail	de	Unbekannter Benutzer oder das Password ist falsch
 unread	common	de	ungelesen

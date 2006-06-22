@@ -395,6 +395,8 @@
 			$this->t->set_var("lang_select_folder",lang('select folder'));
 			$this->t->set_var('lang_max_uploadsize',lang('max uploadsize'));
 			$this->t->set_var('lang_adding_file_please_wait',lang('Adding file to message. Please wait!'));
+			$this->t->set_var('lang_receive_notification',lang('Receive notification'));
+			
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
