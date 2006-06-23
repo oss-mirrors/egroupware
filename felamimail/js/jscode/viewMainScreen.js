@@ -1,60 +1,56 @@
-function changeSorting(_sort)
-{
+function changeSorting(_sort, _aNode) {
 	resetMessageSelect();
 
 	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Change sorting ...</span>';
 	document.getElementById('divMessageList').innerHTML = '';
+	aTags = document.getElementById('tableHeader').getElementsByTagName('a');
+	aTags[0].style.fontWeight='normal';
+	aTags[1].style.fontWeight='normal';
+	aTags[2].style.fontWeight='normal';
+	aTags[3].style.fontWeight='normal';
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.changeSorting",_sort);
+	_aNode.style.fontWeight='bold';
 }
 
-function compressFolder()
-{
-	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + msg_compressingFolder + ' </span>...';
+function compressFolder() {
+	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + lang_compressingFolder + ' </span>...';
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.compressFolder");
 }
 
-function deleteMessages(_messageList)
-{
+function deleteMessages(_messageList) {
 	resetMessageSelect();
 
-	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Deleting messages ...</span>';
+	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + lang_deleting_messages + ' ...</span>';
 	document.getElementById('divMessageList').innerHTML = '';
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteMessages",_messageList);
 }
 
-function displayMessage(_url,_windowName) 
-{
+function displayMessage(_url,_windowName) {
 	egw_openWindowCentered(_url, _windowName, 800, egw_getWindowOuterHeight());
 }
 
-function emptyTrash()
-{
-	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + msg_emptyTrashFolder + ' </span>...';
+function emptyTrash() {
+	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + lang_emptyTrashFolder + ' </span>...';
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.emptyTrash");
 }
 
-function onNodeSelect(_nodeID)
-{
+function onNodeSelect(_nodeID) {
 
-	if(document.getElementsByName("folderAction")[0].value == "moveMessage")
-	{
+	if(document.getElementsByName("folderAction")[0].value == "moveMessage") {
 		resetMessageSelect();
 		formData = xajax.getFormValues('formMessageList');
 		document.getElementById('messageCounter').innerHTML = movingMessages+' <span style="font-weight: bold;">'+_nodeID+' </span>...';
 		document.getElementById('divMessageList').innerHTML = '';
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.moveMessages", _nodeID, formData);
-	}
-	else
-	{
+	} else {
 		resetMessageSelect();
-		document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Loading '+_nodeID+' ...</span>';
+		document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + lang_loading + ' ' + _nodeID + ' ...</span>';
 		document.getElementById('divMessageList').innerHTML = '';
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.updateMessageView",_nodeID);
 	}
 }
 
-function quickSearch(_searchString)
-{
+function quickSearch(_searchString) {
 	resetMessageSelect();
 
  	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Searching for '+document.getElementById('quickSearch').value+' ...</span>';
@@ -142,7 +138,7 @@ function flagMessages(_flag, _messageList)
 {
 	resetMessageSelect();
 
-	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Updating message status ...</span>';
+	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">' + lang_updating_message_status + '</span>';
 	document.getElementById('divMessageList').innerHTML = '';
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.flagMessages",_flag,_messageList);
 	
@@ -202,8 +198,8 @@ function jumpStart() {
 var searchesPending=0;
 
 function refresh() {
-	searchesPending++;
-	document.title=searchesPending;
+	//searchesPending++;
+	//document.title=searchesPending;
 
 	resetMessageSelect();
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');

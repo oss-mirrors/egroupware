@@ -876,16 +876,13 @@
 			
 			$this->bofelamimail->closeConnection();
 			
-			header ("Content-Type: ".$attachment['type']."; name=\"".$attachment['filename']."\"");
-			if($_GET['mode'] == "save")
-			{
+			header ("Content-Type: ".$attachment['type']."; name=\"". $this->bofelamimail->decode_header($attachment['filename']) ."\"");
+			if($_GET['mode'] == "save") {
 				// ask for download
-				header ("Content-Disposition: attachment; filename=\"".$attachment['filename']."\"");
-			}
-			else
-			{
+				header ("Content-Disposition: attachment; filename=\"". $this->bofelamimail->decode_header($attachment['filename']) ."\"");
+			} else {
 				// display it
-				header ("Content-Disposition: inline; filename=\"".$attachment['filename']."\"");
+				header ("Content-Disposition: inline; filename=\"". $this->bofelamimail->decode_header($attachment['filename']) ."\"");
 			}
 			header("Expires: 0");
 			// the next headers are for IE and SSL

@@ -198,7 +198,7 @@
 				$oldTo = $bofelamimail->decode_header(trim($headers->fromaddress));
 				$oldToAddress	= $headers->from[0]->mailbox.'@'.$headers->from[0]->host;
 			}
-			if($_mode == 'all' && !$userEMailAddresses[$oldToAddress]) {
+			if($_mode != 'all' || ($_mode == 'all' && !$userEMailAddresses[$oldToAddress]) ) {
 				$this->sessionData['to'] = $oldTo;
 			}
 			
@@ -495,7 +495,7 @@
 			// set a higher timeout for big messages
 			@set_time_limit(120);
 			#$mail->SMTPDebug = 10;
-			if(count((array)$this->sessionData['to']) > 0 || count((array)$this->sessionData['to']) > 0 || count((array)$this->sessionData['to']) > 0) {
+			if(count((array)$this->sessionData['to']) > 0 || count((array)$this->sessionData['cc']) > 0 || count((array)$this->sessionData['bcc']) > 0) {
 				if(!$mail->Send()) {
 					$this->errorInfo = $mail->ErrorInfo;
 					return false;
@@ -509,14 +509,18 @@
 			$folder = array_unique($folder);
 
 			if (count($folder) > 0) {
-				// mark message as answered
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				foreach($folder as $folderName) {
+					#if($folderName == $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) {
+						$flags = '\\Seen';
+					#} else {
+					#	$flags = '';
+					#}
 					$bofelamimail->openConnection($folderName);
 					$bofelamimail->appendMessage($folderName,
 								$mail->getMessageHeader(),
 								$mail->getMessageBody(),
-								'\\Seen');
+								$flags);
 				}
 				$bofelamimail->closeConnection();
 			}

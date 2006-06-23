@@ -24,6 +24,7 @@
 		var $charset;
 		
 		function ajax_contacts() {
+			$GLOBALS['egw']->session->commit_session();
 			$this->charset	= $GLOBALS['egw']->translation->charset();
 		}
 		

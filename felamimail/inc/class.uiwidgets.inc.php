@@ -57,6 +57,7 @@
 			$template =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
+			$this->charset = $GLOBALS['egw']->translation->charset();
 		}
 
 		/**
@@ -144,7 +145,7 @@
 					$image2 = "'kfm_home.png'";
 					$image3 = "'kfm_home.png'";
 				}
-
+				
 				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,$image1,$image2,$image3,'$entryOptions');\n";
 				if($_displayCheckBox)
 					$folder_tree_new .= "tree.setCheck('$longName','".(int)$obj->subscribed."');";

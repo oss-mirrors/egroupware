@@ -51,13 +51,13 @@
 		function addFolder($_parentFolder, $_newSubFolder) {
 			$folderData = $this->bofelamimail->getFolderStatus('INBOX');
 			$folderName = ($_parentFolder == '--topfolder--'?$_newSubFolder:$_parentFolder.$folderData['delimiter'].$_newSubFolder);
+			$response =& new xajaxResponse();
 			if($this->bofelamimail->imap_createmailbox($folderName, true)) {
-				$response =& new xajaxResponse();
 				$response->addScript("tree.insertNewItem('$_parentFolder','$folderName','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
 				$response->addScript("tree.setCheck('$folderName','0');");
-				$response->addAssign("newSubFolder", "value", '');
-				return $response->getXML();
 			}
+			$response->addAssign("newSubFolder", "value", '');
+			return $response->getXML();
 		}
 		
 		function changeSorting($_sortBy) {

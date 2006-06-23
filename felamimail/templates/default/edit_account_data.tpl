@@ -2,7 +2,7 @@
 <center>
 <form action="{form_action}" name="editAccountData" method="post">
 <div style="width:650px; text-align:left;">
-<input type="checkbox" id="active" name="active" value="1" onchange="onchange_active(this)" {checked_active}>{lang_use_costum_settings}
+<input type="checkbox" id="active" name="active" value="1" onclick="onchange_active(this)" {checked_active}>{lang_use_costum_settings}
 </div>
 <fieldset style="width:650px;" class="row_on" id="identity"><legend style="font-weight: bold;">{lang_identity}</legend>
 <table width="100%" border="0" cellpadding="0" cellspacing="1">

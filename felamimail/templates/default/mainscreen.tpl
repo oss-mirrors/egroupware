@@ -50,7 +50,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 				{filter_options}
 			</select>
 		</td>
-		<td width="110px" style="white-space:nowrap; align:right; text-align:right;">
+		<td width="120px" style="white-space:nowrap; align:right; text-align:right;">
 			<div class="parentDIV" style="text-align:right; align:right;">
 				{navbarButtonsRight}
 			</div>
@@ -73,7 +73,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td align="left" style="font-size:11px;">
 			<span id="messageCounter">{message}</span>
 		</td>
-		<td align="right" style="font-size:11px; width:250px;">
+		<td style="font-size:11px; width:250px; text-align:right;">
 			{quota_display}
 		</td>
 	</tr>
@@ -193,8 +193,10 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td class="mainscreenRow" width="20px" align="center">
 			{attachment_image}
 		</td>
-		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
+		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;" width="117px"><nobr>
 			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
+		</td>
+		<td class="mainscreenRow" width="2px">
 		</td>
 		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;"><nobr>
 			<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); parentNode.parentNode.parentNode.style.fontWeight='normal'; return false;" title="{full_subject}">{header_subject}</a>
@@ -219,12 +221,12 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <!-- END error_message -->
 
 <!-- BEGIN quota_block -->
-	<table cellpadding="0" cellspacing="0" style="border:1px solid silver;width:150px;height:4px;font-size:4px;">
+	<table cellpadding="0" cellspacing="0" style="border:1px solid silver;width:150px;">
 		<tr valign="middle">
-			<td bgcolor="{quotaBG}" align="center" valign="middle" style="width:{leftWidth}%;height:4px;font-size:4px;">
+			<td bgcolor="{quotaBG}" align="center" valign="middle" style="width:{leftWidth}%;height:9px;font-size:9px;">
 				&nbsp;{quotaUsage_left}
 			</td>
-			<td align="center" valign="middle" style="height:4px;font-size:4px;">
+			<td align="center" valign="middle" style="height:9px;font-size:9px;">
 				&nbsp;{quotaUsage_right}
 			</td>
 		</tr>
@@ -245,7 +247,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 <!-- BEGIN table_header_felamimail -->
 			<table WIDTH=100% BORDER="0" CELLSPACING="0" style="table-layout:fixed;">
-				<tr class="th">
+				<tr class="th" id="tableHeader">
 					<td width="20px" align="left">
 						<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">
 					</td>
@@ -255,17 +257,17 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;
 					</td>
-					<td bgcolor="{th_bg}" align="center" class="{css_class_subject}">
-						<a href="javascript:changeSorting('subject');">{lang_subject}</a>
+					<td bgcolor="{th_bg}" style="text-align:left;" class="{css_class_subject}">
+						<a href="#" onclick="changeSorting('subject', this); return false;">{lang_subject}</a>
 					</td>
 					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
-						&nbsp;&nbsp;<a href="javascript:changeSorting('date');">{lang_date}</a>
+						&nbsp;&nbsp;<a href="#" onclick="changeSorting('date', this); return false;">{lang_date}</a>
 					</td>
-					<td width="120px" bgcolor="{th_bg}" align="center" class="{css_class_from}">
-						&nbsp;<a href="javascript:changeSorting('from');"><span id='from_or_to'>{lang_from}</span></a>
+					<td width="120px" bgcolor="{th_bg}" style="text-align:left;" class="{css_class_from}">
+						&nbsp;<a href="#" onclick="changeSorting('from', this); return false;"><span id='from_or_to'>{lang_from}</span></a>
 					</td>
 					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
-						<a href="javascript:changeSorting('size');">{lang_size}</a>&nbsp;
+						<a href="#" onclick="changeSorting('size', this); return false;">{lang_size}</a>&nbsp;
 					</td>
 					<td width="20px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
 						&nbsp;
@@ -276,7 +278,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 <!-- BEGIN table_header_outlook -->
 			<table WIDTH=100% BORDER="0" CELLSPACING="0" style="table-layout:fixed;">
-				<tr class="th">
+				<tr class="th" id="tableHeader">
 					<td width="20px" align="left">
 						<input style="width:12px; height:12px; border:none; margin: 1px; margin-left: 3px;" type="checkbox" id="messageCheckBox" onclick="selectAll(this, refreshTimeOut)">
 					</td>
@@ -286,10 +288,10 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 					<td width="20px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;
 					</td>
-					<td width="120px" bgcolor="{th_bg}" align="center" class="{css_class_from}">
+					<td width="120px" bgcolor="{th_bg}" style="text-align:left;" class="{css_class_from}">
 						&nbsp;<a href="javascript:changeSorting('from');"><span id='from_or_to'>{lang_from}</span></a>
 					</td>
-					<td bgcolor="{th_bg}" align="center" class="{css_class_subject}">
+					<td bgcolor="{th_bg}" style="text-align:left;" class="{css_class_subject}">
 						<a href="javascript:changeSorting('subject');">{lang_subject}</a>
 					</td>
 					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">

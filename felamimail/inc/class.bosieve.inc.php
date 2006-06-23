@@ -37,7 +37,7 @@
 			#$this->restoreSessionData();
 
 			if(is_a($_icServer,'defaultimap') && $_icServer->enableSieve) {
-				$sieveHost		= $_icServer->sieveHost;
+				$sieveHost		= $_icServer->host;
 				$sievePort		= $_icServer->sievePort;
 				$username		= $_icServer->username;
 				$password		= $_icServer->password;

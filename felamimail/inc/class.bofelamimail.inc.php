@@ -108,11 +108,15 @@
 		* @param _hookValues contains the hook values as array
 		* @returns nothing
 		*/
-		function addAccount($_hookValues)
-		{
-			if($this->profileID > 0 && is_numeric($this->profileID))
-			{
-				ExecMethod('emailadmin.bo.addAccount',$_hookValues,3,$this->profileID);
+		function addAccount($_hookValues) {
+			$icServer = $this->mailPreferences->getIncomingServer(0);
+			if(is_a($icServer,'defaultimap')) {
+				$icServer->addAccount($_hookValues);
+			}
+
+			$ogServer = $this->mailPreferences->getOutgoingServer(0);
+			if(is_a($ogServer,'defaultsmtp')) {
+				$ogServer->addAccount($_hookValues);
 			}
 		}
 		
@@ -371,7 +375,7 @@
 			
 			$type 		= $sections[$_partID]["mimeType"];
 			$encoding 	= $sections[$_partID]["encoding"];
-			$filename 	= $sections[$_partID]["name"];
+			$filename 	= $this->decode_header($sections[$_partID]["name"]);
 			
 			$attachment = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
 			
@@ -1194,26 +1198,20 @@
 			return $body;
 		}
 
-		function getMessageRawHeader($_uid, $_partID = '')
-		{
-			if(!$_partID == '')
-			{
+		function getMessageRawHeader($_uid, $_partID = '') {
+			if(!$_partID == '') {
 				return imap_fetchbody($this->mbox, $_uid, $_partID.'.0', FT_UID);
-			}
-			else
-			{
+			} else {
 				return imap_fetchheader($this->mbox, $_uid, FT_UID);
 			}
 		}
 
-		function getMessageStructure($_uid)
-		{
+		function getMessageStructure($_uid) {
 			return imap_fetchstructure($this->mbox, $_uid, FT_UID);
 		}
 		
 		// return the qouta of the users INBOX
-		function getQuotaRoot()
-		{
+		function getQuotaRoot() {
 			return $this->icServer->getQuota('INBOX');
 		}
 		
@@ -1225,11 +1223,9 @@
 			}
 			
 			$mailboxString = $icServer->getMailboxString($_folderName);
-
 			$result = @imap_createmailbox($this->mbox,$mailboxString);
-			
-			if($_subscribe)
-			{
+
+			if($_subscribe) {
 				return @imap_subscribe($this->mbox,$mailboxString);
 			}
 			
@@ -1487,7 +1483,7 @@
 								switch(strtolower($value->attribute))
 								{
 									case 'filename':
-										$_sections[$_currentPartID]["name"] = $value->value;
+										$_sections[$_currentPartID]["name"] = $this->decode_header($value->value);
 										break;
 								}
 							}
@@ -1543,7 +1539,7 @@
 						switch(strtolower($param->attribute))
 						{
 							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
+								$_sections[$_currentPartID]["name"] = $this->decode_header($param->value);
 								break;
 						}
 					}
@@ -1583,7 +1579,7 @@
 						switch(strtolower($param->attribute))
 						{
 							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
+								$_sections[$_currentPartID]["name"] = $this->decode_header($param->value);
 								break;
 						}
 					}
@@ -1608,7 +1604,7 @@
 						switch(strtolower($param->attribute))
 						{
 							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
+								$_sections[$_currentPartID]["name"] = $this->decode_header($param->value);
 								break;
 						}
 					}
@@ -1632,7 +1628,7 @@
 						switch(strtolower($param->attribute))
 						{
 							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
+								$_sections[$_currentPartID]["name"] = ($param->value);
 								break;
 						}
 					}
@@ -1656,7 +1652,7 @@
 						switch(strtolower($param->attribute))
 						{
 							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
+								$_sections[$_currentPartID]["name"] = $this->decode_header($param->value);
 								break;
 						}
 					}
@@ -1743,24 +1739,24 @@
 			}
 		}
 		
-		function toggleFilter()
-		{
-			if($this->sessionData['filter']['filterActive'] == 'true')
-			{
+		function toggleFilter() {
+			if($this->sessionData['filter']['filterActive'] == 'true') {
 				$this->sessionData['filter']['filterActive'] = 'false';
-			}
-			else
-			{
+			} else {
 				$this->sessionData['filter']['filterActive'] = 'true';
 			}
 			$this->saveSessionData();
 		}
 
-		function updateAccount($_hookValues)
-		{
-			if($this->profileID > 0 && is_numeric($this->profileID))
-			{
-				ExecMethod('emailadmin.bo.updateAccount',$_hookValues,3,$this->profileID);
+		function updateAccount($_hookValues) {
+			$icServer = $this->mailPreferences->getIncomingServer(0);
+			if(is_a($icServer,'defaultimap')) {
+				$icServer->updateAccount($_hookValues);
+			}
+
+			$ogServer = $this->mailPreferences->getOutgoingServer(0);
+			if(is_a($ogServer,'defaultsmtp')) {
+				$ogServer->updateAccount($_hookValues);
 			}
 		}
 		

@@ -140,36 +140,30 @@
 			{
 				// IMAP connection settings
 				$icServer =& CreateObject('emailadmin.defaultimap');
-				foreach($_POST['ic'] as $key => $value)
-				{
+				foreach($_POST['ic'] as $key => $value) {
 					$icServer->$key = $value;
 				}
 				
 				// SMTP connection settings
 				$ogServer =& CreateObject('emailadmin.defaultsmtp');
-				foreach($_POST['og'] as $key => $value)
-				{
+				foreach($_POST['og'] as $key => $value) {
 					$ogServer->$key = $value;
 				}
 
 				// identity settings
 				$identity =& CreateObject('emailadmin.ea_identity');
-				foreach($_POST['identity'] as $key => $value)
-				{
+				foreach($_POST['identity'] as $key => $value) {
 					$identity->$key = $value;
 				}
 
-				if((int)$_POST['active'])
-				{
+				if((int)$_POST['active']) {
 					$boPreferences->saveAccountData($icServer, $ogServer, $identity);
 					$boPreferences->setProfileActive(true);
-				}
-				else
-				{
+				} else {
 					$boPreferences->setProfileActive(false);
 				}
-				if($_POST['save'])
-				{
+				
+				if($_POST['save']) {
 					ExecMethod('felamimail.uifelamimail.viewMainScreen');
 					return;
 				}
@@ -193,8 +187,7 @@
 			$identity =& $accountData['identity'];
 #			_debug_array($ogServer);
 			foreach($icServer as $key => $value) {
-				switch($key)
-				{
+				switch($key) {
 					case 'encryption':
 					case 'validatecert':
 						$this->t->set_var('checked_ic_'.$key,($value ? 'checked' : ''));
@@ -204,11 +197,9 @@
 			}
 
 			foreach($ogServer as $key => $value) {
-#				print "$key => $value<bR>";
-				switch($key)
-				{
-					case 'encryption':
-					case 'validatecert':
+				#print "$key => $value<bR>";
+				switch($key) {
+					case 'smtpAuth':
 						$this->t->set_var('checked_og_'.$key,($value ? 'checked' : ''));
 					default:
 						$this->t->set_var("og[$key]", $value);
@@ -216,8 +207,7 @@
 			}
 
 			foreach($identity as $key => $value) {
-				switch($key)
-				{
+				switch($key) {
 					default:
 						$this->t->set_var("identity[$key]", $value);
 				}

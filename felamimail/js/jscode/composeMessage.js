@@ -32,6 +32,10 @@ var KEYCODE_UP=38;
 var KEYCODE_RIGHT=39;
 var KEYCODE_DOWN=40;
 
+// disabled Keycodes
+// quickserach input field
+var disabledKeys1 = new Array(KEYCODE_TAB, KEYCODE_ENTER, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
+
 
 function initAll()
 {
@@ -270,8 +274,10 @@ function keypressed(keycode, keyvalue) {
 		
 		case KEYCODE_RIGHT:
 		case KEYCODE_DOWN:
-			if( selectedSuggestion < resultRows.length-1) {
-				selectSuggestion(selectedSuggestion+1);
+			if(selectedSuggestion) {
+				if(selectedSuggestion < resultRows.length-1) {
+					selectSuggestion(selectedSuggestion+1);
+				}
 			}
 			break;
 		
@@ -288,12 +294,23 @@ function keypressed(keycode, keyvalue) {
 			hideResultBox();
 			break;
 		
+//		case KEYCODE_TAB:
+//			//if (currentSuggestion>=0&&currentSuggestion<_ids.length){_setValue(currentSuggestion);}
+//			//currentInputField.value = results[selectedSuggestion-1];
+//			hideResultBox();
+//			searchActive=false;
+//			break;
+
 		case KEYCODE_TAB:
-			//if (currentSuggestion>=0&&currentSuggestion<_ids.length){_setValue(currentSuggestion);}
-			//currentInputField.value = results[selectedSuggestion-1];
-			hideResultBox();
-			searchActive=false;
+			if(resultboxVisible) {
+				if( selectedSuggestion < resultRows.length-1) {
+					selectSuggestion(selectedSuggestion+1);
+				}
+			} else {
+				focusToNextInputField();
+			}
 			break;
+		
 		
 		case KEYCODE_ALT:
 		case KEYCODE_SHIFT:
@@ -344,6 +361,16 @@ function keycodePressed(_keyCode) {
 	} else {
 		return true;
 	}
+}
+
+function disabledKeyCodes(_keyCodes) {
+	for (var i = 0; i < _keyCodes.length; ++i) {
+		if(currentKeyCode == _keyCodes[i]) {
+			return false;
+		}
+	}
+	
+	return true;
 }
 
 function updateTitle(_text) {

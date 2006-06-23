@@ -193,7 +193,7 @@
 		{select_destination}
 	</td>
 	<td align="left" valign="bottom" style="width:455px;">
-		<input class="input_text" onkeypress="return keycodePressed(KEYCODE_ENTER);" autocomplete="off" type=text style="width: 450px;" name="address[]" value="{address}" onfocus="initResultBox(this)" onblur="stopCapturingEvents()">
+		<input class="input_text" onkeypress="return disabledKeyCodes(disabledKeys1);" autocomplete="off" type=text style="width: 450px;" name="address[]" value="{address}" onfocus="initResultBox(this)" onblur="stopCapturingEvents()">
 	</td>
 	<td style="width:20px;" valign="bottom">
 		<img sstyle="mmargin-top: 1px; bborder: 1px solid red;" src="{img_clear_left}" onclick="deleteTableRow(this)">

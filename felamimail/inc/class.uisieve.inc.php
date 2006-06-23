@@ -55,7 +55,7 @@
 
 			$icServer = $this->mailPreferences->getIncomingServer(0);
 			
-			if(is_a($icServer,'cyrusimap') && $icServer->enableSieve) {
+			if(is_a($icServer,'defaultimap') && $icServer->enableSieve) {
 				$this->bosieve		=& CreateObject('felamimail.bosieve',$icServer);
 			} else {
 				die('Sieve not activated');
