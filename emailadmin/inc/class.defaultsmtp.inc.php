@@ -59,6 +59,12 @@
 			);
 		}
 
+		function getUserData($_uidnumber) {
+			$userData = array();
+			
+			return $userData;
+		}
+
 		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
 		{
 			return true;

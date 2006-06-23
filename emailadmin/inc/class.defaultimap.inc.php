@@ -72,8 +72,7 @@
 		
 		function encodeFolderName($_folderName)
 		{
-			if($this->mbAvailable)
-			{
+			if($this->mbAvailable) {
 				return mb_convert_encoding($_folderName, "UTF7-IMAP", $GLOBALS['egw']->translation->charset());
 			}
 
@@ -167,6 +166,11 @@
 
 			return false;
 		}
+		function getUserData($_uidnumber) {
+			$userData = array();
+			
+			return $userData;
+		}
 		
 		function openConnection($_options=0, $_adminConnection=false) {
 			if(!function_exists('imap_open')) {
@@ -190,6 +194,7 @@
 			if(!$this->mbox = imap_open ($mailboxString, $username, $password, $options)) {
 				return PEAR::raiseError(imap_last_error(), 'horde.error');
 			} else {
+				
 				if(!isset($this->sessionData['capabilities'][$this->host]) || 
 					!isset($this->sessionData['nameSpace'][$this->host][$username]) ||
 					!isset($this->sessionData['delimiter'][$this->host])) {
@@ -208,6 +213,7 @@
 						}
 					}
 
+					$imapClient->logout();
 					$this->saveSessionData();
 				}
 				
@@ -222,6 +228,9 @@
 		
 		function saveSessionData() {
 			$GLOBALS['egw']->session->appsession('imap_session_data','',$this->sessionData);
+		}
+		
+		function setUserData($_quota) {
 		}
 
 		function supportsCapability($_capability) {

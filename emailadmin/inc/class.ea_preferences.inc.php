@@ -27,26 +27,38 @@
 		// enable userdefined accounts
 		var $userDefinedAccounts = false;
 		
-		function getIdentity($_id = -1) {
-			if($_id != -1) {
+		function getIdentity($_id = -1)
+		{
+			if($_id != -1)
+			{
 				return $this->identities[$_id];
-			} else {
+			}
+			else
+			{
 				return $this->identities;
 			}
 		}
 		
-		function getIncomingServer($_id = -1) {
-			if($_id != -1) {
+		function getIncomingServer($_id = -1)
+		{
+			if($_id != -1)
+			{
 				return $this->ic_server[$_id];
-			} else {
+			}
+			else
+			{
 				return $this->ic_server;
 			}
 		}
 		
-		function getOutgoingServer($_id = -1) {
-			if($_id != -1) {
+		function getOutgoingServer($_id = -1)
+		{
+			if($_id != -1)
+			{
 				return $this->og_server[$_id];
-			} else {
+			}
+			else
+			{
 				return $this->og_server;
 			}
 		}

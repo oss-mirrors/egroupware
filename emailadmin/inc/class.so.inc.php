@@ -152,10 +152,10 @@
 
 			$this->db->select($this->table,'ea_profile_id',$where, __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
 			
-			if (($data = $this->db->row(true)))
-			{
+			if (($data = $this->db->row(true))) {
 				return $this->getProfile($data['ea_profile_id'], $this->db_cols);
 			}
+
 			return false;
 		}
 

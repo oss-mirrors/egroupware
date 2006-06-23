@@ -92,6 +92,74 @@
 			
 			return $emailAddresses;
 		}
+
+		function getUserData($_uidnumber) {
+			$userData = array();
+
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
+			
+			if (($sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],"(uidnumber=$_uidnumber)")))
+			{
+				$allValues = ldap_get_entries($ldap, $sri);
+				if ($allValues['count'] > 0)
+				{
+					#print "found something<br>";
+					$userData["mailLocalAddress"]		= $allValues[0]["mail"][0];
+					$userData["mailAlternateAddress"]	= $allValues[0]["mailalternateaddress"];
+					$userData["accountStatus"]		= $allValues[0]["accountstatus"][0];
+					$userData["mailForwardingAddress"]	= $allValues[0]["mailforwardingaddress"];
+					$userData["qmailDotMode"]		= $allValues[0]["qmaildotmode"][0];
+					$userData["deliveryProgramPath"]	= $allValues[0]["deliveryprogrampath"][0];
+					$userData["deliveryMode"]		= $allValues[0]["deliverymode"][0];
+
+					unset($userData["mailAlternateAddress"]["count"]);
+					unset($userData["mailForwardingAddress"]["count"]);					
+
+					return $userData;
+				}
+			}
+			
+			return $userData;
+		}
+		
+		function setUserData($_uidnumber, $_mailAlternateAddress, $_mailForwardingAddress, $_deliveryMode) {
+			$filter = "uidnumber=$_uidnumber";
+
+			$ldap = $GLOBALS['egw']->common->ldapConnect();
+
+			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],$filter);
+			if ($sri) {
+				$allValues 	= ldap_get_entries($ldap, $sri);
+
+				$accountDN 	= $allValues[0]['dn'];
+				$uid	   	= $allValues[0]['uid'][0];
+				$objectClasses	= $allValues[0]['objectclass'];
+				
+				unset($objectClasses['count']);
+
+				if(!in_array('qmailUser',$objectClasses) &&
+					!in_array('qmailuser',$objectClasses))
+				{
+					$objectClasses[]	= 'qmailuser'; 
+					sort($objectClasses);
+					$newData['objectclass']	= $objectClasses;
+				}
+
+				sort($_mailAlternateAddress);
+				sort($_mailForwardingAddress);
+				
+				$newData['mailalternateaddress'] = (array)$_mailAlternateAddress;
+				$newData['mailforwardingaddress'] = (array)$_mailForwardingAddress;
+				$newData['deliverymode']	= ($_deliveryMode == 'forwardOnly') ? 'forwardOnly' : array();
+
+				ldap_mod_replace($ldap, $accountDN, $newData);
+			}
+			else
+			{
+				return false;
+			}
+
+		}
 		
 		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
 		{

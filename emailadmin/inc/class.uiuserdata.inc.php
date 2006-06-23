@@ -29,12 +29,23 @@
 	
 		function display_app_header()
 		{
+			if(!@is_object($GLOBALS['egw']->js))
+			{
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['egw']->js->validate_file('jscode','editUserdata','emailadmin');
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+
 			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 		}
 
 		function editUserData($_useCache='0')
 		{
+			if(!is_object($GLOBALS['egw']->html)) {
+				$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
+			}
+			                                                        
 			$accountID = $_GET['account_id'];			
 			$GLOBALS['account_id'] = $accountID;
 
@@ -70,47 +81,42 @@
 			$this->t->set_var("form_action", $GLOBALS['egw']->link('/index.php',$linkData));
 
 			// only when we show a existing user
-			if($userData = $this->boemailadmin->getUserData($accountID, $_useCache))
-			{
-				if ($userData['mailAlternateAddress'] != '')
-				{
-					$options_mailAlternateAddress = "<select size=\"6\" name=\"mailAlternateAddress\">\n";
-					for ($i=0;$i < count($userData['mailAlternateAddress']); $i++)
-					{
-						$options_mailAlternateAddress .= "<option value=\"$i\">".
-							$userData['mailAlternateAddress'][$i].
-							"</option>\n";
-					}
-					$options_mailAlternateAddress .= "</select>\n";
+			if($userData = $this->boemailadmin->getUserData($accountID, $_useCache)) {
+				$addresses = array();
+				foreach((array)$userData['mailAlternateAddress'] as $data) {
+					$addresses[$data] = $data;
 				}
-				else
-				{
-					$options_mailAlternateAddress = lang('no alternate email address');
-				}
+				$this->t->set_var('selectbox_mailAlternateAddress', $GLOBALS['egw']->html->select(
+					'mailAlternateAddress',
+					'',
+					$addresses, 
+					true, 
+					"style='width: 100%;' id='mailAlternateAddress'",
+					5)
+				);
 			
-				if ($userData['mailRoutingAddress'] != '')
-				{
-					$options_mailRoutingAddress = "<select size=\"6\" name=\"mailRoutingAddress\">\n";
-					for ($i=0;$i < count($userData['mailRoutingAddress']); $i++)
-					{
-						$options_mailRoutingAddress .= "<option value=\"$i\">".
-							$userData['mailRoutingAddress'][$i].
-							"</option>\n";
-					}
-					$options_mailRoutingAddress .= "</select>\n";
+				$addresses = array();
+				foreach((array)$userData['mailForwardingAddress'] as $data) {
+					$addresses[$data] = $data;
 				}
-				else
-				{
-					$options_mailRoutingAddress = lang('no forwarding email address');
-				}
+				$this->t->set_var('selectbox_mailRoutingAddress', $GLOBALS['egw']->html->select(
+					'mailForwardingAddress',
+					'',
+					$addresses, 
+					true, 
+					"style='width: 100%;' id='mailRoutingAddress'",
+					5)
+				);
+				
+				$this->t->set_var('url_image_add',$GLOBALS['egw']->common->image('phpgwapi','new'));
+				$this->t->set_var('url_image_edit',$GLOBALS['egw']->common->image('phpgwapi','edit'));
+				$this->t->set_var('url_image_delete',$GLOBALS['egw']->common->image('phpgwapi','delete'));
 				
 				$this->t->set_var("quotaLimit",$userData["quotaLimit"]);
 			
 				$this->t->set_var("mailLocalAddress",$userData["mailLocalAddress"]);
 				$this->t->set_var("mailAlternateAddress",'');
 				$this->t->set_var("mailRoutingAddress",'');
-				$this->t->set_var("options_mailAlternateAddress",$options_mailAlternateAddress);
-				$this->t->set_var("options_mailRoutingAddress",$options_mailRoutingAddress);
 				$this->t->set_var("selected_".$userData["qmailDotMode"],'selected');
 				$this->t->set_var("deliveryProgramPath",$userData["deliveryProgramPath"]);
 				
@@ -143,49 +149,29 @@
 		
 		function saveUserData()
 		{
-			if($_POST["accountStatus"] == "on")
-			{
+			if($_POST["accountStatus"] == "on") {
 				$accountStatus = "active";
 			}
-			if($_POST["forwardOnly"] == "on")
-			{
+			
+			if($_POST["forwardOnly"] == "on") {
 				$deliveryMode = "forwardOnly";
 			}
 
-			$formData = array
-			(
+			$formData = array (
 				'mailLocalAddress'		=> $_POST["mailLocalAddress"],
-				'mailRoutingAddress'		=> $_POST["mailRoutingAddress"],
-				'add_mailAlternateAddress'	=> $_POST["mailAlternateAddressInput"],
-				'remove_mailAlternateAddress'	=> $_POST["mailAlternateAddress"],
+				'mailAlternateAddress'		=> $_POST["mailAlternateAddress"],
+				'mailForwardingAddress'		=> $_POST["mailForwardingAddress"],
 				'quotaLimit'			=> $_POST["quotaLimit"],
-				'add_mailRoutingAddress'	=> $_POST["mailRoutingAddressInput"],
-				'remove_mailRoutingAddress'	=> $_POST["mailRoutingAddress"],
-				
 				'qmailDotMode'			=> $_POST["qmailDotMode"],
 				'deliveryProgramPath'		=> $_POST["deliveryProgramPath"],
 				'accountStatus'			=> $accountStatus,
 				'deliveryMode'			=> $deliveryMode
 			);
-			
-			if($_POST["add_mailAlternateAddress"]) $bo_action='add_mailAlternateAddress';
-			if($_POST["remove_mailAlternateAddress"]) $bo_action='remove_mailAlternateAddress';
-			if($_POST["add_mailRoutingAddress"]) $bo_action='add_mailRoutingAddress';
-			if($_POST["remove_mailRoutingAddress"]) $bo_action='remove_mailRoutingAddress';
-			if($_POST["save"]) $bo_action='save';
-			
-			$this->boemailadmin->saveUserData($_GET['account_id'], $formData, $bo_action);
 
-			if ($bo_action == 'save')
-			{
-				// read date fresh from ldap storage
-				$this->editUserData();
-			}
-			else
-			{
-				// use cached data
-				$this->editUserData('1');
-			}
+			$this->boemailadmin->saveUserData($_GET['account_id'], $formData);
+
+			// read date fresh from ldap storage
+			$this->editUserData();
 		}
 		
 		function translate()
@@ -204,6 +190,8 @@
 			$this->t->set_var('lang_inmbyte',lang('in MByte'));
 			$this->t->set_var('lang_0forunlimited',lang('leave empty for no quota'));
 			$this->t->set_var('lang_forward_only',lang('forward only'));
+			$this->t->set_var('lang_enter_new_address',lang('Add new email address:'));
+			$this->t->set_var('lang_update_current_address',lang('Update current email address:'));
 		}
 	}
 ?>

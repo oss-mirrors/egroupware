@@ -88,10 +88,21 @@
 				$this->t->set_var("lang_smtp_option_$key",$value);
 			};
 						
-			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value)
-			{
-				$this->t->set_var("lang_imap_option_$key",$value['description']);
+			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value) {
+				$imapServerTypes[$key] = $value['description'];
 			};
+			$selectFrom = $GLOBALS['egw']->html->select(
+				'imapsettings[imapType]', 
+				'', 
+				$imapServerTypes, 
+				false, 
+				"style='width: 250px;' id='imapselector' onchange='imap.display(this.value); ea_setIMAPDefaults(this.value);'"
+			);
+			$this->t->set_var('imaptype', $selectFrom);
+
+			$this->t->set_var('value_smtpPort', '25');
+			$this->t->set_var('value_imapPort', '110');
+			$this->t->set_var('value_imapSievePort', '2000');
 						
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -170,8 +181,11 @@
 				echo parse_navbar();
 		}
 
-		function editProfile($_profileID='')
-		{
+		function editProfile($_profileID='') {
+			if(!is_object($GLOBALS['egw']->html)) {
+				$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
+			}
+			                                                        
 			$allGroups = $GLOBALS['egw']->accounts->get_list('groups');
 			foreach($allGroups as $groupInfo)
 			{
@@ -266,10 +280,17 @@
 				$this->t->set_var("lang_smtp_option_$key",$value);
 			};
 
-			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value)
-			{
-				$this->t->set_var("lang_imap_option_$key",$value['description']);
+			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value) {
+				$imapServerTypes[$key] = $value['description'];
 			};
+			$selectFrom = $GLOBALS['egw']->html->select(
+				'imapsettings[imapType]', 
+				$profileData['imapType'], 
+				$imapServerTypes, 
+				false, 
+				"style='width: 250px;' id='imapselector' onchange='imap.display(this.value);'"
+			);
+			$this->t->set_var('imaptype', $selectFrom);
 						
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -545,7 +566,7 @@
 			$this->t->set_var('lang_enable_cyrus_imap_administration',lang('enable Cyrus IMAP server administration'));
 			$this->t->set_var('lang_cyrus_imap_administration',lang('Cyrus IMAP server administration'));
 			$this->t->set_var('lang_admin_username',lang('admin username'));
-			$this->t->set_var('lang_admin_password',lang('admin password'));
+			$this->t->set_var('lang_admin_password',lang('admin passwort'));
 			$this->t->set_var('lang_imap_server_logintyp',lang('imap server logintyp'));
 			$this->t->set_var('lang_standard',lang('username (standard)'));
 			$this->t->set_var('lang_vmailmgr',lang('username@domainname (Virtual MAIL ManaGeR)'));

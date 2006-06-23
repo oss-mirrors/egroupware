@@ -12,13 +12,12 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	#require_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.ea_preferences.inc.php');
-	
 	// SMTP Server
 	define ('POSTFIX_LDAP', 2);
 	
 	// IMAP Server
 	define ('CYRUS_IMAP_SERVER', 3);
+	define ('DBMAIL_QMAILUSER',  4);
 
 	class bo
 	{
@@ -63,7 +62,7 @@
 						'smtpLDAPBaseDN',
 						'smtpLDAPUseDefault'
 					),
-					'description'	=> lang('Postfix with LDAP'),
+					'description'	=> lang('Postfix with qmailuser schema'),
 					'classname'	=> 'postfixldap'
 				)
 			);
@@ -79,7 +78,7 @@
 						'imapTLSAuthentication',
 						'imapoldcclient'
 					),
-					'description'	=> lang('standard POP3 server'),
+					'description'	=> 'standard POP3 server',
 					'protocol'	=> 'pop3',
 					'classname'	=> 'defaultpop'
 				),
@@ -93,7 +92,7 @@
 						'imapTLSAuthentication',
 						'imapoldcclient'
 					),
-					'description'	=> lang('standard IMAP server'),
+					'description'	=> 'standard IMAP server',
 					'protocol'	=> 'imap',
 					'classname'	=> 'defaultimap'
 				),
@@ -113,9 +112,26 @@
 						'imapSieveServer',
 						'imapSievePort'
 					),
-					'description'	=> lang('Cyrus IMAP Server'),
+					'description'	=> 'Cyrus IMAP Server',
 					'protocol'	=> 'imap',
 					'classname'	=> 'cyrusimap'
+				),
+				'4' 	=> array(
+					'fieldNames'	=> array(
+						'imapServer',
+						'imapPort',
+						'imapType',
+						'imapLoginType',
+						'imapTLSEncryption',
+						'imapTLSAuthentication',
+						'imapoldcclient',
+						'imapEnableSieve',
+						'imapSieveServer',
+						'imapSievePort'
+					),
+					'description'	=> 'DBMail with with qmailuser schema',
+					'protocol'	=> 'imap',
+					'classname'	=> 'dbmailqmailuser'
 				)
 			); 
 			
@@ -127,9 +143,6 @@
 			
 				$this->profileData	= $this->getProfile($_profileID);
 			
-				#$this->imapClass	= $this->IMAPServerType[$this->profileData['imapType']]['classname'];
-				#$this->smtpClass	= $this->SMTPServerType[$this->profileData['smtpType']]['classname'];
-
 				$this->imapClass	=& CreateObject('emailadmin.'.$this->IMAPServerType[$this->profileData['imapType']]['classname']);
 				$this->smtpClass	=& CreateObject('emailadmin.'.$this->SMTPServerType[$this->profileData['smtpType']]['classname']);
 			}
@@ -235,14 +248,12 @@
 #			return $this->imapClass;
 #		}
 		
-		function getIMAPServerTypes()
-		{
-			foreach($this->IMAPServerType as $key => $value)
-			{
+		function getIMAPServerTypes() {
+			foreach($this->IMAPServerType as $key => $value) {
 				$retData[$key]['description']	= $value['description'];
 				$retData[$key]['protocol']	= $value['protocol'];
 			}
-			
+
 			return $retData;
 		}
 		
@@ -387,6 +398,22 @@
 						$eaPreferences->setIncomingServer($icServer);
 						break;
 
+					case DBMAIL_QMAILUSER:
+						$icServer =& CreateObject('emailadmin.dbmailqmailuser');
+						$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes');
+						$icServer->host		= $data['imapServer'];
+						$icServer->port 	= $data['imapPort'];
+						$icServer->validatecert	= ($data['imapTLSAuthentication'] == 'yes');
+						$icServer->username 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
+						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
+						
+						$icServer->enableSieve		= ($data['imapEnableSieve'] == 'yes');
+						$icServer->sieveHost		= $data['imapSieveServer'];
+						$icServer->sievePort		= $data['imapSievePort'];
+						
+						$eaPreferences->setIncomingServer($icServer);
+						break;
+
 					default:
 						$icServer =& CreateObject('emailadmin.defaultimap');
 						$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes');
@@ -458,14 +485,31 @@
 			return false;
 		}
 		
-		function getUserData($_accountID, $_usecache)
+		function getUserData($_accountID)
 		{
-			if ($_usecache)
-			{
-				$userData = $this->userSessionData[$_accountID];
+			$userGroups = $GLOBALS['egw']->accounts->membership($_accountID);
+			$groups = array(0);
+			foreach((array)$userGroups as $groupInfo) {
+				$groups[] = $groupInfo['account_id'];
 			}
-			else
-			{
+
+			if($userProfile = $this->getUserProfile('felamimail', $groups)) {
+				$icServer = $userProfile->getIncomingServer(0);
+				if(is_a($icServer, 'defaultimap')) {
+					$icUserData = $icServer->getUserData($_accountID);
+				}
+
+				$ogServer = $userProfile->getOutgoingServer(0);
+				if(is_a($ogServer, 'defaultsmtp')) {
+					$ogUserData = $ogServer->getUserData($_accountID);
+				}
+				
+				return $icUserData + $ogUserData;
+				
+			}
+			
+			return false;
+			
 				$userData = $this->soemailadmin->getUserData($_accountID);
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection('','',true);
@@ -478,7 +522,6 @@
 				$bofelamimail->closeConnection();
 				$this->userSessionData[$_accountID] = $userData;
 				$this->saveSessionData();
-			}
 			return $userData;
 		}
 
@@ -547,25 +590,9 @@
 				'mail_login_type' => 'imapLoginType',
 				'mail_suffix' => 'defaultDomain',
 				'smtp_server' => 'smtpServer',
-				'smtp_port' => 'smtpPort',
-				'smtp_auth_user' => 'ea_smtp_auth_username',
-				'smtp_auth_passwd' => 'ea_smtp_auth_password',
-				// some more settings for the setup-cli only
-				'smtpType',	// 1 = standard, 2 = postfix with LDAP
-				'smtpAuth',	// null or yes
-				'editforwardingaddress',	// null or yes
-				'imapType',	// 1 = pop3, 2 = standard imap, 3 = Cyrus
-				'imapEnableCyrusAdmin',	// null or yes
-				'imapAdminUsername',
-				'imapAdminPW',
-				'imapEnableSieve',	// null or yes
-				'imapSieveServer',	// 
-				'imapSievePort',	// 2000
+				'smpt_port' => 'smtpPort',
 			) as $setup_name => $ea_name_data)
 			{
-				if (is_int($setup_name)) $setup_name = $ea_name_data;
-				if (!isset($settings[$setup_name])) continue;
-
 				if (!is_array($ea_name_data))
 				{
 					$profile[$ea_name_data] = $settings[$setup_name];
@@ -588,8 +615,6 @@
 					}
 				}
 			}
-			if ($settings['smtp_auth_user']) $profile['smtpAuth'] = 'yes';
-
 			$this->soemailadmin->updateProfile($profile);
 			//echo "<p>EMailAdmin profile update: ".print_r($profile,true)."</p>\n"; exit;
 		}
@@ -649,122 +674,47 @@
 			$GLOBALS['egw']->session->appsession('user_session_data','',$this->userSessionData);
 		}
 		
-		function saveUserData($_accountID, $_formData, $_boAction)
-		{
-			$this->userSessionData[$_accountID]['mailLocalAddress'] 	= $_formData["mailLocalAddress"];
-			$this->userSessionData[$_accountID]['accountStatus'] 		= $_formData["accountStatus"];
-			$this->userSessionData[$_accountID]['deliveryMode'] 		= $_formData["deliveryMode"];
-			$this->userSessionData[$_accountID]['qmailDotMode'] 		= $_formData["qmailDotMode"];
-			$this->userSessionData[$_accountID]['deliveryProgramPath'] 	= $_formData["deliveryProgramPath"];
-			$this->userSessionData[$_accountID]['quotaLimit'] 		= $_formData["quotaLimit"];
-
-			switch ($_boAction)
-			{
-				case 'add_mailAlternateAddress':
-					if (is_array($this->userSessionData[$_accountID]['mailAlternateAddress']))
-					{
-						$count = count($this->userSessionData[$_accountID]['mailAlternateAddress']);
-					}
-					else
-					{
-						$count = 0;
-						$this->userSessionData[$_accountID]['mailAlternateAddress'] = array();
-					}
-					
-					$this->userSessionData[$_accountID]['mailAlternateAddress'][$count] = 
-						$_formData['add_mailAlternateAddress'];
-						
-					$this->saveSessionData();
-					
-					break;
-					
-				case 'remove_mailAlternateAddress':
-					$i=0;
-					
-					while(list($key, $value) = @each($this->userSessionData[$_accountID]['mailAlternateAddress']))
-					{
-						#print ".. $key: $value<br>";
-						if ($key != $_formData['remove_mailAlternateAddress'])
-						{
-							$newMailAlternateAddress[$i]=$value;
-							#print "!! $i: $value<br>";
-							$i++;
-						}
-					}
-					$this->userSessionData[$_accountID]['mailAlternateAddress'] = $newMailAlternateAddress;
-					
-					$this->saveSessionData();
-
-					break;
-					
-				case 'add_mailRoutingAddress':
-					if (is_array($this->userSessionData[$_accountID]['mailRoutingAddress']))
-					{
-						$count = count($this->userSessionData[$_accountID]['mailRoutingAddress']);
-					}
-					else
-					{
-						$count = 0;
-						$this->userSessionData[$_accountID]['mailRoutingAddress'] = array();
-					}
-					
-					$this->userSessionData[$_accountID]['mailRoutingAddress'][$count] = 
-						$_formData['add_mailRoutingAddress'];
-						
-					$this->saveSessionData();
-
-					break;
-					
-				case 'remove_mailRoutingAddress':
-					$i=0;
-					
-					while(list($key, $value) = @each($this->userSessionData[$_accountID]['mailRoutingAddress']))
-					{
-						if ($key != $_formData['remove_mailRoutingAddress'])
-						{
-							$newMailRoutingAddress[$i]=$value;
-							$i++;
-						}
-					}
-					$this->userSessionData[$_accountID]['mailRoutingAddress'] = $newMailRoutingAddress;
-					
-					$this->saveSessionData();
-
-					break;
-					
-				case 'save':
-					$this->soemailadmin->saveUserData(
-						$_accountID, 
-						$this->userSessionData[$_accountID]);
-					$bofelamimail =& CreateObject('felamimail.bofelamimail');
-					$bofelamimail->openConnection('','',true);
-					$bofelamimail->imapSetQuota($GLOBALS['egw']->accounts->id2name($_accountID),
-										$this->userSessionData[$_accountID]['quotaLimit']);
-					$bofelamimail->closeConnection();
-					$GLOBALS['egw']->accounts->cache_invalidate($_accountID);
-					
-					
-					break;
+		function saveUserData($_accountID, $_formData) {
+			$userGroups = $GLOBALS['egw']->accounts->membership($_accountID);
+			$groups = array(0);
+			foreach((array)$userGroups as $groupInfo) {
+				$groups[] = $groupInfo['account_id'];
 			}
+
+			if($userProfile = $this->getUserProfile('felamimail', $groups)) {
+				$icServer = $userProfile->getIncomingServer(0);
+				if(is_a($icServer, 'defaultimap')) {
+					$icServer->setUserData($_accountID, $_formData['quotaLimit']);
+				}
+
+				$ogServer = $userProfile->getOutgoingServer(0);
+				if(is_a($ogServer, 'defaultsmtp')) {
+					$ogServer->setUserData($_accountID, 
+						(array)$_formData['mailAlternateAddress'], 
+						(array)$_formData['mailForwardingAddress'],
+						$_formData['deliveryMode']
+					);
+				}
+				
+				return true;
+			}
+			
+			return false;
 		}
 		
-		function setOrder($_order)
-		{
+		function setOrder($_order) {
 			if(is_array($_order)) {
 				$this->soemailadmin->setOrder($_order);
 			}
 		}
 
-		function updateAccount($_hookValues)
-		{
-			if (is_object($this->imapClass))
-			{
+		function updateAccount($_hookValues) {
+			if (is_object($this->imapClass)) {
 				#ExecMethod("emailadmin.".$this->imapClass.".updateAccount",$_hookValues,3,$this->profileData);
 				$this->imapClass->updateAccount($_hookValues);
 			}
 
-			if (is_object($this->smtpClass))
-			{
+			if (is_object($this->smtpClass)) {
 				#ExecMethod("emailadmin.".$this->smtpClass.".updateAccount",$_hookValues,3,$this->profileData);
 				$this->smtpClass->updateAccount($_hookValues);
 			}
