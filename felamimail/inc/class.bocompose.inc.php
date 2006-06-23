@@ -555,7 +555,7 @@
 		
 		function setDefaults()
 		{
-			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify($GLOBALS['egw_info']['user']['preferences']['felamimail']['signature']);
+			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']);
 			
 			$this->saveSessionData();
 		}
