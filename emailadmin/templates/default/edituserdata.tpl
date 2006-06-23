@@ -1,4 +1,10 @@
 <!-- BEGIN form -->
+<script language="JavaScript1.2">
+
+var langAddAddress="{lang_enter_new_address}";
+var langModifyAddress="{lang_update_current_address}";
+
+</script>
  <form method="POST" action="{form_action}">
   <center>
 	<table border="0" width="95%">
@@ -7,7 +13,7 @@
 					{rows}
 			</td>
 			<td>
-				<table border=0 width=100% cellspacing="0" cellpadding="2">
+				<table border="0" width="100%" cellspacing="0" cellpadding="2">
 					<tr bgcolor="{th_bg}">
 						<td colspan="2">
 							<b>{lang_email_config}</b>
@@ -20,65 +26,45 @@
 					<tr bgcolor="{tr_color1}">
 						<td width="200">{lang_emailAddress}</td>
 						<td colspan="2">
-							<input name="mailLocalAddress" value="{mailLocalAddress}" size=35>
-						</td>
-					</tr>
-					<tr bgcolor="{tr_color2}">
-						<td rowspan="4">{lang_mailAlternateAddress}</td>
-						<td rowspan="4" align="center">
-								{options_mailAlternateAddress}
-						</td>
-						<td align="center">
-							<input type="submit" value="{lang_remove} -->" name="remove_mailAlternateAddress">
-						</td>
-					</tr>
-					<tr bgcolor="{tr_color1}">
-						<td>
-							&nbsp;
-						</td>
-					</tr>
-					<tr bgcolor="{tr_color2}">
-						<td align="center">
-							<input name="mailAlternateAddressInput" value="{mailAlternateAddress}" size=35>
-						</td>
-					</tr>
-					<tr bgcolor="{tr_color2}">
-						<td align="center">
-							<input type="submit" value="<-- {lang_add}" name="add_mailAlternateAddress">
+							<input name="mailLocalAddress" value="{mailLocalAddress}" style="width:350px;">
 						</td>
 					</tr>
 
+
+
+
+					<tr bgcolor="{tr_color2}">
+						<td>{lang_mailAlternateAddress}</td>
+						<td align="center" style="width:350px;">
+								{selectbox_mailAlternateAddress}
+						</td>
+						<td align="left">
+							<button type="button" onclick="addRow('mailAlternateAddress', langAddAddress)"><img src="{url_image_add}" alt="{lang_add}" title="{lang_add}"></button><br>
+							<button type="button" onclick="editRow('mailAlternateAddress', langModifyAddress)"><img src="{url_image_edit}" alt="{lang_edit}" title="{lang_edit}"></button><br>
+							<button type="button" onclick="removeRow('mailAlternateAddress')"><img src="{url_image_delete}" alt="{lang_remove}" title="{lang_remove}"></button>
+						</td>
+					</tr>
+
+
+					
 					<tr bgcolor="{tr_color1}">
+						<td>{lang_mailRoutingAddress}</td>
+						<td align="center">
+								{selectbox_mailRoutingAddress}
+						</td>
+						<td align="left">
+							<button type="button" onclick="addRow('mailRoutingAddress', langAddAddress)"><img src="{url_image_add}" alt="{lang_add}" title="{lang_add}"></button><br>
+							<button type="button" onclick="editRow('mailRoutingAddress', langModifyAddress)"><img src="{url_image_edit}" alt="{lang_edit}" title="{lang_edit}"></button><br>
+							<button type="button" onclick="removeRow('mailRoutingAddress')"><img src="{url_image_delete}" alt="{lang_remove}" title="{lang_remove}"></button>
+						</td>
+					</tr>
+
+					<tr bgcolor="{tr_color2}">
 						<td>
 							{lang_forward_only}
 						</td>
 						<td colspan="2">
 							<input type="checkbox" name="forwardOnly" {forwardOnly_checked}>
-						</td>
-					</tr>
-					
-					<tr bgcolor="{tr_color2}">
-						<td rowspan="4">{lang_mailRoutingAddress}</td>
-						<td rowspan="4" align="center">
-								{options_mailRoutingAddress}
-						</td>
-						<td align="center">
-							<input type="submit" value="{lang_remove} -->" name="remove_mailRoutingAddress">
-						</td>
-					</tr>
-					<tr bgcolor="{tr_color1}">
-						<td>
-							&nbsp;
-						</td>
-					</tr>
-					<tr bgcolor="{tr_color2}">
-						<td align="center">
-							<input name="mailRoutingAddressInput" value="{mailRoutingAddress}" size=35>
-						</td>
-					</tr>
-					<tr bgcolor="{tr_color2}">
-						<td align="center" >
-							<input type="submit" value="<-- {lang_add}" name="add_mailRoutingAddress">
 						</td>
 					</tr>
 
@@ -95,7 +81,7 @@
 					<tr bgcolor="{tr_color2}">
 						<td width="200">{lang_qoutainmbyte}</td>
 						<td colspan="2">
-							<input name="quotaLimit" value="{quotaLimit}" size=35> ({lang_0forunlimited})
+							<input name="quotaLimit" value="{quotaLimit}" style="width:350px;"> ({lang_0forunlimited})
 						</td>
 					</tr>
 					<tr>
@@ -107,7 +93,7 @@
 				<table border=0 width=100%>
 					<tr bgcolor="{tr_color1}">
 						<td align="right" colspan="2">
-							<input type="submit" name="save" value="{lang_button}">
+							<input type="submit" name="save" value="{lang_button}" onclick="selectAllOptions('mailAlternateAddress'); selectAllOptions('mailRoutingAddress');">
 						</td>
 					</tr>
 				</table>
