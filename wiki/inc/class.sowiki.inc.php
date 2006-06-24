@@ -148,7 +148,7 @@ class soWikiPage
 	 * If we have an anonymous session and the anonymous session-type is NOT editable,
 	 * all pages are readonly (even if their own setting is editable by all) !!!
 	 *
-	 *  * @paramboolean $readable check if page is readable or writable, default False == writeable
+	 * @param boolean $readable=false check if page is readable or writable, default False == writeable
 	 * @return boolean true if check was successful, false otherwise
 	 */
 	function acl_check($readable = False)

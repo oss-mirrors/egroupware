@@ -341,7 +341,7 @@ class bowiki extends sowiki
 	 * Is called as hook to participate in the linking
 	 *
 	 * @param string/object $page string with page-name or sowikipage object
-	 * @return string the title
+	 * @return string/boolean string with title, null if page not found or false if not view perms
 	 */
 	function link_title( $page )
 	{
@@ -350,7 +350,9 @@ class bowiki extends sowiki
 			$page =& $this->page( $page );
 			$page->read();
 		}
-		return $page->exists ? strip_tags($page->title) : false;
+		if (!$page->exists) return null;
+		
+		return $page->acl_check(true)  ? strip_tags($page->title) : false;
 	}
 
 	/**
