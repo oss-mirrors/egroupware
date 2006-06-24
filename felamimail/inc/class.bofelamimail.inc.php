@@ -911,7 +911,13 @@
 			$this->updateCache($this->sessionData['mailbox']);
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
-			$filter = $bofilter->getFilter($this->sessionData['activeFilter']);			
+			$filter = $bofilter->getFilter($this->sessionData['activeFilter']);
+
+			if($this->sessionData['mailbox'] == $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) {
+				$filter['to'] = $filter['from'];
+				unset($filter['from']);
+			}
+			                                                                                        
 			if(!$displayHeaders = $caching->getHeaders($_startMessage, $_numberOfMessages, $_sort, $filter)) {
 				return false;
 			}

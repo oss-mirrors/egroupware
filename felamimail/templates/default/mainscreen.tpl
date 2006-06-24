@@ -73,7 +73,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td align="left" style="font-size:11px;">
 			<span id="messageCounter">{message}</span>
 		</td>
-		<td style="font-size:11px; width:250px; text-align:right;">
+		<td align="right" style="font-size:11px; width:250px;">
 			{quota_display}
 		</td>
 	</tr>
@@ -266,10 +266,10 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 					<td width="120px" bgcolor="{th_bg}" style="text-align:left;" class="{css_class_from}">
 						&nbsp;<a href="#" onclick="changeSorting('from', this); return false;"><span id='from_or_to'>{lang_from}</span></a>
 					</td>
-					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
+					<td width="40px" bgcolor="{th_bg}" align="right" class="{css_class_size}">
 						<a href="#" onclick="changeSorting('size', this); return false;">{lang_size}</a>&nbsp;
 					</td>
-					<td width="20px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
+					<td width="15px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
 						&nbsp;
 					</td>
 				</tr>
@@ -297,10 +297,10 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
 						&nbsp;&nbsp;<a href="javascript:changeSorting('date');">{lang_date}</a>
 					</td>
-					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
+					<td width="40px" bgcolor="{th_bg}" align="right" class="{css_class_size}">
 						<a href="javascript:changeSorting('size');">{lang_size}</a>&nbsp;
 					</td>
-					<td width="20px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
+					<td width="15px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
 						&nbsp;
 					</td>
 				</tr>

@@ -553,21 +553,16 @@
 			return true;
 		}
 		
-		function setDefaults()
-		{
+		function setDefaults() {
 			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']);
 			
 			$this->saveSessionData();
 		}
 		
-		function stripSlashes($_string) 
-		{
-			if (get_magic_quotes_gpc()) 
-			{
+		function stripSlashes($_string) {
+			if (get_magic_quotes_gpc()) {
 				return stripslashes($_string);
-			}
-			else
-			{
+			} else {
 				return $_string;
 			}
 		}
