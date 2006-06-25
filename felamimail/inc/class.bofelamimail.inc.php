@@ -213,9 +213,14 @@
 		
 		function deleteAccount($_hookValues)
 		{
-			if($this->profileID > 0 && is_numeric($this->profileID))
-			{
-				ExecMethod('emailadmin.bo.deleteAccount',$_hookValues,3,$this->profileID);
+			$icServer = $this->mailPreferences->getIncomingServer(0);
+			if(is_a($icServer,'defaultimap')) {
+				$icServer->deleteAccount($_hookValues);
+			}
+
+			$ogServer = $this->mailPreferences->getOutgoingServer(0);
+			if(is_a($ogServer,'defaultsmtp')) {
+				$ogServer->deleteAccount($_hookValues);
 			}
 		}
 		
