@@ -182,7 +182,7 @@
 		
 		function emptyTrash() {
 			if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'])) {
-				$this->bofelamimail->compressFolder($preferences->preferences['trashFolder']);
+				$this->bofelamimail->compressFolder($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']);
 			}
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
