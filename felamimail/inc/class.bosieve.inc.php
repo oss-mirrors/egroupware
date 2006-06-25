@@ -12,10 +12,9 @@
 	\***************************************************************************/
 	/* $Id: class.uisieve.inc.php,v 1.24 2005/11/30 08:29:45 ralfbecker Exp $ */
 
-	include_once('Net/Sieve.php');
+	include_once(EGW_SERVER_ROOT. '/felamimail/inc/Sieve.php');
 
-	class bosieve extends Net_Sieve
-	{
+	class bosieve extends Net_Sieve {
 		/**
 		* @var object $icServer object containing the information about the imapserver
 		*/
