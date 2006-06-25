@@ -152,8 +152,7 @@
 		
 		function closeConnection()
 		{
-			if(is_resource($this->mbox))
-			{
+			if(is_resource($this->mbox)) {
 				imap_close($this->mbox);
 			}
 		}
@@ -161,9 +160,11 @@
 		function compressFolder($_folderName = false)
 		{
 			$folderName	= ($_folderName ? $_folderName : $this->sessionData['mailbox']);
-			$deleteOptions	= $this->mailPreferences->preferenes['deleteOptions'];
-			$trashFolder	= $this->mailPreferences->preferenes['trashFolder'];
+			$deleteOptions	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['deleteOptions'];
+			$trashFolder	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'];
 			
+			$this->reopen($folderName);
+
 			if($folderName == $trashFolder && $deleteOptions == "move_to_trash") {
 				$imapServer =& $this->mailPreferences->getIncomingServer(0);
 				$mailboxString = $imapServer->getMailboxString($folderName);

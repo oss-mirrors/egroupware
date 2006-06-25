@@ -85,8 +85,7 @@
 		
 		function compressFolder() {
 			$this->bofelamimail->restoreSessionData();
-			$this->bofelamimail->reopen($this->sessionData['mailbox']);
-			$this->bofelamimail->compressFolder();
+			$this->bofelamimail->compressFolder($this->sessionData['mailbox']);
 
 			$bofilter =& CreateObject('felamimail.bofilter');
 			$caching =& CreateObject('felamimail.bocaching',
@@ -182,11 +181,7 @@
 		}
 		
 		function emptyTrash() {
-			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
-
-			if(!empty($preferences->preferences['trashFolder'])) {
-				$this->bofelamimail->closeConnection();
-				$this->bofelamimail->openConnection($preferences->preferences['trashFolder']);
+			if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'])) {
 				$this->bofelamimail->compressFolder($preferences->preferences['trashFolder']);
 			}
 
@@ -250,7 +245,7 @@
 				$response->addScript("tree.setItemText('$_folderName', '". $folderStatus['shortName'] ."');");
 			}
 
-			//$response->addScript("tree.selectItem('".$_folderName. "',false);");
+			$response->addScript("tree.selectItem('".$_folderName. "',false);");
 
 			return $response->getXML();
 		}
@@ -336,7 +331,6 @@
 			$this->bofelamimail->moveMessages($_folder, $_selectedMessages['msg']);
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
-			
 		}
 
 		function quickSearch($_searchString) {
