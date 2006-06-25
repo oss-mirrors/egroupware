@@ -33,145 +33,158 @@
 		
 		var $sievePort;
 		
-		function addAccount($_hookValues)
-		{
+		function addAccount($_hookValues) {
+			if(!$this->enableCyrusAdmin) {
+				return false;
+			}
 			#_debug_array($_hookValues);
 			$username 	= $_hookValues['account_lid'];
 			$userPassword	= $_hookValues['new_passwd'];
-			
-			#_debug_array($this->profileData);
-			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
-			$imapAdminPW		= $this->profileData['imapAdminPW'];
 
+			$this->closeConnection();
+			
+			// we need a admin connection
+			$this->openConnection(0,true);
+			
 			$folderNames = array(
-				"user.$username",
-				"user.$username.Trash",
-				"user.$username.Sent"
+				'user'. $this->mailboxDelimiter .$username,
+				'user'. $this->mailboxDelimiter .$username . $this->mailboxDelimiter .'Trash',
+				'user'. $this->mailboxDelimiter .$username . $this->mailboxDelimiter .'Sent',
 			);
 			
 			// create the mailbox
-			if($mbox = @imap_open ($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
-			{
+			if(is_resource($this->mbox)) {
 				// create the users folders
-				foreach($folderNames as $mailBoxName)
-				{
-					if(imap_createmailbox($mbox,imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
-					{
-						if(!imap_setacl($mbox, $mailBoxName, $username, "lrswipcda"))
-						{
+				foreach($folderNames as $mailboxName) {
+					$mailboxString = $this->getMailboxString($mailboxName);
+					$mailboxName = $this->encodeFolderName($mailboxName);
+					if(imap_createmailbox($this->mbox, $mailboxString)) {
+						if(!imap_setacl($this->mbox, $mailboxName, $username, "lrswipcda")) {
 							# log error message
 						}
 					}
 				}
-				imap_close($mbox);
-			}
-			else
-			{
-				_debug_array(imap_errors());
+				$this->closeConnection();
+			} else {
+				#_debug_array(imap_errors());
 				return false;
 			}
 			
 			// subscribe to the folders
-			if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword))
-			{
+			if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword)) {
 				imap_subscribe($mbox,$this->getMailboxString('INBOX'));
-				imap_subscribe($mbox,$this->getMailboxString('INBOX.Sent'));
-				imap_subscribe($mbox,$this->getMailboxString('INBOX.Trash'));
+				imap_subscribe($mbox,$this->getMailboxString('INBOX'. $this->mailboxDelimiter .'Trash'));
+				imap_subscribe($mbox,$this->getMailboxString('INBOX'. $this->mailboxDelimiter .'Sent'));
 				imap_close($mbox);
-			}
-			else
-			{
+			} else {
 				# log error message
 			}
 		}
 		
 		function deleteAccount($_hookValues)
 		{
-			$username		= $_hookValues['account_lid'];
-		
-			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
-			$imapAdminPW		= $this->profileData['imapAdminPW'];
-
-			if($mbox = @imap_open($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
-			{
-				$mailBoxName = "user.$username";
-				// give the admin account the rights to delete this mailbox
-				if(imap_setacl($mbox, $mailBoxName, $imapAdminUsername, "lrswipcda"))
-				{
-					if(imap_deletemailbox($mbox,
-						imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
-					{
-						return true;
-					}
-					else
-					{
-						// not able to delete mailbox
-						return false;
-					}
-				}
-				else
-				{
-					// not able to set acl
-					return false;
-				}
-			}
-			else
-			{
-				// imap open failed
+			if(!$this->enableCyrusAdmin) {
 				return false;
 			}
+
+			$this->closeConnection();
+			
+			// we need a admin connection
+			$this->openConnection(0,true);
+
+			$username		= $_hookValues['account_lid'];
+		
+			if(is_resource($this->mbox)) {
+				$mailboxString = $this->getMailboxString('user'. $this->mailboxDelimiter. $username);
+				$mailboxName = $this->encodeFolderName('user'. $this->mailboxDelimiter. $username);
+				// give the admin account the rights to delete this mailbox
+				if(imap_setacl($this->mbox, $mailboxName, $this->adminUsername, 'lrswipcda')) {
+					if(imap_deletemailbox($this->mbox, $mailboxString)) {
+						$this->closeConnection();
+						return true;
+					}
+				}
+			}
+			
+			$this->closeConnection();
+			// imap open failed
+			return false;
 		}
 
-		function updateAccount($_hookValues)
-		{
+		function setUserData($_uidnumber, $_quota) {
+			if(!$this->enableCyrusAdmin) {
+				return false;
+			}
+			
+			$this->closeConnection();
+			
+			// we need a admin connection
+			$this->openConnection(0,true);
+
+			if($username = $GLOBALS['egw']->accounts->id2name($_uidnumber)) {
+
+				$mailboxname = 'user'. $this->mailboxDelimiter. $username;
+
+				if((int)$_quota > 0) {
+					// enable quota
+					$quota_value = imap_set_quota($this->mbox, $mailboxname, $_quota*1024);
+				} else {
+					// disable quota
+					$quota_value = imap_set_quota($this->mbox, $mailboxname, -1);
+				}
+				$this->closeConnection();
+				return true;
+			}
+			$this->closeConnection();
+			return false;
+		}
+
+		function updateAccount($_hookValues) {
+			if(!$this->enableCyrusAdmin) {
+				return false;
+			}
 			#_debug_array($_hookValues);
 			$username 	= $_hookValues['account_lid'];
-			if(isset($_hookValues['new_passwd']))
+			if(isset($_hookValues['new_passwd'])) {
 				$userPassword	= $_hookValues['new_passwd'];
+			}
+
+			$this->closeConnection();
 			
-			#_debug_array($this->profileData);
-			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
-			$imapAdminPW		= $this->profileData['imapAdminPW'];
+			// we need a admin connection
+			$this->openConnection(0,true);
 
 			$folderNames = array(
-				"user.$username",
-				"user.$username.Trash",
-				"user.$username.Sent"
+				'user'. $this->mailboxDelimiter .$username,
+				'user'. $this->mailboxDelimiter .$username . $this->mailboxDelimiter .'Trash',
+				'user'. $this->mailboxDelimiter .$username . $this->mailboxDelimiter .'Sent',
 			);
 			
 			// create the mailbox
-			if($mbox = @imap_open ($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
-			{
+			if(is_resource($this->mbox)) {
 				// create the users folders
-				foreach($folderNames as $mailBoxName)
-				{
-					if(imap_createmailbox($mbox,imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
-					{
-						if(!imap_setacl($mbox, $mailBoxName, $username, "lrswipcd"))
-						{
+				foreach($folderNames as $mailboxName) {
+					$mailboxName = $this->getMailboxString($mailboxName);
+					if(imap_createmailbox($mbox, $mailboxName)) {
+						if(!imap_setacl($mbox, $mailboxName, $username, "lrswipcd")) {
 							# log error message
 						}
 					}
 				}
-				imap_close($mbox);
-			}
-			else
-			{
+				$this->closeConnection();
+			} else {
 				return false;
 			}
 			
 			// we can only subscribe to the folders, if we have the users password
-			if(isset($_hookValues['new_passwd']))
-			{
-				if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword))
-				{
+			if(isset($_hookValues['new_passwd'])) {
+				// subscribe to the folders
+				if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword)) {
 					imap_subscribe($mbox,$this->getMailboxString('INBOX'));
-					imap_subscribe($mbox,$this->getMailboxString('INBOX.Sent'));
-					imap_subscribe($mbox,$this->getMailboxString('INBOX.Trash'));
+					imap_subscribe($mbox,$this->getMailboxString('INBOX'. $this->mailboxDelimiter .'Trash'));
+					imap_subscribe($mbox,$this->getMailboxString('INBOX'. $this->mailboxDelimiter .'Sent'));
 					imap_close($mbox);
-				}
-				else
-				{
+				} else {
 					# log error message
 				}
 			}

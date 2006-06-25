@@ -53,11 +53,16 @@
 		// is mbstring support available
 		var $mbAvailable;
 		
-		function defaultimap()
-		{
+		function defaultimap() {
 			if (function_exists('mb_convert_encoding')) $this->mbAvailable = TRUE;
 			
 			$this->restoreSessionData();
+		}
+		
+		function closeConnection() {
+			if(is_resource($this->mbox)) {
+				imap_close($this->mbox);
+			}
 		}
 		
 		function addAccount($_hookValues)
@@ -169,6 +174,10 @@
 		function getUserData($_uidnumber) {
 			$userData = array();
 			
+			if($quota = $this->getQuota('INBOX')) {
+				$userData['quotaLimit'] = $quota['limit'] / 1024;
+			}
+			
 			return $userData;
 		}
 		
@@ -230,7 +239,8 @@
 			$GLOBALS['egw']->session->appsession('imap_session_data','',$this->sessionData);
 		}
 		
-		function setUserData($_quota) {
+		function setUserData($_uidnumber, $_quota) {
+			return true;
 		}
 
 		function supportsCapability($_capability) {

@@ -65,14 +65,16 @@
 			return $userData;
 		}
 
-		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
-		{
+		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy) {
+			return true;
+		}
+
+		function setUserData($_uidnumber, $_mailAlternateAddress, $_mailForwardingAddress, $_deliveryMode) {
 			return true;
 		}
 		
 		// update a account
-		function updateAccount($_hookValues)
-		{
+		function updateAccount($_hookValues) {
 			return true;
 		}
 	}

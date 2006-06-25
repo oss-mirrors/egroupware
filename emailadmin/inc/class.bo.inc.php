@@ -389,10 +389,9 @@
 						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
 						
 						$icServer->enableCyrusAdmin	= ($data['imapEnableCyrusAdmin'] == 'yes');
-						$icServer->cyrusAdminUsername	= $data['imapAdminUsername'];
-						$icServer->cyrusAdminPassword	= $data['imapAdminPW'];
+						$icServer->adminUsername	= $data['imapAdminUsername'];
+						$icServer->adminPassword	= $data['imapAdminPW'];
 						$icServer->enableSieve		= ($data['imapEnableSieve'] == 'yes');
-						$icServer->sieveHost		= $data['imapSieveServer'];
 						$icServer->sievePort		= $data['imapSievePort'];
 						
 						$eaPreferences->setIncomingServer($icServer);
@@ -408,7 +407,6 @@
 						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
 						
 						$icServer->enableSieve		= ($data['imapEnableSieve'] == 'yes');
-						$icServer->sieveHost		= $data['imapSieveServer'];
 						$icServer->sievePort		= $data['imapSievePort'];
 						
 						$eaPreferences->setIncomingServer($icServer);
