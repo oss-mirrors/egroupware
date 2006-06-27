@@ -80,6 +80,10 @@
 			);
 			$this->t->set_var("form_action", $GLOBALS['egw']->link('/index.php',$linkData));
 
+			$this->t->set_var('url_image_add',$GLOBALS['egw']->common->image('phpgwapi','new'));
+			$this->t->set_var('url_image_edit',$GLOBALS['egw']->common->image('phpgwapi','edit'));
+			$this->t->set_var('url_image_delete',$GLOBALS['egw']->common->image('phpgwapi','delete'));
+			
 			// only when we show a existing user
 			if($userData = $this->boemailadmin->getUserData($accountID, $_useCache)) {
 				$addresses = array();
@@ -108,10 +112,6 @@
 					5)
 				);
 				
-				$this->t->set_var('url_image_add',$GLOBALS['egw']->common->image('phpgwapi','new'));
-				$this->t->set_var('url_image_edit',$GLOBALS['egw']->common->image('phpgwapi','edit'));
-				$this->t->set_var('url_image_delete',$GLOBALS['egw']->common->image('phpgwapi','delete'));
-				
 				$this->t->set_var("quotaLimit",$userData["quotaLimit"]);
 			
 				$this->t->set_var("mailLocalAddress",$userData["mailLocalAddress"]);
@@ -127,9 +127,7 @@
 					$this->t->set_var("forwardOnly_checked","checked");
 				if ($_accountData["deliverExtern"] == "active")
 					$this->t->set_var("deliver_checked","checked");
-			}
-			else
-			{
+			} else {
 				$this->t->set_var("mailLocalAddress",'');
 				$this->t->set_var("mailAlternateAddress",'');
 				$this->t->set_var("mailRoutingAddress",'');
@@ -137,6 +135,26 @@
 				$this->t->set_var("options_mailRoutingAddress",lang('no forwarding email address'));
 				$this->t->set_var("account_checked",'');
 				$this->t->set_var("forwardOnly_checked",'');
+
+				$this->t->set_var('selectbox_mailAlternateAddress', $GLOBALS['egw']->html->select(
+					'mailAlternateAddress',
+					'',
+					array(), 
+					true, 
+					"style='width: 100%;' id='mailAlternateAddress'",
+					5)
+				);
+			
+				$this->t->set_var('selectbox_mailRoutingAddress', $GLOBALS['egw']->html->select(
+					'mailForwardingAddress',
+					'',
+					array(), 
+					true, 
+					"style='width: 100%;' id='mailRoutingAddress'",
+					5)
+				);
+				
+				$this->t->set_var('quotaLimit','');
 			}
 		
 			// create the menu on the left, if needed		
