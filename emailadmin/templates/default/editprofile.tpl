@@ -247,11 +247,12 @@
 				<b>{lang_select_type_of_imap/pop3_server}</b>
 			</td>
 			<td width="50%" align="right">
-				<select  style="width: 250px;" name="imapsettings[imapType]" id="imapselector" size="1" onchange="javascript:imap.display(this.value);">
+<!--				<select  style="width: 250px;" name="iimapsettings[imapType]" id="imapselector" size="1" onchange="javascript:imap.display(this.value);">
 					<option value="1" {selected_imapType_1}>{lang_imap_option_1}</option>
 					<option value="2" {selected_imapType_2}>{lang_imap_option_2}</option>
 					<option value="3" {selected_imapType_3}>{lang_imap_option_3}</option>
-				</select>
+				</select> -->
+				{imaptype}
 			</td>
 		</tr>
 	</table>
@@ -296,18 +297,12 @@
 			</tr>
 
 			<tr>
-				<td>{lang_use_tls_encryption}:</td>
+				<td>{lang_use_tls_authentication}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[1][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+					<input type="checkbox" name="imapsettings[1][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
 				</td>
 			</tr>
 
-			<tr>
-				<td>{lang_pre_2001_c_client}:</td>
-				<td>
-					<input type="checkbox" name="imapsettings[1][imapoldcclient]" {selected_imapoldcclient} value="yes">
-				</td>
-			</tr>
 		</table>
 		</fieldset>
 	</div>
@@ -355,13 +350,6 @@
 				<td>{lang_use_tls_authentication}:</td>
 				<td>
 					<input type="checkbox" name="imapsettings[2][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
-				</td>
-			</tr>
-
-			<tr>
-				<td>{lang_pre_2001_c_client}:</td>
-				<td>
-					<input type="checkbox" name="imapsettings[2][imapoldcclient]" {selected_imapoldcclient} value="yes">
 				</td>
 			</tr>
 		</table>
@@ -414,11 +402,20 @@
 				</td>
 			</tr>
 
+		</table>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_sieve_settings}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
 			<tr>
-				<td>{lang_pre_2001_c_client}:</td>
+				<td width="300px">{lang_enable_sieve}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[3][imapoldcclient]" {selected_imapoldcclient} value="yes">
+					<input type="checkbox" name="imapsettings[3][imapEnableSieve]" {selected_imapEnableSieve} value="yes">
 				</td>
+			</tr>
+			<tr>
+				<td>{lang_sieve_server_port}:</td>
+				<td><input name="imapsettings[3][imapSievePort]" maxlength="5" size="5" value="{value_imapSievePort}"></td>
 			</tr>
 		</table>
 		</fieldset>
@@ -442,23 +439,66 @@
 			</tr>
 		</table>
 		</fieldset>
+	</div>
+	
+	<!-- The code for the DBMail Server with qmailuserbackend -->
+	
+	<div id="imapcontent4" class="inactivetab">
+		<fieldset style="width:650px;" class="row_on"><legend>{lang_server_settings}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
+			<tr>
+				<td width="300px">{lang_imap_server_hostname_or_IP_address}:</td>
+				<td><input name="imapsettings[4][imapServer]" maxlength="80" style="width: 350px;" value="{value_imapServer}"></td>
+			</tr>
+			
+			<tr>
+				<td>{lang_imap_server_port}:</td>
+				<td><input name="imapsettings[4][imapPort]" maxlength="5" size="5" value="{value_imapPort}"></td>
+			</tr>
+			
+			<tr>
+				<td>{lang_imap_server_logintyp}:</td>
+				<td>
+					<select name="imapsettings[4][imapLoginType]" style="width: 350px;" size="1">
+						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
+						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+					</select>
+				</td>
+
+			</tr>
+		</table>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
+                <table width="100%" border="0" cellspacing="0" cellpading="1">
+
+			<tr>
+				<td width="300px">{lang_use_tls_encryption}:</td>
+				<td>
+					<input type="checkbox" name="imapsettings[4][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+				</td>
+			</tr>
+
+			<tr>
+				<td>{lang_use_tls_authentication}:</td>
+				<td>
+					<input type="checkbox" name="imapsettings[4][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+				</td>
+			</tr>
+		</table>
+		</fieldset>
 		<p>
 		<fieldset style="width:650px;" class="row_off"><legend>{lang_sieve_settings}</legend>
 		<table width="100%" border="0" cellspacing="0" cellpading="1">
 			<tr>
 				<td width="300px">{lang_enable_sieve}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[3][imapEnableSieve]" {selected_imapEnableSieve} value="yes">
+					<input type="checkbox" name="imapsettings[4][imapEnableSieve]" {selected_imapEnableSieve} value="yes">
 				</td>
 			</tr>
 			<tr>
-				<td>{lang_sieve_server_hostname_or_ip_address}:</td>
-				<td><input name="imapsettings[3][imapSieveServer]" maxlength="80" style="width: 350px;" value="{value_imapSieveServer}"></td>
-			</tr>
-
-			<tr>
 				<td>{lang_sieve_server_port}:</td>
-				<td><input name="imapsettings[3][imapSievePort]" maxlength="5" size="5" value="{value_imapSievePort}"></td>
+				<td><input name="imapsettings[4][imapSievePort]" maxlength="5" size="5" value="{value_imapSievePort}"></td>
 			</tr>
 		</table>
 		</fieldset>
