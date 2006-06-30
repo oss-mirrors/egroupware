@@ -84,7 +84,7 @@ class bowiki extends sowiki
 
 		global $ViewBase,$EditBase;
 		$ViewBase = $this->viewURL('');
-		$EditBase = $this->editURL('');
+		if(!isset($EditBase)) { $EditBase = $this->editURL(''); }
 	}
 
 	/**
