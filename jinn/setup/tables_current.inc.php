@@ -160,6 +160,25 @@
 			'fk' => array(),
 			'ix' => array('id'),
 			'uc' => array('id')
+		),
+		'egw_jinn_domains' => array(
+			'fd' => array(
+				'id' => array('type' => 'auto'),
+				'name' => array('type' => 'varchar','precision' => '250'),
+				'db_name' => array('type' => 'varchar','precision' => '30'),
+				'db_host' => array('type' => 'varchar','precision' => '30'),
+				'db_user' => array('type' => 'varchar','precision' => '30'),
+				'db_password' => array('type' => 'varchar','precision' => '30'),
+				'db_type' => array('type' => 'varchar','precision' => '30'),
+				'upload_path' => array('type' => 'varchar','precision' => '250'),
+				'upload_url' => array('type' => 'varchar','precision' => '250'),
+				'disabled' => array('type' => 'bool','default' => '0'),
+				'parent_app_id' => array('type' => 'int','precision' => '4')
+			),
+			'pk' => array('id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
 		)
 	);
 ?>

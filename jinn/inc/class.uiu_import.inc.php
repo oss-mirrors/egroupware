@@ -81,6 +81,12 @@
 	  */
 	  function import()
 	  {
+		 // prevent ugly error
+		 if(!$this->bo->site_object['object_id'])
+		 {
+			$this->bo->exit_and_open_screen($this->japielink.'jinn.uiuser.index');
+		 }
+
 		 //_debug_array($_POST);
 		 $this->header(lang('Import CSV-file in %1',$this->bo->site_object['name']));
 		 $this->msg_box();

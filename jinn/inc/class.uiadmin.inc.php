@@ -173,10 +173,16 @@
 			$this->header(lang('Edit Site'));
 
 			$_site_vals_arr=$this->bo->get_phpgw_records('egw_jinn_sites',$where_key,$where_value,'','','name');
+			
+			$site_domains_arr=$this->bo->get_phpgw_records('egw_jinn_domains','parent_app_id',$_site_vals_arr['site_id'],'','','name');
+
 			$this->tplsav2->site_values=$_site_vals_arr[0];
+			$this->tplsav2->site_domains=$site_domains_arr;
 
 			$this->tplsav2->where_key=$where_key;
 			$this->tplsav2->where_value=$where_value;
+
+
 		 }
 		 else
 		 {
