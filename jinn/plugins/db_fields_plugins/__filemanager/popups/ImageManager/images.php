@@ -166,60 +166,70 @@
 	  //_debug_array($file);
 	  if(is_file($file['tmp_name'])) 
 	  {
-		 $img_info = getimagesize($file['tmp_name']);
 
-		 if(is_array($img_info) && $img_info['mime'] != 'application/x-shockwave-flash') 
-		 //this is a valid image
-		 {
-			global $filetypes;
-			$type = $filetypes->GD_type($config['Image_filetype']);
-			//_debug_array($config);
-			//echo $config['Image_filetype'];
-			//die( $type);
-
-			$w = $img_info[0]; 
-			$h = $img_info[1];
-
-			$dest_file = match_extension($dest_dir.'..'.$file['name'], $type);
-			process_and_save_image($file['tmp_name'], $dest_file, 30, 20, $type); //JiNN list view mini thumbnails
-
-			if($_POST[thumb]=='true')
-			{
-			   if(!$_POST[thumbwidth]) $_POST[thumbwidth] = 10000;
-			   if(!$_POST[thumbheight]) $_POST[thumbheight] = 10000;
-			   $prefix='.thumb_01_';
-			   $dest_file = match_extension($dest_dir.$prefix.$file['name'], $type);
-			   process_and_save_image($file['tmp_name'], $dest_file, $_POST[thumbwidth], $_POST[thumbheight], $type);
-			}
-
-			if(!$_POST[width]) $_POST[width] = 10000;
-			if(!$_POST[height]) $_POST[height] = 10000;
-			if( $w > $_POST[width] || $h > $_POST[height] )
-			{
-			   $dest_file = match_extension($dest_dir.$file['name'], $type);
-			   process_and_save_image($file['tmp_name'], $dest_file, $_POST[width], $_POST[height], $type);
-			   $select_image_after_upload = match_extension($BASE_URL.$dirPathPost.'/'.$file['name'], $type);
-			}
-			else
-			{
-			   $dest_file = match_extension($dest_dir.$file['name'], $type);
-			   process_and_save_image($file['tmp_name'], $dest_file, $w, $h, $type);
-			   $select_image_after_upload = match_extension($BASE_URL.$dirPathPost.'/'.$file['name'], $type);
-			}
-		 }
-		 elseif($img_info['mime']=='application/x-shockwave-flash')
-		 // flash files
-		 {
-			move_uploaded_file($file['tmp_name'], $dest_dir.$file['name']);
-			chmod($dest_dir.$file['name'], 0666);
-			$select_other_after_upload = $BASE_URL.$dirPathPost.'/'.$file['name'];
-		 }
-		 else 
-		 //other unknown filetype
+		 if($config['Filetype']=='all')
 		 {
 			move_uploaded_file($file['tmp_name'], $dest_dir.$file['name']);	
 			chmod($dest_dir.$file['name'], 0666);
 			$select_other_after_upload = $BASE_URL.$dirPathPost.'/'.$file['name'];
+		 }
+		 else
+		 {
+			$img_info = getimagesize($file['tmp_name']);
+
+			if(is_array($img_info) && $img_info['mime'] != 'application/x-shockwave-flash') 
+			//this is a valid image
+			{
+			   global $filetypes;
+			   $type = $filetypes->GD_type($config['Image_filetype']);
+			   //_debug_array($config);
+			   //echo $config['Image_filetype'];
+			   //die( $type);
+
+			   $w = $img_info[0]; 
+			   $h = $img_info[1];
+
+			   $dest_file = match_extension($dest_dir.'..'.$file['name'], $type);
+			   process_and_save_image($file['tmp_name'], $dest_file, 30, 20, $type); //JiNN list view mini thumbnails
+
+			   if($_POST[thumb]=='true')
+			   {
+				  if(!$_POST[thumbwidth]) $_POST[thumbwidth] = 10000;
+				  if(!$_POST[thumbheight]) $_POST[thumbheight] = 10000;
+				  $prefix='.thumb_01_';
+				  $dest_file = match_extension($dest_dir.$prefix.$file['name'], $type);
+				  process_and_save_image($file['tmp_name'], $dest_file, $_POST[thumbwidth], $_POST[thumbheight], $type);
+			   }
+
+			   if(!$_POST[width]) $_POST[width] = 10000;
+			   if(!$_POST[height]) $_POST[height] = 10000;
+			   if( $w > $_POST[width] || $h > $_POST[height] )
+			   {
+				  $dest_file = match_extension($dest_dir.$file['name'], $type);
+				  process_and_save_image($file['tmp_name'], $dest_file, $_POST[width], $_POST[height], $type);
+				  $select_image_after_upload = match_extension($BASE_URL.$dirPathPost.'/'.$file['name'], $type);
+			   }
+			   else
+			   {
+				  $dest_file = match_extension($dest_dir.$file['name'], $type);
+				  process_and_save_image($file['tmp_name'], $dest_file, $w, $h, $type);
+				  $select_image_after_upload = match_extension($BASE_URL.$dirPathPost.'/'.$file['name'], $type);
+			   }
+			}
+			elseif($img_info['mime']=='application/x-shockwave-flash')
+			// flash files
+			{
+			   move_uploaded_file($file['tmp_name'], $dest_dir.$file['name']);
+			   chmod($dest_dir.$file['name'], 0666);
+			   $select_other_after_upload = $BASE_URL.$dirPathPost.'/'.$file['name'];
+			}
+			else 
+			//other unknown filetype
+			{
+			   move_uploaded_file($file['tmp_name'], $dest_dir.$file['name']);	
+			   chmod($dest_dir.$file['name'], 0666);
+			   $select_other_after_upload = $BASE_URL.$dirPathPost.'/'.$file['name'];
+			}
 		 }
 	  }
 	  $clearUploads = true;
