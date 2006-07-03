@@ -141,11 +141,23 @@
 	  */
 	  function has_default($field_meta_arr)
 	  {
-		 if($field_meta_arr[has_default])
+		 if($field_meta_arr['has_default'])
 		 {
 			return true;
 		 }
 		 return false;
+	  }
+
+	  function nullable()
+	  {
+		 if($field_meta_arr['not_null'])
+		 {
+			return false;
+		 }
+		 else
+		 {
+			return true;
+		 }
 	  }
 
 	  /*!

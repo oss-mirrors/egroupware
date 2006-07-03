@@ -1727,25 +1727,28 @@
 			}
 			elseif($this->db_ftypes->complete_resolve($metadata[$field[name]])=='int')
 			{
-			   if(!is_numeric($field[value]))
+			   //what to do with empty value
+			   if(!trim($field[value]))
 			   {
-				  continue;
+				  /* if there is a default value set it to this value */
+				  if($this->db_ftypes->has_default($metadata[$field[name]]))
+				  {
+					 $field[value]=$this->db_ftypes->get_default($metadata[$field[name]]);
+				  }
+				  elseif($this->db_ftypes->nullable($metadata[$field[name]]))
+				  {
+					 $field[value]='null';
+				  }
+				  else
+				  {
+					 continue;
+				  }
 			   }
 
-			   if(strval($field[value]!='0'))
+			   if($field[value]!='null' && !is_numeric($field[value]))
 			   {
-				  if(empty($field[value]))
-				  {
-					 /* if there is a default value set it to this value */
-					 if($this->db_ftypes->has_default($metadata[$field[name]]))
-					 {
-						$field[value]=$this->db_ftypes->get_default($metadata[$field[name]]);
-					 }
-					 else
-					 {
-						continue;
-					 }
-				  }
+				  //fixme add error
+				  continue;
 			   }
 			}
 			elseif (!$autowhere && eregi("primary_key", $metadata[$field[name]][flags]) && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
@@ -2128,7 +2131,7 @@
 
 			$SQLfields .= $colname;
 			
-			if( !$meta[$colname]['not_null']&& $colval==null)
+			if( !$meta[$colname]['not_null'] && $colval==null)
 			{
 			   $SQLvalues .= "NULL";
 			}

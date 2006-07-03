@@ -32,7 +32,6 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] heel af en toe na importeren over een site heen lijkt het navigatie menu niet goed te werken in sitebox: wel site geen objecten
 			[_] default varchar geeft bij het openen geen plugin informatie weer
 			[_] gen_menu geeft geen waarschuwing als veld te klein is
-			[_] in relatiescherm, types bij de velden, via tooltip of direct erachter
 			[_] extra hulpregels bij de verschillende relaties, is niet echt duidelijk
 			[_] ??? bij groot een op veel realtie object infinite loop
 			[_] ??? bij nieuw record resolven de relaties niet goed
@@ -164,6 +163,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] relations have to have an own table
 				[_] o2o en m2o relaties hoeven geen remote tabel te hebben
 				[_] O2O je kunt nu kiezen voor tabel 1 met configuratie 2, dus of alleen een confuguratie kiezen of alleen een tabel
+				[_] in relatiescherm, types bij de velden, via tooltip of direct erachter
 			[_] 0% DOCUMENTATION, TRANSLATIONS INFO
 				[_] Vertalen
 				[_] Meer info geven in object overzicht: type relaties, problemen objecten, geconf. velden, totaal db velden

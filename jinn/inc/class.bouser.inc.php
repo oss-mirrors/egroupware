@@ -515,6 +515,7 @@
 				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 
 				  $status[m2m]=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
+
 				  $status[record]=$this->so->update_object_data($object_arr['parent_site_id'], $object_arr[table_name], $data, $where_key,$where_value,$where_string);
 
 				  //_debug_array($post_arr);
