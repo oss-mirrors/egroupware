@@ -24,12 +24,12 @@
 			   self.close()
 		 }
 	  </script>
-	  <?=$this->css?>
+	  <?=//$this->css?>
 	  <style type="text/css">
 		 td
 		 {
 			   vertical-align:top;
-			}
+		 }
 	  </style>
    </head>
 

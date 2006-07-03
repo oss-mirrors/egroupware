@@ -920,6 +920,10 @@
 			}
 
 			$records = $this->so->get_phpgw_record_values($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by);
+			if(!is_array($records))
+			{
+			   return array();
+			}
 
 			return $records;
 		 }

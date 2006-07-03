@@ -107,7 +107,6 @@
 		 }
 
 		 $this->edit_this_jinn_site();
-		 //$this->exit_and_open_screen('jinn.uiadmin.add_edit_site&this_site=true');
 	  }
 
 
@@ -146,7 +145,7 @@
 			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 		 }
 
-		 $where_key='site_id';//stripslashes($this->bo->where_key);
+		 $where_key='site_id';
 		 $where_value=stripslashes($this->bo->where_value);
 
 		 if($_POST[submitted]=='true')
@@ -174,7 +173,7 @@
 
 			$_site_vals_arr=$this->bo->get_phpgw_records('egw_jinn_sites',$where_key,$where_value,'','','name');
 			
-			$site_domains_arr=$this->bo->get_phpgw_records('egw_jinn_domains','parent_app_id',$_site_vals_arr['site_id'],'','','name');
+			$site_domains_arr=$this->bo->get_phpgw_records('egw_jinn_domains','parent_app_id',$where_value,'','','name');
 
 			$this->tplsav2->site_values=$_site_vals_arr[0];
 			$this->tplsav2->site_domains=$site_domains_arr;
@@ -1022,7 +1021,6 @@
 		 $object_values=$this->bo->so->get_object_values($_GET[object_id]);
 
 		 //if we have to save the stuff to the db
-		 //_debug_array();
 		 if($_POST['submitted'] && $_POST['el_changes']!='true')
 		 {
 			// seperate the diffrent type of fields in different arrays
@@ -1130,7 +1128,6 @@
 			}
 			if ($temp == $search)
 			{
-			   //_debug_array($temp);
 			   return $value;
 			}
 			if(!is_array($temp)) return $temp;
@@ -1160,7 +1157,6 @@
 
 				//unset($_GET[edit]);
 			//unset($_POST[plugin]);
-		//	_debug_array($_FILES);
 		 }
 
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
@@ -1189,7 +1185,6 @@
 
 		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
 		 $stored_configs = unserialize(base64_decode($object_arr[events_config]));
-//		 _debug_array($stored_configs);
 
 		 $this->tplsav2->stored_events_arr=array(); 
 		 if(is_array($stored_configs))
@@ -1242,7 +1237,6 @@
 			{
 			   $edit_conf = $stored_configs[$_GET[edit]];
 			}
-//			_debug_array($edit_conf);
 			$this->tplsav2->plugin=$edit_conf['name'];
 			$this->tplsav2->event=$edit_conf['conf']['event'];
 
@@ -1258,8 +1252,6 @@
 			$cfg=$this->bo->object_events_plugins[$edit_conf[name]]['config'];
 			$cfg_help=$this->bo->object_events_plugins[$edit_conf[name]]['config_help'];
 		 }
-
-		 //_debug_array($cfg);
 
 		 if(is_array($cfg))
 		 {
@@ -1414,7 +1406,6 @@
 						}
 						elseif($post_multi[$key.'_plgdelete'])
 						{
-						   //_debug_array($val);
 						   $arr = explode("_SEP_",$key);
 						   $this->bo->site_fs->remove_file($this->bo->so->get_site_id_by_object_id($_GET[object_id]),$val,$plug_reg_conf_arr[substr($arr[0],3)]['items'][$arr[1]][subdir]);
 						}
@@ -1511,7 +1502,7 @@
 		 $this->tplsav2->assign('charset',$GLOBALS['phpgw']->translation->charset());
 		 $this->tplsav2->assign('website_title',lang('Field properties'));
 		 $this->tplsav2->assign('theme_css',$theme_css);
-		 $this->tplsav2->assign('css',$GLOBALS['phpgw']->common->get_css());
+		 //$this->tplsav2->assign('css',$GLOBALS['phpgw']->common->get_css());
 		 $this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
 		 $this->tplsav2->assign('action',$action);
 		 $this->tplsav2->assign('avail_plugins_arr',$avail_plugins_arr);

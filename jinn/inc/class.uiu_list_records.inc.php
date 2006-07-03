@@ -108,7 +108,7 @@
 			   $all_col_names_list[]=$onecol[name];
 
 			   // check for primaries and create array 
-			   if (eregi("primary_key", $onecol[flags]) && $onecol[type]!='blob') // FIXME howto select long blobs
+			   if ($onecol[primary_key] && $onecol[type]!='blob') // FIXME howto select long blobs
 			   {						
 				  $pkey_arr[]=$onecol[name];
 			   }
@@ -355,7 +355,6 @@
 
 		 //the filter class takes care of detecting the current filter, compiling a where statement and compiling the filter options for the listbox
 		 $filter_where = $this->filtermanager->get_filter_where();
-		 //_debug_array($filter_where);
 
 		 $this->tplsav2->set_var('filter_list',$this->filtermanager->format_filter_options($_POST[filtername]));
 		 $this->tplsav2->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
@@ -420,6 +419,16 @@
 			if(!$ftype) $ftype='string';
 			$column_types[$onecol['name']] = $ftype;
 
+			/* check for primaries and create array */
+			if ($onecol[primary_key] && $onecol[type]!='blob') // FIXME howto select long blobs
+			{						
+			   $pkey_arr[]=$onecol[name];
+			}
+			elseif($onecol[type]!='blob') // FIXME howto select long blobs
+			{
+			   $akey_arr[]=$onecol[name];
+			}
+
 			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecol[name]);
 
 			if($field_conf_arr[field_enabled]=='0' && $field_conf_arr[field_enabled]!=null)
@@ -436,15 +445,6 @@
 			//create more simple col_list with only names //why
 			$all_col_names_list[]=$onecol[name];
 
-			/* check for primaries and create array */
-			if (eregi("primary_key", $onecol[flags]) && $onecol[type]!='blob') // FIXME howto select long blobs
-			{						
-			   $pkey_arr[]=$onecol[name];
-			}
-			elseif($onecol[type]!='blob') // FIXME howto select long blobs
-			{
-			   $akey_arr[]=$onecol[name];
-			}
 
 			/* format quick_filter condition 
 			fixme make general function in so
@@ -670,6 +670,8 @@
 			$this->tplsav2->records_rows_arr=array();
 			foreach($records as $recordvalues)
 			{
+			   
+			   
 			   unset($where_string);
 			   if(count($pkey_arr)>0)
 			   {

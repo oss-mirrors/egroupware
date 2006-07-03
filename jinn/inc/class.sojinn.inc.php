@@ -193,19 +193,19 @@
 	  {
 		 if($data['host_profile']=='development')
 		 {
-			$data2['site_db_host']    			= $data['dev_site_db_host'];
-			$data2['site_db_type']    			= $data['dev_site_db_type'];
-			$data2['site_db_name']    			= $data['dev_site_db_name'];
-			$data2['site_db_user']    			= $data['dev_site_db_user'];
-			$data2['site_db_password']			= $data['dev_site_db_password'];
+			$data2['cur_site_db_host']    			= $data['dev_site_db_host'];
+			$data2['cur_site_db_type']    			= $data['dev_site_db_type'];
+			$data2['cur_site_db_name']    			= $data['dev_site_db_name'];
+			$data2['cur_site_db_user']    			= $data['dev_site_db_user'];
+			$data2['cur_site_db_password']			= $data['dev_site_db_password'];
 		 }
 		 else
 		 {
-			$data2['site_db_host']    			= $data['site_db_host'];
-			$data2['site_db_type']    			= $data['site_db_type'];
-			$data2['site_db_name']    			= $data['site_db_name'];
-			$data2['site_db_user']    			= $data['site_db_user'];
-			$data2['site_db_password']			= $data['site_db_password'];
+			$data2['cur_site_db_host']    			= $data['site_db_host'];
+			$data2['cur_site_db_type']    			= $data['site_db_type'];
+			$data2['cur_site_db_name']    			= $data['site_db_name'];
+			$data2['cur_site_db_user']    			= $data['site_db_user'];
+			$data2['cur_site_db_password']			= $data['site_db_password'];
 		 }
 
 		 return $this->test_db($data2);
@@ -233,31 +233,30 @@
 	  */
 	  function test_db($data)
 	  {
-		 if($data['site_db_type']=='egw')
+		 if($data['cur_site_db_type']=='egw')
 		 {
-			$this->test_db = $this->phpgw_db;
+			$this->test_db =  $this->phpgw_db;
 		 }
 		 else
 		 {
 			$this->test_db = & new egw_db();
+
+			$this->test_db->Host		= $data['cur_site_db_host'];
+			$this->test_db->Type		= $data['cur_site_db_type'];
+			$this->test_db->Database	= $data['cur_site_db_name'];
+			$this->test_db->User		= $data['cur_site_db_user'];
+			$this->test_db->Password	= $data['cur_site_db_password'];
 		 }
 
-		 $this->test_db->Host		= $data['site_db_host'];
-		 $this->test_db->Type		= $data['site_db_type'];
-		 $this->test_db->Database	= $data['site_db_name'];
-		 $this->test_db->User		= $data['site_db_user'];
-		 $this->test_db->Password	= $data['site_db_password'];
-
 		 $this->test_db->Halt_On_Error='no';
-
-		 if($test=@$this->test_db->table_names())
+		 @$this->test_db->table_names();
+		 if($this->test_db->Link_ID->_connectionID)
 		 {
 			$this->test_db->disconnect;
 			return true;
 		 }
 		 else
 		 {
-			$this->test_db->disconnect;
 			return false;
 		 }
 	  }
@@ -948,7 +947,6 @@
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query($sql, __LINE__, __FILE__); 
 		
-		 echo $sql;
 		 //we must reorder the records
 		 if($this->phpgw_db->num_rows()>0)
 		 {
@@ -1978,7 +1976,6 @@
 		 elseif($table == 'egw_jinn_objects')
 		 {
 			$SQL = 'SELECT * FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
-			//echo $SQL;
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
 			   if($this->phpgw_db->num_rows()>0) 
@@ -2211,7 +2208,6 @@
 		 }
 
 		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-		 ///echo $SQL;
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status=$this->phpgw_db->get_last_insert_id($table,$last_insert_id_col);
@@ -2665,18 +2661,12 @@
 	
 	  function increase_site_version($site_id)
 	  {
-		 //function update($table,$data,$where,$line,$file,$app=False,$use_prepared_statement=false)
-
 		 $data['site_version']='site_version+1';
 		 $where='site_id='.$site_id;
-		 ///		 $status=$this->phpgw_db->update('egw_jinn_sites',$data,$where,__LINE__,__FILE__);
 		 $sql="UPDATE egw_jinn_sites SET site_version=site_version+1 WHERE site_id=$site_id";
-		 //echo $sql;
 		 $status=$this->phpgw_db->query("$sql",__LINE__,__FILE__);
 
 		 return $status;
-		 
-		 //$this->so->increase_site_version(); 
 	  }
    }
 ?>

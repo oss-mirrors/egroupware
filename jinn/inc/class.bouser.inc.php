@@ -87,16 +87,9 @@
 		 $this->plug = CreateObject('jinn.factory_plugins_db_fields');
 		 $this->plug->local_bo = &$this; //FIXME remove
 
-
-		// move to bojinn
+		 // move to bojinn
 		 $this->object_events_plugin_manager = CreateObject('jinn.factory_plugins_object_events'); 	
 		 $this->object_events_plugin_manager->local_bo = &$this; //FIXME remove
-
-
-		 /* this is for the sidebox */
-		 /* fixme remove these two lines */
-		 //global $local_bo;
-		 //$local_bo=$this;
 
 		 //backwards compatibility: check if unique id field is filled. If not: fill it now.
 		 if($this->session['site_object_id'] && $this->site_object[unique_id] == '')
@@ -518,7 +511,6 @@
 
 				  $status[record]=$this->so->update_object_data($object_arr['parent_site_id'], $object_arr[table_name], $data, $where_key,$where_value,$where_string);
 
-				  //_debug_array($post_arr);
 				  $status[eventstatus] = $this->run_event_plugins('on_update', $post_arr);
 			   }
 			}
@@ -603,11 +595,6 @@
 		 function run_event_plugins($event, $post)
 		 {
 			//get all events plugins configured to this object
-			
-//			$object_arr=$this->so->get_object_values($this->site_object['object_id']);
-			//_debug_array($object_arr);
-//			_debug_array($this->site_object);
-			
 			$stored_configs = unserialize(base64_decode($this->site_object['events_config']));
 			if(is_array($stored_configs))
 			{
@@ -615,13 +602,11 @@
 			   {
 				  if($event == $config['conf']['event'])
 				  {
-					 //_debug_array("valid configuration found");
 					 /*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
 					 met als argumenten de _POST array en de plugin configuratie. 
 					 Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
 					 De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
 					 $status = $this->object_events_plugin_manager->call_event_action($post, $config);
-//					 _debug_array($status);
 				  }
 			   }
 			}
@@ -745,8 +730,6 @@
 			{
 			   $filter_where = "($filter_where) AND ".$this->site_object['extra_where_sql_filter'];
 			}
-			#_debug_array($filter_where);
-			#die();
 			$site_id = $this->session['site_id'];
 			$table_name = $this->site_object['table_name'];
 
@@ -1348,7 +1331,44 @@
 			}
 		 }
 
+		 function create_where_string($post, $fldprefix='')
+		 {
+			//get current table
+			$curr_table=$this->site_object['table_name'];
 
+			//get meta table info
+			$fields = $this->so->site_table_metadata($this->site_object['parent_site_id'],$curr_table);
+
+			//get primary field
+			foreach ( $fields as $onecol )
+			{
+			   // check for primaries and create array 
+			   if ($onecol[primary_key] && $onecol[type]!='blob') // FIXME howto select long blobs
+			   {						
+				  $pkey_arr[]=$onecol[name];
+			   }
+			   elseif($onecol[type]!='blob') // FIXME howto select long blobs
+			   {
+				  $akey_arr[]=$onecol[name];
+			   }
+			}
+			if(!is_array($pkey_arr))
+			{
+			   $pkey_arr=$akey_arr;
+			   unset($akey_arr);
+			}
+			if(count($pkey_arr)>0)
+			{
+			   foreach($pkey_arr as $pkey)
+			   {
+				  if($where_string) $where_string.=' AND ';
+				  $where_string.= '('.$curr_table.'.'.$pkey.' = \''. addslashes($post[$fldprefix.$pkey]).'\')';
+			   }
+			}
+
+			return $where_string;
+
+		 }
 
 
 

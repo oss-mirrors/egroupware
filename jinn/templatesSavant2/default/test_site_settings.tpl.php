@@ -14,7 +14,7 @@
 	  <link href="<?=$this->theme_css?>" type="text/css" rel="StyleSheet" />
 	  <script type="text/javascript" src="<?=$GLOBALS['phpgw_info']['server']['webserver_url']?>/phpgwapi/js/tabs/./tabs.js"></script>
 
-	  <?=$this->css?>
+	  <?=//$this->css?>
 	  <style type="text/css">
 
 		 div.activetab

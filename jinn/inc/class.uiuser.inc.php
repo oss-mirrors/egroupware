@@ -39,7 +39,6 @@
 		 'runonrecord'			=> True
 	  );
 
-
 	  /**
 	  * uiuser 
 	  * 
@@ -194,7 +193,9 @@
 			$where_string=$_GET[where_string];
 		 }
 
+
 		 $rows=$this->bo->so->get_record_values($this->bo->session['site_id'],$this->bo->site_object['table_name'],'','','','','name','','*',$where_string);
+		 
 
 		 foreach($rows as $recvals)
 		 {

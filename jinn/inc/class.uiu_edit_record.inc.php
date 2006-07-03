@@ -473,7 +473,6 @@
 
 			$_tmp_order_arr=array();
 			$big=100000;
-			//_debug_array($complete_elements_array);
 			foreach($complete_elements_array as $one_el)
 			{
 			   $one_el['orig_list_order']=$one_el['form_listing_order'];
@@ -651,7 +650,6 @@
 
 			if($this->tplsav2->edit_object)
 			{
-			   //_debug_array($all_fields_conf_arr);
 			   //check if obj_field record exist and make one if not
 			   if(!is_array($all_fields_conf_arr[$fprops['name']]))
 			   {
@@ -766,7 +764,6 @@
 			}
 		 }
 
-		 //_debug_array($return_fld_arr);
 		 return $return_fld_arr;
 	  }
 

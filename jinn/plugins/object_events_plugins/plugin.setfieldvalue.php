@@ -54,24 +54,11 @@
    {
 		global $local_bo;
 		
-		//get current table
+		$where_string=$local_bo->create_where_string($post,'FLDXXX');
 		$curr_table=$local_bo->site_object['table_name'];
-		
-		//get meta table info
-		$fields = $local_bo->so->site_table_metadata($local_bo->site_object['parent_site_id'],$curr_table);
-		
-		//get primary field
-		foreach ( $fields as $fprops )
-		{
-		   if (eregi("primary_key", $fprops[flags]) || eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
-		   {
-			  $id_field = $fprops[name];
-			  break;
-		   }
-		}
-		
+
 		// controleer of tabel leeg en geef anders foutmelding
-		$sql="UPDATE $curr_table SET {$config[conf]['fieldname_to_set']}='{$config[conf]['new_value']}' WHERE $curr_table.$id_field={$post['FLDXXX'.$id_field]} LIMIT 1";
+		$sql="UPDATE $curr_table SET {$config[conf]['fieldname_to_set']}='{$config[conf]['new_value']}' WHERE $where_string LIMIT 1";
 		$res[] = $local_bo->so->site_db->query($sql,'__LINE__','__FILE__');
 
 		return true;

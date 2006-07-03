@@ -152,6 +152,7 @@
    </head>
 
    <body onload="initAll()">
+	  
 
 	  <?php
 		 if($_POST[submitted])

@@ -1,32 +1,25 @@
 ## J I N N   T A S K S ##
 Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
-	[_] 7% RELEASE 0.9 stable
-		[_] 14% SHOWSTOPPERS BUGS/TASKS
-			[X] after creating new object it show another new object screen in stead of the just made object
-			[_] walk list does not work on egw_access_log: has something to do with primaries 
-			[_] als je een record kopieerd en vervolgens delete wordt ook het origineel verwijderd (zie Lingewoud NIEUW) 
-			:dit was voorgekomen omdat de id was disabled. In dit geval is er geen mogelijkheid om een enkel record te selecteren met de juiste where. 
-			:ROB: dit gebeurd ook bij bewerken Relaties met record mee kopieren
-			[_] help schermen zijn nog niet ingevuld
+	[_] 8% RELEASE 0.9 stable
+		[_] 0% SHOWSTOPPERS BUGS/TASKS
+			[_] missing help screens
+				[_] sites overview
+				[_] objects overview
 			[_] site import/export
 				[_] old file format is buggy
 				[_] not well tested
 				[_] reports are not finished in xml file formal
 				[_] while creating an jinn file a temp parent id must be used; 
+			[_] import/export host profile
 			[_] Edit record
 				[_] order not well working
 				[_] new features not tested
-			[_] sometimes error message in site overview screen
-		[_] 0% BIJNA AF, TESTEN
-			[_] als er geen tabellen zijn faalt de connectie test
-			[_] sommige jinn links geven na het inloggen een lelijke foutmelding
-			[_] config lijst geeft not enabled velden toch weer
-			[_] bij onjuiste gegevens van een databaseconnectie lelijke foutmelding
+		[_] 16% BIJNA AF, TESTEN
 			[_] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
-			[_] htmlarea plugin werkt niet meer?
-			[_] ??? verbergen in formulierweergave werkt niet of niet lekker
 	[_] 27% RELEASE 1.0 stable of later
-		[_] 0% BUGS 
+		[_] 0% BUGS
+			[_] exporting an object forgets the included files
+			[_] config lijst geeft not enabled velden toch weer
 			[_] bij het weggooien van meerdere sites worden de site files niet weggegooid
 			[_] worden rapporten weggegooit?
 			[_] heel af en toe na importeren over een site heen lijkt het navigatie menu niet goed te werken in sitebox: wel site geen objecten
@@ -210,6 +203,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] OPTIMIZATION
 				remove unneeded db connections
 			[_] 3% DIVERS
+				[_] port every use of wherestring on the sitedb site to the new create_where_string function
 				[_] globale configuratie herzien
 				[_] weergeven records is vaak niet uitgewerkt
 				[_] voorkeuren herzien
@@ -277,6 +271,13 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[X] m2m relaties oude stijl worden niet weergegeven in object overzocht in edit site
 				[X] gebruik rapporten wordt genegeerd in globale configuratie
 				[X] als bij een verse installatie een nieuwe site wordt toegevoegt wordt na save weer een leeg scherm getoond om een weer een nieuwe site aan te maken. de nieuwe site moet nu geopend worden
+				[X] after creating new object it show another new object screen in stead of the just made object
+				[X] als je een record kopieerd en vervolgens delete wordt ook het origineel verwijderd (zie Lingewoud NIEUW) 
+				:dit was voorgekomen omdat de id was disabled. In dit geval is er geen mogelijkheid om een enkel record te selecteren met de juiste where. 
+				:ROB: dit gebeurd ook bij bewerken Relaties met record mee kopieren
+				[X] walk list does not work on egw_access_log: has something to do with primaries 
+				[X] sometimes error message in site overview screen
+				[X] als er geen tabellen zijn faalt de connectie test
 			[X] 100% FEATURES/OTHER
 				[X] bij (zoek) filter moet het zoekveld fel gekleurd zijn zodat duidelijk is dat er een filter actief is  
 				[X] nieuwe klasse lay-out
@@ -303,3 +304,4 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[X] attachmentpatch en imagepatch herschrijving naar class structuur
 				[X] duidelijk bericht als een relatie is opgeslagen
 				[X] event walk trough records
+				[X] create generic function for creating where string and implement is everywhere
