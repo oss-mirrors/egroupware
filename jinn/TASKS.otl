@@ -14,6 +14,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] Edit record
 				[_] order not well working
 				[_] new features not tested
+			[_] ajax m2o list view seems to use the configuration of its mother object
 		[_] 16% BIJNA AF, TESTEN
 			[_] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
 	[_] 27% RELEASE 1.0 stable of later

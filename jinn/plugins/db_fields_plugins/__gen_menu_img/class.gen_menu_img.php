@@ -58,7 +58,11 @@
 	  */
 	  function formview_edit($field_name, $value, $config,$attr_arr)
 	  {
-		 $upload_url=$this->local_bo->cur_upload_url();
+		 if($config['subdir'])
+		 {
+			$extrasubdir=SEP.$config['subdir'];
+		 }
+		 $upload_url=$this->local_bo->cur_upload_url().$extrasubdir;
 
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 
@@ -107,8 +111,20 @@
 	  */
 	  function on_save_filter($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	  {
-		 $upload_path=$this->local_bo->cur_upload_path();
-		 $upload_url=$this->local_bo->cur_upload_url();
+		 if($config['subdir'])
+		 {
+			$extrasubdir=SEP.$config['subdir'];
+		 }
+		 $upload_url=$this->local_bo->cur_upload_url().$extrasubdir;
+		 
+
+		 $upload_path=$this->local_bo->cur_upload_path().$extrasubdir;
+		 if(!is_dir($upload_path))
+		 {
+			mkdir($upload_path);
+		 }
+
+
 
 		 //fixme this must come from the localbo why can I not use it?
 		 $site_fs= createobject('jinn.site_fs');
@@ -148,7 +164,6 @@
 			rename($tmpfile,$upload_path.SEP.$newimgfilename);
 
 			$img[] = $newimgfilename;
-
 		 }
 		 
 		 $output = base64_encode(serialize($img));
@@ -166,7 +181,12 @@
 	  */
 	  function listview_read($value,$config,$where_val_enc)
 	  {
-		 $upload_url=$this->local_bo->cur_upload_url();
+		 if($config['subdir'])
+		 {
+			$extrasubdir=SEP.$config['subdir'];
+		 }
+		 $upload_url=$this->local_bo->cur_upload_url().$extrasubdir;
+	//		 $upload_url=$this->local_bo->cur_upload_url();
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 
 		 if($value) $img_arr=unserialize(base64_decode($value));
@@ -191,7 +211,12 @@
 	   */
 	   function formview_read($value,$config)
 	   {
-		  $upload_url=$this->local_bo->cur_upload_url();
+		  if($config['subdir'])
+		  {
+			 $extrasubdir=SEP.$config['subdir'];
+		  }
+		  $upload_url=$this->local_bo->cur_upload_url().$extrasubdir;
+		  //	   $upload_url=$this->local_bo->cur_upload_url();
 		  $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 
 		  $stripped_name=substr($field_name,6);	//the real field name
@@ -344,16 +369,16 @@
 	  *
 	  * @param array $config plugin config array
 	  * @param the action link of the form
-	  * @note we dont use this function , its ment for custom configurations, it could usefull:(
-		 * @todo we can use this when its finished to beautify the config form
-		 */
-		 function config_dialog($config,$form_action)
-		 {
-			$this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
-			$this->tplsav2->addPath('template',$this->plug_root.'/tpl');
-			$this->tplsav2->assign('config',$config);
-			$this->tplsav2->assign('action',$form_action);
-			$this->tplsav2->display('gen_menu_img.config.tpl.php');
-		 }
-	  }	
-   ?>
+	  * @note we dont use this function, its ment for custom configurations, it could usefull 
+	  * @todo we can use this when its finished to beautify the config form
+	  */
+	  function config_dialog($config,$form_action)
+	  {
+		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
+		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
+		 $this->tplsav2->assign('config',$config);
+		 $this->tplsav2->assign('action',$form_action);
+		 $this->tplsav2->display('gen_menu_img.config.tpl.php');
+	  }
+   }	
+?>
