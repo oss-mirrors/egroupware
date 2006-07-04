@@ -1,5 +1,5 @@
 <script>
-   var teller = <?php echo($this->nr);?>;
+   var multicounter = <?php echo($this->nr);?>;
    function deleteSlot(id)
    {
 		 fieldset = document.getElementById('fieldset'+id);
@@ -11,40 +11,40 @@
    }
    function moreFields(srcID)
    {
-		 teller = teller+1;
+		 multicounter = multicounter+1;
 		 slotvar = document.getElementById(srcID);
 		 mslot = document.getElementById('multislots')
 		 fieldset= document.createElement("fieldset");
 		 legend = document.createElement("legend");
-		 legend.innerHTML="Slot "+teller;
+		 legend.innerHTML="Slot "+multicounter;
 		 fieldset.innerHTML=slotvar.innerHTML;
 		 fieldset.appendChild(legend);
-		 fieldset.innerHTML = doOnClickChange(slotvar,teller);
+		 fieldset.innerHTML = doOnClickChange(slotvar,multicounter);
 		 mslot.appendChild(fieldset);
    }
    function doDelete(input)
    {
 		 for (var k=0; k<input.length; k++) 
 		 {
-			   name_new= "Delete"+'['+teller+']'+name[1];
+			   name_new= "Delete"+'['+multicounter+']'+name[1];
 			   input[k].name = name_new;
 		 }
    }
 
-   function doOnClickChange(div, teller)
+   function doOnClickChange(div, multicounter)
    {
 		 textarr = div.innerHTML.split("MLT001");
-		 if(teller < 10)
+		 if(multicounter < 10)
 		 {
-			   res = textarr.join("MLT00"+teller);
+			   res = textarr.join("MLT00"+multicounter);
 		 }
-		 if(teller >9 && teller <100)
+		 if(multicounter >9 && multicounter <100)
 		 {
-			   res = textarr.join("MLT0"+teller);
+			   res = textarr.join("MLT0"+multicounter);
 		 }
-		 if(teller >99) 
+		 if(multicounter >99) 
 		 {
-			   res = textarr.join("MLT"+teller);
+			   res = textarr.join("MLT"+multicounter);
 		 }
 		 return res;
    }
@@ -57,7 +57,7 @@
 			   {
 					 input[k].value='';
 			   }
-			   name_new= name[0]+'['+teller+']'+name[1];
+			   name_new= name[0]+'['+multicounter+']'+name[1];
 			   input[k].name = name_new;
 	   }
    }

@@ -64,7 +64,7 @@
 
 		 if($this->set_val == '' and !$this->set_val)
 		 {
-			if($_POST[submitted])
+/*			if($xxx_POST[submitted])
 			{
 			   if(isset($_POST[$cval[fname]]))
 			   {
@@ -75,7 +75,8 @@
 				  $this->set_val=$_POST[$cval[name]];
 			   }
 			}
-			elseif ($fld_plug_conf_arr[conf][$cval[name]])
+			*/
+			if ($fld_plug_conf_arr[conf][$cval[name]])
 			{
 			   $this->set_val=$fld_plug_conf_arr[conf][$cval[name]];
 			}
@@ -107,11 +108,11 @@
 	  {
 		 $cval = $this->tplsav2->cval;
 		 $set_val = $this->set_val;
-		 #_debug_array($set_val);
 		 #die();
 		 if(is_array($set_val))
 		 {
-			foreach($set_val as $nr =>$val)
+			$nr=1;
+			foreach($set_val as $mname => $val)
 			{
 			   unset($items);
 			   foreach($cval[items] as $item)
@@ -136,9 +137,11 @@
 				  $this->tplsav2->assign('cval',$item);
 				  $items[] = $this->display_plugin_widget($item[type], $this->tplsav2,$item,'',true);
 			   }
+			   //echo $nr;
 			   $this->tplsav2->assign('nr',$nr);
 			   $this->tplsav2->assign('multi_items',$items);
 			   $slots[]=$this->tplsav2->fetch("plg_conf_widget_multi_slot.tpl.php");
+			   $nr++;
 			}
 		 }
 		 else

@@ -50,16 +50,24 @@
    {
 	  $field_config = $bo->so->get_field_values($bo->session['site_object_id'],$_GET[field]);
    }
-//   	_debug_array($bo->session);
-//	_debug_array($_GET);
    $config = unserialize(base64_decode($field_config[field_plugins]));
    $config = $config[conf];
-   //_debug_array($config);
 
    $BASE_DIR = $sessdata[UploadImageBaseDir];
-   if($BASE_DIR == '') $BASE_DIR = $bo->cur_upload_path();
+   if($BASE_DIR == '')
+   {
+	  if($config['subdir'])
+	  {
+		 $subdir='/'.$config['subdir']; 
+	  }
+	  $BASE_DIR = $bo->cur_upload_path().$subdir;
+	  if(!is_dir($BASE_DIR))
+	  {
+		 mkdir($BASE_DIR);
+	  }
+   }
    $BASE_URL = $sessdata[UploadImageBaseURL];
-   if($BASE_URL == '') $BASE_URL = $bo->cur_upload_url();
+   if($BASE_URL == '') $BASE_URL = $bo->cur_upload_url().'/'.$config['subdir'];
    $MAX_HEIGHT = $sessdata[UploadImageMaxHeight];
    $MAX_WIDTH = $sessdata[UploadImageMaxWidth];
    if(!$MAX_HEIGHT) $MAX_HEIGHT = $config['Max_image_height'];

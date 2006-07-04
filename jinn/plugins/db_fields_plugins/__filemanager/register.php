@@ -61,6 +61,17 @@
 	  'Allow_other_images_sizes'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
    );
 
+   $this->registry->plugins['filemanager']['config2'] = array
+   (
+	  'subdir' => array(
+		 'name' => 'subdir',
+		 'label' => lang('Subdirectory to use'),
+		 'type' => 'text',
+		 'size' => 100
+	  )
+   );
+
+
 
 
 

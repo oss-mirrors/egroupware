@@ -84,7 +84,6 @@
 
 		 $this->tplsav2->transbggrid=$GLOBALS['phpgw']->common->image('jinn','transbggrid.png');
 		 
-
 		 $input=$this->tplsav2->fetch('gen_menu_img.formview_edit.tpl.php');
 		 return $input;
 	  }

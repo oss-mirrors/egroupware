@@ -24,9 +24,9 @@
 
    ---------------------------------------------------------------------
    */
-   $this->registry->plugins['gen_menu_img']['name']			= 'gen_menu_img';
+   $this->registry->plugins['gen_menu_img']['name']				= 'gen_menu_img';
    $this->registry->plugins['gen_menu_img']['title']			= 'Genenate Menu Images';
-   $this->registry->plugins['gen_menu_img']['version']			= '0.2';
+   $this->registry->plugins['gen_menu_img']['version']			= '0.3';
    $this->registry->plugins['gen_menu_img']['enable']			= 1;
    $this->registry->plugins['gen_menu_img']['author']			= 'Pim Snel';
    $this->registry->plugins['gen_menu_img']['description']		= 
@@ -42,28 +42,14 @@
 	  'string'
    );
 
-   //
-   $available_fonts=array();
-
-
-   $num_images=array(
-	  '1'=>'1',
-	  '2'=>'2',
-	  '3'=>'3',
-	  '4'=>'4',
-   );
-
-
-   // We need a template in stead of this auto configure array
-   $this->registry->plugins['gen_menu_img']['config2']		= array
+   $this->registry->plugins['gen_menu_img']['config2'] = array
    (
-/*	  'numimg' => array(
-		 'name' => 'numimg',
-		 'label' => lang('Number of versions to create'),
-		 'type' => 'select',
-		 'select_arr' => $num_images
+	  'subdir' => array(
+		 'name' => 'subdir',
+		 'label' => lang('Subdirectory to use'),
+		 'type' => 'text',
+		 'size' => 100
 	  ),
-	  */
 	  'multi1'=>array(
 		 'name'=>'multi1',
 		 'type'=>'multi',
@@ -124,159 +110,11 @@
 			   'type' => 'text',
 			   'size' =>'3'
 			),
-
-
-
-
-
 		 )
 	  )
    );
 
 
-   /*   
-   $this->registry->plugins['gen_menu_img']['config2']		= array
-   (
-	  'numimg' => array(
-		 'name' => 'numimg',
-		 'label' => lang('Number of images to create'),
-		 'type' => 'select',
-		 'select_arr' => $num_images
-	  ),
-	  'spacer' => array(
-		 'name' => 'spacer',
-		 'type' => 'spacer'
-	  ),
-	  'fontfile1' => array(
-		 'name' => 'fontfile1',
-		 'label' => lang('Font file for image %1','1'),
-		 'type' => 'sitefile',
-		 'subdir' =>'fonts',
-		 'allowempty' => false
-	  ),
-	  'fontsize1' => array(
-		 'name' => 'fontsize1',
-		 'label' => lang('Font size for image %1','1'),
-		 'type' => 'text',
-		 'size' => 4
-	  ),
-	  'fontcolor1' => array(
-		 'name' => 'fontcolor1',
-		 'label' => lang('Text color %1','1'),
-		 'type' => 'text',
-		 'size' => 7
-	  ),
-	  'bgcolor1' => array(
-		 'name' => 'bgcolor1',
-		 'label' => lang('Background color %1','1'),
-		 'type' => 'text',
-		 'size' => 7
-	  ),
-	  'bgimg1' => array(
-		 'name' => 'bgimg1',
-		 'label' => lang('Background image %1','1'),
-		 'type' => 'sitefile',
-		 'subdir' =>'genmenu',
-		 'allowempty' => true
-	  ),
-	  'imgheight1' => array(
-		 'name' => 'imgheight1',
-		 'label' => lang('Height image  %1','1'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingtop1' => array(
-		 'name' => 'paddingtop1',
-		 'label' => lang('Font padding on top of the image in pixels %1','1'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingright1' => array(
-		 'name' => 'paddingright1',
-		 'label' => lang('Font padding on right of the image in pixels %1','1'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingleft1' => array(
-		 'name' => 'paddingleft1',
-		 'label' => lang('Font padding on left of the image in pixels %1','1'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
+   $this->registry->plugins['gen_menu_img']['config_execute']		= false;
 
-	  // second optional img
-	  'spacer2' => array(
-		 'name' => 'spacer',
-		 'type' => 'spacer'
-	  ),
-	  'fontfile2' => array(
-		 'name' => 'fontfile2',
-		 'label' => lang('Font file for image %1','2'),
-		 'type' => 'sitefile',
-		 'subdir' =>'fonts',
-		 'allowempty' => false
-	  ),
-	  'fontsize2' => array(
-		 'name' => 'fontsize2',
-		 'label' => lang('Font size for image %1','2'),
-		 'type' => 'text',
-		 'size' => 4
-	  ),
-	  'fontcolor2' => array(
-		 'name' => 'fontcolor2',
-		 'label' => lang('Text color %1','2'),
-		 'type' => 'text',
-		 'size' => 7
-	  ),
-	  'bgcolor2' => array(
-		 'name' => 'bgcolor2',
-		 'label' => lang('Background color %1','2'),
-		 'type' => 'text',
-		 'size' => 7
-	  ),
-	  'bgimg2' => array(
-		 'name' => 'bgimg2',
-		 'label' => lang('Background image %1','2'),
-		 'type' => 'sitefile',
-		 'subdir' =>'genmenu',
-		 'allowempty' => true
-	  ),
-	  'imgheight2' => array(
-		 'name' => 'imgheight2',
-		 'label' => lang('Height image  %1','2'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingtop2' => array(
-		 'name' => 'paddingtop2',
-		 'label' => lang('Font padding on top of the image in pixels %1','2'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingright2' => array(
-		 'name' => 'paddingright2',
-		 'label' => lang('Font padding on right of the image in pixels %1','2'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingleft2' => array(
-		 'name' => 'paddingleft2',
-		 'label' => lang('Font padding on left of the image in pixels %1','2'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-
-
-	  */
-
-
-
-
-
-
-
-	  //);
-
-	  $this->registry->plugins['gen_menu_img']['config_execute']		= false;
-
-   ?>
+?>

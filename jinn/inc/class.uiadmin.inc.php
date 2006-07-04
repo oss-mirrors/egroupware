@@ -71,7 +71,7 @@
 
 		 $this->permissionCheck();
 	  }
-	  
+
 	  /**
 	  * index 
 	  * 
@@ -84,7 +84,7 @@
 		 $this->header(lang('index'));
 		 $this->msg_box();
 	  }	
-	  
+
 	  /**
 	  * del_egw_jinn_object: delete table_object and return to parent site
 	  * 
@@ -123,11 +123,11 @@
 	  }
 
 	  /**
-	   * add_edit_site 
-	   * 
-	   * @access public
-	   * @return void
-	   */
+	  * add_edit_site 
+	  * 
+	  * @access public
+	  * @return void
+	  */
 	  function add_edit_site()
 	  {
 		 if($_GET['this_site'] || $this->edit_this_site)
@@ -172,7 +172,7 @@
 			$this->header(lang('Edit Site'));
 
 			$_site_vals_arr=$this->bo->get_phpgw_records('egw_jinn_sites',$where_key,$where_value,'','','name');
-			
+
 			$site_domains_arr=$this->bo->get_phpgw_records('egw_jinn_domains','parent_app_id',$where_value,'','','name');
 
 			$this->tplsav2->site_values=$_site_vals_arr[0];
@@ -528,7 +528,7 @@
 	  function getEventOptions($selected)
 	  {
 		 $sel_arr[$selected]='selected="selected"';
-		 
+
 		 $event_arr=$this->bo->object_events_plugin_manager->event_arr;
 
 		 $this->tplsav2->optval = '';
@@ -796,7 +796,7 @@
 			}
 
 			$this->bo->set_site_version_info($this->bo->site['site_id']);
-			
+
 		 }
 
 		 //for general sets
@@ -1155,7 +1155,7 @@
 		 {
 			$save_status = $this->bo->save_object_events_conf($_GET[object_id],$_GET[edit]);
 
-				//unset($_GET[edit]);
+			//unset($_GET[edit]);
 			//unset($_POST[plugin]);
 		 }
 
@@ -1169,7 +1169,7 @@
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
-		 
+
 		 $this->msg_box();
 
 		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
@@ -1223,14 +1223,14 @@
 			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
 			$this->tplsav2->set_var('option_selected', 'document.frm.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; document.frm.submit();');
 
-/*			if($_POST[plugin] != '')
+			/*			if($_POST[plugin] != '')
 			{
 			   $this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$_POST[plugin]]['title']);
 
 			   $cfg=$this->bo->object_events_plugins[$_POST[plugin]]['config'];
 			   $cfg_help=$this->bo->object_events_plugins[$_POST[plugin]]['config_help'];
 			}
-*/
+			*/
 			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id].'&edit='.$_GET[edit]));
 
 			if(is_array($stored_configs))
@@ -1293,57 +1293,14 @@
 	  function edit_field_props()
 	  {
 		 //for general sets
-		 if(!$_GET[object_id] || !$_GET[field_name])
+		 /*		 if(!$_GET[object_id] || !$_GET[field_name])
 		 {
 			die('error general flds');
 		 }
-
-		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
-
-		 /* for backwards compatibility */
-		 // how long do we need this
-		 if(!empty($object_arr[plugins]))
-		 {
-			$this->bo->upgrade_plugins($object_arr[object_id]);
-		 }
-
-		 $field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$_GET[field_name]);
-
-		 if($_POST[plugin_name]) 
-		 {
-			$plugin_name=$_POST[plugin_name];
-		 }
-		 else
-		 {
-			$fld_plug_conf_arr=unserialize(base64_decode($field_conf_arr[field_plugins]));
-
-			$plugin_name=$fld_plug_conf_arr[name];
-		 }
-
-		 $plug_reg_arr=$this->bo->get_db_plug_arr($plugin_name);
-
-		 $old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
-		 $plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
-
-		 if($plug_reg_arr['element_type']=='lay-out')
-		 {
-			$avail_plugins_arr=$this->bo->plug->get_layout_plugins();
-		 }
-		 elseif($field_conf_arr['element_type']=='table_field')
-		 {
-			$field_meta_arr=$this->bo->so->object_field_metadata($_GET[object_id],$field_conf_arr['data_source']);
-			$avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST[newplug]:$plugin_name));
-			$this->tplsav2->assign('data_source',$field_conf_arr['data_source']);
-		 }
-		 else
-		 {
-			$field_meta_arr=$this->bo->so->object_field_metadata($_GET[object_id],$_GET[field_name]);
-			$avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST[newplug]:$plugin_name));
-			$this->tplsav2->assign('data_source',$_GET[field_name]);
-		 }
+		 */
 
 		 // A. CAN BE POSTED BY ITSELF
-		 if(is_array($_POST))
+		 if(is_array($_POST) && $_POST['submitted'])
 		 {
 			// seperate the diffrent type of fields in different arrays
 			$post_general=$this->bo->filter_array_with_prefix($_POST,'GENXXX',true);
@@ -1356,22 +1313,27 @@
 			$post_multi=$this->bo->filter_array_with_prefix($_POST,'MLT',true);
 			$post_multi=$this->bo->strip_prefix_from_keys($post_multi,'MLT');
 
-
 			// THE FORM IS SUBMITTED BY ITSELF
-			if($_POST['submitted'])
-			{
+			//			if($_POST['submitted'])
+			//			{
 			   // WE COME FROM ANOTHER PLUG CONF SO WE DO NOTHING
 			   if($_POST['plugchanges'])
 			   {
 				  unset($post_plugins);
 				  $plug_reg_arr=$this->bo->get_db_plug_arr($_POST[newplug]);
 				  $plugin_name = $plug_reg_arr[name]; // reset name in case plugin is an alias for another plugin
+
 				  $old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
 				  $plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
 			   }
 			   // FILES ARE UPLOADED/DELETED
 			   elseif($_POST['uploaddelete']=='true')
 			   {
+				  $plugin_name=$_POST[plugin_name];
+				  $plug_reg_arr=$this->bo->get_db_plug_arr($plugin_name);
+				  $old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
+				  $plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
+
 				  if(is_array($post_plugins))
 				  {
 					 foreach($post_plugins as $key => $val)
@@ -1402,6 +1364,7 @@
 						{
 						   //TODO ??? set key to new file name in POST
 						   $arr = explode("_SEP_",$key);
+
 						   $stored_files_arr=$this->bo->site_fs->save_db_field_plugin_file_from_post($this->bo->so->get_site_id_by_object_id($_GET[object_id]),'MLT'.$key,$plug_reg_conf_arr[substr($arr[0],3)]['items'][$arr[1]][subdir]);
 						}
 						elseif($post_multi[$key.'_plgdelete'])
@@ -1457,99 +1420,148 @@
 						$temp = explode("_SEP_",$name);
 						$multi_name= substr($temp[0],3);
 						$subname = $temp[1];
-						$confM[$multi_name][$number][$subname] = $value;
+						//$confM[$multi_name][$number][$subname] = $value;
+						$confM[$number][$subname] = $value;
+						$conf['conf'][$multi_name] = $confM;
 					 }
-					 $conf['conf'] = $confM;
-					 $_POST[$multi_name] = $confM[$multi_name];
+
+					 //$_POST[$multi_name] = $confM[$multi_name];
 				  }
+				  //_debug_array($conf);
 				  $conf_serialed_string=base64_encode(serialize($conf));
 				  $status=$this->bo->so->save_field_plugin_conf($_GET[object_id],$_GET[field_name],$conf_serialed_string);
 			   }
+			   //			}
 			}
-		 }
 
-		 // FROM HERE THE FORM IS RENDERED
 
-		 //formaction
-		 $action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_field_props&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name].'&plug_name='.$plugin_name);
 
-		 /* if the plugin wants to generate is own page manually */
-		 //fixme remove?
-		 if($plug_reg_arr[config_execute])
-		 {
-			$this->bo->plug->call_config_function($plugin_name,$plug_reg_conf_arr,$action);
-			$GLOBALS['phpgw']->common->phpgw_exit();
-		 }
+			//retrieve needed info form stored conf
+			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
 
-		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
-
-		 $app = $GLOBALS['phpgw_info']['flags']['currentapp'];
-		 $app = $app ? ' ['.(isset($GLOBALS['phpgw_info']['apps'][$app]) ? $GLOBALS['phpgw_info']['apps'][$app]['title'] : lang($app)).']':'';
-
-		 $use_records_cfg=False;
-
-		 if($_GET[close_me]=='true') $body_tags = 'onLoad="self.close()"';
-
-		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
-		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
-
-		 $this->tplsav2->assign('img_icon',PHPGW_IMAGES_DIR . '/favicon.ico');
-		 $this->tplsav2->assign('img_shortcut',PHPGW_IMAGES_DIR . '/favicon.ico');
-		 $this->tplsav2->assign('charset',$GLOBALS['phpgw']->translation->charset());
-		 $this->tplsav2->assign('website_title',lang('Field properties'));
-		 $this->tplsav2->assign('theme_css',$theme_css);
-		 //$this->tplsav2->assign('css',$GLOBALS['phpgw']->common->get_css());
-		 $this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
-		 $this->tplsav2->assign('action',$action);
-		 $this->tplsav2->assign('avail_plugins_arr',$avail_plugins_arr);
-		 $this->tplsav2->assign('post_general',$post_general);
-		 $this->tplsav2->assign('use_records_cfg',$use_records_cfg);
-		 $this->tplsav2->assign('fld_plug_conf_arr',$fld_plug_conf_arr);
-		 $this->tplsav2->assign('body_tags',$body_tags);
-		 $this->tplsav2->assign('plug_title',$plug_reg_arr['title']);
-		 $this->tplsav2->assign('plug_name',$plugin_name);
-		 $this->tplsav2->assign('lang_plugin_name',lang('Plugin name'));
-		 $this->tplsav2->assign('lang_fieldname',lang('Fieldname'));
-		 $this->tplsav2->assign('fieldname',$_GET[field_name]);
-
-		 $this->tplsav2->assign('field_conf_arr',$field_conf_arr);
-		 $this->tplsav2->assign('val_element_label',$field_conf_arr[element_label]);
-		 $this->tplsav2->assign('val_field_help_info',$field_conf_arr[field_help_info]);
-
-		 $this->tplsav2->assign('lang_version',lang('Version'));
-		 $this->tplsav2->assign('lang_plugin_configuration',lang('Plugin Configuration'));
-		 $this->tplsav2->assign('plug_version',$plug_reg_arr['version']);
-		 $this->tplsav2->assign('plug_descr',$plug_reg_arr['description']);
-		 $this->tplsav2->assign('plug_help',$plug_reg_arr['help']);
-		 $this->tplsav2->assign('jinn_sitefile_path',$this->bo->site_fs->get_jinn_sitefile_path($object_arr[parent_site_id]));
-
-		 /* display shouldnt be in this if construction */
-		 if(is_array($plug_reg_conf_arr))
-		 {
-			$this->tplsav2->assign('fld_plug_cnf',lang('Field plugin configuration'));
-			$this->tplsav2->assign('plug_reg_conf_arr',$plug_reg_conf_arr);
-			$temp ='';
-			$configuration_widget= CreateObject('jinn.plg_conf_widget');
-			foreach($plug_reg_conf_arr as $cval)
+			/* for backwards compatibility */
+			// how long do we need this
+			if(!empty($object_arr[plugins]))
 			{
-			   $temp .= $configuration_widget->display_plugin_widget($cval[type],$this->tplsav2, $cval,$fld_plug_conf_arr);
+			   $this->bo->upgrade_plugins($object_arr[object_id]);
 			}
-			$this->tplsav2->assign('plugjes',$temp);
-			$this->tplsav2->display('frm_conf_field.tpl.php');
+
+			$field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$_GET[field_name]);
+
+			if($_POST[plugin_name] && $_POST[plugchanges]) 
+			{
+			   $plugin_name=$_POST[plugin_name];
+			}
+			else
+			{
+			   $fld_plug_conf_arr=unserialize(base64_decode($field_conf_arr[field_plugins]));
+			   $plugin_name=$fld_plug_conf_arr[name];
+			}
+
+			$plug_reg_arr=$this->bo->get_db_plug_arr($plugin_name);
+			$old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
+			$plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
+
+			if($plug_reg_arr['element_type']=='lay-out')
+			{
+			   $avail_plugins_arr=$this->bo->plug->get_layout_plugins();
+			}
+			elseif($field_conf_arr['element_type']=='table_field')
+			{
+			   $field_meta_arr=$this->bo->so->object_field_metadata($_GET[object_id],$field_conf_arr['data_source']);
+			   $avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST[newplug]:$plugin_name));
+			   $this->tplsav2->assign('data_source',$field_conf_arr['data_source']);
+			}
+			else
+			{
+			   $field_meta_arr=$this->bo->so->object_field_metadata($_GET[object_id],$_GET[field_name]);
+			   $avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST[newplug]:$plugin_name));
+			   $this->tplsav2->assign('data_source',$_GET[field_name]);
+			}
+
+			// FROM HERE THE FORM IS RENDERED
+
+			//formaction
+			$action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_field_props&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name].'&plug_name='.$plugin_name);
+
+			/* if the plugin wants to generate is own page manually */
+			//fixme remove?
+			/*		 if($plug_reg_arr[config_execute])
+			{
+			   $this->bo->plug->call_config_function($plugin_name,$plug_reg_conf_arr,$action);
+			   $GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			*/
+
+			$GLOBALS['phpgw_info']['flags']['noheader']=True;
+			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+			$GLOBALS['phpgw_info']['flags']['noappheader']=True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
+
+			$app = $GLOBALS['phpgw_info']['flags']['currentapp'];
+			$app = $app ? ' ['.(isset($GLOBALS['phpgw_info']['apps'][$app]) ? $GLOBALS['phpgw_info']['apps'][$app]['title'] : lang($app)).']':'';
+
+			$use_records_cfg=False;
+
+			if($_GET[close_me]=='true') $body_tags = 'onLoad="self.close()"';
+
+			$theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
+			'/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+
+			$this->tplsav2->assign('img_icon',PHPGW_IMAGES_DIR . '/favicon.ico');
+			$this->tplsav2->assign('img_shortcut',PHPGW_IMAGES_DIR . '/favicon.ico');
+			$this->tplsav2->assign('charset',$GLOBALS['phpgw']->translation->charset());
+			$this->tplsav2->assign('website_title',lang('Field properties'));
+			$this->tplsav2->assign('theme_css',$theme_css);
+			//$this->tplsav2->assign('css',$GLOBALS['phpgw']->common->get_css());
+			$this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+			$this->tplsav2->assign('action',$action);
+			$this->tplsav2->assign('avail_plugins_arr',$avail_plugins_arr);
+			$this->tplsav2->assign('post_general',$post_general);
+			$this->tplsav2->assign('use_records_cfg',$use_records_cfg);
+			$this->tplsav2->assign('fld_plug_conf_arr',$fld_plug_conf_arr);
+			$this->tplsav2->assign('body_tags',$body_tags);
+			$this->tplsav2->assign('plug_title',$plug_reg_arr['title']);
+			$this->tplsav2->assign('plug_name',$plugin_name);
+			$this->tplsav2->assign('lang_plugin_name',lang('Plugin name'));
+			$this->tplsav2->assign('lang_fieldname',lang('Fieldname'));
+			$this->tplsav2->assign('fieldname',$_GET[field_name]);
+
+			$this->tplsav2->assign('field_conf_arr',$field_conf_arr);
+			$this->tplsav2->assign('val_element_label',$field_conf_arr[element_label]);
+			$this->tplsav2->assign('val_field_help_info',$field_conf_arr[field_help_info]);
+
+			$this->tplsav2->assign('lang_version',lang('Version'));
+			$this->tplsav2->assign('lang_plugin_configuration',lang('Plugin Configuration'));
+			$this->tplsav2->assign('plug_version',$plug_reg_arr['version']);
+			$this->tplsav2->assign('plug_descr',$plug_reg_arr['description']);
+			$this->tplsav2->assign('plug_help',$plug_reg_arr['help']);
+			$this->tplsav2->assign('jinn_sitefile_path',$this->bo->site_fs->get_jinn_sitefile_path($object_arr[parent_site_id]));
+
+			/* display shouldnt be in this if construction */
+			if(is_array($plug_reg_conf_arr))
+			{
+			   $this->tplsav2->assign('fld_plug_cnf',lang('Field plugin configuration'));
+			   $this->tplsav2->assign('plug_reg_conf_arr',$plug_reg_conf_arr);
+			   $temp ='';
+			   $configuration_widget= CreateObject('jinn.plg_conf_widget');
+			   foreach($plug_reg_conf_arr as $cval)
+			   {
+				  $temp .= $configuration_widget->display_plugin_widget($cval[type],$this->tplsav2, $cval,$fld_plug_conf_arr);
+			   }
+			   $this->tplsav2->assign('plugjes',$temp);
+			   $this->tplsav2->display('frm_conf_field.tpl.php');
+			}
+
+			$this->bo->sessionmanager->save();
 		 }
 
-		 $this->bo->sessionmanager->save();
+
+
+
+
+
+
 	  }
-
-
-
-	  
-
-
-
-   }
-?>
+   ?>
