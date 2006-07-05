@@ -299,9 +299,11 @@ function jinnHideFields()
 		for (var i=0; i < param.length; i++) 
 		{
 			td = document.getElementById(param[i]);
-			delChilds(td);
-			td.parentNode.style.display = "none";
-
+			if(td)
+			{
+			   delChilds(td);
+			   td.parentNode.style.display = "none";
+			}
 		}
 	}
 }
@@ -317,14 +319,20 @@ function jinnShowFields()
 		for (var i=0; i < param.length; i++) 
 		{
 			td = document.getElementById(param[i]);
-			activateChilds(td);
-			td.parentNode.style.display = "";
-
+			if(td)
+			{
+			   activateChilds(td);
+			   td.parentNode.style.display = "";
+			}
 		}
 	}
 }
 function delChilds(el)
 {
+   if(!el)
+   {
+	  return;
+   }
 	if(el.hasChildNodes() == true)
 	{
 		for(var i=0; i < el.childNodes.length; i++)

@@ -43,16 +43,20 @@
 	  */
 	  var $public_functions = Array
 	  (
-		 'new_record'	=> True,
-		 'edit_record'	=> True,
-		 'read_record'	=> True,
-		 'ajax_get_m2o_frm'=> True,
-		 'ajax_save_m2o_frm'=> True,
-		 'ajax_delete_m2o'=> True,
-		 'ajax_get_m2o_list'=> True,
-		 'dev_change_field_order'=>True,
-		 'delete_element'=>True,
-		 'dev_edit_record' => True,
+		 'new_record'				=> True,
+		 'edit_record'				=> True,
+		 'read_record'				=> True,
+		 'ajax_get_m2o_frm'			=> True,//depr
+		 'ajax_save_m2o_frm'		=> True,//depr
+		 'ajax_delete_m2o'			=> True,//depr
+		 'ajax_get_m2o_list'		=> True,//depr
+		 'dev_change_field_order'	=> True,
+		 'delete_element'			=> True,
+		 'dev_edit_record' 			=> True,
+		 'ajax2_get_m2o_list'   	=> True,
+		 'ajax2_get_m2o_frm' 		=> True,
+		 'ajax2_save_m2o_frm' 		=> True,
+		 'ajax2_del_m2o_rec' 		=> True
 	  );
 
 	  var $mult_records;	
@@ -111,6 +115,7 @@
 		 {
 			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 			$GLOBALS['phpgw']->js->validate_file('wz_dragdrop','wz_dragdrop');
+			$GLOBALS['phpgw']->js->validate_file('jinn','ajax','jinn');
 		 }
 
 		 if (!is_object($GLOBALS['phpgw']->html))
@@ -978,7 +983,6 @@
 		 }
 
 		 $m2o_arr=$this->bo->extract_m2o_relations($this->bo->site_object[relations]);
-
 		 
 		 if (count($m2o_arr)>0)
 		 {
@@ -1233,12 +1237,21 @@
 		 $this->tplsav2->xmlhttp_delete_m2o_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_delete_m2o&object_id='.$object_arr[object_id]);
 		 $this->tplsav2->xmlhttp_save_m2o_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_save_m2o_frm&object_id='.$object_arr[object_id].'&localkeyvalue='.$where_value.'&m2o_rule_arr='.base64_encode(serialize($m2o_rule_arr)));
 
+
+
+		 $this->tplsav2->xmlhttp_get_m2o_list		= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_get_m2o_list');
+		 $this->tplsav2->xmlhttp_get_m2o_link2		= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax2_get_m2o_frm');
+		 $this->tplsav2->xmlhttp_delete_m2o_link	= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_delete_m2o&object_id='.$object_arr[object_id]);
+		 $this->tplsav2->xmlhttp_save_m2o_link2		= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax2_save_m2o_frm&object_id='.$object_arr[object_id].'&localkeyvalue='.$where_value.'&m2o_rule_arr='.base64_encode(serialize($m2o_rule_arr)));
+
+
+
+
+		 
 		 $columns=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $m2o_rule_arr[foreign_table]);
 
 		 $column_types = array();
 		 if(!is_array($columns)) $columns=array();
-
-
 
 		 /* get one with many relations */
 		 $relation1_array=$this->bo->extract_O2M_relations($object_arr['relations']);
@@ -1353,6 +1366,83 @@
 
 		 return $this->tplsav2->fetch('many-to-one_list.1.tpl.php');
 	  }
+
+	  /************************************\
+	  ******                           *****
+	  ******    NEW M2O AJAX IMPL..    *****
+	  ******                           *****
+	  \************************************/
+
+	  function init_ajax2()
+	  {
+		 $this->json = CreateObject('jinn.JSON');
+	  }
+
+	  function ajax2_example()
+	  {
+		 $this->init_ajax2();
+
+		 $value['tinymce']=$this->tplsav2->fetch('tpl/init_tinymce.tpl.php');
+		 $output = $this->json->encode($value);
+
+		 print($output);
+	  }
+
+	  function ajax2_get_m2o_list()
+	  {
+		 $this->init_ajax2();
+	  }
+
+	  function ajax2_get_m2o_frm()
+	  {
+		 $this->init_ajax2();
+		 
+		 $object_arr=$this->bo->so->get_object_values_by_uniq($_GET[obj_conf]);
+
+		 $this->bo->session['m2o_obj_id']=$object_arr[object_id];
+		 $this->bo->sessionmanager->save();
+		 
+		 $where_string=base64_decode($_GET[where_string]);
+
+		 if($this->bo->where_string && !$alt_object_arr)
+		 {
+			$values_object= $this->bo->so->get_record_values($this->bo->session['site_id'],$object_arr[table_name],'','','','','name','','*',$where_string);
+		 }
+
+		 $this->relation1_array = $this->bo->extract_O2M_relations($object_arr[relations]);
+		 $fields_arr=$this->mk_fields_array('M2OX00',$object_arr,$values_object[0]);
+
+		 $this->tplsav2->form_rows=$this->parse_fields_to_layout($fields_arr);
+		 
+		 unset($this->bo->session['m2o_obj_id']);
+		 $this->bo->sessionmanager->save();
+
+		 $value['justdata']=$this->tplsav2->fetch('frm_xmlhttp_req_edit_record2.tpl.php');
+		 
+		 //$value['justdata']=$this->tplsav2->fetch('tpl/init_tinymce.tpl.php');
+		 $output = $this->json->encode($value);
+
+		 print($output);
+	  }
+
+	  function ajax2_save_m2o_frm()
+	  {
+
+		 $this->init_ajax2();
+	  }
+
+	  function ajax2_del_m2o_rec()
+	  {
+
+		 $this->init_ajax2();
+	  }
+
+	  /************************************\
+	  ******                           *****
+	  ******    END M2O AJAX IMPL..    *****
+	  ******                           *****
+	  \************************************/
+
 
 	  /**
 	  * test_object: test we can use the database table else go to index with error

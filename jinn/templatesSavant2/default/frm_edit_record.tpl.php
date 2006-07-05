@@ -215,13 +215,9 @@
 		 fieldname=tmpfieldname.substring(8);
 		 fieldtype=tmpfieldname.substring(3,8);
 
-		 //alert(fieldname);
-		 //alert(fieldtype);
-
 		 document.getElementById('POS'+fieldname+'canvas_'+fieldtype+'_x').value=x_store;
 		 document.getElementById('POS'+fieldname+'canvas_'+fieldtype+'_y').value=y_store;
 
-		 //document.getElementById('designinfo').innerHTML="X="+x_store+"<br/>Y="+y_store;
    }
 
 

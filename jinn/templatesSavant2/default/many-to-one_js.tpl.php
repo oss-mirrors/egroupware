@@ -1,4 +1,55 @@
-<!-- many_to_one -->
+<!-- many_to_one essention javascript -->
+
+<script>
+
+   function ajax2_render_frm_buttons()
+   {
+		 submit ='<input type="button" value="<?=lang('Save')?>" onclick="ajaxsaveform(\''+current_m2o_id+'\',\''+current_save_url+'\')" />';
+		 submit+='<input type="button" value="<?=lang('Close')?>" onclick="closem2oform(\''+current_m2o_id+'\')" />';
+		 return submit;
+   }
+
+   function ajax2_m2o_new_frm(m2o_id,object_conf_id,where_string,submitTo,save_url)
+   {
+		 current_m2o_id=m2o_id;
+		 // current_m2o_object_conf_id=object_conf_id;
+		 // current_m2o_wherestring=where_string;
+		 current_save_url=save_url;
+
+		 //var submitTo = url;
+		 
+		 //location.href = submitTo; //uncomment if you need for debugging
+		 
+		 //http('POST', submitTo, ajax_response_tinymce, document.form1);
+		 
+		 http('GET', submitTo, ajax2_response_render_frm,'');
+   }
+
+   function ajax2_response_render_frm(data) 
+   {
+		 //submit='<input type="button" value="<?=lang('Save')?>" onclick="ajaxsaveform(\''+current_m2o_id+'\',\''+current_save_url+'\')" />';
+		 //submit+='<input type="button" value="<?=lang('Close')?>" onclick="closem2oform(\''+current_m2o_id+'\')" />';
+		 //document.getElementById('div_m2o'+current_m2o_id).innerHTML=data+submit;	
+
+		 // because scripts are not evaluated in new innerHTML we have to do this by hand
+		 //scripts=document.getElementById('div_m2o'+current_m2o_id).getElementsByTagName("script");	
+		 
+		 var inner = document.getElementById('div_m2o'+current_m2o_id);
+
+		 var node = document.createElement('div'); 			// create a new div element
+		 node.innerHTML = data.justdata; 		  	 		// append the text to node
+		 node.innerHTML += ajax2_render_frm_buttons();   	// append the text to node
+		 inner.innerHTML = '';                     			// clear the destination node
+		 inner.appendChild(node);                  			// append the node as a child and ...
+   }
+
+
+
+</script>
+
+
+
+
 <script>
    var current_m2o_id;
    var current_m2o_wherestring;
@@ -313,6 +364,5 @@
 			   }
 		 }
    }
-
 </script>
 

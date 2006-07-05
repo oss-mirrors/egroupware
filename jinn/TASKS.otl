@@ -1,7 +1,14 @@
 ## J I N N   T A S K S ##
 Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
-	[_] 8% RELEASE 0.9 stable
-		[_] 0% SHOWSTOPPERS BUGS/TASKS
+	[_] 0% RELEASE 0.9xxx stable
+		[_] 0% SHOWSTOPPERS BUGS
+			[_] Edit record
+			[_] order not well working
+			[_] ajax m2o list view seems to use the configuration of its mother object
+			[_] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
+			[_] TinyMCE parst niet goed in een many-to-one relatie
+				[_] in progress
+		[_] 0% TASKS
 			[_] missing help screens
 				[_] sites overview
 				[_] objects overview
@@ -10,15 +17,11 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] not well tested
 				[_] reports are not finished in xml file formal
 				[_] while creating an jinn file a temp parent id must be used; 
-			[_] import/export host profile
-			[_] Edit record
-				[_] order not well working
-				[_] new features not tested
-			[_] ajax m2o list view seems to use the configuration of its mother object
-		[_] 16% BIJNA AF, TESTEN
-			[_] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
-	[_] 27% RELEASE 1.0 stable of later
-		[_] 0% BUGS
+				[_] import/export host profile
+				[_] import objects from sites file into current site
+					[_] choose which objects to import with selection dialog
+	[_] 30% RELEASE 1.0 stable of later
+		[_] 11% BUGS
 			[_] exporting an object forgets the included files
 			[_] config lijst geeft not enabled velden toch weer
 			[_] bij het weggooien van meerdere sites worden de site files niet weggegooid
@@ -29,27 +32,22 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] extra hulpregels bij de verschillende relaties, is niet echt duidelijk
 			[_] ??? bij groot een op veel realtie object infinite loop
 			[_] ??? bij nieuw record resolven de relaties niet goed
-			[_] eventueel mogelijkheid tot aangeven om sommige "zware" plugins (tinyMCE bijv.) niet te parsen in bepaalde weergaven.
-			[_] TinyMCE parst niet goed in een many-to-one relatie
 			[_] Formlayout gaat niet goed, met verschillende grotes van de plugins, bijv:
-			[_] TinyMCE is klein in formlayout, maar groot in de normale weergave.
-			[_] Ook slaat hij sommige waardes van velden niet goed op
-			[_] TinyMCE en andere grote plugins schaalbaar in formlayout?
+			[X] TinyMCE is klein in formlayout, maar groot in de normale weergave.
+			[_] TinyMCE slaat sommige waardes van velden niet goed op
+			[X] TinyMCE en andere grote plugins schaalbaar in formlayout?
+			[X] TinyMCE flikkert
 			[_] exporteren lijkt niet lekker te werken (wordt niet goed geexscaped)
 			[_] vorder verschijnt soms helemaal niet in een m2o list
 			[_] foutmelding bij vorder in m2o lijst
 			[_] in een ander template set springen sommige kleuren niet mee
-			[_] de sitebox linkteksten zijn onduidelijk
-			[_] canvas modus werkt niet optimaal, sommige dingen worden niet opgelagen
 			[_] lijstweergave klopt niet helemaal in safari 
-			[_] Geen sql foutmeldingen geven maar normale errors. Errors mailen naar systeembeheerder
 			[_] Als een object niet in het menu staat is het toch mogelijk via de developers mode in de edit screen te komen door op back to normal mode te klikken
 			[_] Ook kleine tabellen worden heel breed weergegeven en dat is lelijk
 			[_] rare fout door where_string die in sessie blijft hangen bij switchen object naar verborgen object
 			[_] als je in een subentry staat in o2m record en op enter drukt submit hij het moeder formulier
 			[_] gen menu plugin geeft foutmedingen wanneer het niet goed is geconfigureerd
 			[_] Filemannager laat geen plaatjes zien maar bestandnamen
-			[_] tinymce flikkert
 		[_] CODE CLEANUP
 			[_] replace SQL sojinn with native eGroupware database functions
 			[_] cleanup javascript move to central place
@@ -161,7 +159,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] 0% DOCUMENTATION, TRANSLATIONS INFO
 				[_] Vertalen
 				[_] Meer info geven in object overzicht: type relaties, problemen objecten, geconf. velden, totaal db velden
-			[_] 14% LIST RECORDS
+			[_] 12% LIST RECORDS
 				[_] optimize search code
 				[_] optimize columnames code
 				[_] improve speed in many ways
@@ -169,6 +167,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] add more browsing functionality
 				[_] remove all doc html
 				[X] port to tplsav2
+				[_] double click on field to edit its content.
 			[_] 0% REPORTS
 				[_] rapporten pdf
 				[_] rapporten delen met andere gebruikers

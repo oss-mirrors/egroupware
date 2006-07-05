@@ -69,9 +69,20 @@
 		  }
 	
 		  $options=$this->setOptions($config);
+		  $options.=",
+		  theme_advanced_resize_horizontal : false,\n
+		  theme_advanced_resizing : true,\n
+		  ";
 
-		  $input = $GLOBALS['phpgw']->html->tinymce($field_name,$value,$style,$options);
-	
+		  //m2o ajax workaround 
+		  //TODO check where we come from
+		  if(!strstr($GLOBALS['egw_info']['flags']['java_script'],'tinyMCE'))
+		  {
+			 $input='<script language="javascript" type="text/javascript" src="phpgwapi/js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>';
+		  }
+
+		  $input .= $GLOBALS['phpgw']->html->tinymce($field_name,$value,$style,$options);
+		  
 		  return $input;
 	   }
 	
