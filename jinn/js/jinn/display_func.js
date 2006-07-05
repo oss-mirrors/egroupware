@@ -293,25 +293,30 @@ function setLocatieSoort () {
  */
 function jinnHideFields()
 {
-	param=jinnHideFields.arguments; 
-	if (param.length)
-	{
-		for (var i=0; i < param.length; i++) 
-		{
-		   for (j=0; j<document.frm.elements.length; j++)
-		   {
-			  //to make it easier for users ;)
-			  if(document.frm.elements[j].name.substring(6) == param[i])
-			  {
-				 el = document.frm.elements[j];//document.frm.elements['MLTX00'+param[i]];
-				 tr = el.parentNode.parentNode;
-				 tr.style.display="none";
-				 el.name = "DEL"+el.name;
-			  }
-		   }
-		}
-	}
-	}
+   param=jinnHideFields.arguments; 
+   if (param.length)
+   {
+	  for (var i=0; i < param.length; i++) 
+	  {
+		 for (j=0; j<document.frm.elements.length; j++)
+		 {
+			//to make it easier for users ;)
+			if(typeof document.frm.elements[j] != 'undefined')
+			{
+			   var name = ""+document.frm.elements[j].name;
+			   //	  if(document.frm.elements[j].name.substring(6) == param[i])
+			   if(name.substring(6) == param[i])
+			   {
+				  el = document.frm.elements[j];//document.frm.elements['MLTX00'+param[i]];
+				  tr = el.parentNode.parentNode;
+				  tr.style.display="none";
+//				  el.name = "DEL"+el.name;
+			   }
+			}
+		 }
+	  }
+   }
+}
 
 /*
  * @function jinnShowFields
@@ -322,19 +327,23 @@ function jinnShowFields()
    param=jinnShowFields.arguments; 
    if (param.length)
    {
-	  for (var i=0; i < param.length; i++) 
+		 for (var i=0; i < param.length; i++) 
 	  {
-		 for (j=0; j<document.frm.elements.length; j++)
+		 for (j=0; j < document.frm.elements.length; j++)
 		 {
-			//to make it easier for users ;)
-			if(document.frm.elements[j].name.substring(6) == param[i])
+			if(typeof document.frm.elements[j] != 'undefined' )
 			{
-			   el = document.frm.elements[j];//document.frm.elements['MLTX00'+param[i]];
-			   tr = el.parentNode.parentNode;
-			   tr.style.display="";
-			   if (el.name.substring(0,3) =="DEL")
+			   var name = ""+document.frm.elements[j].name;
+			   //alert(name.substring(6)+' = '+param[i]);
+			   if(name.substring(6) == param[i])
 			   {
-				  el.name = el.name.substring(3);
+				  el = document.frm.elements[j];//document.frm.elements['MLTX00'+param[i]];
+				  tr = el.parentNode.parentNode;
+				  tr.style.display="";
+				  if (el.name.substring(0,3) =="DEL")
+				  {
+					 el.name = el.name.substring(3);
+				  }
 			   }
 			}
 		 }
@@ -346,10 +355,11 @@ function jinnShowFields()
 * @function jinnShowHideFields
 * @abstract used by selectbox plugin to hide fields based on just selected value
 * @example  jinnShowHideFields(this.name,'Show','two:lang_code,title','three:type')
-*/
+ */
 function jinnShowHideFields()
 {
    param=jinnShowHideFields.arguments; 
+   
    if (param.length)
    {
 	  var selval=param[0].options[param[0].selectedIndex].value;
@@ -365,6 +375,7 @@ function jinnShowHideFields()
 			{
 			   field_arr[ii]='\''+field_arr[ii]+'\'';
 			}
+			//alert('jinn'+param[1]+'Fields('+field_arr.join(',')+')');
 			eval('jinn'+param[1]+'Fields('+field_arr.join(',')+')');
 				  }
 				  }

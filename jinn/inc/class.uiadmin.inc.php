@@ -1448,19 +1448,25 @@
 
 			$field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$_GET[field_name]);
 
-			if($_POST[plugin_name] && $_POST[plugchanges]) 
+			if(!$_POST['plugchanges'])
 			{
-			   $plugin_name=$_POST[plugin_name];
-			}
-			else
-			{
-			   $fld_plug_conf_arr=unserialize(base64_decode($field_conf_arr[field_plugins]));
-			   $plugin_name=$fld_plug_conf_arr[name];
+
+			   if($_POST[plugin_name] && $_POST[plugchanges]) 
+			   {
+				  $plugin_name=$_POST[plugin_name];
+			   }
+			   else
+			   {
+				  $fld_plug_conf_arr=unserialize(base64_decode($field_conf_arr[field_plugins]));
+				  $plugin_name=$fld_plug_conf_arr[name];
+			   }
+
+			   $plug_reg_arr=$this->bo->get_db_plug_arr($plugin_name);
+			   $old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
+			   $plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
+
 			}
 
-			$plug_reg_arr=$this->bo->get_db_plug_arr($plugin_name);
-			$old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
-			$plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
 
 			if($plug_reg_arr['element_type']=='lay-out')
 			{
@@ -1478,7 +1484,7 @@
 			   $avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST[newplug]:$plugin_name));
 			   $this->tplsav2->assign('data_source',$_GET[field_name]);
 			}
-
+		 
 			// FROM HERE THE FORM IS RENDERED
 
 			//formaction

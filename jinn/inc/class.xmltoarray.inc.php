@@ -18,9 +18,10 @@ class xmltoarray
 	* @return none
 	*/
 	
-	function xmltoarray($xml)
+	function xmltoarray($xml,$no_attrib = false)
 	{
-	   $this->xml = $xml;	
+	   $this->xml = $xml;
+	   $this->no_attrib = $no_attrib;
 	}
 	
 	/** 
@@ -50,7 +51,7 @@ class xmltoarray
 					$name = $values[$i]['tag']; 
 					if(!empty($name)){
 					$child[$name]= ($values[$i]['value'])?($values[$i]['value']):''; 
-					if(isset($values[$i]['attributes'])) {					
+					if(isset($values[$i]['attributes']) and !$this->no_attrib) {					
 						$child[$name] = $values[$i]['attributes']; 
 					} 
 				}	
@@ -92,7 +93,10 @@ class xmltoarray
 		xml_parser_free($parser);
 		$i = 0; 
 		$name = $values[$i]['tag']; 
-		$array[$name] = isset($values[$i]['attributes']) ? $values[$i]['attributes'] : ''; 
+		if(!$this->no_attrib)
+		{
+		   $array[$name] = isset($values[$i]['attributes']) ? $values[$i]['attributes'] : ''; 
+		}
 		$array[$name] = $this->_struct_to_array($values, $i); 
 		return $array; 
 	}//createArray

@@ -27,7 +27,7 @@
 			   {
 					 tab.display(document.popfrm.currenttab.value);
 			   }
-			   <?php if($_POST[parentreload]):?>
+			   <?php if($_POST[parentreload] and $_POST[parentreload] =="true"):?>
 			   opener.window.location.href=opener.window.location.href;
 			   <?php endif?>
 		 } 
@@ -41,6 +41,7 @@
 		 // this set the plugchanges field so the class know it has changed
 		 function changeplugin()
 		 {
+			   document.popfrm.parentreload.value = "false";
 			   document.popfrm.plugchanges.value="true";
 			   document.popfrm.submit();
 		 }

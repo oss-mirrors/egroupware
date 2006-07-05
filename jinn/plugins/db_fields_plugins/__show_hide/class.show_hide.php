@@ -56,7 +56,6 @@
 			{
 			   $hide[] = "'{$option[Value]}:{$option[hide][value]}'";
 			}
-			
 		 }
 		 if(!empty($show))
 		 {
@@ -66,6 +65,10 @@
 		 {
 			$hide_sel = implode(",",$hide);
 		 }
+		 #_debug_array($hide_sel);
+		 #_debug_array($show_sel);
+		 #die();
+
 		 $this->tplsav2->assign('show_sel',$show_sel);
 		 $this->tplsav2->assign('hide_sel',$hide_sel);
 		 $this->tplsav2->assign('fieldname',$field_name);
