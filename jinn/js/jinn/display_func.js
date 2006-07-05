@@ -293,62 +293,92 @@ function setLocatieSoort () {
  */
 function jinnHideFields()
 {
-   param=jinnHideFields.arguments; 
-   if (param.length)
-   {
-	  for (var i=0; i < param.length; i++) 
-	  {
-		 for (j=0; j<document.frm.elements.length; j++)
-		 {
-			//to make it easier for users ;)
-			if(typeof document.frm.elements[j] != 'undefined')
-			{
-			   var name = ""+document.frm.elements[j].name;
-			   //	  if(document.frm.elements[j].name.substring(6) == param[i])
-			   if(name.substring(6) == param[i])
-			   {
-				  el = document.frm.elements[j];//document.frm.elements['MLTX00'+param[i]];
-				  tr = el.parentNode.parentNode;
-				  tr.style.display="none";
-//				  el.name = "DEL"+el.name;
-			   }
-			}
-		 }
-	  }
-   }
-}
+	param=jinnHideFields.arguments; 
+	if (param.length)
+	{
+		for (var i=0; i < param.length; i++) 
+		{
+			td = document.getElementById(param[i]);
+			delChilds(td);
+			td.parentNode.style.display = "none";
 
+		}
+	}
+}
 /*
  * @function jinnShowFields
  * @abstract unhides all given id's
  */
 function jinnShowFields()
 {
-   param=jinnShowFields.arguments; 
-   if (param.length)
-   {
-		 for (var i=0; i < param.length; i++) 
-	  {
-		 for (j=0; j < document.frm.elements.length; j++)
-		 {
-			if(typeof document.frm.elements[j] != 'undefined' )
+	param=jinnShowFields.arguments; 
+	if (param.length)
+	{
+		for (var i=0; i < param.length; i++) 
+		{
+			td = document.getElementById(param[i]);
+			activateChilds(td);
+			td.parentNode.style.display = "";
+
+		}
+	}
+}
+function delChilds(el)
+{
+	if(el.hasChildNodes() == true)
+	{
+		for(var i=0; i < el.childNodes.length; i++)
+		{
+			if(el.childNodes[i].hasChildNodes() == true)
 			{
-			   var name = ""+document.frm.elements[j].name;
-			   //alert(name.substring(6)+' = '+param[i]);
-			   if(name.substring(6) == param[i])
-			   {
-				  el = document.frm.elements[j];//document.frm.elements['MLTX00'+param[i]];
-				  tr = el.parentNode.parentNode;
-				  tr.style.display="";
-				  if (el.name.substring(0,3) =="DEL")
-				  {
-					 el.name = el.name.substring(3);
-				  }
-			   }
+				delChilds(el.childNodes[i]);
 			}
-		 }
-	  }
-   }
+			if(el.childNodes[i].name)
+			{
+				if(el.childNodes[i].name.substr(0,3) != "del")
+				{
+					el.childNodes[i].name = "del"+el.childNodes[i].name;
+					el.childNodes[i].id= "del"+el.childNodes[i].id;
+				}
+			}
+			if(el.childNodes[i].id)
+			{
+				if(el.childNodes[i].id.substr(0,3) != "del")
+				{
+					el.childNodes[i].id= "del"+el.childNodes[i].id;
+				}
+			}
+		}
+		return;
+	}
+}
+function activateChilds(el)
+{
+	if(el.hasChildNodes() == true)
+	{
+		for(var i=0; i < el.childNodes.length; i++)
+		{
+			if(el.childNodes[i].hasChildNodes() == true)
+			{
+				activateChilds(el.childNodes[i]);
+			}
+			if(el.childNodes[i].name)
+			{
+				if(el.childNodes[i].name.substr(0,3) == "del")
+				{
+					el.childNodes[i].name = el.childNodes[i].name.substr(3);
+				}
+			}
+			if(el.childNodes[i].id)
+			{
+				if(el.childNodes[i].id.substr(0,3) == "del")
+				{
+					el.childNodes[i].id= el.childNodes[i].id.substr(3);
+				}
+			}
+		}
+		return;
+	}
 }
 
 /*

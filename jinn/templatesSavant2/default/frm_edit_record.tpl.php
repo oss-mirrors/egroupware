@@ -549,7 +549,7 @@
 				  <!-- <img src="<?=$this->tooltip_img?>" <?=$r[tooltip_mouseover]?> alt="" />-->
 				  <?php endif?>
 			   </td>
-			   <td style=""><?=$r[input]?></td>
+			   <td style="" id="<?=$r['fieldname']?>"><?=$r[input]?></td>
 			   <?php endif?>
 			</tr>
 			<?php endforeach?>

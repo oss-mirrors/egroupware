@@ -69,6 +69,7 @@
 		 #_debug_array($show_sel);
 		 #die();
 
+		 $this->tplsav2->assign('value',$value);
 		 $this->tplsav2->assign('show_sel',$show_sel);
 		 $this->tplsav2->assign('hide_sel',$hide_sel);
 		 $this->tplsav2->assign('fieldname',$field_name);

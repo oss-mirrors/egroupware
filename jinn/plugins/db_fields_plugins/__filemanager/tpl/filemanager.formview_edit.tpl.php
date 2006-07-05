@@ -10,6 +10,10 @@
 		 text-align:center;
    }
 </style>
+<input type="hidden" value="" id="CURRENT_RECORD" name="CURRENT_RECORD">
+<input type="hidden" value="" id="CURRENT_FIELD" name="CURRENT_FIELD">
+<input type="hidden" value="" id="CURRENT_SLOT" name="CURRENT_SLOT">
+
 <input type="hidden" name="<?=$this->field_name?>" value="">
 <?php if($this->value):?>
 <input name="<?=$this->prefix.'_IMG_ORG_'.$this->stripped_name?>" type="hidden" value="<?=$this->value?>" />

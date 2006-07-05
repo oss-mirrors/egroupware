@@ -1,6 +1,3 @@
-<input type="hidden" value="" id="CURRENT_RECORD" name="CURRENT_RECORD">
-<input type="hidden" value="" id="CURRENT_FIELD" name="CURRENT_FIELD">
-<input type="hidden" value="" id="CURRENT_SLOT" name="CURRENT_SLOT">
 <script language="JavaScript">
    <!--  
 
