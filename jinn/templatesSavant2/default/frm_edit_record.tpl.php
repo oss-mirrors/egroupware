@@ -217,10 +217,7 @@
 
 		 document.getElementById('POS'+fieldname+'canvas_'+fieldtype+'_x').value=x_store;
 		 document.getElementById('POS'+fieldname+'canvas_'+fieldtype+'_y').value=y_store;
-
    }
-
-
 
 </script>
 

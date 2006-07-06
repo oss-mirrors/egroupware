@@ -11,9 +11,9 @@
    <?=$this->initial_list?>
 </div>
 
-<input type="button" class="egwbutton" onclick="m2o_edit_record('<?=$this->m2o_arr[id]?>','<?=$this->m2o_arr[object_conf]?>','<?=$linked_rec[where_string]?>','<?=$this->xmlhttp_get_m2o_link?>&obj_conf=<?=$this->m2o_arr[object_conf]?>','<?=$this->xmlhttp_save_m2o_link?>&obj_conf=<?=$this->m2o_arr[object_conf]?>')" value="<?=lang('New sub entry')?>">
+<!--<input type="button" class="egwbutton" onclick="m2o_edit_record('<?=$this->m2o_arr[id]?>','<?=$this->m2o_arr[object_conf]?>','<?=$linked_rec[where_string]?>','<?=$this->xmlhttp_get_m2o_link?>&obj_conf=<?=$this->m2o_arr[object_conf]?>','<?=$this->xmlhttp_save_m2o_link?>&obj_conf=<?=$this->m2o_arr[object_conf]?>')" value="<?=lang('New sub entry')?>">-->
 
-<input type="button" class="egwbutton" onclick="ajax2_m2o_new_frm('<?=$this->m2o_arr[id]?>','<?=$this->m2o_arr[object_conf]?>','<?=$linked_rec[where_string]?>','<?=$this->xmlhttp_get_m2o_link2?>&obj_conf=<?=$this->m2o_arr[object_conf]?>','<?=$this->xmlhttp_save_m2o_link2?>&obj_conf=<?=$this->m2o_arr[object_conf]?>')" value="<?=lang('New sub entry')?>">
+<input type="button" class="egwbutton" onclick="ajax2_m2o_edit_frm('<?=$this->m2o_arr[id]?>','<?=$this->m2o_arr[object_conf]?>','<?=$linked_rec[where_string]?>','<?=$this->xmlhttp_get_m2o_link2?>&obj_conf=<?=$this->m2o_arr[object_conf]?>','<?=$this->xmlhttp_save_m2o_link2?>&obj_conf=<?=$this->m2o_arr[object_conf]?>')" value="<?=lang('New sub entry')?>">
 
 <div id="div_m2o<?=$this->m2o_arr[id]?>">
 

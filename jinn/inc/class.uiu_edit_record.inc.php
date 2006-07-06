@@ -1008,6 +1008,7 @@
 			}
 
 			$this->tplsav2->xmlhttp_get_m2o_list=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_get_m2o_list');
+			$this->tplsav2->xmlhttp_get_m2o_list2=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax2_get_m2o_list');
 			$this->tplsav2->m2ojavascript=$this->tplsav2->fetch('many-to-one_js.tpl.php');
 
 		 }
@@ -1090,7 +1091,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function ajax_get_m2o_frm()
+	  /*function ajax_get_m2o_frm()
 	  {
 		 $object_arr=$this->bo->so->get_object_values_by_uniq($_GET[obj_conf]);
 		 
@@ -1118,7 +1119,7 @@
 		 header( "Pragma: no-cache" );
 
 		 $this->tplsav2->display('frm_xmlhttp_req_edit_record.tpl.php');
-	  }
+	  }*/
 
 	  /**
 	  * ajax_save_m2o_frm: save many to one post to the database
@@ -1129,7 +1130,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function ajax_save_m2o_frm()
+	  /*function ajax_save_m2o_frm()
 	  {
 		 if($_POST)
 		 {
@@ -1164,7 +1165,7 @@
 		 </field>
 		 </response>
 		 '; 
-	  }
+	  }*/
 
 	  /**
 	  * ajax_delete_m2o 
@@ -1172,7 +1173,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function ajax_delete_m2o()
+	  /*function ajax_delete_m2o()
 	  {
 		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
 		 $where_arr[]=base64_decode($_GET[where_string]);
@@ -1193,7 +1194,7 @@
 		 </field>
 		 </response>
 		 '; 
-	  }
+	  }*/
 
 	  /**
 	  * ajax_get_m2o_list 
@@ -1201,7 +1202,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function ajax_get_m2o_list()
+	  /*function ajax_get_m2o_list()
 	  {
 		 // get list of related
 		 $m2o_rule_arr=unserialize(base64_decode($_GET[m2o_rule_arr_enc]));
@@ -1213,7 +1214,7 @@
 		 header( "Cache-Control: no-cache, must-revalidate" );
 		 header( "Pragma: no-cache" );
 		 $this->tplsav2->display('frm_xmlhttp_req_cdata.tpl.php');
-	  }
+	  }*/
 
 	  /**
 	  * create_m2o_list 
@@ -1232,22 +1233,16 @@
 		 $where_string="{$m2o_rule_arr[foreign_key]}='$where_value'";
 
 		 $object_arr=$this->bo->so->get_object_values_by_uniq($m2o_rule_arr[object_conf]);
-		 $this->tplsav2->xmlhttp_get_m2o_list=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_get_m2o_list');
+	/*	 $this->tplsav2->xmlhttp_get_m2o_list=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_get_m2o_list');
 		 $this->tplsav2->xmlhttp_get_m2o_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_get_m2o_frm');
 		 $this->tplsav2->xmlhttp_delete_m2o_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_delete_m2o&object_id='.$object_arr[object_id]);
 		 $this->tplsav2->xmlhttp_save_m2o_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_save_m2o_frm&object_id='.$object_arr[object_id].'&localkeyvalue='.$where_value.'&m2o_rule_arr='.base64_encode(serialize($m2o_rule_arr)));
-
-
-
+*/
 		 $this->tplsav2->xmlhttp_get_m2o_list		= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_get_m2o_list');
 		 $this->tplsav2->xmlhttp_get_m2o_link2		= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax2_get_m2o_frm');
-		 $this->tplsav2->xmlhttp_delete_m2o_link	= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax_delete_m2o&object_id='.$object_arr[object_id]);
+		 $this->tplsav2->xmlhttp_delete_m2o_link2	= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax2_del_m2o_rec&object_id='.$object_arr[object_id]);
 		 $this->tplsav2->xmlhttp_save_m2o_link2		= $GLOBALS['egw']->link('/index.php','menuaction=jinn.uiu_edit_record.ajax2_save_m2o_frm&object_id='.$object_arr[object_id].'&localkeyvalue='.$where_value.'&m2o_rule_arr='.base64_encode(serialize($m2o_rule_arr)));
 
-
-
-
-		 
 		 $columns=$this->bo->so->site_table_metadata($this->bo->session['site_id'], $m2o_rule_arr[foreign_table]);
 
 		 $column_types = array();
@@ -1355,7 +1350,6 @@
 
 			   $this->tplsav2->linked_records[]=$linked_rec;
 			}
-
 		 }
 
 		 $this->tplsav2->img_delete=$GLOBALS[phpgw]->common->image('phpgwapi','delete');
@@ -1388,11 +1382,6 @@
 		 print($output);
 	  }
 
-	  function ajax2_get_m2o_list()
-	  {
-		 $this->init_ajax2();
-	  }
-
 	  function ajax2_get_m2o_frm()
 	  {
 		 $this->init_ajax2();
@@ -1417,6 +1406,8 @@
 		 unset($this->bo->session['m2o_obj_id']);
 		 $this->bo->sessionmanager->save();
 
+		 $this->tplsav2->m2oid=$_GET['m2oid'];
+
 		 $value['justdata']=$this->tplsav2->fetch('frm_xmlhttp_req_edit_record2.tpl.php');
 		 
 		 //$value['justdata']=$this->tplsav2->fetch('tpl/init_tinymce.tpl.php');
@@ -1427,14 +1418,65 @@
 
 	  function ajax2_save_m2o_frm()
 	  {
-
 		 $this->init_ajax2();
+		 
+		 if($_POST)
+		 {
+			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+
+			$_m2orule_arr=unserialize(base64_decode($_GET[m2o_rule_arr]));
+			$foreign_key=$_m2orule_arr[foreign_key];
+			$_POST['M2OX00'.$foreign_key]=$_GET[localkeyvalue];
+
+			if(trim($_GET[where_string]))
+			{
+			   $_POST['MLTWHR00']=$_GET[where_string];
+
+			   $status = $this->bo->multiple_records_update($where_arr,1,$object_arr);
+			}
+			else
+			{
+			   $status=$this->bo->multiple_records_insert(1,$object_arr); 
+			}
+		 }
+		 
+		 $data=_debug_array($_POST,false);
+		 
+		 $value[status]=$data;
+		 
+		 $output = $this->json->encode($value);
+
+		 print($output);
 	  }
 
 	  function ajax2_del_m2o_rec()
 	  {
-
 		 $this->init_ajax2();
+
+		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+		 $where_arr[]=base64_decode($_GET[where_string]);
+
+		 $status=$this->bo->multiple_records_delete($where_arr,$object_arr,false);
+		 
+		 $value[status]=$status;
+
+		 $output = $this->json->encode($value);
+
+		 print($output);
+	  }
+
+	  function ajax2_get_m2o_list()
+//	  function ajax2_get_list()
+	  {
+		 $this->init_ajax2();
+		 // get list of related
+		 $m2o_rule_arr=unserialize(base64_decode($_GET[m2o_rule_arr_enc]));
+		 //$this->tplsav2->cdata = $this->create_m2o_list($m2o_rule_arr,$_GET[localkey]);
+		 $value['list'] = $this->create_m2o_list($m2o_rule_arr,$_GET[localkey]);
+		 
+		 $output = $this->json->encode($value);
+
+		 print($output);
 	  }
 
 	  /************************************\
