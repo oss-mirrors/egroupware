@@ -24,6 +24,7 @@
 	
 		function db_fields_plugin_tinymce()
 		{
+		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
 		}
 	
 	   /**
@@ -58,10 +59,11 @@
 			 $style.='width:100%; height:400px;';
 		  }
 
-		  if($this->local_bo->read_preferences('disable_tinymce')=='yes')
+/*		  if($this->local_bo->read_preferences('disable_tinymce')=='yes')
 		  {
 			 return $input='<textarea name="'.$field_name.'" style="'.$style.'">'.$value.'</textarea>';
 		  }
+		  */
 
 		  if (!is_object($GLOBALS['phpgw']->html))
 		  {
@@ -72,18 +74,23 @@
 		  $options.=",
 		  theme_advanced_resize_horizontal : false,\n
 		  theme_advanced_resizing : true,\n
+		  strict_loading_mode : true,\n
 		  ";
+
+		  $this->tplsav2->options=$options;
+		  $this->tplsav2->name=$field_name;
+		  $this->tplsav2->content=$value;
+		  $this->tplsav2->style=$style;
+		  $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
+		  return $this->tplsav2->fetch('edit_field.tpl.php');
 
 		  //m2o ajax workaround 
 		  //TODO check where we come from
-		  if(!strstr($GLOBALS['egw_info']['flags']['java_script'],'tinyMCE'))
-		  {
-			 $input='<script language="javascript" type="text/javascript" src="phpgwapi/js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>';
-		  }
 
-		  $input .= $GLOBALS['phpgw']->html->tinymce($field_name,$value,$style,$options);
+//		  $input .= $GLOBALS['phpgw']->html->tinymce($field_name,$value,$style,$options);
+//		  $input .= "";
 		  
-		  return $input;
+//		  return $input;
 	   }
 	
 	   function formview_read($value, $config)
