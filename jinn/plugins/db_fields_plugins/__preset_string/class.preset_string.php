@@ -36,16 +36,18 @@
 	
 		function formview_edit($field_name, $value, $config,$attr_arr)
 		{
-		   $input='<input type="hidden" name="'.$field_name.'" value="'.strip_tags($config['Preset_Value']).'"/>';
+		   $input='<input type="hidden" name="'.$field_name.'" value="'.strip_tags($config['Preset_Value']).'"/>'.$value;
+		   
 		   return $input;
 		}	
 	
-		function formview_read($field_name,$value)
+		function formview_read($value,$config)
 		{
+
 		   return $value;
 		}
 	
-		function listview_read($field_name,$value, $config,$attr_arr)
+		function listview_read($value,$config,$where_val_enc)
 		{
 		   return $value;
 		}
