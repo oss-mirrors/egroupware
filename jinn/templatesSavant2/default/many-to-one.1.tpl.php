@@ -1,11 +1,12 @@
 <input type="hidden" id="m2o_enc_rule_<?=$this->m2o_arr[id]?>" value="<?=$this->m2o_rule_arr_enc?>" />
 <input type="hidden" id="m2o_localkey_<?=$this->m2o_arr[id]?>" value="<?=$this->localkey?>" />
 <table style="background-color:white;padding:0px;border-bottom:solid 1px #006699" cellspacing="0" cellpadding="0" width="100%">
-<tr>
+<!--<tr>
    <td style="padding:5px 0px 0px 0px;margin:0px;font-weight:bold;"><?=$this->field_label?></td>
-   <!--			<td style="font-size:10px;font-weight:normal" align="center">{pager}</td>
-   <td style="font-size:10px;font-weight:normal" align="right">{total_records} - {rec_per_page}</td>-->
+   			<td style="font-size:10px;font-weight:normal" align="center">{pager}</td>
+<td style="font-size:10px;font-weight:normal" align="right">{total_records} - {rec_per_page}</td>
 </tr>
+-->
 </table>
 <div id="div_m2o_list<?=$this->m2o_arr[id]?>">
    <?=$this->initial_list?>
