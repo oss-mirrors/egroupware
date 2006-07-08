@@ -262,6 +262,8 @@ class g2_integration
 	{
 		global $g2_data;
 
+		if (!$g2_data['sidebarBlocksHtml']) return;
+
 		foreach($g2_data['sidebarBlocksHtml'] as $n => $block)
 		{
 			if (strlen($block) > 2)
