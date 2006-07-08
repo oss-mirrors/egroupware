@@ -1,2 +1,2 @@
 /* $Id$ */
-#gsHeader,#gsFooter { display: none; }
+#gsHeader,#gsFooter,.gbSystemLinks { display: none; }

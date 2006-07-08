@@ -34,7 +34,8 @@ $setup_info['gallery']['hooks']['addaccount']		= 'gallery.g2_integration.addAcco
 $setup_info['gallery']['hooks']['deleteaccount']	= 'gallery.g2_integration.deleteAccount';
 $setup_info['gallery']['hooks']['editaccount']		= 'gallery.g2_integration.editAccount';
 $setup_info['gallery']['hooks']['logout']			= 'gallery.g2_integration.logout';
-$setup_info['gallery']['hooks']['sidebox_menu']		= 'gallery.g2_integration.sideboxMenu';
+$setup_info['gallery']['hooks']['sidebox_menu']		= 'gallery.g2_integration.menus';
+$setup_info['gallery']['hooks']['admin']			= 'gallery.g2_integration.menus';
 
 /* Dependencies for this app to work */
 $setup_info['gallery']['depends'][] = array(

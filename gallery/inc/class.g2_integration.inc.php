@@ -257,46 +257,87 @@ class g2_integration
 	/**
 	 * Sidebox menu hook: displays g2 menu's as sidebox
 	 *
+	 * @param string $location 'admin' || 'sidebox_menu'
 	 */
-	function sideboxMenu()
+	function menus($location)
 	{
 		global $g2_data;
+		
+		if (is_array($location)) $location = $location['location'];	
 
-		if (!$g2_data['sidebarBlocksHtml']) return;
-
-		foreach($g2_data['sidebarBlocksHtml'] as $n => $block)
+		$blocks = array();
+		
+		if (is_array($g2_data['sidebarBlocksHtml']))
 		{
-			if (strlen($block) > 2)
+			foreach($g2_data['sidebarBlocksHtml'] as $n => $block)
 			{
-				if (preg_match('/(<h3[^>]*> ?)(.*)( ?<\\/h3>)/',$block,$matches))
+				//echo "block $n:<pre>".htmlspecialchars($block)."</pre>\n";
+				if (strlen($block) > 2)
 				{
-					$title = $matches[2];
-					unset($matches[0]);
-					$block = str_replace(implode('',$matches),'',$block);
-					$file = array(array(
-						'text' => $block,
-						'link' => false,
-						'no_lang' => true,
-						'icon' => false,
-					));
-				}
-				else
-				{
-					$title = lang('Gallery menu');
-					$file = array();
-					foreach(explode('<a href',str_replace('</div>','',$block)) as $i => $link)
+					// block with own title, give him an own sidebox
+					if (preg_match('/(<h3[^>]*> ?)(.*)( ?<\\/h3>)/',$block,$matches))
 					{
-						if (!$i) continue;	// <div>
-						
-						$file[] = array(
-							'text'    => '<a href'.trim($link),
+						$title = $matches[2];
+						unset($matches[0]);
+						$block = str_replace(implode('',$matches),'',$block);
+		
+						$blocks[$title] = array(array(
+							'text' => $block,
 							'link' => false,
 							'no_lang' => true,
-						);
+							'icon' => false,
+						));
 					}
-					
+					else	// other blocks get collected in the "Gallery Menu"
+					{
+						if (!isset($file))
+						{
+							$file = array();
+							$blocks[lang('Gallery Menu')] =& $file;
+						}
+						if (strstr($block,'block-core-ItemLinks'))
+						{
+							foreach(explode("\n",$block) as $link)
+							{
+								$link = trim($link);
+								if (!$link || substr($link,0,4) == '<div' || $link == '</div>') continue;
+								
+								$file[] = array(
+									'text'    => $link,
+									'link' => false,
+									'no_lang' => true,
+								);
+							}
+						}
+						else
+						{
+							$file[] = array(
+								'text' => $block,
+								'link' => false,
+								'no_lang' => true,
+								'icon' => false,
+							);
+						}
+					}
 				}
-				display_sidebox('gallery',$title,$file);
+			}
+		}
+		// G2's site-administration
+		if ($GLOBALS['egw_info']['user']['apps']['admin'])
+		{
+			$blocks[lang('Admin')] = array(
+				'Site configuration' => $GLOBALS['egw']->link('/gallery/index.php',array('g2_view' => 'core.SiteAdmin')),
+			);
+		}
+		foreach($blocks as $title => $block)
+		{
+			if ($location == 'admin')
+			{
+				display_section('gallery',$block);
+			}
+			else
+			{
+				display_sidebox('gallery',$title,$block);
 			}
 		}
 	}
