@@ -38,7 +38,9 @@ else
 	}
 	list($title,$css,$js) = GalleryEmbed::parseHead($GLOBALS['egw']->translation->convert($g2_data['headHtml'],'utf-8'));
 	$GLOBALS['egw_info']['flags']['app_header'] = $title;
-	$content = implode("\n",$css)."\n".implode("\n",$js)."\n".$GLOBALS['egw']->translation->convert($g2_data['bodyHtml'],'utf-8');
+	$GLOBALS['egw_info']['flags']['java_script'] .= implode("\n",$js);
+	
+	$content = implode("\n",$css)."\n".$GLOBALS['egw']->translation->convert($g2_data['bodyHtml'],'utf-8');
 }
 
 $GLOBALS['egw']->common->egw_header();
