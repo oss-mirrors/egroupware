@@ -269,7 +269,7 @@ class g2_integration
 		
 		if (is_array($g2_data['sidebarBlocksHtml']))
 		{
-			foreach($g2_data['sidebarBlocksHtml'] as $n => $block)
+			foreach($GLOBALS['egw']->translation->convert($g2_data['sidebarBlocksHtml'],'utf-8') as $n => $block)
 			{
 				//echo "block $n:<pre>".htmlspecialchars($block)."</pre>\n";
 				if (strlen($block) > 2)
