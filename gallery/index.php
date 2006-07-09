@@ -13,6 +13,7 @@
 
 $GLOBALS['egw_info'] = array(
 	'flags' => array(
+		'disable_Template_class' => true,
 		'currentapp' => 'gallery',
 		'noheader' => true,
 	),
