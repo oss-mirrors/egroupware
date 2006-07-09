@@ -613,7 +613,7 @@
 								}
 								break;
 								
-							case 'other':
+							case 'others':
 								$otherUsersFolders["$folderNameIMAP"] = $val;
 								break;
 								
@@ -774,7 +774,6 @@
 			$this->reopen($_folderName);
 
 			$cachedStatus = $caching->getImapStatus();
-
 			// no data cached yet?
 			// get all message informations from the imap server for this folder
 			if ($cachedStatus['uidnext'] == 0 || $cachedStatus['uidnext'] > $status->uidnext)
@@ -883,13 +882,12 @@
 			{
 				$displayHeaders = $caching->getHeaders();
 				$messagesToRemove = count($displayHeaders) - $status->messages;
-				reset($displayHeaders);
-				for($i=0; $i<count($displayHeaders); $i++)
+				foreach((array)$displayHeaders as $displayHeader)
 				{
-					$header = imap_fetch_overview($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
+					$header = imap_fetch_overview($this->mbox,$displayHeader['uid'],FT_UID);
 					if (count($header[0]) == 0)
 					{
-						$caching->removeFromCache($displayHeaders[$i]['uid']);
+						$caching->removeFromCache($displayHeader['uid']);
 						$removedMessages++;
 					}
 					if ($removedMessages == $messagesToRemove) break;
@@ -938,10 +936,10 @@
 			$count=0;
 
 			foreach((array)$displayHeaders as $uid => $headerObject) {
-				if(!empty($sequence)) $sequence .= ',';
-				$sequence .= $uid;
+				$sequences[] = $uid;
 				$sortOrder[$uid] = $count++;
 			}
+			$sequence = implode(',', $sequences);
 
 			$count=0;
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';

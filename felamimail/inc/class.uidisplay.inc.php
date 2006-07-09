@@ -872,6 +872,7 @@
 			
 			$part		= $_GET['part'];
 			
+			$this->bofelamimail->reopen($this->mailbox);
 			$attachment 	= $this->bofelamimail->getAttachment($this->uid,$part);
 			
 			$this->bofelamimail->closeConnection();

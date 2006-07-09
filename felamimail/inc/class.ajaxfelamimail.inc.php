@@ -542,6 +542,8 @@
 		
 		function updateFolderStatus($_folderName, $_status) {
 			$this->bofelamimail->subscribe($_folderName,($_status == '1' ? 'subscribe' : 'unsubscribe'));
+			$response =& new xajaxResponse();
+			return $response->getXML();
 		}
 		
 		function updateMessageView($_folderName) {

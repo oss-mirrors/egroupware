@@ -120,8 +120,8 @@
 			'type'   => 'notify',
 			'label'  => 'email signature',
 			'name'   => 'email_sig',
-			'rows'   => 3,
-			'cols'   => 50,
+			'rows'   => 5,
+			'cols'   => 80,
 			'xmlrpc' => True,
 			'admin'  => False,
 			'help'   => ' ',	// this is to get the substitution help-texts

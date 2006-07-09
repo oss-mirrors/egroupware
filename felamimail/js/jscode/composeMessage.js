@@ -274,9 +274,14 @@ function keypressed(keycode, keyvalue) {
 		
 		case KEYCODE_RIGHT:
 		case KEYCODE_DOWN:
-			if(selectedSuggestion) {
+			document.title='down '+selectedSuggestion;
+			//if(selectedSuggestion) {
+			if(resultboxVisible) {
+				document.title='is selected';
 				if(selectedSuggestion < resultRows.length-1) {
 					selectSuggestion(selectedSuggestion+1);
+				} else {
+					selectSuggestion(0);
 				}
 			}
 			break;
@@ -305,6 +310,8 @@ function keypressed(keycode, keyvalue) {
 			if(resultboxVisible) {
 				if( selectedSuggestion < resultRows.length-1) {
 					selectSuggestion(selectedSuggestion+1);
+				} else {
+					selectSuggestion(0);
 				}
 			} else {
 				focusToNextInputField();
@@ -463,4 +470,13 @@ function fm_compose_reloadAttachments() {
 function fm_compose_deleteAttachmentRow(_imageNode, _composeID, _attachmentID) {
 	_imageNode.parentNode.parentNode.parentNode.parentNode.deleteRow(_imageNode.parentNode.parentNode);
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteAttachment", _composeID, _attachmentID);
+}
+
+function fm_compose_selectSuggestionOnClick(_selectedSuggestion) {
+	if(resultboxVisible) {
+		currentInputField.value = results[_selectedSuggestion];
+		hideResultBox();
+	}
+	focusToNextInputField();
+	searchActive=false;
 }

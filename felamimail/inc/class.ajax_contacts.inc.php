@@ -24,17 +24,20 @@
 		var $charset;
 		
 		function ajax_contacts() {
-			$GLOBALS['egw']->session->commit_session();
+error_log('ajax_contacts');
+//			$GLOBALS['egw']->session->commit_session();
 			$this->charset	= $GLOBALS['egw']->translation->charset();
 		}
 		
 		function searchAddress($_searchString) {
+error_log("ajax_contacts::searchAddress('$_searchString')");
 			if (!is_object($GLOBALS['egw']->contacts))
 			{
 				$GLOBALS['egw']->contacts =& CreateObject('phpgwapi.contacts');
 			}
 			if (method_exists($GLOBALS['egw']->contacts,'search'))	// 1.3+
 			{
+error_log("calling contacts::search()");
 				$contacts = $GLOBALS['egw']->contacts->search(array(
 					'n_fn'       => $_searchString,
 					'email'      => $_searchString,
@@ -43,12 +46,14 @@
 			}
 			else	// < 1.3
 			{
+error_log("calling contacts::read()");
 				$contacts = $GLOBALS['egw']->contacts->read(0,20,array(
 					'fn' => 1,
 					'email' => 1,
 					'email_home' => 1,
 				),$_searchString,'tid=n','','fn');
 			}
+error_log("got ".count($contacts). " entries back");
 			$response =& new xajaxResponse();
 
 			if(is_array($contacts)) {
@@ -65,7 +70,7 @@
 							$str = $GLOBALS['egw']->translation->convert(trim($contact['n_fn'] ? $contact['n_fn'] : $contact['fn']).' <'.trim($email).'>',$this->charset,'utf-8');
 							$innerHTML .= '<div class="inactiveResultRow" onclick="selectSuggestion($i)">'.
 								htmlentities($str,ENT_QUOTES,'utf-8').'</div>';
-							$jsArray[$email] = addslashes($str);
+							$jsArray[$email] = addslashes(trim($contact['n_fn'] ? $contact['n_fn'] : $contact['fn']).' <'.trim($email).'>');
 						}
 						if ($i > 10) break;	// we check for # of results here, as we might have empty email addresses
 					}
@@ -81,6 +86,7 @@
 			} else {
 				$response->addAssign('resultBox', 'className', 'resultBoxHidden');
 			}
+error_log("leaving ajax_contacts::searchAddress('$_searchString') ...");
 			return $response->getXML();
 		}
 	}

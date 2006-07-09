@@ -36,6 +36,10 @@
 				$this->composeID = $_composeID;
 				$this->restoreSessionData();
 			}
+			else	// new email
+			{
+				$this->setDefaults();
+			}
 		}
 		
 		/**
@@ -461,7 +465,8 @@
 					switch($value['type'])
 					{
 						case 'message/rfc822':
-							$bofelamimail->openConnection($value['folder']);
+							$bofelamimail->openConnection();
+							$bofelamimail->reopen($value['folder']);
 			
 							$rawBody	= $bofelamimail->getMessageRawBody($value['uid'],$value['partID']);
 			
