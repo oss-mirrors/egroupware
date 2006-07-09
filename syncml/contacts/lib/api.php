@@ -52,15 +52,18 @@ $_services['replace'] = array(
  *
  * @return array  An array of GUIDs for all notes the user can access.
  */
-function _egwcontactssync_list() {
+function _egwcontactssync_list()
+{
 	$guids = array();
 	
-	#$allContacts = ExecMethod('addressbook.vcaladdressbook.search', false);
-	$bocontacts = CreateObject('addressbook.bocontacts');
+	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	
+	$allContacts = ExecMethod('addressbook.bocontacts.search',array());
 
-	$allContacts = $bocontacts->search('', TRUE);
+	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	foreach((array)$allContacts as $contact) {
+	foreach((array)$allContacts as $contact)
+	{
 		$guids[] = $GLOBALS['egw']->common->generate_uid('contacts',$contact['id']);
 	}
 
@@ -76,23 +79,27 @@ function _egwcontactssync_list() {
  *
  * @return array  An array of GUIDs matching the action and time criteria.
  */
-function &_egwcontactssync_listBy($action, $timestamp) {
+function &_egwcontactssync_listBy($action, $timestamp)
+{
 	// todo
 	// check for acl
 	
 	#Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$allChangedItems = $GLOBALS['phpgw']->contenthistory->getHistory('contacts', $action, $timestamp);
+	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('contacts', $action, $timestamp);
 
-	if($action != 'delete') {
+	if($action != 'delete')
+	{
 		$vcalAddressBook = CreateObject('addressbook.vcaladdressbook');
 		$readAbleItems = array();
 
 		// check if we have access to the changed data
 		// need to get improved in the future
-		foreach($allChangedItems as $guid) {
+		foreach($allChangedItems as $guid)
+		{
 			$uid = $GLOBALS['egw']->common->get_egwId($guid);
-			if($vcalAddressBook->check_perms($uid, PHPGW_ACL_READ)) {
+			if($vcalAddressBook->check_perms(EGW_ACL_READ,$uid))
+			{
 				$readAbleItems[] = $guid;
 			}
 		}
@@ -114,25 +121,26 @@ function &_egwcontactssync_listBy($action, $timestamp) {
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcontactssync_import($content, $contentType, $notepad = null) {
+function _egwcontactssync_import($content, $contentType, $notepad = null)
+{
 	#error_log("SymcML: egwcontactssync import content: ".base64_decode($ccontent)." contentType: $contentType");
 	Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
+
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
 			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',true);
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$contactId		= $vcaladdressbook->addVCard($content,-1);
 
+			$contactId		= $vcaladdressbook->addVCard($content);
 			break;
 
 		case 'text/x-s4j-sifc':
 			$sifaddressbook		=& CreateObject('addressbook.sifaddressbook');
-			$contactId = 		$sifaddressbook->addSIF($content,-1);
-
+			$contactId = 		$sifaddressbook->addSIF($content);
 			break;
 			
 		default:
@@ -143,7 +151,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null) {
 		return $contactId;
 	}
 
-	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['phpgw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['egw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $GLOBALS['egw']->common->generate_uid('contacts',$contactId);
 }
 
@@ -158,7 +166,8 @@ function _egwcontactssync_import($content, $contentType, $notepad = null) {
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcontactssync_search($content, $contentType) {
+function _egwcontactssync_search($content, $contentType)
+{
 	#error_log("SymcML: egwcontactssync search content contentType: $contentType");
 	Horde::logMessage("SymcML: egwcontactssync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
@@ -188,11 +197,10 @@ function _egwcontactssync_search($content, $contentType) {
 	}
 
 	#error_log("SymcML: egwcontactssync search found: $contactId");
+	Horde::logMessage("SymcML: egwcontactssync search found: ".$GLOBALS['egw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	if(!$contactId) {
-		Horde::logMessage("SymcML: egwcontactssync search found nothing ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		return false;
 	} else {
-		Horde::logMessage("SymcML: egwcontactssync search found: ".$GLOBALS['egw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		return $GLOBALS['egw']->common->generate_uid('contacts',$contactId);
 	}
 }
@@ -213,7 +221,8 @@ function _egwcontactssync_search($content, $contentType) {
  *
  * @return string  The requested data.
  */
-function _egwcontactssync_export($guid, $contentType) {
+function _egwcontactssync_export($guid, $contentType)
+{
 	if (is_array($contentType)) {
 		$options = $contentType;
 		$contentType = $options['ContentType'];
@@ -232,9 +241,12 @@ function _egwcontactssync_export($guid, $contentType) {
 	switch ($contentType) {
 		case 'text/x-vcard':
 
-			if($vcard = $vcaladdressbook->getVCard($contactID)) {
+			if($vcard = $vcaladdressbook->getVCard($contactID))
+			{
 				return $vcard;
-			} else {
+			}
+			else
+			{
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			
@@ -299,7 +311,7 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
-	$contactID = $GLOBALS['phpgw']->common->get_egwId($guid);
+	$contactID = $GLOBALS['egw']->common->get_egwId($guid);
 
 	switch ($contentType) {
 		case 'text/x-vcard':
