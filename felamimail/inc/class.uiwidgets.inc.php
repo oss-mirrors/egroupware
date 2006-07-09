@@ -212,25 +212,27 @@
 					$this->t->set_var('row_css_class','header_row_');
 				}
 				
+				// filter out undisplayable characters
+				$search = array('[\016]','[\017]',
+					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
+					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
+				$replace = '';
+		
+				$header['subject'] = preg_replace($search,$replace,$header['subject']);
+				$header['subject'] = @htmlspecialchars($header['subject'],ENT_QUOTES,$this->displayCharset);
+				// curly brackets get messed up by the template!
+				$header['subject'] = str_replace(array('{','}'),array('&#x7B;','&#x7D;'),$header['subject']);
+				
 				if (!empty($header['subject'])) {
-					// filter out undisplayable characters
-					$search = array('[\016]','[\017]',
-						'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
-						'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
-					$replace = '';
-			
-					$header['subject'] = preg_replace($search,$replace,$header['subject']);
-
 					// make the subject shorter if it is to long
 					$fullSubject = $header['subject'];
 					#if(strlen($header['subject']) > $maxSubjectLength)
 					#{
 					#	$header['subject'] = substr($header['subject'],0,$maxSubjectLength)."...";
 					#}
-					$header['subject'] = @htmlspecialchars($header['subject'],ENT_QUOTES,$this->displayCharset);
 					$this->t->set_var('header_subject', $header['subject']);
 					#$this->t->set_var('attachments', $header['attachment']);
-					$this->t->set_var('full_subject',@htmlspecialchars($fullSubject,ENT_QUOTES,$this->displayCharset));
+					$this->t->set_var('full_subject',$fullSubject);
 				} else {
 					$this->t->set_var('header_subject',@htmlentities("(".lang('no subject').")",ENT_QUOTES,$this->displayCharset));
 				}
