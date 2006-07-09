@@ -24,13 +24,13 @@
 	<tr class="navbarBackground">
 		<td align="right" width="170px">
 			<div class="parentDIV">
-				<button class="menuButton" type="submit" value="{lang_send}" name="send">
-					<img src="{img_mail_send}">
+				<button class="menuButton" type="submit" value="{lang_send}" name="send" style="width: auto; color: black;">
+					<img src="{img_mail_send}" style="vertical-align: middle;"> <b>{lang_send}</b>
 				</button>
-				<button class="menuButton" type="button" onclick="addybook();">
+				<button class="menuButton" type="button" onclick="addybook();" title="{lang_addressbook}">
 					<img src="{addressbookImage}">
 				</button>
-				<button class="menuButton" type="button" onclick="fm_compose_displayFileSelector();">
+				<button class="menuButton" type="button" onclick="fm_compose_displayFileSelector();" title="{lang_attachments}">
 					<img src="{img_attach_file}">
 				</button>
 			</div>
@@ -165,7 +165,7 @@
 		{size}
 	</td>
 	<td align="center">
-		<input type="checkbox" name="attachment[{attachment_number}]" value="{lang_remove}">
+		<input type="checkbox" name="attachment[{attachment_number}]" value="{lang_remove}" title="{lang_remove}">
 	</td>
 </tr>
 <!-- END attachment_row -->
@@ -196,7 +196,7 @@
 		<input class="input_text" onkeypress="return disabledKeyCodes(disabledKeys1);" autocomplete="off" type=text style="width: 450px;" name="address[]" value="{address}" onfocus="initResultBox(this)" onblur="stopCapturingEvents()">
 	</td>
 	<td style="width:20px;" valign="bottom">
-		<img sstyle="mmargin-top: 1px; bborder: 1px solid red;" src="{img_clear_left}" onclick="deleteTableRow(this)">
+		<img src="{img_clear_left}" onclick="deleteTableRow(this)" title="{lang_remove}">
 	</td>
 	<td style="width:20px;" valign="bottom">
 		<span style="display:none;" valign="bottom">
