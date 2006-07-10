@@ -163,12 +163,17 @@
   $group_list = array();
 //  $group_list = $GLOBALS['phpgw']->accounts->search (array('type'=>'groups'));
   $group_list = $GLOBALS['phpgw']->accounts->membership($GLOBALS['phpgw_info']['user']['account_id']);
+  if ($_POST['ticket_group']) {
+     $_defgroup = $_POST['ticket_group'];
+  } else {
+     $_defgroup = $GLOBALS['phpgw_info']['user']['account_primary_group'];
+  }
   while(list($key,$entry) = each($group_list))
   {
 //      if (check_assign_right(-1, $entry['account_id'], 1)) {
 	  $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_name']);
 	  $GLOBALS['phpgw']->template->set_var('optionvalue', $entry['account_id']);
-	  $GLOBALS['phpgw']->template->set_var('optionselected', $entry['account_id']==$_POST['ticket_group']?' SELECTED ':'');
+	  $GLOBALS['phpgw']->template->set_var('optionselected', $entry['account_id']==$_defgroup?' SELECTED ':'');
 	  $GLOBALS['phpgw']->template->parse('options_group','options_select',true);
 //      }
   }
