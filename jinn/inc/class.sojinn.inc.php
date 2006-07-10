@@ -293,7 +293,8 @@
 	  */
 	  function get_object_values_by_uniq($uniqid)
 	  {
-		 return $this->get_object_values('',$uniqid);
+		 return $this->get_object_values($uniqid);
+		 //return $this->get_object_values('',$uniqid);
 	  }
 
 	  /**
