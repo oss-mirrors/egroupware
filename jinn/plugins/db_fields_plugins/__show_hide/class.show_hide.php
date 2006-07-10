@@ -65,9 +65,6 @@
 		 {
 			$hide_sel = implode(",",$hide);
 		 }
-		 #_debug_array($hide_sel);
-		 #_debug_array($show_sel);
-		 #die();
 
 		 $this->tplsav2->assign('value',$value);
 		 $this->tplsav2->assign('show_sel',$show_sel);
@@ -85,7 +82,7 @@
 
 	  function listview_read($value, $config,$where_val_enc)
 	  {
-		 return 'under construction';
+		 return $value;
 	  }
    }
 ?>
