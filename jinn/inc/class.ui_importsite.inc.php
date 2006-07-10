@@ -28,7 +28,8 @@
 	  var $public_functions = Array(
 		 'import_egw_jinn_site' => True,
 		 'import_incompatible_egw_jinn_site' => True,
-		 'import_object' => True
+		 'import_object' => True,
+		 'import_into' => True
 	  );
 
 	  var $num_objects=0;
@@ -51,12 +52,28 @@
 	  * @access public
 	  * @return void
 	  */
-	  function import_egw_jinn_site()
+	  function import_egw_jinn_site($import_into=false)
 	  {
-		 if (is_array($_FILES[importfile]) )
+		 if($_POST['import_into'])
 		 {
+			$import_into=$_POST['import_into'];
+		 }
+	//	 die($import_into);
+
+		 if (is_array($_FILES[importfile]) || is_file($_POST['newtemp']))
+		 {
+			if(is_file($_POST['newtemp']))
+			{	
+			   $filename = $_POST['newtemp'];
+			}
+			else
+			{
+			   $filename = $_FILES['importfile']['tmp_name'];
+			}
+
 			//do some simple checks and then try to import
-			$filename = $_FILES['importfile']['tmp_name'];
+
+			
 			$dataFile = fopen( $filename, "r" ) ;
 			if($dataFile)
 			{
@@ -67,7 +84,7 @@
 				  if($_POST['disallow_oldjinn'])
 				  {
 					 $this->bo->addError(lang('The uploaded file seems to be saved in the old unsafe file format. This is not allowed.'));
-					 $this->import_form();
+					 $this->import_form($import_into);
 				  }
 				  else
 				  {
@@ -85,13 +102,13 @@
 				  $xmlObj   = CreateObject('jinn.xmltoarray',$buffer);
 				  $xmlarray = $xmlObj->createArray();
 
-				  if($this->load_site_from_xml($xmlarray))
+				  if($this->load_site_from_xml($xmlarray,'',$import_into))
 				  {
 					 $this->bo->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 				  }
 				  else
 				  {
-					 $this->import_form();
+					 $this->import_form($import_into);
 					 
 				  }
 
@@ -105,18 +122,57 @@
 		 }
 		 else
 		 {
-			$this->import_form();
+			$this->import_form($import_into);
 		 }
 
 		 $this->bo->sessionmanager->save();
 	  }
 
-	  function import_form()
+	  function import_into()
 	  {
-		 $this->header(lang('Import JiNN-Site'.$table));
+		 $this->import_egw_jinn_site($_GET['site_id']);
+	  }
+
+	  function select_objects($import_site_objects,$import_into=false)
+	  {
+		 $tmpfile=$_FILES['importfile']['tmp_name'];
+		 $this->tplsav2->newtempfilename=$_FILES['importfile']['name'];
+
+		 $this->tplsav2->newtemp = tempnam('','');
+		 move_uploaded_file($tmpfile,$this->tplsav2->newtemp);
+
+//		 $this->preview_import($this->tplsav2->newtemp);
+		 
+		 $this->header(lang('Select objects to import'));
+		 if(is_array($import_site_objects))
+		 {
+			$this->tplsav2->import_site_objects=$import_site_objects;
+		 }
+
 		 $this->msg_box();
 
 		 $this->tplsav2->form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site');
+		 $this->tplsav2->import_into=$import_into;
+		 $this->tplsav2->display('import_site_select_objects.tpl.php');		 
+
+		 $GLOBALS['phpgw']->common->phpgw_exit();
+	  }
+
+
+	  function import_form($import_into)
+	  {
+		 if($import_into)
+		 {
+			$this->header(lang('Import JiNN Site File into current Site'));
+		 }
+		 else
+		 {
+			$this->header(lang('Load JiNN Site File'));
+		 }
+		 $this->msg_box();
+
+		 $this->tplsav2->form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site');
+		 $this->tplsav2->import_into=$import_into;
 		 $this->tplsav2->display('importsite.tpl.php');		 
 	  }
 
@@ -141,7 +197,7 @@
 		 }
 	  }
 
-	  function load_site_from_xml($xmlarray,$f_replace=false)
+	  function load_site_from_xml($xmlarray,$f_replace=false,$into_site_id=false)
 	  {
 		 if($f_replace)
 		 {
@@ -153,27 +209,41 @@
 			$replace=$_POST['replace_existing'];
 		 }
 
-		 $import_site			= $xmlarray['jinn']['site'][0];
 		 $import_site_files		= $xmlarray['jinn']['site_files'];
 		 $import_site_objects	= $xmlarray['jinn']['site'][0]['objects'];
 
-		 $check_versions = true;
-		 if(!$this->check_version($import_site['jinn_version'],$check_versions))
+		 if(!$_POST['objects_selected'])
 		 {
-			//load incompatible;
+			$this->select_objects($import_site_objects,$into_site_id);
 		 }
 
-		 $new_site_id = $this->save_site($import_site,$replace);
-		 if(!$new_site_id)
+		 if(!$into_site_id)
 		 {
-			$this->bo->addError(lang('An error occured while importing site data.'));
-			return false;
+			$import_site			= $xmlarray['jinn']['site'][0];
+
+			$check_versions = true;
+			if(!$this->check_version($import_site['jinn_version'],$check_versions))
+			{
+			   //load incompatible;
+			}
+
+			$new_site_id = $this->save_site($import_site,$replace);
+			if(!$new_site_id)
+			{
+			   $this->bo->addError(lang('An error occured while importing site data.'));
+			   return false;
+			}
+		 }
+		 else
+		 {
+			$new_site_id=$into_site_id;
 		 }
 
 		 if($import_site_files)
 		 {
 			$this->save_site_files($import_site_files,$new_site_id);
 		 }
+
 
 		 if(is_array($import_site_objects))
 		 {
@@ -418,9 +488,13 @@
 //		 _debug_array($import_site_objects); 
 		 foreach($import_site_objects as $object)
 		 {
-
 			unset($data_objects);
 			unset($imported);
+			
+			if($_POST['objects_selected'] && !$_POST[$object['temp_id']])
+			{
+			   continue;
+			}
 		
 			//while(list($key, $val) = each($object)) 
 			foreach($object as $key => $val)
