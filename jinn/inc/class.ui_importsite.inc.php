@@ -137,8 +137,10 @@
 	  {
 		 $tmpfile=$_FILES['importfile']['tmp_name'];
 		 $this->tplsav2->newtempfilename=$_FILES['importfile']['name'];
+		 //_debug_array($GLOBALS[egw_info][server][temp_dir]);
 
-		 $this->tplsav2->newtemp = tempnam('','');
+//		 $this->tplsav2->newtemp = tempnam($GLOBALS[egw_info][server][temp_dir],'');
+		 $this->tplsav2->newtemp = tempnam('/tmp/infolog','');
 		 move_uploaded_file($tmpfile,$this->tplsav2->newtemp);
 
 //		 $this->preview_import($this->tplsav2->newtemp);
