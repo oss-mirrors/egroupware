@@ -249,7 +249,7 @@
 	  </tr>
    </table>
 
-   <div><input type="button" onClick="newTab();" value="<?=lang('New Site Profile')?>" /><br/><br/><div>
+   <!--<div><input type="button" onClick="newTab();" value="<?=lang('New Site Profile')?>" /><br/><br/><div>-->
 
 		 <div id="topnav">
 			<ul>
@@ -259,10 +259,7 @@
 
 			   <!-- foreach profile -->
 			   <?php 
-				  //				  $num_dom=count($this->site_domains);
-				  //_debug_array($num_dom);
 				  $i=2;
-			   //_debug_array($i);
 			   ?>
 			   <?php foreach($this->site_domains as $domain):?>
 			   <?php $i++; ?>
