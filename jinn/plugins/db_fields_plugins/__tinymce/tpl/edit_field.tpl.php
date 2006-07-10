@@ -5,7 +5,7 @@
 <script language="javascript" type="text/javascript">
    tinyMCE.init({
 		 mode : "exact",
-		 language: "<?=$GLOBALS['egw_info']['user']['preferences']['common']['lang']?>",
+		 xxlanguage: "<?=$GLOBALS['egw_info']['user']['preferences']['common']['lang']?>",
 		 plugin_insertdate_dateFormat : "<?=str_replace(array('Y','m','M','d'),array('%Y','%m','%b','%d'),$GLOBALS['egw_info']['user']['preferences']['common']['dateformat'])?>",
 		 plugin_insertdate_timeFormat : "<?=($GLOBALS['egw_info']['user']['preferences']['common']['timeformat'] == 12 ? '%I:%M %p' : '%H:%M')?>",
 		 elements : "<?=$this->name?>",
@@ -13,7 +13,6 @@
 		 <?=$init_options?>
    });
    tinyMCE.onLoad();
+   //alert('hallo');
 </script>
-<textarea id="<?=$this->name?>" name="<?=$this->name?>" style="<?=$this->style?>">
-   <?=htmlspecialchars($this->content)?>
-</textarea>
+<textarea id="<?=$this->name?>" name="<?=$this->name?>" style="<?=$this->style?>"><?=htmlspecialchars($this->content)?></textarea>
