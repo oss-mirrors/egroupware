@@ -25,8 +25,8 @@
    ---------------------------------------------------------------------
    */
    $this->registry->plugins['gen_menu_img']['name']				= 'gen_menu_img';
-   $this->registry->plugins['gen_menu_img']['title']			= 'Genenate Menu Images';
-   $this->registry->plugins['gen_menu_img']['version']			= '0.3';
+   $this->registry->plugins['gen_menu_img']['title']			= 'TextToImage';
+   $this->registry->plugins['gen_menu_img']['version']			= '0.4';
    $this->registry->plugins['gen_menu_img']['enable']			= 1;
    $this->registry->plugins['gen_menu_img']['author']			= 'Pim Snel';
    $this->registry->plugins['gen_menu_img']['description']		= 

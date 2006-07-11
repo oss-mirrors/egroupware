@@ -261,10 +261,11 @@
 			   <?php 
 				  $i=2;
 			   ?>
-			   <?php foreach($this->site_domains as $domain):?>
+<!--			   <?php foreach($this->site_domains as $domain):?>
 			   <?php $i++; ?>
 			   <li><a href="javascript:void(0);" id="tab<?=$i?>" class="activetab" tabindex="0" accesskey="<?=$i?>" onfocus="tab.display(<?=$i?>);" onclick="tab.display(<?=$i?>); setCurrent(<?=$i?>); return(false);"><?=$domain['name'] ?>(<?=$i?>)</a></li>
 			   <?php endforeach?>
+			   -->   
 
 			</ul>
 			<br />
@@ -345,12 +346,13 @@
 			<?php 
 			   $i=2;
 			?>
+			<!--
 			<?php foreach($this->site_domains as $domain):?>
 			<?php $i++; ?>
 			<div id="tabcontent<?=$i?>" class="inactivetab">
 			   <table style="border-spacing: 15px;">
 				  <tr>
-					 <td ><?=lang('Database type')?></td><td >
+					 <td ><?=lang('Database type')?></td><td>
 						<?php
 						   if($this->site_values['dev_site_db_type']=='pgsql') 
 						   {
@@ -381,6 +383,7 @@
 			   </table>
 			</div>
 			<?php endforeach?>
+			-->
 
 
 			<!-- new tab-->

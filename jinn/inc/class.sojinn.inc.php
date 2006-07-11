@@ -2084,7 +2084,6 @@
 
 		 return $status;
 	  }
-
 	  
 	  /**
 	  * insert_new_object: the one and only function for creating new objects 
@@ -2098,6 +2097,7 @@
 		 $meta=$this->phpgw_table_metadata('egw_jinn_objects',true);
 
 		 $uniqid=uniqid('');
+
 		 $newdata=$this->oldData2newData($data);
 
 		 if(!$newdata['object_id'])
@@ -2109,11 +2109,11 @@
 			$uniqid = $newdata['object_id'];
 		 }
 
-
-		 if(!$newdata['unique_id'])
-		 {
+		 //FIXME remove
+//		 if(!$newdata['unique_id'])
+//		 {
 			$newdata['unique_id'] = $uniqid;
-		 }
+//		 }
 
 		 foreach($newdata as $colname => $colval)
 		 {
@@ -2148,7 +2148,6 @@
 			   $status[where_value]=$uniqid;
 			   $status[ret_code]=0;
 			}
-		
 		 }
 		 else
 		 {

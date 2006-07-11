@@ -202,7 +202,7 @@
 
 			   while (list ($key, $val) = each ($object)) 
 			   { 
-				  $obj_arr['temp_id']=$temp_id;
+//				  $obj_arr['temp_id']=$temp_id;
 
 
 				  if($key != 'object_idxxx' && $key != 'parent_site_id') // keep if needed for static egroupware apps
@@ -230,7 +230,7 @@
 				  {
 					 while (list ($key, $val) = each ($field)) 
 					 { 
-						if ($key != 'field_id' && $key !='field_parent_object') 
+						if ($key != 'xxxxfield_id' && $key !='xxxxfield_parent_object') 
 						{
 						   if(in_array($key,$cdata_array))
 						   {
@@ -243,7 +243,7 @@
 						}
 					 }
 					 //$field_arr['unique_id']=$temp_id;
-					 $field_arr['temp_id']=$temp_id;
+//					 $field_arr['temp_id']=$temp_id;
 					 $obj_arr['fields'][]=$field_arr;
 				  }
 			   }
@@ -262,7 +262,7 @@
 						   //$report_arr[$key]='<![CDATA['.$val.']]>';
 						}
 					 }
-					 $report_arr['temp_id']=$temp_id;
+//					 $report_arr['temp_id']=$temp_id;
 
 					 //FIXME exporting reports is disabled till it's better supported
 					 //uncomment below to enable it again
@@ -438,14 +438,14 @@
 			   { 
 				  $field[value]=$serial;
 
-				  if ($key != 'object_id')
-				  {
+//				  if ($key != 'object_id')
+//				  {
 					 $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
-				  }
+//				  }
 			   }
 
 			   //$out .= "	'unique_id' => '$temp_id',\n";  //depreciated
-			   $out .= "	'temp_id' => '$temp_id',\n"; 
+//			   $out .= "	'temp_id' => '$temp_id',\n"; 
 
 			   $out.=");\n\n";
 
@@ -461,7 +461,7 @@
 
 					 while (list ($key, $val) = each ($field)) 
 					 { 
-						if ($key != 'field_id' && $key !='field_parent_object') 
+						if ($key != 'xxxxfield_id' && $key !='xxxxfield_parent_object') 
 						{
 						   // fix problem with wrong storage of null values causing a 0 value with mean something different
 						   if($val!=null)
@@ -475,8 +475,8 @@
 						   $out .= "	'$key' => $val,\n"; 
 						}
 					 }
-					 $out .= "	'unique_id' => '".$temp_id."',\n"; //depreciated
-					 $out .= "	'temp_id' => '".$temp_id."',\n"; 
+//					 $out .= "	'unique_id' => '".$temp_id."',\n"; //depreciated
+//					 $out .= "	'temp_id' => '".$temp_id."',\n"; 
 					 $out.=");\n\n";
 				  }
 			   }
@@ -496,8 +496,8 @@
 						   $report .= "    '$key' => '".ereg_replace("'","\'",$val)."',\n";
 						}
 					 }
-					 $report_arr['temp_id']=$temp_id;
-					 $report .= "    'temp_id' => '$temp_id',\n";
+//					 $report_arr['temp_id']=$temp_id;
+//					 $report .= "    'temp_id' => '$temp_id',\n";
 					 $report .=");\n\n";
 				  }
 			   }
@@ -595,10 +595,10 @@
 			   { 
 				  $field[value]=$serial;
 
-				  if ($key != 'object_id')
-				  {
+//				  if ($key != 'object_id')
+//				  {
 					 $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
-				  }
+//				  }
 			   }
 			   $out.=");\n\n";
 
@@ -615,7 +615,7 @@
 
 					 while (list ($key, $val) = each ($field)) 
 					 { 
-						if ($key != 'field_id' && $key !='field_parent_object') 
+						if ($key != 'xxxxfield_id' && $key !='xxxxfield_parent_object') 
 						{
 						   // fix problem with wrong storage of null values causing a 0 value with mean something different
 						   if($val!=null)

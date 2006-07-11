@@ -10,6 +10,8 @@
 
    var http_request = false;
 
+   var block_parent_save = false;
+
    function ajax2_render_frm_buttons()
    {
 		 submit ='<input type="button" value="<?=lang('Save')?>" onclick="ajax2_post_form(\''+current_m2o_id+'\',\''+current_save_url+'\')" />';
@@ -41,6 +43,7 @@
 		 //location.href = submitTo; 
 		 
 		 http('GET', submitTo, ajax2_response_render_frm,'');
+
    }
 
    function ajax2_response_render_frm(data) 
@@ -57,6 +60,7 @@
 
 		 inner.innerHTML = '';                     	
 		 inner.appendChild(node);                  
+		 block_parent_save = true;
    }
 
    function ajax2_post_form(m2o_id,submitTo)
@@ -66,14 +70,16 @@
 			   tinyMCE.triggerSave(true,true);
 		 }
 
-		 current_m2o_id=m2o_id;
+ 		 current_m2o_id=m2o_id;
+		 //location.href = submitTo; 
 		 
 		 http('POST', submitTo, ajax2_after_form_post, document.getElementById('frm'+current_m2o_id));
    }
 
    function ajax2_after_form_post(data)
    {
-		 document.getElementById('div_m2o'+current_m2o_id).innerHTML='';
+		 //document.getElementById('div_m2o'+current_m2o_id).innerHTML='';
+		 ajax2_close_frm(current_m2o_id);
 		 ajax2_refreshlist();
    }
 
@@ -103,6 +109,7 @@
    function ajax2_close_frm(id)
    {
 		 document.getElementById('div_m2o'+id).innerHTML='';	
+		 block_parent_save = false;
    }
    
    function ajaxReorderList(m2o_id,col)

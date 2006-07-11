@@ -1505,7 +1505,7 @@
 					 <h4><?=lang('Select object configuration to use')?></h4>
 					 <ul id="ultype3level4">
 						<?php foreach($this->avail_objects_arr as $obj):?>
-						<li><a class="" id="type3l4<?=$obj[unique_id]?>" onclick="setActive('type3l4<?=$obj[unique_id]?>','type3',4,1);" href="javascript:void(0);" ><?=$obj[name]?></a></li> 
+						<li><a class="" id="type3l4<?=$obj[object_id]?>" onclick="setActive('type3l4<?=$obj[object_id]?>','type3',4,1);" href="javascript:void(0);" ><?=$obj[name]?></a></li> 
 						<?php endforeach?>
 					 </ul>
 				  </div>
@@ -1570,7 +1570,7 @@
 					 <h4><?=lang('Select object configuration to use')?></h4>
 					 <ul id="ultype4level4">
 						<?php foreach($this->avail_objects_arr as $obj):?>
-						<li><a class="" id="type4l4<?=$obj[unique_id]?>" onclick="setActive('type4l4<?=$obj[unique_id]?>','type4',4,1);" href="javascript:void(0);" ><?=$obj[name]?></a></li> 
+						<li><a class="" id="type4l4<?=$obj[object_id]?>" onclick="setActive('type4l4<?=$obj[object_id]?>','type4',4,1);" href="javascript:void(0);" ><?=$obj[name]?></a></li> 
 						<?php endforeach?>
 					 </ul>
 				  </div>

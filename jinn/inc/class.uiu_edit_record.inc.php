@@ -1387,6 +1387,8 @@
 		 $this->init_ajax2();
 		 
 		 $object_arr=$this->bo->so->get_object_values_by_uniq($_GET[obj_conf]);
+		 //_debug_array($object_arr);
+		 //_debug_array($_GET);
 
 		 $this->bo->session['m2o_obj_id']=$object_arr[object_id];
 		 $this->bo->sessionmanager->save();
@@ -1420,6 +1422,8 @@
 	  {
 		 $this->init_ajax2();
 		 
+		 //_debug_array($_POST);
+		 //die();
 		 if($_POST)
 		 {
 			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
@@ -1440,9 +1444,11 @@
 			}
 		 }
 		 
-		 $data=_debug_array($_POST,false);
+		 //$data=_debug_array($_POST,false);
+		 //$data=_debug_array($status,false);
 		 
-		 $value[status]=$data;
+		 //$value[status]=$data;
+		 $value[status]='tja';
 		 
 		 $output = $this->json->encode($value);
 

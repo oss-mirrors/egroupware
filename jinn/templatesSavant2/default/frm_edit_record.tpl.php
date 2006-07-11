@@ -561,7 +561,18 @@
 	  <?php if($this->readonly):?>
 	  <div style="float:left;width:auto;"><input type="button" name="edit" onClick="location='<?=$this->edit_record_link?>'" class="egwbutton" value="<?=lang('Edit this Record')?>"></div>
 	  <?php else:?>
-	  <div style="float:left;width:auto;"><input type="submit" name="reopen" class="egwbutton" value="<?=lang('Save')?>"></div>
+	  <script>
+		 function check_m2o_form()
+		 {
+			   if(typeof block_parent_save !='undefined' && block_parent_save )
+			   {
+					 alert('<?=lang('You must save or close the subform to be able to save this record.')?>');
+					 return false;
+			   }
+			   return true;
+		 }
+	  </script>
+	  <div style="float:left;width:auto;"><input type="submit" onclick="return check_m2o_form();" name="reopen" class="egwbutton" value="<?=lang('Save')?>"></div>
 
 	  <?php //if($this->max_records)>1 && $this->num_records<$this->max_records):?>
 	  <!--	  <div style="float:left;width:auto;"><input  class="egwbutton" type="submit" name="add_new" value="<?=lang('Save and Add New Record')?>"></div>-->

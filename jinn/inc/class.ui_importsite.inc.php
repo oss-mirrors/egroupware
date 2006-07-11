@@ -58,7 +58,7 @@
 		 {
 			$import_into=$_POST['import_into'];
 		 }
-	//	 die($import_into);
+		 //	 die($import_into);
 
 		 if (is_array($_FILES[importfile]) || is_file($_POST['newtemp']))
 		 {
@@ -73,7 +73,7 @@
 
 			//do some simple checks and then try to import
 
-			
+
 			$dataFile = fopen( $filename, "r" ) ;
 			if($dataFile)
 			{
@@ -109,7 +109,7 @@
 				  else
 				  {
 					 $this->import_form($import_into);
-					 
+
 				  }
 
 			   }
@@ -140,7 +140,7 @@
 
 		 $this->tplsav2->newtemp = tempnam($GLOBALS['egw_info']['server']['temp_dir'],'');
 		 move_uploaded_file($tmpfile,$this->tplsav2->newtemp);
-		 
+
 		 $this->header(lang('Select objects to import'));
 		 if(is_array($import_site_objects))
 		 {
@@ -176,7 +176,7 @@
 
 	  function check_version($jinn_version,$check_versions)
 	  {
-	
+
 		 $info = $GLOBALS['egw_info']['apps']['jinn'];
 
 		 if(!$jinn_version)
@@ -250,7 +250,7 @@
 
 		 $this->bo->addInfo(lang('%1 Site Objects have been imported.',$this->num_objects));
 		 $this->bo->addInfo(lang('%1 Site Object Fields have been imported.',$this->num_fields));
-//		 $this->bo->addInfo(lang('%1 Site Reports have been imported.',$this->num_reports));
+		 //		 $this->bo->addInfo(lang('%1 Site Reports have been imported.',$this->num_reports));
 
 		 $this->bo->addInfo(lang('Import was succesfull'));
 		 return true;
@@ -275,7 +275,7 @@
 
 		 @include($import[tmp_name]);
 		 $check_versions = true;
-		 
+
 		 if(!($import_site && $checkbit))
 		 {	
 			if($this->bo->session['tmp']['import_site'] && $this->bo->session['tmp']['checkbit'])
@@ -305,7 +305,7 @@
 
 			   $this->bo->exit_and_open_screen('jinn.ui_importsite.import_incompatible_egw_jinn_site');
 			}
-			
+
 			if($new_site_id = $this->save_site($import_site,$_POST['replace_existing']))
 			{
 			   $proceed=true;
@@ -358,6 +358,11 @@
 			{
 			   continue;
 			}
+			
+			/*if($key=='uniqid')
+			{
+			   $val=$this->bo->so->generate_unique_id();
+			}*/
 
 			if(array_key_exists($key, $validfields))
 			{
@@ -384,9 +389,6 @@
 
 		 $new_site_name=$data[0]['value'];	
 
-		 //if replace remove alles wat lijkt op wat we willlen saven
-		 	
-		 //if($replace && $this->site_name_exist($new_site_name))
 		 if($replace)
 		 {
 			//new method: no update but remove
@@ -396,23 +398,11 @@
 			$this->bo->so->delete_phpgw_data('egw_jinn_sites','site_id',$new_site_id);
 			$this->bo->so->delete_phpgw_data('egw_jinn_objects','parent_site_id',$new_site_id);
 
-			//die('hallo');
-//			$thissitename=$this->bo->so->get_sites_by_name($new_site_name);
-//			$this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
-
 			// remove all existing objects
 			$this->bo->addInfo(lang('Replaced existing site named <strong>%1</strong>.',$new_site_name));
 
 			$status=$this->bo->so->insert_new_site($data);
 			$new_site_id=$status[where_value];
-			
-			/*
-			echo $new_site_id;
-			echo $new_site_name;
-			_debug_array($data);	
-			die('hallo');
-			*/
-
 		 }
 		 else
 		 {
@@ -477,54 +467,120 @@
 
 	  function save_objects($import_site_objects,$import_obj_fields,$import_reports,$parent_site_id,$replace)
 	  {
-
 		 $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
-		 $ignorefields = array('fields','reports','parent_site_id');
+		 $ignorefields = array('uniqid','fields','reports','parent_site_id');
 
-		 //check for keep id's
-		 //	 unset($validfields[object_id]);
-//		 _debug_array($import_site_objects); 
+		 //create renaming table for relations
+		 foreach($import_site_objects as $object)
+		 {
+			$newid=$this->bo->so->generate_unique_id();
+			$oldid=$object['object_id'];
+			$object_old2new_id_arr[$oldid]=$newid;
+			//$object_new2old_id_arr[$newid]=$oldid;
+		 }
+
 		 foreach($import_site_objects as $object)
 		 {
 			unset($data_objects);
 			unset($imported);
-			
-			if($_POST['objects_selected'] && !$_POST[$object['temp_id']])
+
+			if($_POST['objects_selected'] && !$_POST[$object['object_id']])
 			{
 			   continue;
 			}
-		
+
 			//while(list($key, $val) = each($object)) 
 			foreach($object as $key => $val)
 			{
-			   if(!$replace && $key=='object_id' )
+			   $old_object_id=$object['object_id'];
+			   if($key=='object_id' )
 			   {
-				  continue;
+				  $new_id = $val = $object_old2new_id_arr[$old_object_id];
+				  //				  continue;
 			   }
-			   
+
+			   //FIXME REMOVE?
 			   if($replace && $key=='object_id')
 			   {
-				  /*
-				  echo "HALLO";
-				  
-				  _debug_array($validfields);
-				  echo $key;
-				  echo $val;
-				  // die('hallo');
-				  */
-				  
 				  $this->bo->so->delete_phpgw_data('egw_jinn_objects', 'object_id', $val);
 			   }
-			   
+
 			   if($key=='temp_id' || $key=='parent_site_id')
 			   {
 				  continue;
 			   }
 
+			   //very complex block which updates all references to objects in the relation conf
+			   if($key=='relations' && trim($val))
+			   {
+				  if (!function_exists('array_walk_recursive'))
+				  {
+					 function array_walk_recursive(&$input, $funcname, $userdata = "")
+					 {
+						if (!is_callable($funcname))
+						{
+						   return false;
+						}
+
+						if (!is_array($input))
+						{
+						   return false;
+						}
+
+						foreach ($input AS $key => $value)
+						{
+						   if (is_array($input[$key]))
+						   {
+							  array_walk_recursive($input[$key], $funcname, $userdata);
+						   }
+						   else
+						   {
+							  $saved_value = $value;
+							  if (!empty($userdata))
+							  {
+								 $funcname($value, $key, $userdata);
+							  }
+							  else
+							  {
+								 $funcname($value, $key);
+							  }
+
+							  if ($value != $saved_value)
+							  {
+								 $input[$key] = $value;
+							  }
+						   }
+						}
+						return true;
+					 }
+				  }
+
+				  $_rel_arr=unserialize(base64_decode($val));
+
+				  if (!function_exists('replace_oldid_with_newid'))
+				  {
+					 function replace_oldid_with_newid(&$item, &$key,$repl) 
+					 {
+						$key=str_replace($repl['old'],$repl['new'],$key);
+						$item=str_replace($repl['old'],$repl['new'],$item);
+					 }
+				  }
+				  
+				  foreach($object_old2new_id_arr as $oldid => $newid)
+				  {
+					 $repl_arr['old']=$oldid;
+					 $repl_arr['new']=$newid;
+					 array_walk_recursive($_rel_arr, 'replace_oldid_with_newid', $repl_arr);
+				  }
+
+				  $val==base64_encode(serialize($_rel_arr));
+			   }
+
+
 			   if(array_key_exists($key, $validfields))
 			   {
 				  $imported[$key] = true;
-			
+
 				  $data_objects[] = array
 				  (
 					 'name' => $key,
@@ -545,16 +601,21 @@
 			}
 
 			$data_objects[] = array ( 'name' => 'parent_site_id', 'value' => $parent_site_id);
-			
- //			$this->bo->addError(_debug_array($data_objects,false));
-//			_debug_array($data_objects);
-//			die();
 
+			//			$data_objects[] = array ( 'name' => 'object_id', 'value' => $object_old2new_id_arr[$old_object_id]);
+
+			//			   $new_id = $status['where_value'];
 			if($status = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
 			{
-			   $new_id = $status['where_value'];
-			   $temp_id = ($object['temp_id']?$object['temp_id']:$object['unique_id']);
-			   
+			   //echo $new_id .' ';
+			   //echo $status['where_value'].' <br/>';
+
+			   //			   $new_id = $status['where_value'];
+
+			   if($old_object_id)
+			   {
+				  $old_object_id = ($object['temp_id']?$object['temp_id']:$object['unique_id']);
+			   }
 			   // check if we're called from the newer load_site_from_xml function with fields etc... embedded
 			   if(is_array($object['fields']))
 			   {
@@ -562,7 +623,7 @@
 				  $import_reports = $object['reports'];
 			   }
 
-			   $this->save_fields($import_obj_fields,$temp_id,$new_id,$object['name']); 
+			   $this->save_fields($import_obj_fields,$old_object_id,$new_id,$object['name']); 
 
 			   //FIXME exporting reports is disabled till it's better supported
 			   //uncomment below to enable it again
@@ -571,10 +632,11 @@
 			   $this->num_objects++;
 			} 
 		 }
+		 //die();
 	  }
 
-	  // $temp_parent_id is the unique id saved in object
-	  function save_fields($import_obj_fields,$temp_parent_id,$new_parent_id,$parent_object_name)
+	  // $old_parent_id is the unique id saved in object
+	  function save_fields($import_obj_fields,$old_parent_id,$new_parent_id,$parent_object_name)
 	  {
 		 if(is_array($import_obj_fields))
 		 {
@@ -583,9 +645,12 @@
 
 			foreach($import_obj_fields as $obj_field)
 			{
-			   if(!$temp_parent_id || 
-			   ($obj_field['unique_id'] && $obj_field['unique_id']!=$temp_parent_id) || 
-			   ($obj_field['temp_id'] && $obj_field['temp_id']!=$temp_parent_id) )
+			   if($old_parent_id != $obj_field['field_parent_object'] 
+			   && ($obj_field['unique_id']!=$old_parent_id) 
+			   && ($obj_field['temp_id']!=$old_parent_id))
+			   //if(!$old_parent_id || 
+			   //			   ($obj_field['unique_id'] && $obj_field['unique_id']!=$old_parent_id) || 
+			   //			   ($obj_field['temp_id'] && $obj_field['temp_id']!=$old_parent_id) )
 			   {
 				  continue;
 			   }
@@ -636,7 +701,7 @@
 		 if(is_array($import_reports))
 		 {
 			$validfields = $this->bo->so->phpgw_table_fields('egw_jinn_report');
-			
+
 			unset($validfields[report_id]);
 
 			foreach($import_reports as $report)

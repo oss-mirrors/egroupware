@@ -111,6 +111,8 @@
 	  */
 	  function on_save_filter($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	  {
+		 //return;
+
 		 if($config['subdir'])
 		 {
 			$extrasubdir=SEP.$config['subdir'];
@@ -157,8 +159,13 @@
 			$toppadding=$imgversion['paddingtop'];
 			$leftpadding=$imgversion['paddingleft'];
 			$rightpadding=$imgversion['paddingright'];
+			
 			$tmpfile=$this->generate_image_from_text($text,$fontpath,$fontsize,$fontcolor,$bgimgpath,$bgcolor,$imgheight,$toppadding,$leftpadding,$rightpadding);
-
+			if(!is_readable($tmpfile))
+			{
+			   $this->local_bo->addError(lang('No text image was created from. Something is wrong. Please check TextToImage plugin configuration.'));	
+			   return;
+			}
 			$newimgfilename=$uniquename.'_'.$i.'.png';
 
 			rename($tmpfile,$upload_path.SEP.$newimgfilename);
@@ -186,10 +193,16 @@
 			$extrasubdir=SEP.$config['subdir'];
 		 }
 		 $upload_url=$this->local_bo->cur_upload_url().$extrasubdir;
-	//		 $upload_url=$this->local_bo->cur_upload_url();
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 
-		 if($value) $img_arr=unserialize(base64_decode($value));
+		 if(trim($value)) 
+		 {
+			$img_arr=unserialize(base64_decode($value));
+		 }
+		 if(count($img_arr)<2)
+		 {
+			return '';
+		 }
 
 		 $this->tplsav2->assign('value',$value);
 		 $this->tplsav2->assign('text',$img_arr[0]);
@@ -224,7 +237,14 @@
 		  $helper_id = $this->local_bo->plug->registry->plugins['gen_menu_img']['helper_fields_substring'];
 		  $prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
 
-		  if($value) $img_arr=unserialize(base64_decode($value));
+		  if(trim($value))
+		  {
+			 $img_arr=unserialize(base64_decode($value));
+		  }
+		  if(count($img_arr)<2)
+		  {
+			 return '';
+		  }
 
 		  $this->tplsav2->assign('prefix',$prefix);
 		  $this->tplsav2->assign('stripped_name',$stripped_name);
@@ -270,6 +290,12 @@
 		 else 
 		 {
 			$getsize = 8;
+		 }
+
+		 if(!is_readable($FONTFILE))
+		 {
+			$this->local_bo->addError(lang('Unable to open Font File'));	
+			return;
 		 }
 
 		 $size = imagettfbbox($getsize+0, 0, $FONTFILE, $TEXT);
