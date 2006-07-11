@@ -612,7 +612,7 @@
 
 			   //			   $new_id = $status['where_value'];
 
-			   if($old_object_id)
+			   if(!$old_object_id)
 			   {
 				  $old_object_id = ($object['temp_id']?$object['temp_id']:$object['unique_id']);
 			   }
