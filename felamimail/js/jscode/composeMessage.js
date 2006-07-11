@@ -80,12 +80,17 @@ function addAddressRow(_tableRow)
 	var newTableRow		= _tableRow.cloneNode(true);
 	var inputElements	= newTableRow.getElementsByTagName('input');
 	var spanElements	= newTableRow.getElementsByTagName('span');
+	var tdElements		= newTableRow.getElementsByTagName('td');
 
 	//alert(inputElements.length);
 	inputElements[0].value		= '';
 	inputElements[0].disabled	= false;
 	inputElements[0].style.width	= '450px';
-	spanElements[0].style.display	= 'none';
+	for(i=0; i<spanElements.length; i++) {
+		if(spanElements[i].className == 'selectFolder') {
+			spanElements[i].style.display	= 'none';
+		}
+	}
 	
 	tableBody.appendChild(newTableRow);
 
@@ -194,8 +199,7 @@ function getPosTop(_node) {
 	return top;
 }
 
-function hideResultBox()
-{
+function hideResultBox() {
 	var resultBox;
 
 	resultBox = document.getElementById('resultBox');
@@ -207,10 +211,12 @@ function hideResultBox()
 }
 
 function initResultBox(_inputField) {
+	//var resultBox;
+
 	currentInputField = _inputField;
 	//document.title = resultRows.length;
-	
-	resultBox = document.getElementById('resultBox');
+	//document.title = "TEST";
+	//resultBox = document.getElementById("resultBox");
 
 	startCapturingEvents(keypressed);
 }
@@ -252,7 +258,7 @@ function startCapturingEvents(_callback) {
 }
 
 function stopCapturingEvents() {
-	delete document.onkeydown;
+	document.onkeydown = null;
 	delete currentKeyCode;
 	hideResultBox();
 }
@@ -422,15 +428,28 @@ function fm_compose_changeInputType(_selectBox) {
 	var selectBoxRow	= _selectBox.parentNode.parentNode;
 	var inputElements	= selectBoxRow.getElementsByTagName('input');
 	var spanElements	= selectBoxRow.getElementsByTagName('span');
+	var tdElements	= selectBoxRow.getElementsByTagName('td');
 
 	if(_selectBox.value == 'folder') {
 		inputElements[0].value		= '';
-		spanElements[0].style.display	= 'inline';
+		for(i=0; i<spanElements.length; i++) {
+			if(spanElements[i].className == 'selectFolder') {
+				spanElements[i].style.display	= 'inline';
+				//spanElements[i+1].style.width   = '16px';
+				//spanElements[i+1].style.height   = '16px';
+			}
+		}
 		currentFolderSelectField	= inputElements[0];
 	} else {
-		spanElements[0].style.display	= 'none';
+		for(i=0; i<spanElements.length; i++) {
+			if(spanElements[i].className == 'selectFolder') {
+				spanElements[i].style.display	= 'none';
+			}
+		}
 		delete currentFolderSelectField;
 	}
+
+	var tdElements	= selectBoxRow.getElementsByTagName('td');
 }
 
 function fm_compose_setFolderSelectValue(_folderName) {

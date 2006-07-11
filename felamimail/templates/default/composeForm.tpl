@@ -109,28 +109,11 @@
 		{errorInfo}<br>
 	</td>
 </tr>
-<tr>
-	<td>
-		&nbsp;
-	</td>
-	<td align="left">
-		<TEXTAREA class="input_text" NAME=body ROWS=20 COLS="76" WRAP=HARD>{body}</TEXTAREA>
-	</td>
-</tr>
-<tr>
-	<td valign="top">
-		{lang_signature}
-	</td>
-	<td align="left">
-		<TEXTAREA class="input_text" NAME=signature ROWS=5 COLS="76" WRAP=HARD>{signature}</TEXTAREA>
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		&nbsp;<br>
-	</td>
-</tr>
 </table>
+		<TEXTAREA class="input_text" NAME=body ROWS=20 COLS="76" WRAP=HARD>{body}</TEXTAREA>
+<fieldset class="bordertop"><legend>{lang_signature}</legend>
+		<TEXTAREA class="input_text" NAME=signature ROWS=5 COLS="76" WRAP=HARD>{signature}</TEXTAREA>
+</fieldset>
 <!-- END body_input -->
 
 <!-- BEGIN attachment -->
@@ -195,12 +178,12 @@
 	<td align="left" valign="bottom" style="width:455px;">
 		<input class="input_text" onkeypress="return disabledKeyCodes(disabledKeys1);" autocomplete="off" type=text style="width: 450px;" name="address[]" value="{address}" onfocus="initResultBox(this)" onblur="stopCapturingEvents()">
 	</td>
-	<td style="width:20px;" valign="bottom">
-		<img src="{img_clear_left}" onclick="deleteTableRow(this)" title="{lang_remove}">
+	<td style="width:25px;" valign="bottom">
+		<button type="image" onclick="deleteTableRow(this); return false;"><img src="{img_clear_left}" title="{lang_remove}"></button>
 	</td>
-	<td style="width:20px;" valign="bottom">
-		<span style="display:none;" valign="bottom">
-		<img src="{img_fileopen}" onclick="fm_compose_selectFolder()" alt="{lang_select_folder}">
+	<td style="width:25px;" valign="bottom">
+		<span style="display:none;" valign="bottom" class="selectFolder">
+		 <button type="image" onclick="fm_compose_selectFolder(); return false;"><img src="{img_fileopen}" alt="{lang_select_folder}"></button>
 		</span>
 	</td>
 </tr>
