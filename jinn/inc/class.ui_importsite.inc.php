@@ -210,7 +210,8 @@
 		 $import_site_files		= $xmlarray['jinn']['site_files'];
 		 $import_site_objects	= $xmlarray['jinn']['site'][0]['objects'];
 
-		 if(!$_POST['objects_selected'])
+		 //		 if(!$_POST['objects_selected'])
+		 if(!$replace && !$_POST['objects_selected'])
 		 {
 			$this->select_objects($import_site_objects,$into_site_id);
 		 }
@@ -493,17 +494,16 @@
 			foreach($object as $key => $val)
 			{
 			   $old_object_id=$object['object_id'];
-			   if($key=='object_id' )
-			   {
-				  $new_id = $val = $object_old2new_id_arr[$old_object_id];
-				  //				  continue;
-			   }
 
-			   //FIXME REMOVE?
 			   if($replace && $key=='object_id')
 			   {
 				  $this->bo->so->delete_phpgw_data('egw_jinn_objects', 'object_id', $val);
 			   }
+			   elseif($key=='object_id' )
+			   {
+				  $new_id = $val = $object_old2new_id_arr[$old_object_id];
+			   }
+
 
 			   if($key=='temp_id' || $key=='parent_site_id')
 			   {

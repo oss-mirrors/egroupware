@@ -201,6 +201,8 @@
 		 $this->uijapie->japielink=$this->make_japie_link();
 		 $this->uijapie->tplsav2->japie=true;
 		 $this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(false,'jinn'));
+		 $this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(true,'jinn'));
+		 
 	  }
 
 	  function list_records()
@@ -209,7 +211,7 @@
 
 		 $this->doClassStuff();
 
-		 $this->uijapie->template->set_root($GLOBALS['egw']->common->get_tpl_dir('jinn'));
+		 //		 $this->uijapie->template->set_root($GLOBALS['egw']->common->get_tpl_dir('jinn'));
 		 $this->uijapie->display();
 	  }
 
