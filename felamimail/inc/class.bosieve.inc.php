@@ -23,11 +23,13 @@
 		/**
 		* @var object $icServer object containing the information about the imapserver
 		*/
-		var $scriptName='felamimail';
+		var $scriptName;
 	
 		function bosieve($_icServer) {
 			parent::Net_Sieve();
 			
+			$this->scriptName = (!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName']) ? $GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'] : 'felamimail');
+
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 
 			#$this->bopreferences    =& CreateObject('felamimail.bopreferences');

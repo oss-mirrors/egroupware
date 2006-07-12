@@ -189,6 +189,13 @@
 			'values' => $sentOptions,
 			'xmlrpc' => True,
 			'admin'  => False
+		),
+		'sieveScriptName' => array(
+			'type'   => 'input',
+			'label'  => 'sieve script name',
+			'name'   => 'sieveScriptName',
+			'xmlrpc' => True,
+			'admin'  => False
 		)
 	);
 
