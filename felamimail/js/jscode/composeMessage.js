@@ -85,7 +85,7 @@ function addAddressRow(_tableRow)
 	//alert(inputElements.length);
 	inputElements[0].value		= '';
 	inputElements[0].disabled	= false;
-	inputElements[0].style.width	= '450px';
+	inputElements[0].style.width	= '99%';
 	for(i=0; i<spanElements.length; i++) {
 		if(spanElements[i].className == 'selectFolder') {
 			spanElements[i].style.display	= 'none';
@@ -97,8 +97,8 @@ function addAddressRow(_tableRow)
 //	inputElements[0].focus();
 
 	singleRowHeight = _tableRow.clientHeight;
-	if(tableRows.length > 5) {
-		neededHeight = singleRowHeight*5;
+	if(tableRows.length > 4) {
+		neededHeight = singleRowHeight*4;
 	} else {
 		neededHeight = singleRowHeight*tableRows.length;
 	}
@@ -129,8 +129,8 @@ function fm_compose_addAttachmentRow(_tableRow)
 //	inputElements[0].focus();
 
 	singleRowHeight = _tableRow.clientHeight;
-	if(tableRows.length > 5) {
-		neededHeight = singleRowHeight*5;
+	if(tableRows.length > 4) {
+		neededHeight = singleRowHeight*4;
 	} else {
 		neededHeight = singleRowHeight*tableRows.length;
 	}
@@ -147,7 +147,7 @@ function deleteTableRow(_imageObject)
 	// all table rows
 	tableRows = tableBody.getElementsByTagName('tr');
 
-	if(tableRows.length > 1) {
+	if(tableRows.length > 4) {
 	
 		// the row where the clicked image is located
 		tableRow = _imageObject.parentNode.parentNode;
@@ -157,13 +157,20 @@ function deleteTableRow(_imageObject)
 		tableBody.removeChild(tableRow);
 	
 		singleRowHeight = tableRows[0].clientHeight;
-		if(tableRows.length > 5) {
-			neededHeight = singleRowHeight*5;
+		if(tableRows.length > 4) {
+			neededHeight = singleRowHeight*4;
 		} else {
 			neededHeight = singleRowHeight*tableRows.length;
 		}
 
 		document.getElementById('addressDIV').style.height = neededHeight+'px';
+	} else {
+		// the row where the clicked image is located
+		tableRow = _imageObject.parentNode.parentNode;
+
+		var inputElements	= tableRow.getElementsByTagName('input');
+		inputElements[0].value	= '';
+		
 	}
 }
 
@@ -187,8 +194,8 @@ function getPosTop(_node) {
 	var top=0;
 	
 	if(_node.offsetParent) {
-		while (_node.offsetParent)
-		{
+		while (_node.offsetParent) {
+			alert(_node.offsetTop +' '+ _node.scrollTop);
 			top += _node.offsetTop;
 			_node = _node.offsetParent;
 		}
@@ -396,10 +403,15 @@ function updateTitle(_text) {
 
 function focusToNextInputField() {
 	var nextRow;
-	
+
 	if(nextRow = currentInputField.parentNode.parentNode.nextSibling) {
-		inputElements = nextRow.getElementsByTagName('input');
-		inputElements[0].focus();
+		if(nextRow.nodeType == 3) {
+			inputElements = nextRow.nextSibling.getElementsByTagName('input');
+			inputElements[0].focus();
+		} else {
+			inputElements = nextRow.getElementsByTagName('input');
+			inputElements[0].focus();
+		}
 	} else {
 		document.getElementById('fm_compose_subject').focus();
 		//document.doit.fm_compose_subject.focus();
@@ -435,8 +447,6 @@ function fm_compose_changeInputType(_selectBox) {
 		for(i=0; i<spanElements.length; i++) {
 			if(spanElements[i].className == 'selectFolder') {
 				spanElements[i].style.display	= 'inline';
-				//spanElements[i+1].style.width   = '16px';
-				//spanElements[i+1].style.height   = '16px';
 			}
 		}
 		currentFolderSelectField	= inputElements[0];

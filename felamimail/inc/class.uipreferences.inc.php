@@ -86,24 +86,24 @@
 		
 		function editForwardingAddress()
 		{
-			$config =& CreateObject('phpgwapi.config','felamimail');
-			$config->read_repository();
-			$profileID = $config->config_data['profileID'];
-			$boEMailAdmin	=& CreateObject('emailadmin.bo',$profileID);
-
-			if($_POST['save'])
-			{
-				//_debug_array($_POST);_debug_array($_POST);_debug_array($_POST);
-				$boEMailAdmin->saveSMTPForwarding($GLOBALS['egw_info']['user']['account_id'],$_POST['forwardingAddress'],$_POST['keepLocalCopy']);
+			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			$mailPrefs	= $bofelamimail->getMailPreferences();
+			$ogServer	= $mailPrefs->getOutgoingServer(0);
+			
+			if(!is_a($ogServer, 'defaultsmtp') || !$ogServer->editForwardingAddress) {
+				die('You should not be here!');
 			}
-			elseif($_POST['cancel'])
-			{
+			
+			if($_POST['save']) {
+				//_debug_array($_POST);_debug_array($_POST);_debug_array($_POST);
+				$ogServer->saveSMTPForwarding($GLOBALS['egw_info']['user']['account_id'],$_POST['forwardingAddress'],$_POST['keepLocalCopy']);
+			} elseif($_POST['cancel']) {
 				ExecMethod('felamimail.uifelamimail.viewMainScreen');
 				return;
 			}
 			
-			$userData	= $boEMailAdmin->getUserData($GLOBALS['egw_info']['user']['account_id'],false);
-			#_debug_array($userData);
+			$userData = $ogServer->getUserData($GLOBALS['egw_info']['user']['account_id']);
+
 			$this->display_app_header(TRUE);
 
 			$this->t->set_file(array("body" => "edit_forwarding_address.tpl"));
@@ -111,18 +111,19 @@
 
 			$this->translate();
 
-			$linkData = array
-			(
+			$linkData = array (
 				'menuaction'    => 'felamimail.uipreferences.editForwardingAddress'
 			);
 			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
 			$this->t->set_var('forwarding_address',$userData['mailRoutingAddress'][0]);
+			
 			#deliveryMode checked_keep_local_copy
-			if($userData['deliveryMode'] != 'forwardOnly')
+			if($userData['deliveryMode'] != 'forwardOnly') {
 				$this->t->set_var('checked_keep_local_copy','checked');
-
+			}
 
 			$this->t->parse("out","main");
+			
 			print $this->t->get('out','main');
 		}
 		
