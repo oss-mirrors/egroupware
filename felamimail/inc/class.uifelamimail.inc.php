@@ -390,7 +390,7 @@
 			(
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose',680,750);";
+			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, egw_getWindowOuterHeight());";
 
 			$navbarImages = array(
 				'mail_new'	=> array(

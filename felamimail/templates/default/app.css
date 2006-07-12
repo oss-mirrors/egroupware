@@ -428,3 +428,11 @@ fieldset.bordertop {
 TD.mainscreenRow {
 	border-bottom:1px solid #CCCCEE;
 }
+
+DIV.divButton {
+	width:16px;
+	height:16px;
+	border: 0px solid red;
+	background-repeat:no-repeat;
+	background-position: center center;
+}

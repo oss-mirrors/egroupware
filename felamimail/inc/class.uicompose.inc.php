@@ -179,7 +179,7 @@
 				if($singleIdentity->default)
 					$defaultIdentity = $key;
 			}
-			$selectFrom = $GLOBALS['egw']->html->select('identity', $defaultIdentity, $identities, true, "style='width: 450px;'");			
+			$selectFrom = $GLOBALS['egw']->html->select('identity', $defaultIdentity, $identities, true, "style='width:100%;'");			
 			$this->t->set_var('select_from', $selectFrom);
 			
 			// from, to, cc
@@ -377,7 +377,8 @@
 			$this->t->set_var("lang_to",lang('to'));
 			$this->t->set_var("lang_cc",lang('cc'));
 			$this->t->set_var("lang_bcc",lang('bcc'));
-			$this->t->set_var("lang_from",lang('from'));
+			//$this->t->set_var("lang_from",lang('from'));
+			$this->t->set_var("lang_identity",lang('identity'));
 			$this->t->set_var("lang_reply_to",lang('reply to'));
 			$this->t->set_var("lang_subject",lang('subject'));
 			$this->t->set_var("lang_addressbook",lang('addressbook'));

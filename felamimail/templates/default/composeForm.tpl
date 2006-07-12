@@ -50,31 +50,9 @@
 </table>
 <br>
 <table style="clear:left; width:660px;" border="0" cellspacing="0" cellpading="1">
-<!-- <tr bgcolor="{th_bg}">
-	<td style="width:90px;" align="left">
-		<button class="menuButton" type="submit" value="{lang_send}" name="send">
-			<img src="{img_mail_send}">
-		</button>
-		<button class="menuButton" type="button" onclick="addybook();">
-			<img src="{addressbookImage}">
-		</button>
-		<button class="menuButton" type="button" onclick="fm_compose_displayFileSelector();">
-			<img src="{img_attach_file}">
-		</button>
-	</td>
-	<td align="right">
-		<input type="checkbox" name="disposition" value="1">
-		{lang_priority}
-		<select name="priority">
-			<option value="1">{lang_high}</option>
-			<option value="3" selected>{lang_normal}</option>
-			<option value="5">{lang_low}</option>
-		</select>
-	</td>
-</tr>-->
 <tr class="row_on">
 	<td align="left" style="width:90px;">
-		<b>{lang_from}</b>
+		<b>{lang_identity}</b>
 	</td>
 	<td align="left">
 		{select_from}
@@ -83,7 +61,7 @@
 </table>
 
 <div id="addressDIV" class="row_on" style="mmax-height: 100px; width:660px; border: solid black 0px; overflow: auto; padding: 0px; margin: 0px; text-align: left;">
-<table id="addressTable" sstyle="width:600px;" border="0" cellspacing="0" cellpading="0"><tbody id="addressRows">{destinationRows}</tbody></table>
+<table id="addressTable" style="width:100%;" border="0" cellspacing="0" cellpading="0"><tbody id="addressRows">{destinationRows}</tbody></table>
 </div>
 
 <table style="width:660px;" border="0" cellspacing="0" cellpading="1">
@@ -92,7 +70,7 @@
 		<b>{lang_subject}</b>
 	</td>
 	<td align="left">
-		<input style="width:450px;" id="fm_compose_subject" onkeypress="return keycodePressed(KEYCODE_ENTER);" class="input_text" onkeyup="updateTitle(this.value)" type="text" style="width:450px;" name="subject" value="{subject}" onfocus="startCaptureEventSubjects(this)">
+		<input style="width:99%;" id="fm_compose_subject" onkeypress="return keycodePressed(KEYCODE_ENTER);" class="input_text" onkeyup="updateTitle(this.value)" type="text" style="width:450px;" name="subject" value="{subject}" onfocus="startCaptureEventSubjects(this)">
 	</td>
 </tr>
 </table>
@@ -110,7 +88,7 @@
 	</td>
 </tr>
 </table>
-		<TEXTAREA class="input_text" NAME=body ROWS=20 COLS="76" WRAP=HARD>{body}</TEXTAREA>
+		<TEXTAREA class="input_text" name="body" rows="20" cols="76" wrap="hard">{body}</TEXTAREA>
 <fieldset class="bordertop"><legend>{lang_signature}</legend>
 		<TEXTAREA class="input_text" NAME=signature ROWS=5 COLS="76" WRAP=HARD>{signature}</TEXTAREA>
 </fieldset>
@@ -175,15 +153,17 @@
 	<td align="right" style="width:90px;">
 		{select_destination}
 	</td>
-	<td align="left" valign="bottom" style="width:455px;">
-		<input class="input_text" onkeypress="return disabledKeyCodes(disabledKeys1);" autocomplete="off" type=text style="width: 450px;" name="address[]" value="{address}" onfocus="initResultBox(this)" onblur="stopCapturingEvents()">
+	<td align="left" valign="bottom" sstyle="width:455px;">
+		<input class="input_text" onkeypress="return disabledKeyCodes(disabledKeys1);" autocomplete="off" type=text style="width:99%;" name="address[]" value="{address}" onfocus="initResultBox(this)" onblur="stopCapturingEvents()">
 	</td>
 	<td style="width:25px;" valign="bottom">
-		<button type="image" onclick="deleteTableRow(this); return false;"><img src="{img_clear_left}" title="{lang_remove}"></button>
+		<!-- <button type="image" onclick="deleteTableRow(this); return false;"><img src="{img_clear_left}" title="{lang_remove}"></button> -->
+		<div class="divButton" style="background-image: url({img_clear_left});" onclick="deleteTableRow(this);" title="{lang_remove}"></div>
 	</td>
 	<td style="width:25px;" valign="bottom">
 		<span style="display:none;" valign="bottom" class="selectFolder">
-		 <button type="image" onclick="fm_compose_selectFolder(); return false;"><img src="{img_fileopen}" alt="{lang_select_folder}"></button>
+		<!-- <button type="image" onclick="fm_compose_selectFolder(); return false;"><img src="{img_fileopen}" alt="{lang_select_folder}"></button> -->
+		 <div class="divButton" style="background-image: url({img_fileopen});" onclick="fm_compose_selectFolder();" title="{lang_select_folder}"></div>
 		</span>
 	</td>
 </tr>
