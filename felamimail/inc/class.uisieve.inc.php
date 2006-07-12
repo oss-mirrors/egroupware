@@ -34,10 +34,12 @@
 			'selectFolder'		=> True,
 		);
 		
-		var $scriptName = 'felamimail';
+		//var $scriptName = 'felamimail';
 
 		function uisieve()
 		{
+			$this->scriptName = (!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'])) ? $GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'] : 'felamimail' ;
+
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
@@ -63,7 +65,6 @@
 			
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
-
 		}
 		
 		function addScript() {
@@ -257,6 +258,7 @@
 		
 		function decreaseFilter()
 		{
+			$this->getRules();	/* ADDED BY GHORTH */
 			$ruleID = get_var('ruleID',array('GET'));
 			if ($this->rules[$ruleID] && $this->rules[$ruleID+1]) 
 			{
@@ -269,7 +271,7 @@
 			
 			$this->saveSessionData();
 			
-			$this->editScript();
+			$this->listRules();
 		}
 
 		function display_app_header() {
@@ -367,12 +369,12 @@
 		
 		function editRule()
 		{
+			$this->getRules();	/* ADDED BY GHORTH */
+
 			$ruleType = get_var('ruletype',array('GET'));
 			
-			if(isset($_POST['anyof']))
-			{
-				if(get_var('priority',array('POST')) != 'unset')
-				{
+			if(isset($_POST['anyof'])) {
+				if(get_var('priority',array('POST')) != 'unset') {
 					$newRule['priority']	= get_var('priority',array('POST'));
 				}
 				$ruleID 		= get_var('ruleID',array('POST'));
@@ -422,7 +424,6 @@
 						$newRule[action]	= 'discard';
 						break;
 				}
-
 				if($newRule['action']) {
 
 					$this->rules[$ruleID] = $newRule;
@@ -554,6 +555,7 @@
 
 		function increaseFilter()
 		{
+			$this->getRules();	/* ADDED BY GHORTH */
 			$ruleID = get_var('ruleID',array('GET'));
 			if ($this->rules[$ruleID] && $this->rules[$ruleID-1]) 
 			{
@@ -566,7 +568,7 @@
 			
 			$this->saveSessionData();
 			
-			$this->editScript();
+			$this->listRules();
 		}
 		
 		function listRules() {
@@ -575,18 +577,7 @@
 			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
 			$boemailadmin	=& CreateObject('emailadmin.bo');
 
-			if($script = $this->bosieve->getScript($this->scriptName)) {
-				$this->scriptToEdit 	= $this->scriptName;
-				if(PEAR::isError($error = $this->bosieve->retrieveRules($this->scriptName)) ) {
-					$this->rules	= array();
-					$this->vacation	= array();
-				} else {
-					$this->rules	= $this->bosieve->getRules($this->scriptName);
-					$this->vacation	= $this->bosieve->getVacation($this->scriptName);
-				}
-			} else {
-				// something got wrong
-			}
+			$this->getRules();	/* ADDED BY GHORTH */
 
 			$this->saveSessionData();
 
@@ -853,6 +844,7 @@
 		
 		function updateRules()
 		{
+			$this->getRules();	/* ADDED BY GHORTH */
 			$action 	= get_var('rulelist_action',array('POST'));
 			$ruleIDs	= get_var('ruleID',array('POST'));
 			$scriptName 	= get_var('scriptname',array('GET'));
@@ -971,5 +963,24 @@
 #			
 #			$this->editScript();
 #		}
+		
+
+
+		/* ADDED BY GHORTH */
+		function getRules()
+		{
+			if($script = $this->bosieve->getScript($this->scriptName)) {
+				$this->scriptToEdit 	= $this->scriptName;
+				if(PEAR::isError($error = $this->bosieve->retrieveRules($this->scriptName)) ) {
+					$this->rules	= array();
+					$this->vacation	= array();
+				} else {
+					$this->rules	= $this->bosieve->getRules($this->scriptName);
+					$this->vacation	= $this->bosieve->getVacation($this->scriptName);
+				}
+			} else {
+				// something got wrong
+			}
+		}
 	}
 ?>
