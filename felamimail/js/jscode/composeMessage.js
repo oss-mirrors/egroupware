@@ -195,7 +195,7 @@ function getPosTop(_node) {
 	
 	if(_node.offsetParent) {
 		while (_node.offsetParent) {
-			alert(_node.offsetTop +' '+ _node.scrollTop);
+//			alert(_node.offsetTop +' '+ _node.scrollTop);
 			top += _node.offsetTop;
 			_node = _node.offsetParent;
 		}
