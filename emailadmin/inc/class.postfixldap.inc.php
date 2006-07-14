@@ -122,7 +122,7 @@
 			return $userData;
 		}
 		
-		function setUserData($_uidnumber, $_mailAlternateAddress, $_mailForwardingAddress, $_deliveryMode) {
+		function setUserData($_uidnumber, $_mailAlternateAddress, $_mailForwardingAddress, $_deliveryMode, $_accountStatus) {
 			$filter = "uidnumber=$_uidnumber";
 
 			$ldap = $GLOBALS['egw']->common->ldapConnect();
@@ -150,7 +150,8 @@
 				
 				$newData['mailalternateaddress'] = (array)$_mailAlternateAddress;
 				$newData['mailforwardingaddress'] = (array)$_mailForwardingAddress;
-				$newData['deliverymode']	= ($_deliveryMode == 'forwardOnly') ? 'forwardOnly' : array();
+				$newData['deliverymode']	= $_deliveryMode ? 'forwardOnly' : array();
+				$newData['accountstatus']	= $_accountStatus ? 'active' : array();
 
 				ldap_mod_replace($ldap, $accountDN, $newData);
 			}

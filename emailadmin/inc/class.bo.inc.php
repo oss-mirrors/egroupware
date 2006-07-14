@@ -690,7 +690,8 @@
 					$ogServer->setUserData($_accountID, 
 						(array)$_formData['mailAlternateAddress'], 
 						(array)$_formData['mailForwardingAddress'],
-						$_formData['deliveryMode']
+						$_formData['deliveryMode'],
+						$_formData['accountStatus']
 					);
 				}
 				
