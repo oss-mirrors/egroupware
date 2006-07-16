@@ -2,14 +2,20 @@ account '%1' not found !!!	emailadmin	zh-tw	找不到帳號 '%1'！
 add profile	emailadmin	zh-tw	新增資料
 admin dn	emailadmin	zh-tw	管理 dn
 admin password	emailadmin	zh-tw	管理密碼
-admin passwort	emailadmin	zh-tw	管理密碼
 admin username	emailadmin	zh-tw	管理帳號
 advanced options	emailadmin	zh-tw	進階選項
 alternate email address	emailadmin	zh-tw	替代郵件位址
 any application	emailadmin	zh-tw	任何模組
 any group	emailadmin	zh-tw	任何群組
+bad login name or password.	emailadmin	zh-tw	帳號或密碼有誤。
+bad or malformed request. server responded: %s	emailadmin	zh-tw	錯誤的請求，伺服器回應： %s
+bad request: %s	emailadmin	zh-tw	錯誤的請求： %s
 can be used by application	emailadmin	zh-tw	可以取用資料的模組
 can be used by group	emailadmin	zh-tw	可以取用資料的群組
+connection dropped by imap server.	emailadmin	zh-tw	連線被 IMAP 伺服器中斷了
+could not complete request. reason given: %s	emailadmin	zh-tw	無法完成請求，理由： %s
+could not open secure connection to the imap server. %s : %s.	emailadmin	zh-tw	無法開啟安全連線到 IMAP 伺服器。%s : %s.
+cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	zh-tw	CRAM-MD5 或 DIGEST-MD5 需要先安裝 Auth_SASL 才能使用。
 cyrus imap server	emailadmin	zh-tw	Cyrus IMAP伺服器
 cyrus imap server administration	emailadmin	zh-tw	Cyrus IMAP伺服器管理
 default	emailadmin	zh-tw	預設
@@ -19,17 +25,24 @@ domainname	emailadmin	zh-tw	網域名稱
 edit email settings	emailadmin	zh-tw	編輯郵件設定
 email account active	emailadmin	zh-tw	郵件帳號啟用
 email address	emailadmin	zh-tw	郵件位址
+email settings	common	zh-tw	郵件設定
+emailadmin	emailadmin	zh-tw	郵件管理
 enable cyrus imap server administration	emailadmin	zh-tw	啟用Cyrus IMAP伺服器管理
 enable sieve	emailadmin	zh-tw	啟用Sieve
 encryption settings	emailadmin	zh-tw	加密設定
 enter your default mail domain (from: user@domain)	emailadmin	zh-tw	輸入您的預設郵件網域(小老鼠後面所有字：帳號@網域)
+error connecting to imap server. %s : %s.	emailadmin	zh-tw	連線到 IMAP 伺服器時發生錯誤。 %s : %s
+error connecting to imap server: [%s] %s.	emailadmin	zh-tw	連線到 IMAP 伺服器時發生錯誤。 [%s] %s
 forward also to	emailadmin	zh-tw	同時轉寄到
 forward email's to	emailadmin	zh-tw	轉寄信件到
 forward only	emailadmin	zh-tw	轉寄
 global options	emailadmin	zh-tw	全域選項
+if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	zh-tw	如果使用 SSL 或 TLS，您必須先載入 PHP openssl 外掛。
 imap admin password	admin	zh-tw	IMAP管理者密碼
 imap admin user	admin	zh-tw	IMAP管理者帳號
 imap c-client version < 2001	emailadmin	zh-tw	IMAP C-終端的版本小於2001
+imap server closed the connection.	emailadmin	zh-tw	IMAP伺服器關閉連線
+imap server closed the connection. server responded: %s	emailadmin	zh-tw	IMAP伺服器關閉連線，伺服器回應： %s
 imap server hostname or ip address	emailadmin	zh-tw	IMAP伺服器的主機名稱或是IP位址
 imap server logintyp	emailadmin	zh-tw	IMAP伺服器登入類型
 imap server port	emailadmin	zh-tw	IMAP伺服器連接埠
@@ -47,6 +60,8 @@ mail settings	admin	zh-tw	郵件設定
 name of organisation	emailadmin	zh-tw	組織名稱
 no alternate email address	emailadmin	zh-tw	沒有可替換的郵件位址
 no forwarding email address	emailadmin	zh-tw	沒有轉寄郵件位址
+no message returned.	emailadmin	zh-tw	沒有訊息回應。
+no supported imap authentication method could be found.	emailadmin	zh-tw	找不到可以支援的 IMAP 認證方式。
 order	emailadmin	zh-tw	順序
 organisation	emailadmin	zh-tw	組織
 plesk can't rename users --> request ignored	emailadmin	zh-tw	Plesk 無法修改使用者名稱 --> 忽略
@@ -80,6 +95,13 @@ standard	emailadmin	zh-tw	標準
 standard imap server	emailadmin	zh-tw	標準IMAP伺服器
 standard pop3 server	emailadmin	zh-tw	標準POP3伺服器
 standard smtp-server	emailadmin	zh-tw	標準SMTP伺服器
+the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	zh-tw	IMAP 伺服器不支援指定的認證方式，請聯絡您的系統管理員。
+this php has no imap support compiled in!!	emailadmin	zh-tw	您的PHP並未編譯為支援IMAP的狀態
+to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	zh-tw	要使用 TLS 連線，您必須執行在 PHP 5.1.0 或是更新版本。
+unexpected response from server to authenticate command.	emailadmin	zh-tw	AUTHENTICATE 指令讓伺服器傳回不如預期的回應。
+unexpected response from server to digest-md5 response.	emailadmin	zh-tw	伺服器傳回不如預期的 Digest-MD5 回應。
+unexpected response from server to login command.	emailadmin	zh-tw	伺服器傳回不如預期的 LOGIN 指令。
+unknown imap response from the server. server responded: %s	emailadmin	zh-tw	不知名的 IMAP 伺服器回應，回應內容： %s
 unsupported action '%1' !!!	emailadmin	zh-tw	不支援 '%1' 這個操作！
 use ldap defaults	emailadmin	zh-tw	使用LDAP預設值
 use smtp auth	emailadmin	zh-tw	使用SMTP認證

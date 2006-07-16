@@ -9,6 +9,7 @@ book marks	common	eu	Estekak
 bookmark changed sucessfully	bookmarks	eu	Esteka zuzen aldatu da
 bookmark created successfully.	bookmarks	eu	Esteka zuzen sortu da
 bookmark deleted successfully	bookmarks	eu	Esteka zuzen ezabatu da
+bookmark deleted successfully.	bookmarks	eu	esteka zuzen ezabatu da
 bookmark not editable	bookmarks	eu	Esteka ezin da editatu
 bookmark not readable	bookmarks	eu	Esteka ezin da irakurri
 bookmarks	common	eu	Estekak
@@ -26,9 +27,11 @@ edit bookmark	bookmarks	eu	Esteka editatu
 edit this bookmark	bookmarks	eu	Esteka hau editatu
 export bookmarks	common	eu	Estekak esportatu
 fewer	bookmarks	eu	Gutxiago
+filter by	bookmarks	eu	Nork iragazi
 found a link you might like	bookmarks	eu	Gustokoa gerta daitekeen lotura bat bilatu da
 from	bookmarks	eu	Norena
 from category %1	bookmarks	eu	%1 kategoriakoa
+global categories	bookmarks	eu	Kategoria orokorrak
 highest	bookmarks	eu	Altuena
 i thought you would be interested in the following link(s):	bookmarks	eu	Ondorengo loturak interesgarriak irudituko zaizkizula pentsatu dut:
 import bookmarks	common	eu	Estekak inportatu
@@ -52,6 +55,7 @@ rating	bookmarks	eu	Balorazioa
 search for:	bookmarks	eu	Bilatu:
 select the format you would like to export to	bookmarks	eu	Esportatzea gustatuko litzaizukeen formatua aukeratu
 send bookmark	bookmarks	eu	Esteka bidali
+site configuration	bookmarks	eu	Konfigurazio gunea
 sub category	bookmarks	eu	Azpikategoria
 to e-mail addresses	bookmarks	eu	Hartzaileen helbide elektronikoak
 total visits	bookmarks	eu	bisita guztiak
@@ -63,3 +67,4 @@ view this bookmark	bookmarks	eu	Esteka hau ikusi
 warning	bookmarks	eu	Abisua
 you are viewing this site outside of egroupware	bookmarks	eu	eGroupWaretik kanpo ari zara leku hau ikusten
 you must select a category	bookmarks	eu	Kategoria bat aukeratu behar duzu
+you need to select a category!	bookmarks	eu	Kategoria bat aukeratu behar duzu!

@@ -1,12 +1,13 @@
 a new ticket has been reported.	tts	hu	Egy új jegy lett bejelentve.
 accept	tts	hu	ELFOGAD
-accept the ticket into verification process.	tts	hu	Elfogadja a jegyet a megerösítö eljárásban.
+accept the ticket into verification process.	tts	hu	Jegy elfogadva ellenõrzésre
 accepted	tts	hu	ELFOGADVA
 action	tts	hu	Intézkedés
 add new ticket	tts	hu	Új jegy hozzáadása
 add ticket	tts	hu	Jegy hozzáadása
 additional notes	tts	hu	További megjegyzések
 admin options	common	hu	Adminisztrációs opciók
+assign tickets	tts	hu	Megbíz
 assign to	tts	hu	Megbízza
 assigned from	tts	hu	Megbízva innen
 assigned to	tts	hu	Megbízva
@@ -15,11 +16,14 @@ billable hours changed	tts	hu	Felszámítható órák megváltozva
 billable hours rate	tts	hu	Felszámítható órák értéke
 billable rate	tts	hu	Felszámítható érték
 billable rate changed	tts	hu	Felszámítható érték
+can assign to	tts	hu	jegyeket hozzárendelhet
+can make full changes	tts	hu	Teljeskör? módosításokat végezhet
 category changed	tts	hu	Kategória megváltozva
 check here to generate the state's id automatically or enter a particular id below.	tts	hu	Ellenörizd itt az állapot autómatikusan létrehozott azonosítóját vagy egy egyéni azonosító lejjebb.
 clear form	tts	hu	Törlés innen
-close the invalid ticket.	tts	hu	A helytelen jegy bezárása
-closed	tts	hu	Bezárva
+close the invalid ticket.	tts	hu	Érvénytelen jegy lezárása
+close ticket	tts	hu	Jegy lezárása
+closed	tts	hu	Lezárva
 completed	tts	hu	BEFEJEZETT
 configure the states	common	hu	Az állapotok konfigurálása
 configure the transitions	common	hu	Az átmenetek konfigurálása
@@ -28,6 +32,7 @@ create new ticket	tts	hu	Új jegy létrehozása
 create new transition	tts	hu	Új átmenet létrehozása
 creates a new ticket, returns ticket_id	tts	hu	Egy új jegy létrehozása, jegy azonosító visszaadása
 creates a struct of tickets	tts	hu	A jegyek szerkezetének kialakítása
+critical	tts	hu	Kritikus
 date opened	tts	hu	Dátum megnyitva
 default assign to	tts	hu	Alapértelmezetten megbízza
 default group	tts	hu	Alapértelmezett csoport
@@ -36,9 +41,13 @@ delete the listed tickets.	tts	hu	A listázott jegyek törlése
 deleting the state	tts	hu	Törlöm az állapotot
 deleting the transition	tts	hu	Törlöm az átmenetet
 detail	tts	hu	részlet
+due date	tts	hu	Kért befejezési dátum
+due date changed	tts	hu	Kért befejezési dátum megváltozott
 duplicate	tts	hu	MÁSOLAT
 edit the state	tts	hu	Az állapot szerkesztése
 edit the transition	tts	hu	Az átmenet szerkesztése
+emergency	tts	hu	Vészhelyzet
+error: the subject of the ticket is not specified.	tts	hu	HIBA: A jegy tárgya nincs megadva.
 force	tts	hu	Eröfeszítés
 global categories	tts	hu	Átfogó kategóriák
 group ownership changed	tts	hu	Csoport tulajdonjog megváltozott
@@ -49,13 +58,16 @@ in progress	tts	hu	Folyamatban
 initial state	tts	hu	Kezdö állapot
 invalid	tts	hu	ÉRVÉNYTELEN
 invalidate	tts	hu	ÉRVÉNYTELENÍT
+keep the present state	tts	hu	Aktuális állapot megõrzése
 keep the present state [%1].	tts	hu	A jelenlegi állapot [%1] megörzése.
 latest note added	tts	hu	Legutolsó észrevétel hozzáadva.
 list of available tickets' states.	tts	hu	Elérhetö jegyek listájának állapota.
 list of available tickets' transitions.	tts	hu	Elérhetö jegyek listájának átmenetei.
+low	tts	hu	Alacsony
+mail owner on transition	tts	hu	email értesítés a tulajdonosnak az átmenetr?l
 missing description	tts	hu	Hiányzó leírás
-morework	tts	hu	
-needswork	tts	hu	
+morework	tts	hu	TÖBB MUNKA
+needswork	tts	hu	MUNKÁT IGÉNYEL
 new	tts	hu	ÚJ
 new ticket	tts	hu	Új jegy
 new tickets can be put into this state.	tts	hu	Új jegyek helyezése ebbe az állapotba.
@@ -68,16 +80,16 @@ no tickets found	tts	hu	Nem találtam jegyeket.
 no transitions found	tts	hu	Nem találtam átmeneteket
 not assigned	tts	hu	Nem hozzáfüzött
 not completed	tts	hu	MEN BEFEJEZETT
-notify changes to ticket assignee by e-mail	tts	hu	
-notify changes to ticket group by e-mail	tts	hu	
-notify changes to ticket owner by e-mail	tts	hu	
+notify changes to ticket assignee by e-mail	tts	hu	Jegy felelõsök értesítése email-ben.
+notify changes to ticket group by e-mail	tts	hu	Jegy felelõs csoport értesítése email-ben.
+notify changes to ticket owner by e-mail	tts	hu	Jegy tulajdonos értesítése email-ben.
 old value	tts	hu	Régi érték
 open	tts	hu	Megnyit
 open / closed	tts	hu	Nyitott / Zárt
 open date	tts	hu	Nyitás dátuma
 opened	tts	hu	Megnyitott
 opened by	tts	hu	Megnyitotta
-original ticket details	tts	hu	Eredeti jegy jellemzök
+original ticket details	tts	hu	Eredeti jegy jellemzõk
 perform irregular transition into the following state	tts	hu	Végrehajt rendellenes átmenetet a következö állapotba
 prio	tts	hu	Fontosság
 priority	tts	hu	Fontosság
@@ -85,6 +97,8 @@ priority changed	tts	hu	Fontosság megváltozott
 put the preexistent ticket into the state %1.	tts	hu	A már látezö jegyet helyezze a %1 állapotba.
 re-assigned	tts	hu	Újra-hozzáfüzött
 re-opened	tts	hu	Újra-megnyitott
+read tickets	tts	hu	Jegyek olvasása
+read tickets within group only	tts	hu	Jegy olvasása csak csoporton belül
 refresh every (seconds)	tts	hu	Felfrissít minden (másodpercben)
 reopen	tts	hu	ÚJRANYIT
 reopened	tts	hu	ÚJRANYITOTT
@@ -95,6 +109,7 @@ returns a struct of values of a single ticket	tts	hu	Vissza adja egy egyedi jegy
 returns the additional notes attached to a ticket	tts	hu	Vissza adja egy jegy további mellékélt értékeléseit
 selected	tts	hu	kiválasztott
 show new/updated tickets on main screen	tts	hu	Megmutatja az új/frissített jegyeket a fö képernyön
+small view	tts	hu	tömör nézet
 source state	tts	hu	Forrás állapota
 state	tts	hu	Állapot
 state changed	tts	hu	Állapot megváltozott
@@ -121,8 +136,12 @@ the ticket was existent before the petri net infrastructure was defined and shou
 the ticket was found a duplicate of another ticket.	tts	hu	A jegy amit találtam egy másik jegy másolata.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	hu	A jegyek a következö listában a %1 állapotban vannak. Kérlek, döntsd el mi legyen ezekkel.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	hu	Nem volt sikeres a jegy jóváhagyása. A jegyen tovább munka szükséges.
+this state means an open ticket	tts	hu	Ebben az állapotban a jegy nyitva.
 ticket	tts	hu	Jegy.
+ticket #	tts	hu	Jegy #
 ticket has been updated	tts	hu	A jegy frissítve lett.
+ticket is not accessable	tts	hu	jegy nem elérhet?
+ticket is not accessible	tts	hu	Ez a jegy nem elérhet?
 tickets found %1	tts	hu	Találtam %1 jegyet
 tickets open %1	tts	hu	Megnyitottam %1 jegyet
 tickets total %1	tts	hu	Összesen %1 jegy
@@ -152,7 +171,9 @@ verify	tts	hu	ELLENÖRIZ
 verify the ticket to work on it.	tts	hu	Jegy ellenörzése munka elött.
 view all tickets	tts	hu	Minden jegy megnézése
 view job detail	tts	hu	Munka jellemzök megnézése
+view only my open tickets	tts	hu	Csak a saját nyitott jegyek megtekintése
 view only open tickets	tts	hu	Csupán a megnyitott jegyek megnézése
+wish	tts	hu	Kívánság
 you can only close a ticket if it is assigned to you.	tts	hu	Egy jegyet csak akkor tudsz bezárni ha az hozzád van rendelve.
 you want to delete the state %1. are you sure?	tts	hu	A %1 állapotot akarod törölni. Biztos vagy benne?
 you want to delete the transition %1. are you sure?	tts	hu	A %1 átmenetet akarod törölni. Biztos vagy benne?

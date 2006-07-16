@@ -2,13 +2,15 @@
 (only cc/bcc)	felamimail	sl	(le CC/BCC)
 (unknown sender)	felamimail	sl	(neznan pošiljatelj)
 activate	felamimail	sl	Aktiviraj
-activate script	felamimail	sl	skripta za aktiviranje
+activate script	felamimail	sl	Skripta za aktiviranje
+add acl	felamimail	sl	Dodaj ACL
 add address	felamimail	sl	Dodaj naslov
 add rule	felamimail	sl	Dodaj pravilo
 add script	felamimail	sl	Dodaj skripto
 add to %1	felamimail	sl	Dodaj v %1
 add to address book	felamimail	sl	Dodaj v adresar
 add to addressbook	felamimail	sl	dodaj v adresar
+adding file to message. please wait!	felamimail	sl	Dodajam datoteko k sporočilu. Počakajte, prosim.
 additional info	felamimail	sl	Podrobnosti
 address book	felamimail	sl	Imenik
 address book search	felamimail	sl	Iskanje po adresarju
@@ -18,12 +20,17 @@ all folders	felamimail	sl	Vse mape
 all of	felamimail	sl	vse od
 allways a new window	felamimail	sl	vedno novo okno
 always show html emails	felamimail	sl	Vedno prikaži HTML sporočila
+and	felamimail	sl	in
 any of	felamimail	sl	katerikoli od
 anyone	felamimail	sl	kdorkoli
 as a subfolder of	felamimail	sl	kot podmapa v
 attachments	felamimail	sl	Priponke
+authentication required	felamimail	sl	zahtevana je avtentikacija
 auto refresh folder list	felamimail	sl	Samodejno osveži seznam map
 back to folder	felamimail	sl	Nazaj v mapo
+bad login name or password.	felamimail	sl	Napačno uporabniško ime ali geslo
+bad or malformed request. server responded: %s	felamimail	sl	Napačna ali napačno oblikovana zahteva. Odgovor strežnika: %s
+bad request: %s	felamimail	sl	Napačna zahteva: %s
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	sl	Glede na podane kriterije imajo prispela sporočila v seznamih različne barve ozadij. To pomaga pri razlikovanju med pošiljatelji sporočil, še posebej v poštnih seznamih.
 bcc	felamimail	sl	BCC
 before headers	felamimail	sl	Pred glavo sporočila
@@ -42,11 +49,13 @@ close window	felamimail	sl	Zapri okno
 color	felamimail	sl	Barva
 compose	felamimail	sl	Novo sporočilo
 compress folder	felamimail	sl	Stisni mapo
+condition	felamimail	sl	pogoj
 configuration	felamimail	sl	Nastavitev
+connection dropped by imap server.	felamimail	sl	Strežnik IMAP je prekinil povezavo.
 contains	felamimail	sl	vsebuje
-could not add folder %1 (%2) !!!	felamimail	sl	Mape %1 (%2) ni bilo mogoče dodati!
-could not delete folder %1 (%2) !!!	felamimail	sl	Mape %1 (%2) ni bilo mogoče zbrisati!
-could not rename folder %1 to %2 (%3) !!!	felamimail	sl	Mape %1 (%2) ni bilo mogoče preimenovati!
+could not complete request. reason given: %s	felamimail	sl	Ne morem dokončati zahteve. Podan vzrok: %s
+could not open secure connection to the imap server. %s : %s.	felamimail	sl	Ne morem vzpostaviti varne povezave s strežnikom IMAP. %s: %s
+cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	sl	CRAM-MD5 ali DIGEST-MD5 zahteva nameščen paket Auth_SASL.
 create	felamimail	sl	Ustvari
 create folder	felamimail	sl	Ustvari mapo
 create sent	felamimail	sl	Ustvari mapo Poslano (Sent)
@@ -62,46 +71,51 @@ dark yellow	felamimail	sl	Temno rumena
 date(newest first)	felamimail	sl	Datum (najprej novejši)
 date(oldest first)	felamimail	sl	Datum (najprej starejši)
 days	felamimail	sl	dni
-deactivate script	felamimail	sl	skripta za deaktiviranje
+deactivate script	felamimail	sl	Skripta za deaktiviranje
 default sorting order	felamimail	sl	Privzet način razvrščanja
-delete all	felamimail	sl	briši vse
+delete all	felamimail	sl	Briši vse
 delete folder	felamimail	sl	Briši mapo
 delete script	felamimail	sl	izbriši skripto
 delete selected	felamimail	sl	Briši označene
-delete selected messages	felamimail	sl	briši označena sporočila
-deleted	felamimail	sl	izbrisano
+delete selected messages	felamimail	sl	Briši označena sporočila
+deleted	felamimail	sl	Izbrisano
 deleted folder successfully!	felamimail	sl	Mapa je bila uspešno izbrisana!
+deleting messages	felamimail	sl	Brisanje sporočila
 disable	felamimail	sl	Onemogoči
-discard message	felamimail	sl	opusti sporočilo
-display messages in multiple windows	felamimail	sl	prikaži sporočila v več oknih
+discard	felamimail	sl	Zavrzi
+discard message	felamimail	sl	Zavrzi sporočilo
+display message in new window	felamimail	sl	Prikaži sporočilo v novem oknu
+display messages in multiple windows	felamimail	sl	Prikaži sporočila v več oknih
 display of html emails	felamimail	sl	Prikazovanje HTML sporočil
 display only when no plain text is available	felamimail	sl	Prikaži le, ko ni na voljo navadnega besedila
 display preferences	felamimail	sl	Prikaži nastavitve
-do it!	felamimail	sl	izvedi!
+do it!	felamimail	sl	Izvedi!
 do not use sent	felamimail	sl	Ne uporabljaj mape Poslano (Sent)
 do not use trash	felamimail	sl	Ne uporabljaj mape Koš (Trash)
 do you really want to delete the '%1' folder?	felamimail	sl	Ali res želite izbrisati mapo '%1'?
-does not contain	felamimail	sl	ne vsebuje
-does not match	felamimail	sl	se ne ujema
-does not match regexp	felamimail	sl	se ne ujema z regularnim izrazom
+does not contain	felamimail	sl	Ne vsebuje
+does not match	felamimail	sl	Se ne ujema
+does not match regexp	felamimail	sl	Se ne ujema z regularnim izrazom
 don't use sent	felamimail	sl	Ne uporabljaj mape Poslano (Sent)
 don't use trash	felamimail	sl	Ne uporabljaj mape Koš (Trash)
-down	felamimail	sl	navzdol
-download	felamimail	sl	prenesi
+down	felamimail	sl	Navzdol
+download	felamimail	sl	Prenesi
 download this as a file	felamimail	sl	Prenesi kot datoteko
 e-mail	felamimail	sl	E-Pošta
 e-mail address	felamimail	sl	E-Poštni naslov
 e-mail folders	felamimail	sl	E-Poštne mape
-edit email forwarding address	felamimail	sl	uredi posredovalni naslov E-pošte
+edit email forwarding address	felamimail	sl	Uredi posredovalni naslov E-pošte
 edit filter	felamimail	sl	Uredi filter
 edit rule	felamimail	sl	uredi pravilo
 edit selected	felamimail	sl	Uredi označeno
-edit vacation settings	felamimail	sl	uredi nastavitve "Na oddihu"
+edit vacation settings	felamimail	sl	Uredi nastavitve "Na oddihu"
 email address	felamimail	sl	E-Poštni naslov
-email forwarding address	felamimail	sl	posredovalni naslov E-pošte
+email forwarding address	felamimail	sl	Posredovalni naslov E-pošte
 email signature	felamimail	sl	E-poštni podpis
-empty trash	felamimail	sl	izprazni smeti
-enable	felamimail	sl	omogoči
+emailaddress	felamimail	sl	Poštni naslov
+empty trash	felamimail	sl	Izprazni smeti
+enable	felamimail	sl	Omogoči
+encrypted connection	felamimail	sl	Kodirana povezava
 enter your default mail domain ( from: user@domain )	admin	sl	Vnesite svojo privzeto domeno za naslove:
 enter your imap mail server hostname or ip address	admin	sl	Vnesite naslov ali IP IMAP strežnika
 enter your sieve server hostname or ip address	admin	sl	Vnesite naslov ali IP SIEVE strežnika
@@ -110,10 +124,12 @@ enter your smtp server hostname or ip address	admin	sl	Vnesite naslov ali IP SMT
 enter your smtp server port	admin	sl	Vnesite vrata SMTP strežnika
 error	felamimail	sl	NAPAKA
 error connecting to imap serv	felamimail	sl	Napaka pri povezovanju z IMAP strežnikom
+error connecting to imap server. %s : %s.	felamimail	sl	Napaka pri povezavi s strežnikom IMAP. %s: %s.
 error opening	felamimail	sl	Napaka pri odpiranju
 every	felamimail	sl	vsak
 every %1 days	felamimail	sl	vsakih %1 dni
 expunge	felamimail	sl	Počisti
+extended	felamimail	sl	Razširjeno
 felamimail	common	sl	FelaMiMail
 file into	felamimail	sl	shrani v
 files	felamimail	sl	datoteke
@@ -137,8 +153,8 @@ follow	felamimail	sl	sledi
 for mail to be send - not functional yet	felamimail	sl	Za pošiljanje sporočila - še ne deluje
 for received mail	felamimail	sl	Za prejeto pošto
 forward	felamimail	sl	Posreduj
+forward to	felamimail	sl	Posreduj
 forward to address	felamimail	sl	Posreduj na naslov
-forwarding	felamimail	sl	Posredovanje
 found	felamimail	sl	Najdenih
 fri	felamimail	sl	pet
 from	felamimail	sl	Pošiljatelj
@@ -148,43 +164,53 @@ full name	felamimail	sl	Polno ime
 greater than	felamimail	sl	večje kakor
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	sl	Oglejte si <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> za več informacij o SquirrelMail.<br>
 header lines	felamimail	sl	Glava sporočila
-hide header	felamimail	sl	skrij glavo
+hide header	felamimail	sl	Skrij glavo
+hostname / address	felamimail	sl	Ime gostitelja/naslov
 html	felamimail	sl	HTML
 icons and text	felamimail	sl	Ikone in besedilo
 icons only	felamimail	sl	Le ikone
 identifying name	felamimail	sl	Določujoče ime
+identity	felamimail	sl	Identiteta
 if	felamimail	sl	ČE
 if from contains	felamimail	sl	če iz vsebuje
 if mail header	felamimail	sl	če glava elektronskega sporočila
 if message size	felamimail	sl	če velikost sporočila
 if subject contains	felamimail	sl	če sujekt vsebuje
 if to contains	felamimail	sl	če za vsebuje
+if using ssl or tls, you must have the php openssl extension loaded.	felamimail	sl	Če želite uporabljati SSL ali TSL, morate naložiti razširitev PHP openssl.
 illegal folder name.  please select a different name.	felamimail	sl	Nedovoljeno ime mape. Prosim, izberite drugo ime.
 imap	felamimail	sl	IMAP
 imap server	felamimail	sl	IMAP strežnik
 imap server address	felamimail	sl	Naslov IMAP strežnika
+imap server closed the connection.	felamimail	sl	Strežnik IMAP je prekinil povezavo.
+imap server closed the connection. server responded: %s	felamimail	sl	Strežnik IMAP je prekinil povezavo. Odgovor strežnika: %s
+imap server password	felamimail	sl	Geslo strežnika IMAP
 imap server type	felamimail	sl	Tip IMAP strežnika
+imap server username	felamimail	sl	Uporabniško ime strežnika IMAP
 imaps authentication	felamimail	sl	IMAPS avtentikacija
 imaps encryption only	felamimail	sl	Le IMAPS šifriranje
 in	felamimail	sl	v
+incoming mail server(imap)	felamimail	sl	Strežnik za prihajajočo pošto (IMAP)
 index order	felamimail	sl	Vrstni red kazala
 info	felamimail	sl	Podatki
 invalid user name or password	felamimail	sl	Napačno uporabniško ime ali geslo
 javascript	felamimail	sl	Javascript
 keep a copy of the message in your inbox	felamimail	sl	obdrži kopijo sporočila v mapi prejeto
 keep local copy of email	felamimail	sl	obdrži lokalno kopijo E-pošte
-kilobytes	felamimail	sl	kilobajtov
+kilobytes	felamimail	sl	Kilobajtov
 language	felamimail	sl	Jezik
 last name	felamimail	sl	Priimek
 left	felamimail	sl	Levo
-less	felamimail	sl	manj
+less	felamimail	sl	Manj
 less than	felamimail	sl	manj kot
 light gray	felamimail	sl	Svetlo siva
 list all	felamimail	sl	Izpiši vse
+loading	felamimail	sl	Nalagam
 location of buttons when composing	felamimail	sl	Položaj gumbov pri pisanju novega sporočila
 mail server login type	admin	sl	Način prijave v poštni strežnik
 mail settings	felamimail	sl	Nastavitve mape
-mainmessage	felamimail	sl	glavno sporočilo
+mainmessage	felamimail	sl	Mlavno sporočilo
+manage emailaccounts	felamimail	sl	Upravljanje poštnih računov
 manage emailfilter / vacation	preferences	sl	Uredi EMailFilter/ Dopust
 manage folders	common	sl	Upravljanje map
 manage sieve	common	sl	Upravljanje skript za Sieve
@@ -197,6 +223,7 @@ mark selected as unread	felamimail	sl	Označi izbrana sporočila kot neprebrana
 match	felamimail	sl	Ujemanje
 matches	felamimail	sl	se ujema z
 matches regexp	felamimail	sl	se ujema z regularnim izrazom
+max uploadsize	felamimail	sl	Največja velikost prenosa
 message highlighting	felamimail	sl	Poudarjanje sporočil
 message list	felamimail	sl	Seznam sporočil
 messages	felamimail	sl	sporočila
@@ -212,14 +239,17 @@ new	common	sl	Novo
 new filter	felamimail	sl	Nov filter
 next	felamimail	sl	Naslednji
 next message	felamimail	sl	naslednje sporočilo
+no active imap server found!!	felamimail	sl	Ni aktivnega strežnika IMAP!
 no filter	felamimail	sl	Brez filtra
 no folders found	felamimail	sl	Ne najdem map
 no folders were found to subscribe to!	felamimail	sl	Ni map za prijavo!
 no folders were found to unsubscribe from!	felamimail	sl	Ni map za odjavo!
 no highlighting is defined	felamimail	sl	Poudarjanje ni definirano
-no messages found...	felamimail	sl	nobeno sporočilo ni najdeno
+no message returned.	felamimail	sl	Ni vrnjenega sporočila.
+no messages found...	felamimail	sl	Nobeno sporočilo ni najdeno
 no messages were selected.	felamimail	sl	Nobeno sporočilo ni izbrano
-no previous message	felamimail	sl	ni predhodnjega sporočila
+no previous message	felamimail	sl	Ni predhodnjega sporočila
+no supported imap authentication method could be found.	felamimail	sl	Ni podprte meode avtentikacije IMAP.
 no valid emailprofile selected!!	felamimail	sl	Ni veljavnega E-poštnega profila!
 none	felamimail	sl	prazno
 on behalf of	felamimail	sl	v imenu
@@ -229,24 +259,29 @@ only one window	felamimail	sl	le eno okno
 only unseen	felamimail	sl	Le nova
 open all	felamimail	sl	odpri vse
 options	felamimail	sl	Možnosti
+or	felamimail	sl	ali
 organisation	felamimail	sl	organizacija
 organization	felamimail	sl	organizacija
 organization name	admin	sl	Ime organizacije
+outgoing mail server(smtp)	felamimail	sl	Strežnik za odhajajočo pošto (IMAP)
 participants	felamimail	sl	Soudeleženci
 personal information	felamimail	sl	Osebni podatki
 please select a address	felamimail	sl	Izberite naslov
 please select the number of days to wait between responses	felamimail	sl	Izberite koliko dni naj počakam med odgovori
 please supply the message to send with auto-responses	felamimail	sl	Vpišite sporočilo, ki se bo poslalo pri samodejnem odgovoru
-posting	felamimail	sl	objavljanje
+port	felamimail	sl	Vrata
+posting	felamimail	sl	Objavljanje
 previous	felamimail	sl	Predhodnji
 previous message	felamimail	sl	predhodnje sporočilo
-print it	felamimail	sl	natisni
-print this page	felamimail	sl	natisni to stran
+print it	felamimail	sl	Natisni
+print this page	felamimail	sl	Natisni to stran
 quicksearch	felamimail	sl	Hitro iskanje
-read	felamimail	sl	prebrano
-reading	felamimail	sl	berem
-recent	felamimail	sl	nedavno
+read	felamimail	sl	Prebrano
+reading	felamimail	sl	Branje
+receive notification	felamimail	sl	Sprejmi potrdilo
+recent	felamimail	sl	Nedavno
 refresh time in minutes	felamimail	sl	Osveži čas v minutah
+reject with	felamimail	sl	Zavrni z
 remove	felamimail	sl	Odstrani
 remove immediately	felamimail	sl	Takoj odstrani
 rename	felamimail	sl	Preimenuj
@@ -263,6 +298,7 @@ respond to mail sent to	felamimail	sl	odgovori na sporočilo poslano na
 return	felamimail	sl	Vrnitev
 return to options page	felamimail	sl	Vrnitev na stran opcij
 right	felamimail	sl	Desno
+row order style	felamimail	sl	Slog zaporednih vrstic
 rule	felamimail	sl	Pravilo
 sat	felamimail	sl	sob
 save	felamimail	sl	Shrani
@@ -302,22 +338,27 @@ sun	felamimail	sl	ned
 table of contents	felamimail	sl	Kazalo
 text only	felamimail	sl	Le besedilo
 the connection to the imap server failed!!	felamimail	sl	Povezava na IMAP strežnik ni uspela.
-the mimeparser can not parse this message.	felamimail	sl	Mime razčlenjevalnik ne more razčleniti tega sporočila.
+the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	sl	Strežnik IMAP verjetno ne podpira izbrane metode avtentikacije. Kontaktirajte sistemskega administratorja.
 then	felamimail	sl	POTEM
 this folder is empty	felamimail	sl	TA MAPA JE PRAZNA
 this php has no imap support compiled in!!	felamimail	sl	Ta PHP ne vsebuje podpore za IMAP!
 thu	felamimail	sl	čet
 to	felamimail	sl	Prejemnik
 to mail sent to	felamimail	sl	sporočilo poslano na
+to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	sl	Če želite uporabljati povezavo TLS, morate imeti različico PHP 5.1.0 ali več.
 translation preferences	felamimail	sl	Nastavitve prevodov
 translation server	felamimail	sl	Strežnik s prevodi
 trash fold	felamimail	sl	Koš
 trash folder	felamimail	sl	Mapa Koš
 tue	felamimail	sl	tor
 type	felamimail	sl	tip
+unexpected response from server to authenticate command.	felamimail	sl	Nepričakovan odgovor strežnika na ukaz AUTHENTICATE.
+unexpected response from server to digest-md5 response.	felamimail	sl	Nepričakovan odgovor strežnika na odgovor Digest-MD5.
+unexpected response from server to login command.	felamimail	sl	Nepričakovan odgovor strežnika na ukaz LOGIN.
 unflagged	felamimail	sl	brez zastavice
 unknown err	felamimail	sl	Neznana napaka
 unknown error	felamimail	sl	Neznana napaka
+unknown imap response from the server. server responded: %s	felamimail	sl	Neznan odgovor IMAP strežnika. Strežnik je odgovoril: %s
 unknown sender	felamimail	sl	Neznan pošiljatelj
 unknown user or password incorrect.	felamimail	sl	Neznan uporabnik ali napačno geslo.
 unread	common	sl	Neprebrano
@@ -327,6 +368,7 @@ unsubscribe	felamimail	sl	Odjavi
 unsubscribed	felamimail	sl	Odjavljen
 unsubscribed successfully!	felamimail	sl	Uspešno odjavljen!
 up	felamimail	sl	gor
+updating message status	felamimail	sl	Posodabljanje stanja sporočil
 use <a href="%1">emailadmin</a> to create profiles	felamimail	sl	uporabi <a href="%1">EmailAdmin</a> za izdelavo profilov
 use a signature	felamimail	sl	Uporabi podpis
 use a signature?	felamimail	sl	Uporabim podpis?
@@ -337,6 +379,7 @@ use regular expressions	felamimail	sl	uporabite regularne izraze
 use smtp auth	admin	sl	Uporabi SMTP avtentikacijo
 users can define their own emailaccounts	admin	sl	Uporabniki lahko definirajo lastne E-poštne račune
 vacation notice	felamimail	sl	Na oddihu
+validate certificate	felamimail	sl	Preveri certifikat
 view full header	felamimail	sl	Pokaži celotno glavo
 view message	felamimail	sl	Pokaži sporočilo
 viewing full header	felamimail	sl	Prikaz celotne glave

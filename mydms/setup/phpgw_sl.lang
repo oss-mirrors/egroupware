@@ -1,62 +1,62 @@
-access mode	mydms	sl	način dostopa
-access rights	mydms	sl	pravice dostopa
+access mode	mydms	sl	Način dostopa
+access rights	mydms	sl	Pravice dostopa
 access_mode_all	mydms	sl	Vsi
 access_mode_none	mydms	sl	Ni dostopa
 access_mode_read	mydms	sl	Branje
 access_mode_readwrite	mydms	sl	Branje+pisanje
 acl get inherited	mydms	sl	ACL se deduje
-add acl	mydms	sl	dodaj ACL
-add document	mydms	sl	dodaj dokument
-add notification	mydms	sl	dodaj obveščanje
-add subfolder	mydms	sl	dodaj podmapo
-admin-tools	mydms	sl	orodja Nadzornika
-all versions	mydms	sl	vse različice
+add acl	mydms	sl	Dodaj ACL
+add document	mydms	sl	Dodaj dokument
+add notification	mydms	sl	Dodaj obveščanje
+add subfolder	mydms	sl	Dodaj podmapo
+admin-tools	mydms	sl	Orodja Nadzornika
+all versions	mydms	sl	Vse različice
 comment	mydms	sl	Komentar
-comment for current version	mydms	sl	komntar za trenutno različico
-copy acl	mydms	sl	kopiraj ACL
-copy documents	mydms	sl	kopiraj dokumente
-copy folder	mydms	sl	kopiraj mapo
-copy options	mydms	sl	kopiraj možnosti
-copy subfolders	mydms	sl	kopiraj podmapo
-create empty acl	mydms	sl	ustvari prazen ACL
-creation date	mydms	sl	datum ustvarjanja
-current acl	mydms	sl	trenutni ACL
-current version	mydms	sl	trenutna različica
-default access	mydms	sl	privzeti dostop
-delete folder	mydms	sl	izbriši mapo
-delete this notification	mydms	sl	izbriši to obveščanje
+comment for current version	mydms	sl	Komentar za trenutno različico
+copy acl	mydms	sl	Kopiraj ACL
+copy documents	mydms	sl	Kopiraj dokumente
+copy folder	mydms	sl	Kopiraj mapo
+copy options	mydms	sl	Kopiraj možnosti
+copy subfolders	mydms	sl	Kopiraj podmapo
+create empty acl	mydms	sl	Ustvari prazen ACL
+creation date	mydms	sl	Datum ustvarjanja
+current acl	mydms	sl	Trenutni ACL
+current version	mydms	sl	Trenutna različica
+default access	mydms	sl	Privzeti dostop
+delete folder	mydms	sl	Izbriši mapo
+delete this notification	mydms	sl	Izbriši to obveščanje
 do you really want to delete this acl?	mydms	sl	Res želite izbrisati ta ACL?
 do you really want to delete this document?	mydms	sl	Res želite izbrisati ta dokument?
 do you really want to delete this version of the document?	mydms	sl	Res želite izbrisati to različico dokumenta?
-does not expire	mydms	sl	ne poteče
-download	mydms	sl	prenesi
-edit folder	mydms	sl	uredi mapo
-expires	mydms	sl	poteče
-expires after	mydms	sl	poteče po
-file size	mydms	sl	velikost datoteke
-filename	mydms	sl	ime datoteke
-folder	mydms	sl	mapa
-general information	mydms	sl	splošne informacije
-information about last update	mydms	sl	informacije o zadnji posodobitvi
+does not expire	mydms	sl	Ne poteče
+download	mydms	sl	Prenesi
+edit folder	mydms	sl	Uredi mapo
+expires	mydms	sl	Poteče
+expires after	mydms	sl	Poteče po
+file size	mydms	sl	Velikost datoteke
+filename	mydms	sl	Ime datoteke
+folder	mydms	sl	Mapa
+general information	mydms	sl	Splošne informacije
+information about last update	mydms	sl	Informacije o zadnji posodobitvi
 informations	mydms	sl	Informacije
-inherit acl again	mydms	sl	ponovno podeduj ACL
-last update	mydms	sl	zadnja posodobitev
-linked documents	mydms	sl	povezani dokumenti
-lock status	mydms	sl	stanje zaklepanja
+inherit acl again	mydms	sl	Ponovno podeduj ACL
+last update	mydms	sl	Zadnja posodobitev
+linked documents	mydms	sl	Povezani dokumenti
+lock status	mydms	sl	Stanje zaklepanja
 mime type	mydms	sl	Tip MIME
-move document	mydms	sl	premakni dokument
-move folder	mydms	sl	premakni mapo
-mydms	common	sl	mydms
-notifications	mydms	sl	obvestila
-permission	mydms	sl	dovoljenja
-select folder	mydms	sl	izberi mapo
-select target folder	mydms	sl	izberi ciljno mapo
-target folder	mydms	sl	ciljna mapa
-this document gets locked by you!	mydms	sl	ta dokument je zaklenjen z vaše strani!
-this document gets unlocked by you.	mydms	sl	ta dokument je odklenjen z vaše strani.
-this document is currently not locked.	mydms	sl	ta dokument trenutno ni zaklenjen.
-this document is locked by <a href="mailto:%1">%2</a>.	mydms	sl	ta dokument je zaklenjen s strani <a href="mailto:%1">%2</a>.
-update document	mydms	sl	posodobi dokument
-upload date	mydms	sl	posodobi datum
-uploaded by	mydms	sl	naložil
-view online	mydms	sl	poglej online
+move document	mydms	sl	Premakni dokument
+move folder	mydms	sl	Premakni mapo
+mydms	common	sl	Mydms
+notifications	mydms	sl	Obvestila
+permission	mydms	sl	Dovoljenja
+select folder	mydms	sl	Izberi mapo
+select target folder	mydms	sl	Izberi ciljno mapo
+target folder	mydms	sl	Ciljna mapa
+this document gets locked by you!	mydms	sl	Ta dokument je zaklenjen z vaše strani!
+this document gets unlocked by you.	mydms	sl	Ta dokument je odklenjen z vaše strani.
+this document is currently not locked.	mydms	sl	Ta dokument trenutno ni zaklenjen.
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	sl	Ta dokument je zaklenjen s strani <a href="mailto:%1">%2</a>.
+update document	mydms	sl	Posodobi dokument
+upload date	mydms	sl	Datum prenosa
+uploaded by	mydms	sl	Prenesel (naložil)
+view online	mydms	sl	Poglej online

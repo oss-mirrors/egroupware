@@ -3,25 +3,32 @@
 (unknown sender)	felamimail	eu	(bidaltzaile ezezaguna)
 activate	felamimail	eu	Aktibatu
 activate script	felamimail	eu	Script-a aktibatu
+add acl	felamimail	eu	acl gehitu
 add address	felamimail	eu	Helbidea gehitu
 add rule	felamimail	eu	Erregela gehitu
 add script	felamimail	eu	Script bat gehitu
 add to %1	felamimail	eu	gehitu %1 -i
 add to address book	felamimail	eu	Gehitu kontaktu agendara
 add to addressbook	felamimail	eu	gehitu kontaktu agendara
+adding file to message. please wait!	felamimail	eu	Fitxategia mezura atxikitzen ari da. Itxaron mesedez!
 additional info	felamimail	eu	Informazio gehiago
 address book	felamimail	eu	Kontaktu agenda
 address book search	felamimail	eu	Bilatu kontaktu agedan
 after message body	felamimail	eu	Mezuaren gorputzaren ondoren
 all address books	felamimail	eu	Kontaktu agenda guztiak
 all folders	felamimail	eu	Karpeta guztiak
+all of	felamimail	eu	guztiak
+allways a new window	felamimail	eu	beti leiho berri bat
 always show html emails	felamimail	eu	Betik erakutsi HTML  formatuan emailak
+and	felamimail	eu	eta
+any of	felamimail	eu	batekin
 anyone	felamimail	eu	Edozein
 as a subfolder of	felamimail	eu	Barne karpeta gisa
 attachments	felamimail	eu	Atxikiak
+authentication required	felamimail	eu	Autentifikazioa behar da
 auto refresh folder list	felamimail	eu	Berritu karpeta lista
 back to folder	felamimail	eu	Itzuli karpetara
-bad reque	felamimail	eu	Erroredun eskaera
+bad login name or password.	felamimail	eu	Izen edo pasahitz okerra
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	eu	ezarritako kriterioen arabera erakutzia. Mezuak kolore ezberdinak izan ditzake. Hau mezua nondik datorren garbiago ikusteko erabiltzen da, bereziki email listetarako.
 bcc	felamimail	eu	Kopia izkutua
 before headers	felamimail	eu	Goiburuen aurretik
@@ -39,6 +46,7 @@ close window	felamimail	eu	Leihoa itxi
 color	felamimail	eu	Kolorea
 compose	felamimail	eu	Idatzi
 compress folder	felamimail	eu	Karpeta konprimatu
+condition	felamimail	eu	baldintza
 configuration	felamimail	eu	Konfigurazioa
 contains	felamimail	eu	dauka
 create	felamimail	eu	Sortu
@@ -65,7 +73,10 @@ delete selected	felamimail	eu	Ezabatu hautaturikoa
 delete selected messages	felamimail	eu	Ezabatu hautaturiko mezuak
 deleted	felamimail	eu	Ezabatua
 deleted folder successfully!	felamimail	eu	Karpeta arrakastaz ezabatua
+deleting messages	felamimail	eu	Mezuak ezabatzen
 disable	felamimail	eu	Ezgaitu
+discard	felamimail	eu	baztertu
+discard message	felamimail	eu	mezua baztertu
 display message in new window	felamimail	eu	mezua lehio berri batean erakutzi
 display of html emails	felamimail	eu	HTML emailak erakutzi
 display only when no plain text is available	felamimail	eu	Erakutsi soilik testu sinpleko bertsiorik ez denean
@@ -91,8 +102,10 @@ edit selected	felamimail	eu	hautatua aldatu
 edit vacation settings	felamimail	eu	oporrent lehentasunak aldatu
 email address	felamimail	eu	E-Posta helbidea
 email signature	felamimail	eu	E-Posta sinadura
-empty trash	felamimail	eu	Zakarra utsik
+emailaddress	felamimail	eu	helbide elektronikoa
+empty trash	felamimail	eu	Zakarra hutsik
 enable	felamimail	eu	indarrean jarri
+encrypted connection	felamimail	eu	konexioa enkriptatua
 enter your default mail domain ( from: user@domain )	admin	eu	Sartu zure oinarrizko posta domeinua (From: erabiltzailea@domeinua)
 enter your imap mail server hostname or ip address	admin	eu	Sartu zure IMAP posta zerbitzariaren ostalari-izena (hostname) edo IP helbidea
 enter your sieve server hostname or ip address	admin	eu	Sartu zure SIEVE zerbitzariaren ostalari-izena (hostname) edo IP helbidea
@@ -105,7 +118,8 @@ error opening	felamimail	eu	Errorea irekitzean
 every	felamimail	eu	guztiak
 every %1 days	felamimail	eu	guztiak %1 egunetan
 expunge	felamimail	eu	Deuseztu
-felamimail	common	eu	FelaMiMail
+extended	felamimail	eu	hedatua
+felamimail	common	eu	Posta
 file into	felamimail	eu	Filtroa
 files	felamimail	eu	artxiboak
 filter active	felamimail	eu	Filtro aktiboa
@@ -128,6 +142,8 @@ follow	felamimail	eu	Jarraitu
 for mail to be send - not functional yet	felamimail	eu	Bidali beharreko e-Postentzat - ez erabilgarri oraindik
 for received mail	felamimail	eu	Jasotako e-Postarentzat
 forward	felamimail	eu	Birbidali
+forward to	felamimail	eu	Birbidali hona
+forward to address	felamimail	eu	Birbidali helbide honetara
 found	felamimail	eu	Aurkitua
 fri	felamimail	eu	Ostirala
 from	felamimail	eu	Nork
@@ -141,17 +157,19 @@ html	felamimail	eu	HTML
 icons and text	felamimail	eu	Ikonoak eta testuak
 icons only	felamimail	eu	Ikonoak soilik
 identifying name	felamimail	eu	Izena identifikatzen
+identity	felamimail	eu	identitate
 if	felamimail	eu	baldin
 illegal folder name.  please select a different name.	felamimail	eu	Karpeta izen desegokia. Mesedez hautatu izen ezberdin bat.
 imap	felamimail	eu	IMAP
 imap server	felamimail	eu	IMAP Zerbitzaria
 imap server address	felamimail	eu	IMAP Zerbitzariaren helbidea
+imap server closed the connection.	felamimail	eu	IMAP zerbitzariak konexioa itxi du
+imap server password	felamimail	eu	imap zerbitzariko pasahitza
 imap server type	felamimail	eu	IMAP Zerbitzari tipoa
+imap server username	felamimail	eu	imap zerbitzariko erabiltzaile izena
 imaps authentication	felamimail	eu	IMAPS Autentifikazioa
 imaps encryption only	felamimail	eu	IMAPS Enkripzioa soilik
 in	felamimail	eu	barne
-in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	eu	SquirrelMail sisteman aukera guztiak erabili ahal izateko beheko karpeta berezia sortu beharra dago. Hautatu kontrol laukia eta "Sortu" botoiean klikatu.
-in the center	felamimail	eu	erdian
 index order	felamimail	eu	Indize ordena
 info	felamimail	eu	Informazioa
 invalid user name or password	felamimail	eu	Erabiltzaile edo pasahitz okerra
@@ -160,16 +178,10 @@ language	felamimail	eu	Hizkuntza
 last name	felamimail	eu	Abizena
 left	felamimail	eu	Ezkerra
 less	felamimail	eu	Gutxiago
-let this folder contain subfolders	felamimail	eu	Karpetak barnean karpetak izan ditzan ahalbideratu
-light blue	felamimail	eu	Urdin argia
-light cyan	felamimail	eu	Cyan argia
 light gray	felamimail	eu	Gris argia
-light green	felamimail	eu	Orlegi argia
-light magenta	felamimail	eu	Magenta argia
-light yellow	felamimail	eu	Ori argia
 list all	felamimail	eu	Guztiak zerrendatu
+loading	felamimail	eu	kargatzen
 location of buttons when composing	felamimail	eu	Botoien posizioa idazterakoan
-location of folder list	felamimail	eu	Karpeta zerrendaren kokapena
 mail server login type	admin	eu	E-Posta zerbitzarian saioa hasteko era
 mail settings	felamimail	eu	E-Posta lehentasunak
 mainmessage	felamimail	eu	Mezu nagusia
@@ -184,72 +196,57 @@ mark selected as unread	felamimail	eu	Hautatutakoa irakurri gabe bezala
 match	felamimail	eu	Parekatu
 matches	felamimail	eu	Parekatuak
 matches regexp	felamimail	eu	Regexp parekatuak
-medium gray	felamimail	eu	Gris normala
-message	felamimail	eu	Mezua
 message highlighting	felamimail	eu	Mezua nabaritu
 message list	felamimail	eu	Mezu zerrenda
 messages	felamimail	eu	mezuak
-minute	felamimail	eu	Minutu
-minutes	felamimail	eu	Minutuak
 mon	felamimail	eu	Astelehena
-more	felamimail	eu	gehiago
 move	felamimail	eu	mugitu
 move messages	felamimail	eu	mugitu mezuak
 move selected to	felamimail	eu	mugitu hautatuak
 move to trash	felamimail	eu	Mugitu Zakarra karpetara
-must be unique	felamimail	eu	Bakarra izan behar du
+moving messages to	felamimail	eu	mezua mugitu hona
 name	felamimail	eu	Izena
 never display html emails	felamimail	eu	Inoiz ez bistaratu HTML emailak
 new	common	eu	Berria
 new filter	felamimail	eu	Iragazki berria
 next	felamimail	eu	Hurrengoa
 next message	felamimail	eu	hurrengo mezua
-nickname	felamimail	eu	Ezizena
 no filter	felamimail	eu	Iragazki gabe
 no folders found	felamimail	eu	Ez da karpetarik aurkitu
 no folders were found to subscribe to!	felamimail	eu	Ez da harpidedun egiteko karpetarik aurkitu!
 no folders were found to unsubscribe from!	felamimail	eu	Ez da harpidedun izateari uzteko karpetarik aurkitu!
 no highlighting is defined	felamimail	eu	Ez dago mezu nabariturik definituta
+no message returned.	felamimail	eu	Ez da mezurik itzuli
+no messages found...	felamimail	eu	ez da mezurik aurkitu...
 no messages were selected.	felamimail	eu	Ez da mezurik hautatu.
-no next message	felamimail	eu	Ez dago hurrengo mezurik
-no notification	felamimail	eu	Ez dago jakinarazpenik
-no personal address book is defined. contact administrator.	felamimail	eu	Ez daukazu definiturik helbide-libururik. Administratzailearekin kontaktatu.
-no persons matching your search was found	felamimail	eu	Ez dira aurkitu zuk agindutako bilaketaren araberako pertsonarik
 no previous message	felamimail	eu	ez dago aurreko mezurik
 no valid emailprofile selected!!	felamimail	eu	posta elektroniko profil egokirik hautatu gabe!
 none	felamimail	eu	bat ere ez
-number of messages to index	felamimail	eu	Indizatu beharreko mezu kopurua
 on behalf of	felamimail	eu	kontura
 one address is not valid	felamimail	eu	Helbideetako baten formatua okerra da
 only inbox	felamimail	eu	Sarrerako ontzia bakarrik
+only one window	felamimail	eu	leiho bat bakarrik
 only unseen	felamimail	eu	Ikusi gabeak bakarrik
 open all	felamimail	eu	guztiak ireki
 options	felamimail	eu	Aukerak
 organisation	felamimail	eu	erakundea
 organization	felamimail	eu	erakundea
 organization name	admin	eu	Erakundearen izena
-oth	felamimail	eu	Bestelakoak
 participants	felamimail	eu	Partaideak
 personal information	felamimail	eu	Informazio pertsonala
 please select a address	felamimail	eu	Mesedez hautatu helbide da
 please select the number of days to wait between responses	felamimail	eu	Mesedez hautatu erantzunen artean itxaron beharreko tartea
 please supply the message to send with auto-responses	felamimail	eu	Sar ezazu erantzun automatikoetan bidali beharreko mezua
+port	felamimail	eu	ataka
 posting	felamimail	eu	bidalketa
-preference file %1 not found. exiting abnormally	felamimail	eu	Lehentasun %1 artxiboa ezin izan da aurkitu. Saioa amaitzen.
-preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	eu	Lehentasun %1 artxiboa ezin izan da aurkitu. Saioa amaitu eta berriro sartu lehentasunen artxiboa sortzera.
 previous	felamimail	eu	Aurrekoa
 previous message	felamimail	eu	aurreko mezua
 print it	felamimail	eu	inprimatu
 print this page	felamimail	eu	inprimatu orri hau
-purge	felamimail	eu	ezabatu
 quicksearch	felamimail	eu	Bilaketa azkarra
 read	felamimail	eu	irakurria
-read da	felamimail	eu	Irakurri
 reading	felamimail	eu	irakurtzen
-reason giv	felamimail	eu	Arrazoia
 recent	felamimail	eu	berria
-refresh folder list	felamimail	eu	karpeta zerrenda eguneratu
-refresh page	felamimail	eu	Orrialdea eguneratu
 refresh time in minutes	felamimail	eu	Eguneratze denbora tartea minututan
 remove	felamimail	eu	ezabatu
 remove immediately	felamimail	eu	ezabatu bat batean
@@ -268,8 +265,6 @@ return	felamimail	eu	Itzuli
 return to options page	felamimail	eu	Itzuli aukeren orrialdera
 right	felamimail	eu	Zuzen
 rule	felamimail	eu	Erregela
-running squirrelmail version %1 (c) 1999-2000.	felamimail	eu	SquirrelMail sistemaren bertsioa %1
-same window - not functional yet	felamimail	eu	Leiho berbera - ez dago martxan oraindik
 sat	felamimail	eu	Larunbata
 save	felamimail	eu	Gorde
 save changes	felamimail	eu	aldaketak gorde
@@ -277,17 +272,14 @@ script name	felamimail	eu	scriptaren izena
 script status	felamimail	eu	scriptaren egoera
 search	felamimail	eu	Bilatu
 search for	felamimail	eu	Bilatu
-seconds	felamimail	eu	Segunduak
 select	felamimail	eu	Hautatu
 select all	felamimail	eu	Guztiak hautatu
 select emailprofile	felamimail	eu	Posta profila hautatu
-select home email address	felamimail	eu	Hautatu etxeko posta elektroniko helbidea
-select work email address	felamimail	eu	Hautatu laneko posta elektroniko helbidea
+select folder	felamimail	eu	Karpeta hautatu
 select your mail server type	admin	eu	Hautatu zure posta zerbitzari mota
 send	felamimail	eu	Bidali
-sent fold	felamimail	eu	Bidalitakoen karpeta
+send a reject message	felamimail	eu	bidali eta hautatu mezua
 sent folder	felamimail	eu	Bidalitakoen karpeta
-server respond	felamimail	eu	Zerbitzariaren erantzuna
 show header	felamimail	eu	bistaratu goiburuak
 show new messages on main screen	felamimail	eu	Erakutzi posta berria lehendabizio pantailan
 sieve settings	admin	eu	SIEVE ren lehentasunak
@@ -300,10 +292,6 @@ size(...->0)	felamimail	eu	Tamainua (...->0)
 size(0->...)	felamimail	eu	Tamainua (0->...)
 small view	felamimail	eu	ikuspegi txikia
 smtp settings	admin	eu	SMTP lehentasunak
-some or all of the help documents are not present!	felamimail	eu	Laguntza dokumentu batzuk edo guztiak falta dira.
-source	felamimail	eu	Iturburua
-special folder options	felamimail	eu	Karpeta berezien aukerak
-squirrelmail	felamimail	eu	Squirrelmail
 subject	felamimail	eu	Gaia
 subject(a->z)	felamimail	eu	Gaia (A->Z)
 subject(z->a)	felamimail	eu	Gaia (Z->A)
@@ -311,38 +299,22 @@ submit	felamimail	eu	Bidali
 subscribe	felamimail	eu	Harpidetu
 subscribed	felamimail	eu	Harpidetuta
 subscribed successfully!	felamimail	eu	Harpidetza burutua
-successfully saved display preferences!	felamimail	eu	Bistaratze lehentasunak arrakastaz godeak
-successfully saved folder preferences!	felamimail	eu	Karpeta lehentasunak arrakastaz godeak
-successfully saved personal information!	felamimail	eu	Datu pertsonalak arrakastaz godeak
 sun	felamimail	eu	Igandea
-switch current folder to	felamimail	eu	aldatu orain zaunden karpeta
 table of contents	felamimail	eu	Edukien taula
 text only	felamimail	eu	Testua bakarrik
 the connection to the imap server failed!!	felamimail	eu	IMAP zerbitzariarekiko konexioak hutsegin du
-the help has not been translated to %1.  it will be displayed in english instead.	felamimail	eu	Laguntza ez dago %1 era itzulia. Ingelesez bistaratuko da ordorioz.
-the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	eu	Pantaila nagusian agertzen den informazioa egokitu liteke, zutabe berriak gehituaz, kenduaz edo ordena aldatuaz.
-the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	eu	Pantaila nagusian agertzen den informazioa egokitu liteke, zutabe berriak gehituaz eta ordena aldatuaz.
-theme	felamimail	eu	Gaia
 then	felamimail	eu	ORDUAN
-these settings change the way your folders are displayed and manipulated.	felamimail	eu	Lehentasun hauek zure karpetak nola bistaratu eta kudetzen diren aldatzen dute.
-this contains personal information about yourself such as your name, your email address, etc.	felamimail	eu	Zure informazio pertsonala dago gorderik hemen, besteak beste zure izena, email helbidea, etab.
 this folder is empty	felamimail	eu	KARPETA HAU UTZIK DAGO
 this php has no imap support compiled in!!	felamimail	eu	PHParendako IMAPa konpilatu gabe
-this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	eu	Portu hau Squirrelmail-en dago oinarriturik. Squirrelmail IMAP posta bezero bat da.
 thu	felamimail	eu	Osteguna
 to	felamimail	eu	Nori
 to mail sent to	felamimail	eu	Nori bidalitako postari
-to the left	felamimail	eu	ezkerrera
-to the right	felamimail	eu	eskumara
-top	felamimail	eu	goia
-translation location	felamimail	eu	Itzulpenen kokapena
 translation preferences	felamimail	eu	Itzulpenen lehentasunak
 translation server	felamimail	eu	Itzulpenen zerbitzaria
 trash fold	felamimail	eu	Zakar karpeta
 trash folder	felamimail	eu	Zakar karpeta
 tue	felamimail	eu	Asteartea
 type	felamimail	eu	mota
-unable to list addresses from %1	felamimail	eu	Ezin izan dira helbideak zerrendatu %1 etik
 unflagged	felamimail	eu	bandera gabea
 unknown err	felamimail	eu	errore ezezaguna
 unknown error	felamimail	eu	errore ezezaguna
@@ -350,15 +322,11 @@ unknown sender	felamimail	eu	Bidaltzaile ezezaguna
 unknown user or password incorrect.	felamimail	eu	Erabiltzaile ezezaguna edo pasahitz okerra
 unread	common	eu	Irakurri gabea
 unseen	felamimail	eu	Ikusi gabea
-unseen and total	felamimail	eu	Ikusi gabeak eta totala
-unseen message notification	felamimail	eu	Ikusi gabeko mezu abisua
-unseen message notification type	felamimail	eu	Ikusi gabeko mezu abisu mota
 unselect all	felamimail	eu	Hautaketa guztiak kendu
 unsubscribe	felamimail	eu	Harpidetza kendu
 unsubscribed	felamimail	eu	Harpidetza kenduta
 unsubscribed successfully!	felamimail	eu	Harpidetza arrakastaz kenduta
 up	felamimail	eu	gora
-update address	felamimail	eu	Helbidea eguneratu
 use <a href="%1">emailadmin</a> to create profiles	felamimail	eu	erabili <a href="%1">EmailAdmin</a> profilak sortzeko
 use a signature	felamimail	eu	Erabili sinadura
 use a signature?	felamimail	eu	Sinadura erabili?
@@ -368,6 +336,7 @@ use javascript or html addressbook?	felamimail	eu	Javascript edo HTML helbide li
 use smtp auth	admin	eu	SMTP autentifikazioa erabili
 users can define their own emailaccounts	admin	eu	Erabiltzaileek euren posta kontuak defini ditzazkete
 vacation notice	felamimail	eu	Opor abisua
+validate certificate	felamimail	eu	balioztatu ziurtagiria
 view full header	felamimail	eu	Goiburu osoak ikusi
 view message	felamimail	eu	Mezua ikusi
 viewing full header	felamimail	eu	Goiburu osoak ikusten
@@ -376,16 +345,9 @@ viewing messages	felamimail	eu	Mezuak ikusten
 wed	felamimail	eu	Asteazkena
 welcome to %1's webmail system	felamimail	eu	Ongietorri %1 webmail sistemara
 when deleting messages	felamimail	eu	Mezuak ezabatzerakoan
-white	felamimail	eu	Txuria
-width of folder list	felamimail	eu	Karpeta zerrendaren zabalera
 with message	felamimail	eu	mezuarekin
 with message "%1"	felamimail	eu	%1 mezuarekin
 wrap incoming text at	felamimail	eu	Posta sarrerak bateratu
 writing	felamimail	eu	Idazten
 wrote	felamimail	eu	Idatzia
-you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	eu	SquirrelMail -ek informazio nola bistaratzen dizun alda dezakezu: koloreak, hizkuntzak eta beste aukera pila bat.
-you can only edit one address at the time	felamimail	eu	Aldiro helbide bakarra alda daiteke
 you must login first.	felamimail	eu	Lehenbizi sisteman sartu beharra daukazu
-you need a valid user and password to access this page!	felamimail	eu	Erabiltzaile eta pasahitz zuzenak behar dituzu orri honetan sartzeko!
-your search failed with the following error(s)	felamimail	eu	Zure bilaketak huts egin du ondorengo errore(ar)ekin
-1	felamimail	eu	1
