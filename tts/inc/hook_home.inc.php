@@ -118,11 +118,13 @@
 			$p->set_var('tts_t_duedate', substr($GLOBALS['phpgw']->db->f('ticket_due'), 0, 16));
 
 			// cope with old, wrongly saved entries, stripslashes would remove single backslashes too
-			$subject = str_replace(array('\\\'','\\"','\\\\'),array("'",'"','\\'),
-				$GLOBALS['phpgw']->db->f('ticket_subject'));
-			if (strlen($subject) > 25) {
-			    $subject = substr($subject,0,23) . '...';
-			}
+			$subject = str_replace(array('\\\'','\\"','\\\\'),array("'",'"','\\'), $GLOBALS['phpgw']->db->f('ticket_subject'));
+			
+			// (erics, 22.05.2006 - commented out clipping of subject line.
+			//if (strlen($subject) > 25) {
+			//    $subject = substr($subject,0,23) . '...';
+			//}
+
 			$p->set_var('tts_t_subject', $subject);
 
 			$p->fp('rows','tts_row',true);

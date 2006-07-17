@@ -14,7 +14,7 @@
 <!-- BEGIN tts_row -->
    <tr class="ticketrow" style="background-color:{tts_row_color}">
      <td align="center"><a href="{tts_ticketdetails_link}">{tts_ticket_id}</a></td>
-     <td align="center"><a href="{tts_ticketdetails_link}">{tts_t_subject}</a></td>
+     <td align="left"><a href="{tts_ticketdetails_link}">{tts_t_subject}</a></td>
      <td align="center">{tts_t_duedate}</td>
      <td align="center">{tts_t_user}</td>
      {tts_col_status}

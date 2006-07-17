@@ -51,7 +51,6 @@
 -->
 <table width="98%" cellspacing="1" cellpadding="1" border="0" align="center">
 	<tr style="background-color:{tts_head_bgcolor}">
-		<td width="22">&nbsp;</td>
 		<td align="center">{tts_head_ticket}</td>
 		<td align="center">{tts_head_subject}</td>
 		<td align="center">{tts_head_prio}</td>
@@ -74,9 +73,8 @@
 
 <!-- BEGIN tts_row -->
 	<tr class="ticketrow" bgcolor="{tts_row_color}">
-		<td width="22">{row_status}</td>
 		<td align="center"><a href="{tts_ticketdetails_link}">{row_ticket_id}</a></td>
-		<td align="center"><a href="{tts_ticketdetails_link}">{tts_t_subject}</a></td>
+		<td align="left"><a href="{tts_ticketdetails_link}">{tts_t_subject}</a></td>
 		<td align="center">{tts_t_prio}</td>
 		<td align="center">{tts_t_duedate}</td>
 		<td align="center">{tts_t_state}</td>
