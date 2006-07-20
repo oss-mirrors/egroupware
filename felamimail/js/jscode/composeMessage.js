@@ -195,8 +195,10 @@ function getPosTop(_node) {
 	
 	if(_node.offsetParent) {
 		while (_node.offsetParent) {
-//			alert(_node.offsetTop +' '+ _node.scrollTop);
 			top += _node.offsetTop;
+			if(_node.parentNode.scrollTop) {
+				top -= _node.parentNode.scrollTop
+			}
 			_node = _node.offsetParent;
 		}
 	} else if (_node.y) {
@@ -231,6 +233,7 @@ function initResultBox(_inputField) {
 function displayResultBox() {
 	var top=0;
 	var left=0;
+	var width=0;
 
 	var resultBox;
 
@@ -242,9 +245,11 @@ function displayResultBox() {
 	if(searchActive) {
 		top = getPosTop(currentInputField) + currentInputField.offsetHeight;
 		left = getPosLeft(currentInputField);
+		width = currentInputField.clientWidth;
 	
 		resultBox.style.top=top + 'px';
 		resultBox.style.left=left + 'px';
+		resultBox.style.width=width + 'px';
 
 		resultBox.className = 'resultBoxVisible';
 	}
