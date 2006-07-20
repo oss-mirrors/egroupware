@@ -13,6 +13,9 @@ function getFolder($id)
 		return false;
 		
 	$resArr = $resArr[0];
+	if($id == 1) {
+		$resArr["defaultAccess"] = M_READ;
+	}
 	$newFolder =  new Folder($resArr["id"], $resArr["name"], $resArr["parent"], $resArr["comment"], $resArr["owner"], $resArr["inheritAccess"], $resArr["defaultAccess"], $resArr["sequence"]);
 	
 	#print $resArr["name"]."<br>";
@@ -132,6 +135,11 @@ class Folder
 
 	function getDefaultAccess()
 	{
+		// give always read access to top folder
+		if($this->_id == $settings->_rootFolderID) {
+			return M_READ;
+		}
+		
 		if ($this->inheritsAccess())
 		{
 			$res = $this->getParent();
@@ -550,11 +558,6 @@ class Folder
 		}
 		if ($foundInACL)
 			return $highestPrivileged;
-		
-		// give always read access to top folder
-		if($this->_id == $settings->_rootFolderID) {
-			return M_READ;
-		}
 		
 		//Standard-Berechtigung verwenden
 		return $this->getDefaultAccess();

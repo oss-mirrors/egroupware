@@ -40,8 +40,8 @@ printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName(
 function checkForm()
 {
 	msg = "";
-	if ((document.form1.userid.options[document.form1.userid.selectedIndex].value == -1) && 
-		(document.form1.groupid.options[document.form1.groupid.selectedIndex].value == -1))
+	if ((document.form1.userid.options[document.form1.userid.selectedIndex].value == none) && 
+		(document.form1.groupid.options[document.form1.groupid.selectedIndex].value == none))
 			msg += "<?php printMLText("js_select_user_or_group");?>\n";
 	if (msg != "")
 	{
@@ -206,8 +206,8 @@ printNextBox(getMLText("add_access"));
 		<td class="inputDescription"><?php printMLText("user");?>:</td>
 		<td>
 			<select name="userid">
-				<option value="-1"><?php printMLText("select_one");?>
-				<option value="-1">-------------------------------
+				<option value="none"><?php printMLText("select_one");?>
+				<option value="none">-------------------------------
 				<?php
 					foreach ($allUsers as $userObj)
 					{
@@ -223,8 +223,8 @@ printNextBox(getMLText("add_access"));
 		<td class="inputDescription"><?php printMLText("group");?>:</td>
 		<td>
 			<select name="groupid">
-				<option value="-1"><?php printMLText("select_one");?>
-				<option value="-1">-------------------------------
+				<option value="none"><?php printMLText("select_one");?>
+				<option value="none">-------------------------------
 				<?php
 					$allGroups = getAllGroups();
 					foreach ($allGroups as $groupObj)

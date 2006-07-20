@@ -138,12 +138,12 @@ else
 		if (!is_numeric($mode))
 			die ("invalid access mode");
 		
-		if ($userid != -1) {
+		if ($userid != 'none') {
 			if (!is_numeric($userid))
 				die ("invalid user id");
 			$folder->addAccess($mode, $userid, true);
 		}
-		if ($groupid != -1) {
+		if ($groupid != 'none') {
 			if (!is_numeric($groupid))
 				die ("invalid group id");
 			$folder->addAccess($mode, $groupid, false);
