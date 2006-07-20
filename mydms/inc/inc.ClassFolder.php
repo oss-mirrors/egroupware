@@ -135,11 +135,6 @@ class Folder
 
 	function getDefaultAccess()
 	{
-		// give always read access to top folder
-		if($this->_id == $settings->_rootFolderID) {
-			return M_READ;
-		}
-		
 		if ($this->inheritsAccess())
 		{
 			$res = $this->getParent();
