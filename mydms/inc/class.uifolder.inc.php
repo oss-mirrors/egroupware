@@ -151,28 +151,30 @@
 		
 		function getInitialFolderView()
 		{
-			header("Content-type:text/xml"); print("<?xml version=\"1.0\"?>");
+			header("Content-type:text/xml"); 
+			print("<?xml version=\"1.0\"?>");
+			
 			if (isset($_GET["id"]))
 				$folderID=$_GET["id"];
 			else
 				$folderID=1;
 
-			$folderObject = getFolder($folderID);
+			if($folderObject = getFolder($folderID)) {
 			
-			$path = $folderObject->getPathNew();
+				$path = $folderObject->getPathNew();
 			
-			$xmlContent	= '';
-			$clientID	= $folderID;
+				$xmlContent	= '';
+				$clientID	= $folderID;
 			
-			// skip the last path part
-			array_pop($path);
+				// skip the last path part
+				array_pop($path);
 
-			while($subFolder = array_pop($path))
-			{
-				$xmlContent	= $this->generateXML($subFolder, $clientID, $folderID, $xmlContent);
-				$clientID	= $subFolder->getID();
+				while($subFolder = array_pop($path)) {
+					$xmlContent	= $this->generateXML($subFolder, $clientID, $folderID, $xmlContent);
+					$clientID	= $subFolder->getID();
+				}
+
 			}
-
 			print "<tree id='$clientID'>$xmlContent</tree>";
 			
 			$GLOBALS['egw']->common->egw_exit();
@@ -186,22 +188,24 @@
 			else
 				$folderID=1;
 
-			$folderObject = getFolder($folderID);
-			
-			$subFolders = $folderObject->getSubFolders();
-			
 			print("<tree id='".$folderID."'>");
 
-			foreach((array)$subFolders as $subFolderObject)
-			{
-				$subFolderID	= $subFolderObject->getID();
-				$subFolderName	= htmlentities($subFolderObject->getName(), ENT_QUOTES, $this->charset);
-				$hasSubfolder	= ($subFolderObject->getSubFolders() ? 1 : 0);
-				print("<item child='$hasSubfolder' id='$subFolderID' text='$subFolderName' im0='folderClosed.gif'></item>");
+			if($folderObject = getFolder($folderID)) {
+			
+				$subFolders = $folderObject->getSubFolders();
+			
+
+				foreach((array)$subFolders as $subFolderObject) {
+					$subFolderID	= $subFolderObject->getID();
+					$subFolderName	= htmlentities($subFolderObject->getName(), ENT_QUOTES, $this->charset);
+					$hasSubfolder	= ($subFolderObject->getSubFolders() ? 1 : 0);
+					print("<item child='$hasSubfolder' id='$subFolderID' text='$subFolderName' im0='folderClosed.gif'></item>");
+				}
+
 			}
 
 			print("</tree>");
-			
+
 			$GLOBALS['egw']->common->egw_exit();
 		}
 

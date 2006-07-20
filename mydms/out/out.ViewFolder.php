@@ -15,10 +15,13 @@ include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
 $folderid = (isset($_GET['folderid'])) ? (int) $_GET['folderid'] : 1;
-$folder = getFolder($folderid);
+if(!$folder = getFolder($folderid)) {
+	die ("Access to folder denied!");
+}
 
-if ($folder->getAccessMode($user) < M_READ)
-	die ("Access denied");
+if ($folder->getAccessMode($user) < M_READ) {
+	die ("Access to folder denied!");
+}
 
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );

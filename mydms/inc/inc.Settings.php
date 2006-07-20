@@ -18,7 +18,7 @@ class Settings
 	var $_rootFolderID = 1;
 	
 	//If you don't want anybody to login as guest, set the following line to false
-	var $_enableGuestLogin = true;
+	var $_enableGuestLogin = false;
 	
 	//default language (name of a subfolder in folder "languages")
 	var $_language = "English";

@@ -483,7 +483,7 @@ class Folder
 	function getAccessMode($user)
 	{
 		GLOBAL $settings;
-		
+
 		//Admin??
 		if ($user->isAdmin())
 			return M_ALL;
@@ -501,8 +501,7 @@ class Folder
 			else
 				return M_NONE;
 		}
-		
-		
+
 		//Berechtigung erben??
 		// wird �ber GetAccessList() bereits realisiert.
 		// durch das Verwenden der folgenden Zeilen w�ren auch Owner-Rechte vererbt worden.
@@ -523,8 +522,9 @@ class Folder
 		//ACLs durchforsten
 		$foundInACL = false;
 		$accessList = $this->getAccessList();
-		if (!$accessList)
+		if (!$accessList) {
 			return false;
+		}
 			
 		foreach ($accessList["users"] as $userAccess)
 		{
@@ -550,6 +550,11 @@ class Folder
 		}
 		if ($foundInACL)
 			return $highestPrivileged;
+		
+		// give always read access to top folder
+		if($this->_id == $settings->_rootFolderID) {
+			return M_READ;
+		}
 		
 		//Standard-Berechtigung verwenden
 		return $this->getDefaultAccess();
