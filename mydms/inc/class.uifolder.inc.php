@@ -138,7 +138,7 @@
 			
 			foreach((array)$subFolders as $subFolderObject) {
 				$subFolderID	= $subFolderObject->getID();
-				$subFolderName	= htmlentities($subFolderObject->getName(), ENT_QUOTES, $this->charset);
+				$subFolderName	= htmlspecialchars($subFolderObject->getName(), ENT_QUOTES, $this->charset);
 				$hasSubfolder	= ($subFolderObject->getSubFolders() ? 1 : 0);
 				$childContent	= ($subFolderID == $_childID ? $_childContent : '');
 				$selectedNode	= ($subFolderID == $_targetID ? " select='1'" : '');
@@ -182,7 +182,9 @@
 			
 		function getSubFolder()
 		{
-			header("Content-type:text/xml"); print("<?xml version=\"1.0\"?>");
+			error_log('getSubFolder');
+			header("Content-type:text/xml"); 
+			print("<?xml version=\"1.0\" encoding=\"$this->charset\"?>");
 			if (isset($_GET["id"]))
 				$folderID=$_GET["id"];
 			else
@@ -193,13 +195,12 @@
 			if($folderObject = getFolder($folderID)) {
 			
 				$subFolders = $folderObject->getSubFolders();
-			
 
 				foreach((array)$subFolders as $subFolderObject) {
 					$subFolderID	= $subFolderObject->getID();
-					$subFolderName	= htmlentities($subFolderObject->getName(), ENT_QUOTES, $this->charset);
+					$subFolderName	= htmlspecialchars($subFolderObject->getName(), ENT_QUOTES, $this->charset);
 					$hasSubfolder	= ($subFolderObject->getSubFolders() ? 1 : 0);
-					print("<item child='$hasSubfolder' id='$subFolderID' text='$subFolderName' im0='folderClosed.gif'></item>");
+					print("<item child='$hasSubfolder' id=\"$subFolderID\" text=\"$subFolderName\" im0='folderClosed.gif'></item>");
 				}
 
 			}
