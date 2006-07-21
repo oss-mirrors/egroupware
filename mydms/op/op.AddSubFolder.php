@@ -36,7 +36,7 @@ if ($folder->getAccessMode($user) < M_READWRITE)
 }
 else
 {
-	printMLText("adding_sub_folder", array("subfoldername" => $fname, "foldername" => $folder->getName()));
+	print lang('Adding subfolder "%1" to folder "%2"...', $fname, $folder->getName());
 
 	$fname = sanitizeString($fname);
 	$comment = sanitizeString($comment);

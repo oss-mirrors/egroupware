@@ -32,7 +32,9 @@ printStartBox(getMLText("rm_folder"));
 <form action="../op/op.RemoveFolder.php" name="form1">
 	<input type="Hidden" name="folderid" value="<?php print $folderid;?>">
 	<div class="standardText">
-	<?php printMLText("confirm_rm_folder", array ("foldername" => $folder->getName()));?>
+	<?php 
+		print lang('Do you really want to remove the "%1" and its content?<br>Be careful: This action cannot be undone.', $folder->getName());
+	?>
 	</div><br>
 	<input type="Submit" value="<?php printMLText("rm_folder");?>">
 </form>
