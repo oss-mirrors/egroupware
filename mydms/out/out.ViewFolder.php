@@ -27,70 +27,10 @@ if ($folder->getAccessMode($user) < M_READ) {
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );
 printTitleBar($folder);
 printFolderPageStart($folder);
-#printPageHeader(getMLText("folder_overview") . ": " . $folder->getName());
 
-#printStartBox(getMLText("folder_infos"));
-
-/* ?>
-	
-	<table cellpadding="0" cellspacing="10">
-		<tr>
-			<td class="infos" valign="top"><?php printMLText("owner");?>:</td>
-			<td style="border-left: 1pt solid #000080;" rowspan="2">&nbsp;</td>
-			<td class="infos">
-				<?php
-					$owner = $folder->getOwner();
-					print "<a class=\"infos\" href=\"mailto:".$owner->getEmail()."\">".$owner->getFullName()."</a>";
-				?>
-			</td>
-		</tr>
-		<tr>
-			<td class="infos" valign="top"><?php printMLText("comment");?>:</td>
-			<td class="infos"><?php print $folder->getComment();?></td>
-		</tr>
-	</table>
-	
-<?php
-printStartBox(getMLText("subfolder_list"));
+printStartBox(getMLText("document_list"));
 ?>
-				
-	<table cellspacing="5" cellpadding="0" border="0">
-	<?php
-		$subFolders = $folder->getSubFolders();
-		$subFolders = filterAccess($subFolders, $user, M_READ);
-		if (count($subFolders) > 0)
-		{
-			$rownum = count($subFolders)+1;
-			print "<tr>\n";
-			print "<td></td>\n";
-			print "<td class=\"filelist\" style=\"border-bottom: 1pt solid #000080;\"><i>".getMLText("name")."</i></td>\n";
-			print "<td rowspan=".$rownum." style=\"border-left: 1pt solid #000080;\">&nbsp;</td>\n";
-			print "<td class=\"filelist\" style=\"border-bottom: 1pt solid #000080;\"><i>".getMLText("comment")."</i></td>\n";
-			print "<td rowspan=".$rownum." style=\"border-left: 1pt solid #000080;\">&nbsp;</td>\n";
-			print "<td class=\"filelist\" style=\"border-bottom: 1pt solid #000080;\"><i>".getMLText("owner")."</i></td>\n";
-			print "</tr>\n";
-			foreach($subFolders as $subFolder)
-			{
-				$owner = $subFolder->getOwner();
-				$comment = $subFolder->getComment();
-				if (strlen($comment) > 25) $comment = substr($comment, 0, 22) . "...";
-				print "<tr>";
-				print "<td><img src=\"images/folder_closed.gif\" width=18 height=18 border=0></td>";
-				print "<td class=\"filelist\"><a class=\"filelist\" href=\"out.ViewFolder.php?folderid=".$subFolder->getID()."\">" . $subFolder->getName() . "</a></td>\n";
-				print "<td class=\"filelist\">" . $comment . "</td>";
-				print "<td class=\"filelist\">".$owner->getFullName()."</td>";
-				print "</tr>";
-			}
-		}
-		else
-			print "<tr><td class=\"filelist\">".getMLText("no_subfolders")."</td></tr>";
-	?>
-	</table>
-
-<?php*/
-	printStartBox(getMLText("document_list"));
-?>
-
+	<div id="rightClickMenu" style="border:1px solid grey; position:absolute; display:none; background-color:silver; z-index:40;">the next big thing...</div>
 	<table cellspacing="5" cellpadding="0" border="0">
 	<?php
 		$documents = $folder->getDocuments();

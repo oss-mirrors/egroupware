@@ -33,7 +33,7 @@ printStartBox(getMLText("rm_folder"));
 	<input type="Hidden" name="folderid" value="<?php print $folderid;?>">
 	<div class="standardText">
 	<?php 
-		print lang('Do you really want to remove the "%1" and its content?<br>Be careful: This action cannot be undone.', $folder->getName());
+		print lang('Do you really want to remove the folder "%1" and its content?<br>Be careful: This action cannot be undone.', $folder->getName());
 	?>
 	</div><br>
 	<input type="Submit" value="<?php printMLText("rm_folder");?>">

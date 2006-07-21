@@ -159,6 +159,7 @@
 			$folder_tree_new .= "tree=new dhtmlXTreeObject('$_divName','100%','100%',0);\n";
 			$folder_tree_new .= "tree.setImagePath('$folderImageDir/dhtmlxtree/');\n";
 			$folder_tree_new .= "tree.setOnClickHandler('onNodeSelect');\n";
+			$folder_tree_new .= "tree.setOnRightClickHandler('onNodeSelectRight');\n";
 
 			$linkData = array
 			(
@@ -214,7 +215,7 @@
 			return $folder_tree_new;
 		}
 
-		function createHTMLFolder_old($_folders, $_selected, $_divName, $_displayCheckBox=false)
+/*		function createHTMLFolder_old($_folders, $_selected, $_divName, $_displayCheckBox=false)
 		{
 			$allFolders = $_folders;
 			
@@ -238,10 +239,6 @@
 				$folder_tree_new .= "tree.enableCheckBoxes(1);";
 				$folder_tree_new .= "tree.setOnCheckHandler('onCheckHandler');";
 			}
-/*			foreach($allFolders as $folderID => $folderObject)
-			{
-				$folder_tree_new .= "tree.loadXML('$xmlAutoLoadURL&id=".$folderObject->getID()."');"; 
-			}*/
 
 			#foreach($allFolders as $folderID => $folderObject)
 			#{
@@ -294,7 +291,7 @@
 
 			return $folder_tree_new;
 		}
-
+*/
 		function deleteACL()
 		{
 			$userID		= (int)$_GET['userid'];

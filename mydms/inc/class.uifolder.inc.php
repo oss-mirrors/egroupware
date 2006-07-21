@@ -182,7 +182,6 @@
 			
 		function getSubFolder()
 		{
-			error_log('getSubFolder');
 			header("Content-type:text/xml"); 
 			print("<?xml version=\"1.0\" encoding=\"$this->charset\"?>");
 			if (isset($_GET["id"]))
