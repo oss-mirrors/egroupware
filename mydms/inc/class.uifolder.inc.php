@@ -152,7 +152,7 @@
 		function getInitialFolderView()
 		{
 			header("Content-type:text/xml"); 
-			print("<?xml version=\"1.0\"?>");
+			print("<?xml version=\"1.0\" encoding=\"$this->charset\"?>");
 			
 			if (isset($_GET["id"]))
 				$folderID=$_GET["id"];
