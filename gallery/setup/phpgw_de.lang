@@ -1,5 +1,30 @@
-an error occurred during user creation in g2.	gallery	de	Beim Benuter anlegen in G2 trat ein Fehler auf.
+album frame (%1samples%2)	gallery	de	Albumrahmen (%1Beispiele%2)
+an error occurred during user creation in g2.	gallery	de	Beim Benutzer anlegen in G2 trat ein Fehler auf.
 an error occurred while trying to initialize g2.	gallery	de	Beim Initialisieren von G2 trat ein Fehler auf.
+can be used to limit the block to a certain album.	gallery	de	Beschränkt den Block auf ein bestimmtes Album.
+complete gallery	gallery	de	Komplette Galerie
+default item to show in the gallery.	gallery	de	Vorgabewert für die Anzeige in der Galerie.
+extra information to show	gallery	de	Zusätzliche Informationen anzeigen
+full size	gallery	de	Volle Größe
 gallery	common	de	Galerie
 gallery menu	gallery	de	Galerie Menü
+gallery sidebar	gallery	de	Galerie Menü
+gallery without sidebar	gallery	de	Galerie ohne Menü
 gallery2 is not installed, you need to %1do that%2 first!!!	gallery	de	Galerie2 ist NICHT installert, %1machen Sie das%2 zuerst!!!
+heading	gallery	de	Überschrift
+image frame (%1samples%2)	gallery	de	Bilderrahmen (%1Beispiele%2)
+imageblock	gallery	de	Bilderblock
+imageblock of the gallery	gallery	de	Bilderblock der Galerie
+item id (number)	gallery	de	Bild- oder Album ID (Nummer)
+one or more blocks to show	gallery	de	Einen oder mehrere Blöcke anzeigen
+pagename of an other page to link to	gallery	de	Seitenname einer anderen Seite zum Verlinken
+set block title to	gallery	de	Setze Blocktitle von
+set gallery title as page-title?	gallery	de	Setze Galerie Titel als Seitentitel?
+should contain a "gallery" block in contentarea "center".	gallery	de	Sollte einen "gallery" Block im Inhaltsbereich "center" haben.
+size (maximum number of pixel of the longest side)	gallery	de	Größe (maximale Anzahl Pixel der längsten Seite)
+specific item (requires itemid!)	gallery	de	Bestimtes Bild- oder Album (benötigt die ID!)
+type of the embeded gallery	gallery	de	Typ der eingebeteten Galerie
+use this module to display the embeded gallery	gallery	de	Diese Module zeigt eine eingebettete Galerie
+view count	gallery	de	Anzahl der Betrachtungen
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	de	Sie bekommen die ID von dem "g2_itemId" Parameter in der Internetadresse, wenn Sie auf das Element klicken.
+you have no rights to view %1 content !!!	gallery	de	Sie habe keine Rechte Inhalte anzuzeigen von %1 !!!

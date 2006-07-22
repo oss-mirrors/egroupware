@@ -24,18 +24,41 @@
  */
 class g2_integration
 {
+	/**
+	 * Errors reported by G2
+	 *
+	 * @var string
+	 */
 	var $error;
+	/**
+	 * G2's prefix for _GET & _POST vars
+	 *
+	 * @var string
+	 */
+	var $prefix = 'g2_';
+	/**
+	 * returned data from G2's handleRequest
+	 * 
+	 * @var array
+	 */
+	var $data;
+	/**
+	 * $_GET from before G2 was initialised
+	 *
+	 * @var array
+	 */
+	var $get_before_g2;
 
 	/**
 	 * Constructor, setting up the GalleryEmbed object
 	 *
 	 * @param boolean $hooked=true called as hook, pass fullinit=true to GalleryEmbed::init(), default yes
+	 * @param string $url gallery url, default null = use /gallery (inside eGW)
 	 * @return g2_integration
 	 */
-	function g2_integration($hooked=true)
+	function g2_integration($hooked=true,$url=null)
 	{
-		global $g2_data;
-		if (is_array($g2_data)) return;	// sideboxMenu hook
+		$this->get_before_g2 = $_GET;	// save $_GET from before G2 was initialised
 
 		if (!file_exists(EGW_SERVER_ROOT.'/gallery/gallery2/config.php'))
 		{
@@ -47,14 +70,14 @@ class g2_integration
 		GalleryDataCache::put('G2_EMBED', 1, true);
 		require(EGW_INCLUDE_ROOT.'/gallery/gallery2' . '/main.php');
 		require(EGW_INCLUDE_ROOT.'/gallery/gallery2' . '/modules/core/classes/GalleryEmbed.class');
-		
+
 		if (($ret = GalleryEmbed::init(array(
-	    	'embedUri' => $GLOBALS['egw']->link('/gallery/index.php'),
+	    	'embedUri' => $url ? $url : $GLOBALS['egw']->link('/gallery/index.php'),
 	    	'g2Uri'    => $GLOBALS['egw_info']['server']['webserver_url'].'/gallery/gallery2/',
 	    	'loginRedirect' => $GLOBALS['egw_info']['server']['webserver_url'].'/login.php',
 //				'embedSessionString' => 'sessionid=',	// gets added by egw::link() to embedUri if necessary
 	     	'gallerySessionId' => $_REQUEST['sessionid'],
-			'activeUserId' => $GLOBALS['egw_info']['user']['account_id'],
+			'activeUserId' => $GLOBALS['egw_info']['user']['account_lid'] == 'anonymous' ? null : $GLOBALS['egw_info']['user']['account_id'],
 			'activeLanguage' => g2_integration::g2_lang($GLOBALS['egw_info']['user']['preferences']['common']['lang']),
 //				'apiVersion' => (optional) array int major, int minor (check if your integration is compatible)
 			'fullInit' => $hooked,
@@ -71,13 +94,19 @@ class g2_integration
 			{
 				// The error we got wasn't due to a missing user, it was a real error
 				$this->error = '<p>'.lang('An error occurred while trying to initialize G2.')."</p>\n";
-				$$this->error .= $GLOBALS['egw']->translation->convert($ret2 ? $ret2->getAsHtml() : $ret->getAsHtml(),'utf-8');
+				$this->error .= $GLOBALS['egw']->translation->convert($ret2 ? $ret2->getAsHtml() : $ret->getAsHtml(),'utf-8');
 			}
 		}
 		elseif (!$hooked)
 		{
 			$this->error = $this->checkSetSiteAdmin($GLOBALS['egw_info']['user']['account_id']);
 		}
+		if ($hooked)
+		{
+			register_shutdown_function(array('GalleryEmbed','done'));
+		}
+		// all CreateObject or ExecMethod should use THIS instance!
+		$GLOBALS['g2_integration'] =& $this;
 	}
 	
 	/**
@@ -261,15 +290,13 @@ class g2_integration
 	 */
 	function menus($location)
 	{
-		global $g2_data;
-		
-		if (is_array($location)) $location = $location['location'];	
+		if (is_array($location)) $location = $location['location'];
 
 		$blocks = array();
 		
-		if (is_array($g2_data['sidebarBlocksHtml']))
+		if (is_array($this->data['sidebarBlocksHtml']))
 		{
-			foreach($GLOBALS['egw']->translation->convert($g2_data['sidebarBlocksHtml'],'utf-8') as $n => $block)
+			foreach($this->data['sidebarBlocksHtml'] as $n => $block)
 			{
 				//echo "block $n:<pre>".htmlspecialchars($block)."</pre>\n";
 				if (strlen($block) > 2)
@@ -329,16 +356,156 @@ class g2_integration
 				'Site configuration' => $GLOBALS['egw']->link('/gallery/index.php',array('g2_view' => 'core.SiteAdmin')),
 			);
 		}
+		$content = '';
 		foreach($blocks as $title => $block)
 		{
-			if ($location == 'admin')
+			switch ($location)
 			{
-				display_section('gallery',$block);
-			}
-			else
-			{
-				display_sidebox('gallery',$title,$block);
+				case 'admin':
+					display_section('gallery',$block);
+					break;
+
+				case 'sidebox_menu': 
+					display_sidebox('gallery',$title,$block);
+					break;
+				
+				case 'sitemgr':	// G2 sidebar for sitemgr
+					if (!isset($block[0]['icon']) || $block[0]['icon'])
+					{
+						foreach($block as $text => $link)
+						{
+							if (!is_array($link)) $link = array('text' => '<a href="'.$link.'">'.$text.'</a>');
+
+							if (isset($link['icon']) && !$link['icon'])
+							{
+								if ($ul_open) $content .= "</ul>\n";
+								$ul_open = false;
+								$content .= $link['text'];
+							}
+							else
+							{
+								if (!$ul_open) $content .= '<ul style="padding-left: 17px; margin: 0px">'."\n";
+								$ul_open = true;
+								$content .= '<li>'.$link['text']."</li>\n";
+							}
+						}
+						if ($ul_open) $content .= "</ul>\n";
+						$ul_open = false;
+					}
+					else
+					{
+						$content .= $block[0]['text'];
+					}
+					break;
 			}
 		}
+		return $content;
+	}
+	
+	/**
+	 * Call GalleryEmbed::handleRequest(); and parse and convert the returned content
+	 *
+	 * @var string $type either 'complete', 'core' or 'sidebar'
+	 * @var string &$title string returns G2's title
+	 * @return string the content
+	 */
+	function handleRequest($type,&$title)
+	{
+		if (is_null($this->data))
+		{
+			// translate posted content for G2 to utf-8
+			if ($_POST && ($charset = $GLOBALS['egw']->translation->charset()) != 'utf-8')
+			{
+				foreach($_POST as $name => $value)
+				{
+					if (substr($name,0,strlen($this->prefix)) == $this->prefix)
+					{
+						$_POST[$name] = $GLOBALS['egw']->translation->convert($value,$charset,'utf-8');
+					}
+				}
+				$_REQUEST = array_merge($_REQUEST,$_POST);
+			}
+			GalleryCapabilities::set('showSidebarBlocks', $type == 'complete');
+
+			$this->data = GalleryEmbed::handleRequest();
+			
+			if ($this->data['isDone'])	// redirect, download, ...
+			{
+				$GLOBALS['egw']->common->egw_exit();
+			}
+			$this->data = $GLOBALS['egw']->translation->convert($this->data,'utf-8');
+		}
+		if ($type != 'sidebar')
+		{
+			list($title,$css,$js) = GalleryEmbed::parseHead($this->data['headHtml']);
+			$GLOBALS['egw_info']['flags']['java_script'] .= implode("\n",$js);
+
+			return implode("\n",$css)."\n".$this->data['bodyHtml'];
+		}
+		// G2 sidebar for sitemgr
+		return $this->menus('sitemgr');
+	}
+	
+	/**
+	 * get an image block from G2
+	 *
+	 * @param array $params see GalleryEmbed::getImageBlock
+	 * @return string
+	 */
+	function imageBlock($params)
+	{
+		list($error,$block,$head) = GalleryEmbed::getImageBlock($params);
+		
+		$content = $error ? $error->getAsHtml() : $head.$block;
+
+		return $GLOBALS['egw']->translation->convert($content,'utf-8');
+	}
+	
+	/**
+	 * fetch availible frames from G2
+	 * 
+	 * @return array with 2 elements: 0 => array frameId => label pairs, 1 => string with url to sample page) 
+	 */
+	function frameTypes()
+	{
+		list ($ret, $imageframe) = GalleryCoreApi::newFactoryInstance('ImageFrameInterface_1_1');
+		if ($ret) die($ret->getAsHtml());
+		list ($ret, $frames) = $imageframe->getImageFrameList();
+		if ($ret) die($ret->getAsHtml());
+		
+		//list ($ret, $sample_url) = $imageframe->getSampleUrl();
+		//if ($ret) die($ret->getAsHtml());
+		// the url returned from G2 is wrong, duno ...
+		$sample_url = $GLOBALS['egw']->link('/gallery/index.php',array('g2_view'=>'imageframe.Sample'));
+
+		return array($GLOBALS['egw']->translation->convert($frames,'utf-8'),$sample_url);
+	}
+	
+	/**
+	 * Get translated list of image block types from G2
+	 * 
+	 * unfortunally there's no function for that in G2's imageblock ...
+	 *
+	 * @return array
+	 */
+	function imageBlockTypes()
+	{
+		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'imageblock', true);
+		if ($ret) die($ret->getAsHtml());
+	
+		return $GLOBALS['egw']->translation->convert(array(
+			'randomImage'  => $module->translate('Random Image'),
+			'recentImage'  => $module->translate('Newest Image'),
+			'viewedImage'  => $module->translate('Most Viewed Image'),
+			'randomAlbum'  => $module->translate('Random Album'),
+			'recentAlbum'  => $module->translate('Newest Album'),
+			'viewedAlbum'  => $module->translate('Most Viewed Album'),
+			'dailyImage'   => $module->translate('Picture of the Day'),
+			'weeklyImage'  => $module->translate('Picture of the Week'),
+			'monthlyImage' => $module->translate('Picture of the Month'),
+			'dailyAlbum'   => $module->translate('Album of the Day'),
+			'weeklyAlbum'  => $module->translate('Album of the Week'),
+			'monthlyAlbum' => $module->translate('Album of the Month'),
+		),'utf-8')+array('specificItem' => lang('specific item (requires itemId!)'));
 	}
 }

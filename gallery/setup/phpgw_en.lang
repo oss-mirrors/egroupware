@@ -1,5 +1,30 @@
+album frame (%1samples%2)	gallery	en	Album frame (%1Samples%2)
 an error occurred during user creation in g2.	gallery	en	An error occurred during user creation in G2.
 an error occurred while trying to initialize g2.	gallery	en	An error occurred while trying to initialize G2.
+can be used to limit the block to a certain album.	gallery	en	Can be used to limit the block to a certain album.
+complete gallery	gallery	en	Complete Gallery
+default item to show in the gallery.	gallery	en	Default item to show in the Gallery.
+extra information to show	gallery	en	Extra information to show
+full size	gallery	en	Full size
 gallery	common	en	Gallery
 gallery menu	gallery	en	Gallery menu
+gallery sidebar	gallery	en	Gallery sidebar
+gallery without sidebar	gallery	en	Gallery without sidebar
 gallery2 is not installed, you need to %1do that%2 first!!!	gallery	en	Gallery2 is NOT installed, you need to %1do that%2 first!!!
+heading	gallery	en	Heading
+image frame (%1samples%2)	gallery	en	Image frame (%1Samples%2)
+imageblock	gallery	en	Imageblock
+imageblock of the gallery	gallery	en	Imageblock of the Gallery
+item id (number)	gallery	en	Item ID (number)
+one or more blocks to show	gallery	en	One or more blocks to show
+pagename of an other page to link to	gallery	en	Pagename of an other page to link to
+set block title to	gallery	en	Set block title to
+set gallery title as page-title?	gallery	en	Set Gallery title as page-title?
+should contain a "gallery" block in contentarea "center".	gallery	en	Should contain a "gallery" block in contentarea "center".
+size (maximum number of pixel of the longest side)	gallery	en	Size (maximum number of pixel of the longest side)
+specific item (requires itemid!)	gallery	en	specific item (requires itemId!)
+type of the embeded gallery	gallery	en	Type of the embeded Gallery
+use this module to display the embeded gallery	gallery	en	Use this module to display the embeded Gallery
+view count	gallery	en	View count
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	en	You can get the ID from the "g2_itemId" parameter in the URL, when you click on the item.
+you have no rights to view %1 content !!!	gallery	en	You have no rights to view %1 content !!!
