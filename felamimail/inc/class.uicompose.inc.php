@@ -187,13 +187,24 @@
 			$this->t->set_var('img_fileopen', $GLOBALS['egw']->common->image('phpgwapi','fileopen'));
 			$this->t->set_var('img_mail_send', $GLOBALS['egw']->common->image('felamimail','mail_send'));
 			$this->t->set_var('img_attach_file', $GLOBALS['egw']->common->image('felamimail','attach'));
+			
+			$destinationRows = 0;
 			foreach(array('to','cc','bcc') as $destination) {
 				foreach((array)$sessionData[$destination] as $key => $value) {
 					$selectDestination = $GLOBALS['egw']->html->select('destination[]', $destination, $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
 					$this->t->set_var('select_destination', $selectDestination);
 					$this->t->set_var('address', @htmlentities($value,ENT_QUOTES,$this->displayCharset));
 					$this->t->parse('destinationRows','destination_row',True);
+					$destinationRows++;
 				}
+			}
+			while($destinationRows < 3) {
+				// and always add one empty row
+				$selectDestination = $GLOBALS['egw']->html->select('destination[]', 'to', $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+				$this->t->set_var('select_destination', $selectDestination);
+				$this->t->set_var('address', '');
+				$this->t->parse('destinationRows','destination_row',True);
+				$destinationRows++;
 			}
 			// and always add one empty row
 			$selectDestination = $GLOBALS['egw']->html->select('destination[]', 'to', $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
