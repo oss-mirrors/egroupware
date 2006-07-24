@@ -128,6 +128,9 @@
 				
 				$entryOptions = 'CHILD,CHECKED';
 
+				$parentName	= htmlspecialchars($parentName, ENT_QUOTES, $this->charset);
+				$shortName	= htmlspecialchars($shortName, ENT_QUOTES, $this->charset);
+
 				$folder_name = $shortName;
 
 				// highlight currently selected mailbox
@@ -145,10 +148,8 @@
 					$image2 = "'kfm_home.png'";
 					$image3 = "'kfm_home.png'";
 				}
-				
-				$parentName = htmlspecialchars($parentName, ENT_QUOTES, $this->charset);
-				$longName = htmlspecialchars($longName, ENT_QUOTES, $this->charset);
-				$folder_name = htmlspecialchars($folder_name, ENT_QUOTES, $this->charset);
+
+				$longName	= htmlspecialchars($longName, ENT_QUOTES, $this->charset);
 				
 				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,$image1,$image2,$image3,'$entryOptions');\n";
 				if($_displayCheckBox)

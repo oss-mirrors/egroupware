@@ -181,12 +181,13 @@
 			}
 			$selectFrom = $GLOBALS['egw']->html->select('identity', $defaultIdentity, $identities, true, "style='width:100%;'");			
 			$this->t->set_var('select_from', $selectFrom);
-			
+
 			// from, to, cc
 			$this->t->set_var('img_clear_left', $GLOBALS['egw']->common->image('felamimail','clear_left'));
 			$this->t->set_var('img_fileopen', $GLOBALS['egw']->common->image('phpgwapi','fileopen'));
 			$this->t->set_var('img_mail_send', $GLOBALS['egw']->common->image('felamimail','mail_send'));
 			$this->t->set_var('img_attach_file', $GLOBALS['egw']->common->image('felamimail','attach'));
+			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
 			
 			$destinationRows = 0;
 			foreach(array('to','cc','bcc') as $destination) {
@@ -310,7 +311,8 @@
 
 			$maxUploadSize = ini_get('upload_max_filesize');
 			$this->t->set_var('max_uploadsize', $maxUploadSize);
-			
+
+			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
 
 			$this->t->pparse("out","fileSelector");
 		}

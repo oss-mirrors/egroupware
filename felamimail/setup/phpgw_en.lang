@@ -125,6 +125,7 @@ enter your smtp server port	admin	en	Enter your SMTP server port
 error	felamimail	en	ERROR
 error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
+error connecting to imap server: [%s] %s.	felamimail	en	Error connecting to IMAP server: [%s] %s.
 error opening	felamimail	en	Error opening
 every	felamimail	en	every
 every %1 days	felamimail	en	every %1 days
@@ -195,6 +196,8 @@ index order	felamimail	en	Index Order
 info	felamimail	en	Info
 invalid user name or password	felamimail	en	Invalid user name or password
 javascript	felamimail	en	JavaScript
+jumping to end	felamimail	en	jumping to end
+jumping to start	felamimail	en	jumping to start
 keep a copy of the message in your inbox	felamimail	en	keep a copy of the message in your inbox
 keep local copy of email	felamimail	en	keep local copy of email
 kilobytes	felamimail	en	kilobytes
@@ -317,6 +320,7 @@ send a reject message	felamimail	en	send a reject message
 sent folder	felamimail	en	Sent Folder
 show header	felamimail	en	show header
 show new messages on main screen	felamimail	en	Show new messages on main screen
+sieve script name	felamimail	en	sieve script name
 sieve settings	admin	en	Sieve settings
 signature	felamimail	en	Signature
 simply click the target-folder	felamimail	en	Simply click the target-folder
@@ -325,6 +329,8 @@ size	felamimail	en	Size
 size of editor window	felamimail	en	Size of editor window
 size(...->0)	felamimail	en	Size (...->0)
 size(0->...)	felamimail	en	Size (0->...)
+skipping forward	felamimail	en	skipping forward
+skipping previous	felamimail	en	skipping previous
 small view	felamimail	en	small view
 smtp settings	admin	en	SMTP settings
 subject	felamimail	en	Subject
@@ -339,6 +345,7 @@ table of contents	felamimail	en	Table of Contents
 text only	felamimail	en	Text only
 the connection to the imap server failed!!	felamimail	en	The connection to the IMAP Server failed!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	en	The IMAP server does not appear to support the authentication method selected. Please contact your system administrator.
+the mimeparser can not parse this message.	felamimail	en	The mimeparser can not parse this message.
 then	felamimail	en	THEN
 this folder is empty	felamimail	en	THIS FOLDER IS EMPTY
 this php has no imap support compiled in!!	felamimail	en	This PHP has no IMAP support compiled in!!
@@ -374,7 +381,6 @@ use a signature	felamimail	en	Use a signature
 use a signature?	felamimail	en	Use a signature?
 use addresses	felamimail	en	Use Addresses
 use custom settings	felamimail	en	Use Custom Settings
-use javascript or html addressbook?	felamimail	en	Use Javascript or HTML addressbook?
 use regular expressions	felamimail	en	use regular expressions
 use smtp auth	admin	en	Use SMTP auth
 users can define their own emailaccounts	admin	en	Users can define their own emailaccounts
@@ -386,11 +392,9 @@ viewing full header	felamimail	en	Viewing full header
 viewing message	felamimail	en	Viewing message
 viewing messages	felamimail	en	Viewing messages
 wed	felamimail	en	Wed
-welcome to %1's webmail system	felamimail	en	Welcome to %1's WebMail system
 when deleting messages	felamimail	en	When deleting messages
 with message	felamimail	en	with message
 with message "%1"	felamimail	en	with message "%1"
 wrap incoming text at	felamimail	en	Wrap incoming text at
 writing	felamimail	en	writing
 wrote	felamimail	en	wrote
-you must login first.	felamimail	en	You must login first.

@@ -251,7 +251,9 @@
 		}
 		
 		function getFolderInfo($_folderName) {
-			if($_folderName != '--topfolder--' && $folderStatus = $this->bofelamimail->getFolderStatus($_folderName)) {
+			$folderName = html_entity_decode($_folderName, ENT_QUOTES, $this->charset);
+			
+			if($folderName != '--topfolder--' && $folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 				$response =& new xajaxResponse();
 
 				if($this->sessionDataAjax['oldFolderName'] == '--topfolder--') {
@@ -267,20 +269,20 @@
 				#	$response->addScript("document.getElementById('newSubFolder').disabled = true;");
 				#}
 				
-				$this->sessionDataAjax['folderName'] = $_folderName;
+				$this->sessionDataAjax['folderName'] = $folderName;
 				$this->saveSessionData();
 				
-				$folderACL = $this->bofelamimail->getIMAPACL($_folderName);
+				$folderACL = $this->bofelamimail->getIMAPACL($folderName);
 				
-				$response->addAssign("newMailboxName", "value", $folderStatus['shortName']);
-				$response->addAssign("folderName", "innerHTML", $_folderName);
+				$response->addAssign("newMailboxName", "value", htmlspecialchars($folderStatus['shortName'], ENT_QUOTES, $this->charset));
+				$response->addAssign("folderName", "innerHTML", htmlspecialchars($folderName, ENT_QUOTES, $this->charset));
 				$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
 
 				return $response->getXML();
 			}
 			else
 			{
-				$this->sessionDataAjax['oldFolderName'] = $_folderName;
+				$this->sessionDataAjax['oldFolderName'] = $folderName;
 				$this->saveSessionData();
 
 				$response =& new xajaxResponse();
@@ -455,7 +457,7 @@
 					'fn' => 1,
 					'email' => 1,
 					'email_home' => 1,
-				),$_searchString,'tid=n','','fn');
+				), $_searchString, 'tid=n', '', 'fn');
 			}
 			$response =& new xajaxResponse();
 
@@ -472,7 +474,7 @@
 							$i++;
 							$str = $GLOBALS['egw']->translation->convert(trim($contact['n_fn'] ? $contact['n_fn'] : $contact['fn']).' <'.trim($email).'>',$this->charset,'utf-8');
 							$innerHTML .= '<div class="inactiveResultRow" onclick="selectSuggestion($i)">'.
-								htmlentities($str,ENT_QUOTES,'utf-8').'</div>';
+								htmlentities($str, ENT_QUOTES, 'utf-8').'</div>';
 							$jsArray[$email] = addslashes($str);
 						}
 						if ($i > 10) break;	// we check for # of results here, as we might have empty email addresses
@@ -567,11 +569,12 @@
 		
 		function xajaxFolderInfo($_formValues) {
 			$response =& new xajaxResponse();
-												$response->addAssign("field1", "value", $_formValues['num1']);
-												$response->addAssign("field2", "value", $_formValues['num2']);
-												$response->addAssign("field3", "value", $_formValues['num1'] * $_formValues['num2']);
 
-												return $response->getXML();
+			$response->addAssign("field1", "value", $_formValues['num1']);
+			$response->addAssign("field2", "value", $_formValues['num2']);
+			$response->addAssign("field3", "value", $_formValues['num1'] * $_formValues['num2']);
+			
+			return $response->getXML();
 		}
 	}
 ?>

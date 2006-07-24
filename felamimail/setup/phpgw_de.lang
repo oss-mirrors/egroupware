@@ -195,6 +195,8 @@ index order	felamimail	de	Spaltenanordnung
 info	felamimail	de	Info
 invalid user name or password	felamimail	de	Falscher Benutzername oder Pasword
 javascript	felamimail	de	JavaScript
+jumping to end	felamimail	de	springe zum Ende
+jumping to start	felamimail	de	springe zum Anfang
 keep a copy of the message in your inbox	felamimail	de	eine Kopie der Nachricht in der INBOX behalten
 keep local copy of email	felamimail	de	Kopie der EMail behalten
 kilobytes	felamimail	de	Kilobytes
@@ -205,7 +207,7 @@ less	felamimail	de	kleiner
 less than	felamimail	de	kleiner als
 light gray	felamimail	de	Hellgrau
 list all	felamimail	de	Alle anzeigen
-loading	felamimail	de	Lade
+loading	felamimail	de	lade
 location of buttons when composing	felamimail	de	Ort der Knöpfe beim EMail schreiben
 mail server login type	admin	de	Typ der Mailserver Anmeldung
 mail settings	felamimail	de	EMail Einstellungen
@@ -317,6 +319,7 @@ send a reject message	felamimail	de	Ablehnungsemail senden
 sent folder	felamimail	de	Ordner für gesendete Nachrichten
 show header	felamimail	de	Kopfzeilen anzeigen
 show new messages on main screen	felamimail	de	neue Nachrichten auf der Startseite anzeigen
+sieve script name	felamimail	de	Sieve Skript Name
 sieve settings	admin	de	Sieve Einstellungen
 signature	felamimail	de	Signatur
 simply click the target-folder	felamimail	de	Ziel Ordner auswählen
@@ -325,6 +328,8 @@ size	felamimail	de	Größe
 size of editor window	felamimail	de	Größe des Editorfensters
 size(...->0)	felamimail	de	Größe(...->0)
 size(0->...)	felamimail	de	Größe(0->...)
+skipping forward	felamimail	de	blättere vorwärts
+skipping previous	felamimail	de	blättere zurück
 small view	felamimail	de	schmale Ansicht
 smtp settings	admin	de	SMTP Einstellungen
 subject	felamimail	de	Betreff
@@ -368,13 +373,12 @@ unsubscribe	felamimail	de	Abbestellen
 unsubscribed	felamimail	de	abbestellt
 unsubscribed successfully!	felamimail	de	Erfolgreich abbestellt
 up	felamimail	de	hoch
-updating message status	felamimail	de	Aktualisiere Nachrichtenstatus
+updating message status	felamimail	de	aktualisiere Nachrichtenstatus
 use <a href="%1">emailadmin</a> to create profiles	felamimail	de	benutzen Sie <a href="%1">EmailAdmin</a> um Profile zu erstellen
 use a signature	felamimail	de	Signatur benutzen
 use a signature?	felamimail	de	Eine Signatur benutzen?
 use addresses	felamimail	de	Adresse benutzen
 use custom settings	felamimail	de	benutze angepaßte Einstellungen
-use javascript or html addressbook?	felamimail	de	JavaScript oder HTML Adressbuch benutzen
 use regular expressions	felamimail	de	reguläre Ausdrücke verwenden
 use smtp auth	admin	de	SMTP Auth benutzen
 users can define their own emailaccounts	admin	de	Anwender können ihre eigenen Konten definieren
@@ -386,11 +390,9 @@ viewing full header	felamimail	de	zeige alle Kopfzeilen
 viewing message	felamimail	de	zeige Nachricht
 viewing messages	felamimail	de	zeige Nachrichten
 wed	felamimail	de	Mi
-welcome to %1's webmail system	felamimail	de	Willkommen beim %1 Webmail System
 when deleting messages	felamimail	de	wenn Nachrichten gelöscht werden
 with message	felamimail	de	mit folgender Nachricht
 with message "%1"	felamimail	de	mit der Nachricht "%1"
 wrap incoming text at	felamimail	de	Text umbrechen nach
 writing	felamimail	de	schreiben
 wrote	felamimail	de	schrieb
-you must login first.	felamimail	de	Sie müssen sich zuerst anmelden

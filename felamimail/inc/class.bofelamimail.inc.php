@@ -469,13 +469,14 @@
 			// now we have the keys as values
 			$mailboxString = $icServer->getMailboxString($_folderName);
 
-			if(imap_getsubscribed($this->mbox,$mailboxString,$mailboxString))
+			if(imap_getsubscribed($this->mbox, $mailboxString, $mailboxString))
 			{
 				$retValue['subscribed'] = true;
 			}
 
-			if(!$folderInfo = imap_getmailboxes($this->mbox,$mailboxString,$mailboxString)) {
+			if(!$folderInfo = imap_getmailboxes($this->mbox, $mailboxString, $mailboxString)) {
 				// folder does not exist
+				error_log("folder ($mailboxString) does not exist");
 				return false;
 			}
 
@@ -1269,7 +1270,8 @@
 							$parentPartID = ($_partID != '') ? $_partID.'.' : '';
 							$bodyParts = array();
 							foreach($structure->parts as $part) {
-								if($part->type == TYPETEXT || $part->type == TYPEMULTIPART || $part->type == TYPEMESSAGE) {
+								#if($part->type == TYPETEXT || $part->type == TYPEMULTIPART || $part->type == TYPEMESSAGE) {
+								if($part->type == TYPETEXT || $part->type == TYPEMULTIPART) {
 									$bodyParts = array_merge($bodyParts, $this->getMessageBody($_uid, $this->htmlOptions, $parentPartID.$i, $part));
 								}
 								$i++;

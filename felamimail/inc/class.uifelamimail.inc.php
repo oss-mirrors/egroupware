@@ -468,11 +468,11 @@
 				'previous_kde',
 				'next_kde',
 				'finnish_kde',
+				'ajax-loader',
 			);
 
-			foreach ($listOfImages as $image) 
-			{
-				$this->t->set_var($image,$GLOBALS['egw']->common->image('felamimail',$image));
+			foreach ($listOfImages as $image) {
+				$this->t->set_var($image, $GLOBALS['egw']->common->image('felamimail', $image));
 			}
 			// refresh settings
 			$refreshTime = $userPreferences['refreshTime'];
@@ -902,6 +902,10 @@
 			$this->t->set_var('lang_moving_messages_to',lang('moving messages to'));
 			$this->t->set_var('lang_empty_trash',lang('empty trash'));
 			$this->t->set_var('lang_compress_folder',lang('compress folder'));
+			$this->t->set_var('lang_skipping_forward',lang('skipping forward'));
+			$this->t->set_var('lang_skipping_previous',lang('skipping previous'));
+			$this->t->set_var('lang_jumping_to_start',lang('jumping to start'));
+			$this->t->set_var('lang_jumping_to_end',lang('jumping to end'));
 		}
 	}
 ?>

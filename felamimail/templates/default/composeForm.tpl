@@ -4,6 +4,9 @@
 	var displayFileSelectorURL	="{file_selector_url}";
 	var composeID			="{compose_id}";
 
+	var activityImagePath		= '{ajax-loader}';
+
+
 	self.focus();
   
 	self.name="first_Window";
@@ -48,7 +51,6 @@
 		</td>
 	</tr>
 </table>
-<br>
 <table style="clear:left; width:660px;" border="0" cellspacing="0" cellpading="1">
 <tr class="row_on">
 	<td align="left" style="width:90px;">
@@ -60,7 +62,7 @@
 </tr>
 </table>
 
-<div id="addressDIV" class="row_on" style="mmax-height: 100px; width:660px; border: solid black 0px; overflow: auto; padding: 0px; margin: 0px; text-align: left;">
+<div id="addressDIV" class="row_on" style="width:660px; border: solid black 0px; overflow: auto; padding: 0px; margin: 0px; text-align: left;">
 <table id="addressTable" style="width:100%;" border="0" cellspacing="0" cellpading="0"><tbody id="addressRows">{destinationRows}</tbody></table>
 </div>
 
@@ -191,7 +193,7 @@
 	</table>
 </form>
 </div>
-<div id="fileSelectorDIV2" style="position:absolute; display:none; height:80px; width:100%; border:0px solid red; top:0px; left:0px; text-align:center; vertical-align:bottom;">
-<span id="statusMessage" style="position:relative; height:100%; width:100%; text-align:center;border:0px solid green; top:30px; left:0px;">{lang_adding_file_please_wait}</span>
+<div id="fileSelectorDIV2" style="position:absolute; display:none; height:80px; width:100%; border:0px solid red; top:0px; left:0px; text-align:right; vertical-align:bottom; background:white;">
+<table border="0" style="margin-left:140px; height:100%;"><tr><td><img src="{ajax-loader}"></td><td><span id="statusMessage" style="height:100%; width:100%; text-align:center;border:0px solid green; top:30px; left:0px;">{lang_adding_file_please_wait}</span></td></tr></table>
 </div>
 <!-- END fileSelector -->

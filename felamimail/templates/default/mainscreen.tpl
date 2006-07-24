@@ -11,6 +11,12 @@ var lang_select_target_folder	= '{lang_select_target_folder}';
 var lang_updating_message_status = '{lang_updating_message_status}';
 var lang_loading 		= '{lang_loading}';
 var lang_deleting_messages 	= '{lang_deleting_messages}';
+var lang_skipping_forward 	= '{lang_skipping_forward}';
+var lang_skipping_previous 	= '{lang_skipping_previous}';
+var lang_jumping_to_end 	= '{lang_jumping_to_end}';
+var lang_jumping_to_start 	= '{lang_jumping_to_start}';
+
+var activityImagePath		= '{ajax-loader}';
 
 // how many row are selected currently
 var checkedCounter=0;
