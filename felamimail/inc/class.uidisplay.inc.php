@@ -290,7 +290,7 @@
 					'uid'		=> $this->uid
 				);
 				if($partID != '')
-					$linkData['partID'] = $partID;
+					$linkData['part'] = $partID;
 				$printURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
 				$navbarImages = array(
