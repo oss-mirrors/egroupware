@@ -12,7 +12,7 @@
 	/* $Id$ */
 
 	$time = time();
-	$oProc->query("DELETE FROM phpgw_wiki_pages");
+	$oProc->query("DELETE FROM egw_wiki_pages");
 	foreach(array(
 		'RecentChanges' => '[[! *]]',
 		'eGroupWare' => "Welcome to '''Wiki''' - the eGroupWare Version of '''WikkiTikkiTavi'''. Wikis are a revolutionary new form of collaboration and online community.
