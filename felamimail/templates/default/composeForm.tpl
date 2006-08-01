@@ -23,7 +23,7 @@
 <center>
 <form method="post" name="doit" action="{link_action}" ENCTYPE="multipart/form-data">
 <input type="hidden" id="saveAsDraft" name="saveAsDraft" value="0">
-<TABLE WIDTH="660px" CELLPADDING="1" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
+<TABLE WIDTH="100%" CELLPADDING="1" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
 	<tr class="navbarBackground">
 		<td align="right" width="170px">
 			<div class="parentDIV">
@@ -54,7 +54,7 @@
 		</td>
 	</tr>
 </table>
-<table style="clear:left; width:660px;" border="0" cellspacing="0" cellpading="1">
+<table style="clear:left; width:100%;" border="0" cellspacing="0" cellpading="1">
 <tr class="row_on">
 	<td align="left" style="width:90px;">
 		<b>{lang_identity}</b>
@@ -65,11 +65,11 @@
 </tr>
 </table>
 
-<div id="addressDIV" class="row_on" style="width:660px; border: solid black 0px; overflow: auto; padding: 0px; margin: 0px; text-align: left;">
+<div id="addressDIV" class="row_on" style="width:100%; border: solid black 0px; overflow: auto; padding: 0px; margin: 0px; text-align: left;">
 <table id="addressTable" style="width:100%;" border="0" cellspacing="0" cellpading="0"><tbody id="addressRows">{destinationRows}</tbody></table>
 </div>
 
-<table style="width:660px;" border="0" cellspacing="0" cellpading="1">
+<table style="width:100%;" border="0" cellspacing="0" cellpading="1">
 <tr class="row_on">
 	<td align="left" style="width:90px;">
 		<b>{lang_subject}</b>

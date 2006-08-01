@@ -80,7 +80,7 @@ delete selected	felamimail	de	ausgewählte Nachrichten löschen
 delete selected messages	felamimail	de	ausgewählte Nachrichten löschen
 deleted	felamimail	de	gelöscht
 deleted folder successfully!	felamimail	de	Ordner erfolgreich gelöscht
-deleting messages	felamimail	de	Lösche Nachrichten
+deleting messages	felamimail	de	lösche Nachrichten
 disable	felamimail	de	Deaktivieren
 discard	felamimail	de	verwerfen
 discard message	felamimail	de	Nachricht verwerfen
@@ -96,11 +96,13 @@ do you really want to delete the '%1' folder?	felamimail	de	Wollen Sie wirklich 
 does not contain	felamimail	de	enthält nicht
 does not match	felamimail	de	trifft nicht zu
 does not match regexp	felamimail	de	trift nicht zu regulärer Ausdruck
+don't use draft folder	felamimail	de	keine Vorlagen Ordner verwenden
 don't use sent	felamimail	de	Keinen gesendenten EMail speichern
 don't use trash	felamimail	de	Keinen Mülleimer verwenden
 down	felamimail	de	runter
 download	felamimail	de	Speichern
 download this as a file	felamimail	de	als Datei downloaden
+draft folder	felamimail	de	Vorlagen Ordner
 e-mail	felamimail	de	E-Mail
 e-mail address	felamimail	de	E-Mailadresse
 e-mail folders	felamimail	de	E-Mail Ordner
@@ -155,6 +157,7 @@ for received mail	felamimail	de	Für empfangene Mail
 forward	felamimail	de	Weiterleiten
 forward to	felamimail	de	weiterleiten an
 forward to address	felamimail	de	weiterleiten an Adresse
+forwarding	felamimail	de	Weiterleitung
 found	felamimail	de	Gefunden
 fri	felamimail	de	Fr
 from	felamimail	de	Von
@@ -304,6 +307,7 @@ row order style	felamimail	de	Spaltenanordnung
 rule	felamimail	de	Regel
 sat	felamimail	de	Sa
 save	felamimail	de	Speichern
+save as draft	felamimail	de	als Vorlage speichern
 save changes	felamimail	de	Änderungen speichern
 script name	felamimail	de	Skriptname
 script status	felamimail	de	Skriptstatus

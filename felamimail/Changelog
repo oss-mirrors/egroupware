@@ -1,5 +1,8 @@
 20060801
 - added support for saving drafts
+- removed debug code from the javascript code
+- current inputfield is blinking now, when livesearch starts
+- removed unneeded admin section
 
 20051128
 - fixed compose link in sidebox menu

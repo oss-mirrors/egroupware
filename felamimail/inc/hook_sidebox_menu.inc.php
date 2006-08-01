@@ -104,13 +104,13 @@
 		display_sidebox($appname,$menu_title,$file);
 	}
 
-	if ($GLOBALS['egw_info']['user']['apps']['admin'])
+/*	if ($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
 		$menu_title = lang('Administration');
 		$file = Array(
 			'Configuration' => $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uifelamimail.hookAdmin')
 		);
 		display_sidebox($appname,$menu_title,$file);
-	}
+	} */
 }
 ?>

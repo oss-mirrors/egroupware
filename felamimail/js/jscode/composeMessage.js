@@ -214,7 +214,7 @@ function hideResultBox() {
 	resultBox = document.getElementById('resultBox');
 	resultBox.className = 'resultBoxHidden';
 
-	document.title='Search finnished';
+	//document.title='Search finnished';
 
 	resultboxVisible=false;
 }
@@ -237,7 +237,7 @@ function displayResultBox() {
 
 	var resultBox;
 
-	document.title='Search finnished';
+	//document.title='Search finnished';
 	selectedSuggestion = -1;
 
 
@@ -287,15 +287,17 @@ function keypressed(keycode, keyvalue) {
 		case KEYCODE_UP:
 			if(selectedSuggestion > 0) {
 				selectSuggestion(selectedSuggestion-1);
+			} else {
+				selectSuggestion(resultRows.length-1);
 			}
 			break;
 		
 		case KEYCODE_RIGHT:
 		case KEYCODE_DOWN:
-			document.title='down '+selectedSuggestion;
+			//document.title='down '+selectedSuggestion;
 			//if(selectedSuggestion) {
 			if(resultboxVisible) {
-				document.title='is selected';
+				//document.title='is selected';
 				if(selectedSuggestion < resultRows.length-1) {
 					selectSuggestion(selectedSuggestion+1);
 				} else {
@@ -317,13 +319,6 @@ function keypressed(keycode, keyvalue) {
 			hideResultBox();
 			break;
 		
-//		case KEYCODE_TAB:
-//			//if (currentSuggestion>=0&&currentSuggestion<_ids.length){_setValue(currentSuggestion);}
-//			//currentInputField.value = results[selectedSuggestion-1];
-//			hideResultBox();
-//			searchActive=false;
-//			break;
-
 		case KEYCODE_TAB:
 			if(resultboxVisible) {
 				if( selectedSuggestion < resultRows.length-1) {
@@ -363,8 +358,9 @@ function keyDown(e) {
 
 function startLiveSearch() {
 	if(currentInputField.value.length > 2) {
+		fm_blink_currentInputField();
 		searchActive=true;
-		document.title='Search started';
+		//document.title='Search started';
 		xajax_doXMLHTTP("felamimail.ajax_contacts.searchAddress",currentInputField.value);
 	}
 }
@@ -518,4 +514,11 @@ function fm_compose_selectSuggestionOnClick(_selectedSuggestion) {
 function fm_compose_saveAsDraft() {
 	document.getElementById('saveAsDraft').value=1;
 	document.doit.submit();
+}
+
+function fm_blink_currentInputField() {
+	currentInputField.style.border = "1px solid #666666";
+	window.setTimeout("currentInputField.style.border = ''", 100);
+	window.setTimeout("currentInputField.style.border = '1px solid #666666'", 200);
+	window.setTimeout("currentInputField.style.border = ''", 450);
 }
