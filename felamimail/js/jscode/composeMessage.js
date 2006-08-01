@@ -514,3 +514,8 @@ function fm_compose_selectSuggestionOnClick(_selectedSuggestion) {
 	focusToNextInputField();
 	searchActive=false;
 }
+
+function fm_compose_saveAsDraft() {
+	document.getElementById('saveAsDraft').value=1;
+	document.doit.submit();
+}

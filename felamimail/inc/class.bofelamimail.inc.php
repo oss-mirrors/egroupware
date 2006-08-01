@@ -433,9 +433,9 @@
 			}
 			
 			return array(
-				'type'	=> $type,
-				'encoding'	=> $encoding,
-				'filename'	=> $filename,
+				'type'		=> $type, 
+				'encoding'	=> $encoding, 
+				'filename'	=> $filename, 
 				'attachment'	=> $attachment
 				);
 		}
@@ -941,8 +941,13 @@
 					
 					$messageData['date']		= $header->udate;
 					$messageData['subject']		= $header->subject;
-					$messageData['to_name']		= $header->to[0]->personal;
-					$messageData['to_address']	= $header->to[0]->mailbox."@".$header->to[0]->host;
+					if($header->to[0]->mailbox != 'undisclosed-recipients') {
+						$messageData['to_name']		= $header->to[0]->personal;
+						$messageData['to_address']	= $header->to[0]->mailbox.(!empty($header->to[0]->host) ? '@'.$header->to[0]->host : '');
+					} else {
+						$messageData['to_name']		= '';
+						$messageData['to_address']	= '';
+					}
 					$messageData['sender_name']	= $header->from[0]->personal;
 					$messageData['sender_address']	= $header->from[0]->mailbox."@".$header->from[0]->host;
 					$messageData['size']		= $header->Size;
@@ -987,8 +992,13 @@
 				
 					$messageData['date'] 		= $header->udate;
 					$messageData['subject'] 	= $header->subject;
-					$messageData['to_name']		= $header->to[0]->personal;
-					$messageData['to_address']	= $header->to[0]->mailbox."@".$header->to[0]->host;
+					if($header->to[0]->mailbox != 'undisclosed-recipients') {
+						$messageData['to_name']		= $header->to[0]->personal;
+						$messageData['to_address']	= $header->to[0]->mailbox.(!empty($header->to[0]->host) ? '@'.$header->to[0]->host : '');
+					} else {
+						$messageData['to_name']		= '';
+						$messageData['to_address']	= '';
+					}
 					$messageData['sender_name'] 	= $header->from[0]->personal;
 					$messageData['sender_address'] 	= $header->from[0]->mailbox."@".$header->from[0]->host;
 					$messageData['size'] 		= $header->Size;
@@ -1093,10 +1103,10 @@
 			foreach((array)$headers as $uid => $headerObject) {
 				$uid = $headerObject->uid;
 
-				$retValue['header'][$sortOrder[$uid]]['subject'] 		= $this->decode_header($displayHeaders[$uid]['subject']);
+				$retValue['header'][$sortOrder[$uid]]['subject'] 	= $this->decode_header($displayHeaders[$uid]['subject']);
 				$retValue['header'][$sortOrder[$uid]]['sender_name'] 	= $this->decode_header($displayHeaders[$uid]['sender_name']);
-				$retValue['header'][$sortOrder[$uid]]['sender_address'] 	= $this->decode_header($displayHeaders[$uid]['sender_address']);
-				$retValue['header'][$sortOrder[$uid]]['to_name'] 		= $this->decode_header($displayHeaders[$uid]['to_name']);
+				$retValue['header'][$sortOrder[$uid]]['sender_address'] = $this->decode_header($displayHeaders[$uid]['sender_address']);
+				$retValue['header'][$sortOrder[$uid]]['to_name'] 	= $this->decode_header($displayHeaders[$uid]['to_name']);
 				$retValue['header'][$sortOrder[$uid]]['to_address'] 	= $this->decode_header($displayHeaders[$uid]['to_address']);
 				$retValue['header'][$sortOrder[$uid]]['attachments']	= $displayHeaders[$uid]['attachments'];
 				$retValue['header'][$sortOrder[$uid]]['size'] 		= $this->decode_header($headerObject->size);
@@ -1585,6 +1595,14 @@
 		function isSentFolder($_folderName)
 		{
 			if($this->mailPreferences->preferences['sentFolder'] == $_folderName)
+				return TRUE;
+			else
+				return FALSE;
+		}
+		
+		function isDraftFolder($_folderName)
+		{
+			if($this->mailPreferences->preferences['draftFolder'] == $_folderName)
 				return TRUE;
 			else
 				return FALSE;

@@ -19,6 +19,7 @@
 		(
 			'action'		=> True,
 			'compose'		=> True,
+			'composeFromDraft'	=> True,
 			'fileSelector'		=> True,
 			'forward'		=> True,
 			'reply'			=> True,
@@ -88,10 +89,14 @@
 			$formData['disposition'] = (bool)$_POST['disposition'];
 			//$formData['mailbox']	= $_GET['mailbox'];
 
-			if(!$this->bocompose->send($formData))
-			{
-				$this->compose();
-				return;
+			if((bool)$_POST['saveAsDraft'] == true) {
+				// save as draft
+				$this->bocompose->saveAsDraft($formData);
+			} else {
+				if(!$this->bocompose->send($formData)) {
+					$this->compose();
+					return;
+				}
 			}
 					
 			#$GLOBALS['egw']->common->egw_exit();
@@ -188,6 +193,7 @@
 			$this->t->set_var('img_mail_send', $GLOBALS['egw']->common->image('felamimail','mail_send'));
 			$this->t->set_var('img_attach_file', $GLOBALS['egw']->common->image('felamimail','attach'));
 			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
+			$this->t->set_var('img_fileexport', $GLOBALS['egw']->common->image('felamimail','fileexport'));
 			
 			$destinationRows = 0;
 			foreach(array('to','cc','bcc') as $destination) {
@@ -255,6 +261,19 @@
 			
 			$this->t->pparse("out","attachment");
 		}
+
+		function composeFromDraft() {
+			$icServer = (int)$_GET['icServer'];
+			$folder = base64_decode($_GET['folder']);
+			$replyID = $_GET['uid'];
+
+			if (!empty($folder) && !empty($replyID) ) {
+				// this fill the session data with the values from the original email
+				$this->bocompose->getDraftData($icServer, $folder, $replyID);
+			}
+			$this->compose('body');
+		}
+		
 
 		function display_app_header()
 		{
@@ -390,13 +409,13 @@
 			$this->t->set_var("lang_to",lang('to'));
 			$this->t->set_var("lang_cc",lang('cc'));
 			$this->t->set_var("lang_bcc",lang('bcc'));
-			//$this->t->set_var("lang_from",lang('from'));
 			$this->t->set_var("lang_identity",lang('identity'));
 			$this->t->set_var("lang_reply_to",lang('reply to'));
 			$this->t->set_var("lang_subject",lang('subject'));
 			$this->t->set_var("lang_addressbook",lang('addressbook'));
 			$this->t->set_var("lang_search",lang('search'));
 			$this->t->set_var("lang_send",lang('send'));
+			$this->t->set_var('lang_save_as_draft',lang('save as draft'));
 			$this->t->set_var("lang_back_to_folder",lang('back to folder'));
 			$this->t->set_var("lang_attachments",lang('attachments'));
 			$this->t->set_var("lang_add",lang('add'));

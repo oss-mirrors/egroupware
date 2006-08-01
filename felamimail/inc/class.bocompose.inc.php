@@ -111,25 +111,31 @@
 			#print"<pre>";print_r($this->sessionData);print"</pre>";exit;
 		}
 		
-		function addMessageAttachment($_uid, $_partID, $_folder, $_name, $_size)
-		{
-			$this->sessionData['attachments'][]=array
-			(
+		function addMessageAttachment($_uid, $_partID, $_folder, $_name, $_type, $_size) {
+			$this->sessionData['attachments'][]=array (
 				'uid'		=> $_uid,
 				'partID'	=> $_partID,
 				'name'		=> $_name,
-				'type'		=> 'message/rfc822',
+				'type'		=> $_type,
 				'size'		=> $_size,
 				'folder'	=> $_folder
 			);
 			
 			$this->saveSessionData();
-			#print"<pre>";print_r($this->sessionData);print"</pre>";
 		}
 		
-		function getAttachmentList()
-		{
+		function generateRFC822Address($_addressObject) {
+			if(!empty($_addressObject->personal) && !empty($_addressObject->mailbox) && !empty($_addressObject->host)) {
+				return sprintf('"%s" <%s@%s>', $this->bofelamimail->decode_header($_addressObject->personal), $_addressObject->mailbox, $_addressObject->host);
+			} elseif(!empty($_addressObject->mailbox) && !empty($_addressObject->host)) {
+				return sprintf("%s@%s", $_addressObject->mailbox, $_addressObject->host);
+			} else {
+				return $_addressObject->mailbox;
+			}
 		}
+		
+/*		function getAttachmentList() {
+		} */
 		
 		// create a hopefully unique id, to keep track of different compose windows
 		// if you do this, you are creating a new email
@@ -140,6 +146,64 @@
 			$this->setDefaults();
 			
 			return $this->composeID;
+		}
+		
+		// $_mode can be:
+		// single: for a reply to one address
+		// all: for a reply to all
+		function getDraftData($_icServer, $_folder, $_uid) {
+			$this->sessionData['to'] = array();
+			
+			$bofelamimail    =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$bofelamimail->openConnection();
+			
+			$userEMailAddresses = $this->preferences->getUserEMailAddresses();
+
+			// get message headers for specified message
+			$headers	= $bofelamimail->getMessageHeader($_folder, $_uid);
+
+			$this->sessionData['uid'] = $_uid;
+
+			if(trim($headers->toaddress) != 'undisclosed-recipients:' && is_array($headers->to)) {
+				foreach($headers->to as $toObject) {
+					$this->sessionData['to'][] = $this->generateRFC822Address($toObject);
+				}
+			}
+ 
+			if(is_array($headers->cc)) {
+				foreach($headers->to as $toObject) {
+					$this->sessionData['cc'][] = $this->generateRFC822Address($toObject);
+				}
+			}
+
+			//reply_to
+			 
+			$this->sessionData['subject']	= $bofelamimail->decode_header($headers->Subject);
+
+			// get the body
+			$bodyParts = $bofelamimail->getMessageBody($_uid, 'only_if_no_text');
+			#_debug_array($bodyParts);
+			for($i=0; $i<count($bodyParts); $i++)
+			{
+				if(!empty($this->sessionData['body'])) $$this->sessionData['body'] .= "\n\n";
+				// add line breaks to $bodyParts
+				$newBody	= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+				$this->sessionData['body'] .= $newBody;
+			}
+						
+			$bofelamimail->reopen($_folder);			
+			if($attachments = $bofelamimail->getMessageAttachments($_uid)) {
+				foreach($attachments as $attachment) {
+					$this->addMessageAttachment($_uid, $attachment['partID'], 
+						$_folder, 
+						$attachment['name'],
+						$attachment['mimeType'],
+						$attachment['size']);
+				}
+			}
+			$bofelamimail->closeConnection();
+			
+			$this->saveSessionData();
 		}
 		
 		function getErrorInfo()
@@ -165,10 +229,9 @@
 			else
 				$size				= lang('unknown');
 
-			$this->addMessageAttachment($_uid, $_partID, 
-				$_folder, 
-				$bofelamimail->decode_header($headers->Subject), 
-				$size);
+			$this->addMessageAttachment($_uid, $_partID, $_folder,
+				$bofelamimail->decode_header($headers->Subject),
+				'message/rfc822', $size);
 			
 			$bofelamimail->closeConnection();
 			
@@ -319,23 +382,142 @@
 			return $retData;
 		}
 		
-		function removeAttachment($_attachmentID)
-		{
+		function removeAttachment($_attachmentID) {
 			unlink($this->sessionData['attachments'][$_attachmentID]['file']);
 			unset($this->sessionData['attachments'][$_attachmentID]);
 
 			$this->saveSessionData();
 		}
 		
-		function restoreSessionData()
-		{
+		function restoreSessionData() {
 			$this->sessionData = $GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID);
-			#print "bocompose after restore<pre>";print_r($this->sessionData);print"</pre>";
 		}
 		
-		function saveSessionData()
-		{
+		function saveSessionData() {
 			$GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID,'',$this->sessionData);
+		}
+
+		function createMessage(&$_mailObject, $_formData, $_identity) {
+			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+
+			$userLang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
+			$langFile = EGW_SERVER_ROOT."/phpgwapi/setup/phpmailer.lang-$userLang.php";
+			if(file_exists($langFile)) {
+				$_mailObject->SetLanguage($userLang, EGW_SERVER_ROOT."/phpgwapi/setup/");
+			} else {
+				$_mailObject->SetLanguage("en", EGW_SERVER_ROOT."/phpgwapi/setup/");
+			}
+			$_mailObject->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
+
+			$_mailObject->IsSMTP();
+			$_mailObject->From 	= $_identity->emailAddress;
+			$_mailObject->FromName = $bofelamimail->encodeHeader($_identity->realName,'q');
+			$_mailObject->Priority = $_formData['priority'];
+			$_mailObject->Encoding = 'quoted-printable';
+			$_mailObject->CharSet	= $this->displayCharset;
+			$_mailObject->AddCustomHeader('X-Mailer: FeLaMiMail');
+			if($_formData['disposition']) {
+				$_mailObject->AddCustomHeader('Disposition-Notification-To: '. $_identity->emailAddress);
+			}
+			if(!empty($_identity->organization))
+				$_mailObject->AddCustomHeader('Organization: '. $bofelamimail->encodeHeader($_identity->organization, 'q'));
+
+			foreach((array)$_formData['to'] as $address) {
+				$address_array	= imap_rfc822_parse_adrlist($address, '');
+				foreach((array)$address_array as $addressObject) {
+					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
+					$_mailObject->AddAddress($emailAddress, $emailName);
+				}
+			}
+
+			foreach((array)$_formData['cc'] as $address) {
+				$address_array	= imap_rfc822_parse_adrlist($address,'');
+				foreach((array)$address_array as $addressObject) {
+					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
+					$_mailObject->AddCC($emailAddress, $emailName);
+				}
+			}
+			
+			foreach((array)$_formData['bcc'] as $address) {
+				$address_array	= imap_rfc822_parse_adrlist($address,'');
+				foreach((array)$address_array as $addressObject) {
+					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
+					$_mailObject->AddBCC($emailAddress, $emailName);
+				}
+			}
+			
+			if (!empty($_formData['reply_to'])) {
+				$address_array	= imap_rfc822_parse_adrlist($this->sessionData['reply_to'],'');
+				if(count($address_array)>0) {
+					$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
+					$emailName = $bofelamimail->encodeHeader($address_array[0]->personal, 'q');
+					$_mailObject->AddReplyTo($emailAddress, $emailName);
+				}
+			}
+			
+			$_mailObject->WordWrap = 76;
+			$_mailObject->Subject = $bofelamimail->encodeHeader($_formData['subject'], 'q');
+			$_mailObject->IsHTML(false);
+			$_mailObject->Body    = $_formData['body'];
+			if (!empty($_formData['signature'])) {
+				$_mailObject->Body	.= "\r\n-- \r\n";
+				$_mailObject->Body	.= $_formData['signature'];
+			}
+
+			// add the attachments
+			foreach((array)$this->sessionData['attachments'] as $attachment) {
+				if(!empty($attachment['uid']) && !empty($attachment['folder'])) {
+					switch($attachment['type']) {
+						case 'message/rfc822':
+							$bofelamimail->openConnection();
+							$bofelamimail->reopen($attachment['folder']);
+							$rawBody	= $bofelamimail->getMessageRawBody($attachment['uid'], $attachment['partID']);
+							$bofelamimail->closeConnection();
+
+							$_mailObject->AddStringAttachment($rawBody, $attachment['name'], '7bit', 'message/rfc822');
+			
+							break;
+							
+						default:
+							$bofelamimail->openConnection();
+							$bofelamimail->reopen($attachment['folder']);
+							$attachmentData	= $bofelamimail->getAttachment($attachment['uid'], $attachment['partID']);
+							$bofelamimail->closeConnection();
+
+							$_mailObject->AddStringAttachment($attachmentData['attachment'], $attachment['name'], 'base64', $attachment['type']);
+			
+							break;
+							
+					}
+				} else {
+					$_mailObject->AddAttachment (
+						$attachment['file'],
+						$attachment['name'],
+						'base64',
+						$attachment['type']
+					);
+				}
+			}
+		}
+
+		function saveAsDraft($_formData)
+		{
+			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$mail		=& CreateObject('phpgwapi.phpmailer');
+			$identity	= $this->preferences->getIdentity((int)$this->sessionData['identity']);
+			$flags = '\\Seen \\Draft';
+			
+			$this->createMessage($mail, $_formData, $identity);
+			
+			$bofelamimail->openConnection();
+			$bofelamimail->appendMessage('Drafts',
+				$mail->getMessageHeader(),
+				$mail->getMessageBody(),
+				$flags);
+			$bofelamimail->closeConnection();
 		}
 
 		function send($_formData)
@@ -355,143 +537,16 @@
 			$this->sessionData['signature']	= $_formData['signature'];
 			$this->sessionData['disposition'] = $_formData['disposition'];
 
-
-			$userLang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
-			$langFile = EGW_SERVER_ROOT."/phpgwapi/setup/phpmailer.lang-$userLang.php";
-			if(file_exists($langFile))
-			{
-				$mail->SetLanguage($userLang, EGW_SERVER_ROOT."/phpgwapi/setup/");
-			}
-			else
-			{
-				$mail->SetLanguage("en", EGW_SERVER_ROOT."/phpgwapi/setup/");
-			}
-			$mail->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
-			
-			#print $this->sessionData['uid']."<bR>";
-			#print $this->sessionData['folder']."<bR>";
-			
-			#_debug_array($_formData);
-			#exit;
-			
-			#include(EGW_APP_ROOT . "/config/config.php");
-				
 			$identity = $this->preferences->getIdentity((int)$this->sessionData['identity']);
+			$this->createMessage($mail, $_formData, $identity);
+
 			$ogServer = $this->preferences->getOutgoingServer(0);
 
-			$mail->IsSMTP();
-			$mail->From 	= $identity->emailAddress;
-			$mail->FromName = $bofelamimail->encodeHeader($identity->realName,'q');
 			$mail->Host 	= $ogServer->host;
 			$mail->Port	= $ogServer->port;
-			$mail->Priority = $this->sessionData['priority'];
-			$mail->Encoding = 'quoted-printable';
-			$mail->CharSet	= $this->displayCharset;
-			$mail->AddCustomHeader("X-Mailer: FeLaMiMail version 0.9.5");
-			if($this->sessionData['disposition']) {
-				$mail->AddCustomHeader("Disposition-Notification-To: $mail->From");
-			}
-			if(!empty($identity->organization))
-				$mail->AddCustomHeader("Organization: ".$bofelamimail->encodeHeader($identity->organization,'q'));
-
-			foreach((array)$this->sessionData['to'] as $address)
-			{
-				$address_array	= imap_rfc822_parse_adrlist($address,'');
-				if(count($address_array)>0)
-				{
-					for($i=0;$i<count($address_array);$i++)
-					{
-						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal,'q');
-						$mail->AddAddress($emailAddress,$emailName);
-					}
-				}
-			}
-
-			foreach((array)$this->sessionData['cc'] as $address)
-			{
-				$address_array	= imap_rfc822_parse_adrlist($address,'');
-				if(count($address_array)>0)
-				{
-					for($i=0;$i<count($address_array);$i++)
-					{
-						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal,'q');
-						$mail->AddCC($emailAddress,$emailName);
-					}
-				}
-			}
-			
-			foreach((array)$this->sessionData['bcc'] as $address)
-			{
-				$address_array	= imap_rfc822_parse_adrlist($address,'');
-				if(count($address_array)>0)
-				{
-					for($i=0;$i<count($address_array);$i++)
-					{
-						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal,'q');
-						$mail->AddBCC($emailAddress,$emailName);
-					}
-				}
-			}
-			
-			if (!empty($this->sessionData['reply_to']))
-			{
-				$address_array	= imap_rfc822_parse_adrlist($this->sessionData['reply_to'],'');
-				if(count($address_array)>0)
-				{
-					$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
-					$emailName = $bofelamimail->encodeHeader($address_array[0]->personal,'q');
-					$mail->AddReplyTo($emailAddress,$emailName);
-				}
-			}
-			
-			$mail->WordWrap = 76;
-			$mail->Subject = $bofelamimail->encodeHeader($this->sessionData['subject'],'q');
-			$mail->IsHTML(false);
-			$mail->Body    = $this->sessionData['body'];
-			if (!empty($this->sessionData['signature']))
-			{
-				$mail->Body	.= "\r\n-- \r\n";
-				$mail->Body	.= $this->sessionData['signature'];
-			}
-
-			// add the attachments
-			if (is_array($this->sessionData['attachments']))
-			{
-				while(list($key,$value) = each($this->sessionData['attachments']))
-				{
-					switch($value['type'])
-					{
-						case 'message/rfc822':
-							$bofelamimail->openConnection();
-							$bofelamimail->reopen($value['folder']);
-			
-							$rawBody	= $bofelamimail->getMessageRawBody($value['uid'],$value['partID']);
-			
-							$bofelamimail->closeConnection();
-					
-							$mail->AddStringAttachment($rawBody,$value['name'],'7bit','message/rfc822');
-			
-							break;
-							
-						default:
-							$mail->AddAttachment
-							(
-								$value['file'],
-								$value['name'],
-								'base64',
-								$value['type']
-							);
-					}
-				}
-			}
-			#$mail->AltBody = $this->sessionData['body'];
 
 			// SMTP Auth??
-			if($ogServer->smtpAuth)
-			{
+			if($ogServer->smtpAuth) {
 				$mail->SMTPAuth	= true;
 				$mail->Username	= $ogServer->username;
 				$mail->Password	= $ogServer->password;
@@ -508,7 +563,8 @@
 			}
 
 			$folder = (array)$this->sessionData['folder'];
-			if($GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'] != 'none') {
+			if(isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) && 
+				$GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'] != 'none') {
 				$folder[] = $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'];
 			}
 			$folder = array_unique($folder);
@@ -571,6 +627,4 @@
 				return $_string;
 			}
 		}
-															
-
 }

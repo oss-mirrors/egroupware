@@ -10,25 +10,28 @@
 	self.focus();
   
 	self.name="first_Window";
-  function addybook()
-  {
-	Window1=window.open('{link_addressbook}',"{lang_search}","width=800,height=600,toolbar=no,scrollbars=yes,status=yes,resizable=yes");
-  }
-  function attach_window(url)
-  {
-	awin = window.open(url,"attach","width=500,height=400,toolbar=no,resizable=yes");
-  }
-
+	
+	function addybook() {
+		Window1=window.open('{link_addressbook}',"{lang_search}","width=800,height=600,toolbar=no,scrollbars=yes,status=yes,resizable=yes");
+	}
+	
+	function attach_window(url) {
+		awin = window.open(url,"attach","width=500,height=400,toolbar=no,resizable=yes");
+	}
 </script>
 
 <center>
 <form method="post" name="doit" action="{link_action}" ENCTYPE="multipart/form-data">
+<input type="hidden" id="saveAsDraft" name="saveAsDraft" value="0">
 <TABLE WIDTH="660px" CELLPADDING="1" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
 	<tr class="navbarBackground">
 		<td align="right" width="170px">
 			<div class="parentDIV">
 				<button class="menuButton" type="submit" value="{lang_send}" name="send" style="width: auto; color: black;">
 					<img src="{img_mail_send}" style="vertical-align: middle;"> <b>{lang_send}</b>
+				</button>
+				<button class="menuButton" type="button" onclick="fm_compose_saveAsDraft();" title="{lang_save_as_draft}">
+					<img src="{img_fileexport}">
 				</button>
 				<button class="menuButton" type="button" onclick="addybook();" title="{lang_addressbook}">
 					<img src="{addressbookImage}">

@@ -79,6 +79,7 @@
 			}
 
 			$this->saveSessionData();
+			$GLOBALS['egw']->session->commit_session();
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
@@ -107,6 +108,7 @@
 			}
 
 			$this->saveSessionData();
+			$GLOBALS['egw']->session->commit_session();
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
@@ -205,16 +207,22 @@
 		}
 		
 		function generateMessageList($_folderName) {
+			$listMode = 0;
+		
 			$this->bofelamimail->restoreSessionData();
 			
-			$isSentFolder = $this->bofelamimail->isSentFolder($_folderName);
+			if($this->bofelamimail->isSentFolder($_folderName)) {
+				$listMode = 1;
+			} elseif($this->bofelamimail->isDraftFolder($_folderName)) {
+				$listMode = 2;
+			}
 
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			$headers = $this->bofelamimail->getHeaders($this->sessionData['startMessage'], $maxMessages, $this->sessionData['sort']);
 
 			$headerTable = $this->uiwidgets->messageTable(
 				$headers, 
-				$isSentFolder, 
+				$listMode, 
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['message_newwindow'],
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']
 			);
@@ -230,7 +238,7 @@
 				$response->addAssign("messageCounter", "innerHTML", lang('Viewing messages')." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage ".lang("total").')');
 			}
 			
-			if($isSentFolder) {
+			if($listMode) {
 				$response->addAssign("from_or_to", "innerHTML", lang('to'));
 			} else {
 				$response->addAssign("from_or_to", "innerHTML", lang('from'));

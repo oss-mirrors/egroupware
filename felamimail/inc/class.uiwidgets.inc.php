@@ -128,8 +128,8 @@
 				
 				$entryOptions = 'CHILD,CHECKED';
 
-				$parentName	= htmlspecialchars($parentName, ENT_QUOTES, $this->charset);
-				$shortName	= htmlspecialchars($shortName, ENT_QUOTES, $this->charset);
+				$parentName	= @htmlspecialchars($parentName, ENT_QUOTES, $this->charset);
+				$shortName	= @htmlspecialchars($shortName, ENT_QUOTES, $this->charset);
 
 				$folder_name = $shortName;
 
@@ -149,22 +149,23 @@
 					$image3 = "'kfm_home.png'";
 				}
 
-				$longName	= htmlspecialchars($longName, ENT_QUOTES, $this->charset);
+				$longName	= @htmlspecialchars($longName, ENT_QUOTES, $this->charset);
 				
 				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,$image1,$image2,$image3,'$entryOptions');\n";
 				if($_displayCheckBox)
 					$folder_tree_new .= "tree.setCheck('$longName','".(int)$obj->subscribed."');";
 			}
 			
-			$selected = htmlspecialchars($_selected, ENT_QUOTES, $this->charset);
+			$selected = @htmlspecialchars($_selected, ENT_QUOTES, $this->charset);
 
 			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$selected');</script>";
 			
 			return $folder_tree_new;
 		}
 
+		// $_folderType 0: normal imap folder 1: sent folder 2: draft folder
 		// $_rowStyle felamimail or outlook
-		function messageTable($_headers, $_isSentFolder, $_readInNewWindow, $_rowStyle='felamimail')
+		function messageTable($_headers, $_folderType, $_readInNewWindow, $_rowStyle='felamimail')
 		{
 			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
@@ -172,8 +173,11 @@
 			$this->t->set_block('body','header_row_outlook');
 			$this->t->set_block('body','message_table');
 
+			$i=0;
 			foreach((array)$_headers['header'] as $header)
 			{
+				#if($i<10) {$i++;continue;}
+				#if($i>20) {continue;} $i++;
 				// create the listing of subjects
 				$maxSubjectLength = 60;
 				$maxAddressLength = 20;
@@ -251,82 +255,74 @@
 					$this->t->set_var('attachment_image', '&nbsp;');
 				}
 			
-				if ($_isSentFolder)
-				{
-					if (!empty($header['to_name']))
-					{
+				if ($_folderType > 0) {
+					// sent or drafts folder
+					if (!empty($header['to_name'])) {
 						$sender_name	= $header['to_name'];
 						$full_address	= $header['to_name'].' <'.$header['to_address'].'>';
-					}
-					else
-					{
+					} else {
 						$sender_name	= $header['to_address'];
 						$full_address	= $header['to_address'];
 					}
-					#$this->t->set_var('lang_from',lang("to"));
-				}
-				else
-				{
-					if (!empty($header['sender_name']))
-					{
+				} else {
+					if (!empty($header['sender_name'])) {
 						$sender_name	= $header['sender_name'];
 						$full_address	= $header['sender_name'].' <'.$header['sender_address'].'>';
-					}
-					else
-					{
+					} else {
 						$sender_name	= $header['sender_address'];
 						$full_address	= $header['sender_address'];
 					}
-					#$this->t->set_var('lang_from',lang("from"));
 				}
-				#if(strlen($sender_name) > $maxAddressLength)
-				#{
-				#	$sender_name = substr($sender_name,0,$maxAddressLength)."...";
-				#}
-				$this->t->set_var('sender_name',$sender_name);
-				$this->t->set_var('full_address',$full_address);
-			
-				$this->t->set_var('message_counter',$i);
-				$this->t->set_var('message_uid',$header['uid']);
 
-				$this->t->set_var('date',$header['date']);
-				$this->t->set_var('size',$this->show_readable_size($header['size']));
-
-				$linkData = array
-				(
-					'menuaction'    => 'felamimail.uidisplay.display',
-					'showHeader'	=> 'false',
-					'uid'		=> $header['uid']
-				);
-				$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
-				$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
-				$this->t->set_var('read_message_windowName', $windowName);
+				$this->t->set_var('sender_name', @htmlspecialchars($sender_name, ENT_QUOTES, $this->charset));
+				$this->t->set_var('full_address', @htmlspecialchars($full_address, ENT_QUOTES, $this->charset));
 			
-				if($_isSentFolder)
-				{
-					if(!empty($header['to_name']))
-					{
+				$this->t->set_var('message_counter', $i);
+				$this->t->set_var('message_uid', $header['uid']);
+
+				$this->t->set_var('date', $header['date']);
+				$this->t->set_var('size', $this->show_readable_size($header['size']));
+
+				if($_folderType == 2) {
+					$linkData = array (
+						'menuaction'    => 'felamimail.uicompose.composeFromDraft',
+						'icServer'	=> 0,
+						'folder'	=> base64_encode($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']),
+						'uid'		=> $header['uid'],
+					);
+					$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
+
+					$windowName = 'composeFromDraft_'.$header['uid'];
+					$this->t->set_var('read_message_windowName', $windowName);
+				} else {
+					$linkData = array (
+						'menuaction'    => 'felamimail.uidisplay.display',
+						'showHeader'	=> 'false',
+						'uid'		=> $header['uid']
+					);
+					$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
+
+					$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
+					$this->t->set_var('read_message_windowName', $windowName);
+				}
+			
+				if($_folderType > 0) {
+					// sent or draft folder
+					if(!empty($header['to_name'])) {
 						list($mailbox, $host) = explode('@',$header['to_address']);
 						$senderAddress  = imap_rfc822_write_address($mailbox,
 								$host,
 								$header['to_name']);
-					}
-					else
-					{
+					} else {
 						$senderAddress  = $header['to_address'];
 					}
-				}
-				else
-				{
-					if(!empty($header['sender_name']))
-					{
+				} else {
+					if(!empty($header['sender_name'])) {
 						list($mailbox, $host) = explode('@',$header['sender_address']);
 						$senderAddress  = imap_rfc822_write_address($mailbox,
 								$host,
 								$header['sender_name']);
-					}
-					else
-					{
+					} else {
 						$senderAddress  = $header['sender_address'];
 					}
 				}

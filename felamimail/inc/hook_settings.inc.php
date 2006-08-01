@@ -106,6 +106,14 @@
 		$folderList
 	);
 
+	$draftOptions = array_merge(
+		array(
+			'none' => lang("Don't use draft folder")
+		),
+		$folderList
+	);
+
+
 	/* Settings array for this app */
 	$GLOBALS['settings'] = array(
 		'refreshTime' => array(
@@ -187,6 +195,14 @@
 			'label'  => 'sent folder',
 			'name'   => 'sentFolder',
 			'values' => $sentOptions,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'draftFolder' => array(
+			'type'   => 'select',
+			'label'  => 'draft folder',
+			'name'   => 'draftFolder',
+			'values' => $draftOptions,
 			'xmlrpc' => True,
 			'admin'  => False
 		),

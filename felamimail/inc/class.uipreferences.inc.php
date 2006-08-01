@@ -115,7 +115,7 @@
 				'menuaction'    => 'felamimail.uipreferences.editForwardingAddress'
 			);
 			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
-			$this->t->set_var('forwarding_address',$userData['mailRoutingAddress'][0]);
+			$this->t->set_var('forwarding_address',$userData['mailForwardingAddress'][0]);
 			
 			#deliveryMode checked_keep_local_copy
 			if($userData['deliveryMode'] != 'forwardOnly') {

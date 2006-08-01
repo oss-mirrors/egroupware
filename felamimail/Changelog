@@ -1,3 +1,6 @@
+20060801
+- added support for saving drafts
+
 20051128
 - fixed compose link in sidebox menu
 - added action to cancel button on edit forwarding page
@@ -59,7 +62,7 @@ Version 0.9.5
 - added support for localized smtp error messages
 - improved mime type handling
 - also forward attachments
-- support for üצה... in folder names
+- support for ן¿½... in folder names
 - support html emails(most evil tags get removed)
 - code cleanup
 - added Sidebox for Idots

@@ -626,13 +626,9 @@
 					$headerCount = count($headers['header']);
 				}
 				
-
-				if ($userPreferences['sentFolder'] == $this->mailbox)
-				{
+				if ($userPreferences['sentFolder'] == $this->mailbox || $userPreferences['draftFolder'] == $this->mailbox) {
 					$this->t->set_var('lang_from',lang("to"));
-				}
-				else
-				{
+				} else {
 					$this->t->set_var('lang_from',lang("from"));
 				}
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
@@ -640,7 +636,7 @@
 				$this->t->set_var('header_rows',
 					$uiwidgets->messageTable(
 						$headers,
-						$userPreferences['sentFolder'] == $this->mailbox,
+						($userPreferences['sentFolder'] == $this->mailbox || $userPreferences['draftFolder'] == $this->mailbox),
 						$userPreferences['message_newwindow'],
 						$userPreferences['rowOrderStyle']
 					)
