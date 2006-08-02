@@ -321,7 +321,7 @@
 	{
 		$GLOBALS['egw_setup']->oProc->query('delete from egw_felamimail_folderstatus',__LINE__,__FILE__);
 
-		retun $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.000';
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.000';
 	}
 
 
