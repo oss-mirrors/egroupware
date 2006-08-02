@@ -13,7 +13,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.3.000';
+	$setup_info['felamimail']['version']     	= '1.3.001';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -66,6 +66,7 @@
 			'from' => 'FeLaMiMail',
 		),
 	);	
+
 
 
 

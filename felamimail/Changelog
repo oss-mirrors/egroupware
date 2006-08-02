@@ -1,5 +1,6 @@
 20060802
 - fixed bug [ 1487161 ] felamimail <> UTF-8 <> Postgres trouble
+- fixed bug [ 1451287 ] Database error when accessing some folders
 
 20060801
 - added support for saving drafts
