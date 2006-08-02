@@ -315,4 +315,12 @@
 
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.2.004';
 	}
+
+	$test[] = '1.2.004';
+	function felamimail_upgrade1_2_004()
+	{
+		$GLOBALS['egw_setup']->oProc->query('delete from egw_felamimail_folderstatus',__LINE__,__FILE__);
+
+		retun $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.000';
+	}
 ?>

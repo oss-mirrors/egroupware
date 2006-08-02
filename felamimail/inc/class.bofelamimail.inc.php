@@ -933,6 +933,7 @@
 					@set_time_limit();// FIXME: beware no effect if in PHP safe_mode
 					$messageData['uid'] = imap_uid($this->mbox, $i);
 					$header = imap_headerinfo($this->mbox, $i);
+
 					// parse structure to see if attachments exist
 					// display icon if so
 					$structure = imap_fetchstructure($this->mbox, $i);
@@ -940,15 +941,15 @@
 					$this->parseMessage($sections, $structure);
 					
 					$messageData['date']		= $header->udate;
-					$messageData['subject']		= $header->subject;
+					$messageData['subject']		= $this->decode_header($header->subject);
 					if($header->to[0]->mailbox != 'undisclosed-recipients') {
-						$messageData['to_name']		= $header->to[0]->personal;
+						$messageData['to_name']		= ($header->to[0]->personal ? $this->decode_header($header->to[0]->personal) : '');
 						$messageData['to_address']	= $header->to[0]->mailbox.(!empty($header->to[0]->host) ? '@'.$header->to[0]->host : '');
 					} else {
 						$messageData['to_name']		= '';
 						$messageData['to_address']	= '';
 					}
-					$messageData['sender_name']	= $header->from[0]->personal;
+					$messageData['sender_name']	= ($header->from[0]->personal ? $this->decode_header($header->from[0]->personal) : '');
 					$messageData['sender_address']	= $header->from[0]->mailbox."@".$header->from[0]->host;
 					$messageData['size']		= $header->Size;
 
@@ -991,15 +992,15 @@
 					$this->parseMessage($sections, $structure);
 				
 					$messageData['date'] 		= $header->udate;
-					$messageData['subject'] 	= $header->subject;
+					$messageData['subject'] 	= $this->decode_header($header->subject);
 					if($header->to[0]->mailbox != 'undisclosed-recipients') {
-						$messageData['to_name']		= $header->to[0]->personal;
+						$messageData['to_name']		= ($header->to[0]->personal ? $this->decode_header($header->to[0]->personal) : '');
 						$messageData['to_address']	= $header->to[0]->mailbox.(!empty($header->to[0]->host) ? '@'.$header->to[0]->host : '');
 					} else {
 						$messageData['to_name']		= '';
 						$messageData['to_address']	= '';
 					}
-					$messageData['sender_name'] 	= $header->from[0]->personal;
+					$messageData['sender_name'] 	= ($header->from[0]->personal ? $this->decode_header($header->from[0]->personal) : '');
 					$messageData['sender_address'] 	= $header->from[0]->mailbox."@".$header->from[0]->host;
 					$messageData['size'] 		= $header->Size;
 
@@ -1082,12 +1083,6 @@
 
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 			$count=0;
-#			$countDisplayHeaders = count($displayHeaders);
-#			for ($i=0;$i<$countDisplayHeaders;$i++) {
-#				if(!empty($sequence)) $sequence .= ',';
-#				$sequence .= $displayHeaders[$i]['uid'];
-#			}
-			$count=0;
 
 			foreach((array)$displayHeaders as $uid => $headerObject) {
 				$sequences[] = $uid;
@@ -1101,12 +1096,14 @@
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
 			foreach((array)$headers as $uid => $headerObject) {
+				//_debug_array($headerObject);
+
 				$uid = $headerObject->uid;
 
-				$retValue['header'][$sortOrder[$uid]]['subject'] 	= $this->decode_header($displayHeaders[$uid]['subject']);
-				$retValue['header'][$sortOrder[$uid]]['sender_name'] 	= $this->decode_header($displayHeaders[$uid]['sender_name']);
+				$retValue['header'][$sortOrder[$uid]]['subject'] 	= $displayHeaders[$uid]['subject'];
+				$retValue['header'][$sortOrder[$uid]]['sender_name'] 	= $displayHeaders[$uid]['sender_name'];
 				$retValue['header'][$sortOrder[$uid]]['sender_address'] = $this->decode_header($displayHeaders[$uid]['sender_address']);
-				$retValue['header'][$sortOrder[$uid]]['to_name'] 	= $this->decode_header($displayHeaders[$uid]['to_name']);
+				$retValue['header'][$sortOrder[$uid]]['to_name'] 	= $displayHeaders[$uid]['to_name'];
 				$retValue['header'][$sortOrder[$uid]]['to_address'] 	= $this->decode_header($displayHeaders[$uid]['to_address']);
 				$retValue['header'][$sortOrder[$uid]]['attachments']	= $displayHeaders[$uid]['attachments'];
 				$retValue['header'][$sortOrder[$uid]]['size'] 		= $this->decode_header($headerObject->size);

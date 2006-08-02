@@ -1,3 +1,6 @@
+20060802
+- fixed bug [ 1487161 ] felamimail <> UTF-8 <> Postgres trouble
+
 20060801
 - added support for saving drafts
 - removed debug code from the javascript code
