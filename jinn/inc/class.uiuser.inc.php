@@ -259,7 +259,7 @@
 		 if(!$_GET['where'])
 		 {
 			$this->filter = CreateObject('jinn.uiu_filter');
-			$this->filter->init_bo(&$this->bo);
+			$this->filter->init_bo($this->bo);
 
 			#_debug_array($_POST);
 			#die($_POST);
