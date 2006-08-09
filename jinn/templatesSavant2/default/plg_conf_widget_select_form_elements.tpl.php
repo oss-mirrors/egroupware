@@ -83,11 +83,11 @@
 	  }
 
 	  if (strValues)  document.popfrm[hidden_fld].value=strValues;
-   }
-   function selectAll(cbList,bSelect) {
-		 for (var i=0; i<cbList.length; i++)
-		 cbList[i].selected = cbList[i].checked = bSelect
-   }
+}
+function selectAll(cbList,bSelect) {
+	  for (var i=0; i<cbList.length; i++)
+	  cbList[i].selected = cbList[i].checked = bSelect
+}
 
 </script>
 <?php #_debug_array($this->set_val);?>
@@ -97,39 +97,34 @@
 <tr>
    <td colspan="2">
 
-	   <table>
-		  <tr>
-   
-   
-   <td style="margin: 0pt; padding: 0pt;" valign="top">
-	  <select ondblclick="SelectPlace('<?php echo($this->cval['fname']);?>[selected]',this.name);saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" style="width: 190px;" multiple="multiple" size="5" name="<?php echo($this->cval['fname']);?>[all]">
-		 <?php foreach($this->fields as $field):?>
-		 <option value="<?php echo($field[field_name]);?>"><?php echo($field[field_name]);?></option>
-		 <?php endforeach?>
-	  </select>
+	  <table>
+		 <tr>
+			<td style="margin: 0pt; padding: 0pt;" valign="top">
+			   <select ondblclick="SelectPlace('<?php echo($this->cval['fname']);?>[selected]',this.name);saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" style="width: 190px;" multiple="multiple" size="5" name="<?php echo($this->cval['fname']);?>[all]">
+				  <?php foreach($this->fields as $field):?>
+				  <option value="<?php echo($field[field_name]);?>"><?=($field[element_label]?$field[element_label]:$field[field_name])?> (<?php echo($field[field_name]);?>)</option>
+				  <?php endforeach?>
+			   </select>
+			</td>
+
+			<td style="margin: 0pt; padding: 0pt; vertical-align: middle; width: 40px;" valign="middle">
+			   <input onclick="SelectPlace('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[all]');saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" class="egwbutton" style="margin: 3px 10px; width: 40px;" value=" &gt;&gt; " name="add" type="button">
+			   <input onclick="DeSelectPlace('<?php echo($this->cval['fname']);?>[selected]');saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" class="egwbutton" style="margin: 3px 10px; width: 40px;" value=" &lt;&lt; " name="remove" type="button">
+			</td>
+
+			<td style="margin: 0pt; padding: 0pt; width: 190px;" valign="top">
+			   <select ondblclick="DeSelectPlace(this.name);saveOptions(this.name,'<?php echo($this->cval['fname']);?>[value]');" style="width: 190px; color: red;" multiple="multiple" size="5" name="<?php echo($this->cval['fname']);?>[selected]">
+				  <?php if(is_array($this->set_val)):?>
+				  <?php foreach($this->set_val as $value):?>
+				  <option value="<?php echo($value);?>"><?php echo($value);?></option>
+				  <?php endforeach?>
+				  <?php endif?>
+			   </select>
+			</td>
+		 </tr> 
+	  </table>
+
    </td>
-
-   <td style="margin: 0pt; padding: 0pt; vertical-align: middle; width: 40px;" valign="middle">
-	  <input onclick="SelectPlace('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[all]');saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" class="egwbutton" style="margin: 3px 10px; width: 40px;" value=" &gt;&gt; " name="add" type="button">
-	  <input onclick="DeSelectPlace('<?php echo($this->cval['fname']);?>[selected]');saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" class="egwbutton" style="margin: 3px 10px; width: 40px;" value=" &lt;&lt; " name="remove" type="button">
-   </td>
-
-   <td style="margin: 0pt; padding: 0pt; width: 190px;" valign="top">
-	  <select ondblclick="DeSelectPlace(this.name);saveOptions(this.name,'<?php echo($this->cval['fname']);?>[value]');" style="width: 190px; color: red;" multiple="multiple" size="5" name="<?php echo($this->cval['fname']);?>[selected]">
-		 <?php if(is_array($this->set_val)):?>
-		 <?php foreach($this->set_val as $value):?>
-		 <option value="<?php echo($value);?>"><?php echo($value);?></option>
-		 <?php endforeach?>
-		 <?php endif?>
-	  </select>
-   </td>
-
-</tr> 
-</table>
-
-
-</td>
-
 </tr>
 <script>
    saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');
