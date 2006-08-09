@@ -89,13 +89,18 @@
 		 cbList[i].selected = cbList[i].checked = bSelect
    }
 
-
 </script>
 <?php #_debug_array($this->set_val);?>
 <?php #die();?>
 <input type="hidden" name="<?php echo($this->cval['fname']);?>[value]" value="">
 <tr><td><?php echo($this->cval['label']);?></td></tr>
 <tr>
+   <td colspan="2">
+
+	   <table>
+		  <tr>
+   
+   
    <td style="margin: 0pt; padding: 0pt;" valign="top">
 	  <select ondblclick="SelectPlace('<?php echo($this->cval['fname']);?>[selected]',this.name);saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" style="width: 190px;" multiple="multiple" size="5" name="<?php echo($this->cval['fname']);?>[all]">
 		 <?php foreach($this->fields as $field):?>
@@ -107,7 +112,6 @@
    <td style="margin: 0pt; padding: 0pt; vertical-align: middle; width: 40px;" valign="middle">
 	  <input onclick="SelectPlace('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[all]');saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" class="egwbutton" style="margin: 3px 10px; width: 40px;" value=" &gt;&gt; " name="add" type="button">
 	  <input onclick="DeSelectPlace('<?php echo($this->cval['fname']);?>[selected]');saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');" class="egwbutton" style="margin: 3px 10px; width: 40px;" value=" &lt;&lt; " name="remove" type="button">
-
    </td>
 
    <td style="margin: 0pt; padding: 0pt; width: 190px;" valign="top">
@@ -119,6 +123,13 @@
 		 <?php endif?>
 	  </select>
    </td>
+
+</tr> 
+</table>
+
+
+</td>
+
 </tr>
 <script>
    saveOptions('<?php echo($this->cval['fname']);?>[selected]','<?php echo($this->cval['fname']);?>[value]');
