@@ -92,7 +92,7 @@
 <tr><td><?php echo($this->cval['label']);?></td></tr>
 <tr>
    <td colspan="2">
-	  <input type="text" name="<?php echo($this->cval['fname']);?>[value]" value="">
+	  <input type="hidden" name="<?php echo($this->cval['fname']);?>[value]" value="">
 	  <table>
 		 <tr>
 			<td style="margin: 0pt; padding: 0pt;" valign="top">
