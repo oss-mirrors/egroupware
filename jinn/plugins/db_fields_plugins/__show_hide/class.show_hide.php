@@ -52,7 +52,31 @@
 			{
 			   $show[] = "'{$option[Value]}:{$option[show][value]}'";
 			}
-			if(! empty($option[hide][value]))
+			if($option['spec_hide']=='inverse')
+			{
+			   //get all inverse fields
+			   unset($sel_show);
+			   unset($_arr);
+			   unset($sel_hide);
+			   if(!empty($option[show][value]))
+			   {
+				  $option[show][value]=trim($option[show][value],',');
+				  $sel_show=explode(',',$option[show][value]);
+			   }
+
+			   $_arr = $this->local_bo->so->mk_field_conf_arr_for_obj($this->local_bo->site_object[object_id]);
+			   foreach($_arr as $allfields)
+			   {
+				  
+				  if($allfields[field_name]!=substr($field_name,6) && !in_array($allfields[field_name],$sel_show))
+				  {
+					 $sel_hide[]=$allfields[field_name];
+				  }
+			   }
+
+			   $hide[]="'{$option[Value]}:".implode(',',$sel_hide)."'";
+			}
+			elseif(! empty($option[hide][value]))
 			{
 			   $hide[] = "'{$option[Value]}:{$option[hide][value]}'";
 			}
@@ -61,6 +85,7 @@
 		 {
 			$show_sel = implode(",",$show);
 		 }
+
 		 if(!empty($hide))
 		 {
 			$hide_sel = implode(",",$hide);
@@ -71,6 +96,7 @@
 		 $this->tplsav2->assign('hide_sel',$hide_sel);
 		 $this->tplsav2->assign('fieldname',$field_name);
 		 $this->tplsav2->assign('options',$config[multi1]);
+		 
 		 return($this->tplsav2->fetch('show_hide.formview_edit.tpl.php'));
 
 	  }

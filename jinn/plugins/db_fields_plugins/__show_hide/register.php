@@ -36,7 +36,9 @@
 	  'int',
 	  'blob'
    );
-   $this->registry->plugins['show_hide']['help']			=  'asdasd';
+   $this->registry->plugins['show_hide']['help']			=  '
+  	This plugin creates  a selectbox that can show and hide fields. It will always ignore itself when hiding fields.
+   ';
    $this->registry->plugins['show_hide']['config2']     = array
    (
 	  'multi1'=>array(
@@ -54,21 +56,27 @@
 			   'type' => 'text'
 			),
 			'show'=>array(
-			   'name' => 'show',
-			   'label' => lang('show'),
-			   'type' => 'select_form_elements'
-			),
-			'hide'=>array(
-			   'name' => 'hide',
-			   'label' => lang('hide'),
-			   'type' => 'select_form_elements',
-			   'allowempty' => false
-			)
+			'name' => 'show',
+			'label' => lang('show'),
+			'type' => 'select_form_elements'
+		 ),
+		 'spec_hide'=>array(
+			'name' => 'spec_hide',
+			'label' => lang('Which fields to hide?'),
+			'type' => 'radio',
+			'radio_arr'=>array('spec'=>lang('Specify hide fields below'),'inverse'=>lang('Use inverse show selection')),
+		 ),
+		 'hide'=>array(
+			'name' => 'hide',
+			'label' => lang('hide'),
+			'type' => 'select_form_elements',
+			'allowempty' => false
 		 )
 	  )
-   );
+   )
+);
 
-   $this->registry->plugins['show_hide']['config_help']		= array
+$this->registry->plugins['show_hide']['config_help']		= array
    (
 	  'Keys_seperated_by_commas'=>'These keys are displayed to the user',
 	  'Value_seperated_by_commas'=>'These values are stored in the database'
