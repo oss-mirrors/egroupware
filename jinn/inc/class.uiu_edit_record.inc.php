@@ -528,7 +528,7 @@
 		 $this->tplsav2->assign('helplink',$GLOBALS[phpgw]->link('/manual/index.php'));
 
 		 $this->tplsav2->assign('img_edit',$GLOBALS[phpgw]->common->image('phpgwapi','edit'));
-		 $this->tplsav2->assign('tooltip_img',$GLOBALS[phpgw]->common->image('phpgwapi','info'));
+//		 $this->tplsav2->assign('tooltip_img',$GLOBALS[phpgw]->common->image('phpgwapi','info'));
 
 		 $this->header('edit record');
 
@@ -583,7 +583,7 @@
 
 			   $options = array('width' => 'auto');
 
-			   $single_fld_arr[tooltip_mouseover]=$GLOBALS[phpgw]->html->tooltip($tooltip, True, $options);
+			   //$single_fld_arr[tooltip_mouseover]=$GLOBALS[phpgw]->html->tooltip($tooltip, True, $options);
 			   $single_fld_arr[field_help_info]=$field_conf_arr[field_help_info];
 			}
 
@@ -1355,7 +1355,7 @@
 		 $this->tplsav2->img_delete=$GLOBALS[phpgw]->common->image('phpgwapi','delete');
 		 $this->tplsav2->img_copy=$GLOBALS[phpgw]->common->image('phpgwapi','copy');
 		 $this->tplsav2->img_edit=$GLOBALS[phpgw]->common->image('phpgwapi','edit');
-		 $this->tplsav2->tooltip_img=$GLOBALS[phpgw]->common->image('phpgwapi','info');
+//		 $this->tplsav2->tooltip_img=$GLOBALS[phpgw]->common->image('phpgwapi','info');
 		 $this->tplsav2->visible_cols=$col_names_list;
 
 		 return $this->tplsav2->fetch('many-to-one_list.1.tpl.php');

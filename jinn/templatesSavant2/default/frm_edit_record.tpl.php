@@ -432,14 +432,7 @@
 			   <a href="javascript:void(0);" onclick="parent.window.open('<?=$r[editfieldlink]?>' , 'poplang_code', 'width=600,height=500,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')"><img src="<?=$this->img_edit?>" alt="" /></a>
 			   <?php endif?> 
 
-			   <span style="font-weight:bold"><?=$r[display_name]?>
-			   <?php if($r[tooltip_mouseover]):?>
-			   <?=//$r[field_help_info]?>
-			   <!--<img src="<?=$this->tooltip_img?>" <?=$r[tooltip_mouseover]?> alt="" />-->
-			   <?php endif?>
-
- 
-			   </span>
+			   <span style="font-weight:bold"><?=$r[display_name]?></span>
 			  			</div>
 
 			<div style="background-color:<?=$fbgcolor?>;position:absolute;left:<?=$setfieldx?>px;top:<?=$setfieldy?>px;" id="div<?='field'.$r[fieldname]?>"><?=$r[input]?>
@@ -525,7 +518,6 @@
 				  <?php if($r[field_help_info]):?>
 				  <br/>
 				  <div style=""><?=$r[field_help_info]?></div>
-				  <!-- <img src="<?=$this->tooltip_img?>" <?=$r[tooltip_mouseover]?> alt="" />-->
 				  <?php endif?>
 				  <?=$r[input]?>
 			   </td>
@@ -539,7 +531,6 @@
 				  <?php if($r['field_help_info']):?>
 				  <br/>
 				  <div style=""><?=$r[field_help_info]?></div>
-				  <!-- <img src="<?=$this->tooltip_img?>" <?=$r[tooltip_mouseover]?> alt="" />-->
 				  <?php endif?>
 			   </td>
 			   <td style="" id="<?=$r['fieldname']?>"><?=$r[input]?></td>
