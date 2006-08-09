@@ -60,43 +60,39 @@
 		 }
    }
    function saveOptions(obj,hidden_fld) 
-   { //v1.0
-	  var boxLength = document.popfrm[obj].length;
-	  var count = 0;
-	  var strValues;
-	  if (boxLength != 0) 
-	  {
-			for (i = 0; i < boxLength; i++) 
-			{
-				  if (count == 0) 
-				  {
-						selectAll(document.popfrm[obj],true)
-						strValues = document.popfrm[obj].options[i].value;
-				  }
-				  else 
-				  {
-						selectAll(document.popfrm[obj],true)
-						strValues = strValues + "," + document.popfrm[obj].options[i].value;
-				  }
-				  count++;
-			}
-	  }
-
-	  if (strValues)  document.popfrm[hidden_fld].value=strValues;
-}
-function selectAll(cbList,bSelect) {
-	  for (var i=0; i<cbList.length; i++)
-	  cbList[i].selected = cbList[i].checked = bSelect
-}
+   { 
+		 var boxLength = document.popfrm[obj].length;
+		 var strValues;
+		 strValues='';
+		 if (boxLength != 0) 
+		 {
+			   for (i = 0; i < boxLength; i++) 
+			   {
+					 if (!strValues) 
+					 {
+						   selectAll(document.popfrm[obj],true)
+						   strValues = document.popfrm[obj].options[i].value;
+					 }
+					 else 
+					 {
+						   selectAll(document.popfrm[obj],true)
+						   strValues = strValues + "," + document.popfrm[obj].options[i].value;
+					 }
+			   }
+		 }
+		 document.popfrm[hidden_fld].value=strValues;
+   }
+   function selectAll(cbList,bSelect) 
+   {
+		 for (var i=0; i<cbList.length; i++)
+		 cbList[i].selected = cbList[i].checked = bSelect
+   }
 
 </script>
-<?php #_debug_array($this->set_val);?>
-<?php #die();?>
-<input type="hidden" name="<?php echo($this->cval['fname']);?>[value]" value="">
 <tr><td><?php echo($this->cval['label']);?></td></tr>
 <tr>
    <td colspan="2">
-
+	  <input type="text" name="<?php echo($this->cval['fname']);?>[value]" value="">
 	  <table>
 		 <tr>
 			<td style="margin: 0pt; padding: 0pt;" valign="top">

@@ -68,7 +68,7 @@
 			   foreach($_arr as $allfields)
 			   {
 				  
-				  if($allfields[field_name]!=substr($field_name,6) && !in_array($allfields[field_name],$sel_show))
+				  if($allfields[field_name]!=substr($field_name,6) && !@in_array($allfields[field_name],$sel_show))
 				  {
 					 $sel_hide[]=$allfields[field_name];
 				  }
