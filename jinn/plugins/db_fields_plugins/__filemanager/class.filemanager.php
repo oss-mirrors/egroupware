@@ -323,15 +323,6 @@
 		 return $display;
 	  }
 
-	  function img_popup_link($absolute_file_path,$img_width,$img_height)
-	  {
-		 $pop_width = ($img_width+50);
-		 $pop_height = ($img_height+50);
-		 $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
-
-		 return "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
-	  }
-
 	  function show_file($file_path, $edit=false, $field_name='', $i='')
 	  {
 		 $upload_path	= $this->local_bo->cur_upload_path();
@@ -341,10 +332,11 @@
 		 $prefix = substr($field_name,0,6); 			//the prefix used to identify records in a multi record view
 		 $prefix .= $helper_id;							//the helper id will help identifying which post vars to ignore when saving the record(s)
 		 $this->tplsav2->name = $name = $prefix.'_IMG_'.$stripped_name.$i;
-		 $span_id = $prefix.'_PATH_'.$stripped_name.$i; //????
+		 $this->tplsav2->span_id = $span_id = $prefix.'_PATH_'.$stripped_name.$i; //????
 
 		 $absolute_file_path=realpath($upload_path.SEP.$file_path);	
 		 $file_name=basename($file_path);
+		 $this->tplsav2->file_name = $file_name;
 		 $dir_name=dirname($absolute_file_path);
 
 		 //retrieve file info
@@ -372,7 +364,11 @@
 
 			if($file_info_arr['img_width']>150)
 			{
-			   $this->tplsav2->popup=$this->img_popup_link($absolute_file_path,$file_info_arr['img_width'],$file_info_arr['img_height']);
+			   $pop_width = ($file_info_arr['img_width']+50);
+			   $pop_height = ($file_info_arr['img_height']+50);
+			   $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+
+			   $this->tplsav2->popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
 			}
 
 			return $this->tplsav2->fetch('filemanager.showfile_img.tpl.php');
@@ -392,7 +388,6 @@
 			$this->tplsav2->flash_icon=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/img/flash.png';
 			$this->tplsav2->flash_js=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/js/flash.js';
 
-			$this->tplsav2->file_name = $file_name;
 
 			return $this->tplsav2->fetch('filemanager.showfile_flash.tpl.php');
 		 }
@@ -402,7 +397,6 @@
 			$this->tplsav2->unknown_icon = &$this->unknown;
 			$this->tplsav2->linkid = &$linkid;	
 			$this->tplsav2->span_id = &$span_id;	
-			$this->tplsav2->file_name = $file_name;
 
 			return $this->tplsav2->fetch('filemanager.showfile_unknown.tpl.php');
 		 }
