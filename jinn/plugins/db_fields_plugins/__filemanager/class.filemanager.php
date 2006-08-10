@@ -50,13 +50,17 @@
 	  var $unknown_style = '';
 	  var $filetypes;
 	  var $tplsav2;
+	  var $fm_helper;
 
 	  function db_fields_plugin_filemanager()
 	  {
+		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
+
+		 require_once 'class.filemanager_helper.inc.php';
+		 $this->fm_helper = new filemanager_helper();
+
 		 require_once 'class.filetypes.php';
 		 $this->filetypes = new filetypes();
-
-		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
 	  }
 
 	  function formview_edit($field_name,$value,$config,$attr_arr)
@@ -78,8 +82,8 @@
 			$this->tplsav2->error_msg=lang('The path to upload images is not correct, please contact your JiNN administrator.');
 			return $this->tplsav2->fetch('filemanager.error.tpl.php');
 		 }
-		 
-	
+
+
 		 if(!$this->javascript_inserted)
 		 {
 			$input .= $this->add_javascript();
@@ -97,7 +101,7 @@
 		 $stripped_name=substr($field_name,6);	//the real field name
 		 $prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
 		 $prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
-		 
+
 		 $this->tplsav2->assign('prefix',$prefix);
 		 $this->tplsav2->assign('stripped_name',$stripped_name);
 		 $this->tplsav2->assign('field_name',$field_name);
@@ -111,7 +115,7 @@
 		 {
 			$value_arr = array();
 		 }
-		 
+
 		 if($num_input <  count($value_arr))
 		 {
 			$counter =count($value_arr);
@@ -127,23 +131,22 @@
 		 {
 			$this->tplsav2->assign('curr_obj_id',$m2o_sess);
 		 }
-		 
+
 		 $this->tplsav2->assign('value_arr',$value_arr);
 
 		 if(is_array($value_arr) && count($value_arr)>0)
 		 {
 			$i=0;
 
-			foreach($value_arr as $img_path)
+			foreach($value_arr as $file_path)
 			{
 			   $i++;
 
-			   $showfile = $this->show_file($img_path, true, $field_name, $i);
+			   $showfile = $this->show_file($file_path, true, $field_name, $i);
 			   $this->tplsav2->assign('showfile',$showfile);
 			   $this->tplsav2->assign('i',$i);
 
 			   $fullrows.=$this->tplsav2->fetch('filemanager.fullrows.tpl.php');
-
 			}
 		 }
 		 $this->tplsav2->assign('fullrows',$fullrows);
@@ -155,16 +158,17 @@
 			   $name = $prefix.'_IMG_'.$stripped_name.$i;
 			   $span_id = $prefix.'_PATH_'.$stripped_name.$i;
 
-			   $showfile = $this->show_slot(true, 'path', $name, $this->spacer, $this->spacer_style, $span_id, '');
+			   $showfile .= '<img id="'.$name.'" src="'.$this->spacer.'" '.$this->spacer_style.' />';
+			   $showfile .= '<br/><span id="'.$span_id.'"></span>';
+
 			   $this->tplsav2->assign('i',$i);
 			   $this->tplsav2->assign('showfile',$showfile);
 			   $this->tplsav2->assign('slot',$slot);
 
 			   $empt_rows.=$this->tplsav2->fetch('filemanager.fullrows.tpl.php');
-
 			}
 		 }
-		 
+
 		 $this->tplsav2->assign('empt_rows',$empt_rows);
 
 		 /* add extra images file container here */
@@ -175,9 +179,6 @@
 	  }
 
 	  function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
-	  /****************************************************************************\
-	  * main image data function                                                   *
-	  \****************************************************************************/
 	  {
 		 $stripped_name=substr($field_name,6);	//the real field name
 		 $prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
@@ -236,7 +237,6 @@
 		 return '-1'; // return -1 when there no value to give but the function finished succesfully
 	  }
 
-
 	  function formview_read($value,$config)
 	  {
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
@@ -245,9 +245,9 @@
 			$value=explode(';',$value);
 			if (is_array($value) && count($value)>0)
 			{
-			   foreach($value as $img_path)
+			   foreach($value as $file_path)
 			   {
-				  $this->tplsav2->files[]=$this->show_file($img_path);
+				  $this->tplsav2->files[]=$this->show_file($file_path);
 			   }
 			}
 			else
@@ -258,7 +258,6 @@
 
 		 return $this->tplsav2->fetch('filemanager.formview_read.tpl.php');
 	  }
-
 
 	  function listview_read($value,$config,$where_val_enc)
 	  {
@@ -277,7 +276,7 @@
 			if (is_array($value))
 			{
 			   $i=0;
-			   foreach($value as $img_path)
+			   foreach($value as $file_path)
 			   {
 				  $i++;
 
@@ -285,12 +284,12 @@
 				  unset($popup); 
 
 				  /* check for image and create previewlink */
-				  if(is_file($upload_path . SEP . $img_path))
+				  if(is_file($upload_path . SEP . $file_path))
 				  {
-					 $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
+					 $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$file_path);
 
 					 // FIXME move code to class
-					 $image_size=getimagesize($upload_path . SEP. $img_path);
+					 $image_size=getimagesize($upload_path . SEP. $file_path);
 					 $pop_width = ($image_size[0]+50);
 					 $pop_height = ($image_size[1]+50);
 
@@ -299,7 +298,7 @@
 
 				  unset($thumblink); 
 
-				  $path_array = explode('/', $img_path);
+				  $path_array = explode('/', $file_path);
 				  $path_array[count($path_array)-1] = '..'.$path_array[count($path_array)-1];
 				  $thumb_path = implode('/', $path_array);
 
@@ -324,216 +323,89 @@
 		 return $display;
 	  }
 
-	  function show_file($img_path, $edit=false, $field_name='', $i='')
+	  function img_popup_link($absolute_file_path,$img_width,$img_height)
+	  {
+		 $pop_width = ($img_width+50);
+		 $pop_height = ($img_height+50);
+		 $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+
+		 return "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
+	  }
+
+	  function show_file($file_path, $edit=false, $field_name='', $i='')
 	  {
 		 $upload_path	= $this->local_bo->cur_upload_path();
-		 $max_prev		= $this->local_bo->read_preferences('max_prev');
 		 $helper_id		= $this->local_bo->plug->registry->plugins['filemanager']['helper_fields_substring'];
 
-		 if($max_prev == '') $max_prev = -1; //default we want to see all preview images
-		 $stripped_name = substr($field_name,6);	//the real field name
-		 $prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
-		 $prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
-		 $img_style = 'style="border-style:solid;border-width:1px;border-color:#000000"';
-		 $name    = $prefix.'_IMG_'.$stripped_name.$i;
-		 $span_id = $prefix.'_PATH_'.$stripped_name.$i;
+		 $stripped_name = substr($field_name,6);		//the real field name
+		 $prefix = substr($field_name,0,6); 			//the prefix used to identify records in a multi record view
+		 $prefix .= $helper_id;							//the helper id will help identifying which post vars to ignore when saving the record(s)
+		 $this->tplsav2->name = $name = $prefix.'_IMG_'.$stripped_name.$i;
+		 $span_id = $prefix.'_PATH_'.$stripped_name.$i; //????
 
-		 $input='';
+		 $absolute_file_path=realpath($upload_path.SEP.$file_path);	
+		 $file_name=basename($file_path);
+		 $dir_name=dirname($absolute_file_path);
 
-		 //check if file exists
-		 if(is_file($upload_path . SEP . $img_path))
+		 //retrieve file info
+		 $file_info_arr = $this->fm_helper->get_file_info($absolute_file_path);
+
+		 if($file_info_arr['not_exist'])
 		 {
-			$image_info = getimagesize($upload_path . SEP. $img_path);
-			$text = '<b>'.$img_path.'</b>';
-			if(is_array($image_info) && $image_info['mime'] != 'application/x-shockwave-flash')
+			$this->tplsav2->error_msg=lang('File does not exist on server, (%1)',$file_path);
+			return $this->tplsav2->fetch('filemanager.error.tpl.php');
+		 }
+		 elseif($file_info_arr['type_gifjpgpng'])
+		 {
+			$absolute_thumb_path=$dir_name.'/.'.$file_name;
+
+			// if thumb exist
+			if(is_file($absolute_thumb_path))
 			{
-			   //process as image
-
-			   // create previewlink
-			   $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
-			   // FIXME move code to class
-			   $image_size=getimagesize($upload_path . SEP. $img_path);
-			   $pop_width = ($image_size[0]+50);
-			   $pop_height = ($image_size[1]+50);
-			   $popup   = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
-
-
-			   $path_array = explode('/', $img_path);
-			   $path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
-			   $thumb_path = implode('/', $path_array);
-
-			   /* check for thumb and create previewlink */
-			   if(is_file($upload_path . SEP . $thumb_path))
-			   {
-				  $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
-			   }
-			   else
-			   {
-			   	//TODO CREATE THUMB
-			   }
-
-			   // if URL exists show link or if set show image in form
-			   if($this->local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
-			   {	
-				  if($this->local_bo->read_preferences('prev_img')=='yes')
-				  {
-					 if($thumblink)
-					 {
-						$input .= $this->show_slot($edit, 'thumblink', $name, $thumblink, $img_style, $span_id, $text, $popup);
-					 }
-					 else
-					 {
-						$input .= $this->show_slot($edit, 'image', $name, $imglink, $img_style, $span_id, $text, $popup);
-					 }
-				  }
-				  elseif($this->local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
-				  {
-					 $input .= $this->show_slot($edit, 'thumblink', $name, $thumblink, $img_style, $span_id, $text, $popup);
-				  }
-				  else
-				  {
-					 $input .= $this->show_slot($edit, 'pathlink', $name, $this->spacer, $this->spacer_style, $span_id, $text, $popup);
-				  }
-			   }
-			   else  
-			   {
-				  if($imglink)
-				  {
-					 $input .= $this->show_slot($edit, 'pathlink', $name, $this->spacer, $this->spacer_style, $span_id, $text, $popup);
-				  }
-				  else
-				  {
-					 $input .= $this->show_slot($edit, 'path', $name, $this->spacer, $this->spacer_style, $span_id, $text);
-				  }
-			   }
-			}
-			elseif($image_info['mime'] == 'application/x-shockwave-flash')
-			{
-			   $input .= $this->show_slot($edit, 'swflash', $name, $img_path, $this->unknown_style, $span_id, $text);
+			   $this->tplsav2->imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_thumb_path);
+			   $this->tplsav2->is_thumb=true;
 			}
 			else
 			{
-			   $filepath=$upload_path . SEP. $img_path; 
-			   /* check for thumb and create previewlink */
-			   if(is_file($filepath))
-			   {
-				  $filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$filepath);
-			   }
-
-			   //process as unknown filetype
-			   $input .= $this->show_slot($edit, 'unknown', $name, $this->unknown, $this->unknown_style, $span_id, $text,$filelink);
+			   $this->tplsav2->imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 			}
-		 }
-		 else
-		 {
-			$this->tplsav2->error_msg=lang('File does not exist on server, (%1)',$img_path);
-			return $this->tplsav2->fetch('filemanager.error.tpl.php');
-		 }
-		 return $input;
-	  }
 
-	  function show_slot($edit, $type, $name, $src, $style, $span_id, $text, $link='')
-	  {
-		 $input = '';
-		 if($edit)
-		 {
-			switch($type)
+			if($file_info_arr['img_width']>150)
 			{
-			   case 'path':
-			   $input .= '<img id="'.$name.'" src="'.$src.'" '.$style.' />';
-			   $input .= '<span id="'.$span_id.'">'.$text.'</span>';
-			   break;
-			   case 'pathlink':
-			   $input .= '<img id="'.$name.'" src="'.$src.'" '.$style.' />';
-			   $input .= '<span id="'.$span_id.'"><a href="javascript:'.$link.'">'.$text.'</a></span>';
-			   break;
-			   case 'thumblink':
-			   $linkid=str_replace('_IMG_','_IMGLINK_',$name);
-			   $input .= '<a id="'.$linkid.'" href="javascript:'.$link.'"><img id="'.$name.'" src="'.$src.'" alt="preview" '.$style.' /></a>';
-			   $input .= '<span id="'.$span_id.'"></span>';
-			   break;
-			   case 'image':
-			   $input .= '<img id="'.$name.'" src="'.$src.'" alt="preview" '.$style.' />';
-			   $input .= '<span id="'.$span_id.'"></span>';
-			   break;
-			   case 'swflash':
-			   $file_spec = @GetImageSize($this->local_bo->cur_upload_path().$src);						
-			   $file_width = ($file_spec[0]>=$file_spec[1]) ? 80 : round($file_spec[0]/($file_spec[1]/80)) ;
-			   $file_height = ($file_spec[1]>=$file_spec[0]) ? 80 : round($file_spec[1]/($file_spec[0]/80)) ;
-			   $input .= '<script language="JavaScript" type="text/JavaScript" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/flash.js"></script>';
-			   $input .= '<script language="JavaScript" type="text/JavaScript">';
-				  $input .= 'if(flashcompattest()==true)';
-				  $input .= '{';
-				  $input .= '	writeFlash('.$file_width.','.$file_height.',\''.$this->local_bo->cur_upload_url().$src.'\',\''.$name.'\');';
-				  $input .= '}';
-				  $input .= 'else';
-				  $input .= '{';
-				  $input .= '	document.write(\'<img id="swflash" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/flash.png" alt="preview" '.$style.' />\');';
-				  $input .= '}';
-				  $input .= '</script>';						
-			   $input .= '<span id="'.$span_id.'">'.$text.'</span>';
-			   break;
-			case 'unknown':
-			   $input .= '<img id="'.$name.'" src="'.$src.'" alt="file of unknown type" '.$style.' />';
-			   if($link)
-			   {
-				  $input .= '<a id="'.$linkid.'" href="'.$link.'"><span id="'.$span_id.'">'.$text.'</span></a>';
-			   }
-			   else
-			   {
-				  $input .= '<span id="'.$span_id.'">'.$text.'</span>';
-			   }
-			   break;
+			   $this->tplsav2->popup=$this->img_popup_link($absolute_file_path,$file_info_arr['img_width'],$file_info_arr['img_height']);
 			}
-		 }
-		 else
-		 {
-			switch($type)
-			{
-			   case 'path':
-			   $input .= $text;
-			   break;
-			   case 'pathlink':
-			   $input .= '<a href="javascript:'.$link.'">'.$text.'</a>';
-			   break;
-			   case 'thumblink':
-			   $input .= '<a href="javascript:'.$link.'"><img src="'.$src.'" alt="preview" '.$style.' /></a>';
-			   break;
-			   case 'image':
-			   $input .= '<img src="'.$src.'" alt="preview" '.$style.' />';
-			   break;
-			   case 'swflash':
-			   $file_spec = @GetImageSize($this->local_bo->cur_upload_path().$src);						
-			   $file_width = ($file_spec[0]>=$file_spec[1]) ? 80 : round($file_spec[0]/($file_spec[1]/80)) ;
-			   $file_height = ($file_spec[1]>=$file_spec[0]) ? 80 : round($file_spec[1]/($file_spec[0]/80)) ;
-			   $input .= '<script language="JavaScript" type="text/JavaScript" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/flash.js"></script>';
-			   $input .= '<script language="JavaScript" type="text/JavaScript">';
-				  $input .= 'if(flashcompattest()==true)';
-				  $input .= '{';
-				  $input .= '	writeFlash('.$file_width.','.$file_height.',\''.$this->local_bo->cur_upload_url().$src.'\',\''.$name.'\');';
-				  $input .= '}';
-				  $input .= 'else';
-				  $input .= '{';
-				  $input .= '	document.write(\'<img name="swflash" src="'.$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/flash.png" alt="preview" '.$style.' />\');';
-				  $input .= '}';
-				  $input .= '</script>';						
-			   $input .= '<span id="'.$span_id.'">'.$text.'</span>';
-			   break;
-			case 'unknown':
 
-			   $input .= '<img id="'.$name.'" src="'.$src.'" alt="file of unknown type" '.$style.' /><br/>';
-			   if($link)
-			   {
-				  $input .= '<a id="'.$linkid.'" href="'.$link.'"><span id="'.$span_id.'">'.$text.'</span></a>';
-			   }
-			   else
-			   {
-				  $input .= '<span id="'.$span_id.'">'.$text.'</span>';
-			   }
-			   break;
-			}
+			return $this->tplsav2->fetch('filemanager.showfile_img.tpl.php');
 		 }
-		 return $input;
+		 elseif($file_info_arr['type_flash'])
+		 {
+			$this->tplsav2->span_id = &$span_id;	
+			$this->tplsav2->fileurl=$this->local_bo->cur_upload_url().'/'.$file_path;
+
+			//test this streaming link for flash
+			$this->tplsav2->filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+
+			$this->tplsav2->file_spec = @GetImageSize($absolute_file_path);						
+			$this->tplsav2->file_width = ($file_spec[0]>=$file_spec[1]) ? 80 : round($file_spec[0]/($file_spec[1]/80)) ;
+			$this->tplsav2->file_height = ($file_spec[1]>=$file_spec[0]) ? 80 : round($file_spec[1]/($file_spec[0]/80)) ;
+
+			$this->tplsav2->flash_icon=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/img/flash.png';
+			$this->tplsav2->flash_js=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__filemanager/js/flash.js';
+
+			$this->tplsav2->file_name = $file_name;
+
+			return $this->tplsav2->fetch('filemanager.showfile_flash.tpl.php');
+		 }
+		 elseif($file_info_arr['type_unknown'])
+		 {
+			$this->tplsav2->filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+			$this->tplsav2->unknown_icon = &$this->unknown;
+			$this->tplsav2->linkid = &$linkid;	
+			$this->tplsav2->span_id = &$span_id;	
+			$this->tplsav2->file_name = $file_name;
+
+			return $this->tplsav2->fetch('filemanager.showfile_unknown.tpl.php');
+		 }
 	  }
 
 	  function add_javascript()

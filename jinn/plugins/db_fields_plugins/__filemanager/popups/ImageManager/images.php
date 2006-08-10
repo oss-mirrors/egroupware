@@ -31,7 +31,7 @@
    require_once '../ImageEditor/Transform.php';
    require_once '../../class.filetypes.php';
 
- 
+
    //for thumbs funcs
    $img = $BASE_DIR.urldecode($_GET['img']);
 
@@ -479,6 +479,7 @@
    function show_flash($img, $file, $info, $size)
    {
 	  global $BASE_DIR, $BASE_URL, $newPath, $extensions;
+	  $file=addslashes($file);
 
 	  $img_path = dir_name($img);
 	  $img_url = $BASE_URL.$img_path.'/'.$file;
@@ -691,6 +692,29 @@ function draw_table_header()
 }
 
 ?>
+<?php
+   //below begins the real flow
+   //		  $dirPath = eregi_replace($BASE_ROOT,'',$IMG_ROOT);
+   $dirPath=$IMG_ROOT;
+
+   $paths = explode('/', $dirPath);
+   $upDirPath = '/';
+   for($i=0; $i<count($paths)-2; $i++) 
+   {
+	  $path = $paths[$i];
+	  if(strlen($path) > 0) 
+	  {
+		 $upDirPath .= $path.'/';
+	  }
+   }
+
+   $slashIndex = strlen($dirPath);
+   $newPath = $dirPath;
+   if($slashIndex > 1 && substr($dirPath, $slashIndex-1, $slashIndex) == '/')
+   {
+	  $newPath = substr($dirPath, 0,$slashIndex-1);
+   }
+?>
 <html>
    <head>
 	  <title>Image Browser</title>
@@ -735,178 +759,154 @@ function draw_table_header()
 
 		 -->
 	  </style>
-	  <?php
-		 //		  $dirPath = eregi_replace($BASE_ROOT,'',$IMG_ROOT);
-		 $dirPath=$IMG_ROOT;
-
-		 $paths = explode('/', $dirPath);
-		 $upDirPath = '/';
-		 for($i=0; $i<count($paths)-2; $i++) 
-		 {
-			$path = $paths[$i];
-			if(strlen($path) > 0) 
-			{
-			   $upDirPath .= $path.'/';
-			}
-		 }
-
-		 $slashIndex = strlen($dirPath);
-		 $newPath = $dirPath;
-		 if($slashIndex > 1 && substr($dirPath, $slashIndex-1, $slashIndex) == '/')
-		 {
-			$newPath = substr($dirPath, 0,$slashIndex-1);
-		 }
-	  ?>
 	  <script type="text/javascript" src="../popup.js"></script>
 	  <script type="text/javascript" src="../../../../dialog.js"></script>
 	  <script language="JavaScript" type="text/JavaScript">
 		 <!--
-		 function pviiClassNew(obj, new_style) { //v2.6 by PVII
-			obj.className=new_style;
-	  }
+		 function pviiClassNew(obj, new_style) 
+		 { 
+			   //v2.6 by PVII
+			   obj.className=new_style;
+		 }
 
-	  function goUp() 
-	  {
-			location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir=<? echo $upDirPath; ?>";
-	  }
+		 function goUp() 
+		 {
+			   location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir=<? echo $upDirPath; ?>";
+		 }
 
-	  function changeDir(newDir) 
-	  {
-			location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+newDir;
-	  }
+		 function changeDir(newDir) 
+		 {
+			   location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+newDir;
+		 }
 
-	  function newFolder(oldDir, newFolder) 
-	  {
-			//location.href = "ImageManager/images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
-			location.href = "images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+oldDir+'&create=folder&foldername='+newFolder;
-	  }
+		 function newFolder(oldDir, newFolder) 
+		 {
+			   //location.href = "ImageManager/images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
+			   location.href = "images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+oldDir+'&create=folder&foldername='+newFolder;
+		 }
 
-	  function updateDir() 
-	  {
+		 function updateDir() 
+		 {
+			   <?php if($select_image_after_upload!='') : ?>
+			   imageSelected("<?php echo $select_image_after_upload; ?>",0,0,0);
+			   <?php endif ?>
+			   <?php if($select_other_after_upload!='') : ?>
+			   otherSelected("<?php echo $select_other_after_upload; ?>");
+			   <?php endif ?>
 
-			<?php if($select_image_after_upload!='') : ?>
-			imageSelected("<?php echo $select_image_after_upload; ?>",0,0,0);
-			<?php endif ?>
-			<?php if($select_other_after_upload!='') : ?>
-			otherSelected("<?php echo $select_other_after_upload; ?>");
-			<?php endif ?>
+			   var newPath = "<?php echo $newPath; ?>";
+			   //alert('<?php echo $newPath; ?>');
+			   if(window.top.document.forms[0] != null) {
 
-			var newPath = "<?php echo $newPath; ?>";
-			//alert('<?php echo $newPath; ?>');
-			if(window.top.document.forms[0] != null) {
+					 var allPaths = window.top.document.forms[0].dirPath.options;
+					 //alert("new:"+newPath);
+					 for(i=0; i<allPaths.length; i++) 
+					 {
+						   //alert(allPaths.item(i).value);
+						   allPaths.item(i).selected = false;
+						   if((allPaths.item(i).value)==newPath) 
+						   {
+								 allPaths.item(i).selected = true;
+						   }
+					 }
 
-				  var allPaths = window.top.document.forms[0].dirPath.options;
-				  //alert("new:"+newPath);
-				  for(i=0; i<allPaths.length; i++) 
-				  {
-						//alert(allPaths.item(i).value);
-						allPaths.item(i).selected = false;
-						if((allPaths.item(i).value)==newPath) 
-						{
-							  allPaths.item(i).selected = true;
-						}
+					 <?
+					 if($clearUploads) {
+					 ?>
+					 var topDoc = window.top.document.forms[0];
+					 topDoc.upload.value = null;
+					 //topDoc.upload.disabled = true;
+					 <?
 				  }
+			   ?>
 
-				  <?
-				  if($clearUploads) {
-				  ?>
-				  var topDoc = window.top.document.forms[0];
-				  topDoc.upload.value = null;
-				  //topDoc.upload.disabled = true;
-				  <?
-			   }
-			?>
+		 }
 
-	  }
+   }
 
+   <? if ($refresh_dirs) { ?>
+   function refreshDirs() 
+   {
+		 var allPaths = window.top.document.forms[0].dirPath.options;
+		 var fields = ["/" <? dirs($BASE_DIR,'');?>];
+
+		 var newPath = "<? echo $newPath; ?>";
+
+		 allPaths.length=0;
+
+		 for(i=0; i<fields.length; i++) 
+		 {
+			   var newElem =	document.createElement("OPTION");
+			   var newValue = fields[i];
+			   newElem.text = newValue;
+			   newElem.value = newValue;
+
+			   if(newValue == newPath) 
+			   newElem.selected = true;	
+			   else
+			   newElem.selected = false;
+
+			   allPaths.add(newElem);
+		 }
+   }
+   refreshDirs();
+   <? } ?>
+
+   function imageSelected(filename, width, height, alt) 
+   {
+		 var topDoc = window.top.document.forms[0];
+		 topDoc.f_url.value = filename;
+		 topDoc.f_type.value = '<?php echo $filetypes->type_id_image; ?>';
+		 //topDoc.f_width.value= width;
+		 //topDoc.f_height.value = height;
+		 //topDoc.f_alt.value = alt;
+		 //topDoc.orginal_width.value = width;
+		 //topDoc.orginal_height.value = height;
+
+   }
+   function otherSelected(filename) 
+   {
+		 var topDoc = window.top.document.forms[0];
+		 topDoc.f_url.value = filename;
+		 topDoc.f_type.value = '<?php echo $filetypes->type_id_other; ?>';
+   }
+
+   function preview(file, image, size, width, height) 
+   {
+		 alert('Not implemented yet,sorry');
+		 return;	
+
+		 /*
+		 var predoc = '<img src="'+file+'" alt="'+image+' ('+width+'x'+height+', '+size+')">';
+		 var w = 450;
+		 var h = 400;
+		 var LeftPosition=(screen.width)?(screen.width-w)/2:100;
+		 var TopPosition=(screen.height)?(screen.height-h)/2:100;
+
+		 var win = window.open('','image_preview','toolbar=no,location=no,menubar=no,status=yes,scrollbars=yes,resizable=yes,width='+w+',height='+h+',top='+TopPosition+',left='+LeftPosition);
+		 var doc=win.document.open();
+
+		 doc.writeln('<html>\n<head>\n<title>Image Preview - '+image+' ('+width+'x'+height+', '+size+')</title>');
+			   doc.writeln('</head>\n<body>');
+			   doc.writeln(predoc);
+			   doc.writeln('</body>\n</html>\n');
+		 doc=win.document.close();
+		 win.focus();*/
+		 //alert(file);
+		 Dialog("../ImageEditor/ImageEditor.php?img="+escape(file), function(param) {
+			   if (!param) {	// user must have pressed Cancel
+				  return false;
+			}
+	  }, null);
+	  return;
 }
 
-<? if ($refresh_dirs) { ?>
-function refreshDirs() 
+function deleteImage(file) 
 {
-   var allPaths = window.top.document.forms[0].dirPath.options;
-   var fields = ["/" <? dirs($BASE_DIR,'');?>];
+   if(confirm("Delete image \""+file+"\"?")) 
+   return true;
 
-   var newPath = "<? echo $newPath; ?>";
-
-   allPaths.length=0;
-
-   for(i=0; i<fields.length; i++) 
-   {
-		 var newElem =	document.createElement("OPTION");
-		 var newValue = fields[i];
-		 newElem.text = newValue;
-		 newElem.value = newValue;
-
-		 if(newValue == newPath) 
-		 newElem.selected = true;	
-		 else
-		 newElem.selected = false;
-
-		 allPaths.add(newElem);
-   }
-	  }
-	  refreshDirs();
-	  <? } ?>
-
-	  function imageSelected(filename, width, height, alt) 
-	  {
-			var topDoc = window.top.document.forms[0];
-			topDoc.f_url.value = filename;
-			topDoc.f_type.value = '<?php echo $filetypes->type_id_image; ?>';
-			//topDoc.f_width.value= width;
-			//topDoc.f_height.value = height;
-			//topDoc.f_alt.value = alt;
-			//topDoc.orginal_width.value = width;
-			//topDoc.orginal_height.value = height;
-
-	  }
-	  function otherSelected(filename) 
-	  {
-			var topDoc = window.top.document.forms[0];
-			topDoc.f_url.value = filename;
-			topDoc.f_type.value = '<?php echo $filetypes->type_id_other; ?>';
-	  }
-
-	  function preview(file, image, size, width, height) 
-	  {
-
-
-			alert('Not implemented yet,sorry');
-			return;	
-
-
-			/*
-			var predoc = '<img src="'+file+'" alt="'+image+' ('+width+'x'+height+', '+size+')">';
-			var w = 450;
-			var h = 400;
-			var LeftPosition=(screen.width)?(screen.width-w)/2:100;
-			var TopPosition=(screen.height)?(screen.height-h)/2:100;
-
-			var win = window.open('','image_preview','toolbar=no,location=no,menubar=no,status=yes,scrollbars=yes,resizable=yes,width='+w+',height='+h+',top='+TopPosition+',left='+LeftPosition);
-			var doc=win.document.open();
-
-			doc.writeln('<html>\n<head>\n<title>Image Preview - '+image+' ('+width+'x'+height+', '+size+')</title>');
-				  doc.writeln('</head>\n<body>');
-				  doc.writeln(predoc);
-				  doc.writeln('</body>\n</html>\n');
-			doc=win.document.close();
-			win.focus();*/
-			//alert(file);
-			Dialog("../ImageEditor/ImageEditor.php?img="+escape(file), function(param) {
-				  if (!param) {	// user must have pressed Cancel
-					 return false;
-			   }
-		 }, null);
-		 return;
-   }
-
-   function deleteImage(file) 
-   {
-		 if(confirm("Delete image \""+file+"\"?")) 
-		 return true;
-
-		 return false;
+   return false;
    }
 
    function deleteFolder(folder, numFiles) 
@@ -922,37 +922,41 @@ function refreshDirs()
 		 return false;
    }
 
-   function MM_findObj(n, d) { //v4.01
-	  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
-			d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
-		 if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
-		 for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
-		 if(!x && d.getElementById) x=d.getElementById(n); return x;
-   }
+   function MM_findObj(n, d) 
+   { 
+		 //v4.01
+		 var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+			   d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+			if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+			for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+			if(!x && d.getElementById) x=d.getElementById(n); return x;
+	  }
 
-   function MM_showHideLayers() { //v6.0
-	  var i,p,v,obj,args=MM_showHideLayers.arguments;
-	  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i],window.top.document))!=null) { v=args[i+2];
-		 if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
-		 obj.visibility=v; }
-   }
+	  function MM_showHideLayers() 
+	  { 
+			//v6.0
+			var i,p,v,obj,args=MM_showHideLayers.arguments;
+			for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i],window.top.document))!=null) { v=args[i+2];
+			   if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+			   obj.visibility=v; }
+	  }
 
-   function changeLoadingStatus(state) 
-   {
-		 var statusText = null;
-		 if(state == 'load') {
-			   statusText = 'Loading Images';	
-		 }
-		 else if(state == 'upload') {
-			   statusText = 'Uploading Files';
-		 }
-		 if(statusText != null) {
-			   var obj = MM_findObj('loadingStatus', window.top.document);
-			   //alert(obj.innerHTML);
-			   if (obj != null && obj.innerHTML != null)
-			   obj.innerHTML = statusText;
-			   MM_showHideLayers('loading','','show')		
-		 }
+	  function changeLoadingStatus(state) 
+	  {
+			var statusText = null;
+			if(state == 'load') {
+				  statusText = 'Loading Images';	
+			}
+			else if(state == 'upload') {
+				  statusText = 'Uploading Files';
+			}
+			if(statusText != null) {
+				  var obj = MM_findObj('loadingStatus', window.top.document);
+				  //alert(obj.innerHTML);
+				  if (obj != null && obj.innerHTML != null)
+				  obj.innerHTML = statusText;
+				  MM_showHideLayers('loading','','show')		
+			}
 	  }
 
 	  //-->
@@ -1002,7 +1006,7 @@ function refreshDirs()
 			   }
 			}
 		 }
-		 
+
 		 $d->close();	
 
 		 if(count($images) > 0 || count($folders) > 0 || count($other) > 0) 

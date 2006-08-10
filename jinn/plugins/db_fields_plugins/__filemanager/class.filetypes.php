@@ -1,7 +1,6 @@
 <?php
    class filetypes
    {
-
 	  // the type_id_??? vars are strings used by the filemanager plugin's different classes to communicate the filetype between them
 	  // for each filetype we add support for we must create an entry here, and refer to it in the images.php file (???selected javascript functions, line 633), and class.filemanager file (javascript on_save, line 536)
 	  var $type_id_image = 'image';
