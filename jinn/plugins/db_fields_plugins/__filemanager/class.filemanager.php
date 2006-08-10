@@ -70,13 +70,13 @@
 		 // Check if everything is set to upload files
 		 if(!$upload_path)
 		 {
-			$input=lang('The path to upload images is not set, please contact your JiNN administrator.');
-			return $input;
+			$this->tplsav2->error_msg=lang('The path to upload images is not set, please contact your JiNN administrator.');
+			return $this->tplsav2->fetch('filemanager.error.tpl.php');
 		 }
 		 elseif(!file_exists($upload_path))
 		 {
-			$input=lang('The path to upload images is not correct, please contact your JiNN administrator.');
-			return $input;
+			$this->tplsav2->error_msg=lang('The path to upload images is not correct, please contact your JiNN administrator.');
+			return $this->tplsav2->fetch('filemanager.error.tpl.php');
 		 }
 		 
 	
@@ -97,7 +97,6 @@
 		 $stripped_name=substr($field_name,6);	//the real field name
 		 $prefix = substr($field_name,0,6); 	//the prefix used to identify records in a multi record view
 		 $prefix .= $helper_id;				//the helper id will help identifying which post vars to ignore when saving the record(s)
-		 //_debug_array($this->local_bo->site_object[object_id]);
 		 
 		 $this->tplsav2->assign('prefix',$prefix);
 		 $this->tplsav2->assign('stripped_name',$stripped_name);
@@ -128,7 +127,6 @@
 		 {
 			$this->tplsav2->assign('curr_obj_id',$m2o_sess);
 		 }
-		 //_debug_array($m2o_sess);
 		 
 		 $this->tplsav2->assign('value_arr',$value_arr);
 
@@ -173,14 +171,6 @@
 
 		 $input.=$this->tplsav2->fetch('filemanager.formview_edit.tpl.php');
 
-		 
-		 /*		 if($config['Zip_file_box']=='True')
-		 {
-			$input.= '<table>';
-			   $input.='<tr><td>'.lang('Add your ZIP-file with images here').'<input type="file" name="IMG_ZIP'.$field_name.'" value=""></td></tr>';
-			   $input.='</table>';
-		 }
-		 */
 		 return $input;
 	  }
 
@@ -249,29 +239,24 @@
 
 	  function formview_read($value,$config)
 	  {
-		 $table_style='';
-		 $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
-
-		 $input.='<table '.$table_style.' cellpadding="3" width="100%">';
-			if(trim($value))// FIXME or rather TESTME
+		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
+		 if(trim($value))
+		 {
+			$value=explode(';',$value);
+			if (is_array($value) && count($value)>0)
 			{
-			   //$input.='<input type="hidden" name="IMG_ORG'.$field_name.'" value="'.$value.'">';
-			   $value=explode(';',$value);
-			   if (is_array($value) && count($value)>0)
+			   foreach($value as $img_path)
 			   {
-				  $i=0;
-				  foreach($value as $img_path)
-				  {
-					 $i++;
-					 $input .= '<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
-						   $input .= $this->show_file($img_path);
-						   $input .= '</td></tr>';							  
-				  }
+				  $this->tplsav2->files[]=$this->show_file($img_path);
 			   }
 			}
-			$input.='</table>';
+			else
+			{
+			   $this->tplsav2->files=array();
+			}
+		 }
 
-		 return $input;
+		 return $this->tplsav2->fetch('filemanager.formview_read.tpl.php');
 	  }
 
 
@@ -322,11 +307,9 @@
 				  if(is_file($upload_path . SEP . $thumb_path))
 				  {
 					 $thumblink='<img src="'.$upload_url . SEP . $thumb_path.'" alt="'.$i.'">';
-
 				  }
 				  else
 				  {
-					 //$thumblink=$i;
 					 $thumblink='<img src="'.$imgiconsrc.'" alt="'.$i.'">';
 				  }
 
@@ -356,12 +339,13 @@
 		 $span_id = $prefix.'_PATH_'.$stripped_name.$i;
 
 		 $input='';
+
 		 //check if file exists
 		 if(is_file($upload_path . SEP . $img_path))
 		 {
 			$image_info = getimagesize($upload_path . SEP. $img_path);
 			$text = '<b>'.$img_path.'</b>';
-			if(is_array($image_info)&& $image_info['mime'] != 'application/x-shockwave-flash')
+			if(is_array($image_info) && $image_info['mime'] != 'application/x-shockwave-flash')
 			{
 			   //process as image
 
@@ -382,6 +366,10 @@
 			   if(is_file($upload_path . SEP . $thumb_path))
 			   {
 				  $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
+			   }
+			   else
+			   {
+			   	//TODO CREATE THUMB
 			   }
 
 			   // if URL exists show link or if set show image in form
@@ -438,8 +426,8 @@
 		 }
 		 else
 		 {
-			$text = '<b>error: file does not exist on server ('.$img_path.')</b>';
-			$input .= $this->show_slot($edit, 'path', $name, $this->spacer, $this->spacer_style, $span_id, $text);
+			$this->tplsav2->error_msg=lang('File does not exist on server, (%1)',$img_path);
+			return $this->tplsav2->fetch('filemanager.error.tpl.php');
 		 }
 		 return $input;
 	  }
@@ -542,7 +530,6 @@
 			   {
 				  $input .= '<span id="'.$span_id.'">'.$text.'</span>';
 			   }
-
 			   break;
 			}
 		 }
@@ -551,9 +538,7 @@
 
 	  function add_javascript()
 	  {
-
 		 $this->javascript_inserted = true;
-
 		 $this->tplsav2->assign('type_id_image',$this->filetypes->type_id_image);
 		 $this->tplsav2->assign('type_id_other',$this->filetypes->type_id_other);
 		 $this->tplsav2->assign('unknown',$this->unknown);
