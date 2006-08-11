@@ -460,7 +460,7 @@
 
 			// get regular fields and o2m relations
 			$fields_arr=$this->mk_fields_array('MLTX'.$this->mult_index,$this->bo->site_object,$this->values_object[0],$this->readonly);
-			$elements_arr=$this->mk_elements_array('MLTX'.$this->mult_index,$this->bo->site_object,$this->values_object[0],$this->readonly);
+			$elements_arr=$this->mk_elements_array('ELEX'.$this->mult_index,$this->bo->site_object,$this->values_object[0],$this->readonly);
 
 			$m2m_arr=array();
 			$m2o_arr=array();//todo set order
@@ -788,15 +788,11 @@
 		 }
 		 foreach($elements_arr as $el)
 		 {
-			
 			$fieldname=$el['field_name'];
-			$el_input_name=$el['field_name'];
-			$el_input_name=$field_prefix.$el['field_name'];
-
+			$el_input_name=$field_prefix.'UNIQ'.$el['field_name'];
 			if($el['element_type']=='table_field' && $el['data_source'])
 			{
-			   $el_input_name=$field_prefix.$el['data_source'];
-			   //$el_input_name=$el['data_source'];
+			   $el_input_name.='SOURCE'.$el['data_source'];
 			   $el_value=$record_values[$el['data_source']];
 
 			   $field_meta_arr=$this->bo->so->object_field_metadata($object_arr[object_id],$el['data_source']);

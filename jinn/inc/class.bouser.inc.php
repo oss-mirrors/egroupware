@@ -353,6 +353,12 @@
 			   {
 				  $post_arr['FLDXXX'.substr($key,6)]=$val;
 			   }
+			   // extra table_field elements overwriting other FLD's 
+			   elseif(substr($key,0,4)=='ELEX' && intval(substr($key,4,2)) == $i)
+			   {
+				  $key=ereg_replace("UNIQ[a-zA-Z0-9]{13}SOURCE", "", $key);
+				  $post_arr['FLDXXX'.substr($key,6)]=$val;
+			   }
 			}
 		 }
 		 else

@@ -63,9 +63,8 @@
 		 {
 			$field_values[field_type] = $type;
 		 }
-		 //_debug_array($field_values);
 
-		 if (substr($input_name,0,4)=='MLTX' || substr($input_name,0,6)=='FLDXXX' || substr($input_name,0,4)=='O2OX' || substr($input_name,0,4)=='M2OX')
+		 if (substr($input_name,0,4)=='ELEX' || substr($input_name,0,4)=='MLTX' || substr($input_name,0,6)=='FLDXXX' || substr($input_name,0,4)=='O2OX' || substr($input_name,0,4)=='M2OX')
 		 {
 			$plug_html = $this->call_plugin($plug_conf_arr[name], 'formview_edit', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','',$field_values);
 		 }
@@ -175,7 +174,7 @@
 
 	  function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values)
 	  {
-		 //_debug_array($config);
+
 
 		 //NEW STYLE PLUGIN CLASSES
 		 if($this->loaded($name))
