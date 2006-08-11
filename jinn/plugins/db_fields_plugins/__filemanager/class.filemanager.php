@@ -46,7 +46,7 @@
    {
 	  var $javascript_inserted = false;
 	  var $spacer = 'jinn/plugins/db_fields_plugins/__filemanager/img/spacer.gif';
-	  var $unknown = "jinn/plugins/db_fields_plugins/__filemanager/popups/ImageManager/unknown.png";
+	  var $unknown = "jinn/plugins/db_fields_plugins/__filemanager/img/unknown.png";
 	  var $unknown_style = '';
 	  var $filetypes;
 	  var $tplsav2;
@@ -344,8 +344,15 @@
 
 		 if($file_info_arr['not_exist'])
 		 {
+			//$ret= '<img id="'.$name.'" src="'.$this->spacer.'" '.$this->spacer_style.' />';
+			//$ret.= '<br/><span id="'.$span_id.'"></span>';
+
+			$this->tplsav2->imglink=$this->spacer;
 			$this->tplsav2->error_msg=lang('File does not exist on server, (%1)',$file_path);
-			return $this->tplsav2->fetch('filemanager.error.tpl.php');
+			$this->tplsav2->file_name=$this->tplsav2->fetch('filemanager.error.tpl.php');
+
+			$ret.= $this->tplsav2->fetch('filemanager.showfile_img.tpl.php');
+			return $ret;
 		 }
 		 elseif($file_info_arr['type_gifjpgpng'])
 		 {

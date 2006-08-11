@@ -1,17 +1,107 @@
 <?php
-   /***********************************************************************
-   ** Title.........:	Image Manager for HTMLArea 3.0 Alpha, PHP Version
-   ** Version.......:	1.01
-   ** Author........:	Xiang Wei ZHUO <wei@zhuo.org>
-   ** Filename......:	insert_image.php
-   ** Last changed..:	8 Mar 2003 
-   ** Notes.........:	Configuration in config.inc.php 
+   /**************************************************************************\
+   * eGroupWare - UploadImage-plugin for htmlArea                             *
+   * http://www.eGroupWare.org                                                *
+   * Written and (c) by Xiang Wei ZHUO <wei@zhuo.org>                         *
+   * Modified for eGW by and (c) by Pim Snel <pim@lingewoud.nl>               *
+   * --------------------------------------------                             *
+   * This program is free software; you can redistribute it and/or modify it  *
+   * under the terms of the GNU General Public License as published by the    *
+   * Free Software Foundation; version 2 of the License.                      *
+   \**************************************************************************/
 
-   - FIXME Only compatible with IE 5.5+
+   /* $id$ */
 
-   ***********************************************************************/
+   // FIXME: remove imageMagick shit, we only use gdlib
+   // FIXME: autodetect safe_mode
+   // FIXME set current app to the calling app
+   // FIXME include header nicer
 
-   include 'ImageManager/config.inc.php';
+   $phpgw_flags = Array(
+	  'currentapp'	=>	'jinn',
+	  'noheader'	=>	True,
+	  'nonavbar'	=>	True,
+	  'noappheader'	=>	True,
+	  'noappfooter'	=>	True,
+	  'nofooter'	=>	True
+   );
+
+   $GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
+
+   include('../../../../header.inc.php');
+
+   define('IMAGE_CLASS', 'GD');  
+
+   //In safe mode, directory creation is not permitted.
+   $SAFE_MODE = false;
+
+   $sessdata =	$GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
+   
+   $bo = CreateObject('jinn.bouser');
+
+   if($_GET[curr_obj_id])
+   {
+
+	  $field_config = $bo->so->get_field_values($_GET[curr_obj_id],$_GET[field]);
+   }
+   else
+   {
+	  $field_config = $bo->so->get_field_values($bo->session['site_object_id'],$_GET[field]);
+   }
+   $config = unserialize(base64_decode($field_config[field_plugins]));
+   $config = $config[conf];
+
+   $BASE_DIR = $sessdata[UploadImageBaseDir];
+   if($BASE_DIR == '')
+   {
+	  if($config['subdir'])
+	  {
+		 $subdir='/'.$config['subdir']; 
+	  }
+	  $BASE_DIR = $bo->cur_upload_path().$subdir;
+	  if(!is_dir($BASE_DIR))
+	  {
+		 mkdir($BASE_DIR);
+	  }
+   }
+   $BASE_URL = $sessdata[UploadImageBaseURL];
+   if($BASE_URL == '') $BASE_URL = $bo->cur_upload_url().'/'.$config['subdir'];
+   $MAX_HEIGHT = $sessdata[UploadImageMaxHeight];
+   $MAX_WIDTH = $sessdata[UploadImageMaxWidth];
+   if(!$MAX_HEIGHT) $MAX_HEIGHT = $config['Max_image_height'];
+   if(!$MAX_WIDTH) $MAX_WIDTH = $config['Max_image_width'];
+
+   //After defining which library to use, if it is NetPBM or IM, you need to
+   //specify where the binary for the selected library are. And of course
+   //your server and PHP must be able to execute them (i.e. safe mode is OFF).
+   //If you have safe mode ON, or don't have the binaries, your choice is
+   //GD only. GD does not require the following definition.
+   //define('IMAGE_TRANSFORM_LIB_PATH', '/usr/bin/netpbm/');
+   //define('IMAGE_TRANSFORM_LIB_PATH', '"D:\\Program Files\\ImageMagick\\');
+
+   $BASE_ROOT = '';
+   $IMG_ROOT = $BASE_ROOT;
+   if(strrpos($BASE_DIR, '/')!= strlen($BASE_DIR)-1) 
+   $BASE_DIR .= '/';
+
+/*
+   if(strrpos($BASE_URL, '/')!= strlen($BASE_URL)-1) 
+   $BASE_URL .= '/';
+*/
+   //Built in function of dirname is faulty
+   //It assumes that the directory nane can not contain a . (period)
+   function dir_name($dir) 
+   {
+	  $lastSlash = intval(strrpos($dir, '/'));
+	  if($lastSlash == strlen($dir)-1){
+		 return substr($dir, 0, $lastSlash);
+	  }
+	  else
+	  return dirname($dir);
+   }
+
+   //include 'ImageManager/config.inc.php';
+
    $no_dir = false;
    if(!is_dir($BASE_DIR)) {
 	  $no_dir = true;
@@ -48,7 +138,7 @@
    <head>
 	  <title>JiNN File Manager</title>
 
-	  <script type="text/javascript" src="popup.js"></script>
+	  <script type="text/javascript" src="js/popup.js"></script>
 
 	  <script language="JavaScript" type="text/JavaScript">
 		 var preview_window = null;
@@ -144,7 +234,7 @@
 
 		 function newFolder() 
 		 {
-			   childWindow=open("ImageManager/newFolder.html","newfolder","height=150,width=300,resizable=yes");
+			   childWindow=open("newFolder.html","newfolder","height=150,width=300,resizable=yes");
 			   if (childWindow.opener == null)	childWindow.opener = self;
 		 }
 
@@ -152,12 +242,12 @@
 		 {
 			   if(constrains.checked) 
 			   {
-					 document.locked_img.src = "ImageManager/locked.gif";	
+					 document.locked_img.src = "img/locked.gif";	
 					 checkConstrains('width') 
 			   }
 			   else
 			   {
-					 document.locked_img.src = "ImageManager/unlocked.gif";	
+					 document.locked_img.src = "img/unlocked.gif";	
 			   }
 		 }
 
@@ -312,11 +402,11 @@
    </head>
    <body onload="Init(); P7_Snap('dirPath','loading',120,70);">
 	  <div class="title">managing <font size="+1"><?php echo($config[Filetype]); ?></font> files</div>
-	  <form action="ImageManager/images.php?field=<?php echo($_GET[field]); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>" name="form1" method="post" target="imgManager" enctype="multipart/form-data">
+	  <form action="iframe.dircontent.php?field=<?php echo($_GET[field]); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>" name="form1" method="post" target="imgManager" enctype="multipart/form-data">
 		 <div id="loading" style="position:absolute; left:200px; top:130px; width:184px; height:48px; z-index:1" class="statusLayer">
 			<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
 			   <tr>
-				  <td><div align="center"><span id="loadingStatus" class="statusText">Loading Images</span><img src="ImageManager/dots.gif" width="22" height="12"></div></td>
+				  <td><div align="center"><span id="loadingStatus" class="statusText">Loading Images</span><img src="img/dots.gif" width="22" height="12"></div></td>
 			   </tr>
 			</table>
 		 </div>
@@ -341,18 +431,18 @@
 									   </select>
 									</td>
 									<td class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-									   <a href="#" onClick="javascript:goUpDir();"><img src="ImageManager/btnFolderUp.gif" width="15" height="15" border="0" alt="Up"></a></td>
+									   <a href="#" onClick="javascript:goUpDir();"><img src="img/btnFolderUp.gif" width="15" height="15" border="0" alt="Up"></a></td>
 									<? if ($SAFE_MODE == false) { ?>
 									<td><div class="separator"></div></td>
 									<td class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-									   <a href="#" onClick="javascript:newFolder();"><img src="ImageManager/btnFolderNew.gif" width="15" height="15" border="0" alt="New Folder"></a></td>
+									   <a href="#" onClick="javascript:newFolder();"><img src="img/btnFolderNew.gif" width="15" height="15" border="0" alt="New Folder"></a></td>
 									<? } ?>
 								 </tr>
 						   </table></td>
 						</tr>
 						<tr>
 						   <td align="center" bgcolor="white"><div name="manager" class="manager">
-								 <iframe src="ImageManager/images.php?field=<?php echo($_GET[field]); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>" name="imgManager" id="imgManager" width="520" height="150" marginwidth="0" marginheight="0" align="top" scrolling="auto" frameborder="0" hspace="0" vspace="0" background="white"></iframe>
+								 <iframe src="iframe.dircontent.php?field=<?php echo($_GET[field]); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>" name="imgManager" id="imgManager" width="520" height="150" marginwidth="0" marginheight="0" align="top" scrolling="auto" frameborder="0" hspace="0" vspace="0" background="white"></iframe>
 							  </div>
 						   </td>
 						</tr>
@@ -367,7 +457,7 @@
 						<td>&nbsp;</td>
 						<td><div align="right"> Max Width </div></td>
 						<td><input name="width" id="f_width" type="text" size="5" style="width:4em" onChange="javascript:checkConstrains('width');"></td>
-						<td rowspan="2"><img src="ImageManager/locked.gif" name="locked_img" width="25" height="32" id="locked_img" alt="Locked"></td>
+						<td rowspan="2"><img src="img/locked.gif" name="locked_img" width="25" height="32" id="locked_img" alt="Locked"></td>
 					 </tr>
 					 <tr> 
 						<td><div align="right">Upload </div></td>

@@ -8,7 +8,8 @@
 	  {
 		 if(!is_file($path))
 		 {
-			return $file_info_array['not_exist'] = true;
+			$file_info_array['not_exist'] = true;
+			return $file_info_array;
 		 }
 
 		 $image_info = getimagesize($path);

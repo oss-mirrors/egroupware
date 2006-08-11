@@ -10,16 +10,6 @@
    * Free Software Foundation; version 2 of the License.                      *
    \**************************************************************************/
 
-   function percent($p, $w) 
-   { 
-	  return (real)(100 * ($p / $w)); 
-   } 
-
-   function unpercent($percent, $whole) 
-   { 
-	  return (real)(($percent * $whole) / 100); 
-   } 
-
 
 
 ?>

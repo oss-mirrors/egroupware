@@ -25,8 +25,108 @@
 
    // FIXME move all php functions to a main file
    // FIXME better directory-structure
+   /**************************************************************************\
+   * eGroupWare - UploadImage-plugin for htmlArea                             *
+   * http://www.eGroupWare.org                                                *
+   * Written and (c) by Xiang Wei ZHUO <wei@zhuo.org>                         *
+   * Modified for eGW by and (c) by Pim Snel <pim@lingewoud.nl>               *
+   * --------------------------------------------                             *
+   * This program is free software; you can redistribute it and/or modify it  *
+   * under the terms of the GNU General Public License as published by the    *
+   * Free Software Foundation; version 2 of the License.                      *
+   \**************************************************************************/
 
-   include 'config.inc.php';
+   /* $id$ */
+
+   // FIXME: remove imageMagick shit, we only use gdlib
+   // FIXME: autodetect safe_mode
+   // FIXME set current app to the calling app
+   // FIXME include header nicer
+
+   $phpgw_flags = Array(
+	  'currentapp'	=>	'jinn',
+	  'noheader'	=>	True,
+	  'nonavbar'	=>	True,
+	  'noappheader'	=>	True,
+	  'noappfooter'	=>	True,
+	  'nofooter'	=>	True
+   );
+
+   $GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
+
+   require_once('../../../../header.inc.php');
+
+   define('IMAGE_CLASS', 'GD');  
+
+   //In safe mode, directory creation is not permitted.
+   $SAFE_MODE = false;
+
+   $sessdata =	$GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
+   
+   $bo = CreateObject('jinn.bouser');
+
+   if($_GET[curr_obj_id])
+   {
+
+	  $field_config = $bo->so->get_field_values($_GET[curr_obj_id],$_GET[field]);
+   }
+   else
+   {
+	  $field_config = $bo->so->get_field_values($bo->session['site_object_id'],$_GET[field]);
+   }
+   $config = unserialize(base64_decode($field_config[field_plugins]));
+   $config = $config[conf];
+
+   $BASE_DIR = $sessdata[UploadImageBaseDir];
+   if($BASE_DIR == '')
+   {
+	  if($config['subdir'])
+	  {
+		 $subdir='/'.$config['subdir']; 
+	  }
+	  $BASE_DIR = $bo->cur_upload_path().$subdir;
+	  if(!is_dir($BASE_DIR))
+	  {
+		 mkdir($BASE_DIR);
+	  }
+   }
+   $BASE_URL = $sessdata[UploadImageBaseURL];
+   if($BASE_URL == '') $BASE_URL = $bo->cur_upload_url().'/'.$config['subdir'];
+   $MAX_HEIGHT = $sessdata[UploadImageMaxHeight];
+   $MAX_WIDTH = $sessdata[UploadImageMaxWidth];
+   if(!$MAX_HEIGHT) $MAX_HEIGHT = $config['Max_image_height'];
+   if(!$MAX_WIDTH) $MAX_WIDTH = $config['Max_image_width'];
+
+   //After defining which library to use, if it is NetPBM or IM, you need to
+   //specify where the binary for the selected library are. And of course
+   //your server and PHP must be able to execute them (i.e. safe mode is OFF).
+   //If you have safe mode ON, or don't have the binaries, your choice is
+   //GD only. GD does not require the following definition.
+   //define('IMAGE_TRANSFORM_LIB_PATH', '/usr/bin/netpbm/');
+   //define('IMAGE_TRANSFORM_LIB_PATH', '"D:\\Program Files\\ImageMagick\\');
+
+   $BASE_ROOT = '';
+   $IMG_ROOT = $BASE_ROOT;
+   if(strrpos($BASE_DIR, '/')!= strlen($BASE_DIR)-1) 
+   $BASE_DIR .= '/';
+
+/*
+   if(strrpos($BASE_URL, '/')!= strlen($BASE_URL)-1) 
+   $BASE_URL .= '/';
+*/
+   //Built in function of dirname is faulty
+   //It assumes that the directory nane can not contain a . (period)
+   function dir_name($dir) 
+   {
+	  $lastSlash = intval(strrpos($dir, '/'));
+	  if($lastSlash == strlen($dir)-1){
+		 return substr($dir, 0, $lastSlash);
+	  }
+	  else
+	  return dirname($dir);
+   }
+
+   //include 'config.inc.php';
    //require_once 'std_functions.inc.php';
 
    function percent($p, $w) 
@@ -39,8 +139,8 @@
 	  return (real)(($percent * $whole) / 100); 
    } 
 
-   require_once '../ImageEditor/Transform.php';
-   require_once '../../class.filetypes.php';
+   require_once 'Transform.php';
+   require_once 'class.filetypes.php';
 
 
    //for thumbs funcs
@@ -172,9 +272,6 @@
    {
 	  global $clearUploads, $config, $select_image_after_upload, $select_other_after_upload, $dirPathPost, $BASE_URL;
 
-	  //_debug_array($config);
-	  //die();
-	  //_debug_array($file);
 	  if(is_file($file['tmp_name'])) 
 	  {
 
@@ -298,7 +395,6 @@
 	  global $BASE_DIR, $refresh_dirs;
 
 	  $del_folder = dir_name($BASE_DIR).$folder;
-	  //_debug_array($del_folder);	  
 	  if(is_dir($del_folder) && num_files($del_folder) <= 0) 
 	  {
 		 rm_all_dir($del_folder);
@@ -456,7 +552,7 @@
 
 	  $img_path = dir_name($img);
 	  $img_file = basename($img);
-	  $thumb_image = 'images.php?img='.urlencode($img);
+	  $thumb_image = 'iframe.dircontent.php?img='.urlencode($img);
 	  $img_url = $BASE_URL.$img_path.'/'.$img_file;
 	  $filesize = parse_size($size);
 	  $file_arr = explode('.', $file);
@@ -474,9 +570,9 @@
 			   <td><table width="100%" border="0" cellspacing="0" cellpadding="2">
 					 <tr> 
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="edit_pencil.gif" width="15" height="15" border="0"></a></td>
+						   <a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="img/edit_pencil.gif" width="15" height="15" border="0"></a></td>
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+						   <a href="iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="img/edit_trash.gif" width="15" height="15" border="0"></a></td>
 						<td width="98%" class="imgCaption"><? echo $info[0].'x'.$info[1]; ?> <? //echo $file_ext; ?></td>
 					 </tr>
 			   </table></td>
@@ -508,7 +604,7 @@
 			<tr> 
 			   <td align="center" class="imgBorder" onMouseOver="pviiClassNew(this,'imgBorderHover')" onMouseOut="pviiClassNew(this,'imgBorder')">
 				  <a href="javascript:;" onClick="javascript:otherSelected('<? echo $img_url; ?>');"><div>
-						<script language="JavaScript" type="text/JavaScript" src="../flash.js"></script>
+						<script language="JavaScript" type="text/JavaScript" src="js/flash.js"></script>
 						<script language="JavaScript" type="text/JavaScript">
 						   <!--
 						   if(flashcompattest()==true)
@@ -589,7 +685,7 @@
 						   </script>
 						</td>
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+						   <a href="iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="img/edit_trash.gif" width="15" height="15" border="0"></a></td>
 						<td width="98%" class="imgCaption"><a href="javascript:;" onClick="javascript:otherSelected('<? echo $img_url; ?>');"><? echo $file; ?> <? //echo $file_ext; ?></a></td>
 					 </tr>
 			   </table></td>
@@ -624,9 +720,9 @@
 			   <td><table width="100%" border="0" cellspacing="0" cellpadding="2">
 					 <tr> 
 						<!--td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						<a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="edit_pencil.gif" width="15" height="15" border="0"></a></td-->
+						<a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="img/edit_pencil.gif" width="15" height="15" border="0"></a></td-->
 						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+						   <a href="iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="img/edit_trash.gif" width="15" height="15" border="0"></a></td>
 						<td width="98%" class="imgCaption"><? echo $file; ?> <? //echo $file_ext; ?></td>
 					 </tr>
 			   </table></td>
@@ -647,8 +743,8 @@
 	  <table width="102" border="0" cellpadding="0" cellspacing="2">
 		 <tr> 
 			<td align="center" class="imgBorder" onMouseOver="pviiClassNew(this,'imgBorderHover')" onMouseOut="pviiClassNew(this,'imgBorder')">
-			   <a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir=<? echo $path; ?>" onClick="changeLoadingStatus('load')">
-				  <img src="folder.gif" width="80" height="80" border=0 alt="<? echo $dir; ?>">
+			   <a href="iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir=<? echo $path; ?>" onClick="changeLoadingStatus('load')">
+				  <img src="img/folder.gif" width="80" height="80" border=0 alt="<? echo $dir; ?>">
 			   </a>
 			</td>
 		 </tr>
@@ -656,7 +752,7 @@
 			<td><table width="100%" border="0" cellspacing="1" cellpadding="2">
 				  <tr> 
 					 <td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						<a href="images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFolder=<? echo $path; ?>&dir=<? echo $newPath; ?>" onClick="return deleteFolder('<? echo $dir; ?>', <? echo $num_files; ?>);"><img src="edit_trash.gif" width="15" height="15" border="0"></a></td>
+						<a href="iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFolder=<? echo $path; ?>&dir=<? echo $newPath; ?>" onClick="return deleteFolder('<? echo $dir; ?>', <? echo $num_files; ?>);"><img src="img/edit_trash.gif" width="15" height="15" border="0"></a></td>
 					 <td width="99%" class="imgCaption"><? echo $dir; ?></td>
 				  </tr>
 			</table></td>
@@ -686,7 +782,7 @@ function draw_no_dir()
 	  <td><div align="center" style="font-size:small;font-weight:bold;color:#CC0000;font-family: Helvetica, sans-serif;">Configuration Problem: &quot;<? echo $BASE_DIR; ?>&quot; does not exist.</div></td>
    </tr>
 </table>
-<?	
+<?php	
 }
 
 
@@ -702,8 +798,6 @@ function draw_table_header()
 	  echo '</table>';
 }
 
-?>
-<?php
    //below begins the real flow
    //		  $dirPath = eregi_replace($BASE_ROOT,'',$IMG_ROOT);
    $dirPath=$IMG_ROOT;
@@ -770,8 +864,8 @@ function draw_table_header()
 
 		 -->
 	  </style>
-	  <script type="text/javascript" src="../popup.js"></script>
-	  <script type="text/javascript" src="../../../../dialog.js"></script>
+	  <script type="text/javascript" src="js/popup.js"></script>
+	  <script type="text/javascript" src="js/dialog.js"></script>
 	  <script language="JavaScript" type="text/JavaScript">
 		 <!--
 		 function pviiClassNew(obj, new_style) 
@@ -782,18 +876,18 @@ function draw_table_header()
 
 		 function goUp() 
 		 {
-			   location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir=<? echo $upDirPath; ?>";
+			   location.href = "iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir=<? echo $upDirPath; ?>";
 		 }
 
 		 function changeDir(newDir) 
 		 {
-			   location.href = "ImageManager/images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+newDir;
+			   location.href = "iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+newDir;
 		 }
 
 		 function newFolder(oldDir, newFolder) 
 		 {
-			   //location.href = "ImageManager/images.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
-			   location.href = "images.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+oldDir+'&create=folder&foldername='+newFolder;
+			   //location.href = "iframe.dircontent.php?dir="+oldDir+'&create=folder&foldername='+newFolder;
+			   location.href = "iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&dir="+oldDir+'&create=folder&foldername='+newFolder;
 		 }
 
 		 function updateDir() 
