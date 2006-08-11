@@ -65,6 +65,7 @@
 
 	  function formview_edit($field_name,$value,$config,$attr_arr)
 	  {	
+		 //_debug_array($field_name);
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 		 $this->tplsav2->assign('config',$config);
 
@@ -158,7 +159,7 @@
 			   $name = $prefix.'_IMG_'.$stripped_name.$i;
 			   $span_id = $prefix.'_PATH_'.$stripped_name.$i;
 
-			   $showfile .= '<img id="'.$name.'" src="'.$this->spacer.'" '.$this->spacer_style.' />';
+			   $showfile = '<img id="'.$name.'" src="'.$this->spacer.'" '.$this->spacer_style.' />';
 			   $showfile .= '<br/><span id="'.$span_id.'"></span>';
 
 			   $this->tplsav2->assign('i',$i);
@@ -344,9 +345,6 @@
 
 		 if($file_info_arr['not_exist'])
 		 {
-			//$ret= '<img id="'.$name.'" src="'.$this->spacer.'" '.$this->spacer_style.' />';
-			//$ret.= '<br/><span id="'.$span_id.'"></span>';
-
 			$this->tplsav2->imglink=$this->spacer;
 			$this->tplsav2->error_msg=lang('File does not exist on server, (%1)',$file_path);
 			$this->tplsav2->file_name=$this->tplsav2->fetch('filemanager.error.tpl.php');

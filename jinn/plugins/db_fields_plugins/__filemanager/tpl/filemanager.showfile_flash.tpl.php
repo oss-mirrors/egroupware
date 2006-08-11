@@ -6,7 +6,7 @@
    }
    else
    {
-		 document.write('<img id="swflash" src="<?=$this->flash_icon?>" alt="<?=lang('flash')?>" />');
+		 document.write('<img id="<?=$this->name?>" src="<?=$this->flash_icon?>" alt="<?=lang('flash')?>" />');
    }
 </script>
 <br/>
