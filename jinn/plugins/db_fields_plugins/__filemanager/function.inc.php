@@ -24,15 +24,24 @@
 
    function make_thumbs($img) 
    {
-	  die('hallo');
 	  global $BASE_DIR, $BASE_URL;
 
 	  $path_info = pathinfo($img);
 	  $path = $path_info['dirname']."/";
 	  $img_file = $path_info['basename'];
-	  _debug_array($img_file);
 
 	  $thumb = $path.'.'.$img_file;
+
+	  if(is_file($BASE_DIR.$thumb)) 
+	  {
+		 $t_mtime = filemtime($BASE_DIR.$thumb);
+		 $o_mtime = filemtime($BASE_DIR.$img);
+
+		 if($t_mtime > $o_mtime) {
+			header('Location: '.$BASE_URL.$path.'.'.$img_file);
+			exit();		
+		 }
+	  }
 
 	  $img_info = getimagesize($BASE_DIR.$path.$img_file);
 	  $w = $img_info[0]; $h = $img_info[1];
@@ -40,7 +49,6 @@
 	  $nw = 96; $nh = 96;
 
 	  //createminithumb
-
 	  if($w <= $nw && $h <= $nh) 
 	  {
 		 if(!is_file($BASE_PATH.$path.'.'.$img_file));
@@ -51,16 +59,6 @@
 		 exit();		
 	  }
 
-	  if(is_file($BASE_DIR.$thumb)) {
-
-		 $t_mtime = filemtime($BASE_DIR.$thumb);
-		 $o_mtime = filemtime($BASE_DIR.$img);
-
-		 if($t_mtime > $o_mtime) {
-			header('Location: '.$BASE_URL.$path.'.'.$img_file);
-			exit();		
-		 }
-	  }
 
 	  $img_thumbs = Image_Transform::factory(IMAGE_CLASS);
 	  $img_thumbs->load($BASE_DIR.$path.$img_file);

@@ -65,7 +65,8 @@
 
 	  function formview_edit($field_name,$value,$config,$attr_arr)
 	  {	
-		 //_debug_array($field_name);
+		 //return _debug_array($config,false);
+		 
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 		 $this->tplsav2->assign('config',$config);
 
@@ -142,6 +143,7 @@
 			foreach($value_arr as $file_path)
 			{
 			   $i++;
+			   //echo $file_path;
 
 			   $showfile = $this->show_file($file_path, true, $field_name, $i);
 			   $this->tplsav2->assign('showfile',$showfile);
@@ -355,25 +357,32 @@
 		 elseif($file_info_arr['type_gifjpgpng'])
 		 {
 			$absolute_thumb_path=$dir_name.'/.'.$file_name;
+			$this->tplsav2->filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 
-			// if thumb exist
-			if(is_file($absolute_thumb_path))
-			{
-			   $this->tplsav2->imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_thumb_path);
-			   $this->tplsav2->is_thumb=true;
-			}
-			else
+
+			unset($this->tplsav2->popup);
+			// no popup needed
+			if($file_info_arr['img_width']<150)
 			{
 			   $this->tplsav2->imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 			}
-
-			if($file_info_arr['img_width']>150)
+			else
 			{
 			   $pop_width = ($file_info_arr['img_width']+50);
 			   $pop_height = ($file_info_arr['img_height']+50);
 			   $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
-
 			   $this->tplsav2->popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
+
+			   // if thumb exist
+			   if(is_file($absolute_thumb_path))
+			   {
+				  $this->tplsav2->tmblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_thumb_path);
+			   }
+			   else
+			   {
+				  $this->tplsav2->size_back=true;
+				  $this->tplsav2->tmblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+			   }
 			}
 
 			return $this->tplsav2->fetch('filemanager.showfile_img.tpl.php');

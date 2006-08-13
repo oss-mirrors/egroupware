@@ -90,8 +90,8 @@
    //for thumbs funcs
    $img = $BASE_DIR.urldecode($_GET['img']);
 
-   //   die($img);
-   _debug_array($_GET);
+   //   echo ($img);
+   //_debug_array($_GET);
    if(is_file($img)) {
 	  make_thumbs(urldecode($_GET['img']));
 	  exit;

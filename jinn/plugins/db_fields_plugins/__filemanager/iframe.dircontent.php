@@ -51,6 +51,18 @@
 
    $bo = CreateObject('jinn.bouser');
 
+   $plug_root= EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__filemanager';
+   $tplsav2 = CreateObject('phpgwapi.tplsavant2');
+   $tplsav2->addPath('template',$plug_root.'/tpl');
+
+   //$_GET[field]=ereg_replace("UNIQ[a-zA-Z0-9]{13}SOURCE", "", $_GET[field]);
+   /*if(ereg(".*UNIQ[a-zA-Z0-9]{13}SOURCE.*", $_GET[field]))
+   {
+  		echo 'hallo'; 
+	 }
+	 */
+   
+
    if($_GET[curr_obj_id])
    {
 	  $field_config = $bo->so->get_field_values($_GET[curr_obj_id],$_GET[field]);
@@ -59,8 +71,10 @@
    {
 	  $field_config = $bo->so->get_field_values($bo->session['site_object_id'],$_GET[field]);
    }
+
    $config = unserialize(base64_decode($field_config[field_plugins]));
    $config = $config[conf];
+   //_debug_array($config);
 
    $BASE_DIR = $sessdata[UploadImageBaseDir];
    if($BASE_DIR == '')
@@ -88,18 +102,12 @@
    $BASE_DIR .= '/';
 
    //for thumbs funcs
-   $img = $BASE_DIR.urldecode($_GET['img']);
-
-//   die($img);
-//_debug_array($_GET);
-/*   if(is_file($img)) {
-	  make_thumbs(urldecode($_GET['img']));
-	  exit;
-   }*/
-   //end for thumbs funcs
+   //$img = $BASE_DIR.urldecode($_GET['img']);
 
    $filetypes = new filetypes();
    $extensions = $filetypes->get_extensions($config['Filetype']);
+
+   //_debug_array($config);
 
    if(isset($_GET['dir'])) {
 	  $dirParam = $_GET['dir'];
@@ -157,38 +165,22 @@
 
    function show_image($img, $file, $info, $size) 
    {
-	  global $BASE_DIR, $BASE_URL, $newPath, $extensions;
-
+	  global $BASE_DIR, $BASE_URL, $newPath, $extensions,$subdir;
 	  $img_path = dir_name($img);
 	  $img_file = basename($img);
-	  $thumb_image = 'makethumb.php?img='.urlencode($img);
-	  $img_url = $BASE_URL.$img_path.'/'.$img_file;
-	  $filesize = parse_size($size);
+	  //_debug_array($BASE_DIR);
+
+	  $GLOBALS['tplsav2']->thumb_image = 'makethumb.php?img='.urlencode( ($subdir?$subdir.'/':'') . $img );
+	  $GLOBALS['tplsav2']->img_url = $BASE_URL.$img_path.'/'.$img_file;
+	  //_debug_array($GLOBALS['tplsav2']->img_url);
+	  $GLOBALS['tplsav2']->info = $info;
+	  $GLOBALS['tplsav2']->file = $file;
+	  $GLOBALS['tplsav2']->filesize = parse_size($size);
 	  $file_arr = explode('.', $file);
 	  $file_ext = $file_arr[count($file_arr)-1];
 	  if($extensions[$file_ext] || $extensions['*'])
 	  {
-	  ?>
-	  <td>
-		 <table width="102" border="0" cellpadding="0" cellspacing="2">
-			<tr> 
-			   <td align="center" class="imgBorder" onMouseOver="pviiClassNew(this,'imgBorderHover')" onMouseOut="pviiClassNew(this,'imgBorder')">
-				  <a href="javascript:;" onClick="javascript:imageSelected('<? echo $img_url; ?>', <? echo $info[0];?>, <? echo $info[1]; ?>,'<? echo $file; ?>');"><img src="<? echo $thumb_image; ?>" alt="<? echo $file; ?> - <? echo $filesize; ?>" border="0"></a></td>
-			</tr>
-			<tr> 
-			   <td><table width="100%" border="0" cellspacing="0" cellpadding="2">
-					 <tr> 
-						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="javascript:;" onClick="javascript:preview('<? echo $img_url; ?>', '<? echo $file; ?>', ' <? echo $filesize; ?>',<? echo $info[0].','.$info[1]; ?>);"><img src="img/edit_pencil.gif" width="15" height="15" border="0"></a></td>
-						<td width="1%" class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-						   <a href="iframe.dircontent.php?field=<?php echo($_GET['field']); ?>&curr_obj_id=<?=$_GET[curr_obj_id]?>&delFile=<? echo $file; ?>&dir=<? echo $newPath; ?>" onClick="return deleteImage('<? echo $file; ?>');"><img src="img/edit_trash.gif" width="15" height="15" border="0"></a></td>
-						<td width="98%" class="imgCaption"><? echo $info[0].'x'.$info[1]; ?> <? //echo $file_ext; ?></td>
-					 </tr>
-			   </table></td>
-			</tr>
-		 </table>
-	  </td>
-	  <?php
+			return $GLOBALS['tplsav2']->fetch('filemanager.dircontent_img.tpl.php');
 	  }
    }
 
@@ -741,7 +733,7 @@ if($slashIndex > 1 && substr($dirPath, $slashIndex-1, $slashIndex) == '/')
 			for($i=0; $i<count($images); $i++) 
 			{
 			   $image_name = key($images);
-			   show_image($images[$image_name]['file'], $image_name, $images[$image_name]['img_info'], $images[$image_name]['size']);
+			   echo show_image($images[$image_name]['file'], $image_name, $images[$image_name]['img_info'], $images[$image_name]['size']);
 			   next($images);
 			}
 			for($i=0; $i<count($flash); $i++) 

@@ -34,11 +34,17 @@
    $bo = CreateObject('jinn.bouser');
    
    $plug_root= EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__filemanager';
-
    $tplsav2 = CreateObject('phpgwapi.tplsavant2');
    $tplsav2->addPath('template',$plug_root.'/tpl');
 
    $tplsav2->SAFE_MODE = false;	//In safe mode, directory creation is not permitted.
+
+   if(ereg("UNIQ[a-zA-Z0-9]{13}SOURCE", $_GET[field]))
+   {
+	  $_t1=explode('UNIQ',$_GET[field]);
+	  $_t2=explode('SOURCE',$_t1[1]);
+	  $_GET[field]=$_t2[0];
+   }
 
    if($_GET[curr_obj_id])
    {
