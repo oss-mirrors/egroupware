@@ -187,6 +187,10 @@
 	  */
 	  function has_object_access($object_id,$uid=false)
 	  {
+		 if($GLOBALS['egw_info']['flags']['currentapp'] != 'jinn')
+		 {
+			return true;
+		 }
 		 if(!$uid)
 		 {
 			$uid=$GLOBALS['phpgw_info']['user']['account_id'];
