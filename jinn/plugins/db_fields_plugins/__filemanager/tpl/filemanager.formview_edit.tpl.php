@@ -10,6 +10,8 @@
 		 text-align:center;
    }
 </style>
+
+<!-- TODO render only once !!! -->
 <input type="hidden" value="" id="CURRENT_RECORD" name="CURRENT_RECORD">
 <input type="hidden" value="" id="CURRENT_FIELD" name="CURRENT_FIELD">
 <input type="hidden" value="" id="CURRENT_SLOT" name="CURRENT_SLOT">
@@ -28,12 +30,10 @@
 <div style="clear:both">
    <input style="margin:5px 0px 5px 0px;" class="egwbutton"  type="button" value="<?=lang('add slot')?>" onClick="moreFields('<?=$this->field_name?>')">
 </div>
-<input id="counter<?=$this->field_name?>" name="counter<?=$this->field_name?>" type="hidden" value="<?=$this->counter?>" />
-
-
 <fieldset id="templbox<?=$this->field_name?>" class="fmfieldset" style="display:none;overflow:hidden;">
    <legend id="label<?=$this->field_name?>"></legend>
-
+   
+   <input id="counter<?=$this->field_name?>" name="counter<?=$this->field_name?>" type="hidden" value="<?=$this->counter?>" />
    <input type="hidden" value="" id="<?=$this->prefix.'_IMG_EDIT_'.$this->stripped_name?>" name="<?=$this->prefix.'_IMG_EDIT_'.$this->stripped_name?>">
 
    <div style="padding-top:10px;">

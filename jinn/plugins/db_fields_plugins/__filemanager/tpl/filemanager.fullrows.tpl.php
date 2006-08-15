@@ -1,5 +1,5 @@
 <div>
-   <input type="hidden" value="" name="<?=$this->prefix.'_IMG_EDIT_'.$this->stripped_name.$this->i?>">
+   <input type="hidden" value="" id="<?=$this->prefix.'_IMG_EDIT_'.$this->stripped_name.$this->i?>" name="<?=$this->prefix.'_IMG_EDIT_'.$this->stripped_name.$this->i?>">
    <fieldset class="fmfieldset" class="overflow:hidden;">
 	  <legend><?=lang('File %1',$this->i)?></legend>
 	  <div style="padding:3px;padding-top:0px;overflow:hidden;">

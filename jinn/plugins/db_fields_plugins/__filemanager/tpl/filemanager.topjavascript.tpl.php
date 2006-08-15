@@ -5,7 +5,6 @@
 
    function childsIDplusOne(srcID,prnt)
    {
-		 //alert(counter);
 		 var newField = prnt.childNodes;
 		 if(newField.length>0)
 		 {
@@ -58,9 +57,12 @@
 		 childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popup.fm_mainwindow.php?field=" + field + "&curr_obj_id=" +obj_id,"console","resizable=no,width=580,height=440");
 		 //childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field=" + field + "&curr_obj_id=" +obj_id,"console","resizable=no,width=580,height=440");
 		 if (childWindow.opener == null)	childWindow.opener = self;
-		 document.frm.CURRENT_RECORD.value=record;
-		 document.frm.CURRENT_FIELD.value=field;
-		 document.frm.CURRENT_SLOT.value=slot;
+		 //		 document.frm.CURRENT_RECORD.value=record;
+		 //		 document.frm.CURRENT_FIELD.value=field;
+		 //		 document.frm.CURRENT_SLOT.value=slot;
+		 document.getElementById('CURRENT_RECORD').value=record;
+		 document.getElementById('CURRENT_FIELD').value=field;
+		 document.getElementById('CURRENT_SLOT').value=slot;
    }
 
    function onBrowseServer2(record, field, calledfrom) 
@@ -68,9 +70,12 @@
 		 var _str = calledfrom.id;
 		 var _arr = _str.split('_');
 
-		 document.frm.CURRENT_RECORD.value=record;
-		 document.frm.CURRENT_FIELD.value=field;
-		 document.frm.CURRENT_SLOT.value=_arr[1];
+		 //document.frm.CURRENT_RECORD.value=record;
+		 //document.frm.CURRENT_FIELD.value=field;
+		 //document.frm.CURRENT_SLOT.value=_arr[1];
+		 document.getElementById('CURRENT_RECORD').value=record;
+		 document.getElementById('CURRENT_FIELD').value=field;
+		 document.getElementById('CURRENT_SLOT').value=_arr[1];
 
 		 childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popup.fm_mainwindow.php?field=" + field,"console","resizable=no,width=580,height=440");
 		 //childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field=" + field,"console","resizable=no,width=580,height=440");
@@ -79,30 +84,16 @@
 
    function setSlot(record, field, slot, fileurl, thumbnail, buttontext, showfilename)
    {
-
-		 //set the img src property for preview purposes
-		 //fill a hidden form input to enable processing and saving of the chosen image path on submitting the form
-
-		 //todo: set img style?
-		 //todo: remove width/height text?
-		 //todo: remove delete checkbox?
-
 		 var cmd;
+		 //todo replace other cmd/eval code with normal DOM calls
 
-		 if(document.getElementById(record + "_IMG_EDIT_" + field + slot ))
+		 /*if(document.getElementById(record + "_IMG_EDIT_" + field + slot ))
 		 {
 			   cmd = "document.getElementById(\"" + record + "_IMG_EDIT_" + field + slot +"\").value = \"" + fileurl + "\";";
 
-		 }
-		 else
-		 {
-			   cmd = "document.frm." + record + "_IMG_EDIT_" + field + slot +".value = \"" + fileurl + "\";";
-		 }
+		 }*/
 
-		 //	  document.getElementById(record + "_IMG_EDIT_" + field + slot).value = fileurl;
-
-		 eval(cmd);
-
+		 document.getElementById(record + "_IMG_EDIT_" + field + slot).value = fileurl;
 		 document.getElementById( record + "_IMG_" + field + slot ).src = thumbnail;
 
 		 // remove border when we replcase it with a spacer
@@ -120,8 +111,6 @@
 		 {
 			   document.getElementById( record + "_IMGLINK_" + field + slot ).href = 'javascript:alert(\'<?=lang('To see changed previews you have to safe this record first.')?>\')';
 		 }
-		 //	  cmd = "document.frm." + record + "_IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + buttontext + "\";";
-		 //eval(cmd);
 
 		 if(showfilename)
 		 {
@@ -151,15 +140,16 @@
 			   var idx = val2_arr.length - 1;
 			   val2_arr[idx] = "." + val2_arr[idx];
 			   var thumb = val2_arr.join("/");
-			   setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, thumb, getLabel("replace"), false);
+			   //setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, thumb, getLabel("replace"), false);
+			   setSlot(document.getElementById('CURRENT_RECORD').value, document.getElementById('CURRENT_FIELD').value, document.getElementById('CURRENT_SLOT').value, fileurl, thumb, getLabel("replace"), false);
 		 }
 		 else if(filetype == "<?=$this->type_id_other?>")
 		 {
-			   setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, "<?=$this->unknown?>", getLabel("replace"), true);
+			   setSlot(document.getElementById('CURRENT_RECORD').value, document.getElementById('CURRENT_FIELD').value, document.getElementById('CURRENT_SLOT').value, fileurl, "<?=$this->unknown?>", getLabel("replace"), true);
 		 }
 		 else
 		 {
-			   setSlot(document.frm.CURRENT_RECORD.value, document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, fileurl, "<?=$this->unknown?>", getLabel("replace"), true);
+			   setSlot(document.getElementById('CURRENT_RECORD').value, document.getElementById('CURRENT_FIELD').value, document.getElementById('CURRENT_SLOT').value, fileurl, "<?=$this->unknown?>", getLabel("replace"), true);
 		 }
    }
 
@@ -181,3 +171,4 @@
    }
    -->
 </script>
+

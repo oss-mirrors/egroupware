@@ -16,7 +16,7 @@
 					 doc.focus();
 			   }
 
-			   var field = opener.document.frm.CURRENT_FIELD.value;
+			   var field = opener.document.getElementById('CURRENT_FIELD').value;
 
 			   document.getElementById("f_width").value="<?php echo($this->config[Max_image_width]); ?>";
 			   document.getElementById("f_height").value="<?php echo($this->config[Max_image_height]); ?>";
