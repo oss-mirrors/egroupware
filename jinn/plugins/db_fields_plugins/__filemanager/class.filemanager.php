@@ -65,8 +65,6 @@
 
 	  function formview_edit($field_name,$value,$config,$attr_arr)
 	  {	
-		 //return _debug_array($config,false);
-		 
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 		 $this->tplsav2->assign('config',$config);
 
@@ -143,7 +141,6 @@
 			foreach($value_arr as $file_path)
 			{
 			   $i++;
-			   //echo $file_path;
 
 			   $showfile = $this->show_file($file_path, true, $field_name, $i);
 			   $this->tplsav2->assign('showfile',$showfile);
@@ -351,8 +348,7 @@
 			$this->tplsav2->error_msg=lang('File does not exist on server, (%1)',$file_path);
 			$this->tplsav2->file_name=$this->tplsav2->fetch('filemanager.error.tpl.php');
 
-			$ret.= $this->tplsav2->fetch('filemanager.showfile_img.tpl.php');
-			return $ret;
+			return $this->tplsav2->fetch('filemanager.showfile_img.tpl.php');
 		 }
 		 elseif($file_info_arr['type_gifjpgpng'])
 		 {
