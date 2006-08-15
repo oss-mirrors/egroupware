@@ -181,13 +181,16 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 function _egwcalendarsync_search($content, $contentType)
 {
 	#error_log("SymcML: egwsifcalendarsync search content contentType: $contentType");
-	#Horde::logMessage("SymcML: egwsifcalendarsync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	Horde::logMessage("SymcML: egwcalendarsync search contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 		case 'text/calendar':
+			$state = $_SESSION['SyncML.state'];
+			$deviceInfo = $state->getClientDeviceInfo();
+
 			$boical		=& CreateObject('calendar.boical');
+			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$eventId	=  $boical->search($content);
 			break;
 			

@@ -135,7 +135,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',true);
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-			$contactId		= $vcaladdressbook->addVCard($content);
+			$contactId		= $vcaladdressbook->addVCard($content, false);
 			break;
 
 		case 'text/x-s4j-sifc':

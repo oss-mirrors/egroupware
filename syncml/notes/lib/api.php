@@ -125,7 +125,7 @@ function &_egwnotessync_listBy($action, $timestamp)
  */
 function _egwnotessync_import($content, $contentType, $notepad = null)
 {
-	Horde::logMessage("SymcML: egwnotessync import content: ... contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwnotessync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 #    global $prefs;
 #	require_once dirname(__FILE__) . '/base.php';
 #	require_once 'Horde/History.php';
@@ -149,8 +149,8 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 	
 	switch ($contentType) {
 		case 'text/plain':
-			$content = $botranslation->convert($content,'utf-8');
-			$noteId = ExecMethod('infolog.boinfolog.write',array('info_des' => $content, 'info_type' => 'note'));
+			$content = $botranslation->convert($content, 'utf-8');
+			$noteId = ExecMethod('infolog.boinfolog.write', array('info_des' => $content, 'info_type' => 'note'));
 			
 			break;
 
