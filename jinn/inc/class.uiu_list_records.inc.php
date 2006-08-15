@@ -908,10 +908,6 @@
 			
 			$buttonrow[]=$this->tplsav2->fetch('runonrecord_icons.tpl.php');
 		 }
-/*		 _debug_array($buttonrow);
-		 echo "hallo";
-		 die();
-*/
 		 return $buttonrow;
 	  }
 

@@ -102,7 +102,6 @@
 		 {
 			$field_values[field_type] = $type;
 		 }
-		 //_debug_array($plug_conf_arr[conf]);
 		 return $this->call_plugin($plug_conf_arr[name], 'listview_read', $value, $plug_conf_arr[conf], $where_val_encoded, $field_name,'','','',$field_values);
 	  }
 

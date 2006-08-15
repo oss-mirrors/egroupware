@@ -1082,137 +1082,6 @@
 	  }
 
 	  /**
-	  * ajax_get_m2o_frm 
-	  * 
-	  * @access public
-	  * @return void
-	  */
-	  /*function ajax_get_m2o_frm()
-	  {
-		 $object_arr=$this->bo->so->get_object_values_by_uniq($_GET[obj_conf]);
-		 
-		 $this->bo->session['m2o_obj_id']=$object_arr[object_id];
-		 $this->bo->sessionmanager->save();
-		 
-		 $where_string=base64_decode($_GET[where_string]);
-		 if($this->bo->where_string && !$alt_object_arr)
-		 {
-			$values_object= $this->bo->so->get_record_values($this->bo->session['site_id'],$object_arr[table_name],'','','','','name','','*',$where_string);
-		 }
-
-		 $this->relation1_array = $this->bo->extract_O2M_relations($object_arr[relations]);
-		 $fields_arr=$this->mk_fields_array('M2OX00',$object_arr,$values_object[0]);
-
-		 $this->tplsav2->form_rows=$this->parse_fields_to_layout($fields_arr);
-		 
-		 unset($this->bo->session['m2o_obj_id']);
-		 $this->bo->sessionmanager->save();
-
-		 header( "Content-type: text/xml" );
-		 header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); 
-		 header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
-		 header( "Cache-Control: no-cache, must-revalidate" );
-		 header( "Pragma: no-cache" );
-
-		 $this->tplsav2->display('frm_xmlhttp_req_edit_record.tpl.php');
-	  }*/
-
-	  /**
-	  * ajax_save_m2o_frm: save many to one post to the database
-	  *
-	  * this function checks if its an insert or an update and it makes sure
-	  * the foreign key is filled with the correct local value.
-	  * 
-	  * @access public
-	  * @return void
-	  */
-	  /*function ajax_save_m2o_frm()
-	  {
-		 if($_POST)
-		 {
-			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
-
-			$_m2orule_arr=unserialize(base64_decode($_GET[m2o_rule_arr]));
-			$foreign_key=$_m2orule_arr[foreign_key];
-			$_POST['M2OX00'.$foreign_key]=$_GET[localkeyvalue];
-
-			if(trim($_GET[where_string]))
-			{
-			   $_POST['MLTWHR00']=$_GET[where_string];
-
-			   $status = $this->bo->multiple_records_update($where_arr,1,$object_arr);
-			}
-			else
-			{
-			   $status=$this->bo->multiple_records_insert(1,$object_arr); 
-			}
-		 }
-		 header( "Content-type: text/xml" );
-		 header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); 
-		 header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
-		 header( "Cache-Control: no-cache, must-revalidate" );
-		 header( "Pragma: no-cache" );
-		 echo 
-		 '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-		 <response>
-		 <field>
-		 <status>
-		 </status>
-		 </field>
-		 </response>
-		 '; 
-	  }*/
-
-	  /**
-	  * ajax_delete_m2o 
-	  * 
-	  * @access public
-	  * @return void
-	  */
-	  /*function ajax_delete_m2o()
-	  {
-		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
-		 $where_arr[]=base64_decode($_GET[where_string]);
-
-		 $status=$this->bo->multiple_records_delete($where_arr,$object_arr,false);
-
-		 header( "Content-type: text/xml" );
-		 header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); 
-		 header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
-		 header( "Cache-Control: no-cache, must-revalidate" );
-		 header( "Pragma: no-cache" );
-		 echo 
-		 '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-		 <response>
-		 <field>
-		 <status>
-		 </status>
-		 </field>
-		 </response>
-		 '; 
-	  }*/
-
-	  /**
-	  * ajax_get_m2o_list 
-	  * 
-	  * @access public
-	  * @return void
-	  */
-	  /*function ajax_get_m2o_list()
-	  {
-		 // get list of related
-		 $m2o_rule_arr=unserialize(base64_decode($_GET[m2o_rule_arr_enc]));
-		 $this->tplsav2->cdata = $this->create_m2o_list($m2o_rule_arr,$_GET[localkey]);
-
-		 header( "Content-type: text/xml" );
-		 header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); 
-		 header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" );
-		 header( "Cache-Control: no-cache, must-revalidate" );
-		 header( "Pragma: no-cache" );
-		 $this->tplsav2->display('frm_xmlhttp_req_cdata.tpl.php');
-	  }*/
-
-	  /**
 	  * create_m2o_list 
 	  * 
 	  * @param mixed $m2o_rule_arr 
@@ -1320,10 +1189,9 @@
 				  $_where_string=base64_encode($where_string);
 			   }
 
-
 			   foreach($col_names_list  as $onecolname)
 			   {
-				  $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecolname[name]);
+				  $field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$onecolname[name]);
 				  $recordvalue=$linked_rec_arr[$onecolname[name]];
 
 				  if ($recordvalue && is_array($fields_with_relation1) && in_array($onecolname[name],$fields_with_relation1))
@@ -1383,8 +1251,6 @@
 		 $this->init_ajax2();
 		 
 		 $object_arr=$this->bo->so->get_object_values_by_uniq($_GET[obj_conf]);
-		 //_debug_array($object_arr);
-		 //_debug_array($_GET);
 
 		 $this->bo->session['m2o_obj_id']=$object_arr[object_id];
 		 $this->bo->sessionmanager->save();
@@ -1418,8 +1284,6 @@
 	  {
 		 $this->init_ajax2();
 		 
-		 //_debug_array($_POST);
-		 //die();
 		 if($_POST)
 		 {
 			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
@@ -1440,10 +1304,6 @@
 			}
 		 }
 		 
-		 //$data=_debug_array($_POST,false);
-		 //$data=_debug_array($status,false);
-		 
-		 //$value[status]=$data;
 		 $value[status]='tja';
 		 
 		 $output = $this->json->encode($value);
@@ -1468,12 +1328,10 @@
 	  }
 
 	  function ajax2_get_m2o_list()
-//	  function ajax2_get_list()
 	  {
 		 $this->init_ajax2();
 		 // get list of related
 		 $m2o_rule_arr=unserialize(base64_decode($_GET[m2o_rule_arr_enc]));
-		 //$this->tplsav2->cdata = $this->create_m2o_list($m2o_rule_arr,$_GET[localkey]);
 		 $value['list'] = $this->create_m2o_list($m2o_rule_arr,$_GET[localkey]);
 		 
 		 $output = $this->json->encode($value);
