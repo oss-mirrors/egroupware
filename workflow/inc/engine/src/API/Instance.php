@@ -220,7 +220,7 @@ class Instance extends Base {
       $init_category = $this->category;
       // we re-read instance members to detect conflicts, changes made while we were unsynchronised
       $this->getInstance($this->instance_id, false, false);
-      // Now for each modified field we'll change the database vale if nobody has changed
+      // Now for each modified field we'll change the database value if nobody has changed
       // the database value before us
       $bindvars = Array();
       $querysets = Array();
@@ -234,6 +234,8 @@ class Instance extends Base {
       $this->_synchronize_member($this->changed['category'],$init_category,$this->category,tra('category'),'wf_category',$querysets,$bindvars);
       $this->_synchronize_member($this->changed['properties'],$init_properties,$this->properties,tra('property'),'wf_properties',$querysets,$bindvars);
       $this->_synchronize_member($this->changed['nextActivity'],$init_nextActivity,$this->nextActivity,tra('next activity'),'wf_next_activity',$querysets,$bindvars);
+      $this->_synchronize_member($this->changed['nextUser'],$init_nextUser,$this->nextUser,tra('next user'),'wf_next_user',$querysets,$bindvars);
+
       if (!(empty($querysets)))
       {
         $queryset = implode(' = ?,', $querysets). ' = ?';
@@ -288,6 +290,7 @@ class Instance extends Base {
   some user.
   */
   function setNextUser($user) {
+	/* TODO: check if $user<>changed['nextUser'] before unsynching 
     $this->changed['nextUser'] = $user;
     $this->unsynch = true;
     return true;
@@ -296,7 +299,7 @@ class Instance extends Base {
   /*!
   This method can be used to get the user that must perform the next 
   activity of the process. This can be empty if no setNextUser was done before.
-  It wont return the default user but inly the user which was assigned by a setNextUser.
+  It wont return the default user but only the user which was assigned by a setNextUser.
   */
   function getNextUser() 
   {
