@@ -540,7 +540,7 @@ class GUI extends Base {
     if ($add_completed_instances) $or_status[] = "(gi.wf_status='completed')";
     if (!(empty($or_status))) 
     {
-        $mid .= 'and ('.implode(' or ', $or_status).')';
+        $mid .= ' and ('.implode(' or ', $or_status).')';
     }
     else
     { //special case, we want no active instance, and we do not want exception/aborted and completed, so what?
@@ -650,7 +650,7 @@ class GUI extends Base {
   */
   function gui_list_instances_by_owner($user, $offset, $maxRecords, $sort_mode, $find, $where='', $add_properties=false, $pId=0, $add_active_instances=true, $add_completed_instances=false, $add_exception_instances=false, $add_aborted_instances=false)
   {
-	return $this->gui_list_user_instances($user,$offset,$maxRecords,$sort_mode,$find,$where,$add_properties, $pId,add_active_instances,$add_completed_instances,$add_exception_instances, $add_aborted_instances,true);
+	return $this->gui_list_user_instances($user,$offset,$maxRecords,$sort_mode,$find,$where,$add_properties, $pId,$add_active_instances,$add_completed_instances,$add_exception_instances, $add_aborted_instances,true);
   }
 
   /*! Get the view activity id avaible for a given process
