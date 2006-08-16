@@ -602,17 +602,25 @@
 		 {
 			//get all events plugins configured to this object
 			$stored_configs = unserialize(base64_decode($this->site_object['events_config']));
+			
 			if(is_array($stored_configs))
 			{
-			   foreach($stored_configs as $config)
+			   if(isset($_GET['plgkey']))
 			   {
-				  if($event == $config['conf']['event'])
+				  $status = $this->object_events_plugin_manager->call_event_action($post, $stored_configs[$_GET['plgkey']]);
+			   }
+			   else
+			   {
+				  foreach($stored_configs as $config)
 				  {
-					 /*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
-					 met als argumenten de _POST array en de plugin configuratie. 
-					 Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
-					 De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
-					 $status = $this->object_events_plugin_manager->call_event_action($post, $config);
+					 if($event == $config['conf']['event'])
+					 {
+						/*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
+						met als argumenten de _POST array en de plugin configuratie. 
+						Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
+						De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
+						$status = $this->object_events_plugin_manager->call_event_action($post, $config);
+					 }
 				  }
 			   }
 			}
