@@ -197,6 +197,32 @@
 		 {
 			$this->uijapie->bo->site_object['extra_where_sql_filter']=$this->extra_where;
 		 }
+		 if($this->upload_url)
+		 {
+			$this->uijapie->bo->site_object['cur_upload_url'] = $this->upload_url;
+			$this->uijapie->bo->plug->local_bo->site_object['cur_upload_url'] = $this->upload_url;
+
+			$sessdata =  $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
+			$sessdata['UploadImageBaseURL'] = $this->upload_url;
+			if(count($sessdata) > 0) //this catches the bug in the phpgwapi crypto class..
+			{
+			   $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi',$sessdata);
+			}
+
+
+		 }
+		 if($this->upload_path)
+		 {
+			$this->uijapie->bo->site_object['cur_upload_path'] = $this->upload_path;
+			$this->uijapie->bo->plug->local_bo->site_object['cur_upload_path'] = $this->upload_path;
+
+			$sessdata =  $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
+			$sessdata['UploadImageBaseDir'] = $this->upload_path;
+			if(count($sessdata) > 0) //this catches the bug in the phpgwapi crypto class..
+			{
+			   $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi',$sessdata);
+			}
+		 }
 
 		 $this->uijapie->japielink=$this->make_japie_link();
 		 $this->uijapie->tplsav2->japie=true;
