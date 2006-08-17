@@ -57,12 +57,12 @@
 
 <!-- END body -->
 <!-- BEGIN footer -->
-  <tr bgcolor="{th_bg} ">
-    <td colspan="2" align="center">
-      <input class="egwbutton"  type="submit" name="submit" value="{lang_submit}">
-      <input class="egwbutton"  type="submit" name="cancel" value="{lang_cancel}">
-    </td>
-  </tr>
+<tr bgcolor="{th_bg} ">
+<td colspan="2" align="center">
+<input class="egwbutton"  type="submit" name="submit" value="{lang_submit}">
+<input class="egwbutton"  type="submit" name="cancel" value="{lang_cancel}">
+</td>
+</tr>
 </table>
 </form>
 <!-- END footer -->
