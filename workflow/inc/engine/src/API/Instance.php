@@ -290,7 +290,7 @@ class Instance extends Base {
   some user.
   */
   function setNextUser($user) {
-	/* TODO: check if $user<>changed['nextUser'] before unsynching 
+	// TODO: check if $user<>changed['nextUser'] before unsynching 
     $this->changed['nextUser'] = $user;
     $this->unsynch = true;
     return true;
