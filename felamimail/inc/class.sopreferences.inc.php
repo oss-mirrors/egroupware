@@ -14,7 +14,13 @@
 
 	class sopreferences
 	{
-		var $accounts_table = 'fm_accounts';
+		var $accounts_table = 'egw_felamimail_accounts';
+		/**
+		 * Instance of the db-class
+		 *
+		 * @var egw_db
+		 */
+		var $db;
 		
 		function sopreferences()
 		{
@@ -34,26 +40,9 @@
 			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
 				$where,__LINE__,__FILE__);
 				
-			while($this->db->next_record())
+			while(($row = $this->db->row(true,'fm_')))
 			{
-				$retValue[$this->db->f('fm_id')] = array(
-					'id'			=> $this->db->f('fm_id'),
-					'active'		=> $this->db->f('fm_active'),
-					'realname'		=> $this->db->f('fm_realname'),
-					'organization'		=> $this->db->f('fm_organization'),
-					'emailaddress'		=> $this->db->f('fm_emailaddress'),
-					'ic_hostname'		=> $this->db->f('fm_ic_hostname'),
-					'ic_port'		=> $this->db->f('fm_ic_port'),
-					'ic_username'		=> $this->db->f('fm_ic_username'),
-					'ic_password'		=> $this->db->f('fm_ic_password'),
-					'ic_encryption'		=> $this->db->f('fm_ic_encryption'),
-					'ic_validatecertificate' => $this->db->f('fm_ic_validatecertificate'),
-					'og_hostname'		=> $this->db->f('fm_og_hostname'),
-					'og_port'		=> $this->db->f('fm_og_port'),
-					'og_smtpauth'		=> $this->db->f('fm_og_smtpauth'),
-					'og_username'		=> $this->db->f('fm_og_username'),
-					'og_password'		=> $this->db->f('fm_og_password'),
-				);
+				$retValue[$row['id']] = $row;
 			}
 			return $retValue;
 		}

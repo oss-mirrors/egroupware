@@ -324,7 +324,6 @@
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.000';
 	}
 
-
 	$test[] = '1.3.000';
 	function felamimail_upgrade1_3_000()
 	{
@@ -346,5 +345,13 @@
 		));
 
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.001';
+	}
+
+	$test[] = '1.3.001';
+	function felamimail_upgrade1_3_001()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameTable('fm_accounts','egw_felamimail_accounts');
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.002';
 	}
 ?>

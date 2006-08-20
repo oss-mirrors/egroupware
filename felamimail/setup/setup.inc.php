@@ -13,7 +13,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.3.001';
+	$setup_info['felamimail']['version']     	= '1.3.002';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -24,7 +24,7 @@
 	$setup_info['felamimail']['maintainer'] 	= 'Lars Kneschke';
 	$setup_info['felamimail']['maintainer_email'] 	= 'l.kneschke@metaways.de';
 
-	$setup_info['felamimail']['tables']    = array('egw_felamimail_cache','egw_felamimail_folderstatus','egw_felamimail_displayfilter','fm_accounts');
+	$setup_info['felamimail']['tables']    = array('egw_felamimail_cache','egw_felamimail_folderstatus','egw_felamimail_displayfilter','egw_felamimail_accounts');
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['felamimail']['hooks'][] = 'preferences';
@@ -66,8 +66,3 @@
 			'from' => 'FeLaMiMail',
 		),
 	);	
-
-
-
-
-

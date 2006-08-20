@@ -61,7 +61,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'fm_accounts' => array(
+		'egw_felamimail_accounts' => array(
 			'fd' => array(
 				'fm_owner' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fm_id' => array('type' => 'auto'),
