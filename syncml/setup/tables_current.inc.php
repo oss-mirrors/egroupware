@@ -44,8 +44,8 @@
 			),
 			'pk' => array('dev_id'),
 			'fk' => array(),
-			'ix' => array('dev_id'),
-			'uc' => array('dev_id',array('dev_model','dev_manufacturer','dev_swversion'))
+			'ix' => array(),
+			'uc' => array(array('dev_model','dev_manufacturer','dev_swversion'))
 		),
 		'egw_syncmlsummary' => array(
 			'fd' => array(
@@ -67,7 +67,7 @@
 			),
 			'pk' => array('owner_devid'),
 			'fk' => array(),
-			'ix' => array('owner_locname','owner_deviceid'),
+			'ix' => array('owner_deviceid'),
 			'uc' => array(array('owner_locname','owner_devid','owner_deviceid'))
 		)
 	);
