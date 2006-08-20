@@ -38,4 +38,14 @@
 		 'appname'  => 'phpgwapi',
 		 'versions' => Array('1.3')
 	);
-?>
+	// installation checks for SyncML
+	$setup_info['felamimail']['check_install'] = array(
+		'' => array(
+			'func' => 'pear_check',
+			'from' => 'SyncML',
+		),
+		'Log' => array(
+			'func' => 'pear_check',
+			'from' => 'SyncML',
+		),
+	);
