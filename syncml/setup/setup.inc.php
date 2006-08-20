@@ -8,7 +8,7 @@
 	*  Free Software Foundation; version 2 of the License.                     *
 	\**************************************************************************/
 
-	// $Id: setup.inc.php 22031 2006-07-08 01:02:37Z ralfbecker $
+	// $Id$
 
 	/* Basic information about this app */
 	$setup_info['syncml']['name']      = 'syncml';
@@ -17,14 +17,14 @@
 	$setup_info['syncml']['enable']    = 3;
 	$setup_info['syncml']['app_order'] = 99;
 
-	$setup_info['phpgwapi']['author'] = 'Lars Kneschke';
-	$setup_info['phpgwapi']['note']   = 'SyncML interface for eGroupWare';
-	$setup_info['phpgwapi']['license']  = 'GPL';
-	$setup_info['phpgwapi']['description'] =
+	$setup_info['syncml']['author'] = 'Lars Kneschke';
+	$setup_info['syncml']['note']   = 'SyncML interface for eGroupWare';
+	$setup_info['syncml']['license']  = 'GPL';
+	$setup_info['syncml']['description'] =
 		'This module allows you to syncronize your SyncML enabled device.';
 
-	$setup_info['phpgwapi']['maintainer'] = 'Lars Kneschke';
-	$setup_info['phpgwapi']['maintainer_email'] = 'l.kneschke@metaways.de';
+	$setup_info['syncml']['maintainer'] = 'Lars Kneschke';
+	$setup_info['syncml']['maintainer_email'] = 'l.kneschke@metaways.de';
  
 
 	/* The tables this app creates */
@@ -34,7 +34,7 @@
 	$setup_info['syncml']['tables'][]  = 'egw_syncmldeviceowner';
 
 	/* Dependencies for this app to work */
-	$setup_info['phpgwapi']['depends'][] = array(
+	$setup_info['syncml']['depends'][] = array(
 		 'appname'  => 'phpgwapi',
 		 'versions' => Array('1.3')
 	);
