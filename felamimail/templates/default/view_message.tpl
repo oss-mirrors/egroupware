@@ -3,86 +3,45 @@
 self.focus();
 </script>
 <!-- {print_navbar} -->
-<table border="0" width="100%" cellspacing="0" style="border: solid white 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
-<tr>
-	<td>
-		{navbar}
-	</td>
-</tr>
-</table>
-<br>
-<table border="0" cellpadding="1" cellspacing="0" width="100%" style="table-layout:fixed">
-
-<tr class="th">
-	<td style="font-weight:bold;">
-		{subject_data}
-	</td>
-</tr>
-</table>
-<br>
-<table width="100%" border="0" cellspacing="0" cellpading="0" bgcolor="white">
-	<tr>
-		<th id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="0" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);" style="font-size:10px;">{lang_Message}</a></th>
-		<th id="tab2" class="activetab" onclick="javascript:tab.display(2);"><a href="#" tabindex="0" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);" style="font-size:10px;">{lang_Attachment} ({attachment_count})</a></th>
-		<th id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="0" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);" style="font-size:10px;">{lang_Header_Lines}</a></th>
-	</tr>
-</table>
-<div id="tabcontent1" class="inactivetab" bgcolor="white">
-<table border="0" width="100%" cellspacing="0" cellpading="0" bgcolor="white" style="table-layout:fixed">
-<tr>
-	<td>
-		&nbsp;
-	</td>
-</tr>
-<tr>
-	<td>
-{header}
-	</td>
-</tr>
-<tr>
-	<td bgcolor="white">
-<div class="body">
-<!-- Body Begin -->
-{body}
-<!-- Body End -->
+<div id="navbarDIV" style="position:absolute; top:0px; height:30px; left:0px; right:0px; border: solid white 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
+        {navbar}
 </div>
-	</td>
-</tr>
-</table>
+<div id="subjectDIV" style="position:absolute; background-color:#ffffff; top:32px; height:20px; width:100%; font-weight:bold; text-align:left; line-height:20px;">
+	<span style="padding-left:2px;">{subject_data}</span>
 </div>
+<div id="headerDIV" style="position:absolute; background-color:#efefdf; top:52px; height:80px; left:0px; right:0px; border-top: 1px solid silver; border-bottom: 1px solid silver; overflow:hidden;">
+	{header}
+</div>
+<div id="bodyDIV" style="position:absolute; background-color:white; top:134px; bottom:0px; width:100%; border-top: 1px solid #efefdf;">
+	<iframe frameborder="no" scrolling="auto" style="width:100%; border:0px solid black; height:100%;" src="{url_displayBody}">
+	</iframe>
+</div>
+<!-- END message_main -->
 
-<div id="tabcontent2" class="inactivetab">
-<table border="0" width="100%" cellspacing="0" bgcolor="white">
-	<tr bgcolor="{bg01}">
-		<td align="center">
-			Name
-		</td>
-		<td align="center">
-			Type
-		</td>
-		<td align="center">
-			Size
-		</td>
-		<td align="center">
-			&nbsp;
-		</td>
-	</tr>
+<!-- BEGIN message_main_attachment -->
+<script language="JavaScript1.2">
+self.focus();
+</script>
+<!-- {print_navbar} -->
+<div id="navbarDIV" style="position:absolute; top:0px; height:30px; left:0px; right:0px; border: solid white 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
+        {navbar}
+</div>
+<div id="subjectDIV" style="position:absolute; background-color:#ffffff; top:32px; height:20px; width:100%; font-weight:bold; text-align:left; line-height:20px;">
+	<span style="padding-left:2px;">{subject_data}</span>
+</div>
+<div id="headerDIV" style="position:absolute; background-color:#efefdf; top:52px; height:80px; left:0px; right:0px; border-top: 1px solid silver; border-bottom: 1px solid silver; overflow:hidden;">
+	{header}
+</div>
+<div id="bodyDIV" style="position:absolute; background-color:white; top:134px; bottom:80px; width:100%; border-top: 1px solid #efefdf;">
+	<iframe frameborder="no" scrolling="auto" style="border:0px solid black; width:100%; height:100%;" src="{url_displayBody}">
+	</iframe>
+</div>
+<div id="attachmentDIV" style="position:absolute; background-color:#efefdf; bottom:0px; height:80px; width:100%; border-top: 1px solid silver; overflow:auto;">
+<table border="0" width="100%" cellspacing="0">
 {attachment_rows}
 </table>
 </div>
-
-<div id="tabcontent3" class="inactivetab">
-<table border="0" width="100%" cellspacing="0" bgcolor="white">
-	<tr>
-		<td>
-			<pre>{rawheader}</pre>
-		</td>
-	</tr> 
-</tr>
-</table>
-</div>
-
-<!-- END message_main -->
+<!-- END message_main_attachment -->
 
 <!-- BEGIN message_raw_header -->
 <tr>
@@ -146,73 +105,62 @@ self.focus();
 	<td width="100" style="font-weight:bold; font-size:10px;">
 		{lang_cc}:
 	</td> 
-	<td style="font-size:10px;">
+	<td style="font-size:10px;" colspan="3">
 		{cc_data}
 	</td>
 </tr>
 <!-- END message_cc -->
 
-<!-- BEGIN message_org -->
-<tr>
-	<td width="100" style="font-weight:bold; font-size:10px;">
-		{lang_organisation}:
-	</td> 
-	<td style="font-size:10px;">
-		{organization_data}
-	</td>
-</tr>
-<!-- END message_org -->
-
 <!-- BEGIN message_onbehalfof -->
 <tr>
-	<td width="100" style="font-weight:bold; font-size:10px;">
+	<td width="100" style="font-weight:bold; font-size:10px; vertical-align:top;">
 		{lang_on_behalf_of}:
 	</td> 
-	<td style="font-size:10px;">
+	<td style="font-size:10px;" colspan="3">
 		{onbehalfof_data}
 	</td>
 </tr>
 <!-- END message_onbehalfof -->
 
 <!-- BEGIN message_header -->
-<table border="0" cellpadding="1" cellspacing="0" width="100%" style="table-layout:fixed">
-
-<table border="0" cellpadding="1" cellspacing="0" width="100%">
-<tr cclass="row_on">
-	<td style="text-align:left; width:120px; font-weight:bold; font-size:10px;">
+<table border="0" cellpadding="1" cellspacing="0" width="100%" style="padding-left:2px;" id="headerTable">
+<tr>
+	<td style="text-align:left; width:100px; font-weight:bold; font-size:10px;">
 		{lang_from}:
 	</td>
-	<td style="font-weight:bold; font-size:10px;">
+	<td style="font-size:10px;" colspan="2">
 		{from_data}
+	</td>
+	<td style="font-size:10px;" align="right">
+		<div id="moreDIV" onclick="toggleHeaderSize();" style="display:none; border:1px dotted black; width:10px; height:10px; line-height:10px; text-align:center; cursor: pointer;">
+			<span id="toogleSPAN">+</span>
+		</div>
 	</td>
 </tr>
 
 {on_behalf_of_part}
 
-{org_part}
-
-<tr cclass="row_off">
+<tr>
 	<td style="font-weight:bold; font-size:10px;">
+		{lang_date}:
+	</td> 
+	<td style="font-size:10px;" colspan="3">
+		{date_received}
+	</td>
+</tr>
+
+<tr>
+	<td style="font-weight:bold; font-size:10px; vertical-align:top;">
 		{lang_to}:
 	</td> 
-	<td style="font-size:10px;">
+	<td style="font-size:10px;" colspan="3">
 		{to_data}
 	</td>
 </tr>
 
 {cc_data_part}
 
-<tr cclass="row_on">
-	<td style="font-weight:bold; font-size:10px;">
-		{lang_date}:
-	</td> 
-	<td style="font-size:10px;">
-		{date_data}
-	</td>
-</tr>
-
 </table>
-<br>
 <!-- END message_header -->
 
 <!-- BEGIN previous_message_block -->

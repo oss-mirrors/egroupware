@@ -1,3 +1,8 @@
+20060821
+- added support for composing html emails
+- fixed some minor internet explorer only display problems
+- messages gets now displayed in a separate iframe. This allows to display html emails, whitout breaking css styles of the main display window. Also only the iframe gets a scrollbar now. That stops the "jumping buttons". In the past they were jumping to the left, when the email was to long and a scrollbar got displayed on the right.
+
 20060802
 - fixed bug [ 1487161 ] felamimail <> UTF-8 <> Postgres trouble
 - fixed bug [ 1451287 ] Database error when accessing some folders

@@ -86,6 +86,7 @@
 			$formData['body'] 	= $this->bocompose->stripSlashes($_POST['body']);
 			$formData['priority'] 	= $this->bocompose->stripSlashes($_POST['priority']);
 			$formData['signature'] 	= $this->bocompose->stripSlashes($_POST['signature']);
+			$formData['contentType'] = $this->bocompose->stripSlashes($_POST['contentType']);
 			$formData['disposition'] = (bool)$_POST['disposition'];
 			//$formData['mailbox']	= $_GET['mailbox'];
 
@@ -103,7 +104,7 @@
 			print "<script type=\"text/javascript\">window.close();</script>";
 		}
 
-		function compose($_focusElement="to")
+		function compose($_focusElement='to')
 		{
 			// read the data from session
 			// all values are empty for a new compose window
@@ -130,6 +131,7 @@
 			$this->t->set_block('composeForm','attachment_row','attachment_row');
 			$this->t->set_block('composeForm','attachment_row_bold');
 			$this->t->set_block('composeForm','destination_row');
+			$this->t->set_block('composeForm','simple_text');
 			
 			$this->translate();
 			
@@ -150,11 +152,6 @@
 				'composeid'	=> $this->composeID
 			);
 			$this->t->set_var('file_selector_url',$GLOBALS['egw']->link('/index.php',$linkData));
-
-			#$linkData = array
-			#(
-			#	'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
-			#);
 
 			$linkData = array
 			(
@@ -200,7 +197,7 @@
 				foreach((array)$sessionData[$destination] as $key => $value) {
 					$selectDestination = $GLOBALS['egw']->html->select('destination[]', $destination, $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
 					$this->t->set_var('select_destination', $selectDestination);
-					$this->t->set_var('address', @htmlentities($value,ENT_QUOTES,$this->displayCharset));
+					$this->t->set_var('address', @htmlentities($value, ENT_QUOTES, $this->displayCharset));
 					$this->t->parse('destinationRows','destination_row',True);
 					$destinationRows++;
 				}
@@ -227,7 +224,15 @@
 			$this->t->pparse("out","header");
 
 			// body
-			$this->t->set_var("body",$sessionData['body']);
+			if($sessionData['mimeType'] == 'text/html') {
+				$style="border:0px; width:100%; height:400px;";
+				$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'simple', $sessionData['body'], $style));
+				$this->t->set_var('contentType', 'html');
+			} else {
+				$style="border:0px; width:100%; height:400px;";
+				$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'ascii', $sessionData['body'], $style));
+				$this->t->set_var('contentType', 'text');
+			}
 			$this->t->set_var("signature",$sessionData['signature']);
 			$this->t->pparse("out","body_input");
 
@@ -284,6 +289,8 @@
 			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+			
+			$GLOBALS['egw']->html->init_tinymce();
 			
 			$GLOBALS['egw']->common->egw_header();
 		}
@@ -389,7 +396,7 @@
 				// this fill the session data with the values from the original email
 				$this->bocompose->getReplyData('single', $icServer, $folder, $replyID, $partID);
 			}
-			$this->compose(@htmlentities('body'));
+			$this->compose('body');
 		}
 		
 		function replyAll() {

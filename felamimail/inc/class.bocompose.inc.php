@@ -30,6 +30,7 @@
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$_charSet);
 			$this->preferences	= $this->bopreferences->getPreferences();
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
+			$this->preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 
 			if (!empty($_composeID))
 			{
@@ -122,6 +123,30 @@
 			);
 			
 			$this->saveSessionData();
+		}
+		
+		function convertHTMLToText($_html) {
+			// remove these tags and any spaces behind the tags
+			$search = array('/<p.*?> */', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */', '/<.?blockquote> */');
+			$replace = '';
+			
+			$text = preg_replace($search, $replace, $_html);
+			
+			// convert these tags and any spaces behind the tags to line breaks
+			$search = array('/&nbsp;<\/p> */', '/<\/p> */', '/<\/li> */', '/<br \/> */');
+			$replace = "\r\n";
+			
+			$text = preg_replace($search, $replace, $text);
+			
+			// special replacements
+			$search = array('/<li>/');
+			$replace = array('  * ');
+			
+			$text = preg_replace($search, $replace, $text);
+			
+			$text = html_entity_decode($text, ENT_COMPAT, $this->displayCharset);
+			
+			return $text;
 		}
 		
 		function generateRFC822Address($_addressObject) {
@@ -224,6 +249,7 @@
 			$headers	= $bofelamimail->getMessageHeader($_folder, $_uid, $_partID);
 			// check for Re: in subject header
 			$this->sessionData['subject'] 	= "[FWD] " . $bofelamimail->decode_header($headers->Subject);
+			$this->sessionData['mimeType']  = 'text/html';
 			if($headers->Size)
 				$size				= $headers->Size;
 			else
@@ -247,6 +273,8 @@
 		// single: for a reply to one address
 		// all: for a reply to all
 		function getReplyData($_mode, $_icServer, $_folder, $_uid, $_partID) {
+			$foundAddresses = array();
+			
 			$bofelamimail    =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$bofelamimail->openConnection();
 			
@@ -259,10 +287,22 @@
 
 			// check for Reply-To: header and use if available
 			if($headers->reply_toaddress) {
-				$oldTo		= $bofelamimail->decode_header(trim($headers->reply_toaddress));
+				foreach($headers->reply_to as $val) {
+					$address = imap_rfc822_write_address($val->mailbox, $val->host, '');
+					if(!$foundAddresses[$address]) {
+						$oldTo[] = $address;
+						$foundAddresses[$address] = true;
+					}
+				}
 				$oldToAddress	= $headers->reply_to[0]->mailbox.'@'.$headers->reply_to[0]->host;
 			} else {
-				$oldTo = $bofelamimail->decode_header(trim($headers->fromaddress));
+				foreach($headers->from as $val) {
+					$address = imap_rfc822_write_address($val->mailbox, $val->host, '');
+					if(!$foundAddresses[$address]) {
+						$oldTo[] = imap_rfc822_write_address($val->mailbox, $val->host, $this->bofelamimail->decode_header($val->personal));
+						$foundAddresses[$address] = true;
+					}
+				}
 				$oldToAddress	= $headers->from[0]->mailbox.'@'.$headers->from[0]->host;
 			}
 			if($_mode != 'all' || ($_mode == 'all' && !$userEMailAddresses[$oldToAddress]) ) {
@@ -271,62 +311,59 @@
 			
 			if($_mode == 'all') {
 				// reply to any address which is cc, but not to my self
-				$oldCC = $bofelamimail->decode_header(trim($headers->ccaddress));
-				$addressParts = imap_rfc822_parse_adrlist($oldCC, '');
-				if (count($addressParts)>0) {
-					while(list($key,$val) = each($addressParts)) {
-						if($userEMailAddresses[$val->mailbox.'@'.$val->host]) {
-							continue;
-						}
-
+				if($headers->cc) {
+					foreach($headers->cc as $val) {
 						if($val->mailbox == 'undisclosed-recipients' || (empty($val->mailbox) && empty($val->host)) ) {
 							continue;
 						}
 
-						if(!empty($this->sessionData['cc'])) $this->sessionData['cc'] .= ",";
+						$address = imap_rfc822_write_address($val->mailbox, $val->host, '');
 
-						if(!empty($val->personal) && !empty($val->mailbox) && !empty($val->host)) {
-							$this->sessionData['cc'] .= sprintf('"%s" <%s@%s>',
-											$val->personal,
-											$val->mailbox,
-											$val->host);
-						} elseif(!empty($val->mailbox) && !empty($val->host)) {
-							$this->sessionData['cc'] .= sprintf("%s@%s",
-											$val->mailbox,
-											$val->host);
-						} else {
-							$this->sessionData['cc'] .= $val->mailbox;
-						}
-					}
-				}
-				
-				
-				// reply to any address which is to, but not to my self
-				$oldTo = $bofelamimail->decode_header(trim($headers->toaddress));
-				$addressParts = imap_rfc822_parse_adrlist($oldTo, '');
-
-				if (count($addressParts)>0) {
-					while(list($key,$val) = each($addressParts)) {
-						if($userEMailAddresses[$val->mailbox.'@'.$val->host]) {
+						if($userEMailAddresses[$address]) {
 							continue;
 						}
 						
+						if(!$foundAddresses[$address]) {
+							$this->sessionData['cc'][] = imap_rfc822_write_address($val->mailbox, $val->host, $this->bofelamimail->decode_header($val->personal));
+							$foundAddresses[$address] = true;
+						}
+					}
+				}
+
+				// reply to any address which is to, but not to my self
+				if($headers->to) {
+					foreach($headers->to as $val) {
 						if($val->mailbox == 'undisclosed-recipients' || (empty($val->mailbox) && empty($val->host)) ) {
 							continue;
 						}
 
-						if(!empty($this->sessionData['to'])) $this->sessionData['to'] .= ", ";
-						if(!empty($val->personal) && !empty($val->mailbox) && !empty($val->host)) {
-							$this->sessionData['to'] .= sprintf('"%s" <%s@%s>',
-											$val->personal,
-											$val->mailbox,
-											$val->host);
-						} elseif(!empty($val->mailbox) && !empty($val->host)) {
-							$this->sessionData['to'] .= sprintf("%s@%s",
-											$val->mailbox,
-											$val->host);
-						} else {
-							$this->sessionData['to'] .= $val->mailbox;
+						$address = imap_rfc822_write_address($val->mailbox, $val->host, '');
+
+						if($userEMailAddresses[$address]) {
+							continue;
+						}
+						
+						if(!$foundAddresses[$address]) {
+							$this->sessionData['to'][] = imap_rfc822_write_address($val->mailbox, $val->host, $this->bofelamimail->decode_header($val->personal));
+							$foundAddresses[$address] = true;
+						}
+					}
+				}
+
+				if($headers->from) {
+					foreach($headers->from as $val) {
+						if($val->mailbox == 'undisclosed-recipients' || (empty($val->mailbox) && empty($val->host)) ) {
+							continue;
+						}
+
+						$address = imap_rfc822_write_address($val->mailbox, $val->host, '');
+
+						if($userEMailAddresses[$address]) {
+							continue;
+						}
+						if(!$foundAddresses[$address]) {
+							$this->sessionData['to'][] = imap_rfc822_write_address($val->mailbox, $val->host, $this->bofelamimail->decode_header($val->personal));
+							$foundAddresses[$address] = true;
 						}
 					}
 				}
@@ -340,31 +377,46 @@
 				$this->sessionData['subject'] = "Re: " . $bofelamimail->decode_header($headers->Subject);
 			}
 
-			$this->sessionData['body']	= $bofelamimail->decode_header($headers->fromaddress) . " ".lang("wrote").": \n>";
+			$bodyParts = $bofelamimail->getMessageBody($_uid, $this->preferencesArray['always_display'], $_partID);
+			$this->sessionData['body']	= @htmlspecialchars($bofelamimail->decode_header($headers->fromaddress), ENT_QUOTES) . " ".lang("wrote").":" .'<br>';
+
+			if($bodyParts['0']['mimeType'] == 'text/html') {
+				$this->sessionData['mimeType'] 	= 'text/html';
+				$this->sessionData['body']	.= '<blockquote type="cite">';
+
+				for($i=0; $i<count($bodyParts); $i++) {
+					if($i>0) {
+						$this->sessionData['body'] .= '<hr>';
+					}
+					$this->sessionData['body'] .= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+				}
+
+				$this->sessionData['body']	.= '</blockquote><br>';
+			} else {
+				$this->sessionData['mimeType']	= 'text/plain';
 			
-			// get the body
-			$bodyParts = $bofelamimail->getMessageBody($_uid, 'only_if_no_text', $_partID);
-			#_debug_array($bodyParts);
-			for($i=0; $i<count($bodyParts); $i++)
-			{
-				if(!empty($this->sessionData['body'])) $$this->sessionData['body'] .= "\n\n";
-				// add line breaks to $bodyParts
-				$newBody	= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
-				#print "<pre>".$newBody."</pre><hr>";
-				$newBody        = explode("\n",$newBody);
-				#_debug_array($newBody);
-				// create it new, with good line breaks
-				reset($newBody);
-				while(list($key,$value) = @each($newBody))
-				{
-					$value .= "\n";
-					$bodyAppend = $this->bofelamimail->wordwrap($value,75,"\n");
-					$bodyAppend = str_replace("\n", "\n>", $bodyAppend);
-					$this->sessionData['body'] .= $bodyAppend;
+				for($i=0; $i<count($bodyParts); $i++) {
+					if($i>0) {
+						$this->sessionData['body'] .= "<hr>";
+					}
+					if(!empty($bodyParts[$i]['body'])) {
+						$this->sessionData['body'] .= '&gt;';
+					}
+					// add line breaks to $bodyParts
+					$newBody	= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+					#print "<pre>".$newBody."</pre><hr>";
+					$newBody        = explode("\n",$newBody);
+					#_debug_array($newBody);
+					// create it new, with good line breaks
+					foreach($newBody as $value) {
+						$value .= "\n";
+						$bodyAppend = $this->bofelamimail->wordwrap($value, 75, "\n");
+						$bodyAppend = str_replace("\n", "<br>&gt;", $bodyAppend);
+						$this->sessionData['body'] .= $bodyAppend;
+					}
 				}
 			}
-																
-					
+			
 			$bofelamimail->closeConnection();
 			
 			$this->saveSessionData();
@@ -460,8 +512,14 @@
 			
 			$_mailObject->WordWrap = 76;
 			$_mailObject->Subject = $bofelamimail->encodeHeader($_formData['subject'], 'q');
-			$_mailObject->IsHTML(false);
-			$_mailObject->Body    = $_formData['body'];
+			if($_formData['contentType'] =='html') {
+				$_mailObject->IsHTML(true);
+				$_mailObject->Body    = $_formData['body'];
+				$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']);
+			} else {
+				$_mailObject->IsHTML(false);
+				$_mailObject->Body = $this->convertHTMLToText($_formData['body']);
+			}
 			if (!empty($_formData['signature'])) {
 				$_mailObject->Body	.= "\r\n-- \r\n";
 				$_mailObject->Body	.= $_formData['signature'];
@@ -536,8 +594,11 @@
 			$this->sessionData['priority']	= $_formData['priority'];
 			$this->sessionData['signature']	= $_formData['signature'];
 			$this->sessionData['disposition'] = $_formData['disposition'];
+			$this->sessionData['contentType'] = $_formData['contentType'];
 
 			$identity = $this->preferences->getIdentity((int)$this->sessionData['identity']);
+			
+			// create the messages
 			$this->createMessage($mail, $_formData, $identity);
 
 			$ogServer = $this->preferences->getOutgoingServer(0);
@@ -615,7 +676,10 @@
 		}
 		
 		function setDefaults() {
-			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']);
+			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify(
+				$GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']
+			);
+			$this->sessionData['mimeType']	= 'text/html';
 			
 			$this->saveSessionData();
 		}

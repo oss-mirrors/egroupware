@@ -1,10 +1,67 @@
-var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage');
+// var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage');
 // var smtp = new Tabs(2,'activetab','inactivetab','smtp','smtpcontent','smtpselector','','smtppage');
 // var imap = new Tabs(3,'activetab','inactivetab','imap','imapcontent','imapselector','','imappage');
 
+var headerFullSize=false;
+
+var headerDIVHeight;
+
+var bodyDIVTop;
+
 function initAll()
 {
-	tab.init();
-// 	smtp.init();
-//	imap.init();
+	//tab.init();
+
+	var headerTable = document.getElementById('headerTable');
+	var headerDIV = document.getElementById('headerDIV');
+
+	if(headerTable.clientHeight > headerDIV.clientHeight) {
+		var moreDIV	= document.getElementById('moreDIV');
+		moreDIV.style.display = 'block';
+	}
+
+	if(is_ie) {
+		fm_resizeBodyDIV();
+		window.onresize = fm_resizeBodyDIV;
+	}
+}
+
+function toggleHeaderSize() {
+	var toogleSPAN = document.getElementById('toogleSPAN');
+
+	var headerTable = document.getElementById('headerTable');
+	var headerDIV = document.getElementById('headerDIV');
+	var bodyDIV	= document.getElementById('bodyDIV');
+
+	if(!headerFullSize) {
+		var navbarDIV	= document.getElementById('navbarDIV');
+		var subjectDIV	= document.getElementById('subjectDIV');
+
+		headerDIVHeight	= headerDIV.clientHeight;
+		bodyDIVTop = bodyDIV.offsetTop;
+		headerDIV.style.height = headerTable.clientHeight + 'px';		
+
+		bodyDIV.style.top = 4 + navbarDIV.clientHeight + subjectDIV.clientHeight + headerDIV.clientHeight + 'px';
+
+		headerFullSize=true;
+		toogleSPAN.innerHTML = '-';
+	} else {
+		headerFullSize=false;
+		toogleSPAN.innerHTML = '+';
+
+		headerDIV.style.height = headerDIVHeight + 'px';
+		bodyDIV.style.top = bodyDIVTop + 'px';
+	}
+}
+
+function fm_resizeBodyDIV() {
+	var attachmentDIV;
+	var bodyDIV     = document.getElementById('bodyDIV');
+	var attachmentDIV     = document.getElementById('attachmentDIV');
+
+	if(attachmentDIV = document.getElementById('attachmentDIV')) {
+		 bodyDIV.style.height = attachmentDIV.offsetTop - bodyDIV.offsetTop + 'px';
+	} else {
+		bodyDIV.style.height = egw_getWindowInnerHeight() - bodyDIV.offsetTop - 2 + 'px';
+	}
 }

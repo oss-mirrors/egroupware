@@ -372,6 +372,7 @@
 		}
 		
 		function refreshFolderList() {
+			$GLOBALS['egw']->session->commit_session();
 			$folders = $this->bofelamimail->getFolderObjects();
 			
 			$response =& new xajaxResponse();

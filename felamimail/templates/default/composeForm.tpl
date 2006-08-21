@@ -25,7 +25,7 @@
 <input type="hidden" id="saveAsDraft" name="saveAsDraft" value="0">
 <TABLE WIDTH="100%" CELLPADDING="1" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
 	<tr class="navbarBackground">
-		<td align="right" width="170px">
+		<td align="left" width="250px">
 			<div class="parentDIV">
 				<button class="menuButton" type="submit" value="{lang_send}" name="send" style="width: auto; color: black;">
 					<img src="{img_mail_send}" style="vertical-align: middle;"> <b>{lang_send}</b>
@@ -93,11 +93,19 @@
 	</td>
 </tr>
 </table>
-		<TEXTAREA class="input_text" name="body" rows="20" cols="76" wrap="hard">{body}</TEXTAREA>
+<input type="hidden" id="contentType" name="contentType" value="{contentType}">
+<div style="border:0px solid black; width:100%; height:400px;">
+	{tinymce}
+</div>
+
 <fieldset class="bordertop"><legend>{lang_signature}</legend>
-		<TEXTAREA class="input_text" NAME=signature ROWS=5 COLS="76" WRAP=HARD>{signature}</TEXTAREA>
+		<TEXTAREA class="input_text" NAME=signature ROWS="5" COLS="76" WRAP=HARD>{signature}</TEXTAREA>
 </fieldset>
 <!-- END body_input -->
+
+<!-- BEGIN simple_text -->
+	<TEXTAREA class="input_text" name="body" style="width:100%; height:100%" wrap="virtual" wrap="soft">{body}</TEXTAREA>
+<!-- END simple_text -->
 
 <!-- BEGIN attachment -->
 <script language="javascript1.2">

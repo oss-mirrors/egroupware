@@ -243,9 +243,9 @@
 					#}
 					$this->t->set_var('header_subject', $header['subject']);
 					#$this->t->set_var('attachments', $header['attachment']);
-					$this->t->set_var('full_subject',$fullSubject);
+					$this->t->set_var('full_subject', $fullSubject);
 				} else {
-					$this->t->set_var('header_subject',@htmlentities("(".lang('no subject').")",ENT_QUOTES,$this->displayCharset));
+					$this->t->set_var('header_subject', @htmlspecialchars('('. lang('no subject') .')', ENT_QUOTES, $this->displayCharset));
 				}
 
 				if($header['attachments'] == 'true') {
