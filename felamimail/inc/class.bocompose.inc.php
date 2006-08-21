@@ -563,19 +563,20 @@
 
 		function saveAsDraft($_formData)
 		{
-			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			$mail		=& CreateObject('phpgwapi.phpmailer');
-			$identity	= $this->preferences->getIdentity((int)$this->sessionData['identity']);
-			$flags = '\\Seen \\Draft';
+			if(!empty($this->preferencesArray['draftFolder'])) {
+				$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+				$mail		=& CreateObject('phpgwapi.phpmailer');
+				$identity	= $this->preferences->getIdentity((int)$this->sessionData['identity']);
+				$flags = '\\Seen \\Draft';
 			
-			$this->createMessage($mail, $_formData, $identity);
-			
-			$bofelamimail->openConnection();
-			$bofelamimail->appendMessage('Drafts',
-				$mail->getMessageHeader(),
-				$mail->getMessageBody(),
-				$flags);
-			$bofelamimail->closeConnection();
+				$this->createMessage($mail, $_formData, $identity);
+				$bofelamimail->openConnection();
+				$bofelamimail->appendMessage($this->preferencesArray['draftFolder'],
+					$mail->getMessageHeader(),
+					$mail->getMessageBody(),
+					$flags);
+				$bofelamimail->closeConnection();
+			}
 		}
 
 		function send($_formData)
