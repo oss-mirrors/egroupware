@@ -53,7 +53,19 @@
 		// is mbstring support available
 		var $mbAvailable;
 		
-		function defaultimap() {
+		/**
+		 * Mailboxes which get automatic created for new accounts (INBOX == '')
+		 *
+		 * @var array
+		 */
+		var $createMailboxes = array('','Sent','Trash','Drafts','Junk');
+		var $imapLoginType,$defaultDomain;
+		
+		function defaultimap($imapLoginType=null,$defaultDomain=null) {
+			// use the given login-type and domain if specified or the values from the global eGW configuration if not
+			$this->imapLoginType = $imapLoginType ? $imapLoginType : $GLOBALS['egw_info']['server']['mail_login_type'];
+			$this->defaultDomain = $defaultDomain ? $defaultDomain : $GLOBALS['egw_info']['server']['mail_suffix'];
+
 			if (function_exists('mb_convert_encoding')) $this->mbAvailable = TRUE;
 			
 			$this->restoreSessionData();
@@ -69,7 +81,12 @@
 		{
 			return true;
 		}
-		
+
+		function updateAccount($_hookValues)
+		{
+			return true;
+		}
+
 		function deleteAccount($_hookValues)
 		{
 			return true;
@@ -98,7 +115,14 @@
 			return isset($this->sessionData['delimiter'][$this->host]) ? $this->sessionData['delimiter'][$this->host] : $this->mailboxDelimiter;
 		}
 		
-		function getMailboxString($_folderName='') {
+		/**
+		 * Create mailbox string from given mailbox-name and user-name
+		 *
+		 * @param string $_folderName='' 
+		 * @param string $username='' if given use the global name, eg. 'user.username[@domain]' as prefix
+		 * @return string utf-7 encoded (done in getMailboxName)
+		 */
+		function getMailboxString($_folderName='',$username='') {
 			#$mailboxPrefix = ($_folderName == 'INBOX' ? '' : $this->mailboxPrefix.$this->mailboxDelimiter);
 			
 			#if($_folderName == 'INBOX') {
@@ -107,6 +131,8 @@
 			#	$mailboxPrefix = (!empty($this->mailboxPrefix) ? $this->mailboxPrefix.$this->mailboxDelimiter : '');
 			#}
 			
+			$_folderName = $this->getMailboxName($_folderName,$username);
+
 			if($this->encryption && $this->validatecert) {
 				$mailboxString = sprintf("{%s:%s/imap/ssl}%s%s",
 					$this->host,
@@ -129,7 +155,41 @@
 					$_folderName);
 			}
 
-			return $this->encodeFolderName($mailboxString);
+			return $mailboxString;
+		}
+
+		/**
+		 * Create mailbox name from given mailbox-name and optional user-name
+		 * 
+		 * Examples:
+		 * getMailboxName('','hugo') --> 'user.hugo'
+		 * getMailboxName('INBOX','hugo') --> 'user.hugo'
+		 * getMailboxName('Trash,'hugo') --> 'user.hugo.Trash
+		 * getMailboxName('INBOX') --> 'INBOX'
+		 * getMailboxName('Trash') --> 'INBOX.Trash'
+		 * getMailboxName('INBOX.Trash') --> 'INBOX.Trash'
+		 *
+		 * @param string $_folderName='' 
+		 * @param string $username='' if given use the global name, eg. 'user.username' instead of 'INBOX'
+		 * @return string utf-7 encoded(!)
+		 */
+		function getMailboxName($_folderName='',$username='') {
+			if ($username)
+			{
+				$folder = 'user' . $this->mailboxDelimiter . $username;
+			}
+			else
+			{
+				$folder = 'INBOX';
+			}
+			if (substr($_folderName,0,6) == 'INBOX'.$this->mailboxDelimiter || $_folderName == 'INBOX')
+			{
+				$_folderName = substr($_folderName,6);
+			}
+			if ($_folderName) $folder .= $this->mailboxDelimiter . $_folderName;
+			
+			//echo "<p align=right>getMailboxName('$_folderName','$username')='$folder'</p>\n";
+			return $this->encodeFolderName($folder);
 		}
 
 		function getNameSpace($_nameSpace) {
@@ -245,11 +305,6 @@
 
 		function supportsCapability($_capability) {
 			return isset($this->sessionData['capabilities'][$this->host][$_capability]) ? true : false;
-		}
-
-		function updateAccount($_hookValues)
-		{
-			return true;
 		}
 	}
 ?>
