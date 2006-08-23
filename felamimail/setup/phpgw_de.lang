@@ -127,6 +127,7 @@ enter your smtp server port	admin	de	Port Adresse des SMTP Servers
 error	felamimail	de	FEHLER
 error connecting to imap serv	felamimail	de	Konnte den IMAP Server (Mailserver) nicht erreichen
 error connecting to imap server. %s : %s.	felamimail	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
+error connecting to imap server: [%s] %s.	felamimail	de	Fehler beim Verbinden mit dem IMAP Server: [%s]  %s.
 error opening	felamimail	de	Fehler beim Öffnen
 every	felamimail	de	alle
 every %1 days	felamimail	de	alle %1 Tage
@@ -308,6 +309,7 @@ rule	felamimail	de	Regel
 sat	felamimail	de	Sa
 save	felamimail	de	Speichern
 save as draft	felamimail	de	als Vorlage speichern
+save as infolog	felamimail	de	Als Infolog speichern
 save changes	felamimail	de	Änderungen speichern
 script name	felamimail	de	Skriptname
 script status	felamimail	de	Skriptstatus
@@ -348,6 +350,7 @@ table of contents	felamimail	de	Inhaltsverzeichnis
 text only	felamimail	de	Nur Text
 the connection to the imap server failed!!	felamimail	de	Die Verbindung zum IMAP Server ist fehlgeschlagen
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	de	Der IMAP Server scheint die ausgewählte Authentifizierungsmethode nicht zu unterstützen. Bitte sprechen Sie mit Ihrem Systemadministrator.
+the mimeparser can not parse this message.	felamimail	de	Der MIME Parser versteht diese Nachricht nicht.
 then	felamimail	de	dann
 this folder is empty	felamimail	de	DIESER ORDNER IST LEER
 this php has no imap support compiled in!!	felamimail	de	Dieses PHP hat keine IMAP Unterstützung!!

@@ -309,6 +309,7 @@ rule	felamimail	en	Rule
 sat	felamimail	en	Sat
 save	felamimail	en	Save
 save as draft	felamimail	en	save as draft
+save as infolog	felamimail	en	save as infolog
 save changes	felamimail	en	save changes
 script name	felamimail	en	script name
 script status	felamimail	en	script status

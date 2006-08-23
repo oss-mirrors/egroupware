@@ -42,15 +42,24 @@
 			</div>
 		</td>
 		<td align="right">
-			<label>{lang_receive_notification} <input type="checkbox" name="disposition" value="1" /></label>
-			&nbsp;
-			{lang_priority}
-			<select name="priority">
-				<option value="1">{lang_high}</option>
-				<option value="3" selected>{lang_normal}</option>
-				<option value="5">{lang_low}</option>
-			</select>
-			&nbsp;
+			<table>
+					<tr>
+						<td>
+							<table>
+								<tr><td><label>{lang_save_as_infolog}&nbsp;{infologImage}</td><td><input class="input_text" type="checkbox" name="to_infolog"></label></td></tr>
+								<tr><td><label>{lang_receive_notification} </td><td><input type="checkbox" name="disposition" value="1" /></label></td></tr>
+							</table>
+						</td>
+						<td>
+							{lang_priority}
+							<select name="priority">
+								<option value="1">{lang_high}</option>
+								<option value="3" selected>{lang_normal}</option>
+								<option value="5">{lang_low}</option>
+							</select>
+						</td>
+				</tr>
+			</table>
 		</td>
 	</tr>
 </table>

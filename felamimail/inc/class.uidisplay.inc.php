@@ -286,11 +286,20 @@
 				if($partID != '')
 					$linkData['part'] = $partID;
 				$printURL = $GLOBALS['egw']->link('/index.php',$linkData);
+				$to_infologURL = $GLOBALS['egw']->link('/index.php',array(
+					'menuaction' => 'infolog.uiinfolog.import_mail',
+					'uid'    => $this->uid,
+					'mailbox' => $this->mailbox
+				));
 
 				$navbarImages = array(
 					'fileprint' => array(
 						'action'	=> "window.location.href = '$printURL'",
 						'tooltip'	=> lang('print it'),
+					),
+					'to_infolog' => array(
+						'action'	=> "window.open('$to_infologURL','_blank','dependent=yes,width=750,height=550,scrollbars=yes,status=yes')",
+						'tooltip'	=> lang('save as infolog'),
 					),
 				);
 				

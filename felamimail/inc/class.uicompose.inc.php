@@ -88,6 +88,7 @@
 			$formData['signature'] 	= $this->bocompose->stripSlashes($_POST['signature']);
 			$formData['contentType'] = $this->bocompose->stripSlashes($_POST['contentType']);
 			$formData['disposition'] = (bool)$_POST['disposition'];
+			$formData['to_infolog'] = $_POST['to_infolog'];
 			//$formData['mailbox']	= $_GET['mailbox'];
 
 			if((bool)$_POST['saveAsDraft'] == true) {
@@ -221,6 +222,8 @@
 			$this->t->set_var("reply_to",@htmlentities($sessionData['reply_to'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("subject",@htmlentities($sessionData['subject'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var('addressbookImage',$GLOBALS['egw']->common->image('phpgwapi/templates/phpgw_website','users'));
+			$this->t->set_var('infologImage',$GLOBALS['egw']->html->image('felamimail','to_infolog',lang('Save as infolog'),'width="17px" height="17px" valign="middle"' ));
+			$this->t->set_var('lang_save_as_infolog',lang('Save as infolog'));
 			$this->t->pparse("out","header");
 
 			// body

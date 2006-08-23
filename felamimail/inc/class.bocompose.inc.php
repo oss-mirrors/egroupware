@@ -596,6 +596,7 @@
 			$this->sessionData['signature']	= $_formData['signature'];
 			$this->sessionData['disposition'] = $_formData['disposition'];
 			$this->sessionData['contentType'] = $_formData['contentType'];
+			$this->sessionData['to_infolog'] = $_formData['to_infolog'];
 
 			$identity = $this->preferences->getIdentity((int)$this->sessionData['identity']);
 			
@@ -657,6 +658,18 @@
 				$bofelamimail->closeConnection();
 			}
 
+			// attension: we dont return from infolog. cleanups will be done there.
+			if ($_formData['to_infolog'] == 'on')
+			{
+				$uiinfolog =& CreateObject('infolog.uiinfolog');
+				$uiinfolog->import_mail(
+					$this->sessionData['to'],
+					$this->sessionData['subject'],
+					$this->sessionData['body'],
+					$this->sessionData['attachments']
+				);
+			}
+			
 			if(is_array($this->sessionData['attachments']))
 			{
 				reset($this->sessionData['attachments']);
