@@ -35,8 +35,10 @@
 		(
 			'display'	=> 'True',
 			'displayBody'	=> 'True',
+			'displayHeader'	=> 'True',
+			'saveMessage'	=> 'True',
 			'showHeader'	=> 'True',
-			'getAttachment'	=> 'True'
+			'getAttachment'	=> 'True',
 		);
 		
 		// the object storing the data about the incoming imap server
@@ -292,6 +294,32 @@
 					'mailbox' => $this->mailbox
 				));
 
+
+				// viewheader url
+				$linkData = array
+				(
+					'menuaction'	=> 'felamimail.uidisplay.displayHeader',
+					'uid'		=> $this->uid
+				);
+				if($partID != '')
+					$linkData['part'] = $partID;
+				$viewHeaderURL = $GLOBALS['egw']->link('/index.php',$linkData);
+				
+				$navbarImages = array();
+
+				// viewheader url
+				$linkData = array
+				(
+					'menuaction'	=> 'felamimail.uidisplay.saveMessage',
+					'uid'		=> $this->uid
+				);
+				if($partID != '')
+					$linkData['part'] = $partID;
+				$saveMessageURL = $GLOBALS['egw']->link('/index.php',$linkData);
+				
+				$navbarImages = array();
+
+				//print email
 				$navbarImages = array(
 					'fileprint' => array(
 						'action'	=> "window.location.href = '$printURL'",
@@ -302,6 +330,18 @@
 						'tooltip'	=> lang('save as infolog'),
 					),
 				);
+				
+				// save email as
+				$navbarImages['fileexport'] = array(
+						'action'	=> "window.location.href = '$saveMessageURL'",
+						'tooltip'	=> lang('save message to disk'),
+					);
+				
+				// view header lines
+				$navbarImages['kmmsgread'] = array(
+						'action'	=> "fm_displayHeaderLines('$viewHeaderURL')",
+						'tooltip'	=> lang('view header lines'),
+					);
 				
 				foreach($navbarImages as $buttonName => $buttonData)
 				{
@@ -812,6 +852,7 @@
 			$this->kses->AddHTML("u");
 			$this->kses->AddHTML("s");
 			$this->kses->AddHTML("i");
+			$this->kses->AddHTML('em');
 			$this->kses->AddHTML("strong");
 			$this->kses->AddHTML("strike");
 			$this->kses->AddHTML("center");
@@ -1030,6 +1071,44 @@
                         print $body;
 		}
 
+		function displayHeader()
+		{
+			$partID		= $_GET['part'];
+			$transformdate	=& CreateObject('felamimail.transformdate');
+			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
+			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
+			// (regis) seems to be necessary to reopen...
+			$this->bofelamimail->reopen($this->mailbox);
+			$headers	= $this->bofelamimail->getMessageHeader($this->mailbox, $this->uid, $partID);
+			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
+
+			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
+
+			$nonDisplayAbleCharacters = array('[\016]','[\017]',
+					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
+					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
+
+			#print "<pre>";print_r($rawheaders);print"</pre>";exit;
+
+			// add line breaks to $rawheaders
+			$newRawHeaders = explode("\n",$rawheaders);
+			reset($newRawHeaders);
+			
+			// reset $rawheaders
+			$rawheaders 	= "";
+			// create it new, with good line breaks
+			reset($newRawHeaders);
+			while(list($key,$value) = @each($newRawHeaders)) {
+				$rawheaders .= wordwrap($value, 90, "\n     ");
+			}
+			
+			$this->bofelamimail->closeConnection();
+			
+			// TODO: add proper header
+			print "<pre>$rawheaders</pre>";
+
+		}
+
 		function display_app_header()
 		{
 			if(!@is_object($GLOBALS['egw']->js))
@@ -1174,6 +1253,14 @@
 																			
 		}
 		
+		function saveMessage() {
+			$partID		= $_GET['part'];
+			// (regis) seems to be necessary to reopen...
+			$this->bofelamimail->reopen($this->mailbox);
+
+			$this->bofelamimail->closeConnection();
+		}
+
 		function showHeader()
 		{
 			if($this->bofelamimail->sessionData['showHeader'] == 'True')

@@ -191,7 +191,9 @@
 
 			if(trim($headers->toaddress) != 'undisclosed-recipients:' && is_array($headers->to)) {
 				foreach($headers->to as $toObject) {
-					$this->sessionData['to'][] = $this->generateRFC822Address($toObject);
+					if($toObject->mailbox && $toObject->mailbox != 'undisclosed-recipients') {
+						$this->sessionData['to'][] = $this->generateRFC822Address($toObject);
+					}
 				}
 			}
  
@@ -381,7 +383,7 @@
 			$this->sessionData['body']	= @htmlspecialchars($bofelamimail->decode_header($headers->fromaddress), ENT_QUOTES) . " ".lang("wrote").":" .'<br>';
 
 			if($bodyParts['0']['mimeType'] == 'text/html') {
-				$this->sessionData['mimeType'] 	= 'text/html';
+				$this->sessionData['mimeType'] 	= 'html';
 				$this->sessionData['body']	.= '<blockquote type="cite">';
 
 				for($i=0; $i<count($bodyParts); $i++) {
@@ -393,7 +395,7 @@
 
 				$this->sessionData['body']	.= '</blockquote><br>';
 			} else {
-				$this->sessionData['mimeType']	= 'text/plain';
+				$this->sessionData['mimeType']	= 'plain';
 			
 				for($i=0; $i<count($bodyParts); $i++) {
 					if($i>0) {
@@ -512,7 +514,7 @@
 			
 			$_mailObject->WordWrap = 76;
 			$_mailObject->Subject = $bofelamimail->encodeHeader($_formData['subject'], 'q');
-			if($_formData['contentType'] =='html') {
+			if($_formData['mimeType'] =='html') {
 				$_mailObject->IsHTML(true);
 				$_mailObject->Body    = $_formData['body'];
 				$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']);
@@ -563,20 +565,19 @@
 
 		function saveAsDraft($_formData)
 		{
-			if(!empty($this->preferencesArray['draftFolder'])) {
-				$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
-				$mail		=& CreateObject('phpgwapi.phpmailer');
-				$identity	= $this->preferences->getIdentity((int)$this->sessionData['identity']);
-				$flags = '\\Seen \\Draft';
+			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$mail		=& CreateObject('phpgwapi.phpmailer');
+			$identity	= $this->preferences->getIdentity((int)$this->sessionData['identity']);
+			$flags = '\\Seen \\Draft';
 			
-				$this->createMessage($mail, $_formData, $identity);
-				$bofelamimail->openConnection();
-				$bofelamimail->appendMessage($this->preferencesArray['draftFolder'],
-					$mail->getMessageHeader(),
-					$mail->getMessageBody(),
-					$flags);
-				$bofelamimail->closeConnection();
-			}
+			$this->createMessage($mail, $_formData, $identity);
+			
+			$bofelamimail->openConnection();
+			$bofelamimail->appendMessage($this->preferencesArray['draftFolder'],
+				$mail->getMessageHeader(),
+				$mail->getMessageBody(),
+				$flags);
+			$bofelamimail->closeConnection();
 		}
 
 		function send($_formData)
@@ -595,7 +596,7 @@
 			$this->sessionData['priority']	= $_formData['priority'];
 			$this->sessionData['signature']	= $_formData['signature'];
 			$this->sessionData['disposition'] = $_formData['disposition'];
-			$this->sessionData['contentType'] = $_formData['contentType'];
+			$this->sessionData['mimeType']	= $_formData['mimeType'];
 			$this->sessionData['to_infolog'] = $_formData['to_infolog'];
 
 			$identity = $this->preferences->getIdentity((int)$this->sessionData['identity']);
@@ -693,7 +694,7 @@
 			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify(
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']
 			);
-			$this->sessionData['mimeType']	= 'text/html';
+			$this->sessionData['mimeType']	= 'html';
 			
 			$this->saveSessionData();
 		}

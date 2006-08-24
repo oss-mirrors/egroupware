@@ -25,7 +25,7 @@
 <input type="hidden" id="saveAsDraft" name="saveAsDraft" value="0">
 <TABLE WIDTH="100%" CELLPADDING="1" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
 	<tr class="navbarBackground">
-		<td align="left" width="250px">
+		<td align="left" width="200px">
 			<div class="parentDIV">
 				<button class="menuButton" type="submit" value="{lang_send}" name="send" style="width: auto; color: black;">
 					<img src="{img_mail_send}" style="vertical-align: middle;"> <b>{lang_send}</b>
@@ -42,15 +42,30 @@
 			</div>
 		</td>
 		<td align="right">
-			<table>
+			<table border="0" width="100%">
 					<tr>
 						<td>
 							<table>
-								<tr><td><label>{lang_save_as_infolog}&nbsp;{infologImage}</td><td><input class="input_text" type="checkbox" name="to_infolog"></label></td></tr>
-								<tr><td><label>{lang_receive_notification} </td><td><input type="checkbox" name="disposition" value="1" /></label></td></tr>
+								<tr>
+									<td>
+										<label for="to_infolog">{lang_save_as_infolog}</label>
+									</td>
+									<td>
+										<label for="to_infolog">{infologImage}</label>
+									</td>
+									<td>
+										<input class="input_text" type="checkbox" id="to_infolog" name="to_infolog" />
+									</td>
+									<td>
+										<label for="disposition">{lang_receive_notification}</label>
+									</td>
+									<td>
+										<input type="checkbox" id="disposition" name="disposition" value="1" />
+									</td>
+								</tr>
 							</table>
 						</td>
-						<td>
+						<td width="150px" align="right">
 							{lang_priority}
 							<select name="priority">
 								<option value="1">{lang_high}</option>
@@ -102,7 +117,7 @@
 	</td>
 </tr>
 </table>
-<input type="hidden" id="contentType" name="contentType" value="{contentType}">
+<input type="hidden" id="mimeType" name="mimeType" value="{mimeType}">
 <div style="border:0px solid black; width:100%; height:400px;">
 	{tinymce}
 </div>

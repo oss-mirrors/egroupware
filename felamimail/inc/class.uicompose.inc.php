@@ -86,7 +86,7 @@
 			$formData['body'] 	= $this->bocompose->stripSlashes($_POST['body']);
 			$formData['priority'] 	= $this->bocompose->stripSlashes($_POST['priority']);
 			$formData['signature'] 	= $this->bocompose->stripSlashes($_POST['signature']);
-			$formData['contentType'] = $this->bocompose->stripSlashes($_POST['contentType']);
+			$formData['mimeType']	= $this->bocompose->stripSlashes($_POST['mimeType']);
 			$formData['disposition'] = (bool)$_POST['disposition'];
 			$formData['to_infolog'] = $_POST['to_infolog'];
 			//$formData['mailbox']	= $_GET['mailbox'];
@@ -227,14 +227,14 @@
 			$this->t->pparse("out","header");
 
 			// body
-			if($sessionData['mimeType'] == 'text/html') {
+			if($sessionData['mimeType'] == 'html') {
 				$style="border:0px; width:100%; height:400px;";
 				$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'simple', $sessionData['body'], $style));
-				$this->t->set_var('contentType', 'html');
+				$this->t->set_var('mimeType', 'html');
 			} else {
 				$style="border:0px; width:100%; height:400px;";
 				$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'ascii', $sessionData['body'], $style));
-				$this->t->set_var('contentType', 'text');
+				$this->t->set_var('mimeType', 'text');
 			}
 			$this->t->set_var("signature",$sessionData['signature']);
 			$this->t->pparse("out","body_input");
