@@ -162,11 +162,10 @@
 		 * Create mailbox name from given mailbox-name and optional user-name
 		 * 
 		 * Examples:
-		 * getMailboxName('','hugo') --> 'user.hugo'
+		 * getMailboxName('','hugo') --> ''
 		 * getMailboxName('INBOX','hugo') --> 'user.hugo'
-		 * getMailboxName('Trash,'hugo') --> 'user.hugo.Trash
+		 * getMailboxName('INBOX.Trash,'hugo') --> 'user.hugo.Trash'
 		 * getMailboxName('INBOX') --> 'INBOX'
-		 * getMailboxName('Trash') --> 'INBOX.Trash'
 		 * getMailboxName('INBOX.Trash') --> 'INBOX.Trash'
 		 *
 		 * @param string $_folderName='' 
@@ -176,18 +175,8 @@
 		function getMailboxName($_folderName='',$username='') {
 			if ($username)
 			{
-				$folder = 'user' . $this->mailboxDelimiter . $username;
+				$_folderName = str_replace('INBOX','user'.$this->mailboxDelimiter.$username,$_folderName);
 			}
-			else
-			{
-				$folder = 'INBOX';
-			}
-			if (substr($_folderName,0,6) == 'INBOX'.$this->mailboxDelimiter || $_folderName == 'INBOX')
-			{
-				$_folderName = substr($_folderName,6);
-			}
-			if ($_folderName) $folder .= $this->mailboxDelimiter . $_folderName;
-			
 			//echo "<p align=right>getMailboxName('$_folderName','$username')='$folder'</p>\n";
 			return $this->encodeFolderName($folder);
 		}

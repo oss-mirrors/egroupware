@@ -51,6 +51,7 @@
 			if(is_resource($this->mbox)) {
 				// create the users folders
 				foreach($this->createMailboxes as $mailboxName) {
+					$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
 					$mailboxString = $this->getMailboxString($mailboxName,$username);
 					$mailboxName = $this->getMailboxName($mailboxName,$username);
 					if(imap_createmailbox($this->mbox, $mailboxString)) {
@@ -68,6 +69,7 @@
 			// subscribe to the folders
 			if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword)) {
 				foreach($this->createMailboxes as $mailboxName) {
+					$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
 					imap_subscribe($mbox,$this->getMailboxString($mailboxName));
 				}
 				imap_close($mbox);
@@ -90,6 +92,7 @@
 			$username = $_hookValues['account_lid'];
 		
 			if(is_resource($this->mbox)) {
+				$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
 				$mailboxString = $this->getMailboxString('',$username);
 				$mailboxName = $this->getMailboxName('',$username);
 				// give the admin account the rights to delete this mailbox
@@ -154,6 +157,7 @@
 			if(is_resource($this->mbox)) {
 				// create the users folders
 				foreach($this->createMailboxes as $mailboxName) {
+					$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
 					$mailboxString = $this->getMailboxString($mailboxName,$username);
 					$mailboxName = $this->getMailboxName($mailboxName,$username);
 					if(imap_createmailbox($this->mbox, $mailboxString)) {
@@ -171,6 +175,7 @@
 				// subscribe to the folders
 				if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword)) {
 					foreach($this->createMailboxes as $mailboxName) {
+						$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
 						imap_subscribe($mbox,$this->getMailboxString($mailboxName));
 					}
 					imap_close($mbox);
@@ -186,15 +191,14 @@
 		 * Reimplemented to deal with the wired way cyrus 2.2 with virtual domains specifies 
 		 * 
 		 * Examples:
-		 * getMailboxName('','hugo') --> 'user.hugo[@domain]
-		 * getMailboxName('INBOX','hugo') --> 'user.hugo[@domain]'
-		 * getMailboxName('Trash,'hugo') --> 'user.hugo.Trash[@domain]' (domain must be the last part!)
+		 * getMailboxName('','hugo') --> ''
+		 * getMailboxName('INBOX','hugo') --> 'user.hugo'
+		 * getMailboxName('INBOX.Trash','hugo@domain.com') --> 'user.hugo.Trash@domain.com'
 		 * getMailboxName('INBOX') --> 'INBOX'
-		 * getMailboxName('Trash') --> 'INBOX.Trash'
 		 * getMailboxName('INBOX.Trash') --> 'INBOX.Trash'
 		 *
 		 * @param string $_folderName='' 
-		 * @param string $username='' if given use the global name, eg. 'user.username[@domain]' as prefix
+		 * @param string $username='' if given use the global name, eg. 'user.username' instead of 'INBOX'
 		 * @return string utf-7 encoded(!)
 		 */
 		function getMailboxName($_folderName='',$username='') {
@@ -206,23 +210,13 @@
 					list($username,$domain) = explode('@',$username);
 					if (!$domain) $domain = $this->defaultDomain;
 				}
-				$folder = 'user' . $this->mailboxDelimiter . $username;
+				$_folderName = str_replace('INBOX','user'.$this->mailboxDelimiter.$username,$_folderName);
 			}
-			else
-			{
-				$folder = 'INBOX';
-			}
-			if (substr($_folderName,0,6) == 'INBOX'.$this->mailboxDelimiter || $_folderName == 'INBOX')
-			{
-				$_folderName = substr($_folderName,6);
-			}
-			if ($_folderName) $folder .= $this->mailboxDelimiter . $_folderName;
-			
 			// domain has to be behind the regular mailbox name
-			if ($domain) $folder .= '@'.$domain;
+			if ($domain) $_folderName .= '@'.$domain;
 
 			//echo "<p align=right>getMailboxName('$_folderName','$username')='$folder'</p>\n";
-			return $this->encodeFolderName($folder);
+			return $this->encodeFolderName($_folderName);
 		}
 	}
 ?>
