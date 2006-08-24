@@ -17,7 +17,9 @@
 	{
 		function addAccount($_hookValues)
 		{
-			$mailLocalAddress	= $_hookValues['account_lid']."@".$this->profileData['defaultDomain'];
+			$mailLocalAddress = $_hookValues['account_email'] ? $_hookValues['account_email'] :
+				$GLOBALS['egw']->common->email_address($_hookValues['account_firstname'],
+					$_hookValues['account_lastname'],$_hookValues['account_lid'],$this->defaultDomain);
 
 			$ds = $GLOBALS['egw']->common->ldapConnect();
 			

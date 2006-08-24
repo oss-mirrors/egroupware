@@ -25,11 +25,13 @@
 		
 		var $password;
 		
-		#// the constructor
-		#function defaultsmtp($_profileData)
-		#{
-		#	$this->profileData = $_profileData;
-		#}
+		var $defaultDomain;
+		
+		// the constructor
+		function defaultsmtp($defaultDomain=null)
+		{
+			$this->defaultDomain = $defaultDomain ? $defaultDomain : $GLOBALS['egw_info']['server']['mail_suffix'];
+		}
 		
 		// add a account
 		function addAccount($_hookValues)
@@ -48,7 +50,7 @@
 			$accountID = $GLOBALS['egw']->accounts->name2id($_accountName);
 			$emailAddress = $GLOBALS['egw']->accounts->id2name($accountID,'account_email');
 			if(empty($emailAddress))
-				$emailAddress = $_accountName.'@'.$this->profileData['defaultDomain'];
+				$emailAddress = $_accountName.'@'.$this->defaultDomain;
 
 			return array(
 				array(
