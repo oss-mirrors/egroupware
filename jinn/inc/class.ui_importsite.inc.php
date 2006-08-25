@@ -498,8 +498,9 @@
 			   if($replace && $key=='object_id')
 			   {
 				  $this->bo->so->delete_phpgw_data('egw_jinn_objects', 'object_id', $val);
+				  $new_id = $val;
 			   }
-			   elseif($key=='object_id' )
+			   elseif($key=='object_id')
 			   {
 				  $new_id = $val = $object_old2new_id_arr[$old_object_id];
 			   }
