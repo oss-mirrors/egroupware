@@ -33,6 +33,7 @@
    $this->registry->plugins['preset_string']['db_field_hooks']		= array
    (
 	  'string',
+	  'int',
 	  'blob'
    );
 
