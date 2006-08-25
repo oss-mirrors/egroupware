@@ -18,34 +18,55 @@
 		 $this->site_object_id=$object_id;
 		 
 		 $this->setSession();
-
 		 
 		 //_debug_array($this->site_id);
 		 //_debug_array($this->site_object_id);
 
+//  		 $this->do_upgrade();
+
 		 $this->check_or_upgrade();
 	  }
 
+	  /**
+	  * check_or_upgrade: check version is correct else upgrade
+	  * 
+	  * @access public
+	  * @return void
+	  */
 	  function check_or_upgrade()
 	  {
-		 //read app jsxl / jaxl
-		 if(!$this->check_site_version_ok($this->calling_app))
+		 $version_status=$this->check_site_version_ok($this->calling_app);
+
+		 if($version_status=='ok')
 		 {
-			$this->set_app_jsxml_to_array($this->calling_app);
+			return;
+		 }
+		 elseif($version_status=='must_upgrade')
+		 {
 			$this->do_upgrade();
+			// todo maybe redirect?
+			// or exit
+		 }
+		 elseif($version_status=='no_version_info')
+		 {
+		 	fatal_error(lang('Can not find version file, Please check if you installation is complete.'));
 		 }
 	  }
 
 	  function do_upgrade()
 	  {
+		 $this->xmlarray = $this->get_app_jsxml_to_array($this->calling_app);
+		 //_debug_array($this->xmlarray);
+		 //die();
+		 
 		 $this->uiimport = CreateObject('jinn.ui_importsite');
-		 $upgrade_ok = $this->uiimport->load_site_from_xml($this->xmlarray,true);
-		 unset($this->uiimport);
 
-//		 $this->setSession();
+		 $upgrade_ok = $this->uiimport->load_site_from_xml($this->xmlarray,true);
+
+		 unset($this->uiimport);
 	  }
 
-	  function set_app_jsxml_to_array($appname)
+	  function get_app_jsxml_to_array($appname)
 	  {
 		 $filename=PHPGW_SERVER_ROOT.'/'.$appname.'/setup/'.$appname.'.jsxl';
 		 if(file_exists($filename))
@@ -62,30 +83,46 @@
 			}
 
 			$xmlObj   = CreateObject('jinn.xmltoarray',$buffer);
-			$this->xmlarray = $xmlObj->createArray();
 
-			return true;
+
+			return $xmlObj->createArray();
+
+//			return true;
+		 }
+		 else
+		 {
+			$this->fatal_error(lang('The Upgrade Data file is missing or not readable. Please check installation.'));
 		 }
 	  }
 
+	  function fatal_error($msg)
+	  {
+		 die($msg);
+	  }
+
+	  /**
+	  * check_site_version_ok: read version info file and return status
+	  * 
+	  * @param mixed $appname 
+	  * @access public
+	  * @return void
+	  */
 	  function check_site_version_ok($appname)
 	  {
 		 if(@include(PHPGW_SERVER_ROOT.'/'.$appname.'/setup/japie.info.php'))
 		 {
-			//if( intval($this->xmlarray['jinn']['site'][0]['site_version']) > intval($this->site_arr['site_version']) )
 			if( $japie_info['site_version'] > intval($this->site_arr['site_version']) )
 			{
-//			   die('hallo');
-			   return false;	
+			   return 'must_upgrade';
 			}
 			else
 			{
-			   return true;
+			   return 'ok';
 			}
 		 }
 		 else 
 		 {
-			return false;
+			return 'no_version_info';
 		 }
 	  }
 
@@ -120,7 +157,7 @@
 	  {
 		 if(!$this->site_object_id)
 		 {
-			die(lang('Error calling Japie function: no object id')); 
+			fatal_error(lang('Error calling Japie function: no object id')); 
 		 }
 
 		 if($_GET['jma']=='jinn.uiu_edit_record.read_record')
