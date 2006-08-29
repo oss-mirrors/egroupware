@@ -251,7 +251,7 @@
 			$headers	= $bofelamimail->getMessageHeader($_folder, $_uid, $_partID);
 			// check for Re: in subject header
 			$this->sessionData['subject'] 	= "[FWD] " . $bofelamimail->decode_header($headers->Subject);
-			$this->sessionData['mimeType']  = 'text/html';
+			$this->sessionData['mimeType']  = 'html';
 			if($headers->Size)
 				$size				= $headers->Size;
 			else
