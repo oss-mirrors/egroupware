@@ -78,7 +78,7 @@
 		  ";
 		  #_debug_array($options);
 
-		  $this->tplsav2->options=$options;
+		  $this->tplsav2->init_options=$options;
 		  $this->tplsav2->name=$field_name;
 		  $this->tplsav2->content=$value;
 		  $this->tplsav2->style=$style;

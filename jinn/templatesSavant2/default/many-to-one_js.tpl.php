@@ -67,7 +67,8 @@
    {
 		 if(typeof tinyMCE != "undefined")
 		 {
-			   tinyMCE.triggerSave(true,true);
+			   // .... (no skip cleanup, skip callback)
+			   tinyMCE.triggerSave(false,true);
 		 }
 
  		 current_m2o_id=m2o_id;

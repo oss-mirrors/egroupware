@@ -10,9 +10,7 @@
 		 plugin_insertdate_timeFormat : "<?=($GLOBALS['egw_info']['user']['preferences']['common']['timeformat'] == 12 ? '%I:%M %p' : '%H:%M')?>",
 		 elements : "<?=$this->name?>",
 		 strict_loading_mode : true,
-		 relative_urls : false,
-		 entity_encoding : "named",
-		 <?=$this->options?>
+		 <?=$this->init_options?>
    });
    tinyMCE.onLoad();
    //alert('hallo');
