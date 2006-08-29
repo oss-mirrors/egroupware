@@ -449,7 +449,7 @@
 			
 			$attachments = $this->getMessageAttachments($_uid);
 			foreach($attachments as $attachment) {
-				if($attachment['id'] == "<$_cid>") {
+				if(strpos($attachment['id'], $_cid) !== false) {
 					$partID = $attachment['partID'];
 					break;
 				}
