@@ -36,6 +36,7 @@
 			'display'	=> 'True',
 			'displayBody'	=> 'True',
 			'displayHeader'	=> 'True',
+			'displayImage'	=> 'True',
 			'saveMessage'	=> 'True',
 			'showHeader'	=> 'True',
 			'getAttachment'	=> 'True',
@@ -480,227 +481,235 @@
 
 			$this->t->set_var("rawheader",@htmlentities(preg_replace($nonDisplayAbleCharacters,'',$rawheaders),ENT_QUOTES,$this->displayCharset));
 
-			#$this->kses->AddProtocol("http");
-			$this->kses->AddHTML(
-				"p",array(
-					'align'	=> array("minlen" =>   1, 'maxlen' =>  10)
-				)
-			);
-			$this->kses->AddHTML("tbody");
-			$this->kses->AddHTML("tt");
-			$this->kses->AddHTML("br");
-			$this->kses->AddHTML("b");
-			$this->kses->AddHTML("i");
-			$this->kses->AddHTML("strike");
-			$this->kses->AddHTML("center");
-			$this->kses->AddHTML(
-				"font",array(
-					"color"	=> array('maxlen' => 10)
-				)
-			);
-			$this->kses->AddHTML(
-				"hr",array(
-					"class"	=> array('maxlen' => 20)
-				)
-			);
-			$this->kses->AddHTML("div");
-			$this->kses->AddHTML("ul");
-			$this->kses->AddHTML(
-				"ol",array(
-					"type"	=> array('maxlen' => 20)
-				)
-			);
-			$this->kses->AddHTML("li");
-			$this->kses->AddHTML("h1");
-			$this->kses->AddHTML("h2");
-			$this->kses->AddHTML(
-				"style",array(
-					"type"	=> array('maxlen' => 20)
-				)
-			);
-			$this->kses->AddHTML("select");
-			$this->kses->AddHTML(
-				"option",array(
-					"value" => array('maxlen' => 45),
-					"selected" => array()
-				)
-			);
+#			#$this->kses->AddProtocol("http");
+#			$this->kses->AddProtocol("cid");
+#			$this->kses->AddHTML(
+#				"p",array(
+#					'align'	=> array("minlen" =>   1, 'maxlen' =>  10)
+#				)
+#			);
+#			$this->kses->AddHTML("tbody");
+#			$this->kses->AddHTML("tt");
+#			$this->kses->AddHTML("br");
+#			$this->kses->AddHTML("b");
+#			$this->kses->AddHTML("i");
+#			$this->kses->AddHTML("strike");
+#			$this->kses->AddHTML("center");
+#			$this->kses->AddHTML(
+#				"font",array(
+#					"color"	=> array('maxlen' => 10)
+#				)
+#			);
+#			$this->kses->AddHTML(
+#				"hr",array(
+#					"class"	=> array('maxlen' => 20)
+#				)
+#			);
+#			$this->kses->AddHTML("div");
+#			$this->kses->AddHTML("ul");
+#			$this->kses->AddHTML(
+#				"ol",array(
+#					"type"	=> array('maxlen' => 20)
+#				)
+#			);
+#			$this->kses->AddHTML("li");
+#			$this->kses->AddHTML("h1");
+#			$this->kses->AddHTML("h2");
+#			$this->kses->AddHTML(
+#				"style",array(
+#					"type"	=> array('maxlen' => 20)
+#				)
+#			);
+#			$this->kses->AddHTML("select");
+#			$this->kses->AddHTML(
+#				"option",array(
+#					"value" => array('maxlen' => 45),
+#					"selected" => array()
+#				)
+#			);
+#
+#			$this->kses->AddHTML(
+#				"a", array(
+#					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
+#					"name" 		=> array('minlen' => 2),
+#					'target'	=> array('maxlen' => 10)
+#				)
+#			);
+#
+#			$this->kses->AddHTML(
+#				"pre", array(
+#					"wrap" => array('maxlen' => 10)
+#				)
+#			);
+#			
+#			//      Allows 'td' tag with colspan|rowspan|class|style|width|nowrap attributes,
+#			//              colspan has minval of   2       and maxval of 5
+#			//              rowspan has minval of   3       and maxval of 6
+#			//              class   has minlen of   1 char  and maxlen of   10 chars
+#			//              style   has minlen of  10 chars and maxlen of 100 chars
+#			//              width   has maxval of 100
+#			//              nowrap  is valueless
+#			$this->kses->AddHTML(
+#				"table",array(
+#					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+#					"border"   => array("minlen" =>   1, 'maxlen' =>  10),
+#					"cellpadding"   => array("minlen" =>   0, 'maxlen' =>  10),
+#					"cellspacing"   => array("minlen" =>   0, 'maxlen' =>  10),
+#					"width"   => array("maxlen" => 5),
+#					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+#					"bgcolor"   => array('maxlen' =>  10),
+#					"align"   => array('maxlen' =>  10),
+#					"valign"   => array('maxlen' =>  10),
+#					"bordercolor"   => array('maxlen' =>  10)
+#				)
+#			);
+#			$this->kses->AddHTML(
+#				"tr",array(
+#					"colspan"	=> array('minval' =>   2, 'maxval' =>   5),
+#					"rowspan"	=> array('minval' =>   3, 'maxval' =>   6),
+#					"class"		=> array("minlen" =>   1, 'maxlen' =>  20),
+#					"width"		=> array("maxlen" => 5),
+#					"style"		=> array('minlen' =>  10, 'maxlen' => 100),
+#					"align"		=> array('maxlen' =>  10),
+#					'bgcolor'	=> array('maxlen' => 10),
+#					"valign"	=> array('maxlen' =>  10),
+#					"nowrap"	=> array('valueless' => 'y')
+#				)
+#			);
+#			$this->kses->AddHTML(
+#				"td",array(
+#					"colspan" => array('minval' =>   2, 'maxval' =>   5),
+#					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+#					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+#					"width"   => array("maxlen" => 5),
+#					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+#					"align"   => array('maxlen' =>  10),
+#					'bgcolor' => array('maxlen' => 10),
+#					"valign"   => array('maxlen' =>  10),
+#					"nowrap"  => array('valueless' => 'y')
+#				)
+#			);
+#			$this->kses->AddHTML(
+#				"th",array(
+#					"colspan" => array('minval' =>   2, 'maxval' =>   5),
+#					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+#					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+#					"width"   => array("maxlen" => 5),
+#					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+#					"align"   => array('maxlen' =>  10),
+#					"valign"   => array('maxlen' =>  10),
+#					"nowrap"  => array('valueless' => 'y')
+#				)
+#			);
+#			$this->kses->AddHTML(
+#				"span",array(
+#					"class"   => array("minlen" =>   1, 'maxlen' =>  20)
+#				)
+#			);
+#			$this->kses->AddHTML(
+#				"blockquote",array(
+#					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
+#					"style"	=> array("minlen" =>   1),
+#					"cite"	=> array('maxlen' => 30),
+#					"type"	=> array('maxlen' => 10),
+#					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
+#				)
+#			);
+#			$this->kses->AddHTML(
+#				'img',array(
+#					"src"		=> array("minlen" =>   4, 'maxlen' =>  60, 'match' => '/^cid:.*/'),
+#					"align"		=> array("minlen" =>   1),
+#					"border"	=> array('maxlen' => 30),
+#				)
+#			);
 
-			$this->kses->AddHTML(
-				"a", array(
-					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
-					"name" 		=> array('minlen' => 2),
-					'target'	=> array('maxlen' => 10)
-				)
-			);
 
-			$this->kses->AddHTML(
-				"pre", array(
-					"wrap" => array('maxlen' => 10)
-				)
-			);
-			
-			//      Allows 'td' tag with colspan|rowspan|class|style|width|nowrap attributes,
-			//              colspan has minval of   2       and maxval of 5
-			//              rowspan has minval of   3       and maxval of 6
-			//              class   has minlen of   1 char  and maxlen of   10 chars
-			//              style   has minlen of  10 chars and maxlen of 100 chars
-			//              width   has maxval of 100
-			//              nowrap  is valueless
-			$this->kses->AddHTML(
-				"table",array(
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"border"   => array("minlen" =>   1, 'maxlen' =>  10),
-					"cellpadding"   => array("minlen" =>   0, 'maxlen' =>  10),
-					"cellspacing"   => array("minlen" =>   0, 'maxlen' =>  10),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"bgcolor"   => array('maxlen' =>  10),
-					"align"   => array('maxlen' =>  10),
-					"valign"   => array('maxlen' =>  10),
-					"bordercolor"   => array('maxlen' =>  10)
-				)
-			);
-			$this->kses->AddHTML(
-				"tr",array(
-					"colspan"	=> array('minval' =>   2, 'maxval' =>   5),
-					"rowspan"	=> array('minval' =>   3, 'maxval' =>   6),
-					"class"		=> array("minlen" =>   1, 'maxlen' =>  20),
-					"width"		=> array("maxlen" => 5),
-					"style"		=> array('minlen' =>  10, 'maxlen' => 100),
-					"align"		=> array('maxlen' =>  10),
-					'bgcolor'	=> array('maxlen' => 10),
-					"valign"	=> array('maxlen' =>  10),
-					"nowrap"	=> array('valueless' => 'y')
-				)
-			);
-			$this->kses->AddHTML(
-				"td",array(
-					"colspan" => array('minval' =>   2, 'maxval' =>   5),
-					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"align"   => array('maxlen' =>  10),
-					'bgcolor' => array('maxlen' => 10),
-					"valign"   => array('maxlen' =>  10),
-					"nowrap"  => array('valueless' => 'y')
-				)
-			);
-			$this->kses->AddHTML(
-				"th",array(
-					"colspan" => array('minval' =>   2, 'maxval' =>   5),
-					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"align"   => array('maxlen' =>  10),
-					"valign"   => array('maxlen' =>  10),
-					"nowrap"  => array('valueless' => 'y')
-				)
-			);
-			$this->kses->AddHTML(
-				"span",array(
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20)
-				)
-			);
-			$this->kses->AddHTML(
-				"blockquote",array(
-					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
-					"style"	=> array("minlen" =>   1),
-					"cite"	=> array('maxlen' => 30),
-					"type"	=> array('maxlen' => 10),
-					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
-				)
-			);
+#			for($i=0; $i<count($bodyParts); $i++)
+#			{
+#				$bodyParts[$i]['body'] = $this->botranslation->convert(
+#					$bodyParts[$i]['body'],strtolower($bodyParts[$i]['charSet'])
+#				);
+#
+#				if($bodyParts[$i]['mimeType'] == 'text/plain')
+#				{
+#					$newBody	= $bodyParts[$i]['body'];
+#
+#					$newBody	= @htmlentities($bodyParts[$i]['body'],ENT_QUOTES,$this->displayCharset);
+#					$newBody	= $this->bofelamimail->wordwrap($newBody, 90, "\n");
+#					
+#					// search http[s] links and make them as links available again
+#					// to understand what's going on here, have a look at 
+#					// http://www.php.net/manual/en/function.preg-replace.php
+#
+#					// create links for websites
+#					$newBody = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,!&gt;,\%,@,\*,#,:,~,\+]+)/ie", 
+#						"'<a href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
+#			
+#					// create links for ftp sites
+#					$newBody = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
+#						"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">$1$3$4</font></a>", $newBody);
+#
+#					// create links for email addresses
+#					$linkData = array
+#					(
+#						'menuaction'    => 'felamimail.uicompose.compose'
+#					);
+#					$link = $GLOBALS['egw']->link('/index.php',$linkData);
+#					$newBody = preg_replace("/(?<=\s{1}|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
+#						"'<a href=\"$link&send_to='.base64_encode('$0').'\"><font color=\"blue\">$0</font></a>'", $newBody);
+#
+#					$newBody	= $this->highlightQuotes($newBody);
+#					$newBody	= "<pre>".$newBody."</pre>";
+#				}
+#				else
+#				{
+#					$newBody	= $bodyParts[$i]['body'];
+#					$newBody	= $this->highlightQuotes($newBody);
+#					$newBody 	= $this->kses->Parse($newBody);
+#
+#					// create links for websites
+#					#$newBody = preg_replace("/(?<!\>)((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+#					#	"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
+#					$newBody = preg_replace("/(?<!>|\/|\")((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+#						"'<a href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
+#
+#					// create links for websites
+#					$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\(,\),\*,#,:,~,\+]+)(\"|\')/ie", 
+#						"'href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"'", $newBody);
+#
+#					// create links for ftp sites
+#					$newBody = preg_replace("/href=(\"|\')((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)(\"|\')/i", 
+#						"href=\"ftp://$4$5\" target=\"_blank\"", $newBody);
+#
+#					// create links for email addresses
+#					$linkData = array
+#					(
+#						'menuaction'    => 'felamimail.uicompose.compose'
+#					);
+#					$link = $GLOBALS['egw']->link('/index.php',$linkData);
+#					$newBody = preg_replace("/href=(\"|\')mailto:([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie", 
+#						"'href=\"$link&send_to='.base64_encode('$2').'\"'", $newBody);
+#					#print "<pre>".htmlentities($newBody)."</pre><hr>";
+#
+#					$link = $GLOBALS['egw']->link('/index.php',$linkData);
+#					#$newBody = preg_replace("/(?<!:)(?<=\s{1}|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
+#					$newBody = preg_replace("/(?<!:)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
+#						"'<a href=\"$link&send_to='.base64_encode('$0').'\"><font color=\"blue\">$0</font></a>'", $newBody);
+#				}
+#				$body .= $newBody;
+#				#print "<hr><pre>$body</pre><hr>";
+#			}
+#			
+#			// create links for windows shares
+#			// \\\\\\\\ == '\\' in real life!! :)
+#			$body = preg_replace("/(\\\\\\\\)([\w,\\\\,-]+)/i", 
+#				"<a href=\"file:$1$2\" target=\"_blank\"><font color=\"blue\">$1$2</font></a>", $body);
+#			
+#			$body = preg_replace($nonDisplayAbleCharacters,'',$body);
+ #                                                                                                                               			
+#				
+#			$this->t->set_var("body", $body);
 
-
-
-			for($i=0; $i<count($bodyParts); $i++)
-			{
-				$bodyParts[$i]['body'] = $this->botranslation->convert(
-					$bodyParts[$i]['body'],strtolower($bodyParts[$i]['charSet'])
-				);
-
-				if($bodyParts[$i]['mimeType'] == 'text/plain')
-				{
-					$newBody	= $bodyParts[$i]['body'];
-
-					$newBody	= @htmlentities($bodyParts[$i]['body'],ENT_QUOTES,$this->displayCharset);
-					$newBody	= $this->bofelamimail->wordwrap($newBody, 90, "\n");
-					
-					// search http[s] links and make them as links available again
-					// to understand what's going on here, have a look at 
-					// http://www.php.net/manual/en/function.preg-replace.php
-
-					// create links for websites
-					$newBody = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,!&gt;,\%,@,\*,#,:,~,\+]+)/ie", 
-						"'<a href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
-			
-					// create links for ftp sites
-					$newBody = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
-						"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">$1$3$4</font></a>", $newBody);
-
-					// create links for email addresses
-					$linkData = array
-					(
-						'menuaction'    => 'felamimail.uicompose.compose'
-					);
-					$link = $GLOBALS['egw']->link('/index.php',$linkData);
-					$newBody = preg_replace("/(?<=\s{1}|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
-						"'<a href=\"$link&send_to='.base64_encode('$0').'\"><font color=\"blue\">$0</font></a>'", $newBody);
-
-					$newBody	= $this->highlightQuotes($newBody);
-					$newBody	= "<pre>".$newBody."</pre>";
-				}
-				else
-				{
-					$newBody	= $bodyParts[$i]['body'];
-					$newBody	= $this->highlightQuotes($newBody);
-					$newBody 	= $this->kses->Parse($newBody);
-
-					// create links for websites
-					#$newBody = preg_replace("/(?<!\>)((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-					#	"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
-					$newBody = preg_replace("/(?<!>|\/|\")((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-						"'<a href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
-
-					// create links for websites
-					$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\(,\),\*,#,:,~,\+]+)(\"|\')/ie", 
-						"'href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"'", $newBody);
-
-					// create links for ftp sites
-					$newBody = preg_replace("/href=(\"|\')((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)(\"|\')/i", 
-						"href=\"ftp://$4$5\" target=\"_blank\"", $newBody);
-
-					// create links for email addresses
-					$linkData = array
-					(
-						'menuaction'    => 'felamimail.uicompose.compose'
-					);
-					$link = $GLOBALS['egw']->link('/index.php',$linkData);
-					$newBody = preg_replace("/href=(\"|\')mailto:([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie", 
-						"'href=\"$link&send_to='.base64_encode('$2').'\"'", $newBody);
-					#print "<pre>".htmlentities($newBody)."</pre><hr>";
-
-					$link = $GLOBALS['egw']->link('/index.php',$linkData);
-					#$newBody = preg_replace("/(?<!:)(?<=\s{1}|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
-					$newBody = preg_replace("/(?<!:)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
-						"'<a href=\"$link&send_to='.base64_encode('$0').'\"><font color=\"blue\">$0</font></a>'", $newBody);
-				}
-				$body .= $newBody;
-				#print "<hr><pre>$body</pre><hr>";
-			}
-			
-			// create links for windows shares
-			// \\\\\\\\ == '\\' in real life!! :)
-			$body = preg_replace("/(\\\\\\\\)([\w,\\\\,-]+)/i", 
-				"<a href=\"file:$1$2\" target=\"_blank\"><font color=\"blue\">$1$2</font></a>", $body);
-			
-			$body = preg_replace($nonDisplayAbleCharacters,'',$body);
-                                                                                                                                			
-				
-			$this->t->set_var("body", $body);
 			$linkData = array (
 				'menuaction'	=> 'felamimail.uidisplay.displayBody',
 				'uid'		=> $this->uid,
@@ -839,10 +848,10 @@
 
 			$this->t->egroupware_hack = False;
 			
-			#$this->kses->AddProtocol("http");
+			$this->kses->AddProtocol('cid');
 			$this->kses->AddHTML(
-				"p",array(
-					'align'	=> array("minlen" =>   1, 'maxlen' =>  10)
+				'p', array(
+					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
 				)
 			);
 			$this->kses->AddHTML("tbody");
@@ -980,8 +989,13 @@
 					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
 				)
 			);
-
-
+			$this->kses->AddHTML(
+				'img',array(
+					"src"		=> array("minlen" =>   4, 'maxlen' =>  60, 'match' => '/^cid:.*/'),
+					"align"		=> array("minlen" =>   1),
+					"border"	=> array('maxlen' => 30),
+				)
+			);
 
 			for($i=0; $i<count($bodyParts); $i++)
 			{
@@ -1040,6 +1054,15 @@
 					$newBody = preg_replace("/href=(\"|\')((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)(\"|\')/i", 
 						"href=\"ftp://$4$5\" target=\"_blank\"", $newBody);
 
+					// create links for inline images
+					$linkData = array (
+						'menuaction'    => 'felamimail.uidisplay.displayImage',
+						'uid'		=> $this->uid,
+					);
+					$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
+					$newBody = preg_replace("/(\"|\')cid:(.*)(\"|\')/iUe", 
+						"'\"$imageURL&cid='.base64_encode('$2').'\"'", $newBody);
+
 					// create links for email addresses
 					$linkData = array
 					(
@@ -1079,14 +1102,14 @@
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
-			$headers	= $this->bofelamimail->getMessageHeader($this->mailbox, $this->uid, $partID);
+			#$headers	= $this->bofelamimail->getMessageHeader($this->mailbox, $this->uid, $partID);
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
 
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
 
-			$nonDisplayAbleCharacters = array('[\016]','[\017]',
-					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
-					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
+			#$nonDisplayAbleCharacters = array('[\016]','[\017]',
+			#		'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
+			#		'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
 
 			#print "<pre>";print_r($rawheaders);print"</pre>";exit;
 
@@ -1104,11 +1127,39 @@
 			
 			$this->bofelamimail->closeConnection();
 			
-			// TODO: add proper header
-			print "<pre>$rawheaders</pre>";
+			header('Content-type: text/html; charset=iso-8859-1');
+			print '<pre>'. htmlspecialchars($rawheaders, ENT_QUOTES, 'iso-8859-1') .'</pre>';
 
 		}
 
+		function displayImage()
+		{
+			$cid	= base64_decode($_GET['cid']);
+
+			$this->bofelamimail->reopen($this->mailbox);
+
+			$attachment 	= $this->bofelamimail->getAttachmentByCID($this->uid, $cid);
+			
+			$this->bofelamimail->closeConnection();
+			
+			$GLOBALS['egw']->session->commit_session();
+			
+			if(is_array($attachment)) {
+				header ("Content-Type: ".$attachment['type']."; name=\"". $this->bofelamimail->decode_header($attachment['filename']) ."\"");
+				header ('Content-Disposition: inline; filename="'. $this->bofelamimail->decode_header($attachment['filename']) .'"');
+				header("Expires: 0");
+				// the next headers are for IE and SSL
+				header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+				header("Pragma: public"); 
+				
+				echo $attachment['attachment'];
+			}
+			
+			$GLOBALS['egw']->common->egw_exit();
+			
+			exit;
+		}
+		
 		function display_app_header()
 		{
 			if(!@is_object($GLOBALS['egw']->js))

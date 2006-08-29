@@ -440,6 +440,63 @@
 				);
 		}
 		
+		// this function is based on a on "Building A PHP-Based Mail Client"
+		// http://www.devshed.com
+		// fetch a specific attachment from a message
+		function getAttachmentByCID($_uid, $_cid)
+		{
+			$partID = false;
+			
+			$attachments = $this->getMessageAttachments($_uid);
+			foreach($attachments as $attachment) {
+				if($attachment['id'] == "<$_cid>") {
+					$partID = $attachment['partID'];
+					break;
+				}
+			}
+
+			if(!$partID) {
+				return false;
+			}
+
+			// parse message structure
+			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
+			$sections = array();
+			$this->parseMessage($sections, $structure, $partID);
+			
+			#_debug_array($sections);
+			
+			$type 		= $sections[$partID]["mimeType"];
+			$encoding 	= $sections[$partID]["encoding"];
+			$filename 	= $this->decode_header($sections[$partID]["name"]);
+			
+			$attachment = imap_fetchbody($this->mbox, $_uid, $partID, FT_UID);
+			
+			switch ($encoding) 
+			{
+				case ENCBASE64:
+					// use imap_base64 to decode
+					$attachment = imap_base64($attachment);
+					break;
+				case ENCQUOTEDPRINTABLE:
+					// use imap_qprint to decode
+					$attachment = imap_qprint($attachment);
+					break;
+				case ENCOTHER:
+					// not sure if this needs decoding at all
+					break;
+				default:
+					// it is either not encoded or we don't know about it
+			}
+			
+			return array(
+				'type'		=> $type, 
+				'encoding'	=> $encoding, 
+				'filename'	=> $filename, 
+				'attachment'	=> $attachment
+				);
+		}
+		
 		function getEMailProfile()
 		{
 			$config =& CreateObject('phpgwapi.config','felamimail');
@@ -1184,7 +1241,7 @@
 			#	#_debug_array($structure['attachment']);
 			#	return $sections['attachment'];
 			#}
-			
+
 			$arrayData = array();
 			if(count($sections) > 0) {
 				foreach($sections as $key => $value) {
@@ -1878,6 +1935,9 @@
 					$_sections[$_currentPartID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
 					$_sections[$_currentPartID]["name"]	= lang("unknown");
 					$_sections[$_currentPartID]['type']	= 'attachment';
+					if($_structure->id) {
+						$_sections[$_currentPartID]['id'] = $_structure->id;
+					}
 					foreach((array)$_structure->dparameters as $param) {
 						switch(strtolower($param->attribute)) {
 							case 'filename':
