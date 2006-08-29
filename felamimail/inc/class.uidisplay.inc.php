@@ -1139,7 +1139,7 @@
 			$this->bofelamimail->reopen($this->mailbox);
 
 			$attachment 	= $this->bofelamimail->getAttachmentByCID($this->uid, $cid);
-			
+
 			$this->bofelamimail->closeConnection();
 			
 			$GLOBALS['egw']->session->commit_session();
