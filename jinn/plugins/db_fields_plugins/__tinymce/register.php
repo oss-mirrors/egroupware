@@ -69,7 +69,7 @@
    );
 
    $advanced_arr=array(
-	  'relative_urls'=>lang('Relative paths to images')
+	  'relative_urls'=>lang('Relative paths to images'),
    );
    
    $this->registry->plugins['tinymce']['config2']		= array
@@ -122,7 +122,15 @@
 		 'label' => lang('Advanced Settings'),
 		 'type' => 'checkbox',
 		 'checkbox_arr' => $advanced_arr
-	  )
+	  ),
+	  'document_base' => array(
+		 'name' => 'document_base',
+		 'label' => lang('DocumentBase for links to link to'),
+		 'type' => 'text',
+		 'allowempty' => true
+	  ),
+
+
    );
 
 

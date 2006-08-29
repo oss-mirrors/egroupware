@@ -76,6 +76,7 @@
 		  theme_advanced_resizing : true,\n
 		  strict_loading_mode : true,\n
 		  ";
+		  #_debug_array($options);
 
 		  $this->tplsav2->options=$options;
 		  $this->tplsav2->name=$field_name;
@@ -279,7 +280,11 @@
 		  
 		  if(!$config['advanced_settings']['relative_urls'])
 		  {
-			 $bar.="\n,relative_urls : false";
+			 $bar.="\n,relative_urls : false\n";
+		  }
+		  if($config[document_base] != '')
+		  {
+			 $bar .="\n,document_base_url : '{$config[document_base]}'\n";
 		  }
 		  
 		  return $bar;
