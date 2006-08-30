@@ -282,11 +282,12 @@
 		  {
 			 $bar.="\n,relative_urls : false\n";
 		  }
+		  /*
 		  if($config[document_base] != '')
 		  {
 			 $bar .="\n,document_base_url : '{$config[document_base]}'\n";
 		  }
-		  
+		  */
 		  return $bar;
 
 	 }

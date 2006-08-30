@@ -40,19 +40,22 @@
 		   if($config['New_height_in_pixels'] && is_numeric(intval($config['New_height_in_pixels']))) $height=intval($config['New_height_in_pixels']);
 		   else $height = '100';
 		   
-		   $input='<textarea name="'.$field_name.'" style="padding:1px;border:solid 1px #cccccc;width:460px; height:'.$height.'px">'.$value.'</textarea>';
+		   $input='<textarea name="'.$field_name.'" style="padding:1px;border:solid 1px #cccccc;width:460px; height:'.$height.'px">'.htmlentities($value).'</textarea>';
 			return $input;
 		}
 	
 		function listview_read($value, $config,$attr_arr)
 		{
+		   $value = strip_tags($value);
+		   $value = htmlentities($value);
 		   if(strlen($value)>20)
 		   {
-			  $value = strip_tags(htmlentities($value));
-	
-			  $title = substr($value,0,200);
-			  
-			  $value = '<span title="'.$title.'">' . substr($value,0,20). ' ...' . '</span>';
+
+			  $_val=explode(' ',$value);
+
+			  $value = implode(' ',array_slice($_val,0,5)); 
+
+			  $value = '<span title="'.$title.'">' . $value. ' ...' . '</span>';
 		   }
 		   return $value;   		
 		}

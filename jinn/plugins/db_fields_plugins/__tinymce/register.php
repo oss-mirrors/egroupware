@@ -123,13 +123,13 @@
 		 'type' => 'checkbox',
 		 'checkbox_arr' => $advanced_arr
 	  ),
-	  'document_base' => array(
+/*	  'document_base' => array(
 		 'name' => 'document_base',
 		 'label' => lang('DocumentBase for links to link to'),
 		 'type' => 'text',
 		 'allowempty' => true
 	  ),
-
+*/
 
    );
 

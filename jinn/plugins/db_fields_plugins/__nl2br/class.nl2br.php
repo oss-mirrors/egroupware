@@ -36,8 +36,10 @@
 
 		function formview_edit($field_name, $value, $config,$attr_arr)
 		{
-			$input='<textarea name="'.$field_name.'" style="width:100%; height:200px">'.str_replace('<br />','',$value).'</textarea>';
-			return $input;
+		   $value=str_replace('<br />','',$value);
+
+		   $input='<textarea name="'.$field_name.'" style="width:100%; height:200px">'.htmlentities($value).'</textarea>';
+		   return $input;
 		}
 	
 		function on_save_filter($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
@@ -55,20 +57,18 @@
 
 		 function listview_read($value, $config,$attr_arr)
 		 {
-			if(strlen($value)>30)
+			$value = strip_tags($value);
+			$value = htmlentities($value);
+			if(strlen($value)>20)
 			{
-			   $value = strip_tags($value);
-			   $value = trim($value);
-			   $title = substr($value,0,200);
+			   $_val=explode(' ',$value);
 
-			   $value = '<span title="'.$title.'">' . substr($value,0,30). ' ...' . '</span>';
+			   $value = implode(' ',array_slice($_val,0,5)); 
+
+			   $value = '<span title="'.$title.'">' . $value. ' ...' . '</span>';
 			}
 			return $value;   		
 		 }
-
-
-
-
 
 	}	
  ?>
