@@ -52,7 +52,7 @@
 						<span id="folderName">{folderName}</span>
 					</td>
 					<td align="center">
-						<button type='button' onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteFolder",tree.getSelectedItemId())'>{lang_delete}</button>
+						<button type='button' id="mailboxDeleteButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteFolder",tree.getSelectedItemId())'>{lang_delete}</button>
 					</td>
 				</tr>
 				<tr>
