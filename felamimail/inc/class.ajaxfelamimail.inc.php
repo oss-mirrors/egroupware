@@ -54,7 +54,6 @@
 			$response =& new xajaxResponse();
 			if($this->bofelamimail->imap_createmailbox($folderName, true)) {
 				$response->addScript("tree.insertNewItem('$_parentFolder','$folderName','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
-				$response->addScript("tree.setCheck('$folderName','0');");
 			}
 			$response->addAssign("newSubFolder", "value", '');
 			return $response->getXML();
@@ -264,10 +263,17 @@
 			if($folderName != '--topfolder--' && $folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 				$response =& new xajaxResponse();
 
-				if($this->sessionDataAjax['oldFolderName'] == '--topfolder--') {
-					$this->sessionDataAjax['oldFolderName'] = '';
+				$response->addScript("document.getElementById('newMailboxName').disabled = false;");
+				$response->addScript("document.getElementById('mailboxRenameButton').disabled = false;");
+				
+				if($folderName == 'INBOX') {
+					$response->addScript("document.getElementById('newMailboxName').disabled = true;");
+					$response->addScript("document.getElementById('mailboxRenameButton').disabled = true;");
+					$response->addScript("document.getElementById('mailboxDeleteButton').disabled = true;");
+				} else {
 					$response->addScript("document.getElementById('newMailboxName').disabled = false;");
 					$response->addScript("document.getElementById('mailboxRenameButton').disabled = false;");
+					$response->addScript("document.getElementById('mailboxDeleteButton').disabled = false;");
 				}
 				// only folders with LATT_NOSELECT not set, can have subfolders
 				// seem to work only for uwimap
@@ -298,6 +304,7 @@
 				$response->addAssign("folderName", "innerHTML", '');
 				$response->addScript("document.getElementById('newMailboxName').disabled = true;");
 				$response->addScript("document.getElementById('mailboxRenameButton').disabled = true;");
+				$response->addScript("document.getElementById('mailboxDeleteButton').disabled = true;");
 				$response->addAssign("aclTable", "innerHTML", '');
 				return $response->getXML();
 			}
@@ -437,7 +444,7 @@
 			{
 				$response =& new xajaxResponse();
 				$response->addScript("tree.deleteItem('$_oldName',0);");
-				$response->addScript("tree.insertNewItem('$_newParent','$newName','$_newName',onNodeSelect,0,0,0,'CHILD,CHECKED,SELECT,CALL');");
+				$response->addScript("tree.insertNewItem('$_newParent','$newName','$_newName',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
 				return $response->getXML();
 			}
 		}
