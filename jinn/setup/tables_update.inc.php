@@ -1775,4 +1775,35 @@
 
 		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.134';
 	}
+
+
+	$test[] = '0.9.134';
+	function jinn_upgrade0_9_134()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_objects','table_name',array(
+			'type' => 'varchar',
+			'precision' => '250',
+			'nullable' => False
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.135';
+	}
+
+
+	$test[] = '0.9.135';
+	function jinn_upgrade0_9_135()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_sites','site_db_name',array(
+			'type' => 'varchar',
+			'precision' => '250',
+			'nullable' => False
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_sites','site_db_host',array(
+			'type' => 'varchar',
+			'precision' => '250',
+			'nullable' => False
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.136';
+	}
 ?>
