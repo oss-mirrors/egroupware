@@ -96,11 +96,13 @@ do you really want to delete the '%1' folder?	felamimail	sl	Ali res želite izbr
 does not contain	felamimail	sl	Ne vsebuje
 does not match	felamimail	sl	Se ne ujema
 does not match regexp	felamimail	sl	Se ne ujema z regularnim izrazom
+don't use draft folder	felamimail	sl	Ne uporabljaj mape Osnutki
 don't use sent	felamimail	sl	Ne uporabljaj mape Poslano (Sent)
 don't use trash	felamimail	sl	Ne uporabljaj mape Koš (Trash)
 down	felamimail	sl	Navzdol
 download	felamimail	sl	Prenesi
 download this as a file	felamimail	sl	Prenesi kot datoteko
+draft folder	felamimail	sl	Mapa Osnutki
 e-mail	felamimail	sl	E-Pošta
 e-mail address	felamimail	sl	E-Poštni naslov
 e-mail folders	felamimail	sl	E-Poštne mape
@@ -125,6 +127,7 @@ enter your smtp server port	admin	sl	Vnesite vrata SMTP strežnika
 error	felamimail	sl	NAPAKA
 error connecting to imap serv	felamimail	sl	Napaka pri povezovanju z IMAP strežnikom
 error connecting to imap server. %s : %s.	felamimail	sl	Napaka pri povezavi s strežnikom IMAP. %s: %s.
+error connecting to imap server: [%s] %s.	felamimail	sl	Napaka pri povezovanja s strežnikom IMAP: [%s] %s.
 error opening	felamimail	sl	Napaka pri odpiranju
 every	felamimail	sl	vsak
 every %1 days	felamimail	sl	vsakih %1 dni
@@ -155,6 +158,7 @@ for received mail	felamimail	sl	Za prejeto pošto
 forward	felamimail	sl	Posreduj
 forward to	felamimail	sl	Posreduj
 forward to address	felamimail	sl	Posreduj na naslov
+forwarding	felamimail	sl	Posredujem
 found	felamimail	sl	Najdenih
 fri	felamimail	sl	pet
 from	felamimail	sl	Pošiljatelj
@@ -195,6 +199,8 @@ index order	felamimail	sl	Vrstni red kazala
 info	felamimail	sl	Podatki
 invalid user name or password	felamimail	sl	Napačno uporabniško ime ali geslo
 javascript	felamimail	sl	Javascript
+jumping to end	felamimail	sl	skok na konec
+jumping to start	felamimail	sl	skok na začetek
 keep a copy of the message in your inbox	felamimail	sl	obdrži kopijo sporočila v mapi prejeto
 keep local copy of email	felamimail	sl	obdrži lokalno kopijo E-pošte
 kilobytes	felamimail	sl	Kilobajtov
@@ -302,6 +308,7 @@ row order style	felamimail	sl	Slog zaporednih vrstic
 rule	felamimail	sl	Pravilo
 sat	felamimail	sl	sob
 save	felamimail	sl	Shrani
+save as draft	felamimail	sl	shrani kot osnutek
 save changes	felamimail	sl	shrani spremembe
 script name	felamimail	sl	ime skripte
 script status	felamimail	sl	status skripte
@@ -374,7 +381,6 @@ use a signature	felamimail	sl	Uporabi podpis
 use a signature?	felamimail	sl	Uporabim podpis?
 use addresses	felamimail	sl	Uporabi naslove
 use custom settings	felamimail	sl	Uporabi lastne nastavitve
-use javascript or html addressbook?	felamimail	sl	Uporabi Javascript ali HTML adresar?
 use regular expressions	felamimail	sl	uporabite regularne izraze
 use smtp auth	admin	sl	Uporabi SMTP avtentikacijo
 users can define their own emailaccounts	admin	sl	Uporabniki lahko definirajo lastne E-poštne račune
@@ -386,11 +392,9 @@ viewing full header	felamimail	sl	Prikaz celotne glave
 viewing message	felamimail	sl	Prikaz sporočila
 viewing messages	felamimail	sl	Prikaz sporočil
 wed	felamimail	sl	sre
-welcome to %1's webmail system	felamimail	sl	Dobrodošli v WebMail sistem %1
 when deleting messages	felamimail	sl	Ob brisanju sporočil
 with message	felamimail	sl	s sporočilom
 with message "%1"	felamimail	sl	s sporočilom "%1"
 wrap incoming text at	felamimail	sl	Besedilo prelomi pri
 writing	felamimail	sl	pisanje
 wrote	felamimail	sl	je napisal
-you must login first.	felamimail	sl	Najprej se morate prijaviti.

@@ -96,11 +96,13 @@ do you really want to delete the '%1' folder?	felamimail	es-es	¿Realmente quiere
 does not contain	felamimail	es-es	No contiene
 does not match	felamimail	es-es	No coincide con
 does not match regexp	felamimail	es-es	No coincide con la expresión
+don't use draft folder	felamimail	es-es	No usar la carpeta borradores
 don't use sent	felamimail	es-es	No usar Enviados
 don't use trash	felamimail	es-es	No usar Papelera
 down	felamimail	es-es	abajo
 download	felamimail	es-es	descargar
 download this as a file	felamimail	es-es	Descargar esto como un fichero
+draft folder	felamimail	es-es	Carpeta borradores
 e-mail	felamimail	es-es	Correo electrónico
 e-mail address	felamimail	es-es	Dirección de correo electrónico
 e-mail folders	felamimail	es-es	Carpetas de correo electrónico
@@ -125,6 +127,7 @@ enter your smtp server port	admin	es-es	Introduzca el el puerto del servidor SMT
 error	felamimail	es-es	ERROR
 error connecting to imap serv	felamimail	es-es	Error al conectar al servidor IMAP
 error connecting to imap server. %s : %s.	felamimail	es-es	Error al conectar con el servidor IMAP: %s: %s
+error connecting to imap server: [%s] %s.	felamimail	es-es	Error al conectar con el servidor IMAP: [%s] %s
 error opening	felamimail	es-es	Error al abrir
 every	felamimail	es-es	cada
 every %1 days	felamimail	es-es	cada %1 días
@@ -155,6 +158,7 @@ for received mail	felamimail	es-es	Para el correo recibido
 forward	felamimail	es-es	Reenviar
 forward to	felamimail	es-es	reenviar a
 forward to address	felamimail	es-es	reenviar a la dirección
+forwarding	felamimail	es-es	Reenviando
 found	felamimail	es-es	Encontrado
 fri	felamimail	es-es	Vie
 from	felamimail	es-es	De
@@ -195,6 +199,8 @@ index order	felamimail	es-es	Orden del índice
 info	felamimail	es-es	Información
 invalid user name or password	felamimail	es-es	El usuario o la contraseña no son válidos
 javascript	felamimail	es-es	JavaScript
+jumping to end	felamimail	es-es	saltando al final
+jumping to start	felamimail	es-es	saltando al principio
 keep a copy of the message in your inbox	felamimail	es-es	guardar una copia del mensaje en la bandeja de entrada
 keep local copy of email	felamimail	es-es	guardar copia local del correo
 kilobytes	felamimail	es-es	kilobytes
@@ -302,6 +308,8 @@ row order style	felamimail	es-es	estilo de ordenar filas
 rule	felamimail	es-es	Regla
 sat	felamimail	es-es	Sab
 save	felamimail	es-es	Guardar
+save as draft	felamimail	es-es	guardar como borrador
+save as infolog	felamimail	es-es	guardar como registro de notas y tareas
 save changes	felamimail	es-es	guardar cambios
 script name	felamimail	es-es	nombre del script
 script status	felamimail	es-es	estado del script
@@ -317,6 +325,7 @@ send a reject message	felamimail	es-es	enviar un mensaje de rechazo
 sent folder	felamimail	es-es	Carpeta de enviados
 show header	felamimail	es-es	mostrar cabecera
 show new messages on main screen	felamimail	es-es	Mostrar mensajes nuevos en la pantalla principal
+sieve script name	felamimail	es-es	nombre del script sieve
 sieve settings	admin	es-es	Configuración de Sieve
 signature	felamimail	es-es	Firma
 simply click the target-folder	felamimail	es-es	Simplemente pulse en la carpeta destino
@@ -325,6 +334,8 @@ size	felamimail	es-es	Tamaño
 size of editor window	felamimail	es-es	Tamaño de la ventana del editor
 size(...->0)	felamimail	es-es	Tamaño (...->0)
 size(0->...)	felamimail	es-es	Tamaño (0->...)
+skipping forward	felamimail	es-es	saltando el siguiente
+skipping previous	felamimail	es-es	saltando el anterior
 small view	felamimail	es-es	Vista reducida
 smtp settings	admin	es-es	Opciones SMTP
 subject	felamimail	es-es	Asunto
@@ -339,6 +350,7 @@ table of contents	felamimail	es-es	Tabla de contenidos
 text only	felamimail	es-es	Sólo texto
 the connection to the imap server failed!!	felamimail	es-es	¡Ha fallado la conexión con el servidor IMAP!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	es-es	El servidor IMAP no parece que soporte el método de identificación seleccionado. Por favor, póngase en contacto con su administrador del sistema.
+the mimeparser can not parse this message.	felamimail	es-es	El intérprete mime no puede interpretar este mensaje
 then	felamimail	es-es	ENTONCES
 this folder is empty	felamimail	es-es	ESTA CARPETA ESTA VACIA
 this php has no imap support compiled in!!	felamimail	es-es	¡Esta instalación de PHP no tiene soporte IMAP!
@@ -374,7 +386,6 @@ use a signature	felamimail	es-es	Usar una firma
 use a signature?	felamimail	es-es	¿Usar una firma?
 use addresses	felamimail	es-es	Usar direcciones
 use custom settings	felamimail	es-es	Usar opciones personalizadas
-use javascript or html addressbook?	felamimail	es-es	Usar javascript o libreta de direcciones HTML
 use regular expressions	felamimail	es-es	usar expresiones regulares
 use smtp auth	admin	es-es	Usar identificación SMTP
 users can define their own emailaccounts	admin	es-es	Los usuarios pueden definir sus propias cuentas de correo
@@ -386,11 +397,9 @@ viewing full header	felamimail	es-es	Viendo la cabecera completa
 viewing message	felamimail	es-es	Viendo mensaje
 viewing messages	felamimail	es-es	Viendo mensajes
 wed	felamimail	es-es	Mie
-welcome to %1's webmail system	felamimail	es-es	Bienvenido al sistema de WebMail %1
 when deleting messages	felamimail	es-es	Al borrar mensajes
 with message	felamimail	es-es	con mensaje
 with message "%1"	felamimail	es-es	con mensaje "%1"
 wrap incoming text at	felamimail	es-es	Ajustar el texto entrante a
 writing	felamimail	es-es	escribiendo
 wrote	felamimail	es-es	escribió
-you must login first.	felamimail	es-es	Antes, debe iniciar la sesión.

@@ -96,11 +96,13 @@ do you really want to delete the '%1' folder?	felamimail	zh-tw	您確定要刪�
 does not contain	felamimail	zh-tw	不包含
 does not match	felamimail	zh-tw	不符合
 does not match regexp	felamimail	zh-tw	不符合條件
+don't use draft folder	felamimail	zh-tw	不使用草稿夾
 don't use sent	felamimail	zh-tw	不使用寄件備份
 don't use trash	felamimail	zh-tw	不使用垃圾桶
 down	felamimail	zh-tw	下
 download	felamimail	zh-tw	下載
 download this as a file	felamimail	zh-tw	另存新檔
+draft folder	felamimail	zh-tw	草稿夾
 e-mail	felamimail	zh-tw	E-Mail
 e-mail address	felamimail	zh-tw	E-Mail位址
 e-mail folders	felamimail	zh-tw	郵件資料夾
@@ -125,6 +127,7 @@ enter your smtp server port	admin	zh-tw	輸入您的SMTP伺服器連接埠
 error	felamimail	zh-tw	錯誤
 error connecting to imap serv	felamimail	zh-tw	連結IMAP伺服器錯誤
 error connecting to imap server. %s : %s.	felamimail	zh-tw	連線到 IMAP 伺服器時發生錯誤。 %s : %s
+error connecting to imap server: [%s] %s.	felamimail	zh-tw	連線到 IMAP 伺服器時發生錯誤： [%s] %s
 error opening	felamimail	zh-tw	開啟錯誤
 every	felamimail	zh-tw	每一
 every %1 days	felamimail	zh-tw	每 %1 天
@@ -155,6 +158,7 @@ for received mail	felamimail	zh-tw	收到的郵件
 forward	felamimail	zh-tw	轉寄
 forward to	felamimail	zh-tw	轉寄給
 forward to address	felamimail	zh-tw	轉寄到信箱
+forwarding	felamimail	zh-tw	轉寄中
 found	felamimail	zh-tw	找到
 fri	felamimail	zh-tw	五
 from	felamimail	zh-tw	來自
@@ -195,6 +199,8 @@ index order	felamimail	zh-tw	排序
 info	felamimail	zh-tw	資訊
 invalid user name or password	felamimail	zh-tw	錯誤的帳號或密碼
 javascript	felamimail	zh-tw	JavaScript
+jumping to end	felamimail	zh-tw	跳到結束的地方
+jumping to start	felamimail	zh-tw	跳到開始的地方
 keep a copy of the message in your inbox	felamimail	zh-tw	在收件夾保留郵件副本
 keep local copy of email	felamimail	zh-tw	在本機保留信件備份
 kilobytes	felamimail	zh-tw	KB
@@ -302,6 +308,7 @@ row order style	felamimail	zh-tw	列順序風格
 rule	felamimail	zh-tw	規則
 sat	felamimail	zh-tw	六
 save	felamimail	zh-tw	儲存
+save as draft	felamimail	zh-tw	儲存為草稿
 save changes	felamimail	zh-tw	儲存修改
 script name	felamimail	zh-tw	指令名稱
 script status	felamimail	zh-tw	指令狀態
@@ -317,6 +324,7 @@ send a reject message	felamimail	zh-tw	寄送一個拒絕信件
 sent folder	felamimail	zh-tw	寄件備份
 show header	felamimail	zh-tw	顯示標頭
 show new messages on main screen	felamimail	zh-tw	在主要畫面顯示新訊息
+sieve script name	felamimail	zh-tw	sieve 程式名稱
 sieve settings	admin	zh-tw	Sieve設定
 signature	felamimail	zh-tw	簽名檔
 simply click the target-folder	felamimail	zh-tw	點選目標資料夾
@@ -325,6 +333,8 @@ size	felamimail	zh-tw	大小
 size of editor window	felamimail	zh-tw	編輯視窗大小
 size(...->0)	felamimail	zh-tw	大小 (...->0)
 size(0->...)	felamimail	zh-tw	大小(0->...)
+skipping forward	felamimail	zh-tw	略過轉寄
+skipping previous	felamimail	zh-tw	略過上一個
 small view	felamimail	zh-tw	縮小
 smtp settings	admin	zh-tw	SMTP設定
 subject	felamimail	zh-tw	主旨
@@ -339,6 +349,7 @@ table of contents	felamimail	zh-tw	內容表單
 text only	felamimail	zh-tw	純文字
 the connection to the imap server failed!!	felamimail	zh-tw	連結IMAP伺服器發生錯誤！
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	zh-tw	IMAP 伺服器不支援指定的認證方式，請聯繫您的系統管理員。
+the mimeparser can not parse this message.	felamimail	zh-tw	mime 解析程式無法處理這封郵件
 then	felamimail	zh-tw	然後
 this folder is empty	felamimail	zh-tw	這個資料夾沒有任何信件
 this php has no imap support compiled in!!	felamimail	zh-tw	您的PHP並未編譯為支援IMAP的狀態
@@ -374,7 +385,6 @@ use a signature	felamimail	zh-tw	使用簽名檔
 use a signature?	felamimail	zh-tw	使用簽名檔？
 use addresses	felamimail	zh-tw	使用位址
 use custom settings	felamimail	zh-tw	使用個人設定
-use javascript or html addressbook?	felamimail	zh-tw	在通訊錄使用Javascript 或 HTML？
 use regular expressions	felamimail	zh-tw	使用樣式比對
 use smtp auth	admin	zh-tw	使用SMTP認證
 users can define their own emailaccounts	admin	zh-tw	使用者可以自行定義郵件帳號
@@ -386,11 +396,9 @@ viewing full header	felamimail	zh-tw	顯示完整標頭中
 viewing message	felamimail	zh-tw	顯示訊息中
 viewing messages	felamimail	zh-tw	顯示訊息中
 wed	felamimail	zh-tw	三
-welcome to %1's webmail system	felamimail	zh-tw	歡迎來到 %1 的網頁郵件系統
 when deleting messages	felamimail	zh-tw	當刪除訊息時
 with message	felamimail	zh-tw	信件
 with message "%1"	felamimail	zh-tw	信件 "%1"
 wrap incoming text at	felamimail	zh-tw	自動斷行
 writing	felamimail	zh-tw	編輯中
 wrote	felamimail	zh-tw	寫
-you must login first.	felamimail	zh-tw	您必須先登入

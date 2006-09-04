@@ -111,7 +111,7 @@ bcc:	workflow	sk	Skrytá kópia:
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	sk	Bud»e opatrní pri interaktívnych aktivitách, majú viacero koncov a zaèiatkov.
 being run	workflow	sk	práve prebiehajúce
 by running theses links you will create new instances of the related process.	workflow	sk	Spustením týchto odkazov vytvoríte nové sedenia k zodpovedajúcim procesom.
-cannot add transition only split or switch activities can have more than one outbound transition	workflow	sk	Nedá sa prida» prechod, iba rozdelenie alebo prehodenie aktivít mô¾e ma» viac ne¾ jeden odchodzí prechod
+cannot add transition only split or switch activities can have more than one outbound transition	workflow	sk	Nedá sa prida» prechod, iba rozdelenie alebo prepnutie aktivít mô¾e ma» viac ne¾ jeden odchodzí prechod
 cannot add transition. only split activities can have more than one outbound transition	workflow	sk	Nedá sa prida» prechod. Iba rozdelené aktivity mô¾u ma» viac ne¾ jeden odchodzí prechod
 cannot create compiled file %1	workflow	sk	Nedá sa vytvori» kompilovaný súbor %1
 cannot run the activity	workflow	sk	Nemô¾em spusti» túto aktivitu
@@ -137,6 +137,7 @@ column process name in instance lists	workflow	sk	Ståpec názov procesu v zoznamo
 column start date in instance lists	workflow	sk	Ståpec dátum zaèiatku v zoznamoch sedení
 compilation	workflow	sk	Kompilácia
 compiling activity %1 : %2	workflow	sk	Kompilujem aktivitu %1 : %2
+complete	workflow	sk	Hotovo
 complete cleanup of aborted instances done	workflow	sk	Úplné èistenie zru¹ených sedení dokonèené
 complete cleanup of all instances done	workflow	sk	Úplné èistenie v¹etkých sedení dokonèené
 completed	workflow	sk	Hotovo
@@ -216,17 +217,17 @@ get back to global activities	workflow	sk	návrat na globálne aktivity
 get back to instance creation	workflow	sk	návrat na vytváranie sedenia
 get property	workflow	sk	Získa» nále¾itos»
 global activities	workflow	sk	Globálne aktivity
-global workflow preferences	workflow	sk	Globálne nastavenia Pracovného denníka
+global workflow preferences	workflow	sk	Globálne nastavenia Mana¾éra Procesov
 go	workflow	sk	choï
 go to same activities for other instances of this process	workflow	sk	choï na rovnaké aktivity pre iné sedenia tohto procesu
 go to same process activities	workflow	sk	choï na rovnaké aktivity procesu
 go to the actual state of this instance	workflow	sk	choï na súèasný stav tohto sedenia
 grab instance	workflow	sk	Prevzia» sedenie
-grant access to the administration and development of workflow processes and activities.	admin	sk	Prideli» prístup na správu a vývoj procesov a aktivít Pracovného denníka.
-grant access to the administration of workflow elements	admin	sk	Prideli» prístup na správu elementov Pracovného denníka
-grant access to the administration of workflow instances in monitor screens	admin	sk	Prideli» prístup na správu sedení Pracovného denníka na sledovacích stránkach (monitor screens)
-grant access to the cleanup/deletion of workflow aborted instances in monitor screens	admin	sk	Prideli» prístup na èistenie/mazanie zru¹ených sedení Pracovného denníka na sledovacích stránkach (monitor screens)
-grant access to the monitoring of workflow elements	admin	sk	Prideli» prístup na sledovanie elementov Pracovného denníka
+grant access to the administration and development of workflow processes and activities.	admin	sk	Prideli» prístup na správu a vývoj procesov a aktivít Mana¾éra Procesov.
+grant access to the administration of workflow elements	admin	sk	Prideli» prístup na správu elementov Mana¾éra Procesov
+grant access to the administration of workflow instances in monitor screens	admin	sk	Prideli» prístup na správu sedení Mana¾éra Procesov na sledovacích stránkach (monitor screens)
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	admin	sk	Prideli» prístup na èistenie/mazanie zru¹ených sedení Mana¾éra Procesov na sledovacích stránkach (monitor screens)
+grant access to the monitoring of workflow elements	admin	sk	Prideli» prístup na sledovanie elementov Mana¾éra Procesov
 graph	workflow	sk	Graf
 graphic options	common	sk	Grafické predvoµby
 group	workflow	sk	Skupina
@@ -271,7 +272,7 @@ it was impossible to complete, no corresponding activity was found.	workflow	sk	
 link addresses are considered local if not containing <strong>http://</strong>. they will get appended the configured local prefix and scanned by egroupware link engine	workflow	sk	Adresy odkazov sú pova¾ované za lokálne, ak neobsahujú <strong>http://</strong>. Dostávajú prednastavenú lokálnu predponu a skenujú sa odkazovým mechanizmom eGroupWare
 list of activities	workflow	sk	Zoznam aktivít
 list of all activities with, for each,  counters of instances by status	workflow	sk	zoznam aktivít, zahàòajúci pre ka¾dú aj poèítadlá sedení podµa stavov
-list of all history items made by instances while they travel in the workflow with information about duration and date	workflow	sk	zoznam v¹etkých polo¾iek histórie vytvorených sedeniami poèas ich putovania v Pracovnom denníku, s informáciami o trvaní a èase
+list of all history items made by instances while they travel in the workflow with information about duration and date	workflow	sk	zoznam v¹etkých polo¾iek histórie vytvorených sedeniami poèas ich putovania v Mana¾éri Procesov, s informáciami o trvaní a èase
 list of all instances with info about current status and activities and link to administration of theses instances	workflow	sk	zoznam v¹etkých sedení s informáciami o súèasnom stave a aktivitách a odkazu na správu týchto sedení
 list of instances	workflow	sk	Zoznam sedení
 list of mappings	workflow	sk	Zoznam mapovaní
@@ -281,7 +282,7 @@ list of processes (%1)	workflow	sk	Zoznam procesov (%1)
 list of processes with status and validity and, for each, counters of instances by status	workflow	sk	zoznam procesov so stavom, platnos»ou a pre ka¾dú, poèítadlami sedení podµa stavu
 list of transitions	workflow	sk	Zoznam prechodov
 list of workitems	workflow	sk	Zoznam pracovných polo¾iek
-mail automatically sent by mail smtp agent for egroupware's workflow	workflow	sk	Mail automaticky odoslaný po¹tovým SMTP agentom pre Pracovný denník v eGroupWare
+mail automatically sent by mail smtp agent for egroupware's workflow	workflow	sk	Mail automaticky odoslaný po¹tovým SMTP agentom pre Mana¾éra Procesov v eGroupWare
 mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	sk	Správy sa dajú posiela» na zaèiatku alebo konci aktivity. Pri interaktívnych aktivitách sa dajú posiela» len po dokonèení.
 manual	workflow	sk	Manuál
 map	workflow	sk	mapova»
@@ -486,6 +487,7 @@ status:	workflow	sk	stav:
 stop	workflow	sk	Stop
 subject:	workflow	sk	Predmet:
 switch	workflow	sk	prepnú»
+switch construct	workflow	sk	Kon¹trukcia prepnutia
 template	workflow	sk	¹ablóna
 test concistency	workflow	sk	Testova» konzistenciu
 test consistency of datas in the database	workflow	sk	Testova» konzistenciu dát v databáze
@@ -496,7 +498,7 @@ the default user will only be set if he is mapped to a role on the activity	work
 the following items must be corrected to be able to activate this process	workflow	sk	Nasledovné polo¾ky sa musia opravi», ak chcete aktivova» proces
 the instance title is shown on top of the form	admin	sk	Titulok sedenia sa zobrazuje navrchu formulára
 the label you want	workflow	sk	menovka ktorú chcete
-the smtp configuration cannot be loaded by the mail_smtp workflow agent	workflow	sk	SMTP nastavenia sa nepodarilo naèíta» mail_smtp agentovi Pracovného denníka
+the smtp configuration cannot be loaded by the mail_smtp workflow agent	workflow	sk	SMTP nastavenia sa nepodarilo naèíta» mail_smtp agentovi Mana¾éra Procesov
 there are no activities available	workflow	sk	Nie sú dostupné ¾iadne aktivity
 there are no config value defined	workflow	sk	Nie je definovaná ¾iadna hodnota nastavenia
 there are no instances available	workflow	sk	Nie sú dostupné ¾iadne sedenia
@@ -518,12 +520,12 @@ this activity for this instance is actually avaible for you.	workflow	sk	Táto ak
 this activity for this instance is actually only avaible for you.	workflow	sk	Táto aktivita k tomuto sedeniu je v súèasnosti dostupná len pre Vás.
 this activity for this instance is not specifically assigned to you.	workflow	sk	Táto aktivita k tomuto sedeniu nie je priradená ¹pecificky k Vám.
 this agent gives the activity the possibility to send an smtp message (mail)	workflow	sk	Tento agent dáva aktivite mo¾nos» posiela» SMTP správy (mail)
-this form will test your local workflow installation to detect potential issues	workflow	sk	Tento formulár otestuje Va¹u lokálnu in¹taláciu Pracovného denníka pre odhalenie mo¾ných problémov
-this is the first screen shown when you click on the workflow application icon	workflow	sk	Toto je prvá stránka, ktorá sa zobrazí keï kliknete na ikonku aplikácie Pracovný denník
+this form will test your local workflow installation to detect potential issues	workflow	sk	Tento formulár otestuje Va¹u lokálnu in¹taláciu Mana¾éra Procesov pre odhalenie mo¾ných problémov
+this is the first screen shown when you click on the workflow application icon	workflow	sk	Toto je prvá stránka, ktorá sa zobrazí keï kliknete na ikonku aplikácie Mana¾ér Procesov
 this process has a view activity. access in view mode is granted only for this view activty.	workflow	sk	Tento proces má zobrazovaciu aktivitu. Prístup v zobrazovacom re¾ime je umo¾nený len pre túto zobrazovaciu aktivitu.
 this process has no end activity	workflow	sk	Tento proces nemá koncovú aktivitu
 this will automatically release the instance when leaving an activity without completing	admin	sk	Týmto sa automaticky zru¹í priradenie sedenia pri opustení aktivity bez dokonèenia
-this will display an activity footer when any activity is runned with workflow engine related informations	admin	sk	Týmto sa zobrazuje zápätie aktivity vtedy, keï je akákoµvek aktivita spustená s informáciami ohµadom mechanizmu Pracovného denníka
+this will display an activity footer when any activity is runned with workflow engine related informations	admin	sk	Týmto sa zobrazuje zápätie aktivity vtedy, keï je akákoµvek aktivita spustená s informáciami ohµadom mechanizmu Mana¾éra Procesov
 to	workflow	sk	Komu
 to:	workflow	sk	Komu:
 transition	workflow	sk	prechod
@@ -535,7 +537,7 @@ transitions removed successfully	workflow	sk	Prechody úspe¹ne odstránené
 type	workflow	sk	typ
 type:	workflow	sk	typ:
 unknow fix instruction :%1	workflow	sk	neznáma fix in¹trukcia: %1
-unknown instruction from the workflow engine: %1	workflow	sk	neznáma in¹trukcia z mechanizmu Pracovného denníka: %1
+unknown instruction from the workflow engine: %1	workflow	sk	neznáma in¹trukcia z mechanizmu Mana¾éra Procesov: %1
 unknown status	workflow	sk	neznámy stav
 update	workflow	sk	aktualiácia
 upload file	workflow	sk	Nahra» súbor
@@ -569,14 +571,15 @@ warning this filter override all others filters	workflow	sk	Varovanie: tento fil
 warning: by using this button you will definitively remove all aborted instances and their history (workitems) for the selected process.	workflow	sk	Varovanie: stlaèením tohto tlaèitla definitívne odstránite v¹etky zru¹ené sedenia VRÁTANE ich histórie (pracovných polo¾iek) pre vybrané procesy.
 warning: by using this button you will definitively remove all instances and their history (workitems) for the selected process, whatever the state they are.	workflow	sk	Varovanie: stlaèením tohto tlaèitla definitívne odstránite v¹etky sedenia VRÁTANE ich histórie (pracovných polo¾iek) pre vybrané procesy, a to nezávisle na stave v ktorom sú.
 we cannot run this activity, maybe this instance or this activity do not exists anymore.	workflow	sk	Nemô¾eme spusti» túto aktivitu, mo¾no¾e toto sedenie alebo táto aktivita u¾ neexistuje.
+we were not able to build the message	workflow	sk	Nepodarilo sa vytvori» túto správu
 when in advanced mode, should we show you advanced actions by default (resume, exception, grab, etc.)?	workflow	sk	Majú sa v roz¹írenom re¾ime zobrazova» roz¹írené akcie? Napríklad poní¾i», výnimka, prevzia»..
 when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	sk	Keï sú dostupné voµby pre viacnásobné potvrdenie, vykresµujeme výberové okno kde je iba jedno tlaèítko potvrdenia namiesto viacerých
 when to send the message:	workflow	sk	Kedy posla» túto správu:
 workflow	common	sk	Pracovný denník
-workflow configuration	admin	sk	Nastavenie Pracovného denníka
-workflow navigation	workflow	sk	Navigácia Pracovného denníka
-workflow preferences	workflow	sk	Predvoµby Pracovného denníka
-workflow site configuration	workflow	sk	Nastavenia stránky Pracovného denníka
+workflow configuration	admin	sk	Nastavenie Mana¾éra Procesov
+workflow navigation	workflow	sk	Navigácia Mana¾éra Procesov
+workflow preferences	workflow	sk	Predvoµby Mana¾éra Procesov
+workflow site configuration	workflow	sk	Nastavenia stránky Mana¾éra Procesov
 workitem information	workflow	sk	Informácie o pracovnej polo¾ke
 workitems	workflow	sk	Pracovné polo¾ky
 you are not allowed to abort instance %1	workflow	sk	Nemáte právo zru¹i» sedenie %1

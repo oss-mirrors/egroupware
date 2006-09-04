@@ -1,3 +1,4 @@
+%1 objects available	jinn	it	%1 oggetti disponibili
 %1 records	jinn	it	%1 record
 %1 records per page	jinn	it	%1 record per pagina
 %1 site obj-fields have been imported.	jinn	it	%1 Obj-fields Sito sono stati importati
@@ -9,15 +10,27 @@ access rights for site not succesfully editted	jinn	it	Diritti di accesso per Si
 access rights for site not succesfully saved	jinn	it	Diritti di accesso per Sito NON salvati con successo
 access rights for site succesfully editted	jinn	it	Diritti di accesso per Sito modificati con successo
 access rights for site succesfully saved	jinn	it	Diritti di accesso per Sito salvati con successo
+access_rights	jinn	it	diritti di accesso
+action was succesful.	jinn	it	L'azione ha avuto successo.
+actions	jinn	it	Azioni
+actions to apply on all selected objects	jinn	it	Azioni da applicare a tutti gli oggetti selezionati
+actions to apply on all selected record	jinn	it	Azioni da applicare a tutti i record selezionati
+actions to apply on all selected sites	jinn	it	Azioni da applicare a tutti i siti selezionati
+activate filter	jinn	it	attiva flitro
+activated plugins	jinn	it	Plugin attivati
+active tabs	jinn	it	Tab attivi
 add	jinn	it	aggiungi
 add %1st image	jinn	it	aggiungi %1a immagine
 add a new configuration:	jinn	it	aggiungi una nuova configurazione
 add attachent	jinn	it	aggiungi allegato
+add attachment	jinn	it	aggiungi allegato
 add attachment %1	jinn	it	aggiungi allegato %1
 add edit	jinn	it	Aggiungi Modifica
 add egw_jinn_sites	jinn	it	aggiungi siti
 add image	jinn	it	aggiungi immagine
 add image %1	jinn	it	aggiungi immagine %1
+add many-to-many relation(s)	jinn	it	Aggiungi relazione/i molti-a-molti
+add many-to-one relation(s)	jinn	it	Aggiungi relazione/i molti-a-uno
 add multiple records	jinn	it	Aggiungi record multipli
 add new	jinn	it	Aggiungi nuovo
 add new entry	jinn	it	Aggiungi nuova voce
@@ -27,6 +40,8 @@ add new one to many	jinn	it	Aggiungi nuova relazione UNO A MOLTI
 add new one with many	jinn	it	Aggiungi nuova relazione UNO CON MOLTI
 add new one-to-one relation	jinn	it	Aggiungi nuova relazione UNO A UNO
 add object	jinn	it	aggiungi oggetto
+add one-to-many relation(s)	jinn	it	Aggiungi relazione/i uno-a-molti
+add one-to-one relation(s)	jinn	it	Aggiungi relazione/i uno-a-uno
 add or remove	jinn	it	aggiungi o rimuovi
 add site	jinn	it	Aggiungi Sito
 add site object	jinn	it	aggiungi oggetto sito
@@ -34,3 +49,6 @@ add site-object	jinn	it	aggiungi oggetto-sito
 add slot	jinn	it	aggiungi slot
 add your zip-file with images here	jinn	it	Aggiungi file ZIP con immagini qui
 admin:: edit site	jinn	it	amministrazione: modifica sito
+administrator mode	jinn	it	Modo Amministratore
+administrators for site %1	jinn	it	amministratori per il sito %1
+advanced settings	jinn	it	Impostazioni Avanzate
