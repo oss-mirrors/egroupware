@@ -259,7 +259,6 @@
 
 					$imapClient = CreateObject('emailadmin.imap_client',$this->host, $this->port, ($this->encryption ? 'ssl' : ''));
 					$imapClient->login($username, $password);
-					
 					$this->sessionData['capabilities'][$this->host] = $imapClient->_capability;
 					$this->sessionData['nameSpace'][$this->host][$username] = $imapClient->namespace();
 					
@@ -274,7 +273,7 @@
 					$imapClient->logout();
 					$this->saveSessionData();
 				}
-				
+
 				return $this->mbox;
 			}
 			

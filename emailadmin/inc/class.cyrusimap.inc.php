@@ -51,7 +51,7 @@
 			if(is_resource($this->mbox)) {
 				// create the users folders
 				foreach($this->createMailboxes as $mailboxName) {
-					$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
+					$mailboxName = 'INBOX' . ($mailboxName ? $this->getDelimiter() .$mailboxName : '');
 					$mailboxString = $this->getMailboxString($mailboxName,$username);
 					$mailboxName = $this->getMailboxName($mailboxName,$username);
 					if(imap_createmailbox($this->mbox, $mailboxString)) {
@@ -69,7 +69,7 @@
 			// subscribe to the folders
 			if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword)) {
 				foreach($this->createMailboxes as $mailboxName) {
-					$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
+					$mailboxName = 'INBOX' . ($mailboxName ? $this->getDelimiter() .$mailboxName : '');
 					imap_subscribe($mbox,$this->getMailboxString($mailboxName));
 				}
 				imap_close($mbox);
@@ -92,9 +92,9 @@
 			$username = $_hookValues['account_lid'];
 		
 			if(is_resource($this->mbox)) {
-				$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
-				$mailboxString = $this->getMailboxString('',$username);
-				$mailboxName = $this->getMailboxName('',$username);
+				#$mailboxName = 'INBOX' . ($mailboxName ? $this->getDelimiter() .$mailboxName : '');
+				$mailboxString = $this->getMailboxString('INBOX',$username);
+				$mailboxName = $this->getMailboxName('INBOX',$username);
 				// give the admin account the rights to delete this mailbox
 				if(imap_setacl($this->mbox, $mailboxName, $this->adminUsername, 'lrswipcda')) {
 					if(imap_deletemailbox($this->mbox, $mailboxString)) {
@@ -157,7 +157,7 @@
 			if(is_resource($this->mbox)) {
 				// create the users folders
 				foreach($this->createMailboxes as $mailboxName) {
-					$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
+					$mailboxName = 'INBOX' . ($mailboxName ? $this->getDelimiter() .$mailboxName : '');
 					$mailboxString = $this->getMailboxString($mailboxName,$username);
 					$mailboxName = $this->getMailboxName($mailboxName,$username);
 					if(imap_createmailbox($this->mbox, $mailboxString)) {
@@ -175,7 +175,7 @@
 				// subscribe to the folders
 				if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword)) {
 					foreach($this->createMailboxes as $mailboxName) {
-						$mailboxName = 'INBOX' . ($mailboxName ? $this->mailboxDelimiter .$mailboxName : '');
+						$mailboxName = 'INBOX' . ($mailboxName ? $this->getDelimiter() .$mailboxName : '');
 						imap_subscribe($mbox,$this->getMailboxString($mailboxName));
 					}
 					imap_close($mbox);
@@ -210,7 +210,7 @@
 					list($username,$domain) = explode('@',$username);
 					if (!$domain) $domain = $this->defaultDomain;
 				}
-				$_folderName = str_replace('INBOX','user'.$this->mailboxDelimiter.$username,$_folderName);
+				$_folderName = str_replace('INBOX', 'user'.$this->getDelimiter().$username, $_folderName);
 			}
 			// domain has to be behind the regular mailbox name
 			if ($domain) $_folderName .= '@'.$domain;
