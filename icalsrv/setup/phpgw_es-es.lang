@@ -4,4 +4,5 @@ apps	icalsrv	es-es	Aplicaciones
 assigned sessionid	icalsrv	es-es	Id de sesión asignado
 bogus request	icalsrv	es-es	Solicitud incorrecta
 calendar test	icalsrv	es-es	Prueba de calendario
+icalsrv	common	es-es	Servidor de calendario
 system	icalsrv	es-es	Sistema

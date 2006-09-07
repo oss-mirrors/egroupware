@@ -15,6 +15,7 @@ profilepath	admin	es-es	Ruta al perfil
 samba config	sambaadmin	es-es	Configuración de samba
 samba settings	common	es-es	Opciones de samba
 samba sid	admin	es-es	SID de Samba
+sambaadmin	common	es-es	Administrador de Samba
 smb homepath	admin	es-es	ruta al directorio smb
 workstation account for	sambaadmin	es-es	cuenta de estación de trabajo para
 workstation configuration	sambaadmin	es-es	configuración de la estación de trabajo
