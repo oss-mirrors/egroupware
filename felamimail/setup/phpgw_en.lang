@@ -22,6 +22,7 @@ allways a new window	felamimail	en	allways a new window
 always show html emails	felamimail	en	Always show HTML emails
 and	felamimail	en	and
 any of	felamimail	en	any of
+any status	felamimail	en	any status
 anyone	felamimail	en	anyone
 as a subfolder of	felamimail	en	as a subfolder of
 attachments	felamimail	en	Attachments
@@ -41,6 +42,7 @@ cc	felamimail	en	CC
 change folder	felamimail	en	Change folder
 check message against next rule also	felamimail	en	check message against next rule also
 checkbox	felamimail	en	Checkbox
+clear search	felamimail	en	clear search
 click here to log back in.	felamimail	en	Click here to log back in.
 click here to return to %1	felamimail	en	Click here to return to %1
 close all	felamimail	en	close all
@@ -311,6 +313,7 @@ save	felamimail	en	Save
 save as draft	felamimail	en	save as draft
 save as infolog	felamimail	en	save as infolog
 save changes	felamimail	en	save changes
+save message to disk	felamimail	en	save message to disk
 script name	felamimail	en	script name
 script status	felamimail	en	script status
 search	felamimail	en	Search
@@ -381,6 +384,7 @@ unsubscribed	felamimail	en	Unsubscribed
 unsubscribed successfully!	felamimail	en	Unsubscribed successfully!
 up	felamimail	en	up
 updating message status	felamimail	en	updating message status
+updating view	felamimail	en	updating view
 use <a href="%1">emailadmin</a> to create profiles	felamimail	en	use <a href="%1">EmailAdmin</a> to create profiles
 use a signature	felamimail	en	Use a signature
 use a signature?	felamimail	en	Use a signature?
@@ -392,6 +396,7 @@ users can define their own emailaccounts	admin	en	Users can define their own ema
 vacation notice	felamimail	en	vacation notice
 validate certificate	felamimail	en	validate certificate
 view full header	felamimail	en	View full header
+view header lines	felamimail	en	view header lines
 view message	felamimail	en	View message
 viewing full header	felamimail	en	Viewing full header
 viewing message	felamimail	en	Viewing message
