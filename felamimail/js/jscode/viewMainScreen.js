@@ -54,18 +54,23 @@ function onNodeSelect(_nodeID) {
 	}
 }
 
-function quickSearch(_searchString) {
+function quickSearch() {
+	var searchType;
+	var searchString;
+	var status;
+
 	resetMessageSelect();
 
- 	document.getElementById('messageCounter').innerHTML = '<span style="font-weight: bold;">Searching for '+document.getElementById('quickSearch').value+' ...</span>';
+	setStatusMessage('<span style="font-weight: bold;">' + lang_updating_view + '</span>');
 	document.getElementById('divMessageList').innerHTML = '';
 
 	document.getElementById('quickSearch').select();
 
-	selectBox = document.getElementById('filter');
-	selectBox.options[1].selected = true; 
+	searchType = document.getElementById('searchType').value;
+	searchString = document.getElementById('quickSearch').value;
+	status 	= document.getElementById('status').value;
 
-	xajax_doXMLHTTP('felamimail.ajaxfelamimail.quickSearch',_searchString);
+	xajax_doXMLHTTP('felamimail.ajaxfelamimail.quickSearch', searchType, searchString, status);
 }
 
 function selectAll(inputBox, _refreshTimeOut) {
@@ -244,4 +249,15 @@ function fm_readMessage(_url, _windowName, _node) {
 	aElements = trElement.getElementsByTagName("a");
 	aElements[0].style.fontWeight='normal';
 	aElements[1].style.fontWeight='normal';
+}
+
+function fm_clearSearch() {
+	var inputQuickSearch = document.getElementById('quickSearch');
+
+	if(inputQuickSearch.value != '') {
+		inputQuickSearch.value = '';
+		quickSearch();
+	}
+	
+	inputQuickSearch.focus();
 }
