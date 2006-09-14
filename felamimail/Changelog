@@ -1,3 +1,10 @@
+20060914
+- removed (temporarly) the dbcache. FeLaMiMail now works completly against the imapserver.
+  This requires a server with search and sort functionality. Big folders
+  should be displayed now very fast.
+- you can sort by message status now
+- updating trash folder counter and quota display when deleting messages
+
 20060821
 - added support for composing html emails
 - fixed some minor internet explorer only display problems

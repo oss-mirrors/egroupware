@@ -22,7 +22,9 @@
 			'addACL'		=> 'True',
 			'editAccountData'	=> 'True',
 			'editForwardingAddress'	=> 'True',
+			'editSignature'		=> 'True',
 			'listFolder'		=> 'True',
+			'listSignatures'	=> 'True',
 			'showHeader'		=> 'True',
 			'getAttachment'		=> 'True'
 		);
@@ -79,6 +81,9 @@
 			}
 			
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
+			
+			$GLOBALS['egw']->html->init_tinymce();
+			
 			$GLOBALS['egw']->common->egw_header();
 			if($_displayNavbar == TRUE)
 				echo parse_navbar();
@@ -124,6 +129,29 @@
 
 			$this->t->parse("out","main");
 			
+			print $this->t->get('out','main');
+		}
+		
+		function editSignature() {
+			$signatureID = (int)$_GET['signatureID'];
+
+			$this->display_app_header(false);
+			
+			$this->t->set_file(array('body' => 'preferences_edit_signature.tpl'));
+			$this->t->set_block('body','main');
+
+			$this->translate();
+
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.editAccountData'
+			);
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
+
+			$style="width:100%; border:0px; height:150px;";
+			$this->t->set_var('tinymce',$GLOBALS['egw']->html->tinymceQuick('body', 'simple', $sessionData['body'], $style));
+
+			$this->t->parse("out","main");
 			print $this->t->get('out','main');
 		}
 		
@@ -415,6 +443,53 @@
 			$this->t->set_var('mailboxName',$mailBoxName);			
 			$this->t->set_var('folderName',$this->selectedFolder);
 			$this->t->set_var('imap_server',$icServer->host);
+			
+			$this->t->pparse("out","main");			
+			$this->bofelamimail->closeConnection();
+		}
+		
+		function listSignatures()
+		{
+			// create a new Mailbox
+			if(isset($_POST['newSubFolder']))
+			{
+				$oldMailboxName = $this->bofelamimail->sessionData['preferences']['mailbox'].'.';
+				$oldMailboxName	= ($oldMailboxName == '--topfolderselected--.') ? '' : $oldMailboxName;
+				$newMailboxName = $oldMailboxName.$_POST['newSubFolder'];
+
+				$this->bofelamimail->imap_createmailbox($newMailboxName,True);
+			}
+			
+			$this->display_app_header(TRUE);
+
+			$this->t->set_file(array("body" => "preferences_list_signatures.tpl"));
+			$this->t->set_block('body','main');
+
+			$this->translate();
+			
+			#print "<pre>";print_r($folderList);print "</pre>";
+			// set the default values for the sort links (sort by subject)
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.listFolder'
+			);
+			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.editSignature'
+			);
+			$urlEditSignature = $GLOBALS['egw']->link('/index.php',$linkData);
+			
+			$tableRows = array(
+				'1' => array(
+					'1'	=> $GLOBALS['egw']->html->checkbox('name', false),
+					'.1'	=> 'style="width:30px"',
+					'2'	=> '<a href="#" onclick="egw_openWindowCentered(\''. $urlEditSignature .'\',\'felamiMailACL\',\'600\',\'200\');">Beschreibung</a>',
+				),
+			);
+			
+			$this->t->set_var('table', $GLOBALS['egw']->html->table($tableRows, 'style="width:100%; border: 1px solid black;"'));
 			
 			$this->t->pparse("out","main");			
 			$this->bofelamimail->closeConnection();

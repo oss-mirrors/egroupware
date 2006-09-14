@@ -68,11 +68,9 @@
 			$this->imapBaseDir	= '';
 
 			$this->displayCharset	= $_displayCharset;
-			
+
 			// set some defaults
-			//if(count($this->sessionData) == 0) // regis (for me PHP4.1.3it's not working)
-			if(empty($this->sessionData))
-			{
+			if(empty($this->sessionData)) {
 				// this should be under user preferences
 				// sessionData empty
 				// no filter active
@@ -83,8 +81,48 @@
 				$this->sessionData['startMessage']	= 1;
 				// default mailbox for preferences pages
 				$this->sessionData['preferences']['mailbox']	= "INBOX";
+				
+				$this->sessionData['messageFilter'] = array(
+					'string'	=> '',
+					'type'		=> 'subject',
+					'status'	=> 'any',
+				);
+				
 				// default sorting
-				$this->sessionData['sort']	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['sortOrder'];
+				switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['sortOrder']) {
+					case 1:
+						$this->sessionData['sort'] = SORTDATE;
+						$this->sessionData['sortReverse'] = false;
+						break;
+					case 2:
+						$this->sessionData['sort'] = SORTFROM;
+						$this->sessionData['sortReverse'] = true;
+						break;
+					case 3:
+						$this->sessionData['sort'] = SORTFROM;
+						$this->sessionData['sortReverse'] = false;
+						break;
+					case 4:
+						$this->sessionData['sort'] = SORTSUBJECT;
+						$this->sessionData['sortReverse'] = true;
+						break;
+					case 5:
+						$this->sessionData['sort'] = SORTSUBJECT;
+						$this->sessionData['sortReverse'] = false;
+						break;
+					case 6:
+						$this->sessionData['sort'] = SORTSIZE;
+						$this->sessionData['sortReverse'] = true;
+						break;
+					case 7:
+						$this->sessionData['sort'] = SORTSIZE;
+						$this->sessionData['sortReverse'] = false;
+						break;
+					default:
+						$this->sessionData['sort'] = SORTDATE;
+						$this->sessionData['sortReverse'] = true;
+						break;
+				}
 				$this->saveSessionData();
 			}
 			
@@ -269,10 +307,10 @@
 			$msglist = '';
 			
 			$imapServer =& $this->mailPreferences->getIncomingServer(0);
-			$caching =& CreateObject('felamimail.bocaching',
-					$imapServer->host,
-					$imapServer->username,
-					$this->sessionData['mailbox']);
+		#	$caching =& CreateObject('felamimail.bocaching',
+		#			$imapServer->host,
+		#			$imapServer->username,
+		#			$this->sessionData['mailbox']);
 
 			foreach($_messageUID as $key => $value) {
 				if(!empty($msglist)) $msglist .= ",";
@@ -292,10 +330,10 @@
 					if(!empty($trashFolder)) {
 						if (imap_mail_move ($this->mbox, $msglist, $this->encodeFolderName($trashFolder), CP_UID)) {
 							imap_expunge($this->mbox);
-							reset($_messageUID);
-							while(list($key, $value) = each($_messageUID)) {
-								$caching->removeFromCache($value);
-							}
+		#					reset($_messageUID);
+		#					while(list($key, $value) = each($_messageUID)) {
+		#						$caching->removeFromCache($value);
+		#					}
 						} else {
 							//print imap_last_error()."<br>";
 							error_log(imap_last_error());
@@ -310,11 +348,11 @@
 				case "remove_immediately":
 					imap_delete($this->mbox, $msglist, FT_UID);
 					imap_expunge ($this->mbox);
-					reset($_messageUID);
-					while(list($key, $value) = each($_messageUID))
-					{
-						$caching->removeFromCache($value);
-					}
+		#			reset($_messageUID);
+		#			while(list($key, $value) = each($_messageUID))
+		#			{
+		#				$caching->removeFromCache($value);
+		#			}
 					break;
 			}
 		}
@@ -523,6 +561,7 @@
 			{
 				return false;
 			}
+
 			// now we have the keys as values
 			$mailboxString = $icServer->getMailboxString($_folderName);
 
@@ -542,7 +581,7 @@
 			$shortNameParts = explode($retValue['delimiter'], $_folderName);
 			$retValue['shortName']	= array_pop($shortNameParts);
 			
-			$folderStatus = imap_status($this->mbox,$mailboxString,SA_ALL);
+			$folderStatus = imap_status($this->mbox,$mailboxString, SA_ALL);
 			if($folderStatus)
 			{
 				// merge a array and object to a array
@@ -1107,8 +1146,184 @@
 			}
 
 		}
+		
+		function createIMAPFilter($_criterias) {
+			if(!is_array($_criterias)) {
+				return false;
+			}
+		#	error_log(print_r($_criterias, true));
+			$imapFilter = '';
+			
+			#foreach($_criterias as $criteria => $parameter) {
+			if(!empty($_criterias['string'])) {
+				$criteria = strtoupper($_criterias['type']);
+				switch ($criteria) {
+					case 'BCC':
+					case 'BODY':
+					case 'CC':
+					case 'FROM':
+					case 'KEYWORD':
+					case 'SUBJECT':
+					case 'TEXT':
+					case 'TO':
+						$imapFilter .= $criteria .' "'. $_criterias['string'] .'" ';
+						break;
+				}
+			}
+
+			#foreach($_criterias as $criteria => $parameter) {
+				$criteria = strtoupper($_criterias['status']);
+				switch ($criteria) {
+					case 'ANSWERED':
+					case 'DELETED':
+					case 'FLAGGED':
+					case 'NEW':
+					case 'OLD':
+					case 'RECENT':
+					case 'SEEN':
+					case 'UNANSWERED':
+					case 'UNDELETED':
+					case 'UNFLAGGED':
+					case 'UNSEEN':
+						$imapFilter .= $criteria .' ';
+						break;
 					
-		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
+					case 'BEFORE':
+					case 'ON':
+					case 'SINCE':
+						$imapFilter .= $criteria .' "'. date() .'" ';
+						break;
+				}
+			#}
+		#	error_log("Filter: $imapFilter");
+			return $imapFilter;
+		}
+
+		function getSortedList($_icServer, $_folderName, $_sort, $_reverse, $_filter) {
+			$mailboxString = $_icServer->getMailboxString($_folderName);
+			$folderStatus = imap_status($this->mbox, $mailboxString, SA_UIDVALIDITY | SA_MESSAGES | SA_UIDNEXT);
+		#	error_log(print_r($this->sessionData['folderStatus'][0][$_folderName], true));
+		#	error_log('imap_status');
+		#	error_log(print_r($folderStatus, true));
+		#	error_log($this->sessionData['folderStatus'][0][$_folderName]['messages'] === $folderStatus->messages);
+			if($this->sessionData['folderStatus'][0][$_folderName]['uidValidity']	=== $folderStatus->uidvalidity &&
+				$this->sessionData['folderStatus'][0][$_folderName]['messages']	=== $folderStatus->messages &&
+				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	=== $folderStatus->uidnext &&
+				$this->sessionData['folderStatus'][0][$_folderName]['filter']	=== $_filter &&
+				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort && 
+				$this->sessionData['folderStatus'][0][$_folderName]['reverse']	=== $_reverse
+			) {
+				error_log("USE CACHE");
+				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
+			} else {
+				error_log("USE NO CACHE");
+				$filter = $this->createIMAPFilter($_filter);
+				$sortResult = imap_sort($this->mbox, $_sort, $_reverse, '', $filter, $this->displayCharset);
+				$this->sessionData['folderStatus'][0][$_folderName]['filter']	= $_filter;
+				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity'] = $folderStatus->uidvalidity;
+				$this->sessionData['folderStatus'][0][$_folderName]['messages']	= $folderStatus->messages;
+				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	= $folderStatus->uidnext;
+				$this->sessionData['folderStatus'][0][$_folderName]['sortResult'] = $sortResult;
+				$this->sessionData['folderStatus'][0][$_folderName]['sort']	= $_sort;
+				$this->sessionData['folderStatus'][0][$_folderName]['reverse'] 	= $_reverse;
+				$this->saveSessionData();
+			}
+			
+			return $sortResult;
+		}
+					
+		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter)
+		{
+#			$transformdate =& CreateObject('felamimail.transformdate');
+#
+			$this->timeCounter = microtime(true);
+			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
+				return false;
+			}
+		#	error_log("$_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse");
+		#	error_log(print_r($_filter, true));
+		#	error_log($_folderName);
+			$this->reopen($_folderName);
+			$mailboxString = $icServer->getMailboxString($_folderName);
+			
+			$sortResult = $this->getSortedList($icServer, $_folderName, $_sort, $_reverse, $_filter);
+		#	error_log(count($sortResult));
+			$total = count($sortResult);
+			$sortResult = array_slice($sortResult, $_startMessage-1, $_numberOfMessages);
+			$queryString = implode(',', $sortResult);
+		#	error_log($queryString);
+			$headers = imap_fetch_overview($this->mbox, $queryString, 0);
+
+			$count = 0;
+
+			foreach((array)$sortResult as $uid) {
+				$sortOrder[$uid] = $count++;
+			}
+			
+			$count = 0;
+
+			foreach((array)$headers as $uid => $headerObject) {
+				#if($count == 0)
+				#_debug_array($headerObject);
+
+				$uid = $headerObject->msgno;
+
+				$retValue['header'][$sortOrder[$uid]]['subject'] 	= $this->decode_header($headerObject->subject);
+				if(!empty($headerObject->from)) {
+					$addressInfo = imap_rfc822_parse_adrlist($headerObject->from, '');
+					if(!empty($addressInfo[0]->host)) {
+						$retValue['header'][$sortOrder[$uid]]['sender_address'] = $addressInfo[0]->mailbox .'@'. $addressInfo[0]->host;
+					} else {
+						$retValue['header'][$sortOrder[$uid]]['sender_address'] = $addressInfo[0]->mailbox;
+					}
+					if(!empty($addressInfo[0]->personal)) {
+						$retValue['header'][$sortOrder[$uid]]['sender_name'] = $this->decode_header($addressInfo[0]->personal);
+					}
+				}
+
+				if(!empty($headerObject->to)) {
+					$addressInfo = imap_rfc822_parse_adrlist($headerObject->to, '');
+					if(!empty($addressInfo[0]->host)) {
+						$retValue['header'][$sortOrder[$uid]]['to_address'] = $addressInfo[0]->mailbox .'@'. $addressInfo[0]->host;
+					} else {
+						$retValue['header'][$sortOrder[$uid]]['to_address'] = $addressInfo[0]->mailbox;
+					}
+					if(!empty($addressInfo[0]->personal)) {
+						$retValue['header'][$sortOrder[$uid]]['to_name'] = $this->decode_header($addressInfo[0]->personal);
+					}
+				}
+
+			#	_debug_array($addressInfo);
+			#	$retValue['header'][$sortOrder[$uid]]['attachments']	= $displayHeaders[$uid]['attachments'];
+				$retValue['header'][$sortOrder[$uid]]['size'] 		= $this->decode_header($headerObject->size);
+
+				$retValue['header'][$sortOrder[$uid]]['date'] = strtotime($headerObject->date);
+				$retValue['header'][$sortOrder[$uid]]['id'] =  $headerObject->msgno;
+				$retValue['header'][$sortOrder[$uid]]['uid'] = $headerObject->uid;
+				$retValue['header'][$sortOrder[$uid]]['recent'] =  $headerObject->recent;
+				$retValue['header'][$sortOrder[$uid]]['flagged'] =  $headerObject->flagged;
+				$retValue['header'][$sortOrder[$uid]]['answered'] =  $headerObject->answered;
+				$retValue['header'][$sortOrder[$uid]]['deleted'] =  $headerObject->deleted;
+				$retValue['header'][$sortOrder[$uid]]['seen'] =  $headerObject->seen;
+				$retValue['header'][$sortOrder[$uid]]['draft'] =  $headerObject->draft;
+
+				$count++;
+			}
+
+			if(is_array($retValue['header'])) {
+				// sort to displayorder
+				ksort($retValue['header']);
+				#_debug_array($retValue['header']);
+				$retValue['info']['total']	= $total;
+				$retValue['info']['first']	= $_startMessage;
+				$retValue['info']['last']	= $_startMessage + $count - 1 ;
+				return $retValue;
+			} else {
+				return 0;
+			}
+		}
+
+		function getHeadersWithCaching($_startMessage, $_numberOfMessages, $_sort)
 		{
 			$this->timeCounter = microtime(true);
 			if(!$icServer = $this->mailPreferences->getIncomingServer(0))
@@ -1259,11 +1474,12 @@
 		}
 		
 		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure='') {
-			#print "UID: $_uid HTML: $_htmlOptions PART: $_partID<br>";
+#			print "<br><br><br>########################################################################<br>";
+#			print "UID: $_uid HTML: $_htmlOptions PART: $_partID<br>";
 			#print $this->htmlOptions."<br>";
 			#require_once('Mail/mimeDecode.php');
-			#$messageBody = imap_fetchbody($this->mbox, $_uid, '', FT_UID);
-			#print "<pre>".$messageBody."</pre>"; print "<hR>";
+#			$messageBody = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
+#			print "<pre>".$messageBody."</pre>"; print "<hR>";
 			#$decoder = new Mail_mimeDecode($messageBody);
 			#$structure = $decoder->decode($params);
 
@@ -1285,13 +1501,19 @@
 					}
 				}
 			}
-			#_debug_array($structure);
+			
+#			_debug_array($structure);
+			
+#			print "<br>-- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----- ---- ---- ---- ---- ----   --- - - -- - - - - - - -<br>";
+
 			switch($structure->type) {
 				case TYPEMESSAGE:
 					switch($structure->subtype) {
 						case 'RFC822':
+#							print "MESSAGE RFC822<br>";
 							$i=1;
 							foreach($structure->parts as $part) {
+#								print $part->subtype."<br>";
 								if($part->type == TYPEMULTIPART && 
 								($part->subtype == 'RELATED' || $part->subtype == 'MIXED' || $part->subtype == 'ALTERNATIVE' || $part->subtype == 'REPORT') ) {
 									$bodyParts = $this->getMessageBody($_uid, $this->htmlOptions, $_partID, $part);
@@ -1323,6 +1545,8 @@
 					break;
 					
 				case TYPEMULTIPART:
+#					print "TYPE MULTIPART<br>";
+#					print $structure->subtype.'<br>';
 					switch($structure->subtype) {
 						case 'ALTERNATIVE':
 							return $this->getMultipartAlternative($_uid, $_partID, $structure, $this->htmlOptions);
@@ -1333,6 +1557,7 @@
 							$i = 1;
 							$parentPartID = ($_partID != '') ? $_partID.'.' : '';
 							$bodyParts = array();
+#							print "PARENTPARTID: $parentPartID<br>";
 							foreach($structure->parts as $part) {
 								#if($part->type == TYPETEXT || $part->type == TYPEMULTIPART || $part->type == TYPEMESSAGE) {
 								if($part->type == TYPETEXT || $part->type == TYPEMULTIPART) {
@@ -1348,15 +1573,17 @@
 					break;
 					
 				case TYPETEXT:
+#					print "TYPE TEXT<hr>";
+#					_debug_array($structure);
 					$bodyPart = array();
-					#_debug_array($structure);
 					if (($structure->subtype == 'HTML' || $structure->subtype == 'PLAIN') && $structure->disposition != 'ATTACHMENT') {
 						if($_partID == '') { 
 							$_partID=1;
 						}
 						$partID = $_partID;
+#						print "UID: $_uid PRATDI: $partID<br>";
 						$mimePartBody = imap_fetchbody($this->mbox, $_uid, $partID, FT_UID);
-
+#print "<pre>$mimePartBody</pre>";
 						$bodyPart = array(
 							array(
 								'body'		=> $this->decodeMimePart($mimePartBody, $structure->encoding),

@@ -53,7 +53,8 @@
 			$folderName = ($_parentFolder == '--topfolder--'?$_newSubFolder:$_parentFolder.$folderData['delimiter'].$_newSubFolder);
 			$response =& new xajaxResponse();
 			if($this->bofelamimail->imap_createmailbox($folderName, true)) {
-				$response->addScript("tree.insertNewItem('$_parentFolder','$folderName','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
+			#	$response->addScript("tree.insertNewItem('$_parentFolder','$folderName','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
+				$response->addScript("tree.insertNewItem('$_parentFolder','$folderName','$_newSubFolder',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED');");
 			}
 			$response->addAssign("newSubFolder", "value", '');
 			return $response->getXML();
@@ -62,23 +63,30 @@
 		function changeSorting($_sortBy) {
 			$this->sessionData['startMessage']	= 1;
 
+			$oldSort = $this->sessionData['sort'];
+
 			switch($_sortBy) {
 				case 'date':
-					$this->sessionData['sort'] = ($this->sessionData['sort'] == 0?1:0);
+					$this->sessionData['sort'] = SORTDATE;
 					break;
 				case 'from':
-					$this->sessionData['sort'] = ($this->sessionData['sort'] == 3?2:3);
+					$this->sessionData['sort'] = SORTFROM;
 					break;
 				case 'size':
-					$this->sessionData['sort'] = ($this->sessionData['sort'] == 6?7:6);
+					$this->sessionData['sort'] = SORTSIZE;
 					break;
 				case 'subject':
-					$this->sessionData['sort'] = ($this->sessionData['sort'] == 5?4:5);
+					$this->sessionData['sort'] = SORTSUBJECT;
 					break;
 			}
 
+			if($this->sessionData['sort'] == $oldSort) {
+				$this->sessionData['sortReverse'] = !$this->sessionData['sortReverse'];
+			} else {
+				$this->sessionData['sortReverse'] = false;
+			}
+
 			$this->saveSessionData();
-			$GLOBALS['egw']->session->commit_session();
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
@@ -186,6 +194,9 @@
 				$this->bofelamimail->compressFolder($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']);
 			}
 
+			if($this->sessionData['mailbox'] == $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']) {
+			}
+
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 		
@@ -194,6 +205,7 @@
 			$this->sessionData['startMessage']      = 1;
 			$this->sessionData['activeFilter']	= (int)$_filterID;
 			$this->saveSessionData();
+			$GLOBALS['egw']->session->commit_session();
 			
 			// generate the new messageview                
 			return $this->generateMessageList($this->sessionData['mailbox']);
@@ -201,11 +213,13 @@
 		
 		function flagMessages($_flag, $_messageList) {
 			$this->bofelamimail->flagMessages($_flag, $_messageList['msg']);
+			$GLOBALS['egw']->session->commit_session();
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 		
 		function generateMessageList($_folderName) {
+			error_log('generateMessageList for folder '.$_folderName);
 			$listMode = 0;
 		
 			$this->bofelamimail->restoreSessionData();
@@ -217,7 +231,15 @@
 			}
 
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-			$headers = $this->bofelamimail->getHeaders($this->sessionData['startMessage'], $maxMessages, $this->sessionData['sort']);
+
+			$headers = $this->bofelamimail->getHeaders(
+				$_folderName, 
+				$this->sessionData['startMessage'], 
+				$maxMessages, 
+				$this->sessionData['sort'], 
+				$this->sessionData['sortReverse'],
+				(array)$this->sessionData['messageFilter']
+			);
 
 			$headerTable = $this->uiwidgets->messageTable(
 				$headers, 
@@ -244,6 +266,11 @@
 			}
 			
 			$response->addAssign("divMessageList", "innerHTML", $headerTable);
+			
+			if($quota = $this->bofelamimail->getQuotaRoot()) {
+				$quotaDisplay = $this->uiwidgets->quotaDisplay($quota['usage'], $quota['limit']);
+				$response->addAssign('quotaDisplay', 'innerHTML', $quotaDisplay);
+			}
 
 			$folderStatus = $this->bofelamimail->getFolderStatus($_folderName);
 			if($folderStatus['unseen'] > 0) {
@@ -252,7 +279,18 @@
 				$response->addScript("tree.setItemText('$_folderName', '". $folderStatus['shortName'] ."');");
 			}
 
+			if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'])) {
+				$folderStatus = $this->bofelamimail->getFolderStatus($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']);
+				if($folderStatus['unseen'] > 0) {
+					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '<b>". $folderStatus['shortName'] ." (". $folderStatus['unseen'] .")</b>');");
+				} else {
+					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '". $folderStatus['shortName'] ."');");
+				}
+			}
+
 			$response->addScript("tree.selectItem('".$_folderName. "',false);");
+
+			error_log('generateMessageList done');
 
 			return $response->getXML();
 		}
@@ -263,17 +301,10 @@
 			if($folderName != '--topfolder--' && $folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 				$response =& new xajaxResponse();
 
-				$response->addScript("document.getElementById('newMailboxName').disabled = false;");
-				$response->addScript("document.getElementById('mailboxRenameButton').disabled = false;");
-				
-				if($folderName == 'INBOX') {
-					$response->addScript("document.getElementById('newMailboxName').disabled = true;");
-					$response->addScript("document.getElementById('mailboxRenameButton').disabled = true;");
-					$response->addScript("document.getElementById('mailboxDeleteButton').disabled = true;");
-				} else {
+				if($this->sessionDataAjax['oldFolderName'] == '--topfolder--') {
+					$this->sessionDataAjax['oldFolderName'] = '';
 					$response->addScript("document.getElementById('newMailboxName').disabled = false;");
 					$response->addScript("document.getElementById('mailboxRenameButton').disabled = false;");
-					$response->addScript("document.getElementById('mailboxDeleteButton').disabled = false;");
 				}
 				// only folders with LATT_NOSELECT not set, can have subfolders
 				// seem to work only for uwimap
@@ -304,7 +335,6 @@
 				$response->addAssign("folderName", "innerHTML", '');
 				$response->addScript("document.getElementById('newMailboxName').disabled = true;");
 				$response->addScript("document.getElementById('mailboxRenameButton').disabled = true;");
-				$response->addScript("document.getElementById('mailboxDeleteButton').disabled = true;");
 				$response->addAssign("aclTable", "innerHTML", '');
 				return $response->getXML();
 			}
@@ -350,23 +380,18 @@
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
-		function quickSearch($_searchString) {
+		function quickSearch($_searchType, $_searchString, $_status) {
 			// save the filter
 			$bofilter		=& CreateObject('felamimail.bofilter');
 
 			$filter['filterName']	= lang('Quicksearch');
-			$filter['from']		= $_searchString;
-			$filter['subject']	= $_searchString;
+			$filter['type']		= $_searchType;
+			$filter['string']	= $_searchString;
+			$filter['status']	= $_status;
 
-			$bofilter->saveFilter($filter,0);
+			$this->sessionData['messageFilter'] = $filter;
 			
-			// start displaying at message 1
-			$this->sessionData['startMessage']      = 1;
-			if($_searchString != '') {
-				$this->sessionData['activeFilter']	= 0;
-			} else {
-				$this->sessionData['activeFilter']	= -1;
-			}
+			$this->sessionData['startMessage'] = 1;
 
 			$this->saveSessionData();
 			
@@ -375,6 +400,7 @@
 		}
 		
 		function refreshMessageList() {
+			error_log('refreshMessageList');
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 		
@@ -444,7 +470,7 @@
 			{
 				$response =& new xajaxResponse();
 				$response->addScript("tree.deleteItem('$_oldName',0);");
-				$response->addScript("tree.insertNewItem('$_newParent','$newName','$_newName',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
+				$response->addScript("tree.insertNewItem('$_newParent','$newName','$_newName',onNodeSelect,0,0,0,'CHILD,CHECKED,SELECT,CALL');");
 				return $response->getXML();
 			}
 		}
@@ -512,13 +538,15 @@
 		
 		function skipForward() {
 			$icServer = $this->bofelamimail->mailPreferences->getIncomingServer(0);
-			$bofilter =& CreateObject('felamimail.bofilter');
-			$caching =& CreateObject('felamimail.bocaching',
-				$this->icServer->host,
-				$this->icServer->username,
-				$this->sessionData['mailbox']);
 
-			$messageCounter = $caching->getMessageCounter($bofilter->getFilter($this->sessionData['activeFilter']));
+			$sortedList = $this->bofelamimail->getSortedList(
+				$icServer, 
+				$this->sessionData['mailbox'], 
+				$this->sessionData['sort'], 
+				$this->sessionData['sortReverse'],
+				(array)$this->sessionData['messageFilter']
+			);
+			$messageCounter = count($sortedList);
 			// $lastPage is the first message ID of the last page
 			if($messageCounter > $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) {
 				$lastPage = $messageCounter - ($messageCounter % $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"]) + 1;
@@ -565,6 +593,7 @@
 		}
 		
 		function updateMessageView($_folderName) {
+			error_log("updateMessageView($_folderName)");
 			$this->sessionData['mailbox'] 		= $_folderName;
 			$this->sessionData['startMessage']	= 1;
 			$this->saveSessionData();

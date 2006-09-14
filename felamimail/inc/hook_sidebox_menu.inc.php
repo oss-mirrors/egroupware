@@ -68,6 +68,13 @@
 			);
 			$file['Manage EMailaccounts'] = $GLOBALS['egw']->link('/index.php',$linkData);
 		}
+
+
+		#	$linkData = array
+		#	(
+		#		'menuaction' => 'felamimail.uipreferences.listSignatures',
+		#	);
+		#	$file['Manage Signatures'] = $GLOBALS['egw']->link('/index.php',$linkData);
 		
 		$file['Manage Folders']	= $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');
 		

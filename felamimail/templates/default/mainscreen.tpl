@@ -15,6 +15,7 @@ var lang_skipping_forward 	= '{lang_skipping_forward}';
 var lang_skipping_previous 	= '{lang_skipping_previous}';
 var lang_jumping_to_end 	= '{lang_jumping_to_end}';
 var lang_jumping_to_start 	= '{lang_jumping_to_start}';
+var lang_updating_view 		= '{lang_updating_view}';
 
 var activityImagePath		= '{ajax-loader}';
 
@@ -43,18 +44,19 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			</div>
 		</td>
 		<td align="right" width="10px">
-			{lang_search}:
+			{select_search}
 		</td>
-		<td align="left" wwidth="100px">
-			<input class="input_text" type="text" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch(this.value);" onFocus="this.select();" style="font-size:11px; width:98%; max-width:300px;">
+		<td align="right">
+			<input class="input_text" type="text" name="quickSearch" id="quickSearch" value="{quicksearch}" onChange="javascript:quickSearch();" onFocus="this.select();" style="font-size:11px; width:100%;">
 		</td>
-		<td align="left" width="10px" valign="bottom">
-			<a href="{url_filter}" valign="bottom"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;
+		<td align="left" width="40px" valign="middle">
+			{img_clear_left}
 		</td>
-		<td align="center" width="140px">
-			<select name="filter" id="filter" onchange="javascript:extendedSearch(this)" style="border : 1px solid silver; font-size:11px; width: 130px;">
-				{filter_options}
-			</select>
+		<td align="left" width="40px" valign="middle">
+			{lang_status}
+		</td>
+		<td align="center" width="100px">
+			{select_status}
 		</td>
 		<td width="120px" style="white-space:nowrap; align:right; text-align:right;">
 			<div class="parentDIV" style="text-align:right; align:right;">
@@ -79,7 +81,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td align="left" style="font-size:11px;">
 			<span id="messageCounter">{message}</span>
 		</td>
-		<td align="right" style="font-size:11px; width:250px;">
+		<td id="quotaDisplay" align="right" style="font-size:11px; width:250px;">
 			{quota_display}
 		</td>
 	</tr>

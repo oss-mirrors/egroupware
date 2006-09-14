@@ -50,25 +50,24 @@
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
 			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
-			if(isset($_POST["filter"]) || isset($_GET["filter"])) {
-				// new search filter defined, lets start with message 1
-				$this->bofelamimail->sessionData['startMessage']= 1;
-			}
+	#		if(isset($_POST["filter"]) || isset($_GET["filter"])) {
+	#			// new search filter defined, lets start with message 1
+	#			$this->bofelamimail->sessionData['startMessage']= 1;
+	#		}
 
-			// navigate for and back
-			if(isset($_GET["startMessage"])) {
-				$this->bofelamimail->sessionData['startMessage'] = $_GET["startMessage"];
-			}
+	#		// navigate for and back
+	#		if(isset($_GET["startMessage"])) {
+	#			$this->bofelamimail->sessionData['startMessage'] = $_GET["startMessage"];
+	#		}
 			
 			$this->bofelamimail->saveSessionData();
 
 			$this->mailbox 		= $this->bofelamimail->sessionData['mailbox'];
 			$this->startMessage 	= $this->bofelamimail->sessionData['startMessage'];
 			$this->sort 		= $this->bofelamimail->sessionData['sort'];
-			#$this->filter 		= $this->bofelamimail->sessionData['activeFilter'];
+			$this->sortReverse 	= $this->bofelamimail->sessionData['sortReverse'];
+	#		$this->filter 		= $this->bofelamimail->sessionData['activeFilter'];
 
-			#$this->cats			=& CreateObject('phpgwapi.categories');
-			#$this->nextmatchs		=& CreateObject('phpgwapi.nextmatchs');
 			$this->t			=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			#$this->grants[$this->account]	= EGW_ACL_READ + EGW_ACL_ADD + EGW_ACL_EDIT + EGW_ACL_DELETE;
 			// this need to fixed
@@ -190,9 +189,11 @@
 		
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['egw']->js))
-			{
+			if(!@is_object($GLOBALS['egw']->js)) {
 				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+			}
+			if(!@is_object($GLOBALS['egw']->html)) {
+				$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
 			}
 			#$GLOBALS['egw']->js->validate_file('foldertree','foldertree');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
@@ -352,6 +353,7 @@
 			#printf ("this->uifelamimail->viewMainScreen() Line 272: %s<br>",date("H:i:s",mktime()));
 			// ui for the quotas
 			if($quota = $this->bofelamimail->getQuotaRoot()) {
+				// TODO reuse code from uiwidgets
 				if($quota['limit'] == 0) {
 					$quotaPercent=100;
 				} else {
@@ -474,6 +476,7 @@
 			foreach ($listOfImages as $image) {
 				$this->t->set_var($image, $GLOBALS['egw']->common->image('felamimail', $image));
 			}
+			$this->t->set_var('img_clear_left', $GLOBALS['egw']->html->image('felamimail', 'clear_left', lang('clear search'), 'style="margin-left:5px; cursor: pointer;" onclick="fm_clearSearch()"'));
 			// refresh settings
 			$refreshTime = $userPreferences['refreshTime'];
 			$this->t->set_var('refreshTime',$refreshTime*60*1000);
@@ -500,107 +503,62 @@
 			{
 				// sort by date newest first
 				case '0':
-					$dateSort	= '1';
-					$dateCSS	= 'text_small_bold';
-					break;
-				// sort by date oldest first
-				case '1':
-					$dateSort	= '0';
 					$dateCSS	= 'text_small_bold';
 					break;
 
 				// sort by from z->a
 				case '2':
-					$fromSort	= '3';
 					$fromCSS	= 'text_small_bold';
 					break;
 				// sort by from a->z
 				case '3':
-					$fromSort	= '2';
-					$fromCSS	= 'text_small_bold';
-					break;
-
-				// sort by subject z->a
-				case '4':
-					$subjectSort	= '5';
 					$subjectCSS	= 'text_small_bold';
 					break;
-				// sort by subject a->z
-				case '5':
-					$subjectSort	= '4';
-					$subjectCSS	= 'text_small_bold';
-					break;
-
 				// sort by size z->a
 				case '6':
-					$sizeSort	= '7';
-					$sizeCSS	= 'text_small_bold';
-					break;
-				// sort by subject a->z
-				case '7':
-					$sizeSort	= '6';
 					$sizeCSS	= 'text_small_bold';
 					break;
 			}
 
 			// sort by date
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
-				'startMessage'	=> 1,
-				'sort'		=> $dateSort
-			);
-			$this->t->set_var('url_sort_date',$GLOBALS['egw']->link('/index.php',$linkData));
-			$this->t->set_var('css_class_date',$dateCSS);
+			$this->t->set_var('css_class_date', $dateCSS);
 		
 			// sort by from
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
-				'startMessage'	=> 1,
-				'sort'		=> $fromSort
-			);
-			$this->t->set_var('url_sort_from',$GLOBALS['egw']->link('/index.php',$linkData));
-			$this->t->set_var('css_class_from',$fromCSS);
+			$this->t->set_var('css_class_from', $fromCSS);
 		
 			// sort by subject
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
-				'startMessage'	=> 1,
-				'sort'		=> $subjectSort
-			);
-			$this->t->set_var('url_sort_subject',$GLOBALS['egw']->link('/index.php',$linkData));
-			$this->t->set_var('css_class_subject',$subjectCSS);
+			$this->t->set_var('css_class_subject', $subjectCSS);
 			
 			// sort by size
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
-				'startMessage'	=> 1,
-				'sort'		=> $sizeSort
-			);
-			$this->t->set_var('url_sort_size',$GLOBALS['egw']->link('/index.php',$linkData));
-			$this->t->set_var('css_class_size',$sizeCSS);
+			$this->t->set_var('css_class_size', $sizeCSS);
 			
-			// create the filter ui
-			$filterList = $bofilter->getFilterList();
-			$activeFilter = (isset($this->bofelamimail->sessionData['activeFilter'])?$this->bofelamimail->sessionData['activeFilter']:-1);
-			// -1 == no filter selected
-			if($activeFilter == -1)
-				$filterUI .= "<option value=\"-1\" selected>".lang('no filter')."</option>";
-			else
-				$filterUI .= "<option value=\"-1\">".lang('no filter')."</option>";
-			while(list($key,$value) = @each($filterList))
-			{
-				$selected="";
-				if($activeFilter == $key) $selected="selected";
-				$filterUI .= "<option value=".$key." $selected>".$value['filterName']."</option>";
+			#_debug_array($this->bofelamimail->sessionData['messageFilter']);
+			if(!empty($this->bofelamimail->sessionData['messageFilter']['string'])) {
+				$this->t->set_var('quicksearch', $this->bofelamimail->sessionData['messageFilter']['string']);
 			}
-			$this->t->set_var('filter_options',$filterUI);
-			// 0 == quicksearch
-			if($activeFilter == '0')
-				$this->t->set_var('quicksearch',$filterList[0]['subject']);
+			
+			$defaultSearchType = (isset($this->bofelamimail->sessionData['messageFilter']['type']) ? $this->bofelamimail->sessionData['messageFilter']['type'] : 'subject');
+			$defaultSelectStatus = (isset($this->bofelamimail->sessionData['messageFilter']['status']) ? $this->bofelamimail->sessionData['messageFilter']['status'] : 'any');
+			
+			$searchTypes = array(
+				'subject'	=> 'subject',
+				'from'		=> 'from',
+				'to'		=> 'to',
+				'cc'		=> 'cc',
+			);
+			$selectSearchType = $GLOBALS['egw']->html->select('searchType', $defaultSearchType, $searchTypes, false, "style='width:100%;' id='searchType' onchange='document.getElementById(\"quickSearch\").focus(); document.getElementById(\"quickSearch\").value=\"\" ;return false;'");
+			$this->t->set_var('select_search', $selectSearchType);
+			
+			$statusTypes = array(
+				'any'		=> 'any status',
+				'flagged'	=> 'flagged',
+				'unseen'	=> 'unread',
+				'answered'	=> 'replied',
+				'seen'		=> 'read',
+				'deleted'	=> 'deleted',
+			);
+			$selectStatus = $GLOBALS['egw']->html->select('status', $defaultSelectStatus, $statusTypes, false, "style='width:100%;' onchange='javascript:quickSearch();' id='status'");
+			$this->t->set_var('select_status', $selectStatus);
 			
 			if($this->connectionStatus != 'True')
 			{
@@ -609,11 +567,7 @@
 			}
 			else
 			{
-				#$folders = $this->bofelamimail->getFolderList('true');
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-
-				$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+				$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter']);
 
  				$headerCount = count($headers['header']);
 					
@@ -902,6 +856,7 @@
 			$this->t->set_var('lang_skipping_previous',lang('skipping previous'));
 			$this->t->set_var('lang_jumping_to_start',lang('jumping to start'));
 			$this->t->set_var('lang_jumping_to_end',lang('jumping to end'));
+			$this->t->set_var('lang_updating_view',lang('updating view'));
 		}
 	}
 ?>

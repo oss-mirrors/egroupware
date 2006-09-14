@@ -1,8 +1,6 @@
 <?php
 	/***************************************************************************\
-	* EGroupWare - FeLaMiMail                                                   *
-	* http://www.linux-at-work.de                                               *
-	* http://www.phpgw.de                                                       *
+	* eGroupWare - FeLaMiMail                                                   *
 	* http://www.egroupware.org                                                 *
 	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
 	* -------------------------------------------------                         *
@@ -172,6 +170,12 @@
 			$this->t->set_block('body','header_row_felamimail');
 			$this->t->set_block('body','header_row_outlook');
 			$this->t->set_block('body','message_table');
+			$timestamp7DaysAgo =
+				mktime(date("H"), date("i"), date("s"), date("m"), date("d")-7, date("Y"));
+			$timestampNow =
+				mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"));
+			$dateToday = date("Y-m-d");
+                                                                                                                
 
 			$i=0;
 			foreach((array)$_headers['header'] as $header)
@@ -280,7 +284,12 @@
 				$this->t->set_var('message_counter', $i);
 				$this->t->set_var('message_uid', $header['uid']);
 
-				$this->t->set_var('date', $header['date']);
+				if ($dateToday == date('Y-m-d', $header['date'])) {
+					$this->t->set_var('date', date('H:i:s', $header['date']));
+				} else {
+					$this->t->set_var('date', date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'], $header['date']));
+				}
+				
 				$this->t->set_var('size', $this->show_readable_size($header['size']));
 
 				if($_folderType == 2) {
@@ -495,6 +504,42 @@
 				'type'	=> 'text',
 				'text'	=> $_text
 			);
+		}
+		
+		function quotaDisplay($_usage, $_limit) {
+			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
+			$this->t->set_file(array("body" => 'mainscreen.tpl'));
+			$this->t->set_block('body','quota_block');
+
+			if($_limit == 0) {
+				$quotaPercent=100;
+			} else {
+				$quotaPercent=round(($_usage*100)/$_limit);
+			}
+				
+			$quotaLimit=$this->show_readable_size($_limit*1024);
+			$quotaUsage=$this->show_readable_size($_usage*1024);
+
+			$this->t->set_var('leftWidth',$quotaPercent);
+
+			if($quotaPercent > 90) {
+				$this->t->set_var('quotaBG','red');
+			} elseif($quotaPercent > 80) {
+				$this->t->set_var('quotaBG','yellow');
+			} else {
+				$this->t->set_var('quotaBG','#66ff66');
+			}
+				
+			if($quotaPercent > 50) {
+				$this->t->set_var('quotaUsage_right','');
+				$this->t->set_var('quotaUsage_left',$quotaUsage .'/'.$quotaLimit);
+			} else {
+				$this->t->set_var('quotaUsage_left','');
+				$this->t->set_var('quotaUsage_right',$quotaUsage .'/'.$quotaLimit);
+			}
+			
+			$this->t->parse('out','quota_block');	
+			return $this->t->get('out','quota_block');
 		}
 	}
 ?>
