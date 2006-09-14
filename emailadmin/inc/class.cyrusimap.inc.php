@@ -109,32 +109,55 @@
 			return false;
 		}
 
-		function setUserData($_uidnumber, $_quota) {
-			if(!$this->enableCyrusAdmin) {
+		/**
+		 * Create mailbox string from given mailbox-name and user-name
+		 *
+		 * @param string $_folderName='' 
+		 * @return string utf-7 encoded (done in getMailboxName)
+		 */
+		function getUserMailboxString($_username, $_folderName) {
+			if(!$othersNameSpace = $this->getNameSpace(IMAP_NAMESPACE_OTHERS)) {
 				return false;
 			}
 			
-			$this->closeConnection();
+			$mailboxString = $this->getConnectionString() . $othersNameSpace['name'] . $_username . (!empty($_folderName) ? $this->getDelimiter() . $_folderName : '');
 			
-			// we need a admin connection
-			$this->openConnection(0,true);
+			if($this->loginType == 'vmailmgr') {
+				$mailboxString .= '@'.$this->domainName;
+			}
 
-			if($username = $GLOBALS['egw']->accounts->id2name($_uidnumber)) {
+			return $this->encodeFolderName($mailboxString);
+		}
 
-				$mailboxName = $this->getMailboxName('',$username);
+		function setUserData($_username, $_quota) {
+			if(!$this->enableCyrusAdmin) {
+				return false;
+			}
+
+			if(!$this->isAdminConnection && is_resource($this->mbox)) {
+				$this->closeConnection();
+			}
+		
+			if(!is_resource($this->mbox)) {
+				// create a admin connection
+				$this->openConnection(0, true);
+			}
+
+		#	if($othersNameSpace = $this->getNameSpace(IMAP_NAMESPACE_OTHERS)) {
+				$mailboxName = $this->getMailboxName($_username);
 
 				if((int)$_quota > 0) {
 					// enable quota
 					$quota_value = imap_set_quota($this->mbox, $mailboxName, $_quota*1024);
 				} else {
 					// disable quota
-					$quota_value = imap_set_quota($this->mbox, $mailboxName, -1);
+					$quota_value = imap_set_quota($this->mbox, $mailboxName, 'none');
 				}
-				$this->closeConnection();
-				return true;
-			}
+		#	}
+
 			$this->closeConnection();
-			return false;
+			return true;
+			
 		}
 
 		function updateAccount($_hookValues) {
@@ -143,7 +166,6 @@
 			}
 			//_debug_array($_hookValues);
 			$username 	= $_hookValues['account_lid'];
-			if ($this->imapLoginType == 'vmailmgr' && $this->defaultDomain) $username .= '@' . $this->defaultDomain;
 			if(isset($_hookValues['new_passwd'])) {
 				$userPassword	= $_hookValues['new_passwd'];
 			}
@@ -157,9 +179,8 @@
 			if(is_resource($this->mbox)) {
 				// create the users folders
 				foreach($this->createMailboxes as $mailboxName) {
-					$mailboxName = 'INBOX' . ($mailboxName ? $this->getDelimiter() .$mailboxName : '');
-					$mailboxString = $this->getMailboxString($mailboxName,$username);
-					$mailboxName = $this->getMailboxName($mailboxName,$username);
+					$mailboxString = $this->getUserMailboxString($username, $mailboxName);
+					$mailboxName = $this->getMailboxName($username, $mailboxName);
 					if(imap_createmailbox($this->mbox, $mailboxString)) {
 						if(!imap_setacl($this->mbox, $mailboxName, $username, "lrswipcda")) {
 							# log error message
@@ -183,40 +204,6 @@
 					# log error message
 				}
 			}
-		}
-
-		/**
-		 * Create mailbox name from given mailbox-name and optional user-name
-		 * 
-		 * Reimplemented to deal with the wired way cyrus 2.2 with virtual domains specifies 
-		 * 
-		 * Examples:
-		 * getMailboxName('','hugo') --> ''
-		 * getMailboxName('INBOX','hugo') --> 'user.hugo'
-		 * getMailboxName('INBOX.Trash','hugo@domain.com') --> 'user.hugo.Trash@domain.com'
-		 * getMailboxName('INBOX') --> 'INBOX'
-		 * getMailboxName('INBOX.Trash') --> 'INBOX.Trash'
-		 *
-		 * @param string $_folderName='' 
-		 * @param string $username='' if given use the global name, eg. 'user.username' instead of 'INBOX'
-		 * @return string utf-7 encoded(!)
-		 */
-		function getMailboxName($_folderName='',$username='') {
-			$domain = '';
-			if ($username)
-			{
-				if ($this->imapLoginType == 'vmailmgr')
-				{
-					list($username,$domain) = explode('@',$username);
-					if (!$domain) $domain = $this->defaultDomain;
-				}
-				$_folderName = str_replace('INBOX', 'user'.$this->getDelimiter().$username, $_folderName);
-			}
-			// domain has to be behind the regular mailbox name
-			if ($domain) $_folderName .= '@'.$domain;
-
-			//echo "<p align=right>getMailboxName('$_folderName','$username')='$folder'</p>\n";
-			return $this->encodeFolderName($_folderName);
 		}
 	}
 ?>

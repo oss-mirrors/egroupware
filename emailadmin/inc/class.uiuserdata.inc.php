@@ -85,7 +85,7 @@
 			$this->t->set_var('url_image_delete',$GLOBALS['egw']->common->image('phpgwapi','delete'));
 			
 			// only when we show a existing user
-			if($userData = $this->boemailadmin->getUserData($accountID, $_useCache)) {
+			if($userData = $this->boemailadmin->getUserData($accountID)) {
 				$addresses = array();
 				foreach((array)$userData['mailAlternateAddress'] as $data) {
 					$addresses[$data] = $data;
@@ -182,7 +182,7 @@
 				'quotaLimit'			=> $_POST["quotaLimit"],
 				'qmailDotMode'			=> $_POST["qmailDotMode"],
 				'deliveryProgramPath'		=> $_POST["deliveryProgramPath"],
-				'accountStatus'			=> $accountStatus,
+				'accountStatus'			=> $accountStatus, 
 				'deliveryMode'			=> $deliveryMode
 			);
 

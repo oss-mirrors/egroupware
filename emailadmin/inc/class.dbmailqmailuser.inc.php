@@ -26,7 +26,7 @@
 		
 		#function deleteAccount($_hookValues) {
 		#}
-		function getUserData($_uidnumber) {
+		function getUserData($_username) {
 			$userData = array();
 			
 			if (!is_object($GLOBALS['egw']->ldap)) {
@@ -43,16 +43,16 @@
 				return false;
 			}
 
-			$filter		= '(&(objectclass=posixaccount)(uidnumber='. $_uidnumber .')(qmailGID='. sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id'])) .'))';
+			$filter		= '(&(objectclass=posixaccount)(uid='. $_username .')(qmailGID='. sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id'])) .'))';
 			$justthese	= array('dn', 'objectclass', 'mailQuota');
-			$sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $justthese);
+			if($sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $justthese)) {
 
-			if($info = ldap_get_entries($ds, $sri)) {
-				if(isset($info[0]['mailquota'][0])) {
-					$userData['quotaLimit'] = $info[0]['mailquota'][0] / 1048576;
+				if($info = ldap_get_entries($ds, $sri)) {
+					if(isset($info[0]['mailquota'][0])) {
+						$userData['quotaLimit'] = $info[0]['mailquota'][0] / 1048576;
+					}
 				}
 			}
-
 			return $userData;
 		}
 
@@ -105,7 +105,7 @@
 			return false;
 		}
 
-		function setUserData($_uidnumber, $_quota) {
+		function setUserData($_username, $_quota) {
 			if (!is_object($GLOBALS['egw']->ldap)) {
 				$GLOBALS['egw']->ldap =& CreateObject('phpgwapi.ldap');
 			}
@@ -120,7 +120,7 @@
 				return false;
 			}
 
-			$filter		= '(&(objectclass=posixaccount)(uidnumber='. $_uidnumber .'))';
+			$filter		= '(&(objectclass=posixaccount)(uid='. $_username .'))';
 			$justthese	= array('dn', 'objectclass', 'qmailGID', 'mail');
 			$sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $justthese);
 

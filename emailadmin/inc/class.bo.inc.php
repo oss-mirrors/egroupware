@@ -385,14 +385,16 @@
 						$icServer->host		= $data['imapServer'];
 						$icServer->port 	= $data['imapPort'];
 						$icServer->validatecert	= ($data['imapTLSAuthentication'] == 'yes');
-						$icServer->username 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
+						$icServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
 						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
+						$icServer->loginType	= $data['imapLoginType'];
+						$icServer->domainName	= $data['defaultDomain'];
 						
-						$icServer->enableCyrusAdmin	= ($data['imapEnableCyrusAdmin'] == 'yes');
-						$icServer->adminUsername	= $data['imapAdminUsername'];
-						$icServer->adminPassword	= $data['imapAdminPW'];
-						$icServer->enableSieve		= ($data['imapEnableSieve'] == 'yes');
-						$icServer->sievePort		= $data['imapSievePort'];
+						$icServer->enableCyrusAdmin = ($data['imapEnableCyrusAdmin'] == 'yes');
+						$icServer->adminUsername = $data['imapAdminUsername'];
+						$icServer->adminPassword = $data['imapAdminPW'];
+						$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
+						$icServer->sievePort	= $data['imapSievePort'];
 						
 						$eaPreferences->setIncomingServer($icServer);
 						break;
@@ -405,9 +407,11 @@
 						$icServer->validatecert	= ($data['imapTLSAuthentication'] == 'yes');
 						$icServer->username 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
 						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
+						$icServer->loginType	= $data['imapLoginType'];
+						$icServer->domainName	= $data['defaultDomain'];
 						
-						$icServer->enableSieve		= ($data['imapEnableSieve'] == 'yes');
-						$icServer->sievePort		= $data['imapSievePort'];
+						$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
+						$icServer->sievePort	= $data['imapSievePort'];
 						
 						$eaPreferences->setIncomingServer($icServer);
 						break;
@@ -420,6 +424,8 @@
 						$icServer->validatecert	= ($data['imapTLSAuthentication'] == 'yes');
 						$icServer->username 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
 						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
+						$icServer->loginType	= $data['imapLoginType'];
+						$icServer->domainName	= $data['defaultDomain'];
 
 						$eaPreferences->setIncomingServer($icServer);
 						break;
@@ -493,8 +499,8 @@
 
 			if($userProfile = $this->getUserProfile('felamimail', $groups)) {
 				$icServer = $userProfile->getIncomingServer(0);
-				if(is_a($icServer, 'defaultimap')) {
-					$icUserData = $icServer->getUserData($_accountID);
+				if(is_a($icServer, 'defaultimap') && $username = $GLOBALS['egw']->accounts->id2name($_accountID)) {
+					$icUserData = $icServer->getUserData($username);
 				}
 
 				$ogServer = $userProfile->getOutgoingServer(0);
@@ -507,20 +513,6 @@
 			}
 			
 			return false;
-			
-				$userData = $this->soemailadmin->getUserData($_accountID);
-				$bofelamimail =& CreateObject('felamimail.bofelamimail');
-				$bofelamimail->openConnection('','',true);
-				$userQuota = 
-					$bofelamimail->imapGetQuota($GLOBALS['egw']->accounts->id2name($_accountID));
-				if(is_array($userQuota))
-				{
-					$userData['quotaLimit']	= $userQuota['limit'];
-				}
-				$bofelamimail->closeConnection();
-				$this->userSessionData[$_accountID] = $userData;
-				$this->saveSessionData();
-			return $userData;
 		}
 
 		function restoreSessionData()
@@ -681,8 +673,8 @@
 
 			if($userProfile = $this->getUserProfile('felamimail', $groups)) {
 				$icServer = $userProfile->getIncomingServer(0);
-				if(is_a($icServer, 'defaultimap')) {
-					$icServer->setUserData($_accountID, $_formData['quotaLimit']);
+				if(is_a($icServer, 'defaultimap') && $username = $GLOBALS['egw']->accounts->id2name($_accountID)) {
+					$icServer->setUserData($username, $_formData['quotaLimit']);
 				}
 
 				$ogServer = $userProfile->getOutgoingServer(0);
