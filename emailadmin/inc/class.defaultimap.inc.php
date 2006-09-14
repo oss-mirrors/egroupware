@@ -189,7 +189,7 @@
 			if($this->isAdminConnection) {
 				$username = $this->adminUsername;
 			} else {
-				$username = $this->username;
+				$username = $this->loginName;
 			}
 			if(!is_array($this->sessionData['nameSpace'][$this->host][$username])) {
 				return false;
@@ -286,7 +286,7 @@
 				$this->isAdminConnection = true;
 			} else {
 				$folderName	= $_folderName;
-				$username	= $this->username;
+				$username	= $this->loginName;
 				$password	= $this->password;
 				$options	= $_options;
 				$this->isAdminConnection = false;

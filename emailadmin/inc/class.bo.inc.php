@@ -389,6 +389,7 @@
 						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
 						$icServer->loginType	= $data['imapLoginType'];
 						$icServer->domainName	= $data['defaultDomain'];
+						$icServer->loginName 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
 						
 						$icServer->enableCyrusAdmin = ($data['imapEnableCyrusAdmin'] == 'yes');
 						$icServer->adminUsername = $data['imapAdminUsername'];
@@ -409,6 +410,7 @@
 						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
 						$icServer->loginType	= $data['imapLoginType'];
 						$icServer->domainName	= $data['defaultDomain'];
+						$icServer->loginName 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
 						
 						$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
 						$icServer->sievePort	= $data['imapSievePort'];
@@ -426,6 +428,7 @@
 						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
 						$icServer->loginType	= $data['imapLoginType'];
 						$icServer->domainName	= $data['defaultDomain'];
+						$icServer->loginName 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
 
 						$eaPreferences->setIncomingServer($icServer);
 						break;
