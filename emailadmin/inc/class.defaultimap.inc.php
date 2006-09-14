@@ -186,31 +186,36 @@
 		}
 
 		function getNameSpace($_nameSpace) {
-			if(!is_array($this->sessionData['nameSpace'][$this->host][$this->username])) {
+			if($this->isAdminConnection) {
+				$username = $this->adminUsername;
+			} else {
+				$username = $this->username;
+			}
+			if(!is_array($this->sessionData['nameSpace'][$this->host][$username])) {
 				return false;
 			}
 
 			switch($_nameSpace) {
 				case IMAP_NAMESPACE_OTHERS:
-					if(isset($this->sessionData['nameSpace'][$this->host][$this->username]['othersNameSpace'])) {
-						return $this->sessionData['nameSpace'][$this->host][$this->username]['othersNameSpace'];
+					if(isset($this->sessionData['nameSpace'][$this->host][$username]['othersNameSpace'])) {
+						return $this->sessionData['nameSpace'][$this->host][$username]['othersNameSpace'];
 					}
 					break;
 
 				case IMAP_NAMESPACE_PERSONAL:
-					if(isset($this->sessionData['nameSpace'][$this->host][$this->username]['personalNameSpace'])) {
-						return $this->sessionData['nameSpace'][$this->host][$this->username]['personalNameSpace'];
+					if(isset($this->sessionData['nameSpace'][$this->host][$username]['personalNameSpace'])) {
+						return $this->sessionData['nameSpace'][$this->host][$username]['personalNameSpace'];
 					}
 					break;
 
 				case IMAP_NAMESPACE_SHARED:
-					if(isset($this->sessionData['nameSpace'][$this->host][$this->username]['sharedNameSpace'])) {
-						return $this->sessionData['nameSpace'][$this->host][$this->username]['sharedNameSpace'];
+					if(isset($this->sessionData['nameSpace'][$this->host][$username]['sharedNameSpace'])) {
+						return $this->sessionData['nameSpace'][$this->host][$username]['sharedNameSpace'];
 					}
 					break;
 
 				default:
-					return $this->sessionData['nameSpace'][$this->host][$this->username];
+					return $this->sessionData['nameSpace'][$this->host][$username];
 					break;
 			}
 			
@@ -234,7 +239,7 @@
 		}
 		
 		function getQuotaByUser($_username) {
-			if(function_exists('imap_get_quotaroot') && $this->supportsCapability('QUOTA')) {
+			if(function_exists('imap_get_quotaroot')) {
 				if(!$this->isAdminConnection && is_resource($this->mbox)) {
 					$this->closeConnection();
 				}
@@ -244,14 +249,15 @@
 					$this->openConnection(0, true);
 				}
 			
-				if($othersNameSpace = $this->getNameSpace(IMAP_NAMESPACE_OTHERS)) {
-					$quota = @imap_get_quota($this->mbox, $othersNameSpace['name'].$_username);
-
-					if(is_array($quota) && isset($quota['STORAGE'])) {
-						return $quota['STORAGE'];
+				if($this->supportsCapability('QUOTA')) {
+					if($othersNameSpace = $this->getNameSpace(IMAP_NAMESPACE_OTHERS)) {
+						$quota = @imap_get_quota($this->mbox, $othersNameSpace['name'].$_username);
+						
+						if(is_array($quota) && isset($quota['STORAGE'])) {
+							return $quota['STORAGE'];
+						}
 					}
 				}
-
 			} 
 
 			return false;
@@ -259,7 +265,7 @@
 		
 		function getUserData($_username) {
 			$userData = array();
-			
+
 			if($quota = $this->getQuotaByUser($_username)) {
 				$userData['quotaLimit'] = $quota['limit'] / 1024;
 			}
@@ -291,7 +297,6 @@
 			if(!$this->mbox = imap_open ($mailboxString, $username, $password, $options)) {
 				return PEAR::raiseError(imap_last_error(), 'horde.error');
 			} else {
-				
 				if(!isset($this->sessionData['capabilities'][$this->host]) ||
 					!isset($this->sessionData['nameSpace'][$this->host][$username]) ||
 					!isset($this->sessionData['delimiter'][$this->host])) {
