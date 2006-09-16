@@ -22,6 +22,7 @@ allways a new window	felamimail	es-es	siempre una ventana nueva
 always show html emails	felamimail	es-es	Mostrar siempre los correos HTML
 and	felamimail	es-es	y
 any of	felamimail	es-es	cualquiera de
+any status	felamimail	es-es	cualquier estado
 anyone	felamimail	es-es	cualquiera
 as a subfolder of	felamimail	es-es	como una subcarpeta de
 attachments	felamimail	es-es	Adjuntos
@@ -41,6 +42,7 @@ cc	felamimail	es-es	CC
 change folder	felamimail	es-es	Cambiar carpeta
 check message against next rule also	felamimail	es-es	comprobar el mensaje también con la regla siguiente
 checkbox	felamimail	es-es	Casilla
+clear search	felamimail	es-es	Limpiar búsqueda
 click here to log back in.	felamimail	es-es	Pulse aquí para volver a iniciar sesión
 click here to return to %1	felamimail	es-es	Pulse aquí para volver a %1
 close all	felamimail	es-es	cerrar todas
@@ -311,6 +313,7 @@ save	felamimail	es-es	Guardar
 save as draft	felamimail	es-es	guardar como borrador
 save as infolog	felamimail	es-es	guardar como registro de notas y tareas
 save changes	felamimail	es-es	guardar cambios
+save message to disk	felamimail	es-es	Guardar mensaje en el disco
 script name	felamimail	es-es	nombre del script
 script status	felamimail	es-es	estado del script
 search	felamimail	es-es	Buscar
@@ -381,6 +384,7 @@ unsubscribed	felamimail	es-es	No suscrito
 unsubscribed successfully!	felamimail	es-es	Desuscripción correcta
 up	felamimail	es-es	arriba
 updating message status	felamimail	es-es	actualizando estado del mensaje
+updating view	felamimail	es-es	Actualizando la vista
 use <a href="%1">emailadmin</a> to create profiles	felamimail	es-es	use <a href="%1">EmailAdmin</a> para crear perfiles
 use a signature	felamimail	es-es	Usar una firma
 use a signature?	felamimail	es-es	¿Usar una firma?
@@ -392,6 +396,7 @@ users can define their own emailaccounts	admin	es-es	Los usuarios pueden definir
 vacation notice	felamimail	es-es	aviso de vacaciones
 validate certificate	felamimail	es-es	validar certificado
 view full header	felamimail	es-es	Ver la cabecera completa
+view header lines	felamimail	es-es	Ver líneas del encabezado
 view message	felamimail	es-es	Ver mensaje
 viewing full header	felamimail	es-es	Viendo la cabecera completa
 viewing message	felamimail	es-es	Viendo mensaje
