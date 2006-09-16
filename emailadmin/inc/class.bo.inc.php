@@ -642,11 +642,7 @@
 		}
 		
 		function saveUserData($_accountID, $_formData) {
-			$userGroups = $GLOBALS['egw']->accounts->membership($_accountID);
-			$groups = array(0);
-			foreach((array)$userGroups as $groupInfo) {
-				$groups[] = $groupInfo['account_id'];
-			}
+			$groups = array_merge(array(0),(array)$GLOBALS['egw']->accounts->memberships($_accountID,true));
 
 			if($userProfile = $this->getUserProfile('felamimail', $groups)) {
 				$icServer = $userProfile->getIncomingServer(0);
@@ -664,6 +660,10 @@
 						$_formData['mailLocalAddress']
 					);
 				}
+				// calling a hook to allow other apps to monitor the changes
+				$_formData['account_id'] = $_accountID;
+				$_formData['location'] = 'editaccountemail';
+				$GLOBALS['egw']->hooks->process($_formData);
 				
 				return true;
 			}
