@@ -12,19 +12,13 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	// SMTP Server
-	define ('POSTFIX_LDAP', 2);
-	
-	// IMAP Server
-	define ('CYRUS_IMAP_SERVER', 3);
-	define ('DBMAIL_QMAILUSER',  4);
-
 	class bo
 	{
 		var $sessionData;
 		var $LDAPData;
 		
 		var $SMTPServerType = array();		// holds a list of config options
+		var $IMAPServerType = array();		// holds a list of config options
 		
 		var $imapClass;				// holds the imap/pop3 class
 		var $smtpClass;				// holds the smtp class
@@ -62,9 +56,34 @@
 						'smtpLDAPBaseDN',
 						'smtpLDAPUseDefault'
 					),
-					'description'	=> lang('Postfix with qmailuser schema'),
+					'description'	=> 'Postfix (qmailUser Schema)',
 					'classname'	=> 'postfixldap'
-				)
+				),
+				'3'     => array(
+					'fieldNames'    => array(
+						'smtpServer',
+						'smtpPort',
+						'smtpAuth',
+						'ea_smtp_auth_username',
+						'ea_smtp_auth_password',
+						'smtpType',
+					),
+					'description'   => 'Postfix (inetOrgPerson Schema)',
+					'classname'     => 'postfixinetorgperson'
+				),
+				'4'     => array(
+					'fieldNames'    => array(
+						'smtpServer',
+						'smtpPort',
+						'smtpAuth',
+						'ea_smtp_auth_username',
+						'ea_smtp_auth_password',
+						'smtpType',
+						'editforwardingaddress',
+					),
+					'description'   => 'Plesk SMTP-Server (Qmail)',
+					'classname'     => 'smtpplesk'
+				),
 			);
 
 			$this->IMAPServerType = array(
@@ -129,10 +148,24 @@
 						'imapSieveServer',
 						'imapSievePort'
 					),
-					'description'	=> 'DBMail with with qmailuser schema',
+					'description'	=> 'DBMail (qmailUser schema)',
 					'protocol'	=> 'imap',
 					'classname'	=> 'dbmailqmailuser'
-				)
+				),
+				'5'     => array(
+					'fieldNames'    => array(
+						'imapServer',
+						'imapPort',
+						'imapType',
+						'imapLoginType',
+						'imapTLSEncryption',
+						'imapTLSAuthentication',
+						'imapoldcclient',
+					),
+					'description'   => 'Plesk IMAP Server (Courier)',
+					'protocol'      => 'imap',
+					'classname'     => 'pleskimap'
+				),
 			); 
 			
 			if ($_restoreSesssion) $this->restoreSessionData();
@@ -356,7 +389,6 @@
 			{
 				$retData[$key] = $value['description'];
 			}
-			
 			return $retData;
 		}
 		
@@ -378,100 +410,42 @@
 			
 				$eaPreferences =& CreateObject('emailadmin.ea_preferences');
 
-				switch($data['imapType']) {
-					case CYRUS_IMAP_SERVER:
-						$icServer =& CreateObject('emailadmin.cyrusimap');
-						$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes');
-						$icServer->host		= $data['imapServer'];
-						$icServer->port 	= $data['imapPort'];
-						$icServer->validatecert	= ($data['imapTLSAuthentication'] == 'yes');
-						$icServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
-						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
-						$icServer->loginType	= $data['imapLoginType'];
-						$icServer->domainName	= $data['defaultDomain'];
-						$icServer->loginName 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
-						
-						$icServer->enableCyrusAdmin = ($data['imapEnableCyrusAdmin'] == 'yes');
-						$icServer->adminUsername = $data['imapAdminUsername'];
-						$icServer->adminPassword = $data['imapAdminPW'];
-						$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
-						$icServer->sievePort	= $data['imapSievePort'];
-						
-						$eaPreferences->setIncomingServer($icServer);
-						break;
+				// fetch the IMAP / incomming server data
+				$icClass = isset($this->IMAPServerType[$data['imapType']]) ? $this->IMAPServerType[$data['imapType']]['classname'] : 'defaultimap';
+				$icServer =& CreateObject('emailadmin.'.$icClass);
+				$icServer->encryption	= $data['imapTLSEncryption'] == 'yes';
+				$icServer->host			= $data['imapServer'];
+				$icServer->port 		= $data['imapPort'];
+				$icServer->validatecert	= $data['imapTLSAuthentication'] == 'yes';
+				$icServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
+				$icServer->password		= $GLOBALS['egw_info']['user']['passwd'];
+				$icServer->loginType	= $data['imapLoginType'];
+				$icServer->domainName	= $data['defaultDomain'];
+				$icServer->loginName 	= $data['imapLoginType'] == 'standard' ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
+				$icServer->enableCyrusAdmin = ($data['imapEnableCyrusAdmin'] == 'yes');
+				$icServer->adminUsername = $data['imapAdminUsername'];
+				$icServer->adminPassword = $data['imapAdminPW'];
+				$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
+				$icServer->sievePort	= $data['imapSievePort'];
+				$eaPreferences->setIncomingServer($icServer);
 
-					case DBMAIL_QMAILUSER:
-						$icServer =& CreateObject('emailadmin.dbmailqmailuser');
-						$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes');
-						$icServer->host		= $data['imapServer'];
-						$icServer->port 	= $data['imapPort'];
-						$icServer->validatecert	= ($data['imapTLSAuthentication'] == 'yes');
-						$icServer->username 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
-						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
-						$icServer->loginType	= $data['imapLoginType'];
-						$icServer->domainName	= $data['defaultDomain'];
-						$icServer->loginName 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
-						
-						$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
-						$icServer->sievePort	= $data['imapSievePort'];
-						
-						$eaPreferences->setIncomingServer($icServer);
-						break;
-
-					default:
-						$icServer =& CreateObject('emailadmin.defaultimap');
-						$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes');
-						$icServer->host		= $data['imapServer'];
-						$icServer->port 	= $data['imapPort'];
-						$icServer->validatecert	= ($data['imapTLSAuthentication'] == 'yes');
-						$icServer->username 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
-						$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
-						$icServer->loginType	= $data['imapLoginType'];
-						$icServer->domainName	= $data['defaultDomain'];
-						$icServer->loginName 	= ($data['imapLoginType'] == 'standard') ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
-
-						$eaPreferences->setIncomingServer($icServer);
-						break;
-				}	
-				
-				switch($data['smtpType']) {
-					case POSTFIX_LDAP:
-						$ogServer =& CreateObject('emailadmin.postfixldap');
-						$ogServer->host		= $data['smtpServer'];
-						$ogServer->port		= $data['smtpPort'];
-						$ogServer->editForwardingAddress = ($data['editforwardingaddress'] == 'yes');
-						$ogServer->smtpAuth	= ($data['smtpAuth'] == 'yes');
-						if($ogServer->smtpAuth) {
-							if(!empty($data['ea_smtp_auth_username'])) {
-								$ogServer->username 	= $data['ea_smtp_auth_username'];
-								$ogServer->password 	= $data['ea_smtp_auth_password'];
-							} else {
-								$ogServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
-								$ogServer->password 	= $GLOBALS['egw_info']['user']['passwd'];
-							}
-						}
-
-						$eaPreferences->setOutgoingServer($ogServer);
-						break;
-
-					default:
-						$ogServer =& CreateObject('emailadmin.defaultsmtp');
-						$ogServer->host		= $data['smtpServer'];
-						$ogServer->port		= $data['smtpPort'];
-						$ogServer->smtpAuth	= ($data['smtpAuth'] == 'yes');
-						if($ogServer->smtpAuth) {
-							if(!empty($data['ea_smtp_auth_username'])) {
-								$ogServer->username 	= $data['ea_smtp_auth_username'];
-								$ogServer->password 	= $data['ea_smtp_auth_password'];
-							} else {
-								$ogServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
-								$ogServer->password 	= $GLOBALS['egw_info']['user']['passwd'];
-							}
-						}
-
-						$eaPreferences->setOutgoingServer($ogServer);
-						break;
+				// fetch the SMTP / outgoing server data
+				$ogClass = isset($this->SMTPServerType[$data['smtpType']]) ? $this->SMTPServerType[$data['smtpType']]['classname'] : 'defaultsmtp';
+				$ogServer =& CreateObject('emailadmin.'.$ogClass);
+				$ogServer->host		= $data['smtpServer'];
+				$ogServer->port		= $data['smtpPort'];
+				$ogServer->editForwardingAddress = ($data['editforwardingaddress'] == 'yes');
+				$ogServer->smtpAuth	= $data['smtpAuth'] == 'yes';
+				if($ogServer->smtpAuth) {
+					if(!empty($data['ea_smtp_auth_username'])) {
+						$ogServer->username 	= $data['ea_smtp_auth_username'];
+						$ogServer->password 	= $data['ea_smtp_auth_password'];
+					} else {
+						$ogServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
+						$ogServer->password 	= $GLOBALS['egw_info']['user']['passwd'];
+					}
 				}
+				$eaPreferences->setOutgoingServer($ogServer);
 
 				foreach($ogServer->getAccountEmailAddress($GLOBALS['egw_info']['user']['account_lid']) as $emailAddresses)
 				{
@@ -686,7 +660,8 @@
 						(array)$_formData['mailAlternateAddress'], 
 						(array)$_formData['mailForwardingAddress'],
 						$_formData['deliveryMode'],
-						$_formData['accountStatus']
+						$_formData['accountStatus'],
+						$_formData['mailLocalAddress']
 					);
 				}
 				

@@ -1,6 +1,6 @@
 var tab = new Tabs(4,'activetab','inactivetab','tab','tabcontent','','','tabpage');
-var smtp = new Tabs(2,'activetab','inactivetab','smtp','smtpcontent','smtpselector','','');
-var imap = new Tabs(4,'activetab','inactivetab','imap','imapcontent','imapselector','','');
+var smtp = new Tabs(4,'activetab','inactivetab','smtp','smtpcontent','smtpselector','','');
+var imap = new Tabs(5,'activetab','inactivetab','imap','imapcontent','imapselector','','');
 
 function initAll() {
 	tab.init();

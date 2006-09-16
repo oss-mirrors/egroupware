@@ -275,11 +275,13 @@
 			);
 			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
-			foreach($this->boemailadmin->getSMTPServerTypes() as $key => $value)
-			{
-				$this->t->set_var("lang_smtp_option_$key",$value);
-			};
-
+			$this->t->set_var('smtptype',$GLOBALS['egw']->html->select(
+				'smtpsettings[smtpType]',
+				$profileData['smtpType'], 
+				$this->boemailadmin->getSMTPServerTypes(),
+				true,
+				'style="width: 250px;" id="smtpselector" onchange="smtp.display(this.value);"'
+			));
 			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value) {
 				$imapServerTypes[$key] = $value['description'];
 			};
@@ -287,7 +289,7 @@
 				'imapsettings[imapType]', 
 				$profileData['imapType'], 
 				$imapServerTypes, 
-				false, 
+				true, 
 				"style='width: 250px;' id='imapselector' onchange='imap.display(this.value);'"
 			);
 			$this->t->set_var('imaptype', $selectFrom);
