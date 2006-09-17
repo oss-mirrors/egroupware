@@ -186,6 +186,11 @@
 		}
 
 		function getNameSpace($_nameSpace) {
+			// this solves a PHP4 problem
+			if(empty($this->sessionData)) {
+				$this->restoreSessionData();
+			}
+			
 			if($this->isAdminConnection) {
 				$username = $this->adminUsername;
 			} else {
