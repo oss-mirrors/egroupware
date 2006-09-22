@@ -35,12 +35,14 @@
 	  var $num_objects=0;
 	  var $num_fields=0;
 	  var $num_reports=0;
+	  var $ignorefields;
 
 	  function ui_importsite()
 	  {
 		 $this->bo = CreateObject('jinn.boadmin');
 		 parent::uijinn();
 
+		 $this->ignorefields = array('uniqid','fields','reports','parent_site_id');
 		 $this->app_title = lang('Administrator Mode');
 
 		 $this->permissionCheck();
@@ -374,7 +376,7 @@
 				  'value' => addslashes($val) 
 			   );
 			}
-			else
+			elseif(!array_key_exists($key, $this->ignorefields))
 			{
 			   $this->bo->addError(lang('incompatibility result: Site <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $import_site['site_name']));
 			}
@@ -382,7 +384,7 @@
 
 		 foreach($validfields as $fieldname => $yes)
 		 {
-			if(!array_key_exists($fieldname, $imported))
+			if(!array_key_exists($fieldname, $imported) and !array_key_exists($fieldname, $this->ignorefields))
 			{
 			   $this->bo->addError(lang('incompatibility result: Site <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $import_site['site_name']));
 			}
@@ -469,7 +471,6 @@
 	  function save_objects($import_site_objects,$import_obj_fields,$import_reports,$parent_site_id,$replace)
 	  {
 		 $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
-		 $ignorefields = array('uniqid','fields','reports','parent_site_id');
 
 		 //create renaming table for relations
 		 foreach($import_site_objects as $object)
@@ -574,7 +575,7 @@
 					 array_walk_recursive($_rel_arr, 'replace_oldid_with_newid', $repl_arr);
 				  }
 
-				  $val==base64_encode(serialize($_rel_arr));
+				  $val=base64_encode(serialize($_rel_arr));
 			   }
 
 
@@ -588,14 +589,15 @@
 					 'value' => addslashes($val) 
 				  );
 			   }
-			   elseif(!in_array($key,$ignorefields))
+			   elseif(!in_array($key,$this->ignorefields))
 			   {
 				  $this->bo->addError(lang('incompatibility result: Object <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $object['name']));
 			   }
 			}
+			
 			foreach($validfields as $fieldname => $yes)
 			{
-			   if(!array_key_exists($fieldname, $imported) && !in_array($fieldname,$ignorefields))
+			   if(!array_key_exists($fieldname, $imported) && !in_array($fieldname,$this->ignorefields))
 			   {
 				  $this->bo->addError(lang('incompatibility result: Object <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $object['name']));
 			   }
@@ -676,7 +678,7 @@
 						'value' => addslashes($val) 
 					 );
 				  }
-				  else
+				  elseif(array_key_exists($key, $this->ignorefields))
 				  {
 					 $this->bo->addError(lang('incompatibility result: Object <b>\'%3\'</b>, field <b>\'%1\'</b>, property <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $obj_field['field_name'], $key, $parent_object_name));
 				  }
@@ -731,7 +733,7 @@
 						'value' => addslashes($val)
 					 );
 				  }
-				  else
+				  elseif(!array_key_exists($key, $this->ignorefields))
 				  {
 					 $this->bo->addError(lang('incompatibility result: Report <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $report['name']));
 				  }
@@ -809,7 +811,7 @@
 						'value' => addslashes($val) 
 					 );
 				  }
-				  else
+				  elseif(!array_key_exists($key, $this->ignorefields))
 				  {
 					 $this->bo->addError(lang('incompatibility result: Object <b>\'%3\'</b>, property <b>\'%1\'</b> with value <b>\'%2\'</b> could not be imported because it does not exist in this JiNN version', $key, $val, $import_object['name']));
 				  }
@@ -882,7 +884,7 @@
 								 'value' => addslashes($val) 
 							  );
 						   }
-						   else
+						   elseif(!array_key_exists($key, $this->ignorefields))
 						   {
 							  $this->bo->addError(lang('incompatibility result: Object <strong>\'%3\'</strong>, field <strong>\'%1\'</strong>, property <strong>\'%2\'</strong> could not be imported because it does not exist in this JiNN version', $obj_field['field_name'], $key, $import_object['name']));
 						   }

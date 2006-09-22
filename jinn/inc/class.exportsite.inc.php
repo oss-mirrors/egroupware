@@ -222,8 +222,6 @@
 			   while (list ($key, $val) = each ($object)) 
 			   { 
 				  //				  $obj_arr['temp_id']=$temp_id;
-
-
 				  if($key != 'object_idxxx' && $key != 'parent_site_id') // keep if needed for static egroupware apps
 				  {
 					 if(in_array($key,$cdata_array))
