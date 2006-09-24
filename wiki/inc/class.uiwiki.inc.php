@@ -239,7 +239,7 @@ class uiwiki extends bowiki
 	function header($page=false,$title='')
 	{
 		// anonymous sessions have no navbar !!!
-		$GLOBALS['egw_info']['flags']['nonavbar'] = $this->anonymous;
+		$GLOBALS['egw_info']['flags']['nonavbar'] = $this->config['allow_anonymous'] != 'Navbar' && $this->anonymous;
 		$GLOBALS['egw']->common->egw_header();
 		
 		if ($page)

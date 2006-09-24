@@ -19,6 +19,7 @@
 <select name="newsettings[allow_anonymous]">
 <option value=""{selected_allow_anonymous_False}>{lang_No}</option>
 <option value="True"{selected_allow_anonymous_True}>{lang_Yes}</option>
+<option value="Navbar"{selected_allow_anonymous_Navbar}>{lang_Yes_with_navbar}</option>
 </select>
 </td>
 </tr>

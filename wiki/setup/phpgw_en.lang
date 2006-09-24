@@ -103,6 +103,7 @@ wiki menu	wiki	en	Wiki Menu
 wiki startpage	wiki	en	Wiki startpage
 writable by	wiki	en	Writable by
 yes always	admin	en	Yes always
+yes with navbar	admin	en	Yes with navbar
 you have been denied access to this site.	wiki	en	You have been denied access to this site.
 you have entered an invalid user name.	wiki	en	You have entered an invalid user name.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	en	You have exeeded the number of pages you are allowed to visit in a given period of time. Please return later.

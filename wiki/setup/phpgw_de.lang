@@ -103,6 +103,7 @@ wiki menu	wiki	de	Wiki Menü
 wiki startpage	wiki	de	Wiki Startseite
 writable by	wiki	de	Schreibbar von
 yes always	admin	de	Ja immer
+yes with navbar	admin	de	Ja mit Navigation
 you have been denied access to this site.	wiki	de	Ihr Zugriff auf diese Seite wurde gesperrt.
 you have entered an invalid user name.	wiki	de	Sie haben einen ungültigen Benutzernamen eingegeben.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	de	Sie haben die maximale Anzahl Seiten überschritten, die Sie in einer vorgegebenen Zeitspannebesuchen dürfen. Bitte kommen Sie später wieder.
