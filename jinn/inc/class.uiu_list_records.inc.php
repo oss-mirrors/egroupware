@@ -191,7 +191,7 @@
 
 		 if($current_page>1)
 		 {
-			$pager='<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($current_page-1)).'" title="'.lang('One page backwards').'">&lt&lt;</a>&nbsp;';
+			$pager='<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.($current_page-1)).'" title="'.lang('One page backwards').'">&lt&lt;</a>&nbsp;';
 		 }
 
 		 if($total_pages > 10)
@@ -207,18 +207,18 @@
 				  }
 				  else
 				  {
-					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
+					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
 				  }
 			   }
 
-			   $pager.= '...&nbsp;<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($total_pages)).'" title="'.lang('Page %1',$total_pages).'">'.$total_pages.'</a>&nbsp;';	
+			   $pager.= '...&nbsp;<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.($total_pages)).'" title="'.lang('Page %1',$total_pages).'">'.$total_pages.'</a>&nbsp;';	
 
 			   //einde start
 			}
 			elseif($current_page <= ($total_pages-6))
 			{
 			   //midden
-			   $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.'1').'" title="'.lang('Page %1','1').'">'.'1'.'</a>&nbsp;...&nbsp;';	
+			   $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.'1').'" title="'.lang('Page %1','1').'">'.'1'.'</a>&nbsp;...&nbsp;';	
 
 			   for($i=($current_page-4); $i<=($current_page+4);$i++)
 			   {
@@ -228,11 +228,11 @@
 				  }
 				  else
 				  {
-					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
+					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
 				  }
 			   }
 
-			   $pager.= '...&nbsp;<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($total_pages)).'" title="'.lang('Page %1',$total_pages).'">'.$total_pages.'</a>&nbsp;';	
+			   $pager.= '...&nbsp;<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.($total_pages)).'" title="'.lang('Page %1',$total_pages).'">'.$total_pages.'</a>&nbsp;';	
 
 			}
 			else
@@ -248,7 +248,7 @@
 				  }
 				  else
 				  {
-					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
+					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
 				  }
 			   }
 			}
@@ -263,7 +263,7 @@
 			   }
 			   else
 			   {
-				  $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
+				  $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
 			   }
 			}
 
@@ -271,7 +271,7 @@
 
 		 if($total_pages>1 && $current_page!=$total_pages)
 		 {
-			$pager.='<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($current_page+1)).'" title="'.lang('One page forward').'">&gt;&gt;</a>';
+			$pager.='<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display&current_page='.($current_page+1)).'" title="'.lang('One page forward').'">&gt;&gt;</a>';
 		 }
 
 		 //extra info for other funcs
@@ -620,7 +620,7 @@
 //		 $lang_rec_per_page= lang('%1 records per page', $rec_per_page);
 
 		 $this->tplsav2->set_var('list_form_action',$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.multiple_actions'));
-		 $this->tplsav2->set_var('menu_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
+		 $this->tplsav2->set_var('menu_action',$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_list_records.display'));
 		 $this->tplsav2->set_var('search_string',$quick_filter);
 
 		 if(trim($quick_filter))

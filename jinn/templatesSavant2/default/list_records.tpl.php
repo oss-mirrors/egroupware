@@ -50,9 +50,10 @@
    <tr>
 	  <td align="" style="padding-left:0px;">
 		 <?php if($this->enable_simple_search):?>
-		 <form action="<?=$this->menu_action ?>" method="post"><?=lang('search for string') ?>&nbsp;<input style="<?=$this->quick_filter_bgcolor ?>" type="text" size="20" name="quick_filter" value="<?=$this->search_string ?>">
+		 <form name="simpleform" action="<?=$this->menu_action ?>" method="post"><?=lang('search for string') ?>&nbsp;<input id="quick_filter_input" style="<?=$this->quick_filter_bgcolor ?>" type="text" size="20" name="quick_filter" value="<?=$this->search_string ?>">
 			<input type="hidden" name="quick_filter_hidden" value="1">
-			<input type='submit'  value='<?=lang('Search'); ?>' class="egwbutton">&nbsp;&nbsp;&nbsp;
+			<input type='submit'value='<?=lang('Search'); ?>' class="egwbutton">&nbsp;
+			<input type='submit'  <?=($this->search_string?'':'disabled="disabled"')?>  onclick="document.getElementById('quick_filter_input').value='';" value='<?=lang('Remove Search Filter'); ?>' class="egwbutton">&nbsp;&nbsp;&nbsp;
 		 </form>	
 		 <?php endif?>
 	  </td>
@@ -104,15 +105,17 @@
 					 <?=lang('Records per page');?>
 					 <?php
 						$recperpagechecked[$this->rec_per_page]='selected="selected"';
-//						_debug_array($recperpagechecked);
 					 ?>
-					 <select id="recperpage" name="recperpage" onchange="location.href=location.href+'&recperpage='+document.getElementById('recperpage').value">
+					 <select id="recperpage" name="recperpage" onchange="location.href='<?=$this->menu_action?>&recperpage='+document.getElementById('recperpage').value">
 						<option <?=$recperpagechecked[10] ?>>10</option>
 						<option <?=$recperpagechecked[25] ?>>25</option>
 						<option <?=$recperpagechecked[50] ?>>50</option>
 						<option <?=$recperpagechecked[100] ?>>100</option>
 					 </select>&nbsp;&nbsp;&nbsp;
+
+					 <?php if(!$this->japie):?>
 					 <a href="<?=$this->config_columns_link?>" title="<?=lang('Show/Hide Columns')?>">&gt;&gt;</a>
+					 <?php endif?>
 					 
 				  </td>
 			   </tr>
