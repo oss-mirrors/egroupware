@@ -399,13 +399,13 @@
 			   <input name="testdbvals" type="hidden">
 			   <input class="egwbutton" onclick="testdbfield()" value="<?=lang('test database and paths')?>" type="button">
 			</div>
+			<?php if($this->site_values['site_id']):?>
 			<div style="float:left;width:auto;">
-			   <?=//$this->onclick_import_into?>
-			   <input class="egwbutton" onclick="location='<?=$this->onclick_import_into?>'" value="<?=lang('Import From Site File')?>" type="button" />
-			   <input class="egwbutton" onclick="location='<?=$this->onclick_export?>'" value="<?=lang('Export this Site')?>" type="button" />
 			   <input class="egwbutton" onclick="location='<?=$this->onclick_export_to_xml?>'" value="<?= lang('Save Site to XML')?>" type="button" />
 			   <input class="egwbutton" onclick="location='<?=$this->onclick_export_xml_to_egw_app?>'" value="<?= lang('Save XML to eGroupWare App')?>" type="button" />
+			   <input class="egwbutton" onclick="location='<?=$this->onclick_export?>'" value="<?=lang('Safe Site to old JiNN File type')?>" type="button" />
 			</div>
+			<?php endif?>
 
 			<div style="float:right;width:auto;"><input type="button" name="reopen" class="egwbutton" value="<?=lang('help')?>" onClick="openhelp();" /></div>
 			<div style="clear:both;height:10px;"></div>
@@ -413,9 +413,11 @@
 
 
 		 <?php if($this->site_values['site_id']):?>
+		 <h1><?=lang('Objects in this site')?></h1>
 		 <input type="button" value="<?=lang('New Object')?>" class="egwbutton" onclick="parent.window.open('<?=$this->link_add_object?>' , 'genobjoptions', 'width=780,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')" />
 
-		 <input type="button" value="<?=lang('Import Object from File')?>" class="egwbutton" onclick="location='<?=$this->link_import_object?>'" />
+		 <input type="button" value="<?=lang('Import Object from Object-File')?>" class="egwbutton" onclick="location='<?=$this->link_import_object?>'" />
+		 <input class="egwbutton" onclick="location='<?=$this->onclick_import_into?>'" value="<?=lang('Import Objects From Site-File')?>" type="button" />
 
 		 <table border="0" cellspacing="1" cellpadding="0" style="background-color:#ffffff;border:solid 1px #cccccc;margin:3px 0px 3px 0px;">
 			<tr>
