@@ -108,19 +108,6 @@
 			'link' => False,
 		 );
 
-		 /*if($this->bo->session['site_id'])
-		 {
-			$file3 = Array(
-			   'Site Main' => array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.list_all_objects'),
-				  'icon'=>'mini_navbar',
-				  'no_lang' => True,
-				  'text'=>lang('Site Main')
-			   ),
-			);
-		 }
-		 */
-
 		 display_sidebox($appname,$menu_title,$file);
 
 		 $file=array();
@@ -235,18 +222,6 @@
 			   'no_lang' => True,
 			   'icon'=>'groupevent'
 			);
-			$file['Add Site'] = array(
-			   'link' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_site'),
-			   'text'=>lang('Add Site'),
-			   'no_lang' => True,
-			   'icon'=>'new'
-			);
-			$file['Browse through sites'] = array(
-			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites'),
-			   'text'=>lang('Browse through sites'),
-			   'no_lang' => True,
-			   'icon'=>'browse'
-			);
 			$file['Load site conf from file'] = array(
 			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'),
 			   'text'=>lang('Load site conf from file'),
@@ -256,22 +231,29 @@
 
 			if ($this->bo->session['site_id'])
 			{
-			   $file['Save site conf to file'] = array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value='.$this->bo->site[site_id]),
-				  'text'=>lang('Save site conf to file'),
+			   $file['Save site conf to XML'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$this->bo->site[site_id]),
+				  'text'=>lang('Save site conf to XML'),
 				  'no_lang' => True,
 				  'icon'=>'filesave'
 			   );
 			}
 
+			$file['Add Site'] = array(
+			   'link' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_site'),
+			   'text'=>lang('Add Site'),
+			   'no_lang' => True,
+			   'icon'=>'new'
+			);
+			$file['List all JiNN Sites'] = array(
+			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites'),
+			   'text'=>lang('List all JiNN Sites'),
+			   'no_lang' => True,
+			   'icon'=>'browse'
+			);
+
 			if ($this->bo->session['site_id'])
 			{
-			   /* $file['_NewLine_']=array(
-				  'text'=>'',
-				  'no_lang' => True,
-				  'link'=>false
-			   );
-			   */
 			   $file['Edit this Site'] = array(
 				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
 				  'text'=>lang('Edit this Site'),
@@ -282,18 +264,19 @@
 
 			if ($this->bo->session['site_object_id'])
 			{
-			   if($_GET['menuaction']=='jinn.uiu_list_records.display') 
-			   {
-				  $devlink = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display_dev&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']);
-			   }
-			   else
-			   {
-				  $devlink = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.dev_edit_record&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']);
-			   }
+			   $devlinklist = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display_dev&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']);
+			   $devlinkform = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.dev_edit_record&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']);
 
-			   $file['Edit this Site Object'] = array(
-				  'link'=>$devlink,
-				  'text'=>lang('Edit this Site Object'),
+			   $file['Edit Object Form View'] = array(
+				  'link'=>$devlinkform,
+				  'text'=>lang('Edit Object Form View'),
+				  'no_lang' => True,
+				  'icon'=>'edit'
+
+			   );
+			   $file['Edit Object List View'] = array(
+				  'link'=>$devlinklist,
+				  'text'=>lang('Edit Object List View'),
 				  'no_lang' => True,
 				  'icon'=>'edit'
 
