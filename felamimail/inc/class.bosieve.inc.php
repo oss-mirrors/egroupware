@@ -40,7 +40,7 @@
 			if(is_a($_icServer,'defaultimap') && $_icServer->enableSieve) {
 				$sieveHost		= $_icServer->host;
 				$sievePort		= $_icServer->sievePort;
-				$username		= $_icServer->username;
+				$username		= $_icServer->loginName;
 				$password		= $_icServer->password;
 				
 				$this->icServer = $_icServer;
