@@ -123,7 +123,8 @@
 </div>
 
 <fieldset class="bordertop"><legend>{lang_signature}</legend>
-		<TEXTAREA class="input_text" NAME=signature ROWS="5" COLS="76" WRAP=HARD>{signature}</TEXTAREA>
+	{select_signature}
+<!--		<TEXTAREA class="input_text" NAME=signature ROWS="5" COLS="76" WRAP=HARD>{signature}</TEXTAREA> -->
 </fieldset>
 <!-- END body_input -->
 

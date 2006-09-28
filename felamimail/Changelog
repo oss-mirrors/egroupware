@@ -1,3 +1,7 @@
+20060928
+- finished signature handling rewrite mostly. You can now define multiple signatures
+  and select them while writing a email.
+
 20060914
 - removed (temporarly) the dbcache. FeLaMiMail now works completly against the imapserver.
   This requires a server with search and sort functionality. Big folders

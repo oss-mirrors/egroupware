@@ -85,6 +85,18 @@
 			'fk' => array(),
 			'ix' => array('fm_owner'),
 			'uc' => array()
+		),
+		'egw_felamimail_signatures' => array(
+			'fd' => array(
+				'fm_signatureid' => array('type' => 'auto'),
+				'fm_accountid' => array('type' => 'int','precision' => '11'),
+				'fm_signature' => array('type' => 'text'),
+				'fm_description' => array('type' => 'varchar','precision' => '255')
+			),
+			'pk' => array('fm_signatureid'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array(array('fm_signatureid','fm_accountid'))
 		)
 	);
 ?>

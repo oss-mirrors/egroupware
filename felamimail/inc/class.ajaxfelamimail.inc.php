@@ -189,6 +189,18 @@
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 		
+		function deleteSignatures($_signatures) {
+				$boPreferences = CreateObject('felamimail.bopreferences');
+				
+				$boPreferences->deleteSignatures($_signatures);
+				
+				$signatures = $boPreferences->getListOfSignatures();
+
+				$response =& new xajaxResponse();
+				$response->addAssign('signatureTable', 'innerHTML', $this->uiwidgets->createSignatureTable($signatures));
+				return $response->getXML();
+		}
+		
 		function emptyTrash() {
 			if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'])) {
 				$this->bofelamimail->compressFolder($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']);
@@ -219,7 +231,6 @@
 		}
 		
 		function generateMessageList($_folderName) {
-			error_log('generateMessageList for folder '.$_folderName);
 			$listMode = 0;
 		
 			$this->bofelamimail->restoreSessionData();
@@ -423,6 +434,16 @@
 			
 		}
 		
+		function refreshSignatureTable() {
+				$boPreferences = CreateObject('felamimail.bopreferences');
+				
+				$signatures = $boPreferences->getListOfSignatures();
+
+				$response =& new xajaxResponse();
+				$response->addAssign('signatureTable', 'innerHTML', $this->uiwidgets->createSignatureTable($signatures));
+				return $response->getXML();
+		}
+		
 		function reloadAttachments($_composeID) {
 			$bocompose	=& CreateObject('felamimail.bocompose', $_composeID);
 			$tableRows	=  array();
@@ -478,6 +499,24 @@
 		function saveSessionData() {
 			$GLOBALS['egw']->session->appsession('ajax_session_data','',$this->sessionDataAjax);
 			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
+		}
+		
+		function saveSignature($_mode, $_id, $_description, $_signature) {
+				$boPreferences = CreateObject('felamimail.bopreferences');
+				
+				$signatureID = $boPreferences->saveSignature($_id, $_description, $_signature);
+
+				$response =& new xajaxResponse();
+
+				if($_mode == 'save') {
+					#$response->addAssign('signatureID', 'value', $signatureID);
+					#$response->addScript('window.close()');
+				} else {
+					$response->addScript("opener.fm_refreshSignatureTable()");
+					$response->addAssign('signatureID', 'value', $signatureID);
+				}
+				
+				return $response->getXML();
 		}
 		
 		function searchAddress($_searchString) {

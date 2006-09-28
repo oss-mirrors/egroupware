@@ -15,6 +15,7 @@
 	class sopreferences
 	{
 		var $accounts_table = 'egw_felamimail_accounts';
+		var $signatures_table = 'egw_felamimail_signatures';
 		/**
 		 * Instance of the db-class
 		 *
@@ -47,6 +48,66 @@
 			return $retValue;
 		}
 
+		function getListOfSignatures($_accountID)
+		{
+			// no valid accountID
+			if(($accountID = (int)$_accountID) < 1)
+				return false;
+				
+			$retValue	= array();
+			
+			$where		= array('fm_accountid' => $accountID);
+			
+			$this->db->select($this->signatures_table,'fm_signatureid,fm_description',
+				$where, __LINE__, __FILE__);
+				
+			while(($row = $this->db->row(true,'fm_'))) {
+				$retValue[$row['signatureid']] = $row;
+			}
+			
+			return $retValue;
+		}
+
+		function getSignature($_accountID, $_signatureID) {
+			// no valid accountID
+			if(($accountID = (int)$_accountID) < 1)
+				return false;
+				
+			$retValue	= array();
+			
+			$where		= array(
+				'fm_accountid'		=> $accountID,
+				'fm_signatureid'	=> $_signatureID
+			);
+			
+			$this->db->select($this->signatures_table,'fm_signatureid,fm_description,fm_signature',
+				$where, __LINE__, __FILE__);
+				
+			if(($row = $this->db->row(true,'fm_'))) {
+				return $row;
+			}
+
+			return $retValue;
+		}
+
+		function deleteSignatures($_accountID, $_signatureIDs) {
+			// no valid accountID
+			if(($accountID = (int)$_accountID) < 1)
+				return false;
+				
+			foreach($_signatureIDs as $signatureID) {
+			
+				$where		= array(
+					'fm_accountid'		=> $accountID,
+					'fm_signatureid'	=> $signatureID
+				);
+			
+				$this->db->delete($this->signatures_table, $where, __LINE__, __FILE__);
+				}
+
+			return true;
+		}
+
 		function saveAccountData($_accountID, $_icServer, $_ogServer, $_identity)
 		{
 			$this->db->insert($this->accounts_table,array(
@@ -68,6 +129,29 @@
 			),array(
 				'fm_owner'			=> $_accountID,
 			),__LINE__,__FILE__);	
+		}
+		
+		function saveSignature($_accountID, $_signatureID, $_description, $_signature) {
+			$data = array(
+				'fm_accountid'			=> $_accountID,
+				'fm_signature'			=> $_signature,
+				'fm_description'		=> $_description,
+			);
+			
+			if($_signatureID == -1) {
+				$this->db->insert($this->signatures_table, $data, '', __LINE__, __FILE__);
+				
+				return $this->db->get_last_insert_id($this->signatures_table,'fm_signatureid');
+			} else {
+				$where = array(
+					'fm_accountid'			=> $_accountID,
+					'fm_signatureid'			=> $_signatureID,
+				);
+
+				$this->db->update($this->signatures_table, $data, $where, __LINE__, __FILE__);
+				
+				return $_signatureID;
+			}
 		}
 
 		function setProfileActive($_accountID, $_status)

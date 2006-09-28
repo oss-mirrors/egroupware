@@ -95,6 +95,10 @@
 			return array('icServer' => $icServer, 'ogServer' => $ogServer, 'identity' => $identity, 'active' => $isActive);
 		}
 		
+		function getListOfSignatures() {
+			return parent::getListOfSignatures($GLOBALS['egw_info']['user']['account_id']);
+		}
+		
 		function getPreferences()
 		{
 			if(!is_a($this->profileData,'ea_preferences ')) {
@@ -152,13 +156,26 @@
 			return $this->profileData;
 		}
 		
-		function saveAccountData($_icServer, $_ogServer, $_identity)
-		{
+		function getSignature($_signatureID) {
+			return parent::getSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID);
+		}
+		
+		function deleteSignatures($_signatureID) {
+			if(!is_array($_signatureID)) {
+				return false;
+			}
+			return parent::deleteSignatures($GLOBALS['egw_info']['user']['account_id'], $_signatureID);
+		}
+		
+		function saveAccountData($_icServer, $_ogServer, $_identity) {
 			parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
 		}
+		
+		function saveSignature($_signatureID, $_description, $_signature) {
+			return parent::saveSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID, $_description, $_signature);
+		}
 
-		function setProfileActive($_status)
-		{
+		function setProfileActive($_status) {
 			parent::setProfileActive($GLOBALS['egw_info']['user']['account_id'], $_status);
 		}
 	}

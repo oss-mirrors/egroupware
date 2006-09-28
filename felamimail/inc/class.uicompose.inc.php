@@ -85,7 +85,7 @@
 			$formData['subject'] 	= $this->bocompose->stripSlashes($_POST['subject']);
 			$formData['body'] 	= $this->bocompose->stripSlashes($_POST['body']);
 			$formData['priority'] 	= $this->bocompose->stripSlashes($_POST['priority']);
-			$formData['signature'] 	= $this->bocompose->stripSlashes($_POST['signature']);
+			$formData['signatureID'] = (int)$_POST['signatureID'];
 			$formData['mimeType']	= $this->bocompose->stripSlashes($_POST['mimeType']);
 			$formData['disposition'] = (bool)$_POST['disposition'];
 			$formData['to_infolog'] = $_POST['to_infolog'];
@@ -236,7 +236,15 @@
 				$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'ascii', $sessionData['body'], $style));
 				$this->t->set_var('mimeType', 'text');
 			}
-			$this->t->set_var("signature",$sessionData['signature']);
+			
+			$signatures = ExecMethod('felamimail.bopreferences.getListOfSignatures');
+
+			$selectSignatures = array();
+			foreach($signatures as $signature) {
+				$selectSignatures[$signature['signatureid']] = $signature['description'];
+			}
+			$selectBox = $GLOBALS['egw']->html->select('signatureID', $sessionData['signatureID'], $selectSignatures, true, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+			$this->t->set_var("select_signature", $selectBox);
 			$this->t->pparse("out","body_input");
 
 			// attachments

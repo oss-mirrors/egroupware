@@ -56,6 +56,10 @@
 			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 			$this->charset = $GLOBALS['egw']->translation->charset();
+			
+			if (!is_object($GLOBALS['egw']->html)) {
+				$GLOBALS['egw']->html = CreateObject('phpgwapi.html');
+			}
 		}
 
 		/**
@@ -159,6 +163,22 @@
 			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$selected');</script>";
 			
 			return $folder_tree_new;
+		}
+		
+		function createSignatureTable($_signatureList) {
+			if(is_array($_signatureList)) {
+				foreach($_signatureList as $signature) {
+					$tableRows[] = array(
+						'1'	=> $GLOBALS['egw']->html->checkbox('signatureID', false, $signature['signatureid']),
+						'.1'	=> 'style="width:30px"',
+						'2'	=> '<a href="" onclick="egw_openWindowCentered(\''. $urlEditSignature ."&signatureID=".$signature['signatureid']. '\',\'felamiMailACL\',\'600\',\'230\'); return false;">'. @htmlspecialchars($signature['description'], ENT_QUOTES, $this->charset) .'</a>',
+					);
+				}
+				
+				return $GLOBALS['egw']->html->table($tableRows, 'style="width:100%;"');
+			}
+			
+			return '';
 		}
 
 		// $_folderType 0: normal imap folder 1: sent folder 2: draft folder

@@ -395,7 +395,7 @@
 			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, egw_getWindowOuterHeight());";
 
 			$navbarImages = array(
-				'mail_new'	=> array(
+				'new'			=> array(
 					'action'	=> $urlCompose,
 					'tooltip'	=> lang('compose'),
 				),

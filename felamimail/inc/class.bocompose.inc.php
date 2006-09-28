@@ -451,7 +451,7 @@
 			$GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID,'',$this->sessionData);
 		}
 
-		function createMessage(&$_mailObject, $_formData, $_identity) {
+		function createMessage(&$_mailObject, $_formData, $_identity, $_signature = false) {
 			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 
 			$userLang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
@@ -518,9 +518,16 @@
 				$_mailObject->IsHTML(true);
 				$_mailObject->Body    = $_formData['body'];
 				$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']);
+				if(!empty($_signature['signature'])) {
+					$_mailObject->AddStringPart($_signature['signature'], lang('signature'), 'quoted-printable', 'text/html');
+					$_mailObject->AltBody .= "\r\n--\r\n". $this->convertHTMLToText($_signature['signature']);
+				}
 			} else {
 				$_mailObject->IsHTML(false);
 				$_mailObject->Body = $this->convertHTMLToText($_formData['body']);
+				if(!empty($_signature['signature'])) {
+					$_mailObject->Body .= "\r\n--\r\n". $this->convertHTMLToText($_signature['signature']);
+				}
 			}
 			if (!empty($_formData['signature'])) {
 				$_mailObject->Body	.= "\r\n-- \r\n";
@@ -594,15 +601,20 @@
 			$this->sessionData['subject']	= trim($_formData['subject']);
 			$this->sessionData['body']	= $_formData['body'];
 			$this->sessionData['priority']	= $_formData['priority'];
-			$this->sessionData['signature']	= $_formData['signature'];
+			$this->sessionData['signatureID'] = $_formData['signatureID'];
 			$this->sessionData['disposition'] = $_formData['disposition'];
 			$this->sessionData['mimeType']	= $_formData['mimeType'];
 			$this->sessionData['to_infolog'] = $_formData['to_infolog'];
 
 			$identity = $this->preferences->getIdentity((int)$this->sessionData['identity']);
+			$signature = $this->bopreferences->getSignature((int)$this->sessionData['signatureID']);
 			
 			// create the messages
-			$this->createMessage($mail, $_formData, $identity);
+			$this->createMessage($mail, $_formData, $identity, $signature);
+			#print "<pre>". $mail->getMessageHeader() ."</pre><hr><br>";
+			#print "<pre>". $mail->getMessageBody() ."</pre><hr><br>";
+			#exit;
+			                                                                
 
 			$ogServer = $this->preferences->getOutgoingServer(0);
 
@@ -615,7 +627,7 @@
 				$mail->Username	= $ogServer->username;
 				$mail->Password	= $ogServer->password;
 			}
-			
+
 			// set a higher timeout for big messages
 			@set_time_limit(120);
 			#$mail->SMTPDebug = 10;

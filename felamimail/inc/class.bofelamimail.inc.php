@@ -179,10 +179,10 @@
 		function appendMessage($_folderName, $_header, $_body, $_flags)
 		{
 			$imapServer =& $this->mailPreferences->getIncomingServer(0);
-			#print "<pre>$_header.$_body</pre>";
 			$mailboxString = $imapServer->getMailboxString($_folderName);
 			$header = str_replace("\n","\r\n",$_header);
 			$body   = str_replace("\n","\r\n",$_body);
+			#print "<pre>". htmlentities($header.$body) ."</pre>";
 			$result = @imap_append($this->mbox, $mailboxString, "$header"."$body", $_flags);
 			#print imap_last_error();exit;
 			return $result;

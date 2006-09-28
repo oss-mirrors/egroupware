@@ -354,4 +354,24 @@
 
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.002';
 	}
+
+
+	$test[] = '1.3.002';
+	function felamimail_upgrade1_3_002()
+	{
+		$GLOBALS['egw_setup']->oProc->CreateTable('egw_felamimail_signatures',array(
+			'fd' => array(
+				'fm_signatureid' => array('type' => 'auto'),
+				'fm_accountid' => array('type' => 'int','precision' => '11'),
+				'fm_signature' => array('type' => 'text'),
+				'fm_description' => array('type' => 'varchar','precision' => '255')
+			),
+			'pk' => array('fm_signatureid'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array(array('fm_signatureid','fm_accountid'))
+		));
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.003';
+	}
 ?>

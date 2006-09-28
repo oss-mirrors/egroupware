@@ -32,8 +32,10 @@
 		function uipreferences()
 		{
 			$this->t = $GLOBALS['egw']->template;
-			#$this->t->egroupware_hack = False;
+			$this->charset = $GLOBALS['egw']->translation->charset();
+
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
 			$this->bofelamimail->openConnection('',OP_HALFOPEN);
 			
@@ -66,9 +68,18 @@
 			
 			switch($_GET['menuaction'])
 			{
+				case 'felamimail.uipreferences.editSignature':
+					$GLOBALS['egw']->js->validate_file('jscode','listSignatures','felamimail');
+					#$GLOBALS['egw']->js->set_onload('fm_initEditLayout();');
+					break;
 				case 'felamimail.uipreferences.editAccountData':
 					$GLOBALS['egw']->js->validate_file('jscode','editAccountData','felamimail');
 					$GLOBALS['egw']->js->set_onload('javascript:initEditAccountData();');
+					break;
+
+				case 'felamimail.uipreferences.listSignatures':
+					$GLOBALS['egw']->js->validate_file('jscode','listSignatures','felamimail');
+					#$GLOBALS['egw']->js->set_onload('javascript:initEditAccountData();');
 					break;
 
 				case 'felamimail.uipreferences.listFolder':
@@ -134,6 +145,10 @@
 		
 		function editSignature() {
 			$signatureID = (int)$_GET['signatureID'];
+			
+			if($signatureID >= 0) {
+				$signatureData = $this->bopreferences->getSignature($signatureID);
+			}
 
 			$this->display_app_header(false);
 			
@@ -144,12 +159,20 @@
 
 			$linkData = array
 			(
-				'menuaction'    => 'felamimail.uipreferences.editAccountData'
+				'menuaction'    => 'felamimail.uipreferences.editSignature'
 			);
 			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
 
+			$this->t->set_var('description', ($signatureID >= 0 ? @htmlspecialchars($signatureData['description'], ENT_QUOTES, $this->charset) : ''));
+			
+			$this->t->set_var('signatureID', $signatureID);
+
 			$style="width:100%; border:0px; height:150px;";
-			$this->t->set_var('tinymce',$GLOBALS['egw']->html->tinymceQuick('body', 'simple', $sessionData['body'], $style));
+			$this->t->set_var('tinymce',$GLOBALS['egw']->html->tinymceQuick(
+				'signature', 'simple', 
+				($signatureID >= 0 ? $signatureData['signature'] : ''), 
+				$style)
+			);
 
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -450,16 +473,6 @@
 		
 		function listSignatures()
 		{
-			// create a new Mailbox
-			if(isset($_POST['newSubFolder']))
-			{
-				$oldMailboxName = $this->bofelamimail->sessionData['preferences']['mailbox'].'.';
-				$oldMailboxName	= ($oldMailboxName == '--topfolderselected--.') ? '' : $oldMailboxName;
-				$newMailboxName = $oldMailboxName.$_POST['newSubFolder'];
-
-				$this->bofelamimail->imap_createmailbox($newMailboxName,True);
-			}
-			
 			$this->display_app_header(TRUE);
 
 			$this->t->set_file(array("body" => "preferences_list_signatures.tpl"));
@@ -473,23 +486,27 @@
 			(
 				'menuaction'    => 'felamimail.uipreferences.listFolder'
 			);
-			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
+			$this->t->set_var('form_action', $GLOBALS['egw']->link('/index.php',$linkData));
 
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.editSignature',
+				'signatureID'	=> '-1'
+			);
+			$this->t->set_var('url_addSignature', $GLOBALS['egw']->link('/index.php',$linkData));
+			
 			$linkData = array
 			(
 				'menuaction'    => 'felamimail.uipreferences.editSignature'
 			);
 			$urlEditSignature = $GLOBALS['egw']->link('/index.php',$linkData);
 			
-			$tableRows = array(
-				'1' => array(
-					'1'	=> $GLOBALS['egw']->html->checkbox('name', false),
-					'.1'	=> 'style="width:30px"',
-					'2'	=> '<a href="#" onclick="egw_openWindowCentered(\''. $urlEditSignature .'\',\'felamiMailACL\',\'600\',\'200\');">Beschreibung</a>',
-				),
-			);
+			$this->t->set_var('url_image_add',$GLOBALS['egw']->common->image('phpgwapi','new'));
+			$this->t->set_var('url_image_delete',$GLOBALS['egw']->common->image('phpgwapi','delete'));
 			
-			$this->t->set_var('table', $GLOBALS['egw']->html->table($tableRows, 'style="width:100%; border: 1px solid black;"'));
+			$signatures = $this->bopreferences->getListOfSignatures();
+			
+			$this->t->set_var('table', $this->uiwidgets->createSignatureTable($signatures));
 			
 			$this->t->pparse("out","main");			
 			$this->bofelamimail->closeConnection();
@@ -549,6 +566,8 @@
 			$this->t->set_var("lang_outgoing_server",lang('outgoing mail server(SMTP)'));
 			$this->t->set_var("auth_required",lang('authentication required'));
 			$this->t->set_var('lang_add_acl',lang('add acl'));
+			$this->t->set_var('lang_description',lang('description'));
+			$this->t->set_var('lang_really_delete_signatures',lang('Do you really want to delete the selected signatures?'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);

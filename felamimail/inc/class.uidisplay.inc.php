@@ -997,11 +997,17 @@
 				)
 			);
 
+			$body = '';
+
 			for($i=0; $i<count($bodyParts); $i++)
 			{
-				$bodyParts[$i]['body']= 
-					$this->botranslation->convert($bodyParts[$i]['body'],
-											strtolower($bodyParts[$i]['charSet']));
+				if(!empty($body)) {
+					$body .= '<hr style="border:dotted 1px silver;">';
+				}
+				$bodyParts[$i]['body'] = $this->botranslation->convert(
+					$bodyParts[$i]['body'],
+					strtolower($bodyParts[$i]['charSet'])
+				);
 
 				if($bodyParts[$i]['mimeType'] == 'text/plain')
 				{
