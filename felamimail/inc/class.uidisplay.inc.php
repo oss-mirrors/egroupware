@@ -44,13 +44,19 @@
 		
 		// the object storing the data about the incoming imap server
 		var $icServer=0;
+		
+		// the non permanent id of the message
+		var $id;
+		
+		// the permanent id of the message
+		var $uid;
 
 		function uidisplay()
 		{
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
-			$this->bofilter 	=& CreateObject('felamimail.bofilter');
+			#$this->bofilter 	=& CreateObject('felamimail.bofilter');
 			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 			$this->kses		=& CreateObject('phpgwapi.kses');
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
@@ -61,32 +67,40 @@
 			
 			$this->mailbox		= $this->bofelamimail->sessionData['mailbox'];
 			$this->sort		= $this->bofelamimail->sessionData['sort'];
-			$this->activeFilter	= $activeFilter = (isset($this->bofelamimail->sessionData['activeFilter'])?$this->bofelamimail->sessionData['activeFilter']:-1);
+			#$this->activeFilter	= $activeFilter = (isset($this->bofelamimail->sessionData['activeFilter'])?$this->bofelamimail->sessionData['activeFilter']:-1);
 			
-			$this->uid		= $_GET['uid'];
+			if(isset($_GET['uid'])) {
+				$this->uid	= (int)$_GET['uid'];
+			}
 			
-			if(isset($_GET['part']) &&
-				is_numeric($_GET['part']))
-			{
-				$this->partID = $_GET['part'];
-			} else {
-				$this->partID = 0;
+			if(isset($_GET['id'])) {
+				$this->id	= (int)$_GET['id'];
+			}
+			
+			if(isset($this->id) && !isset($this->uid)) {
+				if($uid = $this->bofelamimail->idToUid($this->mailbox, $this->id)) {
+					$this->uid = $uid;
+				}
+			}
+			
+			if(isset($_GET['part'])) {
+				$this->partID = (int)$_GET['part'];
 			}
 
-			$icServer = $this->mailPreferences->getIncomingServer(0);
+			#$icServer = $this->mailPreferences->getIncomingServer(0);
 
-			$this->bocaching	=& CreateObject('felamimail.bocaching',
-							$icServer->host,
-							$icServer->username,
-							$this->mailbox);
+			#$this->bocaching	=& CreateObject('felamimail.bocaching',
+			#				$icServer->host,
+			#				$icServer->username,
+			#				$this->mailbox);
 
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 
-			if($_GET['showHeader'] == "false") {
-				$this->bofelamimail->sessionData['showHeader'] = 'False';
-				$this->bofelamimail->saveSessionData();
-			}
+			#if($_GET['showHeader'] == "false") {
+			#	$this->bofelamimail->sessionData['showHeader'] = 'False';
+			#	$this->bofelamimail->saveSessionData();
+			#}
 			
 		}
 		
@@ -138,13 +152,17 @@
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
+#			print "$this->mailbox, $this->uid, $partID<br>";
 			$headers	= $this->bofelamimail->getMessageHeader($this->mailbox, $this->uid, $partID);
+#			_debug_array($headers);exit;
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid,$partID);
-			$filterList 	= $this->bofilter->getFilterList();
-			$filter 	= $filterList[$this->activeFilter];
-			$nextMessage	= $this->bocaching->getNextMessage($this->uid, $this->sort, $filter);
+#			$filterList 	= $this->bofilter->getFilterList();
+#			$filter 	= $filterList[$this->activeFilter];
+#			$nextMessage	= $this->bocaching->getNextMessage($this->uid, $this->sort, $filter);
+			$nextMessage	= $this->bofelamimail->getNextMessage($this->mailbox, $this->id);
+#			_debug_array($nextMessage); exit;
 
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
 
@@ -358,7 +376,7 @@
 					(
 						'menuaction'	=> 'felamimail.uidisplay.display',
 						'showHeader'	=> 'false',
-						'uid'		=> $nextMessage['previous']
+						'id'		=> $nextMessage['previous']
 					);
 					$previousURL = $GLOBALS['egw']->link('/index.php',$linkData);
 					$previousURL = "window.location.href = '$previousURL'";
@@ -374,7 +392,7 @@
 					(
 						'menuaction'	=> 'felamimail.uidisplay.display',
 						'showHeader'	=> 'false',
-						'uid'		=> $nextMessage['next']
+						'id'		=> $nextMessage['next']
 					);
 					$nextURL = $GLOBALS['egw']->link('/index.php',$linkData);
 					$nextURL = "window.location.href = '$nextURL'";
@@ -810,14 +828,13 @@
 		function displayBody()
 		{
 			$partID		= $_GET['part'];
+
 			$transformdate	=& CreateObject('felamimail.transformdate');
 			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
-			$filterList 	= $this->bofilter->getFilterList();
-			$filter 	= $filterList[$this->activeFilter];
 
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
 

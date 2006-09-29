@@ -436,3 +436,67 @@ DIV.divButton {
 	background-repeat:no-repeat;
 	background-position: center center;
 }
+
+#navbarDIV {
+	position:absolute;
+	top:0px;
+	height:30px;
+	left:0px;
+	right:0px;
+	border: solid white 1px;
+	border-right: solid black 1px;
+	border-bottom: solid black 1px;
+}
+
+#subjectDIV {
+	position:absolute; 
+	background-color:#ffffff; 
+	top:32px; 
+	height:20px; 
+	width:100%; 
+	font-weight:bold; 
+	text-align:left; 
+	line-height:20px;
+}
+
+#headerDIV {
+	position:absolute; 
+	background-color:#efefdf; 
+	top:52px; 
+	height:80px; 
+	left:0px; 
+	right:0px; 
+	border-top: 1px solid silver; 
+	border-bottom: 1px solid silver; 
+	overflow:hidden;
+}
+
+.bodyDIV {
+	position:absolute; 
+	background-color:white; 
+	top:134px; 
+	bottom:0px; 
+	width:100%; 
+	border-top: 1px solid #efefdf;
+}
+
+.bodyDIVAttachment {
+	bottom:80px; 
+}
+
+#messageIFRAME {
+	width:100%;
+	border:0px solid black; 
+	height:100%;
+}
+
+#attachmentDIV {
+	position:absolute; 
+	background-color:#efefdf; 
+	bottom:0px; 
+	height:80px; 
+	width:100%; 
+	border-top: 1px solid silver; 
+	overflow:auto;
+}
+

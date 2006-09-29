@@ -224,8 +224,7 @@
 		}
 		
 		function flagMessages($_flag, $_messageList) {
-			$this->bofelamimail->flagMessages($_flag, $_messageList['msg']);
-			$GLOBALS['egw']->session->commit_session();
+			$this->bofelamimail->flagMessages($_flag, $_messageList);
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}

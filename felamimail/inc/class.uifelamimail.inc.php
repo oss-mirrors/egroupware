@@ -400,19 +400,19 @@
 					'tooltip'	=> lang('compose'),
 				),
 				'read_small'		=> array(
-					'action'	=> "flagMessages('read',xajax.getFormValues('formMessageList'))",
+					'action'	=> "flagMessages('read')",
 					'tooltip'	=> lang('mark selected as read'),
 				),
 				'unread_small'		=> array(
-					'action'	=> "flagMessages('unread',xajax.getFormValues('formMessageList'))",
+					'action'	=> "flagMessages('unread')",
 					'tooltip'	=> lang('mark selected as unread'),
 				),
 				'unread_flagged_small'	=> array(
-					'action'	=> "flagMessages('flagged',xajax.getFormValues('formMessageList'))",
+					'action'	=> "flagMessages('flagged')",
 					'tooltip'	=> lang('mark selected as flagged'),
 				),
 				'read_flagged_small'	=> array(
-					'action'	=> "flagMessages('unflagged',xajax.getFormValues('formMessageList'))",
+					'action'	=> "flagMessages('unflagged')",
 					'tooltip'	=> lang('mark selected as unflagged'),
 				),
 				'delete'		=> array(

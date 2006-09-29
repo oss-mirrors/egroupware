@@ -53,7 +53,7 @@
 				exit();
 			}
 
-			if(PEAR::isError($error = $this->login($username, $password  , null , '', false ) ) ){
+			if(PEAR::isError($error = $this->login($username, $password) ) ){
 				echo "  there was an error trying to connect to the server. The error is: " . $error->getMessage()  . "<br>";
 				exit();
 			}

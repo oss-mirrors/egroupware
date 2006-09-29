@@ -143,13 +143,39 @@ function extendedSearch(_selectBox) {
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.extendedSearch',_selectBox.options[_selectBox.selectedIndex].value);
 }
 
-function flagMessages(_flag, _messageList)
+function flagMessages(_flag)
 {
+	var selectedMessages = new Array();
+	var selectedCheckBoxes = new Array();
+	
 	resetMessageSelect();
+	
+	//alert(_messageList);
+	for(i=0; i< document.forms.formMessageList.elements.length; i++) {
+		if(document.forms.formMessageList.elements[i].checked) {
+			selectedMessages.push(document.forms.formMessageList.elements[i].value);
+			selectedCheckBoxes.push(document.forms.formMessageList.elements[i]);
+		}
+	}
+//	alert(_flag);
+//	switch(_flag) {
+//		case 'read':
+//			for(i=0; i< selectedMessages.length; i++) {
+//				document.getElementById('row_' + selectedMessages[i]).style.fontWeight='normal';
+//				selectedCheckBoxes[i].checked = false;
+//			}
+//			break;
+//		case 'unread':
+//			for(i=0; i< selectedMessages.length; i++) {
+//				document.getElementById('row_' + selectedMessages[i]).style.fontWeight='bold';
+//				selectedCheckBoxes[i].checked = false;
+//			}
+//			break;
+//	}
 
 	setStatusMessage('<span style="font-weight: bold;">' + lang_updating_message_status + '</span>');
 	document.getElementById('divMessageList').innerHTML = '';
-	xajax_doXMLHTTP("felamimail.ajaxfelamimail.flagMessages",_flag,_messageList);
+	xajax_doXMLHTTP("felamimail.ajaxfelamimail.flagMessages", _flag, selectedMessages);
 	
 	fm_startTimerMessageListUpdate(refreshTimeOut);
 }

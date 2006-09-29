@@ -38,6 +38,10 @@
 
 		function uisieve()
 		{
+			if(empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'])) {
+				$GLOBALS['egw']->preferences->add('felamimail','sieveScriptName','felamimail', 'forced');
+				$GLOBALS['egw']->preferences->save_repository();
+			}
 			$this->scriptName = (!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'])) ? $GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'] : 'felamimail' ;
 
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
@@ -682,7 +686,7 @@
 			$this->t->set_var('url_back',$GLOBALS['egw']->link('/index.php',$linkData));
 
 			$this->t->pfp("out","header");
-			
+
 		#LK	$this->bosieve->disconnect();
 		}
 

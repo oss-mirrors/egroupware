@@ -43,7 +43,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 				{navbarButtonsLeft}
 			</div>
 		</td>
-		<td align="right" width="80px">
+		<td align="right" width="70px">
 			{select_search}
 		</td>
 		<td align="right">
@@ -114,7 +114,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 			<!-- Start MessageList -->
 
-			<form id="formMessageList">			
+			<form name="formMessageList" id="formMessageList">			
 			<div id="divMessageList" style="overflow:auto; height:460px; margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom: 0px; z-index:90; border : 1px solid Silver;">
 				<!-- <table BORDER="0" style="width:98%; ppadding-left:2; table-layout: fixed;" cellspacing="100" cellpadding="100"> -->
 					{header_rows}
@@ -162,7 +162,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <!-- END status_row_tpl -->
 
 <!-- BEGIN header_row_felamimail -->
-	<tr class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';">
+	<tr id="row_{message_uid}" class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';">
 		<td class="mainscreenRow" width="20px" align="left" valign="top">
 			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
 			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
@@ -190,7 +190,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <!-- END header_row_felamimail -->
 
 <!-- BEGIN header_row_outlook -->
-	<tr class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';" >
+	<tr id="row_{message_uid}" class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';" >
 		<td class="mainscreenRow" width="20px" align="left" valign="top">
 			<input  style="width:12px; height:12px; border: none; margin: 1px;" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
 			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>

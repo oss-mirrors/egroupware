@@ -3,17 +3,17 @@
 self.focus();
 </script>
 <!-- {print_navbar} -->
-<div id="navbarDIV" style="position:absolute; top:0px; height:30px; left:0px; right:0px; border: solid white 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
+<div id="navbarDIV">
         {navbar}
 </div>
-<div id="subjectDIV" style="position:absolute; background-color:#ffffff; top:32px; height:20px; width:100%; font-weight:bold; text-align:left; line-height:20px;">
+<div id="subjectDIV">
 	<span style="padding-left:2px;">{subject_data}</span>
 </div>
-<div id="headerDIV" style="position:absolute; background-color:#efefdf; top:52px; height:80px; left:0px; right:0px; border-top: 1px solid silver; border-bottom: 1px solid silver; overflow:hidden;">
+<div id="headerDIV">
 	{header}
 </div>
-<div id="bodyDIV" style="position:absolute; background-color:white; top:134px; bottom:0px; width:100%; border-top: 1px solid #efefdf;">
-	<iframe frameborder="no" scrolling="auto" style="width:100%; border:0px solid black; height:100%;" src="{url_displayBody}">
+<div class="bodyDIV" id="bodyDIV">
+	<iframe id="messageIFRAME" frameborder="no" scrolling="auto" src="{url_displayBody}">
 	</iframe>
 </div>
 <!-- END message_main -->
@@ -23,20 +23,20 @@ self.focus();
 self.focus();
 </script>
 <!-- {print_navbar} -->
-<div id="navbarDIV" style="position:absolute; top:0px; height:30px; left:0px; right:0px; border: solid white 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
+<div id="navbarDIV">
         {navbar}
 </div>
-<div id="subjectDIV" style="position:absolute; background-color:#ffffff; top:32px; height:20px; width:100%; font-weight:bold; text-align:left; line-height:20px;">
+<div id="subjectDIV">
 	<span style="padding-left:2px;">{subject_data}</span>
 </div>
-<div id="headerDIV" style="position:absolute; background-color:#efefdf; top:52px; height:80px; left:0px; right:0px; border-top: 1px solid silver; border-bottom: 1px solid silver; overflow:hidden;">
+<div id="headerDIV">
 	{header}
 </div>
-<div id="bodyDIV" style="position:absolute; background-color:white; top:134px; bottom:80px; width:100%; border-top: 1px solid #efefdf;">
+<div class="bodyDIV bodyDIVAttachment" id="bodyDIV">
 	<iframe frameborder="no" scrolling="auto" style="border:0px solid black; width:100%; height:100%;" src="{url_displayBody}">
 	</iframe>
 </div>
-<div id="attachmentDIV" style="position:absolute; background-color:#efefdf; bottom:0px; height:80px; width:100%; border-top: 1px solid silver; overflow:auto;">
+<div id="attachmentDIV">
 <table border="0" width="100%" cellspacing="0">
 {attachment_rows}
 </table>

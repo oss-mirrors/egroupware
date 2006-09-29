@@ -176,7 +176,9 @@
 			if($_filter)
 			{
 				$filter = $this->getFilterSQL($_filter);
-				$where[] = $filter;
+				if(!empty($filter)) {
+					$where[] = $filter;
+				}
 			}
 			
 			$this->db->select($this->cache_table,'count(*)',$where,__LINE__,__FILE__);

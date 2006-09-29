@@ -166,7 +166,7 @@
 		}
 		
 		function createSignatureTable($_signatureList) {
-			if(is_array($_signatureList)) {
+			if(is_array($_signatureList) && !empty($_signatureList)) {
 				foreach($_signatureList as $signature) {
 					$tableRows[] = array(
 						'1'	=> $GLOBALS['egw']->html->checkbox('signatureID', false, $signature['signatureid']),
@@ -318,16 +318,19 @@
 						'icServer'	=> 0,
 						'folder'	=> base64_encode($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']),
 						'uid'		=> $header['uid'],
+						'id'		=> $header['id'],
 					);
 					$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
 
 					$windowName = 'composeFromDraft_'.$header['uid'];
 					$this->t->set_var('read_message_windowName', $windowName);
 				} else {
+				#	_debug_array($header);
 					$linkData = array (
 						'menuaction'    => 'felamimail.uidisplay.display',
 						'showHeader'	=> 'false',
-						'uid'		=> $header['uid']
+						'uid'		=> $header['uid'],
+						'id'		=> $header['id'],
 					);
 					$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
 

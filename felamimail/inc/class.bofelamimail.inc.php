@@ -47,6 +47,9 @@
 		var $htmlOptions;
 
 		var $sessionData;
+		
+		// the current selected user profile
+		var $profileID = 0;
 
 		function bofelamimail($_displayCharset='iso-8859-1')
 		{
@@ -179,10 +182,10 @@
 		function appendMessage($_folderName, $_header, $_body, $_flags)
 		{
 			$imapServer =& $this->mailPreferences->getIncomingServer(0);
+			#print "<pre>$_header.$_body</pre>";
 			$mailboxString = $imapServer->getMailboxString($_folderName);
 			$header = str_replace("\n","\r\n",$_header);
 			$body   = str_replace("\n","\r\n",$_body);
-			#print "<pre>". htmlentities($header.$body) ."</pre>";
 			$result = @imap_append($this->mbox, $mailboxString, "$header"."$body", $_flags);
 			#print imap_last_error();exit;
 			return $result;
@@ -430,6 +433,9 @@
 					$result = imap_clearflag_full ($this->mbox, $msglist, "\\Answered", ST_UID);
 					break;
 			}
+			
+			$this->sessionData['folderStatus'][$this->profileID][$this->sessionData['mailbox']]['uidValidity'] = 0;
+			$this->saveSessionData();
 			
 			#error_log(imap_last_error());
 			#print "Result: $result<br>";
@@ -1247,6 +1253,7 @@
 			$mailboxString = $icServer->getMailboxString($_folderName);
 			
 			$sortResult = $this->getSortedList($icServer, $_folderName, $_sort, $_reverse, $_filter);
+		#	_debug_array($sortResult);
 		#	error_log(count($sortResult));
 			$total = count($sortResult);
 			$sortResult = array_slice($sortResult, $_startMessage-1, $_numberOfMessages);
@@ -1426,17 +1433,35 @@
 			}
 		}
 		
+		function getNextMessage($_foldername, $_id) {
+			#_debug_array($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
+			#print "ID: $_id<br>";
+			$position = array_search($_id, $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
+			if($position !== false) {
+				$retValue = array();
+				
+				if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1])) {
+					$retValue['previous'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1];
+				}
+				if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1])) {
+					$retValue['next'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1];
+				}
+				
+				return $retValue;
+			}
+			
+			return false;
+		}
+		
 		function getIMAPACL($_folderName)
 		{
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0))
-			{
+			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
 				return false;
 			}
 			
 			$acl = array();
 			$mailboxString = $icServer->getMailboxString($_folderName);
-			if(function_exists('imap_getacl'))
-			{
+			if(($icServer->supportsCapability('ACL')) && (function_exists('imap_getacl'))) {
 				$acl = imap_getacl ($this->mbox, $_folderName);
 			}
 			
@@ -1778,6 +1803,13 @@
 		// return the qouta of the users INBOX
 		function getQuotaRoot() {
 			return $this->icServer->getQuota('INBOX');
+		}
+		
+		// converts a imap id into a imap uid
+		function idToUid($_mailbox, $_id) {
+			$this->reopen($_mailbox);
+			
+			return imap_uid($this->mbox, $_id);
 		}
 		
 		function imap_createmailbox($_folderName, $_subscribe = False)
