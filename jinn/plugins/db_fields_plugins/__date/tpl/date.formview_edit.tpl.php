@@ -1,7 +1,7 @@
 Het is vandaag <?php echo($this->tday);?> <?php echo($this->tmonth);?> <?php echo($this->tyear);?><br>
 <select name="<?php echo('DATE_DD'.$this->field_name);?>">
    <option value=""></option>
-   <?php for ($d=0;$d <=31;$d++):?>
+   <?php for ($d=1;$d <=31;$d++):?>
    <option value="<?php echo($d);?>" <?php if($d == $this->day){echo'selected="selected"';}?>><?php echo($d);?></option>
    <?php endfor?>
 </select>

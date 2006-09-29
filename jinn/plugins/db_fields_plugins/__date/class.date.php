@@ -38,33 +38,40 @@
 
 	  function formview_edit($field_name,$value,$config,$attr_arr)
 	  {
-			if (!is_object($GLOBALS['phpgw']->jscalendar))
-			{
-			   $GLOBALS['phpgw']->jscalendar = CreateObject('phpgwapi.jscalendar');
-			}
-	 		$today = date('Y-m-d');//$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-			if($value=='0000-00-00') $value=$today; 		
-			//		if($value=='0000-00') $value=$today; 		
-			if(!$value) $value=$today; 		
+		 if (!is_object($GLOBALS['phpgw']->jscalendar))
+		 {
+			$GLOBALS['phpgw']->jscalendar = CreateObject('phpgwapi.jscalendar');
+		 }
+		 $today = date('Y-m-d');
+		//echo  $GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+		 if($value=='0000-00-00')
+		 {
+			unset($value);
+		 }
 
-			list($tyear,$tmonth,$tday)=explode('-',$today);
-			
-			list($year,$month,$day)=explode('-',$value);
-			
-			$this->tplsav2->addPath('template',$this->plug_root.'/tpl');
-	 		$months_arr[0]='';
-			$months_arr[1]='januari';
-			$months_arr[2]='februari';
-			$months_arr[3]='maart';
-			$months_arr[4]='april';
-			$months_arr[5]='mei';
-			$months_arr[6]='juni';
-			$months_arr[7]='juli';
-			$months_arr[8]='augustus';
-			$months_arr[9]='september';
-			$months_arr[10]='oktober';
-			$months_arr[11]='november';
-			$months_arr[12]='december';
+		 if(!$value && $config['defdate']=='today') 
+		 {
+			$value=$today; 		
+		 }
+
+		 list($tyear,$tmonth,$tday)=explode('-',$today);
+
+		 list($year,$month,$day)=explode('-',$value);
+
+		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
+		 $months_arr[0]='';
+		 $months_arr[1]='januari';
+		 $months_arr[2]='februari';
+		 $months_arr[3]='maart';
+		 $months_arr[4]='april';
+		 $months_arr[5]='mei';
+		 $months_arr[6]='juni';
+		 $months_arr[7]='juli';
+		 $months_arr[8]='augustus';
+		 $months_arr[9]='september';
+		 $months_arr[10]='oktober';
+		 $months_arr[11]='november';
+		 $months_arr[12]='december';
 
 		 if($config[style] == 'DHTML-Calendar')
 		 {
@@ -74,11 +81,9 @@
 			$input .= $GLOBALS['phpgw']->jscalendar->input($field_name,'',$year,$month,$day);
 
 			return $input;
-
 		 }
 		 else
 		 {
-
 			$stripped_name=substr($field_name,6);	
 
 			//die(var_dump($input));
@@ -100,13 +105,13 @@
 
 	  function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	  {
-			if (!is_object($GLOBALS['phpgw']->jscalendar))
-			{
-			   $GLOBALS['phpgw']->jscalendar = CreateObject('phpgwapi.jscalendar');
-			}
+		 if (!is_object($GLOBALS['phpgw']->jscalendar))
+		 {
+			$GLOBALS['phpgw']->jscalendar = CreateObject('phpgwapi.jscalendar');
+		 }
 
-			
-	 	 if($config[style] == 'DHTML-Calendar')
+
+		 if($config[style] == 'DHTML-Calendar')
 		 {
 			$date = $HTTP_POST_VARS[$field_name];
 			$new_date_arr = $GLOBALS['phpgw']->jscalendar->input2date($date);
@@ -114,19 +119,28 @@
 		 }
 		 else
 		 {
-		 $new_date = $HTTP_POST_VARS['DATE_YY'.$field_name].'-'.$HTTP_POST_VARS['DATE_MM'.$field_name].'-'.$HTTP_POST_VARS['DATE_DD'.$field_name];
-	  }
+			$new_date = $HTTP_POST_VARS['DATE_YY'.$field_name].'-'.$HTTP_POST_VARS['DATE_MM'.$field_name].'-'.$HTTP_POST_VARS['DATE_DD'.$field_name];
+		 }
 		 if($new_date) return $new_date;
 		 return '-1'; /* return -1 when there no value to give but the function finished succesfully */
 	  }
 
 	  function formview_read($value,$conf_array)
 	  {
+		 if($value=='0000-00-00')
+		 {
+			unset($value);
+		 }
 		 return $this->listview_read($value,$conf_array,'');
 	  }
 
 	  function listview_read($value,$conf_array,$where_val_enc)
 	  {
+/*		 if($value=='0000-00-00')
+		 {
+			return $value;
+		 }
+*/
 		 $months_arr[0]='';
 		 $months_arr[1]='jan';
 		 $months_arr[2]='feb';
