@@ -166,6 +166,12 @@
 		}
 		
 		function createSignatureTable($_signatureList) {
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.editSignature'
+			);
+			$urlEditSignature = $GLOBALS['egw']->link('/index.php',$linkData);
+			
 			if(is_array($_signatureList) && !empty($_signatureList)) {
 				foreach($_signatureList as $signature) {
 					$tableRows[] = array(

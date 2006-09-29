@@ -495,18 +495,12 @@
 			);
 			$this->t->set_var('url_addSignature', $GLOBALS['egw']->link('/index.php',$linkData));
 			
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uipreferences.editSignature'
-			);
-			$urlEditSignature = $GLOBALS['egw']->link('/index.php',$linkData);
-			
 			$this->t->set_var('url_image_add',$GLOBALS['egw']->common->image('phpgwapi','new'));
 			$this->t->set_var('url_image_delete',$GLOBALS['egw']->common->image('phpgwapi','delete'));
 			
 			$signatures = $this->bopreferences->getListOfSignatures();
-
-			$this->t->set_var('table', $signatures ? $this->uiwidgets->createSignatureTable($signatures) : '');
+			
+			$this->t->set_var('table', $this->uiwidgets->createSignatureTable($signatures));
 			
 			$this->t->pparse("out","main");			
 			$this->bofelamimail->closeConnection();
