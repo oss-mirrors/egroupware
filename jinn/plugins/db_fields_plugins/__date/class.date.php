@@ -49,7 +49,7 @@
 			unset($value);
 		 }
 
-		 if(!$value && $config['defdate']=='today') 
+		 if(!$value && $config['defdate']!='null') 
 		 {
 			$value=$today; 		
 		 }
