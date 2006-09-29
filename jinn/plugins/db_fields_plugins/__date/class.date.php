@@ -136,11 +136,11 @@
 
 	  function listview_read($value,$conf_array,$where_val_enc)
 	  {
-/*		 if($value=='0000-00-00')
+		 if($value=='0000-00-00' || !$value)
 		 {
-			return $value;
+			return ;
 		 }
-*/
+
 		 $months_arr[0]='';
 		 $months_arr[1]='jan';
 		 $months_arr[2]='feb';
