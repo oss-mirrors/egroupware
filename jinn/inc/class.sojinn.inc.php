@@ -747,7 +747,6 @@
 	  {
 		 $SQL="SELECT * FROM egw_jinn_objects WHERE name='$name' AND parent_site_id='$parent_site_id'";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
-		 //die($SQL);
 
 		 while($this->phpgw_db->next_record())
 		 {

@@ -1,4 +1,14 @@
 <script language="javascript" type="text/javascript">
+   function check_m2o_form()
+   {
+		 if(typeof block_parent_save !='undefined' && block_parent_save )
+		 {
+			   alert('<?=lang('You must save or close the subform to be able to save this record.')?>');
+			   return false;
+		 }
+		 return true;
+   }
+
    function img_popup(img,pop_width,pop_height,attr)
    {
 		 options="width="+pop_width+",height="+pop_height+",location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no";
@@ -348,6 +358,9 @@
    <?php endif?>
 
    <div style="padding:0px 30px 0px 30px;">
+	  <h1 style="margin-bottom:5px;"><?=$this->site_object_arr[name]?></h1>
+	  <div style="font-weight:bold;padding-bottom:5px;"><?=$this->site_object_arr[help_information]?></div>
+
 	  <!-- BEGIN change_num -->
 	  <?php if(!$this->edit_object && !is_array($this->where_string_record_arr) && !$this->where_string_form):?>
 	  <input type="hidden" name="MLTNUM" value="<?=$this->mult_records?>" />
@@ -356,17 +369,34 @@
 	  <input type="text" name="num_records" maxlength="2" size="2" value="<?=$this->mult_records?>" />
 	  <input  class="egwbutton" type="submit" value="<?= lang('change number of records')?>" onclick="document.frm.changerecnumbers.value='true'" />
 	  <?php endif?>
+	  
 	  <?php endif?>
-	  <!-- END change_num -->
-	  <h1 style="margin-bottom:5px;"><?=$this->site_object_arr[name]?></h1>
-	  <div style="font-weight:bold;padding-bottom:5px;"><?=$this->site_object_arr[help_information]?></div>
 
+	  <!-- END change_num -->
+
+	  <?php if(count($this->records_arr[0])>10 || $this->mult_records>1):?>
+	  <?php if($this->readonly):?>
+	  <div style="float:left;width:auto;"><input type="button" name="edit" onClick="location='<?=$this->edit_record_link?>'" class="egwbutton" value="<?=lang('Edit this Record')?>"></div>
+	  <?php else:?>
+	  <div style="margin:5px;">
+		 <input type="submit" onclick="return check_m2o_form();" name="savereopen" class="egwbutton" value="<?=lang('Save')?>">
+		 <input type="submit" onclick="return check_m2o_form();" name="savefinish" class="egwbutton" value="<?=lang('Save and finish')?>">
+
+	  <?php if(!$this->readonly):?>
+	  <input type="button" onclick="location='<?=$this->listing_link?>'" name="finish" class="egwbutton" value="<?=lang('finish, discard changes')?>">
+	  <?php endif?>
+	  
+   </div>
+   
+   <?php endif?>
+   <?php endif?>
 	  <?php
 		 $rec_i=0;
 		 $row_i=0;
-		 //_debug_array($this->records_arr);
+//		 _debug_array(count($this->records_arr[0]));
 	  ?>
-	  <?php foreach($this->records_arr as $record_rows):?>
+
+   <?php foreach($this->records_arr as $record_rows):?>
 	  <?php $rec_i++ ?>
 
 	  <div style="float:left;margin:0px 20px 0px 0px">
@@ -552,32 +582,20 @@
 	  <?php if($this->readonly):?>
 	  <div style="float:left;width:auto;"><input type="button" name="edit" onClick="location='<?=$this->edit_record_link?>'" class="egwbutton" value="<?=lang('Edit this Record')?>"></div>
 	  <?php else:?>
-	  <script>
-		 function check_m2o_form()
-		 {
-			   if(typeof block_parent_save !='undefined' && block_parent_save )
-			   {
-					 alert('<?=lang('You must save or close the subform to be able to save this record.')?>');
-					 return false;
-			   }
-			   return true;
-		 }
-	  </script>
-	  <div style="float:left;width:auto;"><input type="submit" onclick="return check_m2o_form();" name="reopen" class="egwbutton" value="<?=lang('Save')?>"></div>
 
-	  <?php //if($this->max_records)>1 && $this->num_records<$this->max_records):?>
-	  <!--	  <div style="float:left;width:auto;"><input  class="egwbutton" type="submit" name="add_new" value="<?=lang('Save and Add New Record')?>"></div>-->
-	  <?php //endif?>
+	  <div style="float:left;width:auto;">
+		 <input type="submit" onclick="return check_m2o_form();" name="savereopen" class="egwbutton" value="<?=lang('Save')?>">
+		 <input type="submit" onclick="return check_m2o_form();" name="savefinish" class="egwbutton" value="<?=lang('Save and finish')?>">
+	  </div>
 
-	  <!--	  <input type="hidden" name="delete"> <input  class="egwbutton" type="submit"  name="delete" value="<?=lang('Delete')?>">-->
 	  <?php endif?>
 
-	  <?php if($this->max_records!=1):?>
-	  <div style="float:left;width:auto;"><input type="button" onclick="location='<?=$this->listing_link?>'" name="reopen" class="egwbutton" value="<?=lang('Back to list')?>"></div>
+	  <?php if(!$this->readonly):?>
+	  <div style="float:left;width:auto;"><input type="button" onclick="location='<?=$this->listing_link?>'" name="finish" class="egwbutton" value="<?=lang('finish, discard changes')?>"></div>
 	  <?php endif?>
 
 	  <?php if(!$this->japie):?>
-	  <div style="float:right;width:auto;"><input type="button" onclick="openhelp()" name="reopen" class="egwbutton" value="<?=lang('Help')?>"></div>
+	  <div style="float:right;width:auto;"><input type="button" onclick="openhelp()" name="help" class="egwbutton" value="<?=lang('Help')?>"></div>
 	  <?php endif?>
 	  
 	  <?=$this->runonrecordbuttons?>

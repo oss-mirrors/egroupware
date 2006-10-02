@@ -53,9 +53,9 @@
 	  * @access public
 	  * @return void
 	  */
-	  function uiu_list_records()
+	  function uiu_list_records($session_name='jinn')
 	  {
-		 $this->bo = CreateObject('jinn.bouser');
+		 $this->bo = CreateObject('jinn.bouser',$session_name);
 		 parent::uijinn();
 
 		 $this->boreport = CreateObject('jinn.boreport');
@@ -105,16 +105,16 @@
 			foreach($columns as $onecol)
 			{
 			   //create more simple col_list with only names //why
-			   $all_col_names_list[]=$onecol[name];
+			   $all_col_names_list[]=$onecol['name'];
 
 			   // check for primaries and create array 
-			   if ($onecol[primary_key] && $onecol[type]!='blob') // FIXME howto select long blobs
+			   if ($onecol[primary_key] && $onecol['type']!='blob') // FIXME howto select long blobs
 			   {						
-				  $pkey_arr[]=$onecol[name];
+				  $pkey_arr[]=$onecol['name'];
 			   }
-			   elseif($onecol[type]!='blob') // FIXME howto select long blobs
+			   elseif($onecol['type']!='blob') // FIXME howto select long blobs
 			   {
-				  $akey_arr[]=$onecol[name];
+				  $akey_arr[]=$onecol['name'];
 			   }
 			}
 
@@ -294,8 +294,6 @@
 	  */
 	  function list_records()
 	  {
-
-		 
 		 unset($this->bo->session['mult_where_array']);
 
 		 // check if table exists
@@ -333,9 +331,9 @@
 		 }
 
 		 $order_by_arr=$this->bo->session['browse_settings']['orderby'];
-		 if($_GET[orderby])
+		 if($_GET['orderby'])
 		 {
-			$order_by_arr[$this->bo->site_object[object_id]] = $_GET[orderby];
+			$order_by_arr[$this->bo->site_object[object_id]] = $_GET['orderby'];
 		 }
 		 elseif($default_order)
 		 {
@@ -351,12 +349,12 @@
 			unset($orderby);
 		 }
 
-		 //$filter = ($_GET[filter]?$_GET[filter]:$this->bo->session['browse_settings']['filter']);
+		 //$filter = ($_GET['filter']?$_GET['filter']:$this->bo->session['browse_settings']['filter']);
 
 		 //the filter class takes care of detecting the current filter, compiling a where statement and compiling the filter options for the listbox
 		 $filter_where = $this->filtermanager->get_filter_where();
 
-		 $this->tplsav2->set_var('filter_list',$this->filtermanager->format_filter_options($_POST[filtername]));
+		 $this->tplsav2->set_var('filter_list',$this->filtermanager->format_filter_options($_POST['filtername']));
 		 $this->tplsav2->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
 		 $this->tplsav2->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
 		 $this->tplsav2->set_var('filter_text',lang('activate filter'));
@@ -420,16 +418,16 @@
 			$column_types[$onecol['name']] = $ftype;
 
 			/* check for primaries and create array */
-			if ($onecol[primary_key] && $onecol[type]!='blob') // FIXME howto select long blobs
+			if ($onecol[primary_key] && $onecol['type']!='blob') // FIXME howto select long blobs
 			{						
-			   $pkey_arr[]=$onecol[name];
+			   $pkey_arr[]=$onecol['name'];
 			}
-			elseif($onecol[type]!='blob') // FIXME howto select long blobs
+			elseif($onecol['type']!='blob') // FIXME howto select long blobs
 			{
-			   $akey_arr[]=$onecol[name];
+			   $akey_arr[]=$onecol['name'];
 			}
 
-			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecol[name]);
+			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecol['name']);
 
 			if($field_conf_arr[field_enabled]=='0' && $field_conf_arr[field_enabled]!=null)
 			{
@@ -443,7 +441,7 @@
 			}
 
 			//create more simple col_list with only names //why
-			$all_col_names_list[]=$onecol[name];
+			$all_col_names_list[]=$onecol['name'];
 
 
 			/* format quick_filter condition 
@@ -457,11 +455,11 @@
 			   {
 				  if ($where_condition)
 				  {
-					 $where_condition.= " OR( `{$onecol[name]}` LIKE '%$like_str%')";
+					 $where_condition.= " OR( `{$onecol['name']}` LIKE '%$like_str%')";
 				  }
 				  else
 				  {
-					 $where_condition = "( `{$onecol[name]}` LIKE '%$like_str%')";
+					 $where_condition = "( `{$onecol['name']}` LIKE '%$like_str%')";
 				  }
 			   }
 			}
@@ -561,9 +559,9 @@
 		 {
 			unset($testvalue);
 
-			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col[name]);
+			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col['name']);
 
-			$display_colname=($field_conf_arr[element_label]?$field_conf_arr[element_label]:$col[name]);
+			$display_colname=($field_conf_arr[element_label]?$field_conf_arr[element_label]:$col['name']);
 
 			unset($tipmouseover);
 			if(trim($field_conf_arr[field_help_info]))
@@ -574,41 +572,41 @@
 				  $GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
 			   }
 			   $options = array('width' => 'auto');
-			   $tipmouseover='<img '.$GLOBALS[phpgw]->html->tooltip($tooltip, True, $options).' src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
+			   $tipmouseover='<img '.$GLOBALS['phpgw']->html->tooltip($tooltip, True, $options).' src="'.$GLOBALS['phpgw']->common->image('phpgwapi','info').'" alt="" />'; 
 			}
 
-			if(!$this->bo->field_is_enabled($this->bo->site_object[object_id], $col[name]))
+			if(!$this->bo->field_is_enabled($this->bo->site_object[object_id], $col['name']))
 			{
 			   continue ;
 			}
 
-			$col_names_list[]=$col[name];
+			$col_names_list[]=$col['name'];
 			unset($orderby_link);
 			unset($orderby_image);
 
-			$display_colname=($field_conf_arr[element_label]?$field_conf_arr[element_label]:$col[name]);
+			$display_colname=($field_conf_arr[element_label]?$field_conf_arr[element_label]:$col['name']);
 
-			if ($col[name] == trim(substr($orderby,0,(strlen($orderby)-4))))
+			if ($col['name'] == trim(substr($orderby,0,(strlen($orderby)-4))))
 			{
 			   if (substr($orderby,-4)== 'DESC')
 			   {
-				  $orderby_link = $col[name].' ASC';
+				  $orderby_link = $col['name'].' ASC';
 				  $orderby_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','desc.png').'" border="0">';
 			   }
 			   else 
 			   {
-				  $orderby_link = $col[name].' DESC';
+				  $orderby_link = $col['name'].' DESC';
 				  $orderby_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','asc.png').'" border="0">';
 			   }
 			}
 			else
 			{
-			   $orderby_link = $col[name].' ASC';
+			   $orderby_link = $col['name'].' ASC';
 			}
 
 			$this->tplsav2->set_var('colhead_bg_color',$GLOBALS['phpgw_info']['theme']['th_bg']);
 			$colname_arr['colhead_bg_color']=$GLOBALS['phpgw_info']['theme']['th_bg'];
-			$colname_arr['colhead_order_link']=$GLOBALS[phpgw]->link("/index.php","menuaction=".$this->japielink."jinn.uiu_list_records.display&orderby=$orderby_link");
+			$colname_arr['colhead_order_link']=$GLOBALS['phpgw']->link("/index.php","menuaction=".$this->japielink."jinn.uiu_list_records.display&orderby=$orderby_link");
 			$colname_arr['colhead_name']=str_replace('_','&nbsp;',$display_colname);
 			$colname_arr['colhead_order_by_img']=$orderby_image;
 			$colname_arr['tipmouseover']=$tipmouseover;
@@ -632,17 +630,17 @@
 			$this->tplsav2->set_var('adv_filter_bgcolor','background-color:#ffcccc;');
 		 }
 		 
-		 $this->tplsav2->config_columns_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects');
+		 $this->tplsav2->config_columns_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.config_objects');
 
 		 $this->tplsav2->set_var('total_records',$lang_total_records);
 		 $this->tplsav2->set_var('rec_per_page',$rec_per_page);
 		 $this->tplsav2->set_var('pager',$pager);
-		 $this->tplsav2->set_var('newrec_link',$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.new_record'));
+		 $this->tplsav2->set_var('newrec_link',$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.new_record'));
 
 		 $this->tplsav2->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 		 $this->tplsav2->set_var('table_title',$this->bo->site_object['name']);
 		 $this->tplsav2->set_var('table_descr',$this->bo->site_object['help_information']);
-		 $this->tplsav2->popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+		 $this->tplsav2->popuplink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.img_popup');
 
 		 if(!is_array($pkey_arr))
 		 {
@@ -660,12 +658,12 @@
 		 
 		 if($record_count>0)
 		 {
-			$this->tplsav2->set_var('colfield_view_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','view'));
-			$this->tplsav2->set_var('colfield_edit_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','edit'));
-			$this->tplsav2->set_var('colfield_delete_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','delete'));
-			$this->tplsav2->set_var('colfield_copy_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','copy'));
+			$this->tplsav2->set_var('colfield_view_img_src',$GLOBALS['phpgw']->common->image('phpgwapi','view'));
+			$this->tplsav2->set_var('colfield_edit_img_src',$GLOBALS['phpgw']->common->image('phpgwapi','edit'));
+			$this->tplsav2->set_var('colfield_delete_img_src',$GLOBALS['phpgw']->common->image('phpgwapi','delete'));
+			$this->tplsav2->set_var('colfield_copy_img_src',$GLOBALS['phpgw']->common->image('phpgwapi','copy'));
 			$this->tplsav2->set_var('colfield_lang_confirm_delete_one',lang('Are you sure you want to delete this record?'));
-			$this->tplsav2->set_var('colfield_export_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','filesave'));
+			$this->tplsav2->set_var('colfield_export_img_src',$GLOBALS['phpgw']->common->image('phpgwapi','filesave'));
 
 			$this->tplsav2->records_rows_arr=array();
 			foreach($records as $recordvalues)
@@ -700,10 +698,10 @@
 				  $recrow_arr['colfield_check_name']='SEL'.$where_string;
 				  $recrow_arr['colfield_check_val']=$where_string;
 
-				  $recrow_arr['colfield_edit_link']=$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.edit_record&where_string='.$where_string);
-				  $recrow_arr['colfield_view_link']=$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.read_record&where_string='.$where_string);
-				  $recrow_arr['colfield_delete_link']=$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.del_record&where_string='.$where_string);
-				  $recrow_arr['colfield_copy_link']=$GLOBALS[phpgw]->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.copy_record&where_string='.$where_string);
+				  $recrow_arr['colfield_edit_link']=$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.edit_record&where_string='.$where_string);
+				  $recrow_arr['colfield_view_link']=$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.read_record&where_string='.$where_string);
+				  $recrow_arr['colfield_delete_link']=$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.del_record&where_string='.$where_string);
+				  $recrow_arr['colfield_copy_link']=$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.copy_record&where_string='.$where_string);
 
 				  //for keeping performance only run when plugins are attached
 				  if($this->tplsav2->runonrec_amount>0)
@@ -854,17 +852,17 @@
 	  {
 		 $this->tplsav2->set_var('listoptions',$this->boreport->get_report_list($this->bo->site_object[unique_id]));
 
-		 $r_edit_button =  $output .= "<input class='egwbutton'  type='button' value='".lang('Edit')."' onClick=\"if(document.report_actie.report.value.substr(0,4) != 'user'){alert('".lang('You can only edit your own templates')."');}else{parent.window.open('".$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.edit_report_popup&parent_site_id='.$this->bo->site_object[parent_site_id].'&obj_id='.$this->bo->site_object['unique_id'].'&table_name='.$this->bo->site_object[table_name].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')}\">";		 
+		 $r_edit_button =  $output .= "<input class='egwbutton'  type='button' value='".lang('Edit')."' onClick=\"if(document.report_actie.report.value.substr(0,4) != 'user'){alert('".lang('You can only edit your own templates')."');}else{parent.window.open('".$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.edit_report_popup&parent_site_id='.$this->bo->site_object[parent_site_id].'&obj_id='.$this->bo->site_object['unique_id'].'&table_name='.$this->bo->site_object[table_name].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')}\">";		 
 
 		 $this->tplsav2->set_var('r_edit_button',$r_edit_button);
 
-		 $r_new_from_button = "<input class='egwbutton'  type='button' value='".lang('New from selected')."' onClick=\"parent.window.open('".$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.add_report_from_selected&obj_id='.$this->bo->site_object['unique_id'].'&parent_site_id='.$this->bo->site_object[parent_site_id].'&table_name='.$this->bo->site_object[table_name].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')\">";		 
+		 $r_new_from_button = "<input class='egwbutton'  type='button' value='".lang('New from selected')."' onClick=\"parent.window.open('".$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_from_selected&obj_id='.$this->bo->site_object['unique_id'].'&parent_site_id='.$this->bo->site_object[parent_site_id].'&table_name='.$this->bo->site_object[table_name].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')\">";		 
 
 		 $this->tplsav2->set_var('r_new_from_button',$r_new_from_button);
 
-		 $report_url=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.merge_report&obj_id='.$this->bo->site_object['unique_id']) ;
+		 $report_url=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.merge_report&obj_id='.$this->bo->site_object['unique_id']) ;
 
-		 $add_report_url = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.add_report_user&parent_site_id='.$this->bo->site_object[parent_site_id].'&table_name='.$this->bo->site_object[table_name].'&preference=1&obj_id='.$this->bo->site_object['unique_id']);
+		 $add_report_url = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_user&parent_site_id='.$this->bo->site_object[parent_site_id].'&table_name='.$this->bo->site_object[table_name].'&preference=1&obj_id='.$this->bo->site_object['unique_id']);
 		 $this->tplsav2->set_var('lang_merge',lang('Merge'));
 		 $this->tplsav2->set_var('add_report_url',$add_report_url);
 		 $this->tplsav2->set_var('report_url',$report_url);

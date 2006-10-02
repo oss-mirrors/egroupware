@@ -52,14 +52,14 @@
 	  * @access public
 	  * @return void
 	  */
-	  function uiu_filter()
+	  function uiu_filter($session_name='jinn')
 	  {
-		 $this->bo = CreateObject('jinn.bouser');
+		 $this->bo = CreateObject('jinn.bouser',$session_name);
 		 parent::uijinn();
 
 		 // get all available filters from preferences and session
-		 $this->filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object[unique_id]); 
-		 $this->sessionfilter = $this->bo->read_session_filter($this->bo->site_object[unique_id]);
+		 $this->filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object['unique_id']); 
+		 $this->sessionfilter = $this->bo->read_session_filter($this->bo->site_object['unique_id']);
 	  }
 
 	  /**
@@ -84,7 +84,7 @@
 	  function save_filterstore()
 	  {
 //		 _debug_array($this->filterstore);
-		 $this->bo->save_preferences('filterstore'.$this->bo->site_object[unique_id], $this->filterstore); 
+		 $this->bo->save_preferences('filterstore'.$this->bo->site_object['unique_id'], $this->filterstore); 
 	  }
 
 	  /**
@@ -96,7 +96,7 @@
 	  function save_sessionfilter()
 	  {
 	//	 _debug_array($this->sessionfilter);
-		 $this->bo->save_session_filter($this->bo->site_object[unique_id], $this->sessionfilter);
+		 $this->bo->save_session_filter($this->bo->site_object['unique_id'], $this->sessionfilter);
 		 $this->bo->sessionmanager->save();
 	  }
 
@@ -131,18 +131,18 @@
 		 {
 			foreach($this->filterstore as $filter)
 			{
-			   if($filter[name] == $selected)
+			   if($filter['name'] == $selected)
 			   {
-				  $this->tplsav2->optval = $filter[name];
+				  $this->tplsav2->optval = $filter['name'];
 				  $this->tplsav2->optselected = 'selected="selected"';
-				  $this->tplsav2->optdisplay = $filter[name];
+				  $this->tplsav2->optdisplay = $filter['name'];
 				  $options .= $this->tplsav2->fetch('form_el_option.tpl.php');
 			   }
 			   else
 			   {
-				  $this->tplsav2->optval = $filter[name];
+				  $this->tplsav2->optval = $filter['name'];
 				  $this->tplsav2->optselected = '';
-				  $this->tplsav2->optdisplay = $filter[name];
+				  $this->tplsav2->optdisplay = $filter['name'];
 				  $options .= $this->tplsav2->fetch('form_el_option.tpl.php');
 			   }
 			}
@@ -161,27 +161,27 @@
 
 
 		 // if not specified, get the current filter from the session, or specify empty
-		 if($_POST[filtername] == '')
+		 if($_POST['filtername'] == '')
 		 {
-			$_POST[filtername] = $this->sessionfilter['selected'];
-			if($_POST[filtername] == '')
+			$_POST['filtername'] = $this->sessionfilter['selected'];
+			if($_POST['filtername'] == '')
 			{
-			   $_POST[filtername] == 'NO_FILTER';
+			   $_POST['filtername'] == 'NO_FILTER';
 			}
 
 		 }
 
 		 // check if an existing filter is selected
-		 if($_POST[filtername] != 'NO_FILTER')
+		 if($_POST['filtername'] != 'NO_FILTER')
 		 {
 			//check if it is a temporary (session) filter or permanently (preferences) stored filter and load accordingly
-			if($_POST[filtername] == 'sessionfilter')
+			if($_POST['filtername'] == 'sessionfilter')
 			{
 			   $filter = $this->sessionfilter;
 			}
 			else
 			{
-			   $filter = $this->filterstore[$_POST[filtername]];
+			   $filter = $this->filterstore[$_POST['filtername']];
 			}
 
 			if($filter['ANDOR']=='OR') 
@@ -195,18 +195,18 @@
 
 			// generate the WHERE clause using the loaded filter
 			$filter_where = '';
-			if(is_array($filter[elements]))
+			if(is_array($filter['elements']))
 			{
-			   foreach($filter[elements] as $element)
+			   foreach($filter['elements'] as $element)
 			   {
 				  if($filter_where != '') $filter_where .= " $filter_and_or ";
-				  $filter_where .= "`".$element[field]."`".$element[operator]."'".$element[value]."'";
+				  $filter_where .= "`".$element['field']."`".$element['operator']."'".$element['value']."'";
 			   }
 			}
 		 }
 
 		 // save filtername in session
-		 $this->sessionfilter[selected] = $_POST[filtername];
+		 $this->sessionfilter['selected'] = $_POST['filtername'];
 		 $this->save_sessionfilter();
 
 		 return $filter_where;
@@ -221,9 +221,9 @@
 	  */
 	  function delete()
 	  {
-		 if($_POST[filtername])
+		 if($_POST['filtername'])
 		 {
-			unset($this->filterstore[$_POST[filtername]]);
+			unset($this->filterstore[$_POST['filtername']]);
 			$this->save_filterstore();
 		 }
 
@@ -245,18 +245,18 @@
 		 //start compiling this filter from the post form
 		 $this->filterdata = array();
 
-		 if($_POST[filtername] != '')
+		 if($_POST['filtername'] != '')
 		 {
-			$this->filterdata['name'] = $_POST[filtername];
+			$this->filterdata['name'] = $_POST['filtername'];
 		 }
 		 else
 		 {
 			$this->filterdata['name'] = 'sessionfilter';
 		 }
 
-		 if($_POST[ANDOR] != '')
+		 if($_POST['ANDOR'] != '')
 		 {
-			$this->filterdata['ANDOR'] = $_POST[ANDOR];
+			$this->filterdata['ANDOR'] = $_POST['ANDOR'];
 		 }
 		 else
 		 {
@@ -293,12 +293,12 @@
 		 }
 
 		 //check if a new filter element has been added. If YES then compile it and add it
-		 if($_POST[field] != '' && $_POST[operator] != '' && $_POST[value] != '')
+		 if($_POST['field'] != '' && $_POST['operator'] != '' && $_POST['value'] != '')
 		 {
-			$newid = count($this->filterdata[elements]);
-			$this->filterdata['elements'][$newid][field]    = $_POST[field];
-			$this->filterdata['elements'][$newid][operator] = $_POST[operator];
-			$this->filterdata['elements'][$newid][value]    = $_POST[value];
+			$newid = count($this->filterdata['elements']);
+			$this->filterdata['elements'][$newid]['field']    = $_POST['field'];
+			$this->filterdata['elements'][$newid]['operator'] = $_POST['operator'];
+			$this->filterdata['elements'][$newid]['value']    = $_POST['value'];
 		 }
 
 
@@ -311,14 +311,14 @@
 		 else
 		 {
 			//get the already stored filters, add or replace this one, save them all.
-			$this->filterstore[$_POST[filtername]]=$this->filterdata;
+			$this->filterstore[$_POST['filtername']]=$this->filterdata;
 			$this->save_filterstore();
 		 }
 
 		 //redirect to edit form
-		 $filtername = $_POST[filtername];
+		 $filtername = $_POST['filtername'];
 		 unset($_POST);
-		 $_POST[filtername] = $filtername;
+		 $_POST['filtername'] = $filtername;
 		 $this->edit();
 	  }	  
 
@@ -343,13 +343,13 @@
 			//the save() function already filled $this->filterdata for us
 			//we must do it like that, because the preferences/sessions are not updated right away after calling save
 		 }
-		 elseif($_POST[filtername]=='sessionfilter')
+		 elseif($_POST['filtername']=='sessionfilter')
 		 {
 			$this->filterdata = $this->sessionfilter;
 		 }
 		 else
 		 {
-			$this->filterdata = $this->filterstore[$_POST[filtername]];
+			$this->filterdata = $this->filterstore[$_POST['filtername']];
 		 }
 
 		 if($this->filterdata['ANDOR']=='OR')
@@ -364,13 +364,13 @@
 		 //loop each filter element
 		 $num=0;
 		 $this->tplsav2->filterdata_elements=array();
-		 if(is_array($this->filterdata[elements]))
+		 if(is_array($this->filterdata['elements']))
 		 {
-			foreach($this->filterdata[elements] as $element)
+			foreach($this->filterdata['elements'] as $element)
 			{
 			   $f_el['element']=$num;
-			   $f_el['fields']=$this->getFieldOptions($fields_arr, $element[field]);
-			   $f_el['operators']=$this->getOperatorOptions($element[operator]);
+			   $f_el['fields']=$this->getFieldOptions($fields_arr, $element['field']);
+			   $f_el['operators']=$this->getOperatorOptions($element['operator']);
 			   $f_el['value']=$element['value'];
 			   $f_el['set']=true;
 
@@ -386,7 +386,7 @@
 
 		 $this->tplsav2->filterdata_elements[]=$f_el;
 
-		 $this->tplsav2->set_var('filtername',$this->filterdata[name]);
+		 $this->tplsav2->set_var('filtername',$this->filterdata['name']);
 		 $this->tplsav2->set_var('list_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
 		 $this->tplsav2->set_var('delete_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.delete'));
 
@@ -408,13 +408,13 @@
 		 $fields='<option value="">------------</option>';
 		 foreach($fields_arr as $field)
 		 {
-			if($field[name] == $selected)
+			if($field['name'] == $selected)
 			{
-			   $fields .= '<option value="'.$field[name].'" SELECTED>'.$field[name].'</option>';
+			   $fields .= '<option value="'.$field['name'].'" SELECTED>'.$field['name'].'</option>';
 			}
 			else
 			{
-			   $fields .= '<option value="'.$field[name].'">'.$field[name].'</option>';
+			   $fields .= '<option value="'.$field['name'].'">'.$field['name'].'</option>';
 			}
 		 }
 		 return $fields;

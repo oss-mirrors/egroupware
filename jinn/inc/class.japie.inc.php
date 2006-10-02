@@ -11,20 +11,16 @@
 	  var $calling_app;
 	  var $xmlarray;
 
-	  function japie($object_id)
+	  function japie($object_id,$session_name='')
 	  {
 		 $this->calling_app = $GLOBALS['egw_info']['flags']['currentapp'];
+		 $this->session_name = ($session_name?$session_name:$this->calling_app);
 
 		 $this->site_object_id=$object_id;
 		 
 		 $this->setSession();
 		 
-		 //_debug_array($this->site_id);
-		 //_debug_array($this->site_object_id);
-
-//  		 $this->do_upgrade();
-
-		 $this->check_or_upgrade();
+		 //$this->check_or_upgrade();
 	  }
 
 	  /**
@@ -204,8 +200,10 @@
 		 $tmpso = CreateObject('jinn.sojinn');
 
 		 //FIXME Workaround
-		 $site_with_this_name_arr=$tmpso->get_sites_by_name($this->calling_app);
-		 $this->site_id=$site_with_this_name_arr[0];
+		 //$site_with_this_name_arr=$tmpso->get_sites_by_name($this->calling_app);
+		 //$this->site_id=$site_with_this_name_arr[0];
+
+		 $this->site_id=$tmpso->get_site_id_by_object_id($this->site_object_id);
 
 		 /*
 		 if(!$this->site_id)
@@ -219,7 +217,7 @@
 
 		 //fixme destroy current session??
 		 
-		 $sessionmanager = CreateObject('jinn.sojinnsession');
+		 $sessionmanager = CreateObject('jinn.sojinnsession',$this->session_name);
 		 $sessionmanager->sessionarray['site_object_id']=$this->site_object_id;
 		 $sessionmanager->sessionarray['site_id']=$this->site_id;
 		 $sessionmanager->save();
@@ -245,8 +243,6 @@
 			{
 			   $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi',$sessdata);
 			}
-
-
 		 }
 		 if($this->upload_path)
 		 {
@@ -270,17 +266,16 @@
 
 	  function list_records()
 	  {
-		 $this->uijapie = CreateObject('jinn.uiu_list_records');
+		 $this->uijapie = CreateObject('jinn.uiu_list_records',$this->session_name);
 
 		 $this->doClassStuff();
 
-		 //		 $this->uijapie->template->set_root($GLOBALS['egw']->common->get_tpl_dir('jinn'));
 		 $this->uijapie->display();
 	  }
 
 	  function read_record()
 	  {
-		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
+		 $this->uijapie = CreateObject('jinn.uiu_edit_record',$this->session_name);
 		 $this->doClassStuff();
 
 		 $this->uijapie->read_record();		 
@@ -288,7 +283,7 @@
 
 	  function edit_record()
 	  {
-		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
+		 $this->uijapie = CreateObject('jinn.uiu_edit_record',$this->session_name);
 		 $this->doClassStuff();
 
 		 $this->uijapie->edit_record();		 
@@ -297,7 +292,7 @@
 	  function new_record()
 	  {
 
-		 $this->uijapie = CreateObject('jinn.uiu_edit_record');
+		 $this->uijapie = CreateObject('jinn.uiu_edit_record',$this->session_name);
 		 $this->doClassStuff();
 
 		 $this->uijapie->new_record();		 
@@ -305,7 +300,7 @@
 
 	  function del_record()
 	  {
-		 $this->uijapie = CreateObject('jinn.bouser');
+		 $this->uijapie = CreateObject('jinn.bouser',$this->session_name);
 		 
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japielink=$this->make_japie_link();
@@ -314,7 +309,7 @@
 	  }
 	  function copy_record()
 	  {
-		 $this->uijapie = CreateObject('jinn.bouser');
+		 $this->uijapie = CreateObject('jinn.bouser',$this->session_name);
 		 
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japielink=$this->make_japie_link();
@@ -324,7 +319,7 @@
 
 	  function multiple_actions()
 	  {
-		 $this->uijapie = CreateObject('jinn.bouser');
+		 $this->uijapie = CreateObject('jinn.bouser',$this->session_name);
 		 
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japielink=$this->make_japie_link();
@@ -334,7 +329,7 @@
 
 	  function run_on_record()
 	  {
-		 $this->uijapie = CreateObject('jinn.uiuser');
+		 $this->uijapie = CreateObject('jinn.uiuser',$this->session_name);
 
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japielink=$this->make_japie_link();

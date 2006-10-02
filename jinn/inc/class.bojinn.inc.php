@@ -48,10 +48,10 @@
 	  * @access public
 	  * @return void
 	  */
-	  function bojinn()
+	  function bojinn($session_name='jinn')
 	  {
 		 $this->so = CreateObject('jinn.sojinn');
-		 $this->sessionmanager = CreateObject('jinn.sojinnsession');
+		 $this->sessionmanager = CreateObject('jinn.sojinnsession',$session_name);
 
 		 $this->session	= &$this->sessionmanager->sessionarray;	//reference to session array
 
@@ -469,7 +469,7 @@
 		 {
 			foreach ( $groups as $groupfields )
 			{
-			   $group[]=$groupfields[account_id];
+			   $group[]=$groupfields['account_id'];
 			}
 		 }
 
@@ -494,7 +494,7 @@
 		 {
 			foreach ( $groups as $groupfields )
 			{
-			   $group[]=$groupfields[account_id];
+			   $group[]=$groupfields['account_id'];
 			}
 		 }
 

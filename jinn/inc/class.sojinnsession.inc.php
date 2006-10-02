@@ -32,9 +32,11 @@
    class sojinnsession
    {
 	  var $sessionarray;
+	  var $session_name='jinn';
 
-	  function sojinnsession()
+	  function sojinnsession($session_name='jinn')
 	  {
+		 $this->session_name=$session_name;
 		 $this->load();
 	  }
 
@@ -44,7 +46,8 @@
 		 $_site_id 			= $_POST['site_id'] 		? $_POST['site_id']   		: $_GET['site_id'];
 		 $_site_object_id 	= $_POST['site_object_id'] 	? $_POST['site_object_id']	: $_GET['site_object_id'];
 
-		 $this->sessionarray = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
+		 $this->sessionarray = $GLOBALS['phpgw']->session->appsession('session_data',$this->session_name);
+
 		 $_form 			= $_form 			? $_form  			: $this->sessionarray['form'];
 		 $_site_id 			= $_site_id  		? $_site_id  		: $this->sessionarray['site_id'];
 		 $_site_object_id 	= $_site_object_id 	? $_site_object_id	: $this->sessionarray['site_object_id'];
@@ -83,7 +86,7 @@
 	  {
 		 if(count($this->sessionarray) > 0) //this catches the bug in the phpgwapi crypto class..
 		 {
-			$GLOBALS['phpgw']->session->appsession('session_data','jinn',$this->sessionarray);
+			$GLOBALS['phpgw']->session->appsession('session_data',$this->session_name,$this->sessionarray);
 		 }
 	  }
 

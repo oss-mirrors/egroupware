@@ -60,9 +60,9 @@
 	  * @access public
 	  * @return void
 	  */
-	  function bouser()
+	  function bouser($session_name='jinn')
 	  {
-		 parent::bojinn();
+		 parent::bojinn($session_name);
 
 		 /**
 		 * fixme make a better structure for acl
@@ -461,13 +461,16 @@
 				  $data=$this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr,$object_arr[object_id]));
 				  $status=$this->so->insert_object_data($this->session['site_id'],$object_arr[table_name],$data);
 
-				  $status['mult_where_array'][]=$status[where_string];
+				  $status_mult_where[]=$status[where_string];
 
 				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 				  $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
 				  $status[relations]=$this->so->update_object_many_data($object_arr['parent_site_id'], $m2m_data);
 			   }
 			}
+			$status['mult_where_array']=$status_mult_where;
+			//_debug_array($numrecs);
+			//_debug_array($status);
 
 			return $status;
 

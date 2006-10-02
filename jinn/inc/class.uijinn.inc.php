@@ -28,7 +28,8 @@
 
 	  var $public_functions = Array
 	  (
-		 'debugwindow' => True
+		 'debugwindow' => True,
+		 'pluginwrapper'=>True
 	  );
 
 	  /**
@@ -42,7 +43,28 @@
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
 		 $this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
+	  }
 
+	  function pluginwrapper()
+	  {
+		 str_replace('..','',$_GET['plugname']);
+		 str_replace('/','',$_GET['plugname']);
+		 str_replace('\\','',$_GET['plugname']);
+
+		 str_replace('..','',$_GET['plugfile']);
+		 str_replace('/','',$_GET['plugfile']);
+		 str_replace('\\','',$_GET['plugfile']);
+
+		 foreach($_GET as $getkey=>$getval)
+		 {
+			if($getkey=='plugname' || $getkey=='plugfile' || $getkey=='menuaction')
+			{
+			   continue;
+			}
+			$getstr.="&$getkey=$getval";
+		 }
+		 
+		 header("location:".$GLOBALS['egw_info']['server']['webserver_url'].'/jinn/plugins/db_fields_plugins/__'.$_GET['plugname'].'/'.$_GET['plugfile'].'?x=x&'.$getstr);
 	  }
 
 	  /**
@@ -55,13 +77,12 @@
 	  */
 	  function header($screen_title,$phpgw_header=true)
 	  {
+		 $GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['jinn']['title']. ' - '.$screen_title . $extra_title;
 
 		 unset($GLOBALS['phpgw_info']['flags']['noheader']);
 		 unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
 		 unset($GLOBALS['phpgw_info']['flags']['noappheader']);
 		 unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-		 $GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['jinn']['title']. ' - '.$screen_title . $extra_title;
-
 		 if($phpgw_header && !$this->no_header)
 		 {
 			$GLOBALS['phpgw']->common->phpgw_header();

@@ -1,7 +1,7 @@
 <?php
    /*
    JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare
-   Author:	Lex Vogelaar for Lingewoud
+   Author:	Pim Snel
    Copyright (C)2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
@@ -24,17 +24,31 @@
 
    ---------------------------------------------------------------------
    */
-   $this->registry->plugins['default_string']['name'] 				= 'default_string';
-   $this->registry->plugins['default_string']['title']				= 'default varchar';
-   $this->registry->plugins['default_string']['author']			= 'Pim Snel';
-   $this->registry->plugins['default_string']['description']		= 'Default field plugin for handeling string/varchar fields';
-   $this->registry->plugins['default_string']['version']			= '1.1';
-   $this->registry->plugins['default_string']['enable']			= 1;
-   $this->registry->plugins['default_string']['default']			= 1;
-   $this->registry->plugins['default_string']['db_field_hooks']	= array
+   $this->registry->plugins['mediabrowser']['name']				= 'mediabrowser';
+   $this->registry->plugins['mediabrowser']['title']			= 'mediabrowser';
+   $this->registry->plugins['mediabrowser']['version']			= '0.1';
+   $this->registry->plugins['mediabrowser']['enable']			= 1;
+   $this->registry->plugins['mediabrowser']['author']			= 'Pim Snel';
+   $this->registry->plugins['mediabrowser']['description']		= 
+   'browse the media object   ';
+   $this->registry->plugins['mediabrowser']['element_type']	= 'lay-out';//no defined element type is automaticly table_field
+   $this->registry->plugins['mediabrowser']['xxdb_field_hooks']	= array
    (
 	  'blob',
 	  'string'
    );
+
+   $this->registry->plugins['mediabrowser']['config2'] = array
+   (
+	  'objname' => array(
+		 'name' => 'objname',
+		 'label' => lang('Name of media site object'),
+		 'type' => 'text',
+		 'size' => 100
+	  ),
+   );
+
+
+   $this->registry->plugins['mediabrowser']['config_execute']		= false;
 
 ?>

@@ -62,7 +62,7 @@
 		 }
 		 //	 die($import_into);
 
-		 if (is_array($_FILES[importfile]) || is_file($_POST['newtemp']))
+		 if (is_array($_FILES['importfile']) || is_file($_POST['newtemp']))
 		 {
 			if(is_file($_POST['newtemp']))
 			{	
@@ -151,7 +151,7 @@
 
 		 $this->msg_box();
 
-		 $this->tplsav2->form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site');
+		 $this->tplsav2->form_action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site');
 		 $this->tplsav2->import_into=$import_into;
 		 $this->tplsav2->display('import_site_select_objects.tpl.php');		 
 
@@ -171,7 +171,7 @@
 		 }
 		 $this->msg_box();
 
-		 $this->tplsav2->form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site');
+		 $this->tplsav2->form_action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site');
 		 $this->tplsav2->import_into=$import_into;
 		 $this->tplsav2->display('importsite.tpl.php');		 
 	  }
@@ -274,9 +274,9 @@
 			$this->bo->sessionmanager->save();
 		 }
 
-		 $import=$_FILES[importfile];
+		 $import=$_FILES['importfile'];
 
-		 @include($import[tmp_name]);
+		 @include($import['tmp_name']);
 		 $check_versions = true;
 
 		 if(!($import_site && $checkbit))
@@ -298,8 +298,8 @@
 		 {
 			if(!$this->check_version($import_site['jinn_version'],$check_versions))
 			{
-			   $this->bo->session['tmp']['file'] 				= $import[name]; 
-			   $this->bo->session['tmp']['replace']				= $_POST[replace_existing];
+			   $this->bo->session['tmp']['file'] 				= $import['name']; 
+			   $this->bo->session['tmp']['replace']				= $_POST['replace_existing'];
 			   $this->bo->session['tmp']['import_site'] 		= $import_site; 
 			   $this->bo->session['tmp']['import_site_objects']	= $import_site_objects; 
 			   $this->bo->session['tmp']['import_obj_fields'] 	= $import_obj_fields; 
@@ -352,7 +352,7 @@
 	  function save_site($import_site,$replace)
 	  {
 		 $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_sites');
-		 unset($validfields[site_id]);
+		 unset($validfields['site_id']);
 		 unset($imported);
 
 		 while(list($key, $val) = each($import_site)) 
@@ -405,7 +405,7 @@
 			$this->bo->addInfo(lang('Replaced existing site named <strong>%1</strong>.',$new_site_name));
 
 			$status=$this->bo->so->insert_new_site($data);
-			$new_site_id=$status[where_value];
+			$new_site_id=$status['where_value'];
 		 }
 		 else
 		 {
@@ -431,7 +431,7 @@
 			}
 
 			$status=$this->bo->so->insert_new_site($data);
-			$new_site_id=$status[where_value];
+			$new_site_id=$status['where_value'];
 
 			if(is_array($datanew))
 			{
@@ -705,7 +705,7 @@
 		 {
 			$validfields = $this->bo->so->phpgw_table_fields('egw_jinn_report');
 
-			unset($validfields[report_id]);
+			unset($validfields['report_id']);
 
 			foreach($import_reports as $report)
 			{
@@ -765,7 +765,7 @@
 		 $this->header(lang('Import JiNN Site'));
 		 $this->msg_box();
 
-		 $this->tplsav2->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'));
+		 $this->tplsav2->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'));
 		 $this->tplsav2->set_var('loaded_file',$this->bo->session['tmp']['file']);
 
 		 if($this->bo->session['tmp']['replace'])
@@ -773,7 +773,7 @@
 			$this->tplsav2->set_var('checked', 'checked="checked"');
 		 }
 
-		 $this->tplsav2->set_var('cancel_redirect', $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites'));
+		 $this->tplsav2->set_var('cancel_redirect', $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites'));
 
 		 $this->tplsav2->display('import_incompatible.tpl.php');
 
@@ -788,15 +788,15 @@
 	  */
 	  function import_object()
 	  {
-		 if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
+		 if (is_array($GLOBALS['HTTP_POST_FILES']['importfile']))
 		 {
-			$import=$GLOBALS[HTTP_POST_FILES][importfile];
+			$import=$GLOBALS['HTTP_POST_FILES']['importfile'];
 
-			@include($import[tmp_name]);
+			@include($import['tmp_name']);
 			if ($import_object && $checkbit)
 			{
 			   $validfields = $this->bo->so->phpgw_table_fields('egw_jinn_objects');
-			   unset($validfields[object_id]);
+			   unset($validfields['object_id']);
 			   $imported = array();
 
 			   while(list($key, $val) = each($import_object)) 
@@ -804,7 +804,7 @@
 				  if(array_key_exists($key, $validfields))
 				  {
 					 $imported[$key] = true;
-					 if ($key=='parent_site_id') $val=$_POST[parent_site_id];
+					 if ($key=='parent_site_id') $val=$_POST['parent_site_id'];
 					 $data[] = array
 					 (
 						'name' => $key,
@@ -824,13 +824,13 @@
 				  }
 			   }
 
-			   $new_object_name=$data[1][value];	
-			   $thisobjectname=$this->bo->so->get_objects_by_name($new_object_name,$_POST[parent_site_id]);
+			   $new_object_name=$data[1]['value'];	
+			   $thisobjectname=$this->bo->so->get_objects_by_name($new_object_name,$_POST['parent_site_id']);
 
 			   /* insert as new object */
 			   if($status=$this->bo->so->insert_phpgw_data('egw_jinn_objects',$data))
 			   {
-				  $new_object_id=$status[where_value];
+				  $new_object_id=$status['where_value'];
 
 				  if(count($thisobjectname)>=1)
 				  {
@@ -912,7 +912,7 @@
 				  $this->bo->addError(lang('Import failed'));
 			   }
 
-			   $this->bo->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$_POST[parent_site_id]);
+			   $this->bo->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$_POST['parent_site_id']);
 			}
 
 		 }
@@ -925,7 +925,7 @@
 			$this->header(lang('Import JiNN-Object'));
 			$this->msg_box();
 
-			$this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.ui_importsite.import_object'));
+			$this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_object'));
 			$this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN object file (*.jobj'));
 			$this->template->set_var('parent_site_id',$this->bo->where_value);
 			$this->template->set_var('lang_submit_and_import',lang('submit and import'));
