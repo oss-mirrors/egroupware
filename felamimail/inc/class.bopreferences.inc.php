@@ -96,7 +96,22 @@
 		}
 		
 		function getListOfSignatures() {
-			return parent::getListOfSignatures($GLOBALS['egw_info']['user']['account_id']);
+			$userPrefs = $GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig'];
+			$signatures = parent::getListOfSignatures($GLOBALS['egw_info']['user']['account_id']);
+			
+			$GLOBALS['egw']->preferences->read_repository();			
+			
+			if(count($signatures) == 0 && 
+				!isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig_copied']) &&
+				!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig'])) {
+				
+				$this->saveSignature(-1, lang('default signature'), nl2br($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']));
+				$signatures = parent::getListOfSignatures($GLOBALS['egw_info']['user']['account_id']);
+				$GLOBALS['egw']->preferences->add('felamimail', 'email_sig_copied', true);
+				$GLOBALS['egw']->preferences->save_repository();
+			}
+			
+			return $signatures;
 		}
 		
 		function getPreferences()

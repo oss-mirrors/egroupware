@@ -129,13 +129,16 @@
 			// remove these tags and any spaces behind the tags
 			$search = array('/<p.*?> */', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */', '/<.?blockquote> */');
 			$replace = '';
-			
 			$text = preg_replace($search, $replace, $_html);
 			
 			// convert these tags and any spaces behind the tags to line breaks
-			$search = array('/&nbsp;<\/p> */', '/<\/p> */', '/<\/li> */', '/<br \/> */');
+			$search = array('/<\/li> */', '/<br \/> */');
 			$replace = "\r\n";
+			$text = preg_replace($search, $replace, $text);
 			
+			// convert these tags and any spaces behind the tags to double line breaks
+			$search = array('/&nbsp;<\/p> */', '/<\/p> */');
+			$replace = "\r\n\r\n";
 			$text = preg_replace($search, $replace, $text);
 			
 			// special replacements
@@ -516,11 +519,15 @@
 			$_mailObject->Subject = $bofelamimail->encodeHeader($_formData['subject'], 'q');
 			if($_formData['mimeType'] =='html') {
 				$_mailObject->IsHTML(true);
-				$_mailObject->Body    = $_formData['body'];
-				$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']);
 				if(!empty($_signature['signature'])) {
-					$_mailObject->AddStringPart($_signature['signature'], lang('signature'), 'quoted-printable', 'text/html');
-					$_mailObject->AltBody .= "\r\n--\r\n". $this->convertHTMLToText($_signature['signature']);
+					#$_mailObject->Body    = array($_formData['body'], $_signature['signature']);
+					$_mailObject->Body    = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $_signature['signature'];
+					$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']).
+						"\r\n--\r\n". 
+						$this->convertHTMLToText($_signature['signature']);
+				} else {
+					$_mailObject->Body	= $_formData['body'];
+					$_mailObject->AltBody	= $this->convertHTMLToText($_formData['body']);
 				}
 			} else {
 				$_mailObject->IsHTML(false);
@@ -529,10 +536,10 @@
 					$_mailObject->Body .= "\r\n--\r\n". $this->convertHTMLToText($_signature['signature']);
 				}
 			}
-			if (!empty($_formData['signature'])) {
-				$_mailObject->Body	.= "\r\n-- \r\n";
-				$_mailObject->Body	.= $_formData['signature'];
-			}
+		#	if (!empty($_formData['signature'])) {
+		#		$_mailObject->Body	.= "\r\n-- \r\n";
+		#		$_mailObject->Body	.= $_formData['signature'];
+		#	}
 
 			// add the attachments
 			foreach((array)$this->sessionData['attachments'] as $attachment) {
@@ -644,6 +651,10 @@
 				$folder[] = $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'];
 			}
 			$folder = array_unique($folder);
+		#	print "<pre>";
+		#	print $mail->getMessageHeader();
+		#	print htmlentities($mail->getMessageBody()) ."</pre>";
+		#	exit;
 
 			if (count($folder) > 0) {
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');

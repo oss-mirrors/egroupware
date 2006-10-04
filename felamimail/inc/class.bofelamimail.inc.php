@@ -906,88 +906,103 @@
 
 				foreach($_structure->parts as $mimePart) {
 					if($mimePart->type == TYPETEXT && $mimePart->subtype == 'PLAIN' && $mimePart->bytes > 0) {
-						$partText = array(
+						$partText[] = array(
 							'partID'	=> $parentPartID.$i ,
 							'charset'	=> $this->getMimePartCharset($mimePart) ,
 							'encoding'	=> $mimePart->encoding ,
 						);
 					} elseif ($mimePart->type == TYPETEXT && $mimePart->subtype == 'HTML' && $mimePart->bytes > 0) {
-						$partHTML = array(
+						$partHTML[] = array(
 							'partID'	=> $parentPartID.$i ,
 							'charset'	=> $this->getMimePartCharset($mimePart) ,
 							'encoding'	=> $mimePart->encoding ,
 						);
 					} elseif ($mimePart->type == TYPEMULTIPART && $mimePart->subtype == 'RELATED' && is_object($mimePart->parts[0])) {
-						$mimePart = $mimePart->parts[0];
+						#$mimePart = $mimePart->parts[0];
+						#_debug_array($mimePart);
 						$parentPartID = $parentPartID.$i;
-						if($mimePart->type == TYPETEXT && $mimePart->subtype == 'PLAIN' && $mimePart->bytes > 0) {
-							$partText = array(
-								'partID'	=> $parentPartID.'.1',
-								'charset'	=> $this->getMimePartCharset($mimePart) ,
-								'encoding'	=> $mimePart->encoding ,
-							);
-						} elseif ($mimePart->type == TYPETEXT && $mimePart->subtype == 'HTML' && $mimePart->bytes > 0) {
-							$partHTML = array(
-								'partID'	=> $parentPartID.'.1',
-								'charset'	=> $this->getMimePartCharset($mimePart) ,
-								'encoding'	=> $mimePart->encoding ,
-							);
+						$partCounter = 1;
+
+						foreach($mimePart->parts as $partOfRelated) {
+						#	_debug_array($partOfRelated);
+							if($partOfRelated->type == TYPETEXT && $partOfRelated->subtype == 'PLAIN' && $partOfRelated->bytes > 0) {
+								$partText[] = array(
+									'partID'	=> $parentPartID .'.'. $partCounter,
+									'charset'	=> $this->getMimePartCharset($partOfRelated) ,
+									'encoding'	=> $partOfRelated->encoding ,
+								);
+							} elseif ($partOfRelated->type == TYPETEXT && $partOfRelated->subtype == 'HTML' && $partOfRelated->bytes > 0) {
+								$partHTML[] = array(
+									'partID'	=> $parentPartID .'.'. $partCounter,
+									'charset'	=> $this->getMimePartCharset($partOfRelated) ,
+									'encoding'	=> $partOfRelated->encoding ,
+								);
+							}
+							$partCounter++;
 						}					
 					}
 					$i++;
 				}
-
+				#exit;
 				switch($_htmlMode) {
 					case 'always_display':
-						if(is_array($partHTML)) {
-							$partContent = $this->decodeMimePart(
-								imap_fetchbody($this->mbox, $_uid, $partHTML['partID'], FT_UID) ,
-								$partHTML['encoding']
-							);
-							$bodyPart[] = array(
-								'body'		=> $partContent ,
-								'mimeType'	=> 'text/html' ,
-								'charSet'	=> $partHTML['charset']
-							);
+						if(count($partHTML) > 0) {
+							foreach($partHTML as $partData) {
+								$partContent = $this->decodeMimePart(
+									imap_fetchbody($this->mbox, $_uid, $partData['partID'], FT_UID) ,
+									$partData['encoding']
+								);
+								$bodyPart[] = array(
+									'body'		=> $partContent ,
+									'mimeType'	=> 'text/html' ,
+									'charSet'	=> $partData['charset']
+								);
+							}
 						}
 						break;
 					case 'only_if_no_text':
-						if(is_array($partHTML) && !is_array($partText)) {
-							$partContent = $this->decodeMimePart(
-								imap_fetchbody($this->mbox, $_uid, $partHTML['partID'], FT_UID) ,
-								$partHTML['encoding']
-							);
-							$bodyPart[] = array(
-								'body'		=> $partContent ,
-								'mimeType'	=> 'text/html' ,
-								'charSet'	=> $partHTML['charset']
-							);
-						} elseif (is_array($partText)) {
-							$partContent = $this->decodeMimePart(
-								imap_fetchbody($this->mbox, $_uid, $partText['partID'], FT_UID) ,
-								$partText['encoding']
-							);
+						if(count($partHTML) > 0  && count($partText) == 0) {
+							foreach($partHTML as $partData) {
+								$partContent = $this->decodeMimePart(
+									imap_fetchbody($this->mbox, $_uid, $partData['partID'], FT_UID) ,
+									$partData['encoding']
+								);
+								$bodyPart[] = array(
+									'body'		=> $partContent ,
+									'mimeType'	=> 'text/html' ,
+									'charSet'	=> $partData['charset']
+								);
+							}
+						} elseif (count($partText) > 0) {
+							foreach($partText as $partData) {
+								$partContent = $this->decodeMimePart(
+									imap_fetchbody($this->mbox, $_uid, $partData['partID'], FT_UID) ,
+									$partData['encoding']
+								);
 
-							$bodyPart[] = array(
-								'body'		=> $partContent ,
-								'mimeType'	=> 'text/plain' ,
-								'charSet'	=> $partText['charset']
-							);
+								$bodyPart[] = array(
+									'body'		=> $partContent ,
+									'mimeType'	=> 'text/plain' ,
+									'charSet'	=> $partData['charset']
+								);
+							}
 						}
 						break;
 						
 					default:
-						if (is_array($partText)) {
-							$partContent = $this->decodeMimePart(
-								imap_fetchbody($this->mbox, $_uid, $partText['partID'], FT_UID) ,
-								$partText['encoding']
-							);
-
-							$bodyPart[] = array(
-								'body'		=> $partContent ,
-								'mimeType'	=> 'text/plain' ,
-								'charSet'	=> $partText['charset']
-							);
+						if (count($partText) > 0) {
+							foreach($partText as $partData) {
+								$partContent = $this->decodeMimePart(
+									imap_fetchbody($this->mbox, $_uid, $partData['partID'], FT_UID) ,
+									$partData['encoding']
+								);
+							
+								$bodyPart[] = array(
+									'body'		=> $partContent ,
+									'mimeType'	=> 'text/plain' ,
+									'charSet'	=> $partData['charset']
+								);
+							}
 						}
 						break;
 				}
@@ -1527,7 +1542,7 @@
 				}
 			}
 			
-#			_debug_array($structure);
+			#_debug_array($structure); exit;
 			
 #			print "<br>-- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----- ---- ---- ---- ---- ----   --- - - -- - - - - - - -<br>";
 

@@ -1,3 +1,7 @@
+20061004
+- completly finnished rewrite of signature handling
+- fixed display of messages. You get not the same font also used everwhere in eGW 
+
 20060928
 - finished signature handling rewrite mostly. You can now define multiple signatures
   and select them while writing a email.

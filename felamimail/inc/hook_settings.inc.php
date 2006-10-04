@@ -124,16 +124,16 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
-		'email_sig' => array(
-			'type'   => 'notify',
-			'label'  => 'email signature',
-			'name'   => 'email_sig',
-			'rows'   => 5,
-			'cols'   => 80,
-			'xmlrpc' => True,
-			'admin'  => False,
-			'help'   => ' ',	// this is to get the substitution help-texts
-		),
+#		'email_sig' => array(
+#			'type'   => 'notify',
+#			'label'  => 'email signature',
+#			'name'   => 'email_sig',
+#			'rows'   => 5,
+#			'cols'   => 80,
+#			'xmlrpc' => True,
+#			'admin'  => False,
+#			'help'   => ' ',	// this is to get the substitution help-texts
+#		),
 		'sortOrder' => array(
 			'type'   => 'select',
 			'label'  => 'Default sorting order',

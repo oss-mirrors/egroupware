@@ -132,7 +132,7 @@
 			// change folder
 			$this->bofelamimail->sessionData['mailbox']	= urldecode($_GET["mailbox"]);
 			$this->bofelamimail->sessionData['startMessage']= 1;
-			$this->bofelamimail->sessionData['sort']	= $this->preferences['sortOrder'];
+			$this->bofelamimail->sessionData['sort']	= $this->preferences->preferences['sortOrder'];
 			$this->bofelamimail->sessionData['activeFilter']= -1;
 
 			$this->bofelamimail->saveSessionData();
@@ -392,7 +392,8 @@
 			(
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, egw_getWindowOuterHeight());";
+			#$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, egw_getWindowOuterHeight());";
+			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, 750);";
 
 			$navbarImages = array(
 				'new'			=> array(
