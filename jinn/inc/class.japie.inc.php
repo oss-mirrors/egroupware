@@ -20,7 +20,7 @@
 		 
 		 $this->setSession();
 		 
-		 //$this->check_or_upgrade();
+		 $this->check_or_upgrade();
 	  }
 
 	  /**
