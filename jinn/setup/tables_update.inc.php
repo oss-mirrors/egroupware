@@ -1806,4 +1806,119 @@
 
 		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.136';
 	}
+
+
+	$test[] = '0.9.136';
+	function jinn_upgrade0_9_136()
+	{
+		$GLOBALS['egw_setup']->oProc->DropColumn('egw_jinn_sites',array(
+			'fd' => array(
+				'site_id' => array('type' => 'auto','nullable' => False),
+				'site_name' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'site_db_name' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'site_db_host' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'site_db_user' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'site_db_password' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'site_db_type' => array('type' => 'varchar','precision' => '10','nullable' => False),
+				'upload_path' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'dev_site_db_name' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'dev_site_db_host' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'dev_site_db_user' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'dev_site_db_password' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'dev_site_db_type' => array('type' => 'varchar','precision' => '10','nullable' => False),
+				'dev_upload_path' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'object_scan_prefix' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'jinn_version' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'host_profile' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'uniqid' => array('type' => 'varchar','precision' => '30','nullable' => False),
+				'site_version' => array('type' => 'int','precision' => '4','nullable' => False)
+			),
+			'pk' => array('site_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),'website_url');
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.137';
+	}
+
+
+	$test[] = '0.9.137';
+	function jinn_upgrade0_9_137()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_sites','jinn_version',array(
+			'type' => 'varchar',
+			'precision' => '30'
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.138';
+	}
+
+
+	$test[] = '0.9.138';
+	function jinn_upgrade0_9_138()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_sites','site_version',array(
+			'type' => 'int',
+			'precision' => '4'
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.139';
+	}
+
+
+	$test[] = '0.9.139';
+	function jinn_upgrade0_9_139()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_objects','upload_url',array(
+			'type' => 'varchar',
+			'precision' => '250'
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_objects','dev_upload_url',array(
+			'type' => 'varchar',
+			'precision' => '250'
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.140';
+	}
+
+
+	$test[] = '0.9.140';
+	function jinn_upgrade0_9_140()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_objects','upload_path',array(
+			'type' => 'varchar',
+			'precision' => '250'
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_objects','dev_upload_path',array(
+			'type' => 'varchar',
+			'precision' => '255'
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.141';
+	}
+
+
+	$test[] = '0.9.141';
+	function jinn_upgrade0_9_141()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_objects','layoutmethod',array(
+			'type' => 'char',
+			'precision' => '1'
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_objects','formwidth',array(
+			'type' => 'int',
+			'precision' => '4',
+			'default' => '0'
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_jinn_objects','formheight',array(
+			'type' => 'int',
+			'precision' => '4',
+			'default' => '0'
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.142';
+	}
 ?>
