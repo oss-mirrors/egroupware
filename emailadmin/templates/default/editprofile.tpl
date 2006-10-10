@@ -325,6 +325,99 @@
 		</table>
 		</fieldset>
 	</div>
+
+	<!-- The code for Postfix/LDAP Server with dbmailldapschema-->
+	
+	<div id="smtpcontent5" class="inactivetab">
+		<fieldset style="width:650px;" class="row_on"><legend>{lang_smtp_settings}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
+			<tr>
+				<td width="300px">{lang_SMTP_server_hostname_or_IP_address}:</td>
+				<td><input name="smtpsettings[5][smtpServer]" size="40" value="{value_smtpServer}"></td>
+			</tr>
+			
+			<tr>
+				<td>{lang_SMTP_server_port}:</td>
+				<td><input name="smtpsettings[5][smtpPort]" maxlength="5" size="5" value="{value_smtpPort}"></td>
+			</tr>
+		</table>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_smtp_auth}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
+			<tr class="row_off">
+				<td width="300px">{lang_Use_SMTP_auth}:</td>
+				<td>
+					<input type="checkbox" name="smtpsettings[5][smtpAuth]" {selected_smtpAuth} value="yes">
+				</td>
+			</tr>
+			<tr>
+				<td>{lang_username}:</td>
+				<td>
+					<input type="text" name="smtpsettings[5][ea_smtp_auth_username]" style="width: 350px;" value="{value_ea_smtp_auth_username}">
+				</td>
+			</tr>
+			<tr>
+				<td>{lang_password}:</td>
+				<td>
+					<input type="password" name="smtpsettings[5][ea_smtp_auth_password]" style="width: 350px;" value="{value_ea_smt_pauth_password}">
+				</td>
+			</tr>
+		</table>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_smtp_options}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
+			<tr>
+				<td width="300px">{lang_user_can_edit_forwarding_address}:</td>
+				<td>
+					<input type="checkbox" name="smtpsettings[5][editforwardingaddress]" {selected_editforwardingaddress} value="yes">
+				</td>
+			</tr>
+		</table>
+		</fieldset>
+<!--		<table>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+		</table>
+		<table width="90%" border="0" cellspacing="0" cellpading="1">
+			<tr class="th">
+				<td width="50%" class="td_left">
+					<b>{lang_LDAP_settings}<b>
+				</td>
+				<td class="td_right">
+					&nbsp;
+				</td>
+			</tr>
+			<tr class="row_off">
+				<td class="td_left">{lang_use_LDAP_defaults}:</td>
+				<td class="td_right">
+					<input type="checkbox" name="smtpsettings[5][smtpLDAPUseDefault]" {selected_smtpLDAPUseDefault} value="yes">
+				</td>
+			</tr>
+			<tr class="row_on">
+				<td width="50%" class="td_left">{lang_LDAP_server_hostname_or_IP_address}:</td>
+				<td width="50%" class="td_right"><input name="smtpsettings[5][smtpLDAPServer]" maxlength="80" size="40" value="{value_smtpLDAPServer}"></td>
+			</tr>
+			
+			<tr class="row_off">
+				<td class="td_left">{lang_LDAP_server_admin_dn}:</td>
+				<td class="td_right"><input name="smtpsettings[5][smtpLDAPAdminDN]" maxlength="200" size="40" value="{value_smtpLDAPAdminDN}"></td>
+			</tr>
+			
+			<tr class="row_on">
+				<td class="td_left">{lang_LDAP_server_admin_pw}:</td>
+				<td class="td_right"><input type="password" name="smtpsettings[5][smtpLDAPAdminPW]" maxlength="30" size="40" value="{value_smtpLDAPAdminPW}"></td>
+			</tr>
+
+			<tr class="row_off">
+				<td class="td_left">{lang_LDAP_server_base_dn}:</td>
+				<td class="td_right"><input name="smtpsettings[5][smtpLDAPBaseDN]" maxlength="200" size="40" value="{value_smtpLDAPBaseDN}"></td>
+			</tr>
+		</table> -->
+	</div>
+
 </div>
 
 <!-- The code for IMAP/POP3 Tab -->
@@ -636,6 +729,70 @@
 		</table>
 		</fieldset>
 	</div>	
+
+	<!-- The code for the DBMail Server with dbmailuserbackend -->
+	
+	<div id="imapcontent6" class="inactivetab">
+		<fieldset style="width:650px;" class="row_on"><legend>{lang_server_settings}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
+			<tr>
+				<td width="300px">{lang_imap_server_hostname_or_IP_address}:</td>
+				<td><input name="imapsettings[6][imapServer]" maxlength="80" style="width: 350px;" value="{value_imapServer}"></td>
+			</tr>
+			
+			<tr>
+				<td>{lang_imap_server_port}:</td>
+				<td><input name="imapsettings[6][imapPort]" maxlength="5" size="5" value="{value_imapPort}"></td>
+			</tr>
+			
+			<tr>
+				<td>{lang_imap_server_logintyp}:</td>
+				<td>
+					<select name="imapsettings[6][imapLoginType]" style="width: 350px;" size="1">
+						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
+						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+					</select>
+				</td>
+
+			</tr>
+		</table>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
+                <table width="100%" border="0" cellspacing="0" cellpading="1">
+
+			<tr>
+				<td width="300px">{lang_use_tls_encryption}:</td>
+				<td>
+					<input type="checkbox" name="imapsettings[6][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+				</td>
+			</tr>
+
+			<tr>
+				<td>{lang_use_tls_authentication}:</td>
+				<td>
+					<input type="checkbox" name="imapsettings[6][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+				</td>
+			</tr>
+		</table>
+		</fieldset>
+		<p>
+		<fieldset style="width:650px;" class="row_off"><legend>{lang_sieve_settings}</legend>
+		<table width="100%" border="0" cellspacing="0" cellpading="1">
+			<tr>
+				<td width="300px">{lang_enable_sieve}:</td>
+				<td>
+					<input type="checkbox" name="imapsettings[6][imapEnableSieve]" {selected_imapEnableSieve} value="yes">
+				</td>
+			</tr>
+			<tr>
+				<td>{lang_sieve_server_port}:</td>
+				<td><input name="imapsettings[6][imapSievePort]" maxlength="5" size="5" value="{value_imapSievePort}"></td>
+			</tr>
+		</table>
+		</fieldset>
+	</div>
+	
 </div>
 
 <!-- The code for External Tab -->

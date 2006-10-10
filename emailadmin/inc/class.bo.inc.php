@@ -56,7 +56,7 @@
 						'smtpLDAPBaseDN',
 						'smtpLDAPUseDefault'
 					),
-					'description'	=> 'Postfix (qmailUser Schema)',
+					'description'	=> 'Postfix (qmail Schema)',
 					'classname'	=> 'postfixldap'
 				),
 				'3'     => array(
@@ -83,6 +83,24 @@
 					),
 					'description'   => 'Plesk SMTP-Server (Qmail)',
 					'classname'     => 'smtpplesk'
+				),
+				'5' 	=> array(
+					'fieldNames'	=> array(
+						'smtpServer',
+						'smtpPort',
+						'smtpAuth',
+						'ea_smtp_auth_username',
+						'ea_smtp_auth_password',
+						'smtpType',
+						'editforwardingaddress',
+						'smtpLDAPServer',
+						'smtpLDAPAdminDN',
+						'smtpLDAPAdminPW',
+						'smtpLDAPBaseDN',
+						'smtpLDAPUseDefault'
+					),
+					'description'	=> 'Postfix (dbmail Schema)',
+					'classname'	=> 'postfixdbmailuser'
 				),
 			);
 
@@ -165,6 +183,23 @@
 					'description'   => 'Plesk IMAP Server (Courier)',
 					'protocol'      => 'imap',
 					'classname'     => 'pleskimap'
+				),
+				'6' 	=> array(
+					'fieldNames'	=> array(
+						'imapServer',
+						'imapPort',
+						'imapType',
+						'imapLoginType',
+						'imapTLSEncryption',
+						'imapTLSAuthentication',
+						'imapoldcclient',
+						'imapEnableSieve',
+						'imapSieveServer',
+						'imapSievePort'
+					),
+					'description'	=> 'DBMail (dbmailUser schema)',
+					'protocol'	=> 'imap',
+					'classname'	=> 'dbmaildbmailuser'
 				),
 			); 
 			

@@ -1,3 +1,7 @@
+20061010 lkneschke@metaways.de
+
+- added support for dbmailuser schema
+
 20060416 RalfBecker-AT-outdoor-training.de:
 
 - added plesk plugin to create mail accounts and manage passwords, aliases

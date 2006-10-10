@@ -13,7 +13,7 @@
 	
 	include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
 	
-	class dbmailqmailuser extends defaultimap {
+	class dbmaildbmailuser extends defaultimap {
 		var $enableSieve = false;
 		
 		var $sieveHost;
@@ -43,7 +43,7 @@
 				return false;
 			}
 
-			$filter		= '(&(objectclass=posixaccount)(uid='. $_username .')(qmailGID='. sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id'])) .'))';
+			$filter		= '(&(objectclass=posixaccount)(uid='. $_username .')(dbmailGID='. sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id'])) .'))';
 			$justthese	= array('dn', 'objectclass', 'mailQuota');
 			if($sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $justthese)) {
 
@@ -76,25 +76,37 @@
 			}
 
 			$filter		= '(&(objectclass=posixaccount)(uidnumber='. $uidnumber .'))';
-			$justthese	= array('dn', 'objectclass', 'qmailUID', 'qmailGID', 'mail');
+			$justthese	= array('dn', 'objectclass', 'dbmailUID', 'dbmailGID', 'mail');
 			$sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $justthese);
 			
 			if($info = ldap_get_entries($ds, $sri)) {
-				if(!in_array('qmailuser',$info[0]['objectclass']) && $info[0]['email']) {
+				if(!in_array('dbmailuser',$info[0]['objectclass']) && $info[0]['mail']) {
 					$newData['objectclass'] = $info[0]['objectclass'];
 					unset($newData['objectclass']['count']);
-					$newData['objectclass'][] = 'qmailuser';
+					$newData['objectclass'][] = 'dbmailuser';
 					sort($newData['objectclass']);
-					$newData['qmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
-					$newData['qmailUID']	= (!empty($this->domainName)) ? $_username .'@'. $this->domainName : $_username;
+					$newData['dbmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
+					$newData['dbmailUID']	= (!empty($this->domainName)) ? $_hookValues['account_lid'] .'@'. $this->domainName : $_hookValues['account_lid'];
 					
-					ldap_modify($ds, $info[0]['dn'], $newData);
+					if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
+						#print ldap_error($ds);
+					}
 					
 					return true;
 				} else {
-					if (in_array('qmailuser',$info[0]['objectclass']) && !$info[0]['qmailgid']) {
+					if (in_array('dbmailuser',$info[0]['objectclass']) && !$info[0]['dbmailuid']) {
 						$newData = array();
-						$newData['qmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
+						$newData['dbmailUID']	= (!empty($this->domainName)) ? $_username .'@'. $this->domainName : $_username;
+						
+						if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
+							#print ldap_error($ds);
+							#return false;
+						}
+					}
+				
+					if (in_array('dbmailuser',$info[0]['objectclass']) && !$info[0]['dbmailgid']) {
+						$newData = array();
+						$newData['dbmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
 
 						if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
 							#print ldap_error($ds);
@@ -123,23 +135,33 @@
 			}
 
 			$filter		= '(&(objectclass=posixaccount)(uid='. $_username .'))';
-			$justthese	= array('dn', 'objectclass', 'qmailGID', 'mail');
+			$justthese	= array('dn', 'objectclass', 'dbmailGID', 'dbmailUID', 'mail');
 			$sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $justthese);
 
 			if($info = ldap_get_entries($ds, $sri)) {
 				#_debug_array($info);
-				if(!in_array('qmailuser',$info[0]['objectclass']) && $info[0]['email']) {
+				if(!in_array('dbmailuser',$info[0]['objectclass']) && $info[0]['email']) {
 					$newData['objectclass'] = $info[0]['objectclass'];
 					unset($newData['objectclass']['count']);
-					$newData['objectclass'][] = 'qmailuser';
+					$newData['objectclass'][] = 'dbmailuser';
 					sort($newData['objectclass']);
-					$newData['qmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
+					$newData['dbmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
 					
 					ldap_modify($ds, $info[0]['dn'], $newData);
 				} else {
-					if (in_array('qmailuser',$info[0]['objectclass']) && !$info[0]['qmailgid']) {
+					if (in_array('dbmailuser',$info[0]['objectclass']) && !$info[0]['dbmailuid']) {
 						$newData = array();
-						$newData['qmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
+						$newData['dbmailUID']	= (!empty($this->domainName)) ? $_username .'@'. $this->domainName : $_username;
+
+						if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
+							#print ldap_error($ds);
+							#return false;
+						}
+					}
+				
+					if (in_array('dbmailuser',$info[0]['objectclass']) && !$info[0]['dbmailgid']) {
+						$newData = array();
+						$newData['dbmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
 
 						if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
 							#print ldap_error($ds);
