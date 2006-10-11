@@ -884,7 +884,6 @@
 			
 			$body = preg_replace($nonDisplayAbleCharacters,'',$body);
 			
-			header('Content-type: text/html; charset='.$GLOBALS['egw']->translation->charset());
 			print '<style type="text/css">
 				body,html {
 			        height:100%;
