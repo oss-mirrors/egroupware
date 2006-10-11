@@ -127,11 +127,24 @@
 						break;
 				}
 				$this->saveSessionData();
+				
+				$this->checkCreateFolders();
 			}
 			
 			if (function_exists('mb_convert_encoding')) $this->mbAvailable = TRUE;
 
 			$this->htmlOptions	= $this->mailPreferences->preferences['htmlOptions'];
+		}
+		
+		function checkCreateFolders()
+		{
+			$this->folders = array('Sent','Trash','Junk','Drafts');
+			$this->openConnection();
+			
+			foreach ($this->folders as $folder)
+			{
+				$this->imap_createmailbox($folder,true);
+			}
 		}
 		
 		function addACL($_folderName, $_accountName, $_acl)
