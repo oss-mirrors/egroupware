@@ -42,9 +42,8 @@ class postfixinetorgperson extends defaultsmtp
 		$ds = $GLOBALS['egw']->common->ldapConnect();
 		$sri = @ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'],"(&(uid=$_accountName)(objectclass=posixAccount))",array('dn','mail'));
 		
-		if ($sri)
+		if ($sri && ($allValues = ldap_get_entries($ds, $sri)) && is_array($allValues[0]['mail']))
 		{
-			$allValues = ldap_get_entries($ds, $sri);
 			foreach($allValues[0]['mail'] as $n => $mail)
 			{
 				if (!is_numeric($n)) continue;
