@@ -22,6 +22,7 @@ allways a new window	felamimail	sl	vedno novo okno
 always show html emails	felamimail	sl	Vedno prikaži HTML sporočila
 and	felamimail	sl	in
 any of	felamimail	sl	katerikoli od
+any status	felamimail	sl	katerikoli status
 anyone	felamimail	sl	kdorkoli
 as a subfolder of	felamimail	sl	kot podmapa v
 attachments	felamimail	sl	Priponke
@@ -41,6 +42,7 @@ cc	felamimail	sl	CC
 change folder	felamimail	sl	Spremeni mapo
 check message against next rule also	felamimail	sl	preverite sporočilo nasproti nasletnjemu pravilu
 checkbox	felamimail	sl	Stikalo
+clear search	felamimail	sl	Zbriši iskanje
 click here to log back in.	felamimail	sl	Kliknite tu za ponovno prijavo.
 click here to return to %1	felamimail	sl	Kliknite tu za vrnitev v %1
 close all	felamimail	sl	zapri vse
@@ -308,8 +310,10 @@ row order style	felamimail	sl	Slog zaporednih vrstic
 rule	felamimail	sl	Pravilo
 sat	felamimail	sl	sob
 save	felamimail	sl	Shrani
-save as draft	felamimail	sl	shrani kot osnutek
-save changes	felamimail	sl	shrani spremembe
+save as draft	felamimail	sl	Shrani kot osnutek
+save as infolog	felamimail	sl	Shrani kot Infolog
+save changes	felamimail	sl	Shrani spremembe
+save message to disk	felamimail	sl	Shrani sporočilo na disk
 script name	felamimail	sl	ime skripte
 script status	felamimail	sl	status skripte
 search	felamimail	sl	Iskanje
@@ -332,6 +336,8 @@ size	felamimail	sl	Velikost
 size of editor window	felamimail	sl	Velikost okna za urejanje
 size(...->0)	felamimail	sl	Velikost (... -> 0)
 size(0->...)	felamimail	sl	Velikost (0 -> ...)
+skipping forward	felamimail	sl	skok naprej
+skipping previous	felamimail	sl	skok nazaj
 small view	felamimail	sl	skrčen pogled
 smtp settings	admin	sl	SMTP nastavitve
 subject	felamimail	sl	Zadeva
@@ -376,6 +382,7 @@ unsubscribed	felamimail	sl	Odjavljen
 unsubscribed successfully!	felamimail	sl	Uspešno odjavljen!
 up	felamimail	sl	gor
 updating message status	felamimail	sl	Posodabljanje stanja sporočil
+updating view	felamimail	sl	Posodabljanje pogleda
 use <a href="%1">emailadmin</a> to create profiles	felamimail	sl	uporabi <a href="%1">EmailAdmin</a> za izdelavo profilov
 use a signature	felamimail	sl	Uporabi podpis
 use a signature?	felamimail	sl	Uporabim podpis?
@@ -387,6 +394,7 @@ users can define their own emailaccounts	admin	sl	Uporabniki lahko definirajo la
 vacation notice	felamimail	sl	Na oddihu
 validate certificate	felamimail	sl	Preveri certifikat
 view full header	felamimail	sl	Pokaži celotno glavo
+view header lines	felamimail	sl	Pokaži glavo
 view message	felamimail	sl	Pokaži sporočilo
 viewing full header	felamimail	sl	Prikaz celotne glave
 viewing message	felamimail	sl	Prikaz sporočila

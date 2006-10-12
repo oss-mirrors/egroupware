@@ -103,6 +103,7 @@ wiki menu	wiki	es-es	Menú wiki
 wiki startpage	wiki	es-es	Página de inicio del wiki
 writable by	wiki	es-es	De escritura para
 yes always	admin	es-es	Sí, siempre
+yes with navbar	admin	es-es	Sí, con barra de navegación
 you have been denied access to this site.	wiki	es-es	Le ha sido denegado el acceso a este sitio
 you have entered an invalid user name.	wiki	es-es	Ha introducido un nombre de usuario que no es válido
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	es-es	Ha excedido el número de páginas que se permite visitar durante un período de tiempo. Por favor, vuelva más tarde.

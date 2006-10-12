@@ -22,6 +22,7 @@ allways a new window	felamimail	pt-br	sempre uma nova janela
 always show html emails	felamimail	pt-br	Sempre mostar mensagens em HMTL
 and	felamimail	pt-br	e
 any of	felamimail	pt-br	qualquer
+any status	felamimail	pt-br	qualquer status
 anyone	felamimail	pt-br	qualquer um
 as a subfolder of	felamimail	pt-br	como subpasta de
 attachments	felamimail	pt-br	Anexos
@@ -41,6 +42,7 @@ cc	felamimail	pt-br	cc
 change folder	felamimail	pt-br	Mudar pasta
 check message against next rule also	felamimail	pt-br	Verificar mensagem com a próxima regra também
 checkbox	felamimail	pt-br	Caixa de seleção
+clear search	felamimail	pt-br	limpar procura
 click here to log back in.	felamimail	pt-br	Clique aqui para conectar
 click here to return to %1	felamimail	pt-br	Clique aqui para voltar a %1
 close all	felamimail	pt-br	Fechar todos
@@ -311,6 +313,7 @@ save	felamimail	pt-br	salvar
 save as draft	felamimail	pt-br	salvar como rascunho
 save as infolog	felamimail	pt-br	salvar como tarefa
 save changes	felamimail	pt-br	Salvar alterações
+save message to disk	felamimail	pt-br	Salvar mensagem no disco
 script name	felamimail	pt-br	Nome do script
 script status	felamimail	pt-br	Status do script
 search	felamimail	pt-br	Pesquisa
@@ -381,6 +384,7 @@ unsubscribed	felamimail	pt-br	Desinscrito
 unsubscribed successfully!	felamimail	pt-br	Desinscrito com sucesso!
 up	felamimail	pt-br	para cima
 updating message status	felamimail	pt-br	atualizando status da(s) mensagem(ns)
+updating view	felamimail	pt-br	atualizando exibição
 use <a href="%1">emailadmin</a> to create profiles	felamimail	pt-br	usar <a href="%1">Administrador de E-Mails</a> para criar perfis.
 use a signature	felamimail	pt-br	Usar uma asinatura
 use a signature?	felamimail	pt-br	Usar uma asinatura?
@@ -392,6 +396,7 @@ users can define their own emailaccounts	admin	pt-br	Usuário pode definir suas p
 vacation notice	felamimail	pt-br	Notícia de férias
 validate certificate	felamimail	pt-br	validar certificado
 view full header	felamimail	pt-br	Exibir cabeçalho completo
+view header lines	felamimail	pt-br	Exibir linhas de cabeçalho
 view message	felamimail	pt-br	Exibir mensagem
 viewing full header	felamimail	pt-br	Exibindo cabeçalho completo
 viewing message	felamimail	pt-br	Exibindo mensagem
@@ -402,4 +407,4 @@ with message	felamimail	pt-br	com mensagem
 with message "%1"	felamimail	pt-br	com mensagem "%1"
 wrap incoming text at	felamimail	pt-br	Quebrar a linha do texto de entrada em
 writing	felamimail	pt-br	escrevendo
-wrote	felamimail	pt-br	esceveu
+wrote	felamimail	pt-br	escrito

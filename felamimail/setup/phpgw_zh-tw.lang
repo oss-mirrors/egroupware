@@ -22,6 +22,7 @@ allways a new window	felamimail	zh-tw	都開啟一個新視窗
 always show html emails	felamimail	zh-tw	都用HTML顯示郵件
 and	felamimail	zh-tw	且
 any of	felamimail	zh-tw	任意的
+any status	felamimail	zh-tw	任意狀態
 anyone	felamimail	zh-tw	任何人
 as a subfolder of	felamimail	zh-tw	子資料夾在
 attachments	felamimail	zh-tw	附加檔案
@@ -41,6 +42,7 @@ cc	felamimail	zh-tw	副本
 change folder	felamimail	zh-tw	改變資料夾
 check message against next rule also	felamimail	zh-tw	也用下一個規則檢查郵件
 checkbox	felamimail	zh-tw	核選方塊
+clear search	felamimail	zh-tw	清除搜尋
 click here to log back in.	felamimail	zh-tw	點這裡登入
 click here to return to %1	felamimail	zh-tw	點這裡回到%1
 close all	felamimail	zh-tw	全部關閉
@@ -309,7 +311,9 @@ rule	felamimail	zh-tw	規則
 sat	felamimail	zh-tw	六
 save	felamimail	zh-tw	儲存
 save as draft	felamimail	zh-tw	儲存為草稿
+save as infolog	felamimail	zh-tw	儲存為記事
 save changes	felamimail	zh-tw	儲存修改
+save message to disk	felamimail	zh-tw	儲存訊息到硬碟
 script name	felamimail	zh-tw	指令名稱
 script status	felamimail	zh-tw	指令狀態
 search	felamimail	zh-tw	搜尋
@@ -380,6 +384,7 @@ unsubscribed	felamimail	zh-tw	取消訂閱
 unsubscribed successfully!	felamimail	zh-tw	取消訂閱完成！
 up	felamimail	zh-tw	上一層
 updating message status	felamimail	zh-tw	更新訊息狀態中
+updating view	felamimail	zh-tw	更新檢視
 use <a href="%1">emailadmin</a> to create profiles	felamimail	zh-tw	使用 <a href="%1">郵件管理</a> 來建立資料
 use a signature	felamimail	zh-tw	使用簽名檔
 use a signature?	felamimail	zh-tw	使用簽名檔？
@@ -391,6 +396,7 @@ users can define their own emailaccounts	admin	zh-tw	使用者可以自行定義
 vacation notice	felamimail	zh-tw	假期提醒
 validate certificate	felamimail	zh-tw	驗證
 view full header	felamimail	zh-tw	顯示完整標頭
+view header lines	felamimail	zh-tw	檢視檔頭
 view message	felamimail	zh-tw	顯示訊息
 viewing full header	felamimail	zh-tw	顯示完整標頭中
 viewing message	felamimail	zh-tw	顯示訊息中

@@ -1,20 +1,65 @@
+%1 bookmarks have been deleted	bookmarks	pl	%1 zak³adek zosta³o usuniêtych
+%1 bookmarks imported from %2 successfully.	bookmarks	pl	%1 z %2 zak³adek zosta³o skutecznie zaimportowanych
+(comma separate multiple addresses)	bookmarks	pl	(przecinek oddziela kilka adresów)
+all bookmarks	bookmarks	pl	Wszystkie zak³adki
+and	bookmarks	pl	oraz
+append this message to mailed bookmarks	bookmarks	pl	Do³±cz tê wiadomo¶æ do wysy³anych zak³adek
+ascending	bookmarks	pl	Rosn±co
 book marks	common	pl	Zak³adki
+bookmark changed sucessfully	bookmarks	pl	Zak³adka zosta³a zmieniona.
+bookmark created successfully.	bookmarks	pl	Zak³adka zosta³a utworzona.
+bookmark deleted successfully	bookmarks	pl	Zak³adka zosta³a usuniêta.
+bookmark not editable	bookmarks	pl	Nie mo¿na edytowaæ zak³adki
+bookmark not readable	bookmarks	pl	Nie mo¿na odczytaæ zak³adki
 bookmarks	common	pl	Zak³adki
+bookmarks settings	bookmarks	pl	Ustawienia Zak³adek
+change bookmark	bookmarks	pl	Zmieñ Zak³adkê
+close this window to return	bookmarks	pl	zamknij onko aby wróciæ
+create bookmark	bookmarks	pl	Stwórz zak³adkê
 create new bookmark	bookmarks	pl	Tworzenie nowej zak³adki
-date added	bookmarks	pl	Data utworzenia
+date added	bookmarks	pl	Data zosta³a dodana
+date changed	bookmarks	pl	Data zosta³a zmieniona
 date last updated	bookmarks	pl	Data ostatniej aktualizacji
 date last visited	bookmarks	pl	Data ostatniej wizyty
+descending	bookmarks	pl	Malej±co
 edit bookmark	bookmarks	pl	Edycja zak³adki
 edit this bookmark	bookmarks	pl	Edycja zak³adki
-import bookmarks	preferences	pl	Import zak³adek`
-import bookmarks	bookmarks	pl	Import zak³adek`
-keywords	bookmarks	pl	S³owa kluczowe
+export bookmarks	common	pl	Eksportuj Zak³adki
+fewer	bookmarks	pl	Zmniej
+filter by	bookmarks	pl	Sortuj wg
+found a link you might like	bookmarks	pl	Znaleziono link, który mo¿e ci siê podobaæ
+from	bookmarks	pl	Z
+from category %1	bookmarks	pl	z kategorii %1
+highest	bookmarks	pl	Najwy¿szy
+i thought you would be interested in the following link(s):	bookmarks	pl	Pomy¶la³em, ¿e mog³by¶ byæ zainteresowany nastêpuj±cymi linkami:
+import bookmarks	common	pl	Importuj zak³adki
+like	bookmarks	pl	jak
+list view	bookmarks	pl	widok listy
+lowest	bookmarks	pl	Najni¿szy
 mail this bookmark	bookmarks	pl	Wy¶lij zak³adkê
-mass update:	bookmarks	pl	Mass update:
-never	bookmarks	pl	nigdy
+mass update:	bookmarks	pl	Masowa aktualizacja
+message from	bookmarks	pl	Wiadomo¶æ od
+more	bookmarks	pl	Wiêcej
+name	bookmarks	pl	Nazwa
+name is required	bookmarks	pl	Nazwa jest wymagana
+netscape bookmark file	bookmarks	pl	Plik Zak³adki Netscape'a
+netscape bookmark filename is required!	bookmarks	pl	Nazwa pliku zak³adki Netscape'a jest wymagana!
+new	bookmark	pl	Nowa
+new bookmark	bookmarks	pl	Nowa zak³adka
+or	bookmarks	pl	lub
+please select the categories to export	bookmarks	pl	Prosimy wybraæ kategorie do eksportu
 rating	bookmarks	pl	Ocena
-send	bookmarks	pl	Wy¶lij
-to e-mail address	bookmarks	pl	Na adres e-mail
+search for:	bookmarks	pl	Szukaj:
+select the format you would like to export to	bookmarks	pl	Wybierz format, który chcia³by¶ exportowaæ
+send bookmark	bookmarks	pl	Wy¶lij zak³adkê
+sub category	bookmarks	pl	Podkategoria
+to e-mail addresses	bookmarks	pl	Na Adres E-mail
+to which category should the imported folder hierarchy be attached	bookmarks	pl	Do której kategorii hierarchia zaimportowanego folderu powinna byæ do³±czona
 total visits	bookmarks	pl	Wszystkich wizyt
 tree view	bookmarks	pl	Widok drzewa
-view this bookmark	bookmarks	pl	
+url is required.	bookmarks	pl	Adres URL jest wymagany.
+view bookmark	bookmarks	pl	Poka¿ zak³adkê
+view this bookmark	bookmarks	pl	Poka¿ tê zak³adkê
+warning	bookmarks	pl	Ostrze¿enie
+you are viewing this site outside of egroupware	bookmarks	pl	Ogl±dasz tê stronê spoza systemu eGroupware
+you must select a category	bookmarks	pl	Musisz wybraæ kategoriê
