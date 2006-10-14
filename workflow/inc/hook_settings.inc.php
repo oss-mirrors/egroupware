@@ -22,6 +22,7 @@
 		'startpage' => array(
 			'type'  => 'select',
 			'label' => 'Starting page',
+			'name'	=> 'startpage',
 			'help'  => 'This is the first screen shown when you click on the workflow application icon',
 			'values' => array(
 				'workflow.ui_userprocesses'     => 'My processes',

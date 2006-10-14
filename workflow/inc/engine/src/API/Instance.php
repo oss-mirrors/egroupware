@@ -251,7 +251,6 @@ class Instance extends Base {
       $this->error[] = tra('failed to synchronize instance data with the database');
       return false;
     }
-
     //we are not unsynchronized anymore.
     $this->unsynch = false;
     return true;
