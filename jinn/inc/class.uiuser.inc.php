@@ -230,7 +230,17 @@
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
+		 $this->tplsav2->nameplugin=($this->bo->stored_configs[$_GET['plgkey']]['eventlabel']?$this->bo->stored_configs[$_GET['plgkey']]['eventlabel']:$this->bo->stored_configs[$_GET['plgkey']]['name']);
 
+		 if($this->bo->so->config[loop_numbers] != '' or !empty( $this->bo->so->config[loop_numbers]))
+		 {
+			$this->tplsav2->items=$this->bo->so->config['loop_numbers'];
+		 }
+		 else
+		 {
+			$this->tplsav2->items=30;
+		 }
+		 
 		 $this->tplsav2->assign('selval',$_GET[selvalues]);
 		 $this->tplsav2->display('pop_walk_event.tpl.php');
 	  }
@@ -239,14 +249,23 @@
 	  {
 		 $start_time = time();
 		 //TODO get it from the configuration
-		 if($this->bo->so->config[loop_numbers] != '' or !empty( $this->bo->so->config[loop_numbers]))
+		 if($_GET['recordspercycle'])
 		 {
-			$items=$this->bo->so->config[loop_numbers];
+			$items=$_GET['recordspercycle'];
+		 }
+		 elseif($_POST['recordspercycle'])
+		 {
+			$items=$_POST['recordspercycle'];
+		 }
+		 elseif($this->bo->so->config[loop_numbers] != '' or !empty( $this->bo->so->config[loop_numbers]))
+		 {
+			$items=$this->bo->so->config['loop_numbers'];
 		 }
 		 else
 		 {
-			 $items=20;
+			$items=30;
 		 }
+		 $this->tplsav2->recordspercycle=$items;
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
 		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
 
@@ -308,6 +327,9 @@
 		 
 		 //colums can be cached in session
 
+		 //$this->tplsav2->timesec['stuffbeforecols']=time() - $start_time;
+
+
 		 $colstart_time=time();
 		 $columns = $this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
 		 if(is_array($columns))
@@ -321,7 +343,6 @@
 
 		 $this->tplsav2->timesec['cols']=time() - $colstart_time;
 
-		 $numrowsstart_time=time();
 		 //num rows is cached
 		 if($_GET[amount] != '')
 		 {
@@ -329,26 +350,22 @@
 		 }
 		 else
 		 {
+			$numrowsstart_time=time();
 			$site_id = $this->bo->session['site_id'];
 			$table_name = $this->bo->site_object['table_name'];
 
 			#$data = $this->bo->get_data($columns_arr, $filter_where);
 			$count = $this->bo->so->num_rows_table($site_id, $table_name, $filter_where);
 			#$count = count($data);
+			$this->tplsav2->timesec['numrows']=time() - $numrowsstart_time;
 		 }
-
-		 $this->tplsav2->timesec['numrows']=time() - $numrowsstart_time;
-
 
 		 $get_data_starttime=time();
 		 
 		 $data = $this->bo->get_data($columns_arr, $filter_where, $limit);
 		 $this->tplsav2->timesec['getrecdata']=time() - $get_data_starttime;
 
-		 //		 _debug_array($limit);
-		 //		 echo "hallo";
-
-		 //		 die();
+		 $i=0;
 		 foreach($data as $row)
 		 {
 			//EVENT ON WALK LIST
@@ -358,19 +375,21 @@
 			{
 			   $_row['FLDXXX'.$key]=$val;
 			}
+
+			
+			$rowtime[$i]=time();
 			$status[eventstatus] = $this->bo->run_event_plugins('on_walk_list_button', $_row);
 
-			$plugtimeperrec[]=time() - $plg_exec_time;
+			$plugtimeperrec[]= time() - $plg_exec_time;
+		 	$i++;
 		 }
+		 
 		 if(is_array($plugtimeperrec))
 		 {
 			$this->tplsav2->timesec['avg_plg_exec_time']=(array_sum($plugtimeperrec)/count($plugtimeperrec));
+			$this->tplsav2->timesec['plg_exec_time']=(array_sum($plugtimeperrec));
 		 }
-
-		 #$this->tplsav2->timesec['getrecdata']=time() - $start_time;
-
 		 
-//		 _debug_array($spend_arr);
 		 if($_GET[start]+$items < $count)
 		 {
 			$this->tplsav2->assign('items',$items);

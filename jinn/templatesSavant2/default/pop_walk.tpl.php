@@ -11,14 +11,14 @@
 	  <meta name="copyright" content="eGroupWare http://www.egroupware.org (c) 2005" />
 	  <meta name="author" content="eGroupWare http://www.egroupware.org" />
 	  <meta name="robots" content="none" />
-	  <META HTTP-EQUIV="Refresh" CONTENT="1;URL=<?=$GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiuser.do_loop_walk_events&start={$this->number}&where={$this->where}");?>&amount=<?=$this->amount?>">
+	  <META HTTP-EQUIV="Refresh" CONTENT="1;URL=<?=$GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiuser.do_loop_walk_events&start={$this->number}&where={$this->where}");?>&amount=<?=$this->amount?>&plgkey=<?=$_GET['plgkey']?>&recordspercycle=<?=$this->recordspercycle?>">
 	  <link rel="icon" href="<?=$this->img_icon?>" type="image/x-ico" />
 	  <link rel="shortcut icon" href="<?=$this->img_shortcut?>" />
 	  <link href="<?=$this->theme_css?>" type="text/css" rel="StyleSheet" />
    </head>
    <body>
 		 <div id="divMain">
-			<div id="divAppboxHeader"><?=lang('Walk Records')?></div>
+			<div id="divAppboxHeader"><?=lang('Walk Records')?> - <?=$this->nameplugin?></div>
 			<div id="divAppbox">
 			   <?php if($this->number+$this->items > $this->amount):?>
 			   <?=$this->number?> - <?=($this->amount)?> of <?=$this->amount?><br>
@@ -37,7 +37,7 @@
 				  <td style="width:100px;font-weight:bold"><?=lang('Task')?></td>
 				  <td style="font-weight:bold"><?=lang('Time in sec')?></td>
 				  </tr>
-				  <?php foreach($this->timesec as $timekey=>$timeval):?>
+				  <?php foreach($this->timesec as $timekey => $timeval):?>
 				  <tr>
 					 <td><?=$timekey?></td>
 					 <td><?=$timeval?></td>

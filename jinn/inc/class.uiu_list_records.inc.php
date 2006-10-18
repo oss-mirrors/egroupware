@@ -69,7 +69,7 @@
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 
 		 // prevent ugly errors
-		 if(!$this->bo->site_object[object_id])
+		 if(!$this->bo->site_object['object_id'])
 		 {
 			$this->bo->exit_and_open_screen('jinn.uiuser.index');
 		 }
@@ -95,7 +95,7 @@
 	  {
 		 unset($this->bo->session['mult_where_array']);
 
-		 if($this->bo->site_object[max_records]==1)
+		 if($this->bo->site_object['max_records']==1)
 		 {
 			$columns=$this->bo->so->site_table_metadata($this->bo->site_object['parent_site_id'], $this->bo->site_object['table_name']);
 
@@ -108,7 +108,7 @@
 			   $all_col_names_list[]=$onecol['name'];
 
 			   // check for primaries and create array 
-			   if ($onecol[primary_key] && $onecol['type']!='blob') // FIXME howto select long blobs
+			   if ($onecol['primary_key'] && $onecol['type']!='blob') // FIXME howto select long blobs
 			   {						
 				  $pkey_arr[]=$onecol['name'];
 			   }
@@ -118,7 +118,7 @@
 			   }
 			}
 
-			$records=$this->bo->get_records($this->bo->site_object[table_name],'','',0,1,'name',$orderby,'*',$where_condition);
+			$records=$this->bo->get_records($this->bo->site_object['table_name'],'','',0,1,'name',$orderby,'*',$where_condition);
 			if(count($records)>0)
 			{
 			   foreach($records as $recordvalues)
@@ -325,27 +325,27 @@
 		 $rec_per_page = $this->bo->records_per_page();
 
 		 $current_page_arr=$this->bo->session['browse_settings']['current_page'];
-		 if($_GET[current_page])
+		 if($_GET['current_page'])
 		 {
-			$current_page_arr[$this->bo->site_object[object_id]] = $_GET[current_page];
+			$current_page_arr[$this->bo->site_object['object_id']] = $_GET['current_page'];
 		 }
 
 		 $order_by_arr=$this->bo->session['browse_settings']['orderby'];
 		 if($_GET['orderby'])
 		 {
-			$order_by_arr[$this->bo->site_object[object_id]] = $_GET['orderby'];
+			$order_by_arr[$this->bo->site_object['object_id']] = $_GET['orderby'];
 		 }
 		 elseif($default_order)
 		 {
-			$order_by_arr[$this->bo->site_object[object_id]] = $default_order;
+			$order_by_arr[$this->bo->site_object['object_id']] = $default_order;
 		 }
 
-		 $orderby=$order_by_arr[$this->bo->site_object[object_id]];
+		 $orderby=$order_by_arr[$this->bo->site_object['object_id']];
 
 		 // do not sort is we have created new records
 		 if($this->show_last_page)
 		 {
-			$current_page_arr[$this->bo->site_object[object_id]]='last';
+			$current_page_arr[$this->bo->site_object['object_id']]='last';
 			unset($orderby);
 		 }
 
@@ -361,12 +361,12 @@
 		 $this->tplsav2->set_var('filter_edit',lang('edit filter'));
 
 		 $quick_filter_arr = $this->bo->session['browse_settings']['quick_filter'];
-		 if( trim($_POST[quick_filter]) || $_POST[quick_filter_hidden] )
+		 if( trim($_POST['quick_filter']) || $_POST['quick_filter_hidden'] )
 		 {
-			$quick_filter_arr[$this->bo->site_object[object_id]] = trim( $_POST[quick_filter] );
-			$current_page_arr[$this->bo->site_object[object_id]]=1;
+			$quick_filter_arr[$this->bo->site_object['object_id']] = trim( $_POST['quick_filter'] );
+			$current_page_arr[$this->bo->site_object['object_id']]=1;
 		 }
-		 $quick_filter=$quick_filter_arr[$this->bo->site_object[object_id]];
+		 $quick_filter=$quick_filter_arr[$this->bo->site_object['object_id']];
 
 		 $this->bo->session['browse_settings'] = array
 		 (
@@ -382,7 +382,7 @@
 		 {
 			foreach($relation1_array as $relation1)
 			{
-			   $fields_with_relation1[]=$relation1[local_key];
+			   $fields_with_relation1[]=$relation1['local_key'];
 			}
 		 }
 
@@ -418,7 +418,7 @@
 			$column_types[$onecol['name']] = $ftype;
 
 			/* check for primaries and create array */
-			if ($onecol[primary_key] && $onecol['type']!='blob') // FIXME howto select long blobs
+			if ($onecol['primary_key'] && $onecol['type']!='blob') // FIXME howto select long blobs
 			{						
 			   $pkey_arr[]=$onecol['name'];
 			}
@@ -427,16 +427,15 @@
 			   $akey_arr[]=$onecol['name'];
 			}
 
-			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecol['name']);
+			$field_conf_arrNG[$onecol['name']]=$this->bo->so->get_field_values($this->bo->site_object['object_id'],$onecol['name']);
 
-			if($field_conf_arr[field_enabled]=='0' && $field_conf_arr[field_enabled]!=null)
+			if($field_conf_arrNG[$onecol['name']]['field_enabled']=='0' && $field_conf_arrNG[$onecol['name']]['field_enabled']!=null)
 			{
 			   continue; 
 			}
 
-			if($field_conf_arr[list_visibility]!='0')
+			if($field_conf_arrNG['list_visibility']!='0')
 			{
-			   //continue; 
 			   $fields_show_default[] = $onecol; //fields allowed
 			}
 
@@ -468,15 +467,15 @@
 		 
 
 		 //fixme start of object filters
-		 if($this->bo->site_object[extra_where_sql_filter])
+		 if($this->bo->site_object['extra_where_sql_filter'])
 		 {
 			if ($where_condition) 
 			{
-			   $where_condition.= " AND ({$this->bo->site_object[extra_where_sql_filter]})"; 	
+			   $where_condition.= " AND ({$this->bo->site_object['extra_where_sql_filter']})"; 	
 			}
 			else
 			{
-			   $where_condition= " ({$this->bo->site_object[extra_where_sql_filter]})"; 	
+			   $where_condition= " ({$this->bo->site_object['extra_where_sql_filter']})"; 	
 			}
 		 }
 
@@ -495,14 +494,14 @@
 
 		 $num_rows=$this->bo->so->num_rows_table($this->bo->session['site_id'],$this->bo->site_object['table_name'],$where_condition);
 		 
-		 $pager=$this->pager($current_page_arr[$this->bo->site_object[object_id]],$num_rows,$rec_per_page);
+		 $pager=$this->pager($current_page_arr[$this->bo->site_object['object_id']],$num_rows,$rec_per_page);
 
-		 if($current_page_arr[$this->bo->site_object[object_id]]=='last')
+		 if($current_page_arr[$this->bo->site_object['object_id']]=='last')
 		 {
-			$current_page_arr[$this->bo->site_object[object_id]]=$this->last_page;
+			$current_page_arr[$this->bo->site_object['object_id']]=$this->last_page;
 		 }
 
-		 $offset = $this->bo->get_offset($current_page_arr[$this->bo->site_object[object_id]],$rec_per_page);
+		 $offset = $this->bo->get_offset($current_page_arr[$this->bo->site_object['object_id']],$rec_per_page);
 		 if($offset > $num_rows)
 		 {
 			unset($offset);
@@ -538,35 +537,18 @@
 			$col_list=array_slice($columns,0,4);
 		 }
 
-		 /*
-		 if( count($fields_show_default) > count($col_list) )
-		 {
-			$showextrafieldconf;
-		 }
-		 */
-
-		 //if pref is less then allowed
-		 //if no pref is set and allowed is more then 4
-
-
-
-
 		 /*	check if orderbyfield exist else drop orderby it	*/
 		 if(!in_array(trim(substr($orderby,0,(strlen($orderby)-4))),$all_col_names_list)) unset($orderby);
 
 		 // make columnheaders
 		 foreach ($col_list as $col)
 		 {
-			unset($testvalue);
-
-			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col['name']);
-
-			$display_colname=($field_conf_arr[element_label]?$field_conf_arr[element_label]:$col['name']);
+			$display_colname=($field_conf_arrNG[$col['name']]['element_label']?$field_conf_arrNG[$col['name']]['element_label']:$col['name']);
 
 			unset($tipmouseover);
-			if(trim($field_conf_arr[field_help_info]))
+			if(trim($field_conf_arrNG[$col['name']]['field_help_info']))
 			{
-			   $tooltip=$field_conf_arr[field_help_info];
+			   $tooltip=$field_conf_arrNG[$col['name']]['field_help_info'];
 			   if (!is_object($GLOBALS['phpgw']->html))
 			   {
 				  $GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
@@ -575,7 +557,7 @@
 			   $tipmouseover='<img '.$GLOBALS['phpgw']->html->tooltip($tooltip, True, $options).' src="'.$GLOBALS['phpgw']->common->image('phpgwapi','info').'" alt="" />'; 
 			}
 
-			if(!$this->bo->field_is_enabled($this->bo->site_object[object_id], $col['name']))
+			if(!$this->bo->field_is_enabled($this->bo->site_object['object_id'], $col['name']))
 			{
 			   continue ;
 			}
@@ -584,7 +566,7 @@
 			unset($orderby_link);
 			unset($orderby_image);
 
-			$display_colname=($field_conf_arr[element_label]?$field_conf_arr[element_label]:$col['name']);
+			$display_colname=($field_conf_arrNG[$col['name']]['element_label']?$field_conf_arrNG[$col['name']]['element_label']:$col['name']);
 
 			if ($col['name'] == trim(substr($orderby,0,(strlen($orderby)-4))))
 			{
@@ -613,6 +595,7 @@
 
 			$this->tplsav2->colnames[]=$colname_arr;	
 		 }
+		 // end make comnheaders
 
 		 $lang_total_records= lang('%1 records',$num_rows);
 //		 $lang_rec_per_page= lang('%1 records per page', $rec_per_page);
@@ -666,10 +649,10 @@
 			$this->tplsav2->set_var('colfield_export_img_src',$GLOBALS['phpgw']->common->image('phpgwapi','filesave'));
 
 			$this->tplsav2->records_rows_arr=array();
+
+			//walk through records
 			foreach($records as $recordvalues)
 			{
-			   
-			   
 			   unset($where_string);
 			   if(count($pkey_arr)>0)
 			   {
@@ -714,8 +697,8 @@
 
 				  foreach($col_names_list  as $onecolname)
 				  {
-					 $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object['object_id'],$onecolname);
 					 $recordvalue=$recordvalues[$onecolname];
+					 
 					 if ($recordvalue && is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
 					 {
 						$related_value=$this->bo->get_related_value($relation1_array[$onecolname],$recordvalue);
@@ -723,14 +706,13 @@
 					 }
 					 else
 					 {	
-						$recordvalue=$this->bo->plug->call_plugin_bv($onecolname, $recordvalue, $where_string, $field_conf_arr, $column_types[$onecolname]);
+						$recordvalue=$this->bo->plug->call_plugin_bv($onecolname, $recordvalue, $where_string, $field_conf_arrNG[$onecolname], $column_types[$onecolname]);
 					 }
 
 					 if ($recordvalue == '')
 					 {
 						$recordvalue="&nbsp;";
 					 }
-
 
 					 $onefield_arr['value']=$recordvalue;
 					 $fields_arr[]= $onefield_arr;
@@ -831,18 +813,18 @@
 	  function getWalkListEventButtons()
 	  {
 		 // Get Walk Events
-		 $stored_configs = unserialize(base64_decode($this->bo->site_object[events_config]));
-		 if(is_array($stored_configs))
+		 //$stored_configs = unserialize(base64_decode($this->bo->site_object['events_config']));
+		 if(is_array($this->bo->stored_configs))
 		 {
-			foreach($stored_configs as $conf_arr)
+			foreach($this->bo->stored_configs as $key => $conf_arr)
 			{
 			   if($conf_arr['conf']['event']=='on_walk_list_button')
 			   {
+				  $conf_arr['walklistevent_link'] = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.popwalkevent&plgkey='.$key);
 				  $this->tplsav2->walkbuttons_arr[]=$conf_arr;
 			   }
 			}
 		 }
-		 $this->tplsav2->walkevent_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.popwalkevent');
 
 		 $buttonrow=$this->tplsav2->fetch('walk_buttons.tpl.php');
 		 return $buttonrow;
@@ -850,19 +832,19 @@
 	  }
 	  function getReportBlock()
 	  {
-		 $this->tplsav2->set_var('listoptions',$this->boreport->get_report_list($this->bo->site_object[unique_id]));
+		 $this->tplsav2->set_var('listoptions',$this->boreport->get_report_list($this->bo->site_object['unique_id']));
 
-		 $r_edit_button =  $output .= "<input class='egwbutton'  type='button' value='".lang('Edit')."' onClick=\"if(document.report_actie.report.value.substr(0,4) != 'user'){alert('".lang('You can only edit your own templates')."');}else{parent.window.open('".$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.edit_report_popup&parent_site_id='.$this->bo->site_object[parent_site_id].'&obj_id='.$this->bo->site_object['unique_id'].'&table_name='.$this->bo->site_object[table_name].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')}\">";		 
+		 $r_edit_button =  $output .= "<input class='egwbutton'  type='button' value='".lang('Edit')."' onClick=\"if(document.report_actie.report.value.substr(0,4) != 'user'){alert('".lang('You can only edit your own templates')."');}else{parent.window.open('".$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.edit_report_popup&parent_site_id='.$this->bo->site_object['parent_site_id'].'&obj_id='.$this->bo->site_object['unique_id'].'&table_name='.$this->bo->site_object['table_name'].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')}\">";		 
 
 		 $this->tplsav2->set_var('r_edit_button',$r_edit_button);
 
-		 $r_new_from_button = "<input class='egwbutton'  type='button' value='".lang('New from selected')."' onClick=\"parent.window.open('".$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_from_selected&obj_id='.$this->bo->site_object['unique_id'].'&parent_site_id='.$this->bo->site_object[parent_site_id].'&table_name='.$this->bo->site_object[table_name].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')\">";		 
+		 $r_new_from_button = "<input class='egwbutton'  type='button' value='".lang('New from selected')."' onClick=\"parent.window.open('".$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_from_selected&obj_id='.$this->bo->site_object['unique_id'].'&parent_site_id='.$this->bo->site_object['parent_site_id'].'&table_name='.$this->bo->site_object['table_name'].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')\">";		 
 
 		 $this->tplsav2->set_var('r_new_from_button',$r_new_from_button);
 
 		 $report_url=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.merge_report&obj_id='.$this->bo->site_object['unique_id']) ;
 
-		 $add_report_url = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_user&parent_site_id='.$this->bo->site_object[parent_site_id].'&table_name='.$this->bo->site_object[table_name].'&preference=1&obj_id='.$this->bo->site_object['unique_id']);
+		 $add_report_url = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_user&parent_site_id='.$this->bo->site_object['parent_site_id'].'&table_name='.$this->bo->site_object['table_name'].'&preference=1&obj_id='.$this->bo->site_object['unique_id']);
 		 $this->tplsav2->set_var('lang_merge',lang('Merge'));
 		 $this->tplsav2->set_var('add_report_url',$add_report_url);
 		 $this->tplsav2->set_var('report_url',$report_url);
@@ -893,8 +875,8 @@
 	  
 	  function getRunOnRecordEventIcons($where_string)
 	  {
-//		 $this->tplsav2->iconfilepath=$this->bo->site_fs->get_jinn_sitefile_url($object_arr[parent_site_id]).SEP.'object_events'.SEP.$edit_conf['name'].SEP.$edit_conf['iconfile'];
-//		 $this->tplsav2->objevent_file_path=$this->bo->site_fs->get_jinn_sitefile_url($object_arr[parent_site_id]).SEP.'object_events';
+//		 $this->tplsav2->iconfilepath=$this->bo->site_fs->get_jinn_sitefile_url($object_arr['parent_site_id']).SEP.'object_events'.SEP.$edit_conf['name'].SEP.$edit_conf['iconfile'];
+//		 $this->tplsav2->objevent_file_path=$this->bo->site_fs->get_jinn_sitefile_url($object_arr['parent_site_id']).SEP.'object_events';
 		 foreach($this->runonrecord_arr as $key => $conf_arr)
 		 {
 			$conf_arr['runonrecordevent_link'].='&base64_where_string='.$where_string;

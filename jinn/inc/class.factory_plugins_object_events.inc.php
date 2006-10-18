@@ -58,7 +58,7 @@
 	  {
 		 global $local_bo;
 		 $local_bo = $this->local_bo;
-		 return call_user_func('event_action_'.$config[name], $post, $config);
+		 return call_user_func('event_action_'.$config['name'], $post, $config);
 	  }
 	  
 	  /**

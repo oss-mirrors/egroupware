@@ -112,6 +112,11 @@
 			   $this->scan_new_objects_silent();
 			}
 		 }
+
+		 if($this->site_object['events_config'])
+		 {
+			$this->stored_configs = unserialize(base64_decode($this->site_object['events_config']));
+		 }
 	  }
 
 
@@ -604,17 +609,17 @@
 		 function run_event_plugins($event, $post)
 		 {
 			//get all events plugins configured to this object
-			$stored_configs = unserialize(base64_decode($this->site_object['events_config']));
+			//$stored_configs = unserialize(base64_decode($this->site_object['events_config']));
 			
-			if(is_array($stored_configs))
+			if(is_array($this->stored_configs))
 			{
 			   if(isset($_GET['plgkey']))
 			   {
-				  $status = $this->object_events_plugin_manager->call_event_action($post, $stored_configs[$_GET['plgkey']]);
+				  $status = $this->object_events_plugin_manager->call_event_action($post, $this->stored_configs[$_GET['plgkey']]);
 			   }
 			   else
 			   {
-				  foreach($stored_configs as $config)
+				  foreach($this->stored_configs as $config)
 				  {
 					 if($event == $config['conf']['event'])
 					 {
