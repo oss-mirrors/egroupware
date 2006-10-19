@@ -208,7 +208,7 @@
 				$folder_tree_new .= "tree.selectItem('$folderID',false);";
 
 			$folder_tree_new .= "tree.loadXML('$xmlInitialLoadURL');";
-			
+			$folder_tree_new .= "tree.openItem('$folderID');";
 
 			$folder_tree_new.= '</script>';
 
