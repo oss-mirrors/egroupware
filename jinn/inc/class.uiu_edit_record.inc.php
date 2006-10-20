@@ -684,6 +684,10 @@
 			{
 			   continue;
 			}
+			if(!$this->tplsav2->edit_object && $field_conf_arr['form_visibility']=='0' && $field_conf_arr['form_visibility']!=null)
+			{
+			   continue;
+			}
 
 			$single_fld_arr['form_listing_order']=$field_conf_arr['form_listing_order'];
 			$single_fld_arr['label_visibility']=$field_conf_arr['label_visibility'];

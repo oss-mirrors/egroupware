@@ -584,7 +584,7 @@
 			{
 			   foreach($data as $key => $field)
 			   {
-				  if(strpos($field[name], $plugin['helper_fields_substring']) === false)
+				  if(@strpos($field['name'], $plugin['helper_fields_substring']) === false)
 				  {
 					 //
 				  }
