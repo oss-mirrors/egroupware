@@ -434,7 +434,7 @@
 			   continue; 
 			}
 
-			if($field_conf_arrNG['list_visibility']!='0')
+			if($field_conf_arrNG[$onecol['name']]['list_visibility']!='0')
 			{
 			   $fields_show_default[] = $onecol; //fields allowed
 			}
