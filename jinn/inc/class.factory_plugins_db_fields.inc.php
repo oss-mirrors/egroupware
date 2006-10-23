@@ -56,7 +56,7 @@
 	  * @param array $attr_arr extra attributes like length of database field which can change the behaviour of the plugin
 	  * @return a part of the form as html       
 	  */
-	  function call_plugin_fi($input_name, $value, $type, $field_values, $attr_arr)
+	  function call_plugin_fi($input_name, $value, $type, $field_values, $attr_arr,$record_values=false)
 	  {
 		 $plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
 		 if($field_values[field_type] == '' && $type != '')
@@ -66,7 +66,7 @@
 
 		 if (substr($input_name,0,4)=='ELEX' || substr($input_name,0,4)=='MLTX' || substr($input_name,0,6)=='FLDXXX' || substr($input_name,0,4)=='O2OX' || substr($input_name,0,4)=='M2OX')
 		 {
-			$plug_html = $this->call_plugin($plug_conf_arr[name], 'formview_edit', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','',$field_values);
+			$plug_html = $this->call_plugin($plug_conf_arr[name], 'formview_edit', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','',$field_values,$record_values);
 		 }
 		 else
 		 {
@@ -171,7 +171,7 @@
 	  }
 
 
-	  function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values)
+	  function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values,$record_values=false)
 	  {
 
 
@@ -189,7 +189,7 @@
 				  case 'formview_read':
 					 return $this->_plugins[$name]->formview_read  ($value, $config);
 				  case 'formview_edit':
-					 return $this->_plugins[$name]->formview_edit  ($field_name, $value, $config, $attr_arr);
+					 return $this->_plugins[$name]->formview_edit  ($field_name, $value, $config, $attr_arr,$record_values);
 				  case 'on_save_filter':
 					 return $this->_plugins[$name]->on_save_filter ($field_name, $HTTP_POST_VARS, $HTTP_POST_FILES, $config);
 				  case 'advanced_action':

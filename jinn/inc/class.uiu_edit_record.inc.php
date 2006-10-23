@@ -742,7 +742,7 @@
 			   }
 			   else
 			   {
-				  $plug_arr = $this->bo->plug->call_plugin_fi($single_fld_arr['input_name'], $single_fld_arr['value'], $ftype, $field_conf_arr, $attr_arr);
+				  $plug_arr = $this->bo->plug->call_plugin_fi($single_fld_arr['input_name'], $single_fld_arr['value'], $ftype, $field_conf_arr, $attr_arr,$record_values);
 			   }
 
 			   //some plugins return an array containing extra info to be considered:
@@ -804,7 +804,7 @@
 			   $fieldtype_for_plugin='joker';
 			}
 
-			$plug_arr = $this->bo->plug->call_plugin_fi($el_input_name,$el_value,$fieldtype_for_plugin, $el, $attr_arr);
+			$plug_arr = $this->bo->plug->call_plugin_fi($el_input_name,$el_value,$fieldtype_for_plugin, $el, $attr_arr,$record_values);
 
 			$ret_elements_arr[$el['field_name']]=array(
 			   'parent_object'=>$el['field_parent_object'],

@@ -19,7 +19,7 @@
    $objects_arr=$tmpso->get_objects_by_name($config['objname'],$_GET['site_id']);
    $object_id=$objects_arr[0];
 
-   $plug_root= EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__mediabrowser';
+   $plug_root= EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__popupobject';
    $tplsav2 = CreateObject('phpgwapi.tplsavant2');
    $tplsav2->addPath('template',$plug_root.'/tpl');
 
@@ -33,9 +33,9 @@
    $tplsav2->assign('lang',$GLOBALS['phpgw_info']['user']['preferences']['common']['lang']);
 
    $japie = CreateObject('jinn.japie',$object_id,'jinnmedia',false);
-   $japie->baselink='jinn.uijinn.pluginwrapper&config2base64='.$_GET['config2base64'].'&site_id='.$_GET['site_id'].'&plugname=mediabrowser&plugfile=popup.mediabrowser.php&japie=true';
+   $japie->baselink='jinn.uijinn.pluginwrapper&config2base64='.$_GET['config2base64'].'&site_id='.$_GET['site_id'].'&plugname=popupobject&plugfile=popup.popupobject.php&japie=true';
 
-   $tplsav2->display('pop.mediabrowser.header.tpl.php');
+   $tplsav2->display('pop.popupobject.header.tpl.php');
    $japie->display();
-   $tplsav2->display('pop.mediabrowser.footer.tpl.php');
+   $tplsav2->display('pop.popupobject.footer.tpl.php');
 ?>

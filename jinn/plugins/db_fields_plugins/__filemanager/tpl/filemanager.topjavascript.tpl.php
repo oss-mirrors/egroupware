@@ -54,7 +54,7 @@
 
    function onBrowseServer(record, field, slot, obj_id) 
    {
-		 childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popup.fm_mainwindow.php?field=" + field + "&curr_obj_id=" +obj_id,"console","resizable=no,width=580,height=440");
+		 childWindow=open("<?=$GLOBALS['egw_info']['server']['webserver_url']?>/jinn/plugins/db_fields_plugins/__filemanager/popup.fm_mainwindow.php?field=" + field + "&curr_obj_id=" +obj_id,"consolefilemanager","resizable=no,width=580,height=440");
 		 //childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field=" + field + "&curr_obj_id=" +obj_id,"console","resizable=no,width=580,height=440");
 		 if (childWindow.opener == null)	childWindow.opener = self;
 		 //		 document.frm.CURRENT_RECORD.value=record;
@@ -77,9 +77,9 @@
 		 document.getElementById('CURRENT_FIELD').value=field;
 		 document.getElementById('CURRENT_SLOT').value=_arr[1];
 
-		 childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popup.fm_mainwindow.php?field=" + field,"console","resizable=no,width=580,height=440");
+		 childWindow=window.open("<?=$GLOBALS['egw_info']['server']['webserver_url']?>/jinn/plugins/db_fields_plugins/__filemanager/popup.fm_mainwindow.php?field=" + field,"consolefilemanager","resizable=no,width=580,height=440");
 		 //childWindow=open("jinn/plugins/db_fields_plugins/__filemanager/popups/insert_image.php?field=" + field,"console","resizable=no,width=580,height=440");
-		 if (childWindow.opener == null) childWindow.opener = self;
+		 //if (childWindow.opener == null) childWindow.opener = self;
    }
 
    function setSlot(record, field, slot, fileurl, thumbnail, buttontext, showfilename)

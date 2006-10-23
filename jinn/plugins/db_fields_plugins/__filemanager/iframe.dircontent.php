@@ -126,7 +126,7 @@
    $select_image_after_upload = '';
    $select_other_after_upload = '';
 
-   if(strrpos($IMG_ROOT, '/')!= strlen($IMG_ROOT)-1) 
+   if(@strrpos($IMG_ROOT, '/')!= strlen($IMG_ROOT)-1) 
    $IMG_ROOT .= '/';
 
    if(isset($_GET['create']) && isset($_GET['dir']) && $SAFE_MODE == false) 

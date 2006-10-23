@@ -26,19 +26,19 @@
    /* $Id$ */
 
    /**
-   * MediaBrowser
+   * popupobject
    *
    * @package jinn_plugins
    * @author pim-AT-lingewoud-DOT-nl
    * @copyright (c) 2005 by Pim Snel
    * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
    */
-   class db_fields_plugin_mediabrowser
+   class db_fields_plugin_popupobject
    {
 	  /**
 	  * Constructor
 	  */
-	  function db_fields_plugin_mediabrowser()
+	  function db_fields_plugin_popupobject()
 	  {
 		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
 	  }
@@ -58,13 +58,13 @@
 	  */
 	  function formview_edit($field_name, $value, $config,$attr_arr)
 	  {
+		 $this->tplsav2->field_name=$field_name;
 		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 
-		 $this->tplsav2->field_name=$field_name;
 		 $this->tplsav2->site_id=$this->local_bo->site['site_id'];
 		 
 		 $this->tplsav2->config2base64=base64_encode(serialize($config));
-		 $input=$this->tplsav2->fetch('mediabrowser.formview_edit.tpl.php');
+		 $input=$this->tplsav2->fetch('popupobject.formview_edit.tpl.php');
 		 return $input;
 	  }
 

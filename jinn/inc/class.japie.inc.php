@@ -11,16 +11,21 @@
 	  var $calling_app;
 	  var $xmlarray;
 
-	  function japie($object_id,$session_name='')
+	  function japie($object_id,$session_name='',$upgrade_check=true)
 	  {
 		 $this->calling_app = $GLOBALS['egw_info']['flags']['currentapp'];
 		 $this->session_name = ($session_name?$session_name:$this->calling_app);
 
+//		 _debug_array($object_id);
+
 		 $this->site_object_id=$object_id;
 		 
 		 $this->setSession();
-		 
-		 $this->check_or_upgrade();
+
+		 if($upgrade_check)
+		 {
+			$this->check_or_upgrade();
+		 }
 	  }
 
 	  /**
@@ -45,7 +50,7 @@
 		 }
 		 elseif($version_status=='no_version_info')
 		 {
-		 	fatal_error(lang('Can not find version file, Please check if you installation is complete.'));
+			$this->fatal_error(lang('Can not find version file, Please check if you installation is complete.'));
 		 }
 	  }
 
@@ -153,7 +158,7 @@
 	  {
 		 if(!$this->site_object_id)
 		 {
-			fatal_error(lang('Error calling Japie function: no object id')); 
+			$this->fatal_error(lang('Error calling Japie function: no object id')); 
 		 }
 
 		 if($_GET['jma']=='jinn.uiu_edit_record.read_record')

@@ -26,19 +26,19 @@
    /* $Id$ */
 
    /**
-   * MediaBrowser
+   * formatstring
    *
    * @package jinn_plugins
    * @author pim-AT-lingewoud-DOT-nl
    * @copyright (c) 2005 by Pim Snel
    * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
    */
-   class db_fields_plugin_mediabrowser
+   class db_fields_plugin_formatstring
    {
 	  /**
 	  * Constructor
 	  */
-	  function db_fields_plugin_mediabrowser()
+	  function db_fields_plugin_formatstring()
 	  {
 		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
 	  }
@@ -56,16 +56,21 @@
 	  * @return string/array normally return the generated html to create the input
 	  * @todo implement more than one image
 	  */
-	  function formview_edit($field_name, $value, $config,$attr_arr)
+	  function formview_edit($field_name, $value, $config,$attr_arr,$record_vals=false)
 	  {
-		 $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
+		 if($record_vals)
+		 {
+			$_arr = $this->local_bo->so->mk_field_conf_arr_for_obj($this->local_bo->site_object['object_id']);
 
-		 $this->tplsav2->field_name=$field_name;
-		 $this->tplsav2->site_id=$this->local_bo->site['site_id'];
-		 
-		 $this->tplsav2->config2base64=base64_encode(serialize($config));
-		 $input=$this->tplsav2->fetch('mediabrowser.formview_edit.tpl.php');
-		 return $input;
+			foreach($_arr as $allfields)
+			{
+			   $config['fstring'] = str_replace('$$'.$allfields['field_name'].'$$', $record_vals[$allfields['field_name']], $config['fstring']);
+
+			}
+
+			return $config['fstring'];
+		 }
+		 return lang("save records first");
 	  }
 
    }	
