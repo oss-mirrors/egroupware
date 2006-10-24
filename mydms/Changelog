@@ -1,3 +1,7 @@
+20061024
+- made change owner working
+- removed some problems when editing descriptions
+
 20051125
 - fixed various bugs
   [ 1365737 ] Deleting RootFolder is crashing mydms

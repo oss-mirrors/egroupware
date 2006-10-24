@@ -233,6 +233,20 @@
 			return true;
 		}
 	
+		function setOwner($_documentID, $_owner)
+		{
+			if(!$_documentID)       return false;
+
+			$document	= getDocument($_documentID);
+			$accessMode	= $document->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id']));
+			
+			if($accessMode < M_ALL)	return false;
+
+			$document->setOwner(getUser($_owner));
+			
+			return true;
+		}
+	
 		function updateACL($_documentID, $_userID, $_groupID, $_access)
 		{
 			if(!$_documentID)       return false;

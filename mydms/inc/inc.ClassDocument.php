@@ -61,9 +61,12 @@ class Document
 
 	function setName($newName)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Documents SET name = '" . $newName . "' WHERE id = ". $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array('name' => $newName);
+		$where = array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		$this->_name = $newName;
 		return true;
@@ -73,10 +76,13 @@ class Document
 
 	function setComment($newComment)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Documents SET comment = '" . $newComment . "' WHERE id = ". $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array('comment' => $newComment);
+		$where = array('id' => $this->_id);
+
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
-		
+		}
+		                        
 		$this->_comment = $newComment;
 		return true;
 	}
@@ -85,9 +91,12 @@ class Document
 
 	function setKeywords($newKeywords)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Documents SET keywords = '" . $newKeywords . "' WHERE id = ". $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array('keywords' => $newKeywords);
+		$where = array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		$this->_keywords = $newKeywords;
 		return true;
@@ -107,9 +116,12 @@ class Document
 
 	function setFolder($newFolder)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Documents SET folder = " . $newFolder->getID() . " WHERE id = ". $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array('folder' => $newFolder->getID());
+		$where = array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		$this->_folderID = $newFolder->getID();
 		$this->_folder = $newFolder;
@@ -125,9 +137,12 @@ class Document
 
 	function setOwner($user)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Documents set owner = " . $user->getID() . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array('owner' => $user->getID());
+		$where = array('id' => $this->_id);
+
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		$this->_ownerID = $user->getID();
 		$this->_owner = $user;
@@ -147,9 +162,12 @@ class Document
 
 	function setDefaultAccess($mode)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Documents set defaultAccess = " . $mode . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array('defaultAccess' => $mode);
+		$where = array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		$this->_defaulAccess = $mode;
 		return true;
@@ -160,10 +178,12 @@ class Document
 	function setInheritAccess($inheritAccess)
 	{
 		$inheritAccess = ($inheritAccess) ? "1" : "0";
+		$data = array('inheritAccess' => $inheritAccess);
+		$where = array('id' => $this->_id);
 		
-		$queryStr = "UPDATE phpgw_mydms_Documents SET inheritAccess = " . $GLOBALS['egw']->db->quote($inheritAccess,'bool') . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		$this->_inheritAccess = $inheritAccess;
 		return true;
@@ -188,10 +208,12 @@ class Document
 	function setExpires($expires)
 	{
 		$expires = (!$expires) ? 0 : $expires;
+		$data = array('expires' => $expires);
+		$where = array('id' => $this->_id);
 		
-		$queryStr = "UPDATE phpgw_mydms_Documents SET expires = " . $expires . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		$this->_expires = $expires;
 		return true;
@@ -202,10 +224,12 @@ class Document
 	function setLocked($falseOrUser)
 	{
 		$locked = (is_object($falseOrUser)) ? $falseOrUser->getID() : -1;
+		$data = array('locked' => $locked);
+		$where = array('id' => $this->_id);
 		
-		$queryStr = "UPDATE phpgw_mydms_Documents SET locked = " . $locked . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		unset($this->_lockingUser);
 		$this->_locked = $locked;
@@ -226,9 +250,12 @@ class Document
 
 	function setSequence($seq)
 	{
-		$queryStr = "UPDATE phpgw_mydms_Documents SET sequence = " . $seq . " WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array('sequence' => $seq);
+		$where = array('id' => $this->_id);
+		
+		if(!$this->db->update('phpgw_mydms_Documents', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		$this->_sequence = $seq;
 		return true;
@@ -464,17 +491,32 @@ class Document
 			return false;
 
 		//Eintrag in phpgw_mydms_DocumentContent
-		$queryStr = "INSERT INTO phpgw_mydms_DocumentContent (document, version, comment, date, createdBy, dir, orgFileName, fileType, mimeType) VALUES ".
-					"(".$this->_id.", ".$newVersion.", '".$comment."', ".mktime().", ".$user->getID().", '".$dir."', '".$orgFileName."', '".$fileType."', '" . $mimeType . "')";
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$insertData = array(
+			'document'	=> $this->_id,
+			'version'	=> $newVersion,
+			'comment'	=> $comment,
+			'date'		=> mktime(),
+			'createdBy'	=> $user->getID(),
+			'dir'		=> $dir,
+			'orgFileName'	=> $orgFileName,
+			'fileType'	=> $fileType,
+			'mimeType'	=> $mimeType,
+		);
+		$res = $this->db->insert('phpgw_mydms_DocumentContent', $insertData, '', __LINE__, __FILE__);
+		if (!$res)
 			return false;
+			
+	#	$queryStr = "INSERT INTO phpgw_mydms_DocumentContent (document, version, comment, date, createdBy, dir, orgFileName, fileType, mimeType) VALUES ".
+	#				"(".$this->_id.", ".$newVersion.", '".$comment."', ".mktime().", ".$user->getID().", '".$dir."', '".$orgFileName."', '".$fileType."', '" . $mimeType . "')";
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		unset($this->_content);
 		unset($this->_latestContent);
 		
 		$this->getLatestContent();
-		if ($GLOBALS['mydms']->settings->_enableConverting && in_array($this->_latestContent->getFileType(), array_keys($GLOBALS['mydms']->settings->_convertFileTypes)))
-			$this->_latestContent->convert(); //Auch wenn das schiefgeht, wird deswegen nicht gleich alles "hingeschmissen" (sprich: false zur�ckgegeben)
+	#	if ($GLOBALS['mydms']->settings->_enableConverting && in_array($this->_latestContent->getFileType(), array_keys($GLOBALS['mydms']->settings->_convertFileTypes)))
+	#		$this->_latestContent->convert(); //Auch wenn das schiefgeht, wird deswegen nicht gleich alles "hingeschmissen" (sprich: false zur�ckgegeben)
 		
 //		$this->setLocked(false);
 		

@@ -70,6 +70,7 @@
 			'updateACL'		=> 'true',
 			'updateDocument'	=> 'true',
 			'updateFile'		=> 'true',
+			'setOwner'		=> 'true',
 			'viewDocument'		=> 'true',
 		);
 		
@@ -208,7 +209,7 @@
 				$folder_tree_new .= "tree.selectItem('$folderID',false);";
 
 			$folder_tree_new .= "tree.loadXML('$xmlInitialLoadURL');";
-			$folder_tree_new .= "tree.openItem('$folderID');";
+			
 
 			$folder_tree_new.= '</script>';
 
@@ -362,6 +363,7 @@
 				case 'mydms.uimydms.deleteFile':
 				case 'mydms.uimydms.deleteNotification':
 				case 'mydms.uimydms.setDefaultAccess':
+				case 'mydms.uimydms.setOwner':
 				case 'mydms.uimydms.updateACL':
 				case 'mydms.uimydms.updateFile':
 				case 'mydms.uimydms.viewDocument':
@@ -410,6 +412,18 @@
 			if($documentID && $mode)
 			{
 				$this->bomydms->setDefaultAccess($documentID, $mode);
+				$this->viewDocument($documentID);
+			}
+		}
+
+		function setOwner()
+		{
+			$documentID	= (int)$_GET['documentid'];
+			$owner		= (int)$_POST['owner'];
+
+			if($documentID && $owner)
+			{
+				$this->bomydms->setOwner($documentID, $owner);
 				$this->viewDocument($documentID);
 			}
 		}
@@ -809,7 +823,7 @@
 					{
 						$allUsersOptions[$userObj->getID()] = $userObj->getFullName();
 					}
-					$this->t->set_var('select_ownerid',$GLOBALS['egw']->html->select('owner',$owner->getID(),$allUsersOptions,true,"style=\"width: 300px;\" onchange=\"javascript:document.notify_form.submit();\""));
+					$this->t->set_var('select_ownerid',$GLOBALS['egw']->html->select('owner',$owner->getID(),$allUsersOptions,true,"style=\"width: 300px;\" onchange=\"javascript:document.change_owner.submit();\""));
 					
 					$this->t->parse('change_owner','block_change_owner',True);
 				}

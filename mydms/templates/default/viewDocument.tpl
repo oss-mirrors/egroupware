@@ -402,7 +402,6 @@ if ($user->getID() != $settings->_guestID)
 				<td>
 					{select_ownerid}
 				</td>
-				<td><input type="Submit"></td>
 			</tr>
 		</table>
 		</fieldset>
