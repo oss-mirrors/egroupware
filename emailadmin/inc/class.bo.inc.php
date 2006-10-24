@@ -680,11 +680,6 @@
 			$groups = array_merge(array(0),(array)$GLOBALS['egw']->accounts->memberships($_accountID,true));
 
 			if($userProfile = $this->getUserProfile('felamimail', $groups)) {
-				$icServer = $userProfile->getIncomingServer(0);
-				if(is_a($icServer, 'defaultimap') && $username = $GLOBALS['egw']->accounts->id2name($_accountID)) {
-					$icServer->setUserData($username, $_formData['quotaLimit']);
-				}
-
 				$ogServer = $userProfile->getOutgoingServer(0);
 				if(is_a($ogServer, 'defaultsmtp')) {
 					$ogServer->setUserData($_accountID, 
@@ -695,6 +690,12 @@
 						$_formData['mailLocalAddress']
 					);
 				}
+
+				$icServer = $userProfile->getIncomingServer(0);
+				if(is_a($icServer, 'defaultimap') && $username = $GLOBALS['egw']->accounts->id2name($_accountID)) {
+					$icServer->setUserData($username, $_formData['quotaLimit']);
+				}
+
 				// calling a hook to allow other apps to monitor the changes
 				$_formData['account_id'] = $_accountID;
 				$_formData['location'] = 'editaccountemail';
