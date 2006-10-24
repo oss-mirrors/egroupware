@@ -373,11 +373,10 @@
 	  <?php endif?>
 
 	  <!-- END change_num -->
-
 	  <?php if(count($this->records_arr[0])>10 || $this->mult_records>1):?>
-	  <?php if($this->readonly):?>
+	  <?php if($this->readonly and !$this->site_object_arr[disable_edit_rec]):?>
 	  <div style="float:left;width:auto;"><input type="button" name="edit" onClick="location='<?=$this->edit_record_link?>'" class="egwbutton" value="<?=lang('Edit this Record')?>"></div>
-	  <?php else:?>
+	  <?php elseif(!$this->site_object_arr[disable_edit_rec]):?>
 	  <div style="margin:5px;">
 		 <input type="submit" onclick="return check_m2o_form();" name="savereopen" class="egwbutton" value="<?=lang('Save')?>">
 		 <input type="submit" onclick="return check_m2o_form();" name="savefinish" class="egwbutton" value="<?=lang('Save and finish')?>">
@@ -579,9 +578,9 @@
 
 	  <div style="clear:both;height:20px;"></div>
 
-	  <?php if($this->readonly):?>
+	  <?php if($this->readonly and !$this->site_object_arr[disable_edit_rec]):?>
 	  <div style="float:left;width:auto;"><input type="button" name="edit" onClick="location='<?=$this->edit_record_link?>'" class="egwbutton" value="<?=lang('Edit this Record')?>"></div>
-	  <?php else:?>
+	  <?php elseif(!$this->site_object_arr[disable_edit_rec]):?>
 
 	  <div style="float:left;width:auto;">
 		 <input type="submit" onclick="return check_m2o_form();" name="savereopen" class="egwbutton" value="<?=lang('Save')?>">

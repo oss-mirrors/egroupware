@@ -45,9 +45,9 @@
 	  * @access public
 	  * @return void
 	  */
-	  function uiuser()
+	  function uiuser($session_name='jinn')
 	  {	
-		 $this->bo = CreateObject('jinn.bouser');
+		 $this->bo = CreateObject('jinn.bouser',$session_name);
 		 parent::uijinn();
 	  }
 
@@ -197,11 +197,14 @@
 		 $rows=$this->bo->so->get_record_values($this->bo->session['site_id'],$this->bo->site_object['table_name'],'','','','','name','','*',$where_string);
 		 
 
-		 foreach($rows as $recvals)
+		 if(is_array($rows))
 		 {
-			while(list($key, $val) = each($recvals))
+			foreach($rows as $recvals)
 			{
-			   $_row['FLDXXX'.$key]=$val;
+			   while(list($key, $val) = each($recvals))
+			   {
+				  $_row['FLDXXX'.$key]=$val;
+			   }
 			}
 		 }
 		 $status[eventstatus] = $this->bo->run_event_plugins('run_on_record', $_row);

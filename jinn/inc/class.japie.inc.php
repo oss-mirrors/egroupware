@@ -220,7 +220,6 @@
 		 $this->site_arr = $tmpso->get_site_values($this->site_id);
 		 unset($tmpso);
 
-		 //fixme destroy current session??
 		 
 		 $sessionmanager = CreateObject('jinn.sojinnsession',$this->session_name);
 		 $sessionmanager->sessionarray['site_object_id']=$this->site_object_id;
