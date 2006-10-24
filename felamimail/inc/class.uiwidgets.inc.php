@@ -375,10 +375,10 @@
 
 				$linkData = array
 				(
-					'menuaction'    => 'addressbook.uiaddressbook.add_email',
-					'add_email'	=> urlencode($header['sender_address']),
-					'name'		=> urlencode($header['sender_name']),
-					'referer'	=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
+					'menuaction'   		=> 'addressbook.uicontacts.edit',
+					'presets[email]'	=> urlencode($header['sender_address']),
+					'presets[n_given]'	=> urlencode($header['sender_name']),
+					'referer'		=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
 				);
 				//TODO: url_add_to_addressbook isn't in any of the templates. 
 				//If you want to use it, you need to adopt syntax to the new addressbook (popup)

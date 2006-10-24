@@ -1016,14 +1016,12 @@
 									$link,
 									@htmlentities($newSenderAddress,ENT_QUOTES,$this->displayCharset),
 									@htmlentities($realName, ENT_QUOTES, $this->displayCharset));
-						//TODO: This uses old addressbook code, which should be removed in Version 1.4
-						//Please use addressbook.uicontacts.edit with proper paramenters
 						$linkData = array
 						(
-							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
-							'add_email'	=> $tempSenderAddress,
-							'name'		=> $val->personal,
-							'referer'	=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
+							'menuaction'		=> 'addressbook.uicontacts.edit',
+							'presets[email]'	=> @htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset),
+							'presets[n_given]'	=> @htmlentities($realName, ENT_QUOTES, $this->displayCharset),
+							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
 						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
@@ -1049,13 +1047,11 @@
 						$link = $GLOBALS['egw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',
 									$link,@htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset));
-						//TODO: This uses old addressbook code, which should be removed in Version 1.4
-						//Please use addressbook.uicontacts.edit with proper paramenters
 						$linkData = array
 						(
-							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
-							'add_email'	=> $tempSenderAddress,
-							'referer'	=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
+							'menuaction'		=> 'addressbook.uicontacts.edit',
+							'presets[email]'	=> @htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset),
+							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
 						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
