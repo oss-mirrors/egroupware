@@ -1,3 +1,7 @@
+20061025
+- made printing working again
+- fixed some IE only Javascript problems
+
 20061004
 - completly finnished rewrite of signature handling
 - fixed display of messages. You get not the same font also used everwhere in eGW 

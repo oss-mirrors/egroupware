@@ -30,7 +30,7 @@ function deleteMessages(_messageList) {
 }
 
 function displayMessage(_url,_windowName) {
-	egw_openWindowCentered(_url, _windowName, 800, egw_getWindowOuterHeight());
+	egw_openWindowCentered(_url, _windowName, 850, egw_getWindowOuterHeight());
 }
 
 function emptyTrash() {
@@ -268,7 +268,7 @@ function fm_startTimerMessageListUpdate(_refreshTimeOut) {
 }
 
 function fm_readMessage(_url, _windowName, _node) {
-	egw_openWindowCentered(_url, _windowName, 700, egw_getWindowOuterHeight());
+	egw_openWindowCentered(_url, _windowName, 750, egw_getWindowOuterHeight());
 	trElement = _node.parentNode.parentNode.parentNode;
 	trElement.style.fontWeight='normal';
 

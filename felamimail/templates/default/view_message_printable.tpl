@@ -1,27 +1,18 @@
 <!-- BEGIN message_main -->
 <STYLE type="text/css">
-        .subjectBold
-        {
-        	FONT-SIZE: 12px;
+        .subjectBold {
+        	font-size: 110%;
         	font-weight : bold;
         	font-family : Arial;
         }
 
-        .subject
-        {
-        	FONT-SIZE: 12px;
+        .subject {
+        	font-size: 110%;
         	font-family : Arial;
         }
 
-        .body
-        {
-        	FONT-SIZE: 12px;
-        	font-family : Courier;
-        }
-
-        A.head_link
-        {
-        	color: blue;
+        .body {
+        	font-size: 110%;
         }
 </STYLE>
 <table border="0" cellpadding="1" cellspacing="0" width="100%" style="table-layout:fixed">
@@ -47,82 +38,28 @@
 <tr>
 	<td bgcolor="white">
 <div class="body">
-<!-- Body Begin -->
 {body}
-<!-- Body End -->
 </div>
 	</td>
 </tr>
+</table>
+<table border="0" width="100%" cellspacing="0" cellpading="0" bgcolor="white" style="table-layout:fixed">
+{attachment_rows}
 </table>
 </div>
 
 <!-- END message_main -->
 
-<!-- BEGIN message_raw_header -->
-<tr>
-	<td bgcolor="white">
-		<pre><font face="Arial" size="-1">{raw_header_data}</font></pre>
-	</td>
-</tr>
-<!-- END message_raw_header -->
-
-<!-- BEGIN message_navbar -->
-<table border="0" cellpadding="1" cellspacing="0" width="100%">
-	<tr bgcolor="{th_bg}">
-		<td width="50%">
-			{lang_back_to_folder}:&nbsp;<a class="head_link" href="{link_message_list}">{folder_name}</a>
-		</td>
-		<td align="right">
-			{previous_message}
-			{next_message}
-		</td>
-	</tr>
-	<tr bgcolor="{th_bg}">
-		<td align="right" colspan="2">
-			<a class="head_link" href="{link_reply}">
-			<!-- <img src="{app_image_path}/sm_reply.gif" height="26" width="28" alt="{lang_reply}" border="0"> -->
-			{lang_reply}
-			</a>
-			&nbsp;|&nbsp;
-			<a class="head_link" href="{link_reply_all}">
-			<!-- <img src="{app_image_path}/sm_reply_all.gif" height="26" width="28" alt="{lang_reply_all}" border="0"> -->
-			{lang_reply_all}
-			</a>
-			&nbsp;|&nbsp;
-			<a class="head_link" href="{link_forward}">
-			<!-- <img src="{app_image_path}/sm_forward.gif" height="26" width="28" alt="{lang_forward}" border="0"> -->
-			{lang_forward}
-			</a>
-			&nbsp;|&nbsp;
-			<a class="head_link" href="{link_delete}">
-			<!-- <img src="{app_image_path}/sm_delete.gif" height="26" width="28" alt="{lang_delete}" border="0"> -->
-			{lang_delete}
-			</a>
-		</td>
-	</tr>
-</table>
-<!-- END message_navbar -->
-
 <!-- BEGIN message_attachement_row -->
 <tr>
-	<td valign="top">
-		<a href="{link_view}" target="{target}"><font size="2" face="{theme_font}">
-		<b>{filename}</b></font><a>
+	<td align="left">
+		{filename}
 	</td> 
-	<td>
-		<font size="2" face="{theme_font}">
+	<td align="center">
 		{mimetype}
-		</font>
 	</td>
-	<td>
-		<font size="2" face="{theme_font}">
+	<td align="right">
 		{size}
-		</font>
-	</td>
-	<td width="10%" align="center">
-		<font size="2" face="{theme_font}">
-		<a href="{link_save}">{lang_save}</a>
-		</font>
 	</td>
 </tr>
 <!-- END message_attachement_row -->
@@ -174,8 +111,6 @@
 </tr>
 
 {on_behalf_of_part}
-
-{org_part}
 
 <tr cclass="row_off">
 	<td style="font-weight:bold;">

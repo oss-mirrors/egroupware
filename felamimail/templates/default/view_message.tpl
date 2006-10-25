@@ -6,13 +6,13 @@ self.focus();
 <div id="navbarDIV">
         {navbar}
 </div>
-<div id="subjectDIV">
-	<span style="padding-left:2px;">{subject_data}</span>
+<div id="subjectDIV" style="border: 0px solid green; margin:0px; padding:0px; left:0px;">
+	<span style="padding-left:2px; font-size: 110%;">{subject_data}</span>
 </div>
 <div id="headerDIV">
 	{header}
 </div>
-<div class="bodyDIV" id="bodyDIV">
+<div class="bodyDIV" id="bodyDIV" style="border: 0px solid green; margin:0px; padding:0px; left:0px;">
 	<iframe id="messageIFRAME" frameborder="no" scrolling="auto" src="{url_displayBody}">
 	</iframe>
 </div>
@@ -26,17 +26,17 @@ self.focus();
 <div id="navbarDIV">
         {navbar}
 </div>
-<div id="subjectDIV">
-	<span style="padding-left:2px;">{subject_data}</span>
+<div id="subjectDIV" style="border: 0px solid green; margin:0px; padding:0px; left:0px;">
+	<span style="padding-left:2px; font-size: 110%;">{subject_data}</span>
 </div>
 <div id="headerDIV">
 	{header}
 </div>
-<div class="bodyDIV bodyDIVAttachment" id="bodyDIV">
-	<iframe frameborder="no" scrolling="auto" style="border:0px solid black; width:100%; height:100%;" src="{url_displayBody}">
+<div class="bodyDIV bodyDIVAttachment" id="bodyDIV" style="border: 0px solid green; margin:0px; padding:0px; left:0px;">
+	<iframe frameborder="no" scrolling="auto" style="width:100%; height:100%;" src="{url_displayBody}">
 	</iframe>
 </div>
-<div id="attachmentDIV">
+<div id="attachmentDIV" style="border: 0px solid green; margin:0px; padding:0px; left:0px;">
 <table border="0" width="100%" cellspacing="0">
 {attachment_rows}
 </table>
@@ -79,23 +79,17 @@ self.focus();
 <!-- BEGIN message_attachement_row -->
 <tr>
 	<td valign="top">
-		<a href="#" onclick="{link_view} return false;"><font size="2" face="{theme_font}">
-		<b>{filename}</b></font><a>
+		<a href="#" onclick="{link_view} return false;">
+		<b>{filename}</b><a>
 	</td> 
 	<td align="center">
-		<font size="2" face="{theme_font}">
 		{mimetype}
-		</font>
 	</td>
 	<td align="center">
-		<font size="2" face="{theme_font}">
 		{size}
-		</font>
 	</td>
 	<td width="10%" align="center">
-		<font size="2" face="{theme_font}">
 		<a href="{link_save}"><img src="{url_img_save}" title="{lang_save}"></a>
-		</font>
 	</td>
 </tr>
 <!-- END message_attachement_row -->
