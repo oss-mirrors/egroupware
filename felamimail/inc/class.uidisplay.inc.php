@@ -967,7 +967,7 @@
 			if(!@is_object($GLOBALS['egw']->js)) {
 				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
-			
+
 			if($_GET['menuaction'] != 'felamimail.uidisplay.printMessage' &&
 				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody') {
 				$GLOBALS['egw']->js->validate_file('tabs','tabs');
@@ -1017,6 +1017,7 @@
 									$link,
 									@htmlentities($newSenderAddress,ENT_QUOTES,$this->displayCharset),
 									@htmlentities($realName, ENT_QUOTES, $this->displayCharset));
+
 						$linkData = array
 						(
 							'menuaction'		=> 'addressbook.uicontacts.edit',
@@ -1024,6 +1025,7 @@
 							'presets[n_given]'	=> @htmlentities($realName, ENT_QUOTES, $this->displayCharset),
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
+						
 						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
 						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
 						$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
@@ -1518,7 +1520,6 @@
 
 					switch($value['mimeType'])
 					{
-<<<<<<< .mine
 						case 'message/rfc822':
 							$linkData = array
 							(
@@ -1551,44 +1552,7 @@
 							);
 							$linkView = "window.location.href = '".$GLOBALS['egw']->link('/index.php',$linkData)."';";
 							break;
-=======
-						$tempSenderAddress = $val->mailbox."@".$val->host;
-						$newSenderAddress  = imap_rfc822_write_address($val->mailbox,
-									$val->host,
-									$val->personal);
-						$realName = !empty($_organisation) ? $val->personal .' ('. $_organisation .')' : $val->personal;
-						$linkData = array
-						(
-							'menuaction'	=> 'felamimail.uicompose.compose',
-							'send_to'	=> base64_encode($newSenderAddress)
-						);
-						$link = $GLOBALS['egw']->link('/index.php',$linkData);
-						$senderAddress .= sprintf('<a href="%s" title="%s">%s</a>',
-									$link,
-									@htmlentities($newSenderAddress,ENT_QUOTES,$this->displayCharset),
-									@htmlentities($realName, ENT_QUOTES, $this->displayCharset));
-						$linkData = array
-						(
-							'menuaction'		=> 'addressbook.uicontacts.edit',
-							'presets[email]'	=> @htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset),
-							'presets[n_given]'	=> @htmlentities($realName, ENT_QUOTES, $this->displayCharset),
-							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
-						);
-						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
-						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
-						$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
-						$senderAddress .= sprintf('<a href="%s" onClick="%s">
-							<img src="%s" width="10" height="8" border="0" 
-							align="absmiddle" alt="%s" 
-							title="%s"></a>',
-							$urlAddToAddressbook,
-							$onClick,
-							$image,
-							lang('add to addressbook'),
-							lang('add to addressbook'));
->>>>>>> .r22733
 					}
-<<<<<<< .mine
 					$this->t->set_var("link_view",$linkView);
 					$this->t->set_var("target",$target);
 
@@ -1602,38 +1566,6 @@
 					$this->t->set_var("link_save",$GLOBALS['egw']->link('/index.php',$linkData));
 					
 					$this->t->parse('attachment_rows','message_attachement_row',True);
-=======
-					else
-					{
-						$tempSenderAddress = $val->mailbox."@".$val->host;
-						$linkData = array
-						(
-							'menuaction'	=> 'felamimail.uicompose.compose',
-							'send_to'	=> base64_encode($tempSenderAddress)
-						);
-						$link = $GLOBALS['egw']->link('/index.php',$linkData);
-						$senderAddress .= sprintf('<a href="%s">%s</a>',
-									$link,@htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset));
-						$linkData = array
-						(
-							'menuaction'		=> 'addressbook.uicontacts.edit',
-							'presets[email]'	=> @htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset),
-							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
-						);
-						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
-						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
-						$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
-						$senderAddress .= sprintf('<a href="%s" onClick="%s">
-							<img src="%s" width="10" height="8" border="0" 
-							align="absmiddle" alt="%s" 
-							title="%s"></a>',
-							$urlAddToAddressbook,
-							$onClick,
-							$image,
-							lang('add to addressbook'),
-							lang('add to addressbook'));
-					}
->>>>>>> .r22733
 				}
 			}
 			else
