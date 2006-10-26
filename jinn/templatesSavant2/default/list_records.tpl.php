@@ -136,7 +136,7 @@
 		 <input type="hidden" name="action" value="none">
 		 <table id="recordscontenttable" border="0" cellspacing="1" cellpadding="0" width="100%" style="padding-bottom:3px;border-bottom:solid 1px #006699">
 			<tr>
-			   <td bgcolor="<?=$this->th_bg ?>" colspan="<?=($this->action_colspan+$this->runonrec_amount)?>"  valign="top" style="width:1%;font-weight:bold;padding:3px 5px 3px 5px;"><?=//lang('Actions')?></td>
+			   <td bgcolor="<?=$this->th_bg ?>" colspan="<?=($this->action_colspan+$this->runonrec_amount)?>"  valign="top" style="width:1%;font-weight:bold;padding:3px 5px 3px 5px;"></td>
 
 			   <?php if(is_array($this->colnames)):?>
 			   <?php foreach($this->colnames as $colname):?> 
@@ -222,7 +222,7 @@
 			   <td width="1%" bgcolor="<?=$this->colhead_bg_color ?>" align="left"><a title="<?=lang('export all selected records') ?>" href="javascript:submit_multi('export')" ><img width="16" src="<?=$this->colfield_export_img_src ?>" alt="<?=lang('export all selected records') ?>" /></a></td>
 			   <?php endif?>
 
-			   <?php //if($this->enable_multi):?>
+			   <!--< ? p h p / / if($this->enable_multi):?>-->
 			   <td>&nbsp;<?=lang('Actions to apply on all selected record')?></td>
 			   <?php else:?>
 			   <td>&nbsp;</td>
