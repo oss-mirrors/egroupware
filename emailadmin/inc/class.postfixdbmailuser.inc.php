@@ -67,12 +67,13 @@
 			
 			if ($sri)
 			{
+				$realName = trim($GLOBALS['egw_info']['user']['firstname'] . (!empty($GLOBALS['egw_info']['user']['firstname']) ? ' ' : '') . $GLOBALS['egw_info']['user']['lastname']);
 				$allValues = ldap_get_entries($ds, $sri);
 				if(isset($allValues[0]['mail'][0]))
 				{
 					$emailAddresses[] = array
 					(
-						'name'		=> $GLOBALS['egw_info']['user']['fullname'],
+						'name'		=> $realName,
 						'address'	=> $allValues[0]['mail'][0],
 						'type'		=> 'default'
 					);
@@ -84,7 +85,7 @@
 					{
 						$emailAddresses[] = array
 						(
-							'name'		=> $GLOBALS['egw_info']['user']['fullname'],
+							'name'		=> $realName,
 							'address'	=> $allValues[0]['mailalternateaddress'][$i],
 							'type'		=> 'alternate'
 						);

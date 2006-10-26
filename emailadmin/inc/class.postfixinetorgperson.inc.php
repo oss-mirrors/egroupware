@@ -44,12 +44,13 @@ class postfixinetorgperson extends defaultsmtp
 		
 		if ($sri && ($allValues = ldap_get_entries($ds, $sri)) && is_array($allValues[0]['mail']))
 		{
+			$realName = trim($GLOBALS['egw_info']['user']['firstname'] . (!empty($GLOBALS['egw_info']['user']['firstname']) ? ' ' : '') . $GLOBALS['egw_info']['user']['lastname']);
 			foreach($allValues[0]['mail'] as $n => $mail)
 			{
 				if (!is_numeric($n)) continue;
 
 				$emailAddresses[] = array(
-					'name'		=> $GLOBALS['egw_info']['user']['fullname'],
+					'name'		=> $realName,
 					'address'	=> $mail,
 					'type'		=> !$n ? 'default' : 'alternate',
 				);

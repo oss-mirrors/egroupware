@@ -52,9 +52,11 @@
 			if(empty($emailAddress))
 				$emailAddress = $_accountName.'@'.$this->defaultDomain;
 
+			$realName = trim($GLOBALS['egw_info']['user']['firstname'] . (!empty($GLOBALS['egw_info']['user']['firstname']) ? ' ' : '') . $GLOBALS['egw_info']['user']['lastname']);
+
 			return array(
 				array(
-					'name'		=> $GLOBALS['egw_info']['user']['fullname'], 
+					'name'		=> $realName, 
 					'address'	=> $emailAddress, 
 					'type'		=> 'default'
 				)
