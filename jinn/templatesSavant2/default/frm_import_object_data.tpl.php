@@ -1,5 +1,3 @@
-<!--<h3><?=lang('importeer Object')?>&nbsp;:&nbsp;<span style="background-color:#dddddd">&nbsp;<?=$this->objectname?>&nbsp;</span></h3>-->
-
 <style>
    .previewtable 
    {
@@ -196,7 +194,6 @@
 			<strong><?= lang('CSV File to import')?></strong><br/>
 			<input type="file" name="importfile" /><br/>
 			<input class="egwbutton"  type="submit" name="do_upload" value="<?=lang('Upload');?>"/>
-			<!--				  <input class="egwbutton"  type="button" value="<?=lang('cancel')?>" onClick="history.back();"/>-->
 		 </div>
 		 <br/>
 
@@ -218,83 +215,39 @@
 
    <div style="clear:both;"></div>
    <div style="margin-top:20px;background-color:#dedede;padding:5px;">
-   <?php if(is_array($this->importpreview_arr)):?>
-   <fieldset >
-	  <legend><?=lang('CSV Fields Preview')?></legend>
-	  <div style="overflow:auto;">
-		 <table border="0" class="previewtable" style="">
-			<?php if(is_array($this->importpreview_head_arr)):?>
-			<thead style="">
-			   <tr>
-				  <?php foreach($this->importpreview_head_arr as $prev_head_cell):?>
-				  <th>
-					 <?=$prev_head_cell?>
-				  </th>
-				  <?php endforeach?>
-			   </tr>
-			</thead>
-			<?php endif?>
+	  <?php if(is_array($this->importpreview_arr)):?>
+	  <fieldset >
+		 <legend><?=lang('CSV Fields Preview')?></legend>
+		 <div style="overflow:auto;">
+			<table border="0" class="previewtable" style="">
+			   <?php if(is_array($this->importpreview_head_arr)):?>
+			   <thead style="">
+				  <tr>
+					 <?php foreach($this->importpreview_head_arr as $prev_head_cell):?>
+					 <th>
+						<?=$prev_head_cell?>
+					 </th>
+					 <?php endforeach?>
+				  </tr>
+			   </thead>
+			   <?php endif?>
 
-			<tbody>
-			   <?php foreach($this->importpreview_arr as $prev_row_arr):?>
-			   <tr>
-				  <?php foreach($prev_row_arr as $prev_cell):?>
-				  <td>
-					 <?=$prev_cell?>
-				  </td>
+			   <tbody>
+				  <?php foreach($this->importpreview_arr as $prev_row_arr):?>
+				  <tr>
+					 <?php foreach($prev_row_arr as $prev_cell):?>
+					 <td>
+						<?=$prev_cell?>
+					 </td>
+					 <?php endforeach?>
+				  </tr>
 				  <?php endforeach?>
-			   </tr>
-			   <?php endforeach?>
-			</tbody>
-		 </table>
-	  </div>
-   </fieldset>
+			   </tbody>
+			</table>
+		 </div>
+	  </fieldset>
 
-<!--   <fieldset >
-	  <legend><?=lang('Mapping Preview')?></legend>
-	  <div style="width:470px;overflow:auto;">
-		 <table border="0" class="previewtable" style="">
-			<?php if(is_array($this->cols_arr)):?>
-			<thead style="">
-			   <tr>
-				  <?php foreach($this->cols_arr as $col_arr):?>
-				  <?php //foreach($this->importpreview_head_arr as $prev_head_cell):?>
-				  <th>
-					 <?=$col_arr[column_label]?>
-					 <?=//$prev_head_cell?>
-				  </th>
-				  <?php endforeach?>
-			   </tr>
-			</thead>
-			<?php endif?>
-
-			<tbody>
-			   <?php foreach($this->importpreview_arr as $prev_row_arr):?>
-			   <tr>
-				  <?$iii=0;?>
-				  <?php foreach($prev_row_arr as $prev_cell):?>
-				  <td>
-					 <?=$prev_row_arr[$fld_arr[$iii]]?>
-					 <?php $iii++;?>
-					 <?=//$prev_cell?>
-				  </td>
-				  <?php endforeach?>
-			   </tr>
-			   <?php endforeach?>
-			</tbody>
-		 </table>
-	  </div>
-   </fieldset>
-   -->
-</div>
+   </div>
    <?php endif?>
-
-
-   <!--
-   <pre>
-	  <?=//$this->insertprev?>
-   </pre>
-   -->
-
 </form>
 <div>&nbsp;</div>

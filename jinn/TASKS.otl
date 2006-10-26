@@ -1,10 +1,13 @@
 ## J I N N   T A S K S ##
 Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
-	[_] 0% RELEASE 0.9xxx stable
-		[_] 0% SHOWSTOPPERS BUGS
+	[_] 8% RELEASE 0.9xxx stable
+		[_] 16% SHOWSTOPPERS BUGS
+			[_] PHP compliance
+				[_] check all array_merge
+				[_] check thouroughly
 			[_] Edit record
 			[_] order not well working
-			[_] ajax m2o list view seems to use the configuration of its mother object
+			[X] ajax m2o list view seems to use the configuration of its mother object
 			[_] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
 			[_] TinyMCE parst niet goed in een many-to-one relatie
 				[_] in progress

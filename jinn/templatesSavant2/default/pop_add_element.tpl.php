@@ -24,7 +24,6 @@
 			   self.close()
 		 }
 	  </script>
-	  <?=//$this->css?>
 	  <style type="text/css">
 		 td
 		 {

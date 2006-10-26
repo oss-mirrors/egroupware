@@ -197,6 +197,7 @@
 		 }
 
 		 $objects=$this->get_all_objects_allowed($uid);
+		 //die($object_id);
 
 		 if(in_array($object_id,$objects))
 		 {
@@ -228,6 +229,7 @@
 		 }
 
 		 $objects=$this->so->get_all_objects($uid,$group);
+		 //_debug_array($objects);
 
 		 $sites=$this->get_sites_to_admin($uid);
 

@@ -268,9 +268,6 @@
 			   {
 					 NID=active_el[type][0];
 
-					 //document.getElementById('a_'+NID).innerHTML= '<?=lang('Many-to-Many')?>: '+ lkey +' &gt;&gt; ' + ftab + '.'+ fkey;
-					 //document.getElementById('a_'+NID).innerHTML= '<?=lang('Many-to-Many')?>: '+ ftab;
-
 					 document.getElementById('REL2XXX_FOREIGN_TABLE'+NID).value=ftab;
 
 					 document.getElementById('REL2XXX_CONNECT_KEY_LOCAL'+NID).value=lconfld;
@@ -293,15 +290,11 @@
 			   else
 			   {
 					 NID='N'+NewRelID;
-					 //new_li_inner = ' <li id="li_'+NID+'"> <a href="javascript:void(0);" onclick="deleteRelation(\''+NID+'\',\''+type+'\')"><img src="<?=$this->delete_img?>" alt="" /></a>	<a class="" id="a_'+NID+'" onclick="changerelation(\''+NID+'\',\'type2\')" href="javascript:void(0);" ><?=lang('Many-to-Many')?>: '+lkey+' &gt;&gt; '+ftab+'.'+fkey+'</a> </li> ';
-					 //new_li_inner = ' <li id="li_'+NID+'"> <a href="javascript:void(0);" onclick="deleteRelation(\''+NID+'\',\''+type+'\')"><img src="<?=$this->delete_img?>" alt="" /></a>	<a class="" id="a_'+NID+'" onclick="changerelation(\''+NID+'\',\'type2\')" href="javascript:void(0);" ><?=lang('Many-to-Many')?>: '+ftab+'</a> </li> ';
 
 					 new_hidden_inner='';
 					 new_hidden_inner+='<'+'div style="display:none" id="div'+NID+'">';
 					 new_hidden_inner+='<input type="hidden" id="REL2XXX_ID'+ NID +'" name="REL2XXX_ID'+ NID +'" value="'+NID+'" />';
 					 new_hidden_inner+='<input type="hidden" id="REL2XXX_TYPE'+ NID +'" name="REL2XXX_TYPE'+ NID +'" value="'+2+'" />'; // FIXME type must be in a var also
-					 //new_hidden_inner+='<input type="hidden" id="REL2XXX_LOCAL_KEY'+ NID +'" name="REL2XXX_LOCAL_KEY'+ NID +'" value="'+lkey+'" />';
-					 //new_hidden_inner+='<input type="hidden" id="REL2XXX_FOREIGN_KEY'+ NID +'" name="REL2XXX_FOREIGN_KEY'+ NID +'" value="'+fkey+'" />';
 					 new_hidden_inner+='<input type="hidden" id="REL2XXX_FOREIGN_TABLE'+ NID +'" name="REL2XXX_FOREIGN_TABLE'+ NID +'" value="'+ftab+'" />';
 					 new_hidden_inner+='<input type="hidden" id="REL2XXX_CONNECT_KEY_LOCAL'+ NID +'" name="REL2XXX_CONNECT_KEY_LOCAL'+ NID +'" value="'+lconfld+'" />';
 					 new_hidden_inner+='<input type="hidden" id="REL2XXX_CONNECT_KEY_FOREIGN'+ NID +'" name="REL2XXX_CONNECT_KEY_FOREIGN'+ NID +'" value="'+fconfld+'" />';
@@ -332,7 +325,6 @@
 			   document.getElementById('newhiddens').innerHTML+=new_hidden_inner;
 
 			   closeRelation(type);
-		//	   alert(new_displ_inner);
 			   return true;
 		 }
 

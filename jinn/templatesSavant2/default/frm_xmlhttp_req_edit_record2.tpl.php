@@ -1,4 +1,4 @@
-<form method="post" id="frm<?=$this->m2oid?>" name="frm<?=$this->m2oid?>" action="" enctype="multipart/form-data" onSubmit="//return onSubmitForm()">
+<form method="post" id="frm<?=$this->m2oid?>" name="frm<?=$this->m2oid?>" action="" enctype="multipart/form-data">
    <?=$this->extrahiddens?>
    <input type="hidden" name="submitted" value="true" />
    <?php if($this->where_string_form):?>

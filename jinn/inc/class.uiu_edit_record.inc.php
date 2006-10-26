@@ -781,6 +781,7 @@
 	  */
 	  function mk_elements_array($field_prefix,$object_arr,$record_values=false,$readonly=false)
 	  {
+		 $ret_elements_arr=array();
 		 $elements_arr = $this->bo->so->mk_element_conf_arr_for_obj($object_arr['object_id']);
 		
 		 if(count($elements_arr)<1)
@@ -873,11 +874,12 @@
 	  */
 	  function mk_m2m_array()
 	  {
+		 $ret_arr=array();
 
 		 // fixme create read only widget
 		 if($this->readonly)
 		 {
-			return;	
+			return $ret_arr;
 		 }
 
 		 if($this->mult_records>1 && is_numeric($this->mult_index)) 
@@ -961,8 +963,8 @@
 			   $ret_arr[]=$single_m2m;
 			}
 
-			return $ret_arr;
 		 }
+		 return $ret_arr;
 	  }
 
 	  /**
@@ -973,10 +975,12 @@
 	  */
 	  function mk_m2o_array()
 	  {
+
+		 $ret_arr=array();
 		 // fixme create read only widget
 		 if($this->readonly)
 		 {
-			return;	
+			return $ret_arr;	
 		 }
 
 		 $m2o_arr=$this->bo->extract_m2o_relations($this->bo->site_object['relations']);
@@ -1021,10 +1025,13 @@
 	  */
 	  function mk_o2o_array()
 	  {
+		 $o2o_fields_arr=array();
+		 $ret_arr=array();
+
 		 // fixme create read only widget
 		 if($this->readonly)
 		 {
-			return;	
+			return $ret_arr;	
 		 }
 
 		 $O2O_arr=$this->bo->extract_O2O_relations($this->bo->site_object['relations']);
@@ -1078,8 +1085,8 @@
 			   $i++;
 			}
 
-			return $ret_arr;
 		 }
+		 return $ret_arr;
 	  }
 
 	  /**

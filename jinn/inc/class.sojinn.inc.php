@@ -278,7 +278,7 @@
 
 		 foreach($_table_arr as $tab)
 		 {
-			if ($tab[table_name]==$data['table_name'])
+			if ($tab['table_name']==$data['table_name'])
 			{
 			   return true;
 			}
@@ -814,6 +814,7 @@
 	  */
 	  function get_objects_for_user($uid)
 	  {
+		 $objects=array();
 		 $SQL="SELECT site_object_id FROM egw_jinn_acl WHERE uid='$uid'";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 

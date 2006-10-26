@@ -45,7 +45,6 @@
 			   document.popfrm.submit();
 		 }
 	  </script>
-	  <?=//$this->css?>
 	  <style type="text/css">
 
 		 div.activetab
@@ -280,8 +279,6 @@
 
 						<?php
 						   $chk='checked="checked"';
-						   //_debug_array($this->global_values);
-						   //_debug_array($_POST);
 						   if(!$this->global_values['disable_multi']) 		$checked_disable_multi = $chk;
 						   if(!$this->global_values['disable_create_rec'])		$checked_disable_create_rec = $chk;
 						   if(!$this->global_values['disable_del_rec'])			$checked_disable_del_rec = $chk;
