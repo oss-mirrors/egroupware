@@ -1022,9 +1022,16 @@
 						(
 							'menuaction'		=> 'addressbook.uicontacts.edit',
 							'presets[email]'	=> @htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset),
-							'presets[n_given]'	=> @htmlentities($realName, ENT_QUOTES, $this->displayCharset),
+							'presets[org_name]'	=> $_organisation,
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
+						
+						if($spacePos = strrpos($val->personal, ' ')) {
+							$linkData['presets[n_family]']	= substr($val->personal, $spacePos+1);
+							$linkData['presets[n_given]'] 	= substr($val->personal, 0, $spacePos);
+						} else {
+							$linkData['presets[n_family]']	= @htmlentities($val->personal, ENT_QUOTES, $this->displayCharset);
+						}
 						
 						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
 						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
@@ -1056,6 +1063,7 @@
 						(
 							'menuaction'		=> 'addressbook.uicontacts.edit',
 							'presets[email]'	=> @htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset),
+							'presets[org_name]'	=> $_organisation,
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
