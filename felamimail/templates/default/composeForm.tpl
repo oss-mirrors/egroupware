@@ -80,11 +80,14 @@
 </table>
 <table style="clear:left; width:100%;" border="0" cellspacing="0" cellpading="1">
 <tr class="row_on">
-	<td align="left" style="width:90px;">
+	<td align="left" style="width:116px;">
 		<b>{lang_identity}</b>
 	</td>
 	<td align="left">
 		{select_from}
+	</td>
+	<td style="width:25px;" valign="bottom">
+		&nbsp;
 	</td>
 </tr>
 </table>
@@ -95,11 +98,14 @@
 
 <table style="width:100%;" border="0" cellspacing="0" cellpading="1">
 <tr class="row_on">
-	<td align="left" style="width:90px;">
+	<td align="left" style="width:116px;">
 		<b>{lang_subject}</b>
 	</td>
 	<td align="left">
 		<input style="width:99%;" id="fm_compose_subject" onkeypress="return keycodePressed(KEYCODE_ENTER);" class="input_text" onkeyup="updateTitle(this.value)" type="text" style="width:450px;" name="subject" value="{subject}" onfocus="startCaptureEventSubjects(this)">
+	</td>
+	<td style="width:25px;" valign="bottom">
+		&nbsp;
 	</td>
 </tr>
 </table>
@@ -191,18 +197,17 @@
 	<td align="right" style="width:90px;">
 		{select_destination}
 	</td>
+	<td style="width:25px;" valign="bottom">
+		<span style="display:none;" valign="bottom" class="selectFolder">
+			<!-- <div class="divButton" style="background-image: url({img_fileopen});" onclick="fm_compose_selectFolder();" title="{lang_select_folder}"></div> -->
+			<button type="button" onclick="fm_compose_selectFolder();" title="{lang_select_folder}" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px; font-size:9px; font-weight:bold; height:15px; width:20px; line-height:14px; text-align:center; cursor: pointer;">...</button>
+		</span>
+	</td>
 	<td align="left" valign="bottom" sstyle="width:455px;">
 		<input class="input_text" onkeypress="return disabledKeyCodes(disabledKeys1);" autocomplete="off" type=text style="width:99%;" name="address[]" value="{address}" onfocus="initResultBox(this)" onblur="stopCapturingEvents()">
 	</td>
 	<td style="width:25px;" valign="bottom">
-		<!-- <button type="image" onclick="deleteTableRow(this); return false;"><img src="{img_clear_left}" title="{lang_remove}"></button> -->
 		<div class="divButton" style="background-image: url({img_clear_left});" onclick="deleteTableRow(this);" title="{lang_remove}"></div>
-	</td>
-	<td style="width:25px;" valign="bottom">
-		<span style="display:none;" valign="bottom" class="selectFolder">
-		<!-- <button type="image" onclick="fm_compose_selectFolder(); return false;"><img src="{img_fileopen}" alt="{lang_select_folder}"></button> -->
-		 <div class="divButton" style="background-image: url({img_fileopen});" onclick="fm_compose_selectFolder();" title="{lang_select_folder}"></div>
-		</span>
 	</td>
 </tr>
 <!-- END destination_row -->

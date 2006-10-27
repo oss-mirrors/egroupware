@@ -1,3 +1,12 @@
+20061027
+- reorganized compose dialog a little bit. The folder select button as now
+  directly beside the select box for from, to, cc, reply to and folder
+- fixed a JS error, when selecting the folder from the folder tree
+
+20061026
+- added some more logic, to also import the organisation, when importing addresses by
+  clicking at the icon behind the emailaddresses
+
 20061025
 - made printing working again
 - fixed some IE only Javascript problems

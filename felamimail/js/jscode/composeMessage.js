@@ -469,7 +469,11 @@ function fm_compose_setFolderSelectValue(_folderName) {
 		if(!currentFolderSelectField.parentNode.parentNode.nextSibling) {
 			addAddressRow(currentFolderSelectField.parentNode.parentNode);
 		}
-		currentFolderSelectField.parentNode.parentNode.nextSibling.getElementsByTagName('input')[0].focus();
+		var nextSibling = currentFolderSelectField.parentNode.parentNode.nextSibling;
+		if(nextSibling.nodeType == '3') {
+			nextSibling = nextSibling.nextSibling;
+		}
+		nextSibling.getElementsByTagName('input')[0].focus();
 	}
 }
 

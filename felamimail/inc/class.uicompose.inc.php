@@ -31,6 +31,7 @@
 			'to' 		=> 'to',
 			'cc'		=> 'cc',
 			'bcc'		=> 'bcc',
+			'replyto'	=> 'replyto',
 			'folder'	=> 'folder'
 		);
 
