@@ -1,4 +1,6 @@
 20061027
+- fixed printing when email conatains a cc
+- signature description was always "undefined" when using internet explorer
 - reorganized compose dialog a little bit. The folder select button as now
   directly beside the select box for from, to, cc, reply to and folder
 - fixed a JS error, when selecting the folder from the folder tree
