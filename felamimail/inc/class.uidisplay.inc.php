@@ -1436,10 +1436,8 @@
 		#	$this->t->set_block('displayMsg','message_raw_header');
 		#	$this->t->set_block('displayMsg','message_navbar');
 			$this->t->set_block('displayMsg','message_onbehalfof');
-		#	$this->t->set_block('displayMsg','message_cc');
+			$this->t->set_block('displayMsg','message_cc');
 			$this->t->set_block('displayMsg','message_attachement_row');
-		#	$this->t->set_block('displayMsg','previous_message_block');
-		#	$this->t->set_block('displayMsg','next_message_block');
 			$this->t->set_block('displayMsg','message_org');
 
 		#	$this->t->egroupware_hack = False;
