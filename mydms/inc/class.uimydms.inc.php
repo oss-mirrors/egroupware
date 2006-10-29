@@ -375,6 +375,7 @@
 					$GLOBALS['egw']->js->set_onload('javascript:initTabs();');
 					break;
 				case 'mydms.uimydms.folderChooser':
+					$GLOBALS['egw']->js->validate_file('jscode','mydms','mydms');
 					$GLOBALS['egw']->js->validate_file('jscode','folderChooser','mydms');
 					break;
 			}
