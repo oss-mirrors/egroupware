@@ -39,7 +39,7 @@
 		 'versions' => Array('1.3')
 	);
 	// installation checks for SyncML
-	$setup_info['felamimail']['check_install'] = array(
+	$setup_info['syncml']['check_install'] = array(
 		'' => array(
 			'func' => 'pear_check',
 			'from' => 'SyncML',
