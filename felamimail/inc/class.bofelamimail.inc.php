@@ -1488,9 +1488,8 @@
 			}
 			
 			$acl = array();
-			$mailboxString = $icServer->getMailboxString($_folderName);
 			if(($icServer->supportsCapability('ACL')) && (function_exists('imap_getacl'))) {
-				$acl = imap_getacl ($this->mbox, $_folderName);
+				$acl = imap_getacl ($this->mbox, $icServer->encodeFolderName($_folderName));
 			}
 			
 			return $acl;
