@@ -263,9 +263,14 @@ class Document
 
 	function clearAccessList()
 	{
-		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE targetType = " . T_DOCUMENT . " AND target = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$where = array(
+			'targetType'	=> T_DOCUMENT,
+			'target'	=> $this->_id,
+		);
+		
+		if(!$this->db->delete('phpgw_mydms_ACLs', $where, __LINE__, __FILE__)) {
 			return false;
+		}
 		
 		unset($this->_accessList);
 		return true;
@@ -282,21 +287,39 @@ class Document
 		
 		if (!isset($this->_accessList))
 		{
-			$queryStr = "SELECT * FROM phpgw_mydms_ACLs WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " ORDER BY targetType";
-			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
-			if (is_bool($resArr) && !$resArr)
-				return false;
+			$cols = array('userID', 'groupID', 'mode');
+			$where = array(
+				'targetType'	=> T_DOCUMENT,
+				'target'	=> $this->_id,
+			);
 			
-			$this->_accessList = array("groups" => array(), "users" => array());
-			foreach ($resArr as $row)
-			{
-				if ($row["userID"] != -1)
-					array_push($this->_accessList["users"], new UserAccess($row["userID"], $row["mode"]));
-				else //if ($row["groupID"] != -1)
-					array_push($this->_accessList["groups"], new GroupAccess($row["groupID"], $row["mode"]));
+			if(!$this->db->select('phpgw_mydms_ACLs', $cols, $where, __LINE__, __FILE__, false, 'ORDER BY targetType')) {
+				return false;
 			}
+
+			$this->_accessList = array("groups" => array(), "users" => array());
+			while ($this->db->next_record()) {
+				if ($this->db->f('userID') != -1)
+					array_push($this->_accessList["users"], new UserAccess($this->db->f('userID'), $this->db->f('mode')));
+				else //if ($row["groupID"] != -1)
+					array_push($this->_accessList["groups"], new GroupAccess($this->db->f('groupID'), $this->db->f('mode')));
+			}
+			
+		#	$queryStr = "SELECT * FROM phpgw_mydms_ACLs WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " ORDER BY targetType";
+		#	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+		#	if (is_bool($resArr) && !$resArr)
+		#		return false;
+		#	
+		#	$this->_accessList = array("groups" => array(), "users" => array());
+		#	foreach ($resArr as $row)
+		#	{
+		#		if ($row["userID"] != -1)
+		#			array_push($this->_accessList["users"], new UserAccess($row["userID"], $row["mode"]));
+		#		else //if ($row["groupID"] != -1)
+		#			array_push($this->_accessList["groups"], new GroupAccess($row["groupID"], $row["mode"]));
+		#	}
 		}
-		
+
 		return $this->_accessList;
 	}
 
@@ -304,10 +327,21 @@ class Document
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "INSERT INTO phpgw_mydms_ACLs (target, targetType, ".$userOrGroup.", mode) VALUES 
-					(".$this->_id.", ".T_DOCUMENT.", " . $userOrGroupID . ", " .$mode. ")";
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array (
+			'target'	=> $this->_id,
+			'targetType'	=> T_DOCUMENT,
+			$userOrGroup	=> $userOrGroupID,
+			'mode'		=> $mode,
+		);
+		$res = $this->db->insert('phpgw_mydms_ACLs', $data, '', __LINE__, __FILE__);
+		if (!$res) {
 			return false;
+		}
+		
+		#$queryStr = "INSERT INTO phpgw_mydms_ACLs (target, targetType, ".$userOrGroup.", mode) VALUES 
+		#			(".$this->_id.", ".T_DOCUMENT.", " . $userOrGroupID . ", " .$mode. ")";
+		#if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		#	return false;
 		
 		unset($this->_accessList);
 		return true;
@@ -317,9 +351,20 @@ class Document
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "UPDATE phpgw_mydms_ACLs SET mode = " . $newMode . " WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " AND " . $userOrGroup . " = " . $userOrGroupID;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data	= array('mode'	=> $newMode);
+		$where	= array(
+			'targetType'	=> T_DOCUMENT, 
+			'target'	=> $this->_id, 
+			$userOrGroup	=> $userOrGroupID,
+		);
+		
+		if(!$this->db->update('phpgw_mydms_ACLs', $data, $where, __LINE__, __FILE__)) {
 			return false;
+		}
+
+	#	$queryStr = "UPDATE phpgw_mydms_ACLs SET mode = " . $newMode . " WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " AND " . $userOrGroup . " = " . $userOrGroupID;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		unset($this->_accessList);
 		return true;
@@ -329,9 +374,19 @@ class Document
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE targetType = ".T_DOCUMENT." AND target = ".$this->_id." AND ".$userOrGroup." = " . $userOrGroupID;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$where = array(
+			'targetType'	=> T_DOCUMENT,
+			'target'	=> $this->_id,
+			$userOrGroup	=> $userOrGroupID,
+		);
+		
+		if(!$this->db->delete('phpgw_mydms_ACLs', $where, __LINE__, __FILE__)) {
 			return false;
+		}
+
+	#	$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE targetType = ".T_DOCUMENT." AND target = ".$this->_id." AND ".$userOrGroup." = " . $userOrGroupID;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		unset($this->_accessList);
 		return true;
@@ -416,19 +471,37 @@ class Document
 	{
 		if (!isset($this->_notifyList))
 		{
-			$queryStr ="SELECT * FROM phpgw_mydms_Notify WHERE targetType = " . T_DOCUMENT . " AND target = " . $this->_id;
-			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
-			if (is_bool($resArr) && $resArr == false)
-				return false;
+			$cols = array('userID', 'groupID');
+			$where = array(
+				'targetType'	=> T_DOCUMENT,
+				'target'	=> $this->_id,
+			);
 			
-			$this->_notifyList = array("groups" => array(), "users" => array());
-			foreach ($resArr as $row)
-			{
-				if ($row["userID"] != -1)
-					array_push($this->_notifyList["users"], getUser($row["userID"]) );
-				else //if ($row["groupID"] != -1)
-					array_push($this->_notifyList["groups"], getGroup($row["groupID"]) );
+			if(!$this->db->select('phpgw_mydms_Notify', $cols, $where, __LINE__, __FILE__)) {
+				return false;
 			}
+
+			$this->_notifyList = array("groups" => array(), "users" => array());
+			while ($this->db->next_record()) {
+				if ($this->db->f('userID') != -1)
+					array_push($this->_notifyList["users"], getUser($this->db->f('userID')));
+				else //if ($row["groupID"] != -1)
+					array_push($this->_notifyList["groups"], getGroup($this->db->f('groupID')));
+			}
+			
+		#	$queryStr ="SELECT * FROM phpgw_mydms_Notify WHERE targetType = " . T_DOCUMENT . " AND target = " . $this->_id;
+		#	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+		#	if (is_bool($resArr) && $resArr == false)
+		#		return false;
+		#	
+		#	$this->_notifyList = array("groups" => array(), "users" => array());
+		#	foreach ($resArr as $row)
+		#	{
+		#		if ($row["userID"] != -1)
+		#			array_push($this->_notifyList["users"], getUser($row["userID"]) );
+		#		else //if ($row["groupID"] != -1)
+		#			array_push($this->_notifyList["groups"], getGroup($row["groupID"]) );
+		#	}
 		}
 		return $this->_notifyList;
 	}
@@ -436,10 +509,20 @@ class Document
 	function addNotify($userOrGroupID, $isUser)
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
-		
-		$queryStr = "INSERT INTO phpgw_mydms_Notify (target, targetType, " . $userOrGroup . ") VALUES (" . $this->_id . ", " . T_DOCUMENT . ", " . $userOrGroupID . ")";
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+
+		$data = array (
+			'target'	=> $this->_id,
+			'targetType'	=> T_DOCUMENT,
+			$userOrGroup	=> $userOrGroupID,
+		);
+		$res = $this->db->insert('phpgw_mydms_Notify', $data, '', __LINE__, __FILE__);
+		if (!$res) {
 			return false;
+		}
+		
+	#	$queryStr = "INSERT INTO phpgw_mydms_Notify (target, targetType, " . $userOrGroup . ") VALUES (" . $this->_id . ", " . T_DOCUMENT . ", " . $userOrGroupID . ")";
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		unset($this->_notifyList);
 		return true;
@@ -449,9 +532,19 @@ class Document
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
 		
-		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT . " AND " . $userOrGroup . " = " . $userOrGroupID;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$where = array(
+			'targetType'	=> T_DOCUMENT,
+			'target'	=> $this->_id,
+			$userOrGroup	=> $userOrGroupID,
+		);
+		
+		if(!$this->db->delete('phpgw_mydms_Notify', $where, __LINE__, __FILE__)) {
 			return false;
+		}
+
+	#	$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT . " AND " . $userOrGroup . " = " . $userOrGroupID;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		unset($this->_notifyList);
 		return true;
@@ -527,14 +620,42 @@ class Document
 	{
 		if (!isset($this->_content))
 		{
-			$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." ORDER BY version";
-			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
-			if (is_bool($resArr) && !$res)
-				return false;
+			$cols = array('id', 'document', 'version', 'comment', 'date', 'createdBy', 'dir', 'orgFileName', 'fileType', 'mimeType');
+			$where = array(
+				'document'	=> $this->_id,
+			);
 			
+			if(!$this->db->select('phpgw_mydms_DocumentContent', $cols, $where, __LINE__, __FILE__, false, 'ORDER BY version')) {
+				return false;
+			}
+
 			$this->_content = array();
-			foreach ($resArr as $row)
-				array_push($this->_content, new DocumentContent($row["id"], $row["document"], $row["version"], $row["comment"], $row["date"], $row["createdBy"], $row["dir"], $row["orgFileName"], $row["fileType"], $row["mimeType"]));
+			while ($this->db->next_record()) {
+				array_push(
+					$this->_content, 
+					new DocumentContent(
+						$this->db->f('id'), 
+						$this->db->f('document'), 
+						$this->db->f('version'), 
+						$this->db->f('comment'), 
+						$this->db->f('date'), 
+						$this->db->f('createdBy'), 
+						$this->db->f('dir'), 
+						$this->db->f('orgFileName'), 
+						$this->db->f('fileType'), 
+						$this->db->f('mimeType')
+					)
+				);
+			}
+			
+		#	$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." ORDER BY version";
+		#	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+		#	if (is_bool($resArr) && !$res)
+		#		return false;
+		#	
+		#	$this->_content = array();
+		#	foreach ($resArr as $row)
+		#		array_push($this->_content, new DocumentContent($row["id"], $row["document"], $row["version"], $row["comment"], $row["date"], $row["createdBy"], $row["dir"], $row["orgFileName"], $row["fileType"], $row["mimeType"]));
 		}
 		
 		return $this->_content;
@@ -555,15 +676,42 @@ class Document
 			return false;
 		}
 		
-		$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." AND version = " . $version;
-		$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
-		if (is_bool($resArr) && !$res)
+		$cols = array('id', 'document', 'version', 'comment', 'date', 'createdBy', 'dir', 'orgFileName', 'fileType', 'mimeType');
+		$where = array(
+			'document'	=> $this->_id,
+			'version'	=> $version,
+		);
+			
+		if(!$this->db->select('phpgw_mydms_DocumentContent', $cols, $where, __LINE__, __FILE__)) {
 			return false;
-		if (count($resArr) != 1)
+		}
+
+		if ($this->db->next_record()) {
+			return new DocumentContent(
+				$this->db->f('id'), 
+				$this->db->f('document'), 
+				$this->db->f('version'), 
+				$this->db->f('comment'), 
+				$this->db->f('date'), 
+				$this->db->f('createdBy'), 
+				$this->db->f('dir'), 
+				$this->db->f('orgFileName'), 
+				$this->db->f('fileType'), 
+				$this->db->f('mimeType')
+			);
+		} else {
 			return false;
-		
-		$resArr = $resArr[0];
-		return new DocumentContent($resArr["id"], $resArr["document"], $resArr["version"], $resArr["comment"], $resArr["date"], $resArr["createdBy"], $resArr["dir"], $resArr["orgFileName"], $resArr["fileType"], $resArr["mimeType"]);
+		}
+			
+	#	$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." AND version = " . $version;
+	#	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+	#	if (is_bool($resArr) && !$res)
+	#		return false;
+	#	if (count($resArr) != 1)
+	#		return false;
+	#	
+	#	$resArr = $resArr[0];
+	#	return new DocumentContent($resArr["id"], $resArr["document"], $resArr["version"], $resArr["comment"], $resArr["date"], $resArr["createdBy"], $resArr["dir"], $resArr["orgFileName"], $resArr["fileType"], $resArr["mimeType"]);
 	}
 
 	function getLatestContent()
@@ -577,13 +725,38 @@ class Document
 				return $this->_latestContent;
 			}
 			*/
-			$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." ORDER BY version DESC";
-			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
-			if (is_bool($resArr) && !$resArr)
-				return false;
+			$cols = array('id', 'document', 'version', 'comment', 'date', 'createdBy', 'dir', 'orgFileName', 'fileType', 'mimeType');
+			$where = array(
+				'document'	=> $this->_id,
+			);
 			
-			$resArr = $resArr[0];
-			$this->_latestContent = new DocumentContent($resArr["id"], $resArr["document"], $resArr["version"], $resArr["comment"], $resArr["date"], $resArr["createdBy"], $resArr["dir"], $resArr["orgFileName"], $resArr["fileType"], $resArr["mimeType"]);
+			if(!$this->db->select('phpgw_mydms_DocumentContent', $cols, $where, __LINE__, __FILE__, false, 'ORDER BY version DESC')) {
+				return false;
+			}
+
+			$this->_latestContent = array();
+			if ($this->db->next_record()) {
+				$this->_latestContent = new DocumentContent(
+					$this->db->f('id'), 
+					$this->db->f('document'), 
+					$this->db->f('version'), 
+					$this->db->f('comment'), 
+					$this->db->f('date'), 
+					$this->db->f('createdBy'), 
+					$this->db->f('dir'), 
+					$this->db->f('orgFileName'), 
+					$this->db->f('fileType'), 
+					$this->db->f('mimeType')
+				);
+			}
+	
+		#	$queryStr = "SELECT * FROM phpgw_mydms_DocumentContent WHERE document = ".$this->_id." ORDER BY version DESC";
+		#	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+		#	if (is_bool($resArr) && !$resArr)
+		#		return false;
+		#	
+		#	$resArr = $resArr[0];
+		#	$this->_latestContent = new DocumentContent($resArr["id"], $resArr["document"], $resArr["version"], $resArr["comment"], $resArr["date"], $resArr["createdBy"], $resArr["dir"], $resArr["orgFileName"], $resArr["fileType"], $resArr["mimeType"]);
 		}
 		return $this->_latestContent;
 	}
@@ -606,9 +779,19 @@ class Document
 
 	function addDocumentLink($targetID, $userID, $public)
 	{
-		$queryStr = "INSERT INTO phpgw_mydms_DocumentLinks(document, target, userID, public) VALUES (".$this->_id.", ".$targetID.", ".$userID.", " . $GLOBALS['egw']->db->quote($public,'bool').")";
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$data = array(
+			'document'	=> $this->_id,
+			'target'	=> $targetID,
+			'userID'	=> $userID,
+			'public'	=> $GLOBALS['egw']->db->quote($public,'bool'),
+		);
+		$res = $this->db->insert('phpgw_mydms_DocumentLinks', $data, '', __LINE__, __FILE__);
+		if (!$res)
 			return false;
+
+	#	$queryStr = "INSERT INTO phpgw_mydms_DocumentLinks(document, target, userID, public) VALUES (".$this->_id.", ".$targetID.", ".$userID.", " . $GLOBALS['egw']->db->quote($public,'bool').")";
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		unset($this->_documentLinks);
 		return true;
@@ -616,9 +799,17 @@ class Document
 
 	function removeDocumentLink($linkID)
 	{
-		$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE id = " . $linkID;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$where = array(
+			'id'	=> $linkID,
+		);
+		
+		if(!$this->db->delete('phpgw_mydms_DocumentLinks', $where, __LINE__, __FILE__)) {
 			return false;
+		}
+
+	#	$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE id = " . $linkID;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		unset ($this->_documentLinks);
 		return true;
 	}
@@ -633,18 +824,36 @@ class Document
 			if (!$this->_content[$i]->remove())
 				return false;
 		
-		$queryStr = "DELETE FROM phpgw_mydms_Documents WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$where = array('id' => $this->_id);
+		if(!$this->db->delete('phpgw_mydms_Documents', $where, __LINE__, __FILE__)) {
 			return false;
-		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		}
+		
+		$where = array('target'	=> $this->_id, 'targetType' => T_DOCUMENT);
+		if(!$this->db->delete('phpgw_mydms_ACLs', $where, __LINE__, __FILE__)) {
 			return false;
-		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		}
+		if(!$this->db->delete('phpgw_mydms_Notify', $where, __LINE__, __FILE__)) {
 			return false;
-		$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE document = " . $this->_id . " OR target = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		}
+
+		$where = array('document' => $this->_id, 'target' => $this->_id);
+		if(!$this->db->delete('phpgw_mydms_DocumentLinks', $where, __LINE__, __FILE__)) {
 			return false;
+		}
+
+	#	$queryStr = "DELETE FROM phpgw_mydms_Documents WHERE id = " . $this->_id;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
+	#	$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
+	#	$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE target = " . $this->_id . " AND targetType = " . T_DOCUMENT;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
+	#	$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE document = " . $this->_id . " OR target = " . $this->_id;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		return true;
 	}
@@ -753,9 +962,16 @@ class DocumentContent
 		if (!removeDir($GLOBALS['mydms']->settings->_contentDir . $this->_dir))
 			return false;
 		
-		$queryStr = "DELETE FROM phpgw_mydms_DocumentContent WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$where = array(
+			'id'	=> $this->_id,
+		);
+		
+		if(!$this->db->delete('phpgw_mydms_DocumentContent', $where, __LINE__, __FILE__)) {
 			return false;
+		}
+	#	$queryStr = "DELETE FROM phpgw_mydms_DocumentContent WHERE id = " . $this->_id;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		return true;
 	}
@@ -830,9 +1046,16 @@ class DocumentLink
 
 	function remove()
 	{
-		$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE id = " . $this->_id;
-		if (!$GLOBALS['mydms']->db->getResult($queryStr))
+		$where = array(
+			'id'	=> $this->_id,
+		);
+		
+		if(!$this->db->delete('phpgw_mydms_DocumentLinks', $where, __LINE__, __FILE__)) {
 			return false;
+		}
+	#	$queryStr = "DELETE FROM phpgw_mydms_DocumentLinks WHERE id = " . $this->_id;
+	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
+	#		return false;
 		
 		return true;
 	}

@@ -1,3 +1,7 @@
+2006-11-06  Lars Kneschke  <lkneschke@metaways.de>
+	* fixed folder navigation bug
+	* started converting sql queries to egw db class
+
 20061024
 - made change owner working
 - removed some problems when editing descriptions

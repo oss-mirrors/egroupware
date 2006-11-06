@@ -205,11 +205,15 @@
 			);
 			$xmlInitialLoadURL = $GLOBALS['egw']->link('/index.php',$linkData);
 				
-			if($selectedFolderID == 1)
+			if($selectedFolderID == 1) {
 				$folder_tree_new .= "tree.selectItem('$folderID',false);";
+			}
 
 			$folder_tree_new .= "tree.loadXML('$xmlInitialLoadURL');";
-			
+
+			if($selectedFolderID == 1) {
+				$folder_tree_new .= "tree.openItem('1');";
+			}
 
 			$folder_tree_new.= '</script>';
 
