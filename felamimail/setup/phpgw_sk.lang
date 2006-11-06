@@ -22,6 +22,7 @@ allways a new window	felamimail	sk	v¾dy nové okno
 always show html emails	felamimail	sk	V¾dy zobrazi» HTML správy
 and	felamimail	sk	a
 any of	felamimail	sk	ktorýkoµvek z
+any status	felamimail	sk	ktorýkoµvek stav
 anyone	felamimail	sk	ktokoµvek
 as a subfolder of	felamimail	sk	ako podprieèinok (èoho)
 attachments	felamimail	sk	Prílohy
@@ -41,6 +42,7 @@ cc	felamimail	sk	Kópia
 change folder	felamimail	sk	Zmeni» prieèinok
 check message against next rule also	felamimail	sk	skontrolova» správu aj voèi ïal¹iemu pravidlu
 checkbox	felamimail	sk	Za¹krtávacie políèko
+clear search	felamimail	sk	vyèisti» hµadanie
 click here to log back in.	felamimail	sk	Kliknite som pre opätovné prihlásenie.
 click here to return to %1	felamimail	sk	Kliknite sem pre návrat do %1
 close all	felamimail	sk	zavrie» v¹etko
@@ -96,11 +98,13 @@ do you really want to delete the '%1' folder?	felamimail	sk	Naozaj chcete vymaza
 does not contain	felamimail	sk	neobsahuje
 does not match	felamimail	sk	nezodpovedá
 does not match regexp	felamimail	sk	nezodpovedá regulárnemu výrazu
+don't use draft folder	felamimail	sk	Nepou¾íva» prieèinok návrhov
 don't use sent	felamimail	sk	Nepou¾íva» [Odoslana po¹ta]
 don't use trash	felamimail	sk	Nepou¾íva» [Odpadkový kô¹]
 down	felamimail	sk	dole
 download	felamimail	sk	Stiahnu»
 download this as a file	felamimail	sk	Stiahnu» to do súboru
+draft folder	felamimail	sk	Prieèinok návrhov
 e-mail	felamimail	sk	E-Mail
 e-mail address	felamimail	sk	E-mailová adresa
 e-mail folders	felamimail	sk	E-mailové prieèinky
@@ -156,6 +160,7 @@ for received mail	felamimail	sk	Pre prijaté správy
 forward	felamimail	sk	Odosla» ïalej
 forward to	felamimail	sk	Preposla» (komu)
 forward to address	felamimail	sk	Preposla» na adresu
+forwarding	felamimail	sk	Preposielanie
 found	felamimail	sk	Na¹iel
 fri	felamimail	sk	Pia
 from	felamimail	sk	Od
@@ -272,6 +277,7 @@ please select a address	felamimail	sk	Prosím vyberte adresu
 please select the number of days to wait between responses	felamimail	sk	Prosím vyberte poèet dní, koµko èaka» medzi odpoveïami
 please supply the message to send with auto-responses	felamimail	sk	Prosím zadajte správu, ktorá sa má posiela» v rámci automatickej odpovede
 port	felamimail	sk	port
+posting	felamimail	sk	posielanie
 previous	felamimail	sk	Predchádzajúca
 previous message	felamimail	sk	predchádzajúca správa
 print it	felamimail	sk	vytlaè to
@@ -303,7 +309,10 @@ row order style	felamimail	sk	©týl usporiadania riadkov
 rule	felamimail	sk	Pravidlo
 sat	felamimail	sk	Sob
 save	felamimail	sk	Ulo¾i»
+save as draft	felamimail	sk	ulo¾i» ako návrh
+save as infolog	felamimail	sk	ulo¾i» do Záznamníka
 save changes	felamimail	sk	ulo¾i» zmeny
+save message to disk	felamimail	sk	ulo¾i» správu na disk
 script name	felamimail	sk	názov skriptu
 script status	felamimail	sk	stav skriptu
 search	felamimail	sk	Hµada»
@@ -374,6 +383,7 @@ unsubscribed	felamimail	sk	Odhlásené
 unsubscribed successfully!	felamimail	sk	Úspe¹ne odhlásené!
 up	felamimail	sk	hore
 updating message status	felamimail	sk	Aktualizujem stav správy
+updating view	felamimail	sk	aktualizácia pohµadu
 use <a href="%1">emailadmin</a> to create profiles	felamimail	sk	pre vytváranie profilov pou¾ite <a href="%1">EmailAdmin</a>
 use a signature	felamimail	sk	Pou¾i» podpis
 use a signature?	felamimail	sk	Pou¾i» podpis?
@@ -385,6 +395,7 @@ users can define their own emailaccounts	admin	sk	Pou¾ívatelia smú definova» ich
 vacation notice	felamimail	sk	Upozornenie o vymazávaní
 validate certificate	felamimail	sk	Potvrdi» certifikát
 view full header	felamimail	sk	Zobrazi» celú hlavièku
+view header lines	felamimail	sk	zobrazi» riadky hlavièky
 view message	felamimail	sk	Zobrazi» správu
 viewing full header	felamimail	sk	Zobrazujem celú hlavièku
 viewing message	felamimail	sk	Zobrazujem správu

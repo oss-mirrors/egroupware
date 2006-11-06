@@ -1,6 +1,7 @@
 %1 - %2 of %3	sambaadmin	sk	%1 - %2 z %3
 add workstation	sambaadmin	sk	prida» stanicu
 check ldap setup (experimental!!!)	admin	sk	skontrolova» ldap nastavenie (experimentálne!!!)
+displayname	sambaadmin	sk	Zobrazené meno
 do you really want to delete selected workstation accounts?	sambaadmin	sk	Naozaj chcete zlaza» vybrané úèty staníc?
 logonscript	admin	sk	Logon script
 new account defaults	admin	sk	predvoµby nových úètov

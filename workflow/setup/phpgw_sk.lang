@@ -269,6 +269,7 @@ is active	workflow	sk	Je aktívne
 it seems this activity for this instance is not assigned to you anymore.	workflow	sk	Zdá sa, ¾e táto aktivity pre toto sedenie vám u¾ nie je priradená.
 it was impossible to complete, no activity was given.	workflow	sk	Nedalo sa dokonèi», nebola zadaná aktivita.
 it was impossible to complete, no corresponding activity was found.	workflow	sk	Nedalo sa dokonèi», nena¹la sa ¾iadna zodpovedajúca aktivita.
+join	workflow	sk	pripoji»
 link addresses are considered local if not containing <strong>http://</strong>. they will get appended the configured local prefix and scanned by egroupware link engine	workflow	sk	Adresy odkazov sú pova¾ované za lokálne, ak neobsahujú <strong>http://</strong>. Dostávajú prednastavenú lokálnu predponu a skenujú sa odkazovým mechanizmom eGroupWare
 list of activities	workflow	sk	Zoznam aktivít
 list of all activities with, for each,  counters of instances by status	workflow	sk	zoznam aktivít, zahàòajúci pre ka¾dú aj poèítadlá sedení podµa stavov
@@ -575,7 +576,7 @@ we were not able to build the message	workflow	sk	Nepodarilo sa vytvori» túto sp
 when in advanced mode, should we show you advanced actions by default (resume, exception, grab, etc.)?	workflow	sk	Majú sa v roz¹írenom re¾ime zobrazova» roz¹írené akcie? Napríklad poní¾i», výnimka, prevzia»..
 when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	sk	Keï sú dostupné voµby pre viacnásobné potvrdenie, vykresµujeme výberové okno kde je iba jedno tlaèítko potvrdenia namiesto viacerých
 when to send the message:	workflow	sk	Kedy posla» túto správu:
-workflow	common	sk	Pracovný denník
+workflow	common	sk	Mana¾ér Procesov
 workflow configuration	admin	sk	Nastavenie Mana¾éra Procesov
 workflow navigation	workflow	sk	Navigácia Mana¾éra Procesov
 workflow preferences	workflow	sk	Predvoµby Mana¾éra Procesov

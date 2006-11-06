@@ -43,3 +43,62 @@ error writing to temporary file.	wiki	sk	Chyba pri zápise do doèasného súboru.
 everyone	wiki	sk	Ka¾dý
 find	wiki	sk	Hµada»
 history	wiki	sk	História
+invalid page name.	wiki	sk	Chybný názov stránky.
+load	wiki	sk	Nahra»
+loads the named page in the given language, all change so far get lost !!!	wiki	sk	Nahrá pomenovanú stránku v zadanom jazyku, v¹etky doteraj¹ie zmeny sa stratia !!!
+lock / unlock pages	common	sk	Zamknú» / Odomknú» stránky
+locked	wiki	sk	Zamknuté
+newer	wiki	sk	Nov¹ie
+no never	admin	sk	Nie, nikdy
+no only on request	admin	sk	Nie, iba na po¾iadanie
+not set	wiki	sk	nenastavené
+older	wiki	sk	Star¹ie
+on all pages	wiki	sk	na v¹etkých stránkach
+only if browser supports a richtext-editor	admin	sk	Iba ak prehliadaè podporuje richtext-editor
+only on the first page	wiki	sk	iba na prvej stránke
+page '%1' not found !!!	wiki	sk	Stránka '%1' sa nena¹la !!!
+path of the upload directory (has to be writable by the webserver!)	admin	sk	Cesta k adresáru pre nahratie (musí by» zapisovateµný webserverom!)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sk	Nahratie obrázku cez richedit editor (ak chcete zakáza» nahrávanie, ponechajte adresár pre nahrávanie prázdny)
+please contact the %1administrator%2 for assistance.	wiki	sk	Prosím kontaktujte %1Správcu%2 o pomoc.
+preview	wiki	sk	Náhµad
+preview of current version	wiki	sk	Náhµad súèasnej verzie
+rate control / ip blocking disabled	wiki	sk	Kontrola hodnotenia / Blokovanie IP vypnuté
+readable by	wiki	sk	Mô¾e èíta»
+readonly	admin	sk	iba na èítanie
+recent changes	wiki	sk	Najnov¹ie zmeny
+renames page to the given name and language	wiki	sk	Premenuje stránku na zadané meno a jazyk
+richtext	wiki	sk	Richtext
+rows	wiki	sk	Riadky
+save the changes and exit	wiki	sk	Ulo¾i» zmeny a skonèi»
+saves and continues editing	wiki	sk	Ulo¾í a pokraèuje v úpravách
+search for	wiki	sk	Hµada»
+see complete list (%1 entries)	wiki	sk	Pozrie» úplný zoznam (%1 záznamov)
+show a search	wiki	sk	Zobrazi» hµadanie
+show the title of the wiki page	wiki	sk	Zobrazi» titulok wiki stránky
+site configuration	wiki	sk	Nastavenie stránky
+summary	wiki	sk	Zhrnutie
+summary of change	wiki	sk	Zhrnutie zmeny
+the search returned no result!	wiki	sk	Hµadanie skonèilo bezvýsledne!
+this page can not be edited.	wiki	sk	Táto stránka sa nedá upravova».
+unblock	wiki	sk	Odblokova»
+updates the preview	wiki	sk	Aktualizuje náhµad
+url of the upload directory	admin	sk	URL nahrávacieho adresára
+use this module for displaying wiki-pages	wiki	sk	Pou¾i» tento modul pre zobrazovanie stránok wiki
+users	wiki	sk	pou¾ívatelia
+view document history	wiki	sk	Zobrazi» históriu dokumentu
+visit %1 to set your user name	wiki	sk	Nav¹tívte %1 pre nastavenie Vá¹ho pou¾ívateµského mena
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	sk	Upozornenie: odkedy ste zaèali s úpravami, dokument bol medzitým zmenený niekým iným. Prosím zaèleòte va¹ úpravy do aktuálnej verzie tohto dokumentu.
+who should be able to edit this page	wiki	sk	Komu umo¾níme upravova» túto stránku
+who should be able to read this page	wiki	sk	Komu umo¾níme èíta» túto stránku
+wiki	common	sk	Wiki
+wiki administration	wiki	sk	Správa Wiki
+wiki menu	wiki	sk	Wiki Menu
+wiki startpage	wiki	sk	Wiki úvodná stránka
+writable by	wiki	sk	Zapisovateµné (kým)
+yes always	admin	sk	Áno, v¾dy
+you have been denied access to this site.	wiki	sk	Prístup k tejto stránke Vám bol odopretý.
+you have entered an invalid user name.	wiki	sk	Zadali ste chybné pou¾ívateµské meno.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	sk	Prekroèili ste povolený poèet stránok, ktoré mô¾ete nav¹tívi» v danom èasovom úseku. Prosím vrá»te sa sem neskôr.
+you have no rights to view wiki content !!!	wiki	sk	Nemáte právo èíta» obsah wiki!
+your changes	wiki	sk	Va¹e zmeny
+your user name is "%1".	wiki	sk	Va¹e pou¾ívateµské meno je "%1".
