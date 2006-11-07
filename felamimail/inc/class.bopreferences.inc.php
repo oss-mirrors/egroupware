@@ -73,6 +73,7 @@
 			$icServer->port 	= $accountData['ic_port'];
 			$icServer->validatecert	= (bool)$accountData['ic_validatecertificate'];
 			$icServer->username 	= $accountData['ic_username'];
+			$icServer->loginName 	= $accountData['ic_username'];
 			$icServer->password	= $accountData['ic_password'];
 
 			$ogServer =& CreateObject('emailadmin.defaultsmtp');
