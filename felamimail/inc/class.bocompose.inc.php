@@ -126,6 +126,68 @@
 		}
 		
 		function convertHTMLToText($_html) {
+			print $_html;
+			#print '<hr>';
+			#print "<pre>"; print htmlspecialchars($_html); print "</pre>";
+			#print "<hr>";
+			// remove these tags and any spaces behind the tags
+			$search = array('/<div.*?>/', '/<\/div>\r\n/', '/<\/div>/', '/<p.*?> */', '/<br \/>/', '/<\/li>/', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */');
+			$replace = '';
+			$text = preg_replace($search, $replace, $_html);
+			
+			// convert these tags and any spaces behind the tags to double line breaks
+			$search = array('/&nbsp;<\/p> */', '/<\/p> */');
+			$replace = "\r\n\r\n";
+			$text = preg_replace($search, $replace, $text);
+			
+			// special replacements
+			$search = array('/<li>/');
+			$replace = array('  * ');
+			$text = preg_replace($search, $replace, $text);
+
+			$search = array('/<h[1-9]>/', '/<\/h[1-9]>/');
+			$replace = array('* ', '');
+			$text = preg_replace($search, $replace, $text);
+
+			$search = array('/<hr.*>/');
+			$replace = array("\r\n--------------------------------\r\n");
+			$text = preg_replace($search, $replace, $text);
+			
+			$text = html_entity_decode($text, ENT_COMPAT, $this->displayCharset);
+
+			$indent = 0;
+			$indentString = '';
+			$asciiText = '';
+
+			$quoteParts = preg_split('/<blockquote type="cite">/', $text, -1, PREG_SPLIT_OFFSET_CAPTURE);
+
+			foreach($quoteParts as $quotePart) {
+				if($quotePart[1] > 0) {
+					$indent++;
+					$indentString .= '>';
+				}
+				$quoteParts2 = preg_split('/<\/blockquote>/', $quotePart[0], -1, PREG_SPLIT_OFFSET_CAPTURE);
+				
+				foreach($quoteParts2 as $quotePart2) {
+					if($quotePart2[1] > 0) {
+						$indent--;
+						$indentString = substr($indentString, 0, $indent);
+					}
+
+					$quoteParts3 = preg_split('/\r\n/', $quotePart2[0]);
+
+					foreach($quoteParts3 as $quotePart3) {
+						$quotePart3 = wordwrap($quotePart3, 75, "\r\n$indentString");
+						$asciiText .= $indentString . $quotePart3 . "\r\n";
+					}
+				}
+			}
+			
+			return $asciiText;
+		}
+		
+		function convertHTMLToTextTiny($_html) {
+			print "<pre>"; print htmlspecialchars($_html); print "</pre>";
 			// remove these tags and any spaces behind the tags
 			$search = array('/<p.*?> */', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */', '/<.?blockquote> */');
 			$replace = '';
@@ -148,6 +210,8 @@
 			$text = preg_replace($search, $replace, $text);
 			
 			$text = html_entity_decode($text, ENT_COMPAT, $this->displayCharset);
+
+			print "<pre>"; print htmlspecialchars($text); print "</pre>"; exit;
 			
 			return $text;
 		}
@@ -383,9 +447,9 @@
 			}
 
 			$bodyParts = $bofelamimail->getMessageBody($_uid, $this->preferencesArray['always_display'], $_partID);
-			$this->sessionData['body']	= @htmlspecialchars($bofelamimail->decode_header($headers->fromaddress), ENT_QUOTES) . " ".lang("wrote").":" .'<br>';
 
 			if($bodyParts['0']['mimeType'] == 'text/html') {
+				$this->sessionData['body']	= @htmlspecialchars($bofelamimail->decode_header($headers->fromaddress), ENT_QUOTES) . " ".lang("wrote").":" .'<br>';
 				$this->sessionData['mimeType'] 	= 'html';
 				$this->sessionData['body']	.= '<blockquote type="cite">';
 
@@ -393,11 +457,15 @@
 					if($i>0) {
 						$this->sessionData['body'] .= '<hr>';
 					}
+					if($bodyParts[$i]['mimeType'] == 'text/plain') {
+						$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
+					}
 					$this->sessionData['body'] .= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 				}
 
 				$this->sessionData['body']	.= '</blockquote><br>';
 			} else {
+				$this->sessionData['body']	= @htmlspecialchars($bofelamimail->decode_header($headers->fromaddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
 				$this->sessionData['mimeType']	= 'plain';
 			
 				for($i=0; $i<count($bodyParts); $i++) {
@@ -405,7 +473,7 @@
 						$this->sessionData['body'] .= "<hr>";
 					}
 					if(!empty($bodyParts[$i]['body'])) {
-						$this->sessionData['body'] .= '&gt;';
+						$this->sessionData['body'] .= '>';
 					}
 					// add line breaks to $bodyParts
 					$newBody	= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
@@ -415,8 +483,8 @@
 					// create it new, with good line breaks
 					foreach($newBody as $value) {
 						$value .= "\n";
-						$bodyAppend = $this->bofelamimail->wordwrap($value, 75, "\n");
-						$bodyAppend = str_replace("\n", "<br>&gt;", $bodyAppend);
+						$bodyAppend = $this->bofelamimail->wordwrap($value, 75, "\r\n");
+						$bodyAppend = str_replace("\n", ">", $bodyAppend);
 						$this->sessionData['body'] .= $bodyAppend;
 					}
 				}

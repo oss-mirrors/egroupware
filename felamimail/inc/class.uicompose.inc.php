@@ -226,15 +226,19 @@
 			$this->t->set_var('infologImage',$GLOBALS['egw']->html->image('felamimail','to_infolog',lang('Save as infolog'),'width="17px" height="17px" valign="middle"' ));
 			$this->t->set_var('lang_save_as_infolog',lang('Save as infolog'));
 			$this->t->pparse("out","header");
+			
 
 			// body
 			if($sessionData['mimeType'] == 'html') {
 				$style="border:0px; width:100%; height:400px;";
-				$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'simple', $sessionData['body'], $style));
+			#	$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'simple', $sessionData['body'], $style));
+				$cleanHTMLBody = $this->getCleanHTML($sessionData['body']);
+				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'simple', $cleanHTMLBody, $style));
 				$this->t->set_var('mimeType', 'html');
 			} else {
 				$style="border:0px; width:100%; height:400px;";
-				$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'ascii', $sessionData['body'], $style));
+			#	$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'ascii', $sessionData['body'], $style));
+				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'ascii', $sessionData['body'], $style));
 				$this->t->set_var('mimeType', 'text');
 			}
 			
@@ -369,6 +373,72 @@
 			$this->compose();
 		}
 
+		function getCleanHTML($_body)
+		{
+			$nonDisplayAbleCharacters = array('[\016]','[\017]',
+					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
+					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
+
+			$kses =& CreateObject('phpgwapi.kses');
+			$kses->AddHTML(
+				'p', array(
+					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
+				)
+			);
+			$kses->AddHTML('div');
+			$kses->AddHTML("br");
+			$kses->AddHTML("b");
+			$kses->AddHTML("u");
+			$kses->AddHTML("s");
+			$kses->AddHTML("i");
+			$kses->AddHTML("strong");
+			$kses->AddHTML("strike");
+			$kses->AddHTML("center");
+			$kses->AddHTML(
+				"hr",array(
+					"class"		=> array('maxlen' => 20),
+					"style"		=> array('minlen' => 1),
+				)
+			);
+			$kses->AddHTML("ul");
+			$kses->AddHTML(
+				"ol",array(
+					"type"	=> array('maxlen' => 20)
+				)
+			);
+			$kses->AddHTML("li");
+			$kses->AddHTML("h1");
+			$kses->AddHTML("h2");
+			$kses->AddHTML(
+				"a", array(
+					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
+					"name" 		=> array('minlen' => 2),
+					'target'	=> array('maxlen' => 10)
+				)
+			);
+			$kses->AddHTML(
+				"pre", array(
+					"wrap" => array('maxlen' => 10)
+				)
+			);
+			
+			$kses->AddHTML(
+				"blockquote",array(
+					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
+					"style"	=> array("minlen" =>   1),
+					"cite"	=> array('maxlen' => 30),
+					"type"	=> array('maxlen' => 10),
+					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
+				)
+			);
+
+			$body	= $kses->Parse($_body);
+
+			$body	= preg_replace($nonDisplayAbleCharacters, '', $body);
+			
+			return $body;
+		}
+		
 		function selectFolder()
 		{
 			if(!@is_object($GLOBALS['egw']->js))

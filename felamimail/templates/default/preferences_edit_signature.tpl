@@ -5,7 +5,7 @@
 {lang_description}
 </td>
 <td>
-<input id="signatureDesc" type="text" style="width:100%;" value="{description}">
+<input id="description" type="text" style="width:100%;" value="{description}">
 </td>
 </tr>
 </table>

@@ -1,3 +1,8 @@
+2006-11-07  Lars Kneschke  <lkneschke@metaways.de>
+	* switched to fckeditor for writing html emails
+	* fixed login problem, when using userdefined accounts(loginname was not sent)
+	* improved generating multipart messages
+
 20061027
 - fixed printing when email conatains a cc
 - signature description was always "undefined" when using internet explorer
