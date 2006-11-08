@@ -133,6 +133,7 @@ function &_egwtaskssync_listBy($action, $timestamp)
 function _egwtaskssync_import($content, $contentType, $notepad = null)
 {
 	switch ($contentType) {
+		case 'text/calendar':
 		case 'text/x-vcalendar':
 			$vcalInfolog	=& CreateObject('infolog.vcalinfolog');
 
@@ -214,19 +215,24 @@ function _egwtaskssync_export($guid, $contentType)
 		$options = array();
 	}
 
-	Horde::logMessage("SymcML: egwtaskssync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwtaskssync export guid: $guid contenttype: ". $contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
 	#$syncProfile	= _egwcalendarsync_getSyncProfile();
 	$taskID	= $GLOBALS['egw']->common->get_egwId($guid);
 	
 	switch ($contentType) {
-		case 'text/x-vcalendar':
-			#$boCalendar	=& CreateObject('calendar.boicalendar');
-			#return $boCalendar->export(array('l_event_id' => $eventID));
+		case 'text/calendar':
 			$vcalInfolog    =& CreateObject('infolog.vcalinfolog');
-			return $vcalInfolog->exportVTODO($taskID,'1.0');
+			return $vcalInfolog->exportVTODO($taskID, '2.0');
 			
 			break;
+		
+		case 'text/x-vcalendar':
+			$vcalInfolog    =& CreateObject('infolog.vcalinfolog');
+			return $vcalInfolog->exportVTODO($taskID, '1.0');
+			
+			break;
+		
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
