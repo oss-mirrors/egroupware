@@ -168,10 +168,10 @@
 			$this->t->set_var('signatureID', $signatureID);
 
 			$style="width:100%; border:0px; height:150px;";
-			$this->t->set_var('tinymce',$GLOBALS['egw']->html->tinymceQuick(
+			$this->t->set_var('tinymce',$GLOBALS['egw']->html->fckEditorQuick(
 				'signature', 'simple', 
 				($signatureID >= 0 ? $signatureData['signature'] : ''), 
-				$style)
+				'150px')
 			);
 
 			$this->t->parse("out","main");

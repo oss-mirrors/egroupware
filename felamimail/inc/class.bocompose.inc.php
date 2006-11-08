@@ -126,12 +126,12 @@
 		}
 		
 		function convertHTMLToText($_html) {
-			print $_html;
+			#print $_html;
 			#print '<hr>';
 			#print "<pre>"; print htmlspecialchars($_html); print "</pre>";
 			#print "<hr>";
 			// remove these tags and any spaces behind the tags
-			$search = array('/<div.*?>/', '/<\/div>\r\n/', '/<\/div>/', '/<p.*?> */', '/<br \/>/', '/<\/li>/', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */');
+			$search = array('/<div.*?>/', '/<\/div>\r\n/', '/<\/div>/', '/<p.*?> */', '/<br \/>/', '/<\/li>/', '/<.?strong> /', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */');
 			$replace = '';
 			$text = preg_replace($search, $replace, $_html);
 			
@@ -182,7 +182,7 @@
 					}
 				}
 			}
-			
+
 			return $asciiText;
 		}
 		
@@ -593,6 +593,8 @@
 					$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']).
 						"\r\n--\r\n". 
 						$this->convertHTMLToText($_signature['signature']);
+					#print "<pre>$_mailObject->AltBody</pre>";
+					#print htmlentities($_signature['signature']);
 				} else {
 					$_mailObject->Body	= $_formData['body'];
 					$_mailObject->AltBody	= $this->convertHTMLToText($_formData['body']);
@@ -604,6 +606,7 @@
 					$_mailObject->Body .= "\r\n--\r\n". $this->convertHTMLToText($_signature['signature']);
 				}
 			}
+			
 		#	if (!empty($_formData['signature'])) {
 		#		$_mailObject->Body	.= "\r\n-- \r\n";
 		#		$_mailObject->Body	.= $_formData['signature'];
@@ -727,11 +730,11 @@
 			if (count($folder) > 0) {
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				foreach($folder as $folderName) {
-					#if($folderName == $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) {
+					if($folderName == $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) {
 						$flags = '\\Seen';
-					#} else {
-					#	$flags = '';
-					#}
+					} else {
+						$flags = '';
+					}
 					$bofelamimail->openConnection($folderName);
 					$bofelamimail->appendMessage($folderName,
 								$mail->getMessageHeader(),

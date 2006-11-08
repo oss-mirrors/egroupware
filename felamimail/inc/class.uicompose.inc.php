@@ -233,12 +233,12 @@
 				$style="border:0px; width:100%; height:400px;";
 			#	$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'simple', $sessionData['body'], $style));
 				$cleanHTMLBody = $this->getCleanHTML($sessionData['body']);
-				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'simple', $cleanHTMLBody, $style));
+				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'simple', $cleanHTMLBody));
 				$this->t->set_var('mimeType', 'html');
 			} else {
 				$style="border:0px; width:100%; height:400px;";
 			#	$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'ascii', $sessionData['body'], $style));
-				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'ascii', $sessionData['body'], $style));
+				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'ascii', $sessionData['body']));
 				$this->t->set_var('mimeType', 'text');
 			}
 			

@@ -2,6 +2,12 @@ var ruleSignatureWindowTimeout=500;
 var signatureEditWindow;
 var signatureEditWindowTimer;
 
+function fm_getEditorContent()
+{
+	// Get the editor instance that we want to interact with.
+	return FCKeditorAPI.GetInstance('signature').GetXHTML( true );
+}
+
 function fm_addSignature(_url)
 {
 	signatureEditWindow = egw_openWindowCentered(_url,'editSignature','600','230',window.outerWidth/2,window.outerHeight/2);
@@ -15,7 +21,7 @@ function fm_saveSignature() {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.saveSignature", "save", 
 		document.getElementById('signatureID').value, 
 		document.getElementById('description').value, 
-		tinyMCE.getContent()
+		fm_getEditorContent()
 	);
 	window.setTimeout("window.close()", 1000);
 }
@@ -24,7 +30,7 @@ function fm_applySignature() {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.saveSignature", "apply", 
 		document.getElementById('signatureID').value, 
 		document.getElementById('description').value, 
-		tinyMCE.getContent()
+		fm_getEditorContent()
 	);
 }
 
