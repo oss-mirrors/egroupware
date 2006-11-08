@@ -61,11 +61,11 @@
 		  {
 			 if(is_array($value))
 			 {
-				$ret .="<li><ul>$name=>".$this->FormatArray($value)."</ul></li>";
+				$ret .="<li><ul>$name => ".$this->FormatArray($value)."</ul></li>";
 			 }
 			 else
 			 {
-				$ret .="<li>$name=>$value</li>";
+				$ret .="<li>$name => $value</li>";
 			 }
 		  }
 		  return $ret;
