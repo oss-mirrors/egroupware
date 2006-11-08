@@ -39,7 +39,7 @@
 		  $input=unserialize($value);
 		  if(is_array($input)) $input=var_export($input,true);
 	
-		  return $input;
+		  return "<pre>$input</pre>";
 	   }
 	   
 	   function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
