@@ -45,6 +45,10 @@
 
 		  return $ret;
 	   }
+	   function listview_read($value, $config,$attr_arr)
+	   {
+		  $this->formview_edit('listview',$value,$config,$attr_arr);
+	   }
 	   
 	   function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	   {
