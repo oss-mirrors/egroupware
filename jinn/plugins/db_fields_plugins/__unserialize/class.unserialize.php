@@ -37,9 +37,13 @@
 		  $stripped_name=substr($field_name,6);	
 	
 		  $input=unserialize($value);
-		  if(is_array($input)) $input=var_export($input,true);
-	
-		  return "<pre>$input</pre>";
+		  if(is_array($input)) 
+		  {
+			 #$input=var_export($input,true);
+			 $ret = $this->FormatArray($input);
+		  }
+
+		  return $ret;
 	   }
 	   
 	   function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
@@ -47,7 +51,24 @@
 		  $input=$HTTP_POST_VARS[$field_name];
 		  $output=serialize($input);
 	
-		  return $output;
+		  return "<ul>$output</ul>";
+	   }
+
+	   function FormatArray($array)
+	   {
+		  $ret ="";
+		  foreach($array as $name=>$value)
+		  {
+			 if(is_array($value))
+			 {
+				$ret .="<li><ul>$name=>".$this->FormatArray($value)."</ul></li>";
+			 }
+			 else
+			 {
+				$ret .="<li>$name=>$value</li>";
+			 }
+		  }
+		  return $ret;
 	   }
 	}
 ?>
