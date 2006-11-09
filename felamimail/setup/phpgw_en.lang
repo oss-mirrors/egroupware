@@ -222,6 +222,7 @@ manage emailaccounts	felamimail	en	Manage EMailaccounts
 manage emailfilter / vacation	preferences	en	Manage EMailfilter / Vacation
 manage folders	common	en	Manage Folders
 manage sieve	common	en	Manage Sieve scripts
+manage signatures	felamimail	en	Manage Signatures
 mark as deleted	felamimail	en	Mark as deleted
 mark messages as	felamimail	en	Mark selected messages as
 mark selected as flagged	felamimail	en	Mark selected as flagged
