@@ -1,3 +1,6 @@
+2006-11-13  Lars Kneschke  <lkneschke@metaways.de>
+	* fixed deleting documents
+	
 2006-11-06  Lars Kneschke  <lkneschke@metaways.de>
 	* fixed folder navigation bug
 	* started converting sql queries to egw db class

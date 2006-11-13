@@ -819,16 +819,18 @@ class Document
 	{
 		$res = $this->getContent();
 		if (is_bool($res) && !$res) return false;
-		
-		for ($i = 0; $i < count($this->_content); $i++)
-			if (!$this->_content[$i]->remove())
+
+		for ($i = 0; $i < count($this->_content); $i++) {
+			if (!$this->_content[$i]->remove()) {
 				return false;
-		
+			}
+		}
+
 		$where = array('id' => $this->_id);
 		if(!$this->db->delete('phpgw_mydms_Documents', $where, __LINE__, __FILE__)) {
 			return false;
 		}
-		
+
 		$where = array('target'	=> $this->_id, 'targetType' => T_DOCUMENT);
 		if(!$this->db->delete('phpgw_mydms_ACLs', $where, __LINE__, __FILE__)) {
 			return false;
@@ -883,6 +885,9 @@ class DocumentContent
 		$this->_orgFileName = $orgFileName;
 		$this->_fileType = $fileType;
 		$this->_mimeType = $mimeType;
+
+		$this->db = clone($GLOBALS['egw']->db);
+		$this->db->set_app('mydms');
 	}
 
 	function getVersion() { return $this->_version; }
@@ -959,9 +964,11 @@ class DocumentContent
 
 	function remove()
 	{
-		if (!removeDir($GLOBALS['mydms']->settings->_contentDir . $this->_dir))
-			return false;
-		
+		# does this check make sense here??? Lars
+		#if (!removeDir($GLOBALS['mydms']->settings->_contentDir . $this->_dir)) {
+		#	return false;
+		#}
+
 		$where = array(
 			'id'	=> $this->_id,
 		);
@@ -969,9 +976,6 @@ class DocumentContent
 		if(!$this->db->delete('phpgw_mydms_DocumentContent', $where, __LINE__, __FILE__)) {
 			return false;
 		}
-	#	$queryStr = "DELETE FROM phpgw_mydms_DocumentContent WHERE id = " . $this->_id;
-	#	if (!$GLOBALS['mydms']->db->getResult($queryStr))
-	#		return false;
 		
 		return true;
 	}
@@ -1017,6 +1021,9 @@ class DocumentLink
 		$this->_targetID = $targetID;
 		$this->_userID = $userID;
 		$this->_public = $public;
+
+		$this->db = clone($GLOBALS['egw']->db);
+		$this->db->set_app('mydms');
 	}
 
 	function getID() { return $this->_id; }
