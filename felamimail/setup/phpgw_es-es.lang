@@ -222,6 +222,7 @@ manage emailaccounts	felamimail	es-es	Administrar cuentas de correo
 manage emailfilter / vacation	preferences	es-es	Administrar filtros de correo / Vacaciones
 manage folders	common	es-es	Administrar carpetas
 manage sieve	common	es-es	Administrar scripts Sieve
+manage signatures	felamimail	es-es	Administrar firmas
 mark as deleted	felamimail	es-es	Marcar como borrado
 mark messages as	felamimail	es-es	Marcar mensajes seleccionados como
 mark selected as flagged	felamimail	es-es	Marcar la selección como para descargar
@@ -401,7 +402,7 @@ view message	felamimail	es-es	Ver mensaje
 viewing full header	felamimail	es-es	Viendo la cabecera completa
 viewing message	felamimail	es-es	Viendo mensaje
 viewing messages	felamimail	es-es	Viendo mensajes
-wed	felamimail	es-es	Mie
+wed	felamimail	es-es	Mié
 when deleting messages	felamimail	es-es	Al borrar mensajes
 with message	felamimail	es-es	con mensaje
 with message "%1"	felamimail	es-es	con mensaje "%1"

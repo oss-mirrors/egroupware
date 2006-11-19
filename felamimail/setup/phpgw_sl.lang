@@ -222,6 +222,7 @@ manage emailaccounts	felamimail	sl	Upravljanje poštnih računov
 manage emailfilter / vacation	preferences	sl	Uredi EMailFilter/ Dopust
 manage folders	common	sl	Upravljanje map
 manage sieve	common	sl	Upravljanje skript za Sieve
+manage signatures	felamimail	sl	Upravljanje podpisov
 mark as deleted	felamimail	sl	Označi kot izbrisano
 mark messages as	felamimail	sl	Označi izbrana sporočila kot
 mark selected as flagged	felamimail	sl	Označenim sporočilom dodaj zastavico
@@ -328,6 +329,7 @@ send a reject message	felamimail	sl	pošlji zavrnjeno sporočilo
 sent folder	felamimail	sl	Mapa s poslanimi
 show header	felamimail	sl	pokaži glavo
 show new messages on main screen	felamimail	sl	Prikaži nova sporočila na začetnem zaslonu
+sieve script name	felamimail	sl	Ime skripte sieve
 sieve settings	admin	sl	Nastavitve Sieve
 signature	felamimail	sl	Podpis
 simply click the target-folder	felamimail	sl	Kliknite ciljno mapo
@@ -352,6 +354,7 @@ table of contents	felamimail	sl	Kazalo
 text only	felamimail	sl	Le besedilo
 the connection to the imap server failed!!	felamimail	sl	Povezava na IMAP strežnik ni uspela.
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	sl	Strežnik IMAP verjetno ne podpira izbrane metode avtentikacije. Kontaktirajte sistemskega administratorja.
+the mimeparser can not parse this message.	felamimail	sl	Mimeparser ne more prebrati tega sporočila.
 then	felamimail	sl	POTEM
 this folder is empty	felamimail	sl	TA MAPA JE PRAZNA
 this php has no imap support compiled in!!	felamimail	sl	Ta PHP ne vsebuje podpore za IMAP!
