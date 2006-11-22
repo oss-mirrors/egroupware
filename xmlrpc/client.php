@@ -28,7 +28,7 @@
 </form>
 <p>enter a US state number to query its name</p>';
 
-	if ($_POST['stateno'] != '')
+	if($_POST['stateno'] != '')
 	{
 		$f = CreateObject('phpgwapi.xmlrpcmsg','examples.getStateName',array(CreateObject('phpgwapi.xmlrpcval',$_POST['stateno'], 'int')));
 		print '<pre style="text-align: left;">' . htmlentities($f->serialize()) . "</pre>\n";
@@ -36,12 +36,12 @@
 		$c = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $_SERVER['HTTP_HOST'], 80);
 		$c->setDebug(1);
 		$r = $c->send($f);
-		if (!$r)
+		if(!$r)
 		{
 			die('send failed');
 		}
 		$v = $r->value();
-		if (!$r->faultCode())
+		if(!$r->faultCode())
 		{
 			print 'State number ' . $_POST['stateno'] . ' is ' . $v->scalarval() . '<br>';
 			// print "<HR>I got this value back<BR><PRE>" .
@@ -49,12 +49,14 @@
 		}
 		else
 		{
-			print 'Fault: ';
+			print '<br><br>Fault: ';
 			print 'Code: ' . $r->faultCode() . " Reason '" .$r->faultString()."'";
 
-			echo "<p><b>Plese Note</b>: To be able to use this test, you have to <b>uncomment</b> the following line in <b>xmlrpc.php</b> on your server:<br>
-include(PHPGW_API_INC . '/xmlrpc.interop.php');</p>\n";;
+			echo "<p><b>Please Note</b>: To be able to use this test, you have to <b>uncomment</b> the following line in <b>xmlrpc.php</b> on your server:<br>
+			include(EGW_API_INC . '/xmlrpc.interop.php');</p>\n";;
+			error_reporting(0);
+			$GLOBALS['egw']->common->egw_exit(True);
 		}
 	}
-	$GLOBALS['egw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->egw_footer();
 ?>

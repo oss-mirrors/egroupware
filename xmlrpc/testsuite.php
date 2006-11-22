@@ -41,21 +41,38 @@
 		{
 			$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['egw_info']['server']['webserver_url']).'/xmlrpc.php';
 			$this->client= CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $GLOBALS['LOCALSERVER'], 80);
-			if ($GLOBALS['DEBUG']) $this->client->setDebug(1);
+			if($GLOBALS['DEBUG'])
+			{
+				$this->client->setDebug(1);
+			}
 		}
 
 		function stringTest()
 		{
 			$this->setUp();
 			$sendstring="here are some \"entities\" < > & and " .
-				"here's a dollar sign \$pretendvarname and a backslash too " . chr(92) . 
+				"here's a dollar sign \$pretendvarname and a backslash too " . chr(92) .
 				" - isn't that great? \\\"hackery\\\" at it's best " .
 				" also don't want to miss out on \$item[0]";
 			$f = CreateObject('phpgwapi.xmlrpcmsg','examples.stringecho', array(CreateObject('phpgwapi.xmlrpcval',$sendstring, "string")));
 			$r = $this->client->send($f);
 			/* _debug_array($r); */
 			$v = $r->value();
-			$this->assertEquals($sendstring, $v->scalarval());
+
+			if(!$r->faultCode())
+			{
+				$this->assertEquals($sendstring, $v->scalarval());
+			}
+			else
+			{
+				print '<br><br>Fault: ';
+				print 'Code: ' . $r->faultCode() . " Reason '" .$r->faultString()."'";
+
+				echo "<p><b>Please Note</b>: To be able to use this test, you have to <b>uncomment</b> the following line in <b>xmlrpc.php</b> on your server:<br>
+				include(EGW_API_INC . '/xmlrpc.interop.php');</p>\n";;
+				error_reporting(0);
+				$GLOBALS['egw']->common->egw_exit(True);
+			}
 		}
 
 		function addingDoublesTest()
@@ -98,7 +115,7 @@
 					CreateObject('phpgwapi.xmlrpcval',0, 'boolean'),
 					CreateObject('phpgwapi.xmlrpcval',True, 'boolean'),
 					CreateObject('phpgwapi.xmlrpcval',False, 'boolean')
-				), 
+				),
 				"array"
 			)));
 			$answer = '010101';
@@ -110,7 +127,7 @@
 			for($i=0; $i<$sz; $i++)
 			{
 				 $b=$v->arraymem($i);
-				 if ($b->scalarval())
+				 if($b->scalarval())
 				 {
 					 $got.="1";
 				 }
@@ -148,13 +165,13 @@ And turned it into nylon";
 		{
 			if(!$base)
 			{
-				$base = PHPGW_APP_ROOT;
+				$base = EGW_APP_ROOT;
 			}
 			$this->TestCase($name);
 			$this->root = $base;
 		}
 
-		function stringBug ()
+		function stringBug()
 		{
 			$m=CreateObject('phpgwapi.xmlrpcmsg','dummy');
 			$fp=fopen($this->root . '/bug_string.xml', 'r');
@@ -187,7 +204,10 @@ And turned it into nylon";
 		function setUp()
 		{
 			$this->client=CreateObject('phpgwapi.xmlrpc_client','/NOTEXIST.php', $GLOBALS['LOCALSERVER'], 80);
-			if ($GLOBALS['DEBUG']) $this->client->setDebug(1);
+			if($GLOBALS['DEBUG'])
+			{
+				$this->client->setDebug(1);
+			}
 		}
 	
 		function test404()
@@ -215,7 +235,7 @@ And turned it into nylon";
 			$this->client = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $HTTPSSERVER);
 			//$this->client->setCertificate('/var/www/xmlrpc/rsakey.pem',
 			//			  'test');
-			if ($DEBUG || 1)
+			if($DEBUG || 1)
 			{
 				$this->client->setDebug(1);
 			}
@@ -227,7 +247,7 @@ And turned it into nylon";
 				CreateObject('phpgwapi.xmlrpcval',23, 'int')
 			));
 			$r = $this->client->send($f, 180, 'https');
-			if ($r->faultCode() || $r)
+			if($r->faultCode() || $r)
 			{
 				// create dummy value so assert fails
 				$v = CreateObject('phpgwapi.xmlrpcval','SSL send failed.');
@@ -257,14 +277,14 @@ And turned it into nylon";
 <p>Note, tests beginning with 'f_' <i>should</i> fail.</p>
 <p>
 <?php
-	if (isset($only))
+	if(isset($only))
 	{
 		$suite = new TestSuite($only);
 	}
 	$testRunner = new TestRunner;
 	$testRunner->run($suite);
 
-	error_reporting(E_ALL & ~E_NOTICE);	// TestSuite (phpunit.php) switches it on
+	error_reporting(E_ALL & ~E_NOTICE);	// TestSuite(phpunit.php) switches it on
 
-	$GLOBALS['egw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->egw_footer();
 ?>
