@@ -269,11 +269,22 @@ function createScript()
 			&nbsp;
 		</td>
 	</tr>
-	<tr height="30" valign="bottom">
-		<td align="left">
-			<input name="save" value="{lang_save}" type="submit"> &nbsp;
-			<input name="apply" value="{lang_apply}" type="submit"> &nbsp;
-			<input name="cancel" value="{lang_cancel}" type="submit">
+	<tr height="30px" valign="bottom">
+		<td align="left" colspan="2">
+			<table border="0" valign="bottom">
+			<tr>
+				<td>
+					<input name="save" value="{lang_save}" type="submit">
+				</td>
+				<td>
+					<input name="apply" value="{lang_apply}" type="submit">
+				</td>
+				<td width=100%"> &nbsp; </td>
+				<td align="right">
+					<input name="cancel" value="{lang_cancel}" type="submit">
+				</td>
+			</tr>
+			</table>
 		</td>
 	</tr>
 </table>
