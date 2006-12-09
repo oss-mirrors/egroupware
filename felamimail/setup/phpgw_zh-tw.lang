@@ -222,6 +222,7 @@ manage emailaccounts	felamimail	zh-tw	管理郵件帳號
 manage emailfilter / vacation	preferences	zh-tw	管理郵件規則/假期
 manage folders	common	zh-tw	管理資料夾
 manage sieve	common	zh-tw	管理Sieve程式
+manage signatures	felamimail	zh-tw	管理簽名
 mark as deleted	felamimail	zh-tw	標示刪除
 mark messages as	felamimail	zh-tw	標示選取的訊息為
 mark selected as flagged	felamimail	zh-tw	標示選取的為標註

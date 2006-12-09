@@ -1,5 +1,3 @@
-<div class="stateliststate">%1</div>	tts	pt-br	<div class="stateliststate">%1</div>
-<div class="stateliststate">%1</div> keep the present state	tts	pt-br	<div class="stateliststate">%1</div> Manter o estado atual
 a new ticket has been reported.	tts	pt-br	Um novo ticket foi reportado.
 accept	tts	pt-br	ACEITAR
 accept the ticket into verification process.	tts	pt-br	Aceita o ticket para o processo de verificação.
@@ -166,8 +164,8 @@ tovalidate	tts	pt-br	A_VALIDAR
 toverified	tts	pt-br	A_VERIFICAR
 transition	tts	pt-br	Transição
 transition name	tts	pt-br	Nome da transição
-trouble ticket system	common	pt-br	Tickets
-tts	common	pt-br	Tickets
+trouble ticket system	common	pt-br	TTS
+tts	common	pt-br	TTS
 tts preferences	tts	pt-br	Tickets - Preferências
 undefined	tts	pt-br	INDEFINIDO
 update ticket state	tts	pt-br	Atualizar o estado do ticket
