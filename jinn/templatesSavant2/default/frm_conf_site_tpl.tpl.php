@@ -421,10 +421,11 @@
 
 		 <table border="0" cellspacing="1" cellpadding="0" style="background-color:#ffffff;border:solid 1px #cccccc;margin:3px 0px 3px 0px;">
 			<tr>
-			   <td colspan="6" style="font-size:12px;font-weight:bold;padding:2px;border-bottom:solid 1px #006699" align="left"><?=lang('Site Objects in %1',$this->site_values['site_name']);?></td>
+			   <td colspan="7" style="font-size:12px;font-weight:bold;padding:2px;border-bottom:solid 1px #006699" align="left"><?=lang('Site Objects in %1',$this->site_values['site_name']);?></td>
 			</tr>
 			<tr>
 			   <td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Actions')?></td>
+			   <td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('ObjectID');?></td>
 			   <td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Name');?></td>
 			   <td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Table');?></td>
 			   <td style="background-color:#d3dce3;font-weight:bold;padding:3px;"><?=lang('Relations');?></td>
@@ -448,6 +449,7 @@
 				  <a href="<?=$object_row[link_upgrade]?>"><?=lang('please upgrade')?></a>
 				  <?php endif?>
 			   </td>
+			   <td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>" align="left"><?=$object_row[object_id]?></td>
 			   <td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>" align="left"><?=$object_row[name]?></td>
 			   <td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>" align="left"><?=$object_row[table_name]?></td>
 			   <td style="padding:0px 4px 0px 2px;background-color:<?=$rowbg?>;color:<?=($object_row[old_rel]?'red':'')?>" align="left"><?=($object_row[num_relations]?$object_row[num_relations]:0)?></td>
@@ -457,7 +459,7 @@
 			</tr>
 			<?php endforeach?>
 			<tr>
-			   <td colspan="6" style="border-top:solid 1px #006699;height:1px;" ></td>
+			   <td colspan="7" style="border-top:solid 1px #006699;height:1px;" ></td>
 			</tr>
 			<tr>
 			   <td align="left" style="width:90px;padding:0px 4px 0px 2px;background-color:#d3dce3">
@@ -465,7 +467,7 @@
 				  <!--		  <a title="edit all selected records" href="javascript:submit_multi_edit()"><img src="<?=$this->icon_edit?>" alt="edit all selected records" width="16"></a>-->
 				  <a title="delete all selected records" href="javascript:submit_multi_del()"><img src="<?=$this->icon_del?>" alt="delete all selected records" width="16"></a>
 				  <!--<a title="export all selected records" href="javascript:submit_multi_export()"><img src="/projects/pim/egw_trunk_pbl/phpgwapi/templates/idots/images/filesave.png" alt="export all selected records" width="16"></a>-->
-				  <td colspan="5" style="padding:0px 4px 0px 2px;background-color:#d3dce3"><?=lang('Actions to apply on all selected objects')?></td>
+				  <td colspan="6" style="padding:0px 4px 0px 2px;background-color:#d3dce3"><?=lang('Actions to apply on all selected objects')?></td>
 
 			   </tr>
 			</table>
