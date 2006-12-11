@@ -54,7 +54,7 @@
 
 		 $stripped_name= substr($field_name,6);
 
-		 $SQL="SELECT * FROM `$table` ORDER BY `$stripped_name` DESC LIMIT 1";
+		 $SQL="SELECT * FROM $table ORDER BY $stripped_name DESC LIMIT 1";
 		 $this->local_bo->so->site_db->query($SQL,__LINE__,__FILE__);
 		 $this->local_bo->so->site_db->next_record();
 		 $newval = $this->local_bo->so->site_db->f($stripped_name)+1;
@@ -119,7 +119,7 @@
 		 $where_not=str_replace('=','!=',$where);
 
 		 $this->local_bo->so->site_db_connection($this->local_bo->session[site_id]);
-		 $SQL1="SELECT * FROM $table WHERE `{$attr[myname]}`=0 OR `{$attr[myname]}`=NULL";
+		 $SQL1="SELECT * FROM $table WHERE {$attr[myname]}=0 OR {$attr[myname]}=NULL";
 
 		 if($this->local_bo->so->site_db->query($SQL1,__LINE__,__FILE__))
 		 {
@@ -128,14 +128,14 @@
 			{
 			   for($i=1;$i<=$totalnulls;$i++)
 			   {
-				  $SQL3="UPDATE $table SET `{$attr[myname]}` = $i WHERE `{$attr[myname]}`=0 OR `{$attr[myname]}`=NULL LIMIT 1";
+				  $SQL3="UPDATE $table SET {$attr[myname]} = $i WHERE {$attr[myname]}=0 OR {$attr[myname]}=NULL LIMIT 1";
 				  $this->local_bo->so->site_db->query($SQL3,__LINE__,__FILE__);	   
 			   }
 
 			   $diff=$attr[myval]-$totalnulls;
 			   if($diff<=0)
 			   {
-				  $SQL2="UPDATE $table SET `{$attr[myname]}`=`{$attr[myname]}`+$totalnulls+2 WHERE ((`{$attr[myname]}`!=0) OR (`{$attr[myname]}`!=NULL))";	
+				  $SQL2="UPDATE $table SET {$attr[myname]}={$attr[myname]}+$totalnulls+2 WHERE (({$attr[myname]}!=0) OR ({$attr[myname]}!=NULL))";	
 				  $attr[myval]=$attr[myval]+$totalnulls+1;
 				  $this->local_bo->so->site_db->query($SQL2,__LINE__,__FILE__);
 			   }
@@ -145,17 +145,17 @@
 		 /* UP */
 		 if($attr[move]=='up')
 		 {
-			$SQL4="SELECT * FROM $table WHERE (`{$attr[myname]}`< {$attr[myval]}) AND $where_not ORDER BY `{$attr[myname]}` DESC LIMIT 1";
+			$SQL4="SELECT * FROM $table WHERE ({$attr[myname]}< {$attr[myval]}) AND $where_not ORDER BY {$attr[myname]} DESC LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL4,__LINE__,__FILE__);
 			$this->local_bo->so->site_db->next_record();
 			$newval = $this->local_bo->so->site_db->f($attr[myname]);
 
 			if($newval==$attr[myval]) $newval=$attr[myval]-1;
 
-			$SQL5="UPDATE $table SET `{$attr[myname]}`={$attr[myval]} WHERE (`{$attr[myname]}`< {$attr[myval]}) AND $where_not ORDER BY `{$attr[myname]}` DESC LIMIT 1";
+			$SQL5="UPDATE $table SET {$attr[myname]}={$attr[myval]} WHERE ({$attr[myname]}< {$attr[myval]}) AND $where_not ORDER BY {$attr[myname]} DESC LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL5,__LINE__,__FILE__);
 
-			$SQL6="UPDATE $table SET `{$attr[myname]}`={$newval} WHERE $where LIMIT 1";
+			$SQL6="UPDATE $table SET {$attr[myname]}={$newval} WHERE $where LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL6,__LINE__,__FILE__);
 
 			$this->local_bo->addInfo(lang('Moved Record one row up.'));
@@ -163,30 +163,30 @@
 		 /* DOWN */
 		 elseif($attr[move]=='down')
 		 {
-			$SQL4="SELECT * FROM $table WHERE (`{$attr[myname]}`> {$attr[myval]}) AND $where_not ORDER BY `{$attr[myname]}` ASC LIMIT 1";
+			$SQL4="SELECT * FROM $table WHERE ({$attr[myname]}> {$attr[myval]}) AND $where_not ORDER BY {$attr[myname]} ASC LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL4,__LINE__,__FILE__);
 			$this->local_bo->so->site_db->next_record();
 			$newval = $this->local_bo->so->site_db->f($attr[myname]);
 
 			if($newval==$attr[myval]) $newval=$attr[myval]+1;
 
-			$SQL5="UPDATE $table SET `{$attr[myname]}`={$attr[myval]} WHERE (`{$attr[myname]}`> {$attr[myval]}) AND $where_not ORDER BY `{$attr[myname]}` ASC LIMIT 1";
+			$SQL5="UPDATE $table SET {$attr[myname]}={$attr[myval]} WHERE ({$attr[myname]}> {$attr[myval]}) AND $where_not ORDER BY {$attr[myname]} ASC LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL5,__LINE__,__FILE__);
 
-			$SQL6="UPDATE $table SET `{$attr[myname]}`={$newval} WHERE $where LIMIT 1";
+			$SQL6="UPDATE $table SET {$attr[myname]}={$newval} WHERE $where LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL6,__LINE__,__FILE__);
 
 			$this->local_bo->addInfo(lang('Moved Record one row down.'));
 		 }
 		 elseif($attr[move]=='last')
 		 {
-			$SQL4="SELECT * FROM `$table` ORDER BY `{$attr[myname]}` DESC LIMIT 1";
+			$SQL4="SELECT * FROM $table ORDER BY {$attr[myname]} DESC LIMIT 1";
 
 			$this->local_bo->so->site_db->query($SQL4,__LINE__,__FILE__);
 			$this->local_bo->so->site_db->next_record();
 			$newval = $this->local_bo->so->site_db->f($attr[myname]) + 1;
 
-			$SQL6="UPDATE $table SET `{$attr[myname]}`={$newval} WHERE $where LIMIT 1";
+			$SQL6="UPDATE $table SET {$attr[myname]}={$newval} WHERE $where LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL6,__LINE__,__FILE__);
 
 			$this->local_bo->addInfo(lang('Moved Record to last row.'));
@@ -195,17 +195,17 @@
 		 // FIXME not yet finished
 		 elseif($attr[move]=='thirst')
 		 {
-			$SQL4="SELECT * FROM `$table` ORDER BY `{$attr[myname]}` ASC LIMIT 1";
+			$SQL4="SELECT * FROM $table ORDER BY {$attr[myname]} ASC LIMIT 1";
 
 			$this->local_bo->so->site_db->query($SQL4,__LINE__,__FILE__);
 			$this->local_bo->so->site_db->next_record();
 
-			$SQL5="UPDATE $table SET `{$attr[myname]}`=`{$attr[myname]}`+1 ORDER BY `{$attr[myname]}`  LIMIT 1";
+			$SQL5="UPDATE $table SET {$attr[myname]}={$attr[myname]}+1 ORDER BY {$attr[myname]}  LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL5,__LINE__,__FILE__);
 
 			$newval = $this->local_bo->so->site_db->f($attr[myname]);
 
-			$SQL6="UPDATE $table SET `{$attr[myname]}`={$newval} WHERE $where LIMIT 1";
+			$SQL6="UPDATE $table SET {$attr[myname]}={$newval} WHERE $where LIMIT 1";
 			$this->local_bo->so->site_db->query($SQL6,__LINE__,__FILE__);
 
 			$this->local_bo->addInfo(lang('Moved Record to last row.'));

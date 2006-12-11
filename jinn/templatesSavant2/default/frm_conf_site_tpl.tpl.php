@@ -442,6 +442,7 @@
 			<tr valign="top">
 			   <td style="padding:0px 4px 0px 2px;width:90px;background-color:<?=$rowbg?>" align="left">
 				  <input style="border-style: none;" name="objdel<?=$object_row[object_id]?>" value="<?=$object_row[object_id]?>" type="checkbox">
+				  <a href="javascript:void(0);" title="<?=lang('edit object settings')?>" onclick="parent.window.open('<?=$object_row['link_editobjectsettings']?>' , 'genobjoptions', 'width=780,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')"><img src=<?=$this->icon_editgenpref?> alt="<?=lang('edit object settings')?>" /></a>
 				  <a href="<?=$object_row[link_edit]?>" title="<?=lang('edit')?>"><img src=<?=$this->icon_edit?> alt="<?=lang('edit')?>" /></a>
 				  <a href="<?=$object_row[link_del]?>" onClick="return window.confirm('<?=lang('Do you really want to delete this Site Object?')?>');" title="<?=lang('delete')?>"><img src=<?=$this->icon_del?> alt="<?=lang('delete')?>"  /></a>
 				  <a href="<?=$object_row[link_export]?>" title="<?=lang('export')?>" ><img src=<?=$this->icon_export?> alt="<?=lang('export')?>" /></a>

@@ -279,17 +279,17 @@
 
 						<?php
 						   $chk='checked="checked"';
-						   if(!$this->global_values['disable_multi']) 		$checked_disable_multi = $chk;
-						   if(!$this->global_values['disable_create_rec'])		$checked_disable_create_rec = $chk;
-						   if(!$this->global_values['disable_del_rec'])			$checked_disable_del_rec = $chk;
-						   if(!$this->global_values['disable_edit_rec'])		$checked_disable_edit_rec = $chk;
-						   if(!$this->global_values['disable_view_rec'])		$checked_disable_view_rec = $chk;
-						   if(!$this->global_values['disable_copy_rec'])		$checked_disable_copy_rec = $chk;
-						   if(!$this->global_values['disable_reports']) 		$checked_disable_reports = $chk;
-						   if(!$this->global_values['disable_simple_search'])  	$checked_disable_simple_search = $chk;
-						   if(!$this->global_values['disable_filters']) 		$checked_disable_filters = $chk;
-						   if(!$this->global_values['disable_export'])  		$checked_disable_export = $chk;
-						   if(!$this->global_values['disable_import'])  		$checked_disable_import = $chk;
+						   if(!db2phpbool($this->global_values['disable_multi']))	 		$checked_disable_multi = $chk;
+						   if(!db2phpbool($this->global_values['disable_create_rec']))		$checked_disable_create_rec = $chk;
+						   if(!db2phpbool($this->global_values['disable_del_rec']))			$checked_disable_del_rec = $chk;
+						   if(!db2phpbool($this->global_values['disable_edit_rec']))		$checked_disable_edit_rec = $chk;
+						   if(!db2phpbool($this->global_values['disable_view_rec']))		$checked_disable_view_rec = $chk;
+						   if(!db2phpbool($this->global_values['disable_copy_rec']))		$checked_disable_copy_rec = $chk;
+						   if(!db2phpbool($this->global_values['disable_reports'])) 		$checked_disable_reports = $chk;
+						   if(!db2phpbool($this->global_values['disable_simple_search']))  	$checked_disable_simple_search = $chk;
+						   if(!db2phpbool($this->global_values['disable_filters'])) 		$checked_disable_filters = $chk;
+						   if(!db2phpbool($this->global_values['disable_export']))  		$checked_disable_export = $chk;
+						   if(!db2phpbool($this->global_values['disable_import']))  		$checked_disable_import = $chk;
 						?>
 						<tr>
 						   <td><?=lang('Enable Multiple Record Actions');?></td>

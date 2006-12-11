@@ -501,7 +501,7 @@
 			//exec SQL;
 			if($_POST['flushrecs']=='true')
 			{
-			   $sql_arr[]="TRUNCATE TABLE `{$this->bo->site_object['table_name']}` ;";
+			   $sql_arr[]="TRUNCATE TABLE {$this->bo->site_object['table_name']} ;";
 			}
 
 			$columns = $this->bo->so->site_table_metadata($this->bo->session['site_id'], $this->bo->site_object['table_name']);
@@ -530,7 +530,7 @@
 			   else
 			   {
 				  if($field_str) $field_str.=',';
-				  $field_str.='`'.$col.'`';
+				  $field_str.=''.$col.'';
 			   }
 			}
 			/*
@@ -541,7 +541,7 @@
 			   $_tbl_flds_arr[$tbl_fld];
 
 			   if($field_str) $field_str.=',';
-			   $field_str.='`'.$columns_arr[$tbl_fld].'`';
+			   $field_str.=''.$columns_arr[$tbl_fld].'';
 			}
 			*/
 
@@ -571,7 +571,7 @@
 				  }
 
 				  $sql_arr[]="
-				  INSERT INTO `{$this->bo->site_object['table_name']}`
+				  INSERT INTO {$this->bo->site_object['table_name']}
 				  ( $field_str )
 				  VALUES 
 				  ( $val_str );

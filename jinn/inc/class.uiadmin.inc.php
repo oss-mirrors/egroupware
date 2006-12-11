@@ -93,8 +93,8 @@
 	  */
 	  function del_egw_jinn_object()
 	  {
-		 //$status=$this->bo->so->delete_phpgw_data('egw_jinn_obj_fields','field_parent_object ',$_GET[where_value]);
-		 $status=$this->bo->so->delete_phpgw_data('egw_jinn_objects','object_id',$_GET[where_value]);
+		 //$status=$this->bo->so->delete_phpgw_data('egw_jinn_obj_fields','field_parent_object ',$_GET['where_value']);
+		 $status=$this->bo->so->delete_phpgw_data('egw_jinn_objects','object_id',$_GET['where_value']);
 
 		 if ($status==1)	
 		 {
@@ -148,19 +148,21 @@
 		 $where_key='site_id';
 		 $where_value=stripslashes($this->bo->where_value);
 
-		 if($_POST[submitted]=='true')
+		 if($_POST['submitted']=='true')
 		 {
-			if($_POST[action]=='delete_mult_objects')
+			if($_POST['action']=='delete_mult_objects')
 			{
 			   $status=$this->bo->del_mult_egw_jinn_object();	
 			}
 			else
 			{
 			   $status=$this->bo->insert_or_update_egw_jinn_site();
-			   if($status[where_value])
+			   if($status['where_value'])
 			   {
-				  $where_value=$status[where_value];
-				  $this->bo->sessionmanager->sessionarray->site_id=$where_value;
+				  $where_value=$status['where_value'];
+
+				  //FIXME create and use set function
+				  $this->bo->sessionmanager->sessionarray['site_id']=$where_value;
 				  $this->bo->session['site_id']=$where_value;
 				  $this->bo->sessionmanager->save();
 			   }
@@ -190,13 +192,13 @@
 
 		 $this->msg_box();
 
-		 $this->tplsav2->assign('helplink',$GLOBALS[phpgw]->link('/manual/index.php'));
-		 $this->tplsav2->form_action=$GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiadmin.add_edit_site");
+		 $this->tplsav2->assign('helplink',$GLOBALS['phpgw']->link('/manual/index.php'));
+		 $this->tplsav2->form_action=$GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiadmin.add_edit_site");
 		 $this->tplsav2->test_access_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access');
-		 $this->tplsav2->onclick_import_into=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_into&site_id='.$_site_vals_arr[0][site_id]);
-		 $this->tplsav2->onclick_export=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
-		 $this->tplsav2->onclick_export_to_xml=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
-		 $this->tplsav2->onclick_export_xml_to_egw_app=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.exportsite.save_site_to_egwapp&where_key=site_id&where_value='.$_site_vals_arr[0][site_id]);
+		 $this->tplsav2->onclick_import_into=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_into&site_id='.$_site_vals_arr[0]['site_id']);
+		 $this->tplsav2->onclick_export=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value='.$_site_vals_arr[0]['site_id']);
+		 $this->tplsav2->onclick_export_to_xml=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$_site_vals_arr[0]['site_id']);
+		 $this->tplsav2->onclick_export_xml_to_egw_app=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_egwapp&where_key=site_id&where_value='.$_site_vals_arr[0]['site_id']);
 
 		 /* list objects for this site */
 		 if ($where_key && $where_value)
@@ -206,9 +208,10 @@
 			$this->tplsav2->link_add_object=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_gen_obj_options&new=true&reloadparent=true&parent_site_id='.$where_value);
 			$this->tplsav2->link_import_object=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_object&where_key=site_id&where_value='.$where_value);
 
-			$this->tplsav2->icon_del=$GLOBALS[phpgw]->common->image('phpgwapi','delete');
-			$this->tplsav2->icon_edit=$GLOBALS[phpgw]->common->image('phpgwapi','edit');
-			$this->tplsav2->icon_export=$GLOBALS[phpgw]->common->image('phpgwapi','filesave');
+			$this->tplsav2->icon_del=$GLOBALS['phpgw']->common->image('phpgwapi','delete');
+			$this->tplsav2->icon_edit=$GLOBALS['phpgw']->common->image('phpgwapi','edit');
+			$this->tplsav2->icon_editgenpref=$GLOBALS['phpgw']->common->image('jinn','mini_navbar');
+			$this->tplsav2->icon_export=$GLOBALS['phpgw']->common->image('phpgwapi','filesave');
 
 			$_object_records = $this->bo->get_phpgw_records('egw_jinn_objects','parent_site_id',$where_value,'','','name',"ORDER BY name ASC");
 			if ($_object_records)
@@ -228,13 +231,13 @@
 					 {
 						$_rel=explode('|',$recordvalues['relations']);
 						$recordvalues['num_relations']=count($_rel);
-						$recordvalues[old_rel]=true;
+						$recordvalues['old_rel']=true;
 
 						$this->tplsav2->did_upgrade=true;
 
 						// update db to new relations mappings 
 
-						$relations_field=$recordvalues[relations];
+						$relations_field=$recordvalues['relations'];
 
 						$relations_arr = unserialize(base64_decode($relations_field));
 
@@ -253,8 +256,8 @@
 						   'value'=> $new_relations
 						);
 
-						$status = $this->bo->so->update_phpgw_data('egw_jinn_objects',$data,'object_id',$recordvalues[object_id]);
-						if ($status[error])	
+						$status = $this->bo->so->update_phpgw_data('egw_jinn_objects',$data,'object_id',$recordvalues['object_id']);
+						if ($status['error'])	
 						{
 						   $this->bo->addError(lang('Problems while upgrading %1 relation(s) in %2.',$recordvalues['num_relations'],$recordvalues['name']));
 						}
@@ -273,15 +276,16 @@
 
 				  if( $recordvalues['plugins'])
 				  {
-					 $recordvalues[upgrade]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.upgrade_plugins&site_id=".$recordvalues[parent_site_id]."&object_id=".$recordvalues[object_id]);
+					 $recordvalues['upgrade']=$GLOBALS['phpgw']->link("/index.php","menuaction=jinn.boadmin.upgrade_plugins&site_id=".$recordvalues['parent_site_id']."&object_id=".$recordvalues['object_id']);
 				  }
 
-				  $recordvalues[link_edit] = $GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_edit_record.dev_edit_record&site_id=".$recordvalues[parent_site_id]."&site_object_id=".$recordvalues[object_id]);
+				  $recordvalues['link_edit'] = $GLOBALS['phpgw']->link("/index.php","menuaction=jinn.uiu_edit_record.dev_edit_record&site_id=".$recordvalues['parent_site_id']."&site_object_id=".$recordvalues['object_id']);
+				  $recordvalues['link_editobjectsettings'] = $GLOBALS['phpgw']->link("/index.php","menuaction=jinn.uiadmin.edit_gen_obj_options&object_id=".$recordvalues['object_id']);
 
-				  //$recordvalues[link_del]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_object&where_key=object_id&where_value=".$recordvalues[object_id]);
-				  $recordvalues[link_del]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.del_egw_jinn_object&where_key=object_id&where_value=".$recordvalues[object_id]);
+				  //$recordvalues['link_del']=$GLOBALS['phpgw']->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_object&where_key=object_id&where_value=".$recordvalues['object_id']);
+				  $recordvalues['link_del']=$GLOBALS['phpgw']->link("/index.php","menuaction=jinn.uiadmin.del_egw_jinn_object&where_key=object_id&where_value=".$recordvalues['object_id']);
 
-				  $recordvalues[link_export]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.exportsite.save_object_to_file&where_key=object_id&where_value=".$recordvalues[object_id]);
+				  $recordvalues['link_export']=$GLOBALS['phpgw']->link("/index.php","menuaction=jinn.exportsite.save_object_to_file&where_key=object_id&where_value=".$recordvalues['object_id']);
 
 				  $this->tplsav2->object_records[]=$recordvalues;
 			   }
@@ -299,9 +303,9 @@
 	  */
 	  function browse_egw_jinn_sites()
 	  {
-		 if($_POST[submitted]=='true')
+		 if($_POST['submitted']=='true')
 		 {
-			if($_POST[action]=='delete_mult_sites')
+			if($_POST['action']=='delete_mult_sites')
 			{
 			   $status=$this->bo->del_mult_egw_jinn_sites();	
 			}
@@ -320,25 +324,25 @@
 
 		 $this->msg_box();
 
-		 $this->tplsav2->helplink=$GLOBALS[phpgw]->link('/manual/index.php');
-		 $this->tplsav2->link_add_site=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_site");
-		 $this->tplsav2->link_import_site=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.ui_importsite.import_egw_jinn_site");
+		 $this->tplsav2->helplink=$GLOBALS['phpgw']->link('/manual/index.php');
+		 $this->tplsav2->link_add_site=$GLOBALS['phpgw']->link("/index.php","menuaction=jinn.uiadmin.add_edit_site");
+		 $this->tplsav2->link_import_site=$GLOBALS['phpgw']->link("/index.php","menuaction=jinn.ui_importsite.import_egw_jinn_site");
 
-		 $this->tplsav2->icon_del=$GLOBALS[phpgw]->common->image('phpgwapi','delete');
-		 $this->tplsav2->icon_edit=$GLOBALS[phpgw]->common->image('phpgwapi','edit');
-		 $this->tplsav2->icon_export=$GLOBALS[phpgw]->common->image('phpgwapi','filesave');
+		 $this->tplsav2->icon_del=$GLOBALS['phpgw']->common->image('phpgwapi','delete');
+		 $this->tplsav2->icon_edit=$GLOBALS['phpgw']->common->image('phpgwapi','edit');
+		 $this->tplsav2->icon_export=$GLOBALS['phpgw']->common->image('phpgwapi','filesave');
 
 		 $records=$this->bo->get_phpgw_records('egw_jinn_sites','','','','','name');
 		 if (count($records)>0)
 		 {
 			foreach($records as $recordvalues)
 			{
-			   $objects=$this->bo->get_phpgw_records('egw_jinn_objects','parent_site_id',$recordvalues[site_id],'','','name');
-			   $recordvalues[num_objects]= @count($objects);
+			   $objects=$this->bo->get_phpgw_records('egw_jinn_objects','parent_site_id',$recordvalues['site_id'],'','','name');
+			   $recordvalues['num_objects']= @count($objects);
 
-			   $recordvalues[link_edit] = $GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_site&site_id=".$recordvalues[site_id]."&where_value=".$recordvalues[site_id]."&where_key=site_id");
-			   $recordvalues[link_del]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_site&where_key=site_id&where_value=".$recordvalues[site_id]);
-			   $recordvalues[link_export]=$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value=".$recordvalues[site_id]);
+			   $recordvalues['link_edit'] = $GLOBALS['phpgw']->link("/index.php","menuaction=jinn.uiadmin.add_edit_site&site_id=".$recordvalues['site_id']."&where_value=".$recordvalues['site_id']."&where_key=site_id");
+			   $recordvalues['link_del']=$GLOBALS['phpgw']->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_site&where_key=site_id&where_value=".$recordvalues['site_id']);
+			   $recordvalues['link_export']=$GLOBALS['phpgw']->link("/index.php","menuaction=jinn.exportsite.save_site_to_file&where_key=site_id&where_value=".$recordvalues['site_id']);
 
 			   $this->tplsav2->site_records[]=$recordvalues;
 			}
@@ -366,7 +370,7 @@
 		 $this->tplsav2->assign('website_title',lang('Field properties'));
 		 $this->tplsav2->assign('theme_css',$theme_css);
 		 $this->tplsav2->assign('css',$GLOBALS['phpgw']->common->get_css());
-		 $this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+		 $this->tplsav2->assign('lang',$GLOBALS['phpgw_info']['user']['preferences']['common']['lang']);
 
 		 list( $data['site_db_name'],
 		 $data['site_db_host'],
@@ -379,7 +383,7 @@
 		 $data['dev_site_db_password'],
 		 $data['dev_site_db_type'])=explode(":",$_GET['dbvals']);
 
-		 $data[host_profile] = $this->tplsav2->host_profile = $_GET[profile];
+		 $data['host_profile'] = $this->tplsav2->host_profile = $_GET['profile'];
 
 		 if ($this->bo->so->test_site_db_by_array($data))
 		 {
@@ -389,7 +393,7 @@
 		 $filename = 'jinn.txt';
 		 $paths = explode(";",$_GET['pathvals']);
 
-		 if($_GET[profile]=='development')
+		 if($_GET['profile']=='development')
 		 {
 			$path = $paths[1];
 			$url = $paths[3];
@@ -563,13 +567,13 @@
 		 {
 			foreach($plugin_array as $plugin)
 			{
-			   if($plugin[value] == $selected)
+			   if($plugin['value'] == $selected)
 			   {
-				  $options .= '<option value="'.$plugin[value].'" selected>'.$plugin[name].'</option>';
+				  $options .= '<option value="'.$plugin['value'].'" selected>'.$plugin['name'].'</option>';
 			   }
 			   else
 			   {
-				  $options .= '<option value="'.$plugin[value].'">'.$plugin[name].'</option>';
+				  $options .= '<option value="'.$plugin['value'].'">'.$plugin['name'].'</option>';
 			   }
 			}
 		 }
@@ -585,13 +589,13 @@
 	  */
 	  function xmlhttpreq_get_fields()
 	  {
-		 if($_GET[primary])
+		 if($_GET['primary'])
 		 {
 			$get_primary=true;
 		 }
 
-		 //		 $site_id=$this->bo->so->get_site_id_by_object_id($_GET[object_id]);
-		 $this->tplsav2->fields_arr=$this->bo->get_fieldnames_by_table($_GET[table],$get_primary);
+		 //		 $site_id=$this->bo->so->get_site_id_by_object_id($_GET['object_id']);
+		 $this->tplsav2->fields_arr=$this->bo->get_fieldnames_by_table($_GET['table'],$get_primary);
 
 		 header( "Content-type: text/xml" );
 		 header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); // fix me kan nooit goed zijn
@@ -610,11 +614,11 @@
 	  */
 	  function xmlhttp_req_toggle_field_visible()
 	  {
-		 if($_GET[toggleTo]=='visible')
+		 if($_GET['toggleTo']=='visible')
 		 {
 			$value=1;				
 		 }
-		 elseif($_GET[toggleTo]=='hide')
+		 elseif($_GET['toggleTo']=='hide')
 		 {
 			$value=0;				
 
@@ -626,19 +630,19 @@
 
 		 $data[]=array(
 			'name'=>'field_name',
-			'value'=>$_GET[field_name]
+			'value'=>$_GET['field_name']
 		 );
 
 		 $data[]=array(
 			'name'=>'field_parent_object',
-			'value'=>$_GET[object_id]
+			'value'=>$_GET['object_id']
 		 );
 
 		 $data[] = array(
 			'name' => 'form_visibility', 
 			'value' => $value
 		 );
-		 $where_string="`field_parent_object`='{$_GET[object_id]}' AND  `field_name`='{$_GET[field_name]}'";
+		 $where_string="field_parent_object='{$_GET['object_id']}' AND  field_name='{$_GET['field_name']}'";
 		 $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true);
 		 $this->bo->set_site_version_info($this->bo->site['site_id']);
 
@@ -650,7 +654,7 @@
 
 		 echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 		 echo '<response>';
-		 echo '<status>'.$status[ret_code].'</status>';
+		 echo '<status>'.$status['ret_code'].'</status>';
 		 echo '<visible>'.$value.'</visible>';
 		 echo '</response>';
 	  }
@@ -662,11 +666,11 @@
 	  */
 	  function xmlhttp_req_toggle_field_enabled()
 	  {
-		 if($_GET[toggleTo]=='enable')
+		 if($_GET['toggleTo']=='enable')
 		 {
 			$value=1;				
 		 }
-		 elseif($_GET[toggleTo]=='disable')
+		 elseif($_GET['toggleTo']=='disable')
 		 {
 			$value=0;				
 
@@ -678,12 +682,12 @@
 
 		 $data[]=array(
 			'name'=>'field_name',
-			'value'=>$_GET[field_name]
+			'value'=>$_GET['field_name']
 		 );
 
 		 $data[]=array(
 			'name'=>'field_parent_object',
-			'value'=>$_GET[object_id]
+			'value'=>$_GET['object_id']
 		 );
 
 		 $data[] = array(
@@ -691,7 +695,7 @@
 			'value' => $value
 		 );
 
-		 $where_string="`field_parent_object`='{$_GET[object_id]}' AND  `field_name`='{$_GET[field_name]}'";
+		 $where_string="field_parent_object='{$_GET['object_id']}' AND  field_name='{$_GET['field_name']}'";
 		 $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true);
 		 $this->bo->set_site_version_info($this->bo->site['site_id']);
 
@@ -703,7 +707,7 @@
 
 		 echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 		 echo '<response>';
-		 echo '<status>'.$status[ret_code].'</status>';
+		 echo '<status>'.$status['ret_code'].'</status>';
 		 echo '<visible>'.$value.'</visible>';
 		 echo '</response>';
 	  }
@@ -716,11 +720,11 @@
 	  */
 	  function xmlhttp_req_toggle_field_listvisible()
 	  {
-		 if($_GET[toggleTo]=='visible')
+		 if($_GET['toggleTo']=='visible')
 		 {
 			$value=1;				
 		 }
-		 elseif($_GET[toggleTo]=='hide')
+		 elseif($_GET['toggleTo']=='hide')
 		 {
 			$value=0;				
 
@@ -732,12 +736,12 @@
 
 		 $data[]=array(
 			'name'=>'field_name',
-			'value'=>$_GET[field_name]
+			'value'=>$_GET['field_name']
 		 );
 
 		 $data[]=array(
 			'name'=>'field_parent_object',
-			'value'=>$_GET[object_id]
+			'value'=>$_GET['object_id']
 		 );
 
 		 $data[] = array(
@@ -745,7 +749,7 @@
 			'value' => $value
 		 );
 
-		 $where_string="`field_parent_object`='{$_GET[object_id]}' AND  `field_name`='{$_GET[field_name]}'";
+		 $where_string="field_parent_object='{$_GET['object_id']}' AND  field_name='{$_GET['field_name']}'";
 		 $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true);
 		 $this->bo->set_site_version_info($this->bo->site['site_id']);
 
@@ -757,7 +761,7 @@
 
 		 echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 		 echo '<response>';
-		 echo '<status>'.$status[ret_code].'</status>';
+		 echo '<status>'.$status['ret_code'].'</status>';
 		 echo '<visible>'.$value.'</visible>';
 		 echo '</response>';
 	  }
@@ -775,54 +779,45 @@
 		 //$this->template->set_var('css_file','');
 
 		 // if we have to save the new data
-		 if($_POST[submitted])
+		 if($_POST['submitted'])
 		 {
 			$post=$this->bo->filter_array_with_prefix($_POST,'FLD',true);
 			$post=$this->bo->strip_prefix_from_keys($post,'FLD');
 
 			$data=$this->bo->sql_data_pairs($post,'');
 
-			if($_GET[object_id])
+			if($_GET['object_id'])
 			{
-			   $where_string="`object_id`='{$_GET[object_id]}'";
+			   $where_string="object_id='{$_GET['object_id']}'";
 
-			   $status = $this->bo->so->update_phpgw_data('egw_jinn_objects',$data,'','',$where_string,true); // do insert when not existing
+			   $status = $this->bo->so->update_phpgw_data('egw_jinn_objects',$data,'','',$where_string,false); 
+			   //$status = $this->bo->so->update_phpgw_data('egw_jinn_objects',$data,'','',$where_string,true); // do insert when not existing
 			}
 			else
 			{
 			   $status = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data); // do insert when not existing
-			   $_GET[object_id]=$status['where_value'];
+			   $_GET['object_id']=$status['where_value'];
 			}
 
 			$this->bo->set_site_version_info($this->bo->site['site_id']);
-
 		 }
 
 		 //for general sets
-		 if($_GET[object_id])
+		 if($_GET['object_id'])
 		 {
-			$object_values=$this->bo->so->get_object_values($_GET[object_id]);
-			$where_key='object_id';
-			$where_value=$object_values[object_id];
-		 }
-
-		 $this->tplsav2->assign('where_key',$where_key);
-		 $this->tplsav2->assign('where_value',$where_value);
-
-		 if($where_key && $where_value)
-		 {
+			$object_values=$this->bo->so->get_object_values($_GET['object_id']);
 			$bool_edit_record=true;
-			$object_values=$this->bo->so->get_object_values($where_value);
-			$this->tplsav2->parent_site_id=$object_values[parent_site_id];
 			$table_name = $object_values['table_name'];
-			$this->tplsav2->object_name=$object_values['name'];
+			$this->tplsav2->assign('parent_site_id',$object_values['parent_site_id']);
+			$this->tplsav2->assign('object_name',$object_values['name']);
+			$this->tplsav2->assign('where_key',$where_key);
+			$this->tplsav2->assign('where_value',$where_value);
 		 }
 		 else
 		 {
-			$this->tplsav2->parent_site_id=$_GET[parent_site_id];
+			$this->tplsav2->parent_site_id=$_GET['parent_site_id'];
 			$this->tplsav2->object_name=lang('New object');
 		 }
-
 
 		 if(!$this->tplsav2->parent_site_id)
 		 {
@@ -830,12 +825,11 @@
 			die('no site ID. can\'t create new object');
 		 }
 
-
 		 $tables=$this->bo->so->site_tables_names($this->tplsav2->parent_site_id);
 
 		 foreach($tables as $table)
 		 {
-			$tables_check_arr[]=$table[table_name];
+			$tables_check_arr[]=$table['table_name'];
 		 }
 
 		 if($bool_edit_record && in_array($table_name,$tables_check_arr)) // table exists
@@ -866,7 +860,7 @@
 		 $this->tplsav2->assign('website_title',lang('Field properties'));
 		 $this->tplsav2->assign('theme_css',$theme_css);
 		 $this->tplsav2->assign('css',$GLOBALS['phpgw']->common->get_css());
-		 $this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+		 $this->tplsav2->assign('lang',$GLOBALS['phpgw_info']['user']['preferences']['common']['lang']);
 		 $this->tplsav2->assign('action',$action);
 
 		 $this->tplsav2->display('frm_edit_general_object_options.tpl.php');
@@ -886,27 +880,27 @@
 	  function edit_relation_widgets()
 	  {
 		 // if we have to save the new data
-		 if($_POST[submitted])
+		 if($_POST['submitted'])
 		 {
 			// seperate the diffrent type of fields in different arrays
 
-			$this->bo->save_relations($_POST[object_id]);
+			$this->bo->save_relations($_POST['object_id']);
 
-			$_GET[object_id]=$_POST[object_id];
+			$_GET['object_id']=$_POST['object_id'];
 		 }
 
 		 //for general sets
-		 if(!$_GET[object_id]  )
+		 if(!$_GET['object_id']  )
 		 {
 			die('error no object id');
 		 }
 
-		 $object_values=$this->bo->so->get_object_values($_GET[object_id]);
+		 $object_values=$this->bo->so->get_object_values($_GET['object_id']);
 
-		 $this->tplsav2->xmlhttpreq_link_fields=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.xmlhttpreq_get_fields&object_id='.$_GET[object_id]);
-		 $this->tplsav2->xmlhttpreq_link_objects=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.xmlhttpreq_get_objects&site_id='.$object_values[parent_site_id]);
+		 $this->tplsav2->xmlhttpreq_link_fields=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.xmlhttpreq_get_fields&object_id='.$_GET['object_id']);
+		 $this->tplsav2->xmlhttpreq_link_objects=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.xmlhttpreq_get_objects&site_id='.$object_values['parent_site_id']);
 
-		 $relations_field=$object_values[relations];
+		 $relations_field=$object_values['relations'];
 
 		 $relations_arr = unserialize(base64_decode($relations_field));
 
@@ -917,7 +911,7 @@
 
 		 $relations_arr = $this->bo->bcompat->convert_2modern_relations($relations_arr);
 
-		 $this->tplsav2->delete_img=$GLOBALS[phpgw]->common->image('phpgwapi','delete');
+		 $this->tplsav2->delete_img=$GLOBALS['phpgw']->common->image('phpgwapi','delete');
 		 $this->tplsav2->type1_arr=array();
 		 $this->tplsav2->type2_arr=array();
 		 $this->tplsav2->type3_arr=array();
@@ -928,64 +922,64 @@
 		 {
 			foreach($relations_arr as $relation)
 			{
-			   if ($relation[type]==1)
+			   if ($relation['type']==1)
 			   {
 				  $this->tplsav2->type1_arr[]=$relation;
 			   }
 
-			   if ($relation[type]==2)
+			   if ($relation['type']==2)
 			   {
 				  $this->tplsav2->type2_arr[]=$relation;
 			   }
 
-			   if ($relation[type]==3)
+			   if ($relation['type']==3)
 			   {
 				  $this->tplsav2->type3_arr[]=$relation;
 			   }
 
-			   if ($relation[type]==4)
+			   if ($relation['type']==4)
 			   {
 				  $this->tplsav2->type4_arr[]=$relation;
 			   }
 			}
 		 }
 
-		 $this->tplsav2->object_name=$object_values[name];
+		 $this->tplsav2->object_name=$object_values['name'];
 		 $this->tplsav2->relations_arr=$relations_arr;
 
 		 $hidden_value=base64_encode(serialize($relations_arr));//kan weg straks
 		 $this->tplsav2->assign('hiddenval',$hidden_value);	 
 
-		 $table_name=$object_values[table_name];
-		 $this->tplsav2->table_name=$object_values[table_name]; // used in the new method
+		 $table_name=$object_values['table_name'];
+		 $this->tplsav2->table_name=$object_values['table_name']; // used in the new method
 
-		 $_tables=$this->bo->so->site_tables_names($object_values[parent_site_id]);
+		 $_tables=$this->bo->so->site_tables_names($object_values['parent_site_id']);
 
 		 foreach($_tables as $table)
 		 {
-			$this->tplsav2->avail_table_arr[]=$table[table_name];
+			$this->tplsav2->avail_table_arr[]=$table['table_name'];
 
 			//for the old method
 			$avail_table_arr[]=array
 			(
-			   'name'=> $table[table_name],
-			   'value'=> $table[table_name]
+			   'name'=> $table['table_name'],
+			   'value'=> $table['table_name']
 			);
 		 }
 
-		 $this->tplsav2->avail_objects_arr=$this->bo->get_phpgw_records('egw_jinn_objects','parent_site_id',$object_values[parent_site_id],'','','name');
+		 $this->tplsav2->avail_objects_arr=$this->bo->get_phpgw_records('egw_jinn_objects','parent_site_id',$object_values['parent_site_id'],'','','name');
 
 
 		 $this->tplsav2->assign('relations',$arr_rel_format);
 
 
-		 $fields=$this->bo->so->site_table_metadata($object_values[parent_site_id],$table_name);
+		 $fields=$this->bo->so->site_table_metadata($object_values['parent_site_id'],$table_name);
 		 foreach($fields as $field)
 		 {
-			$this->tplsav2->fields_arr[]=$field[name];
-			if(preg_match("/primary_key/i", $field[flags]))
+			$this->tplsav2->fields_arr[]=$field['name'];
+			if(preg_match("/primary_key/i", $field['flags']))
 			{
-			   $this->tplsav2->primary_arr[]=$field[name];
+			   $this->tplsav2->primary_arr[]=$field['name'];
 			}
 		 }
 
@@ -998,7 +992,7 @@
 		 $this->tplsav2->assign('website_title',lang('Field properties'));
 		 $this->tplsav2->assign('theme_css',$theme_css);
 		 $this->tplsav2->assign('css',$GLOBALS['phpgw']->common->get_css());
-		 $this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+		 $this->tplsav2->assign('lang',$GLOBALS['phpgw_info']['user']['preferences']['common']['lang']);
 
 		 $this->tplsav2->display('frm_edit_relation_widgets.tpl.php');
 	  }
@@ -1017,7 +1011,7 @@
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-		 $object_values=$this->bo->so->get_object_values($_GET[object_id]);
+		 $object_values=$this->bo->so->get_object_values($_GET['object_id']);
 
 		 //if we have to save the stuff to the db
 		 if($_POST['submitted'] && $_POST['el_changes']!='true')
@@ -1041,7 +1035,7 @@
 			   'value'=>$_GET['object_id']
 			);
 
-			$where_string="`field_parent_object`='{$_GET['object_id']}' AND  `field_name`='{$_GET['field_name']}'";
+			$where_string="field_parent_object='{$_GET['object_id']}' AND  field_name='{$_GET['field_name']}'";
 
 			$status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true); // do insert when not existing
 			// end general fields	
@@ -1055,7 +1049,7 @@
 			   $conf_serialed_string=base64_encode(serialize($conf));
 			}
 
-			$status=$this->bo->so->save_field_plugin_conf($_GET[object_id],$new_field_name,$conf_serialed_string);
+			$status=$this->bo->so->save_field_plugin_conf($_GET['object_id'],$new_field_name,$conf_serialed_string);
 			// end plugin fields
 		 }
 
@@ -1076,7 +1070,7 @@
 			}
 
 		 }
-		 else//($_POST[element_type]=='input')
+		 else//($_POST['element_type']=='input')
 		 {
 			$fields=$this->bo->so->site_table_metadata($object_values['parent_site_id'],$object_values['table_name']);
 			foreach($fields as $field)
@@ -1104,7 +1098,7 @@
 		 $this->tplsav2->assign('action',$action);
 
 		 //for general sets
-		 if(!$_GET[object_id])
+		 if(!$_GET['object_id'])
 		 {
 			die('error');
 		 }
@@ -1152,16 +1146,16 @@
 	  {
 		 if($_POST['submitted'])
 		 {
-			$save_status = $this->bo->save_object_events_conf($_GET[object_id],$_GET[edit]);
+			$save_status = $this->bo->save_object_events_conf($_GET['object_id'],$_GET['edit']);
 
-			//unset($_GET[edit]);
-			//unset($_POST[plugin]);
+			//unset($_GET['edit']);
+			//unset($_POST['plugin']);
 		 }
 
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
 		 '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
 
-		 $this->tplsav2->startlink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]);
+		 $this->tplsav2->startlink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET['object_id']);
 		 $this->tplsav2->assign('theme_css',$theme_css);
 		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
@@ -1171,9 +1165,9 @@
 
 		 $this->msg_box();
 
-		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+		 $object_arr=$this->bo->so->get_object_values($_GET['object_id']);
 
-		 if($_GET[close_me]=='true')
+		 if($_GET['close_me']=='true')
 		 {
 			$this->tplsav2->set_var('close', ' onLoad="self.close()"');		 
 		 }
@@ -1182,59 +1176,59 @@
 			$this->tplsav2->set_var('close', '');		 
 		 }
 
-		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
-		 $stored_configs = unserialize(base64_decode($object_arr[events_config]));
+		 $object_arr=$this->bo->so->get_object_values($_GET['object_id']);
+		 $stored_configs = unserialize(base64_decode($object_arr['events_config']));
 
 		 $this->tplsav2->stored_events_arr=array(); 
 		 if(is_array($stored_configs))
 		 {
 			foreach($stored_configs as $key => $config)
 			{
-			   $stored_events_arr['edit_url']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id].'&edit='.$key);
+			   $stored_events_arr['edit_url']=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET['object_id'].'&edit='.$key);
 			   $stored_events_arr['config_id']=$key;
-			   $stored_events_arr['config_description']=lang('%3: event <b>%1</b> triggers plugin <b>%2</b>', $config[conf][event], $config[conf][plugin], $key+1);
+			   $stored_events_arr['config_description']=lang('%3: event <b>%1</b> triggers plugin <b>%2</b>', $config['conf']['event'], $config['conf']['plugin'], $key+1);
 
 			   $this->tplsav2->stored_events_arr[]=$stored_events_arr;
 			}
 		 }
 
 		 //new?
-		 if($_GET[edit]=='')
+		 if($_GET['edit']=='')
 		 //if($xxxx)
 		 {
-			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]));
+			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET['object_id']));
 
-			$this->tplsav2->set_var('event_options', $this->getEventOptions($_POST[event]));		 
-			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
-			$this->tplsav2->set_var('option_selected', 'document.frm.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; document.frm.submit();');
+			$this->tplsav2->set_var('event_options', $this->getEventOptions($_POST['event']));		 
+			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST['event'], $_POST['plugin']));		 
+			$this->tplsav2->set_var('option_selected', 'document.frm.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET['object_id']).'\'; document.frm.submit();');
 
-			if($_POST[plugin] != '')
+			if($_POST['plugin'] != '')
 			{
-			   $this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$_POST[plugin]]['title']);
+			   $this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$_POST['plugin']]['title']);
 
-			   $cfg=$this->bo->object_events_plugins[$_POST[plugin]]['config'];
-			   $cfg_help=$this->bo->object_events_plugins[$_POST[plugin]]['config_help'];
+			   $cfg=$this->bo->object_events_plugins[$_POST['plugin']]['config'];
+			   $cfg_help=$this->bo->object_events_plugins[$_POST['plugin']]['config_help'];
 			}
 		 }
 		 else
 		 {
-			$this->tplsav2->set_var('event_options', $this->getEventOptions($_POST[event]));		 
-			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
-			$this->tplsav2->set_var('option_selected', 'document.frm.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; document.frm.submit();');
+			$this->tplsav2->set_var('event_options', $this->getEventOptions($_POST['event']));		 
+			$this->tplsav2->set_var('plugin_options', $this->getPluginOptions($_POST['event'], $_POST['plugin']));		 
+			$this->tplsav2->set_var('option_selected', 'document.frm.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET['object_id']).'\'; document.frm.submit();');
 
-			/*			if($_POST[plugin] != '')
+			/*			if($_POST['plugin'] != '')
 			{
-			   $this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$_POST[plugin]]['title']);
+			   $this->tplsav2->set_var('plug_name',$this->bo->object_events_plugins[$_POST['plugin']]['title']);
 
-			   $cfg=$this->bo->object_events_plugins[$_POST[plugin]]['config'];
-			   $cfg_help=$this->bo->object_events_plugins[$_POST[plugin]]['config_help'];
+			   $cfg=$this->bo->object_events_plugins[$_POST['plugin']]['config'];
+			   $cfg_help=$this->bo->object_events_plugins[$_POST['plugin']]['config_help'];
 			}
 			*/
-			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id].'&edit='.$_GET[edit]));
+			$this->tplsav2->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET['object_id'].'&edit='.$_GET['edit']));
 
 			if(is_array($stored_configs))
 			{
-			   $edit_conf = $stored_configs[$_GET[edit]];
+			   $edit_conf = $stored_configs[$_GET['edit']];
 			}
 			$this->tplsav2->plugin=$edit_conf['name'];
 			$this->tplsav2->event=$edit_conf['conf']['event'];
@@ -1245,11 +1239,11 @@
 
 			if($edit_conf['iconfile'])
 			{
-			   $this->tplsav2->iconfilepath=$this->bo->site_fs->get_jinn_sitefile_url($object_arr[parent_site_id]).SEP.'object_events'.SEP.$edit_conf['name'].SEP.$edit_conf['iconfile'];
+			   $this->tplsav2->iconfilepath=$this->bo->site_fs->get_jinn_sitefile_url($object_arr['parent_site_id']).SEP.'object_events'.SEP.$edit_conf['name'].SEP.$edit_conf['iconfile'];
 			}
 
-			$cfg=$this->bo->object_events_plugins[$edit_conf[name]]['config'];
-			$cfg_help=$this->bo->object_events_plugins[$edit_conf[name]]['config_help'];
+			$cfg=$this->bo->object_events_plugins[$edit_conf['name']]['config'];
+			$cfg_help=$this->bo->object_events_plugins[$edit_conf['name']]['config_help'];
 		 }
 
 		 if(is_array($cfg))
@@ -1275,7 +1269,7 @@
 			   $this->tplsav2->cfg_arr[]=$cfg_arr;
 			}
 		 }
-		 $this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+		 $this->tplsav2->assign('lang',$GLOBALS['phpgw_info']['user']['preferences']['common']['lang']);
 
 		 $this->tplsav2->display('frm_conf_object_events.tpl.php');
 
@@ -1292,7 +1286,7 @@
 	  function edit_field_props()
 	  {
 		 //for general sets
-		 /*		 if(!$_GET[object_id] || !$_GET[field_name])
+		 /*		 if(!$_GET['object_id'] || !$_GET['field_name'])
 		 {
 			die('error general flds');
 		 }
@@ -1319,8 +1313,8 @@
 			   if($_POST['plugchanges'])
 			   {
 				  unset($post_plugins);
-				  $plug_reg_arr=$this->bo->get_db_plug_arr($_POST[newplug]);
-				  $plugin_name = $plug_reg_arr[name]; // reset name in case plugin is an alias for another plugin
+				  $plug_reg_arr=$this->bo->get_db_plug_arr($_POST['newplug']);
+				  $plugin_name = $plug_reg_arr['name']; // reset name in case plugin is an alias for another plugin
 
 				  $old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
 				  $plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
@@ -1328,7 +1322,7 @@
 			   // FILES ARE UPLOADED/DELETED
 			   elseif($_POST['uploaddelete']=='true')
 			   {
-				  $plugin_name=$_POST[plugin_name];
+				  $plugin_name=$_POST['plugin_name'];
 				  $plug_reg_arr=$this->bo->get_db_plug_arr($plugin_name);
 				  $old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
 				  $plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
@@ -1340,11 +1334,11 @@
 						if($post_plugins[$key.'_plgupload']) 
 						{
 						   //TODO ??? set key to new file name in POST
-						   $stored_files_arr=$this->bo->site_fs->save_db_field_plugin_file_from_post($this->bo->so->get_site_id_by_object_id($_GET[object_id]),'PLGXXX'.$key,$plug_reg_conf_arr[$key][subdir]);	
+						   $stored_files_arr=$this->bo->site_fs->save_db_field_plugin_file_from_post($this->bo->so->get_site_id_by_object_id($_GET['object_id']),'PLGXXX'.$key,$plug_reg_conf_arr[$key]['subdir']);	
 						}
 						elseif($post_plugins[$key.'_plgdelete']) 
 						{
-						   $this->bo->site_fs->remove_file($this->bo->so->get_site_id_by_object_id($_GET[object_id]),$val,$plug_reg_conf_arr[$key][subdir]);	
+						   $this->bo->site_fs->remove_file($this->bo->so->get_site_id_by_object_id($_GET['object_id']),$val,$plug_reg_conf_arr[$key]['subdir']);	
 						}
 
 						if(is_array($post_plugins[$key]))
@@ -1364,12 +1358,12 @@
 						   //TODO ??? set key to new file name in POST
 						   $arr = explode("_SEP_",$key);
 
-						   $stored_files_arr=$this->bo->site_fs->save_db_field_plugin_file_from_post($this->bo->so->get_site_id_by_object_id($_GET[object_id]),'MLT'.$key,$plug_reg_conf_arr[substr($arr[0],3)]['items'][$arr[1]][subdir]);
+						   $stored_files_arr=$this->bo->site_fs->save_db_field_plugin_file_from_post($this->bo->so->get_site_id_by_object_id($_GET['object_id']),'MLT'.$key,$plug_reg_conf_arr[substr($arr[0],3)]['items'][$arr[1]]['subdir']);
 						}
 						elseif($post_multi[$key.'_plgdelete'])
 						{
 						   $arr = explode("_SEP_",$key);
-						   $this->bo->site_fs->remove_file($this->bo->so->get_site_id_by_object_id($_GET[object_id]),$val,$plug_reg_conf_arr[substr($arr[0],3)]['items'][$arr[1]][subdir]);
+						   $this->bo->site_fs->remove_file($this->bo->so->get_site_id_by_object_id($_GET['object_id']),$val,$plug_reg_conf_arr[substr($arr[0],3)]['items'][$arr[1]]['subdir']);
 						}
 
 						if(is_array($post_multi[$key]))
@@ -1390,15 +1384,15 @@
 				  //these two are necessary for try_insert
 				  $data[]=array(
 					 'name'=>'field_name',
-					 'value'=>$_GET[field_name]
+					 'value'=>$_GET['field_name']
 				  );
 
 				  $data[]=array(
 					 'name'=>'field_parent_object',
-					 'value'=>$_GET[object_id]
+					 'value'=>$_GET['object_id']
 				  );
 
-				  $where_string="`field_parent_object`='{$_GET[object_id]}' AND  `field_name`='$_GET[field_name]'";
+				  $where_string="field_parent_object='{$_GET['object_id']}' AND  field_name='{$_GET['field_name']}'";
 
 				  $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true); // do insert when not existing
 				  $this->bo->set_site_version_info($this->bo->site['site_id']);
@@ -1407,7 +1401,7 @@
 
 				  // plugin fields
 				  $conf=array(
-					 'name'=>$_POST[plugin_name],
+					 'name'=>$_POST['plugin_name'],
 					 'conf'=>$post_plugins
 				  );
 
@@ -1428,7 +1422,7 @@
 				  }
 				  //_debug_array($conf);
 				  $conf_serialed_string=base64_encode(serialize($conf));
-				  $status=$this->bo->so->save_field_plugin_conf($_GET[object_id],$_GET[field_name],$conf_serialed_string);
+				  $status=$this->bo->so->save_field_plugin_conf($_GET['object_id'],$_GET['field_name'],$conf_serialed_string);
 			   }
 			   //			}
 			}
@@ -1436,28 +1430,28 @@
 
 
 			//retrieve needed info form stored conf
-			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+			$object_arr=$this->bo->so->get_object_values($_GET['object_id']);
 
 			/* for backwards compatibility */
 			// how long do we need this
-			if(!empty($object_arr[plugins]))
+			if(!empty($object_arr['plugins']))
 			{
-			   $this->bo->upgrade_plugins($object_arr[object_id]);
+			   $this->bo->upgrade_plugins($object_arr['object_id']);
 			}
 
-			$field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$_GET[field_name]);
+			$field_conf_arr=$this->bo->so->get_field_values($object_arr['object_id'],$_GET['field_name']);
 
 			if(!$_POST['plugchanges'])
 			{
 
-			   if($_POST[plugin_name] && $_POST[plugchanges]) 
+			   if($_POST['plugin_name'] && $_POST['plugchanges']) 
 			   {
-				  $plugin_name=$_POST[plugin_name];
+				  $plugin_name=$_POST['plugin_name'];
 			   }
 			   else
 			   {
-				  $fld_plug_conf_arr=unserialize(base64_decode($field_conf_arr[field_plugins]));
-				  $plugin_name=$fld_plug_conf_arr[name];
+				  $fld_plug_conf_arr=unserialize(base64_decode($field_conf_arr['field_plugins']));
+				  $plugin_name=$fld_plug_conf_arr['name'];
 			   }
 
 			   $plug_reg_arr=$this->bo->get_db_plug_arr($plugin_name);
@@ -1473,25 +1467,25 @@
 			}
 			elseif($field_conf_arr['element_type']=='table_field')
 			{
-			   $field_meta_arr=$this->bo->so->object_field_metadata($_GET[object_id],$field_conf_arr['data_source']);
-			   $avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST[newplug]:$plugin_name));
+			   $field_meta_arr=$this->bo->so->object_field_metadata($_GET['object_id'],$field_conf_arr['data_source']);
+			   $avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST['newplug']:$plugin_name));
 			   $this->tplsav2->assign('data_source',$field_conf_arr['data_source']);
 			}
 			else
 			{
-			   $field_meta_arr=$this->bo->so->object_field_metadata($_GET[object_id],$_GET[field_name]);
-			   $avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST[newplug]:$plugin_name));
-			   $this->tplsav2->assign('data_source',$_GET[field_name]);
+			   $field_meta_arr=$this->bo->so->object_field_metadata($_GET['object_id'],$_GET['field_name']);
+			   $avail_plugins_arr=$this->bo->plugins_for_field_type($field_meta_arr,($_POST['submitted']?$_POST['newplug']:$plugin_name));
+			   $this->tplsav2->assign('data_source',$_GET['field_name']);
 			}
 		 
 			// FROM HERE THE FORM IS RENDERED
 
 			//formaction
-			$action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_field_props&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name].'&plug_name='.$plugin_name);
+			$action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_field_props&object_id='.$_GET['object_id'].'&field_name='.$_GET['field_name'].'&plug_name='.$plugin_name);
 
 			/* if the plugin wants to generate is own page manually */
 			//fixme remove?
-			/*		 if($plug_reg_arr[config_execute])
+			/*		 if($plug_reg_arr['config_execute'])
 			{
 			   $this->bo->plug->call_config_function($plugin_name,$plug_reg_conf_arr,$action);
 			   $GLOBALS['phpgw']->common->phpgw_exit();
@@ -1509,7 +1503,7 @@
 
 			$use_records_cfg=False;
 
-			if($_GET[close_me]=='true') $body_tags = 'onLoad="self.close()"';
+			if($_GET['close_me']=='true') $body_tags = 'onLoad="self.close()"';
 
 			$theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . 
 			'/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
@@ -1520,7 +1514,7 @@
 			$this->tplsav2->assign('website_title',lang('Field properties'));
 			$this->tplsav2->assign('theme_css',$theme_css);
 			//$this->tplsav2->assign('css',$GLOBALS['phpgw']->common->get_css());
-			$this->tplsav2->assign('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+			$this->tplsav2->assign('lang',$GLOBALS['phpgw_info']['user']['preferences']['common']['lang']);
 			$this->tplsav2->assign('action',$action);
 			$this->tplsav2->assign('avail_plugins_arr',$avail_plugins_arr);
 			$this->tplsav2->assign('post_general',$post_general);
@@ -1531,18 +1525,18 @@
 			$this->tplsav2->assign('plug_name',$plugin_name);
 			$this->tplsav2->assign('lang_plugin_name',lang('Plugin name'));
 			$this->tplsav2->assign('lang_fieldname',lang('Fieldname'));
-			$this->tplsav2->assign('fieldname',$_GET[field_name]);
+			$this->tplsav2->assign('fieldname',$_GET['field_name']);
 
 			$this->tplsav2->assign('field_conf_arr',$field_conf_arr);
-			$this->tplsav2->assign('val_element_label',$field_conf_arr[element_label]);
-			$this->tplsav2->assign('val_field_help_info',$field_conf_arr[field_help_info]);
+			$this->tplsav2->assign('val_element_label',$field_conf_arr['element_label']);
+			$this->tplsav2->assign('val_field_help_info',$field_conf_arr['field_help_info']);
 
 			$this->tplsav2->assign('lang_version',lang('Version'));
 			$this->tplsav2->assign('lang_plugin_configuration',lang('Plugin Configuration'));
 			$this->tplsav2->assign('plug_version',$plug_reg_arr['version']);
 			$this->tplsav2->assign('plug_descr',$plug_reg_arr['description']);
 			$this->tplsav2->assign('plug_help',$plug_reg_arr['help']);
-			$this->tplsav2->assign('jinn_sitefile_path',$this->bo->site_fs->get_jinn_sitefile_path($object_arr[parent_site_id]));
+			$this->tplsav2->assign('jinn_sitefile_path',$this->bo->site_fs->get_jinn_sitefile_path($object_arr['parent_site_id']));
 
 			/* display shouldnt be in this if construction */
 			if(is_array($plug_reg_conf_arr))
@@ -1553,7 +1547,7 @@
 			   $configuration_widget= CreateObject('jinn.plg_conf_widget');
 			   foreach($plug_reg_conf_arr as $cval)
 			   {
-				  $temp .= $configuration_widget->display_plugin_widget($cval[type],$this->tplsav2, $cval,$fld_plug_conf_arr);
+				  $temp .= $configuration_widget->display_plugin_widget($cval['type'],$this->tplsav2, $cval,$fld_plug_conf_arr);
 			   }
 			   $this->tplsav2->assign('plugjes',$temp);
 			   $this->tplsav2->display('frm_conf_field.tpl.php');

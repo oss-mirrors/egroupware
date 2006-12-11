@@ -179,7 +179,7 @@
 			   'value'=>$_POST['formwidth']
 			);
 
-			$where_string="`object_id`='{$_POST['object_id']}'";
+			$where_string="object_id='{$_POST['object_id']}'";
 			$status = $this->bo->so->update_phpgw_data('egw_jinn_objects',$data,'','',$where_string,true);
 
 			$this->bo->site_object=	$this->bo->so->get_object_values($this->bo->site_object['object_id']);
@@ -209,7 +209,7 @@
 					 'value'=>$_POST['POS'.$field.'canvas_field_y']
 				  );
 
-				  $where_string="`field_parent_object`='{$this->bo->site_object['object_id']}' AND `field_name`='{$field}'";
+				  $where_string="field_parent_object='{$this->bo->site_object['object_id']}' AND field_name='{$field}'";
 
 				  $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true);
 
@@ -673,7 +673,7 @@
 					 'value'=>'auto'
 				  );
 
-				  $where_string="`field_parent_object`='{$_GET['object_id']}' AND  `field_name`='{$_GET['field_name']}'";
+				  $where_string="field_parent_object='{$_GET['object_id']}' AND  field_name='{$_GET['field_name']}'";
 
 				  $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true); // do insert when not existing
 				  $this->bo->addInfo(lang('Add metadata for unknown field: %1.',$new_field_name));

@@ -200,7 +200,7 @@
 			   foreach($filter['elements'] as $element)
 			   {
 				  if($filter_where != '') $filter_where .= " $filter_and_or ";
-				  $filter_where .= "`".$element['field']."`".$element['operator']."'".$element['value']."'";
+				  $filter_where .= "".$element['field']."".$element['operator']."'".$element['value']."'";
 			   }
 			}
 		 }

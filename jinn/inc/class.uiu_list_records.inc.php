@@ -454,11 +454,11 @@
 			   {
 				  if ($where_condition)
 				  {
-					 $where_condition.= " OR( `{$onecol['name']}` LIKE '%$like_str%')";
+					 $where_condition.= " OR( {$onecol['name']} LIKE '%$like_str%')";
 				  }
 				  else
 				  {
-					 $where_condition = "( `{$onecol['name']}` LIKE '%$like_str%')";
+					 $where_condition = "( {$onecol['name']} LIKE '%$like_str%')";
 				  }
 			   }
 			}

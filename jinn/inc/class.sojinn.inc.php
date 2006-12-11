@@ -23,6 +23,8 @@
 
    /* $Id$ */
 
+   include_once(PHPGW_INCLUDE_ROOT.'/jinn/inc/functions.inc.php');
+
    class sojinn
    {
 	  var $phpgw_db;
@@ -71,13 +73,13 @@
 			$pre='dev_';
 		 }
 
-		 $site_values[cur_site_db_name] = $site_values[$pre.'site_db_name'];
-		 $site_values[cur_site_db_host] = $site_values[$pre.'site_db_host'];
-		 $site_values[cur_site_db_user] = $site_values[$pre.'site_db_user'];
-		 $site_values[cur_site_db_password] = $site_values[$pre.'site_db_password'];
-		 $site_values[cur_site_db_type] = $site_values[$pre.'site_db_type'];
-		 $site_values[cur_upload_path] =$site_values[$pre.'upload_path'];
-		 $site_values[cur_upload_url] =$site_values[$pre.'upload_url'];
+		 $site_values['cur_site_db_name'] = $site_values[$pre.'site_db_name'];
+		 $site_values['cur_site_db_host'] = $site_values[$pre.'site_db_host'];
+		 $site_values['cur_site_db_user'] = $site_values[$pre.'site_db_user'];
+		 $site_values['cur_site_db_password'] = $site_values[$pre.'site_db_password'];
+		 $site_values['cur_site_db_type'] = $site_values[$pre.'site_db_type'];
+		 $site_values['cur_upload_path'] =$site_values[$pre.'upload_path'];
+		 $site_values['cur_upload_url'] =$site_values[$pre.'upload_url'];
 
 		 $base_path="";
 
@@ -149,7 +151,7 @@
 		 {
 			foreach($tables as $table)
 			{
-			   $tables_arr[]=$table[table_name];
+			   $tables_arr[]=$table['table_name'];
 			}
 			return $tables_arr;
 		 }
@@ -169,7 +171,7 @@
 			$meta=$this->site_db->metadata($table);
 			foreach ($meta as $col)
 			{
-			   $meta_data[$col[name]]=$col;
+			   $meta_data[$col['name']]=$col;
 			}
 		 }
 		 else
@@ -294,7 +296,6 @@
 	  function get_object_values_by_uniq($uniqid)
 	  {
 		 return $this->get_object_values($uniqid);
-		 //return $this->get_object_values('',$uniqid);
 	  }
 
 	  /**
@@ -324,8 +325,8 @@
 
 		 if($this->config["server_type"]=='dev') $pre='dev_';
 
-		 $object_values[cur_upload_path] =$object_values[$pre.'upload_path'];
-		 $object_values[cur_upload_url] =$object_values[$pre.'upload_url'];
+		 $object_values['cur_upload_path'] =$object_values[$pre.'upload_path'];
+		 $object_values['cur_upload_url'] =$object_values[$pre.'upload_url'];
 
 		 return $object_values;
 	  }
@@ -339,7 +340,7 @@
 	  function get_site_id_by_object_id($object_id)
 	  {
 		 $obj_arr=$this->get_object_values($object_id);
-		 return $obj_arr[parent_site_id];
+		 return $obj_arr['parent_site_id'];
 	  }
 
 	  /**
@@ -375,7 +376,7 @@
 		 while ($this->phpgw_db->next_record())
 		 {	
 			$row=$this->phpgw_db->row();
-			$field_conf_arr[$row[field_name]]=$row;
+			$field_conf_arr[$row['field_name']]=$row;
 		 }
 
 		 return $field_conf_arr;
@@ -452,7 +453,7 @@
 			$meta=$this->phpgw_db->metadata($table);
 			foreach ($meta as $col)
 			{
-			   $ret_meta[$col[name]]=$col;
+			   $ret_meta[$col['name']]=$col;
 			}
 			return $ret_meta;
 		 }
@@ -472,11 +473,11 @@
 	  function object_field_metadata($object_id, $fieldname)
 	  {
 		 $obj_arr=$this->get_object_values($object_id);
-		 $this->site_db_connection($obj_arr[parent_site_id]);
-		 $meta=$this->site_db->metadata($obj_arr[table_name]);
+		 $this->site_db_connection($obj_arr['parent_site_id']);
+		 $meta=$this->site_db->metadata($obj_arr['table_name']);
 		 foreach ($meta as $col)
 		 {
-			$meta_data[$col[name]]=$col;
+			$meta_data[$col['name']]=$col;
 		 }
 
 		 $this->site_close_db_connection();
@@ -944,7 +945,7 @@
 	  {
 		 // check if order is consistant
 		 //quick check on doubles
-		 $sql="SELECT field_id,COUNT(field_id) AS numrecs FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id' GROUP BY form_listing_order HAVING COUNT(field_id)>1";
+		 $sql="SELECT field_id,COUNT(field_id) AS numrecs FROM egw_jinn_obj_fields WHERE field_parent_object='$obj_id' GROUP BY form_listing_order HAVING COUNT(field_id)>1";
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query($sql, __LINE__, __FILE__); 
 		
@@ -952,14 +953,14 @@
 		 if($this->phpgw_db->num_rows()>0)
 		 {
 			//get max order
-			$sql2="SELECT max(`form_listing_order`) as maxorder FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id'";
+			$sql2="SELECT max(form_listing_order) as maxorder FROM egw_jinn_obj_fields WHERE field_parent_object='$obj_id'";
 			$this->phpgw_db->free();	
 			$this->phpgw_db->query("$sql2",__LINE__,__FILE__);
 			$this->phpgw_db->next_record();
 			$maxorder=$this->phpgw_db->f('maxorder');
 
 			//select all doubles
-			$sql3="SELECT field_name FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id' AND `form_listing_order` IN (SELECT `form_listing_order` FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id' GROUP BY form_listing_order HAVING COUNT(field_id)>1 ORDER BY form_listing_order ASC)";
+			$sql3="SELECT field_name FROM egw_jinn_obj_fields WHERE field_parent_object='$obj_id' AND form_listing_order IN (SELECT form_listing_order FROM egw_jinn_obj_fields WHERE field_parent_object='$obj_id' GROUP BY form_listing_order HAVING COUNT(field_id)>1 ORDER BY form_listing_order ASC)";
 			$this->phpgw_db->free();	
 			$this->phpgw_db->query("$sql3",__LINE__,__FILE__);
 			while ($this->phpgw_db->next_record())
@@ -971,14 +972,14 @@
 			foreach($field_names_arr as $field_name)
 			{
 			  $maxorder++;
-			  $sql4="UPDATE `egw_jinn_obj_fields` SET `form_listing_order`=$maxorder WHERE `field_parent_object`='$obj_id' AND field_name='$field_name'";
+			  $sql4="UPDATE egw_jinn_obj_fields SET form_listing_order=$maxorder WHERE field_parent_object='$obj_id' AND field_name='$field_name'";
 			  $this->phpgw_db->free();	
 			  $this->phpgw_db->query("$sql4",__LINE__,__FILE__);
 		   }
 		 }
 		 
 		 //select order from movefield
-		 $sql5="SELECT `form_listing_order` FROM `egw_jinn_obj_fields` WHERE `field_parent_object`='$obj_id' AND field_name='$movefield_name'";
+		 $sql5="SELECT form_listing_order FROM egw_jinn_obj_fields WHERE field_parent_object='$obj_id' AND field_name='$movefield_name'";
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query("$sql5",__LINE__,__FILE__);
 		 $this->phpgw_db->next_record();
@@ -988,21 +989,21 @@
 		 $nbr_search['orderdir'] = ($direc == "down")? 'ASC' : 'DESC'; // decides to search for lower or higher neighbour 
 		 
 		 //select neighbour record and set it form_listing_order to myorder
-		 $sql6="SELECT field_name,form_listing_order FROM `egw_jinn_obj_fields` 
-		 WHERE `field_parent_object`='$obj_id' AND `form_listing_order` {$nbr_search['operator']} $myorder ORDER BY `form_listing_order` {$nbr_search['orderdir']} LIMIT 1";
+		 $sql6="SELECT field_name,form_listing_order FROM egw_jinn_obj_fields 
+		 WHERE field_parent_object='$obj_id' AND form_listing_order {$nbr_search['operator']} $myorder ORDER BY form_listing_order {$nbr_search['orderdir']} LIMIT 1";
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query("$sql6",__LINE__,__FILE__);
 		 $this->phpgw_db->next_record();
 		 $swaprecord=$this->phpgw_db->f('field_name'); // get my current order
 		 $neworder=$this->phpgw_db->f('form_listing_order'); // get my current order
 
-		 $sql7="UPDATE `egw_jinn_obj_fields` SET `form_listing_order` = $myorder 
-		 WHERE `field_parent_object`='$obj_id' AND field_name = '$swaprecord'";
+		 $sql7="UPDATE egw_jinn_obj_fields SET form_listing_order = $myorder 
+		 WHERE field_parent_object='$obj_id' AND field_name = '$swaprecord'";
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query("$sql7",__LINE__,__FILE__);
 	   
-		 //increase or decrease our `form_listing_order`
-		 $sql8="UPDATE `egw_jinn_obj_fields` SET `form_listing_order` = $neworder  WHERE `field_parent_object`='$obj_id' AND field_name='$movefield_name'"; 
+		 //increase or decrease our form_listing_order
+		 $sql8="UPDATE egw_jinn_obj_fields SET form_listing_order = $neworder  WHERE field_parent_object='$obj_id' AND field_name='$movefield_name'"; 
 		 $this->phpgw_db->free();	
 		 $this->phpgw_db->query("$sql8",__LINE__,__FILE__);
 			 
@@ -1033,11 +1034,11 @@
 			{
 			   if ($value_reference=='name')
 			   {
-				  $row[$field[name]] = $this->strip_magic_quotes_gpc($this->phpgw_db->f($field[name]));
+				  $row[$field['name']] = $this->strip_magic_quotes_gpc($this->phpgw_db->f($field['name']));
 			   }
 			   else
 			   {
-				  $row[] = $this->strip_magic_quotes_gpc($this->phpgw_db->f($field[name]));
+				  $row[] = $this->strip_magic_quotes_gpc($this->phpgw_db->f($field['name']));
 			   }
 			}
 			$rows[]=$row;
@@ -1059,7 +1060,7 @@
 	  function get_m2m_record_values($site_id,$object_id,$m2m_relation,$all_or_stored)
 	  {
 		 $this->site_db_connection($site_id);
-		 $_displayfields = unserialize($m2m_relation[foreign_showfields]);
+		 $_displayfields = unserialize($m2m_relation['foreign_showfields']);
 		 
 		 foreach($_displayfields as $displfield)
 		 {
@@ -1237,13 +1238,13 @@
 			   }
 			   else
 			   {
-				  $select .= "`$col`";
+				  $select .= "$col";
 			   }
 			}
 		 }
 
 		 //from
-		 $from = "FROM `$table`";
+		 $from = "FROM $table";
 
 		 //where
 		 if($filter_where=='all')
@@ -1256,7 +1257,7 @@
 			foreach($filter_where as $filter)
 			{
 			   if($where!='WHERE ') $where .= 'AND ';
-			   $where .= "`$filter`";
+			   $where .= "$filter";
 			}
 		 }
 		 elseif(strlen($filter_where) > 0)
@@ -1662,10 +1663,10 @@
 			foreach($fields as $field)
 			{
 			   if($fields_sql) $fields_sql.=',';
-			   $fields_sql.="`{$field['name']}` INT NOT NULL";
+			   $fields_sql.="{$field['name']} INT NOT NULL";
 			}
 
-			$sql="CREATE TABLE `$table_name` ( $fields_sql ) TYPE = MYISAM ;";
+			$sql="CREATE TABLE $table_name ( $fields_sql ) TYPE = MYISAM ;";
 
 			$this->site_db->query($sql,__LINE__,__FILE__);
 		 }
@@ -2309,9 +2310,9 @@
 	  */
 	  function update_phpgw_data($table,$data,$where_key,$where_value,$where_string='',$try_insert=false)
 	  {
-		 $meta=$this->phpgw_table_metadata($table,true);
+//		 $meta=$this->phpgw_table_metadata($table,true);
 
-		 foreach($data as $field)
+/*		 foreach($data as $field)
 		 {
 			if($field[value]=='0')
 			{}
@@ -2324,7 +2325,7 @@
 			if ($SQL_SUB) $SQL_SUB .= ', ';
 			$SQL_SUB .= "$field[name]=$field[value]";
 		 }
-
+*/
 		 if($where_string)
 		 {
 			$WHERE = $this->strip_magic_quotes_gpc($where_string);
@@ -2344,18 +2345,47 @@
 			   return $this->insert_phpgw_data($table,$data);
 			}
 		 }
+		 
+		 //_debug_array($data);
+		 $new_data=$this->oldData2newData($data);
+		 $table_def=$this->table2definition( $table );
+		 //$this->phpgw_db->Debug=true;
+		 $this->phpgw_db->update($table,$new_data,$WHERE,__LINE__,__FILE__,False,false,$table_def);
+		 //$this->phpgw_db->Debug=false;
+		 //die();
 
 		 //update
-		 $sql = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $WHERE;
+		 //$sql = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $WHERE;
+		 //die($sql);
 		  
-		 if (!$this->phpgw_db->query($sql,__LINE__,__FILE__))
+		 /*if (!$this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
 			$status[error]=true;
-		 }
-		 $status[sql]=$sql;	 
-		 $status[where_value]=$where_value;	 
+		 }*/
+		 //$status[sql]=$sql;	 
+		 $status['where_value']=$where_value;	 
 
 		 return $status;
+	  }
+
+	  /**
+	  * table2definition: translates a real table into a eGW tabel definition so 
+	  *		it can be used by class.egw_db.inc.php
+	  * 
+	  * @param mixed $table_name 
+	  * @param mixed $db_obj 
+	  * @access public
+	  * @return void
+	  */
+	  function table2definition($table_name,$db_obj=false)
+	  {
+		 //echo $db_obj->Type;
+		 $oProc =& CreateObject('phpgwapi.schema_proc',$db_obj->Type,$db_obj);
+		 if (method_exists($oProc,'GetTableDefinition'))
+		 {
+			$newdefinition = $oProc->GetTableDefinition($table_name);
+			return $newdefinition;
+		 }
 	  }
 
 
@@ -2442,7 +2472,7 @@
 	  function save_object_events_plugin_conf($object_id,$conf_serialed)
 	  {
 		 if(!$object_id) $object_id=-1;
-		 $sql="UPDATE egw_jinn_objects SET `events_config`='$conf_serialed' WHERE `object_id`='$object_id'";
+		 $sql="UPDATE egw_jinn_objects SET events_config='$conf_serialed' WHERE object_id='$object_id'";
 		 if(!$this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
 			$status[error]=true;
@@ -2563,9 +2593,9 @@
 		 {
 			$html = 0;
 		 }
-		 $SQLfields = '`report_id` , `report_naam` , `report_object_id` , `report_header` , `report_body` , `report_footer`,`report_html`,`report_html_title`';
+		 $SQLfields = 'report_id , report_naam , report_object_id , report_header , report_body , report_footer,report_html,report_html_title';
 		 $SQLvalues='\'\',\''.$name.'\',\''.$object_id.'\',\''.$header.'\',\''.$body.'\',\''.$footer.'\',\''.$html.'\',\''.$html_title.'\'';
-		 $SQL= 'INSERT INTO `egw_jinn_report` (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 $SQL= 'INSERT INTO egw_jinn_report (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 
 		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
@@ -2587,14 +2617,14 @@
 		 {
 			$html = 0;
 		 }
-		 $SQL= 'UPDATE `egw_jinn_report` ';
-		 $SQL .= 'SET `report_naam` = \''.$name;
-		 $SQL .= '\',`report_header` = \''.$header;
-		 $SQL .=  '\',`report_body` = \''.$body;
-		 $SQL .=  '\',`report_footer` = \''.$footer;
-		 $SQL .=  '\',`report_html` = \''.$html;
-		 $SQL .=  '\',`report_html_title` = \''.$html_title;
-		 $SQL .=  '\' WHERE `report_id` ='.$report_id.' LIMIT 1';
+		 $SQL= 'UPDATE egw_jinn_report ';
+		 $SQL .= 'SET report_naam = \''.$name;
+		 $SQL .= '\',report_header = \''.$header;
+		 $SQL .=  '\',report_body = \''.$body;
+		 $SQL .=  '\',report_footer = \''.$footer;
+		 $SQL .=  '\',report_html = \''.$html;
+		 $SQL .=  '\',report_html_title = \''.$html_title;
+		 $SQL .=  '\' WHERE report_id ='.$report_id.' LIMIT 1';
 		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			return 0;
@@ -2608,7 +2638,7 @@
 
 	  function delete_report($report_id)
 	  {
-		 $SQL= 'DELETE FROM `egw_jinn_report` WHERE `report_id` = '.$report_id.' LIMIT 1';
+		 $SQL= 'DELETE FROM egw_jinn_report WHERE report_id = '.$report_id.' LIMIT 1';
 		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			return 0;
