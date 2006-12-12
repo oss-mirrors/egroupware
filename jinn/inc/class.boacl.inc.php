@@ -196,7 +196,7 @@
 			$uid=$GLOBALS['phpgw_info']['user']['account_id'];
 		 }
 
-		 $objects=$this->get_all_objects_allowed($uid);
+		 $objects = $this->get_all_objects_allowed($uid);
 		 //die($object_id);
 
 		 if(in_array($object_id,$objects))
@@ -224,21 +224,19 @@
 		 {
 			foreach ( $groups as $groupfields )
 			{
-			   $group[]=$groupfields[account_id];
+			   $group[] = $groupfields[account_id];
 			}
 		 }
 
-		 $objects=$this->so->get_all_objects($uid,$group);
-		 //_debug_array($objects);
+		 $objects = $this->so->get_all_objects($uid,$group);
 
 		 $sites=$this->get_sites_to_admin($uid);
 
 		 foreach($sites as $site_id)
 		 {
-			$objects_from_sites=$this->get_objects_allowed_in_site($site_id,$uid);
-			$objects=array_merge($objects,$objects_from_sites);
-
-
+			$objects_from_sites = $this->get_objects_allowed_in_site($site_id,$uid);
+			//_debug_array($objects_from_sites);
+			$objects = array_merge($objects,$objects_from_sites);
 		 }
 
 		 return $objects;
@@ -254,17 +252,17 @@
 	  */
 	  function get_objects_allowed_in_site($site_id,$uid)
 	  {
-		 $groups=$GLOBALS['phpgw']->accounts->membership();
+		 $groups = $GLOBALS['phpgw']->accounts->membership();
 
 		 if (is_array($groups))
 		 {
 			foreach ( $groups as $groupfields )
 			{
-			   $group[]=$groupfields[account_id];
+			   $group[] = $groupfields[account_id];
 			}
 		 }
 
-		 $objects=$this->so->get_objects($site_id,$uid,$group);
+		 $objects = $this->so->get_objects($site_id,$uid,$group);
 		 return $objects;
 	  }
 

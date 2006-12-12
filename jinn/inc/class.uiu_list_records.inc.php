@@ -99,7 +99,10 @@
 		 {
 			$columns=$this->bo->so->site_table_metadata($this->bo->site_object['parent_site_id'], $this->bo->site_object['table_name']);
 
-			if(!is_array($columns)) $columns=array();
+			if(!is_array($columns)) 
+			{
+			   $columns=array();
+			}
 
 			// walk through all table columns and fill different array 
 			foreach($columns as $onecol)
@@ -306,6 +309,7 @@
 		 }				
 
 		 // check if there's permission to this object
+		 //FIXME should be done before!!!
 		 if(!$this->bo->acl->has_object_access($this->bo->session['site_object_id']))
 		 {
 			unset($this->bo->session['site_object_id']);

@@ -675,6 +675,7 @@
 
 				  $where_string="field_parent_object='{$_GET['object_id']}' AND  field_name='{$_GET['field_name']}'";
 
+
 				  $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true); // do insert when not existing
 				  $this->bo->addInfo(lang('Add metadata for unknown field: %1.',$new_field_name));
 			   }

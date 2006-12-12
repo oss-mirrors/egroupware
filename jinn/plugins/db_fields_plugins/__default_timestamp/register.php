@@ -30,6 +30,7 @@
 	$this->registry->plugins['default_timestamp']['author']			= 'Pim Snel';
 	$this->registry->plugins['default_timestamp']['description']	= 'Default field plugin for handeling timestamp fields';
 	$this->registry->plugins['default_timestamp']['enable']			= 1;
+	$this->registry->plugins['default_timestamp']['default']		= 1;
 	$this->registry->plugins['default_timestamp']['db_field_hooks']	= array
 	(
 		'timestamp',	

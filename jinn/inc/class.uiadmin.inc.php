@@ -1455,8 +1455,19 @@
 			   }
 
 			   $plug_reg_arr=$this->bo->get_db_plug_arr($plugin_name);
+			   
+			   if(is_array($plug_reg_arr['config2']))
+			   {
+				  $newstyleconf=$plug_reg_arr['config2'];
+			   }
+			   else
+			   {
+				  $newstyleconf=array();
+			   }
+			   
 			   $old_cfg= $this->bo->bcompat->convert_old_dbplug_array($plug_reg_arr['config']);
-			   $plug_reg_conf_arr=array_merge($old_cfg,$plug_reg_arr['config2']);
+			   
+			   $plug_reg_conf_arr=array_merge($old_cfg,$newstyleconf);
 
 			}
 

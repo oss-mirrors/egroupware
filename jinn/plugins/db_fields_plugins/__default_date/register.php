@@ -30,6 +30,7 @@
 	$this->registry->plugins['default_date']['author']			= 'Pim Snel';
 	$this->registry->plugins['default_date']['description']		= 'Default field plugin for handling date fields';
 	$this->registry->plugins['default_date']['enable']			= 1;
+	$this->registry->plugins['default_date']['default']			= 1;
 	$this->registry->plugins['default_date']['db_field_hooks']	= array
 	(
 	   'date',	

@@ -146,20 +146,6 @@
 	  {
 		 $plug_arr=unserialize(base64_decode($field_values[field_plugins]));
 		 $success = $this->call_plugin($plug_arr[name], 'advanced_action', '', $plug_arr[conf], $_GET[where], '', $_GET[attributes], '', '',$field_values);
-
-	/*	 if ($success)
-		 {
-			$this->session['message'][info]=lang('Action was succesful.');
-			$this->sessionmanager->save();
-			$this->exit_and_open_screen('jinn.uiuser.index');
-		 }
-		 else
-		 {
-			$this->session['message'][error]=lang('Action was not succesful. Unknown error');
-			$this->sessionmanager->save();
-			$this->exit_and_open_screen('jinn.uiuser.index');
-		 }
-		 */
 	  }
 
 	  function call_config_function($name,$config,$form_action)
@@ -173,7 +159,6 @@
 
 	  function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values,$record_values=false)
 	  {
-
 
 		 //NEW STYLE PLUGIN CLASSES
 		 if($this->loaded($name))
@@ -203,29 +188,11 @@
 			   return $value;
 			}
 		 }
-		 elseif($this->plugins[$name])
-		 //OLD STYLE PLUGINS
-		 {
-			switch($function)
-			{
-			   case 'listview_read':
-				  return @call_user_func('plg_bv_'.$name, $value, $config, $where_val_encoded, $field_name);
-			   case 'formview_edit':
-				  return @call_user_func('plg_fi_'.$name, $field_name, $value, $config, $attr_arr);
-			   case 'on_save_filter':
-				  return @call_user_func('plg_sf_'.$name, $field_name, $HTTP_POST_VARS, $HTTP_POST_FILES, $config);
-			   case 'formview_read':
-				  return @call_user_func('plg_ro_'.$name, $value, $config);
-			   case 'advanced_action':
-				  return @call_user_func('plg_afa_'.$name, $where_val_encoded, $attr_arr, $config);
-			   default: 
-				  return false;
-			}
-		 }
 		 elseif($replacement = $this->registry->aliases[$name])
 		 //find explicit replacement
 		 {
-			if($this->loaded($replacement) || $this->plugins[$replacement]) 											// make SURE the replacing plugin exists, else we will die in a recursive loop
+			if($this->loaded($replacement))
+			// make SURE the replacing plugin exists, else we will die in a recursive loop
 			{
 			   return $this->call_plugin($replacement, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
 			}
@@ -233,7 +200,8 @@
 		 elseif($replacement = $this->get_default_plugin($field_values[field_type]))
 		 //find default for this fieldtype
 		 {
-			if($this->loaded($replacement[0]['value']) || $this->plugins[$replacement[0]['value']]) 					// make SURE the replacing plugin exists, else we will die in a recursive loop
+			if($this->loaded($replacement[0]['value']))
+			// make SURE the replacing plugin exists, else we will die in a recursive loop
 			{
 			   return $this->call_plugin($replacement[0]['value'], $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
 			}
@@ -241,7 +209,7 @@
 		 else
 		 //we give up. use the default plugin as final fallback
 		 {
-			if($this->loaded('default_') || $this->plugins['default_'])
+			if($this->loaded('default_'))
 			{
 			   return $this->call_plugin('default_', $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
 			}
@@ -260,13 +228,8 @@
 		 {
 			while (false !== ($file = readdir($handle))) 
 			{ 
-			   // OLD STYLE plugins
-			   if (substr($file,0,7)=='plugin.')
-			   {
-				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/'.$file);
-			   }
 			   // NEW STYLE plugins (classes)
-			   elseif(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
+			   if(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
 			   {
 				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
 			   }
@@ -289,13 +252,8 @@
 			{
 			   while (false !== ($file = readdir($handle))) 
 			   { 
-				  // OLD STYLE plugins
-				  if (substr($file,0,7)=='plugin.')
-				  {
-					 include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file);
-				  }
 				  // NEW STYLE plugins (classes)
-				  elseif(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
+				  if(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
 				  {
 					 include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
 				  }
@@ -336,24 +294,6 @@
 	  function plugin_hooks($fieldtype)
 	  {
 		 $plugin_hooks = array();
-
-		 // OLD STYLE plugins
-		 if (count($this->plugins)>0)
-		 {	
-			foreach($this->plugins as $plugin)
-			{
-			   foreach($plugin['db_field_hooks'] as $hook)
-			   {
-				  if ($hook==$fieldtype) 
-				  {
-					 $plugin_hooks[]=array(
-						'value'=>$plugin['name'],
-						'name'=>$plugin['title']
-					 );
-				  }
-			   }
-			}
-		 }
 
 		 // NEW STYLE plugins (classes)
 		 if (count($this->registry->plugins)>0)
@@ -419,26 +359,7 @@
 	  {
 		 $plugin_hooks = array();
 		 $i=1;
-		 // OLD STYLE plugins
-		 if (count($this->plugins)>0)
-		 {	
-			foreach($this->plugins as $plugin)
-			{
-			   foreach($plugin['db_field_hooks'] as $hook)
-			   {
-				  if ($hook==$fieldtype) 
-				  {
-					 if ($plugin['default']==1)
-					 {
-						$plugin_hooks[]=array(
-						   'value'=>$plugin['name'],
-						   'name'=>$plugin['title']
-						);
-					 }
-				  }
-			   }
-			}
-		 }
+		 
 		 // NEW STYLE plugins (classes)
 		 if (count($this->registry->plugins)>0)
 		 {	
@@ -487,16 +408,12 @@
 				  $plug_dir=PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/';
 				  include_once($inc_file);
 			   }
-			   //echo $inc_file;
-			   //include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php');
 			   
 			   if(class_exists('db_fields_plugin_'.$pluginname))
 			   {
 				  eval('$this->_plugins['.$pluginname.'] = new db_fields_plugin_'.$pluginname.'();');	
 				  $this->_plugins[$pluginname]->local_bo = &$this->local_bo;
 				  $this->_plugins[$pluginname]->plug_root = $plug_dir.'__'.$pluginname;
-
-   //				  $this->_plugins[$pluginname]->tplsav2->addPath('template',$this->plug_root.'/tpl');
 
 				  return true;
 			   }

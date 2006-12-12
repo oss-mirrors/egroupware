@@ -88,7 +88,8 @@
 
 		 $this->plug = CreateObject('jinn.factory_plugins_db_fields'); 
 		 $this->plug->local_bo = $this;
-		 $this->plugins = $this->plug->plugins; //fixme: THIS WILL BREAK WHEN WE GET RID OF THE OLD STYLE PLUGINS
+
+		 //$this->plugins = $this->plug->plugins; //fixme: THIS WILL BREAK WHEN WE GET RID OF THE OLD STYLE PLUGINS
 
 		 $this->object_events_plugin_manager = CreateObject('jinn.factory_plugins_object_events'); 
 		 $this->object_events_plugin_manager->local_bo = $this;
@@ -111,18 +112,24 @@
 	  */
 	  function get_db_plug_arr($plugin_name)
 	  {
-		 $plugin = $this->plugins[$plugin_name]; //OLD STYLE plugins
-		 if($plugin == '')
-		 {
-			$plugin = $this->plug->registry->plugins[$plugin_name]; //NEW STYLE plugins (classes)
-		 }
+		 //$plugin = $this->plugins[$plugin_name]; //OLD STYLE plugins
+		 //_debug_array($plugin_name);
+		 $plugin_reg_arr = $this->plug->registry->plugins[$plugin_name]; //NEW STYLE plugins (classes)
 
-		 if($plugin == '')
+		 if(!is_array($plugin_reg_arr))
 		 {
 			$alias = $this->plug->registry->aliases[$plugin_name]; //This plugin may be Depreciated. Try if an Alias has been defined
-			$plugin = $this->plug->registry->plugins[$alias];
+			$plugin_reg_arr = $this->plug->registry->plugins[$alias];
 		 }
-		 return $plugin;
+
+		 if(!is_array($plugin_reg_arr))
+		 {
+			return array();
+		 }
+		 else
+		 {
+			return $plugin_reg_arr;
+		 }
 	  }
 
 
@@ -161,10 +168,12 @@
 	  {
 
 		 $jinn_fieldtype=$this->db_ftypes->complete_resolve($field_meta_arr);
+		 //_debug_array($jinn_fieldtype);
 		 $plugin_default=$this->plug->get_default_plugin($jinn_fieldtype);
 		 $plugin_hooks=$this->plug->plugin_hooks($jinn_fieldtype);
 
 		 $plugin_hooks=array_merge($plugin_default,$plugin_hooks);
+
 		 $doublecheck = array();
 		 foreach($plugin_hooks as $key => $plugin_hook)
 		 {

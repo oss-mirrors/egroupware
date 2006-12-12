@@ -1098,7 +1098,6 @@
 		 }
 
 
-
 		 /**
 		 * http_vars_pairs_m2m 
 		 * 
@@ -1109,6 +1108,7 @@
 		 */
 		 function http_vars_pairs_m2m($HTTP_POST_VARS) 
 		 {
+			$data=array();
 			while(list($key, $val) = each($HTTP_POST_VARS)) 
 			{
 			   if(substr($key,0,3)=='M2M' || substr($key,0,8)=='FLDXXXid')

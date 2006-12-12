@@ -926,7 +926,11 @@
 
 		 if (is_array($objects))
 		 {
-			$objects=array_unique($objects);
+			$objects = array_unique($objects);
+		 }
+		 else
+		 {
+			$objects = array();
 		 }
 
 		 return $objects;
@@ -2237,7 +2241,7 @@
 			return $this->insert_new_object($data);
 		 }
 
-		 $meta=$this->phpgw_table_metadata($table,true);
+/*		 $meta=$this->phpgw_table_metadata($table,true);
 
 		 foreach($data as $field)
 		 {
@@ -2253,8 +2257,14 @@
 			$SQLfields .= $field[name];
 			$SQLvalues .= "'".$field[value]."'";
 		 }
+*/
+		 $new_data=$this->oldData2newData($data);
+		 $table_def=$this->table2definition( $table );
+//		 $this->phpgw_db->Debug=true;
+		 $this->phpgw_db->insert($table,$new_data,'',__LINE__,__FILE__,False,false,$table_def);
+		 //die();
 
-		 $sql='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+/*		 $sql='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 		 if ($this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
 			$status[newid]=$this->phpgw_db->get_last_insert_id($table,$last_insert_id_col);
@@ -2263,7 +2273,9 @@
 		 {
 			$status[error]=true;	
 		 }
+		 
 		 $status[sql]=$sql;	
+*/
 
 		 return $status;
 	  }
@@ -2337,6 +2349,7 @@
 
 		 if($try_insert)
 		 {
+			//$this->phpgw_db->select($table,'*',$WHERE,__LINE__,__FILE__)
 			$sql="SELECT * FROM $table WHERE $WHERE";
 
 			$this->phpgw_db->query($sql,__LINE__,__FILE__);
