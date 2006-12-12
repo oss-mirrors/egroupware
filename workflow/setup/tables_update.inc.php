@@ -373,6 +373,14 @@
         }
 
 	$test[] = '1.2.01.006';
+		function workflow_upgrade1_2_01_006()
+		{
+			#updating the current version
+			$GLOBALS['setup_info']['workflow']['currentver'] = '1.2.01.007';
+			return $GLOBALS['setup_info']['workflow']['currentver'];
+		}
+		
+	$test[] = '1.2.01.007';
         function workflow_upgrade1_3_00_000()
         {
                 #updating the current version

@@ -2,16 +2,19 @@ The second digit is pair (0,2,...) when the version is considered stable
 have a look at the roadmap and other info in the workflow wiki: http://egroupware.org/egroupware/wiki/index.php?page=Work-flow+engine
 mbartz is Michael Bartz
 alpeb is Alejandro Pedraza
-regis_glc is Regis Leroy
+regis_glc or regis_leroy is Regis Leroy <regis.leroy@makina-corpus.org> and is actual maintainer for egroupware's galaxia version
 
 [1.3.00.000] unstable development version ** WARNING USE IT FOR TEST PURPOSE ONLY **
 	* start xajax support in the workflow
 	* use processes.css to decorate process names in all listings
 	* integrate patch 1497085 new method gui_list_instance_by_owner by Mauricio Luiz Viani, integration with gui_list_user_instance
 	* patch 1533381 - Mauricio Luiz Viani- missing $ in GUI/gui_list_instances_by_owner and missing space in gui_list_user_instances
-	* patch 1532608 - Sidnei Drovetto drovetto@users.sourceforge.net - missing database synchro on instance nextUser property
 
-[1.2.01.006] bugfixes release ** LATEST STABLE RELEASE **
+[1.2.01.007] bugfixes release ** LATEST STABLE RELEASE **
+	* fix bad synchro on Instance fields, especially on automatic and start activities (regis_leroy)
+	* pieces of patch 1532608 - Sidnei Drovetto drovetto@users.sourceforge.net - missing database synchro on instance nextUser property
+
+[1.2.01.006] bugfixes release
         * fix error on InstanceManager->get_instance thanks to Gareth Walter <Gareth@irrational.com.au>
 	* fix SQL error on InstanceManager->get_instance_activities thanks to Gareth Walter <Gareth@irrational.com.au>
 	* fix wrong file existence check on ProcessManager->_create_directory_structure thanks to joseph.cachico@orange.fr

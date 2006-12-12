@@ -1,5 +1,5 @@
 <?php
-require_once (GALAXIA_LIBRARY.SEP.'src'.SEP.'common'.SEP.'Base.php');
+require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'common' . SEP . 'Base.php');
 require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'common' . SEP . 'WfSecurity.php');
 require_once(GALAXIA_LIBRARY . SEP . 'src' . SEP . 'ProcessManager' . SEP . 'ActivityManager.php');
 
@@ -48,7 +48,7 @@ class Instance extends Base {
   /*!
   * Method used to load an instance data from the database.
   * This function will load/initialize members of the instance object from the database
-  * it will populatae all members and will by default populate the related activities array
+  * it will populate all members and will by default populate the related activities array
   * and the workitems (history) array.
   * @param $instanceId
   * @param $load_activities true by default, do we need to reload activities from the database?
@@ -150,6 +150,7 @@ class Instance extends Base {
           $vararray[] = $changed;
           $actual = $changed;
         }
+	//seems to be not working
         unset ($changed);
       }
     }
@@ -219,22 +220,31 @@ class Instance extends Base {
       $init_name = $this->name;
       $init_category = $this->category;
       // we re-read instance members to detect conflicts, changes made while we were unsynchronised
-      $this->getInstance($this->instance_id, false, false);
+		// TODO: there is instanceID and instance_id, all around that's bad!!!
+      $this->getInstance($this->instanceId, false, false);
+	  
       // Now for each modified field we'll change the database value if nobody has changed
       // the database value before us
       $bindvars = Array();
       $querysets = Array();
       $queryset = '';
       $this->_synchronize_member($this->changed['status'],$init_status,$this->status,tra('status'),'wf_status',$querysets,$bindvars);
+	  unset ($this->changed['status']);
       $this->_synchronize_member($this->changed['priority'],$init_priority,$this->priority,tra('priority'),'wf_priority',$querysets,$bindvars);
+	  unset ($this->changed['priority']);
       $this->_synchronize_member($this->changed['owner'],$init_owner,$this->owner,tra('owner'),'wf_owner',$querysets,$bindvars);
+	  unset ($this->changed['owner']);
       $this->_synchronize_member($this->changed['started'],$init_started,$this->started,tra('started'),'wf_started',$querysets,$bindvars);
+	  unset ($this->changed['started']);
       $this->_synchronize_member($this->changed['ended'],$init_ended,$this->ended,tra('ended'),'wf_ended',$querysets,$bindvars);
+	  unset ($this->changed['ended']);
       $this->_synchronize_member($this->changed['name'],$init_name,$this->name,tra('name'),'wf_name',$querysets,$bindvars);
+	  unset ($this->changed['name']);
       $this->_synchronize_member($this->changed['category'],$init_category,$this->category,tra('category'),'wf_category',$querysets,$bindvars);
       $this->_synchronize_member($this->changed['properties'],$init_properties,$this->properties,tra('property'),'wf_properties',$querysets,$bindvars);
       $this->_synchronize_member($this->changed['nextActivity'],$init_nextActivity,$this->nextActivity,tra('next activity'),'wf_next_activity',$querysets,$bindvars);
       $this->_synchronize_member($this->changed['nextUser'],$init_nextUser,$this->nextUser,tra('next user'),'wf_next_user',$querysets,$bindvars);
+	  unset ($this->changed['nextUser']);
 
       if (!(empty($querysets)))
       {
@@ -327,26 +337,29 @@ class Instance extends Base {
     $this->pId = $pid;
     $this->setStatus('active');
     $this->setNextUser('');
+	//we pass extra args to started and owner to ignore synchro as we'll insert them just here
     $now = date("U");
-    $this->setStarted($now);
-    $this->setOwner($user);
+	$this->setStarted($now, true);
+	$this->setOwner($user, true);
     
-    $query = 'insert into '.GALAXIA_TABLE_PREFIX.'instances
-      (wf_started,wf_ended,wf_status,wf_p_id,wf_owner,wf_properties) 
-      values(?,?,?,?,?,?)';
-    $this->query($query,array($now,0,'active',$pid,$user,$this->security_cleanup(Array(),false)));
+    //we insert started and owner here and we used them to detect instanceId, this could disturb synchro
+	$query = 'insert into '.GALAXIA_TABLE_PREFIX.'instances
+	  (wf_started,wf_ended,wf_p_id,wf_owner,wf_properties)
+      values(?,?,?,?,?)';
+	$this->query($query,array($now,0,$pid,$user,$this->security_cleanup(Array(),false)));
     $this->instanceId = $this->getOne('select max(wf_instance_id) from '.GALAXIA_TABLE_PREFIX.'instances 
                       where wf_started=? and wf_owner=?',array((int)$now,$user));
     $iid=$this->instanceId;
     
-    // Then add in ".GALAXIA_TABLE_PREFIX."instance_activities an entry for the
+    // Then add in instance_activities an entry for the
     // activity the user and status running and started now
     $query = 'insert into '.GALAXIA_TABLE_PREFIX.'instance_activities (wf_instance_id,wf_activity_id,wf_user,
             wf_started,wf_status) values(?,?,?,?,?)';
     $this->query($query,array((int)$iid,(int)$activityId,$user,(int)$now,'running'));
     
     //update database with other datas stored in the object
-    return $this->sync();
+	//echo "<br/> syncing  in _createNewInstance";
+	return $this->sync();
   }
   
   /*!
@@ -579,16 +592,25 @@ class Instance extends Base {
   /*! 
   * Sets the instance creator user. 
   * @param $user is the new owner id, musn't be false, 0 or empty
+  * @param $ignore_unsynch is false by default, used to set owner with a user already set in database, do not use it unless
+  * you know very well what you're doing
   * @return true if the change was done
   */
-  function setOwner($user) 
+  function setOwner($user,$ignore_unsynch=false) 
   {
     if (empty($user))
     { 
-      return false;
+		return false;
     }
-    $this->changed['owner'] = $user;
-    $this->unsynch = true;
+	if ($ignore_unsynch)
+	{
+		$this->owner=$user;
+	}
+	else
+	{
+		$this->changed['owner'] = $user;
+		$this->unsynch = true;
+	}
     return true;
   }
   
@@ -742,13 +764,24 @@ class Instance extends Base {
   }
 
   /*!
-  Sets the time where the instance was started.    
+  * Sets the time where the instance was started.    
+  * @param $time is the started time
+  * @param $ignore_unsynch is false by default, used to set started with a time already set in database, do not use it unless
+  * you know very well what you're doing
+  * @returns true if everything is well done
   */
-  function setStarted($time) 
+  function setStarted($time,$ignore_unsynch=false)
   {
-    $this->changed['started'] = $time;
-    $this->unsynch = true;
-    return true;
+		 if ($ignore_unsynch)
+		 {
+				$this->started=$time;
+		 }
+		 else
+		 {
+				 $this->changed['started'] = $time;
+				 $this->unsynch = true;
+		 }
+		 return true;
   }
   
   /*!
@@ -923,7 +956,8 @@ class Instance extends Base {
     }
 
     //now we synchronise instance with the database
-    if (!($this->sync())) return false;
+		//echo "<br/> syncing  in _internalComplete";
+	if (!($this->sync())) return false;
     
     //Add a workitem to the instance 
     if ($addworkitem)
@@ -1105,9 +1139,10 @@ class Instance extends Base {
     //Set the status for the instance-activity to aborted
 
     // terminate the instance with status 'aborted'
-    if (!($this->terminate($now,'aborted'))) return false;
+	if (!($this->terminate($now,'aborted'))) return false;
 
     //now we synchronise instance with the database
+		//echo "<br/> syncing  in abort";
     if (!($this->sync())) return false;
     
     //Add a workitem to the instance 
@@ -1138,7 +1173,8 @@ class Instance extends Base {
     if (!($this->setStatus($status))) return false;
     $query = "delete from `".GALAXIA_TABLE_PREFIX."instance_activities` where `wf_instance_id`=?";
     $this->query($query,array((int)$this->instanceId));
-    return $this->sync();
+		//echo "<br/> syncing  in terminate";
+	return $this->sync();
   }
   
   
@@ -1305,7 +1341,8 @@ class Instance extends Base {
     if ($isInteractive=='n') 
     {
       //first we sync actual instance because the next activity could need it
-      if (!($this->sync()))
+      	//echo "<br/> syncing  in sendTo 1";
+	  if (!($this->sync()))
       {
         $returned_data['activity']['failure'] = true;
         return $returned_data;
@@ -1316,6 +1353,7 @@ class Instance extends Base {
     else
     {
       // we sync actual instance
+	  	//echo "<br/> syncing  in sendTo 2";
       if (!($this->sync()))
       {
         $returned_data['failure'] = true;
@@ -1338,6 +1376,7 @@ class Instance extends Base {
   {
     $returned_data = Array();
     // Now execute the code for the activity (function defined in galaxia's config.php)
+		// echo "<br />execute automatic activity";
     $returned_data =& galaxia_execute_activity($activityId, $iid , 1);
 
     //we should have some info in $returned_data now. if it is false there's a problem
@@ -1368,8 +1407,10 @@ class Instance extends Base {
       
     }
     // Reload in case the activity did some change, last sync was done just before calling this function
-    //TODO: check if this sync is really needed
-    $this->getInstance($this->instanceId, false, false);
+    // regis: need a sync here, not just a reload from database
+		//echo "<br/> syncing  in ExecuteAutomaticActivity";
+	$this->unsynch=true; //we force unsynch state as this will force sync() to reload data
+	$this->sync();
 
     //complete the automatic activity----------------------------
     if ($this->Complete($activityId))
