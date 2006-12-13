@@ -35,17 +35,18 @@
 
    $plg = CreateObject('jinn.factory_plugins_db_fields');
    $plg_obj_ev = CreateObject('jinn.factory_plugins_object_events');
-
+   
+   $setup_info['jinn']['extra_untranslated']='';
    if(@count($plg->registry->plugins))
    {
-	  $setup_info['jinn']['extra_untranslated'].= '<table border="0" style="width:550px" cellspacing="2"><tr><td valign="top" colspan="5" style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold;font-size:14px;">'.lang('Registered field plugins').'</td></tr>';
-		 $setup_info['jinn']['extra_untranslated'].= '<tr><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Name').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Version').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Author').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Descrition').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Available for field types').'</td></tr>';
+	     $setup_info['jinn']['extra_untranslated'] .= '<table border="0" style="width:550px" cellspacing="2"><tr><td valign="top" colspan="5" style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold;font-size:14px;">'.lang('Registered field plugins').'</td></tr>';
+		 $setup_info['jinn']['extra_untranslated'] .= '<tr><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Name').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Version').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Author').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Descrition').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Available for field types').'</td></tr>';
 
 		 foreach($plg->registry->plugins as $plugin)
 		 {
-			if(@count($plugin[db_field_hooks])) $fieldtypes=implode('<br/>',$plugin[db_field_hooks]);
+			if(@count($plugin[db_field_hooks])) $fieldtypes=implode('<br/>',$plugin['db_field_hooks']);
 
-			$setup_info['jinn']['extra_untranslated'].= '<tr><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[title].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[version].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[author].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.($plugin[description]?lang($plugin[description]):'').'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$fieldtypes.'</td></tr>';
+			$setup_info['jinn']['extra_untranslated'].= '<tr><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin['title'].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin['version'].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin['author'].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.($plugin['description']?lang($plugin['description']):'').'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$fieldtypes.'</td></tr>';
 		 }
 
 		 $setup_info['jinn']['extra_untranslated'].= '</table><br/>';
@@ -53,14 +54,14 @@
 
    if(@count($plg_obj_ev->object_events_plugins))
    {
-	  $setup_info['jinn']['extra_untranslated'].= '<table border="0" style="width:550px" cellspacing="2"><tr><td valign="top" colspan="5" style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold;font-size:14px;">'.lang('Registered object event plugins').'</td></tr>';
-		 $setup_info['jinn']['extra_untranslated'].= '<tr><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Name').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Version').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Author').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Descrition').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Available for events').'</td></tr>';
+	     $setup_info['jinn']['extra_untranslated'] .= '<table border="0" style="width:550px" cellspacing="2"><tr><td valign="top" colspan="5" style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold;font-size:14px;">'.lang('Registered object event plugins').'</td></tr>';
+		 $setup_info['jinn']['extra_untranslated'] .= '<tr><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Name').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Version').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Author').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Descrition').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Available for events').'</td></tr>';
 
 		 foreach($plg_obj_ev->object_events_plugins as $plugin)
 		 {
-			if(@count($plugin[event_hooks])) $fieldtypes=implode('<br/>',$plugin[event_hooks]);
+			if(@count($plugin[event_hooks])) $fieldtypes=implode('<br/>',$plugin['event_hooks']);
 
-			$setup_info['jinn']['extra_untranslated'].= '<tr><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[title].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[version].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[author].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.($plugin[description]?lang($plugin[description]):'').'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$fieldtypes.'</td></tr>';
+			$setup_info['jinn']['extra_untranslated'].= '<tr><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin['title'].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin['version'].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin['author'].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.($plugin['description']?lang($plugin['description']):'').'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$fieldtypes.'</td></tr>';
 		 }
 
 		 $setup_info['jinn']['extra_untranslated'].= '</table>';

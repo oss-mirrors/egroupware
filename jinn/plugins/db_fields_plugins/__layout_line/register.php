@@ -40,7 +40,7 @@
 		 'name' => 'color',
 		 'label' => lang('Line Color'),
 		 'type' => 'text',
-		 'select_arr' => $num_images
+		 'select_arr' => @$num_images
 	  ),
 	  'shadow' => array(
 		 'name' => 'shadow',
