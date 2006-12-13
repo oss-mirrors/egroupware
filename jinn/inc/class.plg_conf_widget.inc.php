@@ -60,29 +60,19 @@
 		 {
 			unset($this->set_val);
 		 }
-		 #_debug_array($_POST);
 
 		 if($this->set_val == '' and !$this->set_val)
 		 {
-/*			if($xxx_POST[submitted])
+			if(is_array($fld_plug_conf_arr))
 			{
-			   if(isset($_POST[$cval[fname]]))
+			   if ($fld_plug_conf_arr['conf'][$temp])
 			   {
-				  $this->set_val=$_POST[$cval[fname]];
+				  $this->set_val=$fld_plug_conf_arr['conf'][$cval['name']];
 			   }
 			   else
 			   {
-				  $this->set_val=$_POST[$cval[name]];
+				  $this->set_val=$cval['def_val'];
 			   }
-			}
-			*/
-			if ($fld_plug_conf_arr[conf][$cval[name]])
-			{
-			   $this->set_val=$fld_plug_conf_arr[conf][$cval[name]];
-			}
-			else
-			{
-			   $this->set_val=$cval[def_val];
 			}
 		 }
 	    $this->tplsav2->assign('set_val',$this->set_val);
@@ -108,7 +98,6 @@
 	  {
 		 $cval = $this->tplsav2->cval;
 		 $set_val = $this->set_val;
-		 #die();
 		 if(is_array($set_val))
 		 {
 			$nr=1;
