@@ -655,9 +655,9 @@
 			   // FIXME implement m2m relations for o2o related objects
 			   foreach($o2o_data as $o2o_entry)
 			   {
-				  $where= "{$o2o_entry[data][0][name]}={$o2o_entry[data][0][value]}";
+				  $where= "{$o2o_entry['data'][0]['name']}={$o2o_entry['data'][0]['value']}";
 
-				  $status=$this->so->update_object_record($this->session['site_id'], $o2o_entry[meta][O2OT], $o2o_entry[data], '','',$where,true);	   
+				  $status=$this->so->update_object_record($this->session['site_id'], $o2o_entry['meta']['O2OT'], $o2o_entry['data'], '','',$where,true);	   
 			   }
 			}
 			return $status;

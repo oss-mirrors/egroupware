@@ -34,7 +34,7 @@
 
 	  var $db_ftypes;
 
-	  var $debug_sql=false;
+//	  var $debug_sql=true;
 
 	  function sojinn()
 	  {
@@ -95,6 +95,7 @@
 	  * @access private
 	  * @return void
 	  * @todo set database debugging level
+	  * @todo rename to site init
 	  */
 	  function site_db_connection($site_id)
 	  {
@@ -118,7 +119,7 @@
 		 if(!$this->debug_sql)
 		 {
 			$this->site_db->Debug	= False;
-			$this->site_db->Halt_On_Error='no';
+			//$this->site_db->Halt_On_Error='no';
 		 }
 	  }
 
@@ -144,7 +145,6 @@
 	  function site_tables_names($site_id,$easy_arr=false)
 	  {
 		 $this->site_db_connection($site_id);
-
 		 $tables=$this->site_db->table_names();
 
 		 if($easy_arr)
@@ -978,6 +978,7 @@
 			  $maxorder++;
 			  $sql4="UPDATE egw_jinn_obj_fields SET form_listing_order=$maxorder WHERE field_parent_object='$obj_id' AND field_name='$field_name'";
 			  $this->phpgw_db->free();	
+			  //FIXME REPLACE WITH EGWDB
 			  $this->phpgw_db->query("$sql4",__LINE__,__FILE__);
 		   }
 		 }
@@ -1004,11 +1005,13 @@
 		 $sql7="UPDATE egw_jinn_obj_fields SET form_listing_order = $myorder 
 		 WHERE field_parent_object='$obj_id' AND field_name = '$swaprecord'";
 		 $this->phpgw_db->free();	
+		 //FIXME REPLACE WITH EGWDB
 		 $this->phpgw_db->query("$sql7",__LINE__,__FILE__);
 	   
 		 //increase or decrease our form_listing_order
 		 $sql8="UPDATE egw_jinn_obj_fields SET form_listing_order = $neworder  WHERE field_parent_object='$obj_id' AND field_name='$movefield_name'"; 
 		 $this->phpgw_db->free();	
+		 //FIXME REPLACE WITH EGWDB
 		 $this->phpgw_db->query("$sql8",__LINE__,__FILE__);
 			 
 		 // pooh....
@@ -1378,7 +1381,6 @@
 		 return $rows;
 	  }
 
-
 	  function delete_object_data($site_id,$table,$where_key,$where_value,$where_string='')
 	  {
 		 $this->site_db_connection($site_id);
@@ -1444,6 +1446,7 @@
 
 		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 
+		 //FIXME REPLACE WITH EGWDB
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$value[status]=1;
@@ -1552,21 +1555,21 @@
 			unset($akey_arr);
 		 }
 
+		 $new_data=$this->oldData2newData($data);
+		 $table_def=$this->table2definition( $table ,&$this->site_db);
 
-		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-
-		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
+		 if ($this->site_db->insert($table,$new_data,'',__LINE__,__FILE__,False,false,$table_def))
 		 {
-			$status[status]=1; // for backwards compatibility
-			$status[ret_code]=0;
+			$status['status']=1; // for backwards compatibility
+			$status['ret_code']=0;
 
-			$status[id]=$this->site_db->get_last_insert_id($table, $autokey);
+			$status['id']=$this->site_db->get_last_insert_id($table, $autokey);
 
 			if($autokey) 
 			{
-			   $where_string= $autokey.'=\''.$status[id].'\'';
-			   $status[autokey]=$autokey;
-			   $status[autoval]=$status[id];
+			   $where_string= $autokey.'=\''.$status['id'].'\'';
+			   $status['autokey']=$autokey;
+			   $status['autoval']=$status['id'];
 			}
 			elseif(is_array($pkey_arr))
 			{
@@ -1577,14 +1580,14 @@
 			   }
 			}
 
-			$status[where_string]=$where_string;
+			$status['where_string']=$where_string;
 		 }
 		 else
 		 {
-			$status[error]=true;
+			$status['error']=true;
 		 }
 
-		 $status[sql]=$SQL;
+		 $status['sql']=$SQL;
 		 return $status;
 
 
@@ -1623,6 +1626,7 @@
 		 $uid = $this->generate_unique_id();
 
 		 $SQL = "UPDATE egw_jinn_objects SET unique_id = '$uid' WHERE object_id = '$object_id'";
+		 //FIXME REPLACE WITH EGWDB
 		 $result = $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 		 if($result)
@@ -1670,6 +1674,7 @@
 			   $fields_sql.="{$field['name']} INT NOT NULL";
 			}
 
+			//FIXME REPLACE WITH EGWDB
 			$sql="CREATE TABLE $table_name ( $fields_sql ) TYPE = MYISAM ;";
 
 			$this->site_db->query($sql,__LINE__,__FILE__);
@@ -1695,53 +1700,30 @@
 	  {
 		 $this->site_db_connection($site_id);
 
-		 $s_bt=$this->backtick();
-
 		 $metadata=$this->site_table_metadata($site_id,$table,true);
 
 		 foreach($data as $field)
 		 {
-			$jinn_field_type=$this->db_ftypes->complete_resolve($metadata[$field[name]]);
-
-			/* use '' in SQL yes/no */	
-			if($jinn_field_type=='int' || $jinn_field_type=='auto')
+			// check for primaries and create array 
+			if (eregi("auto_increment", $metadata[$field['name']]['flags']))
 			{
-			   $fortick='';//FIXME this is the same as doing nothing!!!
+			   $autowhere=$field['name'].'=\''.$field['value'].'\'';
+			   $autokey=$field['name'];
+			   $autoval=$field['value'];
 			}
-			/* put here all sql-functions
-			NOW() for time, date, timestamp and datestamp
-			PASSWORD for string
-			etc....
-			*/
-			elseif( ($jinn_field_type=='timestamp' || $jinn_field_type=='date') && $field[value]=='Now()')
-			{
-			   $fortick='';//FIXME this is the same as doing nothing!!!
-			}
-			else
-			{
-			   $fortick='\'';
-			}
-
-			/* check for primaries and create array */
-			if (eregi("auto_increment", $metadata[$field[name]][flags]))
-			{
-			   $autowhere=$field[name].'=\''.$field[value].'\'';
-			   $autokey=$field[name];
-			   $autoval=$field[value];
-			}
-			elseif($this->db_ftypes->complete_resolve($metadata[$field[name]])=='int')
+			elseif($this->db_ftypes->complete_resolve($metadata[$field['name']])=='int')
 			{
 			   //what to do with empty value
-			   if(!trim($field[value]))
+			   if(!trim($field['value']))
 			   {
-				  /* if there is a default value set it to this value */
-				  if($this->db_ftypes->has_default($metadata[$field[name]]))
+				  // if there is a default value set it to this value 
+				  if($this->db_ftypes->has_default($metadata[$field['name']]))
 				  {
-					 $field[value]=$this->db_ftypes->get_default($metadata[$field[name]]);
+					 $field['value']=$this->db_ftypes->get_default($metadata[$field['name']]);
 				  }
-				  elseif($this->db_ftypes->nullable($metadata[$field[name]]))
+				  elseif($this->db_ftypes->nullable($metadata[$field['name']]))
 				  {
-					 $field[value]='null';
+					 $field['value']='null';
 				  }
 				  else
 				  {
@@ -1749,25 +1731,22 @@
 				  }
 			   }
 
-			   if($field[value]!='null' && !is_numeric($field[value]))
+			   if($field['value']!='null' && !is_numeric($field['value']))
 			   {
 				  //fixme add error
 				  continue;
 			   }
 			}
-			elseif (!$autowhere && eregi("primary_key", $metadata[$field[name]][flags]) && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
+			elseif (!$autowhere && eregi("primary_key", $metadata[$field['name']]['flags']) && $metadata[$field['name']]['type']!='blob') // FIXME howto select long blobs
 			{						
-			   $pkey_arr[]=$field[name];
+			   $pkey_arr[]=$field['name'];
 			}
-			elseif(!$autowhere && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
+			elseif(!$autowhere && $metadata[$field['name']]['type']!='blob') // FIXME howto select long blobs
 			{
-			   $akey_arr[]=$field[name];
+			   $akey_arr[]=$field['name'];
 			}
 
-			$aval[$field[name]]=substr($field[value],0,$metadata[$field[name]][len]);
-
-			if ($SQL_SUB) $SQL_SUB .= ', ';
-			$SQL_SUB .= "{$s_bt}$field[name]{$s_bt}={$fortick}".$this->strip_magic_quotes_gpc($field[value])."{$fortick}";
+			$aval[$field['name']]=substr($field['value'],0,$metadata[$field['name']]['len']);
 		 }
 
 		 if(!is_array($pkey_arr))
@@ -1778,13 +1757,10 @@
 
 		 if($curr_where_string)
 		 {
-			//$SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $curr_where_string ." LIMIT 1";
 			$WHERE =  $curr_where_string;
 		 }
 		 else
 		 {
-			//$SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . 
-			//$this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_key))."='".$this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_value))."'";
 			$WHERE = $this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_key))."='".$this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_value))."'";
 		 }
 
@@ -1800,18 +1776,19 @@
 			}
 		 }
 
-		 $SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $curr_where_string ." LIMIT 1";
-
-		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
+		 $new_data=$this->oldData2newData($data);
+		 $table_def=$this->table2definition( $table , $this->site_db);
+ 
+		 if($this->site_db->update($table,$new_data,$WHERE,__LINE__,__FILE__,False,false,$table_def))
 		 {
-			$value[ret_code]=0;
-			$value[status]=1;
+			$value['ret_code']=0;
+			$value['status']=1;
 
 			if($autowhere) 
 			{
 			   $where_string= $autowhere;
-			   $value[autokey]=$autokey;
-			   $value[autoval]=$autoval;
+			   $value['autokey']=$autokey;
+			   $value['autoval']=$autoval;
 			}
 			elseif(is_array($pkey_arr))
 			{
@@ -1822,14 +1799,14 @@
 			   }
 			}
 
-			$value[where_string]=$where_string;
+			$value['where_string']=$where_string;
 		 }
 		 else
 		 {
-			$value[error]=true;
+			$value['error']=true;
 		 }
 
-		 $value[sql]=$SQL;
+		 $value['sql']=$SQL;
 		 return $value;
 	  }
 
@@ -1878,6 +1855,7 @@
 			   foreach($related_data as $option)
 			   {
 				  $SQL="INSERT INTO {$rel_info[connect_table]} ({$rel_info[connect_key_local]},{$rel_info[connect_key_foreign]}) VALUES ('$data[FLDXXXid]', '$option')";
+				  //FIXME REPLACE WITH EGWDB
 				  if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 				  {
 					 $status=False;
@@ -1910,6 +1888,7 @@
 			foreach($related_data as $option)
 			{
 			   $SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDXXXid]', '$option')";
+			   //FIXME REPLACE WITH EGWDB
 			   if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 			   {
 				  $status=False;
@@ -2075,6 +2054,7 @@
 
 
 		 $SQL='INSERT INTO egw_jinn_sites (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 //FIXME REPLACE WITH EGWDB
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status[ret_code]=0;
@@ -2148,6 +2128,7 @@
 		 {
 			$SQL='INSERT INTO egw_jinn_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 
+			//FIXME REPLACE WITH EGWDB
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
 			   $status[where_value]=$uniqid;
@@ -2213,6 +2194,7 @@
 		 }
 
 		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 //FIXME REPLACE WITH EGWDB
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status=$this->phpgw_db->get_last_insert_id($table,$last_insert_id_col);
@@ -2241,41 +2223,20 @@
 			return $this->insert_new_object($data);
 		 }
 
-/*		 $meta=$this->phpgw_table_metadata($table,true);
-
-		 foreach($data as $field)
-		 {
-			if($meta[$field['name']]['auto_increment'] || eregi('seq_'.$table,$meta[$field['name']]['default'])) 
-			{
-			   $last_insert_id_col=$field['name'];
-			   continue;
-			}
-
-			if ($SQLfields) $SQLfields .= ',';
-			if ($SQLvalues) $SQLvalues .= ',';
-
-			$SQLfields .= $field[name];
-			$SQLvalues .= "'".$field[value]."'";
-		 }
-*/
 		 $new_data=$this->oldData2newData($data);
 		 $table_def=$this->table2definition( $table );
-//		 $this->phpgw_db->Debug=true;
-		 $this->phpgw_db->insert($table,$new_data,'',__LINE__,__FILE__,False,false,$table_def);
-		 //die();
 
-/*		 $sql='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-		 if ($this->phpgw_db->query($sql,__LINE__,__FILE__))
+		 if ($this->phpgw_db->insert($table,$new_data,'',__LINE__,__FILE__,False,false,$table_def))
 		 {
-			$status[newid]=$this->phpgw_db->get_last_insert_id($table,$last_insert_id_col);
+			$status['newid']=$this->phpgw_db->get_last_insert_id($table,$last_insert_id_col);
 		 }
 		 else
 		 {
-			$status[error]=true;	
+			$status['error']=true;	
 		 }
 		 
-		 $status[sql]=$sql;	
-*/
+		 $status['sql']=$sql;	
+
 
 		 return $status;
 	  }
@@ -2300,6 +2261,7 @@
 		 }
 
 		 $SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
+		 //FIXME REPLACE WITH EGWDB
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status=1;
@@ -2322,22 +2284,6 @@
 	  */
 	  function update_phpgw_data($table,$data,$where_key,$where_value,$where_string='',$try_insert=false)
 	  {
-//		 $meta=$this->phpgw_table_metadata($table,true);
-
-/*		 foreach($data as $field)
-		 {
-			if($field[value]=='0')
-			{}
-			elseif($field[value]=='' && eregi('int',$meta[$field['name']]['type'])) 
-			{
-			   $field[value]="null";
-			}
-			else $field[value]="'$field[value]'";
-
-			if ($SQL_SUB) $SQL_SUB .= ', ';
-			$SQL_SUB .= "$field[name]=$field[value]";
-		 }
-*/
 		 if($where_string)
 		 {
 			$WHERE = $this->strip_magic_quotes_gpc($where_string);
@@ -2349,7 +2295,6 @@
 
 		 if($try_insert)
 		 {
-			//$this->phpgw_db->select($table,'*',$WHERE,__LINE__,__FILE__)
 			$sql="SELECT * FROM $table WHERE $WHERE";
 
 			$this->phpgw_db->query($sql,__LINE__,__FILE__);
@@ -2359,22 +2304,14 @@
 			}
 		 }
 		 
-		 //_debug_array($data);
 		 $new_data=$this->oldData2newData($data);
 		 $table_def=$this->table2definition( $table );
-		 //$this->phpgw_db->Debug=true;
-		 $this->phpgw_db->update($table,$new_data,$WHERE,__LINE__,__FILE__,False,false,$table_def);
-		 //$this->phpgw_db->Debug=false;
-		 //die();
 
-		 //update
-		 //$sql = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $WHERE;
-		 //die($sql);
-		  
-		 /*if (!$this->phpgw_db->query($sql,__LINE__,__FILE__))
+		 if (!$this->phpgw_db->update($table,$new_data,$WHERE,__LINE__,__FILE__,False,false,$table_def))
+		 if (!$this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
-			$status[error]=true;
-		 }*/
+			$status['error']=true;
+		 }
 		 //$status[sql]=$sql;	 
 		 $status['where_value']=$where_value;	 
 
@@ -2392,8 +2329,8 @@
 	  */
 	  function table2definition($table_name,$db_obj=false)
 	  {
-		 //echo $db_obj->Type;
 		 $oProc =& CreateObject('phpgwapi.schema_proc',$db_obj->Type,$db_obj);
+
 		 if (method_exists($oProc,'GetTableDefinition'))
 		 {
 			$newdefinition = $oProc->GetTableDefinition($table_name);
@@ -2426,8 +2363,9 @@
 			$sql="INSERT INTO egw_jinn_obj_fields (field_parent_object,field_name,list_visibility,field_position) VALUES ('$object_ID', '$fieldname', '$show_default', '$position')";
 		 }
 
-		 $status[sql]=$sql;
+		 $status['sql']=$sql;
 
+		 //FIXME REPLACE WITH EGWDB
 		 if($this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
 			$status[ret_code]=0;
@@ -2486,6 +2424,7 @@
 	  {
 		 if(!$object_id) $object_id=-1;
 		 $sql="UPDATE egw_jinn_objects SET events_config='$conf_serialed' WHERE object_id='$object_id'";
+		 //FIXME REPLACE WITH EGWDB
 		 if(!$this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
 			$status[error]=true;
@@ -2512,6 +2451,7 @@
 		 }
 		 //die($sql);
 
+		 //FIXME REPLACE WITH EGWDB
 		 if($this->phpgw_db->query($sql,__LINE__,__FILE__))
 		 {
 			$status[ret_code]=0;
@@ -2539,6 +2479,7 @@
 			   foreach ($editors as $editor)
 			   {
 				  $SQL="INSERT INTO egw_jinn_acl (site_object_id, uid) VALUES ('$object_id','$editor')";
+				  //FIXME REPLACE WITH EGWDB
 				  if(!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 				  {
 					 $error++;
@@ -2575,6 +2516,7 @@
 			   foreach ($editors as $editor)
 			   {
 				  $SQL="INSERT INTO egw_jinn_acl (site_id, uid) VALUES ('$site_id','$editor')";
+				  //FIXME REPLACE WITH EGWDB
 				  if(!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 				  {
 					 $error++;
@@ -2610,6 +2552,7 @@
 		 $SQLvalues='\'\',\''.$name.'\',\''.$object_id.'\',\''.$header.'\',\''.$body.'\',\''.$footer.'\',\''.$html.'\',\''.$html_title.'\'';
 		 $SQL= 'INSERT INTO egw_jinn_report (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 
+		 //FIXME REPLACE WITH EGWDB
 		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			return 0;
@@ -2638,6 +2581,7 @@
 		 $SQL .=  '\',report_html = \''.$html;
 		 $SQL .=  '\',report_html_title = \''.$html_title;
 		 $SQL .=  '\' WHERE report_id ='.$report_id.' LIMIT 1';
+		 //FIXME REPLACE WITH EGWDB
 		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			return 0;
@@ -2699,7 +2643,6 @@
 			$report_arr[r_html_title]=($this->phpgw_db->f('report_html_title'));
 		 }
 		 return $report_arr;
-
 	  }
 	
 	  function increase_site_version($site_id)
@@ -2707,6 +2650,7 @@
 		 $data['site_version']='site_version+1';
 		 $where='site_id='.$site_id;
 		 $sql="UPDATE egw_jinn_sites SET site_version=site_version+1 WHERE site_id=$site_id";
+		 //FIXME REPLACE WITH EGWDB
 		 $status=$this->phpgw_db->query("$sql",__LINE__,__FILE__);
 
 		 return $status;
