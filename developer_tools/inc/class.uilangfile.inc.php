@@ -203,7 +203,6 @@
 				$this->template->set_var('lang_appname',lang('Application'));
 				$this->template->set_var('lang_message',lang('Message'));
 				$this->template->set_var('lang_original',lang('Original'));
-				$this->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 				$this->template->set_var('view_link',
 					$GLOBALS['egw']->link(
 						'/index.php',
@@ -217,7 +216,7 @@
 					$this->template->set_var('mess_id',$mess_id);
 					$this->template->set_var('source_content',$this->html->htmlspecialchars($data['content']));
 					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],"transapp[$mess_id]"));
-					$this->template->set_var('tr_color',$this->nextmatchs->alternate_row_color());
+					$this->template->set_var('tr_class',$this->nextmatchs->alternate_row_color('',true));
 					$this->template->pfp('out','detail');
 				}
 				$this->template->pfp('out','prefooter');
@@ -261,7 +260,7 @@
 			{
 				$this->download('target',$targetlang);
 			}
-
+			$GLOBALS['egw_info']['flags']['css'] .= ".untranslated { background-color: #dab0b0; }\n";
 			$GLOBALS['egw']->common->egw_header();
 			echo parse_navbar();
 
@@ -423,7 +422,6 @@
 				$this->template->set_var('lang_translation',lang('Translation'));
 				$this->template->set_var('lang_missingphrase',lang('Search new phrases'));
 				$this->template->set_var('lang_addphrase',lang('Add new phrase'));
-				$this->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
 				$this->template->set_var('sourcelang',$sourcelang);
 				$this->template->set_var('targetlang',$targetlang);
 				$this->template->pfp('out','postheader');
@@ -440,7 +438,7 @@
 					$this->template->set_var('source_content',$content);
 					$this->template->set_var('content',$transy);
 					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],"transapp[$mess_id]"));
-					$this->template->set_var('tr_color',empty($transy) ? $GLOBALS['egw_info']['theme']['bg06'] : $this->nextmatchs->alternate_row_color());
+					$this->template->set_var('tr_class',empty($transy) ? 'untranslated' : $this->nextmatchs->alternate_row_color('',true));
 					if (($len = max(strlen($key),strlen($content))) > 50)
 					{
 						$this->template->set_var('rows',min(intval($len/80+0.5),10));
@@ -589,9 +587,6 @@
 				$limit = $total;
 			}
 
-			$this->template->set_var('bg_color',$GLOBALS['egw_info']['theme']['bg_color']);
-			$this->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
-
 			$this->template->set_var('sort_title',$this->nextmatchs->show_sort_order($sort,'title','title','/index.php',lang('Title'),'&menuaction=developer_tools.uilangfile.index'));
 			$this->template->set_var('lang_showing',$this->nextmatchs->show_hits($total,$start));
 			$this->template->set_var('left',$this->nextmatchs->left('/index.php',$start,$total,'&menuaction=developer_tools.uilangfile.index'));
@@ -607,9 +602,8 @@
 			{
 				if($start <= $i && $i < $limit)
 				{
-					$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+					$this->template->set_var('tr_class',$this->nextmatchs->alternate_row_color('',true));
 
-					$this->template->set_var('tr_color',$tr_color);
 					$this->template->set_var('name',$data['title']);
 
 					$this->template->set_var('edit','<a href="' . $GLOBALS['egw']->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name=' . urlencode($data['name'])) . '"> ' . lang('Edit') . ' </a>');

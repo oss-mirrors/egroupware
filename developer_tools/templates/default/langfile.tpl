@@ -36,10 +36,10 @@
 <!-- BEGIN postheader -->
 <form method="post" action="{action_url}">
  <table width="90%" align="center">
-  <tr bgcolor="{th_bg}">
+  <tr class="th">
    <td colspan="5" align="center">{lang_application}:&nbsp;{app_title}</td>
   </tr>
-  <tr bgcolor="{th_bg}">
+  <tr class="th">
    <td align="left">{lang_remove}</td>
    <td align="left">{lang_appname}</td>
    <td align="left">{lang_original}</td>
@@ -48,7 +48,7 @@
 <!-- END postheader -->
 
 <!-- BEGIN detail -->
-  <tr bgcolor="{tr_color}">
+  <tr class="{tr_class}">
    <td align="center"><input type="checkbox" name="delete[{mess_id}]"></td>
    <td>{transapp}</td>
    <td>{source_content}</td>
@@ -57,7 +57,7 @@
 <!-- END detail -->
 
 <!-- BEGIN detail_long -->
-  <tr bgcolor="{tr_color}">
+  <tr class="{tr_class}">
    <td align="center"><input type="checkbox" name="delete[{mess_id}]"></td>
    <td>{transapp}</td>
    <td colspan="2">
