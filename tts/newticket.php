@@ -121,6 +121,8 @@
 
   $GLOBALS['phpgw']->template->set_var('form_action', $GLOBALS['phpgw']->link('/tts/newticket.php'));
 
+  $GLOBALS['phpgw']->template->set_var('datepopup_image', $GLOBALS['phpgw']->link('/phpgwapi/templates/default/images/datepopup.gif');
+
   $GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
   $GLOBALS['phpgw']->template->set_var('lang_group', lang('Group'));
   $GLOBALS['phpgw']->template->set_var('lang_subject', lang('Subject') );

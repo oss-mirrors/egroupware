@@ -10,6 +10,8 @@ admin options	common	nl	Beheeropties
 alert for critical prio setting	tts	nl	Je stelt de prioriteit in op kritiek. Overtuig jezelf ervan dat je weet wat dit betekent voor de ontvanger van deze melding en vergeet niet hem/haar onmiddellijk te bellen!
 alert for emergency prio setting	tts	nl	Je stelt de prioriteit in op noodgeval. Overtuig jezelf ervan dat je weet wat dit betekent voor de ontvanger van deze melding en vergeet niet hem/haar onmiddellijk te bellen!
 alert for high prio setting	tts	nl	Denk er s.v.p. aan de ontvanger van deze melding op te bellen!
+all categories used in TTS are global and will remain unchaned in Tracker	tts	nl	Alle categorieën die in TTS worden gebruikr, zijn global en blijvin in Tracker ongewijzigd
+all tickets are already converted to Tracker	tts	nl	Alle meldingen zijn al naar Tracker geconverteerd
 assign tickets	tts	nl	Toewijzen
 assign to	tts	nl	Toewijzen aan
 assigned from	tts	nl	Toegewezen door
@@ -30,6 +32,10 @@ closed	tts	nl	Gesloten
 completed	tts	nl	AFGESLOTEN
 configure the states	common	nl	Configureer de statussen
 configure the transitions	common	nl	Configureer de overgangen
+convert all closed tickets	tts	nl	Converteer alle gesloten meldingen
+convert all open tickets	tts	nl	Converteer alle openstaand meldingen
+convert tickets to tracker	tts	nl	Converteer meldingen naar Tracker
+converted count	tts	nl	Aantal geconverteerd
 create new state	tts	nl	Een nieuwe status creëren
 create new ticket	tts	nl	Een nieuwe melding creëren
 create new transition	tts	nl	Een nieuwe overgang creëren
@@ -111,8 +117,10 @@ resolved	tts	nl	OPGELOST
 returns a struct of a tickets history	tts	nl	Geeft een structuur van de meldinghistorie terug
 returns a struct of values of a single ticket	tts	nl	Geeft een stuctuur van waarden van een enkele melding terug
 returns the additional notes attached to a ticket	tts	nl	Geeft de extra notities van een melding terug
+select which categories should be used in Tracker for the TTS categories	tts	nl	Selecteer welke categorieën in Tracker gebruikt moeten worden voor de TTS categorieën.
 selected	tts	nl	geselecteerd
 show new/updated tickets on main screen	tts	nl	Nieuwe en gewijzigde meldingen op startscherm weergeven
+show tickets converted to Tracker in overviews	tts	nl	Overzichten tonen meldingen dit al naar Tracker zijn geconverteerd
 small view	tts	nl	kleine weergave
 source state	tts	nl	Bronstatus
 state	tts	nl	Status
@@ -143,12 +151,15 @@ the validation of the ticket was unsuccessfull. the ticket requires more work.	t
 this state means an open ticket	tts	nl	Bij deze status staat de melding open.
 ticket	tts	nl	melding
 ticket #	tts	nl	melding #
+ticket count	tts	nl	Aantal meldingen
 ticket has been updated	tts	nl	melding is bijgewerkt
+ticket is in tracker	tts	nl	Deze melding is al geconverteerd naar Tracker!
 ticket is not accessable	tts	nl	melding is niet toegankelijk
 ticket is not accessible	tts	nl	Deze melding is niet toegankelijk
 tickets found %1	tts	nl	Gevonden meldingen %1
+tickets have been converted	tts	nl	meldingen zijn geconverteerd
 tickets open %1	tts	nl	Geopende meldingen %1
-tickets total %1	tts	nl	Totaal meldingen $1
+tickets total %1	tts	nl	Totaal meldingen %1
 to go back to the tts index, click <a href= %1 >here</a>	tts	nl	Om terug te keren naar de inhoudsopgave van probleemmeldingen, klik <a href="%1">hier</a>
 toaccept	tts	nl	NAARACCEPTATIE
 toclosed	tts	nl	NAARSLUITEN

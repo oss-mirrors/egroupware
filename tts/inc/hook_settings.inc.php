@@ -52,6 +52,14 @@
 	);
 
 	$GLOBALS['settings'] = array(
+		'show_converted_tickets' => array(
+			'type'   => 'select',
+			'label'  => 'show tickets converted to Tracker in overviews',
+			'name'   => 'show_converted_tickets',
+			'values' => $yes_and_no,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
 		'mainscreen_show_new_updated' => array(
 			'type'   => 'select',
 			'label'  => 'show new/updated tickets on main screen',

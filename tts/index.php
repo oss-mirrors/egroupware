@@ -60,6 +60,8 @@
   // Append the filter to the search URL, so that the mode carries forward on a search
   $GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
+  $filtermethod = '';
+
   if ($filter == 'viewmyopen')
   {
     $filtermethod = "WHERE ticket_status='O' "
@@ -71,9 +73,9 @@
   if ($filter == 'viewopen') 
   {
     $filtermethod = "WHERE ticket_status='O'";
-    }
-    if ($filter == 'viewopen' || $filter =='viewmyopen' )
-    {
+  }
+  if ($filter == 'viewopen' || $filter =='viewmyopen' )
+  {
     if ($GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'])
     {
       $GLOBALS['phpgw']->template->set_var('autorefresh','<META HTTP-EQUIV="Refresh" CONTENT="'.$GLOBALS['phpgw_info']['user']['preferences']['tts']['refreshinterval'].'; URL='.$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)).'">');
@@ -112,6 +114,17 @@
   $db = clone($GLOBALS['phpgw']->db);
   $db2 = clone($GLOBALS['phpgw']->db);
 
+  if ($GLOBALS['phpgw_info']['user']['preferences']['common']['show_converted_tickets'] == 'N')
+  {
+    if ($filtermethod == '')
+    {
+      $filtermethod = "WHERE ticket_converted = 'N'";
+    }
+    else
+    {
+      $filtermethod .= " AND ticket_converted = 'N'";
+    }
+  }
   // we are _not_ limiting the number of results here, as we filter via ACL later on -- MSc
   $db->query("SELECT *, ticket_due FROM phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
 

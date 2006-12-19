@@ -10,6 +10,8 @@ admin options	common	en	Admin Options
 alert for critical prio setting	tts	en	You are setting the Priority to Critical; Make sure you know what this means to the recipient of the ticket, and dont forget to call him immediately!
 alert for emergency prio setting	tts	en	You are setting the Priority to Emergency; Make sure you know what this means to the recipient of the ticket, and dont forget to call him immediately!
 alert for high prio setting	tts	en	Please consider calling the recipient of this ticket!
+all categories used in TTS are global and will remain unchaned in Tracker	tts	en	All categories used in TTS are global and will remain unchaned in Tracker
+all tickets are already converted to Tracker	tts	en	All tickets are already converted to Tracker
 assign tickets	tts	en	Assign
 assign to	tts	en	Assign to
 assigned from	tts	en	Assigned from
@@ -30,6 +32,10 @@ closed	tts	en	Closed
 completed	tts	en	COMPLETED
 configure the states	common	en	Configure the states
 configure the transitions	common	en	Configure the transitions
+convert all closed tickets	tts	en	Convert all closed tickets
+convert all open tickets	tts	en	Convert all open tickets
+converted count	tts	en	Number converted
+convert tickets to tracker	tts	en	Convert tickets to Tracker
 create new state	tts	en	Create new state
 create new ticket	tts	en	Create new ticket
 create new transition	tts	en	Create new transition
@@ -111,8 +117,10 @@ resolved	tts	en	RESOLVED
 returns a struct of a tickets history	tts	en	Returns a struct of a tickets history
 returns a struct of values of a single ticket	tts	en	Returns a struct of values of a single ticket
 returns the additional notes attached to a ticket	tts	en	Returns the additional notes attached to a ticket
+select which categories should be used in Tracker for the TTS categories	tts	en	Select which categories should be used in Tracker for the TTS categories
 selected	tts	en	selected
 show new/updated tickets on main screen	tts	en	show new/updated tickets on main screen
+show tickets converted to Tracker in overviews	tts	en	Overviews contain tickets that where already converted to Tracker
 small view	tts	en	small view
 source state	tts	en	Source State
 state	tts	en	State
@@ -143,10 +151,13 @@ the validation of the ticket was unsuccessfull. the ticket requires more work.	t
 this state means an open ticket	tts	en	In this state the ticket is open.
 ticket	tts	en	Ticket
 ticket #	tts	en	Ticket #
+ticket count	tts	en	Number of tickets
 ticket has been updated	tts	en	Ticket has been updated
+ticket is in tracker	tts	en	This ticket is already converted to Tracker!
 ticket is not accessable	tts	en	ticket is not accessable
 ticket is not accessible	tts	en	This ticket is not accessible
 tickets found %1	tts	en	Tickets found %1
+tickets have been converted	tts	en	tickets have been converted
 tickets open %1	tts	en	Tickets open %1
 tickets total %1	tts	en	Tickets total %1
 to go back to the tts index, click <a href= %1 >here</a>	tts	en	To go back to the tts index, click <a href="%1">here</a>

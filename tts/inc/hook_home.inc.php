@@ -43,6 +43,14 @@
  */
 		$filtermethod="where ticket_status='O' and ((ticket_assignedto='".$GLOBALS['phpgw_info']['user']['account_id']."' OR ticket_assignedto=0)"
 				. "or (ticket_owner='".$GLOBALS['phpgw_info']['user']['account_id']."')) ";
+                /*
+                 * See if converted tickets should be listed
+                 */
+                if ($GLOBALS['phpgw_info']['user']['preferences']['common']['show_converted_tickets'] == 'N')
+                {
+                  $filtermethod .= " AND ticket_converted = 'N'";
+                }
+
 		$sortmethod = "ORDER BY ticket_priority ASC, CASE WHEN ticket_due IS NOT NULL THEN ticket_due ELSE '2100-01-01' END ASC, ticket_id ASC";
 
 		$GLOBALS['phpgw']->db->query('select ticket_id, ticket_category, ticket_priority,'.

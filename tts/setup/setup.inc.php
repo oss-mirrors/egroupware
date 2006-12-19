@@ -14,13 +14,13 @@
 /* Basic information about this app */
 $setup_info['tts']['name']      = 'tts';
 $setup_info['tts']['title']     = 'Trouble Ticket System';
-$setup_info['tts']['version']   = '1.2.009';
+$setup_info['tts']['version']   = '1.3.001';
 $setup_info['tts']['app_order'] = 10;
 $setup_info['tts']['enable']    = 1;
 
-$setup_info['tts']['author']     = 'Oscar van Eijk, Martin Schuster et al.';
+$setup_info['tts']['author']     = 'Drago Bokal, Joao, Oscar van Eijk et al.';
 $setup_info['tts']['license']    = 'GPL';
-$setup_info['tts']['maintainer'] = array('Martin Schuster','Martin.Schuster@centerpoint.eu.com');
+$setup_info['tts']['maintainer'] = array('Oscar van Eijk','oscar@oveas.com');
 
 /* The tables this app creates */
 $setup_info['tts']['tables']    = array('phpgw_tts_tickets','phpgw_tts_views','phpgw_tts_states','phpgw_tts_transitions');
@@ -35,6 +35,6 @@ $setup_info['tts']['hooks'][]   = 'sidebox_menu';
 /* Dependencies for this app to work */
 $setup_info['tts']['depends'][] = array(
 	 'appname' => 'phpgwapi',
-	 'versions' => Array('1.0.0','1.0.1','1.2','1.3')
+	 'versions' => Array('1.3','1.4')
 );
 

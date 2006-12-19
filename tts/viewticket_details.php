@@ -135,7 +135,7 @@
        exit ();
      }
  
-    $GLOBALS['phpgw']->template->set_var('image_location', EGW_IMAGES_DIR);
+    $GLOBALS['phpgw']->template->set_var('datepopup_image', $GLOBALS['phpgw']->link('/phpgwapi/templates/default/images/datepopup.gif'));
 
     // Have they viewed this ticket before ?
     $GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_views where view_id='$ticket_id' "
@@ -163,6 +163,7 @@
     $ticket['group']          = $GLOBALS['phpgw']->db->f('ticket_group');
     $ticket['state']          = $GLOBALS['phpgw']->db->f('ticket_state');
     $ticket['duedate']	      = substr($GLOBALS['phpgw']->db->f('ticket_due'), 0, 16);
+    $ticket['converted']      = $GLOBALS['phpgw']->db->f('ticket_converted');
 
     if (!$ticket['group']) $ticket['group'] = $GLOBALS['phpgw_info']['user']['account_primary_group'];
 
@@ -272,8 +273,17 @@
       $GLOBALS['phpgw']->template->set_var('value_date',$GLOBALS['phpgw']->common->show_date($value['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
       $GLOBALS['phpgw']->template->set_var('value_user',$value['owner']);
 
+      if ($ticket['converted'] == 'Y')
+      {
+        $GLOBALS['phpgw']->template->set_var('ticket_is_in_tracker',lang('ticket is in tracker'));
+      }
+      else
+      {
+        $GLOBALS['phpgw']->template->set_var('ticket_is_in_tracker','');
+      }
+
       /* Remove old HTML from the notes -- MSc 060131 */
-      $value['new_value'] = preg_replace('/<a href="[^"]+">([^<]+)<\/a>/', '$1', $value['new_value']);
+//      $value['new_value'] = preg_replace('/<a href="[^"]+">([^<]+)<\/a>/', '$1', $value['new_value']);
       $GLOBALS['phpgw']->template->set_var('value_note',html_activate_urls(nl2br(htmlspecialchars(stripslashes($value['new_value'])))));
       $GLOBALS['phpgw']->template->fp('rows_notes','additional_notes_row',True);
     }

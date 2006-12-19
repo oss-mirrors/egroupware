@@ -91,6 +91,11 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 		<td><b>{value_billable_hours_total}</b></td>
 	</tr>
 
+	<tr class="row_off">
+		<td colspan="4"><b><i>{ticket_is_in_tracker}</i></b></td>
+	</tr>
+
+
 	<tr>
 		<td colspan="4"><br />
 			<table width="100%" border="0" cellspacing="0" cellpading="0">
@@ -145,7 +150,7 @@ var tab = new Tabs(3,'activetab','inactivetab','tab','tabcontent','','','tabpage
 						<td><input name="ticket[duedate]" id="duedate" value="{value_duedate}" size="16" />
 						    <script type="text/javascript">
 						      document.writeln('<img id="duedate-trigger" '+
-							      'src="{image_location}/datepopup.gif" '+
+							      'src="{datepopup_image}" '+
 							      'title="Select date" style="cursor:pointer; cursor:hand;"/>');
 						      Calendar.setup( {
 							    inputField: "duedate",

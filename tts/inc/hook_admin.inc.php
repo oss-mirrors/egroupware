@@ -15,10 +15,11 @@
 
 	$values = array
 	(
-		'Admin options'     => $GLOBALS['phpgw']->link('/tts/admin.php'),
-		'Global Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=tts'),
-		'Configure the states'     	=> $GLOBALS['phpgw']->link('/tts/states.php'),
-		'Configure the transitions'   => $GLOBALS['phpgw']->link('/tts/transitions.php')
+		'Admin options'			=> $GLOBALS['phpgw']->link('/tts/admin.php'),
+		'Global Categories'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=tts'),
+		'Configure the states'		=> $GLOBALS['phpgw']->link('/tts/states.php'),
+		'Configure the transitions'	=> $GLOBALS['phpgw']->link('/tts/transitions.php'),
+		'convert tickets to tracker'	=> $GLOBALS['phpgw']->link('/tts/convert.php')
 	);
 
 	display_section('tts','Trouble Ticket System',$values);

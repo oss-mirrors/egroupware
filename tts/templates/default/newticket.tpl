@@ -42,7 +42,7 @@
 		    <input type="text" id="duedate" name="ticket_due" size="16" value="{value_duedate}" />
 		    <script type="text/javascript">
 		      document.writeln('<img id="duedate-trigger" '+
-			      'src="/egroupware/phpgwapi/templates/default/images/datepopup.gif" '+
+			      'src="{datepopup_image}" '+
 			      'title="Select date" style="cursor:pointer; cursor:hand;"/>');
   		      Calendar.setup( {
 			    inputField: "duedate",

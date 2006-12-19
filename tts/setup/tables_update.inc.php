@@ -231,4 +231,18 @@ function tts_upgrade1_2_008()
 	return $GLOBALS['setup_info']['tts']['currentver'];
 }
 
+$test[] = '1.2.009';
+function tts_upgrade1_2_009()
+{
+	// Add a column to keep track of tickets converted to the new tracker
+	$GLOBALS['egw_setup']->oProc->AddColumn('phpgw_tts_tickets','ticket_converted',array(
+		'type' => 'char',
+		'precision' => '1',
+		'nullable' => False,
+		'default' => 'N'
+	));
+
+	return $GLOBALS['setup_info']['tts']['currentver'] = '1.3.001';
+}
+
 ?>
