@@ -33,7 +33,7 @@
 
   if($_POST['cancel'])
   {
-    $GLOBALS['phpgw']->redirect_link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort));
+    $GLOBALS['phpgw']->redirect_link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort,'start'=>$start));
   }
   $ticket_id = intval(get_var('ticket_id',array('POST','GET')));
 
@@ -402,7 +402,7 @@
 
 //    $phpgw->template->set_var('additonal_details_rows',$s);
 
-    $GLOBALS['phpgw']->template->set_var('viewticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
+    $GLOBALS['phpgw']->template->set_var('viewticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort,'start'=>$start)));
     $GLOBALS['phpgw']->template->set_var('ticket_id', $ticket_id);
 
     $GLOBALS['phpgw']->template->set_var('lang_assignedfrom', lang('Assigned from'));
@@ -687,7 +687,11 @@
 
     if ($_POST['save'] && $no_error)
     {
-      $GLOBALS['phpgw']->redirect_link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort));
+      $filter = reg_var('filter','GET');
+      $sort   = reg_var('sort','GET');
+      $order  = reg_var('order','GET');
+      $start  = reg_var('start','GET','numeric',0);
+      $GLOBALS['phpgw']->redirect_link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort,'start'=>$start));
     }
     else  // apply
     {

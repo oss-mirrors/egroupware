@@ -25,9 +25,14 @@
 
   $GLOBALS['phpgw']->config->read_repository();
 
+  $filter = reg_var('filter','GET');
+  $sort   = reg_var('sort','GET');
+  $order  = reg_var('order','GET');
+  $start  = reg_var('start','GET','numeric',0);
+
   if($_POST['cancel'])
   {
-    $GLOBALS['phpgw']->redirect_link('/tts/index.php');
+    $GLOBALS['phpgw']->redirect_link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort,'start'=>$start));
   }
 
   if($_POST['submit'] && !empty($_POST['ticket_subject']))
@@ -119,7 +124,7 @@
   $GLOBALS['phpgw']->template->set_block('newticket','options_select');
   $GLOBALS['phpgw']->template->set_block('newticket','form');
 
-  $GLOBALS['phpgw']->template->set_var('form_action', $GLOBALS['phpgw']->link('/tts/newticket.php'));
+  $GLOBALS['phpgw']->template->set_var('form_action', $GLOBALS['phpgw']->link('/tts/newticket.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort,'start'=>$start)));
 
   $GLOBALS['phpgw']->template->set_var('datepopup_image', $GLOBALS['phpgw']->link('/phpgwapi/templates/default/images/datepopup.gif');
 
