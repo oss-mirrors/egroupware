@@ -8,11 +8,15 @@ bogus request	xmlrpc	sl	Bogus prošnja
 calendar test	xmlrpc	sl	Test koledarja
 client / server test	xmlrpc	sl	Test klienta / strežnika
 configure using admin - peer servers	xmlrpc	sl	Konfiguriranje z uporabo aplikacije admin - partnerski strežniki
+custom request	xmlrpc	sl	Zahteva po meri
 egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	sl	eGroupWare test: XML-RPC/SOAP klient<->strežnik in strežnik<->klient (poteka SOAP...)
+infolog test	xmlrpc	sl	Test InfoDnevnika
 introspection	xmlrpc	sl	Introspekcija
 meerkat browser	xmlrpc	sl	Brskalnik Meerkat
+method	xmlrpc	sl	Metoda
 methods	xmlrpc	sl	Metode
 note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	sl	POZOR: listapps in listusers sta navadno onemogočena v xml_functions.php.
+scalar parameter	xmlrpc	sl	Skalarni parameter
 select target server	xmlrpc	sl	Izberite ciljni strežnik
 server test	xmlrpc	sl	Test strežnika
 server<->server	xmlrpc	sl	Strežnik <-> strežnik

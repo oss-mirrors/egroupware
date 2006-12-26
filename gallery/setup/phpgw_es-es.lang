@@ -1,0 +1,30 @@
+album frame (%1samples%2)	gallery	es-es	Marco cel álbum (%1Ejemplos%2)
+an error occurred during user creation in g2.	gallery	es-es	Ha ocurrido un error durante la creación del usuario en G2
+an error occurred while trying to initialize g2.	gallery	es-es	Ha ocurido un error al intentar inicializar G2
+can be used to limit the block to a certain album.	gallery	es-es	Se puede usar para limitar el bloque a un cierto álbum.
+complete gallery	gallery	es-es	Galería completa
+default item to show in the gallery.	gallery	es-es	Elemento predeterminado a mostrar en la galería.
+extra information to show	gallery	es-es	Información extra a mostrar
+full size	gallery	es-es	Tamaño completo
+gallery	common	es-es	Galería
+gallery menu	gallery	es-es	Menú de Galería
+gallery sidebar	gallery	es-es	Barra lateral de Galería
+gallery without sidebar	gallery	es-es	Galería sin barra lateral
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	es-es	Galería2 NO está instalado, necesita %1hacer eso%2 antes
+heading	gallery	es-es	Encabezado
+image frame (%1samples%2)	gallery	es-es	Marco de imagen (%1Ejemplos%2)
+imageblock	gallery	es-es	Bloque de imagen
+imageblock of the gallery	gallery	es-es	Bloque de imagen de la Galería
+item id (number)	gallery	es-es	ID del elemento (número)
+one or more blocks to show	gallery	es-es	Uno o más bloques a mostrar
+pagename of an other page to link to	gallery	es-es	Nombre de la página u otra página a la que vincular
+set block title to	gallery	es-es	Establecer el título del bloque a
+set gallery title as page-title?	gallery	es-es	¿Establecer el título como título de la página?
+should contain a "gallery" block in contentarea "center".	gallery	es-es	Debe contener un bloque 'gallery' en el área de contenidos 'center'.
+size (maximum number of pixel of the longest side)	gallery	es-es	Tamaño (número máximo de píxel del lado más largo)
+specific item (requires itemid!)	gallery	es-es	Elemento específico (requiere itemid)
+type of the embeded gallery	gallery	es-es	Tipo de galería incrustada
+use this module to display the embeded gallery	gallery	es-es	Use este módulo para mostrar la galería incrustada
+view count	gallery	es-es	Ver cuenta
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	es-es	Puede obtener el ID del parámetro 'g2_itemId' en la URL, cuando pulse en el elemento.
+you have no rights to view %1 content !!!	gallery	es-es	¡No tiene permisos para ver el contenido de %1!

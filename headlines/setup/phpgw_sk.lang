@@ -23,6 +23,7 @@ headlines layout	headlines	sk	Usporiadanie Aktualít
 listings displayed	headlines	sk	Zobrazené zoznamy
 minutes between refresh	headlines	sk	Minút medzi obnovami
 minutes between reloads	headlines	sk	Minút medzi opakovanými naèítaniami
+monitor	common	sk	Sledovanie
 news file	headlines	sk	Súbor noviniek (news)
 news from x	headlines	sk	Novinky od x
 news headlines	common	sk	Novinky - aktuality

@@ -43,6 +43,8 @@ error writing to temporary file.	wiki	sk	Chyba pri zápise do doèasného súboru.
 everyone	wiki	sk	Ka¾dý
 find	wiki	sk	Hµada»
 history	wiki	sk	História
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	sk	Zobrazenie Histórie má zobrazi» <em>v¹etky</em> zmeny, ktoré vykonal posledný autor. V opaènom prípade, zobrazi» iba poslednú vykonanú zmenu.
+history of	wiki	sk	História (èoho)
 invalid page name.	wiki	sk	Chybný názov stránky.
 load	wiki	sk	Nahra»
 loads the named page in the given language, all change so far get lost !!!	wiki	sk	Nahrá pomenovanú stránku v zadanom jazyku, v¹etky doteraj¹ie zmeny sa stratia !!!

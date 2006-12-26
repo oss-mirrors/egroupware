@@ -114,6 +114,7 @@ by running theses links you will create new instances of the related process.	wo
 cannot add transition only split or switch activities can have more than one outbound transition	workflow	sk	Nedá sa prida» prechod, iba rozdelenie alebo prepnutie aktivít mô¾e ma» viac ne¾ jeden odchodzí prechod
 cannot add transition. only split activities can have more than one outbound transition	workflow	sk	Nedá sa prida» prechod. Iba rozdelené aktivity mô¾u ma» viac ne¾ jeden odchodzí prechod
 cannot create compiled file %1	workflow	sk	Nedá sa vytvori» kompilovaný súbor %1
+cannot retrieve the user running the security check	workflow	sk	Neviem obnovi» pou¾ívateµa, ktorý spú¹»a bezpeènostnú kontrolu
 cannot run the activity	workflow	sk	Nemô¾em spusti» túto aktivitu
 cannot run the activity without her process	workflow	sk	Nemô¾em spusti» túto aktivitu bez jej procesu
 cannot run the activity without instance	workflow	sk	Nemô¾em spusti» túto aktivitu bez sedenia

@@ -1,0 +1,30 @@
+album frame (%1samples%2)	gallery	pt-br	Frame do álbum (%1Exemplos%2)
+an error occurred during user creation in g2.	gallery	pt-br	Um erro ocorreu durante a criação do usuário em G2.
+an error occurred while trying to initialize g2.	gallery	pt-br	Um erro ocorreu na tentativa de inicializar G2.
+can be used to limit the block to a certain album.	gallery	pt-br	Pode ser usado para limitar o bloco para um álbum específico.
+complete gallery	gallery	pt-br	Galeria Completa
+default item to show in the gallery.	gallery	pt-br	Item padrão a ser exibido na Galeria.
+extra information to show	gallery	pt-br	Informação extra a ser exibida
+full size	gallery	pt-br	Tamanho completo
+gallery	common	pt-br	Galeria
+gallery menu	gallery	pt-br	Menu da Galeria
+gallery sidebar	gallery	pt-br	Menu lateral da Galeria
+gallery without sidebar	gallery	pt-br	Galeria sem menu lateral
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	pt-br	Gallery2 não está instalada. Você precisa %1fazer isso%2 primeiro !!
+heading	gallery	pt-br	Cabeçalho
+image frame (%1samples%2)	gallery	pt-br	Frame da imagem (%1Exemplos%2)
+imageblock	gallery	pt-br	Bloco de imagens
+imageblock of the gallery	gallery	pt-br	Bloco de imagens da Galeria
+item id (number)	gallery	pt-br	ID do item (número)
+one or more blocks to show	gallery	pt-br	Um ou mais blocos a serem exibidos
+pagename of an other page to link to	gallery	pt-br	Nome de uma outra página a ser linkada
+set block title to	gallery	pt-br	Definir título do bloco como
+set gallery title as page-title?	gallery	pt-br	Definir título da Galeria como título da página?
+should contain a "gallery" block in contentarea "center".	gallery	pt-br	O conteúdo da área "central" deverá conter um bloco "galeria".
+size (maximum number of pixel of the longest side)	gallery	pt-br	Tamanho (número máximo de pixels do lado maior)
+specific item (requires itemid!)	gallery	pt-br	item específico (requer ID do item!)
+type of the embeded gallery	gallery	pt-br	Tipo da Galeria
+use this module to display the embeded gallery	gallery	pt-br	Use este módulo para exibir a Galeria
+view count	gallery	pt-br	Contador de visualização
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	pt-br	Você pode obter o ID do parâmetro "g2_itemId" da URL, quando você clica no item.
+you have no rights to view %1 content !!!	gallery	pt-br	Você não tem permissão para exibir o conteúdo de %1 !!!
