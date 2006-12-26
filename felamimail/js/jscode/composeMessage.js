@@ -52,6 +52,23 @@ function addEmail(to,email)
 	
 	var lastRow = tableRows[tableRows.length-1];
 	var inputElements	= lastRow.getElementsByTagName('input');
+
+	// look for empty fields above to fill in
+	for(rowCounter = tableRows.length-1; rowCounter > 0; rowCounter--)
+	{
+		var rowBefore = tableRows[rowCounter-1];
+		var inputBefore = rowBefore.getElementsByTagName('input');
+		if(inputBefore[0].value == '')
+		{
+			lastRow = rowBefore;
+			inputElements = inputBefore;
+		}
+		else
+		{
+			continue;
+		}
+		
+	}
 	
 	if (inputElements[0].value != '')	// last row not empty --> create new
 	{
@@ -64,8 +81,13 @@ function addEmail(to,email)
 	var selectElements = lastRow.getElementsByTagName('select');
 	selectElements[0].selectedIndex = to == 'cc' ? 1 : (to == 'bcc' ? 2 : 0);
 	
-	// add a new empty last row
-	addAddressRow(lastRow);
+	// add a new empty last row if there is no empty one at all
+	lastRow = tableRows[tableRows.length-1];
+	inputElements	= lastRow.getElementsByTagName('input');
+	if (inputElements[0].value != '')
+	{
+		addAddressRow(lastRow);
+	}
 }
 
 function addAddressRow(_tableRow)
