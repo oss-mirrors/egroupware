@@ -62,8 +62,18 @@ class g2_integration
 
 		if (!file_exists(EGW_SERVER_ROOT.'/gallery/gallery2/config.php'))
 		{
-			$this->error = lang('Gallery2 is NOT installed, you need to %1do that%2 first!!!',
-				'<a href="gallery2/install/" target="_blank">','</a>');
+			$this->error = '<h3>'.lang('Gallery2 is NOT installed, you need to %1do that%2 first!!!',
+				'<a href="gallery2/install/" target="_blank">','</a>')."</h3>\n".
+				'<p><b>'.lang('Please note:')."</b></p>\n".
+				'<p>'.lang('Use the same database settings as for your eGW installation (see your %1 file) and leave the table- and colum-prefix as suggested.',
+					'<b>header.inc.php</b>')."</p>\n".
+				'<p>'.lang('Use %1 as G2 data directory.','<b>'.$GLOBALS['egw_info']['server']['files_dir'].'/gallery'.'</b>')."</p>\n".
+				'<p>'.lang('The administrator account has to be an existing eGroupWare account with exactly the same spelling!').'<br />'.
+				lang('All other eGroupWare users will be created by the G2 integration including there admin rights.')."</p>\n".
+				'<p>'.lang('For multiple eGroupWare instances, you have to remove %1, to be able to install the next instance.','<b>gallery/gallery2/config.php</b>').'<br />'.
+				lang('After successful installation of all instances, you have to copy %1 to %2!','<b>gallery/gallery2_config.php</b>','<b>gallery/gallery2/config.php</b>')."</p>\n".
+				'<p>'.lang('All filenames are relative to %1.','<b>'.EGW_SERVER_ROOT.'</b>')."</p>";
+			
 			return;
 		}
 		require_once(EGW_INCLUDE_ROOT.'/gallery/gallery2' . '/modules/core/classes/GalleryDataCache.class');
