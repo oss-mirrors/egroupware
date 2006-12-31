@@ -11,8 +11,8 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	include_once(EGW_SERVER_ROOT."/emailadmin/inc/class.imap_client.inc.php");
-	
+	require_once 'Net/IMAP.php';
+
 	define('IMAP_NAMESPACE_PERSONAL', 'personal');
 	define('IMAP_NAMESPACE_OTHERS'	, 'others');
 	define('IMAP_NAMESPACE_SHARED'	, 'shared');
@@ -23,7 +23,7 @@
 	 * This is the base class for all other imap classes.
 	 *
 	 */
-	class defaultimap
+	class defaultimap extends Net_IMAP
 	{
 		/**
 		 * the password to be used for admin connections
@@ -114,29 +114,33 @@
 		 *
 		 * @var array
 		 */
-		var $createMailboxes = array('','Sent','Trash','Drafts','Junk');
 		var $imapLoginType;
 		var $defaultDomain;
+		
+		
+		/**
+		 * disable internal conversion from/to ut7
+		 * get's used by Net_IMAP
+		 *
+		 * @var array
+		 */
+		var $_useUTF_7 = false;
 		
 		/**
 		 * the construtor
 		 *
 		 * @return void
 		 */
-		function defaultimap() {
-			if (function_exists('mb_convert_encoding')) $this->mbAvailable = TRUE;
-			
-			$this->restoreSessionData();
-		}
-		
-		/**
-		 * closes the current imap connection
-		 *
-		 */
-		function closeConnection() {
-			if(is_resource($this->mbox)) {
-				imap_close($this->mbox);
+		function defaultimap() 
+		{
+			if (function_exists('mb_convert_encoding')) {
+				$this->mbAvailable = TRUE;
 			}
+
+			$this->restoreSessionData();
+			
+			// construtor for Net_IMAP stuff
+			$this->Net_IMAPProtocol();
 		}
 		
 		/**
@@ -172,6 +176,12 @@
 			return true;
 		}
 		
+		function disconnect()
+		{
+			parent::disconnect();
+			$this->_isConnected = false;
+		}
+		
 		/**
 		 * converts a foldername from current system charset to UTF7
 		 *
@@ -195,7 +205,8 @@
 		 * 
 		 * @return array the supported capabilites
 		 */
-		function getCapabilities() {
+		function getCapabilities() 
+		{
 			if(!is_array($this->sessionData['capabilities'][$this->host])) {
 				return false;
 			}
@@ -208,7 +219,8 @@
 		 *
 		 * @return string the delimimiter
 		 */
-		function getDelimiter() {
+		function getDelimiter() 
+		{
 			return isset($this->sessionData['delimiter'][$this->host]) ? $this->sessionData['delimiter'][$this->host] : $this->mailboxDelimiter;
 		}
 		
@@ -217,26 +229,26 @@
 		 *
 		 * @return string the connectionstring
 		 */
-		function getConnectionString() {
-
-			if($this->encryption && $this->validatecert) {
-				$connectionString = sprintf("{%s:%s/imap/ssl}",
-					$this->host,
-					$this->port);
-			} elseif($this->encryption) {
-				// don't check cert
-				$connectionString = sprintf("{%s:%s/imap/ssl/novalidate-cert}",
-					$this->host,
-					$this->port);
-			} else {
-				// no tls
-				$connectionString = sprintf("{%s:%s/imap/notls}",
-					$this->host,
-					$this->port);
-			}
-
-			return $connectionString;
-		}
+	#	function getConnectionString() 
+	#	{
+	#		if($this->encryption && $this->validatecert) {
+	#			$connectionString = sprintf("{%s:%s/imap/ssl}",
+	#				$this->host,
+	#				$this->port);
+	#		} elseif($this->encryption) {
+	#			// don't check cert
+	#			$connectionString = sprintf("{%s:%s/imap/ssl/novalidate-cert}",
+	#				$this->host,
+	#				$this->port);
+	#		} else {
+	#			// no tls
+	#			$connectionString = sprintf("{%s:%s/imap/notls}",
+	#				$this->host,
+	#				$this->port);
+	#		}
+	#	
+	#		return $connectionString;
+	#	}
 
 		/**
 		 * Create mailbox string from given mailbox-name and user-name
@@ -244,91 +256,50 @@
 		 * @param string $_folderName='' 
 		 * @return string utf-7 encoded (done in getMailboxName)
 		 */
-		function getMailboxName($_username, $_folderName = '') {
-			if(!$othersNameSpace = $this->getNameSpace(IMAP_NAMESPACE_OTHERS)) {
+		function getUserMailboxString($_username, $_folderName='') 
+		{
+			$nameSpaces = $this->getNameSpaces();
+
+			if(!isset($nameSpaces['others'])) {
 				return false;
 			}
 			
-			$mailboxName = $othersNameSpace['name'] . $_username. (!empty($_folderName) ? $this->getDelimiter() . $_folderName : '');
+			$username = $_username;
 
-			return $mailboxName;
-		}
-
-		/**
-		 * Create mailbox string from given mailbox-name and user-name
-		 *
-		 * @param string $_folderName='' 
-		 * @return string utf-7 encoded (done in getMailboxName)
-		 */
-		function getMailboxString($_folderName = '') {
-			$mailboxString = $this->getConnectionString() . $_folderName;
-
-			return $this->encodeFolderName($mailboxString);
-		}
-
-		/**
-		 * Create mailbox string from given mailbox-name and user-name
-		 *
-		 * @param string $_folderName='' 
-		 * @return string utf-7 encoded (done in getMailboxName)
-		 */
-		function getUserMailboxString($_username, $_folderName = '') {
-			if(!$mailboxName = $this->getUserMailboxName($_username, $_folderName)) {
-				return false;
+			if($this->loginType == 'vmailmgr') {
+				$username .= '@'. $this->domainName;
 			}
+
+			$mailboxString = $nameSpaces['others'][0]['name'] . $username . (!empty($_folderName) ? $nameSpaces['others'][0]['delimiter'] . $_folderName : '');
 			
-			$mailboxString = $this->getConnectionString() . $mailboxName;
-
-			return $this->encodeFolderName($mailboxString);
+			return $mailboxString;
 		}
-
 		/**
 		 * get list of namespaces
 		 *
-		 * @param integer $_nameSpace
 		 * @return array array containing information about namespace
 		 */
-		function getNameSpace($_nameSpace) {
-			// this solves a PHP4 problem
-			if(empty($this->sessionData)) {
-				$this->restoreSessionData();
-			}
-			
-			if($this->isAdminConnection) {
-				$username = $this->adminUsername;
-			} else {
-				$username = $this->loginName;
-			}
-			if(!is_array($this->sessionData['nameSpace'][$this->host][$username])) {
+		function getNameSpaces() 
+		{
+			if(!$this->_connected) {
 				return false;
 			}
+			
+			$nameSpace = $this->getNamespace();
 
-			switch($_nameSpace) {
-				case IMAP_NAMESPACE_OTHERS:
-					if(isset($this->sessionData['nameSpace'][$this->host][$username]['othersNameSpace'])) {
-						return $this->sessionData['nameSpace'][$this->host][$username]['othersNameSpace'];
-					}
-					break;
+			$result = array();
 
-				case IMAP_NAMESPACE_PERSONAL:
-					if(isset($this->sessionData['nameSpace'][$this->host][$username]['personalNameSpace'])) {
-						return $this->sessionData['nameSpace'][$this->host][$username]['personalNameSpace'];
-					}
-					break;
+			$result['personal']	= $nameSpace['personal'];
 
-				case IMAP_NAMESPACE_SHARED:
-					if(isset($this->sessionData['nameSpace'][$this->host][$username]['sharedNameSpace'])) {
-						return $this->sessionData['nameSpace'][$this->host][$username]['sharedNameSpace'];
-					}
-					break;
-
-				default:
-					return $this->sessionData['nameSpace'][$this->host][$username];
-					break;
+			if(is_array($nameSpace['others'])) {
+				$result['others']	= $nameSpace['others'];
 			}
 			
-			// namespace not found
-			return false;
+			if(is_array($nameSpace['shared'])) {
+				$result['shared']	= $nameSpace['shared'];
+			}
+					
+			return $result;
 		}
 		
 		/**
@@ -338,20 +309,21 @@
 		 * @param string $_folderName
 		 * @return string the current quota for this folder
 		 */
-		function getQuota($_folderName) {
-			if(!is_resource($this->mbox)) {
-				$this->openConnection();
-			}
-			
-			if(function_exists('imap_get_quotaroot') && $this->supportsCapability('QUOTA')) {
-				$quota = @imap_get_quotaroot($this->mbox, $this->encodeFolderName($_folderName));
-				if(is_array($quota) && isset($quota['STORAGE'])) {
-					return $quota['STORAGE'];
-				}
-			} 
-
-			return false;
-		}
+	#	function getQuota($_folderName) 
+	#	{
+	#		if(!is_resource($this->mbox)) {
+	#			$this->openConnection();
+	#		}
+	#		
+	#		if(function_exists('imap_get_quotaroot') && $this->supportsCapability('QUOTA')) {
+	#			$quota = @imap_get_quotaroot($this->mbox, $this->encodeFolderName($_folderName));
+	#			if(is_array($quota) && isset($quota['STORAGE'])) {
+	#				return $quota['STORAGE'];
+	#			}
+	#		} 
+	#
+	#		return false;
+	#	}
 		
 		/**
 		 * return the quota for another user
@@ -360,27 +332,14 @@
 		 * @param string $_username
 		 * @return string the quota for specified user
 		 */
-		function getQuotaByUser($_username) {
-			if(function_exists('imap_get_quotaroot')) {
-				if(!$this->isAdminConnection && is_resource($this->mbox)) {
-					$this->closeConnection();
-				}
-			
-				if(!is_resource($this->mbox)) {
-					// create a admin connection
-					$this->openConnection(0, true);
-				}
-			
-				if($this->supportsCapability('QUOTA')) {
-					if($othersNameSpace = $this->getNameSpace(IMAP_NAMESPACE_OTHERS)) {
-						$quota = @imap_get_quota($this->mbox, $othersNameSpace['name'].$_username);
-						
-						if(is_array($quota) && isset($quota['STORAGE'])) {
-							return $quota['STORAGE'];
-						}
-					}
-				}
-			} 
+		function getQuotaByUser($_username) 
+		{
+			$mailboxName = $this->getUserMailboxString($_username);
+			$storageQuota = $this->getStorageQuota($mailboxName); 
+
+			if(is_array($storageQuota) && isset($storageQuota['QMAX'])) {
+				return (int)$storageQuota['QMAX'];
+			}
 
 			return false;
 		}
@@ -392,12 +351,17 @@
 		 * @param string $_username
 		 * @return array userdata
 		 */
-		function getUserData($_username) {
+		function getUserData($_username) 
+		{
+			$this->openConnection(true);
+
 			$userData = array();
 
 			if($quota = $this->getQuotaByUser($_username)) {
-				$userData['quotaLimit'] = $quota['limit'] / 1024;
+				$userData['quotaLimit'] = $quota / 1024;
 			}
+			
+			$this->disconnect();
 			
 			return $userData;
 		}
@@ -405,15 +369,14 @@
 		/**
 		 * opens a connection to a imap server
 		 *
-		 * @param integer $_options
 		 * @param bool $_adminConnection create admin connection if true
+		 *
 		 * @return resource the imap connection
 		 */
-		function openConnection($_options=0, $_adminConnection=false) {
-			if(!function_exists('imap_open')) {
-				return lang('This PHP has no IMAP support compiled in!!');
-			}
-
+		function openConnection($_adminConnection=false) 
+		{
+			unset($this->_connectionErrorObject);
+			
 			if($_adminConnection) {
 				$username	= $this->adminUsername;
 				$password	= $this->adminPassword;
@@ -426,63 +389,25 @@
 				$this->isAdminConnection = false;
 			}
 
-			$mailboxString = $this->getMailboxString();
-
-			if(!$this->mbox = imap_open ($mailboxString, $username, $password, $options)) {
-				return PEAR::raiseError(imap_last_error(), 'horde.error');
-			} else {
-				if(!isset($this->sessionData['capabilities'][$this->host]) ||
-					!isset($this->sessionData['nameSpace'][$this->host][$username]) ||
-					!isset($this->sessionData['delimiter'][$this->host])) {
-
-					$imapClient = CreateObject('emailadmin.imap_client',$this->host, $this->port, ($this->encryption ? 'ssl' : ''));
-					$imapClient->login($username, $password);
-					$this->sessionData['capabilities'][$this->host] = $imapClient->_capability;
-
-					if(isset($this->sessionData['capabilities'][$this->host]['NAMESPACE'])) {
-						$nameSpace = $imapClient->namespace();
-					
-						// try to find the find the delimiter
-						foreach($nameSpace as $singleNameSpace) {
-							if(isset($singleNameSpace['delimiter'])) {
-								$this->sessionData['delimiter'][$this->host] = $singleNameSpace['delimiter'];
-							}
-							switch($singleNameSpace['type']) {
-								case 'personal':
-									$this->sessionData['nameSpace'][$this->host][$username]['personalNameSpace'] = $singleNameSpace;
-									break;
-								case 'others':
-									$this->sessionData['nameSpace'][$this->host][$username]['othersNameSpace'] = $singleNameSpace;
-									break;
-								case 'shared':
-									$this->sessionData['nameSpace'][$this->host][$username]['sharedNameSpace'] = $singleNameSpace;
-									break;
-							}
-						}
-					}
-					
-					if(!isset($this->sessionData['nameSpace'][$this->host][$username]['personalNameSpace'])) {
-						$this->sessionData['nameSpace'][$this->host][$username]['personalNameSpace'] = array(
-							'name'		=> 'INBOX/',
-							'delimiter'	=> '/',
-							'type'		=> 'personal',
-						);
-					}
-					
-					$imapClient->logout();
-					$this->saveSessionData();
-				}
-
-				return $this->mbox;
+			if( PEAR::isError($status = $this->connect($this->host, $this->port)) ) {
+				$this->_connectionErrorObject = $status;
+				return false;
 			}
 			
+			if( PEAR::isError($status = $this->login($username, $password)) ) {
+				$this->_connectionErrorObject = $status;
+				return false;
+			}
+			
+			return true;
 		}		
-		
+
 		/**
 		 * restore session variable
 		 *
 		 */
-		function restoreSessionData() {
+		function restoreSessionData() 
+		{
 			$this->sessionData = $GLOBALS['egw']->session->appsession('imap_session_data');
 		}
 		
@@ -490,7 +415,8 @@
 		 * save session variable
 		 *
 		 */
-		function saveSessionData() {
+		function saveSessionData() 
+		{
 			$GLOBALS['egw']->session->appsession('imap_session_data','',$this->sessionData);
 		}
 		
@@ -501,7 +427,8 @@
 		 * @param int $_quota quota in bytes
 		 * @return bool true on success, false on failure
 		 */
-		function setUserData($_username, $_quota) {
+		function setUserData($_username, $_quota) 
+		{
 			return true;
 		}
 
@@ -511,8 +438,9 @@
 		 * @param string $_capability the capability to check for
 		 * @return bool true if capability is supported, false if not
 		 */
-		function supportsCapability($_capability) {
-			return isset($this->sessionData['capabilities'][$this->host][$_capability]) ? true : false;
+		function supportsCapability($_capability) 
+		{
+			return $this->hasCapability($_capability);
 		}
 	}
 ?>

@@ -1,3 +1,10 @@
+2006-12-31 Lars Kneschke <lkneschke@metaways.de>
+	* major rewrite of the imap backend. the imap backend is not handled 
+	  by the php extension php-imap anymore, but the PEAR class Net_IMAP.
+	* improved handling of namespaces
+	* improved performance of most imap operations
+	* improved folderhandling
+
 20061010 lkneschke@metaways.de
 
 - added support for dbmailuser schema

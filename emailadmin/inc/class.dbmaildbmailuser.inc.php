@@ -80,7 +80,7 @@
 			$sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $justthese);
 
 			if($info = ldap_get_entries($ds, $sri)) {
-				if(!in_array('dbmailuser',$info[0]['objectclass']) && $info[0]['mail']) {
+				if((!in_array('dbmailuser',$info[0]['objectclass']) && !in_array('dbmailUser',$info[0]['objectclass'])) && $info[0]['mail']) {
 					$newData['objectclass'] = $info[0]['objectclass'];
 					unset($newData['objectclass']['count']);
 					$newData['objectclass'][] = 'dbmailuser';
@@ -94,7 +94,7 @@
 					
 					return true;
 				} else {
-					if (in_array('dbmailuser',$info[0]['objectclass']) && !$info[0]['dbmailuid']) {
+					if ((in_array('dbmailuser',$info[0]['objectclass']) || in_array('dbmailUser',$info[0]['objectclass'])) && !$info[0]['dbmailuid']) {
 						$newData = array();
 						$newData['dbmailUID']	= (!empty($this->domainName)) ? $_username .'@'. $this->domainName : $_username;
 						
@@ -104,7 +104,7 @@
 						}
 					}
 				
-					if (in_array('dbmailuser',$info[0]['objectclass']) && !$info[0]['dbmailgid']) {
+					if ((in_array('dbmailuser',$info[0]['objectclass']) || in_array('dbmailUser',$info[0]['objectclass']))  && !$info[0]['dbmailgid']) {
 						$newData = array();
 						$newData['dbmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
 
@@ -140,8 +140,7 @@
 
 			if($info = ldap_get_entries($ds, $sri)) {
 				$validLDAPConfig = false;
-				
-				if(in_array('dbmailuser',$info[0]['objectclass'])) {
+				if(in_array('dbmailuser',$info[0]['objectclass']) || in_array('dbmailUser',$info[0]['objectclass'])) {
 					$validLDAPConfig = true;
 				}
 

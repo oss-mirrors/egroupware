@@ -447,6 +447,7 @@
 
 				// fetch the IMAP / incomming server data
 				$icClass = isset($this->IMAPServerType[$data['imapType']]) ? $this->IMAPServerType[$data['imapType']]['classname'] : 'defaultimap';
+
 				$icServer =& CreateObject('emailadmin.'.$icClass);
 				$icServer->encryption	= $data['imapTLSEncryption'] == 'yes';
 				$icServer->host			= $data['imapServer'];
