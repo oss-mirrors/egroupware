@@ -4,6 +4,7 @@
 	* improved handling of namespaces
 	* improved performance of most imap operations
 	* improved folderhandling
+	* make emailadmin dependent on egw-pear
 
 20061010 lkneschke@metaways.de
 

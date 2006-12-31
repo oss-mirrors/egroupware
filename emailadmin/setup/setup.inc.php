@@ -40,6 +40,10 @@
 		'appname'  => 'phpgwapi',
 		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
 	);
+	$setup_info['felamimail']['depends'][] = array(
+		'appname'  => 'egw-pear',
+		'versions' => Array('1.4.000')
+	);
 	// installation checks for felamimail
 	$setup_info['emailadmin']['check_install'] = array(
 		'' => array(
