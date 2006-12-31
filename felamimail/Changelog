@@ -5,6 +5,7 @@
 	* saving a message is working now
 	* improved folder handling
 	* signatures can now be managed from IE too
+	* make FeLaMiMail dependent on egw-pear
 
 2006-11-20 Lars Kneschke  <lkneschke@metaways.de>
 	* passwords are now hidden, when editing account settings

@@ -47,16 +47,21 @@
 		'appname'  => 'emailadmin',
 		'versions' => Array('1.2')
 	);
+	$setup_info['felamimail']['depends'][] = array(
+		'appname'  => 'egw-pear',
+		'versions' => Array('1.4.000')
+	);
 	// installation checks for felamimail
 	$setup_info['felamimail']['check_install'] = array(
 		'' => array(
 			'func' => 'pear_check',
 			'from' => 'FeLaMiMail',
 		),
-		'Net_Sieve' => array(
-			'func' => 'pear_check',
-			'from' => 'FeLaMiMail',
-		),
+# get's provided by egw-pear temporarly
+#		'Net_Sieve' => array(
+#			'func' => 'pear_check',
+#			'from' => 'FeLaMiMail',
+#		),
 		'Auth_SASL' => array(
 			'func' => 'pear_check',
 			'from' => 'FeLaMiMail',
