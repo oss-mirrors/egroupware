@@ -35,7 +35,7 @@
 			<table border="0" width="100%" cellpadding=2 cellspacing=0>
 				<tr>
 					<td style="width:30%;">
-						Host:
+						{lang_imap_server}:
 					</td>
 					<td style="width:50%;">
 						{imap_server}
@@ -46,13 +46,13 @@
 				</tr>
 				<tr>
 					<td>
-						Foldername:
+						{lang_foldername}:
 					</td>
 					<td>
 						<span id="folderName">{folderName}</span>
 					</td>
 					<td align="center">
-						<button type='button' id="mailboxDeleteButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteFolder",tree.getSelectedItemId())'>{lang_delete}</button>
+						<div id="divDeleteButton" style="visibility:hidden;"><button type='button' id="mailboxDeleteButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteFolder",tree.getSelectedItemId())'>{lang_delete}</button></div>
 					</td>
 				</tr>
 				<tr>
@@ -63,7 +63,7 @@
 						<input type="text" size="30" id="newMailboxName" name="newMailboxName" value="{mailboxNameShort}" oonchange="document.renameMailbox.submit()">
 					</td>
 					<td align="center">
-						<button type='button' id="mailboxRenameButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.renameFolder",tree.getSelectedItemId(), tree.getParentId(tree.getSelectedItemId()), document.getElementById("newMailboxName").value)'>{lang_rename}</button>
+						<div id="divRenameButton" style="visibility:hidden;"><button type='button' id="mailboxRenameButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.renameFolder",tree.getSelectedItemId(), tree.getParentId(tree.getSelectedItemId()), document.getElementById("newMailboxName").value)'>{lang_rename}</button></div>
 					</td>
 				</tr>
 				<tr>

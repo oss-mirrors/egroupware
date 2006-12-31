@@ -125,7 +125,6 @@
 				if(!is_a($profileData, 'ea_preferences') || !is_a($profileData->ic_server[0], 'defaultimap')) {
 					return false;
 				}
-
 				if($profileData->userDefinedAccounts) {
 					// get user defined accounts
 					$accountData = $this->getAccountData($profileData);

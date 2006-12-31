@@ -61,6 +61,11 @@
 				$GLOBALS['egw']->html = CreateObject('phpgwapi.html');
 			}
 		}
+		
+		function encodeFolderName($_folderName)
+		{
+			return $GLOBALS['egw']->translation->convert($_folderName, 'UTF7-IMAP', $this->charset);
+		}
 
 		/**
 		* create a folder tree
@@ -75,10 +80,11 @@
 		* @param _topFolderDescription string containing the description for the top folder
 		* @param _formName string name of the sorounding form
 		* @param _hiddenVar string hidden form value, transports the selected folder
+		* @param _useDisplayCharset bool use displaycharset for foldernames (used by uisieve only)
 		*
 		* @return string the html code, to be added into the template
 		*/
-		function createHTMLFolder($_folders, $_selected, $_selectedFolderCount, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox) {
+		function createHTMLFolder($_folders, $_selected, $_selectedFolderCount, $_topFolderName, $_topFolderDescription, $_divName, $_displayCheckBox, $_useDisplayCharset = false) {
 			// create a list of all folders, also the ones which are not subscribed
  			foreach($_folders as $key => $obj) {
 				$folderParts = explode($obj->delimiter,$key);
@@ -89,15 +95,17 @@
 						if(!empty($string)) $string .= $obj->delimiter;
 						$string .= $folderParts[$i];
 						if(!$allFolders[$string]) {	
-							$allFolders[$string] = $obj;
-							unset($allFolders[$string]->name);
-							unset($allFolders[$string]->attributes);
-							unset($allFolders[$string]->counter);
+							$allFolders[$string] = clone($obj);
+							$allFolders[$string]->folderName = $string;
+							$allFolders[$string]->shortFolderName = array_pop(explode($obj->delimiter, $string));
+							$allFolders[$string]->displayName = $this->encodeFolderName($allFolders[$string]->folderName);
+							$allFolders[$string]->shortDisplayName = $this->encodeFolderName($allFolders[$string]->shortFolderName);
 						}
 					}
 				}
 				$allFolders[$key] = $obj;
 			}
+
 			$folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/templates/default/images/';
 			
 			// careful! "d = new..." MUST be on a new line!!!
@@ -110,9 +118,12 @@
 				$folder_tree_new .= "tree.setOnCheckHandler('onCheckHandler');";
 			}
 			
-			$folder_tree_new .= "tree.insertNewItem(0,'--topfolder--','$_topFolderName',onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
+			#$topFolderBase64 = base64_encode('--topfolder--');
+			$topFolderBase64 = '--topfolder--';
+			$folder_tree_new .= "tree.insertNewItem(0,'$topFolderBase64','$_topFolderName',onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
 			
 			#foreach($_folders as $key => $obj)
+			#_debug_array($allFolders);
 			foreach($allFolders as $longName => $obj) {	
 				$messageCount = '';
 				$image1 = "'folderClosed.gif'";
@@ -130,35 +141,47 @@
 				
 				$entryOptions = 'CHILD,CHECKED';
 
-				$parentName	= @htmlspecialchars($parentName, ENT_QUOTES, $this->charset);
-				$shortName	= @htmlspecialchars($shortName, ENT_QUOTES, $this->charset);
+				$displayName	= @htmlspecialchars($obj->shortDisplayName, ENT_QUOTES, $this->charset);
+				$userData	= $displayName;
 
-				$folder_name = $shortName;
+				$parentName	= @htmlspecialchars($parentName, ENT_QUOTES, $this->charset);
 
 				// highlight currently selected mailbox
 				if ($_selected == $longName) {
 					$entryOptions .= ',SELECT';
 					if($_selectedFolderCount > 0) {
 						$messageCount = "&nbsp;($_selectedFolderCount)";
-						$folder_name = "<b>$shortName&nbsp;($_selectedFolderCount)</b>";
+						$displayName = "<b>$displayName&nbsp;($_selectedFolderCount)</b>";
 					}
 				}
 				
+				if($_useDisplayCharset == true) {
+					$folderName	= $GLOBALS['egw']->translation->convert($obj->folderName, 'UTF7-IMAP', $this->charset);
+					$folderName	= @htmlspecialchars($folderName, ENT_QUOTES, $this->charset);
+				} else {
+					$folderName	= @htmlspecialchars($obj->folderName, ENT_QUOTES, $this->charset);
+				}
 				// give INBOX a special foldericon
-				if ($longName == 'INBOX') {
+				if ($folderName == 'INBOX') {
 					$image1 = "'kfm_home.png'";
 					$image2 = "'kfm_home.png'";
 					$image3 = "'kfm_home.png'";
 				}
 
-				$longName	= @htmlspecialchars($longName, ENT_QUOTES, $this->charset);
-				
-				$folder_tree_new .= "tree.insertNewItem('$parentName','$longName','$folder_name',onNodeSelect,$image1,$image2,$image3,'$entryOptions');\n";
-				if($_displayCheckBox)
-					$folder_tree_new .= "tree.setCheck('$longName','".(int)$obj->subscribed."');";
+				$search		= array('\\');
+				$replace	= array('\\\\');
+				$parentName	= str_replace($search, $replace, $parentName);
+				$folderName	= str_replace($search, $replace, $folderName);
+
+				$folder_tree_new .= "tree.insertNewItem('$parentName','$folderName','$displayName',onNodeSelect,$image1,$image2,$image3,'$entryOptions');";
+				$folder_tree_new .= "tree.setUserData('$folderName','folderName', '$userData');";
+				if($_displayCheckBox) {
+					$folder_tree_new .= "tree.setCheck('$folderName','".(int)$obj->subscribed."');";
+				}
 			}
 			
 			$selected = @htmlspecialchars($_selected, ENT_QUOTES, $this->charset);
+			#$selected = base64_encode($_selected);
 
 			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$selected');</script>";
 			
@@ -206,6 +229,7 @@
 			$i=0;
 			foreach((array)$_headers['header'] as $header)
 			{
+				#_debug_array($header);
 				#if($i<10) {$i++;continue;}
 				#if($i>20) {continue;} $i++;
 				// create the listing of subjects
@@ -278,7 +302,8 @@
 					$this->t->set_var('header_subject', @htmlspecialchars('('. lang('no subject') .')', ENT_QUOTES, $this->displayCharset));
 				}
 
-				if($header['attachments'] == 'true') {
+				if($header['mimetype'] == 'multipart/mixed' || 
+				   $header['mimetype'] == 'multipart/related') {
 					$image = '<img src="'.$GLOBALS['egw']->common->image('felamimail','attach').'" border="0" style="width:12px;">';
 					$this->t->set_var('attachment_image', $image);
 				} else {
@@ -535,7 +560,8 @@
 			);
 		}
 		
-		function quotaDisplay($_usage, $_limit) {
+		function quotaDisplay($_usage, $_limit) 
+		{
 			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
 			$this->t->set_block('body','quota_block');
@@ -551,20 +577,26 @@
 
 			$this->t->set_var('leftWidth',$quotaPercent);
 
-			if($quotaPercent > 90) {
+			if($quotaPercent > 90 && $_limit>0) {
 				$this->t->set_var('quotaBG','red');
-			} elseif($quotaPercent > 80) {
+			} elseif($quotaPercent > 80 && $_limit>0) {
 				$this->t->set_var('quotaBG','yellow');
 			} else {
 				$this->t->set_var('quotaBG','#66ff66');
 			}
 				
+			if($_limit > 0) {
+				$quotaText = $quotaUsage .'/'.$quotaLimit;
+			} else {
+				$quotaText = $quotaUsage;
+			}
+				
 			if($quotaPercent > 50) {
+				$this->t->set_var('quotaUsage_left', $quotaText);
 				$this->t->set_var('quotaUsage_right','');
-				$this->t->set_var('quotaUsage_left',$quotaUsage .'/'.$quotaLimit);
 			} else {
 				$this->t->set_var('quotaUsage_left','');
-				$this->t->set_var('quotaUsage_right',$quotaUsage .'/'.$quotaLimit);
+				$this->t->set_var('quotaUsage_right', $quotaText);
 			}
 			
 			$this->t->parse('out','quota_block');	

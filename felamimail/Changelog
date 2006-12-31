@@ -1,3 +1,14 @@
+2006-12-31 Lars Kneschke  <lkneschke@metaways.de>
+	* major rewrite of the imap backend. php-imap is mostly gone. all imap code
+	  is now based on the PEAR class Net_IMAP
+	* drafts keep their formating
+	* saving a message is working now
+	* improved folder handling
+	* signatures can now be managed from IE too
+
+2006-11-20 Lars Kneschke  <lkneschke@metaways.de>
+	* passwords are now hidden, when editing account settings
+
 2006-11-08  Lars Kneschke  <lkneschke@metaways.de>
 	* edit signature is now using fckeditor too
 	* improved generating multipart messages again

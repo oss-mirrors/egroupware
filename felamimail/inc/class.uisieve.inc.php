@@ -417,6 +417,7 @@
 					case 'folder':
 						$newRule['action']	= 'folder';
 						$newRule['action_arg']	= get_var('folder',array('POST'));
+						#$newRule['action_arg']	= $GLOBALS['egw']->translation->convert($newRule['action_arg'], $this->charset, 'UTF7-IMAP');
 						break;
 
 					case 'address':
@@ -474,7 +475,7 @@
 					$vacation	= $this->bosieve->getVacation($this->scriptName);
 				}
 			} else {
-				// something got wrong
+				// something went wrong
 			}
 
 			if(isset($_POST["vacationStatus"])) {
@@ -522,7 +523,11 @@
 			$this->t->set_var('vacation_text',$this->botranslation->convert($vacation['text'],'UTF-8'));
 
 			//vacation days
-			$this->t->set_var('selected_'.$vacation['days'],'selected="selected"');
+			if(empty($vacation)) {
+				$this->t->set_var('selected_7', 'selected="selected"');
+			} else {
+				$this->t->set_var('selected_'.$vacation['days'], 'selected="selected"');
+			}
 
 			// vacation addresses
 			if(is_array($vacation['addresses'])) {
@@ -531,9 +536,13 @@
 				}
 				asort($selectedAddresses);
 			}
+			
 
 			$allIdentities = $preferences->getIdentity();
 			foreach($allIdentities as $key => $singleIdentity) {
+				if(empty($vacation) && $singleIdentity->default === true) {
+					$selectedAddresses[$singleIdentity->emailAddress] = $singleIdentity->emailAddress;
+				}
 				$predefinedAddresses[$singleIdentity->emailAddress] = $singleIdentity->emailAddress;
 			}
 			asort($predefinedAddresses);
@@ -575,10 +584,11 @@
 			$this->listRules();
 		}
 		
-		function listRules() {
+		function listRules() 
+		{
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			
-			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
+			$uiwidgets	=& CreateObject('felamimail.uiwidgets', EGW_APP_TPL);
 			$boemailadmin	=& CreateObject('emailadmin.bo');
 
 			$this->getRules();	/* ADDED BY GHORTH */
@@ -722,7 +732,8 @@
 				lang('IMAP Server'),
 				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
 				'divFolderTree',
-				false
+				false,
+				true
 			);
 			print '<div id="divFolderTree" style="overflow:auto; width:375px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;"></div>';
 			print $folderTree;
@@ -750,7 +761,8 @@
 			return $match;
 		}
 		
-		function saveScript() {
+		function saveScript() 
+		{
 			$scriptName 	= $_POST['scriptName'];
 			$scriptContent	= $_POST['scriptContent'];
 			if(isset($scriptName) and isset($scriptContent))
@@ -776,7 +788,8 @@
 			$this->mainScreen();
 		}
 
-		function saveSessionData() {
+		function saveSessionData() 
+		{
 			$sessionData['sieve_rules']		= $this->rules;
 			$sessionData['sieve_scriptToEdit']	= $this->scriptToEdit;
 			
@@ -902,74 +915,6 @@
 			}
 		}
 		
-#		function updateVacation()
-#		{
-#			#phpinfo();exit;
-#
-#			$scriptName = get_var('scriptname',array('GET'));
-#			$script =& CreateObject('felamimail.Script',$scriptName);
-#
-#			if(!empty($scriptName))
-#			{
-#				if($this->sieve->getscript($scriptName))
-#				{
-#					// fetch the rules to the internal structure inside
-#					// the $script object
-#					if (!$script->retrieveRules($this->sieve))
-#					{
-#						#print "can't receive script<br>";
-#						$this->editScript();
-#					}
-#				}
-#				else
-#				{
-#					#print "Unable to change active script!<br>";
-#					/* we could display the full output here */
-#					$this->listScripts();
-#					$GLOBALS['egw']->common->egw_exit();
-#				}
-#			}
-#
-#			switch(get_var('vacationRule_action',array('POST')))
-#			{
-#				case 'enable':
-#				case 'save':
-#				case 'disable':
-#					$vacation['text']	= get_var('vacation_text',array('POST'));
-#					$vacation['text']	= $this->botranslation->convert($vacation['text'],$this->displayCharset,'UTF-8');
-#					$vacation['days']	= get_var('days',array('POST'));
-#					$vacation['addresses']	= get_var('vacationAddresses',array('POST'));
-#					$vacation['status']	= get_var('vacationRule_action',array('POST')) == 'disable' ? 'off' : 'on';
-#					if($this->checkRule($vacation))
-#					{
-#						$script->vacation	= $vacation;
-#						if (!$script->updateScript($this->sieve)) 
-#						{
-#							print "update failed<br>";
-#							print $script->errstr."<br>";
-#						}
-#					}
-#					break;
-#				
-#				case 'delete':
-#					$script->vacation	= array();
-#					if (!$script->updateScript($this->sieve)) 
-#					{
-#						print "update failed<br>";
-#						print $script->errstr."<br>";
-#					}
-#					break;
-#
-#				default:
-#					print "unhandeld vacationRule_action:". get_var('vacationRule_action',array('POST')) ."<br>";
-#					break;
-#			}
-#			
-#			$this->editScript();
-#		}
-		
-
-
 		/* ADDED BY GHORTH */
 		function getRules()
 		{
@@ -983,7 +928,7 @@
 					$this->vacation	= $this->bosieve->getVacation($this->scriptName);
 				}
 			} else {
-				// something got wrong
+				// something went wrong
 			}
 		}
 	}

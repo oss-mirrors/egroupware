@@ -183,7 +183,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
 		</td>
 		<td colspan=2 align="right" class="mainscreenRow" width="40px">
-			<span style="font-size:10px">{size}</span
+			<span style="font-size:10px">{size}</span>
 		</td>
 				
 </tr>
@@ -213,19 +213,21 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			<nobr><span style="font-size:10px">{date}</span>
 		</td>
 		<td colspan=2 align="right" class="mainscreenRow" width="40px">
-			<span style="font-size:10px">{size}</span
+			<span style="font-size:10px">{size}</span>
 		</td>
 				
 </tr>
 <!-- END header_row_outlook -->
 
 <!-- BEGIN error_message -->
-	<tr>
-		<td bgcolor="#FFFFCC" align="center" colspan="6">
-			<font color="red"><b>{lang_connection_failed}</b></font><br>
-			<br>{message}<br><br>
-		</td>
-	</tr>
+        <table style="width:100%;">
+                <tr>
+                        <td bgcolor="#FFFFCC" align="center" colspan="6">
+                                <font color="red"><b>{lang_connection_failed}</b></font><br>
+                                <br>{connection_error_message}<br><br>
+                        </td>
+                </tr>
+        </table>
 <!-- END error_message -->
 
 <!-- BEGIN quota_block -->

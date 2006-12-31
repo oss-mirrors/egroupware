@@ -34,13 +34,13 @@
 			
 			$this->restoreSessionData();
 			
-			if(!is_array($this->sessionData['filter']))
-			{
+			if(!is_array($this->sessionData['filter'])) {
 				$this->sessionData['filter'][0]['filterName'] = lang('Quicksearch');
 				$this->saveSessionData();
 			}
-			if(!isset($this->sessionData['activeFilter']))
+			if(!isset($this->sessionData['activeFilter'])) {
 				$this->sessionData['activeFilter'] = "-1";
+			}
 		}
 		
 		function deleteFilter($_filterID)

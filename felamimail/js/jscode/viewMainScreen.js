@@ -43,12 +43,12 @@ function onNodeSelect(_nodeID) {
 	if(document.getElementsByName("folderAction")[0].value == "moveMessage") {
 		resetMessageSelect();
 		formData = xajax.getFormValues('formMessageList');
-		setStatusMessage(movingMessages +' <span style="font-weight: bold;">'+ _nodeID +'</span>');
+		setStatusMessage(movingMessages +' <span style="font-weight: bold;">'+ tree.getUserData(_nodeID, 'folderName') +'</span>');
 		document.getElementById('divMessageList').innerHTML = '';
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.moveMessages", _nodeID, formData);
 	} else {
 		resetMessageSelect();
-		setStatusMessage('<span style="font-weight: bold;">' + lang_loading + ' ' + _nodeID + '</span>');
+		setStatusMessage('<span style="font-weight: bold;">' + lang_loading + ' ' + tree.getUserData(_nodeID, 'folderName') + '</span>');
 		document.getElementById('divMessageList').innerHTML = '';
 		xajax_doXMLHTTP("felamimail.ajaxfelamimail.updateMessageView",_nodeID);
 	}

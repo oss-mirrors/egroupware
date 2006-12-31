@@ -35,7 +35,7 @@ class Script {
 
 	// get sieve script rules for this user
 	function retrieveRules ($connection) {
-		global $_SESSION;
+		#global $_SESSION;
 		$continuebit = 1;
 		$sizebit = 2;
 		$anyofbit = 4;
@@ -170,7 +170,8 @@ class Script {
 	// update and save sieve script
 	function updateScript ($connection) 
 	{
-		global $_SESSION,$default,$sieve;
+		#global $_SESSION,$default,$sieve;
+		global $default,$sieve;
 		
 		$activerules = 0;
 		$regexused = 0;

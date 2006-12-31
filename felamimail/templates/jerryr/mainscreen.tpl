@@ -220,12 +220,14 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 <!-- END header_row_outlook -->
 
 <!-- BEGIN error_message -->
-	<tr>
-		<td bgcolor="#FFFFCC" align="center" colspan="6">
-			<font color="red"><b>{lang_connection_failed}</b></font><br>
-			<br>{message}<br><br>
-		</td>
-	</tr>
+        <table style="width:100%;">
+                <tr>
+                        <td bgcolor="#FFFFCC" align="center" colspan="6">
+                                <font color="red"><b>{lang_connection_failed}</b></font><br>
+                                <br>{connection_error_message}<br><br>
+                        </td>
+                </tr>
+        </table>
 <!-- END error_message -->
 
 <!-- BEGIN quota_block -->

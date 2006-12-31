@@ -20,6 +20,7 @@
 			'action'		=> True,
 			'compose'		=> True,
 			'composeFromDraft'	=> True,
+			'getAttachment'		=> True,
 			'fileSelector'		=> True,
 			'forward'		=> True,
 			'reply'			=> True,
@@ -78,7 +79,11 @@
 
 			foreach($_POST['destination'] as $key => $destination) {
 				if(!empty($_POST['address'][$key])) {
-					$formData[$destination][] = $_POST['address'][$key];
+					if($destination == 'folder') {
+						$formData[$destination][] = $GLOBALS['egw']->translation->convert($_POST['address'][$key], $this->charset, 'UTF7-IMAP');
+					} else {
+						$formData[$destination][] = $_POST['address'][$key];
+					}
 				}
 			}
 
@@ -244,7 +249,9 @@
 			
 			$signatures = ExecMethod('felamimail.bopreferences.getListOfSignatures');
 
-			$selectSignatures = array();
+			$selectSignatures = array(
+				'-1' => lang('no signature')
+			);
 			foreach($signatures as $signature) {
 				$selectSignatures[$signature['signatureid']] = $signature['description'];
 			}
@@ -373,6 +380,22 @@
 			$this->compose();
 		}
 
+		function getAttachment()
+		{	
+			$bocompose  =& CreateObject('felamimail.bocompose', $_GET['_composeID']);			
+			$attachment =  $bocompose->sessionData['attachments'][$_GET['attID']] ;
+			header ("Content-Type: ".$attachment['type']."; name=\"". $this->bofelamimail->decode_header($attachment['name']) ."\"");
+			header ("Content-Disposition: inline; filename=\"". $this->bofelamimail->decode_header($attachment['name']) ."\"");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Pragma: public"); 
+			$fp = fopen($attachment['file'], 'rb');
+			fpassthru($fp);
+			$GLOBALS['egw']->common->egw_exit();
+			exit;
+																			
+		}
+
 		function getCleanHTML($_body)
 		{
 			$nonDisplayAbleCharacters = array('[\016]','[\017]',
@@ -463,7 +486,8 @@
 				lang('IMAP Server'),
 				$mailPreferences['username'].'@'.$mailPreferences['imapServerAddress'],
 				'divFolderTree',
-				false
+				false,
+				true
 			);
 			print '<div id="divFolderTree" style="overflow:auto; width:320px; height:450px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;"></div>';
 			print $folderTree;

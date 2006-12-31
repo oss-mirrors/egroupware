@@ -20,7 +20,7 @@ function fm_addSignature(_url)
 function fm_saveSignature() {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.saveSignature", "save", 
 		document.getElementById('signatureID').value, 
-		document.getElementById('description').value, 
+		document.getElementById('signatureDesc').value, 
 		fm_getEditorContent()
 	);
 	window.setTimeout("window.close()", 1000);
@@ -29,7 +29,7 @@ function fm_saveSignature() {
 function fm_applySignature() {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.saveSignature", "apply", 
 		document.getElementById('signatureID').value, 
-		document.getElementById('description').value, 
+		document.getElementById('signatureDesc').value, 
 		fm_getEditorContent()
 	);
 }

@@ -74,6 +74,7 @@ date(newest first)	felamimail	de	Datum (neue zuerst)
 date(oldest first)	felamimail	de	Datum (alte zuerst)
 days	felamimail	de	Tage
 deactivate script	felamimail	de	Script abschalten
+default signature	felamimail	de	Standard Signatur
 default sorting order	felamimail	de	Standard Sortierreihenfolge
 delete all	felamimail	de	alle löschen
 delete folder	felamimail	de	Ordner löschen
@@ -91,10 +92,12 @@ display messages in multiple windows	felamimail	de	Nachrichten in mehreren Fenst
 display of html emails	felamimail	de	HTML EMails anzeigen
 display only when no plain text is available	felamimail	de	nur anzeigen wenn kein Plain Text vorhanden ist
 display preferences	felamimail	de	Anzeige Einstellungen
+displaying html messages is disabled	felamimail	de	Die Anzeige von HTML EMails ist deaktiviert.
 do it!	felamimail	de	Mach es!
 do not use sent	felamimail	de	Gesendete Objekte (Sent) nicht verwenden
 do not use trash	felamimail	de	Gelöschte Objekte (Trash) nicht verwenden
 do you really want to delete the '%1' folder?	felamimail	de	Wollen Sie wirklich den '%1' Ordner löschen?
+do you really want to delete the selected signatures?	felamimail	de	Möchten Sie die ausgewählte Signatur wirklich löschen?
 does not contain	felamimail	de	enthält nicht
 does not match	felamimail	de	trifft nicht zu
 does not match regexp	felamimail	de	trift nicht zu regulärer Ausdruck
@@ -196,6 +199,7 @@ imap server username	felamimail	de	IMAP Server Benutzername
 imaps authentication	felamimail	de	IMAPS Authetifizierung
 imaps encryption only	felamimail	de	IMAPS nur Verschlüsselung
 in	felamimail	de	In
+inbox	felamimail	de	Posteingang
 incoming mail server(imap)	felamimail	de	eingehender Mailserver (IMAP)
 index order	felamimail	de	Spaltenanordnung
 info	felamimail	de	Info
@@ -257,6 +261,7 @@ no highlighting is defined	felamimail	de	keine Hervorhebung definiert
 no message returned.	felamimail	de	Keine Nachrichten gefunden.
 no messages found...	felamimail	de	keine Nachrichten gefunden...
 no messages were selected.	felamimail	de	Es wurde keine NAchricht ausgewählt
+no plain text part found	felamimail	de	Kein Text Teil gefunden.
 no previous message	felamimail	de	Keine vorherige Nachricht vorhanden
 no supported imap authentication method could be found.	felamimail	de	Keine unterstützte IMAP Authentifizierungsmethode gefunden.
 no valid emailprofile selected!!	felamimail	de	Sie haben kein gültiges Email Profil ausgewählt!

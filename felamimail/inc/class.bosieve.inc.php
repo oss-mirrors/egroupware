@@ -67,7 +67,8 @@
 			return $this->vacation;
 		}
 		
-		function setRules($_scriptName, $_rules) {
+		function setRules($_scriptName, $_rules) 
+		{
 			$script         =& CreateObject('felamimail.Script',$_scriptName);
 
 			if($script->retrieveRules($this)) {
@@ -80,7 +81,8 @@
 			return false;
 		}
 
-		function setVacation($_scriptName, $_vacation) {
+		function setVacation($_scriptName, $_vacation) 
+		{
 			$script         =& CreateObject('felamimail.Script',$_scriptName);
 
 			if($script->retrieveRules($this)) {

@@ -37,7 +37,7 @@
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
-			$this->bofelamimail->openConnection('',OP_HALFOPEN);
+			$this->bofelamimail->openConnection();
 			
 			
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
@@ -83,6 +83,7 @@
 					break;
 
 				case 'felamimail.uipreferences.listFolder':
+				case 'felamimail.uipreferences.addACL':
 					$GLOBALS['egw']->js->validate_file('tabs','tabs');
 					$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 					$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
@@ -560,6 +561,7 @@
 			$this->t->set_var("lang_outgoing_server",lang('outgoing mail server(SMTP)'));
 			$this->t->set_var("auth_required",lang('authentication required'));
 			$this->t->set_var('lang_add_acl',lang('add acl'));
+			$this->t->set_var('lang_foldername',lang('foldername'));
 			$this->t->set_var('lang_description',lang('description'));
 			$this->t->set_var('lang_really_delete_signatures',lang('Do you really want to delete the selected signatures?'));
 			

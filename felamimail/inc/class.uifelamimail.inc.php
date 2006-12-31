@@ -36,7 +36,7 @@
 		var $timeCounter;
 		
 		// the object storing the data about the incoming imap server
-		var $icServer=0;
+		var $icServerID=0;
 		
 		function uifelamimail()
 		{
@@ -44,22 +44,12 @@
 
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 			$this->bofelamimail     =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
+
 			$this->bofilter		=& CreateObject('felamimail.bofilter');
 			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 			$this->preferences	= $this->bopreferences->getPreferences();
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
-	#		if(isset($_POST["filter"]) || isset($_GET["filter"])) {
-	#			// new search filter defined, lets start with message 1
-	#			$this->bofelamimail->sessionData['startMessage']= 1;
-	#		}
-
-	#		// navigate for and back
-	#		if(isset($_GET["startMessage"])) {
-	#			$this->bofelamimail->sessionData['startMessage'] = $_GET["startMessage"];
-	#		}
-			
 			$this->bofelamimail->saveSessionData();
 
 			$this->mailbox 		= $this->bofelamimail->sessionData['mailbox'];
@@ -74,9 +64,8 @@
 			// this does not belong to here
 
 			if($_GET['menuaction'] != 'felamimail.uifelamimail.hookAdmin' &&
-				 $_GET['menuaction'] != 'felamimail.uifelamimail.changeFolder')
-			{
-				$this->connectionStatus = $this->bofelamimail->openConnection();
+				 $_GET['menuaction'] != 'felamimail.uifelamimail.changeFolder') {
+				$this->connectionStatus = $this->bofelamimail->openConnection($this->icServerID);
 			}
 
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["row_on"];
@@ -84,7 +73,7 @@
 
 			$this->dataRowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->dataRowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+			#print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 		}
 
 		function addVcard()
@@ -335,7 +324,7 @@
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			
 			$this->display_app_header();
-			
+
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
 			$this->t->set_block('body','main');
 			$this->t->set_block('body','status_row_tpl');
@@ -351,48 +340,23 @@
 			$this->t->set_var('oldMailbox',$urlMailbox);
 			$this->t->set_var('image_path',EGW_IMAGES);
 			#printf ("this->uifelamimail->viewMainScreen() Line 272: %s<br>",date("H:i:s",mktime()));
+
 			// ui for the quotas
-			if($quota = $this->bofelamimail->getQuotaRoot()) {
-				// TODO reuse code from uiwidgets
-				if($quota['limit'] == 0) {
-					$quotaPercent=100;
-				} else {
-					$quotaPercent=round(($quota['usage']*100)/$quota['limit']);
-				}
-				
-				$quotaLimit=$this->show_readable_size($quota['limit']*1024);
-				$quotaUsage=$this->show_readable_size($quota['usage']*1024);
-
-				$this->t->set_var('leftWidth',$quotaPercent);
-
-				if($quotaPercent > 90) {
-					$this->t->set_var('quotaBG','red');
-				} elseif($quotaPercent > 80) {
-					$this->t->set_var('quotaBG','yellow');
-				} else {
-					$this->t->set_var('quotaBG','#66ff66');
-				}
-				
-				if($quotaPercent > 50) {
-					$this->t->set_var('quotaUsage_right','');
-					$this->t->set_var('quotaUsage_left',$quotaUsage .'/'.$quotaLimit);
-				} else {
-					$this->t->set_var('quotaUsage_left','');
-					$this->t->set_var('quotaUsage_right',$quotaUsage .'/'.$quotaLimit);
-				}
-				
-				$this->t->parse('quota_display','quota_block',True);
+			if($this->connectionStatus !== false) {
+				$quota = $this->bofelamimail->getQuotaRoot();
+			} else {
+				$quota['limit'] = 'NOT SET';
 			}
-			else
-			{
+			if($quota['limit'] != 'NOT SET') {
+				$quotaDisplay = $uiwidgets->quotaDisplay($quota['usage'], $quota['limit']);
+				$this->t->set_var('quota_display', $quotaDisplay);
+			} else {
 				$this->t->set_var('quota_display','&nbsp;');
 			}
-			
-			$linkData = array
-			(
+
+			$linkData = array (
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			#$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, egw_getWindowOuterHeight());";
 			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, 750);";
 
 			$navbarImages = array(
@@ -421,11 +385,10 @@
 					'tooltip'	=> lang('mark as deleted'),
 				),
 			);
-			foreach($navbarImages as $buttonName => $buttonInfo)
-			{
+			
+			foreach($navbarImages as $buttonName => $buttonInfo) {
 				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip']);
 			}
-			#$navbarButtons .= $uiwidgets->navbarSeparator();
 			$this->t->set_var('navbarButtonsLeft',$navbarButtons);
 
 			$navbarImages = array(
@@ -447,11 +410,9 @@
 				),
 			);
 			$navbarButtons  = '';
-			foreach($navbarImages as $buttonName => $buttonInfo)
-			{
+			foreach($navbarImages as $buttonName => $buttonInfo) {
 				$navbarButtons .= $uiwidgets->navbarButton($buttonName, $buttonInfo['action'], $buttonInfo['tooltip'],'right');
 			}
-			#$navbarButtons .= $uiwidgets->navbarSeparator();
 			$this->t->set_var('navbarButtonsRight',$navbarButtons);
 
 			// set the images
@@ -538,10 +499,11 @@
 				$this->t->set_var('quicksearch', $this->bofelamimail->sessionData['messageFilter']['string']);
 			}
 			
-			$defaultSearchType = (isset($this->bofelamimail->sessionData['messageFilter']['type']) ? $this->bofelamimail->sessionData['messageFilter']['type'] : 'subject');
+			$defaultSearchType = (isset($this->bofelamimail->sessionData['messageFilter']['type']) ? $this->bofelamimail->sessionData['messageFilter']['type'] : 'quick');
 			$defaultSelectStatus = (isset($this->bofelamimail->sessionData['messageFilter']['status']) ? $this->bofelamimail->sessionData['messageFilter']['status'] : 'any');
-			
+
 			$searchTypes = array(
+				'quick'		=> 'quicksearch',
 				'subject'	=> 'subject',
 				'from'		=> 'from',
 				'to'		=> 'to',
@@ -560,22 +522,19 @@
 			);
 			$selectStatus = $GLOBALS['egw']->html->select('status', $defaultSelectStatus, $statusTypes, false, "style='width:100%;' onchange='javascript:quickSearch();' id='status'");
 			$this->t->set_var('select_status', $selectStatus);
-			
-			if($this->connectionStatus != 'True')
-			{
-				$this->t->set_var('message',$this->connectionStatus);
+
+			if($this->connectionStatus === false) {
+				$this->t->set_var('connection_error_message', lang($this->bofelamimail->getErrorMessage()));
+				$this->t->set_var('message', '&nbsp;');
 				$this->t->parse('header_rows','error_message',True);
-			}
-			else
-			{
+			} else {
 				$headers = $this->bofelamimail->getHeaders($this->mailbox, $this->startMessage, $maxMessages, $this->sort, $this->sortReverse, $this->bofelamimail->sessionData['messageFilter']);
 
  				$headerCount = count($headers['header']);
 					
  				// if there aren't any messages left (eg. after delete or move) 
  				// adjust $this->startMessage  
- 				if ($headerCount==0 && $this->startMessage > $maxMessages)
- 				{
+ 				if ($headerCount==0 && $this->startMessage > $maxMessages) {
  					$this->startMessage = $this->startMessage - $maxMessages;
 					$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 					$headerCount = count($headers['header']);
@@ -601,100 +560,89 @@
 				$lastMessage = $headers['info']['last'];
 				$totalMessage = $headers['info']['total'];
 				$langTotal = lang("total");		
-			}
 			
-			$this->t->set_var('maxMessages',$i);
-			if($_GET["select_all"] == "select_all")
-			{
-				$this->t->set_var('checkedCounter',$i);
-			}
-			else
-			{
-				$this->t->set_var('checkedCounter','0');
-			}
-			
-			// set the select all/nothing link
-			if($_GET["select_all"] == "select_all")
-			{
-				// link to unselect all messages
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
-				);
-				$selectLink = sprintf("<a class=\"body_link\" href=\"%s\">%s</a>",
-							$GLOBALS['egw']->link('/index.php',$linkData),
-							lang("Unselect All"));
-				$this->t->set_var('change_folder_checked','');
-				$this->t->set_var('move_message_checked','checked');
-			}
-			else
-			{
-				// link to select all messages
-				$linkData = array
-				(
-					'select_all'	=> 'select_all',
-					'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
-				);
-				$selectLink = sprintf("<a class=\"body_link\" href=\"%s\">%s</a>",
-							$GLOBALS['egw']->link('/index.php',$linkData),
-							lang("Select all"));
-				$this->t->set_var('change_folder_checked','checked');
-				$this->t->set_var('move_message_checked','');
-			}
-			$this->t->set_var('select_all_link',$selectLink);
-			
-			$this->t->set_var('message',lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)");
-			if($firstMessage > 1)
-			{
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
-					'startMessage'	=> $this->startMessage - $maxMessages
-				);
-				$link = $GLOBALS['egw']->link('/index.php',$linkData);
-				$this->t->set_var('link_previous',"<a class=\"body_link\" href=\"$link\">".lang("previous")."</a>");
-			}
-			else
-			{
-				$this->t->set_var('link_previous',lang("previous"));
-			}
-			
-			if($totalMessage > $lastMessage)
-			{
-				$linkData = array
-				(
-					'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
-					'startMessage'	=> $this->startMessage + $maxMessages
-				);
-				$link = $GLOBALS['egw']->link('/index.php',$linkData);
-				$this->t->set_var('link_next',"<a class=\"body_link\" href=\"$link\">".lang("next")."</a>");
-			}
-			else
-			{
-				$this->t->set_var('link_next',lang("next"));
-			}
-			$this->t->parse('status_row','status_row_tpl',True);
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
-			$imapServer		=& $preferences->getIncomingServer(0);
+				$this->t->set_var('maxMessages',$i);
+				if($_GET["select_all"] == "select_all") {
+					$this->t->set_var('checkedCounter',$i);
+				} else {
+					$this->t->set_var('checkedCounter','0');
+				}
 			
-			$folderObjects = $this->bofelamimail->getFolderObjects(true, false);
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-			$folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox);
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+				// set the select all/nothing link
+				if($_GET["select_all"] == "select_all") {
+					// link to unselect all messages
+					$linkData = array
+					(
+						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
+					);
+					$selectLink = sprintf("<a class=\"body_link\" href=\"%s\">%s</a>",
+								$GLOBALS['egw']->link('/index.php',$linkData),
+								lang("Unselect All"));
+					$this->t->set_var('change_folder_checked','');
+					$this->t->set_var('move_message_checked','checked');
+				} else {
+					// link to select all messages
+					$linkData = array
+					(
+						'select_all'	=> 'select_all',
+						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
+					);
+					$selectLink = sprintf("<a class=\"body_link\" href=\"%s\">%s</a>",
+								$GLOBALS['egw']->link('/index.php',$linkData),
+								lang("Select all"));
+					$this->t->set_var('change_folder_checked','checked');
+					$this->t->set_var('move_message_checked','');
+				}
+				$this->t->set_var('select_all_link',$selectLink);
+			
+				$this->t->set_var('message',lang("Viewing messages")." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage $langTotal)");
+				if($firstMessage > 1) {
+					$linkData = array
+					(
+						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+						'startMessage'	=> $this->startMessage - $maxMessages
+					);
+					$link = $GLOBALS['egw']->link('/index.php',$linkData);
+					$this->t->set_var('link_previous',"<a class=\"body_link\" href=\"$link\">".lang("previous")."</a>");
+				} else {
+					$this->t->set_var('link_previous',lang("previous"));
+				}
 
-			$folderTree = $uiwidgets->createHTMLFolder
-			(
-				$folderObjects, 
-				$this->mailbox, 
-				$folderStatus['unseen'],
-				lang('IMAP Server'), 
-				$imapServer->username.'@'.$imapServer->host,
-				'divFolderTree',
-				FALSE
-			);
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+				if($totalMessage > $lastMessage) {
+					$linkData = array (
+						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+						'startMessage'	=> $this->startMessage + $maxMessages
+					);
+					$link = $GLOBALS['egw']->link('/index.php',$linkData);
+					$this->t->set_var('link_next',"<a class=\"body_link\" href=\"$link\">".lang("next")."</a>");
+				} else {
+					$this->t->set_var('link_next',lang("next"));
+				}
+				$this->t->parse('status_row','status_row_tpl',True);
+				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+				
+				$imapServer		=& $preferences->getIncomingServer(0);
+			
+				$folderObjects = $this->bofelamimail->getFolderObjects(true, false);
+				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+				$folderStatus = $this->bofelamimail->getFolderStatus($this->mailbox);
+				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
 
+				$folderTree = $uiwidgets->createHTMLFolder
+				(
+					$folderObjects, 
+					$this->mailbox, 
+					$folderStatus['unseen'],
+					lang('IMAP Server'), 
+					$imapServer->username.'@'.$imapServer->host,
+					'divFolderTree',
+					FALSE
+				);
+				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
+				$this->bofelamimail->closeConnection();
+
+			}
 			$this->t->set_var('current_mailbox',$current_mailbox);
 			$this->t->set_var('folder_tree',$folderTree);
 
@@ -741,12 +689,7 @@
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
 			
-			if($this->connectionStatus == 'True')
-			{
-				$this->bofelamimail->closeConnection();
-			}
 			$GLOBALS['egw']->common->egw_footer();
-			
 		}
 
 		function array_merge_replace( $array, $newValues ) 

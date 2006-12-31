@@ -74,6 +74,7 @@ date(newest first)	felamimail	en	Date (newest first)
 date(oldest first)	felamimail	en	Date (oldest first)
 days	felamimail	en	days
 deactivate script	felamimail	en	deactivate script
+default signature	felamimail	en	default signature
 default sorting order	felamimail	en	Default sorting order
 delete all	felamimail	en	delete all
 delete folder	felamimail	en	Delete Folder
@@ -91,10 +92,12 @@ display messages in multiple windows	felamimail	en	display messages in multiple 
 display of html emails	felamimail	en	Display of HTML emails
 display only when no plain text is available	felamimail	en	Display only when no plain text is available
 display preferences	felamimail	en	Display Preferences
+displaying html messages is disabled	felamimail	en	displaying html messages is disabled
 do it!	felamimail	en	do it!
 do not use sent	felamimail	en	Do not use Sent
 do not use trash	felamimail	en	Do not use Trash
 do you really want to delete the '%1' folder?	felamimail	en	Do you really want to delete the '%1' folder?
+do you really want to delete the selected signatures?	felamimail	en	Do you really want to delete the selected signatures?
 does not contain	felamimail	en	does not contain
 does not match	felamimail	en	does not match
 does not match regexp	felamimail	en	does not match regexp
@@ -196,6 +199,7 @@ imap server username	felamimail	en	imap server username
 imaps authentication	felamimail	en	IMAPS Authentication
 imaps encryption only	felamimail	en	IMAPS Encryption only
 in	felamimail	en	in
+inbox	felamimail	en	INBOX
 incoming mail server(imap)	felamimail	en	incoming mail server(IMAP)
 index order	felamimail	en	Index Order
 info	felamimail	en	Info
@@ -257,6 +261,7 @@ no highlighting is defined	felamimail	en	No highlighting is defined
 no message returned.	felamimail	en	No message returned.
 no messages found...	felamimail	en	no messages found...
 no messages were selected.	felamimail	en	No messages were selected.
+no plain text part found	felamimail	en	no plain text part found
 no previous message	felamimail	en	no previous Message
 no supported imap authentication method could be found.	felamimail	en	No supported IMAP authentication method could be found.
 no valid emailprofile selected!!	felamimail	en	No Valid Email Profile Selected!!

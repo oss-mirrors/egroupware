@@ -50,7 +50,7 @@
 		
 		// the current selected user profile
 		var $profileID = 0;
-
+		
 		function bofelamimail($_displayCharset='iso-8859-1')
 		{
 			$this->restoreSessionData();
@@ -62,7 +62,7 @@
 			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 			$this->sofelamimail	=& CreateObject('felamimail.sofelamimail');
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
-			
+
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->icServer = $this->mailPreferences->getIncomingServer(0);
 			$this->ogServer = $this->mailPreferences->getOutgoingServer(0);
@@ -87,7 +87,7 @@
 				
 				$this->sessionData['messageFilter'] = array(
 					'string'	=> '',
-					'type'		=> 'subject',
+					'type'		=> 'quick',
 					'status'	=> 'any',
 				);
 				
@@ -127,29 +127,29 @@
 						break;
 				}
 				$this->saveSessionData();
-				
-				$this->checkCreateFolders();
 			}
 			
-			if (function_exists('mb_convert_encoding')) $this->mbAvailable = TRUE;
+			if (function_exists('mb_convert_encoding')) {
+				$this->mbAvailable = TRUE;
+			}
 
 			$this->htmlOptions	= $this->mailPreferences->preferences['htmlOptions'];
 		}
 		
-		function checkCreateFolders()
+		function setACL($_folderName, $_accountName, $_acl)
 		{
-			$this->folders = array('Sent','Trash','Junk','Drafts');
-			$this->openConnection();
-			
-			foreach ($this->folders as $folder)
-			{
-				$this->imap_createmailbox($folder,true);
+			if ( PEAR::isError($this->icServer->setACL($_folderName, $_accountName, $_acl)) ) {
+				return false;
 			}
+			
+			return TRUE;
 		}
 		
-		function addACL($_folderName, $_accountName, $_acl)
+		function deleteACL($_folderName, $_accountName)
 		{
-			imap_setacl($this->mbox, $_folderName, $_accountName, $_acl);
+			if ( PEAR::isError($this->icServer->deleteACL($_folderName, $_accountName)) ) {
+				return false;
+			}
 			
 			return TRUE;
 		}
@@ -162,7 +162,8 @@
 		* @param _hookValues contains the hook values as array
 		* @returns nothing
 		*/
-		function addAccount($_hookValues) {
+		function addAccount($_hookValues) 
+		{
 			$icServer = $this->mailPreferences->getIncomingServer(0);
 			if(is_a($icServer,'defaultimap')) {
 				$icServer->addAccount($_hookValues);
@@ -192,998 +193,91 @@
 			}
 		}
 		
+		/**
+		* save a message in folder
+		*
+		* @todo set flags again
+		*
+		* @param string _folderName the foldername 
+		* @param string _header the header of the message
+		* @param string _body the body of the message
+		* @param string _flags the imap flags to set for the saved message
+		*
+		* @returns nothing
+		*/
 		function appendMessage($_folderName, $_header, $_body, $_flags)
 		{
-			$imapServer =& $this->mailPreferences->getIncomingServer(0);
-			#print "<pre>$_header.$_body</pre>";
-			$mailboxString = $imapServer->getMailboxString($_folderName);
-			$header = str_replace("\n","\r\n",$_header);
+			$header = ltrim(str_replace("\n","\r\n",$_header));
 			$body   = str_replace("\n","\r\n",$_body);
-			$result = @imap_append($this->mbox, $mailboxString, "$header"."$body", $_flags);
-			#print imap_last_error();exit;
-			return $result;
-		}
-		
-		function closeConnection()
-		{
-			if(is_resource($this->mbox)) {
-				imap_close($this->mbox);
+			if ( PEAR::isError($this->icServer->appendMessage("$header"."$body", $_folderName, $_flags))) {
+				return false;
 			}
+			return true;
 		}
 		
+		function closeConnection() {
+			$this->icServer->disconnect();
+		}
+		
+		/**
+		* remove any messages which are marked as deleted or
+		* remove any messages from the trashfolder
+		*
+		* @param string _folderName the foldername 
+		* @returns nothing
+		*/
 		function compressFolder($_folderName = false)
 		{
 			$folderName	= ($_folderName ? $_folderName : $this->sessionData['mailbox']);
 			$deleteOptions	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['deleteOptions'];
 			$trashFolder	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'];
 			
-			$this->reopen($folderName);
+			$this->icServer->selectMailbox($folderName);
 
 			if($folderName == $trashFolder && $deleteOptions == "move_to_trash") {
-				$imapServer =& $this->mailPreferences->getIncomingServer(0);
-				$mailboxString = $imapServer->getMailboxString($folderName);
-				$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
-				$numberOfMessages = $status->messages;
-				$msgList = "1:$numberOfMessages";
-				imap_delete($this->mbox, $msgList);
-				imap_expunge($this->mbox);
-
-				$caching =& CreateObject('felamimail.bocaching',
-					$imapServer->host,
-					$imapServer->username,
-					$folderName);
-				$caching->clearCache($folderName);
+				$this->icServer->deleteMessages('1:*');
+				$this->icServer->expunge();
 			} else {
-				// delete all messages in the current folder which have the deleted flag set 
-				imap_expunge($this->mbox);
-				$this->updateCache($folderName);				
+				$this->icServer->expunge();
 			}
-		}
-		
-		function decodeFolderName($_folderName)
-		{
-			if($this->mbAvailable)
-			{
-				return mb_convert_encoding( $_folderName, $this->displayCharset, "UTF7-IMAP");
-			}
-			
-			// if not
-			return @imap_utf7_decode($_folderName);
-		}
-
-		function decodeMimePart($_mimeMessage, $_encoding) {
-			#// MS-Outlookbug workaround (don't break links)
-			#$mimeMessage = preg_replace("!((http(s?)://)|((www|ftp)\.))(([^\n\t\r]+)([=](\r)?\n))+!i", 
-			#		"$1$7", 
-			#		$_mimeMessage);
-
-			// decode the file ...
-			switch ($_encoding) 
-			{
-				case ENCBASE64:
-					// use imap_base64 to decode
-					return imap_base64($_mimeMessage);
-					break;
-				case ENCQUOTEDPRINTABLE:
-					// use imap_qprint to decode
-					return quoted_printable_decode($_mimeMessage);
-					break;
-				case ENCOTHER:
-					// not sure if this needs decoding at all
-					#break;
-				default:
-					// it is either not encoded or we don't know about it
-					return $_mimeMessage;
-					break;
-			}
-		}
-
-		function decode_header($_string)
-		{
-			$newString = '';
-
-			$string = preg_replace('/\?=\s+=\?/', '?= =?', $_string);
-
-			$elements=imap_mime_header_decode($string);
-
-			foreach((array)$elements as $element) {
-				if ($element->charset == 'default')
-					$element->charset = 'iso-8859-1';
-				$tempString = $this->botranslation->convert($element->text,$element->charset);
-				$newString .= $tempString;
-			}
-			return $newString;
-		}
-		
-		function deleteAccount($_hookValues)
-		{
-			$icServer = $this->mailPreferences->getIncomingServer(0);
-			if(is_a($icServer,'defaultimap')) {
-				$icServer->deleteAccount($_hookValues);
-			}
-
-			$ogServer = $this->mailPreferences->getOutgoingServer(0);
-			if(is_a($ogServer,'defaultsmtp')) {
-				$ogServer->deleteAccount($_hookValues);
-			}
-		}
-		
-		function deleteFolder($_folderName) {
-			if(is_a($this->icServer, 'defaultimap')) {
-				$folderName = $this->icServer->getMailboxString($_folderName);
-				@imap_unsubscribe($this->mbox, $folderName);
-				$result = imap_deletemailbox($this->mbox, $folderName);
-				return $result;
-			}
-			
-			return false;
-		}
-
-		function deleteMessages($_messageUID) {
-			$msglist = '';
-			
-			$imapServer =& $this->mailPreferences->getIncomingServer(0);
-		#	$caching =& CreateObject('felamimail.bocaching',
-		#			$imapServer->host,
-		#			$imapServer->username,
-		#			$this->sessionData['mailbox']);
-
-			foreach($_messageUID as $key => $value) {
-				if(!empty($msglist)) $msglist .= ",";
-				$msglist .= $value;
-			}
-
-			$deleteOptions  = $this->mailPreferences->preferences['deleteOptions'];
-                        $trashFolder    = $this->mailPreferences->preferences['trashFolder'];
-
-			if($this->sessionData['mailbox'] == $trashFolder && $deleteOptions == "move_to_trash") {
-				$deleteOptions = "remove_immediately";
-			}
-			$this->reopen($this->sessionData['mailbox']);
-			
-			switch($deleteOptions) {
-				case "move_to_trash":
-					if(!empty($trashFolder)) {
-						if (imap_mail_move ($this->mbox, $msglist, $this->encodeFolderName($trashFolder), CP_UID)) {
-							imap_expunge($this->mbox);
-		#					reset($_messageUID);
-		#					while(list($key, $value) = each($_messageUID)) {
-		#						$caching->removeFromCache($value);
-		#					}
-						} else {
-							//print imap_last_error()."<br>";
-							error_log(imap_last_error());
-						}
-					}
-					break;
-
-				case "mark_as_deleted":
-					imap_delete($this->mbox, $msglist, FT_UID);
-					break;
-
-				case "remove_immediately":
-					imap_delete($this->mbox, $msglist, FT_UID);
-					imap_expunge ($this->mbox);
-		#			reset($_messageUID);
-		#			while(list($key, $value) = each($_messageUID))
-		#			{
-		#				$caching->removeFromCache($value);
-		#			}
-					break;
-			}
-		}
-		
-		function encodeFolderName($_folderName)
-		{
-			if($this->mbAvailable)
-			{
-				return mb_convert_encoding( $_folderName, "UTF7-IMAP", $this->displayCharset );
-			}
-			
-			// if not
-			return imap_utf7_encode($_folderName);
-		}
-
-		function encodeHeader($_string, $_encoding='q')
-		{
-			switch($_encoding)
-			{
-				case "q":
-					if(!preg_match("/[\x80-\xFF]/",$_string))
-					{
-						// nothing to quote, only 7 bit ascii
-						return $_string;
-					}
-					
-					$string = imap_8bit($_string);
-					$stringParts = explode("=\r\n",$string);
-					while(list($key,$value) = each($stringParts))
-					{
-						if(!empty($retString)) $retString .= " ";
-						$value = str_replace(" ","_",$value);
-						// imap_8bit does not convert "?"
-						// it does not need, but it should
-						$value = str_replace("?","=3F",$value);
-						$retString .= "=?".strtoupper($this->displayCharset). "?Q?". $value. "?=";
-					}
-					#exit;
-					return $retString;
-					break;
-				default:
-					return $_string;
-			}
-		}
-
-		function flagMessages($_flag, $_messageUID)
-		{
-			if(!is_array($_messageUID))
-				return false;
-			
-			foreach($_messageUID as $value)
-			{
-				if(!empty($msglist)) $msglist .= ",";
-				$msglist .= $value;
-			}
-
-			$this->reopen($this->sessionData['mailbox']);
-			
-			switch($_flag)
-			{
-				case "flagged":
-					$result = imap_setflag_full ($this->mbox, $msglist, "\\Flagged", ST_UID);
-					break;
-				case "read":
-					$result = imap_setflag_full ($this->mbox, $msglist, "\\Seen", ST_UID);
-					break;
-				case "answered":
-					$result = imap_setflag_full ($this->mbox, $msglist, "\\Answered", ST_UID);
-					break;
-				case "unflagged":
-					$result = imap_clearflag_full ($this->mbox, $msglist, "\\Flagged", ST_UID);
-					break;
-				case "unread":
-					$result = imap_clearflag_full ($this->mbox, $msglist, "\\Seen", ST_UID);
-					$result = imap_clearflag_full ($this->mbox, $msglist, "\\Answered", ST_UID);
-					break;
-			}
-			
-			$this->sessionData['folderStatus'][$this->profileID][$this->sessionData['mailbox']]['uidValidity'] = 0;
-			$this->saveSessionData();
-			
-			#error_log(imap_last_error());
-			#print "Result: $result<br>";
-		}
-		
-		// this function is based on a on "Building A PHP-Based Mail Client"
-		// http://www.devshed.com
-		// fetch a specific attachment from a message
-		function getAttachment($_uid, $_partID)
-		{
-			// parse message structure
-			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			$sections = array();
-			$this->parseMessage($sections, $structure, $_partID);
-			
-			#_debug_array($sections);
-			
-			$type 		= $sections[$_partID]["mimeType"];
-			$encoding 	= $sections[$_partID]["encoding"];
-			$filename 	= $this->decode_header($sections[$_partID]["name"]);
-			
-			$attachment = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
-			
-			switch ($encoding) 
-			{
-				case ENCBASE64:
-					// use imap_base64 to decode
-					$attachment = imap_base64($attachment);
-					break;
-				case ENCQUOTEDPRINTABLE:
-					// use imap_qprint to decode
-					$attachment = imap_qprint($attachment);
-					break;
-				case ENCOTHER:
-					// not sure if this needs decoding at all
-					break;
-				default:
-					// it is either not encoded or we don't know about it
-			}
-			
-			return array(
-				'type'		=> $type, 
-				'encoding'	=> $encoding, 
-				'filename'	=> $filename, 
-				'attachment'	=> $attachment
-				);
-		}
-		
-		// this function is based on a on "Building A PHP-Based Mail Client"
-		// http://www.devshed.com
-		// fetch a specific attachment from a message
-		function getAttachmentByCID($_uid, $_cid)
-		{
-			$partID = false;
-			
-			$attachments = $this->getMessageAttachments($_uid);
-			foreach($attachments as $attachment) {
-				if(strpos($attachment['id'], $_cid) !== false) {
-					$partID = $attachment['partID'];
-					break;
-				}
-			}
-
-			if(!$partID) {
-				return false;
-			}
-
-			// parse message structure
-			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			$sections = array();
-			$this->parseMessage($sections, $structure, $partID);
-			
-			#_debug_array($sections);
-			
-			$type 		= $sections[$partID]["mimeType"];
-			$encoding 	= $sections[$partID]["encoding"];
-			$filename 	= $this->decode_header($sections[$partID]["name"]);
-			
-			$attachment = imap_fetchbody($this->mbox, $_uid, $partID, FT_UID);
-			
-			switch ($encoding) 
-			{
-				case ENCBASE64:
-					// use imap_base64 to decode
-					$attachment = imap_base64($attachment);
-					break;
-				case ENCQUOTEDPRINTABLE:
-					// use imap_qprint to decode
-					$attachment = imap_qprint($attachment);
-					break;
-				case ENCOTHER:
-					// not sure if this needs decoding at all
-					break;
-				default:
-					// it is either not encoded or we don't know about it
-			}
-			
-			return array(
-				'type'		=> $type, 
-				'encoding'	=> $encoding, 
-				'filename'	=> $filename, 
-				'attachment'	=> $attachment
-				);
-		}
-		
-		function getEMailProfile()
-		{
-			$config =& CreateObject('phpgwapi.config','felamimail');
-			$config->read_repository();
-			$felamimailConfig = $config->config_data;
-			
-			#_debug_array($felamimailConfig);
-			
-			if(!isset($felamimailConfig['profileID']))
-			{
-				return -1;
-			}
-			else
-			{
-				return intval($felamimailConfig['profileID']);
-			}
-		}
-
-		function getFolderStatus($_folderName)
-		{
-			$retValue = array();
-			$retValue['subscribed'] = false;
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0))
-			{
-				return false;
-			}
-
-			// now we have the keys as values
-			$mailboxString = $icServer->getMailboxString($_folderName);
-
-			if(imap_getsubscribed($this->mbox, $mailboxString, $mailboxString))
-			{
-				$retValue['subscribed'] = true;
-			}
-
-			if(!$folderInfo = imap_getmailboxes($this->mbox, $mailboxString, $mailboxString)) {
-				// folder does not exist
-				error_log("folder ($mailboxString) does not exist");
-				return false;
-			}
-
-			$retValue['delimiter']	= (!empty($folderInfo[0]->delimiter) ? $folderInfo[0]->delimiter : $icServer->mailboxDelimiter);
-			$retValue['attributes']	= $folderInfo[0]->attributes;
-			$shortNameParts = explode($retValue['delimiter'], $_folderName);
-			$retValue['shortName']	= array_pop($shortNameParts);
-			
-			$folderStatus = imap_status($this->mbox,$mailboxString, SA_ALL);
-			if($folderStatus)
-			{
-				// merge a array and object to a array
-				$retValue = array_merge($retValue,(array)$folderStatus);
-			}
-
-			return $retValue;
 		}
 		
 		/**
-		* get IMAP folder objects
+		* create a new folder under given parent folder
 		*
-		* returns an array of IMAP folder objects. Put INBOX folder in first
-		* position. Preserves the folder seperator for later use. The returned
-		* array is indexed using the foldername.
+		* @param string _parent the parent foldername
+		* @param string _folderName the new foldername 
+		* @param bool _subscribe subscribe to the new folder
 		*
-		* THIS CODE REALLY NEEDS TO BE CLEANED UP SOMEDAY!!! (Lars)
-		*
-		* @param _subscribedOnly boolean get subscribed or all folders
-		* @param _getCounters    boolean get get messages counters
-		*
-		* @returns array with folder objects. eg.: INBOX => {inbox object}
-		*/		
-		function getFolderObjects($_subscribedOnly=false, $_getCounters=false) 
+		* @returns mixed name of the newly created folder or false on error
+		*/
+		function createFolder($_parent, $_folderName, $_subscribe=false)
 		{
-			#print LATT_NOINFERIORS."<bR>";
-			#print LATT_NOSELECT."<br>";
-			#$_subscribedOnly=false;
-			#$list = array();
-			$isUWIMAP = false;
+			$parent		= $this->_encodeFolderName($_parent);
+			$folderName	= $this->_encodeFolderName($_folderName);
 			
-			if (!is_resource($this->mbox)) { 
-				return $false;
-			} 
-			
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
-				return $false;
-			}
-
-			$inboxData = new stdClass;
-			$inboxData->name = $icServer->getMailboxString('INBOX');
-			$inboxData->delimiter = $icServer->getDelimiter();
-			$inboxData->subscribed = true;
-			#$inboxData->attributes = 64;
-			$folders = array('INBOX' => $inboxData);
-			#_debug_array($folders);
-
-			#print basename(__FILE__) .' '. __LINE__ ."<br>";
-			$nameSpace = $icServer->getNameSpace(IMAP_NAMESPACE_ALL);
-			#krsort($nameSpace);
-			#_debug_array($nameSpace);
-			#_debug_array($icServer->mailboxPrefix);
-			
-			// uw imap does not return the attribute of a folder, when requesting subscribed folders only
-			$mailboxString = $icServer->getMailboxString();
-			if(isset($nameSpace['#mh/'])) {
-				// detected uw-imap! the most worst imap server ever!!!!
-				// we support only the personal namespace on uwimap
-				$foldersNameSpace['personal']['subscribed'] = imap_getsubscribed($this->mbox, $mailboxString, $icServer->mailboxPrefix.'/*');
-
-				foreach($foldersNameSpace['personal']['subscribed'] as $id => $folderInfo) {
-					$shortName = preg_replace("/{.*}/",'',$folderInfo->name);
-					$mailBoxInfo = imap_getmailboxes($this->mbox,$mailboxString, $shortName);
-					if(is_a($mailBoxInfo[0], 'stdClass')) {
-						$foldersNameSpace['personal']['subscribed'][$id] = $mailBoxInfo[0];
-					}
-				}
-				
-				if(!$_subscribedOnly) {
-					$foldersNameSpace['personal']['all'] = imap_getmailboxes($this->mbox, $mailboxString, $icServer->mailboxPrefix.'/*');
-				}
-				$foldersNameSpace['personal']['prefix'] = '';
-				$foldersNameSpace['personal']['delimiter'] = '/';
-				
-				$isUWIMAP = TRUE;
-				
-			} else { foreach($nameSpace as $singleNameSpace) {
-				// some imap servers support multiple prefixes for the some namespace type. only use the first.
-				if(isset($foldersNameSpace[$singleNameSpace['type']])) continue;
-				#_debug_array($singleNameSpace);
-				
-				$foldersNameSpace[$singleNameSpace['type']]['subscribed'] = imap_getsubscribed($this->mbox, $mailboxString, $singleNameSpace['name'].'*');
-				if(!$_subscribedOnly) {
-					$foldersNameSpace[$singleNameSpace['type']]['all'] = imap_getmailboxes($this->mbox, $mailboxString, $singleNameSpace['name'].'*');
-				}
-				$foldersNameSpace[$singleNameSpace['type']]['prefix'] = $singleNameSpace['name'];
-				$foldersNameSpace[$singleNameSpace['type']]['delimiter'] = $singleNameSpace['delimiter'];
-			}}
-
-			$personalInboxFolders	= array();
-			$personalOtherFolders	= array();
-			$otherUsersFolders	= array();
-			$sharedFolders		= array();
-			$foundFolders		= array($inboxData->name => true);
-
-			foreach($foldersNameSpace as $nameSpaceType => $nameSpaceFolders) {
-				if((is_array($nameSpaceFolders['subscribed']) && $_subscribedOnly) ||
-					(is_array($nameSpaceFolders['all']) && !$_subscribedOnly) ) {
-					#print "111: $nameSpaceType<br>";
-					#_debug_array($nameSpaceFolders);
-					#print "foundFolders<br>";
-					#_debug_array($foundFolders);
-#######################################
-					// create a array containing all subscribed folders for this namespace
-					if(!$_subscribedOnly) {
-						foreach((array)$nameSpaceFolders['subscribed'] as $folderInfo) {
-							$subscribedFolders[$folderInfo->name] = TRUE;
-						}
-					}
-					$folderList = ($_subscribedOnly ? $nameSpaceFolders['subscribed'] : $nameSpaceFolders['all']);
-					#_debug_array($folderList);
-					foreach($folderList as $key => $val) {
-						// we got this folder already
-						if($foundFolders[$val->name]) continue;
-						
-						// is this folder subscribed
-						$val->subscribed = ($_subscribedOnly ? TRUE : (bool)$subscribedFolders[$val->name]);
-
-						if(empty($val->delimiter)) {
-							$val->delimiter = $icServer->getDelimiter();
-						}
-					
-						if($isUWIMAP && !empty($icServer->mailboxPrefix)) {
-							$pregMailboxPrefix = preg_quote($icServer->mailboxPrefix,'/');
-							$pregMailboxPrefixFull = preg_quote($icServer->mailboxPrefix.$val->delimiter,'/');
-							$pregMailboxDelimiter = preg_quote($val->delimiter,'/');
-
-							$search = array("/$pregMailboxPrefixFull/", "/$pregMailboxPrefix/");
-							$replace = array('', '');
-							$pregMailboxDelimiter = preg_quote($val->delimiter,'/');
-							$folderNameIMAP = $this->decodeFolderName(preg_replace($search, $replace, $val->name));
-						} else {
-							$folderNameIMAP = $this->decodeFolderName($val->name);
-						}
-						$folderNameIMAP = preg_replace("/{.*}/",'',$folderNameIMAP);
-						
-						#print "FOLDERNAMEIMAP: $folderNameIMAP<br>";
-
-						if(empty($folderNameIMAP)) 
-							continue;
-
-						$folderNameIMAP = preg_replace("/". $pregMailboxDelimiter. "$/", '', $folderNameIMAP);
-						$val->name = preg_replace("/". $pregMailboxDelimiter. "$/", '', $val->name);
-					
-						if($_getCounters == true) {
-							$val->counter = imap_status($this->mbox,$val->name,SA_ALL);
-						}
-						
-						switch($nameSpaceType) {
-							case 'personal':
-								$inboxPos = strpos($folderNameIMAP,'INBOX'); 
-								if ($inboxPos !== false AND $inboxPos == 0) { 
-									$personalInboxFolders["$folderNameIMAP"] = $val;
-								} else { 
-									$personalOtherFolders["$folderNameIMAP"] = $val;
-								}
-								break;
-								
-							case 'others':
-								$otherUsersFolders["$folderNameIMAP"] = $val;
-								break;
-								
-							case 'shared':
-								$sharedFolders["$folderNameIMAP"] = $val;
-								break;
-						}
-						$foundFolders[$val->name] = TRUE;
-					}
-########################################
-				}
-			}
-			#print "<hr>";
-			#_debug_array($folders);
-			#_debug_array($personalInboxFolders);
-			#_debug_array($personalOtherFolders);
-			ksort($personalInboxFolders,SORT_STRING);
-			ksort($personalOtherFolders,SORT_STRING);
-			ksort($otherUsersFolders,SORT_STRING);
-			ksort($sharedFolders,SORT_STRING);
-			$__folders = array(
-				'personal'	=> $folders + $personalInboxFolders + $personalOtherFolders ,
-				'other'		=> $otherUsersFolders ,
-				'shared'	=> $sharedFolders ,
-			);
-			#_debug_array($__folders);                                                            
-			$folders = $folders + $personalInboxFolders + $personalOtherFolders + $otherUsersFolders + $sharedFolders;
-			return $folders;
-
-
-
-
-#################################
-# old code
-################################
-			$inboxMailboxString = $icServer->getMailboxString('INBOX');
-
-			#print "<br><br><br><br><br>INBOX: $mailboxString<br> $inboxMailboxString<br>";
-
-			// we always fetch the subscribed first, to be able to detect subscribed state
-			// and we can not use the result from imap_getsubscribed as this function does not return correct values
-			// for the attribbute value when using UW IMAP
-			$subList = (array)imap_getsubscribed($this->mbox,$mailboxString, '*');
-			#_debug_array($subList);
-			foreach($subList as $folderInfo)
-			{
-				$subscribedFolders[$folderInfo->name] = true;
-				$tmpList = imap_getmailboxes($this->mbox,$folderInfo->name,$folderInfo->name);
-				if(is_object($tmpList[0]))
-					$list[] = $tmpList[0];
+			if(empty($parent)) {
+				$newFolderName = $folderName;
+			} else {
+				$newFolderName = $parent . $this->icServer->getHierarchyDelimiter() . $folderName;
 			}
 			
-			#if(!$_subscribedOnly) {
-			#	$list = imap_getmailboxes($this->mbox,$mailboxString, "*");
-			#}
-
-			// make sure that we always return the INBOX
-			// on some IMAP Servers you can NOT subscribe to the INBOX
-			// to avoid problems, we always fetch the INBOX separatly
-			$inboxList = imap_getmailboxes($this->mbox,$inboxMailboxString,'%');
-			foreach($inboxList as $folderInfo)
-			{
-				if($folderInfo->name == $inboxMailboxString)
-				{
-					$list[] = $folderInfo;
-					$subscribedFolders[$inboxMailboxString] = true;
-					break;
-				}
-			}
-
-			if(is_array($list))
-			{	
-				#reset($list); 
-				$inboxFolders = array();
-				$otherFolders = array();
-				#while (list($key, $val) = each($list))
-				foreach($list as $key => $val) {
-					#_debug_array($val);
-					if($subscribedFolders[$val->name])
-						$val->subscribed = TRUE;
-					else
-						$val->subscribed = FALSE;
-
-					if(empty($val->delimiter))
-						$val->delimiter = $icServer->mailboxDelimiter;
-					
-					if(!empty($icServer->mailboxPrefix)) {
-						$pregMailboxPrefix = preg_quote($icServer->mailboxPrefix,'/');
-						$pregMailboxPrefixFull = preg_quote($icServer->mailboxPrefix.$val->delimiter,'/');
-						$pregMailboxDelimiter = preg_quote($val->delimiter,'/');
-
-						$search = array("/$pregMailboxPrefixFull/", "/$pregMailboxPrefix/");
-						$replace = array('', '');
-						$pregMailboxDelimiter = preg_quote($val->delimiter,'/');
-						$folderNameIMAP = $this->decodeFolderName(preg_replace($search, $replace, $val->name));
-					} else {
-						$folderNameIMAP = $this->decodeFolderName($val->name);
-					}
-					$folderNameIMAP = preg_replace("/{.*}/",'',$folderNameIMAP);
-
-					if(empty($folderNameIMAP)) 
-						continue;
-
-					$folderNameIMAP = preg_replace("/". $pregMailboxDelimiter. "$/", '', $folderNameIMAP);
-					$val->name = preg_replace("/". $pregMailboxDelimiter. "$/", '', $val->name);
-					
-					if($_getCounters == true) {
-						$val->counter = imap_status($this->mbox,$val->name,SA_ALL);
-					}
-					
-					$inboxPos = strpos($folderNameIMAP,'INBOX'); 
-					if ($inboxPos !== false AND $inboxPos == 0) { 
-						$inboxFolders["$folderNameIMAP"] = $val;
-					} else { 
-						$otherFolders["$folderNameIMAP"] = $val;
-					} 
-				}
-				ksort($inboxFolders,SORT_STRING); 
-				ksort($otherFolders,SORT_STRING); 
-				$folders = $inboxFolders + $otherFolders;
-
-				#_debug_array($folders);
-				return $folders; 
-			}
-			else
-			{
-					if($_subscribedOnly == 'true' &&
-						is_array($inboxName = imap_list($this->mbox,$mailboxString,'INBOX'))) {
-						$inboxData = imap_getmailboxes($this->mbox,$mailboxString,'INBOX');
-						$folders['INBOX'] = $inboxData[0];
-					
-						return $folders;
-					}
-			}
-		}
-		
-		function getMimePartCharset($_mimePartObject) {
-			$charSet = 'ISO-8859-1';
-
-			if(is_array($_mimePartObject->parameters)) {
-				foreach($_mimePartObject->parameters as $parameters) {
-					if(strtolower($parameters->attribute) == 'charset') {
-						$charSet = $parameters->value;
-					}
-				}
-			}
-			
-			return $charSet;
-		}
-		
-		function getMultipartAlternative($_uid, $_parentPartID, $_structure, $_htmlMode) {
-				// a multipart/alternative has exactly 2 parts (text and html  OR  text and something else)
-				$i=1;
-				$partText;
-				$partHTML;
-				$parentPartID = ($_parentPartID != '') ? $_parentPartID.'.' : $_parentPartID;
-
-				foreach($_structure->parts as $mimePart) {
-					if($mimePart->type == TYPETEXT && $mimePart->subtype == 'PLAIN' && $mimePart->bytes > 0) {
-						$partText[] = array(
-							'partID'	=> $parentPartID.$i ,
-							'charset'	=> $this->getMimePartCharset($mimePart) ,
-							'encoding'	=> $mimePart->encoding ,
-						);
-					} elseif ($mimePart->type == TYPETEXT && $mimePart->subtype == 'HTML' && $mimePart->bytes > 0) {
-						$partHTML[] = array(
-							'partID'	=> $parentPartID.$i ,
-							'charset'	=> $this->getMimePartCharset($mimePart) ,
-							'encoding'	=> $mimePart->encoding ,
-						);
-					} elseif ($mimePart->type == TYPEMULTIPART && $mimePart->subtype == 'RELATED' && is_object($mimePart->parts[0])) {
-						#$mimePart = $mimePart->parts[0];
-						#_debug_array($mimePart);
-						$parentPartID = $parentPartID.$i;
-						$partCounter = 1;
-
-						foreach($mimePart->parts as $partOfRelated) {
-						#	_debug_array($partOfRelated);
-							if($partOfRelated->type == TYPETEXT && $partOfRelated->subtype == 'PLAIN' && $partOfRelated->bytes > 0) {
-								$partText[] = array(
-									'partID'	=> $parentPartID .'.'. $partCounter,
-									'charset'	=> $this->getMimePartCharset($partOfRelated) ,
-									'encoding'	=> $partOfRelated->encoding ,
-								);
-							} elseif ($partOfRelated->type == TYPETEXT && $partOfRelated->subtype == 'HTML' && $partOfRelated->bytes > 0) {
-								$partHTML[] = array(
-									'partID'	=> $parentPartID .'.'. $partCounter,
-									'charset'	=> $this->getMimePartCharset($partOfRelated) ,
-									'encoding'	=> $partOfRelated->encoding ,
-								);
-							}
-							$partCounter++;
-						}					
-					}
-					$i++;
-				}
-				#exit;
-				switch($_htmlMode) {
-					case 'always_display':
-						if(count($partHTML) > 0) {
-							foreach($partHTML as $partData) {
-								$partContent = $this->decodeMimePart(
-									imap_fetchbody($this->mbox, $_uid, $partData['partID'], FT_UID) ,
-									$partData['encoding']
-								);
-								$bodyPart[] = array(
-									'body'		=> $partContent ,
-									'mimeType'	=> 'text/html' ,
-									'charSet'	=> $partData['charset']
-								);
-							}
-						}
-						break;
-					case 'only_if_no_text':
-						if(count($partHTML) > 0  && count($partText) == 0) {
-							foreach($partHTML as $partData) {
-								$partContent = $this->decodeMimePart(
-									imap_fetchbody($this->mbox, $_uid, $partData['partID'], FT_UID) ,
-									$partData['encoding']
-								);
-								$bodyPart[] = array(
-									'body'		=> $partContent ,
-									'mimeType'	=> 'text/html' ,
-									'charSet'	=> $partData['charset']
-								);
-							}
-						} elseif (count($partText) > 0) {
-							foreach($partText as $partData) {
-								$partContent = $this->decodeMimePart(
-									imap_fetchbody($this->mbox, $_uid, $partData['partID'], FT_UID) ,
-									$partData['encoding']
-								);
-
-								$bodyPart[] = array(
-									'body'		=> $partContent ,
-									'mimeType'	=> 'text/plain' ,
-									'charSet'	=> $partData['charset']
-								);
-							}
-						}
-						break;
-						
-					default:
-						if (count($partText) > 0) {
-							foreach($partText as $partData) {
-								$partContent = $this->decodeMimePart(
-									imap_fetchbody($this->mbox, $_uid, $partData['partID'], FT_UID) ,
-									$partData['encoding']
-								);
-							
-								$bodyPart[] = array(
-									'body'		=> $partContent ,
-									'mimeType'	=> 'text/plain' ,
-									'charSet'	=> $partData['charset']
-								);
-							}
-						}
-						break;
-				}
-				
-				return $bodyPart;
-				
-		}
-		
-		#function microtime_float()
-		#{
-		#	list($usec, $sec) = explode(" ", microtime());
-		#	return ((float)$usec + (float)$sec);
-		#}
-		
-		function updateCache($_folderName)
-		{
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0))
-			{
+			if ( PEAR::isError($this->icServer->createMailbox($newFolderName) ) ) {
 				return false;
 			}
 
-			$caching =& CreateObject('felamimail.bocaching',
-					$icServer->host,
-					$icServer->username,
-					$_folderName);
-
-			$mailboxString = $icServer->getMailboxString($_folderName);
-			$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
-
-			$this->reopen($_folderName);
-
-			$cachedStatus = $caching->getImapStatus();
-			// no data cached yet?
-			// get all message informations from the imap server for this folder
-			if ($cachedStatus['uidnext'] == 0 || $cachedStatus['uidnext'] > $status->uidnext)
-			{
-				//drop all cached info for this folder
-				$caching->clearCache();
-				#print "nix gecached!!<br>";
-				#print "current UIDnext :".$cachedStatus['uidnext']."<br>";
-				# "new UIDnext :".$status->uidnext."<br>";
-				// (regis) seems to be necessary to reopen...
-				for($i=1; $i<=$status->messages; $i++)
-				{
-					@set_time_limit();// FIXME: beware no effect if in PHP safe_mode
-					$messageData['uid'] = imap_uid($this->mbox, $i);
-					$header = imap_headerinfo($this->mbox, $i);
-
-					// parse structure to see if attachments exist
-					// display icon if so
-					$structure = imap_fetchstructure($this->mbox, $i);
-					$sections = array();
-					$this->parseMessage($sections, $structure);
-					
-					$messageData['date']		= $header->udate;
-					$messageData['subject']		= $this->decode_header($header->subject);
-					if($header->to[0]->mailbox != 'undisclosed-recipients') {
-						$messageData['to_name']		= ($header->to[0]->personal ? $this->decode_header($header->to[0]->personal) : '');
-						$messageData['to_address']	= $header->to[0]->mailbox.(!empty($header->to[0]->host) ? '@'.$header->to[0]->host : '');
-					} else {
-						$messageData['to_name']		= '';
-						$messageData['to_address']	= '';
-					}
-					$messageData['sender_name']	= ($header->from[0]->personal ? $this->decode_header($header->from[0]->personal) : '');
-					$messageData['sender_address']	= $header->from[0]->mailbox."@".$header->from[0]->host;
-					$messageData['size']		= $header->Size;
-
-					$messageData['attachments']     = "false";
-
-					foreach($sections as $key => $value)
-					{
-						if($value['type'] == 'attachment')
-						{
-							$messageData['attachments']	= "true";
-							break;
-						}
-					}
-				
-					$caching->addToCache($messageData);
-
-					unset($messageData);
-				}
-
-				$caching->updateImapStatus($status);
-			}
-			// update cache, but only add new emails
-			elseif($status->uidnext != $cachedStatus['uidnext'])
-			{
-				#print "found new messages<br>";
-				#print "new uidnext: ".$status->uidnext." old uidnext: ".$cachedStatus['uidnext']."<br>";
-				$uidRange = $cachedStatus['uidnext'].":".$status->uidnext;
-				#print "$uidRange<br>";
-				#return $uidRange;
-				$newHeaders = imap_fetch_overview($this->mbox,$uidRange,FT_UID);
-				$countNewHeaders = count($newHeaders);
-				for($i=0; $i<$countNewHeaders; $i++)
-				{
-					$messageData['uid'] = $newHeaders[$i]->uid;
-					$header = imap_headerinfo($this->mbox, $newHeaders[$i]->msgno);
-					// parse structure to see if attachments exist
-					// display icon if so
-					$structure = imap_fetchstructure($this->mbox, $newHeaders[$i]->msgno);
-					$sections = array();
-					$this->parseMessage($sections, $structure);
-				
-					$messageData['date'] 		= $header->udate;
-					$messageData['subject'] 	= $this->decode_header($header->subject);
-					if($header->to[0]->mailbox != 'undisclosed-recipients') {
-						$messageData['to_name']		= ($header->to[0]->personal ? $this->decode_header($header->to[0]->personal) : '');
-						$messageData['to_address']	= $header->to[0]->mailbox.(!empty($header->to[0]->host) ? '@'.$header->to[0]->host : '');
-					} else {
-						$messageData['to_name']		= '';
-						$messageData['to_address']	= '';
-					}
-					$messageData['sender_name'] 	= ($header->from[0]->personal ? $this->decode_header($header->from[0]->personal) : '');
-					$messageData['sender_address'] 	= $header->from[0]->mailbox."@".$header->from[0]->host;
-					$messageData['size'] 		= $header->Size;
-
-					$messageData['attachments']     = "false";
-					foreach($sections as $key => $value)
-					{
-						if($value['type'] == 'attachment')
-						{
-							$messageData['attachments']	= "true";
-							break;
-						}
-					}
-					
-					// maybe it's already in the database
-					// lets remove it, sometimes the database gets out of sync
-					$caching->removeFromCache($messageData['uid']);
-					
-					$caching->addToCache($messageData);
-					
-					unset($messageData);
-				}
-				$caching->updateImapStatus($status);
+			if ( PEAR::isError($this->icServer->subscribeMailbox($newFolderName) ) ) {
+				return false;
 			}
 			
-			// now let's do some clean up
-			// if we have more messages in the cache then in the imap box, some external 
-			// imap client deleted some messages. It's better to erase the messages from the cache.
-			#$displayHeaders = $caching->getHeaders();
-			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
-			$dbMessageCounter = $caching->getMessageCounter();
-			#printf ("this->bofelamimail->getHeaders start: %s Zeile: %d<br>",$this->microtime_float()-$start, __LINE__);
-			#print count($displayHeaders) .' - '.$messageCounter."<br>";
-			if ($dbMessageCounter > $status->messages)
-			{
-				$displayHeaders = $caching->getHeaders();
-				$messagesToRemove = count($displayHeaders) - $status->messages;
-				foreach((array)$displayHeaders as $displayHeader)
-				{
-					$header = imap_fetch_overview($this->mbox,$displayHeader['uid'],FT_UID);
-					if (count($header[0]) == 0)
-					{
-						$caching->removeFromCache($displayHeader['uid']);
-						$removedMessages++;
-					}
-					if ($removedMessages == $messagesToRemove) break;
-				}
-			}
+			return $newFolderName;
 
 		}
 		
-		function createIMAPFilter($_criterias) {
+		function createIMAPFilter($_criterias) 
+		{
 			if(!is_array($_criterias)) {
-				return false;
+				return 'ALL';
 			}
 		#	error_log(print_r($_criterias, true));
 			$imapFilter = '';
@@ -1192,6 +286,9 @@
 			if(!empty($_criterias['string'])) {
 				$criteria = strtoupper($_criterias['type']);
 				switch ($criteria) {
+					case 'QUICK':
+						$imapFilter .= 'OR SUBJECT "'. $_criterias['string'] .'" FROM "'. $_criterias['string'] .'" ';
+						break;
 					case 'BCC':
 					case 'BODY':
 					case 'CC':
@@ -1230,33 +327,799 @@
 				}
 			#}
 		#	error_log("Filter: $imapFilter");
-			return $imapFilter;
+			if($imapFilter == '') {
+				return 'ALL';
+			} else {
+				#return trim($imapFilter);
+				return 'CHARSET '. strtoupper($this->displayCharset) .' '. trim($imapFilter);
+			}
+		}
+		
+		/**
+		* convert a mailboxname from displaycharset to urf7-imap
+		*
+		* @param string _folderName the foldername 
+		*
+		* @returns string the converted foldername
+		*/
+		function decodeFolderName($_folderName)
+		{
+			return $this->botranslation->convert($_folderName, $this->displayCharset, 'UTF7-IMAP');
 		}
 
-		function getSortedList($_icServer, $_folderName, $_sort, $_reverse, $_filter) {
-			$mailboxString = $_icServer->getMailboxString($_folderName);
-			$folderStatus = imap_status($this->mbox, $mailboxString, SA_UIDVALIDITY | SA_MESSAGES | SA_UIDNEXT);
-		#	error_log(print_r($this->sessionData['folderStatus'][0][$_folderName], true));
-		#	error_log('imap_status');
-		#	error_log(print_r($folderStatus, true));
-		#	error_log($this->sessionData['folderStatus'][0][$_folderName]['messages'] === $folderStatus->messages);
-			if($this->sessionData['folderStatus'][0][$_folderName]['uidValidity']	=== $folderStatus->uidvalidity &&
-				$this->sessionData['folderStatus'][0][$_folderName]['messages']	=== $folderStatus->messages &&
-				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	=== $folderStatus->uidnext &&
+		function decodeMimePart($_mimeMessage, $_encoding) 
+		{
+			// decode the part
+			switch ($_encoding) 
+			{
+				case 'BASE64':
+					// use imap_base64 to decode
+					return imap_base64($_mimeMessage);
+					break;
+				case 'QUOTED-PRINTABLE':
+					// use imap_qprint to decode
+					return quoted_printable_decode($_mimeMessage);
+					break;
+				default:
+					// it is either not encoded or we don't know about it
+					return $_mimeMessage;
+					break;
+			}
+		}
+
+		function decode_header($_string)
+		{
+			$newString = '';
+
+			$string = preg_replace('/\?=\s+=\?/', '?= =?', $_string);
+
+			$elements=imap_mime_header_decode($string);
+
+			foreach((array)$elements as $element) {
+				if ($element->charset == 'default')
+					$element->charset = 'iso-8859-1';
+				$tempString = $this->botranslation->convert($element->text,$element->charset);
+				$newString .= $tempString;
+			}
+			return $newString;
+		}
+		
+		function deleteAccount($_hookValues)
+		{
+			$icServer = $this->mailPreferences->getIncomingServer(0);
+			if(is_a($icServer,'defaultimap')) {
+				$icServer->deleteAccount($_hookValues);
+			}
+
+			$ogServer = $this->mailPreferences->getOutgoingServer(0);
+			if(is_a($ogServer,'defaultsmtp')) {
+				$ogServer->deleteAccount($_hookValues);
+			}
+		}
+		
+		/**
+		* delete a existing folder
+		*
+		* @param string _folderName the name of the folder to be deleted
+		*
+		* @returns bool true on success, false on failure
+		*/
+		function deleteFolder($_folderName) 
+		{
+			$folderName = $this->_encodeFolderName($_folderName);
+			
+			$this->icServer->unsubscribeMailbox($folderName);
+			if ( PEAR::isError($this->icServer->deleteMailbox($folderName)) ) {
+				return false;
+			}
+			
+			return true;
+		}
+
+		function deleteMessages($_messageUID) 
+		{
+			$msglist = '';
+			$oldMailbox = '';
+			
+			if(!is_array($_messageUID) || count($_messageUID) === 0) {
+				return false;
+			}
+
+			$deleteOptions  = $this->mailPreferences->preferences['deleteOptions'];
+                        $trashFolder    = $this->mailPreferences->preferences['trashFolder'];
+                        $draftFolder	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder'];
+
+			if(($this->sessionData['mailbox'] == $trashFolder && $deleteOptions == "move_to_trash") ||
+			   ($this->sessionData['mailbox'] == $draftFolder)) {
+				$deleteOptions = "remove_immediately";
+			}
+			if($this->icServer->getCurrentMailbox() != $this->sessionData['mailbox']) {
+				$oldMailbox = $this->icServer->getCurrentMailbox();
+				$this->icServer->selectMailbox($this->sessionData['mailbox']);
+			}
+			
+			switch($deleteOptions) {
+				case "move_to_trash":
+					if(!empty($trashFolder)) {
+						#error_log(implode(' : ', $_messageUID));
+						#error_log("$trashFolder <= ". $this->sessionData['mailbox']);
+						// copy messages
+						if ( PEAR::isError($this->icServer->copyMessages($trashFolder, $_messageUID, $this->sessionData['mailbox'], true)) ) {
+							return false;
+						}
+						// mark messages as deleted
+						if ( PEAR::isError($this->icServer->deleteMessages($_messageUID, true))) {
+							return false;
+						}
+						// delete the messages finaly
+						$this->icServer->expunge();
+					}
+					break;
+
+				case "mark_as_deleted":
+					// mark messages as deleted
+					if ( PEAR::isError($this->icServer->deleteMessages($_messageUID, true))) {
+						return false;
+					}
+					break;
+
+				case "remove_immediately":
+					// mark messages as deleted
+					if ( PEAR::isError($this->icServer->deleteMessages($_messageUID, true))) {
+						return false;
+					}
+					// delete the messages finaly
+					$this->icServer->expunge();
+					break;
+			}
+			
+			if($oldMailbox != '') {
+				$this->icServer->selectMailbox($oldMailbox);
+			}
+			
+			return true;
+		}
+		
+		/**
+		* convert a mailboxname from utf7-imap to displaycharset 
+		*
+		* @param string _folderName the foldername 
+		*
+		* @returns string the converted string
+		*/
+		function encodeFolderName($_folderName)
+		{
+			return $this->botranslation->convert($_folderName, 'UTF7-IMAP', $this->displayCharset);
+		}
+
+		function encodeHeader($_string, $_encoding='q')
+		{
+			switch($_encoding) {
+				case "q":
+					if(!preg_match("/[\x80-\xFF]/",$_string)) {
+						// nothing to quote, only 7 bit ascii
+						return $_string;
+					}
+					
+					$string = imap_8bit($_string);
+					$stringParts = explode("=\r\n",$string);
+					while(list($key,$value) = each($stringParts)) {
+						if(!empty($retString)) $retString .= " ";
+						$value = str_replace(" ","_",$value);
+						// imap_8bit does not convert "?"
+						// it does not need, but it should
+						$value = str_replace("?","=3F",$value);
+						$retString .= "=?".strtoupper($this->displayCharset). "?Q?". $value. "?=";
+					}
+					#exit;
+					return $retString;
+					break;
+				default:
+					return $_string;
+			}
+		}
+
+		function flagMessages($_flag, $_messageUID)
+		{
+			if(!is_array($_messageUID))
+				return false;
+			
+			$this->icServer->selectMailbox($this->sessionData['mailbox']);
+			
+			switch($_flag) {
+				case "flagged":
+					$this->icServer->setFlags($_messageUID, '\\Flagged', 'add', true);
+					break;
+				case "read":
+					$this->icServer->setFlags($_messageUID, '\\Seen', 'add', true);
+					break;
+				case "answered":
+					$this->icServer->setFlags($_messageUID, '\\Answered', 'add', true);
+					break;
+				case "unflagged":
+					$this->icServer->setFlags($_messageUID, '\\Flagged', 'remove', true);
+					break;
+				case "unread":
+					$this->icServer->setFlags($_messageUID, '\\Seen', 'remove', true);
+					$this->icServer->setFlags($_messageUID, '\\Answered', 'remove', true);
+					break;
+			}
+			
+			$this->sessionData['folderStatus'][$this->profileID][$this->sessionData['mailbox']]['uidValidity'] = 0;
+			$this->saveSessionData();
+		}
+		
+		function _getSubStructure($_structure, $_partID)
+		{
+			$tempID = '';
+			$structure = $_structure;
+			
+			$imapPartIDs = explode('.',$_partID);
+			
+			foreach($imapPartIDs as $imapPartID) {
+				if(!empty($tempID)) {
+					$tempID .= '.';
+				}
+				$tempID .= $imapPartID;
+				#print "TEMPID: $tempID<br>";
+				#_debug_array($structure);
+				if($structure->subParts[$tempID]->type == 'MESSAGE' && $structure->subParts[$tempID]->subType == 'RFC822' &&
+				   count($structure->subParts[$tempID]->subParts) == 1 &&
+				   $structure->subParts[$tempID]->subParts[$tempID]->type == 'MULTIPART' &&
+				   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' || $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) {
+					$structure = $structure->subParts[$tempID]->subParts[$tempID];
+				} else {
+					$structure = $structure->subParts[$tempID];
+				}
+			}
+
+			if($structure->partID != $_partID) {
+				error_log("bofelamimail::_getSubStructure(". __LINE__ .") partID's don't match");
+				return false;
+			}
+			
+			return $structure;
+		}
+
+		/**
+		* retrieve a attachment
+		*
+		* @param int _uid the uid of the message
+		* @param string _partID the id of the part, which holds the attachment
+		*
+		* @returns array
+		*/
+		function getAttachment($_uid, $_partID)
+		{
+			// parse message structure
+			$structure = $this->icServer->getStructure($_uid, true);
+			#_debug_array($structure);
+			if($_partID != '') {
+				$structure = $this->_getSubStructure($structure, $_partID);
+			}
+
+			if(isset($structure->parameters['NAME'])) {
+				$filename	= $this->decode_header($structure->parameters['NAME']);
+			} elseif(isset($structure->dparameters['FILENAME'])) {
+				$filename	= $this->decode_header($structure->dparameters['FILENAME']);
+			} else {
+				$filename	= lang("unknown");
+			}
+			
+			$attachment = $this->icServer->getBodyPart($_uid, $_partID, true);
+			
+			switch ($structure->encoding) {
+				case 'BASE64':
+					// use imap_base64 to decode
+					$attachment = imap_base64($attachment);
+					break;
+				case 'QUOTED-PRINTABLE':
+					// use imap_qprint to decode
+					$attachment = imap_qprint($attachment);
+					break;
+				default:
+					// it is either not encoded or we don't know about it
+			}
+			
+			$attachmentData = array(
+				'type'		=> $structure->type .'/'. $structure->subType,
+				'filename'	=> $filename, 
+				'attachment'	=> $attachment
+				);
+				
+			return $attachmentData;
+		}
+		
+		// this function is based on a on "Building A PHP-Based Mail Client"
+		// http://www.devshed.com
+		// fetch a specific attachment from a message
+		function getAttachmentByCID($_uid, $_cid)
+		{
+			$partID = false;
+			
+			$attachments = $this->getMessageAttachments($_uid);
+			foreach($attachments as $attachment) {
+				if(strpos($attachment['cid'], $_cid) !== false) {
+					$partID = $attachment['partID'];
+					break;
+				}
+			}
+
+			#print "PARTID: $partID<bR>"; exit;
+
+			if($partID == false) {
+				return false;
+			}
+
+			// parse message structure
+			$structure = $this->icServer->getStructure($_uid, true);
+			$structure = $this->_getSubStructure($structure, $partID);
+
+			if(isset($structure->parameters['NAME'])) {
+				$filename	= $this->decode_header($structure->parameters['NAME']);
+			} elseif(isset($structure->dparameters['FILENAME'])) {
+				$filename	= $this->decode_header($structure->dparameters['FILENAME']);
+			} else {
+				$filename	= lang("unknown");
+			}
+			
+			$attachment = $this->icServer->getBodyPart($_uid, $partID, true);
+			
+			switch ($structure->encoding) {
+				case 'BASE64':
+					// use imap_base64 to decode
+					$attachment = imap_base64($attachment);
+					break;
+				case 'QUOTED-PRINTABLE':
+					// use imap_qprint to decode
+					$attachment = imap_qprint($attachment);
+					break;
+				default:
+					// it is either not encoded or we don't know about it
+			}
+			
+			$attachmentData = array(
+				'type'		=> $structure->type .'/'. $structure->subType,
+				'filename'	=> $filename, 
+				'attachment'	=> $attachment
+			);
+				
+			return $attachmentData;
+		}
+		
+		function getEMailProfile()
+		{
+			$config =& CreateObject('phpgwapi.config','felamimail');
+			$config->read_repository();
+			$felamimailConfig = $config->config_data;
+			
+			#_debug_array($felamimailConfig);
+			
+			if(!isset($felamimailConfig['profileID'])){
+				return -1;
+			} else {
+				return intval($felamimailConfig['profileID']);
+			}
+		}
+		
+		function getErrorMessage()
+		{
+			return $this->icServer->_connectionErrorObject->message;
+		}		
+
+		/**
+		* get IMAP folder status
+		*
+		* returns an array information about the imap folder
+		*
+		* @param _folderName string the foldername
+		*
+		* @returns array
+		*/
+		function getFolderStatus($_folderName)
+		{
+			$retValue = array();
+			$retValue['subscribed'] = false;
+			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
+				return false;
+			}
+
+			// does the folder exist???
+			$folderInfo = $this->icServer->getMailboxes('', $_folderName, true);
+			if(is_a($folderInfo, 'PEAR_Error')) {
+				return false;
+			}
+			if(!is_array($folderInfo[0])) {
+				return false;
+			}
+			
+			$subscribedFolders = $this->icServer->listsubscribedMailboxes('', $_folderName);
+			if(is_array($subscribedFolders) && count($subscribedFolders) == 1) {
+				$retValue['subscribed'] = true;
+			}
+
+			$retValue['delimiter']		= $folderInfo[0]['HIERACHY_DELIMITER'];
+			$retValue['attributes']		= $folderInfo[0]['ATTRIBUTES'];
+			$shortNameParts			= explode($retValue['delimiter'], $_folderName);
+			$retValue['shortName']		= array_pop($shortNameParts);
+			$retValue['displayName']	= $this->encodeFolderName($_folderName);
+			$retValue['shortDisplayName']	= $this->encodeFolderName($retValue['shortName']);
+			if(strtoupper($retValue['shortName']) == 'INBOX') {
+				$retValue['displayName']	= lang('INBOX');
+				$retValue['shortDisplayName']	= lang('INBOX');
+			}
+			
+			if ( PEAR::isError($folderStatus = $this->icServer->getStatus($_folderName)) ) {
+				_debug_array($folderStatus);
+			} else {
+				$retValue['messages']		= $folderStatus['MESSAGES'];
+				$retValue['recent']		= $folderStatus['RECENT'];
+				$retValue['uidnext']		= $folderStatus['UIDNEXT'];
+				$retValue['uidvalidity']	= $folderStatus['UIDVALIDITY'];
+				$retValue['unseen']		= $folderStatus['UNSEEN'];
+			}
+
+			return $retValue;
+		}
+		
+		/**
+		* get IMAP folder objects
+		*
+		* returns an array of IMAP folder objects. Put INBOX folder in first
+		* position. Preserves the folder seperator for later use. The returned
+		* array is indexed using the foldername.
+		*
+		* @param _subscribedOnly boolean get subscribed or all folders
+		* @param _getCounters    boolean get get messages counters
+		*
+		* @returns array with folder objects. eg.: INBOX => {inbox object}
+		*/		
+		function getFolderObjects($_subscribedOnly=false, $_getCounters=false) 
+		{
+			$isUWIMAP = false;
+			
+			$delimiter = $this->icServer->getHierarchyDelimiter();
+
+			$inboxData = new stdClass;
+			$inboxData->name 		= 'INBOX';
+			$inboxData->folderName		= 'INBOX';
+			$inboxData->displayName		= lang('INBOX');
+			$inboxData->delimiter 		= $delimiter;
+			$inboxData->shortFolderName	= 'INBOX';
+			$inboxData->shortDisplayName	= lang('INBOX');
+			$inboxData->subscribed = true;
+			#$inboxData->attributes = 64;
+			$folders = array('INBOX' => $inboxData);
+			#_debug_array($folders);
+
+			$nameSpace = $this->icServer->getNameSpaces();
+
+			// uw imap does not return the attribute of a folder, when requesting subscribed folders only
+			if(isset($nameSpace['#mh/'])) {
+				$mailboxString = $this->icServer->getMailboxString();
+				// detected uw-imap! the most worst imap server ever!!!!
+				// we support only the personal namespace on uwimap
+				$foldersNameSpace['personal']['subscribed'] = imap_getsubscribed($this->mbox, $mailboxString, $icServer->mailboxPrefix.'/*');
+
+				foreach($foldersNameSpace['personal']['subscribed'] as $id => $folderInfo) {
+					$shortName = preg_replace("/{.*}/",'',$folderInfo->name);
+					$mailBoxInfo = imap_getmailboxes($this->mbox,$mailboxString, $shortName);
+					if(is_a($mailBoxInfo[0], 'stdClass')) {
+						$foldersNameSpace['personal']['subscribed'][$id] = $mailBoxInfo[0];
+					}
+				}
+				
+				if(!$_subscribedOnly) {
+					$foldersNameSpace['personal']['all'] = imap_getmailboxes($this->mbox, $mailboxString, $icServer->mailboxPrefix.'/*');
+				}
+				$foldersNameSpace['personal']['prefix'] = '';
+				$foldersNameSpace['personal']['delimiter'] = '/';
+				
+				$isUWIMAP = TRUE;
+				
+			} else { 
+				foreach($nameSpace as $type => $singleNameSpace) {
+					if(is_array($singleNameSpace[0])) {
+						// fetch and sort the subscribed folders
+							$subscribedMailboxes = $this->icServer->listsubscribedMailboxes($singleNameSpace[0]['name']);
+						if( PEAR::isError($subscribedMailboxes) ) {
+							continue;
+						}
+						$foldersNameSpace[$type]['subscribed'] = $subscribedMailboxes;
+						sort($foldersNameSpace[$type]['subscribed']);
+						// fetch and sort all folders
+						$foldersNameSpace[$type]['all'] = $this->icServer->getMailboxes($singleNameSpace[0]['name']);
+						sort($foldersNameSpace[$type]['all']);
+					}
+
+					$foldersNameSpace[$type]['prefix'] = $singleNameSpace[0]['name'];
+					$foldersNameSpace[$type]['delimiter'] = $delimiter;
+				}
+
+				// check for autocreated folders
+				if(is_array($foldersNameSpace['personal']['all'])) {
+					$personalPrefix = $foldersNameSpace['personal']['prefix'];
+					$personalDelimiter = $foldersNameSpace['personal']['delimiter'];
+					if(!empty($personalPrefix)) {
+						if(substr($personalPrefix, -1) != $personalDelimiter) {
+							$folderPrefix = $personalPrefix . $personalDelimiter;
+						} else {
+							$folderPrefix = $personalPrefix;
+						}
+					}
+
+					foreach(array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates') as $personalFolderName) {
+						$folderName = (!empty($personalPrefix)) ? $folderPrefix.$personalFolderName : $personalFolderName;
+						if(!in_array($folderName, $foldersNameSpace['personal']['all'])) {
+							if($this->createFolder('', $folderName, true)) {
+								$foldersNameSpace['personal']['all'][] = $folderName;
+								$foldersNameSpace['personal']['subscribed'][] = $folderName;
+							}
+						}
+					}
+				}
+			}
+			
+			foreach( array('personal', 'others', 'shared') as $type) {
+				if(isset($foldersNameSpace[$type])) {
+					if($_subscribedOnly) {
+						$listOfFolders = $foldersNameSpace[$type]['subscribed'];
+					} else {
+						$listOfFolders = $foldersNameSpace[$type]['all'];
+					}
+					foreach($listOfFolders as $folderName) {
+						if($_subscribedOnly && !in_array($folderName, $foldersNameSpace[$type]['all'])) {
+							continue;
+						}
+						$folderParts = explode($delimiter, $folderName);
+						$shortName = array_pop($folderParts);
+						
+						$folderObject = new stdClass;
+						$folderObject->delimiter	= $delimiter;
+						$folderObject->folderName	= $folderName;
+						$folderObject->shortFolderName	= $shortName;
+						if(!$_subscribedOnly) {
+							$folderObject->subscribed = in_array($folderName, $foldersNameSpace[$type]['subscribed']);
+						}
+						
+						if($_getCounters == true) {
+							$folderStatus = $this->icServer->getStatus($folderName);
+
+							$status =  new stdClass;
+							$status->messages	= $folderStatus['MESSAGES'];
+							$status->unseen		= $folderStatus['UNSEEN'];
+							$status->recent 	= $folderStatus['RECENT'];
+
+							$folderObject->counter = $status;
+						}
+
+						if(strtoupper($folderName) == 'INBOX') {
+							$folderName = 'INBOX';
+							$folderObject->folderName	= 'INBOX';
+							$folderObject->shortFolderName	= 'INBOX';
+							$folderObject->displayName	= lang('INBOX');
+							$folderObject->shortDisplayName = lang('INBOX');
+							$folderObject->subscribed	= true;
+						} else {
+							$folderObject->displayName = $this->encodeFolderName($folderObject->folderName);
+							$folderObject->shortDisplayName = $this->encodeFolderName($shortName);
+						}
+						$folderName = $folderName;
+						$folders[$folderName] = $folderObject;
+					}
+				}
+			}
+			
+			#_debug_array($folders); exit;
+			
+			return $folders;
+		}
+		
+		function getMimePartCharset($_mimePartObject) 
+		{
+			$charSet = 'iso-8859-1';
+
+			if(is_array($_mimePartObject->parameters)) {
+				if(isset($_mimePartObject->parameters['CHARSET'])) {
+					$charSet = $_mimePartObject->parameters['CHARSET'];
+				}
+			}
+			
+			return $charSet;
+		}
+		
+		function getMultipartAlternative($_uid, $_structure, $_htmlMode) 
+		{
+			// a multipart/alternative has exactly 2 parts (text and html  OR  text and something else)
+
+			$partText = false;
+			$partHTML = false;
+
+			foreach($_structure as $mimePart) {
+				if($mimePart->type == 'TEXT' && $mimePart->subType == 'PLAIN' && $mimePart->bytes > 0) {
+					$partText = $mimePart;
+				} elseif($mimePart->type == 'TEXT' && $mimePart->subType == 'HTML' && $mimePart->bytes > 0) {
+					$partHTML = $mimePart;
+				} elseif ($mimePart->type == 'MULTIPART' && $mimePart->subType == 'RELATED' && is_array($mimePart->subParts)) {
+					// in a multipart alternative we treat the multipart/related as html part
+					$partHTML = $mimePart;
+				}
+			}
+
+			switch($_htmlMode) {
+				case 'always_display':
+					if(is_object($partHTML)) {
+						if($partHTML->subType == 'RELATED') {
+							return $this->getMultipartRelated($_uid, $partHTML, 'always_display');
+						} else {
+							return $this->getTextPart($_uid, $partHTML, 'always_display');
+						}
+					} elseif(is_object($partText)) {
+						return $this->getTextPart($_uid, $partText);
+					}
+
+					break;
+				case 'only_if_no_text':
+					if(is_object($partText)) {
+						return $this->getTextPart($_uid, $partText);
+					} elseif(is_object($partHTML)) {
+						if($partHTML->type) {
+							return $this->getMultipartRelated($_uid, $partHTML);
+						} else {
+							return $this->getTextPart($_uid, $partHTML, 'always_display');
+						}
+					}
+
+					break;
+						
+				default:
+					if(is_object($partText)) {
+						return $this->getTextPart($_uid, $partText);
+					} else {
+						$bodyPart = array(
+							'body'		=> lang("no plain text part found"),
+							'mimeType'	=> 'text/plain',
+							'charSet'	=> $this->displayCharset,
+						);
+					}
+
+					break;
+			}
+
+			return $bodyPart;
+		}
+		
+		function getMultipartMixed($_uid, $_structure, $_htmlMode) 
+		{
+			$bodyPart = array();
+
+			foreach($_structure as $part) {
+				switch($part->type) {
+					case 'MULTIPART':
+						switch($part->subType) {
+							case 'ALTERNATIVE':
+								$bodyPart[] = $this->getMultipartAlternative($_uid, $part->subParts, $_htmlMode);
+								break;
+							
+							case 'MIXED':
+							case 'SIGNED':
+								$bodyPart = array_merge($bodyPart, $this->getMultipartMixed($_uid, $part->subParts, $_htmlMode));
+								break;
+							
+							case 'RELATED':
+								$bodyPart = array_merge($bodyPart, $this->getMultipartRelated($_uid, $part->subParts, $_htmlMode));
+								break;
+						}
+						break;
+					
+					case 'TEXT':
+						switch($part->subType) {
+							case 'PLAIN':
+							case 'HTML':
+								if($part->disposition != 'ATTACHMENT') {
+									$bodyPart[] = $this->getTextPart($_uid, $part, $_htmlMode);
+								}
+								break;
+						}
+						break;
+			
+					case 'MESSAGE':
+						if($part->subType == 'delivery-status') {
+							$bodyPart[] = $this->getTextPart($_uid, $part);
+						}
+						break;
+						
+					default:
+						// do nothing
+						// the part is a attachment
+				}
+			}
+
+			return $bodyPart;
+		}
+		
+		function getMultipartRelated($_uid, $_structure, $_htmlMode) 
+		{
+			return $this->getMultipartMixed($_uid, $_structure, $_htmlMode);
+		}
+		
+		function getTextPart($_uid, $_structure, $_htmlMode = '') 
+		{
+			$bodyPart = array();
+			
+			$partID = $_structure->partID;
+			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true);
+			
+			if($_structure->subType == 'HTML' && $_htmlMode != 'always_display' && $_htmlMode != 'only_if_no_text') {
+				$bodyPart = array(
+					'body'		=> lang("displaying html messages is disabled"),
+					'mimeType'	=> 'text/html',
+					'charSet'	=> $this->displayCharset,
+				);
+			} else {
+				$bodyPart = array(
+					'body'		=> $this->decodeMimePart($mimePartBody, $_structure->encoding),
+					'mimeType'	=> ($_structure->type == 'TEXT' && $_structure->subType == 'HTML') ? 'text/html' : 'text/plain',
+					'charSet'	=> $this->getMimePartCharset($_structure),
+				);
+			}
+
+			return $bodyPart;
+		}
+		
+		function getNameSpace($_icServer) 
+		{
+			$this->icServer->getNameSpaces();
+		}
+
+		/**
+		* fetches a sorted list of messages from the imap server
+		* private function
+		*
+		* @todo implement sort based on Net_IMAP
+		* @param string $_folderName the name of the folder in which the messages get searched
+		* @param integer $_sort the primary sort key
+		* @param bool $_reverse sort the messages ascending or descending
+		* @param array $_filter the search filter
+		* @return bool
+		*/
+		function getSortedList($_folderName, $_sort, $_reverse, $_filter) 
+		{
+			$folderStatus = $this->icServer->examineMailbox($_folderName);
+			
+			if(is_array($this->sessionData['folderStatus'][0][$_folderName]) &&
+				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity']	=== $folderStatus['UIDVALIDITY'] &&
+				$this->sessionData['folderStatus'][0][$_folderName]['messages']	=== $folderStatus['EXISTS'] &&
+				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	=== $folderStatus['UIDNEXT'] &&
 				$this->sessionData['folderStatus'][0][$_folderName]['filter']	=== $_filter &&
 				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort && 
 				$this->sessionData['folderStatus'][0][$_folderName]['reverse']	=== $_reverse
 			) {
-				error_log("USE CACHE");
+		#		error_log("USE CACHE");
 				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
 			} else {
-				error_log("USE NO CACHE");
+		#		error_log("USE NO CACHE");
 				$filter = $this->createIMAPFilter($_filter);
-				$sortResult = imap_sort($this->mbox, $_sort, $_reverse, '', $filter, $this->displayCharset);
+		#		$sortResult = imap_sort($this->mbox, $_sort, $_reverse, '', $filter, $this->displayCharset);
+				#print "<pre>";
+				#$this->icServer->setDebug(true);
+				#print "SORT: $_sort, $_reverse<br>";
+				$sortResult = $this->icServer->search($filter, true);
+				if(is_array($sortResult)) {
+					if($_reverse) {
+						rsort($sortResult, SORT_NUMERIC);
+					} else {
+						sort($sortResult, SORT_NUMERIC);
+					}
+				}
+				#$this->icServer->setDebug(false);
+				#exit;
+				#_debug_array($sortResult); exit;
+
 				$this->sessionData['folderStatus'][0][$_folderName]['filter']	= $_filter;
-				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity'] = $folderStatus->uidvalidity;
-				$this->sessionData['folderStatus'][0][$_folderName]['messages']	= $folderStatus->messages;
-				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	= $folderStatus->uidnext;
+				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity'] = $folderStatus['UIDVALIDITY'];
+				$this->sessionData['folderStatus'][0][$_folderName]['messages']	= $folderStatus['EXISTS'];
+				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	= $folderStatus['UIDNEXT'];
 				$this->sessionData['folderStatus'][0][$_folderName]['sortResult'] = $sortResult;
 				$this->sessionData['folderStatus'][0][$_folderName]['sort']	= $_sort;
 				$this->sessionData['folderStatus'][0][$_folderName]['reverse'] 	= $_reverse;
@@ -1266,205 +1129,157 @@
 			return $sortResult;
 		}
 					
+		function getMessageEnvelope($_uid, $_partID = '')
+		{
+			if($_partID == '') {
+				if( PEAR::isError($envelope = $this->icServer->getEnvelope('', $_uid, true)) ) {
+					return false;
+				}
+			
+				return $envelope[0];
+			} else {
+				if( PEAR::isError($headers = $this->icServer->getParsedHeaders($_uid, true, $_partID, true)) ) {
+					return false;
+				}
+				
+				#_debug_array($headers);
+				$newData = array(
+					'DATE'		=> $headers['DATE'],
+					'SUBJECT'	=> $headers['SUBJECT'],
+					'MESSAGE_ID'	=> $headers['MESSAGE-ID']
+				);
+
+				$recepientList = array('FROM', 'TO', 'CC', 'BCC', 'SENDER', 'REPLY_TO');
+				foreach($recepientList as $recepientType) {
+					if(isset($headers[$recepientType])) {
+						$addresses = imap_rfc822_parse_adrlist($headers[$recepientType], '');
+						foreach($addresses as $singleAddress) {
+							$addressData = array(
+								'PERSONAL_NAME'		=> $singleAddress->personal ? $singleAddress->personal : 'NIL',
+								'AT_DOMAIN_LIST'	=> $singleAddress->adl ? $singleAddress->adl : 'NIL',
+								'MAILBOX_NAME'		=> $singleAddress->mailbox ? $singleAddress->mailbox : 'NIL',
+								'HOST_NAME'		=> $singleAddress->host ? $singleAddress->host : 'NIL',
+								'EMAIL'			=> $singleAddress->host ? $singleAddress->mailbox.'@'.$singleAddress->host : $singleAddress->mailbox,
+							);
+							if($addressData['PERSONAL_NAME'] != 'NIL') {
+								$addressData['RFC822_EMAIL'] = imap_rfc822_write_address($singleAddress->mailbox, $singleAddress->host, $singleAddress->personal);
+							} else {
+								$addressData['RFC822_EMAIL'] = 'NIL';
+							}
+							$newData[$recepientType][] = $addressData;
+						}
+					} else {
+						if($recepientType == 'SENDER' || $recepientType == 'REPLY_TO') {
+							$newData[$recepientType] = $newData['FROM'];
+						} else {
+							$newData[$recepientType] = array();
+						}
+					}
+				}
+				#_debug_array($newData);
+
+				return $newData;
+			}
+		}
+		
 		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter)
 		{
-#			$transformdate =& CreateObject('felamimail.transformdate');
-#
-			$this->timeCounter = microtime(true);
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
-				return false;
-			}
-		#	error_log("$_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse");
-		#	error_log(print_r($_filter, true));
-		#	error_log($_folderName);
+			// get the list of messages to fetch
 			$this->reopen($_folderName);
-			$mailboxString = $icServer->getMailboxString($_folderName);
+			$this->icServer->selectMailbox($_folderName);
 			
-			$sortResult = $this->getSortedList($icServer, $_folderName, $_sort, $_reverse, $_filter);
-		#	_debug_array($sortResult);
-		#	error_log(count($sortResult));
+			$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter);
+			// nothing found
+			if(!is_array($sortResult) || empty($sortResult)) {
+				$retValue = array();
+				$retValue['info']['total']	= 0;
+				$retValue['info']['first']	= 0;
+				$retValue['info']['last']	= 0;
+				return $retValue;
+			}
+			
 			$total = count($sortResult);
 			$sortResult = array_slice($sortResult, $_startMessage-1, $_numberOfMessages);
 			$queryString = implode(',', $sortResult);
-		#	error_log($queryString);
-			$headers = imap_fetch_overview($this->mbox, $queryString, 0);
+
+			// fetch the data for the selected messages
+			$headersNew = $this->icServer->getSummary($queryString, true);
 
 			$count = 0;
 
 			foreach((array)$sortResult as $uid) {
 				$sortOrder[$uid] = $count++;
 			}
-			
+
 			$count = 0;
+			
+			foreach((array)$headersNew as $headerObject) {
+				#if($count == 0) _debug_array($headerObject);
+				$uid = $headerObject['UID'];
 
-			foreach((array)$headers as $uid => $headerObject) {
-				#if($count == 0)
-				#_debug_array($headerObject);
-
-				$uid = $headerObject->msgno;
-
-				$retValue['header'][$sortOrder[$uid]]['subject'] 	= $this->decode_header($headerObject->subject);
-				if(!empty($headerObject->from)) {
-					$addressInfo = imap_rfc822_parse_adrlist($headerObject->from, '');
-					if(!empty($addressInfo[0]->host)) {
-						$retValue['header'][$sortOrder[$uid]]['sender_address'] = $addressInfo[0]->mailbox .'@'. $addressInfo[0]->host;
+				$retValue['header'][$sortOrder[$uid]]['subject']	= $this->decode_header($headerObject['SUBJECT']);
+				$retValue['header'][$sortOrder[$uid]]['size'] 		= $headerObject['SIZE'];
+				$retValue['header'][$sortOrder[$uid]]['date']		= strtotime($headerObject['DATE']);
+				$retValue['header'][$sortOrder[$uid]]['mimetype']	= $headerObject['MIMETYPE'];
+				$retValue['header'][$sortOrder[$uid]]['id']		= $headerObject['MSG_NUM'];
+				$retValue['header'][$sortOrder[$uid]]['uid']		= $headerObject['UID'];
+				$retValue['header'][$sortOrder[$uid]]['recent']		= in_array('\\Recent', $headerObject['FLAGS']);
+				$retValue['header'][$sortOrder[$uid]]['flagged']	= in_array('\\Flagged', $headerObject['FLAGS']);
+				$retValue['header'][$sortOrder[$uid]]['answered']	= in_array('\\Answered', $headerObject['FLAGS']);
+				$retValue['header'][$sortOrder[$uid]]['deleted']	= in_array('\\Deleted', $headerObject['FLAGS']);
+				$retValue['header'][$sortOrder[$uid]]['seen']		= in_array('\\Seen', $headerObject['FLAGS']);
+				$retValue['header'][$sortOrder[$uid]]['draft']		= in_array('\\Draft', $headerObject['FLAGS']);
+				
+				if(is_array($headerObject['FROM'][0])) {
+					if($headerObject['FROM'][0]['HOST_NAME'] != 'NIL') {
+						$retValue['header'][$sortOrder[$uid]]['sender_address'] = $headerObject['FROM'][0]['EMAIL'];
 					} else {
-						$retValue['header'][$sortOrder[$uid]]['sender_address'] = $addressInfo[0]->mailbox;
+						$retValue['header'][$sortOrder[$uid]]['sender_address'] = $headerObject['FROM'][0]['MAILBOX_NAME'];
 					}
-					if(!empty($addressInfo[0]->personal)) {
-						$retValue['header'][$sortOrder[$uid]]['sender_name'] = $this->decode_header($addressInfo[0]->personal);
+					if($headerObject['FROM'][0]['PERSONAL_NAME'] != 'NIL') {
+						$retValue['header'][$sortOrder[$uid]]['sender_name'] = $this->decode_header($headerObject['FROM'][0]['PERSONAL_NAME']);
 					}
+					
 				}
 
-				if(!empty($headerObject->to)) {
-					$addressInfo = imap_rfc822_parse_adrlist($headerObject->to, '');
-					if(!empty($addressInfo[0]->host)) {
-						$retValue['header'][$sortOrder[$uid]]['to_address'] = $addressInfo[0]->mailbox .'@'. $addressInfo[0]->host;
+				if(is_array($headerObject['TO'][0])) {
+					if($headerObject['TO'][0]['HOST_NAME'] != 'NIL') {
+						$retValue['header'][$sortOrder[$uid]]['to_address'] = $headerObject['TO'][0]['EMAIL'];
 					} else {
-						$retValue['header'][$sortOrder[$uid]]['to_address'] = $addressInfo[0]->mailbox;
+						$retValue['header'][$sortOrder[$uid]]['to_address'] = $headerObject['TO'][0]['MAILBOX_NAME'];
 					}
-					if(!empty($addressInfo[0]->personal)) {
-						$retValue['header'][$sortOrder[$uid]]['to_name'] = $this->decode_header($addressInfo[0]->personal);
+					if($headerObject['TO'][0]['PERSONAL_NAME'] != 'NIL') {
+						$retValue['header'][$sortOrder[$uid]]['to_name'] = $this->decode_header($headerObject['TO'][0]['PERSONAL_NAME']);
 					}
+					
 				}
-
-			#	_debug_array($addressInfo);
-			#	$retValue['header'][$sortOrder[$uid]]['attachments']	= $displayHeaders[$uid]['attachments'];
-				$retValue['header'][$sortOrder[$uid]]['size'] 		= $this->decode_header($headerObject->size);
-
-				$retValue['header'][$sortOrder[$uid]]['date'] = strtotime($headerObject->date);
-				$retValue['header'][$sortOrder[$uid]]['id'] =  $headerObject->msgno;
-				$retValue['header'][$sortOrder[$uid]]['uid'] = $headerObject->uid;
-				$retValue['header'][$sortOrder[$uid]]['recent'] =  $headerObject->recent;
-				$retValue['header'][$sortOrder[$uid]]['flagged'] =  $headerObject->flagged;
-				$retValue['header'][$sortOrder[$uid]]['answered'] =  $headerObject->answered;
-				$retValue['header'][$sortOrder[$uid]]['deleted'] =  $headerObject->deleted;
-				$retValue['header'][$sortOrder[$uid]]['seen'] =  $headerObject->seen;
-				$retValue['header'][$sortOrder[$uid]]['draft'] =  $headerObject->draft;
 
 				$count++;
 			}
-
+			
+			// sort the messages to the requested displayorder
 			if(is_array($retValue['header'])) {
-				// sort to displayorder
 				ksort($retValue['header']);
-				#_debug_array($retValue['header']);
 				$retValue['info']['total']	= $total;
 				$retValue['info']['first']	= $_startMessage;
 				$retValue['info']['last']	= $_startMessage + $count - 1 ;
 				return $retValue;
 			} else {
-				return 0;
-			}
-		}
-
-		function getHeadersWithCaching($_startMessage, $_numberOfMessages, $_sort)
-		{
-			$this->timeCounter = microtime(true);
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0))
-			{
-				return false;
-			}
-			
-			$caching =& CreateObject('felamimail.bocaching',
-					$icServer->host,
-					$icServer->username,
-					$this->sessionData['mailbox']);
-			$bofilter =& CreateObject('felamimail.bofilter');
-			$transformdate =& CreateObject('felamimail.transformdate');
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-
-			$this->updateCache($this->sessionData['mailbox']);
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-
-			$filter = $bofilter->getFilter($this->sessionData['activeFilter']);
-
-			if($this->sessionData['mailbox'] == $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) {
-				$filter['to'] = $filter['from'];
-				unset($filter['from']);
-			}
-			                                                                                        
-			if(!$displayHeaders = $caching->getHeaders($_startMessage, $_numberOfMessages, $_sort, $filter)) {
-				return false;
-			}
-
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-			$count=0;
-
-			foreach((array)$displayHeaders as $uid => $headerObject) {
-				$sequences[] = $uid;
-				$sortOrder[$uid] = $count++;
-			}
-			$sequence = implode(',', $sequences);
-
-			$count=0;
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-			$headers = imap_fetch_overview($this->mbox, $sequence, FT_UID);
-			//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-
-			foreach((array)$headers as $uid => $headerObject) {
-				//_debug_array($headerObject);
-
-				$uid = $headerObject->uid;
-
-				$retValue['header'][$sortOrder[$uid]]['subject'] 	= $displayHeaders[$uid]['subject'];
-				$retValue['header'][$sortOrder[$uid]]['sender_name'] 	= $displayHeaders[$uid]['sender_name'];
-				$retValue['header'][$sortOrder[$uid]]['sender_address'] = $this->decode_header($displayHeaders[$uid]['sender_address']);
-				$retValue['header'][$sortOrder[$uid]]['to_name'] 	= $displayHeaders[$uid]['to_name'];
-				$retValue['header'][$sortOrder[$uid]]['to_address'] 	= $this->decode_header($displayHeaders[$uid]['to_address']);
-				$retValue['header'][$sortOrder[$uid]]['attachments']	= $displayHeaders[$uid]['attachments'];
-				$retValue['header'][$sortOrder[$uid]]['size'] 		= $this->decode_header($headerObject->size);
-				
-				$timestamp = $displayHeaders[$uid]['date'];
-				$timestamp7DaysAgo = 
-					mktime(date("H"), date("i"), date("s"), date("m"), date("d")-7, date("Y"));
-				$timestampNow = 
-					mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"));
-
-				// date from the future
-				if($timestamp > $timestampNow+86400) {
-					$retValue['header'][$sortOrder[$uid]]['date'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],$timestamp);
-				} elseif (date("Y-m-d") == date("Y-m-d",$timestamp)) {
-					// email from today, show only time
-					$retValue['header'][$sortOrder[$uid]]['date'] = date("H:i:s",$timestamp);
-				} elseif($timestamp7DaysAgo < $timestamp) {
-					// email from the last 7 days, show only weekday
-					$retValue['header'][$sortOrder[$uid]]['date'] = lang(date("l",$timestamp));
-					#$retValue['header'][$sortOrder[$uid]]['date'] = date("Y-m-d H:i:s",$timestamp7DaysAgo)." - ".date("Y-m-d",$timestamp);
-					$retValue['header'][$sortOrder[$uid]]['date'] = date("H:i:s",$timestamp)."(".lang(date("D",$timestamp)).")";
-				} else {
-					$retValue['header'][$sortOrder[$uid]]['date'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],$timestamp);
-				}
-				$retValue['header'][$sortOrder[$uid]]['id'] =  $headerObject->msgno;
-				$retValue['header'][$sortOrder[$uid]]['uid'] = $displayHeaders[$uid]['uid'];
-				$retValue['header'][$sortOrder[$uid]]['recent'] =  $headerObject->recent;
-				$retValue['header'][$sortOrder[$uid]]['flagged'] =  $headerObject->flagged;
-				$retValue['header'][$sortOrder[$uid]]['answered'] =  $headerObject->answered;
-				$retValue['header'][$sortOrder[$uid]]['deleted'] =  $headerObject->deleted;
-				$retValue['header'][$sortOrder[$uid]]['seen'] =  $headerObject->seen;
-				$retValue['header'][$sortOrder[$uid]]['draft'] =  $headerObject->draft;
-
-				#$retValue['header'][$sortOrder[$uid]]['recent'] = $this->sessionData['mailbox'];
-				
-				$count++;
-			}
-
-			if(is_array($retValue['header'])) {
-				ksort($retValue['header']);
-				#_debug_array($retValue['header']);
-				$retValue['info']['total']	= $caching->getMessageCounter($filter);
-				$retValue['info']['first']	= $_startMessage;
-				$retValue['info']['last']	= $_startMessage + $count - 1 ;
+				$retValue = array();
+				$retValue['info']['total']	= 0;
+				$retValue['info']['first']	= 0;
+				$retValue['info']['last']	= 0;
 				return $retValue;
-			} else {
-				return 0;
 			}
 		}
-		
-		function getNextMessage($_foldername, $_id) {
+
+		function getNextMessage($_foldername, $_id) 
+		{
 			#_debug_array($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
 			#print "ID: $_id<br>";
+			#exit;
 			$position = array_search($_id, $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
+
 			if($position !== false) {
 				$retValue = array();
 				
@@ -1483,172 +1298,158 @@
 		
 		function getIMAPACL($_folderName)
 		{
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
-				return false;
-			}
-			
-			$acl = array();
-			if(($icServer->supportsCapability('ACL')) && (function_exists('imap_getacl'))) {
-				$acl = imap_getacl ($this->mbox, $icServer->encodeFolderName($_folderName));
-			}
-			
-			return $acl;
-		}
-		
-		function getMailPreferences() {
-			return $this->mailPreferences;
-		}
-		
-		function getMessageAttachments($_uid, $_partID='') {
-			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			$sections = array();
-			$this->parseMessage($sections, $structure, $_partID);
-			#if(isset($sections['attachment']) && is_array($sections['attachment']))
-			#{
-			#	#_debug_array($structure['attachment']);
-			#	return $sections['attachment'];
-			#}
-
-			$arrayData = array();
-			if(count($sections) > 0) {
-				foreach($sections as $key => $value) {
-					if($value['type'] == 'attachment' && $sections[substr($key,0,-2)]['mimeType'] != "multipart/alternative") {
-						$arrayData[] = $value;
-					}
+			if(($this->hasCapability('ACL'))) {
+				if ( PEAR::isError($acl = $this->icServer->getACL($_folderName)) ) {
+					return false;
 				}
-				if(count($arrayData) > 0) {
-					return $arrayData;
-				}
+				return $acl;
 			}
 			
 			return false;
-
 		}
 		
-		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure='') {
-#			print "<br><br><br>########################################################################<br>";
-#			print "UID: $_uid HTML: $_htmlOptions PART: $_partID<br>";
-			#print $this->htmlOptions."<br>";
-			#require_once('Mail/mimeDecode.php');
-#			$messageBody = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
-#			print "<pre>".$messageBody."</pre>"; print "<hR>";
-			#$decoder = new Mail_mimeDecode($messageBody);
-			#$structure = $decoder->decode($params);
-
-			if($_htmlOptions != '')
-				$this->htmlOptions = $_htmlOptions; 
+		/**
+		* checks if the imap server supports a given capability
+		*
+		* @param string $_capability the name of the capability to check for
+		* @return bool
+		*/
+		function hasCapability($_capability)
+		{
+			return $this->icServer->hasCapability(strtoupper($_capability));
+		}
+		
+		function getMailPreferences() 
+		{
+			return $this->mailPreferences;
+		}
+		
+		function getMessageAttachments($_uid, $_partID='', $_structure='') 
+		{
+			#if($_structure!='') {
+			#	if(is_object($_structure)) {
+			#		print "buh<br>";
+			#	}
+			#	_debug_array($_structure); exit;
+			#}
 
 			if(is_object($_structure)) {
 				$structure = $_structure;
 			} else {
-				$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
+				$structure = $this->icServer->getStructure($_uid, true);
+				
 				if($_partID != '') {
-					$imapPartIDs = explode('.',$_partID);
-					foreach($imapPartIDs as $id) {
-						if($structure->type == TYPEMESSAGE && $structure->subtype == 'RFC822') {
-							$structure = $structure->parts[0]->parts[$id-1];
-						} else {
-							$structure = $structure->parts[$id-1];
-						}
-					}
+					$structure = $this->_getSubStructure($structure, $_partID);
 				}
 			}
 			
-			#_debug_array($structure); exit;
+			#print "<hr>";
+			#_debug_array($structure);
 			
-#			print "<br>-- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----- ---- ---- ---- ---- ----   --- - - -- - - - - - - -<br>";
+			// this kind of message can have no attachments
+			if($structure->type == 'TEXT' || 
+			   ($structure->type == 'MULTIPART' && $structure->subType == 'ALTERNATIVE') ||
+			   !is_array($structure->subParts)) {
+				return array();
+			}
+
+			$attachments = array();
+
+			foreach($structure->subParts as $subPart) {
+				// skip all non attachment parts
+				if(($subPart->type == 'TEXT' && ($subPart->subType == 'PLAIN' || $subPart->subType == 'HTML') && $subPart->disposition != 'ATTACHMENT') ||
+				   ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE') ||
+				   ($subPart->type == 'MESSAGE' && $subPart->subType == 'delivery-status')) {
+					continue;
+				}
+				
+			   	// fetch the subparts for this part
+				if($subPart->type == 'MULTIPART' && 
+				   ($subPart->subType == 'RELATED' || $subPart->subType == 'MIXED' || $subPart->subType == 'SIGNED')) {
+				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
+				} else {
+					$newAttachment = array();
+					$newAttachment['size']		= $subPart->bytes;
+					$newAttachment['mimeType']	= $subPart->type .'/'. $subPart->subType;
+					$newAttachment['partID']	= $subPart->partID;
+					if(isset($subPart->cid)) {
+						$newAttachment['cid']	= $subPart->cid;
+					}
+					if(isset($subPart->parameters['NAME'])) {
+						$newAttachment['name']	= $this->decode_header($subPart->parameters['NAME']);
+					} elseif(isset($subPart->dparameters['FILENAME'])) {
+						$newAttachment['name']	= $this->decode_header($subPart->dparameters['FILENAME']);
+					} else {
+						$newAttachment['name']	= lang("unknown");
+					}
+				
+					$attachments[] = $newAttachment;
+				}
+			}
+
+		   	#_debug_array($attachments); exit;
+			return $attachments;
+
+		}
+		
+		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '') 
+		{
+			if($_htmlOptions != '') {
+				$this->htmlOptions = $_htmlOptions; 
+			}
+
+			if(is_object($_structure)) {
+				$structure = $_structure;
+			} else {
+				$structure = $this->icServer->getStructure($_uid, true);
+				if($_partID != '') {
+					$structure = $this->_getSubStructure($structure, $_partID);
+				}
+			}
 
 			switch($structure->type) {
-				case TYPEMESSAGE:
-					switch($structure->subtype) {
-						case 'RFC822':
-#							print "MESSAGE RFC822<br>";
-							$i=1;
-							foreach($structure->parts as $part) {
-#								print $part->subtype."<br>";
-								if($part->type == TYPEMULTIPART && 
-								($part->subtype == 'RELATED' || $part->subtype == 'MIXED' || $part->subtype == 'ALTERNATIVE' || $part->subtype == 'REPORT') ) {
-									$bodyParts = $this->getMessageBody($_uid, $this->htmlOptions, $_partID, $part);
-								} else {
-									$bodyParts = $this->getMessageBody($_uid, $this->htmlOptions, $_partID.'.'.$i, $part);
-								}
-								$i++;
-							}
-							return $bodyParts;
-						
-							break;
-						case 'DELIVERY-STATUS':
-							// only text
-							if($_partID == '') $_partID=1;
-							$mimePartBody = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
-							$bodyPart = array(
-								array(
-									'body'		=> $this->decodeMimePart($mimePartBody, $structure->encoding),
-									'mimeType'	=> 'text/plain',
-									'charSet'	=> $this->getMimePartCharset($structure),
-								)
-							);
-							
-							return $bodyPart;
-						
-							break;
-					}
-					
-					break;
-					
-				case TYPEMULTIPART:
-#					print "TYPE MULTIPART<br>";
-#					print $structure->subtype.'<br>';
-					switch($structure->subtype) {
+				case 'MULTIPART':
+					switch($structure->subType) {
 						case 'ALTERNATIVE':
-							return $this->getMultipartAlternative($_uid, $_partID, $structure, $this->htmlOptions);
+							return array($this->getMultipartAlternative($_uid, $structure->subParts, $this->htmlOptions));
 							
 							break;
 
-						default:
-							$i = 1;
-							$parentPartID = ($_partID != '') ? $_partID.'.' : '';
-							$bodyParts = array();
-#							print "PARENTPARTID: $parentPartID<br>";
-							foreach($structure->parts as $part) {
-								#if($part->type == TYPETEXT || $part->type == TYPEMULTIPART || $part->type == TYPEMESSAGE) {
-								if($part->type == TYPETEXT || $part->type == TYPEMULTIPART) {
-									$bodyParts = array_merge($bodyParts, $this->getMessageBody($_uid, $this->htmlOptions, $parentPartID.$i, $part));
-								}
-								$i++;
-							}
-							return $bodyParts;
+						case 'MIXED':
+						case 'REPORT':
+						case 'SIGNED':
+							$result = $this->getMultipartMixed($_uid, $structure->subParts, $this->htmlOptions);
+							return $result;
+							
+							break;
 
+						case 'RELATED':
+							return $this->getMultipartRelated($_uid, $structure->subParts, $this->htmlOptions);
+							
 							break;
 					}
 					
 					break;
 					
-				case TYPETEXT:
-#					print "TYPE TEXT<hr>";
-#					_debug_array($structure);
+				case 'TEXT':
 					$bodyPart = array();
-					if (($structure->subtype == 'HTML' || $structure->subtype == 'PLAIN') && $structure->disposition != 'ATTACHMENT') {
-						if($_partID == '') { 
-							$_partID=1;
-						}
-						$partID = $_partID;
-#						print "UID: $_uid PRATDI: $partID<br>";
-						$mimePartBody = imap_fetchbody($this->mbox, $_uid, $partID, FT_UID);
-#print "<pre>$mimePartBody</pre>";
-						$bodyPart = array(
-							array(
-								'body'		=> $this->decodeMimePart($mimePartBody, $structure->encoding),
-								'mimeType'	=> $structure->subtype == 'HTML' ? 'text/html' : 'text/plain',
-								'charSet'	=> $this->getMimePartCharset($structure),
-							)
-						);
+					if (($structure->subType == 'HTML' || $structure->subType == 'PLAIN') && $structure->disposition != 'ATTACHMENT') {
+						$bodyPart = array($this->getTextPart($_uid, $structure, $this->htmlOptions));
 					}
-	
+
 					return $bodyPart;
 					
 					break;
 					
+				case 'MESSAGE':
+					switch($structure->subType) {
+						case 'RFC822':
+							$newStructure = array_shift($structure->subParts);
+							return $this->getMessageBody($_uid, $_htmlOptions, $newStructure->partID, $newStructure);
+							break;
+					}
+					
+					break;
 				default:
 					$bodyPart = array(
 						array(
@@ -1664,141 +1465,9 @@
 			}
 		}
 
-		function getMessageBody_olf($_uid, $_htmlOptions = '', $_partID)
+		function getMessageHeader($_uid, $_partID = '') 
 		{
-			if($_htmlOptions != '')
-				$this->htmlOptions = $_htmlOptions; 
-
-			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
-			$sections = array();
-			$this->parseMessage($sections, $structure, $_partID);
-			#_debug_array($sections);
-			
-			foreach($sections as $key => $value)
-			{
-				#print 'parent is: '.$sections[substr($key,0,-2)]['mimeType'].'<br>';
-				if($value['type'] == 'body' || $sections[substr($key,0,-2)]['mimeType'] == "multipart/alternative")
-				{
-					#_debug_array($value);
-					// no mime message, only body available
-					if($key == 0)
-					{
-						$newPart	= trim(imap_body($this->mbox, $_uid, FT_UID));
-						$encoding	= $structure->encoding;
-						
-						// find mimetype
-						if(strtolower($structure->subtype) == 'html')
-						{
-							$mimeType = 'text/html';
-						}
-						else
-						{
-							$mimeType = 'text/plain';
-						}
-						
-						// find charset
-						if($structure->ifparameters)
-						{
-							foreach($structure->parameters as $value)
-							{
-								$parameter[strtolower($value->attribute)] = 
-									strtolower($value->value);
-							}
-							$charSet = $parameter['charset'];
-						}
-					}
-					else
-					{
-						// select which part(text or html) to display from multipart/alternative
-						#_debug_array($sections);
-						#print $sections['']['mimeType']."<br>";
-						if($sections[substr($key,0,-2)]['mimeType'] == "multipart/alternative")
-						{
-							switch($this->htmlOptions)
-							{
-								// prefer html part
-								// don't display text part
-								case 'always_display':
-									if($value['mimeType'] == 'text/plain')
-										continue 2;
-									break;
-									
-								case 'only_if_no_text':
-								default:
-									if($value['mimeType'] == 'text/html')
-										continue 2;
-									break;
-							}
-						}
-						// don't diplay html emails at all
-						if($value['mimeType'] == 'text/html' && 
-						$this->htmlOptions != 'always_display' &&
-						$this->htmlOptions != 'only_if_no_text')
-						{
-							continue;
-						}
-						$newPart = imap_fetchbody($this->mbox, $_uid, $value["partID"], FT_UID);
-						#if($newPart == '')
-						#{
-						#	#print "nothing<br>";
-						#	// FIX ME
-						#	// do this only if the parent sub type is multipart/mixed
-						#	// and parent/parent is message/rfc
-						#	$newPart = imap_fetchbody($this->mbox, $_uid, substr($value["partID"],0,-2), FT_UID);
-						#	#$newPart = imap_fetchbody($this->mbox, $_uid, '2.2', FT_UID);
-						#}
-						$encoding	= $value['encoding'];
-						$mimeType	= $value['mimeType'];
-						$charSet	= $value['charset'];
-					}
-					
-					// MS-Outlookbug workaround (don't break links)
-					$newPart = preg_replace("!((http(s?)://)|((www|ftp)\.))(([^\n\t\r]+)([=](\r)?\n))+!i", 
-							"$1$7", 
-							$newPart);
-					
-					// decode the file ...
-					switch ($encoding) 
-					{
-						case ENCBASE64:
-							// use imap_base64 to decode
-							$newPart = imap_base64($newPart);
-							break;
-						case ENCQUOTEDPRINTABLE:
-							// use imap_qprint to decode
-							#$newPart = imap_qprint($newPart);
-							$newPart = quoted_printable_decode($newPart);
-							break;
-						case ENCOTHER:
-							// not sure if this needs decoding at all
-							break;
-						default:
-							// it is either not encoded or we don't know about it
-							break;
-					}
-					
-					$bodyPart[] = array('body'	=> $newPart,
-									'mimeType'	=> $mimeType,
-									'charSet'	=> $charSet);
-				}
-			}
-			
-			return $bodyPart;
-			
-		}
-
-
-		function getMessageHeader($_folder, $_uid, $_partID = '') {
-			$this->reopen($_folder);
-			$msgno = imap_msgno($this->mbox, $_uid);
-			if($_partID == '') {
-				$retValue = imap_header($this->mbox, $msgno);
-			} else {
-				// do it the hard way
-				// we need to fetch the headers of another part(message/rfcxxxx)
-				$headersPart = imap_fetchbody($this->mbox, $_uid, $_partID.".0", FT_UID);
-				$retValue = imap_rfc822_parse_headers($headersPart);
-			}
+			$retValue = $this->icServer->getParsedHeaders($_uid, true, $_partID, true);
 
 			return $retValue;
 		}
@@ -1806,69 +1475,63 @@
 		function getMessageRawBody($_uid, $_partID = '')
 		{
 			if($_partID != '') {
-				$body = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
+				$body = $this->icServer->getBody($_uid, true);
 			} else {
-				$header = imap_fetchheader($this->mbox, $_uid, FT_UID);
-				$body = $header.imap_body($this->mbox, $_uid, FT_UID);
+				$body = $this->icServer->getBodyPart($_uid, $_partID, true);
 			}
 			
 			return $body;
 		}
 
-		function getMessageRawHeader($_uid, $_partID = '') {
-			if(!$_partID == '') {
-				return imap_fetchbody($this->mbox, $_uid, $_partID.'.0', FT_UID);
-			} else {
-				return imap_fetchheader($this->mbox, $_uid, FT_UID);
-			}
+		function getMessageRawHeader($_uid, $_partID = '') 
+		{
+			$retValue = $this->icServer->getRawHeaders($_uid, $_partID, true);
+
+			return $retValue;
 		}
 
-		function getMessageStructure($_uid) {
-			return imap_fetchstructure($this->mbox, $_uid, FT_UID);
-		}
+#		function getMessageStructure($_uid) {
+#			return imap_fetchstructure($this->mbox, $_uid, FT_UID);
+#		}
 		
 		// return the qouta of the users INBOX
-		function getQuotaRoot() {
-			return $this->icServer->getQuota('INBOX');
-		}
-		
-		// converts a imap id into a imap uid
-		function idToUid($_mailbox, $_id) {
-			$this->reopen($_mailbox);
-			
-			return imap_uid($this->mbox, $_id);
-		}
-		
-		function imap_createmailbox($_folderName, $_subscribe = False)
+		function getQuotaRoot() 
 		{
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0))
-			{
+			$quota = $this->icServer->getStorageQuotaRoot('INBOX');
+			if(is_array($quota)) {
+				return array(
+					'usage'	=> $quota['USED'],
+					'limit'	=> $quota['QMAX'],
+				);
+			} else {
 				return false;
 			}
-			
-			$mailboxString = $icServer->getMailboxString($_folderName);
-			$result = @imap_createmailbox($this->mbox,$mailboxString);
-
-			if($_subscribe) {
-				return @imap_subscribe($this->mbox,$mailboxString);
-			}
-			
-			return $result;
 		}
 		
-/*		function imap_deletemailbox($_folderName)
-		{
-			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
-			
-			@imap_unsubscribe ($this->mbox, $mailboxString);
-
-			$result = imap_deletemailbox($this->mbox, $mailboxString);
-			
-			#print imap_last_error();
-			
-			return $result;
-		}
-*/		
+#		// converts a imap id into a imap uid
+#		function idToUid($_mailbox, $_id) {
+#			$this->reopen($_mailbox);
+#			
+#			return imap_uid($this->mbox, $_id);
+#		}
+		
+	#	function imap_createmailbox($_folderName, $_subscribe = False)
+	#	{
+	#		if(!$icServer = $this->mailPreferences->getIncomingServer(0))
+	#		{
+	#			return false;
+	#		}
+	#		
+	#		$mailboxString = $icServer->getMailboxString($_folderName);
+	#		$result = @imap_createmailbox($this->mbox,$mailboxString);
+	#
+	#		if($_subscribe) {
+	#			return @imap_subscribe($this->mbox,$mailboxString);
+	#		}
+	#		
+	#		return $result;
+	#	}
+		
 		function imapGetQuota($_username)
 		{
 			$quota_value = @imap_get_quota($this->mbox, "user.".$_username);
@@ -1888,35 +1551,35 @@
 			return @imap_get_quotaroot($this->mbox, $_folderName);
 		}
 		
-		function imap_renamemailbox($_oldMailboxName, $_newMailboxName)
-		{
-			if(strcasecmp("inbox",$_oldMailboxName) == 0 || strcasecmp("inbox",$_newMailboxName) == 0)
-			{
-				return False;
-			}
-
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
-				return false;
-			}
-
-			$oldMailboxName = $icServer->getMailboxString($_oldMailboxName);
-			$newMailboxName = $icServer->getMailboxString($_newMailboxName);
-			$this->reopen('INBOX');
-			
-			$oldFolderStatus = $this->getFolderStatus($_oldMailboxName);
-			// unsubscribe from old foldername
-			// this is needed for UW IMAP
-			$this->subscribe($_oldMailboxName, 'unsubscribe');
-			
-			$result =  @imap_renamemailbox($this->mbox,$oldMailboxName, $newMailboxName);
-			
-			if($oldFolderStatus['subscribed']) {
-				$this->subscribe($_newMailboxName, 'subscribe');
-			}
-			#error_log(imap_last_error());
-			
-			return $result;
-		}
+	#	function imap_renamemailbox($_oldMailboxName, $_newMailboxName)
+	#	{
+	#		if(strcasecmp("inbox",$_oldMailboxName) == 0 || strcasecmp("inbox",$_newMailboxName) == 0)
+	#		{
+	#			return False;
+	#		}
+	#
+	#		if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
+	#			return false;
+	#		}
+	#
+	#		$oldMailboxName = $icServer->getMailboxString($_oldMailboxName);
+	#		$newMailboxName = $icServer->getMailboxString($_newMailboxName);
+	#		$this->reopen('INBOX');
+	#		
+	#		$oldFolderStatus = $this->getFolderStatus($_oldMailboxName);
+	#		// unsubscribe from old foldername
+	#		// this is needed for UW IMAP
+	#		$this->subscribe($_oldMailboxName, 'unsubscribe');
+	#		
+	#		$result =  @imap_renamemailbox($this->mbox,$oldMailboxName, $newMailboxName);
+	#		
+	#		if($oldFolderStatus['subscribed']) {
+	#			$this->subscribe($_newMailboxName, 'subscribe');
+	#		}
+	#		#error_log(imap_last_error());
+	#		
+	#		return $result;
+	#	}
 		
 		function imapSetQuota($_username, $_quotaLimit)
 		{
@@ -1934,392 +1597,87 @@
 		
 		function isSentFolder($_folderName)
 		{
-			if($this->mailPreferences->preferences['sentFolder'] == $_folderName)
-				return TRUE;
-			else
-				return FALSE;
+			if(false !== stripos($this->mailPreferences->preferences['sentFolder'], $_folderName)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		function isDraftFolder($_folderName)
 		{
-			if($this->mailPreferences->preferences['draftFolder'] == $_folderName)
-				return TRUE;
-			else
-				return FALSE;
+			if(false !== stripos($this->mailPreferences->preferences['draftFolder'], $_folderName)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		function moveMessages($_foldername, $_messageUID)
 		{
 			$msglist = '';
 			
-			$caching =& CreateObject('felamimail.bocaching',
-					$this->icServer->host,
-					$this->icServer->username,
-					$this->sessionData['mailbox']);
 			$deleteOptions  = $GLOBALS['egw_info']["user"]["preferences"]["felamimail"]["deleteOptions"];
 
-			foreach($_messageUID as $key => $value) {
-				if(!empty($msglist)) $msglist .= ",";
-				$msglist .= $value;
+			if ( PEAR::isError($this->icServer->copyMessages($_foldername, $_messageUID, $this->sessionData['mailbox'], true)) ) {
+				return false;
 			}
-			#print $msglist."<br>";
-			
-			#print "destination folder($_folderName): ".$this->encodeFolderName($_foldername)."<br>";
-
-			$this->reopen($this->sessionData['mailbox']);
-			
-			if (imap_mail_move ($this->mbox, $msglist, $this->encodeFolderName($_foldername), CP_UID))
-			{
-				#print "allet ok<br>";
-				if($deleteOptions != "mark_as_deleted")
-				{
-					imap_expunge($this->mbox);
-					reset($_messageUID);
-					while(list($key, $value) = each($_messageUID))
-					{
-						$caching->removeFromCache($value);
-					}
-				}
-			}
-			else
-			{
-				error_log(__FILE__ .' '.__LINE__.': '.imap_last_error());
-			}
-			
-		}
-
-		function openConnection($_folderName='', $_options=0, $_adminConnection=false)
-		{
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
-				return lang('No active IMAP server found!!');
+			// mark messages as deleted
+			if ( PEAR::isError($this->icServer->deleteMessages($_messageUID, true))) {
+				return false;
 			}
 
-			$mbox = $icServer->openConnection($_options, $_adminConnection);
-
-			if (is_a($mbox, 'PEAR_Error')) {
-				return $mbox;
+			if($deleteOptions != "mark_as_deleted") {
+				// delete the messages finaly
+				$this->icServer->expunge();
 			}
-			
-			$this->mbox = $mbox;
 			
 			return true;
-		}		
+		}
 
-		function parseMessage(&$_sections, $_structure, $_wantedPartID = '', $_currentPartID='')
+		function openConnection($_icServerID=0, $_adminConnection=false)
 		{
-			#print "w: $_wantedPartID, c: $_currentPartID<br>";
-			#if($_currentPartID == '')
-			#{
-			#	 _debug_array($_structure);
-			#	print "<hr><hr>";
-			#}
-			#_debug_array($_sections);
-			#if ($_currentPartID == '') _debug_array($_structure);
-			switch ($_structure->type)
-			{
-				case TYPETEXT:
-					if(!preg_match("/^$_wantedPartID/i",$_currentPartID))
-					{
-						break;
-					}
-					$mime_type = "text";
-					$data['encoding']	= $_structure->encoding;
-					$data['size']		= $_structure->bytes;
-					$data['partID']	= $_currentPartID;
-					$data["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
-					$data["name"]		= lang("unknown");
-					#for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
-					foreach ((array)$_structure->parameters as $param)
-					{
-						#$param = $_structure->parameters[$lcv];
-						switch(strtolower($param->attribute))
-						{
-							case 'name':
-								$data["name"] = $param->value;
-								break;
-							case 'charset':
-								$data["charset"] = $param->value;
-								break;
-						}
-						
-					}
-					
-					// set this to zero, when we have a plaintext message
-					// if partID[0] is set, we have no attachments
-					if($_currentPartID == '') $_currentPartID = '0';
-					
-					if (strtolower($_structure->disposition) == "attachment" ||
-						$data["name"] != lang("unknown"))
-					{
-						// treat it as attachment
-						// must be a attachment
-						$_sections[$_currentPartID]		= $data;
-						$_sections[$_currentPartID]['type']	= 'attachment';
-					}
-					else
-					{
-						#print "found a body part $_currentPartID<br>";
-						// must be a body part
-						$_sections["$_currentPartID"]		= $data;
-						$_sections["$_currentPartID"]['name']	= lang('body part')." $_currentPartID";
-						$_sections[$_currentPartID]['type']	= 'body';
-					}
-					#print "<hr>";
-					#_debug_array($retData);
-					#print "<hr>";
-					break;
-					
-				case TYPEMULTIPART:
-					#print "found multipart<br>";
-					$mimeType = 'multipart';
-					// lets cycle trough all parts
-					$_sections[$_currentPartID]['mimeType']	= $mimeType."/". strtolower($_structure->subtype);
-
-					if($_currentPartID != '') $_currentPartID .= '.';
-
-					#print $_sections[$_currentPartID]['mimeType']."<br>";
-					for($i = 0; $i < count($_structure->parts); $i++)
-					{
-						$structureData = array();
-						$this->parseMessage($_sections, $_structure->parts[$i], $_wantedPartID, $_currentPartID.($i+1));
-					}
-					break;
-				
-				case TYPEMESSAGE:
-					#print "found message $_currentPartID<br>";
-					#_debug_array($_structure);
-					#print "<hr>";
-					// handle it as attachment
-					#print "$_wantedPartID : $_currentPartID<br>";
-					if(($_wantedPartID < $_currentPartID) ||
-						empty($_wantedPartID))
-					{
-						#print "add as attachment<br>";
-						$mime_type = "message";
-						$_sections[$_currentPartID]['encoding']	= $_structure->encoding;
-						$_sections[$_currentPartID]['size']	= $_structure->bytes;
-						$_sections[$_currentPartID]['partID']	= $_currentPartID;
-						$_sections[$_currentPartID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
-						$_sections[$_currentPartID]["name"]	= lang("unknown");
-						$_sections[$_currentPartID]['type']	= 'attachment';
-						if(!empty($_structure->description))
-						{
-							$_sections[$_currentPartID]["name"] = lang($_structure->description);
-						}
-
-						// has the structure dparameters ??
-						if($_structure->ifdparameters)
-						{
-							foreach($_structure->dparameters as $key => $value)
-							{
-								switch(strtolower($value->attribute))
-								{
-									case 'filename':
-										$_sections[$_currentPartID]["name"] = $value->value;
-										break;
-								}
-							}
-						}
-
-						// has the structure parameters ??
-						if($_structure->ifparameters)
-						{
-							foreach($_structure->parameters as $key => $value)
-							{
-								switch(strtolower($value->attribute))
-								{
-									case 'name':
-										$_sections[$_currentPartID]["name"] = $value->value;
-										break;
-								}
-							}
-						}
-	
-						
-					}
-					// recurse in it
-					else
-					{
-						#_debug_array($_structure);
-						for($i = 0; $i < count($_structure->parts); $i++)
-						{
-						#	print "<b>dive into Message</b><bR>";
-							if($_structure->parts[$i]->type != TYPEMULTIPART)
-								$_currentPartID = $_currentPartID.'.'.($i+1);
-							$this->parseMessage($_sections, $_structure->parts[$i], $_wantedPartID, $_currentPartID);
-						#	$this->parseMessage($_sections, $_structure->parts[0], $_wantedPartID, $_currentPartID);
-						#	print "<b>done diving</b><br>";
-						}
-					}
-					break;
-					
-				case TYPEAPPLICATION:
-					if(!preg_match("/^$_wantedPartID/i",$_currentPartID))
-					{
-						break;
-					}
-					$mime_type = "application";
-					$_sections[$_currentPartID]['encoding']	= $_structure->encoding;
-					$_sections[$_currentPartID]['size']	= $_structure->bytes;
-					$_sections[$_currentPartID]['partID']	= $_currentPartID;
-					$_sections[$_currentPartID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
-					$_sections[$_currentPartID]["name"]	= lang("unknown");
-					$_sections[$_currentPartID]['type']	= 'attachment';
-					foreach((array)$_structure->dparameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					foreach((array)$_structure->parameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'name':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					break;
-					
-				case TYPEAUDIO:
-					if(!preg_match("/^$_wantedPartID/i",$_currentPartID))
-					{
-						break;
-					}
-					$mime_type = "audio";
-					$_sections[$_currentPartID]['encoding']	= $_structure->encoding;
-					$_sections[$_currentPartID]['size']	= $_structure->bytes;
-					$_sections[$_currentPartID]['partID']	= $_currentPartID;
-					$_sections[$_currentPartID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
-					$_sections[$_currentPartID]["name"]	= lang("unknown");
-					$_sections[$_currentPartID]['type']	= 'attachment';
-					foreach((array)$_structure->dparameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					foreach((array)$_structure->parameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'name':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					break;
-					
-				case TYPEIMAGE:
-					if(!preg_match("/^$_wantedPartID/i",$_currentPartID)) {
-						break;
-					}
-					#print "found image $_currentPartID<br>";
-					$mime_type = "image";
-					$_sections[$_currentPartID]['encoding']	= $_structure->encoding;
-					$_sections[$_currentPartID]['size']	= $_structure->bytes;
-					$_sections[$_currentPartID]['partID']	= $_currentPartID;
-					$_sections[$_currentPartID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
-					$_sections[$_currentPartID]["name"]	= lang("unknown");
-					$_sections[$_currentPartID]['type']	= 'attachment';
-					if($_structure->id) {
-						$_sections[$_currentPartID]['id'] = $_structure->id;
-					}
-					foreach((array)$_structure->dparameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					foreach((array)$_structure->parameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'name':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					break;
-					
-				case TYPEVIDEO:
-					if(!preg_match("/^$_wantedPartID/i",$_currentPartID))
-					{
-						break;
-					}
-					$mime_type = "video";
-					$_sections[$_currentPartID]['encoding']	= $_structure->encoding;
-					$_sections[$_currentPartID]['size']	= $_structure->bytes;
-					$_sections[$_currentPartID]['partID']	= $_currentPartID;
-					$_sections[$_currentPartID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
-					$_sections[$_currentPartID]["name"]	= lang("unknown");
-					$_sections[$_currentPartID]['type']	= 'attachment';
-					foreach((array)$_structure->dparameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					foreach((array)$_structure->parameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'name':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					break;
-					
-				case TYPEMODEL:
-					if(!preg_match("/^$_wantedPartID/i",$_currentPartID))
-					{
-						break;
-					}
-					$mime_type = "model";
-					$_sections[$_currentPartID]['encoding']	= $_structure->encoding;
-					$_sections[$_currentPartID]['size']	= $_structure->bytes;
-					$_sections[$_currentPartID]['partID']	= $_currentPartID;
-					$_sections[$_currentPartID]["mimeType"]	= $mime_type."/". strtolower($_structure->subtype);
-					$_sections[$_currentPartID]["name"]	= lang("unknown");
-					$_sections[$_currentPartID]['type']	= 'attachment';
-					foreach((array)$_structure->dparameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'filename':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					foreach((array)$_structure->parameters as $param) {
-						switch(strtolower($param->attribute)) {
-							case 'name':
-								$_sections[$_currentPartID]["name"] = $param->value;
-								break;
-						}
-					}
-					break;
-					
-				default:
-					break;
+			if(!$this->icServer = $this->mailPreferences->getIncomingServer((int)$_icServerID)) {
+				$this->errorMessage = lang('No active IMAP server found!!');
+				return false;
 			}
 
-			#if ($_currentPartID == '') _debug_array($_sections);
+			return $this->icServer->openConnection($_adminConnection);
+		}		
+
+		/**
+		* rename a folder
+		*
+		* @param string _oldFolderName the old foldername
+		* @param string _parent the parent foldername
+		* @param string _folderName the new foldername 
+		*
+		* @returns mixed name of the newly created folder or false on error
+		*/
+		function renameFolder($_oldFolderName, $_parent, $_folderName)
+		{
+			$oldFolderName	= $this->_encodeFolderName($_oldFolderName);
+			$parent		= $this->_encodeFolderName($_parent);
+			$folderName	= $this->_encodeFolderName($_folderName);
 			
-			#print "$_wantedPartID, $_currentPartID<br>";
-			#if($_currentPartID >= $_wantedPartID)
-			#{
-			#	print "will add<br>";
-			#	return $retData;
-			#}
+			if(empty($parent)) {
+				$newFolderName = $folderName;
+			} else {
+				$newFolderName = $parent . $this->icServer->getHierarchyDelimiter() . $folderName;
+			}
+			error_log("create folder: $newFolderName");
 			
+			if ( PEAR::isError($this->icServer->renameMailbox($oldFolderName, $newFolderName) ) ) {
+				return false;
+			}
+
+			return $newFolderName;
+
 		}
 		
 		function reopen($_foldername)
 		{
-			// (regis) seems to be necessary/usefull to reopen in the good folder
-			//echo "<hr>reopening imap mailbox in:".$_foldername;
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
-				return false;
-			}
-			$mailboxString = $icServer->getMailboxString($_foldername);
-			imap_reopen ($this->mbox, $mailboxString);
+			$this->icServer->selectMailbox($_foldername);
 		}
 		
 		function restoreSessionData()
@@ -2359,25 +1717,21 @@
 		
 		function subscribe($_folderName, $_status)
 		{
-			#$this->mailPreferences['imapServerAddress']
-			#$this->mailPreferences['imapPort'],
-			if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
-				return false;
+			if($_status === true) {
+				if ( PEAR::isError($this->icServer->subscribeMailbox($_folderName))) {
+					return false;
+				}
+			} else {
+				if ( PEAR::isError($this->icServer->unsubscribeMailbox($_folderName))) {
+					return false;
+				}
 			}
 			
-			$folderName = $icServer->getMailboxString($_folderName);
-			
-			if($_status == 'unsubscribe')
-			{
-				return imap_unsubscribe($this->mbox,$folderName);
-			}
-			else
-			{
-				return imap_subscribe($this->mbox,$folderName);
-			}
+			return true;
 		}
 		
-		function toggleFilter() {
+		function toggleFilter() 
+		{
 			if($this->sessionData['filter']['filterActive'] == 'true') {
 				$this->sessionData['filter']['filterActive'] = 'false';
 			} else {
@@ -2386,7 +1740,8 @@
 			$this->saveSessionData();
 		}
 
-		function updateAccount($_hookValues) {
+		function updateAccount($_hookValues) 
+		{
 			$icServer = $this->mailPreferences->getIncomingServer(0);
 			if(is_a($icServer,'defaultimap')) {
 				$icServer->updateAccount($_hookValues);
@@ -2400,23 +1755,19 @@
 		
 		function updateSingleACL($_folderName, $_accountName, $_aclType, $_aclStatus)
 		{
-			$folderACL = $this->getIMAPACL($_folderName);
-			$userACL = $folderACL[$_accountName];
+			#$folderACL = $this->getIMAPACL($_folderName);
+			#error_log(print_r($folderACL, true));
+			$userACL = $this->icServer->getACLRights($_accountName, $_folderName);
 			
-			if($_aclStatus == 'true')
-			{
-				if(strpos($userACL, $_aclType) === false)
-				{
+			if($_aclStatus == 'true') {
+				if(strpos($userACL, $_aclType) === false) {
 					$userACL .= $_aclType;
-					imap_setacl ($this->mbox, $_folderName, $_accountName, $userACL);
+					$this->setACL($_folderName, $_accountName, $userACL);
 				}
-			}
-			elseif($_aclStatus == 'false')
-			{
-				if(strpos($userACL, $_aclType) !== false)
-				{
+			} elseif($_aclStatus == 'false') {
+				if(strpos($userACL, $_aclType) !== false) {
 					$userACL = str_replace($_aclType,'',$userACL);
-					imap_setacl ($this->mbox, $_folderName, $_accountName, $userACL);
+					$this->setACL($_folderName, $_accountName, $userACL);
 				}
 			}
 			
@@ -2473,6 +1824,26 @@
 				$newStr .= wordwrap($line, $cols, $cut);
 			}
 			return $newStr;
+		}
+		
+		/**
+		* convert the foldername from display charset to UTF-7
+		*
+		* @param string _parent the parent foldername
+		* @returns ISO-8859-1 encoded string
+		*/
+		function _encodeFolderName($_folderName) {
+			return $GLOBALS['egw']->translation->convert($_folderName, $this->charset, 'ISO-8859-1');
+		}
+
+		/**
+		* convert the foldername from UTF-7 to display charset
+		*
+		* @param string _parent the parent foldername
+		* @returns ISO-8859-1 encoded string
+		*/
+		function _decodeFolderName($_folderName) {
+			return $GLOBALS['egw']->translation->convert($_folderName, $this->charset, 'ISO-8859-1');
 		}
 		
 	}
