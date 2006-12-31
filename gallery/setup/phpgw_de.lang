@@ -1,10 +1,14 @@
+after successful installation of all instances, you have to copy %1 to %2!	gallery	de	Nach erfolgreicher Installation aller Instanzen, kopieren Sie %1 nach %2!
 album frame (%1samples%2)	gallery	de	Albumrahmen (%1Beispiele%2)
+all filenames are relative to %1.	gallery	de	Alle Dateinamen sind relativ zu %1.
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	de	Alle anderen eGroupWare Benutzer werden von der G2 Integration automatisch angelegt, einschließlich ihrer Adminrechte.
 an error occurred during user creation in g2.	gallery	de	Beim Benutzer anlegen in G2 trat ein Fehler auf.
 an error occurred while trying to initialize g2.	gallery	de	Beim Initialisieren von G2 trat ein Fehler auf.
 can be used to limit the block to a certain album.	gallery	de	Beschränkt den Block auf ein bestimmtes Album.
 complete gallery	gallery	de	Komplette Galerie
 default item to show in the gallery.	gallery	de	Vorgabewert für die Anzeige in der Galerie.
 extra information to show	gallery	de	Zusätzliche Informationen anzeigen
+for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	de	Für mehrere eGroupWare Instanzen müssen Sie %1 löschen, bevor Sie die nächste Instanz installieren können.
 full size	gallery	de	Volle Größe
 gallery	common	de	Galerie
 gallery menu	gallery	de	Galerie Menü
@@ -18,12 +22,16 @@ imageblock of the gallery	gallery	de	Bilderblock der Galerie
 item id (number)	gallery	de	Bild- oder Album ID (Nummer)
 one or more blocks to show	gallery	de	Einen oder mehrere Blöcke anzeigen
 pagename of an other page to link to	gallery	de	Seitenname einer anderen Seite zum Verlinken
+please note:	gallery	de	Bitte beachten:
 set block title to	gallery	de	Setze Blocktitle von
 set gallery title as page-title?	gallery	de	Setze Galerie Titel als Seitentitel?
 should contain a "gallery" block in contentarea "center".	gallery	de	Sollte einen "gallery" Block im Inhaltsbereich "center" haben.
 size (maximum number of pixel of the longest side)	gallery	de	Größe (maximale Anzahl Pixel der längsten Seite)
 specific item (requires itemid!)	gallery	de	Bestimtes Bild- oder Album (benötigt die ID!)
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	de	Das Administrator Konto muss ein existierender eGroupWare Benutzer sein, mit exact der gleichen Schreibweise!
 type of the embeded gallery	gallery	de	Typ der eingebeteten Galerie
+use %1 as g2 data directory.	gallery	de	Benutzen Sie %1 als G2 Daten Verzeichnis.
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	de	Benutzen Sie die gleichen Datenbank Einstellung wie für Ihre eGW Installation (siehe Ihre %1 Datei) and lassen sie die Tabellen- und Spalten-Prefixe wie vorgeschlagen.
 use this module to display the embeded gallery	gallery	de	Diese Module zeigt eine eingebettete Galerie
 view count	gallery	de	Anzahl der Betrachtungen
 you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	de	Sie bekommen die ID von dem "g2_itemId" Parameter in der Internetadresse, wenn Sie auf das Element klicken.
