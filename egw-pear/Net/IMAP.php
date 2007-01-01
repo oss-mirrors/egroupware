@@ -55,6 +55,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      * Attempt to connect to the IMAP server located at $host $port
      * @param string $host The IMAP server
      * @param string $port The IMAP port
+     * @param bool   $useTLS enable TLS support
      *
      *          It is only useful in a very few circunstances
      *          because the contructor already makes this job
@@ -63,7 +64,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      * @access public
      * @since  1.0
      */
-    function connect($host, $port)
+    function connect($host, $port, $useTLS = true)
     {
         $ret=$this->cmdConnect($host,$port);
         if($ret === true ){
@@ -71,7 +72,7 @@ class Net_IMAP extends Net_IMAPProtocol {
             $res = $this->cmdCapability();
 
             // check if we can enable TLS via STARTTLS
-            if($this->hasCapability('STARTTLS') === true && function_exists('stream_socket_enable_crypto') === true) {
+            if($this->hasCapability('STARTTLS') === true && $useTLS === true && function_exists('stream_socket_enable_crypto') === true) {
                 if (PEAR::isError($res = $this->cmdStartTLS())) {
                     return $res;
                 }
