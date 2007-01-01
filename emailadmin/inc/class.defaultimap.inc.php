@@ -389,7 +389,7 @@
 				$this->isAdminConnection = false;
 			}
 
-			if( PEAR::isError($status = $this->connect($this->host, $this->port)) ) {
+			if( PEAR::isError($status = $this->connect($this->host, $this->port, $this->encryption)) ) {
 				$this->_connectionErrorObject = $status;
 				return false;
 			}
