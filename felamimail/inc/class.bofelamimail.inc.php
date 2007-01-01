@@ -750,7 +750,7 @@
 			}
 			
 			if ( PEAR::isError($folderStatus = $this->icServer->getStatus($_folderName)) ) {
-				_debug_array($folderStatus);
+				//_debug_array($folderStatus);
 			} else {
 				$retValue['messages']		= $folderStatus['MESSAGES'];
 				$retValue['recent']		= $folderStatus['RECENT'];
@@ -1085,7 +1085,9 @@
 		*/
 		function getSortedList($_folderName, $_sort, $_reverse, $_filter) 
 		{
-			$folderStatus = $this->icServer->examineMailbox($_folderName);
+			if(PEAR::isError($folderStatus = $this->icServer->examineMailbox($_folderName))) {
+				return false;
+			}
 			
 			if(is_array($this->sessionData['folderStatus'][0][$_folderName]) &&
 				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity']	=== $folderStatus['UIDVALIDITY'] &&
@@ -1116,10 +1118,10 @@
 				#exit;
 				#_debug_array($sortResult); exit;
 
-				$this->sessionData['folderStatus'][0][$_folderName]['filter']	= $_filter;
 				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity'] = $folderStatus['UIDVALIDITY'];
 				$this->sessionData['folderStatus'][0][$_folderName]['messages']	= $folderStatus['EXISTS'];
 				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	= $folderStatus['UIDNEXT'];
+				$this->sessionData['folderStatus'][0][$_folderName]['filter']	= $_filter;
 				$this->sessionData['folderStatus'][0][$_folderName]['sortResult'] = $sortResult;
 				$this->sessionData['folderStatus'][0][$_folderName]['sort']	= $_sort;
 				$this->sessionData['folderStatus'][0][$_folderName]['reverse'] 	= $_reverse;
