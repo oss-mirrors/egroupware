@@ -65,7 +65,7 @@
 		 {
 			if(is_array($fld_plug_conf_arr))
 			{
-			   if ($fld_plug_conf_arr['conf'][$temp])
+			   if ($fld_plug_conf_arr['conf'][$cval['name']])
 			   {
 				  $this->set_val=$fld_plug_conf_arr['conf'][$cval['name']];
 			   }
