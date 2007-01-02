@@ -2513,7 +2513,7 @@ class Net_IMAPProtocol {
     function _retrParsedResponse( &$str , $token, $previousToken = null)
     {
 
-    //echo "\n\nTOKEN:$token\r\n";
+    #echo "\n\nTOKEN:$token $str\r\n";
         switch( $token ){
         case "RFC822.SIZE" :
             return array($token=>$this->_parseOneStringResponse( $str,__LINE__ , __FILE__ ));
@@ -2539,6 +2539,10 @@ class Net_IMAPProtocol {
             return false;
             break;
 
+        case "NOMODSEQ" :
+            return array($token=>'');
+            break;
+
         case "UID" :
 
         case "UIDNEXT" :
@@ -2548,7 +2552,7 @@ class Net_IMAPProtocol {
         case "UNSEEN" :
 
         case "MESSAGES" :
-
+        
         case "UIDNEXT" :
 
         case "UIDVALIDITY" :
