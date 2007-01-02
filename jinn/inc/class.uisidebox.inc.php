@@ -110,6 +110,39 @@
 
 		 display_sidebox($appname,$menu_title,$file);
 
+		 /*----------------*/
+
+		 // PROJECT TREE
+
+		 $folders=$this->setMenuTree();
+		 $folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/jinn/templates/default/images/';
+
+		 //$selected_folder=$this->bo->retrievePath($this->node); //'/1/4/5';
+
+		 $select_link=$GLOBALS['egw']->link('/index.php','menuaction=jinn.uiuser.index&node=');
+
+		 unset($content);
+		 if(is_array($folders))	// show project-tree only if it's not empty
+		 {
+			$start_img = $GLOBALS['egw_info']['server']['webserver_url'].'/qproject/templates/default/images/dhtmlxtree/folderOpen.gif';
+			$this->tplsav2->assign('start_img',$start_img);
+			$this->tplsav2->assign('select_link',$select_link);
+			$this->tplsav2->assign('tree',$GLOBALS['egw']->html->tree($folders,$selected_folder,false,'load_project','foldertree','','folderClosed.gif',false,'/',$folderImageDir));
+			$content[0] = 
+			array(
+			   'text' => $this->tplsav2->fetch('sidebox_treemenu.tpl.php'),
+			   'no_lang' => True,
+			   'link' => False,
+			   'icon' => False,
+			);
+		 }
+
+		 $menu_title = lang('JiNN Menu');
+
+		 //display_sidebox($appname,$menu_title,$content);
+
+		 /*----------------*/
+
 		 $file=array();
 		 $conf=array();
 
@@ -151,13 +184,13 @@
 			}
 
 			//if list, if more then one record
-/*			$file['Configure this Object List View']= Array(
+			/*			$file['Configure this Object List View']= Array(
 			   'link'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects'),
 			   'no_lang' => True,
 			   'text'=>lang('Configure List'),
 			   'icon'=>'configure_toolbars'
 			);
-*/
+			*/
 		 }
 
 		 //if create 
@@ -288,6 +321,159 @@
 		 }
 
 	  }
+
+	  
+	  function setMenuTree($parent_id=0,$ppath='')
+	  {
+		 $menustruct['/sites']['label']='JiNN-sites';
+		 $menustruct['/sites']['image']='jinn18.png';
+		 
+		 $menustruct['/sites/1']['label']='Site 1';
+		 $menustruct['/sites/1']['image']='database18.png';
+		 $menustruct['/sites/1/properties']['label']='Site Properties';
+		 $menustruct['/sites/1/properties']['image']='siteprop18.png';
+		 $menustruct['/sites/1/importobject']['label']='Import Object(s)';
+		 $menustruct['/sites/1/importobject']['image']='objectimport18.png';
+		 $menustruct['/sites/1/exportsite']['label']='Export Site';
+		 $menustruct['/sites/1/exportsite']['image']='siteexport18.png';
+		 $menustruct['/sites/1/objects']['label']='Objects';
+		 $menustruct['/sites/1/objects']['image']='jinn18.png';
+		 $menustruct['/sites/1/objects/obj1']['label']='Object 1';
+		 $menustruct['/sites/1/objects/obj1']['image']='object18.png';
+		 $menustruct['/sites/1/objects/obj1/addrec']['label']='Add Records';
+		 $menustruct['/sites/1/objects/obj1/addrec']['image']='addrec18.png';
+		 $menustruct['/sites/1/objects/obj1/listrec']['label']='List Records';
+		 $menustruct['/sites/1/objects/obj1/listrec']['image']='listview18.png';
+		 $menustruct['/sites/1/objects/obj1/import']['label']='Import';
+		 $menustruct['/sites/1/objects/obj1/import']['image']='import18.png';
+		 $menustruct['/sites/1/objects/obj1/export']['label']='Export';
+		 $menustruct['/sites/1/objects/obj1/export']['image']='export18.png';
+		 $menustruct['/sites/1/objects/obj1/objproperties']['label']='Object Properties';
+		 $menustruct['/sites/1/objects/obj1/objproperties']['image']='objectprop18.png';
+		 $menustruct['/sites/1/objects/obj1/designform']['label']='Design Form';
+		 $menustruct['/sites/1/objects/obj1/designform']['image']='formprop18.png';
+		 $menustruct['/sites/1/objects/obj1/designlist']['label']='Design List';
+		 $menustruct['/sites/1/objects/obj1/designlist']['image']='listviewprop18.png';
+		 $menustruct['/sites/1/objects/obj1/exportobject']['label']='Export Object';
+		 $menustruct['/sites/1/objects/obj1/exportobject']['image']='objectexport18.png';
+		 $menustruct['/sites/1/objects/obj2']['label']='Object 2';
+		 $menustruct['/sites/1/objects/obj2']['image']='object18.png';
+		 $menustruct['/sites/1/objects/obj2/addrec']['label']='Add Records';
+		 $menustruct['/sites/1/objects/obj2/addrec']['image']='addrec18.png';
+		 $menustruct['/sites/1/objects/obj2/listrec']['label']='List Records';
+		 $menustruct['/sites/1/objects/obj2/listrec']['image']='listview18.png';
+		 $menustruct['/sites/1/objects/obj2/import']['label']='Import';
+		 $menustruct['/sites/1/objects/obj2/import']['image']='import18.png';
+		 $menustruct['/sites/1/objects/obj2/export']['label']='Export';
+		 $menustruct['/sites/1/objects/obj2/export']['image']='export18.png';
+		 $menustruct['/sites/1/objects/obj2/objproperties']['label']='Object Properties';
+		 $menustruct['/sites/1/objects/obj2/objproperties']['image']='objectprop18.png';
+		 $menustruct['/sites/1/objects/obj2/designform']['label']='Design Form';
+		 $menustruct['/sites/1/objects/obj2/designform']['image']='formprop18.png';
+		 $menustruct['/sites/1/objects/obj2/designlist']['label']='Design List';
+		 $menustruct['/sites/1/objects/obj2/designlist']['image']='listviewprop18.png';
+		 $menustruct['/sites/1/objects/obj2/exportobject']['label']='Export Object';
+		 $menustruct['/sites/1/objects/obj2/exportobject']['image']='objectexport18.png';
+		 $menustruct['/sites/1/createobject']['label']='Create Object';
+		 $menustruct['/sites/1/createobject']['image']='createobject18.png';
+
+		 $menustruct['/sites/2']['label']='Site 2';
+		 $menustruct['/sites/2']['image']='database18.png';
+		 $menustruct['/sites/2/properties']['label']='Site Properties';
+		 $menustruct['/sites/2/properties']['image']='siteprop18.png';
+		 $menustruct['/sites/2/importobject']['label']='Import Object(s)';
+		 $menustruct['/sites/2/importobject']['image']='objectimport18.png';
+		 $menustruct['/sites/2/exportsite']['label']='Export Site';
+		 $menustruct['/sites/2/exportsite']['image']='siteexport18.png';
+		 $menustruct['/sites/2/objects']['label']='Objects';
+		 $menustruct['/sites/2/objects']['image']='jinn18.png';
+		 $menustruct['/sites/2/objects/obj1']['label']='Obj 1';
+		 $menustruct['/sites/2/objects/obj1']['image']='object18.png';
+		 $menustruct['/sites/2/objects/obj1/addrec']['label']='Add Records';
+		 $menustruct['/sites/2/objects/obj1/addrec']['image']='addrec18.png';
+		 $menustruct['/sites/2/objects/obj1/listrec']['label']='List Records';
+		 $menustruct['/sites/2/objects/obj1/listrec']['image']='listview18.png';
+		 $menustruct['/sites/2/objects/obj1/import']['label']='Import';
+		 $menustruct['/sites/2/objects/obj1/import']['image']='import18.png';
+		 $menustruct['/sites/2/objects/obj1/export']['label']='Export';
+		 $menustruct['/sites/2/objects/obj1/export']['image']='export18.png';
+		 $menustruct['/sites/2/objects/obj1/objproperties']['label']='Object Properties';
+		 $menustruct['/sites/2/objects/obj1/objproperties']['image']='objectprop18.png';
+		 $menustruct['/sites/2/objects/obj1/designform']['label']='Design Form';
+		 $menustruct['/sites/2/objects/obj1/designform']['image']='formprop18.png';
+		 $menustruct['/sites/2/objects/obj1/designlist']['label']='Design List';
+		 $menustruct['/sites/2/objects/obj1/designlist']['image']='listviewprop18.png';
+		 $menustruct['/sites/2/objects/obj1/exportobject']['label']='Export Object';
+		 $menustruct['/sites/2/objects/obj1/exportobject']['image']='objectexport18.png';
+		 $menustruct['/sites/2/objects/obj2']['label']='Object 2';
+		 $menustruct['/sites/2/objects/obj2']['image']='object18.png';
+		 $menustruct['/sites/2/objects/obj2/addrec']['label']='Add Records';
+		 $menustruct['/sites/2/objects/obj2/addrec']['image']='addrec18.png';
+		 $menustruct['/sites/2/objects/obj2/listrec']['label']='List Records';
+		 $menustruct['/sites/2/objects/obj2/listrec']['image']='listview18.png';
+		 $menustruct['/sites/2/objects/obj2/import']['label']='Import';
+		 $menustruct['/sites/2/objects/obj2/import']['image']='import18.png';
+		 $menustruct['/sites/2/objects/obj2/export']['label']='Export';
+		 $menustruct['/sites/2/objects/obj2/export']['image']='export18.png';
+		 $menustruct['/sites/2/objects/obj2/objproperties']['label']='Object Properties';
+		 $menustruct['/sites/2/objects/obj2/objproperties']['image']='objectprop18.png';
+		 $menustruct['/sites/2/objects/obj2/designform']['label']='Design Form';
+		 $menustruct['/sites/2/objects/obj2/designform']['image']='formprop18.png';
+		 $menustruct['/sites/2/objects/obj2/designlist']['label']='Design List';
+		 $menustruct['/sites/2/objects/obj2/designlist']['image']='listviewprop18.png';
+		 $menustruct['/sites/2/objects/obj2/exportobject']['label']='Export Object';
+		 $menustruct['/sites/2/objects/obj2/exportobject']['image']='objectexport18.png';
+		 $menustruct['/sites/2/createobject']['label']='Create Object';
+		 $menustruct['/sites/2/createobject']['image']='createobject18.png';
+		 
+		 $menustruct['/add']['label']='Create JiNN-site';
+		 $menustruct['/add']['image']='createsite18.png';
+		 $menustruct['/importsite']['label']='Import Site';
+		 $menustruct['/importsite']['image']='siteimport18.png';
+		 $menustruct['/acl']['label']='ACL';
+		 $menustruct['/acl']['image']='acl18.png';
+		 return $menustruct;
+		 }
+
+	  function setMenuTree2($parent_id=0,$ppath='')
+	  {
+		 $rootfolders=$this->so->getFoldersByParent($parent_id);
+		 if(!$rootfolders) $rootfolders=array();
+
+		 foreach ($rootfolders as $folder)
+		 {
+			//			_debug_array($_fld);
+			$path=$ppath.'/'.$folder['id'];	
+			unset($_fld);
+			$_fld=array(
+			   'label'=>$folder['name'],
+			   'title'=>$folder['name'],
+			);
+
+			if($folder['type']=='p') 
+			{
+			   $img = $this->so->getImageFromTemplate($folder[id]);
+			   #_debug_array($img);
+			   if(!$img)
+			   {
+				  $_fld['image']='gear.png';
+			   }
+			   else
+			   {
+				  $_fld['image'] ='../../../../../../qproject/proj_img/exec.png';
+			   }
+			   # _debug_array($_fld);
+			}
+			$folder_arr[$path]=$_fld;
+
+			$child_arr=$this->setMenuTree($folder['id'],$path);
+			$all_arr=array_merge($all_arr,$folder_arr,$child_arr);
+		 }
+
+		 return $all_arr;
+	  }
+
+
 
    }
 ?>
