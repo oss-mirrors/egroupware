@@ -41,7 +41,7 @@
 	/* Dependencies for this app to work */
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('1.2','1.3')
+		'versions' => Array('1.2','1.3','1.4')
 	);
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'emailadmin',
@@ -58,10 +58,14 @@
 			'from' => 'FeLaMiMail',
 		),
 # get's provided by egw-pear temporarly
-#		'Net_Sieve' => array(
-#			'func' => 'pear_check',
-#			'from' => 'FeLaMiMail',
-#		),
+		'Net_Sieve' => array(
+			'func' => 'pear_check',
+			'from' => 'FeLaMiMail',
+		),
+		'Net_IMAP' => array(
+			'func' => 'pear_check',
+			'from' => 'FeLaMiMail',
+		),
 		'Auth_SASL' => array(
 			'func' => 'pear_check',
 			'from' => 'FeLaMiMail',

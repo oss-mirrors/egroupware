@@ -30,13 +30,29 @@
 	$setup_info['egw-pear']['license']	= 'LGPL';
 	$setup_info['egw-pear']['description']	=
 		'A place for PEAR modules modified for eGroupWare.';
+
 	$setup_info['egw-pear']['note'] 	=
 		'This application is a place for PEAR modules used by eGroupWare, which are NOT YET available from pear, 
 		because we patched them somehow and the PEAR modules are not released upstream.
-		This application is not under the LGPL license because the LGPL is not compatible with the PHP license.
+		This application is under the LGPL license because the GPL is not compatible with the PHP license.
 		If the modules are available from PEAR they do NOT belong here anymore.';
+	
 	$setup_info['egw-pear']['maintainer']	= array(
 		'name'  => 'Lars Kneschke',
 		'email' => 'l.kneschke@metaways.de'
+	);
+	
+	// installation checks for egw-pear
+	$setup_info['egw-pear']['check_install'] = array(
+		// we need pear itself to be installed
+		'' => array(
+			'func' => 'pear_check',
+			'from' => 'FeLaMiMail',
+		),
+		// Net_Socket is required from Net_IMAP & Net_Sieve
+		'Net_Socket' => array(
+			'func' => 'pear_check',
+			'from' => 'FeLaMiMail',
+		),
 	);
 ?>
