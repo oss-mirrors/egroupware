@@ -139,7 +139,7 @@
 
 		 $menu_title = lang('JiNN Menu');
 
-		 //display_sidebox($appname,$menu_title,$content);
+		 display_sidebox($appname,$menu_title,$content);
 
 		 /*----------------*/
 

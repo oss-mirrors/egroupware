@@ -21,7 +21,8 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   include_once(PHPGW_INCLUDE_ROOT.'/jinn/inc/class.uijinn.inc.php');
+   include_once(EGW_INCLUDE_ROOT.'/jinn/inc/class.uijinn.inc.php');
+   include_once(EGW_INCLUDE_ROOT.'/phpgwapi/inc/class.nextmatchs.inc.php');
 
    /**
    * uiu_list_records 
@@ -75,6 +76,8 @@
 		 }
 		 
 		 $this->set_activated_list_elements();
+
+		 $this->nextmatchs = new nextmatchs;
 		 
 	  }
 
@@ -590,8 +593,8 @@
 			   $orderby_link = $col['name'].' ASC';
 			}
 
-			$this->tplsav2->set_var('colhead_bg_color',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$colname_arr['colhead_bg_color']=$GLOBALS['phpgw_info']['theme']['th_bg'];
+			$this->tplsav2->set_var('colhead_bg_color','#d3dce3');
+			$colname_arr['colhead_bg_color']='#d3dce3';
 			$colname_arr['colhead_order_link']=$GLOBALS['phpgw']->link("/index.php","menuaction=".$this->japielink."jinn.uiu_list_records.display&orderby=$orderby_link");
 			$colname_arr['colhead_name']=str_replace('_','&nbsp;',$display_colname);
 			$colname_arr['colhead_order_by_img']=$orderby_image;
@@ -624,7 +627,7 @@
 		 $this->tplsav2->set_var('pager',$pager);
 		 $this->tplsav2->set_var('newrec_link',$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.new_record'));
 
-		 $this->tplsav2->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+		 $this->tplsav2->set_var('th_bg','#d3dce3');
 		 $this->tplsav2->set_var('table_title',$this->bo->site_object['name']);
 		 $this->tplsav2->set_var('table_descr',$this->bo->site_object['help_information']);
 		 $this->tplsav2->popuplink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.img_popup');
@@ -669,14 +672,18 @@
 				  $where_string=base64_encode($where_string);
 			   }
 
-			   if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
+			   $bgclr = $this->nextmatchs->alternate_row_color($bgclr);
+
+/*			   if ($bgclr==$GLOBALS['egw_info']['theme']['row_off'])
 			   {
 				  $bgclr='#ffffff';
 			   }
 			   else
 			   {
-				  $bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
+				  $bgclr=$GLOBALS['egw_info']['theme']['row_off'];
 			   }
+			   */
+
 			   $this->tplsav2->set_var('colfield_bg_color',$bgclr);
 			   $recrow_arr['colfield_bg_color']=$bgclr;
 
