@@ -357,14 +357,16 @@
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id]['label']=$this->bo->so->get_object_name($object_id); // FIXME PERFORMANCE!
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id]['image']='object18.png';
 
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'addrec']['label']='Add Records';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'addrec']['image']='addrec18.png';
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'listrec']['label']='List Records';
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'listrec']['image']='listview18.png';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'addrec']['label']='Add Records';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'addrec']['image']='addrec18.png';
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'import']['label']='Import';
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'import']['image']='import18.png';
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'export']['label']='Export';
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'export']['image']='export18.png';
+
+					 //admin or owners options
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'objproperties']['label']='Object Properties';
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'objproperties']['image']='objectprop18.png';
 					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'designform']['label']='Design Form';
@@ -391,9 +393,6 @@
 			}
 		 }
 
-		 $menustruct['/s/2/createobject']['label']='Create Object';
-		 $menustruct['/s/2/createobject']['image']='createobject18.png';
-		 
 		 $menustruct['/addsite']['label']='Create JiNN-site';
 		 $menustruct['/addsite']['image']='createsite18.png';
 		 $menustruct['/importsite']['label']='Import Site';
@@ -402,8 +401,6 @@
 		 $menustruct['/acl']['image']='acl18.png';
 		 return $menustruct;
 	  }
-
-//	  function resolveSelectedLink($_GET['link'])
 
 	  function openTreeLink()
 	  {
