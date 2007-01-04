@@ -681,11 +681,12 @@
 					if($addressData['PERSONAL_NAME'] != 'NIL') {
 						$newSenderAddress = $addressData['RFC822_EMAIL'] != 'NIL' ? $addressData['RFC822_EMAIL'] : $addressData['EMAIL'];
 						$newSenderAddress = $this->bofelamimail->decode_header($newSenderAddress);
+						$decodedPersonalName = $this->bofelamimail->decode_header($addressData['PERSONAL_NAME']);
+
 						if(!empty($_organisation)) {
-							$realName = $this->bofelamimail->decode_header($addressData['PERSONAL_NAME']) .
-								    ' ('. $_organisation . ')';
+							$realName = $decodedPersonalName .' ('. $_organisation . ')';
 						} else {
-							$realName = $this->bofelamimail->decode_header($addressData['PERSONAL_NAME']);
+							$realName = $decodedPersonalName;
 						}
 						$linkData = array (
 							'menuaction'	=> 'felamimail.uicompose.compose',
@@ -704,11 +705,11 @@
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 						
-						if($spacePos = strrpos($addressData['PERSONAL_NAME'], ' ')) {
-							$linkData['presets[n_family]']	= substr($addressData['PERSONAL_NAME'], $spacePos+1);
-							$linkData['presets[n_given]'] 	= substr($addressData['PERSONAL_NAME'], 0, $spacePos);
+						if($spacePos = strrpos($decodedPersonalName, ' ')) {
+							$linkData['presets[n_family]']	= @htmlentities(substr($decodedPersonalName, $spacePos+1), ENT_QUOTES, $this->displayCharset);
+							$linkData['presets[n_given]'] 	= @htmlentities(substr($decodedPersonalName, 0, $spacePos), ENT_QUOTES, $this->displayCharset);
 						} else {
-							$linkData['presets[n_family]']	= @htmlentities($addressData['PERSONAL_NAME'], ENT_QUOTES, $this->displayCharset);
+							$linkData['presets[n_family]']	= @htmlentities($decodedPersonalName, ENT_QUOTES, $this->displayCharset);
 						}
 						
 						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
