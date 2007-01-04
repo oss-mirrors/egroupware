@@ -119,7 +119,7 @@
 		 if(!$this->debug_sql)
 		 {
 			$this->site_db->Debug	= False;
-			//$this->site_db->Halt_On_Error='no';
+			$this->site_db->Halt_On_Error='no';
 		 }
 	  }
 
@@ -1054,6 +1054,7 @@
 	  }
 
 
+
 	  /**
 	  * get_m2m_record_values: get linked many to many records
 	  * 
@@ -1074,22 +1075,24 @@
 			if($displayfields)	$displayfields.=',';
 			$displayfields.=$displfield;
 		 }
+		 if(count($_displayfields)>1)
+		 {
 		 $displayfields = "CONCAT_WS(' ',".$displayfields.")";
-
+		 }
 		 if ($all_or_stored=="all")
 		 {
 			$SQL="SELECT {$m2m_relation[foreign_table]}.{$m2m_relation[foreign_key]},$displayfields AS display 
 			FROM {$m2m_relation[foreign_table]} 
-			ORDER BY {$_displayfields[0]} ";
+			ORDER BY {$m2m_relation[foreign_table]}.{$_displayfields[0]} ";
 		 }
 		 elseif($object_id)
 		 {
 			$SQL="SELECT {$m2m_relation[foreign_table]}.{$m2m_relation[foreign_key]},$displayfields AS display 
 			FROM {$m2m_relation[foreign_table]} 
 			INNER JOIN {$m2m_relation[connect_table]}
-			ON {$m2m_relation[connect_key_foreign]}={$m2m_relation[foreign_table]}.{$m2m_relation[foreign_key]} 
-			WHERE {$m2m_relation[connect_key_local]}='$object_id' 
-			ORDER BY {$_displayfields[0]}";
+			ON {$m2m_relation[connect_table]}.{$m2m_relation[connect_key_foreign]}={$m2m_relation[foreign_table]}.{$m2m_relation[foreign_key]} 
+			WHERE {$m2m_relation[connect_table]}.{$m2m_relation[connect_key_local]}='$object_id' 
+			ORDER BY {$m2m_relation[foreign_table]}.{$_displayfields[0]}";
 		 }
 		 else
 		 {
