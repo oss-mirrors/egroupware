@@ -361,14 +361,11 @@
 			}
 			if ($found === false)		// no existing profile selected
 			{
-				if (is_array($profileData) && count($profileData))	// if we have a profile use that
-				{
+				if (is_array($profileData) && count($profileData)) {	// if we have a profile use that
 					reset($profileData);
 					list($found,$data) = each($profileData);
 					$this->profileID = $_profileID = $data['profileID'];
-				}
-				elseif ($GLOBALS['egw_info']['server']['smtp_server'])	// create a default profile, from the data in the api config
-				{
+				} elseif ($GLOBALS['egw_info']['server']['smtp_server']) { // create a default profile, from the data in the api config
 					$this->profileID = $_profileID = $this->soemailadmin->addProfile(array(
 						'description' => $GLOBALS['egw_info']['server']['smtp_server'],
 						'defaultDomain' => $GLOBALS['egw_info']['server']['mail_suffix'],
@@ -386,7 +383,7 @@
 						'imapType' => '2',	// imap
 						'imapLoginType' => $GLOBALS['egw_info']['server']['mail_login_type'] ? 
 							$GLOBALS['egw_info']['server']['mail_login_type'] : 'standard',
-						'imapTLSEncryption' => '',
+						'imapTLSEncryption' => '0',
 						'imapTLSAuthentication' => '',
 						'imapoldcclient' => '',						
 					));
@@ -410,7 +407,9 @@
 			$fieldNames[] = 'ea_appname';
 			$fieldNames[] = 'ea_group';
 			
-			return $this->soemailadmin->getProfile($_profileID, $fieldNames);
+			$profileData = $this->soemailadmin->getProfile($_profileID, $fieldNames);
+			$profileData['imapTLSEncryption'] = ($profileData['imapTLSEncryption'] == 'yes' ? 1 : (int)$profileData['imapTLSEncryption']);
+			return $profileData;
 		}
 		
 		function getProfileList($_profileID='')
@@ -449,12 +448,12 @@
 				$icClass = isset($this->IMAPServerType[$data['imapType']]) ? $this->IMAPServerType[$data['imapType']]['classname'] : 'defaultimap';
 
 				$icServer =& CreateObject('emailadmin.'.$icClass);
-				$icServer->encryption	= $data['imapTLSEncryption'] == 'yes';
-				$icServer->host			= $data['imapServer'];
-				$icServer->port 		= $data['imapPort'];
+				$icServer->encryption	= ($data['imapTLSEncryption'] == 'yes' ? 1 : (int)$data['imapTLSEncryption']);
+				$icServer->host		= $data['imapServer'];
+				$icServer->port 	= $data['imapPort'];
 				$icServer->validatecert	= $data['imapTLSAuthentication'] == 'yes';
 				$icServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
-				$icServer->password		= $GLOBALS['egw_info']['user']['passwd'];
+				$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
 				$icServer->loginType	= $data['imapLoginType'];
 				$icServer->domainName	= $data['defaultDomain'];
 				$icServer->loginName 	= $data['imapLoginType'] == 'standard' ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
@@ -572,7 +571,7 @@
 					'imap' => array(
 						'imapType' => 2,
 						'imapPort' => 143,
-						'imapTLSEncryption' => null,
+						'imapTLSEncryption' => 0,
 					),
 					'imaps' => array(
 						'imapType' => 2,
@@ -582,12 +581,12 @@
 					'pop3' => array(
 						'imapType' => 1,
 						'imapPort' => 110,
-						'imapTLSEncryption' => null,
+						'imapTLSEncryption' => 0,
 					),
 					'pop3s' => array(
 						'imapType' => 1,
 						'imapPort' => 995,
-						'imapTLSEncryption' => 'yes',
+						'imapTLSEncryption' => '1',
 					),
 				),
 				'mail_login_type' => 'imapLoginType',
@@ -624,13 +623,14 @@
 
 		function saveProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
-			if(!isset($_globalSettings['profileID']))
-			{
+			if(!isset($_imapSettings['imapTLSAuthentication'])) {
+				$_imapSettings['imapTLSAuthentication'] = true;
+			}
+
+			if(!isset($_globalSettings['profileID'])) {
 				$_globalSettings['ea_order'] = count($this->getProfileList()) + 1;
 				$this->soemailadmin->addProfile($_globalSettings, $_smtpSettings, $_imapSettings);
-			}
-			else
-			{
+			} else {
 				$this->soemailadmin->updateProfile($_globalSettings, $_smtpSettings, $_imapSettings);
 			}
 			$all = $_globalSettings+$_smtpSettings+$_imapSettings;

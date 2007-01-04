@@ -228,22 +228,27 @@
 			
 			$this->translate();
 			
-			foreach((array)$profileData as $key => $value)
-			{
-				//print "$key $value<br>";
-				switch($key)
-				{
+			foreach((array)$profileData as $key => $value) {
+				#print "$key $value<br>";
+				switch($key) {
+					case 'imapTLSEncryption':
+						$this->t->set_var('checked_'. $key .'_'. $value,'checked="1"');
+						break;
+					case 'imapTLSAuthentication':
+						if($value == '1') {
+							$this->t->set_var('selected_'.$key,'checked="1"');
+						}
+						break;
 					case 'imapEnableCyrusAdmin':
 					case 'imapEnableSieve':
-					case 'imapTLSAuthentication':
-					case 'imapTLSEncryption':
 					case 'smtpAuth':
 					case 'smtpLDAPUseDefault':
 					case 'userDefinedAccounts':
 					case 'imapoldcclient':
 					case 'editforwardingaddress':
-						if($value == 'yes')
+						if($value == 'yes') {
 							$this->t->set_var('selected_'.$key,'checked="1"');
+						}
 						break;
 					case 'imapType':
 					case 'smtpType':
@@ -476,8 +481,7 @@
 			$imapSettings	= array();
 			
 			// try to get the profileID
-			if(is_int(intval($_GET['profileID'])) && !empty($_GET['profileID']))
-			{
+			if(is_int(intval($_GET['profileID'])) && !empty($_GET['profileID'])) {
 				$globalSettings['profileID'] = intval($_GET['profileID']);
 			}
 			$globalSettings['description'] = $_POST['globalsettings']['description'];
@@ -490,8 +494,7 @@
 			
 			// get the settings for the smtp server
 			$smtpType = $_POST['smtpsettings']['smtpType'];
-			foreach($this->boemailadmin->getFieldNames($smtpType,'smtp') as $key)
-			{
+			foreach($this->boemailadmin->getFieldNames($smtpType,'smtp') as $key) {
 				$smtpSettings[$key] = $_POST['smtpsettings'][$smtpType][$key];
 			}
 			$smtpSettings['smtpType'] = $smtpType;
@@ -500,23 +503,22 @@
 			
 			// get the settings for the imap/pop3 server
 			$imapType = $_POST['imapsettings']['imapType'];
-			foreach($this->boemailadmin->getFieldNames($imapType,'imap') as $key)
-			{
-				$imapSettings[$key] = $_POST['imapsettings'][$imapType][$key];
+			foreach($this->boemailadmin->getFieldNames($imapType,'imap') as $key) {
+				switch($key) {
+					case 'imapTLSAuthentication':
+						$imapSettings[$key] = $_POST['imapsettings'][$imapType][$key] != 'dontvalidate';
+						break;
+					default:
+						$imapSettings[$key] = $_POST['imapsettings'][$imapType][$key];
+						break;
+				}
 			}
 			$imapSettings['imapType'] = $imapType;
-			
+
 			#_debug_array($imapSettings);
 			
 			$this->boemailadmin->saveProfile($globalSettings, $smtpSettings, $imapSettings);
-			#if ($_POST['bo_action'] == 'save_ldap' || $_GET['bo_action'] == 'save_ldap')
-			#{
-			#	$this->listProfiles();
-			#}
-			#else
-			#{
-			#	$this->editServer($_GET["serverid"],$_GET["pagenumber"]);
-			#}
+
 			print "<script type=\"text/javascript\">opener.location.reload(); window.close();</script>";
 			$GLOBALS['egw']->common->egw_exit();
 			exit;
@@ -568,7 +570,7 @@
 			$this->t->set_var('lang_enable_cyrus_imap_administration',lang('enable Cyrus IMAP server administration'));
 			$this->t->set_var('lang_cyrus_imap_administration',lang('Cyrus IMAP server administration'));
 			$this->t->set_var('lang_admin_username',lang('admin username'));
-			$this->t->set_var('lang_admin_password',lang('admin passwort'));
+			$this->t->set_var('lang_admin_password',lang('admin password'));
 			$this->t->set_var('lang_imap_server_logintyp',lang('imap server logintyp'));
 			$this->t->set_var('lang_standard',lang('username (standard)'));
 			$this->t->set_var('lang_vmailmgr',lang('username@domainname (Virtual MAIL ManaGeR)'));
@@ -587,9 +589,9 @@
 			$this->t->set_var('lang_global_options',lang('global options'));
 			$this->t->set_var('lang_server_settings',lang('server settings'));
 			$this->t->set_var('lang_encryption_settings',lang('encryption settings'));
-			$this->t->set_var('',lang(''));
-			$this->t->set_var('',lang(''));
-			$this->t->set_var('',lang(''));
+			$this->t->set_var('lang_no_encryption',lang('no encryption'));
+			$this->t->set_var('lang_encrypted_connection',lang('encrypted connection'));
+			$this->t->set_var('lang_do_not_validate_certificate',lang('do not validate certificate'));
 			$this->t->set_var('',lang(''));
 			# $this->t->set_var('',lang(''));
 			

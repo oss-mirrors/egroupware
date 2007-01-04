@@ -1,3 +1,7 @@
+2007-01-03 Lars Kneschke <lkneschke@metaways.de>
+	* enabled renaming of dbmail accounts
+	* made SSL/TLS settings working again
+
 2006-12-31 Lars Kneschke <lkneschke@metaways.de>
 	* major rewrite of the imap backend. the imap backend is not handled 
 	  by the php extension php-imap anymore, but the PEAR class Net_IMAP.

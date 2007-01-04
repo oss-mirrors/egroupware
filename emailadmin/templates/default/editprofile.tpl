@@ -376,46 +376,6 @@
 			</tr>
 		</table>
 		</fieldset>
-<!--		<table>
-			<tr>
-				<td colspan="2">&nbsp;</td>
-			</tr>
-		</table>
-		<table width="90%" border="0" cellspacing="0" cellpading="1">
-			<tr class="th">
-				<td width="50%" class="td_left">
-					<b>{lang_LDAP_settings}<b>
-				</td>
-				<td class="td_right">
-					&nbsp;
-				</td>
-			</tr>
-			<tr class="row_off">
-				<td class="td_left">{lang_use_LDAP_defaults}:</td>
-				<td class="td_right">
-					<input type="checkbox" name="smtpsettings[5][smtpLDAPUseDefault]" {selected_smtpLDAPUseDefault} value="yes">
-				</td>
-			</tr>
-			<tr class="row_on">
-				<td width="50%" class="td_left">{lang_LDAP_server_hostname_or_IP_address}:</td>
-				<td width="50%" class="td_right"><input name="smtpsettings[5][smtpLDAPServer]" maxlength="80" size="40" value="{value_smtpLDAPServer}"></td>
-			</tr>
-			
-			<tr class="row_off">
-				<td class="td_left">{lang_LDAP_server_admin_dn}:</td>
-				<td class="td_right"><input name="smtpsettings[5][smtpLDAPAdminDN]" maxlength="200" size="40" value="{value_smtpLDAPAdminDN}"></td>
-			</tr>
-			
-			<tr class="row_on">
-				<td class="td_left">{lang_LDAP_server_admin_pw}:</td>
-				<td class="td_right"><input type="password" name="smtpsettings[5][smtpLDAPAdminPW]" maxlength="30" size="40" value="{value_smtpLDAPAdminPW}"></td>
-			</tr>
-
-			<tr class="row_off">
-				<td class="td_left">{lang_LDAP_server_base_dn}:</td>
-				<td class="td_right"><input name="smtpsettings[5][smtpLDAPBaseDN]" maxlength="200" size="40" value="{value_smtpLDAPBaseDN}"></td>
-			</tr>
-		</table> -->
 	</div>
 
 </div>
@@ -467,16 +427,19 @@
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
-				<td width="300px">{lang_use_tls_encryption}:</td>
+				<td width="300px">{lang_encrypted_connection}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[1][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+					<input type="radio" name="imapsettings[1][imapTLSEncryption]" value="1" {checked_imapTLSEncryption_1}> STARTTLS
+					<input type="radio" name="imapsettings[1][imapTLSEncryption]" value="2" {checked_imapTLSEncryption_2}> TLS
+					<input type="radio" name="imapsettings[1][imapTLSEncryption]" value="3" {checked_imapTLSEncryption_3}> SSL
+					<input type="radio" name="imapsettings[1][imapTLSEncryption]" value="0" {checked_imapTLSEncryption_0}> {lang_no_encryption}
 				</td>
 			</tr>
 
 			<tr>
-				<td>{lang_use_tls_authentication}:</td>
+				<td>{lang_do_not_validate_certificate}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[1][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+					<input type="checkbox" name="imapsettings[1][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="dontvalidate">
 				</td>
 			</tr>
 
@@ -517,16 +480,20 @@
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
-				<td width="300px">{lang_use_tls_encryption}:</td>
-				<td>
-					<input type="checkbox" name="imapsettings[2][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+				<td width="300px">{lang_encrypted_connection}:</td>
+				<td colspan="1">
+<!--					<input type="checkbox" name="imapsettings[2][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes"><br> -->
+					<input type="radio" name="imapsettings[2][imapTLSEncryption]" value="1" {checked_imapTLSEncryption_1}> STARTTLS
+					<input type="radio" name="imapsettings[2][imapTLSEncryption]" value="2" {checked_imapTLSEncryption_2}> TLS
+					<input type="radio" name="imapsettings[2][imapTLSEncryption]" value="3" {checked_imapTLSEncryption_3}> SSL
+					<input type="radio" name="imapsettings[2][imapTLSEncryption]" value="0" {checked_imapTLSEncryption_0}> {lang_no_encryption}
 				</td>
 			</tr>
 
 			<tr>
-				<td>{lang_use_tls_authentication}:</td>
+				<td>{lang_do_not_validate_certificate}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[2][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+					<input type="checkbox" name="imapsettings[2][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="dontvalidate">
 				</td>
 			</tr>
 		</table>
@@ -566,16 +533,20 @@
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
-				<td width="300px">{lang_use_tls_encryption}:</td>
+				<td width="300px">{lang_encrypted_connection}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[3][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+<!--					<input type="checkbox" name="imapsettings[3][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes"> -->
+					<input type="radio" name="imapsettings[3][imapTLSEncryption]" value="1" {checked_imapTLSEncryption_1}> STARTTLS
+					<input type="radio" name="imapsettings[3][imapTLSEncryption]" value="2" {checked_imapTLSEncryption_2}> TLS
+					<input type="radio" name="imapsettings[3][imapTLSEncryption]" value="3" {checked_imapTLSEncryption_3}> SSL
+					<input type="radio" name="imapsettings[3][imapTLSEncryption]" value="0" {checked_imapTLSEncryption_0}> {lang_no_encryption}
 				</td>
 			</tr>
 
 			<tr>
-				<td>{lang_use_tls_authentication}:</td>
+				<td>{lang_do_not_validate_certificate}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[3][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+					<input type="checkbox" name="imapsettings[3][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="dontvalidate">
 				</td>
 			</tr>
 
@@ -650,16 +621,20 @@
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
-				<td width="300px">{lang_use_tls_encryption}:</td>
+				<td width="300px">{lang_encrypted_connection}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[4][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+<!--					<input type="checkbox" name="imapsettings[4][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes"> -->
+					<input type="radio" name="imapsettings[4][imapTLSEncryption]" value="1" {checked_imapTLSEncryption_1}> STARTTLS
+					<input type="radio" name="imapsettings[4][imapTLSEncryption]" value="2" {checked_imapTLSEncryption_2}> TLS
+					<input type="radio" name="imapsettings[4][imapTLSEncryption]" value="3" {checked_imapTLSEncryption_3}> SSL
+					<input type="radio" name="imapsettings[4][imapTLSEncryption]" value="0" {checked_imapTLSEncryption_0}> {lang_no_encryption}
 				</td>
 			</tr>
 
 			<tr>
-				<td>{lang_use_tls_authentication}:</td>
+				<td>{lang_do_not_validate_certificate}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[4][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+					<input type="checkbox" name="imapsettings[4][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="dontvalidate">
 				</td>
 			</tr>
 		</table>
@@ -713,16 +688,20 @@
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
-				<td width="300px">{lang_use_tls_encryption}:</td>
+				<td width="300px">{lang_encrypted_connection}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[5][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+<!--					<input type="checkbox" name="imapsettings[5][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes"> -->
+					<input type="radio" name="imapsettings[5][imapTLSEncryption]" value="1" {checked_imapTLSEncryption_1}> STARTTLS
+					<input type="radio" name="imapsettings[5][imapTLSEncryption]" value="2" {checked_imapTLSEncryption_2}> TLS
+					<input type="radio" name="imapsettings[5][imapTLSEncryption]" value="3" {checked_imapTLSEncryption_3}> SSL
+					<input type="radio" name="imapsettings[5][imapTLSEncryption]" value="0" {checked_imapTLSEncryption_0}> {lang_no_encryption}
 				</td>
 			</tr>
 
 			<tr>
-				<td>{lang_use_tls_authentication}:</td>
+				<td>{lang_do_not_validate_certificate}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[5][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+					<input type="checkbox" name="imapsettings[5][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="dontvalidate">
 				</td>
 			</tr>
 
@@ -762,16 +741,20 @@
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
 			<tr>
-				<td width="300px">{lang_use_tls_encryption}:</td>
+				<td width="300px">{lang_encrypted_connection}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[6][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+<!--					<input type="checkbox" name="imapsettings[6][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes"> -->
+					<input type="radio" name="imapsettings[6][imapTLSEncryption]" value="1" {checked_imapTLSEncryption_1}> STARTTLS
+					<input type="radio" name="imapsettings[6][imapTLSEncryption]" value="2" {checked_imapTLSEncryption_2}> TLS
+					<input type="radio" name="imapsettings[6][imapTLSEncryption]" value="3" {checked_imapTLSEncryption_3}> SSL
+					<input type="radio" name="imapsettings[6][imapTLSEncryption]" value="0" {checked_imapTLSEncryption_0}> {lang_no_encryption}
 				</td>
 			</tr>
 
 			<tr>
-				<td>{lang_use_tls_authentication}:</td>
+				<td>{lang_do_not_validate_certificate}:</td>
 				<td>
-					<input type="checkbox" name="imapsettings[6][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+					<input type="checkbox" name="imapsettings[6][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="dontvalidate">
 				</td>
 			</tr>
 		</table>

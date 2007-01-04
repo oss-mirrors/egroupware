@@ -1,4 +1,5 @@
 account '%1' not found !!!	emailadmin	de	Benutzerkonto '%1' nicht gefunden !!!
+add new email address:	emailadmin	de	Neue EMailadresse hinzufügen
 add profile	emailadmin	de	Profil hinzufügen
 admin dn	emailadmin	de	Admin DN
 admin password	emailadmin	de	Admin Passwort
@@ -32,6 +33,7 @@ enable sieve	emailadmin	de	Sieve aktivieren
 encryption settings	emailadmin	de	Verschlüsselungseinstellungen
 enter your default mail domain (from: user@domain)	emailadmin	de	Standard EMail-Domain (Von: benutzer@domain)
 error connecting to imap server. %s : %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
+error connecting to imap server: [%s] %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. [%s] %s.
 forward also to	emailadmin	de	zusätzlich weiterleiten
 forward email's to	emailadmin	de	EMail's weiterleiten an
 forward only	emailadmin	de	nur weiterleiten
@@ -58,6 +60,7 @@ leave empty for no quota	emailadmin	de	leer lassen um Quota zu deaktivieren
 mail settings	admin	de	Mail Einstellungen
 name of organisation	emailadmin	de	Name der Organisation
 no alternate email address	emailadmin	de	keine zusätzlichen EMailadressen
+no encryption	emailadmin	de	keine Verschlüsselung
 no forwarding email address	emailadmin	de	keine Weiterleitungsadresse definiert
 no message returned.	emailadmin	de	Keine Nachricht zurückgeliefert.
 no supported imap authentication method could be found.	emailadmin	de	Keine unterstützte IMAP Authentifizierungsmethode gefunden.
@@ -102,6 +105,7 @@ unexpected response from server to digest-md5 response.	emailadmin	de	Unerwartet
 unexpected response from server to login command.	emailadmin	de	Unerwartete Antwort des Servers auf das LOGIN Komando.
 unknown imap response from the server. server responded: %s	emailadmin	de	Unbekannte IMAP Antwort vom Server. Server antwortet: %s
 unsupported action '%1' !!!	emailadmin	de	Nicht unterstützte Aktion '%1' !!!
+update current email address:	emailadmin	de	Aktualisiere aktuelle EMailadresse
 use ldap defaults	emailadmin	de	LDAP Standardeinstellungen benutzen
 use smtp auth	emailadmin	de	SMTP Auth benutzen
 use tls authentication	emailadmin	de	TLS Authentifizierung benutzen

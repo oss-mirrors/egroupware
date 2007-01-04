@@ -1,7 +1,9 @@
 account '%1' not found !!!	emailadmin	en	Account '%1' not found !!!
+add new email address:	emailadmin	en	Add new email address:
 add profile	emailadmin	en	Add Profile
 admin dn	emailadmin	en	Admin dn
 admin password	emailadmin	en	Admin password
+admin passwort	emailadmin	en	admin passwort
 admin username	emailadmin	en	Admin username
 advanced options	emailadmin	en	Advanced options
 alternate email address	emailadmin	en	Alternate email address
@@ -59,6 +61,7 @@ leave empty for no quota	emailadmin	en	leave empty for no quota
 mail settings	admin	en	Mail settings
 name of organisation	emailadmin	en	Name of organization
 no alternate email address	emailadmin	en	no alternate email address
+no encryption	emailadmin	en	no encryption
 no forwarding email address	emailadmin	en	no forwarding email address
 no message returned.	emailadmin	en	No message returned.
 no supported imap authentication method could be found.	emailadmin	en	No supported IMAP authentication method could be found.
@@ -103,6 +106,7 @@ unexpected response from server to digest-md5 response.	emailadmin	en	Unexpected
 unexpected response from server to login command.	emailadmin	en	Unexpected response from server to LOGIN command.
 unknown imap response from the server. server responded: %s	emailadmin	en	Unknown IMAP response from the server. Server Responded: %s
 unsupported action '%1' !!!	emailadmin	en	Unsupported action '%1' !!!
+update current email address:	emailadmin	en	Update current email address:
 use ldap defaults	emailadmin	en	Use LDAP defaults
 use smtp auth	emailadmin	en	Use SMTP auth
 use tls authentication	emailadmin	en	Use TLS authentication

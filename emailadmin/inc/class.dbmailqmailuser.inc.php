@@ -86,20 +86,19 @@
 					$newData['objectclass'][] = 'qmailuser';
 					sort($newData['objectclass']);
 					$newData['qmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
-					$newData['qmailUID']	= (!empty($this->domainName)) ? $_username .'@'. $this->domainName : $_username;
+					#$newData['qmailUID']	= (!empty($this->domainName)) ? $_username .'@'. $this->domainName : $_username;
 					
 					ldap_modify($ds, $info[0]['dn'], $newData);
 					
 					return true;
 				} else {
-					if (in_array('qmailuser',$info[0]['objectclass']) && !$info[0]['qmailgid']) {
-						$newData = array();
-						$newData['qmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
+					$newData = array();
+					$newData['qmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
+					#$newData['qmailUID']	= (!empty($this->domainName)) ? $_username .'@'. $this->domainName : $_username;
 
-						if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
-							#print ldap_error($ds);
-							#return false;
-						}
+					if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
+						#print ldap_error($ds);
+						#return false;
 					}
 				}
 			}

@@ -94,24 +94,15 @@
 					
 					return true;
 				} else {
-					if ((in_array('dbmailuser',$info[0]['objectclass']) || in_array('dbmailUser',$info[0]['objectclass'])) && !$info[0]['dbmailuid']) {
-						$newData = array();
-						$newData['dbmailUID']	= (!empty($this->domainName)) ? $_username .'@'. $this->domainName : $_username;
+					$newData = array();
+					$newData['dbmailUID']	= (!empty($this->domainName)) ? $_hookValues['account_lid'] .'@'. $this->domainName : $_hookValues['account_lid'];
+					$newData['dbmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
 						
-						if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
-							#print ldap_error($ds);
-							#return false;
-						}
-					}
-				
-					if ((in_array('dbmailuser',$info[0]['objectclass']) || in_array('dbmailUser',$info[0]['objectclass']))  && !$info[0]['dbmailgid']) {
-						$newData = array();
-						$newData['dbmailGID']	= sprintf("%u", crc32($GLOBALS['egw_info']['server']['install_id']));
-
-						if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
-							#print ldap_error($ds);
-							#return false;
-						}
+					if(!ldap_modify($ds, $info[0]['dn'], $newData)) {
+						print ldap_error($ds);
+						_debug_array($newData);
+						exit;
+						#return false;
 					}
 				}
 			}

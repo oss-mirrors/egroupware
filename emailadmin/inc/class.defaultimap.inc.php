@@ -225,30 +225,67 @@
 		}
 		
 		/**
-		 * Create mailbox string
+		 * Create transport string
 		 *
-		 * @return string the connectionstring
+		 * @return string the transportstring
 		 */
-	#	function getConnectionString() 
-	#	{
-	#		if($this->encryption && $this->validatecert) {
-	#			$connectionString = sprintf("{%s:%s/imap/ssl}",
-	#				$this->host,
-	#				$this->port);
-	#		} elseif($this->encryption) {
-	#			// don't check cert
-	#			$connectionString = sprintf("{%s:%s/imap/ssl/novalidate-cert}",
-	#				$this->host,
-	#				$this->port);
-	#		} else {
-	#			// no tls
-	#			$connectionString = sprintf("{%s:%s/imap/notls}",
-	#				$this->host,
-	#				$this->port);
-	#		}
-	#	
-	#		return $connectionString;
-	#	}
+		function _getTransportString() 
+		{
+			if($this->encryption == 2) {
+				$connectionString = "tls://". $this->host;
+			} elseif($this->encryption == 3) {
+				$connectionString = "ssl://". $this->host;
+			} else {
+				// no tls
+				$connectionString = $this->host;
+			}
+		
+			return $connectionString;
+		}
+
+		/**
+		 * Create the options array for SSL/TLS connections
+		 *
+		 * @return string the transportstring
+		 */
+		function _getTransportOptions() 
+		{
+			if($this->validatecert === false) {
+				if($this->encryption == 2) {
+					 return array(
+						'tls' => array(
+							'verify_peer' = false,
+							'allow_self_signed' = true,
+						)
+					);
+				} elseif($this->encryption == 3) {
+					return array(
+						'ssl' => array(
+							'verify_peer' = false,
+							'allow_self_signed' = true,
+						)
+					);
+				}
+			} else {
+				if($this->encryption == 2) {
+					return array(
+						'tls' => array(
+							'verify_peer' = true,
+							'allow_self_signed' = false,
+						)
+					);
+				} elseif($this->encryption == 3) {
+					return array(
+						'ssl' => array(
+							'verify_peer' = true,
+							'allow_self_signed' = false,
+						)
+					);
+				}
+			}
+		
+			return null;
+		}
 
 		/**
 		 * Create mailbox string from given mailbox-name and user-name
@@ -388,8 +425,10 @@
 				$options	= $_options;
 				$this->isAdminConnection = false;
 			}
-
-			if( PEAR::isError($status = $this->connect($this->host, $this->port, $this->encryption)) ) {
+			
+			$this->setStreamContextOptions($this->_getTransportOptions());
+			
+			if( PEAR::isError($status = $this->connect($this->_getTransportString(), $this->port, $this->encryption == 1)) ) {
 				$this->_connectionErrorObject = $status;
 				return false;
 			}
