@@ -106,7 +106,7 @@
 
 				  if($this->load_site_from_xml($xmlarray,'',$import_into))
 				  {
-					 $this->bo->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
+					 $this->bo->exit_and_open_screen('jinn.ui_listsites.browse_egw_jinn_sites');
 				  }
 				  else
 				  {
@@ -328,12 +328,12 @@
 			   $this->bo->addInfo(lang('%1 Site Object Fields have been imported.',$this->num_fields));
 			   $this->bo->addInfo(lang('%1 Site Reports have been imported.',$this->num_reports));
 
-			   $this->bo->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
+			   $this->bo->exit_and_open_screen('jinn.ui_listsites.browse_egw_jinn_sites');
 			}
 			else
 			{
 			   $this->bo->addError(lang('Import failed'));
-			   $this->bo->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
+			   $this->bo->exit_and_open_screen('jinn.ui_listsites.browse_egw_jinn_sites');
 			}
 		 }
 
@@ -773,7 +773,7 @@
 			$this->tplsav2->set_var('checked', 'checked="checked"');
 		 }
 
-		 $this->tplsav2->set_var('cancel_redirect', $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites'));
+		 $this->tplsav2->set_var('cancel_redirect', $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_listsites.browse_egw_jinn_sites'));
 
 		 $this->tplsav2->display('import_incompatible.tpl.php');
 

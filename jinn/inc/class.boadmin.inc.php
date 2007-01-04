@@ -449,7 +449,7 @@
 		 }
 		 else
 		 {
-			$this->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
+			$this->exit_and_open_screen('jinn.ui_listsites.browse_egw_jinn_sites');
 		 }
 	  }
 
@@ -854,7 +854,7 @@
 			{
 			   $this->addInfo(lang('site succesfully deleted'));
 			}
-			$this->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
+			$this->exit_and_open_screen('jinn.ui_listsites.browse_egw_jinn_sites');
 		 }
 
 
