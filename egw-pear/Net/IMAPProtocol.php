@@ -62,6 +62,18 @@ class Net_IMAPProtocol {
      */
     var $_socket = null;
 
+    /**
+     * The timeout for the connection to the IMAP server.
+     * @var int
+     */
+    var $_timeout = null;
+
+    /**
+     * The options for SSL/TLS connection (see documentation for stream_context_create)
+     * @var array
+     */
+    var $_streamContextOptions = null;
+
      /**
      * To allow class debuging
      * @var boolean
@@ -153,7 +165,7 @@ class Net_IMAPProtocol {
         if( $this->_connected ){
             return new PEAR_Error( 'already connected, logout first!' );
         }
-        if ( PEAR::isError( $this->_socket->connect( $host , $port ) ) ) {
+        if ( PEAR::isError( $this->_socket->connect( $host , $port, null, $this->_timeout, $this->_streamContextOptions ) ) ) {
             return new PEAR_Error( 'unable to open socket' );
         }
         if ( PEAR::isError( $this->_getRawResponse() ) ) {
@@ -363,10 +375,33 @@ class Net_IMAPProtocol {
         return $this->_unParsedReturn;
     }
 
+     /**
+     * set the options for a SSL/TLS connection (see documentation for stream_context_create)
+     *
+     * @param  array  $options the options for the SSL/TLS connection
+     * @return nothing
+     *
+     * @access public
+     * @since  1.0
+     */
+    function setStreamContextOptions($options)
+    {
+        $this->_streamContextOptions = $options;
+    }
 
-
-
-
+     /**
+     * set the the timeout for the connection to the IMAP server.
+     *
+     * @param  int  $timeout the timeout
+     * @return nothing
+     *
+     * @access public
+     * @since  1.0
+     */
+    function setTimeout($timeout)
+    {
+        $this->_timeout = $timeout;
+    }
 
      /**
      * set the "returning of the unparsed response" feature on or off

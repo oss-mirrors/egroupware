@@ -536,11 +536,6 @@ class Net_IMAP extends Net_IMAPProtocol {
               $this->_parseStructureMultipartArray($structurePart, $subMimeParts, $partID.$subPartID);
             } else {
               switch(strtoupper($structurePart[0])) {
-                case 'APPLICATION':
-                  $this->_parseStructureApplicationArray($structurePart, $subMimeParts, $partID.$subPartID);
-              
-                  break;
-
                  case 'IMAGE':
                   $this->_parseStructureImageArray($structurePart, $subMimeParts, $partID.$subPartID);
                   
@@ -555,6 +550,12 @@ class Net_IMAP extends Net_IMAPProtocol {
                   $this->_parseStructureTextArray($structurePart, $subMimeParts, $partID.$subPartID);
               
                   break;
+
+                default:
+                  $this->_parseStructureApplicationArray($structurePart, $subMimeParts, $partID.$subPartID);
+              
+                  break;
+
               }
             }
             $subPartID++;
