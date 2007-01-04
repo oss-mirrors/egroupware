@@ -16,16 +16,19 @@
 		 $this->calling_app = $GLOBALS['egw_info']['flags']['currentapp'];
 		 $this->session_name = ($session_name?$session_name:$this->calling_app);
 
-//		 _debug_array($object_id);
-
 		 $this->site_object_id=$object_id;
-		 
+
 		 $this->setSession();
 
 		 if($upgrade_check)
 		 {
 			$this->check_or_upgrade();
 		 }
+	  }
+
+	  function set_baselink($link)
+	  {
+		 $this->baselink=$link;
 	  }
 
 	  /**
@@ -59,7 +62,7 @@
 		 $this->xmlarray = $this->get_app_jsxml_to_array($this->calling_app);
 		 //_debug_array($this->xmlarray);
 		 //die();
-		 
+
 		 $this->uiimport = CreateObject('jinn.ui_importsite');
 
 		 $upgrade_ok = $this->uiimport->load_site_from_xml($this->xmlarray,true);
@@ -85,10 +88,7 @@
 
 			$xmlObj   = CreateObject('jinn.xmltoarray',$buffer);
 
-
 			return $xmlObj->createArray();
-
-//			return true;
 		 }
 		 else
 		 {
@@ -150,10 +150,16 @@
 		 }
 
 		 $this->extra_where=$extra_where; 
-//		 _debug_array($this->extra_where);
+		 //		 _debug_array($this->extra_where);
 
 	  }
 
+	  /**
+	  * display echo jinn content
+	  * 
+	  * @access public
+	  * @return void
+	  */
 	  function display()
 	  {
 		 if(!$this->site_object_id)
@@ -195,6 +201,42 @@
 		 }
 	  }
 
+	  /**
+	  * fetch return jinn content 
+	  * 
+	  * @access public
+	  * @return void
+	  */
+	  function fetch()
+	  {
+		 ob_start();
+
+		 $this->display();
+
+		 $content = ob_get_contents();
+		 ob_end_clean();
+
+		 return $content;
+	  }
+
+	  /**
+	  * display_full_page renders a complete egroupware page including jinn content
+	  * 
+	  * @access public
+	  * @return void
+	  */
+	  function display_full_page()
+	  {
+		 $content = $this->fetch();
+
+		 echo $GLOBALS['egw']->framework->header();
+		 echo $GLOBALS['egw']->framework->navbar();
+
+		 echo $content;
+
+		 echo $GLOBALS['egw']->framework->footer();
+	  }
+
 	  function make_japie_link()
 	  {
 		 return $this->baselink.'&jma=';
@@ -220,7 +262,7 @@
 		 $this->site_arr = $tmpso->get_site_values($this->site_id);
 		 unset($tmpso);
 
-		 
+
 		 $sessionmanager = CreateObject('jinn.sojinnsession',$this->session_name);
 		 $sessionmanager->sessionarray['site_object_id']=$this->site_object_id;
 		 $sessionmanager->sessionarray['site_id']=$this->site_id;
@@ -265,7 +307,7 @@
 		 $this->uijapie->tplsav2->japie=true;
 		 $this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(false,'jinn'));
 		 $this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(true,'jinn'));
-		 
+
 	  }
 
 	  function list_records()
@@ -292,7 +334,7 @@
 
 		 $this->uijapie->edit_record();		 
 	  }
-  
+
 	  function new_record()
 	  {
 
@@ -305,7 +347,7 @@
 	  function del_record()
 	  {
 		 $this->uijapie = CreateObject('jinn.bouser',$this->session_name);
-		 
+
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japielink=$this->make_japie_link();
 
@@ -314,7 +356,7 @@
 	  function copy_record()
 	  {
 		 $this->uijapie = CreateObject('jinn.bouser',$this->session_name);
-		 
+
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japielink=$this->make_japie_link();
 
@@ -324,7 +366,7 @@
 	  function multiple_actions()
 	  {
 		 $this->uijapie = CreateObject('jinn.bouser',$this->session_name);
-		 
+
 		 $this->uijapie->no_header=true;
 		 $this->uijapie->japielink=$this->make_japie_link();
 
