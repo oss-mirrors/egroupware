@@ -72,7 +72,7 @@
 				'fm_ic_port' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fm_ic_username' => array('type' => 'varchar','precision' => '128','nullable' => False),
 				'fm_ic_password' => array('type' => 'varchar','precision' => '128'),
-				'fm_ic_encryption' => array('type' => 'bool','nullable' => False),
+				'fm_ic_encryption' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fm_og_hostname' => array('type' => 'varchar','precision' => '128','nullable' => False),
 				'fm_og_port' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fm_og_smtpauth' => array('type' => 'bool','nullable' => False),

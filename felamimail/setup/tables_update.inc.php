@@ -374,4 +374,17 @@
 
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.003';
 	}
+
+
+	$test[] = '1.3.003';
+	function felamimail_upgrade1_3_003()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_ic_encryption',array(
+			'type' => 'int',
+			'precision' => '4',
+			'nullable' => False
+		));
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.004';
+	}
 ?>

@@ -41,10 +41,10 @@
 			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
 				$where,__LINE__,__FILE__);
 				
-			while(($row = $this->db->row(true,'fm_')))
-			{
+			while(($row = $this->db->row(true,'fm_'))) {
 				$retValue[$row['id']] = $row;
 			}
+
 			return $retValue;
 		}
 
@@ -110,7 +110,11 @@
 
 		function saveAccountData($_accountID, $_icServer, $_ogServer, $_identity)
 		{
-			$this->db->insert($this->accounts_table,array(
+			if(!isset($_icServer->validatecert)) {
+				$_icServer->validatecert = true;
+			}
+			
+			$data = array(
 				'fm_active'			=> 0,
 				'fm_realname'			=> $_identity->realName,
 				'fm_organization'		=> $_identity->organization,
@@ -119,14 +123,15 @@
 				'fm_ic_port'			=> $_icServer->port,
 				'fm_ic_username'		=> $_icServer->username,
 				'fm_ic_password'		=> $_icServer->password,
-				'fm_ic_encryption'		=> (bool)$_icServer->encryption,
+				'fm_ic_encryption'		=> $_icServer->encryption,
 				'fm_ic_validatecertificate' 	=> (bool)$_icServer->validatecert,
 				'fm_og_hostname'		=> $_ogServer->host,
 				'fm_og_port'			=> $_ogServer->port,
 				'fm_og_smtpauth'		=> (bool)$_ogServer->smtpAuth,
 				'fm_og_username'		=> $_ogServer->username,
 				'fm_og_password'		=> $_ogServer->password,
-			),array(
+			);
+			$this->db->insert($this->accounts_table, $data, array(
 				'fm_owner'			=> $_accountID,
 			),__LINE__,__FILE__);	
 		}

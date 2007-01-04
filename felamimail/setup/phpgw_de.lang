@@ -96,6 +96,7 @@ displaying html messages is disabled	felamimail	de	Die Anzeige von HTML EMails i
 do it!	felamimail	de	Mach es!
 do not use sent	felamimail	de	Gesendete Objekte (Sent) nicht verwenden
 do not use trash	felamimail	de	Gelöschte Objekte (Trash) nicht verwenden
+do not validate certificate	felamimail	de	Zertifikat nicht überprüfen
 do you really want to delete the '%1' folder?	felamimail	de	Wollen Sie wirklich den '%1' Ordner löschen?
 do you really want to delete the selected signatures?	felamimail	de	Möchten Sie die ausgewählte Signatur wirklich löschen?
 does not contain	felamimail	de	enthält nicht
@@ -253,6 +254,7 @@ new filter	felamimail	de	neuer Filter
 next	felamimail	de	nächste
 next message	felamimail	de	nächste Nachricht
 no active imap server found!!	felamimail	de	Kein aktiver IMAP Server gefunden!!
+no encryption	felamimail	de	keine Verschlüsselung
 no filter	felamimail	de	kein Filter
 no folders found	felamimail	de	Keine Ordner gefunden
 no folders were found to subscribe to!	felamimail	de	Keine Order gefunden, die bestellt werden können!

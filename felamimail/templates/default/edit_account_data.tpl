@@ -72,15 +72,19 @@
 			 {lang_encrypted_connection}
 		</td>
 		<td  style="text-align:left;">
-			<input type="checkbox" id="ic[encryption]" name="ic[encryption]" value="1" onchange="onchange_ic_encryption(this)" {checked_ic_encryption}>
+<!--			<input type="checkbox" id="ic[encryption]" name="ic[encryption]" value="1" onchange="onchange_ic_encryption(this)" {checked_ic_encryption}> -->
+			<input type="radio" id="ic[encryption]_1" name="ic[encryption]" value="1" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_1}> STARTTLS
+			<input type="radio" id="ic[encryption]_2" name="ic[encryption]" value="2" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_2}> TLS
+			<input type="radio" id="ic[encryption]_3" name="ic[encryption]" value="3" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_3}> SSL
+			<input type="radio" id="ic[encryption]_0" name="ic[encryption]" value="0" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_0}> {lang_no_encryption}
 		</td>
 	</tr>
 	<tr>
 		<td  style="text-align:left;">
-			 {lang_validate_certificate}
+			 {lang_do_not_validate_certificate}
 		</td>
 		<td  style="text-align:left;">
-			<input type="checkbox" id="ic[validatecert]" name="ic[validatecert]" value="1" {checked_ic_validatecert}>
+			<input type="checkbox" id="ic[validatecert]" name="ic[validatecert]" value="dontvalidate" {checked_ic_validatecert}>
 		</td>
 	</tr>
 </table>

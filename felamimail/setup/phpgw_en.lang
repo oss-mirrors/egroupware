@@ -96,6 +96,7 @@ displaying html messages is disabled	felamimail	en	displaying html messages is d
 do it!	felamimail	en	do it!
 do not use sent	felamimail	en	Do not use Sent
 do not use trash	felamimail	en	Do not use Trash
+do not validate certificate	felamimail	en	do not validate certificate
 do you really want to delete the '%1' folder?	felamimail	en	Do you really want to delete the '%1' folder?
 do you really want to delete the selected signatures?	felamimail	en	Do you really want to delete the selected signatures?
 does not contain	felamimail	en	does not contain
@@ -253,6 +254,7 @@ new filter	felamimail	en	New filter
 next	felamimail	en	Next
 next message	felamimail	en	next message
 no active imap server found!!	felamimail	en	No active IMAP server found!!
+no encryption	felamimail	en	no encryption
 no filter	felamimail	en	No Filter
 no folders found	felamimail	en	No folders found
 no folders were found to subscribe to!	felamimail	en	No folders were found to subscribe to!

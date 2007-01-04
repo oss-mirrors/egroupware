@@ -43,7 +43,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 				{navbarButtonsLeft}
 			</div>
 		</td>
-		<td align="right" width="70px">
+		<td align="right" width="90px">
 			{select_search}
 		</td>
 		<td align="right">

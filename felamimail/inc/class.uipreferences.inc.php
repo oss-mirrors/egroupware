@@ -184,17 +184,22 @@
 			$boPreferences	=& CreateObject('felamimail.bopreferences');
 			$preferences =& $boPreferences->getPreferences();
 			
-			if(!$preferences->userDefinedAccounts)
-			{
+			if(!$preferences->userDefinedAccounts) {
 				die('you are not allowed to be here');
 			}
 
-			if($_POST['save'] || $_POST['apply'])
-			{
+			if($_POST['save'] || $_POST['apply']) {
 				// IMAP connection settings
 				$icServer =& CreateObject('emailadmin.defaultimap');
 				foreach($_POST['ic'] as $key => $value) {
-					$icServer->$key = $value;
+					switch($key) {
+						case 'validatecert':
+							$icServer->$key = ($value != 'dontvalidate');
+							break;
+						default:
+							$icServer->$key = $value;
+							break;
+					}
 				}
 				
 				// SMTP connection settings
@@ -220,9 +225,7 @@
 					ExecMethod('felamimail.uifelamimail.viewMainScreen');
 					return;
 				}
-			}
-			elseif($_POST['cancel'])
-			{
+			} elseif($_POST['cancel']) {
 				ExecMethod('felamimail.uifelamimail.viewMainScreen');
 				return;
 			}
@@ -238,14 +241,20 @@
 			$icServer =& $accountData['icServer'];
 			$ogServer =& $accountData['ogServer'];
 			$identity =& $accountData['identity'];
-#			_debug_array($ogServer);
+			#_debug_array($icServer);
 			foreach($icServer as $key => $value) {
 				switch($key) {
 					case 'encryption':
+						$this->t->set_var('checked_ic_'. $key .'_'. $value, 'checked');
+						break;
+						
 					case 'validatecert':
-						$this->t->set_var('checked_ic_'.$key,($value ? 'checked' : ''));
+						$this->t->set_var('checked_ic_'.$key,($value ? '' : 'checked'));
+						break;
+						
 					default:
 						$this->t->set_var("ic[$key]", $value);
+						break;
 				}
 			}
 
@@ -556,7 +565,7 @@
 			$this->t->set_var('lang_organization',lang('organization'));
 			$this->t->set_var('lang_emailaddress',lang('emailaddress'));
 			$this->t->set_var('lang_encrypted_connection',lang('encrypted connection'));
-			$this->t->set_var('lang_validate_certificate',lang('validate certificate'));
+			$this->t->set_var('lang_do_not_validate_certificate',lang('do not validate certificate'));
 			$this->t->set_var("lang_incoming_server",lang('incoming mail server(IMAP)'));
 			$this->t->set_var("lang_outgoing_server",lang('outgoing mail server(SMTP)'));
 			$this->t->set_var("auth_required",lang('authentication required'));
@@ -564,6 +573,7 @@
 			$this->t->set_var('lang_foldername',lang('foldername'));
 			$this->t->set_var('lang_description',lang('description'));
 			$this->t->set_var('lang_really_delete_signatures',lang('Do you really want to delete the selected signatures?'));
+			$this->t->set_var('lang_no_encryption',lang('no encryption'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);

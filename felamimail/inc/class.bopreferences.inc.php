@@ -38,47 +38,21 @@
 				die(__FILE__.': '.__LINE__);
 			$accountData = parent::getAccountData($GLOBALS['egw_info']['user']['account_id']);
 
-			// create some usefull defaults
-/*			if(count($accountData) == 0)
-			{
-				$profileData = $this->boemailadmin->getUserProfile('felamimail');
-				_debug_array($profileData);exit;
-				$accountData = array(
-					'0'	=> array(
-						'active'		=> false,
-						'realname'		=> $GLOBALS['egw_info']['user']['fullname'],
-						'organization'		=> $profileData['organisationName'],
-						'emailaddress'		=> $GLOBALS['egw_info']['user']['email'],
-						'ic_hostname'		=> $profileData['imapServer'],
-						'ic_port'		=> ($profileData['imapPort'] ? $profileData['imapPort'] : 143),
-						'ic_username'		=> '',
-						'ic_password'		=> '',
-						'ic_encryption'		=> false,
-						'ic_validatecertificate' => false,
-						'og_hostname'		=> $profileData['smtpServer'],
-						'og_port'		=> ($profileData['smtpPort'] ? $profileData['smtpPort'] : 25),
-						'og_smtpauth'		=> false,
-						'og_username'		=> '',
-						'og_password'		=> '',
-					)
-				);
-			}
-*/
 			// currently we use only the first profile available
 			$accountData = array_shift($accountData);
 
 			$icServer =& CreateObject('emailadmin.defaultimap');
-			$icServer->encryption	= (bool)$accountData['ic_encryption'];
+			$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
 			$icServer->host		= $accountData['ic_hostname'];
-			$icServer->port 	= $accountData['ic_port'];
-			$icServer->validatecert	= (bool)$accountData['ic_validatecertificate'];
+			$icServer->port 	= isset($accountData['ic_port']) ? $accountData['ic_port'] : 143;
+			$icServer->validatecert	= isset($accountData['ic_validatecertificate']) ? (bool)$accountData['ic_validatecertificate'] : 1;
 			$icServer->username 	= $accountData['ic_username'];
 			$icServer->loginName 	= $accountData['ic_username'];
 			$icServer->password	= $accountData['ic_password'];
 
 			$ogServer =& CreateObject('emailadmin.defaultsmtp');
 			$ogServer->host		= $accountData['og_hostname'];
-			$ogServer->port		= $accountData['og_port'];
+			$ogServer->port		= isset($accountData['og_port']) ? $accountData['og_port'] : 25;
 			$ogServer->smtpAuth	= (bool)$accountData['og_smtpauth'];
 			if($ogServer->smtpAuth) {
 				$ogServer->username 	= $accountData['og_username'];
@@ -171,26 +145,31 @@
 			return $this->profileData;
 		}
 		
-		function getSignature($_signatureID) {
+		function getSignature($_signatureID) 
+		{
 			return parent::getSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID);
 		}
 		
-		function deleteSignatures($_signatureID) {
+		function deleteSignatures($_signatureID) 
+		{
 			if(!is_array($_signatureID)) {
 				return false;
 			}
 			return parent::deleteSignatures($GLOBALS['egw_info']['user']['account_id'], $_signatureID);
 		}
 		
-		function saveAccountData($_icServer, $_ogServer, $_identity) {
+		function saveAccountData($_icServer, $_ogServer, $_identity) 
+		{
 			parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
 		}
 		
-		function saveSignature($_signatureID, $_description, $_signature) {
+		function saveSignature($_signatureID, $_description, $_signature) 
+		{
 			return parent::saveSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID, $_description, $_signature);
 		}
 
-		function setProfileActive($_status) {
+		function setProfileActive($_status) 
+		{
 			parent::setProfileActive($GLOBALS['egw_info']['user']['account_id'], $_status);
 		}
 	}

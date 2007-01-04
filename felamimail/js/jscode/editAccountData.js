@@ -3,7 +3,8 @@ function initEditAccountData()
 	onchange_active(document.getElementById('active'));
 }
 
-function onchange_active(_checkbox) {
+function onchange_active(_checkbox) 
+{
 	identityInputs = document.getElementById('identity').getElementsByTagName('input');
 	incomingInputs = document.getElementById('incoming_server').getElementsByTagName('input');
 	outgoingInputs = document.getElementById('outgoing_server').getElementsByTagName('input');
@@ -33,32 +34,27 @@ function onchange_active(_checkbox) {
 	onchange_ic_encryption(document.getElementById('ic[encryption]'));
 }
 
-function onchange_og_smtpauth(_checkbox) {
-	if(_checkbox.checked)
-	{
+function onchange_og_smtpauth(_checkbox) 
+{
+	if(_checkbox.checked) {
 		document.getElementById('og[username]').disabled = false;
 		document.getElementById('og[password]').disabled = false;
-	}
-	else
-	{
+	} else {
 		document.getElementById('og[username]').disabled = true;
 		document.getElementById('og[password]').disabled = true;
 	}
 }
 
-function onchange_ic_encryption(_checkbox) {
-
-	if(_checkbox.checked)
-	{
+function onchange_ic_encryption(_checkbox) 
+{
+	if(_checkbox.value == 2 || _checkbox.value == 3) {
 		if(document.getElementById('ic[port]').value == '143' || 
 			document.getElementById('ic[port]').value == '')
 		{
 			document.getElementById('ic[port]').value = '993';
 		}
 		document.getElementById('ic[validatecert]').disabled = false;
-	}
-	else
-	{
+	} else {
 		if(document.getElementById('ic[port]').value == '993' || 
 			document.getElementById('ic[port]').value == '')
 		{
