@@ -344,13 +344,13 @@
 			   $menustruct['/s/s.'.$site_id]['label']=$this->bo->so->get_site_name($site_id); //FIXME PERFORMANCE!
 			   $menustruct['/s/s.'.$site_id]['image']='database18.png';
 
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o']['label']='Objects';
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o']['image']='jinn18.png';
-
 			   // objects
 			   $objects=$this->bo->get_objects_allowed($site_id, $GLOBALS['phpgw_info']['user']['account_id']);
 
-			   if (is_array($objects))
+			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o']['label']=lang('Objects'). ' ('.count($objects).')';
+			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o']['image']='jinn18.png';
+
+			   if (is_array($objects) && $this->bo->session['site_id']==$site_id)
 			   {
 				  foreach ( $objects as $object_id) 
 				  {
