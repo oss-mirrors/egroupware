@@ -254,15 +254,15 @@
 				if($this->encryption == 2) {
 					 return array(
 						'tls' => array(
-							'verify_peer' = false,
-							'allow_self_signed' = true,
+							'verify_peer' => false,
+							'allow_self_signed' => true,
 						)
 					);
 				} elseif($this->encryption == 3) {
 					return array(
 						'ssl' => array(
-							'verify_peer' = false,
-							'allow_self_signed' = true,
+							'verify_peer' => false,
+							'allow_self_signed' => true,
 						)
 					);
 				}
@@ -270,15 +270,15 @@
 				if($this->encryption == 2) {
 					return array(
 						'tls' => array(
-							'verify_peer' = true,
-							'allow_self_signed' = false,
+							'verify_peer' => true,
+							'allow_self_signed' => false,
 						)
 					);
 				} elseif($this->encryption == 3) {
 					return array(
 						'ssl' => array(
-							'verify_peer' = true,
-							'allow_self_signed' = false,
+							'verify_peer' => true,
+							'allow_self_signed' => false,
 						)
 					);
 				}
