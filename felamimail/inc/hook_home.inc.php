@@ -12,12 +12,9 @@
 	/* $Id$ */
 
 	$homedisplay = intval($GLOBALS['egw_info']['user']['preferences']['felamimail']['mainscreen_showmail']);
-	if($homedisplay>0)
-	{
-
+	if($homedisplay > 0) {
 		$d1 = strtolower(substr(EGW_APP_INC,0,3));
-		if($d1 == 'htt' || $d1 == 'ftp' )
-		{
+		if($d1 == 'htt' || $d1 == 'ftp' ) {
 			echo 'Failed attempt to break in via an old Security Hole!<br>'."\n";
 			$GLOBALS['egw']->common->egw_exit();
 		}
@@ -42,7 +39,6 @@
 		);
 
 		$app_id = $GLOBALS['egw']->applications->name2id('felamimail');
-		//$GLOBALS['portal_order'][] = $app_id;
 		$var = Array(
 			'up'		=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
 			'down'		=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
@@ -51,28 +47,22 @@
 			'edit'		=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
 		);
 
-		while(list($key,$value) = each($var))
-		{
+		while(list($key,$value) = each($var)) {
 			$portalbox->set_controls($key,$value);
 		}
 
 		$portalbox->data = Array();
-
 	
-		if($data)
-		{
+		if($data) {
 			$portalbox->data = $data;
 		}
 		
 		$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 		$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 		
-		if(!$this->bofelamimail->openConnection('', OP_READONLY))
-		{
+		if(!$this->bofelamimail->openConnection()) {
 			$extra_data = lang("can't connect to INBOX!!");
-		}	                    
-		else
-		{
+		} else {
 			$folderList	= $this->bofelamimail->getFolderObjects(true, true);
 			#_debug_array($folderList);
 			$extra_data = '<table border="0" cellspacing="0" cellpading="0" width="100%">
@@ -87,22 +77,18 @@
 							<b>'.lang('unseen').'</b>
 						</td>
 					<tr>';
-			foreach($folderList as $key => $value)
-			{
-				if(is_object($value->counter))
-				{
+			foreach($folderList as $key => $value) {
+				#_debug_array($value);
+				if(is_object($value->counter)) {
 					$messages	= $value->counter->messages;
 					$unseen		= $value->counter->unseen;
 					$recent		= $value->counter->recent;
 				}
 				if($messages == 0) $messages = '&nbsp;';
 
-				if($recent > 0)
-				{
+				if($recent > 0) {
 					$newMessages = "$unseen($recent)";
-				}
-				else
-				{
+				} else {
 					if($unseen == 0) $unseen = '&nbsp;';
 					$newMessages = "$unseen";
 				}
@@ -115,7 +101,7 @@
 				);
 				$folderLink = $GLOBALS['egw']->link('/index.php',$linkData);
 				
-				$extra_data .= "<tr><td><a href='$folderLink'>$key</a></td><td>$messages</td><td>$newMessages</td></tr>";
+				$extra_data .= "<tr><td><a href='$folderLink'>$value->displayName</a></td><td>$messages</td><td>$newMessages</td></tr>";
 			}
 			$extra_data .= '</table>';
 		}    

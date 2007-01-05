@@ -1599,7 +1599,11 @@
 		
 		function isSentFolder($_folderName)
 		{
-			if(false !== stripos($this->mailPreferences->preferences['sentFolder'], $_folderName)) {
+			if(empty($this->mailPreferences->preferences['sentFolder'])) {
+				return false;
+			}
+			
+			if(false !== stripos($_folderName, $this->mailPreferences->preferences['sentFolder'])) {
 				return true;
 			} else {
 				return false;
@@ -1608,7 +1612,11 @@
 		
 		function isDraftFolder($_folderName)
 		{
-			if(false !== stripos($this->mailPreferences->preferences['draftFolder'], $_folderName)) {
+			if(empty($this->mailPreferences->preferences['draftFolder'])) {
+				return false;
+			}
+			
+			if(false !== stripos($_folderName, $this->mailPreferences->preferences['draftFolder'])) {
 				return true;
 			} else {
 				return false;
