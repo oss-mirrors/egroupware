@@ -1,3 +1,6 @@
+2007-01-05 Lars Kneschke  <lkneschke@metaways.de>
+	* fetch quota from imap server only, if imap server supports quota
+
 2006-12-31 Lars Kneschke  <lkneschke@metaways.de>
 	* major rewrite of the imap backend. php-imap is mostly gone. all imap code
 	  is now based on the PEAR class Net_IMAP

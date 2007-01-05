@@ -1499,6 +1499,10 @@
 		// return the qouta of the users INBOX
 		function getQuotaRoot() 
 		{
+			if(!$this->icServer->hasCapability('QUOTA')) {
+				return false;
+			}
+
 			$quota = $this->icServer->getStorageQuotaRoot('INBOX');
 			if(is_array($quota)) {
 				return array(

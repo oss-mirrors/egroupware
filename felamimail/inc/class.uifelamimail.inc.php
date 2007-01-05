@@ -347,7 +347,8 @@
 			} else {
 				$quota['limit'] = 'NOT SET';
 			}
-			if($quota['limit'] != 'NOT SET') {
+
+			if($quota !== false && $quota['limit'] != 'NOT SET') {
 				$quotaDisplay = $uiwidgets->quotaDisplay($quota['usage'], $quota['limit']);
 				$this->t->set_var('quota_display', $quotaDisplay);
 			} else {
