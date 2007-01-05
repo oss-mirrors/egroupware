@@ -55,6 +55,74 @@
 	  */
 	  function sidebox_menu()
 	  {
+		 $this->sidebox_menu_objectactions();
+		 $this->sidebox_menu_simplenav();
+		 $this->sidebox_menu_tree();
+		 $this->sidebox_menu_admin();
+	  }
+
+	  function sidebox_menu_objectactions()
+	  {
+		 if($this->bo->session['site_id'] && $this->bo->session['site_object_id'] != -1 && $this->bo->session['site_object_id'])
+		 {
+			$menu_title = $this->bo->site_object['name'];
+
+			//if list, if more then one record
+			if($this->bo->site_object[max_records]!=1)
+			{
+			   $file['Browse current object'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'),
+				  'icon'=>'listview18',
+				  'no_lang' => True,
+				  'text'=>lang('List records')
+			   );
+			}
+
+			//if import
+			if($this->bo->objectelements['enable_import']) 
+			{
+			   $file['ImportCSV'] = array(
+				  'text'=>lang('Import CSV'),
+				  'icon'=>'import18',
+				  'no_lang' => True,
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_import.import')
+			   );
+			}
+
+			//if export
+			if($this->bo->objectelements['enable_export']) 
+			{
+			   $file['Export current object'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_export.export'),
+				  'icon'=>'export18',
+				  'no_lang' => True,
+				  'text'=>lang('Export CSV')
+			   );
+			}
+		 }
+
+		 //if create 
+		 if($this->bo->objectelements['enable_create_rec'] && $this->bo->session['site_id'] 
+		 && $this->bo->site_object['object_id'] && $this->bo->site_object['max_records']!=1)
+		 {
+			$file['Add new entry'] = Array(
+			   'text'=>lang('New record(s)'),
+			   'no_lang' => True,
+			   'icon'=>'addrec18',
+			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.new_record')
+			);
+		 }
+
+		 if(count($file)>0)
+		 {
+			display_sidebox($appname,$menu_title,$file);
+			$file=array();
+		 }
+
+	  }
+
+	  function sidebox_menu_simplenav()
+	  {
 		 // get sites for user and group and make options
 		 $appname='jinn';
 
@@ -116,16 +184,24 @@
 
 		 display_sidebox($appname,$menu_title,$file);
 
-		 /*----------------*/
 
-		 // PROJECT TREE
+	  }
 
+
+	  /**
+	  * sidebox_menu_tree JiNN Tree Navigation
+	  * 
+	  * @access public
+	  * @return void
+	  */
+	  function sidebox_menu_tree()
+	  {
 		 $folders=$this->setMenuTree();
 		 $folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/jinn/templates/default/images/';
 
 		 //$selected_folder=$this->bo->retrievePath($this->node); //'/1/4/5';
 		 //$selected_folder=$_GET['link'];
-		 echo $this->selected_link;
+		 //echo $this->selected_link;
 
 		 $select_link=$GLOBALS['egw']->link('/index.php','menuaction=jinn.uisidebox.openTreeLink&link=');
 
@@ -148,91 +224,10 @@
 		 $menu_title = lang('JiNN Menu');
 
 		 display_sidebox($appname,$menu_title,$content);
+	  }
 
-		 /*----------------*/
-
-		 $file=array();
-		 $conf=array();
-
-		 if($this->bo->session['site_id'] && $this->bo->session['site_object_id'])
-		 {
-			$menu_title = $this->bo->site_object[name];
-
-			//if list, if more then one record
-			if($this->bo->site_object[max_records]!=1)
-			{
-			   $file['Browse current object'] = array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'),
-				  'icon'=>'browse',
-				  'no_lang' => True,
-				  'text'=>lang('List records')
-			   );
-			}
-
-			//if import
-			if($this->bo->objectelements['enable_import']) 
-			{
-			   $file['ImportCSV'] = array(
-				  'text'=>lang('Import CSV'),
-				  'icon'=>'filesave',
-				  'no_lang' => True,
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_import.import')
-			   );
-			}
-
-			//if export
-			if($this->bo->objectelements['enable_export']) 
-			{
-			   $file['Export current object'] = array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_export.export'),
-				  'icon'=>'filesave',
-				  'no_lang' => True,
-				  'text'=>lang('Export CSV')
-			   );
-			}
-
-			//if list, if more then one record
-			/*			$file['Configure this Object List View']= Array(
-			   'link'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects'),
-			   'no_lang' => True,
-			   'text'=>lang('Configure List'),
-			   'icon'=>'configure_toolbars'
-			);
-			*/
-		 }
-
-		 //if create 
-		 if($this->bo->objectelements['enable_create_rec'] && $this->bo->session['site_id'] 
-		 && $this->bo->site_object['object_id'] && $this->bo->site_object['max_records']!=1)
-		 {
-			$file['Add new entry'] = Array(
-			   'text'=>lang('New record(s)'),
-			   'no_lang' => True,
-			   'icon'=>'new',
-			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.new_record')
-			);
-		 }
-
-		 if(count($file)>0)
-		 {
-			display_sidebox($appname,$menu_title,$file);
-			$file=array();
-		 }
-
-		 // NOTE removed preferences link as these are not very helpfull, technically prefs are still enabled and accessible via the main prefs screen
-		 /*		 $menu_title = lang('JiNN Preferences');
-		 $file = Array(
-			'General Preferences' => array(
-			   'link'=>$GLOBALS['phpgw']->link('/preferences/preferences.php','appname=jinn'),
-			   'icon'=>'configure',
-			   'no_lang' => True,
-			   'text'=>lang('General Preferences')
-			),
-		 );
-		 */
-
-		 display_sidebox($appname,$menu_title,$file);
-		 $file=array();
+	  function sidebox_menu_admin()
+	  {
 		 // if admin or side-admin show access rights
 		 if (!$GLOBALS['phpgw_info']['user']['apps']['admin'] && $this->bo && count($this->bo->so->get_sites_for_user2($GLOBALS['phpgw_info']['user']['account_id']))>0)
 		 {
@@ -242,7 +237,7 @@
 				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiacl.main_screen'),
 				  'text'=>lang('Access Rights'),
 				  'no_lang' => True,
-				  'icon'=>'groupevent'
+				  'icon'=>'acl18'
 			   )
 			);
 			display_sidebox($appname,$menu_title,$file);
@@ -261,13 +256,13 @@
 			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiacl.main_screen'),
 			   'text'=>lang('Access Rights'),
 			   'no_lang' => True,
-			   'icon'=>'groupevent'
+			   'icon'=>'acl18'
 			);
 			$file['Load site conf from file'] = array(
 			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'),
 			   'text'=>lang('Load site conf from file'),
 			   'no_lang' => True,
-			   'icon'=>'fileopen'
+			   'icon'=>'siteimport18'
 			);
 
 			if ($this->bo->session['site_id'])
@@ -276,7 +271,7 @@
 				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$this->bo->site[site_id]),
 				  'text'=>lang('Save site conf to XML'),
 				  'no_lang' => True,
-				  'icon'=>'filesave'
+				  'icon'=>'siteexport18'
 			   );
 			}
 
@@ -284,13 +279,13 @@
 			   'link' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_site'),
 			   'text'=>lang('Add Site'),
 			   'no_lang' => True,
-			   'icon'=>'new'
+			   'icon'=>'createsite18'
 			);
 			$file['List all JiNN Sites'] = array(
 			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_listsites.browse_egw_jinn_sites'),
 			   'text'=>lang('List all JiNN Sites'),
 			   'no_lang' => True,
-			   'icon'=>'browse'
+			   'icon'=>'jinn18'
 			);
 
 			if ($this->bo->session['site_id'])
@@ -299,7 +294,7 @@
 				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
 				  'text'=>lang('Edit this Site'),
 				  'no_lang' => True,
-				  'icon'=>'edit'
+				  'icon'=>'siteprop18'
 			   );
 			}
 
@@ -312,14 +307,14 @@
 				  'link'=>$devlinkform,
 				  'text'=>lang('Edit Object Form View'),
 				  'no_lang' => True,
-				  'icon'=>'edit'
+				  'icon'=>'formprop18'
 
 			   );
 			   $file['Edit Object List View'] = array(
 				  'link'=>$devlinklist,
 				  'text'=>lang('Edit Object List View'),
 				  'no_lang' => True,
-				  'icon'=>'edit'
+				  'icon'=>'listviewprop18'
 
 			   );
 			}
@@ -330,12 +325,11 @@
 
 	  }
 
-	  
 	  function setMenuTree($parent_id=0,$ppath='')
 	  {
 		 $menustruct['/s']['label']='JiNN-sites';
 		 $menustruct['/s']['image']='jinn18.png';
-	
+
 		 $this->sites_allowed=$this->bo->get_sites_allowed($GLOBALS['phpgw_info']['user']['account_id']);
 		 if(is_array($this->sites_allowed))
 		 {
@@ -354,49 +348,49 @@
 			   {
 				  foreach ( $objects as $object_id) 
 				  {
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id]['label']=$this->bo->so->get_object_name($object_id); // FIXME PERFORMANCE!
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id]['image']='object18.png';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id]['label']=$this->bo->so->get_object_name($object_id); // FIXME PERFORMANCE!
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id]['image']='object18.png';
 
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'listrec']['label']='List Records';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'listrec']['image']='listview18.png';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'addrec']['label']='Add Records';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'addrec']['image']='addrec18.png';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'import']['label']='Import';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'import']['image']='import18.png';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'export']['label']='Export';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'export']['image']='export18.png';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.listrec']['label']='List Records';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.listrec']['image']='listview18.png';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.addrec']['label']='Add Records';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.addrec']['image']='addrec18.png';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.import']['label']='Import';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.import']['image']='import18.png';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.export']['label']='Export';
+					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.export']['image']='export18.png';
 
 					 //admin or owners options
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'objproperties']['label']='Object Properties';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'objproperties']['image']='objectprop18.png';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'designform']['label']='Design Form';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'designform']['image']='formprop18.png';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'designlist']['label']='Design List';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'designlist']['image']='listviewprop18.png';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'exportobject']['label']='Export Object';
-					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/o.'.$object_id.'/o.'.$object_id.'exportobject']['image']='objectexport18.png';
+//					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.objproperties']['label']='Object Properties';
+//					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.objproperties']['image']='objectprop18.png';
+//					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.designform']['label']='Design Form';
+//					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.designform']['image']='formprop18.png';
+//					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.designlist']['label']='Design List';
+//					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.designlist']['image']='listviewprop18.png';
+//					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.exportobject']['label']='Export Object';
+//					 $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.o/s.'.$site_id.'.o.'.$object_id.'/s.'.$site_id.'.o.'.$object_id.'.exportobject']['image']='objectexport18.png';
 				  }
 			   }
 
 			   //admin or owners options
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.properties']['label']=lang('Site Properties');
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.properties']['image']='siteprop18.png';
-		   
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.importobject']['label']=lang('Import Object');
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.importobject']['image']='objectimport18.png';
+//			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.properties']['label']=lang('Site Properties');
+//			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.properties']['image']='siteprop18.png';
 
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.exportsite']['label']=lang('Export Site');
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.exportsite']['image']='siteexport18.png';
+//			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.importobject']['label']=lang('Import Object');
+//			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.importobject']['image']='objectimport18.png';
 
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'createobject']['label']='Create Object';
-			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'createobject']['image']='createobject18.png';
+//			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.exportsite']['label']=lang('Export Site');
+//			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'.exportsite']['image']='siteexport18.png';
+
+//			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'createobject']['label']='Create Object';
+//			   $menustruct['/s/s.'.$site_id.'/s.'.$site_id.'createobject']['image']='createobject18.png';
 			}
 		 }
 
-		 $menustruct['/addsite']['label']='Create JiNN-site';
+ 		 $menustruct['/addsite']['label']='Create JiNN-site';
 		 $menustruct['/addsite']['image']='createsite18.png';
-		 $menustruct['/importsite']['label']='Import Site';
-		 $menustruct['/importsite']['image']='siteimport18.png';
+//		 $menustruct['/importsite']['label']='Import Site';
+//		 $menustruct['/importsite']['image']='siteimport18.png';
 		 $menustruct['/acl']['label']='ACL';
 		 $menustruct['/acl']['image']='acl18.png';
 		 return $menustruct;
@@ -407,6 +401,7 @@
 		 $_link=explode('.',$_GET['link']);
 		 if(count($_link)==1)
 		 {
+			$this->bo->reset_site_and_object();
 			$this->selected_link='/'.$_link[0];
 			switch($_GET['link'])
 			{
@@ -426,32 +421,65 @@
 		 }
 		 elseif(count($_link)==2)
 		 {
-			$this->bo->session['site_id']=$_link[1];
-			$this->bo->session['site_object_id']=-1;
-			$this->bo->sessionmanager->save();
-			$this->selected_link='/s/s.'.$_link[1].'/s.'.$_link[1].'.o';
-			ExecMethod('jinn.uiuser.index');
+			   $this->bo->reset_site_and_object($_link[1]);
+			   $this->selected_link='/s/s.'.$_link[1].'/s.'.$_link[1].'.o';
+			   //_debug_array($this->bo->session);
+			   ExecMethod('jinn.uiuser.index');
 		 }
 		 elseif(count($_link)==3)
 		 {
 			switch($_link[2])
 			{
 			   case 'o':
-			   $this->bo->session['site_id']=$_link[1];
-			   $this->bo->session['site_object_id']=-1;
-			   $this->bo->sessionmanager->save();
+			   $this->bo->reset_site_and_object($_link[1]);
 			   $this->selected_link='/s/s.'.$_link[1].'/s.'.$_link[1].'.o';
 			   ExecMethod('jinn.uiuser.index');
 			   break;
 
 			   case 'importobject'://FIXME NOT WORKING
-			   $this->bo->session['site_id']=$_link[1];
-			   $this->bo->session['site_object_id']=-1;
-			   $this->bo->sessionmanager->save();
-			   //ExecMethod('jinn.ui_importsite.import_object&where_key=site_id&where_value=4');
+			   $this->bo->reset_site_and_object($_link[1]);
 			   ExecMethod('jinn.ui_importsite.import_object');
+			   break;
 			}
 		 }
+		 elseif(count($_link)==4)
+		 {
+			$this->bo->reset_site_and_object($_link[1],$_link[3]);
+			$this->selected_link='/s/s.'.$_link[1].'/s.'.$_link[1].'.o/s.'.$_link[1].'.o.'.$_link[3].'/s.'.$_link[1].'.o.'.$_link[3].'.listrec';
+			ExecMethod('jinn.uiu_list_records.display');
+		 }
+		 elseif(count($_link)==5)
+		 {
+			$this->bo->reset_site_and_object($_link[1],$_link[3]);
+
+			switch($_link[4])
+			{
+			   case 'listrec':
+			   $this->selected_link='/s/s.'.$_link[1].'/s.'.$_link[1].'.o/s.'.$_link[1].'.o.'.$_link[3].'/s.'.$_link[1].'.o.'.$_link[3].'.listrec';
+			   ExecMethod('jinn.uiu_list_records.display');
+			   break;
+			   
+			   case 'addrec':
+			   $this->selected_link='/s/s.'.$_link[1].'/s.'.$_link[1].'.o/s.'.$_link[1].'.o.'.$_link[3].'/s.'.$_link[1].'.o.'.$_link[3].'.addrec';
+			   ExecMethod('jinn.uiu_edit_record.new_record');
+			   break;
+
+			   case 'import':
+			   $this->selected_link='/s/s.'.$_link[1].'/s.'.$_link[1].'.o/s.'.$_link[1].'.o.'.$_link[3].'/s.'.$_link[1].'.o.'.$_link[3].'.import';
+			   ExecMethod('jinn.uiu_import.import');
+			   break;
+
+			   case 'export':
+			   $this->selected_link='/s/s.'.$_link[1].'/s.'.$_link[1].'.o/s.'.$_link[1].'.o.'.$_link[3].'/s.'.$_link[1].'.o.'.$_link[3].'.export';
+			   ExecMethod('jinn.uiu_export.export');
+			   break;
+			}
+			
+		 }
+
+
+
+		 
 	  }
    }
 ?>

@@ -51,20 +51,12 @@
 	  function bojinn($session_name='jinn')
 	  {
 		 $this->so = CreateObject('jinn.sojinn');
+
 		 $this->sessionmanager = CreateObject('jinn.sojinnsession',$session_name);
+		 $this->session	= & $this->sessionmanager->sessionarray;	//reference to session array
 
-		 $this->session	= &$this->sessionmanager->sessionarray;	//reference to session array
+		 $this->set_site_and_object();
 
-		 if($this->session['site_id'])
-		 {
-			$this->site = $this->so->get_site_values($this->session['site_id']);
-			if ($this->session['site_object_id']) $this->site_object = $this->so->get_object_values($this->session['site_object_id']);
-		 }
-		 else
-		 {
-			unset($this->session);
-			$this->sessionmanager->save();
-		 }
 		 //_debug_array($this->session);
 
 		 $this->prefs = $this->read_preferences_all();
@@ -84,10 +76,38 @@
 
 		 $this->site_fs = createObject('jinn.site_fs');
 
-
 		 $this->set_activated_object_elements();
 
 	  }
+
+	  function reset_site_and_object($site_id=null,$object_id=null)
+	  {
+		 $this->session['site_id'] = $site_id;
+		 $this->session['site_object_id']=$object_id;
+		 //_debug_array($this->session);
+		 $this->sessionmanager->save();
+
+		 $this->set_site_and_object(); 
+	  }
+
+	  function set_site_and_object()
+	  {
+		 if($this->session['site_id'])
+		 {
+			$this->site = $this->so->get_site_values($this->session['site_id']);
+
+			if ($this->session['site_object_id'])
+			{
+			   $this->site_object = $this->so->get_object_values($this->session['site_object_id']);
+			}
+		 }
+		 else
+		 {
+			unset($this->session);
+			$this->sessionmanager->save();
+		 }
+	  }
+
 
 	  /**
 	  * read_preferences 
