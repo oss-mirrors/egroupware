@@ -1,3 +1,6 @@
+2007-01-05 Lars Kneschke <lkneschke@metaways.de>
+	* improved parsing of content-type response
+
 2007-01-03 Lars Kneschke <lkneschke@metaways.de>
 	* enabled renaming of dbmail accounts
 	* made SSL/TLS settings working again
