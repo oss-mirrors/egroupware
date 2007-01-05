@@ -819,9 +819,12 @@
 				
 			} else { 
 				foreach($nameSpace as $type => $singleNameSpace) {
+					$foldersNameSpace[$type]['prefix'] = $singleNameSpace[0]['name'];
+					$foldersNameSpace[$type]['delimiter'] = $delimiter;
+
 					if(is_array($singleNameSpace[0])) {
 						// fetch and sort the subscribed folders
-							$subscribedMailboxes = $this->icServer->listsubscribedMailboxes($singleNameSpace[0]['name']);
+						$subscribedMailboxes = $this->icServer->listsubscribedMailboxes($singleNameSpace[0]['name']);
 						if( PEAR::isError($subscribedMailboxes) ) {
 							continue;
 						}
@@ -832,12 +835,10 @@
 						sort($foldersNameSpace[$type]['all']);
 					}
 
-					$foldersNameSpace[$type]['prefix'] = $singleNameSpace[0]['name'];
-					$foldersNameSpace[$type]['delimiter'] = $delimiter;
 				}
 
 				// check for autocreated folders
-				if(is_array($foldersNameSpace['personal']['all'])) {
+				if(isset($foldersNameSpace['personal']['prefix'])) {
 					$personalPrefix = $foldersNameSpace['personal']['prefix'];
 					$personalDelimiter = $foldersNameSpace['personal']['delimiter'];
 					if(!empty($personalPrefix)) {
@@ -850,7 +851,7 @@
 
 					foreach(array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates') as $personalFolderName) {
 						$folderName = (!empty($personalPrefix)) ? $folderPrefix.$personalFolderName : $personalFolderName;
-						if(!in_array($folderName, $foldersNameSpace['personal']['all'])) {
+						if(!is_array($foldersNameSpace['personal']['all']) || !in_array($folderName, $foldersNameSpace['personal']['all'])) {
 							if($this->createFolder('', $folderName, true)) {
 								$foldersNameSpace['personal']['all'][] = $folderName;
 								$foldersNameSpace['personal']['subscribed'][] = $folderName;
@@ -859,7 +860,7 @@
 					}
 				}
 			}
-			
+
 			foreach( array('personal', 'others', 'shared') as $type) {
 				if(isset($foldersNameSpace[$type])) {
 					if($_subscribedOnly) {
@@ -867,7 +868,7 @@
 					} else {
 						$listOfFolders = $foldersNameSpace[$type]['all'];
 					}
-					foreach($listOfFolders as $folderName) {
+					foreach((array)$listOfFolders as $folderName) {
 						if($_subscribedOnly && !in_array($folderName, $foldersNameSpace[$type]['all'])) {
 							continue;
 						}
