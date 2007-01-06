@@ -2634,6 +2634,11 @@ class Net_IMAPProtocol {
                 S: A0004 OK Completed
             */
             $mailbox = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
+            // courier fix
+            if ($str[0].$str[1] == "\r\n") {
+                $ret_aux = array("MAILBOX"=>$this->utf_7_decode($mailbox) );
+                return array($token => $ret_aux);
+            }
             $this->_parseSpace( $str , __LINE__ , __FILE__ );
             $this->_parseString( $str , '(' , __LINE__ , __FILE__ );
 
@@ -2835,8 +2840,16 @@ class Net_IMAPProtocol {
         case "MYRIGHTS" :
                 $this->_parseSpace( $str , __LINE__ , __FILE__ );
                 $this->_getNextToken( $str ,$mailbox );
-                $this->_parseSpace( $str , __LINE__ , __FILE__ );
-                $this->_getNextToken( $str , $granted );
+                // Patch to handle the alternate MYRIGHTS response from courier-IMAP
+                // pear bug 2954
+                if ($str==')') {
+                    $granted = $mailbox;
+                    $mailbox = $this->currentMailbox;
+                } else {
+                    $this->_parseSpace( $str , __LINE__ , __FILE__ );
+                    $this->_getNextToken( $str , $granted );
+                }
+                // end patch
 
                 $result_array = array( "MAILBOX"=>$this->utf_7_decode($mailbox) , "GRANTED"=>$granted );
                 return $result_array;

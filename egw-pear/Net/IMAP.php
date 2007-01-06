@@ -376,7 +376,7 @@ class Net_IMAP extends Net_IMAPProtocol {
             return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
         }
 
-        #print "<hr>"; var_dump($ret["PARSED"]); print "<hr>";
+        #print "<hr><pre>"; var_dump($ret["PARSED"]); print "<hr>";
 
         if(isset( $ret["PARSED"] ) ){
             for($i=0; $i<count($ret["PARSED"]) ; $i++){
@@ -386,8 +386,15 @@ class Net_IMAP extends Net_IMAPProtocol {
                 $a['FLAGS']=$ret["PARSED"][$i]['EXT']['FLAGS'];
                 $a['INTERNALDATE']=$ret["PARSED"][$i]['EXT']['INTERNALDATE'];
                 $a['SIZE']=$ret["PARSED"][$i]['EXT']['RFC822.SIZE'];
-                if(preg_match('/^content-type: (.*);/iU', $ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS (CONTENT-TYPE)]']['CONTENT'], $matches)) {
-                  $a['MIMETYPE']=strtolower($matches[1]);
+                if(isset($ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS (CONTENT-TYPE)]']['CONTENT'])) {
+                  if(preg_match('/^content-type: (.*);/iU', $ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS (CONTENT-TYPE)]']['CONTENT'], $matches)) {
+                    $a['MIMETYPE']=strtolower($matches[1]);
+                  }
+                } elseif(isset($ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS ("CONTENT-TYPE")]']['CONTENT'])) {
+                  // some versions of cyrus send "CONTENT-TYPE" and CONTENT-TYPE only
+                  if(preg_match('/^content-type: (.*);/iU', $ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS ("CONTENT-TYPE")]']['CONTENT'], $matches)) {
+                    $a['MIMETYPE']=strtolower($matches[1]);
+                  }
                 }
                 $env[]=$a;
                 $a=null;
@@ -1943,7 +1950,6 @@ class Net_IMAP extends Net_IMAPProtocol {
        if($mailbox_name == null){
             $mailbox_name = $this->getCurrentMailbox();
         }
-
 
         if ( PEAR::isError( $ret = $this->cmdGetQuotaRoot($mailbox_name) ) ) {
             return new PEAR_Error($ret->getMessage());
