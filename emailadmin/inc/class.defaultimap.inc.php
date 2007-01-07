@@ -322,18 +322,29 @@
 				return false;
 			}
 			
-			$nameSpace = $this->getNamespace();
+			if($this->hasCapability('NAMESPACE')) {
+				$nameSpace = $this->getNamespace();
 
-			$result = array();
+				$result = array();
 
-			$result['personal']	= $nameSpace['personal'];
+				$result['personal']	= $nameSpace['personal'];
 
-			if(is_array($nameSpace['others'])) {
-				$result['others']	= $nameSpace['others'];
-			}
+				if(is_array($nameSpace['others'])) {
+					$result['others']	= $nameSpace['others'];
+				}
 			
-			if(is_array($nameSpace['shared'])) {
-				$result['shared']	= $nameSpace['shared'];
+				if(is_array($nameSpace['shared'])) {
+					$result['shared']	= $nameSpace['shared'];
+				}
+			} else {
+				$delimiter = $this->getHierarchyDelimiter('INBOX');
+				
+				$result['personal']     = array(
+					0 => array(
+						'name'		=> 'INBOX',
+						'delimiter'	=> $delimiter
+					)
+				);
 			}
 					
 			return $result;
