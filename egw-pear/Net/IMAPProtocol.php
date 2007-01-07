@@ -2549,6 +2549,7 @@ class Net_IMAPProtocol {
     {
 
     #echo "\n\nTOKEN:$token $str\r\n";
+        $token = strtoupper($token);
         switch( $token ){
         case "RFC822.SIZE" :
             return array($token=>$this->_parseOneStringResponse( $str,__LINE__ , __FILE__ ));
