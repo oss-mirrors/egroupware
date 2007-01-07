@@ -132,7 +132,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',true);
+			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 			$contactId		= $vcaladdressbook->addVCard($content, false);
@@ -177,7 +177,7 @@ function _egwcontactssync_search($content, $contentType)
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',true);
+			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 			$contactId		= $vcaladdressbook->search($content);
@@ -234,7 +234,7 @@ function _egwcontactssync_export($guid, $contentType)
 	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
-	$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',True);
+	$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
 	$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 	$contactID		= $GLOBALS['egw']->common->get_egwId($guid);
 	
@@ -315,7 +315,7 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',True);
+			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$result = $vcaladdressbook->addVCard($content,$contactID);
     			

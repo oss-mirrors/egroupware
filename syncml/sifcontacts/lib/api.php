@@ -132,7 +132,7 @@ function _egwsifcontactssync_import($content, $contentType, $notepad = null)
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',true);
+			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 			$contactId		= $vcaladdressbook->addVCard($content);
@@ -307,7 +307,7 @@ function _egwsifcontactssync_replace($guid, $content, $contentType)
 
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook',True);
+			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$result = $vcaladdressbook->addVCard($content,$contactID);
     			
