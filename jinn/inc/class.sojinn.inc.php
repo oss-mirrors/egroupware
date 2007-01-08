@@ -1559,7 +1559,7 @@
 		 }
 
 		 $new_data=$this->oldData2newData($data);
-		 $table_def=$this->table2definition( $table ,&$this->site_db);
+		 $table_def=$this->table2definition( $table ,$this->site_db);
 
 		 if ($this->site_db->insert($table,$new_data,'',__LINE__,__FILE__,False,false,$table_def))
 		 {
