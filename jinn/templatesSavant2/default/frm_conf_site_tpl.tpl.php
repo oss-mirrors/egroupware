@@ -292,9 +292,9 @@
 						   }
 						?>
 						<select id="FLDsite_db_type" name="FLDsite_db_type" onchange="dbTypeChange(this,'prod');">
-						   <option value="egw" <?=$site_db_type_egw?>>This eGroupware (<?=lang('Only MySQL is supported')?>)</option>
+						   <option value="egw" <?=$site_db_type_egw?>>This eGroupware (<?=lang('PSQL is unstable')?>)</option>
 						   <option value="mysql" <?=$site_db_type_mysql?>>MySQL</option>
-						   <option value="pgsql" <?=$site_db_type_pgsql?>>PostgreSQL (<?=lang('Very experimental')?>)</option>
+						   <option value="pgsql" <?=$site_db_type_pgsql?>>PostgreSQL (<?=lang('Unstable')?>)</option>
 						</select>
 					 </td>
 				  </tr>
@@ -328,9 +328,9 @@
 						   }
 						?>
 						<select id="FLDdev_site_db_type" name="FLDdev_site_db_type" onchange="dbTypeChange(this,'dev');">
-						   <option value="egw" <?=$dev_site_db_type_egw?>>This eGroupware (<?=lang('Only MySQL is supported')?>)</option>
+						   <option value="egw" <?=$dev_site_db_type_egw?>>This eGroupware (<?=lang('PSQL is unstable')?>)</option>
 						   <option value="mysql" <?=$dev_site_db_type_mysql?>>MySQL</option>
-						   <option value="pgsql" <?=$dev_site_db_type_pgsql?>>PostgreSQL (<?=lang('Very experimental')?>)</option>
+						   <option value="pgsql" <?=$dev_site_db_type_pgsql?>>PostgreSQL (<?=lang('Unstable')?>)</option>
 						</select>
 					 </td>
 				  </tr>	<tr><td ><?=lang('Database name')?></td><td ><input name="FLDdev_site_db_name" id="FLDdev_site_db_name" size="30"  value="<?=$this->site_values['dev_site_db_name']?>" type="text"></td></tr>
