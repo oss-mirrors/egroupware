@@ -54,7 +54,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function uiu_list_records($session_name='jinn')
+	  function uiu_list_records($session_name='jinnitself')
 	  {
 		 $this->bo = CreateObject('jinn.bouser',$session_name);
 		 parent::uijinn();

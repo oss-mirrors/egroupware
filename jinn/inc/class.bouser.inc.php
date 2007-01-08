@@ -60,7 +60,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function bouser($session_name='jinn')
+	  function bouser($session_name='jinnitself')
 	  {
 		 parent::bojinn($session_name);
 

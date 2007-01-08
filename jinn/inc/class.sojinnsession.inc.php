@@ -32,9 +32,9 @@
    class sojinnsession
    {
 	  var $sessionarray;
-	  var $session_name='jinn';
+	  var $session_name='jinnitself';
 
-	  function sojinnsession($session_name='jinn')
+	  function sojinnsession($session_name='jinnitself')
 	  {
 		 $this->session_name=$session_name;
 		 $this->load();

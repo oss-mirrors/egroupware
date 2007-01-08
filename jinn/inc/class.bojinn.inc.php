@@ -48,7 +48,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function bojinn($session_name='jinn')
+	  function bojinn($session_name='jinnitself')
 	  {
 		 $this->so = CreateObject('jinn.sojinn');
 

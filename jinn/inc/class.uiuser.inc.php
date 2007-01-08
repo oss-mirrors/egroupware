@@ -45,7 +45,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function uiuser($session_name='jinn')
+	  function uiuser($session_name='jinnitself')
 	  {	
 		 $this->bo = CreateObject('jinn.bouser',$session_name);
 		 parent::uijinn();

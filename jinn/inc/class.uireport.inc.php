@@ -277,7 +277,7 @@
 	  {
 		 if($_GET[selection] == 'all' or $_GET[selection] == '')
 		 {
-			$records=$this->bo->get_records($this->bo->site_object[table_name],'','',0,0,'name',$orderby,'*',$where_condition);
+			$records=$this->bo->get_records($this->bo->site_object['table_name'],'','',0,0,'name',$orderby,'*',$where_condition);
 		 }
 		 
 		 if($_GET[selection] == 'selection')
@@ -338,6 +338,7 @@
 			   $header = $this->boreport->replace_tiny_php_tags($header);
 			   $header = preg_replace('/%%(.*?)%%/',"<?=\$this->record['$1'];?>",$header.'<br>');
 			   $output .=  $this->tplsav2->fetch_string($header);  			 
+			   
 			   foreach($records as $record)
 			   {
 				  $input = $report_arr[r_body].'<br>';

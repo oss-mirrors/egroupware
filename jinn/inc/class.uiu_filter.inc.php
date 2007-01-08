@@ -52,7 +52,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function uiu_filter($session_name='jinn')
+	  function uiu_filter($session_name='jinnitself')
 	  {
 		 $this->bo = CreateObject('jinn.bouser',$session_name);
 		 parent::uijinn();

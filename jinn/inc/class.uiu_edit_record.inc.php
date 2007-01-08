@@ -99,7 +99,7 @@
 	  * @access public
 	  * @return void
 	  */
-	  function uiu_edit_record($session_name='jinn')
+	  function uiu_edit_record($session_name='jinnitself')
 	  {
 		 $this->bo = CreateObject('jinn.bouser',$session_name);
 		 parent::uijinn();
