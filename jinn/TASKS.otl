@@ -1,29 +1,29 @@
 ## J I N N   T A S K S ##
 Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
-	[_] 8% RELEASE 0.9xxx stable
-		[_] 16% SHOWSTOPPERS BUGS
-			[_] PHP compliance
-				[_] check all array_merge
-				[_] check thouroughly
-			[_] Edit record
-			[_] order not well working
+	[_] 49% RELEASE 0.9xxx stable
+		[_] 83% SHOWSTOPPERS BUGS
+			[X] PHP5 compliance
+				[X] check all array_merge
+				[X] check thouroughly
+			[X] Edit record
+			[X] order not well working
 			[X] ajax m2o list view seems to use the configuration of its mother object
-			[_] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
+			[X] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
 			[_] TinyMCE parst niet goed in een many-to-one relatie
 				[_] in progress
-		[_] 0% TASKS
+		[_] 16% TASKS
 			[_] missing help screens
 				[_] sites overview
 				[_] objects overview
 			[_] site import/export
 				[_] old file format is buggy
-				[_] not well tested
+				[X] not well tested
 				[_] reports are not finished in xml file formal
 				[_] while creating an jinn file a temp parent id must be used; 
 				[_] import/export host profile
-				[_] import objects from sites file into current site
-					[_] choose which objects to import with selection dialog
-	[_] 30% RELEASE 1.0 stable of later
+				[X] import objects from sites file into current site
+					[X] choose which objects to import with selection dialog
+	[_] 33% RELEASE 1.0 stable of later
 		[_] 11% BUGS
 			[_] exporting an object forgets the included files
 			[_] config lijst geeft not enabled velden toch weer
@@ -64,7 +64,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[X] frm_edit_filter.tpl
 				[_] import_object.tpl
 				[X] list_records.tpl
-		[_] 6% TASKS
+		[_] 16% TASKS
 			[_] 11% SAVE/OPEN JINN DATA	
 				[_] single objects not implemented in xml
 				[_] export xml
@@ -97,7 +97,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] invoer verplicht vervangen met invoer controle op inhoud (wellicht te definieren in plugin zelf)
 				[_] run on record event
 					[_] make complete see uiuser.inc.php
-			[_] 33% JAPIE JiNN API Enterprise
+			[_] 47% JAPIE JiNN API Enterprise
 				[_] set version info when jinn meta data is updated
 					[X] add/edit site
 					[X] add/edit gen object props
@@ -106,19 +106,19 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 					[_] event plugins
 					[_] add/edit report info
 					[_] make more generic
-				[_] 60% japie jinn features
-					[_] search
+				[_] 86% japie jinn features
+					[X] search
 					[_] filters
-					[_] list
-						[_] custom action links
+					[X] list
+						[X] custom action links
 					[X] create single
 					[X] delete single
 					[X] copy single
 					[X] read single
-					[_] edit single
+					[X] edit single
 						[X] open
 						[X] save
-						[_] tinymce javascript include probleem
+						[X] tinymce javascript include probleem
 					[_] multi
 						[X] del
 						[X] edit
@@ -153,7 +153,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 						[X] make if possible to save over new mods
 				[X] make sure hardcoded uniq id's stay as reference
 				[_] disable normal jinn ACL
-				[_] create parallel session handling
+				[X] create parallel session handling
 			[_] 0% RELATIES
 				[_] relations have to have an own table
 				[_] o2o en m2o relaties hoeven geen remote tabel te hebben
@@ -162,23 +162,72 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] 0% DOCUMENTATION, TRANSLATIONS INFO
 				[_] Vertalen
 				[_] Meer info geven in object overzicht: type relaties, problemen objecten, geconf. velden, totaal db velden
-			[_] 12% LIST RECORDS
+			[_] 50% LIST RECORDS
 				[_] optimize search code
 				[_] optimize columnames code
-				[_] improve speed in many ways
-				[_] improve lay-out
-				[_] add more browsing functionality
+				[X] improve speed in many ways
+				[X] improve lay-out
+				[X] add more browsing functionality
 				[_] remove all doc html
 				[X] port to tplsav2
 				[_] double click on field to edit its content.
 			[_] 0% REPORTS
-				[_] rapporten pdf
-				[_] rapporten delen met andere gebruikers
-				[_] rapporten zien er niet uit
+				[_] NextGen PDF Reports
+					[_] Structure
+						[_] ui
+						[_] bo
+						[_] so
+						[_] plugins->inputmethods
+						[_] plugins->outputmethods
+					[_] Screens
+						[_] Design reports
+							[_] All available fields and related fields
+								[_] 0%%field%% normal resolving
+								[_] ... related values??
+							[_] How to store report:
+								[_] Part of applications (can be migrated and exported)
+								[_] Part of local site 
+							[_] Where to store images/fonts:
+								[_] site (can be migrated)
+								[_] local repository (VFS?)
+							[_] Choose Report Engine:
+								 : We must try to culture the the
+								 : reporting engine as plugins
+								[_] HTML
+									[_] choose input method
+										[_] upload
+										[_] manual html
+										[_] manual tinyhtml
+									[_] choose output method
+										[_] save
+										[_] email
+										[_] print
+								[_] PDML
+									[_] Font upload?
+									[_] choose input method
+										[_] upload
+										[_] manual
+								[_] OOGEN
+									...
+						[_] Maintain reports
+							[_] list/delete/edit/copy
+						[_] merge report
+						: cycle if needed
+							[_] select scope
+								[_] all 
+								[_] selected 
+								[_] filtered list
+							[_] choose output method
+								[_] screen/print
+								[_] save
+								[_] email
+								
 			[_] 0% FILTERS
 				[_] filter delen met andere gebruikers
+					save in table filters
 				[_] filters moeten beter uitgewerkt worden en operators moeten door plugin met ajax worden gerendered
 				[_] filters moeten met EN en OF gegroepeerd kunnen worden
+				[_] nicer filter edits
 			[_] 0% ACL
 				[_] eGroupware ACL gebruiken
 				[_] ACL groepen gebruiken
@@ -203,8 +252,8 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] plugins geven aan of ze genest mogen worden of kunnen nesten zoals tabbladen en kaders groupboxen
 				[_] field_name wordt datasource. 
 				[_] element_type: table_field of layout. Geschikt voor afbeeldingen, tabbalden lijnen, kaders, etc......
-			[_] OPTIMIZATION
-				remove unneeded db connections
+			[X] OPTIMIZATION
+				[X] remove unneeded db connections
 			[_] 3% DIVERS
 				[_] port every use of wherestring on the sitedb site to the new create_where_string function
 				[_] globale configuratie herzien
