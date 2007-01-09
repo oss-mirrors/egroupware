@@ -430,7 +430,6 @@
 				$this->sessionDataAjax['folderName'] = $folderName;
 				$this->saveSessionData();
 				
-				$folderACL = $this->bofelamimail->getIMAPACL($folderName);
 				
 				if(strtoupper($folderName) != 'INBOX') {
 					$response->addAssign("newMailboxName", "value", htmlspecialchars($folderStatus['shortDisplayName'], ENT_QUOTES, $this->charset));
@@ -446,7 +445,10 @@
 					$response->addScript("document.getElementById('divRenameButton').style.visibility = 'hidden';");
 				}
 				$response->addAssign("folderName", "innerHTML", htmlspecialchars($folderStatus['displayName'], ENT_QUOTES, $this->charset));
-				$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
+				
+				if($folderACL = $this->bofelamimail->getIMAPACL($folderName)) {
+					$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
+				}
 
 				return $response->getXML();
 			} else {
