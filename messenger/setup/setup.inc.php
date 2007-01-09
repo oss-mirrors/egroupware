@@ -31,6 +31,7 @@
 	$setup_info['messenger']['hooks'][] = 'home';
 	$setup_info['messenger']['hooks'][] = 'admin';
 	$setup_info['messenger']['hooks'][] = 'after_navbar';
+	$setup_info['messenger']['hooks'][] = 'topmenu_info';
 	$setup_info['messenger']['hooks'][] = 'sidebox_menu';
 
 	$setup_info['messenger']['hooks']['notify'] = 'messenger.messengernotify.notify';
