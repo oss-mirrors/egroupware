@@ -91,7 +91,8 @@
 				'fm_signatureid' => array('type' => 'auto'),
 				'fm_accountid' => array('type' => 'int','precision' => '11'),
 				'fm_signature' => array('type' => 'text'),
-				'fm_description' => array('type' => 'varchar','precision' => '255')
+				'fm_description' => array('type' => 'varchar','precision' => '255'),
+				'fm_defaultsignature' => array('type' => 'bool')
 			),
 			'pk' => array('fm_signatureid'),
 			'fk' => array(),

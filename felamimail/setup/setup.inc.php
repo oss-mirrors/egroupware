@@ -5,15 +5,14 @@
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
-	*  Free Software Foundation; either version 2 of the License, or (at your  *
-	*  option) any later version.                                              *
+	*  Free Software Foundation; version 2 of the License.                     *
 	\**************************************************************************/
 
 	/* $Id$ */
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.3.004';
+	$setup_info['felamimail']['version']     	= '1.3.005';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -75,3 +74,5 @@
 			'from' => 'FeLaMiMail',
 		),
 	);	
+
+

@@ -21,7 +21,8 @@ function fm_saveSignature() {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.saveSignature", "save", 
 		document.getElementById('signatureID').value, 
 		document.getElementById('signatureDesc').value, 
-		fm_getEditorContent()
+		fm_getEditorContent(),
+		document.getElementById('isDefaultSignature').value
 	);
 	window.setTimeout("window.close()", 1000);
 }
@@ -30,7 +31,8 @@ function fm_applySignature() {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.saveSignature", "apply", 
 		document.getElementById('signatureID').value, 
 		document.getElementById('signatureDesc').value, 
-		fm_getEditorContent()
+		fm_getEditorContent(),
+		document.getElementById('isDefaultSignature').value
 	);
 }
 

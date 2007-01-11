@@ -340,58 +340,49 @@
 			$this->t->set_var('navbarButtonsLeft',$navbarButtons);
 				
 			$navbarButtons = '';
+			$navbarImages  = array();
+			#_debug_array($nextMessage); exit;
 
-				if($nextMessage['previous'])
-				{
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uidisplay.display',
-						'showHeader'	=> 'false',
-						'uid'		=> $nextMessage['previous']
-					);
-					$previousURL = $GLOBALS['egw']->link('/index.php',$linkData);
-					$previousURL = "window.location.href = '$previousURL'";
-				}
-				else
-				{
-					$previousURL = '';
-				}
-	
-				if($nextMessage['next'])
-				{
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uidisplay.display',
-						'showHeader'	=> 'false',
-						'uid'		=> $nextMessage['next']
-					);
-					$nextURL = $GLOBALS['egw']->link('/index.php',$linkData);
-					$nextURL = "window.location.href = '$nextURL'";
-				}
-				else
-				{
-					$nextURL = '';
-				}
-
-				$navbarImages = array(
-					'down.button'	=> array(
-						'action'	=> $nextURL,
-						'tooltip'	=> lang('next message'),
-					),
-					'up.button'	=> array(
-						'action'	=> $previousURL,
-						'tooltip'	=> lang('previous message'),
-					),
+			if($nextMessage['previous']) {
+				$linkData = array (
+					'menuaction'	=> 'felamimail.uidisplay.display',
+					'showHeader'	=> 'false',
+					'uid'		=> $nextMessage['previous']
 				);
-				
-				foreach($navbarImages as $buttonName => $buttonData)
-				{
-					$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip'], 'right');
-				}
+				$previousURL = $GLOBALS['egw']->link('/index.php',$linkData);
+				$previousURL = "window.location.href = '$previousURL'";
+				$navbarImages['up.button']	= array(
+					'action'	=> $previousURL,
+					'tooltip'	=> lang('previous message'),
+				);
+			} else {
+				$previousURL = '';
+			}
+	
+			if($nextMessage['next']) {
+				$linkData = array (
+					'menuaction'	=> 'felamimail.uidisplay.display',
+					'showHeader'	=> 'false',
+					'uid'		=> $nextMessage['next']
+				);
+				$nextURL = $GLOBALS['egw']->link('/index.php',$linkData);
+				$nextURL = "window.location.href = '$nextURL'";
+				$navbarImages['down.button']	= array(
+					'action'	=> $nextURL,
+					'tooltip'	=> lang('next message'),
+				);
+			} else {
+				$nextURL = '';
+			}
 
-				$this->t->set_var('navbarButtonsRight',$navbarButtons);
 				
-				$this->t->parse('navbar','message_navbar',True);
+			foreach($navbarImages as $buttonName => $buttonData) {
+				$navbarButtons .= $uiWidgets->navbarButton($buttonName, $buttonData['action'], $buttonData['tooltip'], 'right');
+			}
+
+			$this->t->set_var('navbarButtonsRight',$navbarButtons);
+				
+			$this->t->parse('navbar','message_navbar',True);
 
 			// navbar end
 			// header

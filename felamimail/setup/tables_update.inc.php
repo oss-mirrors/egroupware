@@ -387,4 +387,15 @@
 
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.004';
 	}
+
+
+	$test[] = '1.3.004';
+	function felamimail_upgrade1_3_004()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_signatures','fm_defaultsignature',array(
+			'type' => 'bool'
+		));
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.005';
+	}
 ?>

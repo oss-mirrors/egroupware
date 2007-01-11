@@ -430,6 +430,7 @@
 				$this->sessionDataAjax['folderName'] = $folderName;
 				$this->saveSessionData();
 				
+				$folderACL = $this->bofelamimail->getIMAPACL($folderName);
 				
 				if(strtoupper($folderName) != 'INBOX') {
 					$response->addAssign("newMailboxName", "value", htmlspecialchars($folderStatus['shortDisplayName'], ENT_QUOTES, $this->charset));
@@ -445,10 +446,7 @@
 					$response->addScript("document.getElementById('divRenameButton').style.visibility = 'hidden';");
 				}
 				$response->addAssign("folderName", "innerHTML", htmlspecialchars($folderStatus['displayName'], ENT_QUOTES, $this->charset));
-				
-				if($folderACL = $this->bofelamimail->getIMAPACL($folderName)) {
-					$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
-				}
+				$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
 
 				return $response->getXML();
 			} else {
@@ -675,23 +673,25 @@
 			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
 		}
 		
-		function saveSignature($_mode, $_id, $_description, $_signature) 
+		function saveSignature($_mode, $_id, $_description, $_signature, $_isDefaultSignature) 
 		{
-				$boPreferences = CreateObject('felamimail.bopreferences');
+			$boPreferences = CreateObject('felamimail.bopreferences');
+			
+			$isDefaultSignature = ($_isDefaultSignature == 'true' ? true : false);
 				
-				$signatureID = $boPreferences->saveSignature($_id, $_description, $_signature);
+			$signatureID = $boPreferences->saveSignature($_id, $_description, $_signature, $isDefaultSignature);
 
-				$response =& new xajaxResponse();
+			$response =& new xajaxResponse();
 
-				if($_mode == 'save') {
-					#$response->addAssign('signatureID', 'value', $signatureID);
-					#$response->addScript('window.close()');
-				} else {
-					$response->addScript("opener.fm_refreshSignatureTable()");
-					$response->addAssign('signatureID', 'value', $signatureID);
-				}
+			if($_mode == 'save') {
+				#$response->addAssign('signatureID', 'value', $signatureID);
+				#$response->addScript('window.close()');
+			} else {
+				$response->addScript("opener.fm_refreshSignatureTable()");
+				$response->addAssign('signatureID', 'value', $signatureID);
+			}
 				
-				return $response->getXML();
+			return $response->getXML();
 		}
 		
 		function searchAddress($_searchString) 

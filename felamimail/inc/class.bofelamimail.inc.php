@@ -330,7 +330,7 @@
 			if($imapFilter == '') {
 				return 'ALL';
 			} else {
-				#return trim($imapFilter);
+				return trim($imapFilter);
 				return 'CHARSET '. strtoupper($this->displayCharset) .' '. trim($imapFilter);
 			}
 		}
@@ -1095,29 +1095,22 @@
 				$this->sessionData['folderStatus'][0][$_folderName]['messages']	=== $folderStatus['EXISTS'] &&
 				$this->sessionData['folderStatus'][0][$_folderName]['uidnext']	=== $folderStatus['UIDNEXT'] &&
 				$this->sessionData['folderStatus'][0][$_folderName]['filter']	=== $_filter &&
-				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort && 
-				$this->sessionData['folderStatus'][0][$_folderName]['reverse']	=== $_reverse
+				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort
 			) {
-		#		error_log("USE CACHE");
+				#error_log("USE CACHE");
 				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
 			} else {
-		#		error_log("USE NO CACHE");
+				#error_log("USE NO CACHE");
 				$filter = $this->createIMAPFilter($_filter);
-		#		$sortResult = imap_sort($this->mbox, $_sort, $_reverse, '', $filter, $this->displayCharset);
-				#print "<pre>";
-				#$this->icServer->setDebug(true);
-				#print "SORT: $_sort, $_reverse<br>";
-				$sortResult = $this->icServer->search($filter, true);
-				if(is_array($sortResult)) {
-					if($_reverse) {
-						rsort($sortResult, SORT_NUMERIC);
-					} else {
-						sort($sortResult, SORT_NUMERIC);
+				if($this->icServer->hasCapability('SORT')) {
+					$sortOrder = $this->_getSortString($_sort);
+					$sortResult = $this->icServer->sort($sortOrder, 'US-ASCII', $filter, true);
+				} else {
+					$sortResult = $this->icServer->search($filter, true);
+					if(is_array($sortResult)) {
+							sort($sortResult, SORT_NUMERIC);
 					}
 				}
-				#$this->icServer->setDebug(false);
-				#exit;
-				#_debug_array($sortResult); exit;
 
 				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity'] = $folderStatus['UIDVALIDITY'];
 				$this->sessionData['folderStatus'][0][$_folderName]['messages']	= $folderStatus['EXISTS'];
@@ -1125,13 +1118,13 @@
 				$this->sessionData['folderStatus'][0][$_folderName]['filter']	= $_filter;
 				$this->sessionData['folderStatus'][0][$_folderName]['sortResult'] = $sortResult;
 				$this->sessionData['folderStatus'][0][$_folderName]['sort']	= $_sort;
-				$this->sessionData['folderStatus'][0][$_folderName]['reverse'] 	= $_reverse;
-				$this->saveSessionData();
 			}
+			$this->sessionData['folderStatus'][0][$_folderName]['reverse'] 	= $_reverse;
+			$this->saveSessionData();
 			
 			return $sortResult;
 		}
-					
+		
 		function getMessageEnvelope($_uid, $_partID = '')
 		{
 			if($_partID == '') {
@@ -1187,11 +1180,17 @@
 		
 		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter)
 		{
+			$reverse = (bool)$_reverse;
 			// get the list of messages to fetch
 			$this->reopen($_folderName);
 			$this->icServer->selectMailbox($_folderName);
 			
+		#	print "<pre>";
+		#	$this->icServer->setDebug(true);
+			
 			$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter);
+		#	$this->icServer->setDebug(false);
+		#	print "</pre>";
 			// nothing found
 			if(!is_array($sortResult) || empty($sortResult)) {
 				$retValue = array();
@@ -1202,7 +1201,21 @@
 			}
 			
 			$total = count($sortResult);
-			$sortResult = array_slice($sortResult, $_startMessage-1, $_numberOfMessages);
+			#_debug_array($sortResult);
+			#_debug_array(array_slice($sortResult, -5, -2));
+			#error_log("REVERSE: $reverse");
+			if($reverse === true) {
+				$startMessage = $_startMessage-1;
+				if($startMessage > 0) {
+					$sortResult = array_slice($sortResult, -($_numberOfMessages+$startMessage), -$startMessage);
+				} else {
+					$sortResult = array_slice($sortResult, -($_numberOfMessages+($_startMessage-1)));
+				}
+				$sortResult = array_reverse($sortResult);
+			} else {
+				$sortResult = array_slice($sortResult, $_startMessage-1, $_numberOfMessages);
+			}
+
 			$queryString = implode(',', $sortResult);
 
 			// fetch the data for the selected messages
@@ -1279,18 +1292,30 @@
 		function getNextMessage($_foldername, $_id) 
 		{
 			#_debug_array($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
+			#_debug_array($this->sessionData['folderStatus'][$this->profileID]);
 			#print "ID: $_id<br>";
-			#exit;
 			$position = array_search($_id, $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
+			#print "POS: $position<br>";
 
 			if($position !== false) {
 				$retValue = array();
 				
-				if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1])) {
-					$retValue['previous'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1];
-				}
-				if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1])) {
-					$retValue['next'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1];
+				if($this->sessionData['folderStatus'][$this->profileID][$_foldername]['reverse'] == true) {
+					#print "is reverse<br>";
+					if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1])) {
+						$retValue['next'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1];
+					}
+					if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1])) {
+						$retValue['previous'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1];
+					}
+				} else {
+					#print "is not reverse";
+					if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1])) {
+						$retValue['previous'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1];
+					}
+					if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1])) {
+						$retValue['next'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1];
+					}
 				}
 				
 				return $retValue;
@@ -1860,6 +1885,32 @@
 		function _decodeFolderName($_folderName) {
 			return $GLOBALS['egw']->translation->convert($_folderName, $this->charset, 'ISO-8859-1');
 		}
-		
+
+		/**
+		* convert the sort value from the gui(integer) into a string
+		*
+		* @param int _sort the integer sort order
+		* @returns the ascii sort string
+		*/
+		function _getSortString($_sort) 
+		{
+			switch($_sort) {
+				case 2:
+					$retValue = 'FROM';
+					break;
+				case 3:
+					$retValue = 'SUBJECT';
+					break;
+				case 6:
+					$retValue = 'SIZE';
+					break;
+				case 0:
+				default:
+					$retValue = 'DATE';
+					break;
+			}
+			
+			return $retValue;
+		}
 	}
 ?>

@@ -1,3 +1,8 @@
+2007-01-11 Lars Kneschke  <lkneschke@metaways.de>
+	* added support for serverside sort
+	* you make one signature the default one
+	* added support for searching content of message body
+
 2007-01-05 Lars Kneschke  <lkneschke@metaways.de>
 	* fetch quota from imap server only, if imap server supports quota
 	* improved autocreation of folders

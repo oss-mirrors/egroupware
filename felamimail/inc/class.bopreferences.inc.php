@@ -150,6 +150,11 @@
 			return parent::getSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID);
 		}
 		
+		function getDefaultSignature() 
+		{
+			return parent::getDefaultSignature($GLOBALS['egw_info']['user']['account_id']);
+		}
+		
 		function deleteSignatures($_signatureID) 
 		{
 			if(!is_array($_signatureID)) {
@@ -163,9 +168,9 @@
 			parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
 		}
 		
-		function saveSignature($_signatureID, $_description, $_signature) 
+		function saveSignature($_signatureID, $_description, $_signature, $_isDefaultSignature) 
 		{
-			return parent::saveSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID, $_description, $_signature);
+			return parent::saveSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID, $_description, $_signature, (bool)$_isDefaultSignature);
 		}
 
 		function setProfileActive($_status) 

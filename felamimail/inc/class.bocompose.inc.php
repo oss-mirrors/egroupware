@@ -864,16 +864,23 @@
 			return true;
 		}
 		
-		function setDefaults() {
-			$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify(
-				$GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']
-			);
+		function setDefaults() 
+		{
+			if($signatureData = $this->bopreferences->getDefaultSignature()) {
+				$this->sessionData['signatureID'] = $signatureData['signatureid'];
+			} else {
+				$this->sessionData['signatureID'] = -1;
+			}
+			#$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify(
+			#	$GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']
+			#);
 			$this->sessionData['mimeType']	= 'html';
 			
 			$this->saveSessionData();
 		}
 		
-		function stripSlashes($_string) {
+		function stripSlashes($_string) 
+		{
 			if (get_magic_quotes_gpc()) {
 				return stripslashes($_string);
 			} else {

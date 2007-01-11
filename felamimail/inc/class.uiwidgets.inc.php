@@ -188,7 +188,8 @@
 			return $folder_tree_new;
 		}
 		
-		function createSignatureTable($_signatureList) {
+		function createSignatureTable($_signatureList) 
+		{
 			$linkData = array
 			(
 				'menuaction'    => 'felamimail.uipreferences.editSignature'
@@ -197,10 +198,11 @@
 			
 			if(is_array($_signatureList) && !empty($_signatureList)) {
 				foreach($_signatureList as $signature) {
+					$description = ($signature['defaultsignature'] == true) ? $signature['description'] .' ('. lang('default') .')' : $signature['description'];
 					$tableRows[] = array(
 						'1'	=> $GLOBALS['egw']->html->checkbox('signatureID', false, $signature['signatureid']),
 						'.1'	=> 'style="width:30px"',
-						'2'	=> '<a href="" onclick="egw_openWindowCentered(\''. $urlEditSignature ."&signatureID=".$signature['signatureid']. '\',\'felamiMailACL\',\'600\',\'230\'); return false;">'. @htmlspecialchars($signature['description'], ENT_QUOTES, $this->charset) .'</a>',
+						'2'	=> '<a href="" onclick="egw_openWindowCentered(\''. $urlEditSignature ."&signatureID=".$signature['signatureid']. '\',\'felamiMailACL\',\'600\',\'230\'); return false;">'. @htmlspecialchars($description, ENT_QUOTES, $this->charset) .'</a>',
 					);
 				}
 				

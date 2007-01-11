@@ -175,6 +175,14 @@
 				'150px')
 			);
 
+			$this->t->set_var('checkbox_isDefaultSignature',$GLOBALS['egw']->html->checkbox(
+				'isDefaultSignature',
+				$signatureData['defaultsignature'],
+				'true',
+				'id="isDefaultSignature"'
+				)
+			);
+
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
 		}
@@ -574,6 +582,7 @@
 			$this->t->set_var('lang_description',lang('description'));
 			$this->t->set_var('lang_really_delete_signatures',lang('Do you really want to delete the selected signatures?'));
 			$this->t->set_var('lang_no_encryption',lang('no encryption'));
+			$this->t->set_var('lang_default_signature',lang('default signature'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
