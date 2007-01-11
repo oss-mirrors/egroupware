@@ -376,7 +376,7 @@ class Net_IMAP extends Net_IMAPProtocol {
             return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
         }
 
-        #print "<hr><pre>"; var_dump($ret["PARSED"]); print "<hr>";
+        #print "<hr>"; var_dump($ret["PARSED"]); print "<hr>";
 
         if(isset( $ret["PARSED"] ) ){
             for($i=0; $i<count($ret["PARSED"]) ; $i++){
@@ -1919,12 +1919,27 @@ class Net_IMAP extends Net_IMAPProtocol {
         return $ret["PARSED"]["SEARCH"]["SEARCH_LIST"];
     }
 
+    /*
+    * search function. Sends the SEARCH command
+    *
+    *
+    * @return bool Success/Failure
+    */
+    function sort($sort_list, $charset='US-ASCII', $search_list = '', $uidSort = false)
+    {
+        $sort_command = sprintf("(%s) %s %s", $sort_list, strtoupper($charset), $search_list);
 
+        if($uidSort){
+            $ret = $this->cmdUidSort($sort_command);
+        }else{
+            $ret = $this->cmdSort($sort_command);
+        }
 
-
-
-
-
+        if( strtoupper( $ret["RESPONSE"]["CODE"]) != "OK" ){
+            return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
+        }
+        return $ret["PARSED"]["SORT"]["SORT_LIST"];
+    }
 
     /******************************************************************
     **                                                               **
@@ -1950,6 +1965,7 @@ class Net_IMAP extends Net_IMAPProtocol {
        if($mailbox_name == null){
             $mailbox_name = $this->getCurrentMailbox();
         }
+
 
         if ( PEAR::isError( $ret = $this->cmdGetQuotaRoot($mailbox_name) ) ) {
             return new PEAR_Error($ret->getMessage());

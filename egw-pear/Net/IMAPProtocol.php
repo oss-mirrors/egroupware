@@ -1220,10 +1220,27 @@ class Net_IMAPProtocol {
         return $ret;
     }
 
+    /**
+     * Send the SORT command.
+     *
+     * @return mixed Returns a PEAR_Error with an error message on any
+     *               kind of failure, or true on success.
+     * @access public
+     * @since  1.0
+     */
 
-
-
-
+    function cmdSort($sort_cmd)
+    {
+        /*        if($_charset != '' )
+                    $_charset = "[$_charset] ";
+                $param=sprintf("%s%s",$charset,$search_cmd);
+        */
+        $ret = $this->_genericCommand('SORT', $sort_cmd );
+        if(isset( $ret["PARSED"] ) ){
+            $ret["PARSED"]=$ret["PARSED"][0]["EXT"];
+        }
+        return $ret;
+    }
 
     /**
      * Send the STORE command.
@@ -1385,15 +1402,23 @@ class Net_IMAPProtocol {
         return $ret;
     }
 
+    /**
+     * Send the SORT command.
+     *
+     * @return mixed Returns a PEAR_Error with an error message on any
+     *               kind of failure, or true on success.
+     * @access public
+     * @since  1.0
+     */
 
-
-
-
-
-
-
-
-
+    function cmdUidSort($sort_cmd)
+    {
+        $ret=$this->_genericCommand('UID SORT', sprintf("%s",$sort_cmd) );
+        if(isset( $ret["PARSED"] ) ){
+            $ret["PARSED"]=$ret["PARSED"][0]["EXT"];
+        }
+        return $ret;
+    }
 
     /**
      * Send the X command.
@@ -2764,13 +2789,15 @@ class Net_IMAPProtocol {
             break;
 
             case "SEARCH" :
+            case 'SORT':
                 $str_line = rtrim( substr( $this->_getToEOL( $str , false ) , 1) );
-                $struct_arr["SEARCH_LIST"] = explode( ' ' , $str_line );
-                if(count($struct_arr["SEARCH_LIST"]) == 1 && $struct_arr["SEARCH_LIST"][0]==''){
-                    $struct_arr["SEARCH_LIST"]=null;
+                $struct_arr[$token ."_LIST"] = explode( ' ' , $str_line );
+                if(count($struct_arr[$token ."_LIST"]) == 1 && $struct_arr[$token ."_LIST"][0]==''){
+                    $struct_arr[$token ."_LIST"]=null;
                 }
                 return array($token=>$struct_arr);
             break;
+
             case "OK" :
                 /* TODO:
                     parse the [ .... ] part of the response, use the method
