@@ -1,3 +1,6 @@
+2007-01-13 Lars Kneschke  <lkneschke@metaways.de>
+	* finally added support the in-reply-to header
+
 2007-01-11 Lars Kneschke  <lkneschke@metaways.de>
 	* added support for serverside sort
 	* you make one signature the default one

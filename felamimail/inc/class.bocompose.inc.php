@@ -188,7 +188,8 @@
 			return $asciiText;
 		}
 		
-		function convertHTMLToTextTiny($_html) {
+		function convertHTMLToTextTiny($_html) 
+		{
 			print "<pre>"; print htmlspecialchars($_html); print "</pre>";
 			// remove these tags and any spaces behind the tags
 			$search = array('/<p.*?> */', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */', '/<.?blockquote> */');
@@ -218,7 +219,8 @@
 			return $text;
 		}
 		
-		function generateRFC822Address($_addressObject) {
+		function generateRFC822Address($_addressObject) 
+		{
 			if(!empty($_addressObject->personal) && !empty($_addressObject->mailbox) && !empty($_addressObject->host)) {
 				return sprintf('"%s" <%s@%s>', $this->bofelamimail->decode_header($_addressObject->personal), $_addressObject->mailbox, $_addressObject->host);
 			} elseif(!empty($_addressObject->mailbox) && !empty($_addressObject->host)) {
@@ -401,6 +403,7 @@
 			#$headers	= $bofelamimail->getMessageHeader($_uid, $_partID);
 			$this->sessionData['uid'] = $_uid;
 			$this->sessionData['messageFolder'] = $_folder;
+			$this->sessionData['in-reply-to'] = $headers['MESSAGE_ID'];
 
 			// check for Reply-To: header and use if available
 			if(!empty($headers['REPLY_TO']) && ($headers['REPLY_TO'] != $headers['FROM'])) {
@@ -583,15 +586,18 @@
 			$this->saveSessionData();
 		}
 		
-		function restoreSessionData() {
+		function restoreSessionData() 
+		{
 			$this->sessionData = $GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID);
 		}
 		
-		function saveSessionData() {
+		function saveSessionData() 
+		{
 			$GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID,'',$this->sessionData);
 		}
 
-		function createMessage(&$_mailObject, $_formData, $_identity, $_signature = false) {
+		function createMessage(&$_mailObject, $_formData, $_identity, $_signature = false) 
+		{
 			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 
 			$userLang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
@@ -610,6 +616,9 @@
 			$_mailObject->Encoding = 'quoted-printable';
 			$_mailObject->CharSet	= $this->displayCharset;
 			$_mailObject->AddCustomHeader('X-Mailer: FeLaMiMail');
+			if(isset($this->sessionData['in-reply-to'])) {
+				$_mailObject->AddCustomHeader('In-Reply-To: '. $this->sessionData['in-reply-to']);
+			}
 			if($_formData['disposition']) {
 				$_mailObject->AddCustomHeader('Disposition-Notification-To: '. $_identity->emailAddress);
 			}
@@ -754,7 +763,7 @@
 			$this->sessionData['disposition'] = $_formData['disposition'];
 			$this->sessionData['mimeType']	= $_formData['mimeType'];
 			$this->sessionData['to_infolog'] = $_formData['to_infolog'];
-
+			
 			if(empty($this->sessionData['to']) && empty($this->sessionData['cc']) && 
 			   empty($this->sessionData['bcc']) && empty($this->sessionData['folder'])) {
 			   	$messageIsDraft = true;
