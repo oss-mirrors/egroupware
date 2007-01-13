@@ -43,7 +43,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 				{navbarButtonsLeft}
 			</div>
 		</td>
-		<td align="right" width="70px">
+		<td align="right" width="90px">
 			{select_search}
 		</td>
 		<td align="right">
@@ -90,7 +90,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 	
 			<!-- StartFolderTree -->
 
-			<div id="divFolderTree" style="overflow:auto; background-color: white; width:210px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid #9f9f9f;">
+			<div id="divFolderTree" style="overflow:auto; background-color: white; width:230px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid #9f9f9f;">
 			</div>
 			{folder_tree}
 			<script language="JavaScript1.2">refreshFolderStatus();</script>
