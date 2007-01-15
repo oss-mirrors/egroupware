@@ -14,7 +14,7 @@
 /* Basic information about this app */
 $setup_info['tts']['name']      = 'tts';
 $setup_info['tts']['title']     = 'Trouble Ticket System';
-$setup_info['tts']['version']   = '1.3.001';
+$setup_info['tts']['version']   = '1.3.002';
 $setup_info['tts']['app_order'] = 10;
 $setup_info['tts']['enable']    = 1;
 

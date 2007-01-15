@@ -164,6 +164,7 @@
     $ticket['state']          = $GLOBALS['phpgw']->db->f('ticket_state');
     $ticket['duedate']	      = substr($GLOBALS['phpgw']->db->f('ticket_due'), 0, 16);
     $ticket['converted']      = $GLOBALS['phpgw']->db->f('ticket_converted');
+    $ticket['tracker_id']     = $GLOBALS['phpgw']->db->f('tracker_id');
 
     if (!$ticket['group']) $ticket['group'] = $GLOBALS['phpgw_info']['user']['account_primary_group'];
 
@@ -275,7 +276,8 @@
 
       if ($ticket['converted'] == 'Y')
       {
-        $GLOBALS['phpgw']->template->set_var('ticket_is_in_tracker',lang('ticket is in tracker'));
+        $GLOBALS['phpgw']->template->set_var('ticket_is_in_tracker',lang('ticket is in tracker')
+        		. (($ticket['tracker_id'] >= 0)?' (#'.$ticket['tracker_id'].')':''));
       }
       else
       {

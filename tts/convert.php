@@ -28,7 +28,6 @@
 	$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['noheader'] = True;
 	include('../header.inc.php');
-//	$GLOBALS['phpgw']->config->read_repository();
 
 	$_confirmation = '';
 	if($_POST['submit'])
@@ -49,8 +48,6 @@ function TTSCONV_ticket_overview ($_confirmation = '') {
 
 	$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'].' - '.lang("convert tickets to tracker");
 	$GLOBALS['phpgw']->common->phpgw_header();
-
-//	$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
 	$GLOBALS['phpgw']->template->set_file('convert','convert.tpl');
 
@@ -135,27 +132,31 @@ function TTSCONV_ticket_overview ($_confirmation = '') {
 		$GLOBALS['phpgw']->template->set_var('btn_or_msg', $_btn);
 
 		// Select Global- and Tracker- categories
+		$tr_catlist = clone($GLOBALS['phpgw']->db);
 		$GLOBALS['phpgw']->db->query('SELECT cat_id, cat_name FROM egw_categories '
-				. "WHERE cat_appname = 'tracker' ",__LINE__,__FILE__);
+				. "WHERE cat_appname = 'tracker' and cat_parent = 0",__LINE__,__FILE__);
 		if ($GLOBALS['phpgw']->db->num_rows() == 0)
 		{
-			echo "Duh? No categories?"; //Todo; where do I go from here??
+			// Overwrite (and thus, abuse :-S) the Confirmation
+			$GLOBALS['phpgw']->template->set_var('confirmation', "<font color='red' size='+1'><b>".lang('No Trackers found, aborting').'</b></font>');
 		}
 		else
 		{
-			while ($GLOBALS['phpgw']->db->next_record())
-			{
-				$Tracker_cats[$GLOBALS['phpgw']->db->f('cat_id')] = $GLOBALS['phpgw']->db->f('cat_name');
+			while ($GLOBALS['phpgw']->db->next_record()) {
+				$tr_catlist->query('SELECT cat_id, cat_name FROM egw_categories '
+						. "WHERE cat_appname = 'tracker' and cat_parent = "
+						. $GLOBALS['phpgw']->db->f('cat_id') . ' ',__LINE__,__FILE__);
+				if ($tr_catlist->num_rows() > 0)
+				{
+					$Tracker_groups[$GLOBALS['phpgw']->db->f('cat_id')] = $GLOBALS['phpgw']->db->f('cat_name');
+					while ($tr_catlist->next_record())
+					{
+						$Tracker_cats[$GLOBALS['phpgw']->db->f('cat_id')][$tr_catlist->f('cat_id')] = $tr_catlist->f('cat_name');
+					}
+				}
 			}
-		}
 
-		$GLOBALS['phpgw']->db->query('SELECT DISTINCT(ticket_category) FROM phpgw_tts_tickets',__LINE__,__FILE__);
-		if ($GLOBALS['phpgw']->db->num_rows() == 0)
-		{
-			$GLOBALS['phpgw']->template->set_var('lang_catconv', lang('all categories used in TTS are global and will remain unchaned in Tracker'));
-		}
-		else
-		{
+			$GLOBALS['phpgw']->db->query('SELECT DISTINCT(ticket_category) FROM phpgw_tts_tickets',__LINE__,__FILE__);
 			$GLOBALS['phpgw']->template->set_var('lang_catconv', lang('select which categories should be used in Tracker for the TTS categories'));
 			$_selects = '';
 			$_rowclasses = array('row_on', 'row_off');
@@ -166,9 +167,14 @@ function TTSCONV_ticket_overview ($_confirmation = '') {
 					. $GLOBALS['phpgw']->categories->id2name($GLOBALS['phpgw']->db->f('ticket_category'))
 					. '</td><td align="center"> =&gt; </td>';
 				$_selects .= '<td><select name="cat_conv['.$GLOBALS['phpgw']->db->f('ticket_category').']">';
-				foreach ($Tracker_cats as $_catID => $_cat)
+				foreach ($Tracker_groups as $_groupID => $_group)
 				{
-					$_selects .= '<option value="'.$_catID.'">'.$_cat.'</option><br />';
+					$_selects .= '<optgroup label="'.$_group.'"><br />';
+					foreach ($Tracker_cats[$_groupID] as $_catID => $_cat)
+					{
+						$_selects .= '<option value="'.$_groupID.':'.$_catID.'">'.$_cat.'</option><br />';
+					}
+					$_selects .= '</optgroup><br />';
 				}
 				$_selects .= '</select></td></tr>';
 				$_switch = 1 - $_switch;
@@ -185,6 +191,7 @@ function TTSCONV_perform_conversion ($_data)
 {
 	$StatesResolutions  = TTSCONV_states_resolution();
 	$CategoryConversion = $_data['cat_conv'];
+
 
 	$ticketlist = clone($GLOBALS['phpgw']->db);
 
@@ -233,13 +240,13 @@ function TTSCONV_perform_conversion ($_data)
 		{
 			if (isset($CategoryConversion[$ticketlist->f('ticket_category')]))
 			{
-				$_fields['cat_id'] = $CategoryConversion[$ticketlist->f('ticket_category')];
+				list ($_fields['tr_tracker'], $_fields['cat_id']) = explode (':', $CategoryConversion[$ticketlist->f('ticket_category')]);
 			}
 			else
 			{
 				$_fields['cat_id'] = $ticketlist->f('ticket_category');
+				$_fields['tr_tracker'] = $_fields['cat_id'];
 			}
-			$_fields['tr_tracker'] = $_fields['cat_id'];
 		}
 
 		$GLOBALS['phpgw']->db->insert('egw_tracker'
@@ -253,9 +260,12 @@ function TTSCONV_perform_conversion ($_data)
 		$tracker_id = $GLOBALS['phpgw']->db->get_last_insert_id('egw_tracker','tr_id');
 
 		TTSCONV_ticket_history ($ticketlist->f('ticket_id'), $tracker_id);
+
 		$GLOBALS['phpgw']->db->query('UPDATE phpgw_tts_tickets '
 				. "SET ticket_converted = 'Y' "
+				. ", tracker_id = $tracker_id "
 				. 'WHERE ticket_id = ' . $ticketlist->f('ticket_id'),__LINE__,__FILE__);
+
 		$_converted++;
 	}
 	return $_converted;
