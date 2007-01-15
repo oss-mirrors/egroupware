@@ -83,7 +83,6 @@
 	  */
 	  function save_filterstore()
 	  {
-//		 _debug_array($this->filterstore);
 		 $this->bo->save_preferences('filterstore'.$this->bo->site_object['unique_id'], $this->filterstore); 
 	  }
 
@@ -95,7 +94,6 @@
 	  */
 	  function save_sessionfilter()
 	  {
-	//	 _debug_array($this->sessionfilter);
 		 $this->bo->save_session_filter($this->bo->site_object['unique_id'], $this->sessionfilter);
 		 $this->bo->sessionmanager->save();
 	  }
@@ -158,8 +156,6 @@
 	  */
 	  function get_filter_where()
 	  {
-
-
 		 // if not specified, get the current filter from the session, or specify empty
 		 if($_POST['filtername'] == '')
 		 {
@@ -273,10 +269,8 @@
 			}
 		 }
 
-		 
 		 //test if any of the existing elements has been erased
 		 $existing_elements = count($this->filterdata['elements']);
-//		 _debug_array($this->filterdata);
 		 for($element = 0; $element < $existing_elements; $element++)
 		 {
 			if(	$this->filterdata['elements'][$element]['field'] == '' || 

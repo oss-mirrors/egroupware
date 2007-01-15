@@ -23,7 +23,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] import/export host profile
 				[X] import objects from sites file into current site
 					[X] choose which objects to import with selection dialog
-	[_] 33% RELEASE 1.0 stable of later
+	[_] 34% RELEASE 1.0 stable of later
 		[_] 11% BUGS
 			[_] exporting an object forgets the included files
 			[_] config lijst geeft not enabled velden toch weer
@@ -36,10 +36,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] ??? bij groot een op veel realtie object infinite loop
 			[_] ??? bij nieuw record resolven de relaties niet goed
 			[_] Formlayout gaat niet goed, met verschillende grotes van de plugins, bijv:
-			[X] TinyMCE is klein in formlayout, maar groot in de normale weergave.
 			[_] TinyMCE slaat sommige waardes van velden niet goed op
-			[X] TinyMCE en andere grote plugins schaalbaar in formlayout?
-			[X] TinyMCE flikkert
 			[_] exporteren lijkt niet lekker te werken (wordt niet goed geexscaped)
 			[_] vorder verschijnt soms helemaal niet in een m2o list
 			[_] foutmelding bij vorder in m2o lijst
@@ -64,7 +61,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[X] frm_edit_filter.tpl
 				[_] import_object.tpl
 				[X] list_records.tpl
-		[_] 16% TASKS
+		[_] 20% TASKS
 			[_] 11% SAVE/OPEN JINN DATA	
 				[_] single objects not implemented in xml
 				[_] export xml
@@ -171,14 +168,14 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] remove all doc html
 				[X] port to tplsav2
 				[_] double click on field to edit its content.
-			[_] 0% REPORTS
+			[_] 66% REPORTS
 				[_] NextGen PDF Reports
-					[_] Structure
-						[_] ui
-						[_] bo
-						[_] so
-						[_] plugins->inputmethods
-						[_] plugins->outputmethods
+					[X] Structure
+						[X] ui
+						[X] bo
+						[X] so
+						[X] plugins->inputmethods
+						[X] plugins->outputmethods
 					[_] Screens
 						[_] Design reports
 							[_] All available fields and related fields
@@ -198,10 +195,6 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 										[_] upload
 										[_] manual html
 										[_] manual tinyhtml
-									[_] choose output method
-										[_] save
-										[_] email
-										[_] print
 								[_] PDML
 									[_] Font upload?
 									[_] choose input method
@@ -210,17 +203,19 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 								[_] OOGEN
 									...
 						[_] Maintain reports
-							[_] list/delete/edit/copy
+							[_] list
+							[_] delete
+							[X] edit
+							[X] copy
 						[_] merge report
 						: cycle if needed
 							[_] select scope
-								[_] all 
+								[X] all 
 								[_] selected 
-								[_] filtered list
-							[_] choose output method
-								[_] screen/print
-								[_] save
-								[_] email
+								[X] filtered list
+							[X] choose output method
+								[X] screen
+								[X] save
 								
 			[_] 0% FILTERS
 				[_] filter delen met andere gebruikers
@@ -357,3 +352,6 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[X] duidelijk bericht als een relatie is opgeslagen
 				[X] event walk trough records
 				[X] create generic function for creating where string and implement is everywhere
+				[X] TinyMCE is klein in formlayout, maar groot in de normale weergave.
+				[X] TinyMCE en andere grote plugins schaalbaar in formlayout?
+				[X] TinyMCE flikkert

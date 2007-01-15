@@ -14,6 +14,7 @@
 	  function japie($object_id,$session_name='',$upgrade_check=true)
 	  {
 		 $this->calling_app = $GLOBALS['egw_info']['flags']['currentapp'];
+		 //echo $this->calling_app;
 		 $this->session_name = ($session_name?$session_name:$this->calling_app);
 
 		 $this->site_object_id=$object_id;

@@ -25,137 +25,53 @@
    */
 
    /* $Id$ */
-   class boreport
+   include_once(PHPGW_INCLUDE_ROOT.'/jinn/inc/class.bojinn.inc.php');
+   class boreport extends bojinn
    {
 	  var $public_functions = Array(
-		 'save_report' 			=> True,
 		 'get_report_list' 		=> True,
 		 'get_single_report' 	=> True,
 		 'update_single_report' => True,
 		 'delete_report'		=>True,
-		);
+	  );
 
-	  var $so;
-	  var $session;
-	  var $sessionmanager;
+	  var $tplsav2;
 
-	  var $site_object; 
-	  var $site; 
-	  var $local_bo;
-	  var $magick;
-
-	  var $current_config;
-	  var $action;
-
-	  var $where_key;
-	  var $where_value;
-
-	  var $plug;
-	  var $plugins;
-	  var $object_events_plugin_manager;
-	  var $object_events_plugins;
-
-	  var $db_ftypes;
-
-	  function boreport()
+	  function boreport($session_name='jinnitself')
 	  {
-		 $this->session 		= &$this->common->session->sessionarray;	//shortcut to session array
-		 $this->sessionmanager	= &$this->common->session;					//shortcut to session manager object
-		 
-		 $this->so = CreateObject('jinn.sojinn');
+		 parent::bojinn($session_name);
+		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
+		 $this->include_report_plugins();
+	  }
 
-		 // get array of site and object
-		 $this->site = $this->so->get_site_values($this->session['site_id']);
+	  function include_report_plugins()
+	  {
+		 //include_once(EGW_SERVER_ROOT.'/jinn/plugins/report_engines/class.registry.php');
+		 //$this->registry = new db_fields_registry();
 
-		 if ($this->session['site_object_id'])
+		 if ($handle = opendir(EGW_SERVER_ROOT.'/jinn/plugins/report_engines/')) 
 		 {
-			$this->site_object = $this->so->get_object_values($this->session['site_object_id']);
+			while (false !== ($file = readdir($handle))) 
+			{ 
+			   if(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
+			   {
+				  include_once(EGW_SERVER_ROOT.'/jinn/plugins/report_engines/'.$file.'/register.php');	
+			   }
+			}
+			closedir($handle); 
 		 }
-		 
-		 $this->plug = CreateObject('jinn.factory_plugins_db_fields'); 
-		 $this->plug->local_bo = $this;
-		 $this->plugins = $this->plug->plugins; //fixme: THIS WILL BREAK WHEN WE GET RID OF THE OLD STYLE PLUGINS
-
-
-		 $this->object_events_plugin_manager = CreateObject('jinn.factory_plugins_object_events'); 
-		 $this->object_events_plugin_manager->local_bo = $this;
-		 $this->object_events_plugins = $this->object_events_plugin_manager->object_events_plugins;
-
-		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
-
-//		 global $local_bo;
-//		 $local_bo=$this;
 	  }
-	  
-	  function read_preferences($key)
+	  function createtypeobject($report_type_name)
 	  {
-		 $GLOBALS['phpgw']->preferences->read_repository();
-
-		 $prefs = array();
-
-		 if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
-		 {
-			$prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'][$key];
-		 }
-		 return $prefs;
+		 include_once(EGW_SERVER_ROOT.'/jinn/plugins/report_engines/__'.$report_type_name.'/class.'.$report_type_name.'.php');	
+		 return new $report_type_name;
 	  }
 
-	  function save_preferences($key,$prefs)
-	  {
-		 $GLOBALS['phpgw']->preferences->read_repository();
 
-		 $GLOBALS['phpgw']->preferences->change('jinn',$key,$prefs);
-		 $GLOBALS['phpgw']->preferences->save_repository(True);
-	  }
 	  /*
-	  This functions get's the values passed to it by the form and depending on tje preference-value saves it to the database or in the
-	  preferences of the user
+	  This function return a list of reports, depending on the $all opties, 
+	  it will return all(0), only the globals(1) or only the reports of the user(2) 
 	  */
-	  function save_report()
-	  {	
-		 if($_GET[preference] ==0)
-		 {
-		 	if($this->so->insert_report($_POST[name],$_POST[obj_id] ,$_POST[text1] ,$_POST[text2] ,$_POST[text3],$_POST[r_html_title],$_POST[g_html]) ==1)
-		 	{
-				echo(lang('Report saved succesfull').'<br><br><input class="egwbutton" type="button" onClick="self.close()" value="'.lang('close').'"/>');
-			 }
-			 else
-			 {
-				echo(lang('Report NOT saved succesfull').'<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
-			 }
-		  }
-		  else
-		  {
-			 $key = 'reports';
-			 $pref_arr2 = $this->read_preferences($key);
-
-			 $pref_arr['report_id'] = 'user_'.(count($pref_arr2)+1);
-			 $pref_arr['report_naam'] = $_POST[name];
-			 $pref_arr['report_object_id'] = $_POST[obj_id];
-			 $pref_arr['report_header'] = $_POST[text1];
-			 $pref_arr['report_body'] = $_POST[text2];
-			 $pref_arr['report_footer'] = $_POST[text3];
-			 if($_POST[g_html] == 'on')
-			 {
-				$pref_arr['report_html']	= 1;
-			 }
-			 else
-			 {
-				$pref_arr['report_html']= 0;
-			 }
-			 $pref_arr['report_html_title']= $_POST[r_html_title];
-			 			 
-				 $pref_arr2[] = $pref_arr;
-			 $this->save_preferences($key, $pref_arr2);
-			 echo('Report saved succesfull<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
-
-		  }
-		 
-	   }
-	   /*
-	   This function return a list of reports, depending on the $all opties, 
-	   it will return all(0), only the globals(1) or only the reports of the user(2) 
-	   */
 	  function get_report_list($id, $all=1)
 	  {
 		 //print_r($id);
@@ -167,7 +83,7 @@
 		 	{
 		 		foreach($report_arr as $report)
 		 		{
-					$output .='<option value=\''.$report[id].'\'>'.$report[name].'</option>';
+					$output .='<option value=\''.$report['id'].'\'>'.$report['name'].'</option>';
 				}
 		 	}
 		 }
@@ -183,95 +99,108 @@
 			{
 			   foreach($pref_arr as $pref)
 			   {
-				  if($pref[report_object_id] == $id)
-				  $output .='<option value=\''.$pref[report_id].'\'>'.$pref[report_naam].'</option>';
+				  if($pref['report_object_id'] == $id)
+				  $output .='<option value=\''.$pref['report_id'].'\'>'.$pref['report_naam'].'</option>';
 				  $i++;
 			   }
 			}
 	  	 }
 		 return $output;
 	  }
-	  /*
-	  This function saves one report, depending on the id to the JiNN-database or the preferences of the user
+
+	  /**
+	  * get_single_report pass through function 
+	  * 
+	  * @param mixed $id 
+	  * @access public
+	  * @return void
 	  */
 	  function get_single_report($id)
 	  {
-		 if(substr($id,0,4) != 'user')
+		 return($this->so->get_single_report($id));
+	  }
+
+	  /**
+	   * save_report 
+	   * 
+	   * @param mixed $report_id if null new report will be inserted else the report will be updated 
+	   * @access public
+	   * @return void
+	   */
+	  function save_report($report_id=null)
+	  {	
+
+		 $post_extra_conf=$this->filter_array_with_prefix($_POST,'PLGXXX',true);
+		 $post_extra_conf=$this->strip_prefix_from_keys($post_extra_conf,'PLGXXX');
+		 if(is_array($post_extra_conf))
 		 {
-			return($this->so->get_single_report($id));
+			$report_type_confdata=serialize($post_extra_conf);
+		 }
+
+		 if(is_null($report_id))
+		 {
+			if($this->so->insert_report($_POST['name'],$_POST['obj_id'] ,$_POST['text1'] ,$_POST['text2'] ,$_POST['text3'],$_POST['report_type_name'],$report_type_confdata) ==1)
+			{
+			   $this->addInfo(lang('Successfully saved new report.'));
+			}
+			else
+			{
+			   $this->addError(lang('Saving new report failed.'));
+			}
 		 }
 		 else
 		 {
-			 $pref_arr = $this->read_preferences('reports');
-			 foreach($pref_arr as $pref)
-			 {
-				if($pref[report_id] == $id)
-				{
-				   $arr[r_id] = $pref[report_id];
-				   $arr[r_name] = $pref[report_naam];
-				   $arr[r_obj_id] = $pref[report_obj_id];
-				   $arr[r_header] = $pref[report_header]; 		 
-				   $arr[r_footer] = $pref[report_footer];
-				   $arr[r_body] =$pref[report_body];
-				   $arr[r_html] = $pref[report_html];
-				   $arr[r_html_title] = $pref[report_html_title];
-				
-				}
-			 }
-
-			 return $arr;
+			if($this->so->update_report($_POST['name'], $_POST['obj_id'], $_POST['text1'], $_POST['text2'], $_POST['text3'],$_POST['report_type_name'],$report_type_confdata, $report_id))
+			{
+			   $this->addInfo(lang('Successfully saved report.'));
+			}
+			else
+			{
+			   $this->addError(lang('Saving report failed.'));
+			}
 		 }
 	  }
 	  
-	  /*
-	  This function updates one report, depending on the id to the JiNN-database or the preferences of the user
-	  */
-  	  function update_single_report()
-	  {
-		 if(substr($_POST['report_id'],0,4) != 'user')
-		 {
-		 	if($this->so->update_report($_POST[name], $_POST[obj_id], $_POST[text1], $_POST[text2], $_POST[text3],$_POST[r_html_title],$_POST[g_html], $_POST['report_id']))
-		 	{
-				echo('Report updated succesfull<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
-		 	}
-		 	else
-		 	{
-				echo('Report NOT updated succesfull<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
-			 }
-		  }
-		  else
-		  {
-			 $pref_arr = $this->read_preferences('reports');
-			 $i=0;
-			 foreach($pref_arr as $pref)
-			 {
-			 	if(trim($pref[report_id]) == trim($_POST['report_id']))
-			 	{
-				   $pref[report_id] = $_POST['report_id'];
-				   $pref[report_name]= $_POST[name];
-				   $pref[report_obj_id] = $_POST[obj_id];
-				   $pref[report_header] = $_POST[text1];
-				   $pref[report_footer] = $_POST[text3];
-				   $pref[report_body] = $_POST[text2];
-				   $pref[report_html] = $_POST[g_html];
-				   $pref[report_html_title] = $_POST[r_html_title];
-				}
-				$pref_arr[$i]= $pref;
-				$i++;
-			 }
-			 $this->save_preferences('reports',$pref_arr);
-			 echo('Report updated succesfull<br><br><input class="egwbutton"  type="button" onClick="self.close()" value="'.lang('close').'"/>');
-		  }
-	  } 
-
 	  /*
 	  This function deletes one report from the JiNN-database
 	  */
 	  function delete_report()
 	  {
-		 $this->so->delete_report($_GET[report_id]);
-		 header('location:'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.dev_edit_record'));
+		 $this->so->delete_report($_GET['report_id']);
+		 header('location:'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.dev_edit_record'));
 	  }
+
+	  function parse_records_through_header_source($records,$report_arr)
+	  {
+		 $header = $report_arr['report_header'];
+		 $header = $this->replace_tiny_php_tags($header);
+		 $header = preg_replace('/%%(.*?)%%/',"<?=\$this->record['$1'];?>",$header);
+		 return $this->tplsav2->fetch_string($header);  			 
+
+	  }
+	  function parse_records_through_body_source($records,$report_arr)
+	  {
+		 foreach($records as $record)
+		 {
+			$input = $report_arr['report_body'];
+			$this->tplsav2->assign('record',$record);
+			$input = $this->replace_tiny_php_tags($input);
+			$input = preg_replace('/%%(.*?)%%/',"<?=\$this->record['$1'];?>",$input);
+			$output .= $this->tplsav2->fetch_string($input);
+		 }
+		 return $output;
+	  }
+
+	  function parse_records_through_footer_source($records,$report_arr)
+	  {
+		 $footer = $report_arr['report_footer'];
+		 $footer = $this->replace_tiny_php_tags($footer);
+		 $footer = preg_replace('/%%(.*?)%%/',"<?=\$this->record['$1'];?>",$footer );
+
+		 return $this->tplsav2->fetch_string($footer);
+	  }
+
+	  
 	 
 	  /*
 	  This function replaces the own php-tags from the template with the normal php-tags and makes it a valid php-file

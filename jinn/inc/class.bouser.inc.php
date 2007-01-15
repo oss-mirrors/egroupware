@@ -285,32 +285,6 @@
 		 $this->sessionmanager->save();
 	  }
 
-	  /**
-	  * get_records 
-	  * 
-	  * @param mixed $table 
-	  * @param mixed $where_key 
-	  * @param mixed $where_value 
-	  * @param mixed $offset 
-	  * @param mixed $range 
-	  * @param mixed $value_reference 
-	  * @param string $order_by 
-	  * @param string $field_list 
-	  * @param string $where_condition 
-	  * @access public
-	  * @return void
-	  */
-	  function get_records($table,$where_key,$where_value,$offset,$range,$value_reference,$order_by='',$field_list='*',$where_condition='')
-	  {
-		 if (!$value_reference)
-		 {
-			$value_reference='num';
-		 }
-
-		 $records = $this->so->get_record_values($this->session['site_id'],$table,$where_key,$where_value,$offset,$range,$value_reference,$order_by,$field_list,$where_condition);
-
-		 return $records;
-	  }
 
 	  /**
 	  * mult_to_fld 

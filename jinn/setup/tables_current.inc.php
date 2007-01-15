@@ -132,8 +132,8 @@
 				'report_header' => array('type' => 'text','nullable' => False),
 				'report_body' => array('type' => 'text','nullable' => False),
 				'report_footer' => array('type' => 'text','nullable' => False),
-				'report_html' => array('type' => 'int','precision' => '1','nullable' => False,'default' => '0'),
-				'report_html_title' => array('type' => 'varchar','precision' => '25','nullable' => False)
+				'report_type_name' => array('type' => 'varchar','precision' => '15','nullable' => False),
+				'report_type_confdata' => array('type' => 'varchar','precision' => '255')
 			),
 			'pk' => array('report_id'),
 			'fk' => array(),

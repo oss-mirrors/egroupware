@@ -2049,4 +2049,108 @@
 
 		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.145';
 	}
+
+
+	$test[] = '0.9.145';
+	function jinn_upgrade0_9_145()
+	{
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.146';
+	}
+
+
+	$test[] = '0.9.146';
+	function jinn_upgrade0_9_146()
+	{
+		$GLOBALS['egw_setup']->oProc->DropColumn('egw_jinn_report',array(
+			'fd' => array(
+				'report_id' => array('type' => 'auto','nullable' => False),
+				'report_naam' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'report_object_id' => array('type' => 'varchar','precision' => '20','nullable' => False,'default' => '0'),
+				'report_header' => array('type' => 'text','nullable' => False),
+				'report_body' => array('type' => 'text','nullable' => False),
+				'report_footer' => array('type' => 'text','nullable' => False),
+				'report_html' => array('type' => 'int','precision' => '1','nullable' => False),
+				'report_html_title' => array('type' => 'varchar','precision' => '25')
+			),
+			'pk' => array('report_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),'reporttype');
+		$GLOBALS['egw_setup']->oProc->DropColumn('egw_jinn_report',array(
+			'fd' => array(
+				'report_id' => array('type' => 'auto','nullable' => False),
+				'report_naam' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'report_object_id' => array('type' => 'varchar','precision' => '20','nullable' => False,'default' => '0'),
+				'report_header' => array('type' => 'text','nullable' => False),
+				'report_body' => array('type' => 'text','nullable' => False),
+				'report_footer' => array('type' => 'text','nullable' => False),
+				'report_html_title' => array('type' => 'varchar','precision' => '25')
+			),
+			'pk' => array('report_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),'report_html');
+		$GLOBALS['egw_setup']->oProc->DropColumn('egw_jinn_report',array(
+			'fd' => array(
+				'report_id' => array('type' => 'auto','nullable' => False),
+				'report_naam' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'report_object_id' => array('type' => 'varchar','precision' => '20','nullable' => False,'default' => '0'),
+				'report_header' => array('type' => 'text','nullable' => False),
+				'report_body' => array('type' => 'text','nullable' => False),
+				'report_footer' => array('type' => 'text','nullable' => False)
+			),
+			'pk' => array('report_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),'report_html_title');
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.147';
+	}
+
+
+	$test[] = '0.9.147';
+	function jinn_upgrade0_9_147()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_report','reporttype',array(
+			'type' => 'varchar',
+			'precision' => '15',
+			'nullable' => False
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.148';
+	}
+
+
+	$test[] = '0.9.148';
+	function jinn_upgrade0_9_148()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_jinn_report','reporttypeconfdata',array(
+			'type' => 'varchar',
+			'precision' => '255'
+		));
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.149';
+	}
+
+
+	$test[] = '0.9.149';
+	function jinn_upgrade0_9_149()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_report','reporttype','reporttypename');
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.150';
+	}
+
+
+	$test[] = '0.9.150';
+	function jinn_upgrade0_9_150()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_report','reporttypename','report_type_name');
+		$GLOBALS['egw_setup']->oProc->RenameColumn('egw_jinn_report','reporttypeconfdata','report_type_confdata');
+
+		return $GLOBALS['setup_info']['jinn']['currentver'] = '0.9.151';
+	}
 ?>

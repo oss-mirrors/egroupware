@@ -2534,26 +2534,18 @@
 
 		 if ($error>0)
 		 {
-			$status[error]=true;
+			$status['error']=true;
 		 }
 
-		 $status[sql]=$SQL;
+		 $status['sql']=$SQL;
 
 		 return $status;
 	  }
-	  function insert_report($name, $object_id, $header, $body, $footer, $html_title, $html)
+	  function insert_report($name , $object_id, $header, $body, $footer, $report_type_name, $report_type_confdata)
 	  {
-		 if($html == 'on')
-		 {
-			$html = 1;
-		 }
-		 else
-		 {
-			$html = 0;
-		 }
-		 $SQLfields = 'report_id , report_naam , report_object_id , report_header , report_body , report_footer,report_html,report_html_title';
-		 $SQLvalues='\'\',\''.$name.'\',\''.$object_id.'\',\''.$header.'\',\''.$body.'\',\''.$footer.'\',\''.$html.'\',\''.$html_title.'\'';
-		 $SQL= 'INSERT INTO egw_jinn_report (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 $SQLfields = 'report_id , report_naam , report_object_id , report_header , report_body , report_footer,report_type_name,report_type_confdata';
+		 $SQLvalues="'','$name','$object_id','$header','$body','$footer','$report_type_name','$report_type_confdata'";
+		 $SQL= "INSERT INTO egw_jinn_report ( $SQLfields ) VALUES ( $SQLvalues )";
 
 		 //FIXME REPLACE WITH EGWDB
 		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
@@ -2566,7 +2558,7 @@
 		 }
 
 	  }
-	  function update_report($name, $object_id, $header, $body, $footer, $html_title, $html, $report_id)
+	  function update_report($name, $object_id, $header, $body, $footer, $report_type_name, $report_type_confdata, $report_id)
 	  {
 		 if($html == 'on')
 		 {
@@ -2576,14 +2568,15 @@
 		 {
 			$html = 0;
 		 }
-		 $SQL= 'UPDATE egw_jinn_report ';
-		 $SQL .= 'SET report_naam = \''.$name;
-		 $SQL .= '\',report_header = \''.$header;
-		 $SQL .=  '\',report_body = \''.$body;
-		 $SQL .=  '\',report_footer = \''.$footer;
-		 $SQL .=  '\',report_html = \''.$html;
-		 $SQL .=  '\',report_html_title = \''.$html_title;
-		 $SQL .=  '\' WHERE report_id ='.$report_id.' LIMIT 1';
+		 $SQL =  'UPDATE egw_jinn_report ';
+		 $SQL .= "SET report_naam = '$name', ";
+		 $SQL .= "report_header = '$header', ";
+		 $SQL .= "report_body = '$body', ";
+		 $SQL .= "report_footer = '$footer', ";
+		 $SQL .= "report_type_name = '$report_type_name', ";
+		 $SQL .= "report_type_confdata = '$report_type_confdata' ";
+		 $SQL .= " WHERE report_id = $report_id LIMIT 1";
+
 		 //FIXME REPLACE WITH EGWDB
 		 if (!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
@@ -2593,7 +2586,6 @@
 		 {
 			return 1;
 		 }
-
 	  }
 
 	  function delete_report($report_id)
@@ -2618,8 +2610,8 @@
 			$i=0;
 			while ($this->phpgw_db->next_record())
 			{
-			   $report_arr[$i][name]=$this->phpgw_db->f('report_naam');
-			   $report_arr[$i][id]= $this->phpgw_db->f('report_id');
+			   $report_arr[$i]['name']=$this->phpgw_db->f('report_naam');
+			   $report_arr[$i]['id']= $this->phpgw_db->f('report_id');
 			   $i++;
 			}
 			return $report_arr;
@@ -2636,15 +2628,9 @@
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 		 while ($this->phpgw_db->next_record())
 		 {
-			$report_arr[r_id]=($this->phpgw_db->f('report_id'));
-			$report_arr[r_name]=($this->phpgw_db->f('report_naam'));
-			$report_arr[r_obj_id]=($this->phpgw_db->f('report_object_id'));
-			$report_arr[r_header]=($this->phpgw_db->f('report_header'));
-			$report_arr[r_footer]=($this->phpgw_db->f('report_footer'));
-			$report_arr[r_body]=($this->phpgw_db->f('report_body'));
-			$report_arr[r_html]=($this->phpgw_db->f('report_html'));
-			$report_arr[r_html_title]=($this->phpgw_db->f('report_html_title'));
+			$report_arr=$this->phpgw_db->row();
 		 }
+		 
 		 return $report_arr;
 	  }
 	

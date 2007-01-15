@@ -56,8 +56,11 @@
 	  function sidebox_menu()
 	  {
 		 $this->sidebox_menu_objectactions();
+		 $this->sidebox_menu_object_dev();
+		 $this->sidebox_menu_site_dev();
 		 $this->sidebox_menu_simplenav();
-		 $this->sidebox_menu_tree();
+		 //		 $this->sidebox_menu_tree();
+		 $this->sidebox_menu_sites_admin();
 		 $this->sidebox_menu_admin();
 	  }
 
@@ -65,7 +68,7 @@
 	  {
 		 if($this->bo->session['site_id'] && $this->bo->session['site_object_id'] != -1 && $this->bo->session['site_object_id'])
 		 {
-			$menu_title = $this->bo->site_object['name'];
+			$menu_title = lang('Actions %1',"<strong>".$this->bo->site_object['name']."</strong>");
 
 			//if list, if more then one record
 			if($this->bo->site_object[max_records]!=1)
@@ -228,16 +231,15 @@
 
 	  function sidebox_menu_admin()
 	  {
-		 // if admin or side-admin show access rights
+		 $menu_title = lang('General Administration');
 		 if (!$GLOBALS['phpgw_info']['user']['apps']['admin'] && $this->bo && count($this->bo->so->get_sites_for_user2($GLOBALS['phpgw_info']['user']['account_id']))>0)
 		 {
-			$menu_title = lang('Administration');
 			$file = Array(
 			   'Access Rights' => array(
 				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiacl.main_screen'),
 				  'text'=>lang('Access Rights'),
 				  'no_lang' => True,
-				  'icon'=>'acl18'
+				  'icon'=>'groupevent'
 			   )
 			);
 			display_sidebox($appname,$menu_title,$file);
@@ -245,7 +247,6 @@
 		 }
 		 elseif($GLOBALS['phpgw_info']['user']['apps']['admin'])
 		 {
-			$menu_title = lang('Administration');
 			$file['Global Configuration'] = array(
 			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
 			   'text'=>lang('Global Configuration'),
@@ -256,24 +257,18 @@
 			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiacl.main_screen'),
 			   'text'=>lang('Access Rights'),
 			   'no_lang' => True,
-			   'icon'=>'acl18'
-			);
-			$file['Load site conf from file'] = array(
-			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'),
-			   'text'=>lang('Load site conf from file'),
-			   'no_lang' => True,
-			   'icon'=>'siteimport18'
+			   'icon'=>'groupevent'
 			);
 
-			if ($this->bo->session['site_id'])
-			{
-			   $file['Save site conf to XML'] = array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$this->bo->site[site_id]),
-				  'text'=>lang('Save site conf to XML'),
-				  'no_lang' => True,
-				  'icon'=>'siteexport18'
-			   );
-			}
+			display_sidebox($appname,$menu_title,$file);
+			$file=array();
+		 }
+	  }
+	  function sidebox_menu_sites_admin()
+	  {
+		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
+		 {
+			$menu_title = lang('Sites Administration');
 
 			$file['Add Site'] = array(
 			   'link' => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_site'),
@@ -287,40 +282,117 @@
 			   'no_lang' => True,
 			   'icon'=>'jinn18'
 			);
+			$file['Load site conf from file'] = array(
+			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'),
+			   'text'=>lang('Load site conf from file'),
+			   'no_lang' => True,
+			   'icon'=>'fileopen'
+			);
 
-			if ($this->bo->session['site_id'])
-			{
-			   $file['Edit this Site'] = array(
-				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
-				  'text'=>lang('Edit this Site'),
-				  'no_lang' => True,
-				  'icon'=>'siteprop18'
-			   );
-			}
+			display_sidebox($appname,$menu_title,$file);
+			$file=array();
+		 }
+	  }
 
+	  function sidebox_menu_object_dev()
+	  {
+		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
+		 {
 			if ($this->bo->session['site_object_id'])
 			{
+			   $menu_title = lang('Design Object %1',"<strong>".$this->bo->site_object['name']."</strong>");
+
+			   $gen_options_link = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_gen_obj_options&object_id='.$this->bo->site_object['object_id']);
+
+			   $gen_options_js="void parent.window.open('$gen_options_link' , 'genobjoptions', 'width=780,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')";
+
+			   $obj_event_plugins_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$this->bo->site_object['object_id']);
+
+			   $obj_event_plugins_js="void parent.window.open('$obj_event_plugins_link' , 'genobjoptions', 'width=980,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')";
+
+			   $relation_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_relation_widgets&object_id='.$this->bo->site_object['object_id']);
+			   $relation_js="void parent.window.open('$relation_link' , 'genobjoptions', 'width=980,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no');";
+
 			   $devlinklist = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display_dev&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']);
 			   $devlinkform = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.dev_edit_record&site_id='.$this->bo->site_object[parent_site_id].'&site_object_id='.$this->bo->session['site_object_id']);
 
-			   $file['Edit Object Form View'] = array(
+			   $file['Design Object Form'] = array(
 				  'link'=>$devlinkform,
 				  'text'=>lang('Edit Object Form View'),
 				  'no_lang' => True,
 				  'icon'=>'formprop18'
 
 			   );
-			   $file['Edit Object List View'] = array(
+			   $file['Design Object ListView'] = array(
 				  'link'=>$devlinklist,
 				  'text'=>lang('Edit Object List View'),
 				  'no_lang' => True,
 				  'icon'=>'listviewprop18'
-
 			   );
+			   $file['Object Settings'] = array(
+				  'link'=>'javascript:'.$gen_options_js,
+				  'text'=>lang('Object Settings'),
+				  'no_lang' => True,
+				  'icon'=>'objectprop18'
+			   );
+			   $file['Object Event Plugins'] = array(
+				  'link'=>'javascript:'.$obj_event_plugins_js,
+				  'text'=>lang('Object Event Plugins'),
+				  'no_lang' => True,
+				  'icon'=>'objectprop18'
+			   );
+			   $file['Relation Editor'] = array(
+				  'link'=>'javascript:'.$relation_js,
+				  'text'=>lang('Relation Editor'),
+				  'no_lang' => True,
+				  'icon'=>'objectprop18'
+			   );
+/*			   $file['List Reports'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.list_reports&site_id='.$this->bo->site_object['parent_site_id'].'&site_object_id='.$this->bo->session['site_object_id']),
+				  'text'=>lang('List Reports'),
+				  'no_lang' => True,
+				  'icon'=>'objectprop18'
+			   );
+*/
+			   display_sidebox($appname,$menu_title,$file);
 			}
 
-			display_sidebox($appname,$menu_title,$file);
-			$file=array();
+		 }
+
+  
+	  }
+
+	  function sidebox_menu_site_dev()
+	  {
+		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
+		 {
+			if ($this->bo->session['site_id'])
+			{
+
+			   $menu_title = lang('Design Site %1',"<strong>".$this->bo->so->get_site_name($this->bo->session['site_id'])."</strong>");
+			   $file['Edit this Site'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_this_jinn_site'),
+				  'text'=>lang('Edit this Site'),
+				  'no_lang' => True,
+				  'icon'=>'siteprop18'
+			   );
+			   $file['Import into this Site'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_into&site_id='.$this->bo->session['site_id']),
+				  'text'=>lang('Import into this Site'),
+				  'no_lang' => True,
+				  'icon'=>'import18.png'
+			   );
+			   $file['Save site conf to XML'] = array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.exportsite.save_site_to_xml&where_key=site_id&where_value='.$this->bo->site[site_id]),
+				  'text'=>lang('Save site conf to XML'),
+				  'no_lang' => True,
+				  'icon'=>'siteexport18'
+			   );
+
+			   display_sidebox($appname,$menu_title,$file);
+			   $file=array();
+			}
+
 		 }
 
 	  }

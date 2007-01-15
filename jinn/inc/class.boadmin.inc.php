@@ -963,33 +963,6 @@
 		 }
 
 		 /**
-		 * http_vars_pairs_plugins: make array with pairs of keys and values from http_post_vars 
-		 *  
-		 * 
-		 * @note try this with filter_array_with_prefix
-		 * @param mixed $HTTP_POST_VARS 
-		 * @access public
-		 * @return void
-		 */
-		 function http_vars_pairs_plugins($HTTP_POST_VARS) 
-		 {
-			reset($HTTP_POST_VARS);	
-
-			while(list($key, $val) = each($HTTP_POST_VARS)) 
-			{
-			   if(substr($key,0,3)=='PLG')
-			   {
-				  $plug_data[substr($key,3)]=array(
-					 'name'=>$val,
-					 'conf'=> false
-				  );
-			   }
-			}
-
-			return $plug_data;
-		 }
-
-		 /**
 		 * upgrade_plugins 
 		 * 
 		 * @param mixed $object_id 

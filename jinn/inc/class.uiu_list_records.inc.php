@@ -59,7 +59,7 @@
 		 $this->bo = CreateObject('jinn.bouser',$session_name);
 		 parent::uijinn();
 
-		 $this->boreport = CreateObject('jinn.boreport');
+		 $this->boreport = CreateObject('jinn.boreport',$session_name);
 
 		 $this->filtermanager = CreateObject('jinn.uiu_filter');
 
@@ -845,22 +845,23 @@
 	  {
 		 $this->tplsav2->set_var('listoptions',$this->boreport->get_report_list($this->bo->site_object['unique_id']));
 
-		 $r_edit_button =  $output .= "<input class='egwbutton'  type='button' value='".lang('Edit')."' onClick=\"if(document.report_actie.report.value.substr(0,4) != 'user'){alert('".lang('You can only edit your own templates')."');}else{parent.window.open('".$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.edit_report_popup&parent_site_id='.$this->bo->site_object['parent_site_id'].'&obj_id='.$this->bo->site_object['unique_id'].'&table_name='.$this->bo->site_object['table_name'].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')}\">";		 
+		 $this->tplsav2->assign('site_id',$this->bo->site_object['parent_site_id']);
+		 $this->tplsav2->assign('table_name',$this->bo->site_object['table_name']);
+		 $this->tplsav2->assign('object_id',$this->bo->site_object['object_id']);
+		 //$this->tplsav2->set_var('r_edit_button',$r_edit_button);
 
-		 $this->tplsav2->set_var('r_edit_button',$r_edit_button);
-
-		 $r_new_from_button = "<input class='egwbutton'  type='button' value='".lang('New from selected')."' onClick=\"parent.window.open('".$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_from_selected&obj_id='.$this->bo->site_object['unique_id'].'&parent_site_id='.$this->bo->site_object['parent_site_id'].'&table_name='.$this->bo->site_object['table_name'].'&report_id=')."'+document.report_actie.report.value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')\">";		 
-
-		 $this->tplsav2->set_var('r_new_from_button',$r_new_from_button);
+//		 $this->tplsav2->set_var('r_new_from_button',$r_new_from_button);
 
 		 $report_url=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.merge_report&obj_id='.$this->bo->site_object['unique_id']) ;
+		 $report_url2=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.merge&obj_id='.$this->bo->site_object['unique_id']) ;
 
 		 $add_report_url = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_user&parent_site_id='.$this->bo->site_object['parent_site_id'].'&table_name='.$this->bo->site_object['table_name'].'&preference=1&obj_id='.$this->bo->site_object['unique_id']);
 		 $this->tplsav2->set_var('lang_merge',lang('Merge'));
 		 $this->tplsav2->set_var('add_report_url',$add_report_url);
 		 $this->tplsav2->set_var('report_url',$report_url);
+		 $this->tplsav2->set_var('report_url2',$report_url2);
 		 //		 $this->tplsav2->set_var('lang_search', lang('Search'));
-		 $this->tplsav2->set_var('lang_new_report',lang('New Report'));
+		 //$this->tplsav2->set_var('lang_new_report',lang('New Report'));
 
 		 $reportblock=$this->tplsav2->fetch('list_rec_reportsblock.tpl.php');
 		 return $reportblock;

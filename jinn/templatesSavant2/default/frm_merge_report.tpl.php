@@ -14,7 +14,7 @@
 </style>
 <div id='options'>
    <form name='sel'>
-	  <input type='hidden' id='temp' name ='temp' value='all'>
+	  <input type='hidden' id='temp' name='temp' value='all'>
 	  <input name='data_source' type='radio' value='filtered' onClick = 'document.forms[0].temp.value=this.value'><?=lang('filterd list');?><br>
 	  <input name='data_source' type='radio' value='all'  onClick = 'document.forms[0].temp.value=this.value' checked='checked'><?=lang('all records');?><br>
 	  <input name='data_source' type='radio' value='selection'onClick = 'document.forms[0].temp.value=this.value'><?=lang('selection');?><br>

@@ -31,33 +31,36 @@
    $this->registry->report_plugins['pdmlreport']['author']		= 'Pim Snel';
    $this->registry->report_plugins['pdmlreport']['description']	= 'This engine uses the pdmlreport language to generate PDF reports';
 
-   $this->registry->report_plugins['pdmlreport']['inputmethods'] = array
-   (
-	  'upload' => array(
-		 'name' => 'upload',
-		 'label' => lang('Directory where fonts are located'),
-		 'type' => 'text',
-	  ),
-	  'textarea' => array(
-		 'name' => 'textarea',
-		 'label' => lang('Directory where fonts are located'),
-		 'type' => 'custom_method',
-		 'custom_method_function' => 'text_input',
-	  ),
-   );
+   $this->registry->report_plugins['pdmlreport']['outputmethods'] = array('save');
    
-   $this->registry->report_plugins['pdmlreport']['outputmethods'] = array('save', 'print','mail');
+   $selarr2=array(
+	  'P'=>lang('portrait'),
+	  'L'=>lang('landscape'),
+   );
+
+   $selarr1=array(
+	  'a3'=>'a3',
+	  'a4'=>'a4',
+	  'a5'=>'a5',
+	  'letter'=>'letter',
+	  'legal'=>'legal'
+   );
 
    $this->registry->report_plugins['pdmlreport']['config'] = array
    (
-	  'fontdir' => array(
-		 'name' => 'fontdir',
-		 'label' => lang('Directory where fonts are located'),
-		 'type' => 'text',
-		 'size' => 100
+	  'orientation' => array(
+		 'name' => 'orientation',
+		 'label' => lang('Orientation'),
+		 'type' => 'select',
+		 'select_arr' => $selarr2
+	  ),
+	  'papersize' => array(
+		 'name' => 'papersize',
+		 'label' => lang('Paper size '),
+		 'type' => 'select',
+		 'select_arr' => $selarr1
 	  ),
    );
-
 
 
 ?>

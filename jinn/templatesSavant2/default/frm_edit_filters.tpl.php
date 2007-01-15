@@ -1,3 +1,4 @@
+<div style="margin:10px 50px 30px 50px;"> 
 <form name="filterform" action="<?=$this->form_action?>" method="post">
    <div style="margin:10px 0px 20px 0px">
 	  <span style="font-weight:bold"><?=lang('Operator to use between comparisons');?></span>
@@ -23,7 +24,7 @@
 	  <tr>
 		 <?php if($element['set']):?>
 		 <td align="center" style="width:10px">
-			<?=$element['element']?>
+			<?=($element['element']+1)?>
 		 </td>
 		 <td align="center" style="width:10px">
 			<input type="checkbox" name="delete_<?=$element['element']?>" value="true" />
@@ -50,17 +51,35 @@
 	  <?php endforeach?>
    </tr>
 </table>
+<style>
+   .el_disabled
+   {
+		 color: #ccc;
+   }
+   .el_disabled input
+   {
+		 color: #ccc;
+   }
+   .el_enabled
+   {
+		 color: #000;
+   }
+   .el_enabled input
+   {
+		 color: #000;
+   }
+</style>
 <table>
    <tr>
 	  <td colspan="3">&nbsp;</td>
    </tr>
    <tr>
-	  <td align="right"><?=lang('Save as');?>:</td>
+	  <td align="right"><?=lang('Save for later use');?><input id="savelater" onchange="checkSaveLater();" <?=($this->filtername&&$this->filtername!='sessionfilter'?'checked="checked"':'')?> type="checkbox" name="saveforlater" /> </td>
 	  <td align="center" style="padding-left:20px;">
-		 <input type="text" name="filtername" value="<?=$this->filtername?>"/>
 	  </td>
-	  <td align="center" style="padding-left:20px;">
-		 <input class="egwbutton"  type="submit" name="submit" value="<?=lang('Store Filter');?>"/>
+	  <td align="center" id="savelaterfield" class="el_enabled" style="padding-left:20px;">
+		 <?=lang('Save as');?>: <input type="text" id="filtername" name="filtername" value="<?=$this->filtername?>"/>
+		 <!--<input class="egwbutton"  type="submit" name="submit" value="<?=lang('Store Filter');?>"/>-->
 	  </td>
    </tr>
    <tr height="50">
@@ -71,13 +90,35 @@
 		 <input type="hidden" name="listurl" value="<?=$this->list_url?>"/>
 		 <input type="hidden" name="deleteurl" value="<?=$this->delete_url?>"/>
 		 <input class="egwbutton"  type="submit" name="submit" value="<?=lang('Delete Filter');?>" onClick="return onDelete();"/>
-		 <input class="egwbutton"  type="submit" name="submit" value="<?=lang('Activate Filters and Return');?>" onClick="document.filterform.action = document.filterform.listurl.value;"/>
+		 <input class="egwbutton"  type="submit" name="submit" value="<?=lang('Save Filter');?>" xxonClick="document.filterform.action = document.filterform.listurl.value;"/>
+		 <input class="egwbutton"  type="submit" name="submit" value="<?=lang('Return to list');?>" onClick="document.filterform.action = document.filterform.listurl.value;"/>
 	  </td>
    </tr>
 </table>
 </form>
 <script language="javascript">
    <!--
+   function checkSaveLater()
+   {
+		 if(document.getElementById('savelater').checked==true)
+		 {
+			   document.getElementById('savelaterfield').className="el_enabled";
+			   document.getElementById('filtername').disabled=false;
+			   if(document.getElementById('filtername').value=='sessionfilter')
+			   {
+					 document.getElementById('filtername').value='';
+			   }
+		 }
+		 else
+		 {
+			   document.getElementById('savelaterfield').className="el_disabled";
+			   document.getElementById('filtername').disabled=true;
+			   document.getElementById('filtername').value='sessionfilter';
+		 }
+   }
+
+   checkSaveLater();
+
    function onDelete()
    {
 		 if(document.filterform.filtername.value == 'sessionfilter')
@@ -100,3 +141,4 @@
    }
    -->	
 </script>
+</div>

@@ -1,7 +1,7 @@
 <?php
    /*
    JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
+   Copyright (C)2002, 2007 Pim Snel <pim@lingewoud.nl>
    Copyright (C)2002, 2003 Rob van Kraanen <rob@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
@@ -33,6 +33,7 @@
     * @version $Id$
     * @copyright Lingewoud B.V.
 	* @author Rob van Kraanen <rob-AT-lingewoud-DOT-nl> 
+	* @author Pim Snel <pim-AT-lingewoud-DOT-nl> 
     * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
     */
    class uireport extends uijinn
@@ -43,17 +44,15 @@
 		 'edit_report_popup' 		=>True,
 		 'delete_report_popup'		=>True,
 		 'merge_report'				=>True,
+		 'merge'				=>True,
 		 'show_merged_report'		=>True,
 		 'save_merged_report'		=>True,
 		 'print_merged_report'		=>True,
 		 'add_report_user'			=>True,
+		 'list_reports'				=>True,
+		 'addedit_report_ng'		=>True,
 		 'add_report_from_selected'	=>True
 	  );
-	  var $bo;
-	  var $ui;
-	  var $record_id_val;
-	  var $report_id;
-	  var $init_options;
 
 	  /**
 	   * uireport: class contructor that set header and inits bo
@@ -61,55 +60,150 @@
 	   * @access public
 	   * @return void
 	   */
-	  function uireport()
+	  function uireport($session_name='jinnitself')
 	  {
-		 $this->bo = CreateObject('jinn.bouser');
+		 $this->bo = CreateObject('jinn.boreport',$session_name);
 		 parent::uijinn();
-		 
-		 //fixme kan via bo
-		 $this->boreport = CreateObject('jinn.boreport');
-
-		 $this->app_title=$dev_title_string;//.lang('Moderator Mode');
-
-		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
-		 $this->report_id ='';
-		 $this->init_options = 'cleanup: "false"';
 	  }
 
-	  /*
-	  Shows the popup to add reports to the JiNN tables
-	  */
-	  function add_report_popup()
+	  function extra_plugin_config($report_type_name,$fld_plug_conf_arr)
 	  {
-		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
-		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 $fields=$this->boreport->so->site_table_metadata($_GET[parent_site_id], $_GET[table_name]);
+		 $plug_reg_conf_arr = $this->bo->registry->report_plugins[$report_type_name]['config'];
+		 $_fld_plug_conf_arr['conf']=$fld_plug_conf_arr;
+
+		 if(is_array($plug_reg_conf_arr))
+		 {
+			$temp ='';
+			$configuration_widget= CreateObject('jinn.plg_conf_widget');
+			foreach($plug_reg_conf_arr as $cval)
+			{
+			   $temp .= $configuration_widget->display_plugin_widget($cval['type'],$this->tplsav2, $cval,$_fld_plug_conf_arr);
+			}
+			return $temp;
+		 }
+	  }
+
+
+	  /**
+	   * create_report_ng: new report editor screen 
+	   * 
+	   * @access public
+	   * @return void
+	   */
+	  function addedit_report_ng($action)
+	  {
+		 if(!is_null($_POST['reportsubmit']))
+		 {
+			$this->bo->save_report($_POST['report_id']);
+		 }
+		 
+		 switch($action)
+		 {
+			case 'newsite':
+			$this->tplsav2->assign('title',lang('JiNN - New Report'));	
+			break;
+			case 'newuser':
+			$this->tplsav2->assign('title',lang('JiNN - New Private Report'));	
+			break;
+			case 'newcopy':
+			$this->tplsav2->assign('title',lang('Design Report - New from Copy'));	
+			$val = $this->bo->get_single_report($_GET['report_id']);
+			$val['report_id'] = 0;
+			$val['report_name'] =$val['report_name'].'_copy';
+			break;
+			case 'edit':
+			$this->tplsav2->assign('title',lang('Design Report - Edit'));	
+			$val = $this->bo->get_single_report($_GET['report_id']);
+			break;
+		 }
+
+		 //if not get of save type first ask to set a report type
+		 if(is_null($_POST['report_type_name']) && empty($val['report_type_name']))
+		 {
+			$this->ask_report_type();
+		 }
+		 else
+		 {
+			$this->design_report_form($val);	
+		 }
+	  }
+
+	  function ask_report_type()
+	  {
+		 $this->header('Design Report - Choose Type');
+		 $this->msg_box();
+
+		 //TODO get available types
+
+		 $this->tplsav2->assign('returnlink',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
+		 $this->tplsav2->display('choosereporttype.tpl.php');
+	  }
+
+	  /**
+	   * design_report_form 
+	   * 
+	   * @param mixed $val 
+	   * @access public
+	   * @return void
+	   */
+	  function design_report_form($val)
+	  {
+		 //make plugin object
+
+		 $report_type_name =($val['report_type_name']?$val['report_type_name']:$_POST['report_type_name']);
+
+		 $report_type_object = $this->bo->createtypeobject($report_type_name);
+		 $report_type_confdata=unserialize($val['report_type_confdata']);
+		 $extra_config = $this->extra_plugin_config($report_type_name,$report_type_confdata);
+		 
+		 $fields=$this->bo->so->site_table_metadata($_GET['parent_site_id'], $_GET['table_name']);
 		 foreach($fields as $field)
 		 {
-			$attrib.= '<option value="'.$field[name].'">'.$field[name].'</option>';
+			$attrib.= '<option value="'.$field['name'].'">'.$field['name'].'</option>';
 		 }	 
-		 if (!is_object($GLOBALS['phpgw']->html))
-		 {
-			$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
-		 }
-		 $text1=$GLOBALS['phpgw']->html->tinymce('text1','','',$this->init_options);
-		 $text2=$GLOBALS['phpgw']->html->tinymce('text2','','',$this->init_options);
-		 $text3=$GLOBALS['phpgw']->html->tinymce('text3','','',$this->init_options);
-		 $GLOBALS['egw']->common->phpgw_header();
-		 $tplsav2->assign('text1', $text1);
-		 $tplsav2->assign('text2', $text2);
-		 $tplsav2->assign('text3', $text3);
-		 $tplsav2->assign('obj_id', $_GET[obj_id]);
-		 $tplsav2->assign('css', $theme_css);
-		 $tplsav2->assign('server_url',$GLOBALS['phpgw_info']['server']['webserver_url']);
-		 $tplsav2->assign('title',lang('JiNN - Add Report'));	
-		 $tplsav2->assign('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boreport.save_report').'&parent_site_id='.$_get['parent_site_id'].'&table_name='.$_get['table_name'].'&preference=0');
-		 $tplsav2->assign('attibutes',$attrib);
 
-		 $tplsav2->display('pop_add_report.tpl.php');
-		 $GLOBALS['egw']->common->phpgw_footer();
+		 // get and render other config options from plugin
+		 
+		 // TODO also allow import content from uploaded text file
+		 
+		 $report_insertfield_js=$report_type_object->insertfield_javascript();
+		 $report_header=$report_type_object->report_header_input($val['report_header']);
+		 $report_body=$report_type_object->report_body_input($val['report_body']);
+		 $report_footer=$report_type_object->report_footer_input($val['report_footer']);
+
+		 $this->tplsav2->assign('extra_config', $extra_config);
+		 $this->tplsav2->assign('report_insertfield_js', $report_insertfield_js);
+		 $this->tplsav2->assign('report_header', $report_header);
+		 $this->tplsav2->assign('report_body', $report_body);
+		 $this->tplsav2->assign('report_footer', $report_footer);
+
+		 /*****/
+
+		 $this->tplsav2->assign('obj_id', $_GET['obj_id']);
+
+		 $this->tplsav2->assign('attibutes',$attrib);
+		 $this->tplsav2->assign('val',$val);
+		 $this->tplsav2->assign('report_type_name',$report_type_name);
+		 $this->tplsav2->assign('returnlink',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
+
+		 /* Render */
+
+		 $this->header($this->tplsav2->title);
+		 $this->msg_box();
+
+		 $this->tplsav2->display('pop_add_report.tpl.php');
+	  }
+
+	  /**
+	   * add_report_popup 
+	   * 
+	   * @access public
+	   * @return void
+	   */
+	  function add_report_popup()
+	  {
+		 $this->addedit_report_ng('newsite');
+		 exit;
 	  }
 	  
 	  /**
@@ -122,39 +216,8 @@
 	   */
 	  function add_report_user()
 	  {
-		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
-
-		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-
-		 $fields=$this->boreport->so->site_table_metadata($_GET[parent_site_id], $_GET[table_name]);
-		 foreach($fields as $field)
-		 {
-			$attrib.= '<option value="'.$field[name].'">'.$field[name].'</option>';
-		 }	 
-
-		 if (!is_object($GLOBALS['phpgw']->html))
-		 {
-			$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
-		 }
-		 $text1=$GLOBALS['phpgw']->html->tinymce('text1','','',$this->init_options);
-		 $text2=$GLOBALS['phpgw']->html->tinymce('text2','','',$this->init_options);
-		 $text3=$GLOBALS['phpgw']->html->tinymce('text3','','',$this->init_options);
-		 $GLOBALS['egw']->common->phpgw_header();
-		 $tplsav2->assign('text1', $text1);
-		 $tplsav2->assign('text2', $text2);
-		 $tplsav2->assign('text3', $text3);
-		 $tplsav2->assign('obj_id', $_GET[obj_id]);
-		 $tplsav2->assign('css', $theme_css);
-		 $tplsav2->assign('server_url',$GLOBALS['phpgw_info']['server']['webserver_url']);
-		 $tplsav2->assign('title',lang('JiNN - Add Report'));	
-		 $tplsav2->assign('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boreport.save_report').'&parent_site_id='.$_get['parent_site_id'].'&table_name='.$_get['table_name'].'&preference=1');
-		 $tplsav2->assign('attibutes',$attrib);
-
-		 $tplsav2->display('pop_add_report.tpl.php');
-		 $GLOBALS['egw']->common->phpgw_footer();
-
+		 $this->addedit_report_ng('newuser');
+		 exit;
 	  }
  
 	  /**
@@ -167,35 +230,8 @@
 	   */
 	  function add_report_from_selected()
 	  {
-		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
-		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 $fields=$this->bo->so->site_table_metadata($_GET[parent_site_id], $_GET[table_name]);
-		 foreach($fields as $field)
-		 {
-			$attrib.= '<option value="'.$field[name].'">'.$field[name].'</option>';
-		 }	 
-		 if (!is_object($GLOBALS['phpgw']->html))
-		 {
-			$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
-		 }
-		 $val = $this->boreport->get_single_report($_GET[report_id]);
-		 $text1=$GLOBALS['phpgw']->html->tinymce('text1',trim($val[r_header]),'',$this->init_options);
-		 $text2=$GLOBALS['phpgw']->html->tinymce('text2',trim($val[r_body]),'',$this->init_options);
-		 $text3=$GLOBALS['phpgw']->html->tinymce('text3',trim($val[r_footer]),'',$this->init_options);
-		 $GLOBALS['egw']->common->phpgw_header();	 
-		 $tplsav2->assign('text1', $text1);
-		 $tplsav2->assign('text2', $text2);
-		 $tplsav2->assign('text3', $text3);
-		 $tplsav2->assign('obj_id', $_GET[obj_id]);
-		 $tplsav2->assign('title',lang('JiNN - Add Report from Selected'));	
-		  $tplsav2->assign('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boreport.save_report').'&parent_site_id='.$_get['parent_site_id'].'&table_name='.$_get['table_name'].'&preference=1');
-		  $tplsav2->assign('attibutes',$attrib);
-		  $val[r_id] = 0;
-		  $val[r_name] =$val[r_name].'_copy';
-		 $tplsav2->assign('val',$val);
-		 $tplsav2->display('pop_add_report.tpl.php');
+		 $this->addedit_report_ng('newcopy');
+		 exit;
 	  }
 
 	  /**
@@ -208,36 +244,34 @@
 	  */
 	  function edit_report_popup()
 	  {
-		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
-		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
-		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-		 $fields=$this->bo->so->site_table_metadata($_GET[parent_site_id], $_GET[table_name]);
-		 foreach($fields as $field)
-		 {
-			$attrib.= '<option value="'.$field[name].'">'.$field[name].'</option>';
-		 }	 
-		 if (!is_object($GLOBALS['phpgw']->html))
-		 {
-			$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
-		 }
-		 $val = $this->boreport->get_single_report($_GET[report_id]);
-		 $text1=$GLOBALS['phpgw']->html->tinymce('text1',trim($val[r_header]),'',$this->init_options);
-		 $text2=$GLOBALS['phpgw']->html->tinymce('text2',trim($val[r_body]),'',$this->init_options);
-		 $text3=$GLOBALS['phpgw']->html->tinymce('text3',trim($val[r_footer]),'',$this->init_options);
-		 $GLOBALS['egw']->common->phpgw_header();	 
-		 $tplsav2->assign('text1', $text1);
-		 $tplsav2->assign('text2', $text2);
-		 $tplsav2->assign('text3', $text3);
-		 $tplsav2->assign('obj_id', $_GET[obj_id]);
-		 $tplsav2->assign('title',lang('JiNN - Add Report'));	
-		 $tplsav2->assign('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boreport.update_single_report').'&parent_site_id='.$_get['parent_site_id'].'&table_name='.$_get['table_name']);
-		 $tplsav2->assign('attibutes',$attrib);
-		 $tplsav2->assign('val',$val);
-		 $tplsav2->display('pop_add_report.tpl.php');
+		 $this->addedit_report_ng('edit');
+		 exit;
 	  }
-	  /*
-	  */
+
+	  function merge()
+	  {
+		 if($_GET['dest']=='save')
+		 {
+			$this->save_merged_report();
+			exit;
+		 }
+		 elseif($_GET['dest']=='screen')
+		 {
+		 	$this->show_merged_report();
+			exit;
+		 }
+		 $this->tplsav2->assign('sel_val',$_GET['selvalues']);
+		 $this->tplsav2->assign('obj_id', $_GET['obj_id']);
+		 $this->tplsav2->assign('report_id', $_GET['report_id']);
+		 $this->tplsav2->assign('sel_values',$_GET['selvalues']);
+
+		 $this->tplsav2->assign('returnlink',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
+
+		 $this->header('Reports - Merge');
+		 $this->msg_box();
+
+		 $this->tplsav2->display('frm_merge_report_ng.tpl.php');
+	  }
 	 
 	  /**
 	   * merge_report 
@@ -249,17 +283,17 @@
 	   */
 	  function merge_report()
 	  {
-		 $tplsav2 = CreateObject('phpgwapi.tplsavant2');
 		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 		 $GLOBALS['egw']->common->phpgw_header();
-		 $this->tplsav2->assign('sel_val',$_GET[selvalues]);
-		 $this->tplsav2->assign('obj_id', $_GET[obj_id]);
-		 $this->tplsav2->assign('report_id', $_GET[report_id]);
-		 $this->tplsav2->assign('sel_values',$_GET[selvalues]);
+		 $this->tplsav2->assign('sel_val',$_GET['selvalues']);
+		 $this->tplsav2->assign('obj_id', $_GET['obj_id']);
+		 $this->tplsav2->assign('report_id', $_GET['report_id']);
+		 $this->tplsav2->assign('sel_values',$_GET['selvalues']);
 		 $this->tplsav2->display('frm_merge_report.tpl.php');
 	  }
+
 	  
 	  /**
 	  * show_merged_report 
@@ -275,14 +309,22 @@
 	  */
 	  function show_merged_report( $bodytags = '')
 	  {
-		 if($_GET[selection] == 'all' or $_GET[selection] == '')
+		 if(!$_GET['selection'])
+		 {
+			return;
+		 }
+		 if($_GET['selection'] == 'firstrec')
+		 {
+			$records=$this->bo->get_records($this->bo->site_object['table_name'],'','',0,1,'name',$orderby,'*',$where_condition);
+		 }
+		 elseif($_GET['selection'] == 'all')
 		 {
 			$records=$this->bo->get_records($this->bo->site_object['table_name'],'','',0,0,'name',$orderby,'*',$where_condition);
 		 }
 		 
-		 if($_GET[selection] == 'selection')
+		 if($_GET['selection'] == 'selection')
 		 {
-			$sel_arr=split(',',$_GET[sel_values]);	
+			$sel_arr=split(',',$_GET['sel_values']);	
 			foreach($sel_arr as $sel)
 			{
 			   if($sel)
@@ -299,13 +341,13 @@
 			   $where_condition = implode($arr2,' OR ');
 			}
 			  
-			$records=$this->bo->get_records($this->bo->site_object[table_name],'','',0,0,'name',$orderby,'*',$where_condition);
+			$records=$this->bo->get_records($this->bo->site_object['table_name'],'','',0,0,'name',$orderby,'*',$where_condition);
 		 }
 		 
-		 if($_GET[selection] == 'filtered')
+		 if($_GET['selection'] == 'filtered')
 		 {
 		 	$this->filtermanager = CreateObject('jinn.uiu_filter');
-		 	$this->filtermanager->init_bo(&$this->bo);
+		 	//$this->filtermanager->init_bo(&$this->bo);
 		 	$filter_where = $this->filtermanager->get_filter_where();
 			if(trim($where_condition) !='')
 			{
@@ -315,52 +357,22 @@
 			{
 			   $where_condition = $filter_where;
 			}
-			$records=$this->bo->get_records($this->bo->site_object[table_name],'','',0,0,'name',$orderby,'*',$where_condition);
+
+			$records=$this->bo->get_records($this->bo->site_object['table_name'],'','',0,0,'name',$orderby,'*',$where_condition);
 		 }
 		 
-		 $report_arr = $this->boreport->get_single_report($_GET[report_id]);
-		 if($report_arr[r_html]==1)
-		 {
-			$output='
-			<html>
-			   <head>
+		 $report_arr = $this->bo->get_single_report($_GET['report_id']);
+		 $report_type_object = $this->bo->createtypeobject($report_arr['report_type_name']);
+		 $report_type_confdata=unserialize($report_arr['report_type_confdata']);
 
-				  <title>'.$report_arr[r_html_title].'</title>
-			   </head>
-			   <body '.$bodytags.'>
-				  ';
-			   }
-			   else
-			   {
-				  $output ='';
-			   }
-			   $header=$report_arr[r_header];
-			   $header = $this->boreport->replace_tiny_php_tags($header);
-			   $header = preg_replace('/%%(.*?)%%/',"<?=\$this->record['$1'];?>",$header.'<br>');
-			   $output .=  $this->tplsav2->fetch_string($header);  			 
-			   
-			   foreach($records as $record)
-			   {
-				  $input = $report_arr[r_body].'<br>';
-				  $this->tplsav2->assign('record',$record);
-				  $input = $this->boreport->replace_tiny_php_tags($input);
-				  $input = preg_replace('/%%(.*?)%%/',"<?=\$this->record['$1'];?>",$input);
-				  $output .= $this->tplsav2->fetch_string($input);
+		 $output= $report_type_object->pre_show_merged_report($records,$report_arr);
+		 $output.= $this->bo->parse_records_through_header_source($records,$report_arr);
+		 $output.= $this->bo->parse_records_through_body_source($records,$report_arr);
+		 $output.= $this->bo->parse_records_through_footer_source($records,$report_arr);
+		 
+		 $report_type_object->show_merged_report($records,$report_arr,$output);
 
-			   }
-			   $footer = $report_arr[r_footer];
-			   $footer = $this->boreport->replace_tiny_php_tags($footer);
-			   $footer = preg_replace('/%%(.*?)%%/',"<?=\$this->record['$1'];?>",$footer );
-
-			   $output .=  $this->tplsav2->fetch_string($footer);
-			   if($report_arr[r_html]==1)
-			   {
-				  $output.='
-			   </body>
-			</html>
-			';
-		 }
-		 echo $output;
+		 //echo $output;
 	  }
 	  
 	  /**
@@ -373,15 +385,14 @@
 	   */
 	  function save_merged_report()
 	  {
-		 $id = $_GET[report_id];
-		 $link = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uireport.show_merged_report').'&report_id='.$_GET[report_id];
-		 header ("Content-Type: html; name=\"".$link."\"");
-		 // ask for download
-		 header ("Content-Disposition: attachment; filename=\"report.html");
-		 header("Expires: 0");
-		 // the next headers are for IE and SSL
-		 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		 header("Pragma: public");
+		 $id = $_GET['report_id'];
+		 $link = $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.show_merged_report').'&report_id='.$_GET['report_id'];
+
+		 $report_arr = $this->bo->get_single_report($_GET['report_id']);
+		 $report_type_object = $this->bo->createtypeobject($report_arr['report_type_name']);
+
+		 $report_type_object->send_save_headers($report_arr);
+
 		 $this->show_merged_report();
 	  }
 	

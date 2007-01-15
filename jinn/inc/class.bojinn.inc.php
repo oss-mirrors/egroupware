@@ -609,6 +609,60 @@
 		 }
 	  }
 
+	  /**
+	  * http_vars_pairs_plugins: make array with pairs of keys and values from http_post_vars 
+	  * 
+	  * @note try this with filter_array_with_prefix
+	  * @param array $HTTP_POST_VARS the $_POST array
+	  * @access public
+	  * @return void
+	  */
+	  function http_vars_pairs_plugins($HTTP_POST_VARS) 
+	  {
+		 reset($HTTP_POST_VARS);	
+
+		 while(list($key, $val) = each($HTTP_POST_VARS)) 
+		 {
+			if(substr($key,0,3)=='PLG')
+			{
+			   $plug_data[substr($key,3)]=array(
+				  'name'=>$val,
+				  'conf'=> false
+			   );
+			}
+		 }
+
+		 return $plug_data;
+	  }
+
+
+	  /**
+	  * get_records 
+	  * 
+	  * @param mixed $table 
+	  * @param mixed $where_key 
+	  * @param mixed $where_value 
+	  * @param mixed $offset 
+	  * @param mixed $range 
+	  * @param mixed $value_reference 
+	  * @param string $order_by 
+	  * @param string $field_list 
+	  * @param string $where_condition 
+	  * @access public
+	  * @return void
+	  */
+	  function get_records($table,$where_key,$where_value,$offset,$range,$value_reference,$order_by='',$field_list='*',$where_condition='')
+	  {
+		 if (!$value_reference)
+		 {
+			$value_reference='num';
+		 }
+
+		 $records = $this->so->get_record_values($this->session['site_id'],$table,$where_key,$where_value,$offset,$range,$value_reference,$order_by,$field_list,$where_condition);
+
+		 return $records;
+	  }
+
 
 
    }
