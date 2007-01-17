@@ -223,6 +223,7 @@ function TTSCONV_perform_conversion ($_data)
 		$_fields = array(
 			 'tr_summary'        => substr ($ticketlist->f('ticket_subject'),0,80)
 			,'tr_status'         => $StatesResolutions[$ticketlist->f('ticket_state')][0]
+			,'tr_created'        => mktime (1, 0, 1, 1, 1, 1970)
 			,'tr_description'    => $ticketlist->f('ticket_details')
 			,'tr_private'        => 0  // Default to not private (not used in TTS)
 			,'tr_budget'         => (ticket_billable_hours*ticket_billable_rate)
