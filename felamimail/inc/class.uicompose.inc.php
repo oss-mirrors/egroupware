@@ -313,8 +313,6 @@
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			
-			$GLOBALS['egw']->html->init_tinymce();
-			
 			$GLOBALS['egw']->common->egw_header();
 		}
 		
