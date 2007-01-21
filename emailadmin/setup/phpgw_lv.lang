@@ -1,7 +1,6 @@
 add profile	emailadmin	lv	Pievienot profilu
 admin dn	emailadmin	lv	administratora dn
 admin password	emailadmin	lv	administratora parole
-admin passwort	emailadmin	lv	administratora parole
 admin username	emailadmin	lv	administratora lietotājvārds
 advanced options	emailadmin	lv	uzlabotās iespējas
 alternate email address	emailadmin	lv	alternatīvas e-pasta adreses

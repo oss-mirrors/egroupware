@@ -1,7 +1,6 @@
 add profile	emailadmin	ca	Afegir perfil
 admin dn	emailadmin	ca	dn del administrador
 admin password	emailadmin	ca	contrasenya del administrador
-admin passwort	emailadmin	ca	contrasenya del administrador
 admin username	emailadmin	ca	nom d'usuari del administrador
 advanced options	emailadmin	ca	opcions avançades
 alternate email address	emailadmin	ca	adreça de correu alternativa

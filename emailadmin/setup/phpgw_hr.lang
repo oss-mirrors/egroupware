@@ -1,7 +1,6 @@
 add profile	emailadmin	hr	Add Profile
 admin dn	emailadmin	hr	admin dn
 admin password	emailadmin	hr	admin password
-admin passwort	emailadmin	hr	admin passwort
 admin username	emailadmin	hr	admin username
 advanced options	emailadmin	hr	advanced options
 alternate email address	emailadmin	hr	alternate email address

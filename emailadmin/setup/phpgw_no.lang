@@ -1,7 +1,6 @@
 add profile	emailadmin	no	Legg til profil
 admin dn	emailadmin	no	Admin dn
 admin password	emailadmin	no	Admin passord
-admin passwort	emailadmin	no	Admin passord
 admin username	emailadmin	no	Admin brukernavn
 advanced options	emailadmin	no	Avanserte valg
 alternate email address	emailadmin	no	Alternativ e-mailadresse

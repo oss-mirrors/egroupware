@@ -1,4 +1,5 @@
 account '%1' not found !!!	emailadmin	pt-br	Conta '%1' não encontrada !!!
+add new email address:	emailadmin	pt-br	Adicionar novo e-mail:
 add profile	emailadmin	pt-br	Adicionar Perfil
 admin dn	emailadmin	pt-br	dn do administrador
 admin password	emailadmin	pt-br	senha do administrador
@@ -59,6 +60,7 @@ leave empty for no quota	emailadmin	pt-br	deixe em branco para nenhuma quota
 mail settings	admin	pt-br	Configurações de E-Mail
 name of organisation	emailadmin	pt-br	Nome da organização
 no alternate email address	emailadmin	pt-br	sem conta de e-mail alternativa
+no encryption	emailadmin	pt-br	sem criptografia
 no forwarding email address	emailadmin	pt-br	sem conta de e-mail para encaminhar
 no message returned.	emailadmin	pt-br	Nenhuma mensagem retornada.
 no supported imap authentication method could be found.	emailadmin	pt-br	Nenhum método de autenticação IMAP suportado pôde ser encontrado.
@@ -103,6 +105,7 @@ unexpected response from server to digest-md5 response.	emailadmin	pt-br	Respost
 unexpected response from server to login command.	emailadmin	pt-br	Resposta inesperada do servidor para o comando LOGIN.
 unknown imap response from the server. server responded: %s	emailadmin	pt-br	Resposta desconhecida do servidor IMAP. Resposta do servidor: %s
 unsupported action '%1' !!!	emailadmin	pt-br	Ação não suportada: '%1' !!!
+update current email address:	emailadmin	pt-br	Atualizar e-mail atual:
 use ldap defaults	emailadmin	pt-br	usar padrões LDAP
 use smtp auth	emailadmin	pt-br	usar SMTP Autenticado
 use tls authentication	emailadmin	pt-br	Usar autenticação TLS

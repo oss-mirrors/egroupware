@@ -1,4 +1,5 @@
 account '%1' not found !!!	emailadmin	es-es	¡No se encontró la cuenta '%1'!
+add new email address:	emailadmin	es-es	Añadir nueva dirección de correo
 add profile	emailadmin	es-es	Añadir perfil
 admin dn	emailadmin	es-es	dn del administrador
 admin password	emailadmin	es-es	contraseña del administrador
@@ -59,6 +60,7 @@ leave empty for no quota	emailadmin	es-es	Dejar en blanco para no poner cuota
 mail settings	admin	es-es	Configuración del correo.
 name of organisation	emailadmin	es-es	Nombre de la organización
 no alternate email address	emailadmin	es-es	Sin dirección de correo alternativa
+no encryption	emailadmin	es-es	Sin cifrar
 no forwarding email address	emailadmin	es-es	Sin dirección de correo para reenviar
 no message returned.	emailadmin	es-es	No se devolvió ningún mensaje.
 no supported imap authentication method could be found.	emailadmin	es-es	No se pudo encontrar ningún método soportado de identificación IMAP.
@@ -103,6 +105,7 @@ unexpected response from server to digest-md5 response.	emailadmin	es-es	Respues
 unexpected response from server to login command.	emailadmin	es-es	Respuesta inesperada del servidor al comando LOGIN.
 unknown imap response from the server. server responded: %s	emailadmin	es-es	Respuesta IMAP desconocida del servidor. El servidor respondió: %s
 unsupported action '%1' !!!	emailadmin	es-es	¡La acción '%1' no está soportada!
+update current email address:	emailadmin	es-es	Actualizar la dirección de correo actual:
 use ldap defaults	emailadmin	es-es	usar las opciones predeterminadas para LDAP
 use smtp auth	emailadmin	es-es	Usar identificación SMTP
 use tls authentication	emailadmin	es-es	Usar identificación TLS

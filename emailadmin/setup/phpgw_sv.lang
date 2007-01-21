@@ -1,7 +1,6 @@
 add profile	emailadmin	sv	Skapa profil
 admin dn	emailadmin	sv	Admin dn
 admin password	emailadmin	sv	Admin lösenord
-admin passwort	emailadmin	sv	Admin lösenord
 admin username	emailadmin	sv	Admin användare
 advanced options	emailadmin	sv	Avanserade alternativ
 alternate email address	emailadmin	sv	Alternerande e-post adress

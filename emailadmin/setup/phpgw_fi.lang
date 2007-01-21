@@ -1,10 +1,13 @@
+add new email address:	emailadmin	fi	Lisää uusi sähköpostiosoite
 add profile	emailadmin	fi	Lisää Profiili
 admin dn	emailadmin	fi	admin dn
 admin password	emailadmin	fi	admin salasana
-admin passwort	emailadmin	fi	admin salasana
 admin username	emailadmin	fi	admin käyttäjätunnus
 advanced options	emailadmin	fi	lisäasetukset
 alternate email address	emailadmin	fi	vaihtoehtoinen sähköpostiosoite
+any application	emailadmin	fi	Mikä vain sovellus
+any group	emailadmin	fi	Mikä vain ryhmä
+bad login name or password.	emailadmin	fi	Väärä käyttäjätunnus tai salasana
 cyrus imap server	emailadmin	fi	Cyrus IMAP -palvelin
 cyrus imap server administration	emailadmin	fi	Cyrus IMAP -palvelimen hallinta
 default	emailadmin	fi	oletus
@@ -14,15 +17,22 @@ domainname	emailadmin	fi	verkkotunnus
 edit email settings	emailadmin	fi	muokkaa email -asetuksia
 email account active	emailadmin	fi	email -tunnus käytössä
 email address	emailadmin	fi	email -osoite
+email settings	common	fi	Sähköpostin asetukset
 enable cyrus imap server administration	emailadmin	fi	ota Cyrus IMAP -palvelimen hallinta käyttöön
 enable sieve	emailadmin	fi	ota Sieve käyttöön
+encryption settings	emailadmin	fi	Encryptaus asetukset
 enter your default mail domain (from: user@domain)	emailadmin	fi	Anna oletusverkkotunnus (lähettäjä: käyttäjä@verkkotunnus)
+error connecting to imap server. %s : %s.	emailadmin	fi	Virhe yhdistettäessä IMAP palvelimeen. %s : %s.
+error connecting to imap server: [%s] %s.	emailadmin	fi	Virhe yhdistettäessä IMAP palvelimeen. [%s] %s.
 forward also to	emailadmin	fi	lähetä kopio myös osoitteeseen
 forward email's to	emailadmin	fi	lähetä edelleen osoitteeseen
 forward only	emailadmin	fi	lähetä edelleen vain
+global options	emailadmin	fi	Yleiset asetukset
 imap admin password	admin	fi	IMAP admin salasana
 imap admin user	admin	fi	IMAP admin käyttäjätunnus
 imap c-client version < 2001	emailadmin	fi	IMAP C-Client versio < 2001
+imap server closed the connection.	emailadmin	fi	IMAP palvelin katkaisi yhteyden.
+imap server closed the connection. server responded: %s	emailadmin	fi	IMAP palvelin katkaisi yhteyden. Palvelin vastaa:%s
 imap server hostname or ip address	emailadmin	fi	IMAP -palvelimen nimi tai IP-osoite
 imap server logintyp	emailadmin	fi	IMAP -palvelimen käyttäjätunnistus
 imap server port	emailadmin	fi	IMAP -palvelimen portti
@@ -39,6 +49,7 @@ leave empty for no quota	emailadmin	fi	tyhjä, jos ei rajoiteta
 mail settings	admin	fi	Sähköpostin asetukset
 name of organisation	emailadmin	fi	Yrityksen nimi
 no alternate email address	emailadmin	fi	ei vahtoehtoista osoitetta
+no encryption	emailadmin	fi	Ei enkryptausta
 no forwarding email address	emailadmin	fi	ei edelleenlähetyksen osoitetta
 pop3 server hostname or ip address	emailadmin	fi	POP3 -palvelimen nimi tai IP-osoite
 pop3 server port	emailadmin	fi	POP3 -palvelimen portti
@@ -51,19 +62,26 @@ quota settings	emailadmin	fi	tallennuskiintiö
 remove	emailadmin	fi	poista
 select type of imap/pop3 server	emailadmin	fi	Valitse IMAP/POP3 -palvelimen tyyppi
 select type of smtp server	emailadmin	fi	Valitse SMTP -palvelimen tyyppi
+server settings	emailadmin	fi	Palvelimen asetukset
 sieve server hostname or ip address	emailadmin	fi	Sieve -palvelimen nimi tai IP-osoite
 sieve server port	emailadmin	fi	Sieve -palvelimen portti
 sieve settings	emailadmin	fi	Sieven asetukset
+smtp authentication	emailadmin	fi	SMTP tunnistus
+smtp options	emailadmin	fi	SMTP asetukset
 smtp server name	emailadmin	fi	SMTP -palvelimen nimi
+smtp settings	emailadmin	fi	SMTP asetukset
 smtp-server hostname or ip address	emailadmin	fi	SMTP -palvelimen nimi tai IP-osoite
 smtp-server port	emailadmin	fi	SMTP -palvelimen portti
 standard	emailadmin	fi	Vakio
 standard imap server	emailadmin	fi	Vakio IMAP -palvelin
 standard pop3 server	emailadmin	fi	Vakio POP3 -palvelin
 standard smtp-server	emailadmin	fi	Vakio SMTP -palvelin
+this php has no imap support compiled in!!	emailadmin	fi	Tämä PHP ei sisällä IMAP tukea!!
+update current email address:	emailadmin	fi	Päivitä nykyinen sähköpostiosoite:
 use ldap defaults	emailadmin	fi	käytä LDAP -oletuksia
 use smtp auth	emailadmin	fi	Käytä SMTP -käyttäjäntunnistusta
 use tls authentication	emailadmin	fi	Käytä TLS -käyttäjäntunnistusta
 use tls encryption	emailadmin	fi	Käytä TLS -salausta
+username (standard)	emailadmin	fi	käyttäjätunus (standardi)
 users can define their own emailaccounts	emailadmin	fi	Käyttäjät voivat määritellä omat postilaatikkonsa
 virtual mail manager	emailadmin	fi	Virtual MAIL ManaGeR
