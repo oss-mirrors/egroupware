@@ -1,10 +1,14 @@
+after successful installation of all instances, you have to copy %1 to %2!	gallery	es-es	Después de instalar correctamente todas las instancias, tiene que copiar %1 a %2
 album frame (%1samples%2)	gallery	es-es	Marco cel álbum (%1Ejemplos%2)
+all filenames are relative to %1.	gallery	es-es	Todos los nombres de ficheros son relativos a %1
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	es-es	Todos los demás usuarios de eGroupWare se crearán con la integración de G2, incluyendo los derechos de administrador.
 an error occurred during user creation in g2.	gallery	es-es	Ha ocurrido un error durante la creación del usuario en G2
 an error occurred while trying to initialize g2.	gallery	es-es	Ha ocurido un error al intentar inicializar G2
 can be used to limit the block to a certain album.	gallery	es-es	Se puede usar para limitar el bloque a un cierto álbum.
 complete gallery	gallery	es-es	Galería completa
 default item to show in the gallery.	gallery	es-es	Elemento predeterminado a mostrar en la galería.
 extra information to show	gallery	es-es	Información extra a mostrar
+for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	es-es	Para múltiples instancias de eGroupWare, tiene que eliminar %1, para poder instalar la siguiente instancia.
 full size	gallery	es-es	Tamaño completo
 gallery	common	es-es	Galería
 gallery menu	gallery	es-es	Menú de Galería
@@ -18,12 +22,16 @@ imageblock of the gallery	gallery	es-es	Bloque de imagen de la Galería
 item id (number)	gallery	es-es	ID del elemento (número)
 one or more blocks to show	gallery	es-es	Uno o más bloques a mostrar
 pagename of an other page to link to	gallery	es-es	Nombre de la página u otra página a la que vincular
+please note:	gallery	es-es	Por favor, tenga en cuenta:
 set block title to	gallery	es-es	Establecer el título del bloque a
 set gallery title as page-title?	gallery	es-es	¿Establecer el título como título de la página?
 should contain a "gallery" block in contentarea "center".	gallery	es-es	Debe contener un bloque 'gallery' en el área de contenidos 'center'.
 size (maximum number of pixel of the longest side)	gallery	es-es	Tamaño (número máximo de píxel del lado más largo)
 specific item (requires itemid!)	gallery	es-es	Elemento específico (requiere itemid)
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	es-es	La cuenta de administrador tiene que ser una cuenta existente de eGroupWare, escrita exactamente igual.
 type of the embeded gallery	gallery	es-es	Tipo de galería incrustada
+use %1 as g2 data directory.	gallery	es-es	Usar %1 como directorio de datos para G2.
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	es-es	Usar la misma configuración de la base de datos de eGroupWare (mire el fichero %1) y tener los prefijos de columna y tablas según la sugerencia.
 use this module to display the embeded gallery	gallery	es-es	Use este módulo para mostrar la galería incrustada
 view count	gallery	es-es	Ver cuenta
 you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	es-es	Puede obtener el ID del parámetro 'g2_itemId' en la URL, cuando pulse en el elemento.

@@ -4,6 +4,7 @@ basic	headlines	fi	Perus
 choose layout	headlines	fi	Valitse ulkoasu
 color	headlines	fi	Väri
 create new headline	headlines	fi	Luo uusi uutisotsikko
+display	headlines	fi	Näytä
 edit headline sites	headlines	fi	Muokkaa uutisotsikkojen sivustoja
 grab new news sites	common	fi	Hae uudet uutispalvelut
 headline preferences	common	fi	Uutisotsikkojen asetukset
@@ -21,6 +22,7 @@ news file	headlines	fi	Uutistiedosto
 news headlines	common	fi	Uutisotsikot
 news type	headlines	fi	Uutisten tyyppi
 no headlines found	headlines	fi	Otsikkoa ei löytynyt
+other preferences	preferences	fi	Muut asetukset
 reload news sites	headlines	fi	Päivitä uutisten sivustoa
 reset	headlines	fi	Nollaa
 sample	headlines	fi	Malli

@@ -1,31 +1,33 @@
-add answer to poll	polls	fi	Uusi vastaus kyselyyn
+actions	polls	fi	Toimenpiteet
+add answer to poll	polls	fi	Lis‰‰ uusi vastaus ‰‰nestykseen
 add answers	polls	fi	Lis‰‰ vastauksia
-add new poll question	polls	fi	Uusi kyselyn kysymys
+add new poll question	polls	fi	Lis‰‰ uusi kysymys ‰‰nestykseen
 add questions	polls	fi	Lis‰‰ kysymyksi‰
-allow users to vote more then once	polls	fi	saa vastata useita kertoja
+allow users to vote more then once	polls	fi	Salli k‰ytt‰jien vastata useasti ‰‰nestykseen
 answer	polls	fi	Vastaus
-answer has been added to poll	polls	fi	Vastaus lis‰tty kyselyyn
-answer has been updated	polls	fi	Vastaus p‰ivitetty
-answers	polls	fi	vastaukset
-are you sure want to delete this answer ?	polls	fi	Haluatko poistaa vastauksen ?
-are you sure want to delete this question ?	polls	fi	Haluatko poistaa kysymyksen ?
-edit answer	polls	fi	Muokka vastausta
-edit poll question	polls	fi	Muokkaa kysely‰
-enter poll question	polls	fi	Anna kysely
-new poll has been added.  you should now add some answers for this poll	polls	fi	Uusi kysely lis‰tty. Lis‰‰ nyt vastauksia kyselyyn
-poll question	polls	fi	Kyselyn kysymys
-poll settings	common	fi	Kyselyn asetukset
-polls	common	fi	Kyselyt
-question has been updated	polls	fi	Kysymys p‰ivitetty
-select current poll	polls	fi	Valitse kysely
+answer has been added to poll	polls	fi	Vastaus on lis‰tty ‰‰nestykseen
+answer has been updated	polls	fi	Vastaus on p‰ivitetty
+answers	polls	fi	Vastaukset
+are you sure want to delete this answer ?	polls	fi	Haluatko varmasti poistaa t‰m‰n vastauksen ?
+are you sure want to delete this question ?	polls	fi	Haluatko varmasti poistaa t‰m‰n kysymyksen ?
+current poll	polls	fi	Nykyinen ‰‰nestys
+edit answer	polls	fi	Muokkaa vastausta
+edit poll question	polls	fi	Muokkaa kysymyst‰
+enter poll question	polls	fi	Syˆt‰ kysymys
+new poll has been added.  you should now add some answers for this poll	polls	fi	Uusi ‰‰nestys on lis‰tty. Lis‰‰ seuraavaksi muutama vastausvaihtoehto ‰‰nestykseen.
+poll question	polls	fi	ƒ‰nestyksen kysymys
+poll settings	common	fi	ƒ‰nestyksen asetukset
+polls	common	fi	ƒ‰nestykset
+question has been updated	polls	fi	Kysymys on p‰ivitetty
+select current poll	polls	fi	Valitse nykyinen ‰‰nestys
 settings	polls	fi	Asetukset
 settings updated	polls	fi	Asetukset p‰ivitetty
 show answers	polls	fi	N‰yt‰ vastaukset
 show questions	common	fi	N‰yt‰ kysymykset
 total votes	polls	fi	Yhteens‰
-view poll	polls	fi	N‰yt‰ kysely
+view poll	polls	fi	N‰yt‰ ‰‰nestykset
 view results	polls	fi	N‰yt‰ tulokset
-vote	polls	fi	ƒ‰nest‰
+vote	polls	fi	ƒ‰ni
 voting booth admin	admin	fi	ƒ‰nestyskoppi
-voting booth administration	polls	fi	ƒ‰nestyskopin yll‰pito
-which poll	polls	fi	Mik‰ kysely
+voting booth administration	polls	fi	P‰‰k‰ytt‰j‰n ‰‰nestyskoppi
+which poll	polls	fi	Mik‰ ‰‰nestys

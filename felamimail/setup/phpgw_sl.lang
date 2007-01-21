@@ -74,6 +74,7 @@ date(newest first)	felamimail	sl	Datum (najprej novejši)
 date(oldest first)	felamimail	sl	Datum (najprej starejši)
 days	felamimail	sl	Dni
 deactivate script	felamimail	sl	Skript za deaktiviranje
+default signature	felamimail	sl	Privzeti podpis
 default sorting order	felamimail	sl	Privzet način razvrščanja
 delete all	felamimail	sl	Briši vse
 delete folder	felamimail	sl	Briši mapo
@@ -91,10 +92,13 @@ display messages in multiple windows	felamimail	sl	Prikaži sporočila v več ok
 display of html emails	felamimail	sl	Prikazovanje HTML sporočil
 display only when no plain text is available	felamimail	sl	Prikaži le, ko ni na voljo navadnega besedila
 display preferences	felamimail	sl	Prikaži nastavitve
+displaying html messages is disabled	felamimail	sl	Prikazovanje sporočil HTML je onemogočeno
 do it!	felamimail	sl	Izvedi!
 do not use sent	felamimail	sl	Ne uporabljaj mape Poslano (Sent)
 do not use trash	felamimail	sl	Ne uporabljaj mape Koš (Trash)
+do not validate certificate	felamimail	sl	Ne preverjaj certifikata
 do you really want to delete the '%1' folder?	felamimail	sl	Ali res želite izbrisati mapo '%1'?
+do you really want to delete the selected signatures?	felamimail	sl	Res želite izbrisati izbrane podpise?
 does not contain	felamimail	sl	Ne vsebuje
 does not match	felamimail	sl	Se ne ujema
 does not match regexp	felamimail	sl	Se ne ujema z regularnim izrazom
@@ -196,6 +200,7 @@ imap server username	felamimail	sl	Uporabniško ime strežnika IMAP
 imaps authentication	felamimail	sl	Avtentikacija IMAPS
 imaps encryption only	felamimail	sl	Le IMAPS šifriranje
 in	felamimail	sl	V
+inbox	felamimail	sl	Prejeto
 incoming mail server(imap)	felamimail	sl	Strežnik za prihajajočo pošto (IMAP)
 index order	felamimail	sl	Vrstni red kazala
 info	felamimail	sl	Podatki
@@ -249,6 +254,7 @@ new filter	felamimail	sl	Nov filter
 next	felamimail	sl	Naslednji
 next message	felamimail	sl	Naslednje sporočilo
 no active imap server found!!	felamimail	sl	Ni aktivnega strežnika IMAP!
+no encryption	felamimail	sl	Brez šifriranja
 no filter	felamimail	sl	Brez filtra
 no folders found	felamimail	sl	Ne najdem map
 no folders were found to subscribe to!	felamimail	sl	Ni map za naročilo!
@@ -257,6 +263,7 @@ no highlighting is defined	felamimail	sl	Poudarjanje ni definirano
 no message returned.	felamimail	sl	Ni vrnjenega sporočila.
 no messages found...	felamimail	sl	Nobeno sporočilo ni najdeno
 no messages were selected.	felamimail	sl	Nobeno sporočilo ni izbrano
+no plain text part found	felamimail	sl	Ni najdenega čistega besedila
 no previous message	felamimail	sl	Ni predhodnjega sporočila
 no supported imap authentication method could be found.	felamimail	sl	Ni podprte metode avtentikacije IMAP.
 no valid emailprofile selected!!	felamimail	sl	Ni veljavnega E-poštnega profila!

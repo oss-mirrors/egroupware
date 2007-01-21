@@ -74,6 +74,7 @@ date(newest first)	felamimail	es-es	Fecha (la más reciente primero)
 date(oldest first)	felamimail	es-es	Fecha (la más antigua primero)
 days	felamimail	es-es	días
 deactivate script	felamimail	es-es	desactivar script
+default signature	felamimail	es-es	Firma predeterminada
 default sorting order	felamimail	es-es	Modo de ordenar predeterminado
 delete all	felamimail	es-es	Borrar todos
 delete folder	felamimail	es-es	Borrar carpeta
@@ -91,10 +92,13 @@ display messages in multiple windows	felamimail	es-es	mostrar los mensajes en mú
 display of html emails	felamimail	es-es	Mostrar los mensajes HTML
 display only when no plain text is available	felamimail	es-es	Mostrar sólo cuando no hay texto simple disponible
 display preferences	felamimail	es-es	Preferencias de visualización
+displaying html messages is disabled	felamimail	es-es	Mostrar los mensajes en HTML está desactivado
 do it!	felamimail	es-es	¡Hacerlo!
 do not use sent	felamimail	es-es	No usar Enviados
 do not use trash	felamimail	es-es	No usar Papelera
+do not validate certificate	felamimail	es-es	No validar el certificado
 do you really want to delete the '%1' folder?	felamimail	es-es	¿Realmente quiere borrar la carpeta '%1'?
+do you really want to delete the selected signatures?	felamimail	es-es	¿Realmente desea borrar las firmas seleccionadas?
 does not contain	felamimail	es-es	No contiene
 does not match	felamimail	es-es	No coincide con
 does not match regexp	felamimail	es-es	No coincide con la expresión
@@ -196,6 +200,7 @@ imap server username	felamimail	es-es	usuario del servidor IMAP
 imaps authentication	felamimail	es-es	Identificación IMAPS
 imaps encryption only	felamimail	es-es	Cifrado IMAPS solamente
 in	felamimail	es-es	en
+inbox	felamimail	es-es	Bandeja de entrada
 incoming mail server(imap)	felamimail	es-es	servidor de correo entrante (IMAP)
 index order	felamimail	es-es	Orden del índice
 info	felamimail	es-es	Información
@@ -249,6 +254,7 @@ new filter	felamimail	es-es	Nuevo filtro
 next	felamimail	es-es	Siguiente
 next message	felamimail	es-es	Mensaje siguiente
 no active imap server found!!	felamimail	es-es	¡No se encontró ningún servidor IMAP activo!
+no encryption	felamimail	es-es	Sin cifrar
 no filter	felamimail	es-es	Sin filtro
 no folders found	felamimail	es-es	No se encontraron carpetas
 no folders were found to subscribe to!	felamimail	es-es	No se encontraron carpetas a las que suscribirse
@@ -257,6 +263,7 @@ no highlighting is defined	felamimail	es-es	No se definió un resaltado
 no message returned.	felamimail	es-es	No se devolvió ningún mensaje.
 no messages found...	felamimail	es-es	no se encontraron mensajes...
 no messages were selected.	felamimail	es-es	No se seleccionaron mensajes
+no plain text part found	felamimail	es-es	No se encontró ninguna parte con texto sencillo
 no previous message	felamimail	es-es	No hay mensaje anterior
 no supported imap authentication method could be found.	felamimail	es-es	No se pudo encontrar ningún método de identificación IMAP
 no valid emailprofile selected!!	felamimail	es-es	No se ha seleccionado un perfil de correo válido

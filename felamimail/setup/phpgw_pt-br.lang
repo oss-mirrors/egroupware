@@ -74,6 +74,7 @@ date(newest first)	felamimail	pt-br	Data (mais novas primeiro)
 date(oldest first)	felamimail	pt-br	Data (mais antigas primeiro)
 days	felamimail	pt-br	dias
 deactivate script	felamimail	pt-br	desativar script
+default signature	felamimail	pt-br	assinatura padrão
 default sorting order	felamimail	pt-br	Ordem padrão de classificação
 delete all	felamimail	pt-br	Remover todas
 delete folder	felamimail	pt-br	Remover pasta
@@ -91,10 +92,13 @@ display messages in multiple windows	felamimail	pt-br	Exibir mensagens em múltip
 display of html emails	felamimail	pt-br	Exibir emails em HTML
 display only when no plain text is available	felamimail	pt-br	Exibir somente quando não possuir versão em texto plano disponível
 display preferences	felamimail	pt-br	Preferências de Exibição
+displaying html messages is disabled	felamimail	pt-br	a exibição de mensagens HTML está desativada
 do it!	felamimail	pt-br	faça!
 do not use sent	felamimail	pt-br	Não usar Enviadas
 do not use trash	felamimail	pt-br	Não usar Lixeira
+do not validate certificate	felamimail	pt-br	não valide certificados
 do you really want to delete the '%1' folder?	felamimail	pt-br	Você realmente deseja apagar a pasta '%1'?
+do you really want to delete the selected signatures?	felamimail	pt-br	Você realmente deseja remover as assinaturas selecionadas ?
 does not contain	felamimail	pt-br	Não contém
 does not match	felamimail	pt-br	Não coincide
 does not match regexp	felamimail	pt-br	Não coincide com a expressão usada
@@ -196,6 +200,7 @@ imap server username	felamimail	pt-br	nome do usuário do servidor IMAP
 imaps authentication	felamimail	pt-br	Autenticação IMAPS
 imaps encryption only	felamimail	pt-br	Somente encriptação IMAPS
 in	felamimail	pt-br	em
+inbox	felamimail	pt-br	Caixa de Entrada
 incoming mail server(imap)	felamimail	pt-br	servidor IMAP de entrada
 index order	felamimail	pt-br	Índices de classificação
 info	felamimail	pt-br	Informação
@@ -249,6 +254,7 @@ new filter	felamimail	pt-br	Novo Filtro
 next	felamimail	pt-br	Próximo
 next message	felamimail	pt-br	próxima mensagem
 no active imap server found!!	felamimail	pt-br	Nenhum servidor IMAP ativo encontrado!!
+no encryption	felamimail	pt-br	sem criptografia
 no filter	felamimail	pt-br	Sem filtro
 no folders found	felamimail	pt-br	Nenhuma pasta encontrada
 no folders were found to subscribe to!	felamimail	pt-br	Nenhuma pasta encontrada para inscrição
@@ -257,6 +263,7 @@ no highlighting is defined	felamimail	pt-br	Nenhum  destaque foi definido
 no message returned.	felamimail	pt-br	Nenhuma mensagem retornada.
 no messages found...	felamimail	pt-br	Nenhuma mensagem foi encontrada...
 no messages were selected.	felamimail	pt-br	Nenhuma mensagem foi selecionada.
+no plain text part found	felamimail	pt-br	Nehuma parte em texto puro encontrada
 no previous message	felamimail	pt-br	Nenhuma mensagem anterior
 no supported imap authentication method could be found.	felamimail	pt-br	Nenhum método de autenticação suportado pelo servidor IMAP foi encontrado.
 no valid emailprofile selected!!	felamimail	pt-br	Nenhum perfil de e-mail válido selecionado!!!

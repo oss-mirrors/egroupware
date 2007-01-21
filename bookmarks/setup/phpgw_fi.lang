@@ -10,6 +10,7 @@ book marks	common	fi	Suosikit
 bookmark changed sucessfully	bookmarks	fi	Suosikki muutettu.
 bookmark created successfully.	bookmarks	fi	Suosikki lis‰tty.
 bookmark deleted successfully	bookmarks	fi	Suosikki poistettu.
+bookmark deleted successfully.	bookmarks	fi	Suosikki poistettu.
 bookmark not editable	bookmarks	fi	Suosikkia ei voi muokata
 bookmark not readable	bookmarks	fi	Suosikkia ei voi n‰ytt‰‰
 bookmarks	common	fi	Suosikit
@@ -31,11 +32,11 @@ fewer	bookmarks	fi	V‰hemm‰n
 filter by	bookmarks	fi	Rajaa joukkoa
 found a link you might like	bookmarks	fi	Sinua saattaisi kiinnostaa t‰m‰
 from	bookmarks	fi	Mist‰
-from category %1	bookmarks	fi	luokasta %1
+from category %1	bookmarks	fi	Kategoriasta %1
+global categories	bookmarks	fi	Yleiset kategoriat
 highest	bookmarks	fi	Korkein
 i thought you would be interested in the following link(s):	bookmarks	fi	Ajattelin, ett‰ saattaisit olla kiinnostunut seuraavista linkeist‰:
 import bookmarks	common	fi	Tuo suosikkeja
-keywords	bookmarks	fi	Avainsanat
 like	bookmarks	fi	kuin
 list view	bookmarks	fi	Luettelo
 lowest	bookmarks	fi	Matalin
@@ -48,8 +49,8 @@ name	bookmarks	fi	Nimi
 name is required	bookmarks	fi	Nimi on annettava
 netscape bookmark file	bookmarks	fi	Netscapen suosikit-tiedosto
 netscape bookmark filename is required!	bookmarks	fi	Netscapen suosikit-tiedoston nimi on annettava!
-never	bookmarks	fi	Ei koskaan
 new	bookmark	fi	Uusi
+new bookmark	bookmarks	fi	uusi suosikki
 or	bookmarks	fi	tai
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	fi	T‰yt‰ <B>Vastaanottaja</B>, <B>Aihe</B> ja <B>Viesti</B>!
 please select the categories to export	bookmarks	fi	Valitse viet‰v‰t luokat
@@ -57,11 +58,10 @@ query condition	bookmarks	fi	Hakuehto
 rating	bookmarks	fi	Luokitus
 search for:	bookmarks	fi	Etsi:
 select the format you would like to export to	bookmarks	fi	Valitse muoto, johon vied‰‰n
-send	bookmarks	fi	L‰het‰
 send bookmark	bookmarks	fi	L‰het‰ suosikki
+site configuration	bookmarks	fi	Sivun m‰‰ritykset
 sub category	bookmarks	fi	Alaluokka
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	fi	Vastaanottajan osoite %1 ei kelpaa. Osoitteen on oltava muotoa <strong>kayttaja@verkkotunnus</strong> ja verkkotunnuksen on oltava olemassa!
-to e-mail address	bookmarks	fi	S‰hkˆpostiosoitteisiin
 to e-mail addresses	bookmarks	fi	Osoitteiseen
 to which category should the imported folder hierarchy be attached	bookmarks	fi	Mihin luokkaan tuotu kansiohierarkia lis‰t‰‰n
 total visits	bookmarks	fi	vierailukertoja

@@ -1,10 +1,14 @@
+after successful installation of all instances, you have to copy %1 to %2!	gallery	pt-br	Após a instalação de todas as instâncias com sucesso, você deve copiar %1 para %2 !
 album frame (%1samples%2)	gallery	pt-br	Frame do álbum (%1Exemplos%2)
+all filenames are relative to %1.	gallery	pt-br	Todos os nomes de arquivos são relativos a %1.
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	pt-br	Todos os outros usuários do eGroupWare serão criados pela integração da G2, incluindo os direitos administrativos.
 an error occurred during user creation in g2.	gallery	pt-br	Um erro ocorreu durante a criação do usuário em G2.
 an error occurred while trying to initialize g2.	gallery	pt-br	Um erro ocorreu na tentativa de inicializar G2.
 can be used to limit the block to a certain album.	gallery	pt-br	Pode ser usado para limitar o bloco para um álbum específico.
 complete gallery	gallery	pt-br	Galeria Completa
 default item to show in the gallery.	gallery	pt-br	Item padrão a ser exibido na Galeria.
 extra information to show	gallery	pt-br	Informação extra a ser exibida
+for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	pt-br	Para múltiplas instâncias do eGroupWare, você deve remover %1, para ser capaz de instalar a próxima instância.
 full size	gallery	pt-br	Tamanho completo
 gallery	common	pt-br	Galeria
 gallery menu	gallery	pt-br	Menu da Galeria
@@ -18,12 +22,16 @@ imageblock of the gallery	gallery	pt-br	Bloco de imagens da Galeria
 item id (number)	gallery	pt-br	ID do item (número)
 one or more blocks to show	gallery	pt-br	Um ou mais blocos a serem exibidos
 pagename of an other page to link to	gallery	pt-br	Nome de uma outra página a ser linkada
+please note:	gallery	pt-br	Por favor note:
 set block title to	gallery	pt-br	Definir título do bloco como
 set gallery title as page-title?	gallery	pt-br	Definir título da Galeria como título da página?
 should contain a "gallery" block in contentarea "center".	gallery	pt-br	O conteúdo da área "central" deverá conter um bloco "galeria".
 size (maximum number of pixel of the longest side)	gallery	pt-br	Tamanho (número máximo de pixels do lado maior)
 specific item (requires itemid!)	gallery	pt-br	item específico (requer ID do item!)
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	pt-br	A conta do administrador deve ser uma conta existente no eGroupWare com a mesma grafia.
 type of the embeded gallery	gallery	pt-br	Tipo da Galeria
+use %1 as g2 data directory.	gallery	pt-br	Usar %1 como diretório de dados da G2.
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	pt-br	Usar as mesmas configurações de base de dados da sua instalação do eGroupWare (veja seu arquivo %1) e deixar os prefixos de tabelas e colunas como sugerido.
 use this module to display the embeded gallery	gallery	pt-br	Use este módulo para exibir a Galeria
 view count	gallery	pt-br	Contador de visualização
 you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	pt-br	Você pode obter o ID do parâmetro "g2_itemId" da URL, quando você clica no item.

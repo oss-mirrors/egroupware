@@ -10,6 +10,8 @@ admin options	common	es-es	Opciones de administración
 alert for critical prio setting	tts	es-es	Está estableciendo la prioridad a Crítica. Asegúrese de saber lo que esto significa para el destinatario de la incidencia, y ¡no olvide llamarle inmediatamente!
 alert for emergency prio setting	tts	es-es	Está estableciendo la prioridad a Emergencia. Asegúrese de saber lo que esto significa para el destinatario de la incidencia, y ¡no olvide llamarle inmediatamente!
 alert for high prio setting	tts	es-es	¡Por favor, considere llamar al destinatario de esta incidencia!
+all categories used in tts are global and will remain unchaned in tracker	tts	es-es	Todas las categorías utilizadas en TTS son globales y permanecerán intactas en la nueva aplicación de Seguimiento
+all tickets are already converted to tracker	tts	es-es	Todos los tickets ya están convertidos en la aplicación de Seguimiento
 assign tickets	tts	es-es	Asignar
 assign to	tts	es-es	Asignar a
 assigned from	tts	es-es	Asignado desde
@@ -30,6 +32,10 @@ closed	tts	es-es	Cerrada
 completed	tts	es-es	COMPLETADA
 configure the states	common	es-es	Configurar los estados
 configure the transitions	common	es-es	Configurar las transiciones
+convert all closed tickets	tts	es-es	Convertir todas las incidencias cerradas
+convert all open tickets	tts	es-es	Convertir todas las incidencias abiertas
+convert tickets to tracker	tts	es-es	Convertir las incidencias a la aplicación de Seguimiento
+converted count	tts	es-es	Número convertido
 create new state	tts	es-es	Crear un nuevo estado
 create new ticket	tts	es-es	Crear una incidencia nueva
 create new transition	tts	es-es	Crear nueva transición
@@ -111,8 +117,10 @@ resolved	tts	es-es	RESUELTA
 returns a struct of a tickets history	tts	es-es	Devuelve una estructura del historial de la incidencia
 returns a struct of values of a single ticket	tts	es-es	Devuelve una estructura de valores de una sola incidencia
 returns the additional notes attached to a ticket	tts	es-es	Devuelve las notas adicionales adjuntas a una incidencia
+select which categories should be used in tracker for the tts categories	tts	es-es	Seleccionar qué categorías deben usarse en Seguimiento para las categorías de TTS
 selected	tts	es-es	selected
 show new/updated tickets on main screen	tts	es-es	mostrar incidencias nuevas o actualizadas en la pantalla principal
+show tickets converted to tracker in overviews	tts	es-es	Las descripciones contienen incidencias que ya han sido convertidas en Seguimiento
 small view	tts	es-es	vista reducida
 source state	tts	es-es	Estado de origen
 state	tts	es-es	Estado
@@ -143,10 +151,13 @@ the validation of the ticket was unsuccessfull. the ticket requires more work.	t
 this state means an open ticket	tts	es-es	En este estado, la incidencia está abierta
 ticket	tts	es-es	Incidencia
 ticket #	tts	es-es	Incidencia nº
+ticket count	tts	es-es	Número de incidencias
 ticket has been updated	tts	es-es	La incidencia ha sido actualizada
+ticket is in tracker	tts	es-es	Esta incidencia ya está convertida en Seguimiento
 ticket is not accessable	tts	es-es	La incidencia no está accesible
 ticket is not accessible	tts	es-es	Esta incidencia no está accesible
 tickets found %1	tts	es-es	Incidencias encontradas: %1
+tickets have been converted	tts	es-es	incidencias han sido convertidas
 tickets open %1	tts	es-es	Incidencias abiertas: %1
 tickets total %1	tts	es-es	Total de incidencias: %1
 to go back to the tts index, click <a href= %1 >here</a>	tts	es-es	Para volver al índice, pulsar <a href="%1">aquí</a>
