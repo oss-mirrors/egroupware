@@ -78,10 +78,13 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td>
 			&nbsp;
 		</td>
-		<td align="left" style="font-size:11px;">
+		<td align="left" style="font-size:11px; width:190px;">
 			<span id="messageCounter">{message}</span>
 		</td>
-		<td id="quotaDisplay" align="right" style="font-size:11px; width:250px;">
+		<td align="center" style="font-size:11px; color:red; width:auto;">
+			<span id="vacationWarning">{vacation_warning}</span>
+		</td>
+		<td id="quotaDisplay" align="right" style="font-size:11px; width:190px;">
 			{quota_display}
 		</td>
 	</tr>
@@ -103,7 +106,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		
 		<!-- ToDo: ResizeVerticalRule -->		
 		
-		<TD valign="top" colspan="2">
+		<TD valign="top" colspan="3">
 
 			<!-- Start Header MessageList -->
 

@@ -319,7 +319,9 @@
 
 			$preferences		=& $bopreferences->getPreferences();
 			$urlMailbox		=  urlencode($this->mailbox);
-			
+
+			$imapServer =& $preferences->getIncomingServer(0);
+
 			$maxMessages		=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			
@@ -340,6 +342,22 @@
 			$this->t->set_var('oldMailbox',$urlMailbox);
 			$this->t->set_var('image_path',EGW_IMAGES);
 			#printf ("this->uifelamimail->viewMainScreen() Line 272: %s<br>",date("H:i:s",mktime()));
+
+			// display a warning if vacation notice is active
+			if(is_a($imapServer,'defaultimap') && $imapServer->enableSieve) {
+				$this->bosieve		=& CreateObject('felamimail.bosieve',$imapServer);
+				$this->bosieve->retrieveRules($this->bosieve->scriptName);
+				$vacation = $this->bosieve->getVacation($this->bosieve->scriptName);
+			}
+			if(is_array($vacation) && $vacation['status'] == 'on')
+			{
+				$this->t->set_var('vacation_warning',
+					$GLOBALS['egw']->html->image('phpgwapi','dialog_warning',false,'style="vertical-align: middle; width: 16px;"').lang('Vacation notice is active'));
+			}
+			else
+			{
+				$this->t->set_var('vacation_warning','&nbsp;');
+			}
 
 			// ui for the quotas
 			if($this->connectionStatus !== false) {
@@ -622,8 +640,6 @@
 				}
 				$this->t->parse('status_row','status_row_tpl',True);
 				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
-				
-				$imapServer		=& $preferences->getIncomingServer(0);
 			
 				$folderObjects = $this->bofelamimail->getFolderObjects(true, false);
 				//print __LINE__ . ': ' . (microtime(true) - $this->timeCounter) . '<br>';
