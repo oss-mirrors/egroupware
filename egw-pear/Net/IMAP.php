@@ -51,7 +51,7 @@ class Net_IMAP extends Net_IMAPProtocol {
 
 
 
-     /**
+    /**
      * Attempt to connect to the IMAP server located at $host $port
      * @param string $host The IMAP server
      * @param string $port The IMAP port
@@ -72,7 +72,7 @@ class Net_IMAP extends Net_IMAPProtocol {
             $res = $this->cmdCapability();
 
             // check if we can enable TLS via STARTTLS
-            if($this->hasCapability('STARTTLS') === true && $useTLS === true && function_exists('stream_socket_enable_crypto') === true) {
+            if ($this->hasCapability('STARTTLS') === true && $useTLS === true && function_exists('stream_socket_enable_crypto') === true) {
                 if (PEAR::isError($res = $this->cmdStartTLS())) {
                     return $res;
                 }
@@ -387,14 +387,14 @@ class Net_IMAP extends Net_IMAPProtocol {
                 $a['INTERNALDATE']=$ret["PARSED"][$i]['EXT']['INTERNALDATE'];
                 $a['SIZE']=$ret["PARSED"][$i]['EXT']['RFC822.SIZE'];
                 if(isset($ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS (CONTENT-TYPE)]']['CONTENT'])) {
-                  if(preg_match('/^content-type: (.*);/iU', $ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS (CONTENT-TYPE)]']['CONTENT'], $matches)) {
-                    $a['MIMETYPE']=strtolower($matches[1]);
-                  }
-                } elseif(isset($ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS ("CONTENT-TYPE")]']['CONTENT'])) {
-                  // some versions of cyrus send "CONTENT-TYPE" and CONTENT-TYPE only
-                  if(preg_match('/^content-type: (.*);/iU', $ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS ("CONTENT-TYPE")]']['CONTENT'], $matches)) {
-                    $a['MIMETYPE']=strtolower($matches[1]);
-                  }
+                    if(preg_match('/^content-type: (.*);/iU', $ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS (CONTENT-TYPE)]']['CONTENT'], $matches)) {
+                      $a['MIMETYPE']=strtolower($matches[1]);
+                    }
+                } elseif (isset($ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS ("CONTENT-TYPE")]']['CONTENT'])) {
+                    // some versions of cyrus send "CONTENT-TYPE" and CONTENT-TYPE only
+                    if (preg_match('/^content-type: (.*);/iU', $ret["PARSED"][$i]['EXT']['BODY[HEADER.FIELDS ("CONTENT-TYPE")]']['CONTENT'], $matches)) {
+                        $a['MIMETYPE']=strtolower($matches[1]);
+                    }
                 }
                 $env[]=$a;
                 $a=null;
@@ -1319,6 +1319,9 @@ class Net_IMAP extends Net_IMAPProtocol {
     {
     // TODO verificar que el mailbox se encuentra vacio y, sino borrar los mensajes antes~!!!!!!
         $ret=$this->cmdDelete($mailbox);
+        if (PEAR::isError($ret)) {
+            return $ret;
+        }
         if(strtoupper($ret["RESPONSE"]["CODE"]) != "OK"){
             return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
         }
@@ -1567,9 +1570,7 @@ class Net_IMAP extends Net_IMAPProtocol {
         
         $flaglist = '';
         if (is_array($flags)) {
-            foreach ($flags as $flag) {
-                $flaglist .= $flag . ' ';
-            }
+            $flaglist = implode(' ', $flags);
         } else {
             $flaglist = $flags;
         }
@@ -1920,26 +1921,30 @@ class Net_IMAP extends Net_IMAPProtocol {
     }
 
     /*
-    * search function. Sends the SEARCH command
-    *
-    *
-    * @return bool Success/Failure
-    */
+     * search function. Sends the SEARCH command
+     *
+     *
+     * @return bool Success/Failure
+     */
     function sort($sort_list, $charset='US-ASCII', $search_list = '', $uidSort = false)
     {
         $sort_command = sprintf("(%s) %s %s", $sort_list, strtoupper($charset), $search_list);
 
-        if($uidSort){
+        if ($uidSort) {
             $ret = $this->cmdUidSort($sort_command);
-        }else{
+        } else {
             $ret = $this->cmdSort($sort_command);
         }
 
-        if( strtoupper( $ret["RESPONSE"]["CODE"]) != "OK" ){
-            return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
+        if (strtoupper($ret['RESPONSE']['CODE']) != 'OK') {
+            return new PEAR_Error($ret['RESPONSE']['CODE'] . ", " . $ret['RESPONSE']['STR_CODE']);
         }
-        return $ret["PARSED"]["SORT"]["SORT_LIST"];
+        return $ret['PARSED']['SORT']['SORT_LIST'];
     }
+
+
+
+
 
     /******************************************************************
     **                                                               **

@@ -69,7 +69,8 @@ class Net_IMAPProtocol {
     var $_timeout = null;
 
     /**
-     * The options for SSL/TLS connection (see documentation for stream_context_create)
+     * The options for SSL/TLS connection 
+     * (see documentation for stream_context_create)
      * @var array
      */
     var $_streamContextOptions = null;
@@ -165,7 +166,7 @@ class Net_IMAPProtocol {
         if( $this->_connected ){
             return new PEAR_Error( 'already connected, logout first!' );
         }
-        if ( PEAR::isError( $this->_socket->connect( $host , $port, null, $this->_timeout, $this->_streamContextOptions ) ) ) {
+        if (PEAR::isError($this->_socket->connect($host, $port, null, $this->_timeout, $this->_streamContextOptions))) {
             return new PEAR_Error( 'unable to open socket' );
         }
         if ( PEAR::isError( $this->_getRawResponse() ) ) {
@@ -375,35 +376,37 @@ class Net_IMAPProtocol {
         return $this->_unParsedReturn;
     }
 
-     /**
-     * set the options for a SSL/TLS connection (see documentation for stream_context_create)
+    /**
+     * set the options for a SSL/TLS connection 
+     * (see documentation for stream_context_create)
      *
      * @param  array  $options the options for the SSL/TLS connection
      * @return nothing
      *
      * @access public
-     * @since  1.0
+     * @since  1.1
      */
     function setStreamContextOptions($options)
     {
         $this->_streamContextOptions = $options;
     }
 
-     /**
+    /**
      * set the the timeout for the connection to the IMAP server.
      *
      * @param  int  $timeout the timeout
      * @return nothing
      *
      * @access public
-     * @since  1.0
+     * @since  1.1
      */
     function setTimeout($timeout)
     {
         $this->_timeout = $timeout;
     }
 
-     /**
+
+    /**
      * set the "returning of the unparsed response" feature on or off
      *
      * @param  boolean  $status: true: feature is on
@@ -1220,27 +1223,29 @@ class Net_IMAPProtocol {
         return $ret;
     }
 
+
     /**
      * Send the SORT command.
      *
      * @return mixed Returns a PEAR_Error with an error message on any
      *               kind of failure, or true on success.
      * @access public
-     * @since  1.0
+     * @since  1.1
      */
-
     function cmdSort($sort_cmd)
     {
-        /*        if($_charset != '' )
-                    $_charset = "[$_charset] ";
-                $param=sprintf("%s%s",$charset,$search_cmd);
+        /* 
+        if ($_charset != '' )
+            $_charset = "[$_charset] ";
+        $param = sprintf("%s%s",$charset,$search_cmd);
         */
-        $ret = $this->_genericCommand('SORT', $sort_cmd );
-        if(isset( $ret["PARSED"] ) ){
-            $ret["PARSED"]=$ret["PARSED"][0]["EXT"];
+        $ret = $this->_genericCommand('SORT', $sort_cmd);
+        if (isset($ret['PARSED'])) {
+            $ret['PARSED'] = $ret['PARSED'][0]['EXT'];
         }
         return $ret;
     }
+
 
     /**
      * Send the STORE command.
@@ -1402,23 +1407,24 @@ class Net_IMAPProtocol {
         return $ret;
     }
 
+
     /**
-     * Send the SORT command.
+     * Send the UID SORT command.
      *
      * @return mixed Returns a PEAR_Error with an error message on any
      *               kind of failure, or true on success.
      * @access public
-     * @since  1.0
+     * @since  1.1
      */
-
     function cmdUidSort($sort_cmd)
     {
-        $ret=$this->_genericCommand('UID SORT', sprintf("%s",$sort_cmd) );
-        if(isset( $ret["PARSED"] ) ){
+        $ret=$this->_genericCommand('UID SORT', sprintf("%s",$sort_cmd));
+        if (isset($ret['PARSED'])) {
             $ret["PARSED"]=$ret["PARSED"][0]["EXT"];
         }
         return $ret;
     }
+
 
     /**
      * Send the X command.
@@ -2573,7 +2579,7 @@ class Net_IMAPProtocol {
     function _retrParsedResponse( &$str , $token, $previousToken = null)
     {
 
-    #echo "\n\nTOKEN:$token $str\r\n";
+    //echo "\n\nTOKEN:$token\r\n";
         $token = strtoupper($token);
         switch( $token ){
         case "RFC822.SIZE" :
@@ -2600,7 +2606,8 @@ class Net_IMAPProtocol {
             return false;
             break;
 
-        case "NOMODSEQ" :
+        case 'NOMODSEQ':
+            // ToDo: implement RFC 4551
             return array($token=>'');
             break;
 
@@ -2613,7 +2620,7 @@ class Net_IMAPProtocol {
         case "UNSEEN" :
 
         case "MESSAGES" :
-        
+
         case "UIDNEXT" :
 
         case "UIDVALIDITY" :
@@ -2653,47 +2660,50 @@ class Net_IMAPProtocol {
                 S: * QUOTA user.damian (STORAGE 1781460 4000000)
                 S: A0004 OK Completed
 
+            another example of QUOTA response from GETQUOTAROOT:
+                C: A0008 GETQUOTAROOT INBOX
+                S: * QUOTAROOT INBOX ""
+                S: * QUOTA "" (STORAGE 0 1024000 MESSAGE 0 40000)
+                S: A0008 OK GETQUOTAROOT finished.
+
             RFC 2087 section 5.1 says the list could be empty:
 
                 C: A0004 GETQUOTA user.damian
                 S: * QUOTA user.damian ()
                 S: A0004 OK Completed
+
+            quota_list      ::= "(" #quota_resource ")"
+            quota_resource  ::= atom SP number SP number
+            quota_response  ::= "QUOTA" SP astring SP quota_list
             */
+
             $mailbox = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
+            $ret_aux = array('MAILBOX'=>$this->utf_7_decode($mailbox));
+
             // courier fix
             if ($str[0].$str[1] == "\r\n") {
-                $ret_aux = array("MAILBOX"=>$this->utf_7_decode($mailbox) );
                 return array($token => $ret_aux);
             }
+            // end courier fix
+
             $this->_parseSpace( $str , __LINE__ , __FILE__ );
             $this->_parseString( $str , '(' , __LINE__ , __FILE__ );
 
-            $ret_aux = array("MAILBOX"=>$this->utf_7_decode($mailbox) );
-            $this->_getNextToken( $str , $quota_resp );
-            if ($quota_resp == ')' ) {
-                // empty list, apparently no STORAGE or MESSAGE quota set
-                return array($token => $ret_aux);
-            }
-            if( ( $ext = $this->_retrParsedResponse( $str , $quota_resp )) == false){
+            // fetching quota resources ( BNF ::= #quota_resource  but spce separated instead of comma)
+            $this->_getNextToken($str, $quota_resp );
+            while ($quota_resp != ')') {
+                if (($ext = $this->_retrParsedResponse($str, $quota_resp)) == false) {
                     $this->_prot_error("bogus response!!!!" , __LINE__ , __FILE__ );
+                }
+                $ret_aux=array_merge($ret_aux,$ext);
+
+                $this->_getNextToken($str, $quota_resp);
+                if ($quota_resp == ' ') {
+                    $this->_getNextToken($str, $quota_resp);
+                }
             }
-            $ret_aux=array_merge($ret_aux,$ext);
 
-            $this->_getNextToken( $str , $separator );
-            if( $separator == ')' ){
-                return array($token=>$ret_aux);
-            }
-
-
-            $this->_parseSpace( $str , __LINE__ , __FILE__ );
-
-            $this->_getNextToken( $str , $quota_resp );
-            if( ( $ext = $this->_retrParsedResponse( $str , $quota_resp )) == false){
-                    $this->_prot_error("bogus response!!!!" , __LINE__ , __FILE__ );
-            }
-            $ret_aux=array_merge($ret_aux,$ext);
-
-            $this->_parseString( $str , ')' , __LINE__ , __FILE__ );
+            // if empty list, apparently no STORAGE or MESSAGE quota set
             return array($token=>$ret_aux);
             break;
 
@@ -2791,12 +2801,12 @@ class Net_IMAPProtocol {
             case "SEARCH" :
             case 'SORT':
                 $str_line = rtrim( substr( $this->_getToEOL( $str , false ) , 1) );
-                $struct_arr[$token ."_LIST"] = explode( ' ' , $str_line );
-                if(count($struct_arr[$token ."_LIST"]) == 1 && $struct_arr[$token ."_LIST"][0]==''){
-                    $struct_arr[$token ."_LIST"]=null;
+                $struct_arr[$token.'_LIST'] = explode(' ', $str_line);
+                if (count($struct_arr[$token.'_LIST']) == 1 && $struct_arr[$token.'_LIST'][0]=='') {
+                    $struct_arr[$token.'_LIST'] = null;
                 }
                 return array($token=>$struct_arr);
-            break;
+                break;
 
             case "OK" :
                 /* TODO:
@@ -2868,16 +2878,15 @@ class Net_IMAPProtocol {
         case "MYRIGHTS" :
                 $this->_parseSpace( $str , __LINE__ , __FILE__ );
                 $this->_getNextToken( $str ,$mailbox );
-                // Patch to handle the alternate MYRIGHTS response from courier-IMAP
-                // pear bug 2954
-                if ($str==')') {
+                // Patch to handle the alternate MYRIGHTS response from Courier-IMAP
+                if ($str==')'){
                     $granted = $mailbox;
                     $mailbox = $this->currentMailbox;
-                } else {
+                }else{
                     $this->_parseSpace( $str , __LINE__ , __FILE__ );
                     $this->_getNextToken( $str , $granted );
                 }
-                // end patch
+                // End Patch
 
                 $result_array = array( "MAILBOX"=>$this->utf_7_decode($mailbox) , "GRANTED"=>$granted );
                 return $result_array;
