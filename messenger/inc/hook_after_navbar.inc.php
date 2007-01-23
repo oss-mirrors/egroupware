@@ -13,8 +13,8 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
-	if($GLOBALS['egw_info']['flags']['currentapp'] != 'messenger' &&
+	if( $GLOBALS['egw_info']['user']['preferences']['common']['show_general_menu'] == 'sidebox' &&
+	    $GLOBALS['egw_info']['flags']['currentapp'] != 'messenger' &&
 		$GLOBALS['egw_info']['flags']['currentapp'] != 'welcome')
 	{
 		$GLOBALS['egw']->db->query("select count(*) from phpgw_messenger_messages where message_owner='"
