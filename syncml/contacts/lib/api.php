@@ -67,6 +67,8 @@ function _egwcontactssync_list()
 		$guids[] = $GLOBALS['egw']->common->generate_uid('contacts',$contact['id']);
 	}
 
+	Horde::logMessage("SymcML: egwcontactssync list found ids: ". print_r($guids, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
 	return $guids;
 }
 
@@ -223,6 +225,8 @@ function _egwcontactssync_search($content, $contentType)
  */
 function _egwcontactssync_export($guid, $contentType)
 {
+	Horde::logMessage("SymcML: egwcontactssync export guid: $guid contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
 	if (is_array($contentType)) {
 		$options = $contentType;
 		$contentType = $options['ContentType'];
@@ -241,12 +245,9 @@ function _egwcontactssync_export($guid, $contentType)
 	switch ($contentType) {
 		case 'text/x-vcard':
 
-			if($vcard = $vcaladdressbook->getVCard($contactID))
-			{
+			if($vcard = $vcaladdressbook->getVCard($contactID)) {
 				return $vcard;
-			}
-			else
-			{
+			} else {
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			
