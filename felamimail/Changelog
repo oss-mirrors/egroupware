@@ -1,3 +1,6 @@
+2007-01-24 Lars Kneschke  <lkneschke@metaways.de>
+	* removed some old code, which got not used anymore, but created problems (the blind gut of FeLaMiMail :-))
+
 2007-01-13 Lars Kneschke  <lkneschke@metaways.de>
 	* finally added support the in-reply-to header
 

@@ -19,20 +19,13 @@
 			#_debug_array($folderData);
 			$folderList[$folderName] = $folderInfo->displayName;
 		}
+		$this->bofelamimail->closeConnection();
 	}
-
-	$this->bofelamimail->closeConnection();
 
 	$config =& CreateObject('phpgwapi.config','felamimail');
 	$config->read_repository();
 	$felamimailConfig = $config->config_data;
-	#_debug_array($felamimailConfig);
 	unset($config);
-
-	#$boemailadmin =& CreateObject('emailadmin.bo');
-	#$methodData = array($felamimailConfig['profileID']);
-	#_debug_array($methodData);
-	$felamimailConfig = ExecMethod('emailadmin.bo.getProfile',$felamimailConfig['profileID']);
 
 	$refreshTime = array(
 		'0' => lang('disabled'),
@@ -122,16 +115,6 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
-#		'email_sig' => array(
-#			'type'   => 'notify',
-#			'label'  => 'email signature',
-#			'name'   => 'email_sig',
-#			'rows'   => 5,
-#			'cols'   => 80,
-#			'xmlrpc' => True,
-#			'admin'  => False,
-#			'help'   => ' ',	// this is to get the substitution help-texts
-#		),
 		'sortOrder' => array(
 			'type'   => 'select',
 			'label'  => 'Default sorting order',
@@ -213,66 +196,4 @@
 		)
 	);
 
-	if($felamimailConfig['userDefinedAccounts'] == 'yes')
-	{
-		$selectOptions = array(
-			'no'  => lang('no'),
-			'yes' => lang('yes')
-		);
-		$GLOBALS['settings']['use_custom_settings'] = array(
-			'type'   => 'select',
-			'label'  => 'use custom settings',
-			'name'   => 'use_custom_settings',
-			'values' => $selectOptions,
-			'xmlrpc' => True,
-			'admin'  => False
-		);
-
-		$GLOBALS['settings']['username'] = array(
-			'type'   => 'input',
-			'label'  => 'username',
-			'name'   => 'username',
-			'size'   => 40,
-			'xmlrpc' => True,
-			'admin'  => False
-		);
-		$GLOBALS['settings']['key'] = array(
-			'type'   => 'password',
-			'label'  => 'password',
-			'name'   => 'key',
-			'size'   => 40,
-			'xmlrpc' => True,
-			'admin'  => False
-		);
-		$GLOBALS['settings']['emailAddress'] = array(
-			'type'   => 'input',
-			'label'  => 'EMail Address',
-			'name'   => 'emailAddress',
-			'size'   => 40,
-			'xmlrpc' => True,
-			'admin'  => False
-		);
-		$GLOBALS['settings']['imapServerAddress'] = array(
-			'type'   => 'input',
-			'label'  => 'IMAP Server Address',
-			'name'   => 'imapServerAddress',
-			'size'   => 40,
-			'xmlrpc' => True,
-			'admin'  => False
-		);
-
-		$selectOptions = array(
-			'no'  => lang('IMAP'),
-			'yes' => lang('IMAPS Encryption only'),
-			'imaps-encr-auth' => lang('IMAPS Authentication')
-		);
-		$GLOBALS['settings']['imapServerMode'] = array(
-			'type'   => 'select',
-			'label'  => 'IMAP Server type',
-			'name'   => 'imapServerMode',
-			'values' => $selectOptions,
-			'xmlrpc' => True,
-			'admin'  => False
-		);
-	}
 ?>
