@@ -10,6 +10,8 @@
 	\**************************************************************************/
 
 	/* $Id$ */
+	$folderList = array();
+	
 	$this->bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 	if($this->bofelamimail->openConnection()) {
 		$folderObjects = $this->bofelamimail->getFolderObjects();
