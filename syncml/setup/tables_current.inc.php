@@ -44,8 +44,8 @@
 			),
 			'pk' => array('dev_id'),
 			'fk' => array(),
-			'ix' => array(),
-			'uc' => array(array('dev_model','dev_manufacturer','dev_swversion'))
+			'ix' => array(array('dev_model','dev_manufacturer')),
+			'uc' => array()
 		),
 		'egw_syncmlsummary' => array(
 			'fd' => array(
@@ -65,7 +65,7 @@
 				'owner_devid' => array('type' => 'int','precision' => '4','nullable' => False),
 				'owner_deviceid' => array('type' => 'varchar','precision' => '100','nullable' => False)
 			),
-			'pk' => array('owner_devid'),
+			'pk' => array(),
 			'fk' => array(),
 			'ix' => array('owner_deviceid'),
 			'uc' => array(array('owner_locname','owner_devid','owner_deviceid'))

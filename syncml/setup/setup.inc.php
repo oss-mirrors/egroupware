@@ -13,7 +13,7 @@
 	/* Basic information about this app */
 	$setup_info['syncml']['name']      = 'syncml';
 	$setup_info['syncml']['title']     = 'SyncML';
-	$setup_info['syncml']['version']   = '0.9.6';
+	$setup_info['syncml']['version']   = '0.9.008';
 	$setup_info['syncml']['enable']    = 3;
 	$setup_info['syncml']['app_order'] = 99;
 
@@ -49,3 +49,4 @@
 			'from' => 'SyncML',
 		),
 	);
+
