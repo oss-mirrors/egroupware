@@ -11,11 +11,12 @@
 
 	/* $Id$ */
 	$this->bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
-	$this->bofelamimail->openConnection();
-	$folderObjects = $this->bofelamimail->getFolderObjects();
-	foreach($folderObjects as $folderName => $folderInfo) {
-		#_debug_array($folderData);
-		$folderList[$folderName] = $folderInfo->displayName;
+	if($this->bofelamimail->openConnection()) {
+		$folderObjects = $this->bofelamimail->getFolderObjects();
+		foreach($folderObjects as $folderName => $folderInfo) {
+			#_debug_array($folderData);
+			$folderList[$folderName] = $folderInfo->displayName;
+		}
 	}
 
 	$this->bofelamimail->closeConnection();
