@@ -646,7 +646,7 @@
 			$GLOBALS['egw']->common->egw_header();
 		}
 
-		function emailAddressToHTML($_emailAddress, $_organisation='') {
+		function emailAddressToHTML($_emailAddress, $_organisation='', $allwaysShowMailAddress=false, $showAddToAdrdessbookLink=true) {
 			#_debug_array($_emailAddress);
 			// create some nice formated HTML for senderaddress
 			#if($_emailAddress['EMAIL'] == 'undisclosed-recipients: ;')
@@ -674,11 +674,16 @@
 						$newSenderAddress = $this->bofelamimail->decode_header($newSenderAddress);
 						$decodedPersonalName = $this->bofelamimail->decode_header($addressData['PERSONAL_NAME']);
 
-						if(!empty($_organisation)) {
-							$realName = $decodedPersonalName .' ('. $_organisation . ')';
-						} else {
-							$realName = $decodedPersonalName;
+						$realName =  $decodedPersonalName;
+						// add mailaddress
+						if ($allwaysShowMailAddress) {
+							$realName .= ' <'.$addressData['EMAIL'].'>';
 						}
+						// add organization
+						if(!empty($_organisation)) {
+							$realName .= ' ('. $_organisation . ')';
+						}
+						
 						$linkData = array (
 							'menuaction'	=> 'felamimail.uicompose.compose',
 							'send_to'	=> base64_encode($newSenderAddress)
@@ -703,18 +708,20 @@
 							$linkData['presets[n_family]']	= @htmlentities($decodedPersonalName, ENT_QUOTES, $this->displayCharset);
 						}
 						
-						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
-						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
-						$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
-						$senderAddress .= sprintf('<a href="%s" onClick="%s">
-							<img src="%s" width="10" height="8" border="0" 
-							align="absmiddle" alt="%s" 
-							title="%s"></a>',
-							$urlAddToAddressbook,
-							$onClick,
-							$image,
-							lang('add to addressbook'),
-							lang('add to addressbook'));
+						if ($showAddToAdrdessbookLink) {
+							$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
+							$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
+							$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
+							$senderAddress .= sprintf('<a href="%s" onClick="%s">
+								<img src="%s" width="10" height="8" border="0" 
+								align="absmiddle" alt="%s" 
+								title="%s"></a>',
+								$urlAddToAddressbook,
+								$onClick,
+								$image,
+								lang('add to addressbook'),
+								lang('add to addressbook'));
+						}
 					} else {
 						$linkData = array (
 							'menuaction'	=> 'felamimail.uicompose.compose',
@@ -732,18 +739,21 @@
 							'presets[org_name]'	=> @htmlentities($_organisation, ENT_QUOTES, $this->displayCharset),
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
-						$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
-						$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
-						$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
-						$senderAddress .= sprintf('<a href="%s" onClick="%s">
-							<img src="%s" width="10" height="8" border="0" 
-							align="absmiddle" alt="%s" 
-							title="%s"></a>',
-							$urlAddToAddressbook,
-							$onClick,
-							$image,
-							lang('add to addressbook'),
-							lang('add to addressbook'));
+
+						if ($showAddToAdrdessbookLink) {
+							$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
+							$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
+							$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
+							$senderAddress .= sprintf('<a href="%s" onClick="%s">
+								<img src="%s" width="10" height="8" border="0" 
+								align="absmiddle" alt="%s" 
+								title="%s"></a>',
+								$urlAddToAddressbook,
+								$onClick,
+								$image,
+								lang('add to addressbook'),
+								lang('add to addressbook'));
+						}
 					}
 				}
 				
@@ -1055,7 +1065,8 @@
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
 #			print "$this->mailbox, $this->uid, $partID<br>";
-			$headers	= $this->bofelamimail->getMessageHeader($this->mailbox, $this->uid, $partID);
+			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
+			$envelope   = $this->bofelamimail->getMessageEnvelope($this->uid, $partID);
 #			_debug_array($headers);exit;
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
@@ -1102,7 +1113,7 @@
 		#	$this->t->set_block('displayMsg','message_raw_header');
 		#	$this->t->set_block('displayMsg','message_navbar');
 			$this->t->set_block('displayMsg','message_onbehalfof');
-		#	$this->t->set_block('displayMsg','message_cc');
+			$this->t->set_block('displayMsg','message_cc');
 			$this->t->set_block('displayMsg','message_attachement_row');
 		#	$this->t->set_block('displayMsg','previous_message_block');
 		#	$this->t->set_block('displayMsg','next_message_block');
@@ -1112,59 +1123,39 @@
 			
 			$this->translate();
 			
-			if($headers->senderaddress != $headers->fromaddress) {
-				$senderAddress = htmlspecialchars($headers->senderaddress, ENT_QUOTES, $this->displayCharset);
-				$fromAddress   = htmlspecialchars($headers->fromaddress, ENT_QUOTES, $this->displayCharset);
-				if(!empty($organization)) {
-					$fromAddress	.= ' ('. htmlspecialchars($organization, ENT_QUOTES, $this->displayCharset) .')';
-				}
-				$this->t->set_var("from_data",$senderAddress);
-
-				$this->t->set_var("onbehalfof_data",$fromAddress);
-				$this->t->parse('on_behalf_of_part','message_onbehalfof',True);
-			}
-			else
-			{
-				$fromAddress   = htmlspecialchars($headers->fromaddress, ENT_QUOTES, $this->displayCharset);
-				if(!empty($organization)) {
-					$fromAddress	.= ' ('. htmlspecialchars($organization, ENT_QUOTES, $this->displayCharset) .')';
-				}
-				$this->t->set_var("from_data", $fromAddress);
-				$this->t->set_var('on_behalf_of_part','');
-			}
+			if($envelope['FROM'][0] != $envelope['SENDER'][0]) {
+                $senderAddress = $this->emailAddressToHTML($envelope['SENDER'], '', true, false);
+                $fromAddress   = $this->emailAddressToHTML($envelope['FROM'], $organization, true, false);
+                $this->t->set_var("from_data",$senderAddress);
+                $this->t->set_var("onbehalfof_data",$fromAddress);
+                $this->t->parse('on_behalf_of_part','message_onbehalfof',True);
+            } else {
+                $fromAddress   = $this->emailAddressToHTML($envelope['FROM'], $organization, true, false);
+                $this->t->set_var("from_data", $fromAddress);
+                $this->t->set_var('on_behalf_of_part','');
+            }
 
 			// parse the to header
-			$toAddress = htmlspecialchars($headers->toaddress, ENT_QUOTES, $this->displayCharset);
-			$this->t->set_var("to_data",$toAddress);
-			
-			// parse the cc header
-			if($headers->ccaddress)
-			{
-				$ccAddress = htmlspecialchars($headers->ccaddress, ENT_QUOTES, $this->displayCharset);
-				$this->t->set_var("cc_data",$ccAddress);
-				$this->t->parse('cc_data_part','message_cc',True);
-			}
-			else
-			{
-				$this->t->set_var("cc_data_part",'');
-			}
+            $toAddress = $this->emailAddressToHTML($envelope['TO'], '', true, false);
+            $this->t->set_var("to_data",$toAddress);
 
-			if (isset($headers->date))
-			{
-				$headers->date = ereg_replace('  ', ' ', $headers->date);
-				$tmpdate = explode(' ', trim($headers->date));
-			}
-			else
-			{
-				$tmpdate = $date = array("","","","","","");
-			}
-																																																																																																																																																								
+            // parse the cc header
+            if(count($envelope['CC'])) {
+                $ccAddress = $this->emailAddressToHTML($envelope['CC'], '', true, false);
+                $this->t->set_var("cc_data",$ccAddress);
+                $this->t->parse('cc_data_part','message_cc',True);
+            } else {
+                $this->t->set_var("cc_data_part",'');
+            }
+
 			$this->t->set_var("date_data",
-				@htmlspecialchars($GLOBALS['egw']->common->show_date($transformdate->getTimeStamp($tmpdate)),
-				ENT_QUOTES,$this->displayCharset));
+                @htmlspecialchars($GLOBALS['egw']->common->show_date(strtotime($headers['DATE'])),
+                ENT_QUOTES,$this->displayCharset));
+
 			$this->t->set_var("subject_data",
 				@htmlspecialchars($this->bofelamimail->decode_header(preg_replace($nonDisplayAbleCharacters,'',$headers->subject)),
 				ENT_QUOTES,$this->displayCharset));
+
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
 			
