@@ -1124,37 +1124,34 @@
 			$this->translate();
 			
 			if($envelope['FROM'][0] != $envelope['SENDER'][0]) {
-                $senderAddress = $this->emailAddressToHTML($envelope['SENDER'], '', true, false);
-                $fromAddress   = $this->emailAddressToHTML($envelope['FROM'], $organization, true, false);
-                $this->t->set_var("from_data",$senderAddress);
-                $this->t->set_var("onbehalfof_data",$fromAddress);
-                $this->t->parse('on_behalf_of_part','message_onbehalfof',True);
-            } else {
-                $fromAddress   = $this->emailAddressToHTML($envelope['FROM'], $organization, true, false);
-                $this->t->set_var("from_data", $fromAddress);
-                $this->t->set_var('on_behalf_of_part','');
-            }
+				$senderAddress = $this->emailAddressToHTML($envelope['SENDER'], '', true, false);
+				$fromAddress   = $this->emailAddressToHTML($envelope['FROM'], $organization, true, false);
+				$this->t->set_var("from_data",$senderAddress);
+				$this->t->set_var("onbehalfof_data",$fromAddress);
+				$this->t->parse('on_behalf_of_part','message_onbehalfof',True);
+			} else {
+				$fromAddress   = $this->emailAddressToHTML($envelope['FROM'], $organization, true, false);
+				$this->t->set_var("from_data", $fromAddress);
+				$this->t->set_var('on_behalf_of_part','');
+			}
 
 			// parse the to header
-            $toAddress = $this->emailAddressToHTML($envelope['TO'], '', true, false);
-            $this->t->set_var("to_data",$toAddress);
+			$toAddress = $this->emailAddressToHTML($envelope['TO'], '', true, false);
+			$this->t->set_var("to_data",$toAddress);
+			
+			// parse the cc header
+			if(count($envelope['CC'])) {
+				$ccAddress = $this->emailAddressToHTML($envelope['CC'], '', true, false);
+				$this->t->set_var("cc_data",$ccAddress);
+				$this->t->parse('cc_data_part','message_cc',True);
+			} else {
+				$this->t->set_var("cc_data_part",'');
+			}
 
-            // parse the cc header
-            if(count($envelope['CC'])) {
-                $ccAddress = $this->emailAddressToHTML($envelope['CC'], '', true, false);
-                $this->t->set_var("cc_data",$ccAddress);
-                $this->t->parse('cc_data_part','message_cc',True);
-            } else {
-                $this->t->set_var("cc_data_part",'');
-            }
-
-			$this->t->set_var("date_data",
-                @htmlspecialchars($GLOBALS['egw']->common->show_date(strtotime($headers['DATE'])),
-                ENT_QUOTES,$this->displayCharset));
-
+			$this->t->set_var("date_data", 
+				@htmlspecialchars($GLOBALS['egw']->common->show_date(strtotime($headers['DATE'])), ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("subject_data",
-				@htmlspecialchars($this->bofelamimail->decode_header(preg_replace($nonDisplayAbleCharacters,'',$headers->subject)),
-				ENT_QUOTES,$this->displayCharset));
+				@htmlspecialchars($this->bofelamimail->decode_header(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT'])), ENT_QUOTES, $this->displayCharset));
 
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
@@ -1167,16 +1164,14 @@
 			else
 				$this->t->set_var('attachment_count','0');
 
-			if (is_array($attachments) && count($attachments) > 0)
-			{
+			if (is_array($attachments) && count($attachments) > 0) {
 				$this->t->set_var('row_color',$this->rowColor[0]);
 				$this->t->set_var('name',lang('name'));
 				$this->t->set_var('type',lang('type'));
 				$this->t->set_var('size',lang('size'));
 				$this->t->set_var('url_img_save',$GLOBALS['egw']->common->image('felamimail','fileexport'));
 				#$this->t->parse('attachment_rows','attachment_row_bold',True);
-				foreach ($attachments as $key => $value)
-				{
+				foreach ($attachments as $key => $value) {
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
 					$this->t->set_var('filename',@htmlentities($this->bofelamimail->decode_header($value['name']),ENT_QUOTES,$this->displayCharset));
 					$this->t->set_var('mimetype',$value['mimeType']);
