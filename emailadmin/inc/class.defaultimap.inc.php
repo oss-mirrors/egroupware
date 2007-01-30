@@ -438,6 +438,7 @@
 			}
 			
 			$this->setStreamContextOptions($this->_getTransportOptions());
+			$this->setTimeout(20);
 			
 			if( PEAR::isError($status = $this->connect($this->_getTransportString(), $this->port, $this->encryption == 1)) ) {
 				$this->_connectionErrorObject = $status;
