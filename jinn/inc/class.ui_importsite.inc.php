@@ -42,6 +42,7 @@
 		 $this->bo = CreateObject('jinn.boadmin');
 		 parent::uijinn();
 
+
 		 $this->ignorefields = array('uniqid','fields','reports','parent_site_id');
 		 $this->app_title = lang('Administrator Mode');
 
@@ -60,7 +61,6 @@
 		 {
 			$import_into=$_POST['import_into'];
 		 }
-		 //	 die($import_into);
 
 		 if (is_array($_FILES['importfile']) || is_file($_POST['newtemp']))
 		 {
@@ -118,7 +118,7 @@
 			   fclose($dataFile);
 			}
 		 }
-		 elseif(is_array($this->bo->session['tmp']))
+		 elseif(is_array($this->bo->sessionmanager->sessionarray['tmp']))
 		 {
 			$this->load_site_from_file();
 		 }
@@ -127,7 +127,7 @@
 			$this->import_form($import_into);
 		 }
 
-		 $this->bo->sessionmanager->save();
+		 //$this->bo->sessionmanager->save();
 	  }
 
 	  function import_into()
@@ -212,7 +212,6 @@
 		 $import_site_files		= $xmlarray['jinn']['site_files'];
 		 $import_site_objects	= $xmlarray['jinn']['site'][0]['objects'];
 
-		 //		 if(!$_POST['objects_selected'])
 		 if(!$replace && !$_POST['objects_selected'])
 		 {
 			$this->select_objects($import_site_objects,$into_site_id);
@@ -253,7 +252,6 @@
 
 		 $this->bo->addInfo(lang('%1 Site Objects have been imported.',$this->num_objects));
 		 $this->bo->addInfo(lang('%1 Site Object Fields have been imported.',$this->num_fields));
-		 //		 $this->bo->addInfo(lang('%1 Site Reports have been imported.',$this->num_reports));
 
 		 $this->bo->addInfo(lang('Import was succesfull'));
 		 return true;
@@ -267,10 +265,10 @@
 	  */
 	  function load_site_from_file()
 	  {
+
 		 if($_POST['incompatibility_ok'] == '') //check if the admin has specifically ok-ed this import. If not, unload the loaded file
 		 {
-			unset($this->bo->session['tmp']);
-
+			unset($this->bo->sessionmanager->sessionarray['tmp']);
 			$this->bo->sessionmanager->save();
 		 }
 
@@ -281,15 +279,15 @@
 
 		 if(!($import_site && $checkbit))
 		 {	
-			if($this->bo->session['tmp']['import_site'] && $this->bo->session['tmp']['checkbit'])
+			if($this->bo->sessionmanager->sessionarray['tmp']['import_site'] && $this->bo->sessionmanager->sessionarray['tmp']['checkbit'])
 			{
-			   $import_site 			= $this->bo->session['tmp']['import_site'];
-			   $import_site_objects 	= $this->bo->session['tmp']['import_site_objects'];
-			   $import_obj_fields		= $this->bo->session['tmp']['import_obj_fields'];
-			   $import_reports 			= $this->bo->session['tmp']['import_reports'];
-			   $checkbit    			= $this->bo->session['tmp']['checkbit'];
+			   $import_site 			= $this->bo->sessionmanager->sessionarray['tmp']['import_site'];
+			   $import_site_objects 	= $this->bo->sessionmanager->sessionarray['tmp']['import_site_objects'];
+			   $import_obj_fields		= $this->bo->sessionmanager->sessionarray['tmp']['import_obj_fields'];
+			   $import_reports 			= $this->bo->sessionmanager->sessionarray['tmp']['import_reports'];
+			   $checkbit    			= $this->bo->sessionmanager->sessionarray['tmp']['checkbit'];
 			   $check_versions = false;
-			   unset($this->bo->session['tmp']);
+			   unset($this->bo->sessionmanager->sessionarray['tmp']);
 			   $this->bo->sessionmanager->save();
 			}
 		 }
@@ -298,21 +296,21 @@
 		 {
 			if(!$this->check_version($import_site['jinn_version'],$check_versions))
 			{
-			   $this->bo->session['tmp']['file'] 				= $import['name']; 
-			   $this->bo->session['tmp']['replace']				= $_POST['replace_existing'];
-			   $this->bo->session['tmp']['import_site'] 		= $import_site; 
-			   $this->bo->session['tmp']['import_site_objects']	= $import_site_objects; 
-			   $this->bo->session['tmp']['import_obj_fields'] 	= $import_obj_fields; 
-			   $this->bo->session['tmp']['import_reports'] 		= $import_reports; 
-			   $this->bo->session['tmp']['checkbit'] 			= $checkbit; 
+			   $this->bo->sessionmanager->sessionarray['tmp']['file'] 				= $import['name']; 
+			   $this->bo->sessionmanager->sessionarray['tmp']['replace']				= $_POST['replace_existing'];
+			   $this->bo->sessionmanager->sessionarray['tmp']['import_site'] 		= $import_site; 
+			   $this->bo->sessionmanager->sessionarray['tmp']['import_site_objects']	= $import_site_objects; 
+			   $this->bo->sessionmanager->sessionarray['tmp']['import_obj_fields'] 	= $import_obj_fields; 
+			   $this->bo->sessionmanager->sessionarray['tmp']['import_reports'] 		= $import_reports; 
+			   $this->bo->sessionmanager->sessionarray['tmp']['checkbit'] 			= $checkbit; 
 
-			   $this->bo->exit_and_open_screen('jinn.ui_importsite.import_incompatible_egw_jinn_site');
+			   $this->import_incompatible_egw_jinn_site();
+			   exit;
 			}
 
 			if($new_site_id = $this->save_site($import_site,$_POST['replace_existing']))
 			{
 			   $proceed=true;
-			   //return false;
 			}
 
 			if($proceed)
@@ -336,8 +334,10 @@
 			   $this->bo->exit_and_open_screen('jinn.ui_listsites.browse_egw_jinn_sites');
 			}
 		 }
-
-		 $this->bo->sessionmanager->save();
+		 else
+		 {
+			$this->bo->exit_and_open_screen('jinn.ui_listsites.browse_egw_jinn_sites');
+		 }
 	  }
 
 	  function site_name_exist($site_name)
@@ -478,7 +478,6 @@
 			$newid=$this->bo->so->generate_unique_id();
 			$oldid=$object['object_id'];
 			$object_old2new_id_arr[$oldid]=$newid;
-			//$object_new2old_id_arr[$newid]=$oldid;
 		 }
 
 		 foreach($import_site_objects as $object)
@@ -491,7 +490,6 @@
 			   continue;
 			}
 
-			//while(list($key, $val) = each($object)) 
 			foreach($object as $key => $val)
 			{
 			   $old_object_id=$object['object_id'];
@@ -605,16 +603,9 @@
 
 			$data_objects[] = array ( 'name' => 'parent_site_id', 'value' => $parent_site_id);
 
-			//			$data_objects[] = array ( 'name' => 'object_id', 'value' => $object_old2new_id_arr[$old_object_id]);
 
-			//			   $new_id = $status['where_value'];
 			if($status = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
 			{
-			   //echo $new_id .' ';
-			   //echo $status['where_value'].' <br/>';
-
-			   //			   $new_id = $status['where_value'];
-
 			   if(!$old_object_id)
 			   {
 				  $old_object_id = ($object['temp_id']?$object['temp_id']:$object['unique_id']);
@@ -635,7 +626,6 @@
 			   $this->num_objects++;
 			} 
 		 }
-		 //die();
 	  }
 
 	  // $old_parent_id is the unique id saved in object
@@ -651,9 +641,6 @@
 			   if($old_parent_id != $obj_field['field_parent_object'] 
 			   && ($obj_field['unique_id']!=$old_parent_id) 
 			   && ($obj_field['temp_id']!=$old_parent_id))
-			   //if(!$old_parent_id || 
-			   //			   ($obj_field['unique_id'] && $obj_field['unique_id']!=$old_parent_id) || 
-			   //			   ($obj_field['temp_id'] && $obj_field['temp_id']!=$old_parent_id) )
 			   {
 				  continue;
 			   }
@@ -766,9 +753,9 @@
 		 $this->msg_box();
 
 		 $this->tplsav2->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.ui_importsite.import_egw_jinn_site'));
-		 $this->tplsav2->set_var('loaded_file',$this->bo->session['tmp']['file']);
+		 $this->tplsav2->set_var('loaded_file',$this->bo->sessionmanager->sessionarray['tmp']['file']);
 
-		 if($this->bo->session['tmp']['replace'])
+		 if($this->bo->sessionmanager->sessionarray['tmp']['replace'])
 		 {
 			$this->tplsav2->set_var('checked', 'checked="checked"');
 		 }
