@@ -78,13 +78,13 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		<td>
 			&nbsp;
 		</td>
-		<td align="left" style="font-size:11px; width:190px;">
+		<td align="left" style="font-size:11px; width:auto;">
 			<span id="messageCounter">{message}</span>
 		</td>
-		<td align="center" style="font-size:11px; color:red; width:auto;">
+		<td align="center" style="font-size:11px; color:red; width:180px;">
 			<span id="vacationWarning">{vacation_warning}</span>
 		</td>
-		<td id="quotaDisplay" align="right" style="font-size:11px; width:190px;">
+		<td id="quotaDisplay" align="right" style="font-size:11px; width:180px;">
 			{quota_display}
 		</td>
 	</tr>

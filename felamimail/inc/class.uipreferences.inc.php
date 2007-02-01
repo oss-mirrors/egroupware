@@ -197,27 +197,33 @@
 			if($_POST['save'] || $_POST['apply']) {
 				// IMAP connection settings
 				$icServer =& CreateObject('emailadmin.defaultimap');
-				foreach($_POST['ic'] as $key => $value) {
-					switch($key) {
-						case 'validatecert':
-							$icServer->$key = ($value != 'dontvalidate');
-							break;
-						default:
-							$icServer->$key = $value;
-							break;
+				if(is_array($_POST['ic'])) {
+					foreach($_POST['ic'] as $key => $value) {
+						switch($key) {
+							case 'validatecert':
+								$icServer->$key = ($value != 'dontvalidate');
+								break;
+							default:
+								$icServer->$key = $value;
+								break;
+						}
 					}
 				}
 				
 				// SMTP connection settings
 				$ogServer =& CreateObject('emailadmin.defaultsmtp');
-				foreach($_POST['og'] as $key => $value) {
-					$ogServer->$key = $value;
+				if(is_array($_POST['og'])) {
+					foreach($_POST['og'] as $key => $value) {
+						$ogServer->$key = $value;
+					}
 				}
 
 				// identity settings
 				$identity =& CreateObject('emailadmin.ea_identity');
-				foreach($_POST['identity'] as $key => $value) {
-					$identity->$key = $value;
+				if(is_array($_POST['identity'])) {
+					foreach($_POST['identity'] as $key => $value) {
+						$identity->$key = $value;
+					}
 				}
 
 				if((int)$_POST['active']) {
