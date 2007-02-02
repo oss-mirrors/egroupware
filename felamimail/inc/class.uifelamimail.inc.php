@@ -524,6 +524,7 @@
 			$searchTypes = array(
 				'quick'		=> 'quicksearch',
 				'subject'	=> 'subject',
+				'body'		=> 'message',
 				'from'		=> 'from',
 				'to'		=> 'to',
 				'cc'		=> 'cc',

@@ -274,7 +274,7 @@
 
 		}
 		
-		function createIMAPFilter($_criterias) 
+		function createIMAPFilter($_folder, $_criterias) 
 		{
 			if(!is_array($_criterias)) {
 				return 'ALL';
@@ -287,7 +287,11 @@
 				$criteria = strtoupper($_criterias['type']);
 				switch ($criteria) {
 					case 'QUICK':
-						$imapFilter .= 'OR SUBJECT "'. $_criterias['string'] .'" FROM "'. $_criterias['string'] .'" ';
+						if($this->isSentFolder($_folder)) {
+							$imapFilter .= 'OR SUBJECT "'. $_criterias['string'] .'" TO "'. $_criterias['string'] .'" ';
+						} else {
+							$imapFilter .= 'OR SUBJECT "'. $_criterias['string'] .'" FROM "'. $_criterias['string'] .'" ';
+						}
 						break;
 					case 'BCC':
 					case 'BODY':
@@ -1101,7 +1105,7 @@
 				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
 			} else {
 				#error_log("USE NO CACHE");
-				$filter = $this->createIMAPFilter($_filter);
+				$filter = $this->createIMAPFilter($_folderName, $_filter);
 				if($this->icServer->hasCapability('SORT')) {
 					$sortOrder = $this->_getSortString($_sort);
 					$sortResult = $this->icServer->sort($sortOrder, 'US-ASCII', $filter, true);
