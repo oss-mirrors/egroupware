@@ -255,6 +255,9 @@
 			$identity =& $accountData['identity'];
 			#_debug_array($icServer);
 			foreach($icServer as $key => $value) {
+				if(is_object($value) || is_array($value)) {
+					continue;
+				}
 				switch($key) {
 					case 'encryption':
 						$this->t->set_var('checked_ic_'. $key .'_'. $value, 'checked');
@@ -271,6 +274,9 @@
 			}
 
 			foreach($ogServer as $key => $value) {
+				if(is_object($value) || is_array($value)) {
+					continue;
+				}
 				#print "$key => $value<bR>";
 				switch($key) {
 					case 'smtpAuth':
@@ -281,6 +287,9 @@
 			}
 
 			foreach($identity as $key => $value) {
+				if(is_object($value) || is_array($value)) {
+					continue;
+				}
 				switch($key) {
 					default:
 						$this->t->set_var("identity[$key]", $value);
