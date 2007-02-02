@@ -1,6 +1,10 @@
 function initEditAccountData()
 {
-	onchange_active(document.getElementById('active'));
+	var activeElement;
+
+	if(activeElement = document.getElementById('active')) {
+		onchange_active(activeElement);
+	}
 }
 
 function onchange_active(_checkbox) 
@@ -47,19 +51,21 @@ function onchange_og_smtpauth(_checkbox)
 
 function onchange_ic_encryption(_checkbox) 
 {
-	if(_checkbox.value == 2 || _checkbox.value == 3) {
-		if(document.getElementById('ic[port]').value == '143' || 
-			document.getElementById('ic[port]').value == '')
-		{
-			document.getElementById('ic[port]').value = '993';
+	if(_checkbox != null) {
+		if(_checkbox.value == 2 || _checkbox.value == 3) {
+			if(document.getElementById('ic[port]').value == '143' || 
+				document.getElementById('ic[port]').value == '')
+			{
+				document.getElementById('ic[port]').value = '993';
+			}
+			document.getElementById('ic[validatecert]').disabled = false;
+		} else {
+			if(document.getElementById('ic[port]').value == '993' || 
+				document.getElementById('ic[port]').value == '')
+			{
+				document.getElementById('ic[port]').value = '143';
+			}
+			document.getElementById('ic[validatecert]').disabled = true;
 		}
-		document.getElementById('ic[validatecert]').disabled = false;
-	} else {
-		if(document.getElementById('ic[port]').value == '993' || 
-			document.getElementById('ic[port]').value == '')
-		{
-			document.getElementById('ic[port]').value = '143';
-		}
-		document.getElementById('ic[validatecert]').disabled = true;
 	}
 }
