@@ -33,31 +33,11 @@
    {
 	  var $local_bo;
 	  
-	  function db_fields_plugin_imagepath()
-	  {}
-	  
-	  #function plg_fi_imagepath($field_name,$value,$config,$attr_arr)
 	  function formview_edit($field_name, $value, $config,$attr_arr)
 	  {	
-		 #global $local_bo;
-
 		 $stripped_name=substr($field_name,6);	
 
-		 if($this->local_bo->so->config[server_type]=='dev')
-		 {
-			$field_prefix='dev_';
-		 }
-
-		 //	  _debug_array($this->local_bo);
-
-		 if($this->local_bo->site_object[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$this->local_bo->site_object[$field_prefix.'upload_path'];
-		 }
-		 elseif($this->local_bo->site[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$this->local_bo->site[$field_prefix.'upload_path'];
-		 }
+		 $upload_path = $this->local_bo->cur_upload_path();
 
 		 /* Check if everything is set to upload files */ 
 		 if(!$upload_path)
@@ -252,14 +232,8 @@
 		 return $input;
 	  }
 
-	  #function plg_sf_imagepath($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	  function on_save_filter($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
-	  /****************************************************************************\
-	  * main image data function                                                   *
-	  \****************************************************************************/
 	  {
-		 #global $local_bo;
-
 		 /* choose image library to use */
 		 if($this->local_bo->so->config[use_magick]=='MAGICK')
 		 {
@@ -270,19 +244,7 @@
 			$graphic=CreateObject('jinn.bogdlib');
 		 }
 
-		 if($this->local_bo->so->config[server_type]=='dev')
-		 {
-			$field_prefix='dev_';
-		 }
-
-		 if($this->local_bo->site_object[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$this->local_bo->site_object[$field_prefix.'upload_path'];
-		 }
-		 elseif($this->local_bo->site[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$this->local_bo->site[$field_prefix.'upload_path'];
-		 }
+		 $upload_path = $this->local_bo->cur_upload_path();
 
 		 $images_to_delete=$this->local_bo->filter_array_with_prefix($HTTP_POST_VARS,'IMG_DEL');
 
@@ -320,8 +282,6 @@
 
 		 /* finally adding new image and if neccesary a new thumb */
 		 $images_to_add=$this->local_bo->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.$key);
-
-		 //_debug_array($images_to_add);
 
 		 $images_to_add_hei=$this->local_bo->filter_array_with_prefix($HTTP_POST_VARS,'IMG_HEI'.$key);
 		 $images_to_add_wid=$this->local_bo->filter_array_with_prefix($HTTP_POST_VARS,'IMG_WID'.$key);
@@ -482,26 +442,9 @@
 	  }
 
 
-	  #function plg_ro_imagepath($value,$config)
 	  function formview_read($value,$config)
 	  {
-
-		 #global $local_bo;
-		 # $stripped_name=substr($field_name,6);	
-
-		 if($this->local_bo->so->config[server_type]=='dev')
-		 {
-			$field_prefix='dev_';
-		 }
-
-		 if($this->local_bo->site_object[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$this->local_bo->site_object[$field_prefix.'upload_path'];
-		 }
-		 elseif($this->local_bo->site[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$this->local_bo->site[$field_prefix.'upload_path'];
-		 }
+		 $upload_path = $this->local_bo->cur_upload_path();
 
 		 $table_style='';
 		 $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
@@ -510,8 +453,6 @@
 		 $input.='<table '.$table_style.' cellpadding="3" width="100%">';
 			if(trim($value))// FIXME or rather TESTME
 			{
-			   #$input.='<input type="hidden" name="IMG_ORG'.$field_name.'" value="'.$value.'">';
-
 			   $value=explode(';',$value);
 
 			   if (is_array($value) && count($value)>0)
@@ -597,27 +538,9 @@
 
 	  }
 
-
-	  #function plg_bv_imagepath($value,$config,$where_val_enc)
 	  function listview_read($value,$config,$where_val_enc)
 	  {
-
-		 #global $local_bo;
-		 #		 $stripped_name=substr($field_name,6);	
-
-		 if($this->local_bo->so->config[server_type]=='dev')
-		 {
-			$field_prefix='dev_';
-		 }
-
-		 if($this->local_bo->site_object[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$this->local_bo->site_object[$field_prefix.'upload_path'];
-		 }
-		 elseif($this->local_bo->site[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$this->local_bo->site[$field_prefix.'upload_path'];
-		 }
+		 $upload_path = $this->local_bo->cur_upload_path();
 
 		 /* if value is set, show existing images */	
 		 if($value)

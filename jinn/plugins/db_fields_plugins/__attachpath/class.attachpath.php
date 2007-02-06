@@ -35,14 +35,6 @@
    */
    class db_fields_plugin_attachpath
    {
-	  /**
-	  * Constructor
-	  */
-	  function db_fields_plugin_attachpath()
-	  {
-		 //	 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
-	  }
-
 	  /*!
 	  @function plg_fi_attachpath
 	  @fixme remove attachments dir
@@ -50,27 +42,8 @@
 	  @fixme add mimetype icons
 	  */
 	  function formview_edit($field_name, $value, $config,$attr_arr)
-	  //function plg_fi_attachpath($field_name,$value,$config,$attr_arr)
 	  {	
-		 $local_bo= $this->local_bo;
-
-		 if($local_bo->so->config[server_type]=='dev')
-		 {
-			$field_prefix='dev_';
-		 }
-
-		 if($config['Alternative_upload_path_Leave_empty_to_use_normal_path'])
-		 {
-			$upload_path=$config['Alternative_upload_path_Leave_empty_to_use_normal_path'];
-		 }
-		 elseif($local_bo->site_object[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-		 }
-		 elseif($local_bo->site[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
-		 }
+		 $upload_path = $this->local_bo->cur_upload_path();
 
 		 if($config['Store_full_path'])
 		 {
@@ -193,31 +166,13 @@
 	  * main image data function                                                   *
 	  \****************************************************************************/
 	  {
-		 $local_bo=$this->local_bo;
-
 		 /* remove all */
 		 if($_POST[ATT_FLUSH]) 
 		 {
 			return -1;
 		 }
 
-		 if($local_bo->so->config[server_type]=='dev')
-		 {
-			$field_prefix='dev_';
-		 }
-
-		 if($config['Alternative_upload_path_Leave_empty_to_use_normal_path'])
-		 {
-			$upload_path=$config['Alternative_upload_path_Leave_empty_to_use_normal_path'];
-		 }
-		 elseif($local_bo->site_object[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-		 }
-		 elseif($local_bo->site[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
-		 }
+		 $upload_path = $this->local_bo->cur_upload_path();
 
 		 if($config['Store_full_path'])
 		 {
@@ -225,11 +180,11 @@
 		 }
 		 else
 		 {
-			$path_in_db='';//$download_path=$upload_path.SEP;
+			$path_in_db='';
 		 }
 
 
-		 $atts_to_delete=$local_bo->filter_array_with_prefix($_POST,'ATT_DEL');
+		 $atts_to_delete=$this->local_bo->filter_array_with_prefix($_POST,'ATT_DEL');
 
 		 if (count($atts_to_delete)>0){
 
@@ -261,7 +216,7 @@
 
 		 /* finally adding new attachments */
 
-		 $atts_to_add=$local_bo->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC'.$field_name);
+		 $atts_to_add=$this->local_bo->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC'.$field_name);
 
 		 // quick check for new attchments
 		 if(is_array($atts_to_add))
@@ -310,7 +265,7 @@
 
 		 // FIXME check if a file was not uploaded for this att number
 		 /* manual added files */
-		 $man_atts_to_add=$local_bo->filter_array_with_prefix($HTTP_POST_VARS,'ATT_MAN');
+		 $man_atts_to_add=$this->local_bo->filter_array_with_prefix($HTTP_POST_VARS,'ATT_MAN');
 		 if(is_array($man_atts_to_add))
 		 {
 			foreach($man_atts_to_add as $att_name)
@@ -350,22 +305,9 @@
 	  }
 
 	  function formview_read($value,$config)
-	  //function plg_ro_attachpath($value,$config)
 	  {
-		 $local_bo=$this->local_bo;
 
-		 if($local_bo->so->config[server_type]=='dev')
-		 {
-			$field_prefix='dev_';
-		 }
-		 if($local_bo->site_object[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-		 }
-		 elseif($local_bo->site[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
-		 }
+		 $upload_path = $this->local_bo->cur_upload_path();
 
 		 if($config['Store_full_path'])
 		 {
@@ -408,25 +350,12 @@
 	  
 	  
 	  function listview_read($value,$config,$where_val_enc)
-	  //function plg_bv_attachpath($value,$config,$where_val_enc)
 	  {
 
-		 global $local_bo;
 		 $stripped_name=substr($field_name,6);	
 
-		 if($local_bo->so->config[server_type]=='dev')
-		 {
-			$field_prefix='dev_';
-		 }
-
-		 if($local_bo->site_object[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-		 }
-		 elseif($local_bo->site[$field_prefix.'upload_path'])
-		 {
-			$upload_path=$local_bo->site[$field_prefix.'upload_path'];
-		 }
+		 
+		 $upload_path = $this->local_bo->cur_upload_path();
 
 		 if($config['Store_full_path'])
 		 {
