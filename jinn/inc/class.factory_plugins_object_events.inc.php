@@ -57,7 +57,7 @@
   	  function call_event_action($post, $config)
 	  {
 		 global $local_bo;
-		 $local_bo = $this->local_bo;
+		 $local_bo = & $this->local_bo;
 		 return call_user_func('event_action_'.$config['name'], $post, $config);
 	  }
 	  
@@ -68,7 +68,7 @@
 	  function include_plugins()
 	  {
 		 global $local_bo;
-		 $local_bo=$this->local_bo;
+		 $local_bo= & $this->local_bo;
 		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins/object_events_plugins')) {
 
 			/* This is the correct way to loop over the directory. */
@@ -88,7 +88,7 @@
 	  function include_custom_plugins()
 	  {
 		 global $local_bo;
-		 $local_bo=$this->local_bo;
+		 $local_bo = & $this->local_bo;
 		 if(is_dir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins/'))
 		 {
 			if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/object_events_plugins')) {
