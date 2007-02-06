@@ -45,12 +45,11 @@
 		flush();
 	}
 
-
-	class Exception
+	class ExceptionU
 	{
 		/* Emulate a Java exception, sort of... */
 		var $message;
-		function Exception($message)
+		function ExceptionU($message)
 		{
 			$this->message = $message;
 		}
@@ -168,7 +167,7 @@
 			//printf("TestCase::fail(%s)<br>\n", ($message) ? $message : '');
 			/* JUnit throws AssertionFailedError here.  We just record the
 			failure and carry on */
-			$this->fExceptions[] = new Exception(&$message);
+			$this->fExceptions[] = new ExceptionU(&$message);
 		}
 
 		function error($message)
