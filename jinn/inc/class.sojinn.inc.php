@@ -2082,71 +2082,16 @@
 	  */
 	  function insert_new_object($data)
 	  {
-		 $meta=$this->phpgw_table_metadata('egw_jinn_objects',true);
-
-		 $uniqid=uniqid('');
-
 		 $newdata=$this->oldData2newData($data);
 
-		 if(!$newdata['object_id'])
+		 $uniqid=uniqid('');
+		 $newdata['object_id'] = $uniqid;
+
+		 //$this->phpgw_db->Debug=true;
+		 if($this->phpgw_db->insert('egw_jinn_objects',$newdata,$where,__LINE__,__FILE__,'jinn'))
 		 {
-			$newdata['object_id'] = $uniqid;
-		 }
-		 else
-		 {
-			$uniqid = $newdata['object_id'];
-		 }
-
-		 //FIXME remove
-//		 if(!$newdata['unique_id'])
-//		 {
-			$newdata['unique_id'] = $uniqid;
-//		 }
-
-		 foreach($newdata as $colname => $colval)
-		 {
-
-			// safety hack for pgsql which doesn't allow '' for integers
-			if($colval=='' && eregi('int',$meta[$colname]['type']) )
-			{
-			   continue;
-			}
-
-			if ($SQLfields) $SQLfields .= ',';
-			if ($SQLvalues) $SQLvalues .= ',';
-
-			$SQLfields .= $colname;
-			
-			if( !$meta[$colname]['not_null'] && $colval==null)
-			{
-			   $SQLvalues .= "NULL";
-			}
-			else
-			{
-			   $SQLvalues .= "'".$colval."'";
-			}
-		 }
-	
-		 if(!$newmethod)
-		 {
-			$SQL='INSERT INTO egw_jinn_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-
-			//FIXME REPLACE WITH EGWDB
-			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
-			{
-			   $status[where_value]=$uniqid;
-			   $status[ret_code]=0;
-			}
-		 }
-		 else
-		 {
-			$where="object_id='$uniqid'";
-
-			if($this->phpgw_db->insert('egw_jinn_objects',$newdata,$where,__LINE__,__FILE__))
-			{
-			   $status[where_value]=$uniqid;
-			   $status[ret_code]=0;
-			}
+			$status['where_value']=$uniqid;
+			$status['ret_code']=0;
 		 }
 
 		 return $status;
@@ -2308,6 +2253,8 @@
 		 }
 		 
 		 $new_data=$this->oldData2newData($data);
+
+		 //can be removed when is explicitly named in update function
 		 $table_def=$this->table2definition( $table );
 
 		 if (!$this->phpgw_db->update($table,$new_data,$WHERE,__LINE__,__FILE__,False,false,$table_def))
@@ -2442,26 +2389,31 @@
 		 if(!$object_id) $object_id=-1;
 		 $sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object='$object_id' AND field_name='$fieldname'";
 		 $this->phpgw_db->query($sql,__LINE__,__FILE__);
+
+		 $this->phpgw_db->Debug=true;
+
+		 $status['ret_code']=0;
+
 		 if($this->phpgw_db->num_rows()>0)
 		 {
-			// update
-			$sql="UPDATE egw_jinn_obj_fields SET field_plugins='$conf_serialed' WHERE (field_parent_object='$object_id') AND (field_name='$fieldname')";
-		 }
-		 else
-		 {
-			// insert
-			$sql="INSERT INTO egw_jinn_obj_fields (field_parent_object,field_name,field_plugins) VALUES ('$object_id','$fieldname','$conf_serialed')";
-		 }
-		 //die($sql);
+			$new_data['field_plugins']=$conf_serialed;
+			$where="(field_parent_object='$object_id') AND (field_name='$fieldname')";
 
-		 //FIXME REPLACE WITH EGWDB
-		 if($this->phpgw_db->query($sql,__LINE__,__FILE__))
-		 {
-			$status[ret_code]=0;
+			if (!$this->phpgw_db->update('egw_jinn_obj_fields',$new_data,$where,__LINE__,__FILE__,'jinn'))
+			{
+			   $status['ret_code']=1;
+			}
 		 }
 		 else
 		 {
-			$status[ret_code]=1;
+			$new_data['field_parent_object']=$object_id;
+			$new_data['field_name']=$fieldname;
+			$new_data['field_plugins']=$conf_serialed;
+
+			if($this->phpgw_db->insert('egw_jinn_objects',$new_data,null,__LINE__,__FILE__,'jinn'))
+			{
+			   $status['ret_code']=1;
+			}
 		 }
 
 		 return $status;

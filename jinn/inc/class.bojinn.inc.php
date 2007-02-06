@@ -314,7 +314,7 @@
 			   $data[] = array
 			   (
 				  'name' => substr($key,strlen($prefix)),
-				  'value' => addslashes($val) 
+				  'value' => $val 
 			   );
 			}
 		 }

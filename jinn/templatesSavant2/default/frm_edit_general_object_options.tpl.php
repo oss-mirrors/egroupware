@@ -185,19 +185,10 @@
 			   <div id="subnav">
 				  <div id="tabcontent1" class="inactivetab" >
 
-					 <input type="hidden" name="where_key" value="<?= $this->where_key;?>">
-					 <input type="hidden" name="where_value" value="<?= $this->where_value;?>">
+					 <input type="hidden" name="object_id" value="<?= $this->object_id;?>">
+					 <!--<input type="hidden" name="where_value" value="<?= $this->where_value;?>">-->
 
 					 <table align="" cellspacing="2" cellpadding="2" style="border-spacing: 15px;">
-						<!--		  <tr>
-						   <td><?= lang('Object id');?></td>
-						   <td><input type="hidden" name="FLDobject_id" value="<?=$this->where_value;?>"><?=$this->where_value;?></td>
-						</tr>
-						<tr>
-						   <td  ><?= lang('Parent site id');?></td>
-						   <td ><input type=hidden name="FLDparent_site_id" value="<?=$this->global_values['parent_site_id'];?>"><?=$this->global_values['parent_site_id'];?></td>
-						</tr>
-						-->
 						<tr>
 						   <td  ><?= lang('Name');?></td>
 						   <td ><input type="text" name="FLDname" size="40" input_max_length value="<?= $this->global_values['name']?>"></td>

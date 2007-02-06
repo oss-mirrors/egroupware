@@ -773,8 +773,6 @@
 	  */
 	  function edit_gen_obj_options()
 	  {	
-		 //$this->template->set_var('css_file','');
-
 		 // if we have to save the new data
 		 if($_POST['submitted'])
 		 {
@@ -783,16 +781,16 @@
 
 			$data=$this->bo->sql_data_pairs($post,'');
 
-			if($_GET['object_id'])
+			if($_POST['object_id'])
 			{
-			   $where_string="object_id='{$_GET['object_id']}'";
+			   $_GET['object_id'] = $_POST['object_id'];
+			   $where_string="object_id='{$_POST['object_id']}'";
 
 			   $status = $this->bo->so->update_phpgw_data('egw_jinn_objects',$data,'','',$where_string,false); 
-			   //$status = $this->bo->so->update_phpgw_data('egw_jinn_objects',$data,'','',$where_string,true); // do insert when not existing
 			}
 			else
 			{
-			   $status = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data); // do insert when not existing
+			   $status = $this->bo->so->insert_new_object($data); // do insert when not existing
 			   $_GET['object_id']=$status['where_value'];
 			}
 
@@ -807,8 +805,7 @@
 			$table_name = $object_values['table_name'];
 			$this->tplsav2->assign('parent_site_id',$object_values['parent_site_id']);
 			$this->tplsav2->assign('object_name',$object_values['name']);
-			$this->tplsav2->assign('where_key',$where_key);
-			$this->tplsav2->assign('where_value',$where_value);
+			$this->tplsav2->assign('object_id',$_GET['object_id']);
 		 }
 		 else
 		 {
