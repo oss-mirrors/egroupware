@@ -54,7 +54,7 @@
 		   $input=$HTTP_POST_VARS[$key];
 		   if(!$input or $input == '')
 		   {
-			  $output=uniqid();
+			  $output=substr(md5(uniqid(rand())),0,13);
 		   }
 		   else
 		   {
