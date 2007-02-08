@@ -24,19 +24,30 @@
 	  
 	  function extract_archive($tmpfile,$site_id)
 	  {
-		 $archive = CreateObject('phpgwapi.PclZip',$tmpfile);
-		 if($archive->extract(PCLZIP_OPT_PATH, $this->get_jinn_sitefile_path($site_id)) == 0) 
-		 {
-			die("Error : ".$archive->errorInfo(true));
-		 }
+		 $dest_dir=$this->get_jinn_sitefile_path($site_id);
+		 $os = php_uname('s');
 		 
-		 /*		 $v_list = $archive->create($this->get_jinn_sitefile_path($site_id), PCLZIP_OPT_REMOVE_PATH, $this->get_jinn_sitefile_path($site_id));
-		 if ($v_list == 0) {
-			die("Error : ".$archive->errorInfo(true));
-		 }*/
+		 /** if system is mac os x use native unzip command 
+		 because there is a unknown error in PCLZIP on OSX */
+		 if($os=='Darwin')
+		 {
+			$this->check_or_create_dir($dest_dir);
+
+			$cmd="cd $dest_dir; /usr/bin/unzip $tmpfile";
+			exec($cmd);
+			return true;
+		 }
 		 else
 		 {
-			return true;
+			$archive = CreateObject('phpgwapi.PclZip',$tmpfile);
+			if($archive->extract(PCLZIP_OPT_PATH, $dest_dir ) == 0) 
+			{
+			   die("Error : ".$archive->errorInfo(true));
+			}
+			else
+			{
+			   return true;
+			}
 		 }
 	  }
 
@@ -73,7 +84,7 @@
 	  */
 	  function get_jinn_sitefile_path($site_id)
 	  {
-		 return $current_site_dir = EGW_SERVER_ROOT . SEP . 'jinn' . SEP . 'files_sites'. SEP . $site_id;
+		 return EGW_SERVER_ROOT . SEP . 'jinn' . SEP . 'files_sites'. SEP . $site_id;
 	  }
 	  
 	  function get_jinn_sitefile_url($site_id)
