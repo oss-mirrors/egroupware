@@ -2084,10 +2084,15 @@
 	  {
 		 $newdata=$this->oldData2newData($data);
 
-		 $uniqid=uniqid('');
-		 $newdata['object_id'] = $uniqid;
-
-		 //$this->phpgw_db->Debug=true;
+		 if($newdata['object_id']==null)
+		 {
+			$uniqid=uniqid('');
+			$newdata['object_id'] = $uniqid;
+		 }
+		 else
+		 {
+			$uniqid=$newdata['object_id'];
+		 }
 		 if($this->phpgw_db->insert('egw_jinn_objects',$newdata,$where,__LINE__,__FILE__,'jinn'))
 		 {
 			$status['where_value']=$uniqid;

@@ -1,5 +1,4 @@
 <script type="text/javascript" >
-
    function submit_multi_del()
    {
 		 if(countSelectedCheckbox()==0)

@@ -47,6 +47,7 @@
 		 $this->app_title = lang('Administrator Mode');
 
 		 $this->permissionCheck();
+
 	  }
 
 	  /**
@@ -106,6 +107,7 @@
 
 				  if($this->load_site_from_xml($xmlarray,'',$import_into))
 				  {
+					 //$this->import_form($import_into);
 					 $this->bo->exit_and_open_screen('jinn.ui_listsites.browse_egw_jinn_sites');
 				  }
 				  else
@@ -155,6 +157,7 @@
 		 $this->tplsav2->import_into=$import_into;
 		 $this->tplsav2->display('import_site_select_objects.tpl.php');		 
 
+		 $GLOBALS['phpgw']->common->phpgw_footer();
 		 $GLOBALS['phpgw']->common->phpgw_exit();
 	  }
 
@@ -603,8 +606,8 @@
 
 			$data_objects[] = array ( 'name' => 'parent_site_id', 'value' => $parent_site_id);
 
-
-			if($status = $this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
+		    //_debug_array($data_objects);
+			if($status = $this->bo->so->insert_new_object($data_objects))
 			{
 			   if(!$old_object_id)
 			   {
@@ -638,9 +641,11 @@
 
 			foreach($import_obj_fields as $obj_field)
 			{
-			   if($old_parent_id != $obj_field['field_parent_object'] 
-			   && ($obj_field['unique_id']!=$old_parent_id) 
-			   && ($obj_field['temp_id']!=$old_parent_id))
+			   if(
+				  $old_parent_id != $obj_field['field_parent_object'] 
+				  && ($obj_field['unique_id']!=$old_parent_id) 
+				  && ($obj_field['temp_id']!=$old_parent_id)
+			   )
 			   {
 				  continue;
 			   }
@@ -732,7 +737,7 @@
 					 $this->bo->addError(lang('incompatibility result: Report <b>\'%2\'</b>, property <b>\'%1\'</b> was not present in the file', $fieldname, $report['name']));
 				  }
 			   }
-			   if($this->bo->so->validateAndInsert_phpgw_data('egw_jinn_report',$data_reports))
+			   if($this->bo->so->xxxvalidateAndInsert_phpgw_data('egw_jinn_report',$data_reports))
 			   {
 				  $this->num_reports++;
 			   }

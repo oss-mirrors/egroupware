@@ -43,6 +43,16 @@
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
 		 $this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
+
+		 if (!is_object($GLOBALS['phpgw']->js))
+		 {
+			$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+		 }
+		 if (!strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
+		 {
+			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
+		 }
+		 //$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 	  }
 
 	  function pluginwrapper()
