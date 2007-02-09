@@ -2395,7 +2395,7 @@
 		 $sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object='$object_id' AND field_name='$fieldname'";
 		 $this->phpgw_db->query($sql,__LINE__,__FILE__);
 
-		 $this->phpgw_db->Debug=true;
+		 //$this->phpgw_db->Debug=true;
 
 		 $status['ret_code']=0;
 
