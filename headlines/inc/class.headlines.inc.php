@@ -150,6 +150,7 @@
 		// get a new set of links from the site
 		function getLinksSite()
 		{
+			@set_time_limit(30);
 			/* get the file that contains the links as one string */
 			$data = $GLOBALS['egw']->network->gethttpsocketfile($this->base_url . $this->newsfile,NULL,NULL,True);
 			if(!$data)
@@ -213,7 +214,7 @@
 			$exclude = '';
 
 			// get the file that contains the links
-			$lines = $GLOBALS['egw']->network->gethttpsocketfile('http://egroupware.org/egroupware/headlines.rdf');
+			$lines = $GLOBALS['egw']->network->gethttpsocketfile('http://demo.egroupware.org/headlines.rdf');
 			if(!$lines)
 			{
 				return False;
@@ -242,24 +243,25 @@
 						$i+=1;
 						break;
 					}
-					$title[$j] = $regs[1];
-					$title[$j] = ereg_replace("&amp;apos;","'",$title[$j]);
+					$links[$j]['display'] = $regs[1];
+					$links[$j]['display'] = ereg_replace("&amp;apos;","'",$links[$j]['display']);
 				}
 				elseif(ereg("<$linkstr>(.*)</$linkstr>",$lines[$i],$regs))
 				{
-					$links[$j] = $regs[1];
+					$links[$j]['server'] = $regs[1];
 				}
 				elseif(ereg("<description>(.*)</description>",$lines[$i],$regs))
 				{
-					$type[$j] = $regs[1];
+					$links[$j]['type'] = $regs[1];
 					$j++;
 				}
 			}
+			//_debug_array($links);exit;
 
 			$this->db->transaction_begin();
-			for($i=0;$i<count($title);$i++)
+			for($i=0;$i<count($links);$i++)
 			{
-				$server = str_replace('http://','',$links[$i]);
+				$server = str_replace('http://','',$links[$i]['server']);
 				$file   = strstr($server,'/');
 				$server = 'http://' . str_replace($file,'',$server);
 
@@ -267,7 +269,7 @@
 					$this->site_table,
 					'con,display,base_url,newsfile,newstype',
 					array(
-						'display'  => $title[$i],
+						'display'  => $links[$i]['display'],
 						'base_url' => $server,
 						'newsfile' => $file
 					),
@@ -278,10 +280,10 @@
 					$this->db->insert(
 						$this->site_table,
 						array(
-							'display'   => $title[$i],
+							'display'   => $links[$i]['display'],
 							'base_url'  => $server,
 							'newsfile'  => $file,
-							'newstype'  => $type[$i],
+							'newstype'  => $links[$i]['type'],
 							'lastread'  => 0,
 							'cachetime' => 60,
 							'listings'  => 20
@@ -293,17 +295,44 @@
 				}
 				$this->db->next_record();
 
-				if($this->db->f('newstype') <> $type[$i])
+				if($this->db->f('newstype') <> $links[$i]['type'])
 				{
 					$this->db->update(
 						$this->site_table,
-						array('newstype' => $type[$i]),
+						array('newstype' => $links[$i]['type']),
 						array('con' => (int)$this->db->f('con')),
 						__LINE__,__FILE__
 					);
 				}
 			}
 			$this->db->transaction_commit();
+		}
+
+		// export entire site list for creation of a proper site xml file
+		function exportList()
+		{
+			$out = array();
+
+			$this->db->select(
+				$this->site_table,
+				'display,base_url,newsfile,newstype',
+				'',
+				__LINE__,__FILE__
+			);
+			if(!$this->db->num_rows())
+			{
+				return False;
+			}
+
+			while($this->db->next_record())
+			{
+				$out[] = array(
+					'title' => $this->db->f(0),
+					'link'  => $this->db->f(1) . $this->db->f(2),
+					'description'  => $this->db->f(3)
+				);
+			}
+			return $out;
 		}
 
 		// save the new set of links and update the cache time
@@ -348,6 +377,7 @@
 							'base_url'  => $sitedata['base_url'],
 							'newsfile'  => $sitedata['newsfile'],
 							'lastread'  => 0,
+							'newstype'  => $sitedata['newstype'],
 							'cachetime' => $sitedata['cachetime'],
 							'listings'  => $sitedata['listings']
 						),
