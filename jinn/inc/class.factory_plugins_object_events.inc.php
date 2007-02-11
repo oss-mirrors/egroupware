@@ -57,7 +57,14 @@
   	  function call_event_action($post, $config)
 	  {
 		 global $local_bo;
-		 $local_bo = & $this->local_bo;
+		 if (strpos(phpversion(), 5) === 0)
+		 {
+			$local_bo = & $this->local_bo;
+		 }
+		 else
+		 {
+			$local_bo = $this->local_bo;
+		 }
 		 return call_user_func('event_action_'.$config['name'], $post, $config);
 	  }
 	  
