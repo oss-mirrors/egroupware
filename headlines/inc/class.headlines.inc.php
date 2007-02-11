@@ -48,10 +48,6 @@
 		function getLinks($site)
 		{
 			$links = array();
-			if(!$this->readtable($site))
-			{
-				return $links;
-			}
 
 			if($this->isCached())
 			{
@@ -104,12 +100,11 @@
 		function readcache($site)
 		{
 			$cache = array();
-			$this->db->select($this->cache_table,'title,link',array('site' => (int)$id),__LINE__,__FILE__);
+			$this->db->select($this->cache_table,'title,link',array('site' => (int)$site),__LINE__,__FILE__);
 
 			while($this->db->next_record())
 			{
-				$cache['link'][]  = $this->db->f('link');
-				$cache['title'][] = $this->db->f('title');
+				$cache[$this->db->f('title')] = $this->db->f('link');
 			}
 			return $cache;
 		}
@@ -190,14 +185,20 @@
 
 			$i = 1;
 			$links = array();
-			while(list($key,$val) = @each($allItems))
+			while(list($title,$link) = @each($allItems))
 			{
-				if($i == $this->listings)
+				if($title)
 				{
-					break;
+					/* Above checks that the title is not empty, which happens with some sites. */
+					if($i == $this->listings)
+					{
+						break;
+					}
+					$i++;
+					/* Some sites (Wired) return a CR in the middle of the title - maybe in the rss class... */
+					$title = str_replace("\n",'',$title);
+					$links[$title] = $link;
 				}
-				$i++;
-				$links[$key] = $val;
 			}
 
 			return $links;

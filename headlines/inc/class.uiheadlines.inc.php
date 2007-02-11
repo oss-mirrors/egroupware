@@ -47,7 +47,6 @@
 
 			$this->bo->getsites();
 
-//			$headlines =& CreateObject('headlines.headlines');
 			$GLOBALS['egw']->template->set_file(array(
 				'layout_row' => 'layout_row.tpl',
 				'form'       => $GLOBALS['egw_info']['user']['preferences']['headlines']['headlines_layout'] . '.tpl'
@@ -78,9 +77,9 @@
 						$GLOBALS['egw']->template->set_var($var);
 						$s .= $GLOBALS['egw']->template->parse('o_','row');
 					}
-					else
+					elseif(@is_array($links))
 					{
-						while(list($title,$link) = each($links))
+						foreach($links as $title => $link)
 						{
 							$var = Array(
 								'item_link'  => stripslashes($link),
@@ -402,10 +401,10 @@
 				$GLOBALS['egw']->template->set_var('th_bg2',$GLOBALS['egw_info']['theme']['th_bg']);
 				$GLOBALS['egw']->template->set_var('lang_current_cache',lang('Current headlines in cache'));
 
-				foreach($sitecache as $x => $cache)
+				foreach($sitecache as $title => $link)
 				{
 					$GLOBALS['egw']->nextmatchs->template_alternate_row_color($GLOBALS['egw']->template);
-					$GLOBALS['egw']->template->set_var('value','<a href="' . $cache['link'] . '" target="_new">' . $cache['title'] . '</a>');
+					$GLOBALS['egw']->template->set_var('value','<a href="' . $link . '" target="_new">' . $title . '</a>');
 					$GLOBALS['egw']->template->parse('listing_rows','listing_row',True);
 				}
 			}
