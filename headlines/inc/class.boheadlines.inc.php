@@ -133,6 +133,11 @@
 			return $this->so->getList();
 		}
 
+		function exportList()
+		{
+			return $this->so->exportList();
+		}
+
 		function getlinks($site)
 		{
 			return $this->so->getlinks($site);

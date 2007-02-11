@@ -22,6 +22,7 @@
 			'add'   => True,
 			'edit'  => True,
 			'delete' => True,
+			'export' => True,
 			'preferences' => True,
 			'preferences_layout' => True,
 			'grabnewssites' => True
@@ -371,22 +372,44 @@
 
 			$sitecache = $this->bo->readcache($con);
 
-			$GLOBALS['egw']->template->set_var('th_bg2',$GLOBALS['egw_info']['theme']['th_bg']);
-			$GLOBALS['egw']->template->set_var('lang_current_cache',lang('Current headlines in cache'));
-
 			if(count($sitecache) == 0)
 			{
 				$GLOBALS['egw']->nextmatchs->template_alternate_row_color($GLOBALS['egw']->template);
-				$GLOBALS['egw']->template->set_var('value',lang('None'));
-				$GLOBALS['egw']->template->parse('listing_rows','listing_row',True);
+				$GLOBALS['egw']->template->set_var('th_bg2',$GLOBALS['egw_info']['theme']['th_bg']);
+
+				$headline = $this->bo->getLinks($con);
+				settype($headline,'array');
+
+				if(count($headline) == 0)
+				{
+					$GLOBALS['egw']->template->set_var('value',lang('Unable to retrieve links'));
+					$GLOBALS['egw']->template->parse('listing_rows','listing_row',True);
+				}
+				else
+				{
+					$GLOBALS['egw']->template->set_var('lang_current_cache',lang('News headlines'));
+
+					foreach($headline as $title => $link)
+					{
+						$GLOBALS['egw']->nextmatchs->template_alternate_row_color($GLOBALS['egw']->template);
+						$GLOBALS['egw']->template->set_var('value','<a href="' . $link . '" target="_new">' . $title . '</a>');
+						$GLOBALS['egw']->template->parse('listing_rows','listing_row',True);
+					}
+				}
+			}
+			else
+			{
+				$GLOBALS['egw']->template->set_var('th_bg2',$GLOBALS['egw_info']['theme']['th_bg']);
+				$GLOBALS['egw']->template->set_var('lang_current_cache',lang('Current headlines in cache'));
+
+				foreach($sitecache as $x => $cache)
+				{
+					$GLOBALS['egw']->nextmatchs->template_alternate_row_color($GLOBALS['egw']->template);
+					$GLOBALS['egw']->template->set_var('value','<a href="' . $cache['link'] . '" target="_new">' . $cache['title'] . '</a>');
+					$GLOBALS['egw']->template->parse('listing_rows','listing_row',True);
+				}
 			}
 
-			foreach($sitecache as $x => $cache)
-			{
-				$GLOBALS['egw']->nextmatchs->template_alternate_row_color($GLOBALS['egw']->template);
-				$GLOBALS['egw']->template->set_var('value','<a href="' . $cache['link'] . '" target="_new">' . $cache['title'] . '</a>');
-				$GLOBALS['egw']->template->parse('listing_rows','listing_row',True);
-			}
 			$GLOBALS['egw']->template->parse('cancel','cancel');
 
 			$GLOBALS['egw']->template->pfp('out','form');
@@ -518,6 +541,41 @@
 
 			$GLOBALS['egw']->template->pfp('out','body');
 			$GLOBALS['egw']->common->egw_footer();
+		}
+
+		function export()
+		{
+			$exports = $this->bo->exportList();
+			$out = '<?xml version="1.0"?>
+<rss version="1.0">
+	<channel>
+		<title>eGroupWare Headline Sites</title>
+		<link>http://demo.egroupware.org/headlines.rdf</link>
+		<description>The latest Headline Sites available for eGroupWare</description>
+		<language>en-us</language>
+		<image>
+			<title>eGroupWare.org</title>
+			<url>http://www.egroupware.org/eGroupWare.jpg</url>
+			<link>http://www.egroupware.org/</link>
+			<width>144</width>
+			<height>40</height>
+		</image>';
+
+			foreach($exports as $x => $data)
+			{
+				$title = str_replace('&nbsp;',' ' , $data['title']);
+				$out .= '
+		<item>
+			<title>' . $title . '</title>
+			<link>' . $data['link'] . '</link>
+			<description>' . $data['description'] . '</description>
+		</item>';
+			}
+			$out .= '
+	</channel>
+</rss>';
+			ExecMethod2('phpgwapi.browser.content_header','headlines.rdf','text/plain',strlen($out));
+			echo $out;
 		}
 
 		function admin()
