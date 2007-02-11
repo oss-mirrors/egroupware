@@ -43,7 +43,7 @@
     {cancel}
    </table>
   </form>
-
+{edit}
 <!-- END form -->
 
 <!-- BEGIN buttons -->
@@ -62,6 +62,18 @@
      </td>
     </tr>
 <!-- END cancel -->
+
+<!-- BEGIN edit -->
+<form method="POST" action="{edit_url}">
+<table border="0" width="65%" align="center">
+    <tr>
+     <td colspan="2" height="40">
+      <input type="submit" name="edit" value="{lang_edit}">
+     </td>
+    </tr>
+</table>
+</form>
+<!-- END edit -->
 
 <!-- BEGIN listing_row -->
  <tr bgcolor="{tr_color}">

@@ -21,6 +21,7 @@
 		var $cache_table = 'egw_headlines_cached';
 		var $site_table = 'egw_headlines_sites';
 		var $xmlrpc = False;
+		var $debug  = False;
 
 		var $con       = 0;
 		var $display   = '';
@@ -32,9 +33,6 @@
 		var $listings  = 0;
 		var $error_timeout = False;
 
-		// wired news was messing up, I dunno
-		// "wired" => array("Wired&nbsp;News","http://www.wired.com","/news_drop/netcenter/netcenter.rdf/","rdf"),
-
 		function headlines()
 		{
 			$GLOBALS['egw']->network =& CreateObject('phpgwapi.network',False);
@@ -44,33 +42,29 @@
 			$this->xmlrpc = $GLOBALS['egw_info']['server']['xmlrpc'] ? True : False;
 		}
 
-		// try to get the links for the site
+		/* try to get the links for the site */
 		function getLinks($site)
 		{
 			$links = array();
 
-			if($this->isCached())
+			$this->readtable($site);
+			if($this->needrefresh())
 			{
-				$links = $this->getLinksDB();
+				$links = $this->getLinksSite();
+				if(@is_array($links))
+				{
+					$this->saveToDb($links);
+				}
 			}
 			else
 			{
-				$links = $this->getLinksSite();
-
-				if(@is_array($links))
-				{
-					$this->saveToDB($links);
-				}
-				else
-				{
-					$links = $this->getLinksDB();
-					$this->error_timeout = True;
-				}
+				$links = $this->getLinksDB();
 			}
+
 			return $links;
 		}
 
-		// do a quick read of the table
+		/* do a quick read of the table */
 		function readtable($site)
 		{
 			$this->db->select(
@@ -109,16 +103,29 @@
 			return $cache;
 		}
 
-		// determines if the headlines were cached less than $cachetime minutes ago
-		function isCached()
+		/* Determines if the headlines were cached less than $cachetime minutes ago.
+		 *  Renamed from isCached()
+		 */
+		function needrefresh()
 		{
-			return (($this->current_time - $this->lastread) < ($this->cachetime * 60));
+			if(($this->current_time - $this->lastread) > ($this->cachetime * 60))
+			{
+				if($this->debug)
+				{
+					echo '<br>Need to refresh site ' . $this->con;
+				}
+				return True;
+			}
+			if($this->debug)
+			{
+				echo '<br>Site ' . $this->con . ' is new enough';
+			}
+			return False;
 		}
 
 		// get the links from the database
 		function getLinksDB()
 		{
-//			return $this->getLinksSite();
 			$this->db->select($this->cache_table,'title,link',array('site' => (int)$this->con),__LINE__,__FILE__);
 
 			if(!$this->db->num_rows())
@@ -126,6 +133,7 @@
 				$links = $this->getLinksSite();  // try from site again
 				if(!@is_array($links))
 				{
+					$this->saveToDb();
 					$display = htmlspecialchars($this->display);
 //					die("</table><b>error</b>: unable to get links for <br><a href=\""
 //						. "$this->base_url\">$this->display</a>");
@@ -152,10 +160,13 @@
 			{
 				return False;
 			}
-			// if the xml-file specifys an encoding, convert it to our own encoding
+			/* if the xml-file specifes an encoding, convert it to our own encoding */
 			if (preg_match('/\<\?xml.*encoding="([^"]+)"/i',$data,$matches) && $matches[1])
 			{
-				//echo "<p>converting from charset '$matches[1]'</p>\n";
+				if($this->debug)
+				{
+					echo "<br>Converting from charset '$matches[1]'\n";
+				}
 				$data = $GLOBALS['egw']->translation->convert($data,$matches[1]);
 			}
 			else
@@ -204,7 +215,7 @@
 			return $links;
 		}
 
-		// get a list of the sites
+		/* get a list of the sites */
 		function getList()
 		{
 			@set_time_limit(0);
@@ -223,7 +234,7 @@
 
 			$startnum = 0;
 
-			// determine which line to begin grabbing the links
+			/* determine which line to begin grabbing the links */
 			for($i=0;$i<count($lines);$i++)
 			{
 				if(ereg($startat,$lines[$i],$regs))
@@ -233,7 +244,7 @@
 				}
 			}
 
-			// extract the links and assemble into array $links
+			/* extract the links and assemble into array $links */
 			$links = array();
 			for($i=$startnum,$j=0;$i<count($lines);$i++)
 			{
@@ -257,7 +268,6 @@
 					$j++;
 				}
 			}
-			//_debug_array($links);exit;
 
 			$this->db->transaction_begin();
 			for($i=0;$i<count($links);$i++)
@@ -309,7 +319,7 @@
 			$this->db->transaction_commit();
 		}
 
-		// export entire site list for creation of a proper site xml file
+		/* Export entire site list for creation of a proper site xml file */
 		function exportList()
 		{
 			$out = array();
@@ -336,9 +346,13 @@
 			return $out;
 		}
 
-		// save the new set of links and update the cache time
+		/* Save the new set of links and update the cache time */
 		function saveToDB($links)
 		{
+			if($this->debug)
+			{
+				echo '<br>Saving to cache...';
+			}
 			$this->db->delete($this->cache_table,array('site' => (int)$this->con),__LINE__,__FILE__);
 
 			// save links

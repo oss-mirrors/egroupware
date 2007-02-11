@@ -171,6 +171,7 @@
 			$GLOBALS['egw']->template->set_var('lang_type',lang('News Type'));
 			$GLOBALS['egw']->template->set_var('lang_save',lang('Save'));
 			$GLOBALS['egw']->template->set_var('lang_cancel',lang('Cancel'));
+			$GLOBALS['egw']->template->set_var('lang_edit',lang('Edit'));
 
 			$GLOBALS['egw']->template->set_var('input_display','<input name="n_display" value="' . $n_display . '" size="40">');
 			$GLOBALS['egw']->template->set_var('input_base_url','<input name="n_base_url" value="' . $n_base_url . '" size="40">');
@@ -349,6 +350,7 @@
 			$GLOBALS['egw']->template->set_block('admin_form','listing_row');
 			$GLOBALS['egw']->template->set_block('admin_form','listing_rows');
 			$GLOBALS['egw']->template->set_block('admin_form','cancel');
+			$GLOBALS['egw']->template->set_block('admin_form','edit');
 
 			$GLOBALS['egw']->template->set_var('lang_header',lang('View headline'));
 			$GLOBALS['egw']->template->set_var('th_bg',$GLOBALS['egw_info']['theme']['th_bg']);
@@ -361,6 +363,7 @@
 			$GLOBALS['egw']->template->set_var('lang_listings',lang('Listings Displayed'));
 			$GLOBALS['egw']->template->set_var('lang_type',lang('News Type'));
 			$GLOBALS['egw']->template->set_var('lang_cancel',lang('Cancel'));
+			$GLOBALS['egw']->template->set_var('lang_edit',lang('Edit'));
 
 			$GLOBALS['egw']->template->set_var('input_display',$sitedata['display']);
 			$GLOBALS['egw']->template->set_var('input_base_url',$sitedata['base_url']);
@@ -409,7 +412,9 @@
 				}
 			}
 
+			$GLOBALS['egw']->template->set_var('edit_url', $GLOBALS['egw']->link('/index.php','menuaction=headlines.uiheadlines.edit&con=' . $con));
 			$GLOBALS['egw']->template->parse('cancel','cancel');
+			$GLOBALS['egw']->template->parse('edit','edit');
 
 			$GLOBALS['egw']->template->pfp('out','form');
 			$GLOBALS['egw']->common->egw_footer();
