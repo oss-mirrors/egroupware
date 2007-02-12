@@ -108,7 +108,17 @@
 		 */
 		function needrefresh()
 		{
-			if(($this->current_time - $this->lastread) > ($this->cachetime * 60))
+			if($this->debug)
+			{
+				/* Refresh faster for debug purposes, e.g. don't wait an hour for cachetime of 60 */
+				$cachetime = $this->cachetime;
+			}
+			else
+			{
+				$cachetime = $this->cachetime * 60;
+			}
+
+			if(($this->current_time - $this->lastread) > $cachetime)
 			{
 				if($this->debug)
 				{
