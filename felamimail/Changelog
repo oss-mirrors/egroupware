@@ -1,3 +1,6 @@
+2007-02-12 Lars Kneschke  <lkneschke@metaways.de>
+	* added a script to test imap servers
+
 2007-01-24 Lars Kneschke  <lkneschke@metaways.de>
 	* removed some old code, which got not used anymore, but created problems (the blind gut of FeLaMiMail :-))
 
