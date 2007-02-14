@@ -70,7 +70,7 @@ $startTime = microtime(true);
 
 print "<pre>";
 
-set_include_path('../egw_pear'. PATH_SEPARATOR .'/usr/share/php'. PATH_SEPARATOR . get_include_path());
+set_include_path('../egw-pear'. PATH_SEPARATOR .'/usr/share/php'. PATH_SEPARATOR . get_include_path());
 
 require_once 'Net/IMAP.php';
 
