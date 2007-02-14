@@ -97,6 +97,14 @@ $delimiter = $imapClient->getHierarchyDelimiter();
 print "delimiter is: $delimiter<br>";
 
 $elapsedTime = microtime(true) - $startTime;
+print "<h1> $elapsedTime :: List all folders </h1>";
+$imapClient->getMailboxes();
+
+$elapsedTime = microtime(true) - $startTime;
+print "<h1> $elapsedTime :: List all subscribed folders </h1>";
+$imapClient->listsubscribedMailboxes();
+
+$elapsedTime = microtime(true) - $startTime;
 print "<h1> $elapsedTime :: Checking for ACL support: ";
 if($imapClient->hasCapability('ACL')) {
 	print "<span style='color:green;'>supported</span></h1>";
