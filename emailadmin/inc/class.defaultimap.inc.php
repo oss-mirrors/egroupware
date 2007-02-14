@@ -337,11 +337,11 @@
 					$result['shared']	= $nameSpace['shared'];
 				}
 			} else {
-				$delimiter = $this->getHierarchyDelimiter('INBOX');
+				$delimiter = $this->getHierarchyDelimiter();
 				
 				$result['personal']     = array(
 					0 => array(
-						'name'		=> 'INBOX',
+						'name'		=> '',
 						'delimiter'	=> $delimiter
 					)
 				);
