@@ -24,7 +24,7 @@
 
 		$my_msg_bootstrap =& CreateObject("felamimail.bofelamimail");
 
-		$connectionStatus = $my_msg_bootstrap->openConnection('INBOX',OP_READONLY);
+		$connectionStatus = $my_msg_bootstrap->openConnection();
 
 		$folderStatus = $my_msg_bootstrap->getFolderStatus('INBOX');
 		#_debug_array($folderStatus);
