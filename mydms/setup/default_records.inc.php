@@ -15,7 +15,6 @@
 	#$oProc->query("INSERT INTO phpgw_mydms_Folders VALUES (1, 'Root-Folder', 0, 'no comment', 1, 0, 2, 0)");
 
 	$rootFolder = array(
-		'id'		=> 1,
 		'name'		=> 'Root-Folder',
 		'parent'	=> 0,
 		'comment'	=> 'no comment',
