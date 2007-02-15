@@ -334,6 +334,7 @@ select your mail server type	admin	de	Wählen Sie den Typ des Mailservers
 send	felamimail	de	Senden
 send a reject message	felamimail	de	Ablehnungsemail senden
 sent folder	felamimail	de	Ordner für gesendete Nachrichten
+server supports mailfilter(sieve)	felamimail	de	Server unterstützt Mailfilter(Sieve)
 show header	felamimail	de	Kopfzeilen anzeigen
 show new messages on main screen	felamimail	de	neue Nachrichten auf der Startseite anzeigen
 sieve script name	felamimail	de	Sieve Skript Name

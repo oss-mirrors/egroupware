@@ -40,6 +40,7 @@
 
 			// currently we use only the first profile available
 			$accountData = array_shift($accountData);
+			#_debug_array($accountData);
 
 			$icServer =& CreateObject('emailadmin.defaultimap');
 			$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
@@ -49,6 +50,9 @@
 			$icServer->username 	= $accountData['ic_username'];
 			$icServer->loginName 	= $accountData['ic_username'];
 			$icServer->password	= $accountData['ic_password'];
+			$icServer->enableSieve	= isset($accountData['ic_enable_sieve']) ? (bool)$accountData['ic_enable_sieve'] : 1;
+			$icServer->sieveHost	= $accountData['ic_sieve_server'];
+			$icServer->sievePort	= isset($accountData['ic_sieve_port']) ? $accountData['ic_sieve_port'] : 2000;
 
 			$ogServer =& CreateObject('emailadmin.defaultsmtp');
 			$ogServer->host		= $accountData['og_hostname'];
@@ -165,6 +169,14 @@
 		
 		function saveAccountData($_icServer, $_ogServer, $_identity) 
 		{
+			if(!isset($_icServer->validatecert)) {
+				$_icServer->validatecert = true;
+			}
+			
+			if(isset($_icServer->host)) {
+				$_icServer->sieveHost = $_icServer->host;
+			}
+
 			parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
 		}
 		

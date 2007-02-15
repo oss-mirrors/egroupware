@@ -334,6 +334,7 @@ select your mail server type	admin	en	Select your mail server type
 send	felamimail	en	Send
 send a reject message	felamimail	en	send a reject message
 sent folder	felamimail	en	Sent Folder
+server supports mailfilter(sieve)	felamimail	en	server supports mailfilter(sieve)
 show header	felamimail	en	show header
 show new messages on main screen	felamimail	en	Show new messages on main screen
 sieve script name	felamimail	en	sieve script name

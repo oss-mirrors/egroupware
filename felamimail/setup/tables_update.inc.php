@@ -398,4 +398,24 @@
 
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.005';
 	}
+
+
+	$test[] = '1.3.005';
+	function felamimail_upgrade1_3_005()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_ic_enable_sieve',array(
+			'type' => 'bool',
+			'precision' => '255'
+		));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_ic_sieve_server',array(
+			'type' => 'varchar',
+			'precision' => '128'
+		));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_ic_sieve_port',array(
+			'type' => 'int',
+			'precision' => '4'
+		));
+
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.006';
+	}
 ?>

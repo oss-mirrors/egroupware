@@ -36,6 +36,7 @@ function onchange_active(_checkbox)
 	}
 	onchange_og_smtpauth(document.getElementById('og[smtpauth]'));
 	onchange_ic_encryption(document.getElementById('ic[encryption]'));
+	onchange_ic_enableSieve(document.getElementById('ic[enableSieve]'));
 }
 
 function onchange_og_smtpauth(_checkbox) 
@@ -48,6 +49,16 @@ function onchange_og_smtpauth(_checkbox)
 		document.getElementById('og[password]').disabled = true;
 	}
 }
+
+function onchange_ic_enableSieve(_checkbox) 
+{
+	if(_checkbox.checked) {
+		document.getElementById('ic[sievePort]').disabled = false;
+	} else {
+		document.getElementById('ic[sievePort]').disabled = true;
+	}
+}
+
 
 function onchange_ic_encryption(_checkbox) 
 {

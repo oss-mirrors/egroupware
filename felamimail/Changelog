@@ -1,3 +1,6 @@
+2007-02-15 Lars Kneschke  <lkneschke@metaways.de>
+	* enabled sieve support for custom email account settings
+
 2007-02-14 Lars Kneschke  <lkneschke@metaways.de>
 	* improved foldermanagement for server not supporting acl
 	* extended imap test script

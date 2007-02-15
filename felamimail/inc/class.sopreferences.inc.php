@@ -38,7 +38,7 @@
 			$retValue	= array();
 			$where		= array('fm_owner' => $accountID);
 			
-			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
+			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,fm_ic_enable_sieve,fm_ic_sieve_server,fm_ic_sieve_port,fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
 				$where,__LINE__,__FILE__);
 				
 			while(($row = $this->db->row(true,'fm_'))) {
@@ -133,9 +133,6 @@
 
 		function saveAccountData($_accountID, $_icServer, $_ogServer, $_identity)
 		{
-			if(!isset($_icServer->validatecert)) {
-				$_icServer->validatecert = true;
-			}
 			
 			$data = array(
 				'fm_active'			=> 0,
@@ -148,6 +145,9 @@
 				'fm_ic_password'		=> $_icServer->password,
 				'fm_ic_encryption'		=> $_icServer->encryption,
 				'fm_ic_validatecertificate' 	=> (bool)$_icServer->validatecert,
+				'fm_ic_enable_sieve' 		=> (bool)$_icServer->enableSieve,
+				'fm_ic_sieve_server'		=> $_icServer->sieveHost,
+				'fm_ic_sieve_port'		=> $_icServer->sievePort,
 				'fm_og_hostname'		=> $_ogServer->host,
 				'fm_og_port'			=> $_ogServer->port,
 				'fm_og_smtpauth'		=> (bool)$_ogServer->smtpAuth,

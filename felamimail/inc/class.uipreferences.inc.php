@@ -203,6 +203,11 @@
 							case 'validatecert':
 								$icServer->$key = ($value != 'dontvalidate');
 								break;
+								
+							case 'enableSieve':
+								$icServer->$key = ($value == 'enableSieve');
+								break;
+							
 							default:
 								$icServer->$key = $value;
 								break;
@@ -263,6 +268,10 @@
 						$this->t->set_var('checked_ic_'. $key .'_'. $value, 'checked');
 						break;
 						
+					case 'enableSieve':
+						$this->t->set_var('checked_ic_'.$key,($value ? 'checked' : ''));
+						break;
+
 					case 'validatecert':
 						$this->t->set_var('checked_ic_'.$key,($value ? '' : 'checked'));
 						break;
@@ -596,6 +605,7 @@
 			$this->t->set_var('lang_really_delete_signatures',lang('Do you really want to delete the selected signatures?'));
 			$this->t->set_var('lang_no_encryption',lang('no encryption'));
 			$this->t->set_var('lang_default_signature',lang('default signature'));
+			$this->t->set_var('lang_server_supports_sieve',lang('server supports mailfilter(sieve)'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);

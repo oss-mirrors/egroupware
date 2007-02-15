@@ -79,7 +79,10 @@
 				'fm_og_username' => array('type' => 'varchar','precision' => '128'),
 				'fm_og_password' => array('type' => 'varchar','precision' => '128'),
 				'fm_active' => array('type' => 'bool','nullable' => False),
-				'fm_ic_validatecertificate' => array('type' => 'bool','nullable' => False)
+				'fm_ic_validatecertificate' => array('type' => 'bool','nullable' => False),
+				'fm_ic_enable_sieve' => array('type' => 'bool','precision' => '255'),
+				'fm_ic_sieve_server' => array('type' => 'varchar','precision' => '128'),
+				'fm_ic_sieve_port' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('fm_id'),
 			'fk' => array(),

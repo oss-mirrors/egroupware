@@ -72,7 +72,6 @@
 			 {lang_encrypted_connection}
 		</td>
 		<td  style="text-align:left;">
-<!--			<input type="checkbox" id="ic[encryption]" name="ic[encryption]" value="1" onchange="onchange_ic_encryption(this)" {checked_ic_encryption}> -->
 			<input type="radio" id="ic[encryption]_1" name="ic[encryption]" value="1" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_1}> STARTTLS
 			<input type="radio" id="ic[encryption]_2" name="ic[encryption]" value="2" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_2}> TLS
 			<input type="radio" id="ic[encryption]_3" name="ic[encryption]" value="3" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_3}> SSL
@@ -85,6 +84,22 @@
 		</td>
 		<td  style="text-align:left;">
 			<input type="checkbox" id="ic[validatecert]" name="ic[validatecert]" value="dontvalidate" {checked_ic_validatecert}>
+		</td>
+	</tr>
+	<tr>
+		<td  style="text-align:left;">
+			 {lang_server_supports_sieve}
+		</td>
+		<td  style="text-align:left;">
+			<input type="checkbox" id="ic[enableSieve]" name="ic[enableSieve]" onchange="onchange_ic_enableSieve(this)" value="enableSieve" {checked_ic_enableSieve}>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:300px; text-align:left;">
+			{lang_port}
+		</td>
+		<td  style="text-align:left;">
+			<input type="text" style="width: 5em;" id="ic[sievePort]" name="ic[sievePort]" value="{ic[sievePort]}" maxlength="5">
 		</td>
 	</tr>
 </table>
