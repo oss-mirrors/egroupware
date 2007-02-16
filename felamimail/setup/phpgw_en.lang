@@ -18,6 +18,7 @@ after message body	felamimail	en	After message body
 all address books	felamimail	en	All address books
 all folders	felamimail	en	All Folders
 all of	felamimail	en	all of
+allow images from external sources in html emails	felamimail	en	Allow images from external sources in HTML emails
 allways a new window	felamimail	en	allways a new window
 always show html emails	felamimail	en	Always show HTML emails
 and	felamimail	en	and

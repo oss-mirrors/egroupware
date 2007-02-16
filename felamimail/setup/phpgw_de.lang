@@ -18,6 +18,7 @@ after message body	felamimail	de	nach dem Editorfenster
 all address books	felamimail	de	Alle Adressbücher
 all folders	felamimail	de	Alle Ordner
 all of	felamimail	de	mit allen
+allow images from external sources in html emails	felamimail	de	Erlaube Bilder von externen Quellen in HTML emails
 allways a new window	felamimail	de	jede Mail in einem neuen Fenster
 always show html emails	felamimail	de	HTML Emails mmer anzeigen
 and	felamimail	de	und
