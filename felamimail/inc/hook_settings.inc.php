@@ -163,6 +163,13 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
+		'allowExternalIMGs' => array(
+			'type'   => 'check',
+			'label'  => 'allow images from external sources in html emails',
+			'name'   => 'allowExternalIMGs',
+			'xmlrpc' => True,
+			'admin'  => True
+		),
 		'trashFolder' => array(
 			'type'   => 'select',
 			'label'  => 'trash folder',
