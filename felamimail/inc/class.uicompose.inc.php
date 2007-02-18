@@ -401,44 +401,47 @@
 					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
 
 			$kses =& CreateObject('phpgwapi.kses');
-			$kses->AddHTML(
-				'p', array(
+			$kses->AddHTML('p', array(
 					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
 				)
 			);
-			$kses->AddHTML('div');
-			$kses->AddHTML("br");
-			$kses->AddHTML("b");
-			$kses->AddHTML("u");
+			$kses->AddHTML('div', array(
+					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
+				)
+			);
+			$kses->AddHTML('br');
+			$kses->AddHTML('b');
+			$kses->AddHTML('center');
+			$kses->AddHTML('em');
+			$kses->AddHTML('font', array(
+					'color'	=> array('minlen' =>   1, 'maxlen' =>  10)
+				)
+			);
+			$kses->AddHTML('i');
 			$kses->AddHTML("s");
-			$kses->AddHTML("i");
-			$kses->AddHTML("strong");
-			$kses->AddHTML("strike");
-			$kses->AddHTML("center");
-			$kses->AddHTML(
-				"hr",array(
+			$kses->AddHTML('strike');
+			$kses->AddHTML('strong');
+			$kses->AddHTML('u');
+			$kses->AddHTML('hr', array(
 					"class"		=> array('maxlen' => 20),
 					"style"		=> array('minlen' => 1),
 				)
 			);
 			$kses->AddHTML("ul");
-			$kses->AddHTML(
-				"ol",array(
+			$kses->AddHTML('ol', array(
 					"type"	=> array('maxlen' => 20)
 				)
 			);
 			$kses->AddHTML("li");
 			$kses->AddHTML("h1");
 			$kses->AddHTML("h2");
-			$kses->AddHTML(
-				"a", array(
+			$kses->AddHTML('a', array(
 					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
 					"name" 		=> array('minlen' => 2),
 					'target'	=> array('maxlen' => 10)
 				)
 			);
-			$kses->AddHTML(
-				"pre", array(
+			$kses->AddHTML('pre', array(
 					"wrap" => array('maxlen' => 10)
 				)
 			);

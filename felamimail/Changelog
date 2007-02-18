@@ -1,32 +1,36 @@
-2007-02-15 Lars Kneschke  <lkneschke@metaways.de>
+2007-02-16 Lars Kneschke  <l.kneschke@metaways.de>
+	* fix for loosing formating of centering, right-justification, text coloring and italics when composing from draft
+	* fixed my emailaddress in changelog file
+
+2007-02-15 Lars Kneschke  <l.kneschke@metaways.de>
 	* enabled sieve support for custom email account settings
 
-2007-02-14 Lars Kneschke  <lkneschke@metaways.de>
+2007-02-14 Lars Kneschke  <l.kneschke@metaways.de>
 	* improved foldermanagement for server not supporting acl
 	* extended imap test script
 
-2007-02-13 Lars Kneschke  <lkneschke@metaways.de>
+2007-02-13 Lars Kneschke  <l.kneschke@metaways.de>
 	* updated imap server test script
 
-2007-02-12 Lars Kneschke  <lkneschke@metaways.de>
+2007-02-12 Lars Kneschke  <l.kneschke@metaways.de>
 	* added a script to test imap servers
 
-2007-01-24 Lars Kneschke  <lkneschke@metaways.de>
+2007-01-24 Lars Kneschke  <l.kneschke@metaways.de>
 	* removed some old code, which got not used anymore, but created problems (the blind gut of FeLaMiMail :-))
 
-2007-01-13 Lars Kneschke  <lkneschke@metaways.de>
+2007-01-13 Lars Kneschke  <l.kneschke@metaways.de>
 	* finally added support the in-reply-to header
 
-2007-01-11 Lars Kneschke  <lkneschke@metaways.de>
+2007-01-11 Lars Kneschke  <l.kneschke@metaways.de>
 	* added support for serverside sort
 	* you make one signature the default one
 	* added support for searching content of message body
 
-2007-01-05 Lars Kneschke  <lkneschke@metaways.de>
+2007-01-05 Lars Kneschke  <l.kneschke@metaways.de>
 	* fetch quota from imap server only, if imap server supports quota
 	* improved autocreation of folders
 
-2006-12-31 Lars Kneschke  <lkneschke@metaways.de>
+2006-12-31 Lars Kneschke  <l.kneschke@metaways.de>
 	* major rewrite of the imap backend. php-imap is mostly gone. all imap code
 	  is now based on the PEAR class Net_IMAP
 	* drafts keep their formating
@@ -35,14 +39,14 @@
 	* signatures can now be managed from IE too
 	* make FeLaMiMail dependent on egw-pear
 
-2006-11-20 Lars Kneschke  <lkneschke@metaways.de>
+2006-11-20 Lars Kneschke  <l.kneschke@metaways.de>
 	* passwords are now hidden, when editing account settings
 
-2006-11-08  Lars Kneschke  <lkneschke@metaways.de>
+2006-11-08  Lars Kneschke  <l.kneschke@metaways.de>
 	* edit signature is now using fckeditor too
 	* improved generating multipart messages again
 
-2006-11-07  Lars Kneschke  <lkneschke@metaways.de>
+2006-11-07  Lars Kneschke  <l.kneschke@metaways.de>
 	* switched to fckeditor for writing html emails
 	* fixed login problem, when using userdefined accounts(loginname was not sent)
 	* improved generating multipart messages
