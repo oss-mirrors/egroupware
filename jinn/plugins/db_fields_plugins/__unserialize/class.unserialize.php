@@ -45,6 +45,12 @@
 
 		  return $ret;
 	   }
+
+	   function formview_read($value, $config,$attr_arr)
+	   {
+		  $this->formview_edit('listview',$value,$config,$attr_arr);
+	   }
+
 	   function listview_read($value, $config,$attr_arr)
 	   {
 		  $this->formview_edit('listview',$value,$config,$attr_arr);
