@@ -28,21 +28,22 @@ require_once 'Net/Socket.php';
  */
 class Net_IMAPProtocol {
 
-
+    
     /**
-    * The auth methods this class support
-    * @var array
-    */
+     * The auth methods this class support
+     * @var array
+     */
     var $supportedAuthMethods=array('DIGEST-MD5', 'CRAM-MD5', 'LOGIN');
 
 
     /**
-    * The auth methods this class support
-    * @var array
-    */
+     * The auth methods this class support
+     * @var array
+     */
     var $supportedSASLAuthMethods=array('DIGEST-MD5', 'CRAM-MD5');
 
-     /**
+
+    /**
      * _serverAuthMethods
      * @var boolean
      */
@@ -62,11 +63,13 @@ class Net_IMAPProtocol {
      */
     var $_socket = null;
 
+
     /**
      * The timeout for the connection to the IMAP server.
      * @var int
      */
     var $_timeout = null;
+
 
     /**
      * The options for SSL/TLS connection 
@@ -75,53 +78,61 @@ class Net_IMAPProtocol {
      */
     var $_streamContextOptions = null;
 
-     /**
+
+    /**
      * To allow class debuging
      * @var boolean
      */
     var $_debug = false;
-
     var $dbgDialog = '';
 
-     /**
+
+    /**
+     * Print error messages
+     * @var boolean
+     */
+    var $_printErrors = false;
+
+
+    /**
      * Command Number
      * @var int
      */
     var $_cmd_counter = 1;
 
 
-     /**
+    /**
      * Command Number for IMAP commands
      * @var int
      */
     var $_lastCmdID = 1;
 
-     /**
+
+    /**
      * Command Number
      * @var boolean
      */
     var $_unParsedReturn = false;
 
 
-
-     /**
+    /**
      * _connected: checks if there is a connection made to a imap server or not
      * @var boolean
      */
     var $_connected = false;
-     /**
+
+
+    /**
      * Capabilities
      * @var boolean
      */
     var $_serverSupportedCapabilities = null;
 
 
-
-     /**
+    /**
      * Use UTF-7 funcionallity
      * @var boolean
      */
-    //var $_useUTF_7 = false;
     var $_useUTF_7 = true;
 
 
@@ -245,6 +256,19 @@ class Net_IMAPProtocol {
         return $this->dbgDialog;
     }
 
+    /**
+     * Sets printed output of errors on or of
+     *
+     * @param   boolean true or false
+     * 
+     * @return  nothing
+     * @access  public
+     * @since   1.1
+     */
+    function setPrintErrors($printErrors = true)
+    {
+        $this->_printErrors = $printErrors;
+    }
 
 
     /**
@@ -2516,27 +2540,26 @@ class Net_IMAPProtocol {
 
 
 
-
+    // ToDo: all real errors should be returned as PEAR error, others hidden by default
+    // NO extra output from this class!
     /**
-    * Utility funcion to display to console the protocol errors
-    *
-    * @param string the error
-    * @param int the line producing the error
-    * @param string file where the error was produced
-    *
-    * @return string containing  the error
-    * @access private
-    * @since  1.0
-    */
-    function _prot_error($str , $line , $file,$printError=true)
+     * Utility funcion to display to console the protocol errors
+     * printErrors() additionally has to be set to true
+     *
+     * @param string     $str   the error message
+     * @param int        $line  the line producing the error
+     * @param string     $file  file where the error was produced
+     *
+     * @return nothing
+     * @access private
+     * @since  1.0
+     */
+    function _prot_error($str , $line , $file, $printError = true)
     {
-        if($printError){
+        if ($this->_printErrors && $printError) {
             echo "$line,$file,PROTOCOL ERROR!:$str\n";
         }
     }
-
-
-
 
 
 
@@ -2892,17 +2915,27 @@ class Net_IMAPProtocol {
                 return $result_array;
             break;
 
-        case "ACL" :
-                $this->_parseSpace( $str , __LINE__ , __FILE__ );
-                $this->_getNextToken( $str , $mailbox );
-                $this->_parseSpace( $str , __LINE__ , __FILE__ );
-                $acl_arr = explode( ' ' , rtrim( substr( $this->_getToEOL( $str , false ) , 0 ) ) );
-
-                for( $i = 0 ; $i < count( $acl_arr ) ; $i += 2 ){
-                    $arr[] = array( "USER"=>$acl_arr[$i] , "RIGHTS"=>$acl_arr[ $i + 1 ] );
+        case 'ACL':
+                /*
+                RFC 4314:
+                acl-data        = "ACL" SP mailbox *(SP identifier SP rights)
+                identifier      = astring
+                rights          = astring ;; only lowercase ASCII letters and digits are allowed.
+                */
+                //$str = " INBOX\r\nA0006 OK Completed\r\n";
+                $this->_parseSpace($str, __LINE__, __FILE__);
+                $this->_getNextToken($str, $mailbox);
+                
+                $arr = array();
+                while (substr($str, 0, 2) != "\r\n") {
+                    $this->_parseSpace($str, __LINE__, __FILE__);
+                    $this->_getNextToken($str, $acl_user);
+                    $this->_parseSpace($str, __LINE__, __FILE__);
+                    $this->_getNextToken($str, $acl_rights);
+                    $arr[] = array('USER'=>$acl_user, 'RIGHTS'=>$acl_rights);
                 }
 
-                $result_array = array( "MAILBOX"=>$this->utf_7_decode($mailbox) , "USERS"=>$arr );
+                $result_array = array('MAILBOX'=>$this->utf_7_decode($mailbox), 'USERS'=>$arr);
                 return $result_array;
             break;
 
@@ -2962,7 +2995,7 @@ class Net_IMAPProtocol {
     /*
     * Verifies that the next character IS a space
     */
-    function _parseSpace(&$str,$line,$file, $printError = true)
+    function _parseSpace(&$str, $line, $file, $printError = true)
     {
     /*
         This code repeats a lot in this class
@@ -3005,59 +3038,58 @@ class Net_IMAPProtocol {
             $unparsed_str = $str;
         }
 
-        $this->_getNextToken( $str , $token );
+        $this->_getNextToken($str, $token);
 
-        while( $token != $cmdid && $str != '' ){
-        if($token == "+" ){
-        //if the token  is + ignore the line
-        // TODO: verify that this is correct!!!
-            $this->_getToEOL( $str );
-            $this->_getNextToken( $str , $token );
-        }
+        while ($token != $cmdid && $str != '') {
+            if ($token == '+' ) {
+                //if the token  is + ignore the line
+                // TODO: verify that this is correct!!!
+                $this->_getToEOL($str);
+                $this->_getNextToken($str, $token);
+            }
 
-            $this->_parseString( $str , ' ' , __LINE__ , __FILE__ );
+            $this->_parseString($str, ' ', __LINE__, __FILE__);
 
-            $this->_getNextToken( $str , $token );
-        if( $token == '+' ){
-            $this->_getToEOL( $str );
-            $this->_getNextToken( $str , $token );
-        }else
-            if( is_numeric( $token ) ){
-                // The token is a NUMBER so I store it
-                $msg_nro = $token;
-                $this->_parseSpace( $str , __LINE__ , __FILE__ );
+            $this->_getNextToken($str, $token);
+            if ($token == '+') {
+                $this->_getToEOL($str);
+                $this->_getNextToken($str, $token);
+            } else {
+                if (is_numeric($token)) {
+                    // The token is a NUMBER so I store it
+                    $msg_nro = $token;
+                    $this->_parseSpace($str, __LINE__, __FILE__);
 
-                // I get the command
-                $this->_getNextToken( $str , $command );
-
-                if( ( $ext_arr = $this->_retrParsedResponse( $str , $command, $msg_nro ) ) == false ){
-                //  if this bogus response cis a FLAGS () or EXPUNGE response
-                // the ignore it
-                    if( $command != 'FLAGS' && $command != 'EXPUNGE' ){
-                        $this->_prot_error("bogus response!!!!" , __LINE__ , __FILE__, false);
+                    // I get the command
+                    $this->_getNextToken($str, $command);
+ 
+                    if (($ext_arr = $this->_retrParsedResponse($str, $command, $msg_nro)) == false) {
+                        //  if this bogus response cis a FLAGS () or EXPUNGE response
+                        // the ignore it
+                        if ($command != 'FLAGS' && $command != 'EXPUNGE') {
+                            $this->_prot_error("bogus response!!!!" , __LINE__ , __FILE__, false);
+                        }
                     }
+                    $result_array[] = array('COMMAND'=>$command, 'NRO'=>$msg_nro, 'EXT'=>$ext_arr);
+                } else {
+                    // OK the token is not a NUMBER so it MUST be a COMMAND
+                    $command = $token;
+
+                    /* Call the parser return the array
+                        take care of bogus responses!
+                    */
+
+                    if (($ext_arr = $this->_retrParsedResponse($str, $command)) == false) {
+                        $this->_prot_error("bogus response!!!! (COMMAND:$command)", __LINE__, __FILE__);
+                    }
+                    $result_array[] = array('COMMAND'=>$command, 'EXT'=>$ext_arr);
                 }
-                $result_array[] = array( "COMMAND"=>$command , "NRO"=>$msg_nro , "EXT"=>$ext_arr );
-            }else{
-                // OK the token is not a NUMBER so it MUST be a COMMAND
-                $command = $token;
-
-                /* Call the parser return the array
-                    take care of bogus responses!
-                */
-
-                if( ( $ext_arr = $this->_retrParsedResponse( $str , $command ) ) == false ){
-                    $this->_prot_error( "bogus response!!!! (COMMAND:$command)" , __LINE__ , __FILE__ );
-                }
-                $result_array[] = array( "COMMAND"=>$command , "EXT"=>$ext_arr );
-
-
             }
 
 
-            $this->_getNextToken( $str , $token );
+            $this->_getNextToken($str, $token);
 
-            $token = strtoupper( $token );
+            $token = strtoupper($token);
             if( $token != "\r\n" && $token != '' ){
                 $this->_prot_error("PARSE ERROR!!! must be a '\\r\\n' here  but is a '$token'!!!! (getting the next line)|STR:|$str|" , __LINE__ , __FILE__ );
             }
@@ -3072,7 +3104,6 @@ class Net_IMAPProtocol {
         }//While
         // OK we finish the UNTAGGED Response now we must parse the FINAL TAGGED RESPONSE
         //TODO: make this a litle more elegant!
-
         $this->_parseSpace( $str , __LINE__ , __FILE__, false );
 
         $this->_getNextToken( $str , $cmd_status );
