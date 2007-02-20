@@ -34,7 +34,7 @@ var KEYCODE_DOWN=40;
 
 // disabled Keycodes
 // quickserach input field
-var disabledKeys1 = new Array(KEYCODE_TAB, KEYCODE_ENTER, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
+var disabledKeys1 = new Array(KEYCODE_TAB, KEYCODE_ENTER, KEYCODE_UP, KEYCODE_DOWN);
 
 
 function initAll()
@@ -305,7 +305,7 @@ function keypressed(keycode, keyvalue) {
 	//_pressed = new Date().getTime();
 		
 	switch (keycode) {
-		case KEYCODE_LEFT:
+	//	case KEYCODE_LEFT:
 		case KEYCODE_UP:
 			if(selectedSuggestion > 0) {
 				selectSuggestion(selectedSuggestion-1);
@@ -314,7 +314,7 @@ function keypressed(keycode, keyvalue) {
 			}
 			break;
 		
-		case KEYCODE_RIGHT:
+	//	case KEYCODE_RIGHT:
 		case KEYCODE_DOWN:
 			//document.title='down '+selectedSuggestion;
 			//if(selectedSuggestion) {
