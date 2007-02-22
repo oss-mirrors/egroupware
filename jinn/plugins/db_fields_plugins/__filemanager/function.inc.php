@@ -59,8 +59,9 @@
 		 exit();		
 	  }
 
-
-	  $img_thumbs = Image_Transform::factory(IMAGE_CLASS);
+	  $_tmpobj = new Image_Transform;
+	  $img_thumbs = $_tmpobj->factory(IMAGE_CLASS);
+	  //	  $img_thumbs = Image_Transform::factory(IMAGE_CLASS);
 	  $img_thumbs->load($BASE_DIR.$path.$img_file);
 
 	  if ($w > $h) 
@@ -168,7 +169,9 @@
 	  $img_info = getimagesize($path.$img_file);
 	  $w = $img_info[0]; $h = $img_info[1];
 
-	  $img_resize = Image_Transform::factory(IMAGE_CLASS);
+	  $_tmpobj = new Image_Transform;
+	  $img_resize = $_tmpobj->factory(IMAGE_CLASS);
+//	  $img_resize = Image_Transform::factory(IMAGE_CLASS);
 	  $img_resize->load($path.$img_file);
 
 	  $pw = (real)percent($nw, $w);
