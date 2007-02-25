@@ -1,5 +1,5 @@
 are you sure you want to delete %1 ?	ftp	fi	Haluatko poistaa kohteen %1 ?
-attempt to create a directory with empty name	ftp	fi	Yritys luoda nimetön kansio
+attempt to create a directory with empty name	ftp	fi	Yritit luoda nimetön kansio
 attempt to upload a file with empty name	ftp	fi	yritit ladata tiedostoa antamatta sille nimeä
 cd	ftp	fi	cd
 connect	ftp	fi	Yhdistä
@@ -15,9 +15,9 @@ ftp hostname	ftp	fi	FTP verkkoaseman tunnus
 ftp server	ftp	fi	Ftp -palvelin
 home	ftp	fi	Koti
 log into ftp server	ftp	fi	Kirjaudutaan FTP palvelimelle
-logout/relogin	ftp	fi	poistu/kirjaudu uudelleen
+logout/relogin	ftp	fi	poistu / kirjaudu uudelleen
 password	ftp	fi	Salasana
-permissions	ftp	fi	Luvat
+permissions	ftp	fi	Oikeudet
 rename	ftp	fi	nimeä uudelleen %1
 rename file	ftp	fi	uudelleen nimeä tiedosto
 rename from	ftp	fi	Vanha nimi

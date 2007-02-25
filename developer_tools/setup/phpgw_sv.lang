@@ -19,7 +19,7 @@ diary	developer_tools	sv	Kalender
 done	developer_tools	sv	Klar
 download	developer_tools	sv	Ladda ner
 download the lang-file to be saved in the apps setup-dir	developer_tools	sv	Ladda ner språkfil till applikationens setup katalog
-edit	developer_tools	sv	Redigera
+edit	developer_tools	sv	Ändra
 installed applications	developer_tools	sv	Installerade applikationer
 language file management	developer_tools	sv	Språkfilshantering
 list changelogs	developer_tools	sv	Lista ändringshistorik
@@ -37,6 +37,7 @@ preferences	developer_tools	sv	Alternativ
 preferences have been updated	developer_tools	sv	Inställningar uppdaterade
 project	developer_tools	sv	Projekt
 remove	developer_tools	sv	Radera
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	sv	Raderade %1 fraser från målspråket som inte finns i källspråket
 returns to the application list, not saved changes get lost !!!	developer_tools	sv	Återvänd till listan på applikationer, alla osparade ändringar förloras!
 revert	developer_tools	sv	Återgå
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sv	Spara ändringar i intern chache till nästa steg
@@ -70,4 +71,4 @@ you have to [save] every manual change in the above fields, before you can go to
 you must a version	developer_tools	sv	Du måste en version
 you must enter a change	developer_tools	sv	Du måste göra ändringar
 you must select a project	developer_tools	sv	Välj ett projekt
-you need to set your preferences for this app	developer_tools	sv	Gör dina inställningar för detta program
+you need to set your preferences for this app	developer_tools	sv	Gör dina inställningar för programmet

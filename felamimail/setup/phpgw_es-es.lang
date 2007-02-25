@@ -18,6 +18,7 @@ after message body	felamimail	es-es	Después del cuerpo del mensaje
 all address books	felamimail	es-es	Todas las libretas de direcciones
 all folders	felamimail	es-es	Todas las carpetas
 all of	felamimail	es-es	todos los
+allow images from external sources in html emails	felamimail	es-es	Permitir imágenes de origen externo en correos HTML
 allways a new window	felamimail	es-es	siempre una ventana nueva
 always show html emails	felamimail	es-es	Mostrar siempre los correos HTML
 and	felamimail	es-es	y
@@ -334,6 +335,7 @@ select your mail server type	admin	es-es	Seleccionar el tipo de servidor de corr
 send	felamimail	es-es	Enviar
 send a reject message	felamimail	es-es	enviar un mensaje de rechazo
 sent folder	felamimail	es-es	Carpeta de enviados
+server supports mailfilter(sieve)	felamimail	es-es	El servidor soporta filtro de correo (sieve)
 show header	felamimail	es-es	mostrar cabecera
 show new messages on main screen	felamimail	es-es	Mostrar mensajes nuevos en la pantalla principal
 sieve script name	felamimail	es-es	nombre del script sieve
@@ -402,6 +404,7 @@ use regular expressions	felamimail	es-es	usar expresiones regulares
 use smtp auth	admin	es-es	Usar identificación SMTP
 users can define their own emailaccounts	admin	es-es	Los usuarios pueden definir sus propias cuentas de correo
 vacation notice	felamimail	es-es	aviso de vacaciones
+vacation notice is active	felamimail	es-es	El aviso de vacaciones está activo
 validate certificate	felamimail	es-es	validar certificado
 view full header	felamimail	es-es	Ver la cabecera completa
 view header lines	felamimail	es-es	Ver líneas del encabezado

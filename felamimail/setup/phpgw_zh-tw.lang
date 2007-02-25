@@ -74,6 +74,7 @@ date(newest first)	felamimail	zh-tw	日期(新的在前)
 date(oldest first)	felamimail	zh-tw	日期(舊的在前)
 days	felamimail	zh-tw	日
 deactivate script	felamimail	zh-tw	停用程式
+default signature	felamimail	zh-tw	預設簽名
 default sorting order	felamimail	zh-tw	預設排序
 delete all	felamimail	zh-tw	刪除全部
 delete folder	felamimail	zh-tw	刪除資料夾
@@ -91,10 +92,13 @@ display messages in multiple windows	felamimail	zh-tw	開啟多個視窗顯示�
 display of html emails	felamimail	zh-tw	顯示HTML郵件
 display only when no plain text is available	felamimail	zh-tw	只有在不包含存文字時顯示
 display preferences	felamimail	zh-tw	顯示設定
+displaying html messages is disabled	felamimail	zh-tw	顯示 html 信件的功能停用中
 do it!	felamimail	zh-tw	執行！
 do not use sent	felamimail	zh-tw	不使用寄件備份
 do not use trash	felamimail	zh-tw	不使用垃圾桶
+do not validate certificate	felamimail	zh-tw	不驗證執照
 do you really want to delete the '%1' folder?	felamimail	zh-tw	您確定要刪除資料夾 '%1' ？
+do you really want to delete the selected signatures?	felamimail	zh-tw	您確定要刪除選擇的簽名？
 does not contain	felamimail	zh-tw	不包含
 does not match	felamimail	zh-tw	不符合
 does not match regexp	felamimail	zh-tw	不符合條件
@@ -196,6 +200,7 @@ imap server username	felamimail	zh-tw	IMAP伺服器帳號
 imaps authentication	felamimail	zh-tw	IMAPS驗證
 imaps encryption only	felamimail	zh-tw	只透過IMAPS加密
 in	felamimail	zh-tw	在
+inbox	felamimail	zh-tw	收件匣
 incoming mail server(imap)	felamimail	zh-tw	收信伺服器（IMAP）
 index order	felamimail	zh-tw	排序
 info	felamimail	zh-tw	資訊
@@ -249,6 +254,7 @@ new filter	felamimail	zh-tw	新規則
 next	felamimail	zh-tw	下一個
 next message	felamimail	zh-tw	下一封郵件
 no active imap server found!!	felamimail	zh-tw	找不到可以使用的 IMAP 伺服器！
+no encryption	felamimail	zh-tw	沒有加密
 no filter	felamimail	zh-tw	沒有過濾規則
 no folders found	felamimail	zh-tw	找不到資料夾
 no folders were found to subscribe to!	felamimail	zh-tw	找不到可以訂閱的資料夾
@@ -257,6 +263,7 @@ no highlighting is defined	felamimail	zh-tw	未定義醒目標示
 no message returned.	felamimail	zh-tw	沒有訊息回應。
 no messages found...	felamimail	zh-tw	沒有任何信件...
 no messages were selected.	felamimail	zh-tw	沒有選取任何訊息
+no plain text part found	felamimail	zh-tw	找不到純文字部份
 no previous message	felamimail	zh-tw	沒有上一個
 no supported imap authentication method could be found.	felamimail	zh-tw	找不到能夠使用的 IMAP 驗證方式。
 no valid emailprofile selected!!	felamimail	zh-tw	沒有選取可以使用的郵件資料！
@@ -395,6 +402,7 @@ use regular expressions	felamimail	zh-tw	使用樣式比對
 use smtp auth	admin	zh-tw	使用SMTP認證
 users can define their own emailaccounts	admin	zh-tw	使用者可以自行定義郵件帳號
 vacation notice	felamimail	zh-tw	假期提醒
+vacation notice is active	felamimail	zh-tw	假期提醒功能啟用中
 validate certificate	felamimail	zh-tw	驗證
 view full header	felamimail	zh-tw	顯示完整標頭
 view header lines	felamimail	zh-tw	檢視檔頭

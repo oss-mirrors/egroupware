@@ -1,5 +1,5 @@
 actions	polls	sv	Åtgärder
-add answer to poll	polls	sv	Svara undersökning
+add answer to poll	polls	sv	Svara på undersökning
 add answers	polls	sv	Lägg till svar
 add new poll question	polls	sv	Skapa undersökning
 add questions	polls	sv	Skapa undersökning
@@ -11,12 +11,12 @@ answers	polls	sv	Svar
 are you sure want to delete this answer ?	polls	sv	Vill du verkligen radera svaret?
 are you sure want to delete this question ?	polls	sv	Vill du verkligen radera frågan?
 current poll	polls	sv	Aktuell undersökning
-edit answer	polls	sv	Redigera svar
-edit poll question	polls	sv	Redigera undersökning
+edit answer	polls	sv	Ändra svar
+edit poll question	polls	sv	Ändra undersökning
 enter poll question	polls	sv	Skapa undersökning
 new poll has been added.  you should now add some answers for this poll	polls	sv	Undersökningen sparad och du kan nu lägga till frågor
-poll question	polls	sv	Undersöknings fråga
-poll settings	common	sv	Undersökning alternativ
+poll question	polls	sv	Frågeställning
+poll settings	common	sv	Undersöknings alternativ
 polls	common	sv	Undersökning
 question has been updated	polls	sv	Frågan uppdaterad
 select current poll	polls	sv	Välj aktuell undersökning

@@ -1,4 +1,5 @@
 account '%1' not found !!!	emailadmin	zh-tw	找不到帳號 '%1'！
+add new email address:	emailadmin	zh-tw	新增信箱：
 add profile	emailadmin	zh-tw	新增資料
 admin dn	emailadmin	zh-tw	管理 dn
 admin password	emailadmin	zh-tw	管理密碼
@@ -59,6 +60,7 @@ leave empty for no quota	emailadmin	zh-tw	不填入任何資料表示無限制
 mail settings	admin	zh-tw	郵件設定
 name of organisation	emailadmin	zh-tw	組織名稱
 no alternate email address	emailadmin	zh-tw	沒有可替換的郵件位址
+no encryption	emailadmin	zh-tw	沒有加密
 no forwarding email address	emailadmin	zh-tw	沒有轉寄郵件位址
 no message returned.	emailadmin	zh-tw	沒有訊息回應。
 no supported imap authentication method could be found.	emailadmin	zh-tw	找不到可以支援的 IMAP 認證方式。
@@ -103,6 +105,7 @@ unexpected response from server to digest-md5 response.	emailadmin	zh-tw	伺服�
 unexpected response from server to login command.	emailadmin	zh-tw	伺服器傳回不如預期的 LOGIN 指令。
 unknown imap response from the server. server responded: %s	emailadmin	zh-tw	不知名的 IMAP 伺服器回應，回應內容： %s
 unsupported action '%1' !!!	emailadmin	zh-tw	不支援 '%1' 這個操作！
+update current email address:	emailadmin	zh-tw	更新目前信箱：
 use ldap defaults	emailadmin	zh-tw	使用LDAP預設值
 use smtp auth	emailadmin	zh-tw	使用SMTP認證
 use tls authentication	emailadmin	zh-tw	使用TLS認證

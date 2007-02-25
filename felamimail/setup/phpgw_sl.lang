@@ -116,7 +116,7 @@ edit email forwarding address	felamimail	sl	Uredi posredovalni naslov E-pošte
 edit filter	felamimail	sl	Uredi filter
 edit rule	felamimail	sl	Uredi pravilo
 edit selected	felamimail	sl	Uredi označeno
-edit vacation settings	felamimail	sl	Uredi nastavitve "Na oddihu"
+edit vacation settings	felamimail	sl	Uredi nastavitve odsotnosti
 email address	felamimail	sl	E-Poštni naslov
 email forwarding address	felamimail	sl	Posredovalni naslov E-pošte
 email signature	felamimail	sl	E-poštni podpis
@@ -224,7 +224,7 @@ mail server login type	admin	sl	Način prijave v poštni strežnik
 mail settings	felamimail	sl	Nastavitve mape
 mainmessage	felamimail	sl	Glavno sporočilo
 manage emailaccounts	felamimail	sl	Upravljanje poštnih računov
-manage emailfilter / vacation	preferences	sl	Uredi EMailFilter/ Dopust
+manage emailfilter / vacation	preferences	sl	Uredi EMailFilter/ odsotnost
 manage folders	common	sl	Upravljanje map
 manage sieve	common	sl	Upravljanje skript za Sieve
 manage signatures	felamimail	sl	Upravljanje podpisov
@@ -334,6 +334,7 @@ select your mail server type	admin	sl	Izberite tip poštnega strežnika
 send	felamimail	sl	Pošlji
 send a reject message	felamimail	sl	Pošlji zavrnjeno sporočilo
 sent folder	felamimail	sl	Mapa s poslanimi
+server supports mailfilter(sieve)	felamimail	sl	Strežnik podpira mailfilter (sieve)
 show header	felamimail	sl	Prikaži glavo
 show new messages on main screen	felamimail	sl	Prikaži nova sporočila na začetnem zaslonu
 sieve script name	felamimail	sl	Ime skripte sieve
@@ -401,7 +402,8 @@ use custom settings	felamimail	sl	Uporabi lastne nastavitve
 use regular expressions	felamimail	sl	uporabite regularne izraze
 use smtp auth	admin	sl	Uporabi SMTP avtentikacijo
 users can define their own emailaccounts	admin	sl	Uporabniki lahko definirajo lastne E-poštne račune
-vacation notice	felamimail	sl	Na oddihu
+vacation notice	felamimail	sl	Obvestilo o odsotnosti
+vacation notice is active	felamimail	sl	Obvestilo o odsotnosti je aktivno
 validate certificate	felamimail	sl	Preveri certifikat
 view full header	felamimail	sl	Pokaži celotno glavo
 view header lines	felamimail	sl	Pokaži glavo

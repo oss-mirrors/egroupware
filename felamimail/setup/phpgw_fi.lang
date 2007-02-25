@@ -58,12 +58,12 @@ contains	felamimail	fi	sisältö
 could not complete request. reason given: %s	felamimail	fi	Pyyntöä ei voitu toteuttaa. Syynä oli: %s
 could not open secure connection to the imap server. %s : %s.	felamimail	fi	Suojattua yhteyttä IMAP palvelimeen ei voitu avata. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	fi	CRAM-MD5 tai DIGEST-MD5 tarvitaan ennen Auth_SASL paketin asennusta
-create	felamimail	fi	Tee
-create folder	felamimail	fi	Tee kansio
-create sent	felamimail	fi	Tee lähetetyt
-create subfolder	felamimail	fi	Tee kansio
-create trash	felamimail	fi	Tee roskakori
-created folder successfully!	felamimail	fi	Kansio tehty!
+create	felamimail	fi	Luo
+create folder	felamimail	fi	Luo kansio
+create sent	felamimail	fi	Luo lähetetyt
+create subfolder	felamimail	fi	Luo kansio
+create trash	felamimail	fi	Luo roskakori
+created folder successfully!	felamimail	fi	Kansio luotu!
 dark blue	felamimail	fi	Tumma sininen
 dark cyan	felamimail	fi	Tumma sinivihreä
 dark gray	felamimail	fi	Tumma harmaa
@@ -98,7 +98,7 @@ do not use sent	felamimail	fi	Älä käytä lähetetyt
 do not use trash	felamimail	fi	Älä käytä roskakoria
 do not validate certificate	felamimail	fi	Sertifikaatti ei ole kelvollinen
 do you really want to delete the '%1' folder?	felamimail	fi	Oletko varma että haluat poistaa kansion '%1'
-do you really want to delete the selected signatures?	felamimail	fi	Haluatko varmasti poistaa varlitut allekirjoitukset
+do you really want to delete the selected signatures?	felamimail	fi	Haluatko varmasti poistaa valitut allekirjoitukset
 does not contain	felamimail	fi	ei sisällä
 does not match	felamimail	fi	ei täsmää
 does not match regexp	felamimail	fi	Merkkijono ei täsmää
@@ -334,6 +334,7 @@ select your mail server type	admin	fi	Valitse posti palvelimesi tyyppi
 send	felamimail	fi	Lähetä
 send a reject message	felamimail	fi	Lähetä kieltäytymis viesti
 sent folder	felamimail	fi	Lähetetyt kansio
+server supports mailfilter(sieve)	felamimail	fi	palvelin tukee sähköpostin suodatusta (sieve)
 show header	felamimail	fi	Näytä ylätunniste
 show new messages on main screen	felamimail	fi	Näytä uudet viestit pääikkunassa
 sieve script name	felamimail	fi	Seulomis skriptin nimi
@@ -401,7 +402,8 @@ use custom settings	felamimail	fi	Käytä muokattuja asetuksia
 use regular expressions	felamimail	fi	Käytä tavanomaisia ilmaisuja
 use smtp auth	admin	fi	Käytä SMTP tunnistusta
 users can define their own emailaccounts	admin	fi	Käyttäjät voivat määritellä omat sähköposti tunnuksensa
-vacation notice	felamimail	fi	Loma huomautus
+vacation notice	felamimail	fi	Lomavastaaja
+vacation notice is active	felamimail	fi	Lomavastaaja on käytössä
 validate certificate	felamimail	fi	kelvollinen sertifikaatti
 view full header	felamimail	fi	Näytä kaikki otsikkotiedot
 view header lines	felamimail	fi	näytä otsikko rivit

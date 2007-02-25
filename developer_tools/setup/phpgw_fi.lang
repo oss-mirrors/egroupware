@@ -10,7 +10,7 @@ cancel	developer_tools	fi	Peruuta
 change	developer_tools	fi	Muuta
 changelog entry has been added	developer_tools	fi	Kirjaus muutoslokiin tehty
 changelogs	developer_tools	fi	Muutoslokit
-clears the internal buffer, all changes made sofar are lost	developer_tools	fi	Tyhjentää sisäisen puskurin, tähän asti tekemäsin muutokset poistuvat
+clears the internal buffer, all changes made sofar are lost	developer_tools	fi	Tyhjentää sisäisen puskurin, tähän asti tekemäsi muutokset poistuvat
 create new language file	developer_tools	fi	Uusi kielitiedosto
 create sgml file	developer_tools	fi	Uusi SGML -tiedosto
 developer tools - preferences	developer_tools	fi	Kehittäjän työkalut - asetukset

@@ -1,4 +1,6 @@
-add document to category	wiki	fi	lis‰t‰‰n dokumentti ryhm‰‰n
+(don't offer the possibility)	admin	fi	(ei tarjoa mahdollisuutta)
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	fi	<em>Mutta</em> n‰ytt‰‰ v‰hint‰‰n viimeisimm‰t muutokset ja tilaus listat:
+add document to category	wiki	fi	Lis‰t‰‰n dokumentti kategoriaan
 added	wiki	fi	Lis‰tty
 administration features are disabled for this wiki.	wiki	fi	P‰‰k‰ytt‰j‰n ominaisuudet on poistettu k‰ytˆst‰ t‰ss‰ Wikiss‰.
 admins	wiki	fi	Yll‰pit‰j‰t
@@ -9,14 +11,14 @@ anonymous session type	admin	fi	tuntemattoman istunnon tyyppi
 anonymous username	admin	fi	tuntemattoman k‰ytt‰j‰tunnus
 automatically convert pages with wiki-syntax to richtext (if edited)?	admin	fi	Automaattisesti sivut vaihdetaan wiki-syntaksista RTF-tiedostomuodoksi (jos muokattu)?
 block	wiki	fi	Ryhmitt‰‰
-block / unblock hosts	common	fi	Ryhmitt‰‰/ ei ryhmitt‰‰ is‰nt‰
+block / unblock hosts	common	fi	Ryhmitt‰‰ / ei ryhmitt‰‰ is‰nt‰
 blocked ip address ranges	wiki	fi	Ryhmitt‰‰ IP osoitteet
 cancel without saving	wiki	fi	Peruuta ilman tallentamista
 changed	wiki	fi	Muutettu
 changes by last author	wiki	fi	Vaihda viimeist‰ hallitsijaa
 choose your current time here, so the server may figure out what time zone you are in.	wiki	fi	Muuta paikallinen aikasi t‰h‰n, jotta palvelin voi p‰‰tell‰ mill‰ aikavyˆhykkeell‰ olet.
 columns	wiki	fi	Sarakkeet
-converts the page to richtext	wiki	fi	Muunnetaan sivu
+converts the page to richtext	wiki	fi	Muunnetaan sivu RTF muotoon
 current version	wiki	fi	K‰ytˆss‰ oleva versio
 deleted	wiki	fi	Poistettu
 deletes this page	wiki	fi	Poistetaan t‰m‰ sivu
@@ -34,29 +36,37 @@ emailaddress administrator	admin	fi	P‰‰k‰ytt‰j‰n s‰hkˆpostiosoite
 enable free links	admin	fi	Salli ulkoiset linkit
 enable wiki links	admin	fi	Salli Wikin sis‰iset linkit
 enter here the maximum number of entries to display in a document's history list.	wiki	fi	Anna maksimi m‰‰r‰ muokkauksia jotka dokumenttihistoria listaa.
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	fi	M‰‰rittele monta p‰iv‰‰ muokkaukset n‰kyv‰ Viimeisimm‰t muokkaukset listalla tai tilatuilla listoilla. Jos annat arvoksi 0 n‰et kaikki Viimeisimm‰t muutokset, huolimatta siit‰ kuinka kauan sitten ne on tehty.
 enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	fi	Anna IP osoitteiden v‰li <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
 error creating temporary file.	wiki	fi	Virhe luotaessa
 error writing to temporary file.	wiki	fi	Virhe kirjoittaessa
 everyone	wiki	fi	jokainen
 find	wiki	fi	lˆyt‰‰
 history	wiki	fi	Historia
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	fi	Historia n‰ytt‰‰ <em>kaikki</em> omistajan tekem‰t muutokset. Muuten vain viimeiset muutokset.
 history lists	wiki	fi	Historia lista
 history of	wiki	fi	historia
 invalid page name.	wiki	fi	Ep‰kelpo sivun nimi
-load	wiki	fi	Ladata
-loads the named page in the given language, all change so far get lost !!!	wiki	fi	ladataan nimetty sivu annetulla kielell‰, kaikki t‰h‰n astiset muutokset menetet‰‰n !!!
-lock / unlock pages	common	fi	lukittu/lukitsematon sivu
+load	wiki	fi	Lataa
+loads the named page in the given language, all change so far get lost !!!	wiki	fi	Ladataan nimetty sivu annetulla kielell‰, kaikki t‰h‰nastiset muutokset menetet‰‰n !!!
+lock / unlock pages	common	fi	lukittu / lukitsematon sivu
 locked	wiki	fi	Lukittu
+name wiki home link	admin	fi	Wikin etusivun nimi
 newer	wiki	fi	Ei koskaan
+no never	admin	fi	Jatkuvasti
+no only on request	admin	fi	Ei vain pyynnˆst‰
 not set	wiki	fi	ei asetettu
 older	wiki	fi	Vanhempi
 on all pages	wiki	fi	kaikilta sivuilta
 only if browser supports a richtext-editor	admin	fi	Vain jos selain tukee richtext-editoria
 only on the first page	wiki	fi	vain ensimm‰iselt‰ sivulta
 page '%1' not found !!!	wiki	fi	Sivua '%1' ei lˆydy !!!
+path of the upload directory (has to be writable by the webserver!)	admin	fi	Lataus hakemiston polku (palvelimella pit‰‰ olla kirjoitusoikeus)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	fi	Kuvien lataus richtext editoriin (j‰t‰ tyhj‰ksi jos haluat est‰‰ kuvien lataamisen
 please contact the %1administrator%2 for assistance.	wiki	fi	Ota yhteytt‰ %1 yll‰pit‰j‰‰n %2
 preview	wiki	fi	esikatsele
 preview of current version	wiki	fi	esikatsele voimassa olevaa versiota
+rate control / ip blocking disabled	wiki	fi	Arvostelun hallinta / IP blokkaus estetty
 readable by	wiki	fi	Luettavissa
 readonly	admin	fi	Vain luku
 recent changes	wiki	fi	Viimeisimm‰t muutokset
@@ -66,6 +76,7 @@ rows	wiki	fi	Rivit
 save the changes and exit	wiki	fi	Tallennna muutokset ja poistu
 saves and continues editing	wiki	fi	Tallennetaan ja jatketaan muokkaamista
 search for	wiki	fi	Hae
+see complete list (%1 entries)	wiki	fi	Katso kokolista (%1 kohtaa)
 show a search	wiki	fi	N‰yt‰ haku
 show the title of the wiki page	wiki	fi	N‰yt‰ otsikko Wikin sivulla
 site configuration	wiki	fi	Sivun konfiguroiminen
@@ -73,6 +84,7 @@ summary	wiki	fi	Yhteenveto
 summary of change	wiki	fi	Muutosten yhteenveto
 the search returned no result!	wiki	fi	Haku ei tuottanut tulosta
 this page can not be edited.	wiki	fi	T‰t‰ sivua ei voida muokata.
+twin pages	wiki	fi	Kaksois-sivu
 unblock	wiki	fi	Poista esto
 updates the preview	wiki	fi	P‰ivitet‰‰n esikatselua
 url of the upload directory	admin	fi	Lataushakemiston URL
@@ -80,18 +92,19 @@ use this module for displaying wiki-pages	wiki	fi	K‰yt‰ t‰t‰ modulia n‰ytt‰‰m‰‰n
 users	wiki	fi	k‰ytt‰j‰t
 view document history	wiki	fi	katsele dokumentin historiaa
 visit %1 to set your user name	wiki	fi	K‰y %1 asettaaksesi oma k‰ytt‰j‰nimesi
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	fi	Varoitus: sen j‰lkeen kun sin‰ aloitit muokkauksen, t‰t‰ dokumenttia on muuttanut joku toinen. Tee muutokset t‰m‰n dokumentin viimeiseen  versioon.
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	fi	Varoitus: sen j‰lkeen kun aloitit muokkauksen, joku toinen on muuttanut t‰t‰ dokumenttia. Tee muutoksesi t‰m‰n dokumentin viimeiseen  versioon.
 who should be able to edit this page	wiki	fi	kuka voi muokata t‰t‰ sivua
 who should be able to read this page	wiki	fi	kuka voi lukea t‰t‰ sivua
 wiki	common	fi	Wiki
 wiki administration	wiki	fi	Wikin p‰‰k‰ytt‰j‰
-wiki menu	wiki	fi	wiki valikko
+wiki menu	wiki	fi	Wikin valikko
 wiki startpage	wiki	fi	Wikin aloitussivu
 writable by	wiki	fi	kirjoitettavissa
 yes always	admin	fi	Kyll‰ aina
 yes with navbar	admin	fi	Kyll‰, navigointipalkilla
 you have been denied access to this site.	wiki	fi	Sinulta on kielletty p‰‰sy t‰lle sivulle.
 you have entered an invalid user name.	wiki	fi	Olet kirjoittanut ep‰kelvon k‰ytt‰j‰tunnuksen.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	fi	Olet ylitt‰nyt rajoituksen, voit k‰yd‰ vain tietyll‰ m‰‰r‰ll‰ sivuja tiettyn‰ ajanjaksona. Palaa myˆhemmin uudestaan.
 you have no rights to view wiki content !!!	wiki	fi	Sinulla ei ole oikeusia n‰hd‰ wikin sis‰ltˆ‰ !!!
-your changes	wiki	fi	sinun muutokset
+your changes	wiki	fi	Sinun muutokset
 your user name is "%1".	wiki	fi	Sinun k‰ytt‰j‰tunnus on %1.

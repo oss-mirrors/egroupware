@@ -10,6 +10,8 @@ admin options	common	zh-tw	管理者選項
 alert for critical prio setting	tts	zh-tw	您正將優先順序設定為嚴重，請確認您知道這對於接收訊息者的意義，也別忘了立即通知他！
 alert for emergency prio setting	tts	zh-tw	您正將優先順序設定為緊急，請確認您知道這對於接收訊息者的意義，也別忘了立即通知他！
 alert for high prio setting	tts	zh-tw	不妨考慮主動跟接收訊息者討論這個問題
+all categories used in tts are global and will remain unchaned in tracker	tts	zh-tw	所有在 TTS 中使用的類別都是全域的，在 Tracker 中也會保留
+all tickets are already converted to tracker	tts	zh-tw	所有的傳票已經轉換到 Tracker
 assign tickets	tts	zh-tw	指派
 assign to	tts	zh-tw	指派給
 assigned from	tts	zh-tw	指派者
@@ -30,6 +32,10 @@ closed	tts	zh-tw	已關閉
 completed	tts	zh-tw	完成
 configure the states	common	zh-tw	設定狀態
 configure the transitions	common	zh-tw	設定轉換
+convert all closed tickets	tts	zh-tw	轉換所有結案的傳票
+convert all open tickets	tts	zh-tw	轉換所有未處理的傳票
+convert tickets to tracker	tts	zh-tw	轉換所有傳票到 Tracker
+converted count	tts	zh-tw	轉換的數量
 create new state	tts	zh-tw	建立新狀態
 create new ticket	tts	zh-tw	建立新傳票
 create new transition	tts	zh-tw	建立新的轉換
@@ -111,8 +117,10 @@ resolved	tts	zh-tw	已處理
 returns a struct of a tickets history	tts	zh-tw	傳回傳票的歷史架構
 returns a struct of values of a single ticket	tts	zh-tw	傳回單一傳票數值的架構
 returns the additional notes attached to a ticket	tts	zh-tw	傳回傳票的附加訊息
+select which categories should be used in tracker for the tts categories	tts	zh-tw	選擇 TTS 在 Tracker 要使用的類別
 selected	tts	zh-tw	已被選擇
 show new/updated tickets on main screen	tts	zh-tw	顯示最新及更新過的傳票在主畫面
+show tickets converted to tracker in overviews	tts	zh-tw	概要中包含已經轉換到 Tracker 的傳票
 small view	tts	zh-tw	小型圖示
 source state	tts	zh-tw	來源狀態
 state	tts	zh-tw	狀態
@@ -143,10 +151,13 @@ the validation of the ticket was unsuccessfull. the ticket requires more work.	t
 this state means an open ticket	tts	zh-tw	這個狀態表示傳票還在處理當中
 ticket	tts	zh-tw	傳票
 ticket #	tts	zh-tw	傳票編號
+ticket count	tts	zh-tw	傳票數量
 ticket has been updated	tts	zh-tw	傳票已經更新
+ticket is in tracker	tts	zh-tw	這個傳票已經轉換到 Tracker 中！
 ticket is not accessable	tts	zh-tw	無法存取這個傳票
 ticket is not accessible	tts	zh-tw	這個傳票無法存取
 tickets found %1	tts	zh-tw	找到 %1 張傳票
+tickets have been converted	tts	zh-tw	個傳票已經轉換
 tickets open %1	tts	zh-tw	未處理的傳票有 %1
 tickets total %1	tts	zh-tw	總計傳票有 %1
 to go back to the tts index, click <a href= %1 >here</a>	tts	zh-tw	按<a href="%1"></a>這裡回到傳票系統首頁

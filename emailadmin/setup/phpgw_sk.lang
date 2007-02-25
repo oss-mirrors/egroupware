@@ -1,4 +1,5 @@
 account '%1' not found !!!	emailadmin	sk	Úèet '%1' sa nena¹iel !!!
+add new email address:	emailadmin	sk	Prida» novú emailovú adresu:
 add profile	emailadmin	sk	Prida» profil
 admin dn	emailadmin	sk	správcov dn
 admin password	emailadmin	sk	heslo správcu
@@ -59,6 +60,7 @@ leave empty for no quota	emailadmin	sk	ak nechcete kvóty, ponechajte prázdne
 mail settings	admin	sk	nastavenia Po¹ty
 name of organisation	emailadmin	sk	Názov organizácie
 no alternate email address	emailadmin	sk	¾iadna alternatívna emailová adresa
+no encryption	emailadmin	sk	bez ¹ifrovania
 no forwarding email address	emailadmin	sk	¾iadna emailová adresa pre preposielanie
 no message returned.	emailadmin	sk	®iadne správy sa nevrátili.
 no supported imap authentication method could be found.	emailadmin	sk	Nena¹iel som ¾iadnu podporovanú metódu IMAP autentifikácie.
@@ -103,6 +105,7 @@ unexpected response from server to digest-md5 response.	emailadmin	sk	Neoèakávan
 unexpected response from server to login command.	emailadmin	sk	Neoèakávaná odpoveï od servera na príkaz LOGIN.
 unknown imap response from the server. server responded: %s	emailadmin	sk	Neznáma IMAP odpoveï od servera. Server odpovedal: %s
 unsupported action '%1' !!!	emailadmin	sk	Nepodporovaná akcia '%1' !!!
+update current email address:	emailadmin	sk	Aktualizova» súèasnú Emailovú adresu:
 use ldap defaults	emailadmin	sk	pou¾i» predvolené hodnoty LDAP
 use smtp auth	emailadmin	sk	Pou¾i» SMTP autentifikáciu
 use tls authentication	emailadmin	sk	Pou¾i» TLS autentifikáciu

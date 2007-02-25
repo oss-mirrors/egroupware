@@ -10,6 +10,7 @@ add_value	phpldapadmin	fi	lis‰‰ arvo
 add_value_tooltip	phpldapadmin	fi	lis‰‰ muu arvo t‰lle ominaisuudelle
 advanced_search_form_str	phpldapadmin	fi	Kehittynyt etsint‰ lomake
 alias_for	phpldapadmin	fi	Salanimi
+bad_server_id	phpldapadmin	fi	V‰‰r‰ palvelin Id
 base_dn	phpldapadmin	fi	Kanta DN
 binary_value	phpldapadmin	fi	Bin‰‰rinen arvo
 change_entry_rdn	phpldapadmin	fi	Muuta merkinn‰n RDN
@@ -31,7 +32,7 @@ delete_this_entry	phpldapadmin	fi	Poista merkint‰
 delete_this_entry_tooltip	phpldapadmin	fi	Sinua kehoitetaan konfirmoimaan t‰t‰ p‰‰tˆst‰
 desc	phpldapadmin	fi	Kuvaus
 distinguished_name	phpldapadmin	fi	Ensisijainen nimi
-download_value	phpldapadmin	fi	Inuroi arvo
+download_value	phpldapadmin	fi	lataa arvo
 enter_value_to_add	phpldapadmin	fi	Kirjoita arvo jonka haluaisit lis‰t‰:
 entry_attributes	phpldapadmin	fi	Merkinn‰n ominaisuudet
 export_subtree_to_ldif	phpldapadmin	fi	Vie alipuu LDIF
@@ -39,8 +40,8 @@ export_subtree_to_ldif_tooltip	phpldapadmin	fi	Tallenna objektille LDIF vedos ja
 export_to_ldif	phpldapadmin	fi	Vie LDIF
 export_to_ldif_mac	phpldapadmin	fi	Macintosh tyyli linja p‰‰ttyy
 export_to_ldif_tooltip	phpldapadmin	fi	Tallennna t‰m‰n objektin LDIF vedos
-export_to_ldif_unix	phpldapadmin	fi	Unix tyyli linja p‰‰ttyy
-export_to_ldif_win	phpldapadmin	fi	Windows tyyli linja p‰‰ttyy
+export_to_ldif_unix	phpldapadmin	fi	Unixin rivivaihto
+export_to_ldif_win	phpldapadmin	fi	Windowsin rivinvaihto
 false	phpldapadmin	fi	v‰‰r‰
 hidden	phpldapadmin	fi	piilotettu
 hide_internal_attrs	phpldapadmin	fi	piilota sis‰iset ominaisuudet
@@ -55,6 +56,7 @@ jump_to_attr	phpldapadmin	fi	Hypp‰‰ ominaisuuteen
 jump_to_objectclass	phpldapadmin	fi	Hypp‰‰ objektin luokkaan
 jump_to_this_oclass	phpldapadmin	fi	Hypp‰‰ objektin luokan m‰‰ritelm‰‰n
 ldap_refuses_to_give_root	phpldapadmin	fi	Se ilmestyy sill‰ LDAP palvelin on konfiguroitu osoittamatta sen juurta.
+logged_in_as	phpldapadmin	fi	Kirjaudu k‰ytt‰j‰:
 logout	phpldapadmin	fi	kirjaudu  ulos
 logout_of_this_server	phpldapadmin	fi	kirjaudu ulos palvelimelta
 matching_rule_oid	phpldapadmin	fi	Sopiva ohje OID
@@ -98,7 +100,7 @@ syntax_oid	phpldapadmin	fi	Syntaksi OID
 that_this_oclass_requires	phpldapadmin	fi	jota t‰m‰n objektin luokka vaatii. Sin‰ voit tehd‰ niin t‰ss‰ lomakkeessa.
 the_following_attributes	phpldapadmin	fi	Seuraavia<b>ominaisuus tyyppej‰</b> tuetaan t‰ll‰ LDAP palvelimella.
 the_following_matching	phpldapadmin	fi	Seuraavia<b> yhteensopivia s‰‰ntˆj‰</b> tuetaan t‰ll‰ LDAP palvelimella.
-the_following_objectclasses	phpldapadmin	fi	Seuraavia<b>objketin luokkkia</b> tuetaan t‰ll‰ LDAP palvelimella.
+the_following_objectclasses	phpldapadmin	fi	Seuraavia<b>objektin luokkia</b> tuetaan t‰ll‰ LDAP palvelimella.
 the_following_syntaxes	phpldapadmin	fi	Seuraavia<b>syntakseja</b> tuetaan t‰ll‰ LDAP palvelimella.
 true	phpldapadmin	fi	tosi
 value_to	phpldapadmin	fi	arvo

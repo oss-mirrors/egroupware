@@ -74,6 +74,7 @@ date(newest first)	felamimail	sk	Dátum (nov¹ie na zaèiatok)
 date(oldest first)	felamimail	sk	Dátum (star¹ie na zaèiatok)
 days	felamimail	sk	dni
 deactivate script	felamimail	sk	deaktivova» skript
+default signature	felamimail	sk	predvolený podpis
 default sorting order	felamimail	sk	Predvolené triedenie
 delete all	felamimail	sk	zmaza» v¹etko
 delete folder	felamimail	sk	Zmaza» prieèinok
@@ -91,10 +92,12 @@ display messages in multiple windows	felamimail	sk	zobrazi» správy vo viacerých 
 display of html emails	felamimail	sk	Zobrazovanie HTML správ
 display only when no plain text is available	felamimail	sk	Zobrazi» iba keï nie je poruke èistý neformátovaný text
 display preferences	felamimail	sk	Nastavenia zobrazovania
+displaying html messages is disabled	felamimail	sk	Zobrazovanie html správ je vypnuté
 do it!	felamimail	sk	Vykonaj!
 do not use sent	felamimail	sk	Nepou¾íva» [Odoslana po¹ta]
 do not use trash	felamimail	sk	Nepou¾íva» [Odpadkový kô¹]
 do you really want to delete the '%1' folder?	felamimail	sk	Naozaj chcete vymaza» prieèinok '%1'?
+do you really want to delete the selected signatures?	felamimail	sk	Naozaj chcete vymaza» oznaèené podpisy?
 does not contain	felamimail	sk	neobsahuje
 does not match	felamimail	sk	nezodpovedá
 does not match regexp	felamimail	sk	nezodpovedá regulárnemu výrazu
@@ -221,6 +224,7 @@ manage emailaccounts	felamimail	sk	Správa Email-ových úètov
 manage emailfilter / vacation	preferences	sk	Správa EMail-ového filtra / Vymazávania
 manage folders	common	sk	Správa prieèinkov
 manage sieve	common	sk	Správa Sieve skriptov
+manage signatures	felamimail	sk	Správa Podpisov
 mark as deleted	felamimail	sk	Oznaèi» za vymazané
 mark messages as	felamimail	sk	Oznaèi» vybrané správy za
 mark selected as flagged	felamimail	sk	Oznaèi» vybrané ako oznaèkované
@@ -247,6 +251,7 @@ new filter	felamimail	sk	Nový filter
 next	felamimail	sk	Ïal¹í
 next message	felamimail	sk	ïal¹ia správa
 no active imap server found!!	felamimail	sk	Nena¹iel sa ¾iadny aktívny IMAP server !!
+no encryption	felamimail	sk	bez ¹ifrovania
 no filter	felamimail	sk	®iadny filter
 no folders found	felamimail	sk	®iadne prieèinky sa nena¹li
 no folders were found to subscribe to!	felamimail	sk	Nena¹li sa prieèinky pre prihlásenie!
@@ -255,6 +260,7 @@ no highlighting is defined	felamimail	sk	Nebolo nastavené zvýrazòovanie
 no message returned.	felamimail	sk	®iadna správa sa nevrátila.
 no messages found...	felamimail	sk	¾iadne správy sa nena¹li
 no messages were selected.	felamimail	sk	Neboli vybrané ¾iadne správy
+no plain text part found	felamimail	sk	Nebola nájdená ¾iadna èisto textová èas»
 no previous message	felamimail	sk	¾iadna predchádzajúca správa
 no supported imap authentication method could be found.	felamimail	sk	Nena¹la sa ¾iadna z podporovaných metód IMAP autentifikácie.
 no valid emailprofile selected!!	felamimail	sk	Nebol vybratý platný Emailový profil!

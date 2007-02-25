@@ -12,6 +12,7 @@ path to mkntpwd	admin	sk	Cesta k mkntpwd
 profilepath	admin	sk	Cesta k profilu
 samba settings	common	sk	Nastavenia Samby
 samba sid	admin	sk	Samba SID
+sambaadmin	common	sk	Sambaadmin
 smb homepath	admin	sk	Cesta k SMB domovskému prieèinku (smb homepath)
 workstation account for	sambaadmin	sk	úèet stanice pre
 workstation configuration	sambaadmin	sk	Konfigurácia stanice
