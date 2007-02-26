@@ -1,3 +1,6 @@
+2007-02-26 Lars Kneschke  <l.kneschke@metaways.de>
+	* added support for messages containing only attachments (application/..., audio/...)
+
 2007-02-16 Lars Kneschke  <l.kneschke@metaways.de>
 	* fix for loosing formating of centering, right-justification, text coloring and italics when composing from draft
 	* fixed my emailaddress in changelog file

@@ -559,19 +559,22 @@
 			$structure = $_structure;
 			
 			$imapPartIDs = explode('.',$_partID);
-			
+
 			foreach($imapPartIDs as $imapPartID) {
 				if(!empty($tempID)) {
 					$tempID .= '.';
 				}
 				$tempID .= $imapPartID;
-				#print "TEMPID: $tempID<br>";
-				#_debug_array($structure);
+				//print "TEMPID: $tempID<br>";
+				//_debug_array($structure);
 				if($structure->subParts[$tempID]->type == 'MESSAGE' && $structure->subParts[$tempID]->subType == 'RFC822' &&
 				   count($structure->subParts[$tempID]->subParts) == 1 &&
 				   $structure->subParts[$tempID]->subParts[$tempID]->type == 'MULTIPART' &&
 				   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' || $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) {
 					$structure = $structure->subParts[$tempID]->subParts[$tempID];
+				} elseif($tempID == 1) {
+					// do nothing
+					// $structure = $_structure;
 				} else {
 					$structure = $structure->subParts[$tempID];
 				}
@@ -597,7 +600,6 @@
 		{
 			// parse message structure
 			$structure = $this->icServer->getStructure($_uid, true);
-			#_debug_array($structure);
 			if($_partID != '') {
 				$structure = $this->_getSubStructure($structure, $_partID);
 			}
@@ -1378,6 +1380,30 @@
 			#print "<hr>";
 			#_debug_array($structure);
 			
+			// this kind of messages contain only the attachment and no body
+			if($structure->type == 'APPLICATION' || $structure->type == 'AUDIO') {
+				$attachments = array();
+			
+				$newAttachment = array();
+				$newAttachment['size']		= $structure->bytes;
+				$newAttachment['mimeType']	= $structure->type .'/'. $structure->subType;
+				$newAttachment['partID']	= $structure->partID;
+				if(isset($structure->cid)) {
+					$newAttachment['cid']	= $structure->cid;
+				}
+				if(isset($structure->parameters['NAME'])) {
+					$newAttachment['name']	= $this->decode_header($structure->parameters['NAME']);
+				} elseif(isset($structure->dparameters['FILENAME'])) {
+					$newAttachment['name']	= $this->decode_header($structure->dparameters['FILENAME']);
+				} else {
+					$newAttachment['name']	= lang("unknown");
+				}
+				
+				$attachments[] = $newAttachment;
+				
+				return $attachments;
+			}
+			
 			// this kind of message can have no attachments
 			if($structure->type == 'TEXT' || 
 			   ($structure->type == 'MULTIPART' && $structure->subType == 'ALTERNATIVE') ||
@@ -1419,7 +1445,7 @@
 				}
 			}
 
-		   	#_debug_array($attachments); exit;
+		   	//_debug_array($attachments); exit;
 			return $attachments;
 
 		}
@@ -1440,6 +1466,18 @@
 			}
 
 			switch($structure->type) {
+				case 'APPLICATION':
+					$bodyPart = array(
+						array(
+							'body'		=> '',
+							'mimeType'	=> 'text/plain',
+							'charSet'	=> 'iso-8859-1',
+						)
+					);
+					
+					return $bodyPart;
+					
+					break;
 				case 'MULTIPART':
 					switch($structure->subType) {
 						case 'ALTERNATIVE':

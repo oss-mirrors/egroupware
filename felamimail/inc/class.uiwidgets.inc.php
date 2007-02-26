@@ -304,8 +304,11 @@
 					$this->t->set_var('header_subject', @htmlspecialchars('('. lang('no subject') .')', ENT_QUOTES, $this->displayCharset));
 				}
 
+#				_debug_array($header);
 				if($header['mimetype'] == 'multipart/mixed' || 
-				   $header['mimetype'] == 'multipart/related') {
+				   $header['mimetype'] == 'multipart/related' ||
+				   substr($header['mimetype'],0,11) == 'application' ||
+				   substr($header['mimetype'],0,5) == 'audio') {
 					$image = '<img src="'.$GLOBALS['egw']->common->image('felamimail','attach').'" border="0" style="width:12px;">';
 					$this->t->set_var('attachment_image', $image);
 				} else {
