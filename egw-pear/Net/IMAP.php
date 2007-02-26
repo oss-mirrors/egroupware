@@ -537,7 +537,7 @@ class Net_IMAP extends Net_IMAPProtocol {
           return false;
         }
 
-        #print "<hr>Net_IMAP::_parseStructureArray _partID: $_partID<br>";
+        // print "<hr>Net_IMAP::_parseStructureArray _partID: $_partID<br>";
         $mimeParts = array();
         $subPartID = 1;
         $partID = ($_partID == '') ? '' : $_partID.'.';
@@ -551,6 +551,10 @@ class Net_IMAP extends Net_IMAPProtocol {
 
              case 'MESSAGE':
               $this->_parseStructureMessageArray($_structure, $_mimeParts, $partID.$subPartID);
+              break;
+
+            default:
+              $this->_parseStructureApplicationArray($_structure, $_mimeParts, $partID.$subPartID);
               break;
           }
         }
