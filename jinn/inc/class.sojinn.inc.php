@@ -1234,7 +1234,7 @@
 			   if($select!='SELECT ') $select .= ', ';
 			   if(is_array($col))
 			   {
-				  switch($col[type])
+				  switch($col['type'])
 				  {
 					 case 1: //one to many
 						$select .= $this->get_O2M_subselect($col);
@@ -1282,12 +1282,12 @@
 			$limit="";
 		 }
 		 $sql = "$select $from $where $order $limit";
+		 //die($sql);
 		 if($sql)
 		 {
 			$this->site_db_connection($site_id);
 			$this->site_db->query($sql,__LINE__,__FILE__); // returns a result
 			$data = array();
-//			die($sql);
 			while ($this->site_db->next_record())
 			{
 			   $row = $this->site_db->row();

@@ -66,11 +66,11 @@
 
 		 if (($this->bo->session['site_id']==0 || $this->bo->session['site_id']) && $this->bo->session['site_object_id'] && $this->bo->site_object['parent_site_id']==$this->bo->session['site_id'] )
 		 {
-			if(trim($this->bo->site_object[plugins]))
+			if(trim($this->bo->site_object['plugins']))
 			{
 			   $boplugin = CreateObject('jinn.boadmin');
-			   $boplugin->upgrade_plugins($this->bo->site_object[object_id],true);
-			   unset($this->bo->site_object[plugins]);
+			   $boplugin->upgrade_plugins($this->bo->site_object['object_id'],true);
+			   unset($this->bo->site_object['plugins']);
 			}
 
 			$this->bo->exit_and_open_screen('jinn.uiu_list_records.display');
@@ -103,8 +103,8 @@
 		 $this->header('Index');
 		 $this->msg_box();
 
-		 $this->tplsav2->assign('icon_new',$GLOBALS[phpgw]->common->image('phpgwapi','new'));
-		 $this->tplsav2->assign('icon_browse',$GLOBALS[phpgw]->common->image('phpgwapi','browse'));
+		 $this->tplsav2->assign('icon_new',$GLOBALS['phpgw']->common->image('phpgwapi','new'));
+		 $this->tplsav2->assign('icon_browse',$GLOBALS['phpgw']->common->image('phpgwapi','browse'));
 
 		 $sites=$this->bo->get_sites_allowed($GLOBALS['phpgw_info']['user']['account_id']);
 
@@ -123,8 +123,8 @@
 					 $object_arr[]=array(
 						'value'=>$object_id,
 						'name'=>$this->bo->so->get_object_name($object_id),
-						'link_list'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_list_records.display&site_id='.$site_id.'&site_object_id='.$object_id)	   ,
-						'link_new'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.edit_record&site_id='.$site_id.'&site_object_id='.$object_id)	   
+						'link_list'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&site_id='.$site_id.'&site_object_id='.$object_id)	   ,
+						'link_new'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.edit_record&site_id='.$site_id.'&site_object_id='.$object_id)	   
 					 );
 				  }
 			   }
@@ -132,7 +132,7 @@
 			   $site_arr[]=array(
 				  'value'=>$site_id,
 				  'name'=>$this->bo->so->get_site_name($site_id),
-				  'link'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.index&site_id='.$site_id),
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index&site_id='.$site_id),
 				  'object_arr'=>$object_arr
 			   );
 			}
@@ -163,9 +163,9 @@
 			   $object_arr[]=array(
 				  'value'=>$object_id,
 				  'name'=>$this->bo->so->get_object_name($object_id),
-				  'help_information'=>$obj_val[help_information],
-				  'link_list'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_list_records.display&site_id='.$this->bo->session['site_id'].'&site_object_id='.$object_id)	   ,
-				  'link_new'=>$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.edit_record&site_id='.$this->bo->session['site_id'].'&site_object_id='.$object_id)	   
+				  'help_information'=>$obj_val['help_information'],
+				  'link_list'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&site_id='.$this->bo->session['site_id'].'&site_object_id='.$object_id)	   ,
+				  'link_new'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.edit_record&site_id='.$this->bo->session['site_id'].'&site_object_id='.$object_id)	   
 			   );
 			}
 			$this->tplsav2->assign('object_arr',$object_arr);
@@ -190,7 +190,7 @@
 		 }
 		 else
 		 {
-			$where_string=$_GET[where_string];
+			$where_string=$_GET['where_string'];
 		 }
 
 
@@ -207,7 +207,7 @@
 			   }
 			}
 		 }
-		 $status[eventstatus] = $this->bo->run_event_plugins('run_on_record', $_row);
+		 $status['eventstatus'] = $this->bo->run_event_plugins('run_on_record', $_row);
 
 		 //redirect to correct screen
 		 //TODO test on apache 1.3
@@ -235,7 +235,7 @@
 		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
 		 $this->tplsav2->nameplugin=($this->bo->stored_configs[$_GET['plgkey']]['eventlabel']?$this->bo->stored_configs[$_GET['plgkey']]['eventlabel']:$this->bo->stored_configs[$_GET['plgkey']]['name']);
 
-		 if($this->bo->so->config[loop_numbers] != '' or !empty( $this->bo->so->config[loop_numbers]))
+		 if($this->bo->so->config['loop_numbers'] != '' or !empty( $this->bo->so->config['loop_numbers']))
 		 {
 			$this->tplsav2->items=$this->bo->so->config['loop_numbers'];
 		 }
@@ -244,7 +244,7 @@
 			$this->tplsav2->items=30;
 		 }
 		 
-		 $this->tplsav2->assign('selval',$_GET[selvalues]);
+		 $this->tplsav2->assign('selval',$_GET['selvalues']);
 		 $this->tplsav2->display('pop_walk_event.tpl.php');
 	  }
 
@@ -260,7 +260,7 @@
 		 {
 			$items=$_POST['recordspercycle'];
 		 }
-		 elseif($this->bo->so->config[loop_numbers] != '' or !empty( $this->bo->so->config[loop_numbers]))
+		 elseif($this->bo->so->config['loop_numbers'] != '' or !empty( $this->bo->so->config['loop_numbers']))
 		 {
 			$items=$this->bo->so->config['loop_numbers'];
 		 }
@@ -285,7 +285,7 @@
 
 			#_debug_array($_POST);
 			#die($_POST);
-			switch($_POST[data_source])
+			switch($_POST['data_source'])
 			{
 			   case 'filtered':
 			   $filter_where = $this->filter->get_filter_where();
@@ -294,7 +294,7 @@
 			   $filter_where = 'all';
 			   break;
 			   case 'selected':
-			   $arr = explode(',',$_POST[selvalues]);
+			   $arr = explode(',',$_POST['selvalues']);
 			   if(is_array($arr))
 			   {
 				  $filter_where = '(';
@@ -321,7 +321,7 @@
 		 }
 		 else
 		 {
-			$start = intval($_GET[start]);
+			$start = intval($_GET['start']);
 			//$end = $start + $items;
 			$filter_where = unserialize(base64_decode($_GET['where']));
 			$limit = " LIMIT $start, $items";
@@ -340,16 +340,16 @@
 			$columns_arr = array();
 			foreach($columns as $column)
 			{
-			   $columns_arr[] = $column[name];
+			   $columns_arr[] = $column['name'];
 			}
 		 }
 
 		 $this->tplsav2->timesec['cols']=time() - $colstart_time;
 
 		 //num rows is cached
-		 if($_GET[amount] != '')
+		 if($_GET['amount'] != '')
 		 {
-			$count = $_GET[amount];
+			$count = $_GET['amount'];
 		 }
 		 else
 		 {
@@ -364,11 +364,15 @@
 		 }
 
 		 $get_data_starttime=time();
+
+		 $columns_arr='*';
 		 
 		 $data = $this->bo->get_data($columns_arr, $filter_where, $limit);
 		 $this->tplsav2->timesec['getrecdata']=time() - $get_data_starttime;
 
 		 $i=0;
+		 //_debug_array($columns_arr);
+
 		 foreach($data as $row)
 		 {
 			//EVENT ON WALK LIST
@@ -379,9 +383,8 @@
 			   $_row['FLDXXX'.$key]=$val;
 			}
 
-			
 			$rowtime[$i]=time();
-			$status[eventstatus] = $this->bo->run_event_plugins('on_walk_list_button', $_row);
+			$status['eventstatus'] = $this->bo->run_event_plugins('on_walk_list_button', $_row);
 
 			$plugtimeperrec[]= time() - $plg_exec_time;
 		 	$i++;
@@ -393,12 +396,12 @@
 			$this->tplsav2->timesec['plg_exec_time']=(array_sum($plugtimeperrec));
 		 }
 		 
-		 if($_GET[start]+$items < $count)
+		 if($_GET['start']+$items < $count)
 		 {
 			$this->tplsav2->assign('items',$items);
 			$this->tplsav2->assign('amount',$count);
 			$this->tplsav2->assign('where',base64_encode(serialize($filter_where)));
-			$this->tplsav2->assign('number',$_GET[start]+$items);
+			$this->tplsav2->assign('number',$_GET['start']+$items);
 			$this->tplsav2->timesec['total']= time() - $start_time;
 			$this->tplsav2->display('pop_walk.tpl.php');
 		 }
@@ -442,7 +445,7 @@
 			   {
 				  foreach($columns_data as $col_data)
 				  {
-					 $columns[]=$col_data[name];
+					 $columns[]=$col_data['name'];
 
 				  }
 
@@ -451,8 +454,8 @@
 			   if (count($columns)>0)
 			   {
 				  // get the prefered columns, if they exist
-				  $prefs_show_hide=$this->bo->read_preferences('show_fields'.$this->bo->site_object[unique_id]); 
-				  $default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object[unique_id]);
+				  $prefs_show_hide=$this->bo->read_preferences('show_fields'.$this->bo->site_object['unique_id']); 
+				  $default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object['unique_id']);
 
 				  $prefs_show_hide=explode('|',$prefs_show_hide);
 				  if(is_array($prefs_show_hide))
@@ -483,8 +486,8 @@
 					 unset($checked2);
 					 unset($checked3);
 
-					 $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col);
-					 $display_colname=($field_conf_arr[field_alt_name]?$field_conf_arr[field_alt_name]:$col);
+					 $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object['object_id'],$col);
+					 $display_colname=($field_conf_arr['field_alt_name']?$field_conf_arr['field_alt_name']:$col);
 
 					 if($default_order=="$col ASC") $checked2='CHECKED';
 					 if($default_order=="$col DESC") $checked3='CHECKED';
@@ -507,17 +510,18 @@
 						$rows.='</tr>';
 				  }
 
-				  $form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.save_object_config');
+				  $form_action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.save_object_config');
+				  
 				  $button_save='<td><input class="egwbutton"  type="submit" name="action" value="'.lang('save').'"></td>';
 
 				  $button_cancel='<td><input class="egwbutton"  type="button" onClick="location=\''.
-					 $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_list_records.display') .
+					 $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display') .
 					 '\'" name="action" value="'.lang('cancel').'"></td>';
 
 				  $this->template->set_var('form_action',$form_action);
 				  $this->template->set_var('button_save',$button_save);
 				  $this->template->set_var('button_cancel',$button_cancel);
-				  $this->template->set_var('lang_config_table',lang('Configure view of').' '.$this->bo->site_object[name]);
+				  $this->template->set_var('lang_config_table',lang('Configure view of').' '.$this->bo->site_object['name']);
 				  $this->template->set_var('rows',$rows);
 				  $this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 				  $this->template->set_var('lang_column_name',lang('column name'));
@@ -548,13 +552,13 @@
 			}
 
 			/* get available allowed paths from current site  and object*/
-			if($this->bo->site[cur_upload_path])
+			if($this->bo->site['cur_upload_path'])
 			{
-			   $legal_paths[]=$this->bo->site[cur_upload_path];
+			   $legal_paths[]=$this->bo->site['cur_upload_path'];
 			}
-			if($this->bo->site_object[cur_upload_path])
+			if($this->bo->site_object['cur_upload_path'])
 			{
-			   $legal_paths[]=$this->bo->site_object[cur_upload_path];
+			   $legal_paths[]=$this->bo->site_object['cur_upload_path'];
 			}
 
 			/* check if file is in one of the above paths */
@@ -609,8 +613,8 @@
 		 */
 		 function img_popup()
 		 {
-			$attributes=base64_decode($_GET[attr]);
-			$new_path=base64_decode($_GET[path]);
+			$attributes=base64_decode($_GET['attr']);
+			$new_path=base64_decode($_GET['path']);
 			
 			/*
 			$this->template->set_file(array(
