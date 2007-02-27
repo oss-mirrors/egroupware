@@ -26,7 +26,7 @@
 */
 
 	$this->registry->plugins['default_blob']['name'] 			= 'default_blob';
-	$this->registry->plugins['default_blob']['title']			= 'default textarea';
+	$this->registry->plugins['default_blob']['title']			= 'default textarea (depr)';
 	$this->registry->plugins['default_blob']['version']			= '1.2';
 	$this->registry->plugins['default_blob']['author']			= 'Pim Snel';
 	$this->registry->plugins['default_blob']['enable']			= 1;

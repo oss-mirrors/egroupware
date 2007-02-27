@@ -34,6 +34,7 @@
 	$this->registry->plugins['default_text']['description']		= 'Default field plugin for handeling text or text fields, this plugin doesn\'t handle binary texts';
 	$this->registry->plugins['default_text']['db_field_hooks']	= array
 	(
+	   'string',
 	   'blob'
 	 );
 
