@@ -25,16 +25,11 @@
 	/* $Id$
 
 	/**
-	* DEFAULT/FALLBACK BLOB/TEXT/TEXTAREA PLUGIN 
-	@abstract default field plugin for text/blob fields
+	* DEFAULT/FALLBACK text/TEXT/TEXTAREA PLUGIN 
+	@abstract default field plugin for text/text fields
 	*/
-	class db_fields_plugin_default_blob
+	class db_fields_plugin_default_text
 	{
-	
-		function db_fields_plugin_default_blob()
-		{
-		}
-		
 		function formview_edit($field_name,$value, $config,$attr_arr)
 		{
 		   if($config['New_height_in_pixels'] && is_numeric(intval($config['New_height_in_pixels']))) $height=intval($config['New_height_in_pixels']);

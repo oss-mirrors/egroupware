@@ -25,24 +25,24 @@
 	---------------------------------------------------------------------
 */
 
-	$this->registry->plugins['default_blob']['name'] 			= 'default_blob';
-	$this->registry->plugins['default_blob']['title']			= 'default textarea';
-	$this->registry->plugins['default_blob']['version']			= '1.2';
-	$this->registry->plugins['default_blob']['author']			= 'Pim Snel';
-	$this->registry->plugins['default_blob']['enable']			= 1;
-	$this->registry->plugins['default_blob']['default']			= 1;
-	$this->registry->plugins['default_blob']['description']		= 'Default field plugin for handeling blob or text fields, this plugin doesn\'t handle binary blobs';
-	$this->registry->plugins['default_blob']['db_field_hooks']	= array
+	$this->registry->plugins['default_text']['name'] 			= 'default_text';
+	$this->registry->plugins['default_text']['title']			= 'default textarea';
+	$this->registry->plugins['default_text']['version']			= '1.2';
+	$this->registry->plugins['default_text']['author']			= 'Pim Snel';
+	$this->registry->plugins['default_text']['enable']			= 1;
+	$this->registry->plugins['default_text']['default']			= 1;
+	$this->registry->plugins['default_text']['description']		= 'Default field plugin for handeling text or text fields, this plugin doesn\'t handle binary texts';
+	$this->registry->plugins['default_text']['db_field_hooks']	= array
 	(
 	   'blob'
 	 );
 
-	 $this->registry->plugins['default_blob']['config']		= array
+	 $this->registry->plugins['default_text']['config']		= array
 	 (
 		'New_height_in_pixels' => array('100','text','maxlength=3 size=3'), 
 	 );
 	 
-	 $this->registry->plugins['default_blob']['config_help']		= array
+	 $this->registry->plugins['default_text']['config_help']		= array
 	 (
 		'New_height_in_pixels' => 'Default height is 100 pixels', 
 	 );
