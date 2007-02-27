@@ -386,18 +386,18 @@
 
 			if($folderStatus = $this->bofelamimail->getFolderStatus($_folderName)) {
 				if($folderStatus['unseen'] > 0) {
-					$response->addScript("tree.setItemText('$_folderName', '<b>". $folderStatus['shortName'] ." (". $folderStatus['unseen'] .")</b>');");
+					$response->addScript("tree.setItemText('$_folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
 				} else {
-					$response->addScript("tree.setItemText('$_folderName', '". $folderStatus['shortName'] ."');");
+					$response->addScript("tree.setItemText('$_folderName', '". $folderStatus['shortDisplayName'] ."');");
 				}
 			}
 
 			if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'])) {
 				$folderStatus = $this->bofelamimail->getFolderStatus($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']);
 				if($folderStatus['unseen'] > 0) {
-					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '<b>". $folderStatus['shortName'] ." (". $folderStatus['unseen'] .")</b>');");
+					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
 				} else {
-					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '". $folderStatus['shortName'] ."');");
+					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '". $folderStatus['shortDisplayName'] ."');");
 				}
 			}
 
@@ -560,9 +560,9 @@
 				foreach($folders as $folderName => $folderData) {
 					if($folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 						if($folderStatus['unseen'] > 0) {
-							$response->addScript("tree.setItemText('$folderName', '<b>". $this->_encodeFolderName($folderStatus['shortDisplayName']) ." (". $folderStatus['unseen'] .")</b>');");
+							$response->addScript("tree.setItemText('$folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
 						} else {
-							$response->addScript("tree.setItemText('$folderName', '". $this->_encodeFolderName($folderStatus['shortDisplayName']) ."');");
+							$response->addScript("tree.setItemText('$folderName', '". $folderStatus['shortDisplayName'] ."');");
 						}
 					}
 				}
