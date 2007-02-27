@@ -92,10 +92,10 @@
 		 $this->object_events_plugin_manager->local_bo = &$this; //FIXME remove
 
 		 //backwards compatibility: check if unique id field is filled. If not: fill it now.
-		 if($this->session['site_object_id'] && $this->site_object[unique_id] == '')
+		 if($this->session['site_object_id'] && $this->site_object['unique_id'] == '')
 		 {
 			$status = $this->so->set_unique_id($this->session['site_object_id']);
-			$this->site_object[unique_id] = $status[uid];
+			$this->site_object['unique_id'] = $status['uid'];
 		 }
 
 		 // if user changes site:
@@ -134,7 +134,7 @@
 	  {
 		 $field_conf_arr=$this->so->get_field_values($objectID,$fieldname);
 
-		 if($field_conf_arr[field_enabled]!=null && $field_conf_arr[field_enabled]==0)
+		 if($field_conf_arr['field_enabled']!=null && $field_conf_arr['field_enabled']==0)
 		 {
 			return false;
 		 }
@@ -437,14 +437,14 @@
 				  $post_arr=$this->mult_to_fld($i,'_POST');
 				  $files_arr=$this->mult_to_fld($i,'_FILES');
 
-				  $data=$this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr,$object_arr[object_id]));
-				  $status=$this->so->insert_object_data($this->session['site_id'],$object_arr[table_name],$data);
+				  $data=$this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr,$object_arr['object_id']));
+				  $status=$this->so->insert_object_data($this->session['site_id'],$object_arr['table_name'],$data);
 
-				  $status_mult_where[]=$status[where_string];
+				  $status_mult_where[]=$status['where_string'];
 
 				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 				  $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
-				  $status[relations]=$this->so->update_object_many_data($object_arr['parent_site_id'], $m2m_data);
+				  $status['relations']=$this->so->update_object_many_data($object_arr['parent_site_id'], $m2m_data);
 			   }
 			}
 			$status['mult_where_array']=$status_mult_where;
@@ -488,7 +488,7 @@
 				  $post_arr=$this->mult_to_fld($i,'_POST');
 				  $files_arr=$this->mult_to_fld($i,'_FILES');
 
-				  $data = $this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr,$object_arr[object_id]));
+				  $data = $this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr,$object_arr['object_id']));
 				  $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
 				  // $this->session['mult_where_array'][]=$where_string;
 				  $status['mult_where_array'][]=$where_string;
@@ -497,9 +497,9 @@
 
 				  $status[m2m]=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
 
-				  $status[record]=$this->so->update_object_data($object_arr['parent_site_id'], $object_arr[table_name], $data, $where_key,$where_value,$where_string);
+				  $status['record']=$this->so->update_object_data($object_arr['parent_site_id'], $object_arr['table_name'], $data, $where_key,$where_value,$where_string);
 
-				  $status[eventstatus] = $this->run_event_plugins('on_update', $post_arr);
+				  $status['eventstatus'] = $this->run_event_plugins('on_update', $post_arr);
 			   }
 			}
 
@@ -526,7 +526,7 @@
 
 			if($redirect)
 			{
-			   if ($status[error])
+			   if ($status['error'])
 			   {
 				  $this->addError(lang('Records NOT succesfully deleted.'));
 			   }
@@ -597,7 +597,7 @@
 				  {
 					 if($event == $config['conf']['event'])
 					 {
-						/*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
+						/*run_event_plugins roept uit de event_plugin de functie event_action_['plg_naam']() aan 
 						met als argumenten de _POST array en de plugin configuratie. 
 						Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
 						De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
@@ -646,14 +646,14 @@
 		 */
 		 function del_record() 
 		 {
-			$table=$this->site_object[table_name];
+			$table=$this->site_object['table_name'];
 			$where_key=stripslashes($this->where_key);
 			$where_value=stripslashes($this->where_value);
 			$where_string=stripslashes($this->where_string);
 
 			$status=$this->so->delete_object_data($this->session['site_id'], $table, $where_key,$where_value,$where_string);
 
-			if ($status[error])
+			if ($status['error'])
 			{
 			   $this->addError(lang('Record NOT succesfully deleted'));
 			}
@@ -661,7 +661,7 @@
 			{
 			   $this->addInfo(lang('Record succesfully deleted'));
 			}
-			$this->addDebug(__LINE__,__FILE__,$status[sql]);
+			$this->addDebug(__LINE__,__FILE__,$status['sql']);
 
 			$this->exit_and_open_screen($this->japielink.'jinn.uiuser.index');
 		 }
@@ -679,8 +679,8 @@
 			$autokey= $this->so->check_auto_incr($this->session['site_id'],$this->site_object['table_name']);
 			if($autokey)
 			{
-			   $status=$this->so->copy_record($this->session['site_id'],$this->site_object[table_name],$this->where_string,$autokey);
-			   if ($status[ret_code])
+			   $status=$this->so->copy_record($this->session['site_id'],$this->site_object['table_name'],$this->where_string,$autokey);
+			   if ($status['ret_code'])
 			   {
 				  $this->addError(lang('Record NOT succesfully copied'));
 			   }
@@ -688,12 +688,12 @@
 			   {
 				  $this->addInfo(lang('Record succesfully copied'));
 			   }
-			   $this->addDebug(__LINE__,__FILE__,$status[sql]);
+			   $this->addDebug(__LINE__,__FILE__,$status['sql']);
 
-			   if($status[where_string])
+			   if($status['where_string'])
 			   {
 				  $this->exit_and_open_screen($this->japielink.'jinn.uiu_list_records.display_last_records_page');
-				  #$this->exit_and_open_screen('jinn.uiu_edit_record.edit_record&where_string='.base64_encode($status[where_string]));
+				  #$this->exit_and_open_screen('jinn.uiu_edit_record.edit_record&where_string='.base64_encode($status['where_string']));
 			   }
 			}
 			else
@@ -744,7 +744,7 @@
 			{
 			   foreach(array_values($relation_array) as $key => $relation)
 			   {
-				  $relation[name] = 'relation_'.($key+1);
+				  $relation['name'] = 'relation_'.($key+1);
 				  $columns_arr[] = $relation;
 			   }
 			}
@@ -766,7 +766,7 @@
 			{
 			   foreach($relations_arr as $relation)
 			   {
-				  if ($relation[type]=='4')
+				  if ($relation['type']=='4')
 				  {
 					 $m2o_relations[]=$relation;
 				  }
@@ -790,9 +790,9 @@
 			{
 			   foreach($relations_arr as $relation)
 			   {
-				  if ($relation[type]=='3')
+				  if ($relation['type']=='3')
 				  {
-					 $O2O_relations[$relation[org_field]]=$relation;
+					 $O2O_relations[$relation['org_field']]=$relation;
 				  }
 			   }
 			   return $O2O_relations;
@@ -837,9 +837,9 @@
 			{
 			   foreach($relations_arr as $relation)
 			   {
-				  if ($relation[type]=='1')
+				  if ($relation['type']=='1')
 				  {
-					 $O2M_relations[$relation[local_key]]=$relation;
+					 $O2M_relations[$relation['local_key']]=$relation;
 				  }
 			   }
 			   return $O2M_relations;
@@ -866,7 +866,7 @@
 			{
 			   foreach($relations_arr as $relation)
 			   {
-				  if ($relation[type]=='2')
+				  if ($relation['type']=='2')
 				  {
 					 $M2M_relations[]=$relation;
 				  }
@@ -888,9 +888,9 @@
 		 */
 		 function get_related_field($relation_array)
 		 {
-			$displ_arr=unserialize($relation_array[foreign_showfields]);		
+			$displ_arr=unserialize($relation_array['foreign_showfields']);		
 
-			$allrecords=$this->get_records($relation_array[foreign_table],'','','','','name');
+			$allrecords=$this->get_records($relation_array['foreign_table'],'','','','','name');
 
 			if(is_array($allrecords))
 			{
@@ -907,7 +907,7 @@
 				  }
 				  $related_fields[]=array
 				  (
-					 'value'=>$record[$relation_array[foreign_key]],
+					 'value'=>$record[$relation_array['foreign_key']],
 					 'name'=>$displaystring
 				  );
 			   }
@@ -928,9 +928,9 @@
 		 */
 		 function get_related_value($relation_array,$value)
 		 {
-			$displ_arr=unserialize($relation_array[foreign_showfields]);		
-			$table=$relation_array[foreign_table];
-			$related_field=$relation_array[foreign_key];
+			$displ_arr=unserialize($relation_array['foreign_showfields']);		
+			$table=$relation_array['foreign_table'];
+			$related_field=$relation_array['foreign_key'];
 
 			$allrecords=$this->get_records($table,'','','','','name');
 
@@ -981,7 +981,7 @@
 					 $data[] = array
 					 (
 						'name' => substr($key,$prefix_len),
-						'value' =>  $filtered_data  //addslashes($val)
+						'value' =>  $filtered_data  
 					 );
 				  }
 				  else // if there's no plugin, just save the vals
@@ -989,7 +989,7 @@
 					 $data[] = array
 					 (
 						'name' => substr($key,$prefix_len),
-						'value' => addslashes($val) 
+						'value' => $val 
 					 );
 				  }
 			   }
@@ -1031,8 +1031,8 @@
 
 				  $data = array
 				  (
-					 'name' => $_o2o_info[foreign_key],
-					 'value' =>  $primary_val  //addslashes($val)
+					 'name' => $_o2o_info['foreign_key'],
+					 'value' =>  $primary_val 
 				  );
 
 				  $o2o_data_arr[$idx]['data'][]=$data;
@@ -1040,7 +1040,7 @@
 			   elseif(substr($key,0,3)=='O2O')
 			   {
 
-				  $field_values=$this->so->get_field_values($curr_object_arr[object_id],substr($key,6));
+				  $field_values=$this->so->get_field_values($curr_object_arr['object_id'],substr($key,6));
 				  $filtered_data=$this->plug->call_plugin_sf($key,$field_values,$HTTP_POST_VARS,$HTTP_POST_FILES);
 
 				  /* Check for plugin need and plugin availability */
@@ -1050,7 +1050,7 @@
 					 $data = array
 					 (
 						'name' => substr($key,6),
-						'value' =>  $filtered_data  //addslashes($val)
+						'value' =>  $filtered_data  
 					 );
 				  }
 				  else // if there's no plugin, just save the vals
@@ -1058,7 +1058,7 @@
 					 $data = array
 					 (
 						'name' => substr($key,6),
-						'value' => addslashes($val) 
+						'value' => $val 
 					 );
 				  }
 				  $idx=intval(substr($key,4,2));
@@ -1101,12 +1101,12 @@
 		 */
 		 function save_object_config()
 		 {
-			$prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
-			$prefs_show_hide_read=$this->read_preferences('show_fields'.$this->site_object[unique_id]);
+			$prefs_order_new=$GLOBALS['HTTP_POST_VARS']['ORDER'];
+			$prefs_show_hide_read=$this->read_preferences('show_fields'.$this->site_object['unique_id']);
 
-			$show_fields_entry=$this->site_object[object_id];
+			$show_fields_entry=$this->site_object['object_id'];
 
-			while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
+			while(list($key, $x) = each($GLOBALS['HTTP_POST_VARS']))
 			{
 			   if(substr($key,0,4)=='SHOW')
 			   $show_fields_entry.=','.substr($key,4);
@@ -1120,7 +1120,7 @@
 			   {
 
 				  $pref_array=explode(',',$pref_s_h);
-				  if($pref_array[0]!=$this->site_object[object_id])
+				  if($pref_array[0]!=$this->site_object['object_id'])
 				  {
 					 $prefs_show_hide_new.=implode(',',$pref_array);
 				  }
@@ -1134,8 +1134,8 @@
 			   $prefs_show_hide_new=$show_fields_entry;
 			}
 
-			$this->save_preferences('show_fields'.$this->site_object[unique_id],$prefs_show_hide_new);
-			$this->save_preferences('default_order'.$this->site_object[unique_id],$prefs_order_new);
+			$this->save_preferences('show_fields'.$this->site_object['unique_id'],$prefs_show_hide_new);
+			$this->save_preferences('default_order'.$this->site_object['unique_id'],$prefs_order_new);
 			//the browse settings overrule the preferences, so kill them. Otherwise we will not see any results until we chamge the Object and return
 			unset($this->session['browse_settings']['orderby']);
 			$this->sessionmanager->save();
@@ -1152,7 +1152,7 @@
 		 */
 		 function set_adv_filter()
 		 {
-			$this->session['browse_settings'][adv_filter_str]=$_POST[adv_filter];  
+			$this->session['browse_settings']['adv_filter_str']=$_POST['adv_filter'];  
 			$this->sessionmanager->save();
 			$this->exit_and_open_screen('jinn.uiu_list_records.display');
 		 }
@@ -1166,9 +1166,9 @@
 		 function scan_new_objects_silent()
 		 {
 			$status = array();
-			if($this->site[object_scan_prefix] != '')
+			if($this->site['object_scan_prefix'] != '')
 			{
-			   $prefix_arr = explode(',', $this->site[object_scan_prefix]);
+			   $prefix_arr = explode(',', $this->site['object_scan_prefix']);
 			   if(is_array($prefix_arr))
 			   {
 
@@ -1177,23 +1177,23 @@
 				  foreach($tables as $table)
 				  {
 					 //is this table wrapped by an object?
-					 $objects = $this->so->get_objects_by_table($table[table_name], $this->session['site_id']);
+					 $objects = $this->so->get_objects_by_table($table['table_name'], $this->session['site_id']);
 					 if(count($objects) == 0)
 					 {
 						//if no, do we want ALL tables wrapped by an object?
 						if($prefix_arr[0] == '*')
 						{
 						   //if yes, create an object from this table
-						   $status[] = $this->save_scanned_object($this->session['site_id'], $table[table_name]);
+						   $status[] = $this->save_scanned_object($this->session['site_id'], $table['table_name']);
 						}
 						//or does the table name start with one of the prefixes?
 						else
 						{
 						   foreach($prefix_arr as $prefix)
 						   {
-							  if(substr($table[table_name], 0, strlen($prefix)) == $prefix)
+							  if(substr($table['table_name'], 0, strlen($prefix)) == $prefix)
 							  {
-								 $status[] = $this->save_scanned_object($this->session['site_id'], $table[table_name]);
+								 $status[] = $this->save_scanned_object($this->session['site_id'], $table['table_name']);
 							  }
 						   }
 						}
@@ -1218,7 +1218,7 @@
 			   $this->addInfo(lang('%1 new objects where successfully created', count($status)));
 			   foreach($status as $new)
 			   {
-				  if($new[ret_code] != 0)
+				  if($new['ret_code'] != 0)
 				  {
 					 $this->addError(lang('Error creating one or more new Objects'));
 					 $this->addInfo(lang('%1 new objects where successfully created', count($status)));
@@ -1257,14 +1257,14 @@
 		 */
 		 function submit_to_plugin_afa()
 		 {
-			if($this->site_object[plugins])
+			if($this->site_object['plugins'])
 			{
 			   $this->get_plugin_afa();
 			}
 			else 
 			{
 			   //die('hallo');
-			   $field_values=$this->so->get_field_values($this->site_object[object_id],$_GET[field_name]);
+			   $field_values=$this->so->get_field_values($this->site_object['object_id'],$_GET['field_name']);
 			   $this->plug->call_plugin_afa($field_values);
 			}
 		 }
@@ -1280,7 +1280,7 @@
 			global $local_bo;
 			$local_bo=$this;
 
-			$action_plugin_name=$_GET[plg];
+			$action_plugin_name=$_GET['plg'];
 
 			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
 			foreach($plugins as $plugin)
@@ -1308,19 +1308,19 @@
 			if($call_plugin)
 			{
 			   //FIXME all plugins must get an extra argument in the sf_func
-			   $success=@call_user_func('plg_afa_'.$sets[1],$_GET[where],$_GET[attributes],$conf_arr);
+			   $success=@call_user_func('plg_afa_'.$sets[1],$_GET['where'],$_GET['attributes'],$conf_arr);
 			}
 
 			if ($succes)
 			{
-			   $this->session['message'][info]=lang('Action was succesful.');
+			   $this->session['message']['info']=lang('Action was succesful.');
 
 			   $this->sessionmanager->save();
 			   $this->common->exit_and_open_screen('jinn.uiuser.index');
 			}
 			else
 			{
-			   $this->session['message'][error]=lang('Action was not succesful. Unknown error');
+			   $this->session['message']['error']=lang('Action was not succesful. Unknown error');
 
 			   $this->sessionmanager->save();
 			   $this->common->exit_and_open_screen('jinn.uiuser.index');
@@ -1339,13 +1339,13 @@
 			foreach ( $fields as $onecol )
 			{
 			   // check for primaries and create array 
-			   if ($onecol[primary_key] && $onecol[type]!='blob') // FIXME howto select long blobs
+			   if ($onecol['primary_key'] && $onecol['type']!='blob') // FIXME howto select long blobs
 			   {						
-				  $pkey_arr[]=$onecol[name];
+				  $pkey_arr[]=$onecol['name'];
 			   }
-			   elseif($onecol[type]!='blob') // FIXME howto select long blobs
+			   elseif($onecol['type']!='blob') // FIXME howto select long blobs
 			   {
-				  $akey_arr[]=$onecol[name];
+				  $akey_arr[]=$onecol['name'];
 			   }
 			}
 			if(!is_array($pkey_arr))
