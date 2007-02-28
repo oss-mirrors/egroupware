@@ -611,7 +611,8 @@
 
 			$_mailObject->IsSMTP();
 			$_mailObject->From 	= $_identity->emailAddress;
-			$_mailObject->FromName = $bofelamimail->encodeHeader($_identity->realName,'q');
+			#$_mailObject->FromName = $bofelamimail->encodeHeader($_identity->realName,'q');
+			$_mailObject->FromName = $_mailObject->EncodeHeader($_identity->realName);
 			$_mailObject->Priority = $_formData['priority'];
 			$_mailObject->Encoding = 'quoted-printable';
 			$_mailObject->CharSet	= $this->displayCharset;
@@ -622,15 +623,18 @@
 			if($_formData['disposition']) {
 				$_mailObject->AddCustomHeader('Disposition-Notification-To: '. $_identity->emailAddress);
 			}
-			if(!empty($_identity->organization))
-				$_mailObject->AddCustomHeader('Organization: '. $bofelamimail->encodeHeader($_identity->organization, 'q'));
+			if(!empty($_identity->organization)) {
+				#$_mailObject->AddCustomHeader('Organization: '. $bofelamimail->encodeHeader($_identity->organization, 'q'));
+				$_mailObject->AddCustomHeader('Organization: '. $_identity->organization);
+			}
 
 			foreach((array)$_formData['to'] as $address) {
 				$address_array	= imap_rfc822_parse_adrlist($address, '');
 				foreach((array)$address_array as $addressObject) {
 					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
-					$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
-					$_mailObject->AddAddress($emailAddress, $emailName);
+					#$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
+					#$_mailObject->AddAddress($emailAddress, $emailName);
+					$_mailObject->AddAddress($emailAddress, $addressObject->personal);
 				}
 			}
 
@@ -638,8 +642,9 @@
 				$address_array	= imap_rfc822_parse_adrlist($address,'');
 				foreach((array)$address_array as $addressObject) {
 					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
-					$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
-					$_mailObject->AddCC($emailAddress, $emailName);
+					#$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
+					#$_mailObject->AddCC($emailAddress, $emailName);
+					$_mailObject->AddCC($emailAddress, $addressObject->personal);
 				}
 			}
 			
@@ -647,8 +652,9 @@
 				$address_array	= imap_rfc822_parse_adrlist($address,'');
 				foreach((array)$address_array as $addressObject) {
 					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
-					$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
-					$_mailObject->AddBCC($emailAddress, $emailName);
+					#$emailName = $bofelamimail->encodeHeader($addressObject->personal, 'q');
+					#$_mailObject->AddBCC($emailAddress, $emailName);
+					$_mailObject->AddBCC($emailAddress, $addressObject->personal);
 				}
 			}
 			
@@ -656,13 +662,15 @@
 				$address_array	= imap_rfc822_parse_adrlist($this->sessionData['reply_to'],'');
 				if(count($address_array)>0) {
 					$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
-					$emailName = $bofelamimail->encodeHeader($address_array[0]->personal, 'q');
-					$_mailObject->AddReplyTo($emailAddress, $emailName);
+					#$emailName = $bofelamimail->encodeHeader($address_array[0]->personal, 'q');
+					#$_mailObject->AddReplyTo($emailAddress, $emailName);
+					$_mailObject->AddReplyTo($emailAddress, $address_array[0]->personal);
 				}
 			}
 			
 			$_mailObject->WordWrap = 76;
-			$_mailObject->Subject = $bofelamimail->encodeHeader($_formData['subject'], 'q');
+			#$_mailObject->Subject = $bofelamimail->encodeHeader($_formData['subject'], 'q');
+			$_mailObject->Subject = $_formData['subject'];
 			if($_formData['mimeType'] =='html') {
 				$_mailObject->IsHTML(true);
 				if(!empty($_signature['signature'])) {

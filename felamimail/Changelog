@@ -1,3 +1,6 @@
+2007-02-28 Lars Kneschke  <l.kneschke@metaways.de>
+	* rewrote logic to encode header, to handle wrongly encoded header
+
 2007-02-26 Lars Kneschke  <l.kneschke@metaways.de>
 	* added support for messages containing only attachments (application/..., audio/...)
 

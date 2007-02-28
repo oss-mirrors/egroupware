@@ -71,6 +71,9 @@
 			$this->imapBaseDir	= '';
 
 			$this->displayCharset	= $_displayCharset;
+			if(function_exists(mb_decode_mimeheader)) {
+				mb_internal_encoding($this->displayCharset);
+			}
 
 			// set some defaults
 			if(empty($this->sessionData)) {
@@ -373,19 +376,37 @@
 
 		function decode_header($_string)
 		{
-			$newString = '';
+			if(function_exists(mb_decode_mimeheader)) {
+				$string = $_string;
+				if(preg_match_all('/=\?.*\?Q\?.*\?=/iU', $string, $matches)) {
+					foreach($matches[0] as $match) {
+						$fixedMatch = str_replace('_', ' ', $match);
+						$string = str_replace($match, $fixedMatch, $string);
+					}
+				}
+				return mb_decode_mimeheader($string);
+			} elseif(function_exists(iconv_mime_decode)) {
+				// continue decoding also if an error occurs
+				return iconv_mime_decode($_string, 2, $this->displayCharset);
+			} elseif(function_exists(imap_mime_header_decode)) {
+				$newString = '';
 
-			$string = preg_replace('/\?=\s+=\?/', '?= =?', $_string);
+				$string = preg_replace('/\?=\s+=\?/', '?= =?', $_string);
 
-			$elements=imap_mime_header_decode($string);
+				$elements=imap_mime_header_decode($string);
 
-			foreach((array)$elements as $element) {
-				if ($element->charset == 'default')
-					$element->charset = 'iso-8859-1';
-				$tempString = $this->botranslation->convert($element->text,$element->charset);
-				$newString .= $tempString;
+				foreach((array)$elements as $element) {
+					if ($element->charset == 'default')
+						$element->charset = 'iso-8859-1';
+					$tempString = $this->botranslation->convert($element->text,$element->charset);
+					$newString .= $tempString;
+				}
+				
+				return $newString;
 			}
-			return $newString;
+			
+			// no decoding function available
+			return $_string;
 		}
 		
 		function deleteAccount($_hookValues)
@@ -496,37 +517,38 @@
 			return $this->botranslation->convert($_folderName, 'UTF7-IMAP', $this->displayCharset);
 		}
 
-		function encodeHeader($_string, $_encoding='q')
-		{
-			switch($_encoding) {
-				case "q":
-					if(!preg_match("/[\x80-\xFF]/",$_string)) {
-						// nothing to quote, only 7 bit ascii
-						return $_string;
-					}
-					
-					$string = imap_8bit($_string);
-					$stringParts = explode("=\r\n",$string);
-					while(list($key,$value) = each($stringParts)) {
-						if(!empty($retString)) $retString .= " ";
-						$value = str_replace(" ","_",$value);
-						// imap_8bit does not convert "?"
-						// it does not need, but it should
-						$value = str_replace("?","=3F",$value);
-						$retString .= "=?".strtoupper($this->displayCharset). "?Q?". $value. "?=";
-					}
-					#exit;
-					return $retString;
-					break;
-				default:
-					return $_string;
-			}
-		}
+#		function encodeHeader($_string, $_encoding='q')
+#		{
+#			switch($_encoding) {
+#				case "q":
+#					if(!preg_match("/[\x80-\xFF]/",$_string)) {
+#						// nothing to quote, only 7 bit ascii
+#						return $_string;
+#					}
+#					
+#					$string = imap_8bit($_string);
+#					$stringParts = explode("=\r\n",$string);
+#					while(list($key,$value) = each($stringParts)) {
+#						if(!empty($retString)) $retString .= " ";
+#						$value = str_replace(" ","_",$value);
+#						// imap_8bit does not convert "?"
+#						// it does not need, but it should
+#						$value = str_replace("?","=3F",$value);
+#						$retString .= "=?".strtoupper($this->displayCharset). "?Q?". $value. "?=";
+#					}
+#					#exit;
+#					return $retString;
+#					break;
+#				default:
+#					return $_string;
+#			}
+#		}
 
 		function flagMessages($_flag, $_messageUID)
 		{
-			if(!is_array($_messageUID))
+			if(!is_array($_messageUID)) {
 				return false;
+			}
 			
 			$this->icServer->selectMailbox($this->sessionData['mailbox']);
 			
@@ -1560,10 +1582,6 @@
 			return $retValue;
 		}
 
-#		function getMessageStructure($_uid) {
-#			return imap_fetchstructure($this->mbox, $_uid, FT_UID);
-#		}
-		
 		// return the qouta of the users INBOX
 		function getQuotaRoot() 
 		{
@@ -1582,92 +1600,38 @@
 			}
 		}
 		
-#		// converts a imap id into a imap uid
-#		function idToUid($_mailbox, $_id) {
-#			$this->reopen($_mailbox);
-#			
-#			return imap_uid($this->mbox, $_id);
-#		}
-		
-	#	function imap_createmailbox($_folderName, $_subscribe = False)
+	#	function imapGetQuota($_username)
 	#	{
-	#		if(!$icServer = $this->mailPreferences->getIncomingServer(0))
+	#		$quota_value = @imap_get_quota($this->mbox, "user.".$_username);
+	#
+	#		if(is_array($quota_value) && count($quota_value) > 0)
+	#		{
+	#			return array('limit' => $quota_value['limit']/1024);
+	#		}
+	#		else
 	#		{
 	#			return false;
 	#		}
-	#		
-	#		$mailboxString = $icServer->getMailboxString($_folderName);
-	#		$result = @imap_createmailbox($this->mbox,$mailboxString);
-	#
-	#		if($_subscribe) {
-	#			return @imap_subscribe($this->mbox,$mailboxString);
-	#		}
-	#		
-	#		return $result;
-	#	}
+	#	}		
 		
-		function imapGetQuota($_username)
-		{
-			$quota_value = @imap_get_quota($this->mbox, "user.".$_username);
-
-			if(is_array($quota_value) && count($quota_value) > 0)
-			{
-				return array('limit' => $quota_value['limit']/1024);
-			}
-			else
-			{
-				return false;
-			}
-		}		
-		
-		function imap_get_quotaroot($_folderName)
-		{
-			return @imap_get_quotaroot($this->mbox, $_folderName);
-		}
-		
-	#	function imap_renamemailbox($_oldMailboxName, $_newMailboxName)
+	#	function imap_get_quotaroot($_folderName)
 	#	{
-	#		if(strcasecmp("inbox",$_oldMailboxName) == 0 || strcasecmp("inbox",$_newMailboxName) == 0)
-	#		{
-	#			return False;
-	#		}
-	#
-	#		if(!$icServer = $this->mailPreferences->getIncomingServer(0)) {
-	#			return false;
-	#		}
-	#
-	#		$oldMailboxName = $icServer->getMailboxString($_oldMailboxName);
-	#		$newMailboxName = $icServer->getMailboxString($_newMailboxName);
-	#		$this->reopen('INBOX');
-	#		
-	#		$oldFolderStatus = $this->getFolderStatus($_oldMailboxName);
-	#		// unsubscribe from old foldername
-	#		// this is needed for UW IMAP
-	#		$this->subscribe($_oldMailboxName, 'unsubscribe');
-	#		
-	#		$result =  @imap_renamemailbox($this->mbox,$oldMailboxName, $newMailboxName);
-	#		
-	#		if($oldFolderStatus['subscribed']) {
-	#			$this->subscribe($_newMailboxName, 'subscribe');
-	#		}
-	#		#error_log(imap_last_error());
-	#		
-	#		return $result;
+	#		return @imap_get_quotaroot($this->mbox, $_folderName);
 	#	}
 		
-		function imapSetQuota($_username, $_quotaLimit)
-		{
-			if(is_numeric($_quotaLimit) && $_quotaLimit >= 0)
-			{
-				// enable quota
-				$quota_value = @imap_set_quota($this->mbox, "user.".$_username, $_quotaLimit*1024);
-			}
-			else
-			{
-				// disable quota
-				$quota_value = @imap_set_quota($this->mbox, "user.".$_username, -1);
-			}
-		}
+	#	function imapSetQuota($_username, $_quotaLimit)
+	#	{
+	#		if(is_numeric($_quotaLimit) && $_quotaLimit >= 0)
+	#		{
+	#			// enable quota
+	#			$quota_value = @imap_set_quota($this->mbox, "user.".$_username, $_quotaLimit*1024);
+	#		}
+	#		else
+	#		{
+	#			// disable quota
+	#			$quota_value = @imap_set_quota($this->mbox, "user.".$_username, -1);
+	#		}
+	#	}
 		
 		function isSentFolder($_folderName)
 		{
