@@ -30,6 +30,7 @@ news headlines	common	en	News headlines
 news type	headlines	en	News Type
 no headlines found	headlines	en	No headlines found
 other preferences	preferences	en	Other Preferences
+purge headline cache	common	en	Purge Headline Cache
 read a list / search for entries.	headlines	en	Read a list / search for entries.
 read cached site data for a single site by passing the id.	headlines	en	Read cached site data for a single site by passing the id.
 read site data for a single site by passing the id.	headlines	en	Read site data for a single site by passing the id.
