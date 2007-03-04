@@ -1351,13 +1351,24 @@
 			return false;
 		}
 		
-		function getIMAPACL($_folderName)
+		function getIMAPACL($_folderName, $user='')
 		{
 			if(($this->hasCapability('ACL'))) {
 				if ( PEAR::isError($acl = $this->icServer->getACL($_folderName)) ) {
 					return false;
 				}
-				return $acl;
+				
+				if ($user=='') {
+					return $acl;
+				}
+				
+				foreach ($acl as $i => $userACL) {
+					if ($userACL['USER'] == $user) {
+						return $userACL['RIGHTS'];
+					}
+				}
+
+				return '';
 			}
 			
 			return false;
@@ -1800,9 +1811,7 @@
 		
 		function updateSingleACL($_folderName, $_accountName, $_aclType, $_aclStatus)
 		{
-			#$folderACL = $this->getIMAPACL($_folderName);
-			#error_log(print_r($folderACL, true));
-			$userACL = $this->icServer->getACLRights($_accountName, $_folderName);
+			$userACL = $this->getIMAPACL($_folderName, $_accountName);
 			
 			if($_aclStatus == 'true') {
 				if(strpos($userACL, $_aclType) === false) {

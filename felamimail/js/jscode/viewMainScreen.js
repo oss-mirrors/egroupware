@@ -275,6 +275,7 @@ function fm_readMessage(_url, _windowName, _node) {
 	aElements = trElement.getElementsByTagName("a");
 	aElements[0].style.fontWeight='normal';
 	aElements[1].style.fontWeight='normal';
+	xajax_doXMLHTTP("felamimail.ajaxfelamimail.refreshFolder");
 }
 
 function fm_clearSearch() {

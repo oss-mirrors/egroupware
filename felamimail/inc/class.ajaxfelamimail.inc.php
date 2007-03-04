@@ -165,6 +165,14 @@
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
+		/**
+		 * createACLTable
+		 * creates the ACL table
+		 *
+		 * @param	array	$_acl	array containing acl data
+		 *
+		 * @return	string	html output for ACL table
+		 */
 		function createACLTable($_acl) 
 		{
 			if(!is_object($GLOBALS['egw']->html)) {
@@ -172,7 +180,13 @@
 			}
 
 			$aclList = array('l','r','s','w','i','p','c','d','a');
-			$aclShortCuts = array('custom', 'readable', 'post', 'append', 'write', 'all');
+			$aclShortCuts = array(	'custom'	=> 'custom',
+									'lrs'		=> 'readable',
+									'lrsp'		=> 'post',
+									'lrsip'		=> 'append',
+									'lrswipcd'	=> 'write',
+									'lrswipcda'	=>	'all'
+								);
 		
 			ksort($_acl);
 		
@@ -187,10 +201,10 @@
 				foreach($aclList as $acl) {
 					$row .= "<td><input type=\"checkbox\" name=\"acl[$accountName][$acl]\" id=\"acl_$accountName_$acl\"". 
 						(strpos($accountAcl['RIGHTS'],$acl) !== false ? 'checked' : '') .
-						" onclick=\"xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateSingleACL','$accountName','$acl',this.checked)\"</td>";
+						" onclick=\"xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateSingleACL','$accountName','$acl',this.checked); document.getElementById('predefinedFor_$accountName').options[0].selected=true\"</td>";
 				}
 
-				$selectFrom = $GLOBALS['egw']->html->select('identity', $defaultIdentity, $aclShortCuts, false, "style='width: 100px;'");
+				$selectFrom = $GLOBALS['egw']->html->select('identity', $accountAcl['RIGHTS'], $aclShortCuts, false, "id=\"predefinedFor_$accountName\" style='width: 100px;' onChange=\"xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateACL','$accountName',this.value)\"");
 
 				$row .= "<td>$selectFrom</td>";
 				
@@ -546,7 +560,29 @@
 		{
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
-		
+
+		function refreshFolder()
+		{
+			if ($this->_debug) error_log("ajaxfelamimail::refreshFolder");
+			$GLOBALS['egw']->session->commit_session();
+
+            $response =& new xajaxResponse();
+
+			if ($this->_connectionStatus === true) {
+				$folderName = $this->sessionData['mailbox'];
+
+				if ($folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
+					if ($folderStatus['unseen'] > 0) {
+						$response->addScript("tree.setItemText('$folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
+					} else {
+						$response->addScript("tree.setItemText('$folderName', '". $folderStatus['shortDisplayName'] ."');");
+					}
+				}
+			}
+
+			return $response->getXML();
+		}
+
 		function refreshFolderList() 
 		{
 			if($this->_debug) error_log("ajaxfelamimail::refreshFolderList");
@@ -785,7 +821,44 @@
 			
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
-		
+
+
+		/**
+		 * updateACL
+		 * updates all ACLs for a single user and returns the updated the acl table
+		 * it will do nothing on $_acl == 'custom'
+		 *
+		 * @param	string	$_user	user to modify acl entries
+		 * @param	string	$_acl	new acl list
+		 *
+		 * @return	string	ajax xml response
+		 */
+		function updateACL($_user, $_acl)
+		{
+			if ($_acl == 'custom') {
+				$response =& new xajaxResponse();
+				return $response->getXML();
+			}
+
+			$_folderName = $this->sessionDataAjax['folderName'];
+			$result = $this->bofelamimail->setACL($_folderName, $_user, $_acl);
+			if ($result && $folderACL = $this->bofelamimail->getIMAPACL($_folderName)) {
+				return $this->updateACLView();
+			}
+
+			$response =& new xajaxResponse();
+			// add error message
+			// $response->add???
+			return $response->getXML();
+		}
+
+
+		/**
+		 * updateACLView
+		 * updates the ACL view table
+		 *
+		 * @return	string	ajax xml response containing new ACL table
+		 */
 		function updateACLView() 
 		{
 			
