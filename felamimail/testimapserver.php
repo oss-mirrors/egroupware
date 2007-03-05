@@ -65,6 +65,7 @@ $password2	= '';
 
 # folder to use for testing the SORT feature
 $testFolder	= 'INBOX';
+$enableSTARTTLS = true;
 
 $startTime = microtime(true);
 
@@ -78,7 +79,7 @@ print "<h1><span style='color:red;'>ATTENTION: THIS OUTPUT CONTAINS YOUR USERNAM
 
 $elapsedTime = microtime(true) - $startTime;
 print "<h1> $elapsedTime :: Login as user $username1 </h1>";
-$imapClient = new Net_IMAP($host, $port);
+$imapClient = new Net_IMAP($host, $port, $enableSTARTTLS);
 $imapClient->setDebug(true);
 $imapClient->login($username1, $password1, true, false);
 $imapClient->selectMailbox($testFolder);
