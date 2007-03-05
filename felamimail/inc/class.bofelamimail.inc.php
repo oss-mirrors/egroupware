@@ -815,6 +815,16 @@
 			$inboxData->shortFolderName	= 'INBOX';
 			$inboxData->shortDisplayName	= lang('INBOX');
 			$inboxData->subscribed = true;
+			if($_getCounters == true) {
+				$folderStatus = $this->icServer->getStatus('INBOX');
+				
+				$status =  new stdClass;
+				$status->messages	= $folderStatus['MESSAGES'];
+				$status->unseen		= $folderStatus['UNSEEN'];
+				$status->recent		= $folderStatus['RECENT'];
+
+				$inboxData->counter	= $status;
+			}
 			#$inboxData->attributes = 64;
 			$folders = array('INBOX' => $inboxData);
 			#_debug_array($folders);

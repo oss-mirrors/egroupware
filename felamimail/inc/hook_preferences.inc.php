@@ -31,8 +31,8 @@
 	$icServer = $mailPreferences->getIncomingServer(0);
 
 	if($icServer->enableSieve) {
-		$file['Manage EMailfilter'] = $GLOBALS['egw']->link('/index.php', 'menuaction=felamimail.uisieve.listRules');
-		$file['Manage Vacation'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editVacation');
+		$file['filter rules'] = $GLOBALS['egw']->link('/index.php', 'menuaction=felamimail.uisieve.listRules');
+		$file['vacation notice'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editVacation');
 	}
 	
 	//Do not modify below this line

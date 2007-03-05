@@ -12,7 +12,8 @@
 	\***************************************************************************/
 	/* $Id: class.uisieve.inc.php,v 1.24 2005/11/30 08:29:45 ralfbecker Exp $ */
 
-	include_once(EGW_SERVER_ROOT. '/felamimail/inc/Sieve.php');
+	#include_once(EGW_SERVER_ROOT. '/felamimail/inc/Sieve.php');
+	include_once('Net/Sieve.php');
 
 	class bosieve extends Net_Sieve {
 		/**
@@ -24,18 +25,19 @@
 		* @var object $icServer object containing the information about the imapserver
 		*/
 		var $scriptName;
+
+		/**
+		* @var object $error the last PEAR error object
+		*/
+		var $error;
 	
-		function bosieve($_icServer) {
+		function bosieve($_icServer) 
+		{
 			parent::Net_Sieve();
 			
 			$this->scriptName = (!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName']) ? $GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'] : 'felamimail');
 
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
-
-			#$this->bopreferences    =& CreateObject('felamimail.bopreferences');
-			#$this->mailPreferences  = $this->bopreferences->getPreferences();
-			
-			#$this->restoreSessionData();
 
 			if(is_a($_icServer,'defaultimap') && $_icServer->enableSieve) {
 				$sieveHost		= $_icServer->host;
@@ -48,14 +50,12 @@
 				die('Sieve not activated');
 			}
 
-			if(PEAR::isError($error = $this->connect($sieveHost , $sievePort) ) ){
-				echo "  there was an error trying to connect to the server. The error is: " . $error->getMessage() . "<br>" ;
-				exit();
+			if(PEAR::isError($this->error = $this->connect($sieveHost , $sievePort) ) ){
+				return false;
 			}
 
-			if(PEAR::isError($error = $this->login($username, $password) ) ){
-				echo "  there was an error trying to connect to the server. The error is: " . $error->getMessage()  . "<br>";
-				exit();
+			if(PEAR::isError($this->error = $this->login($username, $password) ) ){
+				return false;
 			}
 		}
 		

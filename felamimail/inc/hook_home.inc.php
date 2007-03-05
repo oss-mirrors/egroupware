@@ -84,12 +84,10 @@
 					$unseen		= $value->counter->unseen;
 					$recent		= $value->counter->recent;
 				}
-				if($messages == 0) $messages = '&nbsp;';
 
 				if($recent > 0) {
 					$newMessages = "$unseen($recent)";
 				} else {
-					if($unseen == 0) $unseen = '&nbsp;';
 					$newMessages = "$unseen";
 				}
 				

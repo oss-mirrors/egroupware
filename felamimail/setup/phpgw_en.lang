@@ -145,7 +145,7 @@ file into	felamimail	en	file into
 files	felamimail	en	files
 filter active	felamimail	en	filter active
 filter name	felamimail	en	Filter name
-filter rules	felamimail	en	filter rules
+filter rules	preferences	en	filter rules
 first name	felamimail	en	First name
 flagged	felamimail	en	flagged
 flags	felamimail	en	Flags
@@ -224,7 +224,7 @@ location of buttons when composing	felamimail	en	Location of buttons when compos
 mail server login type	admin	en	Mail server login type
 mail settings	felamimail	en	Mail Settings
 mainmessage	felamimail	en	mainmessage
-manage emailaccounts	felamimail	en	Manage EMailaccounts
+manage emailaccounts	preferences	en	Manage EMailaccounts
 manage emailfilter / vacation	preferences	en	Manage EMailfilter / Vacation
 manage folders	common	en	Manage Folders
 manage sieve	common	en	Manage Sieve scripts
@@ -403,7 +403,7 @@ use custom settings	felamimail	en	Use Custom Settings
 use regular expressions	felamimail	en	use regular expressions
 use smtp auth	admin	en	Use SMTP auth
 users can define their own emailaccounts	admin	en	Users can define their own emailaccounts
-vacation notice	felamimail	en	vacation notice
+vacation notice	preferences	en	vacation notice
 vacation notice is active	felamimail	en	Vacation notice is active
 validate certificate	felamimail	en	validate certificate
 view full header	felamimail	en	View full header

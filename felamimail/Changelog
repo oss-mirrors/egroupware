@@ -1,3 +1,11 @@
+2007-03-05 Lars Kneschke  <l.kneschke@metaways.de>
+	* fixed not working disabling of STARTTLS
+	* fixed borken FeLaMiMail preferences translations
+	* fixed full stop on Sieve connection error
+	* made INBOX counter on homepage working again (based on patch from Pavel Šorejs)
+	* display 0 instead of &nbsp; on empty folders (based on patch from Pavel Šorejs)
+	* removed some not longer needed files
+
 2007-02-28 Lars Kneschke  <l.kneschke@metaways.de>
 	* rewrote logic to encode header, to handle wrongly encoded header
 
