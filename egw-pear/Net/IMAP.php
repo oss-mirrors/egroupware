@@ -750,6 +750,9 @@ class Net_IMAP extends Net_IMAPProtocol {
         #print "Net_IMAP::_parseStructureTextArray _partID: $_partID<br>";
         $part = $this->_parseStructureCommonFields($_structure);
         $part->lines = $_structure[7];
+        
+        // what is the difference between $_structure[8] and $_structure[9]????
+        
         if(is_array($_structure[8])) {
           if(isset($_structure[8][0]) && $_structure[8][0] != 'NIL') {
             $part->disposition = strtoupper($_structure[8][0]);
@@ -762,6 +765,20 @@ class Net_IMAP extends Net_IMAPProtocol {
             }
           }
         }
+
+        if(is_array($_structure[9])) {
+          if(isset($_structure[9][0]) && $_structure[9][0] != 'NIL') {
+            $part->disposition = strtoupper($_structure[9][0]);
+          }
+          if(is_array($_structure[9][1])) {
+            foreach($_structure[9][1] as $key => $value) {
+              if($key%2 == 0) {
+                $part->dparameters[strtoupper($_structure[9][1][$key])] = $_structure[9][1][$key+1];
+              }
+            }
+          }
+        }
+        
         $part->partID = $_partID;
         
         $_mimeParts[$_partID] = $part;
