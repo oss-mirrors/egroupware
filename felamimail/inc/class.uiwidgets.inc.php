@@ -251,15 +251,15 @@
 
 				// the status icon
 				if($header['deleted']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgdel'));
+					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgdel'));
 				} elseif($header['recent']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgnew'));
+					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgnew'));
 				} elseif($header['answered']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgreplied'));
+					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgreplied'));
 				} elseif($header['seen']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgread'));
+					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgread'));
 				} else {
-					$this->t->set_var('image_url',$GLOBALS['egw']->common->image('felamimail','kmmsgunseen'));
+					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgunseen'));
 				}
 
 				// the css for this row
@@ -309,7 +309,7 @@
 				   $header['mimetype'] == 'multipart/related' ||
 				   substr($header['mimetype'],0,11) == 'application' ||
 				   substr($header['mimetype'],0,5) == 'audio') {
-					$image = '<img src="'.$GLOBALS['egw']->common->image('felamimail','attach').'" border="0" style="width:12px;">';
+					$image = $GLOBALS['egw']->html->image('felamimail','attach');
 					$this->t->set_var('attachment_image', $image);
 				} else {
 					$this->t->set_var('attachment_image', '&nbsp;');

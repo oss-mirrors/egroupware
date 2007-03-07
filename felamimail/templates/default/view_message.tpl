@@ -89,7 +89,7 @@ self.focus();
 		{size}
 	</td>
 	<td width="10%" align="center">
-		<a href="{link_save}"><img src="{url_img_save}" title="{lang_save}"></a>
+		<a href="{link_save}">{url_img_save}</a>
 	</td>
 </tr>
 <!-- END message_attachement_row -->

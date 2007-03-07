@@ -171,7 +171,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
-			<img src="{image_url}">
+			{image_url}
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
 			{attachment_image}
@@ -199,7 +199,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			onclick="toggleFolderRadio(this, refreshTimeOut)" {row_selected}>
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
-			<img src="{image_url}">
+			{image_url}
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
 			{attachment_image}
