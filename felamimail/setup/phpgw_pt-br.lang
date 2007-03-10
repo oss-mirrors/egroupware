@@ -18,6 +18,7 @@ after message body	felamimail	pt-br	Após o corpo da mensagem
 all address books	felamimail	pt-br	Todos os contatos
 all folders	felamimail	pt-br	Todas as pastas
 all of	felamimail	pt-br	Todos
+allow images from external sources in html emails	felamimail	pt-br	Todas as imagens de origem externa em e-mails em HTML
 allways a new window	felamimail	pt-br	sempre uma nova janela
 always show html emails	felamimail	pt-br	Sempre mostar mensagens em HMTL
 and	felamimail	pt-br	e
@@ -116,7 +117,7 @@ edit email forwarding address	felamimail	pt-br	Editar e-mail de encaminhamento
 edit filter	felamimail	pt-br	Editar filtro
 edit rule	felamimail	pt-br	Editar regra
 edit selected	felamimail	pt-br	Editar selecionado
-edit vacation settings	felamimail	pt-br	Editar configurações de férias
+edit vacation settings	felamimail	pt-br	Editar configurações de ausência
 email address	felamimail	pt-br	Endereço de E-Mail
 email forwarding address	felamimail	pt-br	E-Mail de encaminhamento
 email signature	felamimail	pt-br	Assinatura de E-Mail
@@ -144,7 +145,7 @@ file into	felamimail	pt-br	Arquivar em
 files	felamimail	pt-br	arquivos
 filter active	felamimail	pt-br	filtro ativo
 filter name	felamimail	pt-br	Nome do filtro
-filter rules	felamimail	pt-br	Regras de filtros
+filter rules	preferences	pt-br	Regras de filtros
 first name	felamimail	pt-br	Primeiro nome
 flagged	felamimail	pt-br	sinalizado
 flags	felamimail	pt-br	Sinalizadores
@@ -223,8 +224,8 @@ location of buttons when composing	felamimail	pt-br	Localização dos botões na co
 mail server login type	admin	pt-br	Tipo de conexão do servidor de correio
 mail settings	felamimail	pt-br	Preferências de Correio
 mainmessage	felamimail	pt-br	mensagem principal
-manage emailaccounts	felamimail	pt-br	Gerenciar contas de e-mail
-manage emailfilter / vacation	preferences	pt-br	Gerenciar Filtros / Férias
+manage emailaccounts	preferences	pt-br	Gerenciar contas de e-mail
+manage emailfilter / vacation	preferences	pt-br	Gerenciar Filtros / Ausência
 manage folders	common	pt-br	Gerenciar pastas
 manage sieve	common	pt-br	Gerenciar scripts Sieve
 manage signatures	felamimail	pt-br	Gerenciar assinaturas
@@ -334,6 +335,7 @@ select your mail server type	admin	pt-br	Selecionar o tipo do seu servidor de e-
 send	felamimail	pt-br	Enviar
 send a reject message	felamimail	pt-br	Enviar uma mensagem de rejeição
 sent folder	felamimail	pt-br	Pasta Enviadas
+server supports mailfilter(sieve)	felamimail	pt-br	Servidor suporta filtro de e-mails (sieve)
 show header	felamimail	pt-br	Exibir cabeçalho
 show new messages on main screen	felamimail	pt-br	Exibir novas mensagens na tela principal
 sieve script name	felamimail	pt-br	nome do script sieve
@@ -401,7 +403,8 @@ use custom settings	felamimail	pt-br	Usar configurações personalizadas
 use regular expressions	felamimail	pt-br	Usar expressões regulares
 use smtp auth	admin	pt-br	Usar autenticação SMTP
 users can define their own emailaccounts	admin	pt-br	Usuário pode definir suas próprias contas de correio
-vacation notice	felamimail	pt-br	Notícia de férias
+vacation notice	preferences	pt-br	Notícia de ausência
+vacation notice is active	felamimail	pt-br	Notícia de ausência está ativa
 validate certificate	felamimail	pt-br	validar certificado
 view full header	felamimail	pt-br	Exibir cabeçalho completo
 view header lines	felamimail	pt-br	Exibir linhas de cabeçalho

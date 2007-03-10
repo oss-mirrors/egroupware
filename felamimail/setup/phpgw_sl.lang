@@ -18,6 +18,7 @@ after message body	felamimail	sl	Za besedilom
 all address books	felamimail	sl	Vsi adresarji
 all folders	felamimail	sl	Vse mape
 all of	felamimail	sl	Vse od
+allow images from external sources in html emails	felamimail	sl	Dovoli slike iz zunanjih virov v sporočilih HTML
 allways a new window	felamimail	sl	Vedno novo okno
 always show html emails	felamimail	sl	Vedno prikaži HTML sporočila
 and	felamimail	sl	in

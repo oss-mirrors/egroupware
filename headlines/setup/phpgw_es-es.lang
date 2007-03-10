@@ -30,6 +30,7 @@ news headlines	common	es-es	Titulares de noticia
 news type	headlines	es-es	Tipo de noticia
 no headlines found	headlines	es-es	No se encontraron titulares
 other preferences	preferences	es-es	Otras preferencias
+purge headline cache	common	es-es	Purgar la caché del titular
 read a list / search for entries.	headlines	es-es	Leer una lista / buscar entradas
 read cached site data for a single site by passing the id.	headlines	es-es	Leer los datos en caché del sitio para un único sitio pasando el id.
 read site data for a single site by passing the id.	headlines	es-es	Leer los datos del sitio para un único sitio pasando el id.
