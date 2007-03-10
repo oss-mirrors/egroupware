@@ -1,0 +1,299 @@
+#	workflow	fi	#
+%1 aborted	workflow	fi	%1 keskeytetty
+%1 active	workflow	fi	%1 aktiivinen
+%1 completed	workflow	fi	%1 suoritettu
+%1 configuration	workflow	fi	1% asetukset
+%1 days, %2:%3:%4	workflow	fi	1% p‰iv‰‰, %2:%3:%4
+%1 exception	workflow	fi	%1 poikkeus
+%1 menu	workflow	fi	%1 valikko
+%1 monitoring	workflow	fi	%1 tarkkailu
+%1 processes (%2 active) (%3 being_run)	workflow	fi	%1 prosessia (%2 active) (%3 being_run)
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	fi	/workflow hakemistoa ei lˆydy ja sit‰ ei voida luoda, pyyd‰ p‰‰k‰ytt‰j‰‰ tarkistamaan yleiset asetukset
+<strong>%owner%</strong> is the instance owner email	workflow	fi	<strong>%owner%</strong> on s‰hkˆpostin omistajan instanssi
+<strong>%property_xx%</strong> is the content of the instance's property xx	workflow	fi	<strong>%property_XX%</strong> sis‰lt‰‰ XX instanssi asetukset
+abort instance	workflow	fi	keskeyt‰ instanssi
+abort this instance	workflow	fi	Keskeyt‰ t‰m‰ instanssi
+aborted	workflow	fi	keskeytetty
+access denied for user %1 on activity %2, no role	workflow	fi	K‰yttj‰n %1 p‰‰sy estetty toimintoa %2 koska roolia ei ole m‰‰ritelty
+act	workflow	fi	toi.
+act. status	workflow	fi	Toiminnon tila
+act. status:	workflow	fi	Toiminnon tila:
+action %1 is impossible if we have no activity and no instance designated for it!	workflow	fi	Toimintoa %1 on mahdoton toteuttaa jollei ole tapahtumaa ja sille ei ole suunniteltu instanssia
+action %1 is impossible, another user is already in place	workflow	fi	Toimintoa %1 on mahdoton toteuttaa, toinen k‰ytt‰j‰ suorittaa sit‰ jo
+action %1 is impossible, there are no user assigned to this activity for this instance	workflow	fi	Toimintoa %1 on mahdoton toteuttaa, kenellek‰‰n k‰ytt‰j‰lle ei ole ohjattu t‰m‰n tapahtuman instanssia
+action %1 needs an activity and activity %2 does not exists	workflow	fi	Toiminto %1 tarvitsee tapahtuman ja tapahtuma %2 ei ole olemassa.
+action %1 needs an instance and instance %2 does not exists	workflow	fi	Toiminto %1 tarvitsee instanssi ja instanssia %2 ei ole olemassa.
+actions	workflow	fi	Toiminnot
+actions right options	common	fi	Toiminnon oikeuksien asetukset
+activate	workflow	fi	Aktivoi
+active	workflow	fi	Toiminto
+active:	workflow	fi	Toiminto:
+activities	workflow	fi	Aktivoinnit
+activities selection	workflow	fi	Aktivointien valinta
+activities updated	workflow	fi	Aktivointien p‰ivitys
+activity	workflow	fi	toiminto
+activity  status	workflow	fi	Aktivoinnin tila
+activity %1	workflow	fi	aktivoi %1
+activity completed	workflow	fi	Toiminto suoritettu
+activity failure	workflow	fi	toiminto ep‰onnistui
+activity name already exists	workflow	fi	Toiminnon nimi on jo olemassa
+activity role #%1 removed	workflow	fi	Toiminnon rooli #%1 poistettu
+activity role removed	workflow	fi	Toiminnon rooli poistettu
+activity saved	workflow	fi	Toiminto aloitettu
+activity:	workflow	fi	toiminto:
+add a transition	workflow	fi	Lis‰‰ siirto
+add aborted instances	workflow	fi	Lis‰‰ keskeytetty instanssi
+add advanced actions	workflow	fi	Lis‰‰ kehittyneempi toiminto
+add completed instances	workflow	fi	Lis‰‰ suoritettu instanssi
+add new	workflow	fi	lis‰‰ uusi
+add new role	workflow	fi	Lis‰‰ uusi rooli
+add or edit a process	workflow	fi	Lis‰‰ tai muokkaa prosessia
+add or edit a role	workflow	fi	Lis‰‰ tai muokkaa roolia
+add or edit an activity	workflow	fi	Lis‰‰ tai muokkaa toimintoa
+add property	workflow	fi	Lis‰‰ ominaisuus
+add role	workflow	fi	Lis‰‰ rooli
+add role to process	workflow	fi	Lis‰‰ rooli prosessiin
+add transition	workflow	fi	lis‰‰ siirto
+add transitions	workflow	fi	Lis‰‰ siirrot
+add transitions from	workflow	fi	Lis‰‰ siirto kohteeseen
+add transitions to	workflow	fi	Lis‰‰ siirto kohteesta
+admin instance	workflow	fi	Yll‰pit‰j‰n instanssi
+admin process roles	workflow	fi	Yll‰pit‰j‰n prosessin roolit
+admin processes	common	fi	Yll‰pit‰j‰n prosessit
+admin processes sources	workflow	fi	Yll‰pit‰j‰n prosessien l‰hteet
+administer instances	admin	fi	Yll‰pit‰j‰n instanssit
+administer processes	admin	fi	Yll‰pit‰j‰n prosessit
+all	workflow	fi	Kaikki
+always show advanced actions	workflow	fi	N‰yt‰ aina edistyneemm‰t toiminnot
+always show advanced mode	workflow	fi	K‰yt‰  aina edistyneempi‰ asetuksia
+assign me this activity	workflow	fi	Merkitse minut t‰m‰n toiminnon k‰sittelij‰ksi
+at least one email address cannot be validated.	workflow	fi	ainakin yksi s‰hkˆpostiosoite on virheellinen.
+auto routed	workflow	fi	Auto reititys
+automatic	workflow	fi	automaattinen
+bad role type	workflow	fi	V‰‰r‰ rooli
+bad user	workflow	fi	V‰‰r‰ k‰ytt‰j‰
+bcc:	workflow	fi	Bcc:
+being run	workflow	fi	k‰ytˆss‰
+by running theses links you will create new instances of the related process.	workflow	fi	suorittamalla n‰m‰ linkit luot uuden instanssin liittyen prosesseihin
+cannot run the activity	workflow	fi	Toimintoa ei voida suorittaa
+cannot run the activity without her process	workflow	fi	Toimintoa ei voida suorittaa ilman prosessia
+cannot run the activity without instance	workflow	fi	Toimintoa ei voida suorittaa ilman instanssia
+cannot run unknown activity	workflow	fi	Tuntematonta toimintoa ei voida suorittaa
+cc:	workflow	fi	Cc:
+cleanup aborted instances	admin	fi	Siivotaan keskeytetyt instanssit
+cleanup actions	workflow	fi	siivoa toiminnot
+close and get back later	workflow	fi	Sulje ja palaa myˆhemmin
+close printer friendly mode	workflow	fi	Sulje tulostinyst‰v‰llinen tila
+complete	workflow	fi	Valmis
+complete cleanup of aborted instances done	workflow	fi	keskeytettyjen instanssien siivous suoritettu loppuun
+complete cleanup of all instances done	workflow	fi	kaikkien instanssien siivous suoritettu loppuun
+completed	workflow	fi	valmistunut
+config values	common	fi	M‰‰rittele arvoja
+confirm delete	workflow	fi	Vahvista poisto
+couldn't add transition	workflow	fi	Siirtoa ei voitu lis‰t‰
+create	workflow	fi	luo
+created	workflow	fi	luotu
+date:	workflow	fi	p‰iv‰ys:
+default config values	workflow	fi	Oletus arvot
+default next user	workflow	fi	Oletuksena seuraava k‰ytt‰j‰
+default owner	workflow	fi	Oletus omistaja
+default settings for processes	admin	fi	Oletus asetukset prosessille
+default user	workflow	fi	Oletus k‰ytt‰j‰
+delete selected	workflow	fi	Poista valitut
+delete transition	workflow	fi	Poista siirto
+deletion successful	workflow	fi	Poistettu onnistuneesti
+description	workflow	fi	Kuvaus
+display please wait message	common	fi	n‰ytet‰‰n, odota viesti‰
+don't move	workflow	fi	ƒl‰ siirr‰
+draw roles	common	fi	piirr‰ roolit
+duration	workflow	fi	Kesto
+end	workflow	fi	P‰‰tˆs
+ended	workflow	fi	P‰‰ttynyt
+enter an activity name	workflow	fi	Anna toiminnon nimi
+error: removing was not done	workflow	fi	Virhe: poistoa ei tehty
+export	workflow	fi	Vie
+failure	workflow	fi	virhe
+filter	workflow	fi	Suodatin
+filter instance by id	workflow	fi	Instanssin suodattimen Id
+fix	workflow	fi	Korjaa
+font size	workflow	fi	Fontin koko
+from	workflow	fi	Kenelt‰
+from:	workflow	fi	Kenelt‰:
+get back to global activities	workflow	fi	palaa yleisiin toimintoihin
+get back to instance creation	workflow	fi	palaa instanssin luomiseen
+global activities	workflow	fi	Yleiset toiminnot
+global workflow preferences	workflow	fi	Yleiset Workflow:n asetukset
+graph	workflow	fi	Grafiikka
+graphic options	common	fi	Grafiikan asetukset
+group	workflow	fi	Ryhm‰
+id	workflow	fi	Id
+import aborted	workflow	fi	Tuonti keskeytetty
+import successfull	workflow	fi	Tuonti onnistunut
+inactive	workflow	fi	Toimeton
+inst.	workflow	fi	Inst.
+inst. status	workflow	fi	Inst. Tila
+instance	workflow	fi	Instanssi
+instance %1	workflow	fi	instanssi %1
+instance history	workflow	fi	Instanssin historia
+instance properties	workflow	fi	Instanssin ominaisuudet
+instance:	workflow	fi	instanssi:
+instance: %1 (process: %2)	workflow	fi	Instanssi: %1 (Prosessi: %2)
+instances	workflow	fi	Instanssit
+instances selection	workflow	fi	Instanssin valinta
+int.	workflow	fi	Int.
+interactive	workflow	fi	Interaktiivinen
+interactive:	workflow	fi	interakttivinen:
+interactivity	workflow	fi	Interaktiivisuus
+invalid	workflow	fi	Kelpaamaton
+invalid process	workflow	fi	Kelpaamaton prosessi
+invalid role name	workflow	fi	Kelpaamaton roolin nimi
+is active	workflow	fi	on aktiivinen
+join	workflow	fi	liity
+list of activities	workflow	fi	Lista toiminnoista
+list of instances	workflow	fi	Lista instansseista
+list of monitors	workflow	fi	Lista seurannoista
+list of processes	workflow	fi	Lista prosesseista
+list of processes (%1)	workflow	fi	Lista prosesseista (%1)
+list of transitions	workflow	fi	Lista siirroista
+manual	workflow	fi	Ohje
+message:	workflow	fi	Viesti
+monitor activities	workflow	fi	Seuraa tapahtumia
+monitor instance	workflow	fi	Seuraa instanssia
+monitor instances	workflow	fi	Seuraa instansseja
+monitor processes	workflow	fi	Seuraa prosessia
+monitor this instance	workflow	fi	Seuraa t‰t‰ instanssia
+monitoring	admin	fi	Seuranta
+monitors	workflow	fi	Seurannat
+more options?	workflow	fi	lis‰‰ valintoja
+my activities	workflow	fi	Omat Toiminnot
+my instances	workflow	fi	Omat instanttini
+my processes	workflow	fi	Omat prosessini
+name	workflow	fi	Nimi
+new instance	workflow	fi	Uusi instanssi
+new major	workflow	fi	Uusi iso
+new major version created	workflow	fi	Uusi iso versio luotu
+new minor	workflow	fi	Uusi pieni
+new minor version created	workflow	fi	Uusi pieni versio luotu
+new transition added	workflow	fi	Uusi siirto tarvitaan
+next activity	workflow	fi	seuraava toiminto
+next user:	workflow	fi	Seuraava k‰yttj‰:
+no activites	workflow	fi	ei toimintoja
+no instance avaible	workflow	fi	ei instansseja saatavilla
+no roles	workflow	fi	ei rooleja
+nobody	workflow	fi	Ei kukaan
+owner	workflow	fi	Omistaja
+owner:	workflow	fi	Omistaja:
+ownership give abort right	common	fi	omistajalle annettu keskeytysoikeus
+ownership give release right	common	fi	omistajalle annettu luovutusoikeus
+please wait, task in progress ...	workflow	fi	Odota hetki, teht‰v‰‰ suoritetaan ...
+printer friendly	workflow	fi	Tulostin yst‰v‰llinen
+priority level:	workflow	fi	T‰rkeysaste:
+process	workflow	fi	Prosessi
+process %1	workflow	fi	prosessi %1
+process %1 %2 is not active, action %3 is impossible	workflow	fi	Prosessi %1 %2 ei ole aktiivinen, toiminto %3 on mahdotonta tehd‰
+process %d has been activated	workflow	fi	Prosessi %d on aktivoitu
+process %d has been deactivated	workflow	fi	Prosessin %d aktivointi kumottu
+process %s %s already exists, the import process was aborted	workflow	fi	Prosessi %s on jo olemassa, tuontiprosessi keskeytettiin
+process %s %s imported	workflow	fi	Prosessi %s tuontiin
+process %s has been created	workflow	fi	Prosessi %s luotiin
+process %s has been updated	workflow	fi	Prosessi %s p‰ivitettiin
+process %s removed	workflow	fi	Prosessi %s poistettiin
+process activities	workflow	fi	Prosessin toiminnot
+process form	workflow	fi	Prosessin muoto
+process name	workflow	fi	Prosessin nimi
+process name already exists	workflow	fi	Prosessin nimi on jo olemassa
+process roles	workflow	fi	Prosessin rooli
+process saved	workflow	fi	Prosessi tallennettu
+process transitions	workflow	fi	Prosessin siirrot
+process version:	workflow	fi	Prosessin versio
+process:	workflow	fi	Prosessi:
+processes	workflow	fi	Prosessit
+properties	workflow	fi	Ominaisuudet
+property	workflow	fi	Ominaisuus
+property %1 already exists	workflow	fi	ominaisuus %1 on jo olemassa
+property %1 not found	workflow	fi	ominaisuutta %1 ei lˆydetty
+quit without saving	workflow	fi	Lopeta ilman tallennusta
+read-only	workflow	fi	vain luku
+reload filter	workflow	fi	Lataa suodatin
+remove active instances	workflow	fi	Poista aktiiviset instanssit
+remove all instances for this process	workflow	fi	poista kaikkin instanssit t‰st‰ prosessista
+remove selected roles	workflow	fi	poista valitut roolit
+replyto:	workflow	fi	Vastaa:
+restart	workflow	fi	k‰ynnist‰ uudelleen
+restart activity	workflow	fi	k‰ynnist‰ toiminto uudelleen
+role	workflow	fi	Rooli
+role added to activity	workflow	fi	Rooli lis‰tty toimintoon
+role added to process	workflow	fi	Rooli lis‰tty prosessiin
+role give abort right	common	fi	Roolille annettu keskeytt‰misoikeudet
+role name	workflow	fi	Roolin nimi
+role saved	workflow	fi	Rooli tallennettu
+roles	workflow	fi	Roolit
+roles assigned to this activity	workflow	fi	T‰m‰n toiminnon k‰sittelij‰ roolit
+roles deleted	workflow	fi	Rooli poistettu
+run	workflow	fi	suorita
+run activity	workflow	fi	suorita aktivointi
+run instance	workflow	fi	suorita instassi
+running	workflow	fi	suoritetaan
+running activity	workflow	fi	Suoritetaan toimintoja
+search:	workflow	fi	Haku:
+select source	workflow	fi	valitse l‰hde
+send all to	workflow	fi	L‰het‰ kaikille
+send an email	workflow	fi	L‰het‰ s‰hkˆpostiviesti
+send instance	workflow	fi	l‰het‰ instanssi
+send transition	workflow	fi	l‰het‰ siirto
+send when the activity is ending	workflow	fi	l‰het‰ kun toiminto p‰‰ttyy
+send when the activity is starting	workflow	fi	l‰het‰ kun toiminto alkaa
+set next act	workflow	fi	Aseta seuraava toiminto
+set next user	workflow	fi	Aseta seuraava k‰ytt‰j‰
+set property	workflow	fi	Aseta ominaisuus
+show instance name	common	fi	N‰yt‰ instanssin nimi
+show instance owner	common	fi	N‰yt‰ instanssin omistaja
+source saved	workflow	fi	L‰hde talletettu
+split	workflow	fi	jaa
+standalone	workflow	fi	paikallinen
+start	workflow	fi	Aloita
+start activity	workflow	fi	Aloita toiminto
+start process	workflow	fi	Aloita prosessi
+started	workflow	fi	Aloitettu
+started:	workflow	fi	aloitettu:
+starting page	workflow	fi	Aloitussivu
+status	workflow	fi	Tila
+status:	workflow	fi	tila:
+stop	workflow	fi	pys‰yt‰
+subject:	workflow	fi	Aihe:
+the activity was not completed	workflow	fi	Toimintoa ei suoritettu
+there are no activities available	workflow	fi	Toimintoja ei ole k‰ytett‰viss‰
+there are no instances available	workflow	fi	Instansseja ei ole k‰ytett‰viss‰
+there are no process available	workflow	fi	Prosesseja ei ole k‰ytett‰viss‰
+there are no processes	workflow	fi	Prosesseja ei ole
+there are no processes available	workflow	fi	Prosesseja ei ole k‰ytett‰viss‰
+there are no processes with the current filter	workflow	fi	Nykyisell‰ suodattimella ei lˆydy prosesseja
+there are no properties available	workflow	fi	Ominaisuuksia ei ole k‰ytett‰viss‰
+this process has no end activity	workflow	fi	t‰ll‰ prosessilla ei ole lopputmis toimintoa
+to	workflow	fi	To
+to:	workflow	fi	To:
+update	workflow	fi	p‰ivit‰
+upload file	workflow	fi	Lataa tiedosto
+use default	workflow	fi	K‰yt‰ oletusta
+use existing roles	workflow	fi	K‰yt‰ olemassaolevia rooleja
+user	workflow	fi	K‰ytt‰j‰
+user activities	workflow	fi	K‰ytt‰j‰n toiminnot
+user instances	workflow	fi	K‰ytt‰j‰n instanssit
+user processes	workflow	fi	K‰ytt‰j‰n prosessit
+user/group	workflow	fi	K‰ytt‰j‰ / Ryhm‰
+user:	workflow	fi	k‰ytt‰j‰:
+users/groups	workflow	fi	K‰ytt‰j‰t / Ryhm‰t
+value	workflow	fi	Arvo
+version	workflow	fi	Versio
+view details	workflow	fi	n‰yt‰ yksityiskohdat
+view this instance	workflow	fi	N‰yt‰ t‰m‰ instanssi
+when to send the message:	workflow	fi	Koska viesti l‰hetet‰‰n:
+workflow	common	fi	Work-Flow
+workflow configuration	admin	fi	Workflow:n konfigurointi
+workflow navigation	workflow	fi	Workflow:n navigointi
+workflow preferences	workflow	fi	Workflow:n ominaisuudet
+workflow site configuration	workflow	fi	Workflow sivun konfigurointi
+you are not allowed to abort instance %1	workflow	fi	Sinulla ei ole oikeutta keskeytt‰‰ instanssia %1
+you are not allowed to restart instance %1	workflow	fi	Sinulla ei ole oikeutta k‰ynnist‰‰ uudestaan instanssia %1
+you are not allowed to resume instance %1	workflow	fi	Sinulla ei ole oikeutta jatkaa instanssia %1
+you are not allowed to send instance %1	workflow	fi	Sinulla ei ole oikeutta l‰hett‰‰n instanssia %1

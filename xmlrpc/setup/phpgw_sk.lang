@@ -1,0 +1,26 @@
+(optional: set domain for user/client login, required: set this servername for server login)	xmlrpc	sk	(voliteµné: nastavi» doménu pre prihlásenie pou¾ívateµa/klienta, povinné: nastavi» tento názov servera pre prihlásenie na server)
+addressbook test	xmlrpc	sk	Test Adresára
+app	xmlrpc	sk	Aplikácia
+apps	xmlrpc	sk	Aplikácie
+assigned kp3	xmlrpc	sk	Priradené kp3
+assigned sessionid	xmlrpc	sk	Priradené id sedenia
+bogus request	xmlrpc	sk	Falo¹ná po¾iadavka
+calendar test	xmlrpc	sk	Test Kalendára
+client / server test	xmlrpc	sk	Test Klient / Server
+configure using admin - peer servers	xmlrpc	sk	Nastavi» s pou¾itím admin - Peer serverov
+custom request	xmlrpc	sk	Pou¾ívateµská po¾iadavka
+egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	sk	eGroupWare XML-RPC/SOAP klient<->server a server<->server test (SOAP prebieha...)
+infolog test	xmlrpc	sk	Test Záznamníka
+meerkat browser	xmlrpc	sk	Meerkat prehliadaè
+method	xmlrpc	sk	Metóda
+methods	xmlrpc	sk	Metódy
+note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	sk	UPOZORNENIE: listapps a listusers sú zvyèajne vypnuté v xml_functions.php
+scalar parameter	xmlrpc	sk	Skalárny parameter
+select target server	xmlrpc	sk	Vyberte cieµový server
+server test	xmlrpc	sk	Test servera
+server<->server	xmlrpc	sk	Server<->Server
+servername/domain	xmlrpc	sk	Názov servera / doména
+simple client	xmlrpc	sk	Jednoduchý klient
+system	xmlrpc	sk	Systém
+test suite	xmlrpc	sk	Testovacia sada
+xmlrpc test	common	sk	XMLRPC Test

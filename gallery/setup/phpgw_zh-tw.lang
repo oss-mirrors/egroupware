@@ -1,0 +1,38 @@
+after successful installation of all instances, you have to copy %1 to %2!	gallery	zh-tw	在所有項目安裝完成後，您需要複製 %1 到 %2！
+album frame (%1samples%2)	gallery	zh-tw	相框 （%1範例%2）
+all filenames are relative to %1.	gallery	zh-tw	所有檔名都與 %1 有關。
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	zh-tw	所有其他的 eGroupWare 使用者會由 G2 整合程式建立，包含他們的管理權限。
+an error occurred during user creation in g2.	gallery	zh-tw	在 G2 中建立使用者時發生錯誤。
+an error occurred while trying to initialize g2.	gallery	zh-tw	在 G2 中組態時發生錯誤。
+can be used to limit the block to a certain album.	gallery	zh-tw	可以用來限制目前相簿使用的區塊。
+complete gallery	gallery	zh-tw	完整的相片館
+default item to show in the gallery.	gallery	zh-tw	相片館預設要顯示的項目。
+extra information to show	gallery	zh-tw	要顯示的其他資訊
+for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	zh-tw	在多重登入的 eGroupWare 環境，在安裝下一個程式時，您必須移除 %1。
+full size	gallery	zh-tw	完整大小
+gallery	common	zh-tw	相片館
+gallery menu	gallery	zh-tw	相片館選單
+gallery sidebar	gallery	zh-tw	相片館側邊選單
+gallery without sidebar	gallery	zh-tw	相片館沒有側邊選單
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	zh-tw	沒有安裝 Gallery2 ，您必須先 %1安裝%2 ！
+heading	gallery	zh-tw	頁首
+image frame (%1samples%2)	gallery	zh-tw	圖框（%1範例%2）
+imageblock	gallery	zh-tw	圖塊
+imageblock of the gallery	gallery	zh-tw	相片館的圖塊
+item id (number)	gallery	zh-tw	項目編號
+one or more blocks to show	gallery	zh-tw	要顯示一或多個區塊
+pagename of an other page to link to	gallery	zh-tw	要連結到期他頁面的頁面名稱
+please note:	gallery	zh-tw	請注意：
+set block title to	gallery	zh-tw	設定區塊標題
+set gallery title as page-title?	gallery	zh-tw	設定相片館標題為頁面標題？
+should contain a "gallery" block in contentarea "center".	gallery	zh-tw	內容區域 "center" 是否要包含一個 "gallery" 區塊。
+size (maximum number of pixel of the longest side)	gallery	zh-tw	大小（最長邊的最大畫素）
+specific item (requires itemid!)	gallery	zh-tw	指定項目（需要項目編號！）
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	zh-tw	管理者帳號必須是 eGroupWare 中已經存在的帳號，而且英文大小寫一致！
+type of the embeded gallery	gallery	zh-tw	嵌入式相片館類型
+use %1 as g2 data directory.	gallery	zh-tw	使用 %1 作為 G2 的資料夾。
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	zh-tw	使用與您 eGroupWare 一樣的資料庫設定（參考檔案 %1 ）並且依據建議設置資料表與欄位前置字元。
+use this module to display the embeded gallery	gallery	zh-tw	用這個模組來顯示嵌入的相片
+view count	gallery	zh-tw	瀏覽次數
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	zh-tw	您可以在點選項目後從網址的 g2_itemId 參數取得編號。
+you have no rights to view %1 content !!!	gallery	zh-tw	您沒有瀏覽 %1 內容的權限！

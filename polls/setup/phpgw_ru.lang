@@ -1,0 +1,33 @@
+actions	polls	ru	действия
+add answer to poll	polls	ru	Добавить ответ в голосование
+add answers	polls	ru	Добавить ответы
+add new poll question	polls	ru	Добавить новый вопрос для голосования
+add questions	polls	ru	Добавить вопросы
+allow users to vote more then once	polls	ru	Разрешить пользователям голосовать неоднократно
+answer	polls	ru	Ответы
+answer has been added to poll	polls	ru	Ответы добавлены в голосование
+answer has been updated	polls	ru	Ответы обновлены
+answers	polls	ru	Ответы
+are you sure want to delete this answer ?	polls	ru	Вы точно хотите удалить этот ответ?
+are you sure want to delete this question ?	polls	ru	Вы точно хотите удалить этот вопрос?
+current poll	polls	ru	Текущее Голосование
+edit answer	polls	ru	Изменить ответ
+edit poll question	polls	ru	Изменить вопрос голосования
+enter poll question	polls	ru	Ввести вопрос голосования
+new poll has been added.  you should now add some answers for this poll	polls	ru	Добавлено новое голосование. Сейчас Вы должны добавить несколько ответов для этго голосования
+poll question	polls	ru	Вопрос голосования
+poll settings	common	ru	Установки голосования
+polls	common	ru	Голосования
+question has been updated	polls	ru	Вопрос был обновлен
+select current poll	polls	ru	Выбрать текущее голосование
+settings	polls	ru	Установки
+settings updated	polls	ru	Установки обновлены
+show answers	polls	ru	Показать ответы
+show questions	common	ru	Показать вопросы
+total votes	polls	ru	Итого
+view poll	polls	ru	Смотреть голосование
+view results	polls	ru	Смотреть результаты
+vote	polls	ru	Голосовать
+voting booth admin	admin	ru	Кабинка для голосования
+voting booth administration	polls	ru	Администрирование кабинки для голосования
+which poll	polls	ru	Какое голосование
