@@ -18,6 +18,7 @@ var lang_jumping_to_start 	= '{lang_jumping_to_start}';
 var lang_updating_view 		= '{lang_updating_view}';
 
 var activityImagePath		= '{ajax-loader}';
+var test = '';
 
 // how many row are selected currently
 var checkedCounter=0;
