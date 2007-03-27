@@ -51,6 +51,7 @@ class Instance extends Base {
   * This function will load/initialize members of the instance object from the database
   * it will populate all members and will by default populate the related activities array
   * and the workitems (history) array.
+  *
   * @param $instanceId
   * @param $load_activities true by default, do we need to reload activities from the database?
   * @param $load_workitems true by default, do we need to reload workitems from the database?
