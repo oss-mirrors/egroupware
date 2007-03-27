@@ -117,6 +117,7 @@ class WfRuntime extends Base
   /*! 
   * @private
   * load the config values for the process associated with the runtime
+  *
   * config values are cached while this WfRuntime object stays alive
   * @param $arrayconf is a config array with default value i.e.:
   *	* key is the config option name
@@ -138,8 +139,8 @@ class WfRuntime extends Base
 
   /*!
   * @public
-  * Load the instance, the activity and the process, allthings needed by the runtime engine
-  * to  'execute' the activity
+  * Load the instance, the activity and the process, all things needed by the runtime engine to 'execute' the activity
+  *
   * @param $activityId is the activity id, the activity we will run
   * @param $instanceId is the instance Id, can be empty for a start or standalone activity
   * @return true or false
@@ -176,9 +177,10 @@ class WfRuntime extends Base
   /*!
   * @private
   * retrieve the process object associated with the activity
+  *
   * @param $pId is the process id of the process you want, if you do not give it we will try to
   * take it from the activity
-  * @return a Process Object of the right type or false
+  * @return true if everything was ok. False in the other case, consult errors
   */
   function loadProcess($pId=0)
   {
@@ -201,17 +203,24 @@ class WfRuntime extends Base
     return true;
   }
   
+  /*!
+  *
+  *
+  * @return the actual Process Object
+  */
   function &getProcess()
   {
     return $this->process;
   }
+  
   /*!
   * @private
   * retrieve the activity of the right type from a baseActivity Object
+  *
   * @param $activity_id is the activity_id you want
   * @param $with_roles will load the roles links on the object
   * @param $with_agents will load the agents links on the object
-  * @return an Activity Object of the right type or false
+  * @return true if everything was ok. False in the other case, consult errors
   */
   function loadActivity($activity_id, $with_roles= true,$with_agents=false)
   {
@@ -236,6 +245,11 @@ class WfRuntime extends Base
     return true;
   }
   
+  /*!
+  * 
+  *
+  * @return the actual Activity Object
+  */
   function &getActivity()
   {
     return $this->activity;
@@ -245,12 +259,12 @@ class WfRuntime extends Base
   * @public
   * retrieve the instance which could be an empty object
   * @param $instanceId is the instance id
-  * @return an Instance Object which can be empty or or string if something was turning bad
+  * @return true if everything was ok. False in the other case, consult errors
   */
   function loadInstance($instanceId)
   {
     $this->instance_id = $instanceId;
-    $this->instance->getInstance($instanceId);
+    $this->instance->loadInstance($instanceId);
     if ( ($this->instance->getInstanceId()==0) 
       && (! (($this->activity->getType()=='standalone') || ($this->activity->getType()=='start') )) )
     {

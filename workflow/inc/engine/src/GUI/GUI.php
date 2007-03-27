@@ -821,7 +821,7 @@ class GUI extends Base {
     {
       //the security object said everything was fine
       $instance = new Instance($this->db);
-      $instance->getInstance($instanceId);
+      $instance->loadInstance($instanceId);
       if (!empty($instance->instanceId)) 
       {
           if (!($instance->abort($activityId,$user)))
@@ -913,7 +913,7 @@ class GUI extends Base {
     {
       //the security object said everything was fine
       $instance =& new Instance($this->db);
-      $instance->getInstance($instanceId);
+      $instance->loadInstance($instanceId);
       // we force the execution of the activity
       $result = $instance->executeAutomaticActivity($activityId, $instanceId);      
       //TODO handle information returned in the sendAutorouted like in the completed activity template
@@ -949,7 +949,7 @@ class GUI extends Base {
     {
       //the security object said everything was fine
       $instance =& new Instance($this->db);
-      $instance->getInstance($instanceId);
+      $instance->loadInstance($instanceId);
       // we force the continuation of the flow
       $result = $instance->sendAutorouted($activityId,true);
       //TODO handle information returned in the sendAutorouted like in the completed activity template

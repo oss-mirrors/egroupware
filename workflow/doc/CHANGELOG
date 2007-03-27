@@ -9,6 +9,7 @@ regis_glc or regis_leroy is Regis Leroy <regis.leroy@makina-corpus.org> and is a
 	* use processes.css to decorate process names in all listings
 	* integrate patch 1497085 new method gui_list_instance_by_owner by Mauricio Luiz Viani, integration with gui_list_user_instance
 	* patch 1533381 - Mauricio Luiz Viani- missing $ in GUI/gui_list_instances_by_owner and missing space in gui_list_user_instances
+	* patch 495 - Oscar Manuel Gomez Senovilla : fix bad version upgrade
 
 [1.2.01.007] bugfixes release ** LATEST STABLE RELEASE **
 	* fix bad synchro on Instance fields, especially on automatic and start activities (regis_leroy)

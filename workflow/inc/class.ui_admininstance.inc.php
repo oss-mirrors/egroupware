@@ -150,7 +150,7 @@
 			
 			//now we use bo_uiinstance to display the form
 			$instance =& CreateObject('workflow.workflow_instance');
-			$instance->getInstance($iid);
+			$instance->loadInstance($iid);
 			$inst_parser	=& CreateObject('workflow.bo_uiinstance', $this->t);
 			//this is necessary the CreateObject did not use ref parameters
 			$inst_parser->t =& $this->t;

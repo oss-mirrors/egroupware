@@ -47,15 +47,33 @@ class Instance extends Base {
 
   /*!
   * Method used to load an instance data from the database.
+  *
   * This function will load/initialize members of the instance object from the database
   * it will populate all members and will by default populate the related activities array
   * and the workitems (history) array.
   * @param $instanceId
   * @param $load_activities true by default, do we need to reload activities from the database?
   * @param $load_workitems true by default, do we need to reload workitems from the database?
+  * @deprecated deprecated since 1.3 see LoadInstanceFromDb instead
   */
   function getInstance($instanceId, $load_activities=true, $load_workitems=true) 
   {
+	trigger_error('Instance->getInstance is deprecated use loadInstance instead',E_USER_WARNING);
+	return loadInstance($instanceId, $load_activities, $load_workitems);
+  }
+
+  /*!
+  * Method used to load an instance data from the database.
+  *
+  * This function will load/initialize members of the instance object from the database
+  * it will populate all members and will by default populate the related activities array
+  * and the workitems (history) array.
+  * @param $instanceId
+  * @param $load_activities true by default, do we need to reload activities from the database?
+  * @param $load_workitems true by default, do we need to reload workitems from the database?
+  * @return true if everything was ok, false in the other case
+  */
+  function loadInstance($instanceId, $load_activities=true, $load_workitems=true)
     if (!($instanceId)) return true; //start activities for example - pseudo instances
     // Get the instance data
     $query = "select * from `".GALAXIA_TABLE_PREFIX."instances` where `wf_instance_id`=?";
@@ -221,7 +239,7 @@ class Instance extends Base {
       $init_category = $this->category;
       // we re-read instance members to detect conflicts, changes made while we were unsynchronised
 		// TODO: there is instanceID and instance_id, all around that's bad!!!
-      $this->getInstance($this->instanceId, false, false);
+      $this->loadInstance($this->instanceId, false, false);
 	  
       // Now for each modified field we'll change the database value if nobody has changed
       // the database value before us
