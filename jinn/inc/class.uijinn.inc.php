@@ -48,7 +48,8 @@
 		 {
 			$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
 		 }
-		 if (!strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
+		 
+		 if ($GLOBALS['phpgw_info']['flags']['java_script'] && !strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
 		 {
 			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 		 }
