@@ -106,18 +106,6 @@
 
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 
-		 /* todo: test if this works */
-		 if (!is_object($GLOBALS['phpgw']->js))
-		 {
-			$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
-		 }
-		 if ($GLOBALS['phpgw_info']['flags']['java_script'] && !strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
-		 {
-			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
-			$GLOBALS['phpgw']->js->validate_file('wz_dragdrop','wz_dragdrop');
-			$GLOBALS['phpgw']->js->validate_file('jinn','ajax','jinn');
-		 }
-
 		 if (!is_object($GLOBALS['phpgw']->html))
 		 {
 			$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');

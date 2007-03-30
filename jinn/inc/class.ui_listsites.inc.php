@@ -70,15 +70,6 @@
 			}
 		 }
 
-		 if (!is_object($GLOBALS['phpgw']->js))
-		 {
-			$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
-		 }
-		 if (!strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
-		 {
-			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
-		 }	 
-
 		 $this->header(lang('List Sites'));
 
 		 $this->msg_box();
