@@ -320,7 +320,7 @@
 			   {
 				  $this->bo->addError(lang('Error in event plugin'));
 			   }
-   
+
 			   if ($status['record']['error'])	
 			   {
 				  if(intval($_POST['MLTNUM'])==1)
@@ -341,6 +341,15 @@
 				  else
 				  {
 					 $this->bo->addInfo(lang('Records were succesfully saved.'));
+				  }
+				  if($_POST['savereopen'])
+				  {
+					 $this->bo->session['mult_where_array']=$status['mult_where_array'];
+				  }
+				  else
+				  {
+					 // open page with last created records
+					 $this->bo->exit_and_open_screen($this->japielink.'jinn.uiu_list_records.display_last_records_page');
 				  }
 			   }
 
