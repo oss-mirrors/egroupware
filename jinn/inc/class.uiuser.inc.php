@@ -428,12 +428,10 @@
 			{
 			   $this->bo->addError(lang('No object selected. No able to configure this view'));
 			   $this->msg_box();
-			   $this->main_menu();	
 			}
 			else
 			{
 			   $this->msg_box();
-			   $this->main_menu();	
 
 			   $this->template->set_file(array(
 				  'config' => 'config_browse_view.tpl'
