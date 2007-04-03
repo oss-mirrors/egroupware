@@ -61,141 +61,49 @@
 		 activeRec=elid;
    }
 
-   /**
-   * toggleVisible
-   * 
-   * @param field $field 
-   * @param toggleTo $toggleTo 
-   * @param object_id because fields in this form can have different object_ids
-   * @access public
-   * @return void
-   * @todo check status of action
-   */
-   function toggleVisible(field,toggleTo,object_id)
+   function toggleFieldFormVisible(field,toggleTo,object_id)
    {
-		 url='<?=$this->xmlhttp_visible_link?>&object_id='+object_id+'&field_name='+field+'&toggleTo='+toggleTo;
-
-		 // branch for native XMLHttpRequest object
-		 if (window.XMLHttpRequest) 
-		 {
-			   req = new XMLHttpRequest();
-			   //req.onreadystatechange = eval(func);
-			   req.open("GET", url, true);
-			   req.send(null);
-		 } 
-		 // branch for IE/Windows ActiveX version
-		 else if (window.ActiveXObject) 
-		 {
-			   req = new ActiveXObject("Microsoft.XMLHTTP");
-			   if (req) 
-			   {
-					 //req.onreadystatechange = eval(func);
-					 req.open("GET", url, true);
-					 req.send();
-			   }
-		 }
-
+		 xajax_doXMLHTTP("jinn.ajaxjinn.toggleFieldFormVisible",field,toggleTo,object_id);
 		 var newlink;
 		 if(toggleTo=='hide')
 		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleVisible(\''+field+'\',\'visible\',\'object_id\')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>';
+			   newlink='<a href="javascript:void(0);" onclick="toggleFieldFormVisible(\''+field+'\',\'visible\',\'object_id\')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>';
 		 }
 		 else
 		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleVisible(\''+field+'\',\'hide\',\'object_id\')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>';
+			   newlink='<a href="javascript:void(0);" onclick="toggleFieldFormVisible(\''+field+'\',\'hide\',\'object_id\')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>';
 		 }
 		 document.getElementById('visible'+field).innerHTML=newlink;	
    }
 
-   /**
-   * toggleVisible
-   * 
-   * @param field $field 
-   * @param toggleTo $toggleTo 
-   * @param object_id because fields in this form can have different object_ids
-   * @access public
-   * @return void
-   * @todo check status of action
-   */
-   function toggleListVisible(field,toggleTo,object_id)
+   function toggleFieldListVisible(field,toggleTo,object_id)
    {
-		 url='<?=$this->xmlhttp_listvisible_link?>&object_id='+object_id+'&field_name='+field+'&toggleTo='+toggleTo;
-
-		 // branch for native XMLHttpRequest object
-		 if (window.XMLHttpRequest) 
-		 {
-			   req = new XMLHttpRequest();
-			   //req.onreadystatechange = eval(func);
-			   req.open("GET", url, true);
-			   req.send(null);
-		 } 
-		 // branch for IE/Windows ActiveX version
-		 else if (window.ActiveXObject) 
-		 {
-			   req = new ActiveXObject("Microsoft.XMLHTTP");
-			   if (req) 
-			   {
-					 //req.onreadystatechange = eval(func);
-					 req.open("GET", url, true);
-					 req.send();
-			   }
-		 }
+		 xajax_doXMLHTTP("jinn.ajaxjinn.toggleFieldListVisible",field,toggleTo,object_id);
 
 		 var newlink;
 		 if(toggleTo=='hide')
 		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleListVisible(\''+field+'\',\'visible\',\'object_id\')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>';
+			   newlink='<a href="javascript:void(0);" onclick="toggleFieldListVisible(\''+field+'\',\'visible\',\'object_id\')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>';
 		 }
 		 else
 		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleListVisible(\''+field+'\',\'hide\',\'object_id\')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>';
+			   newlink='<a href="javascript:void(0);" onclick="toggleFieldListVisible(\''+field+'\',\'hide\',\'object_id\')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>';
 		 }
 		 document.getElementById('listvisible'+field).innerHTML=newlink;	
    }
 
-   /**
-   * toggleEnabled
-   * 
-   * @param field $field 
-   * @param toggleTo $toggleTo 
-   * @param object_id because fields in this form can have different object_ids
-   * @access public
-   * @return void
-   * @todo check status of action
-   */
-   function toggleEnabled(field,toggleTo,object_id)
+   function toggleFieldEnabled(field,toggleTo,object_id)
    {
-		 url='<?=$this->xmlhttp_enabled_link?>&object_id='+object_id+'&field_name='+field+'&toggleTo='+toggleTo;
-
-		 document.getElementById('debug').innerHTML=url;
-		 // branch for native XMLHttpRequest object
-		 if (window.XMLHttpRequest) 
-		 {
-			   req = new XMLHttpRequest();
-			   //req.onreadystatechange = eval(func);
-			   req.open("GET", url, true);
-			   req.send(null);
-		 } 
-		 // branch for IE/Windows ActiveX version
-		 else if (window.ActiveXObject) 
-		 {
-			   req = new ActiveXObject("Microsoft.XMLHTTP");
-			   if (req) 
-			   {
-					 //req.onreadystatechange = eval(func);
-					 req.open("GET", url, true);
-					 req.send();
-			   }
-		 }
+		 xajax_doXMLHTTP("jinn.ajaxjinn.toggleFieldEnabled",field,toggleTo,object_id);
 
 		 var newlink;
 		 if(toggleTo=='enable')
 		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleEnabled(\''+field+'\',\'disable\',\'object_id\')"><img src="<?=$this->img_fld_enabled?>" alt="" /></a>';
+			   newlink='<a href="javascript:void(0);" onclick="toggleFieldEnabled(\''+field+'\',\'disable\',\'object_id\')"><img src="<?=$this->img_fld_enabled?>" alt="" /></a>';
 		 }
 		 else
 		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleEnabled(\''+field+'\',\'enable\',\'object_id\')"><img src="<?=$this->img_fld_disabled?>" alt="" /></a>';
+			   newlink='<a href="javascript:void(0);" onclick="toggleFieldEnabled(\''+field+'\',\'enable\',\'object_id\')"><img src="<?=$this->img_fld_disabled?>" alt="" /></a>';
 		 }
 		 document.getElementById('enable'+field).innerHTML=newlink;	
    }
@@ -507,9 +415,9 @@
 			   <?php if($r['element_type']=='auto'):?>
 			   <td id="enable<?=$r['fieldname']?>" class="propertiescell">
 				  <?php if($r['disabled']=='disabled'):?>
-				  <a href="javascript:void(0);" onclick="toggleEnabled('<?=$r[fieldname]?>','enable','<?=$r['parent_object']?>')"><img src="<?=$this->img_fld_disabled?>" alt="" /></a>
+				  <a href="javascript:void(0);" onclick="toggleFieldEnabled('<?=$r[fieldname]?>','enable','<?=$r['parent_object']?>')"><img src="<?=$this->img_fld_disabled?>" alt="" /></a>
 				  <?php else:?>
-				  <a href="javascript:void(0);" onclick="toggleEnabled('<?=$r[fieldname]?>','disable','<?=$r[parent_object]?>')"><img src="<?=$this->img_fld_enabled?>" alt="" /></a>
+				  <a href="javascript:void(0);" onclick="toggleFieldEnabled('<?=$r[fieldname]?>','disable','<?=$r[parent_object]?>')"><img src="<?=$this->img_fld_enabled?>" alt="" /></a>
 				  <?php endif?>
 			   </td>
 			   <?php else:?>
@@ -520,17 +428,17 @@
 
 			   <td style="" id="visible<?=$r[fieldname]?>" class="propertiescell">
 				  <?php if($r[visible]=='hide'):?>
-				  <a href="javascript:void(0);" onclick="toggleVisible('<?=$r[fieldname]?>','visible','<?=$r[parent_object]?>')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>
+				  <a href="javascript:void(0);" onclick="toggleFieldFormVisible('<?=$r[fieldname]?>','visible','<?=$r[parent_object]?>')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>
 				  <?php else:?>
-				  <a href="javascript:void(0);" onclick="toggleVisible('<?=$r[fieldname]?>','hide','<?=$r[parent_object]?>')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>
+				  <a href="javascript:void(0);" onclick="toggleFieldFormVisible('<?=$r[fieldname]?>','hide','<?=$r[parent_object]?>')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>
 				  <?php endif?>
 			   </td>
 
 			   <td style="" id="listvisible<?=$r[fieldname]?>" class="propertiescell">
 				  <?php if($r[listvisible]=='hide'):?>
-				  <a href="javascript:void(0);" onclick="toggleListVisible('<?=$r[fieldname]?>','visible','<?=$r[parent_object]?>')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>
+				  <a href="javascript:void(0);" onclick="toggleFieldListVisible('<?=$r[fieldname]?>','visible','<?=$r[parent_object]?>')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>
 				  <?php else:?>
-				  <a href="javascript:void(0);" onclick="toggleListVisible('<?=$r[fieldname]?>','hide','<?=$r[parent_object]?>')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>
+				  <a href="javascript:void(0);" onclick="toggleFieldListVisible('<?=$r[fieldname]?>','hide','<?=$r[parent_object]?>')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>
 				  <?php endif?>
 			   </td>
 			   <td style="" class="propertiescell">
