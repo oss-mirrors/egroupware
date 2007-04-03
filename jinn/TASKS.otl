@@ -1,34 +1,7 @@
 ## J I N N   T A S K S ##
 Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
-	[_] 49% RELEASE 0.9xxx stable
-		[_] 83% SHOWSTOPPERS BUGS
-			[X] PHP5 compliance
-				[X] check all array_merge
-				[X] check thouroughly
-			[X] Edit record
-			[X] order not well working
-			[X] ajax m2o list view seems to use the configuration of its mother object
-			[X] in sommige gevallen wordt een m2o niet opgeslagen zonder foutmelding
-			[_] TinyMCE parst niet goed in een many-to-one relatie
-				[_] in progress
-		[_] 16% TASKS
-			[_] missing help screens
-				[_] sites overview
-				[_] objects overview
-			[_] site import/export
-				[_] old file format is buggy
-				[X] not well tested
-				[_] reports are not finished in xml file formal
-				[_] while creating an jinn file a temp parent id must be used; 
-				[_] import/export host profile
-				[X] import objects from sites file into current site
-					[X] choose which objects to import with selection dialog
-	[_] 34% RELEASE 1.0 stable of later
-		[_] 11% BUGS
-			[_] exporting an object forgets the included files
-			[_] config lijst geeft not enabled velden toch weer
-			[_] bij het weggooien van meerdere sites worden de site files niet weggegooid
-			[_] worden rapporten weggegooit?
+	[_] 0% RELEASE 1.0 stable of later
+		[_] 0% DUTCH BUGS
 			[_] heel af en toe na importeren over een site heen lijkt het navigatie menu niet goed te werken in sitebox: wel site geen objecten
 			[_] default varchar geeft bij het openen geen plugin informatie weer
 			[_] gen_menu geeft geen waarschuwing als veld te klein is
@@ -48,134 +21,9 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 			[_] als je in een subentry staat in o2m record en op enter drukt submit hij het moeder formulier
 			[_] gen menu plugin geeft foutmedingen wanneer het niet goed is geconfigureerd
 			[_] Filemannager laat geen plaatjes zien maar bestandnamen
-		[_] CODE CLEANUP
-			[_] replace SQL sojinn with native eGroupware database functions
-			[_] cleanup javascript move to central place
-			[_] cleanup css move to central place
-			[_] move css styles in html attributes to sheet
-			[_] replace old PHPLIB templates with tplsavant2
-				[_] access_rights.tpl
-				[_] accounts.tpl
-				[_] config.tpl
-				[_] config_browse_view.tpl
-				[X] frm_edit_filter.tpl
-				[_] import_object.tpl
-				[X] list_records.tpl
-		[_] 20% TASKS
-			[_] 11% SAVE/OPEN JINN DATA	
-				[_] single objects not implemented in xml
-				[_] export xml
-					[_] cleanup code
-				[_] import xml
-					[_] test/impl replace
-					[_] finish import xml
-					[X] automate from japie calls
-			[_] NEW CLASS LAY-OUT  
-				[_] alle posts moeten terugkomen in ui
-				[_] ACL meer globaal maken
-				[_] Rapporten anders structuren
-				[_] imagepath testen na nieuwe lay=out voor gdlib en imagemagick
-				[_] dubbele functies weghalen
-			[_] HERONTWERP BERICHTEN
-				[_] overal message functies gebruiken
-				[_] overal status array compleet maken
-				[_] ret_code vervangen met error=true
-				[_] session save weghalen
-				[_] in class.site_fs.inc.php staat ook een vreemde foutafhandeling
-				[_] alle plugins nalopen
-			[_] EVENT PLUGINS
-				[_] strange bug event looses name while configuring
-				[_] delete must really delete site files
-				[_] existing site files must be possible to select
-				[_] mandatory moet geen property van een veld zijn maar afgehandelt worden door een eventplugin.
-				[_] event on new record
-				[_] event on delete record
-				[_] invoer verplicht tijdelijk uitgeschakeld
-				[_] invoer verplicht vervangen met invoer controle op inhoud (wellicht te definieren in plugin zelf)
-				[_] run on record event
-					[_] make complete see uiuser.inc.php
-			[_] 47% JAPIE JiNN API Enterprise
-				[_] set version info when jinn meta data is updated
-					[X] add/edit site
-					[X] add/edit gen object props
-					[X] edit field info
-					[X] edit relation info
-					[_] event plugins
-					[_] add/edit report info
-					[_] make more generic
-				[_] 86% japie jinn features
-					[X] search
-					[_] filters
-					[X] list
-						[X] custom action links
-					[X] create single
-					[X] delete single
-					[X] copy single
-					[X] read single
-					[X] edit single
-						[X] open
-						[X] save
-						[X] tinymce javascript include probleem
-					[_] multi
-						[X] del
-						[X] edit
-						[X] create
-						[X] read
-						[_] export CSV
-				[_] enable/disable functions
-					[_] implement these in JiNN General Objecte configuration
-						[_] edit
-						[_] del
-						[_] read
-						[_] copy
-						[X] reports
-						[_] search
-						[_] filters
-						[_] import
-						[_] export
-						[_] list
-				[_] default screen
-				[_] custom return links
-				[_] setup application including JAPIE stuff
-					[X] add japie info in setup/appname.jsxl
-						[X] objects unique id's
-						[X] version
-					[X] When app is opened
-						[X] check if jinn object is available
-						[X] run app if object info in db is correct with object info in setup
-						[X] install site and objects if this is not the case 
-					[_] JiNN
-						[_] show info about application
-						[_] show object id
-						[X] make if possible to save over new mods
-				[X] make sure hardcoded uniq id's stay as reference
-				[_] disable normal jinn ACL
-				[X] create parallel session handling
-			[_] 0% RELATIES
-				[_] relations have to have an own table
-				[_] o2o en m2o relaties hoeven geen remote tabel te hebben
-				[_] O2O je kunt nu kiezen voor tabel 1 met configuratie 2, dus of alleen een confuguratie kiezen of alleen een tabel
-				[_] in relatiescherm, types bij de velden, via tooltip of direct erachter
-			[_] 0% DOCUMENTATION, TRANSLATIONS INFO
-				[_] Vertalen
-				[_] Meer info geven in object overzicht: type relaties, problemen objecten, geconf. velden, totaal db velden
-			[_] 50% LIST RECORDS
-				[_] optimize search code
-				[_] optimize columnames code
-				[X] improve speed in many ways
-				[X] improve lay-out
-				[X] add more browsing functionality
-				[_] remove all doc html
-				[X] port to tplsav2
-				[_] double click on field to edit its content.
-			[_] 66% REPORTS
+		[_] 0% TASKS
+			[_] 0% REPORTS
 				[_] NextGen PDF Reports
-					[X] Structure
-						[X] ui
-						[X] bo
-						[X] so
-						[X] plugins->inputmethods
-						[X] plugins->outputmethods
 					[_] Screens
 						[_] Design reports
 							[_] All available fields and related fields
@@ -205,17 +53,10 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 						[_] Maintain reports
 							[_] list
 							[_] delete
-							[X] edit
-							[X] copy
 						[_] merge report
 						: cycle if needed
 							[_] select scope
-								[X] all 
 								[_] selected 
-								[X] filtered list
-							[X] choose output method
-								[X] screen
-								[X] save
 								
 			[_] 0% FILTERS
 				[_] filter delen met andere gebruikers
@@ -223,14 +64,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] filters moeten beter uitgewerkt worden en operators moeten door plugin met ajax worden gerendered
 				[_] filters moeten met EN en OF gegroepeerd kunnen worden
 				[_] nicer filter edits
-			[_] 0% ACL
-				[_] eGroupware ACL gebruiken
-				[_] ACL groepen gebruiken
-			[_] 33% EXTRA VELDEN/DATASOURCES
-				[X] form edit mode moet een knop voeg veld toe krijgen
-				[X] bij toevoegen moet gekozen worden uit element_type: table_field of layout
-				[X] bij toevoegen wordt de label automatisch ingevuld met 'new_element_1' en kan door developer worden aangepast
-				[X] bij toevoegen nadat gekozen is voor "table_field" kan direct gekozen worden voor een datasource(veld uit de huidige tabel (in de toekomst query)) 
+			[_] 0% EXTRA VELDEN/DATASOURCES
 				[_] na opslaan komt veld onderaan te staan met volgordenummer maximaal +10
 				[_] volgorde moet simpel geimplementeerd worden met standaard stappen van 10 zodat gemakkelijk geschoven kan worden
 				[_] bij renderen form wordt eerst alle tabelvelden opgehaald en bijbehorende obj_velden erbij opgezocht (dit is reeds zo geimplementeerd)
@@ -247,9 +81,7 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] plugins geven aan of ze genest mogen worden of kunnen nesten zoals tabbladen en kaders groupboxen
 				[_] field_name wordt datasource. 
 				[_] element_type: table_field of layout. Geschikt voor afbeeldingen, tabbalden lijnen, kaders, etc......
-			[X] OPTIMIZATION
-				[X] remove unneeded db connections
-			[_] 3% DIVERS
+			[_] 0% DIVERS
 				[_] port every use of wherestring on the sitedb site to the new create_where_string function
 				[_] globale configuratie herzien
 				[_] weergeven records is vaak niet uitgewerkt
@@ -270,7 +102,6 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] Andere databases ondersteunen
 				[_] gebruikers met genoeg rechten moeten een eigen site kunnen opzetten
 				[_] excel importeren en importeren
-				[X] importeren csv met veld-mapping
 				[_] betere configuratie plugins met meer veld mogelijkheden
 				[_] selects options checkboxen in m2o
 				[_] Filemanager kan geen animated-gif's uploaden.
@@ -280,78 +111,3 @@ Jinn bugs, tasks and ideas (Sorry this is sometimes in Dutch)
 				[_] ook scheiding maken voor objecten met maar een record
 				[_] meerdere host profielen kunnen maken door ze in een aparte tabel op te slaan
 				[_] profielen kunnen exporteren
-		[X] 100% DONE
-			[X] 100% BUGS
-				[X] na wijzigen veldeigenschappen moet de pagina worden herladen of met ajax wijzigingen worden gedaan 
-				[X] opslaan reload moeder pagina (was bug :  aanpassen plugin, knop opslaan zou ook het scherm moeten afsluiten van de configuratie)
-				[X] er gebeuren rare dingen met de where_string_arr in de sessie
-				[X] vorder werkt niet
-				[X] als een subentry open staan van o2m en het formulier submit krijg je een hele lelijke foutmelding
-				[X] de foutmeldingen zijn inconsequent
-				[X] o2m lijsten worden herhaald bij meerdere records wijzigen
-				[X] als er ergens op sorteren wordt geklikt werken andere objecten niet meer
-				[X] o2m werkt niet goed bij meerdere records wijzigingen lijsten kloppen niet
-				[X] filters kunnen niet opslaan niet expliciet velden zijn geselecteerd
-				[X] Bij opslaan van een nieuw record met veel data mysql Error: 1136 (Column count doesn't match value count at row 1) foutmelding dit komt als getracht wordt text in een int veld op te slaan 
-				[X] in het o2m subformulier verkleuren de velden niet
-				[X] in safari en blijven de velden grijs nadat ze verlaten zijn
-				[X] globale configuratielink werkt niet
-				[X] site voorpagina werkt niet
-				[X] In edit this site maar ook op andere schermen verdwijnt het object menu
-				[X] Sommige objecten geven geen records weer:zie lingewoud bv->nieuws en lingewoud bv->tickets
-				[X] site profiel kan werkt nog niet
-				[X] plugin informatie wordt niet weergegeven
-				[X] als een tabel niet bestaat maar er wordt op geklikt in menu lelijke foutmelding.
-				[X] testen site geeft foutmeldingen en werkt niet
-				[X] ColorPicker bewaart afbeelding per gebruiker.
-				[X] colorpicker trimt input van primary palet
-				[X] Color picker is erg onduidelijk in formvieuw, alleen een vlakje met een kleur, bij geen kleur doorzichtig.
-				[X] fix bug in saving empty m2m relations in records
-				[X] site bestanden worden niet geexporteerd
-				[X] Bij 1opveel krijg na toevoegen relwidget->... dit moet de lokac key zijn
-				[X] Na add record niet ditzelfde record geopend
-				[X] problemen met weergeven lijstweergave 
-				[X] problemen met weergeven form weergave door verkeerd intepreteren van NULL in enabled
-				[X] veld met dubbele quotes worden wel opgeslagen maar niet getoond als het record wordt weergegeven.
-				[X] Als er maar een record is niet Record 1 weergeven
-				[X] m20 relaties edit record werkt niet als er een tooltip ingesteld staat in het verborgen object
-				[X] m2m relaties oude stijl worden niet weergegeven in object overzocht in edit site
-				[X] gebruik rapporten wordt genegeerd in globale configuratie
-				[X] als bij een verse installatie een nieuwe site wordt toegevoegt wordt na save weer een leeg scherm getoond om een weer een nieuwe site aan te maken. de nieuwe site moet nu geopend worden
-				[X] after creating new object it show another new object screen in stead of the just made object
-				[X] als je een record kopieerd en vervolgens delete wordt ook het origineel verwijderd (zie Lingewoud NIEUW) 
-				:dit was voorgekomen omdat de id was disabled. In dit geval is er geen mogelijkheid om een enkel record te selecteren met de juiste where. 
-				:ROB: dit gebeurd ook bij bewerken Relaties met record mee kopieren
-				[X] walk list does not work on egw_access_log: has something to do with primaries 
-				[X] sometimes error message in site overview screen
-				[X] als er geen tabellen zijn faalt de connectie test
-			[X] 100% FEATURES/OTHER
-				[X] bij (zoek) filter moet het zoekveld fel gekleurd zijn zodat duidelijk is dat er een filter actief is  
-				[X] nieuwe klasse lay-out
-				[X] gen menu  img view record lelijk
-				[X] bij geen thumb geeft filemanager een 1tje weer, geef hier een ander plaatje weer
-				[X] Als in wijzig records een reload wordt gedaan komen er lege records onderaan bij
-				[X] de kleur grijs is te grijs
-				[X] verwijderen bestanden weghalen
-				[X] alle plugins nalopen op common
-				[X] overal include_once van maken
-				[X] overal session verbeteren
-				[X] foutmelding 1op1rel geven als deze relatie niet klopt ivm met uniqid
-				[X] Als een nieuw object wordt toegevoegt niet piepen over de wijziging van de tabel
-				[X] plugins toegang geven tot bo via globals
-				[X] sitebox toegang geven tot bo via globals
-				[X] testen record met max 1 record
-				[X] 'mandatory' eruit flikkeren en uit de hele code halen
-				[X] "field_show_default" moet worden list_visibility
-				[X] "field_form_visible" moet worden form_visibility
-				[X] 'form_listing_order moet alt integer worden toegevoegd
-				[X] 'field_alt_name' moet worden element_label
-				[X] waarschuwing geven als er een ouderwetste eenopeenrelatie is of als de eenopenenrelatie niet volledig is 
-				[X] betere lay-out event configuratie
-				[X] attachmentpatch en imagepatch herschrijving naar class structuur
-				[X] duidelijk bericht als een relatie is opgeslagen
-				[X] event walk trough records
-				[X] create generic function for creating where string and implement is everywhere
-				[X] TinyMCE is klein in formlayout, maar groot in de normale weergave.
-				[X] TinyMCE en andere grote plugins schaalbaar in formlayout?
-				[X] TinyMCE flikkert
