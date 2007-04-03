@@ -191,27 +191,11 @@
 	  }
 
 
-	  /**
-	  * main_menu 
-	  * 
-	  * DEPRECIATED 
-	  *
-	  * @access public
-	  * @return void
-	  */
-	  function main_menu()
-	  {
-		 return;
-	  }
-
 	  function get_developer_object_toolbar()
 	  {
 		 $this->tplsav2->relation_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_relation_widgets&object_id='.$this->bo->site_object['object_id']);
 		 $this->tplsav2->gen_obj_options_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.edit_gen_obj_options&object_id='.$this->bo->site_object['object_id']);
 		 $this->tplsav2->obj_event_plugins_link=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$this->bo->site_object['object_id']);
-
-		 //		_debug_array($_SERVER);
-		 //		_debug_array(menuaction=jinn.uiu_list_records.display_dev);
 
 		if($_GET['menuaction']=='jinn.uiu_list_records.display_dev')
 		{
