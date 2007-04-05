@@ -1,13 +1,13 @@
-absolute path of the backup directory	backup	fr	Chemin absolu du répertoire de backup (p.ex.: /usr/local/www/egroupware/backup/archive)
-absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	fr	Chemin absolu du répertoire de backup (p.ex.: /usr/local/www/egroupware/backup/archive)
-absolute path of the directory of egw backup application	backup	fr	Chemin absolu du répertoire de l'application Backup EGW
-absolute path of the directory to store the backup script	backup	fr	Chemin absolu du répertoire de l'application Backup EGW
+absolute path of the backup directory	backup	fr	Chemin absolu du répertoire de sauvegarde (p.ex.: /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	fr	Chemin absolu du répertoire de sauvegarde (p.ex.: /usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	fr	Chemin absolu du répertoire de l'application EGW Sauvegardes
+absolute path of the directory to store the backup script	backup	fr	Chemin absolu du répertoire de l'application EGW Sauvegardes
 archive type	backup	fr	Sélectionnez le type d'archive
 backup	common	fr	Sauvegardes
 backup administration	common	fr	Administration des sauvegardes
 bzip2	admin	fr	bzip2
 configuration backup	backup	fr	Configuration des sauvegardes
-configuration localhost	backup	fr	ConfigurationLocalhost
+configuration localhost	backup	fr	Configuration de l'hôte local
 create backups of your data ?	backup	fr	Sélectionnez pour créer des sauvegardes de vos données:
 daily	backup	fr	journalier
 data	backup	fr	Données
@@ -20,7 +20,7 @@ interval	backup	fr	Intervalle
 ip or hostname	backup	fr	Adresse IP ou nom d'hôte
 ldap	common	fr	LDAP
 ldap database	admin	fr	Base de données LDAP
-list backup archives	backup	fr	lister les archives de sauvegardes
+list backup archives	backup	fr	lister les sauvegardes archivées
 maildir	admin	fr	Notifications faites par E-Mail:
 monthly	backup	fr	mensuel
 mysql	admin	fr	MySQL
@@ -55,9 +55,9 @@ sql	backup	fr	SQL
 tar	admin	fr	tar
 tar.bz2	backup	fr	tar.bz2
 tar.gz	backup	fr	tar.gz
-the backup application is not configured for showing the archives in egroupware yet !	backup	fr	L'application backup n'est pas encore configurée pour montrer les archives dans GroupWare !
-the directory to store the backup script must be outside of the webservers *documentroot* !	backup	fr	Le répertoire pour enregistrer le script de backup doit résider à l'intérieur du *DocumentRoot* du serveur Web !
+the backup application is not configured for showing the archives in egroupware yet !	backup	fr	L'application Sauvegardes n'est pas encore configurée pour montrer les archives dans GroupWare !
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	fr	Le répertoire pour enregistrer le script de sauvegarde doit résider à l'intérieur du *DocumentRoot* du serveur Web !
 versions can only be a number !	backup	fr	Les versions ne peuvent qu'être des nombres !
 weekly	backup	fr	hebdomadaire
-your sql database isnt supported by this application !	backup	fr	Votre base de données n'est pas supportée par cette application !
+your sql database isnt supported by this application !	backup	fr	Votre base de données SQL n'est pas supportée par cette application !
 zip	common	fr	zip

@@ -4,4 +4,5 @@ apps	icalsrv	fr	Apps
 assigned sessionid	icalsrv	fr	Identificateur de session courant
 bogus request	icalsrv	fr	Soumission d'un bogue
 calendar test	icalsrv	fr	Calendrier test
+icalsrv	common	fr	iCalSrv
 system	icalsrv	fr	Système

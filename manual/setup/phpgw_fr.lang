@@ -12,4 +12,4 @@ search for	manual	fr	Recherche :
 starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	fr	Démarrage de l'importation depuis %1, ceci pourrait durer quelques minutes (spécialement si vous le faites pour la première fois) ...
 the search returned no result!	manual	fr	Pas de résultat trouvé !
 update url for the local manual, default	admin	fr	Mettre à jour l'URL (adresse Web) pour le manuel local.
-wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	fr	Identificateur Wiki pour le manuel local. 1 par défaut, 0 pour que le wiki puisse éditer le manuel.
+wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	fr	Identificateur Wiki pour le manuel local. 1 par défaut, 0 pour pour utiliser wiki pour modifier le manuel.

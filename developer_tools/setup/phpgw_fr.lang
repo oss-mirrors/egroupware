@@ -8,7 +8,7 @@ application	developer_tools	fr	Application
 back	developer_tools	fr	Retour
 cancel	developer_tools	fr	Annuler
 change	developer_tools	fr	Changer
-changelog entry has been added	developer_tools	fr	L'entrée a été ajoutée dans le log des changements
+changelog entry has been added	developer_tools	fr	L'entrée a été ajoutée dans le journal des changements
 changelogs	developer_tools	fr	Journaux de changements
 clears the internal buffer, all changes made sofar are lost	developer_tools	fr	Vide le tampon interne, tous les changements faits jusqu'ici sont perdus
 create new language file	developer_tools	fr	Créer un Nouveau Fichier de Langue
@@ -17,7 +17,7 @@ developer tools - preferences	developer_tools	fr	Outils développeurs - préférenc
 developer_tools	common	fr	Outils de traduction
 diary	developer_tools	fr	Journal
 done	developer_tools	fr	fait
-download	developer_tools	fr	Download
+download	developer_tools	fr	Télécharger
 download the lang-file to be saved in the apps setup-dir	developer_tools	fr	Télécharger le fichier de langue pour qu'il soit enregistré dans le répertoire setup de l'application
 edit	developer_tools	fr	Editer
 installed applications	developer_tools	fr	Applications installées
@@ -32,12 +32,12 @@ message_id in english	developer_tools	fr	message_id en Anglais
 no file	developer_tools	fr	pas de fichier
 ok	developer_tools	fr	ok
 original	developer_tools	fr	Original
-phrase in english	developer_tools	fr	Phrase en Anglais
 phrase in english (or empty if identical)	developer_tools	fr	Phrase en  Anglais (ou rien si identique)
 preferences	developer_tools	fr	Préférences
 preferences have been updated	developer_tools	fr	Les préférences ont été mises à jour
 project	developer_tools	fr	Projet
 remove	developer_tools	fr	Enlever
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	fr	Enlevé %1 phrases de la langue de destination car elles sont absentes de la langue source!
 returns to the application list, not saved changes get lost !!!	developer_tools	fr	Retourne à la liste des applications, les changements non enregistrés seront perdus !!!
 revert	developer_tools	fr	Revenir
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	fr	Enregistre les traductions ajoutées/modifiées dans un tampon interne afin qu'elles puissent être utilisées dans les étapes suivantes
