@@ -41,6 +41,60 @@
 		 parent.window.open("<?=$this->popuplink ?>&path="+img+"&attr="+attr, "pop", options);
    }
 
+   var curr_live=Array();
+
+   function callLiveFieldEdit(cell,wherestring,field,object_id)
+   {	 
+		 if(curr_live['cell']!=cell)
+		 {
+			   callLiveFieldSave()	
+		 }
+		 //check if we can use ajax
+		 if(document.getElementById('fieldinfo_noajax_'+field).value=='')
+		 {
+			   xajax_doXMLHTTP("jinn.ajaxjinn.editSingleField",cell,wherestring,field,object_id);
+			   
+			   curr_live['cell']=cell;
+			   curr_live['wherestring']=wherestring;
+			   curr_live['field']=field;
+			   curr_live['object_id']=object_id;
+
+		 }
+		 else
+		 {
+		 }
+
+		 //call ajax to edit cell
+		 //else open popup to edit cell
+		 //set new value in cell
+   }
+
+   function callLiveFieldSave()
+   {
+		 /*
+		 if(document.getElementsByName('FLDXXX'+curr_live['cell'])!='undefined')
+		 {
+			   _arr=document.getElementsByName('FLDXXX'+curr_live['cell']);
+			   xajax_doXMLHTTP("jinn.ajaxjinn.saveSingleField",_arr[0].value,curr_live['wherestring'],curr_live['field'],curr_live['object_id']);
+			   document.getElementById(curr_live['cell']).innerHTML=_arr[0].value;
+
+			   curr_live=Array();
+		 }
+		 */
+   }
+
+   function hoverCell(cell,inout,offcolor)
+   {
+		 if(inout=='in')
+		 {
+			   cell.style.backgroundColor='#ffff00';
+		 }
+		 else
+		 {
+			   cell.style.backgroundColor=offcolor;
+		 }
+   }
+
    //-->
 </script>
 
@@ -139,7 +193,9 @@
 			   <td bgcolor="<?=$this->th_bg ?>" colspan="<?=($this->action_colspan+$this->runonrec_amount)?>"  valign="top" style="width:1%;font-weight:bold;padding:3px 5px 3px 5px;"></td>
 
 			   <?php if(is_array($this->colnames)):?>
+			   <?php $colidx=0;?>
 			   <?php foreach($this->colnames as $colname):?> 
+			   <input type="hidden" id="fieldinfo_noajax_<?=$colname['fieldname']?>" value="<?=$colname['noajax']?>">
 
 			   <td bgcolor="<?=$colname['colhead_bg_color'] ?>" style="font-weight:bold;padding:3px;" align="center"><a href="<?=$colname['colhead_order_link'] ?>"><?=$colname['colhead_name'] ?>&nbsp;<?=$colname['colhead_order_by_img'] ?></a><?=$colname['tipmouseover'] ?></td>
 
@@ -148,11 +204,16 @@
 			</tr>
 
 			<?php if(count($this->records_rows_arr)>0):?>
+			<?php
+				$rowidx=0;
+			?>
 			<?php foreach($this->records_rows_arr as $recrow_arr):?>
+			<?php
+			   $rowidx++;
+			?>
 
 			<!-- BEGIN row -->
 			<tr valign="top">
-
 			   <?php if($this->enable_multi):?>
 			   <td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" align="left"><input style="border-style:none;" type="checkbox" name="<?=$recrow_arr['colfield_check_name'] ?>" value="<?=$recrow_arr['colfield_check_val'] ?>"/></td>
 			   <?php endif?>
@@ -182,8 +243,14 @@
 
 			   <!-- Field values -->
 			   <?php if(is_array($recrow_arr['fields'])):?>
+			   <?php
+				  $colidx=0;
+			   ?>
 			   <?php foreach($recrow_arr['fields'] as $field_arr):?>
-			   <td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" valign="top" style="padding:0px 2px 0px 2px"><?=$field_arr['value'] ?></td>
+			   <?php
+				  $colidx++;
+			   ?>
+			   <td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" id="cell<?=$rowidx?>x<?=$colidx?>" onmouseout="hoverCell(this,'out','')" onmouseover="hoverCell(this,'in')" onclick="callLiveFieldEdit('cell<?=$rowidx?>x<?=$colidx?>','<?=$recrow_arr['colfield_wherestring']?>','<?=$field_arr['name'] ?>','<?=$this->object_id?>')" valign="top" style="padding:0px 2px 0px 2px"><?php //_debug_array($field_arr);?><?=$field_arr['value'] ?></td>
 			   <?php endforeach?>
 			   <?php endif?>
 

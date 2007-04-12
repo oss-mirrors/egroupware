@@ -5,6 +5,7 @@
    Copyright (C) 2007 Pim Snel <pim@lingewoud.nl>
    License http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
    JiNN is part of eGroupWare - http://www.egroupware.org
+   */
 
    /**
    * db_fields_plugin_word2html 
@@ -43,18 +44,53 @@
 	  {
 		 if(is_array($_FILES['W2HTM'.substr(0,6,$key)]))
 		 {
-			//_debug_array($config);
 			$this->_initVars($config);
-			$_file1 = tempnam('/tmp','FOO');
-			$cmd=$this->wv." -b img -d '".$this->upload_path ."' ".$_FILES['W2HTM'.substr(0,6,$key)]['tmp_name'];
+			$newdir='WORD2HTML'.uniqid('');
+
+			mkdir($this->upload_path.'/'.$newdir);
+			$cmd=$this->wv." -b img -d '".$this->upload_path ."/$newdir' ".$_FILES['W2HTM'.substr(0,6,$key)]['tmp_name'];
 			exec($cmd,&$f);
 			foreach($f as $output) {
 			   $ret .= "$output\n";
 			}
 
+			//make links exact
 			$pattern = "/<img([^>]*) src=\"(?!http|ftp|https)([^\"]*)\"/";
-			$replace = "<img\${1} src=\"" . $this->upload_url.'/' . "\${2}\"";
+			$replace = "<img\${1} src=\"" . $this->upload_url."/$newdir/" . "\${2}\"";
 			$ret = preg_replace($pattern, $replace, $ret); 
+
+			if($config['imgwidth'] || $config['imgheight'])
+			{
+			   $graphic=CreateObject('jinn.bogdlib');
+
+			   //walk through directory and resize images
+			   if ($handle = opendir($this->upload_path.'/'.$newdir)) 
+			   {
+				  while (false !== ($file = readdir($handle))) 
+				  {
+					 if ($file != "." && $file != "..") 
+					 {
+						$fpath=$this->upload_path.'/'.$newdir.'/'.$file;
+						$filetype=$graphic->Get_Imagetype($fpath);	
+
+						$newsize=$graphic->new_image_size($fpath,$config['imgwidth'],$config['imgheight']);
+
+						$newtempfile=$graphic->Resize($newsize['width'],$newsize['height'],$fpath,$filetype);
+						rename($newtempfile,$fpath);
+					 }
+				  }
+				  closedir($handle);
+			   }
+
+			   //remove width and height attributes
+			   $pattern = "/<img([^>]*) (width=\"[0-9]*\")/";
+			   $replace = "<img\${1} ";
+			   $ret = preg_replace($pattern, $replace, $ret); 
+
+			   $pattern = "/<img([^>]*) (height=\"[0-9]*\")/";
+			   $replace = "<img\${1} ";
+			   $ret = preg_replace($pattern, $replace, $ret); 
+			}
 
 			return $ret;
 		 }

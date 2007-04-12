@@ -46,10 +46,6 @@
 		 'new_record'				=> True,
 		 'edit_record'				=> True,
 		 'read_record'				=> True,
-		 'ajax_get_m2o_frm'			=> True,//depr
-		 'ajax_save_m2o_frm'		=> True,//depr
-		 'ajax_delete_m2o'			=> True,//depr
-		 'ajax_get_m2o_list'		=> True,//depr
 		 'dev_change_field_order'	=> True,
 		 'delete_element'			=> True,
 		 'dev_edit_record' 			=> True,

@@ -1,39 +1,24 @@
 <?php
-   /*
-   JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
-
-   eGroupWare - http://www.egroupware.org
-
-   This file is part of JiNN
-
-   JiNN is free software; you can redistribute it and/or modify it under
-   the terms of the GNU General Public License as published by the Free
-   Software Foundation; either version 2 of the License, or (at your 
-   option) any later version.
-
-   JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-   for more details.
-
-   You should have received a copy of the GNU General Public License 
-   along with JiNN; if not, write to the Free Software Foundation, Inc.,
-   59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+   /**
+   JiNN - A Database Application Development Toolkit
+   Author:	Pim Snel for Lingewoud
+   Copyright (C) 2007 Pim Snel <pim@lingewoud.nl>
+   License http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+   JiNN is part of eGroupWare - http://www.egroupware.org
    */
 
-   // explain extends
-   class bogdlib // extends bouser
+   /**
+   * bogdlib 
+   * 
+   * @version $Id$
+   * @copyright Lingewoud B.V.
+   * @author Pim Snel <pim-AT-lingewoud-DOT-nl> 
+   * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+   */
+   class bogdlib 
    {
 	  var $verbose        = false;
 
-	  function bogdlib() 
-	  {
-		 #		 $this->common = CreateObject('jinn.bocommon');
-		 #$this->current_config=$this->common->get_config();
-	  }
-
-	
 	  /**
 	  @function FileTypeSupport
 	  @abstract checks if a filetype is supported by the current gdlib
@@ -96,7 +81,7 @@
 		 $ext=$filetype;		 
 
 		 list($curwidth, $curheight) = getimagesize($filename);
-		 
+
 		 $factor = min( ($maxwidth / $curwidth) , ($maxheight / $curheight) );
 
 		 $sx		= 0;
@@ -108,20 +93,20 @@
 		 $dy		= 0;
 		 $dw		= $curwidth * $factor;
 		 $dh		= $curheight *  $factor;
-		 
+
 		 //die('hallo');
 		 if ($ext == "JPEG") 
 		 { 
 			$src = ImageCreateFromJPEG($filename); 
 		 }
-		 
+
 		 // FIXME gif doesn't work
 		 if ($ext == "GIF") 
 		 { 
 			$src = ImageCreateFromGIF($filename); 
 			//echo 'hallo';
 		 }
-		 
+
 		 if ($ext == "PNG") { $src = ImageCreateFromPNG($filename); }
 
 		 if(function_exists('ImageCreateTrueColor')) {
@@ -129,7 +114,7 @@
 		 } else {
 			$dst = ImageCreate($dw,$dh);
 		 }
-		 
+
 		 if(function_exists('ImageCopyResampled'))
 		 {
 			imageCopyResampled($dst,$src,$dx,$dy,$sx,$sy,$dw,$dh,$sw,$sh);
@@ -144,7 +129,7 @@
 		 if($ext == "GIF") ImagePNG($dst,$target_temp_file,$qual);
 
 		 ImageDestroy($dst);
-		
+
 		 return $target_temp_file;
 	  }
 
@@ -190,6 +175,41 @@
 			   return false;
 		 }
 
+	  }
+
+	  /**
+	  * new_image_size check if image dimension are beyond limits and return new dimensions; 
+	  *  return old dimensions if image is inside allowed limits
+	  * 
+	  * @param string $image_file path to image file
+	  * @param int $max_width 
+	  * @param nt $max_height 
+	  * @access public
+	  * @return array new image dimensions
+	  */
+	  function new_image_size($image_file,$max_width=null,$max_height=null)
+	  {
+		 /* set user size */
+		 $img_size = GetImageSize($image_file);
+
+		 if ($max_width && $img_size[0] > $max_width)
+		 {
+			$ret['width']=$max_width;
+		 }
+		 else
+		 {
+			$ret['width']=$img_size[0];
+		 }
+
+		 if ($max_height && $img_size[1] > $max_height)
+		 {
+			$ret['height']=$max_height;
+		 }
+		 else
+		 {
+			$ret['height']=$img_size[1];
+		 }
+		 return $ret;
 	  }
    }
 

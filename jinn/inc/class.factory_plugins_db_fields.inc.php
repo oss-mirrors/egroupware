@@ -42,6 +42,11 @@
 	  */
 	  function factory_plugins_db_fields()
 	  {
+		 $this->init_plugins();
+	  }
+
+	  function init_plugins()
+	  {
 		 $this->include_plugins();
 		 $this->include_custom_plugins();
 	  }
@@ -58,15 +63,15 @@
 	  */
 	  function call_plugin_fi($input_name, $value, $type, $field_values, $attr_arr,$record_values=false)
 	  {
-		 $plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
-		 if($field_values[field_type] == '' && $type != '')
+		 $plug_conf_arr=unserialize(base64_decode($field_values['field_plugins']));
+		 if($field_values['field_type'] == '' && $type != '')
 		 {
-			$field_values[field_type] = $type;
+			$field_values['field_type'] = $type;
 		 }
 
 		 if (substr($input_name,0,4)=='ELEX' || substr($input_name,0,4)=='MLTX' || substr($input_name,0,6)=='FLDXXX' || substr($input_name,0,4)=='O2OX' || substr($input_name,0,4)=='M2OX')
 		 {
-			$plug_html = $this->call_plugin($plug_conf_arr[name], 'formview_edit', $value, $plug_conf_arr[conf], '', $input_name, $attr_arr,'','',$field_values,$record_values);
+			$plug_html = $this->call_plugin($plug_conf_arr['name'], 'formview_edit', $value, $plug_conf_arr['conf'], '', $input_name, $attr_arr,'','',$field_values,$record_values);
 		 }
 		 else
 		 {
@@ -78,7 +83,7 @@
 			//return preferences button for user
 			//return config button for developer
 			$return_val['pref']=false;
-			$return_val['plugname']=$plug_conf_arr[name];
+			$return_val['plugname']=$plug_conf_arr['name'];
 			$return_val['config']=true;
 			$return_val['html']=$plug_html;
 		 }
@@ -97,13 +102,45 @@
 	  */
 	  function call_plugin_bv($field_name,$value,$where_val_encoded,$field_values, $type='')
 	  {
-		 $plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
-		 if($field_values[field_type] == '' && $type != '')
+		 $plug_conf_arr=unserialize(base64_decode($field_values['field_plugins']));
+		 if($field_values['field_type'] == '' && $type != '')
 		 {
-			$field_values[field_type] = $type;
+			$field_values['field_type'] = $type;
 		 }
-		 return $this->call_plugin($plug_conf_arr[name], 'listview_read', $value, $plug_conf_arr[conf], $where_val_encoded, $field_name,'','','',$field_values);
+		 return $this->call_plugin($plug_conf_arr['name'], 'listview_read', $value, $plug_conf_arr['conf'], $where_val_encoded, $field_name,'','','',$field_values);
 	  }
+
+	  /**
+	  * getpluginfo return field configured or fallback plugin and it configuration and the props of the plugin in one array
+	  * 
+	  * @param array $field_values field configuration array
+	  * @param string $type type of field
+	  * @access public
+	  * @return array  
+	  */
+	  function getpluginfo($field_values,$type=null)
+	  {
+		 $plug_conf_arr=unserialize(base64_decode($field_values['field_plugins']));
+		 if(is_array($plug_conf_arr))
+		 {
+			$plug_conf_arr['plg_props']=$this->registry->plugins[$plug_conf_arr['name']];
+			return $plug_conf_arr;
+		 }
+		 else
+		 {
+			$_arr= $this->get_default_plugin($type);
+			if(count($_arr)>0) 
+			{
+			   $_arr[0]['plg_props']=$this->registry->plugins[$type];
+			   return $_arr[0];
+			}
+			else
+			{
+			   //return unknow handler 
+			}
+		 }
+	  }
+
 
 	  /**
 	  * call storage filter function from plugin
@@ -116,8 +153,8 @@
 	  */
 	  function call_plugin_sf($form_field_name, $field_values,$HTTP_POST_VARS,$HTTP_POST_FILES)
 	  {
-		 $plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
-		 return $this->call_plugin($plug_conf_arr[name],'on_save_filter','',$plug_conf_arr[conf],'',$form_field_name,'',$HTTP_POST_VARS,$HTTP_POST_FILES,$field_values);
+		 $plug_conf_arr=unserialize(base64_decode($field_values['field_plugins']));
+		 return $this->call_plugin($plug_conf_arr['name'],'on_save_filter','',$plug_conf_arr['conf'],'',$form_field_name,'',$HTTP_POST_VARS,$HTTP_POST_FILES,$field_values);
 	  }
 
 
@@ -129,12 +166,12 @@
 	  */
 	  function call_plugin_ro($value, $field_values, $type='')
 	  {
-		 $plug_arr=unserialize(base64_decode($field_values[field_plugins]));
-		 if($field_values[field_type] == '' && $type != '')
+		 $plug_arr=unserialize(base64_decode($field_values['field_plugins']));
+		 if($field_values['field_type'] == '' && $type != '')
 		 {
-			$field_values[field_type] = $type;
+			$field_values['field_type'] = $type;
 		 }
-		 return $this->call_plugin($plug_arr[name], 'formview_read', $value, $plug_arr[conf], '', '', '', '', '',$field_values);
+		 return $this->call_plugin($plug_arr['name'], 'formview_read', $value, $plug_arr['conf'], '', '', '', '', '',$field_values);
 	  }
 
 	  /**
@@ -144,8 +181,8 @@
 	  */
 	  function call_plugin_afa($field_values)
 	  {
-		 $plug_arr=unserialize(base64_decode($field_values[field_plugins]));
-		 $success = $this->call_plugin($plug_arr[name], 'advanced_action', '', $plug_arr[conf], $_GET[where], '', $_GET[attributes], '', '',$field_values);
+		 $plug_arr=unserialize(base64_decode($field_values['field_plugins']));
+		 $success = $this->call_plugin($plug_arr['name'], 'advanced_action', '', $plug_arr['conf'], $_GET['where'], '', $_GET['attributes'], '', '',$field_values);
 	  }
 
 	  function call_config_function($name,$config,$form_action)
@@ -156,10 +193,9 @@
 		 }
 	  }
 
-
-	  function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values,$record_values=false)
+	  function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, 
+	  $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values,$record_values=false)
 	  {
-
 		 //NEW STYLE PLUGIN CLASSES
 		 if($this->loaded($name))
 		 {
@@ -197,7 +233,7 @@
 			   return $this->call_plugin($replacement, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values);
 			}
 		 }
-		 elseif($replacement = $this->get_default_plugin($field_values[field_type]))
+		 elseif($replacement = $this->get_default_plugin($field_values['field_type']))
 		 //find default for this fieldtype
 		 {
 			if($this->loaded($replacement[0]['value']))
@@ -221,17 +257,18 @@
 	  */
 	  function include_plugins()
 	  {
-		 include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/class.registry.php');
+		 include_once(EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/class.registry.php');
 		 $this->registry = new db_fields_registry();
-
-		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/')) 
+		 
+		 if ($handle = opendir(EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/')) 
 		 {
 			while (false !== ($file = readdir($handle))) 
 			{ 
 			   // NEW STYLE plugins (classes)
 			   if(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
 			   {
-				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
+				  //todo test this was include_once
+				  include(EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
 			   }
 			}
 			closedir($handle); 
@@ -246,16 +283,16 @@
 	  */
 	  function include_custom_plugins()
 	  {
-		 if(is_dir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'))
+		 if(is_dir(EGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'))
 		 {
-			if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/')) 
+			if ($handle = opendir(EGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/')) 
 			{
 			   while (false !== ($file = readdir($handle))) 
 			   { 
 				  // NEW STYLE plugins (classes)
 				  if(substr($file,0,2)=='__') //plugins have their individual folders which start with two underscores (i.e. __boolean)
 				  {
-					 include_once(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
+					 include_once(EGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/'.$file.'/register.php');	//each plugin has its own register.php file that fills the registry with info about the plugin
 				  }
 			   }
 			   closedir($handle); 
@@ -388,6 +425,7 @@
 
 	  function loaded($pluginname)
 	  {
+
 		 if($this->registry->plugins[$pluginname]) //is this a NEW STYLE class type plugin?
 		 {
 			if(is_object($this->_plugins[$pluginname])) //is it already loaded?
@@ -396,16 +434,16 @@
 			}
 			else
 			{ 
-			   if(file_exists(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php'))
+			   if(file_exists(EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php'))
 			   {
-				  $inc_file=PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php';
-				  $plug_dir=PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/';
+				  $inc_file=EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php';
+				  $plug_dir=EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/';
 				  include_once($inc_file);
 			   }
-			   elseif(file_exists(PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php'))
+			   elseif(file_exists(EGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php'))
 			   {
-				  $inc_file=PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php';
-				  $plug_dir=PHPGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/';
+				  $inc_file=EGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/__'.$pluginname.'/class.'.$pluginname.'.php';
+				  $plug_dir=EGW_SERVER_ROOT.'/jinn/custom_plugins/db_fields_plugins/';
 				  include_once($inc_file);
 			   }
 			   

@@ -504,7 +504,14 @@
 			}
 
 			return $status;	
+		 }
 
+		 function single_recordfield_update($where_string,$field,$value,$object_arr)
+		 {
+			$post_arr['FLDXXX'.$field]=$value;
+			$data = $this->http_vars_pairs($post_arr,$files_arr,$object_arr['object_id']);
+			$status['record']=$this->so->update_object_data($object_arr['parent_site_id'], $object_arr['table_name'], $data, null,null,$where_string);
+			return $status;
 		 }
 
 		 /**

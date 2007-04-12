@@ -18,7 +18,6 @@
 	  var $site_object; 
 	  var $site; 
 	  var $local_bo;
-	  var $magick;
 
 	  var $plug;
 	  var $object_events_plugin_manager;
@@ -64,9 +63,6 @@
 		 $this->current_config=$this->get_config();		
 
 		 $this->bcompat = CreateObject('jinn.backwards_compat.inc.php');
-
-		 $this->magick = CreateObject('jinn.boimagemagick.inc.php');	
-		 $this->magick->imagemagickdir=$this->current_config['imagemagickdir'];
 
 		 /* do stuff for debugging */
 		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])

@@ -1,38 +1,28 @@
 <?php
-   /*
-   JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2004 Pim Snel <pim@lingewoud.nl>
-
-   eGroupWare - http://www.egroupware.org
-
-   This file is part of JiNN
-
-   JiNN is free software; you can redistribute it and/or modify it under
-   the terms of the GNU General Public License as published by the Free
-   Software Foundation; either version 2 of the License, or (at your 
-   option) any later version.
-
-   JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-   for more details.
-
-   You should have received a copy of the GNU General Public License 
-   along with JiNN; if not, write to the Free Software Foundation, Inc.,
-   59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+   /**
+   JiNN - A Database Application Development Toolkit
+   Author:	Pim Snel for Lingewoud
+   Copyright (C) 2007 Pim Snel <pim@lingewoud.nl>
+   License http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+   JiNN is part of eGroupWare - http://www.egroupware.org
    */
 
-
-   /* 
-   plugin.imagepath.php contains the standard image-upload plugin for 
-   JiNN number off standardly available 
-   plugins for JiNN. 
+   /**
+   * db_fields_plugin_imagepath 
+   * 
+   * contains the standard image-upload plugin for 
+   * JiNN number off standardly available 
+   * plugins for JiNN. 
+   *
+   * @version $Id$
+   * @copyright Lingewoud B.V.
+   * @author Pim Snel <pim-AT-lingewoud-DOT-nl> 
+   * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
    */
-
    class db_fields_plugin_imagepath
    {
 	  var $local_bo;
-	  
+
 	  function formview_edit($field_name, $value, $config,$attr_arr)
 	  {	
 		 $stripped_name=substr($field_name,6);	
@@ -234,15 +224,8 @@
 
 	  function on_save_filter($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	  {
-		 /* choose image library to use */
-		 if($this->local_bo->so->config[use_magick]=='MAGICK')
-		 {
-			$graphic=CreateObject('jinn.boimagemagick');
-		 }
-		 else
-		 {
-			$graphic=CreateObject('jinn.bogdlib');
-		 }
+
+		 $graphic=CreateObject('jinn.bogdlib');
 
 		 $upload_path = $this->local_bo->cur_upload_path();
 

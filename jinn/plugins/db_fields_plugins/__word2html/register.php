@@ -42,15 +42,27 @@
    (
 	  'wvpath' => array(
 		 'name' => 'wvpath',
-		 'label' => lang('path to wv executable: e.g. /usr/local/bin'),
+		 'label' => lang('path to wv executable'),
 		 'type' => 'text',
 		 'size' => 200
 	  ),
 	  'subdir' => array(
 		 'name' => 'subdir',
-		 'label' => lang('Subdirectory to use for extracted images'),
+		 'label' => lang('Optional extra subdir for extracting images'),
 		 'type' => 'text',
 		 'size' => 100
+	  ),
+	  'imgwidth' => array(
+		 'name' => 'imgwidth',
+		 'label' => lang('Max. image width (else leave empty)'),
+		 'type' => 'text',
+		 'size' => 4
+	  ),
+	  'imgheight' => array(
+		 'name' => 'imgheight',
+		 'label' => lang('Max. image height (else leave empty)'),
+		 'type' => 'text',
+		 'size' => 4
 	  ),
 
    );

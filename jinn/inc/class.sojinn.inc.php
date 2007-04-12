@@ -1210,12 +1210,6 @@
 	  }
 
 
-	  function get_fast_record_values()
-	  {
-		 
-		 }
-	  
-
 	  function get_data($site_id, $table, $columns_arr, $filter_where, $limit = false,$key_prefix='')
 	  {
 		 //new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations

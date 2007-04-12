@@ -1,33 +1,16 @@
 <?php
-   /*
-   JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare
-   Author:	Pim Snel
-   Copyright (C)2006 Pim Snel <pim@lingewoud.nl>
-
-   eGroupWare - http://www.egroupware.org
-
-   This file is part of JiNN
-
-   JiNN is free software; you can redistribute it and/or modify it under
-   the terms of the GNU General Public License as published by the Free
-   Software Foundation; either version 2 of the License, or (at your
-   option) any later version.
-
-   JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-   for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with JiNN; if not, write to the Free Software Foundation, Inc.,
-   59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
-
-   ---------------------------------------------------------------------
+   /**
+   JiNN - A Database Application Development Toolkit
+   Author:	Pim Snel for Lingewoud
+   Copyright (C) 2007 Pim Snel <pim@lingewoud.nl>
+   License http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+   JiNN is part of eGroupWare - http://www.egroupware.org
    */
+
    $this->registry->plugins['imagepath']['name']			= 'imagepath';
    $this->registry->plugins['imagepath']['title']			= 'ImagePath plugin';
    $this->registry->plugins['imagepath']['author']			= 'Pim Snel';
-   $this->registry->plugins['imagepath']['version']			= '0.9.7';
+   $this->registry->plugins['imagepath']['version']			= '0.9.8';
    $this->registry->plugins['imagepath']['enable']			= 1;
 
    $this->registry->plugins['imagepath']['description']		= '
@@ -40,21 +23,55 @@
 	  'blob'
    );
 
-   /* ATTENTION: spaces and special character are not allowed in config array 
-   use underscores for spaces */
-   $this->registry->plugins['imagepath']['config']		= array
+   $this->registry->plugins['imagepath']['config2'] = array
    (
-	  /* array('default value','input field type', 'extra html properties')*/
-	  'Max_files' => array('3','text','maxlength=2 size=2'),  
-	  'Allow_more_then_max_files'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
-	  'Zip_file_box'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
-	  'Max_image_width' => array('','text','maxlength=4 size=4'),
-	  'Max_image_height' => array('','text','maxlength=4 size=4'),
-	  'Image_filetype' => array(array('png','gif','jpg'),'select','maxlength=3 size=3'),
-	  'Generate_thumbnail' => array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
-	  'Max_thumbnail_width' => array('100','text','maxlength=3 size=3'),
-	  'Max_thumbnail_height'=> array('100','text','maxlength=3 size=3'),
-	  'Allow_other_images_sizes'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
+	  'Max_files' => array(
+		 'name' => 'Max_files',
+		 'label' => lang('Amount of files to upload'),
+		 'type' => 'text',
+		 'size' =>2 
+	  ),
+	  'Max_image_width' => array(
+		 'name' => 'Max_image_width',
+		 'label' => lang('Max image width'),
+		 'type' => 'text',
+		 'size' =>4
+	  ),
+	  'Max_image_height' => array(
+		 'name' => 'Max_image_height',
+		 'label' => lang('Max_image_height'),
+		 'type' => 'text',
+		 'size' =>4
+	  ),
+	  'Image_filetype' => array(
+		 'name' => 'Image_filetype',
+		 'label' => lang('Image filetype'),
+		 'type' => 'select',
+		 'select_arr' => array('png'=>lang('png'),'gif'=>lang('gif'),'jpg'=>lang('jpg'))
+	  ), 
+	  'Allow_other_images_sizes' => array(
+		 'name' => 'Allow_other_images_sizes',
+		 'label' => lang('Allow other images sizes'),
+		 'type' => 'select',
+		 'select_arr' => array('False'=>lang('no'),'True'=>lang('yes'))
+	  ),
+	  'Generate_thumbnail' => array(
+		 'name' => 'Generate_thumbnail',
+		 'label' => lang('Generate thumbnail'),
+		 'type' => 'select',
+		 'select_arr' => array('False'=>lang('no'),'True'=>lang('yes'))
+	  ),
+	  'Max_thumbnail_width' => array(
+		 'name' => 'Max_thumbnail_width',
+		 'label' => lang('Max thumbnail width'),
+		 'type' => 'text',
+		 'size' =>4
+	  ),
+	  'Max_thumbnail_height' => array(
+		 'name' => 'Max_thumbnail_height',
+		 'label' => lang('Max thumbnail height'),
+		 'type' => 'text',
+		 'size' =>4
+	  ),
    );
-
 

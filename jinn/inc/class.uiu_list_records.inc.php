@@ -300,6 +300,8 @@
 	  */
 	  function list_records()
 	  {
+		 $this->tplsav2->assign('object_id',$this->bo->site_object['object_id']);
+
 		 unset($this->bo->session['mult_where_array']);
 
 		 // check if table exists
@@ -518,7 +520,6 @@
 
 		 $record_count = count($records);
 
-
 		 //$column zijn alle columns
 		 //
 
@@ -550,6 +551,11 @@
 		 // make columnheaders
 		 foreach ($col_list as $col)
 		 {
+
+			$colpluginfo_arr = $this->bo->plug->getpluginfo($field_conf_arrNG[$col['name']],$column_types[$col['name']]);
+			//_debug_array($colpluginfo_arr);
+
+			
 			$display_colname=($field_conf_arrNG[$col['name']]['element_label']?$field_conf_arrNG[$col['name']]['element_label']:$col['name']);
 
 			unset($tipmouseover);
@@ -594,6 +600,9 @@
 			}
 
 			$this->tplsav2->set_var('colhead_bg_color','#d3dce3');
+
+			$colname_arr['fieldname']= $col['name'];
+			$colname_arr['noajax']= $colpluginfo_arr['plg_props']['noajax'];
 			$colname_arr['colhead_bg_color']='#d3dce3';
 			$colname_arr['colhead_order_link']=$GLOBALS['phpgw']->link("/index.php","menuaction=".$this->japielink."jinn.uiu_list_records.display&orderby=$orderby_link");
 			$colname_arr['colhead_name']=str_replace('_','&nbsp;',$display_colname);
@@ -696,6 +705,7 @@
 				  $recrow_arr['colfield_view_link']=$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.uiu_edit_record.read_record&where_string='.$where_string);
 				  $recrow_arr['colfield_delete_link']=$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.del_record&where_string='.$where_string);
 				  $recrow_arr['colfield_copy_link']=$GLOBALS['phpgw']->link('/index.php','menuaction='.$this->japielink.'jinn.bouser.copy_record&where_string='.$where_string);
+				  $recrow_arr['colfield_wherestring']=$where_string;
 
 				  //for keeping performance only run when plugins are attached
 				  if($this->tplsav2->runonrec_amount>0)
@@ -719,6 +729,7 @@
 					 {	
 						$recordvalue=$this->bo->plug->call_plugin_bv($onecolname, $recordvalue, $where_string, $field_conf_arrNG[$onecolname], $column_types[$onecolname]);
 					 }
+//					 _debug_array($field_conf_arrNG);
 
 					 if ($recordvalue == '')
 					 {
@@ -726,6 +737,7 @@
 					 }
 
 					 $onefield_arr['value']=$recordvalue;
+					 $onefield_arr['name']=$onecolname;
 					 $fields_arr[]= $onefield_arr;
 				  }
 

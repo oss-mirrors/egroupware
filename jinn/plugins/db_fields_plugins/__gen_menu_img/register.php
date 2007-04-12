@@ -114,7 +114,4 @@
 	  )
    );
 
-
-   $this->registry->plugins['gen_menu_img']['config_execute']		= false;
-
 ?>
