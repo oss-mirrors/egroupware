@@ -61,7 +61,7 @@
 		 }
 		 else
 		 {
-
+			   //open popup with single field
 		 }
    }
 
@@ -84,15 +84,18 @@
 		 xajax_doXMLHTTP("jinn.ajaxjinn.readSingleField",cell,wherestring,field,object_id);
    }
 
-   function hoverCell(cell,inout,offcolor)
+   function hoverCell(cell,inout,field)
    {
-		 if(inout=='in')
+		 if(document.getElementById('fieldinfo_noajax_'+field).value=='')
 		 {
-			   cell.style.backgroundColor='#ffff00';
-		 }
-		 else
-		 {
-			   cell.style.backgroundColor=offcolor;
+			   if(inout=='in')
+			   {
+					 cell.style.backgroundColor='#ffff66';
+			   }
+			   else
+			   {
+					 cell.style.backgroundColor='';
+			   }
 		 }
    }
 
@@ -251,7 +254,7 @@
 			   <?php
 				  $colidx++;
 			   ?>
-			   <td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" id="cell<?=$rowidx?>x<?=$colidx?>" onmouseout="hoverCell(this,'out','')" onmouseover="hoverCell(this,'in')" onclick="callLiveFieldSave('cell<?=$rowidx?>x<?=$colidx?>');" ondblclick="callLiveFieldEdit('cell<?=$rowidx?>x<?=$colidx?>','<?=$recrow_arr['colfield_wherestring']?>','<?=$field_arr['name'] ?>','<?=$this->object_id?>')" valign="top" style="padding:0px 2px 0px 2px"><?php //_debug_array($field_arr);?><?=$field_arr['value'] ?></td>
+			   <td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" id="cell<?=$rowidx?>x<?=$colidx?>" onmouseout="hoverCell(this,'out','<?=$field_arr['name']?>')" onmouseover="hoverCell(this,'in','<?=$field_arr['name']?>')" onclick="callLiveFieldSave('cell<?=$rowidx?>x<?=$colidx?>');" ondblclick="callLiveFieldEdit('cell<?=$rowidx?>x<?=$colidx?>','<?=$recrow_arr['colfield_wherestring']?>','<?=$field_arr['name'] ?>','<?=$this->object_id?>')" valign="top" style="padding:0px 2px 0px 2px"><?php //_debug_array($field_arr);?><?=$field_arr['value'] ?></td>
 			   <?php endforeach?>
 			   <?php endif?>
 
