@@ -54,6 +54,7 @@
 
    $advanced_arr=array(
 	  'relative_urls'=>lang('Relative paths to images'),
+	  'cleanup'=>lang('Clean up my HTML-code, it can mean a los of layout'),
    );
    
    $this->registry->plugins['tinymce']['config2']		= array

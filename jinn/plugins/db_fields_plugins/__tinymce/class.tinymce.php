@@ -76,6 +76,8 @@
 		  theme_advanced_resizing : true,\n
 		  strict_loading_mode : true,\n
 		  ";
+		  if(!isset($config['[advanced_settings]']['cleanup']))
+		  $options.="cleanup : false,\n";
 		  #_debug_array($options);
 
 		  $this->tplsav2->init_options=$options;
