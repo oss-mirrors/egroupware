@@ -45,7 +45,7 @@
 
    function callLiveFieldEdit(cell,wherestring,field,object_id)
    {	 
-		 if(curr_live['cell']!=cell)
+		 if(curr_live['cell'] && curr_live['cell']!=cell)
 		 {
 			   callLiveFieldSave()	
 		 }
@@ -58,29 +58,30 @@
 			   curr_live['wherestring']=wherestring;
 			   curr_live['field']=field;
 			   curr_live['object_id']=object_id;
-
 		 }
 		 else
 		 {
-		 }
 
-		 //call ajax to edit cell
-		 //else open popup to edit cell
-		 //set new value in cell
+		 }
    }
 
-   function callLiveFieldSave()
+   function callLiveFieldSave(cell)
    {
-		 /*
-		 if(document.getElementsByName('FLDXXX'+curr_live['cell'])!='undefined')
+		 if(curr_live['cell'] && curr_live['cell']!=cell)
 		 {
-			   _arr=document.getElementsByName('FLDXXX'+curr_live['cell']);
-			   xajax_doXMLHTTP("jinn.ajaxjinn.saveSingleField",_arr[0].value,curr_live['wherestring'],curr_live['field'],curr_live['object_id']);
-			   document.getElementById(curr_live['cell']).innerHTML=_arr[0].value;
-
-			   curr_live=Array();
+			   if(document.getElementsByName('FLDXXX'+curr_live['cell'])!='undefined')
+			   {
+					 _arr=document.getElementsByName('FLDXXX'+curr_live['cell']);
+					 xajax_doXMLHTTP("jinn.ajaxjinn.saveSingleField",_arr[0].value,curr_live['wherestring'],curr_live['field'],curr_live['object_id']);
+					 callLiveFieldRead(curr_live['cell'],curr_live['wherestring'],curr_live['field'],curr_live['object_id'])
+					 curr_live=Array();
+			   }
 		 }
-		 */
+   }
+
+   function callLiveFieldRead(cell,wherestring,field,object_id)
+   {
+		 xajax_doXMLHTTP("jinn.ajaxjinn.readSingleField",cell,wherestring,field,object_id);
    }
 
    function hoverCell(cell,inout,offcolor)
@@ -250,7 +251,7 @@
 			   <?php
 				  $colidx++;
 			   ?>
-			   <td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" id="cell<?=$rowidx?>x<?=$colidx?>" onmouseout="hoverCell(this,'out','')" onmouseover="hoverCell(this,'in')" onclick="callLiveFieldEdit('cell<?=$rowidx?>x<?=$colidx?>','<?=$recrow_arr['colfield_wherestring']?>','<?=$field_arr['name'] ?>','<?=$this->object_id?>')" valign="top" style="padding:0px 2px 0px 2px"><?php //_debug_array($field_arr);?><?=$field_arr['value'] ?></td>
+			   <td bgcolor="<?=$recrow_arr['colfield_bg_color'] ?>" id="cell<?=$rowidx?>x<?=$colidx?>" onmouseout="hoverCell(this,'out','')" onmouseover="hoverCell(this,'in')" onclick="callLiveFieldSave('cell<?=$rowidx?>x<?=$colidx?>');" ondblclick="callLiveFieldEdit('cell<?=$rowidx?>x<?=$colidx?>','<?=$recrow_arr['colfield_wherestring']?>','<?=$field_arr['name'] ?>','<?=$this->object_id?>')" valign="top" style="padding:0px 2px 0px 2px"><?php //_debug_array($field_arr);?><?=$field_arr['value'] ?></td>
 			   <?php endforeach?>
 			   <?php endif?>
 

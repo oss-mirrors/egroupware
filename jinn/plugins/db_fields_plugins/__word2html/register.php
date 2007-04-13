@@ -28,8 +28,8 @@
    $this->registry->plugins['word2html']['title']			= 'word2html converter';
    $this->registry->plugins['word2html']['author']			= 'Pim Snel';
    $this->registry->plugins['word2html']['version']		= '1.1';
-   $this->registry->plugins['word2html']['enable']			= 1;
    $this->registry->plugins['word2html']['default']		= 1;
+   $this->registry->plugins['word2html']['noajax']			= true; //this plugin cannot be used with ajax 
    $this->registry->plugins['word2html']['description'] 	= 'Converts html from an uploader word document, including images. It needs to vw toolkit to be installed';
    $this->registry->plugins['word2html']['db_field_hooks']	= array
    (

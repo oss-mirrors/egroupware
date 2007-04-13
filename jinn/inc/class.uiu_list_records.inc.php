@@ -729,7 +729,6 @@
 					 {	
 						$recordvalue=$this->bo->plug->call_plugin_bv($onecolname, $recordvalue, $where_string, $field_conf_arrNG[$onecolname], $column_types[$onecolname]);
 					 }
-//					 _debug_array($field_conf_arrNG);
 
 					 if ($recordvalue == '')
 					 {
