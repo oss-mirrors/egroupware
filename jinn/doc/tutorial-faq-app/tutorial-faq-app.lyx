@@ -247,6 +247,7 @@ status collapsed
 	filename images/Afbeelding2.png
 	width 100text%
 	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -284,6 +285,7 @@ status collapsed
 \begin_inset Graphics
 	filename images/Afbeelding3.png
 	width 100text%
+	rotateOrigin center
 
 \end_inset
 
@@ -319,13 +321,14 @@ New Object
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding4.png
-	width 100text%
+	scale 50
 	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -354,13 +357,14 @@ The object properties window will open.
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding5.png
 	width 100text%
 	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -392,12 +396,14 @@ Though we're not finished yet we can already use these objects for maintaining
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding6.png
-	width 100text%
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -427,7 +433,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding7.png
-	width 100text%
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -452,11 +460,13 @@ JiNN will now open the categories in the Listview showing no records.
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding8.png
+	width 100text%
+	keepAspectRatio
 
 \end_inset
 
@@ -486,6 +496,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding9.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -517,6 +530,9 @@ status open
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding10.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -548,6 +564,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding12.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -605,6 +624,8 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeeldin13.png
+	scale 50
+	rotateOrigin center
 
 \end_inset
 
@@ -639,6 +660,8 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding14.png
+	width 100text%
+	rotateOrigin center
 
 \end_inset
 
@@ -679,6 +702,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding15.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -707,6 +733,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding16.png
+	width 100text%
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -736,6 +765,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding17.png
+	width 100text%
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -773,6 +805,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding22.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -802,6 +837,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding18.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -831,6 +869,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding19.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -868,6 +909,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding21.png
+	width 100text%
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -881,6 +925,8 @@ edit field properties
 \end_inset
 
 
+\newpage
+
 \end_layout
 
 \begin_layout Standard
@@ -892,6 +938,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding23.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -925,6 +974,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding24.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -953,6 +1005,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding25.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -985,6 +1040,9 @@ status collapsed
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding26.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 
@@ -1016,6 +1074,9 @@ status open
 \begin_layout Standard
 \begin_inset Graphics
 	filename images/Afbeelding27.png
+	scale 50
+	keepAspectRatio
+	rotateOrigin center
 
 \end_inset
 

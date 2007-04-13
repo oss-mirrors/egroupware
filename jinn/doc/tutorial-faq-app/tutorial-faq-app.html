@@ -290,9 +290,227 @@ When you're done click on Save and finish. You will now return to
 the list view which will show your records. Every record can be viewed,
 edited, copied or deleted by using these small icons.
 
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg11">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 11: icons to maintain records</center>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc7">
+7</a>&nbsp;&nbsp;Adding relations and changing labels</h2>
+
+<div class="p"><!----></div>
+We now want to create the relation between <em>category.id_cat</em>
+and <em>questions_answers.cat_id</em>. After we have create this relation
+we can assign a category to a <em>Question and Answer</em> using a dropdown
+list.
+
+<div class="p"><!----></div>
+Click on the object <em>Questions and Answers</em> from the JiNN Navigation
+and then click on <em>Edit Object Form View</em> from the administration
+sidebox menu
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg12">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 12: open design form</center>
+
+<div class="p"><!----></div>
+You will now see the developers mode of the form view which is one
+of JiNN's most important and powerfull screens. On top of the form
+you see a horizontal bar with configuration buttons for concerning
+the complete object. On the left side you'll see buttons and icons
+per field to configure every field. 
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg13">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 13: developer toolbar</center>
+
+<div class="p"><!----></div>
+Click on the button Relation Widgets. The relation editor will be
+openen in a plugin. You can create different relation types, displayed
+in the tabs. We're going to create a <em>One-to-many relation</em> widget
+in this form which is the first tab. Click on the the button <em>Create
+new relation</em>.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg14">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 14: create new relation</center>
+
+<div class="p"><!----></div>
+Then select keys, tables and fields like in the example below.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg15">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 15: relation editor</center>
+
+<div class="p"><!----></div>
+Click on save when your finished. The new relation is displayed as
+in the image below:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg16">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 16: save relation in relation editor</center>
+
+<div class="p"><!----></div>
+If this seems good click on close to close the popup. You will now
+see that the field cat id has a dropdown list containing our category
+names. 
+
+<div class="p"><!----></div>
+To finish our work we will edit the default label into Category. Click
+on the edit field symbol left from the cat id field. 
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg17">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 17: edit field button</center>
+
+<div class="p"><!----></div>
+Change label into Category in the popup form and save and close the
+form when your finished.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg18">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 18: change field properties</center>
+
+<div class="p"><!----></div>
+Click on the button Back to normal mode on top of the screen to see
+the form with the new created relation and try to enter and new record.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg19">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 19: form with one-to-many dropdown list</center>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc8">
+8</a>&nbsp;&nbsp;Assign field plugin</h2>
+
+<div class="p"><!----></div>
+One more thing configuration before our interface is ready. We will
+now assign a WSYIWYG-editor to the answer field of Questions and Answers.
+Click again on Edit Object Form View and then click on the edit field
+icon to get the field configuration popup again. Now select the plugins
+tab and then select TinyMCE from the dropdownlist
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg20">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 20: edit field properties</center>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg21">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 21: select field plugin</center>
+
+<div class="p"><!----></div>
+You'll will now get a lot of configuration options. Just leaving these
+as they are will give you result, but of course you are encouraged
+to play with them. Save the form clicking on save at the bottom of
+the page and close the popup. 
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg22">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 22: configure field plugin</center>
+
+<div class="p"><!----></div>
+You're form will now look as this example below.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg23">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 23: the TinyMCE plugin shown in design form view</center>
+
+<div class="p"><!----></div>
+And it will look below like this when you click on <em>Back to normal</em>.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg24">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 24: the TinyMCE plugin shown in the normal form</center>
+
+<div class="p"><!----></div>
+That's all for this tutorial. You now have a simple administration
+interface for your FAQ database. When you assign access to you're
+normal users they can maintain data using these navigation buttons.
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_fIg25">
+</a> 
+
+<div class="p"><!----></div>
+<center>Figure 25: the moderators navigation menu</center>
+
+<div class="p"><!----></div>
+
 <br /><br /><hr /><small>File translated from
 T<sub><font size="-1">E</font></sub>X
 by <a href="http://hutchinson.belmont.ma.us/tth/">
 T<sub><font size="-1">T</font></sub>H</a>,
-version 3.67.<br />On 13 Apr 2007, 16:53.</small>
+version 3.67.<br />On 13 Apr 2007, 23:43.</small>
 </html>
