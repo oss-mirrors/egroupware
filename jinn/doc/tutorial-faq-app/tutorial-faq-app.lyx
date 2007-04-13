@@ -392,7 +392,7 @@ Though we're not finished yet we can already use these objects for maintaining
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset Graphics
@@ -422,7 +422,7 @@ When the site is opened the active objects are listed in the JiNN Navigator.
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset Graphics
@@ -537,6 +537,498 @@ When you're done click on Save and finish.
  You will now return to the list view which will show your records.
  Every record can be viewed, edited, copied or deleted by using these small
  icons.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding12.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+icons to maintain records
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Adding relations and changing labels
+\end_layout
+
+\begin_layout Standard
+We now want to create the relation between 
+\emph on
+category.id_cat
+\emph default
+ and 
+\emph on
+questions_answers.cat_id
+\emph default
+.
+ After we have create this relation we can assign a category to a 
+\emph on
+Question and Answer
+\emph default
+ using a dropdown list.
+\end_layout
+
+\begin_layout Standard
+Click on the object 
+\emph on
+Questions and Answers
+\emph default
+ from the JiNN Navigation and then click on 
+\emph on
+Edit Object Form View
+\emph default
+ from the administration sidebox menu
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeeldin13.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+open design form
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You will now see the developers mode of the form view which is one of JiNN's
+ most important and powerfull screens.
+ On top of the form you see a horizontal bar with configuration buttons
+ for concerning the complete object.
+ On the left side you'll see buttons and icons per field to configure every
+ field.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding14.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+developer toolbar
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Click on the button Relation Widgets.
+ The relation editor will be openen in a plugin.
+ You can create different relation types, displayed in the tabs.
+ We're going to create a 
+\emph on
+One-to-many relation
+\emph default
+ widget in this form which is the first tab.
+ Click on the the button 
+\emph on
+Create new relation
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding15.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+create new relation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then select keys, tables and fields like in the example below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding16.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+relation editor
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Click on save when your finished.
+ The new relation is displayed as in the image below:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding17.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+save relation in relation editor
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If this seems good click on close to close the popup.
+ You will now see that the field cat id has a dropdown list containing our
+ category names.
+ 
+\end_layout
+
+\begin_layout Standard
+To finish our work we will edit the default label into Category.
+ Click on the edit field symbol left from the cat id field.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding22.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+edit field button
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Change label into Category in the popup form and save and close the form
+ when your finished.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding18.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+change field properties
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Click on the button Back to normal mode on top of the screen to see the
+ form with the new created relation and try to enter and new record.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding19.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+form with one-to-many dropdown list
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Assign field plugin
+\end_layout
+
+\begin_layout Standard
+One more thing configuration before our interface is ready.
+ We will now assign a WSYIWYG-editor to the answer field of Questions and
+ Answers.
+ Click again on Edit Object Form View and then click on the edit field icon
+ to get the field configuration popup again.
+ Now select the plugins tab and then select TinyMCE from the dropdownlist
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding21.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+edit field properties
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding23.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+select field plugin
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You'll will now get a lot of configuration options.
+ Just leaving these as they are will give you result, but of course you
+ are encouraged to play with them.
+ Save the form clicking on save at the bottom of the page and close the
+ popup.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding24.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+configure field plugin
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You're form will now look as this example below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding25.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+the TinyMCE plugin shown in design form view
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And it will look below like this when you click on 
+\emph on
+Back to normal
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding26.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+the TinyMCE plugin shown in the normal form
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+That's all for this tutorial.
+ You now have a simple administration interface for your FAQ database.
+ When you assign access to you're normal users they can maintain data using
+ these navigation buttons.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/Afbeelding27.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+the moderators navigation menu
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
