@@ -2,7 +2,7 @@
 \lyxformat 245
 \begin_document
 \begin_header
-\textclass article
+\textclass book
 \language english
 \inputencoding auto
 \fontscheme default
@@ -52,13 +52,13 @@ Pim Snel
 \end_layout
 
 \begin_layout Date
-April 6 2007
+April 13 2007
 \end_layout
 
-\begin_layout Abstract
-The JiNN User Manual is the official JiNN reference guide.
-\newpage
-
+\begin_layout Standard
+This document is the official JiNN User Manual.
+ The latest version can always be found in the subversion repository of
+ egroupware.
 \end_layout
 
 \begin_layout Standard
@@ -67,12 +67,10 @@ The JiNN User Manual is the official JiNN reference guide.
 \end_inset
 
 
-\newpage
-
 \end_layout
 
-\begin_layout Section
-About 
+\begin_layout Chapter
+Introduction
 \end_layout
 
 \begin_layout Standard
@@ -93,7 +91,7 @@ JiNN is written from scratch and still maintained by Pim Snel.
  Development started in 1999.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 In short
 \end_layout
 
@@ -119,7 +117,7 @@ make use of standard or custom database field plugins like the FileManager,
 make use of standard or custom event plugins like email or change value.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Features
 \end_layout
 
@@ -159,12 +157,18 @@ Creating Custom HTML Reports
 Reusable database filters
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Typical JiNN Solutions
 \end_layout
 
 \begin_layout Itemize
 Website Content Management Systems
+\newline
+JiNN is a very useful tool for web developers
+ who need to setup a CMS for their frontend product.
+ You're able to setup a nice idiot-proof interface for you're complex database
+ design within minutes.
+ Even one-to-many relations, and many-to-many relations are a peace of cake.
 \end_layout
 
 \begin_layout Itemize
@@ -191,7 +195,7 @@ Ticket Tracking
 Mailinglist Management
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Current Status and Future 
 \end_layout
 
@@ -203,19 +207,19 @@ JiNN can currently be used to rapidly creat CRUD / BREAD applications.
  If functionality is missing reusable plugins can be creating with PHP.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Using JiNN Applications as Moderator
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Site Navigation
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Object Navigation
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Browsing through records
 \end_layout
 
@@ -230,7 +234,7 @@ The records listing screen is the first step for accessing you object records.
  Some of the stuff described below may not be available in you're application.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Browsing using the pager 
 \end_layout
 
@@ -243,7 +247,7 @@ When there are a lot a records JiNN splits the listing into pages showing
  Here you can click on one if the 9 pages or the last page.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Creating a new record(s)
 \end_layout
 
@@ -252,7 +256,7 @@ You can click the "Add a New Record" button to add a new record in this
  object.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Changing the ordering direction and field
 \end_layout
 
@@ -264,7 +268,7 @@ Sometimes you'll want to browse through you're data when they have a different
  Click again to change the direction of the ordering on this column.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Simple Keyword Search
 \end_layout
 
@@ -382,7 +386,7 @@ To remember you that you're quick search filter is still active the search
  box has soft red background.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Advanced Filtering
 \end_layout
 
@@ -397,7 +401,7 @@ To remember you you have an active filter the filter select box has soft
  red background.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Selecting Records 
 \end_layout
 
@@ -410,7 +414,7 @@ A lot of actions that can be done on a record can also be done on a selection
  the checkbox left bottom of the list below the records.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Opening one or more records for viewing
 \end_layout
 
@@ -422,7 +426,7 @@ You can click on the magnify glass icon on the left of the record to view
  You will now have a detailed view of all these selected records.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Opening one or more records for editing 
 \end_layout
 
@@ -433,7 +437,7 @@ You can click on the pencil icon on the left of the record to edit its content.
  You can now edit the contents of all these selected records.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Deleting one or more records
 \end_layout
 
@@ -446,7 +450,7 @@ You can click on the red cross icon on the left of the record to delete
  There'e now way to restore deleted records.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Copy a record
 \end_layout
 
@@ -455,7 +459,7 @@ To copy a record click on the white paper with the plus sign icon.
  All the contents exept for the primary key will be copied to a new record.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Exporting records to CSV
 \end_layout
 
@@ -464,7 +468,7 @@ You can export you selected records to CSV by clicking on the floppy disk
  icon located on the left bottom below the records.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Merging Data into Reports 
 \end_layout
 
@@ -475,7 +479,7 @@ You can create reports templates or use existing templates to create a new
  or a selection of records.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Run Custom Event Scripts
 \end_layout
 
@@ -513,11 +517,11 @@ You can click the Edit Button to Edit the current displayed records(s) or
  you can click the Back to List button to return to the Record List.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Editing records
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Modifying / Entering Data
 \end_layout
 
@@ -552,7 +556,7 @@ There are a lot of possible Field Plugins.
  Importing CSV data
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Saving and Closing
 \end_layout
 
@@ -564,15 +568,19 @@ When you're satisfied with you modification you can click save to update
  to return to the Record List 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Exporting data to CSV
 \end_layout
 
 \begin_layout Section
-Developing Applications
+Reports
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Chapter
+Developing JiNN Applications
+\end_layout
+
+\begin_layout Section
 Creating and changing Sites
 \end_layout
 
@@ -582,7 +590,7 @@ A JiNN Site stands on top of the Hierarchie.
  it is the container for all Site Objects.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 main properties
 \end_layout
 
@@ -626,7 +634,7 @@ Test database and fs: Tests if JiNN can use the database and read/write
  to the filesystem basepath.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Environment profiles
 \end_layout
 
@@ -656,7 +664,7 @@ filesystem BASEURL: Used to show the stored images or files in the webbrowser
  (optional) 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Site Objects
 \end_layout
 
@@ -709,6 +717,10 @@ In this screen you see every field that is available in the object and you
 \end_layout
 
 \begin_layout Subsubsection
+Database Requirements
+\end_layout
+
+\begin_layout Subsection
 General Object Properties
 \end_layout
 
@@ -801,8 +813,122 @@ Field Plugins
 \end_layout
 
 \begin_layout Standard
-JiNN ships with a lot of core field plugins.
- In this section we describe them and also give an example how to use them.
+A JiNN field plugin adds functionality to the input forms and a method the
+ way data is stored in to the database.
+ The application developer assigns a plugin to a selected field and tunes
+ its behaviour by modifying its configuration.
+ The modified behaviour is limited to the assign field.
+ JiNN ships with a lot of core field plugins.
+ You can see what plugins are registered in your JiNN installation by opening
+ the JiNN application and opening 
+\emph on
+About JiNN
+\emph default
+ from the general menu.
+\end_layout
+
+\begin_layout Standard
+In this section we describe them and also give an example how to use them.
+\end_layout
+
+\begin_layout Subsubsection
+ewline2Break
+\end_layout
+
+\begin_layout Standard
+for replacing breaks with the HTML equivelent
+\end_layout
+
+\begin_layout Subsubsection
+Date
+\end_layout
+
+\begin_layout Subsubsection
+selectbox
+\end_layout
+
+\begin_layout Standard
+a selectbox
+\end_layout
+
+\begin_layout Subsubsection
+boolian
+\end_layout
+
+\begin_layout Standard
+for adding a boolian selectbox
+\end_layout
+
+\begin_layout Subsubsection
+AttachmentPath
+\end_layout
+
+\begin_layout Standard
+For uploading and selecting one or more files
+\end_layout
+
+\begin_layout Subsubsection
+Order Plugin
+\end_layout
+
+\begin_layout Subsubsection
+Switchboard Plugin
+\end_layout
+
+\begin_layout Subsubsection
+Timestamp2integer Plugin
+\end_layout
+
+\begin_layout Subsubsection
+Timestamp Plugin
+\end_layout
+
+\begin_layout Subsubsection
+Unserialize Plugin
+\end_layout
+
+\begin_layout Subsubsection
+Password Plugin
+\end_layout
+
+\begin_layout Standard
+string to upper of lowercase plugin
+\end_layout
+
+\begin_layout Subsubsection
+Publication Timer plugin
+\end_layout
+
+\begin_layout Subsubsection
+colorlab
+\end_layout
+
+\begin_layout Standard
+The Colorlab Plugin is written by 
+\noun on
+Gabriël Ramaker
+\noun default
+.
+ Colorlab is flashmovie that binds to a varchar field.
+ It can be configured to let the user select a color from a predefind pallet
+ or from photoshop like color selector.
+ It stores a W3C validated hexadecimal code in to the database, like #00FF00.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+imagepath
+\end_layout
+
+\begin_layout Standard
+ImagePath is a plugin which offers a method for uploading images which are
+ stored in the upload path.
+ If necessary ImagePath resizes the image to given max sizes and generate
+ thumbnails.
+ The paths to the images are stored in a varchar or text field seperated
+ by semicolons.
+ Programmers can use the PHP function explode to access to file locations
+ from an PHP-array
 \end_layout
 
 \begin_layout Subsubsection
@@ -852,23 +978,66 @@ This plugin depends on the wvWare toolkit.
 Configuration Options
 \end_layout
 
-\begin_layout Itemize
-
+\begin_layout Description
+path\InsetSpace ~
+to\InsetSpace ~
+wv\InsetSpace ~
+executable
+\emph on
 \noun on
-path to wv executable: e.g.
- /usr/local/bin
+ 
+\emph default
 \noun default
-: This option help the plugin find the executable which is needed for conversion.
- The plugin defaults to /usr/bin
+This option help the plugin find the executable which is needed for conversion.
+ The plugin defaults to 
+\emph on
+/usr/bin
+\emph default
+, but
+\noun on
+ 
+\emph on
+\noun default
+/usr/local/bin
+\emph default
+\noun on
+ 
 \end_layout
 
-\begin_layout Itemize
-
+\begin_layout Description
+Subdirectory\InsetSpace ~
+to\InsetSpace ~
+use\InsetSpace ~
+for\InsetSpace ~
+extracted\InsetSpace ~
+images
 \noun on
-Subdirectory to use for extracted images: 
+ 
 \noun default
-Images can optionally be saved in a child directory in the configured upload
- path
+Embedded Images can optionally be saved in a child directory in the configured
+ upload path
+\end_layout
+
+\begin_layout Description
+Max.\InsetSpace ~
+image\InsetSpace ~
+width\InsetSpace ~
+(else\InsetSpace ~
+leave\InsetSpace ~
+empty) If embedded images are wider then this maxumum
+ width in pixels they are resized untill they fit.
+ Aspect ratio is always preserved.
+\end_layout
+
+\begin_layout Description
+Max.\InsetSpace ~
+image\InsetSpace ~
+height\InsetSpace ~
+(else\InsetSpace ~
+leave\InsetSpace ~
+empty) If embedded images are heigher then this
+ maxumum height in pixels they are resized untill they fit.
+ Aspect ratio is always preserved.
 \end_layout
 
 \begin_layout Paragraph
@@ -926,7 +1095,167 @@ Very early implementation of reports functionality.
  You can create templates using a visual HTML editor.
  The Templates support PHP scripting.
  Future features will include PDF generation and events handleling.
- 
+\end_layout
+
+\begin_layout Chapter
+Administration
+\end_layout
+
+\begin_layout Section
+Access Rights
+\end_layout
+
+\begin_layout Standard
+JiNN makes it possible to have a lot of site-databases moderated by a lot
+ of people all in one system.
+ Access Rights are assigned at table-level and every site can have one or
+ more site-administrators.
+\end_layout
+
+\begin_layout Section
+eGroupWare Application Development Using JiNN
+\end_layout
+
+\begin_layout Standard
+JiNN has can be used to develop other eGroupWare Applications.
+ This saves the developer lots of time so he can concentrate on more difficult
+ parts o his applications.
+\end_layout
+
+\begin_layout Chapter
+Extentending JiNN
+\end_layout
+
+\begin_layout Section
+Writing New Field Plugins
+\end_layout
+
+\begin_layout Standard
+It's quite easy to write new field plugins.
+ Using custom plugins you can extend the functionallity of JiNN with little
+ effort.
+ A field plugin has a few requirements.
+\end_layout
+
+\begin_layout Enumerate
+A Field plugin has a unique lowered case name without spaces or non alpha
+ numeric characters.
+\end_layout
+
+\begin_layout Enumerate
+All plugin files resides in one main directory starting with two underscores
+ and then the name of the plugin.
+ E.g.
+ __myplugin
+\end_layout
+
+\begin_layout Enumerate
+The plugin main directory is located in .../egroupware/jinn/plugins/db_fields_plugi
+ns/ or in .../egroupware/jinn/custom_plugins/db_fields_plugins/.
+ The custom plugin directory makes it possible to keep JiNN vanilla and
+ you are encouraged to put you own plugins here.
+\end_layout
+
+\begin_layout Enumerate
+There must be a register.php file which gives jinn general information about
+ the plugin.
+\end_layout
+
+\begin_layout Enumerate
+There must be a class.myplugin.php file where the actual plugin methods executed
+ from.
+\end_layout
+
+\begin_layout Enumerate
+The plugin class file can optionally contain 5 public method which are run
+ when available.
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+formview_edit(....) this method renders the field widget when a records opened
+ for editing or a new record is will be inserted.
+\end_layout
+
+\begin_layout Description
+formview_read() Called when opening a record for viewing (read only) and
+ formats the field data.
+\end_layout
+
+\begin_layout Description
+listview_read(....) this method renders the value of the field when is displayed
+ in the list view.
+\end_layout
+
+\begin_layout Description
+on_save_filter(....) (Storage Process Function) This method is run after the
+ form is submitted.
+ It gets the field value as input argument and returns the processed field
+ value for further storage in the database table.
+\end_layout
+
+\begin_layout Description
+advanced_action() Currently only used in vorder.
+ It makes it possible to have a custom public function called from the plugin
+ class.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+The best way to start writing plugins is to browse through existing plugins
+ JiNN ships and use them a you example.
+\end_layout
+
+\begin_layout Chapter
+Extra Information
+\end_layout
+
+\begin_layout Section
+Resources
+\end_layout
+
+\begin_layout Description
+JiNN\InsetSpace ~
+User\InsetSpace ~
+Manual The Official Complete JiNN Manual.
+ This document is always located at http://svn.egroupware.org/egroupware/trunk/jin
+n/doc/official-manual/
+\end_layout
+
+\begin_layout Description
+Tutorial_Creating\InsetSpace ~
+a\InsetSpace ~
+FAQ_Administrator 30 minutes tutorial where you create
+ a JiNN Application which administrates a FAQ database.
+ Still in development.
+\end_layout
+
+\begin_layout Description
+Mailing-lists see http://www.egroupware.org
+\end_layout
+
+\begin_layout Description
+Forum ...............
+\end_layout
+
+\begin_layout Description
+Bug\InsetSpace ~
+Reports see http://www.egroupware.org
+\end_layout
+
+\begin_layout Description
+Feature\InsetSpace ~
+Requests see http://www.egroupware.org
+\end_layout
+
+\begin_layout Description
+Source\InsetSpace ~
+code see http://www.egroupware.org
+\end_layout
+
+\begin_layout Description
+Commercial\InsetSpace ~
+Support see http://www.lingewoud.nl
 \end_layout
 
 \begin_layout Section
@@ -995,6 +1324,49 @@ It seems to run on Windows though the author never had intentions to make
  it run on Windows.
  Some Field Plugins will definitely not work on Window.
  All inuces like Mac OS X, Linux and the BSD's are completely supported.
+\end_layout
+
+\begin_layout Section
+Resembling Software
+\end_layout
+
+\begin_layout Standard
+The idea behind JiNN is quite unique and there are no tools that do the
+ same.
+ There are resembling tools though.
+ Here a list:
+\end_layout
+
+\begin_layout Paragraph
+Webbased
+\end_layout
+
+\begin_layout Itemize
+[http://phpfriendly.sourceforge.net/ phpFriendlyAdmin]
+\end_layout
+
+\begin_layout Itemize
+[http://dasystem.sourceforge.net/ DASystem]
+\end_layout
+
+\begin_layout Itemize
+[http://www.derosetechnologies.com/ Accession] 
+\end_layout
+
+\begin_layout Itemize
+[http://greenhell.com/dataMiner/ dataMiner]
+\end_layout
+
+\begin_layout Paragraph
+Desktop
+\end_layout
+
+\begin_layout Itemize
+Microsoft Access
+\end_layout
+
+\begin_layout Itemize
+Filemaker
 \end_layout
 
 \end_body
