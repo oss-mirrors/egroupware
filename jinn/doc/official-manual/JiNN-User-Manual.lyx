@@ -248,6 +248,32 @@ When there are a lot a records JiNN splits the listing into pages showing
 \end_layout
 
 \begin_layout Subsection
+Editing Single Field Value
+\end_layout
+
+\begin_layout Standard
+When a cell highlights at when the mouse passes over this indicated that
+ this field can be 
+\emph on
+live edited
+\emph default
+ from within the 
+\emph on
+list view
+\emph default
+.
+
+\emph on
+ 
+\emph default
+You can edit the content of this field without opening the complete record.
+ Just simply double click the cell and it will change to edit mode.
+ When you're done click once somewhere else in the same column.
+ The value is now saved.
+ You can repeat this as many as you like for other fields.
+\end_layout
+
+\begin_layout Subsection
 Creating a new record(s)
 \end_layout
 
@@ -782,6 +808,14 @@ Many-to-One: Created a list with all linked records.
 
 \begin_layout Subsection
 Field Properties
+\end_layout
+
+\begin_layout Standard
+In the design form screen you can click on a field to open its properties
+ in the properties pane located on the left.
+ Older JiNN versions also display an edit icon next to the field which you
+ can click to open an popup with all field properties.
+ 
 \end_layout
 
 \begin_layout Itemize
