@@ -1,7 +1,9 @@
 <?php
-   //$NEWP=true;
+   $NEWP=true;
 ?>
 <script language="javascript" type="text/javascript">
+
+   var thisobjectid='<?=$this->site_object_arr['object_id']?>';
    function check_m2o_form()
    {
 		 if(typeof block_parent_save !='undefined' && block_parent_save )
@@ -51,7 +53,7 @@
 		 document.getElementById(elid).style.background="#dddddd";
 		 activerow=elid;
 
-		 document.getElementById('panel_fname').innerHTML=field;
+		 xajax_doXMLHTTP("jinn.ajaxjinn.getPanelFieldProps",field,thisobjectid);
    }
 
    var activeRec;
@@ -66,82 +68,17 @@
 		 activeRec=elid;
    }
 
-
-   function toggleFieldFormVisible(field,toggleTo,object_id)
+   function toggleFieldVisProp(field,toggleTo,object_id,prop)
    {
-		 xajax_doXMLHTTP("jinn.ajaxjinn.toggleFieldFormVisible",field,toggleTo,object_id);
-		 var newlink;
-		 if(toggleTo=='hide')
-		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleFieldFormVisible(\''+field+'\',\'visible\',\'object_id\')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>';
-		 }
-		 else
-		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleFieldFormVisible(\''+field+'\',\'hide\',\'object_id\')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>';
-		 }
-		 document.getElementById('visible'+field).innerHTML=newlink;	
-   }
-
-   function toggleFieldListVisible(field,toggleTo,object_id)
-   {
-		 xajax_doXMLHTTP("jinn.ajaxjinn.toggleFieldListVisible",field,toggleTo,object_id);
-
-		 var newlink;
-		 if(toggleTo=='hide')
-		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleFieldListVisible(\''+field+'\',\'visible\',\'object_id\')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>';
-		 }
-		 else
-		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleFieldListVisible(\''+field+'\',\'hide\',\'object_id\')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>';
-		 }
-		 document.getElementById('listvisible'+field).innerHTML=newlink;	
+		 xajax_doXMLHTTP("jinn.ajaxjinn.toggleFieldVisProp",field,toggleTo,object_id,prop);
    }
 
    function toggleFieldEnabled(field,toggleTo,object_id)
    {
 		 xajax_doXMLHTTP("jinn.ajaxjinn.toggleFieldEnabled",field,toggleTo,object_id);
-
-		 var newlink;
-		 if(toggleTo=='enable')
-		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleFieldEnabled(\''+field+'\',\'disable\',\'object_id\')"><img src="<?=$this->img_fld_enabled?>" alt="" /></a>';
-		 }
-		 else
-		 {
-			   newlink='<a href="javascript:void(0);" onclick="toggleFieldEnabled(\''+field+'\',\'enable\',\'object_id\')"><img src="<?=$this->img_fld_disabled?>" alt="" /></a>';
-		 }
-		 document.getElementById('enable'+field).innerHTML=newlink;	
    }
 
    var snapdist=10;
-
-   function my_DropFunc()
-   {
-		 // Calculate the snap position which is closest to the drop coordinates
-
-		 var snapY = Math.round(dd.obj.y/snapdist);
-		 //if(snapY<0)snapY=0;
-		 var y = snapdist*snapY;
-		 if(y<dd.elements.fieldcontainer1.y)y=dd.elements.fieldcontainer1.y;
-
-		 var snapX = Math.round(dd.obj.x/snapdist);
-		 //if(snapX<0)snapX=0;
-		 var x = snapdist*snapX;
-		 if(x<dd.elements.fieldcontainer1.x)x=dd.elements.fieldcontainer1.x;
-
-		 var x_store=x-dd.elements.fieldcontainer1.x;
-		 var y_store=y-dd.elements.fieldcontainer1.y;
-		 // Let the dropped item snap to position
-		 dd.obj.moveTo(x, y);
-
-		 var tmpfieldname=dd.obj.name;
-		 fieldname=tmpfieldname.substring(8);
-		 fieldtype=tmpfieldname.substring(3,8);
-
-		 document.getElementById('POS'+fieldname+'canvas_'+fieldtype+'_x').value=x_store;
-		 document.getElementById('POS'+fieldname+'canvas_'+fieldtype+'_y').value=y_store;
-   }
 
 </script>
 
@@ -157,7 +94,7 @@
 
    td.propertiescell
    {
-		 padding:10px 0px 10px 0px;
+		 padding:3px 0px 3px 0px;
    }
 
    table.m2o_list tr td
@@ -185,77 +122,32 @@
    }
 ?>
 
-<!-- edit this record button -->
-<?php if(!$this->edit_object && !$this->japie):?>
-<!--<div style="text-align:right;"><a href="<?=$this->edit_object_link?>"><img src="<?=$this->img_edit?>" alt="" /></a></div>-->
-<?php endif?>
-
 <!-- edit buttons -->
 <?=$this->devtoolbar?>
 
 <?php if($this->edit_object):?>
 
-<!--<div style="background-color:#ffdbb3;padding:3px;">
-   <input type="button" onclick="javascript:location.href='<?=$this->normal_mode_link?>'" style="float:right;" class="egwbutton"  value="<?=lang('Back to normal mode')?>" />
-
-   <input type="button" value="<?=lang('general options')?>" class="egwbutton" onclick="parent.window.open('<?=$this->gen_obj_options_link?>' , 'genobjoptions', 'width=780,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')" />
-
-   <input type="button" value="<?=lang('object event plugins')?>" class="egwbutton" onclick="parent.window.open('<?=$this->obj_event_plugins_link?>' , 'genobjoptions', 'width=980,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')" />
-
-   <input type="button" value="<?=lang('relation widgets')?>" class="egwbutton" onclick="parent.window.open('<?=$this->relation_link?>' , 'relwidget', 'width=980,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')" />
-</div>
--->
-
 <div style="background-color:#ffdbb3;padding:3px;margin-top:1px;">
-   <input type="button" onclick="javascript:location.href='<?=$this->dev_apply_changes?>'" style="float:right;background-color:#ff0000" class="egwbutton"  value="<?=lang('Apply Changes')?>" />
    <input type="button" value="<?=lang('add form element')?>" class="egwbutton" onclick="parent.window.open('<?=$this->add_element_link?>' , 'addelement', 'width=480,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')" />
    &nbsp;|&nbsp;
    <?= lang('Reports');?>
-<select id="report_list">
-   <?=$this->report_list;?>
-</select>
-<input class="egwbutton"  type='button' value='<?=lang('Edit');?>' onClick="parent.window.open('<?=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.edit_report_popup&parent_site_id='.$this->report_vals['parent_site_id'].'&table_name='.$this->report_vals['table_name'].'&report_id=');?>'+document.getElementById('report_list').value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')">
+   <select id="report_list">
+	  <?=$this->report_list;?>
+   </select>
+   <input class="egwbutton"  type='button' value='<?=lang('Edit');?>' onClick="parent.window.open('<?=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.edit_report_popup&parent_site_id='.$this->report_vals['parent_site_id'].'&table_name='.$this->report_vals['table_name'].'&report_id=');?>'+document.getElementById('report_list').value, 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')">
 
-<input class="egwbutton"  type='button' value='<?=lang('Delete');?>' onClick="if(window.confirm('<?=lang('Are you sure?');?>'))location='<?=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boreport.delete_report').'&report_id=';?>'+document.getElementById('report_list').value;">
+   <input class="egwbutton"  type='button' value='<?=lang('Delete');?>' onClick="if(window.confirm('<?=lang('Are you sure?');?>'))location='<?=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boreport.delete_report').'&report_id=';?>'+document.getElementById('report_list').value;">
 
-<input class="egwbutton"  type="button" value="<?=lang('Add');?>" onClick="parent.window.open('<?=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_popup').'&parent_site_id='.$this->report_vals['parent_site_id'].'&table_name='.$this->report_vals['table_name'].'&obj_id='.$this->site_object_arr['object_id'];?>', 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')"/>
+   <input class="egwbutton"  type="button" value="<?=lang('Add');?>" onClick="parent.window.open('<?=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uireport.add_report_popup').'&parent_site_id='.$this->report_vals['parent_site_id'].'&table_name='.$this->report_vals['table_name'].'&obj_id='.$this->site_object_arr['object_id'];?>', 'pop', 'width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')"/>
 
 </div>
 <?php endif?>
 
 <?php 
-   // _debug_array($this->site_object_arr);
-   if($this->site_object_arr['layoutmethod']=='c')
-   {
-	  $checked_canvas='checked="checked"';
-	  #$this->usecanvas=true;
-   }
-   else
-   {
-	  $checked_table='checked="checked"';
-   }
+   $checked_table='checked="checked"';
 ?>
 
 <form method="post" name="frm" action="<?=$this->form_action?>" enctype="multipart/form-data" onSubmit="return onSubmitForm()">
-
-   <?php
-	  /*
-	  <?php if($this->edit_object):?>
-	  <div style="background-color:#fff79f">
-		 <input type="hidden" name="objectsaved" value="true" />
-		 <input type="hidden" name="object_id" value="<?=$this->site_object_arr['object_id']?>" />
-
-		 <?=lang('Form Type')?>: <input <?=$checked_table?> type="radio" value="t" name="formtype" onchange="document.frm.submit();"> <?=lang('Table')?> <input  onchange="document.frm.submit();" type="radio" <?=$checked_canvas?> value="c" name="formtype"> <?=lang('Canvas')?> 
-		 <?php if($this->usecanvas):?>
-		 &nbsp;&nbsp;&nbsp;<?=lang('Form Height')?><input type="text" name="formheight" size="4" onBlur="dd.elements.fieldcontainer1.resizeTo(document.frm.formwidth.value,document.frm.formheight.value)" value="<?=$this->site_object_arr['formheight']?>">
-		 &nbsp;<?=lang('Form Width')?><input type="text" name="formwidth" onBlur="dd.elements.fieldcontainer1.resizeTo(document.frm.formwidth.value,document.frm.formheight.value)" size="4" value="<?=$this->site_object_arr['formwidth']?>">
-		 <?php endif?>
-		 &nbsp;&nbsp;&nbsp;<input type="submit" value="<?=lang('Save Form Lay-out')?>">
-	  </div>
-
-	  <?php endif?>
-	  */
-   ?>
 
    <?=$this->extrahiddens?>
    <input type="hidden" name="submitted" value="true" />
@@ -283,7 +175,7 @@
 	  <input type="text" name="num_records" maxlength="2" size="2" value="<?=$this->mult_records?>" />
 	  <input  class="egwbutton" type="submit" value="<?= lang('change number of records')?>" onclick="document.frm.changerecnumbers.value='true'" />
 	  <?php endif?>
-	  
+
 	  <?php endif?>
 
 	  <!-- END change_num -->
@@ -295,20 +187,20 @@
 		 <input type="submit" onclick="return check_m2o_form();" name="savereopen" class="egwbutton" value="<?=lang('Save')?>">
 		 <input type="submit" onclick="return check_m2o_form();" name="savefinish" class="egwbutton" value="<?=lang('Save and finish')?>">
 
-	  <?php if(!$this->readonly):?>
-	  <input type="button" onclick="location='<?=$this->listing_link?>'" name="finish" class="egwbutton" value="<?=lang('finish, discard changes')?>">
+		 <?php if(!$this->readonly):?>
+		 <input type="button" onclick="location='<?=$this->listing_link?>'" name="finish" class="egwbutton" value="<?=lang('finish, discard changes')?>">
+		 <?php endif?>
+
+	  </div>
+
 	  <?php endif?>
-	  
-   </div>
-   
-   <?php endif?>
-   <?php endif?>
+	  <?php endif?>
 	  <?php
 		 $rec_i=0;
 		 $row_i=0;
 	  ?>
 
-   <?php foreach($this->records_arr as $record_rows):?>
+	  <?php foreach($this->records_arr as $record_rows):?>
 	  <?php $rec_i++ ?>
 
 	  <div style="float:left;margin:0px 20px 0px 0px">
@@ -316,7 +208,6 @@
 		 <?php if($this->mult_records > 1):?>
 		 <div style="background-color:#cccccc;width:70px;padding:3px;"><?=lang('Record %1',$rec_i)?></div>
 		 <?php endif?>
-
 
 		 <?php if($this->usecanvas):?>
 		 <!-- design canvas -->
@@ -375,7 +266,7 @@
 			   <?php endif?> 
 
 			   <span style="font-weight:bold"><?=$r['display_name']?></span>
-			  			</div>
+			</div>
 
 			<div style="background-color:<?=$fbgcolor?>;position:absolute;left:<?=$setfieldx?>px;top:<?=$setfieldy?>px;" id="div<?='field'.$r['fieldname']?>"><?=$r['input']?>
 			   <?php if($this->edit_object):?>
@@ -401,14 +292,15 @@
 
 		 <!-- OUR DEVELOPERS PANEL -->
 		 <?php if($NEWP):?>
-		 <div style="float:right;">
+		 <div style="float:left;">
 			<style>
-
 			   .paneltable 
 			   {
 					 border-spacing:0;
 					 border-top:solid 1px #cccccc;
 					 border-left:solid 1px #cccccc;
+					 margin-right:10px;
+					 margin-left:10px;
 			   }
 			   .paneltable td
 			   {
@@ -417,30 +309,77 @@
 					 border-bottom:solid 1px #cccccc;
 					 border-right:solid 1px #cccccc;
 			   }
-			   
+
 			</style>
-			<!--<strong><?=lang('Element Field');?><strong>-->
-				  <table class="paneltable">
+			<table class="paneltable">
 			   <tr style="font-weight:bold;">
-				  <td><?=lang('Name')?></td>
-				  <td><?=lang('Value')?></td>
+				  <td style="width:100px"><?=lang('Name')?></td>
+				  <td style="width:150px"><?=lang('Value')?></td>
 			   </tr>
 			   <tr>
 				  <td><?=lang('Name')?></td>
 				  <td id="panel_fname"></td>
 			   </tr>
+			   <tr>
+				  <td><?=lang('Field Type')?></td>
+				  <td id="panel_ftype"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Enabled')?></td>
+				  <td id="panel_fenabled"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Label')?></td>
+				  <td id="panel_flabel"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Label Visibility')?></td>
+				  <td id="panel_flabel_visibility"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Help Info')?></td>
+				  <td id="panel_fhelpinfo"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Order')?></td>
+				  <td id="panel_forder"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Form Visibility')?></td>
+				  <td id="panel_fform_visibility"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('List Visibility')?></td>
+				  <td id="panel_flist_visibility"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Span Column')?></td>
+				  <td id="panel_fsingle_col"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Read Only')?></td>
+				  <td id="panel_ffe_readonly"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Data Source')?></td>
+				  <td id="panel_fdata_source"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Delete')?></td>
+				  <td id="panel_del"></td>
+			   </tr>
+			   <!--	   <tr>
+				  <td><?=lang('Debug')?></td>
+				  <td id="panel_debug"></td>
+			   </tr>-->
 			</table>
-			   
 		 </div>
 		 <?php endif?>
-		 
+
 		 <table id="rec<?=$rec_i?>" style="border:dashed 1px #cccccc;margin-bottom:20px;" onmousedown="recActive('rec<?=$rec_i?>')" align="" class="editrecordtable" style="border-spacing: 0px;" cellpadding="0" cellspacing="0"  >
 			<?php if($this->edit_object):?>
 			<tr>
 			   <td class="propertiescell"></td>
-			   <td class="propertiescell"></td>
-			   <td class="propertiescell"><img src="<?=$GLOBALS['egw']->common->image('jinn','formicon22')?>" alt="<?=lang('Form')?>" title="<?=lang('Form')?>" /></td>
-			   <td class="propertiescell"><img src="<?=$GLOBALS['egw']->common->image('jinn','listicon22')?>" alt="<?=lang('Form')?>" title="<?=lang('List')?>" /></td>
 			   <td class="propertiescell"><?=lang("order")?></td>
 			   <td class="propertiescell"></td>
 			</tr>
@@ -452,35 +391,6 @@
 			   <?php if($this->edit_object && $r['editfieldlink']):?>
 			   <td style=""  class="propertiescell">
 				  <a href="javascript:void(0);" onclick="parent.window.open('<?=$r['editfieldlink']?>' , 'poplang_code', 'width=600,height=500,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no')"><img src="<?=$this->img_edit?>" alt="" /></a>
-			   </td>
-			   <?php if($r['element_type']=='auto'):?>
-			   <td id="enable<?=$r['fieldname']?>" class="propertiescell">
-				  <?php if($r['disabled']=='disabled'):?>
-				  <a href="javascript:void(0);" onclick="toggleFieldEnabled('<?=$r['fieldname']?>','enable','<?=$r['parent_object']?>')"><img src="<?=$this->img_fld_disabled?>" alt="" /></a>
-				  <?php else:?>
-				  <a href="javascript:void(0);" onclick="toggleFieldEnabled('<?=$r['fieldname']?>','disable','<?=$r['parent_object']?>')"><img src="<?=$this->img_fld_enabled?>" alt="" /></a>
-				  <?php endif?>
-			   </td>
-			   <?php else:?>
-			   <td id="delete<?=$r['fieldname']?>" class="propertiescell">
-				  <a href="<?=$this->link_delete_element?>&field_name=<?=$r['fieldname']?>" onclick="return window.confirm('<?=lang('Are you sure you want to delete this element?')?>')"><img src="<?=$GLOBALS['egw']->common->image('phpgwapi','close')?>" alt="" /></a>
-			   </td>
-			   <?php endif?>
-
-			   <td style="" id="visible<?=$r['fieldname']?>" class="propertiescell">
-				  <?php if($r['visible']=='hide'):?>
-				  <a href="javascript:void(0);" onclick="toggleFieldFormVisible('<?=$r['fieldname']?>','visible','<?=$r['parent_object']?>')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>
-				  <?php else:?>
-				  <a href="javascript:void(0);" onclick="toggleFieldFormVisible('<?=$r['fieldname']?>','hide','<?=$r['parent_object']?>')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>
-				  <?php endif?>
-			   </td>
-
-			   <td style="" id="listvisible<?=$r['fieldname']?>" class="propertiescell">
-				  <?php if($r['listvisible']=='hide'):?>
-				  <a href="javascript:void(0);" onclick="toggleFieldListVisible('<?=$r['fieldname']?>','visible','<?=$r['parent_object']?>')"><img src="<?=$this->img_eyehidden?>" alt="" /></a>
-				  <?php else:?>
-				  <a href="javascript:void(0);" onclick="toggleFieldListVisible('<?=$r['fieldname']?>','hide','<?=$r['parent_object']?>')"><img src="<?=$this->img_eyevisible?>" alt="" /></a>
-				  <?php endif?>
 			   </td>
 			   <td style="" class="propertiescell">
 				  <a href="<?=$this->change_field_order_link?>&movefield=<?=$r['fieldname']?>&up=true"><img src="<?=$GLOBALS['egw']->common->image('phpgwapi','up2')?>" alt="<?=lang('move up')?>" title="<?=lang('move up')?>" /></a>
@@ -546,7 +456,7 @@
 	  <?php if(!$this->japie):?>
 	  <div style="float:right;width:auto;"><input type="button" onclick="openhelp()" name="help" class="egwbutton" value="<?=lang('Help')?>"></div>
 	  <?php endif?>
-	  
+
 	  <?=$this->runonrecordbuttons?>
 
 	  <div style="clear:both;height:10px;"></div>
