@@ -172,14 +172,8 @@ class uiwiki extends bowiki
 		if ($content['is_html'] || $this->AutoconvertPages == 'never' || !$this->tpl->html->htmlarea_availible())
 		{
 			$this->tpl->disable_cells('action[convert]');
-
-			// picture upload via tinyMCE
-			$GLOBALS['egw']->session->appsession('UploadImage','phpgwapi',array(
-				'app' => 'wiki',
-				'upload_dir'   => $this->upload_dir,
-				'upload_url'   => $this->upload_url,
-				'admin_method' => $GLOBALS['egw']->link('/index.php','menuaction=admin.uiconfig.index&appname=wiki'),
-			));
+			$content['upload_dir'] = $this->upload_dir;
+			$content['rtfEditorFeatures'] = $GLOBALS['egw_info']['user']['preferences']['wiki']['rtfEditorFeatures'];
 		}
 		$GLOBALS['egw_info']['flags']['app_header'] = $GLOBALS['egw_info']['apps']['wiki']['title'] . ' - ' .
 			lang('edit') . ' ' . $content['name'] .

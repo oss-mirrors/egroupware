@@ -10,9 +10,9 @@
 			<rows>
 				<row class="th">
 					<description value="Name"/>
-					<hbox orient="0,0">
+					<hbox options="0" orient="0">
 						<textbox size="60" id="name"/>
-						<menulist span=",leftpadding5">
+						<menulist class="leftpadding5">
 							<menupopup label="Lang" no_lang="1" id="lang"/>
 						</menulist>
 						<button class="leftpadding5" label="Load" id="action[load]" statustext="Loads the named page in the given language, all change so far get lost !!!"/>
@@ -21,20 +21,20 @@
 				</row>
 				<row class="row">
 					<description value="Title"/>
-					<hbox orient="0,0">
+					<hbox options="0" orient="0">
 						<textbox size="60" id="title" statustext="different languages can have different titles"/>
 						<description class="leftpadding5" value="Writable by"/>
-						<menulist span=",leftpadding5">
+						<menulist class="leftpadding5">
 							<menupopup type="select-account" options=",groups" no_lang="1" id="writable" statustext="who should be able to edit this page"/>
 						</menulist>
 						<description class="leftpadding5" value="Readable by"/>
-						<menulist span=",leftpadding5">
+						<menulist class="leftpadding5">
 							<menupopup type="select-account" options=",groups" no_lang="1" id="readable" statustext="who should be able to read this page"/>
 						</menulist>
 					</hbox>
 				</row>
 				<row class="row" disabled="!@is_html">
-					<htmlarea span="all" id="text" plugins="TableOperations,ContextMenu,ColorChooser,FontChooser,FileManager,SearchReplace,InsertDateTime"/>
+					<htmlarea span="all" id="text" mode="$cont[rtfEditorFeatures]" height="320px" width="100%" toolbar="true" base_href="$cont[upload_dir]"/>
 				</row>
 				<row disabled="@is_html">
 					<textbox multiline="true" rows="15" cols="120" span="all" id="text"/>

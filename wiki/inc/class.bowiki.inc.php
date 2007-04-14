@@ -19,7 +19,7 @@ global $UpperPtn,$LowerPtn,$AlphaPtn,$LinkPtn,$UrlPtn,$InterwikiPtn,$MaxNesting,
 global $EditBase,$ViewBase,$HistoryBase;
 
 require_once(EGW_INCLUDE_ROOT.'/wiki/lib/defaults.php');
-if ($GLOBALS['egw']->translation->charset() == 'iso-8859-1')	// allow all iso-8859-1 extra-chars
+if (is_object($GLOBALS['egw']->translation) && $GLOBALS['egw']->translation->charset() == 'iso-8859-1')	// allow all iso-8859-1 extra-chars
 {
 	$UpperPtn = "[A-Z\xc0-\xde]";
 	$LowerPtn = "[a-z\xdf-\xff]";
@@ -47,7 +47,7 @@ require_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.sowiki.inc.php');
 
 class bowiki extends sowiki
 {
-	var $upload_url,$upload_dir;
+	var $upload_dir;
 	var $config;
 
 	function bowiki($wiki_id=0)
@@ -74,7 +74,6 @@ class bowiki extends sowiki
 		
 		$this->ExpireLen = $this->config['ExpireLen'];
 		$this->upload_dir = $this->config['upload_dir'];
-		$this->upload_url = $this->config['upload_url'];
 
 		global $Charset,$UserName;
 		$Charset = $GLOBALS['egw']->translation->charset();

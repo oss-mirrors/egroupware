@@ -34,6 +34,7 @@
 	$setup_info['wiki']['hooks'][] = 'admin';
 	$setup_info['wiki']['hooks'][] = 'sidebox_menu';
 	$setup_info['wiki']['hooks'][] = 'config_validate';
+	$setup_info['wiki']['hooks'][] = 'settings';
 	$setup_info['wiki']['hooks']['search_link'] = 'wiki.bowiki.search_link';
 
 	/* Dependencies for this app to work */

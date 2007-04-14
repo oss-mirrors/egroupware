@@ -16,7 +16,7 @@
 	$menu_title = lang('Wiki Menu');
 	$file = Array(
 		'Recent Changes' => $GLOBALS['egw']->link('/wiki/index.php','page=RecentChanges'),
-		'Preferences' => $GLOBALS['egw']->link('/wiki/index.php','action=prefs')
+		'Preferences' => $GLOBALS['egw']->link('/index.php',array('menuaction'=>'preferences.uisettings.index','appname'=>'wiki')),
 	);
 	display_sidebox($appname,$menu_title,$file);
 
