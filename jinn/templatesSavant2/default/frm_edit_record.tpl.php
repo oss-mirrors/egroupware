@@ -1,6 +1,3 @@
-<?php
-   $NEWP=true;
-?>
 <script language="javascript" type="text/javascript">
 
    var thisobjectid='<?=$this->site_object_arr['object_id']?>';
@@ -291,7 +288,7 @@
 		 <!-- WHEN WE NO NOTHING WE USE A SIMPLE TABLE TO LAY_OUT THE FORM -->
 
 		 <!-- OUR DEVELOPERS PANEL -->
-		 <?php if($NEWP):?>
+		 <?php if($this->edit_object):?>
 		 <div style="float:left;">
 			<style>
 			   .paneltable 
