@@ -93,6 +93,22 @@ if (!isset($GLOBALS['egw_info']))
  */
 
 /*
+ * When display_errors is enabled, PHP errors are printed to the output.
+ * For production web sites, you're strongly encouraged to turn this feature off,
+ * and use error logging instead.
+ * During development, you should set the value to 1 to ensure that you notice PHP
+ * warnings and notices that are not covered in unit tests (e.g. template issues).
+ */
+@ini_set('display_errors', 0);
+
+/*
+ * Prevent direct access to config.php.
+ */
+if (!isset($gallery) || !method_exists($gallery, 'setConfig')) {
+    exit;
+}
+
+/*
  * As a security precaution, we limit access to Gallery's test suite
  * to those people who know the password, below.  Example:
  *
