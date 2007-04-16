@@ -1146,7 +1146,7 @@ JiNN makes it possible to have a lot of site-databases moderated by a lot
  more site-administrators.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 eGroupWare Application Development Using JiNN
 \end_layout
 
@@ -1154,6 +1154,22 @@ eGroupWare Application Development Using JiNN
 JiNN has can be used to develop other eGroupWare Applications.
  This saves the developer lots of time so he can concentrate on more difficult
  parts o his applications.
+\end_layout
+
+\begin_layout Section
+JAPIe Technology
+\end_layout
+
+\begin_layout Section
+Site Setup
+\end_layout
+
+\begin_layout Section
+Updating Lang File
+\end_layout
+
+\begin_layout Section
+Calling Japie from your Application Code
 \end_layout
 
 \begin_layout Chapter
