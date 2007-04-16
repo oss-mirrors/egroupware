@@ -421,7 +421,8 @@ function jinnShowHideFields()
 				  }
 
 
-function jinnIgnoreSpaces(string) {
+function jinnIgnoreSpaces(string) 
+{
    var temp = "";
    string = '' + string;
    splitstring = string.split(" ");
@@ -429,6 +430,21 @@ function jinnIgnoreSpaces(string) {
 	  temp += splitstring[i];
    return temp;
 }
+
+function hoverCell(cell,inout,field)
+   {
+		 if(document.getElementById('fieldinfo_noajax_'+field).value=='')
+		 {
+			   if(inout=='in')
+			   {
+					 cell.style.backgroundColor='#ffff66';
+			   }
+			   else
+			   {
+					 cell.style.backgroundColor='';
+			   }
+		 }
+   }
 
 
 

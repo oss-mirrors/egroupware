@@ -47,7 +47,7 @@
    {	 
 		 if(curr_live['cell'] && curr_live['cell']!=cell)
 		 {
-			   callLiveFieldSave()	
+			   callLiveFieldSave(cell)	
 		 }
 		 //check if we can use ajax
 		 if(document.getElementById('fieldinfo_noajax_'+field).value=='')
@@ -69,32 +69,14 @@
    {
 		 if(curr_live['cell'] && curr_live['cell']!=cell)
 		 {
+			   //alert(curr_live['cell']+cell);
 			   if(document.getElementsByName('FLDXXX'+curr_live['cell'])!='undefined')
 			   {
+					 
 					 _arr=document.getElementsByName('FLDXXX'+curr_live['cell']);
-					 xajax_doXMLHTTP("jinn.ajaxjinn.saveSingleField",_arr[0].value,curr_live['wherestring'],curr_live['field'],curr_live['object_id']);
-					 callLiveFieldRead(curr_live['cell'],curr_live['wherestring'],curr_live['field'],curr_live['object_id'])
+					 xajax_doXMLHTTP("jinn.ajaxjinn.saveReadSingleField",_arr[0].value,curr_live['wherestring'],curr_live['field'],curr_live['object_id'],curr_live['cell']);
+					 //callLiveFieldRead(curr_live['cell'],curr_live['wherestring'],curr_live['field'],curr_live['object_id'])
 					 curr_live=Array();
-			   }
-		 }
-   }
-
-   function callLiveFieldRead(cell,wherestring,field,object_id)
-   {
-		 xajax_doXMLHTTP("jinn.ajaxjinn.readSingleField",cell,wherestring,field,object_id);
-   }
-
-   function hoverCell(cell,inout,field)
-   {
-		 if(document.getElementById('fieldinfo_noajax_'+field).value=='')
-		 {
-			   if(inout=='in')
-			   {
-					 cell.style.backgroundColor='#ffff66';
-			   }
-			   else
-			   {
-					 cell.style.backgroundColor='';
 			   }
 		 }
    }
