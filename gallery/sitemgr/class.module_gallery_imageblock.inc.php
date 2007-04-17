@@ -79,6 +79,15 @@ class module_gallery_imageblock extends Module
 					'<br />'.lang('Can be used to limit the block to a certain album.').
 					'<br />'.lang('You can get the ID from the "g2_itemId" parameter in the URL, when you click on the item.'),
 			),
+			'align' => array(
+				'type' => 'select',
+				'label' => lang('Alignment of the block'),
+				'options' => array(
+					'' => lang('Left'),
+					'center' => lang('Center'),
+					'right'   => lang('Right'),
+				)
+			),
 		);
 		$this->properties = array();
 		$this->title = lang('Imageblock');
@@ -154,6 +163,11 @@ class module_gallery_imageblock extends Module
 					}
 				}
 				break;
+		}
+		
+		if ($arguments['align'])
+		{
+			$content = '<div align="'.$arguments['align'].'">'."\n".$content."\n</div>\n";
 		}
 		return $content;
 	}

@@ -1,10 +1,12 @@
 after successful installation of all instances, you have to copy %1 to %2!	gallery	en	After successful installation of all instances, you have to copy %1 to %2!
 album frame (%1samples%2)	gallery	en	Album frame (%1Samples%2)
+alignment of the block	gallery	en	Alignment of the block
 all filenames are relative to %1.	gallery	en	All filenames are relative to %1.
 all other egroupware users will be created by the g2 integration including there admin rights.	gallery	en	All other eGroupWare users will be created by the G2 integration including there admin rights.
 an error occurred during user creation in g2.	gallery	en	An error occurred during user creation in G2.
 an error occurred while trying to initialize g2.	gallery	en	An error occurred while trying to initialize G2.
 can be used to limit the block to a certain album.	gallery	en	Can be used to limit the block to a certain album.
+center	gallery	en	Center
 complete gallery	gallery	en	Complete Gallery
 default item to show in the gallery.	gallery	en	Default item to show in the Gallery.
 extra information to show	gallery	en	Extra information to show
