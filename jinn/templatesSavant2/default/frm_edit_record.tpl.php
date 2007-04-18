@@ -1,5 +1,9 @@
 <script language="javascript" type="text/javascript">
-
+   <?php if($this->edit_object):?>
+   var design_object=true;
+   <?php else:?>
+   var design_object=false;
+   <?php endif?>
    var thisobjectid='<?=$this->site_object_arr['object_id']?>';
    function check_m2o_form()
    {
@@ -43,6 +47,10 @@
    var activerow;
    function rowactive(elid,field)
    {
+		 if(!design_object)
+		 {
+			   return;
+		 }
 		 if(activerow)
 		 {
 			   document.getElementById(activerow).style.background="";
