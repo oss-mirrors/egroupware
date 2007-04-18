@@ -73,6 +73,24 @@ This document is the official JiNN User Manual.
 Introduction
 \end_layout
 
+\begin_layout Section
+Document Revision
+\end_layout
+
+\begin_layout Standard
+$Rev$
+\newline
+$Author$
+\newline
+$Date$
+\newline
+$HeadURL$
+\end_layout
+
+\begin_layout Section
+A short history
+\end_layout
+
 \begin_layout Standard
 JiNN was made originally made for maintaining websites online, typically
  called a Content Management.
@@ -92,7 +110,7 @@ JiNN is written from scratch and still maintained by Pim Snel.
 \end_layout
 
 \begin_layout Section
-In short
+JiNN Summarized
 \end_layout
 
 \begin_layout Itemize
