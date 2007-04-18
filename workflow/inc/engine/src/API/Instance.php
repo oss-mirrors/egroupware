@@ -74,7 +74,8 @@ class Instance extends Base {
   * @param $load_workitems true by default, do we need to reload workitems from the database?
   * @return true if everything was ok, false in the other case
   */
-  function loadInstance($instanceId, $load_activities=true, $load_workitems=true)
+  function loadInstance($instanceId, $load_activities=true, $load_workitems=true) 
+  {
     if (!($instanceId)) return true; //start activities for example - pseudo instances
     // Get the instance data
     $query = "select * from `".GALAXIA_TABLE_PREFIX."instances` where `wf_instance_id`=?";

@@ -11,6 +11,7 @@ regis_glc or regis_leroy is Regis Leroy <regis.leroy@makina-corpus.org> and is a
 	* patch 1533381 - Mauricio Luiz Viani- missing $ in GUI/gui_list_instances_by_owner and missing space in gui_list_user_instances
 	* patch 495 - Oscar Manuel Gomez Senovilla : fix bad version upgrade
 	* getInstance deprecated, use loadInstance
+	* patch #19 and patch#601 from Jose Luis Gordo Romero missing braket and Group name in role admin
 
 [1.2.01.007] bugfixes release ** LATEST STABLE RELEASE **
 	* fix bad synchro on Instance fields, especially on automatic and start activities (regis_leroy)

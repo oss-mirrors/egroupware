@@ -231,7 +231,7 @@
 			{
 				$this->t->set_var(array(
 					'account_id'	=> 'g'.$group['account_id'],
-					'account_name'	=> $group['account_firstname'] . ' ' . lang('Group'),
+					'account_name'	=> $group['account_lid'] . ' ' . lang('Group'),
 				));
 				$this->t->parse('select_users', 'block_select_users', true);
 			}
