@@ -1,23 +1,27 @@
 (optional: set domain for user/client login, required: set this servername for server login)	xmlrpc	fr	(optionnel: régler le domaine pour le login utilisateur/client, demandé: régler ce nom de serveur pour le login serveur)
 addressbook test	xmlrpc	fr	Test de carnet d'adresses
-App	xmlrpc	fr	App
+app	xmlrpc	fr	App
 apps	xmlrpc	fr	Apps
 assigned kp3	xmlrpc	fr	kp3 assigné
 assigned sessionid	xmlrpc	fr	Sessionid assigné
-bogus request	xmlrpc	fr	Requête de bogue
+bogus request	xmlrpc	fr	Requête incorrecte
 calendar test	xmlrpc	fr	Test calendrier
-configure using admin - peer servers	xmlrpc	fr	Configure en utilisant l'admin - serveurs pairs
+client / server test	xmlrpc	fr	Test client / serveur
+configure using admin - peer servers	xmlrpc	fr	Configurer en utilisant Admin - Serveurs pairs
+custom request	xmlrpc	fr	Requête personnalisée
+egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	fr	Client eGroupWare XML-RPC/SOAP<->Serveur et Test Serveur<->Serveur (SOAP en attente d'exécution...)
+infolog test	xmlrpc	fr	Test infolog
 introspection	xmlrpc	fr	Introspection
-meerkat browser	xmlrpc	fr	Meerkat navigateur
+meerkat browser	xmlrpc	fr	Navigateur Meerkat
+method	xmlrpc	fr	Méthode
 methods	xmlrpc	fr	Méthodes
 note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	fr	NOTE: listapps et listusers sont désactivés par défaut dans xml_functions.php
-egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	fr	eGroupWare XML-RPC/SOAP Client<->Serveur et Serveur<->Serveur Test (SOAP pending...)
-phpgw client/server test	xmlrpc	fr	phpgw client/serveur test
-phpgw server test	xmlrpc	fr	phpgw serveur test
-select target server	xmlrpc	fr	Choisir le serveur destinataire
+scalar parameter	xmlrpc	fr	Paramètres scalaires
+select target server	xmlrpc	fr	Choisir le serveur de destination
+server test	xmlrpc	fr	Test serveur
 server<->server	xmlrpc	fr	Serveur<->Serveur
 servername/domain	xmlrpc	fr	Nom de serveur/Domaine
-simple client	xmlrpc	fr	Simple client
+simple client	xmlrpc	fr	Client simple
 system	xmlrpc	fr	Système
-test suite	xmlrpc	fr	Test Suite
-xmlrpc test	common	fr	XMLRPC Test
+test suite	xmlrpc	fr	Jeux de tests
+xmlrpc test	common	fr	Test XMLRPC

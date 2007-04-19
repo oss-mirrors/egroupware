@@ -40,7 +40,7 @@ activities updated	workflow	fr	Activités mises à jour
 activity	workflow	fr	Activité
 activity  status	workflow	fr	Statut de l'activité
 activity %1	workflow	fr	activité %1
-activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	fr	L'activité %1 (#%2) est associée avec un processus inexistant (#%3)
+activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	fr	L'activité %1 (n°%2) est associée avec un processus inexistant (n°%3)
 activity %1 code is not avaible	workflow	fr	le code de l'activité %1 n'est pas disponible
 activity %1 is interactive but has no role assigned	workflow	fr	L'activité %1 est interactive mais elle ne dispose d'aucune assignation de rôle
 activity %1 is interactive so it must use the $instance->complete() method	workflow	fr	L'activité %1 est interactive, elle doit donc utiliser la méthode $instance->complete()
@@ -89,8 +89,8 @@ admin processes	common	fr	Administration des Processus
 admin processes sources	workflow	fr	Administration des Sources des Processus
 administer instances	admin	fr	Administrer les nstances
 administer processes	admin	fr	Administrer les processus
-agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	fr	L'agent #%1 de type %2 est associé à une activité inexistante #%3
-agent #%1 of type %2 is not linked with an activity	workflow	fr	L'agent #%1 de type %2 n'est lié à aucune activité
+agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	fr	L'agent n°%1 de type %2 est associé à une activité inexistante n°%3
+agent #%1 of type %2 is not linked with an activity	workflow	fr	L'agent n°%1 de type %2 n'est lié à aucune activité
 agent associated with inexistent activity	workflow	fr	Agent associé à une activité inexistante
 agent without activity	workflow	fr	Agent inactif
 agents assigned to this activity	workflow	fr	Agents assignés à cette activité
@@ -241,7 +241,7 @@ if user is in a role for an activity he will have the right to release (un-assig
 if:setnextact	workflow	fr	If:SetNextact
 import aborted	workflow	fr	Importation abandonnée
 import successfull	workflow	fr	Importation réussie
-in role mappings user #%1 is specified as a "%2" but is maybe a "%3"	workflow	fr	Dans le mappage des rôles #%1 est spécifié comme "%2" mais est PEUT-ÊTRE un "%3"
+in role mappings user #%1 is specified as a "%2" but is maybe a "%3"	workflow	fr	Dans le mappage des rôles n°%1 est spécifié comme "%2" mais est PEUT-ÊTRE un "%3"
 inactive	workflow	fr	Inactive
 inst.	workflow	fr	Inst.
 inst. status	workflow	fr	Statut inst.
@@ -401,16 +401,16 @@ remove active instances	workflow	fr	Enlever les instances actives
 remove all instances for this process	workflow	fr	Supprimer toutes les instances pour ce processus
 remove selected roles	workflow	fr	supprimer les rôles sélectionés
 removing instances and workitems for aborted instances on all processes	workflow	fr	Suppression des instances et des éléments d'historique pour les instances interrompues sur tous les processus
-removing instances and workitems for aborted instances on process #%1	workflow	fr	Suppression des instances et des éléments d'historique pour les instances interrompues sur tous le processus numéro %1
-removing instances and workitems for all instances on process #%1	workflow	fr	Suppression des instances et des éléments d'historique pour toutes les instances le processus numéro %1
+removing instances and workitems for aborted instances on process #%1	workflow	fr	Suppression des instances et des éléments d'historique pour les instances interrompues du processus n°%1
+removing instances and workitems for all instances on process #%1	workflow	fr	Suppression des instances et des éléments d'historique pour toutes les instances du processus n°%1
 replyto:	workflow	fr	Répondre à:
 restart	workflow	fr	redémarrer
 restart activity	workflow	fr	redémarrer l'activité
 resume this exception instance	workflow	fr	Reprise de cette instance en exception
 role	workflow	fr	Rôle
-role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	fr	Le rôle #%1 dans le processus %2 possède un processus différent (%3) dans le mapping avec l'utilisateur #%4
-role %1 (#%2) is associated with a non-existent process (#%3)	workflow	fr	Le rôle %1 (#%2) est associé avec un processus inexistant (#%3)
-role %1 is associated in a mapping with user #%2 with a non-existent process (%3)	workflow	fr	Le rôle %1 est associé dans un mapping avec l'utilisateur #%2 avec un processus inexistant (%3)
+role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	fr	Le rôle n°%1 dans le processus %2 possède un processus différent (%3) dans le mapping avec l'utilisateur n°%4
+role %1 (#%2) is associated with a non-existent process (#%3)	workflow	fr	Le rôle %1 (n°%2) est associé avec un processus inexistant (n°%3)
+role %1 is associated in a mapping with user #%2 with a non-existent process (%3)	workflow	fr	Le rôle %1 est associé dans un mapping avec l'utilisateur n°%2 avec un processus inexistant (%3)
 role %1 is not mapped	workflow	fr	Le rôle %1 n'est pas mappé
 role added to activity	workflow	fr	Rôle ajouté à cette activité
 role added to process	workflow	fr	Rôle ajouté au processus
@@ -522,7 +522,7 @@ there are no transitions defined	workflow	fr	il n'y a aucune transition définie
 there are no user activites available	workflow	fr	Il n'y a aucune activité utilisateur disponible
 there are no workitems available	workflow	fr	Il n'y a aucun élément de travail disponible
 there are some undefined preferences associated with this form : %1	workflow	fr	il y a quelques préférences non définies associées à ce formulaire : %1
-there is an unknown user or group #%1 in role mappings	workflow	fr	Il y a un utilisateur ou groupe inconnu #%1 dans les mappings de rôles
+there is an unknown user or group #%1 in role mappings	workflow	fr	Il y a un utilisateur ou groupe inconnu n°%1 dans les mappings de rôles
 they were problems at the compilation of the source:	workflow	fr	Il y a eu des problèmes lors de la compilation des sources:
 this activity for this instance is actually avaible for you.	workflow	fr	Cette activité pour cette instance est actuellement disponible pour vous.
 this activity for this instance is actually only avaible for you.	workflow	fr	Cette activité pour cette instance est actuellement disponible uniquement pour vous.
@@ -554,7 +554,7 @@ use automatic parsing	common	fr	utiliser l'affichage automatique
 use default	workflow	fr	Utiliser le défaut
 use existing roles	workflow	fr	Utiliser un rôle existant
 user	workflow	fr	Utilisateur
-user #%1 is associated with a non-existent role #%2	workflow	fr	L'utilisateur #%1 est associé à un role inexistant #%2
+user #%1 is associated with a non-existent role #%2	workflow	fr	L'utilisateur n°%1 est associé à un role inexistant n°%2
 user activities	workflow	fr	Activités utilisateur
 user instances	workflow	fr	Instances utilisateur
 user instances form: columns	workflow	fr	Formulaire instances utilisateur : colonnes
@@ -598,7 +598,7 @@ you are not allowed to restart instance %1	workflow	fr	Vous n'êtes pas autorisé 
 you are not allowed to resume instance %1	workflow	fr	Vous n'êtes pas autorisé à reprendre l'instance %1
 you are not allowed to send instance %1	workflow	fr	Vous n'êtes pas autorisé à envoyer l'instance %1
 you can use special values with this mail agent:	workflow	fr	Vous pouvez utiliser des valeurs spéciales avec cet agent mail:
-you do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas.	workflow	fr	Vous n'avez plus actuellement le droit d'éxécuter cette activité, peut-être s'agit-il d'un problème d'accès concurrent, rafraichissez vos données.
+you do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas.	workflow	fr	Vous n'avez plus le droit d'exécuter cette activité, peut-être s'agit-il d'un problème d'accès concurrent, rafraichissez vos données.
 you don't have the rights necessary to exception instance %1	workflow	fr	Vous n'avez pas les droits nécessaires pour excepter l'instance %1
 you have not permission to execute this activity	workflow	fr	Vous n'avez pas les droits nécessaires pour exécuter cette activité
 you were not allowed to complete the activity	workflow	fr	Vous n'avez pas été autorisé à compléter l'activité

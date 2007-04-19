@@ -321,7 +321,7 @@ host profile	jinn	fr	Profil hôte
 how many columns do you want to be visible by default in list view?	jinn	fr	Combien voulez-vous de colonnes visibles par défaut dans la Vue en Liste?
 how many records do you want to list per page?	jinn	fr	Combien voulez-vous lister d'enregistrements par page?
 ibrowser	jinn	fr	iBrowser
-if you change the table of this object youn may loose field configuration data.nnn think of this before you save these settings.	jinn	fr	Si vous modifiez la table de cet objet vous\n pourriez perdre les données de configuration du champ.\n\n\n Réfléchissez-y avant d'enregistrer vos réglages.
+if you change the table of this object youn may loose field configuration data.nnn think of this before you save these settings.	jinn	fr	Si vous modifiez la table de cet objet vous pourriez perdre les données de configuration du champ. Pensez-y avant d'enregistrer ces réglages.
 image 1	jinn	fr	Image 1
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	fr	le répertoire d'images n'existe pas ou est incorrect ...<br>veuillez vérifier le répertoire de dépôt des objets
 image picker	jinn	fr	Sélecteur d'Image
@@ -390,7 +390,7 @@ many-to-one relations	jinn	fr	Relations plusieurs-vers-un
 max records	jinn	fr	Nombre max. d'enregistrements
 max. number of previews in form	jinn	fr	Nombre max. de prévisualisations dans le formulaire
 max. records	jinn	fr	Nombre max. d'enregistrements
-maximum image width isn	jinn	fr	largeur d'image maximale isn
+maximum image width isn	jinn	fr	la largeur d'image maximale est
 merge	jinn	fr	Fusionner
 moderator mode	jinn	fr	Mode Modérateur
 months	jinn	fr	mois
