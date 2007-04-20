@@ -60,7 +60,7 @@ class Instance extends Base {
   function getInstance($instanceId, $load_activities=true, $load_workitems=true) 
   {
 	trigger_error('Instance->getInstance is deprecated use loadInstance instead',E_USER_WARNING);
-	return loadInstance($instanceId, $load_activities, $load_workitems);
+	return $this->loadInstance($instanceId, $load_activities, $load_workitems);
   }
 
   /*!
