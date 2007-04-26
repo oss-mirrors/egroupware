@@ -26,12 +26,12 @@
 */
 	$this->registry->plugins['uniqid']['name'] 			= 'uniqid';
 	$this->registry->plugins['uniqid']['title']			= 'Uniqid generator';
-	$this->registry->plugins['uniqid']['author']			= 'Rob van Kraanen';
-	$this->registry->plugins['uniqid']['version']			= '1.1';
-	$this->registry->plugins['uniqid']['enable']			= 1;
-	$this->registry->plugins['uniqid']['default']			= 1;
+	$this->registry->plugins['uniqid']['author']		= 'Rob van Kraanen';
+	$this->registry->plugins['uniqid']['version']		= '1.1';
+	$this->registry->plugins['uniqid']['enable']		= 1;
+//	$this->registry->plugins['uniqid']['default']		= 1;
 	$this->registry->plugins['uniqid']['description'] 	= 'Generates an uniqid, can be used for primary key';
-	$this->registry->plugins['uniqid']['db_field_hooks']	= array
+	$this->registry->plugins['uniqid']['db_field_hooks']= array
 	(
 	   'string','blob'
 	);

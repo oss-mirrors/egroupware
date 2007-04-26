@@ -25,7 +25,7 @@
 
    $setup_info['jinn']['name']		= 'jinn';
    $setup_info['jinn']['title']		= 'JiNN DB App Builder';
-   $setup_info['jinn']['version']	= '0.9.151';
+   $setup_info['jinn']['version']	= '0.9.152';
    $setup_info['jinn']['app_order']	= 15;
    $setup_info['jinn']['author'] 	= 'Pim Snel';
    $setup_info['jinn']['license']  	= 'GPL';
@@ -98,6 +98,7 @@
 		 'appname'  => 'phpgwapi',
 		 'versions' => Array('1.2','1.2.0','1.3')
 	  );
+
 
 
 
