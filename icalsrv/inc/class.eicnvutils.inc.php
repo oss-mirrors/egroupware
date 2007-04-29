@@ -1107,7 +1107,7 @@ END:VTODO
 					}
 					break;
 				case 'MONTHLY':
-					$r_type = strstr($recur,'BYDAY') ? 
+					$r_type = strpos($recur,'BYDAY') !== false ? 
 					MCAL_RECUR_MONTHLY_WDAY : MCAL_RECUR_MONTHLY_MDAY;
 					//		  break;										
 					//fall through
