@@ -43,12 +43,12 @@ class uimanualadmin extends xmlwiki
 		if (($langs = $GLOBALS['egw']->translation->get_installed_langs()))
 		{
 			$langs = implode(',',array_keys($langs));
-			$url .= (strstr($url,'?') === False ? '?' : '&').'lang='.$langs;
+			$url .= (strpos($url,'?') === False ? '?' : '&').'lang='.$langs;
 		}
 		// only do an incremental update if the langs are unchanged and we already did an update
 		if ($langs == $this->manual_config['manual_langs'] && $this->manual_config['manual_updated'])
 		{
-			$url .= (strstr($url,'?') === False ? '?' : '&').'modified='.(int) $this->manual_config['manual_updated'];
+			$url .= (strpos($url,'?') === False ? '?' : '&').'modified='.(int) $this->manual_config['manual_updated'];
 		}
 
 		$GLOBALS['egw_info']['flags']['app_header'] = lang('manual').' - '.lang('download');
