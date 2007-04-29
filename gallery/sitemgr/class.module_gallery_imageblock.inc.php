@@ -154,7 +154,7 @@ class module_gallery_imageblock extends Module
 			case 'title':
 				foreach($lines=explode("\n",$content) as $n => $line)
 				{
-					if (strstr($line,'<h4'))
+					if (strpos($line,'<h4') !== false)
 					{
 						$this->block->title = $lines[$n+1];
 						unset($lines[$n]);unset($lines[$n+1]); unset($lines[$n+2]);

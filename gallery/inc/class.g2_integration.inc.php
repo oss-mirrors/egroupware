@@ -332,7 +332,7 @@ class g2_integration
 							$file = array();
 							$blocks[lang('Gallery Menu')] =& $file;
 						}
-						if (strstr($block,'block-core-ItemLinks'))
+						if (strpos($block,'block-core-ItemLinks') !== false)
 						{
 							foreach(explode("\n",$block) as $link)
 							{
