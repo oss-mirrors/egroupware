@@ -123,7 +123,7 @@
 				// use our network class, as it deals with proxies and the proxy-config in admin->configuration
 				$network =& CreateObject('phpgwapi.network');
 				$xmldata = $network->gethttpsocketfile($url);
-				$xmldata = strstr(implode('',$xmldata),'<?xml');	// discard everything before the start of the xml-file
+				$xmldata = @strstr(implode('',$xmldata),'<?xml');	// discard everything before the start of the xml-file
 			}
 			else
 			{
