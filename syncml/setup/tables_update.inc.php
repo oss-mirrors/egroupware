@@ -108,4 +108,11 @@
 
 		return $GLOBALS['setup_info']['syncml']['currentver'] = '0.9.008';
 	}
+
+
+	$test[] = '0.9.008';
+	function syncml_upgrade0_9_008()
+	{
+		return $GLOBALS['setup_info']['syncml']['currentver'] = '1.4';
+	}
 ?>

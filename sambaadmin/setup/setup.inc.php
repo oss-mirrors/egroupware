@@ -14,7 +14,7 @@
 
 	$setup_info['sambaadmin']['name']	= 'sambaadmin';
 	$setup_info['sambaadmin']['title']	= 'SambaAdmin';
-	$setup_info['sambaadmin']['version']	= '1.2.000';
+	$setup_info['sambaadmin']['version']	= '1.4';
 	$setup_info['sambaadmin']['app_order']	= 99;
 
 	$setup_info['sambaadmin']['author']	= array(
@@ -47,6 +47,6 @@
 	/* Dependacies for this app to work */
 	$setup_info['sambaadmin']['depends'][]	= array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
+		'versions' => Array('1.3','1.4','1.5')
 	);
 ?>

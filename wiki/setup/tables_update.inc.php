@@ -42,8 +42,7 @@
 			'hostname' => 'author',	// rename column
 		));
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.002';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.002';
 	}
 
 
@@ -64,8 +63,7 @@
 			'uc' => array()
 		));
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.003';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.003';
 	}
 
 
@@ -88,8 +86,7 @@
 			'where_defined_page' => 'where_defined'
 		));
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.004';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.004';
 	}
 
 
@@ -112,16 +109,14 @@
 			'where_defined_page' => 'where_defined'
 		));
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.005';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.005';
 	}
 
 
 	$test[] = '0.9.15.005';
 	function wiki_upgrade0_9_15_005()
 	{
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0';
 	}
 
 
@@ -133,8 +128,7 @@
 		{
 			$GLOBALS['egw_setup']->oProc->DropIndex('phpgw_wiki_pages',array('body'));
 		}
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.001';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.001';
 	}
 
 
@@ -146,8 +140,7 @@
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_links','link','wiki_link');
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_links','count','wiki_count');
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.002';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.002';
 	}
 
 
@@ -169,8 +162,7 @@
 		// deleted wiki-pages are now marked as NULL, not longer just as '', as MaxDB cant compare the LONG column agains ''
 		$GLOBALS['egw_setup']->oProc->query("UPDATE phpgw_wiki_pages SET wiki_body=NULL WHERE wiki_body LIKE ''",__LINE__,__FILE__);
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.003';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.003';
 	}
 
 
@@ -183,8 +175,7 @@
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_rate','searchLimit','wiki_rate_searchLimit');
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_rate','editLimit','wiki_rate_editLimit');
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.004';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.004';
 	}
 
 
@@ -196,8 +187,7 @@
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','where_defined_lang','wiki_lang');
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_interwiki','url','interwiki_url');
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.005';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.005';
 	}
 
 
@@ -209,8 +199,7 @@
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','where_defined_lang','wiki_lang');
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_sisterwiki','url','sisterwiki_url');
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.006';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.006';
 	}
 
 
@@ -220,8 +209,7 @@
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_remote_pages','page','wiki_remote_page');
 		$GLOBALS['egw_setup']->oProc->RenameColumn('phpgw_wiki_remote_pages','site','wiki_remote_site');
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.007';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.007';
 	}
 
 
@@ -235,15 +223,20 @@
 		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_wiki_sisterwiki','egw_wiki_sisterwiki');
 		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_wiki_remote_pages','egw_wiki_remote_pages');
 
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.1.001';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.0.1.001';
 	}
 
 
 	$test[] = '1.0.1.001';
 	function wiki_upgrade1_0_1_001()
 	{
-		$GLOBALS['setup_info']['wiki']['currentver'] = '1.2';
-		return $GLOBALS['setup_info']['wiki']['currentver'];
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.2';
+	}
+
+
+	$test[] = '1.2';
+	function wiki_upgrade1_2()
+	{
+		return $GLOBALS['setup_info']['wiki']['currentver'] = '1.4';
 	}
 ?>

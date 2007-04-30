@@ -25,6 +25,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['xmlrpc']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
+		'versions' => Array('1.2','1.3','1.4','1.5')
 	);
 ?>

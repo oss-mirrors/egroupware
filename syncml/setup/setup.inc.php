@@ -13,7 +13,7 @@
 	/* Basic information about this app */
 	$setup_info['syncml']['name']      = 'syncml';
 	$setup_info['syncml']['title']     = 'SyncML';
-	$setup_info['syncml']['version']   = '0.9.008';
+	$setup_info['syncml']['version']   = '1.4';
 	$setup_info['syncml']['enable']    = 3;
 	$setup_info['syncml']['app_order'] = 99;
 
@@ -36,7 +36,7 @@
 	/* Dependencies for this app to work */
 	$setup_info['syncml']['depends'][] = array(
 		 'appname'  => 'phpgwapi',
-		 'versions' => Array('1.3')
+		 'versions' => Array('1.3','1.4','1.5')
 	);
 	// installation checks for SyncML
 	$setup_info['syncml']['check_install'] = array(

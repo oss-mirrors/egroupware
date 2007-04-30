@@ -17,4 +17,12 @@
 		$GLOBALS['setup_info']['mydms']['currentver'] = '1.2.000';
 		return $GLOBALS['setup_info']['mydms']['currentver'];
 	}
+
+
+	$test[] = '1.2.000';
+	function mydms_upgrade1_2_000()
+	{
+		$GLOBALS['setup_info']['mydms']['currentver'] = '1.4';
+		return $GLOBALS['setup_info']['mydms']['currentver'];
+	}
 ?>

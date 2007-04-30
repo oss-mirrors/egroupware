@@ -12,7 +12,7 @@
 	/* Basic information about this app */
 	$setup_info['mydms']['name']      = 'mydms';
 	$setup_info['mydms']['title']     = 'mydms';
-	$setup_info['mydms']['version']   = '1.2.000';
+	$setup_info['mydms']['version']   = '1.4';
 	$setup_info['mydms']['app_order'] = 5;
 	$setup_info['mydms']['enable']    = 1;
 
@@ -49,6 +49,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['mydms']['depends'][] = array(
 		 'appname'  => 'phpgwapi',
-		 'versions' => Array('1.0.0','1.0.1','1.2','1.3')
+		 'versions' => Array('1.3','1.4','1.5')
 	);
 ?>

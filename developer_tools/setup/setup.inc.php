@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['developer_tools']['name']      = 'developer_tools';
 	$setup_info['developer_tools']['title']     = 'TranslationTools';
-	$setup_info['developer_tools']['version']   = '1.2';
+	$setup_info['developer_tools']['version']   = '1.4';
 	$setup_info['developer_tools']['app_order'] = 61;
 	$setup_info['developer_tools']['enable']    = 1;
 
@@ -39,6 +39,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['developer_tools']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('1.0.0','1.0.1','1.2','1.3')
+		'versions' => Array('1.2','1.3','1.4','1.5')
 	);
 ?>
