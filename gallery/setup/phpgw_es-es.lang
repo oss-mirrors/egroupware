@@ -1,10 +1,12 @@
 after successful installation of all instances, you have to copy %1 to %2!	gallery	es-es	Después de instalar correctamente todas las instancias, tiene que copiar %1 a %2
 album frame (%1samples%2)	gallery	es-es	Marco cel álbum (%1Ejemplos%2)
+alignment of the block	gallery	es-es	Alineación del bloque
 all filenames are relative to %1.	gallery	es-es	Todos los nombres de ficheros son relativos a %1
 all other egroupware users will be created by the g2 integration including there admin rights.	gallery	es-es	Todos los demás usuarios de eGroupWare se crearán con la integración de G2, incluyendo los derechos de administrador.
 an error occurred during user creation in g2.	gallery	es-es	Ha ocurrido un error durante la creación del usuario en G2
 an error occurred while trying to initialize g2.	gallery	es-es	Ha ocurido un error al intentar inicializar G2
 can be used to limit the block to a certain album.	gallery	es-es	Se puede usar para limitar el bloque a un cierto álbum.
+center	gallery	es-es	Centro
 complete gallery	gallery	es-es	Galería completa
 default item to show in the gallery.	gallery	es-es	Elemento predeterminado a mostrar en la galería.
 extra information to show	gallery	es-es	Información extra a mostrar

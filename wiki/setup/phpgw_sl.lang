@@ -59,7 +59,10 @@ no never	admin	sl	Ne, nikoli
 no only on request	admin	sl	Ne, samo na zahtevo
 not set	wiki	sl	ni nastavljen
 older	wiki	sl	Starejši
+on all pages	wiki	sl	Na vseh straneh
 only if browser supports a richtext-editor	admin	sl	Le, če brskalnik podpira urejevalnik obogatenega besedila
+only on the first page	wiki	sl	Samo na prvi strani
+page '%1' not found !!!	wiki	sl	Stran '%1' ni bila najdena!
 path of the upload directory (has to be writable by the webserver!)	admin	sl	Mapa za nalaganje (spletni strežnika mora imeti pravico pisanja)
 picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sl	Nalaganje slik z obogatenim urejevalnikom (pustite prazno če želite onemogočiti nalaganje)
 please contact the %1administrator%2 for assistance.	wiki	sl	Prosim, posvetujte se z %1oskrbnikom%2.
@@ -74,15 +77,20 @@ richtext	wiki	sl	Obogateno besedilo
 rows	wiki	sl	Vrstice
 save the changes and exit	wiki	sl	Shrani spremembe in končaj
 saves and continues editing	wiki	sl	Shrani in nadaljuj urejanje
+search for	wiki	sl	Išči
 see complete list (%1 entries)	wiki	sl	Preglej popolni seznam (%1 zapisov)
+show a search	wiki	sl	Prikaži iskanje
+show the title of the wiki page	wiki	sl	Prikaži naslov strani wiki
 site configuration	wiki	sl	Konfiguracija spletišča
 summary	wiki	sl	Povzetek
 summary of change	wiki	sl	Povzetek spremembe
+the search returned no result!	wiki	sl	Iskanje ni vrnilo rezultata!
 this page can not be edited.	wiki	sl	Te strani ni mogoče urejati.
 twin pages	wiki	sl	Dvojne strani
 unblock	wiki	sl	Deblokiraj
 updates the preview	wiki	sl	Osveži predogled
 url of the upload directory	admin	sl	URL mape za nalaganje
+use this module for displaying wiki-pages	wiki	sl	Ta modul uporabite za prikaz strani wiki.
 users	wiki	sl	uporabniki
 view document history	wiki	sl	Preglej zgodovino dokumenta
 visit %1 to set your user name	wiki	sl	Obišči %1 za nastavitev uporabniškega imena
@@ -92,10 +100,13 @@ who should be able to read this page	wiki	sl	kdo lahko bere to stran
 wiki	common	sl	Wiki
 wiki administration	wiki	sl	Wiki administracija
 wiki menu	wiki	sl	Wiki meni
+wiki startpage	wiki	sl	Začetna stran wiki
 writable by	wiki	sl	Piše lahko
 yes always	admin	sl	Da, vedno
+yes with navbar	admin	sl	Da, z navbar
 you have been denied access to this site.	wiki	sl	Dostop do tega spletišča vam je bil zavrnjen.
 you have entered an invalid user name.	wiki	sl	Vnesli ste neveljavno uporabniško ime.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	sl	Prekoračili ste število strani, ki jih lahko v omejenem času obiščete. Prosimo, vrnite se kasneje.
+you have no rights to view wiki content !!!	wiki	sl	Nimate pravice do ogleda vsebine wiki!
 your changes	wiki	sl	Vaše spremembe
 your user name is "%1".	wiki	sl	Vaše uporabniško ime je "%1".

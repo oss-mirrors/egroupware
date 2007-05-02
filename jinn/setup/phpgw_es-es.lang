@@ -322,6 +322,7 @@ how many columns do you want to be visible by default in list view?	jinn	es-es	¿
 how many records do you want to list per page?	jinn	es-es	¿Cuántos registros desea en la lista por página?
 ibrowser	jinn	es-es	Navegador
 if you change the table of this object you\n may loose field configuration data.\n\n\n think of this before you save these settings.	jinn	es-es	Si cambia la tabla de este objeto, puede\nperder los datos de la configuración de los campos.\n\n\nPiense en esto antes de guardar esta configuración.
+if you change the table of this object youn may loose field configuration data.nnn think of this before you save these settings.	jinn	es-es	Si cambia la tabla de este objeto, puede\nperder los datos de la configuración de los campos.\n\n\nPiense en esto antes de guardar esta configuración.
 image 1	jinn	es-es	Imagen 1
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	es-es	El directorio de imágenes no existe o no es correcto.<br>Por favor, compruebe el directorio en el servidor
 image picker	jinn	es-es	Selector de imágenes
@@ -390,7 +391,7 @@ many-to-one relations	jinn	es-es	Relaciones muchos a uno
 max records	jinn	es-es	Número máximo de registros
 max. number of previews in form	jinn	es-es	Número máximo de vistas previas en el formulario
 max. records	jinn	es-es	Número máximo de registros
-maximum image width isn	jinn	es-es	el ancho máximo de la imagen es
+maximum image width isn	jinn	es-es	Anchura máxima de la imagen
 maximum image width isn\	jinn	es-es	Anchura máxima de la imagen
 merge	jinn	es-es	Mezclar
 moderator mode	jinn	es-es	Modo moderador

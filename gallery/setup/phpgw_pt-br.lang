@@ -1,10 +1,12 @@
 after successful installation of all instances, you have to copy %1 to %2!	gallery	pt-br	Após a instalação de todas as instâncias com sucesso, você deve copiar %1 para %2 !
 album frame (%1samples%2)	gallery	pt-br	Frame do álbum (%1Exemplos%2)
+alignment of the block	gallery	pt-br	Alinhamento do bloco
 all filenames are relative to %1.	gallery	pt-br	Todos os nomes de arquivos são relativos a %1.
 all other egroupware users will be created by the g2 integration including there admin rights.	gallery	pt-br	Todos os outros usuários do eGroupWare serão criados pela integração da G2, incluindo os direitos administrativos.
 an error occurred during user creation in g2.	gallery	pt-br	Um erro ocorreu durante a criação do usuário em G2.
 an error occurred while trying to initialize g2.	gallery	pt-br	Um erro ocorreu na tentativa de inicializar G2.
 can be used to limit the block to a certain album.	gallery	pt-br	Pode ser usado para limitar o bloco para um álbum específico.
+center	gallery	pt-br	Centro
 complete gallery	gallery	pt-br	Galeria Completa
 default item to show in the gallery.	gallery	pt-br	Item padrão a ser exibido na Galeria.
 extra information to show	gallery	pt-br	Informação extra a ser exibida

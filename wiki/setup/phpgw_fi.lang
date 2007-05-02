@@ -18,6 +18,7 @@ changed	wiki	fi	Muutettu
 changes by last author	wiki	fi	Vaihda viimeistä hallitsijaa
 choose your current time here, so the server may figure out what time zone you are in.	wiki	fi	Muuta paikallinen aikasi tähän, jotta palvelin voi päätellä millä aikavyöhykkeellä olet.
 columns	wiki	fi	Sarakkeet
+compute difference	wiki	fi	Laske eroavaisuudet
 converts the page to richtext	wiki	fi	Muunnetaan sivu RTF muotoon
 current version	wiki	fi	Käytössä oleva versio
 deleted	wiki	fi	Poistettu
@@ -46,6 +47,7 @@ history	wiki	fi	Historia
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	fi	Historia näyttää <em>kaikki</em> omistajan tekemät muutokset. Muuten vain viimeiset muutokset.
 history lists	wiki	fi	Historia lista
 history of	wiki	fi	historia
+interwikiprefix	admin	fi	InterWikiPrefix
 invalid page name.	wiki	fi	Epäkelpo sivun nimi
 load	wiki	fi	Lataa
 loads the named page in the given language, all change so far get lost !!!	wiki	fi	Ladataan nimetty sivu annetulla kielellä, kaikki tähänastiset muutokset menetetään !!!
