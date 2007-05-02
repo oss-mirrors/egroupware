@@ -14,12 +14,14 @@
 	\**************************************************************************/
 
 	/* $Id$ */
+	
+	require_once(EGW_API_INC. '/class.html.inc.php');
 
 	define('TREE',1);
 	define('_LIST',2);
 	define('CREATE',3);
 	define('SEARCH',4);
-
+	
 	class ui
 	{
 		var $t;
@@ -27,6 +29,11 @@
 		var $img;
 		var $expandedcats;
 		var $nextmatchs;
+		
+		/**
+		 * @var html
+		 */
+		var $html = false;
 
 		var $public_functions = array
 		(
@@ -55,10 +62,10 @@
 				'mail' => $GLOBALS['egw']->common->image('bookmarks','mail'),
 				'delete' => $GLOBALS['egw']->common->image('bookmarks','delete')
 			);
+			$this->html = new html();
 			$this->expandedcats = array();
 			$this->location_info = $this->bo->read_session_data();
 			$this->nextmatchs =& CreateObject('phpgwapi.nextmatchs');
-
 		}
 
 		function init()
@@ -756,54 +763,52 @@
 				'th_bg' => $GLOBALS['egw_info']['theme']['th_bg']
 			));
 
-			$categories = $this->bo->categories->return_array('mains',0,False,'','cat_name','',True);
+			$categories = $this->bo->categories->return_array('all', 0 , false);
+			
+			//build cat tree
+			foreach ( $categories as $key => $cat ) {
+				$categories[$key]['tree'] = $cat['id'];
+				$parent = $cat['parent'];
+				while ( $parent != 0) {
+					$categories[$key]['tree'] = $parent. '/'. $categories[$key]['tree'];
+					$parcatkey = array_search( array('id' => $parent), $categories );
+					$parent = $categories[$parcatkey]['parent'];
+				}
+			}
 
-			$tree = "<script type='text/javascript'>
-// the whole thing only works in a DOM capable browser or IE 4*/
-
-function add(catid)
-{
-	document.cookie = 'menutree[' + catid + ']=';
-}
-
-function remove(catid)
-{
-	var now =new Date();
-	document.cookie = 'menutree[' + catid + ']=; expires=' + now.toGMTString();
-}
-
-function toggle(image, catid)
-{
-	if (document.getElementById)
-	{ //DOM capable
-		styleObj = document.getElementById(catid);
-	}
-	else //we're helpless
-	{
-		return
-	}
-	if (styleObj)	// if an object is found
-	{
-		if (styleObj.style.display == 'none')
-		{
-			add(catid);
-			image.src = '" . $this->img['collapse'] . "';
-			styleObj.style.display = 'block';
-		}
-		else
-		{
-			remove(catid);
-			image.src = '" . $this->img['expand'] . "';
-			styleObj.style.display = 'none';
-		}
-	}
-}
-</script>" .
-				'<table border="0" cellspacing="0" cellpadding="0" width="100%">' .
-				$this->showcat($categories) .
-				'</table>' .
-				"\n";
-
+			// buld bm tree
+			foreach ( $categories as $cat ) {
+				$bookmarks = $this->bo->_list($cat['id'],False,False,False);
+				if ( empty( $bookmarks ) ) continue;
+				$bm_tree[$cat['tree']] = $cat['name'];
+				
+				foreach ( $bookmarks as $id => $bm ) {
+					// begin entry
+					$bm_tree[$cat['tree']. '/'. $id] = array('image' => 'blank.gif');
+					$entry = &$bm_tree[$cat['tree']. '/'. $id]['label'];
+					
+					// edit
+					if ($this->bo->check_perms2( $bm['owner'], $bm['access'], EGW_ACL_EDIT) ) {
+						$entry .= '<a href ="'.
+							$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.ui.edit&bm_id='. $id ). '">'.
+							$this->html->image( 'bookmarks', $this->img['edit'], lang( 'Edit this bookmark' ) ).
+							'</a>';
+					}
+					
+					//view
+					$entry .= '<a href ="'.
+						$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.ui.view&bm_id='. $id ). '">'.
+						$this->html->image( 'bookmarks', $this->img['view'], lang( 'View this bookmark' ) ).
+						'</a>';
+					
+					//redirect
+					$entry .= '<a target="_new" href ="'.
+						$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.ui.redirect&bm_id='. $id ). '">'.
+						$bm['name']. '</a>';
+				}
+			}
+			$tree = $this->html->tree($bm_tree, false, false, "null", 'foldertree', '', '', false, '/', null);
+			
 			$this->t->set_var('body',$tree);
 			$this->app_messages($this->t);
 			$this->t->pfp('out','common_');
@@ -971,8 +976,7 @@ function toggle(image, catid)
 				'input_name' => $bookmark['name'],
 				'input_desc' => nl2br($bookmark['desc']),
 				'input_keywords' => $bookmark['keywords'],
-				'input_rating' => ('<img src="' . $GLOBALS['egw']->common->get_image_path('bookmarks') .
-					'/bar-' . $bookmark['rating'] . '.jpg">'
+				'input_rating' => ('<img src="' . EGW_IMAGES. '/bar-' . $bookmark['rating'] . '.jpg">'
 				),
 				'input_category' => $category,
 				'edit_button' => ($this->bo->check_perms($bm_id,EGW_ACL_EDIT) ?
