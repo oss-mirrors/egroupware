@@ -9,7 +9,7 @@
 	*  option) any later version.                                              *
 	\**************************************************************************/
 
-	/* $Id$ */
+	/* $Id: class.module_forum.inc.php 18221 2005-05-02 09:48:28Z ralfbecker $ */
 
 class module_forum extends Module 
 {
