@@ -176,7 +176,7 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 {
 	global $SeparateLinkWords,$EditBase;
 
-	if (!is_array($page) && strstr($page,':'))
+	if (!is_array($page) && strpos($page,':') !== false)
 	{
 	list($name,$lang) = explode(':',$page);
 	if (strlen($lang) == 2 || strlen($lang) == 5 && $lang[2] == '-')

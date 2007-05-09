@@ -4,7 +4,7 @@
 // Under phpgw these URL's are NOT configurable, you can set the phpgw install-path in setup
 
 $ScriptBase = $GLOBALS['egw']->link('/wiki/index.php');
-$ScriptBase .= strstr($ScriptBase,'?') ? '&' : '?';
+$ScriptBase .= strpos($ScriptBase,'?') !== false ? '&' : '?';
 
 $AdminScript = $ScriptBase . 'action=admin';
 

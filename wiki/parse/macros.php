@@ -8,15 +8,15 @@ function view_macro_category($args)
 	global $FlgChr;
 
 	$text = '';
-	if(strstr($args, '*'))                // Category containing all pages.
+	if(strpos($args, '*') !== false)                // Category containing all pages.
 	{
 		$list = $pagestore->allpages();
 	}
-	else if(strstr($args, '?'))           // New pages.
+	else if(strpos($args, '?') !== false)           // New pages.
 	{
 		$list = $pagestore->newpages();
 	}
-	else if(strstr($args, '~'))           // Zero-length (deleted) pages.
+	else if(strpos($args, '~') !== false)           // Zero-length (deleted) pages.
 	{
 		$list = $pagestore->emptypages();
 	}
