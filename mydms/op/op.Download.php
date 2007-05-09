@@ -40,17 +40,15 @@ if (is_bool($content) && !$content)
 
 header("Pragma: public");
 header("Expires: 0");
-header("Cache-Control: private");
-
-
-header("Content-Type: application/force-download; name=\"" . $content->getOriginalFileName() . "\"");
-header("Content-Transfer-Encoding: binary");
-header("Content-Length: " . filesize($settings->_contentDir . $content->getPath() ));
-header("Content-Disposition: attachment; filename=\"" . $content->getOriginalFileName() . "\"");
-
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Content-Type: " . $content->getMimeType());
-
-
+# Content-Length header does not work correctly on firefox and maybe other browser
+# the right filesize gets send(like reported by ls on the filesystem)
+# but the file stored by the firefox browser is about ~4000 ... 8000 bytes to small
+# disabling Content-Length header solves this problem
+#header("Content-Length: " . filesize($settings->_contentDir . $content->getPath() ) );
+header("Content-Disposition: attachment; filename=\"" . $content->getOriginalFileName() . "\"");
+header("Content-Transfer-Encoding: binary\n");
 
 readfile($settings->_contentDir . $content->getPath());
 exit();
