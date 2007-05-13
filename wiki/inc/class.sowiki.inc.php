@@ -109,9 +109,10 @@ class soWikiPage
 	 *
 	 * @param boolean $readable generate SQL for readable or writable filter, default True == readable
 	 * @param boolean $add_wiki_id add code to filter only the actual wiki
+	 * @param string $table='' table to prefix the column, default none
 	 * @return string SQL to AND into the query
 	 */
-	function acl_filter($readable = True,$add_wiki_id=True)
+	function acl_filter($readable = True,$add_wiki_id=True,$table='')
 	{
 		static $filters = array();
 
@@ -135,6 +136,7 @@ class soWikiPage
 		$filters = array_merge($filters,$this->memberships);
 
 		$sql = '('.($add_wiki_id ? " wiki_id=$this->wiki_id AND " : '').
+			($table ? $table.'.' : '').
 			($readable ? 'wiki_readable' : 'wiki_writable').' IN ('.implode(',',$filters).'))';
 		
 		if ($this->debug) echo "<p>sowiki::acl_filter($readable,$add_wiki_id) = '$sql'</p>\n";
@@ -153,6 +155,9 @@ class soWikiPage
 	 */
 	function acl_check($readable = False)
 	{
+		if (!$this->time) $this->read(true);	// read the page (ignoring acl), if we have not done so
+
+		//echo "soWikiPage::acl_check(".($readable?'readable':'writeable').") $this->name ($this->time/$this->version): readable=$this->readable, writable=$this->writable</p>\n";
 		if (!$readable && $this->config['Anonymous_Session_Type'] != 'editable' &&
 			$GLOBALS['egw_info']['user']['account_lid'] == $this->config['anonymous_username'])
 		{
@@ -197,27 +202,31 @@ class soWikiPage
 	 */
 	function exists()
 	{
-		$this->db->select($this->PgTbl,'wiki_lang',array(
+		$this->db->select($this->PgTbl,'wiki_lang',$where=array(
 				'wiki_name'	=> $this->name,
 				'wiki_lang' => $this->use_langs,
 				$this->acl_filter(),
+				'wiki_time=wiki_supercede',	// only check the current version!
 			),__LINE__,__FILE__);
-		
-		return $this->db->next_record() ? ($this->db->f(0) ? $this->db->f(0) : 'default')  : False;
+		$ret = $this->db->next_record() ? ($this->db->f(0) ? $this->db->f(0) : 'default')  : False;
+		//echo "<p>exists() where=".print_r($where,true)."=$ret</p>\n";
+		return $ret;
 	}
 
 	/**
 	 * Read in a page contents, name and lang was set in the constructor
 	 *
+	 * @param boolean $ignore_acl=false should the page read, even if we have no access-rights, default no
 	 * @return array/boolean contents of the page or False.
 	 */
-	function read()
+	function read($ignore_acl=false)
 	{
 		$where = array(
 			'wiki_name'	=> $this->name,
 			'wiki_lang' => !empty($this->lang) ? $this->lang : $this->use_langs,
-			$this->acl_filter(),
 		);
+		if (!$ignore_acl) $where[] = $this->acl_filter();
+
 		if($this->version != -1)
 		{
 			$where['wiki_version'] = $this->version;
@@ -329,7 +338,12 @@ class soWikiPage
  */
 class sowiki	// DB-Layer
 {
-	var $db; /* @var $db db */
+	/**
+	 * private instance of the db class
+	 *
+	 * @var egw_db
+	 */
+	var $db;
 	var $LkTbl = 'egw_wiki_links';
 	var $PgTbl = 'egw_wiki_pages';
 	var $RtTbl = 'egw_wiki_rate';
@@ -416,19 +430,21 @@ class sowiki	// DB-Layer
 	 */
 	function find($text,$search_in=False)
 	{
+		$sowikipage = new soWikiPage($this->db,$this->PgTbl);
 		$sql="SELECT t1.wiki_name,t1.wiki_lang,t1.wiki_version,MAX(t2.wiki_version) as wiki_max,t1.wiki_title,t1.wiki_body".
 			" FROM $this->PgTbl AS t1,$this->PgTbl AS t2".
 			" WHERE t1.wiki_name=t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=$this->wiki_id AND t2.wiki_id=$this->wiki_id".
+			"  AND ".$sowikipage->acl_filter(true,false,'t1').	// only include pages we are allowed to read!
 			" GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_title,t1.wiki_body".
 			" HAVING t1.wiki_version=MAX(t2.wiki_version) AND (";
 
 		// fix for case-insensitiv search on pgsql for lowercase searchwords
-		$op_text = $this->db->type == 'pgsql' && !preg_match('/[A-Z]/') ? 'ILIKE' : 'LIKE';
+		$op_text = !preg_match('/[A-Z]/',$text) ? $this->db->capabilities['case_insensitive_like'] : 'LIKE';
 		$op_text .= ' '.$this->db->quote($search_in ? $text : "%$text%");
 
 		$search_in = $search_in ? explode(',',$search_in) : array('wiki_name','wiki_title','wiki_body');
 		
-		if ($this->db->Type == 'sapdb' || $this->db->Type == 'maxdb') 
+		if (!$this->db->capabilities['like_on_text']) 
 		{
 			$search_in = array_intersect($search_in,array('wiki_name','wiki_title'));
 		}

@@ -200,13 +200,15 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 
 	if($p->exists())
 	{
+		//echo "<p>$page exists</p>\n";
 		if($SeparateLinkWords && $title == $appearance)
 			{ $appearance = html_split_name($title); }
 		return '<a href="' . viewURL($page) . $anchor . '"' . $hover . ' class="wiki">'
 					 . $appearance . $anchor_appearance . '</a>';
 	}
-	elseif(!$p->acl_check() || !$EditBase)
+	elseif(!$p->acl_check(true) || !$EditBase)
 	{
+		//echo "<p>$page NOT accessible</p>\n";
 		if(validate_page($title) == 1        // Normal WikiName
 			 && $appearance == $title)         // ... and is what it appears
 			{ return $title; }
@@ -215,6 +217,7 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 	}
 	else
 	{
+		//echo "<p>$page does NOT exist</p>\n";
 		if(validate_page($title) == 1        // Normal WikiName
 			 && $appearance == $title)         // ... and is what it appears
 			{ return $title . '<a href="' . editURL($page) . '"' . $hover . '>?</a>'; }
