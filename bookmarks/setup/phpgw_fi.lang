@@ -53,17 +53,17 @@ new	bookmark	fi	Uusi
 new bookmark	bookmarks	fi	uusi suosikki
 or	bookmarks	fi	tai
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	fi	T‰yt‰ <B>Vastaanottaja</B>, <B>Aihe</B> ja <B>Viesti</B>!
-please select the categories to export	bookmarks	fi	Valitse viet‰v‰t luokat
+please select the categories to export	bookmarks	fi	Valitse viet‰v‰t kategoriat
 query condition	bookmarks	fi	Hakuehto
 rating	bookmarks	fi	Luokitus
 search for:	bookmarks	fi	Etsi:
 select the format you would like to export to	bookmarks	fi	Valitse muoto, johon vied‰‰n
 send bookmark	bookmarks	fi	L‰het‰ suosikki
 site configuration	bookmarks	fi	Sivun m‰‰ritykset
-sub category	bookmarks	fi	Alaluokka
+sub category	bookmarks	fi	Alakategoria
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	fi	Vastaanottajan osoite %1 ei kelpaa. Osoitteen on oltava muotoa <strong>kayttaja@verkkotunnus</strong> ja verkkotunnuksen on oltava olemassa!
 to e-mail addresses	bookmarks	fi	Osoitteiseen
-to which category should the imported folder hierarchy be attached	bookmarks	fi	Mihin luokkaan tuotu kansiohierarkia lis‰t‰‰n
+to which category should the imported folder hierarchy be attached	bookmarks	fi	Mihin kategoriaan tuotu kansiohierarkia lis‰t‰‰n
 total visits	bookmarks	fi	vierailukertoja
 tree view	bookmarks	fi	Puun‰kym‰
 unable to open temp file %1 for import.	bookmarks	fi	Virhe avattaessa tiedostoa %1 tuontia varten
@@ -72,5 +72,5 @@ view bookmark	bookmarks	fi	N‰yt‰ suosikki
 view this bookmark	bookmarks	fi	N‰yt‰ t‰m‰ suosikki
 warning	bookmarks	fi	Varoitus
 you are viewing this site outside of egroupware	bookmarks	fi	T‰m‰ on eGroupWare -j‰rjestelm‰n ulkopuolinen sivu
-you must select a category	bookmarks	fi	Luokka on valittava
-you need to select a category!	bookmarks	fi	sinun t‰ytyy valit‰ ryhm‰!
+you must select a category	bookmarks	fi	Valitse kategoria
+you need to select a category!	bookmarks	fi	Valitse kategoria!

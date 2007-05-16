@@ -44,6 +44,7 @@ everyone	wiki	sk	Ka¾dý
 find	wiki	sk	Hµada»
 history	wiki	sk	História
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	sk	Zobrazenie Histórie má zobrazi» <em>v¹etky</em> zmeny, ktoré vykonal posledný autor. V opaènom prípade, zobrazi» iba poslednú vykonanú zmenu.
+history lists	wiki	sk	Zoznamy histórie
 history of	wiki	sk	História (èoho)
 invalid page name.	wiki	sk	Chybný názov stránky.
 load	wiki	sk	Nahra»
@@ -89,7 +90,7 @@ use this module for displaying wiki-pages	wiki	sk	Pou¾i» tento modul pre zobrazo
 users	wiki	sk	pou¾ívatelia
 view document history	wiki	sk	Zobrazi» históriu dokumentu
 visit %1 to set your user name	wiki	sk	Nav¹tívte %1 pre nastavenie Vá¹ho pou¾ívateµského mena
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	sk	Upozornenie: odkedy ste zaèali s úpravami, dokument bol medzitým zmenený niekým iným. Prosím zaèleòte va¹ úpravy do aktuálnej verzie tohto dokumentu.
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	sk	Upozornenie: odkedy ste zaèali s úpravami, dokument bol medzitým zmenený niekým iným. Prosím zaèleòte va¹e úpravy do aktuálnej verzie tohto dokumentu.
 who should be able to edit this page	wiki	sk	Komu umo¾níme upravova» túto stránku
 who should be able to read this page	wiki	sk	Komu umo¾níme èíta» túto stránku
 wiki	common	sk	Wiki
@@ -98,6 +99,7 @@ wiki menu	wiki	sk	Wiki Menu
 wiki startpage	wiki	sk	Wiki úvodná stránka
 writable by	wiki	sk	Zapisovateµné (kým)
 yes always	admin	sk	Áno, v¾dy
+yes with navbar	admin	sk	Áno, s navigaèným panelom
 you have been denied access to this site.	wiki	sk	Prístup k tejto stránke Vám bol odopretý.
 you have entered an invalid user name.	wiki	sk	Zadali ste chybné pou¾ívateµské meno.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	sk	Prekroèili ste povolený poèet stránok, ktoré mô¾ete nav¹tívi» v danom èasovom úseku. Prosím vrá»te sa sem neskôr.

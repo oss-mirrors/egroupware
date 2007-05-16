@@ -1,10 +1,12 @@
 after successful installation of all instances, you have to copy %1 to %2!	gallery	zh-tw	在所有項目安裝完成後，您需要複製 %1 到 %2！
 album frame (%1samples%2)	gallery	zh-tw	相框 （%1範例%2）
+alignment of the block	gallery	zh-tw	區塊對齊
 all filenames are relative to %1.	gallery	zh-tw	所有檔名都與 %1 有關。
 all other egroupware users will be created by the g2 integration including there admin rights.	gallery	zh-tw	所有其他的 eGroupWare 使用者會由 G2 整合程式建立，包含他們的管理權限。
 an error occurred during user creation in g2.	gallery	zh-tw	在 G2 中建立使用者時發生錯誤。
 an error occurred while trying to initialize g2.	gallery	zh-tw	在 G2 中組態時發生錯誤。
 can be used to limit the block to a certain album.	gallery	zh-tw	可以用來限制目前相簿使用的區塊。
+center	gallery	zh-tw	置中
 complete gallery	gallery	zh-tw	完整的相片館
 default item to show in the gallery.	gallery	zh-tw	相片館預設要顯示的項目。
 extra information to show	gallery	zh-tw	要顯示的其他資訊

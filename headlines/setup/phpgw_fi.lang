@@ -30,6 +30,7 @@ news headlines	common	fi	Uutisotsikot
 news type	headlines	fi	Uutisten tyyppi
 no headlines found	headlines	fi	Otsikkoa ei löytynyt
 other preferences	preferences	fi	Muut asetukset
+purge headline cache	common	fi	Tyhjennä uutisotsikoiden välimuisti
 read a list / search for entries.	headlines	fi	Luettu lista / hae merkintöjä.
 read cached site data for a single site by passing the id.	headlines	fi	Lue välimuistin tiedot yksittäisiltä sivuilta antamalla tunniste.
 read site data for a single site by passing the id.	headlines	fi	Lue tiedot yksittäisiltä sivuilta antamalla tunniste.

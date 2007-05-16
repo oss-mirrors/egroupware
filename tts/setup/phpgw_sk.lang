@@ -35,6 +35,7 @@ configure the transitions	common	sk	Konfigurácia prechodov
 convert all closed tickets	tts	sk	Previes» v¹etky uzavreté problémy
 convert all open tickets	tts	sk	Previes» v¹etky otvorené problémy
 convert tickets to tracker	tts	sk	Previes» v¹etky problémy do Sledovaèa
+converted count	tts	sk	Poèet skonvertovaných
 create new state	tts	sk	Vytvori» nový stav
 create new ticket	tts	sk	Vytvori» nový problém
 create new transition	tts	sk	Vytvori» nový prechod

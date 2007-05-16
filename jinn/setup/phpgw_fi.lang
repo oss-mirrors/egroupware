@@ -26,9 +26,12 @@ action was not succesful. unknown error	jinn	fi	Toiminto ei ollut onnistunut. Tu
 action was succesful.	jinn	fi	Toiminto onnistui
 actions	jinn	fi	Toiminnot
 actions to apply on all selected objects	jinn	fi	Toiminto hyv‰ksyy kaikki valitut objektit
+actions to apply on all selected record	jinn	fi	Toiminto hyv‰ksyy kaikki valitut tietueet
 actions to apply on all selected sites	jinn	fi	Toiminto hyv‰ksyy kaikki valitut sivut
+activate experimental features which are in development	jinn	fi	Aktivoi kokeelliset ominaisuudet jotka ovat vasta kehitysasteella.
 activate filter	jinn	fi	aktiivinen suodatin
 activated plugins	jinn	fi	Aktivoitu plugini
+active tabs	jinn	fi	Aktiiviset v‰lilehdet
 add	jinn	fi	Lis‰‰
 add %1st image	jinn	fi	lis‰‰ %1 kuva
 add a new configuration:	jinn	fi	lis‰‰ uusi konfigurointi:
@@ -52,6 +55,7 @@ add new one-to-one relation	jinn	fi	Lis‰‰ uusi yhden suhde yhteen tietokantasuhd
 add object	jinn	fi	lis‰‰ objekti
 add one-to-many relation(s)	jinn	fi	Lis‰‰ yhden suhde moneen tietokantasuhde
 add one-to-one relation(s)	jinn	fi	Lis‰‰ yhden suhde yhteen tietokantasuhde
+add optional extra palets	jinn	fi	Lis‰‰ valinnainen ylim‰‰r‰inen paletti
 add or remove	jinn	fi	lis‰‰ tai poista
 add site	jinn	fi	lis‰‰ sivusto
 add site object	jinn	fi	lis‰‰ sivuston objekti
@@ -70,6 +74,7 @@ all possible entries from %1	jinn	fi	kaikki %1 :n merkinn‰t
 all records	jinn	fi	kaikki tietueet
 all records (unfiltered)	jinn	fi	kaikki tietueet (ilman suodatusta)
 all relations	jinn	fi	Kaikki suhteet
+all tests were successful. you can go on with the site-objects	jinn	fi	Kaikki testit onnistuivat. Voit jatkaa sivuobjekteihin
 alternative fieldname for display	jinn	fi	N‰ytet‰‰n vaitoehtoinen kent‰n nimi
 an error occured.	jinn	fi	Virhe havaittu
 an unknown error has occured (error code 109)	jinn	fi	Tuntematon virhe havaittu (virhekoodi 109)
@@ -154,8 +159,10 @@ database username	jinn	fi	Tietokannan k‰ytt‰j‰tunnus
 days	jinn	fi	p‰iv‰t
 debug	jinn	fi	debug
 default	jinn	fi	oletus
+default image to choose from	jinn	fi	Oletuskuva valitaan
 default image type (jpg, gif, png)	admin	fi	Oletus kuva tyyppi (jpg, gif, png)
 default image width	admin	fi	Oletus kuvan leveys
+default number of visable columns	jinn	fi	N‰kyvien sarakkaiden oletus m‰‰r‰
 default order	jinn	fi	oletus j‰rjestys
 default thumb width	admin	fi	Oletus pienoiskuvan leveys
 default value	jinn	fi	oletus arvo
@@ -183,6 +190,7 @@ development server	jinn	fi	Kehitys palvelin
 dimensions	jinn	fi	ulottuvuudet
 disable the wysiwyg/htmlarea plugin	jinn	fi	Est‰ WYSIWYG / HTMLarea plugini
 display fields	jinn	fi	N‰yt‰ kent‰t
+do you really want to delete this site object?	jinn	fi	Haluatko varmasti poistaa t‰m‰n Sivu objektin
 do you really want to delete this site?	jinn	fi	Haluatko varmasti poistaa t‰m‰n sivun?
 do you want to copy and then edit this record?	jinn	fi	Haluatko kopioida ja muokata t‰t‰ tietuetta?
 do you want to copy this record?	jinn	fi	Haluatko kopioida t‰m‰n tietueen?
@@ -223,6 +231,8 @@ export all selected records	jinn	fi	vie kaikki valitut tietueet
 export records	jinn	fi	Vie tietueet
 export source	jinn	fi	viennin l‰hde
 export this site	jinn	fi	vie t‰m‰ sivusto
+extra palets	jinn	fi	Ylim‰‰r‰iset paletit
+extra where sql filter	jinn	fi	Ylim‰‰r‰inen where sql suodin
 failed	jinn	fi	Ep‰onnistui
 failed to copy: %1 to %2 ...	jinn	fi	kopiointi ep‰onnistui: %1 %2
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	fi	taulukon avaus ep‰onnistui. Tarkista ett‰ taulukko <i> %1 </i> on olemassa tietokannassa.
@@ -243,20 +253,27 @@ file	jinn	fi	Tiedosto
 file %1	jinn	fi	Tiedosto %1
 filename	jinn	fi	tiedoston nimi
 filesize	jinn	fi	tiedoston koko
+filter operator	jinn	fi	suodatin operaattori
 filterd list	jinn	fi	suodatettu lista
 filtered list	jinn	fi	suodatettu lista
 first row has field names	jinn	fi	ensimm‰isell‰ rivill‰ on kenttien nimet
+font file for image %1	jinn	fi	Fonttitiedosto kuvaan %1
+font for image %1	jinn	fi	Fontti kuvaan %1
+font size for image %1	jinn	fi	Fontin koko kuvassa %1
 footer	jinn	fi	Footer
 form	jinn	fi	Lomake
 form height	jinn	fi	Lomakkeen korkeus
 form type	jinn	fi	Lomakkeen muoto
 form visibility	jinn	fi	Lomakkeen n‰kyvyys
 form width	jinn	fi	Lomakkeen leveys
+free	jinn	fi	Vapaa
+free picker	jinn	fi	Vapaa valitsin
 from image	jinn	fi	Kuvasta
 general objects settings	jinn	fi	Yleiset objektin asetukset
 general options	jinn	fi	yleiset asetukset
 general preferences	jinn	fi	Yleiset ominaisuudet
 general settings	admin	fi	Yleiset asetukset
+generate html start en end tags	jinn	fi	Luo html alku ja loppu tagit
 give a new timestamp	jinn	fi	Anna uusi aikaleima
 give new timestamp	jinn	fi	Anna uusi aikaleima
 global configuration	jinn	fi	Yleinen konfiguraatio
@@ -274,6 +291,8 @@ height:	jinn	fi	Korkeus:
 hidden	jinn	fi	Piilota
 hide from menu	jinn	fi	Piiloita objekti valikosta
 hide from object menu	jinn	fi	Piiloita objekti valikosta
+host profile	jinn	fi	Vierailija profiili
+how many columns do you want to be visible by default in list view?	jinn	fi	Montako saraketta n‰ytet‰‰n oletuksena listan‰kym‰ss‰?
 how many records do you want to list per page?	jinn	fi	Kuinka monta tietuetta listataan sivulle
 ibrowser	jinn	fi	iBrowser
 image 1	jinn	fi	Kuva 1
@@ -283,9 +302,9 @@ image settings	admin	fi	Kuvan asetukset
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	fi	ImageMagick hakemisto (esim. /usr/X11R6/bin)
 import anyway	jinn	fi	tuo kuitenkin
 import failed	jinn	fi	tuonti ep‰onnistui
-import jinn site	jinn	fi	tuo JINN sivusto
-import jinn-object	jinn	fi	tuo JINN objekti
-import jinn-site	jinn	fi	tuo JINN- sivusto
+import jinn site	jinn	fi	tuo JiNN sivusto
+import jinn-object	jinn	fi	tuo JiNN objekti
+import jinn-site	jinn	fi	tuo JiNN- sivusto
 import object from file	jinn	fi	tuo objekti tiedostosta
 import object from file to this site	jinn	fi	tuo objekti tiedostosta t‰lle sivulle
 import site	jinn	fi	tuo sivusto
@@ -294,16 +313,20 @@ import was succesfull	jinn	fi	tuonti onnistui
 import was succesfull<br>imported one site with	jinn	fi	tuonti onnistui <br> liitetty sivustoon
 in menu	jinn	fi	Valikossa
 index	jinn	fi	indeksi
+info	jinn	fi	Info
+information	jinn	fi	Tietoa
 input mandatory	jinn	fi	Sis‰ltˆ pakollinen
 insert another record after saving	jinn	fi	lis‰‰ toinen tietue tallentamisen j‰lkeen
 insert date / time	jinn	fi	Lis‰‰ p‰iv‰ys / aika
-insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	fi	Lis‰‰ JINN sivuston parametrit: <li>Lis‰‰ JINN sivuston nimi n‰ytˆlle</li><li>lis‰‰ oikeat tietokannan asetukset</li><li>lis‰‰ oikea t‰ydellinen lataus polku</li><li>lis‰‰ vastaava esikatselun URL ladattaessa elementtej‰</li>
-insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	fi	Lis‰‰/valitse JINN sivuston objektien parametrit: <li>valitse JINN objektin nimi n‰ytˆlle</li><li>valitse tietokannan taulukko k‰yttˆˆn t‰m‰n objektin kanssa</li><li>jos tarpeellista vaihtoehto oikealle t‰ydelliselle lataus polulle</li><li>jos tarpeellista vastaava vaihtoehto esikatselun URLille ladattaessa elementtej‰</li>
-jinn	common	fi	JINN
+insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	fi	Lis‰‰ JiNN sivuston parametrit: <li>Lis‰‰ JiNN sivuston nimi n‰ytˆlle</li><li>lis‰‰ oikeat tietokannan asetukset</li><li>lis‰‰ oikea t‰ydellinen lataus polku</li><li>lis‰‰ vastaava esikatselun URL ladattaessa elementtej‰</li>
+insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	fi	Lis‰‰/valitse JiNN sivuston objektien parametrit: <li>valitse JiNN objektin nimi n‰ytˆlle</li><li>valitse tietokannan taulukko k‰yttˆˆn t‰m‰n objektin kanssa</li><li>jos tarpeellista vaihtoehto oikealle t‰ydelliselle lataus polulle</li><li>jos tarpeellista vastaava vaihtoehto esikatselun URLille ladattaessa elementtej‰</li>
+jinn	common	fi	JiNN
 jinn - add report	jinn	fi	JiNN - Lis‰‰ raportti
 jinn - add report from selected	jinn	fi	JiNN - Lis‰‰ raportti valituista
-jinn editors menu	jinn	fi	JINN muokkaimen valikko
+jinn editors menu	jinn	fi	JiNN muokkaimen valikko
+jinn main	jinn	fi	JiNN p‰‰sivu
 jinn main menu	jinn	fi	JiNN p‰‰valikko
+jinn navigator	jinn	fi	JiNN navigaatio
 jinn preferences	jinn	fi	JINN ominaisuudet
 keep current timestamp	jinn	fi	S‰ilyt‰ nykyinen aikaleima
 keep this empty to let is auto increment	jinn	fi	j‰t‰ tyhj‰ksi jos haluat kasvattaa automaattisesti
@@ -313,9 +336,14 @@ linked entries	jinn	fi	Linkitetty sis‰ltˆ
 list record(s)	jinn	fi	Lista tietueista
 list sites	jinn	fi	sivustojen lista
 list visibility	jinn	fi	n‰kyvyyden lista
+load export profile	jinn	fi	lataa vienti profiili
+load site conf from file	jinn	fi	Lataa sivun konfigurointi tiedosto
+loaded jinn site file	jinn	fi	Ladattu JiNN sivun tiedosto
 local fields	jinn	fi	Paikalliset kent‰t
 main settings	jinn	fi	P‰‰asetukset
+maintainer	common	fi	Kehitt‰j‰
 mandatory	jinn	fi	pakollinen
+manually enter a new relative file path	jinn	fi	M‰‰rittele manuaalisesti uusi suhteellinen polku
 many 2 many relations will not work	jinn	fi	Monen suhde moneen ei toimi
 many-to-many	jinn	fi	Monta moneen
 many-to-many relations	jinn	fi	Monta moneen suhde
@@ -332,6 +360,7 @@ move up	jinn	fi	siirr‰ ylˆs
 moved record one row down.	jinn	fi	Siirr‰ tietue rivin verran ylˆsp‰in
 moved record one row up.	jinn	fi	Siirr‰ tietue rivin verran alasp‰in
 moved record to last row.	jinn	fi	Siirr‰ tietue viimeiselle riville
+name and help info	jinn	fi	nimi ja apu tiedot
 new	jinn	fi	Uusi
 new image size limits.	jinn	fi	Uuden kuvan koko rajoitukset.
 new object	jinn	fi	Uusi objekti
@@ -345,6 +374,7 @@ no matchs found	jinn	fi	Sopivaa ei lˆytynyt
 no max. number	jinn	fi	ei maksimi numeroa
 no new objects created	jinn	fi	Uutta objektia EI luotu
 no new objects created%1	jinn	fi	Uutta objektia %1 EI luotu
+no object selected. no able to configure this view	jinn	fi	Objektia ei ole valittuna. N‰kym‰‰ ei voida konfiguroida
 no objects available	jinn	fi	Objektia ei ole saatavilla
 no objects found for this site.	jinn	fi	Objektia ei lˆytynyt t‰lt‰ sivulta
 no records found	jinn	fi	Tietuetta ei lˆytynyt
@@ -356,6 +386,9 @@ number of images to generate.	jinn	fi	Monta kuvaa luotu:
 number of objects	jinn	fi	Objektien m‰‰r‰:
 number of records per page	jinn	fi	Montako tietuetta n‰ytet‰‰n sivulla
 object configuration	jinn	fi	Objektin konfigurointi
+object event configuration	jinn	fi	Objektin tapahtuman konfigurointi
+object event plugins	jinn	fi	objektin tapahtuman pluginit
+object events configuration	jinn	fi	Objektin tapahtuman konfigurointi
 object id	jinn	fi	Objektin Id
 object serialnumber	jinn	fi	Objektin sarjanumero
 objects	jinn	fi	Objektit
@@ -367,6 +400,8 @@ one page forward	jinn	fi	Sivu eteenp‰in
 one-to-many	jinn	fi	Yksi moneen
 one-to-many relations	jinn	fi	Yhden suhde moneen
 one-to-one	jinn	fi	Yksi yhteen
+one-to-one relation is broken, please fix it or contact site-developer.<br/>%1	jinn	fi	Yksi yhteen suhde on rikki, korjaa se tai ota yhteytt‰ sivun kehitt‰jiin.<br/>%1
+one-to-one relations	jinn	fi	Yksi yhteen suhteet
 only if thumnails exits	jinn	fi	Vain jos pienet kuvakkeet on olemassa
 only one	jinn	fi	vain yksi
 open debugging window.	jinn	fi	Avaa debuggaus ikkuna
@@ -390,6 +425,9 @@ preset: open office spreadsheet	jinn	fi	esiasetus: Open Office Calc
 preview	jinn	fi	Esikatselu
 preview thumbs or images in form	jinn	fi	Esikatsele pienia kuvakkeita tai kuvia lomakkeessa
 preview website	jinn	fi	Esikatsele verkkosivustoa
+primary palet	jinn	fi	Ensisijainen paletti
+production	admin	fi	Tuotanto
+production database	jinn	fi	Tuotanto tietokanta
 real value	jinn	fi	oikea arvo
 record	jinn	fi	tietue
 record %1	jinn	fi	Tietue %1
@@ -437,6 +475,7 @@ report saved succesfull	jinn	fi	Raportti tallennettu onnistuneesti
 reports	jinn	fi	Raportit
 reset	jinn	fi	Palauta
 reset form	jinn	fi	palauta lomake
+right button content menu	jinn	fi	Oikea painikke - Sis‰ltˆ valikko
 save	jinn	fi	tallenna
 save and add new record	jinn	fi	tallenna ja lis‰‰ tietue
 save and add new records	jinn	fi	tallenna ja lis‰‰ tietueita
@@ -445,18 +484,30 @@ save and contiue	jinn	fi	tallenna ja jatka
 save and finish	jinn	fi	tallenna ja lopeta
 save and return to list	jinn	fi	tallenna ja palaa listalle
 save as	jinn	fi	tallenna nimell‰
+save export profile	jinn	fi	tallenna vienti profiili
+save form lay-out	jinn	fi	Tallenna lomakkeen ulkoasu
 save profile	jinn	fi	tallenna profiili
 save relation	jinn	fi	Tallenna suhde
+save site conf to file	jinn	fi	Tallenna sivun konfigurointi tiedosto
 saved version	jinn	fi	Tallennettu versio
+saved with version	jinn	fi	Tallennettu versiolla
 screenshot	jinn	fi	kuvakaappaus
 search	jinn	fi	Etsi
 search and replace	jinn	fi	Etsi ja korvaa
 search for string	jinn	fi	etsi merkkijono
 select a plugin	jinn	fi	valitse plugini
+select an event	jinn	fi	valitse tapahtuma
 select directory	jinn	fi	valitse hakemisto
-select jinn site file	jinn	fi	valitse JIINN sivuston tiedosto
+select foreign key	jinn	fi	Valitse foreign key
+select jinn object file (*.jobj	jinn	fi	Valitse JiNN objekti tiedosto (*.job)
+select jinn site file	jinn	fi	valitse JiNN sivuston tiedosto
+select local key	jinn	fi	Valitse local key
+select object configuration to use	jinn	fi	Valitse k‰ytett‰v‰ objektin konfiguraatio
 select site	jinn	fi	Valitse sivusto
+select site to moderate	jinn	fi	Valitse hallinnoitava sivu
+select site-object to moderate	jinn	fi	Valitse hallinnoitava Sivu objekti
 select theme	jinn	fi	Valitse teema
+select which graphic library jinn must use	admin	fi	Valitse mit‰ grafiikkakirjastoa JiNN k‰ytt‰‰
 select_object	jinn	fi	Valitse objekti
 selected records	jinn	fi	valitut tietueet
 serialnumber	jinn	fi	Objektin sarjanumero
@@ -466,6 +517,7 @@ set access right for site objects	jinn	fi	Aseta k‰yttˆoikeudet sivuston objektei
 set access rights	jinn	fi	Aseta k‰yttˆoikeudet
 set access rights for sites	jinn	fi	Aseta k‰yttˆoikeudet sivustoille
 set administrators for	jinn	fi	Aseta yll‰pit‰j‰
+set administrators for %1	jinn	fi	Aseta p‰‰k‰ytt‰j‰ksi %1
 set object moderator	jinn	fi	aseta objektin valvoja
 set site admin	jinn	fi	aseta sivuston admin
 show	jinn	fi	n‰yt‰
@@ -474,6 +526,7 @@ show all colums, always	jinn	fi	N‰yt‰ kaikki sarakkeet, aina
 show by default in listview	jinn	fi	n‰yt‰ oletuksena listan‰kym‰
 show by default_listview	jinn	fi	n‰yt‰ oletuksena listan‰kym‰
 show colomn	jinn	fi	n‰yt‰ sarake
+show in form	jinn	fi	N‰yt‰ lomakkeella
 show upload path	admin	fi	n‰yt‰ lataus polku
 showing	jinn	fi	n‰ytet‰‰n
 showing:	jinn	fi	n‰ytet‰‰n:
@@ -486,6 +539,7 @@ site db type	jinn	fi	Sivuston tietokannan tyyppi
 site db user	jinn	fi	Sivuston tietokannan k‰ytt‰j‰
 site description	admin	fi	Sivuston kuvaus
 site files succesfully deleted	jinn	fi	Sivun tiedostot poistettu onnistuneesti
+site files succesfully extracted.	jinn	fi	Sivun tiedostot purettu onnistuneesti.
 site id	jinn	fi	Sivuston id
 site media and documents	jinn	fi	Sivuston media ja dokumentit
 site name	jinn	fi	Sivuston nimi
@@ -513,6 +567,7 @@ standard editor options	jinn	fi	Vakioeditorin asetukset
 start	admin	fi	Aloita
 start at record	jinn	fi	aloita nauhoittaminen
 stop at record	jinn	fi	lopeta nauhoittaminen
+store filter	jinn	fi	varaston suodatin
 submit and import	jinn	fi	hyv‰ksy ja tuo
 successful	jinn	fi	Onnistuneesti
 table	jinn	fi	Taulukko
@@ -522,29 +577,41 @@ test database access	jinn	fi	tietokantaan p‰‰syn testaus
 test database and paths	jinn	fi	testaa tietokantaa ja polkuja
 test site settings	jinn	fi	Testi sivuston asetukset
 text color %1	jinn	fi	Tekstin v‰ri %1
+text label	jinn	fi	Otsikkokentt‰
 the attachments subdirectory does not exist and cannot be created ...	jinn	fi	Liitetiedostojen alihakemistoa ei ole olemassa ja ei voida luoda...
 the attachments subdirectory is not writable by the webserver ...	jinn	fi	Liitetiedostojen alihakemisto ei ole kirjoitettu palvelimelle...
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	fi	Tiedosto jonka latasit nimell‰ %1 ei ole kuvatiedosto,on turmeltunut, tai tiedostotyyppi ei ole JINNin kannattama.
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	fi	Tiedosto jota latasit nimell‰ %1 ei ole kuvatiedosto, se on turmeltunut, tai tiedostotyyppi ei ole JINNin kannattama. Jos t‰m‰ virhe toistuu, tarkista sinun imagemagick asennus. ImageMagick vanhempi versio on tunnettu, ei toimi kunnolla JINNin kanssa. Varmista ett‰ asennat viimeisimm‰n version 5.4.9 tai korkeamman
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	fi	Tiedosto jonka latasit nimell‰ %1 ei ole kuvatiedosto,on turmeltunut, tai tiedostotyyppi ei ole JiNNin kannattama.
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	fi	Tiedosto jota latasit nimell‰ %1 ei ole kuvatiedosto, se on turmeltunut, tai tiedostotyyppi ei ole JiNNin kannattama. Jos t‰m‰ virhe toistuu, tarkista sinun imagemagick asennus. ImageMagick vanhempi versio on tunnettu, ei toimi kunnolla JiNNin kanssa. Varmista ett‰ asennat viimeisimm‰n version 5.4.9 tai korkeamman
+the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	fi	T‰m‰ palvelin ei tue GIF-tiedostoja. Koita valita joku muu tiedostotyyppi.
 the max. file upload size is %1 mb.	jinn	fi	Ladattavan tiedoston maximi koko on 1Mb.
+the name of the new object is <strong>%1</strong>.	jinn	fi	Uuden objektin nimi on <strong>%1</strong>.
 the name of the new site is <strong>%1</strong>.	jinn	fi	Uuden sivuston nimi on <strong> %1 </strong>.
-the path to upload files is not correct, please contact your jinn administrator.	jinn	fi	Ladattavien tiedostojen polku ei ole oikein, ota yhteytt‰ JINNin vastaavaan.
-the path to upload files is not set, please contact your jinn administrator.	jinn	fi	Ladattavien tiedostojen polkua ei ole asetettu, ota yhteytt‰ JINNin vastaavaan.
-the path to upload images is not correct, please contact your jinn administrator.	jinn	fi	Ladattavien kuvien polku ei ole oikein, ota yhteytt‰ JINNin vastaavaan.
-the path to upload images is not set, please contact your jinn administrator.	jinn	fi	Ladattavien kuvien polkua ei ole asetettu, ota yhteytt‰ JINNin vastaavaan.
+the old confguration data is replaced<br/><br/>	jinn	fi	Vanha konfiguraatiotieto on korvattu<br/><br/>
+the old style or the new way with the dhtml calendar	jinn	fi	Vanhan mallinen tai uuden tyylinen DHTML kalenteri
+the path to upload files is not correct, please contact your jinn administrator.	jinn	fi	Ladattavien tiedostojen polku ei ole oikein, ota yhteytt‰ JiNNin vastaavaan.
+the path to upload files is not set, please contact your jinn administrator.	jinn	fi	Ladattavien tiedostojen polkua ei ole asetettu, ota yhteytt‰ JiNNin vastaavaan.
+the path to upload images is not correct, please contact your jinn administrator.	jinn	fi	Ladattavien kuvien polku ei ole oikein, ota yhteytt‰ JiNNin vastaavaan.
+the path to upload images is not set, please contact your jinn administrator.	jinn	fi	Ladattavien kuvien polkua ei ole asetettu, ota yhteytt‰ JiNNin vastaavaan.
 there are no directories in this site you have access to.	jinn	fi	Sivustolla ei ole hakemistoja johon p‰‰sisit
+there are no pages	jinn	fi	Sivuja ei ole
 thisfile	jinn	fi	t‰m‰ tiedosto
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	fi	pienten kuvakkeiden hakemistoa ei ole olemassa tai se ei ole oikein... <br> tarkista objektin ladattu hakemisto
 thumbnail	jinn	fi	pienet kuvakkeet
+title for html-page	jinn	fi	HTML sivun otsikko
+tooltip text	jinn	fi	Vihje teksti
+unexpected error	jinn	fi	odottamaton virhe
 unique id	jinn	fi	Yksilˆiv‰ Id
 unlimited	jinn	fi	rajoittamaton
 upgrade	jinn	fi	p‰ivit‰
 upload	jinn	fi	lataa
 upload new font (reload to select this font)	jinn	fi	Lataa uusi fontti (uudelleen lataa t‰m‰n fontin)
 upload path	jinn	fi	Lataus hakemisto
+upload path exist	jinn	fi	Lataus hakemisto lˆytyy
 upload path writable	jinn	fi	Lataus hakemisto kirjoitettavissa
 upload path write test	jinn	fi	Lataus hakemiston kirjoitustesti
 upload url	jinn	fi	Lataus URL
+upload url location correct	jinn	fi	Lataus URL sijainti on oikein
+use reports	admin	fi	K‰yt‰ raportteja
 version	jinn	fi	versio
 very experimental	jinn	fi	Hyvin kokeellinen
 view all selected records	jinn	fi	n‰yt‰ kaikki valitut tietueet
@@ -563,5 +630,6 @@ you have no access to this file.	jinn	fi	Sinulla ei ole oikeuksia t‰h‰n tiedosto
 you have no access to this object	jinn	fi	Sinulla ei ole oikeuksia t‰h‰n objektiin.
 you must select one or more records for this function.	jinn	fi	Valitse ainakin yksi tietue t‰t‰ toimintoa varten.
 you must select one or more sites for this function.	jinn	fi	Valitse ainakin yksi sivu t‰t‰ toimintoa varten.
+you're not allowed to acces this screen.	jinn	fi	Sinulla ei ole p‰‰syoikeutte t‰h‰n ruutuun.
 you're not allowed to administrate media files	jinn	fi	Sinulla ei ole lupaa hallita media tiedostoja
 zoom	jinn	fi	Zoomaa
