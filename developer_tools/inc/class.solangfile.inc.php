@@ -385,6 +385,9 @@
 				$GLOBALS['file'] += $file;
 			}
 		}
+	}
+	if (!function_exists('display_section') && $_GET['menuaction'] == 'developer_tools.uilangfile.missingphrase')
+	{
 		function display_section($appname,$file,$file2='')		// hook_preferences, hook_admin
 		{
 			if (is_array($file2))
