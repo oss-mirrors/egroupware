@@ -101,7 +101,7 @@
 				. ' VALUES (' . (int)$poll_id . ",'" . $answer . "',0," . (int)$vote_id . ')',__LINE__,__FILE__);
 			if($result)
 			{
-				return $this->db->get_last_insert_id('phpgw_polls_desc','poll_id');
+				return $vote_id;
 			}
 			return -1;
 		}
