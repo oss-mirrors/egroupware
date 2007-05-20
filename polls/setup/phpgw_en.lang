@@ -3,7 +3,9 @@ add answer to poll	polls	en	Add answer to poll
 add answers	polls	en	Add answers
 add new poll question	polls	en	Add new poll question
 add questions	polls	en	Add questions
+administrators	polls	en	Administrators
 allow users to vote more then once	polls	en	Allow users to vote more than once
+allways use latest poll	polls	en	Allways use latest poll
 answer	polls	en	Answer
 answer has been added to poll	polls	en	Answer has been added to poll
 answer has been updated	polls	en	Answer has been updated
@@ -13,14 +15,17 @@ are you sure want to delete this question ?	polls	en	Are you sure want to delete
 current poll	polls	en	Current Poll
 edit answer	polls	en	Edit answer
 edit poll question	polls	en	Edit poll question
+egroupware users (non-anonymous)	polls	en	eGroupWare users (non-anonymous)
 enter poll question	polls	en	Enter poll question
+everyone incl. anonymous users	polls	en	Everyone incl. anonymous users
 new poll has been added.  you should now add some answers for this poll	polls	en	New poll has been added.  You should now add some answers for this poll
+noone	polls	en	Noone
 poll question	polls	en	Poll question
-poll settings	common	en	Poll settings
+poll votable by	polls	en	Poll votable by
 polls	common	en	Polls
 question has been updated	polls	en	Question has been updated
+result visible to	polls	en	Result visible to
 select current poll	polls	en	Select current poll
-settings	polls	en	Settings
 settings updated	polls	en	Settings updated
 show answers	polls	en	Show answers
 show questions	common	en	Show questions
@@ -31,3 +36,4 @@ vote	polls	en	Vote
 voting booth admin	admin	en	Voting Booth
 voting booth administration	polls	en	Voting Booth Administration
 which poll	polls	en	Which poll
+you are not (yet) allowed view the result of this vote.	polls	en	You are not (yet) allowed view the result of this vote.

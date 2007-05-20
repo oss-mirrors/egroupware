@@ -5,8 +5,8 @@
  <input type="hidden" name="poll_id" value="{poll_id}">
  {hidden}
   <table border="0" width="400" align="center">
-   <tr bgcolor="{th_bg}">
-    <td colspan="2">{td_message}</td>
+   <tr class="th">
+    <td colspan="2"><b>{td_message}</b></td>
    </tr>
 
    {rows}
@@ -25,14 +25,14 @@
 <!-- END form -->
 
 <!-- BEGIN row -->
-   <tr bgcolor="{tr_color}">
+   <tr class="{tr_class}">
     <td>{td_1}</td>
     <td>{td_2}</td>
    </tr>
 <!-- END row -->
 
 <!-- BEGIN messagebar -->
- <tr bgcolor="{th_bg}">
+ <tr class="th">
   <td colspan="2"><b>{mesg}</b></td>
  </tr>
 <!-- END messagebar -->
@@ -64,7 +64,7 @@
 <!-- END answers -->
 
 <!-- BEGIN answer_row -->
-  <tr bgcolor="{tr_color}">
+  <tr class="{tr_class}">
    <td>{option_text}</td>
    <td width="50">{answer_actions}</td>
   </tr>

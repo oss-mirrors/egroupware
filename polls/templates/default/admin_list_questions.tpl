@@ -11,7 +11,7 @@
   </table>
    </td>
   </tr>
-  <tr bgcolor="{th_bg}">
+  <tr class="th">
    <td>{sort_title}</td>
    <td width="50">{lang_actions}</td>
   </tr>
@@ -26,7 +26,7 @@
 <!-- END form -->
 
 <!-- BEGIN row -->
-  <tr bgcolor="{tr_color}">
+  <tr class="{tr_class}">
    <td>{row_title}</td>
    <td>{row_actions}</td>
   </tr>

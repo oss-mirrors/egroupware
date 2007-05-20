@@ -1,5 +1,5 @@
 <!-- BEGIN poll -->
-<table border="0" align="center" width="400"> 
+<table border="0" align="center" width="100%" style="max-width: 400px;"> 
   {titlebar}
   {votes}
   {show_total}
@@ -7,13 +7,13 @@
 <!-- END poll -->
 
 <!-- BEGIN title -->
-<tr>
-  <td colspan="4" bgcolor="{td_color}" align="left">{poll_title}</td>
+<tr class="th">
+  <td colspan="4"><b>{poll_title}</b></td>
 </tr>
 <!-- END title -->
 
 <!-- BEGIN vote -->
- <tr bgcolor="{vote_color}">
+ <tr class="{tr_class}">
   <td>{option_text}</td>
   <td>{poll_bar}</td>
   <td align="right">{percent}%</td>
@@ -26,8 +26,7 @@
 <!-- END image -->
 
 <!-- BEGIN total -->
- <tr bgcolor="{tr_bgcolor}">
-  <td colspan="2">&nbsp;</td>
-  <td colspan="2" align="right">{lang_total}: {sum}</td>
+ <tr class="th">
+  <td colspan="4" align="right">{lang_total}: {sum}</td>
  </tr>
 <!-- END total -->

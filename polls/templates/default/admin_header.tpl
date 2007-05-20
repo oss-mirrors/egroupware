@@ -1,7 +1,7 @@
 <!-- $Id$ -->
 
  <table border="0" width="100%">
-  <tr bgcolor="{th_bg}">
+  <tr class="th">
    <td><b>{info}</b></td>
   </tr>
 

@@ -1,16 +1,14 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - Setup                                                       *
-  * http://www.eGroupWare.org                                                *
-  * Created by eTemplates DB-Tools written by ralfbecker@outdoor-training.de *
-  * --------------------------------------------                             *
-  * This program is free software; you can redistribute it and/or modify it  *
-  * under the terms of the GNU General Public License as published by the    *
-  * Free Software Foundation; either version 2 of the License, or (at your   *
-  * option) any later version.                                               *
-  \**************************************************************************/
-
-  /* $Id$ */
+/**
+ * eGroupWare - Setup
+ * http://www.egroupware.org 
+ * Created by eTemplates DB-Tools written by ralfbecker@outdoor-training.de
+ *
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @package polls
+ * @subpackage setup
+ * @version $Id$
+ */
 
 	$test[] = '0.8.1';
 	function polls_upgrade0_8_1()
@@ -35,5 +33,75 @@
 	{
 		$GLOBALS['setup_info']['polls']['currentver'] = '1.0.0';
 		return $GLOBALS['setup_info']['polls']['currentver'];
+	}
+
+
+	$test[] = '1.0.0';
+	function polls_upgrade1_0_0()
+	{
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_polls_desc','egw_polls');
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_polls','poll_timestamp',array(
+			'type' => 'int',
+			'precision' => '8',
+			'nullable' => False
+		));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_polls','poll_visible',array(
+			'type' => 'int',
+			'precision' => '4',
+			'nullable' => False,
+			'default' => '0',
+		));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_polls','poll_votable',array(
+			'type' => 'int',
+			'precision' => '4',
+			'nullable' => False,
+			'default' => '0',
+		));
+
+		// we cant have a vote_id 0 in an auto column, so we have to set a new one!
+		$GLOBALS['egw_setup']->db->query('SELECT MAX(vote_id) FROM phpgw_polls_data',__LINE__,__FILE__);
+		$id0 = $GLOBALS['egw_setup']->db->next_record() ? 1+$GLOBALS['egw_setup']->db->f(0) : 1;
+		$GLOBALS['egw_setup']->db->query("UPDATE phpgw_polls_data SET vote_id=$id0 WHERE vote_id=0",__LINE__,__FILE__);
+		
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_polls_data','egw_polls_answers');
+		$GLOBALS['egw_setup']->oProc->RefreshTable('egw_polls_answers',array(
+			'fd' => array(
+				'answer_id' => array('type' => 'auto','nullable' => False),
+				'poll_id' => array('type' => 'int','precision' => '4','nullable' => False),
+				'answer_text' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'answer_votes' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+			),
+			'pk' => array('answer_id'),
+			'fk' => array(),
+			'ix' => array('poll_id'),
+			'uc' => array()
+		),array(
+			'answer_id' => 'vote_id',
+			'answer_text' => 'option_text',
+			'answer_votes' => 'option_count',
+		));
+
+		$GLOBALS['egw_setup']->oProc->RenameTable('phpgw_polls_user','egw_polls_votes');
+		$GLOBALS['egw_setup']->oProc->RefreshTable('egw_polls_votes',array(
+			'fd' => array(
+				'poll_id' => array('type' => 'int','precision' => '4','nullable' => False),
+				'answer_id' => array('type' => 'int','precision' => '4','nullable' => False),
+				'vote_uid' => array('type' => 'int','precision' => '4','nullable' => False),
+				'vote_ip' => array('type' => 'varchar','precision' => '128'),
+				'vote_timestamp' => array('type' => 'int','precision' => '8'),
+			),
+			'pk' => array('poll_id','answer_id','vote_uid','vote_ip'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),array(
+			'answer_id' => 'vote_id',
+			'vote_uid' => 'user_id',
+		));
+		
+		// not need can go into egw_config
+		$GLOBALS['egw_setup']->oProc->DropTable('phpgw_polls_settings');
+
+		return $GLOBALS['setup_info']['polls']['currentver'] = '1.4';
 	}
 ?>

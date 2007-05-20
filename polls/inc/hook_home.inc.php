@@ -16,7 +16,7 @@
 	$hp_display = (int)$GLOBALS['egw_info']['user']['preferences']['polls']['homepage_display'];
 	if($hp_display > 0)
 	{
-		$obj =& CreateObject('polls.ui');
+		$obj =& CreateObject('polls.uipolls');
 		$obj->view();
 	}
 ?>

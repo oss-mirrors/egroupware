@@ -1,66 +1,52 @@
 <?php
-  /**************************************************************************\
-  * eGroupWare - Setup                                                       *
-  * http://www.egroupware.org                                                *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+/**
+ * eGroupWare - Setup
+ * http://www.egroupware.org 
+ *
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @package polls
+ * @subpackage setup
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @version $Id$ 
+ */
 
-  /**************************************************************************\
-  * This file should be generated for you. It should never be edited by hand *
-  \**************************************************************************/
-
-  /* $Id$ */
-
-  // table array for polls
-	$phpgw_baseline = array(
-		'phpgw_polls_data' => array(
-			'fd' => array(
-				'poll_id' => array('type' => 'int','precision' => '4','nullable' => False),
-				'option_text' => array('type' => 'varchar','precision' => '100','nullable' => False),
-				'option_count' => array('type' => 'int','precision' => '4','nullable' => False),
-				'vote_id' => array('type' => 'int','precision' => '4','nullable' => False)
-			),
-			'pk' => array(),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
+$phpgw_baseline = array(
+	'egw_polls' => array(
+		'fd' => array(
+			'poll_id' => array('type' => 'auto','nullable' => False),
+			'poll_title' => array('type' => 'varchar','precision' => '100','nullable' => False),
+			'poll_timestamp' => array('type' => 'int','precision' => '8','nullable' => False),
+			'poll_visible' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+			'poll_votable' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 		),
-		'phpgw_polls_desc' => array(
-			'fd' => array(
-				'poll_id' => array('type' => 'auto','nullable' => False),
-				'poll_title' => array('type' => 'varchar','precision' => '100','nullable' => False),
-				'poll_timestamp' => array('type' => 'int','precision' => '4','nullable' => False)
-			),
-			'pk' => array('poll_id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
+		'pk' => array('poll_id'),
+		'fk' => array(),
+		'ix' => array(),
+		'uc' => array()
+	),
+	'egw_polls_answers' => array(
+		'fd' => array(
+			'answer_id' => array('type' => 'auto','nullable' => False),
+			'poll_id' => array('type' => 'int','precision' => '4','nullable' => False),
+			'answer_text' => array('type' => 'varchar','precision' => '100','nullable' => False),
+			'answer_votes' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 		),
-		'phpgw_polls_user' => array(
-			'fd' => array(
-				'poll_id' => array('type' => 'int','precision' => '4','nullable' => False),
-				'vote_id' => array('type' => 'int','precision' => '4','nullable' => False),
-				'user_id' => array('type' => 'int','precision' => '4','nullable' => False),
-				'vote_timestamp' => array('type' => 'int','precision' => '4','nullable' => True)
-			),
-			'pk' => array(),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
+		'pk' => array('answer_id'),
+		'fk' => array(),
+		'ix' => array('poll_id'),
+		'uc' => array()
+	),
+	'egw_polls_votes' => array(
+		'fd' => array(
+			'poll_id' => array('type' => 'int','precision' => '4','nullable' => False),
+			'answer_id' => array('type' => 'int','precision' => '4','nullable' => False),
+			'vote_uid' => array('type' => 'int','precision' => '4','nullable' => False),
+			'vote_ip' => array('type' => 'varchar','precision' => '128'),
+			'vote_timestamp' => array('type' => 'int','precision' => '8'),
 		),
-		'phpgw_polls_settings' => array(
-			'fd' => array(
-				'setting_name' => array('type' => 'varchar','precision' => '255','nullable' => True),
-				'setting_value' => array('type' => 'varchar','precision' => '255','nullable' => True)
-			),
-			'pk' => array(),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		)
-	);
-?>
+		'pk' => array('poll_id','answer_id','vote_uid','vote_ip'),
+		'fk' => array(),
+		'ix' => array(),
+		'uc' => array()
+	)
+);

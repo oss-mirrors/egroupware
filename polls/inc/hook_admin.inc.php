@@ -16,8 +16,8 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Poll Settings'  => $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'settings')),
-		'Show Questions' => $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'show','type'=>'question'))
+		'Site configuration'  => $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.admin','action'=>'settings')),
+		'Show Questions' => $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.admin','action'=>'show','type'=>'question'))
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);

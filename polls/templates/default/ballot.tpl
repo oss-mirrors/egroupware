@@ -3,20 +3,17 @@
 <input type="hidden" name="poll_id" value="{poll_id}">
 
 <table border="0" align="center" width="50%">
- <tr>
-  <td colspan="2" bgcolor="{title_bgcolor}" align="center">{poll_title}</td>
+ <tr class="th">
+  <td>&nbsp;</td>
+  <td>{poll_title}</td>
  </tr>
 
  {entries}
 <!-- END form_top -->
 
 <!-- BEGIN form_end -->
- <tr bgcolor="{bgcolor}">
-  <td colspan="2">&nbsp;</td>
- </tr>
-
- <tr bgcolor="{bgcolor}">
-  <td colspan="2" align="center"><input name="submit" type="submit" value="{lang_vote}"></td>
+ <tr>
+  <td colspan="2" align="center"><input name="vote" type="submit" value="{lang_vote}"></td>
  </tr>
 
 </table>
@@ -25,8 +22,8 @@
 <!-- END form_end -->
 
 <!-- BEGIN entry -->
- <tr bgcolor="{tr_color}">
-  <td align="center"><input type="radio" name="poll_voteNr" value="{vote_id}"></td>
-  <td>{option_text}</td>
+ <tr class="{tr_class}">
+  <td align="center"><input type="radio" name="poll_voteNr" id="vote{vote_id}" value="{vote_id}"></td>
+  <td><label for="vote{vote_id}">{option_text}</label></td>
  </tr>
 <!-- END entry -->

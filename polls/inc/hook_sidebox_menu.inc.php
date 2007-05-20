@@ -27,9 +27,9 @@
 	$menu_title = 'Polls Menu';
 	$file = Array(
 		'Current Poll'
-			=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.index')),
+			=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.index')),
 		'View Results' 
-			=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.vote','show_results'=>$GLOBALS['poll_settings']['currentpoll']))
+			=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.vote','show_results'=>$GLOBALS['poll_settings']['currentpoll']))
 	);
 	display_sidebox($appname,$menu_title,$file);
 
@@ -45,14 +45,16 @@
 	{
 		$menu_title = 'Administration';
 		$file = Array(
-			'Poll Settings'
-				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'settings')),
+			'Site configuration'
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.admin','action'=>'settings')),
 			'Show Questions'
-				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'show','type'=>'question')),
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.admin','action'=>'show','type'=>'question')),
 			'Add Questions'
-				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'question')),
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.admin','action'=>'add','type'=>'question')),
+			'Show Answers'
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.admin','action'=>'show','type'=>'answer')),
 			'Add Answers'
-				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'answer')),
+				=> $GLOBALS['egw']->link('/index.php', array('menuaction'=>'polls.uipolls.admin','action'=>'add','type'=>'answer')),
 		);
 
 		display_sidebox($appname,$menu_title,$file);
