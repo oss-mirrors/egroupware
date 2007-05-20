@@ -1,5 +1,5 @@
 <!-- $Id$ -->
-<tr bgcolor="{bg_color}">
+<tr class="th">
         <td>{string}</td>
         <td align="center">{read_lang}</td>
         <td align="center">{add_lang}</td>
