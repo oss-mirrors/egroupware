@@ -87,6 +87,9 @@
 		 $this->plug = CreateObject('jinn.factory_plugins_db_fields');
 		 $this->plug->local_bo = &$this; //FIXME remove
 
+		 //UGLY WORKAROUND FOR EVENT PLUGINS
+		 $GLOBALS['local_bo']=&$this;
+
 		 // move to bojinn
 		 $this->object_events_plugin_manager = CreateObject('jinn.factory_plugins_object_events'); 	
 		 $this->object_events_plugin_manager->local_bo = &$this; //FIXME remove
