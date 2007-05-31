@@ -40,6 +40,8 @@
 	  */
 	  function uijinn()
 	  {
+		 $GLOBALS['egw_info']['flags']['include_xajax'] = True;
+
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->tplsav2 = CreateObject('phpgwapi.tplsavant2');
 		 $this->nextmatchs=CreateObject('phpgwapi.nextmatchs');

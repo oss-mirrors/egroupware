@@ -359,6 +359,7 @@
 		 foreach($field_metadata as $fieldmeta)
 		 {
 			$field_values[$fieldmeta['name']]=$this->strip_magic_quotes_gpc($this->phpgw_db->f($fieldmeta['name']));
+			//$field_values[$field_name]=$this->strip_magic_quotes_gpc($this->phpgw_db->f($field_name));
 		 }
 		 return $field_values;
 	  }

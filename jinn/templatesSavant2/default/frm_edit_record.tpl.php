@@ -316,7 +316,11 @@
 			   }
 
 			</style>
+
 			<table class="paneltable">
+			   <tr style="font:size:110%;font-weight:bold;">
+				  <td colspan="2" style="width:100px"><?=lang('JiNN Properties')?></td>
+			   </tr>
 			   <tr style="font-weight:bold;">
 				  <td style="width:100px"><?=lang('Name')?></td>
 				  <td style="width:150px"><?=lang('Value')?></td>
@@ -327,7 +331,7 @@
 			   </tr>
 			   <tr>
 				  <td><?=lang('Field Type')?></td>
-				  <td id="panel_ftype"></td>
+				  <td id="panel_jftype"></td>
 			   </tr>
 			   <tr>
 				  <td><?=lang('Enabled')?></td>
@@ -373,10 +377,44 @@
 				  <td><?=lang('Delete')?></td>
 				  <td id="panel_del"></td>
 			   </tr>
-			   <!--	   <tr>
-				  <td><?=lang('Debug')?></td>
-				  <td id="panel_debug"></td>
-			   </tr>-->
+			</table>
+			<div id="panel_debug"></div>
+			<table  class="paneltable">
+			   <tr style="font:size:110%;font-weight:bold;">
+				  <td colspan="2" style="width:100px"><?=lang('Datasource Properties')?></td>
+			   </tr>
+			   <tr style="font-weight:bold;">
+				  <td style="width:100px"><?=lang('Name')?></td>
+				  <td style="width:150px"><?=lang('Value')?></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Field Type')?></td>
+				  <td id="panel_dbtype"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Size')?></td>
+				  <td id="panel_dbsize"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Not Null')?></td>
+				  <td id="panel_dbnotnull"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('Flags')?></td>
+				  <td id="panel_dbflags"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('binary')?></td>
+				  <td id="panel_dbbin"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('has default')?></td>
+				  <td id="panel_dbhasdef"></td>
+			   </tr>
+			   <tr>
+				  <td><?=lang('default value')?></td>
+				  <td id="panel_dbdefval"></td>
+			   </tr>
 			</table>
 		 </div>
 		 <?php endif?>

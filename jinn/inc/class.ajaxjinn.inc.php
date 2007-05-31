@@ -83,7 +83,7 @@
 		 $response = new xajaxResponse();
 
 		 $props=$this->bo->so->get_field_values($object_id,$field);
-		 $debug=_debug_array($props,false); 
+		 $props_db=$this->bo->so->object_field_metadata($object_id,$field);
 
 		 if($props['field_enabled']==1)
 		 {
@@ -130,7 +130,7 @@
 		 }
 
 		 $response->addAssign('panel_fname', "innerHTML", $props['field_name']);
-		 $response->addAssign('panel_ftype', "innerHTML", $props['element_type']);
+		 $response->addAssign('panel_jftype', "innerHTML", $props['element_type']);
 
 		 $response->addAssign('panel_flabel', "innerHTML", $props['element_label']);
 		 $response->addAssign('panel_fhelpinfo', "innerHTML", $props['field_help_info']);
@@ -143,6 +143,17 @@
 		 $response->addAssign('panel_ffe_readonly', "innerHTML", $props['fe_readonly']);
 		 $response->addAssign('panel_fdata_source', "innerHTML", $props['data_source']);
 		 $response->addAssign('panel_del', "innerHTML", $del);
+
+		 $response->addAssign('panel_dbtype', "innerHTML", $props_db['type']);
+		 $response->addAssign('panel_dbsize', "innerHTML", $props_db['len']);
+		 $response->addAssign('panel_dbflags', "innerHTML", $props_db['flags']);
+		 $response->addAssign('panel_dbhasdef', "innerHTML", $props_db['has_default']);
+		 $response->addAssign('panel_dbdefval', "innerHTML", $props_db['default']);
+		 $response->addAssign('panel_dbbin', "innerHTML", $props_db['binary']);
+		 $response->addAssign('panel_dbnotnull', "innerHTML", $props_db['not_null']);
+
+		 //$debug=_debug_array($props_db,false); 
+		 //$response->addAssign('panel_debug', "innerHTML", $debug);
 
 
 		 return $response->getXML();
