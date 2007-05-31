@@ -124,7 +124,22 @@
 			   }
 			}
 
-			$records=$this->bo->get_records($this->bo->site_object['table_name'],'','',0,1,'name',$orderby,'*',$where_condition);
+			//fixme start of object filters
+			/*
+			if($this->bo->site_object['extra_where_sql_filter'])
+			{
+			   if ($where_string) 
+			   {
+				  $where_string.= " AND ({$this->bo->site_object['extra_where_sql_filter']})"; 	
+			   }
+			   else
+			   {
+				  $where_string= " ({$this->bo->site_object['extra_where_sql_filter']})"; 	
+			   }
+			}*/
+
+
+			$records=$this->bo->get_records($this->bo->site_object['table_name'],'','',0,1,'name',$orderby,'*',$where_string);
 			if(count($records)>0)
 			{
 			   foreach($records as $recordvalues)
@@ -141,6 +156,22 @@
 					 $where_string=base64_encode($where_string);
 				  }
 			   }
+			   //fixme start of object filters
+/*			   if($this->bo->site_object['extra_where_sql_filter'])
+			   {
+				  if ($where_string) 
+				  {
+					 $where_string.= " AND ({$this->bo->site_object['extra_where_sql_filter']})"; 	
+				  }
+				  else
+				  {
+					 $where_string= " ({$this->bo->site_object['extra_where_sql_filter']})"; 	
+				  }
+			   }
+			   */
+//			   $where_string=base64_encode($where_string);
+
+
 
 			   $this->bo->exit_and_open_screen($this->japielink.'jinn.uiu_edit_record.read_record&site_id='.$this->bo->site_object['parent_site_id'].'&site_object_id='.$this->bo->site_object['object_id'].'&where_string='.$where_string);
 			   //die('jinn.uiu_edit_record.read_record&object_id='.$this->bo->site_object['object_id'].'&where_string='.$where_string);
@@ -323,6 +354,7 @@
 			$this->bo->exit_and_open_screen('jinn.uiuser.index');
 		 }
 
+
 		 $this->header('browse through records');
 		 $this->msg_box();
 
@@ -362,12 +394,14 @@
 
 		 //the filter class takes care of detecting the current filter, compiling a where statement and compiling the filter options for the listbox
 		 $filter_where = $this->filtermanager->get_filter_where();
+		 $this->filtermanager->tplsav2=&$this->tplsav2;
 
 		 $this->tplsav2->set_var('filter_list',$this->filtermanager->format_filter_options($_POST['filtername']));
 		 $this->tplsav2->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
 		 $this->tplsav2->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
 		 $this->tplsav2->set_var('filter_text',lang('activate filter'));
 		 $this->tplsav2->set_var('filter_edit',lang('edit filter'));
+
 
 		 $quick_filter_arr = $this->bo->session['browse_settings']['quick_filter'];
 		 if( trim($_POST['quick_filter']) || $_POST['quick_filter_hidden'] )
