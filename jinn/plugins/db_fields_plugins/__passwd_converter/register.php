@@ -30,7 +30,6 @@
    $this->registry->plugins['passwd_converter']['description']		= 'This plugin will generate a md5 hash from the string givven';
    $this->registry->plugins['passwd_converter']['version']			= '0.1';
    $this->registry->plugins['passwd_converter']['enable']			= 1;
-   $this->registry->plugins['passwd_converter']['default']			= 0;
    $this->registry->plugins['passwd_converter']['db_field_hooks']	= array
    (
 	  'string'
