@@ -1,16 +1,16 @@
-%1 bookmarks have been deleted	bookmarks	sk	%1 zálo¾iek bolo zmazaných
+%1 bookmarks have been deleted	bookmarks	sk	%1 zálo¾iek bolo odstránených
 %1 bookmarks imported from %2 successfully.	bookmarks	sk	%1 zálo¾iek z %2 sa úspe¹ne naimportovalo.
 (comma separate multiple addresses)	bookmarks	sk	(èiarkou oddelených viacero adries)
 <b>note:</b> this currently works with netscape bookmarks only	bookmarks	sk	<b>Upozornenie:</b> Toto momentálne funguje len so zálo¾kami v Netscape
 all bookmarks	bookmarks	sk	V¹etky zálo¾ky
 and	bookmarks	sk	A
-append this message to mailed bookmarks	bookmarks	sk	Túto správu pripoji» k mailovaným zálo¾kám
+append this message to mailed bookmarks	bookmarks	sk	Túto správu pripoji» k zálo¾kám odoslaným E-mailom
 ascending	bookmarks	sk	Vzostupné
 book marks	common	sk	Zálo¾ky
-bookmark changed sucessfully	bookmarks	sk	Zálo¾ka úspe¹ne zmenená
-bookmark created successfully.	bookmarks	sk	Zálo¾ka úspe¹ne vytvorená.
-bookmark deleted successfully	bookmarks	sk	Zálo¾ka úspe¹ne zmazaná.
-bookmark deleted successfully.	bookmarks	sk	Zálo¾ka úspe¹ne zmazaná.
+bookmark changed sucessfully	bookmarks	sk	Zálo¾ka bola úspe¹ne zmenená
+bookmark created successfully.	bookmarks	sk	Zálo¾ka bola úspe¹ne vytvorená.
+bookmark deleted successfully	bookmarks	sk	Zálo¾ka bola úspe¹ne odstránená.
+bookmark deleted successfully.	bookmarks	sk	Zálo¾ka bola úspe¹ne odstránená.
 bookmark not editable	bookmarks	sk	Zálo¾ka sa nedá upravova»
 bookmark not readable	bookmarks	sk	Zálo¾ka sa nedá èíta»
 bookmarks	common	sk	Zálo¾ky
@@ -19,10 +19,10 @@ change bookmark	bookmarks	sk	Zmeni» zálo¾ku
 close this window to return	bookmarks	sk	pre návrat zavrite toto okno
 create bookmark	bookmarks	sk	Vytvori» zálo¾ku
 create new bookmark	bookmarks	sk	Vytvori» novú zálo¾ku
-date added	bookmarks	sk	Dátum pridaný
-date changed	bookmarks	sk	Dátum zmenený
-date last updated	bookmarks	sk	Dátum naposledy aktualizovaný
-date last visited	bookmarks	sk	Dátum naposledy nav¹tívený
+date added	bookmarks	sk	Dátum pridania
+date changed	bookmarks	sk	Dátum zmeny
+date last updated	bookmarks	sk	Dátum poslednej aktualizácie
+date last visited	bookmarks	sk	Dátum poslednej náv¹tevy
 descending	bookmarks	sk	Zostupne
 edit bookmark	bookmarks	sk	Upravi» zálo¾ku
 edit this bookmark	bookmarks	sk	Uprav túto zálo¾ku
@@ -30,7 +30,7 @@ enter the name of the netscape bookmark file<br>that you want imported into book
 export bookmarks	common	sk	Exportova» zálo¾ky
 fewer	bookmarks	sk	Menej
 filter by	bookmarks	sk	Filtrova» podµa
-found a link you might like	bookmarks	sk	Na¹iel sa odkaz ktorý by vás mohol zaujíma»
+found a link you might like	bookmarks	sk	Na¹iel sa odkaz, ktorý by vás mohol zaujíma»
 from	bookmarks	sk	Od
 from category %1	bookmarks	sk	z kategórie %1
 global categories	bookmarks	sk	Globálne kategórie
@@ -40,8 +40,8 @@ import bookmarks	common	sk	Naimportova» zálo¾ky
 like	bookmarks	sk	ako
 list view	bookmarks	sk	zobrazi» zoznam
 lowest	bookmarks	sk	Najni¾¹ie
-mail this bookmark	bookmarks	sk	Posla» túto zálo¾ku mailom
-mail-this-link message sent to %1.	bookmarks	sk	správa s odkazom odoslaná pre %1.
+mail this bookmark	bookmarks	sk	Posla» túto zálo¾ku E-mailom
+mail-this-link message sent to %1.	bookmarks	sk	správa s odkazom bola odoslaná pre %1.
 mass update:	bookmarks	sk	Hromadná aktualizácia:
 message from	bookmarks	sk	Správa od
 more	bookmarks	sk	Viac
@@ -59,7 +59,7 @@ rating	bookmarks	sk	Hodnotenie
 search for:	bookmarks	sk	Vyhµada»:
 select the format you would like to export to	bookmarks	sk	Vyberte formát do ktorého chcete exportova»
 send bookmark	bookmarks	sk	Posla» zálo¾ku
-site configuration	bookmarks	sk	Nastavenia Stránky
+site configuration	bookmarks	sk	Konfigurácia stránky
 sub category	bookmarks	sk	Podkategória
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sk	Adresa Kmou %1 je chybná. Formát musí by» <strong>user@domain</strong> a doména musí by» spomedzi existujúcich!
 to e-mail addresses	bookmarks	sk	Adresa Komu
@@ -67,7 +67,7 @@ to which category should the imported folder hierarchy be attached	bookmarks	sk	
 total visits	bookmarks	sk	náv¹tev celkovo
 tree view	bookmarks	sk	Stromový pohµad
 unable to open temp file %1 for import.	bookmarks	sk	Súbor %1 sa nepodarilo otvori» pre import.
-url is required.	bookmarks	sk	Je potrebné URL.
+url is required.	bookmarks	sk	Je potrebná URL adresa.
 view bookmark	bookmarks	sk	Zobrazi» zálo¾ku
 view this bookmark	bookmarks	sk	Zobrazi» túto zálo¾ku
 warning	bookmarks	sk	Pozor

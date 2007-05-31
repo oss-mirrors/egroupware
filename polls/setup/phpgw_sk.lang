@@ -3,31 +3,37 @@ add answer to poll	polls	sk	Prida» odpoveï pre voµbu
 add answers	polls	sk	Prida» odpovede
 add new poll question	polls	sk	Prida» novú otázku pre voµbu
 add questions	polls	sk	Prida» otázky
+administrators	polls	sk	Správcovia
 allow users to vote more then once	polls	sk	Prida» pou¾ívateµov s mo¾nos»ou opakovanej voµby
+allways use latest poll	polls	sk	V¾dy pou¾i» najnov¹iu voµbu
 answer	polls	sk	Odpoveï
 answer has been added to poll	polls	sk	Odpoveï bola pridaná do voµby
 answer has been updated	polls	sk	Odpoveï bola aktualizovaná
 answers	polls	sk	Odpovede
-are you sure want to delete this answer ?	polls	sk	Naozaj chcete zmaza» túto odpoveï?
-are you sure want to delete this question ?	polls	sk	Naozaj chcete zmaza» túto otázku?
+are you sure want to delete this answer ?	polls	sk	Naozaj chcete odstráni» túto odpoveï?
+are you sure want to delete this question ?	polls	sk	Naozaj chcete odstráni» túto otázku?
 current poll	polls	sk	Aktuálna voµba
 edit answer	polls	sk	Upravi» odpoveï
 edit poll question	polls	sk	Upravi» otázku pre voµbu
+egroupware users (non-anonymous)	polls	sk	pou¾ívatelia eGroupWare (nie anonymní)
 enter poll question	polls	sk	Zada» otázku pre voµbu
+everyone incl. anonymous users	polls	sk	V¹etci vrátane anonymných pou¾ívateµov
 new poll has been added.  you should now add some answers for this poll	polls	sk	Nová voµba bola pridaná. Mali by ste teraz zada» nejaké odpovede pre túto voµbu
+noone	polls	sk	Nikto
 poll question	polls	sk	Otázka pre voµbu
-poll settings	common	sk	Nastavenia voµby
+poll votable by	polls	sk	Hlasova» mô¾e
 polls	common	sk	Voµby
 question has been updated	polls	sk	Otázka bola aktualizovaná
+result visible to	polls	sk	Výsledky smie vidie»
 select current poll	polls	sk	Vyberte aktuálnu voµbu
-settings	polls	sk	Nastavenia
-settings updated	polls	sk	Nastavenia aktualizované
+settings updated	polls	sk	Nastavenia boli aktualizované
 show answers	polls	sk	Zobrazi» odpovede
 show questions	common	sk	Zobrazi» otázky
 total votes	polls	sk	Celkovo
 view poll	polls	sk	Zobrazi» voµbu
 view results	polls	sk	Zobrazi» výsledky
-vote	polls	sk	Voli»
-voting booth admin	admin	sk	Volebná kabína
-voting booth administration	polls	sk	Správa volebnej kabíny
+vote	polls	sk	Hlasova»
+voting booth admin	admin	sk	Hlasovacia kabína
+voting booth administration	polls	sk	Správa hlasovacej kabíny
 which poll	polls	sk	Ktorá voµba
+you are not (yet) allowed view the result of this vote.	polls	sk	Nemô¾ete (zatiaµ) vidie» výsledky tejto voµby.

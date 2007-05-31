@@ -13,8 +13,8 @@ changelogs	developer_tools	sk	Záznamy zmien
 clears the internal buffer, all changes made sofar are lost	developer_tools	sk	Vyèistí vnútorný bufer, v¹etky doposiaµ vykonané zmeny sa stratia
 create new language file	developer_tools	sk	Vytvori» nový jazykový súbor
 create sgml file	developer_tools	sk	Vytvori» SGML súbor
-developer tools - preferences	developer_tools	sk	Vývojové nástroje -nastavenia
-developer_tools	common	sk	Prekladateµské nástroje
+developer tools - preferences	developer_tools	sk	Vývojové Nástroje -predvoµby
+developer_tools	common	sk	Prekladateµské Nástroje
 diary	developer_tools	sk	Diár
 done	developer_tools	sk	hotovo
 download	developer_tools	sk	Stiahnu»
@@ -23,21 +23,21 @@ edit	developer_tools	sk	Upravi»
 installed applications	developer_tools	sk	Nain¹talované aplikácie
 language file management	developer_tools	sk	Správa jazykových súborov
 list changelogs	developer_tools	sk	Zobrazi» záznamy o zmenách
-load	developer_tools	sk	Nahra»
-loading source langfile	developer_tools	sk	Nahrávam zdrojový jazykový súbor
-loading target langfile	developer_tools	sk	Nahrávam cieµový jazykový súbor
-loads the selected lang-files, to be modified in the next steps	developer_tools	sk	Nahrá vybrané jazykové súbory, ktoré majú by» zmenené v nasledujúcich krokoch
+load	developer_tools	sk	Naèíta»
+loading source langfile	developer_tools	sk	Naèítavam zdrojový jazykový súbor
+loading target langfile	developer_tools	sk	Naèítavam cieµový jazykový súbor
+loads the selected lang-files, to be modified in the next steps	developer_tools	sk	Naèítajú sa vybrané jazykové súbory, ktoré majú by» zmenené v nasledujúcich krokoch
 message	developer_tools	sk	Správa
 message_id in english	developer_tools	sk	ID správy v angliètine
 no file	developer_tools	sk	¾iadny súbor
 ok	developer_tools	sk	ok
 original	developer_tools	sk	Originál
 phrase in english (or empty if identical)	developer_tools	sk	Fráza v angliètine (alebo prázdne, ak sú toto¾né)
-preferences	developer_tools	sk	Nastavenia
-preferences have been updated	developer_tools	sk	Nastavenia boli aktualizované
+preferences	developer_tools	sk	Predvoµby
+preferences have been updated	developer_tools	sk	Predvoµby boli aktualizované
 project	developer_tools	sk	Projekt
 remove	developer_tools	sk	Odstráni»
-removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	sk	Odstránených %1 fráz z cieµového jazyka, nakoµko sa u¾ nevyskytujú ani v zdrojovom jazyku!
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	sk	Odstránených bolo %1 fráz z cieµového jazyka, nakoµko sa u¾ nevyskytujú ani v zdrojovom jazyku!
 returns to the application list, not saved changes get lost !!!	developer_tools	sk	Návrat do zoznamu aplikácií -neulo¾ené zmeny sa stratia!!!
 revert	developer_tools	sk	Naspä»
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sk	Ulo¾í pridané/zmenené preklady do vnútorného bufera, pre pou¾itie v ïal¹ích krokoch
@@ -71,4 +71,4 @@ you have to [save] every manual change in the above fields, before you can go to
 you must a version	developer_tools	sk	Musíte verziu
 you must enter a change	developer_tools	sk	Musíte zada» zmenu
 you must select a project	developer_tools	sk	Musíte vybra» projekt
-you need to set your preferences for this app	developer_tools	sk	Musíte urèi» va¹e nastavenia pre túto aplikáciu
+you need to set your preferences for this app	developer_tools	sk	Mali by ste nastavi» svoje predvoµby pre túto aplikáciu

@@ -6,10 +6,10 @@ download	manual	sk	stiahnu»
 index	manual	sk	Index
 install or update the manual-pages	admin	sk	in¹talova» alebo aktualizova» stránky manuálu
 manual	common	sk	Manuál / Pomocník
-page(s) %1 not found !!!	manual	sk	Stránka/y %1 sa nena¹la !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	sk	Vzdialené eGroupWare URL ktoré sa má pou¾íva» pre manuál. Ak necháte prázdne, uplatní sa predvolené, èi¾e lokálny manuál.
+page(s) %1 not found !!!	manual	sk	Nena¹iel som stránky %1 !!!
+remote egroupware url for the manual to use, empty for a local manual, default	admin	sk	Vzdialená URL adresa eGroupWare, ktorá sa má pou¾íva» pre manuál. Ak necháte prázdne, uplatní sa predvolené, èi¾e lokálny manuál.
 search for	manual	sk	Hµadaj
 starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	sk	Zaèínam importova» z %1, mô¾e to trva» niekoµko minút (najmä ak to spú¹»ate po prvýkrát) ...
 the search returned no result!	manual	sk	Vyhµadávanie skonèilo bezvýsledne!
-update url for the local manual, default	admin	sk	Aktualizova» URL pre lokálny manuál, predvolené
-wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	sk	Wiki ID pre lokálny manuál, predvolené: 1. 0 sa pou¾íva ak chcete strnky manuálu upravova» pomocou wiki.
+update url for the local manual, default	admin	sk	Aktualizova» adresu URL pre lokálny manuál, predvolené
+wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	sk	Wiki ID pre lokálny manuál, predvolené: 1. 0 sa pou¾íva ak chcete stránky manuálu upravova» pomocou wiki.

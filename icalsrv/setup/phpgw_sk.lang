@@ -1,7 +1,7 @@
 addressbook test	icalsrv	sk	Test Adresára
 app	icalsrv	sk	Aplikácia
 apps	icalsrv	sk	Aplikácie
-assigned sessionid	icalsrv	sk	Priradené ID sedenia
+assigned sessionid	icalsrv	sk	Priradené ID relácie
 bogus request	icalsrv	sk	Chybná po¾iadavka
 calendar test	icalsrv	sk	Test Kalendára
 icalsrv	common	sk	iCalSrv

@@ -1,6 +1,7 @@
 %1 bookmarks have been deleted	bookmarks	pl	%1 zak³adek zosta³o usuniêtych
 %1 bookmarks imported from %2 successfully.	bookmarks	pl	%1 z %2 zak³adek zosta³o skutecznie zaimportowanych
 (comma separate multiple addresses)	bookmarks	pl	(przecinek oddziela kilka adresów)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	pl	<b>Uwaga:</b> Funkcja dostêpna obecnie jedynie w przegl±darce Netscape.
 all bookmarks	bookmarks	pl	Wszystkie zak³adki
 and	bookmarks	pl	oraz
 append this message to mailed bookmarks	bookmarks	pl	Do³±cz tê wiadomo¶æ do wysy³anych zak³adek
@@ -9,6 +10,7 @@ book marks	common	pl	Zak³adki
 bookmark changed sucessfully	bookmarks	pl	Zak³adka zosta³a zmieniona.
 bookmark created successfully.	bookmarks	pl	Zak³adka zosta³a utworzona.
 bookmark deleted successfully	bookmarks	pl	Zak³adka zosta³a usuniêta.
+bookmark deleted successfully.	bookmarks	pl	Zak³adka zosta³a usuniêta.
 bookmark not editable	bookmarks	pl	Nie mo¿na edytowaæ zak³adki
 bookmark not readable	bookmarks	pl	Nie mo¿na odczytaæ zak³adki
 bookmarks	common	pl	Zak³adki
@@ -24,12 +26,14 @@ date last visited	bookmarks	pl	Data ostatniej wizyty
 descending	bookmarks	pl	Malej±co
 edit bookmark	bookmarks	pl	Edycja zak³adki
 edit this bookmark	bookmarks	pl	Edycja zak³adki
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	pl	Podaj nazwê pliku zak³adek Netscape.<br />który chcesz zaimportowaæ do poni¿szego kontenera.
 export bookmarks	common	pl	Eksportuj Zak³adki
 fewer	bookmarks	pl	Zmniej
 filter by	bookmarks	pl	Sortuj wg
 found a link you might like	bookmarks	pl	Znaleziono link, który mo¿e ci siê podobaæ
 from	bookmarks	pl	Z
 from category %1	bookmarks	pl	z kategorii %1
+global categories	bookmarks	pl	Kategorie globalne
 highest	bookmarks	pl	Najwy¿szy
 i thought you would be interested in the following link(s):	bookmarks	pl	Pomy¶la³em, ¿e mog³by¶ byæ zainteresowany nastêpuj±cymi linkami:
 import bookmarks	common	pl	Importuj zak³adki
@@ -37,6 +41,7 @@ like	bookmarks	pl	jak
 list view	bookmarks	pl	widok listy
 lowest	bookmarks	pl	Najni¿szy
 mail this bookmark	bookmarks	pl	Wy¶lij zak³adkê
+mail-this-link message sent to %1.	bookmarks	pl	wiadomo¶æ z tym odno¶nikiem zostata³a wys³ana do %1
 mass update:	bookmarks	pl	Masowa aktualizacja
 message from	bookmarks	pl	Wiadomo¶æ od
 more	bookmarks	pl	Wiêcej
@@ -47,19 +52,25 @@ netscape bookmark filename is required!	bookmarks	pl	Nazwa pliku zak³adki Netsca
 new	bookmark	pl	Nowa
 new bookmark	bookmarks	pl	Nowa zak³adka
 or	bookmarks	pl	lub
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	pl	Proszê wype³niæ: <b>adres odbiorcy</b>, <b>temat</b> oraz <b>tre¶æ wiadomo¶ci</b>!
 please select the categories to export	bookmarks	pl	Prosimy wybraæ kategorie do eksportu
+query condition	bookmarks	pl	Warunek zapytania
 rating	bookmarks	pl	Ocena
 search for:	bookmarks	pl	Szukaj:
 select the format you would like to export to	bookmarks	pl	Wybierz format, który chcia³by¶ exportowaæ
 send bookmark	bookmarks	pl	Wy¶lij zak³adkê
+site configuration	bookmarks	pl	Konfiguracja strony
 sub category	bookmarks	pl	Podkategoria
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	pl	Adres odbiorcy %1 nieprawid³owy. Powinien byæ <strong>u¿ytkownik@domena</strong> i musi byæ to poprawna domena.
 to e-mail addresses	bookmarks	pl	Na Adres E-mail
 to which category should the imported folder hierarchy be attached	bookmarks	pl	Do której kategorii hierarchia zaimportowanego folderu powinna byæ do³±czona
 total visits	bookmarks	pl	Wszystkich wizyt
 tree view	bookmarks	pl	Widok drzewa
+unable to open temp file %1 for import.	bookmarks	pl	Nie uda³o siê otworzyæ pliku tymczasowego %1 dla importu.
 url is required.	bookmarks	pl	Adres URL jest wymagany.
 view bookmark	bookmarks	pl	Poka¿ zak³adkê
 view this bookmark	bookmarks	pl	Poka¿ tê zak³adkê
 warning	bookmarks	pl	Ostrze¿enie
 you are viewing this site outside of egroupware	bookmarks	pl	Ogl±dasz tê stronê spoza systemu eGroupware
 you must select a category	bookmarks	pl	Musisz wybraæ kategoriê
+you need to select a category!	bookmarks	pl	Musisz wybraæ kategoriê!

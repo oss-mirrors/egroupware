@@ -56,6 +56,7 @@ edit the state	tts	fi	Muokkaa tilaa
 edit the transition	tts	fi	Muokkaa siirtymää
 emergency	tts	fi	Hätätilanne
 error: the subject of the ticket is not specified.	tts	fi	VIRHE: pyynnön aihe ei ole erityinen
+force	tts	fi	Pakota
 global categories	tts	fi	Yleinen kategoria
 group ownership changed	tts	fi	Ryhmän omistusoikeudet muutettu
 history	tts	fi	Historia
@@ -134,7 +135,7 @@ the ticket has been reopened for further work.	tts	fi	Pyyntö on uudelleen avattu
 the ticket has been successfully resolved.	tts	fi	Pyyntö on onnistuneesti ratkaistu.
 the ticket has been verified and has to be worked on.	tts	fi	Pyyntö on tarkistettu ja sitä täytyy työstää.
 the ticket has been worked on and the work requires validation.	tts	fi	Pyyntöä on työstetty ja työ vaatii hyväksyntää.
-the ticket has been worked on, but requires more work.	tts	fi	Pyyntö on työstetty mutta vaatii lisää työtä.
+the ticket has been worked on, but requires more work.	tts	fi	Pyyntöä on työstetty, mutta se vaatii lisää työtä.
 the ticket is a duplicate of another ticket and should be closed.	tts	fi	Pyyntö on kopioitu toisesta tapauksesta ja pitäisi sulkea.
 the ticket is essentially not a duplicate of another ticket. reopen it.	tts	fi	Pyyntö ei ole olennaisesti toisen tapauksen kopio. Uudelleen avaa se.
 the ticket is invalid and cannot be worked on.	tts	fi	Tapaus on kelpaamaton ja se ei voi olla työstettävänä.
@@ -149,6 +150,8 @@ ticket #	tts	fi	Pyyntö #
 ticket count	tts	fi	Pyyntöjen määtä
 ticket has been updated	tts	fi	Pyyntö päivitetty
 ticket is in tracker	tts	fi	Tämä pyyntö on jo käännetty Helpdeskiin
+ticket is not accessable	tts	fi	pyyntö ei ole hyväksyttävissä
+ticket is not accessible	tts	fi	Tämä pyyntö ei ole hyväksyttävissä
 tickets found %1	tts	fi	Pyyntöjä löydetty %1
 tickets have been converted	tts	fi	Pyyntö on käännetty
 tickets open %1	tts	fi	Avoimia pyyntöjä %1

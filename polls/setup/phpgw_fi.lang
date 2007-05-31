@@ -3,7 +3,9 @@ add answer to poll	polls	fi	Lis‰‰ uusi vastaus ‰‰nestykseen
 add answers	polls	fi	Lis‰‰ vastauksia
 add new poll question	polls	fi	Lis‰‰ uusi kysymys ‰‰nestykseen
 add questions	polls	fi	Lis‰‰ kysymyksi‰
+administrators	polls	fi	P‰‰k‰ytt‰j‰t
 allow users to vote more then once	polls	fi	Salli k‰ytt‰jien vastata useasti ‰‰nestykseen
+allways use latest poll	polls	fi	K‰yt‰ aina viimeisint‰ ‰‰nestyst‰
 answer	polls	fi	Vastaus
 answer has been added to poll	polls	fi	Vastaus on lis‰tty ‰‰nestykseen
 answer has been updated	polls	fi	Vastaus on p‰ivitetty
@@ -13,14 +15,16 @@ are you sure want to delete this question ?	polls	fi	Haluatko varmasti poistaa t
 current poll	polls	fi	Nykyinen ‰‰nestys
 edit answer	polls	fi	Muokkaa vastausta
 edit poll question	polls	fi	Muokkaa kysymyst‰
+egroupware users (non-anonymous)	polls	fi	eGroupWaren k‰ytt‰j‰t (ei anonyymej‰)
 enter poll question	polls	fi	Syˆt‰ kysymys
+everyone incl. anonymous users	polls	fi	Kaikki, myˆs anonyymit k‰ytt‰j‰t
 new poll has been added.  you should now add some answers for this poll	polls	fi	Uusi ‰‰nestys on lis‰tty. Lis‰‰ seuraavaksi muutama vastausvaihtoehto ‰‰nestykseen.
 poll question	polls	fi	ƒ‰nestyksen kysymys
-poll settings	common	fi	ƒ‰nestyksen asetukset
+poll votable by	polls	fi	On ‰‰nestett‰viss‰
 polls	common	fi	ƒ‰nestykset
 question has been updated	polls	fi	Kysymys on p‰ivitetty
+result visible to	polls	fi	Vastaukset n‰ytet‰‰n
 select current poll	polls	fi	Valitse nykyinen ‰‰nestys
-settings	polls	fi	Asetukset
 settings updated	polls	fi	Asetukset p‰ivitetty
 show answers	polls	fi	N‰yt‰ vastaukset
 show questions	common	fi	N‰yt‰ kysymykset
@@ -31,3 +35,4 @@ vote	polls	fi	ƒ‰ni
 voting booth admin	admin	fi	ƒ‰nestyskoppi
 voting booth administration	polls	fi	P‰‰k‰ytt‰j‰n ‰‰nestyskoppi
 which poll	polls	fi	Mik‰ ‰‰nestys
+you are not (yet) allowed view the result of this vote.	polls	fi	Sinulla ei ole (viel‰) oikeutta n‰hd‰ ‰‰nestyksen tuloksia.

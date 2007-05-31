@@ -4,7 +4,7 @@ app	xmlrpc	sk	Aplikácia
 apps	xmlrpc	sk	Aplikácie
 assigned kp3	xmlrpc	sk	Priradené kp3
 assigned sessionid	xmlrpc	sk	Priradené id sedenia
-bogus request	xmlrpc	sk	Falo¹ná po¾iadavka
+bogus request	xmlrpc	sk	Chybná po¾iadavka
 calendar test	xmlrpc	sk	Test Kalendára
 client / server test	xmlrpc	sk	Test Klient / Server
 configure using admin - peer servers	xmlrpc	sk	Nastavi» s pou¾itím admin - Peer serverov

@@ -1,5 +1,5 @@
 (don't offer the possibility)	admin	sk	(neponúka» mo¾nos»)
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	sk	<em>Ale</em> zobrazi» aspoò toµkoto záznamov v Najnov¹ích Zmenách a ïal¹ích prihlasovaných zoznamoch:
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	sk	<em>Ale</em> zobrazi» aspoò toµkoto polo¾iek v Najnov¹ích Zmenách a ïal¹ích prihlásených zoznamoch:
 add document to category	wiki	sk	Prida» dokument do kategórie
 added	wiki	sk	Pridané
 administration features are disabled for this wiki.	wiki	sk	Správcovské funkcie sú zakázané pre túto wiki.
@@ -11,7 +11,7 @@ anonymous session type	admin	sk	Typ sedenia anonymného pou¾ívateµa
 anonymous username	admin	sk	Pou¾ívateµské meno anonymného pou¾ívateµa
 automatically convert pages with wiki-syntax to richtext (if edited)?	admin	sk	Automaticky konvertova» stránky s wiki-syntaxou na richtext (pri úpravách)?
 block	wiki	sk	Blokova»
-block / unblock hosts	common	sk	Blokova» / Odblokova» host-ov
+block / unblock hosts	common	sk	Blokova» / Odblokova» stroje
 blocked ip address ranges	wiki	sk	Blokované rozsahy IP
 cancel without saving	wiki	sk	Zru¹i» bez ulo¾enia
 changed	wiki	sk	Zmenené
@@ -21,18 +21,19 @@ columns	wiki	sk	Ståpce
 compute difference	wiki	sk	Vypoèíta» rozdiel
 converts the page to richtext	wiki	sk	Skonvertuje stránku na richtext
 current version	wiki	sk	Súèasná verzia
-deleted	wiki	sk	Vymazané
-deletes this page	wiki	sk	Vyma¾e túto stránku
+deleted	wiki	sk	Odstránené
+deletes this page	wiki	sk	Odstráni túto stránku
 difference between versions	wiki	sk	Rozdiely medzi verziami
 differences in	wiki	sk	Rozdiely v
 different languages can have different titles	wiki	sk	Rozlièné jazyky mô¾u ma» rozlièné titulky
 document last modified	wiki	sk	Dokument naposledy zmenený
-edit this <em>archive version</em> of this document	wiki	sk	Upravi» túto <em>ARCHÍVNU VERZIU</em> tohto dokumentu
+edit box	wiki	sk	Okno úprav
+edit this <em>archive version</em> of this document	wiki	sk	Upravi» túto <em>ARCHÍVNU VERZIU</em> dokumentu
 edit this document	wiki	sk	Upravi» tento dokument
 edit with preview	admin	sk	Upravi» s náhµadom
 editable	admin	sk	Upravovateµné
 editing	wiki	sk	Úpravy
-emailaddress administrator	admin	sk	Správca emailových adries
+emailaddress administrator	admin	sk	Správca E-mailových adries
 enable free links	admin	sk	Zapnú» voµné odkazy
 enable wiki links	admin	sk	Zapnú» Wiki odkazy
 enter here the maximum number of entries to display in a document's history list.	wiki	sk	Zadajte maximálny poèet polo¾iek, ktoré sa zobrazia v zozname histórie dokumentu.
@@ -47,10 +48,11 @@ history display should show <em>all</em> changes made by the latest author.  oth
 history lists	wiki	sk	Zoznamy histórie
 history of	wiki	sk	História (èoho)
 invalid page name.	wiki	sk	Chybný názov stránky.
-load	wiki	sk	Nahra»
-loads the named page in the given language, all change so far get lost !!!	wiki	sk	Nahrá pomenovanú stránku v zadanom jazyku, v¹etky doteraj¹ie zmeny sa stratia !!!
+load	wiki	sk	Naèíta»
+loads the named page in the given language, all change so far get lost !!!	wiki	sk	Naèíta pomenovanú stránku v zadanom jazyku, v¹etky doteraj¹ie zmeny sa stratia !!!
 lock / unlock pages	common	sk	Zamknú» / Odomknú» stránky
 locked	wiki	sk	Zamknuté
+name wiki home link	admin	sk	názov wiki domov odkaz
 newer	wiki	sk	Nov¹ie
 no never	admin	sk	Nie, nikdy
 no only on request	admin	sk	Nie, iba na po¾iadanie
@@ -60,8 +62,8 @@ on all pages	wiki	sk	na v¹etkých stránkach
 only if browser supports a richtext-editor	admin	sk	Iba ak prehliadaè podporuje richtext-editor
 only on the first page	wiki	sk	iba na prvej stránke
 page '%1' not found !!!	wiki	sk	Stránka '%1' sa nena¹la !!!
-path of the upload directory (has to be writable by the webserver!)	admin	sk	Cesta k adresáru pre nahratie (musí by» zapisovateµný webserverom!)
-picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sk	Nahratie obrázku cez richedit editor (ak chcete zakáza» nahrávanie, ponechajte adresár pre nahrávanie prázdny)
+path of the upload directory (has to be writable by the webserver!)	admin	sk	Cesta k adresáru pre odovzdanie (musí by» zapisovateµný webserverom!)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sk	Odovzdanie obrázku cez richedit editor (ak chcete zakáza» odovzdávanie, ponechajte adresár pre odovzdanie prázdny)
 please contact the %1administrator%2 for assistance.	wiki	sk	Prosím kontaktujte %1Správcu%2 o pomoc.
 preview	wiki	sk	Náhµad
 preview of current version	wiki	sk	Náhµad súèasnej verzie
@@ -85,7 +87,7 @@ the search returned no result!	wiki	sk	Hµadanie skonèilo bezvýsledne!
 this page can not be edited.	wiki	sk	Táto stránka sa nedá upravova».
 unblock	wiki	sk	Odblokova»
 updates the preview	wiki	sk	Aktualizuje náhµad
-url of the upload directory	admin	sk	URL nahrávacieho adresára
+url of the upload directory	admin	sk	URL adresa adresára pre odovzdanie
 use this module for displaying wiki-pages	wiki	sk	Pou¾i» tento modul pre zobrazovanie stránok wiki
 users	wiki	sk	pou¾ívatelia
 view document history	wiki	sk	Zobrazi» históriu dokumentu

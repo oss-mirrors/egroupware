@@ -3,7 +3,9 @@ add answer to poll	polls	pl	Dodawanie odpowiedzi
 add answers	polls	pl	Dodaj odpowied¼
 add new poll question	polls	pl	Dodawanie nowych pyta
 add questions	polls	pl	Dodaj pytanie
+administrators	polls	pl	Administratorzy
 allow users to vote more then once	polls	pl	Pozwól u¿ytkownikom g³osowaæ wiêcej ni¿ jeden raz
+allways use latest poll	polls	pl	Zawsze u¿ywaj najnowszego g³osowania
 answer	polls	pl	Odpowied¼
 answer has been added to poll	polls	pl	Dodano odpowied¼ do g³osowania
 answer has been updated	polls	pl	Zaktualizowano odpowied¼
@@ -13,14 +15,17 @@ are you sure want to delete this question ?	polls	pl	Na pewno usun±æ pytanie?
 current poll	polls	pl	Aktywne g³osowanie
 edit answer	polls	pl	Edycja odpowiedzi
 edit poll question	polls	pl	Edycja pytania
+egroupware users (non-anonymous)	polls	pl	u¿ytkownicy eGroupWare (nie osoby anonimowe)
 enter poll question	polls	pl	Wpisz pytanie
+everyone incl. anonymous users	polls	pl	wszyscy - ³±cznie z osobami anonimowymi
 new poll has been added.  you should now add some answers for this poll	polls	pl	Dodano nowe g³osowanie. Teraz nale¿y dodaæ odpowiedzi
+noone	polls	pl	Nikt, ale naprawdê nikt
 poll question	polls	pl	Pytanie
-poll settings	common	pl	Konfiguracja g³osowania
+poll votable by	polls	pl	Mog± g³osowaæ
 polls	common	pl	G³osowania
 question has been updated	polls	pl	Zaktualizowano pytanie
+result visible to	polls	pl	Wynik widoczny dla
 select current poll	polls	pl	Wybierz aktualne g³osowanie
-settings	polls	pl	Ustawienia
 settings updated	polls	pl	Uaktualniono konfiguracjê
 show answers	polls	pl	Poka¿ odpowiedzi
 show questions	common	pl	Poka¿ pytania
@@ -31,3 +36,4 @@ vote	polls	pl	G³osuj
 voting booth admin	admin	pl	G³osowania
 voting booth administration	polls	pl	Administracja g³osowaniami
 which poll	polls	pl	Wybór g³osowania
+you are not (yet) allowed view the result of this vote.	polls	pl	Nie masz (jeszcze) zgody na ogl±danie wyniku tego g³osowania.

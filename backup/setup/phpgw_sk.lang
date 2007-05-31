@@ -6,15 +6,15 @@ archive type	backup	sk	Vyberte typ archívu
 backup	common	sk	Zálohovanie
 backup administration	common	sk	Správa Zálohovania
 bzip2	admin	sk	bzip2
-configuration backup	backup	sk	Nastavenia Zálohovania
-configuration localhost	backup	sk	Nastavenia lokálneho stroja (localhost)
-create backups of your data ?	backup	sk	Ak chcete vytvára» zálohy va¹ich dát, za¹krtnite:
+configuration backup	backup	sk	Konfigurácia Zálohovania
+configuration localhost	backup	sk	Konfigurácia lokálneho stroja (localhost)
+create backups of your data ?	backup	sk	Ak chcete vytvára» zálohy va¹ich dát, zaèiarknite:
 daily	backup	sk	Denne
 data	backup	sk	Dáta
 directory locations	admin	sk	Umiestnenia adresárov
 directory names	admin	sk	Názvy adresárov
-e-mail	backup	sk	Ak chcete dostáva» upozornenia emailom, za¹krtnite:
-e-mail notification?	backup	sk	Upozornenia cez email?
+e-mail	backup	sk	Ak chcete dostáva» upozornenia E-mailom, zaèiarknite:
+e-mail notification?	backup	sk	Upozornenia cez E-mail?
 homedirs	admin	sk	Domovské adresáre
 interval	backup	sk	Interval
 ip or hostname	backup	sk	IP alebo názov (hostname)
@@ -38,24 +38,24 @@ please set the path to a local dir to store the backup script !	backup	sk	Prosím
 please set the path to the ldap database dir in *site configuration* !	backup	sk	Prosím nastavte cestu k adresáru LDAP databázy v *Nastavení stránky*!
 please set the path to the mysql database dir in *site configuration* !	backup	sk	Prosím nastavte cestu k adresáru MySQL databázy v *Nastavení stránky*!
 please set the path to the postgresql database dir in *site configuration* !	backup	sk	Prosím nastavte cestu k adresáru PostgreSQL databázy v *Nastavení stránky*!
-please set the values in *site configuration* !	backup	sk	Prosím nastavte hodnoty v *Nastavení stránky*!
-please specify the ip of the remote host !	backup	sk	Prosím zadajte IP vzdialeného systému!
+please set the values in *site configuration* !	backup	sk	Prosím nastavte hodnoty v *Konfigurácii stránky*!
+please specify the ip of the remote host !	backup	sk	Prosím zadajte IP vzdialeného stroja!
 please specify the name of the maildir in *site configuration* !	backup	sk	Prosím zadajte názov adresára Maildir v *Nastavení stránky*!
 please specify the path to the backup directory !	backup	sk	Prosím zadajte cestu k adresáru záloh!
-please specify the path to the user-homedirectories in *site configuration* !	backup	sk	Prosím zadajte cestu k domovským (home) adresárom pou¾ívateµov v *Nastavení stránky*!
-please write down you e-mail for beeing notified	backup	sk	Prosím zadajte vá¹ e-mail pre posielanie upozornení
+please specify the path to the user-homedirectories in *site configuration* !	backup	sk	Prosím zadajte cestu k domovským adresárom pou¾ívateµov v *Konfigurácii stránky*!
+please write down you e-mail for beeing notified	backup	sk	Prosím zadajte vá¹ E-mail na úèely posielania upozornení
 program locations	admin	sk	Umiestnenia programov
-save backup locally ?	backup	sk	Ak chcete uklada» lokálne, za¹krtnite:
+save backup locally ?	backup	sk	Ak chcete uklada» lokálne, zaèiarknite:
 select archive type	backup	sk	Vyberte typ archívu
 select interval	backup	sk	Vyberte interval
 settings	admin	sk	Nastavenia
-show backup archives in egroupware ?	backup	sk	Ak chcete, aby sa zálohy zobrazovali v eGroupWare, za¹krtnite:
+show backup archives in egroupware ?	backup	sk	Ak chcete, aby sa zálohy zobrazovali v eGroupWare, zaèiarknite:
 smbmount	backup	sk	smbmount
 sql	backup	sk	SQL
 tar	admin	sk	tar
 tar.bz2	backup	sk	tar.bz2
 tar.gz	backup	sk	tar.gz
-the backup application is not configured for showing the archives in egroupware yet !	backup	sk	Aplikácia Zálohovanie zatiaµ nie je nastavená tak, aby zobrazovala hotové zálohy v eGroupWare!
+the backup application is not configured for showing the archives in egroupware yet !	backup	sk	Aplikácia Zálohovanie zatiaµ nie je konfigurovaná tak, aby zobrazovala hotové zálohy v eGroupWare!
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	sk	Adresár pre ulo¾enie zálohového skriptu musí by» vnútri *DocumentRoot* webservera!
 versions can only be a number !	backup	sk	Verzie mô¾u by» len èíselné!
 weekly	backup	sk	tý¾denne

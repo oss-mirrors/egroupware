@@ -6,35 +6,35 @@ action	tts	sk	Akcia
 add new ticket	tts	sk	Prida» nový problém
 add ticket	tts	sk	Prida» problém
 additional notes	tts	sk	Ïal¹ie poznámky
-admin options	common	sk	Administrátorské nastavenia
+admin options	common	sk	Správcovské mo¾nosti
 alert for critical prio setting	tts	sk	Nastavujete prioritu na Kritickú; prosím uistite sa, ¾e viete, èo to znamená pre adresáta problému, a nezabudnite mu bezodkladne zavola»!
 alert for emergency prio setting	tts	sk	Nastavujete prioritu na Havarijnú; prosím uistite sa, ¾e viete, èo to znamená pre adresáta problému, a nezabudnite mu bezodkladne zavola»!
 alert for high prio setting	tts	sk	Prosím zvá¾te, èi netreba zavola» adresátovi problému!
 all categories used in tts are global and will remain unchaned in tracker	tts	sk	V¹etky kategórie, pou¾ívané v Problémovníku, sú globálne. Ostanú nezmenené aj v Sledovaèi.
-all tickets are already converted to tracker	tts	sk	V¹etky problémy sú u¾ prevedené do Sledovaèa.
+all tickets are already converted to tracker	tts	sk	V¹etky problémy sú u¾ skonvertované do Sledovaèa.
 assign tickets	tts	sk	Prideli»
 assign to	tts	sk	Prideli» (komu)
 assigned from	tts	sk	Pridelené od
 assigned to	tts	sk	Pridelené komu
 billable hours	tts	sk	Úètovateµné hodiny
-billable hours changed	tts	sk	Úètovateµné hodiny zmenené
+billable hours changed	tts	sk	Úètovateµné hodiny boli zmenené
 billable hours rate	tts	sk	Hodinová sadzba
 billable rate	tts	sk	Sadzba
-billable rate changed	tts	sk	Sadzba zmenená
+billable rate changed	tts	sk	Sadzba bola zmenená
 can assign to	tts	sk	mô¾e prideµova» problémy
-can make full changes	tts	sk	Mô¾e robi» plné zmeny
-category changed	tts	sk	Kategória zmenená
-check here to generate the state's id automatically or enter a particular id below.	tts	sk	Za¹krtnite ak chcete, aby sa ID vytvorilo automaticky. Alebo zadajte ID ruène.
-clear form	tts	sk	Vymaza» formulár
+can make full changes	tts	sk	Mô¾e robi» úplné zmeny
+category changed	tts	sk	Kategória bola zmenená
+check here to generate the state's id automatically or enter a particular id below.	tts	sk	Zaèiarknite ak chcete, aby sa ID vytvorilo automaticky. Alebo zadajte ID ruène.
+clear form	tts	sk	Vyèisti» formulár
 close the invalid ticket.	tts	sk	Uzavrie» neplatný problém.
 close ticket	tts	sk	Uzavrie» problém
 closed	tts	sk	UZAVRETÝ
 completed	tts	sk	HOTOVO
 configure the states	common	sk	Konfigurácia stavov
 configure the transitions	common	sk	Konfigurácia prechodov
-convert all closed tickets	tts	sk	Previes» v¹etky uzavreté problémy
-convert all open tickets	tts	sk	Previes» v¹etky otvorené problémy
-convert tickets to tracker	tts	sk	Previes» v¹etky problémy do Sledovaèa
+convert all closed tickets	tts	sk	Konvertova» v¹etky uzavreté problémy
+convert all open tickets	tts	sk	Konvertova» v¹etky otvorené problémy
+convert tickets to tracker	tts	sk	Konvertova» v¹etky problémy do Sledovaèa
 converted count	tts	sk	Poèet skonvertovaných
 create new state	tts	sk	Vytvori» nový stav
 create new ticket	tts	sk	Vytvori» nový problém
@@ -46,12 +46,12 @@ date opened	tts	sk	Dátum otvorenia
 default assign to	tts	sk	Zvyèajne prideµ (komu)
 default group	tts	sk	Zvyèajná skupina
 default priority	tts	sk	Zvyèajná priorita
-delete the listed tickets.	tts	sk	Zmaza» zobrazené problémy.
-deleting the state	tts	sk	Ma¾em stav
-deleting the transition	tts	sk	Ma¾em transakciu
-detail	tts	sk	Detail
-due date	tts	sk	Koneèný termín
-due date changed	tts	sk	Koneèný termín sa zmenil
+delete the listed tickets.	tts	sk	Odstráni» zobrazené problémy.
+deleting the state	tts	sk	Odstraòujem tento stav
+deleting the transition	tts	sk	Odstraòujem túto transakciu
+detail	tts	sk	Podrobnosti
+due date	tts	sk	Termín vyrie¹enia
+due date changed	tts	sk	Termín vyrie¹enia sa zmenil
 duplicate	tts	sk	DUPLIKÁT
 edit the state	tts	sk	Úprava stavu
 edit the transition	tts	sk	Úprava prechodu
@@ -89,9 +89,9 @@ no tickets found	tts	sk	®iadne problémy sa nena¹li.
 no transitions found	tts	sk	®iadne prechody sa nena¹li
 not assigned	tts	sk	Nepridelený
 not completed	tts	sk	NEDORIE©ENÝ
-notify changes to ticket assignee by e-mail	tts	sk	Oznámi» zadávateµovi zmeny e-mailom
-notify changes to ticket group by e-mail	tts	sk	Oznámi» skupine zmeny e-mailom
-notify changes to ticket owner by e-mail	tts	sk	Oznámi» vlastníkovi zmeny e-mailom
+notify changes to ticket assignee by e-mail	tts	sk	Oznamova» zadávateµovi zmeny E-mailom
+notify changes to ticket group by e-mail	tts	sk	Oznamova» skupine zmeny E-mailom
+notify changes to ticket owner by e-mail	tts	sk	Oznamova» vlastníkovi zmeny E-mailom
 old value	tts	sk	Stará hodnota
 open	tts	sk	Otvorený
 open / closed	tts	sk	Otvorený / Uzavretý
@@ -103,7 +103,7 @@ perform irregular transition into the following state	tts	sk	Vykona» neregulérny
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	sk	Prosím, zadajte predmet problému, ináè sa problém nedá ulo¾i».
 prio	tts	sk	Prio
 priority	tts	sk	Priorita
-priority changed	tts	sk	Priorita zmenená
+priority changed	tts	sk	Priorita bola zmenená
 put the preexistent ticket into the state %1.	tts	sk	Nastavi» stav problému na %1.
 re-assigned	tts	sk	Zmena priradenia
 re-opened	tts	sk	Znovu otvorený
@@ -127,8 +127,8 @@ state	tts	sk	Stav
 state changed	tts	sk	Zmena stavu
 state id	tts	sk	ID stavu
 state name	tts	sk	Názov stavu
-status/date closed	tts	sk	Stav/Dátum ukonèenia
-subject changed	tts	sk	Predmet zmenený
+status/date closed	tts	sk	Stav / Dátum ukonèenia
+subject changed	tts	sk	Predmet bol zmenený
 target state	tts	sk	Cieµový stav
 test	tts	sk	TEST
 the closed ticket requires more work. reopen it.	tts	sk	Je uzavretý, ale potrebuje dorie¹i». Znovu otvori».
@@ -160,7 +160,7 @@ tickets found %1	tts	sk	Na¹lo sa %1 problémov
 tickets have been converted	tts	sk	problémov bolo prevedených
 tickets open %1	tts	sk	%1 otvorených problémov
 tickets total %1	tts	sk	Celkovo %1 problémov
-to go back to the tts index, click <a href= %1 >here</a>	tts	sk	Pre návrat na zoznam Problémovníka, kliknite <a href="%1">sem</a>
+to go back to the tts index, click <a href= %1 >here</a>	tts	sk	Ak sa chcete vráti» na zoznam Problémovníka, kliknite <a href="%1">sem</a>
 toaccept	tts	sk	PRED_PRIJATÍM
 toclosed	tts	sk	PRED_UZAVRETÍM
 toduplicate	tts	sk	PRED_OZNAÈENÍM_DUPLIKÁTU
@@ -177,7 +177,7 @@ transition	tts	sk	Prechod
 transition name	tts	sk	Názov prechodu
 trouble ticket system	common	sk	Problémovník
 tts	common	sk	Problémovník
-tts preferences	tts	sk	Problémovník - nastavenia
+tts preferences	tts	sk	Problémovník - predvoµby
 undefined	tts	sk	NEDEFINOVANÉ
 update ticket state	tts	sk	Aktualizova» stav problému
 updates ticket	tts	sk	Aktualizuje problém
@@ -185,11 +185,11 @@ verified	tts	sk	POTVRDENÝ
 verify	tts	sk	POTVRDI«
 verify the ticket to work on it.	tts	sk	Potvrdi» problém -je reálny a bude sa rie¹i».
 view all tickets	tts	sk	Zobazi» v¹etky problémy
-view job detail	tts	sk	Zobrazi» detail práce
+view job detail	tts	sk	Zobrazi» podrobnosti o zále¾itosti
 view only my open tickets	tts	sk	Zobrazi» len moje otvorené problémy
 view only open tickets	tts	sk	Zobrazi» iba otvorené problémy
 wish	tts	sk	®elanie
 you can only close a ticket if it is assigned to you.	tts	sk	CHYBA! Problém mô¾ete uzavrie» iba ak vám je pridelený.
-you want to delete the state %1 and associated transitions. are you sure?	tts	sk	Sna¾íte sa zmaza» stav %1 a príslu¹né prechody. Naozaj to chcete?
-you want to delete the state %1. are you sure?	tts	sk	Sna¾íte sa zmaza» stav %1. Naozaj to chcete?
-you want to delete the transition %1. are you sure?	tts	sk	Sna¾íte sa zmaza» prechod %1. Naozaj to chcete?
+you want to delete the state %1 and associated transitions. are you sure?	tts	sk	Sna¾íte sa odstráni» stav %1 a príslu¹né prechody. Naozaj to chcete?
+you want to delete the state %1. are you sure?	tts	sk	Sna¾íte sa odstráni» stav %1. Naozaj to chcete?
+you want to delete the transition %1. are you sure?	tts	sk	Sna¾íte sa odstráni» prechod %1. Naozaj to chcete?

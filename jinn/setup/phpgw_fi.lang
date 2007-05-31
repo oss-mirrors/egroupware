@@ -123,6 +123,7 @@ click to select a new color	jinn	fi	paina valitaksesi uusi väri
 close this window	jinn	fi	Sulje ikkuna
 column	jinn	fi	sarake
 column name	jinn	fi	sarakkeen nimi
+come back after new valid tablename is saved to configure plugins	jinn	fi	palaa kun uusi kelvollinen taulunnimi on tallennettu konfiguroimaan plugineja
 come back in edit mode for configuring plugins	jinn	fi	Palaa takaisin muokaustilaan konfiguroimaan plugineja
 come back in edit mode to configure plugins	jinn	fi	Palaa takaisin muokaustilaan konfiguroimaan plugineja
 configure	jinn	fi	konfiguroi
@@ -143,8 +144,9 @@ could not find any tables! check your database name, database username or databa
 create a new site now	jinn	fi	Luo uusi sivusto nyt
 create new relation	jinn	fi	Luo uusi suhde
 criterium	jinn	fi	kriteeri
-current color:	jinn	fi	yleinen väri:
-current session filter	jinn	fi	nykyisens session suodatin
+current color:	jinn	fi	nykyinen väri:
+current session filter	jinn	fi	nykyisen session suodatin
+custom css file for area content	jinn	fi	Oma CSS tiedosto sisältö alueelle
 custom height (e.g. 100%, 300px, 70em)	jinn	fi	Oma korkeus (esim 100%, 300px, 70em)
 custom width (e.g. 100%, 300px, 70em)	jinn	fi	Oma leveys (esim 100%, 300px, 70em)
 database connection	jinn	fi	Tietokanta yhteys
@@ -186,6 +188,7 @@ developer links	jinn	fi	Kehittäjän linkki
 development	admin	fi	Kehitys
 development (test) site upload path	jinn	fi	Kehitys (Testi) sivun latauspolku
 development database	jinn	fi	Kehitysversion tietokanta
+development environment profile	jinn	fi	Kehitysympäristöprofiili
 development server	jinn	fi	Kehitys palvelin
 dimensions	jinn	fi	ulottuvuudet
 disable the wysiwyg/htmlarea plugin	jinn	fi	Estä WYSIWYG / HTMLarea plugini
@@ -216,6 +219,7 @@ enable links	jinn	fi	Salli linkit
 enable simple image	jinn	fi	Salli yksinkertainen kuva
 enable styles	jinn	fi	Salli tyylit
 enable tables	jinn	fi	Salli taulut
+environment profile to use	jinn	fi	Käytettävä ympäristöprofiili
 error code %1	jinn	fi	VIRHEKOODI %1
 error creating one or more new objects	jinn	fi	Virhe luodessa yhtä tai useampaa objektia
 error creating one or more new objects%1	jinn	fi	Virhe luodessa yhtä tai useampaa objektia %1
@@ -223,8 +227,9 @@ error in event plugin	jinn	fi	Virhe tapahtuma pluginissa
 error path_open %1	jinn	fi	virhe avaus polussa %1
 error, field info not saved.	jinn	fi	Virhe, kenttää ei tallennettu.
 error: connection with database failed. please check if database connection settings are correct	jinn	fi	Virhe: Tietokantaan ei saatu yhteyttä, tarkista ovatko tietokannan asetukset oikein.
-error: the file %1 doesn't exists, please contact the webmaster	jinn	fi	VIRHE: tiedosto %1 ei ole olemassa, ota yhteyttä verkon tekijään
+error: the file %1 doesn't exists, please contact the webmaster	jinn	fi	VIRHE: tiedosto %1 ei ole olemassa, ota yhteyttä sivustonylläpitäjään
 events config	jinn	fi	Tapahtuman säädöt
+existing plugin configuration	jinn	fi	Ulkoisten pluginien konfiguraatioon
 export	jinn	fi	Vie
 export all columns	jinn	fi	vie kaikki sarakkeet
 export all selected records	jinn	fi	vie kaikki valitut tietueet
@@ -259,6 +264,9 @@ filtered list	jinn	fi	suodatettu lista
 first row has field names	jinn	fi	ensimmäisellä rivillä on kenttien nimet
 font file for image %1	jinn	fi	Fonttitiedosto kuvaan %1
 font for image %1	jinn	fi	Fontti kuvaan %1
+font padding on left of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseliä vasemalle kuvasta
+font padding on right of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseliä oikealle kuvasta
+font padding on top of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseliä ylöspäin kuvasta
 font size for image %1	jinn	fi	Fontin koko kuvassa %1
 footer	jinn	fi	Footer
 form	jinn	fi	Lomake
@@ -312,6 +320,14 @@ import site from file	jinn	fi	tuo sivusto tiedostosta
 import was succesfull	jinn	fi	tuonti onnistui
 import was succesfull<br>imported one site with	jinn	fi	tuonti onnistui <br> liitetty sivustoon
 in menu	jinn	fi	Valikossa
+incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	fi	Yhteensopimaton tulos: Object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> ei esiintynyt tiedostossa.
+incompatibility result: object <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	fi	Yhteensopimaton tulos: Object <b>'%2'</b>, property <b>'%1'</b> ei esiintynyt tiedostossa.
+incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> ei voitu tuoda, koska sitä ei ole tässä JiNN versiossa.
+incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> ei voitu tuoda, koska sitä ei ole tässä JiNN versiossa.
+incompatibility result: object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> was not present in the file	jinn	fi	Yhteensopimaton tulos: Object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> ei esiintynyt tässä tiedostossa.
+incompatibility result: object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> ei voitu tuoda, koska sitä ei ole tässä JiNN versiossa.
+incompatibility result: site <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	fi	Yhteensopimaton tulos: Site <b>'%2'</b>, property <b>'%1'</b> ei esiintynyt tässä tiedostossa.
+incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> ei voitu tuoda, koska sitä ei ole tässä JiNN versiossa.
 index	jinn	fi	indeksi
 info	jinn	fi	Info
 information	jinn	fi	Tietoa
@@ -377,9 +393,11 @@ no new objects created%1	jinn	fi	Uutta objektia %1 EI luotu
 no object selected. no able to configure this view	jinn	fi	Objektia ei ole valittuna. Näkymää ei voida konfiguroida
 no objects available	jinn	fi	Objektia ei ole saatavilla
 no objects found for this site.	jinn	fi	Objektia ei löytynyt tältä sivulta
+no palet defined	jinn	fi	Palettia ei ole määritetty
 no records found	jinn	fi	Tietuetta ei löytynyt
 no records linked	jinn	fi	Tietuetta ei linkitetty
 normal view	jinn	fi	Normaali näkymä
+nothing to save. please select a plugin to delete or configure a new plugin	jinn	fi	mitään tallennettavaa. Valitse plugin poistettavaksi tai konfiguroi uusi plugin.
 notice that jinn needs imagemagick 5.4.9 or a later version	admin	fi	Huomaa että JiNN tarvitsee ImageMagick 5.4.9 tai uudemman version.
 number of images to create	jinn	fi	Monta kuvaa luotu:
 number of images to generate.	jinn	fi	Monta kuvaa luotu:
@@ -392,6 +410,8 @@ object events configuration	jinn	fi	Objektin tapahtuman konfigurointi
 object id	jinn	fi	Objektin Id
 object serialnumber	jinn	fi	Objektin sarjanumero
 objects	jinn	fi	Objektit
+old relation method	jinn	fi	Vanha suhteellinen tapa
+on_update	jinn	fi	on_update
 one or more records not succesfully added.	jinn	fi	Yhtä tai useampaa tietuetta EI lisätty.
 one or more records not succesfully saved.	jinn	fi	Yhtä tai useampaa tietuetta EI tallennettu.
 one or more records not succesfully saved. (error code 106)	jinn	fi	Yhtä tai useampaa tietuetta EI tallennettu. (virhekoodi 106)
@@ -426,8 +446,10 @@ preview	jinn	fi	Esikatselu
 preview thumbs or images in form	jinn	fi	Esikatsele pienia kuvakkeita tai kuvia lomakkeessa
 preview website	jinn	fi	Esikatsele verkkosivustoa
 primary palet	jinn	fi	Ensisijainen paletti
+primary palet colors in hex seperated by commas	jinn	fi	Ensisijaiset paletin värit hex muodossa, pilkulla erotettuina
 production	admin	fi	Tuotanto
 production database	jinn	fi	Tuotanto tietokanta
+production environment profile	jinn	fi	Tuotantoympäristön profiili
 real value	jinn	fi	oikea arvo
 record	jinn	fi	tietue
 record %1	jinn	fi	Tietue %1

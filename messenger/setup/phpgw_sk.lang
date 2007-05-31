@@ -1,8 +1,8 @@
 compose	messenger	sk	Vytvori»
 compose global message	common	sk	Vytvori» verejnú správu
 compose message	messenger	sk	Vytvori» správu
-delete a message.	messenger	sk	Vymaza» správu.
-delete selected	messenger	sk	Vymaza» vybrané
+delete a message.	messenger	sk	Odstráni» správu.
+delete selected	messenger	sk	Odstráni» vybrané
 forward	messenger	sk	Odosla» ïalej
 forward a message	messenger	sk	Odosla» správu ïalej
 forward a message to another user.	messenger	sk	Odosla» správu ïalej inému pou¾ívateµovi.
@@ -10,7 +10,7 @@ forwarded	messenger	sk	Odoslané ïalej
 from	messenger	sk	Od
 global message	messenger	sk	Verejná správa
 i can't find the username %1 on the system	messenger	sk	Pou¾ívateµa %1 som v systéme nena¹iel
-inbox	messenger	sk	Do¹lé
+inbox	messenger	sk	Doruèená po¹ta
 message from	messenger	sk	Správa od
 messenger	common	sk	Odkazovaè
 new	messenger	sk	Nové
@@ -27,7 +27,7 @@ send a message to a single recipient.	messenger	sk	Odosla» správu jednotlivému a
 send message to	messenger	sk	Odosla» správu (komu)
 sorry, %1's account is not currently active	messenger	sk	¥utujem, úèet %1 v súèasnosti nie je aktívny
 update a message status	messenger	sk	Upravi» stav správy
-use select box for user list in compose	common	sk	Pou¾ite výberové menu pre zoznam pou¾ívateµov poèas vytvárania
+use select box for user list in compose	common	sk	Ak chcete zoznam pou¾ívateµov poèas vytvárania správy, pou¾ite výberové okno
 you didn't enter anything for the message	messenger	sk	Pre danú správu ste nezadali vôbec niè
 you have %1 new message	common	sk	Máte %1 nových správ
 you have %1 new messages	common	sk	Máte %1 nových správ

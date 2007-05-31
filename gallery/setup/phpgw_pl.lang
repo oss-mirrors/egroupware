@@ -1,10 +1,21 @@
-after successful installation of all instances, you have to copy %1 to %2!	gallery	pl	Po zakoñczeniu instalacji wszystkich instacji, musisz skopiowaæ %1 do %2!
+after successful installation of all instances, you have to copy %1 to %2!	gallery	pl	Po zakoñczeniu instalacji wszystkich instancji, musisz skopiowaæ %1 do %2!
 album frame (%1samples%2)	gallery	pl	Ramka albumu (%1Samples%2)
+alignment of the block	gallery	pl	Wyrównanie bloku
 all filenames are relative to %1.	gallery	pl	Wszystkie nazwy plików s± wzglêdne do %1.
-all other egroupware users will be created by the g2 integration including there admin rights.	gallery	pl	Wszyscy inni u¿ytkownicy eGW zostan± stowrzeni w galerii przez integrator G2 w³±cznie z ich prawami do zarz±dzania.
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	pl	Wszyscy inni u¿ytkownicy eGW zostan± stworzeni w galerii przez integrator G2 w³±cznie z ich prawami do zarz±dzania.
 an error occurred during user creation in g2.	gallery	pl	Zaistnia³ b³±d podczas tworzenia u¿ytkowników w G2.
 an error occurred while trying to initialize g2.	gallery	pl	Zaistnia³ b³±d podczas próby inicjalizacji w G2.
 can be used to limit the block to a certain album.	gallery	pl	Mo¿e zostaæ wyko¿ystane do ograniczenia bloku do niektórych albumów.
+center	gallery	pl	Wy¶rodkowany
 complete gallery	gallery	pl	Ca³a galeria.
 default item to show in the gallery.	gallery	pl	Domy¶lna pozycja, któr± mam pokazaæ w Gallery.
 extra information to show	gallery	pl	Dodatkowe informacje do pokazania
+full size	gallery	pl	Pe³ny rozmiar
+gallery	common	pl	Galeria
+gallery menu	gallery	pl	Galeria - menu
+gallery sidebar	gallery	pl	Galeria - menu boczne
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	pl	Modu³ Gallery2 NIE jest zainstalowany, nale¿y %1zrobiæ to%2 w pierwszej kolejno¶ci.
+please note:	gallery	pl	Proszê zauwa¿yæ:
+use this module to display the embeded gallery	gallery	pl	U¿yj tego modu³u w celu wy¶wietlenia wbudowanej galerii
+view count	gallery	pl	Poka¿ licznik
+you have no rights to view %1 content !!!	gallery	pl	Nie masz uprawnieñ do ogl±dania zawarto¶ci %1!
