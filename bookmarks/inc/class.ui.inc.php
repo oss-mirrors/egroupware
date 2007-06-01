@@ -771,18 +771,22 @@
 				$parent = $cat['parent'];
 				while ( $parent != 0) {
 					$categories[$key]['tree'] = $parent. '/'. $categories[$key]['tree'];
-					$parcatkey = array_search( array('id' => $parent), $categories );
+					foreach ( $categories as $ikey => $icat ) {
+						if ( $icat['id'] == $parent ) {
+							$parcatkey = $ikey;
+							break;
+						}
+					}
 					$parent = $categories[$parcatkey]['parent'];
 				}
 			}
-
+			
 			// buld bm tree
 			foreach ( $categories as $cat ) {
 				$bookmarks = $this->bo->_list($cat['id'],False,False,False);
-				if ( empty( $bookmarks ) ) continue;
 				$bm_tree[$cat['tree']] = $cat['name'];
 				
-				foreach ( $bookmarks as $id => $bm ) {
+				foreach ( (array)$bookmarks as $id => $bm ) {
 					// begin entry
 					$bm_tree[$cat['tree']. '/'. $id] = array('image' => 'blank.gif');
 					$entry = &$bm_tree[$cat['tree']. '/'. $id]['label'];
