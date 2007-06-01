@@ -77,12 +77,14 @@
 		  strict_loading_mode : true,\n
 		  ";
 		  if(!isset($config['[advanced_settings]']['cleanup']))
-		  $options.="cleanup : false,\n";
+		  {
+			 $options.="cleanup : false,\n";
+		  }
 		  #_debug_array($options);
 
 		  $this->tplsav2->init_options=$options;
 		  $this->tplsav2->name=$field_name;
-		  $this->tplsav2->content=$value;
+		  $this->tplsav2->content=stripslashes($value);
 		  $this->tplsav2->style=$style;
 		  $this->tplsav2->addPath('template',$this->plug_root.'/tpl');
 		  return $this->tplsav2->fetch('edit_field.tpl.php');
@@ -98,7 +100,7 @@
 	
 	   function formview_read($value, $config)
 	   {
-			return $value;   		
+		  return stripslashes($value);
 	   }
 	
 	   function listview_read($value, $config,$attr_arr)
@@ -291,7 +293,24 @@
 		  }
 		  */
 		  return $bar;
+	   }
+	   function on_save_filter($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
+	   {
+		  $var = $HTTP_POST_VARS[$field_name];
+		  if(!$config[save_filer])
+		  {
+			 $var = preg_replace('#<font size=\"1\">(.*?)</font>#is', '<span style="font-size:8px;">\1</span>', $var);
+			 $var = preg_replace('#<font size=\"2\">(.*?)</font>#is', '<span style="font-size:10px;">\1</span>', $var);
+			 $var = preg_replace('#<font size=\"3\">(.*?)</font>#is', '<span style="font-size:12px;">\1</span>', $var);
+			 $var = preg_replace('#<font size=\"4\">(.*?)</font>#is', '<span style="font-size:14px;">\1</span>', $var);
+			 $var = preg_replace('#<font size=\"5\">(.*?)</font>#is', '<span style="font-size:18px;">\1</span>', $var);
+			 $var = preg_replace('#<font size=\"6\">(.*?)</font>#is', '<span style="font-size:24px;">\1</span>', $var);
+			 $var = preg_replace('#<font size=\"7\">(.*?)</font>#is', '<span style="font-size:36px;">\1</span>', $var);
+		  }
+		  return $var;
+	   }
 
-	 }
+
+	   
   }
 ?>
