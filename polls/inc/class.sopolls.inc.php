@@ -191,6 +191,7 @@ class sopolls
 			'poll_title' => $title,
 			'poll_visible' => $visible,
 			'poll_votable' => $votable,
+			'poll_timestamp' => time(),
 		),false,__LINE__,__FILE__);
 		
 		return $this->db->get_last_insert_id('egw_polls','poll_id');
