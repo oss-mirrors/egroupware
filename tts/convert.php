@@ -348,11 +348,11 @@ function TTSCONV_states_resolution ()
 
 		if ($GLOBALS['phpgw']->db->f('state_open') == 'X')
 		{
-			$StatesResolutions[$_idx][0] = 'c'; //State is closed
+			$StatesResolutions[$_idx][0] = -101; //State is closed
 		}
 		else
 		{
-			$StatesResolutions[$_idx][0] = 'o'; //State is opened
+			$StatesResolutions[$_idx][0] = -100; //State is opened
 		}
 
 		// Check for the default state names in TTS and try
