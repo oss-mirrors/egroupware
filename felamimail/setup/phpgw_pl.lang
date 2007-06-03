@@ -43,6 +43,7 @@ cc	felamimail	pl	DW
 change folder	felamimail	pl	Zmieñ folder
 check message against next rule also	felamimail	pl	sprawd¼ równie¿ kolejnê regu³ê
 clear search	felamimail	pl	wyczy¶æ wyszukiwanie
+click here to log back in.	felamimail	pl	Kliknij aby zalogowaæ siê ponownie
 click here to return to %1	felamimail	pl	Kliknij tutaj aby wróciæ do %1
 close all	felamimail	pl	zamknij wszystko
 close this page	felamimail	pl	zamknij tê stronê
@@ -119,6 +120,7 @@ edit vacation settings	felamimail	pl	edytuj ustawienia autorespondera
 email address	felamimail	pl	Adres e-mail
 email forwarding address	felamimail	pl	adres e-mail przekazywania wiadomo¶ci
 email signature	felamimail	pl	Sygnaturka
+emailaddress	felamimail	pl	adres_email
 empty trash	felamimail	pl	opró¿nij kosz
 enable	felamimail	pl	w³±cz
 encrypted connection	felamimail	pl	po³±czenie szyfrowane
@@ -133,6 +135,7 @@ error connecting to imap serv	felamimail	pl	B³±d ³±czenia z serwerem IMAP
 error connecting to imap server. %s : %s.	felamimail	pl	B³±d po³±czenia do serwera IMAP. %s : %s
 error connecting to imap server: [%s] %s.	felamimail	pl	B³±d po³±czenia do serwera IMAP. [%s]  %s
 error opening	felamimail	pl	B³±d podczas otwierania
+every	felamimail	pl	co
 every %1 days	felamimail	pl	co %1 dni
 expunge	felamimail	pl	Opró¿nij
 extended	felamimail	pl	rozszerzone
@@ -178,6 +181,7 @@ icons and text	felamimail	pl	Ikony i tekst
 icons only	felamimail	pl	Tylko ikony
 identifying name	felamimail	pl	Nazwa identyfikatora
 identity	felamimail	pl	to¿samo¶æ
+if	felamimail	pl	JE¯ELI
 if from contains	felamimail	pl	je¿eli pole 'From:" zawiera
 if mail header	felamimail	pl	je¿eli nag³ówek wiadomo¶ci
 if message size	felamimail	pl	je¿eli rozmiar wiadomo¶ci
@@ -217,6 +221,7 @@ loading	felamimail	pl	³adowanie
 location of buttons when composing	felamimail	pl	Po³o¿enie przycisków przy pisaniu maila
 mail server login type	admin	pl	Typ logowania do serwera poczty
 mail settings	felamimail	pl	Ustawienia poczty
+mainmessage	felamimail	pl	tre¶æ_wiadomo¶ci
 manage emailaccounts	preferences	pl	Zarz±dzaj kontami pocztowymi
 manage emailfilter / vacation	preferences	pl	Zarz±dzaj filtrem pocztym / powiadomieniami
 manage folders	common	pl	Zarz±dzanie folderami
@@ -328,6 +333,7 @@ sent folder	felamimail	pl	Folder Wys³ane
 server supports mailfilter(sieve)	felamimail	pl	serwer posiada filtr poczy (sieve - sito)
 show header	felamimail	pl	poka¿ nag³ówek
 show new messages on main screen	felamimail	pl	Wy¶wietlaæ nowe wiadomo¶ci na stronie g³ównej?
+sieve script name	felamimail	pl	Nazwa skryptu sita ('sieve')
 sieve settings	admin	pl	Ustawienia Sieve
 signature	felamimail	pl	Sygnaturka
 simply click the target-folder	felamimail	pl	Kliknij folder docelowy
@@ -351,6 +357,8 @@ sun	felamimail	pl	Nie
 table of contents	felamimail	pl	Spis tre¶ci
 text only	felamimail	pl	Tylko tekst
 the connection to the imap server failed!!	felamimail	pl	Nieudane po³±czenie z serwerem SMTP!!
+the mimeparser can not parse this message.	felamimail	pl	Nie uda³o siê przetworzyæ zawarto¶ci MIME tej wiadomo¶ci
+then	felamimail	pl	WTEDY
 this folder is empty	felamimail	pl	TEN FOLDER JEST PUSTY
 this php has no imap support compiled in!!	felamimail	pl	PHP nie ma skompilowanej obs³ugi IMAP!!
 thu	felamimail	pl	Czw

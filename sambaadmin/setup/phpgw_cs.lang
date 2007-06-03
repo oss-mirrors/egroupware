@@ -1,0 +1,25 @@
+%1 - %2 of %3	sambaadmin	cs	%1 - %2 z %3
+add workstation	sambaadmin	cs	Pøidat pracovní stanici
+check ldap setup (experimental!!!)	admin	cs	Zkontrolovat nastavení LDAP (experimentální!!!)
+computer group	admin	cs	Skupina pro poèítaèe
+computer ou	admin	cs	Organizaèní jednotka (ou) pro poèítaèe
+displayname	sambaadmin	cs	Zobrazované jméno
+do you really want to delete selected workstation accounts?	sambaadmin	cs	Opravdu chcete smazat vybrané úèty pracovních stanic?
+homedrive	admin	cs	Domovský disk (Homedrive)
+homepath	sambaadmin	cs	Domovská cesta (Homepath)
+logonscript	admin	cs	Pøihla¹ovací skript
+new account defaults	admin	cs	Výchozí hodnoty nového úètu
+participants	sambaadmin	cs	Úèastníci
+path to mkntpwd	admin	cs	Cesta k utilitì mkntpwd
+profilepath	admin	cs	Cesta k u¾ivatelskému profilu
+samba config	sambaadmin	cs	Konfigurace Samby
+samba settings	common	cs	Nastavení Samby
+samba sid	admin	cs	Samba SID
+sambaadmin	common	cs	Správce Samby
+smb homepath	admin	cs	Cesta k domovským adresáøùm Samby
+workstation account for	sambaadmin	cs	Úèet pracovní stanbice pro
+workstation configuration	sambaadmin	cs	Konfigurace pracovní stanice
+workstation list	sambaadmin	cs	Seznam pracovních stanic
+workstation name	sambaadmin	cs	Název pracovní stanice
+workstationaccount active	sambaadmin	cs	Úèet pracovní stanice aktivní
+workstations	sambaadmin	cs	Pracovní stanice

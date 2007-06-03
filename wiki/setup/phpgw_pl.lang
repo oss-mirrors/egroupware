@@ -1,0 +1,91 @@
+(don't offer the possibility)	admin	pl	(nie oferuj mo¿liwo¶ci)
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	pl	<em>Lecz</em> wy¶wietla przynajmniej tak du¿o wpisów w sekcji "Ostatnie zmiany" oraz innych listach subskrypcji:
+add document to category	wiki	pl	Dodaj dokument do kategorii
+added	wiki	pl	Dodano
+administration features are disabled for this wiki.	wiki	pl	Mo¿liwo¶ci administracyjne s± niedostêpne dla tej Wiki
+admins	wiki	pl	administratorzy
+after how many days should old versions of a page be removed (0 for never)	admin	pl	Po ilu dniach nale¿y usun±æ traw± wersjê strony (0 oznacza nigdy)
+allow anonymous access	admin	pl	zezwól na dostêp anonimowy
+anonymous password	admin	pl	Has³o dostêpu anonimowego
+anonymous session type	admin	pl	Typ sesji dostêpu anonimowego
+anonymous username	admin	pl	Nazwa u¿ytkownika anonimowego
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	pl	Czy konwertowaæ automatycznie strony ze sk³adni Wiki do formatu 'richtext' (podczas edycji)?
+block	wiki	pl	Zablokuj
+block / unblock hosts	common	pl	Zablokuj / odblokuj hosty
+blocked ip address ranges	wiki	pl	Zakres zablokowanych adresów IP
+cancel without saving	wiki	pl	Opu¶æ bez zachowania zmian
+changed	wiki	pl	Zmieniono
+changes by last author	wiki	pl	Zmiany dodonane przez ostatniego autora:
+choose your current time here, so the server may figure out what time zone you are in.	wiki	pl	Wska¿ bie¿±cy czas u Ciebie, aby serwer móg³ okre¶liæ strefê czasow±, w której siê znajdujesz.
+columns	wiki	pl	Kolumny
+compute difference	wiki	pl	Oblicz ró¿nicê
+converts the page to richtext	wiki	pl	Konwertuje stronê do formatu 'richtext'
+current version	wiki	pl	Bie¿±ca wersja
+deleted	wiki	pl	Usuniêto
+deletes this page	wiki	pl	Usuwa t± stronê
+difference between versions	wiki	pl	Ró¿nice miêdzy wersjami
+differences in	wiki	pl	Ró¿nice w
+different languages can have different titles	wiki	pl	mo¿na okre¶liæ ró¿ne tytu³y dla ró¿nych jêzyków
+document last modified	wiki	pl	Data ostatniej modyfikacji
+edit box	wiki	pl	Okienko edycyjne
+edit this <em>archive version</em> of this document	wiki	pl	Edytuj tê <em>ARCHIWALN¡ WERSJÊ</em> dokumentu
+edit this document	wiki	pl	Edytuj ten dokument
+edit with preview	admin	pl	Edytuj z podgl±dem
+editable	admin	pl	edytowalny
+error creating temporary file.	wiki	pl	B³±d przy tworzeniu pliku tymczasowego
+error writing to temporary file.	wiki	pl	B³ad przy zapisie do pliku tymczasowego
+everyone	wiki	pl	ka¿dy
+find	wiki	pl	Znajd¼
+history	wiki	pl	historia
+load	wiki	pl	Za³aduj
+loads the named page in the given language, all change so far get lost !!!	wiki	pl	£aduje nazwan± stronê w podanym jêzyku - wszystkie zmiany wykonane do tego czasu zostan± stracone!
+lock / unlock pages	common	pl	Blokuje / odblokowuje strony
+locked	wiki	pl	Zablokowano
+not set	wiki	pl	nie ustawiono
+on all pages	wiki	pl	na wszystkich stronach
+only on the first page	wiki	pl	tylko na pierszej stronie
+page '%1' not found !!!	wiki	pl	Strona '%1' nie znaleziona!
+preview	wiki	pl	Podgl±d
+preview of current version	wiki	pl	Podgl±d wersji bie¿±cej
+rate control / ip blocking disabled	wiki	pl	Blokowanie IP oraz limit stron wy³±czone
+readable by	wiki	pl	Do odczytu dla
+readonly	admin	pl	tylko do odczytu
+recent changes	wiki	pl	Ostatnie zmiany
+renames page to the given name and language	wiki	pl	Zmienia nazwê strony na podan± nazwê i jêzyk
+richtext	wiki	pl	Dokument 'richtext'
+rows	wiki	pl	Wiersze
+save the changes and exit	wiki	pl	Zachowuje zmiany i koñczy edycjê
+saves and continues editing	wiki	pl	Zachowuje zmiany i kontynuuje edycjê
+search for	wiki	pl	Wyszukaj
+see complete list (%1 entries)	wiki	pl	Zobacz pe³n± listê (%1 wpisów)
+show a search	wiki	pl	Poka¿ wyszukiwanie
+show the title of the wiki page	wiki	pl	Poka¿ tytu³ strony Wiki
+site configuration	wiki	pl	Konfiguracja strony
+summary	wiki	pl	Podsumowanie
+summary of change	wiki	pl	Podsumowanie zmian
+the search returned no result!	wiki	pl	Wynik wyszukiwania jest pusty!
+this page can not be edited.	wiki	pl	Ta strona nie mo¿e byæ edytowana
+twin pages	wiki	pl	Podwójne strony
+unblock	wiki	pl	Odblokuj
+updates the preview	wiki	pl	Od¶wie¿a podgl±d
+url of the upload directory	admin	pl	URL dla katalogu ³adowania
+use this module for displaying wiki-pages	wiki	pl	U¿yj tego modu³u do wy¶wietlania stron stylu Wiki
+users	wiki	pl	u¿ytkownicy
+view document history	wiki	pl	Poka¿ historiê dokumentu
+visit %1 to set your user name	wiki	pl	Przejd¼ do %1 aby ustawiæ swoj± nazwê u¿ytkownika
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	pl	Uwaga: od momentu gdy rozpoczêto edycjê, dokument zosta³ zmieniony przez inn± osobê. Proszê po³±czyæ Twoje zmiany w bie¿±ca wersjê tego dokumentu.
+who should be able to edit this page	wiki	pl	kto mo¿e edytowaæ t± stronê
+who should be able to read this page	wiki	pl	kto mo¿e czytaæ t± stronê
+wiki	common	pl	Strony Wiki
+wiki administration	wiki	pl	Wiki - administracja
+wiki menu	wiki	pl	Wiki - menu
+wiki startpage	wiki	pl	Wiki - strona startowa
+writable by	wiki	pl	zapisywalny przez
+yes always	admin	pl	Tak - zawsze
+yes with navbar	admin	pl	Tak - z paskiem nawigacji
+you have been denied access to this site.	wiki	pl	Dostêp do tej strony zosta³ Tobie odebrany.
+you have entered an invalid user name.	wiki	pl	Poda³e¶ nieprawid³ow± nazwê u¿ytkownika.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	pl	Przekroczy³e¶ liczbê stron, któr± mo¿esz obejrzeæ w pewnym przedziale czasu. Proszê wróæ pó¼niej.
+you have no rights to view wiki content !!!	wiki	pl	Nie masz uprawnieñ do ogl±dania zawarto¶ci Wiki
+your changes	wiki	pl	Twoje zmiany
+your user name is "%1".	wiki	pl	Twoj± nazw± u¿ytkownika jest '%1'.

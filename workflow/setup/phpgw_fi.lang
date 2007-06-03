@@ -40,11 +40,17 @@ activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	fi	To
 activity %1 code is not avaible	workflow	fi	toiminnon %1 koodi ei ole saatavilla
 activity %1 is interactive but has no role assigned	workflow	fi	Toiminto %1 on interaktiivinen, mutta sille ei ole m‰‰r‰tty roolia
 activity %1 is interactive so it must use the $instance->complete() method	workflow	fi	Toiminto %1 on interaktiivinen joten sen pit‰‰ k‰ytt‰‰ $instance->complete() method
-activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	fi	Toiminto %1 ei ole interaktiivinen joten siin‰ ei pit‰ k‰ytt‰‰ $instance->complete() method
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	fi	Toiminto %1 on ei-interaktiivinen ja ei-automaattisesti reititetty, mutta sille ei ole m‰‰ritetty roolia
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	fi	Toiminto %1 ei ole interaktiivinen joten siin‰ ei pit‰‰ k‰ytt‰‰ $instance->complete() method
 activity %1 is standalone and is using the $instance object	workflow	fi	Toiminto %1 erillinen ja se k‰ytt‰‰ $instance object
+activity %1 is standalone but has transitions	workflow	fi	Toiminto %1 on erillinen, mutta sill‰ on siirtym‰
+activity %1 is standalone or view but has transitions	workflow	fi	Toiminto %1 on erillinen tai n‰kym‰, mutta sill‰ on siirtym‰
+activity %1 is view and is using the $instance object in write mode	workflow	fi	Toiminto %1 on n‰kym‰ ja se k‰ytt‰‰ $instance objekti kirjoitusmuodossa
 activity agent removed	workflow	fi	Toiminnon agentti poistettu
 activity completed	workflow	fi	Toiminto suoritettu
 activity failure	workflow	fi	toiminto ep‰onnistui
+activity in inexistent process	workflow	fi	Toiminto ep‰tarkassa prosessissa
+activity is waiting for pending transitions	workflow	fi	toiminto odottaa viiv‰stynytt‰ siirtym‰‰
 activity name already exists	workflow	fi	Toiminnon nimi on jo olemassa
 activity role #%1 removed	workflow	fi	Toiminnon rooli #%1 poistettu
 activity role removed	workflow	fi	Toiminnon rooli poistettu
@@ -78,7 +84,9 @@ admin processes	common	fi	Yll‰pit‰j‰n prosessit
 admin processes sources	workflow	fi	Yll‰pit‰j‰n prosessien l‰hteet
 administer instances	admin	fi	Yll‰pit‰j‰n instanssit
 administer processes	admin	fi	Yll‰pit‰j‰n prosessit
+agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	fi	Agentti #%1 muotoa %2 liittyy ep‰tarkkaan toimintoon #%3
 agent #%1 of type %2 is not linked with an activity	workflow	fi	Agentti #%1 muotoa %2 ei ole linkitetty toimintoon
+agent associated with inexistent activity	workflow	fi	Agentti liittyy ep‰tarkkaan tapahtumaan
 agent without activity	workflow	fi	Agentti ilman tapahtumaa
 agents assigned to this activity	workflow	fi	Agentti m‰‰ritetty t‰h‰n tapahtumaan
 all	workflow	fi	Kaikki
@@ -86,8 +94,11 @@ always show advanced actions	workflow	fi	N‰yt‰ aina edistyneemm‰t toiminnot
 always show advanced mode	workflow	fi	K‰yt‰  aina edistyneempi‰ asetuksia
 assign me this activity	workflow	fi	Merkitse minut t‰m‰n toiminnon k‰sittelij‰ksi
 at least one email address cannot be validated.	workflow	fi	ainakin yksi s‰hkˆpostiosoite on virheellinen.
-auto routed	workflow	fi	Auto reititys
+auto routed	workflow	fi	Automaatti reititys
+auto-release on leaving activity	common	fi	Vapauta automaattisesti j‰tetyt tapahtumat
 automatic	workflow	fi	automaattinen
+autorouted activities does not need to be sent by any user after their execution	workflow	fi	Automaattisesti reititettyj‰ tapahtumia ei tarvitse l‰hett‰‰ kenellekk‰‰n k‰ytt‰j‰lle niiden suorittamisen j‰lkeen
+bad parameter for setagents, the parameter should be an array	workflow	fi	Virheellinen parametri setAgents:ssa, parametrin pit‰isi olla taulukko
 bad role type	workflow	fi	V‰‰r‰ rooli
 bad user	workflow	fi	V‰‰r‰ k‰ytt‰j‰
 base directory does not exist, please ask adminstrator to check the global configuration	common	fi	Perushakemistoa ei lˆydy, pyyd‰ p‰‰k‰ytt‰j‰‰ tarkistamaan globalit asetukset
@@ -123,6 +134,7 @@ complete cleanup of all instances done	workflow	fi	kaikkien instanssien siivous 
 completed	workflow	fi	valmistunut
 config values	common	fi	M‰‰rittele arvoja
 confirm delete	workflow	fi	Vahvista poisto
+consult %1 to get the default values:	workflow	fi	Kysy neuvoa %1:lta saadaksesi oletusarvot
 couldn't add transition	workflow	fi	Siirtoa ei voitu lis‰t‰
 create	workflow	fi	luo
 created	workflow	fi	luotu
@@ -351,9 +363,20 @@ there are no processes available	workflow	fi	Prosesseja ei ole k‰ytett‰viss‰
 there are no processes with the current filter	workflow	fi	Nykyisell‰ suodattimella ei lˆydy prosesseja
 there are no properties available	workflow	fi	Ominaisuuksia ei ole k‰ytett‰viss‰
 there are no roles defined for this process	workflow	fi	T‰lle prosessille ei ole m‰‰ritetty rooleja
+there are no transitions defined	workflow	fi	Siirtymi‰ ei ole m‰‰ritetty
+there are no user activites available	workflow	fi	K‰ytt‰j‰n toimintoja ei ole vapaana
+this activity for this instance is actually avaible for you.	workflow	fi	T‰t‰ toiminto< t‰ss‰ instanssissa vapaa sinulle.
+this activity for this instance is actually only avaible for you.	workflow	fi	T‰t‰ toimintoa t‰ss‰ instanssissa vapaana vain sinulle.
+this activity for this instance is not specifically assigned to you.	workflow	fi	T‰t‰ toimintoa t‰ss‰ instanssissa ei ole m‰‰ritetty sinulle.
 this process has no end activity	workflow	fi	t‰ll‰ prosessilla ei ole lopputmis toimintoa
 to	workflow	fi	To
 to:	workflow	fi	To:
+transition	workflow	fi	Siirtym‰
+transition mode	workflow	fi	Siirtym‰n muoto
+transition to %1	workflow	fi	siirtym‰ %1
+transition waiting for human interaction	workflow	fi	siirtym‰ odottaa ihmisen vuorovaikutusta
+transitions	workflow	fi	siirtym‰t
+transitions removed successfully	workflow	fi	Siirtym‰t poistettu onnistuneesti
 type	workflow	fi	Tyyppi
 type:	workflow	fi	Tyyppi:
 unknown status	workflow	fi	tuntematon tila
@@ -384,6 +407,10 @@ workflow navigation	workflow	fi	Workflow:n navigointi
 workflow preferences	workflow	fi	Workflow:n ominaisuudet
 workflow site configuration	workflow	fi	Workflow sivun konfigurointi
 you are not allowed to abort instance %1	workflow	fi	Sinulla ei ole oikeutta keskeytt‰‰ instanssia %1
+you are not allowed to exception instance %1	workflow	fi	Sinulla ei ole poikkeus oikeutta instanssiin %1
+you are not allowed to release instance %1	workflow	fi	Sinulla ei ole oikeutta vapauttaa instanssia %1
 you are not allowed to restart instance %1	workflow	fi	Sinulla ei ole oikeutta k‰ynnist‰‰ uudestaan instanssia %1
 you are not allowed to resume instance %1	workflow	fi	Sinulla ei ole oikeutta jatkaa instanssia %1
 you are not allowed to send instance %1	workflow	fi	Sinulla ei ole oikeutta l‰hett‰‰n instanssia %1
+you have not permission to execute this activity	workflow	fi	Sinulla ei ole oikeutta suorittaa t‰t‰ toimintoa
+you were not allowed to complete the activity	workflow	fi	Sinulle ei ole annettu oikeutta suorittaa t‰t‰ toimintoa

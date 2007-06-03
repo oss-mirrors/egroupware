@@ -1,44 +1,57 @@
 add	developer_tools	cs	pøidat
 add change	developer_tools	cs	Pøidat zmìnu
-add more	developer_tools	cs	Pøidat více
+add more	developer_tools	cs	Pøidat dal¹í
 add new phrase	developer_tools	cs	Pøidat novou frázi
 add phrase	developer_tools	cs	pøidat frázi
-allows you to add a single phrase	developer_tools	cs	Umo¾ní vám pøidat frázi
+allows you to add a single phrase	developer_tools	cs	Dovoluje pøidat jednu frázi
 application	developer_tools	cs	Aplikace
 back	developer_tools	cs	Zpìt
 cancel	developer_tools	cs	Storno
 change	developer_tools	cs	Zmìnit
-clears the internal buffer, all changes made sofar are lost	developer_tools	cs	Vyèistí interní buffer, ve¹keré zmìny vytvoøené a¾ do této chvíle budou ztraceny.
+changelog entry has been added	developer_tools	cs	Záznam do zmìnového protokolu byl pøidán
+changelogs	developer_tools	cs	Zmìnové protokoly
+clears the internal buffer, all changes made sofar are lost	developer_tools	cs	Vyma¾e interní buffer, v¹echny dosud provedené zmìny budou ztraceny
 create new language file	developer_tools	cs	Vytvoøit nový jazykový soubor
 create sgml file	developer_tools	cs	Vytvoøit SGML soubor
-developer tools - preferences	developer_tools	cs	Vývojáøské nástroje - nastavení
+developer tools - preferences	developer_tools	cs	Vývojáøské nástroje - pøedvolby
 developer_tools	common	cs	Nástroje pro pøeklad
 diary	developer_tools	cs	Zápisník
 done	developer_tools	cs	hotovo
-download	developer_tools	cs	Download
-edit	developer_tools	cs	Zmìnit
-installed applications	developer_tools	cs	Nainstalované aplikace
+download	developer_tools	cs	Stáhnout
+download the lang-file to be saved in the apps setup-dir	developer_tools	cs	Stáhnout jazykový soubor pro ulo¾ení do setup slo¾ky aplikace
+edit	developer_tools	cs	Editovat
+installed applications	developer_tools	cs	Instalované aplikace
 language file management	developer_tools	cs	Správa jazykových souborù
+list changelogs	developer_tools	cs	Zobrazit zmìnové protokoly
 load	developer_tools	cs	Nahrát
 loading source langfile	developer_tools	cs	Nahrávám zdrojový jazykový soubor
 loading target langfile	developer_tools	cs	Nahrávám cílový jazykový soubor
+loads the selected lang-files, to be modified in the next steps	developer_tools	cs	Nahraje vybrané jazykové soubory pro jejich úpravu v následujících krocích
 message	developer_tools	cs	Zpráva
-message_id in english	developer_tools	cs	id zprávy v Angliètinì
+message_id in english	developer_tools	cs	id zprávy v angliètinì
 no file	developer_tools	cs	¾ádný soubor
 ok	developer_tools	cs	OK
 original	developer_tools	cs	Originál
-phrase in english (or empty if identical)	developer_tools	cs	Fráze v angliètinì (v pøípadì shody ponechat prázdné)
+phrase in english (or empty if identical)	developer_tools	cs	Fráze v angliètinì (prázdné, je-li identická)
 preferences	developer_tools	cs	Pøedvolby
-preferences have been updated	developer_tools	cs	Pøedvolby byly zmìnìny
+preferences have been updated	developer_tools	cs	Pøedvolby byly zaktualizovány
 project	developer_tools	cs	Projekt
 remove	developer_tools	cs	Odstranit
-returns to the application list, not saved changes get lost !!!	developer_tools	cs	Návrat na seznam aplikací, neulo¾ené zmìny budou ztraceny !!!
-revert	developer_tools	cs	Obnovit
-search for missing phrase	developer_tools	cs	Vyhledat chybìjící fráze
-search new phrases	developer_tools	cs	Vyhledat nové fráze
-searches the source-code for phrases not in the actual source-lang-file	developer_tools	cs	Prohledá zdrojový kód k nalezení frází, které nejsou obsa¾eny v aktuálním zdrojovém jazykovém souboru
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	cs	Odstranìno %1 frází z cílového jazykového souboru, které nebyly ve zdrojovém jazykovém souboru
+returns to the application list, not saved changes get lost !!!	developer_tools	cs	Návrat do seznamu aplikací, neulo¾ené zmìny budou ztraceny !!!
+revert	developer_tools	cs	Vrátit zpìt
+saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	cs	Ulo¾í pøidané/zmìnìné pøeklady do interního bufferu, aby mohly být pou¾ity v dal¹ích krocích
+search changelogs	developer_tools	cs	Prohledat zmìnový protokol
+search for missing phrase	developer_tools	cs	Hledat chybìjící fráze
+search new phrases	developer_tools	cs	Hledat nové fráze
+searches the source-code for phrases not in the actual source-lang-file	developer_tools	cs	Hledá ve zdrojovém kódu aplikace fráze, které nejsou v aktuálním zdrojovém jazykovém souboru
 select project	developer_tools	cs	Vybrat projekt
+sf project tracker	developer_tools	cs	SF Sledování projektu
+sf project tracker preferences	preferences	cs	SF Pøedvolby sledování projektu
 source language	developer_tools	cs	Zdrojový jazyk
+sourceforge project id	developer_tools	cs	Projekt ID na Sourceforge
+sourceforge project tracker	developer_tools	cs	Sourceforge sledování projektu
+sourceforge project tracker preferences	developer_tools	cs	Sourceforge pøedvolby sledování projektu
 step	developer_tools	cs	Krok
 submit	developer_tools	cs	Odeslat
 target language	developer_tools	cs	Cílový jazyk
@@ -47,12 +60,15 @@ translate	developer_tools	cs	Pøelo¾it
 translation	developer_tools	cs	Pøeklad
 translation of phrase	developer_tools	cs	Pøeklad fráze
 update	developer_tools	cs	Aktualizovat
-update database	developer_tools	cs	Aktualizace databáze
-updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	cs	Aktualizuje pøeklady obou jazykových souborù v databázi, mù¾ete tedy okam¾itì zkontrolovat va¹i práci
+update database	developer_tools	cs	Aktualizovat databázi
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	cs	Zaktualizuje pøeklady obou jazykových souborù v databázi, tak¾e mù¾ete svou práci ihned zkontrolovat
 version	developer_tools	cs	Verze
-write	developer_tools	cs	Zapsat
-write the lang-file to the apps setup-dir	developer_tools	cs	Zapsat jazykový soubor do instalaèního adresáøe aplikace
-write to lang table	developer_tools	cs	Zapsat do jazykové tabulky
-writing langfile for '%1' ...	developer_tools	cs	Zapisuji jazykový soubor '%1'
+write	developer_tools	cs	Ulo¾it
+write the lang-file to the apps setup-dir	developer_tools	cs	Ulo¾it jazykový soubor do setup slo¾ky aplikace
+write to lang table	developer_tools	cs	Ulo¾it do jazykové tabulky
+writing langfile for '%1' ...	developer_tools	cs	Ukládám jazykový soubor pro '%1' ...
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	cs	Musíte [Ulo¾it] ka¾dou zmìnu ve vý¹e zobrazených polích ne¾ budete moci pokraèovat dal¹ím krokem !!!
+you must a version	developer_tools	cs	Musíte verzi
+you must enter a change	developer_tools	cs	Musíte zadat zmìnu
 you must select a project	developer_tools	cs	Musíte vybrat projekt
-you need to set your preferences for this app	developer_tools	cs	Je nutno nastavit va¹e pøedvolby pro tuto aplikaci
+you need to set your preferences for this app	developer_tools	cs	Musíte nastavit své pøedvolby pro tuto aplikaci

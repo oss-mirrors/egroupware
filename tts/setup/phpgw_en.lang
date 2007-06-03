@@ -10,8 +10,8 @@ admin options	common	en	Admin Options
 alert for critical prio setting	tts	en	You are setting the Priority to Critical; Make sure you know what this means to the recipient of the ticket, and dont forget to call him immediately!
 alert for emergency prio setting	tts	en	You are setting the Priority to Emergency; Make sure you know what this means to the recipient of the ticket, and dont forget to call him immediately!
 alert for high prio setting	tts	en	Please consider calling the recipient of this ticket!
-all categories used in TTS are global and will remain unchaned in Tracker	tts	en	All categories used in TTS are global and will remain unchaned in Tracker
-all tickets are already converted to Tracker	tts	en	All tickets are already converted to Tracker
+all categories used in tts are global and will remain unchaned in tracker	tts	en	All categories used in TTS are global and will remain unchaned in Tracker
+all tickets are already converted to tracker	tts	en	All tickets are already converted to Tracker
 assign tickets	tts	en	Assign
 assign to	tts	en	Assign to
 assigned from	tts	en	Assigned from
@@ -34,8 +34,8 @@ configure the states	common	en	Configure the states
 configure the transitions	common	en	Configure the transitions
 convert all closed tickets	tts	en	Convert all closed tickets
 convert all open tickets	tts	en	Convert all open tickets
-converted count	tts	en	Number converted
 convert tickets to tracker	tts	en	Convert tickets to Tracker
+converted count	tts	en	Number converted
 create new state	tts	en	Create new state
 create new ticket	tts	en	Create new ticket
 create new transition	tts	en	Create new transition
@@ -117,10 +117,10 @@ resolved	tts	en	RESOLVED
 returns a struct of a tickets history	tts	en	Returns a struct of a tickets history
 returns a struct of values of a single ticket	tts	en	Returns a struct of values of a single ticket
 returns the additional notes attached to a ticket	tts	en	Returns the additional notes attached to a ticket
-select which categories should be used in Tracker for the TTS categories	tts	en	Select which categories should be used in Tracker for the TTS categories
+select which categories should be used in tracker for the tts categories	tts	en	Select which categories should be used in Tracker for the TTS categories
 selected	tts	en	selected
 show new/updated tickets on main screen	tts	en	show new/updated tickets on main screen
-show tickets converted to Tracker in overviews	tts	en	Overviews contain tickets that where already converted to Tracker
+show tickets converted to tracker in overviews	tts	en	Overviews contain tickets that where already converted to Tracker
 small view	tts	en	small view
 source state	tts	en	Source State
 state	tts	en	State
