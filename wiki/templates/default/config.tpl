@@ -59,8 +59,8 @@
 <td>{lang_Enable_Free_Links}:</td>
 <td>
 <select name="newsettings[Enable_Free_Links]">
-<option value=""{selected_Enable_Free_Links_False}>{lang_No}</option>
 <option value="True"{selected_Enable_Free_Links_True}>{lang_Yes}</option>
+<option value="False"{selected_Enable_Free_Links_False}>{lang_No}</option>
 </select>
 </td>
 </tr>
@@ -69,8 +69,8 @@
 <td>{lang_Enable_Wiki_Links}:</td>
 <td>
 <select name="newsettings[Enable_Wiki_Links]">
-<option value=""{selected_Enable_Wiki_Links_False}>{lang_No}</option>
 <option value="True"{selected_Enable_Wiki_Links_True}>{lang_Yes}</option>
+<option value="False"{selected_Enable_Wiki_Links_False}>{lang_No}</option>
 </select>
 </td>
 </tr>

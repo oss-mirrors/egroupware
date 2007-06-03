@@ -69,8 +69,8 @@ class bowiki extends sowiki
 		if (!isset($this->config['wikihome'])) $this->config['wikihome'] = 'eGroupWare';
 		$HomePage = $this->config['wikihome'];
 		$InterWikiPrefix = isset($this->config['InterWikiPrefix'])   ? $this->config['InterWikiPrefix'] : 'EGroupWare';
-		$EnableFreeLinks = isset($this->config['Enable_Free_Links']) ? $this->config['Enable_Free_Links'] : 1;
-		$EnableWikiLinks = isset($this->config['Enable_Wiki_Links']) ? $this->config['Enable_Wiki_Links'] : 1;
+		$EnableFreeLinks = isset($this->config['Enable_Free_Links']) ? $this->config['Enable_Free_Links'] == 'True' : true;
+		$EnableWikiLinks = isset($this->config['Enable_Wiki_Links']) ? $this->config['Enable_Wiki_Links'] == 'True' : true;
 		
 		$this->ExpireLen = $this->config['ExpireLen'];
 		$this->upload_dir = $this->config['upload_dir'];
