@@ -185,15 +185,17 @@ class uimanual extends uiwiki
 				if ($app == 'preferences' && $class == 'uiaclprefs')
 				{
 					$app = $query['acl_app'] ? $query['acl_app'] : $_GET['acl_app'];
-					$function = 'acl';
+					$pages[] = 'Manual'.ucfirst($app).'Acl';
 				}
 				elseif ($app == 'preferences' && $class == 'uisettings')
 				{
-					$pages[] = 'Manual'.ucfirst($query['appname'] ? $query['appname'] : $_GET['appname']).'Preferences';
+					$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
+					$pages[] = 'Manual'.ucfirst($app).'Preferences';
 				}
 				elseif ($app == 'admin' && $class == 'uiconfig')
 				{
 					$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
+					$pages[] = 'Manual'.ucfirst($app).'Config';
 				}
 				$pages[] = 'Manual'.ucfirst($app).ucfirst($class).ucfirst($function);
 				$pages[] = 'Manual'.ucfirst($app).ucfirst($function);
