@@ -123,21 +123,21 @@ class soWikiPage
 		}
 		$user = $GLOBALS['egw_info']['user']['account_id'];
 
-		$filters[] = WIKI_ACL_ALL;
+		$filter = array(WIKI_ACL_ALL);
 
 		if ($GLOBALS['egw_info']['user']['account_lid'] !=  $GLOBALS['config']['AnonymousUser'])
 		{
-			$filters[] = WIKI_ACL_USER;
+			$filter[] = WIKI_ACL_USER;
 		}
 		if (@$GLOBALS['egw_info']['user']['apps']['admin'])
 		{
-			$filters[] = WIKI_ACL_ADMIN;
+			$filter[] = WIKI_ACL_ADMIN;
 		}
-		$filters = array_merge($filters,$this->memberships);
+		$filter = array_merge($filter,$this->memberships);
 
 		$sql = '('.($add_wiki_id ? " wiki_id=$this->wiki_id AND " : '').
 			($table ? $table.'.' : '').
-			($readable ? 'wiki_readable' : 'wiki_writable').' IN ('.implode(',',$filters).'))';
+			($readable ? 'wiki_readable' : 'wiki_writable').' IN ('.implode(',',$filter).'))';
 		
 		if ($this->debug) echo "<p>sowiki::acl_filter($readable,$add_wiki_id) = '$sql'</p>\n";
 
