@@ -63,10 +63,10 @@
 		 }
 		 $response->addAssign('panel_fenabled', "innerHTML", $enabled);
 
-		 $where_string="field_parent_object='$object_id' AND  field_name='$field_name'";
+		 $where_string="field_parent_object='$object_id' AND  field_name='$field'";
 		 $status = $this->bo->so->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string,true);
 		 $this->bo->set_site_version_info($this->bo->site['site_id']);
-		 //	 return $response->addAlert($where_string);
+		 	 $response->addAlert($where_string);
 		 return $response->getXML();
 	  }
 
