@@ -299,10 +299,13 @@ class Document
 
 			$this->_accessList = array("groups" => array(), "users" => array());
 			while ($this->db->next_record()) {
-				if ($this->db->f('userID') != -1)
-					array_push($this->_accessList["users"], new UserAccess($this->db->f('userID'), $this->db->f('mode')));
-				else //if ($row["groupID"] != -1)
-					array_push($this->_accessList["groups"], new GroupAccess($this->db->f('groupID'), $this->db->f('mode')));
+				$userID = ($this->db->f('userID')?$this->db->f('userID'):$this->db->f('userid'));
+				if ($userID != -1) {
+					array_push($this->_accessList["users"], new UserAccess($userID, $this->db->f('mode')));
+				} else {//if ($row["groupID"] != -1)
+					$groupID = ($this->db->f('groupID')?$this->db->f('groupID'):$this->db->f('groupid'));
+					array_push($this->_accessList["groups"], new GroupAccess($groupID, $this->db->f('mode')));
+				}
 			}
 			
 		#	$queryStr = "SELECT * FROM phpgw_mydms_ACLs WHERE targetType = ".T_DOCUMENT." AND target = " . $this->_id . " ORDER BY targetType";
@@ -483,10 +486,13 @@ class Document
 
 			$this->_notifyList = array("groups" => array(), "users" => array());
 			while ($this->db->next_record()) {
-				if ($this->db->f('userID') != -1)
-					array_push($this->_notifyList["users"], getUser($this->db->f('userID')));
-				else //if ($row["groupID"] != -1)
-					array_push($this->_notifyList["groups"], getGroup($this->db->f('groupID')));
+				$userID = ($this->db->f('userID')?$this->db->f('userID'):$this->db->f('userid'));
+				if ($userID != -1) {
+					array_push($this->_notifyList["users"], getUser($userID));
+				} else {//if ($row["groupID"] != -1)
+					$groupID = ($this->db->f('groupID')?$this->db->f('groupID'):$this->db->f('groupid'));
+					array_push($this->_notifyList["groups"], getGroup($groupID));
+				}
 			}
 			
 		#	$queryStr ="SELECT * FROM phpgw_mydms_Notify WHERE targetType = " . T_DOCUMENT . " AND target = " . $this->_id;
@@ -639,11 +645,11 @@ class Document
 						$this->db->f('version'), 
 						$this->db->f('comment'), 
 						$this->db->f('date'), 
-						$this->db->f('createdBy'), 
+						($this->db->f('createdBy')?$this->db->f('createdBy'):$this->db->f('createdby')), 
 						$this->db->f('dir'), 
-						$this->db->f('orgFileName'), 
-						$this->db->f('fileType'), 
-						$this->db->f('mimeType')
+						($this->db->f('orgFileName')?$this->db->f('orgFileName'):$this->db->f('orgfilename')), 
+						($this->db->f('fileType')?$this->db->f('fileType'):$this->db->f('filetype')), 
+						($this->db->f('mimeType')?$this->db->f('mimeType'):$this->db->f('mimetype'))
 					)
 				);
 			}
@@ -693,11 +699,11 @@ class Document
 				$this->db->f('version'), 
 				$this->db->f('comment'), 
 				$this->db->f('date'), 
-				$this->db->f('createdBy'), 
+				($this->db->f('createdBy')?$this->db->f('createdBy'):$this->db->f('createdby')), 
 				$this->db->f('dir'), 
-				$this->db->f('orgFileName'), 
-				$this->db->f('fileType'), 
-				$this->db->f('mimeType')
+				($this->db->f('orgFileName')?$this->db->f('orgFileName'):$this->db->f('orgfilename')), 
+				($this->db->f('fileType')?$this->db->f('fileType'):$this->db->f('filetype')), 
+				($this->db->f('mimeType')?$this->db->f('mimeType'):$this->db->f('mimetype'))
 			);
 		} else {
 			return false;
@@ -742,11 +748,11 @@ class Document
 					$this->db->f('version'), 
 					$this->db->f('comment'), 
 					$this->db->f('date'), 
-					$this->db->f('createdBy'), 
+					($this->db->f('createdBy')?$this->db->f('createdBy'):$this->db->f('createdby')), 
 					$this->db->f('dir'), 
-					$this->db->f('orgFileName'), 
-					$this->db->f('fileType'), 
-					$this->db->f('mimeType')
+					($this->db->f('orgFileName')?$this->db->f('orgFileName'):$this->db->f('orgfilename')), 
+					($this->db->f('fileType')?$this->db->f('fileType'):$this->db->f('filetype')), 
+					($this->db->f('mimeType')?$this->db->f('mimeType'):$this->db->f('mimetype'))
 				);
 			}
 	
