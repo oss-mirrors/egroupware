@@ -89,9 +89,9 @@
 			$input .= $this->add_javascript();
 		 }
 
-		 if (is_numeric($config[Max_files])) 
+		 if (is_numeric($config['Max_files'])) 
 		 {
-			$num_input =$config[Max_files];
+			$num_input =$config['Max_files'];
 		 }
 		 else 
 		 {
@@ -212,9 +212,9 @@
 			//check max images
 			if($config['Allow_more_then_max_files']=='False')
 			{
-			   if( count($images_array) > $config[Max_files] )
+			   if( count($images_array) > $config['Max_files'] )
 			   {
-				  $images_array=array_slice($images_array, 0, $config[Max_files]);
+				  $images_array=array_slice($images_array, 0, $config['Max_files']);
 			   }	
 			}
 			foreach ($images_array as $image_string)
@@ -261,7 +261,7 @@
 
 	  function listview_read($value,$config,$where_val_enc)
 	  {
-		 $imgiconsrc=$GLOBALS[phpgw]->common->image('jinn','imageicon');
+		 $imgiconsrc=$GLOBALS['phpgw']->common->image('jinn','imageicon');
 		 $stripped_name=substr($field_name,6);	
 
 		 $upload_url =$this->local_bo->cur_upload_url ();
@@ -286,7 +286,7 @@
 				  /* check for image and create previewlink */
 				  if(is_file($upload_path . SEP . $file_path))
 				  {
-					 $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$file_path);
+					 $imglink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$file_path);
 
 					 // FIXME move code to class
 					 $image_size=getimagesize($upload_path . SEP. $file_path);
@@ -353,31 +353,31 @@
 		 elseif($file_info_arr['type_gifjpgpng'])
 		 {
 			$absolute_thumb_path=$dir_name.'/.'.$file_name;
-			$this->tplsav2->filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+			$this->tplsav2->filelink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 
 
 			unset($this->tplsav2->popup);
 			// no popup needed
 			if($file_info_arr['img_width']<150)
 			{
-			   $this->tplsav2->imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+			   $this->tplsav2->imglink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 			}
 			else
 			{
 			   $pop_width = ($file_info_arr['img_width']+50);
 			   $pop_height = ($file_info_arr['img_height']+50);
-			   $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+			   $imglink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 			   $this->tplsav2->popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
 
 			   // if thumb exist
 			   if(is_file($absolute_thumb_path))
 			   {
-				  $this->tplsav2->tmblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_thumb_path);
+				  $this->tplsav2->tmblink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_thumb_path);
 			   }
 			   else
 			   {
 				  $this->tplsav2->size_back=true;
-				  $this->tplsav2->tmblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+				  $this->tplsav2->tmblink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 			   }
 			}
 
@@ -389,7 +389,7 @@
 			$this->tplsav2->fileurl=$this->local_bo->cur_upload_url().'/'.$file_path;
 
 			//test this streaming link for flash
-			$this->tplsav2->filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+			$this->tplsav2->filelink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 
 			$this->tplsav2->file_spec = @GetImageSize($absolute_file_path);						
 			$this->tplsav2->file_width = ($file_spec[0]>=$file_spec[1]) ? 80 : round($file_spec[0]/($file_spec[1]/80)) ;
@@ -403,7 +403,7 @@
 		 }
 		 elseif($file_info_arr['type_unknown'])
 		 {
-			$this->tplsav2->filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
+			$this->tplsav2->filelink=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$absolute_file_path);
 			$this->tplsav2->unknown_icon = &$this->unknown;
 			$this->tplsav2->linkid = &$linkid;	
 			$this->tplsav2->span_id = &$span_id;	

@@ -34,7 +34,7 @@
 	$this->registry->plugins['htmlspecialchars']['db_field_hooks']	= array
 	(
 	   'string',
-	   'blob',
+	   'text',
 	);
 	$this->registry->plugins['htmlspecialchars']['config']		= array
 	(

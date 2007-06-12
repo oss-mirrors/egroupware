@@ -59,19 +59,41 @@
 			'varchar'		=>		'string',
 			'char'			=>		'string',
 			'string'		=>		'string',
-			'int'			=>		'int',
 			'real'			=>		'int',
 			'smallint'		=>		'int',
+			'mediumint'		=>		'int',
 			'int'			=>		'int',
 			'tinyint'		=>		'int',
+			'bigint'		=>		'int',
+
 			'float'			=>		'float',
+			'double'		=>		'float',
+			'decimal'		=>		'float',
+
 			'date'			=>		'date',
 			'datetime'		=>		'date',
+
 			'timestamp'		=>		'timestamp',
+
+			'tinyblob'		=>		'blob',
+			'mediumblob'	=>		'blob',
 			'blob'			=>		'blob',
-			'longtext'		=>		'blob',
-			'mediumtext'	=>		'blob',
-			'text'			=>		'blob',
+			'longblob'		=>		'blob',
+
+			'bool'			=>		'unknown',
+			'varbinary'		=>		'unknown',
+			'binary'		=>		'unknown',
+			'set'			=>		'unknown',
+			'enum'			=>		'unknown',
+			'bool'			=>		'unknown',
+			'year'			=>		'unknown',
+			'time'			=>		'unknown',
+
+			'tinytext'		=>		'text',
+			'longtext'		=>		'text',
+			'mediumtext'	=>		'text',
+			'text'			=>		'text',
+
 			'auto'			=>		'auto',
 		 );
 	  }

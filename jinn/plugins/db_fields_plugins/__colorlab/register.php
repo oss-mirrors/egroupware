@@ -31,7 +31,7 @@
    $this->registry->plugins['colorlab']['author']			= 'Gabriël Ramaker';
    $this->registry->plugins['colorlab']['description']		= 'Colorlab plugin for JiNN with Flash 6 front-end. This version is not (fully) functional/stable, use at own risk.<br/>   The Flash(.Fla) source file is located in the \'colorlab\' folder in the JiNN \'plugins\' folder.<br/>';
    $this->registry->plugins['colorlab']['enable']			= 1;
-   $this->registry->plugins['colorlab']['db_field_hooks']	= array('string', 'blob');
+   $this->registry->plugins['colorlab']['db_field_hooks']	= array('string', 'text');
    $this->registry->plugins['colorlab']['config']		    = array(
 	  'Available_colors' => array(array('Unlimited','User-defined'),'select',''),
 	  'User_defined_colors' => array('#FFFFFF,#000000,#CCCCCC','area','')

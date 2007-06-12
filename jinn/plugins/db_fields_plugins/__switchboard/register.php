@@ -43,7 +43,7 @@
    $this->registry->plugins['switchboard']['db_field_hooks']	= array
    (
 	  'string',
-	  'blob'
+	  'text'
    );
    $this->registry->plugins['switchboard']['config']		= array
    (

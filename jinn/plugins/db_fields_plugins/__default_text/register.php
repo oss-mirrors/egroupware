@@ -35,7 +35,7 @@
 	$this->registry->plugins['default_text']['db_field_hooks']	= array
 	(
 	   'string',
-	   'blob'
+	   'text'
 	 );
 
 	 $this->registry->plugins['default_text']['config']		= array

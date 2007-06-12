@@ -34,7 +34,7 @@
    $this->registry->plugins['colorpicker']['helper_fields_substring'] = 'CPR'; //this is for multiple records insert
    $this->registry->plugins['colorpicker']['db_field_hooks']	= array
    (
-	  'blob',
+	  'text',
 	  'string'
    );
 

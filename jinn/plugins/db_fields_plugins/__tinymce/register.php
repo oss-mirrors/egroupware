@@ -17,7 +17,7 @@
    Tinymce is a rich-textarea replacement for the textarea formwidget.';
    $this->registry->plugins['tinymce']['db_field_hooks']	= array
    (
-	  'blob',
+	  'text',
 	  'string'
    );
 

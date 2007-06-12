@@ -33,7 +33,7 @@
    $this->registry->plugins['htmlarea']['description']		= 'The htmlArea plugin is based on htmlArea 3.0rc from interactivetools.com licenced under the BSD licence.<p/>   HtmlArea is a rich-textarea replacement for the textarea formwidget.';
    $this->registry->plugins['htmlarea']['db_field_hooks']	= array
    (
-	  'blob',
+	  'text',
 	  'string'
    );
 

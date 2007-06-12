@@ -38,7 +38,7 @@
    $this->registry->plugins['filemanager']['db_field_hooks']	= array
    (
 	  'string',
-	  'blob'
+	  'text'
    );
 
 	$this->registry->plugins['filemanager']['helper_fields_substring'] = '_FM_'; //this cannot be a class var because bouser needs it even when the class is not loaded

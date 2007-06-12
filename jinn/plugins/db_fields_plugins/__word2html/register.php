@@ -32,7 +32,7 @@
    $this->registry->plugins['word2html']['description'] 	= 'Converts html from an uploader word document, including images. It needs to vw toolkit to be installed';
    $this->registry->plugins['word2html']['db_field_hooks']	= array
    (
-	  'string','blob'
+	  'string','text'
    );
 
    $this->registry->plugins['word2html']['helper_fields_substring'] = 'W2HTM'; //this is for multiple records insert

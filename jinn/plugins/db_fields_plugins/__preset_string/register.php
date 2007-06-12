@@ -34,7 +34,9 @@
    (
 	  'string',
 	  'int',
-	  'blob'
+	  'float',
+	  'blob',
+	  'text'
    );
 
    /*	$this->registry->plugins['preset_string']['config']		= array

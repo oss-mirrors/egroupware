@@ -1,5 +1,6 @@
 <table cellpadding="3" width="100%">
    <?php $i=0;?>
+   <?php if(is_array($this->files)):?>
    <?php foreach($this->files as $onefile_html):?>
    <?$i++;?>
    <tr>
@@ -9,4 +10,5 @@
 	  </td>
    </tr>							  
    <?php endforeach?>
+   <?php endif?>
 </table>

@@ -37,7 +37,7 @@
 	  'string',
 	  'int',
 	  'auto',
-	  'blob'
+	  'text'
    );
 
    $this->registry->plugins['formatval']['config2'] = array

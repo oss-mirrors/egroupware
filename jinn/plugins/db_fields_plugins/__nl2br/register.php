@@ -38,7 +38,7 @@
 	before storing the data to the database';
 	$this->registry->plugins['nl2br']['db_field_hooks']	= array
 	(
-	   'blob',
+	   'text',
 	   'string'
 	);
 	$this->registry->plugins['nl2br']['config']		= array

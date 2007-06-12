@@ -34,7 +34,7 @@
    $this->registry->plugins['attachpath']['db_field_hooks']	= array
    (
 	  'string',
-	  'blob'
+	  'text'
    );
 
    /* ATTENTION: spaces and special character are not allowed in config array 
@@ -43,7 +43,6 @@
    (
 	  'Max_files' => array('3','text','maxlength=2 size=2'), 
 	  'Max_attachment_size_in_megabytes_Leave_empty_to_have_no_limit' => array('','text','maxlength=3 size=3'),
-	  //	  'Alternative_upload_path_Leave_empty_to_use_normal_path' => array('','text','maxlength=200 size=30'),
 	  'Activate_manual_path_input' => array( array('False','True'),'select',''),
 	  'Store_full_path' => array( array('True','False'),'select','')
    );
@@ -51,172 +50,8 @@
    $this->registry->plugins['attachpath']['config_help']		= array
    (
 	  'Max_files' => 'Defaults to three files', 
-	  //	  'Max_attachment_size_in_megabytes_Leave_empty_to_have_no_limit' => array('','text','maxlength=3 size=3'),
-	  //	  'Alternative_upload_path_Leave_empty_to_use_normal_path' => array('','text','maxlength=200 size=30'),
 	  'Activate_manual_path_input' => 'With manual path the user can point to an existing file',
 	  'Store_full_path' => 'If you select True, the complete path is stored in the database, else a path relative to the upload path is stored ' 
    );
-
-  /* $this->registry->plugins['attachpath']['name']			= 'attachpath';
-   $this->registry->plugins['attachpath']['title']			= 'Genenate Menu Images';
-   $this->registry->plugins['attachpath']['version']		= '0.1';
-   $this->registry->plugins['attachpath']['enable']			= 1;
-   $this->registry->plugins['attachpath']['author']			= 'Pim Snel';
-   $this->registry->plugins['attachpath']['description']	= 
-   'With this plugin you can generate high quality images containing the text of your menu item. 
-   The CMS developer has to upload font and background images. The Moderator can then just type 
-   in the text and push the putton generate. The path to the images are stored in a serialized 
-   associative array.
-   ';
-   $this->registry->plugins['attachpath']['helper_fields_substring'] = 'GMI'; //this is for multiple records insert
-   $this->registry->plugins['attachpath']['db_field_hooks']	= array
-   (
-	  'blob'
-   );
-
-   //
-   $available_fonts=array();
-
-   $num_images=array(
-	  '1'=>'1',
-	  '2'=>'2',
-	  '3'=>'3',
-	  '4'=>'4',
-   );
-
-   // We need a template in stead of this auto configure array
-   $this->registry->plugins['attachpath']['config2']		= array
-   (
-	  'numimg' => array(
-		 'name' => 'numimg',
-		 'label' => lang('Number of images to create'),
-		 'type' => 'select',
-		 'select_arr' => $num_images
-	  ),
-	  'spacer' => array(
-		 'name' => 'spacer',
-		 'type' => 'spacer'
-	  ),
-	  'fontfile1' => array(
-		 'name' => 'fontfile1',
-		 'label' => lang('Font file for image %1','1'),
-		 'type' => 'sitefile',
-		 'subdir' =>'fonts',
-		 'allowempty' => false
-	  ),
-	  'fontsize1' => array(
-		 'name' => 'fontsize1',
-		 'label' => lang('Font size for image %1','1'),
-		 'type' => 'text',
-		 'size' => 4
-	  ),
-	  'fontcolor1' => array(
-		 'name' => 'fontcolor1',
-		 'label' => lang('Text color %1','1'),
-		 'type' => 'text',
-		 'size' => 7
-	  ),
-	  'bgcolor1' => array(
-		 'name' => 'bgcolor1',
-		 'label' => lang('Background color %1','1'),
-		 'type' => 'text',
-		 'size' => 7
-	  ),
-	  'bgimg1' => array(
-		 'name' => 'bgimg1',
-		 'label' => lang('Background image %1','1'),
-		 'type' => 'sitefile',
-		 'subdir' =>'genmenu',
-		 'allowempty' => true
-	  ),
-	  'imgheight1' => array(
-		 'name' => 'imgheight1',
-		 'label' => lang('Height image  %1','1'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingtop1' => array(
-		 'name' => 'paddingtop1',
-		 'label' => lang('Font padding on top of the image in pixels %1','1'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingright1' => array(
-		 'name' => 'paddingright1',
-		 'label' => lang('Font padding on right of the image in pixels %1','1'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingleft1' => array(
-		 'name' => 'paddingleft1',
-		 'label' => lang('Font padding on left of the image in pixels %1','1'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-
-	  // second optional img
-	  'spacer2' => array(
-		 'name' => 'spacer',
-		 'type' => 'spacer'
-	  ),
-	  'fontfile2' => array(
-		 'name' => 'fontfile2',
-		 'label' => lang('Font file for image %1','2'),
-		 'type' => 'sitefile',
-		 'subdir' =>'fonts',
-		 'allowempty' => false
-	  ),
-	  'fontsize2' => array(
-		 'name' => 'fontsize2',
-		 'label' => lang('Font size for image %1','2'),
-		 'type' => 'text',
-		 'size' => 4
-	  ),
-	  'fontcolor2' => array(
-		 'name' => 'fontcolor2',
-		 'label' => lang('Text color %1','2'),
-		 'type' => 'text',
-		 'size' => 7
-	  ),
-	  'bgcolor2' => array(
-		 'name' => 'bgcolor2',
-		 'label' => lang('Background color %1','2'),
-		 'type' => 'text',
-		 'size' => 7
-	  ),
-	  'bgimg2' => array(
-		 'name' => 'bgimg2',
-		 'label' => lang('Background image %1','2'),
-		 'type' => 'sitefile',
-		 'subdir' =>'genmenu',
-		 'allowempty' => true
-	  ),
-	  'imgheight2' => array(
-		 'name' => 'imgheight2',
-		 'label' => lang('Height image  %1','2'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingtop2' => array(
-		 'name' => 'paddingtop2',
-		 'label' => lang('Font padding on top of the image in pixels %1','2'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingright2' => array(
-		 'name' => 'paddingright2',
-		 'label' => lang('Font padding on right of the image in pixels %1','2'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-	  'paddingleft2' => array(
-		 'name' => 'paddingleft2',
-		 'label' => lang('Font padding on left of the image in pixels %1','2'),
-		 'type' => 'text',
-		 'size' =>'3'
-	  ),
-   );
-   */
-   $this->registry->plugins['attachpath']['config_execute']		= false;
 
 ?>

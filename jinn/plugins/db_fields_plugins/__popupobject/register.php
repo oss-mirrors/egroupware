@@ -34,7 +34,7 @@
    $this->registry->plugins['popupobject']['element_type']	= 'lay-out';//no defined element type is automaticly table_field
    $this->registry->plugins['popupobject']['xxdb_field_hooks']	= array
    (
-	  'blob',
+	  'text',
 	  'string'
    );
 

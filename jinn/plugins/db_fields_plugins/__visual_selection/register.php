@@ -42,7 +42,7 @@
    $this->registry->plugins['visual_selection']['helper_fields_substring'] = 'GMI'; //this is for multiple records insert
    $this->registry->plugins['visual_selection']['db_field_hooks']	= array
    (
-       'blob',
+       'text',
 	   'string'
 	);
 	$num_images = array(1,2,3,4);

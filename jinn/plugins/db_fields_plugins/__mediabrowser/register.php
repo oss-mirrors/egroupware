@@ -34,7 +34,7 @@
    $this->registry->plugins['mediabrowser']['element_type']	= 'lay-out';//no defined element type is automaticly table_field
    $this->registry->plugins['mediabrowser']['xxdb_field_hooks']	= array
    (
-	  'blob',
+	  'text',
 	  'string'
    );
 

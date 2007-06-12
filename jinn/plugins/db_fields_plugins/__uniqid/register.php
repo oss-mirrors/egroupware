@@ -32,7 +32,7 @@
 	$this->registry->plugins['uniqid']['description'] 	= 'Generates an uniqid, can be used for primary key';
 	$this->registry->plugins['uniqid']['db_field_hooks']= array
 	(
-	   'string','blob'
+	   'string','text'
 	);
 
 ?>

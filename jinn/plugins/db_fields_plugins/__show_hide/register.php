@@ -34,7 +34,7 @@
    (
 	  'string',
 	  'int',
-	  'blob'
+	  'text'
    );
    $this->registry->plugins['show_hide']['help']			=  '
   	This plugin creates  a selectbox that can show and hide fields. It will always ignore itself when hiding fields.

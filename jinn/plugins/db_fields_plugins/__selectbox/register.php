@@ -34,7 +34,7 @@
    (
 	  'string',
 	  'int',
-	  'blob'
+	  'text'
    );
    $this->registry->plugins['selectbox']['help']			=  'If the hidden fields arent available they won\'t work';
    $this->registry->plugins['selectbox']['config']		= array

@@ -38,7 +38,7 @@
    $this->registry->plugins['gen_menu_img']['helper_fields_substring'] = 'GMI'; //this is for multiple records insert
    $this->registry->plugins['gen_menu_img']['db_field_hooks']	= array
    (
-	  'blob',
+	  'text',
 	  'string'
    );
 

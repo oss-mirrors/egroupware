@@ -1,7 +1,6 @@
 <?php
 /*
 	JiNN - Jinn is Not Nuke, a multi-user, multi-site CMS for eGroupWare
-	Author:	Lex Vogelaar for Lingewoud
 	Copyright (C)2005 Pim Snel <pim@lingewoud.nl>
 
 	eGroupWare - http://www.egroupware.org
@@ -26,24 +25,11 @@
 */
 
 	$this->registry->plugins['default_blob']['name'] 			= 'default_blob';
-	$this->registry->plugins['default_blob']['title']			= 'default textarea (depr)';
-	$this->registry->plugins['default_blob']['version']			= '1.2';
+	$this->registry->plugins['default_blob']['title']			= 'default blob widget';
+	$this->registry->plugins['default_blob']['version']			= '0.1';
 	$this->registry->plugins['default_blob']['author']			= 'Pim Snel';
 	$this->registry->plugins['default_blob']['enable']			= 1;
 	$this->registry->plugins['default_blob']['default']			= 1;
-	$this->registry->plugins['default_blob']['description']		= 'Default field plugin for handeling blob or text fields, this plugin doesn\'t handle binary blobs';
-	$this->registry->plugins['default_blob']['db_field_hooks']	= array
-	(
-	   'blob'
-	 );
-
-	 $this->registry->plugins['default_blob']['config']		= array
-	 (
-		'New_height_in_pixels' => array('100','text','maxlength=3 size=3'), 
-	 );
-	 
-	 $this->registry->plugins['default_blob']['config_help']		= array
-	 (
-		'New_height_in_pixels' => 'Default height is 100 pixels', 
-	 );
+	$this->registry->plugins['default_blob']['description']		= 'Default field plugin for handeling blob fields';
+	$this->registry->plugins['default_blob']['db_field_hooks']	= array ('blob');
 ?>

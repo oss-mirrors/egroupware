@@ -20,7 +20,7 @@
    $this->registry->plugins['imagepath']['db_field_hooks']	= array
    (
 	  'string',
-	  'blob'
+	  'text'
    );
 
    $this->registry->plugins['imagepath']['config2'] = array

@@ -31,6 +31,6 @@
    $this->registry->plugins['unserialize']['author']			= 'Pim Snel';
    $this->registry->plugins['unserialize']['description']		= 'De-serialize a value';
    $this->registry->plugins['unserialize']['enable']			= 1;
-   $this->registry->plugins['unserialize']['db_field_hooks']	= array('blob','string');
+   $this->registry->plugins['unserialize']['db_field_hooks']	= array('text','string');
 
 ?>
