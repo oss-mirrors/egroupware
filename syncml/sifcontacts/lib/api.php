@@ -58,7 +58,12 @@ function _egwsifcontactssync_list()
 	
 	#Horde::logMessage("SymcML: egwsifcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	$allContacts = ExecMethod('addressbook.bocontacts.search',array());
+	$filter = array();
+	if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts'])
+	{
+		$filter['account_id'] = null;
+	}
+	$allContacts = ExecMethod2('addressbook.bocontacts.search',array(),True,'','','',False,'AND',false,$filter);
 
 	#Horde::logMessage("SymcML: egwsifcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
