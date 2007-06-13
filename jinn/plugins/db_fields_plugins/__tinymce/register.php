@@ -12,7 +12,7 @@
    $this->registry->plugins['tinymce']['version']			= '0.5';
    $this->registry->plugins['tinymce']['enable']			= 1;
    $this->registry->plugins['tinymce']['author']			= 'Pim Snel';
-   $this->registry->plugins['tinymce']['noajax']			= true; //this plugin cannot be used with ajax 
+   $this->registry->plugins['tinymce']['noajax']			= true; //this plugin cannot be used with ajax in listview
    $this->registry->plugins['tinymce']['description']		= 'The TinyMCE plugin is based on tinymce from tinymce.moxiecode.com.
    Tinymce is a rich-textarea replacement for the textarea formwidget.';
    $this->registry->plugins['tinymce']['db_field_hooks']	= array

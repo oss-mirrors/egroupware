@@ -50,18 +50,18 @@
 	  */
 	  function formview_edit($field_name,$value,$config,$attr_arr)
 	  {	
-		 if($attr_arr['max_size'])
+		 if($attr_arr['len'])
 		 {
-			if($attr_arr['max_size']>40) 
+			if($attr_arr['len']>40) 
 			{
 			   $size=40;
 			}
 			else
 			{
-			   $size=$attr_arr['max_size'];
+			   $size=$attr_arr['len'];
 			}
 
-			$max='size="'.$size.'" maxlength="'.$attr_arr['max_size'].'"';	
+			$max='size="'.$size.'" maxlength="'.$attr_arr['len'].'"';	
 		 }
 
 		 $input='<input onBlur="this.value=jinnIgnoreSpaces(this.value);" type="text" name="'.$field_name.'" '.$max.' value="'.strip_tags($value).'">';

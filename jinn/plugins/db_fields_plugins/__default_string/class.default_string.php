@@ -35,20 +35,20 @@
 		{
 		}
 		
-		function formview_edit($field_name, $value, $config,$attr_arr)
+		function formview_edit($field_name, $value, $config,$dbfieldprops)
 		{
-		   if($attr_arr['max_size'])
+		   if($dbfieldprops['len'])
 		   {
-			  if($attr_arr['max_size']>40) 
+			  if($dbfieldprops['len']>40) 
 			  {
 				 $size=40;
 			  }
 			  else
 			  {
-				 $size=$attr_arr['max_size'];
+				 $size=$dbfieldprops['len'];
 			  }
 	
-			  $max='size="'.$size.'" maxlength="'.$attr_arr['max_size'].'"';	
+			  $max='size="'.$size.'" maxlength="'.$dbfieldprops['len'].'"';	
 		   }
 
 		   $value=strip_tags($value);
@@ -59,7 +59,7 @@
 			return $input;
 		}	
 	
-		function listview_read($value, $config,$attr_arr)
+		function listview_read($value, $config,$dbfieldprops)
 		{
 		   if(strlen($value)>20)
 		   {
