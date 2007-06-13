@@ -14,7 +14,19 @@ function getDocument($id)
 		return false;
 
 	$resArr = $resArr[0];
-	$newDocument = new Document($resArr["id"], $resArr["name"], $resArr["comment"], $resArr["date"], $resArr["expires"], $resArr["owner"], $resArr["folder"], $resArr["inheritAccess"], $resArr["defaultAccess"], $resArr["locked"], $resArr["keywords"], $resArr["sequence"]);
+	$newDocument = new Document(
+		$resArr["id"], 
+		$resArr["name"], 
+		$resArr["comment"], 
+		$resArr["date"], 
+		$resArr["expires"], 
+		$resArr["owner"], 
+		$resArr["folder"], 
+		($resArr["inheritAccess"] ? $resArr["inheritAccess"] : $resArr["inheritaccess"]), 
+		($resArr["defaultAccess"] ? $resArr["defaultAccess"] : $resArr["defaultaccess"]), 
+		$resArr["locked"], 
+		$resArr["keywords"], 
+		$resArr["sequence"]);
 
 	if($newDocument->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id'])) > M_NONE)
 		return $newDocument;
@@ -45,7 +57,11 @@ class Document
 		$this->_expires = $expires;
 		$this->_ownerID = $ownerID;
 		$this->_folderID = $folderID;
-		$this->_inheritAccess = $inheritAccess;
+		if($inheritAccess == 'f' || $inheritAccess == 0) {
+			$this->_inheritAccess = 0;
+		} else {
+			$this->_inheritAccess = 1;
+		}
 		$this->_defaultAccess = $defaultAccess;
 		$this->_locked = $locked;
 		$this->_keywords = $keywords;

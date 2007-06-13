@@ -16,11 +16,19 @@ function getFolder($id)
 	if($id == 1) {
 		$resArr["defaultAccess"] = M_READ;
 	}
-	$newFolder =  new Folder($resArr["id"], $resArr["name"], $resArr["parent"], $resArr["comment"], $resArr["owner"], $resArr["inheritAccess"], $resArr["defaultAccess"], $resArr["sequence"]);
+	$newFolder =  new Folder(
+		$resArr["id"], 
+		$resArr["name"], 
+		$resArr["parent"], 
+		$resArr["comment"], 
+		$resArr["owner"], 
+		($resArr["inheritAccess"] ? $resArr["inheritAccess"] : $resArr["inheritaccess"]), 
+		($resArr["defaultAccess"] ? $resArr["defaultAccess"] : $resArr["defaultaccess"]), 
+		$resArr["sequence"]);
 	
 	#print $resArr["name"]."<br>";
 	#print $newFolder->getAccessMode(getUser($GLOBALS['phpgw_info']['user']['account_id']))."<br>";
-	if($newFolder->getAccessMode(getUser($GLOBALS['phpgw_info']['user']['account_id'])) > 1)
+	if($newFolder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id'])) > 1)
         	return $newFolder;
 	else
 		return false;
@@ -49,7 +57,11 @@ class Folder
 		$this->_parentID = $parentID;
 		$this->_comment = $comment;
 		$this->_ownerID = $ownerID;
-		$this->_inheritAccess = $inheritAccess;
+		if($inheritAccess == 'f' || $inheritAccess == 0) {
+			$this->_inheritAccess = 0;
+		} else {
+			$this->_inheritAccess = 1;
+		}
 		$this->_defaultAccess = $defaultAccess;
 		$this->_sequence = $sequence;
 		
@@ -199,9 +211,17 @@ class Folder
 			$this->_subFolders = array();
 			for ($i = 0; $i < count($resArr); $i++)
 			{
-				$newSubFolder = new Folder($resArr[$i]["id"], $resArr[$i]["name"], $resArr[$i]["parent"], $resArr[$i]["comment"], $resArr[$i]["owner"], $resArr[$i]["inheritAccess"], $resArr[$i]["defaultAccess"], $resArr[$i]["sequence"]);
+				$newSubFolder = new Folder(
+					$resArr[$i]["id"], 
+					$resArr[$i]["name"], 
+					$resArr[$i]["parent"], 
+					$resArr[$i]["comment"], 
+					$resArr[$i]["owner"], 
+					($resArr[$i]["inheritAccess"]?$resArr[$i]["inheritAccess"]:$resArr[$i]["inheritaccess"]), 
+					($resArr[$i]["defaultAccess"]?$resArr[$i]["defaultAccess"]:$resArr[$i]["defaultaccess"]), 
+					$resArr[$i]["sequence"]);
 
-				if($newSubFolder->getAccessMode(getUser($GLOBALS['phpgw_info']['user']['account_id'])) > 1)
+				if($newSubFolder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id'])) > 1)
         				$this->_subFolders[$i] = $newSubFolder;
 			}			
 		}
@@ -313,7 +333,19 @@ class Folder
 			
 			$this->_documents = array();
 			foreach ($resArr as $row)
-				array_push($this->_documents, new Document($row["id"], $row["name"], $row["comment"], $row["date"], $row["expires"], $row["owner"], $row["folder"], $row["inheritAccess"], $row["defaultAccess"], $row["locked"], $row["keywords"], $row["sequence"]));
+				array_push($this->_documents, new Document(
+					$row["id"], 
+					$row["name"], 
+					$row["comment"], 
+					$row["date"], 
+					$row["expires"], 
+					$row["owner"], 
+					$row["folder"], 
+					($row["inheritAccess"]?$row["inheritAccess"]:$row["inheritaccess"]), 
+					($row["defaultAccess"]?$row["defaultAccess"]:$row["defaultaccess"]), 
+					$row["locked"], 
+					$row["keywords"], 
+					$row["sequence"]));
 		}
 		return $this->_documents;
 	}
@@ -419,10 +451,13 @@ class Folder
 			$this->_accessList = array("groups" => array(), "users" => array());
 			foreach ($resArr as $row)
 			{
-				if ($row["userID"] != -1)
-					array_push($this->_accessList["users"], new UserAccess($row["userID"], $row["mode"]));
-				else //if ($row["groupID"] != -1)
-					array_push($this->_accessList["groups"], new GroupAccess($row["groupID"], $row["mode"]));
+				$userID = ($row["userID"] ? $row["userID"] : $row["userid"]);
+				if ($userID != -1) {
+					array_push($this->_accessList["users"], new UserAccess($userID, $row["mode"]));
+				} else {//if ($row["groupID"] != -1)
+					$groupID = ($row["groupID"] ? $row["groupID"] : $row["groupid"]);
+					array_push($this->_accessList["groups"], new GroupAccess($groupID, $row["mode"]));
+				}
 			}
 		}
 		
@@ -570,10 +605,13 @@ class Folder
 			$this->_notifyList = array("groups" => array(), "users" => array());
 			foreach ($resArr as $row)
 			{
-				if ($row["userID"] != -1)
-					array_push($this->_notifyList["users"], getUser($row["userID"]) );
-				else //if ($row["groupID"] != -1)
-					array_push($this->_notifyList["groups"], getGroup($row["groupID"]) );
+				$userID = ($row["userID"] ? $row["userID"] : $row["userid"]);
+				if ($userID != -1) {
+					array_push($this->_notifyList["users"], getUser($userID) );
+				} else {//if ($row["groupID"] != -1)
+					$groupID = ($row["groupID"] ? $row["groupID"] : $row["groupid"]);
+					array_push($this->_notifyList["groups"], getGroup($groupID) );
+				}
 			}
 		}
 		return $this->_notifyList;

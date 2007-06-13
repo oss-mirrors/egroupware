@@ -38,10 +38,10 @@ class Settings
 	function Settings()
 	{
 		//path to where mydms is located
-		$this->_rootDir = EGW_SERVER_ROOT . '/mydms/';
+		$this->_rootDir = EGW_SERVER_ROOT . SEP .'mydms'. SEP;
 	
 		//where the uploaded files are stored (you better choose a directory that is not accessible through your web-server)
-		$this->_contentDir = $GLOBALS['egw_info']['server']['files_dir'] . "/mydms/";
+		$this->_contentDir = $GLOBALS['egw_info']['server']['files_dir'] . SEP .'mydms'. SEP;
 		//if the rootdir unexist or is not a directory, create it
 		if(!is_dir($this->_contentDir)) {
 			if($ret1 = is_writable($GLOBALS['egw_info']['server']['files_dir']))
