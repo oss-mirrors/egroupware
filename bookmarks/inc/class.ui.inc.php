@@ -763,7 +763,7 @@
 				'th_bg' => $GLOBALS['egw_info']['theme']['th_bg']
 			));
 
-			$categories = $this->bo->categories->return_array('all', 0 , false);
+			$categories = (array)$this->bo->categories->return_array( 'all', 0 , false );
 			
 			//build cat tree
 			foreach ( $categories as $key => $cat ) {
@@ -811,7 +811,7 @@
 						$bm['name']. '</a>';
 				}
 			}
-			$tree = $this->html->tree($bm_tree, false, false, "null", 'foldertree', '', '', false, '/', null);
+			$tree = $this->html->tree((array)$bm_tree, false, false, "null", 'foldertree', '', '', false, '/', null);
 			
 			$this->t->set_var('body',$tree);
 			$this->app_messages($this->t);
