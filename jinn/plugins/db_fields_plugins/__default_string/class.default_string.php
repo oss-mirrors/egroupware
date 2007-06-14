@@ -37,7 +37,7 @@
 		
 		function formview_edit($field_name, $value, $config,$dbfieldprops)
 		{
-		   if($dbfieldprops['len'])
+		   if($dbfieldprops['len'] && $dbfieldprops['len']!=-1)
 		   {
 			  if($dbfieldprops['len']>40) 
 			  {

@@ -52,7 +52,7 @@
 	  {	
 		 if($attr_arr['len'])
 		 {
-			if($attr_arr['len']>40) 
+			if($attr_arr['len'] && $attr_arr['len']!=-1)
 			{
 			   $size=40;
 			}

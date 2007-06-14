@@ -1,4 +1,28 @@
 <script>
+//   var buttonBgColor='#b9d5e3';
+   function setIdToMetaField()
+   {
+		 var obj=document.getElementsByName('<?php echo $this->metafieldname?>');
+
+		 if(obj.length > 0)
+		 {
+			   obj[0].setAttribute('id','<?php echo $this->metafieldname?>');
+		 }
+   }
+   function fixid()
+   {
+		 if(document.getElementById('<?php echo $this->metafieldname?>')==undefined)
+		 {
+			   setIdToMetaField();
+			   //xajax_doXMLHTTP("jinn.ajaxjinn.plg_forw",'flvconvertclient.fixmetaid');
+		 }
+   }
+
+   function showMessage(msg,type)
+   {
+		 document.getElementById('flvmsgbox').innerHTML= type+': '+msg;
+   }
+
    function startC()
    {
 		 var movieurl = get_source_movie();
@@ -8,13 +32,36 @@
 		 }
 		 else
 		 {
-			   xajax_doXMLHTTP("jinn.ajaxjinn.plg_forw",'flvconvertclient.addToQueue',movieurl);
+			   fixid();
+			   xajax_doXMLHTTP("jinn.ajaxjinn.plg_forw",'flvconvertclient.addToQueue',getRecordFieldInfo(),movieurl);
+			   document.getElementById('buttonStartC').disabled=true;
+			   document.getElementById('buttonStartC').style.borderStyle='inset';
 		 }
    }
 
-   function restartC()
+   function removeFLV()
    {
-//		 xajax_doXMLHTTP("jinn.ajaxjinn.plg_forw",'flvconvertclient.helloWorld2','Pim Snel');
+   }
+
+   function cancelC()
+   {
+		 document.getElementById('buttonStartC').disabled=false;
+		 document.getElementById('buttonStartC').style.borderStyle='outset';
+   }
+
+   function getRecordFieldInfo()
+   {
+		 return document.getElementById('recordfieldinfo').value;
+   }
+   function getMetaFieldValue()
+   {
+		 fixid();
+		 return document.getElementById('<?php echo $this->metafieldname ?>').value;
+   }
+
+   function getStatusC()
+   {
+		 xajax_doXMLHTTP("jinn.ajaxjinn.plg_forw",'flvconvertclient.getStatus',getRecordFieldInfo(),getMetaFieldValue());
    }
 
    function get_source_movie()
@@ -39,9 +86,9 @@
    }
 </script>
 <div style="color:#aaaaaa;text-align:center;vertical-align:middle;width:360px;height:240px;border: inset 2px #cccccc;background-color:black;">
-   <?php echo $this->videoPreview?><?php echo lang('No FLV available yet.')?>
+   <span id="flvmsgbox"><?php echo $this->videoPreview?><?php echo lang('No FLV available yet.')?></span>
 </div>
-
-<input type="button" value="<?php echo lang('Start conversion')?>" onclick="startC();" />
-<input type="button" value="<?php echo lang('Reset conversion')?>" onclick="restartC();" />
-<input type="button" value="<?php echo lang('Remove FLV')?>" onclick="startC();" />
+<input type="hidden" name="recordfieldinfo" id="recordfieldinfo" value="<?php echo $this->recordfieldinfo?>" />
+<input type="button" id="buttonStartC" value="<?php echo lang('Start conversion')?>" onclick="startC();" />
+<input type="button" value="<?php echo lang('Get Status')?>" onclick="getStatusC();" />
+<input type="button" value="<?php echo lang('Cancel Conversion')?>" onclick="cancelC();" />

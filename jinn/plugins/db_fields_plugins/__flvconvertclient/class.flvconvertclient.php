@@ -2,6 +2,37 @@
    require_once(EGW_SERVER_ROOT.SEP.'jinn/plugins'.SEP.'db_fields_plugins'.SEP.'class.db_field_super.inc.php');
    include(EGW_SERVER_ROOT.SEP.'jinn/plugins'.SEP.'db_fields_plugins'.SEP.'__flvconvertclient'.SEP.'xmlrpcutils.php');
 
+   define('FLVCC_STAT_NOT_STARTED',0);
+   define('FLVCC_STAT_QUEUED',1);
+   define('FLVCC_STAT_BUSY_RETRIEVING',2);
+   define('FLVCC_STAT_BUSY_CONVERTING',4);
+   define('FLVCC_STAT_BUSY_INJECTING_META',6);
+   define('FLVCC_STAT_READY_FOR_SENDING',8);
+   define('FLVCC_STAT_BUSY_SENDING',9);
+   define('FLVCC_STAT_FINISHED',12);
+   define('FLVCC_STAT_ERROR',15);
+   define('FLVCC_STAT_CANCELED',20);
+   function get_status_lang($value)
+   {
+	  switch($value)
+	  {
+		 case FLVCC_STAT_NOT_STARTED: return $value.lang('Not started');break;
+		 case FLVCC_STAT_QUEUED: return lang('TASK Queued');break;
+		 case FLVCC_STAT_BUSY_CONVERTING: return lang('Busy Converting');break;
+		 case FLVCC_STAT_BUSY_INJECTING_META: return lang('Busy Injecting Meta Data');break;
+		 case FLVCC_STAT_BUSY_PUSHING_FILE: return lang('Busy Retrieving File');break;
+		 case FLVCC_STAT_FINISHED: return lang('Finished');break;
+		 case FLVCC_STAT_ERROR: return lang('An error occured');break;
+		 default:
+	  }
+   }
+
+   /* 
+   todo handle not possible double fields of flvconvertclient
+   todo make dl url complete
+   todo remove redundant code
+   */
+
    /**
    * db_fields_plugin_flvconvertclient 
    * 
@@ -15,6 +46,13 @@
    {
 	  function formview_edit($field_name, $value, $config,$attr_arr,$record_values)
 	  {
+		 /*
+		 $wherestring_enc='';
+		 $field='';
+		 $object_id='';
+		 */
+//		 $debug=_debug_array($this->makeSerializedRecordFieldInfo($field_name,$config),false);
+
 		 $this->_initVars($config);
 
 		 $req=$this->_requirementsCheck($config);
@@ -23,20 +61,22 @@
 			return $req;
 		 }
 
-		 $prefix=substr($field_name,0,6);
+		 $prefix=$this->getFieldPrefix($field_name);
+
+		 $this->tplsav2->assign('recordfieldinfo',$this->makeSerializedRecordFieldInfo($field_name,$config));
+		 $this->tplsav2->assign('metafieldname',$prefix.$config['meta_field']);
 
 		 $this->tplsav2->assign('sourcefield',$prefix.'_FM__IMG_ORG_'.$config['source_movie_field']);
 		 $this->tplsav2->assign('fmsourcefield',$prefix.'_FM__IMG_EDIT_'.$config['source_movie_field'].'1');
 
-//		 MLTX00_FM__IMG_ORG_movie_source
 		 $widget=$this->tplsav2->fetch('flvconvertedit.tpl.php');
-		 return $widget . $this->get_status_lang($value);
+		 return $debug.$widget ;//. $this->get_status_lang($value);
 	  }
 
 
 	  function listview_read($value, $config,$attr_arr)
 	  {
-		 return $this->get_status_lang($value);
+		 //return $this->get_status_lang($value);
 	  }
 
 	  function xxxon_save_filter($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
@@ -44,30 +84,9 @@
 		 //
 	  }
 
-	  function get_status_lang($value)
-	  {
-		 switch($value)
-		 {
-			case FLVCC_STAT_NOT_STARTED: return lang('Not started');
-			case FLVCC_STAT_BUSY_COMMAND_SEND: return lang('Busy Command Send');
-			case FLVCC_STAT_BUSY_CONVERTING: return lang('Busy Converting');
-			case FLVCC_STAT_BUSY_INJECTING_META: return lang('Busy Injecting Meta Data');
-			case FLVCC_STAT_BUSY_PUSHING_FILE: return lang('Busy Retrieving File');
-			case FLVCC_STAT_FINISHED: return lang('Finished');
-			case FLVCC_STAT_ERROR: return lang('An error occured');
-			default:
-		 }
-	  }
 
 	  function _initVars($config)
 	  {
-		 define('FLVCC_STAT_NOT_STARTED',0);
-		 define('FLVCC_STAT_COMMAND_SEND',2);
-		 define('FLVCC_STAT_BUSY_CONVERTING',3);
-		 define('FLVCC_STAT_BUSY_INJECTING_META',6);
-		 define('FLVCC_STAT_BUSY_PUSHING_FILE',9);
-		 define('FLVCC_STAT_FINISHED',12);
-		 define('FLVCC_STAT_ERROR',15);
 
 		 if($config['subdirsource'])
 		 {
@@ -104,44 +123,87 @@
 
    class ajax_db_fields_plugin_flvconvertclient
    {
-	  function helloWorld($yourName)
+	  var $host = "localhost"; 
+	  var $uri = null;
+
+	  function ajax_db_fields_plugin_flvconvertclient()
 	  {
-		 $response = new xajaxResponse();
-		 //$response->addAlert('Hello World '.$yourName);
-		 return $response->getXML();
+		 $this->response = new xajaxResponse();
 	  }
 
-	  function addToQueue($movieurl)
+	  function _init($recordFieldInfoPacked)
 	  {
-		 $response = new xajaxResponse();
+		 $recordFieldInfo=unserialize(base64_decode($recordFieldInfoPacked));
 
-		 $host = "localhost";
-		 $uri = "/projects/pim/flvconvert/server.php";
+		 $this->host = $recordFieldInfo['field_config']['server'];
+		 $this->url = $recordFieldInfo['field_config']['url'];
+		 $this->meta_field_id = $recordFieldInfo['prefix'].$recordFieldInfo['field_config']['meta_field'];
+	  }
+
+	  function fixmetaid()
+	  {
+		 $this->response->addScriptCall("setIdToMetaField");
+		 return $this->response->getXML();
+	  }
+
+	  function updateInfoField($msg,$type='info')
+	  {
+		 $this->response->addScriptCall("showMessage", $msg, $type );
+	  }
+
+	  function getStatus($recordFieldInfoPacked,$metafieldinfo)
+	  {
+		 $this->_init($recordFieldInfoPacked);
+
+		 $meta_data_arr = unserialize(base64_decode($metafieldinfo));
 
 		 $result = xu_rpc_http_concise(
 			array(
+			   'method' => "getStatus",
+			   'args'  => array($meta_data_arr['queueid']),
+			   'host'  => $this->host,
+			   'uri'  => $this->uri,
+			   'port'  => 31313
+			)
+		 );
+
+		 if($result)
+		 {
+			$this->updateInfoField(lang('Current Status: ').get_status_lang($result));
+		 }
+		 else
+		 {
+			$this->updateInfoField(lang('Could not communicate with ANY2FLV Server'));
+		 }
+
+		 return $this->response->getXML();
+	  }
+
+	  function addToQueue($recordFieldInfoPacked,$movieurl)
+	  {
+		 $this->_init($recordFieldInfoPacked);
+
+		 $queueid = xu_rpc_http_concise(
+			array(
 			   'method' => "addToQueue",
 			   'args'  => array($movieurl),
-			   'host'  => $host,
-			   'uri'  => $uri,
-			   'port'  => 80
+			   'host'  => $this->host,
+			   'uri'  => $this->uri,
+			   'port'  => 31313
 			)
 		 );
-		 $response->addAlert($result);
 
-		  $result = xu_rpc_http_concise(
-			array(
-			   'method' => "greeting",
-			   'args'  => array($movieurl),
-			   'host'  => $host,
-			   'uri'  => $uri,
-			   'port'  => 80
-			)
-		 );
-		 
-		 $response->addAlert('Hello World '.$result);
-		 //print $result;
+		 $this->meta_data_arr['queueid'] = $queueid;
+		 if($queueid)
+		 {
+			$this->updateInfoField(lang('Conversion started.').$queueid);
+			$this->response->addAssign($this->meta_field_id,"value",base64_encode(serialize($this->meta_data_arr)));
+		 }
+		 else
+		 {
+			$this->updateInfoField(lang('Could not communicate with ANY2FLV Server'));
+		 }
 
-		 return $response->getXML();
+		 return $this->response->getXML();
 	  }
    }

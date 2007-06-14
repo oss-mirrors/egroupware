@@ -32,7 +32,7 @@
 	{
 		function formview_edit($field_name, $value, $config,$attr_arr)
 		{
-		   if($attr_arr['len'])
+		   if($attr_arr['len'] && $attr_arr['len']!=-1)
 		   {
 			  if($attr_arr['len']>40) 
 			  {

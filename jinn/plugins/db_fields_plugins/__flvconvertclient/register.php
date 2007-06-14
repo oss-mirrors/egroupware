@@ -42,9 +42,21 @@
 		 'type' => 'text',
 		 'size' => 30
 	  ),
+	  'meta_field' => array(
+		 'name' => 'meta_field',
+		 'label' => lang('Field for storing any2flv meta information.'),
+		 'type' => 'text',
+		 'size' => 30
+	  ),
 	  'server' => array(
 		 'name' => 'server',
-		 'label' => lang('URL to the FLV conversion Server'),
+		 'label' => lang('hostname or ip address of the FLV conversion Server'),
+		 'type' => 'text',
+		 'size' => 200
+	  ),
+	  'url' => array(
+		 'name' => 'url',
+		 'label' => lang('url of the FLV conversion Server'),
 		 'type' => 'text',
 		 'size' => 200
 	  ),
