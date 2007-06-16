@@ -54,6 +54,12 @@
 		 'type' => 'text',
 		 'size' => 200
 	  ),
+	  'port' => array(
+		 'name' => 'port',
+		 'label' => lang('port of the FLV conversion Server'),
+		 'type' => 'text',
+		 'size' => 6
+	  ),
 	  'url' => array(
 		 'name' => 'url',
 		 'label' => lang('url of the FLV conversion Server'),

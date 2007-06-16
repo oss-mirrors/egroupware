@@ -185,13 +185,14 @@
 		 $success = $this->call_plugin($plug_arr['name'], 'advanced_action', '', $plug_arr['conf'], $_GET['where'], '', $_GET['attributes'], '', '',$field_values);
 	  }
 
-	  function call_config_function($name,$config,$form_action)
+/*	  function call_config_function($name,$config,$form_action)
 	  {
 		 if($this->loaded($name))
 		 {
 			$this->_plugins[$name]->config_dialog ($config,$form_action);
 		 }
 	  }
+*/	  
 
 	  function call_plugin($name, $function, $value, $config, $where_val_encoded, $field_name, $attr_arr, 
 	  $HTTP_POST_VARS, $HTTP_POST_FILES, $field_values,$record_values=false)
@@ -425,7 +426,6 @@
 
 	  function loaded($pluginname)
 	  {
-
 		 if($this->registry->plugins[$pluginname]) //is this a NEW STYLE class type plugin?
 		 {
 			if(is_object($this->_plugins[$pluginname])) //is it already loaded?
@@ -449,9 +449,15 @@
 			   
 			   if(class_exists('db_fields_plugin_'.$pluginname))
 			   {
+
 				  eval('$this->_plugins['.$pluginname.'] = new db_fields_plugin_'.$pluginname.'();');	
 				  $this->_plugins[$pluginname]->local_bo = &$this->local_bo;
 				  $this->_plugins[$pluginname]->plug_root = $plug_dir.'__'.$pluginname;
+
+				  if(method_exists($this->_plugins[$pluginname],'initPluginObject'))
+				  {
+					 $this->_plugins[$pluginname]->initPluginObject();
+				  }
 
 				  return true;
 			   }

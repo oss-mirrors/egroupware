@@ -281,11 +281,17 @@
 	  */
 	  function plg_forw($pluginmethod, $arg0=null, $arg1=null, $arg2=null, $arg3=null, $arg4=null, $arg5=null)
 	  {
+		 $this->switchBoUser();
 		 list($plugin,$method)=explode('.',$pluginmethod);
 
 		 include(EGW_SERVER_ROOT.SEP.'jinn/plugins'.SEP.'db_fields_plugins'.SEP.'__'.$plugin.SEP.'class.'.$plugin.'.php');
 
-		 return call_user_func(array('ajax_db_fields_plugin_'.$plugin,$method),$arg0,$arg1,$arg2,$arg3,$arg4,$arg5,$arg6);
+		 $objectCreate='$myobj = new ajax_db_fields_plugin_'.$plugin.';';
+		 eval($objectCreate);
+		 $myobj->local_bo = &$this->bo;
+		 return $myobj->$method($arg0,$arg1,$arg2,$arg3,$arg4,$arg5,$arg6);
+		 //return call_user_method($method,$myobj,$arg0,$arg1,$arg2,$arg3,$arg4,$arg5,$arg6);
+		 //		 return call_user_func(array('ajax_db_fields_plugin_'.$plugin,$method),$arg0,$arg1,$arg2,$arg3,$arg4,$arg5,$arg6);
 	  }
 
 	  /*function readSingleField($cell,$wherestring_enc,$field,$object_id)

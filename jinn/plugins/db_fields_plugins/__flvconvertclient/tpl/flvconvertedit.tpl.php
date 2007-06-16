@@ -49,6 +49,12 @@
 		 document.getElementById('buttonStartC').style.borderStyle='outset';
    }
 
+   function getFileC()
+   {
+		 fixid();
+		 xajax_doXMLHTTP("jinn.ajaxjinn.plg_forw",'flvconvertclient.getFile',getRecordFieldInfo(),getMetaFieldValue());
+   }
+
    function getRecordFieldInfo()
    {
 		 return document.getElementById('recordfieldinfo').value;
@@ -89,6 +95,8 @@
    <span id="flvmsgbox"><?php echo $this->videoPreview?><?php echo lang('No FLV available yet.')?></span>
 </div>
 <input type="hidden" name="recordfieldinfo" id="recordfieldinfo" value="<?php echo $this->recordfieldinfo?>" />
+<input type="hidden" name="<?php echo $this->field_name?>" id="<?php echo $this->field_name?>" value="<?php echo $this->fvalue?>" />
 <input type="button" id="buttonStartC" value="<?php echo lang('Start conversion')?>" onclick="startC();" />
 <input type="button" value="<?php echo lang('Get Status')?>" onclick="getStatusC();" />
+<input type="button" value="<?php echo lang('Retrieve File')?>" onclick="getFileC();" />
 <input type="button" value="<?php echo lang('Cancel Conversion')?>" onclick="cancelC();" />
