@@ -1,3 +1,6 @@
+2007-06-19 Lars Kneschke  <l.kneschke@metaways.de>
+	* added support for signatures managed by admin aka forced signatures
+
 2007-03-05 Lars Kneschke  <l.kneschke@metaways.de>
 	* fixed not working disabling of STARTTLS
 	* fixed borken FeLaMiMail preferences translations

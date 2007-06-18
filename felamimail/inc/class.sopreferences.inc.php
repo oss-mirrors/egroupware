@@ -48,89 +48,6 @@
 			return $retValue;
 		}
 
-		function getListOfSignatures($_accountID)
-		{
-			// no valid accountID
-			if(($accountID = (int)$_accountID) < 1)
-				return false;
-				
-			$retValue	= array();
-			
-			$where		= array('fm_accountid' => $accountID);
-			
-			$this->db->select($this->signatures_table,'fm_signatureid,fm_description,fm_defaultsignature',
-				$where, __LINE__, __FILE__);
-				
-			while(($row = $this->db->row(true,'fm_'))) {
-				$retValue[$row['signatureid']] = $row;
-			}
-			
-			return $retValue;
-		}
-
-		function getSignature($_accountID, $_signatureID) 
-		{
-			// no valid accountID
-			if(($accountID = (int)$_accountID) < 1)
-				return false;
-				
-			$retValue	= array();
-			
-			$where		= array(
-				'fm_accountid'		=> $accountID,
-				'fm_signatureid'	=> $_signatureID
-			);
-			
-			$this->db->select($this->signatures_table,'fm_signatureid,fm_description,fm_signature,fm_defaultsignature',
-				$where, __LINE__, __FILE__);
-				
-			if(($row = $this->db->row(true,'fm_'))) {
-				return $row;
-			}
-
-			return $retValue;
-		}
-
-		function getDefaultSignature($_accountID) 
-		{
-			// no valid accountID
-			if(($accountID = (int)$_accountID) < 1)
-				return false;
-				
-			$where		= array(
-				'fm_accountid'		=> $accountID,
-				'fm_defaultsignature'	=> true
-			);
-			
-			$this->db->select($this->signatures_table,'fm_signatureid,fm_description,fm_signature,fm_defaultsignature',
-				$where, __LINE__, __FILE__);
-				
-			if(($row = $this->db->row(true,'fm_'))) {
-				return $row;
-			}
-
-			return false;
-		}
-
-		function deleteSignatures($_accountID, $_signatureIDs) 
-		{
-			// no valid accountID
-			if(($accountID = (int)$_accountID) < 1)
-				return false;
-				
-			foreach($_signatureIDs as $signatureID) {
-			
-				$where		= array(
-					'fm_accountid'		=> $accountID,
-					'fm_signatureid'	=> $signatureID
-				);
-			
-				$this->db->delete($this->signatures_table, $where, __LINE__, __FILE__);
-				}
-
-			return true;
-		}
-
 		function saveAccountData($_accountID, $_icServer, $_ogServer, $_identity)
 		{
 			
@@ -159,43 +76,6 @@
 			),__LINE__,__FILE__);	
 		}
 		
-		function saveSignature($_accountID, $_signatureID, $_description, $_signature, $_isDefaultSignature) 
-		{
-			if($_isDefaultSignature == true) {
-				$where = array(
-					'fm_accountid'		=> $_accountID,
-				);
-				$data = array(
-					'fm_defaultsignature'	=> false,
-				);
-				
-				$this->db->update($this->signatures_table, $data, $where, __LINE__, __FILE__);
-			}
-
-			$data = array(
-				'fm_accountid'		=> $_accountID,
-				'fm_signature'		=> $_signature,
-				'fm_description'	=> $_description,
-				'fm_defaultsignature'	=> $_isDefaultSignature,
-			);
-			
-			
-			if($_signatureID == -1) {
-				$this->db->insert($this->signatures_table, $data, '', __LINE__, __FILE__);
-				
-				return $this->db->get_last_insert_id($this->signatures_table,'fm_signatureid');
-			} else {
-				$where = array(
-					'fm_accountid'		=> $_accountID,
-					'fm_signatureid'	=> $_signatureID,
-				);
-
-				$this->db->update($this->signatures_table, $data, $where, __LINE__, __FILE__);
-				
-				return $_signatureID;
-			}
-		}
-
 		function setProfileActive($_accountID, $_status)
 		{
 			$this->db->update($this->accounts_table,array(

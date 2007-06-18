@@ -253,14 +253,16 @@
 				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'ascii', $sessionData['body']));
 				$this->t->set_var('mimeType', 'text');
 			}
-			
-			$signatures = ExecMethod('felamimail.bopreferences.getListOfSignatures');
+
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
+			$boSignatures = new felamimail_bosignatures();
+			$signatures = $boSignatures->getListOfSignatures();
 
 			$selectSignatures = array(
-				'-1' => lang('no signature')
+				'-2' => lang('no signature')
 			);
 			foreach($signatures as $signature) {
-				$selectSignatures[$signature['signatureid']] = $signature['description'];
+				$selectSignatures[$signature['fm_signatureid']] = $signature['fm_description'];
 			}
 			$selectBox = $GLOBALS['egw']->html->select('signatureID', $sessionData['signatureID'], $selectSignatures, true, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
 			$this->t->set_var("select_signature", $selectBox);

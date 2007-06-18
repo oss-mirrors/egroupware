@@ -31,12 +31,8 @@
 	);
 
 	$file = array(
-                array(
-                        'text' => '<a class="textSidebox" href="'.htmlspecialchars($GLOBALS['egw']->link('/index.php',
-                        			  array(
-                        			  	'menuaction' => 'felamimail.uicompose.compose',
-                        			  )
-		                        )).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\''.lang('compose').'\',700,750); return false;">'.lang('compose'),
+		array(
+			'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('compose').'\',700,750); return false;">'.lang('compose'),
                         'no_lang' => true,
                     ),
 
@@ -68,21 +64,19 @@
 			'Preferences'		=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
 		);
 
-		if($preferences->userDefinedAccounts)
-		{
-			$linkData = array
-			(
+		if($preferences->userDefinedAccounts) {
+			$linkData = array (
 				'menuaction' => 'felamimail.uipreferences.editAccountData',
 			);
 			$file['Manage EMailaccounts'] = $GLOBALS['egw']->link('/index.php',$linkData);
 		}
 
-
-			$linkData = array
-			(
+		if($preferences->ea_user_defined_signatures) {
+			$linkData = array (
 				'menuaction' => 'felamimail.uipreferences.listSignatures',
 			);
 			$file['Manage Signatures'] = $GLOBALS['egw']->link('/index.php',$linkData);
+		}
 		
 		$file['Manage Folders']	= $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');
 		

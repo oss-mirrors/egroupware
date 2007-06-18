@@ -22,9 +22,9 @@ function fm_saveSignature() {
 		document.getElementById('signatureID').value, 
 		document.getElementById('signatureDesc').value, 
 		fm_getEditorContent(),
-		document.getElementById('isDefaultSignature').value
+		document.getElementById('isDefaultSignature').checked
 	);
-	window.setTimeout("window.close()", 1000);
+	//window.setTimeout("window.close()", 1000);
 }
 
 function fm_applySignature() {

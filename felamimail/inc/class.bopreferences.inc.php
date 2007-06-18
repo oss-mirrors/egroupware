@@ -74,25 +74,6 @@
 			return array('icServer' => $icServer, 'ogServer' => $ogServer, 'identity' => $identity, 'active' => $isActive);
 		}
 		
-		function getListOfSignatures() {
-			$userPrefs = $GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig'];
-			$signatures = parent::getListOfSignatures($GLOBALS['egw_info']['user']['account_id']);
-			
-			$GLOBALS['egw']->preferences->read_repository();			
-			
-			if(count($signatures) == 0 && 
-				!isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig_copied']) &&
-				!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig'])) {
-				
-				$this->saveSignature(-1, lang('default signature'), nl2br($GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']));
-				$signatures = parent::getListOfSignatures($GLOBALS['egw_info']['user']['account_id']);
-				$GLOBALS['egw']->preferences->add('felamimail', 'email_sig_copied', true);
-				$GLOBALS['egw']->preferences->save_repository();
-			}
-			
-			return $signatures;
-		}
-		
 		function getPreferences()
 		{
 			if(!is_a($this->profileData,'ea_preferences ')) {
@@ -149,17 +130,38 @@
 			return $this->profileData;
 		}
 		
-		function getSignature($_signatureID) 
+		function ggetSignature($_signatureID, $_unparsed = false) 
 		{
-			return parent::getSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID);
+			if($_signatureID == -1) {
+				$profileData = $this->boemailadmin->getUserProfile('felamimail');
+				
+				$systemSignatureIsDefaultSignature = !parent::getDefaultSignature($GLOBALS['egw_info']['user']['account_id']);
+
+				$systemSignature = array(
+					'signatureid'		=> -1,
+					'description'		=> 'eGroupWare '. lang('default signature'),
+					'signature'		=> ($_unparsed === true ? $profileData->ea_default_signature : $GLOBALS['egw']->preferences->parse_notify($profileData->ea_default_signature)),
+					'defaultsignature'	=> $systemSignatureIsDefaultSignature,
+				);
+				
+				return $systemSignature;
+				
+			} else {
+				require_once('class.felamimail_signatures.inc.php');
+				$signature = new felamimail_signatures($_signatureID);
+				if($_unparsed === false) {
+					$signature->fm_signature = $GLOBALS['egw']->preferences->parse_notify($signature->fm_signature);
+				}
+				return $signature;
+			}
 		}
 		
-		function getDefaultSignature() 
+		function ggetDefaultSignature() 
 		{
 			return parent::getDefaultSignature($GLOBALS['egw_info']['user']['account_id']);
 		}
 		
-		function deleteSignatures($_signatureID) 
+		function ddeleteSignatures($_signatureID) 
 		{
 			if(!is_array($_signatureID)) {
 				return false;
@@ -180,7 +182,7 @@
 			parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
 		}
 		
-		function saveSignature($_signatureID, $_description, $_signature, $_isDefaultSignature) 
+		function ssaveSignature($_signatureID, $_description, $_signature, $_isDefaultSignature) 
 		{
 			return parent::saveSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID, $_description, $_signature, (bool)$_isDefaultSignature);
 		}

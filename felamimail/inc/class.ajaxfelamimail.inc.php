@@ -284,11 +284,13 @@
 		function deleteSignatures($_signatures) 
 		{
 			if($this->_debug) error_log("ajaxfelamimail::deleteSignatures");
-			$boPreferences = CreateObject('felamimail.bopreferences');
+
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
+			$boSignatures = new felamimail_bosignatures();
 				
-			$boPreferences->deleteSignatures($_signatures);
+			$boSignatures->deleteSignatures($_signatures);
 				
-			$signatures = $boPreferences->getListOfSignatures();
+			$signatures = $boSignatures->getListOfSignatures();
 
 			$response =& new xajaxResponse();
 			$response->addAssign('signatureTable', 'innerHTML', $this->uiwidgets->createSignatureTable($signatures));
@@ -566,7 +568,7 @@
 			if ($this->_debug) error_log("ajaxfelamimail::refreshFolder");
 			$GLOBALS['egw']->session->commit_session();
 
-            $response =& new xajaxResponse();
+			$response =& new xajaxResponse();
 
 			if ($this->_connectionStatus === true) {
 				$folderName = $this->sessionData['mailbox'];
@@ -610,13 +612,13 @@
 		
 		function refreshSignatureTable() 
 		{
-				$boPreferences = CreateObject('felamimail.bopreferences');
-				
-				$signatures = $boPreferences->getListOfSignatures();
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
+			$boSignatures = new felamimail_bosignatures();
+			$signatures = $boSignatures->getListOfSignatures();
 
-				$response =& new xajaxResponse();
-				$response->addAssign('signatureTable', 'innerHTML', $this->uiwidgets->createSignatureTable($signatures));
-				return $response->getXML();
+			$response =& new xajaxResponse();
+			$response->addAssign('signatureTable', 'innerHTML', $this->uiwidgets->createSignatureTable($signatures));
+			return $response->getXML();
 		}
 		
 		function reloadAttachments($_composeID) 
@@ -711,17 +713,19 @@
 		
 		function saveSignature($_mode, $_id, $_description, $_signature, $_isDefaultSignature) 
 		{
-			$boPreferences = CreateObject('felamimail.bopreferences');
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
+			
+			$boSignatures = new felamimail_bosignatures();
 			
 			$isDefaultSignature = ($_isDefaultSignature == 'true' ? true : false);
 				
-			$signatureID = $boPreferences->saveSignature($_id, $_description, $_signature, $isDefaultSignature);
+			$signatureID = $boSignatures->saveSignature($_id, $_description, $_signature, $isDefaultSignature);
 
 			$response =& new xajaxResponse();
 
 			if($_mode == 'save') {
 				#$response->addAssign('signatureID', 'value', $signatureID);
-				#$response->addScript('window.close()');
+				$response->addScript('window.close();');
 			} else {
 				$response->addScript("opener.fm_refreshSignatureTable()");
 				$response->addAssign('signatureID', 'value', $signatureID);

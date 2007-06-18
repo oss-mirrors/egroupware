@@ -198,11 +198,11 @@
 			
 			if(is_array($_signatureList) && !empty($_signatureList)) {
 				foreach($_signatureList as $signature) {
-					$description = ($signature['defaultsignature'] == true) ? $signature['description'] .' ('. lang('default') .')' : $signature['description'];
+					$description = ($signature['fm_defaultsignature'] == true) ? $signature['fm_description'] .' ('. lang('default') .')' : $signature['fm_description'];
 					$tableRows[] = array(
-						'1'	=> $GLOBALS['egw']->html->checkbox('signatureID', false, $signature['signatureid']),
+						'1'	=> $signature['fm_signatureid'] != -1 ? $GLOBALS['egw']->html->checkbox('signatureID', false, $signature['fm_signatureid']) : '',
 						'.1'	=> 'style="width:30px"',
-						'2'	=> '<a href="" onclick="egw_openWindowCentered(\''. $urlEditSignature ."&signatureID=".$signature['signatureid']. '\',\'felamiMailACL\',\'600\',\'230\'); return false;">'. @htmlspecialchars($description, ENT_QUOTES, $this->charset) .'</a>',
+						'2'	=> '<a href="" onclick="egw_openWindowCentered(\''. $urlEditSignature ."&signatureID=".$signature['fm_signatureid']. '\',\'felamiMailACL\',\'600\',\'230\'); return false;">'. @htmlspecialchars($description, ENT_QUOTES, $this->charset) .'</a>',
 					);
 				}
 				

@@ -14,6 +14,8 @@
 
 	/* $Id$ */
 
+	require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
+
 	class uipreferences
 	{
 
@@ -143,12 +145,13 @@
 		}
 		
 		function editSignature() {
-			$signatureID = (int)$_GET['signatureID'];
-			
-			if($signatureID >= 0) {
-				$signatureData = $this->bopreferences->getSignature($signatureID);
+			if(isset($_GET['signatureID'])) {
+				$signatureID = (int)$_GET['signatureID'];
+		
+				$boSignatures = new felamimail_bosignatures();
+				$signatureData = $boSignatures->getSignature($signatureID);
 			}
-
+			
 			$this->display_app_header(false);
 			
 			$this->t->set_file(array('body' => 'preferences_edit_signature.tpl'));
@@ -156,30 +159,38 @@
 
 			$this->translate();
 
-			$linkData = array
-			(
+			$linkData = array (
 				'menuaction'    => 'felamimail.uipreferences.editSignature'
 			);
-			$this->t->set_var('form_action',$GLOBALS['egw']->link('/index.php',$linkData));
+			$this->t->set_var('form_action', $GLOBALS['egw']->link('/index.php',$linkData));
 
-			$this->t->set_var('description', ($signatureID >= 0 ? @htmlspecialchars($signatureData['description'], ENT_QUOTES, $this->charset) : ''));
+			if(isset($_GET['signatureID'])) {
+
+				$this->t->set_var('description', @htmlspecialchars($signatureData->fm_description, ENT_QUOTES, $this->charset));
 			
-			$this->t->set_var('signatureID', $signatureID);
+				$this->t->set_var('signatureID', $signatureID);
 
-			$style="width:100%; border:0px; height:150px;";
-			$this->t->set_var('tinymce',$GLOBALS['egw']->html->fckEditorQuick(
-				'signature', 'simple', 
-				($signatureID >= 0 ? $signatureData['signature'] : ''), 
-				'150px')
-			);
+				$this->t->set_var('tinymce',$GLOBALS['egw']->html->fckEditorQuick(
+					'signature', 'simple', 
+					$signatureData->fm_signature, 
+					'150px')
+				);
 
-			$this->t->set_var('checkbox_isDefaultSignature',$GLOBALS['egw']->html->checkbox(
-				'isDefaultSignature',
-				$signatureData['defaultsignature'],
-				'true',
-				'id="isDefaultSignature"'
-				)
-			);
+				$this->t->set_var('checkbox_isDefaultSignature',$GLOBALS['egw']->html->checkbox(
+					'isDefaultSignature',
+					$signatureData->fm_defaultsignature,
+					'true',
+					'id="isDefaultSignature"'
+					)
+				);
+			} else {
+				$this->t->set_var('tinymce',$GLOBALS['egw']->html->fckEditorQuick('signature', 'simple', '', '150px'));
+
+				$this->t->set_var('checkbox_isDefaultSignature',$GLOBALS['egw']->html->checkbox(
+					'isDefaultSignature', false, 'true', 'id="isDefaultSignature"'
+				));
+
+			}
 
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -530,16 +541,16 @@
 
 			$linkData = array
 			(
-				'menuaction'    => 'felamimail.uipreferences.editSignature',
-				'signatureID'	=> '-1'
+				'menuaction'    => 'felamimail.uipreferences.editSignature'
 			);
 			$this->t->set_var('url_addSignature', $GLOBALS['egw']->link('/index.php',$linkData));
 			
 			$this->t->set_var('url_image_add',$GLOBALS['egw']->common->image('phpgwapi','new'));
 			$this->t->set_var('url_image_delete',$GLOBALS['egw']->common->image('phpgwapi','delete'));
 			
-			$signatures = $this->bopreferences->getListOfSignatures();
-			
+			$felamimail_bosignatures = new felamimail_bosignatures();
+			$signatures = $felamimail_bosignatures->getListOfSignatures();
+
 			$this->t->set_var('table', $this->uiwidgets->createSignatureTable($signatures));
 			
 			$this->t->pparse("out","main");			

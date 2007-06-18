@@ -27,6 +27,7 @@
 		{
 			$this->displayCharset	= strtolower($_charSet);
 			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
+			$this->bosignatures	=& CreateObject('felamimail.felamimail_bosignatures');
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$_charSet);
 			$this->preferences	= $this->bopreferences->getPreferences();
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
@@ -672,12 +673,12 @@
 			$_mailObject->Subject = $_formData['subject'];
 			if($_formData['mimeType'] =='html') {
 				$_mailObject->IsHTML(true);
-				if(!empty($_signature['signature'])) {
+				if(!empty($_signature->fm_signature)) {
 					#$_mailObject->Body    = array($_formData['body'], $_signature['signature']);
-					$_mailObject->Body    = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $_signature['signature'];
+					$_mailObject->Body    = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $_signature->fm_signature;
 					$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']).
 						"\r\n--\r\n". 
-						$this->convertHTMLToText($_signature['signature']);
+						$this->convertHTMLToText($_signature->fm_signature);
 					#print "<pre>$_mailObject->AltBody</pre>";
 					#print htmlentities($_signature['signature']);
 				} else {
@@ -687,8 +688,8 @@
 			} else {
 				$_mailObject->IsHTML(false);
 				$_mailObject->Body = $this->convertHTMLToText($_formData['body']);
-				if(!empty($_signature['signature'])) {
-					$_mailObject->Body .= "\r\n--\r\n". $this->convertHTMLToText($_signature['signature']);
+				if(!empty($_signature->fm_signature)) {
+					$_mailObject->Body .= "\r\n--\r\n". $this->convertHTMLToText($_signature->fm_signature);
 				}
 			}
 			
@@ -777,7 +778,7 @@
 			}
 
 			$identity = $this->preferences->getIdentity((int)$this->sessionData['identity']);
-			$signature = $this->bopreferences->getSignature((int)$this->sessionData['signatureID']);
+			$signature = $this->bosignatures->getSignature((int)$this->sessionData['signatureID']);
 			
 			// create the messages
 			$this->createMessage($mail, $_formData, $identity, $signature);
@@ -882,14 +883,15 @@
 		
 		function setDefaults() 
 		{
-			if($signatureData = $this->bopreferences->getDefaultSignature()) {
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
+			$boSignatures = new felamimail_bosignatures();
+			
+			if($signatureData = $boSignatures->getDefaultSignature()) {
 				$this->sessionData['signatureID'] = $signatureData['signatureid'];
 			} else {
 				$this->sessionData['signatureID'] = -1;
 			}
-			#$this->sessionData['signature']	= $GLOBALS['egw']->preferences->parse_notify(
-			#	$GLOBALS['egw_info']['user']['preferences']['felamimail']['email_sig']
-			#);
+
 			$this->sessionData['mimeType']	= 'html';
 			
 			$this->saveSessionData();
