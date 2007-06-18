@@ -1,3 +1,6 @@
+2007-06-19 Lars Kneschke <l.kneschke@metaways.de>
+	* added support for defining signature handling in emailadmin
+
 2007-01-05 Lars Kneschke <lkneschke@metaways.de>
 	* improved parsing of content-type response
 

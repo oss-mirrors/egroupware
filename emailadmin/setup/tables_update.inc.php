@@ -202,4 +202,20 @@
 	{
 		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.4';
 	}
+
+
+	$test[] = '1.4';
+	function emailadmin_upgrade1_4()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_emailadmin','ea_user_defined_signatures',array(
+			'type' => 'varchar',
+			'precision' => '3'
+		));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_emailadmin','ea_default_signature',array(
+			'type' => 'varchar',
+			'precision' => '255'
+		));
+
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.4.001';
+	}
 ?>

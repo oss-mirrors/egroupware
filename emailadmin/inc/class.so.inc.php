@@ -49,6 +49,8 @@
 			'ea_appname'			=> 'ea_appname',
 			'ea_smtp_auth_username'		=> 'ea_smtp_auth_username',
 			'ea_smtp_auth_password'		=> 'ea_smtp_auth_password',
+			'ea_user_defined_signatures'	=> 'ea_user_defined_signatures',
+			'ea_default_signature'		=> 'ea_default_signature',
 		);
 
 		function so()
@@ -129,8 +131,7 @@
 			$_fieldNames = array_keys($this->vals2db(array_flip($_fieldNames)));
 			$this->db->select($this->table,$_fieldNames,array('ea_profile_id' => $_profileID), __LINE__, __FILE__);
 			
-			if (($data = $this->db->row(true)))
-			{
+			if (($data = $this->db->row(true))) {
 				return $this->db2vals($data);
 			}
 			return $data;

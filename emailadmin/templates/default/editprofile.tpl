@@ -4,10 +4,10 @@
 <form action="{action_url}" name="mailsettings" method="post">
 <table width="670px" border="0" cellspacing="0" cellpading="0">
 	<tr>
-		<th width="33%" id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="1" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);">Global</a></th>
-		<th width="33%" id="tab2" class="activetab" onclick="javascript:tab.display(2);"><a href="#" tabindex="2" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);">SMTP</a></th>
-		<th width="33%" id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="3" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);">IMAP</a></th>
-<!--		<th id="tab4" class="activetab" onclick="javascript:tab.display(4);"><a href="#" tabindex="4" accesskey="4" onfocus="tab.display(4);" onclick="tab.display(4); return(false);">extern</a></th> -->
+		<th width="25%" id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="1" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);">Global</a></th>
+		<th width="25%" id="tab2" class="activetab" onclick="javascript:tab.display(2);"><a href="#" tabindex="2" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);">SMTP</a></th>
+		<th width="25%" id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="3" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);">IMAP</a></th>
+		<th width="25%" id="tab4" class="activetab" onclick="javascript:tab.display(4);"><a href="#" tabindex="4" accesskey="4" onfocus="tab.display(4);" onclick="tab.display(4); return(false);">Signature</a></th>
 	</tr>
 </table>
 <br><br>
@@ -781,8 +781,23 @@
 <!-- The code for External Tab -->
 
 <div id="tabcontent4" class="inactivetab">
-	<h1>still something todo ...</h1>
-	<p>Come back later!!</p>
+	<fieldset style="width:650px;" class="row_off"><legend>{lang_signature_settings}</legend>
+	<table width="100%" border="0" cellspacing="0" cellpading="1">
+		<tr>
+			<td width="300px">
+				{lang_user_defined_signatures}:
+			</td>
+			<td>
+				<input type="checkbox" name="globalsettings[ea_user_defined_signatures]" {selected_ea_user_defined_signatures} value="yes">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				{signature}
+			</td>
+		</tr>
+	</table>
+	</fieldset>
 </div>
 
 <br><br>

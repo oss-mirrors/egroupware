@@ -14,7 +14,7 @@
 
 	$setup_info['emailadmin']['name']      = 'emailadmin';
 	$setup_info['emailadmin']['title']     = 'EMailAdmin';
-	$setup_info['emailadmin']['version']   = '1.4';
+	$setup_info['emailadmin']['version']   = '1.4.001';
 	$setup_info['emailadmin']['app_order'] = 10;
 	$setup_info['emailadmin']['enable']    = 2;
 
@@ -63,5 +63,6 @@
 			'from' => 'EMailAdmin',
 		),
 	);	
+
 
 

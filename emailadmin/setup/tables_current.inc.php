@@ -48,7 +48,9 @@
 				'ea_appname' => array('type' => 'varchar','precision' => '80'),
 				'ea_group' => array('type' => 'varchar','precision' => '80'),
 				'ea_smtp_auth_username' => array('type' => 'varchar','precision' => '80'),
-				'ea_smtp_auth_password' => array('type' => 'varchar','precision' => '80')
+				'ea_smtp_auth_password' => array('type' => 'varchar','precision' => '80'),
+				'ea_user_defined_signatures' => array('type' => 'varchar','precision' => '3'),
+				'ea_default_signature' => array('type' => 'varchar','precision' => '255')
 			),
 			'pk' => array('ea_profile_id'),
 			'fk' => array(),

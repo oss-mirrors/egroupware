@@ -27,6 +27,9 @@
 		// enable userdefined accounts
 		var $userDefinedAccounts = false;
 		
+		// enable userdefined signatures
+		var $ea_user_defined_signatures = false;
+		
 		function getIdentity($_id = -1)
 		{
 			if($_id != -1)

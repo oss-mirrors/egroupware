@@ -406,6 +406,8 @@
 			$fieldNames[] = 'userDefinedAccounts';
 			$fieldNames[] = 'ea_appname';
 			$fieldNames[] = 'ea_group';
+			$fieldNames[] = 'ea_user_defined_signatures';
+			$fieldNames[] = 'ea_default_signature';
 			
 			$profileData = $this->soemailadmin->getProfile($_profileID, $fieldNames);
 			$profileData['imapTLSEncryption'] = ($profileData['imapTLSEncryption'] == 'yes' ? 1 : (int)$profileData['imapTLSEncryption']);
@@ -493,7 +495,9 @@
 					$eaPreferences->setIdentity($identity);
 				}
 				
-				$eaPreferences->userDefinedAccounts = ($data['userDefinedAccounts'] == 'yes');
+				$eaPreferences->userDefinedAccounts		= ($data['userDefinedAccounts'] == 'yes');
+				$eaPreferences->ea_user_defined_signatures	= ($data['ea_user_defined_signatures'] == 'yes');
+				$eaPreferences->ea_default_signature		= $data['ea_default_signature'];
 				
 				return $eaPreferences;
 			}

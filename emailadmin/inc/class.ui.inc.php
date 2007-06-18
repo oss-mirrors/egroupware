@@ -235,6 +235,9 @@
 			foreach((array)$profileData as $key => $value) {
 				#print "$key $value<br>";
 				switch($key) {
+					case 'ea_default_signature':
+						// nothing to do here
+						break;
 					case 'imapTLSEncryption':
 						$this->t->set_var('checked_'. $key .'_'. $value,'checked="1"');
 						break;
@@ -248,6 +251,7 @@
 					case 'smtpAuth':
 					case 'smtpLDAPUseDefault':
 					case 'userDefinedAccounts':
+					case 'ea_user_defined_signatures':
 					case 'imapoldcclient':
 					case 'editforwardingaddress':
 						if($value == 'yes') {
@@ -303,6 +307,13 @@
 				"style='width: 250px;' id='imapselector' onchange='var v = this.value; imap.display(this.value); this.value=v;'"
 			);
 			$this->t->set_var('imaptype', $selectFrom);
+
+						$style="width:100%; border:0px; height:150px;";
+						$this->t->set_var('signature', $GLOBALS['egw']->html->fckEditorQuick(
+							'globalsettings[ea_default_signature]', 'simple',
+							$profileData['ea_default_signature'], '150px')
+						);
+			
 						
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -489,13 +500,15 @@
 			if(is_int(intval($_GET['profileID'])) && !empty($_GET['profileID'])) {
 				$globalSettings['profileID'] = intval($_GET['profileID']);
 			}
+
 			$globalSettings['description'] = $_POST['globalsettings']['description'];
 			$globalSettings['defaultDomain'] = $_POST['globalsettings']['defaultDomain'];
 			$globalSettings['organisationName'] = $_POST['globalsettings']['organisationName'];
 			$globalSettings['userDefinedAccounts'] = $_POST['globalsettings']['userDefinedAccounts'];
+			$globalSettings['ea_user_defined_signatures'] = ($_POST['globalsettings']['ea_user_defined_signatures'] == 'yes' ? 'yes' : 'no' );
+			$globalSettings['ea_default_signature'] = $_POST['globalsettings']['ea_default_signature'];
 			$globalSettings['ea_appname'] = ($_POST['globalsettings']['ea_appname'] == 'any' ? '' : $_POST['globalsettings']['ea_appname']);
 			$globalSettings['ea_group'] = ($_POST['globalsettings']['ea_group'] == 'any' ? '' : (int)$_POST['globalsettings']['ea_group']);
-			
 			
 			// get the settings for the smtp server
 			$smtpType = $_POST['smtpsettings']['smtpType'];
@@ -555,6 +568,7 @@
 			$this->t->set_var('lang_default_domain',lang('enter your default mail domain (from: user@domain)'));
 			$this->t->set_var('lang_organisation_name',lang('name of organisation'));
 			$this->t->set_var('lang_user_defined_accounts',lang('users can define their own emailaccounts'));
+			$this->t->set_var('lang_user_defined_signatures',lang('users can define their own signatures'));
 			$this->t->set_var('lang_LDAP_server_hostname_or_IP_address',lang('LDAP server hostname or ip address'));
 			$this->t->set_var('lang_LDAP_server_admin_dn',lang('LDAP server admin DN'));
 			$this->t->set_var('lang_LDAP_server_admin_pw',lang('LDAP server admin password'));
