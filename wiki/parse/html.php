@@ -70,20 +70,99 @@ function html_diff_change()
 	{ return html_bold_start() . lang('Changed').':' . html_bold_end(); }
 function html_diff_delete()
 	{ return html_bold_start() . lang('Deleted').':' . html_bold_end(); }
-function html_table_start()
-	{ return '<table class="wiki" style="border: 1px solid black; border-collapse: collapse;">'; }
+function html_table_start($args)
+{
+  if ($args != '') {
+    $extraStr = '';
+
+    // Split and parse CurlyOptions
+    foreach (split_curly_options($args) as $name=>$value) {
+    // Only use the Table-options
+      if ($name[0]=='T') {
+        if ($name[1]=='c') { // TClass - Class of <table>
+          $extraStr .= ' class="'. $value .'"';
+        } else if ($name[1]=='s') {  // TStyle - Style of <table>
+          $extraStr .= ' style="'. $value .'"';
+        } else if ($name[1]=='b') { // TBorder - Use border with given width
+          if (is_numeric($value)) {
+            $extraStr .= ' border="'. $value .'"';
+          } else {
+            $extraStr .= ' border="1"';
+          }
+        }
+      }
+    }
+
+    return "<table$extraStr>";
+  } else {
+    return '<table border="1">';
+  }
+}
 function html_table_end()
 	{ return '</table>'; }
-function html_table_row_start()
-	{ return '<tr>'; }
+function html_table_row_start($args)
+{
+  if ($args != '') {
+    $extraStr = '';
+
+    // Split and parse CurlyOptions
+    foreach (split_curly_options($args) as $name=>$value) {
+      // Only use the Row-options
+      if ($name[0]=='R') {
+        if ($name[1]=='c') { // RClass - Class of <row>
+          $extraStr .= ' class="'. $value .'"';
+        } else if ($name[1]=='s') {  // RStyle - Style of <row>
+          $extraStr .= ' style="'. $value .'"';
+        }
+      }
+    }
+
+    return "<tr$extraStr>";
+  } else {
+    return "<tr>";
+  }
+}
 function html_table_row_end()
 	{ return '</tr>'; }
-function html_table_cell_start($span = 1)
+function html_table_cell_start($span = 1, $args)
 {
-	if($span == 1)
-		{ return '<td style="border: 1px solid black; padding: 2px;">'; }
-	else
-		{ return '<td style="border: 1px solid black; padding: 2px;" colspan="' . $span . '">'; }
+  $extraStr = '';
+  if ($args != '') {
+    $styleStr = '';
+
+    // Parse CurlyOptions
+    foreach (split_curly_options($args) as $name=>$value) {
+      if ($name[0]=='T' or $name[0]=='R') {
+        continue; //Was either a row or table option
+      }
+      if ($name[0]=='w') {
+        if (is_numeric($value)) {
+          $rowspan = $value;
+        } else {
+          $rowspan=2;
+        }
+        $extraStr .= ' rowspan="' . $rowspan .'"';
+      } else if ($name[0] == 'l') { $styleStr .= ' text-align: left;';
+      } else if ($name[0] == 'c') { $styleStr .= ' text-align: center;';
+      } else if ($name[0] == 'r') { $styleStr .= ' text-align: right;';
+      } else if ($name[0] == 't') { $styleStr .= ' vertical-align: top;';
+      } else if ($name[0] == 'b') { $styleStr .= ' vertical-align: bottom;';
+      } else if ($name[0] == 'B') { $styleStr .= ' font-weight: bold;';
+      } else if ($name[0] == 'I') { $styleStr .= ' font-style: italic;';
+      } else if ($name[0] == 's') { $styleStr .= ' '. $value .';';
+      } else if ($name[0] == 'C') { $extraStr .= ' class="'. $value .'"';
+      }
+    }
+
+    if ($styleStr != "") {
+      $extraStr .= ' style="'. $styleStr .'"';
+    }
+  }
+
+  if($span == 1)
+    { return '<td'. $extraStr .'>'; }
+  else
+    { return '<td colspan="'. $span .'"' .$extraStr. '>'; }
 }
 function html_table_cell_end()
 	{ return '</td>'; }

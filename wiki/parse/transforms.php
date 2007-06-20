@@ -21,6 +21,58 @@ function parse_noop($text)
 function q1($text)
 	{ return str_replace('\\"', '"', $text); }
 
+function split_curly_options($text)
+{
+	$retArr = array();
+
+	if (empty($text)) {
+		return $retArr;
+	}
+	$options = preg_split('|,|', $text);
+
+	foreach ($options as $opt) {
+		if (empty($opt)) { continue; }
+		if (preg_match('/(.*)=(.*)/', $opt, $match)) {
+		  $retArr[$match[1]] = $match[2];
+		} else {
+		  $retArr[$opt] = '';
+		}
+	}
+	return $retArr;
+}
+
+function pre_parser($text)
+{
+// Before parsing the whole text, do check for line continuation and forced
+// line breaks. To achieve this, and still have code-sections, code-sections
+// need to be parsed in this section as well
+
+	// Parse the code sections, to escape them from the line control
+	$text = preg_replace("/(?:^|\n)\s*<((?:php)?code)>\s*\n(.*\n)\s*<\\/\\1>\s*(?=\n|$)/Usei",
+					   "q1('\n').code_token('\\1',q1('\\2'))", $text);
+
+	// Insert page breaks to lines ending in a double \
+	$text = preg_replace("/\\\\\\\\\n\s*/se", "new_entity(array('newline'))",
+					   $text);
+
+	// Concatenate lines ending in a single \
+	$text = preg_replace("/\\\\\n[ \t]*/s", " ", $text);
+
+	return $text;
+}
+
+function code_token($codetype, $code)
+{
+	global $FlgChr, $Entity;
+
+	if (stristr("code", $codetype))
+	{ $Entity[count($Entity)] = array('code', parse_htmlisms($code)); }
+	else if (stristr("phpcode", $codetype))
+	{ $Entity[count($Entity)] = array('phpcode', $code); }
+
+	return $FlgChr . (count($Entity)-1) . $FlgChr; //Is a blockelement
+}
+
 function get_title($page)
 {
 	if (is_array($page))
@@ -239,6 +291,40 @@ function transclude_token($text)
 	$result =& new_entity(array('raw', parseText($pg->text, $ParseEngine, $text)));
 	$visited_count--;
 	return $result;
+}
+
+function parse_textenhance($text)
+{
+	global $EnableTextEnhance;
+
+	if ($EnableTextEnhance)
+	{
+		if (preg_match("/^(\*+)([^*].*)$/", $text, $match))
+		{
+		   // Special case, since *'s at start of line is markup for lists
+		   $return = $match[1] .
+					 preg_replace("/(\*\*)(.+)\\1/Ue",
+								  "pair_tokens('bold', q1('\\2'))", $match[2], -1);
+		}
+		else
+		{
+		   $return = preg_replace("/(\*\*)(.+)\\1/Ue",
+								  "pair_tokens('bold', q1('\\2'))", $text, -1);
+		}
+		$return = preg_replace( "/(\/\/)(.+)\\1/Ue",
+								 "pair_tokens('italic', q1('\\2'))", $return, -1);
+		$return = preg_replace( "/(--)(.+)\\1/Ue",
+								 "pair_tokens('del', q1('\\2'))", $return, -1);
+		$return = preg_replace( "/(\+\+)(.+)\\1/Ue",
+								 "pair_tokens('ins', q1('\\2'))", $return, -1);
+		$return = preg_replace( "/(\^\^)(.+)\\1/Ue",
+								 "pair_tokens('superscript', q1('\\2'))", $return, -1);
+		$return = preg_replace( "/(,,)(.+)\\1/Ue",
+								"pair_tokens('subscript', q1('\\2'))", $return, -1);
+		return $return;
+	} else {
+		return $text;
+	}
 }
 
 function parse_bold($text)
@@ -643,20 +729,24 @@ function parse_table($text)
 
 	$pre = '';
 	$post = '';
-	if(preg_match('/^(\|\|)+.*(\|\|)\s*$/', $text))  // Table.
+	if(preg_match('/^(\|\|)+(\{([^{}]+)\})?.*(\|\|)\s*$/', $text, $args))  // Table.
 	{
 		if(!$in_table)
 		{
-			$pre = html_table_start();
-			$in_table = 1;
+		  $pre = html_table_start($args[3]);
+		  $in_table = 1;
 		}
-		$text = preg_replace('/^((\|\|)+)(.*)\|\|\s*$/e',
-												 "new_entity(array('raw',html_table_row_start().html_table_cell_start(strlen('\\1')/2))).".
-												 "q1('\\3').new_entity(array('raw',html_table_cell_end().html_table_row_end()))",
-												 $text, -1);
-		$text = preg_replace('/((\|\|)+)/e',
-												 "new_entity(array('raw',html_table_cell_end().html_table_cell_start(strlen('\\1')/2)))",
-												 $text, -1);
+		$text = preg_replace('/\|\s+\|/e',
+							 "q1('|').new_entity(array('raw','&nbsp;')).q1('|')",
+							 $text);
+		$text = preg_replace('/^((\|\|+)(\{([^{}]+)\})?)(.*)\|\|\s*$/e',
+							 "new_entity(array('raw',html_table_row_start('\\4').
+													 html_table_cell_start(strlen('\\2')/2, '\\4'))).".
+							 "q1('\\5').new_entity(array('raw',html_table_cell_end().html_table_row_end()))",
+							 $text, -1);
+		$text = preg_replace('/((\|\|+)(\{([^{}]+)\})?)/e',
+							 "new_entity(array('raw',html_table_cell_end().html_table_cell_start(strlen('\\2')/2, '\\4')))",
+							 $text, -1);
 	}
 	else if($in_table)                    // Have exited table.
 	{
@@ -665,9 +755,13 @@ function parse_table($text)
 	}
 
 	if($pre != '')
-		{ $text = new_entity(array('raw', $pre)) . $text; }
+	{ 
+		$text = new_entity(array('raw', $pre)) . $text; 
+	}
 	if($post != '')
-		{ $text = $text . new_entity(array('raw', $post)); }
+	{ 
+		$text = $text . new_entity(array('raw', $post)); 
+	}
 
 	return $text;
 }
