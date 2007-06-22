@@ -314,9 +314,10 @@
 			)
 		 );
 
+		 $this->response->addAlert(_debug_array(unserialize(base64_decode($result['extra_info'])),false));
 		 if($result)
 		 {
-			$this->updateInfoField(lang('Current Status: ').get_status_lang($result));
+			$this->updateInfoField(lang('Current Status: ').get_status_lang($result['status']));
 		 }
 		 else
 		 {
@@ -438,7 +439,7 @@
 			   $movieurl=$this->upload_url.'/'.$movieurl;
 			}
 //			$this->updateInfoField($movieurl);
-	//		return $this->response->getXML();
+//		return $this->response->getXML();
 
 			if($this->checkServerAvailability())
 			{
