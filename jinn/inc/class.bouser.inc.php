@@ -447,7 +447,15 @@
 
 				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 				  $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
+
 				  $status['relations']=$this->so->update_object_many_data($object_arr['parent_site_id'], $m2m_data);
+				  /** TODO WORKAROUND FOR O2O RELATIONS */
+				  foreach($post_arr as $_pkey=>$_pval)
+				  {
+					 break;
+				  }
+				  $status['o2o']=$this->o2o_update($_pval);
+				  /** PLEASE REPLACE ABOVE WITH MORE INTELLIGENT SOFTWARE */
 			   }
 			}
 			$status['mult_where_array']=$status_mult_where;
@@ -498,7 +506,15 @@
 				  
 				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 
-				  $status[m2m]=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
+				  /** TODO WORKAROUND FOR O2O RELATIONS */
+				  foreach($post_arr as $_pkey=>$_pval)
+				  {
+					 break;
+				  }
+				  $status['o2o']=$this->o2o_update($_pval);
+				  /** PLEASE REPLACE ABOVE WITH MORE INTELLIGENT SOFTWARE */
+
+				  $status['m2m']=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
 
 				  $status['record']=$this->so->update_object_data($object_arr['parent_site_id'], $object_arr['table_name'], $data, $where_key,$where_value,$where_string);
 
