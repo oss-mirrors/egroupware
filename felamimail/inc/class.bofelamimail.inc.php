@@ -916,12 +916,14 @@
 						if($_getCounters == true) {
 							$folderStatus = $this->icServer->getStatus($folderName);
 
-							$status =  new stdClass;
-							$status->messages	= $folderStatus['MESSAGES'];
-							$status->unseen		= $folderStatus['UNSEEN'];
-							$status->recent 	= $folderStatus['RECENT'];
-
-							$folderObject->counter = $status;
+							if(is_array($folderStatus)) {
+								$status =  new stdClass;
+								$status->messages	= $folderStatus['MESSAGES'];
+								$status->unseen		= $folderStatus['UNSEEN'];
+								$status->recent 	= $folderStatus['RECENT'];
+								
+								$folderObject->counter = $status;
+							}
 						}
 
 						if(strtoupper($folderName) == 'INBOX') {
