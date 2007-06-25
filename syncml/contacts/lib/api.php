@@ -69,7 +69,9 @@ function _egwcontactssync_list()
 
 	foreach((array)$allContacts as $contact)
 	{
-		$guids[] = $GLOBALS['egw']->common->generate_uid('contacts',$contact['id']);
+        	#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
+        	#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		$guids[] = $GLOBALS['egw']->common->generate_uid('contacts', $contact['id']);
 	}
 
 	Horde::logMessage("SymcML: egwcontactssync list found ids: ". print_r($guids, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -86,8 +88,7 @@ function _egwcontactssync_list()
  *
  * @return array  An array of GUIDs matching the action and time criteria.
  */
-function &_egwcontactssync_listBy($action, $timestamp)
-{
+function &_egwcontactssync_listBy($action, $timestamp) {
 	// todo
 	// check for acl
 	
@@ -95,18 +96,15 @@ function &_egwcontactssync_listBy($action, $timestamp)
 
 	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('contacts', $action, $timestamp);
 
-	if($action != 'delete')
-	{
+	if($action != 'delete') {
 		$vcalAddressBook = CreateObject('addressbook.vcaladdressbook');
 		$readAbleItems = array();
 
 		// check if we have access to the changed data
 		// need to get improved in the future
-		foreach($allChangedItems as $guid)
-		{
+		foreach($allChangedItems as $guid) {
 			$uid = $GLOBALS['egw']->common->get_egwId($guid);
-			if($vcalAddressBook->check_perms(EGW_ACL_READ,$uid))
-			{
+			if($vcalAddressBook->check_perms(EGW_ACL_READ,$uid)) {
 				$readAbleItems[] = $guid;
 			}
 		}
@@ -135,6 +133,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 
 	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
+	#error_log(print_r($deviceInfo, true));
 
 	
 	switch ($contentType) {
@@ -286,12 +285,13 @@ function _egwcontactssync_delete($guid)
 		
 		return true;
 	}
+	Horde::logMessage("SymcML: egwcontactssync delete guid: $guid egwid: ". $GLOBALS['egw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 	
-	return ExecMethod('addressbook.vcaladdressbook.delete',$GLOBALS['egw']->common->get_egwId($guid));
+	return ExecMethod('addressbook.vcaladdressbook.delete', $GLOBALS['egw']->common->get_egwId($guid));
 }
 
 /**
