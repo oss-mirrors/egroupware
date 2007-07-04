@@ -58,23 +58,30 @@ function _egwcontactssync_list()
 	
 	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
+	// hardcode your search creteria here
+	$criteria = array();
+	
 	$filter = array();
 	if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts'])
 	{
 		$filter['account_id'] = null;
 	}
-	$allContacts = ExecMethod2('addressbook.bocontacts.search',array(),True,'','','',False,'AND',false,$filter);
+	
+	// hardcode your filter here
+	//$filter['cat_id'] = '!215';
+	$allContacts = ExecMethod2('addressbook.bocontacts.search',$criteria,True,'','','',False,'AND',false,$filter);
 
 	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
+	
+	$guids = array();
 	foreach((array)$allContacts as $contact)
 	{
-        	#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-        	#Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+        #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
+        #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		$guids[] = $GLOBALS['egw']->common->generate_uid('contacts', $contact['id']);
 	}
 
-	Horde::logMessage("SymcML: egwcontactssync list found ids: ". print_r($guids, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage("SymcML: egwcontactssync list found ids: ". print_r($guids, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	return $guids;
 }
@@ -89,30 +96,37 @@ function _egwcontactssync_list()
  * @return array  An array of GUIDs matching the action and time criteria.
  */
 function &_egwcontactssync_listBy($action, $timestamp) {
-	// todo
-	// check for acl
 	
 	#Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$state = $_SESSION['SyncML.state'];
+	
+	$allChangedItems = (array)$GLOBALS['egw']->contenthistory->getHistory('contacts', $action, $timestamp);
+	#Horde::logMessage('SymcML: egwcontactssync listBy $allChangedItems: '. print_r($allChangedItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allReadAbleItems = (array)_egwcontactssync_list();
+	#Horde::logMessage('SymcML: egwcontactssync listBy $allReadAbleItems: '. print_r($allReadAbleItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allClientItems = (array)$state->_getClientItems('contacts');
+	#Horde::logMessage('SymcML: egwcontactssync listBy $allClientItems: '. print_r($allClientItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	switch ($action) {
+		case 'delete' :
+			// filters may have changed, so we need to calculate which
+			// items are to delete from client cause they are not longer is list.
+			return $allChangedItems + array_diff($allClientItems, $allReadAbleItems);
 
-	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('contacts', $action, $timestamp);
+		case 'add' :
+			// - added items may not need to be added, cause they are filtered out.
+			// - filters or entries may have changed, so that more entries
+			//   pass the filter and need to be added on the client.
+			return array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems);
 
-	if($action != 'delete') {
-		$vcalAddressBook = CreateObject('addressbook.vcaladdressbook');
-		$readAbleItems = array();
+		case 'modify' :
+			// - modified entries, which not (longer) pass filters must not be send.
+			// - modified entries which are not at the client must not be send, cause
+			//   the 'add' run will send them!
+			return array_intersect($allChangedItems, $allReadAbleItems, $allClientItems);
 
-		// check if we have access to the changed data
-		// need to get improved in the future
-		foreach($allChangedItems as $guid) {
-			$uid = $GLOBALS['egw']->common->get_egwId($guid);
-			if($vcalAddressBook->check_perms(EGW_ACL_READ,$uid)) {
-				$readAbleItems[] = $guid;
-			}
-		}
-		
-		return $readAbleItems;
+		default:
+			return new PEAR_Error("$action is not defined!");
 	}
-
-	return $allChangedItems;
 }
 
 /**
