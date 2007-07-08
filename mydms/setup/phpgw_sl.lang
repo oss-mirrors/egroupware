@@ -46,7 +46,7 @@ lock status	mydms	sl	Stanje zaklepanja
 mime type	mydms	sl	Tip MIME
 move document	mydms	sl	Premakni dokument
 move folder	mydms	sl	Premakni mapo
-mydms	common	sl	Mydms
+mydms	common	sl	Dokumenti
 notifications	mydms	sl	Obvestila
 permission	mydms	sl	Dovoljenja
 select folder	mydms	sl	Izberi mapo
