@@ -445,7 +445,7 @@
 				return false;
 			}
 			
-			if( PEAR::isError($status = $this->login($username, $password)) ) {
+			if( PEAR::isError($status = $this->login($username, $password, TRUE, !$this->isAdminConnection)) ) {
 				$this->_connectionErrorObject = $status;
 				return false;
 			}
