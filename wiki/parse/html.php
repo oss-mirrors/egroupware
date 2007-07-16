@@ -72,34 +72,52 @@ function html_diff_delete()
 	{ return html_bold_start() . lang('Deleted').':' . html_bold_end(); }
 function html_table_start($args)
 {
+  // initialisation of borderwidth
+  global $borderwidth;
+  $borderwidth=1;
   if ($args != '') {
     $extraStr = '';
-
+    $class='';
+    $style='';
+	$styleStr='';
+    $border='';
+    $borderval=$borderwidth;
     // Split and parse CurlyOptions
     foreach (split_curly_options($args) as $name=>$value) {
     // Only use the Table-options
       if ($name[0]=='T') {
         if ($name[1]=='c') { // TClass - Class of <table>
-          $extraStr .= ' class="'. $value .'"';
+          $class .= ' class="'. $value .'"';
         } else if ($name[1]=='s') {  // TStyle - Style of <table>
-          $extraStr .= ' style="'. $value .'"';
+          $styleStr .= $value;
         } else if ($name[1]=='b') { // TBorder - Use border with given width
           if (is_numeric($value)) {
-            $extraStr .= ' border="'. $value .'"';
-          } else {
-            $extraStr .= ' border="1"';
+            $borderval =  $value;
+			$borderwidth=$value;
+		    $border.=' border="'.$borderval.'" ';
           }
         }
       }
     }
-
-    return "<table$extraStr>";
+    if ($class=='') {$class = ' class="wiki"';}
+	if ($styleStr=='') {$styleStr = ' border:'.$borderval.'px  solid black; border-collapse: collapse;';}
+    if ((stristr($styleStr, 'border') === FALSE) && $styleStr!='' && ($borderval==0)) { 
+		$border= ' ';
+		$styleStr .= ' border:'.$borderval.'px  solid black; border-collapse: collapse;';
+	}
+	if ($styleStr!='') {$style=' style="'. $styleStr .'"';}
+    return "<table$border$class$style>";
   } else {
-    return '<table border="1">';
+    return '<table class="wiki" style=" border:1px solid black; border-collapse: collapse;">';
   }
 }
 function html_table_end()
-	{ return '</table>'; }
+{
+	// set the table border width back to its defaultvalue 1
+	global $borderwidth;
+	$borderwidth=1;
+	return '</table>'; 
+}
 function html_table_row_start($args)
 {
   if ($args != '') {
@@ -126,15 +144,19 @@ function html_table_row_end()
 	{ return '</tr>'; }
 function html_table_cell_start($span = 1, $args)
 {
+  // initialize borderwidth and use it for cell borders as well
+  global $borderwidth;
+  $borderval=$borderwidth;
   $extraStr = '';
+  $border='';
   if ($args != '') {
     $styleStr = '';
 
     // Parse CurlyOptions
     foreach (split_curly_options($args) as $name=>$value) {
-      if ($name[0]=='T' or $name[0]=='R') {
-        continue; //Was either a row or table option
-      }
+	  if ($name[0]=='T' or $name[0]=='R') {
+		continue; //Was either a row or table option
+	  }
       if ($name[0]=='w') {
         if (is_numeric($value)) {
           $rowspan = $value;
@@ -153,12 +175,14 @@ function html_table_cell_start($span = 1, $args)
       } else if ($name[0] == 'C') { $extraStr .= ' class="'. $value .'"';
       }
     }
-
-    if ($styleStr != "") {
-      $extraStr .= ' style="'. $styleStr .'"';
-    }
+  }
+  if ($borderval) { // this is always true, since borderval is set at the top
+		$styleStr .= ' border: '.$borderval.'px solid black; padding: 2px;';
   }
 
+  if ($styleStr != "") {
+	    $extraStr .= ' style="'. $styleStr .'"';
+  }
   if($span == 1)
     { return '<td'. $extraStr .'>'; }
   else
