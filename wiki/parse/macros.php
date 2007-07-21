@@ -12,11 +12,11 @@ function view_macro_category($args)
 	{
 		$list = $pagestore->allpages();
 	}
-	else if(strpos($args, '?') !== false)           // New pages.
+	elseif(strpos($args, '?') !== false)           // New pages.
 	{
 		$list = $pagestore->newpages();
 	}
-	else if(strpos($args, '~') !== false)           // Zero-length (deleted) pages.
+	elseif(strpos($args, '~') !== false)           // Zero-length (deleted) pages.
 	{
 		$list = $pagestore->emptypages();
 	}
@@ -50,7 +50,8 @@ function view_macro_category($args)
 
 	if($i < count($list)-1)
 	{
-		$text .= html_fulllist(preg_match('/^[a-z]+$/i',$_GET['wikipage']) ? $_GET['wikipage']:$page, count($list));
+		$pname = $_GET['wikipage'] ? $_GET['wikipage'] : $_GET['page'];
+		$text .= html_fulllist(preg_match('/^[a-z]+$/i',$pname) ? $pname : $page, count($list));
 	}
 	return $text;
 }

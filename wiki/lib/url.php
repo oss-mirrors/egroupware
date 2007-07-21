@@ -75,7 +75,7 @@ if(!function_exists('historyURL'))
 		{
 			$lang = '&lang=' . ($lang ? $lang : $page['lang']);
 		}
-		return $HistoryBase . urlencode(is_array($page) ? $page['name'] : $page) . $lang;
+		return $HistoryBase . urlencode(is_array($page) ? $page['name'] : $page) . $lang .
 				($full == '' ? '' : '&full=1');
 	}
 }
