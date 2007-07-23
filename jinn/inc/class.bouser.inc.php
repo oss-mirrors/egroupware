@@ -335,6 +335,11 @@
 			   {
 				  $post_arr['FLDXXX'.substr($key,6)]=$val;
 			   }
+			   // If a plugin user wants to use a prefix it must be exactly charachter long
+			   elseif (substr($key,7,3)=='M2O') 
+			   {
+				  $post_arr[substr($key,0,7).'FLDXXX'.substr($key,13)]=$val;
+			   }
 			   // extra table_field elements overwriting other FLD's 
 			   elseif(substr($key,0,4)=='ELEX' && intval(substr($key,4,2)) == $i)
 			   {
@@ -503,7 +508,7 @@
 				  $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
 				  // $this->session['mult_where_array'][]=$where_string;
 				  $status['mult_where_array'][]=$where_string;
-				  
+
 				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 
 				  /** TODO WORKAROUND FOR O2O RELATIONS */
@@ -514,6 +519,7 @@
 				  $status['o2o']=$this->o2o_update($_pval);
 				  /** PLEASE REPLACE ABOVE WITH MORE INTELLIGENT SOFTWARE */
 
+				  
 				  $status['m2m']=$this->so->update_object_many_data($this->session['site_id'], $m2m_data);
 
 				  $status['record']=$this->so->update_object_data($object_arr['parent_site_id'], $object_arr['table_name'], $data, $where_key,$where_value,$where_string);
@@ -1111,10 +1117,10 @@
 			$data=array();
 			while(list($key, $val) = each($HTTP_POST_VARS)) 
 			{
-			   if(substr($key,0,3)=='M2M' || substr($key,0,8)=='FLDXXXid')
-			   {
+			   #if(substr($key,0,3)=='M2M' || substr($key,0,8)=='FLDXXXid')
+			   #{
 				  $data = array_merge($data,array($key=> $val));
-			   }
+				  #}
 			}
 			return $data;
 		 }		
