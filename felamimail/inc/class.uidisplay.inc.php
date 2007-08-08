@@ -698,17 +698,18 @@
 
 						$linkData = array (
 							'menuaction'		=> 'addressbook.uicontacts.edit',
-							'presets[email]'	=> @htmlentities($addressData['EMAIL'], ENT_QUOTES, $this->displayCharset),
-							'presets[org_name]'	=> @htmlentities($_organisation, ENT_QUOTES, $this->displayCharset),
+							'presets[email]'	=> $addressData['EMAIL'],
+							'presets[org_name]'	=> $_organisation,
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 						
 						if($spacePos = strrpos($decodedPersonalName, ' ')) {
-							$linkData['presets[n_family]']	= @htmlentities(substr($decodedPersonalName, $spacePos+1), ENT_QUOTES, $this->displayCharset);
-							$linkData['presets[n_given]'] 	= @htmlentities(substr($decodedPersonalName, 0, $spacePos), ENT_QUOTES, $this->displayCharset);
+							$linkData['presets[n_family]']	= substr($decodedPersonalName, $spacePos+1);
+							$linkData['presets[n_given]'] 	= substr($decodedPersonalName, 0, $spacePos);
 						} else {
-							$linkData['presets[n_family]']	= @htmlentities($decodedPersonalName, ENT_QUOTES, $this->displayCharset);
+							$linkData['presets[n_family]']	= $decodedPersonalName;
 						}
+						$linkData['presets[n_fn]']	= $decodedPersonalName;
 						
 						if ($showAddToAdrdessbookLink) {
 							$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
@@ -737,8 +738,8 @@
 						$linkData = array
 						(
 							'menuaction'		=> 'addressbook.uicontacts.edit',
-							'presets[email]'	=> @htmlentities($addressData['EMAIL'], ENT_QUOTES, $this->displayCharset),
-							'presets[org_name]'	=> @htmlentities($_organisation, ENT_QUOTES, $this->displayCharset),
+							'presets[email]'	=> $addressData['EMAIL'],
+							'presets[org_name]'	=> $_organisation,
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 
