@@ -31,8 +31,19 @@
 
    $sessdata =	$GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
    
-   $bo = CreateObject('jinn.bouser');
-   
+   $sessiondata = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
+
+   $session_name = $sessiondata['JAPIESESS'];
+
+   if($session_name)
+   {
+	  $bo = CreateObject('jinn.bouser',$session_name);
+   }
+   else
+   {
+	  $bo = CreateObject('jinn.bouser');
+   }
+
    $plug_root= EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__filemanager';
    $tplsav2 = CreateObject('phpgwapi.tplsavant2');
    $tplsav2->addPath('template',$plug_root.'/tpl');

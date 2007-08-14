@@ -49,7 +49,18 @@
 
    $sessdata =	$GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
 
-   $bo = CreateObject('jinn.bouser');
+      $sessiondata = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
+
+   $session_name = $sessiondata['JAPIESESS'];
+
+   if($session_name)
+   {
+	  $bo = CreateObject('jinn.bouser',$session_name);
+   }
+   else
+   {
+	  $bo = CreateObject('jinn.bouser');
+   }
 
    if($_GET[curr_obj_id])
    {
