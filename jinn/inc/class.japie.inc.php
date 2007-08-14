@@ -16,6 +16,13 @@
 		 $this->calling_app = $GLOBALS['egw_info']['flags']['currentapp'];
 		 //echo $this->calling_app;
 		 $this->session_name = ($session_name?$session_name:$this->calling_app);
+		 $sessiondata = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
+
+		 $sessiondata['JAPIESESS'] = $this->session_name;
+		 if(count($sessiondata) > 0) //this catches the bug in the phpgwapi crypto class..
+		 {
+			$GLOBALS['phpgw']->session->appsession('session_data','jinn',$sessiondata);
+		 }
 
 		 $this->site_object_id=$object_id;
 
@@ -282,7 +289,9 @@
 		 if($this->upload_url)
 		 {
 			$this->uijapie->bo->site_object['cur_upload_url'] = $this->upload_url;
+			$this->uijapie->bo->site_object['upload_url'] = $this->upload_url;
 			$this->uijapie->bo->plug->local_bo->site_object['cur_upload_url'] = $this->upload_url;
+			$this->uijapie->bo->plug->local_bo->site_object['upload_url'] = $this->upload_url;
 
 			$sessdata =  $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
 			$sessdata['UploadImageBaseURL'] = $this->upload_url;
@@ -294,7 +303,9 @@
 		 if($this->upload_path)
 		 {
 			$this->uijapie->bo->site_object['cur_upload_path'] = $this->upload_path;
+			$this->uijapie->bo->site_object['upload_path'] = $this->upload_path;
 			$this->uijapie->bo->plug->local_bo->site_object['cur_upload_path'] = $this->upload_path;
+			$this->uijapie->bo->plug->local_bo->site_object['upload_path'] = $this->upload_path;
 
 			$sessdata =  $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
 			$sessdata['UploadImageBaseDir'] = $this->upload_path;
@@ -304,6 +315,9 @@
 			}
 		 }
 
+		 #_debug_array($this->uijapie->bo->site_object);
+		 #_debug_array($this->uijapie->bo->plug->local_bo->site_object);
+		 $this->uijapie->bo->site_object['upload_path'] = $this->upload_path;
 		 $this->uijapie->japielink=$this->make_japie_link();
 		 $this->uijapie->tplsav2->japie=true;
 		 $this->uijapie->tplsav2->set_tpl_path($this->uijapie->tplsav2->get_tpl_dir(false,'jinn'));

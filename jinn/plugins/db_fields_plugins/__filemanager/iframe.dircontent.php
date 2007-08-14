@@ -49,7 +49,17 @@
 
    $sessdata =	$GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
 
+   $sessiondata = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
+
+   $session_name = $sessiondata['JAPIESESS'];
+   if($session_name)
+   {
+	  $bo = CreateObject('jinn.bouser',$session_name);
+   }
+   else
+   {
    $bo = CreateObject('jinn.bouser');
+   }
 
    $plug_root= EGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/__filemanager';
    $tplsav2 = CreateObject('phpgwapi.tplsavant2');
@@ -62,7 +72,6 @@
 	 }
 	 */
    
-
    if($_GET[curr_obj_id])
    {
 	  $field_config = $bo->so->get_field_values($_GET[curr_obj_id],$_GET[field]);
@@ -74,7 +83,6 @@
 
    $config = unserialize(base64_decode($field_config[field_plugins]));
    $config = $config[conf];
-   //_debug_array($config);
 
    $BASE_DIR = $sessdata[UploadImageBaseDir];
    if($BASE_DIR == '')
