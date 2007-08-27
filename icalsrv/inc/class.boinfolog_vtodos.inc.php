@@ -2,7 +2,8 @@
    /** 
 	* @file 
 	* eGroupWare - iCalendar VTODOS conversion, import and export for egw infolog
-	* @author Jan van Lieshout   
+	* @author Jan van Lieshout  
+	* @version $Id$ 
 	*/
 
    /* http://www.egroupware.org                                                *
@@ -142,9 +143,12 @@
 			'ongoing'     => 'IN-PROCESS',
 			'done'        => 'COMPLETED',
 			'cancelled'   => 'CANCELLED',
-			'billed'      => 'DONE',
-			'call'        => 'NEEDS-ACTION',
-			'will-call'   => 'IN-PROCESS',
+			// NEW RalfBecker Aug 2007
+			// was mapped to invalid status DONE
+			'billed'      => 'COMPLETED',
+			// these are not longer used (call is mapped to not-started and will-call to ongoing
+//			'call'        => 'NEEDS-ACTION',
+//			'will-call'   => 'IN-PROCESS',
 		);
 
 		/** conversion of vtodo status to infolog status
@@ -157,6 +161,13 @@
 			'COMPLETED'    => 'done',
 			'CANCELLED'    => 'cancelled',
 		);
+		
+		/**
+		 * instance of boinfolog
+		 *
+		 * @var boinfolog
+		 */
+		var $rsc;
 
 		/** mapping from iCalendar VTODO fields to egw infolog task fields
 		* @private
@@ -221,7 +232,7 @@
 					'fn_rns' => array('info_status')
 				),
 				'SUMMARY'	=> array('rn' => 'info_subject'),
-				'UID'		=> array('fn_rn' => ''),
+				'UID'		=> array('fn_rn' => 'info_uid'),
 				//				'URL'       => array('fn_rns' => 'links?'),
 
 				// optional once, but exclusive alternatives
@@ -361,10 +372,16 @@
 			switch ($uid_mapping_export)
 			{
 				case UMM_UID2UID :
-					error_log('boinfolog_vtodos.export_vtodo(): UMM_UID2UID NOT SUPPORTED YET: ERROR');
-					return false;
+					// NEW RalfBecker Aug 2007
+					// InfoLog support uid's from it's version 1.5.001 on
+					// (this code (if clause) is only for 1.4 compatibility and can be removed for the next release)
+					if ($GLOBALS['egw_info']['apps']['infolog']['version'] == '1.4')
+					{
+						error_log('boinfolog_vtodos.export_vtodo(): UMM_UID2UID NOT SUPPORTED YET: ERROR');
+						return false;
+					}
 					// put egw uid into VTODO, to allow client to sync with his uids
-					$taskGUID = $task['uid'];
+					$taskGUID = $task['info_uid'];
 					break;
 				case UMM_NEWUID :
 					// this one should not be decodable by mke_guid2id()
@@ -435,9 +452,11 @@
 						}
 						break;
 						// according to rfc this is not a vtodo field!
-					case 'TRANSP':
-						$attributes['TRANSP'] = $task['non_blocking'] ? 'TRANSPARENT' : 'OPAQUE';
-						break;
+						// New RalfBecker Aug 2007
+						// it's also no infolog field, seems to be cut-n-paste from calendar
+//					case 'TRANSP':
+//						$attributes['TRANSP'] = $task['non_blocking'] ? 'TRANSPARENT' : 'OPAQUE';
+//						break;
 					case 'CATEGORIES':
 						if($catids = $task['info_cat'])
 						{ 
@@ -453,20 +472,23 @@
 							$attributes['RELATED-TO'] = $this->ecu->mki_v_guid($parid,'infolog');
 						}
 						break;
-					case 'STATUS':	// note: custom field in task
-						$attributes['STATUS'] = ( $vtodo_stat = $this->status_task2vtodo[$task['status']])
+					case 'STATUS':
+						// NEW RalfBecker Aug 2007
+						// info_status is a regular infolog field, no custom field
+						$attributes['STATUS'] = ( $vtodo_stat = $this->status_task2vtodo[$task['info_status']])
 							? $vtodo_stat 
 							: 'NEEDS-ACTION';
-						if($vtodo_stat == 'COMPLETED')
-						{
-							$attributes['PERCENT-COMPLETE'] ='100';
-						}
+						// we try to preserv the original infolog status as X-INFOLOG-STATUS, so we can restore it, if the user does not modify STATUS
+						$attributes['X-INFOLOG-STATUS'] = $task['info_status'];
+//						if($vtodo_stat == 'COMPLETED')
+//						{
+//							$attributes['PERCENT-COMPLETE'] ='100';
+//						}
 						// 				elseif (ereg('([0-9]+)%',$task['info_status'],$matches)){
 						// 				  $attributes['PERCENT-COMPLETE'] = $matches[1];
 						// 				  $attributes['STATUS'] ='IN-PROCESS';
 						// 				}
 						break;
-						// use daylight savings time patch, for some dates
 					case 'DTSTART':
 						if ($task['info_startdate'])
 						{
@@ -508,6 +530,8 @@
 				}
 			} //end foreach
 
+			/* NEW RalfBecker Aug 2007
+			   This code is cut-n-paste from calendar, but does NOT apply to infolog!
 			// wholeday detector (DUE =23:59:59 && DTSTART = 00:00)
 			// if detected the times will be exported in VALUE=DATE format
 			if(((date('H:i:s',$task['info_enddate']) == '23:59:59') ||
@@ -527,7 +551,7 @@
 				}
 				//	error_log('WHOLE DAY DETECTED');
 			}
-
+*/
 			//error_log('attributes={'  . print_r($attributes,true));
 
 			// add all collected attributes (not yet added) to the vtodo
@@ -636,8 +660,8 @@
 			{
 				// ad hoc hack: egw hates slashes in a uid so we replace these anyhow with -
 				$vuid = strtr($uidval,'/','-');
-				// useless because atm task dont support a uid field!!!!
-				$task['uid'] = $vuid;
+				// InfoLog support uid from 1.5.001 on!
+				$task['info_uid'] = $vuid;
 			}
 
 			switch ($uid_mapping_import)
@@ -776,8 +800,21 @@
 						$task['info_id_parent'] = $this->ecu->mke_guid2id($attrval,'infolog');
 						break;
 					case 'STATUS':	// note: custom field in task
-						$task['status'] = ($task_stat = $this->status_vtodo2task[$attrval])
-						? $task_stat : 'offer';
+						$task['info_status'] = ($task_stat = $this->status_vtodo2task[$attrval])
+							? $task_stat : 'not-started';
+						// check if we (still) have X-INFOLOG-STATUS set AND it would give an unchanged status (no change by the user)
+						foreach($vtodo->_attributes as $xattr)
+						{
+							if ($xattr['name'] == 'X-INFOLOG-STATUS')
+							{
+								if (!($x_translated = $this->status_task2vtodo[$xattr['value']])) $x_translated = 'NEEDS-ACTION';
+								if ($x_translated == $attrval)
+								{
+									$task['info_status'] = $xattr['value'];
+								}
+								break;
+							}
+						}
 						break;
 						// this is needed, because empty subject is not allowed by egw
 					case 'SUMMARY':
@@ -827,11 +864,11 @@
 			// handle no status found
 			if(!$task['info_status'])
 			{
-				$task['info_status'] = 'offer';
+				$task['info_status'] = 'not-started';
 			}
 
 			// hack for infolog bug: reset info_datecompleted for a not-done status value
-			if($task['info_status'] !== 'done')
+			if($task['info_status'] !== 'done' && $task['info_status'] !== 'billed')
 			{
 				$task['info_datecompleted'] = null;
 			}
@@ -875,6 +912,11 @@
 
 			// -- finally we come to the import into egw ---
 
+		  	// NEW RalfBecker Aug 2007
+			// This type of delete handing is no longer necessary - thought it does no harm at the moment.
+			// I think it can be removed in furture, as it's hard to explain to any user
+			// Deleting tasks is now detected by tracking the requests and submited tasks.
+/*
 			if (($task['info_subject'] == 'X-DELETE')
 			|| ($task['info_subject'] == '_DELETED_'))
 			{
@@ -923,7 +965,7 @@
 				}
 				// -------- UPDATE --------------------
 			}
-			elseif ($tidOk = $this->rsc->write($task, true, false))
+			else*/if ($tidOk = $this->rsc->write($task, true, false))
 			{
 				// ******** for serious debugging only.. **************
 				// 			  if ($this->tsdebug){
@@ -992,6 +1034,21 @@
 				$tid
 			);
 		}
+
+	/**
+	 * Delete a tasks specified by the id
+	 * 
+	 * There's not yet a way to handle the situation that the user has no right to delete a task, 
+	 * eg. because it's delegated to him
+	 *
+	 * @param int $id info_id
+	 * @param int $user account_id
+	 * @return boolean true on success, false otherwise
+	 */
+	function delete_ncvelt($id,$user)
+	{
+		return $this->rsc->delete($id);
+	}
 
 	  /**
 	   * Set the list of ical fields that are supported during the next imports and exports.

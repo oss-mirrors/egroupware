@@ -3,7 +3,7 @@
    * @file personal_vircal_ardb
    * class that provides an array storage for virtual calendars
    *
-   * Id$
+   * @version $Id$
    * @author Jan van Lieshout                                                *
    * @package icalsrv
    */
@@ -224,7 +224,8 @@
 				$this->_events_proto,
 				$username . '/events.ics',
 				"events for $username from 1 month back till 1 year from now", 
-				$rwrule_stdperiod_stduser
+				$rwrule_stdperiod_stduser,
+				$user_id
 			);
 
 			// tasks from 1 month back till 12 months after today
@@ -232,7 +233,8 @@
 				$this->_tasks_proto,
 				$username . '/tasks.ics',
 				"open tasks for $username", 
-				$rwrule_opentasks_stduser
+				$rwrule_opentasks_stduser,
+				$user_id
 			);
 
 			//  /default.ics (combines events and tasks
@@ -240,7 +242,8 @@
 				$this->_calendar_proto,
 				$username . '/default.ics',
 				"events and tasks for $username from 1 month back till 1 year from now", 
-				array_merge($rwrule_stdperiod_stduser, $rwrule_opentasks_stduser)
+				array_merge($rwrule_stdperiod_stduser, $rwrule_opentasks_stduser),
+				$user_id
 			);
 
 			// freebusy from 1 month back till 12 months after today
@@ -248,7 +251,8 @@
 				$this->_freebusy_proto,
 				$username . '/freebusy.ifb',
 				"freebusy times for $username , based on events calendar  from 1 month back till 1 year from now", 
-				$rwrule_stdperiod_stduser
+				$rwrule_stdperiod_stduser,
+				$user_id
 			);
 
 			// -- now some weekly calendars
@@ -264,7 +268,8 @@
 				$this->_events_proto,
 				$username . '/week/events.ics',
 				"events in this week for $username", 
-				$rwrule_weekperiod_stduser
+				$rwrule_weekperiod_stduser,
+				$user_id
 			);
 
 			// 		 // this weeks tasks
@@ -280,7 +285,8 @@
 				$this->calendars['/default.ics'],
 				$username . '/week/default.ics',
 				"events in this week and open tasks for $username", 
-				$rwrule_weekperiod_stduser
+				$rwrule_weekperiod_stduser,
+				$user_id
 			);
 
 			// -- now some monthly calendars
@@ -295,7 +301,8 @@
 				$this->_events_proto,
 				$username . '/month/events.ics',
 				"events in this month for $username", 
-				$rwrule_month_stduser
+				$rwrule_month_stduser,
+				$user_id
 			);
 
 			// 		 // this months tasks
@@ -312,7 +319,8 @@
 				$this->calendars['/default.ics'],
 				$username . '/month/default.ics',
 				"events and tasks in this month for $username", 
-				$rwrule_month_stduser
+				$rwrule_month_stduser,
+				$user_id
 			);
 
 			// this months freebusy
@@ -320,7 +328,8 @@
 				$this->_freebusy_proto,
 				$username . '/month/freebusy.ifb',
 				"freebusy times for $username in this month (based on events calendar)",
-				$rwrule_month_stduser
+				$rwrule_month_stduser,
+				$user_id
 			);
 
 
@@ -337,7 +346,8 @@
 				$this->_events_proto,
 				$username . '/nextmonth/events.ics',
 				"events in next month for $username",
-				$rwrule_nextmonth_stduser
+				$rwrule_nextmonth_stduser,
+				$user_id
 			);
 
 			//	// next months tasks
@@ -354,7 +364,8 @@
 				$this->_freebusy_proto,
 				$username . '/nextmonth/freebusy.ifb',
 				"freebusy times for $username in next month (based on events calendar)",
-				$rwrule_nextmonth_stduser
+				$rwrule_nextmonth_stduser,
+				$user_id
 			);
 
 			return count($this->calendars);
@@ -415,11 +426,11 @@
 		* content fields.
 		* @return VCalDefAr new deepcoy with some fields changed of $oldcdf 
 		*/
-		function _cprw_vcdef(&$ofield, $name, $desc, $rwrules)
+		function _cprw_vcdef(&$ofield, $name, $desc, $rwrules, $owner)
 		{
 			if(is_array($ofield))
 			{
-				$nfield = array();
+				$nfield = array('owner' => $owner);
 				foreach($ofield as $key => $val)
 				{
 					if($key == 'lpath' || $key == 'url')
@@ -436,7 +447,7 @@
 					}
 					else
 					{
-						$nfield[$key] = $this->_cprw_vcdef($val,$name, $desc, $rwrules);
+						$nfield[$key] = $this->_cprw_vcdef($val,$name, $desc, $rwrules, $owner);
 					}
 				}
 				return $nfield;

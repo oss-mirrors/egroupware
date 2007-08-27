@@ -324,8 +324,8 @@
 			$event = $this->rsc->read($eid,null,false,'server');
 		  }
 
-//		  error_log('>>>>>>>>>>>' .'event to export=' . print_r($event,true));
-//		  error_log('event sum:'. $event['title'] . ' start:' .$event['start']);
+		  //error_log('>>>>>>>>>>>' .'event to export=' . print_r($event,true));
+		  //error_log('event sum:'. $event['title'] . ' start:' .$event['start']);
 
 		  // now create a UID value
 		  switch ($uid_mapping_export) {
@@ -356,12 +356,12 @@
 
 			  case 'ATTENDEE':
 				foreach((array)$event['participants'] as $pid => $partstat) {
-				  if (!is_numeric($pid)) continue;
-
-				  list($propval,$propparams) =
-					$this->ecu->mki_vp_4ATTENDEE($pid,$partstat,$event['owner']);
-				  // NOTE: we need to add it already: multiple ATTENDEE fields may be occur 
-				  $this->ecu-> updi_c_addAttribute($vevent,'ATTENDEE',$propval,$propparams);
+					if (!is_numeric($pid) && $pid{0} != 'c') continue;	// neither account nor contact
+					
+					list($propval,$propparams) =
+						$this->ecu->mki_vp_4ATTENDEE($pid,$partstat,$event['owner']);
+					// NOTE: we need to add it already: multiple ATTENDEE fields may be occur 
+					$this->ecu-> updi_c_addAttribute($vevent,'ATTENDEE',$propval,$propparams);
 				}
 				break;
 
@@ -857,6 +857,11 @@
 
 		  // -- finally we come to the import into egw ---
 
+		  // NEW RalfBecker Aug 2007
+		  // This type of delete handing is no longer necessary - thought it does no harm at the moment.
+		  // I think it can be removed in furture, as it's hard to explain to any user
+		  // Deleting events is now detected by tracking the requests and submited events.
+/*
 		  if (($event['title'] == 'X-DELETE') || ($event['title'] == '_DELETED_')){
 
 			// -------- DELETION --------------------
@@ -897,7 +902,7 @@
 			}
 
 			  // -------- UPDATE --------------------
-		  } elseif ($eidOk = $this->rsc->update($event, TRUE)){
+		  } else*/if ($eidOk = $this->rsc->update($event, TRUE)){
 			// UPDATE OKE ,now update alarms
 
 			if(in_array('VALARM',$veImportFields)){
@@ -935,6 +940,10 @@
 
 			//  ---UPDATE BAD --------
 		  } elseif ($user_id != $cur_owner_id){
+
+// NEW RalfBecker Aug 2007
+// ToDo: check the participant status of the current user and update only it
+
 			// UPDATE BAD, but other ones event, so skip
 			  if ($this->evdebug)
 				$this->_errorlog_evupd('event', 'SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
@@ -981,9 +990,27 @@
 									$eid);
 	  }
 
-
-
-
+	/**
+	 * Delete or reject (for $user) an event specified by the id
+	 *
+	 * @param int $id event-id
+	 * @param int $user account_id
+	 * @return boolean true on success, false otherwise
+	 */
+	function delete_ncvelt($id,$user)
+	{
+		if (!($event = $this->rsc->read($id))) return false;
+		
+		if ($event['owner'] == $user && $this->rsc->delete($id))
+		{
+			return true;
+		}
+		elseif($this->rsc->set_status($id,$user,'R'))
+		{
+			return true;
+		}
+		return false;
+	}
 
 	  /**
 	   * Set the list of ical fields that are supported during the next imports and exports.

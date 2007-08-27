@@ -508,27 +508,64 @@ END:VTODO
 
 		/**
 		* Convert and egw account id into a iCalendar CAL-ADDRESS type value string. --Class method--
+		*
+		* NEW RalfBecker Aug 2007
+		* allow to use contact email addresses as participants too (as the webgui)
+		* 
 		* @param int $aid egw account(person) id
 		* @return string $cls cal_address format string (mailto:<emailadr>. On error
 		* the emailadr part will stay empty.
 		*/
 		function mki_v_CAL_ADDRESS($aid)
 		{
-			$mailtoAid = $GLOBALS['egw']->accounts->id2name($aid,'account_email');
-			return $mailtoAid ? 'MAILTO:'.$mailtoAid : 'MAILTO:';
+			if (is_numeric($aid) && ($mailtoAid = $GLOBALS['egw']->accounts->id2name($aid,'account_email')))
+			{
+				return 'MAILTO:'.$mailtoAid;
+			}
+			if ($aid{0} == 'c')	// contact
+			{
+				if (!is_object($GLOBALS['egw']->contacts))
+				{
+					require_once(EGW_API_INC.'/class.contacts.inc.php');
+					$GLOBALS['egw']->contacts =& new contacts;
+				}
+				if (($data = $GLOBALS['egw']->contacts->read(substr($aid,1))))
+				{
+					return 'MAILTO:'.($data['email'] ? $data['email'] : $data['email_home']);
+				}
+			}
+			return 'MAILTO:';
 		}
 
 		/**
 		* Convert and egw account id into a iCalendar CN type parameter string. --Class method--
+		* 
+		* NEW RalfBecker Aug 2007
+		* allow to use contact email addresses as participants too (as the webgui)
+		* 
 		* @param  int $account_id egw account(person) id
 		* @return array CN param in horde_icalendar format. On error this will be empty.
 		*/
 		function mki_p_CN($account_id)
 		{
-			$cns = trim($GLOBALS['egw']->accounts->id2name($account_id,'account_firstname')
-				. ' '
-				. $GLOBALS['egw']->accounts->id2name($account_id,'account_lastname'));
-
+			if (is_numeric($account_id))
+			{
+				$cns = trim($GLOBALS['egw']->accounts->id2name($account_id,'account_firstname')
+					. ' '
+					. $GLOBALS['egw']->accounts->id2name($account_id,'account_lastname'));
+			}
+			elseif($account_id{0} == 'c')	// contact
+			{
+				if (!is_object($GLOBALS['egw']->contacts))
+				{
+					require_once(EGW_API_INC.'/class.contacts.inc.php');
+					$GLOBALS['egw']->contacts =& new contacts;
+				}
+				if (($data = $GLOBALS['egw']->contacts->read(substr($account_id,1))))
+				{
+					$cns = $data['n_fn'] ? $data['n_fn'] : trim($data['n_given'].' '.$data['n_family']);
+				}
+			}
 			return array('CN' => $cns ? $cns : '');
 		}
 
@@ -563,9 +600,12 @@ END:VTODO
 		}
 
 		/**
-		* Convert the egw person id and its participant status into
+		* Convert the egw participant (account_id or 'c'.contact_id) and its participant status into
 		* an ATTENDEE value and parameterslist
 		*
+		* NEW RalfBecker Aug 2007
+		* allow to use contact email addresses as participants too (as the webgui)
+		* 
 		* The resulting value of the ATTENDEE field will be in CAL_ADDRESS type format.
 		* The  resulting parameterlist may contain  fields of the following:
 		*  - <code> ROLE={CHAIR|REQ-PARTICIPANT|OPT-PARTICIPANT|NON-PARTICIPANT} </code>
@@ -590,7 +630,7 @@ END:VTODO
 			$atdpars = $this->mki_p_CN($pid);
 			$atdpars['ROLE'] = ($pid == $owner_id) ? 'CHAIR' : 'REQ-PARTICIPANT';
 			$atdpars['RSVP'] = $partstat == 'U' ? 'TRUE' : 'FALSE';
-			$atdpars['CUTYPE'] = $GLOBALS['egw']->accounts->get_type($uid) == 'g'
+			$atdpars['CUTYPE'] = is_numeric($pid) && $GLOBALS['egw']->accounts->get_type($pid) == 'g'
 				? 'GROUP' : 'INDIVIDUAL';
 			$atdpars['PARTSTAT'] = $this->partstatus_egw2ical[$partstat];
 
@@ -742,13 +782,14 @@ END:VTODO
 			{
 				$aparams =array();
 			}
-
+/* NEW RalfBecker Aug 2007
+   This seems to be done in the horde classes by now, so this code only leads to accumulating backslashes at commas
 			// experimental escaping of COMMA, maybe more fields need added..
 			if(in_array($aname, array('SUMMARY','DESCRIPTION', 'LOCATION', 'CATEGORIES')))
 			{
 				$avalue = str_replace(',','\\,', $avalue);
 			}
-
+*/
 			// it appears that translation->convert() can translate an array
 			// (that is: the values!, not the keys though)
 			// so lets apply it to the avalue and aparams, that should be enough!
@@ -1196,21 +1237,41 @@ END:VTODO
 		}
 
 		/**
-		* Parse a CAL_ADDRESS and try to find the associated egw person_id. --Class method--
+		* Parse a CAL_ADDRESS and try to find the associated egw account_id or contact_id. --Class method--
+		* 
+		* NEW RalfBecker Aug 2007
+		* allow to use contact email addresses as participants too (as the webgui)
+		* 
 		* @param  string $attrval CAL_ADDRESS type value string
-		* @return int|false $pid  associated (by email) egw pid. On error: false.
+		* @return int|string|false $pid associated (by email) egw pid. On error: false.
 		*/
 		function  mke_CAL_ADDRESS2pid($attrval)
 		{
-			if (preg_match('/MAILTO:([@.a-z0-9_-]+)/i',$attrval,$matches) &&
+			if ((preg_match('/MAILTO:([@.a-z0-9_-]+)/i',$attrval,$matches) ||
+				preg_match('/((?:[a-zA-Z0-9_.-])+@(?:(?:[a-zA-Z0-9-])+.)+(?:[a-zA-Z0-9]{2,4})+)/i',$attrval,$matches)) &&
 				($pid = $GLOBALS['egw']->accounts->name2id(strtolower($matches[1]),'account_email')))
 			{
 				return $pid;
 			}
-			else
+			if($matches[1])		// try if a contact exists
 			{
-				return false;
+				if (!is_object($GLOBALS['egw']->contacts))
+				{
+					require_once(EGW_API_INC.'/class.contacts.inc.php');
+					$GLOBALS['egw']->contacts =& new contacts;
+				}
+				if (($found = $GLOBALS['egw']->contacts->search(array(
+						'email' => $matches[1],
+						'email_home' => $matches[1],
+					),true,'','','',false,'OR')))
+				{
+					foreach($found as $contact)
+					{
+						return 'c'.$contact['id'];
+					}
+				}
 			}
+			return false;
 		}
 
 		/**
@@ -1258,7 +1319,14 @@ END:VTODO
 		*/
 		function upde_nonegwParticipants2description(&$edescription,&$ne_participants)
 		{
-			$edescription.= "\n - non egw participants:\n(";
+			if (($pos = strchr($edescription,'- non egw participants:')) !== false)
+			{
+				$edescription = substr($edescription,$pos+strlen('- non egw participants:'))."\n(";
+			}
+			else
+			{
+				$edescription .= "\n - non egw participants:\n(";
+			}
 			$neplist = array();
 			foreach ($ne_participants as $nep)
 			{

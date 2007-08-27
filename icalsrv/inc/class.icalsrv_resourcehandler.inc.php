@@ -760,11 +760,13 @@
 		* 
 		* @param array_of_VElt $vobjs a list of Vcal ELement objects that are converted and
 		* imported into Egw.
+		* NEW RalfBecker Aug 2007
+		* @param array previously exported ids to track deleted entries (entries which are in $exported_ids, but not in $vobjs)
 		* @return array_of_EEltId|false a list of id s of the resulting
 		* egw elements imported or updated in the bound egw resource.
 		* On error: false
 		*/
-		function import_velts(&$vobjs)
+		function import_velts(&$vobjs,$exported_ids=array())
 		{
 			// be forgiven to argument type..
 			if(!is_array($vobjs))
@@ -829,6 +831,22 @@
 						$impstats[$eidStat]++;
 					}
 				}
+				// NEW RalfBecker Aug 2007
+				// delete entries which got NOT imported in this request, but which have been exported to the client
+				if ($exported_ids && method_exists($this,'delete_ncvelt'))
+				{
+					foreach(array_diff($exported_ids,$eelt_ids) as $deleted_id)
+					{
+						if ($this->delete_ncvelt($deleted_id,$this->rsc_owner_id))
+						{
+							$impstats[VELT_IMPORT_STATUS_DELOK]++;
+						}
+						else
+						{
+							$impstats[VELT_IMPORT_STATUS_NOACC]++;
+						}
+					}
+				}
 				// check result stats for errors
 				if(($impstats[VELT_IMPORT_STATUS_ERROR] > 0) || $this->eidebug)
 				{
@@ -841,7 +859,7 @@
 					$impstats[VELT_IMPORT_STATUS_DELOK] . ' del-ok');
 				}
 			}
-
+			
 			return $eelt_ids;
 		}
 
