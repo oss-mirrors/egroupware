@@ -593,7 +593,10 @@
 					if($structure->subParts[$tempID]->type == 'MESSAGE' && $structure->subParts[$tempID]->subType == 'RFC822' &&
 					   count($structure->subParts[$tempID]->subParts) == 1 &&
 					   $structure->subParts[$tempID]->subParts[$tempID]->type == 'MULTIPART' &&
-					   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' || $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) {
+					   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' ||
+					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'ALTERNATIVE' ||
+					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) 
+					{
 						$structure = $structure->subParts[$tempID]->subParts[$tempID];
 					} else {
 						$structure = $structure->subParts[$tempID];
@@ -647,6 +650,8 @@
 				$filename	= $this->decode_header($structure->parameters['NAME']);
 			} elseif(isset($structure->dparameters['FILENAME'])) {
 				$filename	= $this->decode_header($structure->dparameters['FILENAME']);
+                        } elseif(isset($structure->dparameters['FILENAME*'])) {
+                                $filename       = $this->decode_header($structure->dparameters['FILENAME*']);
 			} else {
 				$filename	= lang("unknown");
 			}
@@ -704,6 +709,8 @@
 				$filename	= $this->decode_header($structure->parameters['NAME']);
 			} elseif(isset($structure->dparameters['FILENAME'])) {
 				$filename	= $this->decode_header($structure->dparameters['FILENAME']);
+                        } elseif(isset($structure->dparameters['FILENAME*'])) {
+                                $filename       = $this->decode_header($structure->dparameters['FILENAME*']);
 			} else {
 				$filename	= lang("unknown");
 			}
@@ -1448,6 +1455,7 @@
 				$newAttachment['size']		= $structure->bytes;
 				$newAttachment['mimeType']	= $structure->type .'/'. $structure->subType;
 				$newAttachment['partID']	= $structure->partID;
+				$newAttachment['encoding']      = $structure->encoding;
 				if(isset($structure->cid)) {
 					$newAttachment['cid']	= $structure->cid;
 				}
@@ -1455,6 +1463,8 @@
 					$newAttachment['name']	= $this->decode_header($structure->parameters['NAME']);
 				} elseif(isset($structure->dparameters['FILENAME'])) {
 					$newAttachment['name']	= $this->decode_header($structure->dparameters['FILENAME']);
+				} elseif(isset($structure->dparameters['FILENAME*'])) {
+                                        $newAttachment['name']  = $this->decode_header($structure->dparameters['FILENAME*']);
 				} else {
 					$newAttachment['name']	= lang("unknown");
 				}
@@ -1466,7 +1476,7 @@
 			
 			// this kind of message can have no attachments
 			if($structure->type == 'TEXT' || 
-			   ($structure->type == 'MULTIPART' && $structure->subType == 'ALTERNATIVE') ||
+			   ($structure->type == 'MULTIPART' && $structure->subType == 'ALTERNATIVE' && !is_array($structure->subParts)) ||
 			   !is_array($structure->subParts)) {
 				return array();
 			}
@@ -1477,7 +1487,12 @@
 				// skip all non attachment parts
 				if(($subPart->type == 'TEXT' && ($subPart->subType == 'PLAIN' || $subPart->subType == 'HTML') && $subPart->disposition != 'ATTACHMENT') ||
 				   ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE') ||
-				   ($subPart->type == 'MESSAGE' && $subPart->subType == 'delivery-status')) {
+				   ($subPart->type == 'MESSAGE' && $subPart->subType == 'delivery-status')) 
+				{
+					if ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE')
+					{
+						$attachments = $this->getMessageAttachments($_uid, '', $subPart);
+					}
 					continue;
 				}
 				
@@ -1490,6 +1505,7 @@
 					$newAttachment['size']		= $subPart->bytes;
 					$newAttachment['mimeType']	= $subPart->type .'/'. $subPart->subType;
 					$newAttachment['partID']	= $subPart->partID;
+					$newAttachment['encoding']	= $subPart->encoding;
 					if(isset($subPart->cid)) {
 						$newAttachment['cid']	= $subPart->cid;
 					}
@@ -1497,6 +1513,8 @@
 						$newAttachment['name']	= $this->decode_header($subPart->parameters['NAME']);
 					} elseif(isset($subPart->dparameters['FILENAME'])) {
 						$newAttachment['name']	= $this->decode_header($subPart->dparameters['FILENAME']);
+                                        } elseif(isset($subPart->dparameters['FILENAME*'])) {
+                                                $newAttachment['name']  = $this->decode_header($subPart->dparameters['FILENAME*']);
 					} else {
 						$newAttachment['name']	= lang("unknown");
 					}
