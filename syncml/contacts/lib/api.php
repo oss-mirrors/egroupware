@@ -104,7 +104,7 @@ function &_egwcontactssync_listBy($action, $timestamp) {
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allChangedItems: '. print_r($allChangedItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwcontactssync_list();
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allReadAbleItems: '. print_r($allReadAbleItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$allClientItems = (array)$state->_getClientItems('contacts');
+	$allClientItems = (array)$state->_getClientItems($state->_currentTargetURI);
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allClientItems: '. print_r($allClientItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	switch ($action) {
 		case 'delete' :
@@ -116,7 +116,7 @@ function &_egwcontactssync_listBy($action, $timestamp) {
 			// - added items may not need to be added, cause they are filtered out.
 			// - filters or entries may have changed, so that more entries
 			//   pass the filter and need to be added on the client.
-			return array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems);
+			return array_unique(array_intersect($allChangedItems, $allReadAbleItems)+ array_diff($allReadAbleItems, $allClientItems));
 
 		case 'modify' :
 			// - modified entries, which not (longer) pass filters must not be send.
