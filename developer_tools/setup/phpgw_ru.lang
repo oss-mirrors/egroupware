@@ -13,7 +13,7 @@ changelogs	developer_tools	ru	Списки изменений
 clears the internal buffer, all changes made sofar are lost	developer_tools	ru	Очитить внутренний буффер, все изменения, сделанные столь давно, утеряны
 create new language file	developer_tools	ru	Создать новый языковой файл
 create sgml file	developer_tools	ru	Создать SGML файл
-developer tools - preferences	developer_tools	ru	Инсрументы разработчика - предпочтения
+developer tools - preferences	developer_tools	ru	Инсрументы разработчика - настройки
 developer_tools	common	ru	Инструменты Перевода
 diary	developer_tools	ru	Дневник
 done	developer_tools	ru	готово
@@ -33,8 +33,8 @@ no file	developer_tools	ru	нет файла
 ok	developer_tools	ru	Ok
 original	developer_tools	ru	Оригинал
 phrase in english (or empty if identical)	developer_tools	ru	Фраза на Английском (или оставить пустым, если идентично)
-preferences	developer_tools	ru	Предпочтения
-preferences have been updated	developer_tools	ru	Предпочтения обновлены
+preferences	developer_tools	ru	Настройки
+preferences have been updated	developer_tools	ru	Параметры обновлены
 project	developer_tools	ru	Проект
 remove	developer_tools	ru	Удалить
 removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	ru	Удалено %1 фраз из языка назначения, т.к. они отсутствуют в исходном языке
@@ -47,11 +47,11 @@ search new phrases	developer_tools	ru	Поиск новых фраз
 searches the source-code for phrases not in the actual source-lang-file	developer_tools	ru	Искать исходный текст фразы не только в текущем файле перевода
 select project	developer_tools	ru	Выбрать проект
 sf project tracker	developer_tools	ru	Отслеживание Проекта SF
-sf project tracker preferences	preferences	ru	Предпочтения для Отслеживания Проекта SF
+sf project tracker preferences	preferences	ru	Настройки для Отслеживания Проекта SF
 source language	developer_tools	ru	Исходный язык
 sourceforge project id	developer_tools	ru	ID проекта на Sourceforge
 sourceforge project tracker	developer_tools	ru	Отслеживание Проекта Sourceforge
-sourceforge project tracker preferences	developer_tools	ru	Предпочтения для Отслеживания Проекта Sourceforge
+sourceforge project tracker preferences	developer_tools	ru	Настройки для Отслеживания Проекта Sourceforge
 step	developer_tools	ru	Шаг
 submit	developer_tools	ru	Отправить
 target language	developer_tools	ru	Конечный язык
@@ -71,4 +71,4 @@ you have to [save] every manual change in the above fields, before you can go to
 you must a version	developer_tools	ru	Вы должны указать версию
 you must enter a change	developer_tools	ru	Вы должны внести изменение
 you must select a project	developer_tools	ru	Вы должны выбрать проект
-you need to set your preferences for this app	developer_tools	ru	Вы должны установить свои предпочтения для этого приложения
+you need to set your preferences for this app	developer_tools	ru	Вы должны установить свои настройки для этого приложения

@@ -1,1 +1,15 @@
-manual	common	hu	S�g�
+%1 manual page(s) added or updated	manual	hu	%1 súgó oldal hozzáadva vagy frissítve
+allow anonymous access to the manual, only necessary to act as remote manual	admin	hu	Engedélyezi a súgó oldal anonymous elérését, ami akkor érdekes, amikor a súgót távolról érjük el
+anonymous password	admin	hu	Anonymous jelszó
+anonymous username	admin	hu	Anonymous felhasználónév
+download	manual	hu	Letöltés
+index	manual	hu	Index
+install or update the manual-pages	admin	hu	Telepíti vagy frisíti a súgó oldalakat
+manual	common	hu	Súgó
+page(s) %1 not found !!!	manual	hu	%1 oldal nem található!
+remote egroupware url for the manual to use, empty for a local manual, default	admin	hu	Távoli eGroupWare URL-je a súgó eléréséhez, vagy hagyja üresen a helyi súgó eléréséhez (alapértelmezett)
+search for	manual	hu	Keresés
+starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	hu	Importálás indul innen %1, ez eltarthat egy darabig (különösen, ha első alkalommal indítja)...
+the search returned no result!	manual	hu	A keresés nem hozott találatot !
+update url for the local manual, default	admin	hu	Frissítse az URL-t a helyi súgó eléréséhez (alapértelmezett)
+wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	hu	Wiki azonosító# a helyi súgóhoz, alapértelmezettként 1, használja a 0-t a súgó lapok szerkeszthetőségéhez

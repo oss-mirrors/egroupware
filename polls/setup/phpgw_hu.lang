@@ -1,33 +1,46 @@
-actions	polls	hu	mûveletek
-add answer to poll	polls	hu	Válasz hozzáadása
-add answers	polls	hu	Válaszok hozzáadása
-add new poll question	polls	hu	Új kérdés hozzáadása
-add questions	polls	hu	Kérdések hozzáadása
-allow users to vote more then once	polls	hu	Engedély a felhasználóknak többszöri szavazáshoz
-answer	polls	hu	Válasz
-answer has been added to poll	polls	hu	A válasz hozzáadásra került
-answer has been updated	polls	hu	A válasz frissítésre került
-answers	polls	hu	Válaszok
-are you sure want to delete this answer ?	polls	hu	Biztosan törli a választ ?
-are you sure want to delete this question ?	polls	hu	Biztosan törli a kérdést ?
-current poll	polls	hu	Jelenlegi szavazás
-edit answer	polls	hu	Válasz szerkesztése
-edit poll question	polls	hu	Szavazás kérdésének szerkesztése
-enter poll question	polls	hu	Szavazás kérdésének megadása
-new poll has been added.  you should now add some answers for this poll	polls	hu	Az új szavazás hozzáadásra került. Most a válaszlehetõségek hozzáadásán a sor
-poll question	polls	hu	Szavazás kérdése
-poll settings	common	hu	Szavazás beállítása
-polls	common	hu	Szavazások
-question has been updated	polls	hu	A kérdés frissítve
-select current poll	polls	hu	Jelenlegi szavazás kiválasztása
-settings	polls	hu	Beállítások
-settings updated	polls	hu	A beállítások frissítve
-show answers	polls	hu	Válaszok megjelenítése
-show questions	common	hu	Kérdések megjelenítése
-total votes	polls	hu	Összesen
-view poll	polls	hu	Szavazás megtekintése
-view results	polls	hu	Eredmények megtekintése
+%1 group	polls	hu	%1 csoport
+actions	polls	hu	mÅ±veletek
+add answer to poll	polls	hu	VÃ¡lasz hozzÃ¡adÃ¡sa
+add answers	polls	hu	VÃ¡laszok hozzÃ¡adÃ¡sa
+add new poll question	polls	hu	Ãšj kÃ©rdÃ©s hozzÃ¡adÃ¡sa
+add questions	polls	hu	KÃ©rdÃ©sek hozzÃ¡adÃ¡sa
+administrators	polls	hu	AdminisztrÃ¡torok
+allow users to vote more then once	polls	hu	EngedÃ©ly a felhasznÃ¡lÃ³knak tÃ¶bbszÃ¶ri szavazÃ¡shoz
+allways use latest poll	polls	hu	Mindig a legutÃ³bbi szavazÃ¡s hasznÃ¡lata
+answer	polls	hu	VÃ¡lasz
+answer has been added to poll	polls	hu	A vÃ¡lasz hozzÃ¡adÃ¡sra kerÃ¼lt
+answer has been updated	polls	hu	A vÃ¡lasz frissÃ­tÃ©sre kerÃ¼lt
+answers	polls	hu	VÃ¡laszok
+are you sure want to delete this answer ?	polls	hu	Biztosan tÃ¶rli a vÃ¡laszt ?
+are you sure want to delete this question ?	polls	hu	Biztosan tÃ¶rli a kÃ©rdÃ©st ?
+current poll	polls	hu	Jelenlegi szavazÃ¡s
+edit answer	polls	hu	VÃ¡lasz szerkesztÃ©se
+edit poll question	polls	hu	SzavazÃ¡s kÃ©rdÃ©sÃ©nek szerkesztÃ©se
+egroupware users (non-anonymous)	polls	hu	eGroupWare felhasznÃ¡lÃ³k (nem anonymous!)
+enter poll question	polls	hu	SzavazÃ¡s kÃ©rdÃ©sÃ©nek megadÃ¡sa
+everyone incl. anonymous users	polls	hu	Mindenki, beleÃ©rtve az anonymous felhasznÃ¡lÃ³kat is
+new poll has been added.  you should now add some answers for this poll	polls	hu	Az Ãºj szavazÃ¡s hozzÃ¡adÃ¡sra kerÃ¼lt. Most a vÃ¡laszlehetÅ‘sÃ©gek hozzÃ¡adÃ¡sÃ¡n a sor
+noone	polls	hu	Senki
+poll question	polls	hu	SzavazÃ¡s kÃ©rdÃ©se
+poll votable by	polls	hu	Szavazhatnak
+polls	common	hu	SzavazÃ¡sok
+question has been updated	polls	hu	A kÃ©rdÃ©s frissÃ­tve
+result visible to	polls	hu	EredmÃ©nyek megtekinthetÅ‘k
+select current poll	polls	hu	Jelenlegi szavazÃ¡s kivÃ¡lasztÃ¡sa
+settings updated	polls	hu	A beÃ¡llÃ­tÃ¡sok frissÃ­tve
+show answers	polls	hu	VÃ¡laszok megjelenÃ­tÃ©se
+show bullet if allowed to vote and result else	polls	hu	Ha engedÃ©lyezett a szavazÃ¡s, mutassa a gombÃ³cokat (bÃ©na egy angol megfelelÅ‘)
+show only the ballot	polls	hu	Csak a titkos szavazÃ¡s megjelenÃ­tÃ©se
+show only the result	polls	hu	Csak az eredmÃ©nyek megjelenÃ­tÃ©se
+show questions	common	hu	KÃ©rdÃ©sek megjelenÃ­tÃ©se
+site configuration	polls	hu	Webhely beÃ¡llÃ­tÃ¡sai
+this module displays polls.	polls	hu	Ez a modul megjelenÃ­ti a szavazÃ¡sokat.
+total votes	polls	hu	Ã–sszesen
+view poll	polls	hu	SzavazÃ¡s megtekintÃ©se
+view results	polls	hu	EredmÃ©nyek megtekintÃ©se
 vote	polls	hu	Szavaz
 voting booth admin	admin	hu	Mindegyikre szavaz
-voting booth administration	polls	hu	Mindegyikre szavazás adminisztrációja
-which poll	polls	hu	Melyik szavazás
+voting booth administration	polls	hu	Mindegyikre szavazÃ¡s adminisztrÃ¡ciÃ³ja
+what to show	polls	hu	Mit jelenÃ­tsÃ¼nk meg
+which poll	polls	hu	Melyik szavazÃ¡s
+you are not (yet) allowed view the result of this vote.	polls	hu	Nincs jogosultsÃ¡ga (egyelÅ‘re) megjelenÃ­teni ennek a szavazÃ¡snak az eredmÃ©nyÃ©t.

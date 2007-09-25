@@ -103,6 +103,7 @@ wiki menu	wiki	ru	Меню Вики
 wiki startpage	wiki	ru	Начальная страница Вики
 writable by	wiki	ru	Запись разрешена
 yes always	admin	ru	Всегда да
+yes with navbar	admin	ru	Да с панелью навигации
 you have been denied access to this site.	wiki	ru	Вам запрещен доступ к этому сайту
 you have entered an invalid user name.	wiki	ru	Вы ввели неверное имя пользователя
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	ru	Вы превысили лимит количество страниц, которое Вам разрешено посетить за указанный период времени. Пожалуйста, вернитесь позже.

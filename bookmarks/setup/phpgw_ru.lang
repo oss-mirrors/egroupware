@@ -10,6 +10,7 @@ book marks	common	ru	Закладки
 bookmark changed sucessfully	bookmarks	ru	Закладка изменена успешно
 bookmark created successfully.	bookmarks	ru	Закладка создана успешно.
 bookmark deleted successfully	bookmarks	ru	Закладка удалена успешно.
+bookmark deleted successfully.	bookmarks	ru	Закладка успешно удалена
 bookmark not editable	bookmarks	ru	Закладка не редактируемая
 bookmark not readable	bookmarks	ru	Закладка не читаемая
 bookmarks	common	ru	Закладки
@@ -32,6 +33,7 @@ filter by	bookmarks	ru	Сортировать по
 found a link you might like	bookmarks	ru	Найдена ссылка которая может Вам понравиться
 from	bookmarks	ru	От
 from category %1	bookmarks	ru	из категории %1
+global categories	bookmarks	ru	Общие Категории
 highest	bookmarks	ru	Наивысший
 i thought you would be interested in the following link(s):	bookmarks	ru	Мне кажется, Вы заинтересуетесь следующими ссылками:
 import bookmarks	common	ru	Импортировать закладки
@@ -57,6 +59,7 @@ rating	bookmarks	ru	Рейтинг
 search for:	bookmarks	ru	Искать:
 select the format you would like to export to	bookmarks	ru	Выбирите формат в который вы хотите экспортировать
 send bookmark	bookmarks	ru	Отправить закладку
+site configuration	bookmarks	ru	Конфигурация сайта
 sub category	bookmarks	ru	Под-категория
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ru	Адрес %1 неверен. Он  должен быть в виде <strong>пользователь@домен</strong> и этот домен должен существовать!
 to e-mail addresses	bookmarks	ru	Отправить на E-Mail
@@ -70,3 +73,4 @@ view this bookmark	bookmarks	ru	Просмотреть эту закладку
 warning	bookmarks	ru	Предупреждение
 you are viewing this site outside of egroupware	bookmarks	ru	Вы просматриваете этот сайт вне eGroupWare
 you must select a category	bookmarks	ru	Вы должны выбрать категорию
+you need to select a category!	bookmarks	ru	Вы должны выбрать категорию!

@@ -1,85 +1,111 @@
-(don't offer the possibility)	admin	hu	(ne ajánlja fel a lehetõséget)
-add document to category	wiki	hu	Dokumentum kategorizálása
-added	wiki	hu	Hozzáadva
-administration features are disabled for this wiki.	wiki	hu	Az adminisztrációs lehetõségek ebben a wikiben ki vannak kapcsolva.
-admins	wiki	hu	adminisztrátorok
-after how many days should old versions of a page be removed (0 for never)	admin	hu	Hány napig legyenek megõrizve egy oldal korábbi változatai (a 0 azt jelenti, hogy örökké)
-allow anonymous access	admin	hu	anoním hozzáférések engedélyezése
-anonymous password	admin	hu	Anoním jelszó
-anonymous session type	admin	hu	Anoním Viszony Tpus
-anonymous username	admin	hu	anoním felhasználónév
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	hu	Automatikusan átalakítsa szerkesztéskor a wiki-szintaktikát ritchtexté?
+(don't offer the possibility)	admin	hu	(ne ajÃ¡nlja fel a lehetÅ‘sÃ©get)
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	hu	<em>LegalÃ¡bb</em> ennyi bejegyzÃ©st mutasson a Legfrissebb vÃ¡ltozÃ¡sok Ã©s egyÃ©b listÃ¡kban:
+add document to category	wiki	hu	Dokumentum kategorizÃ¡lÃ¡sa
+added	wiki	hu	HozzÃ¡adva
+administration features are disabled for this wiki.	wiki	hu	Az adminisztrÃ¡ciÃ³s lehetÅ‘sÃ©gek ebben a wikiben ki vannak kapcsolva.
+admins	wiki	hu	adminisztrÃ¡torok
+after how many days should old versions of a page be removed (0 for never)	admin	hu	HÃ¡ny napig legyenek megÅ‘rizve egy oldal korÃ¡bbi vÃ¡ltozatai (a 0 azt jelenti, hogy Ã¶rÃ¶kkÃ©)
+allow anonymous access	admin	hu	anonÃ­m hozzÃ¡fÃ©rÃ©sek engedÃ©lyezÃ©se
+anonymous password	admin	hu	AnonÃ­m jelszÃ³
+anonymous session type	admin	hu	AnonÃ­m Viszony Tpus
+anonymous username	admin	hu	anonÃ­m felhasznÃ¡lÃ³nÃ©v
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	hu	Automatikusan Ã¡talakÃ­tsa szerkesztÃ©skor a wiki-szintaktikÃ¡t ritchtextÃ©?
 block	wiki	hu	Blokk
-block / unblock hosts	common	hu	Hosztok blokkolása / engedélyezése
-blocked ip address ranges	wiki	hu	Blokkol IP címtartomány
-cancel without saving	wiki	hu	Változtatások eldobása
-changed	wiki	hu	Változott
-changes by last author	wiki	hu	Az utolsó szerzõ módosításai
-choose your current time here, so the server may figure out what time zone you are in.	wiki	hu	Válassza ki az aktuális idõpontot, így a kiszolgáló kitalálhatja az alkalmazandó idõzónát.
+block / unblock hosts	common	hu	Hosztok blokkolÃ¡sa / engedÃ©lyezÃ©se
+blocked ip address ranges	wiki	hu	Blokkol IP cÃ­mtartomÃ¡ny
+cancel without saving	wiki	hu	VÃ¡ltoztatÃ¡sok eldobÃ¡sa
+changed	wiki	hu	VÃ¡ltozott
+changes by last author	wiki	hu	Az utolsÃ³ szerzÅ‘ mÃ³dosÃ­tÃ¡sai
+choose your current time here, so the server may figure out what time zone you are in.	wiki	hu	VÃ¡lassza ki az aktuÃ¡lis idÅ‘pontot, Ã­gy a kiszolgÃ¡lÃ³ kitalÃ¡lhatja az alkalmazandÃ³ idÅ‘zÃ³nÃ¡t.
 columns	wiki	hu	Oszlopok
-compute difference	wiki	hu	Különbség számítása
-converts the page to richtext	wiki	hu	Oldal konvertálása ritchtext formába
-current version	wiki	hu	Jelénlegi változat
-deleted	wiki	hu	Törölt
-deletes this page	wiki	hu	Oldal törlése
-difference between versions	wiki	hu	Változatonkénti eltérések
-different languages can have different titles	wiki	hu	minden nyelven saját címet lehet megadni
-document last modified	wiki	hu	Utolsó módosítás
-edit box	wiki	hu	Szerkesztési felület
-edit this <em>archive version</em> of this document	wiki	hu	A dokumentum <em>archív változatának</em> szerkesztése
-edit this document	wiki	hu	Dokumentum szerkesztése
-edit with preview	admin	hu	Szerkesztés elõnézettel
-editable	admin	hu	szerkeszthetõ
-editing	wiki	hu	Szerkesztés
-enable free links	admin	hu	Szabad linkek engedélyezése
-enable wiki links	admin	hu	Wiki linkek engedélyezése
-error creating temporary file.	wiki	hu	Hiba az ideiglenes fájl létrehozásakor.
-error writing to temporary file.	wiki	hu	Hiba az ideiglenes fájl írásakor.
-everyone	wiki	hu	bárki
-find	wiki	hu	Keresés
-history	wiki	hu	napló
-history lists	wiki	hu	Naplók
-interwikiprefix	admin	hu	InterWikiElõtag
-invalid page name.	wiki	hu	Érvénytelen oldalnév
-load	wiki	hu	Betöltés
-lock / unlock pages	common	hu	Oldalak zárolása / engedélyezése
-locked	wiki	hu	Zárolt
-newer	wiki	hu	Újabb
+compute difference	wiki	hu	KÃ¼lÃ¶nbsÃ©g szÃ¡mÃ­tÃ¡sa
+converts the page to richtext	wiki	hu	Oldal konvertÃ¡lÃ¡sa ritchtext formÃ¡ba
+current version	wiki	hu	JelÃ©nlegi vÃ¡ltozat
+deleted	wiki	hu	TÃ¶rÃ¶lt
+deletes this page	wiki	hu	Oldal tÃ¶rlÃ©se
+difference between versions	wiki	hu	VÃ¡ltozatonkÃ©nti eltÃ©rÃ©sek
+differences in	wiki	hu	KÃ¼lÃ¶nbsÃ©gek
+different languages can have different titles	wiki	hu	minden nyelven sajÃ¡t cÃ­met lehet megadni
+document last modified	wiki	hu	UtolsÃ³ mÃ³dosÃ­tÃ¡s
+edit box	wiki	hu	SzerkesztÃ©si felÃ¼let
+edit this <em>archive version</em> of this document	wiki	hu	A dokumentum <em>archÃ­v vÃ¡ltozatÃ¡nak</em> szerkesztÃ©se
+edit this document	wiki	hu	Dokumentum szerkesztÃ©se
+edit with preview	admin	hu	SzerkesztÃ©s elÅ‘nÃ©zettel
+editable	admin	hu	szerkeszthetÅ‘
+editing	wiki	hu	SzerkesztÃ©s
+emailaddress administrator	admin	hu	AdminisztrÃ¡tor email cÃ­me
+enable free links	admin	hu	Szabad linkek engedÃ©lyezÃ©se
+enable wiki links	admin	hu	Wiki linkek engedÃ©lyezÃ©se
+enter here the maximum number of entries to display in a document's history list.	wiki	hu	Adja meg a maximÃ¡lisan megjelenÃ­tendÅ‘ bejegyzÃ©seket a dokumentum tÃ¶rtÃ©net listÃ¡jÃ¡ban.
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	hu	Adja meg napokban azt az idÅ‘tartamot, amely idÅ‘tartamban tÃ¶rtÃ©nt cikk szerkesztÃ©sek/mÃ³dosÃ­tÃ¡sok megjelennek a Legfrissebb vÃ¡ltozÃ¡sok Ã©s egyÃ©b listÃ¡kban. 0-ra (nullÃ¡ra) Ã¡llÃ­tva az Ã¶sszes oldal megjelenik, a szerkesztÃ©s gyakorisÃ¡ga szerint rendezve.
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	hu	Adja meg az IP cÃ­mtartomÃ¡nyt, a kÃ¶vetkezÅ‘ formÃ¡k szerint: <tt>12.*</tt>, <tt>34.56.*</tt>, <tt>78.90.123.*</tt>
+error creating temporary file.	wiki	hu	Hiba az ideiglenes fÃ¡jl lÃ©trehozÃ¡sakor.
+error writing to temporary file.	wiki	hu	Hiba az ideiglenes fÃ¡jl Ã­rÃ¡sakor.
+everyone	wiki	hu	bÃ¡rki
+find	wiki	hu	KeresÃ©s
+history	wiki	hu	naplÃ³
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	hu	A dokumentum tÃ¶rtÃ©net megjelenÃ­ti az <em>Ã¶sszes</em> vÃ¡ltozatot a legutÃ³bbi szerzÅ‘tÅ‘l. EgyÃ©bkÃ©nt csak a legutolsÃ³ vÃ¡ltozÃ¡st jelenÃ­ti meg.
+history lists	wiki	hu	NaplÃ³k
+history of	wiki	hu	TÃ¶rtÃ©net
+interwikiprefix	admin	hu	InterWikiElÅ‘tag
+invalid page name.	wiki	hu	Ã‰rvÃ©nytelen oldalnÃ©v
+load	wiki	hu	BetÃ¶ltÃ©s
+loads the named page in the given language, all change so far get lost !!!	wiki	hu	Az adott oldal megadott nyelvi vÃ¡ltozatÃ¡nak betÃ¶ltÃ©se, az Ã¶sszes vÃ¡ltozÃ¡st elveszÃ­ti !!!
+lock / unlock pages	common	hu	Oldalak zÃ¡rolÃ¡sa / engedÃ©lyezÃ©se
+locked	wiki	hu	ZÃ¡rolt
+name wiki home link	admin	hu	Wiki kezdÅ‘lap elnevezÃ©se
+newer	wiki	hu	Ãšjabb
 no never	admin	hu	Nem, soha
-no only on request	admin	hu	Nem, csak igény esetén
+no only on request	admin	hu	Nem, csak igÃ©ny esetÃ©n
 not set	wiki	hu	nincs megadva
-older	wiki	hu	Régebbi
-only if browser supports a richtext-editor	admin	hu	Csak ha a böngészõ támogatja a ritchtext-szerkesztõt
-preview	wiki	hu	Elõnézet
-preview of current version	wiki	hu	Jelenlegi változat elõnézete
+older	wiki	hu	RÃ©gebbi
+on all pages	wiki	hu	Ã¶sszes oldalon
+only if browser supports a richtext-editor	admin	hu	Csak ha a bÃ¶ngÃ©szÅ‘ tÃ¡mogatja a ritchtext-szerkesztÅ‘t
+only on the first page	wiki	hu	csak az elsÅ‘ oldalon
+page '%1' not found !!!	wiki	hu	'%1' oldal nem talÃ¡lhatÃ³ !!!
+path of the upload directory (has to be writable by the webserver!)	admin	hu	FeltÃ¶ltÃ©si kÃ¶nyvtÃ¡r elÃ©rÃ©si Ãºtja (a webszerver Ã¡ltal Ã­rhatÃ³nak kell lennie).
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	hu	KÃ©pfeltÃ¶ltÃ©s a richtext szerkesztÅ‘vel (hagyja Ã¼resen a feltÃ¶ltÃ©si kÃ¶nyvtÃ¡r ÃºtvonalÃ¡t a feltÃ¶ltÃ©s letiltÃ¡sÃ¡hoz).
+please contact the %1administrator%2 for assistance.	wiki	hu	KÃ©rjen segÃ­tsÃ©get az %1AdminisztrÃ¡tortÃ³l%2.
+preview	wiki	hu	ElÅ‘nÃ©zet
+preview of current version	wiki	hu	Jelenlegi vÃ¡ltozat elÅ‘nÃ©zete
+rate control / ip blocking disabled	wiki	hu	ArÃ¡ny ellenÅ‘rzÃ©s / IP blokkolÃ¡s tiltva
 readable by	wiki	hu	Olvashatja
-readonly	admin	hu	csak olvasható
-recent changes	wiki	hu	Legfrissebb változások
-renames page to the given name and language	wiki	hu	Az oldal átnevezése a megadott névre és nyelvre
+readonly	admin	hu	csak olvashatÃ³
+recent changes	wiki	hu	Legfrissebb vÃ¡ltozÃ¡sok
+renames page to the given name and language	wiki	hu	Az oldal Ã¡tnevezÃ©se a megadott nÃ©vre Ã©s nyelvre
 richtext	wiki	hu	Ritchtext
 rows	wiki	hu	Sorok
-save the changes and exit	wiki	hu	Módosítások mentése, majd kilépés
-saves and continues editing	wiki	hu	Mentés, majd a szerkesztés folytatása
-see complete list (%1 entries)	wiki	hu	Teljes lista megtekintése (%1 bejegyzés)
-site configuration	wiki	hu	Webhely beállításai
-summary	wiki	hu	Összegzés
-summary of change	wiki	hu	Változások összefoglalója
-this page can not be edited.	wiki	hu	Ez az oldal nem szerkeszthetõ.
+save the changes and exit	wiki	hu	MÃ³dosÃ­tÃ¡sok mentÃ©se, majd kilÃ©pÃ©s
+saves and continues editing	wiki	hu	MentÃ©s, majd a szerkesztÃ©s folytatÃ¡sa
+search for	wiki	hu	Keres
+see complete list (%1 entries)	wiki	hu	Teljes lista megtekintÃ©se (%1 bejegyzÃ©s)
+show a search	wiki	hu	KeresÃ©s megjelenÃ­tÃ©se
+show the title of the wiki page	wiki	hu	Wiki oldal cÃ­mÃ©nek megjelenÃ­tÃ©se
+site configuration	wiki	hu	Webhely beÃ¡llÃ­tÃ¡sai
+summary	wiki	hu	Ã–sszegzÃ©s
+summary of change	wiki	hu	VÃ¡ltozÃ¡sok Ã¶sszefoglalÃ³ja
+the search returned no result!	wiki	hu	A keresÃ©s nem hozott talÃ¡latot !
+this page can not be edited.	wiki	hu	Ez az oldal nem szerkeszthetÅ‘.
 twin pages	wiki	hu	Iker oldalak
-unblock	wiki	hu	Engedélyez
-updates the preview	wiki	hu	Elõnézet frissítése
-url of the upload directory	admin	hu	A feltöltési könyvár URL-je
-users	wiki	hu	felhasználók
-view document history	wiki	hu	A dokumentum naplójának megtekintése
+unblock	wiki	hu	EngedÃ©lyez
+updates the preview	wiki	hu	ElÅ‘nÃ©zet frissÃ­tÃ©se
+url of the upload directory	admin	hu	A feltÃ¶ltÃ©si kÃ¶nyvÃ¡r URL-je
+use this module for displaying wiki-pages	wiki	hu	HasznÃ¡lja ezt a module a wiki oldalak megjelenÃ­tÃ©sÃ©hez
+users	wiki	hu	felhasznÃ¡lÃ³k
+view document history	wiki	hu	A dokumentum naplÃ³jÃ¡nak megtekintÃ©se
+visit %1 to set your user name	wiki	hu	%1 meglÃ¡togatÃ¡sa a felhasznÃ¡lÃ³nevÃ©nek a beÃ¡llÃ­tÃ¡sÃ¡hoz
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	hu	Figyelem: miÃ³ta a dokumentumont szerkeszti, a dokumentumot mÃ¡svalaki mÃ³dosÃ­totta. KÃ©rem fÃ©sÃ¼lje Ã¶ssze az Ã¶n munkÃ¡jÃ¡t a dokumentum jelenlegi verziÃ³jÃ¡val.
 who should be able to edit this page	wiki	hu	azok, akik ezt az oldal szerkeszthetik
 who should be able to read this page	wiki	hu	azok, akik ezt az oldalt megtekinthetik
 wiki	common	hu	Wiki
-wiki administration	wiki	hu	Wiki adminisztráció
-wiki menu	wiki	hu	Wiki menü
-writable by	wiki	hu	Írhatja
+wiki administration	wiki	hu	Wiki adminisztrÃ¡ciÃ³
+wiki menu	wiki	hu	Wiki menÃ¼
+wiki startpage	wiki	hu	Wiki kezdÅ‘oldal
+writable by	wiki	hu	Ãrhatja
 yes always	admin	hu	Igen, mindig
-you have been denied access to this site.	wiki	hu	A webhely elérése megtagadva.
-you have entered an invalid user name.	wiki	hu	Érvénytelen felhasználónév lett megadva.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	hu	Túllépte az adott idõszakra vonatkozó oldalletöltések számát. Kérjük látogasson vissza késõbb.
-your changes	wiki	hu	Az Ön változtatásai
-your user name is "%1".	wiki	hu	Az Ön felhasználóneve: %1.
+you have been denied access to this site.	wiki	hu	A webhely elÃ©rÃ©se megtagadva.
+you have entered an invalid user name.	wiki	hu	Ã‰rvÃ©nytelen felhasznÃ¡lÃ³nÃ©v lett megadva.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	hu	TÃºllÃ©pte az adott idÅ‘szakra vonatkozÃ³ oldalletÃ¶ltÃ©sek szÃ¡mÃ¡t. KÃ©rjÃ¼k lÃ¡togasson vissza kÃ©sÅ‘bb.
+you have no rights to view wiki content !!!	wiki	hu	Nincs jogosultsÃ¡ga megnÃ©zni a wiki tartalmat !!!
+your changes	wiki	hu	Az Ã–n vÃ¡ltoztatÃ¡sai
+your user name is "%1".	wiki	hu	Az Ã–n felhasznÃ¡lÃ³neve: %1.
