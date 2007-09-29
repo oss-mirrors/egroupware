@@ -142,6 +142,7 @@ function &_egwcontactssync_listBy($action, $timestamp) {
  */
 function _egwcontactssync_import($content, $contentType, $notepad = null)
 {
+//error_log("_egwcontactssync_import");
 	#error_log("SymcML: egwcontactssync import content: ".base64_decode($ccontent)." contentType: $contentType");
 	Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
@@ -158,6 +159,10 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 			$contactId		= $vcaladdressbook->addVCard($content, false);
 			break;
 
+		case 'text/x-s4j-sife':
+		case 'text/x-s4j-sift':
+		case 'text/x-s4j-sifn':
+			error_log("[_egwcontactssync_import] Treating bad contact content-type '".$contentType."' as if is was 'text/x-s4j-sifc'");
 		case 'text/x-s4j-sifc':
 			$sifaddressbook		=& CreateObject('addressbook.sifaddressbook');
 			$contactId = 		$sifaddressbook->addSIF($content);
@@ -188,7 +193,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
  */
 function _egwcontactssync_search($content, $contentType)
 {
-	#error_log("SymcML: egwcontactssync search content contentType: $contentType");
+//error_log("_egwcontactssync_search");
 	Horde::logMessage("SymcML: egwcontactssync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= $_SESSION['SyncML.state'];
@@ -197,15 +202,19 @@ function _egwcontactssync_search($content, $contentType)
 	
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
+			$vcaladdressbook =& CreateObject('addressbook.vcaladdressbook');
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-			$contactId		= $vcaladdressbook->search($content);
+			$contactId = $vcaladdressbook->search($content);
 			break;
 
+		case 'text/x-s4j-sife':
+		case 'text/x-s4j-sift':
+		case 'text/x-s4j-sifn':
+			#Horde::logMessage("SymcML: egwcontactssync search content: Treating bad contact content-type '$contentType' as if it was 'text/x-s4j-sifc'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifc':
-			$sifaddressbook		=& CreateObject('addressbook.sifaddressbook');
-			$contactId = 		$sifaddressbook->search($content);
+			$sifaddressbook	=& CreateObject('addressbook.sifaddressbook');
+			$contactId = $sifaddressbook->search($content);
 			break;
 			
 		default:
@@ -256,16 +265,39 @@ function _egwcontactssync_export($guid, $contentType)
 	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
-	$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
-	$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 	$contactID		= $GLOBALS['egw']->common->get_egwId($guid);
 	
-	switch ($contentType) {
+	switch ($contentType)
+	{
 		case 'text/x-vcard':
+			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
+			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-			if($vcard = $vcaladdressbook->getVCard($contactID)) {
+			if($vcard = $vcaladdressbook->getVCard($contactID))
+			{
 				return $vcard;
-			} else {
+			}
+			else
+			{
+				return PEAR::raiseError(_("Access Denied"));
+			}
+			
+			break;
+
+		case 'text/x-s4j-sift':
+		case 'text/x-s4j-sife':
+		case 'text/x-s4j-sifn':
+			#Horde::logMessage("SyncML: egwcontactssync_export Treating bad contact content-type '$contentType' as if is was 'text/x-s4j-sifc'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			/* fall through */
+		case 'text/x-s4j-sifc':
+			$sifaddressbook	=& CreateObject('addressbook.sifaddressbook');
+			$contactID	= $GLOBALS['egw']->common->get_egwId($guid);
+			if($sifcard = $sifaddressbook->getSIF($contactID))
+			{
+				return $sifcard;
+			}
+			else
+			{
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			
@@ -322,8 +354,8 @@ function _egwcontactssync_delete($guid)
  */
 function _egwcontactssync_replace($guid, $content, $contentType)
 {
+//error_log("_egwcontactsync_replace");
 	Horde::logMessage("SymcML: egwcontactssync replace guid: $guid with content: $content", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	#error_log("SymcML: egwcontactssync replace guid: $guid content: $ccontent contentType: $contentType");
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_EDIT))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
@@ -331,18 +363,20 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
-	$contactID = $GLOBALS['egw']->common->get_egwId($guid);
+	$contactID	= $GLOBALS['egw']->common->get_egwId($guid);
 
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
+			$vcaladdressbook =& CreateObject('addressbook.vcaladdressbook');
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$result = $vcaladdressbook->addVCard($content,$contactID);
+			return $result;
+			break;
     			
-    			return $result;
-    			
-    			break;
-    			
+		case 'text/x-s4j-sife':
+		case 'text/x-s4j-sift':
+		case 'text/x-s4j-sifn':
+			#Horde::logMessage("SymcML: egwcontactssync replace treating bad contact content-type '$contentType' as if is was 'text/x-s4j-sifc'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifc':
 			#$tmpfname = tempnam('/tmp/sync/contents','sifcontact_');
 			#$handle = fopen($tmpfname, "w");
@@ -351,13 +385,11 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 
 			$sifaddressbook		=& CreateObject('addressbook.sifaddressbook');
 			$result = $sifaddressbook->addSIF($content,$contactID);
-			
 			return $result;
-			
 			break;
 
-    		default:
-    			return PEAR::raiseError(_("Unsupported Content-Type."));
-    	}
+		default:
+			return PEAR::raiseError(_("Unsupported Content-Type."));
+	}
 }
 

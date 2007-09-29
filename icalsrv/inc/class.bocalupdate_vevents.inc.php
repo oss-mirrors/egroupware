@@ -1060,6 +1060,7 @@
 			}
 			break;
 		  case 'sonyericsson':
+		  case 'sony ericsson':
 			switch(strtolower($_productName)){
 			default:
 			  $this->supportedFields = $defaultFields;

@@ -25,6 +25,11 @@ $_services['import'] = array(
     'type' => 'integer'
 );
 
+$_services['search'] = array(
+    'args' => array('content', 'contentType'),
+    'type' => 'integer'
+);
+
 $_services['export'] = array(
     'args' => array('guid', 'contentType'),
     'type' => 'string'
@@ -145,61 +150,105 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 #    require_once MNEMO_BASE . '/lib/Driver.php';
 #    $storage = &Mnemo_Driver::singleton($notepad);
 #
-	$botranslation	=& CreateObject('phpgwapi.translation');
-	
-	switch ($contentType) {
+	if (is_array($contentType))
+	{
+		$options = $contentType;
+		$contentType = $options['ContentType'];
+		unset($options['ContentType']);
+	}
+	else
+	{
+		$options = array();
+	}
+
+	switch ($contentType)
+	{
 		case 'text/plain':
-			$content = $botranslation->convert($content, 'utf-8');
-			$noteId = ExecMethod('infolog.boinfolog.write', array('info_des' => $content, 'info_type' => 'note'));
-			
+		case 'text/x-vnote':
+			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
+			$noteId = $vcalInfolog->importVNOTE($content, $contentType);
 			break;
 
-		case 'text/x-vnote':
-			require_once(EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php');
-
-			
-			// Create new note.
-			$vNote = Horde_iCalendar::newComponent('vnote', $container);
-			
-			if (!$vNote->parsevCalendar($content)) {
-				return PEAR::raiseError(_("There was an error importing the vNote data."));
-			}
-			$vNoteValues = $vNote->getAllAttributes();
-			
-			$note['info_type'] = 'note';
-			foreach($vNoteValues as $vNoteRow)
-			{
-				#if(is_array($vNoteRow))
-				#{
-				#	foreach($value as $key2 => $value2)
-				#	{
-				#		Horde::logMessage("SymcML: egwnotessync import vnote $key2 => $value2", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-				#	}
-				#}
-				switch($vNoteRow['name'])
-				{
-					case 'BODY':
-						$note['info_des'] = $vNoteRow['value'];
-						break;
-					case 'SUMMARY':
-						$note['info_subject'] = $vNoteRow['value'];
-						break;
-				}
-			}
-
-			$noteId = ExecMethod('infolog.boinfolog.write',$note);
-
+		case 'text/x-s4j-sifc':
+		case 'text/x-s4j-sife':
+		case 'text/x-s4j-sift':
+			Horde::logMessage("SyncML: egwnotessync import treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		case 'text/x-s4j-sifn':
+			$sifInfolog	=& CreateObject('infolog.sifinfolog');
+			$noteId = $sifInfolog->addSIF($content,-1,'note');
+			error_log("Done add note: noteId=$noteId");
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 	
-	if (is_a($noteId, 'PEAR_Error')) {
+	if (is_a($noteId, 'PEAR_Error'))
+	{
 		return $noteId;
 	}
 
 	#Horde::logMessage("SymcML: egwnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	return $GLOBALS['egw']->common->generate_uid('infolog_note',$noteId);
+}
+
+/**
+ * Import a memo represented in the specified contentType.
+ *
+ * @param string $content      The content of the memo.
+ * @param string $contentType  What format is the data in? Currently supports:
+ *                             text/plain
+ *                             text/x-vnote
+ * @param string $notepad      (optional) The notepad to save the memo on.
+ *
+ * @return string  The new GUID, or false on failure.
+ */
+function _egwnotessync_search($content, $contentType)
+{
+	if (is_array($contentType))
+	{
+		$options = $contentType;
+		$contentType = $options['ContentType'];
+		unset($options['ContentType']);
+	}
+	else
+	{
+		$options = array();
+	}
+
+	switch ($contentType)
+	{
+		case 'text/x-vnote':
+		case 'text/plain':
+			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
+			$noteId	= $vcalInfolog->searchVNOTE($content, $contentType);
+			break;
+			
+		case 'text/x-s4j-sifc':
+		case 'text/x-s4j-sife':
+		case 'text/x-s4j-sift':
+			Horde::logMessage("SyncML: egwnotessync search treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		case 'text/x-s4j-sifn':
+			$sifInfolog	=& CreateObject('infolog.sifinfolog');
+			$noteId = $sifInfolog->searchSIF($content,'note');
+			break;
+			
+		default:
+			return PEAR::raiseError(_("Unsupported Content-Type."));
+	}
+	
+	if (is_a($noteId, 'PEAR_Error'))
+	{
+		return $noteId;
+	}
+
+	#Horde::logMessage("SymcML: egwsifnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog_note',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	if(!$noteId)
+	{
+		return false;
+	}
+
 	return $GLOBALS['egw']->common->generate_uid('infolog_note',$noteId);
 }
 
@@ -234,63 +283,43 @@ function _egwnotessync_export($guid, $contentType)
 #        return PEAR::raiseError(_("Permission Denied"));
 #    }
 #
-	if (is_array($contentType)) {
+	if (is_array($contentType))
+	{
 		$options = $contentType;
 		$contentType = $options['ContentType'];
 		unset($options['ContentType']);
-	} else {
+	}
+	else
+	{
 		$options = array();
 	}
 	
-	$botranslation =& CreateObject('phpgwapi.translation');
+	$noteId = $GLOBALS['egw']->common->get_egwId($guid);
 	
-	switch ($contentType) {
-		case 'text/plain':
-			if($note = ExecMethod('infolog.boinfolog.read',$GLOBALS['egw']->common->get_egwId($guid)))
-			{
-				$utf8EncodedNote = $botranslation->convert(trim($note['info_des']),$GLOBALS['egw']->translation->charset(),'utf-8');
-
-				return $utf8EncodedNote;
-			}
-			else
-			{
-				return PEAR::raiseError(_("Access Denied"));
-			}
-
-			break;
-			
+	switch ($contentType)
+	{
 		case 'text/x-vnote':
-			if($note = ExecMethod('infolog.boinfolog.read',$GLOBALS['egw']->common->get_egwId($guid)))
+		case 'text/plain':
+			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
+			return $vcalInfolog->exportVNOTE($noteId, $contentType);
+			break;
+
+		case 'text/x-s4j-sifc':
+		case 'text/x-s4j-sife':
+		case 'text/x-s4j-sift':
+			Horde::logMessage("SyncML: egwnotessync export treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		case 'text/x-s4j-sifn':
+			$sifInfolog	=& CreateObject('infolog.sifinfolog');
+			if($note = $sifInfolog->getSIF($noteId, 'note'))
 			{
-				require_once EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar/vnote.php';
-			
-				// Create the new iCalendar container.
-				$vNote = &new Horde_iCalendar_vnote();
-				$vNote->setAttribute('VERSION', '1.1');
-				#$vNote->setAttribute('PRODID', '-//The Horde Project//Mnemo //EN');
-				#$vNote->setAttribute('METHOD', 'PUBLISH');
-				#$vNote->setAttribute('BODY',$botranslation->convert(trim($note['info_des']),$GLOBALS['egw']->translation->charset(),'utf-8'));
-				$vNote->setAttribute('BODY','ballo');
-				$vNote->setAttribute('SUMMARY','sallo');
-				#$vNote->setAttribute('DCREATED','20050609T042643');
-				#$vNote->setAttribute('LAST-MODIFIED','20050609T082941');
-				// Create a new vNote.
-				#$vNote = $storage->toiCalendar($memo, $iCal);
-			
-				// Set encoding options for all string values. For vNotes,
-				// just BODY.
-				#$params['ENCODING'] = 'QUOTED-PRINTABLE';
-				#$vNote->setParameter('BODY', $params);
-			
-				return $vNote->exportvCalendar();
+				return $note;
 			}
 			else
 			{
 				return PEAR::raiseError(_("Access Denied"));
 			}
-			
 			break;
-			
+		
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
@@ -308,10 +337,13 @@ function _egwnotessync_delete($guid)
 {
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// notes at once.
-	if (is_array($guid)) {
-		foreach ($guid as $g) {
+	if (is_array($guid))
+	{
+		foreach ($guid as $g)
+		{
 			$result = _egwnotessync_delete($guid);
-			if (is_a($result, 'PEAR_Error')) {
+			if (is_a($result, 'PEAR_Error'))
+			{
 				return $result;
 			}
 		}
@@ -356,44 +388,35 @@ function _egwnotessync_replace($guid, $content, $contentType)
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 	
-	$botranslation	=& CreateObject('phpgwapi.translation');
+	if (is_array($contentType))
+	{
+		$options = $contentType;
+		$contentType = $options['ContentType'];
+		unset($options['ContentType']);
+	}
+	else
+	{
+		$options = array();
+	}
 	
-	$infoId = $GLOBALS['egw']->common->get_egwId($guid);
+	$noteId = $GLOBALS['egw']->common->get_egwId($guid);
 	
-	switch ($contentType) {
+	switch ($contentType)
+	{
 		case 'text/plain':
-			$content = $botranslation->convert($content,'utf-8');
-			$result = ExecMethod('infolog.boinfolog.write',array('info_des' => $content, 'info_type' => 'note', 'info_id' => $infoId));
-			
-			return $result;
-
 		case 'text/x-vnote':
-			require_once(EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php');
-			// Create new note.
-			$vNote = Horde_iCalendar::newComponent('vnote', $container);
-			
-			if (!$vNote->parsevCalendar($content)) {
-				return PEAR::raiseError(_("There was an error importing the vNote data."));
-			}
-			$vNoteValues = $vNote->getAllAttributes();
-			
-			$note['info_type'] = 'note';
-			$note['info_id'] = $infoId;
-			foreach($vNoteValues as $vNoteRow)
-			{
-				switch($vNoteRow['name'])
-				{
-					case 'BODY':
-						$note['info_des'] = $vNoteRow['value'];
-						break;
-					case 'SUMMARY':
-						$note['info_subject'] = $vNoteRow['value'];
-						break;
-				}
-			}
+			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
+			return $vcalInfolog->importVNOTE($content, $contentType, $noteId);
+			break;
 
-			$result = ExecMethod('infolog.boinfolog.write',$note);
-			return $result;
+		case 'text/x-s4j-sifc':
+		case 'text/x-s4j-sife':
+		case 'text/x-s4j-sift':
+			Horde::logMessage("SyncML: egwnotessync replace treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		case 'text/x-s4j-sifn':
+			$sifInfolog	=& CreateObject('infolog.sifinfolog');
+			return $sifInfolog->addSIF($content, $infoId, 'note');
+			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));

@@ -99,6 +99,7 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 	{
 		return $allChangedItems;	// we cant query the calendar for deleted events
 	}
+
 	// query the calendar, to check if we are a participants in these changed events
 	$boCalendar =& CreateObject('calendar.bocal');
 	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
@@ -110,6 +111,7 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 	{
 		$ids[] = $GLOBALS['egw']->common->get_egwId($guid);
 	}
+
 	// read all events in one go, and check if the user participats
 	if (count($ids) && ($events =& $boCalendar->read($ids)))
 	{
@@ -123,6 +125,7 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 			}
 		}
 	}
+
 	return $guids;
 }
 
@@ -141,25 +144,46 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 {
 	Horde::logMessage("SymcML: egwcalendarsync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state = $_SESSION['SyncML.state'];
-	$deviceInfo = $state->getClientDeviceInfo();
-
-	$boical	=& CreateObject('calendar.boical');
-	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-	
 	#$syncProfile	= _egwcalendarsync_getSyncProfile();
+
+	if (is_array($contentType))
+	{
+		$options = $contentType;
+		$contentType = $options['ContentType'];
+		unset($options['ContentType']);
+	}
+	else
+	{
+		$options = array();
+	}
 	
-	switch ($contentType) {
+	switch ($contentType)
+	{
 		case 'text/x-vcalendar':
+		case 'text/vcalendar':
 		case 'text/calendar':
+			$state = $_SESSION['SyncML.state'];
+			$deviceInfo = $state->getClientDeviceInfo();
+			$boical	=& CreateObject('calendar.boical');
+			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$calendarId = $boical->importVCal($content);
+			break;
+			
+		case 'text/x-s4j-sifc':
+		case 'text/x-s4j-sift':
+		case 'text/x-s4j-sifn':
+			Horde::logMessage("SyncML: egwcalendarsync import treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		case 'text/x-s4j-sife':
+			$sifcalendar =& CreateObject('calendar.sifcalendar');
+			$calendarId = $sifcalendar->addSIF($content,-1);
 			break;
 			
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 	
-	if (is_a($calendarId, 'PEAR_Error')) {
+	if (is_a($calendarId, 'PEAR_Error'))
+	{
 		return $calendarId;
 	}
 
@@ -181,35 +205,57 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
  */
 function _egwcalendarsync_search($content, $contentType)
 {
-	#error_log("SymcML: egwsifcalendarsync search content contentType: $contentType");
 	Horde::logMessage("SymcML: egwcalendarsync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	switch ($contentType) {
+	if (is_array($contentType))
+	{
+		$options = $contentType;
+		$contentType = $options['ContentType'];
+		unset($options['ContentType']);
+	}
+	else
+	{
+		$options = array();
+	}
+	
+	switch ($contentType)
+	{
 		case 'text/x-vcalendar':
+		case 'text/vcalendar':
 		case 'text/calendar':
 			$state = $_SESSION['SyncML.state'];
 			$deviceInfo = $state->getClientDeviceInfo();
-
-			$boical		=& CreateObject('calendar.boical');
+			$boical	=& CreateObject('calendar.boical');
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$eventId	=  $boical->search($content);
+			$eventId = $boical->search($content);
+			break;
+			
+		case 'text/x-s4j-sifc':
+		case 'text/x-s4j-sift':
+		case 'text/x-s4j-sifn':
+			Horde::logMessage("SyncML: egwcalendarsync treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		case 'text/x-s4j-sife':
+			$sifcalendar =& CreateObject('calendar.sifcalendar');
+			$eventId = $sifcalendar->search($content);
 			break;
 			
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($eventId, 'PEAR_Error')) {
+	if (is_a($eventId, 'PEAR_Error'))
+	{
 		return $eventId;
 	}
 
-	if(!$eventId) {
+	if(!$eventId)
+	{
 		return false;
-	} else {
+	}
+	else
+	{
 		$eventId = $GLOBALS['egw']->common->generate_uid('calendar', $eventId);
-
 		Horde::logMessage('SymcML: egwcalendarsync search found: '. $eventId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
 		return $eventId;
 	}
 }
@@ -246,33 +292,51 @@ function _egwcalendarsync_export($guid, $contentType)
 #    }
 #
 
-	if (is_array($contentType)) {
+	if (is_array($contentType))
+	{
 		$options = $contentType;
 		$contentType = $options['ContentType'];
 		unset($options['ContentType']);
-	} else {
+	}
+	else
+	{
 		$options = array();
 	}
 
 	Horde::logMessage("SymcML: egwcalendarsync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	
-	$state = $_SESSION['SyncML.state'];
-	$deviceInfo = $state->getClientDeviceInfo();
-
-	$boical	=& CreateObject('calendar.boical');
-	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 	$eventID	= $GLOBALS['egw']->common->get_egwId($guid);
 	
-	switch ($contentType) {
+	switch ($contentType)
+	{
 		case 'text/x-vcalendar':
-			return $boical->exportVCal($eventID,'1.0');
-			
-			break;
+		case 'text/vcalendar':
 		case 'text/calendar':
-			return $boical->exportVCal($eventID,'2.0');
-
+			$state = $_SESSION['SyncML.state'];
+			$deviceInfo = $state->getClientDeviceInfo();
+			$boical	=& CreateObject('calendar.boical');
+			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+			$vcal_version = ($contentType == 'text/x-vcalendar') ? '1.0' : '2.0';
+			return $boical->exportVCal($eventID,$vcal_version);
 			break;
+
+		case 'text/x-s4j-sifc':
+		case 'text/x-s4j-sift':
+		case 'text/x-s4j-sifn':
+			Horde::logMessage("SyncML: egwcalendarsync export treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		case 'text/x-s4j-sife':
+			$sifcalendar =& CreateObject('calendar.sifcalendar');
+			if($sifevent = $sifcalendar->getSIF($eventID))
+			{
+				return $sifevent;
+			}
+			else
+			{
+				return PEAR::raiseError(_("Access Denied"));
+			}
+			break;
+		
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
@@ -290,10 +354,13 @@ function _egwcalendarsync_delete($guid)
 {
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// contacts at once.
-	if (is_array($guid)) {
-		foreach ($guid as $g) {
+	if (is_array($guid))
+	{
+		foreach ($guid as $g)
+		{
 			$result = _egwcalendarsync_delete($g);
-			if (is_a($result, 'PEAR_Error')) {
+			if (is_a($result, 'PEAR_Error'))
+			{
 				return $result;
 			}
 		}
@@ -309,7 +376,6 @@ function _egwcalendarsync_delete($guid)
 	$bocalendar =& CreateObject('calendar.bocalupdate');
 	
 	return $bocalendar->delete($GLOBALS['egw']->common->get_egwId($guid));
-	
 	#return $bocalendar->expunge();
 }
 
@@ -328,22 +394,43 @@ function _egwcalendarsync_delete($guid)
 function _egwcalendarsync_replace($guid, $content, $contentType)
 {
 	Horde::logMessage("SymcML: egwcalendarsync replace guid: $guid content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$state = $_SESSION['SyncML.state'];
-	$deviceInfo = $state->getClientDeviceInfo();
 
-	$boical	=& CreateObject('calendar.boical');
-	$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+	if (is_array($contentType))
+	{
+		$options = $contentType;
+		$contentType = $options['ContentType'];
+		unset($options['ContentType']);
+	}
+	else
+	{
+		$options = array();
+	}
 
 	$eventID = $GLOBALS['egw']->common->get_egwId($guid);
 	
-	switch ($contentType) {
+	switch ($contentType)
+	{
 		case 'text/x-vcalendar':
+		case 'text/vcalendar':
 		case 'text/calendar':
+			$state = $_SESSION['SyncML.state'];
+			$deviceInfo = $state->getClientDeviceInfo();
+			$boical	=& CreateObject('calendar.boical');
+			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			return $boical->importVCal($content, $eventID);
+			break;
+			
+		case 'text/x-s4j-sifc':
+		case 'text/x-s4j-sift':
+		case 'text/x-s4j-sifn':
+			error_log("[_egwsifcalendarsync_replace] Treating bad calendar content-type '".$contentType."' as if is was 'text/x-s4j-sife'");
+		case 'text/x-s4j-sife':
+			$sifcalendar =& CreateObject('calendar.sifcalendar');
+			return $sifcalendar->addSIF($content,$eventID);
 			break;
 			
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
-	
 }
+
