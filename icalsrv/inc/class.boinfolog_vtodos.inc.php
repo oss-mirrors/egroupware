@@ -133,35 +133,6 @@
 	 */
 	class boinfolog_vtodos extends icalsrv_resourcehandler
     {
-		/** conversion of infologtask status to vtodo status
-		* @private
-		* @var array $status_task2vtodo 
-		*/
-		var $status_task2vtodo = array(
-			'offer'       => 'NEEDS-ACTION',
-			'not-started' => 'NEEDS-ACTION',
-			'ongoing'     => 'IN-PROCESS',
-			'done'        => 'COMPLETED',
-			'cancelled'   => 'CANCELLED',
-			// NEW RalfBecker Aug 2007
-			// was mapped to invalid status DONE
-			'billed'      => 'COMPLETED',
-			// these are not longer used (call is mapped to not-started and will-call to ongoing
-//			'call'        => 'NEEDS-ACTION',
-//			'will-call'   => 'IN-PROCESS',
-		);
-
-		/** conversion of vtodo status to infolog status
-		* @private
-		* @var array 
-		*/
-		var $status_vtodo2task = array(
-			'NEEDS-ACTION' => 'not-started',
-			'IN-PROCESS'   => 'ongoing',
-			'COMPLETED'    => 'done',
-			'CANCELLED'    => 'cancelled',
-		);
-		
 		/**
 		 * instance of boinfolog
 		 *
@@ -473,21 +444,9 @@
 						}
 						break;
 					case 'STATUS':
-						// NEW RalfBecker Aug 2007
-						// info_status is a regular infolog field, no custom field
-						$attributes['STATUS'] = ( $vtodo_stat = $this->status_task2vtodo[$task['info_status']])
-							? $vtodo_stat 
-							: 'NEEDS-ACTION';
+						$attributes['STATUS'] = $this->rsc->status2vtodo($task['info_status']);
 						// we try to preserv the original infolog status as X-INFOLOG-STATUS, so we can restore it, if the user does not modify STATUS
 						$attributes['X-INFOLOG-STATUS'] = $task['info_status'];
-//						if($vtodo_stat == 'COMPLETED')
-//						{
-//							$attributes['PERCENT-COMPLETE'] ='100';
-//						}
-						// 				elseif (ereg('([0-9]+)%',$task['info_status'],$matches)){
-						// 				  $attributes['PERCENT-COMPLETE'] = $matches[1];
-						// 				  $attributes['STATUS'] ='IN-PROCESS';
-						// 				}
 						break;
 					case 'DTSTART':
 						if ($task['info_startdate'])
@@ -800,25 +759,17 @@
 						$task['info_id_parent'] = $this->ecu->mke_guid2id($attrval,'infolog');
 						break;
 					case 'STATUS':	// note: custom field in task
-						$task['info_status'] = ($task_stat = $this->status_vtodo2task[$attrval])
-							? $task_stat : 'not-started';
 						// check if we (still) have X-INFOLOG-STATUS set AND it would give an unchanged status (no change by the user)
 						foreach($vtodo->_attributes as $xattr)
 						{
-							if ($xattr['name'] == 'X-INFOLOG-STATUS')
-							{
-								if (!($x_translated = $this->status_task2vtodo[$xattr['value']])) $x_translated = 'NEEDS-ACTION';
-								if ($x_translated == $attrval)
-								{
-									$task['info_status'] = $xattr['value'];
-								}
-								break;
-							}
+							if ($xattr['name'] == 'X-INFOLOG-STATUS') break;
 						}
+						$task['info_status'] = $this->vtodo2status($attr['value'],
+							$xattr['name'] == 'X-INFOLOG-STATUS' ? $xattr['value'] : null);
 						break;
 						// this is needed, because empty subject is not allowed by egw
 					case 'SUMMARY':
-						$task['info_subject'] = ($attrval) ? $attrval : 'Untitled';
+						$task['info_subject'] = $attrval ? $attrval : 'Untitled';
 						break;
 					case 'COMPLETED':
 						$task['info_datecompleted'] = $this->ecu->mke_DDT2utime($attrval);
