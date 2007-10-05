@@ -579,7 +579,6 @@
 		{
 			$tempID = '';
 			$structure = $_structure;
-			
 			$imapPartIDs = explode('.',$_partID);
 
 			if($_partID != 1) {
@@ -595,6 +594,7 @@
 					   $structure->subParts[$tempID]->subParts[$tempID]->type == 'MULTIPART' &&
 					   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' ||
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'ALTERNATIVE' ||
+					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'RELATED' ||
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) 
 					{
 						$structure = $structure->subParts[$tempID]->subParts[$tempID];
@@ -617,6 +617,7 @@
 					   $structure->subParts[$tempID]->subParts[$tempID]->type == 'MULTIPART' &&
 					   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' || 
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'ALTERNATIVE' ||
+					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'RELATED' ||
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) {
 						$structure = $structure->subParts[$tempID]->subParts[$tempID];
 					} else {
@@ -1544,7 +1545,6 @@
 					$structure = $this->_getSubStructure($structure, $_partID);
 				}
 			}
-
 			switch($structure->type) {
 				case 'APPLICATION':
 					$bodyPart = array(
