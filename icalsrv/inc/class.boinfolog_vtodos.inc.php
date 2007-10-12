@@ -764,7 +764,7 @@
 						{
 							if ($xattr['name'] == 'X-INFOLOG-STATUS') break;
 						}
-						$task['info_status'] = $this->vtodo2status($attr['value'],
+						$task['info_status'] = $this->rsc->vtodo2status($attr['value'],
 							$xattr['name'] == 'X-INFOLOG-STATUS' ? $xattr['value'] : null);
 						break;
 						// this is needed, because empty subject is not allowed by egw
