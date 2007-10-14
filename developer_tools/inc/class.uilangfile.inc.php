@@ -505,7 +505,7 @@
 					break;
 			}
 			$browser =& CreateObject('phpgwapi.browser');
-			$browser->content_header('phpgw_' . $userlang . '.lang');
+			$browser->content_header(EGW_LANGFILE_PREFIX . $userlang . '.lang');
 			$to = $GLOBALS['egw']->translation->charset($userlang);
 			$from = $GLOBALS['egw']->translation->charset();
 			while(list($mess_id,$data) = @each($langarray))
