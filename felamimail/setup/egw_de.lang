@@ -38,6 +38,7 @@ bcc	felamimail	de	Blindkopie
 before headers	felamimail	de	vor den Kopfzeilen
 between headers and message body	felamimail	de	zwischen Kopfzeilen und Editorfenster
 body part	felamimail	de	Hauptteil
+by date	felamimail	de	nach Datum
 can't connect to inbox!!	felamimail	de	kann nicht mit ihrer INBOX verbinden!!!
 cc	felamimail	de	Kopie
 change folder	felamimail	de	Ordner wechseln
@@ -266,7 +267,7 @@ no messages found...	felamimail	de	keine Nachrichten gefunden...
 no messages were selected.	felamimail	de	Es wurde keine NAchricht ausgewählt
 no plain text part found	felamimail	de	Kein Text Teil gefunden.
 no previous message	felamimail	de	Keine vorherige Nachricht vorhanden
-no recipient address given!	felamimail	en	Keine Empfängeradresse angegeben!
+no recipient address given!	felamimail	de	Keine Empfängeradresse angegeben!
 no supported imap authentication method could be found.	felamimail	de	Keine unterstützte IMAP Authentifizierungsmethode gefunden.
 no valid emailprofile selected!!	felamimail	de	Sie haben kein gültiges E-Mail-Profil ausgewählt!
 none	felamimail	de	kein
@@ -420,3 +421,4 @@ with message "%1"	felamimail	de	mit der Nachricht "%1"
 wrap incoming text at	felamimail	de	Text umbrechen nach
 writing	felamimail	de	schreiben
 wrote	felamimail	de	schrieb
+you can use %1 for the above start-date and %2 for the end-date.	felamimail	de	Sie können %1 für das obige Startdatum und %2 für das Endedatum verwenden.

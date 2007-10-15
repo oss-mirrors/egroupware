@@ -142,7 +142,16 @@ class Script {
 						
 						// <crnl>s will be encoded as \\n. undo this.
 						$vacation['text'] = preg_replace("/\\\\n/","\r\n",$vacation['text']);
-						$vacation['status'] = $bits[4];
+						
+						if (strpos($bits[4],'-')!== false)
+						{
+							$vacation['status'] = 'by_date';
+							list($vacation['start_date'],$vacation['end_date']) = explode('-',$bits[4]);
+						}
+						else
+						{
+							$vacation['status'] = $bits[4];
+						}
 						$vacation['addresses'] = &$vaddresses;
 					}
 					
@@ -331,7 +340,10 @@ class Script {
 				$defaultaddr = $sieve->user . '@' . $sieve->maildomain;
 				array_push($vacation['addresses'],$defaultaddr);
 			}
-			if ($vacation['status'] == 'on') {
+			if ($vacation['status'] == 'on' || $vacation['status'] == 'by_date' && 
+				$vacation['start_date'] <= time() && time() <= $vacation['end_date']+24*3600)	// +24*3600 to include the end_date day
+			{
+				$vacation_active = true;
 				$newscriptbody .= "vacation :days " . $vacation['days'] . " :addresses [";
 				$first = 1;
 				foreach ($vacation['addresses'] as $vaddress) {
@@ -339,7 +351,15 @@ class Script {
 						$newscriptbody .= "\"" . $vaddress . "\"";
 						$first = 0;
 				}
-				$newscriptbody .= "] text:\n" . $vacation['text'] . "\n.\n;\n\n";
+				$message = $vacation['text'];
+				if ($vacation['start_date'] || $vacation['end_date'])
+				{
+					$message = str_replace(array('$$start$$','$$end$$'),array(
+							date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],$vacation['start_date']),
+							date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],$vacation['end_date']),
+						),$message);
+				}
+				$newscriptbody .= "] text:\n" . $message . "\n.\n;\n\n";
 			}
 
 			// update with any changes.
@@ -357,13 +377,13 @@ class Script {
 			$newscripthead .= "require [\"fileinto\"";
 			if ($regexused) $newscripthead .= ",\"regex\"";
 			if ($rejectused) $newscripthead .= ",\"reject\"";
-			if ($this->vacation && $this->vacation['status'] == 'on') {
+			if ($this->vacation && $vacation_active) {
 				$newscripthead .= ",\"vacation\"";
 			}
 			$newscripthead .= "];\n\n";
 		} else {
 			// no active rules, but might still have an active vacation rule
-			if ($this->vacation && $this->vacation['status'] == 'on')
+			if ($this->vacation && $vacation_active)
 				$newscripthead .= "require [\"vacation\"];\n\n";
 		}
 	
@@ -400,7 +420,8 @@ class Script {
 				}
 				
 				$vacation['text'] = preg_replace("/\r\n/","\\n",$vacation['text']);
-				$newscriptfoot .= "&&" . $vacation['text'] . "&&" . $vacation['status'] . "\n";
+				$newscriptfoot .= "&&" . $vacation['text'] . "&&" . 
+					($vacation['status']=='by_date' ? $vacation['start_date'].'-'.$vacation['end_date'] : $vacation['status']) . "\n";
 		}
 		$newscriptfoot .= "#mode&&basic\n";
  

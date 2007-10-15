@@ -203,8 +203,13 @@ function createScript()
 			{lang_status}:
 		</td>
 		<td>
-			<input type="radio" name="vacationStatus" {checked_active} value="active"> {lang_active}
-			<input type="radio" name="vacationStatus" {checked_disabled} value="disabled"> {lang_disabled}
+			<input type="radio" name="vacationStatus" {checked_active} value="on" id="status_active"> <label for="status_active">{lang_active}</label>
+			<input type="radio" name="vacationStatus" {checked_disabled} value="off" id="status_disabled"> <label for="status_disabled">{lang_disabled}</label>
+			{by_date}
+		</td>
+	</tr>
+<!-- END timed_vaction -->
+
 		</td>
 	</tr>
 	<tr CLASS="sieveRowActive">
@@ -262,6 +267,7 @@ function createScript()
 		</td>
 		<td nowrap="nowrap">
 			<textarea class="input_text" name="vacation_text" rows="5" cols="75" wrap="hard" tabindex="1">{vacation_text}</textarea>
+			{lang_help_start_end_replacement}
 		</td>
 	</tr>
 	<tr>

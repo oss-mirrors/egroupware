@@ -31,32 +31,50 @@
 		*/
 		var $error;
 	
-		function bosieve($_icServer) 
+		function bosieve($_icServer=null)
 		{
 			parent::Net_Sieve();
 			
 			$this->scriptName = (!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName']) ? $GLOBALS['egw_info']['user']['preferences']['felamimail']['sieveScriptName'] : 'felamimail');
 
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
+			
+			if (!is_null($_icServer) && $this->_connect($_icServer) === 'die') {
+				die('Sieve not activated');
+			}
+		}
 
+		/**
+		 * Open connection to the sieve server
+		 *
+		 * @param defaultimap $_icServer
+		 * @param string $euser='' effictive user, if given the Cyrus admin account is used to login on behalf of $euser
+		 * @return mixed 'die' = sieve not enabled, false=connect or login failure, true=success
+		 */
+		function _connect($_icServer,$euser='')
+		{
 			if(is_a($_icServer,'defaultimap') && $_icServer->enableSieve) {
 				$sieveHost		= $_icServer->host;
 				$sievePort		= $_icServer->sievePort;
-				$username		= $_icServer->loginName;
-				$password		= $_icServer->password;
-				
+				if ($euser) {
+					$username		= $_icServer->adminUsername;
+					$password		= $_icServer->adminPassword;
+				} else {
+					$username		= $_icServer->loginName;
+					$password		= $_icServer->password;
+				}
 				$this->icServer = $_icServer;
 			} else {
-				die('Sieve not activated');
+				return 'die';
 			}
 
 			if(PEAR::isError($this->error = $this->connect($sieveHost , $sievePort) ) ){
 				return false;
 			}
-
-			if(PEAR::isError($this->error = $this->login($username, $password) ) ){
+			if(PEAR::isError($this->error = $this->login($username, $password, null, $euser) ) ){
 				return false;
 			}
+			return true;
 		}
 		
 		function getRules($_scriptName) {
@@ -89,10 +107,36 @@
 				$script->vacation = $_vacation;
 				$script->updateScript($this);
 				
+				// setting up an async job to enable/disable the vacation message
+				include_once(EGW_API_INC.'/class.asyncservice.inc.php');
+				$async =& new asyncservice();
+				$user = $GLOBALS['egw_info']['user']['account_id'];
+				$async->delete($async_id ="felamimail-vacation-$user");
+				if ($_vacation['status'] == 'by_date' && time() < $_vacation['end_date'])
+				{
+					$time = time() < $_vacation['start_date'] ? $_vacation['start_date'] : $_vacation['end_date'];
+					$async->set_timer($time,$async_id,'felamimail.bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
+				}
 				return true;
-			} 
+			}
 
 			return false;
+		}
+		
+		/**
+		 * Callback for the async job to enable/disable the vacation message
+		 *
+		 * @param array $_vacation
+		 */
+		function async_vacation($_vacation)
+		{
+			$bopreferences    =& CreateObject('felamimail.bopreferences');
+			$mailPreferences  = $bopreferences->getPreferences();
+			$icServer = $mailPreferences->getIncomingServer(0);
+			
+			if ($this->_connect($icServer,$icServer->loginName) === true) {			
+				$this->setVacation($_vacation['scriptName'],$_vacation);
+			}
 		}
 
 		function retrieveRules($_scriptName) {

@@ -565,6 +565,9 @@
 				<td>{lang_sieve_server_port}:</td>
 				<td><input name="imapsettings[3][imapSievePort]" maxlength="5" size="5" value="{value_imapSievePort}"></td>
 			</tr>
+			<tr>
+				<td colspan="2">{lang_vacation_requires_admin}</td>
+			</tr>
 		</table>
 		</fieldset>
 		<p>

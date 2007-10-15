@@ -118,4 +118,5 @@ user can edit forwarding address	emailadmin	de	Anwender können ihre Weiterleitun
 username (standard)	emailadmin	de	Benutzername (Standard)
 username@domainname (virtual mail manager)	emailadmin	de	Benutzername@Domänenname (Virtual MAIL ManaGeR)
 users can define their own emailaccounts	emailadmin	de	Anwender können ihre eigenen Konten definieren
+vaction messages with start- and end-date require an admin account to be set!	emailadmin	de	Urlaubsbenachrichtigungen mit Start- und Endedatum benötigen einen gesetzten Administrator Benutzer!
 virtual mail manager	emailadmin	de	Virtual MAIL ManaGeR

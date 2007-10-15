@@ -34,7 +34,18 @@
 			'selectFolder'		=> True,
 		);
 		
+		/**
+		 * Flag if we can do a timed vaction message, requires Cyrus Admin User/Pw to enable/disable via async service
+		 *
+		 * @var boolean
+		 */
+		var $timed_vacation;
 		//var $scriptName = 'felamimail';
+		
+		/**
+		 * @var bosieve
+		 */
+		var $bosieve;
 
 		function uisieve()
 		{
@@ -63,6 +74,8 @@
 			
 			if(is_a($icServer,'defaultimap') && $icServer->enableSieve) {
 				$this->bosieve		=& CreateObject('felamimail.bosieve',$icServer);
+				$this->timed_vacation = is_a($icServer,'cyrusimap') && $icServer->enableCyrusAdmin && 
+					$icServer->adminUsername && $icServer->adminPassword;
 			} else {
 				die('Sieve not activated');
 			}
@@ -466,6 +479,11 @@
 			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
 			$boemailadmin	=& CreateObject('emailadmin.bo');
 
+			if ($this->timed_vacation)
+			{
+				include_once(EGW_API_INC.'/class.jscalendar.inc.php');
+				$jscal = new jscalendar();
+			}
 			if($this->bosieve->getScript($this->scriptName)) {
 				if(PEAR::isError($error = $this->bosieve->retrieveRules($this->scriptName)) ) {
 					$rules		= array();
@@ -484,7 +502,11 @@
 					$newVacation['text']		= $this->botranslation->convert($newVacation['text'],$this->displayCharset,'UTF-8');
 					$newVacation['days']		= get_var('days',array('POST'));
 					$newVacation['addresses']	= get_var('vacationAddresses',array('POST'));
-					$newVacation['status']		= get_var('vacationStatus',array('POST')) == 'disabled' ? 'off' : 'on';
+					$newVacation['status']		= get_var('vacationStatus',array('POST'));
+					if (!in_array($newVacation['status'],array('on','off','by_date'))) $newVacation['status'] = 'off';
+					$date = $jscal->input2date($_POST['start_date']); $newVacation['start_date'] = $date['raw']-12*3600;
+					$date = $jscal->input2date($_POST['end_date']); $newVacation['end_date'] = $date['raw']-12*3600;
+			
 					if($this->checkRule($newVacation)) { 
 						if (!$this->bosieve->setVacation($this->scriptName, $newVacation)) {
 							print "vacation update failed<br>";
@@ -508,14 +530,14 @@
 			// initialize the template
 			$this->t->set_file(array("filterForm" => "sieveForm.tpl"));
 			$this->t->set_block('filterForm','vacation');
-			
+
 			// translate most of the parts
 			$this->translate();
 			
 			// vacation status
-			if($vacation[status] == 'on') {
+			if($vacation['status'] == 'on') {
 				$this->t->set_var('checked_active', 'checked');
-			} else {
+			} elseif($vacation['status'] == 'off') {
 				$this->t->set_var('checked_disabled', 'checked');
 			}
 				
@@ -560,7 +582,14 @@
 			);
 			
 			$this->t->set_var('vacation_action_url',$GLOBALS['egw']->link('/index.php',$linkData));
-
+			
+			if ($this->timed_vacation)
+			{
+				$this->t->set_var('by_date','<input type="radio" name="vacationStatus" value="by_date" id="status_by_date" '.
+					($vacation['status']=='by_date'?' checked':'').' /> <label for="status_by_date">'.lang('by date').'</label>: '.
+					$jscal->input('start_date',$vacation['start_date']).' - '.$jscal->input('end_date',$vacation['end_date']));
+				$this->t->set_var('lang_help_start_end_replacement','<br />'.lang('You can use %1 for the above start-date and %2 for the end-date.','$$start$$','$$end$$'));
+			}
 			$this->t->pfp('out','vacation');
 			
 		#LK	$this->bosieve->disconnect();

@@ -38,6 +38,7 @@ bcc	felamimail	en	BCC
 before headers	felamimail	en	Before headers
 between headers and message body	felamimail	en	Between headers and message body
 body part	felamimail	en	body part
+by date	felamimail	en	by date
 can't connect to inbox!!	felamimail	en	can't connect to INBOX!!
 cc	felamimail	en	CC
 change folder	felamimail	en	Change folder
@@ -420,3 +421,4 @@ with message "%1"	felamimail	en	with message "%1"
 wrap incoming text at	felamimail	en	Wrap incoming text at
 writing	felamimail	en	writing
 wrote	felamimail	en	wrote
+you can use %1 for the above start-date and %2 for the end-date.	felamimail	en	You can use %1 for the above start-date and %2 for the end-date.

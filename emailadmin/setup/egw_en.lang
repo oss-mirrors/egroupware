@@ -118,4 +118,5 @@ user can edit forwarding address	emailadmin	en	User can edit forwarding address
 username (standard)	emailadmin	en	username (standard)
 username@domainname (virtual mail manager)	emailadmin	en	username@domainname (Virtual MAIL ManaGeR)
 users can define their own emailaccounts	emailadmin	en	Users can define their own email accounts
+vaction messages with start- and end-date require an admin account to be set!	emailadmin	en	Vaction messages with start- and end-date require an admin account to be set!
 virtual mail manager	emailadmin	en	Virtual MAIL ManaGeR

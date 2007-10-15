@@ -611,6 +611,7 @@
 			$this->t->set_var('lang_no_encryption',lang('no encryption'));
 			$this->t->set_var('lang_encrypted_connection',lang('encrypted connection'));
 			$this->t->set_var('lang_do_not_validate_certificate',lang('do not validate certificate'));
+			$this->t->set_var('lang_vacation_requires_admin',lang('Vaction messages with start- and end-date require an admin account to be set!'));
 			$this->t->set_var('',lang(''));
 			# $this->t->set_var('',lang(''));
 			
