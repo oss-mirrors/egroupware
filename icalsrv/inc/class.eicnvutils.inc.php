@@ -382,12 +382,15 @@ END:VTODO
 	   * This function returns the the time value in $so_utime patched (i.e. added
 	   * or subtracted) by an offset based on the DST setting of the server time zone
 	   * servertime for the date in $so_utime.
+	   * @deprecated as the issue seems fixed in the Horde code
 	   * @param int $so_utime the utime in the server timezone, to be corrected with
 	   * the timezones DST setting at that date
 	   * @return int the patched, i.e. server timezone DST corrected, utime value.
 	   */
 		function st_dst_patch($so_utime)
 		{
+			return $so_utime;	// the patch seems no longer to be neccessary, I guess it's fixed in the Horde code
+
 			$dst_target = date("I",$so_utime);
 			$dst_now = date("I");
 
@@ -689,7 +692,7 @@ END:VTODO
 				// $expdt= $this->hi->_exportDateTime($recur_enddate);
 				// error_log('EXPORT UNTIL=' . $recur_enddate . ' expdDT:' .  $expdt);
 				// egw sets recur_enddate on 00:00, most clients want also the hour of start inthere
-				$untilday = $recur_enddate + 3600*(date('G',$recur_start)+1);
+				$untilday = $recur_enddate + 3600*(int)date('G',$recur_start)+60*(int)date('i',$recur_start);
 				$recur['UNTIL'] = $this->hi->_exportDateTime($this->st_dst_patch($untilday));
 
 				//		  $recur['UNTIL'] = $this->hi->_exportDateTime($recur_enddate);
@@ -1045,6 +1048,8 @@ END:VTODO
 			if (preg_match('/UNTIL=([0-9TZ]+)/',$recur,$matches))
 			{
 				$r_end = $this->hi->_parseDateTime($matches[1]);
+				// eGW expects the until date to be just a date (without time), otherwise the event is one day longer in eGW
+				$r_end = mktime(0,0,0,(int)date('m',$r_end),(int)date('d',$r_end),(int)date('Y',$r_end));
 			}
 
 			if (preg_match('/INTERVAL=([0-9]+)/',$recur,$matches))
