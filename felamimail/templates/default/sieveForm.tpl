@@ -192,6 +192,7 @@ function createScript()
 <!-- BEGIN vacation -->
 
 <form ACTION="{vacation_action_url}" METHOD="post" NAME="editVacation">
+<p style="color: red; font-style: italic; text-align: center;">{validation_errors}</p>
 <table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
 	<tr CLASS="th">
 		<td colspan="2">
@@ -263,11 +264,19 @@ function createScript()
 	</tr>
 	<tr CLASS="sieveRowActive">
 		<td>
-			{lang_with_message}:
+			{lang_with_message}:<br />{set_as_default}
 		</td>
 		<td nowrap="nowrap">
-			<textarea class="input_text" name="vacation_text" rows="5" cols="75" wrap="hard" tabindex="1">{vacation_text}</textarea>
+			<textarea class="input_text" name="vacation_text" rows="7" cols="75" wrap="hard" tabindex="1">{vacation_text}</textarea>
 			{lang_help_start_end_replacement}
+		</td>
+	</tr>
+	<tr CLASS="sieveRowActive">
+		<td>
+			{lang_vacation_forwards}:
+		</td>
+		<td nowrap="nowrap">
+			<input class="input_text" name="vacation_forwards" size="80" value="{vacation_forwards}" />
 		</td>
 	</tr>
 	<tr>

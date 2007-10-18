@@ -132,7 +132,8 @@ class Script {
 						}
 					}
 					
-					if (preg_match("/^ *#vacation&&(.*)&&(.*)&&(.*)&&(.*)/i",$line,$bits)) {
+					if (preg_match("/^ *#vacation&&(.*)&&(.*)&&(.*)&&(.*)&&(.*)/i",$line,$bits) ||
+						preg_match("/^ *#vacation&&(.*)&&(.*)&&(.*)&&(.*)/i",$line,$bits)) {
 						$vacation['days'] = $bits[1];
 						$vaddresslist = $bits[2];
 						$vaddresslist = preg_replace("/\"|\s/","",$vaddresslist);
@@ -153,6 +154,8 @@ class Script {
 							$vacation['status'] = $bits[4];
 						}
 						$vacation['addresses'] = &$vaddresses;
+
+						$vacation['forwards'] = $bits[5];
 					}
 					
 					if (preg_match("/^ *#mode&&(.*)/i",$line,$bits)){
@@ -343,6 +346,17 @@ class Script {
 			if ($vacation['status'] == 'on' || $vacation['status'] == 'by_date' && 
 				$vacation['start_date'] <= time() && time() <= $vacation['end_date']+24*3600)	// +24*3600 to include the end_date day
 			{
+				if (trim($vacation['forwards'])) {
+					$if = array();
+					foreach($vacation['addresses'] as $addr) {
+						$if[] = 'address :contains ["To","TO","Cc","CC"] "'.$addr.'"';
+					}
+					$newscriptbody .= 'if anyof ('.implode(', ',$if).") {\n";
+					foreach(split(', ?',$vacation['forwards']) as $addr) {
+						$newscriptbody .= "\tredirect \"".$addr."\";\n";
+					}
+					$newscriptbody .= "}\n";
+				}
 				$vacation_active = true;
 				$newscriptbody .= "vacation :days " . $vacation['days'] . " :addresses [";
 				$first = 1;
@@ -421,7 +435,9 @@ class Script {
 				
 				$vacation['text'] = preg_replace("/\r\n/","\\n",$vacation['text']);
 				$newscriptfoot .= "&&" . $vacation['text'] . "&&" . 
-					($vacation['status']=='by_date' ? $vacation['start_date'].'-'.$vacation['end_date'] : $vacation['status']) . "\n";
+					($vacation['status']=='by_date' ? $vacation['start_date'].'-'.$vacation['end_date'] : $vacation['status']);
+				if ($vacation['forwards']) $newscriptfoot .= '&&' . $vacation['forwards'];
+				$newscriptfoot .= "\n";
 		}
 		$newscriptfoot .= "#mode&&basic\n";
  

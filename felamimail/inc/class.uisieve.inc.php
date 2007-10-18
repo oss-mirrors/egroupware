@@ -46,6 +46,8 @@
 		 * @var bosieve
 		 */
 		var $bosieve;
+		
+		var $errorStack;
 
 		function uisieve()
 		{
@@ -241,6 +243,29 @@
 			else
 			{
 				$this->errorStack['addresses'] = lang('Please select a address'.'!');
+			}
+			
+			if ($_vacation['status'] == 'by_date')
+			{
+				if (!$_vacation['start_date'] || !$_vacation['end_date'])
+				{
+					$this->errorStack['status'] = lang('Activating by date requires a start- AND end-date!');
+				}
+				elseif($_vacation['start_date'] > $_vacation['end_date'])
+				{
+					$this->errorStack['status'] = lang('Vacation start-date must be BEFORE the end-date!');
+				}
+			}
+			
+			if ($_vacation['forwards'])
+			{
+				foreach(split(', ?',$_vacation['forwards']) as $addr)
+				{
+					if (!preg_match($regexp,$addr)) 
+					{
+						$this->errorStack['forwards'] = lang('One address is not valid'.'!');
+					}					
+				}
 			}
 
 			if(count($this->errorStack) == 0)
@@ -496,26 +521,42 @@
 				// something went wrong
 			}
 
+			if ($GLOBALS['egw_info']['user']['apps']['admin'])
+			{
+				// store text as default
+				if (isset($_POST['set_as_default']))
+				{
+					$config =& new config('felamimail');
+					$config->save_value('default_vacation_text',$_POST['vacation_text'],'felamimail');
+				}
+				$this->t->set_var('set_as_default','<input type="submit" name="set_as_default" value="'.htmlspecialchars(lang('Set as default')).'" />');
+			}
 			if(isset($_POST["vacationStatus"])) {
-				if(isset($_POST['save']) || isset($_POST['apply'])) {
-					$newVacation['text']		= get_var('vacation_text',array('POST'));
-					$newVacation['text']		= $this->botranslation->convert($newVacation['text'],$this->displayCharset,'UTF-8');
-					$newVacation['days']		= get_var('days',array('POST'));
-					$newVacation['addresses']	= get_var('vacationAddresses',array('POST'));
-					$newVacation['status']		= get_var('vacationStatus',array('POST'));
-					if (!in_array($newVacation['status'],array('on','off','by_date'))) $newVacation['status'] = 'off';
-					$date = $jscal->input2date($_POST['start_date']); $newVacation['start_date'] = $date['raw']-12*3600;
-					$date = $jscal->input2date($_POST['end_date']); $newVacation['end_date'] = $date['raw']-12*3600;
+				$newVacation['text']		= get_var('vacation_text',array('POST'));
+				$newVacation['text']		= $this->botranslation->convert($newVacation['text'],$this->displayCharset,'UTF-8');
+				$newVacation['days']		= get_var('days',array('POST'));
+				$newVacation['addresses']	= get_var('vacationAddresses',array('POST'));
+				$newVacation['status']		= get_var('vacationStatus',array('POST'));
+				$newVacation['forwards']    = get_var('vacation_forwards',array('POST'));
+				if (!in_array($newVacation['status'],array('on','off','by_date'))) $newVacation['status'] = 'off';
+				$date = $jscal->input2date($_POST['start_date']); 
+				if ($date['raw']) $newVacation['start_date'] = $date['raw']-12*3600;
+				$date = $jscal->input2date($_POST['end_date']); 
+				if ($date['raw']) $newVacation['end_date'] = $date['raw']-12*3600;
 			
+				if(isset($_POST['save']) || isset($_POST['apply'])) {
 					if($this->checkRule($newVacation)) { 
 						if (!$this->bosieve->setVacation($this->scriptName, $newVacation)) {
 							print "vacation update failed<br>";
 							#print $script->errstr."<br>";
 						}
 					}
-
-					$vacation = $newVacation;
+					else
+					{
+						$this->t->set_var('validation_errors',implode('<br />',$this->errorStack));
+					}
 				}
+				$vacation = $newVacation;
 				
 				if(isset($_POST['save']) || isset($_POST['cancel'])) {
 					$GLOBALS['egw']->redirect_link('/felamimail/index.php');
@@ -542,14 +583,22 @@
 			}
 				
 			// vacation text
+			if (empty($vacation['text'])) {
+				$config =& new config('felamimail');
+				$config = $config->read_repository();
+				$vacation['text'] = $config['default_vacation_text'];
+			}
 			$this->t->set_var('vacation_text',$this->botranslation->convert($vacation['text'],'UTF-8'));
 
 			//vacation days
 			if(empty($vacation)) {
 				$this->t->set_var('selected_7', 'selected="selected"');
+				// ToDO set default
+				
 			} else {
 				$this->t->set_var('selected_'.$vacation['days'], 'selected="selected"');
 			}
+			$this->t->set_var('vacation_forwards',htmlspecialchars($vacation['forwards']));
 
 			// vacation addresses
 			if(is_array($vacation['addresses'])) {
@@ -882,6 +931,7 @@
 			$this->t->set_var("lang_send_reject_message",lang('send a reject message'));
 			$this->t->set_var("lang_discard_message",lang('discard message'));
 			$this->t->set_var("lang_select_folder",lang('select folder'));
+			$this->t->set_var("lang_vacation_forwards",lang('Forward messages to').'<br />'.lang('(separate multiple addresses by comma)'));
 
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
 			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);
