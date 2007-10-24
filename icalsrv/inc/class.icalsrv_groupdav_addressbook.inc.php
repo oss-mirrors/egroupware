@@ -93,7 +93,8 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 	 */
 	function put(&$options,$id,$user=null)
 	{
-		if (!is_array($ok = $this->_common_get_put_delete('PUT',$options,$id)))
+		$ok = $this->_common_get_put_delete('PUT',$options,$id);
+		if (!is_null($ok) && !is_array($ok))
 		{
 			return $ok;
 		}

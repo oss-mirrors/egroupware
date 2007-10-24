@@ -164,7 +164,7 @@ class icalsrv_groupdav_handler
 	 * @param string $method GET, PUT, DELETE
 	 * @param array &$options
 	 * @param int $id
-	 * @return array/string entry on success, string with http-error-code on failure
+	 * @return array/string entry on success, string with http-error-code on failure, null for PUT on an unknown id
 	 */
 	function _common_get_put_delete($method,&$options,$id)
 	{

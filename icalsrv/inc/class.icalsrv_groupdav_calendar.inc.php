@@ -93,7 +93,8 @@ class icalsrv_groupdav_calendar extends icalsrv_groupdav_handler
 	 */
 	function put(&$options,$id,$user=null)
 	{
-		if (!is_array($event = $this->_common_get_put_delete('PUT',$options,$id)))
+		$event = $this->_common_get_put_delete('PUT',$options,$id);
+		if (!is_null($event) && !is_array($event))
 		{
 			return $event;
 		}
