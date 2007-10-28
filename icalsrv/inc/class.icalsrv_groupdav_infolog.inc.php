@@ -11,7 +11,7 @@
  */
 
 require_once(EGW_INCLUDE_ROOT.'/icalsrv/inc/class.icalsrv_groupdav_handler.inc.php');
-require_once(EGW_INCLUDE_ROOT.'/calendar/inc/class.boinfolog.inc.php');
+require_once(EGW_INCLUDE_ROOT.'/infolog/inc/class.boinfolog.inc.php');
 
 /**
  * eGroupWare: GroupDAV access: infolog handler
@@ -25,7 +25,7 @@ class icalsrv_groupdav_infolog extends icalsrv_groupdav_handler
 	 */	
 	var $bo;
 
-	function icalsrv_groupdav_calendar($debug=null)
+	function icalsrv_groupdav_infolog($debug=null)
 	{
 		$this->icalsrv_groupdav_handler('infolog',$debug);
 		
