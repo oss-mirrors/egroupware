@@ -355,7 +355,7 @@ class Script {
 					foreach(split(', ?',$vacation['forwards']) as $addr) {
 						$newscriptbody .= "\tredirect \"".$addr."\";\n";
 					}
-					$newscriptbody .= "}\n";
+					$newscriptbody .= "\tkeep;\n}\n";
 				}
 				$vacation_active = true;
 				$newscriptbody .= "vacation :days " . $vacation['days'] . " :addresses [";
