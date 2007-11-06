@@ -344,7 +344,7 @@ class Script {
 				array_push($vacation['addresses'],$defaultaddr);
 			}
 			if ($vacation['status'] == 'on' || $vacation['status'] == 'by_date' && 
-				$vacation['start_date'] <= time() && time() <= $vacation['end_date']+24*3600)	// +24*3600 to include the end_date day
+				$vacation['start_date'] <= time() && time() < $vacation['end_date']+24*3600)	// +24*3600 to include the end_date day
 			{
 				if (trim($vacation['forwards'])) {
 					$if = array();

@@ -112,9 +112,10 @@
 				$async =& new asyncservice();
 				$user = $GLOBALS['egw_info']['user']['account_id'];
 				$async->delete($async_id ="felamimail-vacation-$user");
-				if ($_vacation['status'] == 'by_date' && time() < $_vacation['end_date'])
+				$end_date = $_vacation['end_date'] + 24*3600;	// end-date is inclusive, so we have to add 24h
+				if ($_vacation['status'] == 'by_date' && time() < $end_date)
 				{
-					$time = time() < $_vacation['start_date'] ? $_vacation['start_date'] : $_vacation['end_date'];
+					$time = time() < $_vacation['start_date'] ? $_vacation['start_date'] : $end_date;
 					$async->set_timer($time,$async_id,'felamimail.bosieve.async_vacation',$_vacation+array('scriptName'=>$_scriptName),$user);
 				}
 				return true;
