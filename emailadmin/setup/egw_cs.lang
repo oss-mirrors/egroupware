@@ -1,121 +1,122 @@
-account '%1' not found !!!	emailadmin	cs	Úèet '%1' nebyl nalezen !!!
-add new email address:	emailadmin	cs	Pøidat novou e-mailovou adresu:
-add profile	emailadmin	cs	Pøidat profil
-admin dn	emailadmin	cs	Dn (distiguished name) administrátora
-admin password	emailadmin	cs	Heslo administrátora
-admin username	emailadmin	cs	U¾ivatelské jméno administrátora
-advanced options	emailadmin	cs	Roz¹íøené volby
-alternate email address	emailadmin	cs	Alternativní e-mailová adresa
-any application	emailadmin	cs	Kterákoli aplikace
-any group	emailadmin	cs	Kterákoli skupina
-bad login name or password.	emailadmin	cs	Chybné pøihla¹ovací jméno nebo heslo.
-bad or malformed request. server responded: %s	emailadmin	cs	Chybnı nebo ¹patnì fomulovanı po¾adavek. Server odpovìdìl: %s
-bad request: %s	emailadmin	cs	Chybnı po¾adavek: %s
-can be used by application	emailadmin	cs	Mù¾e bıt pou¾it aplikací
-can be used by group	emailadmin	cs	Mù¾e bıt pou¾it skupinou
-connection dropped by imap server.	emailadmin	cs	Pøipojení ukonèeno IMAP serverem.
-could not complete request. reason given: %s	emailadmin	cs	Nemohu dokonèit po¾adavek. Dùvod: %s
-could not open secure connection to the imap server. %s : %s.	emailadmin	cs	Nemohu otevøít zabezpeèené pøipojení na IMAP server. %s : %s.
-cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	cs	CRAM-MD5 nebo DIGEST-MD5 vy¾adují nainstalovanı balíèek Auth_SASL.
+account '%1' not found !!!	emailadmin	cs	ÃšÄet '%1' nebyl nalezen !!!
+add new email address:	emailadmin	cs	PÅ™idat novou e-mailovou adresu:
+add profile	emailadmin	cs	PÅ™idat profil
+admin dn	emailadmin	cs	Dn (distiguished name) administrÃ¡tora
+admin password	emailadmin	cs	Heslo administrÃ¡tora
+admin username	emailadmin	cs	UÅ¾ivatelskÃ© jmÃ©no administrÃ¡tora
+advanced options	emailadmin	cs	RozÅ¡Ã­Å™enÃ© volby
+alternate email address	emailadmin	cs	AlternativnÃ­ e-mailovÃ¡ adresa
+any application	emailadmin	cs	KterÃ¡koli aplikace
+any group	emailadmin	cs	KterÃ¡koli skupina
+bad login name or password.	emailadmin	cs	ChybnÃ© pÅ™ihlaÅ¡ovacÃ­ jmÃ©no nebo heslo.
+bad or malformed request. server responded: %s	emailadmin	cs	ChybnÃ½ nebo Å¡patnÄ› fomulovanÃ½ poÅ¾adavek. Server odpovÄ›dÄ›l: %s
+bad request: %s	emailadmin	cs	ChybnÃ½ poÅ¾adavek: %s
+can be used by application	emailadmin	cs	MÅ¯Å¾e bÃ½t pouÅ¾it aplikacÃ­
+can be used by group	emailadmin	cs	MÅ¯Å¾e bÃ½t pouÅ¾it skupinou
+connection dropped by imap server.	emailadmin	cs	PÅ™ipojenÃ­ ukonÄeno IMAP serverem.
+could not complete request. reason given: %s	emailadmin	cs	Nemohu dokonÄit poÅ¾adavek. DÅ¯vod: %s
+could not open secure connection to the imap server. %s : %s.	emailadmin	cs	Nemohu otevÅ™Ã­t zabezpeÄenÃ© pÅ™ipojenÃ­ na IMAP server. %s : %s.
+cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	cs	CRAM-MD5 nebo DIGEST-MD5 vyÅ¾adujÃ­ nainstalovanÃ½ balÃ­Äek Auth_SASL.
 cyrus imap server	emailadmin	cs	Cyrus IMAP Server
 cyrus imap server administration	emailadmin	cs	Administrace Cyrus IMAP serveru
-default	emailadmin	cs	vıchozí
-deliver extern	emailadmin	cs	doruèit externì
-do not validate certificate	emailadmin	cs	neovìøovat certifikát
+default	emailadmin	cs	vÃ½chozÃ­
+deliver extern	emailadmin	cs	doruÄit externÄ›
+do not validate certificate	emailadmin	cs	neovÄ›Å™ovat certifikÃ¡t
 do you really want to delete this profile	emailadmin	cs	Opravdu chcete smazat tento profil
-domainname	emailadmin	cs	Doménové jméno
-edit email settings	emailadmin	cs	Editovat nastavení e-mailu
-email account active	emailadmin	cs	E-mailovı úèet aktivní
-email address	emailadmin	cs	E-mailová adresa
-email settings	common	cs	Nastavení e-mailu
-emailadmin	emailadmin	cs	Administrátor po¹ty
+domainname	emailadmin	cs	DomÃ©novÃ© jmÃ©no
+edit email settings	emailadmin	cs	Editovat nastavenÃ­ e-mailu
+email account active	emailadmin	cs	E-mailovÃ½ ÃºÄet aktivnÃ­
+email address	emailadmin	cs	E-mailovÃ¡ adresa
+email settings	common	cs	NastavenÃ­ e-mailu
+emailadmin	emailadmin	cs	AdministrÃ¡tor poÅ¡ty
 enable cyrus imap server administration	emailadmin	cs	Povolit administraci Cyrus IMAP serveru
 enable sieve	emailadmin	cs	Povolit Sieve
-encrypted connection	emailadmin	cs	¹ifrované pøipojení
-encryption settings	emailadmin	cs	Nastavení ¹ifrování
-enter your default mail domain (from: user@domain)	emailadmin	cs	Zadejte Va¹i vıchozí po¹tovní doménu (z: u¾ivatel@doména)
-error connecting to imap server. %s : %s.	emailadmin	cs	Chyba spojení na IMAP server. %s : %s.
-error connecting to imap server: [%s] %s.	emailadmin	cs	Chyba spojení na IMAP server: [%s] %s.
-forward also to	emailadmin	cs	Pøeposlat také na
-forward email's to	emailadmin	cs	Pøeposílat e-maily na
-forward only	emailadmin	cs	Jen pøeposlat
-global options	emailadmin	cs	Globální volby
-if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	cs	Pokud chcete pou¾ívat SSL nebo TLS, musíte mít nahráno openssl roz¹íøení PHP.
-imap admin password	admin	cs	Heslo IMAP administrátora
-imap admin user	admin	cs	U¾ivatelskı úèet IMAP administrátora
+encrypted connection	emailadmin	cs	Å¡ifrovanÃ© pÅ™ipojenÃ­
+encryption settings	emailadmin	cs	NastavenÃ­ Å¡ifrovÃ¡nÃ­
+enter your default mail domain (from: user@domain)	emailadmin	cs	Zadejte VaÅ¡i vÃ½chozÃ­ poÅ¡tovnÃ­ domÃ©nu (z: uÅ¾ivatel@domÃ©na)
+error connecting to imap server. %s : %s.	emailadmin	cs	Chyba spojenÃ­ na IMAP server. %s : %s.
+error connecting to imap server: [%s] %s.	emailadmin	cs	Chyba spojenÃ­ na IMAP server: [%s] %s.
+forward also to	emailadmin	cs	PÅ™eposlat takÃ© na
+forward email's to	emailadmin	cs	PÅ™eposÃ­lat e-maily na
+forward only	emailadmin	cs	Jen pÅ™eposlat
+global options	emailadmin	cs	GlobÃ¡lnÃ­ volby
+if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	cs	Pokud chcete pouÅ¾Ã­vat SSL nebo TLS, musÃ­te mÃ­t nahrÃ¡no openssl rozÅ¡Ã­Å™enÃ­ PHP.
+imap admin password	admin	cs	Heslo IMAP administrÃ¡tora
+imap admin user	admin	cs	UÅ¾ivatelskÃ½ ÃºÄet IMAP administrÃ¡tora
 imap c-client version < 2001	emailadmin	cs	IMAP C-klient verze < 2001
-imap server closed the connection.	emailadmin	cs	IMAP server ukonèil spojení.
-imap server closed the connection. server responded: %s	emailadmin	cs	IMAP server ukonèil spojení. Server odpovìdìl: %s
-imap server hostname or ip address	emailadmin	cs	DNS jméno nebo IP adresa IMAP serveru
-imap server logintyp	emailadmin	cs	Typ pøihlá¹ení na IMAP server
-imap server name	emailadmin	cs	Název IMAP serveru
+imap server closed the connection.	emailadmin	cs	IMAP server ukonÄil spojenÃ­.
+imap server closed the connection. server responded: %s	emailadmin	cs	IMAP server ukonÄil spojenÃ­. Server odpovÄ›dÄ›l: %s
+imap server hostname or ip address	emailadmin	cs	DNS jmÃ©no nebo IP adresa IMAP serveru
+imap server logintyp	emailadmin	cs	Typ pÅ™ihlÃ¡Å¡enÃ­ na IMAP server
+imap server name	emailadmin	cs	NÃ¡zev IMAP serveru
 imap server port	emailadmin	cs	Port IMAP serveru
-imap/pop3 server name	emailadmin	cs	Název IMAP/POP3 serveru
+imap/pop3 server name	emailadmin	cs	NÃ¡zev IMAP/POP3 serveru
 in mbyte	emailadmin	cs	v MBytech
 ldap basedn	emailadmin	cs	LDAP basedn
 ldap server	emailadmin	cs	LDAP server
-ldap server accounts dn	emailadmin	cs	DN (distinguished name) úètù na LDAP serveru
-ldap server admin dn	emailadmin	cs	DN (distinguished name) administrátora LDAP serveru
-ldap server admin password	emailadmin	cs	Heslo administrátora LDAP serveru
-ldap server hostname or ip address	emailadmin	cs	DNS jméno nebo IP adresa LDAP serveru
-ldap settings	emailadmin	cs	LDAP nastavení
-leave empty for no quota	emailadmin	cs	ponechte prázdné, nechcete-li kvótu
-mail settings	admin	cs	Nastavení po¹ty
-name of organisation	emailadmin	cs	Název organizace
-no alternate email address	emailadmin	cs	bez alternativní e-mailové adresy
-no encryption	emailadmin	cs	bez ¹ifrování
-no forwarding email address	emailadmin	cs	bez e-mailové adresy pro pøeposílání
-no message returned.	emailadmin	cs	®ádná zpráva se nevrátila.
-no supported imap authentication method could be found.	emailadmin	cs	Nebyla nalezena ¾ádná podporovaná metoda IMAP autentikace.
-order	emailadmin	cs	Poøadí
+ldap server accounts dn	emailadmin	cs	DN (distinguished name) ÃºÄtÅ¯ na LDAP serveru
+ldap server admin dn	emailadmin	cs	DN (distinguished name) administrÃ¡tora LDAP serveru
+ldap server admin password	emailadmin	cs	Heslo administrÃ¡tora LDAP serveru
+ldap server hostname or ip address	emailadmin	cs	DNS jmÃ©no nebo IP adresa LDAP serveru
+ldap settings	emailadmin	cs	LDAP nastavenÃ­
+leave empty for no quota	emailadmin	cs	ponechte prÃ¡zdnÃ©, nechcete-li kvÃ³tu
+mail settings	admin	cs	NastavenÃ­ poÅ¡ty
+name of organisation	emailadmin	cs	NÃ¡zev organizace
+no alternate email address	emailadmin	cs	bez alternativnÃ­ e-mailovÃ© adresy
+no encryption	emailadmin	cs	bez Å¡ifrovÃ¡nÃ­
+no forwarding email address	emailadmin	cs	bez e-mailovÃ© adresy pro pÅ™eposÃ­lÃ¡nÃ­
+no message returned.	emailadmin	cs	Å½Ã¡dnÃ¡ zprÃ¡va se nevrÃ¡tila.
+no supported imap authentication method could be found.	emailadmin	cs	Nebyla nalezena Å¾Ã¡dnÃ¡ podporovanÃ¡ metoda IMAP autentikace.
+order	emailadmin	cs	PoÅ™adÃ­
 organisation	emailadmin	cs	Organizace
-plesk can't rename users --> request ignored	emailadmin	cs	Plesk nemù¾e pøejmenovávat u¾ivatele --> po¾adavek ignorován
+plesk can't rename users --> request ignored	emailadmin	cs	Plesk nemÅ¯Å¾e pÅ™ejmenovÃ¡vat uÅ¾ivatele --> poÅ¾adavek ignorovÃ¡n
 plesk imap server (courier)	emailadmin	cs	Plesk IMAP server (Courier)
-plesk mail script '%1' not found !!!	emailadmin	cs	Plesk po¹tovní skript '%1' nebyl nalezen !!!
-plesk requires passwords to have at least 5 characters and not contain the account-name --> password not set!!!	emailadmin	cs	Plesk vy¾aduje, aby mìla hesla nejménì 5 znakù a neobsahovala název úètu --> heslo nebylo nastaveno!!!
+plesk mail script '%1' not found !!!	emailadmin	cs	Plesk poÅ¡tovnÃ­ skript '%1' nebyl nalezen !!!
+plesk requires passwords to have at least 5 characters and not contain the account-name --> password not set!!!	emailadmin	cs	Plesk vyÅ¾aduje, aby mÄ›la hesla nejmÃ©nÄ› 5 znakÅ¯ a neobsahovala nÃ¡zev ÃºÄtu --> heslo nebylo nastaveno!!!
 plesk smtp-server (qmail)	emailadmin	cs	Plesk SMTP server (Qmail)
-pop3 server hostname or ip address	emailadmin	cs	DNS jméno nebo IP adresa POP3 serveru
+pop3 server hostname or ip address	emailadmin	cs	DNS jmÃ©no nebo IP adresa POP3 serveru
 pop3 server port	emailadmin	cs	Port POP3 serveru
 postfix with ldap	emailadmin	cs	Postfix s LDAP
-profile access rights	emailadmin	cs	pøístupová práva profilu
-profile list	emailadmin	cs	Seznam profilù
-profile name	emailadmin	cs	Název profilu
-qmaildotmode	emailadmin	cs	Teèkovı re¾im Qmail
-qouta size in mbyte	emailadmin	cs	Velikost kvóty v MBytech
-quota settings	emailadmin	cs	Nastavení kvóty
+profile access rights	emailadmin	cs	pÅ™Ã­stupovÃ¡ prÃ¡va profilu
+profile list	emailadmin	cs	Seznam profilÅ¯
+profile name	emailadmin	cs	NÃ¡zev profilu
+qmaildotmode	emailadmin	cs	TeÄkovÃ½ reÅ¾im Qmail
+qouta size in mbyte	emailadmin	cs	Velikost kvÃ³ty v MBytech
+quota settings	emailadmin	cs	NastavenÃ­ kvÃ³ty
 remove	emailadmin	cs	Odstranit
 select type of imap server	emailadmin	cs	Vyberte typ IMAP serveru
 select type of imap/pop3 server	emailadmin	cs	Vyberte typ IMAP/POP3 serveru
 select type of smtp server	emailadmin	cs	Vyberte typ SMTP serveru
-server settings	emailadmin	cs	Nastavení serveru
-sieve server hostname or ip address	emailadmin	cs	DNS jméno nebo IP adresa Sieve serveru
+server settings	emailadmin	cs	NastavenÃ­ serveru
+sieve server hostname or ip address	emailadmin	cs	DNS jmÃ©no nebo IP adresa Sieve serveru
 sieve server port	emailadmin	cs	Port Sieve serveru
-sieve settings	emailadmin	cs	Nastavení sieve
+sieve settings	emailadmin	cs	NastavenÃ­ sieve
 smtp authentication	emailadmin	cs	SMTP autentikace
 smtp options	emailadmin	cs	Volby SMTP
-smtp server name	emailadmin	cs	Jméno SMTP serveru
-smtp settings	emailadmin	cs	Nastavení SMTP
-smtp-server hostname or ip address	emailadmin	cs	DNS jméno nebo IP adresa SMTP serveru
+smtp server name	emailadmin	cs	JmÃ©no SMTP serveru
+smtp settings	emailadmin	cs	NastavenÃ­ SMTP
+smtp-server hostname or ip address	emailadmin	cs	DNS jmÃ©no nebo IP adresa SMTP serveru
 smtp-server port	emailadmin	cs	Port SMTP serveru
-standard	emailadmin	cs	Standardní
-standard imap server	emailadmin	cs	Standardní IMAP server
-standard pop3 server	emailadmin	cs	Standardní POP3 server
-standard smtp-server	emailadmin	cs	Standardní SMTP server
-the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	cs	Vypadá to, ¾e IMAP server nepodporuje vybranou autentikaèní metodu. Zkontaktujte prosím Va¹eho systémového administrátora.
-this php has no imap support compiled in!!	emailadmin	cs	Toto PHP nemá zkompilovanou podporu IMAPu.
-to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	cs	Pro pou¾ití TLS pøipojení musíte provozovat verzi PHP 5.1.0 nebo vy¹¹í.
-unexpected response from server to authenticate command.	emailadmin	cs	Neoèekávaná odpovìï serveru na pøíkaz AUTHENTICATE.
-unexpected response from server to digest-md5 response.	emailadmin	cs	Neoèekávaná odpovìï serveru na Digest-MD5 odpovìï.
-unexpected response from server to login command.	emailadmin	cs	Neoèekávaná odpovìï serveru na pøíkaz LOGIN.
-unknown imap response from the server. server responded: %s	emailadmin	cs	Neznámá IMAP odpovìï server. Odpovìdìl: %s
-unsupported action '%1' !!!	emailadmin	cs	Nepodporovaná akce '%1' !!!
-update current email address:	emailadmin	cs	Aktualizovat souèasnou e-mailovou adresu:
-use ldap defaults	emailadmin	cs	Pou¾ít vıchozí hodnoty LDAP
-use smtp auth	emailadmin	cs	Pou¾ít SMTP autentikaci
-use tls authentication	emailadmin	cs	Pou¾ít TLS autentikaci
-use tls encryption	emailadmin	cs	Pou¾ít TLS ¹ifrování
-user can edit forwarding address	emailadmin	cs	U¾ivatel smí editovat adresu pro pøeposílání
-username (standard)	emailadmin	cs	u¾ivatelské jméno (standardní)
-username@domainname (virtual mail manager)	emailadmin	cs	u¾ivatelskéjméno@doména (Virtuální správce po¹ty)
-users can define their own emailaccounts	emailadmin	cs	U¾ivatelé smí definovat vlastní po¹tovní úèty
-virtual mail manager	emailadmin	cs	Virtuální správce po¹ty
+standard	emailadmin	cs	StandardnÃ­
+standard imap server	emailadmin	cs	StandardnÃ­ IMAP server
+standard pop3 server	emailadmin	cs	StandardnÃ­ POP3 server
+standard smtp-server	emailadmin	cs	StandardnÃ­ SMTP server
+the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	cs	VypadÃ¡ to, Å¾e IMAP server nepodporuje vybranou autentikaÄnÃ­ metodu. Zkontaktujte prosÃ­m VaÅ¡eho systÃ©movÃ©ho administrÃ¡tora.
+this php has no imap support compiled in!!	emailadmin	cs	Toto PHP nemÃ¡ zkompilovanou podporu IMAPu.
+to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	cs	Pro pouÅ¾itÃ­ TLS pÅ™ipojenÃ­ musÃ­te provozovat verzi PHP 5.1.0 nebo vyÅ¡Å¡Ã­.
+unexpected response from server to authenticate command.	emailadmin	cs	NeoÄekÃ¡vanÃ¡ odpovÄ›Ä serveru na pÅ™Ã­kaz AUTHENTICATE.
+unexpected response from server to digest-md5 response.	emailadmin	cs	NeoÄekÃ¡vanÃ¡ odpovÄ›Ä serveru na Digest-MD5 odpovÄ›Ä.
+unexpected response from server to login command.	emailadmin	cs	NeoÄekÃ¡vanÃ¡ odpovÄ›Ä serveru na pÅ™Ã­kaz LOGIN.
+unknown imap response from the server. server responded: %s	emailadmin	cs	NeznÃ¡mÃ¡ IMAP odpovÄ›Ä server. OdpovÄ›dÄ›l: %s
+unsupported action '%1' !!!	emailadmin	cs	NepodporovanÃ¡ akce '%1' !!!
+update current email address:	emailadmin	cs	Aktualizovat souÄasnou e-mailovou adresu:
+use ldap defaults	emailadmin	cs	PouÅ¾Ã­t vÃ½chozÃ­ hodnoty LDAP
+use smtp auth	emailadmin	cs	PouÅ¾Ã­t SMTP autentikaci
+use tls authentication	emailadmin	cs	PouÅ¾Ã­t TLS autentikaci
+use tls encryption	emailadmin	cs	PouÅ¾Ã­t TLS Å¡ifrovÃ¡nÃ­
+user can edit forwarding address	emailadmin	cs	UÅ¾ivatel smÃ­ editovat adresu pro pÅ™eposÃ­lÃ¡nÃ­
+username (standard)	emailadmin	cs	uÅ¾ivatelskÃ© jmÃ©no (standardnÃ­)
+username@domainname (virtual mail manager)	emailadmin	cs	uÅ¾ivatelskÃ©jmÃ©no@domÃ©na (VirtuÃ¡lnÃ­ sprÃ¡vce poÅ¡ty)
+users can define their own emailaccounts	emailadmin	cs	UÅ¾ivatelÃ© smÃ­ definovat vlastnÃ­ poÅ¡tovnÃ­ ÃºÄty
+vaction messages with start- and end-date require an admin account to be set!	emailadmin	cs	AutomatickÃ© odpovÄ›di v nepÅ™Ã­tomnosti, kterÃ© majÃ­ urÄeno poÄÃ¡teÄnÃ­ a koncovÃ© datum, vyÅ¾adujÃ­ nastavenÃ­ administrÃ¡torskÃ©ho ÃºÄtu.
+virtual mail manager	emailadmin	cs	VirtuÃ¡lnÃ­ sprÃ¡vce poÅ¡ty

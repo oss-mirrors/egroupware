@@ -1,25 +1,25 @@
 %1 - %2 of %3	sambaadmin	cs	%1 - %2 z %3
-add workstation	sambaadmin	cs	Pøidat pracovní stanici
-check ldap setup (experimental!!!)	admin	cs	Zkontrolovat nastavení LDAP (experimentální!!!)
-computer group	admin	cs	Skupina pro poèítaèe
-computer ou	admin	cs	Organizaèní jednotka (ou) pro poèítaèe
-displayname	sambaadmin	cs	Zobrazované jméno
-do you really want to delete selected workstation accounts?	sambaadmin	cs	Opravdu chcete smazat vybrané úèty pracovních stanic?
-homedrive	admin	cs	Domovskı disk (Homedrive)
-homepath	sambaadmin	cs	Domovská cesta (Homepath)
-logonscript	admin	cs	Pøihla¹ovací skript
-new account defaults	admin	cs	Vıchozí hodnoty nového úètu
-participants	sambaadmin	cs	Úèastníci
-path to mkntpwd	admin	cs	Cesta k utilitì mkntpwd
-profilepath	admin	cs	Cesta k u¾ivatelskému profilu
+add workstation	sambaadmin	cs	PÅ™idat pracovnÃ­ stanici
+check ldap setup (experimental!!!)	admin	cs	Zkontrolovat nastavenÃ­ LDAP (experimentÃ¡lnÃ­!!!)
+computer group	admin	cs	Skupina pro poÄÃ­taÄe
+computer ou	admin	cs	OrganizaÄnÃ­ jednotka (ou) pro poÄÃ­taÄe
+displayname	sambaadmin	cs	ZobrazovanÃ© jmÃ©no
+do you really want to delete selected workstation accounts?	sambaadmin	cs	Opravdu chcete smazat vybranÃ© ÃºÄty pracovnÃ­ch stanic?
+homedrive	admin	cs	DomovskÃ½ disk (Homedrive)
+homepath	sambaadmin	cs	DomovskÃ¡ cesta (Homepath)
+logonscript	admin	cs	PÅ™ihlaÅ¡ovacÃ­ skript
+new account defaults	admin	cs	VÃ½chozÃ­ hodnoty novÃ©ho ÃºÄtu
+participants	sambaadmin	cs	ÃšÄastnÃ­ci
+path to mkntpwd	admin	cs	Cesta k utilitÄ› mkntpwd
+profilepath	admin	cs	Cesta k uÅ¾ivatelskÃ©mu profilu
 samba config	sambaadmin	cs	Konfigurace Samby
-samba settings	common	cs	Nastavení Samby
+samba settings	common	cs	NastavenÃ­ Samby
 samba sid	admin	cs	Samba SID
-sambaadmin	common	cs	Správce Samby
-smb homepath	admin	cs	Cesta k domovskım adresáøùm Samby
-workstation account for	sambaadmin	cs	Úèet pracovní stanbice pro
-workstation configuration	sambaadmin	cs	Konfigurace pracovní stanice
-workstation list	sambaadmin	cs	Seznam pracovních stanic
-workstation name	sambaadmin	cs	Název pracovní stanice
-workstationaccount active	sambaadmin	cs	Úèet pracovní stanice aktivní
-workstations	sambaadmin	cs	Pracovní stanice
+sambaadmin	common	cs	SprÃ¡vce Samby
+smb homepath	admin	cs	Cesta k domovskÃ½m adresÃ¡Å™Å¯m Samby
+workstation account for	sambaadmin	cs	ÃšÄet pracovnÃ­ stanbice pro
+workstation configuration	sambaadmin	cs	Konfigurace pracovnÃ­ stanice
+workstation list	sambaadmin	cs	Seznam pracovnÃ­ch stanic
+workstation name	sambaadmin	cs	NÃ¡zev pracovnÃ­ stanice
+workstationaccount active	sambaadmin	cs	ÃšÄet pracovnÃ­ stanice aktivnÃ­
+workstations	sambaadmin	cs	PracovnÃ­ stanice

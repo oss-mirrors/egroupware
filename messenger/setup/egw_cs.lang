@@ -1,36 +1,36 @@
-compose	messenger	cs	Vytvoøit
-compose global message	common	cs	Vytvoøit globální zprávu
-compose message	messenger	cs	Vytvoøit zprávu
-delete a message.	messenger	cs	Smazat zprávu.
-delete selected	messenger	cs	Smazat vybrané
-forward	messenger	cs	Pøeposlat
-forward a message	messenger	cs	Pøeposlat zprávu
-forward a message to another user.	messenger	cs	Pøeposlat zprávu jinému u¾ivateli.
-forwarded	messenger	cs	Pøeposlaná
+compose	messenger	cs	VytvoÅ™it
+compose global message	common	cs	VytvoÅ™it globÃ¡lnÃ­ zprÃ¡vu
+compose message	messenger	cs	VytvoÅ™it zprÃ¡vu
+delete a message.	messenger	cs	Smazat zprÃ¡vu.
+delete selected	messenger	cs	Smazat vybranÃ©
+forward	messenger	cs	PÅ™eposlat
+forward a message	messenger	cs	PÅ™eposlat zprÃ¡vu
+forward a message to another user.	messenger	cs	PÅ™eposlat zprÃ¡vu jinÃ©mu uÅ¾ivateli.
+forwarded	messenger	cs	PÅ™eposlanÃ¡
 from	messenger	cs	Od
-global message	messenger	cs	Globální zpráva
-i can't find the username %1 on the system	messenger	cs	Nemohu najít u¾ivatelské jméno %1 v systému
-inbox	messenger	cs	Pøijaté
-message from	messenger	cs	Zpráva od
-messenger	common	cs	Zprávy
-new	messenger	cs	Nová
-read a list of messages.	messenger	cs	Naèíst seznam zpráv
-read a single message.	messenger	cs	Naèíst jednotlivou zprávu
-read message	messenger	cs	Èíst zprávu
-replied	messenger	cs	Odpovìzené
-reply	messenger	cs	Odpovìdìt
-reply to a message	messenger	cs	Odpovìdìt na zprávu
-reply to a received message.	messenger	cs	Odpovìdìt na pøijatou zprávu
+global message	messenger	cs	GlobÃ¡lnÃ­ zprÃ¡va
+i can't find the username %1 on the system	messenger	cs	Nemohu najÃ­t uÅ¾ivatelskÃ© jmÃ©no %1 v systÃ©mu
+inbox	messenger	cs	PÅ™ijatÃ©
+message from	messenger	cs	ZprÃ¡va od
+messenger	common	cs	ZprÃ¡vy
+new	messenger	cs	NovÃ¡
+read a list of messages.	messenger	cs	NaÄÃ­st seznam zprÃ¡v
+read a single message.	messenger	cs	NaÄÃ­st jednotlivou zprÃ¡vu
+read message	messenger	cs	ÄŒÃ­st zprÃ¡vu
+replied	messenger	cs	OdpovÄ›zenÃ©
+reply	messenger	cs	OdpovÄ›dÄ›t
+reply to a message	messenger	cs	OdpovÄ›dÄ›t na zprÃ¡vu
+reply to a received message.	messenger	cs	OdpovÄ›dÄ›t na pÅ™ijatou zprÃ¡vu
 send	messenger	cs	Odeslat
-send a global message.	messenger	cs	Odeslat globální zprávu
-send a message to a single recipient.	messenger	cs	Odeslat zprávu jedinému pøíjemci
-send message to	messenger	cs	Odeslat zprávu (komu)
-sorry, %1's account is not currently active	messenger	cs	Lituji, úèet %1 není v souèasnosti aktivní
-update a message status	messenger	cs	Aktualizovat stav zprávy
-use select box for user list in compose	common	cs	Pøi vytváøení zprávy pou¾ívat rozbalovací nabídku pro seznam u¾ivatelù
-you didn't enter anything for the message	messenger	cs	Do zorávy jste nic nezadal(a)
-you have %1 new message	common	cs	Máte %1 novou zprávu
-you have %1 new messages	common	cs	Máte %1 nové(ıch) zpráv(y)
-you have no messages	messenger	cs	Nemáte ¾ádné zprávy
-you must enter a subject	messenger	cs	Musíte zadat pøedmìt
-you must enter the username this message is for	messenger	cs	Musíte zadat u¾ivatelské jméno pøíjemce zprávy
+send a global message.	messenger	cs	Odeslat globÃ¡lnÃ­ zprÃ¡vu
+send a message to a single recipient.	messenger	cs	Odeslat zprÃ¡vu jedinÃ©mu pÅ™Ã­jemci
+send message to	messenger	cs	Odeslat zprÃ¡vu (komu)
+sorry, %1's account is not currently active	messenger	cs	Lituji, ÃºÄet %1 nenÃ­ v souÄasnosti aktivnÃ­
+update a message status	messenger	cs	Aktualizovat stav zprÃ¡vy
+use select box for user list in compose	common	cs	PÅ™i vytvÃ¡Å™enÃ­ zprÃ¡vy pouÅ¾Ã­vat rozbalovacÃ­ nabÃ­dku pro seznam uÅ¾ivatelÅ¯
+you didn't enter anything for the message	messenger	cs	Do zorÃ¡vy jste nic nezadal(a)
+you have %1 new message	common	cs	MÃ¡te %1 novou zprÃ¡vu
+you have %1 new messages	common	cs	MÃ¡te %1 novÃ©(Ã½ch) zprÃ¡v(y)
+you have no messages	messenger	cs	NemÃ¡te Å¾Ã¡dnÃ© zprÃ¡vy
+you must enter a subject	messenger	cs	MusÃ­te zadat pÅ™edmÄ›t
+you must enter the username this message is for	messenger	cs	MusÃ­te zadat uÅ¾ivatelskÃ© jmÃ©no pÅ™Ã­jemce zprÃ¡vy

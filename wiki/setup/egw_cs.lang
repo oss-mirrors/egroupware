@@ -1,112 +1,112 @@
-(don't offer the possibility)	admin	cs	(nenabízet mo¾nost)
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	cs	<em>Ale</em> zobrazovat alespoò tolik záznamù v Posledních zmìnách a ostatních pøihlá¹enıch seznamech
-add document to category	wiki	cs	Pøidat dokument do kategorie
-added	wiki	cs	Pøidáno
-administration features are disabled for this wiki.	wiki	cs	Administraèní funkce jsou v této wiki zakázány.
-admins	wiki	cs	administrátoøi
-after how many days should old versions of a page be removed (0 for never)	admin	cs	Po kolika dnech mají bıt staré verze stránek smazány (0 znamená nikdy)
-allow anonymous access	admin	cs	Povolit anonymní pøístup
-anonymous password	admin	cs	Anonymní heslo
-anonymous session type	admin	cs	Typ anonymní relace
-anonymous username	admin	cs	Anonymní u¾ivatelské jméno
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	cs	Automaticky konvertovat stránky s wiki syntaxí na richtext (pøi editaci)?
+(don't offer the possibility)	admin	cs	(nenabÃ­zet moÅ¾nost)
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	cs	<em>Ale</em> zobrazovat alespoÅˆ tolik zÃ¡znamÅ¯ v PoslednÃ­ch zmÄ›nÃ¡ch a ostatnÃ­ch pÅ™ihlÃ¡Å¡enÃ½ch seznamech
+add document to category	wiki	cs	PÅ™idat dokument do kategorie
+added	wiki	cs	PÅ™idÃ¡no
+administration features are disabled for this wiki.	wiki	cs	AdministraÄnÃ­ funkce jsou v tÃ©to wiki zakÃ¡zÃ¡ny.
+admins	wiki	cs	administrÃ¡toÅ™i
+after how many days should old versions of a page be removed (0 for never)	admin	cs	Po kolika dnech majÃ­ bÃ½t starÃ© verze strÃ¡nek smazÃ¡ny (0 znamenÃ¡ nikdy)
+allow anonymous access	admin	cs	Povolit anonymnÃ­ pÅ™Ã­stup
+anonymous password	admin	cs	AnonymnÃ­ heslo
+anonymous session type	admin	cs	Typ anonymnÃ­ relace
+anonymous username	admin	cs	AnonymnÃ­ uÅ¾ivatelskÃ© jmÃ©no
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	cs	Automaticky konvertovat strÃ¡nky s wiki syntaxÃ­ na richtext (pÅ™i editaci)?
 block	wiki	cs	Zablokovat
-block / unblock hosts	common	cs	Zablokovat / Odblokovat poèítaèe
-blocked ip address ranges	wiki	cs	Rozsahy blokovanıch IP adres
-cancel without saving	wiki	cs	Ukonèit bez ulo¾ení
-changed	wiki	cs	Zmìnìno
-changes by last author	wiki	cs	Zmìny posledního autora
-choose your current time here, so the server may figure out what time zone you are in.	wiki	cs	Zvolte svùj aktuální èas, aby server mohl zjistit v jaké jste èasové zónì.
+block / unblock hosts	common	cs	Zablokovat / Odblokovat poÄÃ­taÄe
+blocked ip address ranges	wiki	cs	Rozsahy blokovanÃ½ch IP adres
+cancel without saving	wiki	cs	UkonÄit bez uloÅ¾enÃ­
+changed	wiki	cs	ZmÄ›nÄ›no
+changes by last author	wiki	cs	ZmÄ›ny poslednÃ­ho autora
+choose your current time here, so the server may figure out what time zone you are in.	wiki	cs	Zvolte svÅ¯j aktuÃ¡lnÃ­ Äas, aby server mohl zjistit v jakÃ© jste ÄasovÃ© zÃ³nÄ›.
 columns	wiki	cs	Sloupce
-compute difference	wiki	cs	Spoèítat rozdíl
-converts the page to richtext	wiki	cs	Konvertovat stránku do richtextu
-current version	wiki	cs	Aktuální verze
-deleted	wiki	cs	Smazáno
-deletes this page	wiki	cs	Sma¾e tuto stranu
-difference between versions	wiki	cs	Rozdíl mezi verzemi
-differences in	wiki	cs	Rozdíly v
-different languages can have different titles	wiki	cs	rùzné jazyky mohou mít rùzné nadpisy
-document last modified	wiki	cs	Dokument naposledy zmìn
-edit box	wiki	cs	Editaèní pole
-edit this <em>archive version</em> of this document	wiki	cs	Editovat tuto <em>ARCHIVNÍ VERZI</em> dokumentu
+compute difference	wiki	cs	SpoÄÃ­tat rozdÃ­l
+converts the page to richtext	wiki	cs	Konvertovat strÃ¡nku do richtextu
+current version	wiki	cs	AktuÃ¡lnÃ­ verze
+deleted	wiki	cs	SmazÃ¡no
+deletes this page	wiki	cs	SmaÅ¾e tuto stranu
+difference between versions	wiki	cs	RozdÃ­l mezi verzemi
+differences in	wiki	cs	RozdÃ­ly v
+different languages can have different titles	wiki	cs	rÅ¯znÃ© jazyky mohou mÃ­t rÅ¯znÃ© nadpisy
+document last modified	wiki	cs	Dokument naposledy zmÄ›n
+edit box	wiki	cs	EditaÄnÃ­ pole
+edit this <em>archive version</em> of this document	wiki	cs	Editovat tuto <em>ARCHIVNÃ VERZI</em> dokumentu
 edit this document	wiki	cs	Editovat tento dokument
-edit with preview	admin	cs	Editovat s náhledem
-editable	admin	cs	editovatelnı
+edit with preview	admin	cs	Editovat s nÃ¡hledem
+editable	admin	cs	editovatelnÃ½
 editing	wiki	cs	Edituji
-emailaddress administrator	admin	cs	E-mailová adresa administrátora
-enable free links	admin	cs	Povolit volné odkazy
+emailaddress administrator	admin	cs	E-mailovÃ¡ adresa administrÃ¡tora
+enable free links	admin	cs	Povolit volnÃ© odkazy
 enable wiki links	admin	cs	Povolit wiki odkazy
-enter here the maximum number of entries to display in a document's history list.	wiki	cs	Zadejte maximální poèet záznamù pro zobrazení v seznamu historie dokumentu.
-enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	cs	Zadejte poèet dní zpátky, kdy se provedené editace budou zobrazovat v Posledních zmìnách nebo v jinıch pøihlá¹enıch seznamech. Nastavte na nulu, pokud chcete v Posledních zmìnách vidìt v¹echny stránky, bez ohledu na dobu, pøed kterou byly editovány.
+enter here the maximum number of entries to display in a document's history list.	wiki	cs	Zadejte maximÃ¡lnÃ­ poÄet zÃ¡znamÅ¯ pro zobrazenÃ­ v seznamu historie dokumentu.
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	cs	Zadejte poÄet dnÃ­ zpÃ¡tky, kdy se provedenÃ© editace budou zobrazovat v PoslednÃ­ch zmÄ›nÃ¡ch nebo v jinÃ½ch pÅ™ihlÃ¡Å¡enÃ½ch seznamech. Nastavte na nulu, pokud chcete v PoslednÃ­ch zmÄ›nÃ¡ch vidÄ›t vÅ¡echny strÃ¡nky, bez ohledu na dobu, pÅ™ed kterou byly editovÃ¡ny.
 enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	cs	Zadejte rozsah IP adres ve tvaru <tt>12.*</tt>, <tt>34.56.*</tt>, nebo <tt>78.90.123.*</tt>
-error creating temporary file.	wiki	cs	Chyba pøi vytvoøení doèasného souboru
-error writing to temporary file.	wiki	cs	Chyba pøi zápisu do doèasného souboru
-everyone	wiki	cs	v¹ichni
-find	wiki	cs	Najít
+error creating temporary file.	wiki	cs	Chyba pÅ™i vytvoÅ™enÃ­ doÄasnÃ©ho souboru
+error writing to temporary file.	wiki	cs	Chyba pÅ™i zÃ¡pisu do doÄasnÃ©ho souboru
+everyone	wiki	cs	vÅ¡ichni
+find	wiki	cs	NajÃ­t
 history	wiki	cs	historie
-history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	cs	Zobrazení historie by mìlo ukázat <em>v¹echny</em> zmìny provedené posledním autorem. V opaèném pøípadì zobrazí jen poslední provedou zmìnu.
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	cs	ZobrazenÃ­ historie by mÄ›lo ukÃ¡zat <em>vÅ¡echny</em> zmÄ›ny provedenÃ© poslednÃ­m autorem. V opaÄnÃ©m pÅ™Ã­padÄ› zobrazÃ­ jen poslednÃ­ provedou zmÄ›nu.
 history lists	wiki	cs	Seznamy historie
-history of	wiki	cs	Historie (èeho)
+history of	wiki	cs	Historie (Äeho)
 interwikiprefix	admin	cs	InterWikiPrefix
-invalid page name.	wiki	cs	Neplatnı název stránky
-load	wiki	cs	Nahrát
-loads the named page in the given language, all change so far get lost !!!	wiki	cs	Nahraje uvedenou stránku v zadaném jazyce, v¹echny dosud provedené zmìny budou traceny !!!
-lock / unlock pages	common	cs	Zamknout / Odemknout stránky
-locked	wiki	cs	Uzamèeno
-name wiki home link	admin	cs	Jméno odkazu na domovskou stránku wiki
-newer	wiki	cs	Novìj¹í
+invalid page name.	wiki	cs	NeplatnÃ½ nÃ¡zev strÃ¡nky
+load	wiki	cs	NahrÃ¡t
+loads the named page in the given language, all change so far get lost !!!	wiki	cs	Nahraje uvedenou strÃ¡nku v zadanÃ©m jazyce, vÅ¡echny dosud provedenÃ© zmÄ›ny budou traceny !!!
+lock / unlock pages	common	cs	Zamknout / Odemknout strÃ¡nky
+locked	wiki	cs	UzamÄeno
+name wiki home link	admin	cs	JmÃ©no odkazu na domovskou strÃ¡nku wiki
+newer	wiki	cs	NovÄ›jÅ¡Ã­
 no never	admin	cs	Ne, nikdy
-no only on request	admin	cs	Ne, jen na vy¾ádání
-not set	wiki	cs	není nastaveno
-older	wiki	cs	Star¹í
-on all pages	wiki	cs	na v¹ech stránkách
-only if browser supports a richtext-editor	admin	cs	Jen pokud prohlí¾eè podporuje richtext ed
-only on the first page	wiki	cs	jen na první stranì
+no only on request	admin	cs	Ne, jen na vyÅ¾Ã¡dÃ¡nÃ­
+not set	wiki	cs	nenÃ­ nastaveno
+older	wiki	cs	StarÅ¡Ã­
+on all pages	wiki	cs	na vÅ¡ech strÃ¡nkÃ¡ch
+only if browser supports a richtext-editor	admin	cs	Jen pokud prohlÃ­Å¾eÄ podporuje richtext ed
+only on the first page	wiki	cs	jen na prvnÃ­ stranÄ›
 page '%1' not found !!!	wiki	cs	Strana '%1' nebyla nalezena !!!
-path of the upload directory (has to be writable by the webserver!)	admin	cs	Cesta k adresáøi pro upload (webserver do ní musí mít právo zápisu!)
-picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	cs	Upload obrázku pomocí richtext editoru (adresáø pro upload ponechte prázdnı, chcete-li funkci zakázat)
-please contact the %1administrator%2 for assistance.	wiki	cs	Prosím, po¾ádejte o pomoc %1Administrátora%2.
-preview	wiki	cs	Náhled
-preview of current version	wiki	cs	Náhled aktuální verze
-rate control / ip blocking disabled	wiki	cs	Kontrola hodnocení / Blokování IP zakázáno
-readable by	wiki	cs	Èitelné pro
-readonly	admin	cs	jen pro ètení
-recent changes	wiki	cs	Poslední zmìny
-renames page to the given name and language	wiki	cs	Pøejmenuje stránku na zadanı název a jazyk
+path of the upload directory (has to be writable by the webserver!)	admin	cs	Cesta k adresÃ¡Å™i pro upload (webserver do nÃ­ musÃ­ mÃ­t prÃ¡vo zÃ¡pisu!)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	cs	Upload obrÃ¡zku pomocÃ­ richtext editoru (adresÃ¡Å™ pro upload ponechte prÃ¡zdnÃ½, chcete-li funkci zakÃ¡zat)
+please contact the %1administrator%2 for assistance.	wiki	cs	ProsÃ­m, poÅ¾Ã¡dejte o pomoc %1AdministrÃ¡tora%2.
+preview	wiki	cs	NÃ¡hled
+preview of current version	wiki	cs	NÃ¡hled aktuÃ¡lnÃ­ verze
+rate control / ip blocking disabled	wiki	cs	Kontrola hodnocenÃ­ / BlokovÃ¡nÃ­ IP zakÃ¡zÃ¡no
+readable by	wiki	cs	ÄŒitelnÃ© pro
+readonly	admin	cs	jen pro ÄtenÃ­
+recent changes	wiki	cs	PoslednÃ­ zmÄ›ny
+renames page to the given name and language	wiki	cs	PÅ™ejmenuje strÃ¡nku na zadanÃ½ nÃ¡zev a jazyk
 richtext	wiki	cs	Richtext
-rows	wiki	cs	Àádky
-save the changes and exit	wiki	cs	Ulo¾it zmìny a ukonèit
-saves and continues editing	wiki	cs	Ulo¾í a pokraèuje v editaci
+rows	wiki	cs	Å”Ã¡dky
+save the changes and exit	wiki	cs	UloÅ¾it zmÄ›ny a ukonÄit
+saves and continues editing	wiki	cs	UloÅ¾Ã­ a pokraÄuje v editaci
 search for	wiki	cs	Hledat (co)
-see complete list (%1 entries)	wiki	cs	Zobrazit celı seznam (%1 záznamù)
-show a search	wiki	cs	Zobrazit hledání
-show the title of the wiki page	wiki	cs	Zobrazit titulek wiki stránky
+see complete list (%1 entries)	wiki	cs	Zobrazit celÃ½ seznam (%1 zÃ¡znamÅ¯)
+show a search	wiki	cs	Zobrazit hledÃ¡nÃ­
+show the title of the wiki page	wiki	cs	Zobrazit titulek wiki strÃ¡nky
 site configuration	wiki	cs	Konfigurace webu
-summary	wiki	cs	Pøehled
-summary of change	wiki	cs	Pøehled zmìny
-the search returned no result!	wiki	cs	Hledání nevrátilo ¾ádné vısledky!
-this page can not be edited.	wiki	cs	Tuto stránku nelze editovat.
-twin pages	wiki	cs	Stránky dvojèata
+summary	wiki	cs	PÅ™ehled
+summary of change	wiki	cs	PÅ™ehled zmÄ›ny
+the search returned no result!	wiki	cs	HledÃ¡nÃ­ nevrÃ¡tilo Å¾Ã¡dnÃ© vÃ½sledky!
+this page can not be edited.	wiki	cs	Tuto strÃ¡nku nelze editovat.
+twin pages	wiki	cs	StrÃ¡nky dvojÄata
 unblock	wiki	cs	Odblokovat
-updates the preview	wiki	cs	Aktualizuje náhled
-url of the upload directory	admin	cs	URL adresáøe pro upload
-use this module for displaying wiki-pages	wiki	cs	Pou¾ít tento modul pro zobrazování wiki stránek
-users	wiki	cs	u¾ivatelé
+updates the preview	wiki	cs	Aktualizuje nÃ¡hled
+url of the upload directory	admin	cs	URL adresÃ¡Å™e pro upload
+use this module for displaying wiki-pages	wiki	cs	PouÅ¾Ã­t tento modul pro zobrazovÃ¡nÃ­ wiki strÃ¡nek
+users	wiki	cs	uÅ¾ivatelÃ©
 view document history	wiki	cs	Zobrazit historii dokumentu
-visit %1 to set your user name	wiki	cs	Nav¹tivte %1 pro nastavení Va¹eho jména
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	cs	Upozornìní: od chvíle, kdy jste zapoèal(a) editaci, zmìnil dokument je¹tì nìkdo jinı. Prosím zaèleòte Va¹e zmìny do aktuální verze dokumentu.
-who should be able to edit this page	wiki	cs	kdo má mít právo editovat tuto stránku
-who should be able to read this page	wiki	cs	kdo má mít právo èíst tuto stránku
+visit %1 to set your user name	wiki	cs	NavÅ¡tivte %1 pro nastavenÃ­ VaÅ¡eho jmÃ©na
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	cs	UpozornÄ›nÃ­: od chvÃ­le, kdy jste zapoÄal(a) editaci, zmÄ›nil dokument jeÅ¡tÄ› nÄ›kdo jinÃ½. ProsÃ­m zaÄleÅˆte VaÅ¡e zmÄ›ny do aktuÃ¡lnÃ­ verze dokumentu.
+who should be able to edit this page	wiki	cs	kdo mÃ¡ mÃ­t prÃ¡vo editovat tuto strÃ¡nku
+who should be able to read this page	wiki	cs	kdo mÃ¡ mÃ­t prÃ¡vo ÄÃ­st tuto strÃ¡nku
 wiki	common	cs	Wiki
 wiki administration	wiki	cs	Administrace wiki
 wiki menu	wiki	cs	Menu wiki
-wiki startpage	wiki	cs	Startovní stránka wiki
-writable by	wiki	cs	Zapisovatelná (kım)
-yes always	admin	cs	Ano v¾dy
-yes with navbar	admin	cs	Ano pøes navigaèní li¹tu
-you have been denied access to this site.	wiki	cs	Byl Vám zakázán pøístup k tomuto webu.
-you have entered an invalid user name.	wiki	cs	Zadal(a) jste neplatné u¾ivatelské jméno.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	cs	Pøekroèil(a) jste povolenı limit nav¹tívenıch stránek v daném èasovém období. Prosím, vra»te se pozdìji.
-you have no rights to view wiki content !!!	wiki	cs	Nemáte oprávnìní prohlí¾et obsah wiki !!!
-your changes	wiki	cs	Va¹e zmìny
-your user name is "%1".	wiki	cs	Va¹e u¾ivatelské jméno je "%1".
+wiki startpage	wiki	cs	StartovnÃ­ strÃ¡nka wiki
+writable by	wiki	cs	ZapisovatelnÃ¡ (kÃ½m)
+yes always	admin	cs	Ano vÅ¾dy
+yes with navbar	admin	cs	Ano pÅ™es navigaÄnÃ­ liÅ¡tu
+you have been denied access to this site.	wiki	cs	Byl VÃ¡m zakÃ¡zÃ¡n pÅ™Ã­stup k tomuto webu.
+you have entered an invalid user name.	wiki	cs	Zadal(a) jste neplatnÃ© uÅ¾ivatelskÃ© jmÃ©no.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	cs	PÅ™ekroÄil(a) jste povolenÃ½ limit navÅ¡tÃ­venÃ½ch strÃ¡nek v danÃ©m ÄasovÃ©m obdobÃ­. ProsÃ­m, vraÅ¥te se pozdÄ›ji.
+you have no rights to view wiki content !!!	wiki	cs	NemÃ¡te oprÃ¡vnÄ›nÃ­ prohlÃ­Å¾et obsah wiki !!!
+your changes	wiki	cs	VaÅ¡e zmÄ›ny
+your user name is "%1".	wiki	cs	VaÅ¡e uÅ¾ivatelskÃ© jmÃ©no je "%1".

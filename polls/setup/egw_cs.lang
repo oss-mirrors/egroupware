@@ -1,39 +1,39 @@
 actions	polls	cs	akce
-add answer to poll	polls	cs	Pøidat odpovìï do ankety
-add answers	polls	cs	Pøidat odpovìdi
-add new poll question	polls	cs	Pøidat novou otázku do ankety
-add questions	polls	cs	Pøidat otázky
-administrators	polls	cs	Administrátoøi
-allow users to vote more then once	polls	cs	Povolit u¾ivatelùm hlasovat více ne¾ jednou
-allways use latest poll	polls	cs	V¾dy pou¾ít poslední anketu
-answer	polls	cs	Odpovìï
-answer has been added to poll	polls	cs	Odpovìï byla pøidána do ankety
-answer has been updated	polls	cs	Odpovìï byla zaktualizována
-answers	polls	cs	Odpovìdi
-are you sure want to delete this answer ?	polls	cs	Urèitì chcete smazat tuto odpovìï?
-are you sure want to delete this question ?	polls	cs	Urèitì chcete smazat tuto otázku?
-current poll	polls	cs	Aktuální anketa
-edit answer	polls	cs	Editovat odpovìï
-edit poll question	polls	cs	Editovat anketní otázku
-egroupware users (non-anonymous)	polls	cs	U¾ivatelé eGroupWaru (ne anonymní)
-enter poll question	polls	cs	Zadat anketní otázku
-everyone incl. anonymous users	polls	cs	V¹ichni vèetnì anonymních u¾ivatelù
-new poll has been added.  you should now add some answers for this poll	polls	cs	Byla pøidána nová anketa. Mìl(a) byste do této ankety pøidat nìjaké odpovìdi.
+add answer to poll	polls	cs	PÅ™idat odpovÄ›Ä do ankety
+add answers	polls	cs	PÅ™idat odpovÄ›di
+add new poll question	polls	cs	PÅ™idat novou otÃ¡zku do ankety
+add questions	polls	cs	PÅ™idat otÃ¡zky
+administrators	polls	cs	AdministrÃ¡toÅ™i
+allow users to vote more then once	polls	cs	Povolit uÅ¾ivatelÅ¯m hlasovat vÃ­ce neÅ¾ jednou
+allways use latest poll	polls	cs	VÅ¾dy pouÅ¾Ã­t poslednÃ­ anketu
+answer	polls	cs	OdpovÄ›Ä
+answer has been added to poll	polls	cs	OdpovÄ›Ä byla pÅ™idÃ¡na do ankety
+answer has been updated	polls	cs	OdpovÄ›Ä byla zaktualizovÃ¡na
+answers	polls	cs	OdpovÄ›di
+are you sure want to delete this answer ?	polls	cs	UrÄitÄ› chcete smazat tuto odpovÄ›Ä?
+are you sure want to delete this question ?	polls	cs	UrÄitÄ› chcete smazat tuto otÃ¡zku?
+current poll	polls	cs	AktuÃ¡lnÃ­ anketa
+edit answer	polls	cs	Editovat odpovÄ›Ä
+edit poll question	polls	cs	Editovat anketnÃ­ otÃ¡zku
+egroupware users (non-anonymous)	polls	cs	UÅ¾ivatelÃ© eGroupWaru (ne anonymnÃ­)
+enter poll question	polls	cs	Zadat anketnÃ­ otÃ¡zku
+everyone incl. anonymous users	polls	cs	VÅ¡ichni vÄetnÄ› anonymnÃ­ch uÅ¾ivatelÅ¯
+new poll has been added.  you should now add some answers for this poll	polls	cs	Byla pÅ™idÃ¡na novÃ¡ anketa. MÄ›l(a) byste do tÃ©to ankety pÅ™idat nÄ›jakÃ© odpovÄ›di.
 noone	polls	cs	Nikdo
-poll question	polls	cs	Anketní otázka
-poll votable by	polls	cs	V anketì mohou hlasovat
+poll question	polls	cs	AnketnÃ­ otÃ¡zka
+poll votable by	polls	cs	V anketÄ› mohou hlasovat
 polls	common	cs	Ankety
-question has been updated	polls	cs	Otázka byla zaktualizována
-result visible to	polls	cs	Vısledek mohou shlédnout
-select current poll	polls	cs	Vybrat aktuální anketu
-settings updated	polls	cs	Nastavení zaktualizována
-show answers	polls	cs	Zobrazit odpovìdi
-show questions	common	cs	Zobrazit otázky
+question has been updated	polls	cs	OtÃ¡zka byla zaktualizovÃ¡na
+result visible to	polls	cs	VÃ½sledek mohou shlÃ©dnout
+select current poll	polls	cs	Vybrat aktuÃ¡lnÃ­ anketu
+settings updated	polls	cs	NastavenÃ­ zaktualizovÃ¡na
+show answers	polls	cs	Zobrazit odpovÄ›di
+show questions	common	cs	Zobrazit otÃ¡zky
 total votes	polls	cs	Celkem
 view poll	polls	cs	Zobrazit anketu
-view results	polls	cs	Zobrazit vısledky
+view results	polls	cs	Zobrazit vÃ½sledky
 vote	polls	cs	Hlasovat
-voting booth admin	admin	cs	Hlasovací koisek
-voting booth administration	polls	cs	Administrace hlasovacího kiosku
-which poll	polls	cs	Která anketa
-you are not (yet) allowed view the result of this vote.	polls	cs	Nemáte oprávnìní (zatím) zobrazit vısledek této ankety.
+voting booth admin	admin	cs	HlasovacÃ­ koisek
+voting booth administration	polls	cs	Administrace hlasovacÃ­ho kiosku
+which poll	polls	cs	KterÃ¡ anketa
+you are not (yet) allowed view the result of this vote.	polls	cs	NemÃ¡te oprÃ¡vnÄ›nÃ­ (zatÃ­m) zobrazit vÃ½sledek tÃ©to ankety.

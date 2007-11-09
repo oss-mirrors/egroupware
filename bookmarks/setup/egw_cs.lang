@@ -1,76 +1,76 @@
-%1 bookmarks have been deleted	bookmarks	cs	%1 zálo¾ek bylo smazáno
-%1 bookmarks imported from %2 successfully.	bookmarks	cs	%1 zálo¾ek bylo úspì¹nì importováno z %2
-(comma separate multiple addresses)	bookmarks	cs	(více adres oddìlenıch èárkami)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	cs	<b>Poznámka:</b> Aktuálnì funguje jen pro zálo¾ky prohlí¾eèe Netscape
-all bookmarks	bookmarks	cs	V¹echny zálo¾ky
+%1 bookmarks have been deleted	bookmarks	cs	%1 zÃ¡loÅ¾ek bylo smazÃ¡no
+%1 bookmarks imported from %2 successfully.	bookmarks	cs	%1 zÃ¡loÅ¾ek bylo ÃºspÄ›Å¡nÄ› importovÃ¡no z %2
+(comma separate multiple addresses)	bookmarks	cs	(vÃ­ce adres oddÄ›lenÃ½ch ÄÃ¡rkami)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	cs	<b>PoznÃ¡mka:</b> AktuÃ¡lnÄ› funguje jen pro zÃ¡loÅ¾ky prohlÃ­Å¾eÄe Netscape
+all bookmarks	bookmarks	cs	VÅ¡echny zÃ¡loÅ¾ky
 and	bookmarks	cs	A
-append this message to mailed bookmarks	bookmarks	cs	Tuto zprávu pøipojit k zálo¾kám posílanım e-mailem
-ascending	bookmarks	cs	Vzestupnì
-book marks	common	cs	Zálo¾ky
-bookmark changed sucessfully	bookmarks	cs	Zálo¾ka úspì¹nì zmìnìna
-bookmark created successfully.	bookmarks	cs	Zálo¾ka úspì¹nì vytvoøena.
-bookmark deleted successfully	bookmarks	cs	Zálo¾ka úspì¹nì smazána.
-bookmark deleted successfully.	bookmarks	cs	zálo¾ka úspì¹nì smazána.
-bookmark not editable	bookmarks	cs	Zálo¾ku nelze editovat
-bookmark not readable	bookmarks	cs	Zálo¾ku nelze naèíst
-bookmarks	common	cs	Zálo¾ky
-bookmarks settings	bookmarks	cs	Nastavení zálo¾ek
-change bookmark	bookmarks	cs	Zmìnit zálo¾ku
-close this window to return	bookmarks	cs	pro návrat zavøete toto okno
-create bookmark	bookmarks	cs	Vytvoøit zálo¾ku
-create new bookmark	bookmarks	cs	Vytvoøit novou zálo¾ku
-date added	bookmarks	cs	Datum pøidáno
-date changed	bookmarks	cs	Datum zmìnìno
-date last updated	bookmarks	cs	Datum poslední zmìny
-date last visited	bookmarks	cs	Datum poslední náv¹tìvy
-descending	bookmarks	cs	Sestupnì
-edit bookmark	bookmarks	cs	Editovat zálo¾ku
-edit this bookmark	bookmarks	cs	Editovat tuto zálo¾ku
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	cs	Vlo¾te název souboru se zálo¾kami Netscape,<br>kterı chcete importovat do ní¾e uvedeného poøadaèe.
-export bookmarks	common	cs	Expotovat zálo¾ky
-fewer	bookmarks	cs	Ménì
-filter by	bookmarks	cs	Filtrovat (èím)
-found a link you might like	bookmarks	cs	Nalezen odkaz, kterı by Vás mohl zajímat
+append this message to mailed bookmarks	bookmarks	cs	Tuto zprÃ¡vu pÅ™ipojit k zÃ¡loÅ¾kÃ¡m posÃ­lanÃ½m e-mailem
+ascending	bookmarks	cs	VzestupnÄ›
+book marks	common	cs	ZÃ¡loÅ¾ky
+bookmark changed sucessfully	bookmarks	cs	ZÃ¡loÅ¾ka ÃºspÄ›Å¡nÄ› zmÄ›nÄ›na
+bookmark created successfully.	bookmarks	cs	ZÃ¡loÅ¾ka ÃºspÄ›Å¡nÄ› vytvoÅ™ena.
+bookmark deleted successfully	bookmarks	cs	ZÃ¡loÅ¾ka ÃºspÄ›Å¡nÄ› smazÃ¡na.
+bookmark deleted successfully.	bookmarks	cs	zÃ¡loÅ¾ka ÃºspÄ›Å¡nÄ› smazÃ¡na.
+bookmark not editable	bookmarks	cs	ZÃ¡loÅ¾ku nelze editovat
+bookmark not readable	bookmarks	cs	ZÃ¡loÅ¾ku nelze naÄÃ­st
+bookmarks	common	cs	ZÃ¡loÅ¾ky
+bookmarks settings	bookmarks	cs	NastavenÃ­ zÃ¡loÅ¾ek
+change bookmark	bookmarks	cs	ZmÄ›nit zÃ¡loÅ¾ku
+close this window to return	bookmarks	cs	pro nÃ¡vrat zavÅ™ete toto okno
+create bookmark	bookmarks	cs	VytvoÅ™it zÃ¡loÅ¾ku
+create new bookmark	bookmarks	cs	VytvoÅ™it novou zÃ¡loÅ¾ku
+date added	bookmarks	cs	Datum pÅ™idÃ¡no
+date changed	bookmarks	cs	Datum zmÄ›nÄ›no
+date last updated	bookmarks	cs	Datum poslednÃ­ zmÄ›ny
+date last visited	bookmarks	cs	Datum poslednÃ­ nÃ¡vÅ¡tÄ›vy
+descending	bookmarks	cs	SestupnÄ›
+edit bookmark	bookmarks	cs	Editovat zÃ¡loÅ¾ku
+edit this bookmark	bookmarks	cs	Editovat tuto zÃ¡loÅ¾ku
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	cs	VloÅ¾te nÃ¡zev souboru se zÃ¡loÅ¾kami Netscape,<br>kterÃ½ chcete importovat do nÃ­Å¾e uvedenÃ©ho poÅ™adaÄe.
+export bookmarks	common	cs	Expotovat zÃ¡loÅ¾ky
+fewer	bookmarks	cs	MÃ©nÄ›
+filter by	bookmarks	cs	Filtrovat (ÄÃ­m)
+found a link you might like	bookmarks	cs	Nalezen odkaz, kterÃ½ by VÃ¡s mohl zajÃ­mat
 from	bookmarks	cs	Od
 from category %1	bookmarks	cs	z kategorie %1
-global categories	bookmarks	cs	Globální kategorie
-highest	bookmarks	cs	Nejvy¹¹í
-i thought you would be interested in the following link(s):	bookmarks	cs	Myslím, ¾e by Vás mohl(y) zajímat následující odkaz(y):
-import bookmarks	common	cs	Importovat zálo¾ky
+global categories	bookmarks	cs	GlobÃ¡lnÃ­ kategorie
+highest	bookmarks	cs	NejvyÅ¡Å¡Ã­
+i thought you would be interested in the following link(s):	bookmarks	cs	MyslÃ­m, Å¾e by VÃ¡s mohl(y) zajÃ­mat nÃ¡sledujÃ­cÃ­ odkaz(y):
+import bookmarks	common	cs	Importovat zÃ¡loÅ¾ky
 like	bookmarks	cs	jako
 list view	bookmarks	cs	Zobrazit seznam
-lowest	bookmarks	cs	Nejni¾¹í
-mail this bookmark	bookmarks	cs	Poslat zálo¾ky e-mailem
-mail-this-link message sent to %1.	bookmarks	cs	zpráva s odkazem odeslána na %1.
-mass update:	bookmarks	cs	Hromadná aktualizace:
-message from	bookmarks	cs	Zpráva od
-more	bookmarks	cs	Více
-name	bookmarks	cs	Název
-name is required	bookmarks	cs	Název je vy¾adován
-netscape bookmark file	bookmarks	cs	Soubor zálo¾ek Netscape
-netscape bookmark filename is required!	bookmarks	cs	Jméno Netscape souboru se zálo¾kami je vy¾adováno!
-new	bookmark	cs	Nová
-new bookmark	bookmarks	cs	Nová zálo¾ka
+lowest	bookmarks	cs	NejniÅ¾Å¡Ã­
+mail this bookmark	bookmarks	cs	Poslat zÃ¡loÅ¾ky e-mailem
+mail-this-link message sent to %1.	bookmarks	cs	zprÃ¡va s odkazem odeslÃ¡na na %1.
+mass update:	bookmarks	cs	HromadnÃ¡ aktualizace:
+message from	bookmarks	cs	ZprÃ¡va od
+more	bookmarks	cs	VÃ­ce
+name	bookmarks	cs	NÃ¡zev
+name is required	bookmarks	cs	NÃ¡zev je vyÅ¾adovÃ¡n
+netscape bookmark file	bookmarks	cs	Soubor zÃ¡loÅ¾ek Netscape
+netscape bookmark filename is required!	bookmarks	cs	JmÃ©no Netscape souboru se zÃ¡loÅ¾kami je vyÅ¾adovÃ¡no!
+new	bookmark	cs	NovÃ¡
+new bookmark	bookmarks	cs	NovÃ¡ zÃ¡loÅ¾ka
 or	bookmarks	cs	nebo
-please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	cs	Vyplòte prosím <B>e-mailovou adresu pøíjemce</B>, <B>pøedmìt</B> a <B>zprávu</B>!
-please select the categories to export	bookmarks	cs	Vyberte prosím kategorie k exportu
-query condition	bookmarks	cs	Vıbìrové kritérium
-rating	bookmarks	cs	Hodnocení
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	cs	VyplÅˆte prosÃ­m <B>e-mailovou adresu pÅ™Ã­jemce</B>, <B>pÅ™edmÄ›t</B> a <B>zprÃ¡vu</B>!
+please select the categories to export	bookmarks	cs	Vyberte prosÃ­m kategorie k exportu
+query condition	bookmarks	cs	VÃ½bÄ›rovÃ© kritÃ©rium
+rating	bookmarks	cs	HodnocenÃ­
 search for:	bookmarks	cs	Hledat (co):
-select the format you would like to export to	bookmarks	cs	Vyberte formát, do jakého chcete exportovat
-send bookmark	bookmarks	cs	Poslat zálo¾ku
+select the format you would like to export to	bookmarks	cs	Vyberte formÃ¡t, do jakÃ©ho chcete exportovat
+send bookmark	bookmarks	cs	Poslat zÃ¡loÅ¾ku
 site configuration	bookmarks	cs	Konfigurace webu
 sub category	bookmarks	cs	Podkategorie
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	cs	Adresa pøíjemce %1 je neplatná. Formát musí bıt <strong>u¾ivatel@doména</strong> a doména musí existovat!
-to e-mail addresses	bookmarks	cs	E-mailová adresa pøíjemce
-to which category should the imported folder hierarchy be attached	bookmarks	cs	Ke které kategorii má bıt importovaná hierarchie slo¾ek pøipojena
-total visits	bookmarks	cs	celkem náv¹tìv
-tree view	bookmarks	cs	Zobrazení do stromu
-unable to open temp file %1 for import.	bookmarks	cs	Namohu otevøít doèasnı soubor %1 k importu.
-url is required.	bookmarks	cs	URL je vy¾adováno
-view bookmark	bookmarks	cs	Zobrazit zálo¾ku
-view this bookmark	bookmarks	cs	Zobrazit tuto zálo¾ku
-warning	bookmarks	cs	Varování
-you are viewing this site outside of egroupware	bookmarks	cs	Prohlí¾íte tento web mimo eGroupWare
-you must select a category	bookmarks	cs	Musíte vybrat kategorii
-you need to select a category!	bookmarks	cs	Musíte vybrat kategorii !
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	cs	Adresa pÅ™Ã­jemce %1 je neplatnÃ¡. FormÃ¡t musÃ­ bÃ½t <strong>uÅ¾ivatel@domÃ©na</strong> a domÃ©na musÃ­ existovat!
+to e-mail addresses	bookmarks	cs	E-mailovÃ¡ adresa pÅ™Ã­jemce
+to which category should the imported folder hierarchy be attached	bookmarks	cs	Ke kterÃ© kategorii mÃ¡ bÃ½t importovanÃ¡ hierarchie sloÅ¾ek pÅ™ipojena
+total visits	bookmarks	cs	celkem nÃ¡vÅ¡tÄ›v
+tree view	bookmarks	cs	ZobrazenÃ­ do stromu
+unable to open temp file %1 for import.	bookmarks	cs	Namohu otevÅ™Ã­t doÄasnÃ½ soubor %1 k importu.
+url is required.	bookmarks	cs	URL je vyÅ¾adovÃ¡no
+view bookmark	bookmarks	cs	Zobrazit zÃ¡loÅ¾ku
+view this bookmark	bookmarks	cs	Zobrazit tuto zÃ¡loÅ¾ku
+warning	bookmarks	cs	VarovÃ¡nÃ­
+you are viewing this site outside of egroupware	bookmarks	cs	ProhlÃ­Å¾Ã­te tento web mimo eGroupWare
+you must select a category	bookmarks	cs	MusÃ­te vybrat kategorii
+you need to select a category!	bookmarks	cs	MusÃ­te vybrat kategorii !

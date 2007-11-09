@@ -1,15 +1,15 @@
-%1 manual page(s) added or updated	manual	cs	%1 stránek manuálu pøidáno nebo zaktualizováno
-allow anonymous access to the manual, only necessary to act as remote manual	admin	cs	Povolit anonymní pøístup k manuálu. Je zapotøebí jen pokud se pou¾ívá jako vzdálenı manuál.
-anonymous password	admin	cs	Anonymní heslo
-anonymous username	admin	cs	Anonymní u¾ivatelské jméno
-download	manual	cs	stáhnout
+%1 manual page(s) added or updated	manual	cs	%1 strÃ¡nek manuÃ¡lu pÅ™idÃ¡no nebo zaktualizovÃ¡no
+allow anonymous access to the manual, only necessary to act as remote manual	admin	cs	Povolit anonymnÃ­ pÅ™Ã­stup k manuÃ¡lu. Je zapotÅ™ebÃ­ jen pokud se pouÅ¾Ã­vÃ¡ jako vzdÃ¡lenÃ½ manuÃ¡l.
+anonymous password	admin	cs	AnonymnÃ­ heslo
+anonymous username	admin	cs	AnonymnÃ­ uÅ¾ivatelskÃ© jmÃ©no
+download	manual	cs	stÃ¡hnout
 index	manual	cs	Index
-install or update the manual-pages	admin	cs	instalovat nebo aktualizovat stránky manuálu
-manual	common	cs	Manuál / Nápovìda
+install or update the manual-pages	admin	cs	instalovat nebo aktualizovat strÃ¡nky manuÃ¡lu
+manual	common	cs	ManuÃ¡l / NÃ¡povÄ›da
 page(s) %1 not found !!!	manual	cs	Strana(y) %1 nenalezena(y) !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	cs	URL vzdáleného eGroupWare, které má manuál pou¾ívat. Pro pou¾ití lokálního manuálu ponechte prázdné (vıchozí nastavení)
+remote egroupware url for the manual to use, empty for a local manual, default	admin	cs	URL vzdÃ¡lenÃ©ho eGroupWare, kterÃ© mÃ¡ manuÃ¡l pouÅ¾Ã­vat. Pro pouÅ¾itÃ­ lokÃ¡lnÃ­ho manuÃ¡lu ponechte prÃ¡zdnÃ© (vÃ½chozÃ­ nastavenÃ­)
 search for	manual	cs	Hledat (co)
-starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	cs	Zaèínám importovat od %1. Proces mù¾e trvat nìkolik minut (zejména pokud ho spou¹títe poprvé)...
-the search returned no result!	manual	cs	Hledání nevrátilo ¾ádné vısledky!
-update url for the local manual, default	admin	cs	Aktualizovat URL pro lokální manuál (vıchozí)
-wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	cs	Wiki Id pro lokální manuál. Vıchozí hodnota je 1. Nastavte 0 pokud chcete pomocí Wiki editovat stránky manuálu.
+starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	cs	ZaÄÃ­nÃ¡m importovat od %1. Proces mÅ¯Å¾e trvat nÄ›kolik minut (zejmÃ©na pokud ho spouÅ¡tÃ­te poprvÃ©)...
+the search returned no result!	manual	cs	HledÃ¡nÃ­ nevrÃ¡tilo Å¾Ã¡dnÃ© vÃ½sledky!
+update url for the local manual, default	admin	cs	Aktualizovat URL pro lokÃ¡lnÃ­ manuÃ¡l (vÃ½chozÃ­)
+wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	cs	Wiki Id pro lokÃ¡lnÃ­ manuÃ¡l. VÃ½chozÃ­ hodnota je 1. Nastavte 0 pokud chcete pomocÃ­ Wiki editovat strÃ¡nky manuÃ¡lu.
