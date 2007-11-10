@@ -58,7 +58,6 @@ not set	wiki	ca	no especificat
 older	wiki	ca	Més antic
 only if browser supports a richtext-editor	admin	ca	Només si el navegador suporta un editor de text enriquit
 please contact the %1administrator%2 for assistance.	wiki	ca	Si us plau, contacteu amb el vostre %1Administrador%2 per a obtenir assistència.
-please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	ca	Contacteu amb l'<a href="mailto:%1">administrador</a> per obtenir suport.
 preview	wiki	ca	Visualització prèvia
 preview of current version	wiki	ca	Visualització prèvia de la Versió Actual
 rate control / ip blocking disabled	wiki	ca	Control de transferència / blocatge d'IP deshabilitat
@@ -91,7 +90,6 @@ writable by	wiki	ca	D'escriptura per a
 yes always	admin	ca	Sí sempre
 you have been denied access to this site.	wiki	ca	Teniu prohibit l'accés a aquest lloc
 you have entered an invalid user name.	wiki	ca	Heu introduït un nom d'usuari invàlid.
-you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	ca	Heu excedit el nombre de planes que teniu permés visitar en un període de temps determinat. Si us plau, torneu més tard.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	ca	Heu excedit el nombre de pàgines que teniu permès de visitar en un determinat espai de temps. Si us plau, torneu més endavant.
 your changes	wiki	ca	Els vostres canvis
 your user name is "%1".	wiki	ca	El vostre nom d'usuari és "%1".

@@ -30,7 +30,6 @@ add role to process	workflow	ca	Afegir paper al procés
 add transitions	workflow	ca	Afegir transicions
 add transitions from	workflow	ca	Afegir transicions de
 add transitions to	workflow	ca	Afegir transicions a
-admin export	workflow	ca	Exportació administrativa
 admin instance	workflow	ca	Instància administrativa
 admin process activities	workflow	ca	Activitats del procés administratiu
 admin process roles	workflow	ca	Papers del procés administratiu
@@ -60,8 +59,6 @@ end activity is not reachable from start activity	workflow	ca	No es pot arribar 
 exception instance	workflow	ca	instància d'excepció
 exceptions	workflow	ca	excepcions
 export	workflow	ca	Exportar
-export a process	workflow	ca	Exportar un procés
-export file	workflow	ca	Exportar Fitxer
 fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	ca	Error fatal: l'activitat següent no coincideix amb cap candidata dins l'activitat de canvi d'encaminament automàtic
 fatal error: non-deterministic decision for autorouting activity	workflow	ca	Error fatal: decisió no determinística per a l'activitat d'encaminament automàtic
 fatal error: setting next activity to an unexisting activity	workflow	ca	Error fatal: se vol enrutar la propera activitat cap a una activitat inexistent
@@ -102,10 +99,8 @@ monitor instances	workflow	ca	Monitorar instàncies
 monitor processes	workflow	ca	Monitorar processos
 monitor work items	workflow	ca	Monitorar elements de treball
 name	workflow	ca	Nom
-new	workflow	ca	Nova
 new major	workflow	ca	Nou major
 new mapping added	workflow	ca	S'ha afegit un nou mapatge
-new mayor	workflow	ca	Nou major
 new minor	workflow	ca	Nou menor
 new transition added	workflow	ca	S'ha afegit una nova transició
 no activity indicated	workflow	ca	No s'ha indicat una activitat

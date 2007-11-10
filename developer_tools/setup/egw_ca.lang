@@ -8,7 +8,7 @@ application	developer_tools	ca	Aplicació
 back	developer_tools	ca	Tornar
 cancel	developer_tools	ca	Cancel·lar
 change	developer_tools	ca	Canviar
-changelog entry has been added	developer_tools	ca	Entrada afegida al Registre de canvis
+changelog entry has been added	developer_tools	ca	Entrada afegida al registre de canvis
 changelogs	developer_tools	ca	Registres de canvis
 clears the internal buffer, all changes made sofar are lost	developer_tools	ca	Neteja l'emmagatzemament intern, tots els canvis fets fins ara es perdran
 create new language file	developer_tools	ca	Crear Nou Arxiu d'Idioma
@@ -18,21 +18,21 @@ developer_tools	common	ca	Eines de Traducció
 diary	developer_tools	ca	Diari
 done	developer_tools	ca	Fet
 download	developer_tools	ca	Descarregar
-download the lang-file to be saved in the apps setup-dir	developer_tools	ca	Descarregar l'arxiu d'idioma per guardar-lo al directori "setup" de l'aplicació
+download the lang-file to be saved in the apps setup-dir	developer_tools	ca	Descarrega l'arxiu d'idioma per guardar-lo al directori "setup" de l'aplicació
 edit	developer_tools	ca	Editar
 installed applications	developer_tools	ca	Aplicacions instal·lades
 language file management	developer_tools	ca	Gestió d'arxius d'idioma
-list changelogs	developer_tools	ca	Llistar Registres de canvi
+list changelogs	developer_tools	ca	Llistar registres de canvi
 load	developer_tools	ca	Carregar
 loading source langfile	developer_tools	ca	Carregant arxiu d'idioma origen
 loading target langfile	developer_tools	ca	Carregant arxiu d'idioma destí
 loads the selected lang-files, to be modified in the next steps	developer_tools	ca	Carrega els arxius d'idioma seleccionats, per modificar-los a les passes següents
 message	developer_tools	ca	Missatge
-message_id in english	developer_tools	ca	Id. de Missatge en Anglès
+message_id in english	developer_tools	ca	Id. de missatge en Anglès
 no file	developer_tools	ca	Sense arxiu
 ok	developer_tools	ca	D'acord
 original	developer_tools	ca	Original
-phrase in english (or empty if identical)	developer_tools	ca	Frase en Anglès (o buit si es igual)
+phrase in english (or empty if identical)	developer_tools	ca	Frase en Anglès (o buit si és igual)
 preferences	developer_tools	ca	Preferències
 preferences have been updated	developer_tools	ca	Preferències actualitzades
 project	developer_tools	ca	Projecte
@@ -47,11 +47,11 @@ search new phrases	developer_tools	ca	Cercar noves frases
 searches the source-code for phrases not in the actual source-lang-file	developer_tools	ca	Cerca en el codi font frases que no hi siguin al arxiu d'idioma actual
 select project	developer_tools	ca	Seleccionar projecte
 sf project tracker	developer_tools	ca	Seguiment de Projecte SF
-sf project tracker preferences	preferences	ca	Preferències de Seguiment de Projecte SF
+sf project tracker preferences	preferences	ca	Preferències de seguiment de Projecte SF
 source language	developer_tools	ca	Idioma Origen
 sourceforge project id	developer_tools	ca	Id. de projecte a Sourceforge
-sourceforge project tracker	developer_tools	ca	Seguiment de Projecte Sourceforge
-sourceforge project tracker preferences	developer_tools	ca	Preferències de Seguiment de Projecte Sourceforge
+sourceforge project tracker	developer_tools	ca	Seguiment de projecte Sourceforge
+sourceforge project tracker preferences	developer_tools	ca	Preferències de seguiment de projecte Sourceforge
 step	developer_tools	ca	Pas
 submit	developer_tools	ca	Enviar
 target language	developer_tools	ca	Idioma Destí
@@ -72,4 +72,3 @@ you must a version	developer_tools	ca	Heu de versionar
 you must enter a change	developer_tools	ca	Heu d'entrar un canvi
 you must select a project	developer_tools	ca	Heu de sel·leccionar un projecte
 you need to set your preferences for this app	developer_tools	ca	Heu d'establir les vostres preferències per a aquesta aplicació
-
