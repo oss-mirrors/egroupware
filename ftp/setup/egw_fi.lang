@@ -1,14 +1,14 @@
 are you sure you want to delete %1 ?	ftp	fi	Haluatko poistaa kohteen %1 ?
-attempt to create a directory with empty name	ftp	fi	Yritit luoda nimetˆn kansio
-attempt to upload a file with empty name	ftp	fi	yritit ladata tiedostoa antamatta sille nime‰
+attempt to create a directory with empty name	ftp	fi	Yritit luoda nimet√∂n kansio
+attempt to upload a file with empty name	ftp	fi	yritit ladata tiedostoa antamatta sille nime√§
 cd	ftp	fi	cd
-connect	ftp	fi	Yhdist‰
+connect	ftp	fi	Yhdist√§
 create new directory	ftp	fi	Tee uusi kansio
-failed to connect to %1 with user %2 and password %3	ftp	fi	Kohteeseen %1 yhdist‰minen ep‰onnistui (k‰ytt‰j‰ %2, salasana %3)
-failed to create directory %1	ftp	fi	Kansion %1 tekeminen ep‰onnistui
-failed to delete %1	ftp	fi	Kohteen %1 poistaminen ep‰onnistui
-failed to rename %1 to %2	ftp	fi	Kohteen %1 nimen vaihto %2:ksi ep‰onnistui
-failed to upload %1	ftp	fi	Kohteen %1 siirt‰minen ep‰onnistui
+failed to connect to %1 with user %2 and password %3	ftp	fi	Kohteeseen %1 yhdist√§minen ep√§onnistui (k√§ytt√§j√§ %2, salasana %3)
+failed to create directory %1	ftp	fi	Kansion %1 tekeminen ep√§onnistui
+failed to delete %1	ftp	fi	Kohteen %1 poistaminen ep√§onnistui
+failed to rename %1 to %2	ftp	fi	Kohteen %1 nimen vaihto %2:ksi ep√§onnistui
+failed to upload %1	ftp	fi	Kohteen %1 siirt√§minen ep√§onnistui
 file %1 already exists!	ftp	fi	tiedosto %1 on jo olemassa!
 ftp client	ftp	fi	Ftp -asiakas
 ftp hostname	ftp	fi	FTP verkkoaseman tunnus
@@ -18,8 +18,8 @@ log into ftp server	ftp	fi	Kirjaudutaan FTP palvelimelle
 logout/relogin	ftp	fi	poistu / kirjaudu uudelleen
 password	ftp	fi	Salasana
 permissions	ftp	fi	Oikeudet
-rename	ftp	fi	nime‰ uudelleen %1
-rename file	ftp	fi	uudelleen nime‰ tiedosto
+rename	ftp	fi	nime√§ uudelleen %1
+rename file	ftp	fi	uudelleen nime√§ tiedosto
 rename from	ftp	fi	Vanha nimi
 rename to	ftp	fi	uusi nimi
 renamed %1 to %2	ftp	fi	Kohde %1 on nyt %2
@@ -28,5 +28,5 @@ size	ftp	fi	Koko
 successfully created directory %1	ftp	fi	Luotiin kohde %1
 successfully deleted %1	ftp	fi	Kohde %1 poistettu
 successfully uploaded %1	ftp	fi	Kohde %1 siirretty
-upload	ftp	fi	siirr‰
-username	ftp	fi	K‰ytt‰j‰tunnus
+upload	ftp	fi	siirr√§
+username	ftp	fi	K√§ytt√§j√§tunnus

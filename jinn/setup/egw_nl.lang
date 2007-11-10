@@ -1,14 +1,14 @@
 "you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	nl	U heeft tot geen site toegang. Vraag uw beheerder om toegang of controleer of er JiNN sites bestaan
 %1 has a one-to-many with %2 (default:%4) showing %3	jinn	nl	%1 heeft een een-op-veel-relatie met %2 (standaardwaarde: %4) en geeft %3 weer
-%1 has a one-to-many with %2 showing %3	jinn	nl	%1 heeft een één-op-veel-relatie met %2 en geeft %3 weer
-%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	nl	%1 heeft een één-op-één-relatie met %2 en gebruikt de configuatie van object %3
+%1 has a one-to-many with %2 showing %3	jinn	nl	%1 heeft een Ã©Ã©n-op-veel-relatie met %2 en geeft %3 weer
+%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	nl	%1 heeft een Ã©Ã©n-op-Ã©Ã©n-relatie met %2 en gebruikt de configuatie van object %3
 %1 new objects where successfully created	jinn	nl	%1nieuwe objecten met succes aangemaakt
 %1 new objects where successfully created%2	jinn	nl	%1 nieuwe objecten zijn met succes toegevoegd %2
 %1 objects available	jinn	nl	%1 objecten beschikbaar
 %1 records	jinn	nl	%1 records
 %1 records per page	jinn	nl	%1 records per pagina
-%1 site obj-fields have been imported.	jinn	nl	%1 Site Objectvelden zijn geïmporteerd
-%1 site objects have been imported.	jinn	nl	Er zijn %1 Site-objecten geïmporteerd.
+%1 site obj-fields have been imported.	jinn	nl	%1 Site Objectvelden zijn geÃ¯mporteerd
+%1 site objects have been imported.	jinn	nl	Er zijn %1 Site-objecten geÃ¯mporteerd.
 %3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	nl	%3: event <b>%1</b> triggered plugin <b>%2</b>
 4 (default)	jinn	nl	4 (standaard)
 access rights	jinn	nl	Toegangsrechten
@@ -23,7 +23,7 @@ access rights for site-object succesfully saved	jinn	nl	Toegangsrechten voor obj
 access rights site-objects	jinn	nl	Toegangsrechten site-objecten
 access_rights	jinn	nl	Toegangsrechten
 action was not succesful. unknown error	jinn	nl	Handeling is mislukt. Onbekende fout.
-action was succesful.	jinn	nl	Handeling is met succes beëindegt.
+action was succesful.	jinn	nl	Handeling is met succes beÃ«indegt.
 actions	jinn	nl	Acties
 actions to apply on all selected objects	jinn	nl	Acties om toe te passen op geselecteerde objecten
 actions to apply on all selected record	jinn	nl	Acties kunnen worden uitgevoerd op geselecteerde records
@@ -43,18 +43,18 @@ add egw_jinn_sites	jinn	nl	Sites toevoegen
 add image	jinn	nl	afbeelding toevoegen
 add image %1	jinn	nl	voeg beeld %1 toe
 add many-to-many relation(s)	jinn	nl	Voeg veel-op-veel-relaties toe
-add many-to-one relation(s)	jinn	nl	Voeg veel-op-één-relaties toe
+add many-to-one relation(s)	jinn	nl	Voeg veel-op-Ã©Ã©n-relaties toe
 add multiple records	jinn	nl	Meerdere records toevoegen
 add new	jinn	nl	Toevoegen
 add new entry	jinn	nl	Record toevoegen
 add new many to many relation	jinn	nl	Nieuwe VEEL-OP-VEEL relatie toevoegen
 add new many with many relation	jinn	nl	Nieuwe VEEL-OP-VEEL relatie toevoegen
-add new one to many	jinn	nl	Nieuwe ÉÉN-OP-VEEL relatie toevoegen
-add new one with many	jinn	nl	Nieuwe ÉÉN-OP-VEEL relatie toevoegen
-add new one-to-one relation	jinn	nl	Nieuwe ÉÉN-OP-ÉÉN-relatie toevoegen
+add new one to many	jinn	nl	Nieuwe Ã‰Ã‰N-OP-VEEL relatie toevoegen
+add new one with many	jinn	nl	Nieuwe Ã‰Ã‰N-OP-VEEL relatie toevoegen
+add new one-to-one relation	jinn	nl	Nieuwe Ã‰Ã‰N-OP-Ã‰Ã‰N-relatie toevoegen
 add object	jinn	nl	Object toevoegen
-add one-to-many relation(s)	jinn	nl	Voeg één-op-veel-relaties toe
-add one-to-one relation(s)	jinn	nl	Voeg één-op-één-relaties toe
+add one-to-many relation(s)	jinn	nl	Voeg Ã©Ã©n-op-veel-relaties toe
+add one-to-one relation(s)	jinn	nl	Voeg Ã©Ã©n-op-Ã©Ã©n-relaties toe
 add optional extra palets	jinn	nl	Voeg extra paletten toe
 add or remove	jinn	nl	toevoegen of verwijderen
 add site	jinn	nl	Site toevoegen
@@ -113,7 +113,7 @@ can't edit more then 99 record at once	jinn	nl	Kan niet meer dan 99 records tege
 can't edit more then 99 record at once (error code 108)	jinn	nl	Kan niet meer dan 99 records in een keer wijzigen (foutcode 108)
 can't write in sites directory	jinn	nl	Kan niet in sites directory schrijven
 cancel	jinn	nl	Annuleren
-cannot copy a record from this table.	jinn	nl	Kan geen record uit deze tabel kopiëren.
+cannot copy a record from this table.	jinn	nl	Kan geen record uit deze tabel kopiÃ«ren.
 canvas	jinn	nl	Kanvas
 category	jinn	nl	Categorie
 change number of records	jinn	nl	wijzig aantal records om toe te voegen
@@ -127,7 +127,7 @@ column name	jinn	nl	kolomnaam
 come back after new valid tablename is saved to configure plugins	jinn	nl	Kom terug nadat een nieuwe geldige tabelnaam is opgeslagen om de insteekmodules te configureren
 come back in edit mode for configuring plugins	jinn	nl	kom terug in de wijzigenweergave om insteekmodules te configureren
 come back in edit mode to configure plugins	jinn	nl	kom terug in de wijzigenweergave om insteekmodules te configureren
-come back in edit mode to enter one-to-one fields for this record.	jinn	nl	Kom terug in bewerken-modus om één-op-één-relaties te bewerken voor dit record.
+come back in edit mode to enter one-to-one fields for this record.	jinn	nl	Kom terug in bewerken-modus om Ã©Ã©n-op-Ã©Ã©n-relaties te bewerken voor dit record.
 configure	jinn	nl	configureer
 configure browse view	jinn	nl	Configureer lijstweergave
 configure field plugin	jinn	nl	veldplugin configureren
@@ -137,12 +137,12 @@ configure this tableview	jinn	nl	configureer deze tabelweergave
 configure this view	jinn	nl	configureer deze weergave
 configure view of	jinn	nl	configureer weergave van
 convert exec ( e.g. /usr/x11r6/bin/convert )	admin	nl	Pad naar de toepassing convert van ImageMagick (bijv.: /usr/X11R6/bin/convert)
-copy	jinn	nl	kopiëer
+copy	jinn	nl	kopiÃ«er
 copy and edit the new record	jinn	nl	Kopieer en open het nieuwe record om te bewerken
 copy record	jinn	nl	Kopieer record
-copy this record?	jinn	nl	Dit record kopiëren?
+copy this record?	jinn	nl	Dit record kopiÃ«ren?
 could not delete site files. please remove manually	jinn	nl	Kan de site-bestanden niet verwijderen. Verwijder deze a.u.b. met de hand.
-could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	nl	Kon geen tabellen vinden! Controleer de database instellingen of creëer een of meer tabellen in de database.
+could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	nl	Kon geen tabellen vinden! Controleer de database instellingen of creÃ«er een of meer tabellen in de database.
 create a new site now	jinn	nl	Een nieuwe site aanmaken
 create new relation	jinn	nl	Maak nieuwe relatie
 criterium	jinn	nl	criterium
@@ -198,8 +198,8 @@ disable the wysiwyg/htmlarea plugin	jinn	nl	De visuele tekstinvoer-plugin(WYSIWY
 display fields	jinn	nl	Velden weergeven
 do you really want to delete this site object?	jinn	nl	Wilt u dit object verwijderen.
 do you really want to delete this site?	jinn	nl	Wilt u deze site verwijderen.
-do you want to copy and then edit this record?	jinn	nl	Wilt u dit record kopiëren en vervolgens bewerken?
-do you want to copy this record?	jinn	nl	Wilt u dit record kopiëren
+do you want to copy and then edit this record?	jinn	nl	Wilt u dit record kopiÃ«ren en vervolgens bewerken?
+do you want to copy this record?	jinn	nl	Wilt u dit record kopiÃ«ren
 don't save / back to list	jinn	nl	Niet opslaan / Terug naar Lijst
 edit	jinn	nl	Wijzig
 edit all selected records	jinn	nl	alle geselecteerde records bewerken
@@ -247,7 +247,7 @@ extra help information for this field	jinn	nl	Extra helpinformatie voor dit veld
 extra palets	jinn	nl	Extra paletten
 extra where sql filter	jinn	nl	Extra WHERE sql filter
 failed	jinn	nl	Mislukt
-failed to copy: %1 to %2 ...	jinn	nl	Het kopiëren van %1 naar %2 is mislukt.
+failed to copy: %1 to %2 ...	jinn	nl	Het kopiÃ«ren van %1 naar %2 is mislukt.
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	nl	FOUT: Het is niet gelukt de tabel te openen. Controleer a.u.b. of de tabel <i>%1</i> nog voorkomt in de database
 field	jinn	nl	veld
 field configuration	jinn	nl	Veldconfiguratie
@@ -267,7 +267,7 @@ fieldname	jinn	nl	Veldnaam
 fields	jinn	nl	velden
 fields enclosed by	jinn	nl	Velden ingesloten door
 fields escaped by	jinn	nl	Velden ontsnapt door
-fields terminated by	jinn	nl	Velden beëindigd door
+fields terminated by	jinn	nl	Velden beÃ«indigd door
 file	jinn	nl	Bestand
 file %1	jinn	nl	Bestand %1
 filename	jinn	nl	bestandsnaam
@@ -306,10 +306,10 @@ global site configuration	admin	nl	Globale Site Configuratie
 go	jinn	nl	ga
 has a many to many relation with	jinn	nl	Heeft een veel-op-veel-relatie met
 has a many to many relation with:	jinn	nl	Heeft een veel-op-veel-relatie met:
-has a one to many relation with	jinn	nl	Heeft een één-op-veel-relatie met
-has a one to many relation with:	jinn	nl	Heeft een één-op-veel-relatie met:
-has a one-to-one relation with	jinn	nl	Heeft een één-op-één-relatie met
-has a one-to-one relation with:	jinn	nl	Heeft een één-op-één-relatie met:
+has a one to many relation with	jinn	nl	Heeft een Ã©Ã©n-op-veel-relatie met
+has a one to many relation with:	jinn	nl	Heeft een Ã©Ã©n-op-veel-relatie met:
+has a one-to-one relation with	jinn	nl	Heeft een Ã©Ã©n-op-Ã©Ã©n-relatie met
+has a one-to-one relation with:	jinn	nl	Heeft een Ã©Ã©n-op-Ã©Ã©n-relatie met:
 header	jinn	nl	Kopgedeelte
 height image  %1	jinn	nl	Hoogte afbeelding %1
 height:	jinn	nl	Hoogte:
@@ -337,16 +337,16 @@ import object from file to this site	jinn	nl	Importeer object vanuit bestand naa
 import site	jinn	nl	Site importeren
 import site from file	jinn	nl	Importeer site uit bestand
 import was succesfull	jinn	nl	Het importeren is gelukt.
-import was succesfull<br>imported one site with	jinn	nl	Het importeren is gelukt.<br/>1 site geïmporteerd met
+import was succesfull<br>imported one site with	jinn	nl	Het importeren is gelukt.<br/>1 site geÃ¯mporteerd met
 in menu	jinn	nl	In menu
 incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	nl	Incompatibiliteit: Object <strong>'%2"</strong>, veld <strong>'%1'</strong>, kenmerk <strong>'%3'</strong> was niet aanwezig in het bestand.
 incompatibility result: object <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	nl	Incompatibiliteit: Object <strong>'%2"</strong>, kenmerk <strong>'%1'</strong> was niet aanwezig in het bestand.
-incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	nl	Incompatibiliteit: Object <strong>'%3"</strong>, veld <strong>'%1'</strong>, kenmerk <strong>'%2'</strong> kon niet worden geïmporteerd omdat deze niet voorkomt in deze JiNN versie.
-incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	nl	Incompatibiliteit: Object <strong>'%3"</strong>, kenmerk <strong>'%1'</strong> met waarde <strong>'%2'</strong> kon niet worden geïmporteerd omdat deze niet voorkomt in deze JiNN versie.
+incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	nl	Incompatibiliteit: Object <strong>'%3"</strong>, veld <strong>'%1'</strong>, kenmerk <strong>'%2'</strong> kon niet worden geÃ¯mporteerd omdat deze niet voorkomt in deze JiNN versie.
+incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	nl	Incompatibiliteit: Object <strong>'%3"</strong>, kenmerk <strong>'%1'</strong> met waarde <strong>'%2'</strong> kon niet worden geÃ¯mporteerd omdat deze niet voorkomt in deze JiNN versie.
 incompatibility result: object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> was not present in the file	jinn	nl	Incompatibiliteit: Object <strong>'%2'</strong>, veld <strong>'%1'</strong>, eigenschap <strong>'%3'</strong> was niet aanwezig in het bestand.
 incompatibility result: object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> could not be imported because it does not exist in this jinn version	jinn	nl	Incompatibiliteit: Object <strong>'%2'</strong>, veld <strong>'%1'</strong>, eigenschap <strong>'%3'</strong> kon niet worden geimporteerd omdat deze niet ondersteund worden in deze JiNN-versie.
 incompatibility result: site <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	nl	Incompatibiliteit: Site <strong>'%2"</strong>, kenmerk <strong>'%1'</strong> was niet aanwezig in het bestand.
-incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	nl	Incompatibiliteit: Site <strong>'%3"</strong>, kenmerk <strong>'%1'</strong> met waarde <strong>'%2'</strong> kon niet worden geïmporteerd omdat deze niet voorkomt in deze JiNN versie.
+incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	nl	Incompatibiliteit: Site <strong>'%3"</strong>, kenmerk <strong>'%1'</strong> met waarde <strong>'%2'</strong> kon niet worden geÃ¯mporteerd omdat deze niet voorkomt in deze JiNN versie.
 index	jinn	nl	index
 info	jinn	nl	info
 information	jinn	nl	informatie
@@ -368,7 +368,7 @@ keep current timestamp	jinn	nl	Behoudt huidige tijdstempel
 keep this empty to let is auto increment	jinn	nl	Laat deze leeg om het automatisch op te laten slaan
 last edited record	jinn	nl	Laatst gewijzigde record
 license	common	nl	Licentie
-lines terminated by	jinn	nl	Regels beëindigd door
+lines terminated by	jinn	nl	Regels beÃ«indigd door
 linked entries	jinn	nl	Gelinkte items
 list record(s)	jinn	nl	Lijst met records
 list record(s) in current object	jinn	nl	Recordlijst in huidig object
@@ -385,8 +385,8 @@ manually enter a new relative file path	jinn	nl	Voer handmatig een bestandspad i
 many 2 many relations will not work	jinn	nl	VEEL-op-VEEL-relaties zullen niet werken
 many-to-many	jinn	nl	Veel-op-Veel
 many-to-many relations	jinn	nl	Veel-op-Veel-relaties
-many-to-one	jinn	nl	Veel-op-Één
-many-to-one relations	jinn	nl	Veel-op-Eén-relaties
+many-to-one	jinn	nl	Veel-op-Ã‰Ã©n
+many-to-one relations	jinn	nl	Veel-op-EÃ©n-relaties
 max records	jinn	nl	Max. records
 max. number of previews in form	jinn	nl	Max. aantal previews in "wijzigen formulier"
 max. records	jinn	nl	Max. aantal records
@@ -423,7 +423,7 @@ no palet defined	jinn	nl	Geen palet gedefinieerd
 no records found	jinn	nl	Geen records gevonden
 no records linked	jinn	nl	Geen records gelinkt
 normal view	jinn	nl	Normale weergave
-not yet implemented	jinn	nl	Nog niet geïmplementeerd
+not yet implemented	jinn	nl	Nog niet geÃ¯mplementeerd
 nothing to save. please select a plugin to delete or configure a new plugin	jinn	nl	Niets om op te slaan. Selecteer een plugin om te verwijderen of configureer een nieuwe plugin
 notice that jinn needs imagemagick 5.4.9 or a later version	admin	nl	Let op JiNN heeft ImageMagick 5.4.9 of een latere versie nodig. U kunt ook de in PHP ingebouwde GDLIB gebruiken.
 number of images to create	jinn	nl	Aantal afbeeldingen om te maken
@@ -442,17 +442,17 @@ old relation method	jinn	nl	Oude relatie methode
 on_update	jinn	nl	bij_bewerken
 one or more records not succesfully added.	jinn	nl	Een of meerdere records konden niet worden toegevoegd.
 one or more records not succesfully saved.	jinn	nl	Een of meerdere records konden niet worden opgeslagen.
-one or more records not succesfully saved. (error code 106)	jinn	nl	Éen of meerdere records konden niet worden opgeslagen (foutcode 106)
+one or more records not succesfully saved. (error code 106)	jinn	nl	Ã‰en of meerdere records konden niet worden opgeslagen (foutcode 106)
 one page backwards	jinn	nl	Een pagina terug
 one page forward	jinn	nl	Een pagina vooruit
-one-to-many	jinn	nl	Eén-op-Veel
-one-to-many relations	jinn	nl	Eén-op-Veel-relaties
-one-to-one	jinn	nl	Eén-op-Eén
-one-to-one relation is broken, please fix it or contact site-developer.<br/>%1	jinn	nl	Eén-op-één-relatie is gebroken. Repareer deze of neem contact op met de beheerder/ontwikkelaar.<br/>%1
-one-to-one relations	jinn	nl	Eén-op-Eén-relaties
+one-to-many	jinn	nl	EÃ©n-op-Veel
+one-to-many relations	jinn	nl	EÃ©n-op-Veel-relaties
+one-to-one	jinn	nl	EÃ©n-op-EÃ©n
+one-to-one relation is broken, please fix it or contact site-developer.<br/>%1	jinn	nl	EÃ©n-op-Ã©Ã©n-relatie is gebroken. Repareer deze of neem contact op met de beheerder/ontwikkelaar.<br/>%1
+one-to-one relations	jinn	nl	EÃ©n-op-EÃ©n-relaties
 only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	nl	Activeer deze optie alleen als u weet wat u doet. U kunt uw gegevens vernietigen door experimentele features te gebruiken
 only if thumnails exits	jinn	nl	Alleen als er een thumbnail bestaat
-only one	jinn	nl	slechts één
+only one	jinn	nl	slechts Ã©Ã©n
 open debugging window.	jinn	nl	Open debugging-venster
 operation on multiple records failed.	jinn	nl	De operatie met meerdere record is mislukt.
 operation on multiple records failed. (error code 100)	jinn	nl	Actie met meerdere records is mislukt. (foutcode 100)
@@ -492,8 +492,8 @@ record deleted succesfully	jinn	nl	Record met succes verwijderd.
 record is not succesfully added.	jinn	nl	Record is NIET met succes toegevoegd.
 record is succesfully added.	jinn	nl	Record is met succes toegevoegd.
 record list	jinn	nl	Recordlijst
-record not succesfully copied	jinn	nl	Record is niet met succes gekopiëerd.
-record not succesfully copied. unknown error	jinn	nl	Record is niet met succes gekopiëerd. Onbekende fout.
+record not succesfully copied	jinn	nl	Record is niet met succes gekopiÃ«erd.
+record not succesfully copied. unknown error	jinn	nl	Record is niet met succes gekopiÃ«erd. Onbekende fout.
 record not succesfully deleted	jinn	nl	Record is NIET met succes verwijderd.
 record not succesfully deleted.	jinn	nl	Record is niet met succes vewijderd.
 record not succesfully deleted. unknown error	jinn	nl	Record is niet met succes verwijderd. Onbekende fout.
@@ -542,7 +542,7 @@ save and add new record	jinn	nl	opslaan en nieuw record toevoegen
 save and add new records	jinn	nl	opslaan en nieuwe records toevoegen
 save and continue	jinn	nl	Opslaan en doorgaan met bewerken
 save and contiue	jinn	nl	Opslaan en doorgaan met bewerken
-save and finish	jinn	nl	Opslaan en bewerking beëindigen
+save and finish	jinn	nl	Opslaan en bewerking beÃ«indigen
 save and return to list	jinn	nl	opslaan en terug naar lijst
 save as	jinn	nl	opslaan als
 save export profile	jinn	nl	Exportprofiel opslaan
@@ -654,7 +654,7 @@ the administrator set an invalid max. file upload size. for safety reasons we no
 the attachments subdirectory does not exist and cannot be created ...	jinn	nl	De documenten subdirectorie bestaat niet en kan niet worden aangemaakt ...
 the attachments subdirectory is not writable by the webserver ...	jinn	nl	De documenten subdirectorie is niet schrijfbaar voor de webserver ...
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	nl	Het bestand, %1, dat u heeft ge-upload, is corrupt, is geen beeldbestand of het beeldformaat wordt niet door JiNN ondersteund.
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	nl	Het bestand, %1, dat u heeft ge-upload, is corrupt, is geen beeldbestand of het beeldformaat wordt niet door JiNN ondersteund. Als deze fout terugkeert controleer dan uw installatie van ImageMagick. Oudere versies van ImageMagick werken niet goed met JiNN. Zorg ervoor dat uw ImageMagick versie 5.4.9 of hogen heeft geïnstalleerd.
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	nl	Het bestand, %1, dat u heeft ge-upload, is corrupt, is geen beeldbestand of het beeldformaat wordt niet door JiNN ondersteund. Als deze fout terugkeert controleer dan uw installatie van ImageMagick. Oudere versies van ImageMagick werken niet goed met JiNN. Zorg ervoor dat uw ImageMagick versie 5.4.9 of hogen heeft geÃ¯nstalleerd.
 the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	nl	Het GIF-bestandstype wordt niet door deze server ondersteund. Klik op terug en probeer a.u.b. een ander bestandstype te uploaden.
 the identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5	jinn	nl	Het identificatieveld van deze tabel, %1, vertegenwoordigt door %2, heeft een veel-op-veel relatie met %3 vertegenwoordigd door %4 en geeft %5 weer.
 the identifyer from this table (%1.id) represented by	jinn	nl	Het identificatieveld van deze tabel (%1.id) vertegenwoordigt door
@@ -727,7 +727,7 @@ you cannot delete the session filter	jinn	nl	U kunt niet het filter van de huidi
 you don't have access to this page.	jinn	nl	U heeft geen toegang tot deze pagina.
 you have no access to this file.	jinn	nl	U heeft toegang tot dit bestand.
 you have no access to this object	jinn	nl	U heeft geen toegang tot dit object.
-you must select one or more records for this function.	jinn	nl	U moet eerst één of meerdere records selecteren.
+you must select one or more records for this function.	jinn	nl	U moet eerst Ã©Ã©n of meerdere records selecteren.
 you must select one or more sites for this function.	jinn	nl	U moet een of meerdere sites selecteren voor de functie.
 you're not allowed to acces this screen.	jinn	nl	U heeft geen toegang tot de pagina die u opvroeg
 you're not allowed to administrate media files	jinn	nl	U bent niet toegestaan om mediabestanden te beheren.

@@ -9,26 +9,26 @@ add acl	mydms	pt	Adicionarl ACL
 add document	mydms	pt	Adicionar documento
 add notification	mydms	pt	Adicionar aviso
 add subfolder	mydms	pt	Adicionar subpasta
-admin-tools	mydms	pt	Ferramentas de administraÁ„o
-all versions	mydms	pt	todas as versıes
-comment	mydms	pt	Coment·rio
-comment for current version	mydms	pt	Coment·rios da vers„o actual
+admin-tools	mydms	pt	Ferramentas de administra√ß√£o
+all versions	mydms	pt	todas as vers√µes
+comment	mydms	pt	Coment√°rio
+comment for current version	mydms	pt	Coment√°rios da vers√£o actual
 copy acl	mydms	pt	Copiar ACL
 copy documents	mydms	pt	Copiar documentos
 copy folder	mydms	pt	Copiar pasta
-copy options	mydms	pt	Copiar opÁıes
+copy options	mydms	pt	Copiar op√ß√µes
 copy subfolders	mydms	pt	Copiar subpasta
 create empty acl	mydms	pt	Criar acl vazio
-creation date	mydms	pt	Data de criaÁ„o
+creation date	mydms	pt	Data de cria√ß√£o
 current acl	mydms	pt	ACL actual
-current version	mydms	pt	Vers„o actual
-default access	mydms	pt	acesso por omiss„o
+current version	mydms	pt	Vers√£o actual
+default access	mydms	pt	acesso por omiss√£o
 delete folder	mydms	pt	Eliminar pasta
 delete this notification	mydms	pt	Eliminar este aviso
 do you really want to delete this acl?	mydms	pt	Deseja realmente eliminar este acl?
 do you really want to delete this document?	mydms	pt	Deseja realmente eliminar este documento?
-do you really want to delete this version of the document?	mydms	pt	Deseja realmente eliminar esta vers„o do documento?
-does not expire	mydms	pt	N„o expira
+do you really want to delete this version of the document?	mydms	pt	Deseja realmente eliminar esta vers√£o do documento?
+does not expire	mydms	pt	N√£o expira
 download	mydms	pt	Transferir
 edit folder	mydms	pt	Editar pasta
 expires	mydms	pt	Expira
@@ -36,11 +36,11 @@ expires after	mydms	pt	Expira depois
 file size	mydms	pt	Tamanho do ficheiro
 filename	mydms	pt	Nome do ficheiro
 folder	mydms	pt	Pasta
-general information	mydms	pt	informaÁ„o geral
-information about last update	mydms	pt	informaÁıes sobre a ˙ltima actualizaÁ„o
-informations	mydms	pt	InformaÁıes
+general information	mydms	pt	informa√ß√£o geral
+information about last update	mydms	pt	informa√ß√µes sobre a √∫ltima actualiza√ß√£o
+informations	mydms	pt	Informa√ß√µes
 inherit acl again	mydms	pt	ACL herdado de novo
-last update	mydms	pt	⁄ltima actualizaÁ„o
+last update	mydms	pt	√öltima actualiza√ß√£o
 linked documents	mydms	pt	Documentos ligados
 lock status	mydms	pt	Estado trancado
 mime type	mydms	pt	Mime Type
@@ -48,13 +48,13 @@ move document	mydms	pt	Mover documento
 move folder	mydms	pt	Mover pasta
 mydms	common	pt	MyDms
 notifications	mydms	pt	Avisos
-permission	mydms	pt	Permiss„o
+permission	mydms	pt	Permiss√£o
 select folder	mydms	pt	Seleccionar pasta
 select target folder	mydms	pt	Seleccionar pasta de destino
 target folder	mydms	pt	Pasta de destino
-this document gets locked by you!	mydms	pt	Este documento È trancado por si!
-this document gets unlocked by you.	mydms	pt	Este documento È destrancado por si.
-this document is currently not locked.	mydms	pt	Este documento n„o se encontra trancado.
+this document gets locked by you!	mydms	pt	Este documento √© trancado por si!
+this document gets unlocked by you.	mydms	pt	Este documento √© destrancado por si.
+this document is currently not locked.	mydms	pt	Este documento n√£o se encontra trancado.
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	pt	Este documento foi trancado por <a href="mailto:%1">%2</a>.
 update document	mydms	pt	Actualizar documento
 upload date	mydms	pt	Enviar data

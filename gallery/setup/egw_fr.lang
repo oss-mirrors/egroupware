@@ -1,38 +1,38 @@
-after successful installation of all instances, you have to copy %1 to %2!	gallery	fr	Après la création réussie de l'instance, vous devez copier %1 vers %2!
+after successful installation of all instances, you have to copy %1 to %2!	gallery	fr	AprÃ¨s la crÃ©ation rÃ©ussie de l'instance, vous devez copier %1 vers %2!
 album frame (%1samples%2)	gallery	fr	Cadre de l'album (%1Echantillons%2)
-all filenames are relative to %1.	gallery	fr	Tous les noms de fichiers sont relatifs à %1.
-all other egroupware users will be created by the g2 integration including there admin rights.	gallery	fr	Tous les autres utilisateurs eGroupWare seront créés par l'intégration G2 y-compris les droits administrateur.
-an error occurred during user creation in g2.	gallery	fr	Une erreur s'est produite lors de la création de l'utilisateur dans G2.
+all filenames are relative to %1.	gallery	fr	Tous les noms de fichiers sont relatifs Ã  %1.
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	fr	Tous les autres utilisateurs eGroupWare seront crÃ©Ã©s par l'intÃ©gration G2 y-compris les droits administrateur.
+an error occurred during user creation in g2.	gallery	fr	Une erreur s'est produite lors de la crÃ©ation de l'utilisateur dans G2.
 an error occurred while trying to initialize g2.	gallery	fr	Une erreur s'est produite lors de l'initialisation de G2.
-can be used to limit the block to a certain album.	gallery	fr	Peut être utilisé pour limiter le bloc à un certain album.
-complete gallery	gallery	fr	Galerie Complète
-default item to show in the gallery.	gallery	fr	Elément par défaut à afficher dans la Galerie
-extra information to show	gallery	fr	Information complémentaire à afficher
+can be used to limit the block to a certain album.	gallery	fr	Peut Ãªtre utilisÃ© pour limiter le bloc Ã  un certain album.
+complete gallery	gallery	fr	Galerie ComplÃ¨te
+default item to show in the gallery.	gallery	fr	ElÃ©ment par dÃ©faut Ã  afficher dans la Galerie
+extra information to show	gallery	fr	Information complÃ©mentaire Ã  afficher
 for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	fr	Pour de multiples instances eGroupWare, vous devez supprimer %1 afin de pouvoir installer l'instance suivante.
-full size	gallery	fr	Taille réelle
+full size	gallery	fr	Taille rÃ©elle
 gallery	common	fr	Galerie
 gallery menu	gallery	fr	Menu de la Galerie
-gallery sidebar	gallery	fr	Barre latérale de la Galerie
-gallery without sidebar	gallery	fr	Galerie sans barre latérale
-gallery2 is not installed, you need to %1do that%2 first!!!	gallery	fr	Galerie2 n'est PAS installée, vous devez %1le faire%2 en premier!!!
-heading	gallery	fr	Entête
+gallery sidebar	gallery	fr	Barre latÃ©rale de la Galerie
+gallery without sidebar	gallery	fr	Galerie sans barre latÃ©rale
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	fr	Galerie2 n'est PAS installÃ©e, vous devez %1le faire%2 en premier!!!
+heading	gallery	fr	EntÃªte
 image frame (%1samples%2)	gallery	fr	Cadre d'image (%1Echantillons%2)
 imageblock	gallery	fr	Bloc d'image
 imageblock of the gallery	gallery	fr	Bloc d'image de la Galerie
-item id (number)	gallery	fr	N° d'élément (chiffre)
-one or more blocks to show	gallery	fr	Un ou plusieurs blocs à afficher
-pagename of an other page to link to	gallery	fr	Nom de la page à lier à une autre
+item id (number)	gallery	fr	NÂ° d'Ã©lÃ©ment (chiffre)
+one or more blocks to show	gallery	fr	Un ou plusieurs blocs Ã  afficher
+pagename of an other page to link to	gallery	fr	Nom de la page Ã  lier Ã  une autre
 please note:	gallery	fr	Veuillez noter:
-set block title to	gallery	fr	Fixer le titre du bloc à
+set block title to	gallery	fr	Fixer le titre du bloc Ã 
 set gallery title as page-title?	gallery	fr	Fixer le titre de la Galerie comme titre de la page?
 should contain a "gallery" block in contentarea "center".	gallery	fr	Devrait contenir un bloc "galerie" dans la zone de contenu "centre".
-size (maximum number of pixel of the longest side)	gallery	fr	Taille (nombre de pixel maximum du côté le plus long)
-specific item (requires itemid!)	gallery	fr	élément spécifique (requiert n° d'élément!)
-the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	fr	Le compte administrateur doit être un compte eGroupWare connu en respectant exactement la même orthographe!
-type of the embeded gallery	gallery	fr	Type de la Galerie imbriquée
-use %1 as g2 data directory.	gallery	fr	Utilisez %1 comme répertoire de données G2.
-use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	fr	Utilisez les mêmes réglages de base de données que pour votre installation eGW (voir votre fichier %1) et laissez les préfixes de tables et de colonnes comme suggéré.
-use this module to display the embeded gallery	gallery	fr	Uiltisez ce module pour afficher la Galerie imbriquée
-view count	gallery	fr	Voir quantité
-you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	fr	Vous pouvez obtenir l'ID du paramètre "g2_itemId" dans l'URL quand vous cliquez sur l'élément.
+size (maximum number of pixel of the longest side)	gallery	fr	Taille (nombre de pixel maximum du cÃ´tÃ© le plus long)
+specific item (requires itemid!)	gallery	fr	Ã©lÃ©ment spÃ©cifique (requiert nÂ° d'Ã©lÃ©ment!)
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	fr	Le compte administrateur doit Ãªtre un compte eGroupWare connu en respectant exactement la mÃªme orthographe!
+type of the embeded gallery	gallery	fr	Type de la Galerie imbriquÃ©e
+use %1 as g2 data directory.	gallery	fr	Utilisez %1 comme rÃ©pertoire de donnÃ©es G2.
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	fr	Utilisez les mÃªmes rÃ©glages de base de donnÃ©es que pour votre installation eGW (voir votre fichier %1) et laissez les prÃ©fixes de tables et de colonnes comme suggÃ©rÃ©.
+use this module to display the embeded gallery	gallery	fr	Uiltisez ce module pour afficher la Galerie imbriquÃ©e
+view count	gallery	fr	Voir quantitÃ©
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	fr	Vous pouvez obtenir l'ID du paramÃ¨tre "g2_itemId" dans l'URL quand vous cliquez sur l'Ã©lÃ©ment.
 you have no rights to view %1 content !!!	gallery	fr	Vous n'avez pas la permission d'afficher le contenu de %1 !!!

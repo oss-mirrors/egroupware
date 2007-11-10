@@ -32,21 +32,21 @@ filter by	bookmarks	it	Filtra per
 found a link you might like	bookmarks	it	Trovato un link che ti potrebbe piacere
 from	bookmarks	it	Da
 from category %1	bookmarks	it	dalla categoria %1
-highest	bookmarks	it	Più alto
+highest	bookmarks	it	PiÃ¹ alto
 i thought you would be interested in the following link(s):	bookmarks	it	Ho pensato che saresti stato interessato ai seguenti link:
 import bookmarks	common	it	Importa segnalibri
 like	bookmarks	it	come
 list view	bookmarks	it	elenco
-lowest	bookmarks	it	Più basso
+lowest	bookmarks	it	PiÃ¹ basso
 mail this bookmark	bookmarks	it	Invia questo segnalibro
 mail-this-link message sent to %1.	bookmarks	it	messaggio invia-questo-link inviato a %1.
 mass update:	bookmarks	it	Aggiornamento cumulativo:
 message from	bookmarks	it	Messaggio da
 more	bookmarks	it	Altro
 name	bookmarks	it	Nome
-name is required	bookmarks	it	Il nome è richiesto
+name is required	bookmarks	it	Il nome Ã¨ richiesto
 netscape bookmark file	bookmarks	it	File Segnalibri Netscape
-netscape bookmark filename is required!	bookmarks	it	NomeFile dei Segnalibri di Netscape è richiesto !
+netscape bookmark filename is required!	bookmarks	it	NomeFile dei Segnalibri di Netscape Ã¨ richiesto !
 new	bookmark	it	Nuovo
 new bookmark	bookmarks	it	nuovo segnalibro
 or	bookmarks	it	o
@@ -58,7 +58,7 @@ search for:	bookmarks	it	Cerca:
 select the format you would like to export to	bookmarks	it	Seleziona il formato per l'esportazione
 send bookmark	bookmarks	it	Invia segnalibro
 sub category	bookmarks	it	SottoCategoria
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	it	L'indirizzo %1 non è valido. Il formato deve essere <strong>utente@dominio</strong> e il dominio deve esistere!
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	it	L'indirizzo %1 non Ã¨ valido. Il formato deve essere <strong>utente@dominio</strong> e il dominio deve esistere!
 to e-mail addresses	bookmarks	it	Indirizzi email A
 to which category should the imported folder hierarchy be attached	bookmarks	it	A quale categoria deve appartenere la gerarchia delle cartelle importate
 total visits	bookmarks	it	visite totali

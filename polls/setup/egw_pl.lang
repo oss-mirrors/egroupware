@@ -1,39 +1,39 @@
 actions	polls	pl	Akcje
 add answer to poll	polls	pl	Dodawanie odpowiedzi
-add answers	polls	pl	Dodaj odpowiedº
+add answers	polls	pl	Dodaj odpowied≈∫
 add new poll question	polls	pl	Dodawanie nowych pyta
 add questions	polls	pl	Dodaj pytanie
 administrators	polls	pl	Administratorzy
-allow users to vote more then once	polls	pl	PozwÛl uøytkownikom g≥osowaÊ wiÍcej niø jeden raz
-allways use latest poll	polls	pl	Zawsze uøywaj najnowszego g≥osowania
-answer	polls	pl	Odpowiedº
-answer has been added to poll	polls	pl	Dodano odpowiedº do g≥osowania
-answer has been updated	polls	pl	Zaktualizowano odpowiedº
+allow users to vote more then once	polls	pl	Pozw√≥l u≈ºytkownikom g≈Çosowaƒá wiƒôcej ni≈º jeden raz
+allways use latest poll	polls	pl	Zawsze u≈ºywaj najnowszego g≈Çosowania
+answer	polls	pl	Odpowied≈∫
+answer has been added to poll	polls	pl	Dodano odpowied≈∫ do g≈Çosowania
+answer has been updated	polls	pl	Zaktualizowano odpowied≈∫
 answers	polls	pl	Odpowiedzi
-are you sure want to delete this answer ?	polls	pl	Na pewno usun±Ê odpowiedº?
-are you sure want to delete this question ?	polls	pl	Na pewno usun±Ê pytanie?
-current poll	polls	pl	Aktywne g≥osowanie
+are you sure want to delete this answer ?	polls	pl	Na pewno usunƒÖƒá odpowied≈∫?
+are you sure want to delete this question ?	polls	pl	Na pewno usunƒÖƒá pytanie?
+current poll	polls	pl	Aktywne g≈Çosowanie
 edit answer	polls	pl	Edycja odpowiedzi
 edit poll question	polls	pl	Edycja pytania
-egroupware users (non-anonymous)	polls	pl	uøytkownicy eGroupWare (nie osoby anonimowe)
+egroupware users (non-anonymous)	polls	pl	u≈ºytkownicy eGroupWare (nie osoby anonimowe)
 enter poll question	polls	pl	Wpisz pytanie
-everyone incl. anonymous users	polls	pl	wszyscy - ≥±cznie z osobami anonimowymi
-new poll has been added.  you should now add some answers for this poll	polls	pl	Dodano nowe g≥osowanie. Teraz naleøy dodaÊ odpowiedzi
-noone	polls	pl	Nikt, ale naprawdÍ nikt
+everyone incl. anonymous users	polls	pl	wszyscy - ≈ÇƒÖcznie z osobami anonimowymi
+new poll has been added.  you should now add some answers for this poll	polls	pl	Dodano nowe g≈Çosowanie. Teraz nale≈ºy dodaƒá odpowiedzi
+noone	polls	pl	Nikt, ale naprawdƒô nikt
 poll question	polls	pl	Pytanie
-poll votable by	polls	pl	Mog± g≥osowaÊ
-polls	common	pl	G≥osowania
+poll votable by	polls	pl	MogƒÖ g≈Çosowaƒá
+polls	common	pl	G≈Çosowania
 question has been updated	polls	pl	Zaktualizowano pytanie
 result visible to	polls	pl	Wynik widoczny dla
-select current poll	polls	pl	Wybierz aktualne g≥osowanie
-settings updated	polls	pl	Uaktualniono konfiguracjÍ
-show answers	polls	pl	Pokaø odpowiedzi
-show questions	common	pl	Pokaø pytania
-total votes	polls	pl	Wszystkich g≥osÛw
-view poll	polls	pl	Wy∂wietl g≥osowania
+select current poll	polls	pl	Wybierz aktualne g≈Çosowanie
+settings updated	polls	pl	Uaktualniono konfiguracjƒô
+show answers	polls	pl	Poka≈º odpowiedzi
+show questions	common	pl	Poka≈º pytania
+total votes	polls	pl	Wszystkich g≈Ços√≥w
+view poll	polls	pl	Wy≈õwietl g≈Çosowania
 view results	polls	pl	Zobacz rezultaty
-vote	polls	pl	G≥osuj
-voting booth admin	admin	pl	G≥osowania
-voting booth administration	polls	pl	Administracja g≥osowaniami
-which poll	polls	pl	WybÛr g≥osowania
-you are not (yet) allowed view the result of this vote.	polls	pl	Nie masz (jeszcze) zgody na ogl±danie wyniku tego g≥osowania.
+vote	polls	pl	G≈Çosuj
+voting booth admin	admin	pl	G≈Çosowania
+voting booth administration	polls	pl	Administracja g≈Çosowaniami
+which poll	polls	pl	Wyb√≥r g≈Çosowania
+you are not (yet) allowed view the result of this vote.	polls	pl	Nie masz (jeszcze) zgody na oglƒÖdanie wyniku tego g≈Çosowania.

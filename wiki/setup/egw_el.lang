@@ -1,111 +1,111 @@
-(don't offer the possibility)	admin	el	(μην προσφέρετε την πιθανότητα)
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	el	<em>Αλλά</em> προβολή τουλάχιστον αυτών των πολλών εισόδων στο ΠρόσφατεςΑλλαγές και σε άλλες λίστες εγγραφής:
-add document to category	wiki	el	Προσθήκη εγγράφου στην κατηγορία
-added	wiki	el	Προστέθηκε
-administration features are disabled for this wiki.	wiki	el	Τα διαχεριστικά χαρακτηριστικά είναι απενεργοποιημένα για αυτό το wiki.
-admins	wiki	el	διαχειριστές
-after how many days should old versions of a page be removed (0 for never)	admin	el	Μετά από πόσες ημέρες θέλτε οι παλιές εκδόσεις μιας σελίδας να αφαιρούνται(0 για ποτέ)
-allow anonymous access	admin	el	επιτρέψτε την είσοδο των ανωνύμων
-anonymous password	admin	el	Κωδικός ανωνύμου
-anonymous session type	admin	el	Τύπος Συνεδρίας Ανωνύμου
-anonymous username	admin	el	username ανωνύμου
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	el	Αυτόματη μετατροπή σελίδων με wiki-σύνταξη σε richtext (αν έχει δημοσευθεί);
-block	wiki	el	Αποκλεισμός
-block / unblock hosts	common	el	Αποκλεισμός / Παύση αποκλεισμού ξενιστή
-blocked ip address ranges	wiki	el	Αποκλείστηκαν ζώνες IP διευθύνσεων
-cancel without saving	wiki	el	Ακύρωση χωρίς αποθήκευση
-changed	wiki	el	Έγινε αλλαγή
-changes by last author	wiki	el	Αλλαγές τελευταίου συγγραφέα
-choose your current time here, so the server may figure out what time zone you are in.	wiki	el	Επιλέξτε την τρέχουσα ώρα, για να μπορέσει ο server να υπολογίσει σε ποια ζώνη βρίσκεστε.
-columns	wiki	el	Στήλες
-compute difference	wiki	el	Διαφορές υπολογιστή
-converts the page to richtext	wiki	el	Μετατρέπει αυτή τη σελίδα σε richtext
-current version	wiki	el	Τρέχουσα έκδοση
-deleted	wiki	el	Διεγράφη
-deletes this page	wiki	el	Διαγράφει αυτή τη σελίδα
-difference between versions	wiki	el	Διαφορά μεταηύ των  εκδόσεων
-differences in	wiki	el	Διαφορές σε
-different languages can have different titles	wiki	el	διαφορετικές γλώσσες μπορεί να έχουν διαφορετικούς τίτλους
-document last modified	wiki	el	Τελευταία τροποποίηση εγγράφου
-edit box	wiki	el	Επεξεργασία κουτιού
-edit this <em>archive version</em> of this document	wiki	el	Επεξεργασία αυτού <em>ARCHIVE VERSION</em> αυτού του εγγράφου
-edit this document	wiki	el	Επεξεργασία αυτού του εγγράφου
-edit with preview	admin	el	Επεξεργασία με Προεπισκόπηση
-editable	admin	el	επεξεργάσιμο
-editing	wiki	el	Επεξεργάζεται
-emailaddress administrator	admin	el	Διαχειριστής διεύθυνσης email
-enable free links	admin	el	Ενεργοποίηση Ελεύθερων Συνδέσμων
-enable wiki links	admin	el	Ενεργοποίηση Wiki Συνδέσμων
-enter here the maximum number of entries to display in a document's history list.	wiki	el	Πληκτρολογήστε εδώ το μέγιστο αριθμό εισόδων προς προβολή στον Ιστορικό Κατάλογο του εγγράφου.
-enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	el	Πληκτρολογήστε εδώ το μέγιστο αριθμό ημερών των επεξεργασιών στις ΠρόσφατεςΑλλαγές ή σε οποιαδήποτε άλλη λίστα εγγραφής.
-enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	el	Πληκτρολογήστε τη ζώνη της IP διεύθυνσης στη φόρμα <tt>12.*</tt>, <tt>34.56.*</tt>, ή <tt>78.90.123.*</tt>
-error creating temporary file.	wiki	el	Σφάλμα κατά τη δημιουργία προσωρινού αρχείου.
-error writing to temporary file.	wiki	el	Σφάλμα κατά την εγγραφή  στο προσωρινό αρχείο.
-everyone	wiki	el	όλοι
-find	wiki	el	Αναζήτηση
-history	wiki	el	Ιστορικό
-history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	el	Η προβολή του ιστορικού θα έπρεπε αν εφανίζει <em>all</em> αλλαγές που έγιναν από τον τελευταίο συγγραφέα. Διαφορετικά, προβολή μόνο της τελευταίας αλλαγής.
-history lists	wiki	el	Ιστορικός Κατάλογς
-history of	wiki	el	Ιστορικό του
+(don't offer the possibility)	admin	el	(ΞΌΞ·Ξ½ Ο€ΟΞΏΟƒΟ†Ξ­ΟΞµΟ„Ξµ Ο„Ξ·Ξ½ Ο€ΞΉΞΈΞ±Ξ½ΟΟ„Ξ·Ο„Ξ±)
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	el	<em>Ξ‘Ξ»Ξ»Ξ¬</em> Ο€ΟΞΏΞ²ΞΏΞ»Ξ® Ο„ΞΏΟ…Ξ»Ξ¬Ο‡ΞΉΟƒΟ„ΞΏΞ½ Ξ±Ο…Ο„ΟΞ½ Ο„Ο‰Ξ½ Ο€ΞΏΞ»Ξ»ΟΞ½ ΞµΞΉΟƒΟΞ΄Ο‰Ξ½ ΟƒΟ„ΞΏ Ξ ΟΟΟƒΟ†Ξ±Ο„ΞµΟ‚Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ ΞΊΞ±ΞΉ ΟƒΞµ Ξ¬Ξ»Ξ»ΞµΟ‚ Ξ»Ξ―ΟƒΟ„ΞµΟ‚ ΞµΞ³Ξ³ΟΞ±Ο†Ξ®Ο‚:
+add document to category	wiki	el	Ξ ΟΞΏΟƒΞΈΞ®ΞΊΞ· ΞµΞ³Ξ³ΟΞ¬Ο†ΞΏΟ… ΟƒΟ„Ξ·Ξ½ ΞΊΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ±
+added	wiki	el	Ξ ΟΞΏΟƒΟ„Ξ­ΞΈΞ·ΞΊΞµ
+administration features are disabled for this wiki.	wiki	el	Ξ¤Ξ± Ξ΄ΞΉΞ±Ο‡ΞµΟΞΉΟƒΟ„ΞΉΞΊΞ¬ Ο‡Ξ±ΟΞ±ΞΊΟ„Ξ·ΟΞΉΟƒΟ„ΞΉΞΊΞ¬ ΞµΞ―Ξ½Ξ±ΞΉ Ξ±Ο€ΞµΞ½ΞµΟΞ³ΞΏΟ€ΞΏΞΉΞ·ΞΌΞ­Ξ½Ξ± Ξ³ΞΉΞ± Ξ±Ο…Ο„Ο Ο„ΞΏ wiki.
+admins	wiki	el	Ξ΄ΞΉΞ±Ο‡ΞµΞΉΟΞΉΟƒΟ„Ξ­Ο‚
+after how many days should old versions of a page be removed (0 for never)	admin	el	ΞΞµΟ„Ξ¬ Ξ±Ο€Ο Ο€ΟΟƒΞµΟ‚ Ξ·ΞΌΞ­ΟΞµΟ‚ ΞΈΞ­Ξ»Ο„Ξµ ΞΏΞΉ Ο€Ξ±Ξ»ΞΉΞ­Ο‚ ΞµΞΊΞ΄ΟΟƒΞµΞΉΟ‚ ΞΌΞΉΞ±Ο‚ ΟƒΞµΞ»Ξ―Ξ΄Ξ±Ο‚ Ξ½Ξ± Ξ±Ο†Ξ±ΞΉΟΞΏΟΞ½Ο„Ξ±ΞΉ(0 Ξ³ΞΉΞ± Ο€ΞΏΟ„Ξ­)
+allow anonymous access	admin	el	ΞµΟ€ΞΉΟ„ΟΞ­ΟΟ„Ξµ Ο„Ξ·Ξ½ ΞµΞ―ΟƒΞΏΞ΄ΞΏ Ο„Ο‰Ξ½ Ξ±Ξ½Ο‰Ξ½ΟΞΌΟ‰Ξ½
+anonymous password	admin	el	ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚ Ξ±Ξ½Ο‰Ξ½ΟΞΌΞΏΟ…
+anonymous session type	admin	el	Ξ¤ΟΟ€ΞΏΟ‚ Ξ£Ο…Ξ½ΞµΞ΄ΟΞ―Ξ±Ο‚ Ξ‘Ξ½Ο‰Ξ½ΟΞΌΞΏΟ…
+anonymous username	admin	el	username Ξ±Ξ½Ο‰Ξ½ΟΞΌΞΏΟ…
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	el	Ξ‘Ο…Ο„ΟΞΌΞ±Ο„Ξ· ΞΌΞµΟ„Ξ±Ο„ΟΞΏΟ€Ξ® ΟƒΞµΞ»Ξ―Ξ΄Ο‰Ξ½ ΞΌΞµ wiki-ΟƒΟΞ½Ο„Ξ±ΞΎΞ· ΟƒΞµ richtext (Ξ±Ξ½ Ξ­Ο‡ΞµΞΉ Ξ΄Ξ·ΞΌΞΏΟƒΞµΟ…ΞΈΞµΞ―);
+block	wiki	el	Ξ‘Ο€ΞΏΞΊΞ»ΞµΞΉΟƒΞΌΟΟ‚
+block / unblock hosts	common	el	Ξ‘Ο€ΞΏΞΊΞ»ΞµΞΉΟƒΞΌΟΟ‚ / Ξ Ξ±ΟΟƒΞ· Ξ±Ο€ΞΏΞΊΞ»ΞµΞΉΟƒΞΌΞΏΟ ΞΎΞµΞ½ΞΉΟƒΟ„Ξ®
+blocked ip address ranges	wiki	el	Ξ‘Ο€ΞΏΞΊΞ»ΞµΞ―ΟƒΟ„Ξ·ΞΊΞ±Ξ½ Ξ¶ΟΞ½ΞµΟ‚ IP Ξ΄ΞΉΞµΟ…ΞΈΟΞ½ΟƒΞµΟ‰Ξ½
+cancel without saving	wiki	el	Ξ‘ΞΊΟΟΟ‰ΟƒΞ· Ο‡Ο‰ΟΞ―Ο‚ Ξ±Ο€ΞΏΞΈΞ®ΞΊΞµΟ…ΟƒΞ·
+changed	wiki	el	ΞΞ³ΞΉΞ½Ξµ Ξ±Ξ»Ξ»Ξ±Ξ³Ξ®
+changes by last author	wiki	el	Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ Ο„ΞµΞ»ΞµΟ…Ο„Ξ±Ξ―ΞΏΟ… ΟƒΟ…Ξ³Ξ³ΟΞ±Ο†Ξ­Ξ±
+choose your current time here, so the server may figure out what time zone you are in.	wiki	el	Ξ•Ο€ΞΉΞ»Ξ­ΞΎΟ„Ξµ Ο„Ξ·Ξ½ Ο„ΟΞ­Ο‡ΞΏΟ…ΟƒΞ± ΟΟΞ±, Ξ³ΞΉΞ± Ξ½Ξ± ΞΌΟ€ΞΏΟΞ­ΟƒΞµΞΉ ΞΏ server Ξ½Ξ± Ο…Ο€ΞΏΞ»ΞΏΞ³Ξ―ΟƒΞµΞΉ ΟƒΞµ Ο€ΞΏΞΉΞ± Ξ¶ΟΞ½Ξ· Ξ²ΟΞ―ΟƒΞΊΞµΟƒΟ„Ξµ.
+columns	wiki	el	Ξ£Ο„Ξ®Ξ»ΞµΟ‚
+compute difference	wiki	el	Ξ”ΞΉΞ±Ο†ΞΏΟΞ­Ο‚ Ο…Ο€ΞΏΞ»ΞΏΞ³ΞΉΟƒΟ„Ξ®
+converts the page to richtext	wiki	el	ΞΞµΟ„Ξ±Ο„ΟΞ­Ο€ΞµΞΉ Ξ±Ο…Ο„Ξ® Ο„Ξ· ΟƒΞµΞ»Ξ―Ξ΄Ξ± ΟƒΞµ richtext
+current version	wiki	el	Ξ¤ΟΞ­Ο‡ΞΏΟ…ΟƒΞ± Ξ­ΞΊΞ΄ΞΏΟƒΞ·
+deleted	wiki	el	Ξ”ΞΉΞµΞ³ΟΞ¬Ο†Ξ·
+deletes this page	wiki	el	Ξ”ΞΉΞ±Ξ³ΟΞ¬Ο†ΞµΞΉ Ξ±Ο…Ο„Ξ® Ο„Ξ· ΟƒΞµΞ»Ξ―Ξ΄Ξ±
+difference between versions	wiki	el	Ξ”ΞΉΞ±Ο†ΞΏΟΞ¬ ΞΌΞµΟ„Ξ±Ξ·Ο Ο„Ο‰Ξ½  ΞµΞΊΞ΄ΟΟƒΞµΟ‰Ξ½
+differences in	wiki	el	Ξ”ΞΉΞ±Ο†ΞΏΟΞ­Ο‚ ΟƒΞµ
+different languages can have different titles	wiki	el	Ξ΄ΞΉΞ±Ο†ΞΏΟΞµΟ„ΞΉΞΊΞ­Ο‚ Ξ³Ξ»ΟΟƒΟƒΞµΟ‚ ΞΌΟ€ΞΏΟΞµΞ― Ξ½Ξ± Ξ­Ο‡ΞΏΟ…Ξ½ Ξ΄ΞΉΞ±Ο†ΞΏΟΞµΟ„ΞΉΞΊΞΏΟΟ‚ Ο„Ξ―Ο„Ξ»ΞΏΟ…Ο‚
+document last modified	wiki	el	Ξ¤ΞµΞ»ΞµΟ…Ο„Ξ±Ξ―Ξ± Ο„ΟΞΏΟ€ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· ΞµΞ³Ξ³ΟΞ¬Ο†ΞΏΟ…
+edit box	wiki	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± ΞΊΞΏΟ…Ο„ΞΉΞΏΟ
+edit this <em>archive version</em> of this document	wiki	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ξ±Ο…Ο„ΞΏΟ <em>ARCHIVE VERSION</em> Ξ±Ο…Ο„ΞΏΟ Ο„ΞΏΟ… ΞµΞ³Ξ³ΟΞ¬Ο†ΞΏΟ…
+edit this document	wiki	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ξ±Ο…Ο„ΞΏΟ Ο„ΞΏΟ… ΞµΞ³Ξ³ΟΞ¬Ο†ΞΏΟ…
+edit with preview	admin	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± ΞΌΞµ Ξ ΟΞΏΞµΟ€ΞΉΟƒΞΊΟΟ€Ξ·ΟƒΞ·
+editable	admin	el	ΞµΟ€ΞµΞΎΞµΟΞ³Ξ¬ΟƒΞΉΞΌΞΏ
+editing	wiki	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ¬Ξ¶ΞµΟ„Ξ±ΞΉ
+emailaddress administrator	admin	el	Ξ”ΞΉΞ±Ο‡ΞµΞΉΟΞΉΟƒΟ„Ξ®Ο‚ Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·Ο‚ email
+enable free links	admin	el	Ξ•Ξ½ΞµΟΞ³ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Ξ•Ξ»ΞµΟΞΈΞµΟΟ‰Ξ½ Ξ£Ο…Ξ½Ξ΄Ξ­ΟƒΞΌΟ‰Ξ½
+enable wiki links	admin	el	Ξ•Ξ½ΞµΟΞ³ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Wiki Ξ£Ο…Ξ½Ξ΄Ξ­ΟƒΞΌΟ‰Ξ½
+enter here the maximum number of entries to display in a document's history list.	wiki	el	Ξ Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ ΞµΞ΄Ο Ο„ΞΏ ΞΌΞ­Ξ³ΞΉΟƒΟ„ΞΏ Ξ±ΟΞΉΞΈΞΌΟ ΞµΞΉΟƒΟΞ΄Ο‰Ξ½ Ο€ΟΞΏΟ‚ Ο€ΟΞΏΞ²ΞΏΞ»Ξ® ΟƒΟ„ΞΏΞ½ Ξ™ΟƒΟ„ΞΏΟΞΉΞΊΟ ΞΞ±Ο„Ξ¬Ξ»ΞΏΞ³ΞΏ Ο„ΞΏΟ… ΞµΞ³Ξ³ΟΞ¬Ο†ΞΏΟ….
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	el	Ξ Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ ΞµΞ΄Ο Ο„ΞΏ ΞΌΞ­Ξ³ΞΉΟƒΟ„ΞΏ Ξ±ΟΞΉΞΈΞΌΟ Ξ·ΞΌΞµΟΟΞ½ Ο„Ο‰Ξ½ ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞΉΟΞ½ ΟƒΟ„ΞΉΟ‚ Ξ ΟΟΟƒΟ†Ξ±Ο„ΞµΟ‚Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ Ξ® ΟƒΞµ ΞΏΟ€ΞΏΞΉΞ±Ξ΄Ξ®Ο€ΞΏΟ„Ξµ Ξ¬Ξ»Ξ»Ξ· Ξ»Ξ―ΟƒΟ„Ξ± ΞµΞ³Ξ³ΟΞ±Ο†Ξ®Ο‚.
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	el	Ξ Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ Ο„Ξ· Ξ¶ΟΞ½Ξ· Ο„Ξ·Ο‚ IP Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·Ο‚ ΟƒΟ„Ξ· Ο†ΟΟΞΌΞ± <tt>12.*</tt>, <tt>34.56.*</tt>, Ξ® <tt>78.90.123.*</tt>
+error creating temporary file.	wiki	el	Ξ£Ο†Ξ¬Ξ»ΞΌΞ± ΞΊΞ±Ο„Ξ¬ Ο„Ξ· Ξ΄Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ο€ΟΞΏΟƒΟ‰ΟΞΉΞ½ΞΏΟ Ξ±ΟΟ‡ΞµΞ―ΞΏΟ….
+error writing to temporary file.	wiki	el	Ξ£Ο†Ξ¬Ξ»ΞΌΞ± ΞΊΞ±Ο„Ξ¬ Ο„Ξ·Ξ½ ΞµΞ³Ξ³ΟΞ±Ο†Ξ®  ΟƒΟ„ΞΏ Ο€ΟΞΏΟƒΟ‰ΟΞΉΞ½Ο Ξ±ΟΟ‡ΞµΞ―ΞΏ.
+everyone	wiki	el	ΟΞ»ΞΏΞΉ
+find	wiki	el	Ξ‘Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ·
+history	wiki	el	Ξ™ΟƒΟ„ΞΏΟΞΉΞΊΟ
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	el	Ξ— Ο€ΟΞΏΞ²ΞΏΞ»Ξ® Ο„ΞΏΟ… ΞΉΟƒΟ„ΞΏΟΞΉΞΊΞΏΟ ΞΈΞ± Ξ­Ο€ΟΞµΟ€Ξµ Ξ±Ξ½ ΞµΟ†Ξ±Ξ½Ξ―Ξ¶ΞµΞΉ <em>all</em> Ξ±Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ Ο€ΞΏΟ… Ξ­Ξ³ΞΉΞ½Ξ±Ξ½ Ξ±Ο€Ο Ο„ΞΏΞ½ Ο„ΞµΞ»ΞµΟ…Ο„Ξ±Ξ―ΞΏ ΟƒΟ…Ξ³Ξ³ΟΞ±Ο†Ξ­Ξ±. Ξ”ΞΉΞ±Ο†ΞΏΟΞµΟ„ΞΉΞΊΞ¬, Ο€ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΟΞ½ΞΏ Ο„Ξ·Ο‚ Ο„ΞµΞ»ΞµΟ…Ο„Ξ±Ξ―Ξ±Ο‚ Ξ±Ξ»Ξ»Ξ±Ξ³Ξ®Ο‚.
+history lists	wiki	el	Ξ™ΟƒΟ„ΞΏΟΞΉΞΊΟΟ‚ ΞΞ±Ο„Ξ¬Ξ»ΞΏΞ³Ο‚
+history of	wiki	el	Ξ™ΟƒΟ„ΞΏΟΞΉΞΊΟ Ο„ΞΏΟ…
 interwikiprefix	admin	el	InterWikiPrefix
-invalid page name.	wiki	el	¶κυρο όνομα σελίδας.
-load	wiki	el	Φόρτωση
-loads the named page in the given language, all change so far get lost !!!	wiki	el	Φορτώνει την ονοματιζόμενη σελίδα στη δοσμένη γλώσσα, όλες οι μέχρι τώρα αλλαγές θα χαθούν!!!
-lock / unlock pages	common	el	Κλείδωμα / Ξεκλείδωμα Σελίδων
-locked	wiki	el	Κλειδώθηκε
-name wiki home link	admin	el	ορίστε τη wiki ως αρχική σελίδα
-newer	wiki	el	Ποτέ
-no never	admin	el	Όχι ποτέ
-no only on request	admin	el	Όχι μόνο ύστερα από αίτηση
-not set	wiki	el	δεν έχει οριστεί
-older	wiki	el	Παλαιότερο
-on all pages	wiki	el	σε όλες τις σελίδες
-only if browser supports a richtext-editor	admin	el	Μόνο εάν ο browser υποστηρίζει richtext-εκδότη
-only on the first page	wiki	el	Μόνο στη πρώτη σελίδα
-page '%1' not found !!!	wiki	el	Η σελίδα '%1' δεν βρέθηκε !!1
-path of the upload directory (has to be writable by the webserver!)	admin	el	Μονοπάτι του φορτωμένου καταλόγου (πρέπει να είναι εγγράψιμο από τον webserver!)
-please contact the %1administrator%2 for assistance.	wiki	el	Παρακαλώ επικοινωνήστε με τον %1Διαχειριστή%2 για βοήθεια.
-preview	wiki	el	Προεπισκόπηση
-preview of current version	wiki	el	Προεπισκόπηση Τρέχουσας Έκδοσης
-rate control / ip blocking disabled	wiki	el	Ταχύτητα ελέγχου / Απενεργοποίηση αποκλεισμού IP
-readable by	wiki	el	Αναγνώσιμο από
-readonly	admin	el	μόνο ανάγνωση
-recent changes	wiki	el	Πρόσφατες Αλλαγές
-renames page to the given name and language	wiki	el	Μετονομάζει τη σελίδα στο δοθέν όνομα και γλώσσα
+invalid page name.	wiki	el	Ξ†ΞΊΟ…ΟΞΏ ΟΞ½ΞΏΞΌΞ± ΟƒΞµΞ»Ξ―Ξ΄Ξ±Ο‚.
+load	wiki	el	Ξ¦ΟΟΟ„Ο‰ΟƒΞ·
+loads the named page in the given language, all change so far get lost !!!	wiki	el	Ξ¦ΞΏΟΟ„ΟΞ½ΞµΞΉ Ο„Ξ·Ξ½ ΞΏΞ½ΞΏΞΌΞ±Ο„ΞΉΞ¶ΟΞΌΞµΞ½Ξ· ΟƒΞµΞ»Ξ―Ξ΄Ξ± ΟƒΟ„Ξ· Ξ΄ΞΏΟƒΞΌΞ­Ξ½Ξ· Ξ³Ξ»ΟΟƒΟƒΞ±, ΟΞ»ΞµΟ‚ ΞΏΞΉ ΞΌΞ­Ο‡ΟΞΉ Ο„ΟΟΞ± Ξ±Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ ΞΈΞ± Ο‡Ξ±ΞΈΞΏΟΞ½!!!
+lock / unlock pages	common	el	ΞΞ»ΞµΞ―Ξ΄Ο‰ΞΌΞ± / ΞΞµΞΊΞ»ΞµΞ―Ξ΄Ο‰ΞΌΞ± Ξ£ΞµΞ»Ξ―Ξ΄Ο‰Ξ½
+locked	wiki	el	ΞΞ»ΞµΞΉΞ΄ΟΞΈΞ·ΞΊΞµ
+name wiki home link	admin	el	ΞΏΟΞ―ΟƒΟ„Ξµ Ο„Ξ· wiki Ο‰Ο‚ Ξ±ΟΟ‡ΞΉΞΊΞ® ΟƒΞµΞ»Ξ―Ξ΄Ξ±
+newer	wiki	el	Ξ ΞΏΟ„Ξ­
+no never	admin	el	ΞΟ‡ΞΉ Ο€ΞΏΟ„Ξ­
+no only on request	admin	el	ΞΟ‡ΞΉ ΞΌΟΞ½ΞΏ ΟΟƒΟ„ΞµΟΞ± Ξ±Ο€Ο Ξ±Ξ―Ο„Ξ·ΟƒΞ·
+not set	wiki	el	Ξ΄ΞµΞ½ Ξ­Ο‡ΞµΞΉ ΞΏΟΞΉΟƒΟ„ΞµΞ―
+older	wiki	el	Ξ Ξ±Ξ»Ξ±ΞΉΟΟ„ΞµΟΞΏ
+on all pages	wiki	el	ΟƒΞµ ΟΞ»ΞµΟ‚ Ο„ΞΉΟ‚ ΟƒΞµΞ»Ξ―Ξ΄ΞµΟ‚
+only if browser supports a richtext-editor	admin	el	ΞΟΞ½ΞΏ ΞµΞ¬Ξ½ ΞΏ browser Ο…Ο€ΞΏΟƒΟ„Ξ·ΟΞ―Ξ¶ΞµΞΉ richtext-ΞµΞΊΞ΄ΟΟ„Ξ·
+only on the first page	wiki	el	ΞΟΞ½ΞΏ ΟƒΟ„Ξ· Ο€ΟΟΟ„Ξ· ΟƒΞµΞ»Ξ―Ξ΄Ξ±
+page '%1' not found !!!	wiki	el	Ξ— ΟƒΞµΞ»Ξ―Ξ΄Ξ± '%1' Ξ΄ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞµ !!1
+path of the upload directory (has to be writable by the webserver!)	admin	el	ΞΞΏΞ½ΞΏΟ€Ξ¬Ο„ΞΉ Ο„ΞΏΟ… Ο†ΞΏΟΟ„Ο‰ΞΌΞ­Ξ½ΞΏΟ… ΞΊΞ±Ο„Ξ±Ξ»ΟΞ³ΞΏΟ… (Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± ΞµΞ―Ξ½Ξ±ΞΉ ΞµΞ³Ξ³ΟΞ¬ΟΞΉΞΌΞΏ Ξ±Ο€Ο Ο„ΞΏΞ½ webserver!)
+please contact the %1administrator%2 for assistance.	wiki	el	Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο ΞµΟ€ΞΉΞΊΞΏΞΉΞ½Ο‰Ξ½Ξ®ΟƒΟ„Ξµ ΞΌΞµ Ο„ΞΏΞ½ %1Ξ”ΞΉΞ±Ο‡ΞµΞΉΟΞΉΟƒΟ„Ξ®%2 Ξ³ΞΉΞ± Ξ²ΞΏΞ®ΞΈΞµΞΉΞ±.
+preview	wiki	el	Ξ ΟΞΏΞµΟ€ΞΉΟƒΞΊΟΟ€Ξ·ΟƒΞ·
+preview of current version	wiki	el	Ξ ΟΞΏΞµΟ€ΞΉΟƒΞΊΟΟ€Ξ·ΟƒΞ· Ξ¤ΟΞ­Ο‡ΞΏΟ…ΟƒΞ±Ο‚ ΞΞΊΞ΄ΞΏΟƒΞ·Ο‚
+rate control / ip blocking disabled	wiki	el	Ξ¤Ξ±Ο‡ΟΟ„Ξ·Ο„Ξ± ΞµΞ»Ξ­Ξ³Ο‡ΞΏΟ… / Ξ‘Ο€ΞµΞ½ΞµΟΞ³ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Ξ±Ο€ΞΏΞΊΞ»ΞµΞΉΟƒΞΌΞΏΟ IP
+readable by	wiki	el	Ξ‘Ξ½Ξ±Ξ³Ξ½ΟΟƒΞΉΞΌΞΏ Ξ±Ο€Ο
+readonly	admin	el	ΞΌΟΞ½ΞΏ Ξ±Ξ½Ξ¬Ξ³Ξ½Ο‰ΟƒΞ·
+recent changes	wiki	el	Ξ ΟΟΟƒΟ†Ξ±Ο„ΞµΟ‚ Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚
+renames page to the given name and language	wiki	el	ΞΞµΟ„ΞΏΞ½ΞΏΞΌΞ¬Ξ¶ΞµΞΉ Ο„Ξ· ΟƒΞµΞ»Ξ―Ξ΄Ξ± ΟƒΟ„ΞΏ Ξ΄ΞΏΞΈΞ­Ξ½ ΟΞ½ΞΏΞΌΞ± ΞΊΞ±ΞΉ Ξ³Ξ»ΟΟƒΟƒΞ±
 richtext	wiki	el	Richtext
-rows	wiki	el	Γραμμές
-save the changes and exit	wiki	el	Αποθήκευση αλλαγών και έξοδος
-saves and continues editing	wiki	el	Αποθηκεύει και συνεχίζει την επεξεργασία
-search for	wiki	el	Αναζήτηση για
-see complete list (%1 entries)	wiki	el	Προβολή πλήρους λίστας (%1 είσοδοι)
-show a search	wiki	el	Προβολή μιας αναζήτησης
-show the title of the wiki page	wiki	el	Προβολή του τίτλου της σελίδας wiki
-site configuration	wiki	el	Τροποποίηση Site
-summary	wiki	el	Περίληψη
-summary of change	wiki	el	Περίληψη αλλαγής
-the search returned no result!	wiki	el	Δεν υπάρχουν αποτελέσματα γι'αυτήν την αναζήτηση
-this page can not be edited.	wiki	el	Αυτή η σελίδα δεν μπορεί να επεξεργαστεί
-twin pages	wiki	el	Όμοιες σελίδες
-unblock	wiki	el	Παύση αποκλεισμού
-updates the preview	wiki	el	Ενημερώνει την προεπισκόπηση
-url of the upload directory	admin	el	URL του φορτωμένου καταλόγου
-use this module for displaying wiki-pages	wiki	el	Χρήση αυτής της ενότητας για προβολή  wiki-σελίδων
-users	wiki	el	χρήστες
-view document history	wiki	el	Προβολή ιστορικού εγγράφου
-visit %1 to set your user name	wiki	el	Επισκεφθείτε %1 για να ορίσετε το όνομα χρήστη σας
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	el	Προσοχή: από το ξεκίνημα της επεξεργασίας, αυτό το έγγραφο έχει υποστεί αλλαγές από κάποιον άλλο. Παρακαλώ συγχωνεύστε τις επεξεργασίες σας στην τρέχουσα έκδοση του εγγράφου.
-who should be able to edit this page	wiki	el	ποιος θα έπρεπε να έχει τη δυνατότητα επεξεργασίας της σελίδας.
-who should be able to read this page	wiki	el	ποιος θα έπρεπε να έχει τη δυνατότητα ανάγνωσης της σελίδας.
+rows	wiki	el	Ξ“ΟΞ±ΞΌΞΌΞ­Ο‚
+save the changes and exit	wiki	el	Ξ‘Ο€ΞΏΞΈΞ®ΞΊΞµΟ…ΟƒΞ· Ξ±Ξ»Ξ»Ξ±Ξ³ΟΞ½ ΞΊΞ±ΞΉ Ξ­ΞΎΞΏΞ΄ΞΏΟ‚
+saves and continues editing	wiki	el	Ξ‘Ο€ΞΏΞΈΞ·ΞΊΞµΟΞµΞΉ ΞΊΞ±ΞΉ ΟƒΟ…Ξ½ΞµΟ‡Ξ―Ξ¶ΞµΞΉ Ο„Ξ·Ξ½ ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ±
+search for	wiki	el	Ξ‘Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ· Ξ³ΞΉΞ±
+see complete list (%1 entries)	wiki	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ο€Ξ»Ξ®ΟΞΏΟ…Ο‚ Ξ»Ξ―ΟƒΟ„Ξ±Ο‚ (%1 ΞµΞ―ΟƒΞΏΞ΄ΞΏΞΉ)
+show a search	wiki	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΞΉΞ±Ο‚ Ξ±Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ·Ο‚
+show the title of the wiki page	wiki	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ο„ΞΏΟ… Ο„Ξ―Ο„Ξ»ΞΏΟ… Ο„Ξ·Ο‚ ΟƒΞµΞ»Ξ―Ξ΄Ξ±Ο‚ wiki
+site configuration	wiki	el	Ξ¤ΟΞΏΟ€ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Site
+summary	wiki	el	Ξ ΞµΟΞ―Ξ»Ξ·ΟΞ·
+summary of change	wiki	el	Ξ ΞµΟΞ―Ξ»Ξ·ΟΞ· Ξ±Ξ»Ξ»Ξ±Ξ³Ξ®Ο‚
+the search returned no result!	wiki	el	Ξ”ΞµΞ½ Ο…Ο€Ξ¬ΟΟ‡ΞΏΟ…Ξ½ Ξ±Ο€ΞΏΟ„ΞµΞ»Ξ­ΟƒΞΌΞ±Ο„Ξ± Ξ³ΞΉ'Ξ±Ο…Ο„Ξ®Ξ½ Ο„Ξ·Ξ½ Ξ±Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ·
+this page can not be edited.	wiki	el	Ξ‘Ο…Ο„Ξ® Ξ· ΟƒΞµΞ»Ξ―Ξ΄Ξ± Ξ΄ΞµΞ½ ΞΌΟ€ΞΏΟΞµΞ― Ξ½Ξ± ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΟ„ΞµΞ―
+twin pages	wiki	el	ΞΞΌΞΏΞΉΞµΟ‚ ΟƒΞµΞ»Ξ―Ξ΄ΞµΟ‚
+unblock	wiki	el	Ξ Ξ±ΟΟƒΞ· Ξ±Ο€ΞΏΞΊΞ»ΞµΞΉΟƒΞΌΞΏΟ
+updates the preview	wiki	el	Ξ•Ξ½Ξ·ΞΌΞµΟΟΞ½ΞµΞΉ Ο„Ξ·Ξ½ Ο€ΟΞΏΞµΟ€ΞΉΟƒΞΊΟΟ€Ξ·ΟƒΞ·
+url of the upload directory	admin	el	URL Ο„ΞΏΟ… Ο†ΞΏΟΟ„Ο‰ΞΌΞ­Ξ½ΞΏΟ… ΞΊΞ±Ο„Ξ±Ξ»ΟΞ³ΞΏΟ…
+use this module for displaying wiki-pages	wiki	el	Ξ§ΟΞ®ΟƒΞ· Ξ±Ο…Ο„Ξ®Ο‚ Ο„Ξ·Ο‚ ΞµΞ½ΟΟ„Ξ·Ο„Ξ±Ο‚ Ξ³ΞΉΞ± Ο€ΟΞΏΞ²ΞΏΞ»Ξ®  wiki-ΟƒΞµΞ»Ξ―Ξ΄Ο‰Ξ½
+users	wiki	el	Ο‡ΟΞ®ΟƒΟ„ΞµΟ‚
+view document history	wiki	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΞΉΟƒΟ„ΞΏΟΞΉΞΊΞΏΟ ΞµΞ³Ξ³ΟΞ¬Ο†ΞΏΟ…
+visit %1 to set your user name	wiki	el	Ξ•Ο€ΞΉΟƒΞΊΞµΟ†ΞΈΞµΞ―Ο„Ξµ %1 Ξ³ΞΉΞ± Ξ½Ξ± ΞΏΟΞ―ΟƒΞµΟ„Ξµ Ο„ΞΏ ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ· ΟƒΞ±Ο‚
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	el	Ξ ΟΞΏΟƒΞΏΟ‡Ξ®: Ξ±Ο€Ο Ο„ΞΏ ΞΎΞµΞΊΞ―Ξ½Ξ·ΞΌΞ± Ο„Ξ·Ο‚ ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ±Ο‚, Ξ±Ο…Ο„Ο Ο„ΞΏ Ξ­Ξ³Ξ³ΟΞ±Ο†ΞΏ Ξ­Ο‡ΞµΞΉ Ο…Ο€ΞΏΟƒΟ„ΞµΞ― Ξ±Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ Ξ±Ο€Ο ΞΊΞ¬Ο€ΞΏΞΉΞΏΞ½ Ξ¬Ξ»Ξ»ΞΏ. Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο ΟƒΟ…Ξ³Ο‡Ο‰Ξ½ΞµΟΟƒΟ„Ξµ Ο„ΞΉΟ‚ ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―ΞµΟ‚ ΟƒΞ±Ο‚ ΟƒΟ„Ξ·Ξ½ Ο„ΟΞ­Ο‡ΞΏΟ…ΟƒΞ± Ξ­ΞΊΞ΄ΞΏΟƒΞ· Ο„ΞΏΟ… ΞµΞ³Ξ³ΟΞ¬Ο†ΞΏΟ….
+who should be able to edit this page	wiki	el	Ο€ΞΏΞΉΞΏΟ‚ ΞΈΞ± Ξ­Ο€ΟΞµΟ€Ξµ Ξ½Ξ± Ξ­Ο‡ΞµΞΉ Ο„Ξ· Ξ΄Ο…Ξ½Ξ±Ο„ΟΟ„Ξ·Ο„Ξ± ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ±Ο‚ Ο„Ξ·Ο‚ ΟƒΞµΞ»Ξ―Ξ΄Ξ±Ο‚.
+who should be able to read this page	wiki	el	Ο€ΞΏΞΉΞΏΟ‚ ΞΈΞ± Ξ­Ο€ΟΞµΟ€Ξµ Ξ½Ξ± Ξ­Ο‡ΞµΞΉ Ο„Ξ· Ξ΄Ο…Ξ½Ξ±Ο„ΟΟ„Ξ·Ο„Ξ± Ξ±Ξ½Ξ¬Ξ³Ξ½Ο‰ΟƒΞ·Ο‚ Ο„Ξ·Ο‚ ΟƒΞµΞ»Ξ―Ξ΄Ξ±Ο‚.
 wiki	common	el	Wiki
-wiki administration	wiki	el	Διαχείριση Wiki
-wiki menu	wiki	el	Μενού Wiki
-wiki startpage	wiki	el	Αρχική σελίδα Wiki
-writable by	wiki	el	Εγγράψιμο από
-yes always	admin	el	Ναι πάντα
-yes with navbar	admin	el	Ναι με μπάρα πλοήγησης
-you have been denied access to this site.	wiki	el	Δεν σας επιτρέπεται η είσοδος σε αυτό το site.
-you have entered an invalid user name.	wiki	el	Έχετε πληκτρολογήσει άκυρο όνομα χρήστη
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	el	Έχετε υπερβεί τον αριθμό σελίδων που σας επιτρέπεται να επισκεφθείτε σε συγκεκριμένη χρονική περίοδο. Παρακαλώ επιστρέψτε αργότερα.
-you have no rights to view wiki content !!!	wiki	el	Δεν έχετε δικαιώματα προβολής του wiki περιεχομένου !!!
-your changes	wiki	el	Οι αλλαγές σας
-your user name is "%1".	wiki	el	Το όνομα χρήστη σας είναι "%1".
+wiki administration	wiki	el	Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Wiki
+wiki menu	wiki	el	ΞΞµΞ½ΞΏΟ Wiki
+wiki startpage	wiki	el	Ξ‘ΟΟ‡ΞΉΞΊΞ® ΟƒΞµΞ»Ξ―Ξ΄Ξ± Wiki
+writable by	wiki	el	Ξ•Ξ³Ξ³ΟΞ¬ΟΞΉΞΌΞΏ Ξ±Ο€Ο
+yes always	admin	el	ΞΞ±ΞΉ Ο€Ξ¬Ξ½Ο„Ξ±
+yes with navbar	admin	el	ΞΞ±ΞΉ ΞΌΞµ ΞΌΟ€Ξ¬ΟΞ± Ο€Ξ»ΞΏΞ®Ξ³Ξ·ΟƒΞ·Ο‚
+you have been denied access to this site.	wiki	el	Ξ”ΞµΞ½ ΟƒΞ±Ο‚ ΞµΟ€ΞΉΟ„ΟΞ­Ο€ΞµΟ„Ξ±ΞΉ Ξ· ΞµΞ―ΟƒΞΏΞ΄ΞΏΟ‚ ΟƒΞµ Ξ±Ο…Ο„Ο Ο„ΞΏ site.
+you have entered an invalid user name.	wiki	el	ΞΟ‡ΞµΟ„Ξµ Ο€Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΞµΞΉ Ξ¬ΞΊΟ…ΟΞΏ ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ·
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	el	ΞΟ‡ΞµΟ„Ξµ Ο…Ο€ΞµΟΞ²ΞµΞ― Ο„ΞΏΞ½ Ξ±ΟΞΉΞΈΞΌΟ ΟƒΞµΞ»Ξ―Ξ΄Ο‰Ξ½ Ο€ΞΏΟ… ΟƒΞ±Ο‚ ΞµΟ€ΞΉΟ„ΟΞ­Ο€ΞµΟ„Ξ±ΞΉ Ξ½Ξ± ΞµΟ€ΞΉΟƒΞΊΞµΟ†ΞΈΞµΞ―Ο„Ξµ ΟƒΞµ ΟƒΟ…Ξ³ΞΊΞµΞΊΟΞΉΞΌΞ­Ξ½Ξ· Ο‡ΟΞΏΞ½ΞΉΞΊΞ® Ο€ΞµΟΞ―ΞΏΞ΄ΞΏ. Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο ΞµΟ€ΞΉΟƒΟ„ΟΞ­ΟΟ„Ξµ Ξ±ΟΞ³ΟΟ„ΞµΟΞ±.
+you have no rights to view wiki content !!!	wiki	el	Ξ”ΞµΞ½ Ξ­Ο‡ΞµΟ„Ξµ Ξ΄ΞΉΞΊΞ±ΞΉΟΞΌΞ±Ο„Ξ± Ο€ΟΞΏΞ²ΞΏΞ»Ξ®Ο‚ Ο„ΞΏΟ… wiki Ο€ΞµΟΞΉΞµΟ‡ΞΏΞΌΞ­Ξ½ΞΏΟ… !!!
+your changes	wiki	el	ΞΞΉ Ξ±Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ ΟƒΞ±Ο‚
+your user name is "%1".	wiki	el	Ξ¤ΞΏ ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ· ΟƒΞ±Ο‚ ΞµΞ―Ξ½Ξ±ΞΉ "%1".

@@ -1,28 +1,28 @@
 actions	polls	da	handlinger
-add answer to poll	polls	da	Tilføj svar til afstemning
-add answers	polls	da	Tilføj svarene
-add new poll question	polls	da	Tilføj ny afstemnings spørgsmål
-add questions	polls	da	Tilføj spørgsmål
-allow users to vote more then once	polls	da	Tillad brugere at stemme mere end én gang
+add answer to poll	polls	da	TilfÃ¸j svar til afstemning
+add answers	polls	da	TilfÃ¸j svarene
+add new poll question	polls	da	TilfÃ¸j ny afstemnings spÃ¸rgsmÃ¥l
+add questions	polls	da	TilfÃ¸j spÃ¸rgsmÃ¥l
+allow users to vote more then once	polls	da	Tillad brugere at stemme mere end Ã©n gang
 answer	polls	da	Svar
-answer has been added to poll	polls	da	Svar er tilføjet til afstemningen
+answer has been added to poll	polls	da	Svar er tilfÃ¸jet til afstemningen
 answer has been updated	polls	da	Svar er opdateret
 answers	polls	da	Svar
-are you sure want to delete this answer ?	polls	da	Er du sikker på du vil slette dette svar?
-are you sure want to delete this question ?	polls	da	Er du sikker på du vil slette dette spørgsmål?
-edit answer	polls	da	Redigér svar
-edit poll question	polls	da	Redigér afstemnings spørgsmål
-enter poll question	polls	da	Indtast afstemnings spørgsmål
-new poll has been added.  you should now add some answers for this poll	polls	da	Ny afstemning er tilføjet. Du bør nu tilføje nogle svar til denne afstemning
-poll question	polls	da	Afstemnings spørgsmål
+are you sure want to delete this answer ?	polls	da	Er du sikker pÃ¥ du vil slette dette svar?
+are you sure want to delete this question ?	polls	da	Er du sikker pÃ¥ du vil slette dette spÃ¸rgsmÃ¥l?
+edit answer	polls	da	RedigÃ©r svar
+edit poll question	polls	da	RedigÃ©r afstemnings spÃ¸rgsmÃ¥l
+enter poll question	polls	da	Indtast afstemnings spÃ¸rgsmÃ¥l
+new poll has been added.  you should now add some answers for this poll	polls	da	Ny afstemning er tilfÃ¸jet. Du bÃ¸r nu tilfÃ¸je nogle svar til denne afstemning
+poll question	polls	da	Afstemnings spÃ¸rgsmÃ¥l
 poll settings	common	da	Afstemnings indstillinger
 polls	common	da	Afstemninger
-question has been updated	polls	da	Spørgsmål er opdateret
-select current poll	polls	da	Vælg den nuværende afstemning
+question has been updated	polls	da	SpÃ¸rgsmÃ¥l er opdateret
+select current poll	polls	da	VÃ¦lg den nuvÃ¦rende afstemning
 settings	polls	da	indstillinger
 settings updated	polls	da	Indstillingerne er opdateret
 show answers	polls	da	Vis svar
-show questions	common	da	Vis spørgsmål
+show questions	common	da	Vis spÃ¸rgsmÃ¥l
 total votes	polls	da	Total
 view poll	polls	da	Se afstemning
 vote	polls	da	Stem

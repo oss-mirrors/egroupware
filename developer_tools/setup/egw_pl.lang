@@ -1,87 +1,87 @@
 add	developer_tools	pl	Dodaj
 add a single phrase	developer_tools	pl	Dodaj jedno zdanie
-add change	developer_tools	pl	Dodaj zmianê
-add more	developer_tools	pl	Dodaj wiêcej
+add change	developer_tools	pl	Dodaj zmianÄ™
+add more	developer_tools	pl	Dodaj wiÄ™cej
 add new phrase	developer_tools	pl	Dodaj nowe zdanie
 add phrase	developer_tools	pl	Dodaj zdanie
-allows you to add a single phrase	developer_tools	pl	Pozwala dodaæ pojedyñcze zdanie
+allows you to add a single phrase	developer_tools	pl	Pozwala dodaÄ‡ pojedyÅ„cze zdanie
 any	developer_tools	pl	Dowolny
 application	developer_tools	pl	Aplikacja
 back	developer_tools	pl	Wstecz
 cancel	developer_tools	pl	Anuluj
-change	developer_tools	pl	Zmieñ
+change	developer_tools	pl	ZmieÅ„
 changelog entry has been added	developer_tools	pl	Wpis dodany do dzienniku zmian
 changelogs	developer_tools	pl	Dziennik zmian
-clears the internal buffer, all changes made sofar are lost	developer_tools	pl	Czy¶ci bufor wewnêtrzny, wszelkie dotychczasowe zmiany zostan± utracone
+clears the internal buffer, all changes made sofar are lost	developer_tools	pl	CzyÅ›ci bufor wewnÄ™trzny, wszelkie dotychczasowe zmiany zostanÄ… utracone
 common	developer_tools	pl	Wsplne
 create lang.sql file	developer_tools	pl	Utwrz plik lang.sql
-create new language file	developer_tools	pl	Utwórz nowy plik jêzykowy
+create new language file	developer_tools	pl	UtwÃ³rz nowy plik jÄ™zykowy
 create new language set	developer_tools	pl	Utwrz nowy j?zyk
-create sgml file	developer_tools	pl	Utwórz plik sgml
+create sgml file	developer_tools	pl	UtwÃ³rz plik sgml
 developer tools	common	pl	Narz?dzia deweloperskie
-developer tools - preferences	developer_tools	pl	Ustawienia narzêdzi t³umacza
-developer_tools	common	pl	Narzêdzie T³umacza
+developer tools - preferences	developer_tools	pl	Ustawienia narzÄ™dzi tÅ‚umacza
+developer_tools	common	pl	NarzÄ™dzie TÅ‚umacza
 diary	developer_tools	pl	Dziennik
 display missing phrases in lang set	developer_tools	pl	Wy?wietl brakuj?ce zdania w j?zyku
 done	developer_tools	pl	wykonane
 download	developer_tools	pl	Pobierz
 download output as a lang file	developer_tools	pl	Wyj?cie jako plik lang?
-download the lang-file to be saved in the apps setup-dir	developer_tools	pl	¦ci±gnij na twój dysk lokalny plik jêzykowy, który ma byæ zapisany w katalogu setupu aplikacji.
+download the lang-file to be saved in the apps setup-dir	developer_tools	pl	ÅšciÄ…gnij na twÃ³j dysk lokalny plik jÄ™zykowy, ktÃ³ry ma byÄ‡ zapisany w katalogu setupu aplikacji.
 edit	developer_tools	pl	Edycja
 generate new lang.sql file	developer_tools	pl	Generowanie pliku lang.sql
 import lang set	developer_tools	pl	Import j?zyka
 installed applications	developer_tools	pl	Zainstalowane aplikacje
-language file management	developer_tools	pl	Zarz±dzanie wersjami jêzykowymi
+language file management	developer_tools	pl	ZarzÄ…dzanie wersjami jÄ™zykowymi
 list changelogs	developer_tools	pl	Lista zmian
-load	developer_tools	pl	Za³aduj
-loading source langfile	developer_tools	pl	Wczytywanie pliku jêzyka ¼ród³owego
-loading target langfile	developer_tools	pl	Wczytywanie pliku jêzyka docelowego
-loads the selected lang-files, to be modified in the next steps	developer_tools	pl	£aduje wybrany plik jêzykowy do opracowywania w nastêpnych krokach
+load	developer_tools	pl	ZaÅ‚aduj
+loading source langfile	developer_tools	pl	Wczytywanie pliku jÄ™zyka ÅºrÃ³dÅ‚owego
+loading target langfile	developer_tools	pl	Wczytywanie pliku jÄ™zyka docelowego
+loads the selected lang-files, to be modified in the next steps	developer_tools	pl	Åaduje wybrany plik jÄ™zykowy do opracowywania w nastÄ™pnych krokach
 message	developer_tools	pl	Komunikat
 message_id in english	developer_tools	pl	ID komunikatu po angielsku
 new phrase has been added	developer_tools	pl	Dodano nowe zdanie
 no file	developer_tools	pl	Nie ma pliku
 ok	developer_tools	pl	OK
-original	developer_tools	pl	Orygina³
+original	developer_tools	pl	OryginaÅ‚
 phrase in english	developer_tools	pl	Zdanie angielskie
-phrase in english (or empty if identical)	developer_tools	pl	Fraza w jêzyku angielskim (lub puste, je¿eli identyczne)
+phrase in english (or empty if identical)	developer_tools	pl	Fraza w jÄ™zyku angielskim (lub puste, jeÅ¼eli identyczne)
 phrase in new language	developer_tools	pl	Zdanie w innym j?zyku
 preferences	developer_tools	pl	Ustawienia
 preferences have been updated	developer_tools	pl	Zaktualizowano ustawienia
 project	developer_tools	pl	Projekt
-remove	developer_tools	pl	Usuñ
-returns to the application list, not saved changes get lost !!!	developer_tools	pl	Powrót do listy aplikacji, wszelkie niezapisane zmiany bed± stracone !!!
+remove	developer_tools	pl	UsuÅ„
+returns to the application list, not saved changes get lost !!!	developer_tools	pl	PowrÃ³t do listy aplikacji, wszelkie niezapisane zmiany bedÄ… stracone !!!
 revert	developer_tools	pl	Cofnij
-saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	pl	Zapisuje dodane/zmienione t³umaczenia do wewnêtrznego bufora, by móc u¿yæ ich w dalszych krokach.
+saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	pl	Zapisuje dodane/zmienione tÅ‚umaczenia do wewnÄ™trznego bufora, by mÃ³c uÅ¼yÄ‡ ich w dalszych krokach.
 search changelogs	developer_tools	pl	Szukaj zmian
-search for missing phrase	developer_tools	pl	Szukaj brakuj±cych zdañ
-search new phrases	developer_tools	pl	Znajd¼ nowe zdania
-searches the source-code for phrases not in the actual source-lang-file	developer_tools	pl	Przeszukuje kod ¼ród³owy, by znale¶æ frazy nie zawarte w pliku jêzykowym.
+search for missing phrase	developer_tools	pl	Szukaj brakujÄ…cych zdaÅ„
+search new phrases	developer_tools	pl	ZnajdÅº nowe zdania
+searches the source-code for phrases not in the actual source-lang-file	developer_tools	pl	Przeszukuje kod ÅºrÃ³dÅ‚owy, by znaleÅ›Ä‡ frazy nie zawarte w pliku jÄ™zykowym.
 select application	developer_tools	pl	Wybierz aplikacj?
 select language to generate for	developer_tools	pl	Wybierz j?zyk
 select project	developer_tools	pl	Wybierz projekt
 select which application for this phrase	developer_tools	pl	Wybierz aplikacj?
 select which language for this phrase	developer_tools	pl	Wybierz j?zyk
-source language	developer_tools	pl	Jêzyk ¼ród³owy
+source language	developer_tools	pl	JÄ™zyk ÅºrÃ³dÅ‚owy
 sourceforge project id	developer_tools	pl	ID projektu w Sourceforge
 step	developer_tools	pl	Krok
-submit	developer_tools	pl	Wy¶lij
-target language	developer_tools	pl	Jêzyk docelowy
-title	developer_tools	pl	Tytu³
-translate	developer_tools	pl	T³umaczenie
-translation	developer_tools	pl	T³umaczenie
-translation of phrase	developer_tools	pl	T³umaczenie frazy
+submit	developer_tools	pl	WyÅ›lij
+target language	developer_tools	pl	JÄ™zyk docelowy
+title	developer_tools	pl	TytuÅ‚
+translate	developer_tools	pl	TÅ‚umaczenie
+translation	developer_tools	pl	TÅ‚umaczenie
+translation of phrase	developer_tools	pl	TÅ‚umaczenie frazy
 update	developer_tools	pl	Aktualizacja
 update database	developer_tools	pl	Zaktualizuj baze
-updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	pl	Aktualizuje t³umaczenia obydwu plików w twojej bazie, aby¶ móg³ natychmiastowo sprawdziæ swoje t³umaczenie.
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	pl	Aktualizuje tÅ‚umaczenia obydwu plikÃ³w w twojej bazie, abyÅ› mÃ³gÅ‚ natychmiastowo sprawdziÄ‡ swoje tÅ‚umaczenie.
 version	developer_tools	pl	Wersja
 view/edit/delete all phrases	developer_tools	pl	Poka?/edycja/usu? wszystkie zdania
 write	developer_tools	pl	Zapisz
-write the lang-file to the apps setup-dir	developer_tools	pl	Zapisz plik jêzykowy do katalogu setupu aplikacji
+write the lang-file to the apps setup-dir	developer_tools	pl	Zapisz plik jÄ™zykowy do katalogu setupu aplikacji
 write to lang table	developer_tools	pl	Zapisz do tabeli LANG
 writing langfile for '%1' ...	developer_tools	pl	Zapisuje plik jezykowy dla %1 ...
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	pl	Musisz [zapisaæ] kazd± zmianê w polach wy¿ej przed uruchomieniem nastêpnego kroku !!!
-you must a version	developer_tools	pl	Musisz wersjê
-you must enter a change	developer_tools	pl	Musisz wprowadziæ zmianê
-you must select a project	developer_tools	pl	Musisz wybraæ projekt
-you need to set your preferences for this app	developer_tools	pl	Powinienie¶ ustawiæ swoje preferencje dla tej aplikacji
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	pl	Musisz [zapisaÄ‡] kazdÄ… zmianÄ™ w polach wyÅ¼ej przed uruchomieniem nastÄ™pnego kroku !!!
+you must a version	developer_tools	pl	Musisz wersjÄ™
+you must enter a change	developer_tools	pl	Musisz wprowadziÄ‡ zmianÄ™
+you must select a project	developer_tools	pl	Musisz wybraÄ‡ projekt
+you need to set your preferences for this app	developer_tools	pl	PowinienieÅ› ustawiÄ‡ swoje preferencje dla tej aplikacji

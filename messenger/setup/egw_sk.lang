@@ -1,36 +1,36 @@
-compose	messenger	sk	Vytvori»
-compose global message	common	sk	Vytvori» verejnú správu
-compose message	messenger	sk	Vytvori» správu
-delete a message.	messenger	sk	Odstráni» správu.
-delete selected	messenger	sk	Odstráni» vybrané
-forward	messenger	sk	Odosla» ïalej
-forward a message	messenger	sk	Odosla» správu ïalej
-forward a message to another user.	messenger	sk	Odosla» správu ïalej inému pou¾ívateµovi.
-forwarded	messenger	sk	Odoslané ïalej
+compose	messenger	sk	VytvoriÅ¥
+compose global message	common	sk	VytvoriÅ¥ verejnÃº sprÃ¡vu
+compose message	messenger	sk	VytvoriÅ¥ sprÃ¡vu
+delete a message.	messenger	sk	OdstrÃ¡niÅ¥ sprÃ¡vu.
+delete selected	messenger	sk	OdstrÃ¡niÅ¥ vybranÃ©
+forward	messenger	sk	OdoslaÅ¥ Äalej
+forward a message	messenger	sk	OdoslaÅ¥ sprÃ¡vu Äalej
+forward a message to another user.	messenger	sk	OdoslaÅ¥ sprÃ¡vu Äalej inÃ©mu pouÅ¾Ã­vateÄ¾ovi.
+forwarded	messenger	sk	OdoslanÃ© Äalej
 from	messenger	sk	Od
-global message	messenger	sk	Verejná správa
-i can't find the username %1 on the system	messenger	sk	Pou¾ívateµa %1 som v systéme nena¹iel
-inbox	messenger	sk	Doruèená po¹ta
-message from	messenger	sk	Správa od
-messenger	common	sk	Odkazovaè
-new	messenger	sk	Nové
-read a list of messages.	messenger	sk	Naèíta» zoznam správ.
-read a single message.	messenger	sk	Naèíta» jednotlivú správu.
-read message	messenger	sk	Naèíta» správu
-replied	messenger	sk	Odpovedané
-reply	messenger	sk	Odpoveï
-reply to a message	messenger	sk	Odpoveda» na správu
-reply to a received message.	messenger	sk	Odpoveda» na prijatú správu.
-send	messenger	sk	Odosla»
-send a global message.	messenger	sk	Odosla» verejnú správu.
-send a message to a single recipient.	messenger	sk	Odosla» správu jednotlivému adresátovi.
-send message to	messenger	sk	Odosla» správu (komu)
-sorry, %1's account is not currently active	messenger	sk	¥utujem, úèet %1 v súèasnosti nie je aktívny
-update a message status	messenger	sk	Upravi» stav správy
-use select box for user list in compose	common	sk	Ak chcete zoznam pou¾ívateµov poèas vytvárania správy, pou¾ite vıberové okno
-you didn't enter anything for the message	messenger	sk	Pre danú správu ste nezadali vôbec niè
-you have %1 new message	common	sk	Máte %1 novıch správ
-you have %1 new messages	common	sk	Máte %1 novıch správ
-you have no messages	messenger	sk	Nemáte ¾iadne správy
-you must enter a subject	messenger	sk	Musíte zada» predmet
-you must enter the username this message is for	messenger	sk	Musíte zada», pre koho je táto správa
+global message	messenger	sk	VerejnÃ¡ sprÃ¡va
+i can't find the username %1 on the system	messenger	sk	PouÅ¾Ã­vateÄ¾a %1 som v systÃ©me nenaÅ¡iel
+inbox	messenger	sk	DoruÄenÃ¡ poÅ¡ta
+message from	messenger	sk	SprÃ¡va od
+messenger	common	sk	OdkazovaÄ
+new	messenger	sk	NovÃ©
+read a list of messages.	messenger	sk	NaÄÃ­taÅ¥ zoznam sprÃ¡v.
+read a single message.	messenger	sk	NaÄÃ­taÅ¥ jednotlivÃº sprÃ¡vu.
+read message	messenger	sk	NaÄÃ­taÅ¥ sprÃ¡vu
+replied	messenger	sk	OdpovedanÃ©
+reply	messenger	sk	OdpoveÄ
+reply to a message	messenger	sk	OdpovedaÅ¥ na sprÃ¡vu
+reply to a received message.	messenger	sk	OdpovedaÅ¥ na prijatÃº sprÃ¡vu.
+send	messenger	sk	OdoslaÅ¥
+send a global message.	messenger	sk	OdoslaÅ¥ verejnÃº sprÃ¡vu.
+send a message to a single recipient.	messenger	sk	OdoslaÅ¥ sprÃ¡vu jednotlivÃ©mu adresÃ¡tovi.
+send message to	messenger	sk	OdoslaÅ¥ sprÃ¡vu (komu)
+sorry, %1's account is not currently active	messenger	sk	Ä½utujem, ÃºÄet %1 v sÃºÄasnosti nie je aktÃ­vny
+update a message status	messenger	sk	UpraviÅ¥ stav sprÃ¡vy
+use select box for user list in compose	common	sk	Ak chcete zoznam pouÅ¾Ã­vateÄ¾ov poÄas vytvÃ¡rania sprÃ¡vy, pouÅ¾ite vÃ½berovÃ© okno
+you didn't enter anything for the message	messenger	sk	Pre danÃº sprÃ¡vu ste nezadali vÃ´bec niÄ
+you have %1 new message	common	sk	MÃ¡te %1 novÃ½ch sprÃ¡v
+you have %1 new messages	common	sk	MÃ¡te %1 novÃ½ch sprÃ¡v
+you have no messages	messenger	sk	NemÃ¡te Å¾iadne sprÃ¡vy
+you must enter a subject	messenger	sk	MusÃ­te zadaÅ¥ predmet
+you must enter the username this message is for	messenger	sk	MusÃ­te zadaÅ¥, pre koho je tÃ¡to sprÃ¡va

@@ -1,40 +1,40 @@
 %1 by %2	comic	ca	%1 per %2
 %1 by %2 (%3)	comic	ca	%1 per %2 (%3)
-are you sure you want to reset all	comic	ca	¿Seguro que quiere restablecer todo?
-are you sure you want to reset all comic dates and resolved image urls?	comic	ca	Esteu segurs de voler restablir totes les dates de les tires cómiques i urls d'imatges resoltes?
+are you sure you want to reset all	comic	ca	Â¿Seguro que quiere restablecer todo?
+are you sure you want to reset all comic dates and resolved image urls?	comic	ca	Esteu segurs de voler restablir totes les dates de les tires cÃ³miques i urls d'imatges resoltes?
 censorship level	comic	ca	Nivell de censura
 censorship override enabled	comic	ca	Ignorar censura activat
 comic	common	ca	Humor
-comic preferences updated	comic	ca	Preferències d'Humor actualitzades
+comic preferences updated	comic	ca	PreferÃ¨ncies d'Humor actualitzades
 comics	common	ca	Humor
-comics per page	comic	ca	Tires cómiques per plana
-comics scaled	comic	ca	Tires cómiques a escala
-daily comic	common	ca	Tira cómica diaria
-daily comic preferences	comic	ca	Preferèncias de la tira cómica diaria
-daily comics	admin	ca	Tires cómiques diaries
-daily comics - global options	comic	ca	Tires cómiques diaries - Opcions globals
-daily comics data	comic	ca	Dades de les tires cómiques diaries
-daily comics global options	comic	ca	Opcions globals de les tires cómiques
-display layout	comic	ca	Format de visualització
-display options	comic	ca	Opcions de visualització
-egroupware daily comics	comic	ca	Tires cómiques diairies d'eGroupWare
-front page comic	comic	ca	Tira cómica de la plana de portada
-front page comic scaled	comic	ca	Tira cómica de la plana de portada a escala
-genre	comic	ca	Gènere
-global comics	comic	ca	Tires cómiques globals
+comics per page	comic	ca	Tires cÃ³miques per plana
+comics scaled	comic	ca	Tires cÃ³miques a escala
+daily comic	common	ca	Tira cÃ³mica diaria
+daily comic preferences	comic	ca	PreferÃ¨ncias de la tira cÃ³mica diaria
+daily comics	admin	ca	Tires cÃ³miques diaries
+daily comics - global options	comic	ca	Tires cÃ³miques diaries - Opcions globals
+daily comics data	comic	ca	Dades de les tires cÃ³miques diaries
+daily comics global options	comic	ca	Opcions globals de les tires cÃ³miques
+display layout	comic	ca	Format de visualitzaciÃ³
+display options	comic	ca	Opcions de visualitzaciÃ³
+egroupware daily comics	comic	ca	Tires cÃ³miques diairies d'eGroupWare
+front page comic	comic	ca	Tira cÃ³mica de la plana de portada
+front page comic scaled	comic	ca	Tira cÃ³mica de la plana de portada a escala
+genre	comic	ca	GÃ¨nere
+global comics	comic	ca	Tires cÃ³miques globals
 global options	comic	ca	Opcions globals
 global options updated	comic	ca	Opcions globals actualitzades
 image source	comic	ca	Origen de l'imatge
-max file size	comic	ca	Tamanyo màxim de l'arxiu
+max file size	comic	ca	Tamanyo mÃ xim de l'arxiu
 my comics	comic	ca	Els meus comics
 no_entries	comic	ca	Sense entrades
-parser	comic	ca	Intèrpret
+parser	comic	ca	IntÃ¨rpret
 performed %1 of element	comic	ca	Fet %1 de l'element
 random	comic	ca	Aleatori
 rated	comic	ca	Qualificat
 remote (parse/snarf) enabled	comic	ca	Remot (interpretar/snarf)
 reset	comic	ca	Restablir
-reset comic data	admin	ca	Restablir dades de les tiras cómiques
+reset comic data	admin	ca	Restablir dades de les tiras cÃ³miques
 resolve	comic	ca	Resoldre
 showing %1 (%2 - %3 of %4)	comic	ca	Mostrant %1 (%2 - %3 de %4)
 template	comic	ca	Plantilla

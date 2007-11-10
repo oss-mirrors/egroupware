@@ -1,74 +1,74 @@
-add	developer_tools	sv	Lägg till
-add change	developer_tools	sv	Lägg till ändring
-add more	developer_tools	sv	Lägg till fler
-add new phrase	developer_tools	sv	Lägg till ny fras
-add phrase	developer_tools	sv	Lägg till fras
-allows you to add a single phrase	developer_tools	sv	Du kan lägga till enstaka fraser
+add	developer_tools	sv	LÃ¤gg till
+add change	developer_tools	sv	LÃ¤gg till Ã¤ndring
+add more	developer_tools	sv	LÃ¤gg till fler
+add new phrase	developer_tools	sv	LÃ¤gg till ny fras
+add phrase	developer_tools	sv	LÃ¤gg till fras
+allows you to add a single phrase	developer_tools	sv	Du kan lÃ¤gga till enstaka fraser
 application	developer_tools	sv	Applikation
 back	developer_tools	sv	Tillbaks
 cancel	developer_tools	sv	Avbryt
-change	developer_tools	sv	Ändra
-changelog entry has been added	developer_tools	sv	Ändringhistorik post tillagd
-changelogs	developer_tools	sv	Ändringshistorik
-clears the internal buffer, all changes made sofar are lost	developer_tools	sv	Tömmer intern chache och alla tidigare ändringar förloras
-create new language file	developer_tools	sv	Skapa ny språkfil
+change	developer_tools	sv	Ã„ndra
+changelog entry has been added	developer_tools	sv	Ã„ndringhistorik post tillagd
+changelogs	developer_tools	sv	Ã„ndringshistorik
+clears the internal buffer, all changes made sofar are lost	developer_tools	sv	TÃ¶mmer intern chache och alla tidigare Ã¤ndringar fÃ¶rloras
+create new language file	developer_tools	sv	Skapa ny sprÃ¥kfil
 create sgml file	developer_tools	sv	Skapa SGML fil
-developer tools - preferences	developer_tools	sv	Översättningsverktyg - Alternativ
-developer_tools	common	sv	Översättningsverktyg
+developer tools - preferences	developer_tools	sv	Ã–versÃ¤ttningsverktyg - Alternativ
+developer_tools	common	sv	Ã–versÃ¤ttningsverktyg
 diary	developer_tools	sv	Kalender
 done	developer_tools	sv	Klar
 download	developer_tools	sv	Ladda ner
-download the lang-file to be saved in the apps setup-dir	developer_tools	sv	Ladda ner språkfil till applikationens setup katalog
-edit	developer_tools	sv	Ändra
+download the lang-file to be saved in the apps setup-dir	developer_tools	sv	Ladda ner sprÃ¥kfil till applikationens setup katalog
+edit	developer_tools	sv	Ã„ndra
 installed applications	developer_tools	sv	Installerade applikationer
-language file management	developer_tools	sv	Språkfilshantering
-list changelogs	developer_tools	sv	Lista ändringshistorik
+language file management	developer_tools	sv	SprÃ¥kfilshantering
+list changelogs	developer_tools	sv	Lista Ã¤ndringshistorik
 load	developer_tools	sv	Ladda
-loading source langfile	developer_tools	sv	Laddar källspråksfil
-loading target langfile	developer_tools	sv	Laddar målspråksfil
-loads the selected lang-files, to be modified in the next steps	developer_tools	sv	Laddar språkfil att redigera i nästa steg
+loading source langfile	developer_tools	sv	Laddar kÃ¤llsprÃ¥ksfil
+loading target langfile	developer_tools	sv	Laddar mÃ¥lsprÃ¥ksfil
+loads the selected lang-files, to be modified in the next steps	developer_tools	sv	Laddar sprÃ¥kfil att redigera i nÃ¤sta steg
 message	developer_tools	sv	Meddelande
-message_id in english	developer_tools	sv	Meddelande ID på engelska
+message_id in english	developer_tools	sv	Meddelande ID pÃ¥ engelska
 no file	developer_tools	sv	Ingen fil
 ok	developer_tools	sv	Ok
 original	developer_tools	sv	Orginal
-phrase in english (or empty if identical)	developer_tools	sv	Fras på engelska (eller tom om identisk)
+phrase in english (or empty if identical)	developer_tools	sv	Fras pÃ¥ engelska (eller tom om identisk)
 preferences	developer_tools	sv	Alternativ
-preferences have been updated	developer_tools	sv	Inställningar uppdaterade
+preferences have been updated	developer_tools	sv	InstÃ¤llningar uppdaterade
 project	developer_tools	sv	Projekt
 remove	developer_tools	sv	Radera
-removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	sv	Raderade %1 fraser från målspråket som inte finns i källspråket
-returns to the application list, not saved changes get lost !!!	developer_tools	sv	Återvänd till listan på applikationer, alla osparade ändringar förloras!
-revert	developer_tools	sv	Återgå
-saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sv	Spara ändringar i intern chache till nästa steg
-search changelogs	developer_tools	sv	Sök i ändringshistorik
-search for missing phrase	developer_tools	sv	Sök saknade fraser
-search new phrases	developer_tools	sv	Sök nya fraser
-searches the source-code for phrases not in the actual source-lang-file	developer_tools	sv	Söker i källkoden efter fraser som saknas i källspråk fil
-select project	developer_tools	sv	Välj projekt
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	sv	Raderade %1 fraser frÃ¥n mÃ¥lsprÃ¥ket som inte finns i kÃ¤llsprÃ¥ket
+returns to the application list, not saved changes get lost !!!	developer_tools	sv	Ã…tervÃ¤nd till listan pÃ¥ applikationer, alla osparade Ã¤ndringar fÃ¶rloras!
+revert	developer_tools	sv	Ã…tergÃ¥
+saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sv	Spara Ã¤ndringar i intern chache till nÃ¤sta steg
+search changelogs	developer_tools	sv	SÃ¶k i Ã¤ndringshistorik
+search for missing phrase	developer_tools	sv	SÃ¶k saknade fraser
+search new phrases	developer_tools	sv	SÃ¶k nya fraser
+searches the source-code for phrases not in the actual source-lang-file	developer_tools	sv	SÃ¶ker i kÃ¤llkoden efter fraser som saknas i kÃ¤llsprÃ¥k fil
+select project	developer_tools	sv	VÃ¤lj projekt
 sf project tracker	developer_tools	sv	SF Projekt tracker
 sf project tracker preferences	preferences	sv	SF Projekt tracker alternativ
-source language	developer_tools	sv	Källspråk
+source language	developer_tools	sv	KÃ¤llsprÃ¥k
 sourceforge project id	developer_tools	sv	Sourceforge projekt ID
 sourceforge project tracker	developer_tools	sv	Sourceforge projekt tracker
 sourceforge project tracker preferences	developer_tools	sv	Sourceforge projekt tracker alternativ
 step	developer_tools	sv	Steg
 submit	developer_tools	sv	Spara
-target language	developer_tools	sv	Målspråk
+target language	developer_tools	sv	MÃ¥lsprÃ¥k
 title	developer_tools	sv	Titel
-translate	developer_tools	sv	Översätt
-translation	developer_tools	sv	Översättning
-translation of phrase	developer_tools	sv	Översatt fras
+translate	developer_tools	sv	Ã–versÃ¤tt
+translation	developer_tools	sv	Ã–versÃ¤ttning
+translation of phrase	developer_tools	sv	Ã–versatt fras
 update	developer_tools	sv	Uppdatera
 update database	developer_tools	sv	Uppdatera databas
-updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	sv	Uppdatera båda språkfilerna för att verifiera ändringar genast
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	sv	Uppdatera bÃ¥da sprÃ¥kfilerna fÃ¶r att verifiera Ã¤ndringar genast
 version	developer_tools	sv	Version
 write	developer_tools	sv	Skriv
-write the lang-file to the apps setup-dir	developer_tools	sv	Skriv språkfil till setupkatalogen
-write to lang table	developer_tools	sv	Skriv till språktabellen
-writing langfile for '%1' ...	developer_tools	sv	Skriver språkfil för '%1' ...
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	sv	Du måste [Spara] alla tidigare ändringar innan du kan gå vidare till nästa steg!
-you must a version	developer_tools	sv	Du måste en version
-you must enter a change	developer_tools	sv	Du måste göra ändringar
-you must select a project	developer_tools	sv	Välj ett projekt
-you need to set your preferences for this app	developer_tools	sv	Gör dina inställningar för programmet
+write the lang-file to the apps setup-dir	developer_tools	sv	Skriv sprÃ¥kfil till setupkatalogen
+write to lang table	developer_tools	sv	Skriv till sprÃ¥ktabellen
+writing langfile for '%1' ...	developer_tools	sv	Skriver sprÃ¥kfil fÃ¶r '%1' ...
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	sv	Du mÃ¥ste [Spara] alla tidigare Ã¤ndringar innan du kan gÃ¥ vidare till nÃ¤sta steg!
+you must a version	developer_tools	sv	Du mÃ¥ste en version
+you must enter a change	developer_tools	sv	Du mÃ¥ste gÃ¶ra Ã¤ndringar
+you must select a project	developer_tools	sv	VÃ¤lj ett projekt
+you need to set your preferences for this app	developer_tools	sv	GÃ¶r dina instÃ¤llningar fÃ¶r programmet

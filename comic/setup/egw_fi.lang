@@ -1,39 +1,39 @@
 %1 by %2	comic	fi	%1 %2
 %1 by %2 (%3)	comic	fi	%1 %2:sta (%3)
-are you sure you want to reset all comic dates and resolved image urls?	comic	fi	Haluatko pyyhki‰ p‰iv‰t ja kuvien url:t?
+are you sure you want to reset all comic dates and resolved image urls?	comic	fi	Haluatko pyyhki√§ p√§iv√§t ja kuvien url:t?
 censorship level	comic	fi	Sensuurin taso
-censorship override enabled	comic	fi	Sensuurin ohitus k‰ytˆss‰
+censorship override enabled	comic	fi	Sensuurin ohitus k√§yt√∂ss√§
 comic	common	fi	Sarjakuvat
-comic preferences updated	comic	fi	Sarjakuvan asetuksia p‰ivitetty
+comic preferences updated	comic	fi	Sarjakuvan asetuksia p√§ivitetty
 comics	common	fi	Sarjakuvat
 comics per page	comic	fi	Sarjakuvia sivua kohti
 comics scaled	comic	fi	Sarjakuvat skaalattu
-daily comic	common	fi	P‰ivitt‰inen sarjakuva
-daily comic preferences	comic	fi	P‰ivitt‰isen sarjakuvan asetukset
-daily comics	admin	fi	P‰ivitt‰iset sarjakuvat
-daily comics - global options	comic	fi	P‰ivitt‰iset sarjakuvat -julkiset asetukset
+daily comic	common	fi	P√§ivitt√§inen sarjakuva
+daily comic preferences	comic	fi	P√§ivitt√§isen sarjakuvan asetukset
+daily comics	admin	fi	P√§ivitt√§iset sarjakuvat
+daily comics - global options	comic	fi	P√§ivitt√§iset sarjakuvat -julkiset asetukset
 daily comics data	comic	fi	Sarjakuvien tiedot
-daily comics global options	comic	fi	Sarjakuvien j‰rjestelm‰asetukset
-display layout	comic	fi	N‰ytˆn ulkoasu
-display options	comic	fi	N‰ytˆn vaihtoehdot
+daily comics global options	comic	fi	Sarjakuvien j√§rjestelm√§asetukset
+display layout	comic	fi	N√§yt√∂n ulkoasu
+display options	comic	fi	N√§yt√∂n vaihtoehdot
 egroupware daily comics	comic	fi	eGroupWare Sarjakuvat
 front page comic	comic	fi	Etusivun sarjakuva
 front page comic scaled	comic	fi	Etusivun sarjakuva skaalattu
 genre	comic	fi	Tyylilaji
 global comics	common	fi	Yleiset sarjakuvat
 global options	common	fi	Yleiset asetukset
-global options updated	comic	fi	Yleiset asetukset p‰ivitetty
-image source	comic	fi	Kuvan l‰hde
+global options updated	comic	fi	Yleiset asetukset p√§ivitetty
+image source	comic	fi	Kuvan l√§hde
 max file size	comic	fi	Suurin tiedoston koko
 my comics	comic	fi	Sarjakuvani
-no_entries	comic	fi	Ei_merkintˆj‰
+no_entries	comic	fi	Ei_merkint√∂j√§
 parser	comic	fi	Tulkki
 random	comic	fi	Sattumanvarainen
 rated	comic	fi	Luokitus
-remote (parse/snarf) enabled	comic	fi	Et‰palvelin (tulkkaa/paikalliskopio)
+remote (parse/snarf) enabled	comic	fi	Et√§palvelin (tulkkaa/paikalliskopio)
 reset	comic	fi	Nollaa
 reset comic data	admin	fi	Nollaa sarjakuva tieto
-resolve	comic	fi	Selvit‰
-showing %1 (%2 - %3 of %4)	comic	fi	N‰ytet‰‰n %1 (%2-%3 %4)
+resolve	comic	fi	Selvit√§
+showing %1 (%2 - %3 of %4)	comic	fi	N√§ytet√§√§n %1 (%2-%3 %4)
 template	comic	fi	Malli
 visit %1	comic	fi	Vieraile %1

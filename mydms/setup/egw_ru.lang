@@ -1,62 +1,62 @@
-access mode	mydms	ru	режим доступа
-access rights	mydms	ru	права доступа
-access_mode_all	mydms	ru	Все
-access_mode_none	mydms	ru	Нет доступа
-access_mode_read	mydms	ru	Чтение
-access_mode_readwrite	mydms	ru	Чтение+Запись
-acl get inherited	mydms	ru	acl наследовано
-add acl	mydms	ru	добавить acl
-add document	mydms	ru	добавить документ
-add notification	mydms	ru	добавить уведомление
-add subfolder	mydms	ru	Добавить подпапку
-admin-tools	mydms	ru	Утилиты управления
-all versions	mydms	ru	все версии
-comment	mydms	ru	Коментарий
-comment for current version	mydms	ru	коментарий для текущей версии
-copy acl	mydms	ru	копировать acl
-copy documents	mydms	ru	копировать документ
-copy folder	mydms	ru	копировать папку
-copy options	mydms	ru	параметры копирования
-copy subfolders	mydms	ru	копировать подпапку
-create empty acl	mydms	ru	создать пустой acl
-creation date	mydms	ru	дата создания
-current acl	mydms	ru	текущий acl
-current version	mydms	ru	текущая версия
-default access	mydms	ru	досуп по умолчанию
-delete folder	mydms	ru	удалить папку
-delete this notification	mydms	ru	удалить это извещение
-do you really want to delete this acl?	mydms	ru	Вы действительно хотите удалить этот acl?
-do you really want to delete this document?	mydms	ru	Вы действительно хотите удалить этот документ?
-do you really want to delete this version of the document?	mydms	ru	Вы действительно хотите удалить эту версию документа?
-does not expire	mydms	ru	срок не истекает
-download	mydms	ru	Загрузить
-edit folder	mydms	ru	редактировать папку
-expires	mydms	ru	истекает
-expires after	mydms	ru	истекает после
-file size	mydms	ru	размер файла
-filename	mydms	ru	имя файла
-folder	mydms	ru	папка
-general information	mydms	ru	общая информация
-information about last update	mydms	ru	информация о последнем обновлении
-informations	mydms	ru	Информация
-inherit acl again	mydms	ru	наследовать acl снова
-last update	mydms	ru	последнее обновление
-linked documents	mydms	ru	свзяанный документ
-lock status	mydms	ru	статус блокировки
-mime type	mydms	ru	Тип Mime
-move document	mydms	ru	переместить документ
-move folder	mydms	ru	переместить папку
-mydms	common	ru	Управление Документами
-notifications	mydms	ru	уведомления
-permission	mydms	ru	разрешение
-select folder	mydms	ru	выбрать папку
-select target folder	mydms	ru	выбрать папку назначения
-target folder	mydms	ru	папка назначения
-this document gets locked by you!	mydms	ru	Данный документ блокирован вами!
-this document gets unlocked by you.	mydms	ru	Данный документ разблокирован вами.
-this document is currently not locked.	mydms	ru	Данный документ не блокирован.
-this document is locked by <a href="mailto:%1">%2</a>.	mydms	ru	этот документ заблокирован <a href="mailto:%1">%2</a>.
-update document	mydms	ru	обновить документ
-upload date	mydms	ru	дата выгрузки
-uploaded by	mydms	ru	выгружено
-view online	mydms	ru	просмотр тут же
+access mode	mydms	ru	я─п╣п╤п╦п╪ п╢п╬я│я┌я┐п©п╟
+access rights	mydms	ru	п©я─п╟п╡п╟ п╢п╬я│я┌я┐п©п╟
+access_mode_all	mydms	ru	п▓я│п╣
+access_mode_none	mydms	ru	п²п╣я┌ п╢п╬я│я┌я┐п©п╟
+access_mode_read	mydms	ru	п╖я┌п╣п╫п╦п╣
+access_mode_readwrite	mydms	ru	п╖я┌п╣п╫п╦п╣+п≈п╟п©п╦я│я▄
+acl get inherited	mydms	ru	acl п╫п╟я│п╩п╣п╢п╬п╡п╟п╫п╬
+add acl	mydms	ru	п╢п╬п╠п╟п╡п╦я┌я▄ acl
+add document	mydms	ru	п╢п╬п╠п╟п╡п╦я┌я▄ п╢п╬п╨я┐п╪п╣п╫я┌
+add notification	mydms	ru	п╢п╬п╠п╟п╡п╦я┌я▄ я┐п╡п╣п╢п╬п╪п╩п╣п╫п╦п╣
+add subfolder	mydms	ru	п■п╬п╠п╟п╡п╦я┌я▄ п©п╬п╢п©п╟п©п╨я┐
+admin-tools	mydms	ru	пёя┌п╦п╩п╦я┌я▀ я┐п©я─п╟п╡п╩п╣п╫п╦я▐
+all versions	mydms	ru	п╡я│п╣ п╡п╣я─я│п╦п╦
+comment	mydms	ru	п п╬п╪п╣п╫я┌п╟я─п╦п╧
+comment for current version	mydms	ru	п╨п╬п╪п╣п╫я┌п╟я─п╦п╧ п╢п╩я▐ я┌п╣п╨я┐я┴п╣п╧ п╡п╣я─я│п╦п╦
+copy acl	mydms	ru	п╨п╬п©п╦я─п╬п╡п╟я┌я▄ acl
+copy documents	mydms	ru	п╨п╬п©п╦я─п╬п╡п╟я┌я▄ п╢п╬п╨я┐п╪п╣п╫я┌
+copy folder	mydms	ru	п╨п╬п©п╦я─п╬п╡п╟я┌я▄ п©п╟п©п╨я┐
+copy options	mydms	ru	п©п╟я─п╟п╪п╣я┌я─я▀ п╨п╬п©п╦я─п╬п╡п╟п╫п╦я▐
+copy subfolders	mydms	ru	п╨п╬п©п╦я─п╬п╡п╟я┌я▄ п©п╬п╢п©п╟п©п╨я┐
+create empty acl	mydms	ru	я│п╬п╥п╢п╟я┌я▄ п©я┐я│я┌п╬п╧ acl
+creation date	mydms	ru	п╢п╟я┌п╟ я│п╬п╥п╢п╟п╫п╦я▐
+current acl	mydms	ru	я┌п╣п╨я┐я┴п╦п╧ acl
+current version	mydms	ru	я┌п╣п╨я┐я┴п╟я▐ п╡п╣я─я│п╦я▐
+default access	mydms	ru	п╢п╬я│я┐п© п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌
+delete folder	mydms	ru	я┐п╢п╟п╩п╦я┌я▄ п©п╟п©п╨я┐
+delete this notification	mydms	ru	я┐п╢п╟п╩п╦я┌я▄ я█я┌п╬ п╦п╥п╡п╣я┴п╣п╫п╦п╣
+do you really want to delete this acl?	mydms	ru	п▓я▀ п╢п╣п╧я│я┌п╡п╦я┌п╣п╩я▄п╫п╬ я┘п╬я┌п╦я┌п╣ я┐п╢п╟п╩п╦я┌я▄ я█я┌п╬я┌ acl?
+do you really want to delete this document?	mydms	ru	п▓я▀ п╢п╣п╧я│я┌п╡п╦я┌п╣п╩я▄п╫п╬ я┘п╬я┌п╦я┌п╣ я┐п╢п╟п╩п╦я┌я▄ я█я┌п╬я┌ п╢п╬п╨я┐п╪п╣п╫я┌?
+do you really want to delete this version of the document?	mydms	ru	п▓я▀ п╢п╣п╧я│я┌п╡п╦я┌п╣п╩я▄п╫п╬ я┘п╬я┌п╦я┌п╣ я┐п╢п╟п╩п╦я┌я▄ я█я┌я┐ п╡п╣я─я│п╦я▌ п╢п╬п╨я┐п╪п╣п╫я┌п╟?
+does not expire	mydms	ru	я│я─п╬п╨ п╫п╣ п╦я│я┌п╣п╨п╟п╣я┌
+download	mydms	ru	п≈п╟пЁя─я┐п╥п╦я┌я▄
+edit folder	mydms	ru	я─п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄ п©п╟п©п╨я┐
+expires	mydms	ru	п╦я│я┌п╣п╨п╟п╣я┌
+expires after	mydms	ru	п╦я│я┌п╣п╨п╟п╣я┌ п©п╬я│п╩п╣
+file size	mydms	ru	я─п╟п╥п╪п╣я─ я└п╟п╧п╩п╟
+filename	mydms	ru	п╦п╪я▐ я└п╟п╧п╩п╟
+folder	mydms	ru	п©п╟п©п╨п╟
+general information	mydms	ru	п╬п╠я┴п╟я▐ п╦п╫я└п╬я─п╪п╟я├п╦я▐
+information about last update	mydms	ru	п╦п╫я└п╬я─п╪п╟я├п╦я▐ п╬ п©п╬я│п╩п╣п╢п╫п╣п╪ п╬п╠п╫п╬п╡п╩п╣п╫п╦п╦
+informations	mydms	ru	п≤п╫я└п╬я─п╪п╟я├п╦я▐
+inherit acl again	mydms	ru	п╫п╟я│п╩п╣п╢п╬п╡п╟я┌я▄ acl я│п╫п╬п╡п╟
+last update	mydms	ru	п©п╬я│п╩п╣п╢п╫п╣п╣ п╬п╠п╫п╬п╡п╩п╣п╫п╦п╣
+linked documents	mydms	ru	я│п╡п╥я▐п╟п╫п╫я▀п╧ п╢п╬п╨я┐п╪п╣п╫я┌
+lock status	mydms	ru	я│я┌п╟я┌я┐я│ п╠п╩п╬п╨п╦я─п╬п╡п╨п╦
+mime type	mydms	ru	п╒п╦п© Mime
+move document	mydms	ru	п©п╣я─п╣п╪п╣я│я┌п╦я┌я▄ п╢п╬п╨я┐п╪п╣п╫я┌
+move folder	mydms	ru	п©п╣я─п╣п╪п╣я│я┌п╦я┌я▄ п©п╟п©п╨я┐
+mydms	common	ru	пёп©я─п╟п╡п╩п╣п╫п╦п╣ п■п╬п╨я┐п╪п╣п╫я┌п╟п╪п╦
+notifications	mydms	ru	я┐п╡п╣п╢п╬п╪п╩п╣п╫п╦я▐
+permission	mydms	ru	я─п╟п╥я─п╣я┬п╣п╫п╦п╣
+select folder	mydms	ru	п╡я▀п╠я─п╟я┌я▄ п©п╟п©п╨я┐
+select target folder	mydms	ru	п╡я▀п╠я─п╟я┌я▄ п©п╟п©п╨я┐ п╫п╟п╥п╫п╟я┤п╣п╫п╦я▐
+target folder	mydms	ru	п©п╟п©п╨п╟ п╫п╟п╥п╫п╟я┤п╣п╫п╦я▐
+this document gets locked by you!	mydms	ru	п■п╟п╫п╫я▀п╧ п╢п╬п╨я┐п╪п╣п╫я┌ п╠п╩п╬п╨п╦я─п╬п╡п╟п╫ п╡п╟п╪п╦!
+this document gets unlocked by you.	mydms	ru	п■п╟п╫п╫я▀п╧ п╢п╬п╨я┐п╪п╣п╫я┌ я─п╟п╥п╠п╩п╬п╨п╦я─п╬п╡п╟п╫ п╡п╟п╪п╦.
+this document is currently not locked.	mydms	ru	п■п╟п╫п╫я▀п╧ п╢п╬п╨я┐п╪п╣п╫я┌ п╫п╣ п╠п╩п╬п╨п╦я─п╬п╡п╟п╫.
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	ru	я█я┌п╬я┌ п╢п╬п╨я┐п╪п╣п╫я┌ п╥п╟п╠п╩п╬п╨п╦я─п╬п╡п╟п╫ <a href="mailto:%1">%2</a>.
+update document	mydms	ru	п╬п╠п╫п╬п╡п╦я┌я▄ п╢п╬п╨я┐п╪п╣п╫я┌
+upload date	mydms	ru	п╢п╟я┌п╟ п╡я▀пЁя─я┐п╥п╨п╦
+uploaded by	mydms	ru	п╡я▀пЁя─я┐п╤п╣п╫п╬
+view online	mydms	ru	п©я─п╬я│п╪п╬я┌я─ я┌я┐я┌ п╤п╣

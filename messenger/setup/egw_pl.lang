@@ -1,36 +1,36 @@
-compose	messenger	pl	Utwórz
-compose global message	common	pl	Utwórz wiadomo¶æ globaln±
-compose message	messenger	pl	Tworzenie wiadomo¶ci
-delete a message.	messenger	pl	Usuñ wiadomo¶æ
-delete selected	messenger	pl	Usuñ zaznaczone
-forward	messenger	pl	Przeka¿
-forward a message	messenger	pl	Przeka¿ wiadomo¶æ
-forward a message to another user.	messenger	pl	Przeka¿ wiadomosæ do innego u¿ytkownika
+compose	messenger	pl	UtwÃ³rz
+compose global message	common	pl	UtwÃ³rz wiadomoÅ›Ä‡ globalnÄ…
+compose message	messenger	pl	Tworzenie wiadomoÅ›ci
+delete a message.	messenger	pl	UsuÅ„ wiadomoÅ›Ä‡
+delete selected	messenger	pl	UsuÅ„ zaznaczone
+forward	messenger	pl	PrzekaÅ¼
+forward a message	messenger	pl	PrzekaÅ¼ wiadomoÅ›Ä‡
+forward a message to another user.	messenger	pl	PrzekaÅ¼ wiadomosÄ‡ do innego uÅ¼ytkownika
 forwarded	messenger	pl	Przekazany
 from	messenger	pl	Od
-global message	messenger	pl	Wiadomo¶æ globalna
-i can't find the username %1 on the system	messenger	pl	Nie mo¿na znale¼æ u¿ytkownika %1 w systemie
+global message	messenger	pl	WiadomoÅ›Ä‡ globalna
+i can't find the username %1 on the system	messenger	pl	Nie moÅ¼na znaleÅºÄ‡ uÅ¼ytkownika %1 w systemie
 inbox	messenger	pl	Skrzynka odbiorcza
-message from	messenger	pl	Wiadomo¶æ od
+message from	messenger	pl	WiadomoÅ›Ä‡ od
 messenger	common	pl	Komunikator
 new	messenger	pl	Nowa
-read a list of messages.	messenger	pl	Przeczytaj listê wiadomo¶ci
-read a single message.	messenger	pl	Przeczytaj pojedyncz± wiadomo¶æ
-read message	messenger	pl	Czytaj wiadomo¶æ
+read a list of messages.	messenger	pl	Przeczytaj listÄ™ wiadomoÅ›ci
+read a single message.	messenger	pl	Przeczytaj pojedynczÄ… wiadomoÅ›Ä‡
+read message	messenger	pl	Czytaj wiadomoÅ›Ä‡
 replied	messenger	pl	odpowiedziano
 reply	messenger	pl	Odpowiedz
-reply to a message	messenger	pl	Odpowiedz na tê wiadomo¶æ
-reply to a received message.	messenger	pl	Odpowiedz na otrzyman± wiadomo¶æ
-send	messenger	pl	Wy¶lij
-send a global message.	messenger	pl	Wy¶lij wiadomo¶æ globaln±
-send a message to a single recipient.	messenger	pl	Wy¶lij wiadomo¶æ do pojedynczej osoby
-send message to	messenger	pl	Wy¶lij wiadomo¶æ do
+reply to a message	messenger	pl	Odpowiedz na tÄ™ wiadomoÅ›Ä‡
+reply to a received message.	messenger	pl	Odpowiedz na otrzymanÄ… wiadomoÅ›Ä‡
+send	messenger	pl	WyÅ›lij
+send a global message.	messenger	pl	WyÅ›lij wiadomoÅ›Ä‡ globalnÄ…
+send a message to a single recipient.	messenger	pl	WyÅ›lij wiadomoÅ›Ä‡ do pojedynczej osoby
+send message to	messenger	pl	WyÅ›lij wiadomoÅ›Ä‡ do
 sorry, %1's account is not currently active	messenger	pl	Przepraszamy, konto %1 nie jest aktualnie aktywne
-update a message status	messenger	pl	Aktualizuj status wiadomo¶ci
-use select box for user list in compose	common	pl	U¿yj listy rozwijanej do wyboru u¿ytkowników
-you didn't enter anything for the message	messenger	pl	Nie wpisano tre¶ci wiadomo¶ci
-you have %1 new message	common	pl	Masz %1 now± wiadomo¶æ
-you have %1 new messages	common	pl	Masz %1 nowych wiadomo¶ci
-you have no messages	messenger	pl	Nie masz wiadomo¶ci
-you must enter a subject	messenger	pl	Musisz wprowadziæ temat
-you must enter the username this message is for	messenger	pl	Musisz wprowadziæ nazwê u¿ytkownika, dla którego jest ta wiadomo¶æ
+update a message status	messenger	pl	Aktualizuj status wiadomoÅ›ci
+use select box for user list in compose	common	pl	UÅ¼yj listy rozwijanej do wyboru uÅ¼ytkownikÃ³w
+you didn't enter anything for the message	messenger	pl	Nie wpisano treÅ›ci wiadomoÅ›ci
+you have %1 new message	common	pl	Masz %1 nowÄ… wiadomoÅ›Ä‡
+you have %1 new messages	common	pl	Masz %1 nowych wiadomoÅ›ci
+you have no messages	messenger	pl	Nie masz wiadomoÅ›ci
+you must enter a subject	messenger	pl	Musisz wprowadziÄ‡ temat
+you must enter the username this message is for	messenger	pl	Musisz wprowadziÄ‡ nazwÄ™ uÅ¼ytkownika, dla ktÃ³rego jest ta wiadomoÅ›Ä‡

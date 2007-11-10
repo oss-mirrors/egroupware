@@ -1,5 +1,5 @@
 %1 bookmarks have been deleted	bookmarks	nl	%1 favorieten zijn verwijderd
-%1 bookmarks imported from %2 successfully.	bookmarks	nl	Met succes %1 favorieten geïmporteerd van %2.
+%1 bookmarks imported from %2 successfully.	bookmarks	nl	Met succes %1 favorieten geÃ¯mporteerd van %2.
 (comma separate multiple addresses)	bookmarks	nl	(komma gescheiden, meerdere adressen)
 <b>note:</b> this currently works with netscape bookmarks only	bookmarks	nl	LET OP: Dit werkt momenteel alleen met Netscape favorieten.
 all bookmarks	bookmarks	nl	Alle Favorieten
@@ -33,9 +33,9 @@ filter by	bookmarks	nl	Filteren op
 found a link you might like	bookmarks	nl	Link gevonden die u wellicht interesseert
 from	bookmarks	nl	Van
 from category %1	bookmarks	nl	uit categorie %1
-global categories	bookmarks	nl	Globale categoriën
+global categories	bookmarks	nl	Globale categoriÃ«n
 highest	bookmarks	nl	Hoogste
-i thought you would be interested in the following link(s):	bookmarks	nl	I dacht dat u geïntereseerd zou zijn in de volgende link(s):
+i thought you would be interested in the following link(s):	bookmarks	nl	I dacht dat u geÃ¯ntereseerd zou zijn in de volgende link(s):
 import bookmarks	common	nl	Importeer favorieten
 like	bookmarks	nl	zoals
 list view	bookmarks	nl	lijst weergave
@@ -53,7 +53,7 @@ new	bookmark	nl	Nieuw
 new bookmark	bookmarks	nl	nieuwe favoriet
 or	bookmarks	nl	of
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	nl	Geef a.u.b. het <B>Aan E-Mailadres</B>, <B>Onderwerp</B>, en <B>Bericht</B>!
-please select the categories to export	bookmarks	nl	Selecteer a.u.b. de categorieën
+please select the categories to export	bookmarks	nl	Selecteer a.u.b. de categorieÃ«n
 query condition	bookmarks	nl	Zoekcriterium
 rating	bookmarks	nl	Waardering
 search for:	bookmarks	nl	Zoeken op:
@@ -63,7 +63,7 @@ site configuration	bookmarks	nl	Site configuratie
 sub category	bookmarks	nl	Subcategorie
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	nl	Het <B>Aan E-Mailadres</B> %1 is ongeldig. Het adres moet als volgt eruit zien <strong>gebruiker@domein</strong>
 to e-mail addresses	bookmarks	nl	Het <B>Aan E-Mailadres</B>
-to which category should the imported folder hierarchy be attached	bookmarks	nl	Aan welke categorie moet de geïmporteerde maphiërarchie worden toegevoegd
+to which category should the imported folder hierarchy be attached	bookmarks	nl	Aan welke categorie moet de geÃ¯mporteerde maphiÃ«rarchie worden toegevoegd
 total visits	bookmarks	nl	totaal aantal bezoekers
 tree view	bookmarks	nl	Boomweergave
 unable to open temp file %1 for import.	bookmarks	nl	Tijdelijk bestand %1 kan niet worden geopend om te importeren.

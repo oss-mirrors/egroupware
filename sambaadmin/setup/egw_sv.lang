@@ -1,23 +1,23 @@
 %1 - %2 of %3	sambaadmin	sv	%1 - %2 av %3
-add workstation	sambaadmin	sv	Lägg till dator
-check ldap setup (experimental!!!)	admin	sv	Kontrollera LDAP inställningar (experimentell)
+add workstation	sambaadmin	sv	LÃ¤gg till dator
+check ldap setup (experimental!!!)	admin	sv	Kontrollera LDAP instÃ¤llningar (experimentell)
 computer group	admin	sv	Datorgrupp
 computer ou	admin	sv	Dator ou
 displayname	sambaadmin	sv	Visat namn
 do you really want to delete selected workstation accounts?	sambaadmin	sv	Vill du verkligen radera valda datorkonton?
 homedrive	admin	sv	Hemkatalog
-homepath	sambaadmin	sv	Hemsökväg
+homepath	sambaadmin	sv	HemsÃ¶kvÃ¤g
 logonscript	admin	sv	Inloggnings skript
-new account defaults	admin	sv	Standard för nya konton
+new account defaults	admin	sv	Standard fÃ¶r nya konton
 participants	sambaadmin	sv	Deltagare
-path to mkntpwd	admin	sv	Sökväg till mkntpwd
-profilepath	admin	sv	Profil sökväg
-samba config	sambaadmin	sv	Samba inställningar
+path to mkntpwd	admin	sv	SÃ¶kvÃ¤g till mkntpwd
+profilepath	admin	sv	Profil sÃ¶kvÃ¤g
+samba config	sambaadmin	sv	Samba instÃ¤llningar
 samba settings	common	sv	Samba alternativ
 samba sid	admin	sv	Samba SID
 sambaadmin	common	sv	Sambahantering
-smb homepath	admin	sv	Smb sökväg
-workstation account for	sambaadmin	sv	Datorkonto för
+smb homepath	admin	sv	Smb sÃ¶kvÃ¤g
+workstation account for	sambaadmin	sv	Datorkonto fÃ¶r
 workstation configuration	sambaadmin	sv	Datoralternativ
 workstation list	sambaadmin	sv	Datorlista
 workstation name	sambaadmin	sv	Datornamn

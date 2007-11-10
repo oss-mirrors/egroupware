@@ -19,8 +19,8 @@ read a single message.	messenger	no	Les en enkelt melding
 read message	messenger	no	Les melding
 replied	messenger	no	Besvart
 reply	messenger	no	Svare
-reply to a message	messenger	no	Svare på en melding
-reply to a received message.	messenger	no	Svar på en mottatt melding
+reply to a message	messenger	no	Svare pÃ¥ en melding
+reply to a received message.	messenger	no	Svar pÃ¥ en mottatt melding
 send	messenger	no	Send
 send a global message.	messenger	no	Send en global melding
 send a message to a single recipient.	messenger	no	Send en elding til en mottaker
@@ -32,5 +32,5 @@ you didn't enter anything for the message	messenger	no	Du registrerte ingenting 
 you have %1 new message	common	no	Du har %1 ny melding
 you have %1 new messages	common	no	Du har %1 nye meldinger
 you have no messages	messenger	no	Du har ingen meldinger
-you must enter a subject	messenger	no	Du må registrere en overskrift
-you must enter the username this message is for	messenger	no	Du må registrere hvilken bruker denne meldingen er til
+you must enter a subject	messenger	no	Du mÃ¥ registrere en overskrift
+you must enter the username this message is for	messenger	no	Du mÃ¥ registrere hvilken bruker denne meldingen er til

@@ -1,33 +1,33 @@
-actions	polls	ru	действия
-add answer to poll	polls	ru	Добавить ответ в голосование
-add answers	polls	ru	Добавить ответы
-add new poll question	polls	ru	Добавить новый вопрос для голосования
-add questions	polls	ru	Добавить вопросы
-allow users to vote more then once	polls	ru	Разрешить пользователям голосовать неоднократно
-answer	polls	ru	Ответы
-answer has been added to poll	polls	ru	Ответы добавлены в голосование
-answer has been updated	polls	ru	Ответы обновлены
-answers	polls	ru	Ответы
-are you sure want to delete this answer ?	polls	ru	Вы точно хотите удалить этот ответ?
-are you sure want to delete this question ?	polls	ru	Вы точно хотите удалить этот вопрос?
-current poll	polls	ru	Текущее Голосование
-edit answer	polls	ru	Изменить ответ
-edit poll question	polls	ru	Изменить вопрос голосования
-enter poll question	polls	ru	Ввести вопрос голосования
-new poll has been added.  you should now add some answers for this poll	polls	ru	Добавлено новое голосование. Сейчас Вы должны добавить несколько ответов для этго голосования
-poll question	polls	ru	Вопрос голосования
-poll settings	common	ru	Установки голосования
-polls	common	ru	Голосования
-question has been updated	polls	ru	Вопрос был обновлен
-select current poll	polls	ru	Выбрать текущее голосование
-settings	polls	ru	Установки
-settings updated	polls	ru	Установки обновлены
-show answers	polls	ru	Показать ответы
-show questions	common	ru	Показать вопросы
-total votes	polls	ru	Итого
-view poll	polls	ru	Смотреть голосование
-view results	polls	ru	Смотреть результаты
-vote	polls	ru	Голосовать
-voting booth admin	admin	ru	Кабинка для голосования
-voting booth administration	polls	ru	Администрирование кабинки для голосования
-which poll	polls	ru	Какое голосование
+actions	polls	ru	п╢п╣п╧я│я┌п╡п╦я▐
+add answer to poll	polls	ru	п■п╬п╠п╟п╡п╦я┌я▄ п╬я┌п╡п╣я┌ п╡ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦п╣
+add answers	polls	ru	п■п╬п╠п╟п╡п╦я┌я▄ п╬я┌п╡п╣я┌я▀
+add new poll question	polls	ru	п■п╬п╠п╟п╡п╦я┌я▄ п╫п╬п╡я▀п╧ п╡п╬п©я─п╬я│ п╢п╩я▐ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+add questions	polls	ru	п■п╬п╠п╟п╡п╦я┌я▄ п╡п╬п©я─п╬я│я▀
+allow users to vote more then once	polls	ru	п═п╟п╥я─п╣я┬п╦я┌я▄ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐п╪ пЁп╬п╩п╬я│п╬п╡п╟я┌я▄ п╫п╣п╬п╢п╫п╬п╨я─п╟я┌п╫п╬
+answer	polls	ru	п·я┌п╡п╣я┌я▀
+answer has been added to poll	polls	ru	п·я┌п╡п╣я┌я▀ п╢п╬п╠п╟п╡п╩п╣п╫я▀ п╡ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦п╣
+answer has been updated	polls	ru	п·я┌п╡п╣я┌я▀ п╬п╠п╫п╬п╡п╩п╣п╫я▀
+answers	polls	ru	п·я┌п╡п╣я┌я▀
+are you sure want to delete this answer ?	polls	ru	п▓я▀ я┌п╬я┤п╫п╬ я┘п╬я┌п╦я┌п╣ я┐п╢п╟п╩п╦я┌я▄ я█я┌п╬я┌ п╬я┌п╡п╣я┌?
+are you sure want to delete this question ?	polls	ru	п▓я▀ я┌п╬я┤п╫п╬ я┘п╬я┌п╦я┌п╣ я┐п╢п╟п╩п╦я┌я▄ я█я┌п╬я┌ п╡п╬п©я─п╬я│?
+current poll	polls	ru	п╒п╣п╨я┐я┴п╣п╣ п⌠п╬п╩п╬я│п╬п╡п╟п╫п╦п╣
+edit answer	polls	ru	п≤п╥п╪п╣п╫п╦я┌я▄ п╬я┌п╡п╣я┌
+edit poll question	polls	ru	п≤п╥п╪п╣п╫п╦я┌я▄ п╡п╬п©я─п╬я│ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+enter poll question	polls	ru	п▓п╡п╣я│я┌п╦ п╡п╬п©я─п╬я│ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+new poll has been added.  you should now add some answers for this poll	polls	ru	п■п╬п╠п╟п╡п╩п╣п╫п╬ п╫п╬п╡п╬п╣ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦п╣. п║п╣п╧я┤п╟я│ п▓я▀ п╢п╬п╩п╤п╫я▀ п╢п╬п╠п╟п╡п╦я┌я▄ п╫п╣я│п╨п╬п╩я▄п╨п╬ п╬я┌п╡п╣я┌п╬п╡ п╢п╩я▐ я█я┌пЁп╬ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+poll question	polls	ru	п▓п╬п©я─п╬я│ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+poll settings	common	ru	пёя│я┌п╟п╫п╬п╡п╨п╦ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+polls	common	ru	п⌠п╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+question has been updated	polls	ru	п▓п╬п©я─п╬я│ п╠я▀п╩ п╬п╠п╫п╬п╡п╩п╣п╫
+select current poll	polls	ru	п▓я▀п╠я─п╟я┌я▄ я┌п╣п╨я┐я┴п╣п╣ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦п╣
+settings	polls	ru	пёя│я┌п╟п╫п╬п╡п╨п╦
+settings updated	polls	ru	пёя│я┌п╟п╫п╬п╡п╨п╦ п╬п╠п╫п╬п╡п╩п╣п╫я▀
+show answers	polls	ru	п÷п╬п╨п╟п╥п╟я┌я▄ п╬я┌п╡п╣я┌я▀
+show questions	common	ru	п÷п╬п╨п╟п╥п╟я┌я▄ п╡п╬п©я─п╬я│я▀
+total votes	polls	ru	п≤я┌п╬пЁп╬
+view poll	polls	ru	п║п╪п╬я┌я─п╣я┌я▄ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦п╣
+view results	polls	ru	п║п╪п╬я┌я─п╣я┌я▄ я─п╣п╥я┐п╩я▄я┌п╟я┌я▀
+vote	polls	ru	п⌠п╬п╩п╬я│п╬п╡п╟я┌я▄
+voting booth admin	admin	ru	п п╟п╠п╦п╫п╨п╟ п╢п╩я▐ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+voting booth administration	polls	ru	п░п╢п╪п╦п╫п╦я│я┌я─п╦я─п╬п╡п╟п╫п╦п╣ п╨п╟п╠п╦п╫п╨п╦ п╢п╩я▐ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦я▐
+which poll	polls	ru	п п╟п╨п╬п╣ пЁп╬п╩п╬я│п╬п╡п╟п╫п╦п╣

@@ -1,7 +1,7 @@
 add profile	emailadmin	sv	Skapa profil
 admin dn	emailadmin	sv	Admin dn
-admin password	emailadmin	sv	Admin lösenord
-admin username	emailadmin	sv	Admin användare
+admin password	emailadmin	sv	Admin lÃ¶senord
+admin username	emailadmin	sv	Admin anvÃ¤ndare
 advanced options	emailadmin	sv	Avanserade alternativ
 alternate email address	emailadmin	sv	Alternerande e-post adress
 cyrus imap server	emailadmin	sv	Cyrus IMAP Server
@@ -9,18 +9,18 @@ cyrus imap server administration	emailadmin	sv	Cyrus IMAP server administration
 default	emailadmin	sv	Standard
 deliver extern	emailadmin	sv	Leverera extern
 do you really want to delete this profile	emailadmin	sv	Vill du verkligen radera profilen?
-domainname	emailadmin	sv	Domän namn
+domainname	emailadmin	sv	DomÃ¤n namn
 edit email settings	emailadmin	sv	Redigera e-post alternativ
 email account active	emailadmin	sv	Aktivt e-post konto
 email address	emailadmin	sv	E-post adress
 enable cyrus imap server administration	emailadmin	sv	Aktivera Cyrus IMAP server administration
 enable sieve	emailadmin	sv	Aktivera Sieve
-enter your default mail domain (from: user@domain)	emailadmin	sv	Standard e-post domän (från: user@domain)
-forward also to	emailadmin	sv	Vidarebefodra även till
+enter your default mail domain (from: user@domain)	emailadmin	sv	Standard e-post domÃ¤n (frÃ¥n: user@domain)
+forward also to	emailadmin	sv	Vidarebefodra Ã¤ven till
 forward email's to	emailadmin	sv	Vidarebefodra e-post till
 forward only	emailadmin	sv	Vidarebefodra endast
-imap admin password	admin	sv	IMAP admin lösenord
-imap admin user	admin	sv	IMAP admin användare
+imap admin password	admin	sv	IMAP admin lÃ¶senord
+imap admin user	admin	sv	IMAP admin anvÃ¤ndare
 imap c-client version < 2001	emailadmin	sv	IMAP C-Client version < 2001
 imap server hostname or ip address	emailadmin	sv	IMAP server hostnamn eller IP adress
 imap server logintyp	emailadmin	sv	IMAP server inloggnings typ
@@ -31,10 +31,10 @@ ldap basedn	emailadmin	sv	LDAP basedn
 ldap server	emailadmin	sv	LDAP server
 ldap server accounts dn	emailadmin	sv	LDAP server konton DN
 ldap server admin dn	emailadmin	sv	LDAP server admin DN
-ldap server admin password	emailadmin	sv	LDAP server admin lösenord
+ldap server admin password	emailadmin	sv	LDAP server admin lÃ¶senord
 ldap server hostname or ip address	emailadmin	sv	LDAP server hostnamn eller IP adress
 ldap settings	emailadmin	sv	LDAP alternativ
-leave empty for no quota	emailadmin	sv	Lämna tomt för ingen kvot
+leave empty for no quota	emailadmin	sv	LÃ¤mna tomt fÃ¶r ingen kvot
 mail settings	admin	sv	E-post alternativ
 name of organisation	emailadmin	sv	Organisations namn
 no alternate email address	emailadmin	sv	Ingen alternerande e-post adress
@@ -48,8 +48,8 @@ qmaildotmode	emailadmin	sv	qmaildotmode
 qouta size in mbyte	emailadmin	sv	Kvot storlek i Mb
 quota settings	emailadmin	sv	Kvot alternativ
 remove	emailadmin	sv	Radera
-select type of imap/pop3 server	emailadmin	sv	Välj typ av IMAP/POP3 server
-select type of smtp server	emailadmin	sv	Välj typ av SMTP Server
+select type of imap/pop3 server	emailadmin	sv	VÃ¤lj typ av IMAP/POP3 server
+select type of smtp server	emailadmin	sv	VÃ¤lj typ av SMTP Server
 sieve server hostname or ip address	emailadmin	sv	Sieve server hostnamn eller IP adress
 sieve server port	emailadmin	sv	Sieve server port
 sieve settings	emailadmin	sv	Sieve alternativ
@@ -60,9 +60,9 @@ standard	emailadmin	sv	Standard
 standard imap server	emailadmin	sv	Standard IMAP server
 standard pop3 server	emailadmin	sv	Standard POP3 server
 standard smtp-server	emailadmin	sv	Standard SMTP server
-use ldap defaults	emailadmin	sv	använd LDAP standarder
-use smtp auth	emailadmin	sv	Använd SMTP autentisering
-use tls authentication	emailadmin	sv	Använd TLS autentisering
-use tls encryption	emailadmin	sv	Använd TLS kryptering
-users can define their own emailaccounts	emailadmin	sv	Användare kan definiera egna epost konton?
+use ldap defaults	emailadmin	sv	anvÃ¤nd LDAP standarder
+use smtp auth	emailadmin	sv	AnvÃ¤nd SMTP autentisering
+use tls authentication	emailadmin	sv	AnvÃ¤nd TLS autentisering
+use tls encryption	emailadmin	sv	AnvÃ¤nd TLS kryptering
+users can define their own emailaccounts	emailadmin	sv	AnvÃ¤ndare kan definiera egna epost konton?
 virtual mail manager	emailadmin	sv	Virtuell E-post administration

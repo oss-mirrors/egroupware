@@ -3,31 +3,31 @@
 (unknown sender)	felamimail	da	(Ukendt afsender)
 activate	felamimail	da	Aktivere
 activate script	felamimail	da	aktivere script
-add	felamimail	da	tilføj
-add address	felamimail	da	Tilføj Adresse
-add rule	felamimail	da	Tilføj Regel
-add script	felamimail	da	Tilføj Script
-add to %1	felamimail	da	Tilføj til %1
-add to address book	felamimail	da	Tilføj til adressebog
-add to addressbook	felamimail	da	tilføj til adressebog
+add	felamimail	da	tilfÃ¸j
+add address	felamimail	da	TilfÃ¸j Adresse
+add rule	felamimail	da	TilfÃ¸j Regel
+add script	felamimail	da	TilfÃ¸j Script
+add to %1	felamimail	da	TilfÃ¸j til %1
+add to address book	felamimail	da	TilfÃ¸j til adressebog
+add to addressbook	felamimail	da	tilfÃ¸j til adressebog
 additional info	felamimail	da	Yderligere information
 address book	felamimail	da	Adressebog
-address book search	felamimail	da	Søg i adressebog
+address book search	felamimail	da	SÃ¸g i adressebog
 after message body	felamimail	da	Efter meddelsesemne
-all address books	felamimail	da	Alle adressebøger
+all address books	felamimail	da	Alle adressebÃ¸ger
 all folders	felamimail	da	Alle Mapper
 always show html emails	felamimail	da	Vis altid HTML e-mails
 anyone	felamimail	da	alle
 as a subfolder of	felamimail	da	sun under mappe af
-attachments	felamimail	da	vedhæftet filer
+attachments	felamimail	da	vedhÃ¦ftet filer
 auto refresh folder list	felamimail	da	Automatisk opdatering af mappe liste
 back to folder	felamimail	da	Tilbage til mappe
-bad reque	felamimail	da	Ugyldig efterspørgelse
-based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	da	Baseret på et given information, indkommende beskeder kan have forskellige baggrundsfarver i meddelelses listen. Dette hjælper at se forskel på hvem beskeden er fra, især for postlister.
+bad reque	felamimail	da	Ugyldig efterspÃ¸rgelse
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	da	Baseret pÃ¥ et given information, indkommende beskeder kan have forskellige baggrundsfarver i meddelelses listen. Dette hjÃ¦lper at se forskel pÃ¥ hvem beskeden er fra, isÃ¦r for postlister.
 bcc	felamimail	da	BCC
-before headers	felamimail	da	Før hoved information
-between headers and message body	felamimail	da	Mellem hoved information og brødtekst
-body part	felamimail	da	brødtekst
+before headers	felamimail	da	FÃ¸r hoved information
+between headers and message body	felamimail	da	Mellem hoved information og brÃ¸dtekst
+body part	felamimail	da	brÃ¸dtekst
 can't connect to inbox!!	felamimail	da	kan ikke forbinde til Indbakke!!!
 cc	felamimail	da	CC
 change folder	felamimail	da	Skift mappe
@@ -48,17 +48,17 @@ create sent	felamimail	da	Opret Sendt
 create subfolder	felamimail	da	Opret Undermappe
 create trash	felamimail	da	Opret Skraldespand
 created folder successfully!	felamimail	da	Mappe oprettet sucessfuldt
-dark blue	felamimail	da	Mørk Blå
-dark cyan	felamimail	da	Mørk Cyan
-dark gray	felamimail	da	Mørk Grå
-dark green	felamimail	da	Mørk Grøn
-dark magenta	felamimail	da	Mørk Magenta
-dark yellow	felamimail	da	Mørk Gul
+dark blue	felamimail	da	MÃ¸rk BlÃ¥
+dark cyan	felamimail	da	MÃ¸rk Cyan
+dark gray	felamimail	da	MÃ¸rk GrÃ¥
+dark green	felamimail	da	MÃ¸rk GrÃ¸n
+dark magenta	felamimail	da	MÃ¸rk Magenta
+dark yellow	felamimail	da	MÃ¸rk Gul
 date	felamimail	da	Dato
-date(newest first)	felamimail	da	Dato (nyeste først)
-date(oldest first)	felamimail	da	Dato (ældste først)
+date(newest first)	felamimail	da	Dato (nyeste fÃ¸rst)
+date(oldest first)	felamimail	da	Dato (Ã¦ldste fÃ¸rst)
 deactivate script	felamimail	da	deaktivere script
-default sorting order	felamimail	da	Standart soterings rækkefølge
+default sorting order	felamimail	da	Standart soterings rÃ¦kkefÃ¸lge
 delete	felamimail	da	Slet
 delete all	felamimail	da	Slet alle
 delete folder	felamimail	da	Slet Mappe
@@ -69,9 +69,9 @@ deleted folder successfully!	felamimail	da	Mappe er slettet sucessfuldt
 disable	felamimail	da	Deaktivere
 display message in new window	felamimail	da	Vis besked i nyt vindue
 display of html emails	felamimail	da	Vis HTML i emails
-display only when no plain text is available	felamimail	da	Vis kun når ren tekst version er tilgængelig
+display only when no plain text is available	felamimail	da	Vis kun nÃ¥r ren tekst version er tilgÃ¦ngelig
 display preferences	felamimail	da	Vis preferencer
-do it!	felamimail	da	gør det!
+do it!	felamimail	da	gÃ¸r det!
 do not use sent	felamimail	da	Brug ikke sendt
 do not use trash	felamimail	da	Brug ikke skraldespand
 do you really want to delete the '%1' folder?	felamimail	da	Vil du virkelig slette '%1' mappen?
@@ -80,7 +80,7 @@ does not match	felamimail	da	passer ikke sammen
 does not match regexp	felamimail	da	passer ikke til regexp
 don't use sent	felamimail	da	Brug ikke Sendt
 don't use trash	felamimail	da	Brug ikke skraldespand
-done	felamimail	da	Udført
+done	felamimail	da	UdfÃ¸rt
 down	felamimail	da	ned
 download	felamimail	da	hent
 download this as a file	felamimail	da	hent denne som fil
@@ -93,9 +93,9 @@ edit rule	felamimail	da	rediger regel
 edit selected	felamimail	da	Redigere udvalgte
 email address	felamimail	da	E-mail Adresse
 email signature	felamimail	da	E-mail signatur
-empty trash	felamimail	da	tøm skraldespanden
+empty trash	felamimail	da	tÃ¸m skraldespanden
 enable	felamimail	da	aktivere
-enter your default mail domain ( from: user@domain )	admin	da	Indtast dit standart post domæne (Fra: bruger@domæne)
+enter your default mail domain ( from: user@domain )	admin	da	Indtast dit standart post domÃ¦ne (Fra: bruger@domÃ¦ne)
 enter your imap mail server hostname or ip address	admin	da	Indtast din IMAP post server hostnavn eller IP adresse
 enter your sieve server hostname or ip address	admin	da	Indtast din SIEVE post server hostnavn eller IP adresse
 enter your sieve server port	admin	da	Indtast din SIEVE server port
@@ -104,7 +104,7 @@ enter your smtp server port	admin	da	Indtast din SMTP server port
 erro	felamimail	da	FEJL
 error	felamimail	da	FEJL
 error connecting to imap serv	felamimail	da	Forbindelsen til IMAP serveren fejlede
-error opening	felamimail	da	Kunne ikke åbne
+error opening	felamimail	da	Kunne ikke Ã¥bne
 expunge	felamimail	da	slette
 felamimail	common	da	FelaMiMail
 file into	felamimail	da	akivere til
@@ -124,7 +124,7 @@ folderlist	felamimail	da	Mappe liste
 foldername	felamimail	da	Mappe navn
 folders	felamimail	da	Mapper
 folders created successfully!	felamimail	da	Mappe oprettet sucessfuldt
-follow	felamimail	da	følg
+follow	felamimail	da	fÃ¸lg
 for mail to be send - not functional yet	felamimail	da	Til post der skal sendes - virker ikke endnu
 for received mail	felamimail	da	Til modtaget post
 forward	felamimail	da	Vidersend
@@ -133,15 +133,15 @@ from	felamimail	da	Fra
 from(a->z)	felamimail	da	Fra (A->Z)
 from(z->a)	felamimail	da	Fra (Z->A)
 full name	felamimail	da	Fulde navn
-have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	da	Tak et kik på  <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> for at lære mere om Squirrelmail.<br>
-help	felamimail	da	Hjælp
+have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	da	Tak et kik pÃ¥  <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> for at lÃ¦re mere om Squirrelmail.<br>
+help	felamimail	da	HjÃ¦lp
 hide header	felamimail	da	gem hovedinformation
 html	felamimail	da	HTML
 icons and text	felamimail	da	Ikoner og tekst
 icons only	felamimail	da	Kun Ikoner
 identifying name	felamimail	da	Identificerbar navn
 if	felamimail	da	HVIS
-illegal folder name.  please select a different name.	felamimail	da	Ugyldig mappe navn. Vælg venligst et andet navn.
+illegal folder name.  please select a different name.	felamimail	da	Ugyldig mappe navn. VÃ¦lg venligst et andet navn.
 imap	felamimail	da	IMAP
 imap server	felamimail	da	IMAP Server
 imap server address	felamimail	da	IMAP Server Adresse
@@ -149,9 +149,9 @@ imap server type	felamimail	da	IMAP Server type
 imaps authentication	felamimail	da	IMAP-S Autifikation
 imaps encryption only	felamimail	da	Kun IMAP-S Autorisation
 in	felamimail	da	i
-in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	da	For at SquirrelMail kan levere alle valgmuligheder skaldu oprette special mapperne her under. Vælg bare afkrydsningsboksene af og tryk opret knappen.
+in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	da	For at SquirrelMail kan levere alle valgmuligheder skaldu oprette special mapperne her under. VÃ¦lg bare afkrydsningsboksene af og tryk opret knappen.
 in the center	felamimail	da	I midten
-index order	felamimail	da	Kartotek Rækkefølge
+index order	felamimail	da	Kartotek RÃ¦kkefÃ¸lge
 info	felamimail	da	Information
 invalid user name or password	felamimail	da	Forkert brugernavn eller adgangskode
 javascript	felamimail	da	JavaScript
@@ -160,10 +160,10 @@ last name	felamimail	da	Efternavn
 left	felamimail	da	Venstre
 less	felamimail	da	mindre
 let this folder contain subfolders	felamimail	da	Lad denne mappen indeholde undermapper
-light blue	felamimail	da	Lys Blå
+light blue	felamimail	da	Lys BlÃ¥
 light cyan	felamimail	da	Lys Cyan
-light gray	felamimail	da	Lys Grå
-light green	felamimail	da	Lys Grøn
+light gray	felamimail	da	Lys GrÃ¥
+light green	felamimail	da	Lys GrÃ¸n
 light magenta	felamimail	da	Lys Magenta
 light yellow	felamimail	da	Lys Gul
 list all	felamimail	da	Vis alle
@@ -176,14 +176,14 @@ manage folders	felamimail	da	Administrere mapper
 manage sieve	felamimail	da	Administrere Sieve scripts
 mark as deleted	felamimail	da	Marker som slettet
 mark messages as	felamimail	da	Marker valgte beskeder som
-mark selected as flagged	felamimail	da	Sæt flag ved udvalgte
-mark selected as read	felamimail	da	Marker valgte som læst
+mark selected as flagged	felamimail	da	SÃ¦t flag ved udvalgte
+mark selected as read	felamimail	da	Marker valgte som lÃ¦st
 mark selected as unflagged	felamimail	da	Fjern flag ved udvalgte
-mark selected as unread	felamimail	da	Marker valgte som ulæst
+mark selected as unread	felamimail	da	Marker valgte som ulÃ¦st
 match	felamimail	da	Resultat
 matches	felamimail	da	resultater
 matches regexp	felamimail	da	resultater regexp
-medium gray	felamimail	da	Mellem Grå
+medium gray	felamimail	da	Mellem GrÃ¥
 message highlighting	felamimail	da	Besked makering
 message list	felamimail	da	Besked Liste
 messages	felamimail	da	beskeder
@@ -199,12 +199,12 @@ name	felamimail	da	Navn
 never display html emails	felamimail	da	Vis aldrig HTML emails
 new	felamimail	da	Ny
 new filter	felamimail	da	Nyt filter
-next	felamimail	da	Næste
-next message	felamimail	da	Næste E-mail
-nickname	felamimail	da	Kælenavn
+next	felamimail	da	NÃ¦ste
+next message	felamimail	da	NÃ¦ste E-mail
+nickname	felamimail	da	KÃ¦lenavn
 no filter	felamimail	da	Ingen Filter
 no folders found	felamimail	da	Ingen mapper fundet
-no folders were found to subscribe to!	felamimail	da	Ingen mapper blev fundet til at abonnere på!
+no folders were found to subscribe to!	felamimail	da	Ingen mapper blev fundet til at abonnere pÃ¥!
 no folders were found to unsubscribe from!	felamimail	da	Ingen mapper blev fundet til at opsige abonnement fra!
 no highlighting is defined	felamimail	da	Ingen makering er defineret
 no messages were selected.	felamimail	da	Ingen beskeder var udvalgt
@@ -216,10 +216,10 @@ no previous message	felamimail	da	Ingen tidligere beskeder
 no valid emailprofile selected!!	felamimail	da	Ingen gyldig E-mail profile er valgt.
 none	felamimail	da	ingen
 number of messages to index	felamimail	da	Antal beskeder at registere
-on behalf of	felamimail	da	på vegne af
+on behalf of	felamimail	da	pÃ¥ vegne af
 only inbox	felamimail	da	Kun Indbakke
-only unseen	felamimail	da	Kun ulæste
-open all	felamimail	da	åben alle
+only unseen	felamimail	da	Kun ulÃ¦ste
+open all	felamimail	da	Ã¥ben alle
 options	felamimail	da	indstillinger
 organisation	felamimail	da	organisation
 organization	felamimail	da	organisation
@@ -233,11 +233,11 @@ previous	felamimail	da	Tidligere
 previous message	felamimail	da	Tidligere E-mail
 print it	felamimail	da	print
 print this page	felamimail	da	print denne side
-purge	felamimail	da	tøm
-quicksearch	felamimail	da	Hurtig søg.
-read	felamimail	da	læst
-read da	felamimail	da	Læs da
-reading	felamimail	da	læser
+purge	felamimail	da	tÃ¸m
+quicksearch	felamimail	da	Hurtig sÃ¸g.
+read	felamimail	da	lÃ¦st
+read da	felamimail	da	LÃ¦s da
+reading	felamimail	da	lÃ¦ser
 reason giv	felamimail	da	Giv Grund
 recent	felamimail	da	Helt Ny
 refresh folder list	felamimail	da	opdatere mappe liste
@@ -245,10 +245,10 @@ refresh page	felamimail	da	Opdatere Siden
 refresh time in minutes	felamimail	da	Opdaterings interval i minutter
 remove	felamimail	da	fjern
 remove immediately	felamimail	da	Fjern nu
-rename	felamimail	da	Omdøb
-rename a folder	felamimail	da	Omdøb en mappe
-rename folder	felamimail	da	Omdøb mappe
-renamed successfully!	felamimail	da	Omdøbt succesfuld
+rename	felamimail	da	OmdÃ¸b
+rename a folder	felamimail	da	OmdÃ¸b en mappe
+rename folder	felamimail	da	OmdÃ¸b mappe
+renamed successfully!	felamimail	da	OmdÃ¸bt succesfuld
 replied	felamimail	da	Besvaret
 reply	felamimail	da	Besvar
 reply all	felamimail	da	Besvar Alle
@@ -256,37 +256,37 @@ reply to	felamimail	da	Besvar Til
 replyto	felamimail	da	Besvar Til
 return	felamimail	da	Tilbage
 return to options page	felamimail	da	Tilbage til indstillingerne
-right	felamimail	da	Højre
+right	felamimail	da	HÃ¸jre
 rule	felamimail	da	Regel
-running squirrelmail version %1 (c) 1999-2000.	felamimail	da	Køre SquirrelMail version %1 (c) 1999-2000
+running squirrelmail version %1 (c) 1999-2000.	felamimail	da	KÃ¸re SquirrelMail version %1 (c) 1999-2000
 same window - not functional yet	felamimail	da	Samme Vindue - virker ikke endnu
 save	felamimail	da	Gem
-search	felamimail	da	Søg
-search for	felamimail	da	Søg efter
+search	felamimail	da	SÃ¸g
+search for	felamimail	da	SÃ¸g efter
 seconds	felamimail	da	Sekunder
-select	felamimail	da	Vælg
-select all	felamimail	da	Vælg Alle
-select emailprofile	felamimail	da	Vælg E-mail profil
-select home email address	felamimail	da	Vælg privat e-mail adresse
-select work email address	felamimail	da	Vælg arbejds e-mail adresse
-select your mail server type	admin	da	Vælg din post server type
+select	felamimail	da	VÃ¦lg
+select all	felamimail	da	VÃ¦lg Alle
+select emailprofile	felamimail	da	VÃ¦lg E-mail profil
+select home email address	felamimail	da	VÃ¦lg privat e-mail adresse
+select work email address	felamimail	da	VÃ¦lg arbejds e-mail adresse
+select your mail server type	admin	da	VÃ¦lg din post server type
 send	felamimail	da	Send
 sent fold	felamimail	da	Sendt Mappe
 sent folder	felamimail	da	Sendt Mappe
 server respond	felamimail	da	Server svar
 show header	felamimail	da	vis hoved information
-show new messages on main screen	felamimail	da	Vis nye meddelser på startsiden
+show new messages on main screen	felamimail	da	Vis nye meddelser pÃ¥ startsiden
 sieve settings	admin	da	Sieve indstillinger
 signature	felamimail	da	Signatur
 simply click the target-folder	felamimail	da	Bare klik destinations mappen
 site configuration	felamimail	da	site konfiguration
-size	felamimail	da	Størrelse
-size of editor window	felamimail	da	Størrelse af redigere vindue
-size(...->0)	felamimail	da	Størrelse (...->0)
-size(0->...)	felamimail	da	Størrelse (0->...)
+size	felamimail	da	StÃ¸rrelse
+size of editor window	felamimail	da	StÃ¸rrelse af redigere vindue
+size(...->0)	felamimail	da	StÃ¸rrelse (...->0)
+size(0->...)	felamimail	da	StÃ¸rrelse (0->...)
 small view	felamimail	da	Lille overblik
 smtp settings	admin	da	SMTP indstillinger
-some or all of the help documents are not present!	felamimail	da	Noget eller alt hjælp dokumentation er ikke tilgængelig
+some or all of the help documents are not present!	felamimail	da	Noget eller alt hjÃ¦lp dokumentation er ikke tilgÃ¦ngelig
 source	felamimail	da	Klide
 special folder options	felamimail	da	Speciel mappe indstillinger
 squirrelmail	felamimail	da	Squirrelmail
@@ -297,30 +297,30 @@ submit	felamimail	da	Godkend
 subscribe	felamimail	da	abonnere
 subscribed	felamimail	da	Abonneret
 subscribed successfully!	felamimail	da	Abonneret sucessfuld!
-successfully saved display preferences!	felamimail	da	Skærm indstillingerne er gemt!
+successfully saved display preferences!	felamimail	da	SkÃ¦rm indstillingerne er gemt!
 successfully saved folder preferences!	felamimail	da	Mappe indstillingerne er gemt!
 successfully saved personal information!	felamimail	da	Personlige informationer er gemt!
-switch current folder to	felamimail	da	gem nuværende mappe til
+switch current folder to	felamimail	da	gem nuvÃ¦rende mappe til
 table of contents	felamimail	da	Indhold
 text only	felamimail	da	Kun Tekst
 the connection to the imap server failed!!	felamimail	da	Forbindingen til IMAP serveren fejlede
-the help has not been translated to %1.  it will be displayed in english instead.	felamimail	da	Hlælp er ikke oversat til %1. Den vil brive vist i Engelsk i stedet
-the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	da	Inholdsordenen er måden som kolonnerne er arrangeret op i beskederne. Du kan tilføje, fjerne og flytte kolonnerne rundt så de passer til dit behov.
-the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	da	Ordenen som beskederne kan ændres til og ændringer til hoved informationen i hvilken rækkefølge du vil.
+the help has not been translated to %1.  it will be displayed in english instead.	felamimail	da	HlÃ¦lp er ikke oversat til %1. Den vil brive vist i Engelsk i stedet
+the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	da	Inholdsordenen er mÃ¥den som kolonnerne er arrangeret op i beskederne. Du kan tilfÃ¸je, fjerne og flytte kolonnerne rundt sÃ¥ de passer til dit behov.
+the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	da	Ordenen som beskederne kan Ã¦ndres til og Ã¦ndringer til hoved informationen i hvilken rÃ¦kkefÃ¸lge du vil.
 theme	felamimail	da	Thema
-then	felamimail	da	SÅ
-these settings change the way your folders are displayed and manipulated.	felamimail	da	Disse indstillinger ændre på måden mapperne vises og manipuleres.
+then	felamimail	da	SÃ…
+these settings change the way your folders are displayed and manipulated.	felamimail	da	Disse indstillinger Ã¦ndre pÃ¥ mÃ¥den mapperne vises og manipuleres.
 this contains personal information about yourself such as your name, your email address, etc.	felamimail	da	Her er personlige informationer om dig, som f.eks. dit navn, e-mail addresse osv.
 this folder is empty	felamimail	da	Denne mappe er tom
-this php has no imap support compiled in!!	felamimail	da	Der er ikke understøttelse for IMAP i din PHP kode.
-this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	da	Dette modul er baseret op Squirrelmail, som er en uafhængig IMAP client.<br>
+this php has no imap support compiled in!!	felamimail	da	Der er ikke understÃ¸ttelse for IMAP i din PHP kode.
+this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	da	Dette modul er baseret op Squirrelmail, som er en uafhÃ¦ngig IMAP client.<br>
 to	felamimail	da	Til
 to the left	felamimail	da	til venstre
-to the right	felamimail	da	til højre
+to the right	felamimail	da	til hÃ¸jre
 top	felamimail	da	Toppen
-translation location	felamimail	da	Oversætnings placering
-translation preferences	felamimail	da	Oversætnings indstillinger
-translation server	felamimail	da	Oversætnings server
+translation location	felamimail	da	OversÃ¦tnings placering
+translation preferences	felamimail	da	OversÃ¦tnings indstillinger
+translation server	felamimail	da	OversÃ¦tnings server
 trash fold	felamimail	da	Skrald map.
 trash folder	felamimail	da	Skraldespands mappen
 type	felamimail	da	type
@@ -330,13 +330,13 @@ unknown err	felamimail	da	Ukendt fejl
 unknown error	felamimail	da	Ukendt fejl
 unknown sender	felamimail	da	Ukendt afsender
 unknown user or password incorrect.	felamimail	da	Ukendt bruger eller adgangskoden er forkert
-unread	felamimail	da	ulæst
+unread	felamimail	da	ulÃ¦st
 unseen	felamimail	da	uset
 unseen and total	felamimail	da	Uset og total
 unseen message notification	felamimail	da	Uset besked orientering
 unseen message notification type	felamimail	da	Uset besked orientering og type
-unselect all	felamimail	da	Fravælg alle
-unsubscribe	felamimail	da	Fravælg
+unselect all	felamimail	da	FravÃ¦lg alle
+unsubscribe	felamimail	da	FravÃ¦lg
 unsubscribed	felamimail	da	Fravalgt
 unsubscribed successfully!	felamimail	da	Fravalgt sucessfuldt
 up	felamimail	da	op
@@ -354,15 +354,15 @@ viewing full header	felamimail	da	Viser fuld hoved information
 viewing message	felamimail	da	Viser besked
 viewing messages	felamimail	da	Viser beskeder
 welcome to %1's webmail system	felamimail	da	Velkommen til %1's WebMail system
-when deleting messages	felamimail	da	Når meddelser slettes
+when deleting messages	felamimail	da	NÃ¥r meddelser slettes
 white	felamimail	da	Hvid
-width of folder list	felamimail	da	Bredde på mappe listen
+width of folder list	felamimail	da	Bredde pÃ¥ mappe listen
 wrap incoming text at	felamimail	da	indpak inkommende tekst som
 writing	felamimail	da	skriver
 wrote	felamimail	da	skrev
-you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	da	Du kan ændre måden SquirrelMail ser ud og viser informationer til dig, som f.eks. farver, sprog og andre indstillinger
-you can only edit one address at the time	felamimail	da	Du kan kun ændre i en adresse af gangen
-you must login first.	felamimail	da	Du skal logge ind først.
+you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	da	Du kan Ã¦ndre mÃ¥den SquirrelMail ser ud og viser informationer til dig, som f.eks. farver, sprog og andre indstillinger
+you can only edit one address at the time	felamimail	da	Du kan kun Ã¦ndre i en adresse af gangen
+you must login first.	felamimail	da	Du skal logge ind fÃ¸rst.
 you need a valid user and password to access this page!	felamimail	da	Du skal bruge et gyldig brugernavn og adgangskode for at kunne se denne side!
-your search failed with the following error(s)	felamimail	da	Din søgning fejlede med følgende fejl (s)
+your search failed with the following error(s)	felamimail	da	Din sÃ¸gning fejlede med fÃ¸lgende fejl (s)
 1	felamimail	da	1

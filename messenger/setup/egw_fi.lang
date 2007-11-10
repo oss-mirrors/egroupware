@@ -1,36 +1,36 @@
 compose	messenger	fi	Kirjoita
-compose global message	common	fi	Kirjoita j‰rjestelm‰viesti
+compose global message	common	fi	Kirjoita j√§rjestelm√§viesti
 compose message	messenger	fi	Kirjoita viesti
 delete a message.	messenger	fi	Poista viesti.
 delete selected	messenger	fi	Poista valittu.
-forward	messenger	fi	L‰het‰ eteenp‰in
-forward a message	messenger	fi	L‰het‰ viesti eteenp‰in
-forward a message to another user.	messenger	fi	L‰het‰ viesti toiselle k‰ytt‰j‰lle.
-forwarded	messenger	fi	Edelleenl‰hetetty
-from	messenger	fi	Mist‰
-global message	messenger	fi	J‰rjestelm‰viesti
-i can't find the username %1 on the system	messenger	fi	En lˆyd‰ k‰ytt‰j‰tunnusta %1 j‰rjestelm‰st‰.
+forward	messenger	fi	L√§het√§ eteenp√§in
+forward a message	messenger	fi	L√§het√§ viesti eteenp√§in
+forward a message to another user.	messenger	fi	L√§het√§ viesti toiselle k√§ytt√§j√§lle.
+forwarded	messenger	fi	Edelleenl√§hetetty
+from	messenger	fi	Mist√§
+global message	messenger	fi	J√§rjestelm√§viesti
+i can't find the username %1 on the system	messenger	fi	En l√∂yd√§ k√§ytt√§j√§tunnusta %1 j√§rjestelm√§st√§.
 inbox	messenger	fi	Saapuneet
-message from	messenger	fi	L‰hett‰j‰
+message from	messenger	fi	L√§hett√§j√§
 messenger	common	fi	Viestit
 new	messenger	fi	Uusi
 read a list of messages.	messenger	fi	Lue viestien listaa
-read a single message.	messenger	fi	Lue yksitt‰ist‰ viesti‰
+read a single message.	messenger	fi	Lue yksitt√§ist√§ viesti√§
 read message	messenger	fi	Lue viesti
 replied	messenger	fi	Vastattu
 reply	messenger	fi	Vastaa
 reply to a message	messenger	fi	Vastaa viestiin
 reply to a received message.	messenger	fi	Vastaa vastaanotettuun viestiin.
-send	messenger	fi	L‰het‰
-send a global message.	messenger	fi	L‰het‰ j‰rjestelm‰viesti.
-send a message to a single recipient.	messenger	fi	L‰het‰ viesti yhdelle vastaanottajalle
+send	messenger	fi	L√§het√§
+send a global message.	messenger	fi	L√§het√§ j√§rjestelm√§viesti.
+send a message to a single recipient.	messenger	fi	L√§het√§ viesti yhdelle vastaanottajalle
 send message to	messenger	fi	Kenelle
-sorry, %1's account is not currently active	messenger	fi	%1 k‰ytt‰j‰tili ei ole aktiivinen
-update a message status	messenger	fi	P‰ivit‰ viestin tilaa
-use select box for user list in compose	common	fi	K‰yt‰ vastaamiseen k‰ytt‰j‰listalla olevaa valintalaatikkoa
-you didn't enter anything for the message	messenger	fi	Et kirjoittanut viestiin mit‰‰n.
-you have %1 new message	common	fi	Uusia viestej‰ %1
-you have %1 new messages	common	fi	Uusia viestej‰ %1
-you have no messages	messenger	fi	Sinulle ei ole viestej‰
-you must enter a subject	messenger	fi	Sinun t‰ytyy kirjoittaa aihe
-you must enter the username this message is for	messenger	fi	Sinun t‰ytyy antaa k‰ytt‰j‰tunnus kenelt‰ t‰m‰ viesti on
+sorry, %1's account is not currently active	messenger	fi	%1 k√§ytt√§j√§tili ei ole aktiivinen
+update a message status	messenger	fi	P√§ivit√§ viestin tilaa
+use select box for user list in compose	common	fi	K√§yt√§ vastaamiseen k√§ytt√§j√§listalla olevaa valintalaatikkoa
+you didn't enter anything for the message	messenger	fi	Et kirjoittanut viestiin mit√§√§n.
+you have %1 new message	common	fi	Uusia viestej√§ %1
+you have %1 new messages	common	fi	Uusia viestej√§ %1
+you have no messages	messenger	fi	Sinulle ei ole viestej√§
+you must enter a subject	messenger	fi	Sinun t√§ytyy kirjoittaa aihe
+you must enter the username this message is for	messenger	fi	Sinun t√§ytyy antaa k√§ytt√§j√§tunnus kenelt√§ t√§m√§ viesti on

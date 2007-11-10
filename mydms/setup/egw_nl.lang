@@ -4,7 +4,7 @@ access_mode_all	mydms	nl	Alle
 access_mode_none	mydms	nl	Geen toegang
 access_mode_read	mydms	nl	Lezen
 access_mode_readwrite	mydms	nl	Lezen+Schrijven
-acl get inherited	mydms	nl	acl wordt geërfd
+acl get inherited	mydms	nl	acl wordt geÃ«rfd
 add acl	mydms	nl	acl toevoegen
 add document	mydms	nl	document toevoegen
 add notification	mydms	nl	notificatie toevoegen

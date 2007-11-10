@@ -1,13 +1,13 @@
-access mode	mydms	sv	Åtkomst läge
-access rights	mydms	sv	Reglera åtkomst
+access mode	mydms	sv	Ã…tkomst lÃ¤ge
+access rights	mydms	sv	Reglera Ã¥tkomst
 access_mode_all	mydms	sv	Alla
-access_mode_none	mydms	sv	Ingen åtkomst
-access_mode_read	mydms	sv	Läs
-access_mode_readwrite	mydms	sv	Läs+skriv
-acl get inherited	mydms	sv	ACL ärvs
-add acl	mydms	sv	Lägg till ACL
+access_mode_none	mydms	sv	Ingen Ã¥tkomst
+access_mode_read	mydms	sv	LÃ¤s
+access_mode_readwrite	mydms	sv	LÃ¤s+skriv
+acl get inherited	mydms	sv	ACL Ã¤rvs
+add acl	mydms	sv	LÃ¤gg till ACL
 add document	mydms	sv	Skapa dokument
-add notification	mydms	sv	Lägg till notifiering
+add notification	mydms	sv	LÃ¤gg till notifiering
 add subfolder	mydms	sv	Skapa underkatalog
 admin-tools	mydms	sv	Administrativa verktyg
 all versions	mydms	sv	Alla versioner
@@ -22,40 +22,40 @@ create empty acl	mydms	sv	Skapa tom ACL
 creation date	mydms	sv	Skapat datum
 current acl	mydms	sv	Aktuell ACL
 current version	mydms	sv	Aktuell version
-default access	mydms	sv	Standard åtkomst
+default access	mydms	sv	Standard Ã¥tkomst
 delete folder	mydms	sv	Radera katalog
 delete this notification	mydms	sv	Radera notifiering
 do you really want to delete this acl?	mydms	sv	Vill du verkligen radera ACL?
 do you really want to delete this document?	mydms	sv	Vill du verkligen radera dokumentet?
 do you really want to delete this version of the document?	mydms	sv	Vill du verkligen radera denna version av dokumentet?
-does not expire	mydms	sv	Förfaller inte
+does not expire	mydms	sv	FÃ¶rfaller inte
 download	mydms	sv	Ladda ner
-edit folder	mydms	sv	Ändra katalog
-expires	mydms	sv	Förfaller
-expires after	mydms	sv	Förfaller efter
+edit folder	mydms	sv	Ã„ndra katalog
+expires	mydms	sv	FÃ¶rfaller
+expires after	mydms	sv	FÃ¶rfaller efter
 file size	mydms	sv	Filstorlek
 filename	mydms	sv	Filnamn
 folder	mydms	sv	Katalog
-general information	mydms	sv	Allmän information
+general information	mydms	sv	AllmÃ¤n information
 information about last update	mydms	sv	Information om senaste uppdatering
 informations	mydms	sv	Information
-inherit acl again	mydms	sv	Ärv ACL igen
+inherit acl again	mydms	sv	Ã„rv ACL igen
 last update	mydms	sv	Senaste uppdatering
-linked documents	mydms	sv	Länkade dokument
-lock status	mydms	sv	Lås dokument
+linked documents	mydms	sv	LÃ¤nkade dokument
+lock status	mydms	sv	LÃ¥s dokument
 mime type	mydms	sv	Mime Typ
 move document	mydms	sv	Flytta dokument
 move folder	mydms	sv	Flytta katalog
 mydms	common	sv	MyDMS
 notifications	mydms	sv	Meddelanden
-permission	mydms	sv	Behörighet
-select folder	mydms	sv	Välj katalog
-select target folder	mydms	sv	Välj målkatalog
-target folder	mydms	sv	Målkatalog
-this document gets locked by you!	mydms	sv	Dokumentet låses av dig
-this document gets unlocked by you.	mydms	sv	Dokumentet öppnas av dig
-this document is currently not locked.	mydms	sv	Dokumentet är inte låst
-this document is locked by <a href="mailto:%1">%2</a>.	mydms	sv	Dokumentet är låst av <a href="mailto:%1">%2</a>.
+permission	mydms	sv	BehÃ¶righet
+select folder	mydms	sv	VÃ¤lj katalog
+select target folder	mydms	sv	VÃ¤lj mÃ¥lkatalog
+target folder	mydms	sv	MÃ¥lkatalog
+this document gets locked by you!	mydms	sv	Dokumentet lÃ¥ses av dig
+this document gets unlocked by you.	mydms	sv	Dokumentet Ã¶ppnas av dig
+this document is currently not locked.	mydms	sv	Dokumentet Ã¤r inte lÃ¥st
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	sv	Dokumentet Ã¤r lÃ¥st av <a href="mailto:%1">%2</a>.
 update document	mydms	sv	Uppdatera dokument
 upload date	mydms	sv	Upplagd datum
 uploaded by	mydms	sv	Upplagd av

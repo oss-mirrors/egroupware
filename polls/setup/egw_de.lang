@@ -1,31 +1,31 @@
 actions	polls	de	Aktionen
-add answer to poll	polls	de	Antwort zur Umfrage hinzufügen
-add answers	polls	de	Antwort hinzufügen
-add new poll question	polls	de	Eine neue Umfrage hinzufügen
-add questions	polls	de	Umfrage hinzufügen
+add answer to poll	polls	de	Antwort zur Umfrage hinzufÃ¼gen
+add answers	polls	de	Antwort hinzufÃ¼gen
+add new poll question	polls	de	Eine neue Umfrage hinzufÃ¼gen
+add questions	polls	de	Umfrage hinzufÃ¼gen
 administrators	polls	de	Administratoren
 allow users to vote more then once	polls	de	Benutzern erlauben mehr als einmal abzustimmen
 allways use latest poll	polls	de	Immer die letzte Umfrage benutzen
 answer	polls	de	Antwort
-answer has been added to poll	polls	de	Antwort wurde der Umfrage hinzugefügt
+answer has been added to poll	polls	de	Antwort wurde der Umfrage hinzugefÃ¼gt
 answer has been updated	polls	de	Umfrage wurde aktualisiert
 answers	polls	de	Antworten
-are you sure want to delete this answer ?	polls	de	Sind Sie sicher das Sie diese Antwort löschen möchten ?
-are you sure want to delete this question ?	polls	de	Sind Sie sicher das Sie diese Frage löschen möchten ?
+are you sure want to delete this answer ?	polls	de	Sind Sie sicher das Sie diese Antwort lÃ¶schen mÃ¶chten ?
+are you sure want to delete this question ?	polls	de	Sind Sie sicher das Sie diese Frage lÃ¶schen mÃ¶chten ?
 current poll	polls	de	Aktuelle Umfrage
 edit answer	polls	de	Antwort bearbeiten
 edit poll question	polls	de	Umfrage bearbeiten
 egroupware users (non-anonymous)	polls	de	eGroupWare Benutzer (nicht anonyme)
 enter poll question	polls	de	Neue Umfrage
 everyone incl. anonymous users	polls	de	Jeder einschl. anonyme Benutzer
-new poll has been added.  you should now add some answers for this poll	polls	de	Neue Umfrage hinzugefügt. Geben Sie nun die Antworten zu dieser Umfrage ein.
+new poll has been added.  you should now add some answers for this poll	polls	de	Neue Umfrage hinzugefÃ¼gt. Geben Sie nun die Antworten zu dieser Umfrage ein.
 noone	polls	de	Niemand
 poll question	polls	de	Frage der Umfrage
-poll votable by	polls	de	Abstimmen dürfen
+poll votable by	polls	de	Abstimmen dÃ¼rfen
 polls	common	de	Umfragen
 question has been updated	polls	de	Frage wurde aktualisiert
-result visible to	polls	de	Ergebnis sichtbar für
-select current poll	polls	de	Eine Umfrage auswählen
+result visible to	polls	de	Ergebnis sichtbar fÃ¼r
+select current poll	polls	de	Eine Umfrage auswÃ¤hlen
 settings updated	polls	de	Konfiguration aktualisiert
 show answers	polls	de	Antworten zeigen
 show questions	common	de	Umfragen zeigen
@@ -36,4 +36,4 @@ vote	polls	de	Abstimmen
 voting booth admin	admin	de	Umfragen
 voting booth administration	polls	de	Umfragen Administration
 which poll	polls	de	Welche Umfrage
-you are not (yet) allowed view the result of this vote.	polls	de	Sie dürfen das Ergebnis dieser Umfrage (noch) nicht sehen.
+you are not (yet) allowed view the result of this vote.	polls	de	Sie dÃ¼rfen das Ergebnis dieser Umfrage (noch) nicht sehen.

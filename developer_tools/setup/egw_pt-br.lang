@@ -1,74 +1,74 @@
 add	developer_tools	pt-br	Adicionar
-add change	developer_tools	pt-br	Adicionar alteração
+add change	developer_tools	pt-br	Adicionar alteraÃ§Ã£o
 add more	developer_tools	pt-br	Adicionar mais
 add new phrase	developer_tools	pt-br	Adicionar nova frase
 add phrase	developer_tools	pt-br	Adicionar frase
-allows you to add a single phrase	developer_tools	pt-br	Permite que você adicione um única frase
+allows you to add a single phrase	developer_tools	pt-br	Permite que vocÃª adicione um Ãºnica frase
 application	developer_tools	pt-br	Aplicativo
 back	developer_tools	pt-br	Voltar
 cancel	developer_tools	pt-br	Cancelar
 change	developer_tools	pt-br	Alterar
-changelog entry has been added	developer_tools	pt-br	Foi adicionada uma entrada ao Registro de Modificação
-changelogs	developer_tools	pt-br	Registro de Modificação
-clears the internal buffer, all changes made sofar are lost	developer_tools	pt-br	Limpa a área de memória interna, e todas as mudanças feitas até o presente momento serão perdidas
+changelog entry has been added	developer_tools	pt-br	Foi adicionada uma entrada ao Registro de ModificaÃ§Ã£o
+changelogs	developer_tools	pt-br	Registro de ModificaÃ§Ã£o
+clears the internal buffer, all changes made sofar are lost	developer_tools	pt-br	Limpa a Ã¡rea de memÃ³ria interna, e todas as mudanÃ§as feitas atÃ© o presente momento serÃ£o perdidas
 create new language file	developer_tools	pt-br	Criar novo arquivo de idioma
 create sgml file	developer_tools	pt-br	Criar arquivo SGML
-developer tools - preferences	developer_tools	pt-br	Ferramenta de Tradução - Preferências
-developer_tools	common	pt-br	Ferramenta de Tradução
-diary	developer_tools	pt-br	Diário
+developer tools - preferences	developer_tools	pt-br	Ferramenta de TraduÃ§Ã£o - PreferÃªncias
+developer_tools	common	pt-br	Ferramenta de TraduÃ§Ã£o
+diary	developer_tools	pt-br	DiÃ¡rio
 done	developer_tools	pt-br	feito
 download	developer_tools	pt-br	Baixar
-download the lang-file to be saved in the apps setup-dir	developer_tools	pt-br	Baixar o arquivo .lang à ser salvo no diretório setup de cada aplicativo
+download the lang-file to be saved in the apps setup-dir	developer_tools	pt-br	Baixar o arquivo .lang Ã  ser salvo no diretÃ³rio setup de cada aplicativo
 edit	developer_tools	pt-br	Editar
 installed applications	developer_tools	pt-br	Aplicativos instalados
-language file management	developer_tools	pt-br	Manutenção de arquivos de Idiomas
-list changelogs	developer_tools	pt-br	Exibir registros de modificações
+language file management	developer_tools	pt-br	ManutenÃ§Ã£o de arquivos de Idiomas
+list changelogs	developer_tools	pt-br	Exibir registros de modificaÃ§Ãµes
 load	developer_tools	pt-br	Carregar
 loading source langfile	developer_tools	pt-br	Carregando arquivo de idioma fonte
 loading target langfile	developer_tools	pt-br	Carregando arquivo de idioma destino
-loads the selected lang-files, to be modified in the next steps	developer_tools	pt-br	Carrega os arquivos .lang selecionados, à serem modificados nas próximas etapas
+loads the selected lang-files, to be modified in the next steps	developer_tools	pt-br	Carrega os arquivos .lang selecionados, Ã  serem modificados nas prÃ³ximas etapas
 message	developer_tools	pt-br	Mensagem
-message_id in english	developer_tools	pt-br	message_id em inglês
+message_id in english	developer_tools	pt-br	message_id em inglÃªs
 no file	developer_tools	pt-br	Nenhum arquivo
 ok	developer_tools	pt-br	ok
 original	developer_tools	pt-br	Original
-phrase in english (or empty if identical)	developer_tools	pt-br	Frase em inglês (ou vazio para idêntico)
-preferences	developer_tools	pt-br	Preferências
-preferences have been updated	developer_tools	pt-br	Suas preferências foram atualizadas
+phrase in english (or empty if identical)	developer_tools	pt-br	Frase em inglÃªs (ou vazio para idÃªntico)
+preferences	developer_tools	pt-br	PreferÃªncias
+preferences have been updated	developer_tools	pt-br	Suas preferÃªncias foram atualizadas
 project	developer_tools	pt-br	Projeto
 remove	developer_tools	pt-br	Remover
-removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	pt-br	%1 frases removidas do idioma destino, já que elas não estão presentes no idioma de origem.
-returns to the application list, not saved changes get lost !!!	developer_tools	pt-br	Retorna à lista de aplicativos, mudanças não salvas serão perdidas!!!
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	pt-br	%1 frases removidas do idioma destino, jÃ¡ que elas nÃ£o estÃ£o presentes no idioma de origem.
+returns to the application list, not saved changes get lost !!!	developer_tools	pt-br	Retorna Ã  lista de aplicativos, mudanÃ§as nÃ£o salvas serÃ£o perdidas!!!
 revert	developer_tools	pt-br	Reverter
-saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	pt-br	Salva as traduções adicionadas/modificadas na área interna de memória, utilizada nas etapas seguintes
-search changelogs	developer_tools	pt-br	Procurar nos registros de modificações
+saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	pt-br	Salva as traduÃ§Ãµes adicionadas/modificadas na Ã¡rea interna de memÃ³ria, utilizada nas etapas seguintes
+search changelogs	developer_tools	pt-br	Procurar nos registros de modificaÃ§Ãµes
 search for missing phrase	developer_tools	pt-br	Procurar por frases perdidas
 search new phrases	developer_tools	pt-br	Procurar novas frases
-searches the source-code for phrases not in the actual source-lang-file	developer_tools	pt-br	Procura no código-fonte por frases que não estejam no arquivo .lang
+searches the source-code for phrases not in the actual source-lang-file	developer_tools	pt-br	Procura no cÃ³digo-fonte por frases que nÃ£o estejam no arquivo .lang
 select project	developer_tools	pt-br	Selecionar projeto
 sf project tracker	developer_tools	pt-br	Monitor de Projetos no SourceForge
-sf project tracker preferences	preferences	pt-br	Preferências do Monitor de Projetos no SourceForge
+sf project tracker preferences	preferences	pt-br	PreferÃªncias do Monitor de Projetos no SourceForge
 source language	developer_tools	pt-br	Idioma origem
 sourceforge project id	developer_tools	pt-br	ID do projeto no Sourceforge
 sourceforge project tracker	developer_tools	pt-br	Monitor de Projetos no SourceForge
-sourceforge project tracker preferences	developer_tools	pt-br	Preferências do Monitor de Projetos no SourceForge
+sourceforge project tracker preferences	developer_tools	pt-br	PreferÃªncias do Monitor de Projetos no SourceForge
 step	developer_tools	pt-br	Etapa
 submit	developer_tools	pt-br	Enviar
 target language	developer_tools	pt-br	Idioma destino
-title	developer_tools	pt-br	Título
+title	developer_tools	pt-br	TÃ­tulo
 translate	developer_tools	pt-br	Traduzir
-translation	developer_tools	pt-br	Tradução
-translation of phrase	developer_tools	pt-br	Tradução da frase
+translation	developer_tools	pt-br	TraduÃ§Ã£o
+translation of phrase	developer_tools	pt-br	TraduÃ§Ã£o da frase
 update	developer_tools	pt-br	Atualizar
 update database	developer_tools	pt-br	Atualizar Base de Dados
-updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	pt-br	Remete as atualizações dos arquivos para o Banco de Dados, mostrando imediatamente assim o resultao do seu trabalho
-version	developer_tools	pt-br	Versão
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	pt-br	Remete as atualizaÃ§Ãµes dos arquivos para o Banco de Dados, mostrando imediatamente assim o resultao do seu trabalho
+version	developer_tools	pt-br	VersÃ£o
 write	developer_tools	pt-br	Gravar
-write the lang-file to the apps setup-dir	developer_tools	pt-br	Escrever o arquivo .lang no diretório setup do aplicativo correspondente
+write the lang-file to the apps setup-dir	developer_tools	pt-br	Escrever o arquivo .lang no diretÃ³rio setup do aplicativo correspondente
 write to lang table	developer_tools	pt-br	Gravar na tabela de idiomas
 writing langfile for '%1' ...	developer_tools	pt-br	Escrevendo arquivo .lang para '%1' ...
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	pt-br	!!! Você deve [Salvar] cada alteração manual nos campos acima antes de seguir para a próxima etapa!!!
-you must a version	developer_tools	pt-br	Você deve definir uma versão
-you must enter a change	developer_tools	pt-br	Você deve fazer alguma modificação
-you must select a project	developer_tools	pt-br	Você deve selecionar um projeto
-you need to set your preferences for this app	developer_tools	pt-br	Você deve definir suas preferências para esse aplicativo
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	pt-br	!!! VocÃª deve [Salvar] cada alteraÃ§Ã£o manual nos campos acima antes de seguir para a prÃ³xima etapa!!!
+you must a version	developer_tools	pt-br	VocÃª deve definir uma versÃ£o
+you must enter a change	developer_tools	pt-br	VocÃª deve fazer alguma modificaÃ§Ã£o
+you must select a project	developer_tools	pt-br	VocÃª deve selecionar um projeto
+you need to set your preferences for this app	developer_tools	pt-br	VocÃª deve definir suas preferÃªncias para esse aplicativo

@@ -10,11 +10,11 @@ any group	emailadmin	it	ogni gruppo
 bad login name or password.	emailadmin	it	Nome utente o password errati.
 bad or malformed request. server responded: %s	emailadmin	it	Richiesta errata o mal composta. Il Server ha risposto: %s
 bad request: %s	emailadmin	it	Richiesta errata: %s
-can be used by application	emailadmin	it	può essere usato da applicazione
-can be used by group	emailadmin	it	può essere usato da gruppo
+can be used by application	emailadmin	it	puÃ² essere usato da applicazione
+can be used by group	emailadmin	it	puÃ² essere usato da gruppo
 connection dropped by imap server.	emailadmin	it	Connessione interrotta dal sever IMAP.
 could not complete request. reason given: %s	emailadmin	it	Impossibile completare la richiesta. Motivazione data: %s
-could not open secure connection to the imap server. %s : %s.	emailadmin	it	Non è possibile aprire una connessione sicura al server IMAP. %s : %s.
+could not open secure connection to the imap server. %s : %s.	emailadmin	it	Non Ã¨ possibile aprire una connessione sicura al server IMAP. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	it	CRAM-MD5 o DIGEST-MD5 richiede che il pacchetto Auth_SASL sia installato.
 cyrus imap server	emailadmin	it	Server IMAP Cyrus
 cyrus imap server administration	emailadmin	it	Amministrazione Server IMAP Cyrus
@@ -90,7 +90,7 @@ use ldap defaults	emailadmin	it	usa predefiniti LDAP
 use smtp auth	emailadmin	it	usa autenticazione SMTP
 use tls authentication	emailadmin	it	usa autenticazione TLS
 use tls encryption	emailadmin	it	usa crittografia TLS
-user can edit forwarding address	emailadmin	it	l'utente può modificare indirizzo di inoltro
+user can edit forwarding address	emailadmin	it	l'utente puÃ² modificare indirizzo di inoltro
 username (standard)	emailadmin	it	nome utente (standard)
 username@domainname (virtual mail manager)	emailadmin	it	nomeutente@nome dominio (ManaGeR MAIL Virtuale)
 users can define their own emailaccounts	emailadmin	it	Gli utenti possono definire i propri account email

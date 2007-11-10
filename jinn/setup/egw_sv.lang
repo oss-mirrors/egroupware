@@ -1,106 +1,106 @@
-"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	sv	"Du har inte access till nÂgra siter. Be din administratˆr att ge dig access till din site eller kontrollera huruvida nÂgra siter existerar."
-%1 has a one-to-many with %2 showing %3	jinn	sv	%1 har en-till-mÂnga med %2 visar %3
-%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	sv	%1 har en-till-en relation med %2 genom konfiguration fˆr objekt %3
-%1 site obj-fields have been imported.	jinn	sv	%1 Site Obj-f‰lt har importerats
+"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	sv	"Du har inte access till n√•gra siter. Be din administrat√∂r att ge dig access till din site eller kontrollera huruvida n√•gra siter existerar."
+%1 has a one-to-many with %2 showing %3	jinn	sv	%1 har en-till-m√•nga med %2 visar %3
+%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	sv	%1 har en-till-en relation med %2 genom konfiguration f√∂r objekt %3
+%1 site obj-fields have been imported.	jinn	sv	%1 Site Obj-f√§lt har importerats
 %1 site objects have been imported.	jinn	sv	%1 site objekt importerade
 4 (default)	jinn	sv	4 (default)
-access rights	jinn	sv	≈tkomstr‰ttigheter
-access rights for site not succesfully editted	jinn	sv	≈tkomstr‰ttigheter kunde inte redigeras
-access rights for site not succesfully saved	jinn	sv	≈tkomstr‰ttigheter kunde inte sparas
-access rights for site succesfully editted	jinn	sv	≈tkomstr‰ttigheter sparade
-access rights for site succesfully saved	jinn	sv	≈tkomstr‰ttigheter sparade
-access rights for site-object not succesfully editted	jinn	sv	≈tkomst r‰ttigheter kunde inte ‰ndras
-access rights for site-object not succesfully saved	jinn	sv	≈tkomstr‰ttigheter fˆr site-objekt kunde inte sparas
-access rights for site-object succesfully editted	jinn	sv	≈tkomst r‰ttigheter ‰ndrade
-access rights for site-object succesfully saved	jinn	sv	≈tkomstr‰ttigheter fˆr site-objekt sparade
-access rights site-objects	jinn	sv	≈tkomst r‰ttigheter site objekt
-access_rights	jinn	sv	≈tkomst r‰ttigheter
-action was not succesful. unknown error	jinn	sv	≈tg‰rden misslyckade pga ok‰nt fel
-action was succesful.	jinn	sv	≈tg‰rd lyckades
-actions	jinn	sv	≈tg‰rder
-actions to apply on all selected record	jinn	sv	Vad skall utfˆras pÂ valda poster
+access rights	jinn	sv	√Ötkomstr√§ttigheter
+access rights for site not succesfully editted	jinn	sv	√Ötkomstr√§ttigheter kunde inte redigeras
+access rights for site not succesfully saved	jinn	sv	√Ötkomstr√§ttigheter kunde inte sparas
+access rights for site succesfully editted	jinn	sv	√Ötkomstr√§ttigheter sparade
+access rights for site succesfully saved	jinn	sv	√Ötkomstr√§ttigheter sparade
+access rights for site-object not succesfully editted	jinn	sv	√Ötkomst r√§ttigheter kunde inte √§ndras
+access rights for site-object not succesfully saved	jinn	sv	√Ötkomstr√§ttigheter f√∂r site-objekt kunde inte sparas
+access rights for site-object succesfully editted	jinn	sv	√Ötkomst r√§ttigheter √§ndrade
+access rights for site-object succesfully saved	jinn	sv	√Ötkomstr√§ttigheter f√∂r site-objekt sparade
+access rights site-objects	jinn	sv	√Ötkomst r√§ttigheter site objekt
+access_rights	jinn	sv	√Ötkomst r√§ttigheter
+action was not succesful. unknown error	jinn	sv	√Ötg√§rden misslyckade pga ok√§nt fel
+action was succesful.	jinn	sv	√Ötg√§rd lyckades
+actions	jinn	sv	√Ötg√§rder
+actions to apply on all selected record	jinn	sv	Vad skall utf√∂ras p√• valda poster
 activate experimental features which are in development	jinn	sv	Aktivera experimentella funktioner (under utveckling)
-add	jinn	sv	L‰gg till
-add %1st image	jinn	sv	L‰gg till %1 bilder
+add	jinn	sv	L√§gg till
+add %1st image	jinn	sv	L√§gg till %1 bilder
 add attachent	jinn	sv	Bifoga bilaga
 add attachment	jinn	sv	Bifoga bilaga
 add attachment %1	jinn	sv	Bifoga bilaga %1
-add edit	jinn	sv	L‰gg till redigera
-add egw_jinn_sites	jinn	sv	l‰gg till jinn-siter
-add image	jinn	sv	L‰gg till bild
-add image %1	jinn	sv	L‰gg till bild %1
-add multiple records	jinn	sv	L‰gg till multipla poster
-add new	jinn	sv	L‰gg till ny
-add new entry	jinn	sv	L‰gg till ny post
-add new many to many relation	jinn	sv	L‰gg till ny mÂnga-till-mÂnga relation
-add new many with many relation	jinn	sv	L‰gg till ny mÂnga-med-mÂnga relation
-add new one to many	jinn	sv	L‰gg till ny en-till-mÂnga
-add new one with many	jinn	sv	L‰gg till ny en-med-mÂnga
-add new one-to-one relation	jinn	sv	L‰gg till ny en-till-en relation
-add object	jinn	sv	L‰gg till objekt
-add or remove	jinn	sv	L‰gg till eller radera
-add phpgw_jinn_sites	jinn	sv	L‰gg till phpgw_jinn_sites
-add site	jinn	sv	L‰gg till site
-add site object	jinn	sv	L‰gg till site objekt
-add site-object	jinn	sv	L‰gg till site objekt
+add edit	jinn	sv	L√§gg till redigera
+add egw_jinn_sites	jinn	sv	l√§gg till jinn-siter
+add image	jinn	sv	L√§gg till bild
+add image %1	jinn	sv	L√§gg till bild %1
+add multiple records	jinn	sv	L√§gg till multipla poster
+add new	jinn	sv	L√§gg till ny
+add new entry	jinn	sv	L√§gg till ny post
+add new many to many relation	jinn	sv	L√§gg till ny m√•nga-till-m√•nga relation
+add new many with many relation	jinn	sv	L√§gg till ny m√•nga-med-m√•nga relation
+add new one to many	jinn	sv	L√§gg till ny en-till-m√•nga
+add new one with many	jinn	sv	L√§gg till ny en-med-m√•nga
+add new one-to-one relation	jinn	sv	L√§gg till ny en-till-en relation
+add object	jinn	sv	L√§gg till objekt
+add or remove	jinn	sv	L√§gg till eller radera
+add phpgw_jinn_sites	jinn	sv	L√§gg till phpgw_jinn_sites
+add site	jinn	sv	L√§gg till site
+add site object	jinn	sv	L√§gg till site objekt
+add site-object	jinn	sv	L√§gg till site objekt
 admin:: edit site	jinn	sv	admin:: redigera site
-administrator mode	jinn	sv	Administratˆrs l‰ge
-administrators for site $site_name	jinn	sv	Administratˆrer fˆr site $site_name
+administrator mode	jinn	sv	Administrat√∂rs l√§ge
+administrators for site $site_name	jinn	sv	Administrat√∂rer f√∂r site $site_name
 advanced configuration	jinn	sv	Avancerade alternativ
-all from	jinn	sv	Alla frÂn
-alternative fieldname for display	jinn	sv	Alternativt f‰lnamn fˆr visning
-an error occured.	jinn	sv	Ett fel intr‰ffade
+all from	jinn	sv	Alla fr√•n
+alternative fieldname for display	jinn	sv	Alternativt f√§lnamn f√∂r visning
+an error occured.	jinn	sv	Ett fel intr√§ffade
 another	jinn	sv	Annan
 are you sure you want to delete these multiple records?	jinn	sv	Vill du verkligen radera de valda posterna?
 are you sure you want to delete this record?	jinn	sv	Vill du verkligen radera denna post?
 are you sure your want to edit these records?	jinn	sv	Vill du verkligen radera dessa poster?
-are you sure?	jinn	sv	ƒr du s‰ker?
+are you sure?	jinn	sv	√Ñr du s√§ker?
 ascending	jinn	sv	Stigande
-attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	sv	Katalog fˆr bilagor exiterar inte, ‰r inte korrekt eller kan inte skapas <br>Kontrollera objektens uppladnings katalog:
+attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	sv	Katalog f√∂r bilagor exiterar inte, √§r inte korrekt eller kan inte skapas <br>Kontrollera objektens uppladnings katalog:
 automatic	jinn	sv	Automatiskt
-automaticly add objects for all tables	jinn	sv	L‰gg till objekt fˆr alla tabeller automatiskt
-automaticly incrementing	jinn	sv	÷ka automatiskt
-available for field types	common	sv	Tillg‰nglig fˆr f‰lt typer
+automaticly add objects for all tables	jinn	sv	L√§gg till objekt f√∂r alla tabeller automatiskt
+automaticly incrementing	jinn	sv	√ñka automatiskt
+available for field types	common	sv	Tillg√§nglig f√∂r f√§lt typer
 back to record list	jinn	sv	Tillbaks till post listan
-binary	jinn	sv	Bin‰rt
-binary, contains data	jinn	sv	Bin‰rt, innehÂller data
-binary, empty	jinn	sv	Bin‰rt, tom
+binary	jinn	sv	Bin√§rt
+binary, contains data	jinn	sv	Bin√§rt, inneh√•ller data
+binary, empty	jinn	sv	Bin√§rt, tom
 browse	jinn	sv	Utforska
 browse current object	jinn	sv	Utforska aktuella objekt
 browse sites	jinn	sv	Utforska siter
-browse through object settings	admin	sv	Utforska objekt inst‰llningar
+browse through object settings	admin	sv	Utforska objekt inst√§llningar
 browse through sites	jinn	sv	Utforska siter
 browses through sites	admin	sv	Utforskar siter
 c_all	jinn	sv	c_all
 c_none	jinn	sv	c_none
-can't edit more then 99 record at once (error code 108)	jinn	sv	Can inte redigera fler ‰n 99 poster pÂ en gÂng
+can't edit more then 99 record at once (error code 108)	jinn	sv	Can inte redigera fler √§n 99 poster p√• en g√•ng
 cancel	jinn	sv	Avbryt
-cannot copy a record from this table.	jinn	sv	Kan inte kopiera en post frÂn denna tabell
+cannot copy a record from this table.	jinn	sv	Kan inte kopiera en post fr√•n denna tabell
 category	jinn	sv	Kategori
-change number of records	jinn	sv	ƒndra antal poster
+change number of records	jinn	sv	√Ñndra antal poster
 check:	jinn	sv	Kontrollera:
-choose	jinn	sv	V‰lj
-close this window	jinn	sv	St‰ng fˆnster
+choose	jinn	sv	V√§lj
+close this window	jinn	sv	St√§ng f√∂nster
 column name	jinn	sv	Kolumn namn
-come back after new valid tablename is saved to configure plugins	jinn	sv	≈terv‰nd n‰r tabellnamn sparats fˆr att konfigurera plugin
-come back in edit mode for configuring plugins	jinn	sv	≈terv‰nd i redigerings l‰ge fˆr att konfigurera plugin
-come back in edit mode to configure plugins	jinn	sv	≈terv‰nd i redigerings l‰ge fˆr att konfigurera plugin
-come back in edit mode to enter one-to-one fields for this record.	jinn	sv	GÂ tillbaka till redigeringsl‰ge fˆr att ange ett-till-ett f‰lt fˆr denna post
+come back after new valid tablename is saved to configure plugins	jinn	sv	√Öterv√§nd n√§r tabellnamn sparats f√∂r att konfigurera plugin
+come back in edit mode for configuring plugins	jinn	sv	√Öterv√§nd i redigerings l√§ge f√∂r att konfigurera plugin
+come back in edit mode to configure plugins	jinn	sv	√Öterv√§nd i redigerings l√§ge f√∂r att konfigurera plugin
+come back in edit mode to enter one-to-one fields for this record.	jinn	sv	G√• tillbaka till redigeringsl√§ge f√∂r att ange ett-till-ett f√§lt f√∂r denna post
 configure	jinn	sv	Alternativ
 configure browse view	jinn	sv	Konfigurera utforskar vy
-configure field plugin	jinn	sv	Konfigurera f‰lt plugin
+configure field plugin	jinn	sv	Konfigurera f√§lt plugin
 configure this object list view	jinn	sv	Konfigurera objekt list vy
 configure this tableview	jinn	sv	Konfigurera tabell vy
 configure this view	jinn	sv	Konfigurera vy
-configure view of	jinn	sv	Konfigurera vy fˆr
-convert exec ( e.g. /usr/x11r6/bin/convert )	admin	sv	Sˆkv‰g till convert frÂn ImageMagick (ex. /usr/X11R6/bin/convert)
+configure view of	jinn	sv	Konfigurera vy f√∂r
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	sv	S√∂kv√§g till convert fr√•n ImageMagick (ex. /usr/X11R6/bin/convert)
 copy	jinn	sv	Kopiera
 copy and edit the new record	jinn	sv	Kopiera och redigera den nya posten
-could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	sv	Kunde inte hitta tabeller! Kontrollera databas namn, databas anv‰ndare och databas lˆsenord.
+could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	sv	Kunde inte hitta tabeller! Kontrollera databas namn, databas anv√§ndare och databas l√∂senord.
 create a new site now	jinn	sv	Skapa ny site
-current color:	jinn	sv	Aktuell f‰rg:
-database connection failed! <p>please recheck your settings.	jinn	sv	Databas kopplingen fungerar inte <p>Kontrollera inst‰llningarna
-database connection was succesfull. <p>you can go on with the site-objects	jinn	sv	Databas kopplingen fungerar <p> Du kan gÂ vidare med site objekt
+current color:	jinn	sv	Aktuell f√§rg:
+database connection failed! <p>please recheck your settings.	jinn	sv	Databas kopplingen fungerar inte <p>Kontrollera inst√§llningarna
+database connection was succesfull. <p>you can go on with the site-objects	jinn	sv	Databas kopplingen fungerar <p> Du kan g√• vidare med site objekt
 days	jinn	sv	Dagar
 debug	jinn	sv	Debugga
 default	jinn	sv	Standard
@@ -115,13 +115,13 @@ delete all selected records	jinn	sv	Radera valda poster
 descending	jinn	sv	Fallande
 descrition	common	sv	Beskrivning
 dev site db host	jinn	sv	Hostname till utvecklingsdatabasen
-dev site db name	jinn	sv	Databasnamn fˆr utvecklingsdatabasen
+dev site db name	jinn	sv	Databasnamn f√∂r utvecklingsdatabasen
 dev site db password	jinn	sv	Databaspassword till utvecklingsdatabasen
-dev site db type	jinn	sv	Databastyp fˆr utvecklingsdatabasen
-dev site db user	jinn	sv	Anv‰ndarnamn till utvecklingsdatabasen
+dev site db type	jinn	sv	Databastyp f√∂r utvecklingsdatabasen
+dev site db user	jinn	sv	Anv√§ndarnamn till utvecklingsdatabasen
 dev upload path	jinn	sv	Uploadpath till utvecklingssiten
-dev upload url	jinn	sv	URL fˆr utvecklares upload
-developer links	jinn	sv	Utvecklar l‰nkar
+dev upload url	jinn	sv	URL f√∂r utvecklares upload
+developer links	jinn	sv	Utvecklar l√§nkar
 development	admin	sv	Utveckling
 development server	jinn	sv	Utvecklings server
 dimensions	jinn	sv	Dimensioner
@@ -130,41 +130,41 @@ do you want to copy and then edit this record?	jinn	sv	Vill du kopiera och sedan
 edit	jinn	sv	Redigera
 edit all selected records	jinn	sv	Redigera alla valda poster
 edit egw_jinn_sites	jinn	sv	Redigera jinn siter
-edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	sv	Redigera JiNN site objekt parametrar: <li>V‰lj JiNN objekt namn att visa</li> <li>V‰lj databas tabell att anv‰nda med objektet</li> <li>Om nˆdv‰ndigt en alternativ korrekt absolut sˆkv‰g till uppladdning</li> <li>Om nˆdv‰ndigt en motsvarande URL fˆr att fˆrhandsvisa upladdade objekt</li><br><li>Definiera f‰lt relationer</li><li>Konfigurera f‰ltplugins</li>
+edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	sv	Redigera JiNN site objekt parametrar: <li>V√§lj JiNN objekt namn att visa</li> <li>V√§lj databas tabell att anv√§nda med objektet</li> <li>Om n√∂dv√§ndigt en alternativ korrekt absolut s√∂kv√§g till uppladdning</li> <li>Om n√∂dv√§ndigt en motsvarande URL f√∂r att f√∂rhandsvisa upladdade objekt</li><br><li>Definiera f√§lt relationer</li><li>Konfigurera f√§ltplugins</li>
 edit object	jinn	sv	Rediger objekt
 edit site	jinn	sv	Redigera site
 edit this record	jinn	sv	Redigera post
 edit this site	jinn	sv	Redigera siten
 edit this site object	jinn	sv	Redigera site objekt
-editors for object $object_name in site $site_name	jinn	sv	Editor fˆr objekt $object_name i site $site_name
+editors for object $object_name in site $site_name	jinn	sv	Editor f√∂r objekt $object_name i site $site_name
 error code %1	jinn	sv	Felkod %1
 error path_open %1	jinn	sv	Fel path_open %1
-error: the file %1 doesn't exists, please contact the webmaster	jinn	sv	Fel: fil %1 existerar inte, kontakta administratˆr
+error: the file %1 doesn't exists, please contact the webmaster	jinn	sv	Fel: fil %1 existerar inte, kontakta administrat√∂r
 export this site	jinn	sv	Exportera siten
 failed to copy: %1 to %2 ...	jinn	sv	Kunde inte kopiera %1 till %2
-failed to open table. please check if table <i>%1</i> still exists in database	jinn	sv	Kunde inte ˆppna tabellen. Kontrollera om den finns i databasen
-field	jinn	sv	F‰lt
-field configuration	jinn	sv	F‰lt alternativ
-field plugin	jinn	sv	F‰lt plugin
-field plugin configuration	jinn	sv	F‰lt plugin alternativ
-field plugins	jinn	sv	F‰lt plugin
-field to display	jinn	sv	Visa f‰lt
-fields	jinn	sv	F‰lt
+failed to open table. please check if table <i>%1</i> still exists in database	jinn	sv	Kunde inte √∂ppna tabellen. Kontrollera om den finns i databasen
+field	jinn	sv	F√§lt
+field configuration	jinn	sv	F√§lt alternativ
+field plugin	jinn	sv	F√§lt plugin
+field plugin configuration	jinn	sv	F√§lt plugin alternativ
+field plugins	jinn	sv	F√§lt plugin
+field to display	jinn	sv	Visa f√§lt
+fields	jinn	sv	F√§lt
 filename	jinn	sv	Filnamn
 filesize	jinn	sv	Filstorlek
-form input plugin	jinn	sv	Formul‰r indata plugin
-general preferences	jinn	sv	Allm‰nna alternativ
-general settings	admin	sv	Allm‰nna alternativ
-give new timestamp	jinn	sv	Ge ny tidst‰mpel
+form input plugin	jinn	sv	Formul√§r indata plugin
+general preferences	jinn	sv	Allm√§nna alternativ
+general settings	admin	sv	Allm√§nna alternativ
+give new timestamp	jinn	sv	Ge ny tidst√§mpel
 global configuration	jinn	sv	Globala alternativ
 global site configuration	admin	sv	Globala site alternativ
-go	jinn	sv	GÂ
-has a many to many relation with	jinn	sv	har mÂnga-till-mÂnga relation med
-has a one to many relation with	jinn	sv	har en-till-mÂnga relation med
+go	jinn	sv	G√•
+has a many to many relation with	jinn	sv	har m√•nga-till-m√•nga relation med
+has a one to many relation with	jinn	sv	har en-till-m√•nga relation med
 has a one-to-one relation with	jinn	sv	har en-till-en relation med
-height:	jinn	sv	Hˆjd:
-hidden	jinn	sv	Gˆmd
-image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	sv	Katalog fˆr bilder exiterar inte, ‰r inte korrekt eller kan inte skapas <br>Kontrollera objektens uppladnings katalog:
+height:	jinn	sv	H√∂jd:
+hidden	jinn	sv	G√∂md
+image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	sv	Katalog f√∂r bilder exiterar inte, √§r inte korrekt eller kan inte skapas <br>Kontrollera objektens uppladnings katalog:
 image settings	admin	sv	Bild alternativ
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	sv	ImageMagick katalog (ex. /usr/X11R6/bin)
 import failed	jinn	sv	import misslyckades
@@ -174,20 +174,20 @@ import site	jinn	sv	Importera site
 import was succesfull	jinn	sv	Import lyckades
 import was succesfull<br>imported one site with	jinn	sv	Import lyckades<br>Importerade en site med
 index	jinn	sv	Index
-insert another record after saving	jinn	sv	Spara och l‰gg till ny post
-insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	sv	Redigera JiNN site inst‰llningar: <li>Ange JiNN site namn</li> <li>Ange databas inst‰llningar</li> <li>Ange absolut uppladdnings sˆkv‰g</li> <li>Ange motsvarande URL fˆr fˆrhandsvisning av objekt</li>
-insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	sv	Redigera JiNN site objekt parametrar: <li>V‰lj JiNN objekt namn att visa</li> <li>V‰lj databas tabell att anv‰nda med objektet</li> <li>Om nˆdv‰ndigt en alternativ korrekt absolut sˆkv‰g till uppladdning</li> <li>Om nˆdv‰ndigt en motsvarande URL fˆr att fˆrhandsvisa upladdade objekt</li>
+insert another record after saving	jinn	sv	Spara och l√§gg till ny post
+insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	sv	Redigera JiNN site inst√§llningar: <li>Ange JiNN site namn</li> <li>Ange databas inst√§llningar</li> <li>Ange absolut uppladdnings s√∂kv√§g</li> <li>Ange motsvarande URL f√∂r f√∂rhandsvisning av objekt</li>
+insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	sv	Redigera JiNN site objekt parametrar: <li>V√§lj JiNN objekt namn att visa</li> <li>V√§lj databas tabell att anv√§nda med objektet</li> <li>Om n√∂dv√§ndigt en alternativ korrekt absolut s√∂kv√§g till uppladdning</li> <li>Om n√∂dv√§ndigt en motsvarande URL f√∂r att f√∂rhandsvisa upladdade objekt</li>
 jinn	common	sv	JiNN
 jinn editors menu	jinn	sv	JiNN Editor Meny
 jinn main menu	jinn	sv	JiNN Huvudmeny
 jinn preferences	jinn	sv	JiNN Alternativ
 list sites	jinn	sv	Lista siter
-many 2 many relations will not work	jinn	sv	MÂnga-till-mÂnga relation fungerar inte
-max. number of previews in form	jinn	sv	Max. nummer av fˆrhandsgranskningar i formul‰r
+many 2 many relations will not work	jinn	sv	M√•nga-till-m√•nga relation fungerar inte
+max. number of previews in form	jinn	sv	Max. nummer av f√∂rhandsgranskningar i formul√§r
 maximum image width isn	jinn	sv	maximum image width isn
 maximum image width isn\	jinn	sv	maximum image width isn
-moderator mode	jinn	sv	Moderator L‰ge
-months	jinn	sv	MÂnader
+moderator mode	jinn	sv	Moderator L√§ge
+months	jinn	sv	M√•nader
 months_abbr	jinn	sv	months_abbr
 move down	jinn	sv	Flytta ner
 move to last position	jinn	sv	Flytta nederst
@@ -195,89 +195,89 @@ move up	jinn	sv	Flytta upp
 moved record one row down.	jinn	sv	Flyttade en rad ner
 moved record one row up.	jinn	sv	Flyttade en rad upp
 moved record to last row.	jinn	sv	Flyttade nederst
-new image size limits.	jinn	sv	Nya bildstorlek begr‰nsningar
-no matchs found	jinn	sv	Inga tr‰ffar
+new image size limits.	jinn	sv	Nya bildstorlek begr√§nsningar
+no matchs found	jinn	sv	Inga tr√§ffar
 no max. number	jinn	sv	Inget max nummer
 no object selected. no able to configure this view	jinn	sv	Inget objekt valt. Kan inte konfigurera vy
-no objects found for this site.	jinn	sv	Inga objekt funna fˆr siten
-no records found	jinn	sv	Inga tr‰ffar
+no objects found for this site.	jinn	sv	Inga objekt funna f√∂r siten
+no records found	jinn	sv	Inga tr√§ffar
 normal view	jinn	sv	Normal vy
-not yet implemented	jinn	sv	Inte ‰nnu implementerad
-notice that jinn needs imagemagick 5.4.9 or a later version	admin	sv	Observera att JiNN behˆver ImageMagick 5.4.9 eller senare
-only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	sv	Aktivera detta endast om du vet vad du gˆr. Du kan fˆrstˆra din data med experimentella funktioner.
+not yet implemented	jinn	sv	Inte √§nnu implementerad
+notice that jinn needs imagemagick 5.4.9 or a later version	admin	sv	Observera att JiNN beh√∂ver ImageMagick 5.4.9 eller senare
+only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	sv	Aktivera detta endast om du vet vad du g√∂r. Du kan f√∂rst√∂ra din data med experimentella funktioner.
 only if thumnails exits	jinn	sv	Bara om bildminiatyrer finns
 only one	jinn	sv	Bara en
-path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	sv	Sˆkv‰g till convert frÂn ImageMagick (ex. /usr/X11R6/bin/convert)
-please contact administrator with this message	jinn	sv	Var god och kontakta administratˆr med detta meddelande
-please contact administrator with this message.	jinn	sv	Var god och kontakta administratˆr med detta meddelande
-please set your preferences for this application	jinn	sv	Gˆr inst‰llningar fˆr applikationen
-preview thumbs or images in form	jinn	sv	Fˆrhandsgranska miniatyrer eller bilder i formul‰ret
-preview website	jinn	sv	Fˆrhandsgranska webbsite
+path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	sv	S√∂kv√§g till convert fr√•n ImageMagick (ex. /usr/X11R6/bin/convert)
+please contact administrator with this message	jinn	sv	Var god och kontakta administrat√∂r med detta meddelande
+please contact administrator with this message.	jinn	sv	Var god och kontakta administrat√∂r med detta meddelande
+please set your preferences for this application	jinn	sv	G√∂r inst√§llningar f√∂r applikationen
+preview thumbs or images in form	jinn	sv	F√∂rhandsgranska miniatyrer eller bilder i formul√§ret
+preview website	jinn	sv	F√∂rhandsgranska webbsite
 production	admin	sv	Produktion
-real value	jinn	sv	Riktigt v‰rde
+real value	jinn	sv	Riktigt v√§rde
 record	jinn	sv	Post
 record added succesfully	jinn	sv	Post tillagd
 record deleted succesfully	jinn	sv	Post raderad
-record not succesfully copied. unknown error	jinn	sv	Post kopierades INTE pga ok‰nt fel
-record not succesfully deleted. unknown error	jinn	sv	Post raderades INTE pga ok‰nt fel
+record not succesfully copied. unknown error	jinn	sv	Post kopierades INTE pga ok√§nt fel
+record not succesfully deleted. unknown error	jinn	sv	Post raderades INTE pga ok√§nt fel
 record succesfully copied	jinn	sv	Post kopierad
 record succesfully deleted	jinn	sv	Post raderad
 record succesfully editted	jinn	sv	Post redigerad
-registered field plugins	common	sv	Registrerad plugin f‰lt
+registered field plugins	common	sv	Registrerad plugin f√§lt
 related	jinn	sv	Relaterad
-related entries from table %1	jinn	sv	Relaterad post frÂn tabell %1
+related entries from table %1	jinn	sv	Relaterad post fr√•n tabell %1
 relation %1	jinn	sv	Relation %1
 relations	jinn	sv	Relationer
-relations for this object	jinn	sv	Relationer fˆr objektet
-remote	admin	sv	Fj‰rr
+relations for this object	jinn	sv	Relationer f√∂r objektet
+remote	admin	sv	Fj√§rr
 remove	jinn	sv	Radera
-replace existing site with the same name?	jinn	sv	Ers‰tt existerande site med samma namn?
+replace existing site with the same name?	jinn	sv	Ers√§tt existerande site med samma namn?
 replaced existing site named <strong>%1</strong>.	jinn	sv	Ersatte existerande site vid namn <strong>%1</strong>.
 represented by:	jinn	sv	Representerad av:
-reset form	jinn	sv	≈terst‰ll formul‰ret
+reset form	jinn	sv	√Öterst√§ll formul√§ret
 save	jinn	sv	Spara
-save and continue	jinn	sv	Spara och forts‰tt
-save and contiue	jinn	sv	Spara och forts‰tt
+save and continue	jinn	sv	Spara och forts√§tt
+save and contiue	jinn	sv	Spara och forts√§tt
 save and finish	jinn	sv	Spara och avsluta
-search	jinn	sv	Sˆk
-search for string	jinn	sv	Sˆkstr‰ng
-select directory	jinn	sv	V‰lj katalog
-select jinn site file	jinn	sv	V‰lj JiNN site fil
-select site	jinn	sv	V‰lj site
-select site to moderate	jinn	sv	V‰lj site att moderera
-select site-object to moderate	jinn	sv	V‰lj site objekt att moderera
-select which graphic library jinn must use	admin	sv	V‰lj grafisk lib JiNN  ska anv‰nda
-select_object	jinn	sv	V‰lj objekt
+search	jinn	sv	S√∂k
+search for string	jinn	sv	S√∂kstr√§ng
+select directory	jinn	sv	V√§lj katalog
+select jinn site file	jinn	sv	V√§lj JiNN site fil
+select site	jinn	sv	V√§lj site
+select site to moderate	jinn	sv	V√§lj site att moderera
+select site-object to moderate	jinn	sv	V√§lj site objekt att moderera
+select which graphic library jinn must use	admin	sv	V√§lj grafisk lib JiNN  ska anv√§nda
+select_object	jinn	sv	V√§lj objekt
 server type?	admin	sv	Server typ
-set access right for site objects	jinn	sv	S‰tt Âtkomst r‰ttigheter fˆr site objekten
-set access rights	jinn	sv	S‰tt Âtkomst r‰ttigheter
-set access rights for sites	jinn	sv	S‰tt Âtkomst r‰ttigheter fˆr siter
-set administrators for	jinn	sv	Ange administratˆrer fˆr
-set administrators for %1	jinn	sv	Ange administratˆrer fˆr %1
+set access right for site objects	jinn	sv	S√§tt √•tkomst r√§ttigheter f√∂r site objekten
+set access rights	jinn	sv	S√§tt √•tkomst r√§ttigheter
+set access rights for sites	jinn	sv	S√§tt √•tkomst r√§ttigheter f√∂r siter
+set administrators for	jinn	sv	Ange administrat√∂rer f√∂r
+set administrators for %1	jinn	sv	Ange administrat√∂rer f√∂r %1
 set object moderator	jinn	sv	Ange objekt moderator
 set site admin	jinn	sv	Ange site namn
 show	jinn	sv	Visa
 show all columns	jinn	sv	Visa alla kolumner
 show colomn	jinn	sv	Visa kolumn
 show extra table debugging information	jinn	sv	Visa extra tabell debug info
-show upload path	admin	sv	Visa uppladdnings sˆkv‰g
+show upload path	admin	sv	Visa uppladdnings s√∂kv√§g
 showing	jinn	sv	Visar
-site beheerders	jinn	sv	Site administratˆrer
+site beheerders	jinn	sv	Site administrat√∂rer
 site db host	jinn	sv	Site databas host
 site db name	jinn	sv	Site databas namn
-site db password	jinn	sv	Site databas lˆsenord
+site db password	jinn	sv	Site databas l√∂senord
 site db type	jinn	sv	Site databas typ
-site db user	jinn	sv	Site databas anv‰ndare
+site db user	jinn	sv	Site databas anv√§ndare
 site description	admin	sv	Site beskrivning
 site id	jinn	sv	Site ID
 site media and documents	jinn	sv	Site media och dokument
 site name	jinn	sv	Site namn
-site not succesfully added, unknown error	jinn	sv	Site skapades INTE pga ok‰nt fel
-site not succesfully deleted, unknown error	jinn	sv	Site raderades INTE pga ok‰nt fel
-site not succesfully saved, unknown error	jinn	sv	Site sparades INTE pga ok‰nt fel
-site object not succesfully added, unknown error	jinn	sv	Site Object skapades INTE pga ok‰nt fel
-site object not succesfully deleted, unknown error	jinn	sv	Site Object raderades INTE pga ok‰nt fel
-site object not succesfully saved, unknown error	jinn	sv	Site Object sparades INTE pga ok‰nt fel
+site not succesfully added, unknown error	jinn	sv	Site skapades INTE pga ok√§nt fel
+site not succesfully deleted, unknown error	jinn	sv	Site raderades INTE pga ok√§nt fel
+site not succesfully saved, unknown error	jinn	sv	Site sparades INTE pga ok√§nt fel
+site object not succesfully added, unknown error	jinn	sv	Site Object skapades INTE pga ok√§nt fel
+site object not succesfully deleted, unknown error	jinn	sv	Site Object raderades INTE pga ok√§nt fel
+site object not succesfully saved, unknown error	jinn	sv	Site Object sparades INTE pga ok√§nt fel
 site object succesfully added	jinn	sv	Site Object skapad
 site object succesfully deleted	jinn	sv	Site Object raderad
 site object succesfully saved	jinn	sv	Site Object sparad
@@ -288,28 +288,28 @@ site title	admin	sv	Site titel
 site-objects	jinn	sv	Site objekt
 sites	jinn	sv	Siter
 start	admin	sv	Start
-start at record	jinn	sv	Bˆrja med post
+start at record	jinn	sv	B√∂rja med post
 stop at record	jinn	sv	Sluta med post
 submit and import	jinn	sv	Spara och importera
 t/m	jinn	sv	t/m
-tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	sv	Tabellnamn <i>%1</i> ‰r ogiltigt. Ange annan tabell eller radera objektet.
-test database access	jinn	sv	Testa databas Âtkomst
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	sv	Uppladdad bildfil %1 ‰r inte giltig, korrupt eller av JiNN supporterad filtyp
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	sv	Uppladdad bildfil %1 ‰r inte giltig, korrupt eller av JiNN supporterad filtyp. Om felet kvarstÂr kontrollera din ImageMagick installation. ƒldre versioner av ImageMagick ‰r k‰nda att inte fungera fullt ut med JiNN (kr‰ver version 5.4.9 eller senare)
-the max. file upload size is %1 mb.	jinn	sv	Max uppladdad filstorlek ‰r %1 mb.
-the name of the new site is <strong>%1</strong>.	jinn	sv	Namnet pÂ den nya siten ‰r <strong>%1</strong>.
-the resize process failed, please contact the administrator	jinn	sv	Kunde inte ‰ndra storlek. Kontrakta administratˆr.
-there are no directories in this site you have access to.	jinn	sv	Du har inte Âtkomst r‰ttighet till nÂgon katalog i siten.
+tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	sv	Tabellnamn <i>%1</i> √§r ogiltigt. Ange annan tabell eller radera objektet.
+test database access	jinn	sv	Testa databas √•tkomst
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	sv	Uppladdad bildfil %1 √§r inte giltig, korrupt eller av JiNN supporterad filtyp
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	sv	Uppladdad bildfil %1 √§r inte giltig, korrupt eller av JiNN supporterad filtyp. Om felet kvarst√•r kontrollera din ImageMagick installation. √Ñldre versioner av ImageMagick √§r k√§nda att inte fungera fullt ut med JiNN (kr√§ver version 5.4.9 eller senare)
+the max. file upload size is %1 mb.	jinn	sv	Max uppladdad filstorlek √§r %1 mb.
+the name of the new site is <strong>%1</strong>.	jinn	sv	Namnet p√• den nya siten √§r <strong>%1</strong>.
+the resize process failed, please contact the administrator	jinn	sv	Kunde inte √§ndra storlek. Kontrakta administrat√∂r.
+there are no directories in this site you have access to.	jinn	sv	Du har inte √•tkomst r√§ttighet till n√•gon katalog i siten.
 thisfile	jinn	sv	thisfile
-thumb directory does not exist or is not correct ...	jinn	sv	Bildminiatyr katalog existerar inte eller ‰r ogiltig
-thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	sv	Bildminiatyr katalog existerar inte eller ‰r ogiltig <br> Kontrollera objektens uppladdnings katalog.
+thumb directory does not exist or is not correct ...	jinn	sv	Bildminiatyr katalog existerar inte eller √§r ogiltig
+thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	sv	Bildminiatyr katalog existerar inte eller √§r ogiltig <br> Kontrollera objektens uppladdnings katalog.
 thumbnail	jinn	sv	Bildminiatyrer
-unlimited	jinn	sv	Obegr‰nsad
-using object configuration	jinn	sv	Anv‰nda objekt alternativ
+unlimited	jinn	sv	Obegr√§nsad
+using object configuration	jinn	sv	Anv√§nda objekt alternativ
 version	jinn	sv	Version
-when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	sv	N‰r mÂnga bilder kopplats till en post kan det ta lÂng tid att ladda formul‰ret. Du kan s‰tta ett max antal bilder som visas.
-when this is enables information like field length and field type is shown when editing record	jinn	sv	Om detta aktiveras visas information som f‰ltl‰ngd och f‰lt typ n‰r post redigeras
-when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	sv	N‰r du v‰ljer 'Aldrig' visas bara l‰nkar till bilder. Om du v‰ljer 'Bara om bildminiatyrer finns' visas dessa om bilden finns. Om du v‰ljer 'Ja' visas alla bilder.
+when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	sv	N√§r m√•nga bilder kopplats till en post kan det ta l√•ng tid att ladda formul√§ret. Du kan s√§tta ett max antal bilder som visas.
+when this is enables information like field length and field type is shown when editing record	jinn	sv	Om detta aktiveras visas information som f√§ltl√§ngd och f√§lt typ n√§r post redigeras
+when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	sv	N√§r du v√§ljer 'Aldrig' visas bara l√§nkar till bilder. Om du v√§ljer 'Bara om bildminiatyrer finns' visas dessa om bilden finns. Om du v√§ljer 'Ja' visas alla bilder.
 width:	jinn	sv	Bredd:
 with_checked_files	jinn	sv	with_checked_files
-you're not allowed to administrate media files	jinn	sv	Du saknar r‰ttighet att administrera media filer
+you're not allowed to administrate media files	jinn	sv	Du saknar r√§ttighet att administrera media filer

@@ -1,15 +1,15 @@
-%1 manual page(s) added or updated	manual	fi	%1 ohjesivu(ja) lis‰tty tai p‰ivitetty
-allow anonymous access to the manual, only necessary to act as remote manual	admin	fi	Salli anonyymin k‰ytt‰j‰n p‰‰sy ohjeisiin, tarpeellinen vain jos k‰ytet‰‰n et‰ohjeena!
-anonymous password	admin	fi	Anonyymin k‰ytt‰j‰n salasana
-anonymous username	admin	fi	Anonyymin k‰ytt‰j‰n k‰ytt‰j‰tunnus
+%1 manual page(s) added or updated	manual	fi	%1 ohjesivu(ja) lis√§tty tai p√§ivitetty
+allow anonymous access to the manual, only necessary to act as remote manual	admin	fi	Salli anonyymin k√§ytt√§j√§n p√§√§sy ohjeisiin, tarpeellinen vain jos k√§ytet√§√§n et√§ohjeena!
+anonymous password	admin	fi	Anonyymin k√§ytt√§j√§n salasana
+anonymous username	admin	fi	Anonyymin k√§ytt√§j√§n k√§ytt√§j√§tunnus
 download	manual	fi	lataa koneellesi
 index	manual	fi	Indeksi
-install or update the manual-pages	admin	fi	asenna tai p‰ivit‰ ohjesivuja
-manual	common	fi	K‰yttˆohje / Ohje
-page(s) %1 not found !!!	manual	fi	Sivu(ja) %1 ei lˆydy !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	fi	Poista eGroupWaren URL ohje k‰ytˆst‰, tyhj‰n‰ k‰ytet‰‰n paikallista ohjetta, oletuksena.
+install or update the manual-pages	admin	fi	asenna tai p√§ivit√§ ohjesivuja
+manual	common	fi	K√§ytt√∂ohje / Ohje
+page(s) %1 not found !!!	manual	fi	Sivu(ja) %1 ei l√∂ydy !!!
+remote egroupware url for the manual to use, empty for a local manual, default	admin	fi	Poista eGroupWaren URL ohje k√§yt√∂st√§, tyhj√§n√§ k√§ytet√§√§n paikallista ohjetta, oletuksena.
 search for	manual	fi	Hae
-starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	fi	Aloitetaan tuonti l‰hteest‰ %1, t‰m‰ saattaa vied‰ useita minuutteja (varsinkin jos t‰m‰ on ensimm‰inen kerta) ...
+starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	fi	Aloitetaan tuonti l√§hteest√§ %1, t√§m√§ saattaa vied√§ useita minuutteja (varsinkin jos t√§m√§ on ensimm√§inen kerta) ...
 the search returned no result!	manual	fi	Haku ei palauttanut tulosta!
-update url for the local manual, default	admin	fi	P‰ivit‰ URL paikalliseen ohjeeseen, oletuksena
-wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	fi	Wiki Id paikalliseen ohjeeseen, oletuksena 1, k‰yt‰ 0 muokataksesi ohjeen sivua.
+update url for the local manual, default	admin	fi	P√§ivit√§ URL paikalliseen ohjeeseen, oletuksena
+wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	fi	Wiki Id paikalliseen ohjeeseen, oletuksena 1, k√§yt√§ 0 muokataksesi ohjeen sivua.

@@ -1,16 +1,16 @@
-are you sure you want to delete this news site ?	admin	ja	¤³¤Î¥Ë¥å¡¼¥¹¥µ¥¤¥È¤òºï½ü¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤¹¤«¡£
+are you sure you want to delete this news site ?	admin	ja	ã“ã®ãƒ‹ãƒ¥ãƒ¼ã‚¹ã‚µã‚¤ãƒˆã‚’å‰Šé™¤ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã™ã‹ã€‚
 base url	admin	ja	Base URL
-headlines	common	ja	¥Ø¥Ã¥É¥é¥¤¥ó
-headline sites	admin	ja	¥Ø¥Ã¥É¥é¥¤¥ó¥µ¥¤¥È
-headline preferences	common	ja	¥Ø¥Ã¥É¥é¥¤¥ó
-listings displayed	admin	ja	°ìÍ÷É½¼¨
-minutes between reloads	admin	ja	¹¹¿·»ş´Ö
-news file	admin	ja	¥Ë¥å¡¼¥¹¥Õ¥¡¥¤¥ë
-news headlines	common	ja	¥Ë¥å¡¼¥¹¥Ø¥Ã¥É¥é¥¤¥ó
-news type	admin	ja	¥Ë¥å¡¼¥¹¥¿¥¤¥×
-that site has already been entered	admin	ja	¥µ¥¤¥È¤Ï´û¤ËÂ¸ºß¤·¤Æ¤¤¤Ş¤¹¡£
-you must enter a base url	admin	ja	base URL ¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£
-you must enter a display	admin	ja	É½¼¨¹àÌÜ¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£
-you must enter a news url	admin	ja	¿·¤·¤¤ URL ¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£
-you must enter the number of listings display	admin	ja	É½¼¨¿ô¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£
-you must enter the number of minutes between reload	admin	ja	¹¹¿·´Ö³Ö¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£
+headlines	common	ja	ãƒ˜ãƒƒãƒ‰ãƒ©ã‚¤ãƒ³
+headline sites	admin	ja	ãƒ˜ãƒƒãƒ‰ãƒ©ã‚¤ãƒ³ã‚µã‚¤ãƒˆ
+headline preferences	common	ja	ãƒ˜ãƒƒãƒ‰ãƒ©ã‚¤ãƒ³
+listings displayed	admin	ja	ä¸€è¦§è¡¨ç¤º
+minutes between reloads	admin	ja	æ›´æ–°æ™‚é–“
+news file	admin	ja	ãƒ‹ãƒ¥ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«
+news headlines	common	ja	ãƒ‹ãƒ¥ãƒ¼ã‚¹ãƒ˜ãƒƒãƒ‰ãƒ©ã‚¤ãƒ³
+news type	admin	ja	ãƒ‹ãƒ¥ãƒ¼ã‚¹ã‚¿ã‚¤ãƒ—
+that site has already been entered	admin	ja	ã‚µã‚¤ãƒˆã¯æ—¢ã«å­˜åœ¨ã—ã¦ã„ã¾ã™ã€‚
+you must enter a base url	admin	ja	base URL ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚
+you must enter a display	admin	ja	è¡¨ç¤ºé …ç›®ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚
+you must enter a news url	admin	ja	æ–°ã—ã„ URL ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚
+you must enter the number of listings display	admin	ja	è¡¨ç¤ºæ•°ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚
+you must enter the number of minutes between reload	admin	ja	æ›´æ–°é–“éš”ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚

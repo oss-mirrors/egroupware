@@ -1,39 +1,39 @@
-after successful installation of all instances, you have to copy %1 to %2!	gallery	sk	Po úspe¹nom nain¹talovaní v¹etkıch in¹tancií, musíte skopírova» %1 do %2!
-album frame (%1samples%2)	gallery	sk	Rámec albumu (%1Samples%2)
+after successful installation of all instances, you have to copy %1 to %2!	gallery	sk	Po ÃºspeÅ¡nom nainÅ¡talovanÃ­ vÅ¡etkÃ½ch inÅ¡tanciÃ­, musÃ­te skopÃ­rovaÅ¥ %1 do %2!
+album frame (%1samples%2)	gallery	sk	RÃ¡mec albumu (%1Samples%2)
 alignment of the block	gallery	sk	Zarovnanie bloku
-all filenames are relative to %1.	gallery	sk	V¹etky názvy súborov sú relatívne ku %1.
-all other egroupware users will be created by the g2 integration including there admin rights.	gallery	sk	V¹etci ostatní pou¾ívatelia eGroupWare sa vytvoria s G2 integráciou, vrátane administrátorskıch oprávnení.
-an error occurred during user creation in g2.	gallery	sk	Nastala chyba poèas vytvárania pou¾ívateµa v G2.
-an error occurred while trying to initialize g2.	gallery	sk	Nastala chyba poèas inicializácie G2.
-can be used to limit the block to a certain album.	gallery	sk	Dá sa pou¾i» na obmedzenie bloku na jednotlivı album.
-complete gallery	gallery	sk	Úplná Galéria
-default item to show in the gallery.	gallery	sk	Predvolená polo¾ka, ktorá sa zobrazí v Galérii.
-extra information to show	gallery	sk	Ïal¹ie informácie, ktoré sa majú zobrazi»
-for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	sk	Ak chcete ma» viacero in¹tancií eGroupWare, musíte odstráni» %1, aby ste mohli nain¹talova» ïal¹iu in¹tanciu.
-full size	gallery	sk	Plná veµkos»
-gallery	common	sk	Galéria
-gallery menu	gallery	sk	Menu Galérie
-gallery sidebar	gallery	sk	Boènı panel Galérie
-gallery without sidebar	gallery	sk	Galéria bez boèného panelu
-gallery2 is not installed, you need to %1do that%2 first!!!	gallery	sk	Galéria2 NIE JE nain¹talovaná, musíte to najprv %1do that%2
-heading	gallery	sk	Hlavièka
-image frame (%1samples%2)	gallery	sk	Rámec obrázku (%1Samples%2)
-imageblock	gallery	sk	Blok obrázku
-imageblock of the gallery	gallery	sk	Blok obrázku v Galérii
-item id (number)	gallery	sk	ID polo¾ky (èíslo)
+all filenames are relative to %1.	gallery	sk	VÅ¡etky nÃ¡zvy sÃºborov sÃº relatÃ­vne ku %1.
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	sk	VÅ¡etci ostatnÃ­ pouÅ¾Ã­vatelia eGroupWare sa vytvoria s G2 integrÃ¡ciou, vrÃ¡tane administrÃ¡torskÃ½ch oprÃ¡vnenÃ­.
+an error occurred during user creation in g2.	gallery	sk	Nastala chyba poÄas vytvÃ¡rania pouÅ¾Ã­vateÄ¾a v G2.
+an error occurred while trying to initialize g2.	gallery	sk	Nastala chyba poÄas inicializÃ¡cie G2.
+can be used to limit the block to a certain album.	gallery	sk	DÃ¡ sa pouÅ¾iÅ¥ na obmedzenie bloku na jednotlivÃ½ album.
+complete gallery	gallery	sk	ÃšplnÃ¡ GalÃ©ria
+default item to show in the gallery.	gallery	sk	PredvolenÃ¡ poloÅ¾ka, ktorÃ¡ sa zobrazÃ­ v GalÃ©rii.
+extra information to show	gallery	sk	ÄalÅ¡ie informÃ¡cie, ktorÃ© sa majÃº zobraziÅ¥
+for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	sk	Ak chcete maÅ¥ viacero inÅ¡tanciÃ­ eGroupWare, musÃ­te odstrÃ¡niÅ¥ %1, aby ste mohli nainÅ¡talovaÅ¥ ÄalÅ¡iu inÅ¡tanciu.
+full size	gallery	sk	PlnÃ¡ veÄ¾kosÅ¥
+gallery	common	sk	GalÃ©ria
+gallery menu	gallery	sk	Menu GalÃ©rie
+gallery sidebar	gallery	sk	BoÄnÃ½ panel GalÃ©rie
+gallery without sidebar	gallery	sk	GalÃ©ria bez boÄnÃ©ho panelu
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	sk	GalÃ©ria2 NIE JE nainÅ¡talovanÃ¡, musÃ­te to najprv %1do that%2
+heading	gallery	sk	HlaviÄka
+image frame (%1samples%2)	gallery	sk	RÃ¡mec obrÃ¡zku (%1Samples%2)
+imageblock	gallery	sk	Blok obrÃ¡zku
+imageblock of the gallery	gallery	sk	Blok obrÃ¡zku v GalÃ©rii
+item id (number)	gallery	sk	ID poloÅ¾ky (ÄÃ­slo)
 one or more blocks to show	gallery	sk	Jeden alebo viac blokov pre zobrazenie
-pagename of an other page to link to	gallery	sk	Názov inej stránky, na ktorú sa chceme linkova»
+pagename of an other page to link to	gallery	sk	NÃ¡zov inej strÃ¡nky, na ktorÃº sa chceme linkovaÅ¥
 please note:	gallery	sk	Upozornenie:
-set block title to	gallery	sk	Nastavi» titulok bloku na
-set gallery title as page-title?	gallery	sk	Nastavi» titulok Galérie podµa titulku stránky?
-should contain a "gallery" block in contentarea "center".	gallery	sk	Má obsahova» blok "galéria" v centrálnej oblasti?
-size (maximum number of pixel of the longest side)	gallery	sk	Veµkos» (najväè¹í poèet pixelov najdlh¹ej strany)
-specific item (requires itemid!)	gallery	sk	¹pecifická polo¾ka (vy¾aduje ID polo¾ky!)
-the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	sk	Administrátorov úèet musí by» existujúci úèet eGroupWare, s presne rovnakım názvom!
-type of the embeded gallery	gallery	sk	Typ pripojenej Galérie
-use %1 as g2 data directory.	gallery	sk	Pou¾i» %1 ako dátovı adresár pre G2
-use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	sk	Pou¾i» rovnaké nastavenia databázy ako sú v celkovej in¹talácii (pozrite súbor %1). Ponecha» predponu tabuµky a ståpca tak, ako je navrhované.
-use this module to display the embeded gallery	gallery	sk	Pou¾i» tento modul na zobrazenie pripojenej Galérie
-view count	gallery	sk	Poèítadlo zobrazení
-you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	sk	ID mô¾ete získa» z parametra "g2_itemId" v URL, keï kliknete na polo¾ku.
-you have no rights to view %1 content !!!	gallery	sk	Nemáte právo vidie» obsah %1 !!!
+set block title to	gallery	sk	NastaviÅ¥ titulok bloku na
+set gallery title as page-title?	gallery	sk	NastaviÅ¥ titulok GalÃ©rie podÄ¾a titulku strÃ¡nky?
+should contain a "gallery" block in contentarea "center".	gallery	sk	MÃ¡ obsahovaÅ¥ blok "galÃ©ria" v centrÃ¡lnej oblasti?
+size (maximum number of pixel of the longest side)	gallery	sk	VeÄ¾kosÅ¥ (najvÃ¤ÄÅ¡Ã­ poÄet pixelov najdlhÅ¡ej strany)
+specific item (requires itemid!)	gallery	sk	Å¡pecifickÃ¡ poloÅ¾ka (vyÅ¾aduje ID poloÅ¾ky!)
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	sk	AdministrÃ¡torov ÃºÄet musÃ­ byÅ¥ existujÃºci ÃºÄet eGroupWare, s presne rovnakÃ½m nÃ¡zvom!
+type of the embeded gallery	gallery	sk	Typ pripojenej GalÃ©rie
+use %1 as g2 data directory.	gallery	sk	PouÅ¾iÅ¥ %1 ako dÃ¡tovÃ½ adresÃ¡r pre G2
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	sk	PouÅ¾iÅ¥ rovnakÃ© nastavenia databÃ¡zy ako sÃº v celkovej inÅ¡talÃ¡cii (pozrite sÃºbor %1). PonechaÅ¥ predponu tabuÄ¾ky a stÄºpca tak, ako je navrhovanÃ©.
+use this module to display the embeded gallery	gallery	sk	PouÅ¾iÅ¥ tento modul na zobrazenie pripojenej GalÃ©rie
+view count	gallery	sk	PoÄÃ­tadlo zobrazenÃ­
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	sk	ID mÃ´Å¾ete zÃ­skaÅ¥ z parametra "g2_itemId" v URL, keÄ kliknete na poloÅ¾ku.
+you have no rights to view %1 content !!!	gallery	sk	NemÃ¡te prÃ¡vo vidieÅ¥ obsah %1 !!!

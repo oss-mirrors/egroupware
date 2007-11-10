@@ -1,38 +1,38 @@
-compose	messenger	bg	Създай
-compose global message	common	bg	Създай ново глобално съобщение
-compose message	messenger	bg	Ново съобщение
-compose to multi-users	messenger	bg	Ново,  към няколко получатели
-compose to single-user	messenger	bg	Ново, към един получател
-delete a message.	messenger	bg	Изтрий съобщение
-delete selected	messenger	bg	Изтрий маркираните
-forward	messenger	bg	Препрати
-forward a message	messenger	bg	Препрати съобщението
-forward a message to another user.	messenger	bg	Препрати съобщението към потребител
-forwarded	messenger	bg	Препратено
-from	messenger	bg	От
-global message	messenger	bg	Глобално съобщение
-i can't find the username %1 on the system	messenger	bg	Няма такъв потребител
-inbox	messenger	bg	Входяща кутия
-message from	messenger	bg	Съобщение от
-messenger	common	bg	Съобщения
-new	messenger	bg	Нов
-read a list of messages.	messenger	bg	Списък от съобщения
-read a single message.	messenger	bg	Прочети едно съобщение
-read message	messenger	bg	Прочети съобщение
-replied	messenger	bg	Огговорено
-reply	messenger	bg	Отговор
-reply to a message	messenger	bg	Отговори
-reply to a received message.	messenger	bg	Отговори
-send	messenger	bg	Изпрати
-send a global message.	messenger	bg	Изпрати глобално съобщение
-send a message to a single recipient.	messenger	bg	Изпрати съобщение към даден потребител
-send message to	messenger	bg	Изпрати на
-sorry, %1's account is not currently active	messenger	bg	Този акаунт не е активен в момента
-update a message status	messenger	bg	Обнови статус на съобщение
-use select box for user list in compose	common	bg	Избор на няколко получатели
-you didn't enter anything for the message	messenger	bg	Не сте въвели съобщение
-you have %1 new message	common	bg	Имате %1 нови съобщение (я)
-you have %1 new messages	common	bg	Имате %1 нови съобщение (я)
-you have no messages	messenger	bg	Нямате нови съобщения
-you must enter a subject	messenger	bg	Трябва да въведете тема
-you must enter the username this message is for	messenger	bg	Моля, въведете получател
+compose	messenger	bg	РЎСЉР·РґР°Р№
+compose global message	common	bg	РЎСЉР·РґР°Р№ РЅРѕРІРѕ РіР»РѕР±Р°Р»РЅРѕ СЃСЉРѕР±С‰РµРЅРёРµ
+compose message	messenger	bg	РќРѕРІРѕ СЃСЉРѕР±С‰РµРЅРёРµ
+compose to multi-users	messenger	bg	РќРѕРІРѕ,  РєСЉРј РЅСЏРєРѕР»РєРѕ РїРѕР»СѓС‡Р°С‚РµР»Рё
+compose to single-user	messenger	bg	РќРѕРІРѕ, РєСЉРј РµРґРёРЅ РїРѕР»СѓС‡Р°С‚РµР»
+delete a message.	messenger	bg	РР·С‚СЂРёР№ СЃСЉРѕР±С‰РµРЅРёРµ
+delete selected	messenger	bg	РР·С‚СЂРёР№ РјР°СЂРєРёСЂР°РЅРёС‚Рµ
+forward	messenger	bg	РџСЂРµРїСЂР°С‚Рё
+forward a message	messenger	bg	РџСЂРµРїСЂР°С‚Рё СЃСЉРѕР±С‰РµРЅРёРµС‚Рѕ
+forward a message to another user.	messenger	bg	РџСЂРµРїСЂР°С‚Рё СЃСЉРѕР±С‰РµРЅРёРµС‚Рѕ РєСЉРј РїРѕС‚СЂРµР±РёС‚РµР»
+forwarded	messenger	bg	РџСЂРµРїСЂР°С‚РµРЅРѕ
+from	messenger	bg	РћС‚
+global message	messenger	bg	Р“Р»РѕР±Р°Р»РЅРѕ СЃСЉРѕР±С‰РµРЅРёРµ
+i can't find the username %1 on the system	messenger	bg	РќСЏРјР° С‚Р°РєСЉРІ РїРѕС‚СЂРµР±РёС‚РµР»
+inbox	messenger	bg	Р’С…РѕРґСЏС‰Р° РєСѓС‚РёСЏ
+message from	messenger	bg	РЎСЉРѕР±С‰РµРЅРёРµ РѕС‚
+messenger	common	bg	РЎСЉРѕР±С‰РµРЅРёСЏ
+new	messenger	bg	РќРѕРІ
+read a list of messages.	messenger	bg	РЎРїРёСЃСЉРє РѕС‚ СЃСЉРѕР±С‰РµРЅРёСЏ
+read a single message.	messenger	bg	РџСЂРѕС‡РµС‚Рё РµРґРЅРѕ СЃСЉРѕР±С‰РµРЅРёРµ
+read message	messenger	bg	РџСЂРѕС‡РµС‚Рё СЃСЉРѕР±С‰РµРЅРёРµ
+replied	messenger	bg	РћРіРіРѕРІРѕСЂРµРЅРѕ
+reply	messenger	bg	РћС‚РіРѕРІРѕСЂ
+reply to a message	messenger	bg	РћС‚РіРѕРІРѕСЂРё
+reply to a received message.	messenger	bg	РћС‚РіРѕРІРѕСЂРё
+send	messenger	bg	РР·РїСЂР°С‚Рё
+send a global message.	messenger	bg	РР·РїСЂР°С‚Рё РіР»РѕР±Р°Р»РЅРѕ СЃСЉРѕР±С‰РµРЅРёРµ
+send a message to a single recipient.	messenger	bg	РР·РїСЂР°С‚Рё СЃСЉРѕР±С‰РµРЅРёРµ РєСЉРј РґР°РґРµРЅ РїРѕС‚СЂРµР±РёС‚РµР»
+send message to	messenger	bg	РР·РїСЂР°С‚Рё РЅР°
+sorry, %1's account is not currently active	messenger	bg	РўРѕР·Рё Р°РєР°СѓРЅС‚ РЅРµ Рµ Р°РєС‚РёРІРµРЅ РІ РјРѕРјРµРЅС‚Р°
+update a message status	messenger	bg	РћР±РЅРѕРІРё СЃС‚Р°С‚СѓСЃ РЅР° СЃСЉРѕР±С‰РµРЅРёРµ
+use select box for user list in compose	common	bg	РР·Р±РѕСЂ РЅР° РЅСЏРєРѕР»РєРѕ РїРѕР»СѓС‡Р°С‚РµР»Рё
+you didn't enter anything for the message	messenger	bg	РќРµ СЃС‚Рµ РІСЉРІРµР»Рё СЃСЉРѕР±С‰РµРЅРёРµ
+you have %1 new message	common	bg	РРјР°С‚Рµ %1 РЅРѕРІРё СЃСЉРѕР±С‰РµРЅРёРµ (СЏ)
+you have %1 new messages	common	bg	РРјР°С‚Рµ %1 РЅРѕРІРё СЃСЉРѕР±С‰РµРЅРёРµ (СЏ)
+you have no messages	messenger	bg	РќСЏРјР°С‚Рµ РЅРѕРІРё СЃСЉРѕР±С‰РµРЅРёСЏ
+you must enter a subject	messenger	bg	РўСЂСЏР±РІР° РґР° РІСЉРІРµРґРµС‚Рµ С‚РµРјР°
+you must enter the username this message is for	messenger	bg	РњРѕР»СЏ, РІСЉРІРµРґРµС‚Рµ РїРѕР»СѓС‡Р°С‚РµР»

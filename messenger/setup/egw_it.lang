@@ -25,7 +25,7 @@ send	messenger	it	Invia
 send a global message.	messenger	it	Invia un messaggio globale
 send a message to a single recipient.	messenger	it	Invia un messaggio a un singolo ricevente
 send message to	messenger	it	Invia un messaggio a
-sorry, %1's account is not currently active	messenger	it	Spiacente, l'account di %1 non è attualmente attivo
+sorry, %1's account is not currently active	messenger	it	Spiacente, l'account di %1 non Ã¨ attualmente attivo
 update a message status	messenger	it	Aggiorna lo stato di un messaggio
 use select box for user list in compose	common	it	In composizione, utilizza la casella di selezione, per la lista utenti
 you didn't enter anything for the message	messenger	it	Non hai inserito niente per il messaggio

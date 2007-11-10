@@ -1,4 +1,4 @@
-access mode	mydms	it	modalit‡ accesso
+access mode	mydms	it	modalit√† accesso
 access rights	mydms	it	diritti di accesso
 access_mode_all	mydms	it	Tutto
 access_mode_none	mydms	it	Nessun accesso
@@ -55,8 +55,8 @@ select target folder	mydms	it	scegli cartella destinazione
 target folder	mydms	it	cartella destinazione
 this document gets locked by you!	mydms	it	questo documento viene bloccato da te!
 this document gets unlocked by you.	mydms	it	questo documento viene sbloccato da te
-this document is currently not locked.	mydms	it	questo documento non Ë attualmente bloccato
-this document is locked by <a href="mailto:%1">%2</a>.	mydms	it	questo documento Ë bloccato da <a href="mailto:%1">%2</a>.
+this document is currently not locked.	mydms	it	questo documento non √® attualmente bloccato
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	it	questo documento √® bloccato da <a href="mailto:%1">%2</a>.
 update document	mydms	it	aggiorna documento
 upload date	mydms	it	data caricamento
 uploaded by	mydms	it	caricato da

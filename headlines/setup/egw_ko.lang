@@ -1,47 +1,47 @@
-are you sure you want to delete this news site ?	headlines	ko	ÀÌ ´º½º»çÀÌÆ®¸¦ Á¤¸» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?
-base url	headlines	ko	±âº» URL
-basic	headlines	ko	±âº»
-choose layout	headlines	ko	·¹ÀÌ¾Æ¿ôÀ» ¼±ÅÃ
-color	headlines	ko	»ö»ó Ç¥±â
-create new headline	headlines	ko	»õ·Î¿î Ç¥Á¦¾î¸¦ »ı¼º
-current headlines in cache	headlines	ko	ÇöÀç Ä³½¬¿¡ ÀúÀåµÈ Ç¥Á¦¾îµé
-display	headlines	ko	Á¦¸ñ
-edit headline sites	headlines	ko	Ç¥Á¦¾î »çÀÌÆ®¸¦ ÆíÁı
-edit headlines shown by default	headlines	ko	±âº»ÀûÀ¸·Î º¸ÀÏ Ç¥Á¦¾îÀ» ÆíÁı
-grab new news sites	common	ko	»õ·Î¿î ´º½º »çÀÌÆ®¸¦ ²ø¾î¿À±â(Grab)
-gray	headlines	ko	È¸»ö Ç¥±â
-headline preferences	common	ko	Ç¥Á¦¾î È¯°æ¼³Á¤
-headline site management	common	ko	Ç¥Á¦¾î °ü¸®
-headline sites	headlines	ko	Ç¥Á¦¾î »çÀÌÆ®
-headlines	common	ko	Ç¥Á¦¾î
-headlines administration	headlines	ko	Ç¥Á¦¾î°ü¸®
-headlines administration - delete headline	headlines	ko	Ç¥Á¦¾î°ü¸® - Ç¥Á¦¾î »èÁ¦
-headlines layout	headlines	ko	Ç¥Á¦¾î ·¹ÀÌ¾Æ¿ô
-listings displayed	headlines	ko	Ç¥½ÃÇÒ ¸ñ·Ï°³¼ö
-minutes between refresh	headlines	ko	´Ù½Ã °»½ÅÇÒ ½Ã°£(ºĞ´ÜÀ§)
-minutes between reloads	headlines	ko	´Ù½Ã ·ÎµåÇÒ ½Ã°£(ºĞ´ÜÀ§)
-monitor	common	ko	¸ğ´ÏÅÍ
-news file	headlines	ko	´º½º ÆÄÀÏ
-news headlines	common	ko	´º½º Ç¥Á¦¾î
-news type	headlines	ko	´º½º Å¸ÀÔ
-no headlines found	headlines	ko	Ç¥Á¦¾î¸¦ Ã£Áö ¸øÇß½À´Ï´Ù
-other preferences	preferences	ko	±âÅ¸ È¯°æ¼³Á¤
-reload news sites	headlines	ko	´º½º »çÀÌÆ®¸¦ ´Ù½ÃÀĞ±â
-reset	headlines	ko	ÃÊ±âÈ­
-sample	headlines	ko	¿¹Á¦
-select headline news sites	headlines	ko	Ç¥Á¦¾î ´º½º »çÀÌÆ® ¼±ÅÃ
-select headlines to display	common	ko	º¸¿©ÁÙ Ç¥Á¦¾î ¼±ÅÃ
-select layout	common	ko	Ç¥Á¦¾î ·¹ÀÌ¾Æ¿ô
-show headlines on homepage	headlines	ko	È¨ÆäÀÌÁö¿¡ Ç¥Á¦¾î º¸ÀÌ±â
-site	headlines	ko	»çÀÌÆ®
-that site has already been entered	headlines	ko	ÀÌ¹Ì ÀÔ·ÂµÈ »çÀÌÆ®ÀÔ´Ï´Ù
-unable to retrieve links	headlines	ko	¸µÅ©¸¦ È®ÀÎÇÒ ¼ö ¾ø½À´Ï´Ù
-update headline	headlines	ko	Ç¥Á¦¾î °»½Å
-view headline	headlines	ko	Ç¥Á¦¾î º¸±â
-you can only enter numbers for listings display	headlines	ko	Ç¥½ÃÇÒ ¸ñ·ÏÀÇ ¼ıÀÚ¸¸ ÀÔ·Â °¡´ÉÇÕ´Ï´Ù
-you can only enter numbers minutes between refresh	headlines	ko	Àç°»½ÅÇÒ ½Ã°£°£°İÀº ºĞ´ÜÀ§ÀÇ ¼ıÀÚ¸¸ ÀÔ·Â°¡´ÉÇÕ´Ï´Ù.
-you must enter a base url	headlines	ko	±âº» URLÀ» ÀÔ·ÂÇØ¾ß ÇÕ´Ï´Ù.
-you must enter a display	headlines	ko	Á¦¸ñÀ» ÀÔ·ÂÇØ¾ß ÇÕ´Ï´Ù.
-you must enter a news url	headlines	ko	´º½º URLÀ» ÀÔ·ÂÇØ¾ß ÇÕ´Ï´Ù.
-you must enter the number of listings display	headlines	ko	º¸¿©ÁÙ ¸ñ·Ï°³¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä
-you must enter the number of minutes between reload	headlines	ko	¸®·Îµå(´Ù½ÃÀĞ±â) ½Ã°£ °£°İÀ» ÀÔ·ÂÇØ¾ß ÇÕ´Ï´Ù.
+are you sure you want to delete this news site ?	headlines	ko	ì´ ë‰´ìŠ¤ì‚¬ì´íŠ¸ë¥¼ ì •ë§ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?
+base url	headlines	ko	ê¸°ë³¸ URL
+basic	headlines	ko	ê¸°ë³¸
+choose layout	headlines	ko	ë ˆì´ì•„ì›ƒì„ ì„ íƒ
+color	headlines	ko	ìƒ‰ìƒ í‘œê¸°
+create new headline	headlines	ko	ìƒˆë¡œìš´ í‘œì œì–´ë¥¼ ìƒì„±
+current headlines in cache	headlines	ko	í˜„ì¬ ìºì‰¬ì— ì €ì¥ëœ í‘œì œì–´ë“¤
+display	headlines	ko	ì œëª©
+edit headline sites	headlines	ko	í‘œì œì–´ ì‚¬ì´íŠ¸ë¥¼ í¸ì§‘
+edit headlines shown by default	headlines	ko	ê¸°ë³¸ì ìœ¼ë¡œ ë³´ì¼ í‘œì œì–´ì„ í¸ì§‘
+grab new news sites	common	ko	ìƒˆë¡œìš´ ë‰´ìŠ¤ ì‚¬ì´íŠ¸ë¥¼ ëŒì–´ì˜¤ê¸°(Grab)
+gray	headlines	ko	íšŒìƒ‰ í‘œê¸°
+headline preferences	common	ko	í‘œì œì–´ í™˜ê²½ì„¤ì •
+headline site management	common	ko	í‘œì œì–´ ê´€ë¦¬
+headline sites	headlines	ko	í‘œì œì–´ ì‚¬ì´íŠ¸
+headlines	common	ko	í‘œì œì–´
+headlines administration	headlines	ko	í‘œì œì–´ê´€ë¦¬
+headlines administration - delete headline	headlines	ko	í‘œì œì–´ê´€ë¦¬ - í‘œì œì–´ ì‚­ì œ
+headlines layout	headlines	ko	í‘œì œì–´ ë ˆì´ì•„ì›ƒ
+listings displayed	headlines	ko	í‘œì‹œí•  ëª©ë¡ê°œìˆ˜
+minutes between refresh	headlines	ko	ë‹¤ì‹œ ê°±ì‹ í•  ì‹œê°„(ë¶„ë‹¨ìœ„)
+minutes between reloads	headlines	ko	ë‹¤ì‹œ ë¡œë“œí•  ì‹œê°„(ë¶„ë‹¨ìœ„)
+monitor	common	ko	ëª¨ë‹ˆí„°
+news file	headlines	ko	ë‰´ìŠ¤ íŒŒì¼
+news headlines	common	ko	ë‰´ìŠ¤ í‘œì œì–´
+news type	headlines	ko	ë‰´ìŠ¤ íƒ€ì…
+no headlines found	headlines	ko	í‘œì œì–´ë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤
+other preferences	preferences	ko	ê¸°íƒ€ í™˜ê²½ì„¤ì •
+reload news sites	headlines	ko	ë‰´ìŠ¤ ì‚¬ì´íŠ¸ë¥¼ ë‹¤ì‹œì½ê¸°
+reset	headlines	ko	ì´ˆê¸°í™”
+sample	headlines	ko	ì˜ˆì œ
+select headline news sites	headlines	ko	í‘œì œì–´ ë‰´ìŠ¤ ì‚¬ì´íŠ¸ ì„ íƒ
+select headlines to display	common	ko	ë³´ì—¬ì¤„ í‘œì œì–´ ì„ íƒ
+select layout	common	ko	í‘œì œì–´ ë ˆì´ì•„ì›ƒ
+show headlines on homepage	headlines	ko	í™ˆí˜ì´ì§€ì— í‘œì œì–´ ë³´ì´ê¸°
+site	headlines	ko	ì‚¬ì´íŠ¸
+that site has already been entered	headlines	ko	ì´ë¯¸ ì…ë ¥ëœ ì‚¬ì´íŠ¸ì…ë‹ˆë‹¤
+unable to retrieve links	headlines	ko	ë§í¬ë¥¼ í™•ì¸í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤
+update headline	headlines	ko	í‘œì œì–´ ê°±ì‹ 
+view headline	headlines	ko	í‘œì œì–´ ë³´ê¸°
+you can only enter numbers for listings display	headlines	ko	í‘œì‹œí•  ëª©ë¡ì˜ ìˆ«ìë§Œ ì…ë ¥ ê°€ëŠ¥í•©ë‹ˆë‹¤
+you can only enter numbers minutes between refresh	headlines	ko	ì¬ê°±ì‹ í•  ì‹œê°„ê°„ê²©ì€ ë¶„ë‹¨ìœ„ì˜ ìˆ«ìë§Œ ì…ë ¥ê°€ëŠ¥í•©ë‹ˆë‹¤.
+you must enter a base url	headlines	ko	ê¸°ë³¸ URLì„ ì…ë ¥í•´ì•¼ í•©ë‹ˆë‹¤.
+you must enter a display	headlines	ko	ì œëª©ì„ ì…ë ¥í•´ì•¼ í•©ë‹ˆë‹¤.
+you must enter a news url	headlines	ko	ë‰´ìŠ¤ URLì„ ì…ë ¥í•´ì•¼ í•©ë‹ˆë‹¤.
+you must enter the number of listings display	headlines	ko	ë³´ì—¬ì¤„ ëª©ë¡ê°œìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”
+you must enter the number of minutes between reload	headlines	ko	ë¦¬ë¡œë“œ(ë‹¤ì‹œì½ê¸°) ì‹œê°„ ê°„ê²©ì„ ì…ë ¥í•´ì•¼ í•©ë‹ˆë‹¤.

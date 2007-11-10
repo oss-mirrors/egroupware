@@ -1,13 +1,13 @@
 access mode	mydms	de	Zugriffsberechtigung
 access rights	mydms	de	Zugriffsrechte
-access_mode_all	mydms	de	Keine Beschränkung
+access_mode_all	mydms	de	Keine BeschrÃ¤nkung
 access_mode_none	mydms	de	Kein Zugriff
 access_mode_read	mydms	de	Lesen
 access_mode_readwrite	mydms	de	Lesen+Schreiben
 acl get inherited	mydms	de	Berechtigungen werden momentan ererbt.
-add acl	mydms	de	Zugriffsberechtigung hinzufügen
+add acl	mydms	de	Zugriffsberechtigung hinzufÃ¼gen
 add document	mydms	de	Dokument anlegen
-add notification	mydms	de	Benachrichtigung hinzufügen
+add notification	mydms	de	Benachrichtigung hinzufÃ¼gen
 add subfolder	mydms	de	Unterordner anlegen
 admin-tools	mydms	de	Administrations Tools
 all versions	mydms	de	alle Versionen
@@ -23,21 +23,21 @@ creation date	mydms	de	Erstellt am
 current acl	mydms	de	Aktuelle Zugriffsberechtigungen
 current version	mydms	de	Aktuelle Version
 default access	mydms	de	Standardberechtigung
-delete folder	mydms	de	Ordner löschen
-delete this notification	mydms	de	diese Benachrichtigung löschen
-do you really want to delete this acl?	mydms	de	Möchten Sie diese Zugriffberechtigung wirklich löschen?
-do you really want to delete this document?	mydms	de	Möchten Sie dieses Dokument wirklich löschen?
-do you really want to delete this version of the document?	mydms	de	Möchten Sie wirklich diese Version des Dokumentes löschen?
-does not expire	mydms	de	für immer verfügbar
+delete folder	mydms	de	Ordner lÃ¶schen
+delete this notification	mydms	de	diese Benachrichtigung lÃ¶schen
+do you really want to delete this acl?	mydms	de	MÃ¶chten Sie diese Zugriffberechtigung wirklich lÃ¶schen?
+do you really want to delete this document?	mydms	de	MÃ¶chten Sie dieses Dokument wirklich lÃ¶schen?
+do you really want to delete this version of the document?	mydms	de	MÃ¶chten Sie wirklich diese Version des Dokumentes lÃ¶schen?
+does not expire	mydms	de	fÃ¼r immer verfÃ¼gbar
 download	mydms	de	Herunterladen
 edit folder	mydms	de	Ordner bearbeiten
-expires	mydms	de	Gültigkeit
-expires after	mydms	de	verfügbar bis
-file size	mydms	de	Dateigröße
+expires	mydms	de	GÃ¼ltigkeit
+expires after	mydms	de	verfÃ¼gbar bis
+file size	mydms	de	DateigrÃ¶ÃŸe
 filename	mydms	de	Dateiname
 folder	mydms	de	Ordner
 general information	mydms	de	Allgemeine Informationen
-information about last update	mydms	de	Informationen über das letzte Update
+information about last update	mydms	de	Informationen Ã¼ber das letzte Update
 informations	mydms	de	Informationen
 inherit acl again	mydms	de	Berechtigungen wieder ererben
 last update	mydms	de	Letzte Aktualisierung
@@ -49,8 +49,8 @@ move folder	mydms	de	Ordner verschieben
 mydms	common	de	MyDMS
 notifications	mydms	de	Benachrichtigungen
 permission	mydms	de	Berechtigung
-select folder	mydms	de	Ordner auswählen
-select target folder	mydms	de	Zielordner auswählen
+select folder	mydms	de	Ordner auswÃ¤hlen
+select target folder	mydms	de	Zielordner auswÃ¤hlen
 target folder	mydms	de	Zielordner
 this document gets locked by you!	mydms	de	Dieses Dokument wird von Ihnen gesperrt!
 this document gets unlocked by you.	mydms	de	Dieses Dokument wird von Ihnen entsperrt.

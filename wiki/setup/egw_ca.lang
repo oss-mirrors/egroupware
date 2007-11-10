@@ -1,97 +1,97 @@
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	ca	<em>PerÚ</em> mostra com a mÌnim aquestes entrades dins Canvis Recents i altres llistes de subscripciÛ:
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	ca	<em>Per√≤</em> mostra com a m√≠nim aquestes entrades dins Canvis Recents i altres llistes de subscripci√≥:
 add document to category	wiki	ca	Afegeix document a categoria
 added	wiki	ca	Afegit
-administration features are disabled for this wiki.	wiki	ca	Les caracterÌstiques d'administraciÛ estan deshabilitades per a aquest wiki.
+administration features are disabled for this wiki.	wiki	ca	Les caracter√≠stiques d'administraci√≥ estan deshabilitades per a aquest wiki.
 admins	wiki	ca	administradors
-allow anonymous access	admin	ca	permet accÈs anÚnim
-anonymous password	admin	ca	Contrasenya anÚnima
-anonymous session type	admin	ca	Tipus de SessiÛ AnÚnima
-anonymous username	admin	ca	usuari anÚnim
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	ca	Converteix autom‡ticament les p‡gines amb sintaxi de wiki a text enriquit (si s'editen)?
+allow anonymous access	admin	ca	permet acc√©s an√≤nim
+anonymous password	admin	ca	Contrasenya an√≤nima
+anonymous session type	admin	ca	Tipus de Sessi√≥ An√≤nima
+anonymous username	admin	ca	usuari an√≤nim
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	ca	Converteix autom√†ticament les p√†gines amb sintaxi de wiki a text enriquit (si s'editen)?
 block	wiki	ca	Bloca
-block / unblock hosts	common	ca	Bloca / Desbloca m‡quines
+block / unblock hosts	common	ca	Bloca / Desbloca m√†quines
 blocked ip address ranges	wiki	ca	Abast d'adreces IP blocades
-cancel without saving	wiki	ca	Cancel∑la sense desar
+cancel without saving	wiki	ca	Cancel¬∑la sense desar
 changed	wiki	ca	Canviat
 changes by last author	wiki	ca	Canvis del darrer autor
-choose your current time here, so the server may figure out what time zone you are in.	wiki	ca	Trieu aquÌ el vostre horari actual a fi de que el servidor pugui esbrinar en quina zona hor‡ria esteu.
+choose your current time here, so the server may figure out what time zone you are in.	wiki	ca	Trieu aqu√≠ el vostre horari actual a fi de que el servidor pugui esbrinar en quina zona hor√†ria esteu.
 columns	wiki	ca	Columnes
-compute difference	wiki	ca	Calcula la DiferËncia
-converts the page to richtext	wiki	ca	Converteix la p‡gina a text enriquit
-current version	wiki	ca	VersiÛ actual
+compute difference	wiki	ca	Calcula la Difer√®ncia
+converts the page to richtext	wiki	ca	Converteix la p√†gina a text enriquit
+current version	wiki	ca	Versi√≥ actual
 deleted	wiki	ca	Esborrat
-deletes this page	wiki	ca	Esborra aquesta p‡gina
-difference between versions	wiki	ca	DiferËncia entre versions
-differences in	wiki	ca	DiferËncies a
-different languages can have different titles	wiki	ca	idiomes diferents poden tenir tÌtols diferents
-document last modified	wiki	ca	Darrera modificaciÛ del document
-edit box	wiki	ca	Quadre d'ediciÛ
-edit this <em>archive version</em> of this document	wiki	ca	Edita aquesta <em>VERSI” DE L'ARXIU</em> d'aquest document
+deletes this page	wiki	ca	Esborra aquesta p√†gina
+difference between versions	wiki	ca	Difer√®ncia entre versions
+differences in	wiki	ca	Difer√®ncies a
+different languages can have different titles	wiki	ca	idiomes diferents poden tenir t√≠tols diferents
+document last modified	wiki	ca	Darrera modificaci√≥ del document
+edit box	wiki	ca	Quadre d'edici√≥
+edit this <em>archive version</em> of this document	wiki	ca	Edita aquesta <em>VERSI√ì DE L'ARXIU</em> d'aquest document
 edit this document	wiki	ca	Edita aquest document
-edit with preview	admin	ca	Edita amb VisualitzaciÛ prËvia
+edit with preview	admin	ca	Edita amb Visualitzaci√≥ pr√®via
 editable	admin	ca	editable
 editing	wiki	ca	Editant
-emailaddress administrator	admin	ca	AdreÁa de correu de l'Administrador
-enable free links	admin	ca	Habilita EnllaÁos Lliures
-enable wiki links	admin	ca	Habilita EnllaÁos Wiki
-enter here the maximum number of entries to display in a document's history list.	wiki	ca	IntroduÔu aquÌ el nombre m‡xim d'entrades per mostrar a l'historial d'un document
-enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	ca	IntroduÔu aquÌ el nombre de dies d'edicions a mostrar als Canvis Recents o qualsevol altra llista de subscripciÛ. Establiu-ho a zero si voleu veure totes les p‡gines a Canvis Recents, sense tenir en compte si s'han editat recentment.
-enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	ca	IntroduÔu l'abast d'adreces IP en format <tt>12.*</tt>, <tt>34.56.*</tt>, o <tt>78.90.123.*</tt>
+emailaddress administrator	admin	ca	Adre√ßa de correu de l'Administrador
+enable free links	admin	ca	Habilita Enlla√ßos Lliures
+enable wiki links	admin	ca	Habilita Enlla√ßos Wiki
+enter here the maximum number of entries to display in a document's history list.	wiki	ca	Introdu√Øu aqu√≠ el nombre m√†xim d'entrades per mostrar a l'historial d'un document
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	ca	Introdu√Øu aqu√≠ el nombre de dies d'edicions a mostrar als Canvis Recents o qualsevol altra llista de subscripci√≥. Establiu-ho a zero si voleu veure totes les p√†gines a Canvis Recents, sense tenir en compte si s'han editat recentment.
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	ca	Introdu√Øu l'abast d'adreces IP en format <tt>12.*</tt>, <tt>34.56.*</tt>, o <tt>78.90.123.*</tt>
 error creating temporary file.	wiki	ca	Error creant el fitxer temporal.
 error writing to temporary file.	wiki	ca	Error escrivint en el fitxer temporal.
 everyone	wiki	ca	tothom
 find	wiki	ca	Cerca
 history	wiki	ca	historial
-history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	ca	L'historial hauria de mostrar <em>tots</em> els canvis realitzats pel darrer autor. Altrament, nomÈs mostra el darrer canvi realitzat.
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	ca	L'historial hauria de mostrar <em>tots</em> els canvis realitzats pel darrer autor. Altrament, nom√©s mostra el darrer canvi realitzat.
 history lists	wiki	ca	Llistes d'historial
 history of	wiki	ca	Historial de
 interwikiprefix	admin	ca	Prefix Entre Wikis
-invalid page name.	wiki	ca	Nom de p‡gina no v‡lid.
+invalid page name.	wiki	ca	Nom de p√†gina no v√†lid.
 load	wiki	ca	Carrega
-loads the named page in the given language, all change so far get lost !!!	wiki	ca	Carrega la p‡gina indicada en l'idioma donat, tots els canvis es perdran !!!
-lock / unlock pages	common	ca	Bloca / Desbloca P‡gines
+loads the named page in the given language, all change so far get lost !!!	wiki	ca	Carrega la p√†gina indicada en l'idioma donat, tots els canvis es perdran !!!
+lock / unlock pages	common	ca	Bloca / Desbloca P√†gines
 locked	wiki	ca	Blocat
-name wiki home link	admin	ca	nom de l'enllaÁ de la p‡gina d'inici de wiki
-newer	wiki	ca	MÈs recent
+name wiki home link	admin	ca	nom de l'enlla√ß de la p√†gina d'inici de wiki
+newer	wiki	ca	M√©s recent
 no never	admin	ca	No mai
 not set	wiki	ca	no especificat
-older	wiki	ca	MÈs antic
-only if browser supports a richtext-editor	admin	ca	NomÈs si el navegador suporta un editor de text enriquit
-please contact the %1administrator%2 for assistance.	wiki	ca	Si us plau, contacteu amb el vostre %1Administrador%2 per a obtenir assistËncia.
+older	wiki	ca	M√©s antic
+only if browser supports a richtext-editor	admin	ca	Nom√©s si el navegador suporta un editor de text enriquit
+please contact the %1administrator%2 for assistance.	wiki	ca	Si us plau, contacteu amb el vostre %1Administrador%2 per a obtenir assist√®ncia.
 please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	ca	Contacteu amb l'<a href="mailto:%1">administrador</a> per obtenir suport.
-preview	wiki	ca	VisualitzaciÛ prËvia
-preview of current version	wiki	ca	VisualitzaciÛ prËvia de la VersiÛ Actual
-rate control / ip blocking disabled	wiki	ca	Control de transferËncia / blocatge d'IP deshabilitat
+preview	wiki	ca	Visualitzaci√≥ pr√®via
+preview of current version	wiki	ca	Visualitzaci√≥ pr√®via de la Versi√≥ Actual
+rate control / ip blocking disabled	wiki	ca	Control de transfer√®ncia / blocatge d'IP deshabilitat
 readable by	wiki	ca	De lectura per a
-readonly	admin	ca	nomÈs de lectura
+readonly	admin	ca	nom√©s de lectura
 recent changes	wiki	ca	Canvis Recents
-renames page to the given name and language	wiki	ca	Renomena la p‡gina al nom i l'idioma indicats
+renames page to the given name and language	wiki	ca	Renomena la p√†gina al nom i l'idioma indicats
 richtext	wiki	ca	Text enriquit
 rows	wiki	ca	Files
 save the changes and exit	wiki	ca	Desa els canvis i surt
 saves and continues editing	wiki	ca	Desa i continua editant
 see complete list (%1 entries)	wiki	ca	Mostra la llista sencera (%1 entrades)
-site configuration	wiki	ca	ConfiguraciÛ del lloc
+site configuration	wiki	ca	Configuraci√≥ del lloc
 summary	wiki	ca	Resum
 summary of change	wiki	ca	Resum dels canvis
-this page can not be edited.	wiki	ca	Aquesta p‡gina no pot ser editada.
-twin pages	wiki	ca	P‡gines bessones
+this page can not be edited.	wiki	ca	Aquesta p√†gina no pot ser editada.
+twin pages	wiki	ca	P√†gines bessones
 unblock	wiki	ca	Desbloca
-updates the preview	wiki	ca	Actualitza la visualitzaciÛ prËvia
+updates the preview	wiki	ca	Actualitza la visualitzaci√≥ pr√®via
 users	wiki	ca	usuaris
 view document history	wiki	ca	Mostra l'historial del document
 visit %1 to set your user name	wiki	ca	Visiteu %1 per a establir el vostre nom d'usuari
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	ca	AvÌs: des de que heu comenÁat a editar, aquest document ha estat modificat per una altra persona. Si us plau, adapteu els vostres canvis dins la versiÛ actual d'aquest document.
-who should be able to edit this page	wiki	ca	qui ha de poder editar aquesta p‡gina
-who should be able to read this page	wiki	ca	qui ha de poder llegir aquesta p‡gina
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	ca	Av√≠s: des de que heu comen√ßat a editar, aquest document ha estat modificat per una altra persona. Si us plau, adapteu els vostres canvis dins la versi√≥ actual d'aquest document.
+who should be able to edit this page	wiki	ca	qui ha de poder editar aquesta p√†gina
+who should be able to read this page	wiki	ca	qui ha de poder llegir aquesta p√†gina
 wiki	common	ca	Wiki
-wiki administration	wiki	ca	AdministraciÛ de Wiki
-wiki menu	wiki	ca	Men˙ de Wiki
+wiki administration	wiki	ca	Administraci√≥ de Wiki
+wiki menu	wiki	ca	Men√∫ de Wiki
 writable by	wiki	ca	D'escriptura per a
-yes always	admin	ca	SÌ sempre
-you have been denied access to this site.	wiki	ca	Teniu prohibit l'accÈs a aquest lloc
-you have entered an invalid user name.	wiki	ca	Heu introduÔt un nom d'usuari inv‡lid.
-you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	ca	Heu excedit el nombre de planes que teniu permÈs visitar en un perÌode de temps determinat. Si us plau, torneu mÈs tard.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	ca	Heu excedit el nombre de p‡gines que teniu permËs de visitar en un determinat espai de temps. Si us plau, torneu mÈs endavant.
+yes always	admin	ca	S√≠ sempre
+you have been denied access to this site.	wiki	ca	Teniu prohibit l'acc√©s a aquest lloc
+you have entered an invalid user name.	wiki	ca	Heu introdu√Øt un nom d'usuari inv√†lid.
+you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	ca	Heu excedit el nombre de planes que teniu perm√©s visitar en un per√≠ode de temps determinat. Si us plau, torneu m√©s tard.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	ca	Heu excedit el nombre de p√†gines que teniu perm√®s de visitar en un determinat espai de temps. Si us plau, torneu m√©s endavant.
 your changes	wiki	ca	Els vostres canvis
-your user name is "%1".	wiki	ca	El vostre nom d'usuari Ès "%1".
+your user name is "%1".	wiki	ca	El vostre nom d'usuari √©s "%1".

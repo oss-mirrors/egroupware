@@ -1,16 +1,16 @@
-add a single entry by passing the fields.	headlines	fi	Lisää yksittäinen merkintä kenttiin.
-are you sure you want to delete this news site ?	headlines	fi	Haluatko poistaa tämän uutispalvelun?
+add a single entry by passing the fields.	headlines	fi	LisÃ¤Ã¤ yksittÃ¤inen merkintÃ¤ kenttiin.
+are you sure you want to delete this news site ?	headlines	fi	Haluatko poistaa tÃ¤mÃ¤n uutispalvelun?
 base url	headlines	fi	Pohja-URL
 basic	headlines	fi	Perus
 choose layout	headlines	fi	Valitse ulkoasu
-color	headlines	fi	Väri
+color	headlines	fi	VÃ¤ri
 create new headline	headlines	fi	Luo uusi uutisotsikko
-current headlines in cache	headlines	fi	Nykyiset uutisotsikot välimuistissa
-delete a single entry by passing the id.	headlines	fi	Poista yksittäinen merkintä antamalla sen tunniste
-display	headlines	fi	Näytä
-edit a single entry by passing the fields including the id.	headlines	fi	Muokkaa yksittäistä merkintää valitsemalla kentät jotka sisältävät tunnisteen.
+current headlines in cache	headlines	fi	Nykyiset uutisotsikot vÃ¤limuistissa
+delete a single entry by passing the id.	headlines	fi	Poista yksittÃ¤inen merkintÃ¤ antamalla sen tunniste
+display	headlines	fi	NÃ¤ytÃ¤
+edit a single entry by passing the fields including the id.	headlines	fi	Muokkaa yksittÃ¤istÃ¤ merkintÃ¤Ã¤ valitsemalla kentÃ¤t jotka sisÃ¤ltÃ¤vÃ¤t tunnisteen.
 edit headline sites	headlines	fi	Muokkaa uutisotsikkojen sivustoja
-edit headlines shown by default	headlines	fi	Näytä muokatut uutisotsikot oletuksena
+edit headlines shown by default	headlines	fi	NÃ¤ytÃ¤ muokatut uutisotsikot oletuksena
 grab new news sites	common	fi	Hae uudet uutispalvelut
 gray	headlines	fi	Harmaa
 headline preferences	common	fi	Uutisotsikkojen asetukset
@@ -20,36 +20,36 @@ headlines	common	fi	Uutisotsikot
 headlines administration	headlines	fi	Uutisotsikkojen hallinto
 headlines administration - delete headline	headlines	fi	Uutisotsikkojen hallinto - poista otsikko
 headlines layout	headlines	fi	Uutisotsikon ulkoasu
-listings displayed	headlines	fi	Näytetyt listaukset
-minutes between refresh	headlines	fi	Päivitysten väli (min)
-minutes between reloads	headlines	fi	Latausten väli (min)
+listings displayed	headlines	fi	NÃ¤ytetyt listaukset
+minutes between refresh	headlines	fi	PÃ¤ivitysten vÃ¤li (min)
+minutes between reloads	headlines	fi	Latausten vÃ¤li (min)
 monitor	common	fi	Tarkkaile
 news file	headlines	fi	Uutistiedosto
 news from x	headlines	fi	Uutiset jostakin
 news headlines	common	fi	Uutisotsikot
 news type	headlines	fi	Uutisten tyyppi
-no headlines found	headlines	fi	Otsikkoa ei löytynyt
+no headlines found	headlines	fi	Otsikkoa ei lÃ¶ytynyt
 other preferences	preferences	fi	Muut asetukset
-purge headline cache	common	fi	Tyhjennä uutisotsikoiden välimuisti
-read a list / search for entries.	headlines	fi	Luettu lista / hae merkintöjä.
-read cached site data for a single site by passing the id.	headlines	fi	Lue välimuistin tiedot yksittäisiltä sivuilta antamalla tunniste.
-read site data for a single site by passing the id.	headlines	fi	Lue tiedot yksittäisiltä sivuilta antamalla tunniste.
-reload news sites	headlines	fi	Päivitä uutisten sivustoa
+purge headline cache	common	fi	TyhjennÃ¤ uutisotsikoiden vÃ¤limuisti
+read a list / search for entries.	headlines	fi	Luettu lista / hae merkintÃ¶jÃ¤.
+read cached site data for a single site by passing the id.	headlines	fi	Lue vÃ¤limuistin tiedot yksittÃ¤isiltÃ¤ sivuilta antamalla tunniste.
+read site data for a single site by passing the id.	headlines	fi	Lue tiedot yksittÃ¤isiltÃ¤ sivuilta antamalla tunniste.
+reload news sites	headlines	fi	PÃ¤ivitÃ¤ uutisten sivustoa
 reset	headlines	fi	Nollaa
 sample	headlines	fi	Malli
 select headline news sites	headlines	fi	Valitse Uutisotsikkopalvelut
-select headlines to display	common	fi	Valitse otsikot näytölle
+select headlines to display	common	fi	Valitse otsikot nÃ¤ytÃ¶lle
 select layout	common	fi	Valitse ulkoasu
-show headlines on homepage	headlines	fi	Näytä otsikot kotisivulla
+show headlines on homepage	headlines	fi	NÃ¤ytÃ¤ otsikot kotisivulla
 site	headlines	fi	Sivusto
-that site has already been entered	headlines	fi	Palvelu on jo lisätty
-unable to retrieve links	headlines	fi	Linkkejä ei voitu palauttaa
-update headline	headlines	fi	Päivitä otsikot
-view headline	headlines	fi	Näytä otsikko
-you can only enter numbers for listings display	headlines	fi	Voit antaa vain numeroarvon näytön asetuksiin
-you can only enter numbers minutes between refresh	headlines	fi	Voit antaa vain numeroarvon (minuutteja) päivitysvälille
+that site has already been entered	headlines	fi	Palvelu on jo lisÃ¤tty
+unable to retrieve links	headlines	fi	LinkkejÃ¤ ei voitu palauttaa
+update headline	headlines	fi	PÃ¤ivitÃ¤ otsikot
+view headline	headlines	fi	NÃ¤ytÃ¤ otsikko
+you can only enter numbers for listings display	headlines	fi	Voit antaa vain numeroarvon nÃ¤ytÃ¶n asetuksiin
+you can only enter numbers minutes between refresh	headlines	fi	Voit antaa vain numeroarvon (minuutteja) pÃ¤ivitysvÃ¤lille
 you must enter a base url	headlines	fi	Anna pohja-URL
-you must enter a display	headlines	fi	Anna näyttö
+you must enter a display	headlines	fi	Anna nÃ¤yttÃ¶
 you must enter a news url	headlines	fi	Anna uutis-URL
-you must enter the number of listings display	headlines	fi	Anna näytettyjen listausten määrä
-you must enter the number of minutes between reload	headlines	fi	Anna latausten välinen aika
+you must enter the number of listings display	headlines	fi	Anna nÃ¤ytettyjen listausten mÃ¤Ã¤rÃ¤
+you must enter the number of minutes between reload	headlines	fi	Anna latausten vÃ¤linen aika

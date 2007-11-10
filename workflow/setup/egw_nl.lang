@@ -98,7 +98,7 @@ all	workflow	nl	Alle
 always show advanced actions	workflow	nl	Altijd de geavanceerde acties weergeven
 always show advanced mode	workflow	nl	Altijd de geavanceerde modus weergeven
 assign me this activity	workflow	nl	Wijs mij deze activiteit toe
-at least one email address cannot be validated.	workflow	nl	minstens één emailadres kon niet gevalideerd worden.
+at least one email address cannot be validated.	workflow	nl	minstens Ã©Ã©n emailadres kon niet gevalideerd worden.
 auto routed	workflow	nl	Automatisch gerouteerd
 auto-release on leaving activity	common	nl	automatisch vrijgeven als de activiteit verlaten wordt
 automatic	workflow	nl	Automatisch
@@ -111,8 +111,8 @@ bcc:	workflow	nl	BCC:
 be carefull with interactive activity, end and start of theses activities are multiple.	workflow	nl	Wees voorzichtig met de interactieve activiteit, eind en begin van deze activiteiten zijn meervoudig.
 being run	workflow	nl	wordt uitgevoerd
 by running theses links you will create new instances of the related process.	workflow	nl	door het uitvoeren van deze links maakt u nieuwe instanties van het gerelateerde proces aan.
-cannot add transition only split or switch activities can have more than one outbound transition	workflow	nl	Kan transitie niet toevoegen, alleen splitsende of schakelende activiteiten kunnen meer dan één uitgaande transitie hebben
-cannot add transition. only split activities can have more than one outbound transition	workflow	nl	Kan transitie niet toevoegen. Alleen splitsende activiteiten kunnen meer dan één uitgaande transitie hebben
+cannot add transition only split or switch activities can have more than one outbound transition	workflow	nl	Kan transitie niet toevoegen, alleen splitsende of schakelende activiteiten kunnen meer dan Ã©Ã©n uitgaande transitie hebben
+cannot add transition. only split activities can have more than one outbound transition	workflow	nl	Kan transitie niet toevoegen. Alleen splitsende activiteiten kunnen meer dan Ã©Ã©n uitgaande transitie hebben
 cannot create compiled file %1	workflow	nl	kan het gecompileerde bestand %1 niet aanmaken
 cannot retrieve the user running the security check	workflow	nl	Kan de gebruiker voor de beveiligingscontrole niet ophalen
 cannot run the activity	workflow	nl	Kan de activiteit niet uitvoeren
@@ -161,9 +161,9 @@ delition successful	workflow	nl	Verwijdering succesvol
 description	workflow	nl	Beschrijving
 display please wait message	common	nl	toon het even geduld bericht
 do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	nl	Wilt u de activiteitsstatus op instanties lijsten weergeven? Meestal is dit 'lopend' maar indien u nietzelfrouterende transities gebruik zult u enkele voltooide activiteiten hebben.
-do you want the category column on instances lists, if yout instances use categories you should use it	workflow	nl	Wilt u de categorie kolom op instanties lijsten weergeven? Indien uw instanties categorieën gebruiken zou u dit moeten inschakelen
-do you want the category name column on instances lists, if your instances use categories you should use it	workflow	nl	Wilt u de categorienaam kolom op instanties lijsten weergeven? Indien uw instanties categorieën gebruiken zou u dit moeten inschakelen
-do you want the category name column on instances lists. if your instances use categories you should use this	workflow	nl	Wilt u de categorienaam kolom op instanties lijsten weergeven? Indien uw instanties categorieën gebruiken zou u dit moeten inschakelen
+do you want the category column on instances lists, if yout instances use categories you should use it	workflow	nl	Wilt u de categorie kolom op instanties lijsten weergeven? Indien uw instanties categorieÃ«n gebruiken zou u dit moeten inschakelen
+do you want the category name column on instances lists, if your instances use categories you should use it	workflow	nl	Wilt u de categorienaam kolom op instanties lijsten weergeven? Indien uw instanties categorieÃ«n gebruiken zou u dit moeten inschakelen
+do you want the category name column on instances lists. if your instances use categories you should use this	workflow	nl	Wilt u de categorienaam kolom op instanties lijsten weergeven? Indien uw instanties categorieÃ«n gebruiken zou u dit moeten inschakelen
 do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	nl	Wilt u de instantie ID kolom op instanties lijsten weergeven? Dit is de unieke identifier van een instantie
 do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	nl	Wilt u de instantienaam kolom op instanties lijsten weergeven? Indien uw instanties namen gebruiken zou u dit zeker moeten doen.
 do you want the instance status on instances lists. the instance status is usefull to disting beteween aborted, completed, exception or active instances	workflow	nl	Wilt u de instantiestatus kolom op instanties lijsten weergeven? De instantiestatus is nuttig om onderscheid te maken tussen afgebroken, voltooid, uitzondering of actieve instanties
@@ -377,7 +377,7 @@ process %s removed	workflow	nl	Proces %s is verwijderd
 process activities	workflow	nl	Proces activiteiten
 process alone	workflow	nl	Proces alleen
 process does not have a start activity	workflow	nl	Proces heeft geen startactiviteit
-process does not have exactly one end activity	workflow	nl	Proces heeft niet precies één eind activiteit
+process does not have exactly one end activity	workflow	nl	Proces heeft niet precies Ã©Ã©n eind activiteit
 process form	workflow	nl	Procesformulier
 process name	workflow	nl	Procesnaam
 process name already exists	workflow	nl	Procesnaam bestaat reeds
@@ -581,7 +581,7 @@ warning: by using this button you will definitively remove all instances and the
 we cannot run this activity, maybe this instance or this activity do not exists anymore.	workflow	nl	We konden deze activiteit niet uitvoeren, misschien bestaat deze instantie of deze activiteit niet meer.
 we were not able to build the message	workflow	nl	We konden het bericht niet samenstellen
 when in advanced mode, should we show you advanced actions by default (resume, exception, grab, etc.)?	workflow	nl	Indien in geavanceerde modus, moeten we u dan standaard de geavanceerde acties tonen (doorgaan, uitzonderen, oppakken, enz.)?
-when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	nl	indien meerdere verzend opties beschikbaar zijn tonen we een keuzelijst met slechts één verzendknop in plaats van meerdere knoppen
+when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	nl	indien meerdere verzend opties beschikbaar zijn tonen we een keuzelijst met slechts Ã©Ã©n verzendknop in plaats van meerdere knoppen
 when to send the message:	workflow	nl	Wanneer het bericht verzenden:
 workflow	common	nl	Werkstroom
 workflow configuration	admin	nl	Werkstroom configuratie

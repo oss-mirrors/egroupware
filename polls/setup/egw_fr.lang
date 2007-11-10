@@ -1,32 +1,32 @@
 actions	polls	fr	actions
-add answer to poll	polls	fr	Ajouter une réponse au sondage
-add answers	polls	fr	Ajouter des réponses
+add answer to poll	polls	fr	Ajouter une rÃ©ponse au sondage
+add answers	polls	fr	Ajouter des rÃ©ponses
 add new poll question	polls	fr	Ajouter une nouvelle question au sondage
 add questions	polls	fr	Ajouter les questions
-allow users to vote more then once	polls	fr	Autoriser les utilisateurs à voter plus d'une fois
-answer	polls	fr	Réponse
-answer has been added to poll	polls	fr	La réponse a été ajoutée au sondage
-answer has been updated	polls	fr	La réponse a été mise à jour
-answers	polls	fr	Réponses
-are you sure want to delete this answer ?	polls	fr	Etes-vous sûr de vouloir supprimer cette réponse ?
-are you sure want to delete this question ?	polls	fr	Etes-vous sûr de vouloir supprimer cette question ?
+allow users to vote more then once	polls	fr	Autoriser les utilisateurs Ã  voter plus d'une fois
+answer	polls	fr	RÃ©ponse
+answer has been added to poll	polls	fr	La rÃ©ponse a Ã©tÃ© ajoutÃ©e au sondage
+answer has been updated	polls	fr	La rÃ©ponse a Ã©tÃ© mise Ã  jour
+answers	polls	fr	RÃ©ponses
+are you sure want to delete this answer ?	polls	fr	Etes-vous sÃ»r de vouloir supprimer cette rÃ©ponse ?
+are you sure want to delete this question ?	polls	fr	Etes-vous sÃ»r de vouloir supprimer cette question ?
 current poll	polls	fr	Sondage actif
-edit answer	polls	fr	Modifier la réponse
+edit answer	polls	fr	Modifier la rÃ©ponse
 edit poll question	polls	fr	Modifier la question du sondage
 enter poll question	polls	fr	Entrer la question du sondage
-new poll has been added.  you should now add some answers for this poll	polls	fr	Le nouveau sondage a été ajouté. Vous devriez maintenant ajouter des réponses pour ce sondage
+new poll has been added.  you should now add some answers for this poll	polls	fr	Le nouveau sondage a Ã©tÃ© ajoutÃ©. Vous devriez maintenant ajouter des rÃ©ponses pour ce sondage
 poll question	polls	fr	Question du sondage
-poll settings	common	fr	Réglages Sondages
+poll settings	common	fr	RÃ©glages Sondages
 polls	common	fr	Sondages
-question has been updated	polls	fr	La question a été mise à jour
+question has been updated	polls	fr	La question a Ã©tÃ© mise Ã  jour
 select current poll	polls	fr	Choisissez le sondage actif
-settings	polls	fr	Paramètres
-settings updated	polls	fr	Réglages mis à jour
-show answers	polls	fr	Afficher les réponses
+settings	polls	fr	ParamÃ¨tres
+settings updated	polls	fr	RÃ©glages mis Ã  jour
+show answers	polls	fr	Afficher les rÃ©ponses
 show questions	common	fr	Afficher les questions
 total votes	polls	fr	Total
 view poll	polls	fr	Voir le sondage
-view results	polls	fr	Voir Résultats
+view results	polls	fr	Voir RÃ©sultats
 vote	polls	fr	Voter
 voting booth admin	admin	fr	Isoloir
 voting booth administration	polls	fr	Administration des Isoloirs

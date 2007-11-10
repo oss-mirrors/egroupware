@@ -1,55 +1,55 @@
-add a single entry by passing the fields.	headlines	sk	Prida» polo¾ku pomocou zadania polí.
-are you sure you want to delete this news site ?	headlines	sk	Ste si istí, ¾e chcete odstráni» túto sie» novinek (news site) ?
-base url	headlines	sk	Základná adresa URL
-basic	headlines	sk	Základné
+add a single entry by passing the fields.	headlines	sk	PridaÅ¥ poloÅ¾ku pomocou zadania polÃ­.
+are you sure you want to delete this news site ?	headlines	sk	Ste si istÃ­, Å¾e chcete odstrÃ¡niÅ¥ tÃºto sieÅ¥ novinek (news site) ?
+base url	headlines	sk	ZÃ¡kladnÃ¡ adresa URL
+basic	headlines	sk	ZÃ¡kladnÃ©
 choose layout	headlines	sk	Vyberte usporiadanie
 color	headlines	sk	Farba
-create new headline	headlines	sk	Vytvori» aktualitu
-current headlines in cache	headlines	sk	Súèasné aktuality vo vyrovnávacej pamäti
-delete a single entry by passing the id.	headlines	sk	Odstráni» polo¾ku podµa zadaného ID.
-display	headlines	sk	Zobrazi»
-edit a single entry by passing the fields including the id.	headlines	sk	Upravi» záznam podµa zadanıch polí vrátane ID.
-edit headline sites	headlines	sk	Upravi» siete aktualít
-edit headlines shown by default	headlines	sk	Upravi» aktuality ktoré sa be¾ne zobrazujú
-grab new news sites	common	sk	Získa» nové siete noviniek
-gray	headlines	sk	©edá
-headline preferences	common	sk	Predvoµby Aktualít
-headline site management	common	sk	Správa siete Aktualít
-headline sites	headlines	sk	Siete Aktualít
+create new headline	headlines	sk	VytvoriÅ¥ aktualitu
+current headlines in cache	headlines	sk	SÃºÄasnÃ© aktuality vo vyrovnÃ¡vacej pamÃ¤ti
+delete a single entry by passing the id.	headlines	sk	OdstrÃ¡niÅ¥ poloÅ¾ku podÄ¾a zadanÃ©ho ID.
+display	headlines	sk	ZobraziÅ¥
+edit a single entry by passing the fields including the id.	headlines	sk	UpraviÅ¥ zÃ¡znam podÄ¾a zadanÃ½ch polÃ­ vrÃ¡tane ID.
+edit headline sites	headlines	sk	UpraviÅ¥ siete aktualÃ­t
+edit headlines shown by default	headlines	sk	UpraviÅ¥ aktuality ktorÃ© sa beÅ¾ne zobrazujÃº
+grab new news sites	common	sk	ZÃ­skaÅ¥ novÃ© siete noviniek
+gray	headlines	sk	Å edÃ¡
+headline preferences	common	sk	PredvoÄ¾by AktualÃ­t
+headline site management	common	sk	SprÃ¡va siete AktualÃ­t
+headline sites	headlines	sk	Siete AktualÃ­t
 headlines	common	sk	Aktuality
-headlines administration	headlines	sk	Správa Aktualít
-headlines administration - delete headline	headlines	sk	Správa Aktualít - Odstráni¾ aktualitu
-headlines layout	headlines	sk	Usporiadanie Aktualít
-listings displayed	headlines	sk	Zobrazené zoznamy
-minutes between refresh	headlines	sk	Minút medzi obnovami
-minutes between reloads	headlines	sk	Minút medzi opakovanımi naèítaniami
+headlines administration	headlines	sk	SprÃ¡va AktualÃ­t
+headlines administration - delete headline	headlines	sk	SprÃ¡va AktualÃ­t - OdstrÃ¡niÅ¾ aktualitu
+headlines layout	headlines	sk	Usporiadanie AktualÃ­t
+listings displayed	headlines	sk	ZobrazenÃ© zoznamy
+minutes between refresh	headlines	sk	MinÃºt medzi obnovami
+minutes between reloads	headlines	sk	MinÃºt medzi opakovanÃ½mi naÄÃ­taniami
 monitor	common	sk	Sledovanie
-news file	headlines	sk	Súbor noviniek (news)
+news file	headlines	sk	SÃºbor noviniek (news)
 news from x	headlines	sk	Novinky od x
 news headlines	common	sk	Novinky - aktuality
 news type	headlines	sk	Druh noviniek
-no headlines found	headlines	sk	®iadne aktuality
-other preferences	preferences	sk	Iné predvoµby
-purge headline cache	common	sk	Vyprázdni» vyrovnávaciu pamä» Aktualít
-read a list / search for entries.	headlines	sk	Naèíta» zoznam / vyhµada» záznamy.
-read cached site data for a single site by passing the id.	headlines	sk	Naèíta» z vyrovnávacej pamäte dáta jednotlivej stránky podµa zadaného ID.
-read site data for a single site by passing the id.	headlines	sk	Naèíta» dáta jednotlivej stránky podµa zadaného ID.
-reload news sites	headlines	sk	Znovunaèíta» sie» noviniek
-reset	headlines	sk	Vynulova»
+no headlines found	headlines	sk	Å½iadne aktuality
+other preferences	preferences	sk	InÃ© predvoÄ¾by
+purge headline cache	common	sk	VyprÃ¡zdniÅ¥ vyrovnÃ¡vaciu pamÃ¤Å¥ AktualÃ­t
+read a list / search for entries.	headlines	sk	NaÄÃ­taÅ¥ zoznam / vyhÄ¾adaÅ¥ zÃ¡znamy.
+read cached site data for a single site by passing the id.	headlines	sk	NaÄÃ­taÅ¥ z vyrovnÃ¡vacej pamÃ¤te dÃ¡ta jednotlivej strÃ¡nky podÄ¾a zadanÃ©ho ID.
+read site data for a single site by passing the id.	headlines	sk	NaÄÃ­taÅ¥ dÃ¡ta jednotlivej strÃ¡nky podÄ¾a zadanÃ©ho ID.
+reload news sites	headlines	sk	ZnovunaÄÃ­taÅ¥ sieÅ¥ noviniek
+reset	headlines	sk	VynulovaÅ¥
 sample	headlines	sk	Vzorka
-select headline news sites	headlines	sk	Vybra» siete aktualít
-select headlines to display	common	sk	Vyberte, ktoré aktuality zobrazi»
+select headline news sites	headlines	sk	VybraÅ¥ siete aktualÃ­t
+select headlines to display	common	sk	Vyberte, ktorÃ© aktuality zobraziÅ¥
 select layout	common	sk	Vyberte usporiadanie
-show headlines on homepage	headlines	sk	Zobrazova» aktuality na domovskej stránke
-site	headlines	sk	Sie»
-that site has already been entered	headlines	sk	Táto sie» u¾ bola zadaná
-unable to retrieve links	headlines	sk	Odkazy sa nepodarilo naèíta»
-update headline	headlines	sk	Aktualizova»
-view headline	headlines	sk	Zobrazi» aktualitu
-you can only enter numbers for listings display	headlines	sk	Mô¾ete zada» iba èísla pre zobrazenie zoznamov
-you can only enter numbers minutes between refresh	headlines	sk	Mô¾ete zada» iba poèet minút medzi obnoveniami
-you must enter a base url	headlines	sk	Musíte zada» základnú URL adresu
-you must enter a display	headlines	sk	Musíte zada» obrazovku
-you must enter a news url	headlines	sk	Musíte zada» URL adresu news
-you must enter the number of listings display	headlines	sk	Musíte zada» poèet zobrazenıch záznamov
-you must enter the number of minutes between reload	headlines	sk	Musíte zada» poèet minút medzi znovunaèítaním
+show headlines on homepage	headlines	sk	ZobrazovaÅ¥ aktuality na domovskej strÃ¡nke
+site	headlines	sk	SieÅ¥
+that site has already been entered	headlines	sk	TÃ¡to sieÅ¥ uÅ¾ bola zadanÃ¡
+unable to retrieve links	headlines	sk	Odkazy sa nepodarilo naÄÃ­taÅ¥
+update headline	headlines	sk	AktualizovaÅ¥
+view headline	headlines	sk	ZobraziÅ¥ aktualitu
+you can only enter numbers for listings display	headlines	sk	MÃ´Å¾ete zadaÅ¥ iba ÄÃ­sla pre zobrazenie zoznamov
+you can only enter numbers minutes between refresh	headlines	sk	MÃ´Å¾ete zadaÅ¥ iba poÄet minÃºt medzi obnoveniami
+you must enter a base url	headlines	sk	MusÃ­te zadaÅ¥ zÃ¡kladnÃº URL adresu
+you must enter a display	headlines	sk	MusÃ­te zadaÅ¥ obrazovku
+you must enter a news url	headlines	sk	MusÃ­te zadaÅ¥ URL adresu news
+you must enter the number of listings display	headlines	sk	MusÃ­te zadaÅ¥ poÄet zobrazenÃ½ch zÃ¡znamov
+you must enter the number of minutes between reload	headlines	sk	MusÃ­te zadaÅ¥ poÄet minÃºt medzi znovunaÄÃ­tanÃ­m

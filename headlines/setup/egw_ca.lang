@@ -1,49 +1,49 @@
-are you sure you want to delete this news site ?	headlines	ca	Esteu segurs d'esborrar aquesta font de notícies?
+are you sure you want to delete this news site ?	headlines	ca	Esteu segurs d'esborrar aquesta font de notÃ­cies?
 base url	headlines	ca	URL Base
-basic	headlines	ca	Bàsic
+basic	headlines	ca	BÃ sic
 choose layout	headlines	ca	Trieu format
 color	headlines	ca	Color
 create new headline	headlines	ca	Crear Nou Titular
-current headlines in cache	headlines	ca	Titulars actualment en caché
+current headlines in cache	headlines	ca	Titulars actualment en cachÃ©
 display	headlines	ca	Mostrar
-edit headline sites	headlines	ca	Editar els llocs de fonts de notícies
+edit headline sites	headlines	ca	Editar els llocs de fonts de notÃ­cies
 edit headlines shown by default	headlines	ca	Editar els titulars mostrats per defecte
-grab new news sites	common	ca	Cercar nous llocs de fonts de notícies
+grab new news sites	common	ca	Cercar nous llocs de fonts de notÃ­cies
 gray	headlines	ca	Gris
-headline preferences	common	ca	Preferències dels Titulars
-headline site management	common	ca	Gestió de llocs de fonts de notícies
-headline sites	headlines	ca	Llocs de Fonts de Notícies
+headline preferences	common	ca	PreferÃ¨ncies dels Titulars
+headline site management	common	ca	GestiÃ³ de llocs de fonts de notÃ­cies
+headline sites	headlines	ca	Llocs de Fonts de NotÃ­cies
 headlines	common	ca	Titulars
-headlines administration	headlines	ca	Administració de Titulars
-headlines administration - delete headline	headlines	ca	Administració de Titulars - Esborrar titular
+headlines administration	headlines	ca	AdministraciÃ³ de Titulars
+headlines administration - delete headline	headlines	ca	AdministraciÃ³ de Titulars - Esborrar titular
 headlines layout	headlines	ca	Format dels titulars
 listings displayed	headlines	ca	Llistats mostrats
 minutes between refresh	headlines	ca	Minuts entre actualitzacions
-minutes between reloads	headlines	ca	Minuts entre recàrregues
+minutes between reloads	headlines	ca	Minuts entre recÃ rregues
 monitor	common	ca	Monitor
-news file	headlines	ca	Arxiu de notícies
+news file	headlines	ca	Arxiu de notÃ­cies
 news from x	headlines	ca	Noticias de x
-news headlines	common	ca	Titulars de notícies
+news headlines	common	ca	Titulars de notÃ­cies
 news headlines	common	ca	encabezados de noticias
-news type	headlines	ca	Tipus de notícies
+news type	headlines	ca	Tipus de notÃ­cies
 no headlines found	headlines	ca	No s'han trobat titulars
-other preferences	preferences	ca	Altres preferències
-reload news sites	headlines	ca	Recarregar fonts de notícies
+other preferences	preferences	ca	Altres preferÃ¨ncies
+reload news sites	headlines	ca	Recarregar fonts de notÃ­cies
 reset	headlines	ca	Restablir
 sample	headlines	ca	Exemple
-select headline news sites	headlines	ca	Seleccioneu llocs de Titulars de Notícies
+select headline news sites	headlines	ca	Seleccioneu llocs de Titulars de NotÃ­cies
 select headlines to display	common	ca	Seleccioneu els Titulars a mostrar
 select layout	common	ca	Seleccioneu format
 show headlines on homepage	headlines	ca	Mostrar titulars a la plana d'inici
 site	headlines	ca	Lloc
 that site has already been entered	headlines	ca	Aquest lloc ja s'ha entrat
-unable to retrieve links	headlines	ca	No es poden recuperar els enllaços
+unable to retrieve links	headlines	ca	No es poden recuperar els enllaÃ§os
 update headline	headlines	ca	Actualitzar titular
 view headline	headlines	ca	Veure titular
-you can only enter numbers for listings display	headlines	ca	Només podeu entrar números per visualitzar llistats
-you can only enter numbers minutes between refresh	headlines	ca	Només podeu entrar números als minuts entre actualitzacions
-you must enter a base url	headlines	ca	Heu d'entrar una adreça url base
-you must enter a display	headlines	ca	Heu d'entrar una visualització
-you must enter a news url	headlines	ca	Heu d'entrar una adreça url de notícies
-you must enter the number of listings display	headlines	ca	Heu d'entrar el número d'elements llistats a mostrar
-you must enter the number of minutes between reload	headlines	ca	Heu d'entrar el número de minuts entre recàrregues
+you can only enter numbers for listings display	headlines	ca	NomÃ©s podeu entrar nÃºmeros per visualitzar llistats
+you can only enter numbers minutes between refresh	headlines	ca	NomÃ©s podeu entrar nÃºmeros als minuts entre actualitzacions
+you must enter a base url	headlines	ca	Heu d'entrar una adreÃ§a url base
+you must enter a display	headlines	ca	Heu d'entrar una visualitzaciÃ³
+you must enter a news url	headlines	ca	Heu d'entrar una adreÃ§a url de notÃ­cies
+you must enter the number of listings display	headlines	ca	Heu d'entrar el nÃºmero d'elements llistats a mostrar
+you must enter the number of minutes between reload	headlines	ca	Heu d'entrar el nÃºmero de minuts entre recÃ rregues

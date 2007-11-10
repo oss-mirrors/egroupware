@@ -1,70 +1,70 @@
-%1 bookmarks have been deleted	bookmarks	bg	Бяха изтрити %1 отметки
-%1 bookmarks imported from %2 successfully.	bookmarks	bg	Успешно бяха внесени %1 отметки от %2.
-(comma separate multiple addresses)	bookmarks	bg	(адреси, разделени със запетая)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	bg	<b>Забележка:</b> Това засега работи само за отметки на Netscape.
-all bookmarks	bookmarks	bg	Всички отметки
-and	bookmarks	bg	И
-append this message to mailed bookmarks	bookmarks	bg	Добавяне на това съобщение към изпращаните по пощата отметки
-ascending	bookmarks	bg	Възходящо
-book marks	common	bg	Отметки
-bookmark changed sucessfully	bookmarks	bg	Отметката е променена
-bookmark created successfully.	bookmarks	bg	Отметката е създадена.
-bookmark not editable	bookmarks	bg	Отметката не може да се редактира
-bookmark not readable	bookmarks	bg	Отметката не може да се прочете
-bookmarks	common	bg	Отметки
-bookmarks settings	bookmarks	bg	Настройки на отметките
-change bookmark	bookmarks	bg	Промяна на отметката
-close this window to return	bookmarks	bg	затворете този прозорец, за да се върнете
-create bookmark	bookmarks	bg	Създаване на отметка
-create new bookmark	bookmarks	bg	Създаване на нова отметка
-date added	bookmarks	bg	Датата е добавена
-date changed	bookmarks	bg	Датата е променена
-date last updated	bookmarks	bg	Дата на последно обновяване
-date last visited	bookmarks	bg	Дата на последно посещение
-descending	bookmarks	bg	Низходящо
-edit bookmark	bookmarks	bg	Редактиране на отметка
-edit this bookmark	bookmarks	bg	Редактиране на тази отметка
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	bg	Въведете името на файла с отметки на Netscape, който искате да въде внесен.
-export bookmarks	common	bg	Изнасяне на отметки
-fewer	bookmarks	bg	по-малко
-filter by	bookmarks	bg	Филтриране по
-found a link you might like	bookmarks	bg	Препратка, която може да ти е интересна
-from	bookmarks	bg	От
-from category %1	bookmarks	bg	от категория %1
-highest	bookmarks	bg	Най-висока
-i thought you would be interested in the following link(s):	bookmarks	bg	Реших, че следните препратки може да са ти интересни:
-import bookmarks	common	bg	Внасяне на отметки
-like	bookmarks	bg	подобно на
-list view	bookmarks	bg	Списък
-lowest	bookmarks	bg	Най-ниска
-mail this bookmark	bookmarks	bg	Изпращане та отметката по пощата
-mail-this-link message sent to %1.	bookmarks	bg	съобщение "изпращане на отметката" изпратено на %1.
-mass update:	bookmarks	bg	Групово обновяване:
-message from	bookmarks	bg	Съобщение от
-more	bookmarks	bg	повече
-name	bookmarks	bg	Име
-name is required	bookmarks	bg	Името е задължително
-netscape bookmark file	bookmarks	bg	Файл с отметки на Netscape
-netscape bookmark filename is required!	bookmarks	bg	Нужно е името на файл с отметки на Netscape!
-new	bookmark	bg	Нова
-or	bookmarks	bg	или
-please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	bg	Моля, попълнете <B>адрес на получателя</B>, <B>относно</B>, и <B>съдържанието на писмото</B>!
-please select the categories to export	bookmarks	bg	Моля изберете категориите за експортиране
-query condition	bookmarks	bg	Условие на търсенето
-rating	bookmarks	bg	Оценка
-search for:	bookmarks	bg	Търсене за:
-select the format you would like to export to	bookmarks	bg	Изберете формата, в който искате да експортирате
-send bookmark	bookmarks	bg	Изпращане на отметка
-sub category	bookmarks	bg	Подкатегория
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	bg	Адресът на получателя, %1, не е валиден. Форматът трябва да е <strong>user@domain</strong> и domain-ът трябва да съществува!
-to e-mail addresses	bookmarks	bg	До адрес на епоща
-to which category should the imported folder hierarchy be attached	bookmarks	bg	Към коя категория да прикачат внасяните директории?
-total visits	bookmarks	bg	общо посещения
-tree view	bookmarks	bg	Дървовиден изглед
-unable to open temp file %1 for import.	bookmarks	bg	Не може да се отвори временният файл %1 за внасяне.
-url is required.	bookmarks	bg	Изисква се URL.
-view bookmark	bookmarks	bg	Преглед на отметка
-view this bookmark	bookmarks	bg	Преглед на тази отметка
-warning	bookmarks	bg	Внимание
-you are viewing this site outside of egroupware	bookmarks	bg	Този сайт е външен за eGroupWare
-you must select a category	bookmarks	bg	Трябва да изберете категория
+%1 bookmarks have been deleted	bookmarks	bg	Р‘СЏС…Р° РёР·С‚СЂРёС‚Рё %1 РѕС‚РјРµС‚РєРё
+%1 bookmarks imported from %2 successfully.	bookmarks	bg	РЈСЃРїРµС€РЅРѕ Р±СЏС…Р° РІРЅРµСЃРµРЅРё %1 РѕС‚РјРµС‚РєРё РѕС‚ %2.
+(comma separate multiple addresses)	bookmarks	bg	(Р°РґСЂРµСЃРё, СЂР°Р·РґРµР»РµРЅРё СЃСЉСЃ Р·Р°РїРµС‚Р°СЏ)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	bg	<b>Р—Р°Р±РµР»РµР¶РєР°:</b> РўРѕРІР° Р·Р°СЃРµРіР° СЂР°Р±РѕС‚Рё СЃР°РјРѕ Р·Р° РѕС‚РјРµС‚РєРё РЅР° Netscape.
+all bookmarks	bookmarks	bg	Р’СЃРёС‡РєРё РѕС‚РјРµС‚РєРё
+and	bookmarks	bg	Р
+append this message to mailed bookmarks	bookmarks	bg	Р”РѕР±Р°РІСЏРЅРµ РЅР° С‚РѕРІР° СЃСЉРѕР±С‰РµРЅРёРµ РєСЉРј РёР·РїСЂР°С‰Р°РЅРёС‚Рµ РїРѕ РїРѕС‰Р°С‚Р° РѕС‚РјРµС‚РєРё
+ascending	bookmarks	bg	Р’СЉР·С…РѕРґСЏС‰Рѕ
+book marks	common	bg	РћС‚РјРµС‚РєРё
+bookmark changed sucessfully	bookmarks	bg	РћС‚РјРµС‚РєР°С‚Р° Рµ РїСЂРѕРјРµРЅРµРЅР°
+bookmark created successfully.	bookmarks	bg	РћС‚РјРµС‚РєР°С‚Р° Рµ СЃСЉР·РґР°РґРµРЅР°.
+bookmark not editable	bookmarks	bg	РћС‚РјРµС‚РєР°С‚Р° РЅРµ РјРѕР¶Рµ РґР° СЃРµ СЂРµРґР°РєС‚РёСЂР°
+bookmark not readable	bookmarks	bg	РћС‚РјРµС‚РєР°С‚Р° РЅРµ РјРѕР¶Рµ РґР° СЃРµ РїСЂРѕС‡РµС‚Рµ
+bookmarks	common	bg	РћС‚РјРµС‚РєРё
+bookmarks settings	bookmarks	bg	РќР°СЃС‚СЂРѕР№РєРё РЅР° РѕС‚РјРµС‚РєРёС‚Рµ
+change bookmark	bookmarks	bg	РџСЂРѕРјСЏРЅР° РЅР° РѕС‚РјРµС‚РєР°С‚Р°
+close this window to return	bookmarks	bg	Р·Р°С‚РІРѕСЂРµС‚Рµ С‚РѕР·Рё РїСЂРѕР·РѕСЂРµС†, Р·Р° РґР° СЃРµ РІСЉСЂРЅРµС‚Рµ
+create bookmark	bookmarks	bg	РЎСЉР·РґР°РІР°РЅРµ РЅР° РѕС‚РјРµС‚РєР°
+create new bookmark	bookmarks	bg	РЎСЉР·РґР°РІР°РЅРµ РЅР° РЅРѕРІР° РѕС‚РјРµС‚РєР°
+date added	bookmarks	bg	Р”Р°С‚Р°С‚Р° Рµ РґРѕР±Р°РІРµРЅР°
+date changed	bookmarks	bg	Р”Р°С‚Р°С‚Р° Рµ РїСЂРѕРјРµРЅРµРЅР°
+date last updated	bookmarks	bg	Р”Р°С‚Р° РЅР° РїРѕСЃР»РµРґРЅРѕ РѕР±РЅРѕРІСЏРІР°РЅРµ
+date last visited	bookmarks	bg	Р”Р°С‚Р° РЅР° РїРѕСЃР»РµРґРЅРѕ РїРѕСЃРµС‰РµРЅРёРµ
+descending	bookmarks	bg	РќРёР·С…РѕРґСЏС‰Рѕ
+edit bookmark	bookmarks	bg	Р РµРґР°РєС‚РёСЂР°РЅРµ РЅР° РѕС‚РјРµС‚РєР°
+edit this bookmark	bookmarks	bg	Р РµРґР°РєС‚РёСЂР°РЅРµ РЅР° С‚Р°Р·Рё РѕС‚РјРµС‚РєР°
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	bg	Р’СЉРІРµРґРµС‚Рµ РёРјРµС‚Рѕ РЅР° С„Р°Р№Р»Р° СЃ РѕС‚РјРµС‚РєРё РЅР° Netscape, РєРѕР№С‚Рѕ РёСЃРєР°С‚Рµ РґР° РІСЉРґРµ РІРЅРµСЃРµРЅ.
+export bookmarks	common	bg	РР·РЅР°СЃСЏРЅРµ РЅР° РѕС‚РјРµС‚РєРё
+fewer	bookmarks	bg	РїРѕ-РјР°Р»РєРѕ
+filter by	bookmarks	bg	Р¤РёР»С‚СЂРёСЂР°РЅРµ РїРѕ
+found a link you might like	bookmarks	bg	РџСЂРµРїСЂР°С‚РєР°, РєРѕСЏС‚Рѕ РјРѕР¶Рµ РґР° С‚Рё Рµ РёРЅС‚РµСЂРµСЃРЅР°
+from	bookmarks	bg	РћС‚
+from category %1	bookmarks	bg	РѕС‚ РєР°С‚РµРіРѕСЂРёСЏ %1
+highest	bookmarks	bg	РќР°Р№-РІРёСЃРѕРєР°
+i thought you would be interested in the following link(s):	bookmarks	bg	Р РµС€РёС…, С‡Рµ СЃР»РµРґРЅРёС‚Рµ РїСЂРµРїСЂР°С‚РєРё РјРѕР¶Рµ РґР° СЃР° С‚Рё РёРЅС‚РµСЂРµСЃРЅРё:
+import bookmarks	common	bg	Р’РЅР°СЃСЏРЅРµ РЅР° РѕС‚РјРµС‚РєРё
+like	bookmarks	bg	РїРѕРґРѕР±РЅРѕ РЅР°
+list view	bookmarks	bg	РЎРїРёСЃСЉРє
+lowest	bookmarks	bg	РќР°Р№-РЅРёСЃРєР°
+mail this bookmark	bookmarks	bg	РР·РїСЂР°С‰Р°РЅРµ С‚Р° РѕС‚РјРµС‚РєР°С‚Р° РїРѕ РїРѕС‰Р°С‚Р°
+mail-this-link message sent to %1.	bookmarks	bg	СЃСЉРѕР±С‰РµРЅРёРµ "РёР·РїСЂР°С‰Р°РЅРµ РЅР° РѕС‚РјРµС‚РєР°С‚Р°" РёР·РїСЂР°С‚РµРЅРѕ РЅР° %1.
+mass update:	bookmarks	bg	Р“СЂСѓРїРѕРІРѕ РѕР±РЅРѕРІСЏРІР°РЅРµ:
+message from	bookmarks	bg	РЎСЉРѕР±С‰РµРЅРёРµ РѕС‚
+more	bookmarks	bg	РїРѕРІРµС‡Рµ
+name	bookmarks	bg	РРјРµ
+name is required	bookmarks	bg	РРјРµС‚Рѕ Рµ Р·Р°РґСЉР»Р¶РёС‚РµР»РЅРѕ
+netscape bookmark file	bookmarks	bg	Р¤Р°Р№Р» СЃ РѕС‚РјРµС‚РєРё РЅР° Netscape
+netscape bookmark filename is required!	bookmarks	bg	РќСѓР¶РЅРѕ Рµ РёРјРµС‚Рѕ РЅР° С„Р°Р№Р» СЃ РѕС‚РјРµС‚РєРё РЅР° Netscape!
+new	bookmark	bg	РќРѕРІР°
+or	bookmarks	bg	РёР»Рё
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	bg	РњРѕР»СЏ, РїРѕРїСЉР»РЅРµС‚Рµ <B>Р°РґСЂРµСЃ РЅР° РїРѕР»СѓС‡Р°С‚РµР»СЏ</B>, <B>РѕС‚РЅРѕСЃРЅРѕ</B>, Рё <B>СЃСЉРґСЉСЂР¶Р°РЅРёРµС‚Рѕ РЅР° РїРёСЃРјРѕС‚Рѕ</B>!
+please select the categories to export	bookmarks	bg	РњРѕР»СЏ РёР·Р±РµСЂРµС‚Рµ РєР°С‚РµРіРѕСЂРёРёС‚Рµ Р·Р° РµРєСЃРїРѕСЂС‚РёСЂР°РЅРµ
+query condition	bookmarks	bg	РЈСЃР»РѕРІРёРµ РЅР° С‚СЉСЂСЃРµРЅРµС‚Рѕ
+rating	bookmarks	bg	РћС†РµРЅРєР°
+search for:	bookmarks	bg	РўСЉСЂСЃРµРЅРµ Р·Р°:
+select the format you would like to export to	bookmarks	bg	РР·Р±РµСЂРµС‚Рµ С„РѕСЂРјР°С‚Р°, РІ РєРѕР№С‚Рѕ РёСЃРєР°С‚Рµ РґР° РµРєСЃРїРѕСЂС‚РёСЂР°С‚Рµ
+send bookmark	bookmarks	bg	РР·РїСЂР°С‰Р°РЅРµ РЅР° РѕС‚РјРµС‚РєР°
+sub category	bookmarks	bg	РџРѕРґРєР°С‚РµРіРѕСЂРёСЏ
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	bg	РђРґСЂРµСЃСЉС‚ РЅР° РїРѕР»СѓС‡Р°С‚РµР»СЏ, %1, РЅРµ Рµ РІР°Р»РёРґРµРЅ. Р¤РѕСЂРјР°С‚СЉС‚ С‚СЂСЏР±РІР° РґР° Рµ <strong>user@domain</strong> Рё domain-СЉС‚ С‚СЂСЏР±РІР° РґР° СЃСЉС‰РµСЃС‚РІСѓРІР°!
+to e-mail addresses	bookmarks	bg	Р”Рѕ Р°РґСЂРµСЃ РЅР° РµРїРѕС‰Р°
+to which category should the imported folder hierarchy be attached	bookmarks	bg	РљСЉРј РєРѕСЏ РєР°С‚РµРіРѕСЂРёСЏ РґР° РїСЂРёРєР°С‡Р°С‚ РІРЅР°СЃСЏРЅРёС‚Рµ РґРёСЂРµРєС‚РѕСЂРёРё?
+total visits	bookmarks	bg	РѕР±С‰Рѕ РїРѕСЃРµС‰РµРЅРёСЏ
+tree view	bookmarks	bg	Р”СЉСЂРІРѕРІРёРґРµРЅ РёР·РіР»РµРґ
+unable to open temp file %1 for import.	bookmarks	bg	РќРµ РјРѕР¶Рµ РґР° СЃРµ РѕС‚РІРѕСЂРё РІСЂРµРјРµРЅРЅРёСЏС‚ С„Р°Р№Р» %1 Р·Р° РІРЅР°СЃСЏРЅРµ.
+url is required.	bookmarks	bg	РР·РёСЃРєРІР° СЃРµ URL.
+view bookmark	bookmarks	bg	РџСЂРµРіР»РµРґ РЅР° РѕС‚РјРµС‚РєР°
+view this bookmark	bookmarks	bg	РџСЂРµРіР»РµРґ РЅР° С‚Р°Р·Рё РѕС‚РјРµС‚РєР°
+warning	bookmarks	bg	Р’РЅРёРјР°РЅРёРµ
+you are viewing this site outside of egroupware	bookmarks	bg	РўРѕР·Рё СЃР°Р№С‚ Рµ РІСЉРЅС€РµРЅ Р·Р° eGroupWare
+you must select a category	bookmarks	bg	РўСЂСЏР±РІР° РґР° РёР·Р±РµСЂРµС‚Рµ РєР°С‚РµРіРѕСЂРёСЏ

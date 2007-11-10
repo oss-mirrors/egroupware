@@ -25,7 +25,7 @@ send	messenger	ca	Envia
 send a global message.	messenger	ca	Envia missatge global.
 send a message to a single recipient.	messenger	ca	Envia un missatge a un sol destinatari.
 send message to	messenger	ca	Envia missatge a
-sorry, %1's account is not currently active	messenger	ca	Disculpeu, el compte de %1 no est‡ actiu actualment
+sorry, %1's account is not currently active	messenger	ca	Disculpeu, el compte de %1 no est√† actiu actualment
 update a message status	messenger	ca	Actualitza l'estat d'un missatge
 you didn't enter anything for the message	messenger	ca	No heu entrat res al missatge
 you have %1 new message	common	ca	Teniu 1 missatge nou

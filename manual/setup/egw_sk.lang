@@ -1,15 +1,15 @@
-%1 manual page(s) added or updated	manual	sk	%1 manuálovıch stránok bolo pridanıch alebo aktualizovanıch
-allow anonymous access to the manual, only necessary to act as remote manual	admin	sk	Povoli» anonymnım pou¾ívateµom prístup k manuálu. Potrebné len ak sa pou¾íva ako vzdialenı manuál
-anonymous password	admin	sk	Heslo anonymného pou¾ívateµa
-anonymous username	admin	sk	Pou¾ívateµské meno anonymného pou¾ívateµa
-download	manual	sk	stiahnu»
+%1 manual page(s) added or updated	manual	sk	%1 manuÃ¡lovÃ½ch strÃ¡nok bolo pridanÃ½ch alebo aktualizovanÃ½ch
+allow anonymous access to the manual, only necessary to act as remote manual	admin	sk	PovoliÅ¥ anonymnÃ½m pouÅ¾Ã­vateÄ¾om prÃ­stup k manuÃ¡lu. PotrebnÃ© len ak sa pouÅ¾Ã­va ako vzdialenÃ½ manuÃ¡l
+anonymous password	admin	sk	Heslo anonymnÃ©ho pouÅ¾Ã­vateÄ¾a
+anonymous username	admin	sk	PouÅ¾Ã­vateÄ¾skÃ© meno anonymnÃ©ho pouÅ¾Ã­vateÄ¾a
+download	manual	sk	stiahnuÅ¥
 index	manual	sk	Index
-install or update the manual-pages	admin	sk	in¹talova» alebo aktualizova» stránky manuálu
-manual	common	sk	Manuál / Pomocník
-page(s) %1 not found !!!	manual	sk	Nena¹iel som stránky %1 !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	sk	Vzdialená URL adresa eGroupWare, ktorá sa má pou¾íva» pre manuál. Ak necháte prázdne, uplatní sa predvolené, èi¾e lokálny manuál.
-search for	manual	sk	Hµadaj
-starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	sk	Zaèínam importova» z %1, mô¾e to trva» niekoµko minút (najmä ak to spú¹»ate po prvıkrát) ...
-the search returned no result!	manual	sk	Vyhµadávanie skonèilo bezvısledne!
-update url for the local manual, default	admin	sk	Aktualizova» adresu URL pre lokálny manuál, predvolené
-wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	sk	Wiki ID pre lokálny manuál, predvolené: 1. 0 sa pou¾íva ak chcete stránky manuálu upravova» pomocou wiki.
+install or update the manual-pages	admin	sk	inÅ¡talovaÅ¥ alebo aktualizovaÅ¥ strÃ¡nky manuÃ¡lu
+manual	common	sk	ManuÃ¡l / PomocnÃ­k
+page(s) %1 not found !!!	manual	sk	NenaÅ¡iel som strÃ¡nky %1 !!!
+remote egroupware url for the manual to use, empty for a local manual, default	admin	sk	VzdialenÃ¡ URL adresa eGroupWare, ktorÃ¡ sa mÃ¡ pouÅ¾Ã­vaÅ¥ pre manuÃ¡l. Ak nechÃ¡te prÃ¡zdne, uplatnÃ­ sa predvolenÃ©, ÄiÅ¾e lokÃ¡lny manuÃ¡l.
+search for	manual	sk	HÄ¾adaj
+starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	sk	ZaÄÃ­nam importovaÅ¥ z %1, mÃ´Å¾e to trvaÅ¥ niekoÄ¾ko minÃºt (najmÃ¤ ak to spÃºÅ¡Å¥ate po prvÃ½krÃ¡t) ...
+the search returned no result!	manual	sk	VyhÄ¾adÃ¡vanie skonÄilo bezvÃ½sledne!
+update url for the local manual, default	admin	sk	AktualizovaÅ¥ adresu URL pre lokÃ¡lny manuÃ¡l, predvolenÃ©
+wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	sk	Wiki ID pre lokÃ¡lny manuÃ¡l, predvolenÃ©: 1. 0 sa pouÅ¾Ã­va ak chcete strÃ¡nky manuÃ¡lu upravovaÅ¥ pomocou wiki.

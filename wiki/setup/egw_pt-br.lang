@@ -1,111 +1,111 @@
-(don't offer the possibility)	admin	pt-br	(n„o oferecer a possibilidade)
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	pt-br	<em>Mostrar</em> os v·rios arquivos no documento RecentChanges e tambÈm em outras listas:
+(don't offer the possibility)	admin	pt-br	(n√£o oferecer a possibilidade)
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	pt-br	<em>Mostrar</em> os v√°rios arquivos no documento RecentChanges e tamb√©m em outras listas:
 add document to category	wiki	pt-br	Adicionar documento a uma categoria
 added	wiki	pt-br	Adicionado
-administration features are disabled for this wiki.	wiki	pt-br	Recursos administrativos est„o desabilitados para este Wiki.
+administration features are disabled for this wiki.	wiki	pt-br	Recursos administrativos est√£o desabilitados para este Wiki.
 admins	wiki	pt-br	administradores
-after how many days should old versions of a page be removed (0 for never)	admin	pt-br	Versıes antigas de uma p·gina dever„o ser removidas apÛs quantos dias? (0 para nunca)
-allow anonymous access	admin	pt-br	permitir acesso anÙnimo
-anonymous password	admin	pt-br	Senha para usu·rio AnÙnimo
-anonymous session type	admin	pt-br	Tipo de Sess„o para AnÙnimo
-anonymous username	admin	pt-br	Nome do usu·rio anÙnimo
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	pt-br	Converter automaticamente p·ginas com sintax-wiki para richtext (se editada)?
+after how many days should old versions of a page be removed (0 for never)	admin	pt-br	Vers√µes antigas de uma p√°gina dever√£o ser removidas ap√≥s quantos dias? (0 para nunca)
+allow anonymous access	admin	pt-br	permitir acesso an√¥nimo
+anonymous password	admin	pt-br	Senha para usu√°rio An√¥nimo
+anonymous session type	admin	pt-br	Tipo de Sess√£o para An√¥nimo
+anonymous username	admin	pt-br	Nome do usu√°rio an√¥nimo
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	pt-br	Converter automaticamente p√°ginas com sintax-wiki para richtext (se editada)?
 block	wiki	pt-br	Bloquear
 block / unblock hosts	common	pt-br	Bloquear / Desbloquear hosts
-blocked ip address ranges	wiki	pt-br	Faixa de endereÁo IP bloqueada
+blocked ip address ranges	wiki	pt-br	Faixa de endere√ßo IP bloqueada
 cancel without saving	wiki	pt-br	Cancelar sem salvar
 changed	wiki	pt-br	Alterado
-changes by last author	wiki	pt-br	AlteraÁıes por autor
-choose your current time here, so the server may figure out what time zone you are in.	wiki	pt-br	Escolha seu fuso hor·rio aqui, assim os usu·rios podem adotar o hor·rio fora do fuso que vocÍ est·.
+changes by last author	wiki	pt-br	Altera√ß√µes por autor
+choose your current time here, so the server may figure out what time zone you are in.	wiki	pt-br	Escolha seu fuso hor√°rio aqui, assim os usu√°rios podem adotar o hor√°rio fora do fuso que voc√™ est√°.
 columns	wiki	pt-br	Colunas
-compute difference	wiki	pt-br	Computar DiferenÁas
-converts the page to richtext	wiki	pt-br	Converter a p·gina para formato richtext
-current version	wiki	pt-br	Vers„o atual
+compute difference	wiki	pt-br	Computar Diferen√ßas
+converts the page to richtext	wiki	pt-br	Converter a p√°gina para formato richtext
+current version	wiki	pt-br	Vers√£o atual
 deleted	wiki	pt-br	Removida
-deletes this page	wiki	pt-br	Remover esta p·gina
-difference between versions	wiki	pt-br	DiferenÁa entre as versıes
-differences in	wiki	pt-br	DiferenÁas em
-different languages can have different titles	wiki	pt-br	Diferentes idiomas podem possuir tÌtulos diferentes
-document last modified	wiki	pt-br	⁄ltimo documento modificado
-edit box	wiki	pt-br	Box para ediÁ„o
-edit this <em>archive version</em> of this document	wiki	pt-br	Editar esta <em>VERS√O DO ARQUIVO</em> para este documento
+deletes this page	wiki	pt-br	Remover esta p√°gina
+difference between versions	wiki	pt-br	Diferen√ßa entre as vers√µes
+differences in	wiki	pt-br	Diferen√ßas em
+different languages can have different titles	wiki	pt-br	Diferentes idiomas podem possuir t√≠tulos diferentes
+document last modified	wiki	pt-br	√öltimo documento modificado
+edit box	wiki	pt-br	Box para edi√ß√£o
+edit this <em>archive version</em> of this document	wiki	pt-br	Editar esta <em>VERS√ÉO DO ARQUIVO</em> para este documento
 edit this document	wiki	pt-br	Editar este documento
 edit with preview	admin	pt-br	Editar e Visualizar
-editable	admin	pt-br	edit·vel
+editable	admin	pt-br	edit√°vel
 editing	wiki	pt-br	Editando
-emailaddress administrator	admin	pt-br	EndereÁo de e-mail do administrador
+emailaddress administrator	admin	pt-br	Endere√ßo de e-mail do administrador
 enable free links	admin	pt-br	Ativar Links livres
 enable wiki links	admin	pt-br	Ativar Links Wiki
-enter here the maximum number of entries to display in a document's history list.	wiki	pt-br	Informe aqui o n˙mero m·ximo de registros a serem mostrados na lista de histÛrico de documentos.
-enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	pt-br	Informe aqui o n˙mero de dias que devem ser mostrados as ediÁıes do arquivo RecentChanges ou qualquer lista subescrita.  Marque como zero quando desejar visualizar todas as p·ginas no arquivo RecentChanges, n„o obstante como foram editados recentemente.
-enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	pt-br	Informe a faixa do endereÁo IP <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
-error creating temporary file.	wiki	pt-br	Erro ao criar o arquivo tempor·rio.
-error writing to temporary file.	wiki	pt-br	Erro ao escrever no arquivo tempor·rio.
+enter here the maximum number of entries to display in a document's history list.	wiki	pt-br	Informe aqui o n√∫mero m√°ximo de registros a serem mostrados na lista de hist√≥rico de documentos.
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	pt-br	Informe aqui o n√∫mero de dias que devem ser mostrados as edi√ß√µes do arquivo RecentChanges ou qualquer lista subescrita.  Marque como zero quando desejar visualizar todas as p√°ginas no arquivo RecentChanges, n√£o obstante como foram editados recentemente.
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	pt-br	Informe a faixa do endere√ßo IP <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
+error creating temporary file.	wiki	pt-br	Erro ao criar o arquivo tempor√°rio.
+error writing to temporary file.	wiki	pt-br	Erro ao escrever no arquivo tempor√°rio.
 everyone	wiki	pt-br	todos
 find	wiki	pt-br	Localizar
-history	wiki	pt-br	histÛrico
-history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	pt-br	Mostrar a lista de histÛrico <em>inteira</em> com alteraÁıes feitas pelo ˙ltimo autor. Do contr·rio, mostre apenas a ˙ltima mudanÁa feita.
-history lists	wiki	pt-br	Lista de HistÛrico
-history of	wiki	pt-br	HistÛrico de
+history	wiki	pt-br	hist√≥rico
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	pt-br	Mostrar a lista de hist√≥rico <em>inteira</em> com altera√ß√µes feitas pelo √∫ltimo autor. Do contr√°rio, mostre apenas a √∫ltima mudan√ßa feita.
+history lists	wiki	pt-br	Lista de Hist√≥rico
+history of	wiki	pt-br	Hist√≥rico de
 interwikiprefix	admin	pt-br	InterWikiPrefix
-invalid page name.	wiki	pt-br	Nome de p·gina inv·lido
+invalid page name.	wiki	pt-br	Nome de p√°gina inv√°lido
 load	wiki	pt-br	Carregar
-loads the named page in the given language, all change so far get lost !!!	wiki	pt-br	Carrega a p·gina escolhida no idioma selecionado, todas as alteraÁıes ser„o perdidas !!!
-lock / unlock pages	common	pt-br	Bloquear / Desbloquear P·ginas
+loads the named page in the given language, all change so far get lost !!!	wiki	pt-br	Carrega a p√°gina escolhida no idioma selecionado, todas as altera√ß√µes ser√£o perdidas !!!
+lock / unlock pages	common	pt-br	Bloquear / Desbloquear P√°ginas
 locked	wiki	pt-br	Bloqueada
-name wiki home link	admin	pt-br	name wiki P·gina principal
+name wiki home link	admin	pt-br	name wiki P√°gina principal
 newer	wiki	pt-br	Mais recente
 no never	admin	pt-br	Nunca
-no only on request	admin	pt-br	N„o apenas a pedido
-not set	wiki	pt-br	n„o selecionado
+no only on request	admin	pt-br	N√£o apenas a pedido
+not set	wiki	pt-br	n√£o selecionado
 older	wiki	pt-br	Mais antigo
-on all pages	wiki	pt-br	em todas as p·ginas
+on all pages	wiki	pt-br	em todas as p√°ginas
 only if browser supports a richtext-editor	admin	pt-br	Apenas se o navegador suportar o editor richtext
-only on the first page	wiki	pt-br	somente para a primeira p·gina
-page '%1' not found !!!	wiki	pt-br	P·gina '%1' n„o encontrada !!!
-path of the upload directory (has to be writable by the webserver!)	admin	pt-br	Caminho para o diretÛrio de carregamento (o servidor web deve ter permissıes de escrita nele)
-picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	pt-br	Carregar figura atravÈs de editor richtext (deixe em branco para desabilitar o carregamento)
+only on the first page	wiki	pt-br	somente para a primeira p√°gina
+page '%1' not found !!!	wiki	pt-br	P√°gina '%1' n√£o encontrada !!!
+path of the upload directory (has to be writable by the webserver!)	admin	pt-br	Caminho para o diret√≥rio de carregamento (o servidor web deve ter permiss√µes de escrita nele)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	pt-br	Carregar figura atrav√©s de editor richtext (deixe em branco para desabilitar o carregamento)
 please contact the %1administrator%2 for assistance.	wiki	pt-br	Contate o %1Administrador%2 para ajuda.
 preview	wiki	pt-br	Visualizar
-preview of current version	wiki	pt-br	Visualizar vers„o atual
+preview of current version	wiki	pt-br	Visualizar vers√£o atual
 rate control / ip blocking disabled	wiki	pt-br	Controle de taxa / Bloqueio para IP desativado
 readable by	wiki	pt-br	Leitura
 readonly	admin	pt-br	apenas leitura
-recent changes	wiki	pt-br	AlteraÁıes recentes
-renames page to the given name and language	wiki	pt-br	Renomear p·gina para ao nome e idioma escolhidos
+recent changes	wiki	pt-br	Altera√ß√µes recentes
+renames page to the given name and language	wiki	pt-br	Renomear p√°gina para ao nome e idioma escolhidos
 richtext	wiki	pt-br	Richtext
 rows	wiki	pt-br	Fileiras
-save the changes and exit	wiki	pt-br	Salvar alteraÁıes e sair
+save the changes and exit	wiki	pt-br	Salvar altera√ß√µes e sair
 saves and continues editing	wiki	pt-br	Salvar e continuar editando
 search for	wiki	pt-br	Pesquisar por
 see complete list (%1 entries)	wiki	pt-br	Ver lista completa (%1 registros)
 show a search	wiki	pt-br	Exibir uma pesquisa
-show the title of the wiki page	wiki	pt-br	Exibir o tÌtulo da p·gina wiki
-site configuration	wiki	pt-br	ConfiguraÁ„o da p·gina
-summary	wiki	pt-br	Sum·rio
-summary of change	wiki	pt-br	Sum·rio das alteraÁıes
-the search returned no result!	wiki	pt-br	A pesquisa n„o retornou nenhum resultado!
-this page can not be edited.	wiki	pt-br	Esta p·gina n„o pode ser editada.
-twin pages	wiki	pt-br	P·gina idÍnticas
+show the title of the wiki page	wiki	pt-br	Exibir o t√≠tulo da p√°gina wiki
+site configuration	wiki	pt-br	Configura√ß√£o da p√°gina
+summary	wiki	pt-br	Sum√°rio
+summary of change	wiki	pt-br	Sum√°rio das altera√ß√µes
+the search returned no result!	wiki	pt-br	A pesquisa n√£o retornou nenhum resultado!
+this page can not be edited.	wiki	pt-br	Esta p√°gina n√£o pode ser editada.
+twin pages	wiki	pt-br	P√°gina id√™nticas
 unblock	wiki	pt-br	Desbloquear
-updates the preview	wiki	pt-br	Atualizar a visualizaÁ„o
-url of the upload directory	admin	pt-br	URL do diretÛrio de carregamento
-use this module for displaying wiki-pages	wiki	pt-br	Use este mÛdulo para exibir p·ginas wiki
-users	wiki	pt-br	usu·rios
-view document history	wiki	pt-br	Ver histÛrico do documento
-visit %1 to set your user name	wiki	pt-br	Visite %1 para alterar seu nome de usu·rio
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	pt-br	AtenÁ„o: desde que vocÍ iniciou a ediÁ„o neste documento, ele foi editado por outra pessoa. FaÁa a mesclagem da sua ediÁ„o com as demais alteraÁıes para o documento.
-who should be able to edit this page	wiki	pt-br	quem pode editar esta p·gina
-who should be able to read this page	wiki	pt-br	quem pode ler esta p·gina
+updates the preview	wiki	pt-br	Atualizar a visualiza√ß√£o
+url of the upload directory	admin	pt-br	URL do diret√≥rio de carregamento
+use this module for displaying wiki-pages	wiki	pt-br	Use este m√≥dulo para exibir p√°ginas wiki
+users	wiki	pt-br	usu√°rios
+view document history	wiki	pt-br	Ver hist√≥rico do documento
+visit %1 to set your user name	wiki	pt-br	Visite %1 para alterar seu nome de usu√°rio
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	pt-br	Aten√ß√£o: desde que voc√™ iniciou a edi√ß√£o neste documento, ele foi editado por outra pessoa. Fa√ßa a mesclagem da sua edi√ß√£o com as demais altera√ß√µes para o documento.
+who should be able to edit this page	wiki	pt-br	quem pode editar esta p√°gina
+who should be able to read this page	wiki	pt-br	quem pode ler esta p√°gina
 wiki	common	pt-br	Wiki
-wiki administration	wiki	pt-br	AdministraÁ„o Wiki
+wiki administration	wiki	pt-br	Administra√ß√£o Wiki
 wiki menu	wiki	pt-br	Menu Wiki
-wiki startpage	wiki	pt-br	P·gina wiki inicial
-writable by	wiki	pt-br	EdiÁ„o
+wiki startpage	wiki	pt-br	P√°gina wiki inicial
+writable by	wiki	pt-br	Edi√ß√£o
 yes always	admin	pt-br	Sim sempre
-you have been denied access to this site.	wiki	pt-br	VocÍ est· bloqueado para acesso a esta p·gina.
-you have entered an invalid user name.	wiki	pt-br	VocÍ informou um nome de usu·rio inv·lido.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	pt-br	VocÍ excedeu o n˙mero de p·ginas permitidos ‡ vocÍ para visitaÁ„o dentro do perÌodo. Por favor retorne mais tarde.
-you have no rights to view wiki content !!!	wiki	pt-br	VocÍ n„o tem permiss„o para exibir este conte˙do wiki !!!
-your changes	wiki	pt-br	Suas alteraÁıes
-your user name is "%1".	wiki	pt-br	Seu nome de usu·rio È "%1".
+you have been denied access to this site.	wiki	pt-br	Voc√™ est√° bloqueado para acesso a esta p√°gina.
+you have entered an invalid user name.	wiki	pt-br	Voc√™ informou um nome de usu√°rio inv√°lido.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	pt-br	Voc√™ excedeu o n√∫mero de p√°ginas permitidos √† voc√™ para visita√ß√£o dentro do per√≠odo. Por favor retorne mais tarde.
+you have no rights to view wiki content !!!	wiki	pt-br	Voc√™ n√£o tem permiss√£o para exibir este conte√∫do wiki !!!
+your changes	wiki	pt-br	Suas altera√ß√µes
+your user name is "%1".	wiki	pt-br	Seu nome de usu√°rio √© "%1".

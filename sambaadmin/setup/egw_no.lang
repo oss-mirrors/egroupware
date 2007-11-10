@@ -4,7 +4,7 @@ check ldap setup (experimental!!!)	admin	no	Kontoller LDAP oppsett (Eksperimente
 computer group	admin	no	Datamaskingruppe
 computer ou	admin	no	Datamaskin OU
 displayname	sambaadmin	no	Visningsnavn
-do you really want to delete selected workstation accounts?	sambaadmin	no	Ønsker du virkelig å slette valgte arbeidsstasjonskonto?
+do you really want to delete selected workstation accounts?	sambaadmin	no	Ã˜nsker du virkelig Ã¥ slette valgte arbeidsstasjonskonto?
 homedrive	admin	no	Hjemmedisk
 homepath	sambaadmin	no	Hjemmesti
 logonscript	admin	no	Loginskript

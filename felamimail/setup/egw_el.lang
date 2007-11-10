@@ -1,412 +1,412 @@
-(no subject)	felamimail	el	(κανένα θέμα)
-(only cc/bcc)	felamimail	el	(μόνο Cc/Bcc)
-(unknown sender)	felamimail	el	(άγνωστος αποστολέας)
-activate	felamimail	el	Ενεργοποίηση
-activate script	felamimail	el	ενεργοποίηση κειμένου ομιλίας
-add acl	felamimail	el	προσθήκη acl
-add address	felamimail	el	Προσθήκη διεύθυνσης
-add rule	felamimail	el	Προσθήκη Κανόνα
-add script	felamimail	el	Προσθήκη Κειμένου ομιλίας
-add to %1	felamimail	el	Προσθήκη στο %1
-add to address book	felamimail	el	Προσθήκη στο βιβλίο διευθύνσεων
-add to addressbook	felamimail	el	προσθήκη στο βιβλίο διευθύνσεων
-adding file to message. please wait!	felamimail	el	Το αρχείο προστίθεται στο μήνυμα.Παρακαλώ περιμένετε!
-additional info	felamimail	el	Επιπλέον πληροφορίες
-address book	felamimail	el	Βιβλίο Διευθύνσεων
-address book search	felamimail	el	Αναζήτηση Βιβλίου Διευθύνσεων
-after message body	felamimail	el	Μετά το κυρίως σώμα του μηνύματος
-all address books	felamimail	el	Όλα τα βιβλία διευθύνσεων
-all folders	felamimail	el	Όλοι οι Φάκελοι
-all of	felamimail	el	όλα από
-allow images from external sources in html emails	felamimail	el	Να επιτρέπονται οι εικόνες από εξωτερικές πηγές στα HTML emails
-allways a new window	felamimail	el	πάντα νέο παράθυρο
-always show html emails	felamimail	el	Να εμφανίζονται πάντοτε τα HTML emails
-and	felamimail	el	και
-any of	felamimail	el	οποιοδήποτε
-any status	felamimail	el	οποιαδήποτε κατάσταση
-anyone	felamimail	el	οποιοσδήποτε
-as a subfolder of	felamimail	el	ως υποφάκελος του
-attachments	felamimail	el	Επισυνάψεις
-authentication required	felamimail	el	απαιτείται αυθεντικότητα
-auto refresh folder list	felamimail	el	Αυτόματη ανανέωση λίστας φακέλων
-back to folder	felamimail	el	Πίσω στο φάκελο
-bad login name or password.	felamimail	el	Λάθος όνομα ή κωδικός πρόσβασης
-bad request: %s	felamimail	el	¶κυρη απαίτηση: %
-based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	el	Βασισμένο πάνω στα δοθέντα κριτήρια, τα εισερχόμενα μηνύματα μπορούν να έχουν διαφορετικό χρώμα φόντου στη λίστα μηνυμάτων. Αυτό βοηθάει στην εύκολη διάκριση του αποστολέα, ιδιαίτερα  στις λίστες μηνυμάτων.
+(no subject)	felamimail	el	(ΞΊΞ±Ξ½Ξ­Ξ½Ξ± ΞΈΞ­ΞΌΞ±)
+(only cc/bcc)	felamimail	el	(ΞΌΟΞ½ΞΏ Cc/Bcc)
+(unknown sender)	felamimail	el	(Ξ¬Ξ³Ξ½Ο‰ΟƒΟ„ΞΏΟ‚ Ξ±Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ­Ξ±Ο‚)
+activate	felamimail	el	Ξ•Ξ½ΞµΟΞ³ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ·
+activate script	felamimail	el	ΞµΞ½ΞµΟΞ³ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· ΞΊΞµΞΉΞΌΞ­Ξ½ΞΏΟ… ΞΏΞΌΞΉΞ»Ξ―Ξ±Ο‚
+add acl	felamimail	el	Ο€ΟΞΏΟƒΞΈΞ®ΞΊΞ· acl
+add address	felamimail	el	Ξ ΟΞΏΟƒΞΈΞ®ΞΊΞ· Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·Ο‚
+add rule	felamimail	el	Ξ ΟΞΏΟƒΞΈΞ®ΞΊΞ· ΞΞ±Ξ½ΟΞ½Ξ±
+add script	felamimail	el	Ξ ΟΞΏΟƒΞΈΞ®ΞΊΞ· ΞΞµΞΉΞΌΞ­Ξ½ΞΏΟ… ΞΏΞΌΞΉΞ»Ξ―Ξ±Ο‚
+add to %1	felamimail	el	Ξ ΟΞΏΟƒΞΈΞ®ΞΊΞ· ΟƒΟ„ΞΏ %1
+add to address book	felamimail	el	Ξ ΟΞΏΟƒΞΈΞ®ΞΊΞ· ΟƒΟ„ΞΏ Ξ²ΞΉΞ²Ξ»Ξ―ΞΏ Ξ΄ΞΉΞµΟ…ΞΈΟΞ½ΟƒΞµΟ‰Ξ½
+add to addressbook	felamimail	el	Ο€ΟΞΏΟƒΞΈΞ®ΞΊΞ· ΟƒΟ„ΞΏ Ξ²ΞΉΞ²Ξ»Ξ―ΞΏ Ξ΄ΞΉΞµΟ…ΞΈΟΞ½ΟƒΞµΟ‰Ξ½
+adding file to message. please wait!	felamimail	el	Ξ¤ΞΏ Ξ±ΟΟ‡ΞµΞ―ΞΏ Ο€ΟΞΏΟƒΟ„Ξ―ΞΈΞµΟ„Ξ±ΞΉ ΟƒΟ„ΞΏ ΞΌΞ®Ξ½Ο…ΞΌΞ±.Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο Ο€ΞµΟΞΉΞΌΞ­Ξ½ΞµΟ„Ξµ!
+additional info	felamimail	el	Ξ•Ο€ΞΉΟ€Ξ»Ξ­ΞΏΞ½ Ο€Ξ»Ξ·ΟΞΏΟ†ΞΏΟΞ―ΞµΟ‚
+address book	felamimail	el	Ξ’ΞΉΞ²Ξ»Ξ―ΞΏ Ξ”ΞΉΞµΟ…ΞΈΟΞ½ΟƒΞµΟ‰Ξ½
+address book search	felamimail	el	Ξ‘Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ· Ξ’ΞΉΞ²Ξ»Ξ―ΞΏΟ… Ξ”ΞΉΞµΟ…ΞΈΟΞ½ΟƒΞµΟ‰Ξ½
+after message body	felamimail	el	ΞΞµΟ„Ξ¬ Ο„ΞΏ ΞΊΟ…ΟΞ―Ο‰Ο‚ ΟƒΟΞΌΞ± Ο„ΞΏΟ… ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+all address books	felamimail	el	ΞΞ»Ξ± Ο„Ξ± Ξ²ΞΉΞ²Ξ»Ξ―Ξ± Ξ΄ΞΉΞµΟ…ΞΈΟΞ½ΟƒΞµΟ‰Ξ½
+all folders	felamimail	el	ΞΞ»ΞΏΞΉ ΞΏΞΉ Ξ¦Ξ¬ΞΊΞµΞ»ΞΏΞΉ
+all of	felamimail	el	ΟΞ»Ξ± Ξ±Ο€Ο
+allow images from external sources in html emails	felamimail	el	ΞΞ± ΞµΟ€ΞΉΟ„ΟΞ­Ο€ΞΏΞ½Ο„Ξ±ΞΉ ΞΏΞΉ ΞµΞΉΞΊΟΞ½ΞµΟ‚ Ξ±Ο€Ο ΞµΞΎΟ‰Ο„ΞµΟΞΉΞΊΞ­Ο‚ Ο€Ξ·Ξ³Ξ­Ο‚ ΟƒΟ„Ξ± HTML emails
+allways a new window	felamimail	el	Ο€Ξ¬Ξ½Ο„Ξ± Ξ½Ξ­ΞΏ Ο€Ξ±ΟΞ¬ΞΈΟ…ΟΞΏ
+always show html emails	felamimail	el	ΞΞ± ΞµΞΌΟ†Ξ±Ξ½Ξ―Ξ¶ΞΏΞ½Ο„Ξ±ΞΉ Ο€Ξ¬Ξ½Ο„ΞΏΟ„Ξµ Ο„Ξ± HTML emails
+and	felamimail	el	ΞΊΞ±ΞΉ
+any of	felamimail	el	ΞΏΟ€ΞΏΞΉΞΏΞ΄Ξ®Ο€ΞΏΟ„Ξµ
+any status	felamimail	el	ΞΏΟ€ΞΏΞΉΞ±Ξ΄Ξ®Ο€ΞΏΟ„Ξµ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·
+anyone	felamimail	el	ΞΏΟ€ΞΏΞΉΞΏΟƒΞ΄Ξ®Ο€ΞΏΟ„Ξµ
+as a subfolder of	felamimail	el	Ο‰Ο‚ Ο…Ο€ΞΏΟ†Ξ¬ΞΊΞµΞ»ΞΏΟ‚ Ο„ΞΏΟ…
+attachments	felamimail	el	Ξ•Ο€ΞΉΟƒΟ…Ξ½Ξ¬ΟΞµΞΉΟ‚
+authentication required	felamimail	el	Ξ±Ο€Ξ±ΞΉΟ„ΞµΞ―Ο„Ξ±ΞΉ Ξ±Ο…ΞΈΞµΞ½Ο„ΞΉΞΊΟΟ„Ξ·Ο„Ξ±
+auto refresh folder list	felamimail	el	Ξ‘Ο…Ο„ΟΞΌΞ±Ο„Ξ· Ξ±Ξ½Ξ±Ξ½Ξ­Ο‰ΟƒΞ· Ξ»Ξ―ΟƒΟ„Ξ±Ο‚ Ο†Ξ±ΞΊΞ­Ξ»Ο‰Ξ½
+back to folder	felamimail	el	Ξ Ξ―ΟƒΟ‰ ΟƒΟ„ΞΏ Ο†Ξ¬ΞΊΞµΞ»ΞΏ
+bad login name or password.	felamimail	el	Ξ›Ξ¬ΞΈΞΏΟ‚ ΟΞ½ΞΏΞΌΞ± Ξ® ΞΊΟ‰Ξ΄ΞΉΞΊΟΟ‚ Ο€ΟΟΟƒΞ²Ξ±ΟƒΞ·Ο‚
+bad request: %s	felamimail	el	Ξ†ΞΊΟ…ΟΞ· Ξ±Ο€Ξ±Ξ―Ο„Ξ·ΟƒΞ·: %
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	el	Ξ’Ξ±ΟƒΞΉΟƒΞΌΞ­Ξ½ΞΏ Ο€Ξ¬Ξ½Ο‰ ΟƒΟ„Ξ± Ξ΄ΞΏΞΈΞ­Ξ½Ο„Ξ± ΞΊΟΞΉΟ„Ξ®ΟΞΉΞ±, Ο„Ξ± ΞµΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ± ΞΌΞ·Ξ½ΟΞΌΞ±Ο„Ξ± ΞΌΟ€ΞΏΟΞΏΟΞ½ Ξ½Ξ± Ξ­Ο‡ΞΏΟ…Ξ½ Ξ΄ΞΉΞ±Ο†ΞΏΟΞµΟ„ΞΉΞΊΟ Ο‡ΟΟΞΌΞ± Ο†ΟΞ½Ο„ΞΏΟ… ΟƒΟ„Ξ· Ξ»Ξ―ΟƒΟ„Ξ± ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½. Ξ‘Ο…Ο„Ο Ξ²ΞΏΞ·ΞΈΞ¬ΞµΞΉ ΟƒΟ„Ξ·Ξ½ ΞµΟΞΊΞΏΞ»Ξ· Ξ΄ΞΉΞ¬ΞΊΟΞΉΟƒΞ· Ο„ΞΏΟ… Ξ±Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ­Ξ±, ΞΉΞ΄ΞΉΞ±Ξ―Ο„ΞµΟΞ±  ΟƒΟ„ΞΉΟ‚ Ξ»Ξ―ΟƒΟ„ΞµΟ‚ ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½.
 bcc	felamimail	el	BCC
-before headers	felamimail	el	Πριν τις κεφαλίδες
-between headers and message body	felamimail	el	Ανάμεσα στις κεφαλίδες και το κυρίως σώμα του μηνύματος
-body part	felamimail	el	κυρίως σώμα
-can't connect to inbox!!	felamimail	el	δεν μπορεί να συνδεθεί με τα ΕΙΣΕΡΧΟΜΕΝΑ
+before headers	felamimail	el	Ξ ΟΞΉΞ½ Ο„ΞΉΟ‚ ΞΊΞµΟ†Ξ±Ξ»Ξ―Ξ΄ΞµΟ‚
+between headers and message body	felamimail	el	Ξ‘Ξ½Ξ¬ΞΌΞµΟƒΞ± ΟƒΟ„ΞΉΟ‚ ΞΊΞµΟ†Ξ±Ξ»Ξ―Ξ΄ΞµΟ‚ ΞΊΞ±ΞΉ Ο„ΞΏ ΞΊΟ…ΟΞ―Ο‰Ο‚ ΟƒΟΞΌΞ± Ο„ΞΏΟ… ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+body part	felamimail	el	ΞΊΟ…ΟΞ―Ο‰Ο‚ ΟƒΟΞΌΞ±
+can't connect to inbox!!	felamimail	el	Ξ΄ΞµΞ½ ΞΌΟ€ΞΏΟΞµΞ― Ξ½Ξ± ΟƒΟ…Ξ½Ξ΄ΞµΞΈΞµΞ― ΞΌΞµ Ο„Ξ± Ξ•Ξ™Ξ£Ξ•Ξ΅Ξ§ΞΞΞ•ΞΞ‘
 cc	felamimail	el	CC
-change folder	felamimail	el	Αλλαγή φακέλου
+change folder	felamimail	el	Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ® Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
 checkbox	felamimail	el	Checkbox
-clear search	felamimail	el	καθαρισμός αναζήτησης
-click here to log back in.	felamimail	el	Κάντε κλικ εδώ για να εισέλθετε ξανά πίσω
-click here to return to %1	felamimail	el	Κάντε κλικ εδώ για επιστροφή στο %1
-close all	felamimail	el	κλείσιμο όλων
-close this page	felamimail	el	κλείσιμο αυτής της σελίδας
-close window	felamimail	el	Κλείσιμο παράθυρου
-color	felamimail	el	Χρώμα
-compose	felamimail	el	Συνθέτω
-compress folder	felamimail	el	Φάκελος συμπίεσης
-condition	felamimail	el	κατάσταση
-configuration	felamimail	el	Διάρθρωση
-connection dropped by imap server.	felamimail	el	Έπεσε η σύνδεση από τον IMAP server
-contains	felamimail	el	περιέχει
-could not complete request. reason given: %s	felamimail	el	Δεν ολοκληρώθηκε το αίτημα. Αιτία: %s
-could not open secure connection to the imap server. %s : %s.	felamimail	el	Δεν έγινε ασφαλής σύνδεση με τον IMAP server. %s : %s.
-cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	el	CRAM-MD5 ή DIGEST-MD5 απαιτεί το Auth_SASL πακέτο να εγκατασταθεί.
-create	felamimail	el	Δημιουργία
-create folder	felamimail	el	Δημιουργία Φακέλου
-create sent	felamimail	el	Δημιουργία Σταλθέντων
-create subfolder	felamimail	el	Δημιουργία υποφακέλου
-create trash	felamimail	el	Δημιουργία Κάδου Αχρήστων
-created folder successfully!	felamimail	el	Δημιουργία φακέλου επιτυχής!
-dark blue	felamimail	el	Σκούρο μπλε
-dark cyan	felamimail	el	Σκούρο κυανό
-dark gray	felamimail	el	Σκούρο γκρι
-dark green	felamimail	el	Σκούρο πράσινο
-dark magenta	felamimail	el	Σκούρο ματζέντα
-dark yellow	felamimail	el	Σκούρο κίτρινο
-date(newest first)	felamimail	el	Ημερομηνία (πρώτα η πιο πρόσφατη)
-date(oldest first)	felamimail	el	Ημερομηνία (πρώτα η πιο παλιά)
-days	felamimail	el	ημέρες
-deactivate script	felamimail	el	απενεργοποίηση σεναρίου
-default signature	felamimail	el	προεπιλεγμένη υπογραφή
-default sorting order	felamimail	el	Προεπιλεγμένη σειρά ταξινόμησης
-delete all	felamimail	el	διαγραφή όλων
-delete folder	felamimail	el	Διαγραφή Φακέλου
-delete script	felamimail	el	διαγραφή σεναρίου
-delete selected	felamimail	el	Διαγραφή επιλεγμένων
-delete selected messages	felamimail	el	διαγραφή επιλεγμένων μηνυμάτων
-deleted	felamimail	el	διεγράφη
-deleted folder successfully!	felamimail	el	Φάκελος διεγράφη επιτυχώς
-deleting messages	felamimail	el	διαγραφή μηνυμάτων
-disable	felamimail	el	Απενεργοποίηση
-discard	felamimail	el	απόρριψη
-discard message	felamimail	el	απόρριψη μηνύματων
-display message in new window	felamimail	el	Προβολή μηνύματος σε νέο παράθυρο
-display messages in multiple windows	felamimail	el	προβολή μηνυμάτων σε πολλαπλά παράθυρα
-display of html emails	felamimail	el	Προβολή των HTML emails
-display only when no plain text is available	felamimail	el	Προβολή μόνο όταν είναι δεν διαθέσιμο κανένα αποκρυπτογραφημένο κείμενο
-display preferences	felamimail	el	Προβολή Προτιμήσεων
-displaying html messages is disabled	felamimail	el	η προβολή των html μηνυμάτων είναι απενεργοποιημένη
-do it!	felamimail	el	Κάντο!
-do not use sent	felamimail	el	Μην χρησιμοποιείτε τα Σταλθέντα
-do not use trash	felamimail	el	Μην χρησιμοποιείτε τον Κάδο Αχρήστων
-do not validate certificate	felamimail	el	μην επικυρώνετε το πιστοποιητικό
-do you really want to delete the '%1' folder?	felamimail	el	Θέλετε πραγματικά να διαγράψετε τον φάκελο '%1' ;
-do you really want to delete the selected signatures?	felamimail	el	Θέλετε πραγματικά να διαγάψετε τι=ς επιλεγμένες υπογραφές;
-does not contain	felamimail	el	δεν περιέχει
-does not match	felamimail	el	δεν συμπίπτει
-don't use draft folder	felamimail	el	Μην χρησιμοποιείτε των φάκελο προσχεδίων
-don't use sent	felamimail	el	Μην χρησιμοποιείτε τα Σταλθέντα
-don't use trash	felamimail	el	Μην χρησιμοποιείτε των Κάδο Αχρήστων
-down	felamimail	el	κάτω
-download	felamimail	el	φόρτωση
-download this as a file	felamimail	el	Φόρτωση αυτού του φακέλου
-draft folder	felamimail	el	προσχέδιος φάκελος
+clear search	felamimail	el	ΞΊΞ±ΞΈΞ±ΟΞΉΟƒΞΌΟΟ‚ Ξ±Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ·Ο‚
+click here to log back in.	felamimail	el	ΞΞ¬Ξ½Ο„Ξµ ΞΊΞ»ΞΉΞΊ ΞµΞ΄Ο Ξ³ΞΉΞ± Ξ½Ξ± ΞµΞΉΟƒΞ­Ξ»ΞΈΞµΟ„Ξµ ΞΎΞ±Ξ½Ξ¬ Ο€Ξ―ΟƒΟ‰
+click here to return to %1	felamimail	el	ΞΞ¬Ξ½Ο„Ξµ ΞΊΞ»ΞΉΞΊ ΞµΞ΄Ο Ξ³ΞΉΞ± ΞµΟ€ΞΉΟƒΟ„ΟΞΏΟ†Ξ® ΟƒΟ„ΞΏ %1
+close all	felamimail	el	ΞΊΞ»ΞµΞ―ΟƒΞΉΞΌΞΏ ΟΞ»Ο‰Ξ½
+close this page	felamimail	el	ΞΊΞ»ΞµΞ―ΟƒΞΉΞΌΞΏ Ξ±Ο…Ο„Ξ®Ο‚ Ο„Ξ·Ο‚ ΟƒΞµΞ»Ξ―Ξ΄Ξ±Ο‚
+close window	felamimail	el	ΞΞ»ΞµΞ―ΟƒΞΉΞΌΞΏ Ο€Ξ±ΟΞ¬ΞΈΟ…ΟΞΏΟ…
+color	felamimail	el	Ξ§ΟΟΞΌΞ±
+compose	felamimail	el	Ξ£Ο…Ξ½ΞΈΞ­Ο„Ο‰
+compress folder	felamimail	el	Ξ¦Ξ¬ΞΊΞµΞ»ΞΏΟ‚ ΟƒΟ…ΞΌΟ€Ξ―ΞµΟƒΞ·Ο‚
+condition	felamimail	el	ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·
+configuration	felamimail	el	Ξ”ΞΉΞ¬ΟΞΈΟΟ‰ΟƒΞ·
+connection dropped by imap server.	felamimail	el	ΞΟ€ΞµΟƒΞµ Ξ· ΟƒΟΞ½Ξ΄ΞµΟƒΞ· Ξ±Ο€Ο Ο„ΞΏΞ½ IMAP server
+contains	felamimail	el	Ο€ΞµΟΞΉΞ­Ο‡ΞµΞΉ
+could not complete request. reason given: %s	felamimail	el	Ξ”ΞµΞ½ ΞΏΞ»ΞΏΞΊΞ»Ξ·ΟΟΞΈΞ·ΞΊΞµ Ο„ΞΏ Ξ±Ξ―Ο„Ξ·ΞΌΞ±. Ξ‘ΞΉΟ„Ξ―Ξ±: %s
+could not open secure connection to the imap server. %s : %s.	felamimail	el	Ξ”ΞµΞ½ Ξ­Ξ³ΞΉΞ½Ξµ Ξ±ΟƒΟ†Ξ±Ξ»Ξ®Ο‚ ΟƒΟΞ½Ξ΄ΞµΟƒΞ· ΞΌΞµ Ο„ΞΏΞ½ IMAP server. %s : %s.
+cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	el	CRAM-MD5 Ξ® DIGEST-MD5 Ξ±Ο€Ξ±ΞΉΟ„ΞµΞ― Ο„ΞΏ Auth_SASL Ο€Ξ±ΞΊΞ­Ο„ΞΏ Ξ½Ξ± ΞµΞ³ΞΊΞ±Ο„Ξ±ΟƒΟ„Ξ±ΞΈΞµΞ―.
+create	felamimail	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ±
+create folder	felamimail	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ξ¦Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+create sent	felamimail	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ξ£Ο„Ξ±Ξ»ΞΈΞ­Ξ½Ο„Ο‰Ξ½
+create subfolder	felamimail	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ο…Ο€ΞΏΟ†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+create trash	felamimail	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± ΞΞ¬Ξ΄ΞΏΟ… Ξ‘Ο‡ΟΞ®ΟƒΟ„Ο‰Ξ½
+created folder successfully!	felamimail	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ… ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ®Ο‚!
+dark blue	felamimail	el	Ξ£ΞΊΞΏΟΟΞΏ ΞΌΟ€Ξ»Ξµ
+dark cyan	felamimail	el	Ξ£ΞΊΞΏΟΟΞΏ ΞΊΟ…Ξ±Ξ½Ο
+dark gray	felamimail	el	Ξ£ΞΊΞΏΟΟΞΏ Ξ³ΞΊΟΞΉ
+dark green	felamimail	el	Ξ£ΞΊΞΏΟΟΞΏ Ο€ΟΞ¬ΟƒΞΉΞ½ΞΏ
+dark magenta	felamimail	el	Ξ£ΞΊΞΏΟΟΞΏ ΞΌΞ±Ο„Ξ¶Ξ­Ξ½Ο„Ξ±
+dark yellow	felamimail	el	Ξ£ΞΊΞΏΟΟΞΏ ΞΊΞ―Ο„ΟΞΉΞ½ΞΏ
+date(newest first)	felamimail	el	Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ± (Ο€ΟΟΟ„Ξ± Ξ· Ο€ΞΉΞΏ Ο€ΟΟΟƒΟ†Ξ±Ο„Ξ·)
+date(oldest first)	felamimail	el	Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ± (Ο€ΟΟΟ„Ξ± Ξ· Ο€ΞΉΞΏ Ο€Ξ±Ξ»ΞΉΞ¬)
+days	felamimail	el	Ξ·ΞΌΞ­ΟΞµΟ‚
+deactivate script	felamimail	el	Ξ±Ο€ΞµΞ½ΞµΟΞ³ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· ΟƒΞµΞ½Ξ±ΟΞ―ΞΏΟ…
+default signature	felamimail	el	Ο€ΟΞΏΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ξ· Ο…Ο€ΞΏΞ³ΟΞ±Ο†Ξ®
+default sorting order	felamimail	el	Ξ ΟΞΏΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ξ· ΟƒΞµΞΉΟΞ¬ Ο„Ξ±ΞΎΞΉΞ½ΟΞΌΞ·ΟƒΞ·Ο‚
+delete all	felamimail	el	Ξ΄ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® ΟΞ»Ο‰Ξ½
+delete folder	felamimail	el	Ξ”ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® Ξ¦Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+delete script	felamimail	el	Ξ΄ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® ΟƒΞµΞ½Ξ±ΟΞ―ΞΏΟ…
+delete selected	felamimail	el	Ξ”ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½
+delete selected messages	felamimail	el	Ξ΄ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½ ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½
+deleted	felamimail	el	Ξ΄ΞΉΞµΞ³ΟΞ¬Ο†Ξ·
+deleted folder successfully!	felamimail	el	Ξ¦Ξ¬ΞΊΞµΞ»ΞΏΟ‚ Ξ΄ΞΉΞµΞ³ΟΞ¬Ο†Ξ· ΞµΟ€ΞΉΟ„Ο…Ο‡ΟΟ‚
+deleting messages	felamimail	el	Ξ΄ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½
+disable	felamimail	el	Ξ‘Ο€ΞµΞ½ΞµΟΞ³ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ·
+discard	felamimail	el	Ξ±Ο€ΟΟΟΞΉΟΞ·
+discard message	felamimail	el	Ξ±Ο€ΟΟΟΞΉΟΞ· ΞΌΞ·Ξ½ΟΞΌΞ±Ο„Ο‰Ξ½
+display message in new window	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚ ΟƒΞµ Ξ½Ξ­ΞΏ Ο€Ξ±ΟΞ¬ΞΈΟ…ΟΞΏ
+display messages in multiple windows	felamimail	el	Ο€ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½ ΟƒΞµ Ο€ΞΏΞ»Ξ»Ξ±Ο€Ξ»Ξ¬ Ο€Ξ±ΟΞ¬ΞΈΟ…ΟΞ±
+display of html emails	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ο„Ο‰Ξ½ HTML emails
+display only when no plain text is available	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΟΞ½ΞΏ ΟΟ„Ξ±Ξ½ ΞµΞ―Ξ½Ξ±ΞΉ Ξ΄ΞµΞ½ Ξ΄ΞΉΞ±ΞΈΞ­ΟƒΞΉΞΌΞΏ ΞΊΞ±Ξ½Ξ­Ξ½Ξ± Ξ±Ο€ΞΏΞΊΟΟ…Ο€Ο„ΞΏΞ³ΟΞ±Ο†Ξ·ΞΌΞ­Ξ½ΞΏ ΞΊΞµΞ―ΞΌΞµΞ½ΞΏ
+display preferences	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ξ ΟΞΏΟ„ΞΉΞΌΞ®ΟƒΞµΟ‰Ξ½
+displaying html messages is disabled	felamimail	el	Ξ· Ο€ΟΞΏΞ²ΞΏΞ»Ξ® Ο„Ο‰Ξ½ html ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½ ΞµΞ―Ξ½Ξ±ΞΉ Ξ±Ο€ΞµΞ½ΞµΟΞ³ΞΏΟ€ΞΏΞΉΞ·ΞΌΞ­Ξ½Ξ·
+do it!	felamimail	el	ΞΞ¬Ξ½Ο„ΞΏ!
+do not use sent	felamimail	el	ΞΞ·Ξ½ Ο‡ΟΞ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞΉΞµΞ―Ο„Ξµ Ο„Ξ± Ξ£Ο„Ξ±Ξ»ΞΈΞ­Ξ½Ο„Ξ±
+do not use trash	felamimail	el	ΞΞ·Ξ½ Ο‡ΟΞ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞΉΞµΞ―Ο„Ξµ Ο„ΞΏΞ½ ΞΞ¬Ξ΄ΞΏ Ξ‘Ο‡ΟΞ®ΟƒΟ„Ο‰Ξ½
+do not validate certificate	felamimail	el	ΞΌΞ·Ξ½ ΞµΟ€ΞΉΞΊΟ…ΟΟΞ½ΞµΟ„Ξµ Ο„ΞΏ Ο€ΞΉΟƒΟ„ΞΏΟ€ΞΏΞΉΞ·Ο„ΞΉΞΊΟ
+do you really want to delete the '%1' folder?	felamimail	el	ΞΞ­Ξ»ΞµΟ„Ξµ Ο€ΟΞ±Ξ³ΞΌΞ±Ο„ΞΉΞΊΞ¬ Ξ½Ξ± Ξ΄ΞΉΞ±Ξ³ΟΞ¬ΟΞµΟ„Ξµ Ο„ΞΏΞ½ Ο†Ξ¬ΞΊΞµΞ»ΞΏ '%1' ;
+do you really want to delete the selected signatures?	felamimail	el	ΞΞ­Ξ»ΞµΟ„Ξµ Ο€ΟΞ±Ξ³ΞΌΞ±Ο„ΞΉΞΊΞ¬ Ξ½Ξ± Ξ΄ΞΉΞ±Ξ³Ξ¬ΟΞµΟ„Ξµ Ο„ΞΉ=Ο‚ ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½ΞµΟ‚ Ο…Ο€ΞΏΞ³ΟΞ±Ο†Ξ­Ο‚;
+does not contain	felamimail	el	Ξ΄ΞµΞ½ Ο€ΞµΟΞΉΞ­Ο‡ΞµΞΉ
+does not match	felamimail	el	Ξ΄ΞµΞ½ ΟƒΟ…ΞΌΟ€Ξ―Ο€Ο„ΞµΞΉ
+don't use draft folder	felamimail	el	ΞΞ·Ξ½ Ο‡ΟΞ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞΉΞµΞ―Ο„Ξµ Ο„Ο‰Ξ½ Ο†Ξ¬ΞΊΞµΞ»ΞΏ Ο€ΟΞΏΟƒΟ‡ΞµΞ΄Ξ―Ο‰Ξ½
+don't use sent	felamimail	el	ΞΞ·Ξ½ Ο‡ΟΞ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞΉΞµΞ―Ο„Ξµ Ο„Ξ± Ξ£Ο„Ξ±Ξ»ΞΈΞ­Ξ½Ο„Ξ±
+don't use trash	felamimail	el	ΞΞ·Ξ½ Ο‡ΟΞ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞΉΞµΞ―Ο„Ξµ Ο„Ο‰Ξ½ ΞΞ¬Ξ΄ΞΏ Ξ‘Ο‡ΟΞ®ΟƒΟ„Ο‰Ξ½
+down	felamimail	el	ΞΊΞ¬Ο„Ο‰
+download	felamimail	el	Ο†ΟΟΟ„Ο‰ΟƒΞ·
+download this as a file	felamimail	el	Ξ¦ΟΟΟ„Ο‰ΟƒΞ· Ξ±Ο…Ο„ΞΏΟ Ο„ΞΏΟ… Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+draft folder	felamimail	el	Ο€ΟΞΏΟƒΟ‡Ξ­Ξ΄ΞΉΞΏΟ‚ Ο†Ξ¬ΞΊΞµΞ»ΞΏΟ‚
 e-mail	felamimail	el	E-mail
-e-mail address	felamimail	el	Διεύθυνση e-mail
-e-mail folders	felamimail	el	Φάκελοι e-mail
-edit email forwarding address	felamimail	el	επεξεργασία διευθυνσης προωθημένου e-mail
-edit filter	felamimail	el	Επεξεργασία φίλτρου
-edit rule	felamimail	el	επεξεργασία κανόνα
-edit selected	felamimail	el	Επεξεργασία επιλεγμένων
-edit vacation settings	felamimail	el	επεξεργασία ρυθμίσεων διακοπών
-email address	felamimail	el	Διεύθυνση e-mail
-email forwarding address	felamimail	el	διεύθυνση προωθημένου e-mail
-email signature	felamimail	el	Υπογραφή e-mail
-emailaddress	felamimail	el	Διεύθυνση e-mail
-empty trash	felamimail	el	¶δειασμα κάδου αχρήστων
-enable	felamimail	el	ενεργοποίηση
-encrypted connection	felamimail	el	αποκρυπτογραφημένη σύνδεση
-enter your imap mail server hostname or ip address	admin	el	Πληκτρολογήστε το IMAP mail server όνομα χρήστη ή την IP διεύθυνση
-enter your sieve server hostname or ip address	admin	el	Πληκτρολογήστε το SIEVE server όνομα χρήστη ή την IP διεύθυνση
-enter your sieve server port	admin	el	Πληκτρολογήστε την SIEVE server θύρα
-enter your smtp server hostname or ip address	admin	el	Πληκτρολογήστε το SMTP server όνομα χρήστη ή την IP διεύθυνση
-enter your smtp server port	admin	el	Πληκτρολογήστε την SMTP server θύρα
-error	felamimail	el	ΣΦΑΛΜΑ
-error connecting to imap serv	felamimail	el	Σφάλμα κατά τη σύνδεση με τον IMAP serv
-error connecting to imap server. %s : %s.	felamimail	el	Σφάλμα κατά τη σύνδεση με τον IMAP server. %s : %s.
-error connecting to imap server: [%s] %s.	felamimail	el	Σφάλμα κατά τη σύνδεση με τον IMAP server. [%s] : %s.
-error opening	felamimail	el	Σφάλμα στο άνοιγμα
-every	felamimail	el	κάθε
-every %1 days	felamimail	el	κάθε %1 ημέρες
-expunge	felamimail	el	Διαγράφω
-extended	felamimail	el	επεκτάθηκε
+e-mail address	felamimail	el	Ξ”ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ· e-mail
+e-mail folders	felamimail	el	Ξ¦Ξ¬ΞΊΞµΞ»ΞΏΞΉ e-mail
+edit email forwarding address	felamimail	el	ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ξ΄ΞΉΞµΟ…ΞΈΟ…Ξ½ΟƒΞ·Ο‚ Ο€ΟΞΏΟ‰ΞΈΞ·ΞΌΞ­Ξ½ΞΏΟ… e-mail
+edit filter	felamimail	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ο†Ξ―Ξ»Ο„ΟΞΏΟ…
+edit rule	felamimail	el	ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± ΞΊΞ±Ξ½ΟΞ½Ξ±
+edit selected	felamimail	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½
+edit vacation settings	felamimail	el	ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± ΟΟ…ΞΈΞΌΞ―ΟƒΞµΟ‰Ξ½ Ξ΄ΞΉΞ±ΞΊΞΏΟ€ΟΞ½
+email address	felamimail	el	Ξ”ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ· e-mail
+email forwarding address	felamimail	el	Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ· Ο€ΟΞΏΟ‰ΞΈΞ·ΞΌΞ­Ξ½ΞΏΟ… e-mail
+email signature	felamimail	el	Ξ¥Ο€ΞΏΞ³ΟΞ±Ο†Ξ® e-mail
+emailaddress	felamimail	el	Ξ”ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ· e-mail
+empty trash	felamimail	el	Ξ†Ξ΄ΞµΞΉΞ±ΟƒΞΌΞ± ΞΊΞ¬Ξ΄ΞΏΟ… Ξ±Ο‡ΟΞ®ΟƒΟ„Ο‰Ξ½
+enable	felamimail	el	ΞµΞ½ΞµΟΞ³ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ·
+encrypted connection	felamimail	el	Ξ±Ο€ΞΏΞΊΟΟ…Ο€Ο„ΞΏΞ³ΟΞ±Ο†Ξ·ΞΌΞ­Ξ½Ξ· ΟƒΟΞ½Ξ΄ΞµΟƒΞ·
+enter your imap mail server hostname or ip address	admin	el	Ξ Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ Ο„ΞΏ IMAP mail server ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ· Ξ® Ο„Ξ·Ξ½ IP Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·
+enter your sieve server hostname or ip address	admin	el	Ξ Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ Ο„ΞΏ SIEVE server ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ· Ξ® Ο„Ξ·Ξ½ IP Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·
+enter your sieve server port	admin	el	Ξ Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ Ο„Ξ·Ξ½ SIEVE server ΞΈΟΟΞ±
+enter your smtp server hostname or ip address	admin	el	Ξ Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ Ο„ΞΏ SMTP server ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ· Ξ® Ο„Ξ·Ξ½ IP Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·
+enter your smtp server port	admin	el	Ξ Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ Ο„Ξ·Ξ½ SMTP server ΞΈΟΟΞ±
+error	felamimail	el	Ξ£Ξ¦Ξ‘Ξ›ΞΞ‘
+error connecting to imap serv	felamimail	el	Ξ£Ο†Ξ¬Ξ»ΞΌΞ± ΞΊΞ±Ο„Ξ¬ Ο„Ξ· ΟƒΟΞ½Ξ΄ΞµΟƒΞ· ΞΌΞµ Ο„ΞΏΞ½ IMAP serv
+error connecting to imap server. %s : %s.	felamimail	el	Ξ£Ο†Ξ¬Ξ»ΞΌΞ± ΞΊΞ±Ο„Ξ¬ Ο„Ξ· ΟƒΟΞ½Ξ΄ΞµΟƒΞ· ΞΌΞµ Ο„ΞΏΞ½ IMAP server. %s : %s.
+error connecting to imap server: [%s] %s.	felamimail	el	Ξ£Ο†Ξ¬Ξ»ΞΌΞ± ΞΊΞ±Ο„Ξ¬ Ο„Ξ· ΟƒΟΞ½Ξ΄ΞµΟƒΞ· ΞΌΞµ Ο„ΞΏΞ½ IMAP server. [%s] : %s.
+error opening	felamimail	el	Ξ£Ο†Ξ¬Ξ»ΞΌΞ± ΟƒΟ„ΞΏ Ξ¬Ξ½ΞΏΞΉΞ³ΞΌΞ±
+every	felamimail	el	ΞΊΞ¬ΞΈΞµ
+every %1 days	felamimail	el	ΞΊΞ¬ΞΈΞµ %1 Ξ·ΞΌΞ­ΟΞµΟ‚
+expunge	felamimail	el	Ξ”ΞΉΞ±Ξ³ΟΞ¬Ο†Ο‰
+extended	felamimail	el	ΞµΟ€ΞµΞΊΟ„Ξ¬ΞΈΞ·ΞΊΞµ
 felamimail	common	el	FelaMiMail
-file into	felamimail	el	αρχείο μέσα στο
-files	felamimail	el	αρχεία
-filter active	felamimail	el	ενεργό φίλτρο
-filter name	felamimail	el	Όνομα φίλτρου
-filter rules	common	el	κανόνες φίλτρου
-first name	felamimail	el	Όνομα
-flagged	felamimail	el	σημαιοστολισμένο
-flags	felamimail	el	Σημαίες
-folder acl	felamimail	el	Acl φακέλου
-folder name	felamimail	el	Όνομα φακέλου
-folder path	felamimail	el	Διαδρομή φακέλου
-folder preferences	felamimail	el	Προτιμήσεις Φακέλου
-folder settings	felamimail	el	Ρυθμίσεις φακέλου
-folder status	felamimail	el	Κατάσταση φακέλου
-folderlist	felamimail	el	Λίστα φακέλου
-foldername	felamimail	el	Όνομα φακέλου
-folders	felamimail	el	Φάκελοι
-folders created successfully!	felamimail	el	Επιτυχής δημιουργία φακέλων!
-follow	felamimail	el	ακολουθώ
-for mail to be send - not functional yet	felamimail	el	Για αποστολή μηνύματος - δεν λειτουργεί ακόμα
-for received mail	felamimail	el	Για εισερχόμενα μηνύματα
-forward	felamimail	el	Προώθηση
-forward to	felamimail	el	προώθηση σε
-forward to address	felamimail	el	προώθηση στην διεύθυνση
-forwarding	felamimail	el	Προωθείται
-found	felamimail	el	Βρέθηκε
-fri	felamimail	el	Παρ
-from	felamimail	el	Από
-from(a->z)	felamimail	el	Από (Α->Ω)
-from(z->a)	felamimail	el	Από (Ω->Α)
-full name	felamimail	el	Ολόκληρο το όνομα
-greater than	felamimail	el	μεγαλύτερο από
-have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	el	Κοιτάξτε στο <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> για να μάθετε περισσότερα για το Squirrelmail.<br>
-header lines	felamimail	el	Γραμμές Τίτλου
-hide header	felamimail	el	απόκρυψη τίτλου
-hostname / address	felamimail	el	όνομα χρήστη / διεύθυνση
+file into	felamimail	el	Ξ±ΟΟ‡ΞµΞ―ΞΏ ΞΌΞ­ΟƒΞ± ΟƒΟ„ΞΏ
+files	felamimail	el	Ξ±ΟΟ‡ΞµΞ―Ξ±
+filter active	felamimail	el	ΞµΞ½ΞµΟΞ³Ο Ο†Ξ―Ξ»Ο„ΟΞΏ
+filter name	felamimail	el	ΞΞ½ΞΏΞΌΞ± Ο†Ξ―Ξ»Ο„ΟΞΏΟ…
+filter rules	common	el	ΞΊΞ±Ξ½ΟΞ½ΞµΟ‚ Ο†Ξ―Ξ»Ο„ΟΞΏΟ…
+first name	felamimail	el	ΞΞ½ΞΏΞΌΞ±
+flagged	felamimail	el	ΟƒΞ·ΞΌΞ±ΞΉΞΏΟƒΟ„ΞΏΞ»ΞΉΟƒΞΌΞ­Ξ½ΞΏ
+flags	felamimail	el	Ξ£Ξ·ΞΌΞ±Ξ―ΞµΟ‚
+folder acl	felamimail	el	Acl Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+folder name	felamimail	el	ΞΞ½ΞΏΞΌΞ± Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+folder path	felamimail	el	Ξ”ΞΉΞ±Ξ΄ΟΞΏΞΌΞ® Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+folder preferences	felamimail	el	Ξ ΟΞΏΟ„ΞΉΞΌΞ®ΟƒΞµΞΉΟ‚ Ξ¦Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+folder settings	felamimail	el	Ξ΅Ο…ΞΈΞΌΞ―ΟƒΞµΞΉΟ‚ Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+folder status	felamimail	el	ΞΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ· Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+folderlist	felamimail	el	Ξ›Ξ―ΟƒΟ„Ξ± Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+foldername	felamimail	el	ΞΞ½ΞΏΞΌΞ± Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+folders	felamimail	el	Ξ¦Ξ¬ΞΊΞµΞ»ΞΏΞΉ
+folders created successfully!	felamimail	el	Ξ•Ο€ΞΉΟ„Ο…Ο‡Ξ®Ο‚ Ξ΄Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ο†Ξ±ΞΊΞ­Ξ»Ο‰Ξ½!
+follow	felamimail	el	Ξ±ΞΊΞΏΞ»ΞΏΟ…ΞΈΟ
+for mail to be send - not functional yet	felamimail	el	Ξ“ΞΉΞ± Ξ±Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ® ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚ - Ξ΄ΞµΞ½ Ξ»ΞµΞΉΟ„ΞΏΟ…ΟΞ³ΞµΞ― Ξ±ΞΊΟΞΌΞ±
+for received mail	felamimail	el	Ξ“ΞΉΞ± ΞµΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ± ΞΌΞ·Ξ½ΟΞΌΞ±Ο„Ξ±
+forward	felamimail	el	Ξ ΟΞΏΟΞΈΞ·ΟƒΞ·
+forward to	felamimail	el	Ο€ΟΞΏΟΞΈΞ·ΟƒΞ· ΟƒΞµ
+forward to address	felamimail	el	Ο€ΟΞΏΟΞΈΞ·ΟƒΞ· ΟƒΟ„Ξ·Ξ½ Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·
+forwarding	felamimail	el	Ξ ΟΞΏΟ‰ΞΈΞµΞ―Ο„Ξ±ΞΉ
+found	felamimail	el	Ξ’ΟΞ­ΞΈΞ·ΞΊΞµ
+fri	felamimail	el	Ξ Ξ±Ο
+from	felamimail	el	Ξ‘Ο€Ο
+from(a->z)	felamimail	el	Ξ‘Ο€Ο (Ξ‘->Ξ©)
+from(z->a)	felamimail	el	Ξ‘Ο€Ο (Ξ©->Ξ‘)
+full name	felamimail	el	ΞΞ»ΟΞΊΞ»Ξ·ΟΞΏ Ο„ΞΏ ΟΞ½ΞΏΞΌΞ±
+greater than	felamimail	el	ΞΌΞµΞ³Ξ±Ξ»ΟΟ„ΞµΟΞΏ Ξ±Ο€Ο
+have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	el	ΞΞΏΞΉΟ„Ξ¬ΞΎΟ„Ξµ ΟƒΟ„ΞΏ <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> Ξ³ΞΉΞ± Ξ½Ξ± ΞΌΞ¬ΞΈΞµΟ„Ξµ Ο€ΞµΟΞΉΟƒΟƒΟΟ„ΞµΟΞ± Ξ³ΞΉΞ± Ο„ΞΏ Squirrelmail.<br>
+header lines	felamimail	el	Ξ“ΟΞ±ΞΌΞΌΞ­Ο‚ Ξ¤Ξ―Ο„Ξ»ΞΏΟ…
+hide header	felamimail	el	Ξ±Ο€ΟΞΊΟΟ…ΟΞ· Ο„Ξ―Ο„Ξ»ΞΏΟ…
+hostname / address	felamimail	el	ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ· / Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·
 html	felamimail	el	HTML
-icons and text	felamimail	el	Εικόνες και κείμενο
-icons only	felamimail	el	Μόνο εικόνες
-identifying name	felamimail	el	Αναγνώριση ονόματος
-identity	felamimail	el	Ταυτότητα
-if	felamimail	el	ΑΝ
-if from contains	felamimail	el	αν από τα περιεχόμενα
-if mail header	felamimail	el	αν ο τίτλος του μηνύματος
-if message size	felamimail	el	αν το μέγεθος του μηνύματος
-if subject contains	felamimail	el	αν το θέμα περιέχει
-if to contains	felamimail	el	αν το σε περιέχει
-if using ssl or tls, you must have the php openssl extension loaded.	felamimail	el	Αν χρησιμοποιείται SSL ή TLS, πρέπει να έχετε την PHP openssl επέκταση φορτωμένη.
-illegal folder name.  please select a different name.	felamimail	el	¶κυρο όνομα φακέλου. Παρακαλώ επιλέξτε διαφορετικό όνομα.
+icons and text	felamimail	el	Ξ•ΞΉΞΊΟΞ½ΞµΟ‚ ΞΊΞ±ΞΉ ΞΊΞµΞ―ΞΌΞµΞ½ΞΏ
+icons only	felamimail	el	ΞΟΞ½ΞΏ ΞµΞΉΞΊΟΞ½ΞµΟ‚
+identifying name	felamimail	el	Ξ‘Ξ½Ξ±Ξ³Ξ½ΟΟΞΉΟƒΞ· ΞΏΞ½ΟΞΌΞ±Ο„ΞΏΟ‚
+identity	felamimail	el	Ξ¤Ξ±Ο…Ο„ΟΟ„Ξ·Ο„Ξ±
+if	felamimail	el	Ξ‘Ξ
+if from contains	felamimail	el	Ξ±Ξ½ Ξ±Ο€Ο Ο„Ξ± Ο€ΞµΟΞΉΞµΟ‡ΟΞΌΞµΞ½Ξ±
+if mail header	felamimail	el	Ξ±Ξ½ ΞΏ Ο„Ξ―Ο„Ξ»ΞΏΟ‚ Ο„ΞΏΟ… ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+if message size	felamimail	el	Ξ±Ξ½ Ο„ΞΏ ΞΌΞ­Ξ³ΞµΞΈΞΏΟ‚ Ο„ΞΏΟ… ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+if subject contains	felamimail	el	Ξ±Ξ½ Ο„ΞΏ ΞΈΞ­ΞΌΞ± Ο€ΞµΟΞΉΞ­Ο‡ΞµΞΉ
+if to contains	felamimail	el	Ξ±Ξ½ Ο„ΞΏ ΟƒΞµ Ο€ΞµΟΞΉΞ­Ο‡ΞµΞΉ
+if using ssl or tls, you must have the php openssl extension loaded.	felamimail	el	Ξ‘Ξ½ Ο‡ΟΞ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞΉΞµΞ―Ο„Ξ±ΞΉ SSL Ξ® TLS, Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± Ξ­Ο‡ΞµΟ„Ξµ Ο„Ξ·Ξ½ PHP openssl ΞµΟ€Ξ­ΞΊΟ„Ξ±ΟƒΞ· Ο†ΞΏΟΟ„Ο‰ΞΌΞ­Ξ½Ξ·.
+illegal folder name.  please select a different name.	felamimail	el	Ξ†ΞΊΟ…ΟΞΏ ΟΞ½ΞΏΞΌΞ± Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…. Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο ΞµΟ€ΞΉΞ»Ξ­ΞΎΟ„Ξµ Ξ΄ΞΉΞ±Ο†ΞΏΟΞµΟ„ΞΉΞΊΟ ΟΞ½ΞΏΞΌΞ±.
 imap	felamimail	el	IMAP
 imap server	felamimail	el	IMAP Server
-imap server address	felamimail	el	Διεύθυνση IMAP Server
-imap server closed the connection.	felamimail	el	Ο IMAP Server έκλεισε τη σύνδεση
-imap server closed the connection. server responded: %s	felamimail	el	Ο IMAP Server έκλεισε τη σύνδεση. Ο Server απάντησε: %s
-imap server password	felamimail	el	imap server κωδικός
-imap server type	felamimail	el	IMAP Server τύπος
-imap server username	felamimail	el	imap server όνομα χρήστη
-imaps authentication	felamimail	el	IMAPS ΑΥΘΕΝΤΙΚΟΤΗΤΑ
-imaps encryption only	felamimail	el	Μόνο IMAPS κρυπτογράφηση
-in	felamimail	el	μέσα
-inbox	felamimail	el	Εισερχόμενα
-incoming mail server(imap)	felamimail	el	server(IMAP) εισερχομένων μηνυμάτων
-index order	felamimail	el	Ταξινόμηση ευρετηρίου
-info	felamimail	el	Πληροφορίες
-invalid user name or password	felamimail	el	¶κυρο όνομα χρήστη ή κωδικός
+imap server address	felamimail	el	Ξ”ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ· IMAP Server
+imap server closed the connection.	felamimail	el	Ξ IMAP Server Ξ­ΞΊΞ»ΞµΞΉΟƒΞµ Ο„Ξ· ΟƒΟΞ½Ξ΄ΞµΟƒΞ·
+imap server closed the connection. server responded: %s	felamimail	el	Ξ IMAP Server Ξ­ΞΊΞ»ΞµΞΉΟƒΞµ Ο„Ξ· ΟƒΟΞ½Ξ΄ΞµΟƒΞ·. Ξ Server Ξ±Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞµ: %s
+imap server password	felamimail	el	imap server ΞΊΟ‰Ξ΄ΞΉΞΊΟΟ‚
+imap server type	felamimail	el	IMAP Server Ο„ΟΟ€ΞΏΟ‚
+imap server username	felamimail	el	imap server ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ·
+imaps authentication	felamimail	el	IMAPS Ξ‘Ξ¥ΞΞ•ΞΞ¤Ξ™ΞΞΞ¤Ξ—Ξ¤Ξ‘
+imaps encryption only	felamimail	el	ΞΟΞ½ΞΏ IMAPS ΞΊΟΟ…Ο€Ο„ΞΏΞ³ΟΞ¬Ο†Ξ·ΟƒΞ·
+in	felamimail	el	ΞΌΞ­ΟƒΞ±
+inbox	felamimail	el	Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ±
+incoming mail server(imap)	felamimail	el	server(IMAP) ΞµΞΉΟƒΞµΟΟ‡ΞΏΞΌΞ­Ξ½Ο‰Ξ½ ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½
+index order	felamimail	el	Ξ¤Ξ±ΞΎΞΉΞ½ΟΞΌΞ·ΟƒΞ· ΞµΟ…ΟΞµΟ„Ξ·ΟΞ―ΞΏΟ…
+info	felamimail	el	Ξ Ξ»Ξ·ΟΞΏΟ†ΞΏΟΞ―ΞµΟ‚
+invalid user name or password	felamimail	el	Ξ†ΞΊΟ…ΟΞΏ ΟΞ½ΞΏΞΌΞ± Ο‡ΟΞ®ΟƒΟ„Ξ· Ξ® ΞΊΟ‰Ξ΄ΞΉΞΊΟΟ‚
 javascript	felamimail	el	JavaScript
-jumping to end	felamimail	el	μετάβαση στην αρχή
-jumping to start	felamimail	el	μετάβαση στο τέλος
-keep a copy of the message in your inbox	felamimail	el	κρατήστε ένα αντίγραφο του μηνύματος στα εισερχόμενα
-keep local copy of email	felamimail	el	κρατήστε ένα τοπικό αντίγραφο του email
+jumping to end	felamimail	el	ΞΌΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ· ΟƒΟ„Ξ·Ξ½ Ξ±ΟΟ‡Ξ®
+jumping to start	felamimail	el	ΞΌΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ· ΟƒΟ„ΞΏ Ο„Ξ­Ξ»ΞΏΟ‚
+keep a copy of the message in your inbox	felamimail	el	ΞΊΟΞ±Ο„Ξ®ΟƒΟ„Ξµ Ξ­Ξ½Ξ± Ξ±Ξ½Ο„Ξ―Ξ³ΟΞ±Ο†ΞΏ Ο„ΞΏΟ… ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚ ΟƒΟ„Ξ± ΞµΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ±
+keep local copy of email	felamimail	el	ΞΊΟΞ±Ο„Ξ®ΟƒΟ„Ξµ Ξ­Ξ½Ξ± Ο„ΞΏΟ€ΞΉΞΊΟ Ξ±Ξ½Ο„Ξ―Ξ³ΟΞ±Ο†ΞΏ Ο„ΞΏΟ… email
 kilobytes	felamimail	el	kilobytes
-language	felamimail	el	Γλώσσα
-last name	felamimail	el	Επώνυμο
-left	felamimail	el	Αριστερά
-less	felamimail	el	λιγότερο
-less than	felamimail	el	λιγότερο από
-light gray	felamimail	el	Ανοιχτό Γκρι
-list all	felamimail	el	Δημιουργία λίστας με όλα
-loading	felamimail	el	φόρτωση
-location of buttons when composing	felamimail	el	Τοποθεσία κουμπιών όταν γίνεται η σύνθεση
-mail server login type	admin	el	Τύπος εισόδου μηνύματος server
-mail settings	felamimail	el	Ρυθμίσεις μηνύματος
-mainmessage	felamimail	el	κύριο μήνυμα
-manage emailaccounts	preferences	el	Διαχείριση λογαρισμών Email
-manage emailfilter / vacation	preferences	el	Διαχείριση φίλτρου Email / Διακοπών
-manage folders	common	el	Διαχείριση Φακέλων
-manage sieve	common	el	Διαχείριση Sieve σεναρίων
-manage signatures	felamimail	el	Διαχείριση υπογραφών
-mark as deleted	felamimail	el	Σημείωση ως διαγραμένο
-mark messages as	felamimail	el	Σημείωση επιλεγμένων μηνυμάτων ως
-mark selected as flagged	felamimail	el	Σημείωση επιλεγμένων ως σημαιοστολισμένα
-mark selected as read	felamimail	el	Σημείωση επιλεγμένων ως διαβασμένα
-mark selected as unflagged	felamimail	el	Σημείωση επιλεγμένων ως μη σημαιοστολισμένα
-mark selected as unread	felamimail	el	Σημείωση επιλεγμένων ως μη διαβασμένα
-match	felamimail	el	Συνδυασμός
-matches	felamimail	el	συνδυάζεται
-matches regexp	felamimail	el	συνδυάζεται regexp
-max uploadsize	felamimail	el	μέγιστο μέγεθος φορτώματος
-message highlighting	felamimail	el	Υπογράμμιση Μηνύματος
-message list	felamimail	el	Κατάλογος μηνυμάτων
-messages	felamimail	el	μηνύματα
-mon	felamimail	el	Δευ
-move	felamimail	el	μετακίνηση
-move messages	felamimail	el	μετακίνηση μηνυμάτων
-move selected to	felamimail	el	μετακίνηση επιλεγμένων στο
-move to trash	felamimail	el	Μετακίνηση στον Κάδο Αχρήστων
-moving messages to	felamimail	el	μετακίνηση επιλεγμένων στο
-name	felamimail	el	Όνομα
-never display html emails	felamimail	el	Να μην προβάλονται τα HTML emails
-new	common	el	Νέο
-new filter	felamimail	el	Νέο φίλτρο
-next	felamimail	el	Επόμενο
-next message	felamimail	el	επόμενο μήνυμα
-no active imap server found!!	felamimail	el	Δεν βρέθηκε ενεργός IMAP server!!!
-no encryption	felamimail	el	Καμία κρυπτογράφηση
-no filter	felamimail	el	Κανένα φίλτρο
-no folders found	felamimail	el	Δεν βρέθηκε κανένας φάκελος
-no folders were found to subscribe to!	felamimail	el	Δεν βρέθηκε κανένας φάκελος για εγγραφή σε αυτόν!
-no folders were found to unsubscribe from!	felamimail	el	Δεν βρέθηκε κανένας φάκελος για παύση συνδρομής!
-no highlighting is defined	felamimail	el	Δεν έχει όριστει κάποια υπογράμμιση
-no message returned.	felamimail	el	Δεν επεστράφη κάποιο μήνυμα.
-no messages found...	felamimail	el	δεν βρέθηκαν μηνύματα...
-no messages were selected.	felamimail	el	Δεν επιλέχθηκαν κάποια μηνύματα.
-no plain text part found	felamimail	el	δεν βρέθηκε μέρος αποκρυπτογραφημένου κειμένου
-no previous message	felamimail	el	κανένα προηγούμενο κείμενο
-no supported imap authentication method could be found.	felamimail	el	Δεν βρέθηκε καμία υποστηριζόμενη IMAP επικυρωμένη μέθοδος.
-no valid emailprofile selected!!	felamimail	el	Έχει επιλεχθεί άκυρο προφίλ Email!
-none	felamimail	el	κανένα
-on behalf of	felamimail	el	εκ μέρους του
-one address is not valid	felamimail	el	Κάποια διεύθυνση είναι άκυρη
-only inbox	felamimail	el	Μόνο τα ΕΙΣΕΡΧΟΜΕΝΑ
-only one window	felamimail	el	μόνο ένα παράθυρο
-only unseen	felamimail	el	μόνο αυτά που δεν έχουν προβληθεί
-open all	felamimail	el	άνοιγμα όλων
-options	felamimail	el	Επιλογές
-or	felamimail	el	ή
-organisation	felamimail	el	οργανισμός
-organization	felamimail	el	οργανισμός
-organization name	admin	el	Όνομα οργανισμού
-participants	felamimail	el	Συμμετέχοντες
-personal information	felamimail	el	Προσωπικές πληροφορίες
-please select a address	felamimail	el	Παρακαλώ επιλέξτε μία διεύθυνση
-please select the number of days to wait between responses	felamimail	el	παρακαλώ επιλέξτε τον αριθμό των ημερών για αναμονή μεταξύ των απαντήσεων
-please supply the message to send with auto-responses	felamimail	el	Παρακαλώ τροφοδοτήστε το μήνυμα προς αποστολή με αυτόματες απαντήσεις
-port	felamimail	el	θύρα
-posting	felamimail	el	ταχυδρόμηση
-previous	felamimail	el	Προηγούμενο
-previous message	felamimail	el	προηγούμενο μήνυμα
-print it	felamimail	el	εκτύπωση
-print this page	felamimail	el	εκτύπωση σελίδας
-quicksearch	felamimail	el	Γρήγορη αναζήτηση
-read	felamimail	el	ανάγνωση
-reading	felamimail	el	ανάγνωση
-receive notification	felamimail	el	Παρελήφθη ειδοποίηση
-recent	felamimail	el	πρόσφατα
-refresh time in minutes	felamimail	el	Ανανέωση ώρας σε λεπτά
-reject with	felamimail	el	απόρριψη με
-remove	felamimail	el	μετακίνηση
-remove immediately	felamimail	el	¶μεση μετακίνηση
-rename	felamimail	el	Μετονομασία
-rename a folder	felamimail	el	Μετονομασία ενός Φακέλου
-rename folder	felamimail	el	Μετονομασία φακέλου
-renamed successfully!	felamimail	el	Επιτυχής μετονομασία!
-replied	felamimail	el	απαντήθηκε
-reply	felamimail	el	Απάντηση
-reply all	felamimail	el	Απάντηση σε όλα
-reply to	felamimail	el	Απάντηση στο
-replyto	felamimail	el	Απάντησηστο
-respond	felamimail	el	Απόκριση
-return	felamimail	el	Επιστροφή
-return to options page	felamimail	el	Επιστροφή στη σελίδα επιλογών
-right	felamimail	el	Δεξιά
-row order style	felamimail	el	Στυλ ταξινόμησης σειράς
-rule	felamimail	el	Κανόνας
-sat	felamimail	el	Σάβ
-save	felamimail	el	Αποθήκευση
-save as draft	felamimail	el	Αποθήκευση ως προσχέδιο
-save as infolog	felamimail	el	Αποθήκευση ως infolog
-save changes	felamimail	el	αποθήκευση αλλαγών
-save message to disk	felamimail	el	αποθήκευση αλλαγών στο δίσκο
-script name	felamimail	el	όνομα σεναρίου
-script status	felamimail	el	κατάσταση σεναρίου
-search	felamimail	el	Αναζήτηση
-search for	felamimail	el	Αναζήτηση για
-select	felamimail	el	Επιλογή
-select all	felamimail	el	Επιλογή όλων
-select emailprofile	felamimail	el	Επιλογή προφίλ Email
-select folder	felamimail	el	επιλογή φακέλου
-select your mail server type	admin	el	Επιλέξτε τον τύπο mail server
-send	felamimail	el	Αποστολή
-send a reject message	felamimail	el	αποστολή μηνύματος απόρριψης
-sent folder	felamimail	el	Φάκελος σταλθέντων
-show header	felamimail	el	Προβολή τίτλου
-show new messages on main screen	felamimail	el	Προβολή νέων μηνυμάτων στην κύρια οθόνη
-sieve script name	felamimail	el	όνομα sieve σεναρίου
-sieve settings	admin	el	Ρυθμίσεις Sieve
-signature	felamimail	el	Υπογραφή
-simply click the target-folder	felamimail	el	Απλά κάντε κλικ στον στόχο-φάκελο
-site configuration	felamimail	el	ρυθμίσεις site
-size	felamimail	el	Μέγεθος
-size of editor window	felamimail	el	Μέγεθος παραθύρου συντάκτη
-size(...->0)	felamimail	el	Μέγεθος (...->0)
-size(0->...)	felamimail	el	Μέγεθος (0->...)
-skipping forward	felamimail	el	παράληψη προώθησης
-skipping previous	felamimail	el	παράληψη προηγουμένων
-small view	felamimail	el	μικρή προβολή
-smtp settings	admin	el	Ρυθμίσεις SMTP
-subject	felamimail	el	Θέμα
-subject(a->z)	felamimail	el	Θέμα (Α->Ω)
-subject(z->a)	felamimail	el	Θέμα (Ω->Α)
-submit	felamimail	el	Υποβολή
-subscribe	felamimail	el	Εγγραφή
-subscribed	felamimail	el	Έχει εγγραφεί
-subscribed successfully!	felamimail	el	Η εγγραφή ήταν επιτυχής
-sun	felamimail	el	Κυρ
-table of contents	felamimail	el	Πίνακας περιεχομένων
-text only	felamimail	el	Μόνο κείμενο
-the connection to the imap server failed!!	felamimail	el	Αποτυχία σύνδεση με τον IMAP Server
-the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	el	Ο IMAP server δεν υποστηρίζει την επιλεγμένη μέθοδο αυθεντικότητας.Παρακαλώ επικοινωνήστε με τον διαχειριστή σας.
-then	felamimail	el	ΜΕΤΑ
-this folder is empty	felamimail	el	ΑΥΤΟΣ Ο ΦΑΚΕΛΟΣ ΕΙΝΑΙ ΑΔΕΙΟΣ
-this php has no imap support compiled in!!	felamimail	el	Αυτό το PHP δεν έχει καθόλου IMAP υποστήριξη μεταφρασμένη!!
-thu	felamimail	el	Πέμ
-to	felamimail	el	Στο
-to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	el	Για τη χρησιμοποίηση TLS σύνδεσης, πρέπει να έχετε PHP 5.1.0 ή υψηλότερη έκδοση.
-translation preferences	felamimail	el	Προτιμήσεις Μετάφρασης
-translation server	felamimail	el	Server μετάφρασης
-trash fold	felamimail	el	Φάκ Κάδου Αχρήστων
-trash folder	felamimail	el	Φάκελος Κάδου Αχρήστων
-tue	felamimail	el	Τρί
-type	felamimail	el	τύπος
-unexpected response from server to authenticate command.	felamimail	el	Απρόσμενη απάντηση από τον server στην ΕΞΑΚΡΙΒΩΣΗ ΓΝΗΣΙΟΤΗΤΑΣ εντολής.
-unexpected response from server to digest-md5 response.	felamimail	el	Απρόσμενη απάντηση από τον server στην Digest-MD5 απάντηση.
-unexpected response from server to login command.	felamimail	el	Απρόσμενη απάντηση από τον server στην εντολή ΕΙΣΟΔΟΥ
-unflagged	felamimail	el	αποσημαιοστολίστηκε
-unknown err	felamimail	el	¶γνωστο λάθ
-unknown error	felamimail	el	¶γνωστο λάθος
-unknown imap response from the server. server responded: %s	felamimail	el	¶γνωστη IMAP απάντηση από τον server.Απάντηση Server:%s
-unknown sender	felamimail	el	¶γνωστος αποστολέας
-unknown user or password incorrect.	felamimail	el	¶γνωστος χρήστης ή λάθος κωδικός.
-unread	common	el	Αδιάβαστα
-unseen	felamimail	el	Αθέατα
-unselect all	felamimail	el	Αποεπιλογή όλων
-unsubscribe	felamimail	el	Παύση συνδρομής
-unsubscribed	felamimail	el	Η συνδρομή σταμάτησε
-unsubscribed successfully!	felamimail	el	Η συνδρομή σταμάτησε επιτυχώς!
-up	felamimail	el	πάνω
-updating message status	felamimail	el	ενημέρωση κατάστασης μηνύματος
-updating view	felamimail	el	ενημέρωση εμφάνισης
-use <a href="%1">emailadmin</a> to create profiles	felamimail	el	χρησιμοποιήστε <a href="%1">EmailAdmin</a> για τη δημιουργία προφίλ
-use a signature	felamimail	el	Χρήση υπογραφής
-use a signature?	felamimail	el	Χρήση υπογραφής;
-use addresses	felamimail	el	Χρήση διευθύνσεων
-use custom settings	felamimail	el	Χρήση σύνηθων Ρυθμίσεων
-use regular expressions	felamimail	el	χρήση κανονικών εκφράσεων
-use smtp auth	admin	el	Χρήση SMTP αυθ
-users can define their own emailaccounts	admin	el	Οι χρήστες μπορούν να ορίσουν τους δικούς τους email λογαριασμούς
-vacation notice	common	el	ειδοποίηση διακοπών
-vacation notice is active	felamimail	el	Η ειδοποίηση διακοπών είναι ενεργή
-validate certificate	felamimail	el	επικύρωση πιστοποιητικού
-view full header	felamimail	el	Προβολή πλήρους τίτλου
-view header lines	felamimail	el	Προβολή γραμμών τίτλου
-view message	felamimail	el	Προβολή μηνύματος
-viewing full header	felamimail	el	Προβάλλεται πλήρης τίτλος
-viewing message	felamimail	el	Προβολή μηνύματος
-viewing messages	felamimail	el	Προβολή μηνυμάτων
-wed	felamimail	el	Τετ
-when deleting messages	felamimail	el	Όταν διαγράφονται τα μηνύματα
-with message	felamimail	el	με μήνυμα
-with message "%1"	felamimail	el	με μήνυμα "%1"
-wrap incoming text at	felamimail	el	Τύλιγμα εισερχόμενου μηνύματος σε
-writing	felamimail	el	γράφεται
-wrote	felamimail	el	γράφτηκε
+language	felamimail	el	Ξ“Ξ»ΟΟƒΟƒΞ±
+last name	felamimail	el	Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ
+left	felamimail	el	Ξ‘ΟΞΉΟƒΟ„ΞµΟΞ¬
+less	felamimail	el	Ξ»ΞΉΞ³ΟΟ„ΞµΟΞΏ
+less than	felamimail	el	Ξ»ΞΉΞ³ΟΟ„ΞµΟΞΏ Ξ±Ο€Ο
+light gray	felamimail	el	Ξ‘Ξ½ΞΏΞΉΟ‡Ο„Ο Ξ“ΞΊΟΞΉ
+list all	felamimail	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ξ»Ξ―ΟƒΟ„Ξ±Ο‚ ΞΌΞµ ΟΞ»Ξ±
+loading	felamimail	el	Ο†ΟΟΟ„Ο‰ΟƒΞ·
+location of buttons when composing	felamimail	el	Ξ¤ΞΏΟ€ΞΏΞΈΞµΟƒΞ―Ξ± ΞΊΞΏΟ…ΞΌΟ€ΞΉΟΞ½ ΟΟ„Ξ±Ξ½ Ξ³Ξ―Ξ½ΞµΟ„Ξ±ΞΉ Ξ· ΟƒΟΞ½ΞΈΞµΟƒΞ·
+mail server login type	admin	el	Ξ¤ΟΟ€ΞΏΟ‚ ΞµΞΉΟƒΟΞ΄ΞΏΟ… ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚ server
+mail settings	felamimail	el	Ξ΅Ο…ΞΈΞΌΞ―ΟƒΞµΞΉΟ‚ ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+mainmessage	felamimail	el	ΞΊΟΟΞΉΞΏ ΞΌΞ®Ξ½Ο…ΞΌΞ±
+manage emailaccounts	preferences	el	Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Ξ»ΞΏΞ³Ξ±ΟΞΉΟƒΞΌΟΞ½ Email
+manage emailfilter / vacation	preferences	el	Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Ο†Ξ―Ξ»Ο„ΟΞΏΟ… Email / Ξ”ΞΉΞ±ΞΊΞΏΟ€ΟΞ½
+manage folders	common	el	Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Ξ¦Ξ±ΞΊΞ­Ξ»Ο‰Ξ½
+manage sieve	common	el	Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Sieve ΟƒΞµΞ½Ξ±ΟΞ―Ο‰Ξ½
+manage signatures	felamimail	el	Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Ο…Ο€ΞΏΞ³ΟΞ±Ο†ΟΞ½
+mark as deleted	felamimail	el	Ξ£Ξ·ΞΌΞµΞ―Ο‰ΟƒΞ· Ο‰Ο‚ Ξ΄ΞΉΞ±Ξ³ΟΞ±ΞΌΞ­Ξ½ΞΏ
+mark messages as	felamimail	el	Ξ£Ξ·ΞΌΞµΞ―Ο‰ΟƒΞ· ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½ ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½ Ο‰Ο‚
+mark selected as flagged	felamimail	el	Ξ£Ξ·ΞΌΞµΞ―Ο‰ΟƒΞ· ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½ Ο‰Ο‚ ΟƒΞ·ΞΌΞ±ΞΉΞΏΟƒΟ„ΞΏΞ»ΞΉΟƒΞΌΞ­Ξ½Ξ±
+mark selected as read	felamimail	el	Ξ£Ξ·ΞΌΞµΞ―Ο‰ΟƒΞ· ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½ Ο‰Ο‚ Ξ΄ΞΉΞ±Ξ²Ξ±ΟƒΞΌΞ­Ξ½Ξ±
+mark selected as unflagged	felamimail	el	Ξ£Ξ·ΞΌΞµΞ―Ο‰ΟƒΞ· ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½ Ο‰Ο‚ ΞΌΞ· ΟƒΞ·ΞΌΞ±ΞΉΞΏΟƒΟ„ΞΏΞ»ΞΉΟƒΞΌΞ­Ξ½Ξ±
+mark selected as unread	felamimail	el	Ξ£Ξ·ΞΌΞµΞ―Ο‰ΟƒΞ· ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½ Ο‰Ο‚ ΞΌΞ· Ξ΄ΞΉΞ±Ξ²Ξ±ΟƒΞΌΞ­Ξ½Ξ±
+match	felamimail	el	Ξ£Ο…Ξ½Ξ΄Ο…Ξ±ΟƒΞΌΟΟ‚
+matches	felamimail	el	ΟƒΟ…Ξ½Ξ΄Ο…Ξ¬Ξ¶ΞµΟ„Ξ±ΞΉ
+matches regexp	felamimail	el	ΟƒΟ…Ξ½Ξ΄Ο…Ξ¬Ξ¶ΞµΟ„Ξ±ΞΉ regexp
+max uploadsize	felamimail	el	ΞΌΞ­Ξ³ΞΉΟƒΟ„ΞΏ ΞΌΞ­Ξ³ΞµΞΈΞΏΟ‚ Ο†ΞΏΟΟ„ΟΞΌΞ±Ο„ΞΏΟ‚
+message highlighting	felamimail	el	Ξ¥Ο€ΞΏΞ³ΟΞ¬ΞΌΞΌΞΉΟƒΞ· ΞΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+message list	felamimail	el	ΞΞ±Ο„Ξ¬Ξ»ΞΏΞ³ΞΏΟ‚ ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½
+messages	felamimail	el	ΞΌΞ·Ξ½ΟΞΌΞ±Ο„Ξ±
+mon	felamimail	el	Ξ”ΞµΟ…
+move	felamimail	el	ΞΌΞµΟ„Ξ±ΞΊΞ―Ξ½Ξ·ΟƒΞ·
+move messages	felamimail	el	ΞΌΞµΟ„Ξ±ΞΊΞ―Ξ½Ξ·ΟƒΞ· ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½
+move selected to	felamimail	el	ΞΌΞµΟ„Ξ±ΞΊΞ―Ξ½Ξ·ΟƒΞ· ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½ ΟƒΟ„ΞΏ
+move to trash	felamimail	el	ΞΞµΟ„Ξ±ΞΊΞ―Ξ½Ξ·ΟƒΞ· ΟƒΟ„ΞΏΞ½ ΞΞ¬Ξ΄ΞΏ Ξ‘Ο‡ΟΞ®ΟƒΟ„Ο‰Ξ½
+moving messages to	felamimail	el	ΞΌΞµΟ„Ξ±ΞΊΞ―Ξ½Ξ·ΟƒΞ· ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ο‰Ξ½ ΟƒΟ„ΞΏ
+name	felamimail	el	ΞΞ½ΞΏΞΌΞ±
+never display html emails	felamimail	el	ΞΞ± ΞΌΞ·Ξ½ Ο€ΟΞΏΞ²Ξ¬Ξ»ΞΏΞ½Ο„Ξ±ΞΉ Ο„Ξ± HTML emails
+new	common	el	ΞΞ­ΞΏ
+new filter	felamimail	el	ΞΞ­ΞΏ Ο†Ξ―Ξ»Ο„ΟΞΏ
+next	felamimail	el	Ξ•Ο€ΟΞΌΞµΞ½ΞΏ
+next message	felamimail	el	ΞµΟ€ΟΞΌΞµΞ½ΞΏ ΞΌΞ®Ξ½Ο…ΞΌΞ±
+no active imap server found!!	felamimail	el	Ξ”ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞµ ΞµΞ½ΞµΟΞ³ΟΟ‚ IMAP server!!!
+no encryption	felamimail	el	ΞΞ±ΞΌΞ―Ξ± ΞΊΟΟ…Ο€Ο„ΞΏΞ³ΟΞ¬Ο†Ξ·ΟƒΞ·
+no filter	felamimail	el	ΞΞ±Ξ½Ξ­Ξ½Ξ± Ο†Ξ―Ξ»Ο„ΟΞΏ
+no folders found	felamimail	el	Ξ”ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞµ ΞΊΞ±Ξ½Ξ­Ξ½Ξ±Ο‚ Ο†Ξ¬ΞΊΞµΞ»ΞΏΟ‚
+no folders were found to subscribe to!	felamimail	el	Ξ”ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞµ ΞΊΞ±Ξ½Ξ­Ξ½Ξ±Ο‚ Ο†Ξ¬ΞΊΞµΞ»ΞΏΟ‚ Ξ³ΞΉΞ± ΞµΞ³Ξ³ΟΞ±Ο†Ξ® ΟƒΞµ Ξ±Ο…Ο„ΟΞ½!
+no folders were found to unsubscribe from!	felamimail	el	Ξ”ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞµ ΞΊΞ±Ξ½Ξ­Ξ½Ξ±Ο‚ Ο†Ξ¬ΞΊΞµΞ»ΞΏΟ‚ Ξ³ΞΉΞ± Ο€Ξ±ΟΟƒΞ· ΟƒΟ…Ξ½Ξ΄ΟΞΏΞΌΞ®Ο‚!
+no highlighting is defined	felamimail	el	Ξ”ΞµΞ½ Ξ­Ο‡ΞµΞΉ ΟΟΞΉΟƒΟ„ΞµΞΉ ΞΊΞ¬Ο€ΞΏΞΉΞ± Ο…Ο€ΞΏΞ³ΟΞ¬ΞΌΞΌΞΉΟƒΞ·
+no message returned.	felamimail	el	Ξ”ΞµΞ½ ΞµΟ€ΞµΟƒΟ„ΟΞ¬Ο†Ξ· ΞΊΞ¬Ο€ΞΏΞΉΞΏ ΞΌΞ®Ξ½Ο…ΞΌΞ±.
+no messages found...	felamimail	el	Ξ΄ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞ±Ξ½ ΞΌΞ·Ξ½ΟΞΌΞ±Ο„Ξ±...
+no messages were selected.	felamimail	el	Ξ”ΞµΞ½ ΞµΟ€ΞΉΞ»Ξ­Ο‡ΞΈΞ·ΞΊΞ±Ξ½ ΞΊΞ¬Ο€ΞΏΞΉΞ± ΞΌΞ·Ξ½ΟΞΌΞ±Ο„Ξ±.
+no plain text part found	felamimail	el	Ξ΄ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞµ ΞΌΞ­ΟΞΏΟ‚ Ξ±Ο€ΞΏΞΊΟΟ…Ο€Ο„ΞΏΞ³ΟΞ±Ο†Ξ·ΞΌΞ­Ξ½ΞΏΟ… ΞΊΞµΞΉΞΌΞ­Ξ½ΞΏΟ…
+no previous message	felamimail	el	ΞΊΞ±Ξ½Ξ­Ξ½Ξ± Ο€ΟΞΏΞ·Ξ³ΞΏΟΞΌΞµΞ½ΞΏ ΞΊΞµΞ―ΞΌΞµΞ½ΞΏ
+no supported imap authentication method could be found.	felamimail	el	Ξ”ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞµ ΞΊΞ±ΞΌΞ―Ξ± Ο…Ο€ΞΏΟƒΟ„Ξ·ΟΞΉΞ¶ΟΞΌΞµΞ½Ξ· IMAP ΞµΟ€ΞΉΞΊΟ…ΟΟ‰ΞΌΞ­Ξ½Ξ· ΞΌΞ­ΞΈΞΏΞ΄ΞΏΟ‚.
+no valid emailprofile selected!!	felamimail	el	ΞΟ‡ΞµΞΉ ΞµΟ€ΞΉΞ»ΞµΟ‡ΞΈΞµΞ― Ξ¬ΞΊΟ…ΟΞΏ Ο€ΟΞΏΟ†Ξ―Ξ» Email!
+none	felamimail	el	ΞΊΞ±Ξ½Ξ­Ξ½Ξ±
+on behalf of	felamimail	el	ΞµΞΊ ΞΌΞ­ΟΞΏΟ…Ο‚ Ο„ΞΏΟ…
+one address is not valid	felamimail	el	ΞΞ¬Ο€ΞΏΞΉΞ± Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ· ΞµΞ―Ξ½Ξ±ΞΉ Ξ¬ΞΊΟ…ΟΞ·
+only inbox	felamimail	el	ΞΟΞ½ΞΏ Ο„Ξ± Ξ•Ξ™Ξ£Ξ•Ξ΅Ξ§ΞΞΞ•ΞΞ‘
+only one window	felamimail	el	ΞΌΟΞ½ΞΏ Ξ­Ξ½Ξ± Ο€Ξ±ΟΞ¬ΞΈΟ…ΟΞΏ
+only unseen	felamimail	el	ΞΌΟΞ½ΞΏ Ξ±Ο…Ο„Ξ¬ Ο€ΞΏΟ… Ξ΄ΞµΞ½ Ξ­Ο‡ΞΏΟ…Ξ½ Ο€ΟΞΏΞ²Ξ»Ξ·ΞΈΞµΞ―
+open all	felamimail	el	Ξ¬Ξ½ΞΏΞΉΞ³ΞΌΞ± ΟΞ»Ο‰Ξ½
+options	felamimail	el	Ξ•Ο€ΞΉΞ»ΞΏΞ³Ξ­Ο‚
+or	felamimail	el	Ξ®
+organisation	felamimail	el	ΞΏΟΞ³Ξ±Ξ½ΞΉΟƒΞΌΟΟ‚
+organization	felamimail	el	ΞΏΟΞ³Ξ±Ξ½ΞΉΟƒΞΌΟΟ‚
+organization name	admin	el	ΞΞ½ΞΏΞΌΞ± ΞΏΟΞ³Ξ±Ξ½ΞΉΟƒΞΌΞΏΟ
+participants	felamimail	el	Ξ£Ο…ΞΌΞΌΞµΟ„Ξ­Ο‡ΞΏΞ½Ο„ΞµΟ‚
+personal information	felamimail	el	Ξ ΟΞΏΟƒΟ‰Ο€ΞΉΞΊΞ­Ο‚ Ο€Ξ»Ξ·ΟΞΏΟ†ΞΏΟΞ―ΞµΟ‚
+please select a address	felamimail	el	Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο ΞµΟ€ΞΉΞ»Ξ­ΞΎΟ„Ξµ ΞΌΞ―Ξ± Ξ΄ΞΉΞµΟΞΈΟ…Ξ½ΟƒΞ·
+please select the number of days to wait between responses	felamimail	el	Ο€Ξ±ΟΞ±ΞΊΞ±Ξ»Ο ΞµΟ€ΞΉΞ»Ξ­ΞΎΟ„Ξµ Ο„ΞΏΞ½ Ξ±ΟΞΉΞΈΞΌΟ Ο„Ο‰Ξ½ Ξ·ΞΌΞµΟΟΞ½ Ξ³ΞΉΞ± Ξ±Ξ½Ξ±ΞΌΞΏΞ½Ξ® ΞΌΞµΟ„Ξ±ΞΎΟ Ο„Ο‰Ξ½ Ξ±Ο€Ξ±Ξ½Ο„Ξ®ΟƒΞµΟ‰Ξ½
+please supply the message to send with auto-responses	felamimail	el	Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο Ο„ΟΞΏΟ†ΞΏΞ΄ΞΏΟ„Ξ®ΟƒΟ„Ξµ Ο„ΞΏ ΞΌΞ®Ξ½Ο…ΞΌΞ± Ο€ΟΞΏΟ‚ Ξ±Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ® ΞΌΞµ Ξ±Ο…Ο„ΟΞΌΞ±Ο„ΞµΟ‚ Ξ±Ο€Ξ±Ξ½Ο„Ξ®ΟƒΞµΞΉΟ‚
+port	felamimail	el	ΞΈΟΟΞ±
+posting	felamimail	el	Ο„Ξ±Ο‡Ο…Ξ΄ΟΟΞΌΞ·ΟƒΞ·
+previous	felamimail	el	Ξ ΟΞΏΞ·Ξ³ΞΏΟΞΌΞµΞ½ΞΏ
+previous message	felamimail	el	Ο€ΟΞΏΞ·Ξ³ΞΏΟΞΌΞµΞ½ΞΏ ΞΌΞ®Ξ½Ο…ΞΌΞ±
+print it	felamimail	el	ΞµΞΊΟ„ΟΟ€Ο‰ΟƒΞ·
+print this page	felamimail	el	ΞµΞΊΟ„ΟΟ€Ο‰ΟƒΞ· ΟƒΞµΞ»Ξ―Ξ΄Ξ±Ο‚
+quicksearch	felamimail	el	Ξ“ΟΞ®Ξ³ΞΏΟΞ· Ξ±Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ·
+read	felamimail	el	Ξ±Ξ½Ξ¬Ξ³Ξ½Ο‰ΟƒΞ·
+reading	felamimail	el	Ξ±Ξ½Ξ¬Ξ³Ξ½Ο‰ΟƒΞ·
+receive notification	felamimail	el	Ξ Ξ±ΟΞµΞ»Ξ®Ο†ΞΈΞ· ΞµΞΉΞ΄ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ·
+recent	felamimail	el	Ο€ΟΟΟƒΟ†Ξ±Ο„Ξ±
+refresh time in minutes	felamimail	el	Ξ‘Ξ½Ξ±Ξ½Ξ­Ο‰ΟƒΞ· ΟΟΞ±Ο‚ ΟƒΞµ Ξ»ΞµΟ€Ο„Ξ¬
+reject with	felamimail	el	Ξ±Ο€ΟΟΟΞΉΟΞ· ΞΌΞµ
+remove	felamimail	el	ΞΌΞµΟ„Ξ±ΞΊΞ―Ξ½Ξ·ΟƒΞ·
+remove immediately	felamimail	el	Ξ†ΞΌΞµΟƒΞ· ΞΌΞµΟ„Ξ±ΞΊΞ―Ξ½Ξ·ΟƒΞ·
+rename	felamimail	el	ΞΞµΟ„ΞΏΞ½ΞΏΞΌΞ±ΟƒΞ―Ξ±
+rename a folder	felamimail	el	ΞΞµΟ„ΞΏΞ½ΞΏΞΌΞ±ΟƒΞ―Ξ± ΞµΞ½ΟΟ‚ Ξ¦Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+rename folder	felamimail	el	ΞΞµΟ„ΞΏΞ½ΞΏΞΌΞ±ΟƒΞ―Ξ± Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+renamed successfully!	felamimail	el	Ξ•Ο€ΞΉΟ„Ο…Ο‡Ξ®Ο‚ ΞΌΞµΟ„ΞΏΞ½ΞΏΞΌΞ±ΟƒΞ―Ξ±!
+replied	felamimail	el	Ξ±Ο€Ξ±Ξ½Ο„Ξ®ΞΈΞ·ΞΊΞµ
+reply	felamimail	el	Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ·
+reply all	felamimail	el	Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ· ΟƒΞµ ΟΞ»Ξ±
+reply to	felamimail	el	Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ· ΟƒΟ„ΞΏ
+replyto	felamimail	el	Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ·ΟƒΟ„ΞΏ
+respond	felamimail	el	Ξ‘Ο€ΟΞΊΟΞΉΟƒΞ·
+return	felamimail	el	Ξ•Ο€ΞΉΟƒΟ„ΟΞΏΟ†Ξ®
+return to options page	felamimail	el	Ξ•Ο€ΞΉΟƒΟ„ΟΞΏΟ†Ξ® ΟƒΟ„Ξ· ΟƒΞµΞ»Ξ―Ξ΄Ξ± ΞµΟ€ΞΉΞ»ΞΏΞ³ΟΞ½
+right	felamimail	el	Ξ”ΞµΞΎΞΉΞ¬
+row order style	felamimail	el	Ξ£Ο„Ο…Ξ» Ο„Ξ±ΞΎΞΉΞ½ΟΞΌΞ·ΟƒΞ·Ο‚ ΟƒΞµΞΉΟΞ¬Ο‚
+rule	felamimail	el	ΞΞ±Ξ½ΟΞ½Ξ±Ο‚
+sat	felamimail	el	Ξ£Ξ¬Ξ²
+save	felamimail	el	Ξ‘Ο€ΞΏΞΈΞ®ΞΊΞµΟ…ΟƒΞ·
+save as draft	felamimail	el	Ξ‘Ο€ΞΏΞΈΞ®ΞΊΞµΟ…ΟƒΞ· Ο‰Ο‚ Ο€ΟΞΏΟƒΟ‡Ξ­Ξ΄ΞΉΞΏ
+save as infolog	felamimail	el	Ξ‘Ο€ΞΏΞΈΞ®ΞΊΞµΟ…ΟƒΞ· Ο‰Ο‚ infolog
+save changes	felamimail	el	Ξ±Ο€ΞΏΞΈΞ®ΞΊΞµΟ…ΟƒΞ· Ξ±Ξ»Ξ»Ξ±Ξ³ΟΞ½
+save message to disk	felamimail	el	Ξ±Ο€ΞΏΞΈΞ®ΞΊΞµΟ…ΟƒΞ· Ξ±Ξ»Ξ»Ξ±Ξ³ΟΞ½ ΟƒΟ„ΞΏ Ξ΄Ξ―ΟƒΞΊΞΏ
+script name	felamimail	el	ΟΞ½ΞΏΞΌΞ± ΟƒΞµΞ½Ξ±ΟΞ―ΞΏΟ…
+script status	felamimail	el	ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ· ΟƒΞµΞ½Ξ±ΟΞ―ΞΏΟ…
+search	felamimail	el	Ξ‘Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ·
+search for	felamimail	el	Ξ‘Ξ½Ξ±Ξ¶Ξ®Ο„Ξ·ΟƒΞ· Ξ³ΞΉΞ±
+select	felamimail	el	Ξ•Ο€ΞΉΞ»ΞΏΞ³Ξ®
+select all	felamimail	el	Ξ•Ο€ΞΉΞ»ΞΏΞ³Ξ® ΟΞ»Ο‰Ξ½
+select emailprofile	felamimail	el	Ξ•Ο€ΞΉΞ»ΞΏΞ³Ξ® Ο€ΟΞΏΟ†Ξ―Ξ» Email
+select folder	felamimail	el	ΞµΟ€ΞΉΞ»ΞΏΞ³Ξ® Ο†Ξ±ΞΊΞ­Ξ»ΞΏΟ…
+select your mail server type	admin	el	Ξ•Ο€ΞΉΞ»Ξ­ΞΎΟ„Ξµ Ο„ΞΏΞ½ Ο„ΟΟ€ΞΏ mail server
+send	felamimail	el	Ξ‘Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ®
+send a reject message	felamimail	el	Ξ±Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ® ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚ Ξ±Ο€ΟΟΟΞΉΟΞ·Ο‚
+sent folder	felamimail	el	Ξ¦Ξ¬ΞΊΞµΞ»ΞΏΟ‚ ΟƒΟ„Ξ±Ξ»ΞΈΞ­Ξ½Ο„Ο‰Ξ½
+show header	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ο„Ξ―Ο„Ξ»ΞΏΟ…
+show new messages on main screen	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ξ½Ξ­Ο‰Ξ½ ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½ ΟƒΟ„Ξ·Ξ½ ΞΊΟΟΞΉΞ± ΞΏΞΈΟΞ½Ξ·
+sieve script name	felamimail	el	ΟΞ½ΞΏΞΌΞ± sieve ΟƒΞµΞ½Ξ±ΟΞ―ΞΏΟ…
+sieve settings	admin	el	Ξ΅Ο…ΞΈΞΌΞ―ΟƒΞµΞΉΟ‚ Sieve
+signature	felamimail	el	Ξ¥Ο€ΞΏΞ³ΟΞ±Ο†Ξ®
+simply click the target-folder	felamimail	el	Ξ‘Ο€Ξ»Ξ¬ ΞΊΞ¬Ξ½Ο„Ξµ ΞΊΞ»ΞΉΞΊ ΟƒΟ„ΞΏΞ½ ΟƒΟ„ΟΟ‡ΞΏ-Ο†Ξ¬ΞΊΞµΞ»ΞΏ
+site configuration	felamimail	el	ΟΟ…ΞΈΞΌΞ―ΟƒΞµΞΉΟ‚ site
+size	felamimail	el	ΞΞ­Ξ³ΞµΞΈΞΏΟ‚
+size of editor window	felamimail	el	ΞΞ­Ξ³ΞµΞΈΞΏΟ‚ Ο€Ξ±ΟΞ±ΞΈΟΟΞΏΟ… ΟƒΟ…Ξ½Ο„Ξ¬ΞΊΟ„Ξ·
+size(...->0)	felamimail	el	ΞΞ­Ξ³ΞµΞΈΞΏΟ‚ (...->0)
+size(0->...)	felamimail	el	ΞΞ­Ξ³ΞµΞΈΞΏΟ‚ (0->...)
+skipping forward	felamimail	el	Ο€Ξ±ΟΞ¬Ξ»Ξ·ΟΞ· Ο€ΟΞΏΟΞΈΞ·ΟƒΞ·Ο‚
+skipping previous	felamimail	el	Ο€Ξ±ΟΞ¬Ξ»Ξ·ΟΞ· Ο€ΟΞΏΞ·Ξ³ΞΏΟ…ΞΌΞ­Ξ½Ο‰Ξ½
+small view	felamimail	el	ΞΌΞΉΞΊΟΞ® Ο€ΟΞΏΞ²ΞΏΞ»Ξ®
+smtp settings	admin	el	Ξ΅Ο…ΞΈΞΌΞ―ΟƒΞµΞΉΟ‚ SMTP
+subject	felamimail	el	ΞΞ­ΞΌΞ±
+subject(a->z)	felamimail	el	ΞΞ­ΞΌΞ± (Ξ‘->Ξ©)
+subject(z->a)	felamimail	el	ΞΞ­ΞΌΞ± (Ξ©->Ξ‘)
+submit	felamimail	el	Ξ¥Ο€ΞΏΞ²ΞΏΞ»Ξ®
+subscribe	felamimail	el	Ξ•Ξ³Ξ³ΟΞ±Ο†Ξ®
+subscribed	felamimail	el	ΞΟ‡ΞµΞΉ ΞµΞ³Ξ³ΟΞ±Ο†ΞµΞ―
+subscribed successfully!	felamimail	el	Ξ— ΞµΞ³Ξ³ΟΞ±Ο†Ξ® Ξ®Ο„Ξ±Ξ½ ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ®Ο‚
+sun	felamimail	el	ΞΟ…Ο
+table of contents	felamimail	el	Ξ Ξ―Ξ½Ξ±ΞΊΞ±Ο‚ Ο€ΞµΟΞΉΞµΟ‡ΞΏΞΌΞ­Ξ½Ο‰Ξ½
+text only	felamimail	el	ΞΟΞ½ΞΏ ΞΊΞµΞ―ΞΌΞµΞ½ΞΏ
+the connection to the imap server failed!!	felamimail	el	Ξ‘Ο€ΞΏΟ„Ο…Ο‡Ξ―Ξ± ΟƒΟΞ½Ξ΄ΞµΟƒΞ· ΞΌΞµ Ο„ΞΏΞ½ IMAP Server
+the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	el	Ξ IMAP server Ξ΄ΞµΞ½ Ο…Ο€ΞΏΟƒΟ„Ξ·ΟΞ―Ξ¶ΞµΞΉ Ο„Ξ·Ξ½ ΞµΟ€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½Ξ· ΞΌΞ­ΞΈΞΏΞ΄ΞΏ Ξ±Ο…ΞΈΞµΞ½Ο„ΞΉΞΊΟΟ„Ξ·Ο„Ξ±Ο‚.Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο ΞµΟ€ΞΉΞΊΞΏΞΉΞ½Ο‰Ξ½Ξ®ΟƒΟ„Ξµ ΞΌΞµ Ο„ΞΏΞ½ Ξ΄ΞΉΞ±Ο‡ΞµΞΉΟΞΉΟƒΟ„Ξ® ΟƒΞ±Ο‚.
+then	felamimail	el	ΞΞ•Ξ¤Ξ‘
+this folder is empty	felamimail	el	Ξ‘Ξ¥Ξ¤ΞΞ£ Ξ Ξ¦Ξ‘ΞΞ•Ξ›ΞΞ£ Ξ•Ξ™ΞΞ‘Ξ™ Ξ‘Ξ”Ξ•Ξ™ΞΞ£
+this php has no imap support compiled in!!	felamimail	el	Ξ‘Ο…Ο„Ο Ο„ΞΏ PHP Ξ΄ΞµΞ½ Ξ­Ο‡ΞµΞΉ ΞΊΞ±ΞΈΟΞ»ΞΏΟ… IMAP Ο…Ο€ΞΏΟƒΟ„Ξ®ΟΞΉΞΎΞ· ΞΌΞµΟ„Ξ±Ο†ΟΞ±ΟƒΞΌΞ­Ξ½Ξ·!!
+thu	felamimail	el	Ξ Ξ­ΞΌ
+to	felamimail	el	Ξ£Ο„ΞΏ
+to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	el	Ξ“ΞΉΞ± Ο„Ξ· Ο‡ΟΞ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· TLS ΟƒΟΞ½Ξ΄ΞµΟƒΞ·Ο‚, Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± Ξ­Ο‡ΞµΟ„Ξµ PHP 5.1.0 Ξ® Ο…ΟΞ·Ξ»ΟΟ„ΞµΟΞ· Ξ­ΞΊΞ΄ΞΏΟƒΞ·.
+translation preferences	felamimail	el	Ξ ΟΞΏΟ„ΞΉΞΌΞ®ΟƒΞµΞΉΟ‚ ΞΞµΟ„Ξ¬Ο†ΟΞ±ΟƒΞ·Ο‚
+translation server	felamimail	el	Server ΞΌΞµΟ„Ξ¬Ο†ΟΞ±ΟƒΞ·Ο‚
+trash fold	felamimail	el	Ξ¦Ξ¬ΞΊ ΞΞ¬Ξ΄ΞΏΟ… Ξ‘Ο‡ΟΞ®ΟƒΟ„Ο‰Ξ½
+trash folder	felamimail	el	Ξ¦Ξ¬ΞΊΞµΞ»ΞΏΟ‚ ΞΞ¬Ξ΄ΞΏΟ… Ξ‘Ο‡ΟΞ®ΟƒΟ„Ο‰Ξ½
+tue	felamimail	el	Ξ¤ΟΞ―
+type	felamimail	el	Ο„ΟΟ€ΞΏΟ‚
+unexpected response from server to authenticate command.	felamimail	el	Ξ‘Ο€ΟΟΟƒΞΌΞµΞ½Ξ· Ξ±Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ· Ξ±Ο€Ο Ο„ΞΏΞ½ server ΟƒΟ„Ξ·Ξ½ Ξ•ΞΞ‘ΞΞ΅Ξ™Ξ’Ξ©Ξ£Ξ— Ξ“ΞΞ—Ξ£Ξ™ΞΞ¤Ξ—Ξ¤Ξ‘Ξ£ ΞµΞ½Ο„ΞΏΞ»Ξ®Ο‚.
+unexpected response from server to digest-md5 response.	felamimail	el	Ξ‘Ο€ΟΟΟƒΞΌΞµΞ½Ξ· Ξ±Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ· Ξ±Ο€Ο Ο„ΞΏΞ½ server ΟƒΟ„Ξ·Ξ½ Digest-MD5 Ξ±Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ·.
+unexpected response from server to login command.	felamimail	el	Ξ‘Ο€ΟΟΟƒΞΌΞµΞ½Ξ· Ξ±Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ· Ξ±Ο€Ο Ο„ΞΏΞ½ server ΟƒΟ„Ξ·Ξ½ ΞµΞ½Ο„ΞΏΞ»Ξ® Ξ•Ξ™Ξ£ΞΞ”ΞΞ¥
+unflagged	felamimail	el	Ξ±Ο€ΞΏΟƒΞ·ΞΌΞ±ΞΉΞΏΟƒΟ„ΞΏΞ»Ξ―ΟƒΟ„Ξ·ΞΊΞµ
+unknown err	felamimail	el	Ξ†Ξ³Ξ½Ο‰ΟƒΟ„ΞΏ Ξ»Ξ¬ΞΈ
+unknown error	felamimail	el	Ξ†Ξ³Ξ½Ο‰ΟƒΟ„ΞΏ Ξ»Ξ¬ΞΈΞΏΟ‚
+unknown imap response from the server. server responded: %s	felamimail	el	Ξ†Ξ³Ξ½Ο‰ΟƒΟ„Ξ· IMAP Ξ±Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ· Ξ±Ο€Ο Ο„ΞΏΞ½ server.Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ· Server:%s
+unknown sender	felamimail	el	Ξ†Ξ³Ξ½Ο‰ΟƒΟ„ΞΏΟ‚ Ξ±Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ­Ξ±Ο‚
+unknown user or password incorrect.	felamimail	el	Ξ†Ξ³Ξ½Ο‰ΟƒΟ„ΞΏΟ‚ Ο‡ΟΞ®ΟƒΟ„Ξ·Ο‚ Ξ® Ξ»Ξ¬ΞΈΞΏΟ‚ ΞΊΟ‰Ξ΄ΞΉΞΊΟΟ‚.
+unread	common	el	Ξ‘Ξ΄ΞΉΞ¬Ξ²Ξ±ΟƒΟ„Ξ±
+unseen	felamimail	el	Ξ‘ΞΈΞ­Ξ±Ο„Ξ±
+unselect all	felamimail	el	Ξ‘Ο€ΞΏΞµΟ€ΞΉΞ»ΞΏΞ³Ξ® ΟΞ»Ο‰Ξ½
+unsubscribe	felamimail	el	Ξ Ξ±ΟΟƒΞ· ΟƒΟ…Ξ½Ξ΄ΟΞΏΞΌΞ®Ο‚
+unsubscribed	felamimail	el	Ξ— ΟƒΟ…Ξ½Ξ΄ΟΞΏΞΌΞ® ΟƒΟ„Ξ±ΞΌΞ¬Ο„Ξ·ΟƒΞµ
+unsubscribed successfully!	felamimail	el	Ξ— ΟƒΟ…Ξ½Ξ΄ΟΞΏΞΌΞ® ΟƒΟ„Ξ±ΞΌΞ¬Ο„Ξ·ΟƒΞµ ΞµΟ€ΞΉΟ„Ο…Ο‡ΟΟ‚!
+up	felamimail	el	Ο€Ξ¬Ξ½Ο‰
+updating message status	felamimail	el	ΞµΞ½Ξ·ΞΌΞ­ΟΟ‰ΟƒΞ· ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·Ο‚ ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+updating view	felamimail	el	ΞµΞ½Ξ·ΞΌΞ­ΟΟ‰ΟƒΞ· ΞµΞΌΟ†Ξ¬Ξ½ΞΉΟƒΞ·Ο‚
+use <a href="%1">emailadmin</a> to create profiles	felamimail	el	Ο‡ΟΞ·ΟƒΞΉΞΌΞΏΟ€ΞΏΞΉΞ®ΟƒΟ„Ξµ <a href="%1">EmailAdmin</a> Ξ³ΞΉΞ± Ο„Ξ· Ξ΄Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ο€ΟΞΏΟ†Ξ―Ξ»
+use a signature	felamimail	el	Ξ§ΟΞ®ΟƒΞ· Ο…Ο€ΞΏΞ³ΟΞ±Ο†Ξ®Ο‚
+use a signature?	felamimail	el	Ξ§ΟΞ®ΟƒΞ· Ο…Ο€ΞΏΞ³ΟΞ±Ο†Ξ®Ο‚;
+use addresses	felamimail	el	Ξ§ΟΞ®ΟƒΞ· Ξ΄ΞΉΞµΟ…ΞΈΟΞ½ΟƒΞµΟ‰Ξ½
+use custom settings	felamimail	el	Ξ§ΟΞ®ΟƒΞ· ΟƒΟΞ½Ξ·ΞΈΟ‰Ξ½ Ξ΅Ο…ΞΈΞΌΞ―ΟƒΞµΟ‰Ξ½
+use regular expressions	felamimail	el	Ο‡ΟΞ®ΟƒΞ· ΞΊΞ±Ξ½ΞΏΞ½ΞΉΞΊΟΞ½ ΞµΞΊΟ†ΟΞ¬ΟƒΞµΟ‰Ξ½
+use smtp auth	admin	el	Ξ§ΟΞ®ΟƒΞ· SMTP Ξ±Ο…ΞΈ
+users can define their own emailaccounts	admin	el	ΞΞΉ Ο‡ΟΞ®ΟƒΟ„ΞµΟ‚ ΞΌΟ€ΞΏΟΞΏΟΞ½ Ξ½Ξ± ΞΏΟΞ―ΟƒΞΏΟ…Ξ½ Ο„ΞΏΟ…Ο‚ Ξ΄ΞΉΞΊΞΏΟΟ‚ Ο„ΞΏΟ…Ο‚ email Ξ»ΞΏΞ³Ξ±ΟΞΉΞ±ΟƒΞΌΞΏΟΟ‚
+vacation notice	common	el	ΞµΞΉΞ΄ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Ξ΄ΞΉΞ±ΞΊΞΏΟ€ΟΞ½
+vacation notice is active	felamimail	el	Ξ— ΞµΞΉΞ΄ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Ξ΄ΞΉΞ±ΞΊΞΏΟ€ΟΞ½ ΞµΞ―Ξ½Ξ±ΞΉ ΞµΞ½ΞµΟΞ³Ξ®
+validate certificate	felamimail	el	ΞµΟ€ΞΉΞΊΟΟΟ‰ΟƒΞ· Ο€ΞΉΟƒΟ„ΞΏΟ€ΞΏΞΉΞ·Ο„ΞΉΞΊΞΏΟ
+view full header	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ο€Ξ»Ξ®ΟΞΏΟ…Ο‚ Ο„Ξ―Ο„Ξ»ΞΏΟ…
+view header lines	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ξ³ΟΞ±ΞΌΞΌΟΞ½ Ο„Ξ―Ο„Ξ»ΞΏΟ…
+view message	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+viewing full header	felamimail	el	Ξ ΟΞΏΞ²Ξ¬Ξ»Ξ»ΞµΟ„Ξ±ΞΉ Ο€Ξ»Ξ®ΟΞ·Ο‚ Ο„Ξ―Ο„Ξ»ΞΏΟ‚
+viewing message	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚
+viewing messages	felamimail	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΞ·Ξ½Ο…ΞΌΞ¬Ο„Ο‰Ξ½
+wed	felamimail	el	Ξ¤ΞµΟ„
+when deleting messages	felamimail	el	ΞΟ„Ξ±Ξ½ Ξ΄ΞΉΞ±Ξ³ΟΞ¬Ο†ΞΏΞ½Ο„Ξ±ΞΉ Ο„Ξ± ΞΌΞ·Ξ½ΟΞΌΞ±Ο„Ξ±
+with message	felamimail	el	ΞΌΞµ ΞΌΞ®Ξ½Ο…ΞΌΞ±
+with message "%1"	felamimail	el	ΞΌΞµ ΞΌΞ®Ξ½Ο…ΞΌΞ± "%1"
+wrap incoming text at	felamimail	el	Ξ¤ΟΞ»ΞΉΞ³ΞΌΞ± ΞµΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½ΞΏΟ… ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚ ΟƒΞµ
+writing	felamimail	el	Ξ³ΟΞ¬Ο†ΞµΟ„Ξ±ΞΉ
+wrote	felamimail	el	Ξ³ΟΞ¬Ο†Ο„Ξ·ΞΊΞµ

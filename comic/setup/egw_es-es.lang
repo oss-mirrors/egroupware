@@ -1,39 +1,39 @@
 %1 by %2	comic	es-es	%1 por %2
 %1 by %2 (%3)	comic	es-es	%1 por %2 (%3)
-are you sure you want to reset all comic dates and resolved image urls?	comic	es-es	縎eguro que quiere restablecer todas las fechas de las tiras c髆icas y urls de im醙enes resueltas?
+are you sure you want to reset all comic dates and resolved image urls?	comic	es-es	驴Seguro que quiere restablecer todas las fechas de las tiras c贸micas y urls de im谩genes resueltas?
 censorship level	comic	es-es	Nivel de censura
 censorship override enabled	comic	es-es	Ignorar censura activado
-comic	common	es-es	Tiras c髆icas
+comic	common	es-es	Tiras c贸micas
 comic preferences updated	comic	es-es	Preferencias de los comics actualizadas
-comics	common	es-es	Tiras c髆icas
-comics per page	comic	es-es	Tiras c髆icas por p醙ina
-comics scaled	comic	es-es	Tiras c髆icas a escala
-daily comic	common	es-es	Tira c髆ica diaria
-daily comic preferences	comic	es-es	Preferencias de la tira c髆ica diaria
-daily comics	admin	es-es	Tiras c髆icas diarias
-daily comics - global options	comic	es-es	Tiras c髆icas diarias - Opciones globales
-daily comics data	comic	es-es	Datos de las tiras c髆icas diarias
-daily comics global options	comic	es-es	Opciones globales de las tiras c髆icas
-display layout	comic	es-es	Formato de visualizaci髇
-display options	comic	es-es	Opciones de visualizaci髇
-egroupware daily comics	comic	es-es	Tiras c髆icas diairias de eGroupWare
-front page comic	comic	es-es	Tira c髆ica de la p醙ina de portada
-front page comic scaled	comic	es-es	Tira c髆ica de la p醙ina de portada a escala
-genre	comic	es-es	G閚ero
-global comics	common	es-es	Tiras c髆icas globales
+comics	common	es-es	Tiras c贸micas
+comics per page	comic	es-es	Tiras c贸micas por p谩gina
+comics scaled	comic	es-es	Tiras c贸micas a escala
+daily comic	common	es-es	Tira c贸mica diaria
+daily comic preferences	comic	es-es	Preferencias de la tira c贸mica diaria
+daily comics	admin	es-es	Tiras c贸micas diarias
+daily comics - global options	comic	es-es	Tiras c贸micas diarias - Opciones globales
+daily comics data	comic	es-es	Datos de las tiras c贸micas diarias
+daily comics global options	comic	es-es	Opciones globales de las tiras c贸micas
+display layout	comic	es-es	Formato de visualizaci贸n
+display options	comic	es-es	Opciones de visualizaci贸n
+egroupware daily comics	comic	es-es	Tiras c贸micas diairias de eGroupWare
+front page comic	comic	es-es	Tira c贸mica de la p谩gina de portada
+front page comic scaled	comic	es-es	Tira c贸mica de la p谩gina de portada a escala
+genre	comic	es-es	G茅nero
+global comics	common	es-es	Tiras c贸micas globales
 global options	common	es-es	Opciones globales
 global options updated	comic	es-es	Opciones globales actualizadas
 image source	comic	es-es	Origen de la imagen
-max file size	comic	es-es	Tama駉 m醲imo del fichero
+max file size	comic	es-es	Tama帽o m谩ximo del fichero
 my comics	comic	es-es	Mis comics
 no_entries	comic	es-es	Sin entradas
-parser	comic	es-es	Int閞prete
+parser	comic	es-es	Int茅rprete
 performed %1 of element	comic	es-es	Realizado %1 del elemento
 random	comic	es-es	Aleatoria
 rated	comic	es-es	Calificado
 remote (parse/snarf) enabled	comic	es-es	Remoto (interpretar/snarf)
 reset	comic	es-es	Restablecer
-reset comic data	admin	es-es	Restablecer los datos de las tiras c髆icas
+reset comic data	admin	es-es	Restablecer los datos de las tiras c贸micas
 resolve	comic	es-es	Resolver
 showing %1 (%2 - %3 of %4)	comic	es-es	Mostrando %1 (%2 - %3 de %4)
 template	comic	es-es	Plantilla

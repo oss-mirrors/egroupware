@@ -1,85 +1,85 @@
-account '%1' not found !!!	emailadmin	fi	Tili‰ '%1' ei lˆytynyt !!!
-add new email address:	emailadmin	fi	Lis‰‰ uusi s‰hkˆpostiosoite
-add profile	emailadmin	fi	Lis‰‰ profiili
+account '%1' not found !!!	emailadmin	fi	Tili√§ '%1' ei l√∂ytynyt !!!
+add new email address:	emailadmin	fi	Lis√§√§ uusi s√§hk√∂postiosoite
+add profile	emailadmin	fi	Lis√§√§ profiili
 admin dn	emailadmin	fi	admin dn
 admin password	emailadmin	fi	admin salasana
-admin username	emailadmin	fi	admin k‰ytt‰j‰tunnus
-advanced options	emailadmin	fi	lis‰asetukset
-alternate email address	emailadmin	fi	vaihtoehtoinen s‰hkˆpostiosoite
-any application	emailadmin	fi	Mik‰ vain sovellus
-any group	emailadmin	fi	Mik‰ vain ryhm‰
-bad login name or password.	emailadmin	fi	V‰‰r‰ k‰ytt‰j‰tunnus tai salasana
-bad or malformed request. server responded: %s	emailadmin	fi	V‰‰r‰ tai viallinen pyyntˆ. Serveri palauttaa: %s
-bad request: %s	emailadmin	fi	V‰‰r‰ pyyntˆ: %s
-can be used by application	emailadmin	fi	Voidaan k‰ytt‰‰ sovelluksessa
-can be used by group	emailadmin	fi	Voidaan k‰ytt‰‰ ryhm‰ll‰
+admin username	emailadmin	fi	admin k√§ytt√§j√§tunnus
+advanced options	emailadmin	fi	lis√§asetukset
+alternate email address	emailadmin	fi	vaihtoehtoinen s√§hk√∂postiosoite
+any application	emailadmin	fi	Mik√§ vain sovellus
+any group	emailadmin	fi	Mik√§ vain ryhm√§
+bad login name or password.	emailadmin	fi	V√§√§r√§ k√§ytt√§j√§tunnus tai salasana
+bad or malformed request. server responded: %s	emailadmin	fi	V√§√§r√§ tai viallinen pyynt√∂. Serveri palauttaa: %s
+bad request: %s	emailadmin	fi	V√§√§r√§ pyynt√∂: %s
+can be used by application	emailadmin	fi	Voidaan k√§ytt√§√§ sovelluksessa
+can be used by group	emailadmin	fi	Voidaan k√§ytt√§√§ ryhm√§ll√§
 connection dropped by imap server.	emailadmin	fi	Yhteys IMAP palvelimeen katkesi.
-could not complete request. reason given: %s	emailadmin	fi	Pyyntˆ‰ ei voitu toteuttaa. Syyn‰ oli: %s
-could not open secure connection to the imap server. %s : %s.	emailadmin	fi	Turvattua yhteytt‰ IMAP palvelimeen ei voitu avata. %s : %s.
-cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	fi	CRAM-MD5 tai DIGEST-MD5 k‰yttˆ edellytt‰‰ Auth_SASL paketin asentamista.
+could not complete request. reason given: %s	emailadmin	fi	Pyynt√∂√§ ei voitu toteuttaa. Syyn√§ oli: %s
+could not open secure connection to the imap server. %s : %s.	emailadmin	fi	Turvattua yhteytt√§ IMAP palvelimeen ei voitu avata. %s : %s.
+cram-md5 or digest-md5 requires the auth_sasl package to be installed.	emailadmin	fi	CRAM-MD5 tai DIGEST-MD5 k√§ytt√∂ edellytt√§√§ Auth_SASL paketin asentamista.
 cyrus imap server	emailadmin	fi	Cyrus IMAP -palvelin
 cyrus imap server administration	emailadmin	fi	Cyrus IMAP -palvelimen hallinta
 default	emailadmin	fi	oletus
 deliver extern	emailadmin	fi	deliver extern
-do you really want to delete this profile	emailadmin	fi	Haluatko varmasti poistaa t‰m‰n profiilin
+do you really want to delete this profile	emailadmin	fi	Haluatko varmasti poistaa t√§m√§n profiilin
 domainname	emailadmin	fi	verkkotunnus
-edit email settings	emailadmin	fi	muokkaa s‰hkˆpostin asetuksia
-email account active	emailadmin	fi	S‰hkˆpostitunnus k‰ytˆss‰
-email address	emailadmin	fi	S‰hkˆpostiosoite
-email settings	common	fi	S‰hkˆpostin asetukset
-emailadmin	emailadmin	fi	S‰hkˆpostin yll‰pit‰j‰
-enable cyrus imap server administration	emailadmin	fi	ota Cyrus IMAP -palvelimen hallinta k‰yttˆˆn
-enable sieve	emailadmin	fi	ota Sieve k‰yttˆˆn
+edit email settings	emailadmin	fi	muokkaa s√§hk√∂postin asetuksia
+email account active	emailadmin	fi	S√§hk√∂postitunnus k√§yt√∂ss√§
+email address	emailadmin	fi	S√§hk√∂postiosoite
+email settings	common	fi	S√§hk√∂postin asetukset
+emailadmin	emailadmin	fi	S√§hk√∂postin yll√§pit√§j√§
+enable cyrus imap server administration	emailadmin	fi	ota Cyrus IMAP -palvelimen hallinta k√§ytt√∂√∂n
+enable sieve	emailadmin	fi	ota Sieve k√§ytt√∂√∂n
 encryption settings	emailadmin	fi	Encryptaus asetukset
-enter your default mail domain (from: user@domain)	emailadmin	fi	Anna oletusverkkotunnus (l‰hett‰j‰: k‰ytt‰j‰@verkkotunnus)
-error connecting to imap server. %s : %s.	emailadmin	fi	Virhe yhdistett‰ess‰ IMAP palvelimeen. %s : %s.
-error connecting to imap server: [%s] %s.	emailadmin	fi	Virhe yhdistett‰ess‰ IMAP palvelimeen. [%s] %s.
-forward also to	emailadmin	fi	l‰het‰ kopio myˆs osoitteeseen
-forward email's to	emailadmin	fi	l‰het‰ edelleen osoitteeseen
-forward only	emailadmin	fi	l‰het‰ edelleen vain
+enter your default mail domain (from: user@domain)	emailadmin	fi	Anna oletusverkkotunnus (l√§hett√§j√§: k√§ytt√§j√§@verkkotunnus)
+error connecting to imap server. %s : %s.	emailadmin	fi	Virhe yhdistett√§ess√§ IMAP palvelimeen. %s : %s.
+error connecting to imap server: [%s] %s.	emailadmin	fi	Virhe yhdistett√§ess√§ IMAP palvelimeen. [%s] %s.
+forward also to	emailadmin	fi	l√§het√§ kopio my√∂s osoitteeseen
+forward email's to	emailadmin	fi	l√§het√§ edelleen osoitteeseen
+forward only	emailadmin	fi	l√§het√§ edelleen vain
 global options	emailadmin	fi	Yleiset asetukset
-if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	fi	Jos k‰yt‰t SSL tai TLS, sinulla pit‰‰ olla PHP openssl lis‰osa ladattuna.
+if using ssl or tls, you must have the php openssl extension loaded.	emailadmin	fi	Jos k√§yt√§t SSL tai TLS, sinulla pit√§√§ olla PHP openssl lis√§osa ladattuna.
 imap admin password	admin	fi	IMAP admin salasana
-imap admin user	admin	fi	IMAP admin k‰ytt‰j‰tunnus
+imap admin user	admin	fi	IMAP admin k√§ytt√§j√§tunnus
 imap c-client version < 2001	emailadmin	fi	IMAP C-Client versio < 2001
 imap server closed the connection.	emailadmin	fi	IMAP palvelin katkaisi yhteyden.
 imap server closed the connection. server responded: %s	emailadmin	fi	IMAP palvelin katkaisi yhteyden. Palvelin vastaa: %s
 imap server hostname or ip address	emailadmin	fi	IMAP -palvelimen nimi tai IP-osoite
-imap server logintyp	emailadmin	fi	IMAP -palvelimen k‰ytt‰j‰tunnistus
+imap server logintyp	emailadmin	fi	IMAP -palvelimen k√§ytt√§j√§tunnistus
 imap server port	emailadmin	fi	IMAP -palvelimen portti
 imap/pop3 server name	emailadmin	fi	IMAP / POP3 -palvelimen nimi
 in mbyte	emailadmin	fi	megatavua
 ldap basedn	emailadmin	fi	LDAP basedn
 ldap server	emailadmin	fi	LDAP -palvelin
 ldap server accounts dn	emailadmin	fi	LDAP tunnusten DN
-ldap server admin dn	emailadmin	fi	LDAP yll‰pidon DN
+ldap server admin dn	emailadmin	fi	LDAP yll√§pidon DN
 ldap server admin password	emailadmin	fi	LDAP hallinnan salasana
 ldap server hostname or ip address	emailadmin	fi	LDAP -palvelimen nimi tai IP-osoite
 ldap settings	emailadmin	fi	LDAP -asetukset
-leave empty for no quota	emailadmin	fi	j‰t‰ tyhj‰ksi, jos ei rajoiteta
-mail settings	admin	fi	S‰hkˆpostin asetukset
+leave empty for no quota	emailadmin	fi	j√§t√§ tyhj√§ksi, jos ei rajoiteta
+mail settings	admin	fi	S√§hk√∂postin asetukset
 name of organisation	emailadmin	fi	Yrityksen nimi
 no alternate email address	emailadmin	fi	ei vahtoehtoista osoitetta
 no encryption	emailadmin	fi	Ei enkryptausta
-no forwarding email address	emailadmin	fi	ei edelleenl‰hetyksen osoitetta
-no message returned.	emailadmin	fi	Viesti‰ ei palautettu
-no supported imap authentication method could be found.	emailadmin	fi	Tuettua IMAP tunnistustapaa ei lˆydetty.
+no forwarding email address	emailadmin	fi	ei edelleenl√§hetyksen osoitetta
+no message returned.	emailadmin	fi	Viesti√§ ei palautettu
+no supported imap authentication method could be found.	emailadmin	fi	Tuettua IMAP tunnistustapaa ei l√∂ydetty.
 order	emailadmin	fi	Tilaa
 organisation	emailadmin	fi	Organisaatio
-plesk can't rename users --> request ignored	emailadmin	fi	Plesk ei voi nimet‰ k‰ytt‰ji‰ --> pyyntˆ hyl‰tty
+plesk can't rename users --> request ignored	emailadmin	fi	Plesk ei voi nimet√§ k√§ytt√§ji√§ --> pyynt√∂ hyl√§tty
 plesk imap server (courier)	emailadmin	fi	Plesk IMAP palvelin (Courier)
-plesk mail script '%1' not found !!!	emailadmin	fi	Plesk s‰hkˆpostiskripti‰ '%1' ei lˆydy !!!
-plesk requires passwords to have at least 5 characters and not contain the account-name --> password not set!!!	emailadmin	fi	Plesk:n salasanassa pit‰‰ olla v‰hint‰‰n 5 merkki‰, eik‰ se saa olla k‰ytt‰j‰tilin nimi --> salasanaa EI ole asetettu !!!
+plesk mail script '%1' not found !!!	emailadmin	fi	Plesk s√§hk√∂postiskripti√§ '%1' ei l√∂ydy !!!
+plesk requires passwords to have at least 5 characters and not contain the account-name --> password not set!!!	emailadmin	fi	Plesk:n salasanassa pit√§√§ olla v√§hint√§√§n 5 merkki√§, eik√§ se saa olla k√§ytt√§j√§tilin nimi --> salasanaa EI ole asetettu !!!
 plesk smtp-server (qmail)	emailadmin	fi	Plesk SMTP-palvelin (Qmail)
 pop3 server hostname or ip address	emailadmin	fi	POP3 -palvelimen nimi tai IP-osoite
 pop3 server port	emailadmin	fi	POP3 -palvelimen portti
 postfix with ldap	emailadmin	fi	Postfix ja LDAP
-profile access rights	emailadmin	fi	profiilin p‰‰sy oikeudet
+profile access rights	emailadmin	fi	profiilin p√§√§sy oikeudet
 profile list	emailadmin	fi	Lista profiileista
 profile name	emailadmin	fi	Profiilin nimi
 qmaildotmode	emailadmin	fi	qmaildotmode
-qouta size in mbyte	emailadmin	fi	tallennuskiintiˆ Mt
-quota settings	emailadmin	fi	tallennuskiintiˆ
+qouta size in mbyte	emailadmin	fi	tallennuskiinti√∂ Mt
+quota settings	emailadmin	fi	tallennuskiinti√∂
 remove	emailadmin	fi	poista
 select type of imap/pop3 server	emailadmin	fi	Valitse IMAP / POP3 -palvelimen tyyppi
 select type of smtp server	emailadmin	fi	Valitse SMTP -palvelimen tyyppi
@@ -97,21 +97,21 @@ standard	emailadmin	fi	Vakio
 standard imap server	emailadmin	fi	Vakio IMAP -palvelin
 standard pop3 server	emailadmin	fi	Vakio POP3 -palvelin
 standard smtp-server	emailadmin	fi	Vakio SMTP -palvelin
-the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	fi	IMAP palvelimelta ei lˆydy tukea valitulle tunnistus muodolle, ote yhteytt‰ j‰rjestelm‰n p‰‰k‰ytt‰j‰‰n.
-this php has no imap support compiled in!!	emailadmin	fi	T‰m‰ PHP ei sis‰ll‰ IMAP tukea!!
-to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	fi	K‰ytt‰‰ksesi TLS yhteytt‰, sinulla pit‰‰ olla k‰ytˆss‰ PHP 5.1.0 tai uudempi.
+the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	fi	IMAP palvelimelta ei l√∂ydy tukea valitulle tunnistus muodolle, ote yhteytt√§ j√§rjestelm√§n p√§√§k√§ytt√§j√§√§n.
+this php has no imap support compiled in!!	emailadmin	fi	T√§m√§ PHP ei sis√§ll√§ IMAP tukea!!
+to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	fi	K√§ytt√§√§ksesi TLS yhteytt√§, sinulla pit√§√§ olla k√§yt√∂ss√§ PHP 5.1.0 tai uudempi.
 unexpected response from server to authenticate command.	emailadmin	fi	Odottamaton vastaus palvelimen AUTHENTICATE komennolta.
 unexpected response from server to digest-md5 response.	emailadmin	fi	Odottamaton vastaus palvelimen Digest-MD5 vastauksesta.
 unexpected response from server to login command.	emailadmin	fi	Odottamaton vastaus palvelimen LOGIN komennolta.
 unknown imap response from the server. server responded: %s	emailadmin	fi	Tuntematon IMAP vastaus palvelimelta. Palvelin vastasi: %s
 unsupported action '%1' !!!	emailadmin	fi	Toiminto jota ei tueta '%1' !!!
-update current email address:	emailadmin	fi	P‰ivit‰ nykyinen s‰hkˆpostiosoite:
-use ldap defaults	emailadmin	fi	K‰yt‰ LDAP -oletuksia
-use smtp auth	emailadmin	fi	K‰yt‰ SMTP -k‰ytt‰j‰ntunnistusta
-use tls authentication	emailadmin	fi	K‰yt‰ TLS -k‰ytt‰j‰ntunnistusta
-use tls encryption	emailadmin	fi	K‰yt‰ TLS -salausta
-user can edit forwarding address	emailadmin	fi	K‰ytt‰j‰ voi muokata eteenp‰inl‰hetyksen osoitetta
-username (standard)	emailadmin	fi	k‰ytt‰j‰tunnus (standardi)
-username@domainname (virtual mail manager)	emailadmin	fi	k‰ytt‰j‰tunnus@palvelimennimi (Virtual MAIL ManaGeR)
-users can define their own emailaccounts	emailadmin	fi	K‰ytt‰j‰t voivat m‰‰ritell‰ omat postilaatikkonsa
+update current email address:	emailadmin	fi	P√§ivit√§ nykyinen s√§hk√∂postiosoite:
+use ldap defaults	emailadmin	fi	K√§yt√§ LDAP -oletuksia
+use smtp auth	emailadmin	fi	K√§yt√§ SMTP -k√§ytt√§j√§ntunnistusta
+use tls authentication	emailadmin	fi	K√§yt√§ TLS -k√§ytt√§j√§ntunnistusta
+use tls encryption	emailadmin	fi	K√§yt√§ TLS -salausta
+user can edit forwarding address	emailadmin	fi	K√§ytt√§j√§ voi muokata eteenp√§inl√§hetyksen osoitetta
+username (standard)	emailadmin	fi	k√§ytt√§j√§tunnus (standardi)
+username@domainname (virtual mail manager)	emailadmin	fi	k√§ytt√§j√§tunnus@palvelimennimi (Virtual MAIL ManaGeR)
+users can define their own emailaccounts	emailadmin	fi	K√§ytt√§j√§t voivat m√§√§ritell√§ omat postilaatikkonsa
 virtual mail manager	emailadmin	fi	Virtual MAIL ManaGeR

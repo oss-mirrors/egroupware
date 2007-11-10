@@ -1,70 +1,70 @@
-%1 bookmarks have been deleted	bookmarks	ko	%1 ºÏ¸¶Å©´Â »èÁ¦µÇ¾ú½À´Ï´Ù.
-%1 bookmarks imported from %2 successfully.	bookmarks	ko	** %2ÀÇ ºÏ¸¶Å©¸¦ %1·Î °¡Á®¿À±â ¼º°ø.
-(comma separate multiple addresses)	bookmarks	ko	(ÄÄ¸¶·Î ºĞ¸®µÈ ¿©·¯°³ÀÇ ÁÖ¼Ò)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ko	<b>Âü°í:</b> ÇöÀç´Â ³İ½ºÄÉÀÔ ºÏ¸¶Å©¸¸ µ¿ÀÛÇÕ´Ï´Ù
-all bookmarks	bookmarks	ko	¸ğµç ºÏ¸¶Å©
-and	bookmarks	ko	±×¸®°í(AND ¿¬»ê)
-append this message to mailed bookmarks	bookmarks	ko	¸ŞÀÏ·Î ¹ß¼ÛµÈ ºÏ¸¶Å©·Î ÀÌ ¸Ş¼¼Áö¸¦ È®Àå
-ascending	bookmarks	ko	¿Ã¸²Â÷¼ø
-book marks	common	ko	ºÏ¸¶Å©
-bookmark changed sucessfully	bookmarks	ko	¼º°øÀûÀ¸·Î ºÏ¸¶Å©¸¦ º¯°æÇß½À´Ï´Ù
-bookmark created successfully.	bookmarks	ko	¼º°øÀûÀ¸·Î ºÏ¸¶Å©¸¦ »ı¼ºÇß½À´Ï´Ù
-bookmark not editable	bookmarks	ko	ºÏ¸¶Å©¸¦ ÆíÁıÇÒ¼ö ¾ø½À´Ï´Ù
-bookmark not readable	bookmarks	ko	ºÏ¸¶Å©¸¦ ÀĞÀ»¼ö ¾ø½À´Ï´Ù
-bookmarks	common	ko	ºÏ¸¶Å©
-bookmarks settings	bookmarks	ko	ºÏ¸¶Å© ¼³Á¤
-change bookmark	bookmarks	ko	ºÏ¸¶Å© ¹Ù²Ù±â
-close this window to return	bookmarks	ko	ÀÌ Ã¢À» ´İ°í µ¹¾Æ°¡±â
-create bookmark	bookmarks	ko	ºÏ¸¶Å© »ı¼º
-create new bookmark	bookmarks	ko	»õ ºÏ¸¶Å© »ı¼º
-date added	bookmarks	ko	Ãß°¡µÈ ³¯Â¥
-date changed	bookmarks	ko	º¯°æµÈ ³¯Â¥
-date last updated	bookmarks	ko	ÃÖÁ¾°»½Å ³¯Â¥
-date last visited	bookmarks	ko	ÃÖÁ¾¹æ¹® ³¯Â¥
-descending	bookmarks	ko	³»¸²Â÷¼ø
-edit bookmark	bookmarks	ko	ºÏ¸¶Å© ÆíÁı
-edit this bookmark	bookmarks	ko	ÀÌ ºÏ¸¶Å© ÆíÁı
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	ko	ºÏ¸¶Å©·Î °¡Á®¿À°í ½ÍÀº <br> ³İ½ºÄÉÀÔ ºÏ¸¶Å©ÆÄÀÏÀÇ ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä.
-export bookmarks	common	ko	ºÏ¸¶Å© ³»º¸³»±â
-fewer	bookmarks	ko	°Ë»öÁ¶°Ç °¨¼Ò
-filter by	bookmarks	ko	°É·¯Áü :
-found a link you might like	bookmarks	ko	ÁÁ¾ÆÇÏ½Ç ¸µÅ©¸¦ ¹ß°ßÇß½À´Ï´Ù.
-from	bookmarks	ko	ºÎÅÍ
-from category %1	bookmarks	ko	Ä«Å×°í¸® %1 ºÎÅÍ
-highest	bookmarks	ko	°¡Àå³ôÀº (highest)
-i thought you would be interested in the following link(s):	bookmarks	ko	´ÙÀ½ÀÇ ¸µÅ©°¡ °ü½ÉÀÖÀ¸½Ç °Ì´Ï´Ù:
-import bookmarks	common	ko	ºÏ¸¶Å© °¡Á®¿À±â
-like	bookmarks	ko	ºñ½ÁÇÑ
-list view	bookmarks	ko	¸ñ·Ï
-lowest	bookmarks	ko	°¡Àå³·Àº (lowest)
-mail this bookmark	bookmarks	ko	ÀÌ ºÏ¸¶Å©¸¦ ¸ŞÀÏ·Î º¸³¿
-mail-this-link message sent to %1.	bookmarks	ko	'ÇöÀç¸µÅ©¸¦¸ŞÀÏ·Î' ¸Ş¼¼Áö¸¦ %1 À¸·Î º¸³¿
-mass update:	bookmarks	ko	´ë·® °»½Å:
-message from	bookmarks	ko	¸Ş¼¼Áö ¹ß¼ÛÁö
-more	bookmarks	ko	°Ë»öÁ¶°Ç Ãß°¡
-name	bookmarks	ko	ÀÌ¸§
-name is required	bookmarks	ko	ÀÌ¸§ÀÌ ÇÊ¿äÇÕ´Ï´Ù
-netscape bookmark file	bookmarks	ko	³İ½ºÄÉÀÔ ºÏ¸¶Å© ÆÄÀÏ
-netscape bookmark filename is required!	bookmarks	ko	³İ½ºÄÉÀÔ ºÏ¸¶Å© ÆÄÀÏÀÌ¸§ÀÌ ÇÊ¿äÇÕ´Ï´Ù!
-new	bookmark	ko	»õ·Î¸¸µé±â
-or	bookmarks	ko	ÀÌ°Å³ª(OR¿¬»ê)
-please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ko	<b>º¸³¾ ÀÌ¸ŞÀÏ ÁÖ¼Ò</b>,<B>Á¦¸ñ</b>, ±×¸®°í <B>¸Ş¼¼Áö</b>¸¦ ÀÛ¼ºÇØÁÖ¼¼¿ä!
-please select the categories to export	bookmarks	ko	³»º¸³¾ Ä«Å×°í¸®¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä
-query condition	bookmarks	ko	Äõ¸® Á¶°Ç
-rating	bookmarks	ko	Á¡¼ö
-search for:	bookmarks	ko	Ã£±â :
-select the format you would like to export to	bookmarks	ko	³»º¸³¾ Çü½Ä ¼±ÅÃ
-send bookmark	bookmarks	ko	ºÏ¸¶Å© º¸³»±â
-sub category	bookmarks	ko	ÇÏÀ§ Ä«Å×°í¸®
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ko	º¸³¾ÁÖ¼Ò %1 °¡ ºÎÀûÀıÇÕ´Ï´Ù. Çü½ÄÀº <strong> »ç¿ëÀÚ@µµ¸ŞÀÎ</strong>ÀÌ¸ç µµ¸ŞÀÎÀÌ ¹İµå½Ã ÀÖ¾î¾ß ÇÕ´Ï´Ù!
-to e-mail addresses	bookmarks	ko	º¸³¾ ÀÌ-¸ŞÀÏ ÁÖ¼Òµé
-to which category should the imported folder hierarchy be attached	bookmarks	ko	°¡Á®¿Â Æú´õÀÇ °èÃş±¸Á¶°¡ ´õÇØÁú Ä«Å×°í¸®´Â ¾î¶² °ÍÀÔ´Ï±î
-total visits	bookmarks	ko	ÃÑ ¹æ¹®ÀÚ
-tree view	bookmarks	ko	Æ®¸® ºä
-unable to open temp file %1 for import.	bookmarks	ko	°¡Á®¿À±â: ÀÓ½ÃÆÄÀÏ %1À» ¿­¼ö¾ø½À´Ï´Ù
-url is required.	bookmarks	ko	URLÀÌ ÇÊ¿äÇÕ´Ï´Ù.
-view bookmark	bookmarks	ko	ºÏ¸¶Å© º¸±â
-view this bookmark	bookmarks	ko	ÀÌ ºÏ¸¶Å© º¸±â
-warning	bookmarks	ko	°æ°í
-you are viewing this site outside of egroupware	bookmarks	ko	±ÍÇÏ´Â eGroupWare ¿ÜºÎ¿¡¼­ ÀÌ »çÀÌÆ®¸¦ º¸°í ÀÖ½À´Ï´Ù
-you must select a category	bookmarks	ko	¹İµå½Ã Ä«Å×°í¸®¸¦ ¼±ÅÃÇØ¾ßÇÕ´Ï´Ù
+%1 bookmarks have been deleted	bookmarks	ko	%1 ë¶ë§ˆí¬ëŠ” ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.
+%1 bookmarks imported from %2 successfully.	bookmarks	ko	** %2ì˜ ë¶ë§ˆí¬ë¥¼ %1ë¡œ ê°€ì ¸ì˜¤ê¸° ì„±ê³µ.
+(comma separate multiple addresses)	bookmarks	ko	(ì»´ë§ˆë¡œ ë¶„ë¦¬ëœ ì—¬ëŸ¬ê°œì˜ ì£¼ì†Œ)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ko	<b>ì°¸ê³ :</b> í˜„ì¬ëŠ” ë„·ìŠ¤ì¼€ì… ë¶ë§ˆí¬ë§Œ ë™ì‘í•©ë‹ˆë‹¤
+all bookmarks	bookmarks	ko	ëª¨ë“  ë¶ë§ˆí¬
+and	bookmarks	ko	ê·¸ë¦¬ê³ (AND ì—°ì‚°)
+append this message to mailed bookmarks	bookmarks	ko	ë©”ì¼ë¡œ ë°œì†¡ëœ ë¶ë§ˆí¬ë¡œ ì´ ë©”ì„¸ì§€ë¥¼ í™•ì¥
+ascending	bookmarks	ko	ì˜¬ë¦¼ì°¨ìˆœ
+book marks	common	ko	ë¶ë§ˆí¬
+bookmark changed sucessfully	bookmarks	ko	ì„±ê³µì ìœ¼ë¡œ ë¶ë§ˆí¬ë¥¼ ë³€ê²½í–ˆìŠµë‹ˆë‹¤
+bookmark created successfully.	bookmarks	ko	ì„±ê³µì ìœ¼ë¡œ ë¶ë§ˆí¬ë¥¼ ìƒì„±í–ˆìŠµë‹ˆë‹¤
+bookmark not editable	bookmarks	ko	ë¶ë§ˆí¬ë¥¼ í¸ì§‘í• ìˆ˜ ì—†ìŠµë‹ˆë‹¤
+bookmark not readable	bookmarks	ko	ë¶ë§ˆí¬ë¥¼ ì½ì„ìˆ˜ ì—†ìŠµë‹ˆë‹¤
+bookmarks	common	ko	ë¶ë§ˆí¬
+bookmarks settings	bookmarks	ko	ë¶ë§ˆí¬ ì„¤ì •
+change bookmark	bookmarks	ko	ë¶ë§ˆí¬ ë°”ê¾¸ê¸°
+close this window to return	bookmarks	ko	ì´ ì°½ì„ ë‹«ê³  ëŒì•„ê°€ê¸°
+create bookmark	bookmarks	ko	ë¶ë§ˆí¬ ìƒì„±
+create new bookmark	bookmarks	ko	ìƒˆ ë¶ë§ˆí¬ ìƒì„±
+date added	bookmarks	ko	ì¶”ê°€ëœ ë‚ ì§œ
+date changed	bookmarks	ko	ë³€ê²½ëœ ë‚ ì§œ
+date last updated	bookmarks	ko	ìµœì¢…ê°±ì‹  ë‚ ì§œ
+date last visited	bookmarks	ko	ìµœì¢…ë°©ë¬¸ ë‚ ì§œ
+descending	bookmarks	ko	ë‚´ë¦¼ì°¨ìˆœ
+edit bookmark	bookmarks	ko	ë¶ë§ˆí¬ í¸ì§‘
+edit this bookmark	bookmarks	ko	ì´ ë¶ë§ˆí¬ í¸ì§‘
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	ko	ë¶ë§ˆí¬ë¡œ ê°€ì ¸ì˜¤ê³  ì‹¶ì€ <br> ë„·ìŠ¤ì¼€ì… ë¶ë§ˆí¬íŒŒì¼ì˜ ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”.
+export bookmarks	common	ko	ë¶ë§ˆí¬ ë‚´ë³´ë‚´ê¸°
+fewer	bookmarks	ko	ê²€ìƒ‰ì¡°ê±´ ê°ì†Œ
+filter by	bookmarks	ko	ê±¸ëŸ¬ì§ :
+found a link you might like	bookmarks	ko	ì¢‹ì•„í•˜ì‹¤ ë§í¬ë¥¼ ë°œê²¬í–ˆìŠµë‹ˆë‹¤.
+from	bookmarks	ko	ë¶€í„°
+from category %1	bookmarks	ko	ì¹´í…Œê³ ë¦¬ %1 ë¶€í„°
+highest	bookmarks	ko	ê°€ì¥ë†’ì€ (highest)
+i thought you would be interested in the following link(s):	bookmarks	ko	ë‹¤ìŒì˜ ë§í¬ê°€ ê´€ì‹¬ìˆìœ¼ì‹¤ ê²ë‹ˆë‹¤:
+import bookmarks	common	ko	ë¶ë§ˆí¬ ê°€ì ¸ì˜¤ê¸°
+like	bookmarks	ko	ë¹„ìŠ·í•œ
+list view	bookmarks	ko	ëª©ë¡
+lowest	bookmarks	ko	ê°€ì¥ë‚®ì€ (lowest)
+mail this bookmark	bookmarks	ko	ì´ ë¶ë§ˆí¬ë¥¼ ë©”ì¼ë¡œ ë³´ëƒ„
+mail-this-link message sent to %1.	bookmarks	ko	'í˜„ì¬ë§í¬ë¥¼ë©”ì¼ë¡œ' ë©”ì„¸ì§€ë¥¼ %1 ìœ¼ë¡œ ë³´ëƒ„
+mass update:	bookmarks	ko	ëŒ€ëŸ‰ ê°±ì‹ :
+message from	bookmarks	ko	ë©”ì„¸ì§€ ë°œì†¡ì§€
+more	bookmarks	ko	ê²€ìƒ‰ì¡°ê±´ ì¶”ê°€
+name	bookmarks	ko	ì´ë¦„
+name is required	bookmarks	ko	ì´ë¦„ì´ í•„ìš”í•©ë‹ˆë‹¤
+netscape bookmark file	bookmarks	ko	ë„·ìŠ¤ì¼€ì… ë¶ë§ˆí¬ íŒŒì¼
+netscape bookmark filename is required!	bookmarks	ko	ë„·ìŠ¤ì¼€ì… ë¶ë§ˆí¬ íŒŒì¼ì´ë¦„ì´ í•„ìš”í•©ë‹ˆë‹¤!
+new	bookmark	ko	ìƒˆë¡œë§Œë“¤ê¸°
+or	bookmarks	ko	ì´ê±°ë‚˜(ORì—°ì‚°)
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ko	<b>ë³´ë‚¼ ì´ë©”ì¼ ì£¼ì†Œ</b>,<B>ì œëª©</b>, ê·¸ë¦¬ê³  <B>ë©”ì„¸ì§€</b>ë¥¼ ì‘ì„±í•´ì£¼ì„¸ìš”!
+please select the categories to export	bookmarks	ko	ë‚´ë³´ë‚¼ ì¹´í…Œê³ ë¦¬ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”
+query condition	bookmarks	ko	ì¿¼ë¦¬ ì¡°ê±´
+rating	bookmarks	ko	ì ìˆ˜
+search for:	bookmarks	ko	ì°¾ê¸° :
+select the format you would like to export to	bookmarks	ko	ë‚´ë³´ë‚¼ í˜•ì‹ ì„ íƒ
+send bookmark	bookmarks	ko	ë¶ë§ˆí¬ ë³´ë‚´ê¸°
+sub category	bookmarks	ko	í•˜ìœ„ ì¹´í…Œê³ ë¦¬
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ko	ë³´ë‚¼ì£¼ì†Œ %1 ê°€ ë¶€ì ì ˆí•©ë‹ˆë‹¤. í˜•ì‹ì€ <strong> ì‚¬ìš©ì@ë„ë©”ì¸</strong>ì´ë©° ë„ë©”ì¸ì´ ë°˜ë“œì‹œ ìˆì–´ì•¼ í•©ë‹ˆë‹¤!
+to e-mail addresses	bookmarks	ko	ë³´ë‚¼ ì´-ë©”ì¼ ì£¼ì†Œë“¤
+to which category should the imported folder hierarchy be attached	bookmarks	ko	ê°€ì ¸ì˜¨ í´ë”ì˜ ê³„ì¸µêµ¬ì¡°ê°€ ë”í•´ì§ˆ ì¹´í…Œê³ ë¦¬ëŠ” ì–´ë–¤ ê²ƒì…ë‹ˆê¹Œ
+total visits	bookmarks	ko	ì´ ë°©ë¬¸ì
+tree view	bookmarks	ko	íŠ¸ë¦¬ ë·°
+unable to open temp file %1 for import.	bookmarks	ko	ê°€ì ¸ì˜¤ê¸°: ì„ì‹œíŒŒì¼ %1ì„ ì—´ìˆ˜ì—†ìŠµë‹ˆë‹¤
+url is required.	bookmarks	ko	URLì´ í•„ìš”í•©ë‹ˆë‹¤.
+view bookmark	bookmarks	ko	ë¶ë§ˆí¬ ë³´ê¸°
+view this bookmark	bookmarks	ko	ì´ ë¶ë§ˆí¬ ë³´ê¸°
+warning	bookmarks	ko	ê²½ê³ 
+you are viewing this site outside of egroupware	bookmarks	ko	ê·€í•˜ëŠ” eGroupWare ì™¸ë¶€ì—ì„œ ì´ ì‚¬ì´íŠ¸ë¥¼ ë³´ê³  ìˆìŠµë‹ˆë‹¤
+you must select a category	bookmarks	ko	ë°˜ë“œì‹œ ì¹´í…Œê³ ë¦¬ë¥¼ ì„ íƒí•´ì•¼í•©ë‹ˆë‹¤

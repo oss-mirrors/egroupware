@@ -10,30 +10,30 @@ book marks	common	no	Favoritter
 bookmark changed sucessfully	bookmarks	no	Endringen av bokmerket var vellykket
 bookmark created successfully.	bookmarks	no	Opprettelse av bokmerket var vellykket
 bookmark deleted successfully	bookmarks	no	Bokmerket ble slettet
-bookmark not editable	bookmarks	no	Bokmerket er ikke mulig å endre
-bookmark not readable	bookmarks	no	Bokmerket er ikke mulig å lese
+bookmark not editable	bookmarks	no	Bokmerket er ikke mulig Ã¥ endre
+bookmark not readable	bookmarks	no	Bokmerket er ikke mulig Ã¥ lese
 bookmarks	common	no	Bokmerker
 bookmarks settings	bookmarks	no	Bokmerkeinnstillinger
 change bookmark	bookmarks	no	Endre bokmerke
-close this window to return	bookmarks	no	lukk dette vinduet for å returnere
+close this window to return	bookmarks	no	lukk dette vinduet for Ã¥ returnere
 create bookmark	bookmarks	no	Opprett bokmerke
 create new bookmark	bookmarks	no	Opprett nytt bokmerke
 date added	bookmarks	no	Opprettet dato
 date changed	bookmarks	no	Endret dato
 date last updated	bookmarks	no	Sist oppdatert dato
-date last visited	bookmarks	no	Sist besøkte dato
+date last visited	bookmarks	no	Sist besÃ¸kte dato
 descending	bookmarks	no	Synkede
 edit bookmark	bookmarks	no	Endre bokmerket
 edit this bookmark	bookmarks	no	Endre dette bokmerket
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	no	Skriv inn navnet på Netscape favorittfilen<br>som du vil importere til bokmerkene under.
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	no	Skriv inn navnet pÃ¥ Netscape favorittfilen<br>som du vil importere til bokmerkene under.
 export bookmarks	common	no	Eksporter bokmerker
-fewer	bookmarks	no	Færre
+fewer	bookmarks	no	FÃ¦rre
 filter by	bookmarks	no	Filtrer ved
 found a link you might like	bookmarks	no	Fant en lenke du kanskje vil like
 from	bookmarks	no	Fra
 from category %1	bookmarks	no	fra %1 kategorien
-highest	bookmarks	no	Høyeste
-i thought you would be interested in the following link(s):	bookmarks	no	Jeg tror du ville være interessert i denne lenken(e):
+highest	bookmarks	no	HÃ¸yeste
+i thought you would be interested in the following link(s):	bookmarks	no	Jeg tror du ville vÃ¦re interessert i denne lenken(e):
 import bookmarks	common	no	Importer bokmerker
 like	bookmarks	no	lignende
 list view	bookmarks	no	Vis som liste
@@ -44,29 +44,29 @@ mass update:	bookmarks	no	Oppdater alle:
 message from	bookmarks	no	Melding fra
 more	bookmarks	no	Mer
 name	bookmarks	no	Navn
-name is required	bookmarks	no	Navn er påkrevd
+name is required	bookmarks	no	Navn er pÃ¥krevd
 netscape bookmark file	bookmarks	no	Netscape Favoritt Fil
-netscape bookmark filename is required!	bookmarks	no	Netscape favoritt filnavn er påkrevd!
+netscape bookmark filename is required!	bookmarks	no	Netscape favoritt filnavn er pÃ¥krevd!
 new	bookmark	no	Opprett
 new bookmark	bookmarks	no	Opprette bokmerke
 or	bookmarks	no	eller
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	no	Vennligst fyll inn <B>Til epost adresse</B>, <B>Emne</B>, og <B>Melding</B>!
-please select the categories to export	bookmarks	no	Vennligst velg kategorier å eksportere
-query condition	bookmarks	no	Vilkår for spørring
+please select the categories to export	bookmarks	no	Vennligst velg kategorier Ã¥ eksportere
+query condition	bookmarks	no	VilkÃ¥r for spÃ¸rring
 rating	bookmarks	no	Ranking
-search for:	bookmarks	no	Søk etter:
+search for:	bookmarks	no	SÃ¸k etter:
 select the format you would like to export to	bookmarks	no	Velg format du vil eksportere til
 send bookmark	bookmarks	no	Send bokmerke
 sub category	bookmarks	no	Underkategori
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	no	Til adresse %1 ugyldig. Formatet må være <strong>bruker@domene</strong> og domenet må finnes!
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	no	Til adresse %1 ugyldig. Formatet mÃ¥ vÃ¦re <strong>bruker@domene</strong> og domenet mÃ¥ finnes!
 to e-mail addresses	bookmarks	no	Til E-Post Adressene
 to which category should the imported folder hierarchy be attached	bookmarks	no	Til hvilken kategori skal de importerte katalogene bli knyttes til
-total visits	bookmarks	no	Totalt besøkte
+total visits	bookmarks	no	Totalt besÃ¸kte
 tree view	bookmarks	no	Trevisning
-unable to open temp file %1 for import.	bookmarks	no	Kan ikke åpne midlertidig fil %1 for import.
-url is required.	bookmarks	no	En URL er nødvendig.
+unable to open temp file %1 for import.	bookmarks	no	Kan ikke Ã¥pne midlertidig fil %1 for import.
+url is required.	bookmarks	no	En URL er nÃ¸dvendig.
 view bookmark	bookmarks	no	Vis bokmerke
 view this bookmark	bookmarks	no	Vis dette bokmerket
 warning	bookmarks	no	Advarsel
-you are viewing this site outside of egroupware	bookmarks	no	Du ser denne siden på utsiden av eGroupWare
-you must select a category	bookmarks	no	Du må velge en kategori
+you are viewing this site outside of egroupware	bookmarks	no	Du ser denne siden pÃ¥ utsiden av eGroupWare
+you must select a category	bookmarks	no	Du mÃ¥ velge en kategori

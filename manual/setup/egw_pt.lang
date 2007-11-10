@@ -1,15 +1,15 @@
-%1 manual page(s) added or updated	manual	pt	%1 página(s) do manual adicionada(s) ou actualizada(s)
-allow anonymous access to the manual, only necessary to act as remote manual	admin	pt	Permitir o acesso de utilizadores anónimos ao manual, apenas necessário para manual remoto
-anonymous password	admin	pt	Senha anónima
-anonymous username	admin	pt	Nome de utilizador anónimo
+%1 manual page(s) added or updated	manual	pt	%1 pÃ¡gina(s) do manual adicionada(s) ou actualizada(s)
+allow anonymous access to the manual, only necessary to act as remote manual	admin	pt	Permitir o acesso de utilizadores anÃ³nimos ao manual, apenas necessÃ¡rio para manual remoto
+anonymous password	admin	pt	Senha anÃ³nima
+anonymous username	admin	pt	Nome de utilizador anÃ³nimo
 download	manual	pt	Transferir
-index	manual	pt	Índice
-install or update the manual-pages	admin	pt	instalar ou actualizar páginas do manual
+index	manual	pt	Ãndice
+install or update the manual-pages	admin	pt	instalar ou actualizar pÃ¡ginas do manual
 manual	common	pt	Manual / Ajuda
-page(s) %1 not found !!!	manual	pt	Não foi possível encontrar a(s) página(s) %1 !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	pt	URL do eGroupWare remota para o manual a utilizar, vazio para um manual local, por omissão
+page(s) %1 not found !!!	manual	pt	NÃ£o foi possÃ­vel encontrar a(s) pÃ¡gina(s) %1 !!!
+remote egroupware url for the manual to use, empty for a local manual, default	admin	pt	URL do eGroupWare remota para o manual a utilizar, vazio para um manual local, por omissÃ£o
 search for	manual	pt	Pesquisar por
-starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	pt	A iniciar a importação a partir de %1. Esta acção pode demorar alguns minutos (principalmente se for a primeira vez)...
+starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	pt	A iniciar a importaÃ§Ã£o a partir de %1. Esta acÃ§Ã£o pode demorar alguns minutos (principalmente se for a primeira vez)...
 the search returned no result!	manual	pt	Nenhum resultado para esta pesquisa!
-update url for the local manual, default	admin	pt	Actualizar URL para o manual local, por omissão
-wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	pt	ID do Wiki para o manual local, por omissão 1, 0 para utilizar o Wiki para edição de páginas do manual.
+update url for the local manual, default	admin	pt	Actualizar URL para o manual local, por omissÃ£o
+wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	pt	ID do Wiki para o manual local, por omissÃ£o 1, 0 para utilizar o Wiki para ediÃ§Ã£o de pÃ¡ginas do manual.

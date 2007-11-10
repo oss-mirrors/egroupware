@@ -1,95 +1,95 @@
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	ko	** <em>ÇÏÁö¸¸</em> ÃÖ¼ÒÇÑ ÀÌ ¼ö¸¸Å­ÀÇ Ç×¸ñÀÌ RecentChanges ¿Í ´Ù¸¥ subscription ¸ñ·Ï¿¡ Ç¥½ÃµË´Ï´Ù
-add document to category	wiki	ko	¹®¼­¸¦ Ä«Å×°í¸®¿¡ Ãß°¡
-added	wiki	ko	Ãß°¡µÊ
-administration features are disabled for this wiki.	wiki	ko	ÀÌ À§Å°¿¡´Â °ü¸®ÀÚ±â´ÉÀÌ ºñÈ°¼ºÈ­µË´Ï´Ù
-admins	wiki	ko	°ü¸®ÀÚ
-allow anonymous access	admin	ko	ÀÍ¸íÁ¢±Ù Çã¿ë
-anonymous password	admin	ko	ÀÍ¸í ¾ÏÈ£
-anonymous session type	admin	ko	ÀÍ¸í ¼¼¼Ç Å¸ÀÔ
-anonymous username	admin	ko	ÀÍ¸í »ç¿ëÀÚÀÌ¸§
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	ko	À§Å°-¹®¹ıÀÇ ÆäÀÌÁö¸¦ ¸®Ä¡ÅØ½ºÆ®·Î ÀÚµ¿ º¯È¯ ÇÒ±î¿ä (ÆíÁıµÇ¾úÀ»°æ¿ì¿¡)?
-block	wiki	ko	ºí·°
-block / unblock hosts	common	ko	ºí·° / ¾ğºí·° È£½ºÆ®
-blocked ip address ranges	wiki	ko	ºí·°µÈ IP ÁÖ¼ÒÀÇ ¹üÀ§
-cancel without saving	wiki	ko	ÀúÀåÇÏÁö ¾Ê°í Ãë¼Ò
-changed	wiki	ko	º¯°æµÊ
-changes by last author	wiki	ko	¸¶Áö¸· ±Û¾´ÀÌ°¡ º¯°æÇÑ°Í
-choose your current time here, so the server may figure out what time zone you are in.	wiki	ko	ÇöÀç ½Ã°£À» ¼±ÅÃÇÏ¼¼¿ä, ±×·¯¸é ¼­¹ö°¡ ±ÍÇÏÀÇ ½Ã°£´ë¸¦ ¾Ë¾Æ³À´Ï´Ù
-columns	wiki	ko	¿­
-compute difference	wiki	ko	Â÷ÀÌÁ¡À» °è»ê
-converts the page to richtext	wiki	ko	ÆäÀÌÁö¸¦ ¸®Ä¡ÅØ½ºÆ®·Î º¯È¯
-current version	wiki	ko	ÇöÀç ¹öÀü
-deleted	wiki	ko	»èÁ¦µÊ
-deletes this page	wiki	ko	ÀÌ ÆäÀÌÁö¸¦ »èÁ¦
-difference between versions	wiki	ko	¹öÀü°£ Â÷ÀÌÁ¡
-differences in	wiki	ko	** Â÷ÀÌÁ¡
-different languages can have different titles	wiki	ko	´Ù¸¥¾ğ¾î´Â °¢ÀÚ ´Ù¸¥ Á¦¸ñÀ» °¡Áú¼ö ÀÖ´Ù
-document last modified	wiki	ko	¹®¼­°¡ ¸¶Áö¸·À¸·Î º¯°æµÊ
-edit box	wiki	ko	ÆíÁı»óÀÚ
-edit this <em>archive version</em> of this document	wiki	ko	ÀÌ ¹®¼­ÀÇ <em>¾ÆÄ«ÀÌºê ¹öÀü</em>À» ÆíÁı
-edit this document	wiki	ko	ÀÌ ¹®¼­¸¦ ÆíÁı
-edit with preview	admin	ko	¹Ì¸®º¸±â·Î ÆíÁı
-editable	admin	ko	ÆíÁı°¡´É
-editing	wiki	ko	ÆíÁıÁß
-emailaddress administrator	admin	ko	ÀÌ¸ŞÀÏÁÖ¼Ò °ü¸®ÀÚ
-enable free links	admin	ko	ÀÚÀ¯·Î¿î ¸µÅ© °¡´É
-enable wiki links	admin	ko	À§Å° ¸µÅ© °¡´É
-enter here the maximum number of entries to display in a document's history list.	wiki	ko	¹®¼­Á¢±Ù¸ñ·Ï¿¡ º¸¿©Áú Ç×¸ñ °³¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä
-enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	ko	RecentChanges¿¡ ÆíÁıµÈ¹®¼­·Î º¸¿©Áú ±â°£À» ÀÔ·ÂÇÏ°Å³ª ´Ù¸¥ subscription ¸ñ·ÏÀ» ÀÔ·ÂÇÏ¼¼¿ä<br> ÀÌ °ªÀ» 0À¸·Î ÇÒ°æ¿ì ¸ğµç RecentChangesÀÇ ¸ğµç ÆäÀÌÁö¸¦ º¸°ÔµÇ¸é ¾ğÁ¦ ÆíÁıµÇ¾ú´ÂÁö´Â °í·ÁÇÏÁö ¾Ê°Ô µË´Ï´Ù.
-enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	ko	IPÁÖ¼Ò ¹üÀ§¸¦ ÀÔ·ÂÇÏ¼¼¿ä. <<tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
-error creating temporary file.	wiki	ko	ÀÓ½ÃÆÄÀÏ »ı¼º¿À·ù
-error writing to temporary file.	wiki	ko	ÀÓ½ÃÆÄÀÏ ÀÛ¼º¿À·ù
-everyone	wiki	ko	¸ğµÎ
-find	wiki	ko	Ã£±â
-history	wiki	ko	Á¢±Ù±â·Ï
-history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	ko	¸¶Áö¸· ÀÛ¼ºÀÚ°¡ º¯°æÇÑ <em>¸ğµç</em> Á¢±Ù±â·ÏÀ» º¸¿©ÁÜ. ¼³Á¤ÇÏÁö ¾ÊÀ¸¸é °¡Àå ¸¶Áö¸· º¯°æµÈ°Í¸¸ Ç¥½ÃµÊ
-history lists	wiki	ko	Á¢±Ù±â·Ï ¸ñ·Ïµé
-history of	wiki	ko	Á¢±Ù±â·Ï:
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	ko	** <em>í•˜ì§€ë§Œ</em> ìµœì†Œí•œ ì´ ìˆ˜ë§Œí¼ì˜ í•­ëª©ì´ RecentChanges ì™€ ë‹¤ë¥¸ subscription ëª©ë¡ì— í‘œì‹œë©ë‹ˆë‹¤
+add document to category	wiki	ko	ë¬¸ì„œë¥¼ ì¹´í…Œê³ ë¦¬ì— ì¶”ê°€
+added	wiki	ko	ì¶”ê°€ë¨
+administration features are disabled for this wiki.	wiki	ko	ì´ ìœ„í‚¤ì—ëŠ” ê´€ë¦¬ìê¸°ëŠ¥ì´ ë¹„í™œì„±í™”ë©ë‹ˆë‹¤
+admins	wiki	ko	ê´€ë¦¬ì
+allow anonymous access	admin	ko	ìµëª…ì ‘ê·¼ í—ˆìš©
+anonymous password	admin	ko	ìµëª… ì•”í˜¸
+anonymous session type	admin	ko	ìµëª… ì„¸ì…˜ íƒ€ì…
+anonymous username	admin	ko	ìµëª… ì‚¬ìš©ìì´ë¦„
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	ko	ìœ„í‚¤-ë¬¸ë²•ì˜ í˜ì´ì§€ë¥¼ ë¦¬ì¹˜í…ìŠ¤íŠ¸ë¡œ ìë™ ë³€í™˜ í• ê¹Œìš” (í¸ì§‘ë˜ì—ˆì„ê²½ìš°ì—)?
+block	wiki	ko	ë¸”ëŸ­
+block / unblock hosts	common	ko	ë¸”ëŸ­ / ì–¸ë¸”ëŸ­ í˜¸ìŠ¤íŠ¸
+blocked ip address ranges	wiki	ko	ë¸”ëŸ­ëœ IP ì£¼ì†Œì˜ ë²”ìœ„
+cancel without saving	wiki	ko	ì €ì¥í•˜ì§€ ì•Šê³  ì·¨ì†Œ
+changed	wiki	ko	ë³€ê²½ë¨
+changes by last author	wiki	ko	ë§ˆì§€ë§‰ ê¸€ì“´ì´ê°€ ë³€ê²½í•œê²ƒ
+choose your current time here, so the server may figure out what time zone you are in.	wiki	ko	í˜„ì¬ ì‹œê°„ì„ ì„ íƒí•˜ì„¸ìš”, ê·¸ëŸ¬ë©´ ì„œë²„ê°€ ê·€í•˜ì˜ ì‹œê°„ëŒ€ë¥¼ ì•Œì•„ëƒ…ë‹ˆë‹¤
+columns	wiki	ko	ì—´
+compute difference	wiki	ko	ì°¨ì´ì ì„ ê³„ì‚°
+converts the page to richtext	wiki	ko	í˜ì´ì§€ë¥¼ ë¦¬ì¹˜í…ìŠ¤íŠ¸ë¡œ ë³€í™˜
+current version	wiki	ko	í˜„ì¬ ë²„ì „
+deleted	wiki	ko	ì‚­ì œë¨
+deletes this page	wiki	ko	ì´ í˜ì´ì§€ë¥¼ ì‚­ì œ
+difference between versions	wiki	ko	ë²„ì „ê°„ ì°¨ì´ì 
+differences in	wiki	ko	** ì°¨ì´ì 
+different languages can have different titles	wiki	ko	ë‹¤ë¥¸ì–¸ì–´ëŠ” ê°ì ë‹¤ë¥¸ ì œëª©ì„ ê°€ì§ˆìˆ˜ ìˆë‹¤
+document last modified	wiki	ko	ë¬¸ì„œê°€ ë§ˆì§€ë§‰ìœ¼ë¡œ ë³€ê²½ë¨
+edit box	wiki	ko	í¸ì§‘ìƒì
+edit this <em>archive version</em> of this document	wiki	ko	ì´ ë¬¸ì„œì˜ <em>ì•„ì¹´ì´ë¸Œ ë²„ì „</em>ì„ í¸ì§‘
+edit this document	wiki	ko	ì´ ë¬¸ì„œë¥¼ í¸ì§‘
+edit with preview	admin	ko	ë¯¸ë¦¬ë³´ê¸°ë¡œ í¸ì§‘
+editable	admin	ko	í¸ì§‘ê°€ëŠ¥
+editing	wiki	ko	í¸ì§‘ì¤‘
+emailaddress administrator	admin	ko	ì´ë©”ì¼ì£¼ì†Œ ê´€ë¦¬ì
+enable free links	admin	ko	ììœ ë¡œìš´ ë§í¬ ê°€ëŠ¥
+enable wiki links	admin	ko	ìœ„í‚¤ ë§í¬ ê°€ëŠ¥
+enter here the maximum number of entries to display in a document's history list.	wiki	ko	ë¬¸ì„œì ‘ê·¼ëª©ë¡ì— ë³´ì—¬ì§ˆ í•­ëª© ê°œìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	ko	RecentChangesì— í¸ì§‘ëœë¬¸ì„œë¡œ ë³´ì—¬ì§ˆ ê¸°ê°„ì„ ì…ë ¥í•˜ê±°ë‚˜ ë‹¤ë¥¸ subscription ëª©ë¡ì„ ì…ë ¥í•˜ì„¸ìš”<br> ì´ ê°’ì„ 0ìœ¼ë¡œ í• ê²½ìš° ëª¨ë“  RecentChangesì˜ ëª¨ë“  í˜ì´ì§€ë¥¼ ë³´ê²Œë˜ë©´ ì–¸ì œ í¸ì§‘ë˜ì—ˆëŠ”ì§€ëŠ” ê³ ë ¤í•˜ì§€ ì•Šê²Œ ë©ë‹ˆë‹¤.
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	ko	IPì£¼ì†Œ ë²”ìœ„ë¥¼ ì…ë ¥í•˜ì„¸ìš”. <<tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>
+error creating temporary file.	wiki	ko	ì„ì‹œíŒŒì¼ ìƒì„±ì˜¤ë¥˜
+error writing to temporary file.	wiki	ko	ì„ì‹œíŒŒì¼ ì‘ì„±ì˜¤ë¥˜
+everyone	wiki	ko	ëª¨ë‘
+find	wiki	ko	ì°¾ê¸°
+history	wiki	ko	ì ‘ê·¼ê¸°ë¡
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	ko	ë§ˆì§€ë§‰ ì‘ì„±ìê°€ ë³€ê²½í•œ <em>ëª¨ë“ </em> ì ‘ê·¼ê¸°ë¡ì„ ë³´ì—¬ì¤Œ. ì„¤ì •í•˜ì§€ ì•Šìœ¼ë©´ ê°€ì¥ ë§ˆì§€ë§‰ ë³€ê²½ëœê²ƒë§Œ í‘œì‹œë¨
+history lists	wiki	ko	ì ‘ê·¼ê¸°ë¡ ëª©ë¡ë“¤
+history of	wiki	ko	ì ‘ê·¼ê¸°ë¡:
 interwikiprefix	admin	ko	InterWikiPrefix
-invalid page name.	wiki	ko	ºÎÀûÀıÇÑ ÆäÀÌÁö ÀÌ¸§
-load	wiki	ko	·Îµå
-loads the named page in the given language, all change so far get lost !!!	wiki	ko	ÁÖ¾îÁø¾ğ¾î·Î ÀÛ¸íµÈ ÆäÀÌÁö¸¦ ·Îµå, º¯°æµÈ ¸ğµç°ÍÀº ÀÒ°ÔµË´Ï´Ù!!!
-lock / unlock pages	common	ko	Àá±è / Ç®¸² ÆäÀÌÁö
-locked	wiki	ko	Àá°åÀ½
-name wiki home link	admin	ko	À§Å°È¨¿¡ ¸µÅ©ÇÒ ÀÌ¸§
-newer	wiki	ko	º¸´Ù »õ·Î¿î(Newer)
+invalid page name.	wiki	ko	ë¶€ì ì ˆí•œ í˜ì´ì§€ ì´ë¦„
+load	wiki	ko	ë¡œë“œ
+loads the named page in the given language, all change so far get lost !!!	wiki	ko	ì£¼ì–´ì§„ì–¸ì–´ë¡œ ì‘ëª…ëœ í˜ì´ì§€ë¥¼ ë¡œë“œ, ë³€ê²½ëœ ëª¨ë“ ê²ƒì€ ìƒê²Œë©ë‹ˆë‹¤!!!
+lock / unlock pages	common	ko	ì ê¹€ / í’€ë¦¼ í˜ì´ì§€
+locked	wiki	ko	ì ê²¼ìŒ
+name wiki home link	admin	ko	ìœ„í‚¤í™ˆì— ë§í¬í•  ì´ë¦„
+newer	wiki	ko	ë³´ë‹¤ ìƒˆë¡œìš´(Newer)
 no never	admin	ko	No never
-not set	wiki	ko	** ¼³Á¤ ¾ÈµÊ
-older	wiki	ko	º¸´Ù ÀÌÀü(Older)
-only if browser supports a richtext-editor	admin	ko	ºê¶ó¿ìÀú°¡ ¸®Ä¡ÅØ½ºÆ®-ÆíÁı±â¸¦ Áö¿øÇÒ °æ¿ì¿¡¸¸
-please contact the %1administrator%2 for assistance.	wiki	ko	Áö¿øÀÌ ÇÊ¿äÇÏ½Ã¸é %1°ü¸®ÀÚ%2¿¡°Ô ¹®ÀÇÇÏ¼¼¿ä
-preview	wiki	ko	¹Ì¸®º¸±â
-preview of current version	wiki	ko	ÇöÀç¹öÀü ¹Ì¸®º¸±â
-rate control / ip blocking disabled	wiki	ko	µî±Ş Á¦¾î / IP ºí·° ºñÈ°¼ºÈ­
-readable by	wiki	ko	ÀĞÀ»¼ö ÀÖÀ½
-readonly	admin	ko	ÀĞ±âÀü¿ë
+not set	wiki	ko	** ì„¤ì • ì•ˆë¨
+older	wiki	ko	ë³´ë‹¤ ì´ì „(Older)
+only if browser supports a richtext-editor	admin	ko	ë¸Œë¼ìš°ì €ê°€ ë¦¬ì¹˜í…ìŠ¤íŠ¸-í¸ì§‘ê¸°ë¥¼ ì§€ì›í•  ê²½ìš°ì—ë§Œ
+please contact the %1administrator%2 for assistance.	wiki	ko	ì§€ì›ì´ í•„ìš”í•˜ì‹œë©´ %1ê´€ë¦¬ì%2ì—ê²Œ ë¬¸ì˜í•˜ì„¸ìš”
+preview	wiki	ko	ë¯¸ë¦¬ë³´ê¸°
+preview of current version	wiki	ko	í˜„ì¬ë²„ì „ ë¯¸ë¦¬ë³´ê¸°
+rate control / ip blocking disabled	wiki	ko	ë“±ê¸‰ ì œì–´ / IP ë¸”ëŸ­ ë¹„í™œì„±í™”
+readable by	wiki	ko	ì½ì„ìˆ˜ ìˆìŒ
+readonly	admin	ko	ì½ê¸°ì „ìš©
 recent changes	wiki	ko	Recent Changes
-renames page to the given name and language	wiki	ko	ÁÖ¾îÁø ¾ğ¾îÀÇ ÀÌ¸§À¸·Î ÇöÀçÆäÀÌÁö ÀÌ¸§¹Ù²Ù±â
-richtext	wiki	ko	¸®Ä¡ÅØ½ºÆ®
-rows	wiki	ko	ÁÙ
-save the changes and exit	wiki	ko	³ª°¥¶§ º¯°æµÈ°ÍÀ» ÀúÀå
-saves and continues editing	wiki	ko	ÀúÀåÇÏ°í °è¼Ó ÆíÁı
-see complete list (%1 entries)	wiki	ko	¿Ï·á ¸ñ·Ïº¸±â (%1 Ç×¸ñ)
-site configuration	wiki	ko	»çÀÌÆ® ±¸¼º
-summary	wiki	ko	¿ä¾à
-summary of change	wiki	ko	º¯°æÁ¡ ¿ä¾à
-this page can not be edited.	wiki	ko	ÀÌ ÆäÀÌÁö´Â ÆíÁıºÒ°¡
-twin pages	wiki	ko	½ÖµÕÀÌ ÆäÀÌÁö
-unblock	wiki	ko	¾ğºí·°(unblock)
-updates the preview	wiki	ko	¹Ì¸®º¸±â °»½Å
-users	wiki	ko	»ç¿ëÀÚµé
-view document history	wiki	ko	¹®¼­ÀÇ Á¢±Ù±â·Ï º¸±â
-visit %1 to set your user name	wiki	ko	%1 ¹æ¹®ÇØ¼­ »ç¿ëÀÚÀÌ¸§ ¼³Á¤
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	ko	°æ°í: ÀÌ ÆäÀÌÁöÀÇ ÆíÁıÀ» ½ÃÀÛÇßÀ» ½ÃÁ¡ºÎÅÍ,ÀÌ ¹®¼­´Â ´Ù¸¥ ´©±º°¡¿¡ ÀÇÇØ º¯°æµÇ¾ú½À´Ï´Ù. ±ÍÇÏ²²¼­ ÆíÁıÇÑ ÇöÀç ¹öÀüÀÇ ¹®¼­¿Í º´ÇÕÇÏ¼¼¿ä
-who should be able to edit this page	wiki	ko	ÀÌ ÆäÀÌÁö¸¦ ÆíÁıÇÒ¼ö ÀÖ´Â »ç¶÷
-who should be able to read this page	wiki	ko	ÀÌ ÆäÀÌÁö¸¦ ÀĞÀ»¼ö ÀÖ´Â »ç¶÷
-wiki	common	ko	À§Å°
-wiki administration	wiki	ko	À§Å° °ü¸®
-wiki menu	wiki	ko	À§Å° ¸Ş´º
-writable by	wiki	ko	¾µ¼öÀÖÀ½
-yes always	admin	ko	Ç×»ó ¿¹
-you have been denied access to this site.	wiki	ko	ÀÌ »çÀÌÆ®¿¡ Á¢±ÙÇÒ¼ö ¾ø½À´Ï´Ù
-you have entered an invalid user name.	wiki	ko	ºÎÀûÀıÇÑ »ç¿ëÀÚÀÌ¸§À» ÀÔ·ÂÇß½À´Ï´Ù
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	ko	Á¤ÇØÁø ½Ã°£¿¡ ¹æ¹®ÇÒ¼ö ÀÖ´Â ÆäÀÌÁö¼ö¸¦ ÃÊ°ú Çß½À´Ï´Ù. ³ªÁß¿¡ ´Ù½Ã ¹æ¹®ÇØÁÖ¼¼¿ä
-your changes	wiki	ko	º¯°æÇÑ°Í
-your user name is "%1".	wiki	ko	±ÍÇÏÀÇ ÀÌ¸§Àº "%1"
+renames page to the given name and language	wiki	ko	ì£¼ì–´ì§„ ì–¸ì–´ì˜ ì´ë¦„ìœ¼ë¡œ í˜„ì¬í˜ì´ì§€ ì´ë¦„ë°”ê¾¸ê¸°
+richtext	wiki	ko	ë¦¬ì¹˜í…ìŠ¤íŠ¸
+rows	wiki	ko	ì¤„
+save the changes and exit	wiki	ko	ë‚˜ê°ˆë•Œ ë³€ê²½ëœê²ƒì„ ì €ì¥
+saves and continues editing	wiki	ko	ì €ì¥í•˜ê³  ê³„ì† í¸ì§‘
+see complete list (%1 entries)	wiki	ko	ì™„ë£Œ ëª©ë¡ë³´ê¸° (%1 í•­ëª©)
+site configuration	wiki	ko	ì‚¬ì´íŠ¸ êµ¬ì„±
+summary	wiki	ko	ìš”ì•½
+summary of change	wiki	ko	ë³€ê²½ì  ìš”ì•½
+this page can not be edited.	wiki	ko	ì´ í˜ì´ì§€ëŠ” í¸ì§‘ë¶ˆê°€
+twin pages	wiki	ko	ìŒë‘¥ì´ í˜ì´ì§€
+unblock	wiki	ko	ì–¸ë¸”ëŸ­(unblock)
+updates the preview	wiki	ko	ë¯¸ë¦¬ë³´ê¸° ê°±ì‹ 
+users	wiki	ko	ì‚¬ìš©ìë“¤
+view document history	wiki	ko	ë¬¸ì„œì˜ ì ‘ê·¼ê¸°ë¡ ë³´ê¸°
+visit %1 to set your user name	wiki	ko	%1 ë°©ë¬¸í•´ì„œ ì‚¬ìš©ìì´ë¦„ ì„¤ì •
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	ko	ê²½ê³ : ì´ í˜ì´ì§€ì˜ í¸ì§‘ì„ ì‹œì‘í–ˆì„ ì‹œì ë¶€í„°,ì´ ë¬¸ì„œëŠ” ë‹¤ë¥¸ ëˆ„êµ°ê°€ì— ì˜í•´ ë³€ê²½ë˜ì—ˆìŠµë‹ˆë‹¤. ê·€í•˜ê»˜ì„œ í¸ì§‘í•œ í˜„ì¬ ë²„ì „ì˜ ë¬¸ì„œì™€ ë³‘í•©í•˜ì„¸ìš”
+who should be able to edit this page	wiki	ko	ì´ í˜ì´ì§€ë¥¼ í¸ì§‘í• ìˆ˜ ìˆëŠ” ì‚¬ëŒ
+who should be able to read this page	wiki	ko	ì´ í˜ì´ì§€ë¥¼ ì½ì„ìˆ˜ ìˆëŠ” ì‚¬ëŒ
+wiki	common	ko	ìœ„í‚¤
+wiki administration	wiki	ko	ìœ„í‚¤ ê´€ë¦¬
+wiki menu	wiki	ko	ìœ„í‚¤ ë©”ë‰´
+writable by	wiki	ko	ì“¸ìˆ˜ìˆìŒ
+yes always	admin	ko	í•­ìƒ ì˜ˆ
+you have been denied access to this site.	wiki	ko	ì´ ì‚¬ì´íŠ¸ì— ì ‘ê·¼í• ìˆ˜ ì—†ìŠµë‹ˆë‹¤
+you have entered an invalid user name.	wiki	ko	ë¶€ì ì ˆí•œ ì‚¬ìš©ìì´ë¦„ì„ ì…ë ¥í–ˆìŠµë‹ˆë‹¤
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	ko	ì •í•´ì§„ ì‹œê°„ì— ë°©ë¬¸í• ìˆ˜ ìˆëŠ” í˜ì´ì§€ìˆ˜ë¥¼ ì´ˆê³¼ í–ˆìŠµë‹ˆë‹¤. ë‚˜ì¤‘ì— ë‹¤ì‹œ ë°©ë¬¸í•´ì£¼ì„¸ìš”
+your changes	wiki	ko	ë³€ê²½í•œê²ƒ
+your user name is "%1".	wiki	ko	ê·€í•˜ì˜ ì´ë¦„ì€ "%1"

@@ -1,125 +1,125 @@
-"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	fi	Sinulla ei ole p‰‰sy‰ n‰ille sivuille. Pyyd‰ yll‰pit‰j‰‰ antamaan sinulle oikeudet sivusi objekteille tai katso onko muita sivuja.
-%1 has a one-to-many with %2 (default:%4) showing %3	jinn	fi	%1 on liian monta %2 (oletuksena:%4) n‰ytet‰‰n %3
-%1 has a one-to-many with %2 showing %3	jinn	fi	%1 on liian monta %2 n‰ytet‰‰n %3
-%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	fi	%1 on 1-1 suhde %2:n k‰ytett‰ess‰ konfiguraatiota objektilla %3
+"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	fi	Sinulla ei ole p√§√§sy√§ n√§ille sivuille. Pyyd√§ yll√§pit√§j√§√§ antamaan sinulle oikeudet sivusi objekteille tai katso onko muita sivuja.
+%1 has a one-to-many with %2 (default:%4) showing %3	jinn	fi	%1 on liian monta %2 (oletuksena:%4) n√§ytet√§√§n %3
+%1 has a one-to-many with %2 showing %3	jinn	fi	%1 on liian monta %2 n√§ytet√§√§n %3
+%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	fi	%1 on 1-1 suhde %2:n k√§ytett√§ess√§ konfiguraatiota objektilla %3
 %1 new objects where successfully created	jinn	fi	%1 uusi objekti luotu onnistuneesti
 %1 new objects where successfully created%2	jinn	fi	%1 uusi objekti luotu onnistuneesti %2
-%1 objects available	jinn	fi	%1 objekti k‰ytett‰viss‰
+%1 objects available	jinn	fi	%1 objekti k√§ytett√§viss√§
 %1 records	jinn	fi	%1 arvoa
 %1 records per page	jinn	fi	%1 arvoa sivulla
-%1 site obj-fields have been imported.	jinn	fi	%1 sivuston objektikentt‰ on tuotu.
+%1 site obj-fields have been imported.	jinn	fi	%1 sivuston objektikentt√§ on tuotu.
 %1 site objects have been imported.	jinn	fi	%1 sivuston objektit on tuotu.
 %3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	fi	%3: tapahtuma <b>%1<b/> laukaisee pluginin <b>%2</b>
 4 (default)	jinn	fi	4 (oletus)
-access rights	jinn	fi	K‰yttˆoikeudet
-access rights for site not succesfully editted	jinn	fi	Sivuston k‰yttˆoikeuksia ei onnistuttu muokkaamaan
-access rights for site not succesfully saved	jinn	fi	Sivuston k‰yttˆoikeudet EIVƒT tallentuneet
-access rights for site succesfully editted	jinn	fi	Sivuston k‰yttˆoikeudet onnistuneesti muokattu
-access rights for site succesfully saved	jinn	fi	Sivuston k‰yttˆoikeudet tallennettu
-access rights for site-object not succesfully editted	jinn	fi	Sivuston objektin k‰yttˆoikeuksia ei onnistuttu muokkaamaan
-access rights for site-object not succesfully saved	jinn	fi	Sivuston objektin k‰yttˆoikeudet EIVƒT tallentuneet
-access rights for site-object succesfully editted	jinn	fi	Sivuston objektin k‰yttˆoikeudet onnistuneesti muokattu
-access rights for site-object succesfully saved	jinn	fi	Sivuston objektin k‰yttˆoikeudet tallennettu
-access rights site-objects	jinn	fi	k‰yttˆoikeudet sivuston objekteihin
-access_rights	jinn	fi	K‰yttˆ oikeudet
+access rights	jinn	fi	K√§ytt√∂oikeudet
+access rights for site not succesfully editted	jinn	fi	Sivuston k√§ytt√∂oikeuksia ei onnistuttu muokkaamaan
+access rights for site not succesfully saved	jinn	fi	Sivuston k√§ytt√∂oikeudet EIV√ÑT tallentuneet
+access rights for site succesfully editted	jinn	fi	Sivuston k√§ytt√∂oikeudet onnistuneesti muokattu
+access rights for site succesfully saved	jinn	fi	Sivuston k√§ytt√∂oikeudet tallennettu
+access rights for site-object not succesfully editted	jinn	fi	Sivuston objektin k√§ytt√∂oikeuksia ei onnistuttu muokkaamaan
+access rights for site-object not succesfully saved	jinn	fi	Sivuston objektin k√§ytt√∂oikeudet EIV√ÑT tallentuneet
+access rights for site-object succesfully editted	jinn	fi	Sivuston objektin k√§ytt√∂oikeudet onnistuneesti muokattu
+access rights for site-object succesfully saved	jinn	fi	Sivuston objektin k√§ytt√∂oikeudet tallennettu
+access rights site-objects	jinn	fi	k√§ytt√∂oikeudet sivuston objekteihin
+access_rights	jinn	fi	K√§ytt√∂ oikeudet
 action was not succesful. unknown error	jinn	fi	Toiminto ei ollut onnistunut. Tuntematon virhe
 action was succesful.	jinn	fi	Toiminto onnistui
 actions	jinn	fi	Toiminnot
-actions to apply on all selected objects	jinn	fi	Toiminto hyv‰ksyy kaikki valitut objektit
-actions to apply on all selected record	jinn	fi	Toiminto hyv‰ksyy kaikki valitut tietueet
-actions to apply on all selected sites	jinn	fi	Toiminto hyv‰ksyy kaikki valitut sivut
+actions to apply on all selected objects	jinn	fi	Toiminto hyv√§ksyy kaikki valitut objektit
+actions to apply on all selected record	jinn	fi	Toiminto hyv√§ksyy kaikki valitut tietueet
+actions to apply on all selected sites	jinn	fi	Toiminto hyv√§ksyy kaikki valitut sivut
 activate experimental features which are in development	jinn	fi	Aktivoi kokeelliset ominaisuudet jotka ovat vasta kehitysasteella.
 activate filter	jinn	fi	aktiivinen suodatin
 activated plugins	jinn	fi	Aktivoitu plugini
-active tabs	jinn	fi	Aktiiviset v‰lilehdet
-add	jinn	fi	Lis‰‰
-add %1st image	jinn	fi	lis‰‰ %1 kuva
-add a new configuration:	jinn	fi	lis‰‰ uusi konfigurointi:
-add attachent	jinn	fi	lis‰‰ liitetiedosto
-add attachment	jinn	fi	lis‰‰ liitetiedosto
-add attachment %1	jinn	fi	lis‰‰ liitetiedosto
-add edit	jinn	fi	lis‰‰ muokkaa
-add egw_jinn_sites	jinn	fi	lis‰‰ sivut
-add image	jinn	fi	lis‰‰ kuva
-add image %1	jinn	fi	lis‰‰ kuva %1
-add many-to-many relation(s)	jinn	fi	Lis‰‰ monen suhde moneen tietokantasuhde
-add many-to-one relation(s)	jinn	fi	Lis‰‰ yhden suhde moneen tietokantasuhde
-add multiple records	jinn	fi	Lsi‰‰ useita arvoja
-add new	jinn	fi	lis‰‰ uusi
-add new entry	jinn	fi	lis‰‰ uusi merkint‰
-add new many to many relation	jinn	fi	Lis‰‰ uusi monen suhde moneen tietokantasuhde
-add new many with many relation	jinn	fi	Lis‰‰ uusi monta suhteessa moneen tietokantasuhde
-add new one to many	jinn	fi	Lis‰‰ uusi yhden suhde moneen tietokantasuhde
-add new one with many	jinn	fi	Lis‰‰uusi  yksi suhteessa moneen tietokantasuhde
-add new one-to-one relation	jinn	fi	Lis‰‰ uusi yhden suhde yhteen tietokantasuhde
-add object	jinn	fi	lis‰‰ objekti
-add one-to-many relation(s)	jinn	fi	Lis‰‰ yhden suhde moneen tietokantasuhde
-add one-to-one relation(s)	jinn	fi	Lis‰‰ yhden suhde yhteen tietokantasuhde
-add optional extra palets	jinn	fi	Lis‰‰ valinnainen ylim‰‰r‰inen paletti
-add or remove	jinn	fi	lis‰‰ tai poista
-add site	jinn	fi	lis‰‰ sivusto
-add site object	jinn	fi	lis‰‰ sivuston objekti
-add site-object	jinn	fi	lis‰‰ sivuston objekti
-add slot	jinn	fi	lis‰‰ kolo
-add your zip-file with images here	jinn	fi	Lis‰‰ kuvia sis‰lt‰v‰ Zip-tiedosto t‰h‰n
+active tabs	jinn	fi	Aktiiviset v√§lilehdet
+add	jinn	fi	Lis√§√§
+add %1st image	jinn	fi	lis√§√§ %1 kuva
+add a new configuration:	jinn	fi	lis√§√§ uusi konfigurointi:
+add attachent	jinn	fi	lis√§√§ liitetiedosto
+add attachment	jinn	fi	lis√§√§ liitetiedosto
+add attachment %1	jinn	fi	lis√§√§ liitetiedosto
+add edit	jinn	fi	lis√§√§ muokkaa
+add egw_jinn_sites	jinn	fi	lis√§√§ sivut
+add image	jinn	fi	lis√§√§ kuva
+add image %1	jinn	fi	lis√§√§ kuva %1
+add many-to-many relation(s)	jinn	fi	Lis√§√§ monen suhde moneen tietokantasuhde
+add many-to-one relation(s)	jinn	fi	Lis√§√§ yhden suhde moneen tietokantasuhde
+add multiple records	jinn	fi	Lsi√§√§ useita arvoja
+add new	jinn	fi	lis√§√§ uusi
+add new entry	jinn	fi	lis√§√§ uusi merkint√§
+add new many to many relation	jinn	fi	Lis√§√§ uusi monen suhde moneen tietokantasuhde
+add new many with many relation	jinn	fi	Lis√§√§ uusi monta suhteessa moneen tietokantasuhde
+add new one to many	jinn	fi	Lis√§√§ uusi yhden suhde moneen tietokantasuhde
+add new one with many	jinn	fi	Lis√§√§uusi  yksi suhteessa moneen tietokantasuhde
+add new one-to-one relation	jinn	fi	Lis√§√§ uusi yhden suhde yhteen tietokantasuhde
+add object	jinn	fi	lis√§√§ objekti
+add one-to-many relation(s)	jinn	fi	Lis√§√§ yhden suhde moneen tietokantasuhde
+add one-to-one relation(s)	jinn	fi	Lis√§√§ yhden suhde yhteen tietokantasuhde
+add optional extra palets	jinn	fi	Lis√§√§ valinnainen ylim√§√§r√§inen paletti
+add or remove	jinn	fi	lis√§√§ tai poista
+add site	jinn	fi	lis√§√§ sivusto
+add site object	jinn	fi	lis√§√§ sivuston objekti
+add site-object	jinn	fi	lis√§√§ sivuston objekti
+add slot	jinn	fi	lis√§√§ kolo
+add your zip-file with images here	jinn	fi	Lis√§√§ kuvia sis√§lt√§v√§ Zip-tiedosto t√§h√§n
 admin:: edit site	jinn	fi	admin:: muokkaa sivustoa
-administrator mode	jinn	fi	Yll‰pit‰j‰n n‰kym‰
-administrators for site %1	jinn	fi	%1 sivun yll‰pit‰j‰
-advanced configuration	jinn	fi	kehittyneemm‰t konfiguraatiot
-advanced settings	jinn	fi	Kehittyneemm‰t asetukset
+administrator mode	jinn	fi	Yll√§pit√§j√§n n√§kym√§
+administrators for site %1	jinn	fi	%1 sivun yll√§pit√§j√§
+advanced configuration	jinn	fi	kehittyneemm√§t konfiguraatiot
+advanced settings	jinn	fi	Kehittyneemm√§t asetukset
 advhr	jinn	fi	advhr
 advlink	jinn	fi	advlink
 all from	jinn	fi	kaikki
-all possible entries from %1	jinn	fi	kaikki %1 :n merkinn‰t
+all possible entries from %1	jinn	fi	kaikki %1 :n merkinn√§t
 all records	jinn	fi	kaikki tietueet
 all records (unfiltered)	jinn	fi	kaikki tietueet (ilman suodatusta)
 all relations	jinn	fi	Kaikki suhteet
 all tests were successful. you can go on with the site-objects	jinn	fi	Kaikki testit onnistuivat. Voit jatkaa sivuobjekteihin
-alternative fieldname for display	jinn	fi	N‰ytet‰‰n vaitoehtoinen kent‰n nimi
+alternative fieldname for display	jinn	fi	N√§ytet√§√§n vaitoehtoinen kent√§n nimi
 an error occured.	jinn	fi	Virhe havaittu
 an unknown error has occured (error code 109)	jinn	fi	Tuntematon virhe havaittu (virhekoodi 109)
 an unknown error has occured (error code 110)	jinn	fi	Tuntematon virhe havaittu (virhekoodi 110)
 another	jinn	fi	muu
 are you sure you want to delete these multiple records?	jinn	fi	Haluatko varmasti poistaa useita tietueita?
 are you sure you want to delete these selected sites?	jinn	fi	Haluatko varmasti poistaa valitut sivut?
-are you sure you want to delete this filter?	jinn	fi	Haluatko varmasti poistaa t‰m‰n suodattimen?
-are you sure you want to delete this record?	jinn	fi	Haluatko varmasti poistaa t‰m‰n tietueen?
-are you sure your want to edit these records?	jinn	fi	Haluatko varmasti muokata t‰t‰ tietuetta?
+are you sure you want to delete this filter?	jinn	fi	Haluatko varmasti poistaa t√§m√§n suodattimen?
+are you sure you want to delete this record?	jinn	fi	Haluatko varmasti poistaa t√§m√§n tietueen?
+are you sure your want to edit these records?	jinn	fi	Haluatko varmasti muokata t√§t√§ tietuetta?
 are you sure?	jinn	fi	Oletko varma?
 area size	jinn	fi	Alueen koko
 ascending	jinn	fi	nouseva
-attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	fi	liitetiedoston hakemistoa ei ole olemassa tai se ei ole oikein, eik‰ sit‰ ole luotu...<br>tarkista objektin lataus hakemistosta:
+attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	fi	liitetiedoston hakemistoa ei ole olemassa tai se ei ole oikein, eik√§ sit√§ ole luotu...<br>tarkista objektin lataus hakemistosta:
 automatic	jinn	fi	automaattinen
-automaticly add objects for all tables	jinn	fi	Lis‰‰ objekti automaattisesti kaikkiin taulukoihin
+automaticly add objects for all tables	jinn	fi	Lis√§√§ objekti automaattisesti kaikkiin taulukoihin
 automaticly incrementing	jinn	fi	kasvaa automaattisesti
 available for events	jinn	fi	Mahdollinen tapahtumissa
-available for field types	common	fi	K‰ytett‰viss‰ olevat kentt‰tyypit
+available for field types	common	fi	K√§ytett√§viss√§ olevat kentt√§tyypit
 back to normal mode	jinn	fi	Palaa normaali tilaan
 back to record list	jinn	fi	takaisin tietuelistaan
 back to record listing	jinn	fi	Takaisin tietuelistaukseen
-background color %1	jinn	fi	Taustav‰ri %1
+background color %1	jinn	fi	Taustav√§ri %1
 background image %1	jinn	fi	Taustakuva %1
-binary	jinn	fi	bin‰‰rinen
-binary, contains data	jinn	fi	bin‰‰rinen, sis‰lt‰‰ dataa
-binary, empty	jinn	fi	bin‰‰rinen, tyhj‰
+binary	jinn	fi	bin√§√§rinen
+binary, contains data	jinn	fi	bin√§√§rinen, sis√§lt√§√§ dataa
+binary, empty	jinn	fi	bin√§√§rinen, tyhj√§
 body	jinn	fi	Body
 browse	jinn	fi	Selaa
-browse current object	jinn	fi	Selaa viimeisint‰ objektia
+browse current object	jinn	fi	Selaa viimeisint√§ objektia
 browse sites	jinn	fi	selaa sivustoja
-browse through object settings	admin	fi	Selaa objekti asetuksien l‰vitse
-browse through sites	jinn	fi	Selaa sivustojen l‰vitse
-browses through sites	admin	fi	Selataan sivustojen l‰vitse
+browse through object settings	admin	fi	Selaa objekti asetuksien l√§vitse
+browse through sites	jinn	fi	Selaa sivustojen l√§vitse
+browses through sites	admin	fi	Selataan sivustojen l√§vitse
 can't edit more then 99 record at once	jinn	fi	Voit muokata vain 99 tietuetta kerralla
 can't edit more then 99 record at once (error code 108)	jinn	fi	Voit muokata vain 99 tietuetta kerralla (virhekoodi 108)
 can't write in sites directory	jinn	fi	Ei voi kirjoittaa sivun hakemistoon
 cancel	jinn	fi	Peruuta
-cannot copy a record from this table.	jinn	fi	Tietuetta ei voida kopioida t‰h‰n tauluun
+cannot copy a record from this table.	jinn	fi	Tietuetta ei voida kopioida t√§h√§n tauluun
 category	jinn	fi	Kategoria
-change number of records	jinn	fi	vaihda tietueiden lukum‰‰r‰‰
+change number of records	jinn	fi	vaihda tietueiden lukum√§√§r√§√§
 change plugin	jinn	fi	Vaihda pluginia
 check:	jinn	fi	tarkista
 choose	jinn	fi	Valitse
-click to select a new color	jinn	fi	paina valitaksesi uusi v‰ri
+click to select a new color	jinn	fi	paina valitaksesi uusi v√§ri
 close this window	jinn	fi	Sulje ikkuna
 column	jinn	fi	sarake
 column name	jinn	fi	sarakkeen nimi
@@ -127,45 +127,45 @@ come back after new valid tablename is saved to configure plugins	jinn	fi	palaa 
 come back in edit mode for configuring plugins	jinn	fi	Palaa takaisin muokaustilaan konfiguroimaan plugineja
 come back in edit mode to configure plugins	jinn	fi	Palaa takaisin muokaustilaan konfiguroimaan plugineja
 configure	jinn	fi	konfiguroi
-configure browse view	jinn	fi	konfiguroi lis‰‰ n‰kym‰‰
-configure field plugin	jinn	fi	konfiguroi kent‰n plugini
+configure browse view	jinn	fi	konfiguroi lis√§√§ n√§kym√§√§
+configure field plugin	jinn	fi	konfiguroi kent√§n plugini
 configure list	jinn	fi	Konfiguroi lista
-configure list view	jinn	fi	Konfiguroi listan‰kym‰‰
-configure this tableview	jinn	fi	Konfiguroi taulukkon‰kym‰‰
-configure this view	jinn	fi	Konfiguroi t‰t‰ n‰kym‰‰
-configure view of	jinn	fi	Konfigurointin‰kym‰:
-convert exec ( e.g. /usr/x11r6/bin/convert )	admin	fi	polku ImageMagick k‰‰nt‰j‰‰n (esim /usr/X11R6/bin/convert)
+configure list view	jinn	fi	Konfiguroi listan√§kym√§√§
+configure this tableview	jinn	fi	Konfiguroi taulukkon√§kym√§√§
+configure this view	jinn	fi	Konfiguroi t√§t√§ n√§kym√§√§
+configure view of	jinn	fi	Konfigurointin√§kym√§:
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	fi	polku ImageMagick k√§√§nt√§j√§√§n (esim /usr/X11R6/bin/convert)
 copy	jinn	fi	kopioi
 copy and edit the new record	jinn	fi	kopioi ja muokkaa uutta tietuetta
 copy record	jinn	fi	kopioi tietue
-copy this record?	jinn	fi	Kopioi t‰m‰ tietue?
+copy this record?	jinn	fi	Kopioi t√§m√§ tietue?
 could not delete site files. please remove manually	jinn	fi	Sivun tiedostoja ei voitu poistaa, poista ne manuaalisesti.
-could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	fi	Ei lˆytynyt yht‰‰n taulukkoa! Tarkista tietokannan nimi, tietokannan k‰ytt‰j‰nimi tai sen salasana tai luo yksi tai useampia taulukoita tietokantaan.
+could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	fi	Ei l√∂ytynyt yht√§√§n taulukkoa! Tarkista tietokannan nimi, tietokannan k√§ytt√§j√§nimi tai sen salasana tai luo yksi tai useampia taulukoita tietokantaan.
 create a new site now	jinn	fi	Luo uusi sivusto nyt
 create new relation	jinn	fi	Luo uusi suhde
 criterium	jinn	fi	kriteeri
-current color:	jinn	fi	nykyinen v‰ri:
+current color:	jinn	fi	nykyinen v√§ri:
 current session filter	jinn	fi	nykyisen session suodatin
-custom css file for area content	jinn	fi	Oma CSS tiedosto sis‰ltˆ alueelle
+custom css file for area content	jinn	fi	Oma CSS tiedosto sis√§lt√∂ alueelle
 custom height (e.g. 100%, 300px, 70em)	jinn	fi	Oma korkeus (esim 100%, 300px, 70em)
 custom width (e.g. 100%, 300px, 70em)	jinn	fi	Oma leveys (esim 100%, 300px, 70em)
 database connection	jinn	fi	Tietokanta yhteys
-database connection failed! <p>please recheck your settings.	jinn	fi	Yhteys tietokantaan ep‰onnistui! <P> Tarkista uudelleen asetukset.
+database connection failed! <p>please recheck your settings.	jinn	fi	Yhteys tietokantaan ep√§onnistui! <P> Tarkista uudelleen asetukset.
 database connection was succesful.	jinn	fi	Yhteys tietokantaan onnistui
 database connection was succesfull. <p>you can go on with the site-objects	jinn	fi	Yhteys tietokantaan onnistui. <P> Voit jatkaa sivuston objektien
 database hostname	jinn	fi	Tietokannan palvelimen nimi
 database name	jinn	fi	Tietokannan nimi
 database password	jinn	fi	Tietokannan salasana
 database type	jinn	fi	Tietokannan tyyppi
-database username	jinn	fi	Tietokannan k‰ytt‰j‰tunnus
-days	jinn	fi	p‰iv‰t
+database username	jinn	fi	Tietokannan k√§ytt√§j√§tunnus
+days	jinn	fi	p√§iv√§t
 debug	jinn	fi	debug
 default	jinn	fi	oletus
 default image to choose from	jinn	fi	Oletuskuva valitaan
 default image type (jpg, gif, png)	admin	fi	Oletus kuva tyyppi (jpg, gif, png)
 default image width	admin	fi	Oletus kuvan leveys
-default number of visable columns	jinn	fi	N‰kyvien sarakkaiden oletus m‰‰r‰
-default order	jinn	fi	oletus j‰rjestys
+default number of visable columns	jinn	fi	N√§kyvien sarakkaiden oletus m√§√§r√§
+default order	jinn	fi	oletus j√§rjestys
 default thumb width	admin	fi	Oletus pienoiskuvan leveys
 default value	jinn	fi	oletus arvo
 default value:	jinn	fi	oletus arvo:
@@ -174,86 +174,86 @@ delete	jinn	fi	Poista
 delete all selected records	jinn	fi	poista kaikki valitut tietueet
 delete file	jinn	fi	poista tiedosto
 delete filter	jinn	fi	poista suodatin
-delete this record?	jinn	fi	Poista t‰m‰ tietue?
+delete this record?	jinn	fi	Poista t√§m√§ tietue?
 descending	jinn	fi	laskeva
 descrition	common	fi	Kuvaus
 dev site db host	jinn	fi	Kehitys (Testi) sivun tietokannan palvelimennimi
 dev site db name	jinn	fi	Kehitys (Testi) sivun tietokannan nimi
 dev site db password	jinn	fi	Kehitys (Testi) sivun tietokannan salasana
 dev site db type	jinn	fi	Kehitys (Testi) sivun tietokannan tyyppi
-dev site db user	jinn	fi	Kehitys (Testi) sivun tietokannan k‰ytt‰j‰tunnus
+dev site db user	jinn	fi	Kehitys (Testi) sivun tietokannan k√§ytt√§j√§tunnus
 dev upload path	jinn	fi	Kehitys (Testi) sivun latauspolku
 dev upload url	jinn	fi	kehityversion lataus URL
-developer links	jinn	fi	Kehitt‰j‰n linkki
+developer links	jinn	fi	Kehitt√§j√§n linkki
 development	admin	fi	Kehitys
 development (test) site upload path	jinn	fi	Kehitys (Testi) sivun latauspolku
 development database	jinn	fi	Kehitysversion tietokanta
-development environment profile	jinn	fi	Kehitysymp‰ristˆprofiili
+development environment profile	jinn	fi	Kehitysymp√§rist√∂profiili
 development server	jinn	fi	Kehitys palvelin
 dimensions	jinn	fi	ulottuvuudet
-disable the wysiwyg/htmlarea plugin	jinn	fi	Est‰ WYSIWYG / HTMLarea plugini
-display fields	jinn	fi	N‰yt‰ kent‰t
-do you really want to delete this site object?	jinn	fi	Haluatko varmasti poistaa t‰m‰n Sivu objektin
-do you really want to delete this site?	jinn	fi	Haluatko varmasti poistaa t‰m‰n sivun?
-do you want to copy and then edit this record?	jinn	fi	Haluatko kopioida ja muokata t‰t‰ tietuetta?
-do you want to copy this record?	jinn	fi	Haluatko kopioida t‰m‰n tietueen?
-don't save / back to list	jinn	fi	ƒl‰ tallenna / Palaa listaan
+disable the wysiwyg/htmlarea plugin	jinn	fi	Est√§ WYSIWYG / HTMLarea plugini
+display fields	jinn	fi	N√§yt√§ kent√§t
+do you really want to delete this site object?	jinn	fi	Haluatko varmasti poistaa t√§m√§n Sivu objektin
+do you really want to delete this site?	jinn	fi	Haluatko varmasti poistaa t√§m√§n sivun?
+do you want to copy and then edit this record?	jinn	fi	Haluatko kopioida ja muokata t√§t√§ tietuetta?
+do you want to copy this record?	jinn	fi	Haluatko kopioida t√§m√§n tietueen?
+don't save / back to list	jinn	fi	√Ñl√§ tallenna / Palaa listaan
 edit	jinn	fi	Muokkaa
 edit all selected records	jinn	fi	muokkaa kaikkia valittuja tietueita
 edit egw_jinn_sites	jinn	fi	muokkaa sivuja
-edit field properties	jinn	fi	Muokkaa kent‰n ominaisuuksia
+edit field properties	jinn	fi	Muokkaa kent√§n ominaisuuksia
 edit filter	jinn	fi	Muokkaa suodatinta
 edit object	jinn	fi	Muokkaa objektia
 edit relations of %1	jinn	fi	Muokkaa %1 suhteita
 edit site	jinn	fi	Muokkaa sivustoa
-edit this record	jinn	fi	muokkaa t‰t‰ tietuetta
+edit this record	jinn	fi	muokkaa t√§t√§ tietuetta
 edit this site	jinn	fi	Muokkaa sivustoa
 edit this site object	jinn	fi	muokkaa sivuston objektia
 editors for object %1 in site %2	jinn	fi	muokkaa objektia %1 sivulta %2
-empty	jinn	fi	Tyhj‰
-empty filter	jinn	fi	Tyhj‰ suodatin
-enable colors	jinn	fi	Salli v‰rit
+empty	jinn	fi	Tyhj√§
+empty filter	jinn	fi	Tyhj√§ suodatin
+enable colors	jinn	fi	Salli v√§rit
 enable font properties	jinn	fi	Salli fontin ominaisuudet
-enable fullscreen mode	jinn	fi	Salli kokon‰ytˆn asetus
+enable fullscreen mode	jinn	fi	Salli kokon√§yt√∂n asetus
 enable links	jinn	fi	Salli linkit
 enable simple image	jinn	fi	Salli yksinkertainen kuva
 enable styles	jinn	fi	Salli tyylit
 enable tables	jinn	fi	Salli taulut
-environment profile to use	jinn	fi	K‰ytett‰v‰ ymp‰ristˆprofiili
+environment profile to use	jinn	fi	K√§ytett√§v√§ ymp√§rist√∂profiili
 error code %1	jinn	fi	VIRHEKOODI %1
-error creating one or more new objects	jinn	fi	Virhe luodessa yht‰ tai useampaa objektia
-error creating one or more new objects%1	jinn	fi	Virhe luodessa yht‰ tai useampaa objektia %1
+error creating one or more new objects	jinn	fi	Virhe luodessa yht√§ tai useampaa objektia
+error creating one or more new objects%1	jinn	fi	Virhe luodessa yht√§ tai useampaa objektia %1
 error in event plugin	jinn	fi	Virhe tapahtuma pluginissa
 error path_open %1	jinn	fi	virhe avaus polussa %1
-error, field info not saved.	jinn	fi	Virhe, kentt‰‰ ei tallennettu.
-error: connection with database failed. please check if database connection settings are correct	jinn	fi	Virhe: Tietokantaan ei saatu yhteytt‰, tarkista ovatko tietokannan asetukset oikein.
-error: the file %1 doesn't exists, please contact the webmaster	jinn	fi	VIRHE: tiedosto %1 ei ole olemassa, ota yhteytt‰ sivustonyll‰pit‰j‰‰n
-events config	jinn	fi	Tapahtuman s‰‰dˆt
+error, field info not saved.	jinn	fi	Virhe, kentt√§√§ ei tallennettu.
+error: connection with database failed. please check if database connection settings are correct	jinn	fi	Virhe: Tietokantaan ei saatu yhteytt√§, tarkista ovatko tietokannan asetukset oikein.
+error: the file %1 doesn't exists, please contact the webmaster	jinn	fi	VIRHE: tiedosto %1 ei ole olemassa, ota yhteytt√§ sivustonyll√§pit√§j√§√§n
+events config	jinn	fi	Tapahtuman s√§√§d√∂t
 existing plugin configuration	jinn	fi	Ulkoisten pluginien konfiguraatioon
 export	jinn	fi	Vie
 export all columns	jinn	fi	vie kaikki sarakkeet
 export all selected records	jinn	fi	vie kaikki valitut tietueet
 export records	jinn	fi	Vie tietueet
-export source	jinn	fi	viennin l‰hde
-export this site	jinn	fi	vie t‰m‰ sivusto
-extra palets	jinn	fi	Ylim‰‰r‰iset paletit
-extra where sql filter	jinn	fi	Ylim‰‰r‰inen where sql suodin
-failed	jinn	fi	Ep‰onnistui
-failed to copy: %1 to %2 ...	jinn	fi	kopiointi ep‰onnistui: %1 %2
-failed to open table. please check if table <i>%1</i> still exists in database	jinn	fi	taulukon avaus ep‰onnistui. Tarkista ett‰ taulukko <i> %1 </i> on olemassa tietokannassa.
-field	jinn	fi	kentt‰
-field configuration	jinn	fi	Kent‰n konfiguraatio
-field plugin	jinn	fi	Kentt‰ plugini
-field plugin configuration	jinn	fi	Kentt‰ pluginin konfiguraatio
-field plugins	jinn	fi	Kentt‰ pluginit
-field position	jinn	fi	kent‰n sijainti
-field properties	jinn	fi	Kent‰n ominaisuudet
-field to display	jinn	fi	kentt‰ n‰kym‰
-field to display:	jinn	fi	kentt‰ n‰kym‰:
-field:	jinn	fi	kentt‰:
-fieldconfiguration	jinn	fi	Kent‰n konfiguraatio
-fieldname	jinn	fi	Kent‰nnimi
-fields	jinn	fi	kent‰t
+export source	jinn	fi	viennin l√§hde
+export this site	jinn	fi	vie t√§m√§ sivusto
+extra palets	jinn	fi	Ylim√§√§r√§iset paletit
+extra where sql filter	jinn	fi	Ylim√§√§r√§inen where sql suodin
+failed	jinn	fi	Ep√§onnistui
+failed to copy: %1 to %2 ...	jinn	fi	kopiointi ep√§onnistui: %1 %2
+failed to open table. please check if table <i>%1</i> still exists in database	jinn	fi	taulukon avaus ep√§onnistui. Tarkista ett√§ taulukko <i> %1 </i> on olemassa tietokannassa.
+field	jinn	fi	kentt√§
+field configuration	jinn	fi	Kent√§n konfiguraatio
+field plugin	jinn	fi	Kentt√§ plugini
+field plugin configuration	jinn	fi	Kentt√§ pluginin konfiguraatio
+field plugins	jinn	fi	Kentt√§ pluginit
+field position	jinn	fi	kent√§n sijainti
+field properties	jinn	fi	Kent√§n ominaisuudet
+field to display	jinn	fi	kentt√§ n√§kym√§
+field to display:	jinn	fi	kentt√§ n√§kym√§:
+field:	jinn	fi	kentt√§:
+fieldconfiguration	jinn	fi	Kent√§n konfiguraatio
+fieldname	jinn	fi	Kent√§nnimi
+fields	jinn	fi	kent√§t
 file	jinn	fi	Tiedosto
 file %1	jinn	fi	Tiedosto %1
 filename	jinn	fi	tiedoston nimi
@@ -261,18 +261,18 @@ filesize	jinn	fi	tiedoston koko
 filter operator	jinn	fi	suodatin operaattori
 filterd list	jinn	fi	suodatettu lista
 filtered list	jinn	fi	suodatettu lista
-first row has field names	jinn	fi	ensimm‰isell‰ rivill‰ on kenttien nimet
+first row has field names	jinn	fi	ensimm√§isell√§ rivill√§ on kenttien nimet
 font file for image %1	jinn	fi	Fonttitiedosto kuvaan %1
 font for image %1	jinn	fi	Fontti kuvaan %1
-font padding on left of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseli‰ vasemalle kuvasta
-font padding on right of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseli‰ oikealle kuvasta
-font padding on top of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseli‰ ylˆsp‰in kuvasta
+font padding on left of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseli√§ vasemalle kuvasta
+font padding on right of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseli√§ oikealle kuvasta
+font padding on top of the image in pixels %1	jinn	fi	Tekstin padding %1 pikseli√§ yl√∂sp√§in kuvasta
 font size for image %1	jinn	fi	Fontin koko kuvassa %1
 footer	jinn	fi	Footer
 form	jinn	fi	Lomake
 form height	jinn	fi	Lomakkeen korkeus
 form type	jinn	fi	Lomakkeen muoto
-form visibility	jinn	fi	Lomakkeen n‰kyvyys
+form visibility	jinn	fi	Lomakkeen n√§kyvyys
 form width	jinn	fi	Lomakkeen leveys
 free	jinn	fi	Vapaa
 free picker	jinn	fi	Vapaa valitsin
@@ -300,7 +300,7 @@ hidden	jinn	fi	Piilota
 hide from menu	jinn	fi	Piiloita objekti valikosta
 hide from object menu	jinn	fi	Piiloita objekti valikosta
 host profile	jinn	fi	Vierailija profiili
-how many columns do you want to be visible by default in list view?	jinn	fi	Montako saraketta n‰ytet‰‰n oletuksena listan‰kym‰ss‰?
+how many columns do you want to be visible by default in list view?	jinn	fi	Montako saraketta n√§ytet√§√§n oletuksena listan√§kym√§ss√§?
 how many records do you want to list per page?	jinn	fi	Kuinka monta tietuetta listataan sivulle
 ibrowser	jinn	fi	iBrowser
 image 1	jinn	fi	Kuva 1
@@ -309,12 +309,12 @@ image picker	jinn	fi	Kuvan valitsin
 image settings	admin	fi	Kuvan asetukset
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	fi	ImageMagick hakemisto (esim. /usr/X11R6/bin)
 import anyway	jinn	fi	tuo kuitenkin
-import failed	jinn	fi	tuonti ep‰onnistui
+import failed	jinn	fi	tuonti ep√§onnistui
 import jinn site	jinn	fi	tuo JiNN sivusto
 import jinn-object	jinn	fi	tuo JiNN objekti
 import jinn-site	jinn	fi	tuo JiNN- sivusto
 import object from file	jinn	fi	tuo objekti tiedostosta
-import object from file to this site	jinn	fi	tuo objekti tiedostosta t‰lle sivulle
+import object from file to this site	jinn	fi	tuo objekti tiedostosta t√§lle sivulle
 import site	jinn	fi	tuo sivusto
 import site from file	jinn	fi	tuo sivusto tiedostosta
 import was succesfull	jinn	fi	tuonti onnistui
@@ -322,44 +322,44 @@ import was succesfull<br>imported one site with	jinn	fi	tuonti onnistui <br> lii
 in menu	jinn	fi	Valikossa
 incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	fi	Yhteensopimaton tulos: Object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> ei esiintynyt tiedostossa.
 incompatibility result: object <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	fi	Yhteensopimaton tulos: Object <b>'%2'</b>, property <b>'%1'</b> ei esiintynyt tiedostossa.
-incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> ei voitu tuoda, koska sit‰ ei ole t‰ss‰ JiNN versiossa.
-incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> ei voitu tuoda, koska sit‰ ei ole t‰ss‰ JiNN versiossa.
-incompatibility result: object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> was not present in the file	jinn	fi	Yhteensopimaton tulos: Object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> ei esiintynyt t‰ss‰ tiedostossa.
-incompatibility result: object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> ei voitu tuoda, koska sit‰ ei ole t‰ss‰ JiNN versiossa.
-incompatibility result: site <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	fi	Yhteensopimaton tulos: Site <b>'%2'</b>, property <b>'%1'</b> ei esiintynyt t‰ss‰ tiedostossa.
-incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> ei voitu tuoda, koska sit‰ ei ole t‰ss‰ JiNN versiossa.
+incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> ei voitu tuoda, koska sit√§ ei ole t√§ss√§ JiNN versiossa.
+incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> ei voitu tuoda, koska sit√§ ei ole t√§ss√§ JiNN versiossa.
+incompatibility result: object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> was not present in the file	jinn	fi	Yhteensopimaton tulos: Object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> ei esiintynyt t√§ss√§ tiedostossa.
+incompatibility result: object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> ei voitu tuoda, koska sit√§ ei ole t√§ss√§ JiNN versiossa.
+incompatibility result: site <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	fi	Yhteensopimaton tulos: Site <b>'%2'</b>, property <b>'%1'</b> ei esiintynyt t√§ss√§ tiedostossa.
+incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	fi	Yhteensopimaton tulos: Site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> ei voitu tuoda, koska sit√§ ei ole t√§ss√§ JiNN versiossa.
 index	jinn	fi	indeksi
 info	jinn	fi	Info
 information	jinn	fi	Tietoa
-input mandatory	jinn	fi	Sis‰ltˆ pakollinen
-insert another record after saving	jinn	fi	lis‰‰ toinen tietue tallentamisen j‰lkeen
-insert date / time	jinn	fi	Lis‰‰ p‰iv‰ys / aika
-insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	fi	Lis‰‰ JiNN sivuston parametrit: <li>Lis‰‰ JiNN sivuston nimi n‰ytˆlle</li><li>lis‰‰ oikeat tietokannan asetukset</li><li>lis‰‰ oikea t‰ydellinen lataus polku</li><li>lis‰‰ vastaava esikatselun URL ladattaessa elementtej‰</li>
-insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	fi	Lis‰‰/valitse JiNN sivuston objektien parametrit: <li>valitse JiNN objektin nimi n‰ytˆlle</li><li>valitse tietokannan taulukko k‰yttˆˆn t‰m‰n objektin kanssa</li><li>jos tarpeellista vaihtoehto oikealle t‰ydelliselle lataus polulle</li><li>jos tarpeellista vastaava vaihtoehto esikatselun URLille ladattaessa elementtej‰</li>
+input mandatory	jinn	fi	Sis√§lt√∂ pakollinen
+insert another record after saving	jinn	fi	lis√§√§ toinen tietue tallentamisen j√§lkeen
+insert date / time	jinn	fi	Lis√§√§ p√§iv√§ys / aika
+insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	fi	Lis√§√§ JiNN sivuston parametrit: <li>Lis√§√§ JiNN sivuston nimi n√§yt√∂lle</li><li>lis√§√§ oikeat tietokannan asetukset</li><li>lis√§√§ oikea t√§ydellinen lataus polku</li><li>lis√§√§ vastaava esikatselun URL ladattaessa elementtej√§</li>
+insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	fi	Lis√§√§/valitse JiNN sivuston objektien parametrit: <li>valitse JiNN objektin nimi n√§yt√∂lle</li><li>valitse tietokannan taulukko k√§ytt√∂√∂n t√§m√§n objektin kanssa</li><li>jos tarpeellista vaihtoehto oikealle t√§ydelliselle lataus polulle</li><li>jos tarpeellista vastaava vaihtoehto esikatselun URLille ladattaessa elementtej√§</li>
 jinn	common	fi	JiNN
-jinn - add report	jinn	fi	JiNN - Lis‰‰ raportti
-jinn - add report from selected	jinn	fi	JiNN - Lis‰‰ raportti valituista
+jinn - add report	jinn	fi	JiNN - Lis√§√§ raportti
+jinn - add report from selected	jinn	fi	JiNN - Lis√§√§ raportti valituista
 jinn editors menu	jinn	fi	JiNN muokkaimen valikko
-jinn main	jinn	fi	JiNN p‰‰sivu
-jinn main menu	jinn	fi	JiNN p‰‰valikko
+jinn main	jinn	fi	JiNN p√§√§sivu
+jinn main menu	jinn	fi	JiNN p√§√§valikko
 jinn navigator	jinn	fi	JiNN navigaatio
 jinn preferences	jinn	fi	JINN ominaisuudet
-keep current timestamp	jinn	fi	S‰ilyt‰ nykyinen aikaleima
-keep this empty to let is auto increment	jinn	fi	j‰t‰ tyhj‰ksi jos haluat kasvattaa automaattisesti
+keep current timestamp	jinn	fi	S√§ilyt√§ nykyinen aikaleima
+keep this empty to let is auto increment	jinn	fi	j√§t√§ tyhj√§ksi jos haluat kasvattaa automaattisesti
 last edited record	jinn	fi	Viimeksi muokattu tietue
 license	common	fi	Lisenssi
-linked entries	jinn	fi	Linkitetty sis‰ltˆ
+linked entries	jinn	fi	Linkitetty sis√§lt√∂
 list record(s)	jinn	fi	Lista tietueista
 list sites	jinn	fi	sivustojen lista
-list visibility	jinn	fi	n‰kyvyyden lista
+list visibility	jinn	fi	n√§kyvyyden lista
 load export profile	jinn	fi	lataa vienti profiili
 load site conf from file	jinn	fi	Lataa sivun konfigurointi tiedosto
 loaded jinn site file	jinn	fi	Ladattu JiNN sivun tiedosto
-local fields	jinn	fi	Paikalliset kent‰t
-main settings	jinn	fi	P‰‰asetukset
-maintainer	common	fi	Kehitt‰j‰
+local fields	jinn	fi	Paikalliset kent√§t
+main settings	jinn	fi	P√§√§asetukset
+maintainer	common	fi	Kehitt√§j√§
 mandatory	jinn	fi	pakollinen
-manually enter a new relative file path	jinn	fi	M‰‰rittele manuaalisesti uusi suhteellinen polku
+manually enter a new relative file path	jinn	fi	M√§√§rittele manuaalisesti uusi suhteellinen polku
 many 2 many relations will not work	jinn	fi	Monen suhde moneen ei toimi
 many-to-many	jinn	fi	Monta moneen
 many-to-many relations	jinn	fi	Monta moneen suhde
@@ -368,14 +368,14 @@ many-to-one relations	jinn	fi	Monta yhteen suhde
 max records	jinn	fi	Max tietueeta
 max. records	jinn	fi	Max tietueeta
 maximum image width isn	jinn	fi	Kuvan maksimi leveys isn
-moderator mode	jinn	fi	Yll‰pit‰j‰n n‰kym‰
+moderator mode	jinn	fi	Yll√§pit√§j√§n n√§kym√§
 months	jinn	fi	kuukaudet
-move down	jinn	fi	siirr‰ alas
-move to last position	jinn	fi	siirr‰ viimeiseksi
-move up	jinn	fi	siirr‰ ylˆs
-moved record one row down.	jinn	fi	Siirr‰ tietue rivin verran ylˆsp‰in
-moved record one row up.	jinn	fi	Siirr‰ tietue rivin verran alasp‰in
-moved record to last row.	jinn	fi	Siirr‰ tietue viimeiselle riville
+move down	jinn	fi	siirr√§ alas
+move to last position	jinn	fi	siirr√§ viimeiseksi
+move up	jinn	fi	siirr√§ yl√∂s
+moved record one row down.	jinn	fi	Siirr√§ tietue rivin verran yl√∂sp√§in
+moved record one row up.	jinn	fi	Siirr√§ tietue rivin verran alasp√§in
+moved record to last row.	jinn	fi	Siirr√§ tietue viimeiselle riville
 name and help info	jinn	fi	nimi ja apu tiedot
 new	jinn	fi	Uusi
 new image size limits.	jinn	fi	Uuden kuvan koko rajoitukset.
@@ -384,25 +384,25 @@ new record	jinn	fi	uusi tietue
 new record(s)	jinn	fi	Uudet tietueet
 new report	jinn	fi	Uusi raportti
 new site	jinn	fi	Uusi sivu
-new sub entry	jinn	fi	Uusi alimerkint‰
+new sub entry	jinn	fi	Uusi alimerkint√§
 no filter	jinn	fi	Ei suodatusta
-no matchs found	jinn	fi	Sopivaa ei lˆytynyt
+no matchs found	jinn	fi	Sopivaa ei l√∂ytynyt
 no max. number	jinn	fi	ei maksimi numeroa
 no new objects created	jinn	fi	Uutta objektia EI luotu
 no new objects created%1	jinn	fi	Uutta objektia %1 EI luotu
-no object selected. no able to configure this view	jinn	fi	Objektia ei ole valittuna. N‰kym‰‰ ei voida konfiguroida
+no object selected. no able to configure this view	jinn	fi	Objektia ei ole valittuna. N√§kym√§√§ ei voida konfiguroida
 no objects available	jinn	fi	Objektia ei ole saatavilla
-no objects found for this site.	jinn	fi	Objektia ei lˆytynyt t‰lt‰ sivulta
-no palet defined	jinn	fi	Palettia ei ole m‰‰ritetty
-no records found	jinn	fi	Tietuetta ei lˆytynyt
+no objects found for this site.	jinn	fi	Objektia ei l√∂ytynyt t√§lt√§ sivulta
+no palet defined	jinn	fi	Palettia ei ole m√§√§ritetty
+no records found	jinn	fi	Tietuetta ei l√∂ytynyt
 no records linked	jinn	fi	Tietuetta ei linkitetty
-normal view	jinn	fi	Normaali n‰kym‰
-nothing to save. please select a plugin to delete or configure a new plugin	jinn	fi	mit‰‰n tallennettavaa. Valitse plugin poistettavaksi tai konfiguroi uusi plugin.
-notice that jinn needs imagemagick 5.4.9 or a later version	admin	fi	Huomaa ett‰ JiNN tarvitsee ImageMagick 5.4.9 tai uudemman version.
+normal view	jinn	fi	Normaali n√§kym√§
+nothing to save. please select a plugin to delete or configure a new plugin	jinn	fi	mit√§√§n tallennettavaa. Valitse plugin poistettavaksi tai konfiguroi uusi plugin.
+notice that jinn needs imagemagick 5.4.9 or a later version	admin	fi	Huomaa ett√§ JiNN tarvitsee ImageMagick 5.4.9 tai uudemman version.
 number of images to create	jinn	fi	Monta kuvaa luotu:
 number of images to generate.	jinn	fi	Monta kuvaa luotu:
-number of objects	jinn	fi	Objektien m‰‰r‰:
-number of records per page	jinn	fi	Montako tietuetta n‰ytet‰‰n sivulla
+number of objects	jinn	fi	Objektien m√§√§r√§:
+number of records per page	jinn	fi	Montako tietuetta n√§ytet√§√§n sivulla
 object configuration	jinn	fi	Objektin konfigurointi
 object event configuration	jinn	fi	Objektin tapahtuman konfigurointi
 object event plugins	jinn	fi	objektin tapahtuman pluginit
@@ -412,15 +412,15 @@ object serialnumber	jinn	fi	Objektin sarjanumero
 objects	jinn	fi	Objektit
 old relation method	jinn	fi	Vanha suhteellinen tapa
 on_update	jinn	fi	on_update
-one or more records not succesfully added.	jinn	fi	Yht‰ tai useampaa tietuetta EI lis‰tty.
-one or more records not succesfully saved.	jinn	fi	Yht‰ tai useampaa tietuetta EI tallennettu.
-one or more records not succesfully saved. (error code 106)	jinn	fi	Yht‰ tai useampaa tietuetta EI tallennettu. (virhekoodi 106)
-one page backwards	jinn	fi	Sivu taaksep‰in
-one page forward	jinn	fi	Sivu eteenp‰in
+one or more records not succesfully added.	jinn	fi	Yht√§ tai useampaa tietuetta EI lis√§tty.
+one or more records not succesfully saved.	jinn	fi	Yht√§ tai useampaa tietuetta EI tallennettu.
+one or more records not succesfully saved. (error code 106)	jinn	fi	Yht√§ tai useampaa tietuetta EI tallennettu. (virhekoodi 106)
+one page backwards	jinn	fi	Sivu taaksep√§in
+one page forward	jinn	fi	Sivu eteenp√§in
 one-to-many	jinn	fi	Yksi moneen
 one-to-many relations	jinn	fi	Yhden suhde moneen
 one-to-one	jinn	fi	Yksi yhteen
-one-to-one relation is broken, please fix it or contact site-developer.<br/>%1	jinn	fi	Yksi yhteen suhde on rikki, korjaa se tai ota yhteytt‰ sivun kehitt‰jiin.<br/>%1
+one-to-one relation is broken, please fix it or contact site-developer.<br/>%1	jinn	fi	Yksi yhteen suhde on rikki, korjaa se tai ota yhteytt√§ sivun kehitt√§jiin.<br/>%1
 one-to-one relations	jinn	fi	Yksi yhteen suhteet
 only if thumnails exits	jinn	fi	Vain jos pienet kuvakkeet on olemassa
 only one	jinn	fi	vain yksi
@@ -428,12 +428,12 @@ open debugging window.	jinn	fi	Avaa debuggaus ikkuna
 optional max. height	jinn	fi	Vaihtoehtoinen maksimi korkeus
 optional max. width	jinn	fi	Vaihtoehtoinen maksimi leveys
 page %1	jinn	fi	Sivu %1
-parent site id	jinn	fi	Is‰nt‰sivu Id
-path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	fi	Polku ImageMagick k‰‰nt‰j‰‰n (esim /usr/X11R6/bin)
-please fill in all mandatory fields	jinn	fi	t‰yt‰ kaikki pakolliset kent‰t
+parent site id	jinn	fi	Is√§nt√§sivu Id
+path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	fi	Polku ImageMagick k√§√§nt√§j√§√§n (esim /usr/X11R6/bin)
+please fill in all mandatory fields	jinn	fi	t√§yt√§ kaikki pakolliset kent√§t
 please select a site	jinn	fi	valitse sivu
-please set your preferences for this application	jinn	fi	Aseta asetukset t‰lle sovellukselle
-please upgrade	jinn	fi	p‰ivit‰
+please set your preferences for this application	jinn	fi	Aseta asetukset t√§lle sovellukselle
+please upgrade	jinn	fi	p√§ivit√§
 plugin configuration	jinn	fi	Pluginin konfigurointi
 plugin configuration not saved.	jinn	fi	Pluginin konfigurointia EI tallennettu
 plugin configuration successfully saved	jinn	fi	Pluginin konfigurointi tallennettu
@@ -446,17 +446,17 @@ preview	jinn	fi	Esikatselu
 preview thumbs or images in form	jinn	fi	Esikatsele pienia kuvakkeita tai kuvia lomakkeessa
 preview website	jinn	fi	Esikatsele verkkosivustoa
 primary palet	jinn	fi	Ensisijainen paletti
-primary palet colors in hex seperated by commas	jinn	fi	Ensisijaiset paletin v‰rit hex muodossa, pilkulla erotettuina
+primary palet colors in hex seperated by commas	jinn	fi	Ensisijaiset paletin v√§rit hex muodossa, pilkulla erotettuina
 production	admin	fi	Tuotanto
 production database	jinn	fi	Tuotanto tietokanta
-production environment profile	jinn	fi	Tuotantoymp‰ristˆn profiili
+production environment profile	jinn	fi	Tuotantoymp√§rist√∂n profiili
 real value	jinn	fi	oikea arvo
 record	jinn	fi	tietue
 record %1	jinn	fi	Tietue %1
 record added succesfully	jinn	fi	tietue liitetty onnistuneesti
 record deleted succesfully	jinn	fi	Tietue poistettu onnistuneesti
-record is not succesfully added.	jinn	fi	Tietuetta EI lis‰tty onnistuneesti
-record is succesfully added.	jinn	fi	Tietue lis‰tty onnistuneesti
+record is not succesfully added.	jinn	fi	Tietuetta EI lis√§tty onnistuneesti
+record is succesfully added.	jinn	fi	Tietue lis√§tty onnistuneesti
 record list	jinn	fi	tietuelista
 record not succesfully copied	jinn	fi	Tietueen kopioiminen EI onnistunut.
 record not succesfully copied. unknown error	jinn	fi	Tietueen kopioiminen EI onnistunut. Tuntematon virhe
@@ -468,44 +468,44 @@ record not succesfully saved. unknown error	jinn	fi	Tietueen tallentaminen EI on
 record succesfully copied	jinn	fi	Tietue onnistuneesti kopioitu
 record succesfully deleted	jinn	fi	Tietue onnistuneesti poistettu
 record succesfully editted	jinn	fi	Tietue onnistuneesti muokattu
-record successfully added	jinn	fi	Tietue lis‰tty onnistuneesti
+record successfully added	jinn	fi	Tietue lis√§tty onnistuneesti
 record was not succesfully saved.	jinn	fi	Tietuetta EI tallennettu.
 record was succesfully saved.	jinn	fi	Tietua tallennettu onnistuneesti.
 records not succesfully deleted.	jinn	fi	Tietueita EI poistettu onnistuneesti.
 records not succesfully deleted. (error code 101)	jinn	fi	Tietueita EI poistettu onnistuneesti. (virhekoodi 101)
 records succesfully deleted	jinn	fi	Tietueet poistettu onnistuneesti.
-records were not succesfully added.	jinn	fi	Tietueita EI lis‰tty onnistuneesti
+records were not succesfully added.	jinn	fi	Tietueita EI lis√§tty onnistuneesti
 records were not succesfully saved.	jinn	fi	Tietueita EI tallennettu onnistuneesti
-records were succesfully added.	jinn	fi	Tietueet lis‰tty onnistuneesti.
+records were succesfully added.	jinn	fi	Tietueet lis√§tty onnistuneesti.
 records were succesfully saved.	jinn	fi	Tietueet tallennettu onnistuneesti.
-related	jinn	fi	liittyv‰t
+related	jinn	fi	liittyv√§t
 relation %1	jinn	fi	suhde %1
 relation not succesfully saved, unknown error	jinn	fi	Suhdetta EI tallennettu onnistuneesti, tuntematon virhe
 relation succesfully saved	jinn	fi	Suhde tallennettu onnistuneesti
 relations	jinn	fi	suhteet
-relations for this object	jinn	fi	suhteet t‰h‰n objektiin
+relations for this object	jinn	fi	suhteet t√§h√§n objektiin
 relative paths to images	jinn	fi	Suhteellinen polku kuviin
-reload parent window	jinn	fi	P‰ivit‰ is‰nt‰ikkuna
-remote	admin	fi	Et‰inen
+reload parent window	jinn	fi	P√§ivit√§ is√§nt√§ikkuna
+remote	admin	fi	Et√§inen
 remove	jinn	fi	poistaa
 remove all	jinn	fi	Poista kaikki
 replace	jinn	fi	Korvaa
-replace existing site with the same name?	jinn	fi	Korvataanko olemassa oleva samalla nimell‰?
-replaced existing site named <strong>%1</strong>.	jinn	fi	Korvaa olemassa oleva sivusto nimell‰ <strong> %1 </strong>.
+replace existing site with the same name?	jinn	fi	Korvataanko olemassa oleva samalla nimell√§?
+replaced existing site named <strong>%1</strong>.	jinn	fi	Korvaa olemassa oleva sivusto nimell√§ <strong> %1 </strong>.
 report not saved succesfull	jinn	fi	Raporttia EI tallennettu onnistuneesti
 report saved succesfull	jinn	fi	Raportti tallennettu onnistuneesti
 reports	jinn	fi	Raportit
 reset	jinn	fi	Palauta
 reset form	jinn	fi	palauta lomake
-right button content menu	jinn	fi	Oikea painikke - Sis‰ltˆ valikko
+right button content menu	jinn	fi	Oikea painikke - Sis√§lt√∂ valikko
 save	jinn	fi	tallenna
-save and add new record	jinn	fi	tallenna ja lis‰‰ tietue
-save and add new records	jinn	fi	tallenna ja lis‰‰ tietueita
+save and add new record	jinn	fi	tallenna ja lis√§√§ tietue
+save and add new records	jinn	fi	tallenna ja lis√§√§ tietueita
 save and continue	jinn	fi	tallenna ja jatka
 save and contiue	jinn	fi	tallenna ja jatka
 save and finish	jinn	fi	tallenna ja lopeta
 save and return to list	jinn	fi	tallenna ja palaa listalle
-save as	jinn	fi	tallenna nimell‰
+save as	jinn	fi	tallenna nimell√§
 save export profile	jinn	fi	tallenna vienti profiili
 save form lay-out	jinn	fi	Tallenna lomakkeen ulkoasu
 save profile	jinn	fi	tallenna profiili
@@ -524,60 +524,60 @@ select foreign key	jinn	fi	Valitse foreign key
 select jinn object file (*.jobj	jinn	fi	Valitse JiNN objekti tiedosto (*.job)
 select jinn site file	jinn	fi	valitse JiNN sivuston tiedosto
 select local key	jinn	fi	Valitse local key
-select object configuration to use	jinn	fi	Valitse k‰ytett‰v‰ objektin konfiguraatio
+select object configuration to use	jinn	fi	Valitse k√§ytett√§v√§ objektin konfiguraatio
 select site	jinn	fi	Valitse sivusto
 select site to moderate	jinn	fi	Valitse hallinnoitava sivu
 select site-object to moderate	jinn	fi	Valitse hallinnoitava Sivu objekti
 select theme	jinn	fi	Valitse teema
-select which graphic library jinn must use	admin	fi	Valitse mit‰ grafiikkakirjastoa JiNN k‰ytt‰‰
+select which graphic library jinn must use	admin	fi	Valitse mit√§ grafiikkakirjastoa JiNN k√§ytt√§√§
 select_object	jinn	fi	Valitse objekti
 selected records	jinn	fi	valitut tietueet
 serialnumber	jinn	fi	Objektin sarjanumero
 server type?	admin	fi	Palvelin tyyppi?
 session filter	jinn	fi	session suodatus
-set access right for site objects	jinn	fi	Aseta k‰yttˆoikeudet sivuston objekteille
-set access rights	jinn	fi	Aseta k‰yttˆoikeudet
-set access rights for sites	jinn	fi	Aseta k‰yttˆoikeudet sivustoille
-set administrators for	jinn	fi	Aseta yll‰pit‰j‰
-set administrators for %1	jinn	fi	Aseta p‰‰k‰ytt‰j‰ksi %1
+set access right for site objects	jinn	fi	Aseta k√§ytt√∂oikeudet sivuston objekteille
+set access rights	jinn	fi	Aseta k√§ytt√∂oikeudet
+set access rights for sites	jinn	fi	Aseta k√§ytt√∂oikeudet sivustoille
+set administrators for	jinn	fi	Aseta yll√§pit√§j√§
+set administrators for %1	jinn	fi	Aseta p√§√§k√§ytt√§j√§ksi %1
 set object moderator	jinn	fi	aseta objektin valvoja
 set site admin	jinn	fi	aseta sivuston admin
-show	jinn	fi	n‰yt‰
-show all columns	jinn	fi	n‰yt‰ kaikki sarakkeet
-show all colums, always	jinn	fi	N‰yt‰ kaikki sarakkeet, aina
-show by default in listview	jinn	fi	n‰yt‰ oletuksena listan‰kym‰
-show by default_listview	jinn	fi	n‰yt‰ oletuksena listan‰kym‰
-show colomn	jinn	fi	n‰yt‰ sarake
-show in form	jinn	fi	N‰yt‰ lomakkeella
-show upload path	admin	fi	n‰yt‰ lataus polku
-showing	jinn	fi	n‰ytet‰‰n
-showing:	jinn	fi	n‰ytet‰‰n:
+show	jinn	fi	n√§yt√§
+show all columns	jinn	fi	n√§yt√§ kaikki sarakkeet
+show all colums, always	jinn	fi	N√§yt√§ kaikki sarakkeet, aina
+show by default in listview	jinn	fi	n√§yt√§ oletuksena listan√§kym√§
+show by default_listview	jinn	fi	n√§yt√§ oletuksena listan√§kym√§
+show colomn	jinn	fi	n√§yt√§ sarake
+show in form	jinn	fi	N√§yt√§ lomakkeella
+show upload path	admin	fi	n√§yt√§ lataus polku
+showing	jinn	fi	n√§ytet√§√§n
+showing:	jinn	fi	n√§ytet√§√§n:
 site	jinn	fi	Sivusto
-site beheerders	jinn	fi	Sivuston yll‰pit‰j‰t
-site db host	jinn	fi	Sivuston tietokannan is‰nt‰
+site beheerders	jinn	fi	Sivuston yll√§pit√§j√§t
+site db host	jinn	fi	Sivuston tietokannan is√§nt√§
 site db name	jinn	fi	Sivuston tietokannan nimi
 site db password	jinn	fi	Sivuston tietokannan salasana
 site db type	jinn	fi	Sivuston tietokannan tyyppi
-site db user	jinn	fi	Sivuston tietokannan k‰ytt‰j‰
+site db user	jinn	fi	Sivuston tietokannan k√§ytt√§j√§
 site description	admin	fi	Sivuston kuvaus
 site files succesfully deleted	jinn	fi	Sivun tiedostot poistettu onnistuneesti
 site files succesfully extracted.	jinn	fi	Sivun tiedostot purettu onnistuneesti.
 site id	jinn	fi	Sivuston id
 site media and documents	jinn	fi	Sivuston media ja dokumentit
 site name	jinn	fi	Sivuston nimi
-site not succesfully added, unknown error	jinn	fi	Sivuston liitt‰minen ep‰onnistui, tuntematon virhe
-site not succesfully deleted, unknown error	jinn	fi	Sivuston poistaminen ep‰onnistui, tuntematon virhe
-site not succesfully saved, unknown error	jinn	fi	Sivuston tallentaminen ep‰onnistui, tuntematon virhe
-site object not succesfully added, unknown error	jinn	fi	Sivuston objektin liitt‰minen ep‰onnistui, tuntematon virhe
-site object not succesfully deleted, unknown error	jinn	fi	Sivuston objektin poistaminen ep‰onnistui, tuntematon virhe
-site object not succesfully saved, unknown error	jinn	fi	Sivuston objektin tallentaminen ep‰onnistui, tuntematon virhe
-site object succesfully added	jinn	fi	Sivuston objektin liitt‰minen onnistui
+site not succesfully added, unknown error	jinn	fi	Sivuston liitt√§minen ep√§onnistui, tuntematon virhe
+site not succesfully deleted, unknown error	jinn	fi	Sivuston poistaminen ep√§onnistui, tuntematon virhe
+site not succesfully saved, unknown error	jinn	fi	Sivuston tallentaminen ep√§onnistui, tuntematon virhe
+site object not succesfully added, unknown error	jinn	fi	Sivuston objektin liitt√§minen ep√§onnistui, tuntematon virhe
+site object not succesfully deleted, unknown error	jinn	fi	Sivuston objektin poistaminen ep√§onnistui, tuntematon virhe
+site object not succesfully saved, unknown error	jinn	fi	Sivuston objektin tallentaminen ep√§onnistui, tuntematon virhe
+site object succesfully added	jinn	fi	Sivuston objektin liitt√§minen onnistui
 site object succesfully deleted	jinn	fi	Sivuston objektin poistaminen onnistui
 site object succesfully saved	jinn	fi	Sivuston objektin tallentaminen onnistui
 site objects in %1	jinn	fi	Sivun objektit %1
 site objects not succesfully deleted, unknown error	jinn	fi	Sivun objekteja EI poistettu onnistuneesti, tuntematon virhe.
 site objects succesfully deleted	jinn	fi	Sivun objektit poistettu onnistuneesti
-site succesfully added	jinn	fi	Sivuston liitt‰minen onnistui
+site succesfully added	jinn	fi	Sivuston liitt√§minen onnistui
 site succesfully deleted	jinn	fi	sivuston poistaminen onnistui
 site succesfully saved	jinn	fi	sivuston tallentaminen onnistui
 site title	admin	fi	Sivuston otsikko
@@ -590,68 +590,68 @@ start	admin	fi	Aloita
 start at record	jinn	fi	aloita nauhoittaminen
 stop at record	jinn	fi	lopeta nauhoittaminen
 store filter	jinn	fi	varaston suodatin
-submit and import	jinn	fi	hyv‰ksy ja tuo
+submit and import	jinn	fi	hyv√§ksy ja tuo
 successful	jinn	fi	Onnistuneesti
 table	jinn	fi	Taulukko
 table name	jinn	fi	Taulukon nimi
-tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	fi	Taulukonnimi <i> %1 </i> ei ole oikein. Luultavasti taulukonnimi on muuttunut tai taulukko on poistettu. Valitse uusi taulukko tai poista t‰m‰ objekti
-test database access	jinn	fi	tietokantaan p‰‰syn testaus
+tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	fi	Taulukonnimi <i> %1 </i> ei ole oikein. Luultavasti taulukonnimi on muuttunut tai taulukko on poistettu. Valitse uusi taulukko tai poista t√§m√§ objekti
+test database access	jinn	fi	tietokantaan p√§√§syn testaus
 test database and paths	jinn	fi	testaa tietokantaa ja polkuja
 test site settings	jinn	fi	Testi sivuston asetukset
-text color %1	jinn	fi	Tekstin v‰ri %1
-text label	jinn	fi	Otsikkokentt‰
+text color %1	jinn	fi	Tekstin v√§ri %1
+text label	jinn	fi	Otsikkokentt√§
 the attachments subdirectory does not exist and cannot be created ...	jinn	fi	Liitetiedostojen alihakemistoa ei ole olemassa ja ei voida luoda...
 the attachments subdirectory is not writable by the webserver ...	jinn	fi	Liitetiedostojen alihakemisto ei ole kirjoitettu palvelimelle...
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	fi	Tiedosto jonka latasit nimell‰ %1 ei ole kuvatiedosto,on turmeltunut, tai tiedostotyyppi ei ole JiNNin kannattama.
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	fi	Tiedosto jota latasit nimell‰ %1 ei ole kuvatiedosto, se on turmeltunut, tai tiedostotyyppi ei ole JiNNin kannattama. Jos t‰m‰ virhe toistuu, tarkista sinun imagemagick asennus. ImageMagick vanhempi versio on tunnettu, ei toimi kunnolla JiNNin kanssa. Varmista ett‰ asennat viimeisimm‰n version 5.4.9 tai korkeamman
-the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	fi	T‰m‰ palvelin ei tue GIF-tiedostoja. Koita valita joku muu tiedostotyyppi.
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	fi	Tiedosto jonka latasit nimell√§ %1 ei ole kuvatiedosto,on turmeltunut, tai tiedostotyyppi ei ole JiNNin kannattama.
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	fi	Tiedosto jota latasit nimell√§ %1 ei ole kuvatiedosto, se on turmeltunut, tai tiedostotyyppi ei ole JiNNin kannattama. Jos t√§m√§ virhe toistuu, tarkista sinun imagemagick asennus. ImageMagick vanhempi versio on tunnettu, ei toimi kunnolla JiNNin kanssa. Varmista ett√§ asennat viimeisimm√§n version 5.4.9 tai korkeamman
+the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	fi	T√§m√§ palvelin ei tue GIF-tiedostoja. Koita valita joku muu tiedostotyyppi.
 the max. file upload size is %1 mb.	jinn	fi	Ladattavan tiedoston maximi koko on 1Mb.
 the name of the new object is <strong>%1</strong>.	jinn	fi	Uuden objektin nimi on <strong>%1</strong>.
 the name of the new site is <strong>%1</strong>.	jinn	fi	Uuden sivuston nimi on <strong> %1 </strong>.
 the old confguration data is replaced<br/><br/>	jinn	fi	Vanha konfiguraatiotieto on korvattu<br/><br/>
 the old style or the new way with the dhtml calendar	jinn	fi	Vanhan mallinen tai uuden tyylinen DHTML kalenteri
-the path to upload files is not correct, please contact your jinn administrator.	jinn	fi	Ladattavien tiedostojen polku ei ole oikein, ota yhteytt‰ JiNNin vastaavaan.
-the path to upload files is not set, please contact your jinn administrator.	jinn	fi	Ladattavien tiedostojen polkua ei ole asetettu, ota yhteytt‰ JiNNin vastaavaan.
-the path to upload images is not correct, please contact your jinn administrator.	jinn	fi	Ladattavien kuvien polku ei ole oikein, ota yhteytt‰ JiNNin vastaavaan.
-the path to upload images is not set, please contact your jinn administrator.	jinn	fi	Ladattavien kuvien polkua ei ole asetettu, ota yhteytt‰ JiNNin vastaavaan.
-there are no directories in this site you have access to.	jinn	fi	Sivustolla ei ole hakemistoja johon p‰‰sisit
+the path to upload files is not correct, please contact your jinn administrator.	jinn	fi	Ladattavien tiedostojen polku ei ole oikein, ota yhteytt√§ JiNNin vastaavaan.
+the path to upload files is not set, please contact your jinn administrator.	jinn	fi	Ladattavien tiedostojen polkua ei ole asetettu, ota yhteytt√§ JiNNin vastaavaan.
+the path to upload images is not correct, please contact your jinn administrator.	jinn	fi	Ladattavien kuvien polku ei ole oikein, ota yhteytt√§ JiNNin vastaavaan.
+the path to upload images is not set, please contact your jinn administrator.	jinn	fi	Ladattavien kuvien polkua ei ole asetettu, ota yhteytt√§ JiNNin vastaavaan.
+there are no directories in this site you have access to.	jinn	fi	Sivustolla ei ole hakemistoja johon p√§√§sisit
 there are no pages	jinn	fi	Sivuja ei ole
-thisfile	jinn	fi	t‰m‰ tiedosto
+thisfile	jinn	fi	t√§m√§ tiedosto
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	fi	pienten kuvakkeiden hakemistoa ei ole olemassa tai se ei ole oikein... <br> tarkista objektin ladattu hakemisto
 thumbnail	jinn	fi	pienet kuvakkeet
 title for html-page	jinn	fi	HTML sivun otsikko
 tooltip text	jinn	fi	Vihje teksti
 unexpected error	jinn	fi	odottamaton virhe
-unique id	jinn	fi	Yksilˆiv‰ Id
+unique id	jinn	fi	Yksil√∂iv√§ Id
 unlimited	jinn	fi	rajoittamaton
-upgrade	jinn	fi	p‰ivit‰
+upgrade	jinn	fi	p√§ivit√§
 upload	jinn	fi	lataa
-upload new font (reload to select this font)	jinn	fi	Lataa uusi fontti (uudelleen lataa t‰m‰n fontin)
+upload new font (reload to select this font)	jinn	fi	Lataa uusi fontti (uudelleen lataa t√§m√§n fontin)
 upload path	jinn	fi	Lataus hakemisto
-upload path exist	jinn	fi	Lataus hakemisto lˆytyy
+upload path exist	jinn	fi	Lataus hakemisto l√∂ytyy
 upload path writable	jinn	fi	Lataus hakemisto kirjoitettavissa
 upload path write test	jinn	fi	Lataus hakemiston kirjoitustesti
 upload url	jinn	fi	Lataus URL
 upload url location correct	jinn	fi	Lataus URL sijainti on oikein
-use reports	admin	fi	K‰yt‰ raportteja
+use reports	admin	fi	K√§yt√§ raportteja
 version	jinn	fi	versio
 very experimental	jinn	fi	Hyvin kokeellinen
-view all selected records	jinn	fi	n‰yt‰ kaikki valitut tietueet
-visible	jinn	fi	N‰kyv‰
-when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	fi	Kun kuvia on liitetty paljon nauhoitettavaksi, lomake voi lataantua hyvin hitaasti. Voi asettaa kuville maksimi m‰‰r‰n mitk‰ kuvat n‰ytet‰‰n lomakkeella.
-when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	fi	Kun valitset 'Ei koskaan', n‰ytet‰‰n vain linkit kuviin; kun valitset 'pienet kuvakkeet' esikatseluun n‰ytet‰‰n jos pienet kuvat kuvakkeet on olemassa; jos valitset 'Kyll‰' kaikki kuvat n‰ytet‰‰n
+view all selected records	jinn	fi	n√§yt√§ kaikki valitut tietueet
+visible	jinn	fi	N√§kyv√§
+when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	fi	Kun kuvia on liitetty paljon nauhoitettavaksi, lomake voi lataantua hyvin hitaasti. Voi asettaa kuville maksimi m√§√§r√§n mitk√§ kuvat n√§ytet√§√§n lomakkeella.
+when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	fi	Kun valitset 'Ei koskaan', n√§ytet√§√§n vain linkit kuviin; kun valitset 'pienet kuvakkeet' esikatseluun n√§ytet√§√§n jos pienet kuvat kuvakkeet on olemassa; jos valitset 'Kyll√§' kaikki kuvat n√§ytet√§√§n
 width:	jinn	fi	Leveys:
 with_checked_files	jinn	fi	tarkistettujen tiedostojen kanssa
-yes, hide from menu	jinn	fi	Kyll‰, piiloita valikko
+yes, hide from menu	jinn	fi	Kyll√§, piiloita valikko
 you are on a <b>development</b> server	jinn	fi	olet <b>kehitys</b> palvelimella
 you are on a <b>production</b> server	jinn	fi	olet <b>tuotanto</b> palvelimella
 you can only edit your own templates	jinn	fi	Voit muokata vain omia mallipohjiasi
 you cannot delete the session filter	jinn	fi	Et voi poistaa session suodattimia.
-you don't have access to this page.	jinn	fi	Sinulla ei ole oikeuksia t‰lle sivulle.
-you have no access to this file.	jinn	fi	Sinulla ei ole oikeuksia t‰h‰n tiedostoon.
-you have no access to this object	jinn	fi	Sinulla ei ole oikeuksia t‰h‰n objektiin.
-you must select one or more records for this function.	jinn	fi	Valitse ainakin yksi tietue t‰t‰ toimintoa varten.
-you must select one or more sites for this function.	jinn	fi	Valitse ainakin yksi sivu t‰t‰ toimintoa varten.
-you're not allowed to acces this screen.	jinn	fi	Sinulla ei ole p‰‰syoikeutte t‰h‰n ruutuun.
+you don't have access to this page.	jinn	fi	Sinulla ei ole oikeuksia t√§lle sivulle.
+you have no access to this file.	jinn	fi	Sinulla ei ole oikeuksia t√§h√§n tiedostoon.
+you have no access to this object	jinn	fi	Sinulla ei ole oikeuksia t√§h√§n objektiin.
+you must select one or more records for this function.	jinn	fi	Valitse ainakin yksi tietue t√§t√§ toimintoa varten.
+you must select one or more sites for this function.	jinn	fi	Valitse ainakin yksi sivu t√§t√§ toimintoa varten.
+you're not allowed to acces this screen.	jinn	fi	Sinulla ei ole p√§√§syoikeutte t√§h√§n ruutuun.
 you're not allowed to administrate media files	jinn	fi	Sinulla ei ole lupaa hallita media tiedostoja
 zoom	jinn	fi	Zoomaa

@@ -1,74 +1,74 @@
-add	developer_tools	ja	ÄÉ²Ã
-add change	developer_tools	ja	ÍúÎòÄÉ²Ã
-add more	developer_tools	ja	¤µ¤é¤ËÄÉ²Ã
-add new phrase	developer_tools	ja	Ê¸¸ÀÄÉ²Ã
-add phrase	developer_tools	ja	Ê¸¸ÀÄÉ²Ã
-allows you to add a single phrase	developer_tools	ja	Ê¸¸À¤ò¤Ò¤È¤ÄÄÉ²Ã¤·¤Ş¤¹
-application	developer_tools	ja	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó
-back	developer_tools	ja	Ìá¤ë
-cancel	developer_tools	ja	¥­¥ã¥ó¥»¥ë
-change	developer_tools	ja	ÊÑ¹¹ÆâÍÆ
-changelog entry has been added	developer_tools	ja	ÊÑ¹¹ÍúÎò¤¬ÄÉ²Ã¤µ¤ì¤Ş¤·¤¿
-changelogs	developer_tools	ja	ÊÑ¹¹ÍúÎò
-clears the internal buffer, all changes made sofar are lost	developer_tools	ja	ÆâÉô¥Ğ¥Ã¥Õ¥¡¤ò¥¯¥ê¥¢¤·¤Ş¤¹(Á´¤Æ¤ÎÊÑ¹¹¤ÏÇË´ş¤µ¤ì¤Ş¤¹)
-create new language file	developer_tools	ja	¿·¤·¤¤¸À¸ì¥Õ¥¡¥¤¥ë¤òºîÀ®¤¹¤ë
-create sgml file	developer_tools	ja	SGML¥Õ¥¡¥¤¥ëºîÀ®
-developer tools	common	ja	³«È¯¼ÔÍÑ¥Ä¡¼¥ë
-developer tools - preferences	developer_tools	ja	Developer tools - ¥æ¡¼¥¶ÀßÄê
-developer_tools	common	ja	ËİÌõ¥Ä¡¼¥ë
-diary	developer_tools	ja	Æü»ï
+add	developer_tools	ja	è¿½åŠ 
+add change	developer_tools	ja	å±¥æ­´è¿½åŠ 
+add more	developer_tools	ja	ã•ã‚‰ã«è¿½åŠ 
+add new phrase	developer_tools	ja	æ–‡è¨€è¿½åŠ 
+add phrase	developer_tools	ja	æ–‡è¨€è¿½åŠ 
+allows you to add a single phrase	developer_tools	ja	æ–‡è¨€ã‚’ã²ã¨ã¤è¿½åŠ ã—ã¾ã™
+application	developer_tools	ja	ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³
+back	developer_tools	ja	æˆ»ã‚‹
+cancel	developer_tools	ja	ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+change	developer_tools	ja	å¤‰æ›´å†…å®¹
+changelog entry has been added	developer_tools	ja	å¤‰æ›´å±¥æ­´ãŒè¿½åŠ ã•ã‚Œã¾ã—ãŸ
+changelogs	developer_tools	ja	å¤‰æ›´å±¥æ­´
+clears the internal buffer, all changes made sofar are lost	developer_tools	ja	å†…éƒ¨ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢ã—ã¾ã™(å…¨ã¦ã®å¤‰æ›´ã¯ç ´æ£„ã•ã‚Œã¾ã™)
+create new language file	developer_tools	ja	æ–°ã—ã„è¨€èªãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã™ã‚‹
+create sgml file	developer_tools	ja	SGMLãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ
+developer tools	common	ja	é–‹ç™ºè€…ç”¨ãƒ„ãƒ¼ãƒ«
+developer tools - preferences	developer_tools	ja	Developer tools - ãƒ¦ãƒ¼ã‚¶è¨­å®š
+developer_tools	common	ja	ç¿»è¨³ãƒ„ãƒ¼ãƒ«
+diary	developer_tools	ja	æ—¥èªŒ
 done	developer_tools	ja	done
-download	developer_tools	ja	¥À¥¦¥ó¥í¡¼¥É
-download the lang-file to be saved in the apps setup-dir	developer_tools	ja	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó¤Îsetup¥Ç¥£¥ì¥¯¥È¥ê¤ËÊİÂ¸¤¹¤ë¤¿¤á¤Ë¥À¥¦¥ó¥í¡¼¥É¤¹¤ë
-edit	developer_tools	ja	ÊÔ½¸
-installed applications	developer_tools	ja	¥¤¥ó¥¹¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤ë¥¢¥×¥ê¥±¡¼¥·¥ç¥ó
-language file management	developer_tools	ja	¸À¸ì¥Õ¥¡¥¤¥ë´ÉÍı
-list changelogs	developer_tools	ja	ÍúÎò°ìÍ÷
-load	developer_tools	ja	ÆÉ¤ß¹ş¤ß
-loading source langfile	developer_tools	ja	¸µ¤Î¸À¸ì¥Õ¥¡¥¤¥ëÆÉ¤ß¹ş¤ß
-loading target langfile	developer_tools	ja	ÂĞ¾İ¸À¸ì¥Õ¥¡¥¤¥ëÆÉ¤ß¹ş¤ß
-loads the selected lang-files, to be modified in the next steps	developer_tools	ja	¼¡¤Î¥¹¥Æ¥Ã¥×¤Ç½¤Àµ¤¹¤ë¤¿¤á¤ËÁªÂò¤µ¤ì¤¿lang-file¤òÆÉ¤ß¹ş¤à
-message	developer_tools	ja	¥á¥Ã¥»¡¼¥¸
-message_id in english	developer_tools	ja	¥á¥Ã¥»¡¼¥¸ID(±Ñ¸ì)
-no file	developer_tools	ja	¥Õ¥¡¥¤¥ë¤Ê¤·
+download	developer_tools	ja	ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+download the lang-file to be saved in the apps setup-dir	developer_tools	ja	ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®setupãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ä¿å­˜ã™ã‚‹ãŸã‚ã«ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+edit	developer_tools	ja	ç·¨é›†
+installed applications	developer_tools	ja	ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³
+language file management	developer_tools	ja	è¨€èªãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†
+list changelogs	developer_tools	ja	å±¥æ­´ä¸€è¦§
+load	developer_tools	ja	èª­ã¿è¾¼ã¿
+loading source langfile	developer_tools	ja	å…ƒã®è¨€èªãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
+loading target langfile	developer_tools	ja	å¯¾è±¡è¨€èªãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
+loads the selected lang-files, to be modified in the next steps	developer_tools	ja	æ¬¡ã®ã‚¹ãƒ†ãƒƒãƒ—ã§ä¿®æ­£ã™ã‚‹ãŸã‚ã«é¸æŠã•ã‚ŒãŸlang-fileã‚’èª­ã¿è¾¼ã‚€
+message	developer_tools	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+message_id in english	developer_tools	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ID(è‹±èª)
+no file	developer_tools	ja	ãƒ•ã‚¡ã‚¤ãƒ«ãªã—
 ok	developer_tools	ja	OK
-original	developer_tools	ja	¥ª¥ê¥¸¥Ê¥ë
-phrase in english	developer_tools	ja	Ê¸¸À(±Ñ¸ì)
-phrase in english (or empty if identical)	developer_tools	ja	±Ñ¸ì¤ÎÊ¸¸À(Æ±°ì¤Ê¤é¶õ)
-preferences	developer_tools	ja	¥æ¡¼¥¶ÀßÄê
-preferences have been updated	developer_tools	ja	¥æ¡¼¥¶ÀßÄê¤¬¹¹¿·¤µ¤ì¤Ş¤·¤¿
-project	developer_tools	ja	¥×¥í¥¸¥§¥¯¥È
-remove	developer_tools	ja	ºï½ü
-returns to the application list, not saved changes get lost !!!	developer_tools	ja	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó¤Î°ìÍ÷¤ËÌá¤ê¤Ş¤¹¡£ÊİÂ¸¤µ¤ì¤Æ¤¤¤Ê¤¤ÊÑ¹¹ÅÀ¤ÏÇË´ş¤µ¤ì¤Ş¤¹!!!
-revert	developer_tools	ja	¤ä¤êÄ¾¤·
-saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	ja	°Ê¹ß¤Î¥¹¥Æ¥Ã¥×¤Ç»È¤¦¤¿¤á¤ËÄÉ²Ã/ÊÑ¹¹¤·¤¿ËİÌõÊ¸¤òÆâÉô¥Ğ¥Ã¥Õ¥¡¤ËÊİÂ¸¤·¤Ş¤¹
-search changelogs	developer_tools	ja	ÍúÎò¸¡º÷
-search for missing phrase	developer_tools	ja	·çÍîÊ¸¸À¸¡º÷
-search new phrases	developer_tools	ja	¿·¤·¤¤Ê¸¸À¤ò¸¡º÷
-searches the source-code for phrases not in the actual source-lang-file	developer_tools	ja	source-lang-file¤ËÌµ¤¤Ê¸¸À¤ò¥½¡¼¥¹¥³¡¼¥É¤«¤é¸¡º÷
-select project	developer_tools	ja	¥×¥í¥¸¥§¥¯¥ÈÁªÂò
+original	developer_tools	ja	ã‚ªãƒªã‚¸ãƒŠãƒ«
+phrase in english	developer_tools	ja	æ–‡è¨€(è‹±èª)
+phrase in english (or empty if identical)	developer_tools	ja	è‹±èªã®æ–‡è¨€(åŒä¸€ãªã‚‰ç©º)
+preferences	developer_tools	ja	ãƒ¦ãƒ¼ã‚¶è¨­å®š
+preferences have been updated	developer_tools	ja	ãƒ¦ãƒ¼ã‚¶è¨­å®šãŒæ›´æ–°ã•ã‚Œã¾ã—ãŸ
+project	developer_tools	ja	ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆ
+remove	developer_tools	ja	å‰Šé™¤
+returns to the application list, not saved changes get lost !!!	developer_tools	ja	ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ä¸€è¦§ã«æˆ»ã‚Šã¾ã™ã€‚ä¿å­˜ã•ã‚Œã¦ã„ãªã„å¤‰æ›´ç‚¹ã¯ç ´æ£„ã•ã‚Œã¾ã™!!!
+revert	developer_tools	ja	ã‚„ã‚Šç›´ã—
+saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	ja	ä»¥é™ã®ã‚¹ãƒ†ãƒƒãƒ—ã§ä½¿ã†ãŸã‚ã«è¿½åŠ /å¤‰æ›´ã—ãŸç¿»è¨³æ–‡ã‚’å†…éƒ¨ãƒãƒƒãƒ•ã‚¡ã«ä¿å­˜ã—ã¾ã™
+search changelogs	developer_tools	ja	å±¥æ­´æ¤œç´¢
+search for missing phrase	developer_tools	ja	æ¬ è½æ–‡è¨€æ¤œç´¢
+search new phrases	developer_tools	ja	æ–°ã—ã„æ–‡è¨€ã‚’æ¤œç´¢
+searches the source-code for phrases not in the actual source-lang-file	developer_tools	ja	source-lang-fileã«ç„¡ã„æ–‡è¨€ã‚’ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‹ã‚‰æ¤œç´¢
+select project	developer_tools	ja	ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆé¸æŠ
 sf project tracker	developer_tools	ja	SF Project tracker
-sf project tracker preferences	preferences	ja	SF Project tracker ¥æ¡¼¥¶ÀßÄê
-source language	developer_tools	ja	¸µ¤Î¸À¸ì
+sf project tracker preferences	preferences	ja	SF Project tracker ãƒ¦ãƒ¼ã‚¶è¨­å®š
+source language	developer_tools	ja	å…ƒã®è¨€èª
 sourceforge project id	developer_tools	ja	Sourceforge project ID
 sourceforge project tracker	developer_tools	ja	Sourceforge project tracker
-sourceforge project tracker preferences	developer_tools	ja	Sourceforge project tracker ¥æ¡¼¥¶ÀßÄê
-step	developer_tools	ja	¥¹¥Æ¥Ã¥×
+sourceforge project tracker preferences	developer_tools	ja	Sourceforge project tracker ãƒ¦ãƒ¼ã‚¶è¨­å®š
+step	developer_tools	ja	ã‚¹ãƒ†ãƒƒãƒ—
 submit	developer_tools	ja	Submit
-target language	developer_tools	ja	ÂĞ¾İ¸À¸ì
+target language	developer_tools	ja	å¯¾è±¡è¨€èª
 title	developer_tools	ja	Title
 translate	developer_tools	ja	Translate
-translation	developer_tools	ja	ËİÌõ
-translation of phrase	developer_tools	ja	ËİÌõÊ¸¸À
-update	developer_tools	ja	ÄûÀµ
-update database	developer_tools	ja	¥Ç¡¼¥¿¥Ù¡¼¥¹¤Î¹¹¿·
-updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	ja	¥Ç¡¼¥¿¥Ù¡¼¥¹¤ÎÎ¾Êı¤Îlang-file¤ÎËİÌõ¤ò¹¹¿·¤·¤Ş¤¹¡£·ë²Ì¤ò¤¹¤°¤Ë³ÎÇ§¤Ç¤­¤Ş¤¹¡£
-version	developer_tools	ja	¥Ğ¡¼¥¸¥ç¥ó
+translation	developer_tools	ja	ç¿»è¨³
+translation of phrase	developer_tools	ja	ç¿»è¨³æ–‡è¨€
+update	developer_tools	ja	è¨‚æ­£
+update database	developer_tools	ja	ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æ›´æ–°
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	ja	ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®ä¸¡æ–¹ã®lang-fileã®ç¿»è¨³ã‚’æ›´æ–°ã—ã¾ã™ã€‚çµæœã‚’ã™ãã«ç¢ºèªã§ãã¾ã™ã€‚
+version	developer_tools	ja	ãƒãƒ¼ã‚¸ãƒ§ãƒ³
 write	developer_tools	ja	Write
-write the lang-file to the apps setup-dir	developer_tools	ja	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó¤Îsetup¥Ç¥£¥ì¥¯¥È¥ê¤Ëlang-file¤òÊİÂ¸¤¹¤ë
-write to lang table	developer_tools	ja	½ñ¤­¹ş¤ß
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	ja	¾å¤Î¹àÌÜ¤òÊÑ¹¹¤·¤¿¤é¡¢¼¡¤Î¥¹¥Æ¥Ã¥×¤Ë¿Ê¤àÁ°¤ËËè²ó[ÊİÂ¸]¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Ş¤¹!!!
-you must a version	developer_tools	ja	¥Ğ¡¼¥¸¥ç¥ó¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤
-you must enter a change	developer_tools	ja	ÊÑ¹¹ÆâÍÆ¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤
-you must select a project	developer_tools	ja	¥×¥í¥¸¥§¥¯¥È¤òÁªÂò¤·¤Æ²¼¤µ¤¤
-you need to set your preferences for this app	developer_tools	ja	¤³¤Î¥¢¥×¥ê¥±¡¼¥·¥ç¥ó¤Î¥æ¡¼¥¶ÀßÄê¤ò¹Ô¤¦É¬Í×¤¬¤¢¤ê¤Ş¤¹
+write the lang-file to the apps setup-dir	developer_tools	ja	ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®setupãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«lang-fileã‚’ä¿å­˜ã™ã‚‹
+write to lang table	developer_tools	ja	æ›¸ãè¾¼ã¿
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	ja	ä¸Šã®é …ç›®ã‚’å¤‰æ›´ã—ãŸã‚‰ã€æ¬¡ã®ã‚¹ãƒ†ãƒƒãƒ—ã«é€²ã‚€å‰ã«æ¯å›[ä¿å­˜]ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™!!!
+you must a version	developer_tools	ja	ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„
+you must enter a change	developer_tools	ja	å¤‰æ›´å†…å®¹ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„
+you must select a project	developer_tools	ja	ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’é¸æŠã—ã¦ä¸‹ã•ã„
+you need to set your preferences for this app	developer_tools	ja	ã“ã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ¦ãƒ¼ã‚¶è¨­å®šã‚’è¡Œã†å¿…è¦ãŒã‚ã‚Šã¾ã™

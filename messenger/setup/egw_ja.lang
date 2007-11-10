@@ -1,26 +1,26 @@
-compose	messenger	ja	ºîÀ®
-compose global message	admin	ja	¶¦ÄÌ¥á¥Ã¥»¡¼¥¸
-compose global message	messenger	ja	¶¦ÄÌ¥á¥Ã¥»¡¼¥¸
-compose message	messenger	ja	ºîÀ®
-delete selected	messenger	ja	ÁªÂò¥á¥Ã¥»¡¼¥¸¤òºï½ü
-forward	messenger	ja	Å¾Á÷
-forward a message	messenger	ja	Å¾Á÷
-forwarded	messenger	ja	Å¾Á÷ºÑ¤ß
-global message	messenger	ja	¶¦ÄÌ¥á¥Ã¥»¡¼¥¸
+compose	messenger	ja	ä½œæˆ
+compose global message	admin	ja	å…±é€šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+compose global message	messenger	ja	å…±é€šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+compose message	messenger	ja	ä½œæˆ
+delete selected	messenger	ja	é¸æŠãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‰Šé™¤
+forward	messenger	ja	è»¢é€
+forward a message	messenger	ja	è»¢é€
+forwarded	messenger	ja	è»¢é€æ¸ˆã¿
+global message	messenger	ja	å…±é€šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 inbox	messenger	ja	Inbox
-i can't find the username %1 on the system	messenger	ja	¥æ¡¼¥¶ %1 ¤¬¤¢¤ê¤Ş¤»¤ó
-message from	messenger	ja	Á÷¿®¼Ô
-messenger	common	ja	¥á¥Ã¥»¥ó¥¸¥ã¡¼
-new	messenger	ja	¿·µ¬
-read message	messenger	ja	ÆÉ¤à
-replied	messenger	ja	ÊÖ¿®ºÑ¤ß
-reply	messenger	ja	ÊÖ¿®
-reply to a message	messenger	ja	ÊÖ¿®
-send	messenger	ja	Á÷¿®
-send message to	messenger	ja	Á÷¿®Àè
-you didn't enter anything for the message	messenger	ja	¥á¥Ã¥»¡¼¥¸¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤
-you have %1 new message	common	ja	%1 ¤Ä¤Î¥á¥Ã¥»¡¼¥¸¤¬¤¢¤ê¤Ş¤¹
-you have %1 new messages	common	ja	%1 ¤Ä¤Î¥á¥Ã¥»¡¼¥¸¤¬¤¢¤ê¤Ş¤¹
-you have no messages	messenger	ja	¥á¥Ã¥»¡¼¥¸¤¬¤¢¤ê¤Ş¤»¤ó
-you must enter a subject	messenger	ja	·ïÌ¾¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤
-you must enter the username this message is for	messenger	ja	Á÷¿®Àè¤Î¥æ¡¼¥¶¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤
+i can't find the username %1 on the system	messenger	ja	ãƒ¦ãƒ¼ã‚¶ %1 ãŒã‚ã‚Šã¾ã›ã‚“
+message from	messenger	ja	é€ä¿¡è€…
+messenger	common	ja	ãƒ¡ãƒƒã‚»ãƒ³ã‚¸ãƒ£ãƒ¼
+new	messenger	ja	æ–°è¦
+read message	messenger	ja	èª­ã‚€
+replied	messenger	ja	è¿”ä¿¡æ¸ˆã¿
+reply	messenger	ja	è¿”ä¿¡
+reply to a message	messenger	ja	è¿”ä¿¡
+send	messenger	ja	é€ä¿¡
+send message to	messenger	ja	é€ä¿¡å…ˆ
+you didn't enter anything for the message	messenger	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„
+you have %1 new message	common	ja	%1 ã¤ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ã‚Šã¾ã™
+you have %1 new messages	common	ja	%1 ã¤ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ã‚Šã¾ã™
+you have no messages	messenger	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ã‚Šã¾ã›ã‚“
+you must enter a subject	messenger	ja	ä»¶åã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„
+you must enter the username this message is for	messenger	ja	é€ä¿¡å…ˆã®ãƒ¦ãƒ¼ã‚¶ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„

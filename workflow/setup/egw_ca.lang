@@ -1,5 +1,5 @@
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	ca	El directori /workflow no existeix i no s'ha pogut crear. Si us plau, demaneu al vostre administrador que comprovi la configuraciÛ global
-abort instance	workflow	ca	avortar inst‡ncia
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	ca	El directori /workflow no existeix i no s'ha pogut crear. Si us plau, demaneu al vostre administrador que comprovi la configuraci√≥ global
+abort instance	workflow	ca	avortar inst√†ncia
 aborted	workflow	ca	avortat
 act	workflow	ca	activitat
 act. status	workflow	ca	Estat de l'activitat
@@ -9,85 +9,85 @@ activities	workflow	ca	Activitats
 activities updated	workflow	ca	Activitats actualitzades
 activity	workflow	ca	activitat
 activity  status	workflow	ca	Estat de l'Activitat
-activity %1 is interactive but has no role assigned	workflow	ca	L'activitat %1 Ès interactiva perÚ no tÈ un paper assignat
-activity %1 is interactive so it must use the $instance->complete() method	workflow	ca	L'activitat %1 Ès interactiva, aixÌ que ha d'utilitzar el mËtode $instance->complete()
-activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	ca	L'activitat %1 no Ès interactiva ni autoencaminada perÚ no tÈ un paper assignat
-activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	ca	L'activitat %1 no Ès interactiva, per tant no ha d'utilitzar el mËtode $instance->complete()
-activity %1 is standalone and is using the $instance object	workflow	ca	L'activitat %1 Ès independent i est‡ utilitzant l'objecte $instance
-activity %1 is standalone but has transitions	workflow	ca	L'activitat %1 Ès independent perÚ tÈ transicions
-activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	ca	L'activitat %1 Ès un commutador, aixÌ que s'ha d'utilitzar el mËtode $instance->setNextActivity($actname)
+activity %1 is interactive but has no role assigned	workflow	ca	L'activitat %1 √©s interactiva per√≤ no t√© un paper assignat
+activity %1 is interactive so it must use the $instance->complete() method	workflow	ca	L'activitat %1 √©s interactiva, aix√≠ que ha d'utilitzar el m√®tode $instance->complete()
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	ca	L'activitat %1 no √©s interactiva ni autoencaminada per√≤ no t√© un paper assignat
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	ca	L'activitat %1 no √©s interactiva, per tant no ha d'utilitzar el m√®tode $instance->complete()
+activity %1 is standalone and is using the $instance object	workflow	ca	L'activitat %1 √©s independent i est√† utilitzant l'objecte $instance
+activity %1 is standalone but has transitions	workflow	ca	L'activitat %1 √©s independent per√≤ t√© transicions
+activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	ca	L'activitat %1 √©s un commutador, aix√≠ que s'ha d'utilitzar el m√®tode $instance->setNextActivity($actname)
 activity completed	workflow	ca	Activitat completada
 activity name already exists	workflow	ca	El nom de l'activitat ja existeix
 activity role removed	workflow	ca	Paper de l'activitat eliminat
 activity saved	workflow	ca	L'activitat s'ha desat
-add a transition	workflow	ca	Afegir una transiciÛ
+add a transition	workflow	ca	Afegir una transici√≥
 add new	workflow	ca	afegir nou
-add or edit a process	workflow	ca	Afegir o editar un procÈs
+add or edit a process	workflow	ca	Afegir o editar un proc√©s
 add or edit an activity	workflow	ca	Afegir o editar una activitat
 add property	workflow	ca	Afegir propietat
 add role	workflow	ca	Afegir paper
-add role to process	workflow	ca	Afegir paper al procÈs
+add role to process	workflow	ca	Afegir paper al proc√©s
 add transitions	workflow	ca	Afegir transicions
 add transitions from	workflow	ca	Afegir transicions de
 add transitions to	workflow	ca	Afegir transicions a
-admin export	workflow	ca	ExportaciÛ administrativa
-admin instance	workflow	ca	Inst‡ncia administrativa
-admin process activities	workflow	ca	Activitats del procÈs administratiu
-admin process roles	workflow	ca	Papers del procÈs administratiu
+admin export	workflow	ca	Exportaci√≥ administrativa
+admin instance	workflow	ca	Inst√†ncia administrativa
+admin process activities	workflow	ca	Activitats del proc√©s administratiu
+admin process roles	workflow	ca	Papers del proc√©s administratiu
 admin processes	workflow	ca	Processos administratius
-admin processes sources	workflow	ca	OrÌgens dels processos administratius
+admin processes sources	workflow	ca	Or√≠gens dels processos administratius
 all	workflow	ca	Tots
 auto routed	workflow	ca	Autoencaminat
-automatic	workflow	ca	Autom‡tic
-base directory does not exist, please ask adminstrator to check the global configuration	common	ca	El directori base no existeix, si us plau, demaneu a l'administrador que comprovi la configuraciÛ global
-being run	workflow	ca	s'est‡ executant
-cannot add transition. only split activities can have more than one outbound transition	workflow	ca	No es pot afegir la transiciÛ. NomÈs les activitats separades poden tenir mÈs d'una transiciÛ de sortida.
-circular reference found. some activity has a transition leading to itself	workflow	ca	S'ha trobat una referËncia circular. Algunes activitats tenen una transiciÛ principal cap a elles mateixes
+automatic	workflow	ca	Autom√†tic
+base directory does not exist, please ask adminstrator to check the global configuration	common	ca	El directori base no existeix, si us plau, demaneu a l'administrador que comprovi la configuraci√≥ global
+being run	workflow	ca	s'est√† executant
+cannot add transition. only split activities can have more than one outbound transition	workflow	ca	No es pot afegir la transici√≥. Nom√©s les activitats separades poden tenir m√©s d'una transici√≥ de sortida.
+circular reference found. some activity has a transition leading to itself	workflow	ca	S'ha trobat una refer√®ncia circular. Algunes activitats tenen una transici√≥ principal cap a elles mateixes
 code	workflow	ca	codi
 complete	workflow	ca	Complet
 completed	workflow	ca	completat
-couldn't add transition	workflow	ca	No s'ha pogut afegir la transiciÛ
+couldn't add transition	workflow	ca	No s'ha pogut afegir la transici√≥
 create	workflow	ca	crear
 created	workflow	ca	Creada
-delete selected	workflow	ca	Esborrar la selecciÛ
+delete selected	workflow	ca	Esborrar la selecci√≥
 deletion successful	workflow	ca	Esborrat correctament
 delition successful	workflow	ca	Esborrat correctament
-description	workflow	ca	DescripciÛ
+description	workflow	ca	Descripci√≥
 don't move	workflow	ca	No moure
-duration	workflow	ca	DuraciÛ
+duration	workflow	ca	Duraci√≥
 end	workflow	ca	fi
 end activity is not reachable from start activity	workflow	ca	No es pot arribar a l'activitat final des de l'activitat inicial
-exception instance	workflow	ca	inst‡ncia d'excepciÛ
+exception instance	workflow	ca	inst√†ncia d'excepci√≥
 exceptions	workflow	ca	excepcions
 export	workflow	ca	Exportar
-export a process	workflow	ca	Exportar un procÈs
+export a process	workflow	ca	Exportar un proc√©s
 export file	workflow	ca	Exportar Fitxer
-fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	ca	Error fatal: l'activitat seg¸ent no coincideix amb cap candidata dins l'activitat de canvi d'encaminament autom‡tic
-fatal error: non-deterministic decision for autorouting activity	workflow	ca	Error fatal: decisiÛ no determinÌstica per a l'activitat d'encaminament autom‡tic
+fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	ca	Error fatal: l'activitat seg√ºent no coincideix amb cap candidata dins l'activitat de canvi d'encaminament autom√†tic
+fatal error: non-deterministic decision for autorouting activity	workflow	ca	Error fatal: decisi√≥ no determin√≠stica per a l'activitat d'encaminament autom√†tic
 fatal error: setting next activity to an unexisting activity	workflow	ca	Error fatal: se vol enrutar la propera activitat cap a una activitat inexistent
-fatal error: trying to send an instance to an activity but no transition found	workflow	ca	Error fatal: intentant enviar una inst‡ncia a una activitat, perÚ no s'ha trobat cap transiciÛ
+fatal error: trying to send an instance to an activity but no transition found	workflow	ca	Error fatal: intentant enviar una inst√†ncia a una activitat, per√≤ no s'ha trobat cap transici√≥
 filter	workflow	ca	Filtre
 from	workflow	ca	De
-get property	workflow	ca	ObtÈ propietat
-grab instance	workflow	ca	agafar inst‡ncia
-graph	workflow	ca	Gr‡fic
+get property	workflow	ca	Obt√© propietat
+grab instance	workflow	ca	agafar inst√†ncia
+graph	workflow	ca	Gr√†fic
 group	workflow	ca	Grup
 id	workflow	ca	Id
 if:setnextact	workflow	ca	Si:EstableixProperaActivitat
 inactive	workflow	ca	Inactiu
-inst. status	workflow	ca	Estat de la inst‡ncia
-instance	workflow	ca	Inst‡ncia
-instance properties	workflow	ca	Propietats de la inst‡ncia
-instance: %1 (process: %2)	workflow	ca	Inst‡ncia: %1 (ProcÈs: %2)
-instances	workflow	ca	Inst‡ncies
+inst. status	workflow	ca	Estat de la inst√†ncia
+instance	workflow	ca	Inst√†ncia
+instance properties	workflow	ca	Propietats de la inst√†ncia
+instance: %1 (process: %2)	workflow	ca	Inst√†ncia: %1 (Proc√©s: %2)
+instances	workflow	ca	Inst√†ncies
 interactive	workflow	ca	Interactiva
 interactivity	workflow	ca	Interactivitat
-invalid	workflow	ca	inv‡lid
-invalid process	workflow	ca	ProcÈs inv‡lid
-is active	workflow	ca	est‡ actiu
+invalid	workflow	ca	inv√†lid
+invalid process	workflow	ca	Proc√©s inv√†lid
+is active	workflow	ca	est√† actiu
 join	workflow	ca	ajuntar
 list of activities	workflow	ca	Llista d'activitats
-list of instances	workflow	ca	Llista d'inst‡ncies
+list of instances	workflow	ca	Llista d'inst√†ncies
 list of mappings	workflow	ca	Llista de mapatges
 list of processes	workflow	ca	Llista de processos
 list of processes (%1)	workflow	ca	Llista de processos (%1)
@@ -98,7 +98,7 @@ map	workflow	ca	mapa
 map users/groups to roles	workflow	ca	Mapar usuaris/grups a papers
 mappings deleted	workflow	ca	Mapatges esborrats
 monitor activities	workflow	ca	Monitorar activitats
-monitor instances	workflow	ca	Monitorar inst‡ncies
+monitor instances	workflow	ca	Monitorar inst√†ncies
 monitor processes	workflow	ca	Monitorar processos
 monitor work items	workflow	ca	Monitorar elements de treball
 name	workflow	ca	Nom
@@ -107,37 +107,37 @@ new major	workflow	ca	Nou major
 new mapping added	workflow	ca	S'ha afegit un nou mapatge
 new mayor	workflow	ca	Nou major
 new minor	workflow	ca	Nou menor
-new transition added	workflow	ca	S'ha afegit una nova transiciÛ
+new transition added	workflow	ca	S'ha afegit una nova transici√≥
 no activity indicated	workflow	ca	No s'ha indicat una activitat
-no instance indicated	workflow	ca	No s'ha indicat una inst‡ncia
-no process indicated	workflow	ca	No s'ha indicat cap procÈs
+no instance indicated	workflow	ca	No s'ha indicat una inst√†ncia
+no process indicated	workflow	ca	No s'ha indicat cap proc√©s
 no properties defined	workflow	ca	No s'han definit propietats
 no roles	workflow	ca	No hi ha papers
 no roles asociated with this activity	workflow	ca	No hi ha papers associats amb aquesta activitat
 no work item indicated	workflow	ca	No s'ha indicat cap element de treball
-or import a process	workflow	ca	O importar un procÈs
+or import a process	workflow	ca	O importar un proc√©s
 owner	workflow	ca	Propietari
-process	workflow	ca	ProcÈs
-process %d has been activated	workflow	ca	El procÈs %d ha estat activat
-process %d has been deactivated	workflow	ca	El procÈs %d ha estat desactivat
-process %s %s imported	workflow	ca	El procÈs %s %s ha estat importat
-process %s has been created	workflow	ca	El procÈs %s ha estat creat
-process %s has been updated	workflow	ca	El procÈs %s ha estat actualitzat
-process %s removed	workflow	ca	El procÈs %s ha estat eliminat
+process	workflow	ca	Proc√©s
+process %d has been activated	workflow	ca	El proc√©s %d ha estat activat
+process %d has been deactivated	workflow	ca	El proc√©s %d ha estat desactivat
+process %s %s imported	workflow	ca	El proc√©s %s %s ha estat importat
+process %s has been created	workflow	ca	El proc√©s %s ha estat creat
+process %s has been updated	workflow	ca	El proc√©s %s ha estat actualitzat
+process %s removed	workflow	ca	El proc√©s %s ha estat eliminat
 process activities	workflow	ca	Processar activitats
-process does not have a start activity	workflow	ca	El procÈs no tÈ una activitat inicial
-process does not have exactly one end activity	workflow	ca	El procÈs no tÈ exactament una activitat final
-process form	workflow	ca	Formulari del procÈs
-process name	workflow	ca	Nom del ProcÈs
-process name already exists	workflow	ca	El nom del procÈs ja existeix
+process does not have a start activity	workflow	ca	El proc√©s no t√© una activitat inicial
+process does not have exactly one end activity	workflow	ca	El proc√©s no t√© exactament una activitat final
+process form	workflow	ca	Formulari del proc√©s
+process name	workflow	ca	Nom del Proc√©s
+process name already exists	workflow	ca	El nom del proc√©s ja existeix
 process roles	workflow	ca	Processar papers
 process transitions	workflow	ca	Processar transicions
 processes	workflow	ca	Processos
 properties	workflow	ca	Propietats
 property	workflow	ca	Propietat
-release instance	workflow	ca	alliberar inst‡ncia
-role %1 is not mapped	workflow	ca	El paper %1 no est‡ mapat
-role added to process	workflow	ca	Paper afegit al procÈs
+release instance	workflow	ca	alliberar inst√†ncia
+role %1 is not mapped	workflow	ca	El paper %1 no est√† mapat
+role added to process	workflow	ca	Paper afegit al proc√©s
 role saved	workflow	ca	Paper desat
 roles	workflow	ca	Papers
 roles assigned to this activity	workflow	ca	Papers assignats a aquesta activitat
@@ -145,12 +145,12 @@ roles deleted	workflow	ca	Papers esborrats
 routing	workflow	ca	Encaminament
 run	workflow	ca	executar
 run activity	workflow	ca	executar activitat
-run instance	workflow	ca	executar inst‡ncia
+run instance	workflow	ca	executar inst√†ncia
 running	workflow	ca	executant
 running activity	workflow	ca	Executant activitat
 select source	workflow	ca	selecciona font
 send all to	workflow	ca	Envia'ls tots a
-send instance	workflow	ca	envia inst‡ncia
+send instance	workflow	ca	envia inst√†ncia
 set next act	workflow	ca	Estableix Propera activitat
 set next user	workflow	ca	Estableix proper usuari
 set property	workflow	ca	Estableix propietat
@@ -167,16 +167,16 @@ stop	workflow	ca	atura
 switch	workflow	ca	commutador
 switch construct	workflow	ca	Constructor del commutador
 template	workflow	ca	plantilla
-the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	ca	El directori /workflow no existeix i no es pot crear. Si us plau, demaneu al vostre administrador que comprovi la configuraciÛ global
-the following items must be corrected to be able to activate this process	workflow	ca	S'han de corregir els seg¸ents elements per poder activar aquest procÈs
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	ca	El directori /workflow no existeix i no es pot crear. Si us plau, demaneu al vostre administrador que comprovi la configuraci√≥ global
+the following items must be corrected to be able to activate this process	workflow	ca	S'han de corregir els seg√ºents elements per poder activar aquest proc√©s
 there are no activities available	workflow	ca	No hi ha activitats disponibles
-there are no instances available	workflow	ca	No hi ha inst‡ncies disponibles
-there are no mappings defined for this process	workflow	ca	No hi ha mapatges definits per aquest procÈs
+there are no instances available	workflow	ca	No hi ha inst√†ncies disponibles
+there are no mappings defined for this process	workflow	ca	No hi ha mapatges definits per aquest proc√©s
 there are no processes	workflow	ca	No hi ha processos
 there are no processes available	workflow	ca	No hi ha processos disponibles
 there are no processes defined	workflow	ca	No hi ha processos definits
 there are no properties available	workflow	ca	No hi ha propietats disponibles
-there are no roles defined for this process	workflow	ca	No hi ha papers definits per a aquest procÈs
+there are no roles defined for this process	workflow	ca	No hi ha papers definits per a aquest proc√©s
 there are no transitions defined	workflow	ca	No hi ha transicions definides
 there are no user activites available	workflow	ca	No hi ha activitats d'usuari disponibles
 there are no workitems available	workflow	ca	No hi ha elements de treball disponibles
@@ -187,15 +187,15 @@ update	workflow	ca	actualitza
 upload file	workflow	ca	Penja fitxer
 user	workflow	ca	Usuari
 user activities	workflow	ca	Activitats de l'usuari
-user instances	workflow	ca	Inst‡ncies de l'usuari
+user instances	workflow	ca	Inst√†ncies de l'usuari
 user processes	workflow	ca	Processos de l'usuari
 user/group	workflow	ca	Usuari/Grup
 users/groups	workflow	ca	Usuaris/Grups
-valid	workflow	ca	V‡lid
-valid process	workflow	ca	ProcÈs v‡lid
+valid	workflow	ca	V√†lid
+valid process	workflow	ca	Proc√©s v√†lid
 value	workflow	ca	Valor
-version	workflow	ca	VersiÛ
+version	workflow	ca	Versi√≥
 workflow	common	ca	Flux de treball
-workitem information	workflow	ca	InformaciÛ de l'element de treball
+workitem information	workflow	ca	Informaci√≥ de l'element de treball
 workitems	workflow	ca	Elements de treball
-you have not permission to execute this activity	workflow	ca	No teniu permÌs per executar aquesta activitat
+you have not permission to execute this activity	workflow	ca	No teniu perm√≠s per executar aquesta activitat

@@ -1,15 +1,15 @@
 are you sure you want to delete this news site ?	headlines	sv	Vill du verkligen radera sajten?
 base url	headlines	sv	Bas URL
 basic	headlines	sv	Grund
-choose layout	headlines	sv	Välj layout
-color	headlines	sv	Färg
+choose layout	headlines	sv	VÃ¤lj layout
+color	headlines	sv	FÃ¤rg
 create new headline	headlines	sv	Skapa rubrik
 current headlines in cache	headlines	sv	Aktuella rubriker i cachen
 display	headlines	sv	Namn
 edit headline sites	headlines	sv	Redigera nyhetssajter
 edit headlines shown by default	headlines	sv	Redigera standard rubriker
-grab new news sites	common	sv	Hämta fler nyhetssajter
-gray	headlines	sv	Grå
+grab new news sites	common	sv	HÃ¤mta fler nyhetssajter
+gray	headlines	sv	GrÃ¥
 headline preferences	common	sv	Rubrik alternativ
 headline site management	common	sv	Sajt hantering
 headline sites	headlines	sv	Rubriksajter
@@ -25,17 +25,17 @@ news file	headlines	sv	Nyhetsfil
 news headlines	common	sv	Nyhets rubriker
 news type	headlines	sv	Typ
 no headlines found	headlines	sv	Hittade inga rubriker
-other preferences	preferences	sv	Övriga inställningar
+other preferences	preferences	sv	Ã–vriga instÃ¤llningar
 reload news sites	headlines	sv	Uppdatera nyhetssajter
-reset	headlines	sv	Återställ
+reset	headlines	sv	Ã…terstÃ¤ll
 sample	headlines	sv	Exempel
-select headline news sites	headlines	sv	Välj nyhetssajter
-select headlines to display	common	sv	Välj nyhetersajter
-select layout	common	sv	Välj layout
-show headlines on homepage	headlines	sv	Visa rubriker på Startsidan
+select headline news sites	headlines	sv	VÃ¤lj nyhetssajter
+select headlines to display	common	sv	VÃ¤lj nyhetersajter
+select layout	common	sv	VÃ¤lj layout
+show headlines on homepage	headlines	sv	Visa rubriker pÃ¥ Startsidan
 site	headlines	sv	Sajt
 that site has already been entered	headlines	sv	Sajten finns redan
-unable to retrieve links	headlines	sv	Kunde inte hämta länkar
+unable to retrieve links	headlines	sv	Kunde inte hÃ¤mta lÃ¤nkar
 update headline	headlines	sv	Redigera
 view headline	headlines	sv	Sammanfattning
 you can only enter numbers for listings display	headlines	sv	Ange i nummer antal visade rubriker

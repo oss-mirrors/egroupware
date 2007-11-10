@@ -1,94 +1,94 @@
-(no subject)	felamimail	ru	(без темы)
-(unknown sender)	felamimail	ru	(неизвестный отправитель)
-activate	felamimail	ru	Активировать
-activate script	felamimail	ru	Активировать скрипт
-add acl	felamimail	ru	добавить ACL
-add address	felamimail	ru	Добавить адрес
-add rule	felamimail	ru	Добавить правило
-add script	felamimail	ru	Добавить скрипт
-add to %1	felamimail	ru	Добавить в %1
-add to address book	felamimail	ru	добавить в адресную книгу
-add to addressbook	felamimail	ru	добавить в адресную книгу
-adding file to message. please wait!	felamimail	ru	Добавление файла в сообщение.ПОжалуйста подождите.
-additional info	felamimail	ru	Добавочная информация.
-address book	felamimail	ru	Адресная книга
-address book search	felamimail	ru	Поиск по адресной книге
-after message body	felamimail	ru	После основного сообщения
-all address books	felamimail	ru	Все адресные книги
-all folders	felamimail	ru	Все папки
-all of	felamimail	ru	все из
-allow images from external sources in html emails	felamimail	ru	Разрешать изображения из внешних источников в письмах формата HTML
-allways a new window	felamimail	ru	всегда новое окно
-always show html emails	felamimail	ru	Всегда показывать письма формата HTML
-and	felamimail	ru	и
-any of	felamimail	ru	любой из
-any status	felamimail	ru	любое состояние
-anyone	felamimail	ru	хоть один
-as a subfolder of	felamimail	ru	как подпапка
-attachments	felamimail	ru	Вложения
-authentication required	felamimail	ru	требуется идентификация
-auto refresh folder list	felamimail	ru	Автообновление списка папок
-back to folder	felamimail	ru	Обратно в папку
-bad login name or password.	felamimail	ru	Неверное имя пользователя или пароль
-bad request: %s	felamimail	ru	Неверный запрос: %s
-change folder	felamimail	ru	Сменить папку
-clear search	felamimail	ru	очистить поиск
-close all	felamimail	ru	закрыть все
-close this page	felamimail	ru	закрыть эту страницу
-close window	felamimail	ru	Закрыть окно
-color	felamimail	ru	Цвет
-compose	felamimail	ru	Новое письмо
-compress folder	felamimail	ru	Сжать папку
-condition	felamimail	ru	состояние
-configuration	felamimail	ru	Конфигурация
-connection dropped by imap server.	felamimail	ru	Соединение разорвано IMAP сервером
-contains	felamimail	ru	содержат
-create	felamimail	ru	создать
-create folder	felamimail	ru	Создать папку
-create subfolder	felamimail	ru	Создать подпапку
-create trash	felamimail	ru	Создать мусорный ящик
-created folder successfully!	felamimail	ru	Папка успешно создана
-dark blue	felamimail	ru	Темно-синий
-dark cyan	felamimail	ru	Темно-голубой
-dark gray	felamimail	ru	Темно-серый
-dark green	felamimail	ru	Темно-зеленый
-dark magenta	felamimail	ru	Темно-малиновый
-dark yellow	felamimail	ru	Темно-желтый
-date(newest first)	felamimail	ru	Дата (новые - первыми)
-date(oldest first)	felamimail	ru	Дата (старые - первыми)
-days	felamimail	ru	дни
-delete all	felamimail	ru	стереть все
-deleted	felamimail	ru	стерто
-flagged	felamimail	ru	отмечено флажком
-manage folders	common	ru	Управление папками
-manage signatures	felamimail	ru	Управление подписями
-mark as deleted	felamimail	ru	Отметить как стертое
-mark messages as	felamimail	ru	Отметить выбранное сообщение как
-mark selected as flagged	felamimail	ru	Отметить флажком
-mark selected as read	felamimail	ru	Отметить как прочтенное
-mark selected as unflagged	felamimail	ru	Снять флажок
-mark selected as unread	felamimail	ru	Отметить как не прочтенное
-match	felamimail	ru	Совпадает
-matches	felamimail	ru	совпадения
-quicksearch	felamimail	ru	Быстрый поиск
-read	felamimail	ru	прочитано
-replied	felamimail	ru	был ответ
-reply	felamimail	ru	Ответить
-reply all	felamimail	ru	Ответить всем
-send	felamimail	ru	Отправить
-send a reject message	felamimail	ru	Отправить отказ
-sent folder	felamimail	ru	Отправленные
-show header	felamimail	ru	Показать заголовок
-size	felamimail	ru	Размер
-subject	felamimail	ru	Тема
-sun	felamimail	ru	Вскр
-text only	felamimail	ru	Только текст
-then	felamimail	ru	ТОГДА
-this folder is empty	felamimail	ru	ЭТА ПАПКА ПУСТА
-use smtp auth	admin	ru	Использовать авторизацию по SMTP
-validate certificate	felamimail	ru	проверить сертификат
-view message	felamimail	ru	Просмотреть сообщение
-viewing message	felamimail	ru	Просмотр сообщения
-viewing messages	felamimail	ru	Просмотр сообщений
-writing	felamimail	ru	записываю
-wrote	felamimail	ru	записано
+(no subject)	felamimail	ru	(п╠п╣п╥ я┌п╣п╪я▀)
+(unknown sender)	felamimail	ru	(п╫п╣п╦п╥п╡п╣я│я┌п╫я▀п╧ п╬я┌п©я─п╟п╡п╦я┌п╣п╩я▄)
+activate	felamimail	ru	п░п╨я┌п╦п╡п╦я─п╬п╡п╟я┌я▄
+activate script	felamimail	ru	п░п╨я┌п╦п╡п╦я─п╬п╡п╟я┌я▄ я│п╨я─п╦п©я┌
+add acl	felamimail	ru	п╢п╬п╠п╟п╡п╦я┌я▄ ACL
+add address	felamimail	ru	п■п╬п╠п╟п╡п╦я┌я▄ п╟п╢я─п╣я│
+add rule	felamimail	ru	п■п╬п╠п╟п╡п╦я┌я▄ п©я─п╟п╡п╦п╩п╬
+add script	felamimail	ru	п■п╬п╠п╟п╡п╦я┌я▄ я│п╨я─п╦п©я┌
+add to %1	felamimail	ru	п■п╬п╠п╟п╡п╦я┌я▄ п╡ %1
+add to address book	felamimail	ru	п╢п╬п╠п╟п╡п╦я┌я▄ п╡ п╟п╢я─п╣я│п╫я┐я▌ п╨п╫п╦пЁя┐
+add to addressbook	felamimail	ru	п╢п╬п╠п╟п╡п╦я┌я▄ п╡ п╟п╢я─п╣я│п╫я┐я▌ п╨п╫п╦пЁя┐
+adding file to message. please wait!	felamimail	ru	п■п╬п╠п╟п╡п╩п╣п╫п╦п╣ я└п╟п╧п╩п╟ п╡ я│п╬п╬п╠я┴п╣п╫п╦п╣.п÷п·п╤п╟п╩я┐п╧я│я┌п╟ п©п╬п╢п╬п╤п╢п╦я┌п╣.
+additional info	felamimail	ru	п■п╬п╠п╟п╡п╬я┤п╫п╟я▐ п╦п╫я└п╬я─п╪п╟я├п╦я▐.
+address book	felamimail	ru	п░п╢я─п╣я│п╫п╟я▐ п╨п╫п╦пЁп╟
+address book search	felamimail	ru	п÷п╬п╦я│п╨ п©п╬ п╟п╢я─п╣я│п╫п╬п╧ п╨п╫п╦пЁп╣
+after message body	felamimail	ru	п÷п╬я│п╩п╣ п╬я│п╫п╬п╡п╫п╬пЁп╬ я│п╬п╬п╠я┴п╣п╫п╦я▐
+all address books	felamimail	ru	п▓я│п╣ п╟п╢я─п╣я│п╫я▀п╣ п╨п╫п╦пЁп╦
+all folders	felamimail	ru	п▓я│п╣ п©п╟п©п╨п╦
+all of	felamimail	ru	п╡я│п╣ п╦п╥
+allow images from external sources in html emails	felamimail	ru	п═п╟п╥я─п╣я┬п╟я┌я▄ п╦п╥п╬п╠я─п╟п╤п╣п╫п╦я▐ п╦п╥ п╡п╫п╣я┬п╫п╦я┘ п╦я│я┌п╬я┤п╫п╦п╨п╬п╡ п╡ п©п╦я│я▄п╪п╟я┘ я└п╬я─п╪п╟я┌п╟ HTML
+allways a new window	felamimail	ru	п╡я│п╣пЁп╢п╟ п╫п╬п╡п╬п╣ п╬п╨п╫п╬
+always show html emails	felamimail	ru	п▓я│п╣пЁп╢п╟ п©п╬п╨п╟п╥я▀п╡п╟я┌я▄ п©п╦я│я▄п╪п╟ я└п╬я─п╪п╟я┌п╟ HTML
+and	felamimail	ru	п╦
+any of	felamimail	ru	п╩я▌п╠п╬п╧ п╦п╥
+any status	felamimail	ru	п╩я▌п╠п╬п╣ я│п╬я│я┌п╬я▐п╫п╦п╣
+anyone	felamimail	ru	я┘п╬я┌я▄ п╬п╢п╦п╫
+as a subfolder of	felamimail	ru	п╨п╟п╨ п©п╬п╢п©п╟п©п╨п╟
+attachments	felamimail	ru	п▓п╩п╬п╤п╣п╫п╦я▐
+authentication required	felamimail	ru	я┌я─п╣п╠я┐п╣я┌я│я▐ п╦п╢п╣п╫я┌п╦я└п╦п╨п╟я├п╦я▐
+auto refresh folder list	felamimail	ru	п░п╡я┌п╬п╬п╠п╫п╬п╡п╩п╣п╫п╦п╣ я│п©п╦я│п╨п╟ п©п╟п©п╬п╨
+back to folder	felamimail	ru	п·п╠я─п╟я┌п╫п╬ п╡ п©п╟п©п╨я┐
+bad login name or password.	felamimail	ru	п²п╣п╡п╣я─п╫п╬п╣ п╦п╪я▐ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐ п╦п╩п╦ п©п╟я─п╬п╩я▄
+bad request: %s	felamimail	ru	п²п╣п╡п╣я─п╫я▀п╧ п╥п╟п©я─п╬я│: %s
+change folder	felamimail	ru	п║п╪п╣п╫п╦я┌я▄ п©п╟п©п╨я┐
+clear search	felamimail	ru	п╬я┤п╦я│я┌п╦я┌я▄ п©п╬п╦я│п╨
+close all	felamimail	ru	п╥п╟п╨я─я▀я┌я▄ п╡я│п╣
+close this page	felamimail	ru	п╥п╟п╨я─я▀я┌я▄ я█я┌я┐ я│я┌я─п╟п╫п╦я├я┐
+close window	felamimail	ru	п≈п╟п╨я─я▀я┌я▄ п╬п╨п╫п╬
+color	felamimail	ru	п╕п╡п╣я┌
+compose	felamimail	ru	п²п╬п╡п╬п╣ п©п╦я│я▄п╪п╬
+compress folder	felamimail	ru	п║п╤п╟я┌я▄ п©п╟п©п╨я┐
+condition	felamimail	ru	я│п╬я│я┌п╬я▐п╫п╦п╣
+configuration	felamimail	ru	п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐
+connection dropped by imap server.	felamimail	ru	п║п╬п╣п╢п╦п╫п╣п╫п╦п╣ я─п╟п╥п╬я─п╡п╟п╫п╬ IMAP я│п╣я─п╡п╣я─п╬п╪
+contains	felamimail	ru	я│п╬п╢п╣я─п╤п╟я┌
+create	felamimail	ru	я│п╬п╥п╢п╟я┌я▄
+create folder	felamimail	ru	п║п╬п╥п╢п╟я┌я▄ п©п╟п©п╨я┐
+create subfolder	felamimail	ru	п║п╬п╥п╢п╟я┌я▄ п©п╬п╢п©п╟п©п╨я┐
+create trash	felamimail	ru	п║п╬п╥п╢п╟я┌я▄ п╪я┐я│п╬я─п╫я▀п╧ я▐я┴п╦п╨
+created folder successfully!	felamimail	ru	п÷п╟п©п╨п╟ я┐я│п©п╣я┬п╫п╬ я│п╬п╥п╢п╟п╫п╟
+dark blue	felamimail	ru	п╒п╣п╪п╫п╬-я│п╦п╫п╦п╧
+dark cyan	felamimail	ru	п╒п╣п╪п╫п╬-пЁп╬п╩я┐п╠п╬п╧
+dark gray	felamimail	ru	п╒п╣п╪п╫п╬-я│п╣я─я▀п╧
+dark green	felamimail	ru	п╒п╣п╪п╫п╬-п╥п╣п╩п╣п╫я▀п╧
+dark magenta	felamimail	ru	п╒п╣п╪п╫п╬-п╪п╟п╩п╦п╫п╬п╡я▀п╧
+dark yellow	felamimail	ru	п╒п╣п╪п╫п╬-п╤п╣п╩я┌я▀п╧
+date(newest first)	felamimail	ru	п■п╟я┌п╟ (п╫п╬п╡я▀п╣ - п©п╣я─п╡я▀п╪п╦)
+date(oldest first)	felamimail	ru	п■п╟я┌п╟ (я│я┌п╟я─я▀п╣ - п©п╣я─п╡я▀п╪п╦)
+days	felamimail	ru	п╢п╫п╦
+delete all	felamimail	ru	я│я┌п╣я─п╣я┌я▄ п╡я│п╣
+deleted	felamimail	ru	я│я┌п╣я─я┌п╬
+flagged	felamimail	ru	п╬я┌п╪п╣я┤п╣п╫п╬ я└п╩п╟п╤п╨п╬п╪
+manage folders	common	ru	пёп©я─п╟п╡п╩п╣п╫п╦п╣ п©п╟п©п╨п╟п╪п╦
+manage signatures	felamimail	ru	пёп©я─п╟п╡п╩п╣п╫п╦п╣ п©п╬п╢п©п╦я│я▐п╪п╦
+mark as deleted	felamimail	ru	п·я┌п╪п╣я┌п╦я┌я▄ п╨п╟п╨ я│я┌п╣я─я┌п╬п╣
+mark messages as	felamimail	ru	п·я┌п╪п╣я┌п╦я┌я▄ п╡я▀п╠я─п╟п╫п╫п╬п╣ я│п╬п╬п╠я┴п╣п╫п╦п╣ п╨п╟п╨
+mark selected as flagged	felamimail	ru	п·я┌п╪п╣я┌п╦я┌я▄ я└п╩п╟п╤п╨п╬п╪
+mark selected as read	felamimail	ru	п·я┌п╪п╣я┌п╦я┌я▄ п╨п╟п╨ п©я─п╬я┤я┌п╣п╫п╫п╬п╣
+mark selected as unflagged	felamimail	ru	п║п╫я▐я┌я▄ я└п╩п╟п╤п╬п╨
+mark selected as unread	felamimail	ru	п·я┌п╪п╣я┌п╦я┌я▄ п╨п╟п╨ п╫п╣ п©я─п╬я┤я┌п╣п╫п╫п╬п╣
+match	felamimail	ru	п║п╬п╡п©п╟п╢п╟п╣я┌
+matches	felamimail	ru	я│п╬п╡п©п╟п╢п╣п╫п╦я▐
+quicksearch	felamimail	ru	п▒я▀я│я┌я─я▀п╧ п©п╬п╦я│п╨
+read	felamimail	ru	п©я─п╬я┤п╦я┌п╟п╫п╬
+replied	felamimail	ru	п╠я▀п╩ п╬я┌п╡п╣я┌
+reply	felamimail	ru	п·я┌п╡п╣я┌п╦я┌я▄
+reply all	felamimail	ru	п·я┌п╡п╣я┌п╦я┌я▄ п╡я│п╣п╪
+send	felamimail	ru	п·я┌п©я─п╟п╡п╦я┌я▄
+send a reject message	felamimail	ru	п·я┌п©я─п╟п╡п╦я┌я▄ п╬я┌п╨п╟п╥
+sent folder	felamimail	ru	п·я┌п©я─п╟п╡п╩п╣п╫п╫я▀п╣
+show header	felamimail	ru	п÷п╬п╨п╟п╥п╟я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╬п╨
+size	felamimail	ru	п═п╟п╥п╪п╣я─
+subject	felamimail	ru	п╒п╣п╪п╟
+sun	felamimail	ru	п▓я│п╨я─
+text only	felamimail	ru	п╒п╬п╩я▄п╨п╬ я┌п╣п╨я│я┌
+then	felamimail	ru	п╒п·п⌠п■п░
+this folder is empty	felamimail	ru	п╜п╒п░ п÷п░п÷п п░ п÷пёп║п╒п░
+use smtp auth	admin	ru	п≤я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ п╟п╡я┌п╬я─п╦п╥п╟я├п╦я▌ п©п╬ SMTP
+validate certificate	felamimail	ru	п©я─п╬п╡п╣я─п╦я┌я▄ я│п╣я─я┌п╦я└п╦п╨п╟я┌
+view message	felamimail	ru	п÷я─п╬я│п╪п╬я┌я─п╣я┌я▄ я│п╬п╬п╠я┴п╣п╫п╦п╣
+viewing message	felamimail	ru	п÷я─п╬я│п╪п╬я┌я─ я│п╬п╬п╠я┴п╣п╫п╦я▐
+viewing messages	felamimail	ru	п÷я─п╬я│п╪п╬я┌я─ я│п╬п╬п╠я┴п╣п╫п╦п╧
+writing	felamimail	ru	п╥п╟п©п╦я│я▀п╡п╟я▌
+wrote	felamimail	ru	п╥п╟п©п╦я│п╟п╫п╬

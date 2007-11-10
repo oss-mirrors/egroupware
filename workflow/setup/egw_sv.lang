@@ -7,26 +7,26 @@ activities	workflow	sv	Aktiviteter
 activities updated	workflow	sv	aktiviteter uppdaterade
 activity	workflow	sv	aktivitet
 activity  status	workflow	sv	aktivitetsstatus
-activity %1 is interactive but has no role assigned	workflow	sv	Aktivitet %1 ‰r interaktiv men har saknar rolltilldelning
-activity %1 is interactive so it must use the $instance->complete() method	workflow	sv	Aktivitet %1 ‰r interaktiv sÂ den mÂste anv‰nda metoden $instance->complete()
-activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	sv	Aktivitet %1 ‰r icke-interaktiv och icke-autoroutad men saknar rolltilldelning
-activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	sv	Atktivitet %1 ‰r icke-interaktiv sÂ den fÂr INTE anv‰nda metoden $instance->complete()
-activity %1 is standalone and is using the $instance object	workflow	sv	Aktivitet %1 ‰r fristÂende och anv‰nder $instance objektet
-activity %1 is standalone but has transitions	workflow	sv	Aktivitet %1 ‰r fristÂende men har ˆvergÂngar
-activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	sv	Aktivitet %1 ‰r v‰xel sÂ den mÂste anv‰nda metoden $instance->setNextActivity($actname)
-activity completed	workflow	sv	Aktivitet slutfˆrd
-activity name already exists	workflow	sv	Det aktivitetsnamnet anv‰ndes redan
+activity %1 is interactive but has no role assigned	workflow	sv	Aktivitet %1 √§r interaktiv men har saknar rolltilldelning
+activity %1 is interactive so it must use the $instance->complete() method	workflow	sv	Aktivitet %1 √§r interaktiv s√• den m√•ste anv√§nda metoden $instance->complete()
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	sv	Aktivitet %1 √§r icke-interaktiv och icke-autoroutad men saknar rolltilldelning
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	sv	Atktivitet %1 √§r icke-interaktiv s√• den f√•r INTE anv√§nda metoden $instance->complete()
+activity %1 is standalone and is using the $instance object	workflow	sv	Aktivitet %1 √§r frist√•ende och anv√§nder $instance objektet
+activity %1 is standalone but has transitions	workflow	sv	Aktivitet %1 √§r frist√•ende men har √∂verg√•ngar
+activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	sv	Aktivitet %1 √§r v√§xel s√• den m√•ste anv√§nda metoden $instance->setNextActivity($actname)
+activity completed	workflow	sv	Aktivitet slutf√∂rd
+activity name already exists	workflow	sv	Det aktivitetsnamnet anv√§ndes redan
 activity role removed	workflow	sv	Aktivitetsroll borttagen
 activity saved	workflow	sv	Aktivitet sparad
-add a transition	workflow	sv	L‰ggtill ˆvergÂng
-add new	workflow	sv	l‰gg till ny
-add or edit a process	workflow	sv	l‰gg till eller redigera process
-add or edit an activity	workflow	sv	l‰gg till eller redigera aktivitet
-add property	workflow	sv	l‰gg till egenskap
-add role	workflow	sv	l‰gg till roll
+add a transition	workflow	sv	L√§ggtill √∂verg√•ng
+add new	workflow	sv	l√§gg till ny
+add or edit a process	workflow	sv	l√§gg till eller redigera process
+add or edit an activity	workflow	sv	l√§gg till eller redigera aktivitet
+add property	workflow	sv	l√§gg till egenskap
+add role	workflow	sv	l√§gg till roll
 add role to process	workflow	sv	koppla roll till process
-add transitions	workflow	sv	l‰gg till ˆvergÂngar
-add transitions from	workflow	sv	l‰gg till ˆvergÂnar frÂn
-add transitions to	workflow	sv	l‰gg till ˆvergÂngar till
+add transitions	workflow	sv	l√§gg till √∂verg√•ngar
+add transitions from	workflow	sv	l√§gg till √∂verg√•nar fr√•n
+add transitions to	workflow	sv	l√§gg till √∂verg√•ngar till
 admin instance	workflow	sv	Administrera instans
 admin process activities	workflow	sv	administrera

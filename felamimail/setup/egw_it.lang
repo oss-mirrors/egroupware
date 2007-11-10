@@ -24,7 +24,7 @@ as a subfolder of	felamimail	it	come sottocartella di
 attachments	felamimail	it	Allegati
 auto refresh folder list	felamimail	it	Auto aggiorna elenco cartelle
 back to folder	felamimail	it	Torna alla cartella
-based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	it	In base ai criteri stabiliti, i messaggi in entrata possono avere differenti colori nell'elenco messaggi. Ciò aiuta a distinguere facilmente la provenienza dei messaggi, specialmente per liste di distribuzione.
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	it	In base ai criteri stabiliti, i messaggi in entrata possono avere differenti colori nell'elenco messaggi. CiÃ² aiuta a distinguere facilmente la provenienza dei messaggi, specialmente per liste di distribuzione.
 bcc	felamimail	it	CCN
 before headers	felamimail	it	Prima degli header
 between headers and message body	felamimail	it	Tra gli header e il corpo del messaggio
@@ -56,7 +56,7 @@ dark gray	felamimail	it	Grigio Scuro
 dark green	felamimail	it	Verde Scuro
 dark magenta	felamimail	it	Magenta Scuro
 dark yellow	felamimail	it	Giallo Scuro
-date(newest first)	felamimail	it	Data (prima più recenti)
+date(newest first)	felamimail	it	Data (prima piÃ¹ recenti)
 date(oldest first)	felamimail	it	Data (prima meno recenti)
 days	felamimail	it	giorni
 deactivate script	felamimail	it	disattiva script
@@ -184,7 +184,7 @@ manage sieve	common	it	Gestione script Sieve
 mark as deleted	felamimail	it	Segna come cancellato
 mark messages as	felamimail	it	Segna i messaggi selezionati come
 mark selected as flagged	felamimail	it	Segna come contrassegnati
-mark selected as read	felamimail	it	Segna come già letto
+mark selected as read	felamimail	it	Segna come giÃ  letto
 mark selected as unflagged	felamimail	it	Segna come non contrassegnati
 mark selected as unread	felamimail	it	Segna come da leggere
 match	felamimail	it	Corrisponde
@@ -216,7 +216,7 @@ no previous message	felamimail	it	nessun Messaggio precedente
 no valid emailprofile selected!!	felamimail	it	Nessun Profilo E-Mail valido selezionato!!
 none	felamimail	it	nessuno
 on behalf of	felamimail	it	on behalf of
-one address is not valid	felamimail	it	Un indirizzo non è valido
+one address is not valid	felamimail	it	Un indirizzo non Ã¨ valido
 only inbox	felamimail	it	Solo INBOX
 only one window	felamimail	it	solo una finestra
 only unseen	felamimail	it	Solo non letti
@@ -294,7 +294,7 @@ subscribed successfully!	felamimail	it	Sottoscritto con successo!
 sun	felamimail	it	Dom
 table of contents	felamimail	it	Indice dei contenuti
 text only	felamimail	it	Solo testo
-the connection to the imap server failed!!	felamimail	it	La connessione al server IMAP è fallita!!
+the connection to the imap server failed!!	felamimail	it	La connessione al server IMAP Ã¨ fallita!!
 then	felamimail	it	ALLORA
 this folder is empty	felamimail	it	QUESTA CARTELLA E' VUOTA
 this php has no imap support compiled in!!	felamimail	it	Questo PHP non contiene il supporto IMAP!!

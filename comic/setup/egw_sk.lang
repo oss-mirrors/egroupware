@@ -1,40 +1,40 @@
 %1 by %2	comic	sk	%1 cez %2
 %1 by %2 (%3)	comic	sk	%1 cez %2 (%3)
-are you sure you want to reset all comic dates and resolved image urls?	comic	sk	Naozaj chcete vynulova» v¹etky komixové dáta a získané URL adresy obrázkov?
-censorship level	comic	sk	Úroveò cenzúry
-censorship override enabled	comic	sk	Cenzúra bola vyradená
+are you sure you want to reset all comic dates and resolved image urls?	comic	sk	Naozaj chcete vynulovaÅ¥ vÅ¡etky komixovÃ© dÃ¡ta a zÃ­skanÃ© URL adresy obrÃ¡zkov?
+censorship level	comic	sk	ÃšroveÅˆ cenzÃºry
+censorship override enabled	comic	sk	CenzÃºra bola vyradenÃ¡
 comic	common	sk	Komix
-comic preferences updated	comic	sk	Nastavenia Komixu boli upravené
+comic preferences updated	comic	sk	Nastavenia Komixu boli upravenÃ©
 comics	common	sk	Komix
-comics per page	comic	sk	Komixov na stránku
-comics scaled	comic	sk	Komix bol prispôsobenı
-daily comic	common	sk	Dennı komix
-daily comic preferences	comic	sk	Nastavenia denného komixu
-daily comics	admin	sk	Dennı komix
-daily comics - global options	comic	sk	Dennı komix - globálne nastavenia
-daily comics data	comic	sk	Údaje denného komixu
-daily comics global options	comic	sk	Dennı komix - globálne nastavenia
-display layout	comic	sk	Vzhµad
-display options	comic	sk	Mo¾nosti vzhµadu
-egroupware daily comics	comic	sk	Dennı komix eGroupWare
-front page comic	comic	sk	Komix pre hlavnú stránku
-front page comic scaled	comic	sk	Prispôsobenı komix pre hlavnú stránku
-genre	comic	sk	®áner
-global comics	common	sk	Globálny komix
-global options	common	sk	Globálne nastavenia
-global options updated	comic	sk	Globálne nastavenia boli upravené
-image source	comic	sk	Zdroj obrázku
-max file size	comic	sk	Maximálna veµkos» súboru
-my comics	comic	sk	Môj komix
-no_entries	comic	sk	0 záznamov
-parser	comic	sk	Analyzátor
+comics per page	comic	sk	Komixov na strÃ¡nku
+comics scaled	comic	sk	Komix bol prispÃ´sobenÃ½
+daily comic	common	sk	DennÃ½ komix
+daily comic preferences	comic	sk	Nastavenia dennÃ©ho komixu
+daily comics	admin	sk	DennÃ½ komix
+daily comics - global options	comic	sk	DennÃ½ komix - globÃ¡lne nastavenia
+daily comics data	comic	sk	Ãšdaje dennÃ©ho komixu
+daily comics global options	comic	sk	DennÃ½ komix - globÃ¡lne nastavenia
+display layout	comic	sk	VzhÄ¾ad
+display options	comic	sk	MoÅ¾nosti vzhÄ¾adu
+egroupware daily comics	comic	sk	DennÃ½ komix eGroupWare
+front page comic	comic	sk	Komix pre hlavnÃº strÃ¡nku
+front page comic scaled	comic	sk	PrispÃ´sobenÃ½ komix pre hlavnÃº strÃ¡nku
+genre	comic	sk	Å½Ã¡ner
+global comics	common	sk	GlobÃ¡lny komix
+global options	common	sk	GlobÃ¡lne nastavenia
+global options updated	comic	sk	GlobÃ¡lne nastavenia boli upravenÃ©
+image source	comic	sk	Zdroj obrÃ¡zku
+max file size	comic	sk	MaximÃ¡lna veÄ¾kosÅ¥ sÃºboru
+my comics	comic	sk	MÃ´j komix
+no_entries	comic	sk	0 zÃ¡znamov
+parser	comic	sk	AnalyzÃ¡tor
 performed %1 of element	comic	sk	Vykonalo sa %1 elementu
-random	comic	sk	Náhodnı
+random	comic	sk	NÃ¡hodnÃ½
 rated	comic	sk	Hodnotenie
 remote (parse/snarf) enabled	comic	sk	Vzdialene (parse/snarf)
 reset	comic	sk	Vynulovanie
-reset comic data	admin	sk	Vynulova» údaje komixu
-resolve	comic	sk	Získa»
+reset comic data	admin	sk	VynulovaÅ¥ Ãºdaje komixu
+resolve	comic	sk	ZÃ­skaÅ¥
 showing %1 (%2 - %3 of %4)	comic	sk	ukazujem %1 (%2 - %3 z %4)
-template	comic	sk	©ablóna
-visit %1	comic	sk	Nav¹tívi» %1
+template	comic	sk	Å ablÃ³na
+visit %1	comic	sk	NavÅ¡tÃ­viÅ¥ %1

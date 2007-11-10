@@ -1,6 +1,6 @@
-%1 manual page(s) added or updated	manual	ko	%1 ¸Ş´º¾ó ÆäÀÌÁö°¡ Ãß°¡ ¶Ç´Â °»½ÅµÇ¾ú½À´Ï´Ù.
-download	manual	ko	³»·Á¹Ş±â
-install or update the manual-pages	admin	ko	¸Ş´º¾ó-ÆäÀÌÁöÀÇ ¼³Ä¡ ¶Ç´Â °»½Å
-manual	common	ko	µµ¿ò¸»
-page(s) %1 not found !!!	manual	ko	ÆäÀÌÁö %1 À» Ã£À»¼ö ¾ø½À´Ï´Ù!!!
-starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	ko	%1À¸·Î ºÎÅÍ °¡Á®¿À±â ½ÃÀÛÇÕ´Ï´Ù, ÀÌ ÀÛ¾÷Àº ¸îºĞ °É¸±¼ö ÀÖ½À´Ï´Ù. (Æ¯È÷ °¡Àå Ã³À½¿¡ ½ÇÇàÇÏ½Ç¶§)...
+%1 manual page(s) added or updated	manual	ko	%1 ë©”ë‰´ì–¼ í˜ì´ì§€ê°€ ì¶”ê°€ ë˜ëŠ” ê°±ì‹ ë˜ì—ˆìŠµë‹ˆë‹¤.
+download	manual	ko	ë‚´ë ¤ë°›ê¸°
+install or update the manual-pages	admin	ko	ë©”ë‰´ì–¼-í˜ì´ì§€ì˜ ì„¤ì¹˜ ë˜ëŠ” ê°±ì‹ 
+manual	common	ko	ë„ì›€ë§
+page(s) %1 not found !!!	manual	ko	í˜ì´ì§€ %1 ì„ ì°¾ì„ìˆ˜ ì—†ìŠµë‹ˆë‹¤!!!
+starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	ko	%1ìœ¼ë¡œ ë¶€í„° ê°€ì ¸ì˜¤ê¸° ì‹œì‘í•©ë‹ˆë‹¤, ì´ ì‘ì—…ì€ ëª‡ë¶„ ê±¸ë¦´ìˆ˜ ìˆìŠµë‹ˆë‹¤. (íŠ¹íˆ ê°€ì¥ ì²˜ìŒì— ì‹¤í–‰í•˜ì‹¤ë•Œ)...

@@ -41,7 +41,7 @@ select headlines to display	common	it	Seleziona Titoli da visualizzare
 select layout	common	it	Scegli layout
 show headlines on homepage	headlines	it	Seleziona Titoli in pagina principale
 site	headlines	it	Sito
-that site has already been entered	headlines	it	Quel sito Ë gi‡ stato inserito
+that site has already been entered	headlines	it	Quel sito √® gi√† stato inserito
 unable to retrieve links	headlines	it	Impossibile recuperare i collegamenti
 update headline	headlines	it	Aggiorna titolo
 view headline	headlines	it	Visualizza titolo

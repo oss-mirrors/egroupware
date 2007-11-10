@@ -14,7 +14,7 @@ blocked ip address ranges	wiki	it	Intervalli indirizzi IP bloccati
 cancel without saving	wiki	it	Annulla senza salvare
 changed	wiki	it	Cambiato
 changes by last author	wiki	it	Cambiamenti fatti dall'ultimo autore
-choose your current time here, so the server may figure out what time zone you are in.	wiki	it	Scegli la tua ora attuale qui, cosicché il server può capire in che fuso orario sei.
+choose your current time here, so the server may figure out what time zone you are in.	wiki	it	Scegli la tua ora attuale qui, cosicchÃ© il server puÃ² capire in che fuso orario sei.
 columns	wiki	it	Colonne
 compute difference	wiki	it	Calcola la differenza
 converts the page to richtext	wiki	it	Converte la pagina in RICHTEXT
@@ -42,7 +42,7 @@ error writing to temporary file.	wiki	it	Errore durante la scrittura sul file te
 everyone	wiki	it	tutti
 find	wiki	it	Trova
 history	wiki	it	Cronologia
-history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	it	La Cronologia deve mostrare <em>tutte</em> le modifiche fatte dall'ultimo autore. Altrimenti, mostrerà solo l'ultima modifica.
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	it	La Cronologia deve mostrare <em>tutte</em> le modifiche fatte dall'ultimo autore. Altrimenti, mostrerÃ  solo l'ultima modifica.
 history lists	wiki	it	Elenco cronologico
 history of	wiki	it	Cronologia di
 interwikiprefix	admin	it	Prefisso interWiki
@@ -52,10 +52,10 @@ loads the named page in the given language, all change so far get lost !!!	wiki	
 lock / unlock pages	common	it	Blocca / Sblocca Pagine
 locked	wiki	it	Bloccato
 name wiki home link	admin	it	Nome collegamento HOME del Wiki
-newer	wiki	it	Più recente
+newer	wiki	it	PiÃ¹ recente
 no never	admin	it	No mai
 not set	wiki	it	Non impostato
-older	wiki	it	Più vecchio
+older	wiki	it	PiÃ¹ vecchio
 only if browser supports a richtext-editor	admin	it	Solo se il browser supporta un editor RICHTEXT
 please contact the %1administrator%2 for assistance.	wiki	it	Prego contatta l' %1Amministratore%2 per assistenza.
 preview	wiki	it	Anteprima
@@ -73,23 +73,23 @@ see complete list (%1 entries)	wiki	it	Vedi lista completa (%1 inserimenti)
 site configuration	wiki	it	Configurazione Sito
 summary	wiki	it	Indice
 summary of change	wiki	it	Indice delle modifiche
-this page can not be edited.	wiki	it	Questa pagina non può essere modificata.
+this page can not be edited.	wiki	it	Questa pagina non puÃ² essere modificata.
 twin pages	wiki	it	Pagine gemelle
 unblock	wiki	it	Sblocca
 updates the preview	wiki	it	Aggiorna l'anteprima
 users	wiki	it	utenti
 view document history	wiki	it	Visualizza cronologia documento
 visit %1 to set your user name	wiki	it	Visita %1 per settare il tuo nome utente
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	it	Attenzione: da quando hai iniziaaaaato la modifica, questo documento è stato cambiato da qualcunaltro. Prego aggiungi le tue modifiche nella versione attuale di quest documento.
-who should be able to edit this page	wiki	it	chi può modificare questa pagina
-who should be able to read this page	wiki	it	chi può leggere questa pagina
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	it	Attenzione: da quando hai iniziaaaaato la modifica, questo documento Ã¨ stato cambiato da qualcunaltro. Prego aggiungi le tue modifiche nella versione attuale di quest documento.
+who should be able to edit this page	wiki	it	chi puÃ² modificare questa pagina
+who should be able to read this page	wiki	it	chi puÃ² leggere questa pagina
 wiki	common	it	Wiki
 wiki administration	wiki	it	Configurazione Wiki
-wiki menu	wiki	it	Menù Wiki
+wiki menu	wiki	it	MenÃ¹ Wiki
 writable by	wiki	it	Scrivibile da
-yes always	admin	it	Sì sempre
-you have been denied access to this site.	wiki	it	Ti è stato negato l'accesso a questo sito.
+yes always	admin	it	SÃ¬ sempre
+you have been denied access to this site.	wiki	it	Ti Ã¨ stato negato l'accesso a questo sito.
 you have entered an invalid user name.	wiki	it	Hai inserito un nome utente non valido.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	it	Hai superato il numero di pagine che puoi visitare in un dato periodo di tempo. Per favore torna più tardi.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	it	Hai superato il numero di pagine che puoi visitare in un dato periodo di tempo. Per favore torna piÃ¹ tardi.
 your changes	wiki	it	Le tue modifiche
-your user name is "%1".	wiki	it	Il tuo nome utente è "%1".
+your user name is "%1".	wiki	it	Il tuo nome utente Ã¨ "%1".

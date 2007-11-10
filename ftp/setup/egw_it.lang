@@ -9,7 +9,7 @@ failed to create directory %1	ftp	it	Impossibile creare la directory %1
 failed to delete %1	ftp	it	Impossibile cancellare %1
 failed to rename %1 to %2	ftp	it	Impossibile rinominare %1 in %2
 failed to upload %1	ftp	it	Impossibile uploadare %1
-file %1 already exists!	ftp	it	il file %1 esiste gi‡!
+file %1 already exists!	ftp	it	il file %1 esiste gi√†!
 ftp client	ftp	it	Client FTP
 ftp hostname	ftp	it	Nome server FTP
 ftp server	ftp	it	Server FTP

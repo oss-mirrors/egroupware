@@ -1,76 +1,76 @@
-%1 bookmarks have been deleted	bookmarks	ru	%1 закладок удалено
-%1 bookmarks imported from %2 successfully.	bookmarks	ru	%1 закладок импортировано из %2 успешно
-(comma separate multiple addresses)	bookmarks	ru	(множественные адреса, разделенные запятыми)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ru	<b>Примечание:</b> Эта функция сейчас работает только с закладками Netskape
-all bookmarks	bookmarks	ru	Все закладки
-and	bookmarks	ru	и
-append this message to mailed bookmarks	bookmarks	ru	Добавить это сообщение к закладкам, пересылаемым почтовым сообщением
-ascending	bookmarks	ru	По возростанию
-book marks	common	ru	Закладки
-bookmark changed sucessfully	bookmarks	ru	Закладка изменена успешно
-bookmark created successfully.	bookmarks	ru	Закладка создана успешно.
-bookmark deleted successfully	bookmarks	ru	Закладка удалена успешно.
-bookmark deleted successfully.	bookmarks	ru	Закладка успешно удалена
-bookmark not editable	bookmarks	ru	Закладка не редактируемая
-bookmark not readable	bookmarks	ru	Закладка не читаемая
-bookmarks	common	ru	Закладки
-bookmarks settings	bookmarks	ru	Настройки Закладок
-change bookmark	bookmarks	ru	Изменить закладку
-close this window to return	bookmarks	ru	для возврата закрыть окно
-create bookmark	bookmarks	ru	Создать закладку
-create new bookmark	bookmarks	ru	Создать новую закладку
-date added	bookmarks	ru	Дата добавлена
-date changed	bookmarks	ru	Дата Изменена
-date last updated	bookmarks	ru	Дата последнего обновления
-date last visited	bookmarks	ru	Дата последнего просмотра
-descending	bookmarks	ru	По убыванию
-edit bookmark	bookmarks	ru	Редактировать закладку
-edit this bookmark	bookmarks	ru	Редактировать данную закладку
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	ru	Ниже введите имя файла с закладками Netscape<br>, которые Вы хотите импортировать в свои закладки
-export bookmarks	common	ru	Экспортировать закладки
-fewer	bookmarks	ru	Убрать
-filter by	bookmarks	ru	Сортировать по
-found a link you might like	bookmarks	ru	Найдена ссылка которая может Вам понравиться
-from	bookmarks	ru	От
-from category %1	bookmarks	ru	из категории %1
-global categories	bookmarks	ru	Общие Категории
-highest	bookmarks	ru	Наивысший
-i thought you would be interested in the following link(s):	bookmarks	ru	Мне кажется, Вы заинтересуетесь следующими ссылками:
-import bookmarks	common	ru	Импортировать закладки
-like	bookmarks	ru	похоже
-list view	bookmarks	ru	в виде списка
-lowest	bookmarks	ru	Наинизший
-mail this bookmark	bookmarks	ru	Отправить закладку по почте
-mail-this-link message sent to %1.	bookmarks	ru	сообщение типа "отправить эту ссылку" отправлено %1.
-mass update:	bookmarks	ru	Массовое обновление:
-message from	bookmarks	ru	Сообщение От
-more	bookmarks	ru	Еще
-name	bookmarks	ru	Имя
-name is required	bookmarks	ru	Требуется имя
-netscape bookmark file	bookmarks	ru	Файл Закладок Netscape
-netscape bookmark filename is required!	bookmarks	ru	требуется имя файла закладок Netscape!
-new	bookmark	ru	Новая
-new bookmark	bookmarks	ru	новая закладка
-or	bookmarks	ru	или
-please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ru	Пожалуйста, заполните поля <B>E-Mail Кому</B>, <B>Тема</B>, и <B>Сообщение</B>!
-please select the categories to export	bookmarks	ru	Выбирите категории для экспорта
-query condition	bookmarks	ru	Условия запроса
-rating	bookmarks	ru	Рейтинг
-search for:	bookmarks	ru	Искать:
-select the format you would like to export to	bookmarks	ru	Выбирите формат в который вы хотите экспортировать
-send bookmark	bookmarks	ru	Отправить закладку
-site configuration	bookmarks	ru	Конфигурация сайта
-sub category	bookmarks	ru	Под-категория
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ru	Адрес %1 неверен. Он  должен быть в виде <strong>пользователь@домен</strong> и этот домен должен существовать!
-to e-mail addresses	bookmarks	ru	Отправить на E-Mail
-to which category should the imported folder hierarchy be attached	bookmarks	ru	В какую категорию должна быть импортирована вложенная папка
-total visits	bookmarks	ru	всего посещений
-tree view	bookmarks	ru	Дерево закладок
-unable to open temp file %1 for import.	bookmarks	ru	Невозможно открыть временный файл %1 для импорта.
-url is required.	bookmarks	ru	Необходим URL
-view bookmark	bookmarks	ru	Просмотр закладки
-view this bookmark	bookmarks	ru	Просмотреть эту закладку
-warning	bookmarks	ru	Предупреждение
-you are viewing this site outside of egroupware	bookmarks	ru	Вы просматриваете этот сайт вне eGroupWare
-you must select a category	bookmarks	ru	Вы должны выбрать категорию
-you need to select a category!	bookmarks	ru	Вы должны выбрать категорию!
+%1 bookmarks have been deleted	bookmarks	ru	%1 п╥п╟п╨п╩п╟п╢п╬п╨ я┐п╢п╟п╩п╣п╫п╬
+%1 bookmarks imported from %2 successfully.	bookmarks	ru	%1 п╥п╟п╨п╩п╟п╢п╬п╨ п╦п╪п©п╬я─я┌п╦я─п╬п╡п╟п╫п╬ п╦п╥ %2 я┐я│п©п╣я┬п╫п╬
+(comma separate multiple addresses)	bookmarks	ru	(п╪п╫п╬п╤п╣я│я┌п╡п╣п╫п╫я▀п╣ п╟п╢я─п╣я│п╟, я─п╟п╥п╢п╣п╩п╣п╫п╫я▀п╣ п╥п╟п©я▐я┌я▀п╪п╦)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ru	<b>п÷я─п╦п╪п╣я┤п╟п╫п╦п╣:</b> п╜я┌п╟ я└я┐п╫п╨я├п╦я▐ я│п╣п╧я┤п╟я│ я─п╟п╠п╬я┌п╟п╣я┌ я┌п╬п╩я▄п╨п╬ я│ п╥п╟п╨п╩п╟п╢п╨п╟п╪п╦ Netskape
+all bookmarks	bookmarks	ru	п▓я│п╣ п╥п╟п╨п╩п╟п╢п╨п╦
+and	bookmarks	ru	п╦
+append this message to mailed bookmarks	bookmarks	ru	п■п╬п╠п╟п╡п╦я┌я▄ я█я┌п╬ я│п╬п╬п╠я┴п╣п╫п╦п╣ п╨ п╥п╟п╨п╩п╟п╢п╨п╟п╪, п©п╣я─п╣я│я▀п╩п╟п╣п╪я▀п╪ п©п╬я┤я┌п╬п╡я▀п╪ я│п╬п╬п╠я┴п╣п╫п╦п╣п╪
+ascending	bookmarks	ru	п÷п╬ п╡п╬п╥я─п╬я│я┌п╟п╫п╦я▌
+book marks	common	ru	п≈п╟п╨п╩п╟п╢п╨п╦
+bookmark changed sucessfully	bookmarks	ru	п≈п╟п╨п╩п╟п╢п╨п╟ п╦п╥п╪п╣п╫п╣п╫п╟ я┐я│п©п╣я┬п╫п╬
+bookmark created successfully.	bookmarks	ru	п≈п╟п╨п╩п╟п╢п╨п╟ я│п╬п╥п╢п╟п╫п╟ я┐я│п©п╣я┬п╫п╬.
+bookmark deleted successfully	bookmarks	ru	п≈п╟п╨п╩п╟п╢п╨п╟ я┐п╢п╟п╩п╣п╫п╟ я┐я│п©п╣я┬п╫п╬.
+bookmark deleted successfully.	bookmarks	ru	п≈п╟п╨п╩п╟п╢п╨п╟ я┐я│п©п╣я┬п╫п╬ я┐п╢п╟п╩п╣п╫п╟
+bookmark not editable	bookmarks	ru	п≈п╟п╨п╩п╟п╢п╨п╟ п╫п╣ я─п╣п╢п╟п╨я┌п╦я─я┐п╣п╪п╟я▐
+bookmark not readable	bookmarks	ru	п≈п╟п╨п╩п╟п╢п╨п╟ п╫п╣ я┤п╦я┌п╟п╣п╪п╟я▐
+bookmarks	common	ru	п≈п╟п╨п╩п╟п╢п╨п╦
+bookmarks settings	bookmarks	ru	п²п╟я│я┌я─п╬п╧п╨п╦ п≈п╟п╨п╩п╟п╢п╬п╨
+change bookmark	bookmarks	ru	п≤п╥п╪п╣п╫п╦я┌я▄ п╥п╟п╨п╩п╟п╢п╨я┐
+close this window to return	bookmarks	ru	п╢п╩я▐ п╡п╬п╥п╡я─п╟я┌п╟ п╥п╟п╨я─я▀я┌я▄ п╬п╨п╫п╬
+create bookmark	bookmarks	ru	п║п╬п╥п╢п╟я┌я▄ п╥п╟п╨п╩п╟п╢п╨я┐
+create new bookmark	bookmarks	ru	п║п╬п╥п╢п╟я┌я▄ п╫п╬п╡я┐я▌ п╥п╟п╨п╩п╟п╢п╨я┐
+date added	bookmarks	ru	п■п╟я┌п╟ п╢п╬п╠п╟п╡п╩п╣п╫п╟
+date changed	bookmarks	ru	п■п╟я┌п╟ п≤п╥п╪п╣п╫п╣п╫п╟
+date last updated	bookmarks	ru	п■п╟я┌п╟ п©п╬я│п╩п╣п╢п╫п╣пЁп╬ п╬п╠п╫п╬п╡п╩п╣п╫п╦я▐
+date last visited	bookmarks	ru	п■п╟я┌п╟ п©п╬я│п╩п╣п╢п╫п╣пЁп╬ п©я─п╬я│п╪п╬я┌я─п╟
+descending	bookmarks	ru	п÷п╬ я┐п╠я▀п╡п╟п╫п╦я▌
+edit bookmark	bookmarks	ru	п═п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄ п╥п╟п╨п╩п╟п╢п╨я┐
+edit this bookmark	bookmarks	ru	п═п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄ п╢п╟п╫п╫я┐я▌ п╥п╟п╨п╩п╟п╢п╨я┐
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	ru	п²п╦п╤п╣ п╡п╡п╣п╢п╦я┌п╣ п╦п╪я▐ я└п╟п╧п╩п╟ я│ п╥п╟п╨п╩п╟п╢п╨п╟п╪п╦ Netscape<br>, п╨п╬я┌п╬я─я▀п╣ п▓я▀ я┘п╬я┌п╦я┌п╣ п╦п╪п©п╬я─я┌п╦я─п╬п╡п╟я┌я▄ п╡ я│п╡п╬п╦ п╥п╟п╨п╩п╟п╢п╨п╦
+export bookmarks	common	ru	п╜п╨я│п©п╬я─я┌п╦я─п╬п╡п╟я┌я▄ п╥п╟п╨п╩п╟п╢п╨п╦
+fewer	bookmarks	ru	пёп╠я─п╟я┌я▄
+filter by	bookmarks	ru	п║п╬я─я┌п╦я─п╬п╡п╟я┌я▄ п©п╬
+found a link you might like	bookmarks	ru	п²п╟п╧п╢п╣п╫п╟ я│я│я▀п╩п╨п╟ п╨п╬я┌п╬я─п╟я▐ п╪п╬п╤п╣я┌ п▓п╟п╪ п©п╬п╫я─п╟п╡п╦я┌я▄я│я▐
+from	bookmarks	ru	п·я┌
+from category %1	bookmarks	ru	п╦п╥ п╨п╟я┌п╣пЁп╬я─п╦п╦ %1
+global categories	bookmarks	ru	п·п╠я┴п╦п╣ п п╟я┌п╣пЁп╬я─п╦п╦
+highest	bookmarks	ru	п²п╟п╦п╡я▀я│я┬п╦п╧
+i thought you would be interested in the following link(s):	bookmarks	ru	п°п╫п╣ п╨п╟п╤п╣я┌я│я▐, п▓я▀ п╥п╟п╦п╫я┌п╣я─п╣я│я┐п╣я┌п╣я│я▄ я│п╩п╣п╢я┐я▌я┴п╦п╪п╦ я│я│я▀п╩п╨п╟п╪п╦:
+import bookmarks	common	ru	п≤п╪п©п╬я─я┌п╦я─п╬п╡п╟я┌я▄ п╥п╟п╨п╩п╟п╢п╨п╦
+like	bookmarks	ru	п©п╬я┘п╬п╤п╣
+list view	bookmarks	ru	п╡ п╡п╦п╢п╣ я│п©п╦я│п╨п╟
+lowest	bookmarks	ru	п²п╟п╦п╫п╦п╥я┬п╦п╧
+mail this bookmark	bookmarks	ru	п·я┌п©я─п╟п╡п╦я┌я▄ п╥п╟п╨п╩п╟п╢п╨я┐ п©п╬ п©п╬я┤я┌п╣
+mail-this-link message sent to %1.	bookmarks	ru	я│п╬п╬п╠я┴п╣п╫п╦п╣ я┌п╦п©п╟ "п╬я┌п©я─п╟п╡п╦я┌я▄ я█я┌я┐ я│я│я▀п╩п╨я┐" п╬я┌п©я─п╟п╡п╩п╣п╫п╬ %1.
+mass update:	bookmarks	ru	п°п╟я│я│п╬п╡п╬п╣ п╬п╠п╫п╬п╡п╩п╣п╫п╦п╣:
+message from	bookmarks	ru	п║п╬п╬п╠я┴п╣п╫п╦п╣ п·я┌
+more	bookmarks	ru	п∙я┴п╣
+name	bookmarks	ru	п≤п╪я▐
+name is required	bookmarks	ru	п╒я─п╣п╠я┐п╣я┌я│я▐ п╦п╪я▐
+netscape bookmark file	bookmarks	ru	п╓п╟п╧п╩ п≈п╟п╨п╩п╟п╢п╬п╨ Netscape
+netscape bookmark filename is required!	bookmarks	ru	я┌я─п╣п╠я┐п╣я┌я│я▐ п╦п╪я▐ я└п╟п╧п╩п╟ п╥п╟п╨п╩п╟п╢п╬п╨ Netscape!
+new	bookmark	ru	п²п╬п╡п╟я▐
+new bookmark	bookmarks	ru	п╫п╬п╡п╟я▐ п╥п╟п╨п╩п╟п╢п╨п╟
+or	bookmarks	ru	п╦п╩п╦
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ru	п÷п╬п╤п╟п╩я┐п╧я│я┌п╟, п╥п╟п©п╬п╩п╫п╦я┌п╣ п©п╬п╩я▐ <B>E-Mail п п╬п╪я┐</B>, <B>п╒п╣п╪п╟</B>, п╦ <B>п║п╬п╬п╠я┴п╣п╫п╦п╣</B>!
+please select the categories to export	bookmarks	ru	п▓я▀п╠п╦я─п╦я┌п╣ п╨п╟я┌п╣пЁп╬я─п╦п╦ п╢п╩я▐ я█п╨я│п©п╬я─я┌п╟
+query condition	bookmarks	ru	пёя│п╩п╬п╡п╦я▐ п╥п╟п©я─п╬я│п╟
+rating	bookmarks	ru	п═п╣п╧я┌п╦п╫пЁ
+search for:	bookmarks	ru	п≤я│п╨п╟я┌я▄:
+select the format you would like to export to	bookmarks	ru	п▓я▀п╠п╦я─п╦я┌п╣ я└п╬я─п╪п╟я┌ п╡ п╨п╬я┌п╬я─я▀п╧ п╡я▀ я┘п╬я┌п╦я┌п╣ я█п╨я│п©п╬я─я┌п╦я─п╬п╡п╟я┌я▄
+send bookmark	bookmarks	ru	п·я┌п©я─п╟п╡п╦я┌я▄ п╥п╟п╨п╩п╟п╢п╨я┐
+site configuration	bookmarks	ru	п п╬п╫я└п╦пЁя┐я─п╟я├п╦я▐ я│п╟п╧я┌п╟
+sub category	bookmarks	ru	п÷п╬п╢-п╨п╟я┌п╣пЁп╬я─п╦я▐
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ru	п░п╢я─п╣я│ %1 п╫п╣п╡п╣я─п╣п╫. п·п╫  п╢п╬п╩п╤п╣п╫ п╠я▀я┌я▄ п╡ п╡п╦п╢п╣ <strong>п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄@п╢п╬п╪п╣п╫</strong> п╦ я█я┌п╬я┌ п╢п╬п╪п╣п╫ п╢п╬п╩п╤п╣п╫ я│я┐я┴п╣я│я┌п╡п╬п╡п╟я┌я▄!
+to e-mail addresses	bookmarks	ru	п·я┌п©я─п╟п╡п╦я┌я▄ п╫п╟ E-Mail
+to which category should the imported folder hierarchy be attached	bookmarks	ru	п▓ п╨п╟п╨я┐я▌ п╨п╟я┌п╣пЁп╬я─п╦я▌ п╢п╬п╩п╤п╫п╟ п╠я▀я┌я▄ п╦п╪п©п╬я─я┌п╦я─п╬п╡п╟п╫п╟ п╡п╩п╬п╤п╣п╫п╫п╟я▐ п©п╟п©п╨п╟
+total visits	bookmarks	ru	п╡я│п╣пЁп╬ п©п╬я│п╣я┴п╣п╫п╦п╧
+tree view	bookmarks	ru	п■п╣я─п╣п╡п╬ п╥п╟п╨п╩п╟п╢п╬п╨
+unable to open temp file %1 for import.	bookmarks	ru	п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╬я┌п╨я─я▀я┌я▄ п╡я─п╣п╪п╣п╫п╫я▀п╧ я└п╟п╧п╩ %1 п╢п╩я▐ п╦п╪п©п╬я─я┌п╟.
+url is required.	bookmarks	ru	п²п╣п╬п╠я┘п╬п╢п╦п╪ URL
+view bookmark	bookmarks	ru	п÷я─п╬я│п╪п╬я┌я─ п╥п╟п╨п╩п╟п╢п╨п╦
+view this bookmark	bookmarks	ru	п÷я─п╬я│п╪п╬я┌я─п╣я┌я▄ я█я┌я┐ п╥п╟п╨п╩п╟п╢п╨я┐
+warning	bookmarks	ru	п÷я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦п╣
+you are viewing this site outside of egroupware	bookmarks	ru	п▓я▀ п©я─п╬я│п╪п╟я┌я─п╦п╡п╟п╣я┌п╣ я█я┌п╬я┌ я│п╟п╧я┌ п╡п╫п╣ eGroupWare
+you must select a category	bookmarks	ru	п▓я▀ п╢п╬п╩п╤п╫я▀ п╡я▀п╠я─п╟я┌я▄ п╨п╟я┌п╣пЁп╬я─п╦я▌
+you need to select a category!	bookmarks	ru	п▓я▀ п╢п╬п╩п╤п╫я▀ п╡я▀п╠я─п╟я┌я▄ п╨п╟я┌п╣пЁп╬я─п╦я▌!

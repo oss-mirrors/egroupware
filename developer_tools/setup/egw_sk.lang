@@ -1,74 +1,74 @@
-add	developer_tools	sk	prida»
-add change	developer_tools	sk	Prida» zmenu
-add more	developer_tools	sk	Prida» viacero
-add new phrase	developer_tools	sk	Prida» novú frázu
-add phrase	developer_tools	sk	Prida» frázu
-allows you to add a single phrase	developer_tools	sk	Umo¾ní vám prida» jednu frázu
-application	developer_tools	sk	Aplikácia
-back	developer_tools	sk	Spä»
-cancel	developer_tools	sk	Zru¹i»
-change	developer_tools	sk	Zmeni»
-changelog entry has been added	developer_tools	sk	Bola pridaná polo¾ka v zázname zmien
-changelogs	developer_tools	sk	Záznamy zmien
-clears the internal buffer, all changes made sofar are lost	developer_tools	sk	Vyèistí vnútornı bufer, v¹etky doposiaµ vykonané zmeny sa stratia
-create new language file	developer_tools	sk	Vytvori» novı jazykovı súbor
-create sgml file	developer_tools	sk	Vytvori» SGML súbor
-developer tools - preferences	developer_tools	sk	Vıvojové Nástroje -predvoµby
-developer_tools	common	sk	Prekladateµské Nástroje
-diary	developer_tools	sk	Diár
+add	developer_tools	sk	pridaÅ¥
+add change	developer_tools	sk	PridaÅ¥ zmenu
+add more	developer_tools	sk	PridaÅ¥ viacero
+add new phrase	developer_tools	sk	PridaÅ¥ novÃº frÃ¡zu
+add phrase	developer_tools	sk	PridaÅ¥ frÃ¡zu
+allows you to add a single phrase	developer_tools	sk	UmoÅ¾nÃ­ vÃ¡m pridaÅ¥ jednu frÃ¡zu
+application	developer_tools	sk	AplikÃ¡cia
+back	developer_tools	sk	SpÃ¤Å¥
+cancel	developer_tools	sk	ZruÅ¡iÅ¥
+change	developer_tools	sk	ZmeniÅ¥
+changelog entry has been added	developer_tools	sk	Bola pridanÃ¡ poloÅ¾ka v zÃ¡zname zmien
+changelogs	developer_tools	sk	ZÃ¡znamy zmien
+clears the internal buffer, all changes made sofar are lost	developer_tools	sk	VyÄistÃ­ vnÃºtornÃ½ bufer, vÅ¡etky doposiaÄ¾ vykonanÃ© zmeny sa stratia
+create new language file	developer_tools	sk	VytvoriÅ¥ novÃ½ jazykovÃ½ sÃºbor
+create sgml file	developer_tools	sk	VytvoriÅ¥ SGML sÃºbor
+developer tools - preferences	developer_tools	sk	VÃ½vojovÃ© NÃ¡stroje -predvoÄ¾by
+developer_tools	common	sk	PrekladateÄ¾skÃ© NÃ¡stroje
+diary	developer_tools	sk	DiÃ¡r
 done	developer_tools	sk	hotovo
-download	developer_tools	sk	Stiahnu»
-download the lang-file to be saved in the apps setup-dir	developer_tools	sk	Stiahnu» jazykovı súbor, ulo¾i» do setup adresára aplikácie
-edit	developer_tools	sk	Upravi»
-installed applications	developer_tools	sk	Nain¹talované aplikácie
-language file management	developer_tools	sk	Správa jazykovıch súborov
-list changelogs	developer_tools	sk	Zobrazi» záznamy o zmenách
-load	developer_tools	sk	Naèíta»
-loading source langfile	developer_tools	sk	Naèítavam zdrojovı jazykovı súbor
-loading target langfile	developer_tools	sk	Naèítavam cieµovı jazykovı súbor
-loads the selected lang-files, to be modified in the next steps	developer_tools	sk	Naèítajú sa vybrané jazykové súbory, ktoré majú by» zmenené v nasledujúcich krokoch
-message	developer_tools	sk	Správa
-message_id in english	developer_tools	sk	ID správy v angliètine
-no file	developer_tools	sk	¾iadny súbor
+download	developer_tools	sk	StiahnuÅ¥
+download the lang-file to be saved in the apps setup-dir	developer_tools	sk	StiahnuÅ¥ jazykovÃ½ sÃºbor, uloÅ¾iÅ¥ do setup adresÃ¡ra aplikÃ¡cie
+edit	developer_tools	sk	UpraviÅ¥
+installed applications	developer_tools	sk	NainÅ¡talovanÃ© aplikÃ¡cie
+language file management	developer_tools	sk	SprÃ¡va jazykovÃ½ch sÃºborov
+list changelogs	developer_tools	sk	ZobraziÅ¥ zÃ¡znamy o zmenÃ¡ch
+load	developer_tools	sk	NaÄÃ­taÅ¥
+loading source langfile	developer_tools	sk	NaÄÃ­tavam zdrojovÃ½ jazykovÃ½ sÃºbor
+loading target langfile	developer_tools	sk	NaÄÃ­tavam cieÄ¾ovÃ½ jazykovÃ½ sÃºbor
+loads the selected lang-files, to be modified in the next steps	developer_tools	sk	NaÄÃ­tajÃº sa vybranÃ© jazykovÃ© sÃºbory, ktorÃ© majÃº byÅ¥ zmenenÃ© v nasledujÃºcich krokoch
+message	developer_tools	sk	SprÃ¡va
+message_id in english	developer_tools	sk	ID sprÃ¡vy v angliÄtine
+no file	developer_tools	sk	Å¾iadny sÃºbor
 ok	developer_tools	sk	ok
-original	developer_tools	sk	Originál
-phrase in english (or empty if identical)	developer_tools	sk	Fráza v angliètine (alebo prázdne, ak sú toto¾né)
-preferences	developer_tools	sk	Predvoµby
-preferences have been updated	developer_tools	sk	Predvoµby boli aktualizované
+original	developer_tools	sk	OriginÃ¡l
+phrase in english (or empty if identical)	developer_tools	sk	FrÃ¡za v angliÄtine (alebo prÃ¡zdne, ak sÃº totoÅ¾nÃ©)
+preferences	developer_tools	sk	PredvoÄ¾by
+preferences have been updated	developer_tools	sk	PredvoÄ¾by boli aktualizovanÃ©
 project	developer_tools	sk	Projekt
-remove	developer_tools	sk	Odstráni»
-removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	sk	Odstránenıch bolo %1 fráz z cieµového jazyka, nakoµko sa u¾ nevyskytujú ani v zdrojovom jazyku!
-returns to the application list, not saved changes get lost !!!	developer_tools	sk	Návrat do zoznamu aplikácií -neulo¾ené zmeny sa stratia!!!
-revert	developer_tools	sk	Naspä»
-saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sk	Ulo¾í pridané/zmenené preklady do vnútorného bufera, pre pou¾itie v ïal¹ích krokoch
-search changelogs	developer_tools	sk	Hµada» v záznamoch o zmenách
-search for missing phrase	developer_tools	sk	Hµada» chıbajúcu frázu
-search new phrases	developer_tools	sk	Hµada» nové frázy
-searches the source-code for phrases not in the actual source-lang-file	developer_tools	sk	Prehµadá zdrojové kódy pre frázy, ktoré nie sú uvedené v súèasnom zdrojovom jazykovom súbore
+remove	developer_tools	sk	OdstrÃ¡niÅ¥
+removed %1 phrases from the target language, as they are not present in the source language!	developer_tools	sk	OdstrÃ¡nenÃ½ch bolo %1 frÃ¡z z cieÄ¾ovÃ©ho jazyka, nakoÄ¾ko sa uÅ¾ nevyskytujÃº ani v zdrojovom jazyku!
+returns to the application list, not saved changes get lost !!!	developer_tools	sk	NÃ¡vrat do zoznamu aplikÃ¡ciÃ­ -neuloÅ¾enÃ© zmeny sa stratia!!!
+revert	developer_tools	sk	NaspÃ¤Å¥
+saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sk	UloÅ¾Ã­ pridanÃ©/zmenenÃ© preklady do vnÃºtornÃ©ho bufera, pre pouÅ¾itie v ÄalÅ¡Ã­ch krokoch
+search changelogs	developer_tools	sk	HÄ¾adaÅ¥ v zÃ¡znamoch o zmenÃ¡ch
+search for missing phrase	developer_tools	sk	HÄ¾adaÅ¥ chÃ½bajÃºcu frÃ¡zu
+search new phrases	developer_tools	sk	HÄ¾adaÅ¥ novÃ© frÃ¡zy
+searches the source-code for phrases not in the actual source-lang-file	developer_tools	sk	PrehÄ¾adÃ¡ zdrojovÃ© kÃ³dy pre frÃ¡zy, ktorÃ© nie sÃº uvedenÃ© v sÃºÄasnom zdrojovom jazykovom sÃºbore
 select project	developer_tools	sk	Vyberte projekt
-sf project tracker	developer_tools	sk	SF sledovaè projektov
-sf project tracker preferences	preferences	sk	Nastavenia SF sledovaèa projektov
-source language	developer_tools	sk	Zdrojovı jazyk
-sourceforge project id	developer_tools	sk	Projektové ID pre Sourceforge
-sourceforge project tracker	developer_tools	sk	Sourceforge sledovaè projektov
-sourceforge project tracker preferences	developer_tools	sk	Nastavenia Sourceforge sledovaèa projektov
+sf project tracker	developer_tools	sk	SF sledovaÄ projektov
+sf project tracker preferences	preferences	sk	Nastavenia SF sledovaÄa projektov
+source language	developer_tools	sk	ZdrojovÃ½ jazyk
+sourceforge project id	developer_tools	sk	ProjektovÃ© ID pre Sourceforge
+sourceforge project tracker	developer_tools	sk	Sourceforge sledovaÄ projektov
+sourceforge project tracker preferences	developer_tools	sk	Nastavenia Sourceforge sledovaÄa projektov
 step	developer_tools	sk	Krok
-submit	developer_tools	sk	Odosla»
-target language	developer_tools	sk	Cieµovı jazyk
+submit	developer_tools	sk	OdoslaÅ¥
+target language	developer_tools	sk	CieÄ¾ovÃ½ jazyk
 title	developer_tools	sk	Titul
-translate	developer_tools	sk	Prelo¾i»
+translate	developer_tools	sk	PreloÅ¾iÅ¥
 translation	developer_tools	sk	Preklad
-translation of phrase	developer_tools	sk	Preklad frázy
-update	developer_tools	sk	Aktualizova»
-update database	developer_tools	sk	Aktualizova» databázu
-updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	sk	Aktualizuje preklady oboch jazykovıch súborov vo va¹ej databáze, tak¾e mô¾ete okam¾ite skontrolova» va¹u prácu
+translation of phrase	developer_tools	sk	Preklad frÃ¡zy
+update	developer_tools	sk	AktualizovaÅ¥
+update database	developer_tools	sk	AktualizovaÅ¥ databÃ¡zu
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	sk	Aktualizuje preklady oboch jazykovÃ½ch sÃºborov vo vaÅ¡ej databÃ¡ze, takÅ¾e mÃ´Å¾ete okamÅ¾ite skontrolovaÅ¥ vaÅ¡u prÃ¡cu
 version	developer_tools	sk	Verzia
-write	developer_tools	sk	Zapísa»
-write the lang-file to the apps setup-dir	developer_tools	sk	Zapísa» jazykovı súbor do setup adresára aplikácie
-write to lang table	developer_tools	sk	Zapísa» do jazykovej tabuµky
-writing langfile for '%1' ...	developer_tools	sk	Zapisujem jazykovı súbor pre '%1' ...
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	sk	Skôr, ne¾ budete pokraèova» v ïal¹ích krokoch, musíte Ulo¾i» ka¾dú manuálnu zmenu v horeuvedenıch poliach!!!
-you must a version	developer_tools	sk	Musíte verziu
-you must enter a change	developer_tools	sk	Musíte zada» zmenu
-you must select a project	developer_tools	sk	Musíte vybra» projekt
-you need to set your preferences for this app	developer_tools	sk	Mali by ste nastavi» svoje predvoµby pre túto aplikáciu
+write	developer_tools	sk	ZapÃ­saÅ¥
+write the lang-file to the apps setup-dir	developer_tools	sk	ZapÃ­saÅ¥ jazykovÃ½ sÃºbor do setup adresÃ¡ra aplikÃ¡cie
+write to lang table	developer_tools	sk	ZapÃ­saÅ¥ do jazykovej tabuÄ¾ky
+writing langfile for '%1' ...	developer_tools	sk	Zapisujem jazykovÃ½ sÃºbor pre '%1' ...
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	sk	SkÃ´r, neÅ¾ budete pokraÄovaÅ¥ v ÄalÅ¡Ã­ch krokoch, musÃ­te UloÅ¾iÅ¥ kaÅ¾dÃº manuÃ¡lnu zmenu v horeuvedenÃ½ch poliach!!!
+you must a version	developer_tools	sk	MusÃ­te verziu
+you must enter a change	developer_tools	sk	MusÃ­te zadaÅ¥ zmenu
+you must select a project	developer_tools	sk	MusÃ­te vybraÅ¥ projekt
+you need to set your preferences for this app	developer_tools	sk	Mali by ste nastaviÅ¥ svoje predvoÄ¾by pre tÃºto aplikÃ¡ciu

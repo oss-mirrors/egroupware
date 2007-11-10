@@ -1,40 +1,40 @@
-add forum	forum	ja	¥Õ¥©¡¼¥é¥àºîÀ®
-all forums, user posts, and topics in this category will be lost!	forum	ja	¤³¤Î¥«¥Æ¥´¥ê¤Ë¤¢¤ë¥Õ¥©¡¼¥é¥à¤ÈÅê¹Æ¤·¤¿¥È¥Ô¥Ã¥¯¤¬¤¹¤Ù¤Æºï½ü¤µ¤ì¤Ş¤¹
-all user posts and topics will be lost!	forum	ja	Åê¹Æ¤·¤¿¥È¥Ô¥Ã¥¯¤¬¤¹¤Ù¤Æºï½ü¤µ¤ì¤Ş¤¹
-are you sure you want to delete this category?	forum	ja	¤³¤Î¥«¥Æ¥´¥ê¤òºï½ü¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤¹¤«
-are you sure you want to delete this forum?	forum	ja	¤³¤Î¥Õ¥©¡¼¥é¥à¤òºï½ü¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤¹¤«
-author	forum	ja	ºîÀ®¼Ô
-belongs to category	forum	ja	Â°¤¹¤ë¥«¥Æ¥´¥ê
-category description	forum	ja	¥«¥Æ¥´¥ê¾ÜºÙ
-category name	forum	ja	¥«¥Æ¥´¥êÌ¾
-change forum settings	admin	ja	¥Õ¥©¡¼¥é¥àÀßÄê
-collapse threads	forum	ja	¥¹¥ì¥Ã¥É¤òÊÄ¤¸¤ë
-create new category	forum	ja	¥«¥Æ¥´¥êºîÀ®
-current categories and sub forums	forum	ja	¥«¥Æ¥´¥ê¤È¥Õ¥©¡¼¥é¥à°ìÍ÷
-edit forum	forum	ja	¥Õ¥©¡¼¥é¥àÄûÀµ
-email replies to this thread, to the address above	forum	ja	ÅÅ»Ò¥á¡¼¥ë¤Ç¥ê¥×¥é¥¤¤¹¤ë
-forum	common	ja	¥Õ¥©¡¼¥é¥à
-forum administration	admin	ja	´Ä¶­ÀßÄê
-forum description	forum	ja	¥Õ¥©¡¼¥é¥à¾ÜºÙ
-forum name	forum	ja	¥Õ¥©¡¼¥é¥àÌ¾
-forums	forum	ja	¥Õ¥©¡¼¥é¥à
-latest reply	forum	ja	ºÇ½ª¥ê¥×¥é¥¤
-new category	forum	ja	¥«¥Æ¥´¥êºîÀ®
-new forum	forum	ja	¥Õ¥©¡¼¥é¥àºîÀ®
-new topic	forum	ja	¥È¥Ô¥Ã¥¯ºîÀ®
-no category	forum	ja	¥«¥Æ¥´¥ê¤Ê¤·
-normal view	forum	ja	¥¹¥ì¥Ã¥ÉÉ½¼¨
-post a message to this thread	forum	ja	¤³¤Î¥¹¥ì¥Ã¥É¤ËÅê¹Æ
-replies	forum	ja	¥ê¥×¥é¥¤
-reply to this message	forum	ja	¤³¤Î¥á¥Ã¥»¡¼¥¸¤Ë¥ê¥×¥é¥¤
-return to admin	forum	ja	´Ä¶­ÀßÄê¤ØÌá¤ë
-return to forums	forum	ja	¥Õ¥©¡¼¥é¥à¤ØÌá¤ë
-return	forum	ja	¥Õ¥©¡¼¥é¥à¤ØÌá¤ë
-topic	forum	ja	¥È¥Ô¥Ã¥¯
-update category	forum	ja	¥«¥Æ¥´¥êÄûÀµ
-update forum	forum	ja	¥Õ¥©¡¼¥é¥àÄûÀµ
-unknown	forum	ja	ÉÔÌÀ
-view threads	forum	ja	¥¹¥ì¥Ã¥ÉÉ½¼¨
-view collapse	forum	ja	¥¹¥ì¥Ã¥É¤òÊÄ¤¸¤ë
-your email	forum	ja	ÅÅ»Ò¥á¡¼¥ë
-your name	forum	ja	Ì¾Á°
+add forum	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ ä½œæˆ
+all forums, user posts, and topics in this category will be lost!	forum	ja	ã“ã®ã‚«ãƒ†ã‚´ãƒªã«ã‚ã‚‹ãƒ•ã‚©ãƒ¼ãƒ©ãƒ ã¨æŠ•ç¨¿ã—ãŸãƒˆãƒ”ãƒƒã‚¯ãŒã™ã¹ã¦å‰Šé™¤ã•ã‚Œã¾ã™
+all user posts and topics will be lost!	forum	ja	æŠ•ç¨¿ã—ãŸãƒˆãƒ”ãƒƒã‚¯ãŒã™ã¹ã¦å‰Šé™¤ã•ã‚Œã¾ã™
+are you sure you want to delete this category?	forum	ja	ã“ã®ã‚«ãƒ†ã‚´ãƒªã‚’å‰Šé™¤ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã™ã‹
+are you sure you want to delete this forum?	forum	ja	ã“ã®ãƒ•ã‚©ãƒ¼ãƒ©ãƒ ã‚’å‰Šé™¤ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã™ã‹
+author	forum	ja	ä½œæˆè€…
+belongs to category	forum	ja	å±ã™ã‚‹ã‚«ãƒ†ã‚´ãƒª
+category description	forum	ja	ã‚«ãƒ†ã‚´ãƒªè©³ç´°
+category name	forum	ja	ã‚«ãƒ†ã‚´ãƒªå
+change forum settings	admin	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ è¨­å®š
+collapse threads	forum	ja	ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’é–‰ã˜ã‚‹
+create new category	forum	ja	ã‚«ãƒ†ã‚´ãƒªä½œæˆ
+current categories and sub forums	forum	ja	ã‚«ãƒ†ã‚´ãƒªã¨ãƒ•ã‚©ãƒ¼ãƒ©ãƒ ä¸€è¦§
+edit forum	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ è¨‚æ­£
+email replies to this thread, to the address above	forum	ja	é›»å­ãƒ¡ãƒ¼ãƒ«ã§ãƒªãƒ—ãƒ©ã‚¤ã™ã‚‹
+forum	common	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ 
+forum administration	admin	ja	ç’°å¢ƒè¨­å®š
+forum description	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ è©³ç´°
+forum name	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ å
+forums	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ 
+latest reply	forum	ja	æœ€çµ‚ãƒªãƒ—ãƒ©ã‚¤
+new category	forum	ja	ã‚«ãƒ†ã‚´ãƒªä½œæˆ
+new forum	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ ä½œæˆ
+new topic	forum	ja	ãƒˆãƒ”ãƒƒã‚¯ä½œæˆ
+no category	forum	ja	ã‚«ãƒ†ã‚´ãƒªãªã—
+normal view	forum	ja	ã‚¹ãƒ¬ãƒƒãƒ‰è¡¨ç¤º
+post a message to this thread	forum	ja	ã“ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã«æŠ•ç¨¿
+replies	forum	ja	ãƒªãƒ—ãƒ©ã‚¤
+reply to this message	forum	ja	ã“ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«ãƒªãƒ—ãƒ©ã‚¤
+return to admin	forum	ja	ç’°å¢ƒè¨­å®šã¸æˆ»ã‚‹
+return to forums	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ ã¸æˆ»ã‚‹
+return	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ ã¸æˆ»ã‚‹
+topic	forum	ja	ãƒˆãƒ”ãƒƒã‚¯
+update category	forum	ja	ã‚«ãƒ†ã‚´ãƒªè¨‚æ­£
+update forum	forum	ja	ãƒ•ã‚©ãƒ¼ãƒ©ãƒ è¨‚æ­£
+unknown	forum	ja	ä¸æ˜
+view threads	forum	ja	ã‚¹ãƒ¬ãƒƒãƒ‰è¡¨ç¤º
+view collapse	forum	ja	ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’é–‰ã˜ã‚‹
+your email	forum	ja	é›»å­ãƒ¡ãƒ¼ãƒ«
+your name	forum	ja	åå‰

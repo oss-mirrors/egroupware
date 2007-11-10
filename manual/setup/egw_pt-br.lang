@@ -1,15 +1,15 @@
-%1 manual page(s) added or updated	manual	pt-br	%1 p·gina(s) do manual adicionada(s) ou atualizada(s)
-allow anonymous access to the manual, only necessary to act as remote manual	admin	pt-br	Permitir acesso anÙnimo ao Manual/Ajuda (somente necess·rio para usar manual remoto)
-anonymous password	admin	pt-br	Senha do usu·rio anÙnimo
-anonymous username	admin	pt-br	Nome do usu·rio anÙnimo
+%1 manual page(s) added or updated	manual	pt-br	%1 p√°gina(s) do manual adicionada(s) ou atualizada(s)
+allow anonymous access to the manual, only necessary to act as remote manual	admin	pt-br	Permitir acesso an√¥nimo ao Manual/Ajuda (somente necess√°rio para usar manual remoto)
+anonymous password	admin	pt-br	Senha do usu√°rio an√¥nimo
+anonymous username	admin	pt-br	Nome do usu√°rio an√¥nimo
 download	manual	pt-br	download
 index	manual	pt-br	Indice
-install or update the manual-pages	admin	pt-br	Instalar ou atualizar p·ginas do Manual/Ajuda
+install or update the manual-pages	admin	pt-br	Instalar ou atualizar p√°ginas do Manual/Ajuda
 manual	common	pt-br	Manual / Ajuda
-page(s) %1 not found !!!	manual	pt-br	P·gina(s) %1 n„o encontrada(s) !!!
-remote egroupware url for the manual to use, empty for a local manual, default	admin	pt-br	URL para Manual/Ajuda remoto do eGroupWare (vazio para manual local - padr„o)
+page(s) %1 not found !!!	manual	pt-br	P√°gina(s) %1 n√£o encontrada(s) !!!
+remote egroupware url for the manual to use, empty for a local manual, default	admin	pt-br	URL para Manual/Ajuda remoto do eGroupWare (vazio para manual local - padr√£o)
 search for	manual	pt-br	Pesquisar por
-starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	pt-br	Iniciando a importaÁ„o de %1, pode levar alguns minutos (especialmente se vocÍ o executa pela primeira vez)...
-the search returned no result!	manual	pt-br	A pesquisa n„o retornou nenhum resultado!
-update url for the local manual, default	admin	pt-br	Atualizar URL para Manual/Ajuda local (padr„o)
-wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	pt-br	Identificador Wiki para o Manual/Ajuda local. Padr„o 1. Use 0 para usar o Wiki na ediÁao das p·ginas do Manual/Ajuda.
+starting import from %1, this might take several minutes (specialy if you start it the first time) ...	manual	pt-br	Iniciando a importa√ß√£o de %1, pode levar alguns minutos (especialmente se voc√™ o executa pela primeira vez)...
+the search returned no result!	manual	pt-br	A pesquisa n√£o retornou nenhum resultado!
+update url for the local manual, default	admin	pt-br	Atualizar URL para Manual/Ajuda local (padr√£o)
+wiki id for the local manual, default 1, 0 to use the wiki to edit the manual pages	admin	pt-br	Identificador Wiki para o Manual/Ajuda local. Padr√£o 1. Use 0 para usar o Wiki na edi√ßao das p√°ginas do Manual/Ajuda.

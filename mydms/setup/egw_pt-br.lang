@@ -1,5 +1,5 @@
 access mode	mydms	pt-br	Modo de acesso
-access rights	mydms	pt-br	Permissões de acesso
+access rights	mydms	pt-br	PermissÃµes de acesso
 access_mode_all	mydms	pt-br	Tudo
 access_mode_none	mydms	pt-br	Sem acesso
 access_mode_read	mydms	pt-br	Ler
@@ -7,56 +7,56 @@ access_mode_readwrite	mydms	pt-br	Ler+Escrever
 acl get inherited	mydms	pt-br	Acl foi herdada
 add acl	mydms	pt-br	Adicionar acl
 add document	mydms	pt-br	Adicionar documento
-add notification	mydms	pt-br	Adicionar notificação
+add notification	mydms	pt-br	Adicionar notificaÃ§Ã£o
 add subfolder	mydms	pt-br	Adicionar sub-pasta
 admin-tools	mydms	pt-br	Ferramentas Administrativas
-all versions	mydms	pt-br	Todas versões
-comment	mydms	pt-br	Comentário
-comment for current version	mydms	pt-br	Comentário da versão atual
-content	mydms	pt-br	Conteúdo
+all versions	mydms	pt-br	Todas versÃµes
+comment	mydms	pt-br	ComentÃ¡rio
+comment for current version	mydms	pt-br	ComentÃ¡rio da versÃ£o atual
+content	mydms	pt-br	ConteÃºdo
 copy acl	mydms	pt-br	Copiar acl
 copy documents	mydms	pt-br	Copiar documentos
 copy folder	mydms	pt-br	Copiar pasta
-copy options	mydms	pt-br	Copiar opções
+copy options	mydms	pt-br	Copiar opÃ§Ãµes
 copy subfolders	mydms	pt-br	Copiar sub-pasta
 create empty acl	mydms	pt-br	Criar acl vazia
-creation date	mydms	pt-br	Data de criação
+creation date	mydms	pt-br	Data de criaÃ§Ã£o
 current acl	mydms	pt-br	Acl atual
-current version	mydms	pt-br	Versão atual
-default access	mydms	pt-br	Acesso padrão
+current version	mydms	pt-br	VersÃ£o atual
+default access	mydms	pt-br	Acesso padrÃ£o
 delete folder	mydms	pt-br	Remover pasta
-delete this notification	mydms	pt-br	Remover esta notificação
+delete this notification	mydms	pt-br	Remover esta notificaÃ§Ã£o
 do you really want to delete this acl?	mydms	pt-br	Tem certeza que deseja remover esta conta?
 do you really want to delete this document?	mydms	pt-br	Tem certeza que deseja remover este documento?
-do you really want to delete this version of the document?	mydms	pt-br	Tem certeza que deseja remover esta versão do documento?
-does not expire	mydms	pt-br	Não expira
+do you really want to delete this version of the document?	mydms	pt-br	Tem certeza que deseja remover esta versÃ£o do documento?
+does not expire	mydms	pt-br	NÃ£o expira
 download	mydms	pt-br	Baixar
 edit folder	mydms	pt-br	Editar pasta
 expires	mydms	pt-br	Expira
-expires after	mydms	pt-br	Expira após
+expires after	mydms	pt-br	Expira apÃ³s
 file size	mydms	pt-br	Tamanho do arquivo
 filename	mydms	pt-br	Nome do arquivo
 folder	mydms	pt-br	Pasta
-general information	mydms	pt-br	Informação geral
-information about last update	mydms	pt-br	Informação sobre última atualização
-informations	mydms	pt-br	Informações
+general information	mydms	pt-br	InformaÃ§Ã£o geral
+information about last update	mydms	pt-br	InformaÃ§Ã£o sobre Ãºltima atualizaÃ§Ã£o
+informations	mydms	pt-br	InformaÃ§Ãµes
 inherit acl again	mydms	pt-br	Herdar acl novamente
-last update	mydms	pt-br	Última atualização
+last update	mydms	pt-br	Ãšltima atualizaÃ§Ã£o
 linked documents	mydms	pt-br	Documentos linkados
-lock status	mydms	pt-br	Status de proteção
+lock status	mydms	pt-br	Status de proteÃ§Ã£o
 mime type	mydms	pt-br	Mime Type
 move document	mydms	pt-br	Mover documento
 move folder	mydms	pt-br	Mover pasta
 mydms	common	pt-br	Meus Documentos
-notifications	mydms	pt-br	Notificações
-permission	mydms	pt-br	Permissões
+notifications	mydms	pt-br	NotificaÃ§Ãµes
+permission	mydms	pt-br	PermissÃµes
 select folder	mydms	pt-br	Selecionar pasta
 select target folder	mydms	pt-br	Selecionar pasta destino
 target folder	mydms	pt-br	Pasta destino
-this document gets locked by you!	mydms	pt-br	Este documento foi protegido por você
-this document gets unlocked by you.	mydms	pt-br	Este documento foi desprotegido por você
-this document is currently not locked.	mydms	pt-br	Este documento não está protegido no momento
-this document is locked by <a href="mailto:%1">%2</a>.	mydms	pt-br	Este documento está protegido por <a href="mailto:%1">%2</a>
+this document gets locked by you!	mydms	pt-br	Este documento foi protegido por vocÃª
+this document gets unlocked by you.	mydms	pt-br	Este documento foi desprotegido por vocÃª
+this document is currently not locked.	mydms	pt-br	Este documento nÃ£o estÃ¡ protegido no momento
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	pt-br	Este documento estÃ¡ protegido por <a href="mailto:%1">%2</a>
 update document	mydms	pt-br	Atualizar documento
 upload date	mydms	pt-br	Data do carregamento
 uploaded by	mydms	pt-br	Carregado por

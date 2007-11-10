@@ -1,47 +1,47 @@
-are you sure you want to delete this news site ?	headlines	ru	Вы уверены, что хотите удалить этот новостной сайт?
-base url	headlines	ru	Базовый URL
-basic	headlines	ru	Обычный
-choose layout	headlines	ru	Выбирите расположение
-color	headlines	ru	Цветной
-create new headline	headlines	ru	Создать Новый Заголовок
-current headlines in cache	headlines	ru	Заголовки, находящиеся сейчас в кэше:
-display	headlines	ru	Название
-edit headline sites	headlines	ru	Редактировать сайты заголовка
-edit headlines shown by default	headlines	ru	Редактировать заголовки, показываемые по умолчанию
-grab new news sites	common	ru	Получить новые новостные сайты
-gray	headlines	ru	Серый
-headline preferences	common	ru	Настройки Заголовков
-headline site management	common	ru	Управление Заголовками сайтов
-headline sites	headlines	ru	Заголовки Сайтов
-headlines	common	ru	Заголовки
-headlines administration	headlines	ru	Администрация Заголовков
-headlines administration - delete headline	headlines	ru	Администрация Заголовков - Удалить заголовок
-headlines layout	headlines	ru	Макет заголовков
-listings displayed	headlines	ru	Отображаемые списки
-minutes between refresh	headlines	ru	Минут между обновлениями
-minutes between reloads	headlines	ru	Минут между перезагрузками
-monitor	common	ru	Монитор
-news file	headlines	ru	Новостной файл
-news headlines	common	ru	Заголовки новостей
-news type	headlines	ru	Тип Новостей
-no headlines found	headlines	ru	Не найдены заголовки
-other preferences	preferences	ru	Другие Предпочтения
-reload news sites	headlines	ru	Перегрузить новостные сайты
-reset	headlines	ru	Сброс
-sample	headlines	ru	Пример
-select headline news sites	headlines	ru	Выбирите Заголовки новостных сайтов
-select headlines to display	common	ru	Выбирите Заголовки для отображения
-select layout	common	ru	Выбирите макет
-show headlines on homepage	headlines	ru	Отображать заголовки на домашней стрранице
-site	headlines	ru	Сайт
-that site has already been entered	headlines	ru	Уже зашли на этот сайт
-unable to retrieve links	headlines	ru	Невозможно получить ссылки
-update headline	headlines	ru	Обновить заголовок
-view headline	headlines	ru	Просмотр заголовка
-you can only enter numbers for listings display	headlines	ru	Вы можете только ввести номер для отображения списка
-you can only enter numbers minutes between refresh	headlines	ru	Вы можете только ввести количество минут между обновлениями
-you must enter a base url	headlines	ru	Вы должны указать базовый URL
-you must enter a display	headlines	ru	Вы должны указать дисплей
-you must enter a news url	headlines	ru	Вы должны указать URL новости
-you must enter the number of listings display	headlines	ru	Вы должны указать количество списков на дисплее
-you must enter the number of minutes between reload	headlines	ru	Вы должны указать количество минут между перезагрузками
+are you sure you want to delete this news site ?	headlines	ru	п▓я▀ я┐п╡п╣я─п╣п╫я▀, я┤я┌п╬ я┘п╬я┌п╦я┌п╣ я┐п╢п╟п╩п╦я┌я▄ я█я┌п╬я┌ п╫п╬п╡п╬я│я┌п╫п╬п╧ я│п╟п╧я┌?
+base url	headlines	ru	п▒п╟п╥п╬п╡я▀п╧ URL
+basic	headlines	ru	п·п╠я▀я┤п╫я▀п╧
+choose layout	headlines	ru	п▓я▀п╠п╦я─п╦я┌п╣ я─п╟я│п©п╬п╩п╬п╤п╣п╫п╦п╣
+color	headlines	ru	п╕п╡п╣я┌п╫п╬п╧
+create new headline	headlines	ru	п║п╬п╥п╢п╟я┌я▄ п²п╬п╡я▀п╧ п≈п╟пЁп╬п╩п╬п╡п╬п╨
+current headlines in cache	headlines	ru	п≈п╟пЁп╬п╩п╬п╡п╨п╦, п╫п╟я┘п╬п╢я▐я┴п╦п╣я│я▐ я│п╣п╧я┤п╟я│ п╡ п╨я█я┬п╣:
+display	headlines	ru	п²п╟п╥п╡п╟п╫п╦п╣
+edit headline sites	headlines	ru	п═п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄ я│п╟п╧я┌я▀ п╥п╟пЁп╬п╩п╬п╡п╨п╟
+edit headlines shown by default	headlines	ru	п═п╣п╢п╟п╨я┌п╦я─п╬п╡п╟я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╨п╦, п©п╬п╨п╟п╥я▀п╡п╟п╣п╪я▀п╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌
+grab new news sites	common	ru	п÷п╬п╩я┐я┤п╦я┌я▄ п╫п╬п╡я▀п╣ п╫п╬п╡п╬я│я┌п╫я▀п╣ я│п╟п╧я┌я▀
+gray	headlines	ru	п║п╣я─я▀п╧
+headline preferences	common	ru	п²п╟я│я┌я─п╬п╧п╨п╦ п≈п╟пЁп╬п╩п╬п╡п╨п╬п╡
+headline site management	common	ru	пёп©я─п╟п╡п╩п╣п╫п╦п╣ п≈п╟пЁп╬п╩п╬п╡п╨п╟п╪п╦ я│п╟п╧я┌п╬п╡
+headline sites	headlines	ru	п≈п╟пЁп╬п╩п╬п╡п╨п╦ п║п╟п╧я┌п╬п╡
+headlines	common	ru	п≈п╟пЁп╬п╩п╬п╡п╨п╦
+headlines administration	headlines	ru	п░п╢п╪п╦п╫п╦я│я┌я─п╟я├п╦я▐ п≈п╟пЁп╬п╩п╬п╡п╨п╬п╡
+headlines administration - delete headline	headlines	ru	п░п╢п╪п╦п╫п╦я│я┌я─п╟я├п╦я▐ п≈п╟пЁп╬п╩п╬п╡п╨п╬п╡ - пёп╢п╟п╩п╦я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╬п╨
+headlines layout	headlines	ru	п°п╟п╨п╣я┌ п╥п╟пЁп╬п╩п╬п╡п╨п╬п╡
+listings displayed	headlines	ru	п·я┌п╬п╠я─п╟п╤п╟п╣п╪я▀п╣ я│п©п╦я│п╨п╦
+minutes between refresh	headlines	ru	п°п╦п╫я┐я┌ п╪п╣п╤п╢я┐ п╬п╠п╫п╬п╡п╩п╣п╫п╦я▐п╪п╦
+minutes between reloads	headlines	ru	п°п╦п╫я┐я┌ п╪п╣п╤п╢я┐ п©п╣я─п╣п╥п╟пЁя─я┐п╥п╨п╟п╪п╦
+monitor	common	ru	п°п╬п╫п╦я┌п╬я─
+news file	headlines	ru	п²п╬п╡п╬я│я┌п╫п╬п╧ я└п╟п╧п╩
+news headlines	common	ru	п≈п╟пЁп╬п╩п╬п╡п╨п╦ п╫п╬п╡п╬я│я┌п╣п╧
+news type	headlines	ru	п╒п╦п© п²п╬п╡п╬я│я┌п╣п╧
+no headlines found	headlines	ru	п²п╣ п╫п╟п╧п╢п╣п╫я▀ п╥п╟пЁп╬п╩п╬п╡п╨п╦
+other preferences	preferences	ru	п■я─я┐пЁп╦п╣ п÷я─п╣п╢п©п╬я┤я┌п╣п╫п╦я▐
+reload news sites	headlines	ru	п÷п╣я─п╣пЁя─я┐п╥п╦я┌я▄ п╫п╬п╡п╬я│я┌п╫я▀п╣ я│п╟п╧я┌я▀
+reset	headlines	ru	п║п╠я─п╬я│
+sample	headlines	ru	п÷я─п╦п╪п╣я─
+select headline news sites	headlines	ru	п▓я▀п╠п╦я─п╦я┌п╣ п≈п╟пЁп╬п╩п╬п╡п╨п╦ п╫п╬п╡п╬я│я┌п╫я▀я┘ я│п╟п╧я┌п╬п╡
+select headlines to display	common	ru	п▓я▀п╠п╦я─п╦я┌п╣ п≈п╟пЁп╬п╩п╬п╡п╨п╦ п╢п╩я▐ п╬я┌п╬п╠я─п╟п╤п╣п╫п╦я▐
+select layout	common	ru	п▓я▀п╠п╦я─п╦я┌п╣ п╪п╟п╨п╣я┌
+show headlines on homepage	headlines	ru	п·я┌п╬п╠я─п╟п╤п╟я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╨п╦ п╫п╟ п╢п╬п╪п╟я┬п╫п╣п╧ я│я┌я─я─п╟п╫п╦я├п╣
+site	headlines	ru	п║п╟п╧я┌
+that site has already been entered	headlines	ru	пёп╤п╣ п╥п╟я┬п╩п╦ п╫п╟ я█я┌п╬я┌ я│п╟п╧я┌
+unable to retrieve links	headlines	ru	п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п©п╬п╩я┐я┤п╦я┌я▄ я│я│я▀п╩п╨п╦
+update headline	headlines	ru	п·п╠п╫п╬п╡п╦я┌я▄ п╥п╟пЁп╬п╩п╬п╡п╬п╨
+view headline	headlines	ru	п÷я─п╬я│п╪п╬я┌я─ п╥п╟пЁп╬п╩п╬п╡п╨п╟
+you can only enter numbers for listings display	headlines	ru	п▓я▀ п╪п╬п╤п╣я┌п╣ я┌п╬п╩я▄п╨п╬ п╡п╡п╣я│я┌п╦ п╫п╬п╪п╣я─ п╢п╩я▐ п╬я┌п╬п╠я─п╟п╤п╣п╫п╦я▐ я│п©п╦я│п╨п╟
+you can only enter numbers minutes between refresh	headlines	ru	п▓я▀ п╪п╬п╤п╣я┌п╣ я┌п╬п╩я▄п╨п╬ п╡п╡п╣я│я┌п╦ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╪п╦п╫я┐я┌ п╪п╣п╤п╢я┐ п╬п╠п╫п╬п╡п╩п╣п╫п╦я▐п╪п╦
+you must enter a base url	headlines	ru	п▓я▀ п╢п╬п╩п╤п╫я▀ я┐п╨п╟п╥п╟я┌я▄ п╠п╟п╥п╬п╡я▀п╧ URL
+you must enter a display	headlines	ru	п▓я▀ п╢п╬п╩п╤п╫я▀ я┐п╨п╟п╥п╟я┌я▄ п╢п╦я│п©п╩п╣п╧
+you must enter a news url	headlines	ru	п▓я▀ п╢п╬п╩п╤п╫я▀ я┐п╨п╟п╥п╟я┌я▄ URL п╫п╬п╡п╬я│я┌п╦
+you must enter the number of listings display	headlines	ru	п▓я▀ п╢п╬п╩п╤п╫я▀ я┐п╨п╟п╥п╟я┌я▄ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ я│п©п╦я│п╨п╬п╡ п╫п╟ п╢п╦я│п©п╩п╣п╣
+you must enter the number of minutes between reload	headlines	ru	п▓я▀ п╢п╬п╩п╤п╫я▀ я┐п╨п╟п╥п╟я┌я▄ п╨п╬п╩п╦я┤п╣я│я┌п╡п╬ п╪п╦п╫я┐я┌ п╪п╣п╤п╢я┐ п©п╣я─п╣п╥п╟пЁя─я┐п╥п╨п╟п╪п╦

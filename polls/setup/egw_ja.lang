@@ -1,27 +1,27 @@
-add answer to poll	polls	ja	²óÅúÄÉ²Ã
-add answers	polls	ja	²óÅúÄÉ²Ã
-add new poll question	polls	ja	¼ÁÌäÄÉ²Ã
-add questions	polls	ja	¼ÁÌäÄÉ²Ã
-allow users to vote more then once	polls	ja	Ê£¿ô²óÅêÉ¼¤òµö²Ä¤¹¤ë
-answer	polls	ja	²óÅú
-answer has been added to poll	polls	ja	²óÅú¤òÄÉ²Ã¤·¤Ş¤·¤¿
-answer has been updated	polls	ja	²óÅú¤òÄûÀµ¤·¤Ş¤·¤¿
-are you sure want to delete this answer ?	polls	ja	¤³¤Î²óÅú¤òºï½ü¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤·¤ç¤¦¤«
-are you sure want to delete this question ?	polls	ja	¤³¤Î¼ÁÌä¤òºï½ü¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤·¤ç¤¦¤«
-edit answer	polls	ja	²óÅúÄûÀµ
-edit poll question	polls	ja	¼ÁÌäÄûÀµ
-enter poll question	polls	ja	¼ÁÌäÆâÍÆ
-new poll has been added.  you should now add some answers for this poll	polls	ja	¼ÁÌä¤òÄÉ²Ã¤·¤Ş¤·¤¿¡£¼ÁÌä¤ËÂĞ¤¹¤ë²óÅú¤òÄÉ²Ã¤·¤Æ¤¯¤À¤µ¤¤
-poll question	polls	ja	¼ÁÌäÆâÍÆ
-poll settings	polls	ja	´Ä¶­ÀßÄê
-polls	common	ja	ÅÅ»ÒÅêÉ¼
-question has been updated	polls	ja	¼ÁÌä¤òÄûÀµ¤·¤Ş¤·¤¿
-select current poll	polls	ja	´ûÄê¤Î¼ÁÌä
-settings updated	polls	ja	ÀßÄê¤·¤Ş¤·¤¿
-show answers	polls	ja	²óÅúÉ½¼¨
-show questions	polls	ja	¼ÁÌäÉ½¼¨
-total votes	polls	ja	ÅêÉ¼¿ô
-vote	polls	ja	ÅêÉ¼
-voting booth admin	admin	ja	´Ä¶­ÀßÄê
-voting booth administration	polls	ja	ÅÅ»ÒÅêÉ¼´Ä¶­ÀßÄê
-which poll	polls	ja	¼ÁÌäÁªÂò
+add answer to poll	polls	ja	å›ç­”è¿½åŠ 
+add answers	polls	ja	å›ç­”è¿½åŠ 
+add new poll question	polls	ja	è³ªå•è¿½åŠ 
+add questions	polls	ja	è³ªå•è¿½åŠ 
+allow users to vote more then once	polls	ja	è¤‡æ•°å›æŠ•ç¥¨ã‚’è¨±å¯ã™ã‚‹
+answer	polls	ja	å›ç­”
+answer has been added to poll	polls	ja	å›ç­”ã‚’è¿½åŠ ã—ã¾ã—ãŸ
+answer has been updated	polls	ja	å›ç­”ã‚’è¨‚æ­£ã—ã¾ã—ãŸ
+are you sure want to delete this answer ?	polls	ja	ã“ã®å›ç­”ã‚’å‰Šé™¤ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã—ã‚‡ã†ã‹
+are you sure want to delete this question ?	polls	ja	ã“ã®è³ªå•ã‚’å‰Šé™¤ã—ã¦ã‚‚ã‚ˆã‚ã—ã„ã§ã—ã‚‡ã†ã‹
+edit answer	polls	ja	å›ç­”è¨‚æ­£
+edit poll question	polls	ja	è³ªå•è¨‚æ­£
+enter poll question	polls	ja	è³ªå•å†…å®¹
+new poll has been added.  you should now add some answers for this poll	polls	ja	è³ªå•ã‚’è¿½åŠ ã—ã¾ã—ãŸã€‚è³ªå•ã«å¯¾ã™ã‚‹å›ç­”ã‚’è¿½åŠ ã—ã¦ãã ã•ã„
+poll question	polls	ja	è³ªå•å†…å®¹
+poll settings	polls	ja	ç’°å¢ƒè¨­å®š
+polls	common	ja	é›»å­æŠ•ç¥¨
+question has been updated	polls	ja	è³ªå•ã‚’è¨‚æ­£ã—ã¾ã—ãŸ
+select current poll	polls	ja	æ—¢å®šã®è³ªå•
+settings updated	polls	ja	è¨­å®šã—ã¾ã—ãŸ
+show answers	polls	ja	å›ç­”è¡¨ç¤º
+show questions	polls	ja	è³ªå•è¡¨ç¤º
+total votes	polls	ja	æŠ•ç¥¨æ•°
+vote	polls	ja	æŠ•ç¥¨
+voting booth admin	admin	ja	ç’°å¢ƒè¨­å®š
+voting booth administration	polls	ja	é›»å­æŠ•ç¥¨ç’°å¢ƒè¨­å®š
+which poll	polls	ja	è³ªå•é¸æŠ

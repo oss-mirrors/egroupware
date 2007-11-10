@@ -1,76 +1,76 @@
-%1 bookmarks have been deleted	bookmarks	sv	%1 bokm‰rken raderade
-%1 bookmarks imported from %2 successfully.	bookmarks	sv	%1 bokm‰rken importerade frÂn %2
+%1 bookmarks have been deleted	bookmarks	sv	%1 bokm√§rken raderade
+%1 bookmarks imported from %2 successfully.	bookmarks	sv	%1 bokm√§rken importerade fr√•n %2
 (comma separate multiple addresses)	bookmarks	sv	(flera kommaseparerade adresser)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	sv	<b>Obs:</b> Fungerar bara med Netscape kompatibla bokm‰rken
-all bookmarks	bookmarks	sv	Alla bokm‰rken
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	sv	<b>Obs:</b> Fungerar bara med Netscape kompatibla bokm√§rken
+all bookmarks	bookmarks	sv	Alla bokm√§rken
 and	bookmarks	sv	Och
-append this message to mailed bookmarks	bookmarks	sv	L‰gg till meddelandet i skickade bokm‰rken
+append this message to mailed bookmarks	bookmarks	sv	L√§gg till meddelandet i skickade bokm√§rken
 ascending	bookmarks	sv	Stigande
-book marks	common	sv	Bokm‰rken
-bookmark changed sucessfully	bookmarks	sv	Bokm‰rket ‰ndrat
-bookmark created successfully.	bookmarks	sv	Bokm‰rket skapat
-bookmark deleted successfully	bookmarks	sv	Bokm‰rket raderat
-bookmark deleted successfully.	bookmarks	sv	Bokm‰rket raderat
-bookmark not editable	bookmarks	sv	Bokm‰rket inte redigerbart
-bookmark not readable	bookmarks	sv	Bokm‰rket inte l‰sbarat
-bookmarks	common	sv	Bokm‰rken
-bookmarks settings	bookmarks	sv	Bokm‰rkes alternativ
-change bookmark	bookmarks	sv	ƒndra bokm‰rke
-close this window to return	bookmarks	sv	St‰ng fˆnstret och Âterv‰nd
-create bookmark	bookmarks	sv	Skapa bokm‰rke
-create new bookmark	bookmarks	sv	Skapa bokm‰rke
+book marks	common	sv	Bokm√§rken
+bookmark changed sucessfully	bookmarks	sv	Bokm√§rket √§ndrat
+bookmark created successfully.	bookmarks	sv	Bokm√§rket skapat
+bookmark deleted successfully	bookmarks	sv	Bokm√§rket raderat
+bookmark deleted successfully.	bookmarks	sv	Bokm√§rket raderat
+bookmark not editable	bookmarks	sv	Bokm√§rket inte redigerbart
+bookmark not readable	bookmarks	sv	Bokm√§rket inte l√§sbarat
+bookmarks	common	sv	Bokm√§rken
+bookmarks settings	bookmarks	sv	Bokm√§rkes alternativ
+change bookmark	bookmarks	sv	√Ñndra bokm√§rke
+close this window to return	bookmarks	sv	St√§ng f√∂nstret och √•terv√§nd
+create bookmark	bookmarks	sv	Skapa bokm√§rke
+create new bookmark	bookmarks	sv	Skapa bokm√§rke
 date added	bookmarks	sv	Datum skapad
-date changed	bookmarks	sv	Datum ‰ndrat
+date changed	bookmarks	sv	Datum √§ndrat
 date last updated	bookmarks	sv	Datum senast uppdaterad
-date last visited	bookmarks	sv	Datum senast besˆkt
+date last visited	bookmarks	sv	Datum senast bes√∂kt
 descending	bookmarks	sv	Fallande
-edit bookmark	bookmarks	sv	ƒndra bokm‰rken
-edit this bookmark	bookmarks	sv	ƒndra bokm‰rket
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	sv	Skriv filnamn pÂ Netscape bokm‰rkesfil<br>du vill importera.
-export bookmarks	common	sv	Exportera bokm‰rken
-fewer	bookmarks	sv	F‰rre
+edit bookmark	bookmarks	sv	√Ñndra bokm√§rken
+edit this bookmark	bookmarks	sv	√Ñndra bokm√§rket
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	sv	Skriv filnamn p√• Netscape bokm√§rkesfil<br>du vill importera.
+export bookmarks	common	sv	Exportera bokm√§rken
+fewer	bookmarks	sv	F√§rre
 filter by	bookmarks	sv	Sortera enligt
-found a link you might like	bookmarks	sv	Hittade en l‰nk du kan t‰nkas tycka om
-from	bookmarks	sv	FrÂn
-from category %1	bookmarks	sv	FrÂn kategori %1
+found a link you might like	bookmarks	sv	Hittade en l√§nk du kan t√§nkas tycka om
+from	bookmarks	sv	Fr√•n
+from category %1	bookmarks	sv	Fr√•n kategori %1
 global categories	bookmarks	sv	Globala kategorier
-highest	bookmarks	sv	Hˆgsta
-i thought you would be interested in the following link(s):	bookmarks	sv	Jag t‰nkte att du vore intresserad av fˆljande l‰nk(ar):
-import bookmarks	common	sv	Importera bokm‰rken
+highest	bookmarks	sv	H√∂gsta
+i thought you would be interested in the following link(s):	bookmarks	sv	Jag t√§nkte att du vore intresserad av f√∂ljande l√§nk(ar):
+import bookmarks	common	sv	Importera bokm√§rken
 like	bookmarks	sv	Liknande
 list view	bookmarks	sv	List vy
-lowest	bookmarks	sv	L‰gsta
-mail this bookmark	bookmarks	sv	E-posta bokm‰rket
-mail-this-link message sent to %1.	bookmarks	sv	"E-posta l‰nken" meddelande skickat till %1.
+lowest	bookmarks	sv	L√§gsta
+mail this bookmark	bookmarks	sv	E-posta bokm√§rket
+mail-this-link message sent to %1.	bookmarks	sv	"E-posta l√§nken" meddelande skickat till %1.
 mass update:	bookmarks	sv	Massuppdatera:
-message from	bookmarks	sv	Meddelande frÂn
+message from	bookmarks	sv	Meddelande fr√•n
 more	bookmarks	sv	Fler
 name	bookmarks	sv	Namn
-name is required	bookmarks	sv	Namn kr‰vs
-netscape bookmark file	bookmarks	sv	Netscape kompatibel bokm‰rkesfil
-netscape bookmark filename is required!	bookmarks	sv	Netscape bokm‰rkens filnamn kr‰vs
+name is required	bookmarks	sv	Namn kr√§vs
+netscape bookmark file	bookmarks	sv	Netscape kompatibel bokm√§rkesfil
+netscape bookmark filename is required!	bookmarks	sv	Netscape bokm√§rkens filnamn kr√§vs
 new	bookmark	sv	Nytt
-new bookmark	bookmarks	sv	Nytt bokm‰rke
+new bookmark	bookmarks	sv	Nytt bokm√§rke
 or	bookmarks	sv	Eller
-please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	sv	Fyll i <B>Till e-postadress</B>, <B>ƒmne</B> och <B>Meddelande</B>
-please select the categories to export	bookmarks	sv	V‰lj kategori att exportera
-query condition	bookmarks	sv	Sˆk kriterier
-rating	bookmarks	sv	Omdˆmme
-search for:	bookmarks	sv	Sˆk efter:
-select the format you would like to export to	bookmarks	sv	V‰lj export format
-send bookmark	bookmarks	sv	Skicka bokm‰rke
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	sv	Fyll i <B>Till e-postadress</B>, <B>√Ñmne</B> och <B>Meddelande</B>
+please select the categories to export	bookmarks	sv	V√§lj kategori att exportera
+query condition	bookmarks	sv	S√∂k kriterier
+rating	bookmarks	sv	Omd√∂mme
+search for:	bookmarks	sv	S√∂k efter:
+select the format you would like to export to	bookmarks	sv	V√§lj export format
+send bookmark	bookmarks	sv	Skicka bokm√§rke
 site configuration	bookmarks	sv	Sajt alternativ
 sub category	bookmarks	sv	Underkategori
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sv	Adressen %1 ‰r ogiltig. Formatet mÂste vara <strong>user@domain</strong> och dom‰nen mÂste vara giltig!
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sv	Adressen %1 √§r ogiltig. Formatet m√•ste vara <strong>user@domain</strong> och dom√§nen m√•ste vara giltig!
 to e-mail addresses	bookmarks	sv	Till
-to which category should the imported folder hierarchy be attached	bookmarks	sv	Till vilken kategori ska katalog tr‰d importeras
-total visits	bookmarks	sv	Antal besˆk
-tree view	bookmarks	sv	Tr‰d vy
-unable to open temp file %1 for import.	bookmarks	sv	Kunde inte ˆppna temp fil %1 fˆr import
-url is required.	bookmarks	sv	URL kr‰vs
-view bookmark	bookmarks	sv	Visa bokm‰rke
-view this bookmark	bookmarks	sv	Visa bokm‰rket
+to which category should the imported folder hierarchy be attached	bookmarks	sv	Till vilken kategori ska katalog tr√§d importeras
+total visits	bookmarks	sv	Antal bes√∂k
+tree view	bookmarks	sv	Tr√§d vy
+unable to open temp file %1 for import.	bookmarks	sv	Kunde inte √∂ppna temp fil %1 f√∂r import
+url is required.	bookmarks	sv	URL kr√§vs
+view bookmark	bookmarks	sv	Visa bokm√§rke
+view this bookmark	bookmarks	sv	Visa bokm√§rket
 warning	bookmarks	sv	Varning
-you are viewing this site outside of egroupware	bookmarks	sv	Du besˆker denna sajt utanfˆr eGroupWare
-you must select a category	bookmarks	sv	V‰lj kategori
-you need to select a category!	bookmarks	sv	V‰lj kategori
+you are viewing this site outside of egroupware	bookmarks	sv	Du bes√∂ker denna sajt utanf√∂r eGroupWare
+you must select a category	bookmarks	sv	V√§lj kategori
+you need to select a category!	bookmarks	sv	V√§lj kategori

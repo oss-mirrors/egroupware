@@ -3,131 +3,131 @@
 %1 completed	workflow	pl	%1 wykonano
 %1 configuration	workflow	pl	%1 Konfiguracja
 %1 days, %2:%3:%4	workflow	pl	%1 dni. %2:%3:%4
-/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	pl	katalog '/workflow' nie istnieje i nie mo¿e byæ utworzony, proszê popro¶ administrator o sprawdzenie konfiguracji globalnej
-abort instance	workflow	pl	anuluj instancjê
-abort this instance	workflow	pl	Anuluj t± instancjê
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	pl	katalog '/workflow' nie istnieje i nie moÅ¼e byÄ‡ utworzony, proszÄ™ poproÅ› administrator o sprawdzenie konfiguracji globalnej
+abort instance	workflow	pl	anuluj instancjÄ™
+abort this instance	workflow	pl	Anuluj tÄ… instancjÄ™
 aborted	workflow	pl	anulowano
-access denied for user %1 on activity %2, no role	workflow	pl	Brak dostêpu dla u¿ytkownika %1 do czynno¶ci %2, brak roli
-action %1 is impossible if we have no activity and no instance designated for it!	workflow	pl	Akcja %1 nie mo¿e byæ wykonana, je¿eli nie ma czynno¶ci oraz instancji przypisanych do niej.
-action %1 is impossible, another user is already in place	workflow	pl	Akcja %1 nie mo¿e byæ wykonana, inny u¿ytkownik jest ju¿ na miejscu.
-action %1 is impossible, there are no user assigned to this activity for this instance	workflow	pl	Akcja %1 nie mo¿e byæ wykonana, nie ma u¿ytkowników przypisanych do tej czynno¶ci dla tej instancji.
-action %1 needs an activity and activity %2 does not exists	workflow	pl	Akcja %1 wymaga istnienia czynno¶ci, ale czynno¶æ %2 nie istnieje.
+access denied for user %1 on activity %2, no role	workflow	pl	Brak dostÄ™pu dla uÅ¼ytkownika %1 do czynnoÅ›ci %2, brak roli
+action %1 is impossible if we have no activity and no instance designated for it!	workflow	pl	Akcja %1 nie moÅ¼e byÄ‡ wykonana, jeÅ¼eli nie ma czynnoÅ›ci oraz instancji przypisanych do niej.
+action %1 is impossible, another user is already in place	workflow	pl	Akcja %1 nie moÅ¼e byÄ‡ wykonana, inny uÅ¼ytkownik jest juÅ¼ na miejscu.
+action %1 is impossible, there are no user assigned to this activity for this instance	workflow	pl	Akcja %1 nie moÅ¼e byÄ‡ wykonana, nie ma uÅ¼ytkownikÃ³w przypisanych do tej czynnoÅ›ci dla tej instancji.
+action %1 needs an activity and activity %2 does not exists	workflow	pl	Akcja %1 wymaga istnienia czynnoÅ›ci, ale czynnoÅ›Ä‡ %2 nie istnieje.
 action %1 needs an instance and instance %2 does not exists	workflow	pl	Akcja %1 wymaga istnienia instancji, ale instancja %2 nie istnieje.
 actions	workflow	pl	Akcje
-actions right options	common	pl	Ustawienia uprawnieñ akcji
+actions right options	common	pl	Ustawienia uprawnieÅ„ akcji
 activate	workflow	pl	aktywuj
 active	workflow	pl	Aktywne
 active:	workflow	pl	aktywne:
-activities	workflow	pl	Czynno¶ci
-activities selection	workflow	pl	Wybór czynno¶ci
-activities updated	workflow	pl	Czynno¶ci zaktualizowano
-activity	workflow	pl	czynno¶æ
-activity  status	workflow	pl	Status czynno¶ci
-activity %1	workflow	pl	czynno¶æ %1
-activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	pl	Czynno¶æ %1 (nr %2) jest po³±czone z nie istniej±cym procesem (nr %3).
-activity %1 code is not avaible	workflow	pl	kod czynno¶ci %1 nie jest dostêpny
-activity %1 is interactive but has no role assigned	workflow	pl	Czynno¶æ %1 jest interaktywna, ale nie przypisano do niej ¿adnej roli
-activity %1 is interactive so it must use the $instance->complete() method	workflow	pl	Czynno¶æ %1 jest interaktywna - musi zatem wykorzystywaæ metodê $instance->complete()
-activity %1 is standalone but has transitions	workflow	pl	Czynno¶æ %1 jest samodzielna, lecz posiada zdefiniowane przej¶cia
-activity %1 is standalone or view but has transitions	workflow	pl	Czynno¶æ %1 jest samodzielna lub jest widokiem, lecz posiada zdefiniowane przej¶cia
-activity agent removed	workflow	pl	Agent czynno¶ci usuniêty
-activity completed	workflow	pl	Czynno¶æ zakoñczono
-activity failure	workflow	pl	awaria czynno¶ci
-activity saved	workflow	pl	Czynno¶æ zapisano
-activity:	workflow	pl	czynno¶ci:
-add a transition	workflow	pl	Dodaj przej¶cie
+activities	workflow	pl	CzynnoÅ›ci
+activities selection	workflow	pl	WybÃ³r czynnoÅ›ci
+activities updated	workflow	pl	CzynnoÅ›ci zaktualizowano
+activity	workflow	pl	czynnoÅ›Ä‡
+activity  status	workflow	pl	Status czynnoÅ›ci
+activity %1	workflow	pl	czynnoÅ›Ä‡ %1
+activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	pl	CzynnoÅ›Ä‡ %1 (nr %2) jest poÅ‚Ä…czone z nie istniejÄ…cym procesem (nr %3).
+activity %1 code is not avaible	workflow	pl	kod czynnoÅ›ci %1 nie jest dostÄ™pny
+activity %1 is interactive but has no role assigned	workflow	pl	CzynnoÅ›Ä‡ %1 jest interaktywna, ale nie przypisano do niej Å¼adnej roli
+activity %1 is interactive so it must use the $instance->complete() method	workflow	pl	CzynnoÅ›Ä‡ %1 jest interaktywna - musi zatem wykorzystywaÄ‡ metodÄ™ $instance->complete()
+activity %1 is standalone but has transitions	workflow	pl	CzynnoÅ›Ä‡ %1 jest samodzielna, lecz posiada zdefiniowane przejÅ›cia
+activity %1 is standalone or view but has transitions	workflow	pl	CzynnoÅ›Ä‡ %1 jest samodzielna lub jest widokiem, lecz posiada zdefiniowane przejÅ›cia
+activity agent removed	workflow	pl	Agent czynnoÅ›ci usuniÄ™ty
+activity completed	workflow	pl	CzynnoÅ›Ä‡ zakoÅ„czono
+activity failure	workflow	pl	awaria czynnoÅ›ci
+activity saved	workflow	pl	CzynnoÅ›Ä‡ zapisano
+activity:	workflow	pl	czynnoÅ›ci:
+add a transition	workflow	pl	Dodaj przejÅ›cie
 add aborted instances	workflow	pl	Dodaj przerwane instancje
 add advanced actions	workflow	pl	Dodaj zaawansowane akcje
-add new role	workflow	pl	Dodaj now± rolê
+add new role	workflow	pl	Dodaj nowÄ… rolÄ™
 add or edit a process	workflow	pl	Dodaj lub edytuj proces
-add or edit a role	workflow	pl	Dodaj lub edytuj rolê
-add or edit an activity	workflow	pl	Dodaj lub edytuj czynno¶æ
-add property	workflow	pl	Dodaj w³a¶ciwo¶æ
-add role	workflow	pl	Dodaj rolê
-add role to process	workflow	pl	Dodaj rolê do procesu
-add transition	workflow	pl	dodaj przej¶cie
-add transitions	workflow	pl	Dodaj przej¶cia
-add transitions from	workflow	pl	Dodaj przej¶cia do
-add transitions to	workflow	pl	Dodaj przej¶cia z
-administer instances	admin	pl	Zarz±dzaj instancjami
-administer processes	admin	pl	Zarz±dzaj procesami
-bad role type	workflow	pl	Niew³a¶ciwy typ roli
+add or edit a role	workflow	pl	Dodaj lub edytuj rolÄ™
+add or edit an activity	workflow	pl	Dodaj lub edytuj czynnoÅ›Ä‡
+add property	workflow	pl	Dodaj wÅ‚aÅ›ciwoÅ›Ä‡
+add role	workflow	pl	Dodaj rolÄ™
+add role to process	workflow	pl	Dodaj rolÄ™ do procesu
+add transition	workflow	pl	dodaj przejÅ›cie
+add transitions	workflow	pl	Dodaj przejÅ›cia
+add transitions from	workflow	pl	Dodaj przejÅ›cia do
+add transitions to	workflow	pl	Dodaj przejÅ›cia z
+administer instances	admin	pl	ZarzÄ…dzaj instancjami
+administer processes	admin	pl	ZarzÄ…dzaj procesami
+bad role type	workflow	pl	NiewÅ‚aÅ›ciwy typ roli
 bcc:	workflow	pl	UDW (BCC):
-cleanup actions	workflow	pl	przeczy¶æ akcje
+cleanup actions	workflow	pl	przeczyÅ›Ä‡ akcje
 code	workflow	pl	kod
 compilation	workflow	pl	Kompilacja
-complete	workflow	pl	Zakoñcz
-complete cleanup of aborted instances done	workflow	pl	Ca³kowite czyszczenie przerwanych instancji wykonane
-complete cleanup of all instances done	workflow	pl	Ca³kowite czyszczenie wszystkich istnancji wykonane
-completed	workflow	pl	Zakoñczono
-config values	common	pl	Warto¶ci konfiguracyjne
-confirm delete	workflow	pl	Potwierd¼ usuniêcie
-couldn't add transition	workflow	pl	Nie mo¿na dodaæ przej¶cia
-create	workflow	pl	utwórz
+complete	workflow	pl	ZakoÅ„cz
+complete cleanup of aborted instances done	workflow	pl	CaÅ‚kowite czyszczenie przerwanych instancji wykonane
+complete cleanup of all instances done	workflow	pl	CaÅ‚kowite czyszczenie wszystkich istnancji wykonane
+completed	workflow	pl	ZakoÅ„czono
+config values	common	pl	WartoÅ›ci konfiguracyjne
+confirm delete	workflow	pl	PotwierdÅº usuniÄ™cie
+couldn't add transition	workflow	pl	Nie moÅ¼na dodaÄ‡ przejÅ›cia
+create	workflow	pl	utwÃ³rz
 created	workflow	pl	Utworzono
-default config values	workflow	pl	Domy¶lne warto¶ci konfiguracyjne
-default owner	workflow	pl	Domy¶lny w³a¶ciciel
-default user	workflow	pl	Domyslny u¿ytkownik
-delete selected	workflow	pl	Usuñ wybrane
+default config values	workflow	pl	DomyÅ›lne wartoÅ›ci konfiguracyjne
+default owner	workflow	pl	DomyÅ›lny wÅ‚aÅ›ciciel
+default user	workflow	pl	Domyslny uÅ¼ytkownik
+delete selected	workflow	pl	UsuÅ„ wybrane
 description	workflow	pl	Opis
-don't move	workflow	pl	Nie przeno¶
+don't move	workflow	pl	Nie przenoÅ›
 duration	workflow	pl	Czas trwania
-enter an activity name	workflow	pl	Podaj nazwê czynno¶ci
-exception	workflow	pl	wyj±tek
-failed to create workitem	workflow	pl	nie uda³o siê utworzyæ obiektu roboczego
-failed to execute automatic activity	workflow	pl	nie uda³o siê wykonaæ automatycznej czynno¶ci
-failed to obtain lock on %1 table	workflow	pl	nie uda³o siê uzyskaæ blokady na tabeli %1
-failed to obtain lock on instances table	workflow	pl	nie uda³o siê uzyskaæ blokady na tabelach czynno¶ci
-failed to record instance properties	workflow	pl	nie uda³o siê zarejestrowaæ w³asno¶ci instanacji
-failed to synchronize instance data with the database	workflow	pl	nie uda³o siê zsynchronizowaæ danych instancji z baz± danych
+enter an activity name	workflow	pl	Podaj nazwÄ™ czynnoÅ›ci
+exception	workflow	pl	wyjÄ…tek
+failed to create workitem	workflow	pl	nie udaÅ‚o siÄ™ utworzyÄ‡ obiektu roboczego
+failed to execute automatic activity	workflow	pl	nie udaÅ‚o siÄ™ wykonaÄ‡ automatycznej czynnoÅ›ci
+failed to obtain lock on %1 table	workflow	pl	nie udaÅ‚o siÄ™ uzyskaÄ‡ blokady na tabeli %1
+failed to obtain lock on instances table	workflow	pl	nie udaÅ‚o siÄ™ uzyskaÄ‡ blokady na tabelach czynnoÅ›ci
+failed to record instance properties	workflow	pl	nie udaÅ‚o siÄ™ zarejestrowaÄ‡ wÅ‚asnoÅ›ci instanacji
+failed to synchronize instance data with the database	workflow	pl	nie udaÅ‚o siÄ™ zsynchronizowaÄ‡ danych instancji z bazÄ… danych
 failure	workflow	pl	awaria
-my activities	workflow	pl	Moje czynno¶ci
+my activities	workflow	pl	Moje czynnoÅ›ci
 my instances	workflow	pl	Moje instancje
 my processes	workflow	pl	Moje procesy
 name	workflow	pl	Nazwa
 new instance	workflow	pl	Nowa instancja
-new transition added	workflow	pl	Dodano nowe przej¶cie
-next activity	workflow	pl	nastêpna czynno¶æ
-no activites	workflow	pl	Brak czynno¶ci
-no activity indicated	workflow	pl	Nie wskazano czynno¶ci
+new transition added	workflow	pl	Dodano nowe przejÅ›cie
+next activity	workflow	pl	nastÄ™pna czynnoÅ›Ä‡
+no activites	workflow	pl	Brak czynnoÅ›ci
+no activity indicated	workflow	pl	Nie wskazano czynnoÅ›ci
 no process indicated	workflow	pl	Nie wskazano procesu
-no properties defined	workflow	pl	Nie zdefiniowano w³a¶ciwo¶ci
-no roles asociated with this activity	workflow	pl	Nie przyporz±dkowano ról do tej czynno¶ci
+no properties defined	workflow	pl	Nie zdefiniowano wÅ‚aÅ›ciwoÅ›ci
+no roles asociated with this activity	workflow	pl	Nie przyporzÄ…dkowano rÃ³l do tej czynnoÅ›ci
 printer friendly	workflow	pl	Wersja do wydruku
-process %d has been activated	workflow	pl	Proces %d zosta³ aktywowany
-process %d has been deactivated	workflow	pl	Proces %d zosta³ deaktywowany
-process %s removed	workflow	pl	Proces %s usuniêty
-quit without saving	workflow	pl	Opu¶æ bez zachowania zmian
-reload filter	workflow	pl	Prze³aduj filtr
-select a transition to remove	workflow	pl	Wybierz przej¶cie do usuniêcia
-smtp agent has detected some errors when sending email after completion of the activity	workflow	pl	Agent SMTP wykry³ b³êdy podczas wysy³ania wiadomo¶ci po ukoñczeniu czynno¶ci.
-smtp agent has detected some errors when sending email at the beginning of the activity	workflow	pl	Agent SMTP wykry³ b³êdy podczas wysy³ania wiadomo¶ci podczas rozpoczynania czynno¶ci.
-smtp agent has detected some errors when sending email at the end of this activity	workflow	pl	Agent SMTP wykry³ b³êdy podczas wysy³ania wiadomo¶ci przy zakoñczeniu czynno¶ci.
-smtp agent has detected some errors when sending email on demand whith this activity	workflow	pl	Agent SMTP wykry³ b³êdy podczas wysy³ania wiadomo¶ci na ¿±danie zwi±zanej z czynno¶ci±.
+process %d has been activated	workflow	pl	Proces %d zostaÅ‚ aktywowany
+process %d has been deactivated	workflow	pl	Proces %d zostaÅ‚ deaktywowany
+process %s removed	workflow	pl	Proces %s usuniÄ™ty
+quit without saving	workflow	pl	OpuÅ›Ä‡ bez zachowania zmian
+reload filter	workflow	pl	PrzeÅ‚aduj filtr
+select a transition to remove	workflow	pl	Wybierz przejÅ›cie do usuniÄ™cia
+smtp agent has detected some errors when sending email after completion of the activity	workflow	pl	Agent SMTP wykryÅ‚ bÅ‚Ä™dy podczas wysyÅ‚ania wiadomoÅ›ci po ukoÅ„czeniu czynnoÅ›ci.
+smtp agent has detected some errors when sending email at the beginning of the activity	workflow	pl	Agent SMTP wykryÅ‚ bÅ‚Ä™dy podczas wysyÅ‚ania wiadomoÅ›ci podczas rozpoczynania czynnoÅ›ci.
+smtp agent has detected some errors when sending email at the end of this activity	workflow	pl	Agent SMTP wykryÅ‚ bÅ‚Ä™dy podczas wysyÅ‚ania wiadomoÅ›ci przy zakoÅ„czeniu czynnoÅ›ci.
+smtp agent has detected some errors when sending email on demand whith this activity	workflow	pl	Agent SMTP wykryÅ‚ bÅ‚Ä™dy podczas wysyÅ‚ania wiadomoÅ›ci na Å¼Ä…danie zwiÄ…zanej z czynnoÅ›ciÄ….
 template	workflow	pl	szablon
-there are no activities available	workflow	pl	Brak dostêpnych czynno¶ci
-there are no config value defined	workflow	pl	Nie zdefiniowano warto¶ci konfiguracyjnej
-there are no instances available	workflow	pl	Brak dostêpnych instancji
-there are no mappings defined for this process	workflow	pl	Nie zdefiniowano przej¶æ dla tego procesu
-there are no process available	workflow	pl	Brak dostêpnego procesu
-there are no processes	workflow	pl	Brak procesów
-there are no processes available	workflow	pl	Brak dostêpnych procesów
-there are no processes defined	workflow	pl	Nie zdefiniowano procesów
-there are no processes with the current filter	workflow	pl	¯aden proces nie pasuje do zadanego filtra
-there are no properties available	workflow	pl	Brak dostêpnych w³asno¶ci
-there are no roles defined for this process	workflow	pl	Nie zdefiniowano ról dla tego procesu
-there are no transitions defined	workflow	pl	Nie zdefiniowano przej¶æ
-there are no user activites available	workflow	pl	Brak dostêpnych czynno¶ci u¿ytkowników
-transition	workflow	pl	przej¶cie
-transition mode	workflow	pl	tryb przej¶cia
-transition to %1	workflow	pl	przej¶cie do %1
-transition waiting for human interaction	workflow	pl	przej¶cie oczekuje na akcjê u¿ytkownika
-transitions	workflow	pl	przej¶cia
-transitions removed successfully	workflow	pl	Usuniêto przej¶cia
+there are no activities available	workflow	pl	Brak dostÄ™pnych czynnoÅ›ci
+there are no config value defined	workflow	pl	Nie zdefiniowano wartoÅ›ci konfiguracyjnej
+there are no instances available	workflow	pl	Brak dostÄ™pnych instancji
+there are no mappings defined for this process	workflow	pl	Nie zdefiniowano przejÅ›Ä‡ dla tego procesu
+there are no process available	workflow	pl	Brak dostÄ™pnego procesu
+there are no processes	workflow	pl	Brak procesÃ³w
+there are no processes available	workflow	pl	Brak dostÄ™pnych procesÃ³w
+there are no processes defined	workflow	pl	Nie zdefiniowano procesÃ³w
+there are no processes with the current filter	workflow	pl	Å»aden proces nie pasuje do zadanego filtra
+there are no properties available	workflow	pl	Brak dostÄ™pnych wÅ‚asnoÅ›ci
+there are no roles defined for this process	workflow	pl	Nie zdefiniowano rÃ³l dla tego procesu
+there are no transitions defined	workflow	pl	Nie zdefiniowano przejÅ›Ä‡
+there are no user activites available	workflow	pl	Brak dostÄ™pnych czynnoÅ›ci uÅ¼ytkownikÃ³w
+transition	workflow	pl	przejÅ›cie
+transition mode	workflow	pl	tryb przejÅ›cia
+transition to %1	workflow	pl	przejÅ›cie do %1
+transition waiting for human interaction	workflow	pl	przejÅ›cie oczekuje na akcjÄ™ uÅ¼ytkownika
+transitions	workflow	pl	przejÅ›cia
+transitions removed successfully	workflow	pl	UsuniÄ™to przejÅ›cia
 valid	workflow	pl	Poprawny
 valid process	workflow	pl	Poprawny proces
-value	workflow	pl	Warto¶æ
+value	workflow	pl	WartoÅ›Ä‡
 version	workflow	pl	Wersja
-view details	workflow	pl	poka¿ szczegó³y
-workflow configuration	admin	pl	Konfiguracja modu³u Workflow
-workflow preferences	workflow	pl	Preferencje modu³u Workflow
+view details	workflow	pl	pokaÅ¼ szczegÃ³Å‚y
+workflow configuration	admin	pl	Konfiguracja moduÅ‚u Workflow
+workflow preferences	workflow	pl	Preferencje moduÅ‚u Workflow

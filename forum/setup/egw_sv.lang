@@ -1,18 +1,18 @@
 add forum	forum	sv	Skapa forum
-all forums, user posts, and topics in this category will be lost!	forum	sv	Alla forum, användares meddelanden och ämnen i denna kategori kommer att raderas!
-all user posts and topics will be lost!	forum	sv	Alla användares meddelanden och ämnen kommer att raderas!
-all user posts, and topics in this forum will be lost!	forum	sv	Alla användares meddelanden och ämnen i detta forum kommer att raderas!
+all forums, user posts, and topics in this category will be lost!	forum	sv	Alla forum, anvÃ¤ndares meddelanden och Ã¤mnen i denna kategori kommer att raderas!
+all user posts and topics will be lost!	forum	sv	Alla anvÃ¤ndares meddelanden och Ã¤mnen kommer att raderas!
+all user posts, and topics in this forum will be lost!	forum	sv	Alla anvÃ¤ndares meddelanden och Ã¤mnen i detta forum kommer att raderas!
 are you sure you want to delete this category?	forum	sv	Vill du verkligen radera kategorin?
 are you sure you want to delete this forum?	forum	sv	Vill du verkligen radera forumet?
-belongs to category	forum	sv	Tillhör kategori
+belongs to category	forum	sv	TillhÃ¶r kategori
 category description	forum	sv	Kategori beskrivning
 category name	forum	sv	Kategori namn
-collapse threads	forum	sv	Komprimera trådar
+collapse threads	forum	sv	Komprimera trÃ¥dar
 collapsed	forum	sv	Komprimerad
 create new category	forum	sv	Skapa ny kategori
 current categories and sub forums	forum	sv	Aktuella kategorier och under forum
-edit forum	forum	sv	Ändra forum
-email replies to this thread, to the address above	forum	sv	E-post svar i denna tråd till adressen ovan
+edit forum	forum	sv	Ã„ndra forum
+email replies to this thread, to the address above	forum	sv	E-post svar i denna trÃ¥d till adressen ovan
 forum	common	sv	Forum
 forum administration	common	sv	Forum administration
 forum description	forum	sv	Forum beskrivning
@@ -21,19 +21,19 @@ forums	common	sv	Forum
 latest reply	forum	sv	Senaste svar
 new category	forum	sv	Ny kategori
 new forum	forum	sv	Nytt forum
-new topic	forum	sv	Nytt ämne
+new topic	forum	sv	Nytt Ã¤mne
 no category	forum	sv	Ingen kategori
 post	forum	sv	Posta
-post a message to this thread	forum	sv	Posta ett meddelande till denna tråd
+post a message to this thread	forum	sv	Posta ett meddelande till denna trÃ¥d
 replies	forum	sv	Svar
 return to admin	forum	sv	Tillbaks till admin
 return to forums	forum	sv	Tillbaks till forum
 sub category	forum	sv	Under kategori
 there are no forums in this category	forum	sv	Det finns inga forum i denna kategori
-threaded	forum	sv	Trådad
-topic	forum	sv	Ämne
+threaded	forum	sv	TrÃ¥dad
+topic	forum	sv	Ã„mne
 update category	forum	sv	Uppdatera kategori
 update forum	forum	sv	Uppdatera forum
-view threads	forum	sv	Visa tråd
+view threads	forum	sv	Visa trÃ¥d
 your email	forum	sv	Din e-post adress
 your name	forum	sv	Ditt namn

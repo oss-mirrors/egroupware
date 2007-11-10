@@ -1,24 +1,24 @@
 actions	polls	es-es	acciones
-add answer to poll	polls	es-es	Añadir respuestas al sondeo
-add answers	polls	es-es	Añadir respuestas
-add new poll question	polls	es-es	Añadir nueva pregunta al sondeo
-add questions	polls	es-es	Añadir preguntas
+add answer to poll	polls	es-es	AÃ±adir respuestas al sondeo
+add answers	polls	es-es	AÃ±adir respuestas
+add new poll question	polls	es-es	AÃ±adir nueva pregunta al sondeo
+add questions	polls	es-es	AÃ±adir preguntas
 administrators	polls	es-es	Administradores
-allow users to vote more then once	polls	es-es	permitir a los usuarios votar más de una vez
-allways use latest poll	polls	es-es	Siempre usar el último sondeo
+allow users to vote more then once	polls	es-es	permitir a los usuarios votar mÃ¡s de una vez
+allways use latest poll	polls	es-es	Siempre usar el Ãºltimo sondeo
 answer	polls	es-es	Respuesta
-answer has been added to poll	polls	es-es	La respuesta se ha añadido al sondeo
+answer has been added to poll	polls	es-es	La respuesta se ha aÃ±adido al sondeo
 answer has been updated	polls	es-es	La respuesta ha sido actualizada
 answers	polls	es-es	Respuestas
-are you sure want to delete this answer ?	polls	es-es	¿Seguro que quiere borrar esta respuesta?
-are you sure want to delete this question ?	polls	es-es	¿Seguro que quiere borrar esta pregunta?
+are you sure want to delete this answer ?	polls	es-es	Â¿Seguro que quiere borrar esta respuesta?
+are you sure want to delete this question ?	polls	es-es	Â¿Seguro que quiere borrar esta pregunta?
 current poll	polls	es-es	Sondeo actual
 edit answer	polls	es-es	Editar respuesta
 edit poll question	polls	es-es	Editar respuesta del sondeo
-egroupware users (non-anonymous)	polls	es-es	Usuarios de eGroupWare (no anónimos)
+egroupware users (non-anonymous)	polls	es-es	Usuarios de eGroupWare (no anÃ³nimos)
 enter poll question	polls	es-es	Introducir pregunta para el sondeo
-everyone incl. anonymous users	polls	es-es	Todos, incluso los anónimos
-new poll has been added.  you should now add some answers for this poll	polls	es-es	Se ha añadido un nuevo sondeo. Debe añadir ahora las respuestas para este sondeo.
+everyone incl. anonymous users	polls	es-es	Todos, incluso los anÃ³nimos
+new poll has been added.  you should now add some answers for this poll	polls	es-es	Se ha aÃ±adido un nuevo sondeo. Debe aÃ±adir ahora las respuestas para este sondeo.
 noone	polls	es-es	Nadie
 poll question	polls	es-es	Pregunta para el sondeo
 poll votable by	polls	es-es	Sondeo votable por
@@ -26,7 +26,7 @@ polls	common	es-es	Sondeos
 question has been updated	polls	es-es	La pregunta ha sido actualizada
 result visible to	polls	es-es	Resultado visible para
 select current poll	polls	es-es	Seleccionar sondeo actual
-settings updated	polls	es-es	Configuración actualizada
+settings updated	polls	es-es	ConfiguraciÃ³n actualizada
 show answers	polls	es-es	Mostrar respuestas
 show questions	common	es-es	Mostrar preguntas
 total votes	polls	es-es	Total
@@ -34,6 +34,6 @@ view poll	polls	es-es	Ver sondeo
 view results	polls	es-es	Ver resultados
 vote	polls	es-es	Votar
 voting booth admin	admin	es-es	Puesto del voto
-voting booth administration	polls	es-es	Administración de puestos de voto
-which poll	polls	es-es	Qué sondeo
-you are not (yet) allowed view the result of this vote.	polls	es-es	No puede (aún) ver el resultado de esta votación.
+voting booth administration	polls	es-es	AdministraciÃ³n de puestos de voto
+which poll	polls	es-es	QuÃ© sondeo
+you are not (yet) allowed view the result of this vote.	polls	es-es	No puede (aÃºn) ver el resultado de esta votaciÃ³n.

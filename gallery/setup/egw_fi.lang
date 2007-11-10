@@ -1,22 +1,22 @@
-after successful installation of all instances, you have to copy %1 to %2!	gallery	fi	Kun olet asentanut kaikki onnistuneesti, sinun pit‰‰ kopioida %1 -> %2!
+after successful installation of all instances, you have to copy %1 to %2!	gallery	fi	Kun olet asentanut kaikki onnistuneesti, sinun pit√§√§ kopioida %1 -> %2!
 album frame (%1samples%2)	gallery	fi	Albumin kehys (%1Esimerkit%2)
 alignment of the block	gallery	fi	Lohkon ryhmittely
 all filenames are relative to %1.	gallery	fi	Kaikki tiedostonimet ovat suhteellisia %1
-all other egroupware users will be created by the g2 integration including there admin rights.	gallery	fi	Kaikki muut eGroupWaren k‰ytt‰j‰ voivat luoda G2 integrointeja, mukaan lukien admin oikeudet
-an error occurred during user creation in g2.	gallery	fi	Virha havaittu luodessa k‰ytt‰j‰‰ G2:teen
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	fi	Kaikki muut eGroupWaren k√§ytt√§j√§ voivat luoda G2 integrointeja, mukaan lukien admin oikeudet
+an error occurred during user creation in g2.	gallery	fi	Virha havaittu luodessa k√§ytt√§j√§√§ G2:teen
 an error occurred while trying to initialize g2.	gallery	fi	Virhe havaittu alustaessa G2:ta
-can be used to limit the block to a certain album.	gallery	fi	Voidaan k‰ytt‰‰ rajoittaan tietty‰ albumia
-center	gallery	fi	Keskell‰
+can be used to limit the block to a certain album.	gallery	fi	Voidaan k√§ytt√§√§ rajoittaan tietty√§ albumia
+center	gallery	fi	Keskell√§
 complete gallery	gallery	fi	Galleria on valmis
-default item to show in the gallery.	gallery	fi	Oletuskohde n‰ytet‰‰n Galleriassa.
-extra information to show	gallery	fi	N‰yt‰ ylim‰‰r‰ist‰ tietoa
-for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	fi	Useita eGroupWare instansseja varten, sinun t‰ytyy poistaa %1, voidaksesi asentaa seuraava instanssi.
-full size	gallery	fi	T‰ysi koko
+default item to show in the gallery.	gallery	fi	Oletuskohde n√§ytet√§√§n Galleriassa.
+extra information to show	gallery	fi	N√§yt√§ ylim√§√§r√§ist√§ tietoa
+for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	fi	Useita eGroupWare instansseja varten, sinun t√§ytyy poistaa %1, voidaksesi asentaa seuraava instanssi.
+full size	gallery	fi	T√§ysi koko
 gallery	common	fi	Galleria
 gallery menu	gallery	fi	Galleria valikko
 gallery sidebar	gallery	fi	Galleria sivupalkilla
 gallery without sidebar	gallery	fi	Galleria ilman sivupalkkia
-gallery2 is not installed, you need to %1do that%2 first!!!	gallery	fi	Gallery2 EI ole asennettu, sinun pit‰‰ ensin tehd‰ %1 %2!!!
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	fi	Gallery2 EI ole asennettu, sinun pit√§√§ ensin tehd√§ %1 %2!!!
 heading	gallery	fi	Otsikko
 image frame (%1samples%2)	gallery	fi	Kuvan kehys (%1Esimerkki%2)
 imageblock	gallery	fi	Kuvanesto
@@ -27,14 +27,14 @@ pagename of an other page to link to	gallery	fi	Sivunnimi on linkki toiselle siv
 please note:	gallery	fi	Huomio:
 set block title to	gallery	fi	Aseta eston otsikko
 set gallery title as page-title?	gallery	fi	Aseta gallerian otsikko sivun nimeksi
-should contain a "gallery" block in contentarea "center".	gallery	fi	Tuleeko "galleria" lohkon sis‰lt‰‰ sis‰ltˆalue "keskell‰".
-size (maximum number of pixel of the longest side)	gallery	fi	Koko (Pikseleiden maksimim‰‰r‰ kuvan pitk‰ll‰ sivulla)
+should contain a "gallery" block in contentarea "center".	gallery	fi	Tuleeko "galleria" lohkon sis√§lt√§√§ sis√§lt√∂alue "keskell√§".
+size (maximum number of pixel of the longest side)	gallery	fi	Koko (Pikseleiden maksimim√§√§r√§ kuvan pitk√§ll√§ sivulla)
 specific item (requires itemid!)	gallery	fi	erityinen kohde (tarvitsee kohteen tunniste ID:n)
-the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	fi	Yll‰pit‰j‰n tunnus pit‰‰ olla olemassa eGroupWaressa tunnuksena, t‰sm‰lleen samalla tapaa kirjoitettuna.
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	fi	Yll√§pit√§j√§n tunnus pit√§√§ olla olemassa eGroupWaressa tunnuksena, t√§sm√§lleen samalla tapaa kirjoitettuna.
 type of the embeded gallery	gallery	fi	Sulatetun Gallerian tyyppi
-use %1 as g2 data directory.	gallery	fi	K‰yt‰ %1 G2 data hakemistona
-use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	fi	K‰yt‰ samoja tietokannan asetuksia kuin eGW asennuksessa (katso %1 tiedostosta) ja j‰t‰ taulu ja sarake prefixit kuten suositellaan
-use this module to display the embeded gallery	gallery	fi	K‰yt‰ t‰t‰ modulia n‰ytt‰m‰‰n upotettu Galleria
-view count	gallery	fi	N‰yt‰ laskuri
+use %1 as g2 data directory.	gallery	fi	K√§yt√§ %1 G2 data hakemistona
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	fi	K√§yt√§ samoja tietokannan asetuksia kuin eGW asennuksessa (katso %1 tiedostosta) ja j√§t√§ taulu ja sarake prefixit kuten suositellaan
+use this module to display the embeded gallery	gallery	fi	K√§yt√§ t√§t√§ modulia n√§ytt√§m√§√§n upotettu Galleria
+view count	gallery	fi	N√§yt√§ laskuri
 you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	fi	Saat tunnisteen "g2_itemid" parametriin URL:sta kun klikkaat kohdetta.
-you have no rights to view %1 content !!!	gallery	fi	Sinulla ei ole oikeusia n‰hd‰ %1 sis‰ltˆ‰ !!!
+you have no rights to view %1 content !!!	gallery	fi	Sinulla ei ole oikeusia n√§hd√§ %1 sis√§lt√∂√§ !!!

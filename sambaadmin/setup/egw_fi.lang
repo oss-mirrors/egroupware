@@ -1,14 +1,14 @@
 %1 - %2 of %3	sambaadmin	fi	%1 - %2 %3:sta
-add workstation	sambaadmin	fi	Lisää työasema
+add workstation	sambaadmin	fi	LisÃ¤Ã¤ tyÃ¶asema
 check ldap setup (experimental!!!)	admin	fi	Tarkista LDAP:n asetukset (kokeellinen!!!)
-computer group	admin	fi	Työryhmä
+computer group	admin	fi	TyÃ¶ryhmÃ¤
 computer ou	admin	fi	Toimialue
-displayname	sambaadmin	fi	Näytettävä nimi
-do you really want to delete selected workstation accounts?	sambaadmin	fi	Haluatko varmasti poistaa valitun työaseman käyttäjätilin
+displayname	sambaadmin	fi	NÃ¤ytettÃ¤vÃ¤ nimi
+do you really want to delete selected workstation accounts?	sambaadmin	fi	Haluatko varmasti poistaa valitun tyÃ¶aseman kÃ¤yttÃ¤jÃ¤tilin
 homedrive	admin	fi	Kotilevy
 homepath	sambaadmin	fi	Kotipolku
 logonscript	admin	fi	Kirjautumis skripti
-new account defaults	admin	fi	Uuden käyttäjätilin oletusasetukset
+new account defaults	admin	fi	Uuden kÃ¤yttÃ¤jÃ¤tilin oletusasetukset
 participants	sambaadmin	fi	Osallistujat
 path to mkntpwd	admin	fi	Polku mkntpwd
 profilepath	admin	fi	Profiilin polku
@@ -17,9 +17,9 @@ samba settings	common	fi	Samban asetukset
 samba sid	admin	fi	Samba SID
 sambaadmin	common	fi	Samba-Admin
 smb homepath	admin	fi	Samban kotipolku
-workstation account for	sambaadmin	fi	Työaseman käyttäjätili
-workstation configuration	sambaadmin	fi	Työaseman asetukset
-workstation list	sambaadmin	fi	Työasemalista
-workstation name	sambaadmin	fi	Työaseman nimi
-workstationaccount active	sambaadmin	fi	Työaseman käyttäjätili aktivointi
-workstations	sambaadmin	fi	Työasemat
+workstation account for	sambaadmin	fi	TyÃ¶aseman kÃ¤yttÃ¤jÃ¤tili
+workstation configuration	sambaadmin	fi	TyÃ¶aseman asetukset
+workstation list	sambaadmin	fi	TyÃ¶asemalista
+workstation name	sambaadmin	fi	TyÃ¶aseman nimi
+workstationaccount active	sambaadmin	fi	TyÃ¶aseman kÃ¤yttÃ¤jÃ¤tili aktivointi
+workstations	sambaadmin	fi	TyÃ¶asemat

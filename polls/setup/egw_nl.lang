@@ -3,7 +3,7 @@ add answer to poll	polls	nl	Voeg een antwoord aan de enquete toe
 add answers	polls	nl	Antwoorden toevoegen
 add new poll question	polls	nl	Voeg een nieuwe enquete vraag toe
 add questions	polls	nl	Vragen toevoegen
-allow users to vote more then once	polls	nl	Gebruikers toestaan om meer dan één keer te stemmen
+allow users to vote more then once	polls	nl	Gebruikers toestaan om meer dan Ã©Ã©n keer te stemmen
 answer	polls	nl	Antwoord
 answer has been added to poll	polls	nl	Antwoord is aan de enquete toegevoegd
 answer has been updated	polls	nl	Antwoord is bijgewerkt

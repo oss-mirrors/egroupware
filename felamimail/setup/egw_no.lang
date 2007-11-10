@@ -11,9 +11,9 @@ add to address book	felamimail	no	Legg til i adressebok
 add to addressbook	felamimail	no	legg til i adressebok
 additional info	felamimail	no	Tilleggsinformasjon
 address book	felamimail	no	Adressebok
-address book search	felamimail	no	Søk i adressebok
+address book search	felamimail	no	SÃ¸k i adressebok
 after message body	felamimail	no	Etter meldingstekst
-all address books	felamimail	no	Alle adressebøker
+all address books	felamimail	no	Alle adressebÃ¸ker
 all folders	felamimail	no	Alle mapper
 all of	felamimail	no	alle av
 allways a new window	felamimail	no	altid et nytt vindu
@@ -24,18 +24,18 @@ as a subfolder of	felamimail	no	som en undermappe av
 attachments	felamimail	no	Vedlegg
 auto refresh folder list	felamimail	no	Oppdater mappeliste automatisk
 back to folder	felamimail	no	TIlbake til mappe
-based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	no	Basert på gitte kriterier, kan innkommende meldinger ha forskjellig bakgrunnsfarge i meldingslisten. Dette gir deg oversikt over hvem meldingene er fra, spesielt for e-post lister.
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	no	Basert pÃ¥ gitte kriterier, kan innkommende meldinger ha forskjellig bakgrunnsfarge i meldingslisten. Dette gir deg oversikt over hvem meldingene er fra, spesielt for e-post lister.
 bcc	felamimail	no	Blindkopi
-before headers	felamimail	no	Før overskrift
+before headers	felamimail	no	FÃ¸r overskrift
 between headers and message body	felamimail	no	Mellom overskift og meldingstekst
 body part	felamimail	no	meldingstekst
 can't connect to inbox!!	felamimail	no	kan ikke koble til Innboks!!
 cc	felamimail	no	Kopi
 change folder	felamimail	no	Bytt mappe
-check message against next rule also	felamimail	no	Kontroller melding mot neste regel også
+check message against next rule also	felamimail	no	Kontroller melding mot neste regel ogsÃ¥
 checkbox	felamimail	no	Sjekkboks
-click here to log back in.	felamimail	no	Klikk her for å logge på igjen
-click here to return to %1	felamimail	no	Klikk her for å returnere til %1
+click here to log back in.	felamimail	no	Klikk her for Ã¥ logge pÃ¥ igjen
+click here to return to %1	felamimail	no	Klikk her for Ã¥ returnere til %1
 close all	felamimail	no	lukk alle
 close this page	felamimail	no	lukk denne siden
 close window	felamimail	no	Lukk vindu
@@ -48,16 +48,16 @@ create	felamimail	no	Opprett
 create folder	felamimail	no	Opprett Mappe
 create sent	felamimail	no	Opprett Sendt
 create subfolder	felamimail	no	Opprett Undermappe
-create trash	felamimail	no	Opprett Søppelkurv
+create trash	felamimail	no	Opprett SÃ¸ppelkurv
 created folder successfully!	felamimail	no	Opprettet mappe
-dark blue	felamimail	no	Mørk Blå
-dark cyan	felamimail	no	Mørk Cyan
-dark gray	felamimail	no	Mørk Grå
-dark green	felamimail	no	Mørk Grønn
-dark magenta	felamimail	no	Mørk Magenta
-dark yellow	felamimail	no	Mørk Gul
-date(newest first)	felamimail	no	Dato (nyeste først)
-date(oldest first)	felamimail	no	Dato (eldste først)
+dark blue	felamimail	no	MÃ¸rk BlÃ¥
+dark cyan	felamimail	no	MÃ¸rk Cyan
+dark gray	felamimail	no	MÃ¸rk GrÃ¥
+dark green	felamimail	no	MÃ¸rk GrÃ¸nn
+dark magenta	felamimail	no	MÃ¸rk Magenta
+dark yellow	felamimail	no	MÃ¸rk Gul
+date(newest first)	felamimail	no	Dato (nyeste fÃ¸rst)
+date(oldest first)	felamimail	no	Dato (eldste fÃ¸rst)
 days	felamimail	no	dager
 deactivate script	felamimail	no	deaktiver skript
 default sorting order	felamimail	no	Standard sortering
@@ -72,17 +72,17 @@ disable	felamimail	no	Deaktiver
 discard message	felamimail	no	Forkast melding
 display message in new window	felamimail	no	Vis melding i nytt vindu
 display of html emails	felamimail	no	Visning av HTML e-post
-display only when no plain text is available	felamimail	no	Vis bare når ingen normal tekst er tilgjengelig
+display only when no plain text is available	felamimail	no	Vis bare nÃ¥r ingen normal tekst er tilgjengelig
 display preferences	felamimail	no	Vis Preferanser
-do it!	felamimail	no	gjør det!
+do it!	felamimail	no	gjÃ¸r det!
 do not use sent	felamimail	no	Bruk ikke Sendt
-do not use trash	felamimail	no	Bruk ikke Søppelkurv
+do not use trash	felamimail	no	Bruk ikke SÃ¸ppelkurv
 do you really want to delete the '%1' folder?	felamimail	no	Vil du virkelig slette mappen %1?
 does not contain	felamimail	no	inneholder ikke
 does not match	felamimail	no	stemmer ikke
 does not match regexp	felamimail	no	stemmer ikke med regexp
 don't use sent	felamimail	no	Ikke bruk Sendt
-don't use trash	felamimail	no	Ikke bruk Søppelkurv
+don't use trash	felamimail	no	Ikke bruk SÃ¸ppelkurv
 down	felamimail	no	ned
 download	felamimail	no	last ned
 download this as a file	felamimail	no	Last ned dette som en fil
@@ -95,8 +95,8 @@ edit selected	felamimail	no	Rediger valgt
 edit vacation settings	felamimail	no	Redigere ferieinnstillinger
 email address	felamimail	no	E-post Adresse
 email signature	felamimail	no	E-post signatur
-empty trash	felamimail	no	tøm søppelkurv
-enable	felamimail	no	muliggjør
+empty trash	felamimail	no	tÃ¸m sÃ¸ppelkurv
+enable	felamimail	no	muliggjÃ¸r
 enter your default mail domain ( from: user@domain )	admin	no	Skriv inn ditt standard e-post domene (Fra: bruker@domene)
 enter your imap mail server hostname or ip address	admin	no	Skriv inn IMAP tjenernavn eller IP-adresse
 enter your sieve server hostname or ip address	admin	no	Skriv inn SIEVE tjenernavn eller IP adresse
@@ -105,7 +105,7 @@ enter your smtp server hostname or ip address	admin	no	Skriv inn SMTP tjenernavn
 enter your smtp server port	admin	no	Skriv inn SMTP tjenerport
 error	felamimail	no	FEIL
 error connecting to imap serv	felamimail	no	Feil ved tilkobling til IMAP tjener
-error opening	felamimail	no	Kunne ikke åpne
+error opening	felamimail	no	Kunne ikke Ã¥pne
 every	felamimail	no	hver
 every %1 days	felamimail	no	hver %1 dag
 expunge	felamimail	no	Slett for godt
@@ -128,19 +128,19 @@ folderlist	felamimail	no	Mappeliste
 foldername	felamimail	no	Mappenavn
 folders	felamimail	no	Mapper
 folders created successfully!	felamimail	no	Mappe opprettet!
-follow	felamimail	no	følg
-for mail to be send - not functional yet	felamimail	no	For mail som skal sendes - ikke funksjonell ennå
+follow	felamimail	no	fÃ¸lg
+for mail to be send - not functional yet	felamimail	no	For mail som skal sendes - ikke funksjonell ennÃ¥
 for received mail	felamimail	no	For mottatt e-post
 forward	felamimail	no	Videresend
 forward to address	felamimail	no	Videresend til adresse
 found	felamimail	no	Funnet
 fri	felamimail	no	Fre
 from	felamimail	no	Fra
-from(a->z)	felamimail	no	Fra (A -> Å)
-from(z->a)	felamimail	no	Fra (Å -> A)
+from(a->z)	felamimail	no	Fra (A -> Ã…)
+from(z->a)	felamimail	no	Fra (Ã… -> A)
 full name	felamimail	no	Fullt Navn
-greater than	felamimail	no	Større enn
-have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	no	Ta en kikk på <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> for å lære mer om Squirrelmail.<br>
+greater than	felamimail	no	StÃ¸rre enn
+have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	no	Ta en kikk pÃ¥ <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> for Ã¥ lÃ¦re mer om Squirrelmail.<br>
 header lines	felamimail	no	Hodelinjer
 hide header	felamimail	no	gjem hode
 html	felamimail	no	HTML
@@ -150,7 +150,7 @@ identifying name	felamimail	no	Identifiserbart navn
 if	felamimail	no	Dersom
 if from contains	felamimail	no	dersom fra inneholder
 if mail header	felamimail	no	dersom meldingshodet
-if message size	felamimail	no	dersom meldingsstørrelse
+if message size	felamimail	no	dersom meldingsstÃ¸rrelse
 if subject contains	felamimail	no	dersom emnet inneholder
 if to contains	felamimail	no	dersom til inneholder
 illegal folder name.  please select a different name.	felamimail	no	Ulovlig mappenavn. Vennligst velg et annet navn.
@@ -167,12 +167,12 @@ invalid user name or password	felamimail	no	Galt brukernavn eller passord
 javascript	felamimail	no	JavaScript
 keep a copy of the message in your inbox	felamimail	no	behold en kopi av meldingen i din innboks
 kilobytes	felamimail	no	kilobytes
-language	felamimail	no	Språk
+language	felamimail	no	SprÃ¥k
 last name	felamimail	no	Etternavn
 left	felamimail	no	Venstre
 less	felamimail	no	mindre
 less than	felamimail	no	mindre enn
-light gray	felamimail	no	Lys Grå
+light gray	felamimail	no	Lys GrÃ¥
 list all	felamimail	no	List ut alle
 location of buttons when composing	felamimail	no	Knappers lokasjon ved opprettelse
 mail server login type	admin	no	E-post tjener innloggingstype
@@ -197,7 +197,7 @@ mon	felamimail	no	Man
 move	felamimail	no	flytt
 move messages	felamimail	no	flytt meldinger
 move selected to	felamimail	no	flytt valgt til
-move to trash	felamimail	no	Flytt til søppelkurv
+move to trash	felamimail	no	Flytt til sÃ¸ppelkurv
 moving messages to	felamimail	no	Flytter meldinger til
 name	felamimail	no	Navn
 never display html emails	felamimail	no	Vis aldri HTML e-post
@@ -207,20 +207,20 @@ next	felamimail	no	Neste
 next message	felamimail	no	neste melding
 no filter	felamimail	no	Ingen filter
 no folders found	felamimail	no	Fant ingen mapper
-no folders were found to subscribe to!	felamimail	no	Fant ingen mapper å melde på
-no folders were found to unsubscribe from!	felamimail	no	Fant ingen mapper å avmelde fra
+no folders were found to subscribe to!	felamimail	no	Fant ingen mapper Ã¥ melde pÃ¥
+no folders were found to unsubscribe from!	felamimail	no	Fant ingen mapper Ã¥ avmelde fra
 no highlighting is defined	felamimail	no	Ingen merking er definert
 no messages found...	felamimail	no	Ingen meldinger funnet
 no messages were selected.	felamimail	no	Ingen meldinger er valgt
-no previous message	felamimail	no	ingen foregående Melding
+no previous message	felamimail	no	ingen foregÃ¥ende Melding
 no valid emailprofile selected!!	felamimail	no	Ingen Gyldig E-post profil er valgt
 none	felamimail	no	ingen
-on behalf of	felamimail	no	på vegne av
+on behalf of	felamimail	no	pÃ¥ vegne av
 one address is not valid	felamimail	no	En av adressene er ikke gyldig
 only inbox	felamimail	no	Kun INNBOKS
 only one window	felamimail	no	Bare et vindu
 only unseen	felamimail	no	Bare usett
-open all	felamimail	no	åpne alle
+open all	felamimail	no	Ã¥pne alle
 options	felamimail	no	Alternativer
 organisation	felamimail	no	organisering
 organization	felamimail	no	organisasjon
@@ -235,7 +235,7 @@ previous	felamimail	no	Forrige
 previous message	felamimail	no	forrige melding
 print it	felamimail	no	skriv ut
 print this page	felamimail	no	skriv ut denne siden
-quicksearch	felamimail	no	Hurtigsøk
+quicksearch	felamimail	no	HurtigsÃ¸k
 read	felamimail	no	les
 reading	felamimail	no	lesing
 recent	felamimail	no	siste
@@ -252,18 +252,18 @@ reply all	felamimail	no	Svar alle
 reply to	felamimail	no	Svar til
 replyto	felamimail	no	SvarTil
 respond	felamimail	no	Responder
-respond to mail sent to	felamimail	no	Responder på mail sent til
+respond to mail sent to	felamimail	no	Responder pÃ¥ mail sent til
 return	felamimail	no	Tilbake
 return to options page	felamimail	no	Tilbake til alternativer
-right	felamimail	no	Høyre
+right	felamimail	no	HÃ¸yre
 rule	felamimail	no	Regel
-sat	felamimail	no	Lør
+sat	felamimail	no	LÃ¸r
 save	felamimail	no	Lagre
 save changes	felamimail	no	Lagre endringer
-script name	felamimail	no	Navn på skript
+script name	felamimail	no	Navn pÃ¥ skript
 script status	felamimail	no	Status for skript
-search	felamimail	no	Søk
-search for	felamimail	no	Søk etter
+search	felamimail	no	SÃ¸k
+search for	felamimail	no	SÃ¸k etter
 select	felamimail	no	Velg
 select all	felamimail	no	Velg alle
 select emailprofile	felamimail	no	Velg E-post Profil
@@ -273,38 +273,38 @@ send	felamimail	no	Send
 send a reject message	felamimail	no	send en avvisningsmelding
 sent folder	felamimail	no	Sendt Mappe
 show header	felamimail	no	vis meldingshode
-show new messages on main screen	felamimail	no	Vis nye meldinger på hovedside
+show new messages on main screen	felamimail	no	Vis nye meldinger pÃ¥ hovedside
 sieve settings	admin	no	Sieve innstillinger
 signature	felamimail	no	Signatur
-simply click the target-folder	felamimail	no	Klikk på målmappe
+simply click the target-folder	felamimail	no	Klikk pÃ¥ mÃ¥lmappe
 site configuration	felamimail	no	sidekonfigurasjon
-size	felamimail	no	Størrelse
-size of editor window	felamimail	no	Størrelse på editeringsvindu
-size(...->0)	felamimail	no	Størrelse (...->0)
-size(0->...)	felamimail	no	Størrelse (0->...)
+size	felamimail	no	StÃ¸rrelse
+size of editor window	felamimail	no	StÃ¸rrelse pÃ¥ editeringsvindu
+size(...->0)	felamimail	no	StÃ¸rrelse (...->0)
+size(0->...)	felamimail	no	StÃ¸rrelse (0->...)
 small view	felamimail	no	liten visning
 smtp settings	admin	no	SMTP innstillinger
 subject	felamimail	no	Emne
-subject(a->z)	felamimail	no	Emne (A->Å)
-subject(z->a)	felamimail	no	Emne (Å->A)
+subject(a->z)	felamimail	no	Emne (A->Ã…)
+subject(z->a)	felamimail	no	Emne (Ã…->A)
 submit	felamimail	no	Send
-subscribe	felamimail	no	Meld på
-subscribed	felamimail	no	Meldt på
-subscribed successfully!	felamimail	no	Påmelding vellykket
-sun	felamimail	no	Søn
+subscribe	felamimail	no	Meld pÃ¥
+subscribed	felamimail	no	Meldt pÃ¥
+subscribed successfully!	felamimail	no	PÃ¥melding vellykket
+sun	felamimail	no	SÃ¸n
 table of contents	felamimail	no	Innhold
 text only	felamimail	no	Kun tekst
 the connection to the imap server failed!!	felamimail	no	Koblingen til IMAP tjeneren feilet!!
 then	felamimail	no	DA
 this folder is empty	felamimail	no	DENNE MAPPEN ER TOM
-this php has no imap support compiled in!!	felamimail	no	PHP versjonen har ingen IMAP-støtte kompilert inn
+this php has no imap support compiled in!!	felamimail	no	PHP versjonen har ingen IMAP-stÃ¸tte kompilert inn
 thu	felamimail	no	Tor
 to	felamimail	no	Til
 to mail sent to	felamimail	no	Til mail sent til
 translation preferences	felamimail	no	Oversettelses innstillinger
 translation server	felamimail	no	Oversettelses tjener
-trash fold	felamimail	no	Søppelmappe
-trash folder	felamimail	no	Søppelmappe
+trash fold	felamimail	no	SÃ¸ppelmappe
+trash folder	felamimail	no	SÃ¸ppelmappe
 tue	felamimail	no	Tir
 type	felamimail	no	type
 unflagged	felamimail	no	avflagget
@@ -319,13 +319,13 @@ unsubscribe	felamimail	no	Avmeld
 unsubscribed	felamimail	no	Avmeldt
 unsubscribed successfully!	felamimail	no	Vellykket avmelding
 up	felamimail	no	opp
-use <a href="%1">emailadmin</a> to create profiles	felamimail	no	bruk <a href="%1">EmailAdmin</a> for å opprette profiler
+use <a href="%1">emailadmin</a> to create profiles	felamimail	no	bruk <a href="%1">EmailAdmin</a> for Ã¥ opprette profiler
 use a signature	felamimail	no	Bruk en signatur
 use a signature?	felamimail	no	Bruk en signatur?
 use addresses	felamimail	no	Bruk adresser
 use custom settings	felamimail	no	Bruk Normale Innstillinger
 use javascript or html addressbook?	felamimail	no	Bruk Javascript eller HTML adressebok?
-use regular expressions	felamimail	no	bruk regulære uttrykk
+use regular expressions	felamimail	no	bruk regulÃ¦re uttrykk
 use smtp auth	admin	no	Bruk SMTP autentisering
 users can define their own emailaccounts	admin	no	Brukere kan definere egne e-post kontoer
 vacation notice	felamimail	no	Ferie melding
@@ -336,10 +336,10 @@ viewing message	felamimail	no	Viser melding
 viewing messages	felamimail	no	Viser meldinger
 wed	felamimail	no	Ons
 welcome to %1's webmail system	felamimail	no	Velkommen til %1 WebMail system
-when deleting messages	felamimail	no	Når du sletter meldinger
+when deleting messages	felamimail	no	NÃ¥r du sletter meldinger
 with message	felamimail	no	Med melding
 with message "%1"	felamimail	no	Med melding "%1"
 wrap incoming text at	felamimail	no	Bryt innkommende tekst ved
 writing	felamimail	no	skrivning
 wrote	felamimail	no	skrev
-you must login first.	felamimail	no	Du må logge inn først
+you must login first.	felamimail	no	Du mÃ¥ logge inn fÃ¸rst

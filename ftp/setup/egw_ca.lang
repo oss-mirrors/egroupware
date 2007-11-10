@@ -5,7 +5,7 @@ cd	ftp	ca	cd
 connect	ftp	ca	Connectar
 create new directory	ftp	ca	Crear un nou directori
 delete	ftp	ca	esborrar
-failed to connect to %1 with user %2 and password %3	ftp	ca	Error a la connexió a %1 amb l'usuari %2 i la contrasenya %3
+failed to connect to %1 with user %2 and password %3	ftp	ca	Error a la connexiÃ³ a %1 amb l'usuari %2 i la contrasenya %3
 failed to create directory %1	ftp	ca	Error al crear el directori %1
 failed to delete %1	ftp	ca	Error al esborrar %1
 failed to rename %1 to %2	ftp	ca	Error al reanomenar %1 a %2
@@ -14,8 +14,8 @@ ftp client	ftp	ca	Client FTP
 ftp hostname	ftp	ca	Servidor FTP
 ftp server	ftp	ca	Servidor FTP
 home	ftp	ca	Inici
-log into ftp server	ftp	ca	Iniciar sessió al servidor FTP
-logout/relogin	ftp	ca	Tancar sessió/reconnectar
+log into ftp server	ftp	ca	Iniciar sessiÃ³ al servidor FTP
+logout/relogin	ftp	ca	Tancar sessiÃ³/reconnectar
 password	ftp	ca	Contrasenya
 permissions	ftp	ca	Permissos
 rename	ftp	ca	reanomenar

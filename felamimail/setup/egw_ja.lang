@@ -1,71 +1,71 @@
-add address	felamimail	ja	ÄÉ²Ã
-add to %1 	felamimail	ja	%1 ÄÉ²Ã
-additional info	felamimail	ja	ÄÉ²Ã¾ğÊó
-as a subfolder of	felamimail	ja	¿Æ¥Õ¥©¥ë¥À
-attach:	felamimail	ja	ÅºÉÕ¥Õ¥¡¥¤¥ë
-attachments	felamimail	ja	ÅºÉÕ¥Õ¥¡¥¤¥ë
-bcc:	felamimail	ja	£Â£Ã£Ã¡§
-body	felamimail	ja	ËÜÊ¸
-cc:	felamimail	ja	£Ã£Ã¡§
-checkbox	felamimail	ja	¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹
-checked messages	felamimail	ja	»ØÄê¥á¥Ã¥»¡¼¥¸
-color	felamimail	ja	¿§
-create folder	felamimail	ja	¥Õ¥©¥ë¥ÀºîÀ®
-Created folder successfully!	felamimail	ja	¥Õ¥©¥ë¥À¤òºîÀ®¤·¤Ş¤·¤¿¡£
-current folder	felamimail	ja	¸½ºß¤Î¥Õ¥©¥ë¥À
-current folder:	felamimail	ja	¸½ºß¤Î¥Õ¥©¥ë¥À
-date:	felamimail	ja	Á÷¿®ÆüÉÕ¡§
-delete folder	felamimail	ja	¥Õ¥©¥ë¥Àºï½ü
-deleted folder successfully!	felamimail	ja	¥Õ¥©¥ë¥À¤òºï½ü¤·¤Ş¤·¤¿¡£
-delete selected	felamimail	ja	ºï½ü
-down	felamimail	ja	²¼
-download this as a file	felamimail	ja	¤³¤Î¥á¥Ã¥»¡¼¥¸¤ò¥À¥¦¥ó¥í¡¼¥É
-e-mail address	felamimail	ja	ÅÅ»Ò¥á¡¼¥ë
-edit selected	felamimail	ja	ÄûÀµ
-everywhere	felamimail	ja	¤¹¤Ù¤Æ
-from:	felamimail	ja	º¹½Ğ¿Í¡§
-identifying name	felamimail	ja	ÄêµÁÌ¾
-index order	felamimail	ja	É½¼¨¹àÌÜÀßÄê
-info	felamimail	ja	ÄÉ²Ã¾ğÊó
-message list	felamimail	ja	¥á¥Ã¥»¡¼¥¸°ìÍ÷
-message highlighting	felamimail	ja	¥á¥Ã¥»¡¼¥¸¶¯Ä´É½¼¨
-move	felamimail	ja	°ÜÆ°
-move & follow	felamimail	ja	°ÜÆ°¤ÈÁªÂò
-move selected to:	felamimail	ja	ÁªÂò¥á¥Ã¥»¡¼¥¸°ÜÆ°Àè
-must be unique	felamimail	ja	½ÅÊ£¤·¤Ê¤¤ÃÍ¤òÆşÎÏ
-new	felamimail	ja	¿·µ¬ºîÀ®
-new name:	felamimail	ja	¿·¤·¤¤¥Õ¥©¥ë¥ÀÌ¾¡§
-nickname	felamimail	ja	¥Ë¥Ã¥¯¥Í¡¼¥à
-no folders found	felamimail	ja	¥Õ¥©¥ë¥À¤Ê¤·
-no folders were found to subscribe to!	felamimail	ja	É½¼¨²ÄÇ½¤Ê¥Õ¥©¥ë¥À¤¬¤¢¤ê¤Ş¤»¤ó¡£
-no folders were found to unsubscribe from!	felamimail	ja	ÈóÉ½¼¨²ÄÇ½¤Ê¥Õ¥©¥ë¥À¤¬¤¢¤ê¤Ş¤»¤ó¡£
-no highlighting is defined	felamimail	ja	¶¯Ä´É½¼¨¤ÏÌ¤ÄêµÁ¤Ç¤¹¡£
-no messages found	felamimail	ja	¥á¥Ã¥»¡¼¥¸¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£
-no messages were selected.	felamimail	ja	¥á¥Ã¥»¡¼¥¸¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£
-options	felamimail	ja	¥ª¥×¥·¥ç¥ó
+add address	felamimail	ja	è¿½åŠ 
+add to %1 	felamimail	ja	%1 è¿½åŠ 
+additional info	felamimail	ja	è¿½åŠ æƒ…å ±
+as a subfolder of	felamimail	ja	è¦ªãƒ•ã‚©ãƒ«ãƒ€
+attach:	felamimail	ja	æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«
+attachments	felamimail	ja	æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«
+bcc:	felamimail	ja	ï¼¢ï¼£ï¼£ï¼š
+body	felamimail	ja	æœ¬æ–‡
+cc:	felamimail	ja	ï¼£ï¼£ï¼š
+checkbox	felamimail	ja	ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹
+checked messages	felamimail	ja	æŒ‡å®šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+color	felamimail	ja	è‰²
+create folder	felamimail	ja	ãƒ•ã‚©ãƒ«ãƒ€ä½œæˆ
+Created folder successfully!	felamimail	ja	ãƒ•ã‚©ãƒ«ãƒ€ã‚’ä½œæˆã—ã¾ã—ãŸã€‚
+current folder	felamimail	ja	ç¾åœ¨ã®ãƒ•ã‚©ãƒ«ãƒ€
+current folder:	felamimail	ja	ç¾åœ¨ã®ãƒ•ã‚©ãƒ«ãƒ€
+date:	felamimail	ja	é€ä¿¡æ—¥ä»˜ï¼š
+delete folder	felamimail	ja	ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤
+deleted folder successfully!	felamimail	ja	ãƒ•ã‚©ãƒ«ãƒ€ã‚’å‰Šé™¤ã—ã¾ã—ãŸã€‚
+delete selected	felamimail	ja	å‰Šé™¤
+down	felamimail	ja	ä¸‹
+download this as a file	felamimail	ja	ã“ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+e-mail address	felamimail	ja	é›»å­ãƒ¡ãƒ¼ãƒ«
+edit selected	felamimail	ja	è¨‚æ­£
+everywhere	felamimail	ja	ã™ã¹ã¦
+from:	felamimail	ja	å·®å‡ºäººï¼š
+identifying name	felamimail	ja	å®šç¾©å
+index order	felamimail	ja	è¡¨ç¤ºé …ç›®è¨­å®š
+info	felamimail	ja	è¿½åŠ æƒ…å ±
+message list	felamimail	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä¸€è¦§
+message highlighting	felamimail	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å¼·èª¿è¡¨ç¤º
+move	felamimail	ja	ç§»å‹•
+move & follow	felamimail	ja	ç§»å‹•ã¨é¸æŠ
+move selected to:	felamimail	ja	é¸æŠãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç§»å‹•å…ˆ
+must be unique	felamimail	ja	é‡è¤‡ã—ãªã„å€¤ã‚’å…¥åŠ›
+new	felamimail	ja	æ–°è¦ä½œæˆ
+new name:	felamimail	ja	æ–°ã—ã„ãƒ•ã‚©ãƒ«ãƒ€åï¼š
+nickname	felamimail	ja	ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ 
+no folders found	felamimail	ja	ãƒ•ã‚©ãƒ«ãƒ€ãªã—
+no folders were found to subscribe to!	felamimail	ja	è¡¨ç¤ºå¯èƒ½ãªãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚Šã¾ã›ã‚“ã€‚
+no folders were found to unsubscribe from!	felamimail	ja	éè¡¨ç¤ºå¯èƒ½ãªãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚Šã¾ã›ã‚“ã€‚
+no highlighting is defined	felamimail	ja	å¼·èª¿è¡¨ç¤ºã¯æœªå®šç¾©ã§ã™ã€‚
+no messages found	felamimail	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚
+no messages were selected.	felamimail	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚
+options	felamimail	ja	ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 original message	felamimail	ja	Original Message
-personal address book	felamimail	ja	¸Ä¿Í¥¢¥É¥ì¥¹Ä¢
-personal information	felamimail	ja	¸Ä¿Í¾ğÊó
-refresh folder list	felamimail	ja	¥Õ¥©¥ë¥ÀºÆÉ½¼¨
-remove	felamimail	ja	ºï½ü
-rename a folder	felamimail	ja	¥Õ¥©¥ë¥ÀÌ¾¤ÎÊÑ¹¹
-renamed successfully!	felamimail	ja	¥Õ¥©¥ë¥ÀÌ¾¤òÊÑ¹¹¤·¤Ş¤·¤¿¡£
-reply to	felamimail	ja	¥ê¥×¥é¥¤
-select all	felamimail	ja	Á´¤ÆÁªÂò
-signature	felamimail	ja	½ğÌ¾
-subscribe	felamimail	ja	É½¼¨
-subscribed successfully!	felamimail	ja	É½¼¨¤Ë¤·¤Ş¤·¤¿¡£
-this contains personal information about yourself such as your name, your email address, etc.	felamimail	ja	ÅÅ»Ò¥á¡¼¥ë¥¢¥É¥ì¥¹¤äÁ÷¿®¼ÔÌ¾¤Ê¤É¤Î¸Ä¿Í¾ğÊó¤òÀßÄê¤·¤Ş¤¹¡£
-to	felamimail	ja	£ô£ï
-to:	felamimail	ja	°¸Àè¡§
-unsubscribe	felamimail	ja	ÈóÉ½¼¨
-unsubscribed successfully!	felamimail	ja	ÈóÉ½¼¨¤Ë¤·¤Ş¤·¤¿¡£
-unselect all	felamimail	ja	Á´¤ÆÁªÂò²ò½ü
-up	felamimail	ja	¾å
-update address	felamimail	ja	¥¢¥É¥ì¥¹¹¹¿·
-use a signature?	felamimail	ja	½ğÌ¾¤ò»ÈÍÑ
-view full header	felamimail	ja	¥Ø¥Ã¥ÀÉ½¼¨
-viewing full header	felamimail	ja	¥Ø¥Ã¥ÀÉ½¼¨
-viewing message	felamimail	ja	É½¼¨¿ô
-view messages	felamimail	ja	¥á¥Ã¥»¡¼¥¸É½¼¨
-viewing messages	felamimail	ja	É½¼¨¿ô
+personal address book	felamimail	ja	å€‹äººã‚¢ãƒ‰ãƒ¬ã‚¹å¸³
+personal information	felamimail	ja	å€‹äººæƒ…å ±
+refresh folder list	felamimail	ja	ãƒ•ã‚©ãƒ«ãƒ€å†è¡¨ç¤º
+remove	felamimail	ja	å‰Šé™¤
+rename a folder	felamimail	ja	ãƒ•ã‚©ãƒ«ãƒ€åã®å¤‰æ›´
+renamed successfully!	felamimail	ja	ãƒ•ã‚©ãƒ«ãƒ€åã‚’å¤‰æ›´ã—ã¾ã—ãŸã€‚
+reply to	felamimail	ja	ãƒªãƒ—ãƒ©ã‚¤
+select all	felamimail	ja	å…¨ã¦é¸æŠ
+signature	felamimail	ja	ç½²å
+subscribe	felamimail	ja	è¡¨ç¤º
+subscribed successfully!	felamimail	ja	è¡¨ç¤ºã«ã—ã¾ã—ãŸã€‚
+this contains personal information about yourself such as your name, your email address, etc.	felamimail	ja	é›»å­ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚„é€ä¿¡è€…åãªã©ã®å€‹äººæƒ…å ±ã‚’è¨­å®šã—ã¾ã™ã€‚
+to	felamimail	ja	ï½”ï½
+to:	felamimail	ja	å®›å…ˆï¼š
+unsubscribe	felamimail	ja	éè¡¨ç¤º
+unsubscribed successfully!	felamimail	ja	éè¡¨ç¤ºã«ã—ã¾ã—ãŸã€‚
+unselect all	felamimail	ja	å…¨ã¦é¸æŠè§£é™¤
+up	felamimail	ja	ä¸Š
+update address	felamimail	ja	ã‚¢ãƒ‰ãƒ¬ã‚¹æ›´æ–°
+use a signature?	felamimail	ja	ç½²åã‚’ä½¿ç”¨
+view full header	felamimail	ja	ãƒ˜ãƒƒãƒ€è¡¨ç¤º
+viewing full header	felamimail	ja	ãƒ˜ãƒƒãƒ€è¡¨ç¤º
+viewing message	felamimail	ja	è¡¨ç¤ºæ•°
+view messages	felamimail	ja	ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
+viewing messages	felamimail	ja	è¡¨ç¤ºæ•°

@@ -1,77 +1,77 @@
-%1 bookmarks have been deleted	bookmarks	ca	Esborrades %1 adreces d'interès
-%1 bookmarks imported from %2 successfully.	bookmarks	ca	Importades correctament %1 de %2 adreces d'interès
-(comma separate multiple addresses)	bookmarks	ca	(la coma separa vàries adreces)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ca	<b>Nota:</b> Actualment només funciona amb adreces d'interès de Netscape/Mozilla
-all bookmarks	bookmarks	ca	Totes les adreces d'interès
+%1 bookmarks have been deleted	bookmarks	ca	Esborrades %1 adreces d'interÃ¨s
+%1 bookmarks imported from %2 successfully.	bookmarks	ca	Importades correctament %1 de %2 adreces d'interÃ¨s
+(comma separate multiple addresses)	bookmarks	ca	(la coma separa vÃ ries adreces)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ca	<b>Nota:</b> Actualment nomÃ©s funciona amb adreces d'interÃ¨s de Netscape/Mozilla
+all bookmarks	bookmarks	ca	Totes les adreces d'interÃ¨s
 and	bookmarks	ca	I
-append this message to mailed bookmarks	bookmarks	ca	Afegir aquest missatge a les adreces d'interès enviades
+append this message to mailed bookmarks	bookmarks	ca	Afegir aquest missatge a les adreces d'interÃ¨s enviades
 ascending	bookmarks	ca	Ascendent
-book marks	common	ca	Adreces d'Interès
-bookmark changed sucessfully	bookmarks	ca	Adreça d'interès canviada correctament
-bookmark created successfully.	bookmarks	ca	Adreça d'interès creada correctament
-bookmark deleted successfully	bookmarks	ca	Adreça d'interès esborrada correctament.
-bookmark deleted successfully.	bookmarks	ca	Adreça d'interès esborrada correctament.
-bookmark not editable	bookmarks	ca	Adreça d'interès no editable
-bookmark not readable	bookmarks	ca	Adreça d'interès no llegible
-bookmarks	common	ca	Adreces d'Interès
-bookmarks settings	bookmarks	ca	Configuració de les adreces d'interès
-change bookmark	bookmarks	ca	Canviar adreça d'interès
+book marks	common	ca	Adreces d'InterÃ¨s
+bookmark changed sucessfully	bookmarks	ca	AdreÃ§a d'interÃ¨s canviada correctament
+bookmark created successfully.	bookmarks	ca	AdreÃ§a d'interÃ¨s creada correctament
+bookmark deleted successfully	bookmarks	ca	AdreÃ§a d'interÃ¨s esborrada correctament.
+bookmark deleted successfully.	bookmarks	ca	AdreÃ§a d'interÃ¨s esborrada correctament.
+bookmark not editable	bookmarks	ca	AdreÃ§a d'interÃ¨s no editable
+bookmark not readable	bookmarks	ca	AdreÃ§a d'interÃ¨s no llegible
+bookmarks	common	ca	Adreces d'InterÃ¨s
+bookmarks settings	bookmarks	ca	ConfiguraciÃ³ de les adreces d'interÃ¨s
+change bookmark	bookmarks	ca	Canviar adreÃ§a d'interÃ¨s
 close this window to return	bookmarks	ca	tancar aquesta ventana per tornar
-create bookmark	bookmarks	ca	Crear adreça d'interès
-create new bookmark	bookmarks	ca	Crear nova adreça d'interès
+create bookmark	bookmarks	ca	Crear adreÃ§a d'interÃ¨s
+create new bookmark	bookmarks	ca	Crear nova adreÃ§a d'interÃ¨s
 date added	bookmarks	ca	Data afegida
 date changed	bookmarks	ca	Data canviada
-date last updated	bookmarks	ca	Data de la darrera actualització
+date last updated	bookmarks	ca	Data de la darrera actualitzaciÃ³
 date last visited	bookmarks	ca	Data de la darrera visita
 descending	bookmarks	ca	Descendent
-edit bookmark	bookmarks	ca	Editar adreça d'interès
-edit this bookmark	bookmarks	ca	Editar aquesta adreça d'interès
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	ca	entreu el nom de l'arxiu d'Adreces d'Interès de Netscape<br>que volgueu importar a continuació.
-export bookmarks	common	ca	Exportar adreça d'interès
+edit bookmark	bookmarks	ca	Editar adreÃ§a d'interÃ¨s
+edit this bookmark	bookmarks	ca	Editar aquesta adreÃ§a d'interÃ¨s
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	ca	entreu el nom de l'arxiu d'Adreces d'InterÃ¨s de Netscape<br>que volgueu importar a continuaciÃ³.
+export bookmarks	common	ca	Exportar adreÃ§a d'interÃ¨s
 fewer	bookmarks	ca	Menys
 filter by	bookmarks	ca	Filtrar per
-found a link you might like	bookmarks	ca	Trobat un enllaç interessant
+found a link you might like	bookmarks	ca	Trobat un enllaÃ§ interessant
 from	bookmarks	ca	De
-from category %1	bookmarks	ca	de categoria %º
+from category %1	bookmarks	ca	de categoria %Âº
 global categories	bookmarks	ca	Categories globals
-highest	bookmarks	ca	La més alta
-i thought you would be interested in the following link(s):	bookmarks	ca	Hem trobat que potser són interessants els següents enllaços:
-import bookmarks	common	ca	Importar Adreces d'Interès
+highest	bookmarks	ca	La mÃ©s alta
+i thought you would be interested in the following link(s):	bookmarks	ca	Hem trobat que potser sÃ³n interessants els segÃ¼ents enllaÃ§os:
+import bookmarks	common	ca	Importar Adreces d'InterÃ¨s
 like	bookmarks	ca	com
 list	bookmarks	ca	Llista
 list view	bookmarks	ca	Llista
-lowest	bookmarks	ca	La més baixa
-mail this bookmark	bookmarks	ca	Enviar aquesta adreça d'interès
-mail-this-link message sent to %1.	bookmarks	ca	Missatge enviar-aquest-enllaç enviat a %1
-mass update:	bookmarks	ca	Actualització massiva:
+lowest	bookmarks	ca	La mÃ©s baixa
+mail this bookmark	bookmarks	ca	Enviar aquesta adreÃ§a d'interÃ¨s
+mail-this-link message sent to %1.	bookmarks	ca	Missatge enviar-aquest-enllaÃ§ enviat a %1
+mass update:	bookmarks	ca	ActualitzaciÃ³ massiva:
 message from	bookmarks	ca	Missatge de
-more	bookmarks	ca	Més
+more	bookmarks	ca	MÃ©s
 name	bookmarks	ca	Nom
-name is required	bookmarks	ca	El nom és obligatori
-netscape bookmark file	bookmarks	ca	Arxiu d'Adreces d'Interès de Netscape
-netscape bookmark filename is required!	bookmarks	ca	El nom de l'arxiu d'Adreces d'Interès de Netscape és obligatori
+name is required	bookmarks	ca	El nom Ã©s obligatori
+netscape bookmark file	bookmarks	ca	Arxiu d'Adreces d'InterÃ¨s de Netscape
+netscape bookmark filename is required!	bookmarks	ca	El nom de l'arxiu d'Adreces d'InterÃ¨s de Netscape Ã©s obligatori
 new	bookmarks	ca	Nou
-new bookmark	bookmarks	ca	nova adreça d'interès
+new bookmark	bookmarks	ca	nova adreÃ§a d'interÃ¨s
 or	bookmarks	ca	o
-please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ca	Ompliu <b>Adreça de correu destí</b>, <b>Assumpte</b> i <b>Missatge</b>
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	ca	Ompliu <b>AdreÃ§a de correu destÃ­</b>, <b>Assumpte</b> i <b>Missatge</b>
 please select the categories to export	bookmarks	ca	Si us plau, seleccioneu les categories a exportar
-query condition	bookmarks	ca	Condició de consulta
-rating	bookmarks	ca	Estimació
+query condition	bookmarks	ca	CondiciÃ³ de consulta
+rating	bookmarks	ca	EstimaciÃ³
 search for:	bookmarks	ca	Cercar:
 select the format you would like to export to	bookmarks	ca	Seleccioneu el format amb que ho voleu exportar
-send bookmark	bookmarks	ca	Enviar adreça d'interès
-site configuration	bookmarks	ca	Configuració del lloc
+send bookmark	bookmarks	ca	Enviar adreÃ§a d'interÃ¨s
+site configuration	bookmarks	ca	ConfiguraciÃ³ del lloc
 sub category	bookmarks	ca	Subcategoria
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ca	L'adreça Per: %1 no es vàlida. El format ha de ser <strong>usuari@domini</strong> i el domini ha d'existir.
-to e-mail addresses	bookmarks	ca	Adreces de correu destí
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ca	L'adreÃ§a Per: %1 no es vÃ lida. El format ha de ser <strong>usuari@domini</strong> i el domini ha d'existir.
+to e-mail addresses	bookmarks	ca	Adreces de correu destÃ­
 to which category should the imported folder hierarchy be attached	bookmarks	ca	A quina categoria s'ha d'afegir la jerarquia de la carpeta importada
 total visits	bookmarks	ca	visites totals
 tree view	bookmarks	ca	Vista d'arbre
 unable to open temp file %1 for import.	bookmarks	ca	No es pot obrir l'arxiu temporal %1 per importar
-url is required.	bookmarks	ca	URL obligatòria
-view bookmark	bookmarks	ca	Veure adreça d'interès
-view this bookmark	bookmarks	ca	Veure aquesta adreça d'interès
-warning	bookmarks	ca	Avís
+url is required.	bookmarks	ca	URL obligatÃ²ria
+view bookmark	bookmarks	ca	Veure adreÃ§a d'interÃ¨s
+view this bookmark	bookmarks	ca	Veure aquesta adreÃ§a d'interÃ¨s
+warning	bookmarks	ca	AvÃ­s
 you are viewing this site outside of egroupware	bookmarks	ca	Esteu veient aquest lloc des de fora d'eGroupWare
 you must select a category	bookmarks	ca	Heu de seleccionar una categoria
 you need to select a category!	bookmarks	ca	Heu de seleccionar una categoria !

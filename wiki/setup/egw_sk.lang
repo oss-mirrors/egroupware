@@ -1,110 +1,110 @@
-(don't offer the possibility)	admin	sk	(neponúka» mo¾nos»)
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	sk	<em>Ale</em> zobrazi» aspoò toµkoto polo¾iek v Najnov¹ích Zmenách a ïal¹ích prihlásenıch zoznamoch:
-add document to category	wiki	sk	Prida» dokument do kategórie
-added	wiki	sk	Pridané
-administration features are disabled for this wiki.	wiki	sk	Správcovské funkcie sú zakázané pre túto wiki.
-admins	wiki	sk	Správcovia
-after how many days should old versions of a page be removed (0 for never)	admin	sk	Po koµkıch dòoch treba odstráni» staré verzie stránky (0 pre nikdy)
-allow anonymous access	admin	sk	povoli» anonymnı prístup
-anonymous password	admin	sk	Heslo anonymného pou¾ívateµa
-anonymous session type	admin	sk	Typ sedenia anonymného pou¾ívateµa
-anonymous username	admin	sk	Pou¾ívateµské meno anonymného pou¾ívateµa
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	sk	Automaticky konvertova» stránky s wiki-syntaxou na richtext (pri úpravách)?
-block	wiki	sk	Blokova»
-block / unblock hosts	common	sk	Blokova» / Odblokova» stroje
-blocked ip address ranges	wiki	sk	Blokované rozsahy IP
-cancel without saving	wiki	sk	Zru¹i» bez ulo¾enia
-changed	wiki	sk	Zmenené
-changes by last author	wiki	sk	Zmeny od posledného autora
-choose your current time here, so the server may figure out what time zone you are in.	wiki	sk	Vyberte Vá¹ aktuálny èas, aby mohol server zisti», v akej èasovej zóne sa nachádzate.
-columns	wiki	sk	Ståpce
-compute difference	wiki	sk	Vypoèíta» rozdiel
-converts the page to richtext	wiki	sk	Skonvertuje stránku na richtext
-current version	wiki	sk	Súèasná verzia
-deleted	wiki	sk	Odstránené
-deletes this page	wiki	sk	Odstráni túto stránku
+(don't offer the possibility)	admin	sk	(neponÃºkaÅ¥ moÅ¾nosÅ¥)
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	sk	<em>Ale</em> zobraziÅ¥ aspoÅˆ toÄ¾koto poloÅ¾iek v NajnovÅ¡Ã­ch ZmenÃ¡ch a ÄalÅ¡Ã­ch prihlÃ¡senÃ½ch zoznamoch:
+add document to category	wiki	sk	PridaÅ¥ dokument do kategÃ³rie
+added	wiki	sk	PridanÃ©
+administration features are disabled for this wiki.	wiki	sk	SprÃ¡vcovskÃ© funkcie sÃº zakÃ¡zanÃ© pre tÃºto wiki.
+admins	wiki	sk	SprÃ¡vcovia
+after how many days should old versions of a page be removed (0 for never)	admin	sk	Po koÄ¾kÃ½ch dÅˆoch treba odstrÃ¡niÅ¥ starÃ© verzie strÃ¡nky (0 pre nikdy)
+allow anonymous access	admin	sk	povoliÅ¥ anonymnÃ½ prÃ­stup
+anonymous password	admin	sk	Heslo anonymnÃ©ho pouÅ¾Ã­vateÄ¾a
+anonymous session type	admin	sk	Typ sedenia anonymnÃ©ho pouÅ¾Ã­vateÄ¾a
+anonymous username	admin	sk	PouÅ¾Ã­vateÄ¾skÃ© meno anonymnÃ©ho pouÅ¾Ã­vateÄ¾a
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	sk	Automaticky konvertovaÅ¥ strÃ¡nky s wiki-syntaxou na richtext (pri ÃºpravÃ¡ch)?
+block	wiki	sk	BlokovaÅ¥
+block / unblock hosts	common	sk	BlokovaÅ¥ / OdblokovaÅ¥ stroje
+blocked ip address ranges	wiki	sk	BlokovanÃ© rozsahy IP
+cancel without saving	wiki	sk	ZruÅ¡iÅ¥ bez uloÅ¾enia
+changed	wiki	sk	ZmenenÃ©
+changes by last author	wiki	sk	Zmeny od poslednÃ©ho autora
+choose your current time here, so the server may figure out what time zone you are in.	wiki	sk	Vyberte VÃ¡Å¡ aktuÃ¡lny Äas, aby mohol server zistiÅ¥, v akej Äasovej zÃ³ne sa nachÃ¡dzate.
+columns	wiki	sk	StÄºpce
+compute difference	wiki	sk	VypoÄÃ­taÅ¥ rozdiel
+converts the page to richtext	wiki	sk	Skonvertuje strÃ¡nku na richtext
+current version	wiki	sk	SÃºÄasnÃ¡ verzia
+deleted	wiki	sk	OdstrÃ¡nenÃ©
+deletes this page	wiki	sk	OdstrÃ¡ni tÃºto strÃ¡nku
 difference between versions	wiki	sk	Rozdiely medzi verziami
 differences in	wiki	sk	Rozdiely v
-different languages can have different titles	wiki	sk	Rozlièné jazyky mô¾u ma» rozlièné titulky
-document last modified	wiki	sk	Dokument naposledy zmenenı
-edit box	wiki	sk	Okno úprav
-edit this <em>archive version</em> of this document	wiki	sk	Upravi» túto <em>ARCHÍVNU VERZIU</em> dokumentu
-edit this document	wiki	sk	Upravi» tento dokument
-edit with preview	admin	sk	Upravi» s náhµadom
-editable	admin	sk	Upravovateµné
-editing	wiki	sk	Úpravy
-emailaddress administrator	admin	sk	Správca E-mailovıch adries
-enable free links	admin	sk	Zapnú» voµné odkazy
-enable wiki links	admin	sk	Zapnú» Wiki odkazy
-enter here the maximum number of entries to display in a document's history list.	wiki	sk	Zadajte maximálny poèet polo¾iek, ktoré sa zobrazia v zozname histórie dokumentu.
-enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	sk	Zadajte poèet dní úprav, ktoré sa zobrazia v Najnov¹ích Zmenách alebo inom prihlasovanom zozname. Nastavte 0 ak tam chcete vidie» v¹etky stránky, nezávisle na dátume úprav.
+different languages can have different titles	wiki	sk	RozliÄnÃ© jazyky mÃ´Å¾u maÅ¥ rozliÄnÃ© titulky
+document last modified	wiki	sk	Dokument naposledy zmenenÃ½
+edit box	wiki	sk	Okno Ãºprav
+edit this <em>archive version</em> of this document	wiki	sk	UpraviÅ¥ tÃºto <em>ARCHÃVNU VERZIU</em> dokumentu
+edit this document	wiki	sk	UpraviÅ¥ tento dokument
+edit with preview	admin	sk	UpraviÅ¥ s nÃ¡hÄ¾adom
+editable	admin	sk	UpravovateÄ¾nÃ©
+editing	wiki	sk	Ãšpravy
+emailaddress administrator	admin	sk	SprÃ¡vca E-mailovÃ½ch adries
+enable free links	admin	sk	ZapnÃºÅ¥ voÄ¾nÃ© odkazy
+enable wiki links	admin	sk	ZapnÃºÅ¥ Wiki odkazy
+enter here the maximum number of entries to display in a document's history list.	wiki	sk	Zadajte maximÃ¡lny poÄet poloÅ¾iek, ktorÃ© sa zobrazia v zozname histÃ³rie dokumentu.
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	sk	Zadajte poÄet dnÃ­ Ãºprav, ktorÃ© sa zobrazia v NajnovÅ¡Ã­ch ZmenÃ¡ch alebo inom prihlasovanom zozname. Nastavte 0 ak tam chcete vidieÅ¥ vÅ¡etky strÃ¡nky, nezÃ¡visle na dÃ¡tume Ãºprav.
 enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	sk	Zadajte rozsah IP v tvare <tt>12.*</tt>, <tt>34.56.*</tt>, alebo <tt>78.90.123.*</tt>
-error creating temporary file.	wiki	sk	Chyba pri vytváraní doèasného súboru.
-error writing to temporary file.	wiki	sk	Chyba pri zápise do doèasného súboru.
-everyone	wiki	sk	Ka¾dı
-find	wiki	sk	Hµada»
-history	wiki	sk	História
-history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	sk	Zobrazenie Histórie má zobrazi» <em>v¹etky</em> zmeny, ktoré vykonal poslednı autor. V opaènom prípade, zobrazi» iba poslednú vykonanú zmenu.
-history lists	wiki	sk	Zoznamy histórie
-history of	wiki	sk	História (èoho)
-invalid page name.	wiki	sk	Chybnı názov stránky.
-load	wiki	sk	Naèíta»
-loads the named page in the given language, all change so far get lost !!!	wiki	sk	Naèíta pomenovanú stránku v zadanom jazyku, v¹etky doteraj¹ie zmeny sa stratia !!!
-lock / unlock pages	common	sk	Zamknú» / Odomknú» stránky
-locked	wiki	sk	Zamknuté
-name wiki home link	admin	sk	názov wiki domov odkaz
-newer	wiki	sk	Nov¹ie
+error creating temporary file.	wiki	sk	Chyba pri vytvÃ¡ranÃ­ doÄasnÃ©ho sÃºboru.
+error writing to temporary file.	wiki	sk	Chyba pri zÃ¡pise do doÄasnÃ©ho sÃºboru.
+everyone	wiki	sk	KaÅ¾dÃ½
+find	wiki	sk	HÄ¾adaÅ¥
+history	wiki	sk	HistÃ³ria
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	sk	Zobrazenie HistÃ³rie mÃ¡ zobraziÅ¥ <em>vÅ¡etky</em> zmeny, ktorÃ© vykonal poslednÃ½ autor. V opaÄnom prÃ­pade, zobraziÅ¥ iba poslednÃº vykonanÃº zmenu.
+history lists	wiki	sk	Zoznamy histÃ³rie
+history of	wiki	sk	HistÃ³ria (Äoho)
+invalid page name.	wiki	sk	ChybnÃ½ nÃ¡zov strÃ¡nky.
+load	wiki	sk	NaÄÃ­taÅ¥
+loads the named page in the given language, all change so far get lost !!!	wiki	sk	NaÄÃ­ta pomenovanÃº strÃ¡nku v zadanom jazyku, vÅ¡etky doterajÅ¡ie zmeny sa stratia !!!
+lock / unlock pages	common	sk	ZamknÃºÅ¥ / OdomknÃºÅ¥ strÃ¡nky
+locked	wiki	sk	ZamknutÃ©
+name wiki home link	admin	sk	nÃ¡zov wiki domov odkaz
+newer	wiki	sk	NovÅ¡ie
 no never	admin	sk	Nie, nikdy
-no only on request	admin	sk	Nie, iba na po¾iadanie
-not set	wiki	sk	nenastavené
-older	wiki	sk	Star¹ie
-on all pages	wiki	sk	na v¹etkıch stránkach
-only if browser supports a richtext-editor	admin	sk	Iba ak prehliadaè podporuje richtext-editor
-only on the first page	wiki	sk	iba na prvej stránke
-page '%1' not found !!!	wiki	sk	Stránka '%1' sa nena¹la !!!
-path of the upload directory (has to be writable by the webserver!)	admin	sk	Cesta k adresáru pre odovzdanie (musí by» zapisovateµnı webserverom!)
-picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sk	Odovzdanie obrázku cez richedit editor (ak chcete zakáza» odovzdávanie, ponechajte adresár pre odovzdanie prázdny)
-please contact the %1administrator%2 for assistance.	wiki	sk	Prosím kontaktujte %1Správcu%2 o pomoc.
-preview	wiki	sk	Náhµad
-preview of current version	wiki	sk	Náhµad súèasnej verzie
-rate control / ip blocking disabled	wiki	sk	Kontrola hodnotenia / Blokovanie IP vypnuté
-readable by	wiki	sk	Mô¾e èíta»
-readonly	admin	sk	iba na èítanie
-recent changes	wiki	sk	Najnov¹ie zmeny
-renames page to the given name and language	wiki	sk	Premenuje stránku na zadané meno a jazyk
+no only on request	admin	sk	Nie, iba na poÅ¾iadanie
+not set	wiki	sk	nenastavenÃ©
+older	wiki	sk	StarÅ¡ie
+on all pages	wiki	sk	na vÅ¡etkÃ½ch strÃ¡nkach
+only if browser supports a richtext-editor	admin	sk	Iba ak prehliadaÄ podporuje richtext-editor
+only on the first page	wiki	sk	iba na prvej strÃ¡nke
+page '%1' not found !!!	wiki	sk	StrÃ¡nka '%1' sa nenaÅ¡la !!!
+path of the upload directory (has to be writable by the webserver!)	admin	sk	Cesta k adresÃ¡ru pre odovzdanie (musÃ­ byÅ¥ zapisovateÄ¾nÃ½ webserverom!)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	sk	Odovzdanie obrÃ¡zku cez richedit editor (ak chcete zakÃ¡zaÅ¥ odovzdÃ¡vanie, ponechajte adresÃ¡r pre odovzdanie prÃ¡zdny)
+please contact the %1administrator%2 for assistance.	wiki	sk	ProsÃ­m kontaktujte %1SprÃ¡vcu%2 o pomoc.
+preview	wiki	sk	NÃ¡hÄ¾ad
+preview of current version	wiki	sk	NÃ¡hÄ¾ad sÃºÄasnej verzie
+rate control / ip blocking disabled	wiki	sk	Kontrola hodnotenia / Blokovanie IP vypnutÃ©
+readable by	wiki	sk	MÃ´Å¾e ÄÃ­taÅ¥
+readonly	admin	sk	iba na ÄÃ­tanie
+recent changes	wiki	sk	NajnovÅ¡ie zmeny
+renames page to the given name and language	wiki	sk	Premenuje strÃ¡nku na zadanÃ© meno a jazyk
 richtext	wiki	sk	Richtext
 rows	wiki	sk	Riadky
-save the changes and exit	wiki	sk	Ulo¾i» zmeny a skonèi»
-saves and continues editing	wiki	sk	Ulo¾í a pokraèuje v úpravách
-search for	wiki	sk	Hµada»
-see complete list (%1 entries)	wiki	sk	Pozrie» úplnı zoznam (%1 záznamov)
-show a search	wiki	sk	Zobrazi» hµadanie
-show the title of the wiki page	wiki	sk	Zobrazi» titulok wiki stránky
-site configuration	wiki	sk	Nastavenie stránky
+save the changes and exit	wiki	sk	UloÅ¾iÅ¥ zmeny a skonÄiÅ¥
+saves and continues editing	wiki	sk	UloÅ¾Ã­ a pokraÄuje v ÃºpravÃ¡ch
+search for	wiki	sk	HÄ¾adaÅ¥
+see complete list (%1 entries)	wiki	sk	PozrieÅ¥ ÃºplnÃ½ zoznam (%1 zÃ¡znamov)
+show a search	wiki	sk	ZobraziÅ¥ hÄ¾adanie
+show the title of the wiki page	wiki	sk	ZobraziÅ¥ titulok wiki strÃ¡nky
+site configuration	wiki	sk	Nastavenie strÃ¡nky
 summary	wiki	sk	Zhrnutie
 summary of change	wiki	sk	Zhrnutie zmeny
-the search returned no result!	wiki	sk	Hµadanie skonèilo bezvısledne!
-this page can not be edited.	wiki	sk	Táto stránka sa nedá upravova».
-unblock	wiki	sk	Odblokova»
-updates the preview	wiki	sk	Aktualizuje náhµad
-url of the upload directory	admin	sk	URL adresa adresára pre odovzdanie
-use this module for displaying wiki-pages	wiki	sk	Pou¾i» tento modul pre zobrazovanie stránok wiki
-users	wiki	sk	pou¾ívatelia
-view document history	wiki	sk	Zobrazi» históriu dokumentu
-visit %1 to set your user name	wiki	sk	Nav¹tívte %1 pre nastavenie Vá¹ho pou¾ívateµského mena
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	sk	Upozornenie: odkedy ste zaèali s úpravami, dokument bol medzitım zmenenı niekım inım. Prosím zaèleòte va¹e úpravy do aktuálnej verzie tohto dokumentu.
-who should be able to edit this page	wiki	sk	Komu umo¾níme upravova» túto stránku
-who should be able to read this page	wiki	sk	Komu umo¾níme èíta» túto stránku
+the search returned no result!	wiki	sk	HÄ¾adanie skonÄilo bezvÃ½sledne!
+this page can not be edited.	wiki	sk	TÃ¡to strÃ¡nka sa nedÃ¡ upravovaÅ¥.
+unblock	wiki	sk	OdblokovaÅ¥
+updates the preview	wiki	sk	Aktualizuje nÃ¡hÄ¾ad
+url of the upload directory	admin	sk	URL adresa adresÃ¡ra pre odovzdanie
+use this module for displaying wiki-pages	wiki	sk	PouÅ¾iÅ¥ tento modul pre zobrazovanie strÃ¡nok wiki
+users	wiki	sk	pouÅ¾Ã­vatelia
+view document history	wiki	sk	ZobraziÅ¥ histÃ³riu dokumentu
+visit %1 to set your user name	wiki	sk	NavÅ¡tÃ­vte %1 pre nastavenie VÃ¡Å¡ho pouÅ¾Ã­vateÄ¾skÃ©ho mena
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	sk	Upozornenie: odkedy ste zaÄali s Ãºpravami, dokument bol medzitÃ½m zmenenÃ½ niekÃ½m inÃ½m. ProsÃ­m zaÄleÅˆte vaÅ¡e Ãºpravy do aktuÃ¡lnej verzie tohto dokumentu.
+who should be able to edit this page	wiki	sk	Komu umoÅ¾nÃ­me upravovaÅ¥ tÃºto strÃ¡nku
+who should be able to read this page	wiki	sk	Komu umoÅ¾nÃ­me ÄÃ­taÅ¥ tÃºto strÃ¡nku
 wiki	common	sk	Wiki
-wiki administration	wiki	sk	Správa Wiki
+wiki administration	wiki	sk	SprÃ¡va Wiki
 wiki menu	wiki	sk	Wiki Menu
-wiki startpage	wiki	sk	Wiki úvodná stránka
-writable by	wiki	sk	Zapisovateµné (kım)
-yes always	admin	sk	Áno, v¾dy
-yes with navbar	admin	sk	Áno, s navigaènım panelom
-you have been denied access to this site.	wiki	sk	Prístup k tejto stránke Vám bol odopretı.
-you have entered an invalid user name.	wiki	sk	Zadali ste chybné pou¾ívateµské meno.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	sk	Prekroèili ste povolenı poèet stránok, ktoré mô¾ete nav¹tívi» v danom èasovom úseku. Prosím vrá»te sa sem neskôr.
-you have no rights to view wiki content !!!	wiki	sk	Nemáte právo èíta» obsah wiki!
-your changes	wiki	sk	Va¹e zmeny
-your user name is "%1".	wiki	sk	Va¹e pou¾ívateµské meno je "%1".
+wiki startpage	wiki	sk	Wiki ÃºvodnÃ¡ strÃ¡nka
+writable by	wiki	sk	ZapisovateÄ¾nÃ© (kÃ½m)
+yes always	admin	sk	Ãno, vÅ¾dy
+yes with navbar	admin	sk	Ãno, s navigaÄnÃ½m panelom
+you have been denied access to this site.	wiki	sk	PrÃ­stup k tejto strÃ¡nke VÃ¡m bol odopretÃ½.
+you have entered an invalid user name.	wiki	sk	Zadali ste chybnÃ© pouÅ¾Ã­vateÄ¾skÃ© meno.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	sk	PrekroÄili ste povolenÃ½ poÄet strÃ¡nok, ktorÃ© mÃ´Å¾ete navÅ¡tÃ­viÅ¥ v danom Äasovom Ãºseku. ProsÃ­m vrÃ¡Å¥te sa sem neskÃ´r.
+you have no rights to view wiki content !!!	wiki	sk	NemÃ¡te prÃ¡vo ÄÃ­taÅ¥ obsah wiki!
+your changes	wiki	sk	VaÅ¡e zmeny
+your user name is "%1".	wiki	sk	VaÅ¡e pouÅ¾Ã­vateÄ¾skÃ© meno je "%1".

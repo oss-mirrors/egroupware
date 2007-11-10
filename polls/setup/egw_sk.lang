@@ -1,39 +1,39 @@
 actions	polls	sk	Akcie
-add answer to poll	polls	sk	Prida» odpoveï pre voµbu
-add answers	polls	sk	Prida» odpovede
-add new poll question	polls	sk	Prida» novú otázku pre voµbu
-add questions	polls	sk	Prida» otázky
-administrators	polls	sk	Správcovia
-allow users to vote more then once	polls	sk	Prida» pou¾ívateµov s mo¾nos»ou opakovanej voµby
-allways use latest poll	polls	sk	V¾dy pou¾i» najnov¹iu voµbu
-answer	polls	sk	Odpoveï
-answer has been added to poll	polls	sk	Odpoveï bola pridaná do voµby
-answer has been updated	polls	sk	Odpoveï bola aktualizovaná
+add answer to poll	polls	sk	PridaÅ¥ odpoveÄ pre voÄ¾bu
+add answers	polls	sk	PridaÅ¥ odpovede
+add new poll question	polls	sk	PridaÅ¥ novÃº otÃ¡zku pre voÄ¾bu
+add questions	polls	sk	PridaÅ¥ otÃ¡zky
+administrators	polls	sk	SprÃ¡vcovia
+allow users to vote more then once	polls	sk	PridaÅ¥ pouÅ¾Ã­vateÄ¾ov s moÅ¾nosÅ¥ou opakovanej voÄ¾by
+allways use latest poll	polls	sk	VÅ¾dy pouÅ¾iÅ¥ najnovÅ¡iu voÄ¾bu
+answer	polls	sk	OdpoveÄ
+answer has been added to poll	polls	sk	OdpoveÄ bola pridanÃ¡ do voÄ¾by
+answer has been updated	polls	sk	OdpoveÄ bola aktualizovanÃ¡
 answers	polls	sk	Odpovede
-are you sure want to delete this answer ?	polls	sk	Naozaj chcete odstráni» túto odpoveï?
-are you sure want to delete this question ?	polls	sk	Naozaj chcete odstráni» túto otázku?
-current poll	polls	sk	Aktuálna voµba
-edit answer	polls	sk	Upravi» odpoveï
-edit poll question	polls	sk	Upravi» otázku pre voµbu
-egroupware users (non-anonymous)	polls	sk	pou¾ívatelia eGroupWare (nie anonymní)
-enter poll question	polls	sk	Zada» otázku pre voµbu
-everyone incl. anonymous users	polls	sk	V¹etci vrátane anonymnıch pou¾ívateµov
-new poll has been added.  you should now add some answers for this poll	polls	sk	Nová voµba bola pridaná. Mali by ste teraz zada» nejaké odpovede pre túto voµbu
+are you sure want to delete this answer ?	polls	sk	Naozaj chcete odstrÃ¡niÅ¥ tÃºto odpoveÄ?
+are you sure want to delete this question ?	polls	sk	Naozaj chcete odstrÃ¡niÅ¥ tÃºto otÃ¡zku?
+current poll	polls	sk	AktuÃ¡lna voÄ¾ba
+edit answer	polls	sk	UpraviÅ¥ odpoveÄ
+edit poll question	polls	sk	UpraviÅ¥ otÃ¡zku pre voÄ¾bu
+egroupware users (non-anonymous)	polls	sk	pouÅ¾Ã­vatelia eGroupWare (nie anonymnÃ­)
+enter poll question	polls	sk	ZadaÅ¥ otÃ¡zku pre voÄ¾bu
+everyone incl. anonymous users	polls	sk	VÅ¡etci vrÃ¡tane anonymnÃ½ch pouÅ¾Ã­vateÄ¾ov
+new poll has been added.  you should now add some answers for this poll	polls	sk	NovÃ¡ voÄ¾ba bola pridanÃ¡. Mali by ste teraz zadaÅ¥ nejakÃ© odpovede pre tÃºto voÄ¾bu
 noone	polls	sk	Nikto
-poll question	polls	sk	Otázka pre voµbu
-poll votable by	polls	sk	Hlasova» mô¾e
-polls	common	sk	Voµby
-question has been updated	polls	sk	Otázka bola aktualizovaná
-result visible to	polls	sk	Vısledky smie vidie»
-select current poll	polls	sk	Vyberte aktuálnu voµbu
-settings updated	polls	sk	Nastavenia boli aktualizované
-show answers	polls	sk	Zobrazi» odpovede
-show questions	common	sk	Zobrazi» otázky
+poll question	polls	sk	OtÃ¡zka pre voÄ¾bu
+poll votable by	polls	sk	HlasovaÅ¥ mÃ´Å¾e
+polls	common	sk	VoÄ¾by
+question has been updated	polls	sk	OtÃ¡zka bola aktualizovanÃ¡
+result visible to	polls	sk	VÃ½sledky smie vidieÅ¥
+select current poll	polls	sk	Vyberte aktuÃ¡lnu voÄ¾bu
+settings updated	polls	sk	Nastavenia boli aktualizovanÃ©
+show answers	polls	sk	ZobraziÅ¥ odpovede
+show questions	common	sk	ZobraziÅ¥ otÃ¡zky
 total votes	polls	sk	Celkovo
-view poll	polls	sk	Zobrazi» voµbu
-view results	polls	sk	Zobrazi» vısledky
-vote	polls	sk	Hlasova»
-voting booth admin	admin	sk	Hlasovacia kabína
-voting booth administration	polls	sk	Správa hlasovacej kabíny
-which poll	polls	sk	Ktorá voµba
-you are not (yet) allowed view the result of this vote.	polls	sk	Nemô¾ete (zatiaµ) vidie» vısledky tejto voµby.
+view poll	polls	sk	ZobraziÅ¥ voÄ¾bu
+view results	polls	sk	ZobraziÅ¥ vÃ½sledky
+vote	polls	sk	HlasovaÅ¥
+voting booth admin	admin	sk	Hlasovacia kabÃ­na
+voting booth administration	polls	sk	SprÃ¡va hlasovacej kabÃ­ny
+which poll	polls	sk	KtorÃ¡ voÄ¾ba
+you are not (yet) allowed view the result of this vote.	polls	sk	NemÃ´Å¾ete (zatiaÄ¾) vidieÅ¥ vÃ½sledky tejto voÄ¾by.
