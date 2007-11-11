@@ -837,7 +837,7 @@
 				{
 					foreach(array_diff($exported_ids,$eelt_ids) as $deleted_id)
 					{
-						if ($this->delete_ncvelt($deleted_id,$this->rsc_owner_id))
+						if ($this->delete_ncvelt($deleted_id,$GLOBALS['egw_info']['user']['account_id']))
 						{
 							$impstats[VELT_IMPORT_STATUS_DELOK]++;
 						}
