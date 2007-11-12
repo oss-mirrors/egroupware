@@ -29,7 +29,10 @@
 			'Compose global message' => $GLOBALS['egw']->link('/index.php','menuaction=messenger.uimessenger.compose_global')
 		);
 
-		display_sidebox($appname,$menu_title,$file);
-	}
+		if($GLOBALS['egw_info']['flags']['currentapp'] == 'messenger')
+		{
+		   display_sidebox($appname,$menu_title,$file);
+		}
+	 }
 }
 ?>
