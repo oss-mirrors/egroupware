@@ -18,7 +18,7 @@
 
    // register the new hooks, if the admin missed it ;-)
    // thanks Ralf
-
+/*
    if (!is_object($GLOBALS['phpgw']->hooks))
    {
 	  $GLOBALS['phpgw']->hooks = CreateObject('phpgwapi.hooks');
@@ -28,4 +28,4 @@
    $GLOBALS['phpgw']->hooks->register_hooks('jinn',$setup_info['jinn']['hooks']);
 
    ExecMethod($setup_info['jinn']['hooks']['sidebox_menu']); 
-
+*/
