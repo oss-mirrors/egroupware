@@ -892,7 +892,11 @@
 			$boSignatures = new felamimail_bosignatures();
 			
 			if($signatureData = $boSignatures->getDefaultSignature()) {
-				$this->sessionData['signatureID'] = $signatureData['signatureid'];
+				if (is_array($signatureData)) {
+					$this->sessionData['signatureID'] = $signatureData['signatureid'];
+				} else {
+					$this->sessionData['signatureID'] =$signatureData;
+				}
 			} else {
 				$this->sessionData['signatureID'] = -1;
 			}
