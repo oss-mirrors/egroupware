@@ -866,8 +866,9 @@
 				// but we need to reintroduce him later
 				// uw imap does not return the attribute of a folder, when requesting subscribed folders only
 				// dovecot has the same problem too
-			} else { 
-				foreach($nameSpace as $type => $singleNameSpace) {
+			} else {
+				if (is_array($nameSpace)) { 
+				  foreach($nameSpace as $type => $singleNameSpace) {
 					if($type == 'personal' && ($singleNameSpace[2]['name'] == '#mh/' || count($nameSpace) == 1) && $this->icServer->mailboxExist('Mail')) {
 						// uw-imap server with mailbox prefix or dovecot maybe
 						$foldersNameSpace[$type]['prefix'] = 'Mail';
@@ -892,7 +893,7 @@
 						$foldersNameSpace[$type]['all'] = $this->icServer->getMailboxes($foldersNameSpace[$type]['prefix']);
 						sort($foldersNameSpace[$type]['all']);
 					}
-
+				  }
 				}
 
 				// check for autocreated folders
