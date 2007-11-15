@@ -1,162 +1,162 @@
-a new ticket has been reported.	tts	cs	Bylo vlo¾eno nové oznámení.
-accept	tts	cs	PØIJMOUT
-accept the ticket into verification process.	tts	cs	Zaøadit oznámení do verifikaèního procesu.
-accepted	tts	cs	PØIJATO
+a new ticket has been reported.	tts	cs	Bylo vloÅ¾eno novÃ© oznÃ¡menÃ­.
+accept	tts	cs	PÅ˜IJMOUT
+accept the ticket into verification process.	tts	cs	ZaÅ™adit oznÃ¡menÃ­ do verifikaÄnÃ­ho procesu.
+accepted	tts	cs	PÅ˜IJATO
 action	tts	cs	Akce
-add new ticket	tts	cs	Pøidat nové oznámení
-add ticket	tts	cs	Pøidat oznámení
-additional notes	tts	cs	Dodateèné poznámky
-admin options	common	cs	Administrátorské volby
-assign to	tts	cs	Pøiøadit
-assigned from	tts	cs	Pøiøadil
-assigned to	tts	cs	Pøiøazen
-billable hours	tts	cs	Úètovatné hodiny
-billable hours changed	tts	cs	Úètované hodiny zmìnìny
-billable hours rate	tts	cs	Sazba úètovanıch hodin
-billable rate	tts	cs	Úètovaná sazba
-billable rate changed	tts	cs	Úètovaná sazba zmìnìna
-category changed	tts	cs	Kategorie zmìnìna
-check here to generate the state's id automatically or enter a particular id below.	tts	cs	Zkontrolujte zde automatické ID stavu nebo zadejte ID ní¾e.
-clear form	tts	cs	Smazat formuláø
-close the invalid ticket.	tts	cs	Zavøít neplatné oznámení
-closed	tts	cs	UZAVØENO
+add new ticket	tts	cs	PÅ™idat novÃ© oznÃ¡menÃ­
+add ticket	tts	cs	PÅ™idat oznÃ¡menÃ­
+additional notes	tts	cs	DodateÄnÃ© poznÃ¡mky
+admin options	common	cs	AdministrÃ¡torskÃ© volby
+assign to	tts	cs	PÅ™iÅ™adit
+assigned from	tts	cs	PÅ™iÅ™adil
+assigned to	tts	cs	PÅ™iÅ™azen
+billable hours	tts	cs	ÃšÄtovatnÃ© hodiny
+billable hours changed	tts	cs	ÃšÄtovanÃ© hodiny zmÄ›nÄ›ny
+billable hours rate	tts	cs	Sazba ÃºÄtovanÃ½ch hodin
+billable rate	tts	cs	ÃšÄtovanÃ¡ sazba
+billable rate changed	tts	cs	ÃšÄtovanÃ¡ sazba zmÄ›nÄ›na
+category changed	tts	cs	Kategorie zmÄ›nÄ›na
+check here to generate the state's id automatically or enter a particular id below.	tts	cs	Zkontrolujte zde automatickÃ© ID stavu nebo zadejte ID nÃ­Å¾e.
+clear form	tts	cs	Smazat formulÃ¡Å™
+close the invalid ticket.	tts	cs	ZavÅ™Ã­t neplatnÃ© oznÃ¡menÃ­
+closed	tts	cs	UZAVÅ˜ENO
 completed	tts	cs	HOTOVO
 configure the states	common	cs	Konfigurovat stavy
-configure the transitions	common	cs	Konfigurovat zmìny
-create new state	tts	cs	Vytvoøit novı stav
-create new ticket	tts	cs	Vytvoøit nové oznámení
-create new transition	tts	cs	Vytvoøit novou zmìnu
-creates a new ticket, returns ticket_id	tts	cs	Vytvoøí nové oznámení, vrátí ticket_id
-creates a struct of tickets	tts	cs	Vytvoøí strukturu oznámení
-date opened	tts	cs	Datum otevøení
-default assign to	tts	cs	Standardnì pøiøazeno
-default group	tts	cs	Standardní skupina
-default priority	tts	cs	Standardní priorita
-delete the listed tickets.	tts	cs	Smazat oznámení ze seznamu.
-deleting the state	tts	cs	Smazání stavu
-deleting the transition	tts	cs	Smazání zmìny
+configure the transitions	common	cs	Konfigurovat zmÄ›ny
+create new state	tts	cs	VytvoÅ™it novÃ½ stav
+create new ticket	tts	cs	VytvoÅ™it novÃ© oznÃ¡menÃ­
+create new transition	tts	cs	VytvoÅ™it novou zmÄ›nu
+creates a new ticket, returns ticket_id	tts	cs	VytvoÅ™Ã­ novÃ© oznÃ¡menÃ­, vrÃ¡tÃ­ ticket_id
+creates a struct of tickets	tts	cs	VytvoÅ™Ã­ strukturu oznÃ¡menÃ­
+date opened	tts	cs	Datum otevÅ™enÃ­
+default assign to	tts	cs	StandardnÄ› pÅ™iÅ™azeno
+default group	tts	cs	StandardnÃ­ skupina
+default priority	tts	cs	StandardnÃ­ priorita
+delete the listed tickets.	tts	cs	Smazat oznÃ¡menÃ­ ze seznamu.
+deleting the state	tts	cs	SmazÃ¡nÃ­ stavu
+deleting the transition	tts	cs	SmazÃ¡nÃ­ zmÄ›ny
 detail	tts	cs	Detail
-duplicate	tts	cs	DUPLIKÁT
+duplicate	tts	cs	DUPLIKÃT
 edit the state	tts	cs	Editovat stav
-edit the transition	tts	cs	Editovat zmìnu
-error: the subject of the ticket is not specified.	tts	cs	CHYBA: Pøedmìt oznámení není specifikován.
+edit the transition	tts	cs	Editovat zmÄ›nu
+error: the subject of the ticket is not specified.	tts	cs	CHYBA: PÅ™edmÄ›t oznÃ¡menÃ­ nenÃ­ specifikovÃ¡n.
 force	tts	cs	Vynutit
-global categories	tts	cs	Globální kategorie
-group ownership changed	tts	cs	Vlastník skupiny zmìnìn
+global categories	tts	cs	GlobÃ¡lnÃ­ kategorie
+group ownership changed	tts	cs	VlastnÃ­k skupiny zmÄ›nÄ›n
 history	tts	cs	Historie
-i worked on the ticket and the work requires validation.	tts	cs	Práce na oznámení vy¾aduje potvrzení.
-i worked on the ticket, but did not finish.	tts	cs	Práce na oznámení nebyla dokonèena.
-in progress	tts	cs	Ve zpracování
-initial state	tts	cs	Poèáteèní stav
-invalid	tts	cs	NEPLATNÉ
-invalidate	tts	cs	ZRU©IT PLATNOST
-keep the present state [%1].	tts	cs	Zachovat souèasnı stav [%1].
-latest note added	tts	cs	Poslední poznámka pøidána
-list of available tickets' states.	tts	cs	Seznam dostupnıch stavù oznámení
-list of available tickets' transitions.	tts	cs	Seznam dostupnıch zmìn oznámení
-missing description	tts	cs	Chybìjící popis
-morework	tts	cs	VÍCE PRÁCE
-needswork	tts	cs	POTØEBUJE DOPRACOVAT
-new	tts	cs	NOVİ
-new ticket	tts	cs	Nové oznámení
-new tickets can be put into this state.	tts	cs	Nová oznámení mohou bıt vlo¾ena do tohoto stavu.
-new value	tts	cs	Nová hodnota
-no additional notes	tts	cs	®ádné dodateèné poznámky
-no duplicate	tts	cs	®ÁDNİ DUPLIKÁT
-no notes for this ticket	tts	cs	®ádné poznámky k tomuto oznámení
-no states found	tts	cs	®ádné stavy nenalezeny
-no tickets found	tts	cs	®ádná oznámení nenalezena
-no transitions found	tts	cs	Nenalezeny ¾ádné zmìny
-not assigned	tts	cs	Nezaøazen
-not completed	tts	cs	NEDOKONÈENO
-notify changes to ticket assignee by e-mail	tts	cs	Upozonit na zmìny zaøazení oznámení e-mailem
-notify changes to ticket group by e-mail	tts	cs	Upozonit na zmìny skupiny oznámení e-mailem
-notify changes to ticket owner by e-mail	tts	cs	Upozonit na zmìny vlastníka oznámení e-mailem
-old value	tts	cs	Stará hodnota
-open	tts	cs	Otevøít
-open / closed	tts	cs	Otevøeno / Uzavøeno
-open date	tts	cs	Datum otevøení
-opened	tts	cs	Otevøen
-opened by	tts	cs	Otevøel
-original ticket details	tts	cs	Pùvodní detaily oznámení
-perform irregular transition into the following state	tts	cs	Vykoná neregulérní zmìnu v následujících stavech
-please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	cs	Zadejte Pøedmìt oznámení, jinak oznámení nebude ulo¾eno.
+i worked on the ticket and the work requires validation.	tts	cs	PrÃ¡ce na oznÃ¡menÃ­ vyÅ¾aduje potvrzenÃ­.
+i worked on the ticket, but did not finish.	tts	cs	PrÃ¡ce na oznÃ¡menÃ­ nebyla dokonÄena.
+in progress	tts	cs	Ve zpracovÃ¡nÃ­
+initial state	tts	cs	PoÄÃ¡teÄnÃ­ stav
+invalid	tts	cs	NEPLATNÃ‰
+invalidate	tts	cs	ZRUÅ IT PLATNOST
+keep the present state [%1].	tts	cs	Zachovat souÄasnÃ½ stav [%1].
+latest note added	tts	cs	PoslednÃ­ poznÃ¡mka pÅ™idÃ¡na
+list of available tickets' states.	tts	cs	Seznam dostupnÃ½ch stavÅ¯ oznÃ¡menÃ­
+list of available tickets' transitions.	tts	cs	Seznam dostupnÃ½ch zmÄ›n oznÃ¡menÃ­
+missing description	tts	cs	ChybÄ›jÃ­cÃ­ popis
+morework	tts	cs	VÃCE PRÃCE
+needswork	tts	cs	POTÅ˜EBUJE DOPRACOVAT
+new	tts	cs	NOVÃ
+new ticket	tts	cs	NovÃ© oznÃ¡menÃ­
+new tickets can be put into this state.	tts	cs	NovÃ¡ oznÃ¡menÃ­ mohou bÃ½t vloÅ¾ena do tohoto stavu.
+new value	tts	cs	NovÃ¡ hodnota
+no additional notes	tts	cs	Å½Ã¡dnÃ© dodateÄnÃ© poznÃ¡mky
+no duplicate	tts	cs	Å½ÃDNÃ DUPLIKÃT
+no notes for this ticket	tts	cs	Å½Ã¡dnÃ© poznÃ¡mky k tomuto oznÃ¡menÃ­
+no states found	tts	cs	Å½Ã¡dnÃ© stavy nenalezeny
+no tickets found	tts	cs	Å½Ã¡dnÃ¡ oznÃ¡menÃ­ nenalezena
+no transitions found	tts	cs	Nenalezeny Å¾Ã¡dnÃ© zmÄ›ny
+not assigned	tts	cs	NezaÅ™azen
+not completed	tts	cs	NEDOKONÄŒENO
+notify changes to ticket assignee by e-mail	tts	cs	Upozonit na zmÄ›ny zaÅ™azenÃ­ oznÃ¡menÃ­ e-mailem
+notify changes to ticket group by e-mail	tts	cs	Upozonit na zmÄ›ny skupiny oznÃ¡menÃ­ e-mailem
+notify changes to ticket owner by e-mail	tts	cs	Upozonit na zmÄ›ny vlastnÃ­ka oznÃ¡menÃ­ e-mailem
+old value	tts	cs	StarÃ¡ hodnota
+open	tts	cs	OtevÅ™Ã­t
+open / closed	tts	cs	OtevÅ™eno / UzavÅ™eno
+open date	tts	cs	Datum otevÅ™enÃ­
+opened	tts	cs	OtevÅ™en
+opened by	tts	cs	OtevÅ™el
+original ticket details	tts	cs	PÅ¯vodnÃ­ detaily oznÃ¡menÃ­
+perform irregular transition into the following state	tts	cs	VykonÃ¡ neregulÃ©rnÃ­ zmÄ›nu v nÃ¡sledujÃ­cÃ­ch stavech
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	cs	Zadejte PÅ™edmÄ›t oznÃ¡menÃ­, jinak oznÃ¡menÃ­ nebude uloÅ¾eno.
 prio	tts	cs	Priorita
 priority	tts	cs	Priorita
-priority changed	tts	cs	Priorita zmìnìna
-put the preexistent ticket into the state %1.	tts	cs	Vlo¾it pøedcházející oznámení do stavu %1.
-re-assigned	tts	cs	Znovupøiøazen
-re-opened	tts	cs	Znovuotevøen
-refresh every (seconds)	tts	cs	Obnovit ka¾dıch (sekund)
-reopen	tts	cs	ZNOVU OTEVØÍT
-reopened	tts	cs	ZNOVUOTEVØENO
-resolve	tts	cs	VYØE©IT
-resolved	tts	cs	VYØE©ENO
-returns a struct of a tickets history	tts	cs	Vrátí strukturu historie oznámení
-returns a struct of values of a single ticket	tts	cs	Vrátí strukturu hodnot jednoduchého oznámení
-returns the additional notes attached to a ticket	tts	cs	Vrátí dodateèné poznámky pøipojené k oznámení
-selected	tts	cs	vybrané
-show new/updated tickets on main screen	tts	cs	Uka¾ nová/aktualizovaná oznámení v hlavním oknì
-source state	tts	cs	Zdrojovı stav
+priority changed	tts	cs	Priorita zmÄ›nÄ›na
+put the preexistent ticket into the state %1.	tts	cs	VloÅ¾it pÅ™edchÃ¡zejÃ­cÃ­ oznÃ¡menÃ­ do stavu %1.
+re-assigned	tts	cs	ZnovupÅ™iÅ™azen
+re-opened	tts	cs	ZnovuotevÅ™en
+refresh every (seconds)	tts	cs	Obnovit kaÅ¾dÃ½ch (sekund)
+reopen	tts	cs	ZNOVU OTEVÅ˜ÃT
+reopened	tts	cs	ZNOVUOTEVÅ˜ENO
+resolve	tts	cs	VYÅ˜EÅ IT
+resolved	tts	cs	VYÅ˜EÅ ENO
+returns a struct of a tickets history	tts	cs	VrÃ¡tÃ­ strukturu historie oznÃ¡menÃ­
+returns a struct of values of a single ticket	tts	cs	VrÃ¡tÃ­ strukturu hodnot jednoduchÃ©ho oznÃ¡menÃ­
+returns the additional notes attached to a ticket	tts	cs	VrÃ¡tÃ­ dodateÄnÃ© poznÃ¡mky pÅ™ipojenÃ© k oznÃ¡menÃ­
+selected	tts	cs	vybranÃ©
+show new/updated tickets on main screen	tts	cs	UkaÅ¾ novÃ¡/aktualizovanÃ¡ oznÃ¡menÃ­ v hlavnÃ­m oknÄ›
+source state	tts	cs	ZdrojovÃ½ stav
 state	tts	cs	Stav
-state changed	tts	cs	Stav zmìnìn
+state changed	tts	cs	Stav zmÄ›nÄ›n
 state id	tts	cs	ID stavu
-state name	tts	cs	Jméno stavu
-status/date closed	tts	cs	Stav/Datum uzavøení
-subject changed	tts	cs	Pøedmìt zmìnìn
-target state	tts	cs	Cílovı stav
+state name	tts	cs	JmÃ©no stavu
+status/date closed	tts	cs	Stav/Datum uzavÅ™enÃ­
+subject changed	tts	cs	PÅ™edmÄ›t zmÄ›nÄ›n
+target state	tts	cs	CÃ­lovÃ½ stav
 test	tts	cs	TEST
-the closed ticket requires more work. reopen it.	tts	cs	Uzavøené oznámení potøebuje dopracovat. Znovuotevøít.
-the owner of the ticket was not able to confirm the issue.	tts	cs	Dr¾itel oznámení nebyl schopen potvrdit problém.
-the ticket has been accepted by the owner, who is about to work on it.	tts	cs	Vlastník akceptoval oznámení, na kterém má pracovat.
-the ticket has been closed without resolution.	tts	cs	Oznámení bylo uzavøeno bez rozhodnutí.
-the ticket has been reopened for further work.	tts	cs	Oznámení bylo znovuotevøeno k dal¹í práci.
-the ticket has been successfully resolved.	tts	cs	Oznámení bylo úspì¹nì vyøe¹eno.
-the ticket has been verified and has to be worked on.	tts	cs	Oznámení bylo zkontrolováno a musí bıt dopracováno.
-the ticket has been worked on and the work requires validation.	tts	cs	S oznámením se pracuje a potøebuje potvrzení.
-the ticket has been worked on, but requires more work.	tts	cs	S oznámením se pracuje, ale potøebuje dokonèit.
-the ticket is a duplicate of another ticket and should be closed.	tts	cs	Oznámení je duplikátem jiného a mìlo by bıt uzavøeno.
-the ticket is essentially not a duplicate of another ticket. reopen it.	tts	cs	Oznámení není v podstatì duplikátem jiného. Znovu otevøít.
-the ticket is invalid and cannot be worked on.	tts	cs	Oznámení je neplatné a není mo¾né s ním pracovat.
-the ticket resolution was successfully validated. close the ticket.	tts	cs	Informace o vyøe¹ení oznámení byla úspì¹nì potvrzena. Zavøete oznámení.
-the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	cs	Oznámení existovalo døíve ne¾ byla definována infrastruktura Petriho sítí a  mìl by mu bıt pøiøazen stav.
-the ticket was found a duplicate of another ticket.	tts	cs	Oznámení je duplikátem jiného.
-the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	cs	Oznámení v následujícím seznamu jsou ve stavu %1. Rozhodnìte co s nimi.
-the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	cs	Kontrola oznámení byla neúspì¹ná. Oznámení potøebuje dopracovat.
-ticket	tts	cs	Oznámení
-ticket has been updated	tts	cs	Oznámení bylo aktualizováno
-tickets found %1	tts	cs	Nalezena oznámení %1
-tickets open %1	tts	cs	Otevøena oznámení %1
-tickets total %1	tts	cs	Oznámení celkem %1
-to go back to the tts index, click <a href= %1 >here</a>	tts	cs	Jestli¾e chcete zpátky na index Oznámení, kliknìte <a href="%1">tady</a>.
-toaccept	tts	cs	K PØIJETÍ
-toclosed	tts	cs	K UZAVØENÍ
+the closed ticket requires more work. reopen it.	tts	cs	UzavÅ™enÃ© oznÃ¡menÃ­ potÅ™ebuje dopracovat. ZnovuotevÅ™Ã­t.
+the owner of the ticket was not able to confirm the issue.	tts	cs	DrÅ¾itel oznÃ¡menÃ­ nebyl schopen potvrdit problÃ©m.
+the ticket has been accepted by the owner, who is about to work on it.	tts	cs	VlastnÃ­k akceptoval oznÃ¡menÃ­, na kterÃ©m mÃ¡ pracovat.
+the ticket has been closed without resolution.	tts	cs	OznÃ¡menÃ­ bylo uzavÅ™eno bez rozhodnutÃ­.
+the ticket has been reopened for further work.	tts	cs	OznÃ¡menÃ­ bylo znovuotevÅ™eno k dalÅ¡Ã­ prÃ¡ci.
+the ticket has been successfully resolved.	tts	cs	OznÃ¡menÃ­ bylo ÃºspÄ›Å¡nÄ› vyÅ™eÅ¡eno.
+the ticket has been verified and has to be worked on.	tts	cs	OznÃ¡menÃ­ bylo zkontrolovÃ¡no a musÃ­ bÃ½t dopracovÃ¡no.
+the ticket has been worked on and the work requires validation.	tts	cs	S oznÃ¡menÃ­m se pracuje a potÅ™ebuje potvrzenÃ­.
+the ticket has been worked on, but requires more work.	tts	cs	S oznÃ¡menÃ­m se pracuje, ale potÅ™ebuje dokonÄit.
+the ticket is a duplicate of another ticket and should be closed.	tts	cs	OznÃ¡menÃ­ je duplikÃ¡tem jinÃ©ho a mÄ›lo by bÃ½t uzavÅ™eno.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	cs	OznÃ¡menÃ­ nenÃ­ v podstatÄ› duplikÃ¡tem jinÃ©ho. Znovu otevÅ™Ã­t.
+the ticket is invalid and cannot be worked on.	tts	cs	OznÃ¡menÃ­ je neplatnÃ© a nenÃ­ moÅ¾nÃ© s nÃ­m pracovat.
+the ticket resolution was successfully validated. close the ticket.	tts	cs	Informace o vyÅ™eÅ¡enÃ­ oznÃ¡menÃ­ byla ÃºspÄ›Å¡nÄ› potvrzena. ZavÅ™ete oznÃ¡menÃ­.
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	cs	OznÃ¡menÃ­ existovalo dÅ™Ã­ve neÅ¾ byla definovÃ¡na infrastruktura Petriho sÃ­tÃ­ a  mÄ›l by mu bÃ½t pÅ™iÅ™azen stav.
+the ticket was found a duplicate of another ticket.	tts	cs	OznÃ¡menÃ­ je duplikÃ¡tem jinÃ©ho.
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	cs	OznÃ¡menÃ­ v nÃ¡sledujÃ­cÃ­m seznamu jsou ve stavu %1. RozhodnÄ›te co s nimi.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	cs	Kontrola oznÃ¡menÃ­ byla neÃºspÄ›Å¡nÃ¡. OznÃ¡menÃ­ potÅ™ebuje dopracovat.
+ticket	tts	cs	OznÃ¡menÃ­
+ticket has been updated	tts	cs	OznÃ¡menÃ­ bylo aktualizovÃ¡no
+tickets found %1	tts	cs	Nalezena oznÃ¡menÃ­ %1
+tickets open %1	tts	cs	OtevÅ™ena oznÃ¡menÃ­ %1
+tickets total %1	tts	cs	OznÃ¡menÃ­ celkem %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	cs	JestliÅ¾e chcete zpÃ¡tky na index OznÃ¡menÃ­, kliknÄ›te <a href="%1">tady</a>.
+toaccept	tts	cs	K PÅ˜IJETÃ
+toclosed	tts	cs	K UZAVÅ˜ENÃ
 toduplicate	tts	cs	K DUPLIKACI
-toinvalid	tts	cs	KE ZNEPLATNÌNÍ
-toneedswork	tts	cs	K DOPRACOVÁNÍ
-tonew	tts	cs	JAKO NOVİ
-toreopened	tts	cs	KE ZNOVUOTEVØENÍ
-toresolved	tts	cs	K VYØE©ENÍ
-total billable	tts	cs	Souhrnné vyúètování
-totovalidate	tts	cs	K OVÌØENÍ
-tovalidate	tts	cs	K OVÌØENÍ
+toinvalid	tts	cs	KE ZNEPLATNÄšNÃ
+toneedswork	tts	cs	K DOPRACOVÃNÃ
+tonew	tts	cs	JAKO NOVÃ
+toreopened	tts	cs	KE ZNOVUOTEVÅ˜ENÃ
+toresolved	tts	cs	K VYÅ˜EÅ ENÃ
+total billable	tts	cs	SouhrnnÃ© vyÃºÄtovÃ¡nÃ­
+totovalidate	tts	cs	K OVÄšÅ˜ENÃ
+tovalidate	tts	cs	K OVÄšÅ˜ENÃ
 toverified	tts	cs	KE KONTROLE
-transition	tts	cs	Zmìna
-transition name	tts	cs	Název zmìny
-trouble ticket system	common	cs	Sledování problémù
-tts	common	cs	Sledování problémù
-tts preferences	tts	cs	Sledování problémù - pøedvolby
-undefined	tts	cs	NEDEFINOVÁNO
-update ticket state	tts	cs	Aktualizovat stav oznámení
-updates ticket	tts	cs	Oznámení aktualizováno
-verified	tts	cs	ZKONTROLOVÁNO
+transition	tts	cs	ZmÄ›na
+transition name	tts	cs	NÃ¡zev zmÄ›ny
+trouble ticket system	common	cs	SledovÃ¡nÃ­ problÃ©mÅ¯
+tts	common	cs	SledovÃ¡nÃ­ problÃ©mÅ¯
+tts preferences	tts	cs	SledovÃ¡nÃ­ problÃ©mÅ¯ - pÅ™edvolby
+undefined	tts	cs	NEDEFINOVÃNO
+update ticket state	tts	cs	Aktualizovat stav oznÃ¡menÃ­
+updates ticket	tts	cs	OznÃ¡menÃ­ aktualizovÃ¡no
+verified	tts	cs	ZKONTROLOVÃNO
 verify	tts	cs	ZKONTROLOVAT
-verify the ticket to work on it.	tts	cs	Zkontrolovat oznámení
-view all tickets	tts	cs	Prohlí¾et v¹echna oznámení
-view job detail	tts	cs	Prohlí¾et detail èinnosti
-view only my open tickets	tts	cs	Prohlí¾et pouze moje otevøená oznámení
-view only open tickets	tts	cs	Prohlí¾et pouze otevøená oznámení
-you can only close a ticket if it is assigned to you.	tts	cs	Jestli¾e je oznámení pøiøazeno vám, mù¾ete ho pouze zavøít.
-you want to delete the state %1 and associated transitions. are you sure?	tts	cs	Opravdu chcete smazat stav %1 a asociované zmìny?
+verify the ticket to work on it.	tts	cs	Zkontrolovat oznÃ¡menÃ­
+view all tickets	tts	cs	ProhlÃ­Å¾et vÅ¡echna oznÃ¡menÃ­
+view job detail	tts	cs	ProhlÃ­Å¾et detail Äinnosti
+view only my open tickets	tts	cs	ProhlÃ­Å¾et pouze moje otevÅ™enÃ¡ oznÃ¡menÃ­
+view only open tickets	tts	cs	ProhlÃ­Å¾et pouze otevÅ™enÃ¡ oznÃ¡menÃ­
+you can only close a ticket if it is assigned to you.	tts	cs	JestliÅ¾e je oznÃ¡menÃ­ pÅ™iÅ™azeno vÃ¡m, mÅ¯Å¾ete ho pouze zavÅ™Ã­t.
+you want to delete the state %1 and associated transitions. are you sure?	tts	cs	Opravdu chcete smazat stav %1 a asociovanÃ© zmÄ›ny?
 you want to delete the state %1. are you sure?	tts	cs	Opravdu chcete smazat stav %1?
-you want to delete the transition %1. are you sure?	tts	cs	Opravdu chcete smazat zmìnu %1?
+you want to delete the transition %1. are you sure?	tts	cs	Opravdu chcete smazat zmÄ›nu %1?

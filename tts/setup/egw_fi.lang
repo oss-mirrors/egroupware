@@ -1,191 +1,191 @@
-a new ticket has been reported.	tts	fi	Uusi pyyntö on ilmoitettu
-accept	tts	fi	HYVÄKSY
-accept the ticket into verification process.	tts	fi	hyväksytään pyyntö tarkistettuun prosessiin
-accepted	tts	fi	Hyväksytty
+a new ticket has been reported.	tts	fi	Uusi pyyntÃ¶ on ilmoitettu
+accept	tts	fi	HYVÃ„KSY
+accept the ticket into verification process.	tts	fi	hyvÃ¤ksytÃ¤Ã¤n pyyntÃ¶ tarkistettuun prosessiin
+accepted	tts	fi	HyvÃ¤ksytty
 action	tts	fi	Toiminta
-add new ticket	tts	fi	Lisää uusi pyyntö
-add ticket	tts	fi	Lisää pyyntö
-additional notes	tts	fi	Lisätietoja
-admin options	common	fi	Ylläpidon asetukset
-alert for critical prio setting	tts	fi	Olet asettamassa tärkeysastetta kriittiseksi; Tarkista että tiedät se tarkoittaa pyynnön käsittelijälle ja älä unohda ilmoittaa hänelle tästä välittömästi!
-alert for emergency prio setting	tts	fi	Olet asettamassa tärkeysastetta hätätilanteeksi; Tarkista että tiedät se tarkoittaa pyynnön käsittelijälle ja älä unohda ilmoittaa hänelle tästä välittömästi!
-alert for high prio setting	tts	fi	Harkitse yhteyden ottamista pyynnön käsittelijään
-all tickets are already converted to tracker	tts	fi	Kaikki pyynnöt on jo käännetty Helpdeskiin
-assign tickets	tts	fi	Käsittelijä
-assign to	tts	fi	Aseta käsittelijäksi
-assigned from	tts	fi	Edellinen käsittelijä
-assigned to	tts	fi	Käsittelijä
+add new ticket	tts	fi	LisÃ¤Ã¤ uusi pyyntÃ¶
+add ticket	tts	fi	LisÃ¤Ã¤ pyyntÃ¶
+additional notes	tts	fi	LisÃ¤tietoja
+admin options	common	fi	YllÃ¤pidon asetukset
+alert for critical prio setting	tts	fi	Olet asettamassa tÃ¤rkeysastetta kriittiseksi; Tarkista ettÃ¤ tiedÃ¤t se tarkoittaa pyynnÃ¶n kÃ¤sittelijÃ¤lle ja Ã¤lÃ¤ unohda ilmoittaa hÃ¤nelle tÃ¤stÃ¤ vÃ¤littÃ¶mÃ¤sti!
+alert for emergency prio setting	tts	fi	Olet asettamassa tÃ¤rkeysastetta hÃ¤tÃ¤tilanteeksi; Tarkista ettÃ¤ tiedÃ¤t se tarkoittaa pyynnÃ¶n kÃ¤sittelijÃ¤lle ja Ã¤lÃ¤ unohda ilmoittaa hÃ¤nelle tÃ¤stÃ¤ vÃ¤littÃ¶mÃ¤sti!
+alert for high prio setting	tts	fi	Harkitse yhteyden ottamista pyynnÃ¶n kÃ¤sittelijÃ¤Ã¤n
+all tickets are already converted to tracker	tts	fi	Kaikki pyynnÃ¶t on jo kÃ¤Ã¤nnetty Helpdeskiin
+assign tickets	tts	fi	KÃ¤sittelijÃ¤
+assign to	tts	fi	Aseta kÃ¤sittelijÃ¤ksi
+assigned from	tts	fi	Edellinen kÃ¤sittelijÃ¤
+assigned to	tts	fi	KÃ¤sittelijÃ¤
 billable hours	tts	fi	Laskutettavat tunnit
 billable hours changed	tts	fi	Laskutettavat tunnit muutettu
 billable hours rate	tts	fi	Tuntihinta
 billable rate	tts	fi	Hinta
 billable rate changed	tts	fi	Tuntihinta muutettu
-can assign to	tts	fi	voi käsitellä pyyntöjä
-can make full changes	tts	fi	Voi tehdä kaikki muutokset
+can assign to	tts	fi	voi kÃ¤sitellÃ¤ pyyntÃ¶jÃ¤
+can make full changes	tts	fi	Voi tehdÃ¤ kaikki muutokset
 category changed	tts	fi	Kategoria muutettu
-check here to generate the state's id automatically or enter a particular id below.	tts	fi	Tarkasta tämä kohta aikaansaadaksesi tilojen ID automaattisesti tai kirjoita erityinen ID alapuolelle.
-clear form	tts	fi	Tyhjennä lomake
-close the invalid ticket.	tts	fi	Sulje kelpaamaton pyyntö.
-close ticket	tts	fi	Sulje pyyntö
+check here to generate the state's id automatically or enter a particular id below.	tts	fi	Tarkasta tÃ¤mÃ¤ kohta aikaansaadaksesi tilojen ID automaattisesti tai kirjoita erityinen ID alapuolelle.
+clear form	tts	fi	TyhjennÃ¤ lomake
+close the invalid ticket.	tts	fi	Sulje kelpaamaton pyyntÃ¶.
+close ticket	tts	fi	Sulje pyyntÃ¶
 closed	tts	fi	Suljettu
 completed	tts	fi	VALMIS
 configure the states	common	fi	Konfiguroi tiloja
-configure the transitions	common	fi	Konfiguroi siirtymiä
-convert all closed tickets	tts	fi	Käännä kaikki suljetut pyynnöt
-convert all open tickets	tts	fi	Käännä kaikki avoimet pyynnöt
-convert tickets to tracker	tts	fi	Käännä pyynnöt Helpdeskiin
-converted count	tts	fi	Näin monta käännettiin:
+configure the transitions	common	fi	Konfiguroi siirtymiÃ¤
+convert all closed tickets	tts	fi	KÃ¤Ã¤nnÃ¤ kaikki suljetut pyynnÃ¶t
+convert all open tickets	tts	fi	KÃ¤Ã¤nnÃ¤ kaikki avoimet pyynnÃ¶t
+convert tickets to tracker	tts	fi	KÃ¤Ã¤nnÃ¤ pyynnÃ¶t Helpdeskiin
+converted count	tts	fi	NÃ¤in monta kÃ¤Ã¤nnettiin:
 create new state	tts	fi	Luo uusi tila
-create new ticket	tts	fi	Luo uusi pyyntö
-create new transition	tts	fi	Luo uusi siirtymä
-creates a new ticket, returns ticket_id	tts	fi	Luodaan uusi  pyyntö ja palautetaan tapauksen_id
-creates a struct of tickets	tts	fi	Luodaan ryhmään tapauksia
+create new ticket	tts	fi	Luo uusi pyyntÃ¶
+create new transition	tts	fi	Luo uusi siirtymÃ¤
+creates a new ticket, returns ticket_id	tts	fi	Luodaan uusi  pyyntÃ¶ ja palautetaan tapauksen_id
+creates a struct of tickets	tts	fi	Luodaan ryhmÃ¤Ã¤n tapauksia
 critical	tts	fi	Kriittinen
-date opened	tts	fi	Avauspäivä
+date opened	tts	fi	AvauspÃ¤ivÃ¤
 default assign to	tts	fi	Oletus toimeksi annosta
-default group	tts	fi	Oletus ryhmä
-default priority	tts	fi	Oletus tärkeysaste
+default group	tts	fi	Oletus ryhmÃ¤
+default priority	tts	fi	Oletus tÃ¤rkeysaste
 delete the listed tickets.	tts	fi	Poista listatut tapaukset
 deleting the state	tts	fi	Poistetaan  tila
-deleting the transition	tts	fi	Poistetaan siirtymä
+deleting the transition	tts	fi	Poistetaan siirtymÃ¤
 detail	tts	fi	Yksityiskohdat
-due date	tts	fi	Päättymispäivä
-due date changed	tts	fi	Päättymispäivä muutettu
+due date	tts	fi	PÃ¤Ã¤ttymispÃ¤ivÃ¤
+due date changed	tts	fi	PÃ¤Ã¤ttymispÃ¤ivÃ¤ muutettu
 duplicate	tts	fi	LUO KAKSOISKAPPALE
 edit the state	tts	fi	Muokkaa tilaa
-edit the transition	tts	fi	Muokkaa siirtymää
-emergency	tts	fi	Hätätilanne
-error: the subject of the ticket is not specified.	tts	fi	VIRHE: pyynnön aihe ei ole erityinen
+edit the transition	tts	fi	Muokkaa siirtymÃ¤Ã¤
+emergency	tts	fi	HÃ¤tÃ¤tilanne
+error: the subject of the ticket is not specified.	tts	fi	VIRHE: pyynnÃ¶n aihe ei ole erityinen
 force	tts	fi	Pakota
 global categories	tts	fi	Yleinen kategoria
-group ownership changed	tts	fi	Ryhmän omistusoikeudet muutettu
+group ownership changed	tts	fi	RyhmÃ¤n omistusoikeudet muutettu
 history	tts	fi	Historia
-i worked on the ticket and the work requires validation.	tts	fi	Työstin pyyntöä ja työ vaatii hyväksyntää.
-i worked on the ticket, but did not finish.	tts	fi	Olen työstänyt pyyntöä, mutta se ei ole valmis.
-in progress	tts	fi	Käsittelyssä
-initial state	tts	fi	alkuperäinen tila
+i worked on the ticket and the work requires validation.	tts	fi	TyÃ¶stin pyyntÃ¶Ã¤ ja tyÃ¶ vaatii hyvÃ¤ksyntÃ¤Ã¤.
+i worked on the ticket, but did not finish.	tts	fi	Olen tyÃ¶stÃ¤nyt pyyntÃ¶Ã¤, mutta se ei ole valmis.
+in progress	tts	fi	KÃ¤sittelyssÃ¤
+initial state	tts	fi	alkuperÃ¤inen tila
 invalid	tts	fi	KELPAAMATON
-invalidate	tts	fi	MITÄTÖIDÄ
-keep the present state	tts	fi	Säilytä nykyinen tila
-keep the present state [%1].	tts	fi	Pidä nykyinen tila [%1].
-latest note added	tts	fi	Uusin huomautus lisätty
+invalidate	tts	fi	MITÃ„TÃ–IDÃ„
+keep the present state	tts	fi	SÃ¤ilytÃ¤ nykyinen tila
+keep the present state [%1].	tts	fi	PidÃ¤ nykyinen tila [%1].
+latest note added	tts	fi	Uusin huomautus lisÃ¤tty
 list of available tickets' states.	tts	fi	Lista saatavilla olevien tapauksien tiloista.
-list of available tickets' transitions.	tts	fi	Lista saatavilla olevien tapauksien siirtymistä.
+list of available tickets' transitions.	tts	fi	Lista saatavilla olevien tapauksien siirtymistÃ¤.
 low	tts	fi	Matala
 missing description	tts	fi	Kuvaus puuttuu
-morework	tts	fi	LISÄÄ TYÖTÄ
-needswork	tts	fi	TARVITSEE TYÖSTÄÄ
+morework	tts	fi	LISÃ„Ã„ TYÃ–TÃ„
+needswork	tts	fi	TARVITSEE TYÃ–STÃ„Ã„
 new	tts	fi	UUSI
-new ticket	tts	fi	Uusi pyyntö
-new tickets can be put into this state.	tts	fi	Uudet pyynnöt voidaan laittaa tähän tilaan.
+new ticket	tts	fi	Uusi pyyntÃ¶
+new tickets can be put into this state.	tts	fi	Uudet pyynnÃ¶t voidaan laittaa tÃ¤hÃ¤n tilaan.
 new value	tts	fi	Uusi arvo
 no additional notes	tts	fi	Ei muita huomautuksia
 no duplicate	tts	fi	EI KAKSOISKAPPALE
-no notes for this ticket	tts	fi	Ei huomautuksia tälle pyynnölle
+no notes for this ticket	tts	fi	Ei huomautuksia tÃ¤lle pyynnÃ¶lle
 no states found	tts	fi	Ei tilaa
-no tickets found	tts	fi	Ei pyyntöjä.
-no transitions found	tts	fi	Ei siirtymiä
+no tickets found	tts	fi	Ei pyyntÃ¶jÃ¤.
+no transitions found	tts	fi	Ei siirtymiÃ¤
 not assigned	tts	fi	Ei nimetty
 not completed	tts	fi	EI VALMISTUNUT
-notify changes to ticket assignee by e-mail	tts	fi	Ilmoitetaan muutoksista pyynnön omistajalle sählöpostitse
-notify changes to ticket group by e-mail	tts	fi	Ilmoitetaan muutoksista pyynnön ryhmälle sähköpostitse
-notify changes to ticket owner by e-mail	tts	fi	Ilmoitetaan muutoksista pyynnön omistajalle sähköpostitse
+notify changes to ticket assignee by e-mail	tts	fi	Ilmoitetaan muutoksista pyynnÃ¶n omistajalle sÃ¤hlÃ¶postitse
+notify changes to ticket group by e-mail	tts	fi	Ilmoitetaan muutoksista pyynnÃ¶n ryhmÃ¤lle sÃ¤hkÃ¶postitse
+notify changes to ticket owner by e-mail	tts	fi	Ilmoitetaan muutoksista pyynnÃ¶n omistajalle sÃ¤hkÃ¶postitse
 old value	tts	fi	vanha arvo
 open	tts	fi	Avaa
 open / closed	tts	fi	Avaa / Suljettu
-open date	tts	fi	Avauspäivä
+open date	tts	fi	AvauspÃ¤ivÃ¤
 opened	tts	fi	Avattu
 opened by	tts	fi	Avaaja
-original ticket details	tts	fi	Alkuperäisen pyynnön yksityiskohdat
-please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	fi	Kirjoita pyynnön aihe, muuten pyyntöä ei voida varastoida.
-prio	tts	fi	Tärk.
-priority	tts	fi	Tärkeys
-priority changed	tts	fi	Tärkeysastetta muutettu
-put the preexistent ticket into the state %1.	tts	fi	Laita entinen pyyntö tilaan %1.
+original ticket details	tts	fi	AlkuperÃ¤isen pyynnÃ¶n yksityiskohdat
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	fi	Kirjoita pyynnÃ¶n aihe, muuten pyyntÃ¶Ã¤ ei voida varastoida.
+prio	tts	fi	TÃ¤rk.
+priority	tts	fi	TÃ¤rkeys
+priority changed	tts	fi	TÃ¤rkeysastetta muutettu
+put the preexistent ticket into the state %1.	tts	fi	Laita entinen pyyntÃ¶ tilaan %1.
 re-assigned	tts	fi	Uudelleen osoitettu
 re-opened	tts	fi	uudelleen avattu
-read tickets	tts	fi	Lue pyynnöt
-read tickets within group only	tts	fi	Lue vain ryhmä pyynnöt
-refresh every (seconds)	tts	fi	Virkistä kaikki (sekunnit)
+read tickets	tts	fi	Lue pyynnÃ¶t
+read tickets within group only	tts	fi	Lue vain ryhmÃ¤ pyynnÃ¶t
+refresh every (seconds)	tts	fi	VirkistÃ¤ kaikki (sekunnit)
 reopen	tts	fi	uudelleen avaa
 reopened	tts	fi	uudelleen avattu
 resolve	tts	fi	uudelleen ratkaise
 resolved	tts	fi	uudelleen ratkaistu
-returns a struct of a tickets history	tts	fi	Palauttaa ryhmän pyyntöjen historian
-returns a struct of values of a single ticket	tts	fi	Palauttaa ryhmän yksittäisen pyynnön arvot
-returns the additional notes attached to a ticket	tts	fi	Palauttaa lisähuomautukset liitettynä pyyntöön
-select which categories should be used in tracker for the tts categories	tts	fi	Valitse mitä kategorioita käytetään Helpdeskin kategorioissa
+returns a struct of a tickets history	tts	fi	Palauttaa ryhmÃ¤n pyyntÃ¶jen historian
+returns a struct of values of a single ticket	tts	fi	Palauttaa ryhmÃ¤n yksittÃ¤isen pyynnÃ¶n arvot
+returns the additional notes attached to a ticket	tts	fi	Palauttaa lisÃ¤huomautukset liitettynÃ¤ pyyntÃ¶Ã¶n
+select which categories should be used in tracker for the tts categories	tts	fi	Valitse mitÃ¤ kategorioita kÃ¤ytetÃ¤Ã¤n Helpdeskin kategorioissa
 selected	tts	fi	valitut
-show new/updated tickets on main screen	tts	fi	näytä uusi / päivitetty tapaus pää ruudulla
-small view	tts	fi	Pieni näkymä
-source state	tts	fi	Lähteen tila
+show new/updated tickets on main screen	tts	fi	nÃ¤ytÃ¤ uusi / pÃ¤ivitetty tapaus pÃ¤Ã¤ ruudulla
+small view	tts	fi	Pieni nÃ¤kymÃ¤
+source state	tts	fi	LÃ¤hteen tila
 state	tts	fi	Tila
 state changed	tts	fi	Tila vaihdettu
 state id	tts	fi	Tilan ID
 state name	tts	fi	Tilan nimi
-status/date closed	tts	fi	Tila / Sulkemispäivä
+status/date closed	tts	fi	Tila / SulkemispÃ¤ivÃ¤
 subject changed	tts	fi	Aihe muutettu
 target state	tts	fi	Tavoitteen tila
 test	tts	fi	TESTI
-the closed ticket requires more work. reopen it.	tts	fi	Suljettu pyyntö vaatii lisää työtä. Avaa uudelleen se.
-the owner of the ticket was not able to confirm the issue.	tts	fi	Pyynnön omistaja ei voinut konfiguroida aihetta.
-the ticket has been accepted by the owner, who is about to work on it.	tts	fi	Omistaja, joka on hyväksynyt pyynnön, työstää sitä.
-the ticket has been closed without resolution.	tts	fi	Pyyntö on suljettu ilman päätöstä.
-the ticket has been reopened for further work.	tts	fi	Pyyntö on uudelleen avattu työstettäväksi.
-the ticket has been successfully resolved.	tts	fi	Pyyntö on onnistuneesti ratkaistu.
-the ticket has been verified and has to be worked on.	tts	fi	Pyyntö on tarkistettu ja sitä täytyy työstää.
-the ticket has been worked on and the work requires validation.	tts	fi	Pyyntöä on työstetty ja työ vaatii hyväksyntää.
-the ticket has been worked on, but requires more work.	tts	fi	Pyyntöä on työstetty, mutta se vaatii lisää työtä.
-the ticket is a duplicate of another ticket and should be closed.	tts	fi	Pyyntö on kopioitu toisesta tapauksesta ja pitäisi sulkea.
-the ticket is essentially not a duplicate of another ticket. reopen it.	tts	fi	Pyyntö ei ole olennaisesti toisen tapauksen kopio. Uudelleen avaa se.
-the ticket is invalid and cannot be worked on.	tts	fi	Tapaus on kelpaamaton ja se ei voi olla työstettävänä.
-the ticket resolution was successfully validated. close the ticket.	tts	fi	Pyynnön ratkaisu oli menestyksekkäästi vahvistettu. Sulje tapaus.
-the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	fi	Pyyntö oli olemassa ennen kuin Petri Net infrastruktuuri oli määritellyt ja olisi osoittanut tilan.
-the ticket was found a duplicate of another ticket.	tts	fi	Pyyntö löydettiin toista tapausta jäljentämällä.
-the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	fi	Seuraavan listan pyynnöt ovat tilassa %1. Päätä mitä niille pitäisi tehdä.
-the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	fi	Pyynnön vahvistaminen ei ollut menestynyt. Pyyntö tarvitsee lisää työtä.
-this state means an open ticket	tts	fi	Tässä tilassa pyyntö on auki.
-ticket	tts	fi	Pyyntö
-ticket #	tts	fi	Pyyntö #
-ticket count	tts	fi	Pyyntöjen määtä
-ticket has been updated	tts	fi	Pyyntö päivitetty
-ticket is in tracker	tts	fi	Tämä pyyntö on jo käännetty Helpdeskiin
-ticket is not accessable	tts	fi	pyyntö ei ole hyväksyttävissä
-ticket is not accessible	tts	fi	Tämä pyyntö ei ole hyväksyttävissä
-tickets found %1	tts	fi	Pyyntöjä löydetty %1
-tickets have been converted	tts	fi	Pyyntö on käännetty
-tickets open %1	tts	fi	Avoimia pyyntöjä %1
-tickets total %1	tts	fi	Pyyntöjä yhteensä %1
-to go back to the tts index, click <a href= %1 >here</a>	tts	fi	Mene takaisin tts indeksiin, paina <a href="%1">tässä</a>
-toaccept	tts	fi	HYVÄKSYÄ
+the closed ticket requires more work. reopen it.	tts	fi	Suljettu pyyntÃ¶ vaatii lisÃ¤Ã¤ tyÃ¶tÃ¤. Avaa uudelleen se.
+the owner of the ticket was not able to confirm the issue.	tts	fi	PyynnÃ¶n omistaja ei voinut konfiguroida aihetta.
+the ticket has been accepted by the owner, who is about to work on it.	tts	fi	Omistaja, joka on hyvÃ¤ksynyt pyynnÃ¶n, tyÃ¶stÃ¤Ã¤ sitÃ¤.
+the ticket has been closed without resolution.	tts	fi	PyyntÃ¶ on suljettu ilman pÃ¤Ã¤tÃ¶stÃ¤.
+the ticket has been reopened for further work.	tts	fi	PyyntÃ¶ on uudelleen avattu tyÃ¶stettÃ¤vÃ¤ksi.
+the ticket has been successfully resolved.	tts	fi	PyyntÃ¶ on onnistuneesti ratkaistu.
+the ticket has been verified and has to be worked on.	tts	fi	PyyntÃ¶ on tarkistettu ja sitÃ¤ tÃ¤ytyy tyÃ¶stÃ¤Ã¤.
+the ticket has been worked on and the work requires validation.	tts	fi	PyyntÃ¶Ã¤ on tyÃ¶stetty ja tyÃ¶ vaatii hyvÃ¤ksyntÃ¤Ã¤.
+the ticket has been worked on, but requires more work.	tts	fi	PyyntÃ¶Ã¤ on tyÃ¶stetty, mutta se vaatii lisÃ¤Ã¤ tyÃ¶tÃ¤.
+the ticket is a duplicate of another ticket and should be closed.	tts	fi	PyyntÃ¶ on kopioitu toisesta tapauksesta ja pitÃ¤isi sulkea.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	fi	PyyntÃ¶ ei ole olennaisesti toisen tapauksen kopio. Uudelleen avaa se.
+the ticket is invalid and cannot be worked on.	tts	fi	Tapaus on kelpaamaton ja se ei voi olla tyÃ¶stettÃ¤vÃ¤nÃ¤.
+the ticket resolution was successfully validated. close the ticket.	tts	fi	PyynnÃ¶n ratkaisu oli menestyksekkÃ¤Ã¤sti vahvistettu. Sulje tapaus.
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	fi	PyyntÃ¶ oli olemassa ennen kuin Petri Net infrastruktuuri oli mÃ¤Ã¤ritellyt ja olisi osoittanut tilan.
+the ticket was found a duplicate of another ticket.	tts	fi	PyyntÃ¶ lÃ¶ydettiin toista tapausta jÃ¤ljentÃ¤mÃ¤llÃ¤.
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	fi	Seuraavan listan pyynnÃ¶t ovat tilassa %1. PÃ¤Ã¤tÃ¤ mitÃ¤ niille pitÃ¤isi tehdÃ¤.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	fi	PyynnÃ¶n vahvistaminen ei ollut menestynyt. PyyntÃ¶ tarvitsee lisÃ¤Ã¤ tyÃ¶tÃ¤.
+this state means an open ticket	tts	fi	TÃ¤ssÃ¤ tilassa pyyntÃ¶ on auki.
+ticket	tts	fi	PyyntÃ¶
+ticket #	tts	fi	PyyntÃ¶ #
+ticket count	tts	fi	PyyntÃ¶jen mÃ¤Ã¤tÃ¤
+ticket has been updated	tts	fi	PyyntÃ¶ pÃ¤ivitetty
+ticket is in tracker	tts	fi	TÃ¤mÃ¤ pyyntÃ¶ on jo kÃ¤Ã¤nnetty Helpdeskiin
+ticket is not accessable	tts	fi	pyyntÃ¶ ei ole hyvÃ¤ksyttÃ¤vissÃ¤
+ticket is not accessible	tts	fi	TÃ¤mÃ¤ pyyntÃ¶ ei ole hyvÃ¤ksyttÃ¤vissÃ¤
+tickets found %1	tts	fi	PyyntÃ¶jÃ¤ lÃ¶ydetty %1
+tickets have been converted	tts	fi	PyyntÃ¶ on kÃ¤Ã¤nnetty
+tickets open %1	tts	fi	Avoimia pyyntÃ¶jÃ¤ %1
+tickets total %1	tts	fi	PyyntÃ¶jÃ¤ yhteensÃ¤ %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	fi	Mene takaisin tts indeksiin, paina <a href="%1">tÃ¤ssÃ¤</a>
+toaccept	tts	fi	HYVÃ„KSYÃ„
 toclosed	tts	fi	SULJETTU
 toduplicate	tts	fi	KOPIOI
 toinvalid	tts	fi	KELPAAMATON
-toneedswork	tts	fi	TARVITSEE TYÖTÄ
+toneedswork	tts	fi	TARVITSEE TYÃ–TÃ„
 tonew	tts	fi	UUSI
 toreopened	tts	fi	UUDELLEEN AVATTU
 toresolved	tts	fi	UUDELLEEN RATKAISTU
 total billable	tts	fi	Kokonais lasku
-totovalidate	tts	fi	HYVÄKSYÄ
+totovalidate	tts	fi	HYVÃ„KSYÃ„
 tovalidate	tts	fi	VAHVISTAA
 toverified	tts	fi	TARKISTETTU
 transition	tts	fi	Siirtyminen
 transition name	tts	fi	Siirtymisen nimi
-trouble ticket system	common	fi	Ongelmatapaus -järjestelmä
-tts	common	fi	Ongelmatapaus -järjestelmä
-tts preferences	tts	fi	Ongelmatapaus -järjestelmä - asetukset
-undefined	tts	fi	MÄÄRITTELEMÄTÖN
-update ticket state	tts	fi	Päivitä pyynnön tila
-updates ticket	tts	fi	päivitetään tapaukset
+trouble ticket system	common	fi	Ongelmatapaus -jÃ¤rjestelmÃ¤
+tts	common	fi	Ongelmatapaus -jÃ¤rjestelmÃ¤
+tts preferences	tts	fi	Ongelmatapaus -jÃ¤rjestelmÃ¤ - asetukset
+undefined	tts	fi	MÃ„Ã„RITTELEMÃ„TÃ–N
+update ticket state	tts	fi	PÃ¤ivitÃ¤ pyynnÃ¶n tila
+updates ticket	tts	fi	pÃ¤ivitetÃ¤Ã¤n tapaukset
 verified	tts	fi	TARKISTETTU
 verify	tts	fi	TARKISTAA
-verify the ticket to work on it.	tts	fi	Tarkista pyyntö työstääksesi sitä
-view all tickets	tts	fi	Näytä kaikki pyynnöt
-view job detail	tts	fi	Näytä työn yksityiskohdat
-view only my open tickets	tts	fi	Näytä vain avaamani pyynnöt
-view only open tickets	tts	fi	Näytä vain avoimet pyynnöt
+verify the ticket to work on it.	tts	fi	Tarkista pyyntÃ¶ tyÃ¶stÃ¤Ã¤ksesi sitÃ¤
+view all tickets	tts	fi	NÃ¤ytÃ¤ kaikki pyynnÃ¶t
+view job detail	tts	fi	NÃ¤ytÃ¤ tyÃ¶n yksityiskohdat
+view only my open tickets	tts	fi	NÃ¤ytÃ¤ vain avaamani pyynnÃ¶t
+view only open tickets	tts	fi	NÃ¤ytÃ¤ vain avoimet pyynnÃ¶t
 wish	tts	fi	Toivo
-you can only close a ticket if it is assigned to you.	tts	fi	Voit sulkea pyynnön vain jos se on osoitettu sinulle.
-you want to delete the state %1 and associated transitions. are you sure?	tts	fi	Haluat poistaa tilan %1 ja siihen liittyvät siirtymät. Oletko aivan varma?
+you can only close a ticket if it is assigned to you.	tts	fi	Voit sulkea pyynnÃ¶n vain jos se on osoitettu sinulle.
+you want to delete the state %1 and associated transitions. are you sure?	tts	fi	Haluat poistaa tilan %1 ja siihen liittyvÃ¤t siirtymÃ¤t. Oletko aivan varma?
 you want to delete the state %1. are you sure?	tts	fi	Haluat poistaa tilan %1. Oletko aivan varma?
-you want to delete the transition %1. are you sure?	tts	fi	Haluat poistaa siirtymän %1. Oletko aivan varma?
+you want to delete the transition %1. are you sure?	tts	fi	Haluat poistaa siirtymÃ¤n %1. Oletko aivan varma?

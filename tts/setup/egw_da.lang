@@ -1,5 +1,5 @@
-add new ticket	tts	da	Tilføj ny billet
-add ticket	tts	da	Tilføj billet
+add new ticket	tts	da	TilfÃ¸j ny billet
+add ticket	tts	da	TilfÃ¸j billet
 additional notes	tts	da	Yderligere noter
 assign to	tts	da	Anvis til
 assigned from	tts	da	Anvist fra
@@ -8,26 +8,26 @@ clear form	tts	da	Slet formular
 close	tts	da	Luk
 close date	tts	da	Luk dato
 closed	tts	da	Lukket
-date opened	tts	da	Dato åbnet
+date opened	tts	da	Dato Ã¥bnet
 detail	tts	da	Detalje
 details	tts	da	Detaljer
 group	tts	da	Gruppe
-in progress	tts	da	Under udførsel
+in progress	tts	da	Under udfÃ¸rsel
 new ticket	tts	da	Ny billet
 no subject	tts	da	Intet emne
 no tickets found	tts	da	Ingen billetter fundet
 ok	tts	da	OK
-open date	tts	da	Dato åben
-opened by	tts	da	Åbnet af
+open date	tts	da	Dato Ã¥ben
+opened by	tts	da	Ã…bnet af
 prio	tts	da	Prio
 priority	tts	da	Prioritet
-reopen	tts	da	Åben igen
+reopen	tts	da	Ã…ben igen
 status/date closed	tts	da	Status/Dato lukket
 subject	tts	da	Emne
 ticket	tts	da	Melding
 Ticket assigned to %1	tts	da	Melding tilegnet til %1
 trouble ticket system	common	da	Problem registrerings system
-update	tts	da	Opdatér
+update	tts	da	OpdatÃ©r
 view all tickets	tts	da	Se alle meldinger
 view job detail	tts	da	Se opgave detaljer
-view only open tickets	tts	da	Se alle åbenstående meldinger
+view only open tickets	tts	da	Se alle Ã¥benstÃ¥ende meldinger

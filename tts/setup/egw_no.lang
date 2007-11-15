@@ -7,9 +7,9 @@ add new ticket	tts	no	Lag ny sak
 add ticket	tts	no	Lag sak
 additional notes	tts	no	Ekstra notater
 admin options	common	no	Administrator opsjoner
-alert for critical prio setting	tts	no	Du setter prioritet til kritisk. Forvis deg om at mottaker av saken oppfatter dette ved å ringe straks.
-alert for emergency prio setting	tts	no	Du setter prioritet til øyeblikkelig. Forvis deg om at mottaker av saken oppfatter dette ved å ringe straks.
-alert for high prio setting	tts	no	Vurder å ringe mottaker av denne saken.
+alert for critical prio setting	tts	no	Du setter prioritet til kritisk. Forvis deg om at mottaker av saken oppfatter dette ved Ã¥ ringe straks.
+alert for emergency prio setting	tts	no	Du setter prioritet til Ã¸yeblikkelig. Forvis deg om at mottaker av saken oppfatter dette ved Ã¥ ringe straks.
+alert for high prio setting	tts	no	Vurder Ã¥ ringe mottaker av denne saken.
 assign tickets	tts	no	Fordel
 assign to	tts	no	Fordel til
 assigned from	tts	no	Fordelt av
@@ -20,23 +20,23 @@ billable hours rate	tts	no	Fakturerbar timepris
 billable rate	tts	no	Fakturerbar pris
 billable rate changed	tts	no	Fakturerbar pris endret
 can assign to	tts	no	Kan fordele saker
-can make full changes	tts	no	Kan utføre alle endringer
+can make full changes	tts	no	Kan utfÃ¸re alle endringer
 category changed	tts	no	Kategori endret
-check here to generate the state's id automatically or enter a particular id below.	tts	no	Huk av her for å lage tilstands-ID automatisk, eller skriv inn ønsker ID under.
-clear form	tts	no	Tøm formular
+check here to generate the state's id automatically or enter a particular id below.	tts	no	Huk av her for Ã¥ lage tilstands-ID automatisk, eller skriv inn Ã¸nsker ID under.
+clear form	tts	no	TÃ¸m formular
 close the invalid ticket.	tts	no	Lukk den ugyldig saken.
 close ticket	tts	no	Lukk saken
 closed	tts	no	Lukket
-completed	tts	no	FULLFØRT
+completed	tts	no	FULLFÃ˜RT
 configure the states	common	no	Konfigurer tilstander
 configure the transitions	common	no	Konfigurer overgangene
 create new state	tts	no	Lag ny tilstand
 create new ticket	tts	no	Lag ny sak
 create new transition	tts	no	Lag ny overgang
 creates a new ticket, returns ticket_id	tts	no	Lager ny sak, returnerer sak_id
-creates a struct of tickets	tts	no	Lager struktur på sakene
+creates a struct of tickets	tts	no	Lager struktur pÃ¥ sakene
 critical	tts	no	Kristisk
-date opened	tts	no	Åpnet dato
+date opened	tts	no	Ã…pnet dato
 default assign to	tts	no	Standard tildeling til
 default group	tts	no	Standard gruppe
 default priority	tts	no	Standard prioritet
@@ -49,19 +49,19 @@ due date changed	tts	no	Forfallsdato endret
 duplicate	tts	no	KOPI
 edit the state	tts	no	Endre tilstand
 edit the transition	tts	no	Endre overgang
-emergency	tts	no	Øyeblikkelig
-error: the subject of the ticket is not specified.	tts	no	FEIL : Du må ha en overskrift på saken
+emergency	tts	no	Ã˜yeblikkelig
+error: the subject of the ticket is not specified.	tts	no	FEIL : Du mÃ¥ ha en overskrift pÃ¥ saken
 force	tts	no	Tving
 global categories	tts	no	Globale kategorier
 group ownership changed	tts	no	Gruppeeierskap endret
 history	tts	no	Historie
 i worked on the ticket and the work requires validation.	tts	no	Jeg jobbet med saken, og arbeidet trenger validering.
 i worked on the ticket, but did not finish.	tts	no	Jeg arbeidet med saken, men ble ikke ferdig.
-in progress	tts	no	Pågår
+in progress	tts	no	PÃ¥gÃ¥r
 initial state	tts	no	Oppstartsfase
 invalid	tts	no	UGYLDIG
-invalidate	tts	no	UGYLDIGGJØR
-keep the present state [%1].	tts	no	Behold nåværende tilstand [%1].
+invalidate	tts	no	UGYLDIGGJÃ˜R
+keep the present state [%1].	tts	no	Behold nÃ¥vÃ¦rende tilstand [%1].
 latest note added	tts	no	Siste notat lagt til
 list of available tickets' states.	tts	no	Vis tilgjengelige saks-tilstander.
 list of available tickets' transitions.	tts	no	Vis tilgjengelige saks-overganger.
@@ -85,75 +85,75 @@ notify changes to ticket assignee by e-mail	tts	no	Informer fullmektig om endrin
 notify changes to ticket group by e-mail	tts	no	Informer gruppe om endringer via epost
 notify changes to ticket owner by e-mail	tts	no	Informer eier om endringer via epost
 old value	tts	no	Gammel verdi
-open	tts	no	Åpen
-open / closed	tts	no	Åpen / Lukket
-open date	tts	no	Åpningsdato
-opened	tts	no	Åpnet
-opened by	tts	no	Åpnet av
+open	tts	no	Ã…pen
+open / closed	tts	no	Ã…pen / Lukket
+open date	tts	no	Ã…pningsdato
+opened	tts	no	Ã…pnet
+opened by	tts	no	Ã…pnet av
 original ticket details	tts	no	Orginale saksdetaljer
-perform irregular transition into the following state	tts	no	Utfør uvanlig overgang til følgende tilstand
-please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	no	Du må registrere en overskrift på meldingen ellers vil den ikke lagres.
+perform irregular transition into the following state	tts	no	UtfÃ¸r uvanlig overgang til fÃ¸lgende tilstand
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	no	Du mÃ¥ registrere en overskrift pÃ¥ meldingen ellers vil den ikke lagres.
 prio	tts	no	Prio
 priority	tts	no	Prioritet
 priority changed	tts	no	Prioritet endret
 put the preexistent ticket into the state %1.	tts	no	Sett den eksisterende saken til tilstand %1.
 re-assigned	tts	no	Gjen-tildelt
-re-opened	tts	no	Gjenåpnet
+re-opened	tts	no	GjenÃ¥pnet
 read tickets	tts	no	Les saker
 read tickets within group only	tts	no	Bare lese saker innen gruppen
 refresh every (seconds)	tts	no	Oppdater hver (sekunder)
-reopen	tts	no	GJENÅPNE
-reopened	tts	no	GJENÅPNET
-resolve	tts	no	AVGJØRE
+reopen	tts	no	GJENÃ…PNE
+reopened	tts	no	GJENÃ…PNET
+resolve	tts	no	AVGJÃ˜RE
 resolved	tts	no	AVGJORT
 returns a struct of a tickets history	tts	no	Viser en strukturert sakshistorie
-returns a struct of values of a single ticket	tts	no	Viser strukturert verdi på en enkel sak
+returns a struct of values of a single ticket	tts	no	Viser strukturert verdi pÃ¥ en enkel sak
 returns the additional notes attached to a ticket	tts	no	Viser ekstranotater tillagt en sak
 selected	tts	no	valgt
-show new/updated tickets on main screen	tts	no	vis nye/endrede saker på hovedskjerm
-source state	tts	no	Åpningstilstand
+show new/updated tickets on main screen	tts	no	vis nye/endrede saker pÃ¥ hovedskjerm
+source state	tts	no	Ã…pningstilstand
 state	tts	no	Tilstand
 state changed	tts	no	Tilstand endret
 state id	tts	no	Tilstand ID
 state name	tts	no	Tilstandsnavn
 status/date closed	tts	no	Status/Dato lukket
 subject changed	tts	no	Emne endret
-target state	tts	no	Mål tilstand
+target state	tts	no	MÃ¥l tilstand
 test	tts	no	TEST
-the closed ticket requires more work. reopen it.	tts	no	Den lukkede saken krever mer arbeid. Gjenåpne den.
+the closed ticket requires more work. reopen it.	tts	no	Den lukkede saken krever mer arbeid. GjenÃ¥pne den.
 the owner of the ticket was not able to confirm the issue.	tts	no	Sakseieren kunne ikke bekrefte problemet.
 the ticket has been accepted by the owner, who is about to work on it.	tts	no	Saken er akseptert av eier, som starter arbeid med den umiddelbart.
-the ticket has been closed without resolution.	tts	no	Saken har blitt lukket uten at løsning ble funnet.
-the ticket has been reopened for further work.	tts	no	Saken har blitt gjenåpnet for mer arbeid.
-the ticket has been successfully resolved.	tts	no	Saken er løst.
+the ticket has been closed without resolution.	tts	no	Saken har blitt lukket uten at lÃ¸sning ble funnet.
+the ticket has been reopened for further work.	tts	no	Saken har blitt gjenÃ¥pnet for mer arbeid.
+the ticket has been successfully resolved.	tts	no	Saken er lÃ¸st.
 the ticket has been verified and has to be worked on.	tts	no	Saken har blitt verifisert og arbeides med.
 the ticket has been worked on and the work requires validation.	tts	no	Saken har blitt arbeidet med og trenger validering.
 the ticket has been worked on, but requires more work.	tts	no	Saken har blitt arbeidet med, men trenger mer arbeid.
-the ticket is a duplicate of another ticket and should be closed.	tts	no	Saken er en kopi av en annen sak og bør stenges.
-the ticket is essentially not a duplicate of another ticket. reopen it.	tts	no	Saken er egentlig ikke kopi av en annen sak. Bør gjenåpnes.
+the ticket is a duplicate of another ticket and should be closed.	tts	no	Saken er en kopi av en annen sak og bÃ¸r stenges.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	no	Saken er egentlig ikke kopi av en annen sak. BÃ¸r gjenÃ¥pnes.
 the ticket is invalid and cannot be worked on.	tts	no	Saken er ugyldig og kan ikke jobbes med.
 the ticket resolution was successfully validated. close the ticket.	tts	no	Saken er validert. Lukk saken.
-the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	no	Saken eksisterte før Petri Net infrastruktur ble definert og må tildeles en tilstand.
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	no	Saken eksisterte fÃ¸r Petri Net infrastruktur ble definert og mÃ¥ tildeles en tilstand.
 the ticket was found a duplicate of another ticket.	tts	no	Saken er en kopi av en annen sak.
-the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	no	Følgende saker har tilstand %1. Vennligst avgjør hva som skal gjøres.
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	no	FÃ¸lgende saker har tilstand %1. Vennligst avgjÃ¸r hva som skal gjÃ¸res.
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	no	Validering av saken feilet. Saken krever mer arbeid.
-this state means an open ticket	tts	no	Saken er åpen ved denne tilstand
+this state means an open ticket	tts	no	Saken er Ã¥pen ved denne tilstand
 ticket	tts	no	Sak
 ticket #	tts	no	Saksnr.
 ticket has been updated	tts	no	Saken har blitt oppdatert
 ticket is not accessible	tts	no	Saken er ikke tilgjengelig
 tickets found %1	tts	no	Saker funnet %1
-tickets open %1	tts	no	Saker åpnet %1
+tickets open %1	tts	no	Saker Ã¥pnet %1
 tickets total %1	tts	no	Totale saker %1
-to go back to the tts index, click <a href= %1 >here</a>	tts	no	Gå tilbake til TTS indeks og klikk <a href="%1">here</a>
+to go back to the tts index, click <a href= %1 >here</a>	tts	no	GÃ¥ tilbake til TTS indeks og klikk <a href="%1">here</a>
 toaccept	tts	no	TILAKSEPTER
 toclosed	tts	no	TILLUKKET
 toduplicate	tts	no	TILKOPI
 toinvalid	tts	no	TILUGYLDIG
 toneedswork	tts	no	TILMERARBEID
 tonew	tts	no	TILNY
-toreopened	tts	no	TILGJENÅPNET
-toresolved	tts	no	TILLØST
+toreopened	tts	no	TILGJENÃ…PNET
+toresolved	tts	no	TILLÃ˜ST
 total billable	tts	no	Totalt fakturerbart
 totovalidate	tts	no	TILVALIDER
 tovalidate	tts	no	TILVALIDER
@@ -168,13 +168,13 @@ update ticket state	tts	no	Oppdater saks status
 updates ticket	tts	no	Oppdater sak
 verified	tts	no	VERIFISERT
 verify	tts	no	VERIFISER
-verify the ticket to work on it.	tts	no	Verifiser sak for å arbeide med den.
+verify the ticket to work on it.	tts	no	Verifiser sak for Ã¥ arbeide med den.
 view all tickets	tts	no	Vis alle saker
 view job detail	tts	no	Vis jobbdetaljer
-view only my open tickets	tts	no	Vis bare mine åpne saker
-view only open tickets	tts	no	Vis kun åpne saker
-wish	tts	no	Ønske
+view only my open tickets	tts	no	Vis bare mine Ã¥pne saker
+view only open tickets	tts	no	Vis kun Ã¥pne saker
+wish	tts	no	Ã˜nske
 you can only close a ticket if it is assigned to you.	tts	no	Du kan kun lukke en sak hvis den er tildelt deg.
-you want to delete the state %1 and associated transitions. are you sure?	tts	no	Du vil slette tilstand %1 og tilhørende overganger. Er du sikker?
+you want to delete the state %1 and associated transitions. are you sure?	tts	no	Du vil slette tilstand %1 og tilhÃ¸rende overganger. Er du sikker?
 you want to delete the state %1. are you sure?	tts	no	Du vil slette tilstand %1. Er du sikker?
 you want to delete the transition %1. are you sure?	tts	no	Du vil slette overgang %1. Er du sikker?

@@ -10,7 +10,7 @@ admin options	common	nl	Beheeropties
 alert for critical prio setting	tts	nl	Je stelt de prioriteit in op kritiek. Overtuig jezelf ervan dat je weet wat dit betekent voor de ontvanger van deze melding en vergeet niet hem/haar onmiddellijk te bellen!
 alert for emergency prio setting	tts	nl	Je stelt de prioriteit in op noodgeval. Overtuig jezelf ervan dat je weet wat dit betekent voor de ontvanger van deze melding en vergeet niet hem/haar onmiddellijk te bellen!
 alert for high prio setting	tts	nl	Denk er s.v.p. aan de ontvanger van deze melding op te bellen!
-all categories used in TTS are global and will remain unchaned in Tracker	tts	nl	Alle categorieën die in TTS worden gebruikr, zijn global en blijvin in Tracker ongewijzigd
+all categories used in TTS are global and will remain unchaned in Tracker	tts	nl	Alle categorieÃ«n die in TTS worden gebruikr, zijn global en blijvin in Tracker ongewijzigd
 all tickets are already converted to Tracker	tts	nl	Alle meldingen zijn al naar Tracker geconverteerd
 assign tickets	tts	nl	Toewijzen
 assign to	tts	nl	Toewijzen aan
@@ -36,11 +36,11 @@ convert all closed tickets	tts	nl	Converteer alle gesloten meldingen
 convert all open tickets	tts	nl	Converteer alle openstaand meldingen
 convert tickets to tracker	tts	nl	Converteer meldingen naar Tracker
 converted count	tts	nl	Aantal geconverteerd
-create new state	tts	nl	Een nieuwe status creëren
-create new ticket	tts	nl	Een nieuwe melding creëren
-create new transition	tts	nl	Een nieuwe overgang creëren
-creates a new ticket, returns ticket_id	tts	nl	Creëert een nieuwe melding, geeft  'ticket_id' terug
-creates a struct of tickets	tts	nl	Creëert een structuur van meldingen
+create new state	tts	nl	Een nieuwe status creÃ«ren
+create new ticket	tts	nl	Een nieuwe melding creÃ«ren
+create new transition	tts	nl	Een nieuwe overgang creÃ«ren
+creates a new ticket, returns ticket_id	tts	nl	CreÃ«ert een nieuwe melding, geeft  'ticket_id' terug
+creates a struct of tickets	tts	nl	CreÃ«ert een structuur van meldingen
 critical	tts	nl	Kritiek
 date opened	tts	nl	Datum geopend
 default assign to	tts	nl	Standaard toegewezen aan
@@ -58,13 +58,13 @@ edit the transition	tts	nl	De overgang wijzigen
 emergency	tts	nl	Spoed
 error: the subject of the ticket is not specified.	tts	nl	FOUT: Het onderwerp van de melding is niet ingevuld
 force	tts	nl	Forceer
-global categories	tts	nl	Globale categoriën
+global categories	tts	nl	Globale categoriÃ«n
 group ownership changed	tts	nl	Groepeigendom  is gewijzigd
 history	tts	nl	Geschiedenis
 i worked on the ticket and the work requires validation.	tts	nl	Ik heb aan de melding gewerkt en het werk vereist validatie.
 i worked on the ticket, but did not finish.	tts	nl	Ik heb aan de melding gewerkt maar niet afgerond.
 in progress	tts	nl	In uitvoering
-initial state	tts	nl	Initiële status
+initial state	tts	nl	InitiÃ«le status
 invalid	tts	nl	ONGELDIG
 invalidate	tts	nl	ONGELDIG
 keep the present state	tts	nl	Behoud de huidige status
@@ -117,7 +117,7 @@ resolved	tts	nl	OPGELOST
 returns a struct of a tickets history	tts	nl	Geeft een structuur van de meldinghistorie terug
 returns a struct of values of a single ticket	tts	nl	Geeft een stuctuur van waarden van een enkele melding terug
 returns the additional notes attached to a ticket	tts	nl	Geeft de extra notities van een melding terug
-select which categories should be used in Tracker for the TTS categories	tts	nl	Selecteer welke categorieën in Tracker gebruikt moeten worden voor de TTS categorieën.
+select which categories should be used in Tracker for the TTS categories	tts	nl	Selecteer welke categorieÃ«n in Tracker gebruikt moeten worden voor de TTS categorieÃ«n.
 selected	tts	nl	geselecteerd
 show new/updated tickets on main screen	tts	nl	Nieuwe en gewijzigde meldingen op startscherm weergeven
 show tickets converted to Tracker in overviews	tts	nl	Overzichten tonen meldingen dit al naar Tracker zijn geconverteerd

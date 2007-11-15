@@ -1,158 +1,158 @@
-a new ticket has been reported.	tts	el	Έχετε μια νέα κλήση.
-accept	tts	el	Αποδοχή
-accept the ticket into verification process.	tts	el	Αποδοχή της κλήσης κατα την διαδικασία επαλήθευσης.
-accepted	tts	el	Αποδοχή επιτυχής
-action	tts	el	Ενέργεια
-add new ticket	tts	el	Προσθήκη νέας κλήσης
-add ticket	tts	el	Προσθήκη κλήσης
-additional notes	tts	el	Πρόσθετες σημειώσεις
-admin options	common	el	Επιλογές διαχειριστή
-assign to	tts	el	Καθορισμός στον/στην
-assigned from	tts	el	Καθορίστηκε απο
-assigned to	tts	el	Καθορίστηκε στον/στην
-billable hours	tts	el	Ώρες χρέωσης
-billable hours changed	tts	el	Οι ώρες χρέωσης άλλαξαν
-billable hours rate	tts	el	Βαθμός χρεωστικών ωρών
-billable rate	tts	el	Βαθμός χρέωσης
-billable rate changed	tts	el	Ο βαθμός χρέωσης άλλαξε
-category changed	tts	el	Αλλαγή κατηγορίας επιτυχής
-check here to generate the state's id automatically or enter a particular id below.	tts	el	Πατήστε εδώ για την αυτοματοποίηση της δημιουργίας του αριθμού κατάστασης ή πληκτρολογήστε ένα συγκεκριμένο αριθμό παρακάτω
-clear form	tts	el	Καθαρισμός φόρμας
-close the invalid ticket.	tts	el	Κλείσιμο των άκυρων κλήσεων
-closed	tts	el	Έκλεισε
-completed	tts	el	Ολοκληρώθηκε
-configure the states	common	el	Τροποποίηση καταστάσεων
-configure the transitions	common	el	Τροποποίηση μεταβάσεων
-create new state	tts	el	Δημιουργία νέας κατάστασης
-create new ticket	tts	el	Δημιουργία νέας κλήσης
-create new transition	tts	el	Δημιουργία νέας μετάβασης
-creates a new ticket, returns ticket_id	tts	el	Δημιουργεί μια νέα κλήση, επιστρέφει τον αριθμό της κλήσης
-creates a struct of tickets	tts	el	Δημιουργεί μια δομή κλήσεων
-date opened	tts	el	Ημερομηνία ανοίγματος
-default assign to	tts	el	Προκαθορισμένη αποστολή στον/στην
-default group	tts	el	Προκαθορισμένη ομάδα
-default priority	tts	el	Προκαθορισμένη προτεραιότητα
-delete the listed tickets.	tts	el	Διαγραφή των κλήσεων της λίστας.
-deleting the state	tts	el	Διαγραφή της κατάστασης
-deleting the transition	tts	el	Διαγραφή της μετάβασης
-detail	tts	el	Λεπτομέρεια
-duplicate	tts	el	Δημιουργία διπλότυπου
-edit the state	tts	el	Επεξεργασία της κατάστασης
-edit the transition	tts	el	Επεξεργασία της μετάβασης
-force	tts	el	Αναγκαστικά
-global categories	tts	el	Γενικές κατηγορίες
-group ownership changed	tts	el	Η ιδιοκτησία της ομάδας άλλαξε
-history	tts	el	Ιστορικό
-i worked on the ticket and the work requires validation.	tts	el	Η επεξεργασία της κλήσης πρέπει να επιβεβεωθεί.
-i worked on the ticket, but did not finish.	tts	el	Η επεξεργασία της κλήσης δεν ολοκληρώθηκε
-in progress	tts	el	Επεξεργασία σε εξέλιξη
-initial state	tts	el	Αρχική κατάσταση
-invalid	tts	el	¶κυρο
-invalidate	tts	el	Ακυρώνω
-keep the present state [%1].	tts	el	Κράτησε την τρέχουσα κατάσταση [%1]
-latest note added	tts	el	Τελευταία καταχώριση
-list of available tickets' states.	tts	el	Λίστα καταστάσης των διαθέσιμων κλήσεων
-list of available tickets' transitions.	tts	el	Λίστα μεταβάσεων των διαθέσιμων κλήσεων
-missing description	tts	el	Ελλιπής περιγραφή
-morework	tts	el	Περισσότερη επεξεργασία
-needswork	tts	el	Χρειάζεται επεξεργασία
-new	tts	el	Δημιουργία
-new ticket	tts	el	Νέα κλήση
-new tickets can be put into this state.	tts	el	Νέες κλήσεις μπορούν να εισαχθούν σε αυτή την κατάσταση.
-new value	tts	el	Νέα τιμή
-no additional notes	tts	el	Δεν υπάρχουν συμπληρωματικές σημειώσεις
-no duplicate	tts	el	Κανένα διπλότυπο
-no notes for this ticket	tts	el	Δεν υπάρχουν σημειώσεις για το συγκεκριμένο
-no states found	tts	el	Δεν βρέθηκαν καταστάσεις
-no tickets found	tts	el	Δεν βρέθηκαν κλήσεις
-no transitions found	tts	el	Δεν βρέθηκαν μεταβάσεις
-not assigned	tts	el	Δεν καθορίστηκε
-not completed	tts	el	Δεν ολοκληρώθηκε
-notify changes to ticket assignee by e-mail	tts	el	Ειδοποίηση για όποιες αλλαγές στον καθορισμό της κλήσης μέσω ηλεκτρονικού ταχυδρομείου
-notify changes to ticket group by e-mail	tts	el	Ειδοποίηση για όποιες αλλαγές των ομάδων κλήσεων μέσω ηλεκτρονικού ταχυδρομείου
-notify changes to ticket owner by e-mail	tts	el	Ειδοποίηση για κάθε αλλαγή της ιδιοκτησίας των κλήσεων μέσω ηλεκτρονικού ταχυδρομείου
-old value	tts	el	Παλιά τιμή
-open	tts	el	¶νοιγμα
-open / closed	tts	el	¶νοιγμα / Κλείσιμο
-open date	tts	el	Ημερομηνία ανοίγματος
-opened	tts	el	¶νοιξε
-opened by	tts	el	¶νοιξε απο
-original ticket details	tts	el	Αρχικές λεπτομέρειες κλήσης
-perform irregular transition into the following state	tts	el	Εκτελέσατε μια αντικανονική μετάβαση στην ακόλουθη κατάσταση
-prio	tts	el	Προηγούμενο
-priority	tts	el	Προτεραιότητα
-priority changed	tts	el	Αλλαγή προτεραιότητας επιτυχής
-put the preexistent ticket into the state %1.	tts	el	Τοποθετήστε την προϋπάρχουσα κλήση στην κατάσταση %1.
-re-assigned	tts	el	Επανακαθορίστηκε
+a new ticket has been reported.	tts	el	ΞΟ‡ΞµΟ„Ξµ ΞΌΞΉΞ± Ξ½Ξ­Ξ± ΞΊΞ»Ξ®ΟƒΞ·.
+accept	tts	el	Ξ‘Ο€ΞΏΞ΄ΞΏΟ‡Ξ®
+accept the ticket into verification process.	tts	el	Ξ‘Ο€ΞΏΞ΄ΞΏΟ‡Ξ® Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ ΞΊΞ±Ο„Ξ± Ο„Ξ·Ξ½ Ξ΄ΞΉΞ±Ξ΄ΞΉΞΊΞ±ΟƒΞ―Ξ± ΞµΟ€Ξ±Ξ»Ξ®ΞΈΞµΟ…ΟƒΞ·Ο‚.
+accepted	tts	el	Ξ‘Ο€ΞΏΞ΄ΞΏΟ‡Ξ® ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ®Ο‚
+action	tts	el	Ξ•Ξ½Ξ­ΟΞ³ΞµΞΉΞ±
+add new ticket	tts	el	Ξ ΟΞΏΟƒΞΈΞ®ΞΊΞ· Ξ½Ξ­Ξ±Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚
+add ticket	tts	el	Ξ ΟΞΏΟƒΞΈΞ®ΞΊΞ· ΞΊΞ»Ξ®ΟƒΞ·Ο‚
+additional notes	tts	el	Ξ ΟΟΟƒΞΈΞµΟ„ΞµΟ‚ ΟƒΞ·ΞΌΞµΞΉΟΟƒΞµΞΉΟ‚
+admin options	common	el	Ξ•Ο€ΞΉΞ»ΞΏΞ³Ξ­Ο‚ Ξ΄ΞΉΞ±Ο‡ΞµΞΉΟΞΉΟƒΟ„Ξ®
+assign to	tts	el	ΞΞ±ΞΈΞΏΟΞΉΟƒΞΌΟΟ‚ ΟƒΟ„ΞΏΞ½/ΟƒΟ„Ξ·Ξ½
+assigned from	tts	el	ΞΞ±ΞΈΞΏΟΞ―ΟƒΟ„Ξ·ΞΊΞµ Ξ±Ο€ΞΏ
+assigned to	tts	el	ΞΞ±ΞΈΞΏΟΞ―ΟƒΟ„Ξ·ΞΊΞµ ΟƒΟ„ΞΏΞ½/ΟƒΟ„Ξ·Ξ½
+billable hours	tts	el	ΞΟΞµΟ‚ Ο‡ΟΞ­Ο‰ΟƒΞ·Ο‚
+billable hours changed	tts	el	ΞΞΉ ΟΟΞµΟ‚ Ο‡ΟΞ­Ο‰ΟƒΞ·Ο‚ Ξ¬Ξ»Ξ»Ξ±ΞΎΞ±Ξ½
+billable hours rate	tts	el	Ξ’Ξ±ΞΈΞΌΟΟ‚ Ο‡ΟΞµΟ‰ΟƒΟ„ΞΉΞΊΟΞ½ Ο‰ΟΟΞ½
+billable rate	tts	el	Ξ’Ξ±ΞΈΞΌΟΟ‚ Ο‡ΟΞ­Ο‰ΟƒΞ·Ο‚
+billable rate changed	tts	el	Ξ Ξ²Ξ±ΞΈΞΌΟΟ‚ Ο‡ΟΞ­Ο‰ΟƒΞ·Ο‚ Ξ¬Ξ»Ξ»Ξ±ΞΎΞµ
+category changed	tts	el	Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ® ΞΊΞ±Ο„Ξ·Ξ³ΞΏΟΞ―Ξ±Ο‚ ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ®Ο‚
+check here to generate the state's id automatically or enter a particular id below.	tts	el	Ξ Ξ±Ο„Ξ®ΟƒΟ„Ξµ ΞµΞ΄Ο Ξ³ΞΉΞ± Ο„Ξ·Ξ½ Ξ±Ο…Ο„ΞΏΞΌΞ±Ο„ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Ο„Ξ·Ο‚ Ξ΄Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ±Ο‚ Ο„ΞΏΟ… Ξ±ΟΞΉΞΈΞΌΞΏΟ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·Ο‚ Ξ® Ο€Ξ»Ξ·ΞΊΟ„ΟΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ Ξ­Ξ½Ξ± ΟƒΟ…Ξ³ΞΊΞµΞΊΟΞΉΞΌΞ­Ξ½ΞΏ Ξ±ΟΞΉΞΈΞΌΟ Ο€Ξ±ΟΞ±ΞΊΞ¬Ο„Ο‰
+clear form	tts	el	ΞΞ±ΞΈΞ±ΟΞΉΟƒΞΌΟΟ‚ Ο†ΟΟΞΌΞ±Ο‚
+close the invalid ticket.	tts	el	ΞΞ»ΞµΞ―ΟƒΞΉΞΌΞΏ Ο„Ο‰Ξ½ Ξ¬ΞΊΟ…ΟΟ‰Ξ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½
+closed	tts	el	ΞΞΊΞ»ΞµΞΉΟƒΞµ
+completed	tts	el	ΞΞ»ΞΏΞΊΞ»Ξ·ΟΟΞΈΞ·ΞΊΞµ
+configure the states	common	el	Ξ¤ΟΞΏΟ€ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· ΞΊΞ±Ο„Ξ±ΟƒΟ„Ξ¬ΟƒΞµΟ‰Ξ½
+configure the transitions	common	el	Ξ¤ΟΞΏΟ€ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· ΞΌΞµΟ„Ξ±Ξ²Ξ¬ΟƒΞµΟ‰Ξ½
+create new state	tts	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ξ½Ξ­Ξ±Ο‚ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·Ο‚
+create new ticket	tts	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ξ½Ξ­Ξ±Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚
+create new transition	tts	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ξ½Ξ­Ξ±Ο‚ ΞΌΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ·Ο‚
+creates a new ticket, returns ticket_id	tts	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³ΞµΞ― ΞΌΞΉΞ± Ξ½Ξ­Ξ± ΞΊΞ»Ξ®ΟƒΞ·, ΞµΟ€ΞΉΟƒΟ„ΟΞ­Ο†ΞµΞΉ Ο„ΞΏΞ½ Ξ±ΟΞΉΞΈΞΌΟ Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚
+creates a struct of tickets	tts	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³ΞµΞ― ΞΌΞΉΞ± Ξ΄ΞΏΞΌΞ® ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½
+date opened	tts	el	Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ± Ξ±Ξ½ΞΏΞ―Ξ³ΞΌΞ±Ο„ΞΏΟ‚
+default assign to	tts	el	Ξ ΟΞΏΞΊΞ±ΞΈΞΏΟΞΉΟƒΞΌΞ­Ξ½Ξ· Ξ±Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ® ΟƒΟ„ΞΏΞ½/ΟƒΟ„Ξ·Ξ½
+default group	tts	el	Ξ ΟΞΏΞΊΞ±ΞΈΞΏΟΞΉΟƒΞΌΞ­Ξ½Ξ· ΞΏΞΌΞ¬Ξ΄Ξ±
+default priority	tts	el	Ξ ΟΞΏΞΊΞ±ΞΈΞΏΟΞΉΟƒΞΌΞ­Ξ½Ξ· Ο€ΟΞΏΟ„ΞµΟΞ±ΞΉΟΟ„Ξ·Ο„Ξ±
+delete the listed tickets.	tts	el	Ξ”ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® Ο„Ο‰Ξ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½ Ο„Ξ·Ο‚ Ξ»Ξ―ΟƒΟ„Ξ±Ο‚.
+deleting the state	tts	el	Ξ”ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® Ο„Ξ·Ο‚ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·Ο‚
+deleting the transition	tts	el	Ξ”ΞΉΞ±Ξ³ΟΞ±Ο†Ξ® Ο„Ξ·Ο‚ ΞΌΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ·Ο‚
+detail	tts	el	Ξ›ΞµΟ€Ο„ΞΏΞΌΞ­ΟΞµΞΉΞ±
+duplicate	tts	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ± Ξ΄ΞΉΟ€Ξ»ΟΟ„Ο…Ο€ΞΏΟ…
+edit the state	tts	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ο„Ξ·Ο‚ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·Ο‚
+edit the transition	tts	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ο„Ξ·Ο‚ ΞΌΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ·Ο‚
+force	tts	el	Ξ‘Ξ½Ξ±Ξ³ΞΊΞ±ΟƒΟ„ΞΉΞΊΞ¬
+global categories	tts	el	Ξ“ΞµΞ½ΞΉΞΊΞ­Ο‚ ΞΊΞ±Ο„Ξ·Ξ³ΞΏΟΞ―ΞµΟ‚
+group ownership changed	tts	el	Ξ— ΞΉΞ΄ΞΉΞΏΞΊΟ„Ξ·ΟƒΞ―Ξ± Ο„Ξ·Ο‚ ΞΏΞΌΞ¬Ξ΄Ξ±Ο‚ Ξ¬Ξ»Ξ»Ξ±ΞΎΞµ
+history	tts	el	Ξ™ΟƒΟ„ΞΏΟΞΉΞΊΟ
+i worked on the ticket and the work requires validation.	tts	el	Ξ— ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± ΞµΟ€ΞΉΞ²ΞµΞ²ΞµΟ‰ΞΈΞµΞ―.
+i worked on the ticket, but did not finish.	tts	el	Ξ— ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ Ξ΄ΞµΞ½ ΞΏΞ»ΞΏΞΊΞ»Ξ·ΟΟΞΈΞ·ΞΊΞµ
+in progress	tts	el	Ξ•Ο€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± ΟƒΞµ ΞµΞΎΞ­Ξ»ΞΉΞΎΞ·
+initial state	tts	el	Ξ‘ΟΟ‡ΞΉΞΊΞ® ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·
+invalid	tts	el	Ξ†ΞΊΟ…ΟΞΏ
+invalidate	tts	el	Ξ‘ΞΊΟ…ΟΟΞ½Ο‰
+keep the present state [%1].	tts	el	ΞΟΞ¬Ο„Ξ·ΟƒΞµ Ο„Ξ·Ξ½ Ο„ΟΞ­Ο‡ΞΏΟ…ΟƒΞ± ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ· [%1]
+latest note added	tts	el	Ξ¤ΞµΞ»ΞµΟ…Ο„Ξ±Ξ―Ξ± ΞΊΞ±Ο„Ξ±Ο‡ΟΟΞΉΟƒΞ·
+list of available tickets' states.	tts	el	Ξ›Ξ―ΟƒΟ„Ξ± ΞΊΞ±Ο„Ξ±ΟƒΟ„Ξ¬ΟƒΞ·Ο‚ Ο„Ο‰Ξ½ Ξ΄ΞΉΞ±ΞΈΞ­ΟƒΞΉΞΌΟ‰Ξ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½
+list of available tickets' transitions.	tts	el	Ξ›Ξ―ΟƒΟ„Ξ± ΞΌΞµΟ„Ξ±Ξ²Ξ¬ΟƒΞµΟ‰Ξ½ Ο„Ο‰Ξ½ Ξ΄ΞΉΞ±ΞΈΞ­ΟƒΞΉΞΌΟ‰Ξ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½
+missing description	tts	el	Ξ•Ξ»Ξ»ΞΉΟ€Ξ®Ο‚ Ο€ΞµΟΞΉΞ³ΟΞ±Ο†Ξ®
+morework	tts	el	Ξ ΞµΟΞΉΟƒΟƒΟΟ„ΞµΟΞ· ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ±
+needswork	tts	el	Ξ§ΟΞµΞΉΞ¬Ξ¶ΞµΟ„Ξ±ΞΉ ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ±
+new	tts	el	Ξ”Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ±
+new ticket	tts	el	ΞΞ­Ξ± ΞΊΞ»Ξ®ΟƒΞ·
+new tickets can be put into this state.	tts	el	ΞΞ­ΞµΟ‚ ΞΊΞ»Ξ®ΟƒΞµΞΉΟ‚ ΞΌΟ€ΞΏΟΞΏΟΞ½ Ξ½Ξ± ΞµΞΉΟƒΞ±Ο‡ΞΈΞΏΟΞ½ ΟƒΞµ Ξ±Ο…Ο„Ξ® Ο„Ξ·Ξ½ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·.
+new value	tts	el	ΞΞ­Ξ± Ο„ΞΉΞΌΞ®
+no additional notes	tts	el	Ξ”ΞµΞ½ Ο…Ο€Ξ¬ΟΟ‡ΞΏΟ…Ξ½ ΟƒΟ…ΞΌΟ€Ξ»Ξ·ΟΟ‰ΞΌΞ±Ο„ΞΉΞΊΞ­Ο‚ ΟƒΞ·ΞΌΞµΞΉΟΟƒΞµΞΉΟ‚
+no duplicate	tts	el	ΞΞ±Ξ½Ξ­Ξ½Ξ± Ξ΄ΞΉΟ€Ξ»ΟΟ„Ο…Ο€ΞΏ
+no notes for this ticket	tts	el	Ξ”ΞµΞ½ Ο…Ο€Ξ¬ΟΟ‡ΞΏΟ…Ξ½ ΟƒΞ·ΞΌΞµΞΉΟΟƒΞµΞΉΟ‚ Ξ³ΞΉΞ± Ο„ΞΏ ΟƒΟ…Ξ³ΞΊΞµΞΊΟΞΉΞΌΞ­Ξ½ΞΏ
+no states found	tts	el	Ξ”ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞ±Ξ½ ΞΊΞ±Ο„Ξ±ΟƒΟ„Ξ¬ΟƒΞµΞΉΟ‚
+no tickets found	tts	el	Ξ”ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞ±Ξ½ ΞΊΞ»Ξ®ΟƒΞµΞΉΟ‚
+no transitions found	tts	el	Ξ”ΞµΞ½ Ξ²ΟΞ­ΞΈΞ·ΞΊΞ±Ξ½ ΞΌΞµΟ„Ξ±Ξ²Ξ¬ΟƒΞµΞΉΟ‚
+not assigned	tts	el	Ξ”ΞµΞ½ ΞΊΞ±ΞΈΞΏΟΞ―ΟƒΟ„Ξ·ΞΊΞµ
+not completed	tts	el	Ξ”ΞµΞ½ ΞΏΞ»ΞΏΞΊΞ»Ξ·ΟΟΞΈΞ·ΞΊΞµ
+notify changes to ticket assignee by e-mail	tts	el	Ξ•ΞΉΞ΄ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Ξ³ΞΉΞ± ΟΟ€ΞΏΞΉΞµΟ‚ Ξ±Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ ΟƒΟ„ΞΏΞ½ ΞΊΞ±ΞΈΞΏΟΞΉΟƒΞΌΟ Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ ΞΌΞ­ΟƒΟ‰ Ξ·Ξ»ΞµΞΊΟ„ΟΞΏΞ½ΞΉΞΊΞΏΟ Ο„Ξ±Ο‡Ο…Ξ΄ΟΞΏΞΌΞµΞ―ΞΏΟ…
+notify changes to ticket group by e-mail	tts	el	Ξ•ΞΉΞ΄ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Ξ³ΞΉΞ± ΟΟ€ΞΏΞΉΞµΟ‚ Ξ±Ξ»Ξ»Ξ±Ξ³Ξ­Ο‚ Ο„Ο‰Ξ½ ΞΏΞΌΞ¬Ξ΄Ο‰Ξ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½ ΞΌΞ­ΟƒΟ‰ Ξ·Ξ»ΞµΞΊΟ„ΟΞΏΞ½ΞΉΞΊΞΏΟ Ο„Ξ±Ο‡Ο…Ξ΄ΟΞΏΞΌΞµΞ―ΞΏΟ…
+notify changes to ticket owner by e-mail	tts	el	Ξ•ΞΉΞ΄ΞΏΟ€ΞΏΞ―Ξ·ΟƒΞ· Ξ³ΞΉΞ± ΞΊΞ¬ΞΈΞµ Ξ±Ξ»Ξ»Ξ±Ξ³Ξ® Ο„Ξ·Ο‚ ΞΉΞ΄ΞΉΞΏΞΊΟ„Ξ·ΟƒΞ―Ξ±Ο‚ Ο„Ο‰Ξ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½ ΞΌΞ­ΟƒΟ‰ Ξ·Ξ»ΞµΞΊΟ„ΟΞΏΞ½ΞΉΞΊΞΏΟ Ο„Ξ±Ο‡Ο…Ξ΄ΟΞΏΞΌΞµΞ―ΞΏΟ…
+old value	tts	el	Ξ Ξ±Ξ»ΞΉΞ¬ Ο„ΞΉΞΌΞ®
+open	tts	el	Ξ†Ξ½ΞΏΞΉΞ³ΞΌΞ±
+open / closed	tts	el	Ξ†Ξ½ΞΏΞΉΞ³ΞΌΞ± / ΞΞ»ΞµΞ―ΟƒΞΉΞΌΞΏ
+open date	tts	el	Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ± Ξ±Ξ½ΞΏΞ―Ξ³ΞΌΞ±Ο„ΞΏΟ‚
+opened	tts	el	Ξ†Ξ½ΞΏΞΉΞΎΞµ
+opened by	tts	el	Ξ†Ξ½ΞΏΞΉΞΎΞµ Ξ±Ο€ΞΏ
+original ticket details	tts	el	Ξ‘ΟΟ‡ΞΉΞΊΞ­Ο‚ Ξ»ΞµΟ€Ο„ΞΏΞΌΞ­ΟΞµΞΉΞµΟ‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚
+perform irregular transition into the following state	tts	el	Ξ•ΞΊΟ„ΞµΞ»Ξ­ΟƒΞ±Ο„Ξµ ΞΌΞΉΞ± Ξ±Ξ½Ο„ΞΉΞΊΞ±Ξ½ΞΏΞ½ΞΉΞΊΞ® ΞΌΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ· ΟƒΟ„Ξ·Ξ½ Ξ±ΞΊΟΞ»ΞΏΟ…ΞΈΞ· ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·
+prio	tts	el	Ξ ΟΞΏΞ·Ξ³ΞΏΟΞΌΞµΞ½ΞΏ
+priority	tts	el	Ξ ΟΞΏΟ„ΞµΟΞ±ΞΉΟΟ„Ξ·Ο„Ξ±
+priority changed	tts	el	Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ® Ο€ΟΞΏΟ„ΞµΟΞ±ΞΉΟΟ„Ξ·Ο„Ξ±Ο‚ ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ®Ο‚
+put the preexistent ticket into the state %1.	tts	el	Ξ¤ΞΏΟ€ΞΏΞΈΞµΟ„Ξ®ΟƒΟ„Ξµ Ο„Ξ·Ξ½ Ο€ΟΞΏΟ‹Ο€Ξ¬ΟΟ‡ΞΏΟ…ΟƒΞ± ΞΊΞ»Ξ®ΟƒΞ· ΟƒΟ„Ξ·Ξ½ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ· %1.
+re-assigned	tts	el	Ξ•Ο€Ξ±Ξ½Ξ±ΞΊΞ±ΞΈΞΏΟΞ―ΟƒΟ„Ξ·ΞΊΞµ
 re-opened	tts	el	
-refresh every (seconds)	tts	el	Ανανέωση κάθε (δευτερόλεπτα)
-reopen	tts	el	Ξανάνοιγω
+refresh every (seconds)	tts	el	Ξ‘Ξ½Ξ±Ξ½Ξ­Ο‰ΟƒΞ· ΞΊΞ¬ΞΈΞµ (Ξ΄ΞµΟ…Ο„ΞµΟΟΞ»ΞµΟ€Ο„Ξ±)
+reopen	tts	el	ΞΞ±Ξ½Ξ¬Ξ½ΞΏΞΉΞ³Ο‰
 reopened	tts	el	
-resolve	tts	el	Επιλύση
-resolved	tts	el	Επιτυχής επίλυση
-returns a struct of a tickets history	tts	el	Επιστρέφει το ιστορικό της δομής των κλήσεων
-returns a struct of values of a single ticket	tts	el	Επιστρέφει την δομή των τιμών μιας κλήσης
-returns the additional notes attached to a ticket	tts	el	Επιστρέφει τις σημειώσεις που αφορούν μια κλήση
-selected	tts	el	Επιλεγμένο
-show new/updated tickets on main screen	tts	el	Εμφάνισε τις καινούριες/ανανεωμένες κλήσεις στο αρχική οθόνη
-source state	tts	el	Αρχική κατάσταση
-state	tts	el	Kατάσταση
-state changed	tts	el	Αλλαγή κατάστασης
-state id	tts	el	Αριθμός κατάστασης
-state name	tts	el	Όνομα κατάστασης
-status/date closed	tts	el	Κατάσταση / Ημερομηνία έκλεισε
-subject changed	tts	el	Αλλαγή θέματος επιτυχής
-target state	tts	el	Τελική κατάσταση
-test	tts	el	Έλεγχος/Δοκιμή
-the closed ticket requires more work. reopen it.	tts	el	Η κλήση που έκλεισε χρειάζεται περισσότερη ανάλυση. Ανοίξτε την.
-the owner of the ticket was not able to confirm the issue.	tts	el	Ο ιδιοκτήτης της κλήσης δεν ήταν δυνατό να επιβεβαιώση το θέμα.
-the ticket has been accepted by the owner, who is about to work on it.	tts	el	Η κλήση έχει αποδεχθεί απο τον ιδιοκτήτη, ο οποίος θα αναλύσει το πρόβλημα.
-the ticket has been closed without resolution.	tts	el	Η κλήση έκλεισε χωρίς ανάλυση.
-the ticket has been reopened for further work.	tts	el	Η κλήση έχει ξανανοιχθεί για περαιτέρω ανάλυση.
-the ticket has been successfully resolved.	tts	el	Η επίλυση της κλήσης ήταν επιτυχής.
-the ticket has been verified and has to be worked on.	tts	el	Η κλήση έχει επαληθευθεί και πρέπει να αναλυθεί.
-the ticket has been worked on and the work requires validation.	tts	el	Η επεξεργασία της κλήσης τελείωσε και χρειάζεται επιβεβαίωση.
-the ticket has been worked on, but requires more work.	tts	el	Η κλήση έχει αναλυθεί, αλλά χρειάζεται περισσότερη ανάλυση.
-the ticket is a duplicate of another ticket and should be closed.	tts	el	Η κλήση υπάρχει ώς διπλότυπο σε άλλη κλήση και πρέπει να κλείσει.
-the ticket is essentially not a duplicate of another ticket. reopen it.	tts	el	Η κλήση δεν είναι διπλότυπο μιας άλλης κλήσηας. Ανοίξτε την ξανά.
-the ticket is invalid and cannot be worked on.	tts	el	Η κλήση είναι άκυρη και δεν είναι δυνατή η επεξεργασία της.
-the ticket resolution was successfully validated. close the ticket.	tts	el	Η ανάλυση της κλήσης επιβεβεώθηκε επιτυχημένα. Κλείστε την κλήση.
-the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	el	Η κλήση υπήρχε πριν δηλωθεί η Petri Net αρχιτεκτονική και πρέπει να καθοριστεί μια κατάσταση.
-the ticket was found a duplicate of another ticket.	tts	el	Η συγκεκρημένη κλήση ήδη υπάρχει.
-the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	el	Οι κλήσεις στην ακόλουθη λίστα βρίσκονται σε κατάσταση %1. Παρακαλώ, αποφασίστε τι πρέπει να γίνει με αυτές.
-the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	el	Η επιβεβαίωση της κλήσης ήταν ανεπιτυχής. Η κλήση χρειάζεται περισσότερη επεξεργασία.
-ticket	tts	el	Κλήση
-ticket has been updated	tts	el	Η κλήση ανανεώθηκε
-tickets found %1	tts	el	Κλήσεις που βρέθηκαν %1
-tickets open %1	tts	el	Ανοιχτές κλήσεις %1
-tickets total %1	tts	el	Συνολικές κλήσεις %1
-to go back to the tts index, click <a href= %1 >here</a>	tts	el	Για να μεταφερθείτε πίσω στο ευρετήριο του tts, πατήστε <a href="%1"> εδω</a>
-toaccept	tts	el	Προς αποδοχή
-toclosed	tts	el	Προς κλείσιμο
-toduplicate	tts	el	Προς αντιγραφή
-toinvalid	tts	el	Προς ακύρωση
-toneedswork	tts	el	Προς περισσότερη επεξεργασία
-tonew	tts	el	Προς δημιουργία
+resolve	tts	el	Ξ•Ο€ΞΉΞ»ΟΟƒΞ·
+resolved	tts	el	Ξ•Ο€ΞΉΟ„Ο…Ο‡Ξ®Ο‚ ΞµΟ€Ξ―Ξ»Ο…ΟƒΞ·
+returns a struct of a tickets history	tts	el	Ξ•Ο€ΞΉΟƒΟ„ΟΞ­Ο†ΞµΞΉ Ο„ΞΏ ΞΉΟƒΟ„ΞΏΟΞΉΞΊΟ Ο„Ξ·Ο‚ Ξ΄ΞΏΞΌΞ®Ο‚ Ο„Ο‰Ξ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½
+returns a struct of values of a single ticket	tts	el	Ξ•Ο€ΞΉΟƒΟ„ΟΞ­Ο†ΞµΞΉ Ο„Ξ·Ξ½ Ξ΄ΞΏΞΌΞ® Ο„Ο‰Ξ½ Ο„ΞΉΞΌΟΞ½ ΞΌΞΉΞ±Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚
+returns the additional notes attached to a ticket	tts	el	Ξ•Ο€ΞΉΟƒΟ„ΟΞ­Ο†ΞµΞΉ Ο„ΞΉΟ‚ ΟƒΞ·ΞΌΞµΞΉΟΟƒΞµΞΉΟ‚ Ο€ΞΏΟ… Ξ±Ο†ΞΏΟΞΏΟΞ½ ΞΌΞΉΞ± ΞΊΞ»Ξ®ΟƒΞ·
+selected	tts	el	Ξ•Ο€ΞΉΞ»ΞµΞ³ΞΌΞ­Ξ½ΞΏ
+show new/updated tickets on main screen	tts	el	Ξ•ΞΌΟ†Ξ¬Ξ½ΞΉΟƒΞµ Ο„ΞΉΟ‚ ΞΊΞ±ΞΉΞ½ΞΏΟΟΞΉΞµΟ‚/Ξ±Ξ½Ξ±Ξ½ΞµΟ‰ΞΌΞ­Ξ½ΞµΟ‚ ΞΊΞ»Ξ®ΟƒΞµΞΉΟ‚ ΟƒΟ„ΞΏ Ξ±ΟΟ‡ΞΉΞΊΞ® ΞΏΞΈΟΞ½Ξ·
+source state	tts	el	Ξ‘ΟΟ‡ΞΉΞΊΞ® ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·
+state	tts	el	KΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·
+state changed	tts	el	Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ® ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·Ο‚
+state id	tts	el	Ξ‘ΟΞΉΞΈΞΌΟΟ‚ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·Ο‚
+state name	tts	el	ΞΞ½ΞΏΞΌΞ± ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·Ο‚
+status/date closed	tts	el	ΞΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ· / Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ± Ξ­ΞΊΞ»ΞµΞΉΟƒΞµ
+subject changed	tts	el	Ξ‘Ξ»Ξ»Ξ±Ξ³Ξ® ΞΈΞ­ΞΌΞ±Ο„ΞΏΟ‚ ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ®Ο‚
+target state	tts	el	Ξ¤ΞµΞ»ΞΉΞΊΞ® ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·
+test	tts	el	ΞΞ»ΞµΞ³Ο‡ΞΏΟ‚/Ξ”ΞΏΞΊΞΉΞΌΞ®
+the closed ticket requires more work. reopen it.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ο€ΞΏΟ… Ξ­ΞΊΞ»ΞµΞΉΟƒΞµ Ο‡ΟΞµΞΉΞ¬Ξ¶ΞµΟ„Ξ±ΞΉ Ο€ΞµΟΞΉΟƒΟƒΟΟ„ΞµΟΞ· Ξ±Ξ½Ξ¬Ξ»Ο…ΟƒΞ·. Ξ‘Ξ½ΞΏΞ―ΞΎΟ„Ξµ Ο„Ξ·Ξ½.
+the owner of the ticket was not able to confirm the issue.	tts	el	Ξ ΞΉΞ΄ΞΉΞΏΞΊΟ„Ξ®Ο„Ξ·Ο‚ Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ Ξ΄ΞµΞ½ Ξ®Ο„Ξ±Ξ½ Ξ΄Ο…Ξ½Ξ±Ο„Ο Ξ½Ξ± ΞµΟ€ΞΉΞ²ΞµΞ²Ξ±ΞΉΟΟƒΞ· Ο„ΞΏ ΞΈΞ­ΞΌΞ±.
+the ticket has been accepted by the owner, who is about to work on it.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ξ­Ο‡ΞµΞΉ Ξ±Ο€ΞΏΞ΄ΞµΟ‡ΞΈΞµΞ― Ξ±Ο€ΞΏ Ο„ΞΏΞ½ ΞΉΞ΄ΞΉΞΏΞΊΟ„Ξ®Ο„Ξ·, ΞΏ ΞΏΟ€ΞΏΞ―ΞΏΟ‚ ΞΈΞ± Ξ±Ξ½Ξ±Ξ»ΟΟƒΞµΞΉ Ο„ΞΏ Ο€ΟΟΞ²Ξ»Ξ·ΞΌΞ±.
+the ticket has been closed without resolution.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ξ­ΞΊΞ»ΞµΞΉΟƒΞµ Ο‡Ο‰ΟΞ―Ο‚ Ξ±Ξ½Ξ¬Ξ»Ο…ΟƒΞ·.
+the ticket has been reopened for further work.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ξ­Ο‡ΞµΞΉ ΞΎΞ±Ξ½Ξ±Ξ½ΞΏΞΉΟ‡ΞΈΞµΞ― Ξ³ΞΉΞ± Ο€ΞµΟΞ±ΞΉΟ„Ξ­ΟΟ‰ Ξ±Ξ½Ξ¬Ξ»Ο…ΟƒΞ·.
+the ticket has been successfully resolved.	tts	el	Ξ— ΞµΟ€Ξ―Ξ»Ο…ΟƒΞ· Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ Ξ®Ο„Ξ±Ξ½ ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ®Ο‚.
+the ticket has been verified and has to be worked on.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ξ­Ο‡ΞµΞΉ ΞµΟ€Ξ±Ξ»Ξ·ΞΈΞµΟ…ΞΈΞµΞ― ΞΊΞ±ΞΉ Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± Ξ±Ξ½Ξ±Ξ»Ο…ΞΈΞµΞ―.
+the ticket has been worked on and the work requires validation.	tts	el	Ξ— ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ Ο„ΞµΞ»ΞµΞ―Ο‰ΟƒΞµ ΞΊΞ±ΞΉ Ο‡ΟΞµΞΉΞ¬Ξ¶ΞµΟ„Ξ±ΞΉ ΞµΟ€ΞΉΞ²ΞµΞ²Ξ±Ξ―Ο‰ΟƒΞ·.
+the ticket has been worked on, but requires more work.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ξ­Ο‡ΞµΞΉ Ξ±Ξ½Ξ±Ξ»Ο…ΞΈΞµΞ―, Ξ±Ξ»Ξ»Ξ¬ Ο‡ΟΞµΞΉΞ¬Ξ¶ΞµΟ„Ξ±ΞΉ Ο€ΞµΟΞΉΟƒΟƒΟΟ„ΞµΟΞ· Ξ±Ξ½Ξ¬Ξ»Ο…ΟƒΞ·.
+the ticket is a duplicate of another ticket and should be closed.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ο…Ο€Ξ¬ΟΟ‡ΞµΞΉ ΟΟ‚ Ξ΄ΞΉΟ€Ξ»ΟΟ„Ο…Ο€ΞΏ ΟƒΞµ Ξ¬Ξ»Ξ»Ξ· ΞΊΞ»Ξ®ΟƒΞ· ΞΊΞ±ΞΉ Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± ΞΊΞ»ΞµΞ―ΟƒΞµΞΉ.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ξ΄ΞµΞ½ ΞµΞ―Ξ½Ξ±ΞΉ Ξ΄ΞΉΟ€Ξ»ΟΟ„Ο…Ο€ΞΏ ΞΌΞΉΞ±Ο‚ Ξ¬Ξ»Ξ»Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ξ±Ο‚. Ξ‘Ξ½ΞΏΞ―ΞΎΟ„Ξµ Ο„Ξ·Ξ½ ΞΎΞ±Ξ½Ξ¬.
+the ticket is invalid and cannot be worked on.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· ΞµΞ―Ξ½Ξ±ΞΉ Ξ¬ΞΊΟ…ΟΞ· ΞΊΞ±ΞΉ Ξ΄ΞµΞ½ ΞµΞ―Ξ½Ξ±ΞΉ Ξ΄Ο…Ξ½Ξ±Ο„Ξ® Ξ· ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± Ο„Ξ·Ο‚.
+the ticket resolution was successfully validated. close the ticket.	tts	el	Ξ— Ξ±Ξ½Ξ¬Ξ»Ο…ΟƒΞ· Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ ΞµΟ€ΞΉΞ²ΞµΞ²ΞµΟΞΈΞ·ΞΊΞµ ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ·ΞΌΞ­Ξ½Ξ±. ΞΞ»ΞµΞ―ΟƒΟ„Ξµ Ο„Ξ·Ξ½ ΞΊΞ»Ξ®ΟƒΞ·.
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ο…Ο€Ξ®ΟΟ‡Ξµ Ο€ΟΞΉΞ½ Ξ΄Ξ·Ξ»Ο‰ΞΈΞµΞ― Ξ· Petri Net Ξ±ΟΟ‡ΞΉΟ„ΞµΞΊΟ„ΞΏΞ½ΞΉΞΊΞ® ΞΊΞ±ΞΉ Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± ΞΊΞ±ΞΈΞΏΟΞΉΟƒΟ„ΞµΞ― ΞΌΞΉΞ± ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·.
+the ticket was found a duplicate of another ticket.	tts	el	Ξ— ΟƒΟ…Ξ³ΞΊΞµΞΊΟΞ·ΞΌΞ­Ξ½Ξ· ΞΊΞ»Ξ®ΟƒΞ· Ξ®Ξ΄Ξ· Ο…Ο€Ξ¬ΟΟ‡ΞµΞΉ.
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	el	ΞΞΉ ΞΊΞ»Ξ®ΟƒΞµΞΉΟ‚ ΟƒΟ„Ξ·Ξ½ Ξ±ΞΊΟΞ»ΞΏΟ…ΞΈΞ· Ξ»Ξ―ΟƒΟ„Ξ± Ξ²ΟΞ―ΟƒΞΊΞΏΞ½Ο„Ξ±ΞΉ ΟƒΞµ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ· %1. Ξ Ξ±ΟΞ±ΞΊΞ±Ξ»Ο, Ξ±Ο€ΞΏΟ†Ξ±ΟƒΞ―ΟƒΟ„Ξµ Ο„ΞΉ Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± Ξ³Ξ―Ξ½ΞµΞΉ ΞΌΞµ Ξ±Ο…Ο„Ξ­Ο‚.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	el	Ξ— ΞµΟ€ΞΉΞ²ΞµΞ²Ξ±Ξ―Ο‰ΟƒΞ· Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ Ξ®Ο„Ξ±Ξ½ Ξ±Ξ½ΞµΟ€ΞΉΟ„Ο…Ο‡Ξ®Ο‚. Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ο‡ΟΞµΞΉΞ¬Ξ¶ΞµΟ„Ξ±ΞΉ Ο€ΞµΟΞΉΟƒΟƒΟΟ„ΞµΟΞ· ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ±.
+ticket	tts	el	ΞΞ»Ξ®ΟƒΞ·
+ticket has been updated	tts	el	Ξ— ΞΊΞ»Ξ®ΟƒΞ· Ξ±Ξ½Ξ±Ξ½ΞµΟΞΈΞ·ΞΊΞµ
+tickets found %1	tts	el	ΞΞ»Ξ®ΟƒΞµΞΉΟ‚ Ο€ΞΏΟ… Ξ²ΟΞ­ΞΈΞ·ΞΊΞ±Ξ½ %1
+tickets open %1	tts	el	Ξ‘Ξ½ΞΏΞΉΟ‡Ο„Ξ­Ο‚ ΞΊΞ»Ξ®ΟƒΞµΞΉΟ‚ %1
+tickets total %1	tts	el	Ξ£Ο…Ξ½ΞΏΞ»ΞΉΞΊΞ­Ο‚ ΞΊΞ»Ξ®ΟƒΞµΞΉΟ‚ %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	el	Ξ“ΞΉΞ± Ξ½Ξ± ΞΌΞµΟ„Ξ±Ο†ΞµΟΞΈΞµΞ―Ο„Ξµ Ο€Ξ―ΟƒΟ‰ ΟƒΟ„ΞΏ ΞµΟ…ΟΞµΟ„Ξ®ΟΞΉΞΏ Ο„ΞΏΟ… tts, Ο€Ξ±Ο„Ξ®ΟƒΟ„Ξµ <a href="%1"> ΞµΞ΄Ο‰</a>
+toaccept	tts	el	Ξ ΟΞΏΟ‚ Ξ±Ο€ΞΏΞ΄ΞΏΟ‡Ξ®
+toclosed	tts	el	Ξ ΟΞΏΟ‚ ΞΊΞ»ΞµΞ―ΟƒΞΉΞΌΞΏ
+toduplicate	tts	el	Ξ ΟΞΏΟ‚ Ξ±Ξ½Ο„ΞΉΞ³ΟΞ±Ο†Ξ®
+toinvalid	tts	el	Ξ ΟΞΏΟ‚ Ξ±ΞΊΟΟΟ‰ΟƒΞ·
+toneedswork	tts	el	Ξ ΟΞΏΟ‚ Ο€ΞµΟΞΉΟƒΟƒΟΟ„ΞµΟΞ· ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ±
+tonew	tts	el	Ξ ΟΞΏΟ‚ Ξ΄Ξ·ΞΌΞΉΞΏΟ…ΟΞ³Ξ―Ξ±
 toreopened	tts	el	
-toresolved	tts	el	Προς επίλυση
-total billable	tts	el	Συνολική χρέωση
+toresolved	tts	el	Ξ ΟΞΏΟ‚ ΞµΟ€Ξ―Ξ»Ο…ΟƒΞ·
+total billable	tts	el	Ξ£Ο…Ξ½ΞΏΞ»ΞΉΞΊΞ® Ο‡ΟΞ­Ο‰ΟƒΞ·
 totovalidate	tts	el	
-tovalidate	tts	el	Προς επιβεβαίωση
-toverified	tts	el	Προς επαλήθευση
-transition	tts	el	Μετάβαση
-transition name	tts	el	Ονομασία μετάβασης
+tovalidate	tts	el	Ξ ΟΞΏΟ‚ ΞµΟ€ΞΉΞ²ΞµΞ²Ξ±Ξ―Ο‰ΟƒΞ·
+toverified	tts	el	Ξ ΟΞΏΟ‚ ΞµΟ€Ξ±Ξ»Ξ®ΞΈΞµΟ…ΟƒΞ·
+transition	tts	el	ΞΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ·
+transition name	tts	el	ΞΞ½ΞΏΞΌΞ±ΟƒΞ―Ξ± ΞΌΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ·Ο‚
 trouble ticket system	common	el	
 tts	common	el	
-tts preferences	tts	el	Trouble Ticket System - Προτιμήσεις
-undefined	tts	el	Δεν έχει δηλωθεί
-update ticket state	tts	el	Ανανέωση καταστάσεως της κλήσης
-updates ticket	tts	el	Ανανεώνει την κλήση
-verified	tts	el	Επαληθεύτηκε
-verify	tts	el	Επαλήθευση
-verify the ticket to work on it.	tts	el	Επαλήθευση της κλήσης για επεξεργασία με αυτή.
-view all tickets	tts	el	Προβολή όλων των κλήσεων
-view job detail	tts	el	Προβολή λεπτομερειών εργασίας
-view only open tickets	tts	el	Προβολή μόνο των ανοιχτών κλήσεων
-you can only close a ticket if it is assigned to you.	tts	el	Μπορείτε να κλείσετε μια κλήση μόνο αν είναι καθορισμένη σε εσάς.
-you want to delete the state %1. are you sure?	tts	el	Θέλετε να διαγράψετε την κατάσταση %1. Είστε σίγουροι ;
-you want to delete the transition %1. are you sure?	tts	el	Θέλετε να διαγράψετε την μετάβαση %1. Είστε σίγουροι ;
+tts preferences	tts	el	Trouble Ticket System - Ξ ΟΞΏΟ„ΞΉΞΌΞ®ΟƒΞµΞΉΟ‚
+undefined	tts	el	Ξ”ΞµΞ½ Ξ­Ο‡ΞµΞΉ Ξ΄Ξ·Ξ»Ο‰ΞΈΞµΞ―
+update ticket state	tts	el	Ξ‘Ξ½Ξ±Ξ½Ξ­Ο‰ΟƒΞ· ΞΊΞ±Ο„Ξ±ΟƒΟ„Ξ¬ΟƒΞµΟ‰Ο‚ Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚
+updates ticket	tts	el	Ξ‘Ξ½Ξ±Ξ½ΞµΟΞ½ΞµΞΉ Ο„Ξ·Ξ½ ΞΊΞ»Ξ®ΟƒΞ·
+verified	tts	el	Ξ•Ο€Ξ±Ξ»Ξ·ΞΈΞµΟΟ„Ξ·ΞΊΞµ
+verify	tts	el	Ξ•Ο€Ξ±Ξ»Ξ®ΞΈΞµΟ…ΟƒΞ·
+verify the ticket to work on it.	tts	el	Ξ•Ο€Ξ±Ξ»Ξ®ΞΈΞµΟ…ΟƒΞ· Ο„Ξ·Ο‚ ΞΊΞ»Ξ®ΟƒΞ·Ο‚ Ξ³ΞΉΞ± ΞµΟ€ΞµΞΎΞµΟΞ³Ξ±ΟƒΞ―Ξ± ΞΌΞµ Ξ±Ο…Ο„Ξ®.
+view all tickets	tts	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΟΞ»Ο‰Ξ½ Ο„Ο‰Ξ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½
+view job detail	tts	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® Ξ»ΞµΟ€Ο„ΞΏΞΌΞµΟΞµΞΉΟΞ½ ΞµΟΞ³Ξ±ΟƒΞ―Ξ±Ο‚
+view only open tickets	tts	el	Ξ ΟΞΏΞ²ΞΏΞ»Ξ® ΞΌΟΞ½ΞΏ Ο„Ο‰Ξ½ Ξ±Ξ½ΞΏΞΉΟ‡Ο„ΟΞ½ ΞΊΞ»Ξ®ΟƒΞµΟ‰Ξ½
+you can only close a ticket if it is assigned to you.	tts	el	ΞΟ€ΞΏΟΞµΞ―Ο„Ξµ Ξ½Ξ± ΞΊΞ»ΞµΞ―ΟƒΞµΟ„Ξµ ΞΌΞΉΞ± ΞΊΞ»Ξ®ΟƒΞ· ΞΌΟΞ½ΞΏ Ξ±Ξ½ ΞµΞ―Ξ½Ξ±ΞΉ ΞΊΞ±ΞΈΞΏΟΞΉΟƒΞΌΞ­Ξ½Ξ· ΟƒΞµ ΞµΟƒΞ¬Ο‚.
+you want to delete the state %1. are you sure?	tts	el	ΞΞ­Ξ»ΞµΟ„Ξµ Ξ½Ξ± Ξ΄ΞΉΞ±Ξ³ΟΞ¬ΟΞµΟ„Ξµ Ο„Ξ·Ξ½ ΞΊΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ· %1. Ξ•Ξ―ΟƒΟ„Ξµ ΟƒΞ―Ξ³ΞΏΟ…ΟΞΏΞΉ ;
+you want to delete the transition %1. are you sure?	tts	el	ΞΞ­Ξ»ΞµΟ„Ξµ Ξ½Ξ± Ξ΄ΞΉΞ±Ξ³ΟΞ¬ΟΞµΟ„Ξµ Ο„Ξ·Ξ½ ΞΌΞµΟ„Ξ¬Ξ²Ξ±ΟƒΞ· %1. Ξ•Ξ―ΟƒΟ„Ξµ ΟƒΞ―Ξ³ΞΏΟ…ΟΞΏΞΉ ;

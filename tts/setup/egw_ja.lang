@@ -1,49 +1,49 @@
-Default Priority	tts	ja	½é´üÍ¥ÀèÅÙ
-Default assign to	tts	ja	½é´ü¥¢¥µ¥¤¥ó
-add new ticket	tts	ja	ÄÉ²Ã
-add ticket	tts	ja	ÄÉ²Ã
-additional notes	tts	ja	ÄÉ²Ã¾ğÊó
-admin options	admin	ja	´Ä¶­ÀßÄê
-assign to	tts	ja	¥¢¥µ¥¤¥ó
-assigned from	tts	ja	Äó¶¡¼Ô
-assigned to	tts	ja	¥¢¥µ¥¤¥ó
-close	tts	ja	ºî¶È½ªÎ»
-close date	tts	ja	½ªÎ»Æü
-closed	tts	ja	ºî¶È½ªÎ»
-date opened	tts	ja	Äó¶¡Æü
-default group	tts	ja	½é´ü¥°¥ë¡¼¥×
-detail	tts	ja	¾ÜºÙ
-details	tts	ja	¾ÜºÙ¾ğÊó
-disabled	tts	ja	¤Ê¤·
-force	tts	ja	É¬¿Ü
-highest	tts	ja	¹â
-in progress	tts	ja	ºî¶È¿Ê¹ÔÃæ
-lowest	tts	ja	Äã
-new ticket	tts	ja	¿·¤·¤¤¥Á¥±¥Ã¥È
-no subject	tts	ja	·ïÌ¾¤Ê¤·
-no tickets found	tts	ja	¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£
-not assigned	tts	ja	¥¢¥µ¥¤¥ó¤Ê¤·
-open date	tts	ja	Äó¶¡Æü
-opened by	tts	ja	Äó¶¡¼Ô
-prio	tts	ja	Í¥ÀèÅÙ
-refresh every (seconds)	tts	ja	¹¹¿·´Ö³Ö¡ÊÉÃ¡Ë
-reopen	tts	ja	ºî¶ÈºÆ³«
-search	tts	ja	¸¡º÷
-show new/updated tickets on main screen	tts	ja	¿·¤·¤¤¥Á¥±¥Ã¥È¤ò¥á¥¤¥ó²èÌÌ¤ËÉ½¼¨¤¹¤ë
-status/date closed	tts	ja	¾õÂÖ/½ªÎ»Æü
-ticket	tts	ja	¥Á¥±¥Ã¥È
-ticket assigned to %1	tts	ja	%1 ¤Ë¥¢¥µ¥¤¥ó
-ticket closed	tts	ja	ºî¶È½ªÎ»
-tickets found %1	tts	ja	%1 ·ï¸«¤Ä¤«¤ê¤Ş¤·¤¿
-ticket reopened	tts	ja	ºî¶ÈºÆ³«
-tickets open %1	tts	ja	¥ª¡¼¥×¥ó %1
-tickets total %1	tts	ja	¹ç·× %1
-trouble ticket system	common	ja	¥Á¥±¥Ã¥È¥·¥¹¥Æ¥à
-tts	common	ja	¥Á¥±¥Ã¥È¥·¥¹¥Æ¥à
-tts preferences	tts	ja	¥Á¥±¥Ã¥È¥·¥¹¥Æ¥à¥æ¡¼¥¶ÀßÄê
-update	tts	ja	ÆâÍÆ¹¹¿·
-use email notification	tts	ja	ÅÅ»Ò¥á¡¼¥ëÄÌÃÎ¤ò»È¤¦
-users choice	tts	ja	¥æ¡¼¥¶ÁªÂò
-view all tickets	tts	ja	¥Á¥±¥Ã¥ÈÉ½¼¨
-view job detail	tts	ja	¾ÜºÙÉ½¼¨
-view only open tickets	tts	ja	¥ª¡¼¥×¥ó¥Á¥±¥Ã¥ÈÉ½¼¨
+Default Priority	tts	ja	åˆæœŸå„ªå…ˆåº¦
+Default assign to	tts	ja	åˆæœŸã‚¢ã‚µã‚¤ãƒ³
+add new ticket	tts	ja	è¿½åŠ 
+add ticket	tts	ja	è¿½åŠ 
+additional notes	tts	ja	è¿½åŠ æƒ…å ±
+admin options	admin	ja	ç’°å¢ƒè¨­å®š
+assign to	tts	ja	ã‚¢ã‚µã‚¤ãƒ³
+assigned from	tts	ja	æä¾›è€…
+assigned to	tts	ja	ã‚¢ã‚µã‚¤ãƒ³
+close	tts	ja	ä½œæ¥­çµ‚äº†
+close date	tts	ja	çµ‚äº†æ—¥
+closed	tts	ja	ä½œæ¥­çµ‚äº†
+date opened	tts	ja	æä¾›æ—¥
+default group	tts	ja	åˆæœŸã‚°ãƒ«ãƒ¼ãƒ—
+detail	tts	ja	è©³ç´°
+details	tts	ja	è©³ç´°æƒ…å ±
+disabled	tts	ja	ãªã—
+force	tts	ja	å¿…é ˆ
+highest	tts	ja	é«˜
+in progress	tts	ja	ä½œæ¥­é€²è¡Œä¸­
+lowest	tts	ja	ä½
+new ticket	tts	ja	æ–°ã—ã„ãƒã‚±ãƒƒãƒˆ
+no subject	tts	ja	ä»¶åãªã—
+no tickets found	tts	ja	è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚
+not assigned	tts	ja	ã‚¢ã‚µã‚¤ãƒ³ãªã—
+open date	tts	ja	æä¾›æ—¥
+opened by	tts	ja	æä¾›è€…
+prio	tts	ja	å„ªå…ˆåº¦
+refresh every (seconds)	tts	ja	æ›´æ–°é–“éš”ï¼ˆç§’ï¼‰
+reopen	tts	ja	ä½œæ¥­å†é–‹
+search	tts	ja	æ¤œç´¢
+show new/updated tickets on main screen	tts	ja	æ–°ã—ã„ãƒã‚±ãƒƒãƒˆã‚’ãƒ¡ã‚¤ãƒ³ç”»é¢ã«è¡¨ç¤ºã™ã‚‹
+status/date closed	tts	ja	çŠ¶æ…‹/çµ‚äº†æ—¥
+ticket	tts	ja	ãƒã‚±ãƒƒãƒˆ
+ticket assigned to %1	tts	ja	%1 ã«ã‚¢ã‚µã‚¤ãƒ³
+ticket closed	tts	ja	ä½œæ¥­çµ‚äº†
+tickets found %1	tts	ja	%1 ä»¶è¦‹ã¤ã‹ã‚Šã¾ã—ãŸ
+ticket reopened	tts	ja	ä½œæ¥­å†é–‹
+tickets open %1	tts	ja	ã‚ªãƒ¼ãƒ—ãƒ³ %1
+tickets total %1	tts	ja	åˆè¨ˆ %1
+trouble ticket system	common	ja	ãƒã‚±ãƒƒãƒˆã‚·ã‚¹ãƒ†ãƒ 
+tts	common	ja	ãƒã‚±ãƒƒãƒˆã‚·ã‚¹ãƒ†ãƒ 
+tts preferences	tts	ja	ãƒã‚±ãƒƒãƒˆã‚·ã‚¹ãƒ†ãƒ ãƒ¦ãƒ¼ã‚¶è¨­å®š
+update	tts	ja	å†…å®¹æ›´æ–°
+use email notification	tts	ja	é›»å­ãƒ¡ãƒ¼ãƒ«é€šçŸ¥ã‚’ä½¿ã†
+users choice	tts	ja	ãƒ¦ãƒ¼ã‚¶é¸æŠ
+view all tickets	tts	ja	ãƒã‚±ãƒƒãƒˆè¡¨ç¤º
+view job detail	tts	ja	è©³ç´°è¡¨ç¤º
+view only open tickets	tts	ja	ã‚ªãƒ¼ãƒ—ãƒ³ãƒã‚±ãƒƒãƒˆè¡¨ç¤º

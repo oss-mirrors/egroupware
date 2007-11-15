@@ -7,9 +7,9 @@ add new ticket	tts	it	Aggiungi nuovo ticket
 add ticket	tts	it	Aggiungi ticket
 additional notes	tts	it	Note aggiuntive
 admin options	common	it	Opzioni di amministrazione
-alert for critical prio setting	tts	it	Stai impostando la Priorit‡ a Critica. Assicurati di conoscere cosa significa per il ricevente del ticket, e non dimenticare di chiamarlo immediatamente!
-alert for emergency prio setting	tts	it	Stai impostando la Priorit‡ a Emergenza. Assicurati di conoscere cosa significa per il ricevente del ticket, e non dimenticare di chiamarlo immediatamente!
-alert for high prio setting	tts	it	Per favore considera l'opportunit‡ di chiamare il ricevente di questo ticket!
+alert for critical prio setting	tts	it	Stai impostando la Priorit√† a Critica. Assicurati di conoscere cosa significa per il ricevente del ticket, e non dimenticare di chiamarlo immediatamente!
+alert for emergency prio setting	tts	it	Stai impostando la Priorit√† a Emergenza. Assicurati di conoscere cosa significa per il ricevente del ticket, e non dimenticare di chiamarlo immediatamente!
+alert for high prio setting	tts	it	Per favore considera l'opportunit√† di chiamare il ricevente di questo ticket!
 assign tickets	tts	it	Assegna
 assign to	tts	it	Assegna a
 assigned from	tts	it	Assegnato da
@@ -19,8 +19,8 @@ billable hours changed	tts	it	Ore fatturabili modificate
 billable hours rate	tts	it	Tariffa oraria fatturabile
 billable rate	tts	it	Tariffa fatturabile
 billable rate changed	tts	it	Tariffa oraria modificata
-can assign to	tts	it	puÚ assegnare i ticket
-can make full changes	tts	it	PuÚ fare modifiche complete
+can assign to	tts	it	pu√≤ assegnare i ticket
+can make full changes	tts	it	Pu√≤ fare modifiche complete
 category changed	tts	it	Categoria modificata
 check here to generate the state's id automatically or enter a particular id below.	tts	it	Seleziona qui per generare automaticamente l'ID dello stato o inserisci un ID particolare sotto.
 clear form	tts	it	Svuota Modulo
@@ -39,7 +39,7 @@ critical	tts	it	Critica
 date opened	tts	it	Data apertura
 default assign to	tts	it	Assegna per default a
 default group	tts	it	Gruppo di default
-default priority	tts	it	Priorit‡ di default
+default priority	tts	it	Priorit√† di default
 delete the listed tickets.	tts	it	Cancella i ticket in elenco
 deleting the state	tts	it	Cancello lo stato
 deleting the transition	tts	it	Cancello la transizione
@@ -50,10 +50,10 @@ duplicate	tts	it	DUPLICATO
 edit the state	tts	it	Modifica lo stato
 edit the transition	tts	it	Modifica la transizione
 emergency	tts	it	Emergenza
-error: the subject of the ticket is not specified.	tts	it	ERRORE: Non Ë stato specificato l'oggetto del  ticket
+error: the subject of the ticket is not specified.	tts	it	ERRORE: Non √® stato specificato l'oggetto del  ticket
 force	tts	it	Forza
 global categories	tts	it	Categorie Globali
-group ownership changed	tts	it	Cambiato gruppo di propriet‡
+group ownership changed	tts	it	Cambiato gruppo di propriet√†
 history	tts	it	Cronologia
 i worked on the ticket and the work requires validation.	tts	it	Ho lavorato sul ticket e il lavoro richiede la validazione.
 i worked on the ticket, but did not finish.	tts	it	Ho lavorato sul ticket, ma non ho finito
@@ -92,10 +92,10 @@ opened	tts	it	Aperto
 opened by	tts	it	Aperto da
 original ticket details	tts	it	Dettagli Originali del Ticket
 perform irregular transition into the following state	tts	it	Esegui transizione irregolare nel seguente stato
-please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	it	Per favore inserisci l'oggetto del ticket, altrimenti il ticket non puÚ essere salvato.
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	it	Per favore inserisci l'oggetto del ticket, altrimenti il ticket non pu√≤ essere salvato.
 prio	tts	it	Prio
-priority	tts	it	Priorit‡
-priority changed	tts	it	Priorit‡ cambiata
+priority	tts	it	Priorit√†
+priority changed	tts	it	Priorit√† cambiata
 put the preexistent ticket into the state %1.	tts	it	Porta il ticket preesistente allo stato %1.
 re-assigned	tts	it	Riassegnato
 re-opened	tts	it	Riaperto
@@ -120,28 +120,28 @@ status/date closed	tts	it	Status/Data chiusura
 subject changed	tts	it	Oggetto cambiato
 target state	tts	it	Stato d'arrivo
 test	tts	it	TEST
-the closed ticket requires more work. reopen it.	tts	it	Il ticket che Ë stato chiuso richiede pi˘ lavoro. Riaprilo.
-the owner of the ticket was not able to confirm the issue.	tts	it	Il proprietario del ticket non Ë stato in grado di confermare il problema.
-the ticket has been accepted by the owner, who is about to work on it.	tts	it	Il ticket Ë stato accettato dal proprietario, che sta per lavorarlo.
-the ticket has been closed without resolution.	tts	it	Il ticket Ë stato chiuso senza soluzione.
-the ticket has been reopened for further work.	tts	it	Il ticket Ë stato riaperto per un'ulteriore lavorazione.
-the ticket has been successfully resolved.	tts	it	Il ticket Ë stato risolto.
-the ticket has been verified and has to be worked on.	tts	it	Il ticket Ë stato verificato e deve essere lavorato.
-the ticket has been worked on and the work requires validation.	tts	it	Il ticket Ë stato lavorato e il lavoro richiede validazione.
-the ticket has been worked on, but requires more work.	tts	it	Il ticket Ë stato lavorato, ma richiede ulteriore lavoro.
-the ticket is a duplicate of another ticket and should be closed.	tts	it	Il ticket Ë un duplicato di un altro ticket e deve essere chiuso.
-the ticket is essentially not a duplicate of another ticket. reopen it.	tts	it	Il ticket non Ë effettivamente un duplicato di un altro ticket. Riaprilo.
-the ticket is invalid and cannot be worked on.	tts	it	Il ticket non Ë valido e non puÚ essere lavorato.
-the ticket resolution was successfully validated. close the ticket.	tts	it	La soluzione del ticket Ë stata validata con successo. Chiudi il ticket.
+the closed ticket requires more work. reopen it.	tts	it	Il ticket che √® stato chiuso richiede pi√π lavoro. Riaprilo.
+the owner of the ticket was not able to confirm the issue.	tts	it	Il proprietario del ticket non √® stato in grado di confermare il problema.
+the ticket has been accepted by the owner, who is about to work on it.	tts	it	Il ticket √® stato accettato dal proprietario, che sta per lavorarlo.
+the ticket has been closed without resolution.	tts	it	Il ticket √® stato chiuso senza soluzione.
+the ticket has been reopened for further work.	tts	it	Il ticket √® stato riaperto per un'ulteriore lavorazione.
+the ticket has been successfully resolved.	tts	it	Il ticket √® stato risolto.
+the ticket has been verified and has to be worked on.	tts	it	Il ticket √® stato verificato e deve essere lavorato.
+the ticket has been worked on and the work requires validation.	tts	it	Il ticket √® stato lavorato e il lavoro richiede validazione.
+the ticket has been worked on, but requires more work.	tts	it	Il ticket √® stato lavorato, ma richiede ulteriore lavoro.
+the ticket is a duplicate of another ticket and should be closed.	tts	it	Il ticket √® un duplicato di un altro ticket e deve essere chiuso.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	it	Il ticket non √® effettivamente un duplicato di un altro ticket. Riaprilo.
+the ticket is invalid and cannot be worked on.	tts	it	Il ticket non √® valido e non pu√≤ essere lavorato.
+the ticket resolution was successfully validated. close the ticket.	tts	it	La soluzione del ticket √® stata validata con successo. Chiudi il ticket.
 the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	it	Il ticket esisteva prima che l'infrastruttura Petri Net fosse definita e deve essergli assegnato uno stato.
-the ticket was found a duplicate of another ticket.	tts	it	Il ticket Ë risultato un duplicato di un altro ticket.
+the ticket was found a duplicate of another ticket.	tts	it	Il ticket √® risultato un duplicato di un altro ticket.
 the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	it	I ticket nella lista seguente sono nello stato %1. Per favore, decidi cosa deve esserne fatto.
-the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	it	La validazione del ticket Ë stata negativa. Il ticket richiede altro lavoro.
-this state means an open ticket	tts	it	In questo stato il ticket Ë aperto.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	it	La validazione del ticket √® stata negativa. Il ticket richiede altro lavoro.
+this state means an open ticket	tts	it	In questo stato il ticket √® aperto.
 ticket	tts	it	Ticket
 ticket #	tts	it	Ticket N.
-ticket has been updated	tts	it	Il ticket Ë stato aggiornato
-ticket is not accessible	tts	it	Questo ticket non Ë accessibile
+ticket has been updated	tts	it	Il ticket √® stato aggiornato
+ticket is not accessible	tts	it	Questo ticket non √® accessibile
 tickets found %1	tts	it	Ticket trovati %1
 tickets open %1	tts	it	Ticket aperti %1
 tickets total %1	tts	it	Ticket totali %1
@@ -174,7 +174,7 @@ view job detail	tts	it	Visualizza dettagli lavoro
 view only my open tickets	tts	it	Visualizza solo i miei ticket aperti
 view only open tickets	tts	it	Visualizza solo i ticket aperti
 wish	tts	it	Desiderio
-you can only close a ticket if it is assigned to you.	tts	it	Puoi chiudere un ticket solo se Ë assegnato a te.
+you can only close a ticket if it is assigned to you.	tts	it	Puoi chiudere un ticket solo se √® assegnato a te.
 you want to delete the state %1 and associated transitions. are you sure?	tts	it	Vuoi davvero eliminare lo stato %1 e le transizioni associate?
 you want to delete the state %1. are you sure?	tts	it	Vuoi davvero cancellare lo stato %1?
 you want to delete the transition %1. are you sure?	tts	it	Vuoi davvero cancellare la transizione %1?

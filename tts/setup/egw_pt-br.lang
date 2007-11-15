@@ -1,97 +1,97 @@
 a new ticket has been reported.	tts	pt-br	Um novo ticket foi reportado.
 accept	tts	pt-br	ACEITAR
-accept the ticket into verification process.	tts	pt-br	Aceita o ticket para o processo de verificaÁ„o.
+accept the ticket into verification process.	tts	pt-br	Aceita o ticket para o processo de verifica√ß√£o.
 accepted	tts	pt-br	ACEITO
-action	tts	pt-br	AÁ„o
+action	tts	pt-br	A√ß√£o
 add new ticket	tts	pt-br	Adicionar um novo ticket
 add ticket	tts	pt-br	Adicionar ticket
 additional notes	tts	pt-br	Notas adicionais
-admin options	common	pt-br	OpÁıes de administraÁ„o
-alert for critical prio setting	tts	pt-br	VocÍ est· colocando a Prioridade para CrÌtica; Tenha certeza que vocÍ sabe o que isso significa para o respons·vel pelo ticket, e n„o esqueÁa de contact·-lo imediatamente!
-alert for emergency prio setting	tts	pt-br	VocÍ est· colocando a Prioridade para EmergÍncia; Tenha certeza que vocÍ sabe o que isso significa para o respons·vel pelo ticket, e n„o esqueÁa de contact·-lo imediatamente!
-alert for high prio setting	tts	pt-br	Por favor, considere entrar em contato com o respons·vel por este ticket!
-all categories used in tts are global and will remain unchaned in tracker	tts	pt-br	Todas as categorias usadas no aplicativo Tickets s„o globais e ser„o mantidas no Sistema de Tickets
-all tickets are already converted to tracker	tts	pt-br	Todos os tickets j· est„o convertidos para o Sistema de Tickets
+admin options	common	pt-br	Op√ß√µes de administra√ß√£o
+alert for critical prio setting	tts	pt-br	Voc√™ est√° colocando a Prioridade para Cr√≠tica; Tenha certeza que voc√™ sabe o que isso significa para o respons√°vel pelo ticket, e n√£o esque√ßa de contact√°-lo imediatamente!
+alert for emergency prio setting	tts	pt-br	Voc√™ est√° colocando a Prioridade para Emerg√™ncia; Tenha certeza que voc√™ sabe o que isso significa para o respons√°vel pelo ticket, e n√£o esque√ßa de contact√°-lo imediatamente!
+alert for high prio setting	tts	pt-br	Por favor, considere entrar em contato com o respons√°vel por este ticket!
+all categories used in tts are global and will remain unchaned in tracker	tts	pt-br	Todas as categorias usadas no aplicativo Tickets s√£o globais e ser√£o mantidas no Sistema de Tickets
+all tickets are already converted to tracker	tts	pt-br	Todos os tickets j√° est√£o convertidos para o Sistema de Tickets
 assign tickets	tts	pt-br	Designar
 assign to	tts	pt-br	Designar a
 assigned from	tts	pt-br	Designado de
 assigned to	tts	pt-br	Designado para
-billable hours	tts	pt-br	Horas Remuner·veis
+billable hours	tts	pt-br	Horas Remuner√°veis
 billable hours changed	tts	pt-br	Horas remuneradas alteradas
-billable hours rate	tts	pt-br	Valor de horas Remuner·veis
-billable rate	tts	pt-br	Valor da RemuneraÁ„o
-billable rate changed	tts	pt-br	Valor da remuneraÁ„o alterado
+billable hours rate	tts	pt-br	Valor de horas Remuner√°veis
+billable rate	tts	pt-br	Valor da Remunera√ß√£o
+billable rate changed	tts	pt-br	Valor da remunera√ß√£o alterado
 can assign to	tts	pt-br	Pode designar tickets
-can make full changes	tts	pt-br	Pode fazer quaisquer alteraÁıes
+can make full changes	tts	pt-br	Pode fazer quaisquer altera√ß√µes
 category changed	tts	pt-br	Categoria alterada
 check here to generate the state's id automatically or enter a particular id below.	tts	pt-br	Selecione aqui para gerar os estados dos IDs automaticamente ou especifique um ID em particular abaixo.
-clear form	tts	pt-br	Limpar formul·rio
-close the invalid ticket.	tts	pt-br	Fechar o ticket inv·lido.
+clear form	tts	pt-br	Limpar formul√°rio
+close the invalid ticket.	tts	pt-br	Fechar o ticket inv√°lido.
 close ticket	tts	pt-br	Fechar ticket
 closed	tts	pt-br	Fechado
 completed	tts	pt-br	COMPLETO
 configure the states	common	pt-br	Configurar estados
-configure the transitions	common	pt-br	Configurar transiÁıes
+configure the transitions	common	pt-br	Configurar transi√ß√µes
 convert all closed tickets	tts	pt-br	Converter todos os tickets fechados
 convert all open tickets	tts	pt-br	Converter todos os tickets abertos
 convert tickets to tracker	tts	pt-br	Converter tickets para o Sistema de Tickets
-converted count	tts	pt-br	N˙mero convertido
+converted count	tts	pt-br	N√∫mero convertido
 create new state	tts	pt-br	Criar novo estado
 create new ticket	tts	pt-br	Criar novo ticket
-create new transition	tts	pt-br	Criar nova transiÁ„o
-creates a new ticket, returns ticket_id	tts	pt-br	Cria um novo ticket, retorna o n˙mero de identificaÁ„o do ticket
+create new transition	tts	pt-br	Criar nova transi√ß√£o
+creates a new ticket, returns ticket_id	tts	pt-br	Cria um novo ticket, retorna o n√∫mero de identifica√ß√£o do ticket
 creates a struct of tickets	tts	pt-br	Cria uma estrutura de tickets
-critical	tts	pt-br	CrÌtica
+critical	tts	pt-br	Cr√≠tica
 date opened	tts	pt-br	Data da abertura
-default assign to	tts	pt-br	Atribuir por padr„o a
-default group	tts	pt-br	Grupo padr„o
-default priority	tts	pt-br	Prioridade padr„o
+default assign to	tts	pt-br	Atribuir por padr√£o a
+default group	tts	pt-br	Grupo padr√£o
+default priority	tts	pt-br	Prioridade padr√£o
 delete the listed tickets.	tts	pt-br	Remover os tickets listados
 deleting the state	tts	pt-br	Apagando o estado
-deleting the transition	tts	pt-br	Apagando a transiÁ„o
+deleting the transition	tts	pt-br	Apagando a transi√ß√£o
 detail	tts	pt-br	Detalhe
-due date	tts	pt-br	Data de TÈrmino
-due date changed	tts	pt-br	Data de TÈrmino alterada
+due date	tts	pt-br	Data de T√©rmino
+due date changed	tts	pt-br	Data de T√©rmino alterada
 duplicate	tts	pt-br	DUPLICADO
 edit the state	tts	pt-br	Editar estado
-edit the transition	tts	pt-br	Editar transiÁ„o
-emergency	tts	pt-br	EmergÍncia
-error: the subject of the ticket is not specified.	tts	pt-br	ERRO: O Assunto do ticket n„o foi informado.
-force	tts	pt-br	ForÁar
+edit the transition	tts	pt-br	Editar transi√ß√£o
+emergency	tts	pt-br	Emerg√™ncia
+error: the subject of the ticket is not specified.	tts	pt-br	ERRO: O Assunto do ticket n√£o foi informado.
+force	tts	pt-br	For√ßar
 global categories	tts	pt-br	Categorias Globais
 group ownership changed	tts	pt-br	Grupo alterado
-history	tts	pt-br	HistÛrico
-i worked on the ticket and the work requires validation.	tts	pt-br	Eu trabalhei no ticket e o trabalho requer validaÁ„o.
-i worked on the ticket, but did not finish.	tts	pt-br	Eu trabalhei no ticket, mas n„o finalizei.
+history	tts	pt-br	Hist√≥rico
+i worked on the ticket and the work requires validation.	tts	pt-br	Eu trabalhei no ticket e o trabalho requer valida√ß√£o.
+i worked on the ticket, but did not finish.	tts	pt-br	Eu trabalhei no ticket, mas n√£o finalizei.
 in progress	tts	pt-br	Em progresso
 initial state	tts	pt-br	Estado inicial
-invalid	tts	pt-br	INV¡LIDO
+invalid	tts	pt-br	INV√ÅLIDO
 invalidate	tts	pt-br	INVALIDAR
 keep the present state	tts	pt-br	Manter o estado atual
 keep the present state [%1].	tts	pt-br	Manter estado atual [%1].
-latest note added	tts	pt-br	⁄ltima nota adicionada
-list of available tickets' states.	tts	pt-br	Lista de estados disponÌveis para tickets
-list of available tickets' transitions.	tts	pt-br	Lista de transiÁıes disponÌveis para tickets
+latest note added	tts	pt-br	√öltima nota adicionada
+list of available tickets' states.	tts	pt-br	Lista de estados dispon√≠veis para tickets
+list of available tickets' transitions.	tts	pt-br	Lista de transi√ß√µes dispon√≠veis para tickets
 low	tts	pt-br	Baixa
-mail owner on transition	tts	pt-br	notificar o propriet·rio na transiÁ„o
-missing description	tts	pt-br	DescriÁ„o inexistente
+mail owner on transition	tts	pt-br	notificar o propriet√°rio na transi√ß√£o
+missing description	tts	pt-br	Descri√ß√£o inexistente
 morework	tts	pt-br	RETRABALHO
-needswork	tts	pt-br	COME«AR
+needswork	tts	pt-br	COME√áAR
 new	tts	pt-br	NOVO
 new ticket	tts	pt-br	Novo ticket
 new tickets can be put into this state.	tts	pt-br	Novos tickets podem ser criados neste estado.
 new value	tts	pt-br	Novo valor
 no additional notes	tts	pt-br	Nenhuma nota adicional
-no duplicate	tts	pt-br	SEM DUPLICA«√O
+no duplicate	tts	pt-br	SEM DUPLICA√á√ÉO
 no notes for this ticket	tts	pt-br	Nenhuma nota para este ticket
 no states found	tts	pt-br	Nenhum estado encontrado
 no tickets found	tts	pt-br	Nenhum ticket encontrado
-no transitions found	tts	pt-br	Nenhuma transiÁ„o encontrada
-not assigned	tts	pt-br	N„o designado
+no transitions found	tts	pt-br	Nenhuma transi√ß√£o encontrada
+not assigned	tts	pt-br	N√£o designado
 not completed	tts	pt-br	INCOMPLETO
-notify changes to ticket assignee by e-mail	tts	pt-br	Notificar, por e-mail, o respons·vel quando houver alteraÁıes
-notify changes to ticket group by e-mail	tts	pt-br	Notificar, por e-mail, o grupo quando houver alteraÁıes
-notify changes to ticket owner by e-mail	tts	pt-br	Notificar, por e-mail, o propriet·rio quando houver alteraÁıes
+notify changes to ticket assignee by e-mail	tts	pt-br	Notificar, por e-mail, o respons√°vel quando houver altera√ß√µes
+notify changes to ticket group by e-mail	tts	pt-br	Notificar, por e-mail, o grupo quando houver altera√ß√µes
+notify changes to ticket owner by e-mail	tts	pt-br	Notificar, por e-mail, o propriet√°rio quando houver altera√ß√µes
 old value	tts	pt-br	Valor Antigo
 open	tts	pt-br	Abrir
 open / closed	tts	pt-br	Aberto / Fechado
@@ -99,12 +99,12 @@ open date	tts	pt-br	Data de abertura
 opened	tts	pt-br	Aberto
 opened by	tts	pt-br	Aberto por
 original ticket details	tts	pt-br	Detalhes iniciais do Ticket
-perform irregular transition into the following state	tts	pt-br	Realizar transiÁ„o irregular para o estado seguinte
-please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	pt-br	Por favor, informe o assunto do ticket, sen„o o mesmo n„o ser· salvo.
+perform irregular transition into the following state	tts	pt-br	Realizar transi√ß√£o irregular para o estado seguinte
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	pt-br	Por favor, informe o assunto do ticket, sen√£o o mesmo n√£o ser√° salvo.
 prio	tts	pt-br	Prioridade
 priority	tts	pt-br	Prioridade
 priority changed	tts	pt-br	Prioridade alterada
-put the preexistent ticket into the state %1.	tts	pt-br	Colocar o ticket prÈ-existente no estado %1.
+put the preexistent ticket into the state %1.	tts	pt-br	Colocar o ticket pr√©-existente no estado %1.
 re-assigned	tts	pt-br	Redesignado
 re-opened	tts	pt-br	Reaberto
 read tickets	tts	pt-br	Ler tickets
@@ -114,14 +114,14 @@ reopen	tts	pt-br	REABRIR
 reopened	tts	pt-br	REABERTO
 resolve	tts	pt-br	RESOLVER
 resolved	tts	pt-br	RESOLVIDO
-returns a struct of a tickets history	tts	pt-br	Traz a estrutura do histÛrico de um ticket
-returns a struct of values of a single ticket	tts	pt-br	Traz a estrutura de valores de um ˙nico ticket
+returns a struct of a tickets history	tts	pt-br	Traz a estrutura do hist√≥rico de um ticket
+returns a struct of values of a single ticket	tts	pt-br	Traz a estrutura de valores de um √∫nico ticket
 returns the additional notes attached to a ticket	tts	pt-br	Traz as notas adicionais anexadas a um ticket
-select which categories should be used in tracker for the tts categories	tts	pt-br	Selecione quais categorias dever„o ser usadas no Sistema de Tickets para as categorias do aplicativo Tickets
+select which categories should be used in tracker for the tts categories	tts	pt-br	Selecione quais categorias dever√£o ser usadas no Sistema de Tickets para as categorias do aplicativo Tickets
 selected	tts	pt-br	Selecionado
 show new/updated tickets on main screen	tts	pt-br	Exibir tickets novos/atualizados na tela principal
-show tickets converted to tracker in overviews	tts	pt-br	O seguimento contÈm tickets que j· foram convertidos para o Sistema de Tickets
-small view	tts	pt-br	ExibiÁ„o reduzida
+show tickets converted to tracker in overviews	tts	pt-br	O seguimento cont√©m tickets que j√° foram convertidos para o Sistema de Tickets
+small view	tts	pt-br	Exibi√ß√£o reduzida
 source state	tts	pt-br	Estado fonte
 state	tts	pt-br	Estado
 state changed	tts	pt-br	Estado modificado
@@ -132,35 +132,35 @@ subject changed	tts	pt-br	Assunto alterado
 target state	tts	pt-br	Estado Alvo
 test	tts	pt-br	TESTAR
 the closed ticket requires more work. reopen it.	tts	pt-br	O ticket fechado requer que ele seja refeito. Reabra-o.
-the owner of the ticket was not able to confirm the issue.	tts	pt-br	O propiet·rio do ticket n„o foi capaz de confirmar a quest„o.
-the ticket has been accepted by the owner, who is about to work on it.	tts	pt-br	O ticket foi aceito pelo propiet·rio, que iniciar· o trabalho nele.
-the ticket has been closed without resolution.	tts	pt-br	O ticket foi fechado sem uma soluÁ„o.
+the owner of the ticket was not able to confirm the issue.	tts	pt-br	O propiet√°rio do ticket n√£o foi capaz de confirmar a quest√£o.
+the ticket has been accepted by the owner, who is about to work on it.	tts	pt-br	O ticket foi aceito pelo propiet√°rio, que iniciar√° o trabalho nele.
+the ticket has been closed without resolution.	tts	pt-br	O ticket foi fechado sem uma solu√ß√£o.
 the ticket has been reopened for further work.	tts	pt-br	O ticket foi reaberto para mais trabalhos.
 the ticket has been successfully resolved.	tts	pt-br	O ticket foi resolvido com sucesso.
 the ticket has been verified and has to be worked on.	tts	pt-br	O ticket foi verificado e necessita ser iniciado.
-the ticket has been worked on and the work requires validation.	tts	pt-br	O ticket foi trabalhado e esse trabalho requer validaÁ„o.
+the ticket has been worked on and the work requires validation.	tts	pt-br	O ticket foi trabalhado e esse trabalho requer valida√ß√£o.
 the ticket has been worked on, but requires more work.	tts	pt-br	O ticket foi trabalhado e esse trabalho requer retrabalho.
-the ticket is a duplicate of another ticket and should be closed.	tts	pt-br	Esse ticket È uma duplicata de outro ticket e deve ser fechado.
-the ticket is essentially not a duplicate of another ticket. reopen it.	tts	pt-br	Esse ticket n„o È uma duplicata de outro. Reabra-o
-the ticket is invalid and cannot be worked on.	tts	pt-br	Esse ticket È inv·lido e n„o pode ser trabalhado.
-the ticket resolution was successfully validated. close the ticket.	tts	pt-br	A resoluÁ„o do ticket foi validada com sucesso. Feche o ticket.
-the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	pt-br	O ticket existia antes da definiÁ„o da estrutura de redes de Petri e deve ter um estado atribuido.
+the ticket is a duplicate of another ticket and should be closed.	tts	pt-br	Esse ticket √© uma duplicata de outro ticket e deve ser fechado.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	pt-br	Esse ticket n√£o √© uma duplicata de outro. Reabra-o
+the ticket is invalid and cannot be worked on.	tts	pt-br	Esse ticket √© inv√°lido e n√£o pode ser trabalhado.
+the ticket resolution was successfully validated. close the ticket.	tts	pt-br	A resolu√ß√£o do ticket foi validada com sucesso. Feche o ticket.
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	pt-br	O ticket existia antes da defini√ß√£o da estrutura de redes de Petri e deve ter um estado atribuido.
 the ticket was found a duplicate of another ticket.	tts	pt-br	O ticket foi detectado como duplicata de outro ticket.
-the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	pt-br	Os tickets na seguinte lista est„o com o estado %1. Favor decidir o que deve ser feito com eles.
-the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	pt-br	A validaÁ„o n„o foi favor·vel. o ticket necessita de retrabalho.
-this state means an open ticket	tts	pt-br	Neste estado o ticket est· aberto.
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	pt-br	Os tickets na seguinte lista est√£o com o estado %1. Favor decidir o que deve ser feito com eles.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	pt-br	A valida√ß√£o n√£o foi favor√°vel. o ticket necessita de retrabalho.
+this state means an open ticket	tts	pt-br	Neste estado o ticket est√° aberto.
 ticket	tts	pt-br	Ticket
 ticket #	tts	pt-br	Ticket #
 ticket count	tts	pt-br	Quantidade de tickets
 ticket has been updated	tts	pt-br	Ticket foi atualizado
-ticket is in tracker	tts	pt-br	Este ticket j· foi convertido para o Sistema de Tickets
-ticket is not accessable	tts	pt-br	Ticket n„o est· acessÌvel
-ticket is not accessible	tts	pt-br	Este ticket n„o est· acessÌvel
+ticket is in tracker	tts	pt-br	Este ticket j√° foi convertido para o Sistema de Tickets
+ticket is not accessable	tts	pt-br	Ticket n√£o est√° acess√≠vel
+ticket is not accessible	tts	pt-br	Este ticket n√£o est√° acess√≠vel
 tickets found %1	tts	pt-br	Tickets encontrados: %1
 tickets have been converted	tts	pt-br	tickets foram convertidos
 tickets open %1	tts	pt-br	Tickets abertos: %1
 tickets total %1	tts	pt-br	Total de tickets: %1
-to go back to the tts index, click <a href= %1 >here</a>	tts	pt-br	Para voltar para a p·gina principal do TTS, clique <a href="%1">aqui</a>
+to go back to the tts index, click <a href= %1 >here</a>	tts	pt-br	Para voltar para a p√°gina principal do TTS, clique <a href="%1">aqui</a>
 toaccept	tts	pt-br	A_ACEITAR
 toclosed	tts	pt-br	A_FECHAR
 toduplicate	tts	pt-br	A_DUPLICAR
@@ -169,15 +169,15 @@ toneedswork	tts	pt-br	A_INICIAR
 tonew	tts	pt-br	A_NOVO
 toreopened	tts	pt-br	A_REABRIR
 toresolved	tts	pt-br	A_RESOLVER
-total billable	tts	pt-br	Total remuner·vel
+total billable	tts	pt-br	Total remuner√°vel
 totovalidate	tts	pt-br	A_VALIDAR
 tovalidate	tts	pt-br	A_VALIDAR
 toverified	tts	pt-br	A_VERIFICAR
-transition	tts	pt-br	TransiÁ„o
-transition name	tts	pt-br	Nome da transiÁ„o
+transition	tts	pt-br	Transi√ß√£o
+transition name	tts	pt-br	Nome da transi√ß√£o
 trouble ticket system	common	pt-br	TTS
 tts	common	pt-br	TTS
-tts preferences	tts	pt-br	Tickets - PreferÍncias
+tts preferences	tts	pt-br	Tickets - Prefer√™ncias
 undefined	tts	pt-br	INDEFINIDO
 update ticket state	tts	pt-br	Atualizar o estado do ticket
 updates ticket	tts	pt-br	Atualizar ticket
@@ -188,8 +188,8 @@ view all tickets	tts	pt-br	Exibir todos tickets
 view job detail	tts	pt-br	Exibir detalhe da tarefa
 view only my open tickets	tts	pt-br	Exibir apenas meus tickets abertos
 view only open tickets	tts	pt-br	Exibir somente tickets abertos
-wish	tts	pt-br	Desej·vel
-you can only close a ticket if it is assigned to you.	tts	pt-br	VocÍ sÛ pode fechar um tickect que foi atribuido a vocÍ
-you want to delete the state %1 and associated transitions. are you sure?	tts	pt-br	Tem certeza que deseja remover o estado %1 e transiÁıes associadas?
+wish	tts	pt-br	Desej√°vel
+you can only close a ticket if it is assigned to you.	tts	pt-br	Voc√™ s√≥ pode fechar um tickect que foi atribuido a voc√™
+you want to delete the state %1 and associated transitions. are you sure?	tts	pt-br	Tem certeza que deseja remover o estado %1 e transi√ß√µes associadas?
 you want to delete the state %1. are you sure?	tts	pt-br	Tem certeza que deseja remover o estado %1?
-you want to delete the transition %1. are you sure?	tts	pt-br	Tem certeza que deseja remover a transiÁ„o %1?
+you want to delete the transition %1. are you sure?	tts	pt-br	Tem certeza que deseja remover a transi√ß√£o %1?
