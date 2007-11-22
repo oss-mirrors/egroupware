@@ -283,7 +283,7 @@ class g2_integration
 	 */
 	function logout()
 	{
-		if (($ret = GalleryEmbed::logout(array(
+		if (class_exists('GalleryEmbed') && ($ret = GalleryEmbed::logout(array(
 	    	'embedUri' => $GLOBALS['egw']->link('/gallery/index.php'),
 //			'embedSessionString' => 'sessionid=',	// gets added by egw::link() to embedUri if necessary
 	     	'gallerySessionId' => $_REQUEST['sessionid'],
