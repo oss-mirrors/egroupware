@@ -429,6 +429,7 @@
 				break;
 
 			  case 'DALARM':
+			  	if (is_array($event['alarm']))
 				foreach($event['alarm'] as $alarmID => $alarmData) {
 				  $attributes['DALARM'] = $hIcal->_exportDateTime($alarmData['time']);
 				  // lets take only the first alarm
@@ -437,6 +438,7 @@
 				break;
 
 			  case 'VALARM':
+			  	if (is_array($event['alarm']))
 				foreach($event['alarm'] as $alarmID => $alarmData) {
 				  $this->ecu->mki_c_VALARM($alarmData, $vevent,
 										  $event['start'], $veExportFields);
