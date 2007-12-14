@@ -680,7 +680,6 @@
 				'filename'	=> $filename, 
 				'attachment'	=> $attachment
 				);
-				
 			return $attachmentData;
 		}
 		
@@ -1112,7 +1111,6 @@
 			
 			$partID = $_structure->partID;
 			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true);
-			
 			if($_structure->subType == 'HTML' && $_htmlMode != 'always_display' && $_htmlMode != 'only_if_no_text') {
 				$bodyPart = array(
 					'body'		=> lang("displaying html messages is disabled"),
@@ -1126,7 +1124,6 @@
 					'charSet'	=> $this->getMimePartCharset($_structure),
 				);
 			}
-
 			return $bodyPart;
 		}
 		
@@ -1361,7 +1358,10 @@
 			#_debug_array($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
 			#_debug_array($this->sessionData['folderStatus'][$this->profileID]);
 			#print "ID: $_id<br>";
-			$position = array_search($_id, $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
+			$position=false;
+			if (is_array($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'])) {
+				$position = array_search($_id, $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
+			}
 			#print "POS: $position<br>";
 
 			if($position !== false) {
@@ -1538,7 +1538,6 @@
 			if($_htmlOptions != '') {
 				$this->htmlOptions = $_htmlOptions; 
 			}
-
 			if(is_object($_structure)) {
 				$structure = $_structure;
 			} else {
