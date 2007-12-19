@@ -19,6 +19,12 @@ class Script {
 	var $vacation;     /* vacation settings. */
 	var $pcount;       /* highest priority value in ruleset. */
 	var $errstr;       /* error text. */
+	/**
+	 * Switch on some error_log debug messages
+	 *
+	 * @var boolean
+	 */
+	var $debug=false;
 
 	// class constructor
 	function Script ($scriptname) {
@@ -34,6 +40,12 @@ class Script {
 	}
 
 	// get sieve script rules for this user
+	/**
+	 * Retrieve the rules
+	 *
+	 * @param bosieve $connection
+	 * @return boolean true, if script written successfull
+	 */
 	function retrieveRules ($connection) {
 		#global $_SESSION;
 		$continuebit = 1;
@@ -44,11 +56,13 @@ class Script {
  
 		if (!isset($this->name)){
 			$this->errstr = 'retrieveRules: no script name specified';
+			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": no script name specified");
 			return false;
 		}
 		
 		if (!is_object($connection)) {
 			$this->errstr = "retrieveRules: no sieve session open";
+			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": no sieve session open");
 			return false;
 		}
 
@@ -62,6 +76,7 @@ class Script {
 		#print "<br><br><br><br>get Script ". $this->name ."<bR>";
  
 		if(PEAR::isError($script = $connection->getScript($this->name))) {
+			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": error retrieving script: ".$script->getMessage());
 			return $script;
 		}
 		
@@ -88,6 +103,7 @@ class Script {
 		if (!preg_match("/^# ?Mail(.*)rules for/", $line)){
 				$this->errstr = 'retrieveRules: encoding not recognised';
 				$this->so = false;
+				if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": encoding not recognised");
 				return false;
 		}
 		$this->so = true;
@@ -174,6 +190,7 @@ class Script {
 		$this->script = $script;
 		$this->rules = $rules;
 		$this->vacation = $vacation;
+		if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": Script succesful retrieved: ".print_r($vacation,true));
  
 		return true;
 	}
@@ -453,9 +470,4 @@ class Script {
 
 		return true;
 	}
-
-
 }
-
-
-?>

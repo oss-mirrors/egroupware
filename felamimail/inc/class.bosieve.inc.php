@@ -30,6 +30,13 @@
 		* @var object $error the last PEAR error object
 		*/
 		var $error;
+		
+		/**
+		 * Switch on some error_log debug messages
+		 *
+		 * @var boolean
+		 */
+		var $debug = false;
 	
 		function bosieve($_icServer=null)
 		{
@@ -69,9 +76,11 @@
 			}
 
 			if(PEAR::isError($this->error = $this->connect($sieveHost , $sievePort) ) ){
+				if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": error in connect($sieveHost,$sievePort): ".$this->error->getMessage());
 				return false;
 			}
 			if(PEAR::isError($this->error = $this->login($username, $password, null, $euser) ) ){
+				if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": error in login($username,$password,null,$euser): ".$this->error->getMessage());
 				return false;
 			}
 			return true;
@@ -88,6 +97,7 @@
 		function setRules($_scriptName, $_rules) 
 		{
 			$script         =& CreateObject('felamimail.Script',$_scriptName);
+			$script->debug = $this->debug;
 
 			if($script->retrieveRules($this)) {
 				$script->rules = $_rules;
@@ -101,7 +111,9 @@
 
 		function setVacation($_scriptName, $_vacation) 
 		{
+			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__."($_scriptName,".print_r($_vacation,true).')');
 			$script         =& CreateObject('felamimail.Script',$_scriptName);
+			$script->debug = $this->debug;
 
 			if($script->retrieveRules($this)) {
 				$script->vacation = $_vacation;
@@ -120,6 +132,7 @@
 				}
 				return true;
 			}
+			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__."($_scriptName,".print_r($_vacation,true).') could not retrieve rules!');
 
 			return false;
 		}
@@ -131,12 +144,16 @@
 		 */
 		function async_vacation($_vacation)
 		{
+			if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.'('.print_r($_vacation,true).')');
 			$bopreferences    =& CreateObject('felamimail.bopreferences');
 			$mailPreferences  = $bopreferences->getPreferences();
 			$icServer = $mailPreferences->getIncomingServer(0);
 			
 			if ($this->_connect($icServer,$icServer->loginName) === true) {			
 				$this->setVacation($_vacation['scriptName'],$_vacation);
+				// we need to logout, so further vacation's get processed
+				$error = $this->_cmdLogout();
+				if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.' logout '.(PEAR::isError($error) ? 'failed: '.$ret->getMessage() : 'successful'));
 			}
 		}
 
