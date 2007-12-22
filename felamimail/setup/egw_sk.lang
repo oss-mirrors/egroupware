@@ -1,8 +1,10 @@
 (no subject)	felamimail	sk	(bez predmetu)
 (only cc/bcc)	felamimail	sk	(iba Kópia/Skrytá kópia)
+(separate multiple addresses by comma)	felamimail	sk	(oddeliť viacero adries čiarkou)
 (unknown sender)	felamimail	sk	(neznámy odosielateľ)
 activate	felamimail	sk	Aktivovať
 activate script	felamimail	sk	aktivovať skript
+activating by date requires a start- and end-date!	felamimail	sk	Aktivácia dátumom vyžaduje dátum začiatku AJ konca!
 add acl	felamimail	sk	Pridať ACL
 add address	felamimail	sk	Pridať adresu
 add rule	felamimail	sk	Pridať pravidlo
@@ -38,6 +40,8 @@ bcc	felamimail	sk	Skrytá kópia
 before headers	felamimail	sk	Pred hlavičkou
 between headers and message body	felamimail	sk	Medzi hlavičkou a telom správy
 body part	felamimail	sk	časť tela
+by date	felamimail	sk	podľa dátumu
+can not send message. no recipient defined!	felamimail	sk	Nepodarilo sa odoslať správu. Nebol zadaný adresát!
 can't connect to inbox!!	felamimail	sk	nedá sa pripojiť k Doručenej pošte!
 cc	felamimail	sk	Kópia
 change folder	felamimail	sk	Zmeniť priečinok
@@ -75,6 +79,7 @@ date(newest first)	felamimail	sk	Dátum (novšie na začiatok)
 date(oldest first)	felamimail	sk	Dátum (staršie na začiatok)
 days	felamimail	sk	dni
 deactivate script	felamimail	sk	deaktivovať skript
+default	felamimail	sk	predvolené
 default signature	felamimail	sk	predvolený podpis
 default sorting order	felamimail	sk	Predvolené triedenie
 delete all	felamimail	sk	odstrániť všetko
@@ -163,6 +168,7 @@ follow	felamimail	sk	nasledovať
 for mail to be send - not functional yet	felamimail	sk	Pre správu určenú na odoslanie - v súčasnosti nefunkčné
 for received mail	felamimail	sk	Pre prijaté správy
 forward	felamimail	sk	Odoslať ďalej
+forward messages to	felamimail	sk	Odoslať správy ďalej (komu)
 forward to	felamimail	sk	Odoslať ďalej (komu)
 forward to address	felamimail	sk	Odoslať ďalej na adresu
 forwarding	felamimail	sk	Odosielanie ďalej
@@ -266,6 +272,9 @@ no messages found...	felamimail	sk	žiadne správy sa nenašli
 no messages were selected.	felamimail	sk	Neboli vybrané žiadne správy
 no plain text part found	felamimail	sk	Nebola nájdená žiadna čisto textová časť
 no previous message	felamimail	sk	žiadna predchádzajúca správa
+no recipient address given!	felamimail	sk	Nebol zadaný adresát!
+no signature	felamimail	sk	žiadny podpis
+no subject given!	felamimail	sk	Nebol zadaný predmet sprrávy!
 no supported imap authentication method could be found.	felamimail	sk	Nenašla sa žiadna z podporovaných metód IMAP overovania.
 no valid emailprofile selected!!	felamimail	sk	Nebol vybratý platný E-mailový profil!
 none	felamimail	sk	žiadne
@@ -336,6 +345,7 @@ send	felamimail	sk	Odoslať
 send a reject message	felamimail	sk	odoslať odmietaciu správu
 sent folder	felamimail	sk	Priečinok Odoslaná pošta
 server supports mailfilter(sieve)	felamimail	sk	server podporuje mailfilter (sieve)
+set as default	felamimail	sk	Nastaviť ako predvolené
 show header	felamimail	sk	zobraziť hlavičku
 show new messages on main screen	felamimail	sk	Zobrazovať nové správy na hlavnej stránke
 sieve script name	felamimail	sk	Názov Sieve skriptu
@@ -359,6 +369,7 @@ subscribe	felamimail	sk	Prihlásiť
 subscribed	felamimail	sk	Prihlásené
 subscribed successfully!	felamimail	sk	Úspešne prihlásené!
 sun	felamimail	sk	Ned
+system signature	felamimail	sk	podpis systému
 table of contents	felamimail	sk	Obsahová tabuľka
 text only	felamimail	sk	Iba text
 the connection to the imap server failed!!	felamimail	sk	Pripojenie na IMAP server sa nepodarilo!!!
@@ -405,6 +416,7 @@ use smtp auth	admin	sk	Použiť SMTP overovanie
 users can define their own emailaccounts	admin	sk	Používatelia smú definovať ich vlastné poštové účty
 vacation notice	common	sk	Upozornenie o odstraňovaní
 vacation notice is active	felamimail	sk	Upozornenie o odstraňovaní je aktívne
+vacation start-date must be before the end-date!	felamimail	sk	Dátum začiatku odstraňovania musí byť PRED dátumom konca!
 validate certificate	felamimail	sk	Potvrdiť certifikát
 view full header	felamimail	sk	Zobraziť celú hlavičku
 view header lines	felamimail	sk	zobraziť riadky hlavičky
@@ -419,3 +431,4 @@ with message "%1"	felamimail	sk	so správou "%1"
 wrap incoming text at	felamimail	sk	Zarovnať príchodzí text:
 writing	felamimail	sk	zapisuje sa
 wrote	felamimail	sk	zapísal
+you can use %1 for the above start-date and %2 for the end-date.	felamimail	sk	Môžete použiť %1 pre vyššieuvedený dátum začiatku a %2 pre dátum konca.

@@ -5,7 +5,7 @@
 %1 configuration	workflow	sk	%1 Konfigurácia
 %1 days, %2:%3:%4	workflow	sk	%1 dní, %2:%3:%4
 %1 exception	workflow	sk	%1 výnimka
-%1 menu	workflow	sk	%1 Menu
+%1 menu	workflow	sk	%1 Ponuka
 %1 monitoring	workflow	sk	%1 Sledovanie
 %1 processes (%2 active) (%3 being_run)	workflow	sk	%1 postupov (%2 aktívnych) (%3 spustených)
 /workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	sk	Adresár /workflow neexistuje a nedá sa vytvoriť, prosím požiadajte správcu aby skontroloval globálnu konfiguráciu

@@ -1,8 +1,10 @@
 (no subject)	felamimail	pt-br	(sem assunto)
 (only cc/bcc)	felamimail	pt-br	(somente Cc/Cco)
+(separate multiple addresses by comma)	felamimail	pt-br	(separar vários endereços por vírgula)
 (unknown sender)	felamimail	pt-br	(remetente desconhecido)
 activate	felamimail	pt-br	Ativar
 activate script	felamimail	pt-br	Ativar script
+activating by date requires a start- and end-date!	felamimail	pt-br	Ativação por data requer uma data inicial e final!
 add acl	felamimail	pt-br	Adicionar ACL
 add address	felamimail	pt-br	Adicionar endereço
 add rule	felamimail	pt-br	Adicionar Regra
@@ -38,6 +40,8 @@ bcc	felamimail	pt-br	CCO
 before headers	felamimail	pt-br	Antes dos cabeçalhos
 between headers and message body	felamimail	pt-br	Entre cabeçalho e corpo da mensagem
 body part	felamimail	pt-br	corpo da mensagem
+by date	felamimail	pt-br	por data
+can not send message. no recipient defined!	felamimail	pt-br	não foi possível enviar mensagem. Sem conteúdo definido!
 can't connect to inbox!!	felamimail	pt-br	não foi possível conectar com CAIXA DE ENTRADA
 cc	felamimail	pt-br	cc
 change folder	felamimail	pt-br	Mudar pasta
@@ -75,6 +79,7 @@ date(newest first)	felamimail	pt-br	Data (mais novas primeiro)
 date(oldest first)	felamimail	pt-br	Data (mais antigas primeiro)
 days	felamimail	pt-br	dias
 deactivate script	felamimail	pt-br	desativar script
+default	felamimail	pt-br	padrão
 default signature	felamimail	pt-br	assinatura padrão
 default sorting order	felamimail	pt-br	Ordem padrão de classificação
 delete all	felamimail	pt-br	Remover todas
@@ -163,6 +168,7 @@ follow	felamimail	pt-br	seguir
 for mail to be send - not functional yet	felamimail	pt-br	Para mensagem a ser enviada (não funcionando ainda)
 for received mail	felamimail	pt-br	Para email recebido
 forward	felamimail	pt-br	Encaminhar
+forward messages to	felamimail	pt-br	Encaminhar mensagens para
 forward to	felamimail	pt-br	encaminhar para
 forward to address	felamimail	pt-br	Encaminhar para endereço
 forwarding	felamimail	pt-br	Encaminhando
@@ -267,6 +273,8 @@ no messages were selected.	felamimail	pt-br	Nenhuma mensagem foi selecionada.
 no plain text part found	felamimail	pt-br	Nehuma parte em texto puro encontrada
 no previous message	felamimail	pt-br	Nenhuma mensagem anterior
 no recipient address given!	felamimail	pt-br	Nenhum endereço informado!
+no signature	felamimail	pt-br	sem assinatura
+no subject given!	felamimail	pt-br	Nenhum assunto informado!
 no supported imap authentication method could be found.	felamimail	pt-br	Nenhum método de autenticação suportado pelo servidor IMAP foi encontrado.
 no valid emailprofile selected!!	felamimail	pt-br	Nenhum perfil de e-mail válido selecionado!!!
 none	felamimail	pt-br	Nenhum
@@ -337,6 +345,7 @@ send	felamimail	pt-br	Enviar
 send a reject message	felamimail	pt-br	Enviar uma mensagem de rejeição
 sent folder	felamimail	pt-br	Pasta Enviadas
 server supports mailfilter(sieve)	felamimail	pt-br	Servidor suporta filtro de e-mails (sieve)
+set as default	felamimail	pt-br	Definir como padrão
 show header	felamimail	pt-br	Exibir cabeçalho
 show new messages on main screen	felamimail	pt-br	Exibir novas mensagens na tela principal
 sieve script name	felamimail	pt-br	nome do script sieve
@@ -360,6 +369,7 @@ subscribe	felamimail	pt-br	Inscrever
 subscribed	felamimail	pt-br	Inscrito
 subscribed successfully!	felamimail	pt-br	Inscrito com sucesso!
 sun	felamimail	pt-br	Dom
+system signature	felamimail	pt-br	assinatura do sistema
 table of contents	felamimail	pt-br	Ïndice
 text only	felamimail	pt-br	Somente texto
 the connection to the imap server failed!!	felamimail	pt-br	A conexão com o servidor IMAP falhou!
@@ -406,6 +416,7 @@ use smtp auth	admin	pt-br	Usar autenticação SMTP
 users can define their own emailaccounts	admin	pt-br	Usuário pode definir suas próprias contas de correio
 vacation notice	common	pt-br	Notícia de ausência
 vacation notice is active	felamimail	pt-br	Notícia de ausência está ativa
+vacation start-date must be before the end-date!	felamimail	pt-br	Data inicial de ausência deve ser ANTERIOR à data final !
 validate certificate	felamimail	pt-br	validar certificado
 view full header	felamimail	pt-br	Exibir cabeçalho completo
 view header lines	felamimail	pt-br	Exibir linhas de cabeçalho
@@ -420,3 +431,4 @@ with message "%1"	felamimail	pt-br	com mensagem "%1"
 wrap incoming text at	felamimail	pt-br	Quebrar a linha do texto de entrada em
 writing	felamimail	pt-br	escrevendo
 wrote	felamimail	pt-br	escreveu
+you can use %1 for the above start-date and %2 for the end-date.	felamimail	pt-br	Você pode usar %1 para a data inicial acima e %2 para a data final.

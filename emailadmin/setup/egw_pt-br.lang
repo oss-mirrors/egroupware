@@ -118,4 +118,5 @@ user can edit forwarding address	emailadmin	pt-br	usuário pode editar endereço
 username (standard)	emailadmin	pt-br	nome do usuário (padrão)
 username@domainname (virtual mail manager)	emailadmin	pt-br	nomedousuario@nomedodominio (Gerenciador Virtual Mail)
 users can define their own emailaccounts	emailadmin	pt-br	Os usuários podem definir sua próprias contas de correio
+vaction messages with start- and end-date require an admin account to be set!	emailadmin	pt-br	Mensagens de ausência com datas de início e término necessitam de uma conta de administrador para serem definidas!
 virtual mail manager	emailadmin	pt-br	Gerenciador Virtual Mail
