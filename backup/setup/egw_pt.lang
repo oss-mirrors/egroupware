@@ -4,14 +4,14 @@ archive type	backup	pt	Archive type
 backup	common	pt	Backup
 backup administration	common	pt	Backup administration
 bzip2	admin	pt	bzip2
-configuration backup	backup	pt	Backup Configuração
-configuration localhost	backup	pt	Configuração Localhost
+configuration backup	backup	pt	Backup ConfiguraÃ§Ã£o
+configuration localhost	backup	pt	ConfiguraÃ§Ã£o Localhost
 create backups of your data ?	backup	pt	Criar backups?
-daily	backup	pt	diário
+daily	backup	pt	diÃ¡rio
 data	backup	pt	Data
-directory locations	admin	pt	Diretórios
-directory names	admin	pt	Nomes dos diretórios
-e-mail	backup	pt	Receber notificações por e-mail:
+directory locations	admin	pt	DiretÃ³rios
+directory names	admin	pt	Nomes dos diretÃ³rios
+e-mail	backup	pt	Receber notificaÃ§Ãµes por e-mail:
 homedirs	admin	pt	Home directories
 interval	backup	pt	Intervalo
 ip or hostname	backup	pt	IP ou hostname

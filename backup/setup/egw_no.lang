@@ -13,8 +13,8 @@ ip or hostname	backup	no	IP eller vertsnavn
 ldap	common	no	LDAP
 ldap database	admin	no	LDAP database
 list backup archives	backup	no	vise arkiv for sikkerhetskopier
-maildir	admin	no	Melding går til e-mail :
-monthly	backup	no	Månedlig
+maildir	admin	no	Melding gÃ¥r til e-mail :
+monthly	backup	no	MÃ¥nedlig
 mysql	admin	no	MySql
 nfs	backup	no	nfs
 operating system	backup	no	Operativsystem
@@ -24,6 +24,6 @@ sql	backup	no	SQL
 tar	admin	no	tar
 tar.bz2	backup	no	tar.bz2
 tar.gz	backup	no	tar.gz
-versions can only be a number !	backup	no	Versjoner kan bare være et nummer !
+versions can only be a number !	backup	no	Versjoner kan bare vÃ¦re et nummer !
 weekly	backup	no	Ukentlig
 zip	common	no	zip

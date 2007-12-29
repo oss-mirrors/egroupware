@@ -1,70 +1,70 @@
-absolute path of the backup directory	backup	bg	Пълен път до директорията за архивите (напр. /usr/local/www/egroupware/backup/archive)
-absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	bg	Пълен път до директорията за архивите (напр. /usr/local/www/egroupware/backup/archive)
-absolute path of the directory of egw backup application	backup	bg	Пълен път до директорията на приложението "Архивиране"
-absolute path of the directory to store the backup script	backup	bg	Пълен път до диркторията за съхранение на архивиращия скрипт
-archive type	backup	bg	Вид на архива
-backup	common	bg	Архивиране
-backup administration	common	bg	Управление на архивирането
+absolute path of the backup directory	backup	bg	ГЏГєГ«ГҐГ­ ГЇГєГІ Г¤Г® Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г§Г  Г Г°ГµГЁГўГЁГІГҐ (Г­Г ГЇГ°. /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	bg	ГЏГєГ«ГҐГ­ ГЇГєГІ Г¤Г® Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г§Г  Г Г°ГµГЁГўГЁГІГҐ (Г­Г ГЇГ°. /usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	bg	ГЏГєГ«ГҐГ­ ГЇГєГІ Г¤Г® Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г­Г  ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГҐГІГ® "ГЂГ°ГµГЁГўГЁГ°Г Г­ГҐ"
+absolute path of the directory to store the backup script	backup	bg	ГЏГєГ«ГҐГ­ ГЇГєГІ Г¤Г® Г¤ГЁГ°ГЄГІГ®Г°ГЁГїГІГ  Г§Г  Г±ГєГµГ°Г Г­ГҐГ­ГЁГҐ Г­Г  Г Г°ГµГЁГўГЁГ°Г Г№ГЁГї Г±ГЄГ°ГЁГЇГІ
+archive type	backup	bg	Г‚ГЁГ¤ Г­Г  Г Г°ГµГЁГўГ 
+backup	common	bg	ГЂГ°ГµГЁГўГЁГ°Г Г­ГҐ
+backup administration	common	bg	Г“ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ Г­Г  Г Г°ГµГЁГўГЁГ°Г Г­ГҐГІГ®
 bzip2	admin	bg	bzip2
-configuration backup	backup	bg	Настройки на архивирането
-configuration localhost	backup	bg	Настройки на локалния хост
-configuration remote host	backup	bg	Настройки на отдалечения хост
-create backups of your data ?	backup	bg	Да се архивират ли данните ви?
-daily	backup	bg	ежедневно
-data	backup	bg	Данни
-directory locations	admin	bg	местоположения на директориите
-directory names	admin	bg	имена на директориите
-e-mail	backup	bg	ЕПоща
-e-mail notification?	backup	bg	Уведомяване по електронната поща
-homedirs	admin	bg	Домашни директории
-interval	backup	bg	Интервал
-ip or hostname	backup	bg	IP адрес или име на хост
+configuration backup	backup	bg	ГЌГ Г±ГІГ°Г®Г©ГЄГЁ Г­Г  Г Г°ГµГЁГўГЁГ°Г Г­ГҐГІГ®
+configuration localhost	backup	bg	ГЌГ Г±ГІГ°Г®Г©ГЄГЁ Г­Г  Г«Г®ГЄГ Г«Г­ГЁГї ГµГ®Г±ГІ
+configuration remote host	backup	bg	ГЌГ Г±ГІГ°Г®Г©ГЄГЁ Г­Г  Г®ГІГ¤Г Г«ГҐГ·ГҐГ­ГЁГї ГµГ®Г±ГІ
+create backups of your data ?	backup	bg	Г„Г  Г±ГҐ Г Г°ГµГЁГўГЁГ°Г ГІ Г«ГЁ Г¤Г Г­Г­ГЁГІГҐ ГўГЁ?
+daily	backup	bg	ГҐГ¦ГҐГ¤Г­ГҐГўГ­Г®
+data	backup	bg	Г„Г Г­Г­ГЁ
+directory locations	admin	bg	Г¬ГҐГ±ГІГ®ГЇГ®Г«Г®Г¦ГҐГ­ГЁГї Г­Г  Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГЁГІГҐ
+directory names	admin	bg	ГЁГ¬ГҐГ­Г  Г­Г  Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГЁГІГҐ
+e-mail	backup	bg	Г…ГЏГ®Г№Г 
+e-mail notification?	backup	bg	Г“ГўГҐГ¤Г®Г¬ГїГўГ Г­ГҐ ГЇГ® ГҐГ«ГҐГЄГІГ°Г®Г­Г­Г ГІГ  ГЇГ®Г№Г 
+homedirs	admin	bg	Г„Г®Г¬Г ГёГ­ГЁ Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГЁ
+interval	backup	bg	Г€Г­ГІГҐГ°ГўГ Г«
+ip or hostname	backup	bg	IP Г Г¤Г°ГҐГ± ГЁГ«ГЁ ГЁГ¬ГҐ Г­Г  ГµГ®Г±ГІ
 ldap	common	bg	LDAP
-ldap database	admin	bg	LDAP база данни
-list backup archives	backup	bg	списък на архивите
-maildir	admin	bg	Пощенска директория
-monthly	backup	bg	всеки месец
+ldap database	admin	bg	LDAP ГЎГ Г§Г  Г¤Г Г­Г­ГЁ
+list backup archives	backup	bg	Г±ГЇГЁГ±ГєГЄ Г­Г  Г Г°ГµГЁГўГЁГІГҐ
+maildir	admin	bg	ГЏГ®Г№ГҐГ­Г±ГЄГ  Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГї
+monthly	backup	bg	ГўГ±ГҐГЄГЁ Г¬ГҐГ±ГҐГ¶
 mysql	admin	bg	MySQL
 nfs	backup	bg	NFS
-no backup archives available !	backup	bg	Няма налични архиви!
-number of stored backup versions	backup	bg	Брой запазвани версии на архивите
-operating system	backup	bg	Операционна система
-password	backup	bg	Парола
+no backup archives available !	backup	bg	ГЌГїГ¬Г  Г­Г Г«ГЁГ·Г­ГЁ Г Г°ГµГЁГўГЁ!
+number of stored backup versions	backup	bg	ГЃГ°Г®Г© Г§Г ГЇГ Г§ГўГ Г­ГЁ ГўГҐГ°Г±ГЁГЁ Г­Г  Г Г°ГµГЁГўГЁГІГҐ
+operating system	backup	bg	ГЋГЇГҐГ°Г Г¶ГЁГ®Г­Г­Г  Г±ГЁГ±ГІГҐГ¬Г 
+password	backup	bg	ГЏГ Г°Г®Г«Г 
 pgsql	admin	bg	PostgreSQL
 php cgi	admin	bg	php cgi
-please enter the path of the needed applications in *site configuration* !	backup	bg	Моля задайте пътя до нужните приложения в "Общи настройки"!
-please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	bg	Моля задайте пътя до директорията за архиви и/или включете показването на архивите в eGroupWare!
-please enter username and password for remote connection !	backup	bg	Моля въведете име и парола за отдалечено свързнаве!
-please select an application for transport to the remote host !	backup	bg	Моля изберете приложение за пренос до отдалечената система!
-please set the path to a local dir to store the backup script !	backup	bg	Моля задайте пътя до локална директория за запазване на архивиращия скрипт!
-please set the path to the ldap database dir in *site configuration* !	backup	bg	Моля задайте пътя до директорията на LDAP базата в "Общи настройки"!
-please set the path to the mysql database dir in *site configuration* !	backup	bg	Моля задайте пътя до директорията на MySQL базата в "Общи настройки"!
-please set the path to the postgresql database dir in *site configuration* !	backup	bg	Моля задайте пътя до директорията на PostgreSQL базата в "Общи настройки"!
-please set the values in *site configuration* !	backup	bg	Моля задайте стойностите в "Общи настройки"
-please specify the ip of the remote host !	backup	bg	Моля задайте IР адреса на отдалечената машина!
-please specify the name of the maildir in *site configuration* !	backup	bg	Моля укажете вида на Maildir в "общи настройки"!
-please specify the path to the backup directory !	backup	bg	Моля, задайте пътя до директорията за архивите!
-please specify the path to the user-homedirectories in *site configuration* !	backup	bg	Моля задайте пътя до потребителските директории в "Общи настройки"!
-please write down you e-mail for beeing notified	backup	bg	Моля въведете арес на електронната поща за уведомяване
-program locations	admin	bg	местоположения на програмите
-save backup locally ?	backup	bg	Да се запазват ли архивите локално?
-save backup to a remote host ?	backup	bg	Да се запазват ли архивите на отдалечен хост?
-select archive type	backup	bg	Изберете вид на архива
-select interval	backup	bg	Изберете интервал
-select transport application	backup	bg	Изберете приложение за прехвърляне на данните
-settings	admin	bg	настройки
-show backup archives in egroupware ?	backup	bg	Да се показват ли архивите в eGroupWare?
+please enter the path of the needed applications in *site configuration* !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ ГЇГєГІГї Г¤Г® Г­ГіГ¦Г­ГЁГІГҐ ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГї Гў "ГЋГЎГ№ГЁ Г­Г Г±ГІГ°Г®Г©ГЄГЁ"!
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ ГЇГєГІГї Г¤Г® Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г§Г  Г Г°ГµГЁГўГЁ ГЁ/ГЁГ«ГЁ ГўГЄГ«ГѕГ·ГҐГІГҐ ГЇГ®ГЄГ Г§ГўГ Г­ГҐГІГ® Г­Г  Г Г°ГµГЁГўГЁГІГҐ Гў eGroupWare!
+please enter username and password for remote connection !	backup	bg	ГЊГ®Г«Гї ГўГєГўГҐГ¤ГҐГІГҐ ГЁГ¬ГҐ ГЁ ГЇГ Г°Г®Г«Г  Г§Г  Г®ГІГ¤Г Г«ГҐГ·ГҐГ­Г® Г±ГўГєГ°Г§Г­Г ГўГҐ!
+please select an application for transport to the remote host !	backup	bg	ГЊГ®Г«Гї ГЁГ§ГЎГҐГ°ГҐГІГҐ ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГҐ Г§Г  ГЇГ°ГҐГ­Г®Г± Г¤Г® Г®ГІГ¤Г Г«ГҐГ·ГҐГ­Г ГІГ  Г±ГЁГ±ГІГҐГ¬Г !
+please set the path to a local dir to store the backup script !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ ГЇГєГІГї Г¤Г® Г«Г®ГЄГ Г«Г­Г  Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГї Г§Г  Г§Г ГЇГ Г§ГўГ Г­ГҐ Г­Г  Г Г°ГµГЁГўГЁГ°Г Г№ГЁГї Г±ГЄГ°ГЁГЇГІ!
+please set the path to the ldap database dir in *site configuration* !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ ГЇГєГІГї Г¤Г® Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г­Г  LDAP ГЎГ Г§Г ГІГ  Гў "ГЋГЎГ№ГЁ Г­Г Г±ГІГ°Г®Г©ГЄГЁ"!
+please set the path to the mysql database dir in *site configuration* !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ ГЇГєГІГї Г¤Г® Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г­Г  MySQL ГЎГ Г§Г ГІГ  Гў "ГЋГЎГ№ГЁ Г­Г Г±ГІГ°Г®Г©ГЄГЁ"!
+please set the path to the postgresql database dir in *site configuration* !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ ГЇГєГІГї Г¤Г® Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г­Г  PostgreSQL ГЎГ Г§Г ГІГ  Гў "ГЋГЎГ№ГЁ Г­Г Г±ГІГ°Г®Г©ГЄГЁ"!
+please set the values in *site configuration* !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ Г±ГІГ®Г©Г­Г®Г±ГІГЁГІГҐ Гў "ГЋГЎГ№ГЁ Г­Г Г±ГІГ°Г®Г©ГЄГЁ"
+please specify the ip of the remote host !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ IГђ Г Г¤Г°ГҐГ±Г  Г­Г  Г®ГІГ¤Г Г«ГҐГ·ГҐГ­Г ГІГ  Г¬Г ГёГЁГ­Г !
+please specify the name of the maildir in *site configuration* !	backup	bg	ГЊГ®Г«Гї ГіГЄГ Г¦ГҐГІГҐ ГўГЁГ¤Г  Г­Г  Maildir Гў "Г®ГЎГ№ГЁ Г­Г Г±ГІГ°Г®Г©ГЄГЁ"!
+please specify the path to the backup directory !	backup	bg	ГЊГ®Г«Гї, Г§Г Г¤Г Г©ГІГҐ ГЇГєГІГї Г¤Г® Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г§Г  Г Г°ГµГЁГўГЁГІГҐ!
+please specify the path to the user-homedirectories in *site configuration* !	backup	bg	ГЊГ®Г«Гї Г§Г Г¤Г Г©ГІГҐ ГЇГєГІГї Г¤Г® ГЇГ®ГІГ°ГҐГЎГЁГІГҐГ«Г±ГЄГЁГІГҐ Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГЁ Гў "ГЋГЎГ№ГЁ Г­Г Г±ГІГ°Г®Г©ГЄГЁ"!
+please write down you e-mail for beeing notified	backup	bg	ГЊГ®Г«Гї ГўГєГўГҐГ¤ГҐГІГҐ Г Г°ГҐГ± Г­Г  ГҐГ«ГҐГЄГІГ°Г®Г­Г­Г ГІГ  ГЇГ®Г№Г  Г§Г  ГіГўГҐГ¤Г®Г¬ГїГўГ Г­ГҐ
+program locations	admin	bg	Г¬ГҐГ±ГІГ®ГЇГ®Г«Г®Г¦ГҐГ­ГЁГї Г­Г  ГЇГ°Г®ГЈГ°Г Г¬ГЁГІГҐ
+save backup locally ?	backup	bg	Г„Г  Г±ГҐ Г§Г ГЇГ Г§ГўГ ГІ Г«ГЁ Г Г°ГµГЁГўГЁГІГҐ Г«Г®ГЄГ Г«Г­Г®?
+save backup to a remote host ?	backup	bg	Г„Г  Г±ГҐ Г§Г ГЇГ Г§ГўГ ГІ Г«ГЁ Г Г°ГµГЁГўГЁГІГҐ Г­Г  Г®ГІГ¤Г Г«ГҐГ·ГҐГ­ ГµГ®Г±ГІ?
+select archive type	backup	bg	Г€Г§ГЎГҐГ°ГҐГІГҐ ГўГЁГ¤ Г­Г  Г Г°ГµГЁГўГ 
+select interval	backup	bg	Г€Г§ГЎГҐГ°ГҐГІГҐ ГЁГ­ГІГҐГ°ГўГ Г«
+select transport application	backup	bg	Г€Г§ГЎГҐГ°ГҐГІГҐ ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГҐ Г§Г  ГЇГ°ГҐГµГўГєГ°Г«ГїГ­ГҐ Г­Г  Г¤Г Г­Г­ГЁГІГҐ
+settings	admin	bg	Г­Г Г±ГІГ°Г®Г©ГЄГЁ
+show backup archives in egroupware ?	backup	bg	Г„Г  Г±ГҐ ГЇГ®ГЄГ Г§ГўГ ГІ Г«ГЁ Г Г°ГµГЁГўГЁГІГҐ Гў eGroupWare?
 smbmount	backup	bg	SMBMOUNT
 sql	backup	bg	SQL
 tar	admin	bg	tar
 tar.bz2	backup	bg	tar.bz2
 tar.gz	backup	bg	tar.gz
-the backup application is not configured for showing the archives in egroupware yet !	backup	bg	Приложението за архивиране още не е настроено да показва архивите в eGroupWare!
-the directory to store the backup script must be outside of the webservers *documentroot* !	backup	bg	Директорията за архивиращия скрипт трябва да бъде извън зоната за документи на уеб-сървъра!
-the ftp connection failed ! please check your configuration !	backup	bg	FTP връзката се провали! Моля, проверете настройките си!
-transport application	backup	bg	Приложение за прехвърляне на данните
-user	backup	bg	Потребител
-versions can only be a number !	backup	bg	Версиите може да бъдат само числа!
-weekly	backup	bg	всяка седмица
-your sql database isnt supported by this application !	backup	bg	SQL базата ви данни не се поддържа от това приложение!
+the backup application is not configured for showing the archives in egroupware yet !	backup	bg	ГЏГ°ГЁГ«Г®Г¦ГҐГ­ГЁГҐГІГ® Г§Г  Г Г°ГµГЁГўГЁГ°Г Г­ГҐ Г®Г№ГҐ Г­ГҐ ГҐ Г­Г Г±ГІГ°Г®ГҐГ­Г® Г¤Г  ГЇГ®ГЄГ Г§ГўГ  Г Г°ГµГЁГўГЁГІГҐ Гў eGroupWare!
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	bg	Г„ГЁГ°ГҐГЄГІГ®Г°ГЁГїГІГ  Г§Г  Г Г°ГµГЁГўГЁГ°Г Г№ГЁГї Г±ГЄГ°ГЁГЇГІ ГІГ°ГїГЎГўГ  Г¤Г  ГЎГєГ¤ГҐ ГЁГ§ГўГєГ­ Г§Г®Г­Г ГІГ  Г§Г  Г¤Г®ГЄГіГ¬ГҐГ­ГІГЁ Г­Г  ГіГҐГЎ-Г±ГєГ°ГўГєГ°Г !
+the ftp connection failed ! please check your configuration !	backup	bg	FTP ГўГ°ГєГ§ГЄГ ГІГ  Г±ГҐ ГЇГ°Г®ГўГ Г«ГЁ! ГЊГ®Г«Гї, ГЇГ°Г®ГўГҐГ°ГҐГІГҐ Г­Г Г±ГІГ°Г®Г©ГЄГЁГІГҐ Г±ГЁ!
+transport application	backup	bg	ГЏГ°ГЁГ«Г®Г¦ГҐГ­ГЁГҐ Г§Г  ГЇГ°ГҐГµГўГєГ°Г«ГїГ­ГҐ Г­Г  Г¤Г Г­Г­ГЁГІГҐ
+user	backup	bg	ГЏГ®ГІГ°ГҐГЎГЁГІГҐГ«
+versions can only be a number !	backup	bg	Г‚ГҐГ°Г±ГЁГЁГІГҐ Г¬Г®Г¦ГҐ Г¤Г  ГЎГєГ¤Г ГІ Г±Г Г¬Г® Г·ГЁГ±Г«Г !
+weekly	backup	bg	ГўГ±ГїГЄГ  Г±ГҐГ¤Г¬ГЁГ¶Г 
+your sql database isnt supported by this application !	backup	bg	SQL ГЎГ Г§Г ГІГ  ГўГЁ Г¤Г Г­Г­ГЁ Г­ГҐ Г±ГҐ ГЇГ®Г¤Г¤ГєГ°Г¦Г  Г®ГІ ГІГ®ГўГ  ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГҐ!
 zip	common	bg	zip

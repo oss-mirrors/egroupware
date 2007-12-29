@@ -1,63 +1,63 @@
-absolute path of the backup directory	backup	sk	Absolútna cesta k adresáru záloh (napr. /usr/local/www/egroupware/backup/archive)
-absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	sk	Absolútna cesta k adresáru záloh (napr. /usr/local/www/egroupware/backup/archive)
-absolute path of the directory of egw backup application	backup	sk	Absolútna cesta k adresáru aplikácie EGW Zálohovanie
-absolute path of the directory to store the backup script	backup	sk	Absolútna cesta k adresáru aplikácie EGW Zálohovanie
-archive type	backup	sk	Vyberte typ archívu
-backup	common	sk	Zálohovanie
-backup administration	common	sk	Správa Zálohovania
+absolute path of the backup directory	backup	sk	AbsolÃºtna cesta k adresÃ¡ru zÃ¡loh (napr. /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	sk	AbsolÃºtna cesta k adresÃ¡ru zÃ¡loh (napr. /usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	sk	AbsolÃºtna cesta k adresÃ¡ru aplikÃ¡cie EGW ZÃ¡lohovanie
+absolute path of the directory to store the backup script	backup	sk	AbsolÃºtna cesta k adresÃ¡ru aplikÃ¡cie EGW ZÃ¡lohovanie
+archive type	backup	sk	Vyberte typ archÃ­vu
+backup	common	sk	ZÃ¡lohovanie
+backup administration	common	sk	SprÃ¡va ZÃ¡lohovania
 bzip2	admin	sk	bzip2
-configuration backup	backup	sk	Konfigurácia Zálohovania
-configuration localhost	backup	sk	Konfigurácia lokálneho stroja (localhost)
-create backups of your data ?	backup	sk	Ak chcete vytvára» zálohy va¹ich dát, zaèiarknite:
+configuration backup	backup	sk	KonfigurÃ¡cia ZÃ¡lohovania
+configuration localhost	backup	sk	KonfigurÃ¡cia lokÃ¡lneho stroja (localhost)
+create backups of your data ?	backup	sk	Ak chcete vytvÃ¡raÂ» zÃ¡lohy vaÂ¹ich dÃ¡t, zaÃ¨iarknite:
 daily	backup	sk	Denne
-data	backup	sk	Dáta
-directory locations	admin	sk	Umiestnenia adresárov
-directory names	admin	sk	Názvy adresárov
-e-mail	backup	sk	Ak chcete dostáva» upozornenia E-mailom, zaèiarknite:
+data	backup	sk	DÃ¡ta
+directory locations	admin	sk	Umiestnenia adresÃ¡rov
+directory names	admin	sk	NÃ¡zvy adresÃ¡rov
+e-mail	backup	sk	Ak chcete dostÃ¡vaÂ» upozornenia E-mailom, zaÃ¨iarknite:
 e-mail notification?	backup	sk	Upozornenia cez E-mail?
-homedirs	admin	sk	Domovské adresáre
+homedirs	admin	sk	DomovskÃ© adresÃ¡re
 interval	backup	sk	Interval
-ip or hostname	backup	sk	IP alebo názov (hostname)
+ip or hostname	backup	sk	IP alebo nÃ¡zov (hostname)
 ldap	common	sk	LDAP
-ldap database	admin	sk	LDAP databáza
-list backup archives	backup	sk	zoznam záloh
-maildir	admin	sk	Upozornenia sa posielajú na adresu:
-monthly	backup	sk	Mesaène
+ldap database	admin	sk	LDAP databÃ¡za
+list backup archives	backup	sk	zoznam zÃ¡loh
+maildir	admin	sk	Upozornenia sa posielajÃº na adresu:
+monthly	backup	sk	MesaÃ¨ne
 mysql	admin	sk	MySQL
 nfs	backup	sk	nfs
-no backup archives available !	backup	sk	®iadne zálohy sa nena¹li!
-number of stored backup versions	backup	sk	Poèet ulo¾enıch záloh, ktoré sa majú ponecha» pri mazaní starıch:
-operating system	backup	sk	Operaènı systém
+no backup archives available !	backup	sk	Â®iadne zÃ¡lohy sa nenaÂ¹li!
+number of stored backup versions	backup	sk	PoÃ¨et uloÂ¾enÃ½ch zÃ¡loh, ktorÃ© sa majÃº ponechaÂ» pri mazanÃ­ starÃ½ch:
+operating system	backup	sk	OperaÃ¨nÃ½ systÃ©m
 pgsql	admin	sk	PostgreSQL
-php cgi	admin	sk	Úplná cesta k vá¹mu PHP spustiteµnému súboru (napr. /usr/bin/php)
-please enter the path of the needed applications in *site configuration* !	backup	sk	Prosím zadajte cestu k po¾adovanım apolikáciám v *Nastavení stránky*!
-please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	sk	Prosím zadajte cestu k adresáru záloh a/alebo zapnite zobrazovanie záloh v eGroupWare!
-please enter username and password for remote connection !	backup	sk	Prosím zadajte pou¾ívateµské meno a heslo pre vzdialenı prístup!
-please select an application for transport to the remote host !	backup	sk	Prosím vyberte aplikáciu pre presun na vzdialenı systém!
-please set the path to a local dir to store the backup script !	backup	sk	Prosím nastavte cestu k lokálnemu adresáru, kde sa má ulo¾i» zálohovı skript!
-please set the path to the ldap database dir in *site configuration* !	backup	sk	Prosím nastavte cestu k adresáru LDAP databázy v *Nastavení stránky*!
-please set the path to the mysql database dir in *site configuration* !	backup	sk	Prosím nastavte cestu k adresáru MySQL databázy v *Nastavení stránky*!
-please set the path to the postgresql database dir in *site configuration* !	backup	sk	Prosím nastavte cestu k adresáru PostgreSQL databázy v *Nastavení stránky*!
-please set the values in *site configuration* !	backup	sk	Prosím nastavte hodnoty v *Konfigurácii stránky*!
-please specify the ip of the remote host !	backup	sk	Prosím zadajte IP vzdialeného stroja!
-please specify the name of the maildir in *site configuration* !	backup	sk	Prosím zadajte názov adresára Maildir v *Nastavení stránky*!
-please specify the path to the backup directory !	backup	sk	Prosím zadajte cestu k adresáru záloh!
-please specify the path to the user-homedirectories in *site configuration* !	backup	sk	Prosím zadajte cestu k domovskım adresárom pou¾ívateµov v *Konfigurácii stránky*!
-please write down you e-mail for beeing notified	backup	sk	Prosím zadajte vá¹ E-mail na úèely posielania upozornení
+php cgi	admin	sk	ÃšplnÃ¡ cesta k vÃ¡Â¹mu PHP spustiteÂµnÃ©mu sÃºboru (napr. /usr/bin/php)
+please enter the path of the needed applications in *site configuration* !	backup	sk	ProsÃ­m zadajte cestu k poÂ¾adovanÃ½m apolikÃ¡ciÃ¡m v *NastavenÃ­ strÃ¡nky*!
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	sk	ProsÃ­m zadajte cestu k adresÃ¡ru zÃ¡loh a/alebo zapnite zobrazovanie zÃ¡loh v eGroupWare!
+please enter username and password for remote connection !	backup	sk	ProsÃ­m zadajte pouÂ¾Ã­vateÂµskÃ© meno a heslo pre vzdialenÃ½ prÃ­stup!
+please select an application for transport to the remote host !	backup	sk	ProsÃ­m vyberte aplikÃ¡ciu pre presun na vzdialenÃ½ systÃ©m!
+please set the path to a local dir to store the backup script !	backup	sk	ProsÃ­m nastavte cestu k lokÃ¡lnemu adresÃ¡ru, kde sa mÃ¡ uloÂ¾iÂ» zÃ¡lohovÃ½ skript!
+please set the path to the ldap database dir in *site configuration* !	backup	sk	ProsÃ­m nastavte cestu k adresÃ¡ru LDAP databÃ¡zy v *NastavenÃ­ strÃ¡nky*!
+please set the path to the mysql database dir in *site configuration* !	backup	sk	ProsÃ­m nastavte cestu k adresÃ¡ru MySQL databÃ¡zy v *NastavenÃ­ strÃ¡nky*!
+please set the path to the postgresql database dir in *site configuration* !	backup	sk	ProsÃ­m nastavte cestu k adresÃ¡ru PostgreSQL databÃ¡zy v *NastavenÃ­ strÃ¡nky*!
+please set the values in *site configuration* !	backup	sk	ProsÃ­m nastavte hodnoty v *KonfigurÃ¡cii strÃ¡nky*!
+please specify the ip of the remote host !	backup	sk	ProsÃ­m zadajte IP vzdialenÃ©ho stroja!
+please specify the name of the maildir in *site configuration* !	backup	sk	ProsÃ­m zadajte nÃ¡zov adresÃ¡ra Maildir v *NastavenÃ­ strÃ¡nky*!
+please specify the path to the backup directory !	backup	sk	ProsÃ­m zadajte cestu k adresÃ¡ru zÃ¡loh!
+please specify the path to the user-homedirectories in *site configuration* !	backup	sk	ProsÃ­m zadajte cestu k domovskÃ½m adresÃ¡rom pouÂ¾Ã­vateÂµov v *KonfigurÃ¡cii strÃ¡nky*!
+please write down you e-mail for beeing notified	backup	sk	ProsÃ­m zadajte vÃ¡Â¹ E-mail na ÃºÃ¨ely posielania upozornenÃ­
 program locations	admin	sk	Umiestnenia programov
-save backup locally ?	backup	sk	Ak chcete uklada» lokálne, zaèiarknite:
-select archive type	backup	sk	Vyberte typ archívu
+save backup locally ?	backup	sk	Ak chcete ukladaÂ» lokÃ¡lne, zaÃ¨iarknite:
+select archive type	backup	sk	Vyberte typ archÃ­vu
 select interval	backup	sk	Vyberte interval
 settings	admin	sk	Nastavenia
-show backup archives in egroupware ?	backup	sk	Ak chcete, aby sa zálohy zobrazovali v eGroupWare, zaèiarknite:
+show backup archives in egroupware ?	backup	sk	Ak chcete, aby sa zÃ¡lohy zobrazovali v eGroupWare, zaÃ¨iarknite:
 smbmount	backup	sk	smbmount
 sql	backup	sk	SQL
 tar	admin	sk	tar
 tar.bz2	backup	sk	tar.bz2
 tar.gz	backup	sk	tar.gz
-the backup application is not configured for showing the archives in egroupware yet !	backup	sk	Aplikácia Zálohovanie zatiaµ nie je konfigurovaná tak, aby zobrazovala hotové zálohy v eGroupWare!
-the directory to store the backup script must be outside of the webservers *documentroot* !	backup	sk	Adresár pre ulo¾enie zálohového skriptu musí by» vnútri *DocumentRoot* webservera!
-versions can only be a number !	backup	sk	Verzie mô¾u by» len èíselné!
-weekly	backup	sk	tı¾denne
-your sql database isnt supported by this application !	backup	sk	Va¹a SQL databáza nie je podporovaná touto aplikáciou!
+the backup application is not configured for showing the archives in egroupware yet !	backup	sk	AplikÃ¡cia ZÃ¡lohovanie zatiaÂµ nie je konfigurovanÃ¡ tak, aby zobrazovala hotovÃ© zÃ¡lohy v eGroupWare!
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	sk	AdresÃ¡r pre uloÂ¾enie zÃ¡lohovÃ©ho skriptu musÃ­ byÂ» vnÃºtri *DocumentRoot* webservera!
+versions can only be a number !	backup	sk	Verzie mÃ´Â¾u byÂ» len Ã¨Ã­selnÃ©!
+weekly	backup	sk	tÃ½Â¾denne
+your sql database isnt supported by this application !	backup	sk	VaÂ¹a SQL databÃ¡za nie je podporovanÃ¡ touto aplikÃ¡ciou!
 zip	common	sk	zip

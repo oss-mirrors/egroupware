@@ -26,7 +26,7 @@ monthly	backup	it	Mensile
 mysql	admin	it	MySQL
 nfs	backup	it	nfs
 no backup archives available !	backup	it	Nessun archivio backup disponibile !
-number of stored backup versions	backup	it	Numero di backup memorizzati da mantenere prima di cancellare i più vecchi?
+number of stored backup versions	backup	it	Numero di backup memorizzati da mantenere prima di cancellare i piÃ¹ vecchi?
 operating system	backup	it	Sistema operativo
 pgsql	admin	it	PostgreSQL
 php cgi	admin	it	Percorso completo del tuo eseguibile PHP (es.: /usr/bin/php)
@@ -55,9 +55,9 @@ sql	backup	it	SQL
 tar	admin	it	tar
 tar.bz2	backup	it	tar.bz2
 tar.gz	backup	it	tar.gz
-the backup application is not configured for showing the archives in egroupware yet !	backup	it	L'applicazione di backup non è ancora stata configurata per visualizzare gli archivi in eGroupWare!
+the backup application is not configured for showing the archives in egroupware yet !	backup	it	L'applicazione di backup non Ã¨ ancora stata configurata per visualizzare gli archivi in eGroupWare!
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	it	La directory dove memorizzare lo script d backup deve essere all'interno di *DocumentRoot* del webserver !
 versions can only be a number !	backup	it	Le versioni possono solo essere un numero !
 weekly	backup	it	settimanale
-your sql database isnt supported by this application !	backup	it	Il tuo database SQL non è supportato da questa applicazione !
+your sql database isnt supported by this application !	backup	it	Il tuo database SQL non Ã¨ supportato da questa applicazione !
 zip	common	it	zip

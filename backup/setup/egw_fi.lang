@@ -1,7 +1,7 @@
-absolute path of the backup directory	backup	fi	Varmuuskopiohakemiston t‰ydellinen polku (esim.:/usr/local/www/egroupware/backup/archive)
-absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	fi	Varmuuskopiohakemiston t‰ydellinen polku (esim.:/usr/local/www/egroupware/backup/archive)
-absolute path of the directory of egw backup application	backup	fi	EGW varmuuskopiosovelluksen hakemiston t‰ydellinen polku
-absolute path of the directory to store the backup script	backup	fi	EGW varmuuskopiosovelluksen hakemiston t‰ydellinen polku
+absolute path of the backup directory	backup	fi	Varmuuskopiohakemiston t√§ydellinen polku (esim.:/usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	fi	Varmuuskopiohakemiston t√§ydellinen polku (esim.:/usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	fi	EGW varmuuskopiosovelluksen hakemiston t√§ydellinen polku
+absolute path of the directory to store the backup script	backup	fi	EGW varmuuskopiosovelluksen hakemiston t√§ydellinen polku
 archive type	backup	fi	Valitse arkistosi tyyppi
 backup	common	fi	Varmuuskopio
 backup administration	common	fi	Varmuuskopion hallinta
@@ -9,53 +9,53 @@ bzip2	admin	fi	bzip2
 configuration backup	backup	fi	Varmuuskopion konfiguraatio
 configuration localhost	backup	fi	Paikallisen palvelimen konfiguraatio
 create backups of your data ?	backup	fi	Tarkista tiedoistasi luodut varmuuskopiot
-daily	backup	fi	p‰ivitt‰in
+daily	backup	fi	p√§ivitt√§in
 data	backup	fi	Tieto
 directory locations	admin	fi	Hakemiston sijainnit
 directory names	admin	fi	Hakemiston nimet
-e-mail	backup	fi	Tarkita vastaanotetut s‰hkˆposti huomautukset:
-e-mail notification?	backup	fi	S‰hkˆposti huomautus
+e-mail	backup	fi	Tarkita vastaanotetut s√§hk√∂posti huomautukset:
+e-mail notification?	backup	fi	S√§hk√∂posti huomautus
 homedirs	admin	fi	Kotihakemistot
 interval	backup	fi	Tauko
 ip or hostname	backup	fi	IP tai palvelimennimi
 ldap	common	fi	LDAP
 ldap database	admin	fi	LDAP tietokanta
 list backup archives	backup	fi	Varmuuskopion arkistojen lista
-maildir	admin	fi	Huomautus tulee s‰hkˆpostiin:
+maildir	admin	fi	Huomautus tulee s√§hk√∂postiin:
 monthly	backup	fi	kuukausittain
 mysql	admin	fi	MySQL
 nfs	backup	fi	nfs
 no backup archives available !	backup	fi	Varmuuskopion arkistoa ei saatavilla !
 number of stored backup versions	backup	fi	Montako versiota varmuuskopioista varastoidaan ennen kuin vanhin varmuuskopio poistetaan:
-operating system	backup	fi	K‰yttˆj‰rjestelm‰
+operating system	backup	fi	K√§ytt√∂j√§rjestelm√§
 pgsql	admin	fi	PostgreSQL
 php cgi	admin	fi	Koko polku sinun PHP exec (esim.: /usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	fi	Kirjoita tarvitsemasi sovelluksen polku *Sivuston konfiguraatiossa* !
-please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	fi	Kirjoita polku varmuuskopiohakemistolle ja/tai aktivoi n‰ytt‰m‰‰n arkistoja eGroupWaressa !
-please enter username and password for remote connection !	backup	fi	Anna k‰ytt‰j‰tunnus ja salasana et‰yhteytt‰ varten !
-please select an application for transport to the remote host !	backup	fi	Valitse sovellus siirt‰‰ksesi et‰palvelimelle !
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	fi	Kirjoita polku varmuuskopiohakemistolle ja/tai aktivoi n√§ytt√§m√§√§n arkistoja eGroupWaressa !
+please enter username and password for remote connection !	backup	fi	Anna k√§ytt√§j√§tunnus ja salasana et√§yhteytt√§ varten !
+please select an application for transport to the remote host !	backup	fi	Valitse sovellus siirt√§√§ksesi et√§palvelimelle !
 please set the path to a local dir to store the backup script !	backup	fi	Anna polku paikalliseen hakemistoon johon skripti tallentaa varmuuskopion !
 please set the path to the ldap database dir in *site configuration* !	backup	fi	Anna polku LDAP tietokannan hakemistoon *Sivuston konfiguroinnissa* !
 please set the path to the mysql database dir in *site configuration* !	backup	fi	Anna polku MySQL tietokannan hakemistoon *Sivuston konfiguroinnissa* !
 please set the path to the postgresql database dir in *site configuration* !	backup	fi	Anna polku PostgreSQL tietokannan hakemistoon *Sivuston konfiguroinnissa* !
 please set the values in *site configuration* !	backup	fi	Aseta arvot *Sivuston konfiguroinnissa* !
-please specify the ip of the remote host !	backup	fi	Nime‰ et‰is‰nn‰n ip !
-please specify the name of the maildir in *site configuration* !	backup	fi	M‰‰rittele s‰hkˆpostihakemiston nimi *Sivuston konfiguroinnissa* !
-please specify the path to the backup directory !	backup	fi	Nime‰ polku varmuuskopion hakemistoon !
-please specify the path to the user-homedirectories in *site configuration* !	backup	fi	Nime‰ polku k‰ytt‰j‰n kotihakemistoon *Sivuston konfiguroinnissa*!
-please write down you e-mail for beeing notified	backup	fi	Anna s‰hkˆpostiosoitteesi johon huomautus l‰hetet‰‰n
+please specify the ip of the remote host !	backup	fi	Nime√§ et√§is√§nn√§n ip !
+please specify the name of the maildir in *site configuration* !	backup	fi	M√§√§rittele s√§hk√∂postihakemiston nimi *Sivuston konfiguroinnissa* !
+please specify the path to the backup directory !	backup	fi	Nime√§ polku varmuuskopion hakemistoon !
+please specify the path to the user-homedirectories in *site configuration* !	backup	fi	Nime√§ polku k√§ytt√§j√§n kotihakemistoon *Sivuston konfiguroinnissa*!
+please write down you e-mail for beeing notified	backup	fi	Anna s√§hk√∂postiosoitteesi johon huomautus l√§hetet√§√§n
 program locations	admin	fi	Ohjelman sijainnit
 save backup locally ?	backup	fi	Tarkista varmuuskopion tallennus paikallisesti
 select archive type	backup	fi	Valitse arkiston tyyppi
 select interval	backup	fi	Valitse tauko
 settings	admin	fi	asetukset
-show backup archives in egroupware ?	backup	fi	Tarkista n‰ytt‰‰ksesi varmuuskopio arkistot eGroupWaressa:
+show backup archives in egroupware ?	backup	fi	Tarkista n√§ytt√§√§ksesi varmuuskopio arkistot eGroupWaressa:
 smbmount	backup	fi	smbmount
 sql	backup	fi	SQL
 tar	admin	fi	tar
 tar.bz2	backup	fi	tar.bz2
 tar.gz	backup	fi	tar.gz
-the backup application is not configured for showing the archives in egroupware yet !	backup	fi	Varmuuskopio sovellusta ei ole konfiguroitu viel‰ n‰ytett‰v‰ksi arkistossa eGroupWaressa !
+the backup application is not configured for showing the archives in egroupware yet !	backup	fi	Varmuuskopio sovellusta ei ole konfiguroitu viel√§ n√§ytett√§v√§ksi arkistossa eGroupWaressa !
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	fi	Hakemisto johon varmuuskopioskripti varastoi varmuuskopiot, tulee sijaita Web-palvelimella *DocumentRoot* !
 versions can only be a number !	backup	fi	Versio voi olla vain numero !
 weekly	backup	fi	viikoittain
