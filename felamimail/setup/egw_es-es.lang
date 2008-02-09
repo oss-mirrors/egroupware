@@ -1,8 +1,10 @@
 (no subject)	felamimail	es-es	(Sin asunto)
 (only cc/bcc)	felamimail	es-es	(sólo Cc/Cco)
+(separate multiple addresses by comma)	felamimail	es-es	(separar múltiples direcciones con comas)
 (unknown sender)	felamimail	es-es	(remitente desconocido)
 activate	felamimail	es-es	Activar
 activate script	felamimail	es-es	activar script
+activating by date requires a start- and end-date!	felamimail	es-es	Activar por fecha requiere una fecha de inicio y otra de final
 add acl	felamimail	es-es	añadir acl
 add address	felamimail	es-es	Añadir dirección
 add rule	felamimail	es-es	Añadir regla
@@ -38,6 +40,8 @@ bcc	felamimail	es-es	CCO
 before headers	felamimail	es-es	Antes de las cabeceras
 between headers and message body	felamimail	es-es	Entre las cabeceras y el cuerpo del mensaje
 body part	felamimail	es-es	Parte del cuerpo
+by date	felamimail	es-es	por fecha
+can not send message. no recipient defined!	felamimail	es-es	¡no puedo enviar el mensaje por no tener destinatario!
 can't connect to inbox!!	felamimail	es-es	¡¡No se puede leer la Bandeja de entrada!!
 cc	felamimail	es-es	CC
 change folder	felamimail	es-es	Cambiar carpeta
@@ -75,6 +79,7 @@ date(newest first)	felamimail	es-es	Fecha (la más reciente primero)
 date(oldest first)	felamimail	es-es	Fecha (la más antigua primero)
 days	felamimail	es-es	días
 deactivate script	felamimail	es-es	desactivar script
+default	felamimail	es-es	predeterminado
 default signature	felamimail	es-es	Firma predeterminada
 default sorting order	felamimail	es-es	Modo de ordenar predeterminado
 delete all	felamimail	es-es	Borrar todos
@@ -163,6 +168,7 @@ follow	felamimail	es-es	seguir
 for mail to be send - not functional yet	felamimail	es-es	Para el correo pendiente de enviar - todavía no funciona
 for received mail	felamimail	es-es	Para el correo recibido
 forward	felamimail	es-es	Reenviar
+forward messages to	felamimail	es-es	Reenviar mensajes a
 forward to	felamimail	es-es	reenviar a
 forward to address	felamimail	es-es	reenviar a la dirección
 forwarding	felamimail	es-es	Reenviando
@@ -267,6 +273,8 @@ no messages were selected.	felamimail	es-es	No se seleccionaron mensajes
 no plain text part found	felamimail	es-es	No se encontró ninguna parte con texto sencillo
 no previous message	felamimail	es-es	No hay mensaje anterior
 no recipient address given!	felamimail	es-es	¡No se han indicado destinatarios!
+no signature	felamimail	es-es	sin firma
+no subject given!	felamimail	es-es	¡No se ha indicado un asunto!
 no supported imap authentication method could be found.	felamimail	es-es	No se pudo encontrar ningún método de identificación IMAP
 no valid emailprofile selected!!	felamimail	es-es	No se ha seleccionado un perfil de correo válido
 none	felamimail	es-es	ninguno
@@ -337,6 +345,7 @@ send	felamimail	es-es	Enviar
 send a reject message	felamimail	es-es	enviar un mensaje de rechazo
 sent folder	felamimail	es-es	Carpeta de enviados
 server supports mailfilter(sieve)	felamimail	es-es	El servidor soporta filtro de correo (sieve)
+set as default	felamimail	es-es	Establecer como predeterminado
 show header	felamimail	es-es	mostrar cabecera
 show new messages on main screen	felamimail	es-es	Mostrar mensajes nuevos en la pantalla principal
 sieve script name	felamimail	es-es	nombre del script sieve
@@ -360,6 +369,7 @@ subscribe	felamimail	es-es	Suscribirse
 subscribed	felamimail	es-es	Suscrito
 subscribed successfully!	felamimail	es-es	Suscripción correcta
 sun	felamimail	es-es	Dom
+system signature	felamimail	es-es	firma del sistema
 table of contents	felamimail	es-es	Tabla de contenidos
 text only	felamimail	es-es	Sólo texto
 the connection to the imap server failed!!	felamimail	es-es	¡Ha fallado la conexión con el servidor IMAP!
@@ -406,6 +416,7 @@ use smtp auth	admin	es-es	Usar identificación SMTP
 users can define their own emailaccounts	admin	es-es	Los usuarios pueden definir sus propias cuentas de correo
 vacation notice	common	es-es	aviso de vacaciones
 vacation notice is active	felamimail	es-es	El aviso de vacaciones está activo
+vacation start-date must be before the end-date!	felamimail	es-es	¡La fecha de inicio de las vacaciones debe ser ANTES de la fecha de fin!
 validate certificate	felamimail	es-es	validar certificado
 view full header	felamimail	es-es	Ver la cabecera completa
 view header lines	felamimail	es-es	Ver líneas del encabezado
@@ -420,3 +431,4 @@ with message "%1"	felamimail	es-es	con mensaje "%1"
 wrap incoming text at	felamimail	es-es	Ajustar el texto entrante a
 writing	felamimail	es-es	escribiendo
 wrote	felamimail	es-es	escribió
+you can use %1 for the above start-date and %2 for the end-date.	felamimail	es-es	Puede usar %1 para la fecha de inicio de arriba y %2 para la fecha de fin.
