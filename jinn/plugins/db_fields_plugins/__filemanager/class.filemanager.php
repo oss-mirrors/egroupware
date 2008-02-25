@@ -113,6 +113,7 @@
 		 }
 		 else
 		 {
+			$this->tplsav2->assign('value','');
 			$value_arr = array();
 		 }
 
