@@ -134,7 +134,7 @@
 			if (!empty($_GET['send_to']))
 			{
 				$sessionData['to'] = base64_decode($_GET['send_to']);
-			}
+			}			
 			$this->display_app_header();
 			
 			$this->t->set_file(array("composeForm" => "composeForm.tpl"));
@@ -407,7 +407,7 @@
 					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
 					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
 
-			$kses =& CreateObject('phpgwapi.kses');
+			$kses = new kses();
 			$kses->AddHTML('p', array(
 					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
 				)
@@ -462,6 +462,25 @@
 					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
 				)
 			);
+			
+			// tables
+			$kses->AddHTML('table');
+			$kses->AddHTML('tbody');
+			$kses->AddHTML('tr',array(
+				'valign' => array('minlen' => 1, 'maxlen' =>  10),
+				'class'	 => array('minlen' =>   1, 'maxlen' =>  50),
+				'height' => array('minlen' => 1, 'maxlen' =>  10),
+			));
+			$kses->AddHTML('td',array(
+				'class'	=> array('minlen' =>   1, 'maxlen' =>  50),
+				'colspan' => array("minlen" =>   1),
+				'align'  => array('minlen' => 1, 'maxlen' =>  10),
+				'width' => array('minlen' => 1, 'maxlen' =>  10),
+			));
+			$kses->AddHTML('style',array(
+				'type' => array('minlen' => 1, 'maxlen' =>  10),
+			));
+
 			// strip comments out of the message completely
 			if ($_body) {
 				$begin_comment=stripos($_body,'<!--');
