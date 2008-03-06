@@ -15,6 +15,12 @@
 
 	class postfixldap extends defaultsmtp
 	{
+		/**
+		 * Hook called if account get's updated --> update the mailMessageStore attribute
+		 *
+		 * @param array $_hookValues
+		 * @return boolean
+		 */
 		function addAccount($_hookValues)
 		{
 			$mailLocalAddress = $_hookValues['account_email'] ? $_hookValues['account_email'] :
@@ -50,11 +56,53 @@
 			(
 				'mail'			=> $mailLocalAddress,
 				'accountStatus'		=> 'active',
-				'objectclass'		=> $objectClasses
+				'objectclass'		=> $objectClasses,
+				'mailMessageStore'  => $_hookValues['account_lid'].'@'.$this->defaultDomain,
 			);
 
-			ldap_mod_replace ($ds, $accountDN, $newData);
+			return ldap_mod_replace ($ds, $accountDN, $newData);
 			#print ldap_error($ds);
+		}
+
+		/**
+		 * Hook called if account get's updated --> update the mailMessageStore attribute
+		 *
+		 * @param array $_hookValues
+		 * @return boolean
+		 */
+		function updateAccount($_hookValues)
+		{
+			$mailLocalAddress = $_hookValues['account_email'] ? $_hookValues['account_email'] :
+				$GLOBALS['egw']->common->email_address($_hookValues['account_firstname'],
+					$_hookValues['account_lastname'],$_hookValues['account_lid'],$this->defaultDomain);
+
+			$ds = $GLOBALS['egw']->common->ldapConnect();
+			$filter 	= "(&(uid=$_hookValues[account_lid])(objectclass=posixAccount))";
+			$attributes	= array('dn','objectclass');
+			if (!($sri = @ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $attributes)))
+			{
+				return false;
+			}
+			$allValues 	= ldap_get_entries($ds, $sri);
+			$accountDN 	= $allValues[0]['dn'];
+			$objectClasses	= $allValues[0]['objectclass'];
+			
+			unset($objectClasses['count']);
+			
+			if(!in_array('qmailUser',$objectClasses) && !in_array('qmailuser',$objectClasses))
+			{
+				$objectClasses[]	= 'qmailuser';
+				// the new code for postfix+cyrus+ldap
+				$newData = array 
+				(
+					'mail'              => $mailLocalAddress,
+					'accountStatus'		=> 'active',
+					'objectclass'		=> $objectClasses,
+				);
+			}
+			$newData['mailMessageStore'] = $_hookValues['account_lid'].'@'.$this->defaultDomain;
+
+			return ldap_mod_replace ($ds, $accountDN, $newData);
 		}
 
 		function getAccountEmailAddress($_accountName)
@@ -96,7 +144,8 @@
 			return $emailAddresses;
 		}
 
-		function getUserData($_uidnumber) {
+		function getUserData($_uidnumber) 
+		{
 			$userData = array();
 
 			$ldap = $GLOBALS['egw']->common->ldapConnect();
@@ -125,45 +174,43 @@
 			return $userData;
 		}
 		
-		function setUserData($_uidnumber, $_mailAlternateAddress, $_mailForwardingAddress, $_deliveryMode, $_accountStatus, $_mailLocalAddress) {
+		function setUserData($_uidnumber, $_mailAlternateAddress, $_mailForwardingAddress, $_deliveryMode, $_accountStatus, $_mailLocalAddress) 
+		{
 			$filter = "uidnumber=$_uidnumber";
 
 			$ldap = $GLOBALS['egw']->common->ldapConnect();
 
-			$sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],$filter);
-			if ($sri) {
-				$allValues 	= ldap_get_entries($ldap, $sri);
-
-				$accountDN 	= $allValues[0]['dn'];
-				$uid	   	= $allValues[0]['uid'][0];
-				$objectClasses	= $allValues[0]['objectclass'];
-				
-				unset($objectClasses['count']);
-
-				if(!in_array('qmailUser',$objectClasses) &&
-					!in_array('qmailuser',$objectClasses))
-				{
-					$objectClasses[]	= 'qmailuser'; 
-					sort($objectClasses);
-					$newData['objectclass']	= $objectClasses;
-				}
-
-				sort($_mailAlternateAddress);
-				sort($_mailForwardingAddress);
-				
-				$newData['mailalternateaddress'] = (array)$_mailAlternateAddress;
-				$newData['mailforwardingaddress'] = (array)$_mailForwardingAddress;
-				$newData['deliverymode']	= $_deliveryMode ? 'forwardOnly' : array();
-				$newData['accountstatus']	= $_accountStatus ? 'active' : array();
-				$newData['mail'] = $_mailLocalAddress;
-
-				ldap_mod_replace($ldap, $accountDN, $newData);
-			}
-			else
+			if (!($sri = @ldap_search($ldap,$GLOBALS['egw_info']['server']['ldap_context'],$filter)))
 			{
 				return false;
 			}
+			$allValues 	= ldap_get_entries($ldap, $sri);
 
+			$accountDN 	= $allValues[0]['dn'];
+			$uid	   	= $allValues[0]['uid'][0];
+			$objectClasses	= $allValues[0]['objectclass'];
+			
+			unset($objectClasses['count']);
+
+			if(!in_array('qmailUser',$objectClasses) &&
+				!in_array('qmailuser',$objectClasses))
+			{
+				$objectClasses[]	= 'qmailuser'; 
+				sort($objectClasses);
+				$newData['objectclass']	= $objectClasses;
+			}
+
+			sort($_mailAlternateAddress);
+			sort($_mailForwardingAddress);
+			
+			$newData['mailalternateaddress'] = (array)$_mailAlternateAddress;
+			$newData['mailforwardingaddress'] = (array)$_mailForwardingAddress;
+			$newData['deliverymode']	= $_deliveryMode ? 'forwardOnly' : array();
+			$newData['accountstatus']	= $_accountStatus ? 'active' : array();
+			$newData['mail'] = $_mailLocalAddress;
+			$newData['mailMessageStore']  = $uid.'@'.$this->defaultDomain;
+
+			return ldap_mod_replace($ldap, $accountDN, $newData);
 		}
 		
 		function saveSMTPForwarding($_accountID, $_forwardingAddress, $_keepLocalCopy)
@@ -171,46 +218,40 @@
 			$ds = $GLOBALS['egw']->common->ldapConnect();
 			$filter 	= sprintf("(&(uidnumber=%s)(objectclass=posixAccount))",$_accountID);
 			$attributes	= array('dn','mailforwardingaddress','deliverymode','objectclass');
-			$sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $attributes);
 			
-			if ($sri)
+			if (!($sri = ldap_search($ds, $GLOBALS['egw_info']['server']['ldap_context'], $filter, $attributes)))
 			{
-				$newData = array();
-				$allValues = ldap_get_entries($ds, $sri);
-
-				$newData['objectclass']	= $allValues[0]['objectclass'];
-				
-				unset($newData['objectclass']['count']);
-
-				if(!in_array('qmailUser',$newData['objectclass']) &&
-					!in_array('qmailuser',$newData['objectclass']))
-				{
-					$newData['objectclass'][]	= 'qmailuser'; 
-				}
-
-				if(!empty($_forwardingAddress))
-				{
-					if(is_array($allValues[0]['mailforwardingaddress']))
-					{
-						$newData['mailforwardingaddress'] = $allValues[0]['mailforwardingaddress'];
-						unset($newData['mailforwardingaddress']['count']);
-						$newData['mailforwardingaddress'][0] = $_forwardingAddress;
-					}
-					else
-					{
-						$newData['mailforwardingaddress'][0] = $_forwardingAddress;
-					}
-					$newData['deliverymode'] = ($_keepLocalCopy == 'yes'? array() : 'forwardOnly');
-				}
-				else
-				{
-					$newData['mailforwardingaddress'] = array();
-					$newData['deliverymode'] = array();
-				}
-
-				ldap_modify ($ds, $allValues[0]['dn'], $newData);
-				#print ldap_error($ds);
+				return false;
 			}
+			$newData = array();
+			$allValues = ldap_get_entries($ds, $sri);
+
+			$newData['objectclass']	= $allValues[0]['objectclass'];
+			
+			unset($newData['objectclass']['count']);
+
+			if(!in_array('qmailUser',$newData['objectclass']) &&
+				!in_array('qmailuser',$newData['objectclass']))
+			{
+				$newData['objectclass'][]	= 'qmailuser'; 
+			}
+
+			if(!empty($_forwardingAddress))
+			{
+				if(is_array($allValues[0]['mailforwardingaddress']))
+				{
+					$newData['mailforwardingaddress'] = $allValues[0]['mailforwardingaddress'];
+					unset($newData['mailforwardingaddress']['count']);
+				}
+				$newData['mailforwardingaddress'][0] = $_forwardingAddress;
+				$newData['deliverymode'] = ($_keepLocalCopy == 'yes'? array() : 'forwardOnly');
+			}
+			else
+			{
+				$newData['mailforwardingaddress'] = array();
+				$newData['deliverymode'] = array();
+			}
+
+			return ldap_modify ($ds, $allValues[0]['dn'], $newData);
 		}
 	}
-?>
