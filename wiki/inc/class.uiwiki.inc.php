@@ -42,7 +42,7 @@ class uiwiki extends bowiki
 				break;
 			case 'auto':
 			default:
-				$this->auto_convert = $this->tpl->html->htmlarea_availible();
+				$this->auto_convert = html::htmlarea_availible();
 		}
 		if (get_magic_quotes_gpc())
 		{
@@ -168,7 +168,7 @@ class uiwiki extends bowiki
 		);
 		$this->tpl->read('wiki.edit');
 
-		if ($content['is_html'] || $this->AutoconvertPages == 'never' || !$this->tpl->html->htmlarea_availible())
+		if ($content['is_html'] || $this->AutoconvertPages == 'never' || !html::htmlarea_availible())
 		{
 			$this->tpl->disable_cells('action[convert]');
 			$content['upload_dir'] = $this->upload_dir;
