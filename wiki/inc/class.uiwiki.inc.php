@@ -30,8 +30,7 @@ class uiwiki extends bowiki
 
 		$this->anonymous = $this->config['allow_anonymous'] && $this->config['anonymous_username'] == $GLOBALS['egw_info']['user']['account_lid'];
 
-		$this->tpl =& CreateObject('etemplate.etemplate');
-		$this->html =& $this->tpl->html;
+		$this->tpl = new etemplate();
 
 		// should pages with wiki-syntax be converted to html automaticaly
 		switch($this->AutoconvertPages)
@@ -207,7 +206,7 @@ class uiwiki extends bowiki
 
 		if ($page->read() === false)
 		{
-			$html = '<p><b>'.lang("Page '%1' not found !!!",'<i>'.$this->html->htmlspecialchars($_GET['page'].
+			$html = '<p><b>'.lang("Page '%1' not found !!!",'<i>'.html::htmlspecialchars($_GET['page'].
 				($_GET['lang']?':'.$_GET['lang']:'')).'</i>')."</b></p>\n";
 			$page = false;
 		}
@@ -248,8 +247,8 @@ class uiwiki extends bowiki
 		$html .= '<form action="'.$GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.search')).'" method="POST">'.
 			'<a href="'.$this->viewURL($this->config['wikihome']).'">'.$this->config['wikihome'].'</a> | '.
 			'<a href="'.$this->viewUrl('RecentChanges').'">'.lang('Recent Changes').'</a> | '.
-			'<input name="search" value="'.$this->html->htmlspecialchars($_REQUEST['search']).'" /> '.
-			'<input type="submit" name="go" value="'.$this->html->htmlspecialchars(lang('Search')).'" /></form>'."\n";
+			'<input name="search" value="'.html::htmlspecialchars($_REQUEST['search']).'" /> '.
+			'<input type="submit" name="go" value="'.html::htmlspecialchars(lang('Search')).'" /></form>'."\n";
 		$html .= "<hr />\n";
 		
 		return $html;
@@ -284,7 +283,7 @@ class uiwiki extends bowiki
 	{
 		$this->rateCheck('view',$_SERVER['REMOTE_ADDR']);
 
-		$html = $this->header(false,lang('Search for').': '.$this->html->htmlspecialchars($_REQUEST['search']));
+		$html = $this->header(false,lang('Search for').': '.html::htmlspecialchars($_REQUEST['search']));
 		
 		$nothing_found = true;
 		foreach($this->find(str_replace(array('*','?'),array('%','_'),$_REQUEST['search'])) as $page)
@@ -294,9 +293,9 @@ class uiwiki extends bowiki
 				$nothing_found = false;
 				$html .= "<ul>\n";
 			}
-			$item = '<li><a href="'.htmlspecialchars($this->viewURL($page['name'],$page['lang'])).'"><b>'.$this->html->htmlspecialchars($page['title']).'</b></a>'.
-				($page['lang'] != $this->lang ? ' <i>'.$this->html->htmlspecialchars($GLOBALS['egw']->translation->lang2language($page['lang'])).'</i>' : '').'<br />'.
-				$this->html->htmlspecialchars($this->summary($page))."</li>\n";
+			$item = '<li><a href="'.htmlspecialchars($this->viewURL($page['name'],$page['lang'])).'"><b>'.html::htmlspecialchars($page['title']).'</b></a>'.
+				($page['lang'] != $this->lang ? ' <i>'.html::htmlspecialchars($GLOBALS['egw']->translation->lang2language($page['lang'])).'</i>' : '').'<br />'.
+				html::htmlspecialchars($this->summary($page))."</li>\n";
 			
 			if ($page['lang'] != $this->lang)
 			{
