@@ -115,6 +115,7 @@ down	felamimail	en	down
 download	felamimail	en	download
 download this as a file	felamimail	en	Download this as a file
 draft folder	felamimail	en	draft folder
+drafts	felamimail	en	Drafts
 e-mail	felamimail	en	E-Mail
 e-mail address	felamimail	en	E-Mail address
 e-mail folders	felamimail	en	E-Mail Folders
@@ -215,6 +216,7 @@ invalid user name or password	felamimail	en	Invalid user name or password
 javascript	felamimail	en	JavaScript
 jumping to end	felamimail	en	jumping to end
 jumping to start	felamimail	en	jumping to start
+junk	felamimail	en	Junk
 keep a copy of the message in your inbox	felamimail	en	keep a copy of the message in your inbox
 keep local copy of email	felamimail	en	keep local copy of email
 kilobytes	felamimail	en	kilobytes
@@ -343,6 +345,7 @@ select folder	felamimail	en	select folder
 select your mail server type	admin	en	Select your mail server type
 send	felamimail	en	Send
 send a reject message	felamimail	en	send a reject message
+sent	felamimail	en	Sent
 sent folder	felamimail	en	Sent Folder
 server supports mailfilter(sieve)	felamimail	en	server supports mailfilter(sieve)
 set as default	felamimail	en	Set as default
@@ -371,6 +374,7 @@ subscribed successfully!	felamimail	en	Subscribed successfully!
 sun	felamimail	en	Sun
 system signature	felamimail	en	system signature
 table of contents	felamimail	en	Table of Contents
+templates	felamimail	en	Templates
 text only	felamimail	en	Text only
 the connection to the imap server failed!!	felamimail	en	The connection to the IMAP Server failed!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	en	The IMAP server does not appear to support the authentication method selected. Please contact your system administrator.
@@ -384,6 +388,7 @@ to mail sent to	felamimail	en	to mail sent to
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.
 translation preferences	felamimail	en	Translation Preferences
 translation server	felamimail	en	Translation server
+trash	felamimail	en	Trash
 trash fold	felamimail	en	Trash Fold
 trash folder	felamimail	en	Trash Folder
 tue	felamimail	en	Tue

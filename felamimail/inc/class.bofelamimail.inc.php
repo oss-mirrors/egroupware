@@ -51,6 +51,13 @@
 		// the current selected user profile
 		var $profileID = 0;
 		
+		/**
+		 * Folders that get automatic created AND get translated to the users language
+		 *
+		 * @var array
+		 */
+		var $autoFolders = array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates');
+		
 		function bofelamimail($_displayCharset='iso-8859-1')
 		{
 			$this->restoreSessionData();
@@ -803,6 +810,11 @@
 				$retValue['displayName']	= lang('INBOX');
 				$retValue['shortDisplayName']	= lang('INBOX');
 			}
+			// translate the automatic Folders (Sent, Drafts, ...) like the INBOX
+			elseif (in_array($retValue['shortName'],$this->autoFolders))
+			{
+				$retValue['displayName'] = $retValue['shortDisplayName'] = lang($retValue['shortName']);
+			}
 			
 			if ( PEAR::isError($folderStatus = $this->icServer->getStatus($_folderName)) ) {
 				//_debug_array($folderStatus);
@@ -906,7 +918,7 @@
 							$folderPrefix = $personalPrefix;
 						}
 					}
-					foreach(array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates') as $personalFolderName) {
+					foreach($this->autoFolders as $personalFolderName) {
 						$folderName = (!empty($personalPrefix)) ? $folderPrefix.$personalFolderName : $personalFolderName;
 						if(!is_array($foldersNameSpace['personal']['all']) || !in_array($folderName, $foldersNameSpace['personal']['all'])) {
 							if($this->createFolder('', $folderName, true)) {
@@ -962,6 +974,9 @@
 							$folderObject->displayName	= lang('INBOX');
 							$folderObject->shortDisplayName = lang('INBOX');
 							$folderObject->subscribed	= true;
+						// translate the automatic Folders (Sent, Drafts, ...) like the INBOX
+						} elseif (in_array($shortName,$this->autoFolders)) {
+							$folderObject->displayName = $folderObject->shortDisplayName = lang($shortName);
 						} else {
 							$folderObject->displayName = $this->encodeFolderName($folderObject->folderName);
 							$folderObject->shortDisplayName = $this->encodeFolderName($shortName);

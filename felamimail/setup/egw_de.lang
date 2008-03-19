@@ -115,6 +115,7 @@ down	felamimail	de	runter
 download	felamimail	de	Speichern
 download this as a file	felamimail	de	als Datei downloaden
 draft folder	felamimail	de	Vorlagen Ordner
+drafts	felamimail	de	Entwürfe
 e-mail	felamimail	de	E-Mail
 e-mail address	felamimail	de	E-Mailadresse
 e-mail folders	felamimail	de	E-Mail Ordner
@@ -215,6 +216,7 @@ invalid user name or password	felamimail	de	Falscher Benutzername oder Pasword
 javascript	felamimail	de	JavaScript
 jumping to end	felamimail	de	springe zum Ende
 jumping to start	felamimail	de	springe zum Anfang
+junk	felamimail	de	Spammails
 keep a copy of the message in your inbox	felamimail	de	eine Kopie der Nachricht in der INBOX behalten
 keep local copy of email	felamimail	de	Kopie der E-Mail behalten
 kilobytes	felamimail	de	Kilobytes
@@ -343,6 +345,7 @@ select folder	felamimail	de	Ordner auswählen
 select your mail server type	admin	de	Wählen Sie den Typ des Mailservers
 send	felamimail	de	Senden
 send a reject message	felamimail	de	Ablehnungs-E-Mail senden
+sent	felamimail	de	Gesendet
 sent folder	felamimail	de	Ordner für gesendete Nachrichten
 server supports mailfilter(sieve)	felamimail	de	Server unterstützt Mailfilter(Sieve)
 set as default	felamimail	de	Als Vorgabe setzen
@@ -371,6 +374,7 @@ subscribed successfully!	felamimail	de	Erfolgreich abonniert
 sun	felamimail	de	So
 system signature	felamimail	de	System Signatur
 table of contents	felamimail	de	Inhaltsverzeichnis
+templates	felamimail	de	Vorlagen
 text only	felamimail	de	Nur Text
 the connection to the imap server failed!!	felamimail	de	Die Verbindung zum IMAP Server ist fehlgeschlagen
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	de	Der IMAP Server scheint die ausgewählte Authentifizierungsmethode nicht zu unterstützen. Bitte sprechen Sie mit Ihrem Systemadministrator.
@@ -384,6 +388,7 @@ to mail sent to	felamimail	de	Mail an senden an
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	de	Für eine TLS Verbindung, benötigen Sie PHP 5.1.0 oder neuer.
 translation preferences	felamimail	de	Übersetzungseinstellungen
 translation server	felamimail	de	Übersetzungsserver
+trash	felamimail	de	Papierkorb
 trash fold	felamimail	de	Abfall Ordner
 trash folder	felamimail	de	Ordner für gelöschte Nachrichten
 tue	felamimail	de	Di
