@@ -6,7 +6,7 @@
  * @link http://gallery.sourceforge.net/
  * @package gallery
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @copyright 2006 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright 2006-8 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */

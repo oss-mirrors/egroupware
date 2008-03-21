@@ -6,6 +6,7 @@
  * @link http://gallery.sourceforge.net/
  * @package gallery
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright 2006-8 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @version $Id$
  */
@@ -16,11 +17,6 @@
  * This class gets either called via a hook if a user gets created, changed or deleted in eGroupWare
  * or can be called manualy, eg. from index to create a new user.
  * At the moment we only sync eGW Admins and the membership to g2's site-admins group. No other group memberships!
- * 
- * @package gallery
- * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @copyright 2006 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 class g2_integration
 {
