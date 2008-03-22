@@ -62,7 +62,6 @@
 				'mail' => $GLOBALS['egw']->common->image('bookmarks','mail'),
 				'delete' => $GLOBALS['egw']->common->image('bookmarks','delete')
 			);
-			$this->html = new html();
 			$this->expandedcats = array();
 			$this->location_info = $this->bo->read_session_data();
 			$this->nextmatchs =& CreateObject('phpgwapi.nextmatchs');
@@ -795,14 +794,14 @@
 					if ($this->bo->check_perms2( $bm['owner'], $bm['access'], EGW_ACL_EDIT) ) {
 						$entry .= '<a href ="'.
 							$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.ui.edit&bm_id='. $id ). '">'.
-							$this->html->image( 'bookmarks', $this->img['edit'], lang( 'Edit this bookmark' ) ).
+							html::image( 'bookmarks', $this->img['edit'], lang( 'Edit this bookmark' ) ).
 							'</a>';
 					}
 					
 					//view
 					$entry .= '<a href ="'.
 						$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.ui.view&bm_id='. $id ). '">'.
-						$this->html->image( 'bookmarks', $this->img['view'], lang( 'View this bookmark' ) ).
+						html::image( 'bookmarks', $this->img['view'], lang( 'View this bookmark' ) ).
 						'</a>';
 					
 					//redirect
@@ -811,7 +810,7 @@
 						$bm['name']. '</a>';
 				}
 			}
-			$tree = $this->html->tree((array)$bm_tree, false, false, "null", 'foldertree', '', '', false, '/', null);
+			$tree = html::tree((array)$bm_tree, false, false, "null", 'foldertree', '', '', false, '/', null);
 			
 			$this->t->set_var('body',$tree);
 			$this->app_messages($this->t);

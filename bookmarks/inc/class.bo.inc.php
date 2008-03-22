@@ -32,14 +32,12 @@
 		{
 			$this->so =& CreateObject('bookmarks.so');
 			$this->grants      = $GLOBALS['egw']->acl->get_grants('bookmarks');
-			$this->categories =& CreateObject('phpgwapi.categories','','bookmarks');
-			$GLOBALS['egw']->config     =& CreateObject('phpgwapi.config');
-			$GLOBALS['egw']->config->read_repository();
-			$this->config      = $GLOBALS['egw']->config->config_data;
+			$this->categories = $GLOBALS['egw']->categories;
+			$this->config = config::read('bookmarks');
 			$this->url_format_check = True;
 			$this->validate =& CreateObject('phpgwapi.validator');
 
-			$this->translation = &$GLOBALS['egw']->translation;
+			$this->translation = $GLOBALS['egw']->translation;
 			$this->charset = $this->translation->charset();
 		}
 
