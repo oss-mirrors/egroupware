@@ -175,10 +175,6 @@
 		 */
 		function createACLTable($_acl) 
 		{
-			if(!is_object($GLOBALS['egw']->html)) {
-				$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
-			}
-
 			$aclList = array('l','r','s','w','i','p','c','d','a');
 			$aclShortCuts = array(	'custom'	=> 'custom',
 									'lrs'		=> 'readable',
@@ -204,7 +200,7 @@
 						" onclick=\"xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateSingleACL','$accountName','$acl',this.checked); document.getElementById('predefinedFor_$accountName').options[0].selected=true\"</td>";
 				}
 
-				$selectFrom = $GLOBALS['egw']->html->select('identity', $accountAcl['RIGHTS'], $aclShortCuts, false, "id=\"predefinedFor_$accountName\" style='width: 100px;' onChange=\"xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateACL','$accountName',this.value)\"");
+				$selectFrom = html::select('identity', $accountAcl['RIGHTS'], $aclShortCuts, false, "id=\"predefinedFor_$accountName\" style='width: 100px;' onChange=\"xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateACL','$accountName',this.value)\"");
 
 				$row .= "<td>$selectFrom</td>";
 				
@@ -665,10 +661,7 @@
 			}
 			
 			if(count($tableRows) > 0) {
-				if(!is_object($GLOBALS['egw']->html)) {
-					$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
-				}
-				$table = $GLOBALS['egw']->html->table($tableRows, "style='width:100%'");
+				$table = html::table($tableRows, "style='width:100%'");
 			}
 
 			$response =& new xajaxResponse();
@@ -736,22 +729,12 @@
 		
 		function searchAddress($_searchString) 
 		{
-			if (!is_object($GLOBALS['egw']->contacts)) {
-				$GLOBALS['egw']->contacts =& CreateObject('phpgwapi.contacts');
-			}
-			if (method_exists($GLOBALS['egw']->contacts,'search')) {	// 1.3+
-				$contacts = $GLOBALS['egw']->contacts->search(array(
-					'n_fn'       => $_searchString,
-					'email'      => $_searchString,
-					'email_home' => $_searchString,
-				),array('n_fn','email','email_home'),'n_fn','','%',false,'OR',array(0,20));
-			} else {	// < 1.3
-				$contacts = $GLOBALS['egw']->contacts->read(0,20,array(
-					'fn' => 1,
-					'email' => 1,
-					'email_home' => 1,
-				), $_searchString, 'tid=n', '', 'fn');
-			}
+			$contacts = $GLOBALS['egw']->contacts->search(array(
+				'n_fn'       => $_searchString,
+				'email'      => $_searchString,
+				'email_home' => $_searchString,
+			),array('n_fn','email','email_home'),'n_fn','','%',false,'OR',array(0,20));
+
 			$response =& new xajaxResponse();
 
 			if(is_array($contacts)) {

@@ -626,10 +626,6 @@
 		
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['egw']->js)) {
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
-
 			if($_GET['menuaction'] != 'felamimail.uidisplay.printMessage' &&
 				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody') {
 				$GLOBALS['egw']->js->validate_file('tabs','tabs');

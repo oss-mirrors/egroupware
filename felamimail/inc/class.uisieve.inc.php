@@ -322,10 +322,6 @@
 			else
 				$editMode	= 'filter';
 
-			if(!@is_object($GLOBALS['egw']->js))
-			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
 			$GLOBALS['egw']->js->validate_file('tabs','tabs');
 			$GLOBALS['egw']->js->validate_file('jscode','editProfile','felamimail');
 			$GLOBALS['egw']->js->validate_file('jscode','listSieveRules','felamimail');
@@ -789,10 +785,6 @@
 		
 		function selectFolder()
 		{
-			if(!@is_object($GLOBALS['egw']->js))
-			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');                        
 			$GLOBALS['egw']->js->validate_file('jscode','editSieveRule','felamimail');

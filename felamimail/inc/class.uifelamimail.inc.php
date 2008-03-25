@@ -178,12 +178,6 @@
 		
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['egw']->js)) {
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
-			if(!@is_object($GLOBALS['egw']->html)) {
-				$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
-			}
 			#$GLOBALS['egw']->js->validate_file('foldertree','foldertree');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
@@ -352,7 +346,7 @@
 			if(is_array($vacation) && $vacation['status'] == 'on')
 			{
 				$this->t->set_var('vacation_warning',
-					$GLOBALS['egw']->html->image('phpgwapi','dialog_warning',false,'style="vertical-align: middle; width: 16px;"').lang('Vacation notice is active'));
+					html::image('phpgwapi','dialog_warning',false,'style="vertical-align: middle; width: 16px;"').lang('Vacation notice is active'));
 			}
 			else
 			{
@@ -457,7 +451,7 @@
 			foreach ($listOfImages as $image) {
 				$this->t->set_var($image, $GLOBALS['egw']->common->image('felamimail', $image));
 			}
-			$this->t->set_var('img_clear_left', $GLOBALS['egw']->html->image('felamimail', 'clear_left', lang('clear search'), 'style="margin-left:5px; cursor: pointer;" onclick="fm_clearSearch()"'));
+			$this->t->set_var('img_clear_left', html::image('felamimail', 'clear_left', lang('clear search'), 'style="margin-left:5px; cursor: pointer;" onclick="fm_clearSearch()"'));
 			// refresh settings
 			$refreshTime = $userPreferences['refreshTime'];
 			$this->t->set_var('refreshTime',$refreshTime*60*1000);
@@ -529,7 +523,7 @@
 				'to'		=> 'to',
 				'cc'		=> 'cc',
 			);
-			$selectSearchType = $GLOBALS['egw']->html->select('searchType', $defaultSearchType, $searchTypes, false, "style='width:100%;' id='searchType' onchange='document.getElementById(\"quickSearch\").focus(); document.getElementById(\"quickSearch\").value=\"\" ;return false;'");
+			$selectSearchType = html::select('searchType', $defaultSearchType, $searchTypes, false, "style='width:100%;' id='searchType' onchange='document.getElementById(\"quickSearch\").focus(); document.getElementById(\"quickSearch\").value=\"\" ;return false;'");
 			$this->t->set_var('select_search', $selectSearchType);
 			
 			$statusTypes = array(
@@ -540,7 +534,7 @@
 				'seen'		=> 'read',
 				'deleted'	=> 'deleted',
 			);
-			$selectStatus = $GLOBALS['egw']->html->select('status', $defaultSelectStatus, $statusTypes, false, "style='width:100%;' onchange='javascript:quickSearch();' id='status'");
+			$selectStatus = html::select('status', $defaultSelectStatus, $statusTypes, false, "style='width:100%;' onchange='javascript:quickSearch();' id='status'");
 			$this->t->set_var('select_status', $selectStatus);
 
 			if($this->connectionStatus === false) {

@@ -63,11 +63,6 @@
 		// $_displayNavbar false == don't display navbar
 		function display_app_header($_displayNavbar)
 		{
-			if(!@is_object($GLOBALS['egw']->js))
-			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
-			
 			switch($_GET['menuaction'])
 			{
 				case 'felamimail.uipreferences.editSignature':

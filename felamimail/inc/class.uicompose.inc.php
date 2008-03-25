@@ -195,7 +195,7 @@
 				if($singleIdentity->default)
 					$defaultIdentity = $key;
 			}
-			$selectFrom = $GLOBALS['egw']->html->select('identity', $defaultIdentity, $identities, true, "style='width:100%;'");			
+			$selectFrom = html::select('identity', $defaultIdentity, $identities, true, "style='width:100%;'");			
 			$this->t->set_var('select_from', $selectFrom);
 
 			// from, to, cc, replyto
@@ -209,7 +209,7 @@
 			$destinationRows = 0;
 			foreach(array('to','cc','bcc','replyto') as $destination) {
 				foreach((array)$sessionData[$destination] as $key => $value) {
-					$selectDestination = $GLOBALS['egw']->html->select('destination[]', $destination, $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+					$selectDestination = html::select('destination[]', $destination, $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
 					$this->t->set_var('select_destination', $selectDestination);
 					$this->t->set_var('address', @htmlentities($value, ENT_QUOTES, $this->displayCharset));
 					$this->t->parse('destinationRows','destination_row',True);
@@ -218,21 +218,21 @@
 			}
 			while($destinationRows < 3) {
 				// and always add one empty row
-				$selectDestination = $GLOBALS['egw']->html->select('destination[]', 'to', $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+				$selectDestination = html::select('destination[]', 'to', $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
 				$this->t->set_var('select_destination', $selectDestination);
 				$this->t->set_var('address', '');
 				$this->t->parse('destinationRows','destination_row',True);
 				$destinationRows++;
 			}
 			// and always add one empty row
-			$selectDestination = $GLOBALS['egw']->html->select('destination[]', 'to', $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+			$selectDestination = html::select('destination[]', 'to', $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
 			$this->t->set_var('select_destination', $selectDestination);
 			$this->t->set_var('address', '');
 			$this->t->parse('destinationRows','destination_row',True);
 
 			$this->t->set_var("subject",@htmlentities($sessionData['subject'],ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var('addressbookImage',$GLOBALS['egw']->common->image('phpgwapi/templates/phpgw_website','users'));
-			$this->t->set_var('infologImage',$GLOBALS['egw']->html->image('felamimail','to_infolog',lang('Save as infolog'),'width="17px" height="17px" valign="middle"' ));
+			$this->t->set_var('infologImage',html::image('felamimail','to_infolog',lang('Save as infolog'),'width="17px" height="17px" valign="middle"' ));
 			$this->t->set_var('lang_save_as_infolog',lang('Save as infolog'));
 			$this->t->set_var('lang_no_recipient',lang('No recipient address given!'));
 			$this->t->set_var('lang_no_subject',lang('No subject given!'));
@@ -242,14 +242,14 @@
 			// body
 			if($sessionData['mimeType'] == 'html') {
 				$style="border:0px; width:100%; height:400px;";
-			#	$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'simple', $sessionData['body'], $style));
+			#	$this->t->set_var('tinymce', html::tinymceQuick('body', 'simple', $sessionData['body'], $style));
 				$cleanHTMLBody = $this->getCleanHTML($sessionData['body']);
-				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'simple', $cleanHTMLBody));
+				$this->t->set_var('tinymce', html::fckEditorQuick('body', 'simple', $cleanHTMLBody));
 				$this->t->set_var('mimeType', 'html');
 			} else {
 				$style="border:0px; width:100%; height:400px;";
-			#	$this->t->set_var('tinymce', $GLOBALS['egw']->html->tinymceQuick('body', 'ascii', $sessionData['body'], $style));
-				$this->t->set_var('tinymce', $GLOBALS['egw']->html->fckEditorQuick('body', 'ascii', $sessionData['body']));
+			#	$this->t->set_var('tinymce', html::tinymceQuick('body', 'ascii', $sessionData['body'], $style));
+				$this->t->set_var('tinymce', html::fckEditorQuick('body', 'ascii', $sessionData['body']));
 				$this->t->set_var('mimeType', 'text');
 			}
 
@@ -263,7 +263,7 @@
 			foreach($signatures as $signature) {
 				$selectSignatures[$signature['fm_signatureid']] = $signature['fm_description'];
 			}
-			$selectBox = $GLOBALS['egw']->html->select('signatureID', $sessionData['signatureID'], $selectSignatures, true, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+			$selectBox = html::select('signatureID', $sessionData['signatureID'], $selectSignatures, true, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
 			$this->t->set_var("select_signature", $selectBox);
 			$this->t->pparse("out","body_input");
 
@@ -282,10 +282,7 @@
 				}
 				
 				if(count($tableRows) > 0) {
-					if(!is_object($GLOBALS['egw']->html)) {
-						$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
-					}
-					$table = $GLOBALS['egw']->html->table($tableRows, "style='width:100%'");
+					$table = html::table($tableRows, "style='width:100%'");
 				}
 				$this->t->set_var('attachment_rows',$table);
 			}
@@ -312,10 +309,6 @@
 
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['egw']->js))
-			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
 			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
@@ -508,10 +501,6 @@
 		
 		function selectFolder()
 		{
-			if(!@is_object($GLOBALS['egw']->js))
-			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');                        
 			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');

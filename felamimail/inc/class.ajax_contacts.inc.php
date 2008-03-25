@@ -21,9 +21,6 @@
 		}
 		
 		function searchAddress($_searchString) {
-			if (!is_object($GLOBALS['egw']->contacts)) {
-				$GLOBALS['egw']->contacts =& CreateObject('phpgwapi.contacts');
-			}
 			if (method_exists($GLOBALS['egw']->contacts,'search')) {
 				// 1.3+
 				$contacts = $GLOBALS['egw']->contacts->search(array(
