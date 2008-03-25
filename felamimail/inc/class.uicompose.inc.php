@@ -115,25 +115,26 @@
 			// read the data from session
 			// all values are empty for a new compose window
 			$sessionData = $this->bocompose->getSessionData();
-			if (is_array($_GET['preset']))
+
+			if (is_array($_REQUEST['preset']))
 			{
-				if ($_GET['preset']['file'] && is_readable($_GET['preset']['file']))
+				if ($_REQUEST['preset']['file'] && is_readable($_REQUEST['preset']['file']))
 				{
-					$this->bocompose->addAttachment(array_merge($sessionData,$_GET['preset']));
+					$this->bocompose->addAttachment(array_merge($sessionData,$_REQUEST['preset']));
 					$sessionData = $this->bocompose->getSessionData();
 				}
 				foreach(array('to','cc','bcc','subject','body') as $name)
 				{
-					if ($_GET['preset'][$name]) $sessionData[$name] = $_GET['preset'][$name];
+					if ($_REQUEST['preset'][$name]) $sessionData[$name] = $_REQUEST['preset'][$name];
 				}
 			}
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			#_debug_array($preferences);
 			
 			// is the to address set already?
-			if (!empty($_GET['send_to']))
+			if (!empty($_REQUEST['send_to']))
 			{
-				$sessionData['to'] = base64_decode($_GET['send_to']);
+				$sessionData['to'] = base64_decode($_REQUEST['send_to']);
 			}			
 			$this->display_app_header();
 			
