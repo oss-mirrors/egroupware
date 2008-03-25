@@ -35,11 +35,6 @@
 			$this->nextmatchs =& CreateObject('phpgwapi.nextmatchs');
 			$GLOBALS['egw']->translation->add_app('developer_tools');
 			$GLOBALS['egw']->translation->add_app('common');
-			if (!is_object($GLOBALS['egw']->html))
-			{
-				$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
-			}
-			$this->html = $GLOBALS['egw']->html;
 		}
 
 		function addphrase()
@@ -214,7 +209,7 @@
 				{
 					$mess_id  = $this->encode_id($key);
 					$this->template->set_var('mess_id',$mess_id);
-					$this->template->set_var('source_content',$this->html->htmlspecialchars($data['content']));
+					$this->template->set_var('source_content',html::htmlspecialchars($data['content']));
 					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],"transapp[$mess_id]"));
 					$this->template->set_var('tr_class',$this->nextmatchs->alternate_row_color('',true));
 					$this->template->pfp('out','detail');
@@ -432,8 +427,8 @@
 				while(list($key,$data) = @each($langarray))
 				{
 					$mess_id  = $this->encode_id($key);
-					$content  = $this->html->htmlspecialchars($mess_id == 'charset' ? $mess_id : $data['content']);
-					$transy   = $this->html->htmlspecialchars($translation[$key]['content']);
+					$content  = html::htmlspecialchars($mess_id == 'charset' ? $mess_id : $data['content']);
+					$transy   = html::htmlspecialchars($translation[$key]['content']);
 					$this->template->set_var('mess_id',$mess_id);
 					$this->template->set_var('source_content',$content);
 					$this->template->set_var('content',$transy);
