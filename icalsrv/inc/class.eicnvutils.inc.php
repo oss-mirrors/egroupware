@@ -527,11 +527,6 @@ END:VTODO
 			}
 			if ($aid{0} == 'c')	// contact
 			{
-				if (!is_object($GLOBALS['egw']->contacts))
-				{
-					require_once(EGW_API_INC.'/class.contacts.inc.php');
-					$GLOBALS['egw']->contacts =& new contacts;
-				}
 				if (($data = $GLOBALS['egw']->contacts->read(substr($aid,1))))
 				{
 					return 'MAILTO:'.($data['email'] ? $data['email'] : $data['email_home']);
@@ -559,11 +554,6 @@ END:VTODO
 			}
 			elseif($account_id{0} == 'c')	// contact
 			{
-				if (!is_object($GLOBALS['egw']->contacts))
-				{
-					require_once(EGW_API_INC.'/class.contacts.inc.php');
-					$GLOBALS['egw']->contacts =& new contacts;
-				}
 				if (($data = $GLOBALS['egw']->contacts->read(substr($account_id,1))))
 				{
 					$cns = $data['n_fn'] ? $data['n_fn'] : trim($data['n_given'].' '.$data['n_family']);
@@ -886,12 +876,6 @@ END:VTODO
 			if (empty($cnames))
 			{
 				return false;
-			}
-
-			if (!is_object($catsys =& $GLOBALS['egw']->categories))
-			{
-				$GLOBALS['egw']->categories =& CreateObject('phpgwapi.categories',
-				$owner_id,$app_name);
 			}
 
 			$catsys =& $GLOBALS['egw']->categories;
@@ -1260,11 +1244,6 @@ END:VTODO
 			}
 			if($matches[1])		// try if a contact exists
 			{
-				if (!is_object($GLOBALS['egw']->contacts))
-				{
-					require_once(EGW_API_INC.'/class.contacts.inc.php');
-					$GLOBALS['egw']->contacts =& new contacts;
-				}
 				if (($found = $GLOBALS['egw']->contacts->search(array(
 						'email' => $matches[1],
 						'email_home' => $matches[1],
