@@ -1259,12 +1259,12 @@
 			$this->reopen($_folderName);
 			$this->icServer->selectMailbox($_folderName);
 			
-		#	print "<pre>";
-		#	$this->icServer->setDebug(true);
+			#print "<pre>";
+			#$this->icServer->setDebug(true);
 			
 			$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter);
-		#	$this->icServer->setDebug(false);
-		#	print "</pre>";
+			#$this->icServer->setDebug(false);
+			#print "</pre>";
 			// nothing found
 			if(!is_array($sortResult) || empty($sortResult)) {
 				$retValue = array();
@@ -1302,68 +1302,77 @@
 			}
 
 			$count = 0;
-			
-			foreach((array)$headersNew as $headerObject) {
-				#if($count == 0) _debug_array($headerObject);
-				$uid = $headerObject['UID'];
-				
-				// make dates like "Mon, 23 Apr 2007 10:11:06 UT" working with strtotime
-				if(substr($headerObject['DATE'],-2) === 'UT') {
-					$headerObject['DATE'] .= 'C';
-				}
-
-				$retValue['header'][$sortOrder[$uid]]['subject']	= $this->decode_header($headerObject['SUBJECT']);
-				$retValue['header'][$sortOrder[$uid]]['size'] 		= $headerObject['SIZE'];
-				$retValue['header'][$sortOrder[$uid]]['date']		= strtotime($headerObject['DATE']);
-				$retValue['header'][$sortOrder[$uid]]['mimetype']	= $headerObject['MIMETYPE'];
-				$retValue['header'][$sortOrder[$uid]]['id']		= $headerObject['MSG_NUM'];
-				$retValue['header'][$sortOrder[$uid]]['uid']		= $headerObject['UID'];
-				$retValue['header'][$sortOrder[$uid]]['recent']		= in_array('\\Recent', $headerObject['FLAGS']);
-				$retValue['header'][$sortOrder[$uid]]['flagged']	= in_array('\\Flagged', $headerObject['FLAGS']);
-				$retValue['header'][$sortOrder[$uid]]['answered']	= in_array('\\Answered', $headerObject['FLAGS']);
-				$retValue['header'][$sortOrder[$uid]]['deleted']	= in_array('\\Deleted', $headerObject['FLAGS']);
-				$retValue['header'][$sortOrder[$uid]]['seen']		= in_array('\\Seen', $headerObject['FLAGS']);
-				$retValue['header'][$sortOrder[$uid]]['draft']		= in_array('\\Draft', $headerObject['FLAGS']);
-				
-				if(is_array($headerObject['FROM'][0])) {
-					if($headerObject['FROM'][0]['HOST_NAME'] != 'NIL') {
-						$retValue['header'][$sortOrder[$uid]]['sender_address'] = $headerObject['FROM'][0]['EMAIL'];
-					} else {
-						$retValue['header'][$sortOrder[$uid]]['sender_address'] = $headerObject['FROM'][0]['MAILBOX_NAME'];
-					}
-					if($headerObject['FROM'][0]['PERSONAL_NAME'] != 'NIL') {
-						$retValue['header'][$sortOrder[$uid]]['sender_name'] = $this->decode_header($headerObject['FROM'][0]['PERSONAL_NAME']);
-					}
+			if (is_array($headersNew)) {	
+				foreach((array)$headersNew as $headerObject) {
+					#if($count == 0) _debug_array($headerObject);
+					$uid = $headerObject['UID'];
 					
-				}
-
-				if(is_array($headerObject['TO'][0])) {
-					if($headerObject['TO'][0]['HOST_NAME'] != 'NIL') {
-						$retValue['header'][$sortOrder[$uid]]['to_address'] = $headerObject['TO'][0]['EMAIL'];
-					} else {
-						$retValue['header'][$sortOrder[$uid]]['to_address'] = $headerObject['TO'][0]['MAILBOX_NAME'];
+					// make dates like "Mon, 23 Apr 2007 10:11:06 UT" working with strtotime
+					if(substr($headerObject['DATE'],-2) === 'UT') {
+						$headerObject['DATE'] .= 'C';
 					}
-					if($headerObject['TO'][0]['PERSONAL_NAME'] != 'NIL') {
-						$retValue['header'][$sortOrder[$uid]]['to_name'] = $this->decode_header($headerObject['TO'][0]['PERSONAL_NAME']);
-					}
-					
-				}
 
-				$count++;
-			}
-			
-			// sort the messages to the requested displayorder
-			if(is_array($retValue['header'])) {
-				ksort($retValue['header']);
-				$retValue['info']['total']	= $total;
-				$retValue['info']['first']	= $_startMessage;
-				$retValue['info']['last']	= $_startMessage + $count - 1 ;
-				return $retValue;
+					$retValue['header'][$sortOrder[$uid]]['subject']	= $this->decode_header($headerObject['SUBJECT']);
+					$retValue['header'][$sortOrder[$uid]]['size'] 		= $headerObject['SIZE'];
+					$retValue['header'][$sortOrder[$uid]]['date']		= strtotime($headerObject['DATE']);
+					$retValue['header'][$sortOrder[$uid]]['mimetype']	= $headerObject['MIMETYPE'];
+					$retValue['header'][$sortOrder[$uid]]['id']		= $headerObject['MSG_NUM'];
+					$retValue['header'][$sortOrder[$uid]]['uid']		= $headerObject['UID'];
+					if (is_array($headerObject['FLAGS'])) {
+						$retValue['header'][$sortOrder[$uid]]['recent']		= in_array('\\Recent', $headerObject['FLAGS']);
+						$retValue['header'][$sortOrder[$uid]]['flagged']	= in_array('\\Flagged', $headerObject['FLAGS']);
+						$retValue['header'][$sortOrder[$uid]]['answered']	= in_array('\\Answered', $headerObject['FLAGS']);
+						$retValue['header'][$sortOrder[$uid]]['deleted']	= in_array('\\Deleted', $headerObject['FLAGS']);
+						$retValue['header'][$sortOrder[$uid]]['seen']		= in_array('\\Seen', $headerObject['FLAGS']);
+						$retValue['header'][$sortOrder[$uid]]['draft']		= in_array('\\Draft', $headerObject['FLAGS']);
+					}
+					if(is_array($headerObject['FROM']) && is_array($headerObject['FROM'][0])) {
+						if($headerObject['FROM'][0]['HOST_NAME'] != 'NIL') {
+							$retValue['header'][$sortOrder[$uid]]['sender_address'] = $headerObject['FROM'][0]['EMAIL'];
+						} else {
+							$retValue['header'][$sortOrder[$uid]]['sender_address'] = $headerObject['FROM'][0]['MAILBOX_NAME'];
+						}
+						if($headerObject['FROM'][0]['PERSONAL_NAME'] != 'NIL') {
+							$retValue['header'][$sortOrder[$uid]]['sender_name'] = $this->decode_header($headerObject['FROM'][0]['PERSONAL_NAME']);
+						}
+						
+					}
+
+					if(is_array($headerObject['TO']) && is_array($headerObject['TO'][0])) {
+						if($headerObject['TO'][0]['HOST_NAME'] != 'NIL') {
+							$retValue['header'][$sortOrder[$uid]]['to_address'] = $headerObject['TO'][0]['EMAIL'];
+						} else {
+							$retValue['header'][$sortOrder[$uid]]['to_address'] = $headerObject['TO'][0]['MAILBOX_NAME'];
+						}
+						if($headerObject['TO'][0]['PERSONAL_NAME'] != 'NIL') {
+							$retValue['header'][$sortOrder[$uid]]['to_name'] = $this->decode_header($headerObject['TO'][0]['PERSONAL_NAME']);
+						}
+						
+					}
+
+					$count++;
+				}
+				
+				// sort the messages to the requested displayorder
+				if(is_array($retValue['header'])) {
+					ksort($retValue['header']);
+					$retValue['info']['total']	= $total;
+					$retValue['info']['first']	= $_startMessage;
+					$retValue['info']['last']	= $_startMessage + $count - 1 ;
+					return $retValue;
+				} else {
+					$retValue = array();
+					$retValue['info']['total']	= 0;
+					$retValue['info']['first']	= 0;
+					$retValue['info']['last']	= 0;
+					return $retValue;
+				}
 			} else {
+				error_log("bofelamimail::getHeaders -> retrieval of Message Details failed: ".print_r($headersNew,TRUE));
 				$retValue = array();
-				$retValue['info']['total']	= 0;
-				$retValue['info']['first']	= 0;
-				$retValue['info']['last']	= 0;
+				$retValue['info']['total']  = 0;
+				$retValue['info']['first']  = 0;
+				$retValue['info']['last']   = 0;
 				return $retValue;
 			}
 		}
