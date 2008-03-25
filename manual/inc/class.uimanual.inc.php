@@ -63,12 +63,6 @@ class uimanual extends uiwiki
 		$this->lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
 
 		$this->bowiki($this->wiki_id);
-		
-		if (!is_object($GLOBALS['egw']->html))
-		{
-			$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
-		}
-		$this->html =& $GLOBALS['egw']->html;
 	}
 
 	/**
@@ -124,12 +118,12 @@ class uimanual extends uiwiki
 			if ($app_page->read() === False) $app = false;
 		}
 		$html .= '<form action="'.$GLOBALS['egw']->link('/index.php',array('menuaction'=>'manual.uimanual.search')).'" method="POST">'.
-			(isset($_GET['referer']) ? $this->html->image('phpgwapi','left-grey',lang('Back')) :
-			$this->html->a_href($this->html->image('phpgwapi','left',lang('Back')),'','','onclick="history.back(); return false;"')).' | '.
+			(isset($_GET['referer']) ? html::image('phpgwapi','left-grey',lang('Back')) :
+			html::a_href(html::image('phpgwapi','left',lang('Back')),'','','onclick="history.back(); return false;"')).' | '.
 			'<a href="'.htmlspecialchars($this->viewURL('Manual')).'">'.lang('Index').'</a> | '.
 			($app ? '<a href="'.htmlspecialchars($this->viewUrl('Manual'.$app)).'">'.lang($app).'</a> | ' : '').
-			'<input name="search" value="'.$this->html->htmlspecialchars($_REQUEST['search']).'" />&nbsp;'.
-			'<input type="submit" name="go" value="'.$this->html->htmlspecialchars(lang('Search')).'" /></form>'."\n";
+			'<input name="search" value="'.html::htmlspecialchars($_REQUEST['search']).'" />&nbsp;'.
+			'<input type="submit" name="go" value="'.html::htmlspecialchars(lang('Search')).'" /></form>'."\n";
 		$html .= "<hr />\n";
 		
 		if ($title) $html .= '<p><b>'.$titel."</b></p>\n";
