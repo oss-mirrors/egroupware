@@ -531,7 +531,8 @@
 					if($bodyParts[$i]['mimeType'] == 'text/plain') {
 						$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
 					}
-					$this->sessionData['body'] .= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+					$this->sessionData['body'] .= self::getCleanHTML(
+						$this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']));
 				}
 
 				$this->sessionData['body']	.= '</blockquote><br>';
@@ -572,6 +573,110 @@
 			$bofelamimail->closeConnection();
 			
 			$this->saveSessionData();
+		}
+		
+		static function getCleanHTML($_body)
+		{
+			static $nonDisplayAbleCharacters = array('[\016]','[\017]',
+					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
+					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
+
+			$kses = new kses();
+			$kses->AddHTML('p', array(
+					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
+				)
+			);
+			$kses->AddHTML('div', array(
+					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
+				)
+			);
+			$kses->AddHTML('br');
+			$kses->AddHTML('b');
+			$kses->AddHTML('center');
+			$kses->AddHTML('em');
+			$kses->AddHTML('font', array(
+					'color'	=> array('minlen' =>   1, 'maxlen' =>  10)
+				)
+			);
+			$kses->AddHTML('i');
+			$kses->AddHTML("s");
+			$kses->AddHTML('strike');
+			$kses->AddHTML('strong');
+			$kses->AddHTML('u');
+			$kses->AddHTML('hr', array(
+					"class"		=> array('maxlen' => 20),
+					"style"		=> array('minlen' => 1),
+				)
+			);
+			$kses->AddHTML("ul");
+			$kses->AddHTML('ol', array(
+					"type"	=> array('maxlen' => 20)
+				)
+			);
+			$kses->AddHTML("li");
+			$kses->AddHTML("h1");
+			$kses->AddHTML("h2");
+			$kses->AddHTML('a', array(
+					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
+					"name" 		=> array('minlen' => 2),
+					'target'	=> array('maxlen' => 10)
+				)
+			);
+			$kses->AddHTML('pre', array(
+					"wrap" => array('maxlen' => 10)
+				)
+			);
+			
+			$kses->AddHTML(
+				"blockquote",array(
+					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
+					"style"	=> array("minlen" =>   1),
+					"cite"	=> array('maxlen' => 30),
+					"type"	=> array('maxlen' => 10),
+					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
+				)
+			);
+			
+			// tables
+			$kses->AddHTML('table');
+			$kses->AddHTML('tbody');
+			$kses->AddHTML('tr',array(
+				'valign' => array('minlen' => 1, 'maxlen' =>  10),
+				'class'	 => array('minlen' =>   1, 'maxlen' =>  50),
+				'height' => array('minlen' => 1, 'maxlen' =>  10),
+			));
+			$kses->AddHTML('td',array(
+				'class'	=> array('minlen' =>   1, 'maxlen' =>  50),
+				'colspan' => array("minlen" =>   1),
+				'align'  => array('minlen' => 1, 'maxlen' =>  10),
+				'width' => array('minlen' => 1, 'maxlen' =>  10),
+			));
+			$kses->AddHTML('style',array(
+				'type' => array('minlen' => 1, 'maxlen' =>  10),
+			));
+
+			// strip comments out of the message completely
+			if ($_body) {
+				$begin_comment=stripos($_body,'<!--');
+				while ($begin_comment!==FALSE) {
+					//since there is a begin tag there should be an end tag, starting somewhere at least 4 chars further down
+					$end_comment=stripos($_body,'-->',$begin_comment+4);
+					if ($end_comment !== FALSE) {
+						$_body=substr($_body,0,$begin_comment-1).substr($_body,$end_comment+3);
+					} else {
+						//somehow there is a begin tag of a comment but no end tag. throw it away
+						$_body=str_replace('<!--','',$_body);
+					}
+					$begin_comment=stripos($_body,'<!--');
+					if (strlen($_body)<$begin_comment) break;
+				}
+			}
+ 
+			$body	= $kses->Parse($_body);
+
+			$body	= preg_replace($nonDisplayAbleCharacters, '', $body);
+			
+			return $body;
 		}
 		
 		function getSessionData()
