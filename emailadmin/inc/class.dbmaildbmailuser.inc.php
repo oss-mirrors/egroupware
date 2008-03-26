@@ -29,10 +29,6 @@
 		function getUserData($_username) {
 			$userData = array();
 			
-			if (!is_object($GLOBALS['egw']->ldap)) {
-				$GLOBALS['egw']->ldap =& CreateObject('phpgwapi.ldap');
-			}
-
 			$ds = $GLOBALS['egw']->ldap->ldapConnect(
 				$GLOBALS['egw_info']['server']['ldap_host'],
 				$GLOBALS['egw_info']['server']['ldap_root_dn'],
@@ -61,10 +57,6 @@
 				return false;
 			}
 			
-			if (!is_object($GLOBALS['egw']->ldap)) {
-				$GLOBALS['egw']->ldap =& CreateObject('phpgwapi.ldap');
-			}
-
 			$ds = $GLOBALS['egw']->ldap->ldapConnect(
 				$GLOBALS['egw_info']['server']['ldap_host'],
 				$GLOBALS['egw_info']['server']['ldap_root_dn'],
@@ -111,10 +103,6 @@
 		}
 
 		function setUserData($_username, $_quota) {
-			if (!is_object($GLOBALS['egw']->ldap)) {
-				$GLOBALS['egw']->ldap =& CreateObject('phpgwapi.ldap');
-			}
-
 			$ds = $GLOBALS['egw']->ldap->ldapConnect(
 				$GLOBALS['egw_info']['server']['ldap_host'],
 				$GLOBALS['egw_info']['server']['ldap_root_dn'],

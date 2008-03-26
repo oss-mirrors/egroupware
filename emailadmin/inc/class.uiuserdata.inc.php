@@ -29,10 +29,6 @@
 	
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['egw']->js))
-			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
 			$GLOBALS['egw']->js->validate_file('jscode','editUserdata','emailadmin');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 
@@ -42,10 +38,6 @@
 
 		function editUserData($_useCache='0')
 		{
-			if(!is_object($GLOBALS['egw']->html)) {
-				$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
-			}
-			                                                        
 			$accountID = $_GET['account_id'];			
 			$GLOBALS['account_id'] = $accountID;
 
@@ -90,7 +82,7 @@
 				foreach((array)$userData['mailAlternateAddress'] as $data) {
 					$addresses[$data] = $data;
 				}
-				$this->t->set_var('selectbox_mailAlternateAddress', $GLOBALS['egw']->html->select(
+				$this->t->set_var('selectbox_mailAlternateAddress', html::select(
 					'mailAlternateAddress',
 					'',
 					$addresses, 
@@ -103,7 +95,7 @@
 				foreach((array)$userData['mailForwardingAddress'] as $data) {
 					$addresses[$data] = $data;
 				}
-				$this->t->set_var('selectbox_mailRoutingAddress', $GLOBALS['egw']->html->select(
+				$this->t->set_var('selectbox_mailRoutingAddress', html::select(
 					'mailForwardingAddress',
 					'',
 					$addresses, 
@@ -136,7 +128,7 @@
 				$this->t->set_var("account_checked",'');
 				$this->t->set_var("forwardOnly_checked",'');
 
-				$this->t->set_var('selectbox_mailAlternateAddress', $GLOBALS['egw']->html->select(
+				$this->t->set_var('selectbox_mailAlternateAddress', html::select(
 					'mailAlternateAddress',
 					'',
 					array(), 
@@ -145,7 +137,7 @@
 					5)
 				);
 			
-				$this->t->set_var('selectbox_mailRoutingAddress', $GLOBALS['egw']->html->select(
+				$this->t->set_var('selectbox_mailRoutingAddress', html::select(
 					'mailForwardingAddress',
 					'',
 					array(), 

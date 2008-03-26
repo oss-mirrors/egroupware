@@ -68,8 +68,8 @@
 			#$this->t->set_var('profile_name',$profileList[0]['description']);
 			$this->t->set_var('smtpActiveTab','1');
 			$this->t->set_var('imapActiveTab','2');	// IMAP
-			$this->t->set_var('application_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_appname]','',$applications, true, "style='width: 250px;'"));
-			$this->t->set_var('group_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_group]','',$allGroups, true, "style='width: 250px;'"));
+			$this->t->set_var('application_select_box', html::select('globalsettings[ea_appname]','',$applications, true, "style='width: 250px;'"));
+			$this->t->set_var('group_select_box', html::select('globalsettings[ea_group]','',$allGroups, true, "style='width: 250px;'"));
 			
 			$linkData = array
 			(
@@ -83,7 +83,7 @@
 			);
 			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
-			$this->t->set_var('smtptype',$GLOBALS['egw']->html->select(
+			$this->t->set_var('smtptype',html::select(
 				'smtpsettings[smtpType]',
 				$profileData['smtpType'], 
 				$this->boemailadmin->getSMTPServerTypes(),
@@ -94,7 +94,7 @@
 			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value) {
 				$imapServerTypes[$key] = $value['description'];
 			};
-			$selectFrom = $GLOBALS['egw']->html->select(
+			$selectFrom = html::select(
 				'imapsettings[imapType]', 
 				'', 
 				$imapServerTypes, 
@@ -156,10 +156,6 @@
 		
 		function display_app_header()
 		{
-			if(!@is_object($GLOBALS['egw']->js))
-			{
-				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
-			}
 			$GLOBALS['egw']->js->validate_file('tabs','tabs');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 
@@ -186,10 +182,6 @@
 		}
 
 		function editProfile($_profileID='') {
-			if(!is_object($GLOBALS['egw']->html)) {
-				$GLOBALS['egw']->html =& CreateObject('phpgwapi.html');
-			}
-			                                                        
 			$allGroups = $GLOBALS['egw']->accounts->get_list('groups');
 			foreach($allGroups as $groupInfo)
 			{
@@ -264,10 +256,10 @@
 						$this->t->set_var('selected_'.$key.'_'.$value,'selected="1"');
 						break;
 					case 'ea_appname':
-						$this->t->set_var('application_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_appname]',$value,$applications, true, "style='width: 250px;'"));
+						$this->t->set_var('application_select_box', html::select('globalsettings[ea_appname]',$value,$applications, true, "style='width: 250px;'"));
 						break;
 					case 'ea_group':
-						$this->t->set_var('group_select_box', $GLOBALS['egw']->html->select('globalsettings[ea_group]',$value,$allGroups, true, "style='width: 250px;'"));
+						$this->t->set_var('group_select_box', html::select('globalsettings[ea_group]',$value,$allGroups, true, "style='width: 250px;'"));
 						break;
 					default:
 						$this->t->set_var('value_'.$key,$value);
@@ -288,7 +280,7 @@
 			);
 			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
-			$this->t->set_var('smtptype',$GLOBALS['egw']->html->select(
+			$this->t->set_var('smtptype',html::select(
 				'smtpsettings[smtpType]',
 				$profileData['smtpType'], 
 				$this->boemailadmin->getSMTPServerTypes(),
@@ -298,7 +290,7 @@
 			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value) {
 				$imapServerTypes[$key] = $value['description'];
 			};
-			$selectFrom = $GLOBALS['egw']->html->select(
+			$selectFrom = html::select(
 				'imapsettings[imapType]', 
 				$profileData['imapType'], 
 				$imapServerTypes, 
@@ -309,7 +301,7 @@
 			$this->t->set_var('imaptype', $selectFrom);
 
 						$style="width:100%; border:0px; height:150px;";
-						$this->t->set_var('signature', $GLOBALS['egw']->html->fckEditorQuick(
+						$this->t->set_var('signature', html::fckEditorQuick(
 							'globalsettings[ea_default_signature]', 'simple',
 							$profileData['ea_default_signature'], '150px')
 						);
