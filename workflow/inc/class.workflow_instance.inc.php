@@ -10,7 +10,7 @@
 	{
 		function workflow_Instance()
 		{
-			parent::Instance($GLOBALS['egw']->ADOdb);
+			parent::Instance($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>

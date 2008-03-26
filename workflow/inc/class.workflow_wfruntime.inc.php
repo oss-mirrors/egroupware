@@ -8,7 +8,7 @@
 	{
 		function workflow_wfruntime()
 		{
-			parent::WfRuntime($GLOBALS['egw']->ADOdb);
+			parent::WfRuntime($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>

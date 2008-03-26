@@ -8,7 +8,7 @@
 	{
 		function workflow_wfsecurity()
 		{
-			parent::WfSecurity($GLOBALS['egw']->ADOdb);
+			parent::WfSecurity($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>

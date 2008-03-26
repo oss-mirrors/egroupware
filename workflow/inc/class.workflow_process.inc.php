@@ -8,7 +8,7 @@
 	{
 		function workflow_process()
 		{
-			parent::Process($GLOBALS['egw']->ADOdb);
+			parent::Process($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>

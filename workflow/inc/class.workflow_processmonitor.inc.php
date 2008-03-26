@@ -8,7 +8,7 @@
 	{
 		function workflow_processmonitor()
 		{
-			parent::ProcessMonitor($GLOBALS['egw']->ADOdb);
+			parent::ProcessMonitor($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>

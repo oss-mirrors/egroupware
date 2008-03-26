@@ -23,7 +23,7 @@ class Base extends Observable {
     //Force transactionnal mysql (Innodb) -> mysqlt
     if ($db->databaseType=='mysql')
     {
-    	$GLOBALS['egw']->db->disconnect();
+    	$db->disconnect();
     	$db = $GLOBALS['egw']->db->connect(
 			$GLOBALS['egw_info']['server']['db_name'],
 			$GLOBALS['egw_info']['server']['db_host'],

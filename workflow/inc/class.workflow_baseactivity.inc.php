@@ -8,7 +8,7 @@
 	{
 		function workflow_baseactivity()
 		{
-			parent::BaseActivity($GLOBALS['egw']->ADOdb);
+			parent::BaseActivity($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>

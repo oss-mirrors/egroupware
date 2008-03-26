@@ -69,7 +69,7 @@
 			$this->GUI		=& CreateObject('workflow.workflow_gui');
 			$this->categories 	=& CreateObject('phpgwapi.categories');
 			// TODO: open a new connection to the database under a different username to allow privilege handling on tables
-			$this->db 		=& $GLOBALS['egw']->ADOdb;
+			$this->db 		=& $GLOBALS['egw']->db->link_id();
 		}
 
 		/**

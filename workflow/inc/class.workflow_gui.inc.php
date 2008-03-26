@@ -11,7 +11,7 @@
 	{
 		function workflow_gui()
 		{
-			parent::GUI($GLOBALS['egw']->ADOdb);
+			parent::GUI($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>

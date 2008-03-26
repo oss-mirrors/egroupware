@@ -11,7 +11,7 @@
 	{
 		function workflow_processmanager()
 		{
-			parent::ProcessManager($GLOBALS['egw']->ADOdb);
+			parent::ProcessManager($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>

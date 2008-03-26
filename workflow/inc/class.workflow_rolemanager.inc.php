@@ -8,7 +8,7 @@
 	{
 		function workflow_rolemanager()
 		{
-			parent::RoleManager($GLOBALS['egw']->ADOdb);
+			parent::RoleManager($GLOBALS['egw']->db->link_id());
 		}
 	}
 ?>
