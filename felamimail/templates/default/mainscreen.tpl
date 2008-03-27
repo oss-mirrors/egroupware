@@ -180,7 +180,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); return false;" title="{full_subject}">{header_subject}</a>
 		</td>
 		<td class="mainscreenRow" width="95px" align="center">
-			<nobr><span style="font-size:10px">{date}</span>
+			<nobr><span style="font-size:10px" title="{datetime}">{date}</span>
 		</td>
 		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;" width="120px"><nobr>
 			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>
@@ -213,7 +213,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); parentNode.parentNode.parentNode.style.fontWeight='normal'; return false;" title="{full_subject}">{header_subject}</a>
 		</td>
 		<td class="mainscreenRow" width="95px" align="center">
-			<nobr><span style="font-size:10px">{date}</span>
+			<nobr><span style="font-size:10px" title="{datetime}">{date}</span>
 		</td>
 		<td colspan=2 align="right" class="mainscreenRow" width="40px">
 			<span style="font-size:10px">{size}</span>
