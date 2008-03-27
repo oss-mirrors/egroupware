@@ -231,7 +231,7 @@
 			$i=0;
 			foreach((array)$_headers['header'] as $header)
 			{
-				#_debug_array($header);
+				//_debug_array($header);
 				#if($i<10) {$i++;continue;}
 				#if($i>20) {continue;} $i++;
 				// create the listing of subjects
@@ -341,11 +341,12 @@
 				$this->t->set_var('message_uid', $header['uid']);
 
 				if ($dateToday == date('Y-m-d', $header['date'])) {
-					$this->t->set_var('date', date('H:i:s', $header['date']));
+ 				    $this->t->set_var('date', $GLOBALS['egw']->common->show_date($header['date'],'H:i:s'));
 				} else {
-					$this->t->set_var('date', date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'], $header['date']));
+					$this->t->set_var('date', $GLOBALS['egw']->common->show_date($header['date'],$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']));
 				}
-				
+				$this->t->set_var('datetime', $GLOBALS['egw']->common->show_date($header['date']/*,$GLOBALS['egw_info']['user']['preferences']['common']['dateformat']*/));
+
 				$this->t->set_var('size', $this->show_readable_size($header['size']));
 
 				if($_folderType == 2) {
