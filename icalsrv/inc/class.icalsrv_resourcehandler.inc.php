@@ -289,7 +289,9 @@
 		all                         // the default
 		siemens/sx11
 		nexthaus corporation/
+		nexthaus corp/
 		sonyericsson/
+		sony ericsson/
 		multisync/
 		...
 		remotecalendars/

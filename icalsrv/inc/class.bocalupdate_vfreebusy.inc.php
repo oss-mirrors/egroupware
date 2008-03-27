@@ -531,6 +531,7 @@
 			switch(strtolower($_productManufacturer))
 			{
 				case 'nexthaus corporation':
+				case 'nexthaus corp':
 					switch(strtolower($_productName))
 					{
 						default:
