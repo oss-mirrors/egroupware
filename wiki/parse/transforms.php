@@ -126,6 +126,8 @@ function new_entity($array)
 function parse_wikiname($text, $validate = 0)
 {
 	global $LinkPtn, $EnableWikiLinks;
+	
+	if (is_object($text)) $text = $test->name;
 
 	if(!$EnableWikiLinks) { return $text; }
 
