@@ -79,6 +79,10 @@ function get_title($page)
 	{
 		return $page['title'] ? $page['title'] : $page['name'];
 	}
+	elseif(is_object($page))
+	{
+		return $page->title ? $page->title : $page->name;
+	}
 	return $page;
 }
 
@@ -87,6 +91,10 @@ function get_name($page)
 	if (is_array($page))
 	{
 		return $page['name'] ? $page['name'] : $page['title'];
+	}
+	elseif(is_object($page))
+	{
+		return $page->name ? $page->name : $page->title;
 	}
 	return $page;
 }
@@ -127,7 +135,7 @@ function parse_wikiname($text, $validate = 0)
 {
 	global $LinkPtn, $EnableWikiLinks;
 	
-	if (is_object($text)) $text = $test->name;
+	$text = get_name($text);
 
 	if(!$EnableWikiLinks) { return $text; }
 
