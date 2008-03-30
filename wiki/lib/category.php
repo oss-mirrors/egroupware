@@ -15,7 +15,8 @@ function add_to_category($page, $catlist)
 	$pagenames = array();
 	preg_replace('/' . $FlgChr . '(\\d+)' . $FlgChr . '/e',
 							 '$pagenames[]=$Entity[\\1][1]', $parsed);
-
+	$page = get_name($page);
+	
 	if(validate_page($page) == 2)
 		{ $page = '((' . $page . '))'; }
 
@@ -45,7 +46,7 @@ function add_to_category($page, $catlist)
 		 
 			$pg->version++;
 			$pg->comment  = '';
-			$pg->hostname = gethostbyaddr($REMOTE_ADDR);
+			$pg->hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 			$pg->username = $UserName;
 
 			$pg->write();
