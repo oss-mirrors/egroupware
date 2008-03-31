@@ -569,7 +569,7 @@
 					'ea_group' => 0,
 				);
 			}
-			foreach(array(
+			foreach($to_parse = array(
 				'mail_server' => 'imapServer',
 				'mail_server_type' => array(
 					'imap' => array(
@@ -624,6 +624,9 @@
 					}
 				}
 			}
+			// merge the other not processed values unchanged
+			$profile = array_merge($profile,array_diff_assoc($settings,$to_parse));
+
 			$this->soemailadmin->updateProfile($profile);
 			//echo "<p>EMailAdmin profile update: ".print_r($profile,true)."</p>\n"; exit;
 		}
