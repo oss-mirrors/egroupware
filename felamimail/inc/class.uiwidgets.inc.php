@@ -244,6 +244,7 @@
 				if(!empty($header['recent'])) $flags .= "R";
 				if(!empty($header['flagged'])) $flags .= "F";
 				if(!empty($header['answered'])) $flags .= "A";
+				if(!empty($header['forwarded'])) $flags .= "W";
 				if(!empty($header['deleted'])) $flags .= "D";
 				if(!empty($header['seen'])) $flags .= "S";
 				
@@ -254,6 +255,8 @@
 					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgdel'));
 				} elseif($header['recent']) {
 					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgnew'));
+				} elseif($header['forwarded']) {
+					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgforwarded'));
 				} elseif($header['answered']) {
 					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgreplied'));
 				} elseif($header['seen']) {
