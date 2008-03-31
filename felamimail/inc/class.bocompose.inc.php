@@ -304,7 +304,7 @@
 			}
 
 			$this->sessionData['subject']	= $bofelamimail->decode_header($headers['SUBJECT']);
-
+			
 			$bodyParts = $bofelamimail->getMessageBody($_uid, $this->preferencesArray['always_display'], $_partID);
 			#_debug_array($bodyParts);
 
@@ -371,6 +371,9 @@
 			#_debug_array($headers); exit;
 			// check for Re: in subject header
 			$this->sessionData['subject'] 	= "[FWD] " . $bofelamimail->decode_header($headers['SUBJECT']);
+			$this->sessionData['sourceFolder']=$_folder;
+			$this->sessionData['forwardFlag']='forwarded';
+			$this->sessionData['forwardedUID']=$_uid;
 			$this->sessionData['mimeType']  = 'html';
 			if($headers['SIZE'])
 				$size				= $headers['SIZE'];
@@ -520,7 +523,7 @@
 
 			$fromAddress = ($headers['FROM'][0]['PERSONAL_NAME'] != 'NIL') ? $headers['FROM'][0]['RFC822_EMAIL'] : $headers['FROM'][0]['EMAIL'];
 			if($bodyParts['0']['mimeType'] == 'text/html') {
-				$this->sessionData['body']	= @htmlspecialchars($bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":" .'<br>';
+				$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":" .'<br>';
 				$this->sessionData['mimeType'] 	= 'html';
 				$this->sessionData['body']	.= '<blockquote type="cite">';
 
@@ -537,7 +540,7 @@
 
 				$this->sessionData['body']	.= '</blockquote><br>';
 			} else {
-				$this->sessionData['body']	= @htmlspecialchars($bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
+				$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
 				$this->sessionData['mimeType']	= 'plain';
 			
 				for($i=0; $i<count($bodyParts); $i++) {
@@ -950,8 +953,7 @@
 				}
 				$bofelamimail->closeConnection();
 			}
-
-			if(isset($this->sessionData['uid']) && isset($this->sessionData['messageFolder'])) {
+			if((isset($this->sessionData['uid']) && isset($this->sessionData['messageFolder'])) || (isset($this->sessionData['forwardFlag']) && isset($this->sessionData['sourceFolder']))) {
 				// mark message as answered
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection();
@@ -960,6 +962,10 @@
 					$bofelamimail->deleteMessages(array($this->sessionData['uid']));
 				} else {
 					$bofelamimail->flagMessages("answered", array($this->sessionData['uid']));
+					if (array_key_exists('forwardFlag',$this->sessionData) && $this->sessionData['forwardFlag']=='forwarded')
+					{
+						$bofelamimail->flagMessages("forwarded", array($this->sessionData['forwardedUID']));
+					}
 				}
 				$bofelamimail->closeConnection();
 			}
