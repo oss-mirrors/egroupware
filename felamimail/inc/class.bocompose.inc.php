@@ -523,7 +523,10 @@
 
 			$fromAddress = ($headers['FROM'][0]['PERSONAL_NAME'] != 'NIL') ? $headers['FROM'][0]['RFC822_EMAIL'] : $headers['FROM'][0]['EMAIL'];
 			if($bodyParts['0']['mimeType'] == 'text/html') {
-				$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":" .'<br>';
+				$this->sessionData['body']	= '----------------'.lang("original message").'-----------------<br>'.
+					@htmlspecialchars(lang("from").": ".$bofelamimail->decode_header($fromAddress),ENT_QUOTES)."<br>".
+					@htmlspecialchars(lang("date").": ".$headers['DATE'],ENT_QUOTES)."<br>".
+					'----------------------------------------------------------'."<br>";
 				$this->sessionData['mimeType'] 	= 'html';
 				$this->sessionData['body']	.= '<blockquote type="cite">';
 
@@ -540,7 +543,12 @@
 
 				$this->sessionData['body']	.= '</blockquote><br>';
 			} else {
-				$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
+				#$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
+                $this->sessionData['body']  = '----------------'.lang("original message").'-----------------'."\r\n".
+                    @htmlspecialchars(lang("from").": ".$bofelamimail->decode_header($fromAddress)."\r\n".
+					lang("date").": ".$headers['DATE'], ENT_QUOTES)."\r\n".
+                    '-------------------------------------------------'."\r\n";
+ 
 				$this->sessionData['mimeType']	= 'plain';
 			
 				for($i=0; $i<count($bodyParts); $i++) {
