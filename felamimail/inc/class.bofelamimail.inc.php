@@ -554,8 +554,10 @@
 
 		function flagMessages($_flag, $_messageUID)
 		{
+			#error_log("felamimail::bocompose::flagMessages");
 			if(!is_array($_messageUID)) {
-				return false;
+				#return false;
+				$_messageUID=array($_messageUID);
 			}
 			
 			$this->icServer->selectMailbox($this->sessionData['mailbox']);
@@ -567,6 +569,8 @@
 				case "read":
 					$this->icServer->setFlags($_messageUID, '\\Seen', 'add', true);
 					break;
+				case "forwarded":
+					$this->icServer->setFlags($_messageUID, '$Forwarded', 'add', true);
 				case "answered":
 					$this->icServer->setFlags($_messageUID, '\\Answered', 'add', true);
 					break;
@@ -576,6 +580,7 @@
 				case "unread":
 					$this->icServer->setFlags($_messageUID, '\\Seen', 'remove', true);
 					$this->icServer->setFlags($_messageUID, '\\Answered', 'remove', true);
+					$this->icServer->setFlags($_messageUID, '$Forwarded', 'remove', true);
 					break;
 			}
 			
@@ -1126,7 +1131,7 @@
 			
 			$partID = $_structure->partID;
 			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true);
-			if($_structure->subType == 'HTML' && $_htmlMode != 'always_display' && $_htmlMode != 'only_if_no_text') {
+			if($_structure->subType == 'HTML' && $_htmlMode != 'always_display'  && $_htmlMode != 'only_if_no_text') {
 				$bodyPart = array(
 					'body'		=> lang("displaying html messages is disabled"),
 					'mimeType'	=> 'text/html',
@@ -1322,6 +1327,7 @@
 						$retValue['header'][$sortOrder[$uid]]['recent']		= in_array('\\Recent', $headerObject['FLAGS']);
 						$retValue['header'][$sortOrder[$uid]]['flagged']	= in_array('\\Flagged', $headerObject['FLAGS']);
 						$retValue['header'][$sortOrder[$uid]]['answered']	= in_array('\\Answered', $headerObject['FLAGS']);
+						$retValue['header'][$sortOrder[$uid]]['forwarded']   = in_array('$Forwarded', $headerObject['FLAGS']);
 						$retValue['header'][$sortOrder[$uid]]['deleted']	= in_array('\\Deleted', $headerObject['FLAGS']);
 						$retValue['header'][$sortOrder[$uid]]['seen']		= in_array('\\Seen', $headerObject['FLAGS']);
 						$retValue['header'][$sortOrder[$uid]]['draft']		= in_array('\\Draft', $headerObject['FLAGS']);
