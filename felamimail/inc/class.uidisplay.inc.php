@@ -191,6 +191,7 @@
 			$this->t->set_block('displayMsg','message_navbar');
 			$this->t->set_block('displayMsg','message_onbehalfof');
 			$this->t->set_block('displayMsg','message_cc');
+			$this->t->set_block('displayMsg','message_bcc');
 			$this->t->set_block('displayMsg','message_attachement_row');
 			$this->t->set_block('displayMsg','previous_message_block');
 			$this->t->set_block('displayMsg','next_message_block');
@@ -413,6 +414,15 @@
 				$this->t->set_var("cc_data_part",'');
 			}
 
+			// parse the bcc header
+			if(count($envelope['BCC'])) {
+				$bccAddress = $this->emailAddressToHTML($envelope['BCC']);
+				$this->t->set_var("bcc_data",$bccAddress);
+				$this->t->parse('bcc_data_part','message_bcc',True);
+			} else {
+				$this->t->set_var("bcc_data_part",'');
+			}
+
 			$this->t->set_var("date_received",
 				@htmlspecialchars($GLOBALS['egw']->common->show_date(strtotime($headers['DATE'])),
 				ENT_QUOTES,$this->displayCharset));
@@ -452,8 +462,7 @@
 				foreach ($attachments as $key => $value)
 				{
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
-					$this->t->set_var('filename',$value['name'] ? @htmlentities($value['name'], ENT_QUOTES, $this->displayCharset) :
-						lang('(no subject)'));
+					$this->t->set_var('filename',$value['name'] ? $filename : lang('(no subject)'));
 					$this->t->set_var('mimetype',$value['mimeType']);
 					$this->t->set_var('size',$value['size']);
 					$this->t->set_var('attachment_number',$key);
@@ -589,7 +598,7 @@
 			$this->bofelamimail->closeConnection();
 			
 			header('Content-type: text/html; charset=iso-8859-1');
-			print '<pre>'. htmlspecialchars($rawheaders, ENT_QUOTES, 'iso-8859-1') .'</pre>';
+			print '<pre>'. htmlspecialchars($rawheaders, ENT_NOQUOTES, 'iso-8859-1') .'</pre>';
 
 		}
 
@@ -803,7 +812,6 @@
 			$nonDisplayAbleCharacters = array('[\016]','[\017]',
 					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
 					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
-
 			$this->kses->AddProtocol('cid');
 			$this->kses->AddHTML(
 				'p', array(
@@ -811,6 +819,7 @@
 				)
 			);
 			$this->kses->AddHTML("tbody");
+			$this->kses->AddHTML("thead");
 			$this->kses->AddHTML("tt");
 			$this->kses->AddHTML("br");
 			$this->kses->AddHTML("b");
@@ -823,7 +832,8 @@
 			$this->kses->AddHTML("center");
 			$this->kses->AddHTML(
 				"font",array(
-					"color"	=> array('maxlen' => 10)
+					"color"	=> array('maxlen' => 10),
+					"size"=>array('maxlen'=>2)
 				)
 			);
 			$this->kses->AddHTML(
@@ -846,6 +856,7 @@
 			$this->kses->AddHTML("li");
 			$this->kses->AddHTML("h1");
 			$this->kses->AddHTML("h2");
+			$this->kses->AddHTML("h3");
 			$this->kses->AddHTML(
 				"style",array(
 					"type"	=> array('maxlen' => 20)
@@ -946,6 +957,7 @@
 					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
 				)
 			);
+
 			$this->kses->AddHTML(
 				'img',array(
 					"src"		=> array("minlen" =>   4, 'maxlen' =>  60, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs'] ? '' : 'match' => '/^cid:.*/'),
@@ -1003,7 +1015,6 @@
 					$newBody	= $singleBodyPart['body'];
 					$newBody	= $this->highlightQuotes($newBody);
 					$newBody 	= $this->kses->Parse($newBody);
-
 					// create links for websites
 					#$newBody = preg_replace("/(?<!\>)((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
 					#	"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);

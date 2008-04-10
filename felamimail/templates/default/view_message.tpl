@@ -105,6 +105,17 @@ self.focus();
 </tr>
 <!-- END message_cc -->
 
+<!-- BEGIN message_bcc -->
+<tr>
+    <td width="100" style="font-weight:bold; font-size:10px;">
+        {lang_bcc}:
+    </td>
+    <td style="font-size:10px;" colspan="3">
+        {bcc_data}
+    </td>
+</tr>
+<!-- END message_bcc -->
+
 <!-- BEGIN message_onbehalfof -->
 <tr>
 	<td width="100" style="font-weight:bold; font-size:10px; vertical-align:top;">
@@ -153,7 +164,7 @@ self.focus();
 </tr>
 
 {cc_data_part}
-
+{bcc_data_part}
 </table>
 <!-- END message_header -->
 

@@ -522,9 +522,22 @@
 			#_debug_array($bodyParts);
 
 			$fromAddress = ($headers['FROM'][0]['PERSONAL_NAME'] != 'NIL') ? $headers['FROM'][0]['RFC822_EMAIL'] : $headers['FROM'][0]['EMAIL'];
+			$toAddressA = array();
+			$toAddress = '';
+			foreach ($headers['TO'] as $mailheader) {
+				$toAddressA[] =  ($mailheader['PERSONAL_NAME'] != 'NIL') ? $mailheader['RFC822_EMAIL'] : $mailheader['EMAIL'];
+			}
+			if (count($toAddressA)>0) $toAddress = @htmlspecialchars(lang("to").": ".$bofelamimail->decode_header(implode(', ', $toAddressA)),ENT_QUOTES).($bodyParts['0']['mimeType'] == 'text/html'?"<br>":"\r\n"); 
+			$ccAddressA = array();
+			$ccAddress = '';
+			foreach ($headers['CC'] as $mailheader) {
+				$ccAddressA[] =  ($mailheader['PERSONAL_NAME'] != 'NIL') ? $mailheader['RFC822_EMAIL'] : $mailheader['EMAIL'];
+			}
+			if (count($ccAddressA)>0) $ccAddress = @htmlspecialchars(lang("cc").": ".$bofelamimail->decode_header(implode(', ', $ccAddressA)),ENT_QUOTES).($bodyParts['0']['mimeType'] == 'text/html'?"<br>":"\r\n");
 			if($bodyParts['0']['mimeType'] == 'text/html') {
 				$this->sessionData['body']	= '----------------'.lang("original message").'-----------------<br>'.
 					@htmlspecialchars(lang("from").": ".$bofelamimail->decode_header($fromAddress),ENT_QUOTES)."<br>".
+					$toAddress.$ccAddress.
 					@htmlspecialchars(lang("date").": ".$headers['DATE'],ENT_QUOTES)."<br>".
 					'----------------------------------------------------------'."<br>";
 				$this->sessionData['mimeType'] 	= 'html';
@@ -545,8 +558,9 @@
 			} else {
 				#$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
                 $this->sessionData['body']  = '----------------'.lang("original message").'-----------------'."\r\n".
-                    @htmlspecialchars(lang("from").": ".$bofelamimail->decode_header($fromAddress)."\r\n".
-					lang("date").": ".$headers['DATE'], ENT_QUOTES)."\r\n".
+                    @htmlspecialchars(lang("from").": ".$bofelamimail->decode_header($fromAddress),ENT_QUOTES)."\r\n".
+					$toAddress.$ccAddress.
+					@htmlspecialchars(lang("date").": ".$headers['DATE'], ENT_QUOTES)."\r\n".
                     '-------------------------------------------------'."\r\n";
  
 				$this->sessionData['mimeType']	= 'plain';
@@ -944,6 +958,15 @@
 			$folder = array_unique($folder);
 
 			if (count($folder) > 0) {
+
+				foreach((array)$this->sessionData['bcc'] as $address) {
+					$address_array  = imap_rfc822_parse_adrlist($address,'');
+					foreach((array)$address_array as $addressObject) {
+						$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+						$mailAddr[] = array($emailAddress, $addressObject->personal);
+					}
+				}
+
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection();
 				foreach($folder as $folderName) {
@@ -954,8 +977,10 @@
 					} else {
 						$flags = '';
 					}
+					#$mailHeader=explode('From:',$mail->getMessageHeader());	
+					#$mailHeader[0].$mail->AddrAppend("Bcc",$mailAddr).'From:'.$mailHeader[1],
 					$bofelamimail->appendMessage($folderName,
-								$mail->getMessageHeader(),
+								$mail->AddrAppend("Bcc",$mailAddr).$mail->getMessageHeader(),
 								$mail->getMessageBody(),
 								$flags);
 				}
