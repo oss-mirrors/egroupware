@@ -158,7 +158,7 @@
 			{
 				if (@is_dir($fd.$fn.SEP))
 				{
-					if (($fn!='.')&&($fn!='..')&&($fn!='CVS'))
+					if (($fn!='.')&&($fn!='..')&&($fn!='CVS') && $fn != '.svn')
 					{
 						$this->parse_php_app($app,$fd.$fn.SEP);
 					}
