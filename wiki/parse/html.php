@@ -251,13 +251,7 @@ function html_url($url, $text)
 		{
 			return $url;
 		}
-		$parts = explode('/',substr($url,4));
-		$file = array_pop($parts);
-		$path = implode('/',$parts);
-		$linkdata['menuaction'] = 'filemanager.uifilemanager.view';
-		$linkdata['path'] = rawurlencode(base64_encode($path));
-		$linkdata['file'] = rawurlencode(base64_encode($file));
-		$url = $GLOBALS['egw']->link('/index.php',$linkdata);
+		$url = $GLOBALS['egw']->link(egw_vfs::download_url(substr($url,4)));
 	}
 	if($is_image)
 	{
