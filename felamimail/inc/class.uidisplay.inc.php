@@ -56,6 +56,26 @@
 
 		function uidisplay()
 		{
+			/* Having this defined in just one spot could help when changes need
+			 * to be made to the pattern
+			 * Make sure that the expression is evaluated case insensitively
+			 *
+			 * RFC2822 (and RFC822) defines the left side of an email address as (roughly):
+			 *  1*atext *("." 1*atext)
+			 * where atext is: a-zA-Z0-9!#$%&'*+-/=?^_`{|}~
+			 *
+			 * Here's pretty sophisticated IP matching:
+			 * $IPMatch = '(2[0-5][0-9]|1?[0-9]{1,2})';
+			 * $IPMatch = '\[?' . $IPMatch . '(\.' . $IPMatch . '){3}\]?';
+			 */
+			/* Here's enough: */
+			global $IP_RegExp_Match, $Host_RegExp_Match, $Email_RegExp_Match;
+			$IP_RegExp_Match = '\\[?[0-9]{1,3}(\\.[0-9]{1,3}){3}\\]?';
+			$Host_RegExp_Match = '('.$IP_RegExp_Match.'|[0-9a-z]([-.]?[0-9a-z])*\\.[a-z][a-z]+)';
+			$atext = '([a-z0-9!#$&%*+/=?^_`{|}~-]|&amp;)';
+			$dot_atom = $atext.'+(\.'.$atext.'+)*';
+			$Email_RegExp_Match = $dot_atom.'(%'.$Host_RegExp_Match.')?@'.$Host_RegExp_Match;
+
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
@@ -90,6 +110,52 @@
 
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
+		}
+
+		/**
+		 * Parses a body and converts all found email addresses to clickable links.
+		 *
+		 * @param string body the body to process, by ref
+		 * @return int the number of unique addresses found
+		 */
+		function parseEmail (&$body) {
+			global $Email_RegExp_Match;
+			$sbody     = $body;
+			$addresses = array();
+
+			/* Find all the email addresses in the body */
+			while(eregi($Email_RegExp_Match, $sbody, $regs)) {
+				$addresses[$regs[0]] = strtr($regs[0], array('&amp;' => '&'));
+				$start = strpos($sbody, $regs[0]) + strlen($regs[0]);
+				$sbody = substr($sbody, $start);
+			}
+
+			/* Replace each email address with a compose URL */
+			$lmail='';
+			foreach ($addresses as $text => $email) {
+				if ($lmail == $email) next($addresses);
+				#echo $text."#<br>";
+				#echo $email."#<br>";
+				$comp_uri = $this->makeComposeLink($email, $text);
+				$body = str_replace($text, $comp_uri, $body);
+				$lmail=$email;
+			}
+
+			/* Return number of unique addresses found */
+			return count($addresses);
+		}
+
+		function makeComposeLink($email,$text)
+		{
+			if (!$email || $email == '' || $email == ' ') return '';
+			if (!$text) $text = $email;
+			// create links for email addresses
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uicompose.compose'
+			);
+			$link = $GLOBALS['egw']->link('/index.php',$linkData);
+			return '<a href="'.$link.'&send_to='.base64_encode($email).'"><font color=\"blue\">'.$text.'</font></a>';
 		}
 		
 		function highlightQuotes($text, $level = 5)
@@ -999,13 +1065,7 @@
 						"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">ftp://$3$4</font></a>", $newBody);
 
 					// create links for email addresses
-					$linkData = array
-					(
-						'menuaction'    => 'felamimail.uicompose.compose'
-					);
-					$link = $GLOBALS['egw']->link('/index.php',$linkData);
-					$newBody = preg_replace("/(?<=\s{1}|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
-						"'<a href=\"$link&send_to='.base64_encode('$0').'\"><font color=\"blue\">$0</font></a>'", $newBody);
+					$this->parseEmail($newBody);
 
 					$newBody	= $this->highlightQuotes($newBody);
 					$newBody	= nl2br($newBody);
@@ -1044,14 +1104,12 @@
 						'menuaction'    => 'felamimail.uicompose.compose'
 					);
 					$link = $GLOBALS['egw']->link('/index.php',$linkData);
-					$newBody = preg_replace("/href=(\"|\')mailto:([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie", 
+					$newBody = preg_replace("/href=(\"|\')mailto:([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie",
 						"'href=\"$link&send_to='.base64_encode('$2').'\"'", $newBody);
 					#print "<pre>".htmlentities($newBody)."</pre><hr>";
 
-					$link = $GLOBALS['egw']->link('/index.php',$linkData);
-					#$newBody = preg_replace("/(?<!:)(?<=\s{1}|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
-					$newBody = preg_replace("/(?<!:)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))/ie", 
-						"'<a href=\"$link&send_to='.base64_encode('$0').'\"><font color=\"blue\">$0</font></a>'", $newBody);
+					// replace emails within the text with clickable links.
+					$this->parseEmail($newBody);
 				}
 				$body .= $newBody;
 				#print "<hr><pre>$body</pre><hr>";
