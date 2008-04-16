@@ -17,15 +17,15 @@
 	class soforum
 	{
 		var $debug=False;
-		
+
 		var $db;	/* @var $db db */
 		var $threads_table,$body_table,$forums_table,$categories_table;
 
 		function soforum()
 		{
-			$this->db = $GLOBALS['egw']->db;
+			$this->db = clone($GLOBALS['egw']->db);
 			$this->db->set_app('forum');
-			
+
 			foreach(array('threads','body','forums','categories') as $name)
 			{
 				$table = $name . '_table';
@@ -53,9 +53,9 @@
 			$data = array(
 				'name'	=> $cat['name'],
 				'descr'	=> $cat['descr']
-			);	
-			
-			
+			);
+
+
 			if($cat['id'])
 			{
 				$this->db->update($this->categories_table,$data,array('id' => $cat['id']),__LINE__,__FILE__);
@@ -148,7 +148,7 @@
 					'stat'		=> 0,
 					'n_replies'	=> 0,
 				),false,__LINE__,__FILE__);
-					
+
 			$this->db->update($this->threads_table,array(
 					'n_replies = n_replies+1'
 				),array(
@@ -284,7 +284,7 @@
 				'cat_id' => $cat_id,
 			);
 			if($forum_id) $where['id'] = $forum_id;
-			
+
 			$this->db->select($this->forums_table,'*',$where,__LINE__,__FILE__);
 			while($this->db->next_record())
 			{
