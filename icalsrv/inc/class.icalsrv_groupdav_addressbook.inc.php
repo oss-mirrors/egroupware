@@ -22,16 +22,16 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 	 * bo class of the application
 	 *
 	 * @var vcaladdressbook
-	 */	
+	 */
 	var $bo;
 
 	function icalsrv_groupdav_addressbook($debug=null)
 	{
 		$this->icalsrv_groupdav_handler('addressbook',$debug);
-		
+
 		$this->bo =& new bocontacts();
 	}
-	
+
 	/**
 	 * Handle propfind in the addressbook folder
 	 *
@@ -60,7 +60,7 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Handle get request for an event
 	 *
@@ -74,15 +74,14 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 		{
 			return $contact;
 		}
-		include_once(EGW_INCLUDE_ROOT.'/addressbook/inc/class.vcaladdressbook.inc.php');
-		$handler =& new vcaladdressbook();
+		$handler = self::_get_handler();
 		$options['data'] = $handler->getVCard($id);
 		$options['mimetype'] = 'text/x-vcard; charset=utf-8';
 		header('Content-Encoding: identity');
 		header('ETag: '.$this->get_etag($contact));
 		return true;
 	}
-	
+
 	/**
 	 * Handle put request for an event
 	 *
@@ -98,11 +97,10 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 		{
 			return $ok;
 		}
-		include_once(EGW_INCLUDE_ROOT.'/addressbook/inc/class.vcaladdressbook.inc.php');
-		$handler =& new vcaladdressbook();
+		$handler = self::_get_handler();
 		$contact = $handler->vcardtoegw($options['content']);
 		if (!is_null($ok)) $contact['id'] = $id;
-		
+
 		if (!$this->bo->save($contact)) return false;
 
 		header('ETag: '.$this->get_etag($contact));
@@ -114,7 +112,23 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Get the handler and set the supported fields
+	 *
+	 * @return vcaladdressbook
+	 */
+	private function _get_handler()
+	{
+		include_once(EGW_INCLUDE_ROOT.'/addressbook/inc/class.vcaladdressbook.inc.php');
+		$handler =& new vcaladdressbook();
+		if (strpos($_SERVER['HTTP_USER_AGENT'],'KHTML') !== false)
+		{
+			$handler->setSupportedFields('KDE');
+		}
+		return $handler;
+	}
+
 	/**
 	 * Handle delete request for an event
 	 *
@@ -130,7 +144,7 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 		}
 		return $this->bo->delete($id);
 	}
-	
+
 	/**
 	 * Read a contact
 	 *
@@ -141,7 +155,7 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 	{
 		return $this->bo->read($id);
 	}
-	
+
 	/**
 	 * Check if user has the neccessary rights on a contact
 	 *
