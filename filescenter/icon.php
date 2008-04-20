@@ -26,7 +26,7 @@ option) any later version.
 
 
 	//load files management class
-	$vfs =& CreateObject('phpgwapi.vfs');
+	$vfs =& CreateObject('filescenter.vfs');
 
 	//load filetypes management class
 	#require($GO_CONFIG->class_path."filetypes.class.inc");

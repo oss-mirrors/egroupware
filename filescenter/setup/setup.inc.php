@@ -20,6 +20,15 @@
 	$setup_info['filescenter']['app_order'] = 5;
 	$setup_info['filescenter']['enable']    = 1;
 
+	$setup_info['filescenter']['tables'][]  = 'phpgw_vfs2_mimetypes';
+	$setup_info['filescenter']['tables'][]  = 'phpgw_vfs2_files';
+	$setup_info['filescenter']['tables'][]  = 'phpgw_vfs2_customfields';
+	$setup_info['filescenter']['tables'][]  = 'phpgw_vfs2_quota';
+	$setup_info['filescenter']['tables'][]  = 'phpgw_vfs2_shares';
+	$setup_info['filescenter']['tables'][]  = 'phpgw_vfs2_versioning';
+	$setup_info['filescenter']['tables'][]  = 'phpgw_vfs2_customfields_data';
+	$setup_info['filescenter']['tables'][]  = 'phpgw_vfs2_prefixes';
+
 	$setup_info['filescenter']['author'] = 'Thyamad Projects';
 	$setup_info['filescenter']['author_img'] = 'thyamad';
 	$setup_info['filescenter']['author_url'] = 'http://www.thyamad.com';
@@ -45,8 +54,8 @@
 #		'verify_settings'
 	);
 
-	
-	
+
+
 	/* Dependencies for this app to work */
 	$setup_info['filescenter']['depends'][] = array(
 		'appname' => 'phpgwapi',

@@ -14,13 +14,13 @@
 	*  option) any later version.                                               *
 	\***************************************************************************/
 
-		class tree_node
-		{
-				var $path;
-				var $name;
-				var $contents;
-				var $icon;
-		}
+	class tree_node
+	{
+		var $path;
+		var $name;
+		var $contents;
+		var $icon;
+	}
 
 	class bo_fm2
 	{
@@ -48,8 +48,8 @@
 
 		function bo_fm2()
 		{
-			$this->vfs =& CreateObject('phpgwapi.vfs');
-	
+			$this->vfs =& CreateObject('filescenter.vfs');
+
 			$this->so  =& CreateObject('filescenter.so_fm2');
 
 			error_reporting (4);
@@ -63,7 +63,7 @@
 			$this->appname = $GLOBALS['egw_info']['flags']['currentapp'];
 
 			$this->now = date('Y-m-d');
-		
+
 			if (stristr ($this->rootdir, EGW_SERVER_ROOT))
 			{
 				$this->filesdir = substr ($this->rootdir, strlen (EGW_SERVER_ROOT));
@@ -123,7 +123,7 @@
 
 
 		/**
-		  * Checks if base directory is available. If not, 
+		  * Checks if base directory is available. If not,
 		  *
 							  * try to create it, if possible.
 		 */
@@ -146,7 +146,7 @@
 					'string' => $this->fakebase,
 					'relatives' => array(RELATIVE_NONE)
 				));
-				
+
 				$this->vfs->override_acl = 0;
 
 				//test one more time
@@ -161,7 +161,7 @@
 				{
 					//FIXME previous version in UI used ui->messages
 					$messages[]= $GLOBALS['egw']->common->error_list(array(
-						lang('Fake Base Dir did not exist, eGroupWare created a new one.') 
+						lang('Fake Base Dir did not exist, eGroupWare created a new one.')
 					));
 				}
 			}
@@ -182,7 +182,7 @@
 					'string' => $this->homedir.'/templates',
 					'relatives' => array(RELATIVE_NONE)
 				));
-				
+
 				$this->vfs->override_acl = 0;
 
 				//test one more time
@@ -309,7 +309,7 @@
 
 		###
 		# Calculate and display B or KB
-		# And yes, that first if is strange, 
+		# And yes, that first if is strange,
 		# but it does do something
 		###
 
@@ -389,7 +389,7 @@
 				return (0);
 			}
 		}
-		
+
 		function html_text ($string, $times = 1, $return = 0, $lang = 0)
 		{
 			if ($lang)
@@ -444,7 +444,7 @@
 			{
 				$rstring = rawurlencode ($string);
 
-				/* Terrible hack, decodes all /'s back to normal */  
+				/* Terrible hack, decodes all /'s back to normal */
 				$rstring = preg_replace ("/%2F/", '/', $rstring);
 			}
 
@@ -473,7 +473,7 @@
 		/**
 		  * Creates a folder
 		  *
-		  * 
+		  *
 		  * @param string $path         path (relative-vfs) of creation
 		  * @param string $foldername   the name of folder created
 		 */
@@ -487,7 +487,7 @@
 //					$messages[]= $GLOBALS['egw']->common->error_list(array($this->bo->html_encode(lang('Directory names cannot contain "%1"', $badchar), 1)));
 					return lang('Directory names cannot contain "%1"', $badchar);
 				}
-				
+
 				$ls_array = $this->vfs->ls(array(
 					'string'	=> $path . '/' . $foldername,
 					'relatives'	=> array(RELATIVE_NONE),
@@ -496,7 +496,7 @@
 				));
 
 				$fileinfo = $ls_array[0];
-			
+
 
 				# If Directory Exists
 				if(!empty($fileinfo['name']))
@@ -541,7 +541,7 @@
 		/**
 		  * Deletes a file or a folder with all its contents (BEWARE!)
 		  *
-		  * 
+		  *
 		  * @param array $files    array with string with full filenames(filescenter) or file identificator(other appl)
 		  * @param string $app     application name
 		 */
@@ -554,7 +554,7 @@
 				foreach($files as $filename)
 				{
 					$filename = $this->get_app_path($filename,$app);
-				
+
 					if($this->vfs->delete(array(
 						'string'    => $filename,
 						'relatives' => RELATIVE_NONE )))
@@ -587,7 +587,7 @@
 		/**
 		  * put files in $cut session var
 		  *
-		  * 
+		  *
 		  * @param array $files    array with string with filenames
 		 */
 		function cut($files)
@@ -605,7 +605,7 @@
 		/**
 		  * put files in $copy session var
 		  *
-		  * 
+		  *
 		  * @param array $files    array with string with filenames
 		 */
 		function copy($files)
@@ -625,7 +625,7 @@
 		 */
 		function get_copied()
 		{
-			return $GLOBALS['egw']->session->appsession('copy','filescenter');	
+			return $GLOBALS['egw']->session->appsession('copy','filescenter');
 		}
 
 
@@ -641,21 +641,21 @@
 
 
 		/**
-		  * moves files from $cut session var, copies files from $copy 
+		  * moves files from $cut session var, copies files from $copy
 		  *
 							  * session var, unsets $cut session var
-		  * 
+		  *
 		  * @param array $path    Path (folder) of pasting
 		 */
 		function paste($path)
 		{
 			$a = $this->get_path_content($path,'',True);
-			
+
 			# if path exists && is a directory
 			if (!empty($a) && $a[0]['mime_type'] == 'Directory')
 			{
 				$cutted = $GLOBALS['egw']->session->appsession('cut','filescenter');
-				$copied = $GLOBALS['egw']->session->appsession('copy','filescenter');	
+				$copied = $GLOBALS['egw']->session->appsession('copy','filescenter');
 
 				if ($cutted)
 				{
@@ -714,7 +714,7 @@
 		{
 			if (is_string($from) && is_string($to))
 			{
-				$from = array( array( 
+				$from = array( array(
 					'from' => $from,
 					'to'   => $to
 				));
@@ -742,7 +742,7 @@
 
 		function get_file_history($file)
 		{
-			if(is_string($file)) 
+			if(is_string($file))
 			{
 				$journal_array = $this->vfs->get_journal(array(
 					'string'	=> $file,
@@ -773,7 +773,7 @@
 
 			if (is_string($from) && is_string($to))
 			{
-				$from = array( array( 
+				$from = array( array(
 					'from' => $from,
 					'to'   => $to
 				));
@@ -799,7 +799,7 @@
 			return True; #FIXME
 		}
 
-		
+
 
 		/**
 		 *   Use it to view or download a file
@@ -841,7 +841,7 @@
 					'string'	=> $file,//FIXME
 					'relatives'	=> array(RELATIVE_NONE)
 				));
-				
+
 				$content_length = function_exists('mb_strlen') && ini_get('mbstring.func_overload') ? mb_strlen($contents,'latin1') : strlen($content);
 				if(in_array($mime_type,$viewable) && !$_GET['download'])
 				{
@@ -872,7 +872,7 @@
 				foreach($filesn as $formname => $files)
 				{
 					$file_number = ereg_replace('^file','',$formname);
-					
+
 					if($badchar = $this->bad_chars($files['name'], True, True))
 					{
 						$messages[]= $GLOBALS['egw']->common->error_list(array($this->html_encode(lang('File names cannot contain "%1"', $badchar), 1)));
@@ -920,7 +920,7 @@
 									#if overwriting, do not change.
 									#TODO rethink/decide policy for that
 									#'prefix' => $otherelms['prefix'.$file_number])
-									
+
 								)
 							);
 							$this->vfs->set_attributes($tmp_arr);
@@ -995,7 +995,7 @@
 						'relatives' => array(RELATIVE_ALL),
 						'attributes' => array(
 							'prefix' => ($otherelms['prefix'.$matches[1]]) ? $otherelms['prefix'.$matches[1]] : $GLOBALS['egw_info']['user']['account_lid'],
-							'ptype' => ($otherelms['type'.$matches[1]]) 
+							'ptype' => ($otherelms['type'.$matches[1]])
 							)
 						));
 				}
@@ -1019,7 +1019,7 @@
 
 			$filename = $params['string'];
 			$filename = array_pop(explode('/',$params['string']));
-		
+
 			if($params['string'] != '/' && $params['string'] != $this->fakebase)
 			{
 				if($badchar = $this->bad_chars($filename, True, True))
@@ -1111,7 +1111,7 @@
 		/**
 		 *   Handle file compression
 		 *
-		 * 
+		 *
 		 * @param array   $files      List of files that go in archive
 		 * @param string  $archname   Name of archive
 		 * @param string  $type       Compression type
@@ -1136,7 +1136,7 @@
 				$messages[]= $GLOBALS['egw']->common->error_list(array($this->html_encode(lang('File names cannot contain "%1"', $badchar), 1)));
 				return false;
 			}
-		
+
 			$this->vfs->compress(array(
 				'files' => $files,
 				'name'  => $archpath.'/'.$archname,
@@ -1144,7 +1144,7 @@
 				'relatives' => $rel_array,
 				'prefix' => $archprefix,
 				'ptype' => $archptype
-				
+
 				));
 
 		}
@@ -1153,7 +1153,7 @@
 		/**
 		 *   Handle file decompression
 		 *
-		 * 
+		 *
 		 * @param string  $archname   Name of archive
 		 * @param string  $archprefix Prefix of the file ID of archive
 		 * @param string  $archpath   Path where archive will be placed
@@ -1179,7 +1179,7 @@
 		/**
 		 *   Update custom fields for a given file
 		 *
-		 * 
+		 *
 		 * @param string  $filename, full filename,with relativity to RELATIVE_ROOT
 		 * @param array   $custom_array
 
@@ -1206,7 +1206,7 @@
 		 * @param array $files  Array values are the complete relative file names
 		 * 		 * 		 * 	 of files being compressed
 		 * @param string $archname   Complete relative file name of the archive,
-		 * 		 * 		 * 		 * 		 * 		 * 		 * 	without extension (this will be put by the 
+		 * 		 * 		 * 		 * 		 * 		 * 		 * 	without extension (this will be put by the
 		 * 		 * 		 * 		 * 		 * 		 * 		 * 	program)
 		 * @param string $ctype      type of compression: ("bzip"/"gzip"/"zip")
 		 * @author Vinicius Cubas Brand
@@ -1287,7 +1287,7 @@
 						$tree['root']->path = '';
 						$tree['root']->contents = array();
 
-			$vfs_sharing =& CreateObject('phpgwapi.vfs_sharing');
+			$vfs_sharing =& CreateObject('filescenter.vfs_sharing');
 
 			$other_shares = $vfs_sharing->get_shares($GLOBALS['egw_info']['user']['account_id'],false,EGW_ACL_READ,array($this->vfs->get_appfiles_root(),$this->publicdir));
 
@@ -1299,7 +1299,7 @@
 										if (!array_key_exists($lid,$tree['root']->contents))
 										{
 												$tree['root']->contents[$lid] =& new tree_node;
-										
+
 												$tree['root']->contents[$lid]->name = $fname.' '.$lname;
 												$tree['root']->contents[$lid]->path = '';
 												$tree['root']->contents[$lid]->contents = array();
@@ -1396,7 +1396,7 @@
 								$tree = array(
 										$first => new tree_node
 										);
-										
+
 								$tree[$first]->path = ereg_replace('/'.implode('/',$dir).'$','',$path);
 								$tree[$first]->name = $first;
 								$tree[$first]->contents = 1;
@@ -1429,7 +1429,7 @@
 		{
 			$resp = $this->vfs->get_external_files_info();
 
-			//now build the tree of dirs.	
+			//now build the tree of dirs.
 			$tree = array();
 
 			$root_node =& $this->create_node('',lang('Applications'),0);
@@ -1451,7 +1451,7 @@
 							$this->vfs->file_exists(array(
 								'string' => $appfiles_root.'/'.$application.'/'.$external_info['id'],
 								'relatives' => array(RELATIVE_ROOT)))
-						/*&& 
+						/*&&
 							$this->external_has_files($application,$external_info['id'])*/)
 						{
 							if (!$tree['root']->contents[$application])
@@ -1460,7 +1460,7 @@
 								$tree['root']->contents[$application]->act_as = $appfiles_root.'/'.$application;
 
 							}
-						
+
 							$this->add_applications_tree($tree['root']->contents[$application],$external_info,$files_info,$application);
 						}
 					}
@@ -1481,7 +1481,7 @@
 
 			$dirname = $this->vfs->get_appfiles_root().'/'.$application.'/'.$external_info['id'];
 
-			$node_path = (($external_info['permissions'] & EGW_ACL_READ) 
+			$node_path = (($external_info['permissions'] & EGW_ACL_READ)
 				&& $this->vfs->file_exists(array(
 					'string' => $dirname,
 					'relatives' => array(RELATIVE_ROOT)))) ? $dirname
@@ -1520,7 +1520,7 @@
 				$files_info[$external_info['id']]['node'] =& $node;
 				return true;
 			}
-			
+
 			//nodes which parent is not available are discarded.
 			unset($node);
 			return false;
@@ -1542,14 +1542,14 @@
 
 		/**
 		 * Function: external_directory_name
-		 * 
+		 *
 		 * 		Retrieves the name of a external directory based on the full
 		 * 		path name of the directory and the external hooks.
-		 * 
+		 *
 		 * Parameters:
-		 * 
+		 *
 		 * 		path - a string of the form '/appfiles/projects/9', in other
-		 * 		       words, a string of an application folder. 
+		 * 		       words, a string of an application folder.
 		 */
 		function external_directory_name($path)
 		{
@@ -1559,21 +1559,21 @@
 
 			$path = explode('/',$path);
 
-			$ret['appname'] = $GLOBALS['egw_info']['user']['apps'][$path[0]]['title']; 
+			$ret['appname'] = $GLOBALS['egw_info']['user']['apps'][$path[0]]['title'];
 			$ret['dirname'] = $this->vfs->get_external_name($path[0],$path[1]);
-			
+
 			return $ret;
 		}
-		
+
 		/**
 		 * Function is_application_dir
-		 * 
+		 *
 		 * 		Returns true if $path is an application dir. False otherwise.
-		 * 
+		 *
 		 * Parameters:
-		 * 
+		 *
 		 * 		path - a string of the form '/appfiles/projects/9', in other
-		 * 		       words, a string of an application folder. 
+		 * 		       words, a string of an application folder.
 		 */
 		function is_application_dir($path)
 		{
@@ -1582,11 +1582,11 @@
 				$path = str_replace($this->vfs->get_appfiles_root(),'',$path);
 				$path = ereg_replace('^\/*','',$path);
 				$path = ereg_replace('\/*$','',$path);
-			
+
 				$path = explode('/',$path);
-				
+
 				if (count($path) == 2)
-				{				
+				{
 					return true;
 				}
 			}
@@ -1610,13 +1610,13 @@
 		{
 
 			$res = $this->vfs->search($keyword);
-	
+
 						$result = array();
 						//verify file permissions for each file
 						foreach ($res as $file_id)
 						{
 	/*			will find another way to do this
-				print_r( $this->vfs->vfs_sharing->get_file_permissions($account_id,$file_id));	
+				print_r( $this->vfs->vfs_sharing->get_file_permissions($account_id,$file_id));
 
 								if ($this->vfs->vfs_sharing->get_file_permissions($account_id,$file_id) & EGW_ACL_READ)
 								{*/
@@ -1637,10 +1637,10 @@
 
 				if(!$path || $this->vfs->pwd(array('full' => False)) == '')
 				{
-					$path = $this->homedir; 
+					$path = $this->homedir;
 				}
 			}
-			
+
 			if ($must_be_a_dir)
 			{
 				$file_info = $this->vfs->ls(array(
@@ -1653,7 +1653,7 @@
 				{
 					$path = dirname($path);
 				}
-				
+
 			}
 
 			$this->vfs->cd(array('string' => False, 'relatives' => array(RELATIVE_NONE), 'relative' => False));
@@ -1663,7 +1663,7 @@
 		function exist_records_vfs2()
 		{
 			$db =& $GLOBALS['egw']->db;
-			
+
 			$db->select('phpgw_vfs2_files','*','',__LINE__,__FILE__);
 			if ($db->num_rows() <= 1)
 			{
@@ -1671,7 +1671,7 @@
 			}
 			return true;
 		}
-		
+
 		function exist_records_vfs()
 		{
 			$db =& $GLOBALS['egw']->db;
@@ -1682,11 +1682,14 @@
 			{
 				$old_vfs_table = 'egw_vfs';
 			}
-			else
+			elseif (array_key_exists('phpgw_vfs',$tables_def))
 			{
 				$old_vfs_table = 'phpgw_vfs';
 			}
-			
+			else
+			{
+				return false;
+			}
 			$db->select($old_vfs_table,'*','',__LINE__,__FILE__);
 			if ($db->num_rows() <= 2)
 			{
@@ -1704,7 +1707,7 @@
 		}
 				/*
 						function allowed_access
-						@description Returns True if access is allowed to $dir. 
+						@description Returns True if access is allowed to $dir.
 				*/
 				function allowed_access($dir,$permission=EGW_ACL_READ)
 				{
@@ -1803,7 +1806,7 @@
 			{
 				$path = $this->homedir."/tmp/$app";
 			}
-			
+
 			#creates path if not exists
 
 			$this->vfs->override_acl = 1;
@@ -1838,7 +1841,7 @@
 					'relatives' => array(RELATIVE_NONE)
 								));
 
-					$vfs_sharing =& CreateObject('phpgwapi.vfs_sharing');
+					$vfs_sharing =& CreateObject('filescenter.vfs_sharing');
 
 								$vfs_sharing->set_permissions(array(
 										$file_id => array(
@@ -1880,7 +1883,7 @@
 					'caption' => "[$apptitle] $caption ($path)",
 					'link' => $resp[$application][$id]['url']
 					);
-					
+
 			}
 		}
 
@@ -1888,13 +1891,13 @@
 		{
 			//TODO modularize this someway
 						$image_root = $GLOBALS['egw_info']['server']['webserver_url'].'/filescenter/templates/default/images/22x22';
-			
+
 			$ftree = array('root' => new tree_node);
 			$ftree['root']->path = '';
 			$ftree['root']->name = lang('FilesCenter');
 			$ftree['root']->contents = array();
 
-			$bo_home_tree = $this->get_dir_tree($this->homedir,lang('Home'));			
+			$bo_home_tree = $this->get_dir_tree($this->homedir,lang('Home'));
 			reset($bo_home_tree);
 			list($key,$val1) = each($bo_home_tree);
 			$val1->icon = $image_root.'/home.png';
@@ -1999,7 +2002,7 @@
 					'order' => 'file.name'
 					)
 				));
-	
+
 			$root_node =& $this->create_node('',lang('Subscriptions'),0);
 
 			$tree['root'] = $root_node;

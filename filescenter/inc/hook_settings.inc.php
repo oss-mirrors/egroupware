@@ -37,7 +37,7 @@
 		'proper_id' => 'File ID'
 	);
 
-	$custom =& CreateObject('phpgwapi.vfs_customfields');
+	$custom =& CreateObject('filescenter.vfs_customfields');
 
 	$customfields = $custom->get_customfields('customfield_name');
 
@@ -63,7 +63,7 @@
 	{
 		create_check_box($value,$key);
 	}
-	
+
 	create_section('Other settings');
 	create_input_box('Maximum number of backups','vfs_backups','The maximum number of backups that will be stored in the file version system. Oldest backups are deleted first. Use -1 to store unlimited backups.','5',4,4);
 
