@@ -879,6 +879,9 @@
 					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
 					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
 			$this->kses->AddProtocol('cid');
+			// since check protocoll is called for every value associated to an attribute we have to add color and background-color to the valid protocolls
+			$this->kses->AddProtocol('color');
+			$this->kses->AddProtocol('background-color');
 			$this->kses->AddHTML(
 				'p', array(
 					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
@@ -898,7 +901,7 @@
 			$this->kses->AddHTML("center");
 			$this->kses->AddHTML(
 				"font",array(
-					"color"	=> array('maxlen' => 10),
+					"color"	=> array('maxlen' => 20),
 					"size"=>array('maxlen'=>2)
 				)
 			);
@@ -925,7 +928,9 @@
 			$this->kses->AddHTML("h3");
 			$this->kses->AddHTML(
 				"style",array(
-					"type"	=> array('maxlen' => 20)
+					"type"	=> array('maxlen' => 20),
+					"color"	=> array('maxlen' => 20),
+					"background-color" => array('maxlen' => 20)
 				)
 			);
 			$this->kses->AddHTML("select");
@@ -1011,7 +1016,8 @@
 			);
 			$this->kses->AddHTML(
 				"span",array(
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20)
+					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+					"style"	  => array('minlen' =>  5, 'maxlen' => 100) 
 				)
 			);
 			$this->kses->AddHTML(
