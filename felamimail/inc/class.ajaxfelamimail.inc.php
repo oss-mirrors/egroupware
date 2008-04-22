@@ -367,8 +367,9 @@
 			);
 
 			$headerTable = $this->uiwidgets->messageTable(
-				$headers, 
-				$listMode, 
+				$headers,
+				$listMode,
+				$_folderName,
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['message_newwindow'],
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']
 			);
