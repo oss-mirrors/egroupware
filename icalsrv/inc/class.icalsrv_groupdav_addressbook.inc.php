@@ -75,8 +75,10 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 			return $contact;
 		}
 		$handler = self::_get_handler();
-		$options['data'] = $handler->getVCard($id);
-		$options['mimetype'] = 'text/x-vcard; charset=utf-8';
+		// SoGo Connector for Thunderbird works only with iso-8859-1!
+		$charset = strpos($_SERVER['HTTP_USER_AGENT'],'Thunderbird') !== false ? 'iso-8859-1' : 'utf-8';
+		$options['data'] = $handler->getVCard($id,$charset);
+		$options['mimetype'] = 'text/x-vcard; charset='.$charset;
 		header('Content-Encoding: identity');
 		header('ETag: '.$this->get_etag($contact));
 		return true;
