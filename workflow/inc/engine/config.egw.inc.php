@@ -41,42 +41,18 @@ if (!function_exists('galaxia_show_error')) {
 	}
 }
 
+$workflow_dir = $GLOBALS['egw_info']['server']['files_dir'].SEP.'workflow';
 
-// filesystem Operations
-$GLOBALS['egw']->vfs = createobject('phpgwapi.vfs');
-
-// check if basedir exists
-$test=$GLOBALS['egw']->vfs->get_real_info(array('string' => '/', 'relatives' => array(RELATIVE_NONE), 'relative' => False));
-if($test[mime_type]!='Directory')
+if (!file_exists($workflow_dir) || !mkdir($workflow_dir,0700,true) || !is_dir($workflow_dir) || !is_writable($workflow_dir))
 {
 	galaxia_show_error(lang('Base directory does not exist, please ask adminstrator to check the global configuration'),false, true);
 }
 
-// check if /workflow  exists
-$test = @$GLOBALS['egw']->vfs->get_real_info(array('string' => '/workflow', 'relatives' => array(RELATIVE_NONE), 'relative' => False));
-if($test[mime_type]!='Directory')
-{
-	// if not, create it
-	$GLOBALS['egw']->vfs->override_acl = 1;
-	$GLOBALS['egw']->vfs->mkdir(array(
-		'string' => '/workflow',
-		'relatives' => array(RELATIVE_NONE)
-	));
-	$GLOBALS['egw']->vfs->override_acl = 0;
-
-	// test one more time
-	$test = $GLOBALS['egw']->vfs->get_real_info(array('string' => '/workflow', 'relatives' => array(RELATIVE_NONE), 'relative' => False));
-	if($test[mime_type]!='Directory')
-	{
-		galaxia_show_error(lang('/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration'), false, true);
-	}
-}
-			
-// Directory where the Galaxia processes will be stored, e.g. /workflow on the vfs
+// Directory where the Galaxia processes will be stored, e.g. /workflow in eGW's files dir
 if (!defined('GALAXIA_PROCESSES'))
 {
 		// Note: this directory must be writeable by the webserver !
-		define('GALAXIA_PROCESSES', $GLOBALS['egw']->vfs->basedir.SEP.'workflow');
+		define('GALAXIA_PROCESSES', $workflow_dir);
 }
 
 // Directory where a *copy* of the Galaxia activity templates will be stored, e.g. templates
@@ -96,7 +72,7 @@ if (!defined('GALAXIA_TEMPLATE_HEADER')) {
 if (!defined('GALAXIA_LOGFILE')) {
 		// Note: this file must be writeable by the webserver !
 		//define('GALAXIA_LOGFILE', GALAXIA_LIBRARY . '/log/pm.log');
-		define('GALAXIA_LOGFILE',  $GLOBALS['egw']->vfs->basedir.SEP.'workflow'.SEP.'galaxia.log');
+		define('GALAXIA_LOGFILE',  $workflow_dir.SEP.'galaxia.log');
 }
 
 // Directory containing the GraphViz 'dot' and 'neato' programs, in case
@@ -126,7 +102,7 @@ if (!function_exists('galaxia_get_agents_list'))
 	{
 		$res = array(
 			array(
-				'wf_agent_type' => 'mail_smtp', 
+				'wf_agent_type' => 'mail_smtp',
 				'wf_agent_priority' => 1,
 			)
 		);
@@ -140,7 +116,7 @@ if (!function_exists('galaxia_user_can_admin_process'))
 {
 	//! Specify if the user has special admin rights on processes
 	/**
-	*  * @return true if the actual user has access to the processes administration. 
+	*  * @return true if the actual user has access to the processes administration.
 	*  * ie. he can edit/activate/deactivate/create/destroy processes and activities
 	*  * warning: dangerous rights, this user can do whatever PHP can do...
 	 */
@@ -202,7 +178,7 @@ if (!function_exists('galaxia_user_can_monitor'))
 	}
 }
 
-	if (!function_exists('galaxia_retrieve_user_groups')) 
+	if (!function_exists('galaxia_retrieve_user_groups'))
 	{
 		/*!
 		* Specify how to retrieve an array containing all groups id for a given user
@@ -211,10 +187,10 @@ if (!function_exists('galaxia_user_can_monitor'))
 		* @return an arry of integers, the groups ids the user is member of, or false if the user is not
 		* the member of any group
 		*/
-		function galaxia_retrieve_user_groups($user=0) 
+		function galaxia_retrieve_user_groups($user=0)
 		{
 			$user_groups=Array();
-			if (!($user == $GLOBALS['egw_info']['user']['account_id'])) 
+			if (!($user == $GLOBALS['egw_info']['user']['account_id']))
 			{
 				//we are asking groups membership for another user than the actually loaded in memory.
 				$other_account =& CreateObject('phpgwapi.accounts',$user,'u');
@@ -237,7 +213,7 @@ if (!function_exists('galaxia_user_can_monitor'))
 	}
 
 
-	if (!function_exists('galaxia_retrieve_group_users')) 
+	if (!function_exists('galaxia_retrieve_group_users'))
 	{
 		//! Specify how to retrieve an array containing all users id for a given group id
 		/**
@@ -245,7 +221,7 @@ if (!function_exists('galaxia_user_can_monitor'))
 		*  * @param $add_names false by default, if true we add user names in the result
 		*  * return an array with all users id or an associative array with names associated with ids if $add_names is true
 		 */
-		function galaxia_retrieve_group_users($group, $add_names=false) 
+		function galaxia_retrieve_group_users($group, $add_names=false)
 		{
 			$members = $GLOBALS['egw']->accounts->member($group);
 			foreach((array)$members as $key => $value)
@@ -259,16 +235,16 @@ if (!function_exists('galaxia_user_can_monitor'))
 					$group_users[]=($value['account_id']);
 				}
 			}
-			
+
 			return $group_users;
 		}
 	}
-	
+
 	if (!function_exists('galaxia_retrieve_running_user'))
 {
 	//! returns the actual user running this PHP code
 	/**
-	*  * @return the user id of the actual running user. 
+	*  * @return the user id of the actual running user.
 	 */
 	function galaxia_retrieve_running_user()
 	{
@@ -277,20 +253,20 @@ if (!function_exists('galaxia_user_can_monitor'))
 }
 
 
-	if (!function_exists('galaxia_retrieve_name')) 
+	if (!function_exists('galaxia_retrieve_name'))
 	{
 		//! Specify how to retrieve the name of an user with is Id
 		/**
 		*  * @param $user the user or group id
 		*  * return the name of the user
 		 */
-		function galaxia_retrieve_name($user) 
+		function galaxia_retrieve_name($user)
 		{
 			$username = $GLOBALS['egw']->accounts->id2name($user);
 			return $username;
 		}
 	}
-	 
+
 // Specify how to execute a non-interactive activity (for use in src/API/Instance.php)
 if (!function_exists('galaxia_execute_activity')) {
 		/**
@@ -300,7 +276,7 @@ if (!function_exists('galaxia_execute_activity')) {
 		*  * @param $auto is true by default
 		*  * @return AN ARRAY, or at least true or false. This array can contain :
 		*	* a key 'failure' with an error string the engine will retrieve in instance error messages in case of
-		*	failure (this will mark your execution as Bad), 
+		*	failure (this will mark your execution as Bad),
 		*	* a key 'debug' with a debug string the engine will retrieve in instance error messages,
 		 */
 		function galaxia_execute_activity($activityId = 0, $iid = 0, $auto = 1)
@@ -322,7 +298,7 @@ if (!function_exists('galaxia_execute_activity')) {
 	as it is maybe stored as a string. But 1 and 0 special values are
 	handled correctly as ints (bools).
 */
-if (!function_exists('galaxia_get_config_values')) 
+if (!function_exists('galaxia_get_config_values'))
 {
 	function galaxia_get_config_values($parameters=array())
 	{
