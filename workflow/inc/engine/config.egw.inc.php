@@ -43,7 +43,7 @@ if (!function_exists('galaxia_show_error')) {
 
 $workflow_dir = $GLOBALS['egw_info']['server']['files_dir'].SEP.'workflow';
 
-if (!file_exists($workflow_dir) || !mkdir($workflow_dir,0700,true) || !is_dir($workflow_dir) || !is_writable($workflow_dir))
+if (!file_exists($workflow_dir) && !mkdir($workflow_dir,0700,true) || !is_dir($workflow_dir) || !is_writable($workflow_dir))
 {
 	galaxia_show_error(lang('Base directory does not exist, please ask adminstrator to check the global configuration'),false, true);
 }
