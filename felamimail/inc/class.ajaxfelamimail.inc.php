@@ -236,6 +236,28 @@
 			return $response->getXML();
 		}
 
+        function toggleEditor($_composeID, $_content ,$_mode)
+        {
+            if($this->_debug) error_log("ajaxfelamimail::toggleEditor");
+            $bocompose  =& CreateObject('felamimail.bocompose', $_composeID);
+			if($_mode == 'simple') {
+        		$this->sessionData['mimeType'] = 'html';
+				// convert emailadresses presentet in angle brackets to emailadress only
+				$bocompose->replaceEmailAdresses($_content);
+			} else {
+				$this->sessionData['mimeType'] = 'text';
+				$_content = $bocompose->convertHTMLToText($_content);
+			}
+			$htmlObject = html::fckEditorQuick('body', $_mode, $_content);
+			$this->saveSessionData();
+			$response =& new xajaxResponse();
+			$response->addScript('FCKeditorAPI_ConfirmCleanup();');
+			$response->addScript('FCKeditorAPI_Cleanup();');
+			$response->addAssign('editorArea', 'innerHTML', $htmlObject);
+            return $response->getXML();
+        }
+
+
 		/*
 		* delete a existing folder
 		*

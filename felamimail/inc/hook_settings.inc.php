@@ -75,7 +75,7 @@
 	$htmlOptions = array(
 		'never_display'		=> lang('never display html emails'),
 		'only_if_no_text'	=> lang('display only when no plain text is available'),
-		'always_display'	=> lang('always show html emails')
+		'always_display'	=> lang('always show html emails'),
 	);
 
 	$rowOrderStyle = array(

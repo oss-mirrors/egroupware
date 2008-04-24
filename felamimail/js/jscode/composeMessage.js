@@ -35,7 +35,7 @@ var KEYCODE_DOWN=40;
 // disabled Keycodes
 // quickserach input field
 var disabledKeys1 = new Array(KEYCODE_TAB, KEYCODE_ENTER, KEYCODE_UP, KEYCODE_DOWN);
-
+//var disabledKeys1 = new Array(KEYCODE_ENTER, KEYCODE_UP, KEYCODE_DOWN);
 
 function initAll()
 {
@@ -371,7 +371,7 @@ function keypressed(keycode, keyvalue) {
 function keyDown(e) {
 	var pressedKeyID = document.all ? window.event.keyCode : e.which;
 	var pressedKey = String.fromCharCode(pressedKeyID).toLowerCase();
-
+	
 	currentKeyCode=pressedKeyID;
 	if(keyDownCallback!=null) {
 		keyDownCallback(pressedKeyID, pressedKey);
@@ -439,6 +439,23 @@ function focusToNextInputField() {
 		document.getElementById('fm_compose_subject').focus();
 		//document.doit.fm_compose_subject.focus();
 	}
+}
+
+function focusToPrevInputField() {
+    var prevRow;
+
+    if(prevRow = currentInputField.parentNode.parentNode.previousSibling) {
+        if(prevRow.nodeType == 3) {
+            inputElements = prevRow.previousSibling.getElementsByTagName('input');
+            inputElements[0].focus();
+        } else {
+            inputElements = prevRow.getElementsByTagName('input');
+            inputElements[0].focus();
+        }
+    } else {
+        document.getElementById('fm_compose_subject').focus();
+        //document.doit.fm_compose_subject.focus();
+    }
 }
 
 function keyDownSubject(keycode, keyvalue) {
@@ -565,4 +582,81 @@ function fm_compose_sendEMail() {
 		alert(fm_compose_langNoAddressSet);
 	}
 }
- 
+
+// Set the state of the HTML/Plain toggles based on the _is_html field value
+function fm_set_editor_toggle_states()
+{
+	// set the editor toggle based on the state of the editor
+
+	var htmlFlag = document.getElementsByName('_is_html')[0];
+	var toggles = document.getElementsByName('_editorSelect');
+	for(var t=0; t<toggles.length; t++)
+	{
+		if (toggles[t].value == 'html')
+		{
+			toggles[t].checked = (htmlFlag.value == "1");
+		}
+		else
+		{
+			toggles[t].checked = (htmlFlag.value == "0");
+		}
+	}
+}
+
+// Toggle between the HTML and Plain Text editors
+function fm_toggle_editor(toggler)
+{
+	var selectedEditor = toggler.value;
+
+	// determine the currently displayed editor
+
+	var htmlFlag = document.getElementsByName('_is_html')[0];
+	var mimeType = document.getElementById('mimeType');
+	var currentEditor = htmlFlag.value;
+
+	if (selectedEditor == currentEditor)
+	{
+		return;
+	}
+
+	// do the appropriate conversion
+
+	if (selectedEditor == 'html')
+	{
+		var composeElement = document.getElementsByName('body')[0];
+		var existingPlainText = composeElement.value;
+		var htmlText = "<pre>" + existingPlainText + "</pre>";
+		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID,htmlText,'simple');
+		htmlFlag.value = "1";
+		mimeType.value = "html";
+	}
+	else
+	{
+		var editor = FCKeditorAPI.GetInstance('body');
+	    var existingHtml = editor.GetHTML();
+		delete editor;
+		xajax_doXMLHTTP("felamimail.ajaxfelamimail.toggleEditor", composeID,existingHtml,'ascii');
+		//removeFCK('body');
+	    htmlFlag.value = "0";
+		mimeType.value = "text";
+	}
+}
+function removeFCK(fieldId)
+{
+       var configElement = document.getElementById(fieldId+'___Config');
+       var frameElement =  document.getElementById(fieldId+'___Frame');
+       //var textarea = document.forms[this].elements[fieldId];
+       var editor = FCKeditorAPI.GetInstance(fieldId);
+       
+       //if (editor!=null && configElement && frameElement && configElement.parentNode==textarea.parentNode && frameElement.parentNode==textarea.parentNode && document.removeChild)
+	   if (editor!=null && configElement && frameElement && document.removeChild)
+       {
+          editor.UpdateLinkedField();
+          configElement.parentNode.removeChild(configElement);
+          frameElement.parentNode.removeChild(frameElement);
+          //textarea.style.display = '';
+          delete FCKeditorAPI.Instances[fieldId];
+          delete editor;
+       }
+
+}

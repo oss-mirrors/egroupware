@@ -144,18 +144,20 @@
 </tr>
 </table>
 <input type="hidden" id="mimeType" name="mimeType" value="{mimeType}">
-<div style="border:0px solid black; width:100%; height:400px;">
+<div id="editorArea" style="border:0px solid black; width:100%; height:400px;">
 	{tinymce}
 </div>
 
-<fieldset class="bordertop"><legend>{lang_signature}</legend>
-	{select_signature}
+<fieldset class="bordertop"><legend>{lang_signature}/{lang_editormode}</legend>
+	{select_signature} &nbsp; {toggle_editormode}
 <!--		<TEXTAREA class="input_text" NAME=signature ROWS="5" COLS="76" WRAP=HARD>{signature}</TEXTAREA> -->
 </fieldset>
 <!-- END body_input -->
 
 <!-- BEGIN simple_text -->
+<div id="editorArea">
 	<TEXTAREA class="input_text" name="body" style="width:100%; height:100%" wrap="virtual" wrap="soft">{body}</TEXTAREA>
+</div>
 <!-- END simple_text -->
 
 <!-- BEGIN attachment -->
@@ -167,7 +169,7 @@
 </script>
 
 <fieldset class="bordertop"><legend>{lang_attachments}</legend>
-<div id="divAttachments" sstyle="border:1px solid black; width:660px;">
+<div id="divAttachments" style="border:1px solid lightgrey; width:100%;">
 <table width="100%" border="0" cellspacing="1" cellpading="0">
 {attachment_rows}
 </table>

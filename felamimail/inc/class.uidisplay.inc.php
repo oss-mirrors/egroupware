@@ -494,7 +494,7 @@
 				ENT_QUOTES,$this->displayCharset));
 			
 			$this->t->set_var("subject_data",
-				@htmlspecialchars($this->bofelamimail->decode_header(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT'])),
+				@htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters,'',$envelope['SUBJECT'])),
 				ENT_QUOTES,$this->displayCharset));
 
 			$this->t->parse("header","message_header",True);
@@ -524,7 +524,7 @@
 				$this->t->set_var('size',lang('size'));
 				$this->t->set_var('url_img_save',$GLOBALS['egw']->html->image('felamimail','fileexport', lang('save')));
 				#$this->t->parse('attachment_rows','attachment_row_bold',True);
-
+				
 				$charset2use=$this->displayCharset;
 				foreach ($attachments as $key => $value)
 				{
@@ -546,7 +546,8 @@
 							(
 								'menuaction'	=> 'felamimail.uidisplay.display',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'part'		=> $value['partID'],
+								'is_winmail'    => $value['is_winmail']
 							);
 							$windowName = 'displayMessage_'. $this->uid;
 							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());";
@@ -559,7 +560,8 @@
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'part'		=> $value['partID'],
+								'is_winmail'    => $value['is_winmail']
 							);
 							$windowName = 'displayAttachment_'. $this->uid;
 							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',800,600);";
@@ -569,7 +571,8 @@
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'part'		=> $value['partID'],
+								'is_winmail'    => $value['is_winmail']
 							);
 							$linkView = "window.location.href = '".$GLOBALS['egw']->link('/index.php',$linkData)."';";
 							break;
@@ -582,7 +585,8 @@
 						'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 						'mode'		=> 'save',
 						'uid'		=> $this->uid,
-						'part'		=> $value['partID']
+						'part'		=> $value['partID'],
+						'is_winmail'    => $value['is_winmail']
 					);
 					$this->t->set_var("link_save",$GLOBALS['egw']->link('/index.php',$linkData));
 					
@@ -849,9 +853,11 @@
 		{
 			
 			$part		= $_GET['part'];
+			$is_winmail = $_GET['is_winmail'] ? $_GET['is_winmail'] : 0;
 			
 			$this->bofelamimail->reopen($this->mailbox);
-			$attachment 	= $this->bofelamimail->getAttachment($this->uid,$part);
+			#$attachment 	= $this->bofelamimail->getAttachment($this->uid,$part);
+			$attachment = $this->bofelamimail->getAttachment($this->uid,$part,$is_winmail);
 			$this->bofelamimail->closeConnection();
 			
 			$GLOBALS['egw']->session->commit_session();
@@ -1232,7 +1238,7 @@
 			$this->t->set_var("date_data", 
 				@htmlspecialchars($GLOBALS['egw']->common->show_date(strtotime($headers['DATE'])), ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("subject_data",
-				@htmlspecialchars($this->bofelamimail->decode_header(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT'])), ENT_QUOTES, $this->displayCharset));
+				@htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT'])), ENT_QUOTES, $this->displayCharset));
 
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);

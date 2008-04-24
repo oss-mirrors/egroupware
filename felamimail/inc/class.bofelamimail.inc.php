@@ -416,7 +416,68 @@
 			// no decoding function available
 			return $_string;
 		}
-		
+
+		function decode_subject($_string)
+		{
+			$string = $_string;
+			$retvalue = $this->decode_header($string);
+			if($retvalue=='NIL')
+			{
+				$retvalue = 'No Subject';
+			}
+			return $retvalue;
+
+		}
+
+		/**
+		 * decodes winmail.dat attachments
+		 *
+		 * @param int $_uid
+		 * @param string $_partID
+		 * @param int $_filenumber
+		 * @return array
+		 */
+		function decode_winmail( $_uid, $_partID, $_filenumber=0 ) 
+		{
+			$attachment = $this->getAttachment( $_uid, $_partID );
+
+			$dir = $GLOBALS['egw_info']['server']['temp_dir']."/fmail_winmail/$_uid";
+			$mime = CreateObject('phpgwapi.mime_magic');
+			if ( $attachment['type'] == 'APPLICATION/MS-TNEF' && $attachment['filename'] == 'winmail.dat' ) 
+			{
+				// decode winmail.dat
+				if ( !file_exists( "$dir/winmail.dat" ) ) 
+				{
+					mkdir( $dir, 0700, true );
+					file_put_contents( "$dir/winmail.dat", $attachment['attachment'] );
+					exec( "cd $dir && ytnef -f . winmail.dat" );
+				}
+
+				// list contents
+				$files = scandir( $dir );
+				foreach ( $files as $num => $file ) 
+				{
+					if ( filetype( "$dir/$file" ) != 'file' || $file == 'winmail.dat' ) continue;
+					if ( $_filenumber > 0 && $_filenumber != $num ) continue;
+					$type = $mime->filename2mime($file);
+					$attachments[] = array(
+						'is_winmail' => $num,
+						'name' => $file,
+						'size' => filesize( "$dir/$file"),
+						'partID' => $_partID,
+						'mimeType' => $type,
+						'type' => $type,
+						'attachment' => $_filenumber > 0 ? file_get_contents("$dir/$file") : '',
+					);
+					unlink($dir."/".$file);
+				}
+				if (file_exists($dir."/winmail.dat")) unlink($dir."/winmail.dat");
+				if (file_exists($dir)) rmdir($dir);
+				return $_filenumber > 0 ? $attachments[0] : $attachments;
+			}
+			return false;
+		}
+	
 		function deleteAccount($_hookValues)
 		{
 			$icServer = $this->mailPreferences->getIncomingServer(0);
@@ -651,10 +712,11 @@
 		*
 		* @param int _uid the uid of the message
 		* @param string _partID the id of the part, which holds the attachment
+		* @param int _winmail_nr winmail.dat attachment nr.
 		*
 		* @returns array
 		*/
-		function getAttachment($_uid, $_partID)
+		function getAttachment($_uid, $_partID, $_winmail_nr=0)
 		{
 			// parse message structure
 			$structure = $this->icServer->getStructure($_uid, true);
@@ -692,6 +754,16 @@
 				'filename'	=> $filename, 
 				'attachment'	=> $attachment
 				);
+			# if the attachment holds a winmail number and is a winmail.dat then we have to handle that.
+			if ( $filename == 'winmail.dat' && $_winmail_nr > 0 &&
+				( $wmattach = $this->decode_winmail( $_uid, $_partID, $_winmail_nr ) ) ) 
+			{
+				$attachmentData = array(
+					'type'       => $wmattach['type'],
+					'filename'   => $wmattach['name'], 
+					'attachment' => $wmattach['attachment'],
+ 				);
+			}
 			return $attachmentData;
 		}
 		
@@ -1317,7 +1389,7 @@
 						$headerObject['DATE'] .= 'C';
 					}
 
-					$retValue['header'][$sortOrder[$uid]]['subject']	= $this->decode_header($headerObject['SUBJECT']);
+					$retValue['header'][$sortOrder[$uid]]['subject']	= $this->decode_subject($headerObject['SUBJECT']);
 					$retValue['header'][$sortOrder[$uid]]['size'] 		= $headerObject['SIZE'];
 					$retValue['header'][$sortOrder[$uid]]['date']		= strtotime($headerObject['DATE']);
 					$retValue['header'][$sortOrder[$uid]]['mimetype']	= $headerObject['MIMETYPE'];
@@ -1503,8 +1575,15 @@
 				} else {
 					$newAttachment['name']	= lang("unknown");
 				}
-				
-				$attachments[] = $newAttachment;
+				# if the new attachment is a winmail.dat, we have to decode that first
+				if ( $newAttachment['name'] == 'winmail.dat' && 
+					( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) ) 
+				{
+					$attachments = array_merge( $attachments, $wmattachments );
+				} else {
+					$attachments[] = $newAttachment;
+				}
+				//$attachments[] = $newAttachment;
 				
 				return $attachments;
 			}
@@ -1533,7 +1612,9 @@
 				
 			   	// fetch the subparts for this part
 				if($subPart->type == 'MULTIPART' && 
-				   ($subPart->subType == 'RELATED' || $subPart->subType == 'MIXED' || $subPart->subType == 'SIGNED')) {
+				   ($subPart->subType == 'RELATED' || 
+					$subPart->subType == 'MIXED' || 
+					$subPart->subType == 'SIGNED')) {
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
 				} else {
 					$newAttachment = array();
@@ -1553,8 +1634,15 @@
 					} else {
 						$newAttachment['name']	= lang("unknown");
 					}
-				
-					$attachments[] = $newAttachment;
+					# if the new attachment is a winmail.dat, we have to decode that first
+					if ( $newAttachment['name'] == 'winmail.dat' &&
+						( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) )
+					{
+						$attachments = array_merge( $attachments, $wmattachments );
+					} else {
+						$attachments[] = $newAttachment;
+					}
+					//$attachments[] = $newAttachment;
 				}
 			}
 
@@ -1649,7 +1737,7 @@
 		function getMessageHeader($_uid, $_partID = '') 
 		{
 			$retValue = $this->icServer->getParsedHeaders($_uid, true, $_partID, true);
-
+			
 			return $retValue;
 		}
 
@@ -1667,7 +1755,7 @@
 		function getMessageRawHeader($_uid, $_partID = '') 
 		{
 			$retValue = $this->icServer->getRawHeaders($_uid, $_partID, true);
-
+			
 			return $retValue;
 		}
 

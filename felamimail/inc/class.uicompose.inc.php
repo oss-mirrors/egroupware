@@ -244,10 +244,12 @@
 				$style="border:0px; width:100%; height:400px;";
 				$this->t->set_var('tinymce', html::fckEditorQuick('body', 'simple', $sessionData['body']));
 				$this->t->set_var('mimeType', 'html');
+				$ishtml=1;
 			} else {
 				$style="border:0px; width:100%; height:400px;";
 				$this->t->set_var('tinymce', html::fckEditorQuick('body', 'ascii', $sessionData['body']));
 				$this->t->set_var('mimeType', 'text');
+				$ishtml=0;
 			}
 
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
@@ -260,8 +262,10 @@
 			foreach($signatures as $signature) {
 				$selectSignatures[$signature['fm_signatureid']] = $signature['fm_description'];
 			}
-			$selectBox = html::select('signatureID', $sessionData['signatureID'], $selectSignatures, true, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
+			$selectBox = html::select('signatureID', $sessionData['signatureID'], $selectSignatures, true, "style='width: 70%;' onchange='fm_compose_changeInputType(this)'");
 			$this->t->set_var("select_signature", $selectBox);
+			$this->t->set_var("lang_editormode",lang("Editor type"));
+			$this->t->set_var("toggle_editormode", lang("Editor type").":&nbsp;<span><input name=\"_is_html\" value=\"".$ishtml."\" type=\"hidden\" /><input name=\"_editorselect\" onchange=\"fm_toggle_editor(this)\" ".($ishtml ? "checked=\"checked\"" : "")." id=\"_html\" value=\"html\" type=\"radio\"><label for=\"_html\">HTML</label><input name=\"_editorselect\" onchange=\"fm_toggle_editor(this)\" ".($ishtml ? "" : "checked=\"checked\"")." id=\"_plain\" value=\"plain\" type=\"radio\"><label for=\"_plain\">Plain text</label></span>");
 			$this->t->pparse("out","body_input");
 
 			// attachments

@@ -127,6 +127,17 @@
 			$this->saveSessionData();
 		}
 		
+		/**
+		* replace emailaddresses eclosed in <> (eg.: <me@you.de>) with the emailaddress only (e.g: me@you.de)
+		* always returns 1
+		*/
+		static function replaceEmailAdresses(&$text)
+		{
+			// replace emailaddresses eclosed in <> (eg.: <me@you.de>) with the emailaddress only (e.g: me@you.de)
+			$text = preg_replace("/(<|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))(>|&gt;)/ie","'$2'", $text);
+			return 1;
+		}
+	
 		function convertHTMLToText($_html) 
 		{
 			#print $_html;
@@ -134,7 +145,7 @@
 			#print "<pre>"; print htmlspecialchars($_html); print "</pre>";
 			#print "<hr>";
 			// remove these tags and any spaces behind the tags
-			$search = array('/<div.*?>/', '/<\/div>\r\n/', '/<\/div>/', '/<p.*?> */', '/<br \/>/', '/<\/li>/', '/<.?strong> /', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */');
+			$search = array('/<div.*?>/', '/<\/div>\r\n/', '/<\/div>/', '/<p.*?> */', '/<\/li>/', '/<.?strong> /', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?b>/', '/<.?i>/', '/<.?s>/', '/<.?em>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */','/<style.*?>/','/<.?style>/' ,'/<span.*?>/','/<.?span>/', '/<a.*?>/','/<.?a>/');
 			$replace = '';
 			$text = preg_replace($search, $replace, $_html);
 			
@@ -143,20 +154,39 @@
 			$replace = "\r\n\r\n";
 			$text = preg_replace($search, $replace, $text);
 			
+			$search = array('/<pre.*?>/','/<.?pre>/');
+			$replace = "\r\n";
+			$text = preg_replace($search, $replace, $text);
+
 			// special replacements
 			$search = array('/<li>/');
 			$replace = array('  * ');
 			$text = preg_replace($search, $replace, $text);
+			// table stuff
+			$search = array('/<table.*?>/','/<.?table>/', '/<tr.*?>/','/<.?tr>/');
+			$replace = array("\r\n\r\n ","\r\n\r\n ","\r\n ","\r\n ");
+			$text = preg_replace($search, $replace, $text);
+			
+			$search = array('/<thead.*?>/','/<.?thead>/','/<tbody.*?>/','/<.?tbody>/');
+			$replace = '';
+			$text = preg_replace($search, $replace, $text);
 
+			$search = array('/<td.*?>/','/<.?td>/');
+			$replace = array('| ',' |');
+			$text = preg_replace($search, $replace, $text);
+			// headings, rules
 			$search = array('/<h[1-9]>/', '/<\/h[1-9]>/');
 			$replace = array('* ', '');
 			$text = preg_replace($search, $replace, $text);
 
-			$search = array('/<hr.*>/');
-			$replace = array("\r\n--------------------------------\r\n");
+			$search = array('/<hr.*>/','/<br.*?>/');
+			$replace = array("\r\n--------------------------------\r\n","\r\n");
 			$text = preg_replace($search, $replace, $text);
 			
 			$text = html_entity_decode($text, ENT_COMPAT, $this->displayCharset);
+			// replace emailaddresses eclosed in <> (eg.: <me@you.de>) with the emailaddress only (e.g: me@you.de)
+			#$text = preg_replace("/(<|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))(>|&gt;)/ie","'$2'", $text);
+			self::replaceEmailAdresses($text);
 
 			$pos = strpos($text, 'blockquote');
 
