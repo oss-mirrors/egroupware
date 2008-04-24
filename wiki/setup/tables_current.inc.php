@@ -40,16 +40,11 @@
 				'wiki_hostname' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 				'wiki_comment' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 				'wiki_title' => array('type' => 'varchar','precision' => '80'),
-				'wiki_body' => array('type' => 'text')
+				'wiki_body' => array('type' => 'longtext')
 			),
 			'pk' => array('wiki_id','wiki_name','wiki_lang','wiki_version'),
 			'fk' => array(),
-			'ix' => array('wiki_title',array('wiki_body','options' => array(
-				'mysql' => 'FULLTEXT',
-				'mssql' => False,
-				'pgsql' => False,
-				'maxdb' => False,
-				'sapdb' => False))),
+			'ix' => array('wiki_title',array('wiki_body','options' => array('mysql' => 'FULLTEXT',' mssql' => '',' pgsql' => '',' maxdb' => '',' sapdb' => ''))),
 			'uc' => array()
 		),
 		'egw_wiki_rate' => array(
