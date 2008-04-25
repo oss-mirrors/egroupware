@@ -1,8 +1,8 @@
 <?php
-   /** 
-	* @file 
+   /**
+	* @file
 	* eGroupWare - iCalendar VEVENTS conversion, import and export for egw calendar.
-	* @author Jan van Lieshout   
+	* @author Jan van Lieshout
 	* @package Egwical
 	*/
 
@@ -24,13 +24,13 @@
    * [+?]todo: check multiple category import (do they get duplicated?
    * [+]check recur EXPORT stuff
    *    [+] ENDDATE egw has other definition of 'end on' than KO3.5
-   *    [+] by DAY, [+]UNTIL [+]INTERVAL 
+   *    [+] by DAY, [+]UNTIL [+]INTERVAL
    *        NOTE BYDAY was bugged in boical!!!
    *    [+] more tests RRULE export for by [+]MONTH, [+]YEAR,[+] WEEKLY (probably works?)
    *    [+] EXDATE fields export
    * [ ]check recur IMPORT stuff
-   *    [+] by day, recur_interval 
-   *    [+] RRULE import by month, interval 
+   *    [+] by day, recur_interval
+   *    [+] RRULE import by month, interval
    *    [+] recur_exception (content gets into event correctly, but..)
    *    [+] COUNT converted (partially) to UNTIL
    *    [+] EDIT/DELETE in non owned calendars (>=NAPI-3.1)
@@ -138,7 +138,7 @@
 	 * @author Lars Kneschke <lkneschke@egroupware.org> (parts from boical that are reused here)
 	 * @author Ralf Becker <RalfBecker-AT-outdoor-training.de> (parts from boical that are
 	 * reused here)
-	 * @version 0.9.37-ng-a6 empty summary fields fix (semi) 
+	 * @version 0.9.37-ng-a6 empty summary fields fix (semi)
 	 * @date 20060508
 	 * @since 0.9.37-ng-a2 removed double charset translation
 	 * @since 0.9.36  update does not change owner anymore
@@ -149,7 +149,7 @@
 	 */
     class bocalupdate_vevents extends icalsrv_resourcehandler
     {
-	  
+
 	  /**
 	   * @private
 	   * @var boolean
@@ -237,7 +237,7 @@
 	   * using the set_rsc() method.
 	   * @param ProductType $devicetype The type identification of the device that is used to
 	   * the transport the ical data to and from. This is used to set the supportedFields already.
-	   * @note These can also later be set using the setSupportedFields() method. 
+	   * @note These can also later be set using the setSupportedFields() method.
 	   * @param string $rscownid the id of the calendar owner. This is only needed for import
 	   * in calendars not owned by the authenticated user. Default (0) the id of the
 	   * authenticated user is used.
@@ -255,12 +255,12 @@
 		$this->setSupportedFields($devicetype);
 		$this->set_rsc($egwrsc);
 
-		return true;		
+		return true;
 	  }
 
 
-	  /** Set the egw calendar resource  that this class will handle.  
-	   * 
+	  /** Set the egw calendar resource  that this class will handle.
+	   *
 	   * This worker is only capable of handling  bocalupdate calendar objects, so it should
 	   * be of that class. The $egw_rsc is registered in the $rsc variable and the supported
 	   * ical element is set to be 'vevent'. This is registered in $rsc_vtypes.
@@ -292,8 +292,8 @@
 	   * the $uid_mapping_export parameter. Either with the event id encoded (ID2UID) or with the
 	   * event uid field copied (UID2UID) or with a completey new generated string (NEWUID).
 	   * .
-	   * For more info see @ref secuidmapping 
-	   * 
+	   * For more info see @ref secuidmapping
+	   *
 	   * @param EventId|EventData $event array data (or id) of the eGW event that will be exported
 	   * @param int $uid_mapping_export switch to set the export mode for the uid fields.
 	   * Default UMM_ID2UID is used.
@@ -304,12 +304,12 @@
  	  function export_vevent(&$event, $uid_mapping_export=ID2UID)
 	  {
 		// decode the mode
-		$euid_export = ($uid_mapping_export == ID2UID) ? false : true; 
+		$euid_export = ($uid_mapping_export == ID2UID) ? false : true;
 		// auxiliary horde_iCalendar object
-		$hIcal = $this->hi; 
+		$hIcal = $this->hi;
 
 		$veExportFields =& $this->supportedFields;
-		
+
 		  if (!is_array($event)){
 		  // event was passed as an event id
 			$eid = $event;
@@ -345,7 +345,7 @@
 		  $vevent = Horde_iCalendar::newComponent('VEVENT',$this->hi);
 		  $parameters = $attributes = array();
 		  // to important to let supportedFields decide on this
-		  $attributes['UID'] = $eventGUID;				
+		  $attributes['UID'] = $eventGUID;
 
 		  foreach($veExportFields as $veFieldName) {
 
@@ -357,10 +357,10 @@
 			  case 'ATTENDEE':
 				foreach((array)$event['participants'] as $pid => $partstat) {
 					if (!is_numeric($pid) && $pid{0} != 'c') continue;	// neither account nor contact
-					
+
 					list($propval,$propparams) =
 						$this->ecu->mki_vp_4ATTENDEE($pid,$partstat,$event['owner']);
-					// NOTE: we need to add it already: multiple ATTENDEE fields may be occur 
+					// NOTE: we need to add it already: multiple ATTENDEE fields may be occur
 					$this->ecu-> updi_c_addAttribute($vevent,'ATTENDEE',$propval,$propparams);
 				}
 				break;
@@ -370,7 +370,7 @@
 				break;
 
 				// according to rfc, ORGANIZER not used for events in the own calendar
-			  case 'ORGANIZER':	
+			  case 'ORGANIZER':
 				if (!isset($event['participants'][$event['owner']])
 					|| count($event['participants']) > 1) {
 				  $attributes['ORGANIZER']  = $this->ecu->mki_v_CAL_ADDRESS($event['owner']);
@@ -378,7 +378,7 @@
 				}
 				break;
 
-				// Note; wholeday detection may change the DTEND value later! 
+				// Note; wholeday detection may change the DTEND value later!
 // we will do it together with DTSTART
 // 			  case 'DTEND':
 // 				//				if(date('H:i:s',$event['end']) == '23:59:59')
@@ -413,7 +413,7 @@
 				break;
 
 			  case 'CATEGORIES':
-				if ($catids = $event['category']){ 
+				if ($catids = $event['category']){
 				  $catnamescstr = $this->ecu->cats_ids2idnamescstr(explode(',',$catids));
 				  $attributes['CATEGORIES'] = $catnamescstr;
 				}
@@ -448,7 +448,7 @@
 			  case 'STATUS':	// note: custom field in event
 				if (! $evstat = strtoupper($event['status']))
 				  $evstat = 'CONFIRMED'; //default..
-				$attributes['STATUS'] = $evstat; 
+				$attributes['STATUS'] = $evstat;
 				break;
 
 				// use daylight savings time patch, for some dates
@@ -477,7 +477,7 @@
 		  // wholeday detector (DTEND =23:59:59 && DTSTART = 00:00)
 		  // if detected the times will be exported in VALUE=DATE format
 		  if(((date('H:i:s',$event['end']) == '23:59:59') ||
-			  (date('H:i:s',$event['end']) == '00:00:00')) 
+			  (date('H:i:s',$event['end']) == '00:00:00'))
 			 && (date('H:i',$event['start'] == '00:00'))){
 			$attributes['DTSTART'] =
 			  $this->hi->_parseDate(date('Ymd',$event['start']));
@@ -506,7 +506,7 @@
 											$avalue,
 											$parameters[$aname]);
 		  }
-		
+
 		return $vevent; //return VEVENTObj
 	  }
 
@@ -544,17 +544,17 @@
 	   * - use the value in the VEVENT uid field a search key for a uid search
 	   *  amongst the Egw events (<code>UMM_UID2UID</code>) to use as event to update. Or finally
 	   * - update a specific existing Egw event defined by the $cal_id parameter, with the data
-	   *  (UMM_FIXEDID). 
+	   *  (UMM_FIXEDID).
 	   *
-	   * Default the mode <code>UMM_UID2ID</code> is used. 	 For more info see @ref secuidmapping 
+	   * Default the mode <code>UMM_UID2ID</code> is used. 	 For more info see @ref secuidmapping
 	   *
 	   * @ref $supportedFields    determines the VEVENTS that will be used for import
-	   *  
+	   *
 	   * For importing vevents the calendar of $this->rsc_owner_id is taken. That is the ownership
 	   * of the new event is set to that owner. For editing(and deleting) of existing events
 	   * the id of the current owner is always (re-) used.
-	   * 
-	   * @param  VEVENT $vevent   VEVENT object (horde_iCalendar_vevent) 
+	   *
+	   * @param  VEVENT $vevent   VEVENT object (horde_iCalendar_vevent)
 	   * @param int $uid_mapping_import uid mapping import mode used. see @ref secuidmapping Default
 	   *  UMM_UID2ID.
 	   * @param boolean $reimport_missing_events enable the import of previously exported events
@@ -569,7 +569,7 @@
 	  function import_vevent(&$vevent, $uid_mapping_import, $reimport_missing_events=false, $cal_id=0)
 	  {
 		// auxiliary horde_iCalendar object
-		$hIcal = $this->hi; 
+		$hIcal = $this->hi;
 
 		$veImportFields =& $this->supportedFields;
 
@@ -589,16 +589,16 @@
 		unset($owner_id);
 		$evduration = false;
 		$nonegw_participants = array();
-		
+
 		// handle UID field always first according to uid_matching algorithm
 		$cur_eid      = false;  // current egw event id
 		$cur_owner_id = false;  // current egw event owner id
 		$cur_event    = false;  // and the whole array of possibly correspond egw event
-		// import action description (just for fun and debug) : 
+		// import action description (just for fun and debug) :
 		// NEW|NEW-NONUID|NEW-FOR-MISSING
 		// DEL-MISSING|DEL-READ|DEL-READ-UID|
-		// UPD-MISSING|UPD-READ|UPD-READ-UID 
-		$imp_action    = 'NEW-NONUID';    
+		// UPD-MISSING|UPD-READ|UPD-READ-UID
+		$imp_action    = 'NEW-NONUID';
 
 		$vuid = null;
 		if($uidval = $vevent->getAttribute('UID')){
@@ -608,7 +608,7 @@
 		}
 
 		switch ($uid_mapping_import) {
-		  
+
 		case UMM_UID2ID :
 		  // try to decode cur_eid from uid
 		  if(!$vuid){
@@ -618,7 +618,7 @@
 		  if (!($cur_eid = $this->ecu->mke_guid2id($vuid,'calendar'))){
 			$imp_action = 'NEW';
 			break;
-		  }			
+		  }
 		  // good cur_eid, so fall through
 		case UMM_FIXEDID :
 		  if ( $uid_mapping_import == UMM_FIXEDID){
@@ -638,18 +638,18 @@
 		  //  a pity couldnot read the corresponding cur_event,
 		  if($reimport_missing_events){
 			// maybe it was deleted in egw already..
-			$imp_action = 'UPD-MISSING'; 
+			$imp_action = 'UPD-MISSING';
 			unset($event['id']); // import as a new one
 			$imp_action = 'NEW';
 			break;
-		  } 
+		  }
 		  // no reimport allowed and event for id not found
 		  return VELT_IMPORT_STATUS_NOELT;
 		  break;
-		  
+
 		case UMM_UID2UID :
 		  if ((!empty($vuid)) && ($uidmatch_event = $this->rsc->read($vuid)))	{
-			// go do uidmatching, search for a egw event with the vuid as uid field 
+			// go do uidmatching, search for a egw event with the vuid as uid field
 			// is this uid-search really implemented in bocal ??
 			$cur_eid      = $uidmatch_event['id'];
 			$cur_owner_id = $uidmatch_event['owner'];
@@ -660,7 +660,7 @@
 			$imp_action = 'NEW';
 		  }
 		  break;
-		  
+
 		case UMM_NEWID :
 		  // fall through
 		default:
@@ -722,7 +722,7 @@
 			  // by putting it in event['RECUR']
 			  $event['RECUR'] = $attrval;
 			  break;
-			case 'EXDATE': 
+			case 'EXDATE':
 			  if (($exdays = $this->ecu->mke_EXDATEpv2udays($attr['params'], $attrval))
 				  !== false ){
 				foreach ($exdays as $day){
@@ -769,7 +769,7 @@
 			  break;
 
 			  // make organizer into a accepting participant
-			case 'ORGANIZER':	// make him 
+			case 'ORGANIZER':	// make him
 			  if ($pid = $this->ecu->mke_CAL_ADDRESS2pid($attrval))
 				  $event['participants'][$pid] = 'A';
 			      //$event['owner'] = $pid;
@@ -792,9 +792,9 @@
 					  . $attrval . 'HAS NO CONVERSION YET');
 			}
 		  } // end of fields loop
-	
+
 		  // now all fields are gathered do some checking and combinations
-		  
+
 		  // we may have a RECUR value set? Then convert to egw recur def
 		  if ($recurval = $event['RECUR']){
 			if(!($recur = $this->ecu->mke_RECUR2rar($recurval,$event['start'])) == false){
@@ -808,8 +808,8 @@
 		  // build endtime from duration if dtend was not set
 		  if (!isset($event['end']) && ($evduration !== false)){
 			$event['end'] = $this->ecu->mke_DDT2utime($event['start']) + $evduration;
-		  } 
-		  
+		  }
+
 		  // a trick for whole day handling or ...??
 		  if(date('H:i:s',$event['end']) == '00:00:00')
 			$event['end']--;
@@ -819,7 +819,7 @@
 		  foreach($vevent->getComponents() as $valarm) {
 			// SKIP anything but a VALARM
 			if(!is_a($valarm, 'Horde_iCalendar_valarm'))
-			  continue; 
+			  continue;
 			$this->ecu->upde_c_VALARM2alarms($alarms,$valarm,$user_id,$veImportFields);
 		  }
 
@@ -830,8 +830,8 @@
 														   $nonegw_participants);
 
 		  // handle fixed id call (for boical compatibility)
-		  // @todo test boical compatibility (esp. with $cal_id>0 case) 
-		  if($cal_id > 0)	{
+		  // @todo test boical compatibility (esp. with $cal_id>0 case)
+		  if(is_numeric($cal_id) && $cal_id > 0)	{
 			$event['id'] = $cal_id;
 		  }
 
@@ -896,7 +896,7 @@
 
 			  } else {
 				// DELETE BAD and it was ours
-				$this->_errorlog_evupd('event', 'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
+				$this->_errorlog_evupd('event', 'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)',
 									   $user_id, $event, $cur_event);
 				return VELT_IMPORT_STATUS_ERROR;
 			  }
@@ -917,7 +917,7 @@
 
 			  // ******** for serious debugging only.. **************
 			  //			  if ($this->evdebug){
-			  //				$this->_errorlog_evupd('OK: ' . $imp_action, 
+			  //				$this->_errorlog_evupd('OK: ' . $imp_action,
 			  //									   $user_id, $event, $cur_event);
 			  //error_log('event readback dump:' . print_r($updatedEvent,true));
 			  //			  }
@@ -926,7 +926,7 @@
 			  foreach($updatedEvent['alarm'] as $alarmID => $alarmData)	{
 				$this->rsc->delete_alarm($alarmID);
 			  }
-			  //  set new alarms 						
+			  //  set new alarms
 			  foreach($alarms as $alarm) {
 				if(!isset($alarm['offset'])){
 				  $alarm['offset'] = $event['start'] - $alarm['time'];
@@ -948,13 +948,13 @@
 
 			// UPDATE BAD, but other ones event, so skip
 			  if ($this->evdebug)
-				$this->_errorlog_evupd('event', 'SKIPPED: ' . $imp_action . ' (INSUFFICIENT RIGHTS)',
+				$this->_errorlog_evupd('event', 'SKIPPED: ' . $imp_action . " (INSUFFICIENT RIGHTS: $user_id!=$cur_owner_id)",
 									   $user_id, $event, $cur_event);
 			  return VELT_IMPORT_STATUS_NOACC;
-				
+
 		  } else {
 			// UPDATE BAD and we own it or it was a new one
-			$this->_errorlog_evupd('event', 'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
+			$this->_errorlog_evupd('event', 'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)',
 								   $user_id, $event, $cur_event);
 			return VELT_IMPORT_STATUS_ERROR;
 
@@ -971,10 +971,10 @@
 	   *
 	   * The value of the member variable $reimport_missing_elements is used to possibly allow to
 	   * reimport of gone events in the calendar.
-	   * 
+	   *
 	   * The value of the member variable $uid_mapping_import is used to control the set
 	   * of iCalendar fields that are imported.
-	   * @param  VEVENT $ncvelt    VEVENT object (horde_iCalendar_vevent) 
+	   * @param  VEVENT $ncvelt    VEVENT object (horde_iCalendar_vevent)
 	   * @param  int $eid  id for a selected event to be updated by the info from $velt
 	   *     If left out or set to -1 then uid_mapping_import is switched back to its standard
 	   *  setting as found in the member variable $uid_mapping_import.
@@ -985,7 +985,7 @@
 	  function import_ncvelt(&$ncvelt,$eid=-1)
 	  {
 		$uid_mapping_import_sel = ($eid > 0) ? UMM_FIXEDID : $this->uid_mapping_import;
-		  
+
 		return $this->import_vevent($ncvelt,
 									$uid_mapping_import_sel,
 									$this->reimport_missing_elements,
@@ -1002,7 +1002,7 @@
 	function delete_ncvelt($id,$user)
 	{
 		if (!($event = $this->rsc->read($id))) return false;
-		
+
 		if ($event['owner'] == $user && $this->rsc->delete($id))
 		{
 			return true;
@@ -1039,7 +1039,7 @@
 		$defaultFields =  array('CLASS','SUMMARY','DESCRIPTION','LOCATION','DTSTART',
 								  'DTEND','RRULE','EXDATE','PRIORITY');
 		  // not: 'TRANSP','ATTENDEE','ORGANIZER','CATEGORIES','URL','CONTACT'
-		  
+
 		  switch(strtolower($_productManufacturer))	{
 		  case 'nexthaus corporation':
 		  case 'nexthaus corp':
@@ -1051,7 +1051,7 @@
 			  break;
 			}
 			break;
-			
+
 			// multisync does not provide anymore information then the manufacturer
 			// we suppose multisync with evolution
 		  case 'the multisync project':
@@ -1070,7 +1070,7 @@
 			  break;
 			}
 			break;
-			
+
 		  case 'synthesis ag':
 			switch(strtolower($_productName)){
 			default:
@@ -1079,7 +1079,7 @@
 			}
 			break;
 			// used outside of SyncML, eg. by the calendar itself ==> all possible fields
-		  case 'file':	
+		  case 'file':
 		  case 'all':
 			$this->supportedFields =
 			  array_merge($defaultFields,
@@ -1087,7 +1087,7 @@
 								'DURATION','VALARM','VALARM/TRIGGER'));
 //			error_log('OKE setsupportedFields (all)to:'. print_r($this->supportedFields,true));
 			break;
-			
+
 			// the fallback for SyncML
 		  default:
 			error_log("Client not found: $_productManufacturer $_productName");
