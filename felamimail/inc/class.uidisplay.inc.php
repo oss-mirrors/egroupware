@@ -155,7 +155,7 @@
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
 			$link = $GLOBALS['egw']->link('/index.php',$linkData);
-			return '<a href="'.$link.'&send_to='.base64_encode($email).'"><font color=\"blue\">'.$text.'</font></a>';
+			return '<a href="'.$link.'&send_to='.base64_encode($email).'" target="_top"><font color="blue">'.$text.'</font></a>';
 		}
 		
 		function highlightQuotes($text, $level = 5)
