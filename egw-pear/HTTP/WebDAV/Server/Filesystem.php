@@ -2,7 +2,7 @@
 
 require_once "HTTP/WebDAV/Server.php";
 require_once "System.php";
-    
+
 /**
  * Filesystem access using WebDAV
  *
@@ -10,7 +10,7 @@ require_once "System.php";
  * @author  Hartmut Holzgraefe <hartmut@php.net>
  * @version @package-version@
  */
-class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server 
+class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
 {
     /**
      * Root directory for WebDAV access
@@ -22,7 +22,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      */
     var $base = "";
 
-    /** 
+    /**
      * MySQL Host where property and locking information is stored
      *
      * @access private
@@ -39,7 +39,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
     var $db_name = "webdav";
 
     /**
-     * MySQL table name prefix 
+     * MySQL table name prefix
      *
      * @access private
      * @var    string
@@ -66,9 +66,9 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * Serve a webdav request
      *
      * @access public
-     * @param  string  
+     * @param  string
      */
-    function ServeRequest($base = false) 
+    function ServeRequest($base = false)
     {
         // special treatment for litmus compliance test
         // reply on its identifier header
@@ -86,7 +86,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         } else if (!$this->base) {
             $this->base = $this->_SERVER['DOCUMENT_ROOT'];
         }
-                
+
         // establish connection to property/locking db
         mysql_connect($this->db_host, $this->db_user, $this->db_passwd) or die(mysql_error());
         mysql_select_db($this->db_name) or die(mysql_error());
@@ -105,7 +105,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  string  Password
      * @return bool    true on successful authentication
      */
-    function check_auth($type, $user, $pass) 
+    function check_auth($type, $user, $pass)
     {
         return true;
     }
@@ -118,11 +118,11 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  array  return array for file properties
      * @return bool   true on success
      */
-    function PROPFIND(&$options, &$files) 
+    function PROPFIND(&$options, &$files)
     {
         // get absolute fs path to requested resource
         $fspath = $this->base . $options["path"];
-            
+
         // sanity check
         if (!file_exists($fspath)) {
             return false;
@@ -136,13 +136,13 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
 
         // information for contained resources requested?
         if (!empty($options["depth"])) { // TODO check for is_dir() first?
-                
+
             // make sure path ends with '/'
             $options["path"] = $this->_slashify($options["path"]);
 
             // try to open directory
             $handle = @opendir($fspath);
-                
+
             if ($handle) {
                 // ok, now get all its contents
                 while ($filename = readdir($handle)) {
@@ -151,20 +151,21 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
                     }
                 }
                 // TODO recursion needed if "Depth: infinite"
+            	closedir($handle);
             }
         }
 
         // ok, all done
         return true;
-    } 
-        
+    }
+
     /**
      * Get properties for a single file/resource
      *
      * @param  string  resource path
      * @return array   resource properties
      */
-    function fileinfo($path) 
+    function fileinfo($path)
     {
         // map URI path to filesystem path
         $fspath = $this->base . $path;
@@ -172,12 +173,12 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         // create result array
         $info = array();
         // TODO remove slash append code when base clase is able to do it itself
-        $info["path"]  = is_dir($fspath) ? $this->_slashify($path) : $path; 
+        $info["path"]  = is_dir($fspath) ? $this->_slashify($path) : $path;
         $info["props"] = array();
-            
+
         // no special beautified displayname here ...
         $info["props"][] = $this->mkprop("displayname", strtoupper($path));
-            
+
         // creation and modification time
         $info["props"][] = $this->mkprop("creationdate",    filectime($fspath));
         $info["props"][] = $this->mkprop("getlastmodified", filemtime($fspath));
@@ -186,7 +187,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         if (is_dir($fspath)) {
             // directory (WebDAV collection)
             $info["props"][] = $this->mkprop("resourcetype", "collection");
-            $info["props"][] = $this->mkprop("getcontenttype", "httpd/unix-directory");             
+            $info["props"][] = $this->mkprop("getcontenttype", "httpd/unix-directory");
         } else {
             // plain file (WebDAV resource)
             $info["props"][] = $this->mkprop("resourcetype", "");
@@ -194,13 +195,13 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
                 $info["props"][] = $this->mkprop("getcontenttype", $this->_mimetype($fspath));
             } else {
                 $info["props"][] = $this->mkprop("getcontenttype", "application/x-non-readable");
-            }               
+            }
             $info["props"][] = $this->mkprop("getcontentlength", filesize($fspath));
         }
 
         // get additional properties from database
-        $query = "SELECT ns, name, value 
-                        FROM {$this->db_prefix}properties 
+        $query = "SELECT ns, name, value
+                        FROM {$this->db_prefix}properties
                        WHERE path = '$path'";
         $res = mysql_query($query);
         while ($row = mysql_fetch_assoc($res)) {
@@ -214,20 +215,20 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
     /**
      * detect if a given program is found in the search PATH
      *
-     * helper function used by _mimetype() to detect if the 
+     * helper function used by _mimetype() to detect if the
      * external 'file' utility is available
      *
      * @param  string  program name
      * @param  string  optional search path, defaults to $PATH
      * @return bool    true if executable program found in path
      */
-    function _can_execute($name, $path = false) 
+    function _can_execute($name, $path = false)
     {
         // path defaults to PATH from environment if not set
         if ($path === false) {
             $path = getenv("PATH");
         }
-            
+
         // check method depends on operating system
         if (!strncmp(PHP_OS, "WIN", 3)) {
             // on Windows an appropriate COM or EXE file needs to exist
@@ -238,7 +239,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
             $exts     = array("");
             $check_fn = "is_executable";
         }
-            
+
         // now check the directories in the path for the program
         foreach (explode(PATH_SEPARATOR, $path) as $dir) {
             // skip invalid path entries
@@ -254,52 +255,52 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         return false;
     }
 
-        
+
     /**
      * try to detect the mime type of a file
      *
      * @param  string  file path
      * @return string  guessed mime type
      */
-    function _mimetype($fspath) 
+    function _mimetype($fspath)
     {
         if (@is_dir($fspath)) {
             // directories are easy
-            return "httpd/unix-directory"; 
+            return "httpd/unix-directory";
         } else if (function_exists("mime_content_type")) {
             // use mime magic extension if available
             $mime_type = mime_content_type($fspath);
         } else if ($this->_can_execute("file")) {
-            // it looks like we have a 'file' command, 
+            // it looks like we have a 'file' command,
             // lets see it it does have mime support
             $fp    = popen("file -i '$fspath' 2>/dev/null", "r");
             $reply = fgets($fp);
             pclose($fp);
-                
+
             // popen will not return an error if the binary was not found
             // and find may not have mime support using "-i"
-            // so we test the format of the returned string 
-                
+            // so we test the format of the returned string
+
             // the reply begins with the requested filename
-            if (!strncmp($reply, "$fspath: ", strlen($fspath)+2)) {                     
+            if (!strncmp($reply, "$fspath: ", strlen($fspath)+2)) {
                 $reply = substr($reply, strlen($fspath)+2);
                 // followed by the mime type (maybe including options)
                 if (preg_match('|^[[:alnum:]_-]+/[[:alnum:]_-]+;?.*|', $reply, $matches)) {
                     $mime_type = $matches[0];
                 }
             }
-        } 
-            
+        }
+
         if (empty($mime_type)) {
             // Fallback solution: try to guess the type by the file extension
             // TODO: add more ...
-            // TODO: it has been suggested to delegate mimetype detection 
+            // TODO: it has been suggested to delegate mimetype detection
             //       to apache but this has at least three issues:
             //       - works only with apache
             //       - needs file to be within the document tree
-            //       - requires apache mod_magic 
+            //       - requires apache mod_magic
             // TODO: can we use the registry for this on Windows?
-            //       OTOH if the server is Windos the clients are likely to 
+            //       OTOH if the server is Windos the clients are likely to
             //       be Windows, too, and tend do ignore the Content-Type
             //       anyway (overriding it with information taken from
             //       the registry)
@@ -314,49 +315,49 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
             case ".jpg":
                 $mime_type = "image/jpeg";
                 break;
-            default: 
+            default:
                 $mime_type = "application/octet-stream";
                 break;
             }
         }
-            
+
         return $mime_type;
     }
 
     /**
      * GET method handler
-     * 
+     *
      * @param  array  parameter passing array
      * @return bool   true on success
      */
-    function GET(&$options) 
+    function GET(&$options)
     {
         // get absolute fs path to requested resource
         $fspath = $this->base . $options["path"];
 
         // sanity check
         if (!file_exists($fspath)) return false;
-            
+
         // is this a collection?
         if (is_dir($fspath)) {
             return $this->GetDir($fspath, $options);
         }
-            
+
         // detect resource type
-        $options['mimetype'] = $this->_mimetype($fspath); 
-                
+        $options['mimetype'] = $this->_mimetype($fspath);
+
         // detect modification time
         // see rfc2518, section 13.7
         // some clients seem to treat this as a reverse rule
         // requiering a Last-Modified header if the getlastmodified header was set
         $options['mtime'] = filemtime($fspath);
-            
+
         // detect resource size
         $options['size'] = filesize($fspath);
-            
+
         // no need to check result here, it is handled by the base class
         $options['stream'] = fopen($fspath, "r");
-            
+
         return true;
     }
 
@@ -369,7 +370,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  string  directory path
      * @return void    function has to handle HTTP response itself
      */
-    function GetDir($fspath, &$options) 
+    function GetDir($fspath, &$options)
     {
         $path = $this->_slashify($options["path"]);
         if ($path != $options["path"]) {
@@ -386,9 +387,9 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         }
 
         echo "<html><head><title>Index of ".htmlspecialchars($options['path'])."</title></head>\n";
-            
+
         echo "<h1>Index of ".htmlspecialchars($options['path'])."</h1>\n";
-            
+
         echo "<pre>";
         printf($format, "Size", "Last modified", "Filename");
         echo "<hr>";
@@ -397,9 +398,9 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
             if ($filename != "." && $filename != "..") {
                 $fullpath = $fspath."/".$filename;
                 $name     = htmlspecialchars($filename);
-                printf($format, 
+                printf($format,
                        number_format(filesize($fullpath)),
-                       strftime("%Y-%m-%d %H:%M:%S", filemtime($fullpath)), 
+                       strftime("%Y-%m-%d %H:%M:%S", filemtime($fullpath)),
                        "<a href='$name'>$name</a>");
             }
         }
@@ -415,11 +416,11 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
 
     /**
      * PUT method handler
-     * 
+     *
      * @param  array  parameter passing array
      * @return bool   true on success
      */
-    function PUT(&$options) 
+    function PUT(&$options)
     {
         $fspath = $this->base . $options["path"];
 
@@ -441,8 +442,8 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  array  general parameter passing array
      * @return bool   true on success
      */
-    function MKCOL($options) 
-    {           
+    function MKCOL($options)
+    {
         $path   = $this->base .$options["path"];
         $parent = dirname($path);
         $name   = basename($path);
@@ -462,23 +463,23 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         if (!empty($this->_SERVER["CONTENT_LENGTH"])) { // no body parsing yet
             return "415 Unsupported media type";
         }
-            
+
         $stat = mkdir($parent."/".$name, 0777);
         if (!$stat) {
-            return "403 Forbidden";                 
+            return "403 Forbidden";
         }
 
         return ("201 Created");
     }
-        
-        
+
+
     /**
      * DELETE method handler
      *
      * @param  array  general parameter passing array
      * @return bool   true on success
      */
-    function DELETE($options) 
+    function DELETE($options)
     {
         $path = $this->base . "/" .$options["path"];
 
@@ -487,14 +488,14 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         }
 
         if (is_dir($path)) {
-            $query = "DELETE FROM {$this->db_prefix}properties 
+            $query = "DELETE FROM {$this->db_prefix}properties
                            WHERE path LIKE '".$this->_slashify($options["path"])."%'";
             mysql_query($query);
             System::rm("-rf $path");
         } else {
             unlink($path);
         }
-        $query = "DELETE FROM {$this->db_prefix}properties 
+        $query = "DELETE FROM {$this->db_prefix}properties
                        WHERE path = '$options[path]'";
         mysql_query($query);
 
@@ -508,7 +509,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  array  general parameter passing array
      * @return bool   true on success
      */
-    function MOVE($options) 
+    function MOVE($options)
     {
         return $this->COPY($options, true);
     }
@@ -519,7 +520,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  array  general parameter passing array
      * @return bool   true on success
      */
-    function COPY($options, $del=false) 
+    function COPY($options, $del=false)
     {
         // TODO Property updates still broken (Litmus should detect this?)
 
@@ -558,7 +559,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
             if ($options["overwrite"]) {
                 $stat = $this->DELETE(array("path" => $options["dest"]));
                 if (($stat{0} != "2") && (substr($stat, 0, 3) != "404")) {
-                    return $stat; 
+                    return $stat;
                 }
             } else {
                 return "412 precondition failed";
@@ -576,13 +577,13 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
             }
             $destpath = $this->_unslashify($options["dest"]);
             if (is_dir($source)) {
-                $query = "UPDATE {$this->db_prefix}properties 
-                                 SET path = REPLACE(path, '".$options["path"]."', '".$destpath."') 
+                $query = "UPDATE {$this->db_prefix}properties
+                                 SET path = REPLACE(path, '".$options["path"]."', '".$destpath."')
                                WHERE path LIKE '".$this->_slashify($options["path"])."%'";
                 mysql_query($query);
             }
 
-            $query = "UPDATE {$this->db_prefix}properties 
+            $query = "UPDATE {$this->db_prefix}properties
                              SET path = '".$destpath."'
                            WHERE path = '".$options["path"]."'";
             mysql_query($query);
@@ -597,22 +598,22 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
             if (!is_array($files) || empty($files)) {
                 return "500 Internal server error";
             }
-                    
-                
+
+
             foreach ($files as $file) {
                 if (is_dir($file)) {
                     $file = $this->_slashify($file);
                 }
 
                 $destfile = str_replace($source, $dest, $file);
-                    
+
                 if (is_dir($file)) {
                     if (!is_dir($destfile)) {
-                        // TODO "mkdir -p" here? (only natively supported by PHP 5) 
+                        // TODO "mkdir -p" here? (only natively supported by PHP 5)
                         if (!@mkdir($destfile)) {
                             return "409 Conflict";
                         }
-                    } 
+                    }
                 } else {
                     if (!@copy($file, $destfile)) {
                         return "409 Conflict";
@@ -620,13 +621,13 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
                 }
             }
 
-            $query = "INSERT INTO {$this->db_prefix}properties 
+            $query = "INSERT INTO {$this->db_prefix}properties
                                SELECT *
-                                 FROM {$this->db_prefix}properties 
+                                 FROM {$this->db_prefix}properties
                                 WHERE path = '".$options['path']."'";
         }
 
-        return ($new && !$existing_col) ? "201 Created" : "204 No Content";         
+        return ($new && !$existing_col) ? "201 Created" : "204 No Content";
     }
 
     /**
@@ -635,7 +636,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  array  general parameter passing array
      * @return bool   true on success
      */
-    function PROPPATCH(&$options) 
+    function PROPPATCH(&$options)
     {
         global $prefs, $tab;
 
@@ -643,27 +644,27 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         $path = $options["path"];
         $dir  = dirname($path)."/";
         $base = basename($path);
-            
+
         foreach ($options["props"] as $key => $prop) {
             if ($prop["ns"] == "DAV:") {
                 $options["props"][$key]['status'] = "403 Forbidden";
             } else {
                 if (isset($prop["val"])) {
-                    $query = "REPLACE INTO {$this->db_prefix}properties 
+                    $query = "REPLACE INTO {$this->db_prefix}properties
                                            SET path = '$options[path]'
                                              , name = '$prop[name]'
                                              , ns= '$prop[ns]'
                                              , value = '$prop[val]'";
                 } else {
-                    $query = "DELETE FROM {$this->db_prefix}properties 
-                                        WHERE path = '$options[path]' 
-                                          AND name = '$prop[name]' 
+                    $query = "DELETE FROM {$this->db_prefix}properties
+                                        WHERE path = '$options[path]'
+                                          AND name = '$prop[name]'
                                           AND ns = '$prop[ns]'";
-                }       
+                }
                 mysql_query($query);
             }
         }
-                        
+
         return "";
     }
 
@@ -674,7 +675,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  array  general parameter passing array
      * @return bool   true on success
      */
-    function LOCK(&$options) 
+    function LOCK(&$options)
     {
         // get absolute fs path to requested resource
         $fspath = $this->base . $options["path"];
@@ -695,8 +696,8 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
             mysql_free_result($res);
 
             if (is_array($row)) {
-                $query = "UPDATE {$this->db_prefix}locks 
-                                 SET expires = '$options[timeout]' 
+                $query = "UPDATE {$this->db_prefix}locks
+                                 SET expires = '$options[timeout]'
                                    , modified = ".time()."
                               $where";
                 mysql_query($query);
@@ -710,7 +711,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
                 return false;
             }
         }
-            
+
         $query = "INSERT INTO {$this->db_prefix}locks
                         SET token   = '$options[locktoken]'
                           , path    = '$options[path]'
@@ -731,7 +732,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  array  general parameter passing array
      * @return bool   true on success
      */
-    function UNLOCK(&$options) 
+    function UNLOCK(&$options)
     {
         $query = "DELETE FROM {$this->db_prefix}locks
                       WHERE path = '$options[path]'
@@ -747,10 +748,10 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  string resource path to check for locks
      * @return bool   true on success
      */
-    function checkLock($path) 
+    function checkLock($path)
     {
         $result = false;
-            
+
         $query = "SELECT owner, token, created, modified, expires, exclusivelock
                   FROM {$this->db_prefix}locks
                  WHERE path = '$path'
@@ -767,8 +768,8 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
                                  "depth"   => 0,
                                  "owner"   => $row['owner'],
                                  "token"   => $row['token'],
-                                 "created" => $row['created'],   
-                                 "modified" => $row['modified'],   
+                                 "created" => $row['created'],
+                                 "modified" => $row['modified'],
                                  "expires" => $row['expires']
                                  );
             }
@@ -784,7 +785,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
      * @param  void
      * @return bool   true on success
      */
-    function create_database() 
+    function create_database()
     {
         // TODO
         return false;
