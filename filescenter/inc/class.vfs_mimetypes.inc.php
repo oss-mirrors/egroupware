@@ -38,7 +38,7 @@
 			$this->default_filetype_icon = PHPGW_INCLUDE_ROOT.'/filescenter/icons/default.gif';
 
 			$this->db = clone($GLOBALS['phpgw']->db);
-
+			$this->db->set_app('filescenter');
 		}
 
 		/*!

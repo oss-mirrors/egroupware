@@ -21,11 +21,11 @@
 		function vfs_customfields()
 		{
 			$this->db = clone($GLOBALS['phpgw']->db);
-
+			$this->db->set_app('filescenter');
 		}
 
 		# =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-		# Functions to associate customfields to a file              # 
+		# Functions to associate customfields to a file              #
 		# =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 
@@ -35,7 +35,7 @@
 			if (!is_numeric($file_id) || !(((int)$file_id)==$file_id))
 				return false;
 
-			$sql = "SELECT cf.customfield_name as name, 
+			$sql = "SELECT cf.customfield_name as name,
 			               cfd.data as data
 			        FROM   phpgw_vfs2_customfields as cf,
 					       phpgw_vfs2_customfields_data as cfd
@@ -49,7 +49,7 @@
 			{
 				$result[$this->db->Record['name']] = $this->db->Record['data'];
 			}
-			
+
 			return $result;
 
 		}
@@ -64,7 +64,7 @@
 				return false;
 
 			$fields = $this->get_customfields('customfield_name');
-				
+
 			foreach($data as $file_id => $file_data)
 			{
 				foreach($file_data as $name => $value)
@@ -75,7 +75,7 @@
 						//TODO ERROR HANDLING
 						continue;
 					}
-					
+
 					$this->db->insert('phpgw_vfs2_customfields_data',
 						array('data' => $value),
 						array('file_id'=>$file_id,'customfield_id'=>$fields[$name]['customfield_id']),
@@ -110,7 +110,7 @@
 		}
 
 		/* Search the files that have $keyword in any field, or in the fields
-		   specified in the array fields 
+		   specified in the array fields
 		   @param $fields array('field1','fields2',...)*/
 		function search_files($keyword,$fields=null)
 		{
@@ -132,13 +132,13 @@
 				if ($cf_ids)
 				{
 					$where = implode(' OR ',$cf_ids);
-					
+
 					$where = 'AND ('.$where.')';
 				}
 
 			}
-			
-			
+
+
 
 			$sql = "SELECT file_id
 					FROM   phpgw_vfs2_customfields_data
@@ -156,7 +156,7 @@
 		}
 
 		# =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-		# Functions to manage custom field types                     # 
+		# Functions to manage custom field types                     #
 		# =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 		//Gets all custom field types, indexed by $indexedby.
@@ -165,7 +165,7 @@
 		function get_customfields($indexedby='customfield_name',$activeonly=true)
 		{
 			$where=($activeonly)?array('customfield_active'=>'Y'):array();
-		
+
 			$this->db->select('phpgw_vfs2_customfields','*',$where,
 				__LINE__,__FILE__);
 
@@ -176,13 +176,13 @@
 			}
 
 			if (!is_array($result[0]) || !array_key_exists($indexedby,$result[0]))
-			{	
+			{
 				$indexedby = 'customfield_name';
 			}
 
 			$result2 = array();
 			foreach($result as $key => $val)
-			{		
+			{
 				$result2[$val[$indexedby]] = $val;
 			}
 
@@ -194,7 +194,7 @@
 		function get_attributes($activeonly=true)
 		{
 			$where=($activeonly)?array('customfield_active'=>'Y'):array();
-		
+
 			$this->db->select('phpgw_vfs2_customfields','*',$where,
 				__LINE__,__FILE__);
 
@@ -205,7 +205,7 @@
 
 			$result2 = array();
 			foreach($result as $key => $val)
-			{		
+			{
 				$result2[$val['customfield_name']] = $val['customfield_description'];
 			}
 
@@ -213,13 +213,13 @@
 		}
 
 
-	
+
 		//Add a new type of custom field
-		//$type can be of the same possible types for egw 
+		//$type can be of the same possible types for egw
 		function add_customfield($name,$description,$type,$precision='',$active='N')
 		{
 			$active = strtoupper($active);
-			
+
 			$res = $this->db->insert('phpgw_vfs2_customfields',array(
 				'customfield_name' => $name,
 				'customfield_description' => $description,
@@ -254,7 +254,7 @@
 			}
 			return false;
 		}
-		
+
 		//generally better inactivate a field than remove.
 		function remove_customfield($customfield_id)
 		{
@@ -270,7 +270,7 @@
 				}
 			}
 			return false;
-		} 
+		}
 
 	}
 ?>

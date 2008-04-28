@@ -24,7 +24,7 @@
 	{
 		var $accounts;
 		var $db;
-		
+
 		/*!
 		 * function vfs_sharing
 		 * @description Class constructor
@@ -33,12 +33,13 @@
 		{
 			$this->accounts =& $GLOBALS['phpgw']->accounts;
 			$this->db = clone($GLOBALS['phpgw']->db);
+			$this->db->set_app('filescenter');
 		}
 
 		/*!
 		 * function set_permissions
 		 * @description Add specified permissions that do not exist, remove
-		 *    unspecified permissions that exist. Easier to call than 
+		 *    unspecified permissions that exist. Easier to call than
 		 *    add_permissions and then remove_permissions
 		 * @param array $data in the following format:
 		 *         array(
@@ -50,13 +51,13 @@
 		 */
 		function set_permissions($data)
 		{
-			//TODO see if a user have permissions in a file. Only if he have 
+			//TODO see if a user have permissions in a file. Only if he have
 			//(or if is inside his homedir) he can change permissions
 			if (!$data || !is_array($data))
 			{
 				return false;
 			}
-			
+
 			//search for permissions on files, to know which ones must be
 			//updated/inserted
 			reset($data);
@@ -64,15 +65,15 @@
 			{
 				$file_ids[] = $file_id;
 			}
-			
-			$sql = 'SELECT * from phpgw_vfs2_shares 
+
+			$sql = 'SELECT * from phpgw_vfs2_shares
 					WHERE file_id IN ('.implode(',',$file_ids).')';
 
 			$this->db->query($sql,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
-				$current_shares[$this->db->Record['file_id']][$this->db->Record['account_id']] = $this->db->Record['acl_rights']; 
+				$current_shares[$this->db->Record['file_id']][$this->db->Record['account_id']] = $this->db->Record['acl_rights'];
 			}
 
 			//now that we have the current permissions, must know which ones to
@@ -92,7 +93,7 @@
 						}
 
 						unset($current_shares[$file_id][$account_id]);
-						
+
 					}
 					else
 					{
@@ -119,7 +120,7 @@
 			{
 				$this->store_permissions($file_id,$account_ids);
 			}
-			
+
 			foreach($delete as $file_id => $account_ids)
 			{
 				$this->remove_permissions($file_id,$account_ids);
@@ -163,7 +164,7 @@
 
 			//gets an array will all accounts as key
 			$accounts = array_keys($account_ids);
-			
+
 			$this->db->delete('phpgw_vfs2_shares',
 				array('account_id'=>$accounts,'file_id'=>$file_id),
 				__LINE__,__FILE__);
@@ -174,7 +175,7 @@
 		/**
 		 * Function: remove_all_permissions
 		 *
-		 *		Removes all permissions of a file 
+		 *		Removes all permissions of a file
 		 */
 		function remove_all_permissions($file_id)
 		{
@@ -216,7 +217,7 @@
 		 * @param $account_id The id of the user that can read the shared folder
 		 * @param $is_owner If true, will get only the shared folders that
 		 *   $account_id owns. Useful to get the shares that account_id owns
-		 *   and have configured himself (true), or instead the shares of the 
+		 *   and have configured himself (true), or instead the shares of the
 		 *   others that he have $permission (false)
 		 * @result array with the list of the file_id's of all shares
 		 */
@@ -226,7 +227,7 @@
 				'is_owner' => false,
 				'permission' => PHPGW_ACL_READ
 				);
-		
+
 			if (is_array($account_id))
 			{
 				$account_id = array_merge($default_values,$account_id);
@@ -236,7 +237,7 @@
 				$only_dir = $account_id['only_dir'];
 				$account_id = $account_id['account_id'];
 			}
-		
+
 			if ($exclude_dir)
 			{
 				if (is_array($exclude_dir))
@@ -255,7 +256,7 @@
 			{
 				$append .= " AND fls.directory LIKE '".$only_dir."%' ";
 			}
-		
+
 			if ($is_owner)
 			{
 				$sql = "SELECT DISTINCT sh.file_id     as file_id,
@@ -268,7 +269,7 @@
 						INNER JOIN phpgw_vfs2_mimetypes mime on fls.mime_id = mime.mime_id
 						WHERE  sh.file_id = fls.file_id
 						  AND  mime.mime = 'Directory'
-						  AND  fls.shared = 'Y' 
+						  AND  fls.shared = 'Y'
 						  $append
 						  AND  fls.owner_id = $account_id";
 			}
@@ -283,7 +284,7 @@
 				}
 
 				$accounts[] = $account_id;
-			
+
 				$sql = "SELECT DISTINCT sh.file_id     as file_id,
 							   sh.acl_rights  as acl_rights,
 							   fls.directory  as directory,
@@ -295,7 +296,7 @@
 						WHERE  sh.file_id = fls.file_id
 						  AND  mime.mime = 'Directory'
 						  AND  sh.account_id IN (".implode(',',$accounts).")
-						  AND  fls.shared = 'Y' 
+						  AND  fls.shared = 'Y'
 						  $append
 						  AND  fls.owner_id != $account_id";
 			}
@@ -310,9 +311,9 @@
 					$res[] = $this->db->Record;
 				}
 			}
-			
+
 			//should be returned the array with complete file description
-			return $res; 
+			return $res;
 		}
 
 		/*!
@@ -338,7 +339,7 @@
 			}
 
 			$accounts[] = $account_id;
-		
+
 			$sql = "SELECT DISTINCT sh.file_id     as file_id,
 						   sh.acl_rights  as acl_rights,
 						   fls.directory  as directory,
@@ -348,9 +349,9 @@
 						   phpgw_vfs2_files  as fls
 					WHERE  sh.file_id = fls.file_id
 					  AND  sh.account_id IN (".implode(',',$accounts).")
-					  AND  (  fls.directory LIKE '%$keyword%' 
+					  AND  (  fls.directory LIKE '%$keyword%'
 					       OR fls.name LIKE '%$keyword%')
-					  AND  fls.shared = 'Y' 
+					  AND  fls.shared = 'Y'
 					  AND  fls.owner_id != $account_id";
 
 			$this->db->query($sql,__LINE__,__FILE__);
@@ -391,7 +392,7 @@
 			$fullname = $directory.'/'.$name;
 
 			$parent_dirs = array();
-	
+
 			$dirs_expl = explode('/',$fullname);
 
 			//put all parents hierarchy in an array
@@ -440,7 +441,7 @@
 							FROM    phpgw_vfs2_files  as fls,
 							        phpgw_vfs2_shares as sh
 							WHERE  fls.file_id = sh.file_id
-							  AND  fls.directory = '".$parent_dirs_array[$i+1]."' 
+							  AND  fls.directory = '".$parent_dirs_array[$i+1]."'
 							  AND  fls.name      = '".$dir_name."'
 							  AND  fls.shared    = 'Y'";
 
@@ -459,26 +460,26 @@
 								WHERE  (sh.account_id IN ($accounts)
 									   OR fls.owner_id  = $account_id)
 								  AND  fls.file_id = sh.file_id
-								  AND  fls.directory = '".$parent_dirs_array[$i+1]."' 
+								  AND  fls.directory = '".$parent_dirs_array[$i+1]."'
 								  AND  fls.name      = '".$dir_name."'
 								  AND  fls.shared    = 'Y'";
 
 						$this->db->query($sql,__LINE__,__FILE__);
 
-						
+
 	/*
 						$this->db->select('phpgw_vfs2_files','file_id',
 							array('directory'=>$parent_dirs_array[$i+1],
 								  'name'=>$dir_name), __LINE__,__FILE__);
 
 						$this->db->next_record();
-						
+
 						$this->db->select('phpgw_vfs2_shares','acl_rights',
 							array('file_id'=>$this->db->Record['file_id'],
 								  'account_id'=>$account_id),__LINE__,__FILE__);*/
 
 
-								  
+
 
 //						echo "tested file: ".$dir_name." \n<br>";
 //						echo $sql."<br><br>\n\n";

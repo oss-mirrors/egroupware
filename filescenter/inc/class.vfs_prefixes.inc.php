@@ -34,6 +34,7 @@
 		function vfs_prefixes()
 		{
 			$this->db = clone($GLOBALS['phpgw']->db);
+			$this->db->set_app('filescenter');
 		}
 
 		/*!
@@ -72,10 +73,10 @@
 					unset($data[$key]);
 				}
 			}
-			
+
 			//see if exists some equal prefix id
 			$this->db->select('phpgw_vfs2_prefixes','prefix_id',array('prefix' => $data['prefix']));
-			
+
 			if($this->db->next_record()) //exists
 			{
 				if ($dont_update)
@@ -134,7 +135,7 @@
 			unset($data['prefix_id']);
 
 			return $this->db->update('phpgw_vfs2_prefixes',$data,$where,__LINE__,__FILE__);
-			
+
 		}
 
 		/*!
@@ -161,7 +162,7 @@
 			if (!$data['prefix_id'] && !$data['prefix'])
 				return false;
 
-			
+
 			$this->db->select('phpgw_vfs2_prefixes','*',$data,__LINE__,__FILE__);
 
 			if ($this->db->next_record())
@@ -185,19 +186,19 @@
 		{
 			if (!$user_id)
 			{
-				$user_id = $GLOBALS['phpgw_info']['user']['account_id']; 
+				$user_id = $GLOBALS['phpgw_info']['user']['account_id'];
 			}
 
 			switch ($status)
 			{
 				case 'owns':
 					$this->db->select('phpgw_vfs2_prefixes','*',array('owner_id'=>$user_id,'prefix_type'=>$type),__LINE__,__FILE__);
-					
+
 					while($this->db->next_record())
 					{
 						$return[] = $this->db->Record;
 					}
-					
+
 					break;
 				case 'view':
 					$acl =& CreateObject('phpgwapi.acl',$user_id);
@@ -245,13 +246,13 @@
 					{
 						return array();
 					}
-	
+
 					if ($pr_list)
 					{
 						$prefix_string = '('.implode(',',$pr_list).')';
-						
+
 						$this->db->select('phpgw_vfs2_prefixes','*','prefix_id IN '.$prefix_string." AND prefix_type='$type'",__LINE__,__FILE__);
-						
+
 						while($this->db->next_record())
 						{
 							$return[] = $this->db->Record;
@@ -274,7 +275,7 @@
 		 * @description Updates users who can see a prefix
 		 *
 		 * @param prefix_id int (required) The prefix that will have permissions
-		 *   changed 
+		 *   changed
 		 * @param user_list array  Array with account_ids that can read prefix
 		 *   as values.
 		 *
@@ -313,7 +314,7 @@
 			}
 
 			foreach($list_of_users_to_del as $user_id)
-			{	
+			{
 				$acl->account_id = $user_id;
 				$acl->read_repository();
 				#echo "<br>\nDeleted: prefix $prefix_id ; user $user_id";
