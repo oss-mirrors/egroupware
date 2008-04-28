@@ -24,7 +24,9 @@ class Base extends Observable {
     if ($db->databaseType=='mysql')
     {
     	$db->disconnect();
-    	$db = $GLOBALS['egw']->db->connect(
+	// Clone first so reconnect doesn't overwrite GLOBALS['egw']->db's connection
+	$clone = clone($GLOBALS['egw']->db);
+    	$db = $clone->connect(
 			$GLOBALS['egw_info']['server']['db_name'],
 			$GLOBALS['egw_info']['server']['db_host'],
 			$GLOBALS['egw_info']['server']['db_port'],
