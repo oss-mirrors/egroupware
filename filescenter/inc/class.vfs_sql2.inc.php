@@ -113,6 +113,7 @@
 			}
 
 			$this->db = clone($GLOBALS['phpgw']->db);
+			$this->db->set_app('filescenter');
 			$this->db_hl =& $GLOBALS['phpgw']->db_hl;
 
 			$this->vfs_shared ();
