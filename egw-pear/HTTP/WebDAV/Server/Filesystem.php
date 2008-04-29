@@ -396,7 +396,7 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
 
         while ($filename = readdir($handle)) {
             if ($filename != "." && $filename != "..") {
-                $fullpath = $fspath."/".$filename;
+                $fullpath = $path.$filename;
                 $name     = htmlspecialchars($filename);
                 printf($format,
                        number_format(filesize($fullpath)),
