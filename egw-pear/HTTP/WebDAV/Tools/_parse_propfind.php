@@ -22,12 +22,12 @@
 
 /**
  * helper class for parsing PROPFIND request bodies
- * 
+ *
  * @package HTTP_WebDAV_Server
  * @author Hartmut Holzgraefe <hholzgra@php.net>
  * @version @package-version@
  */
-class _parse_propfind 
+class _parse_propfind
 {
     /**
      * success state flag
@@ -46,6 +46,37 @@ class _parse_propfind
     var $props = false;
 
     /**
+     * found (CalDAV) filters are collected here
+     *
+     * @var array
+     * @access public
+     */
+    var $filters = false;
+
+    /**
+     * found other tags, eg. CalDAV calendar-multiget href's
+     *
+     * @var array
+     * @access public
+     */
+    var $other = false;
+
+    /**
+     * what we are currently parsing: props or filters
+     *
+     * @var array
+     * @access private
+     */
+    var $use = 'props';
+
+    /**
+     * Root tag, usually 'propfind' for PROPFIND, but can be eg. 'calendar-query' or 'calendar-multiget' for CalDAV REPORT
+     *
+     * @var array with keys 'name' and 'ns'
+     */
+    var $root;
+
+    /**
      * internal tag nesting depth counter
      *
      * @var int
@@ -53,17 +84,17 @@ class _parse_propfind
      */
     var $depth = 0;
 
-    
+
     /**
      * constructor
      *
      * @access public
      */
-    function _parse_propfind($path) 
+    function _parse_propfind($path)
     {
         // success state flag
         $this->success = true;
-        
+
         // property storage array
         $this->props = array();
 
@@ -88,8 +119,12 @@ class _parse_propfind
                                 array(&$this, "_startElement"),
                                 array(&$this, "_endElement"));
 
+		xml_set_character_data_handler($xml_parser,
+            array(&$this,'_charData')
+        );
+
         // we want a case sensitive parser
-        xml_parser_set_option($xml_parser, 
+        xml_parser_set_option($xml_parser,
                               XML_OPTION_CASE_FOLDING, false);
 
 
@@ -100,8 +135,8 @@ class _parse_propfind
                 $had_input = true;
                 $this->success &= xml_parse($xml_parser, $line, false);
             }
-        } 
-        
+        }
+
         // finish parsing
         if ($had_input) {
             $this->success &= xml_parse($xml_parser, "", true);
@@ -109,24 +144,24 @@ class _parse_propfind
 
         // free parser
         xml_parser_free($xml_parser);
-        
+
         // close input stream
         fclose($f_in);
 
         // if no input was parsed it was a request
         if(!count($this->props)) $this->props = "all"; // default
     }
-    
+
 
     /**
      * start tag handler
-     * 
+     *
      * @access private
      * @param  resource  parser
      * @param  string    tag name
      * @param  array     tag attributes
      */
-    function _startElement($parser, $name, $attrs) 
+    function _startElement($parser, $name, $attrs)
     {
         // name space handling
         if (strstr($name, " ")) {
@@ -138,41 +173,76 @@ class _parse_propfind
             $tag = $name;
         }
 
+        // record root tag
+        if ($this->depth == 0) {
+        	$this->root = array('name' => $tag, 'xmlns' => $ns);
+        }
+
         // special tags at level 1: <allprop> and <propname>
         if ($this->depth == 1) {
-            if ($tag == "allprop")
-                $this->props = "all";
-
-            if ($tag == "propname")
-                $this->props = "names";
+         	$this->use = 'props';
+            switch ($tag)
+            {
+            	case "allprop":
+                	$this->props = "all";
+					break;
+            	case "propname":
+               		$this->props = "names";
+               		break;
+            	case 'prop':
+           			break;
+            	case 'filter':
+            		$this->use = 'filters';
+            		break;
+            	default:
+            		$this->use = 'other';
+            		break;
+            }
         }
 
         // requested properties are found at level 2
-        if ($this->depth == 2) {
+        // CalDAV filters can be at deeper levels too and we need the attrs, same for other tags (eg. multiget href's)
+        if ($this->depth == 2 || $this->use == 'filters' && $this->depth >= 2 || $this->use == 'other') {
             $prop = array("name" => $tag);
             if ($ns)
                 $prop["xmlns"] = $ns;
-            $this->props[] = $prop;
+            if ($this->use != 'props') {
+            	$prop['attrs'] = $attrs;
+            	$prop['depth'] = $this->depth;
+            }
+            $this->{$this->use}[] = $prop;
         }
 
         // increment depth count
         $this->depth++;
     }
-    
+
 
     /**
      * end tag handler
-     * 
+     *
      * @access private
      * @param  resource  parser
      * @param  string    tag name
      */
-    function _endElement($parser, $name) 
+    function _endElement($parser, $name)
     {
         // here we only need to decrement the depth count
         $this->depth--;
     }
+
+
+    /**
+     * char data handler for non prop tags, eg. href's in CalDAV multiget, or filter contents
+     *
+     * @access private
+     * @param  resource  parser
+     * @param  string    character data
+     */
+    function _charData($parser, $data)
+    {
+        if ($this->use != 'props' && ($n = count($this->{$this->use})) && ($data = trim($data))) {
+        	$this->{$this->use}[$n-1]['data'] = $data;
+        }
+    }
 }
-
-
-?>
