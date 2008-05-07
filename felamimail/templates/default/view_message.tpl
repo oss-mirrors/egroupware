@@ -1,5 +1,6 @@
 <!-- BEGIN message_main -->
 <script language="JavaScript1.2">
+var lang_sendnotify = "{lang_sendnotify}"; 
 self.focus();
 </script>
 <!-- {print_navbar} -->
@@ -16,6 +17,9 @@ self.focus();
 	<iframe id="messageIFRAME" frameborder="no" scrolling="auto" src="{url_displayBody}">
 	</iframe>
 </div>
+<script type="text/javascript">
+{sentNotify}
+</script>
 <!-- END message_main -->
 
 <!-- BEGIN message_main_attachment -->

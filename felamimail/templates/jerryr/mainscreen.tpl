@@ -175,7 +175,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			{image_url}
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
-			{attachment_image}
+			 {prio_image}{attachment_image}
 		</td>
 		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;"><nobr>
 			<a class="{row_css_class}" name="subject_url" href="#" onclick="fm_readMessage('{url_read_message}', '{read_message_windowName}', this); return false;" title="{full_subject}">{header_subject}</a>
@@ -203,7 +203,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 			{image_url}
 		</td>
 		<td class="mainscreenRow" width="20px" align="center">
-			{attachment_image}
+			{prio_image}{attachment_image}
 		</td>
 		<td class="mainscreenRow" style="overflow:hidden; white-space:nowrap;" width="117px"><nobr>
 			<a class="{row_css_class}" href="#" onclick="{url_compose} return false;" title="{full_address}">{sender_name}</a>

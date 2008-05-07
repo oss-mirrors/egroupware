@@ -246,6 +246,7 @@
 				$bocompose->replaceEmailAdresses($_content);
 			} else {
 				$this->sessionData['mimeType'] = 'text';
+				$_content = $bocompose->_getCleanHTML($_content);
 				$_content = $bocompose->convertHTMLToText($_content);
 			}
 			$htmlObject = html::fckEditorQuick('body', $_mode, $_content);
@@ -357,6 +358,20 @@
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
+
+		function sendNotify ($_uid, $_ret) 
+		{
+			$response =& new xajaxResponse();
+			if ($_ret==='true') {
+				if ( $this->bofelamimail->sendMDN($_uid) )
+					$this->bofelamimail->flagMessages("mdnsent",array($_uid));
+			} else {
+				 $this->bofelamimail->flagMessages("mdnnotsent",array($_uid));
+			}
+			return $response;
+
+		}
+
 		
 		function generateMessageList($_folderName) 
 		{

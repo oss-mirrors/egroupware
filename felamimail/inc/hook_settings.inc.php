@@ -44,6 +44,11 @@
 		'30' => '30'
 	);
 
+	$forwardOptions = array(
+		'asmail' => lang('forward as attachment'),
+		'inline' => lang('forward inline'),
+	);
+
 	$sortOrder = array(
 		'0' => lang('date(newest first)'),
 		'1' => lang('date(oldest first)'),
@@ -131,6 +136,14 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
+        'message_forwarding' => array(
+            'type'   => 'select',
+            'label'  => 'how to forward messages',
+            'name'   => 'message_forwarding',
+            'values' => $forwardOptions,
+            'xmlrpc' => True,
+            'admin'  => False
+        ),
 		'mainscreen_showmail' => array(
 			'type'   => 'select',
 			'label'  => 'show new messages on main screen',

@@ -613,6 +613,20 @@
 #			}
 #		}
 
+		function getNotifyFlags ($_messageUID) {
+			$flags =  $this->icServer->getFlags($_messageUID, true);
+			if (PEAR::isError($flags)) {
+				return null;
+				}
+			if ( in_array('MDNSent',$flags[0]) )
+				return true;
+
+			if ( in_array('MDNnotSent',$flags[0]) )
+				return false;
+
+			return null;
+		}
+
 		function flagMessages($_flag, $_messageUID)
 		{
 			#error_log("felamimail::bocompose::flagMessages");
@@ -642,6 +656,12 @@
 					$this->icServer->setFlags($_messageUID, '\\Seen', 'remove', true);
 					$this->icServer->setFlags($_messageUID, '\\Answered', 'remove', true);
 					$this->icServer->setFlags($_messageUID, '$Forwarded', 'remove', true);
+					break;
+				case "mdnsent":
+					$this->icServer->setFlags($_messageUID, 'MDNSent', 'add', true);
+					break;
+				case "mdnnotsent":
+					$this->icServer->setFlags($_messageUID, 'MDNnotSent', 'add', true);
 					break;
 			}
 			
@@ -705,6 +725,207 @@
 			}
 			
 			return $structure;
+		}
+		/*
+		* strip tags out of the message completely with their content
+		* param $_body is the text to be processed
+		* param $tag is the tagname which is to be removed. Note, that only the name of the tag is to be passed to the function
+		*            without the enclosing brackets
+		* param $endtag can be different from tag  but should be used only, if begin and endtag are known to be different e.g.: <!-- -->
+		*/
+		static function replaceTagsCompletley(&$_body,$tag,$endtag='')
+		{
+			if ($endtag == '' || empty($endtag) || !isset($endtag)) $endtag = $tag;
+			// strip tags out of the message completely with their content
+			$taglen=strlen($tag);
+			$endtaglen=strlen($endtag);
+			if ($_body) {
+				$begin_tag = strpos(strtolower($_body),'<'.$tag);
+				while ($begin_tag !== FALSE) {
+					//since there is a begin tag there should be an end tag, starting somewhere at least the length of the tag down chars further down
+					$end_tag=strpos(strtolower($_body),$endtag.'>',$begin_tag+$taglen+1);
+					if ($end_tag !== FALSE && $end_tag > $begin_tag) {
+						$_body = substr($_body,0,$begin_tag-1).substr($_body,$end_tag+$endtaglen+1);
+					} else {
+						//somehow there is a begin tag of a tag but no end tag. throw it away
+						// we will take care of this later on/somewhere else
+						break;
+					}
+					$begin_tag = strpos(strtolower($_body),'<'."$tag");
+
+					if (strlen($_body)<$begin_tag) break;
+				}
+			}
+		}
+		
+		static function getCleanHTML(&$_html)
+		{
+
+			$kses = new kses();
+			$kses->AddProtocol('cid');
+			// since check protocoll is called for every value associated to an attribute we have to add color and background-color to the valid protocolls
+			$kses->AddProtocol('color');
+			$kses->AddProtocol('background-color');
+			$kses->AddHTML(
+				'p', array(
+					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
+				)
+			);
+			$kses->AddHTML("tbody");
+			$kses->AddHTML("thead");
+			$kses->AddHTML("tt");
+			$kses->AddHTML("br");
+			$kses->AddHTML("b");
+			$kses->AddHTML("u");
+			$kses->AddHTML("s");
+			$kses->AddHTML("i");
+			$kses->AddHTML('em');
+			$kses->AddHTML("strong");
+			$kses->AddHTML("strike");
+			$kses->AddHTML("center");
+			$kses->AddHTML(
+				"font",array(
+					"color"	=> array('maxlen' => 20),
+					"size"=>array('maxlen'=>2)
+				)
+			);
+			$kses->AddHTML(
+				"hr",array(
+					"class"		=> array('maxlen' => 20),
+					"style"		=> array('minlen' => 1),
+				)
+			);
+			$kses->AddHTML(
+				"div",array(
+					'align' => array('maxlen' => 10)
+				)
+			);
+			$kses->AddHTML("ul");
+			$kses->AddHTML(
+				"ol",array(
+					"type"	=> array('maxlen' => 20)
+				)
+			);
+			$kses->AddHTML("li");
+			$kses->AddHTML("h1");
+			$kses->AddHTML("h2");
+			$kses->AddHTML("h3");
+			$kses->AddHTML(
+				"style",array(
+					"type"	=> array('maxlen' => 20),
+					"color"	=> array('maxlen' => 20),
+					"background-color" => array('maxlen' => 20)
+				)
+			);
+			$kses->AddHTML("select");
+			$kses->AddHTML(
+				"option",array(
+					"value" => array('maxlen' => 45),
+					"selected" => array()
+				)
+			);
+
+			$kses->AddHTML(
+				"a", array(
+					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
+					"name" 		=> array('minlen' => 2),
+					'target'	=> array('maxlen' => 10)
+				)
+			);
+
+			$kses->AddHTML(
+				"pre", array(
+					"wrap" => array('maxlen' => 10)
+				)
+			);
+			
+			//      Allows 'td' tag with colspan|rowspan|class|style|width|nowrap attributes,
+			//              colspan has minval of   2       and maxval of 5
+			//              rowspan has minval of   3       and maxval of 6
+			//              class   has minlen of   1 char  and maxlen of   10 chars
+			//              style   has minlen of  10 chars and maxlen of 100 chars
+			//              width   has maxval of 100
+			//              nowrap  is valueless
+			$kses->AddHTML(
+				"table",array(
+					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+					"border"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"cellpadding"   => array("minlen" =>   0, 'maxlen' =>  10),
+					"cellspacing"   => array("minlen" =>   0, 'maxlen' =>  10),
+					"width"   => array("maxlen" => 5),
+					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+					"bgcolor"   => array('maxlen' =>  10),
+					"align"   => array('maxlen' =>  10),
+					"valign"   => array('maxlen' =>  10),
+					"bordercolor"   => array('maxlen' =>  10)
+				)
+			);
+			$kses->AddHTML(
+				"tr",array(
+					"colspan"	=> array('minval' =>   2, 'maxval' =>   5),
+					"rowspan"	=> array('minval' =>   3, 'maxval' =>   6),
+					"class"		=> array("minlen" =>   1, 'maxlen' =>  20),
+					"width"		=> array("maxlen" => 5),
+					"style"		=> array('minlen' =>  10, 'maxlen' => 100),
+					"align"		=> array('maxlen' =>  10),
+					'bgcolor'	=> array('maxlen' => 10),
+					"valign"	=> array('maxlen' =>  10),
+					"nowrap"	=> array('valueless' => 'y')
+				)
+			);
+			$kses->AddHTML(
+				"td",array(
+					"colspan" => array('minval' =>   2, 'maxval' =>   5),
+					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+					"width"   => array("maxlen" => 5),
+					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+					"align"   => array('maxlen' =>  10),
+					'bgcolor' => array('maxlen' => 10),
+					"valign"   => array('maxlen' =>  10),
+					"nowrap"  => array('valueless' => 'y')
+				)
+			);
+			$kses->AddHTML(
+				"th",array(
+					"colspan" => array('minval' =>   2, 'maxval' =>   5),
+					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+					"width"   => array("maxlen" => 5),
+					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+					"align"   => array('maxlen' =>  10),
+					"valign"   => array('maxlen' =>  10),
+					"nowrap"  => array('valueless' => 'y')
+				)
+			);
+			$kses->AddHTML(
+				"span",array(
+					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
+					"style"	  => array('minlen' =>  5, 'maxlen' => 100) 
+				)
+			);
+			$kses->AddHTML(
+				"blockquote",array(
+					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
+					"style"	=> array("minlen" =>   1),
+					"cite"	=> array('maxlen' => 30),
+					"type"	=> array('maxlen' => 10),
+					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
+				)
+			);
+
+			$kses->AddHTML(
+				'img',array(
+					"src"		=> array("minlen" =>   4, 'maxlen' =>  200, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs'] ? '' : 'match' => '/^cid:.*/'),
+					"align"		=> array("minlen" =>   1),
+					"border"	=> array('maxlen' => 30),
+				)
+			);
+
+			self::replaceTagsCompletley($_html,'!--','--');
+
+			$_html = $kses->Parse($_html);
+
 		}
 
 		/**
@@ -1395,6 +1616,7 @@
 					$retValue['header'][$sortOrder[$uid]]['mimetype']	= $headerObject['MIMETYPE'];
 					$retValue['header'][$sortOrder[$uid]]['id']		= $headerObject['MSG_NUM'];
 					$retValue['header'][$sortOrder[$uid]]['uid']		= $headerObject['UID'];
+					$retValue['header'][$sortOrder[$uid]]['priority']		= ($headerObject['PRIORITY']?$headerObject['PRIORITY']:3);
 					if (is_array($headerObject['FLAGS'])) {
 						$retValue['header'][$sortOrder[$uid]]['recent']		= in_array('\\Recent', $headerObject['FLAGS']);
 						$retValue['header'][$sortOrder[$uid]]['flagged']	= in_array('\\Flagged', $headerObject['FLAGS']);
@@ -1403,6 +1625,8 @@
 						$retValue['header'][$sortOrder[$uid]]['deleted']	= in_array('\\Deleted', $headerObject['FLAGS']);
 						$retValue['header'][$sortOrder[$uid]]['seen']		= in_array('\\Seen', $headerObject['FLAGS']);
 						$retValue['header'][$sortOrder[$uid]]['draft']		= in_array('\\Draft', $headerObject['FLAGS']);
+						$retValue['header'][$sortOrder[$uid]]['mdnsent']	= in_array('MDNSent', $headerObject['FLAGS']);
+						$retValue['header'][$sortOrder[$uid]]['mdnnotsent']	= in_array('MDNnotSent', $headerObject['FLAGS']);
 					}
 					if(is_array($headerObject['FROM']) && is_array($headerObject['FROM'][0])) {
 						if($headerObject['FROM'][0]['HOST_NAME'] != 'NIL') {
@@ -1601,6 +1825,7 @@
 				// skip all non attachment parts
 				if(($subPart->type == 'TEXT' && ($subPart->subType == 'PLAIN' || $subPart->subType == 'HTML') && $subPart->disposition != 'ATTACHMENT') ||
 				   ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE') ||
+				   ($subPart->type == 'MULTIPART' && $subPart->subType == 'APPLEFILE') ||
 				   ($subPart->type == 'MESSAGE' && $subPart->subType == 'delivery-status')) 
 				{
 					if ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE')
@@ -1614,7 +1839,8 @@
 				if($subPart->type == 'MULTIPART' && 
 				   ($subPart->subType == 'RELATED' || 
 					$subPart->subType == 'MIXED' || 
-					$subPart->subType == 'SIGNED')) {
+					$subPart->subType == 'SIGNED' || 
+					$subPart->subType == 'APPLEDOUBLE')) {
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
 				} else {
 					$newAttachment = array();
@@ -1664,6 +1890,7 @@
 					$structure = $this->_getSubStructure($structure, $_partID);
 				}
 			}
+
 			switch($structure->type) {
 				case 'APPLICATION':
 					$bodyPart = array(
@@ -1714,7 +1941,8 @@
 					switch($structure->subType) {
 						case 'RFC822':
 							$newStructure = array_shift($structure->subParts);
-							return $this->getMessageBody($_uid, $_htmlOptions, $newStructure->partID, $newStructure);
+							$bodyPart = $this->getMessageBody($_uid, $_htmlOptions, $newStructure->partID, $newStructure);
+							return $bodyPart;
 							break;
 					}
 					
@@ -2092,6 +2320,70 @@
 			}
 			
 			return $retValue;
+		}
+
+		function sendMDN($uid) {
+			$identities = $this->mailPreferences->getIdentity();
+			$headers = $this->getMessageHeader($uid);
+			$send = & CreateObject('phpgwapi.send');
+			$send->ClearAddresses();
+			$send->ClearAttachments();
+			$send->IsHTML(False);
+			$send->IsSMTP();
+
+			$array_to = explode(",",$headers['TO']);
+			foreach($identities as  $identity) {
+				if ( preg_match('/\b'.$identity->emailAddress.'\b/',$headers['TO']) ) {
+					$send->From = $identity->emailAddress;
+					$send->FromName = $identity->realName;
+					error_log('Not Default '.$from);
+					break;
+				}
+				if($identity->default) {
+					$send->From = $identity->emailAddress;
+					$send->FromName = $identity->realName;
+				}
+			}
+
+			if (isset($headers['DISPOSITION-NOTIFICATION-TO'])) {
+				$send->AddAddress( $headers['DISPOSITION-NOTIFICATION-TO'] );
+			} else if ( isset($headers['RETURN-RECEIPT-TO']) ) {
+				$send->AddAddress( $headers['RETURN-RECEIPT-TO']);
+			} else if ( isset($headers['X-CONFIRM-READING-TO']) ) {
+				$send->AddAddress( $headers['X-CONFIRM-READING-TO']);
+			} else return false;
+
+			$send->AddCustomHeader('References: '.$headers['MESSAGE-ID']);
+			$send->Subject = $send->encode_subject( lang('Read')." : ".$headers['SUBJECT'] );
+			
+			$sep = "-----------mdn".$uniq_id = md5(uniqid(time()));
+			
+			$body = "--".$sep."\r\n".
+				"Content-Type: text/plain; charset=ISO-8859-1\r\n".
+				"Content-Transfer-Encoding: 7bit\r\n\r\n".
+				$send->EncodeString(lang("Your message to %1 was displayed." ,$send->From),"7bit").
+				"\r\n";
+
+			$body .= "--".$sep."\r\n".
+				"Content-Type: message/disposition-notification; name=\"MDNPart2.txt\"\r\n" .
+				"Content-Disposition: inline\r\n".
+				"Content-Transfer-Encoding: 7bit\r\n\r\n";
+			$body.= $send->EncodeString("Reporting-UA: eGroupWare\r\n" .
+						   "Final-Recipient: rfc822;".$send->From."\r\n" .
+						   "Original-Message-ID: ".$headers['MESSAGE-ID']."\r\n".
+						   "Disposition: manual-action/MDN-sent-manually; displayed",'7bit')."\r\n";
+
+			$body .= "--".$sep."\r\n".
+				"Content-Type: text/rfc822-headers; name=\"MDNPart3.txt\"\r\n" .
+				"Content-Transfer-Encoding: 7bit\r\n" .
+				"Content-Disposition: inline\r\n\r\n";
+			$body .= $send->EncodeString($this->getMessageRawHeader($uid),'7bit')."\r\n";
+			$body .= "--".$sep."--";
+
+
+			$header = rtrim($send->CreateHeader())."\r\n"."Content-Type: multipart/report; report-type=disposition-notification;\r\n".
+				"\tboundary=\"".$sep."\"\r\n\r\n";
+			return $send->SmtpSend($header,$body);
 		}
 	}
 ?>

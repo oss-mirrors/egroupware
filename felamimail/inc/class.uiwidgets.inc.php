@@ -307,7 +307,7 @@
 					$this->t->set_var('header_subject', @htmlspecialchars('('. lang('no subject') .')', ENT_QUOTES, $this->displayCharset));
 				}
 
-#				_debug_array($header);
+				#_debug_array($header);
 				if($header['mimetype'] == 'multipart/mixed' || 
 				   $header['mimetype'] == 'multipart/related' ||
 				   substr($header['mimetype'],0,11) == 'application' ||
@@ -317,7 +317,16 @@
 				} else {
 					$this->t->set_var('attachment_image', '&nbsp;');
 				}
-			
+				// show priority flag
+				if ($header['priority'] < 3) {
+					 $image = $GLOBALS['egw']->html->image('felamimail','prio_high');
+				} elseif ($header['priority'] > 3) {
+					$image = $GLOBALS['egw']->html->image('felamimail','prio_low');
+				} else {
+					$image = '';
+				}
+				$this->t->set_var('prio_image', $image);
+
 				if ($_folderType > 0) {
 					// sent or drafts folder
 					if (!empty($header['to_name'])) {

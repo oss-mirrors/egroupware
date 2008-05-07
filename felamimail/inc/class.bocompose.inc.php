@@ -32,7 +32,9 @@
 			$this->preferences	= $this->bopreferences->getPreferences();
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
 			$this->preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
-
+			//force the default for the forwarding -> asmail
+			if (!array_key_exists('message_forwarding',$this->preferencesArray) || !isset($this->preferencesArray['message_forwarding']) || empty($this->preferencesArray['message_forwarding'])) $this->preferencesArray['message_forwarding'] = 'asmail';
+			// check if there is a composeid set, and restore the session, if so
 			if (!empty($_composeID))
 			{
 				$this->composeID = $_composeID;
@@ -144,8 +146,13 @@
 			#print '<hr>';
 			#print "<pre>"; print htmlspecialchars($_html); print "</pre>";
 			#print "<hr>";
+			bofelamimail::replaceTagsCompletley($_html,'style');
 			// remove these tags and any spaces behind the tags
-			$search = array('/<div.*?>/', '/<\/div>\r\n/', '/<\/div>/', '/<p.*?> */', '/<\/li>/', '/<.?strong> /', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?b>/', '/<.?i>/', '/<.?s>/', '/<.?em>/', '/<.?ul> */', '/<.?ol> */', '/<.?font.*?> */','/<style.*?>/','/<.?style>/' ,'/<span.*?>/','/<.?span>/', '/<a.*?>/','/<.?a>/');
+			$search = array('/<div.*?>/', '/<\/div>\r\n/', '/<\/div>/', '/<p.*?> */',  
+							'/<.?strong> /', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?b>/', '/<.?i>/', '/<.?s>/', 
+							'/<\/li>/', '/<.?ul> */', '/<.?ol> */', 
+							'/<.?font.*?>/', '/<style.*?>/','/<.?style>/' ,
+							'/<span.*?>/','/<.?span>/', '/<a.*?>/','/<.?a>/','/<img.*?>/');
 			$replace = '';
 			$text = preg_replace($search, $replace, $_html);
 			
@@ -159,12 +166,15 @@
 			$text = preg_replace($search, $replace, $text);
 
 			// special replacements
+			$search = array('/&#160;/');
+			$replace = array(' ');
+			$text = preg_replace($search, $replace, $text);
 			$search = array('/<li>/');
 			$replace = array('  * ');
 			$text = preg_replace($search, $replace, $text);
 			// table stuff
 			$search = array('/<table.*?>/','/<.?table>/', '/<tr.*?>/','/<.?tr>/');
-			$replace = array("\r\n\r\n ","\r\n\r\n ","\r\n ","\r\n ");
+			$replace = array("\r\n\r\n ","\r\n\r\n ","\r\n ","");
 			$text = preg_replace($search, $replace, $text);
 			
 			$search = array('/<thead.*?>/','/<.?thead>/','/<tbody.*?>/','/<.?tbody>/');
@@ -391,6 +401,9 @@
 		
 		function getForwardData($_icServer, $_folder, $_uid, $_partID) 
 		{
+			if  ($this->preferencesArray['message_forwarding'] == 'inline') {
+				$this->getReplyData('forward', $_icServer, $_folder, $_uid, $_partID);
+			}
 			$bofelamimail    =& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$bofelamimail->openConnection();
 			$bofelamimail->reopen($_folder);
@@ -404,16 +417,32 @@
 			$this->sessionData['sourceFolder']=$_folder;
 			$this->sessionData['forwardFlag']='forwarded';
 			$this->sessionData['forwardedUID']=$_uid;
-			$this->sessionData['mimeType']  = 'html';
-			if($headers['SIZE'])
-				$size				= $headers['SIZE'];
-			else
-				$size				= lang('unknown');
+			if  ($this->preferencesArray['message_forwarding'] == 'asmail') {
+				$this->sessionData['mimeType']  = 'html';
+				if($headers['SIZE'])
+					$size				= $headers['SIZE'];
+				else
+					$size				= lang('unknown');
 
-			$this->addMessageAttachment($_uid, $_partID, $_folder,
-				$bofelamimail->decode_header($headers['SUBJECT']),
-				'MESSAGE/RFC822', $size);
-			
+				$this->addMessageAttachment($_uid, $_partID, $_folder,
+					$bofelamimail->decode_header($headers['SUBJECT']),
+					'MESSAGE/RFC822', $size);
+			}
+			else
+			{
+				unset($this->sessionData['in-reply-to']);
+				unset($this->sessionData['to']);
+				unset($this->sessionData['cc']);
+				if($attachments = $bofelamimail->getMessageAttachments($_uid,$_partID)) {
+					foreach($attachments as $attachment) {
+						$this->addMessageAttachment($_uid, $attachment['partID'],
+							$_folder,
+							$attachment['name'],
+							$attachment['mimeType'],
+							$attachment['size']);
+					}
+				}
+			}
 			$bofelamimail->closeConnection();
 			
 			$this->saveSessionData();
@@ -427,6 +456,7 @@
 		// $_mode can be:
 		// single: for a reply to one address
 		// all: for a reply to all
+		// forward: inlineforwarding of a message with its attachments
 		function getReplyData($_mode, $_icServer, $_folder, $_uid, $_partID) 
 		{
 			$foundAddresses = array();
@@ -580,8 +610,7 @@
 					if($bodyParts[$i]['mimeType'] == 'text/plain') {
 						$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
 					}
-					$this->sessionData['body'] .= self::getCleanHTML(
-						$this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']));
+					$this->sessionData['body'] .= self::_getCleanHTML($this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']));
 				}
 
 				$this->sessionData['body']	.= '</blockquote><br>';
@@ -630,108 +659,15 @@
 			$this->saveSessionData();
 		}
 		
-		static function getCleanHTML($_body)
+		static function _getCleanHTML($_body)
 		{
 			static $nonDisplayAbleCharacters = array('[\016]','[\017]',
 					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
 					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
-
-			$kses = new kses();
-			$kses->AddHTML('p', array(
-					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
-				)
-			);
-			$kses->AddHTML('div', array(
-					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
-				)
-			);
-			$kses->AddHTML('br');
-			$kses->AddHTML('b');
-			$kses->AddHTML('center');
-			$kses->AddHTML('em');
-			$kses->AddHTML('font', array(
-					'color'	=> array('minlen' =>   1, 'maxlen' =>  10)
-				)
-			);
-			$kses->AddHTML('i');
-			$kses->AddHTML("s");
-			$kses->AddHTML('strike');
-			$kses->AddHTML('strong');
-			$kses->AddHTML('u');
-			$kses->AddHTML('hr', array(
-					"class"		=> array('maxlen' => 20),
-					"style"		=> array('minlen' => 1),
-				)
-			);
-			$kses->AddHTML("ul");
-			$kses->AddHTML('ol', array(
-					"type"	=> array('maxlen' => 20)
-				)
-			);
-			$kses->AddHTML("li");
-			$kses->AddHTML("h1");
-			$kses->AddHTML("h2");
-			$kses->AddHTML('a', array(
-					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
-					"name" 		=> array('minlen' => 2),
-					'target'	=> array('maxlen' => 10)
-				)
-			);
-			$kses->AddHTML('pre', array(
-					"wrap" => array('maxlen' => 10)
-				)
-			);
+			bofelamimail::getCleanHTML($_body);
+			$_body	= preg_replace($nonDisplayAbleCharacters, '', $_body);
 			
-			$kses->AddHTML(
-				"blockquote",array(
-					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
-					"style"	=> array("minlen" =>   1),
-					"cite"	=> array('maxlen' => 30),
-					"type"	=> array('maxlen' => 10),
-					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
-				)
-			);
-			
-			// tables
-			$kses->AddHTML('table');
-			$kses->AddHTML('tbody');
-			$kses->AddHTML('tr',array(
-				'valign' => array('minlen' => 1, 'maxlen' =>  10),
-				'class'	 => array('minlen' =>   1, 'maxlen' =>  50),
-				'height' => array('minlen' => 1, 'maxlen' =>  10),
-			));
-			$kses->AddHTML('td',array(
-				'class'	=> array('minlen' =>   1, 'maxlen' =>  50),
-				'colspan' => array("minlen" =>   1),
-				'align'  => array('minlen' => 1, 'maxlen' =>  10),
-				'width' => array('minlen' => 1, 'maxlen' =>  10),
-			));
-			$kses->AddHTML('style',array(
-				'type' => array('minlen' => 1, 'maxlen' =>  10),
-			));
-
-			// strip comments out of the message completely
-			if ($_body) {
-				$begin_comment=stripos($_body,'<!--');
-				while ($begin_comment!==FALSE) {
-					//since there is a begin tag there should be an end tag, starting somewhere at least 4 chars further down
-					$end_comment=stripos($_body,'-->',$begin_comment+4);
-					if ($end_comment !== FALSE) {
-						$_body=substr($_body,0,$begin_comment-1).substr($_body,$end_comment+3);
-					} else {
-						//somehow there is a begin tag of a comment but no end tag. throw it away
-						$_body=str_replace('<!--','',$_body);
-					}
-					$begin_comment=stripos($_body,'<!--');
-					if (strlen($_body)<$begin_comment) break;
-				}
-			}
- 
-			$body	= $kses->Parse($_body);
-
-			$body	= preg_replace($nonDisplayAbleCharacters, '', $body);
-			
-			return $body;
+			return $_body;
 		}
 		
 		function getSessionData()
@@ -864,25 +800,26 @@
 		#	}
 
 			// add the attachments
+			$bofelamimail->openConnection();
 			foreach((array)$this->sessionData['attachments'] as $attachment) {
 				if(!empty($attachment['uid']) && !empty($attachment['folder'])) {
 					switch($attachment['type']) {
 						case 'MESSAGE/RFC822':
 							$rawHeader='';
-							$bofelamimail->openConnection();
+							//$bofelamimail->openConnection();
 							$bofelamimail->reopen($attachment['folder']);
 							if (isset($attachment['partID'])) {
 								$rawHeader      = $bofelamimail->getMessageRawHeader($attachment['uid'], $attachment['partID']);
 							}
 							$rawBody        = $bofelamimail->getMessageRawBody($attachment['uid'], $attachment['partID']);
-							$bofelamimail->closeConnection();
+							//$bofelamimail->closeConnection();
 							$_mailObject->AddStringAttachment($rawHeader.$rawBody, $attachment['name'], '7bit', 'message/rfc822');
 							break;
 						default:
-							$bofelamimail->openConnection();
+							//$bofelamimail->openConnection();
 							$bofelamimail->reopen($attachment['folder']);
 							$attachmentData	= $bofelamimail->getAttachment($attachment['uid'], $attachment['partID']);
-							$bofelamimail->closeConnection();
+							//$bofelamimail->closeConnection();
 
 							$_mailObject->AddStringAttachment($attachmentData['attachment'], $attachment['name'], 'base64', $attachment['type']);
 			
@@ -898,6 +835,7 @@
 					);
 				}
 			}
+			$bofelamimail->closeConnection();
 		}
 
 		function saveAsDraft($_formData)
@@ -936,7 +874,20 @@
 			$this->sessionData['disposition'] = $_formData['disposition'];
 			$this->sessionData['mimeType']	= $_formData['mimeType'];
 			$this->sessionData['to_infolog'] = $_formData['to_infolog'];
-
+			// if the body is empty, maybe someone pasted something with scripts, into the message body
+			if(empty($this->sessionData['body']))
+			{
+				// this is to be found with the egw_unset_vars array for the _POST['body'] array
+				$name='_POST';
+				$key='body';
+				#error_log($GLOBALS['egw_unset_vars'][$name.'['.$key.']']);
+				if (isset($GLOBALS['egw_unset_vars'][$name.'['.$key.']']))
+				{
+					$this->sessionData['body'] = self::_getCleanHTML( $GLOBALS['egw_unset_vars'][$name.'['.$key.']']);
+					$_formData['body']=$this->sessionData['body'];
+				}
+				#error_log($this->sessionData['body']);
+			}
 			if(empty($this->sessionData['to']) && empty($this->sessionData['cc']) && 
 			   empty($this->sessionData['bcc']) && empty($this->sessionData['folder'])) {
 			   	$messageIsDraft = true;

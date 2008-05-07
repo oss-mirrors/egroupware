@@ -569,13 +569,13 @@ function fm_blink_currentInputField() {
 function fm_compose_sendEMail() {
 	var addressTable = document.getElementById('addressRows').rows;
 	var addressSet = false;
-	
+
 	for (i=0; i<addressTable.length; i++) {
 		if(addressTable.item(i).cells[2].firstChild.value != '') {
 			addressSet = true;
 		}
 	}
-	
+
 	if(addressSet == true) {
 		document.doit.submit();
 	} else {
@@ -613,8 +613,17 @@ function fm_toggle_editor(toggler)
 	var htmlFlag = document.getElementsByName('_is_html')[0];
 	var mimeType = document.getElementById('mimeType');
 	var currentEditor = htmlFlag.value;
+	var currentMode ='';
+	if (currentEditor == 1)
+	{
+		currentMode='html';
+	}
+	else
+	{
+		currentMode='plain';
+	}
 
-	if (selectedEditor == currentEditor)
+	if (selectedEditor == currentMode)
 	{
 		return;
 	}

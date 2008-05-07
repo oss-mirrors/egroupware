@@ -80,7 +80,6 @@
 			$this->displayCharset   = $GLOBALS['egw']->translation->charset();
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
-			$this->kses		=& CreateObject('phpgwapi.kses');
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
 			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
@@ -231,6 +230,14 @@
 			if(isset($headers['ORGANIZATION'])) {
 				$organization = $this->bofelamimail->decode_header(trim($headers['ORGANIZATION']));
 			}
+		
+			if ( isset($headers['DISPOSITION-NOTIFICATION-TO']) ) {
+				$sent_not = $this->bofelamimail->decode_header(trim($headers['DISPOSITION-NOTIFICATION-TO']));
+			} else if ( isset($headers['RETURN-RECEIPT-TO']) ) {
+				$sent_not = $this->bofelamimail->decode_header(trim($headers['RETURN-RECEIPT-TO']));
+			} else if ( isset($headers['X-CONFIRM-READING-TO']) ) {
+				$sent_not = $this->bofelamimail->decode_header(trim($headers['X-CONFIRM-READING-TO']));
+			} else $sent_not = "";
 			
 			// reset $rawheaders
 			$rawheaders 	= "";
@@ -239,9 +246,7 @@
 			while(list($key,$value) = @each($newRawHeaders)) {
 				$rawheaders .= wordwrap($value, 90, "\n     ");
 			}
-			
-			$this->bofelamimail->closeConnection();
-			
+						
 			$this->display_app_header();
 			if(!isset($_GET['printable'])) {
 				$this->t->set_file(array("displayMsg" => "view_message.tpl"));
@@ -249,6 +254,13 @@
 				$this->t->set_file(array("displayMsg" => "view_message_printable.tpl"));
 				$this->t->set_var('charset',$GLOBALS['egw']->translation->charset());
 			}
+			if ( $sent_not != "" && $this->bofelamimail->getNotifyFlags($this->uid) === null ) {
+				$this->t->set_var('sentNotify','sendNotify("'.$this->uid.'");');
+				$this->t->set_var('lang_sendnotify',lang('The message sender has requested a response to indicate that you have read this message. Would you like to send a receipt?'));
+			} else {
+				$this->t->set_var('sentNotify','');
+			}
+			$this->bofelamimail->closeConnection();
 
 			$this->t->set_block('displayMsg','message_main');
 			$this->t->set_block('displayMsg','message_main_attachment');
@@ -890,165 +902,6 @@
 			$nonDisplayAbleCharacters = array('[\016]','[\017]',
 					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
 					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
-			$this->kses->AddProtocol('cid');
-			// since check protocoll is called for every value associated to an attribute we have to add color and background-color to the valid protocolls
-			$this->kses->AddProtocol('color');
-			$this->kses->AddProtocol('background-color');
-			$this->kses->AddHTML(
-				'p', array(
-					'align'	=> array('minlen' =>   1, 'maxlen' =>  10)
-				)
-			);
-			$this->kses->AddHTML("tbody");
-			$this->kses->AddHTML("thead");
-			$this->kses->AddHTML("tt");
-			$this->kses->AddHTML("br");
-			$this->kses->AddHTML("b");
-			$this->kses->AddHTML("u");
-			$this->kses->AddHTML("s");
-			$this->kses->AddHTML("i");
-			$this->kses->AddHTML('em');
-			$this->kses->AddHTML("strong");
-			$this->kses->AddHTML("strike");
-			$this->kses->AddHTML("center");
-			$this->kses->AddHTML(
-				"font",array(
-					"color"	=> array('maxlen' => 20),
-					"size"=>array('maxlen'=>2)
-				)
-			);
-			$this->kses->AddHTML(
-				"hr",array(
-					"class"		=> array('maxlen' => 20),
-					"style"		=> array('minlen' => 1),
-				)
-			);
-			$this->kses->AddHTML(
-				"div",array(
-					'align' => array('maxlen' => 10)
-				)
-			);
-			$this->kses->AddHTML("ul");
-			$this->kses->AddHTML(
-				"ol",array(
-					"type"	=> array('maxlen' => 20)
-				)
-			);
-			$this->kses->AddHTML("li");
-			$this->kses->AddHTML("h1");
-			$this->kses->AddHTML("h2");
-			$this->kses->AddHTML("h3");
-			$this->kses->AddHTML(
-				"style",array(
-					"type"	=> array('maxlen' => 20),
-					"color"	=> array('maxlen' => 20),
-					"background-color" => array('maxlen' => 20)
-				)
-			);
-			$this->kses->AddHTML("select");
-			$this->kses->AddHTML(
-				"option",array(
-					"value" => array('maxlen' => 45),
-					"selected" => array()
-				)
-			);
-
-			$this->kses->AddHTML(
-				"a", array(
-					"href" 		=> array('maxlen' => 145, 'minlen' => 10),
-					"name" 		=> array('minlen' => 2),
-					'target'	=> array('maxlen' => 10)
-				)
-			);
-
-			$this->kses->AddHTML(
-				"pre", array(
-					"wrap" => array('maxlen' => 10)
-				)
-			);
-			
-			//      Allows 'td' tag with colspan|rowspan|class|style|width|nowrap attributes,
-			//              colspan has minval of   2       and maxval of 5
-			//              rowspan has minval of   3       and maxval of 6
-			//              class   has minlen of   1 char  and maxlen of   10 chars
-			//              style   has minlen of  10 chars and maxlen of 100 chars
-			//              width   has maxval of 100
-			//              nowrap  is valueless
-			$this->kses->AddHTML(
-				"table",array(
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"border"   => array("minlen" =>   1, 'maxlen' =>  10),
-					"cellpadding"   => array("minlen" =>   0, 'maxlen' =>  10),
-					"cellspacing"   => array("minlen" =>   0, 'maxlen' =>  10),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"bgcolor"   => array('maxlen' =>  10),
-					"align"   => array('maxlen' =>  10),
-					"valign"   => array('maxlen' =>  10),
-					"bordercolor"   => array('maxlen' =>  10)
-				)
-			);
-			$this->kses->AddHTML(
-				"tr",array(
-					"colspan"	=> array('minval' =>   2, 'maxval' =>   5),
-					"rowspan"	=> array('minval' =>   3, 'maxval' =>   6),
-					"class"		=> array("minlen" =>   1, 'maxlen' =>  20),
-					"width"		=> array("maxlen" => 5),
-					"style"		=> array('minlen' =>  10, 'maxlen' => 100),
-					"align"		=> array('maxlen' =>  10),
-					'bgcolor'	=> array('maxlen' => 10),
-					"valign"	=> array('maxlen' =>  10),
-					"nowrap"	=> array('valueless' => 'y')
-				)
-			);
-			$this->kses->AddHTML(
-				"td",array(
-					"colspan" => array('minval' =>   2, 'maxval' =>   5),
-					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"align"   => array('maxlen' =>  10),
-					'bgcolor' => array('maxlen' => 10),
-					"valign"   => array('maxlen' =>  10),
-					"nowrap"  => array('valueless' => 'y')
-				)
-			);
-			$this->kses->AddHTML(
-				"th",array(
-					"colspan" => array('minval' =>   2, 'maxval' =>   5),
-					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"width"   => array("maxlen" => 5),
-					"style"   => array('minlen' =>  10, 'maxlen' => 100),
-					"align"   => array('maxlen' =>  10),
-					"valign"   => array('maxlen' =>  10),
-					"nowrap"  => array('valueless' => 'y')
-				)
-			);
-			$this->kses->AddHTML(
-				"span",array(
-					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"style"	  => array('minlen' =>  5, 'maxlen' => 100) 
-				)
-			);
-			$this->kses->AddHTML(
-				"blockquote",array(
-					"class"	=> array("minlen" =>   1, 'maxlen' =>  20),
-					"style"	=> array("minlen" =>   1),
-					"cite"	=> array('maxlen' => 30),
-					"type"	=> array('maxlen' => 10),
-					"dir"	=> array("minlen" =>   1, 'maxlen' =>  10)
-				)
-			);
-
-			$this->kses->AddHTML(
-				'img',array(
-					"src"		=> array("minlen" =>   4, 'maxlen' =>  200, $GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs'] ? '' : 'match' => '/^cid:.*/'),
-					"align"		=> array("minlen" =>   1),
-					"border"	=> array('maxlen' => 30),
-				)
-			);
 
 			$body = '';
 
@@ -1092,7 +945,7 @@
 				{
 					$newBody	= $singleBodyPart['body'];
 					$newBody	= $this->highlightQuotes($newBody);
-					$newBody 	= $this->kses->Parse($newBody);
+					bofelamimail::getCleanHTML($newBody);
 					// create links for websites
 					#$newBody = preg_replace("/(?<!\>)((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
 					#	"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
