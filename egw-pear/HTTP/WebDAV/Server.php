@@ -1412,6 +1412,7 @@ class HTTP_WebDAV_Server
             // new lock
             $options["scope"]     = $lockinfo->lockscope;
             $options["type"]      = $lockinfo->locktype;
+            // Todo: lockinfo::owner still contains D:href opening and closing tags, maybe they should be removed here with strip_tags
             $options["owner"]     = $lockinfo->owner;
             $options["locktoken"] = $this->_new_locktoken();
 
@@ -1668,7 +1669,7 @@ class HTTP_WebDAV_Server
      */
     function _new_locktoken()
     {
-        return "opaquelocktoken:".$this->_new_uuid();
+        return "opaquelocktoken:".HTTP_WebDAV_Server::_new_uuid();
     }
 
     // }}}
