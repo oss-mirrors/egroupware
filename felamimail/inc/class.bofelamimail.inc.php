@@ -735,7 +735,13 @@
 		*/
 		static function replaceTagsCompletley(&$_body,$tag,$endtag='')
 		{
-			if ($endtag == '' || empty($endtag) || !isset($endtag)) $endtag = $tag;
+			if ($tag) $tag = strtolower($tag);
+			if ($endtag == '' || empty($endtag) || !isset($endtag)) 
+			{
+			        $endtag = $tag;
+			} else {
+			        $endtag = strtolower($endtag);
+			}
 			// strip tags out of the message completely with their content
 			$taglen=strlen($tag);
 			$endtaglen=strlen($endtag);
