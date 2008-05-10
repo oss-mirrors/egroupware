@@ -55,24 +55,24 @@ $_services['replace'] = array(
 function _egwcontactssync_list()
 {
 	$guids = array();
-	
+
 	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	// hardcode your search creteria here
 	$criteria = array();
-	
+
 	$filter = array();
 	if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts'])
 	{
 		$filter['account_id'] = null;
 	}
-	
+
 	// hardcode your filter here
 	//$filter['cat_id'] = '!215';
-	$allContacts = ExecMethod2('addressbook.bocontacts.search',$criteria,True,'','','',False,'AND',false,$filter);
+	$allContacts = ExecMethod2('addressbook.addressbook_bo.search',$criteria,True,'','','',False,'AND',false,$filter);
 
 	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	$guids = array();
 	foreach((array)$allContacts as $contact)
 	{
@@ -96,10 +96,10 @@ function _egwcontactssync_list()
  * @return array  An array of GUIDs matching the action and time criteria.
  */
 function &_egwcontactssync_listBy($action, $timestamp) {
-	
+
 	#Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state = $_SESSION['SyncML.state'];
-	
+
 	$allChangedItems = (array)$GLOBALS['egw']->contenthistory->getHistory('contacts', $action, $timestamp);
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allChangedItems: '. print_r($allChangedItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwcontactssync_list();
@@ -150,10 +150,10 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 	$deviceInfo		= $state->getClientDeviceInfo();
 	#error_log(print_r($deviceInfo, true));
 
-	
+
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
+			$vcaladdressbook	= new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 			$contactId		= $vcaladdressbook->addVCard($content, false);
@@ -164,14 +164,14 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 		case 'text/x-s4j-sifn':
 			error_log("[_egwcontactssync_import] Treating bad contact content-type '".$contentType."' as if is was 'text/x-s4j-sifc'");
 		case 'text/x-s4j-sifc':
-			$sifaddressbook		=& CreateObject('addressbook.sifaddressbook');
+			$sifaddressbook		= new addressbook_sif();
 			$contactId = 		$sifaddressbook->addSIF($content);
 			break;
-			
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
-	
+
 	if (is_a($contactId, 'PEAR_Error')) {
 		return $contactId;
 	}
@@ -199,10 +199,10 @@ function _egwcontactssync_search($content, $contentType)
 	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
 
-	
+
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook =& CreateObject('addressbook.vcaladdressbook');
+			$vcaladdressbook = new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 			$contactId = $vcaladdressbook->search($content);
@@ -213,14 +213,14 @@ function _egwcontactssync_search($content, $contentType)
 		case 'text/x-s4j-sifn':
 			#Horde::logMessage("SymcML: egwcontactssync search content: Treating bad contact content-type '$contentType' as if it was 'text/x-s4j-sifc'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifc':
-			$sifaddressbook	=& CreateObject('addressbook.sifaddressbook');
+			$sifaddressbook	= new addressbook_sif();
 			$contactId = $sifaddressbook->search($content);
 			break;
-			
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
-	
+
 	if (is_a($contactId, 'PEAR_Error')) {
 		return $contactId;
 	}
@@ -261,16 +261,16 @@ function _egwcontactssync_export($guid, $contentType)
 	} else {
 		$options = array();
 	}
-	
+
 	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
 	$contactID		= $GLOBALS['egw']->common->get_egwId($guid);
-	
+
 	switch ($contentType)
 	{
 		case 'text/x-vcard':
-			$vcaladdressbook	=& CreateObject('addressbook.vcaladdressbook');
+			$vcaladdressbook	= new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 			if($vcard = $vcaladdressbook->getVCard($contactID))
@@ -281,7 +281,7 @@ function _egwcontactssync_export($guid, $contentType)
 			{
 				return PEAR::raiseError(_("Access Denied"));
 			}
-			
+
 			break;
 
 		case 'text/x-s4j-sift':
@@ -290,7 +290,7 @@ function _egwcontactssync_export($guid, $contentType)
 			#Horde::logMessage("SyncML: egwcontactssync_export Treating bad contact content-type '$contentType' as if is was 'text/x-s4j-sifc'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			/* fall through */
 		case 'text/x-s4j-sifc':
-			$sifaddressbook	=& CreateObject('addressbook.sifaddressbook');
+			$sifaddressbook	= new addressbook_sif();
 			$contactID	= $GLOBALS['egw']->common->get_egwId($guid);
 			if($sifcard = $sifaddressbook->getSIF($contactID))
 			{
@@ -300,9 +300,9 @@ function _egwcontactssync_export($guid, $contentType)
 			{
 				return PEAR::raiseError(_("Access Denied"));
 			}
-			
+
 			break;
-		
+
 		default:
 			#Horde::logMessage("SymcML: export unsupported", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			return PEAR::raiseError(_("Unsupported Content-Type."));
@@ -328,16 +328,16 @@ function _egwcontactssync_delete($guid)
 				return $result;
 			}
 		}
-		
+
 		return true;
 	}
 	Horde::logMessage("SymcML: egwcontactssync delete guid: $guid egwid: ". $GLOBALS['egw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
-	
-	return ExecMethod('addressbook.vcaladdressbook.delete', $GLOBALS['egw']->common->get_egwId($guid));
+
+	return ExecMethod('addressbook.addressbook_vcal.delete', $GLOBALS['egw']->common->get_egwId($guid));
 }
 
 /**
@@ -367,12 +367,12 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 
 	switch ($contentType) {
 		case 'text/x-vcard':
-			$vcaladdressbook =& CreateObject('addressbook.vcaladdressbook');
+			$vcaladdressbook = new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$result = $vcaladdressbook->addVCard($content,$contactID);
 			return $result;
 			break;
-    			
+
 		case 'text/x-s4j-sife':
 		case 'text/x-s4j-sift':
 		case 'text/x-s4j-sifn':
@@ -383,7 +383,7 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 			#fwrite($handle, base64_decode($content));
 			#fclose($handle);
 
-			$sifaddressbook		=& CreateObject('addressbook.sifaddressbook');
+			$sifaddressbook		= new addressbook_sif();
 			$result = $sifaddressbook->addSIF($content,$contactID);
 			return $result;
 			break;
