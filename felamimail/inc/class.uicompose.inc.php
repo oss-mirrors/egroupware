@@ -27,7 +27,7 @@
 			'replyAll'		=> True,
 			'selectFolder'		=> True,
 		);
-		
+
 		var $destinations = array(
 			'to' 		=> 'to',
 			'cc'		=> 'cc',
@@ -53,19 +53,19 @@
 				else
 					$this->composeID = $_GET['composeid'];
 				$this->bocompose   =& CreateObject('felamimail.bocompose',$this->composeID,$this->displayCharset);
-			}			
+			}
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->mailPreferences  = ExecMethod('felamimail.bopreferences.getPreferences');
 
 			$this->t->set_unknowns('remove');
-			
+
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 
 
 		}
-		
+
 		function unhtmlentities ($string)
 		{
 			$trans_tbl = get_html_translation_table (HTML_ENTITIES);
@@ -105,7 +105,7 @@
 					return;
 				}
 			}
-					
+
 			#$GLOBALS['egw']->common->egw_exit();
 			print "<script type=\"text/javascript\">window.close();</script>";
 		}
@@ -130,14 +130,14 @@
 			}
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			#_debug_array($preferences);
-			
+
 			// is the to address set already?
 			if (!empty($_REQUEST['send_to']))
 			{
 				$sessionData['to'] = base64_decode($_REQUEST['send_to']);
-			}			
+			}
 			$this->display_app_header();
-			
+
 			$this->t->set_file(array("composeForm" => "composeForm.tpl"));
 			$this->t->set_block('composeForm','header','header');
 			$this->t->set_block('composeForm','body_input');
@@ -146,11 +146,11 @@
 			$this->t->set_block('composeForm','attachment_row_bold');
 			$this->t->set_block('composeForm','destination_row');
 			$this->t->set_block('composeForm','simple_text');
-			
+
 			$this->translate();
-			
+
 			$this->t->set_var("link_addressbook",$GLOBALS['egw']->link('/index.php',array(
-				'menuaction' => 'addressbook.uicontacts.emailpopup',
+				'menuaction' => 'addressbook.addressbook_ui.emailpopup',
 			)));
 			$this->t->set_var("focusElement",$_focusElement);
 
@@ -185,7 +185,7 @@
 			{
 				$this->t->set_var('errorInfo','&nbsp;');
 			}
-			
+
 			// header
 			$allIdentities = $preferences->getIdentity();
 			#_debug_array($allIdentities);
@@ -195,7 +195,7 @@
 				if($singleIdentity->default)
 					$defaultIdentity = $key;
 			}
-			$selectFrom = html::select('identity', $defaultIdentity, $identities, true, "style='width:100%;'");			
+			$selectFrom = html::select('identity', $defaultIdentity, $identities, true, "style='width:100%;'");
 			$this->t->set_var('select_from', $selectFrom);
 
 			// from, to, cc, replyto
@@ -237,7 +237,7 @@
 			$this->t->set_var('lang_no_recipient',lang('No recipient address given!'));
 			$this->t->set_var('lang_no_subject',lang('No subject given!'));
 			$this->t->pparse("out","header");
-			
+
 
 			// body
 			if($sessionData['mimeType'] == 'html') {
@@ -281,7 +281,7 @@
 					);
 					$tableRows[] = $tempArray;
 				}
-				
+
 				if(count($tableRows) > 0) {
 					$table = html::table($tableRows, "style='width:100%'");
 				}
@@ -291,7 +291,7 @@
 			{
 				$this->t->set_var('attachment_rows','');
 			}
-			
+
 			$this->t->pparse("out","attachment");
 		}
 
@@ -306,17 +306,17 @@
 			}
 			$this->compose('body');
 		}
-		
+
 
 		function display_app_header()
 		{
 			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
 			$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
-			
+
 			$GLOBALS['egw']->common->egw_header();
 		}
-		
+
 		function fileSelector()
 		{
 			if(is_array($_FILES["addFileName"])) {
@@ -333,21 +333,21 @@
 					print "<script type='text/javascript'>document.getElementById('fileSelectorDIV1').style.display = 'inline';document.getElementById('fileSelectorDIV2').style.display = 'none';</script>";
 				}
 			}
-			
+
 			if(!@is_object($GLOBALS['egw']->js))
 			{
 				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
 			}
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');                        
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
 			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
 			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
-			
+
 			$this->t->set_file(array("composeForm" => "composeForm.tpl"));
 			$this->t->set_block('composeForm','fileSelector','fileSelector');
-			
+
 			$this->translate();
 
 			$linkData = array
@@ -380,26 +380,26 @@
 		}
 
 		function getAttachment()
-		{	
-			$bocompose  =& CreateObject('felamimail.bocompose', $_GET['_composeID']);			
+		{
+			$bocompose  =& CreateObject('felamimail.bocompose', $_GET['_composeID']);
 			$attachment =  $bocompose->sessionData['attachments'][$_GET['attID']] ;
 			header ("Content-Type: ".$attachment['type']."; name=\"". $this->bofelamimail->decode_header($attachment['name']) ."\"");
 			header ("Content-Disposition: inline; filename=\"". $this->bofelamimail->decode_header($attachment['name']) ."\"");
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-			header("Pragma: public"); 
+			header("Pragma: public");
 			$fp = fopen($attachment['file'], 'rb');
 			fpassthru($fp);
 			$GLOBALS['egw']->common->egw_exit();
 			exit;
-																			
+
 		}
 
 
 		function selectFolder()
 		{
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');                        
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
 			$GLOBALS['egw']->js->validate_file('jscode','composeMessage','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
@@ -434,7 +434,7 @@
 			}
 			$this->compose('body');
 		}
-		
+
 		function replyAll() {
 			$icServer = (int)$_GET['icServer'];
 			$folder = base64_decode($_GET['folder']);
@@ -446,7 +446,7 @@
 			}
 			$this->compose('body');
 		}
-		
+
 		function translate() {
 			$this->t->set_var("lang_message_list",lang('Message List'));
 			$this->t->set_var("lang_to",lang('to'));
@@ -473,7 +473,7 @@
 			$this->t->set_var('lang_adding_file_please_wait',lang('Adding file to message. Please wait!'));
 			$this->t->set_var('lang_receive_notification',lang('Receive notification'));
 			$this->t->set_var('lang_no_address_set',lang('can not send message. no recipient defined!'));
-			
+
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
 			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);

@@ -56,12 +56,12 @@
 			$this->template = $template;
 			$this->template->set_file(array("body" => 'uiwidgets.tpl'));
 			$this->charset = $GLOBALS['egw']->translation->charset();
-			
+
 			if (!is_object($GLOBALS['egw']->html)) {
 				$GLOBALS['egw']->html = CreateObject('phpgwapi.html');
 			}
 		}
-		
+
 		function encodeFolderName($_folderName)
 		{
 			return $GLOBALS['egw']->translation->convert($_folderName, 'UTF7-IMAP', $this->charset);
@@ -94,7 +94,7 @@
 					for($i = 0; $i < $partCount-1; $i++) {
 						if(!empty($string)) $string .= $obj->delimiter;
 						$string .= $folderParts[$i];
-						if(!$allFolders[$string]) {	
+						if(!$allFolders[$string]) {
 							$allFolders[$string] = clone($obj);
 							$allFolders[$string]->folderName = $string;
 							$allFolders[$string]->shortFolderName = array_pop(explode($obj->delimiter, $string));
@@ -107,7 +107,7 @@
 			}
 
 			$folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/templates/default/images/';
-			
+
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new  = '<link rel="STYLESHEET" type="text/css" href="'.$GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/js/dhtmlxtree/css/dhtmlXTree.css">';
 			$folder_tree_new .= "<script type='text/javascript'>";
@@ -117,28 +117,28 @@
 				$folder_tree_new .= "tree.enableCheckBoxes(1);";
 				$folder_tree_new .= "tree.setOnCheckHandler('onCheckHandler');";
 			}
-			
+
 			#$topFolderBase64 = base64_encode('--topfolder--');
 			$topFolderBase64 = '--topfolder--';
 			$folder_tree_new .= "tree.insertNewItem(0,'$topFolderBase64','$_topFolderName',onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";
-			
+
 			#foreach($_folders as $key => $obj)
 			#_debug_array($allFolders);
-			foreach($allFolders as $longName => $obj) {	
+			foreach($allFolders as $longName => $obj) {
 				$messageCount = '';
 				$image1 = "'folderClosed.gif'";
 				$image2 = "0";
 				$image3 = "0";
-				
+
 				$folderParts = explode($obj->delimiter, $longName);
-				
+
 				//get rightmost folderpart
 				$shortName = array_pop($folderParts);
-				
+
 				// the rest of the array is the name of the parent
 				$parentName = implode((array)$folderParts,$obj->delimiter);
 				if(empty($parentName)) $parentName = '--topfolder--';
-				
+
 				$entryOptions = 'CHILD,CHECKED';
 
 				$displayName	= @htmlspecialchars($obj->shortDisplayName, ENT_QUOTES, $this->charset);
@@ -154,7 +154,7 @@
 						$displayName = "<b>$displayName&nbsp;($_selectedFolderCount)</b>";
 					}
 				}
-				
+
 				if($_useDisplayCharset == true) {
 					$folderName	= $GLOBALS['egw']->translation->convert($obj->folderName, 'UTF7-IMAP', $this->charset);
 					$folderName	= @htmlspecialchars($folderName, ENT_QUOTES, $this->charset);
@@ -179,23 +179,23 @@
 					$folder_tree_new .= "tree.setCheck('$folderName','".(int)$obj->subscribed."');";
 				}
 			}
-			
+
 			$selected = @htmlspecialchars($_selected, ENT_QUOTES, $this->charset);
 			#$selected = base64_encode($_selected);
 
 			$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$selected');</script>";
-			
+
 			return $folder_tree_new;
 		}
-		
-		function createSignatureTable($_signatureList) 
+
+		function createSignatureTable($_signatureList)
 		{
 			$linkData = array
 			(
 				'menuaction'    => 'felamimail.uipreferences.editSignature'
 			);
 			$urlEditSignature = $GLOBALS['egw']->link('/index.php',$linkData);
-			
+
 			if(is_array($_signatureList) && !empty($_signatureList)) {
 				foreach($_signatureList as $signature) {
 					$description = ($signature['fm_defaultsignature'] == true) ? $signature['fm_description'] .' ('. lang('default') .')' : $signature['fm_description'];
@@ -205,10 +205,10 @@
 						'2'	=> '<a href="" onclick="egw_openWindowCentered(\''. $urlEditSignature ."&signatureID=".$signature['fm_signatureid']. '\',\'felamiMailACL\',\'600\',\'230\'); return false;">'. @htmlspecialchars($description, ENT_QUOTES, $this->charset) .'</a>',
 					);
 				}
-				
+
 				return $GLOBALS['egw']->html->table($tableRows, 'style="width:100%;"');
 			}
-			
+
 			return '';
 		}
 
@@ -226,7 +226,7 @@
 			$timestampNow =
 				mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"));
 			$dateToday = date("Y-m-d");
-                                                                                                                
+
 
 			$i=0;
 			foreach((array)$_headers['header'] as $header)
@@ -239,7 +239,7 @@
 				$maxAddressLength = 20;
 				$maxSubjectLengthBold = 50;
 				$maxAddressLengthBold = 14;
-					
+
 				$flags = "";
 				if(!empty($header['recent'])) $flags .= "R";
 				if(!empty($header['flagged'])) $flags .= "F";
@@ -247,7 +247,7 @@
 				if(!empty($header['forwarded'])) $flags .= "W";
 				if(!empty($header['deleted'])) $flags .= "D";
 				if(!empty($header['seen'])) $flags .= "S";
-				
+
 				$this->t->set_var('row_text', '');
 
 				// the status icon
@@ -281,18 +281,18 @@
 				} else {
 					$this->t->set_var('row_css_class','header_row_');
 				}
-				
+
 				// filter out undisplayable characters
 				$search = array('[\016]','[\017]',
 					'[\020]','[\021]','[\022]','[\023]','[\024]','[\025]','[\026]','[\027]',
 					'[\030]','[\031]','[\032]','[\033]','[\034]','[\035]','[\036]','[\037]');
 				$replace = '';
-		
+
 				$header['subject'] = preg_replace($search,$replace,$header['subject']);
 				$header['subject'] = @htmlspecialchars($header['subject'],ENT_QUOTES,$this->displayCharset);
 				// curly brackets get messed up by the template!
 				$header['subject'] = str_replace(array('{','}'),array('&#x7B;','&#x7D;'),$header['subject']);
-				
+
 				if (!empty($header['subject'])) {
 					// make the subject shorter if it is to long
 					$fullSubject = $header['subject'];
@@ -308,7 +308,7 @@
 				}
 
 				#_debug_array($header);
-				if($header['mimetype'] == 'multipart/mixed' || 
+				if($header['mimetype'] == 'multipart/mixed' ||
 				   $header['mimetype'] == 'multipart/related' ||
 				   substr($header['mimetype'],0,11) == 'application' ||
 				   substr($header['mimetype'],0,5) == 'audio') {
@@ -348,7 +348,7 @@
 
 				$this->t->set_var('sender_name', @htmlspecialchars($sender_name, ENT_QUOTES, $this->charset));
 				$this->t->set_var('full_address', @htmlspecialchars($full_address, ENT_QUOTES, $this->charset));
-			
+
 				$this->t->set_var('message_counter', $i);
 				$this->t->set_var('message_uid', $header['uid']);
 
@@ -386,7 +386,7 @@
 					$windowName = ($_readInNewWindow == 1 ? 'displayMessage' : 'displayMessage_'.$header['uid']);
 					$this->t->set_var('read_message_windowName', $windowName);
 				}
-			
+
 				if($_folderType > 0) {
 					// sent or draft folder
 					if(!empty($header['to_name'])) {
@@ -418,18 +418,18 @@
 
 				$linkData = array
 				(
-					'menuaction'   		=> 'addressbook.uicontacts.edit',
+					'menuaction'   		=> 'addressbook.addressbook_ui.edit',
 					'presets[email]'	=> urlencode($header['sender_address']),
 					'presets[n_given]'	=> urlencode($header['sender_name']),
 					'referer'		=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
 				);
-				//TODO: url_add_to_addressbook isn't in any of the templates. 
+				//TODO: url_add_to_addressbook isn't in any of the templates.
 				//If you want to use it, you need to adopt syntax to the new addressbook (popup)
 				$this->t->set_var('url_add_to_addressbook',$GLOBALS['egw']->link('/index.php',$linkData));
 				$this->t->set_var('msg_icon_sm',$msg_icon_sm);
-				
+
 				$this->t->set_var('phpgw_images',EGW_IMAGES);
-		
+
 				switch($_rowStyle) {
 					case 'outlook':
 						$this->t->parse('message_rows','header_row_outlook',True);
@@ -440,7 +440,7 @@
 				}
 			}
 			$this->t->parse("out","message_table");
-			
+
 			return $this->t->get('out','message_table');
 		}
 
@@ -459,7 +459,7 @@
 		function multiSelectBox($_selectedValues, $_predefinedValues, $_valueName, $_boxWidth="100%")
 		{
 			$this->template->set_block('body','multiSelectBox');
-			
+
 			if(is_array($_selectedValues))
 			{
 				foreach($_selectedValues as $key => $value)
@@ -482,16 +482,16 @@
 
 			$this->template->set_var('multiSelectBox_valueName', $_valueName);
 			$this->template->set_var('multiSelectBox_boxWidth', $_boxWidth);
-			
-			
+
+
 			return $this->template->fp('out','multiSelectBox');
 		}
-		
+
 		function navbarButton($_imageName, $_imageAction, $_toolTip='', $_float='left')
 		{
 			$image = $GLOBALS['egw']->common->image('felamimail',$_imageName);
 			$float = $_float == 'right' ? 'right' : 'left';
-			
+
 			return "<div class='navButton' style='float:$float;' onmousedown='this.className=\"navButtonActive\";' onmouseup='this.className=\"navButtonHover\";' onmouseout='this.className=\"navButton\";' onclick=\"$_imageAction\"><img style='width:16px; height:16px;' title='$_toolTip' src='$image' ></div>";
 		}
 
@@ -505,13 +505,13 @@
 		{
 			$bytes /= 1024;
 			$type = 'k';
-			
+
 			if ($bytes / 1024 > 1)
 			{
 				$bytes /= 1024;
 				$type = 'M';
 			}
-			
+
 			if ($bytes < 10)
 			{
 				$bytes *= 10;
@@ -520,15 +520,15 @@
 			}
 			else
 				settype($bytes, 'integer');
-			
+
 			return $bytes . '&nbsp;' . $type ;
 		}
-		
+
 		function tableView($_headValues, $_tableWidth="100%")
 		{
 			$this->template->set_block('body','tableView');
 			$this->template->set_block('body','tableViewHead');
-			
+
 			if(is_array($_headValues))
 			{
 				foreach($_headValues as $head)
@@ -537,7 +537,7 @@
 					$this->template->parse('tableView_Head','tableViewHead',True);
 				}
 			}
-			
+
 			if(is_array($this->tableViewRows))
 			{
 				foreach($this->tableViewRows as $tableRow)
@@ -555,20 +555,20 @@
 					$rowData .= "</tr>";
 				}
 			}
-			
+
 			$this->template->set_var('tableView_width', $_tableWidth);
 			$this->template->set_var('tableView_Rows', $rowData);
-			
+
 			return $this->template->fp('out','tableView');
 		}
-		
+
 		function tableViewAddRow()
 		{
 			$this->tableViewRows[] = array();
 			end($this->tableViewRows);
 			return key($this->tableViewRows);
 		}
-		
+
 		function tableViewAddTextCell($_rowID,$_text)
 		{
 			$this->tableViewRows[$_rowID][]= array
@@ -577,8 +577,8 @@
 				'text'	=> $_text
 			);
 		}
-		
-		function quotaDisplay($_usage, $_limit) 
+
+		function quotaDisplay($_usage, $_limit)
 		{
 			$this->t =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
@@ -589,7 +589,7 @@
 			} else {
 				$quotaPercent=round(($_usage*100)/$_limit);
 			}
-				
+
 			$quotaLimit=$this->show_readable_size($_limit*1024);
 			$quotaUsage=$this->show_readable_size($_usage*1024);
 
@@ -602,13 +602,13 @@
 			} else {
 				$this->t->set_var('quotaBG','#66ff66');
 			}
-				
+
 			if($_limit > 0) {
 				$quotaText = $quotaUsage .'/'.$quotaLimit;
 			} else {
 				$quotaText = $quotaUsage;
 			}
-				
+
 			if($quotaPercent > 50) {
 				$this->t->set_var('quotaUsage_left', $quotaText);
 				$this->t->set_var('quotaUsage_right','');
@@ -616,8 +616,8 @@
 				$this->t->set_var('quotaUsage_left','');
 				$this->t->set_var('quotaUsage_right', $quotaText);
 			}
-			
-			$this->t->parse('out','quota_block');	
+
+			$this->t->parse('out','quota_block');
 			return $this->t->get('out','quota_block');
 		}
 	}
