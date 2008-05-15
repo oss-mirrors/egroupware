@@ -11,7 +11,6 @@
  */
 
 require_once(EGW_INCLUDE_ROOT.'/icalsrv/inc/class.icalsrv_groupdav_handler.inc.php');
-require_once(EGW_INCLUDE_ROOT.'/addressbook/inc/class.bocontacts.inc.php');
 
 /**
  * eGroupWare: GroupDAV access: addressbook handler
@@ -29,7 +28,7 @@ class icalsrv_groupdav_addressbook extends icalsrv_groupdav_handler
 	{
 		$this->icalsrv_groupdav_handler('addressbook',$debug);
 
-		$this->bo =& new bocontacts();
+		$this->bo =& new addressbook_bo();
 	}
 
 	/**
