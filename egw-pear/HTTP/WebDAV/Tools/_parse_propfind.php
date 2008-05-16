@@ -210,6 +210,7 @@ class _parse_propfind
             	$prop['attrs'] = $attrs;
             	$prop['depth'] = $this->depth;
             }
+            if (!is_array($this->{$this->use})) $this->{$this->use} = array();
             $this->{$this->use}[] = $prop;
         }
 
