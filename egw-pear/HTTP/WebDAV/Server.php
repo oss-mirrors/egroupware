@@ -684,6 +684,9 @@ class HTTP_WebDAV_Server
         $this->http_status("207 Multi-Status");
         header('Content-Type: text/xml; charset="utf-8"');
 
+        // we buffer the output to be able to send a Content-Length header, as some clients dont understand chunked encoding
+        ob_start();
+
         // ... and payload
         echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
         echo "<D:multistatus xmlns:D=\"DAV:\">\n";
@@ -824,6 +827,10 @@ class HTTP_WebDAV_Server
         }
 
         echo "</D:multistatus>\n";
+
+        // sending the Content-Lenght header, before flushing the buffer
+        header('Content-Length: '.ob_get_length());
+        ob_end_flush();
     }
 
 
