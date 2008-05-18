@@ -596,7 +596,9 @@ class HTTP_WebDAV_Server
                 // restrict returned properties to the requested ones
                 // here we strip all unrequested entries out of the response
 
-                switch($options['props']) {
+            	// this can happen if we have allprop and prop in one propfind:
+            	// <allprop /><prop><blah /></prop>, eg. blah is not automatic returned by allprop
+                switch(is_array($options['props']) ? $options['props'][0] : $options['props']) {
                 case "all":
                     // nothing to remove
                     break;

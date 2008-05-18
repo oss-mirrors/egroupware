@@ -210,7 +210,9 @@ class _parse_propfind
             	$prop['attrs'] = $attrs;
             	$prop['depth'] = $this->depth;
             }
-            if (!is_array($this->{$this->use})) $this->{$this->use} = array();
+         	// this can happen if we have allprop and prop in one propfind:
+        	// <allprop /><prop><blah /></prop>, eg. blah is not automatic returned by allprop
+            if (!is_array($this->{$this->use}) && $this->{$this->use}) $this->{$this->use} = array($this->{$this->use});
             $this->{$this->use}[] = $prop;
         }
 
