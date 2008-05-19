@@ -645,7 +645,7 @@ class HTTP_WebDAV_Server
             // but for which no values where returned by the user handler
             if (is_array($options['props'])) {
                 foreach ($options["props"] as $reqprop) {
-                    if ($reqprop['name']=="") continue; // skip empty entries
+                    if (!is_array($reqprop) || $reqprop['name']=="") continue; // skip empty entries, or 'all' if <allprop /> used together with <prop>
 
                     $found = false;
 
