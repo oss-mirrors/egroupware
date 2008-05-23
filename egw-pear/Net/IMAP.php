@@ -1251,7 +1251,7 @@ class Net_IMAP extends Net_IMAPProtocol {
      * @param   string  $mailbox        mailbox name to append to (default is current mailbox)
      * @param   string  $flags_list     set flags appended message
      *
-     * @return  mixed   true on success / Pear_Error on failure
+     * @return  mixed   true (or the uid of the created message) on success / Pear_Error on failure
      *
      * @access  public
      * @since   1.0
@@ -1265,9 +1265,16 @@ class Net_IMAP extends Net_IMAPProtocol {
         if (PEAR::isError($ret)) {
             return $ret;
         }
+
         if(strtoupper($ret["RESPONSE"]["CODE"]) != "OK"){
             return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
         }
+		// the expected response is something like that: [APPENDUID 1160024220 12] Completed
+		// the uid of the created message is the number just before the closing bracket
+		$retcode = explode(' ',$ret["RESPONSE"]["STR_CODE"]);
+		$retcode = explode(']',$retcode[2]);
+		if (intval($retcode[0]) > 0) return $retcode[0];
+		// this should never happen, exept the parsed response is not as expected
         return true;
     }
 
