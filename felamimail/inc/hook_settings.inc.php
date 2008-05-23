@@ -44,6 +44,11 @@
 		'30' => '30'
 	);
 
+	$prefAskForMove = array(
+		'0' => lang('no'),
+		'1' => lang('yes')
+	);
+ 
 	$forwardOptions = array(
 		'asmail' => lang('forward as attachment'),
 		'inline' => lang('forward inline'),
@@ -75,6 +80,11 @@
 		'move_to_trash'		=> lang('move to trash'),
 		'mark_as_deleted'	=> lang('mark as deleted'),
 		'remove_immediately'	=> lang('remove immediately')
+	);
+
+	$composeOptions = array(
+		'html'     => lang('html'),
+		'text'   => lang('text/plain'),
 	);
 
 	$htmlOptions = array(
@@ -109,6 +119,13 @@
 		$folderList
 	);
 
+    $templateOptions = array_merge(
+        array(
+            'none' => lang("Don't use template folder")
+        ),
+        $folderList
+    );
+
 
 	/* Settings array for this app */
 	$GLOBALS['settings'] = array(
@@ -120,6 +137,14 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
+       'prefaskformove' => array(
+            'type'   => 'select',
+            'label'  => 'Do you want to be asked for confirmation before moving selected messages to another folder?',
+            'name'   => 'prefaskformove',
+            'values' => $prefAskForMove,
+            'xmlrpc' => True,
+            'admin'  => False
+        ),
 		'sortOrder' => array(
 			'type'   => 'select',
 			'label'  => 'Default sorting order',
@@ -168,6 +193,14 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
+        'composeOptions' => array(
+            'type'   => 'select',
+            'label'  => 'start new messages with mime type plain/text or html?',
+            'name'   => 'composeOptions',
+            'values' => $composeOptions,
+            'xmlrpc' => True,
+            'admin'  => False
+        ),
 		'htmlOptions' => array(
 			'type'   => 'select',
 			'label'  => 'display of html emails',
@@ -207,6 +240,14 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
+        'templateFolder' => array(
+            'type'   => 'select',
+            'label'  => 'template folder',
+            'name'   => 'templateFolder',
+            'values' => $templateOptions,
+            'xmlrpc' => True,
+            'admin'  => False
+        ),
 		'sieveScriptName' => array(
 			'type'   => 'input',
 			'label'  => 'sieve script name',

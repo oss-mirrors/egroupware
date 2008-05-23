@@ -317,6 +317,7 @@
 			$imapServer =& $preferences->getIncomingServer(0);
 
 			$maxMessages		=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
+			if (empty($maxMessages)) $maxMessages = 23; // this seems to be the number off messages that fit the height of the folder tree
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			
 			$this->display_app_header();
@@ -370,7 +371,7 @@
 			$linkData = array (
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, 750);";
+			$urlCompose = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','compose', 700, egw_getWindowOuterHeight());";
 
 			$navbarImages = array(
 				'new'			=> array(
@@ -455,7 +456,9 @@
 			// refresh settings
 			$refreshTime = $userPreferences['refreshTime'];
 			$this->t->set_var('refreshTime',$refreshTime*60*1000);
-			
+			// other settings
+			$prefaskformove = intval($userPreferences['prefaskformove']) ? intval($userPreferences['prefaskformove']) : 0;
+			$this->t->set_var('prefaskformove',$prefaskformove);	
 			#// set the url to open when refreshing
 			#$linkData = array
 			#(
@@ -554,17 +557,22 @@
 					$headerCount = count($headers['header']);
 				}
 				
-				if ($userPreferences['sentFolder'] == $this->mailbox || $userPreferences['draftFolder'] == $this->mailbox) {
+				if ($this->bofelamimail->isSentFolder($this->mailbox) 
+					|| $this->bofelamimail->isDraftFolder($this->mailbox) 
+					|| $this->bofelamimail->isTemplateFolder($this->mailbox)) {
 					$this->t->set_var('lang_from',lang("to"));
 				} else {
 					$this->t->set_var('lang_from',lang("from"));
 				}
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
-
+				
 				$this->t->set_var('header_rows',
 					$uiwidgets->messageTable(
 						$headers,
-						($userPreferences['sentFolder'] == $this->mailbox || $userPreferences['draftFolder'] == $this->mailbox),
+						($this->bofelamimail->isSentFolder($this->mailbox) 
+							|| $this->bofelamimail->isDraftFolder( $this->mailbox) 
+							|| $this->bofelamimail->isTemplateFolder($this->mailbox)),
+						$this->mailbox,
 						$userPreferences['message_newwindow'],
 						$userPreferences['rowOrderStyle']
 					)
@@ -806,6 +814,7 @@
 			$this->t->set_var('lang_open_all',lang("open all"));
 			$this->t->set_var('lang_close_all',lang("close all"));
 			$this->t->set_var('lang_moving_messages_to',lang('moving messages to'));
+			$this->t->set_var('lang_askformove',lang('Do you really want to move the selected messages to folder:'));
 			$this->t->set_var('lang_empty_trash',lang('empty trash'));
 			$this->t->set_var('lang_compress_folder',lang('compress folder'));
 			$this->t->set_var('lang_skipping_forward',lang('skipping forward'));

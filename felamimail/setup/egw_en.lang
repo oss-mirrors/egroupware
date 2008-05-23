@@ -105,11 +105,14 @@ do not use trash	felamimail	en	Do not use Trash
 do not validate certificate	felamimail	en	do not validate certificate
 do you really want to delete the '%1' folder?	felamimail	en	Do you really want to delete the '%1' folder?
 do you really want to delete the selected signatures?	felamimail	en	Do you really want to delete the selected signatures?
+do you really want to move the selected messages to folder:	felamimail	en	Do you really want to move the selected messages to folder:
+do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	en	Do you want to be asked for confirmation before moving selected messages to another folder?
 does not contain	felamimail	en	does not contain
 does not match	felamimail	en	does not match
 does not match regexp	felamimail	en	does not match regexp
 don't use draft folder	felamimail	en	Don't use draft folder
 don't use sent	felamimail	en	Don't use Sent
+don't use template folder	felamimail	en	Don't use template folder
 don't use trash	felamimail	en	Don't use Trash
 down	felamimail	en	down
 download	felamimail	en	download
@@ -124,6 +127,7 @@ edit filter	felamimail	en	Edit filter
 edit rule	felamimail	en	edit rule
 edit selected	felamimail	en	Edit selected
 edit vacation settings	felamimail	en	edit vacation settings
+editor type	felamimail	en	Editor type
 email address	felamimail	en	E-Mail Address
 email forwarding address	felamimail	en	email forwarding address
 email signature	felamimail	en	Email signature
@@ -169,6 +173,8 @@ follow	felamimail	en	follow
 for mail to be send - not functional yet	felamimail	en	For mail to be send - not functional yet
 for received mail	felamimail	en	For received mail
 forward	felamimail	en	Forward
+forward as attachment	felamimail	en	forward as attachment
+forward inline	felamimail	en	forward inline
 forward messages to	felamimail	en	Forward messages to
 forward to	felamimail	en	forward to
 forward to address	felamimail	en	forward to address
@@ -184,6 +190,7 @@ have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.
 header lines	felamimail	en	Header Lines
 hide header	felamimail	en	hide header
 hostname / address	felamimail	en	hostname / address
+how to forward messages	felamimail	en	how to forward messages
 html	felamimail	en	HTML
 icons and text	felamimail	en	Icons and text
 icons only	felamimail	en	Icons only
@@ -280,6 +287,7 @@ no subject given!	felamimail	en	No subject given!
 no supported imap authentication method could be found.	felamimail	en	No supported IMAP authentication method could be found.
 no valid emailprofile selected!!	felamimail	en	No Valid Email Profile Selected!!
 none	felamimail	en	none
+on	felamimail	en	on
 on behalf of	felamimail	en	on behalf of
 one address is not valid	felamimail	en	One address is not valid
 only inbox	felamimail	en	Only INBOX
@@ -304,6 +312,7 @@ previous	felamimail	en	Previous
 previous message	felamimail	en	previous message
 print it	felamimail	en	print it
 print this page	felamimail	en	print this page
+printview	felamimail	en	printview
 quicksearch	felamimail	en	Quicksearch
 read	felamimail	en	read
 reading	felamimail	en	reading
@@ -375,10 +384,12 @@ subscribed successfully!	felamimail	en	Subscribed successfully!
 sun	felamimail	en	Sun
 system signature	felamimail	en	system signature
 table of contents	felamimail	en	Table of Contents
+template folder	felamimail	en	Template folder
 templates	felamimail	en	Templates
 text only	felamimail	en	Text only
 the connection to the imap server failed!!	felamimail	en	The connection to the IMAP Server failed!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	en	The IMAP server does not appear to support the authentication method selected. Please contact your system administrator.
+the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	en	The message sender has requested a response to indicate that you have read this message. Would you like to send a receipt?
 the mimeparser can not parse this message.	felamimail	en	The mimeparser can not parse this message.
 then	felamimail	en	THEN
 this folder is empty	felamimail	en	THIS FOLDER IS EMPTY
@@ -438,3 +449,4 @@ wrap incoming text at	felamimail	en	Wrap incoming text at
 writing	felamimail	en	writing
 wrote	felamimail	en	wrote
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	en	You can use %1 for the above start-date and %2 for the end-date.
+your message to %1 was displayed.	felamimail	en	Your message to %1 was displayed.

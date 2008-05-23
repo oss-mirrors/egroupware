@@ -559,6 +559,11 @@ function fm_compose_saveAsDraft() {
 	document.doit.submit();
 }
 
+function fm_compose_printit() {
+	document.getElementById('printit').value=1;
+	document.doit.submit();
+}
+
 function fm_blink_currentInputField() {
 	currentInputField.style.border = "1px solid #666666";
 	window.setTimeout("currentInputField.style.border = ''", 100);

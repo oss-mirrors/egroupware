@@ -390,6 +390,8 @@
 				$listMode = 1;
 			} elseif($this->bofelamimail->isDraftFolder($_folderName)) {
 				$listMode = 2;
+			} elseif($this->bofelamimail->isTemplateFolder($_folderName)) {
+				$listMode = 3;
 			}
 
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
@@ -554,7 +556,7 @@
 			
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
-		
+
 		/*
 		* move messages to another folder
 		*
@@ -567,9 +569,18 @@
 		{
 			if($this->_debug) error_log("ajaxfelamimail::moveMessages");
 			$folderName = $this->_decodeEntityFolderName($_folderName);
-			$this->bofelamimail->moveMessages($folderName, $_selectedMessages['msg']);
+			if (!empty( $_selectedMessages['msg']) && !empty($folderName)) {
+				$this->bofelamimail->moveMessages($folderName, $_selectedMessages['msg']);
 
-			return $this->generateMessageList($this->sessionData['mailbox']);
+				return $this->generateMessageList($this->sessionData['mailbox']);
+			} else {
+				$response =& new xajaxResponse();
+				$response->addScript('resetMessageSelect();');
+				$response->addScript('tellUser("'.lang('No messages selected, or lost selection. Changing to folder ').'","'.$_folderName.'");');
+				$response->addScript('onNodeSelect("'.$_folderName.'");');
+				return $response->getXML();
+ 
+			}
 		}
 
 		function quickSearch($_searchType, $_searchString, $_status) 

@@ -213,16 +213,17 @@
 		* @param string _body the body of the message
 		* @param string _flags the imap flags to set for the saved message
 		*
-		* @returns nothing
+		* @returns the id of the message appended or false
 		*/
 		function appendMessage($_folderName, $_header, $_body, $_flags)
 		{
 			$header = ltrim(str_replace("\n","\r\n",$_header));
 			$body   = str_replace("\n","\r\n",$_body);
-			if ( PEAR::isError($this->icServer->appendMessage("$header"."$body", $_folderName, $_flags))) {
+			$messageid = $this->icServer->appendMessage("$header"."$body", $_folderName, $_flags);
+			if ( PEAR::isError($messageid)) {
 				return false;
 			}
-			return true;
+			return $messageid;
 		}
 		
 		function closeConnection() {
@@ -522,8 +523,9 @@
 			}
 
 			$deleteOptions  = $this->mailPreferences->preferences['deleteOptions'];
-                        $trashFolder    = $this->mailPreferences->preferences['trashFolder'];
-                        $draftFolder	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder'];
+			$trashFolder    = $this->mailPreferences->preferences['trashFolder'];
+			$draftFolder	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder'];
+			$templateFolder    = $GLOBALS['egw_info']['user']['preferences']['felamimail']['templateFolder'];
 
 			if(($this->sessionData['mailbox'] == $trashFolder && $deleteOptions == "move_to_trash") ||
 			   ($this->sessionData['mailbox'] == $draftFolder)) {
@@ -933,7 +935,7 @@
 			self::replaceTagsCompletley($_html,'!--','--');
 
 			$_html = $kses->Parse($_html);
-
+			$_html = preg_replace('/([\000-\012])/','',$_html);
 		}
 
 		/**
@@ -2065,7 +2067,20 @@
 				return false;
 			}
 			
-			if(false !== stripos($_folderName, $this->mailPreferences->preferences['draftFolder'])) {
+			if(false !== strpos(strtolower($_folderName), strtolower($this->mailPreferences->preferences['draftFolder']))) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function isTemplateFolder($_folderName)
+		{
+			if(empty($this->mailPreferences->preferences['templateFolder'])) {
+				return false;
+			}
+
+			if(false !== strpos(strtolower($_folderName), strtolower($this->mailPreferences->preferences['templateFolder']))) {
 				return true;
 			} else {
 				return false;

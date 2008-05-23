@@ -38,14 +38,34 @@ function emptyTrash() {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.emptyTrash");
 }
 
+function tellUser(message,_nodeID) {
+	if (_nodeID) {
+		alert(message+tree.getUserData(_nodeID, 'folderName'));
+	} else {
+		alert(message);
+	}
+}
+
 function onNodeSelect(_nodeID) {
+	var Check = true;
 	if(tree.getUserData(_nodeID, 'folderName')) {
 		if(document.getElementsByName("folderAction")[0].value == "moveMessage") {
-			resetMessageSelect();
-			formData = xajax.getFormValues('formMessageList');
-			setStatusMessage(movingMessages +' <span style="font-weight: bold;">'+ tree.getUserData(_nodeID, 'folderName') +'</span>');
-			document.getElementById('divMessageList').innerHTML = '';
-			xajax_doXMLHTTP("felamimail.ajaxfelamimail.moveMessages", _nodeID, formData);
+			if (prefAskForMove == 1) Check = confirm(lang_askformove + tree.getUserData(_nodeID, 'folderName'));
+			if (Check == true)
+			{
+				resetMessageSelect();
+				formData = xajax.getFormValues('formMessageList');
+				setStatusMessage(movingMessages +' <span style="font-weight: bold;">'+ tree.getUserData(_nodeID, 'folderName') +'</span>');
+				document.getElementById('divMessageList').innerHTML = '';
+				xajax_doXMLHTTP("felamimail.ajaxfelamimail.moveMessages", _nodeID, formData);
+			} else {
+				resetMessageSelect();
+				for(i=0; i< document.forms.formMessageList.elements.length; i++) {
+					if(document.forms.formMessageList.elements[i].checked) {
+						document.forms.formMessageList.elements[i].checked = false;
+					}
+				}
+			}
 		} else {
 			resetMessageSelect();
 			setStatusMessage('<span style="font-weight: bold;">' + lang_loading + ' ' + tree.getUserData(_nodeID, 'folderName') + '</span>');
@@ -246,7 +266,7 @@ function refreshFolderStatus() {
 }
 
 function openComposeWindow(_url) {
-	egw_openWindowCentered(_url,'test',700,750);
+	egw_openWindowCentered(_url,'test',700,egw_getWindowOuterHeight());
 }
 
 // timer functions

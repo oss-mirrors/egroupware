@@ -23,6 +23,7 @@
 			'getAttachment'		=> True,
 			'fileSelector'		=> True,
 			'forward'		=> True,
+			'composeAsNew'         => True,
 			'reply'			=> True,
 			'replyAll'		=> True,
 			'selectFolder'		=> True,
@@ -89,14 +90,37 @@
 
 			$formData['subject'] 	= $this->bocompose->stripSlashes($_POST['subject']);
 			$formData['body'] 	= $this->bocompose->stripSlashes($_POST['body']);
+			// if the body is empty, maybe someone pasted something with scripts, into the message body
+			if(empty($formData['body']))
+			{
+				// this is to be found with the egw_unset_vars array for the _POST['body'] array
+				$name='_POST';
+				$key='body';
+				#error_log($GLOBALS['egw_unset_vars'][$name.'['.$key.']']);
+				if (isset($GLOBALS['egw_unset_vars'][$name.'['.$key.']']))
+				{
+					$formData['body'] = bocompose::_getCleanHTML( $GLOBALS['egw_unset_vars'][$name.'['.$key.']']);
+				}
+			}
 			$formData['priority'] 	= $this->bocompose->stripSlashes($_POST['priority']);
 			$formData['signatureID'] = (int)$_POST['signatureID'];
 			$formData['mimeType']	= $this->bocompose->stripSlashes($_POST['mimeType']);
 			$formData['disposition'] = (bool)$_POST['disposition'];
 			$formData['to_infolog'] = $_POST['to_infolog'];
 			//$formData['mailbox']	= $_GET['mailbox'];
-
+			if((bool)$_POST['printit'] == true) {
+				$formData['printit'] = 1; 
+				$formData['isDraft'] = 1;
+				// pint the composed message. therefore save it as draft and reopen it as plain printwindow
+				$formData['subject'] = "[".lang('printview').":]".$formData['subject'];
+				$messageUid = $this->bocompose->saveAsDraft($formData);
+				$uidisplay   =& CreateObject('felamimail.uidisplay');
+				$uidisplay->printMessage($messageUid, $formData['printit']);
+				//$GLOBALS['egw']->link('/index.php',array('menuaction' => 'felamimail.uidisplay.printMessage','uid'=>$messageUid));
+				return;
+			}
 			if((bool)$_POST['saveAsDraft'] == true) {
+				$formData['isDraft'] = 1; 
 				// save as draft
 				$this->bocompose->saveAsDraft($formData);
 			} else {
@@ -198,16 +222,20 @@
 			$selectFrom = html::select('identity', $defaultIdentity, $identities, true, "style='width:100%;'");
 			$this->t->set_var('select_from', $selectFrom);
 
-			// from, to, cc, replyto
+			// navbar(, kind of)
 			$this->t->set_var('img_clear_left', $GLOBALS['egw']->common->image('felamimail','clear_left'));
 			$this->t->set_var('img_fileopen', $GLOBALS['egw']->common->image('phpgwapi','fileopen'));
 			$this->t->set_var('img_mail_send', $GLOBALS['egw']->common->image('felamimail','mail_send'));
 			$this->t->set_var('img_attach_file', $GLOBALS['egw']->common->image('felamimail','attach'));
 			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
 			$this->t->set_var('img_fileexport', $GLOBALS['egw']->common->image('felamimail','fileexport'));
-
+			// prepare print url/button
+			$this->t->set_var('img_print_it', $GLOBALS['egw']->common->image('felamimail','fileprint'));
+			$this->t->set_var('lang_print_it', lang('print it'));
+			$this->t->set_var('print_it', $printURL);
+			// from, to, cc, replyto
 			$destinationRows = 0;
-			foreach(array('to','cc','bcc','replyto') as $destination) {
+			foreach(array('to','cc','bcc','replyto','folder') as $destination) {
 				foreach((array)$sessionData[$destination] as $key => $value) {
 					$selectDestination = html::select('destination[]', $destination, $this->destinations, false, "style='width: 100%;' onchange='fm_compose_changeInputType(this)'");
 					$this->t->set_var('select_destination', $selectDestination);
@@ -423,6 +451,18 @@
 			print $folderTree;
 		}
 
+		function composeAsNew() {
+			$icServer = (int)$_GET['icServer'];
+			$folder = base64_decode($_GET['folder']);
+			$replyID = $_GET['reply_id'];
+			$partID  = $_GET['part_id'];
+			if (!empty($folder) && !empty($replyID) ) {
+				// this fill the session data with the values from the original email
+				$this->bocompose->getDraftData($icServer, $folder, $replyID, $partID);
+			}
+			$this->compose('body');
+		}
+
 		function reply() {
 			$icServer = (int)$_GET['icServer'];
 			$folder = base64_decode($_GET['folder']);
@@ -479,6 +519,7 @@
 			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);
 			$this->t->set_var("bg03",$GLOBALS['egw_info']["theme"]["bg03"]);
 		}
+
 }
 
 ?>

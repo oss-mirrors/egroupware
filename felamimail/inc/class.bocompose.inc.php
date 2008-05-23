@@ -33,7 +33,9 @@
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
 			$this->preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			//force the default for the forwarding -> asmail
-			if (!array_key_exists('message_forwarding',$this->preferencesArray) || !isset($this->preferencesArray['message_forwarding']) || empty($this->preferencesArray['message_forwarding'])) $this->preferencesArray['message_forwarding'] = 'asmail';
+			if (!array_key_exists('message_forwarding',$this->preferencesArray) 
+				|| !isset($this->preferencesArray['message_forwarding']) 
+				|| empty($this->preferencesArray['message_forwarding'])) $this->preferencesArray['message_forwarding'] = 'asmail';
 			// check if there is a composeid set, and restore the session, if so
 			if (!empty($_composeID))
 			{
@@ -181,8 +183,8 @@
 			$replace = '';
 			$text = preg_replace($search, $replace, $text);
 
-			$search = array('/<td.*?>/','/<.?td>/');
-			$replace = array('| ',' |');
+			$search = array('/<td.*?>/','/<.?td>/','/<th.*?>/','/<.?th>/');
+			$replace = array('| ',' |', '| ',' |');
 			$text = preg_replace($search, $replace, $text);
 			// headings, rules
 			$search = array('/<h[1-9]>/', '/<\/h[1-9]>/');
@@ -291,7 +293,7 @@
 		// $_mode can be:
 		// single: for a reply to one address
 		// all: for a reply to all
-		function getDraftData($_icServer, $_folder, $_uid) 
+		function getDraftData($_icServer, $_folder, $_uid, $_partID=NULL) 
 		{
 			$this->sessionData['to'] = array();
 			
@@ -303,12 +305,16 @@
 
 			// get message headers for specified message
 			#$headers	= $bofelamimail->getMessageHeader($_folder, $_uid);
-			$headers	= $bofelamimail->getMessageEnvelope($_uid);
-
+			$headers	= $bofelamimail->getMessageEnvelope($_uid, $_partID);
+			$addHeadInfo = $bofelamimail->getMessageHeader($_uid, $_partID);
+			if (!empty($addHeadInfo['X-MAILFOLDER'])) {
+				foreach ( explode('|',$addHeadInfo['X-MAILFOLDER']) as $val ) {
+					$this->sessionData['folder'][] = $val;
+				}
+			}
 			$this->sessionData['uid'] = $_uid;
 			$this->sessionData['messageFolder'] = $_folder;
 			$this->sessionData['isDraft'] = true;
-
 			foreach($headers['CC'] as $val) {
 				if($val['MAILBOX_NAME'] == 'undisclosed-recipients' || (empty($val['MAILBOX_NAME']) && empty($val['HOST_NAME'])) ) {
 					continue;
@@ -343,8 +349,44 @@
 				}
 			}
 
+			foreach($headers['REPLY_TO'] as $val) {
+				if($val['MAILBOX_NAME'] == 'undisclosed-recipients' || (empty($val['MAILBOX_NAME']) && empty($val['HOST_NAME'])) ) {
+					continue;
+				}
+
+				if($userEMailAddresses[$val['EMAIL']]) {
+					continue;
+				}
+						
+				if(!$foundAddresses[$val['EMAIL']]) {
+					$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
+					$address = $this->bofelamimail->decode_header($address);
+					$this->sessionData['replyto'][] = $address;
+					$foundAddresses[$val['EMAIL']] = true;
+				}
+			}
+
+			foreach($headers['BCC'] as $val) {
+				if($val['MAILBOX_NAME'] == 'undisclosed-recipients' || (empty($val['MAILBOX_NAME']) && empty($val['HOST_NAME'])) ) {
+					continue;
+				}
+
+				if($userEMailAddresses[$val['EMAIL']]) {
+					continue;
+				}
+						
+				if(!$foundAddresses[$val['EMAIL']]) {
+					$address = $val['PERSONAL_NAME'] != 'NIL' ? $val['RFC822_EMAIL'] : $val['EMAIL'];
+					$address = $this->bofelamimail->decode_header($address);
+					$this->sessionData['bcc'][] = $address;
+					$foundAddresses[$val['EMAIL']] = true;
+				}
+			}
+
 			$this->sessionData['subject']	= $bofelamimail->decode_header($headers['SUBJECT']);
-			
+			// remove a printview tag if composing
+			$searchfor = '/^\['.lang('printview').':\]/';
+			$this->sessionData['subject'] = preg_replace($searchfor,'',$this->sessionData['subject']);	
 			$bodyParts = $bofelamimail->getMessageBody($_uid, $this->preferencesArray['always_display'], $_partID);
 			#_debug_array($bodyParts);
 
@@ -375,7 +417,7 @@
 				}
 			}
 
-			if($attachments = $bofelamimail->getMessageAttachments($_uid)) {
+			if($attachments = $bofelamimail->getMessageAttachments($_uid,$_partID)) {
 				foreach($attachments as $attachment) {
 					$this->addMessageAttachment($_uid, $attachment['partID'], 
 						$_folder, 
@@ -844,15 +886,45 @@
 			$mail		=& CreateObject('phpgwapi.phpmailer');
 			$identity	= $this->preferences->getIdentity((int)$this->sessionData['identity']);
 			$flags = '\\Seen \\Draft';
-			
+			$BCCmail = '';
+	
 			$this->createMessage($mail, $_formData, $identity);
-			
+			// preserve the bcc and if possible the save to folder information
+			$this->sessionData['folder']    = $_formData['folder'];
+			$this->sessionData['bcc']   = $_formData['bcc'];
+			foreach((array)$this->sessionData['bcc'] as $address) {
+				$address_array  = imap_rfc822_parse_adrlist($address,'');
+				foreach((array)$address_array as $addressObject) {
+					$emailAddress = $addressObject->mailbox. (!empty($addressObject->host) ? '@'.$addressObject->host : '');
+					$mailAddr[] = array($emailAddress, $addressObject->personal);
+				}
+			}
 			$bofelamimail->openConnection();
-			$bofelamimail->appendMessage($this->preferencesArray['draftFolder'],
-				$mail->getMessageHeader(),
+			// folder list as Customheader
+			if (!empty($this->sessionData['folder'])) 
+			{
+				$folders = implode('|',array_unique($this->sessionData['folder']));
+				$mail->AddCustomHeader("X-Mailfolder: $folders");
+			}
+			// decide where to save the message (default to draft folder, if we find nothing else)
+			// if the current folder is in draft or template folder save it there
+			// if it is called from printview then save it with the draft folder
+			$savingDestination = $this->preferencesArray['draftFolder'];
+			if (empty($this->sessionData['messageFolder']) && !empty($this->sessionData['mailbox'])) $this->sessionData['messageFolder'] = $this->sessionData['mailbox'];  
+			if ($bofelamimail->isDraftFolder($this->sessionData['messageFolder']) 
+				|| $bofelamimail->isTemplateFolder($this->sessionData['messageFolder'])) 
+			{
+				$savingDestination = $this->sessionData['messageFolder'];
+			} 
+			if (  !empty($_formData['printit']) && $_formData['printit'] == 0 ) $savingDestination = $this->preferencesArray['draftFolder'];
+
+			if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
+			$messageUid = $bofelamimail->appendMessage($savingDestination,
+				$BCCmail.$mail->getMessageHeader(),
 				$mail->getMessageBody(),
 				$flags);
 			$bofelamimail->closeConnection();
+			return $messageUid;
 		}
 
 		function send($_formData)
@@ -875,7 +947,8 @@
 			$this->sessionData['mimeType']	= $_formData['mimeType'];
 			$this->sessionData['to_infolog'] = $_formData['to_infolog'];
 			// if the body is empty, maybe someone pasted something with scripts, into the message body
-			if(empty($this->sessionData['body']))
+			// this should not happen anymore, unless you call send directly, since the check was introduced with the action command
+			if(empty($this->sessionData['body'])) 
 			{
 				// this is to be found with the egw_unset_vars array for the _POST['body'] array
 				$name='_POST';
@@ -947,7 +1020,8 @@
 						$mailAddr[] = array($emailAddress, $addressObject->personal);
 					}
 				}
-
+				$BCCmail='';
+				if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection();
 				foreach($folder as $folderName) {
@@ -961,18 +1035,25 @@
 					#$mailHeader=explode('From:',$mail->getMessageHeader());	
 					#$mailHeader[0].$mail->AddrAppend("Bcc",$mailAddr).'From:'.$mailHeader[1],
 					$bofelamimail->appendMessage($folderName,
-								$mail->AddrAppend("Bcc",$mailAddr).$mail->getMessageHeader(),
+								$BCCmail.$mail->getMessageHeader(),
 								$mail->getMessageBody(),
 								$flags);
 				}
 				$bofelamimail->closeConnection();
 			}
-			if((isset($this->sessionData['uid']) && isset($this->sessionData['messageFolder'])) || (isset($this->sessionData['forwardFlag']) && isset($this->sessionData['sourceFolder']))) {
+			if((isset($this->sessionData['uid']) && isset($this->sessionData['messageFolder'])) 
+				|| (isset($this->sessionData['forwardFlag']) && isset($this->sessionData['sourceFolder']))) {
 				// mark message as answered
 				$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection();
 				$bofelamimail->reopen($this->sessionData['messageFolder']);
-				if($this->sessionData['messageFolder'] == $GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']) {
+				// if the draft folder is a starting part of the messages folder, the draft message will be deleted after the send
+				// unless your templatefolder is a subfolder of your draftfolder, and the message is in there
+				if((!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']) && 
+					preg_match('/^'.$GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder'].'/',$this->sessionData['messageFolder']))
+					&& !(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['templateFolder']) &&
+					preg_match('/^'.$GLOBALS['egw_info']['user']['preferences']['felamimail']['templateFolder'].'/',$this->sessionData['messageFolder']))
+				) {
 					$bofelamimail->deleteMessages(array($this->sessionData['uid']));
 				} else {
 					$bofelamimail->flagMessages("answered", array($this->sessionData['uid']));
@@ -1025,8 +1106,12 @@
 			} else {
 				$this->sessionData['signatureID'] = -1;
 			}
-
-			$this->sessionData['mimeType']	= 'html';
+			// apply the current mailbox to the compose session data of the/a new email
+			$appsessionData = $GLOBALS['egw']->session->appsession('session_data');
+			$this->sessionData['mailbox'] = $appsessionData['mailbox'];
+			
+			$this->sessionData['mimeType'] = 'html';
+			if (!empty($this->preferencesArray['composeOptions']) && $this->preferencesArray['composeOptions']=="text") $this->sessionData['mimeType']  = 'text/plain';	
 			
 			$this->saveSessionData();
 		}

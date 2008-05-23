@@ -212,7 +212,7 @@
 			return '';
 		}
 
-		// $_folderType 0: normal imap folder 1: sent folder 2: draft folder
+		// $_folderType 0: normal imap folder 1: sent folder 2: draft folder 3: template folder
 		// $_rowStyle felamimail or outlook
 		function messageTable($_headers, $_folderType, $_folderName, $_readInNewWindow, $_rowStyle='felamimail')
 		{
@@ -328,7 +328,7 @@
 				$this->t->set_var('prio_image', $image);
 
 				if ($_folderType > 0) {
-					// sent or drafts folder
+					// sent or drafts or template folder
 					if (!empty($header['to_name'])) {
 						$sender_name	= $header['to_name'];
 						$full_address	= $header['to_name'].' <'.$header['to_address'].'>';
@@ -361,7 +361,7 @@
 
 				$this->t->set_var('size', $this->show_readable_size($header['size']));
 
-				if($_folderType == 2) {
+				if($_folderType == 2 || $_folderType == 3) {
 					$linkData = array (
 						'menuaction'    => 'felamimail.uicompose.composeFromDraft',
 						'icServer'	=> 0,
@@ -388,7 +388,7 @@
 				}
 
 				if($_folderType > 0) {
-					// sent or draft folder
+					// sent or draft or template folder
 					if(!empty($header['to_name'])) {
 						list($mailbox, $host) = explode('@',$header['to_address']);
 						$senderAddress  = imap_rfc822_write_address($mailbox,

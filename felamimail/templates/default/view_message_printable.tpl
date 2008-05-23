@@ -19,7 +19,7 @@
 
 <tr style="background: white;">
 	<td colspnan="2" style="font-weight:bold; text-align: center; font-size: 120%;">
-		{subject_data}
+		<a class="{row_css_class}" name="subject_url" href="{url_read_message}" target="{read_message_windowName}" title="{full_subject_data}">{subject_data}</a>
 	</td>
 </tr>
 </table>

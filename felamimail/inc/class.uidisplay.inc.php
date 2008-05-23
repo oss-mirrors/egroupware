@@ -282,7 +282,19 @@
 //			if(!isset($_GET['printable']))
 //			{
 			// navbar start
-				// reply url
+			// compose as new URL
+			$linkData = array (
+				'menuaction'    => 'felamimail.uicompose.composeAsNew',
+				'icServer'  => $this->icServer,
+				'folder'    => base64_encode($this->mailbox),
+				'reply_id'  => $this->uid,
+			);
+			if($partID != '') {
+				$linkData['part_id'] = $partID;
+			}
+			$asnewURL = $GLOBALS['egw']->link('/index.php',$linkData);
+
+			// reply url
 			$linkData = array (
 				'menuaction'	=> 'felamimail.uicompose.reply',
 				'icServer'	=> $this->icServer,
@@ -327,6 +339,10 @@
 			$deleteURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
 			$navbarImages = array(
+				'new'	=> array(
+					'action'    => "window.location.href = '$asnewURL'",
+					'tooltip'   => lang('compose as new'),
+				),
 				'mail_reply'	=> array(
 					'action'	=> "window.location.href = '$replyURL'",
 					'tooltip'	=> lang('reply'),
@@ -358,12 +374,17 @@
 				$linkData['part'] = $partID;
 			}
 			$printURL = $GLOBALS['egw']->link('/index.php',$linkData);
-			$to_infologURL = $GLOBALS['egw']->link('/index.php',array(
+
+			// infolog URL
+			$linkData = array(
 				'menuaction' => 'infolog.uiinfolog.import_mail',
 				'uid'    => $this->uid,
 				'mailbox' => $this->mailbox
-			));
-
+			);
+			if($partID != '') {
+				$linkData['part'] = $partID;
+			}
+			$to_infologURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
 			// viewheader url
 			$linkData = array (
@@ -377,7 +398,7 @@
 
 			$navbarImages = array();
 
-			// viewheader url
+			// save message url
 			$linkData = array (
 				'menuaction'	=> 'felamimail.uidisplay.saveMessage',
 				'uid'		=> $this->uid
@@ -721,7 +742,7 @@
 			exit;
 		}
 
-		function display_app_header()
+		function display_app_header($printing = NULL)
 		{
 			if($_GET['menuaction'] != 'felamimail.uidisplay.printMessage' &&
 				$_GET['menuaction'] != 'felamimail.uidisplay.displayBody') {
@@ -729,12 +750,12 @@
 				$GLOBALS['egw']->js->validate_file('jscode','view_message','felamimail');
 				$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			}
-
-			if($_GET['menuaction'] == 'felamimail.uidisplay.printMessage') {
+			
+			if(($_GET['menuaction'] == 'felamimail.uidisplay.printMessage') || (!empty($printing) && $printing == 1)) {
 				$GLOBALS['egw']->js->set_onload('javascript:window.print()');
 			}
 
-			if($_GET['menuaction'] == 'felamimail.uidisplay.printMessage' ||
+			if($_GET['menuaction'] == 'felamimail.uidisplay.printMessage' || (!empty($printing) && $printing == 1) ||
 				$_GET['menuaction'] == 'felamimail.uidisplay.displayBody') {
 				$GLOBALS['egw_info']['flags']['nofooter'] = true;
 			}
@@ -996,14 +1017,19 @@
 			return $body;
 		}
 
-		function printMessage()
+		function printMessage($messageId = NULL, $callfromcompose = NULL)
 		{
+			if (!empty($messageId) && empty($this->uid)) $this->uid = $messageId;
 			$partID		= $_GET['part'];
 			$transformdate	=& CreateObject('felamimail.transformdate');
 			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
 			// (regis) seems to be necessary to reopen...
-			$this->bofelamimail->reopen($this->mailbox);
+			$folder = $this->mailbox;
+			// the folder for callfromcompose is hardcoded, because the message to be printed from the compose window is saved as draft, and can be
+			// reopened for composing (only) from there
+			if ($callfromcompose) $folder = $GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder'];
+			$this->bofelamimail->reopen($folder);
 #			print "$this->mailbox, $this->uid, $partID<br>";
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
 			$envelope   = $this->bofelamimail->getMessageEnvelope($this->uid, $partID);
@@ -1043,7 +1069,7 @@
 
 			$this->bofelamimail->closeConnection();
 
-			$this->display_app_header();
+			$this->display_app_header($callfromcompose);
 			$this->t->set_file(array("displayMsg" => "view_message_printable.tpl"));
 		#	$this->t->set_var('charset',$GLOBALS['egw']->translation->charset());
 
@@ -1090,8 +1116,27 @@
 
 			$this->t->set_var("date_data",
 				@htmlspecialchars($GLOBALS['egw']->common->show_date(strtotime($headers['DATE'])), ENT_QUOTES,$this->displayCharset));
-			$this->t->set_var("subject_data",
-				@htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT'])), ENT_QUOTES, $this->displayCharset));
+			
+			// link to go back to the message view. the link differs if the print was called from a normal viewing window, or from compose 
+			$subject = @htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT'])), ENT_QUOTES, $this->displayCharset);
+			$this->t->set_var("subject_data", $subject);
+			$this->t->set_var("full_subject_data", $subject);
+			$linkData = array (
+				'menuaction'    => 'felamimail.uidisplay.display',
+				'showHeader'    => 'false',
+				'folder'	=> base64_encode($folder),
+				'uid'       => $this->uid,
+				'id'        => $this->id,
+			);
+			if ($callfromcompose) $linkData['menuaction'] = 'felamimail.uicompose.composeFromDraft';
+			$_readInNewWindow = $this->mailPreferences->preferences['message_newwindow'];
+			$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
+
+			$target = 'displayMessage';
+			$windowName = ($_readInNewWindow == 1 ? $target : $target.'_'.$this->uid);
+			#if ($callfromcompose) $target = 'composeFromDraft';
+			if ($callfromcompose) $windowName = '_top';
+			$this->t->set_var('read_message_windowName', $windowName);
 
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);

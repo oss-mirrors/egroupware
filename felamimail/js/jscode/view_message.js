@@ -19,12 +19,14 @@ function initAll()
 
 	var headerTable = document.getElementById('headerTable');
 	var headerDIV = document.getElementById('headerDIV');
-
-	if(headerTable.clientHeight > headerDIV.clientHeight) {
-		var moreDIV	= document.getElementById('moreDIV');
-		moreDIV.style.display = 'block';
+	if (headerTable) {
+		if (headerTable.clientHeight) {
+			if(headerTable.clientHeight > headerDIV.clientHeight) {
+				var moreDIV	= document.getElementById('moreDIV');
+				moreDIV.style.display = 'block';
+			}
+		}
 	}
-
 	if(is_ie) {
 		fm_resizeBodyDIV();
 		window.onresize = fm_resizeBodyDIV;

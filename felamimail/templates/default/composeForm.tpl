@@ -43,9 +43,10 @@
 <center>
 <form method="post" name="doit" action="{link_action}" ENCTYPE="multipart/form-data" onsubmit="return check_data();">
 <input type="hidden" id="saveAsDraft" name="saveAsDraft" value="0">
+<input type="hidden" id="printit" name="printit" value="0">
 <TABLE WIDTH="100%" CELLPADDING="1" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
 	<tr class="navbarBackground">
-		<td align="left" width="200px">
+		<td align="left" width="250px">
 			<div class="parentDIV">
 				<button class="menuButton" type="submit" value="{lang_send}" name="send" style="width: auto; color: black;">
 					<img src="{img_mail_send}" style="vertical-align: middle;"> <b>{lang_send}</b>
@@ -58,6 +59,9 @@
 				</button>
 				<button class="menuButton" type="button" onclick="fm_compose_displayFileSelector();" title="{lang_attachments}">
 					<img src="{img_attach_file}">
+				</button>
+				<button class="menuButton" type="button" onclick="fm_compose_printit();" title="{lang_print_it}">
+					<img src="{img_print_it}">
 				</button>
 			</div>
 		</td>

@@ -5,6 +5,9 @@ var sURL = unescape(window.location.pathname);
 // some translations needed for javascript functions
 
 var movingMessages		= '{lang_moving_messages_to}';
+var lang_askformove			= '{lang_askformove}';
+var prefAskForMove			= '{prefaskformove}';
+
 var lang_emptyTrashFolder	= '{lang_empty_trash}';
 var lang_compressingFolder	= '{lang_compress_folder}';
 var lang_select_target_folder	= '{lang_select_target_folder}';
