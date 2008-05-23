@@ -396,7 +396,7 @@
 			}
 				
 			/* Get app-specific category listings */
-			$cats_link .= $this->cat->formated_list('select','all',$cat_id,False);
+			$cats_link .= $this->cat->formatted_list('select','all',$cat_id,False);
 			$cats_link .= '</select>'."\n";
 			return $cats_link;
 		}
