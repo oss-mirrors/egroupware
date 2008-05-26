@@ -312,6 +312,9 @@
 					$this->sessionData['folder'][] = $val;
 				}
 			}
+			if (!empty($addHeadInfo['X-SIGNATURE'])) {
+				$this->sessionData['signatureID'] = $addHeadInfo['X-SIGNATURE'];
+			}
 			$this->sessionData['uid'] = $_uid;
 			$this->sessionData['messageFolder'] = $_folder;
 			$this->sessionData['isDraft'] = true;
@@ -892,6 +895,7 @@
 			// preserve the bcc and if possible the save to folder information
 			$this->sessionData['folder']    = $_formData['folder'];
 			$this->sessionData['bcc']   = $_formData['bcc'];
+			$this->sessionData['signatureID'] = $_formData['signatureID'];
 			foreach((array)$this->sessionData['bcc'] as $address) {
 				$address_array  = imap_rfc822_parse_adrlist($address,'');
 				foreach((array)$address_array as $addressObject) {
@@ -906,6 +910,7 @@
 				$folders = implode('|',array_unique($this->sessionData['folder']));
 				$mail->AddCustomHeader("X-Mailfolder: $folders");
 			}
+			$mail->AddCustomHeader('X-Signature: '.$this->sessionData['signatureID']);
 			// decide where to save the message (default to draft folder, if we find nothing else)
 			// if the current folder is in draft or template folder save it there
 			// if it is called from printview then save it with the draft folder
