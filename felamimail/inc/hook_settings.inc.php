@@ -177,6 +177,14 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
+		'mainscreen_showfolders' => array(
+			'type'   => 'multiselect',
+			'label'  => 'if shown, which folders should appear on main screen',
+			'name'   => 'mainscreen_showfolders',
+			'values' => $folderList,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
 		'message_newwindow' => array(
 			'type'   => 'select',
 			'label'  => 'display messages in multiple windows',
