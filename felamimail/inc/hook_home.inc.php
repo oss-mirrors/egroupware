@@ -77,29 +77,34 @@
 							<b>'.lang('unseen').'</b>
 						</td>
 					<tr>';
+			$showFolders = array();
+			if (!empty($this->bofelamimail->mailPreferences->preferences['mainscreen_showfolders'])) $showFolders = explode(',',$this->bofelamimail->mailPreferences->preferences['mainscreen_showfolders']);
 			foreach($folderList as $key => $value) {
+				#echo count($showFolders).'-'.in_array($key, $showFolders).'#<br>'; 
 				#_debug_array($value);
-				if(is_object($value->counter)) {
-					$messages	= $value->counter->messages;
-					$unseen		= $value->counter->unseen;
-					$recent		= $value->counter->recent;
-				}
+				if (count($showFolders) == 0 || (count($showFolders)>0 && in_array($key, $showFolders))) {
+					if(is_object($value->counter)) {
+						$messages	= $value->counter->messages;
+						$unseen		= $value->counter->unseen;
+						$recent		= $value->counter->recent;
+					}
 
-				if($recent > 0) {
-					$newMessages = "$unseen($recent)";
-				} else {
-					$newMessages = "$unseen";
+					if($recent > 0) {
+						$newMessages = "$unseen($recent)";
+					} else {
+						$newMessages = "$unseen";
+					}
+				
+				
+					$linkData = array
+					(
+						'menuaction'    => 'felamimail.uifelamimail.changeFolder',
+						'mailbox'	=> urlencode($key)
+					);
+					$folderLink = $GLOBALS['egw']->link('/index.php',$linkData);
+				
+					$extra_data .= "<tr><td><a href='$folderLink'>$value->displayName</a></td><td>$messages</td><td>$newMessages</td></tr>";
 				}
-				
-				
-				$linkData = array
-				(
-					'menuaction'    => 'felamimail.uifelamimail.changeFolder',
-					'mailbox'	=> urlencode($key)
-				);
-				$folderLink = $GLOBALS['egw']->link('/index.php',$linkData);
-				
-				$extra_data .= "<tr><td><a href='$folderLink'>$value->displayName</a></td><td>$messages</td><td>$newMessages</td></tr>";
 			}
 			$extra_data .= '</table>';
 		}    
