@@ -32,7 +32,7 @@
 		);
 
 		var $mbox;		// the mailbox identifier any function should use
-
+		static $debug = false; //true; // sometimes debuging is quite handy, to see things. check with the error log to see results
 		// define some constants
 		// message types
 		var $type = array("text", "multipart", "message", "application", "audio", "image", "video", "other");
@@ -752,17 +752,25 @@
 			if ($_body) {
 				$begin_tag = strpos(strtolower($_body),'<'.$tag);
 				while ($begin_tag !== FALSE) {
+					$bodylength = strlen($_body);
 					//since there is a begin tag there should be an end tag, starting somewhere at least the length of the tag down chars further down
 					$end_tag=strpos(strtolower($_body),$endtag.'>',$begin_tag+$taglen+1);
 					if ($end_tag !== FALSE && $end_tag > $begin_tag) {
+						if (self::$debug) error_log("bofelamimail:replaceTagsCompletley: substitution of (<)$tag to $endtag(>) from position $begin_tag:". substr($_body,$begin_tag,$taglen+10));
+						if (self::$debug) error_log("bofelamimail:replaceTagsCompletley: substitute to $endtag(>) at position ".($end_tag+$endtaglen+1).":".substr($_body,$end_tag+$endtaglen+1-$endtaglen-1,$endtaglen+10));
 						$_body = substr($_body,0,$begin_tag-1).substr($_body,$end_tag+$endtaglen+1);
 					} else {
 						//somehow there is a begin tag of a tag but no end tag. throw it away
 						// we will take care of this later on/somewhere else
 						break;
 					}
-					$begin_tag = strpos(strtolower($_body),'<'."$tag");
-
+					$new_start = strpos(strtolower($_body),'<'."$tag");
+					if ($new_start == $begin_tag && $bodylength == strlen($_body)) {
+						// sometimes the substitution does not take place, so if the position does not change: break
+						break;
+					} else {
+						$begin_tag = $new_start;
+					}
 					if (strlen($_body)<$begin_tag) break;
 				}
 			}
