@@ -1162,7 +1162,8 @@
 			$isUWIMAP = false;
 			
 			$delimiter = $this->icServer->getHierarchyDelimiter();
-
+			if( PEAR::isError($delimiter)) $delimiter = '/';
+			
 			$inboxData = new stdClass;
 			$inboxData->name 		= 'INBOX';
 			$inboxData->folderName		= 'INBOX';
@@ -1579,6 +1580,7 @@
 			#$this->icServer->setDebug(true);
 			
 			$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter);
+
 			#$this->icServer->setDebug(false);
 			#print "</pre>";
 			// nothing found
