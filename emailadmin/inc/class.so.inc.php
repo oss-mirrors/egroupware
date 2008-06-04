@@ -42,6 +42,7 @@
 			'ea_description'		=> 'description',
 			'ea_default_domain'		=> 'defaultDomain',
 			'ea_organisation_name'		=> 'organisationName',
+			'ea_user_defined_identities'  => 'userDefinedIdentities',
 			'ea_user_defined_accounts'	=> 'userDefinedAccounts',
 			'ea_imapoldcclient'		=> 'imapoldcclient',
 			'ea_order'			=> 'ea_order',

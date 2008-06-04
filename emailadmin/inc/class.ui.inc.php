@@ -243,6 +243,7 @@
 					case 'smtpAuth':
 					case 'smtpLDAPUseDefault':
 					case 'userDefinedAccounts':
+					case 'userDefinedIdentities':
 					case 'ea_user_defined_signatures':
 					case 'imapoldcclient':
 					case 'editforwardingaddress':
@@ -497,6 +498,7 @@
 			$globalSettings['defaultDomain'] = $_POST['globalsettings']['defaultDomain'];
 			$globalSettings['organisationName'] = $_POST['globalsettings']['organisationName'];
 			$globalSettings['userDefinedAccounts'] = $_POST['globalsettings']['userDefinedAccounts'];
+			$globalSettings['userDefinedIdentities'] = $_POST['globalsettings']['userDefinedIdentities'];
 			$globalSettings['ea_user_defined_signatures'] = ($_POST['globalsettings']['ea_user_defined_signatures'] == 'yes' ? 'yes' : 'no' );
 			$globalSettings['ea_default_signature'] = $_POST['globalsettings']['ea_default_signature'];
 			$globalSettings['ea_appname'] = ($_POST['globalsettings']['ea_appname'] == 'any' ? '' : $_POST['globalsettings']['ea_appname']);
@@ -560,6 +562,7 @@
 			$this->t->set_var('lang_default_domain',lang('enter your default mail domain (from: user@domain)'));
 			$this->t->set_var('lang_organisation_name',lang('name of organisation'));
 			$this->t->set_var('lang_user_defined_accounts',lang('users can define their own emailaccounts'));
+			$this->t->set_var('lang_user_defined_identities',lang('users can define their own identities'));
 			$this->t->set_var('lang_user_defined_signatures',lang('users can define their own signatures'));
 			$this->t->set_var('lang_LDAP_server_hostname_or_IP_address',lang('LDAP server hostname or ip address'));
 			$this->t->set_var('lang_LDAP_server_admin_dn',lang('LDAP server admin DN'));

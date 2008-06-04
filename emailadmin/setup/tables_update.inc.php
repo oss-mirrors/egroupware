@@ -218,4 +218,16 @@
 
 		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.4.001';
 	}
+
+    $test[] = '1.4.001';
+    function emailadmin_upgrade1_4_001()
+    {
+        $GLOBALS['egw_setup']->oProc->AddColumn('egw_emailadmin','ea_user_defined_identities',array(
+            'type' => 'varchar',
+            'precision' => '3'
+        ));
+
+        return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.5.001';
+    }
+
 ?>

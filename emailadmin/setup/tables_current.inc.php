@@ -42,6 +42,7 @@
 				'ea_description' => array('type' => 'varchar','precision' => '200'),
 				'ea_default_domain' => array('type' => 'varchar','precision' => '100'),
 				'ea_organisation_name' => array('type' => 'varchar','precision' => '100'),
+				'ea_user_defined_identities' => array('type' => 'varchar','precision' => '3'),
 				'ea_user_defined_accounts' => array('type' => 'varchar','precision' => '3'),
 				'ea_imapoldcclient' => array('type' => 'varchar','precision' => '3'),
 				'ea_order' => array('type' => 'int','precision' => '4'),

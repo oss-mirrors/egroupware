@@ -71,6 +71,14 @@
 	<p>
 	<fieldset style="width:650px;" class="row_off"><legend>{lang_global_options}</legend>
 	<table width="100%" border="0" cellspacing="0" cellpading="1">
+        <tr>
+            <td width="300px">
+                {lang_user_defined_identities}:
+            </td>
+            <td>
+                <input type="checkbox" name="globalsettings[userDefinedIdentities]" {selected_userDefinedIdentities} value="yes">
+            </td>
+        </tr>
 		<tr>
 			<td width="300px">
 				{lang_user_defined_accounts}:

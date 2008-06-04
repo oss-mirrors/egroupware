@@ -371,6 +371,7 @@
 						'defaultDomain' => $GLOBALS['egw_info']['server']['mail_suffix'],
 						'organisationName' => '',
 						'userDefinedAccounts' => '',
+						'userDefinedIdentities' => '',
 					),array(
 						'smtpServer' => $GLOBALS['egw_info']['server']['smtp_server'],
 						'smtpPort' => $GLOBALS['egw_info']['server']['smtp_port'],
@@ -404,6 +405,7 @@
 			$fieldNames[] = 'profileID';
 			$fieldNames[] = 'organisationName';
 			$fieldNames[] = 'userDefinedAccounts';
+			$fieldNames[] = 'userDefinedIdentities';
 			$fieldNames[] = 'ea_appname';
 			$fieldNames[] = 'ea_group';
 			$fieldNames[] = 'ea_user_defined_signatures';
@@ -496,6 +498,7 @@
 				}
 				
 				$eaPreferences->userDefinedAccounts		= ($data['userDefinedAccounts'] == 'yes');
+				$eaPreferences->userDefinedIdentities     = ($data['userDefinedIdentities'] == 'yes');
 				$eaPreferences->ea_user_defined_signatures	= ($data['ea_user_defined_signatures'] == 'yes');
 				$eaPreferences->ea_default_signature		= $data['ea_default_signature'];
 				
