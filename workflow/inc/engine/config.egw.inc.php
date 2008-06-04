@@ -106,6 +106,17 @@ if (!function_exists('galaxia_get_agents_list'))
 				'wf_agent_priority' => 1,
 			)
 		);
+		$hooked_agents = $GLOBALS['egw']->hooks->process('workflow_agent');
+		foreach($hooked_agents as $appname => $agent_list) {
+			if(!is_array($agent_list)) {
+				continue;
+			}
+			foreach($agent_list as $agent_array) {
+				if($agent_array['wf_agent_type']) {
+					$res[] = $agent_array;
+				}
+			}
+		}
 		return  $res;
 	}
 }

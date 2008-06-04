@@ -216,7 +216,7 @@
 				{
 					if (empty($this->agents[$agent['wf_agent_type']]))
 					{
-						$ui_agent =& createObject('workflow.ui_agent_'.$agent['wf_agent_type']);
+						$ui_agent =& $this->get_agent($agent['wf_agent_type']);
 						$ui_agent->load($agent['wf_agent_id']);
 						$this->agents[$agent['wf_agent_type']] = $ui_agent;
 						unset($ui_agent);
@@ -786,7 +786,7 @@
 				foreach ($activity_agents as $agent)
 				{
 					//create an empty temp ui_agent object
-					$ui_agent =& createObject('workflow.ui_agent_'.$agent['wf_agent_type']);
+					$ui_agent =& $this->get_agent($agent['wf_agent_type']);
 					//build this object BUT without loading actual data
 					//because we will save next values soon
 					$ui_agent->load($agent['wf_agent_id'],false);

@@ -7,7 +7,7 @@ $activity_agents =& $this->activity->getAgents();
 foreach ($activity_agents as $agent)
 {
 	//create an empty temp ui_agent object
-	$ui_agent =& createObject('workflow.ui_agent_'.$agent['wf_agent_type']);
+	$ui_agent =& $this->get_agent($agent['wf_agent_type']);
 	//build this object
 	$ui_agent->load($agent['wf_agent_id']);
 	//At runtime agents need to handle relations with the instance and the activity

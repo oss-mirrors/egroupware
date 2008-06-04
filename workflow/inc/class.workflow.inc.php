@@ -304,5 +304,30 @@
 			return lang('%1 days, %2:%3:%4',$days,$hours,$min,$sec);
 		}
 
+		/**
+		*	Find and load a ui_agent_* object, either locally or via eGroupWare hooks
+		*
+		*	@param agent_type
+		*	@return the ui_agent, or null
+		*/
+		function &get_agent($agent_type) {
+			$ui_agent = null;
+			if(file_exists(dirname(__FILE__) . SEP . 'class.ui_agent_' . $agent_type . '.inc.php')) {
+				$ui_agent =& createObject('workflow.ui_agent_'.$agent_type);
+			} else {
+				// Look for hooked agents from other applications
+				$hooked_agents = $GLOBALS['egw']->hooks->process('workflow_agent');
+				foreach($hooked_agents as $appname => $agent_list) {
+					if(is_array($agent_list)) {
+						foreach($agent_list as $agent_info) {
+							if($agent_info['wf_agent_type'] == $agent_type) {
+								return CreateObject($agent_info['wf_agent_class']);
+							}
+						}
+					}
+				}
+			}
+			return $ui_agent;
+		}
 	}
 ?>
