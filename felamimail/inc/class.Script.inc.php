@@ -17,6 +17,7 @@ class Script {
 	var $mode;         /* basic or advanced. Smartsieve can only read/write basic. */
 	var $rules;        /* array of sieve rules. */
 	var $vacation;     /* vacation settings. */
+	var $emailNotification; /* email notification settings. */
 	var $pcount;       /* highest priority value in ruleset. */
 	var $errstr;       /* error text. */
 	/**
@@ -35,6 +36,7 @@ class Script {
 		$this->mode = '';
 		$this->rules = array();
 		$this->vacation = array();
+		$this->emailNotification = array(); // Added email notifications
 		$this->pcount = 0;
 		$this->errstr = '';
 	}
@@ -86,7 +88,9 @@ class Script {
 
 		$rules = array();
 		$vacation = array();
+		$emailNotification = array(); // Added email notifications
 		$regexps = array('^ *##PSEUDO','^ *#rule','^ *#vacation','^ *#mode');
+		$regexps[] = '^ *#notify'; // Added email notifications
 
 		/* first line should be the script size. eg: {123}. */
 		#$line = array_shift($lines);
@@ -173,6 +177,12 @@ class Script {
 
 						$vacation['forwards'] = $bits[5];
 					}
+
+					if (preg_match("/^ *#notify&&(.*)&&(.*)&&(.*)/i",$line,$bits)) {
+		 				$emailNotification['status'] = $bits[1];
+						$emailNotification['externalEmail'] = $bits[2];
+						$emailNotification['displaySubject'] = $bits[3];
+					}
 					
 					if (preg_match("/^ *#mode&&(.*)/i",$line,$bits)){
 						if ($bits[1] == 'basic')
@@ -190,6 +200,7 @@ class Script {
 		$this->script = $script;
 		$this->rules = $rules;
 		$this->vacation = $vacation;
+		$this->emailNotification = $emailNotification; // Added email notifications
 		if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": Script succesful retrieved: ".print_r($vacation,true));
  
 		return true;
@@ -396,6 +407,25 @@ class Script {
 			// update with any changes.
 			$this->vacation = $vacation;
 		}
+
+		if ($this->emailNotification && $this->emailNotification['status'] == 'on') {
+			// format notification email header components
+			$notification_email = $this->emailNotification['externalEmail'];
+
+			// format notification body
+			$egw_site_title = $GLOBALS['egw_info']['server']['site_title'];
+			$notification_body = lang("You have received a new message on the")." {$egw_site_title}"."\n";
+			$notification_body .= "\n";
+			$notification_body .= 'From: $from$'."\n";
+			if ($this->emailNotification['displaySubject']) {
+				$notification_body .= 'Subject: $subject$'."\n";
+			}
+			//$notification_body .= 'Size: $size$'."\n";
+
+			$newscriptbody .= 'notify :message "'.$notification_body.'" :method "mailto" :options "'.$notification_email.'";'."\n";
+			//$newscriptbody .= 'notify :message "'.$notification_body.'" :method "mailto" :options "'.$notification_email.'?subject='.$notification_subject.'";'."\n";
+			$newscriptbody .= 'keep;'."\n\n";
+		}
  
 		// generate the script head
  
@@ -411,11 +441,13 @@ class Script {
 			if ($this->vacation && $vacation_active) {
 				$newscripthead .= ",\"vacation\"";
 			}
+			if ($this->emailNotification && $this->emailNotification['status'] == 'on') $newscripthead .= ',"notify"'; // Added email notifications
 			$newscripthead .= "];\n\n";
 		} else {
 			// no active rules, but might still have an active vacation rule
 			if ($this->vacation && $vacation_active)
 				$newscripthead .= "require [\"vacation\"];\n\n";
+			if ($this->emailNotification && $this->emailNotification['status'] == 'on') $newscripthead .= "require [\"notify\"];\n\n"; // Added email notifications
 		}
 	
  
@@ -456,6 +488,11 @@ class Script {
 				if ($vacation['forwards']) $newscriptfoot .= '&&' . $vacation['forwards'];
 				$newscriptfoot .= "\n";
 		}
+		if ($this->emailNotification) {
+			$emailNotification = $this->emailNotification;
+			$newscriptfoot .= "#notify&&" . $emailNotification['status'] . "&&" . $emailNotification['externalEmail'] . "&&" . $emailNotification['displaySubject'] . "\n";
+		}
+
 		$newscriptfoot .= "#mode&&basic\n";
  
 		$newscript = $newscripthead . $newscriptbody . $newscriptfoot;

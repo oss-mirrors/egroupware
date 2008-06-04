@@ -68,7 +68,8 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		</td>
 	</TR>
 </table>
-
+<form method="post" name="mainView" id="mainView" action="{reloadView}">
+</form>
 <TABLE  width="100%" cellpadding="0" cellspacing="0" border="0" style="height:100px;">
 		<input type="hidden" name="folderAction" id="folderAction" value="changeFolder">
 		<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
@@ -76,6 +77,7 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 
 	<tr style="height: 20px;">
 		<td>
+
 			<span id="folderFunction" align="left" style="font-size:11px;">&nbsp;</span>	
 		</td>
 		<td>
@@ -93,10 +95,10 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 	</tr>
 	<TR>
 		<td valign="top" class="folderlist" width="180">
-	
+			<!-- StartAccountSelector -->
+			<span id="accountSelect" align="left" style="font-size:11px;">{accountSelect}</span>	
 			<!-- StartFolderTree -->
-
-			<div id="divFolderTree" style="overflow:auto; width:180px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
+			<div id="divFolderTree" style="overflow:auto; width:180px; height:458px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
 			</div>
 			{folder_tree}
 			<script language="JavaScript1.2">refreshFolderStatus();</script>
@@ -133,7 +135,6 @@ fm_startTimerMessageListUpdate(refreshTimeOut);
 		</TD>
 	</TR>
 </table>
-
 
 <!-- END main -->
 

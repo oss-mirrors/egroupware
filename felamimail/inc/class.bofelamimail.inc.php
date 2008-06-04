@@ -513,11 +513,11 @@
 			return true;
 		}
 
-		function deleteMessages($_messageUID) 
+		function deleteMessages($_messageUID, $_folder=NULL) 
 		{
 			$msglist = '';
 			$oldMailbox = '';
-			
+			if (is_null($_folder) || empty($_folder)) $_folder = $this->sessionData['mailbox'];	
 			if(!is_array($_messageUID) || count($_messageUID) === 0) {
 				return false;
 			}
@@ -531,9 +531,9 @@
 			   ($this->sessionData['mailbox'] == $draftFolder)) {
 				$deleteOptions = "remove_immediately";
 			}
-			if($this->icServer->getCurrentMailbox() != $this->sessionData['mailbox']) {
+			if($this->icServer->getCurrentMailbox() != $_folder) {
 				$oldMailbox = $this->icServer->getCurrentMailbox();
-				$this->icServer->selectMailbox($this->sessionData['mailbox']);
+				$this->icServer->selectMailbox($_folder);
 			}
 			
 			switch($deleteOptions) {
@@ -542,7 +542,7 @@
 						#error_log(implode(' : ', $_messageUID));
 						#error_log("$trashFolder <= ". $this->sessionData['mailbox']);
 						// copy messages
-						if ( PEAR::isError($this->icServer->copyMessages($trashFolder, $_messageUID, $this->sessionData['mailbox'], true)) ) {
+						if ( PEAR::isError($this->icServer->copyMessages($trashFolder, $_messageUID, $_folder, true)) ) {
 							return false;
 						}
 						// mark messages as deleted
@@ -2159,6 +2159,7 @@
 		
 		function reopen($_foldername)
 		{
+			#_debug_array($this->icServer);
 			$this->icServer->selectMailbox($_foldername);
 		}
 		

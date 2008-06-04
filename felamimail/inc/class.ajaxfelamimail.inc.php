@@ -315,7 +315,47 @@
 			$response->addAssign('signatureTable', 'innerHTML', $this->uiwidgets->createSignatureTable($signatures));
 			return $response->getXML();
 		}
+
+		function changeActiveAccount($accountData)
+		{
+			if($this->_debug) error_log("ajaxfelamimail::changeActiveAccount");
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.bopreferences.inc.php');
+			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$boPreferences->setProfileActive(false);
+			if ($accountData) $boPreferences->setProfileActive(true,$accountData);
+
+			$response =& new xajaxResponse();
+			$response->addScript('refreshView();');
+			return $response->getXML();
+		}
 		
+		function deleteAccountData($accountData)
+		{
+			if($this->_debug) error_log("ajaxfelamimail::deleteAccountData");
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.bopreferences.inc.php');
+			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$boPreferences->deleteAccountData($accountData);
+			$preferences =& $boPreferences->getPreferences();
+			$allAccountData    = $boPreferences->getAllAccountData($preferences);
+			foreach ($allAccountData as $tmpkey => $accountData)
+			{
+				$identity =& $accountData['identity'];
+				foreach($identity as $key => $value) {
+					if(is_object($value) || is_array($value)) {
+						continue;
+					}
+					switch($key) {
+						default:
+							$tempvar[$key] = $value;
+					}
+				}
+				$accountArray[]=$tempvar;
+			}
+			$response =& new xajaxResponse();
+			$response->addAssign('userDefinedAccountTable', 'innerHTML', $this->uiwidgets->createAccountDataTable($accountArray));
+			return $response->getXML();
+		}
+
 		/*
 		* empty trash folder
 		*
@@ -666,6 +706,31 @@
 			return $response->getXML();
 		}
 		
+		function refreshAccountDataTable()
+		{
+			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.bopreferences.inc.php');
+			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$preferences =& $boPreferences->getPreferences();
+			$allAccountData    = $boPreferences->getAllAccountData($preferences);
+			foreach ($allAccountData as $tmpkey => $accountData)
+			{
+				$identity =& $accountData['identity'];
+				foreach($identity as $key => $value) {
+					if(is_object($value) || is_array($value)) {
+						continue;
+					}
+					switch($key) {
+						default:
+						$tempvar[$key] = $value;
+					}
+				}
+				$accountArray[]=$tempvar;
+			}
+			$response =& new xajaxResponse();
+			$response->addAssign('userDefinedAccountTable', 'innerHTML', $this->uiwidgets->createAccountDataTable($accountArray));
+			return $response->getXML();
+		}
+
 		function reloadAttachments($_composeID) 
 		{
 			$bocompose	=& CreateObject('felamimail.bocompose', $_composeID);
@@ -762,17 +827,30 @@
 			$isDefaultSignature = ($_isDefaultSignature == 'true' ? true : false);
 				
 			$signatureID = $boSignatures->saveSignature($_id, $_description, $_signature, $isDefaultSignature);
-
+			
 			$response =& new xajaxResponse();
 
 			if($_mode == 'save') {
 				#$response->addAssign('signatureID', 'value', $signatureID);
-				$response->addScript('window.close();');
+				$response->addScript("opener.fm_refreshSignatureTable()");
+				$response->addScript("document.getElementById('signatureDesc').focus();window.close();");
 			} else {
 				$response->addScript("opener.fm_refreshSignatureTable()");
 				$response->addAssign('signatureID', 'value', $signatureID);
 			}
 				
+			return $response->getXML();
+		}
+
+		function setComposeSignature($identity)
+		{
+			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$preferences =& $boPreferences->getPreferences();
+			$Identities = $preferences->getIdentity($identity);
+			//error_log(print_r($Identities->signature,true));
+
+			$response =& new xajaxResponse();
+			$response->addScript('setSignature('.$Identities->signature.');');
 			return $response->getXML();
 		}
 		

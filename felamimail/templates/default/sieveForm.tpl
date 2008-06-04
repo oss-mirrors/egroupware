@@ -310,3 +310,54 @@ function createScript()
 <input type="hidden" name="ruleID" value="{value_ruleID}">
 </form>
 <!-- END vacation -->
+
+<!-- BEGIN email_notification -->
+<form ACTION="{email_notification_action_url}" METHOD="post" NAME="editVacation">
+<table WIDTH="100%" CELLPADDING="2" CELLSPACING="1" style="border: 1px solid silver;">
+  <tr CLASS="th">
+    <td colspan="2">email notification settings</td>
+  </tr>
+  <tr CLASS="row_on">
+    <td>Status:</td>
+    <td>
+      <input type="radio" name="emailNotificationStatus"{checked_active} value="active"> {lang_active}
+      <input type="radio" name="emailNotificationStatus"{checked_disabled} value="disabled"> {lang_disabled}
+    </td>
+  </tr>
+  <tr CLASS="row_off">
+    <td>External email:</td>
+    <td nowrap="nowrap"><input type="text" size="35" name="emailNotificationExternalEmail" value="{external_email}" /></td>
+  </tr>
+  <tr CLASS="row_on">
+    <td>Display mail subject in notification:</td>
+    <td>
+      <input type="radio" name="emailNotificationDisplaySubject"{checked_yes} value="1"> {lang_yes}
+      <input type="radio" name="emailNotificationDisplaySubject"{checked_no} value="0"> {lang_no}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      &nbsp;
+    </td>
+  </tr>
+  <tr height="30px" valign="bottom">
+    <td align="left" colspan="2">
+      <table border="0" valign="bottom">
+      <tr>
+        <td>
+          <input name="save" value="{lang_save}" type="submit">
+        </td>
+        <td>
+          <input name="apply" value="{lang_apply}" type="submit">
+        </td>
+        <td width=100%"> &nbsp; </td>
+        <td align="right">
+          <input name="cancel" value="{lang_cancel}" type="submit">
+        </td>
+      </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+<!-- END email_notification -->

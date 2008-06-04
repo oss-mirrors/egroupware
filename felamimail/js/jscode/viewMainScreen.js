@@ -265,6 +265,10 @@ function refreshFolderStatus() {
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshFolderList');
 }
 
+function refreshView() {
+	document.mainView.submit();
+}
+
 function openComposeWindow(_url) {
 	egw_openWindowCentered(_url,'test',700,egw_getWindowOuterHeight());
 }
@@ -309,3 +313,10 @@ function fm_clearSearch() {
 	
 	inputQuickSearch.focus();
 }
+
+function changeActiveAccount(_accountSelection)
+{
+	//alert(_accountSelection.value);
+	xajax_doXMLHTTP('felamimail.ajaxfelamimail.changeActiveAccount',_accountSelection.value);
+}
+

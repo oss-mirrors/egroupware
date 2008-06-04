@@ -161,8 +161,10 @@
 			$preferences		= ExecMethod('felamimail.bopreferences.getPreferences');
 
 			$message[] = $_GET["message"];
-			
-			$this->bofelamimail->deleteMessages($message);
+			$mailfolder = NULL;
+			if (!empty($_GET['folder'])) $mailfolder  = base64_decode($_GET['folder']);
+	
+			$this->bofelamimail->deleteMessages($message,$mailfolder);
 
 			// set the url to open when refreshing
 			$linkData = array
@@ -315,7 +317,8 @@
 			$urlMailbox		=  urlencode($this->mailbox);
 
 			$imapServer =& $preferences->getIncomingServer(0);
-
+			$activeIdentity =& $preferences->getIdentity(0);
+			#_debug_array($activeIdentity);
 			$maxMessages		=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
 			if (empty($maxMessages)) $maxMessages = 23; // this seems to be the number off messages that fit the height of the folder tree
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
@@ -337,7 +340,12 @@
 			$this->t->set_var('oldMailbox',$urlMailbox);
 			$this->t->set_var('image_path',EGW_IMAGES);
 			#printf ("this->uifelamimail->viewMainScreen() Line 272: %s<br>",date("H:i:s",mktime()));
-
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uifelamimail.viewMainScreen'
+			);
+			$refreshURL = $GLOBALS['egw']->link('/index.php',$linkData);
+			$this->t->set_var('reloadView',$refreshURL);
 			// display a warning if vacation notice is active
 			if(is_a($imapServer,'defaultimap') && $imapServer->enableSieve) {
 				$this->bosieve		=& CreateObject('felamimail.bosieve',$imapServer);
@@ -539,6 +547,39 @@
 			);
 			$selectStatus = html::select('status', $defaultSelectStatus, $statusTypes, false, "style='width:100%;' onchange='javascript:quickSearch();' id='status'");
 			$this->t->set_var('select_status', $selectStatus);
+
+			$selectedID = 0;
+			$allAccountData    = $this->bopreferences->getAllAccountData($this->preferences);
+			foreach ($allAccountData as $tmpkey => $accountData)
+			{
+				$identity =& $accountData['identity'];
+				$icServer =& $accountData['icServer'];
+				//_debug_array($identity);
+				//_debug_array($icServer);
+				if (empty($icServer->host)) continue;
+				$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+				if (!empty($identity->default)) $selectedID = $identity->id;
+			}
+			if (!isset($activeIdentity->id) && $selectedID == 0) {
+				$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
+			}
+			// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
+			if ($activeIdentity->id) {
+				$boemailadmin =& CreateObject('emailadmin.bo');
+				$defaultProfile = $boemailadmin->getUserProfile() ;
+				#_debug_array($defaultProfile);
+				$identitys =& $defaultProfile->identities;
+				$icServers =& $defaultProfile->ic_server;
+				foreach ($identitys as $tmpkey => $identity)
+				{
+					if (empty($icServers[$tmpkey]->host)) continue;
+					$identities[0] = $identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+				}
+				#$identities[0] = $defaultIdentity->realName.' '.$defaultIdentity->organization.' <'.$defaultIdentity->emailAddress.'>';
+			}
+			$selectAccount = html::select('accountSelect', $selectedID, $identities, true, "style='width:100%;' onchange='changeActiveAccount(this);'");
+			$this->t->set_var('accountSelect', $selectAccount);
+
 
 			if($this->connectionStatus === false) {
 				$this->t->set_var('connection_error_message', lang($this->bofelamimail->getErrorMessage()));

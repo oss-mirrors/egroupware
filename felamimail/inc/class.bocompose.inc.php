@@ -315,6 +315,9 @@
 			if (!empty($addHeadInfo['X-SIGNATURE'])) {
 				$this->sessionData['signatureID'] = $addHeadInfo['X-SIGNATURE'];
 			}
+			if (!empty($addHeadInfo['X-IDENTITY'])) {
+				$this->sessionData['identity'] = $addHeadInfo['X-IDENTITY'];
+			}
 			$this->sessionData['uid'] = $_uid;
 			$this->sessionData['messageFolder'] = $_folder;
 			$this->sessionData['isDraft'] = true;
@@ -755,9 +758,12 @@
 				$_mailObject->SetLanguage("en", EGW_SERVER_ROOT."/phpgwapi/setup/");
 			}
 			$_mailObject->PluginDir = EGW_SERVER_ROOT."/phpgwapi/inc/";
-
+			$activeMailProfile = $this->preferences->getIdentity(0);
 			$_mailObject->IsSMTP();
 			$_mailObject->CharSet	= $this->displayCharset;
+			// you need to set the sender, if you work with different identities, since most smtp servers, dont allow
+			// sending in the name of someone else
+			$_mailObject->Sender  = $activeMailProfile->emailAddress;
 			$_mailObject->From 	= $_identity->emailAddress;
 			$_mailObject->FromName = $_mailObject->EncodeHeader($_identity->realName);
 			$_mailObject->Priority = $_formData['priority'];
@@ -911,6 +917,7 @@
 				$mail->AddCustomHeader("X-Mailfolder: $folders");
 			}
 			$mail->AddCustomHeader('X-Signature: '.$this->sessionData['signatureID']);
+			$mail->AddCustomHeader('X-Identity: '.(int)$this->sessionData['identity']);
 			// decide where to save the message (default to draft folder, if we find nothing else)
 			// if the current folder is in draft or template folder save it there
 			// if it is called from printview then save it with the draft folder
@@ -970,10 +977,11 @@
 			   empty($this->sessionData['bcc']) && empty($this->sessionData['folder'])) {
 			   	$messageIsDraft = true;
 			}
-
+			#error_log(print_r($this->preferences,true));
 			$identity = $this->preferences->getIdentity((int)$this->sessionData['identity']);
 			$signature = $this->bosignatures->getSignature((int)$this->sessionData['signatureID']);
-			
+			#error_log($this->sessionData['identity']);
+			#error_log(print_r($identity,true));	
 			// create the messages
 			$this->createMessage($mail, $_formData, $identity, $signature);
 			#print "<pre>". $mail->getMessageHeader() ."</pre><hr><br>";
@@ -982,7 +990,7 @@
 			                                                                
 
 			$ogServer = $this->preferences->getOutgoingServer(0);
-
+			#_debug_array($ogServer);
 			$mail->Host 	= $ogServer->host;
 			$mail->Port	= $ogServer->port;
 
@@ -1111,6 +1119,9 @@
 			} else {
 				$this->sessionData['signatureID'] = -1;
 			}
+			// retrieve the signature accociated with the identity
+			$accountData    = $this->bopreferences->getAccountData($this->preferences,'active');
+			if ($accountData['identity']->signature) $this->sessionData['signatureID'] = $accountData['identity']->signature;
 			// apply the current mailbox to the compose session data of the/a new email
 			$appsessionData = $GLOBALS['egw']->session->appsession('session_data');
 			$this->sessionData['mailbox'] = $appsessionData['mailbox'];

@@ -31,12 +31,12 @@
 			$this->boemailadmin =& CreateObject('emailadmin.bo');
 		}
 
-		// get user defined accounts		
-		function getAccountData(&$_profileData)
+		// get the first active user defined account		
+		function getAccountData(&$_profileData, $_accountID=NULL)
 		{
 			if(!is_a($_profileData, 'ea_preferences'))
 				die(__FILE__.': '.__LINE__);
-			$accountData = parent::getAccountData($GLOBALS['egw_info']['user']['account_id']);
+			$accountData = parent::getAccountData($GLOBALS['egw_info']['user']['account_id'],$_accountID);
 
 			// currently we use only the first profile available
 			$accountData = array_shift($accountData);
@@ -66,14 +66,78 @@
 			$identity =& CreateObject('emailadmin.ea_identity');
 			$identity->emailAddress	= $accountData['emailaddress'];
 			$identity->realName	= $accountData['realname'];
-			$identity->default	= true;
+			//$identity->default	= true;
+			$identity->default = (bool)$accountData['active'];
 			$identity->organization	= $accountData['organization'];
+			$identity->signature = $accountData['signatureid'];
+			$identity->id  = $accountData['id'];
 
 			$isActive = (bool)$accountData['active'];
 
 			return array('icServer' => $icServer, 'ogServer' => $ogServer, 'identity' => $identity, 'active' => $isActive);
 		}
-		
+
+		function getAllAccountData(&$_profileData)
+		{
+			if(!is_a($_profileData, 'ea_preferences'))
+				die(__FILE__.': '.__LINE__);
+			$AllAccountData = parent::getAccountData($GLOBALS['egw_info']['user']['account_id'],'all');
+			#_debug_array($accountData);
+			foreach ($AllAccountData as $key => $accountData)
+			{
+				$icServer =& CreateObject('emailadmin.defaultimap');
+				$icServer->encryption	= isset($accountData['ic_encryption']) ? $accountData['ic_encryption'] : 1;
+				$icServer->host		= $accountData['ic_hostname'];
+				$icServer->port 	= isset($accountData['ic_port']) ? $accountData['ic_port'] : 143;
+				$icServer->validatecert	= isset($accountData['ic_validatecertificate']) ? (bool)$accountData['ic_validatecertificate'] : 1;
+				$icServer->username 	= $accountData['ic_username'];
+				$icServer->loginName 	= $accountData['ic_username'];
+				$icServer->password	= $accountData['ic_password'];
+				$icServer->enableSieve	= isset($accountData['ic_enable_sieve']) ? (bool)$accountData['ic_enable_sieve'] : 1;
+				$icServer->sieveHost	= $accountData['ic_sieve_server'];
+				$icServer->sievePort	= isset($accountData['ic_sieve_port']) ? $accountData['ic_sieve_port'] : 2000;
+
+				$ogServer =& CreateObject('emailadmin.defaultsmtp');
+				$ogServer->host		= $accountData['og_hostname'];
+				$ogServer->port		= isset($accountData['og_port']) ? $accountData['og_port'] : 25;
+				$ogServer->smtpAuth	= (bool)$accountData['og_smtpauth'];
+				if($ogServer->smtpAuth) {
+					$ogServer->username 	= $accountData['og_username'];
+					$ogServer->password 	= $accountData['og_password'];
+				}
+
+				$identity =& CreateObject('emailadmin.ea_identity');
+				$identity->emailAddress	= $accountData['emailaddress'];
+				$identity->realName	= $accountData['realname'];
+				//$identity->default	= true;
+				$identity->default = (bool)$accountData['active'];
+				$identity->organization	= $accountData['organization'];
+				$identity->signature = $accountData['signatureid'];
+				$identity->id  = $accountData['id'];
+				$isActive = (bool)$accountData['active'];
+				$out[] = array('icServer' => $icServer, 'ogServer' => $ogServer, 'identity' => $identity, 'active' => $isActive);
+			}
+			return $out;
+		}
+
+		function getUserDefinedIdentities()
+		{
+			$profileData        = $this->boemailadmin->getUserProfile('felamimail');
+			if(!is_a($profileData, 'ea_preferences') || !is_a($profileData->ic_server[0], 'defaultimap')) {
+				return false;
+			}
+			if($profileData->userDefinedAccounts) {
+				// get user defined accounts
+				$allAccountData = $this->getAllAccountData($profileData);
+				foreach ($allAccountData as $tmpkey => $accountData)
+				{
+					$accountArray[] = $accountData['identity'];
+				}
+				return $accountArray;
+			}
+			return array();
+		}	
+
 		function getPreferences()
 		{
 			if(!is_a($this->profileData,'ea_preferences ')) {
@@ -99,8 +163,22 @@
 							$profileData->setOutgoingServer($accountData['ogServer'],0);
 					
 						// replace the global defined identity
-						if(is_a($accountData['identity'],'ea_identity'))
+						if(is_a($accountData['identity'],'ea_identity')) {
 							$profileData->setIdentity($accountData['identity'],0);
+							$rememberID = $accountData['identity']->id;
+						}
+						$allUserIdentities = $this->getUserDefinedIdentities();
+						$i=1;
+						if (is_array($allUserIdentities)) {
+							$i=1;
+							foreach ($allUserIdentities as $tmpkey => $id)
+							{
+								if ($id->id != $rememberID) {
+									$profileData->setIdentity($id,$i);
+									$i++;
+								}
+							}
+						}
 					}
 				}
 				
@@ -171,25 +249,28 @@
 		
 		function saveAccountData($_icServer, $_ogServer, $_identity) 
 		{
-			if(!isset($_icServer->validatecert)) {
+			if(is_object($_icServer) && !isset($_icServer->validatecert)) {
 				$_icServer->validatecert = true;
 			}
-			
 			if(isset($_icServer->host)) {
 				$_icServer->sieveHost = $_icServer->host;
 			}
-
-			parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
+			return parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
 		}
-		
+	
+		function deleteAccountData($_identity)
+		{
+			parent::deleteAccountData($GLOBALS['egw_info']['user']['account_id'], $_identity);
+		}
+
 		function ssaveSignature($_signatureID, $_description, $_signature, $_isDefaultSignature) 
 		{
 			return parent::saveSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID, $_description, $_signature, (bool)$_isDefaultSignature);
 		}
 
-		function setProfileActive($_status) 
+		function setProfileActive($_status, $_identity=NULL) 
 		{
-			parent::setProfileActive($GLOBALS['egw_info']['user']['account_id'], $_status);
+			parent::setProfileActive($GLOBALS['egw_info']['user']['account_id'], $_status, $_identity);
 		}
 	}
 ?>

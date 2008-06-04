@@ -674,3 +674,16 @@ function removeFCK(fieldId)
        }
 
 }
+function changeIdentity(SelectedId)
+{
+	//alert(SelectedId.value);
+	xajax_doXMLHTTP("felamimail.ajaxfelamimail.setComposeSignature", SelectedId.value);
+}
+function setSignature(SelectedId)
+{
+	for (i = 0; i < document.doit.signatureID.length; ++i)
+		if (document.doit.signatureID.options[i].value == SelectedId)
+			document.doit.signatureID.options[i].selected = true;
+		//else
+		//	document.doit.signatureID.options[i].selected = false;
+}

@@ -27,6 +27,7 @@
 			'editSignature'		=> 'True',
 			'listFolder'		=> 'True',
 			'listSignatures'	=> 'True',
+			'listAccountData'	=> 'True',
 			'showHeader'		=> 'True',
 			'getAttachment'		=> 'True'
 		);
@@ -69,6 +70,7 @@
 					$GLOBALS['egw']->js->validate_file('jscode','listSignatures','felamimail');
 					#$GLOBALS['egw']->js->set_onload('fm_initEditLayout();');
 					break;
+				case 'felamimail.uipreferences.listAccountData':
 				case 'felamimail.uipreferences.editAccountData':
 					$GLOBALS['egw']->js->validate_file('jscode','editAccountData','felamimail');
 					$GLOBALS['egw']->js->set_onload('javascript:initEditAccountData();');
@@ -196,7 +198,7 @@
 			$boPreferences	=& CreateObject('felamimail.bopreferences');
 			$preferences =& $boPreferences->getPreferences();
 			
-			if(!$preferences->userDefinedAccounts) {
+			if(!($preferences->userDefinedAccounts || $preferences->userDefinedIdentities)) {
 				die('you are not allowed to be here');
 			}
 
@@ -219,6 +221,8 @@
 								break;
 						}
 					}
+				} else {
+					$icServer = NULL;
 				}
 				
 				// SMTP connection settings
@@ -227,6 +231,8 @@
 					foreach($_POST['og'] as $key => $value) {
 						$ogServer->$key = $value;
 					}
+				} else {
+					$ogServer = NULL;
 				}
 
 				// identity settings
@@ -236,12 +242,16 @@
 						$identity->$key = $value;
 					}
 				}
+				
 
+				$newID = $boPreferences->saveAccountData($icServer, $ogServer, $identity);
+				if ($identity->id == 'new') $identity->id = $newID;
 				if((int)$_POST['active']) {
-					$boPreferences->saveAccountData($icServer, $ogServer, $identity);
-					$boPreferences->setProfileActive(true);
-				} else {
+					#$boPreferences->saveAccountData($icServer, $ogServer, $identity);
 					$boPreferences->setProfileActive(false);
+					$boPreferences->setProfileActive(true,$identity->id);
+				} else {
+					$boPreferences->setProfileActive(false,$identity->id);
 				}
 				
 				if($_POST['save']) {
@@ -252,7 +262,6 @@
 				ExecMethod('felamimail.uifelamimail.viewMainScreen');
 				return;
 			}
-
 			$this->display_app_header(TRUE);
 			
 			$this->t->set_file(array("body" => "edit_account_data.tpl"));
@@ -260,58 +269,89 @@
 
 			$this->translate();
 
-			$accountData	= $boPreferences->getAccountData($preferences);
+			// if there is no accountID with the call of the edit method, retrieve an active account
+			$account2retrieve = 'active';
+			if ((int)$_GET['accountID']) {
+				$account2retrieve = $_GET['accountID'];
+			}
+			if ($_GET['accountID'] == 'new') $account2retrieve = 'new';
+			if (!empty($newID) && $newID>0) $account2retrieve = $newID;
+			if ($account2retrieve != 'new') $accountData	= $boPreferences->getAccountData($preferences, $account2retrieve);
 			$icServer =& $accountData['icServer'];
 			$ogServer =& $accountData['ogServer'];
 			$identity =& $accountData['identity'];
-			#_debug_array($icServer);
-			foreach($icServer as $key => $value) {
-				if(is_object($value) || is_array($value)) {
-					continue;
-				}
-				switch($key) {
-					case 'encryption':
-						$this->t->set_var('checked_ic_'. $key .'_'. $value, 'checked');
-						break;
+			#_debug_array($identity);
+			if ($icServer) {
+				foreach($icServer as $key => $value) {
+					if(is_object($value) || is_array($value)) {
+						continue;
+					}
+					switch($key) {
+						case 'encryption':
+							$this->t->set_var('checked_ic_'. $key .'_'. $value, 'checked');
+							break;
 						
-					case 'enableSieve':
-						$this->t->set_var('checked_ic_'.$key,($value ? 'checked' : ''));
-						break;
+						case 'enableSieve':
+							$this->t->set_var('checked_ic_'.$key,($value ? 'checked' : ''));
+							break;
 
-					case 'validatecert':
-						$this->t->set_var('checked_ic_'.$key,($value ? '' : 'checked'));
-						break;
+						case 'validatecert':
+							$this->t->set_var('checked_ic_'.$key,($value ? '' : 'checked'));
+							break;
 						
-					default:
-						$this->t->set_var("ic[$key]", $value);
-						break;
+						default:
+							$this->t->set_var("ic[$key]", $value);
+							break;
+					}
 				}
 			}
-
-			foreach($ogServer as $key => $value) {
-				if(is_object($value) || is_array($value)) {
-					continue;
-				}
-				#print "$key => $value<bR>";
-				switch($key) {
-					case 'smtpAuth':
-						$this->t->set_var('checked_og_'.$key,($value ? 'checked' : ''));
-					default:
-						$this->t->set_var("og[$key]", $value);
-				}
-			}
-
-			foreach($identity as $key => $value) {
-				if(is_object($value) || is_array($value)) {
-					continue;
-				}
-				switch($key) {
-					default:
-						$this->t->set_var("identity[$key]", $value);
+			if ($ogServer) {
+				foreach($ogServer as $key => $value) {
+					if(is_object($value) || is_array($value)) {
+						continue;
+					}
+					#print "$key => $value<bR>";
+					switch($key) {
+						case 'smtpAuth':
+							$this->t->set_var('checked_og_'.$key,($value ? 'checked' : ''));
+						default:
+							$this->t->set_var("og[$key]", $value);
+					}
 				}
 			}
-
-			$this->t->set_var('checked_active',($accountData['active'] ? 'checked' : ''));
+			$felamimail_bosignatures = new felamimail_bosignatures();
+			$signatures = $felamimail_bosignatures->getListOfSignatures();
+			foreach ($signatures as $sigkey => $sig) {
+				$allSignatures[$sig['fm_signatureid']] = $sig['fm_description'];
+			}
+			$sigvalue = -1;
+			if ($identity) {
+				foreach($identity as $key => $value) {
+					if(is_object($value) || is_array($value)) {
+						continue;
+					}
+					switch($key) {
+						case 'signature':
+							$sigvalue = $value;
+							break;
+						default:
+							$this->t->set_var("identity[$key]", $value);
+					}
+				}
+ 				$this->t->set_var('accountID',$identity->id); 
+				$this->t->set_var('checked_active',($accountData['active'] ? ($preferences->userDefinedAccounts ? 'checked' : '') : ''));
+			} else {
+				if ($signatureData = $felamimail_bosignatures->getDefaultSignature()) {
+					if (is_array($signatureData)) {
+						$sigvalue = $signatureData['signatureid'];
+					} else {
+						$sigvalue =$signatureData;
+					}
+				}
+				$this->t->set_var('accountID','new');
+			}
+			$this->t->set_var('allowAccounts',($preferences->userDefinedAccounts ? 1 : 0));
+			$this->t->set_var('identity_selectbox', $GLOBALS['egw']->html->select('identity[signature]',$sigvalue,$allSignatures, true, "style='width: 250px;'"));
 			
 			$linkData = array
 			(
@@ -551,9 +591,62 @@
 			$this->t->pparse("out","main");			
 			$this->bofelamimail->closeConnection();
 		}
+
+		function listAccountData()
+		{
+			$this->display_app_header(TRUE);
+			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$preferences =& $boPreferences->getPreferences();
+			$allAccountData    = $boPreferences->getAllAccountData($preferences);
+			foreach ($allAccountData as $tmpkey => $accountData)
+			{
+				$identity =& $accountData['identity'];
+
+				#_debug_array($identity);
+			
+				foreach($identity as $key => $value) {
+					if(is_object($value) || is_array($value)) {
+						continue;
+					}
+					switch($key) {
+						default:
+							$tempvar[$key] = $value;
+					}
+				}
+				$accountArray[]=$tempvar;
+			}
+			$this->t->set_file(array("body" => "preferences_list_accounts.tpl"));
+			$this->t->set_block('body','main');
+
+			$this->translate();
+			
+			#print "<pre>";print_r($folderList);print "</pre>";
+			// set the default values for the sort links (sort by subject)
+			#$linkData = array
+			#(
+			#	'menuaction'    => 'felamimail.uipreferences.listFolder'
+			#);
+			#$this->t->set_var('form_action', $GLOBALS['egw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.editAccountData',
+				'accountID'		=> 'new'
+			);
+			$this->t->set_var('url_addAccount', $GLOBALS['egw']->link('/index.php',$linkData));
+			
+			$this->t->set_var('url_image_add',$GLOBALS['egw']->common->image('phpgwapi','new'));
+			$this->t->set_var('url_image_delete',$GLOBALS['egw']->common->image('phpgwapi','delete'));
+			
+			$this->t->set_var('table', $this->uiwidgets->createAccountDataTable($accountArray));
+			
+			$this->t->pparse("out","main");			
+			$this->bofelamimail->closeConnection();
+		}
 		
 		function translate()
 		{
+			$this->t->set_var('lang_signature',lang('Signatur'));
 			$this->t->set_var("lang_folder_name",lang('folder name'));
 			$this->t->set_var("lang_folder_list",lang('folderlist'));
 			$this->t->set_var("lang_select",lang('select'));
@@ -567,6 +660,7 @@
 			$this->t->set_var("lang_create_subfolder",lang('create subfolder'));
 			$this->t->set_var("lang_delete_folder",lang('delete folder'));
 			$this->t->set_var("lang_confirm_delete",addslashes(lang("Do you really want to delete the '%1' folder?",$this->bofelamimail->sessionData['preferences']['mailbox'])));
+			$this->t->set_var("lang_really_delete_accountsettings",lang("Do you really want to delete the selected Accountsettings and the assosiated Identity."));
 			$this->t->set_var("lang_delete",lang('delete'));
 			$this->t->set_var("lang_imap_server",lang('IMAP Server'));
 			$this->t->set_var("lang_folder_settings",lang('folder settings'));
@@ -596,6 +690,7 @@
 			$this->t->set_var('lang_port',lang('port'));
 			$this->t->set_var('lang_apply',lang('apply'));
 			$this->t->set_var('lang_use_costum_settings',lang('use custom settings'));
+			$this->t->set_var('lang_use_custom_ids',lang('use custom identities'));
 			$this->t->set_var('lang_identity',lang('identity'));
 			$this->t->set_var('lang_name',lang('name'));
 			$this->t->set_var('lang_organization',lang('organization'));

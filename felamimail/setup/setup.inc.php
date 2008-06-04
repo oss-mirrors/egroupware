@@ -12,7 +12,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.4';
+	$setup_info['felamimail']['version']     	= '1.5.002';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -20,10 +20,10 @@
 	$setup_info['felamimail']['license']		= 'GPL';
 	$setup_info['felamimail']['description']	=
 		'IMAP emailclient for eGroupWare';
-	$setup_info['felamimail']['maintainer'] 	= 'Lars Kneschke';
-	$setup_info['felamimail']['maintainer_email'] 	= 'l.kneschke@metaways.de';
+	$setup_info['felamimail']['maintainer'] 	= 'Klaus Leithoff';
+	$setup_info['felamimail']['maintainer_email'] 	= 'kl@leithoff.net';
 
-	$setup_info['felamimail']['tables']    = array('egw_felamimail_cache','egw_felamimail_folderstatus','egw_felamimail_displayfilter','egw_felamimail_accounts','egw_felamimail_signatures');
+	$setup_info['felamimail']['tables']    = array('egw_felamimail_displayfilter','egw_felamimail_accounts','egw_felamimail_signatures');
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['felamimail']['hooks'][] = 'preferences';

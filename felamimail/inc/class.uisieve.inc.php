@@ -32,6 +32,7 @@
 			'updateVacation'	=> True,
 			'saveVacation'		=> True,
 			'selectFolder'		=> True,
+			'editEmailNotification'           => True, // Added email notifications
 		);
 		
 		/**
@@ -639,6 +640,72 @@
 			$this->t->pfp('out','vacation');
 			
 		#LK	$this->bosieve->disconnect();
+		}
+
+		function editEmailNotification() {
+			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
+
+			$uiwidgets  =& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
+			$boemailadmin =& CreateObject('emailadmin.bo');
+
+			if($this->bosieve->getScript($this->scriptName)) {
+				if(PEAR::isError($error = $this->bosieve->retrieveRules($this->scriptName)) ) {
+					$rules    = array();
+					$emailNotification = array();
+				} else {
+					$rules    = $this->bosieve->getRules($this->scriptName);
+					$emailNotification = $this->bosieve->getEmailNotification($this->scriptName);
+				}
+			} else {
+				// something went wrong
+			}
+
+
+			// perform actions
+			if (isset($_POST["emailNotificationStatus"])) {
+				if (isset($_POST['save']) || isset($_POST['apply'])) {
+					//$newEmailNotification['text']          = $this->botranslation->convert($newVacation['text'],$this->displayCharset,'UTF-8');
+					$newEmailNotification['status']          = get_var('emailNotificationStatus',array('POST')) == 'disabled' ? 'off' : 'on';
+					$newEmailNotification['externalEmail']   = get_var('emailNotificationExternalEmail',array('POST'));
+					$newEmailNotification['displaySubject']   = get_var('emailNotificationDisplaySubject',array('POST'));
+					if (!$this->bosieve->setEmailNotification($this->scriptName, $newEmailNotification)) {
+						print lang("email notification update failed")."<br />";
+						print $script->errstr."<br />";
+					}
+					$emailNotification = $newEmailNotification;
+				}
+				if (isset($_POST['save']) || isset($_POST['cancel'])) {
+					$GLOBALS['egw']->redirect_link('/felamimail/index.php');
+				}
+			}
+
+			$this->saveSessionData();
+
+			// display the header
+			$this->display_app_header();
+
+			// initialize the template
+			$this->t->set_file(array("filterForm" => "sieveForm.tpl"));
+			$this->t->set_block('filterForm','email_notification');
+
+			// translate most of the parts
+			$this->translate();
+			$this->t->set_var("lang_yes",lang('yes'));
+			$this->t->set_var("lang_no",lang('no'));
+
+			// email notification status
+			if ($emailNotification['status'] == 'on') $this->t->set_var('checked_active', ' checked');
+			else $this->t->set_var('checked_disabled', ' checked');
+
+			// email notification display subject
+			if ($emailNotification['displaySubject'] == '1') $this->t->set_var('checked_yes', ' checked');
+			else $this->t->set_var('checked_no', ' checked');
+
+			// email notification external email
+			$this->t->set_var('external_email', $emailNotification['externalEmail']);
+
+			$this->t->set_var('email_notification_action_url',$GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editEmailNotification'));
+			$this->t->pfp('out','email_notification');
 		}
 
 		function increaseFilter()

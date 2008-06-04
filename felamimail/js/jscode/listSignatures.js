@@ -24,6 +24,7 @@ function fm_saveSignature() {
 		fm_getEditorContent(),
 		document.getElementById('isDefaultSignature').checked
 	);
+	//fm_refreshSignatureTable();
 	//window.setTimeout("window.close()", 1000);
 }
 
@@ -34,6 +35,7 @@ function fm_applySignature() {
 		fm_getEditorContent(),
 		document.getElementById('isDefaultSignature').value
 	);
+	fm_refreshSignatureTable();
 }
 
 function fm_initEditLayout() {
@@ -53,6 +55,7 @@ function fm_deleteSignatures() {
 		if(signatures.length > 0) {
 			if(confirm(lang_reallyDeleteSignatures)) {
 				xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteSignatures", signatures);
+				fm_refreshSignatureTable();
 			}
 		}
 	}

@@ -29,7 +29,11 @@
 			$this->db->set_app('felamimail');
 		}
 		
-		function getAccountData($_accountID)
+		// allowed keywords for _identity are either the fm_id, all or active
+		// an fm_id retrieves the account with the specified fm_id of the given user
+		// all 		retrieves ALL Accounts of a given user
+		// active 	retrieves all active accounts of a given user
+		function getAccountData($_accountID, $_identity = NULL)
 		{
 			// no valid accountID
 			if(($accountID = (int)$_accountID) < 1)
@@ -37,8 +41,9 @@
 				
 			$retValue	= array();
 			$where		= array('fm_owner' => $accountID);
-			
-			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,fm_ic_enable_sieve,fm_ic_sieve_server,fm_ic_sieve_port,fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
+			if (!empty($_identity) && $_identity != 'active' && $_identity != 'all') $where['fm_id'] = $_identity;
+			if ($_identity == 'active' || empty($_identity)) $where['fm_active'] = 1;
+			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_signatureid,fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,fm_ic_enable_sieve,fm_ic_sieve_server,fm_ic_sieve_port,fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
 				$where,__LINE__,__FILE__);
 				
 			while(($row = $this->db->row(true,'fm_'))) {
@@ -48,7 +53,6 @@
 				}
 				$retValue[$row['id']] = $row;
 			}
-
 			return $retValue;
 		}
 
@@ -57,36 +61,68 @@
 			
 			$data = array(
 				'fm_active'			=> 0,
+				'fm_owner'			=> $_accountID,
 				'fm_realname'			=> $_identity->realName,
 				'fm_organization'		=> $_identity->organization,
 				'fm_emailaddress'		=> $_identity->emailAddress,
-				'fm_ic_hostname'		=> $_icServer->host,
-				'fm_ic_port'			=> $_icServer->port,
-				'fm_ic_username'		=> $_icServer->username,
-				'fm_ic_password'		=> $_icServer->password,
-				'fm_ic_encryption'		=> $_icServer->encryption,
-				'fm_ic_validatecertificate' 	=> (bool)$_icServer->validatecert,
-				'fm_ic_enable_sieve' 		=> (bool)$_icServer->enableSieve,
-				'fm_ic_sieve_server'		=> $_icServer->sieveHost,
-				'fm_ic_sieve_port'		=> $_icServer->sievePort,
-				'fm_og_hostname'		=> $_ogServer->host,
-				'fm_og_port'			=> $_ogServer->port,
-				'fm_og_smtpauth'		=> (bool)$_ogServer->smtpAuth,
-				'fm_og_username'		=> $_ogServer->username,
-				'fm_og_password'		=> $_ogServer->password,
+				'fm_signatureid'		=> $_identity->signature,
 			);
-			$this->db->insert($this->accounts_table, $data, array(
-				'fm_owner'			=> $_accountID,
-			),__LINE__,__FILE__);	
+			if (is_object($_icServer)) {
+				$data = array_merge($data,array(
+					'fm_ic_hostname'		=> $_icServer->host,
+					'fm_ic_port'			=> $_icServer->port,
+					'fm_ic_username'		=> $_icServer->username,
+					'fm_ic_password'		=> $_icServer->password,
+					'fm_ic_encryption'		=> $_icServer->encryption,
+					'fm_ic_validatecertificate' 	=> (bool)$_icServer->validatecert,
+					'fm_ic_enable_sieve' 		=> (bool)$_icServer->enableSieve,
+					'fm_ic_sieve_server'		=> $_icServer->sieveHost,
+					'fm_ic_sieve_port'		=> $_icServer->sievePort,
+				));
+			}
+			if (is_object($_ogServer)) {
+				$data = array_merge($data,array(
+					'fm_og_hostname'		=> $_ogServer->host,
+					'fm_og_port'			=> $_ogServer->port,
+					'fm_og_smtpauth'		=> (bool)$_ogServer->smtpAuth,
+					'fm_og_username'		=> $_ogServer->username,
+					'fm_og_password'		=> $_ogServer->password,
+				));
+			}
+			$where = array(
+                'fm_owner'          => $_accountID,
+            );
+			#_debug_array($data);
+			if (!empty($_identity->id)) $where['fm_id'] = $_identity->id;
+			if ($_identity->id == 'new') 
+			{
+				$this->db->insert($this->accounts_table, $data, NULL,__LINE__,__FILE__);
+				return  $this->db->get_last_insert_id($this->accounts_table, 'fm_id');
+			} else {
+				$this->db->update($this->accounts_table, $data, $where,__LINE__,__FILE__);	
+				return $_identity->id;
+			}	
 		}
 		
-		function setProfileActive($_accountID, $_status)
+		function deleteAccountData($_accountID, $_identity)
 		{
+			$where = array(
+				'fm_owner'          => $_accountID,
+			);
+			if (is_array($_identity)) $where[] = "fm_id in (".implode(',',$_identity).")";
+			if (!empty($_identity->id) && !is_array($_identity)) $where['fm_id'] = $_identity->id;
+			$this->db->delete($this->accounts_table, $where  ,__LINE__,__FILE__);
+		}
+	
+		function setProfileActive($_accountID, $_status, $_identity)
+		{
+			$where = array(
+                'fm_owner'          => $_accountID,
+            );
+			if (!empty($_identity)) $where['fm_id'] = $_identity;
 			$this->db->update($this->accounts_table,array(
 				'fm_active'			=> $_status,
-			),array(
-				'fm_owner'			=> $_accountID,
-			),__LINE__,__FILE__);	
+			), $where,__LINE__,__FILE__);	
 		}
 	}
 ?>

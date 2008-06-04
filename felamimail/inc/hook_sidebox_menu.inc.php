@@ -64,11 +64,11 @@
 			'Preferences'		=> $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname=felamimail'),
 		);
 
-		if($preferences->userDefinedAccounts) {
+		if($preferences->userDefinedAccounts || $preferences->userDefinedIdentities) {
 			$linkData = array (
-				'menuaction' => 'felamimail.uipreferences.editAccountData',
+				'menuaction' => 'felamimail.uipreferences.listAccountData',
 			);
-			$file['Manage EMailaccounts'] = $GLOBALS['egw']->link('/index.php',$linkData);
+			$file['Manage eMail: Accounts / Identities'] = $GLOBALS['egw']->link('/index.php',$linkData);
 		}
 
 		if($preferences->ea_user_defined_signatures) {
@@ -95,6 +95,7 @@
 					'menuaction'	=> 'felamimail.uisieve.editVacation',
 				);
 				$file['vacation notice']	= $GLOBALS['egw']->link('/index.php',$linkData);
+				$file['email notification'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editEmailNotification'); //Added email notifications
 			}
 		}
 

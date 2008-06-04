@@ -212,6 +212,31 @@
 			return '';
 		}
 
+		function createAccountDataTable($_identities)
+		{
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.editAccountData'
+			);
+			$urlEditAccountData = $GLOBALS['egw']->link('/index.php',$linkData);
+
+			if(is_array($_identities) && !empty($_identities)) {
+				foreach($_identities as $identity) {
+					$description = $identity['id'].":".$identity['realName']." ".$identity['organization']." <".$identity['emailAddress'].">";
+					$description = ($identity['default'] == true) ? $description .' ('. lang('default') .')' : $description;
+					$tableRows[] = array(
+						'1'	=> $identity['id'] != -1 ? $GLOBALS['egw']->html->checkbox('accountID', false, $identity['id']) : '',
+						'.1'	=> 'style="width:30px"',
+						'2'	=> '<a href="'. $urlEditAccountData ."&accountID=".$identity['id'].'">'. @htmlspecialchars($description, ENT_QUOTES, $this->charset) .'</a>',
+					);
+				}
+
+				return $GLOBALS['egw']->html->table($tableRows, 'style="width:100%;"');
+			}
+
+			return '';
+		}
+
 		// $_folderType 0: normal imap folder 1: sent folder 2: draft folder 3: template folder
 		// $_rowStyle felamimail or outlook
 		function messageTable($_headers, $_folderType, $_folderName, $_readInNewWindow, $_rowStyle='felamimail')
@@ -378,6 +403,7 @@
 					$linkData = array (
 						'menuaction'    => 'felamimail.uidisplay.display',
 						'showHeader'	=> 'false',
+						'mailbox'    => base64_encode($_folderName),
 						'uid'		=> $header['uid'],
 						'id'		=> $header['id'],
 					);

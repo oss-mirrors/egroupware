@@ -87,6 +87,8 @@
 			$this->bofelamimail->openConnection($this->icServerID);
 
 			$this->mailbox		= $this->bofelamimail->sessionData['mailbox'];
+			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
+
 			$this->sort		= $this->bofelamimail->sessionData['sort'];
 
 			if(isset($_GET['uid'])) {
@@ -200,6 +202,8 @@
 		function display()
 		{
 			$partID		= $_GET['part'];
+			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
+			
 			$transformdate	=& CreateObject('felamimail.transformdate');
 			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
@@ -368,7 +372,8 @@
 			// print url
 			$linkData = array (
 				'menuaction'	=> 'felamimail.uidisplay.printMessage',
-				'uid'		=> $this->uid
+				'uid'		=> $this->uid,
+				'folder'    => base64_encode($this->mailbox),
 			);
 			if($partID != '') {
 				$linkData['part'] = $partID;
@@ -379,7 +384,7 @@
 			$linkData = array(
 				'menuaction' => 'infolog.uiinfolog.import_mail',
 				'uid'    => $this->uid,
-				'mailbox' => $this->mailbox
+				'mailbox' =>  base64_encode($this->mailbox)
 			);
 			if($partID != '') {
 				$linkData['part'] = $partID;
@@ -389,7 +394,8 @@
 			// viewheader url
 			$linkData = array (
 				'menuaction'	=> 'felamimail.uidisplay.displayHeader',
-				'uid'		=> $this->uid
+				'uid'		=> $this->uid,
+				'mailbox'	=> base64_encode($this->mailbox)
 			);
 			if($partID != '') {
 				$linkData['part'] = $partID;
@@ -401,7 +407,8 @@
 			// save message url
 			$linkData = array (
 				'menuaction'	=> 'felamimail.uidisplay.saveMessage',
-				'uid'		=> $this->uid
+				'uid'		=> $this->uid,
+				'mailbox'	=> base64_encode($this->mailbox)
 			);
 			if($partID != '') {
 				$linkData['part'] = $partID;
@@ -447,7 +454,8 @@
 				$linkData = array (
 					'menuaction'	=> 'felamimail.uidisplay.display',
 					'showHeader'	=> 'false',
-					'uid'		=> $nextMessage['previous']
+					'uid'		=> $nextMessage['previous'],
+					'mailbox'	=> base64_encode($this->mailbox)
 				);
 				$previousURL = $GLOBALS['egw']->link('/index.php',$linkData);
 				$previousURL = "window.location.href = '$previousURL'";
@@ -463,7 +471,8 @@
 				$linkData = array (
 					'menuaction'	=> 'felamimail.uidisplay.display',
 					'showHeader'	=> 'false',
-					'uid'		=> $nextMessage['next']
+					'uid'		=> $nextMessage['next'],
+					'mailbox'	=> base64_encode($this->mailbox)
 				);
 				$nextURL = $GLOBALS['egw']->link('/index.php',$linkData);
 				$nextURL = "window.location.href = '$nextURL'";
@@ -537,7 +546,8 @@
 			$linkData = array (
 				'menuaction'	=> 'felamimail.uidisplay.displayBody',
 				'uid'		=> $this->uid,
-				'part'		=> $partID
+				'part'		=> $partID,
+				'mailbox'	=>  base64_encode($this->mailbox) 
 			);
 			$this->t->set_var('url_displayBody', $GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -580,6 +590,7 @@
 								'menuaction'	=> 'felamimail.uidisplay.display',
 								'uid'		=> $this->uid,
 								'part'		=> $value['partID'],
+								'mailbox'	=> base64_encode($this->mailbox),
 								'is_winmail'    => $value['is_winmail']
 							);
 							$windowName = 'displayMessage_'. $this->uid;
@@ -594,7 +605,8 @@
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
 								'part'		=> $value['partID'],
-								'is_winmail'    => $value['is_winmail']
+								'is_winmail'    => $value['is_winmail'],
+								'mailbox'   => base64_encode($this->mailbox),
 							);
 							$windowName = 'displayAttachment_'. $this->uid;
 							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',800,600);";
@@ -605,7 +617,8 @@
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
 								'part'		=> $value['partID'],
-								'is_winmail'    => $value['is_winmail']
+								'is_winmail'    => $value['is_winmail'],
+								'mailbox'   => base64_encode($this->mailbox),
 							);
 							$linkView = "window.location.href = '".$GLOBALS['egw']->link('/index.php',$linkData)."';";
 							break;
@@ -619,7 +632,8 @@
 						'mode'		=> 'save',
 						'uid'		=> $this->uid,
 						'part'		=> $value['partID'],
-						'is_winmail'    => $value['is_winmail']
+						'is_winmail'    => $value['is_winmail'],
+						'mailbox'   => base64_encode($this->mailbox),
 					);
 					$this->t->set_var("link_save",$GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -643,7 +657,8 @@
 		function displayBody()
 		{
 			$partID		= $_GET['part'];
-
+			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
+			
 			$this->bofelamimail->reopen($this->mailbox);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 
@@ -676,6 +691,8 @@
 		function displayHeader()
 		{
 			$partID		= $_GET['part'];
+			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
+
 			$transformdate	=& CreateObject('felamimail.transformdate');
 			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
@@ -715,6 +732,7 @@
 		{
 			$cid	= base64_decode($_GET['cid']);
 			$partID = urldecode($_GET['partID']);
+			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
 
 			$this->bofelamimail->reopen($this->mailbox);
 
@@ -887,6 +905,7 @@
 
 			$part		= $_GET['part'];
 			$is_winmail = $_GET['is_winmail'] ? $_GET['is_winmail'] : 0;
+			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
 
 			$this->bofelamimail->reopen($this->mailbox);
 			#$attachment 	= $this->bofelamimail->getAttachment($this->uid,$part);
@@ -985,6 +1004,7 @@
 					$linkData = array (
 						'menuaction'    => 'felamimail.uidisplay.displayImage',
 						'uid'		=> $this->uid,
+						'mailbox'	=> base64_encode($this->mailbox)
 					);
 					$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
 					$newBody = preg_replace("/(\"|\')cid:(.*)(\"|\')/iUe",
@@ -1021,6 +1041,8 @@
 		{
 			if (!empty($messageId) && empty($this->uid)) $this->uid = $messageId;
 			$partID		= $_GET['part'];
+			if (!empty($_GET['folder'])) $this->mailbox  = base64_decode($_GET['folder']);
+
 			$transformdate	=& CreateObject('felamimail.transformdate');
 			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
@@ -1124,11 +1146,14 @@
 			$linkData = array (
 				'menuaction'    => 'felamimail.uidisplay.display',
 				'showHeader'    => 'false',
-				'folder'	=> base64_encode($folder),
+				'mailbox'	=> base64_encode($folder),
 				'uid'       => $this->uid,
 				'id'        => $this->id,
 			);
-			if ($callfromcompose) $linkData['menuaction'] = 'felamimail.uicompose.composeFromDraft';
+			if ($callfromcompose) {
+				$linkData['menuaction'] = 'felamimail.uicompose.composeFromDraft';
+				$linkData['folder'] = base64_encode($folder);
+			}
 			$_readInNewWindow = $this->mailPreferences->preferences['message_newwindow'];
 			$this->t->set_var('url_read_message', $GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -1170,7 +1195,8 @@
 							(
 								'menuaction'	=> 'felamimail.uidisplay.display',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'part'		=> $value['partID'],
+								'mailbox'   => base64_encode($folder),
 							);
 							$windowName = 'displayMessage_'.$this->uid;
 							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight());";
@@ -1183,7 +1209,8 @@
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'part'		=> $value['partID'],
+								'mailbox'   => base64_encode($folder),
 							);
 							$windowName = 'displayAttachment_'.$this->uid;
 							$linkView = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',800,600);";
@@ -1193,7 +1220,8 @@
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 								'uid'		=> $this->uid,
-								'part'		=> $value['partID']
+								'part'		=> $value['partID'],
+								'mailbox'   => base64_encode($folder),
 							);
 							$linkView = "window.location.href = '".$GLOBALS['egw']->link('/index.php',$linkData)."';";
 							break;
@@ -1206,7 +1234,8 @@
 						'menuaction'	=> 'felamimail.uidisplay.getAttachment',
 						'mode'		=> 'save',
 						'uid'		=> $this->uid,
-						'part'		=> $value['partID']
+						'part'		=> $value['partID'],
+						'mailbox'   => base64_encode($folder),
 					);
 					$this->t->set_var("link_save",$GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -1233,6 +1262,8 @@
 		function saveMessage()
 		{
 			$partID		= $_GET['part'];
+			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
+
 			// (regis) seems to be necessary to reopen...
 			$this->bofelamimail->reopen($this->mailbox);
 

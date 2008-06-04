@@ -152,8 +152,6 @@
 					if ($_REQUEST['preset'][$name]) $sessionData[$name] = $_REQUEST['preset'][$name];
 				}
 			}
-			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
-			#_debug_array($preferences);
 
 			// is the to address set already?
 			if (!empty($_REQUEST['send_to']))
@@ -211,15 +209,19 @@
 			}
 
 			// header
-			$allIdentities = $preferences->getIdentity();
+			$allIdentities = $this->mailPreferences->getIdentity();
 			#_debug_array($allIdentities);
 			$defaultIdentity = 0;
 			foreach($allIdentities as $key => $singleIdentity) {
+				#$identities[$singleIdentity->id] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
 				$identities[$key] = $singleIdentity->realName.' <'.$singleIdentity->emailAddress.'>';
-				if($singleIdentity->default)
+				if(!empty($singleIdentity->default)) {
+					#$defaultIdentity = $singleIdentity->id;
 					$defaultIdentity = $key;
+					$sessionData['signatureID'] = $singleIdentity->signature;
+				}
 			}
-			$selectFrom = html::select('identity', $defaultIdentity, $identities, true, "style='width:100%;'");
+			$selectFrom = html::select('identity', $defaultIdentity, $identities, true, "style='width:100%;' onchange='changeIdentity(this);'");
 			$this->t->set_var('select_from', $selectFrom);
 
 			// navbar(, kind of)
@@ -283,7 +285,7 @@
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
 			$boSignatures = new felamimail_bosignatures();
 			$signatures = $boSignatures->getListOfSignatures();
-
+			
 			$selectSignatures = array(
 				'-2' => lang('no signature')
 			);

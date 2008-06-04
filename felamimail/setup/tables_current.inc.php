@@ -12,45 +12,6 @@
   /* $Id$ */
 
 	$phpgw_baseline = array(
-		'egw_felamimail_cache' => array(
-			'fd' => array(
-				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
-				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
-				'fmail_accountname' => array('type' => 'varchar','precision' => '128','nullable' => False),
-				'fmail_foldername' => array('type' => 'varchar','precision' => '128','nullable' => False),
-				'fmail_uid' => array('type' => 'int','precision' => '4','nullable' => False),
-				'fmail_subject' => array('type' => 'text'),
-				'fmail_striped_subject' => array('type' => 'text'),
-				'fmail_sender_name' => array('type' => 'varchar','precision' => '256'),
-				'fmail_sender_address' => array('type' => 'varchar','precision' => '256'),
-				'fmail_to_name' => array('type' => 'varchar','precision' => '256'),
-				'fmail_to_address' => array('type' => 'varchar','precision' => '256'),
-				'fmail_date' => array('type' => 'int','precision' => '8'),
-				'fmail_size' => array('type' => 'int','precision' => '4'),
-				'fmail_attachments' => array('type' => 'varchar','precision' => '120')
-			),
-			'pk' => array('fmail_accountid','fmail_hostname','fmail_accountname','fmail_foldername','fmail_uid'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		),
-		'egw_felamimail_folderstatus' => array(
-			'fd' => array(
-				'fmail_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
-				'fmail_hostname' => array('type' => 'varchar','precision' => '60','nullable' => False),
-				'fmail_accountname' => array('type' => 'varchar','precision' => '128','nullable' => False),
-				'fmail_foldername' => array('type' => 'varchar','precision' => '128','nullable' => False),
-				'fmail_messages' => array('type' => 'int','precision' => '4'),
-				'fmail_recent' => array('type' => 'int','precision' => '4'),
-				'fmail_unseen' => array('type' => 'int','precision' => '4'),
-				'fmail_uidnext' => array('type' => 'int','precision' => '4'),
-				'fmail_uidvalidity' => array('type' => 'int','precision' => '4')
-			),
-			'pk' => array('fmail_accountid','fmail_hostname','fmail_accountname','fmail_foldername'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		),
 		'egw_felamimail_displayfilter' => array(
 			'fd' => array(
 				'fmail_filter_accountid' => array('type' => 'int','precision' => '4','nullable' => False),
@@ -68,6 +29,7 @@
 				'fm_realname' => array('type' => 'varchar','precision' => '128'),
 				'fm_organization' => array('type' => 'varchar','precision' => '128'),
 				'fm_emailaddress' => array('type' => 'varchar','precision' => '128','nullable' => False),
+				'fm_signatureid' =>  array('type' => 'int','precision' => '4'),
 				'fm_ic_hostname' => array('type' => 'varchar','precision' => '128','nullable' => False),
 				'fm_ic_port' => array('type' => 'int','precision' => '4','nullable' => False),
 				'fm_ic_username' => array('type' => 'varchar','precision' => '128','nullable' => False),

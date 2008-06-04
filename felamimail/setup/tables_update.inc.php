@@ -425,4 +425,38 @@
 	{
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.4';
 	}
+
+    $test[] = '1.4';
+    function felamimail_upgrade1_4()
+    {
+		$GLOBALS['egw_setup']->oProc->DropTable('egw_felamimail_cache');
+		$GLOBALS['egw_setup']->oProc->DropTable('egw_felamimail_displayfilter');
+		$GLOBALS['egw_setup']->oProc->DropTable('egw_felamimail_folderstatus');
+        $GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_signatureid',array(
+            'type' => 'int',
+            'precision' => '4'
+        ));
+ 
+        return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.5.001';
+    }
+
+    $test[] = '1.5.001';
+    function felamimail_upgrade1_5_001()
+    {
+
+        $GLOBALS['egw_setup']->oProc->CreateTable('egw_felamimail_displayfilter',
+            Array(
+                'fd' => array(
+                    'fmail_filter_accountid'     => array('type' => 'int', 'precision' => 4, 'nullable' => false),
+                    'fmail_filter_data'    => array('type' => 'text')
+                ),
+                'pk' => array('fmail_filter_accountid'),
+                'fk' => array(),
+                'ix' => array(),
+                'uc' => array()
+            )
+		);
+        return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.5.002';
+    }
+
 ?>

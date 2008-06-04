@@ -1,10 +1,13 @@
 <!-- BEGIN main -->
+<script language="JavaScript1.2">
+
+var allowAccounts        = {allowAccounts};
+
+</script>
 <center>
 <form action="{form_action}" name="editAccountData" method="post">
-<div style="width:650px; text-align:left;">
-<input type="checkbox" id="active" name="active" value="1" onclick="onchange_active(this)" {checked_active}>{lang_use_costum_settings}
-</div>
-<fieldset style="width:650px;" class="row_on" id="identity"><legend style="font-weight: bold;">{lang_identity}</legend>
+<INPUT TYPE=hidden NAME="identity[id]" value="{accountID}">
+<fieldset style="width:650px;" class="row_on" id="identity"><legend style="font-weight: bold;">{lang_identity} {accountID}</legend>
 <table width="100%" border="0" cellpadding="0" cellspacing="1">
 	<tr>
 		<td style="width:300px; text-align:left;">
@@ -30,8 +33,21 @@
 			<input type="text" style="width: 99%;" name="identity[emailAddress]" value="{identity[emailAddress]}" maxlength="128">
 		</td>
 	</tr>
+    <tr>
+        <td  style="text-align:left;">
+            {lang_signature}
+        </td>
+        <td  style="text-align:left;">
+            {identity_selectbox}
+        </td>
+    </tr>
+
 </table>
 </fieldset>
+
+<div style="width:650px; text-align:left;">
+<input type="checkbox" id="active" name="active" value="1" onclick="onchange_active(this)" {checked_active}>{lang_use_costum_settings}
+</div>
 
 <fieldset style="width:650px;" class="row_on" id="incoming_server"><legend style="font-weight: bold;">{lang_incoming_server}</legend>
 <table width="100%" border="0" cellpadding="0" cellspacing="1">

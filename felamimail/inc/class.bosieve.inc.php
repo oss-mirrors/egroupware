@@ -93,7 +93,11 @@
 		function getVacation($_scriptName) {
 			return $this->vacation;
 		}
-		
+	
+		function getEmailNotification($_scriptName) {
+			return $this->emailNotification;
+		}
+	
 		function setRules($_scriptName, $_rules) 
 		{
 			$script         =& CreateObject('felamimail.Script',$_scriptName);
@@ -157,13 +161,27 @@
 			}
 		}
 
+		function setEmailNotification($_scriptName, $_emailNotification) {
+	    	if ($_emailNotification['externalEmail'] == '' || !preg_match("/\@/",$_emailNotification['externalEmail'])) {
+	    		$_emailNotification['status'] = 'off';
+	    		$_emailNotification['externalEmail'] = '';
+	    	}
+
+	    	$script =& CreateObject('felamimail.Script',$_scriptName);
+	    	if ($script->retrieveRules($this)) {
+	    		$script->emailNotification = $_emailNotification;
+	    		return $script->updateScript($this);
+	    	}
+	    	return false;
+		}
+
 		function retrieveRules($_scriptName) {
 			$script         =& CreateObject('felamimail.Script',$_scriptName);
 			
 			if($script->retrieveRules($this)) {
 				$this->rules = $script->rules;
 				$this->vacation = $script->vacation;
-				
+				$this->emailNotification = $script->emailNotification; // Added email notifications	
 				return true;
 			} 
 			
