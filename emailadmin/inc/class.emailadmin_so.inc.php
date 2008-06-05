@@ -11,7 +11,7 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	class so
+	class emailadmin_so
 	{
 		var $db;
 		var $table = 'egw_emailadmin';
@@ -54,7 +54,7 @@
 			'ea_default_signature'		=> 'ea_default_signature',
 		);
 
-		function so()
+		function __construct()
 		{
 			if (is_object($GLOBALS['egw_setup']->db))
 			{

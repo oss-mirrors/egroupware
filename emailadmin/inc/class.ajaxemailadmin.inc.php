@@ -16,7 +16,7 @@
 	{
 		function ajaxemailadmin()
 		{
-			$this->bo		=& CreateObject('emailadmin.bo');
+			$this->bo		= new emailadmin_bo();
 /*			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
 			$this->bofelamimail->openConnection();

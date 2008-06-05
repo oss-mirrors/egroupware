@@ -11,7 +11,7 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$_GET['menuaction']     = 'emailadmin.ui.listProfiles';
+	$_GET['menuaction']     = 'emailadmin.emailadmin_ui.listProfiles';
 
 	$GLOBALS['egw_info'] = array(
 		'flags' => array(
@@ -22,5 +22,5 @@
 	);
 	include('../header.inc.php');
 
-	execmethod('emailadmin.ui.listProfiles');
+	execmethod('emailadmin.emailadmin_ui.listProfiles');
 ?>

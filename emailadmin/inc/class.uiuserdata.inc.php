@@ -24,7 +24,7 @@
 		function uiuserdata()
 		{
 			$this->t			=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
-			$this->boemailadmin		=& CreateObject('emailadmin.bo');
+			$this->boemailadmin		= new emailadmin_bo();
 		}
 	
 		function display_app_header()

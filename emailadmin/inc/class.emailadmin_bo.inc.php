@@ -12,7 +12,7 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	class bo
+	class emailadmin_bo
 	{
 		var $sessionData;
 		var $LDAPData;
@@ -24,9 +24,9 @@
 		var $smtpClass;				// holds the smtp class
 		
 
-		function bo($_profileID=-1,$_restoreSesssion=true)
+		function __construct($_profileID=-1,$_restoreSesssion=true)
 		{
-			$this->soemailadmin =& CreateObject('emailadmin.so');
+			$this->soemailadmin = new emailadmin_so();
 			
 			$this->SMTPServerType = array(
 				'1' 	=> array(

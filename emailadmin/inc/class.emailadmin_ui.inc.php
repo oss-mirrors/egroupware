@@ -11,7 +11,7 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	class ui
+	class emailadmin_ui
 	{
 		
 		var $public_functions = array
@@ -29,11 +29,12 @@
 		var $t;
 		var $boqmailldap;
 
-		function ui()
+		function __construct()
 		{
 			$this->nextmatchs   =& CreateObject('phpgwapi.nextmatchs');
 			$this->t            =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
-			$this->boemailadmin =& CreateObject('emailadmin.bo');
+			#$this->boemailadmin =& CreateObject('emailadmin.bo');
+			$this->boemailadmin = new emailadmin_bo();
 		}
 		
 		function addProfile()
@@ -73,13 +74,13 @@
 			
 			$linkData = array
 			(
-				'menuaction'	=> 'emailadmin.ui.saveProfile'
+				'menuaction'	=> 'emailadmin.emailadmin_ui.saveProfile'
 			);
 			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			$linkData = array
 			(
-				'menuaction'	=> 'emailadmin.ui.listProfiles'
+				'menuaction'	=> 'emailadmin.emailadmin_ui.listProfiles'
 			);
 			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -161,8 +162,8 @@
 
 			switch($_GET['menuaction'])
 			{
-				case 'emailadmin.ui.addProfile':
-				case 'emailadmin.ui.editProfile':
+				case 'emailadmin.emailadmin_ui.addProfile':
+				case 'emailadmin.emailadmin_ui.editProfile':
 					$GLOBALS['egw_info']['nofooter'] = true;
 					$GLOBALS['egw']->js->validate_file('jscode','editProfile','emailadmin');
 					$GLOBALS['egw']->js->set_onload('javascript:initAll();');
@@ -170,14 +171,14 @@
 
 					break;
 
-				case 'emailadmin.ui.listProfiles':
+				case 'emailadmin.emailadmin_ui.listProfiles':
 					$GLOBALS['egw']->js->validate_file('jscode','listProfile','emailadmin');
 
 					break;
 			}
 			$GLOBALS['egw']->common->egw_header();
 			
-			if($_GET['menuaction'] == 'emailadmin.ui.listProfiles' || $_GET['menuaction'] == 'emailadmin.ui.deleteProfile')
+			if($_GET['menuaction'] == 'emailadmin.emailadmin_ui.listProfiles' || $_GET['menuaction'] == 'emailadmin.emailadmin_ui.deleteProfile')
 				echo parse_navbar();
 		}
 
@@ -270,14 +271,14 @@
 			
 			$linkData = array
 			(
-				'menuaction'	=> 'emailadmin.ui.saveProfile',
+				'menuaction'	=> 'emailadmin.emailadmin_ui.saveProfile',
 				'profileID'	=> $profileID
 			);
 			$this->t->set_var('action_url',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			$linkData = array
 			(
-				'menuaction'	=> 'emailadmin.ui.listProfiles'
+				'menuaction'	=> 'emailadmin.emailadmin_ui.listProfiles'
 			);
 			$this->t->set_var('back_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -330,7 +331,7 @@
 				{
 					$linkData = array
 					(
-						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'menuaction'	=> 'emailadmin.emailadmin_ui.editProfile',
 						'nocache'	=> '1',
 						'tabpage'	=> '3',
 						'profileid'	=> $profileList[$i]['profileID']
@@ -339,7 +340,7 @@
 					
 					$linkData = array
 					(
-						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'menuaction'	=> 'emailadmin.emailadmin_ui.editProfile',
 						'nocache'	=> '1',
 						'tabpage'	=> '1',
 						'profileid'	=> $profileList[$i]['profileID']
@@ -348,7 +349,7 @@
 					
 					$linkData = array
 					(
-						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'menuaction'	=> 'emailadmin.emailadmin_ui.editProfile',
 						'nocache'	=> '1',
 						'tabpage'	=> '2',
 						'profileid'	=> $profileList[$i]['profileID']
@@ -357,7 +358,7 @@
 					
 					$linkData = array
 					(
-						'menuaction'	=> 'emailadmin.ui.deleteProfile',
+						'menuaction'	=> 'emailadmin.emailadmin_ui.deleteProfile',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
 					$deleteLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).
@@ -367,7 +368,7 @@
 					$application = (empty($profileList[$i]['ea_appname']) ? lang('any application') : $GLOBALS['egw_info']['apps'][$profileList[$i]['ea_appname']]['title']);
 					$linkData = array
 					(
-						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'menuaction'	=> 'emailadmin.emailadmin_ui.editProfile',
 						'nocache'	=> '1',
 						'tabpage'	=> '1',
 						'profileid'	=> $profileList[$i]['profileID']
@@ -377,7 +378,7 @@
 					$group = (empty($profileList[$i]['ea_group']) ? lang('any group') : $GLOBALS['egw']->accounts->id2name($profileList[$i]['ea_group']));
 					$linkData = array
 					(
-						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'menuaction'	=> 'emailadmin.emailadmin_ui.editProfile',
 						'nocache'	=> '1',
 						'tabpage'	=> '1',
 						'profileid'	=> $profileList[$i]['profileID']
@@ -423,7 +424,7 @@
 			
 			$linkData = array
 			(
-				'menuaction'	=> 'emailadmin.ui.addProfile'
+				'menuaction'	=> 'emailadmin.emailadmin_ui.addProfile'
 			);
 			$this->t->set_var('add_link',$GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -442,10 +443,10 @@
 		
 			$var = Array(
 				'th_bg'			=> $GLOBALS['egw_info']['theme']['th_bg'],
-				'left_next_matchs'	=> $this->nextmatchs->left('/index.php',$start,$total,'menuaction=emailadmin.ui.listServers'),
-				'right_next_matchs'	=> $this->nextmatchs->right('/admin/groups.php',$start,$total,'menuaction=emailadmin.ui.listServers'),
+				'left_next_matchs'	=> $this->nextmatchs->left('/index.php',$start,$total,'menuaction=emailadmin.emailadmin_ui.listServers'),
+				'right_next_matchs'	=> $this->nextmatchs->right('/admin/groups.php',$start,$total,'menuaction=emailadmin.emailadmin_ui.listServers'),
 				'lang_groups'		=> lang('user groups'),
-				'sort_name'		=> $this->nextmatchs->show_sort_order($sort,'account_lid',$order,'/index.php',lang('name'),'menuaction=emailadmin.ui.listServers'),
+				'sort_name'		=> $this->nextmatchs->show_sort_order($sort,'account_lid',$order,'/index.php',lang('name'),'menuaction=emailadmin.emailadmin_ui.listServers'),
 				'description'		=> $_description,
 				'header_edit'		=> lang('Edit'),
 				'header_delete'		=> lang('Delete')
