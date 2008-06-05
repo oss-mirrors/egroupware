@@ -28,7 +28,7 @@
 		function bopreferences()
 		{
 			parent::sopreferences();
-			$this->boemailadmin =& CreateObject('emailadmin.bo');
+			$this->boemailadmin = new emailadmin_bo();
 		}
 
 		// get the first active user defined account		

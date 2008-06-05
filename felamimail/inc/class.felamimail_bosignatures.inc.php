@@ -18,12 +18,12 @@
 	class felamimail_bosignatures
 	{
 		function felamimail_bosignatures() {
-			$boemailadmin =& CreateObject('emailadmin.bo');
+			$boemailadmin = new emailadmin_bo();
 			$this->profileData = $boemailadmin->getUserProfile('felamimail');
 		}
 		
 		function getListOfSignatures() {
-			$boemailadmin =& CreateObject('emailadmin.bo');
+			$boemailadmin = new emailadmin_bo();
 			$fmSignatures = new felamimail_signatures();
 			
 			#$profileData = $boemailadmin->getUserProfile('felamimail');
@@ -76,8 +76,6 @@
 		function getSignature($_signatureID, $_unparsed = false) 
 		{
 			if($_signatureID == -1) {
-				#$boemailadmin =& CreateObject('emailadmin.bo');
-				#$profileData = $boemailadmin->getUserProfile('felamimail');
 				
 				$systemSignatureIsDefaultSignature = $this->getDefaultSignature();
 

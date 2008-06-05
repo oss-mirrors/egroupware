@@ -21,9 +21,9 @@
 	if($mailPreferences->userDefinedAccounts) {
 		$linkData = array
 		(
-			'menuaction' => 'felamimail.uipreferences.editAccountData',
+			'menuaction' => 'felamimail.uipreferences.listAccountData',
 		);
-		$file['Manage EMailaccounts'] = $GLOBALS['egw']->link('/index.php',$linkData);
+		$file['Manage eMail: Accounts / Identities'] = $GLOBALS['egw']->link('/index.php',$linkData);
 	}
 
 	$file['Manage Folders'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');

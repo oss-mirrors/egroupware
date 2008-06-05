@@ -499,7 +499,7 @@
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			
 			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
-			$boemailadmin	=& CreateObject('emailadmin.bo');
+			$boemailadmin	= new emailadmin_bo();
 
 			if ($this->timed_vacation)
 			{
@@ -646,7 +646,7 @@
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 
 			$uiwidgets  =& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
-			$boemailadmin =& CreateObject('emailadmin.bo');
+			$boemailadmin = new emailadmin_bo();
 
 			if($this->bosieve->getScript($this->scriptName)) {
 				if(PEAR::isError($error = $this->bosieve->retrieveRules($this->scriptName)) ) {
@@ -731,7 +731,7 @@
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
 			
 			$uiwidgets	=& CreateObject('felamimail.uiwidgets', EGW_APP_TPL);
-			$boemailadmin	=& CreateObject('emailadmin.bo');
+			$boemailadmin	= new emailadmin_bo();
 
 			$this->getRules();	/* ADDED BY GHORTH */
 

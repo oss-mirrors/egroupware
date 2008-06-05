@@ -270,7 +270,9 @@
 			if(empty($parent)) {
 				$newFolderName = $folderName;
 			} else {
-				$newFolderName = $parent . $this->icServer->getHierarchyDelimiter() . $folderName;
+				$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();
+				if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
+				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
 			
 			if ( PEAR::isError($this->icServer->createMailbox($newFolderName) ) ) {
@@ -346,7 +348,7 @@
 				return 'ALL';
 			} else {
 				return trim($imapFilter);
-				return 'CHARSET '. strtoupper($this->displayCharset) .' '. trim($imapFilter);
+				#return 'CHARSET '. strtoupper($this->displayCharset) .' '. trim($imapFilter);
 			}
 		}
 		
@@ -1495,9 +1497,16 @@
 				$filter = $this->createIMAPFilter($_folderName, $_filter);
 				if($this->icServer->hasCapability('SORT')) {
 					$sortOrder = $this->_getSortString($_sort);
-					$sortResult = $this->icServer->sort($sortOrder, 'US-ASCII', $filter, true);
+					if (!empty($this->displayCharset)) {
+						$sortResult = $this->icServer->sort($sortOrder, strtoupper( $this->displayCharset ), $filter, true);
+					}
+					if (PEAR::isError($sortResult) || empty($this->displayCharset)) {
+						$sortResult = $this->icServer->sort($sortOrder, 'US-ASCII', $filter, true);
+					}
 				} else {
-					$sortResult = $this->icServer->search($filter, true);
+					$advFilter = 'CHARSET '. strtoupper($this->displayCharset) .' '.$filter;
+					$sortResult = $this->icServer->search($advFilter, true);
+					if (PEAR::isError($sortResult)) $sortResult = $this->icServer->search($filter, true); 
 					if(is_array($sortResult)) {
 							sort($sortResult, SORT_NUMERIC);
 					}
@@ -2147,7 +2156,9 @@
 			if(empty($parent)) {
 				$newFolderName = $folderName;
 			} else {
-				$newFolderName = $parent . $this->icServer->getHierarchyDelimiter() . $folderName;
+				$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();
+				if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
+				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
 			error_log("create folder: $newFolderName");
 			

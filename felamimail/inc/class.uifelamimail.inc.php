@@ -251,7 +251,7 @@
 				$this->bofelamimail->setEMailProfile($profileID);
 			}
 			
-			$boemailadmin =& CreateObject('emailadmin.bo');
+			$boemailadmin = new emailadmin_bo();
 			
 			$profileList = $boemailadmin->getProfileList();
 			$profileID = $this->bofelamimail->getEMailProfile();
@@ -275,7 +275,7 @@
 			
 			$linkData = array
 			(
-				'menuaction'	=> 'emailadmin.ui.listProfiles'
+				'menuaction'	=> 'emailadmin.emailadmin_ui.listProfiles'
 			);
 			$this->t->set_var('lang_go_emailadmin', lang('use <a href="%1">EmailAdmin</a> to create profiles', $GLOBALS['egw']->link('/index.php',$linkData)));
 			
@@ -565,7 +565,7 @@
 			}
 			// if you use user defined accounts you may want to access the profile defined with the emailadmin available to the user
 			if ($activeIdentity->id) {
-				$boemailadmin =& CreateObject('emailadmin.bo');
+				$boemailadmin = new emailadmin_bo();
 				$defaultProfile = $boemailadmin->getUserProfile() ;
 				#_debug_array($defaultProfile);
 				$identitys =& $defaultProfile->identities;
