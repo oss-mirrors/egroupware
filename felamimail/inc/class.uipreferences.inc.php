@@ -598,22 +598,24 @@
 			$boPreferences  =& CreateObject('felamimail.bopreferences');
 			$preferences =& $boPreferences->getPreferences();
 			$allAccountData    = $boPreferences->getAllAccountData($preferences);
-			foreach ($allAccountData as $tmpkey => $accountData)
-			{
-				$identity =& $accountData['identity'];
+			if ($allAccountData) {
+				foreach ($allAccountData as $tmpkey => $accountData)
+				{
+					$identity =& $accountData['identity'];
 
-				#_debug_array($identity);
+					#_debug_array($identity);
 			
-				foreach($identity as $key => $value) {
-					if(is_object($value) || is_array($value)) {
-						continue;
+					foreach($identity as $key => $value) {
+						if(is_object($value) || is_array($value)) {
+							continue;
+						}
+						switch($key) {
+							default:
+								$tempvar[$key] = $value;
+						}
 					}
-					switch($key) {
-						default:
-							$tempvar[$key] = $value;
-					}
+					$accountArray[]=$tempvar;
 				}
-				$accountArray[]=$tempvar;
 			}
 			$this->t->set_file(array("body" => "preferences_list_accounts.tpl"));
 			$this->t->set_block('body','main');
