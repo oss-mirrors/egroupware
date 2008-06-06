@@ -550,15 +550,17 @@
 
 			$selectedID = 0;
 			$allAccountData    = $this->bopreferences->getAllAccountData($this->preferences);
-			foreach ($allAccountData as $tmpkey => $accountData)
-			{
-				$identity =& $accountData['identity'];
-				$icServer =& $accountData['icServer'];
-				//_debug_array($identity);
-				//_debug_array($icServer);
-				if (empty($icServer->host)) continue;
-				$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
-				if (!empty($identity->default)) $selectedID = $identity->id;
+			if ($allAccountData) {
+				foreach ($allAccountData as $tmpkey => $accountData)
+				{
+					$identity =& $accountData['identity'];
+					$icServer =& $accountData['icServer'];
+					//_debug_array($identity);
+					//_debug_array($icServer);
+					if (empty($icServer->host)) continue;
+					$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+					if (!empty($identity->default)) $selectedID = $identity->id;
+				}
 			}
 			if (!isset($activeIdentity->id) && $selectedID == 0) {
 				$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
