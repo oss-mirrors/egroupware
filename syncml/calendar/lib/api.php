@@ -69,14 +69,14 @@ function _egwcalendarsync_list($_startDate='', $_endDate='')
 		'enum_recuring' => false,
 		'enum_groups' => true,
 	);
-	
-	$events =& ExecMethod('calendar.bocal.search',$searchFilter);
-	
+
+	$events =& ExecMethod('calendar.calendar_bo.search',$searchFilter);
+
 	foreach((array)$events as $event)
 	{
 		$guids[] = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
 	}
-	return $guids;	
+	return $guids;
 }
 
 /**
@@ -101,7 +101,7 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 	}
 
 	// query the calendar, to check if we are a participants in these changed events
-	$boCalendar =& CreateObject('calendar.bocal');
+	$boCalendar =& new calendar_bo();
 	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
 	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
 
@@ -156,7 +156,7 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 	{
 		$options = array();
 	}
-	
+
 	switch ($contentType)
 	{
 		case 'text/x-vcalendar':
@@ -168,7 +168,7 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$calendarId = $boical->importVCal($content);
 			break;
-			
+
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sift':
 		case 'text/x-s4j-sifn':
@@ -177,11 +177,11 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 			$sifcalendar =& CreateObject('calendar.sifcalendar');
 			$calendarId = $sifcalendar->addSIF($content,-1);
 			break;
-			
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
-	
+
 	if (is_a($calendarId, 'PEAR_Error'))
 	{
 		return $calendarId;
@@ -217,7 +217,7 @@ function _egwcalendarsync_search($content, $contentType)
 	{
 		$options = array();
 	}
-	
+
 	switch ($contentType)
 	{
 		case 'text/x-vcalendar':
@@ -229,7 +229,7 @@ function _egwcalendarsync_search($content, $contentType)
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$eventId = $boical->search($content);
 			break;
-			
+
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sift':
 		case 'text/x-s4j-sifn':
@@ -238,7 +238,7 @@ function _egwcalendarsync_search($content, $contentType)
 			$sifcalendar =& CreateObject('calendar.sifcalendar');
 			$eventId = $sifcalendar->search($content);
 			break;
-			
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
@@ -278,7 +278,7 @@ function _egwcalendarsync_search($content, $contentType)
  */
 function _egwcalendarsync_export($guid, $contentType)
 {
-	
+
 #    require_once dirname(__FILE__) . '/base.php';
 #
 #    $storage = &Mnemo_Driver::singleton();
@@ -304,10 +304,10 @@ function _egwcalendarsync_export($guid, $contentType)
 	}
 
 	Horde::logMessage("SymcML: egwcalendarsync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 
 	$eventID	= $GLOBALS['egw']->common->get_egwId($guid);
-	
+
 	switch ($contentType)
 	{
 		case 'text/x-vcalendar':
@@ -336,7 +336,7 @@ function _egwcalendarsync_export($guid, $contentType)
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			break;
-		
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
@@ -364,17 +364,17 @@ function _egwcalendarsync_delete($guid)
 				return $result;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$GLOBALS['egw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
-	$bocalendar =& CreateObject('calendar.bocalupdate');
-	
+
+	$bocalendar =& new calendar_boupdate();
+
 	return $bocalendar->delete($GLOBALS['egw']->common->get_egwId($guid));
 	#return $bocalendar->expunge();
 }
@@ -407,7 +407,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType)
 	}
 
 	$eventID = $GLOBALS['egw']->common->get_egwId($guid);
-	
+
 	switch ($contentType)
 	{
 		case 'text/x-vcalendar':
@@ -419,7 +419,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType)
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			return $boical->importVCal($content, $eventID);
 			break;
-			
+
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sift':
 		case 'text/x-s4j-sifn':
@@ -428,7 +428,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType)
 			$sifcalendar =& CreateObject('calendar.sifcalendar');
 			return $sifcalendar->addSIF($content,$eventID);
 			break;
-			
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
