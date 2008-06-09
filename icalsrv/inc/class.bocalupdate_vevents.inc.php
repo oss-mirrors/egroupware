@@ -272,7 +272,7 @@
 	  */
 	  function set_rsc($egw_rsc)
 	  {
-		if(!is_a($egw_rsc,'bocalupdate'))
+		if(!is_a($egw_rsc,'calendar_boupdate'))
 		  return false;
 		$this->rsc = $egw_rsc;
 		$this->rsc_vtypes[]= 'vevent';

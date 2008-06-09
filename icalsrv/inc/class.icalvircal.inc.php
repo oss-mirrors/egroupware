@@ -169,7 +169,7 @@
 					{
 						switch($rsc_class)
 						{
-							case 'calendar.bocalupdate':
+							case 'calendar.calendar_boupdate':
 								$params += array(
 									'offset' => 0,
 									'num_rows' => 1,
@@ -213,7 +213,7 @@
 				// ToDo: move that in a $rh_def attribute
 				switch ($rsc_class)
 				{
-					case 'calendar.bocalupdate':
+					case 'calendar.calendar_boupdate':
 						$ids_exported['calendar'] = array();
 						foreach($ids as $event)
 						{

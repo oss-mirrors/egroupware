@@ -83,7 +83,7 @@
 				'enabled' => 1,
 				'auth'  => ':basic',
 				'rscs'  => array(
-					'calendar.bocalupdate' => array(
+					'calendar.calendar_boupdate' => array(
 						'hnd'   => 'icalsrv.bocalupdate_vevents',
 						'hndarg3' => '0',
 						'qmeth' => 'search',

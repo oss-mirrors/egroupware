@@ -19,7 +19,7 @@
 
 	//	require_once EGW_SERVER_ROOT.'/icalsrvsrv/inc/calendar/class.bovevents.inc.php';
 
-	class boical extends bocalupdate
+	class boical extends calendar_boupdate
 	{
 		/** the icalsrv resource handler object that handles  ical import and export for the calendar.
 		* @var bocalupdate_vevents $calhnd 
@@ -28,7 +28,7 @@
 
 		function boical()
 		{
-			bocalupdate::bocalupdate(); // call superclass constructor
+			parent::__construct(); // call superclass constructor
 			error_log("warning class: calendar.boical call DEPRECATED,"
 				. "\nplease rewrite your code to use icalsrv.bocalupdate_vevents class"
 				. "\n now temporary code fix used ");

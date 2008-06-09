@@ -83,7 +83,7 @@
 			'enabled' => 1,
 			'auth'  => ':basic',
 			'rscs'  => array(
-				'calendar.bocalupdate' => array(
+				'calendar.calendar_boupdate' => array(
 					'hnd'   => 'icalsrv.bocalupdate_vfreebusy',
 					'owner_id' => '_fn_cal_owner_id()',
 					'hndarg4' => array(
@@ -116,7 +116,7 @@
 			'enabled' => 1,
 			'auth'  => ':basic',
 			'rscs'  => array(
-				'calendar.bocalupdate' => array(
+				'calendar.calendar_boupdate' => array(
 					'hnd'   => 'icalsrv.bocalupdate_vevents',
 					'owner_id' => '_fn_cal_owner_id()',
 					'qmeth' => 'search',
