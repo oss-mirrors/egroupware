@@ -47,7 +47,7 @@
    * @todo check multiple category import (do they get duplicated?
    */
 
-	require_once EGW_SERVER_ROOT.'/calendar/inc/class.bocalupdate.inc.php';
+	require_once EGW_SERVER_ROOT.'/calendar/inc/class.calendar_boupdate.inc.php';
     require_once EGW_SERVER_ROOT.'/icalsrv/inc/class.icalsrv_resourcehandler.inc.php';
 
 
