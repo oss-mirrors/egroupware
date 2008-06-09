@@ -22,7 +22,7 @@
 
 
 	require_once EGW_SERVER_ROOT.'/phpgwapi/inc/horde/Horde/iCalendar.php';
-	require_once EGW_SERVER_ROOT.'/calendar/inc/class.socal.inc.php';  // for MCAL defs
+	require_once EGW_SERVER_ROOT.'/calendar/inc/class.calendar_so.inc.php';  // for MCAL defs
 
     /**
 	 * Common  utility routines to manipulate iCalendar components and fields in
