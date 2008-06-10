@@ -174,7 +174,7 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 		case 'text/x-s4j-sifn':
 			Horde::logMessage("SyncML: egwcalendarsync import treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sife':
-			$sifcalendar =& CreateObject('calendar.sifcalendar');
+			$sifcalendar = new calendar_sif();
 			$calendarId = $sifcalendar->addSIF($content,-1);
 			break;
 
@@ -235,7 +235,7 @@ function _egwcalendarsync_search($content, $contentType)
 		case 'text/x-s4j-sifn':
 			Horde::logMessage("SyncML: egwcalendarsync treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sife':
-			$sifcalendar =& CreateObject('calendar.sifcalendar');
+			$sifcalendar = new calendar_sif();
 			$eventId = $sifcalendar->search($content);
 			break;
 
@@ -326,7 +326,7 @@ function _egwcalendarsync_export($guid, $contentType)
 		case 'text/x-s4j-sifn':
 			Horde::logMessage("SyncML: egwcalendarsync export treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sife':
-			$sifcalendar =& CreateObject('calendar.sifcalendar');
+			$sifcalendar = new calendar_sif();
 			if($sifevent = $sifcalendar->getSIF($eventID))
 			{
 				return $sifevent;
@@ -425,7 +425,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType)
 		case 'text/x-s4j-sifn':
 			error_log("[_egwsifcalendarsync_replace] Treating bad calendar content-type '".$contentType."' as if is was 'text/x-s4j-sife'");
 		case 'text/x-s4j-sife':
-			$sifcalendar =& CreateObject('calendar.sifcalendar');
+			$sifcalendar = new calendar_sif();
 			return $sifcalendar->addSIF($content,$eventID);
 			break;
 
