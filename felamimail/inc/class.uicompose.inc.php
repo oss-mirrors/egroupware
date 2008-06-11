@@ -285,7 +285,16 @@
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
 			$boSignatures = new felamimail_bosignatures();
 			$signatures = $boSignatures->getListOfSignatures();
-			
+			if (empty($sessionData['signatureID'])) {
+				if ($signatureData = $boSignatures->getDefaultSignature()) {
+					if (is_array($signatureData)) {
+						$sessionData['signatureID'] = $signatureData['signatureid'];
+					} else {
+						$sessionData['signatureID'] =$signatureData;
+					}
+				}
+			}
+	
 			$selectSignatures = array(
 				'-2' => lang('no signature')
 			);
