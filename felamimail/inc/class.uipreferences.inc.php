@@ -321,10 +321,13 @@
 			}
 			$felamimail_bosignatures = new felamimail_bosignatures();
 			$signatures = $felamimail_bosignatures->getListOfSignatures();
+			$allSignatures = array(
+				'-2' => lang('no signature')
+			);
 			foreach ($signatures as $sigkey => $sig) {
 				$allSignatures[$sig['fm_signatureid']] = $sig['fm_description'];
 			}
-			$sigvalue = -1;
+			$sigvalue = -2;
 			if ($identity) {
 				foreach($identity as $key => $value) {
 					if(is_object($value) || is_array($value)) {
