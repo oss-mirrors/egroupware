@@ -1360,7 +1360,7 @@
 						return $this->getTextPart($_uid, $partText);
 					} elseif(is_object($partHTML)) {
 						if($partHTML->type) {
-							return $this->getMultipartRelated($_uid, $partHTML);
+							return $this->getMultipartRelated($_uid, $partHTML, $_htmlMode);
 						} else {
 							return $this->getTextPart($_uid, $partHTML, 'always_display');
 						}
