@@ -167,16 +167,15 @@
 							$profileData->setIdentity($accountData['identity'],0);
 							$rememberID = $accountData['identity']->id;
 						}
-						$allUserIdentities = $this->getUserDefinedIdentities();
-						$i=1;
-						if (is_array($allUserIdentities)) {
-							$i=1;
-							foreach ($allUserIdentities as $tmpkey => $id)
-							{
-								if ($id->id != $rememberID) {
-									$profileData->setIdentity($id,$i);
-									$i++;
-								}
+					}
+					$allUserIdentities = $this->getUserDefinedIdentities();
+					if (is_array($allUserIdentities)) {
+						$i=count($allUserIdentities);
+						foreach ($allUserIdentities as $tmpkey => $id)
+						{
+							if ($id->id != $rememberID) {
+								$profileData->setIdentity($id,$i);
+								$i++;
 							}
 						}
 					}
@@ -203,8 +202,7 @@
 				$this->profileData = $profileData;
 				
 				#_debug_array($this->profileData);
-			}
-
+			} 
 			return $this->profileData;
 		}
 		
