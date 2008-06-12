@@ -129,11 +129,13 @@
 			if($profileData->userDefinedAccounts) {
 				// get user defined accounts
 				$allAccountData = $this->getAllAccountData($profileData);
-				foreach ($allAccountData as $tmpkey => $accountData)
-				{
-					$accountArray[] = $accountData['identity'];
+				if ($allAccountData) {
+					foreach ($allAccountData as $tmpkey => $accountData)
+					{
+						$accountArray[] = $accountData['identity'];
+					}
+					return $accountArray;
 				}
-				return $accountArray;
 			}
 			return array();
 		}	
