@@ -109,7 +109,8 @@
 			$where = array(
 				'fm_owner'          => $_accountID,
 			);
-			if (is_array($_identity)) $where[] = "fm_id in (".implode(',',$_identity).")";
+			if (is_array($_identity) && count($_identity)>1) $where[] = "fm_id in (".implode(',',$_identity).")";
+			if (is_array($_identity) && count($_identity)==1) $where['fm_id'] = $_identity[0];
 			if (!empty($_identity->id) && !is_array($_identity)) $where['fm_id'] = $_identity->id;
 			$this->db->delete($this->accounts_table, $where  ,__LINE__,__FILE__);
 		}
