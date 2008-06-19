@@ -42,12 +42,12 @@
 			$retValue	= array();
 			$where		= array('fm_owner' => $accountID);
 			if (!empty($_identity) && $_identity != 'active' && $_identity != 'all') $where['fm_id'] = $_identity;
-			if ($_identity == 'active' || empty($_identity)) $where['fm_active'] = 1;
+			if ($_identity == 'active' || empty($_identity)) $where['fm_active'] = true;
 			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_signatureid,fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,fm_ic_enable_sieve,fm_ic_sieve_server,fm_ic_sieve_port,fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
 				$where,__LINE__,__FILE__);
 				
 			while(($row = $this->db->row(true,'fm_'))) {
-				foreach(array('ic_validatecertificate','ic_enable_sieve','og_smtpauth') as $name)
+				foreach(array('active','ic_validatecertificate','ic_enable_sieve','og_smtpauth') as $name)
 				{
 					$row[$name] = $this->db->from_bool($row[$name]);
 				}
@@ -60,7 +60,7 @@
 		{
 			
 			$data = array(
-				'fm_active'			=> 0,
+				'fm_active'			=> false,
 				'fm_owner'			=> $_accountID,
 				'fm_realname'			=> $_identity->realName,
 				'fm_organization'		=> $_identity->organization,
@@ -122,7 +122,7 @@
             );
 			if (!empty($_identity)) $where['fm_id'] = $_identity;
 			$this->db->update($this->accounts_table,array(
-				'fm_active'			=> $_status,
+				'fm_active'			=> (bool)$_status,
 			), $where,__LINE__,__FILE__);	
 		}
 	}

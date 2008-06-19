@@ -1452,8 +1452,9 @@
 					'charSet'	=> $this->displayCharset,
 				);
 			} else {
+				// some Servers append PropertyFile___ ; strip that here for display
 				$bodyPart = array(
-					'body'		=> $this->decodeMimePart($mimePartBody, $_structure->encoding),
+					'body'		=> preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)),
 					'mimeType'	=> ($_structure->type == 'TEXT' && $_structure->subType == 'HTML') ? 'text/html' : 'text/plain',
 					'charSet'	=> $this->getMimePartCharset($_structure),
 				);
@@ -1808,7 +1809,7 @@
 			#_debug_array($structure);
 			
 			// this kind of messages contain only the attachment and no body
-			if($structure->type == 'APPLICATION' || $structure->type == 'AUDIO') {
+			if($structure->type == 'APPLICATION' || $structure->type == 'AUDIO' || $structure->type == 'IMAGE') {
 				$attachments = array();
 			
 				$newAttachment = array();
@@ -1919,19 +1920,15 @@
 					$structure = $this->_getSubStructure($structure, $_partID);
 				}
 			}
-
 			switch($structure->type) {
 				case 'APPLICATION':
-					$bodyPart = array(
+					return array(
 						array(
 							'body'		=> '',
 							'mimeType'	=> 'text/plain',
 							'charSet'	=> 'iso-8859-1',
 						)
 					);
-					
-					return $bodyPart;
-					
 					break;
 				case 'MULTIPART':
 					switch($structure->subType) {
@@ -1943,50 +1940,47 @@
 						case 'MIXED':
 						case 'REPORT':
 						case 'SIGNED':
-							$result = $this->getMultipartMixed($_uid, $structure->subParts, $this->htmlOptions);
-							return $result;
-							
+							return $this->getMultipartMixed($_uid, $structure->subParts, $this->htmlOptions);
 							break;
 
 						case 'RELATED':
 							return $this->getMultipartRelated($_uid, $structure->subParts, $this->htmlOptions);
-							
 							break;
 					}
 					
 					break;
-					
+				case 'AUDIO': // some servers send audiofiles and imagesfiles directly, without any stuff surround it
+				case 'IMAGE': // they are displayed as Attachment NOT INLINE
+					return array(
+						array(
+							'body'      => '',
+							'mimeType'  => $structure->subType,
+						),
+					);
+					break;
 				case 'TEXT':
 					$bodyPart = array();
 					if (($structure->subType == 'HTML' || $structure->subType == 'PLAIN') && $structure->disposition != 'ATTACHMENT') {
 						$bodyPart = array($this->getTextPart($_uid, $structure, $this->htmlOptions));
 					}
-
 					return $bodyPart;
-					
 					break;
-					
 				case 'MESSAGE':
 					switch($structure->subType) {
 						case 'RFC822':
 							$newStructure = array_shift($structure->subParts);
-							$bodyPart = $this->getMessageBody($_uid, $_htmlOptions, $newStructure->partID, $newStructure);
-							return $bodyPart;
+							return $this->getMessageBody($_uid, $_htmlOptions, $newStructure->partID, $newStructure);
 							break;
 					}
-					
 					break;
 				default:
-					$bodyPart = array(
+					return array(
 						array(
 							'body'		=> lang('The mimeparser can not parse this message.'),
 							'mimeType'	=> 'text/plain',
 							'charSet'	=> 'iso-8859-1',
 						)
 					);
-					
-					return $bodyPart;
-					
 					break;
 			}
 		}

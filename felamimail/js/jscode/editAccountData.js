@@ -103,7 +103,7 @@ function fm_deleteAccountData() {
 
 		if(accountData.length > 0) {
 			if(confirm(lang_reallyDeleteAccountSettings)) {
-				xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteAccountData", accountData);
+				xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteAccountData", accountData.join(","));
 				fm_refreshAccountDataTable();
 			}
 		}

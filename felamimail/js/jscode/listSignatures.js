@@ -54,7 +54,7 @@ function fm_deleteSignatures() {
 
 		if(signatures.length > 0) {
 			if(confirm(lang_reallyDeleteSignatures)) {
-				xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteSignatures", signatures);
+				xajax_doXMLHTTP("felamimail.ajaxfelamimail.deleteSignatures", signatures.join(","));
 				fm_refreshSignatureTable();
 			}
 		}

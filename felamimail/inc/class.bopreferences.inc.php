@@ -260,7 +260,20 @@
 	
 		function deleteAccountData($_identity)
 		{
-			parent::deleteAccountData($GLOBALS['egw_info']['user']['account_id'], $_identity);
+			if (is_array($_identity)) {
+				foreach ($_identity as $tmpkey => $id)
+				{
+					if ($id->id) {
+						$identity[] = $id->id;
+					} else {
+						$identity[] = $id;
+					}
+				}
+			} else {
+				$identity = $_identity;
+			} 
+	
+			parent::deleteAccountData($GLOBALS['egw_info']['user']['account_id'], $identity);
 		}
 
 		function ssaveSignature($_signatureID, $_description, $_signature, $_isDefaultSignature) 

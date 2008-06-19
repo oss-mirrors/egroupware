@@ -303,12 +303,12 @@
 		function deleteSignatures($_signatures) 
 		{
 			if($this->_debug) error_log("ajaxfelamimail::deleteSignatures");
-
+			$signatures = explode(",",$_signatures);
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
 			$boSignatures = new felamimail_bosignatures();
 				
-			$boSignatures->deleteSignatures($_signatures);
-				
+			$boSignatures->deleteSignatures($signatures);
+			unset($signatures);
 			$signatures = $boSignatures->getListOfSignatures();
 
 			$response =& new xajaxResponse();
@@ -329,9 +329,10 @@
 			return $response->getXML();
 		}
 		
-		function deleteAccountData($accountData)
+		function deleteAccountData($accountIDs)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::deleteAccountData");
+			$accountData = explode(",",$accountIDs);
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.bopreferences.inc.php');
 			$boPreferences  =& CreateObject('felamimail.bopreferences');
 			$boPreferences->deleteAccountData($accountData);

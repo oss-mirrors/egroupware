@@ -216,7 +216,11 @@
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID);
 			#_debug_array($attachments); exit;
 			$envelope	= $this->bofelamimail->getMessageEnvelope($this->uid, $partID);
-
+			// if not using iFrames, we need to retrieve the messageBody here
+			// by now this is a fixed value and controls the use/loading of the template and how the vars are set.
+			// Problem is: the iFrame Layout provides the scrollbars.
+			#$useIFrames = true;
+			#if ($useIFrames === false) $bodyParts  = $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 			$nextMessage	= $this->bofelamimail->getNextMessage($this->mailbox, $this->uid);
 
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
@@ -253,7 +257,11 @@
 
 			$this->display_app_header();
 			if(!isset($_GET['printable'])) {
-				$this->t->set_file(array("displayMsg" => "view_message.tpl"));
+				#if ($useIFrames === true) {
+					$this->t->set_file(array("displayMsg" => "view_message.tpl"));
+				#} else {
+					#$this->t->set_file(array("displayMsg" => "viewmessage.tpl"));
+				#}
 			} else {
 				$this->t->set_file(array("displayMsg" => "view_message_printable.tpl"));
 				$this->t->set_var('charset',$GLOBALS['egw']->translation->charset());
@@ -543,14 +551,17 @@
 
 			$this->t->set_var("rawheader",@htmlentities(preg_replace($nonDisplayAbleCharacters,'',$rawheaders),ENT_QUOTES,$this->displayCharset));
 
-			$linkData = array (
-				'menuaction'	=> 'felamimail.uidisplay.displayBody',
-				'uid'		=> $this->uid,
-				'part'		=> $partID,
-				'mailbox'	=>  base64_encode($this->mailbox) 
-			);
-			$this->t->set_var('url_displayBody', $GLOBALS['egw']->link('/index.php',$linkData));
-
+			#if ($useIFrames === true) {
+				$linkData = array (
+					'menuaction'	=> 'felamimail.uidisplay.displayBody',
+					'uid'		=> $this->uid,
+					'part'		=> $partID,
+					'mailbox'	=>  base64_encode($this->mailbox) 
+				);
+				$this->t->set_var('url_displayBody', $GLOBALS['egw']->link('/index.php',$linkData));
+			#} else {
+			#	$this->t->set_var('displayBody',$this->showBody($this->getdisplayableBody($bodyParts), false));	
+			#}
 			#$this->t->set_var("signature", $sessionData['signature']);
 
 			// attachments
@@ -665,10 +676,12 @@
 			$this->bofelamimail->closeConnection();
 
 			$this->display_app_header();
+			$this->showBody($this->getdisplayableBody($bodyParts), true);
+		}
 
-			$body = $this->getdisplayableBody($bodyParts);
-
-			print '<style type="text/css">
+		function showBody(&$body, $print=true)
+		{
+			$BeginBody = '<style type="text/css">
 				body,html {
 			        height:100%;
 			        width:100%;
@@ -683,9 +696,13 @@
 			</style>
 			<div style="height:100%;width:100%; background-color:white; padding:0px; margin:0px;"><table width="100%" style="table-layout:fixed"><tr><td class="td_display">';
 
-                        print $body.'</td></tr></table>';
-
-                        print "</body></html>";
+            $EndBody = '</td></tr></table>';
+			$EndBody .= "</body></html>";
+			if ($print)	{
+				print $BeginBody. $body .$EndBody;
+			} else {
+				return $BeginBody. $body .$EndBody;
+			}
 		}
 
 		function displayHeader()
@@ -933,7 +950,7 @@
 			exit;
 		}
 
-		function getdisplayableBody($_bodyParts)
+		function &getdisplayableBody($_bodyParts)
 		{
 			$bodyParts	= $_bodyParts;
 

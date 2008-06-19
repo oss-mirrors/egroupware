@@ -379,11 +379,40 @@
 	$test[] = '1.3.003';
 	function felamimail_upgrade1_3_003()
 	{
-		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_ic_encryption',array(
-			'type' => 'int',
-			'precision' => '4',
-			'nullable' => False
-		));
+		#$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_ic_encryption',array(
+		#	'type' => 'int',
+		#	'precision' => '4',
+		#	'nullable' => False
+		#));
+
+		$GLOBALS['egw_setup']->oProc->RefreshTable('egw_felamimail_accounts',array(
+ 			'fd' => array(
+					'fm_owner' => array('type' => 'int','precision' => '4','nullable' => False),
+					'fm_id' => array('type' => 'auto'),
+					'fm_realname' => array('type' => 'varchar','precision' => '128'),
+					'fm_organization' => array('type' => 'varchar','precision' => '128'),
+					'fm_emailaddress' => array('type' => 'varchar','precision' => '128','nullable' => False),
+					'fm_ic_hostname' => array('type' => 'varchar','precision' => '128','nullable' => False),
+					'fm_ic_port' => array('type' => 'int','precision' => '4','nullable' => False),
+					'fm_ic_username' => array('type' => 'varchar','precision' => '128','nullable' => False),
+					'fm_ic_password' => array('type' => 'varchar','precision' => '128'),
+					'fm_ic_encryption' => array('type' => 'int','precision' => '4'),
+					'fm_og_hostname' => array('type' => 'varchar','precision' => '128','nullable' => False),
+					'fm_og_port' => array('type' => 'int','precision' => '4','nullable' => False),
+					'fm_og_smtpauth' => array('type' => 'bool','nullable' => False),
+					'fm_og_username' => array('type' => 'varchar','precision' => '128'),
+					'fm_og_password' => array('type' => 'varchar','precision' => '128'),
+					'fm_active' => array('type' => 'bool','nullable' => False),
+					'fm_ic_validatecertificate' => array('type' => 'bool','nullable' => False),
+				),
+			'pk' => array('fm_id'),
+			'fk' => array(),
+			'ix' => array('fm_owner'),
+			'uc' => array()
+			), array(
+				'fm_ic_encryption' => "CASE WHEN fm_ic_encryption THEN 1 ELSE 0 END",
+			)
+		);
 
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.3.004';
 	}
@@ -458,5 +487,41 @@
 		);
         return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.5.002';
     }
+
+	$test[] = '1.5.002';
+	function felamimail_upgrade1_5_002()
+	{
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_ic_encryption',array(
+			'type' => 'int',
+			'precision' => '4',
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_ic_hostname',array(
+			'type' => 'varchar',
+			'precision' => '128',
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_ic_port',array(
+			'type' => 'int',
+			'precision' => '4',
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_ic_username',array(
+			'type' => 'varchar',
+			'precision' => '128',
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_ic_validatecertificate',array(
+			'type' => 'bool',
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_og_hostname',array(
+			'type' => 'varchar',
+			'precision' => '128',
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_og_port',array(
+			'type' => 'int',
+			'precision' => '4',
+		));
+		$GLOBALS['egw_setup']->oProc->AlterColumn('egw_felamimail_accounts','fm_og_smtpauth',array(
+			'type' => 'bool',
+		)); 
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.5.003';
+	}
 
 ?>
