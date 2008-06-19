@@ -125,6 +125,11 @@
 		 * @var array
 		 */
 		var $_useUTF_7 = false;
+
+		/**
+		 * a debug switch
+		 */
+		var $debug = false;
 		
 		/**
 		 * the construtor
@@ -321,10 +326,13 @@
 			if(!$this->_connected) {
 				return false;
 			}
-			
+			$retrieveDefault = false;
 			if($this->hasCapability('NAMESPACE')) {
 				$nameSpace = $this->getNamespace();
-
+				if( PEAR::isError($nameSpace)) {
+					if ($this->debug) error_log("emailadmin::defaultimap->getNameSpaces:".print_r($nameSpace,true));
+					$retrieveDefault = true;
+				}
 				$result = array();
 
 				$result['personal']	= $nameSpace['personal'];
@@ -336,9 +344,11 @@
 				if(is_array($nameSpace['shared'])) {
 					$result['shared']	= $nameSpace['shared'];
 				}
-			} else {
+			} 
+			if (!$this->hasCapability('NAMESPACE') || $retrieveDefault) {
 				$delimiter = $this->getHierarchyDelimiter();
-				
+				if( PEAR::isError($delimiter)) $delimiter = '/';
+	
 				$result['personal']     = array(
 					0 => array(
 						'name'		=> '',
