@@ -854,8 +854,11 @@ class Net_IMAPProtocol {
         $ret=$this->_genericCommand('EXAMINE', $mailbox_name);
         $parsed='';
         if(isset( $ret["PARSED"] ) ){
-            for($i=0;$i<count($ret["PARSED"]); $i++){ $command=$ret["PARSED"][$i]["EXT"];
-                    $parsed[key($command)]=$command[key($command)];
+            for($i=0;$i<count($ret["PARSED"]); $i++){
+				if (array_key_exists("EXT",$ret["PARSED"][$i]) && is_array($ret["PARSED"][$i]["EXT"])) {
+					$command=$ret["PARSED"][$i]["EXT"];
+					$parsed[key($command)]=$command[key($command)];
+				}
             }
         }
         return array("PARSED"=>$parsed,"RESPONSE"=>$ret["RESPONSE"]);
