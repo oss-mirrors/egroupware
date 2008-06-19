@@ -332,17 +332,18 @@
 				if( PEAR::isError($nameSpace)) {
 					if ($this->debug) error_log("emailadmin::defaultimap->getNameSpaces:".print_r($nameSpace,true));
 					$retrieveDefault = true;
-				}
-				$result = array();
+				} else {
+					$result = array();
 
-				$result['personal']	= $nameSpace['personal'];
+					$result['personal']	= $nameSpace['personal'];
 
-				if(is_array($nameSpace['others'])) {
-					$result['others']	= $nameSpace['others'];
-				}
+					if(is_array($nameSpace['others'])) {
+						$result['others']	= $nameSpace['others'];
+					}
 			
-				if(is_array($nameSpace['shared'])) {
-					$result['shared']	= $nameSpace['shared'];
+					if(is_array($nameSpace['shared'])) {
+						$result['shared']	= $nameSpace['shared'];
+					}
 				}
 			} 
 			if (!$this->hasCapability('NAMESPACE') || $retrieveDefault) {
