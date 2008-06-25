@@ -946,6 +946,11 @@ class HTTP_WebDAV_Server
                 if (isset($options['mtime'])) {
                     header("Last-modified:".gmdate("D, d M Y H:i:s ", $options['mtime'])."GMT");
                 }
+                // fix for IE and https, thanks to rob_burcham@yahoo.com
+                // see http://us3.php.net/manual/en/function.header.php#83219
+                // and http://support.microsoft.com/kb/812935
+				header("Cache-Control: maxage=1"); //In seconds
+				header("Pragma: public");
 
                 if (isset($options['stream'])) {
                     // GET handler returned a stream
