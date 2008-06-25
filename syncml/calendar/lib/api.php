@@ -164,7 +164,7 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 		case 'text/calendar':
 			$state = $_SESSION['SyncML.state'];
 			$deviceInfo = $state->getClientDeviceInfo();
-			$boical	=& CreateObject('calendar.boical');
+			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$calendarId = $boical->importVCal($content);
 			break;
@@ -225,7 +225,7 @@ function _egwcalendarsync_search($content, $contentType)
 		case 'text/calendar':
 			$state = $_SESSION['SyncML.state'];
 			$deviceInfo = $state->getClientDeviceInfo();
-			$boical	=& CreateObject('calendar.boical');
+			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$eventId = $boical->search($content);
 			break;
@@ -315,7 +315,7 @@ function _egwcalendarsync_export($guid, $contentType)
 		case 'text/calendar':
 			$state = $_SESSION['SyncML.state'];
 			$deviceInfo = $state->getClientDeviceInfo();
-			$boical	=& CreateObject('calendar.boical');
+			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$vcal_version = ($contentType == 'text/x-vcalendar') ? '1.0' : '2.0';
 			return $boical->exportVCal($eventID,$vcal_version);
@@ -415,7 +415,7 @@ function _egwcalendarsync_replace($guid, $content, $contentType)
 		case 'text/calendar':
 			$state = $_SESSION['SyncML.state'];
 			$deviceInfo = $state->getClientDeviceInfo();
-			$boical	=& CreateObject('calendar.boical');
+			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			return $boical->importVCal($content, $eventID);
 			break;

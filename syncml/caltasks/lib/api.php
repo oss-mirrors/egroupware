@@ -191,7 +191,7 @@ function _egwcaltaskssync_import($content, $contentType, $notepad = null)
 				$id = $vcalInfolog->importVTODO($content);
 				$type = 'infolog_task';
 			} else {
-				$boical	=& CreateObject('calendar.boical');
+				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 				$id = $boical->importVCal($content);
 				$type = 'calendar';
@@ -234,7 +234,7 @@ function _egwcaltaskssync_search($content, $contentType)
 				$id 		=  $vcalInfolog->searchVTODO($content);
 				$type		=  'infolog_task';
 			} else {
-				$boical		=& CreateObject('calendar.boical');
+				$boical		= new calendar_ical();
 				$id		=  $boical->search($content);
 				$type		=  'calendar';
 			}
@@ -307,7 +307,7 @@ function _egwcaltaskssync_export($guid, $contentType)
 		}
 	} else {
 		Horde::logMessage("SymcML: egwcaltaskssync export exporting event", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		$boical	=& CreateObject('calendar.boical');
+		$boical	= new calendar_ical();
 		$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 		$eventID	= $GLOBALS['egw']->common->get_egwId($guid);
@@ -396,7 +396,7 @@ function _egwcaltaskssync_replace($guid, $content, $contentType)
 				return $vcalInfolog->importVTODO($content, $taskID);
 			} else {
 				Horde::logMessage("SymcML: egwcaltaskssync replace replacing event", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-				$boical	=& CreateObject('calendar.boical');
+				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 				$eventID = $GLOBALS['egw']->common->get_egwId($guid);
