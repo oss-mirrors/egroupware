@@ -88,10 +88,10 @@ var allowAccounts        = {allowAccounts};
 			 {lang_encrypted_connection}
 		</td>
 		<td  style="text-align:left;">
-			<input type="radio" id="ic[encryption]_1" name="ic[encryption]" value="1" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_1}> STARTTLS
-			<input type="radio" id="ic[encryption]_2" name="ic[encryption]" value="2" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_2}> TLS
-			<input type="radio" id="ic[encryption]_3" name="ic[encryption]" value="3" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_3}> SSL
-			<input type="radio" id="ic[encryption]_0" name="ic[encryption]" value="0" onchange="onchange_ic_encryption(this)" {checked_ic_encryption_0}> {lang_no_encryption}
+			<input type="radio" id="ic[encryption]_1" name="ic[encryption]" value="1" onclick="onchange_ic_encryption(this)" {checked_ic_encryption_1}> STARTTLS
+			<input type="radio" id="ic[encryption]_2" name="ic[encryption]" value="2" onclick="onchange_ic_encryption(this)" {checked_ic_encryption_2}> TLS
+			<input type="radio" id="ic[encryption]_3" name="ic[encryption]" value="3" onclick="onchange_ic_encryption(this)" {checked_ic_encryption_3}> SSL
+			<input type="radio" id="ic[encryption]_0" name="ic[encryption]" value="0" onclick="onchange_ic_encryption(this)" {checked_ic_encryption_0}> {lang_no_encryption}
 		</td>
 	</tr>
 	<tr>
