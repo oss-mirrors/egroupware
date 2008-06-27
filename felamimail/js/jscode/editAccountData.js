@@ -34,7 +34,7 @@ function onchange_active(_checkbox)
 		}
 
 		onchange_og_smtpauth(document.getElementById('og[smtpauth]'));
-		onchange_ic_encryption(document.getElementById('ic[encryption]'));
+		//onchange_ic_encryption(document.getElementById('ic[encryption]'));
 		onchange_ic_enableSieve(document.getElementById('ic[enableSieve]'));
 	} else {
 		for(i=0; i<incomingInputs.length; i++) {
