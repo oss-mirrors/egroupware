@@ -466,8 +466,8 @@ class Script {
 				* for compatibility with Websieve. */
 				$rule['priority'] = $pcount;
 				$newscriptfoot .= "#rule&&" . $rule['priority'] . "&&" . $rule['status'] . "&&" . 
-					$rule['from'] . "&&" . $rule['to'] . "&&" . $rule['subject'] . "&&" . $rule['action'] . "&&" . 
-					$rule['action_arg'] . "&&" . $rule['flg'] . "&&" . $rule['field'] . "&&" . $rule['field_val'] . "&&" . $rule['size'] . "\n";
+				addslashes($rule['from']) . "&&" . addslashes($rule['to']) . "&&" . addslashes($rule['subject']) . "&&" . $rule['action'] . "&&" . 
+				addslashes($rule['action_arg']) . "&&" . $rule['flg'] . "&&" . addslashes($rule['field']) . "&&" . addslashes($rule['field_val']) . "&&" . $rule['size'] . "\n";
 				$pcount = $pcount+2;
 			}
 		}
