@@ -114,6 +114,10 @@
 				// pint the composed message. therefore save it as draft and reopen it as plain printwindow
 				$formData['subject'] = "[".lang('printview').":]".$formData['subject'];
 				$messageUid = $this->bocompose->saveAsDraft($formData);
+				if (!$messageUid) {
+					 print "<script type=\"text/javascript\">alert('".lang("Error: Could not save Message as Draft")."');</script>";
+					return;
+				} 
 				$uidisplay   =& CreateObject('felamimail.uidisplay');
 				$uidisplay->printMessage($messageUid, $formData['printit']);
 				//$GLOBALS['egw']->link('/index.php',array('menuaction' => 'felamimail.uidisplay.printMessage','uid'=>$messageUid));
@@ -122,7 +126,10 @@
 			if((bool)$_POST['saveAsDraft'] == true) {
 				$formData['isDraft'] = 1; 
 				// save as draft
-				$this->bocompose->saveAsDraft($formData);
+				$messageUid = $this->bocompose->saveAsDraft($formData);
+				if (!$messageUid) {
+					print "<script type=\"text/javascript\">alert('".lang("Error: Could not save Message as Draft")."');</script>";
+				}
 			} else {
 				if(!$this->bocompose->send($formData)) {
 					$this->compose();
@@ -157,6 +164,11 @@
 			if (!empty($_REQUEST['send_to']))
 			{
 				$sessionData['to'] = base64_decode($_REQUEST['send_to']);
+			}
+			//is the MimeType set/requested
+			 if (!empty($_REQUEST['mimeType'])) 
+			{
+				$sessionData['mimeType'] = $_REQUEST['mimeType'];
 			}
 			$this->display_app_header();
 
