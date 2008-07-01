@@ -1207,7 +1207,7 @@ class Net_IMAPProtocol {
     function cmdExpunge()
     {
         $ret=$this->_genericCommand('EXPUNGE');
-
+		if (PEAR::isError($ret)) return new PEAR_Error('could not Expunge!');
         if(isset( $ret["PARSED"] ) ){
            $parsed=$ret["PARSED"];
             unset($ret["PARSED"]);
