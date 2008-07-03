@@ -166,9 +166,18 @@
 				$sessionData['to'] = base64_decode($_REQUEST['send_to']);
 			}
 			//is the MimeType set/requested
-			 if (!empty($_REQUEST['mimeType'])) 
+			if (!empty($_REQUEST['mimeType'])) 
 			{
 				$sessionData['mimeType'] = $_REQUEST['mimeType'];
+			}
+			// is a certain signature requested?
+			// only the following values are supported (and make sense)
+			// no => means -2
+			// system => means -1
+			// default => fetches the default, which is standard behavior
+			if (!empty($_REQUEST['signature']) && (strtolower($_REQUEST['signature']) == 'no' || strtolower($_REQUEST['signature']) == 'system'))
+			{
+				$presetSig = (strtolower($_REQUEST['signature']) == 'no' ? -2 : -1);
 			}
 			$this->display_app_header();
 
@@ -313,7 +322,7 @@
 			foreach($signatures as $signature) {
 				$selectSignatures[$signature['fm_signatureid']] = $signature['fm_description'];
 			}
-			$selectBox = html::select('signatureID', $sessionData['signatureID'], $selectSignatures, true, "style='width: 70%;' onchange='fm_compose_changeInputType(this)'");
+			$selectBox = html::select('signatureID', ($presetSig ? $presetSig : $sessionData['signatureID']), $selectSignatures, true, "style='width: 70%;' onchange='fm_compose_changeInputType(this)'");
 			$this->t->set_var("select_signature", $selectBox);
 			$this->t->set_var("lang_editormode",lang("Editor type"));
 			$this->t->set_var("toggle_editormode", lang("Editor type").":&nbsp;<span><input name=\"_is_html\" value=\"".$ishtml."\" type=\"hidden\" /><input name=\"_editorselect\" onchange=\"fm_toggle_editor(this)\" ".($ishtml ? "checked=\"checked\"" : "")." id=\"_html\" value=\"html\" type=\"radio\"><label for=\"_html\">HTML</label><input name=\"_editorselect\" onchange=\"fm_toggle_editor(this)\" ".($ishtml ? "" : "checked=\"checked\"")." id=\"_plain\" value=\"plain\" type=\"radio\"><label for=\"_plain\">Plain text</label></span>");
