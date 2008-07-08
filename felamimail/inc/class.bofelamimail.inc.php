@@ -39,7 +39,7 @@
 		
 		// message encodings
 		var $encoding = array("7bit", "8bit", "binary", "base64", "quoted-printable", "other");
-		
+		static $displayCharset;		
 		// set to true, if php is compiled with multi byte string support
 		var $mbAvailable = FALSE;
 
@@ -77,9 +77,9 @@
 			#_debug_array($this->mailPreferences);
 			$this->imapBaseDir	= '';
 
-			$this->displayCharset	= $_displayCharset;
+			self::$displayCharset	= $_displayCharset;
 			if(function_exists(mb_decode_mimeheader)) {
-				mb_internal_encoding($this->displayCharset);
+				mb_internal_encoding(self::$displayCharset);
 			}
 
 			// set some defaults
@@ -348,7 +348,7 @@
 				return 'ALL';
 			} else {
 				return trim($imapFilter);
-				#return 'CHARSET '. strtoupper($this->displayCharset) .' '. trim($imapFilter);
+				#return 'CHARSET '. strtoupper(self::$displayCharset) .' '. trim($imapFilter);
 			}
 		}
 		
@@ -361,12 +361,13 @@
 		*/
 		function decodeFolderName($_folderName)
 		{
-			return $this->botranslation->convert($_folderName, $this->displayCharset, 'UTF7-IMAP');
+			return $this->botranslation->convert($_folderName, self::$displayCharset, 'UTF7-IMAP');
 		}
 
-		function decodeMimePart($_mimeMessage, $_encoding) 
+		function decodeMimePart($_mimeMessage, $_encoding, $_charset = '') 
 		{
 			// decode the part
+			if (self::$debug) error_log("bofelamimail::decodeMimePart: ".print_r($_mimeMessage,true));
 			switch ($_encoding) 
 			{
 				case 'BASE64':
@@ -399,7 +400,7 @@
 				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$string);
 			} elseif(function_exists(iconv_mime_decode)) {
 				// continue decoding also if an error occurs
-				$string = @iconv_mime_decode($_string, 2, $this->displayCharset);
+				$string = @iconv_mime_decode($_string, 2, self::$displayCharset);
 				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$string);
 			} elseif(function_exists(imap_mime_header_decode)) {
 				$newString = '';
@@ -424,13 +425,13 @@
 
 		function decode_subject($_string)
 		{
-			$string = $_string;
-			$retvalue = $this->decode_header($string);
-			if($retvalue=='NIL')
+			#$string = $_string;
+			$_string = self::decode_header($_string);
+			if($_string=='NIL')
 			{
-				$retvalue = 'No Subject';
+				$_string = 'No Subject';
 			}
-			return $retvalue;
+			return $_string;
 
 		}
 
@@ -589,7 +590,7 @@
 		*/
 		function encodeFolderName($_folderName)
 		{
-			return $this->botranslation->convert($_folderName, 'UTF7-IMAP', $this->displayCharset);
+			return $this->botranslation->convert($_folderName, 'UTF7-IMAP', self::$displayCharset);
 		}
 
 #		function encodeHeader($_string, $_encoding='q')
@@ -609,7 +610,7 @@
 #						// imap_8bit does not convert "?"
 #						// it does not need, but it should
 #						$value = str_replace("?","=3F",$value);
-#						$retString .= "=?".strtoupper($this->displayCharset). "?Q?". $value. "?=";
+#						$retString .= "=?".strtoupper(self::$displayCharset). "?Q?". $value. "?=";
 #					}
 #					#exit;
 #					return $retString;
@@ -732,6 +733,7 @@
 			
 			return $structure;
 		}
+
 		/*
 		* strip tags out of the message completely with their content
 		* param $_body is the text to be processed
@@ -763,8 +765,11 @@
 						$_body = substr($_body,0,$begin_tag-1).substr($_body,$end_tag+$endtaglen+1);
 					} else {
 						//somehow there is a begin tag of a tag but no end tag. throw it away
-						// we will take care of this later on/somewhere else
-						break;
+						// we will take care of this later on/somewhere else: now
+						if (self::$debug) error_log("bofelamimail:replaceTagsCompletley: substitution of (<)$tag(>), since there is no end tag");
+						$end_tag=strpos(strtolower($_body),'>',$begin_tag+$taglen+1);
+						$_body = substr($_body,0,$begin_tag-1).substr($_body,$end_tag+1);
+						//break;
 					}
 					$new_start = strpos(strtolower($_body),'<'."$tag");
 					if ($new_start == $begin_tag && $bodylength == strlen($_body)) {
@@ -837,6 +842,7 @@
 					"background-color" => array('maxlen' => 20)
 				)
 			);
+
 			$kses->AddHTML("select");
 			$kses->AddHTML(
 				"option",array(
@@ -941,10 +947,16 @@
 					"border"	=> array('maxlen' => 30),
 				)
 			);
-
+			// clean out empty or pagewide style definitions
+			self::replaceTagsCompletley($_html,'style>','</style');
+			// no scripts allowed
+			self::replaceTagsCompletley($_html,'script', '</script');
+			// clean ot comments
 			self::replaceTagsCompletley($_html,'!--','--');
 
 			$_html = $kses->Parse($_html);
+			// there may be leftovers clean out empty or pagewide style definitions
+			self::replaceTagsCompletley($_html,'style>','</style');
 			$_html = preg_replace('/([\000-\012])/','',$_html);
 		}
 
@@ -984,7 +996,8 @@
 					break;
 				case 'QUOTED-PRINTABLE':
 					// use imap_qprint to decode
-					$attachment = imap_qprint($attachment);
+					#$attachment = imap_qprint($attachment);
+					$attachment = quoted_printable_decode($attachment);
 					break;
 				default:
 					// it is either not encoded or we don't know about it
@@ -1052,7 +1065,8 @@
 					break;
 				case 'QUOTED-PRINTABLE':
 					// use imap_qprint to decode
-					$attachment = imap_qprint($attachment);
+					#$attachment = imap_qprint($attachment);
+					$attachment = quoted_printable_decode($attachment);
 					break;
 				default:
 					// it is either not encoded or we don't know about it
@@ -1106,12 +1120,12 @@
 
 			// does the folder exist???
 			$folderInfo = $this->icServer->getMailboxes('', $_folderName, true);
-			if(is_a($folderInfo, 'PEAR_Error')) {
+			if(is_a($folderInfo, 'PEAR_Error') || !is_array($folderInfo[0])) {
 				return false;
 			}
-			if(!is_array($folderInfo[0])) {
-				return false;
-			}
+			#if(!is_array($folderInfo[0])) {
+			#	return false;
+			#}
 			
 			$subscribedFolders = $this->icServer->listsubscribedMailboxes('', $_folderName);
 			if(is_array($subscribedFolders) && count($subscribedFolders) == 1) {
@@ -1375,7 +1389,7 @@
 						$bodyPart = array(
 							'body'		=> lang("no plain text part found"),
 							'mimeType'	=> 'text/plain',
-							'charSet'	=> $this->displayCharset,
+							'charSet'	=> self::$displayCharset,
 						);
 					}
 
@@ -1445,16 +1459,17 @@
 			
 			$partID = $_structure->partID;
 			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true);
+			#_debug_array(preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)));
 			if($_structure->subType == 'HTML' && $_htmlMode != 'always_display'  && $_htmlMode != 'only_if_no_text') {
 				$bodyPart = array(
 					'body'		=> lang("displaying html messages is disabled"),
 					'mimeType'	=> 'text/html',
-					'charSet'	=> $this->displayCharset,
+					'charSet'	=> self::$displayCharset,
 				);
 			} else {
 				// some Servers append PropertyFile___ ; strip that here for display
 				$bodyPart = array(
-					'body'		=> preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)),
+					'body'		=> preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding, $this->getMimePartCharset($_structure))),
 					'mimeType'	=> ($_structure->type == 'TEXT' && $_structure->subType == 'HTML') ? 'text/html' : 'text/plain',
 					'charSet'	=> $this->getMimePartCharset($_structure),
 				);
@@ -1498,14 +1513,14 @@
 				$filter = $this->createIMAPFilter($_folderName, $_filter);
 				if($this->icServer->hasCapability('SORT')) {
 					$sortOrder = $this->_getSortString($_sort);
-					if (!empty($this->displayCharset)) {
-						$sortResult = $this->icServer->sort($sortOrder, strtoupper( $this->displayCharset ), $filter, true);
+					if (!empty(self::$displayCharset)) {
+						$sortResult = $this->icServer->sort($sortOrder, strtoupper( self::$displayCharset ), $filter, true);
 					}
-					if (PEAR::isError($sortResult) || empty($this->displayCharset)) {
+					if (PEAR::isError($sortResult) || empty(self::$displayCharset)) {
 						$sortResult = $this->icServer->sort($sortOrder, 'US-ASCII', $filter, true);
 					}
 				} else {
-					$advFilter = 'CHARSET '. strtoupper($this->displayCharset) .' '.$filter;
+					$advFilter = 'CHARSET '. strtoupper(self::$displayCharset) .' '.$filter;
 					$sortResult = $this->icServer->search($advFilter, true);
 					if (PEAR::isError($sortResult)) $sortResult = $this->icServer->search($filter, true); 
 					if(is_array($sortResult)) {
@@ -1584,7 +1599,7 @@
 			$reverse = (bool)$_reverse;
 			// get the list of messages to fetch
 			$this->reopen($_folderName);
-			$this->icServer->selectMailbox($_folderName);
+			//$this->icServer->selectMailbox($_folderName);
 			
 			#print "<pre>";
 			#$this->icServer->setDebug(true);
@@ -1920,6 +1935,7 @@
 					$structure = $this->_getSubStructure($structure, $_partID);
 				}
 			}
+			if (self::$debug) _debug_array($structure);
 			switch($structure->type) {
 				case 'APPLICATION':
 					return array(
@@ -2066,7 +2082,11 @@
 			if(empty($this->mailPreferences->preferences['sentFolder'])) {
 				return false;
 			}
-			
+			// does the folder exist???
+			if (!self::folderExists($_folderName)) {	
+				return false;
+			}
+
 			if(false !== stripos($_folderName, $this->mailPreferences->preferences['sentFolder'])) {
 				return true;
 			} else {
@@ -2079,7 +2099,11 @@
 			if(empty($this->mailPreferences->preferences['draftFolder'])) {
 				return false;
 			}
-			
+			// does the folder exist???
+			if (!self::folderExists($_folderName)) {
+				return false;
+			}
+	
 			if(false !== strpos(strtolower($_folderName), strtolower($this->mailPreferences->preferences['draftFolder']))) {
 				return true;
 			} else {
@@ -2092,6 +2116,10 @@
 			if(empty($this->mailPreferences->preferences['templateFolder'])) {
 				return false;
 			}
+			// does the folder exist???
+			if (!self::folderExists($_folderName)) {
+				return false;
+			}
 
 			if(false !== strpos(strtolower($_folderName), strtolower($this->mailPreferences->preferences['templateFolder']))) {
 				return true;
@@ -2100,6 +2128,23 @@
 			}
 		}
 		
+		function folderExists($_folder, $forceCheck=false)
+		{
+			// does the folder exist???
+			#error_log("bofelamimail::folderExists->Connected?".$this->icServer->_connected.", ".$_folder.", ".$forceCheck);
+			if ((!($this->icServer->_connected == 1)) && $forceCheck) {
+				#error_log("bofelamimail::folderExists->NotConnected and forceCheck");
+				return false;
+			} 
+			$folderInfo = $this->icServer->getMailboxes('', $_folder, true);
+			#error_log(print_r($folderInfo,true));
+			if(is_a($folderInfo, 'PEAR_Error') || !is_array($folderInfo[0])) {
+				return false;
+			} else {
+				return true;
+			} 
+		}
+
 		function moveMessages($_foldername, $_messageUID)
 		{
 			$msglist = '';
@@ -2128,8 +2173,15 @@
 				$this->errorMessage = lang('No active IMAP server found!!');
 				return false;
 			}
-
-			return $this->icServer->openConnection($_adminConnection);
+			#error_log( "---------------------------open connection <br>");
+			#error_log(print_r($this->icServer,true));
+			if ($this->icServer->_connected == 1) {
+				$tretval = $this->icServer->selectMailbox($this->icServer->currentMailbox);
+			} else {
+				$tretval = $this->icServer->openConnection($_adminConnection);
+			}
+			#error_log(print_r($this->icServer->_connected,true));
+			return $tretval;
 		}		
 
 		/**
@@ -2166,8 +2218,14 @@
 		
 		function reopen($_foldername)
 		{
-			#_debug_array($this->icServer);
-			$this->icServer->selectMailbox($_foldername);
+			#error_log( "------------------------reopen-<br>");
+			#error_log(print_r($this->icServer->_connected,true));
+			if ($this->icServer->_connected == 1) {
+				$tretval = $this->icServer->selectMailbox($_foldername);
+			} else {
+				$tretval = $this->icServer->openConnection(false);
+				$tretval = $this->icServer->selectMailbox($_foldername);
+			}
 		}
 		
 		function restoreSessionData()
@@ -2262,54 +2320,37 @@
 			return $userACL;
 		}
 		
-		/* inspired by http://de2.php.net/wordwrap
-			 desolate19 at hotmail dot com */
 		function wordwrap($str, $cols, $cut)
 		{
-/*			
-			// todo
-			// think about multibyte charsets
-			// think about links in html mode
-			$len		= strlen($str);
-			$tag		= 0;
-			$lineLenght	= 0;
-			
-			for ($i = 0; $i < $len; $i++) 
-			{
-				$lineLenght++;
-				$chr = substr($str,$i,1);
-				if(ctype_cntrl($chr))
-				{
-					if(ord($chr) == 10)
-						$lineLenght     = 0;
-				}
-				if ($chr == '<') {
-					$tag++;
-				} elseif ($chr == '>') {
-					$tag--;
-				} elseif ((!$tag) && (ctype_space($chr))) {
-					$wordlen = 0;
-				} elseif (!$tag) {
-					$wordlen++;
-				}
-
-				if ((!$tag) && (!$wordlen) && $lineLenght > $cols) {
-				//if ((!$tag) && ($wordlen) && (!($wordlen % $cols))) {
-					#print "add cut<br>";
-					$chr .= $cut;
-					$lineLenght     = 0;
-				}
-				$result .= $chr;
-			}
-			return $result;
-*/
 			$lines = explode('\n', $str);
 			$newStr = '';
 			foreach($lines as $line)
 			{
 				// replace tabs by 8 space chars, or any tab only counts one char
-				$line = str_replace("\t","        ",$line);
-				$newStr .= wordwrap($line, $cols, $cut);
+				//$line = str_replace("\t","        ",$line);
+				//$newStr .= wordwrap($line, $cols, $cut);
+				$allowedLength = $cols-strlen($cut);
+				if (strlen($line) > $allowedLength) {
+					$s=explode(" ", $line);
+					$line = "";
+					$linecnt = 0;
+					foreach ($s as $k=>$v) {
+						$cnt = strlen($v);
+						// only break long words within the wordboundaries, 
+						if($cnt > $allowedLength) {
+							$v=wordwrap($v, $allowedLength, $cut, true);
+						}
+						// the rest should be broken at the start of the new word that exceeds the limit  
+						if ($linecnt+$cnt > $allowedLength) {
+							$v=$cut.$v;
+							$linecnt = 0;
+						} else {
+							$linecnt += $cnt;
+						}
+						if (strlen($v)) $line .= (strlen($line) ? " " : "").$v;
+					}
+				}
+				$newStr .= $line;
 			}
 			return $newStr;
 		}
@@ -2321,7 +2362,7 @@
 		* @returns ISO-8859-1 encoded string
 		*/
 		function _encodeFolderName($_folderName) {
-			return $GLOBALS['egw']->translation->convert($_folderName, $this->charset, 'ISO-8859-1');
+			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'ISO-8859-1');
 		}
 
 		/**
@@ -2331,7 +2372,7 @@
 		* @returns ISO-8859-1 encoded string
 		*/
 		function _decodeFolderName($_folderName) {
-			return $GLOBALS['egw']->translation->convert($_folderName, $this->charset, 'ISO-8859-1');
+			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'ISO-8859-1');
 		}
 
 		/**
@@ -2424,5 +2465,37 @@
 				"\tboundary=\"".$sep."\"\r\n\r\n";
 			return $send->SmtpSend($header,$body);
 		}
+
+		/**
+		 * Tests if string contains 8bit symbols.
+		 *
+		 * If charset is not set, function defaults to default_charset.
+		 * $default_charset global must be set correctly if $charset is
+		 * not used.
+		 * @param string $string tested string
+		 * @param string $charset charset used in a string
+		 * @return bool true if 8bit symbols are detected
+		 */
+		static function is8bit(&$string,$charset='') {
+
+		    if ($charset=='') $charset= self::$displayCharset;
+
+			/**
+			* Don't use \240 in ranges. Sometimes RH 7.2 doesn't like it.
+			* Don't use \200-\237 for iso-8859-x charsets. This ranges
+			* stores control symbols in those charsets.
+			* Use preg_match instead of ereg in order to avoid problems
+			* with mbstring overloading
+			*/
+			if (preg_match("/^iso-8859/i",$charset)) {
+				$needle='/\240|[\241-\377]/';
+			} else {
+				$needle='/[\200-\237]|\240|[\241-\377]/';
+			}
+			return preg_match("$needle",$string);
+		}
+		static function detect_qp(&$sting) {
+			$needle = '/(=[0-9][A-F])|(=[A-F][0-9])|(=[A-F][A-F])|(=[0-9][0-9])/';
+			return preg_match("$needle",$string);
+		}
 	}
-?>

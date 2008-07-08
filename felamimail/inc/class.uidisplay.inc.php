@@ -216,11 +216,12 @@
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID);
 			#_debug_array($attachments); exit;
 			$envelope	= $this->bofelamimail->getMessageEnvelope($this->uid, $partID);
+			#_debug_array($envelope); exit;
 			// if not using iFrames, we need to retrieve the messageBody here
 			// by now this is a fixed value and controls the use/loading of the template and how the vars are set.
 			// Problem is: the iFrame Layout provides the scrollbars.
-			#$useIFrames = true;
-			#if ($useIFrames === false) $bodyParts  = $this->bofelamimail->getMessageBody($this->uid,'',$partID);
+			#$bodyParts  = $this->bofelamimail->getMessageBody($this->uid,'',$partID);
+			#_debug_array($bodyParts); exit;
 			$nextMessage	= $this->bofelamimail->getNextMessage($this->mailbox, $this->uid);
 
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
@@ -257,11 +258,7 @@
 
 			$this->display_app_header();
 			if(!isset($_GET['printable'])) {
-				#if ($useIFrames === true) {
-					$this->t->set_file(array("displayMsg" => "view_message.tpl"));
-				#} else {
-					#$this->t->set_file(array("displayMsg" => "viewmessage.tpl"));
-				#}
+				$this->t->set_file(array("displayMsg" => "view_message.tpl"));
 			} else {
 				$this->t->set_file(array("displayMsg" => "view_message_printable.tpl"));
 				$this->t->set_var('charset',$GLOBALS['egw']->translation->charset());
@@ -551,18 +548,13 @@
 
 			$this->t->set_var("rawheader",@htmlentities(preg_replace($nonDisplayAbleCharacters,'',$rawheaders),ENT_QUOTES,$this->displayCharset));
 
-			#if ($useIFrames === true) {
-				$linkData = array (
+			$linkData = array (
 					'menuaction'	=> 'felamimail.uidisplay.displayBody',
 					'uid'		=> $this->uid,
 					'part'		=> $partID,
 					'mailbox'	=>  base64_encode($this->mailbox) 
 				);
-				$this->t->set_var('url_displayBody', $GLOBALS['egw']->link('/index.php',$linkData));
-			#} else {
-			#	$this->t->set_var('displayBody',$this->showBody($this->getdisplayableBody($bodyParts), false));	
-			#}
-			#$this->t->set_var("signature", $sessionData['signature']);
+			$this->t->set_var('url_displayBody', $GLOBALS['egw']->link('/index.php',$linkData));
 
 			// attachments
 			if(is_array($attachments) && count($attachments) > 0) {
@@ -579,13 +571,14 @@
 				$this->t->set_var('url_img_save',$GLOBALS['egw']->html->image('felamimail','fileexport', lang('save')));
 				#$this->t->parse('attachment_rows','attachment_row_bold',True);
 
-				$charset2use=$this->displayCharset;
+				$detectedCharSet=$charset2use=$this->displayCharset;
 				foreach ($attachments as $key => $value)
 				{
+					#$detectedCharSet = mb_detect_encoding($value['name'].'a',strtoupper($this->displayCharset).",UTF-8, ISO-8559-1");
 					mb_convert_variables("UTF-8","ISO-8559-1",$value['name']); # iso 2 UTF8
 					//if (mb_convert_variables("ISO-8859-1","UTF-8",$value['name'])){echo "Juhu utf8 2 ISO\n";};
 					//echo $value['name']."\n";
-					$filename=htmlentities($value['name'], ENT_QUOTES, $charset2use);
+					$filename=htmlentities($value['name'], ENT_QUOTES, $detectedCharSet);
 
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
 					$this->t->set_var('filename',($value['name'] ? ( $filename ? $filename : $value['name'] ) : lang('(no subject)')));
@@ -672,7 +665,6 @@
 			
 			$this->bofelamimail->reopen($this->mailbox);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
-
 			$this->bofelamimail->closeConnection();
 
 			$this->display_app_header();
@@ -760,7 +752,7 @@
 			$GLOBALS['egw']->session->commit_session();
 
 			if(is_array($attachment)) {
-				error_log("Content-Type: ".$attachment['type']."; name=\"". $attachment['filename'] ."\"");
+				//error_log("Content-Type: ".$attachment['type']."; name=\"". $attachment['filename'] ."\"");
 				header ("Content-Type: ". strtolower($attachment['type']) ."; name=\"". $attachment['filename'] ."\"");
 				header ('Content-Disposition: inline; filename="'. $attachment['filename'] .'"');
 				header("Expires: 0");
@@ -852,15 +844,15 @@
 							'presets[org_name]'	=> $_organisation,
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
-
-						if($spacePos = strrpos($decodedPersonalName, ' ')) {
-							$linkData['presets[n_family]']	= substr($decodedPersonalName, $spacePos+1);
-							$linkData['presets[n_given]'] 	= substr($decodedPersonalName, 0, $spacePos);
-						} else {
-							$linkData['presets[n_family]']	= $decodedPersonalName;
+						if (!empty($decodedPersonalName)) {
+							if($spacePos = strrpos($decodedPersonalName, ' ')) {
+								$linkData['presets[n_family]']	= substr($decodedPersonalName, $spacePos+1);
+								$linkData['presets[n_given]'] 	= substr($decodedPersonalName, 0, $spacePos);
+							} else {
+								$linkData['presets[n_family]']	= $decodedPersonalName;
+							}
+							$linkData['presets[n_fn]']	= $decodedPersonalName;
 						}
-						$linkData['presets[n_fn]']	= $decodedPersonalName;
-
 						if ($showAddToAdrdessbookLink) {
 							$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
 							$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
@@ -968,16 +960,21 @@
 				if(!empty($body)) {
 					$body .= '<hr style="border:dotted 1px silver;">';
 				}
+				#_debug_array($singleBodyPart['charSet']);
 				$singleBodyPart['body'] = $this->botranslation->convert(
 					$singleBodyPart['body'],
 					strtolower($singleBodyPart['charSet'])
 				);
+				//error_log($singleBodyPart['body']);
+				#$CharSetUsed = mb_detect_encoding($singleBodyPart['body'] . 'a' , strtoupper($singleBodyPart['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1');
 
 				if($singleBodyPart['mimeType'] == 'text/plain')
 				{
 					$newBody	= $singleBodyPart['body'];
 
-					$newBody	= @htmlentities($singleBodyPart['body'],ENT_QUOTES,$this->displayCharset);
+					$newBody	= @htmlentities($singleBodyPart['body'],ENT_QUOTES, strtoupper($this->displayCharset));
+					// if the conversion to htmlentities fails somehow, try without specifying the charset, which defaults to iso-
+					if (empty($newBody)) $newBody    = htmlentities($singleBodyPart['body'],ENT_QUOTES);
 					#$newBody	= $this->bofelamimail->wordwrap($newBody, 90, "\n");
 
 					// search http[s] links and make them as links available again

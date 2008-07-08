@@ -33,9 +33,13 @@
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
 			$this->preferencesArray =& $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 			//force the default for the forwarding -> asmail
-			if (!array_key_exists('message_forwarding',$this->preferencesArray) 
-				|| !isset($this->preferencesArray['message_forwarding']) 
-				|| empty($this->preferencesArray['message_forwarding'])) $this->preferencesArray['message_forwarding'] = 'asmail';
+			if (is_array($this->preferencesArray)) {
+				if (!array_key_exists('message_forwarding',$this->preferencesArray) 
+					|| !isset($this->preferencesArray['message_forwarding']) 
+					|| empty($this->preferencesArray['message_forwarding'])) $this->preferencesArray['message_forwarding'] = 'asmail';
+			} else {
+				$this->preferencesArray['message_forwarding'] = 'asmail';
+			}
 			// check if there is a composeid set, and restore the session, if so
 			if (!empty($_composeID))
 			{
@@ -150,7 +154,7 @@
 			#print "<hr>";
 			bofelamimail::replaceTagsCompletley($_html,'style');
 			// remove these tags and any spaces behind the tags
-			$search = array('/<div.*?>/', '/<\/div>\r\n/', '/<\/div>/', '/<p.*?> */',  
+			$search = array('/<div.*?>/', '/<p.*?> */',  
 							'/<.?strong> /', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?b>/', '/<.?i>/', '/<.?s>/', 
 							'/<\/li>/', '/<.?ul> */', '/<.?ol> */', 
 							'/<.?font.*?>/', '/<style.*?>/','/<.?style>/' ,
@@ -159,8 +163,8 @@
 			$text = preg_replace($search, $replace, $_html);
 			
 			// convert these tags and any spaces behind the tags to double line breaks
-			$search = array('/&nbsp;<\/p> */', '/<\/p> */');
-			$replace = "\r\n\r\n";
+			$search = array('/&nbsp;<\/p> */', '/<\/p> */','/\r\n\r\n/');
+			$replace = array("\r\n\r\n","\r\n");
 			$text = preg_replace($search, $replace, $text);
 			
 			$search = array('/<pre.*?>/','/<.?pre>/');
@@ -191,8 +195,8 @@
 			$replace = array('* ', '');
 			$text = preg_replace($search, $replace, $text);
 
-			$search = array('/<hr.*>/','/<br.*?>/');
-			$replace = array("\r\n--------------------------------\r\n","\r\n");
+			$search = array('/<hr.*>/','/<br.*?>\r\n/','/<br.*?>/','/<\/div>\r\n/','/<\/div>/');
+			$replace = array("\r\n--------------------------------\r\n", "\r\n", "\r\n", "\r\n", "\r\n");
 			$text = preg_replace($search, $replace, $text);
 			
 			$text = html_entity_decode($text, ENT_COMPAT, $this->displayCharset);
@@ -201,7 +205,7 @@
 			self::replaceEmailAdresses($text);
 
 			$pos = strpos($text, 'blockquote');
-
+			#error_log("convert HTML2Text");
 			if($pos === false) {
 				$asciiText = $text;
 			} else {
@@ -227,7 +231,27 @@
 						$quoteParts3 = preg_split('/\r\n/', $quotePart2[0]);
 
 						foreach($quoteParts3 as $quotePart3) {
-							$quotePart3 = wordwrap($quotePart3, 75, "\r\n$indentString");
+							$allowedLength = 76-strlen("\r\n$indentString");
+							if (strlen($quotePart3) > $allowedLength) {
+								$s=explode(" ", $quotePart3);
+								$quotePart3 = "";
+								$linecnt = 0;
+								foreach ($s as $k=>$v) {
+									$cnt = strlen($v);
+									// only break long words within the wordboundaries, 
+									if($cnt > $allowedLength) {
+										$v=wordwrap($v, $allowedLength, "\r\n$indentString", true);
+									}
+									// the rest should be broken at the start of the new word that exceeds the limit  
+									if ($linecnt+$cnt > $allowedLength) {
+										$v="\r\n$indentString$v";
+										$linecnt = 0;
+									} else {
+										$linecnt += $cnt;
+									}
+									if (strlen($v))  $quotePart3 .= (strlen($quotePart3) ? " " : "").$v;
+								}
+							}
 							$asciiText .= $indentString . $quotePart3 . "\r\n";
 						}
 					}
@@ -407,7 +431,9 @@
 					if($bodyParts[$i]['mimeType'] == 'text/plain') {
 						$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
 					}
-					$this->sessionData['body'] .= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+					$bodyParts[$i]['body'] = $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+					#error_log( "GetDraftData (HTML) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
+					$this->sessionData['body'] .=  $bodyParts[$i]['body'] ;
 				}
 
 			} else {
@@ -417,9 +443,9 @@
 					if($i>0) {
 						$this->sessionData['body'] .= "<hr>";
 					}
-
-					// add line breaks to $bodyParts
-					$this->sessionData['body'] .= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+					$bodyParts[$i]['body'] = $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+					#error_log( "GetDraftData (Plain) CharSet".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
+					$this->sessionData['body'] .=  $bodyParts[$i]['body'] ;
 				}
 			}
 
@@ -659,6 +685,8 @@
 						$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
 					}
 					$this->sessionData['body'] .= self::_getCleanHTML($this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']));
+					#error_log( "GetReplyData (HTML) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
+
 				}
 
 				$this->sessionData['body']	.= '</blockquote><br>';
@@ -679,6 +707,8 @@
 
 					// add line breaks to $bodyParts
 					$newBody	= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+					#error_log( "GetReplyData (Plain) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
+
 					$newBody        = explode("\n",$newBody);
 
 					// create body new, with good line breaks and indention
@@ -689,7 +719,7 @@
 						$numberOfChars = strspn(trim($value), ">");
 						$appendString = str_repeat('>', $numberOfChars + 1);
 						
-						$bodyAppend = $this->bofelamimail->wordwrap($value, 80, "\r\n$appendString ");
+						$bodyAppend = $this->bofelamimail->wordwrap($value, 76-strlen("\r\n$appendString "), "\r\n$appendString ");
 						
 						if($bodyAppend[0] == '>') {
 							$bodyAppend = '>'. $bodyAppend;
@@ -823,6 +853,15 @@
 			$_mailObject->WordWrap = 76;
 			#$_mailObject->Subject = $bofelamimail->encodeHeader($_formData['subject'], 'q');
 			$_mailObject->Subject = $_formData['subject'];
+			#$realCharset = mb_detect_encoding($_formData['body'] . 'a' , strtoupper($this->displayCharset).',UTF-8, ISO-8859-1');
+			#error_log("bocompose::createMessage:".$realCharset);
+			// this should never happen since we come from the edit dialog
+			if (bofelamimail::detect_qp($_formData['body'])) {
+				error_log("Error: bocompose::createMessage found QUOTED-PRINTABLE while Composing Message. Charset:$realCharset Message:".print_r($_formData['body'],true));
+				$_formData['body'] = preg_replace('/=\r\n/', '', $_formData['body']);	
+				$_formData['body'] = quoted_printable_decode($_formData['body']);
+			}
+			#if ($realCharset != $this->displayCharset) error_log("Error: bocompose::createMessage found Charset ($realCharset) differs from DisplayCharset (".$this->displayCharset.")");
 			if($_formData['mimeType'] =='html') {
 				$_mailObject->IsHTML(true);
 				if(!empty($_signature->fm_signature)) {
@@ -845,11 +884,6 @@
 				}
 			}
 			
-		#	if (!empty($_formData['signature'])) {
-		#		$_mailObject->Body	.= "\r\n-- \r\n";
-		#		$_mailObject->Body	.= $_formData['signature'];
-		#	}
-
 			// add the attachments
 			$bofelamimail->openConnection();
 			foreach((array)$this->sessionData['attachments'] as $attachment) {
@@ -857,20 +891,16 @@
 					switch($attachment['type']) {
 						case 'MESSAGE/RFC822':
 							$rawHeader='';
-							//$bofelamimail->openConnection();
 							$bofelamimail->reopen($attachment['folder']);
 							if (isset($attachment['partID'])) {
 								$rawHeader      = $bofelamimail->getMessageRawHeader($attachment['uid'], $attachment['partID']);
 							}
 							$rawBody        = $bofelamimail->getMessageRawBody($attachment['uid'], $attachment['partID']);
-							//$bofelamimail->closeConnection();
 							$_mailObject->AddStringAttachment($rawHeader.$rawBody, $attachment['name'], '7bit', 'message/rfc822');
 							break;
 						default:
-							//$bofelamimail->openConnection();
 							$bofelamimail->reopen($attachment['folder']);
 							$attachmentData	= $bofelamimail->getAttachment($attachment['uid'], $attachment['partID']);
-							//$bofelamimail->closeConnection();
 
 							$_mailObject->AddStringAttachment($attachmentData['attachment'], $attachment['name'], 'base64', $attachment['type']);
 			
@@ -909,7 +939,6 @@
 					$mailAddr[] = array($emailAddress, $addressObject->personal);
 				}
 			}
-			$bofelamimail->openConnection();
 			// folder list as Customheader
 			if (!empty($this->sessionData['folder'])) 
 			{
@@ -931,10 +960,16 @@
 			if (  !empty($_formData['printit']) && $_formData['printit'] == 0 ) $savingDestination = $this->preferencesArray['draftFolder'];
 
 			if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
-			$messageUid = $bofelamimail->appendMessage($savingDestination,
-				$BCCmail.$mail->getMessageHeader(),
-				$mail->getMessageBody(),
-				$flags);
+			$bofelamimail->openConnection();
+			if ($bofelamimail->folderExists($savingDestination,true)) {
+				$messageUid = $bofelamimail->appendMessage($savingDestination,
+					$BCCmail.$mail->getMessageHeader(),
+					$mail->getMessageBody(),
+					$flags);
+			} else {
+				error_log("bofelamimail::saveAsDraft->".lang("folder")." ". $savingDestination." ".lang("does not exist on IMAP Server."));
+				return false;
+			}
 			$bofelamimail->closeConnection();
 			return $messageUid;
 		}
@@ -1010,7 +1045,7 @@
 					return false;
 				}
 			}
-			
+			#error_log("Mail Sent.!");
 			$folder = (array)$this->sessionData['folder'];
 			if(isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) && 
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'] != 'none' &&
@@ -1023,7 +1058,14 @@
 			   	}
 			}
 			$folder = array_unique($folder);
-
+			#error_log("Number of Folders to move copy the message to:".count($folder));
+			if ((count($folder) > 0) || (isset($this->sessionData['uid']) && isset($this->sessionData['messageFolder']))
+                || (isset($this->sessionData['forwardFlag']) && isset($this->sessionData['sourceFolder']))) {
+				$bofelamimail =& CreateObject('felamimail.bofelamimail');
+				$bofelamimail->openConnection();
+				//$bofelamimail->reopen($this->sessionData['messageFolder']);
+				#error_log("(re)opened Connection");
+			}
 			if (count($folder) > 0) {
 
 				foreach((array)$this->sessionData['bcc'] as $address) {
@@ -1035,29 +1077,32 @@
 				}
 				$BCCmail='';
 				if (count($mailAddr)>0) $BCCmail = $mail->AddrAppend("Bcc",$mailAddr);
-				$bofelamimail =& CreateObject('felamimail.bofelamimail');
-				$bofelamimail->openConnection();
+				//$bofelamimail =& CreateObject('felamimail.bofelamimail');
+				//$bofelamimail->openConnection();
 				foreach($folder as $folderName) {
-					if($folderName == $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) {
+					if($bofelamimail->isSentFolder($folderName)) {
 						$flags = '\\Seen';
-					} elseif($folderName == $GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']) {
+					} elseif($bofelamimail->isDraftFolder($folderName)) {
 						$flags = '\\Draft';
 					} else {
 						$flags = '';
 					}
 					#$mailHeader=explode('From:',$mail->getMessageHeader());	
 					#$mailHeader[0].$mail->AddrAppend("Bcc",$mailAddr).'From:'.$mailHeader[1],
-					$bofelamimail->appendMessage($folderName,
+					if ($bofelamimail->folderExists($folderName,true)) {
+						$bofelamimail->appendMessage($folderName,
 								$BCCmail.$mail->getMessageHeader(),
 								$mail->getMessageBody(),
 								$flags);
+					}
 				}
-				$bofelamimail->closeConnection();
+				//$bofelamimail->closeConnection();
 			}
+			#error_log("handling draft messages, flagging and such");
 			if((isset($this->sessionData['uid']) && isset($this->sessionData['messageFolder'])) 
 				|| (isset($this->sessionData['forwardFlag']) && isset($this->sessionData['sourceFolder']))) {
 				// mark message as answered
-				$bofelamimail =& CreateObject('felamimail.bofelamimail');
+				//$bofelamimail =& CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection();
 				$bofelamimail->reopen($this->sessionData['messageFolder']);
 				// if the draft folder is a starting part of the messages folder, the draft message will be deleted after the send
@@ -1075,9 +1120,10 @@
 						$bofelamimail->flagMessages("forwarded", array($this->sessionData['forwardedUID']));
 					}
 				}
-				$bofelamimail->closeConnection();
+				//$bofelamimail->closeConnection();
 			}
-
+			if ($bofelamimail) $bofelamimail->closeConnection();
+			//error_log("performing Infolog Stuff");
 			// attension: we dont return from infolog. cleanups will be done there.
 			if ($_formData['to_infolog'] == 'on') {
 				$uiinfolog =& CreateObject('infolog.uiinfolog');
