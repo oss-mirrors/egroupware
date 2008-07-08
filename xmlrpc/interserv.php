@@ -60,7 +60,7 @@
 	{
 		$xserver_name = $_POST['xserver_name'];
 	}
-	
+
 	$method = $_POST['method'];
 	$param  = $_POST['param'];
 
@@ -156,7 +156,7 @@
 		$is->kp3 = $xkp3;
 		/* TODO - Adjust the values below as desired */
 		$is->send(
-			$method='addressbook.boaddressbook.search',array(
+			$method='addressbook.addressbook_bo.search',array(
 				'start' => 1,
 				'limit' => 5,
 				//'fields' => array('n_given','n_family','cat_id','bday','last_mod','custom1'),
@@ -193,7 +193,7 @@
 		$is->kp3 = $xkp3;
 		/* TODO - Adjust the values below as desired */
 		$is->send(
-			$method='calendar.bocalendar.search', array(
+			$method='calendar.calendar_bo.search', array(
 				'start' => date('Y-m-d').'T00:00:00',
 				'end'   => date('Y-m-d',time()+60*60*24).'T00:00:00',
 			),
@@ -205,7 +205,7 @@
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
-		
+
 		$is->send(
 			$method,$param,
 			$is->server['server_url'],
