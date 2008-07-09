@@ -8,7 +8,7 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
-	
+
 	/* $Id$ */
 
 	$time = time();
@@ -26,7 +26,7 @@ WikkiTikkiTavi is the original version of this documentation system. Their [http
 ----
 SmashWordsTogether to create a page link.  Click on the ? to edit the new page.
 
-You can also create ((free links)) that aren't WordsSmashedTogether.  Type them like this: {{```((free links))```}}.  
+You can also create ((free links)) that aren't WordsSmashedTogether.  Type them like this: {{```((free links))```}}.
 ----
 {{```''italic text''```}} becomes ''italic text''
 ----
@@ -46,7 +46,7 @@ You can put a picture in a page by typing the URL to the picture (it must end in
 http://www.egroupware.org/egroupware/phpgwapi/templates/idots/images/logo.png
 ----
 There are 2 possibilities for '''code formatting''':
-{{'''{{\$is_admin = \$GLOBALS['phpgw_info']['user']['apps']['admin'];}}'''}}
+{{'''{{\$is_admin = \$GLOBALS['egw_info']['user']['apps']['admin'];}}'''}}
 or
 {{<code>}}
 if (\$_POST['add'])
@@ -56,7 +56,7 @@ if (\$_POST['add'])
 {{</code>}}
 becomes
 
-{{\$GLOBALS['phpgw_info']['user']['apps']['admin']}}
+{{\$GLOBALS['egw_info']['user']['apps']['admin']}}
 or
 <code>
 if (\$_POST['add'])
@@ -77,13 +77,13 @@ becomes
 You can create bullet lists by starting a paragraph with one or more asterisks.
 
 {{```*Bullet one```}}
-{{```**Sub-bullet```}} 
+{{```**Sub-bullet```}}
 becomes
 
 *Bullet one
 **Sub-bullet
 ----
-You can create a description list by starting a paragraph with the following syntax 
+You can create a description list by starting a paragraph with the following syntax
 
 {{```*;Item 1: Something```}}
 {{```*;Item 2: Something else```}}
@@ -164,4 +164,4 @@ You can create tables using pairs of vertical bars:
 		),false,__LINE__,__FILE__,'wiki');
 	}
 
-	
+
