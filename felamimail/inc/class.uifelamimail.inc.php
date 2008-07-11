@@ -549,7 +549,7 @@
 			$this->t->set_var('select_status', $selectStatus);
 
 			$selectedID = 0;
-			$allAccountData    = $this->bopreferences->getAllAccountData($this->preferences);
+			if($this->preferences->userDefinedAccounts) $allAccountData = $this->bopreferences->getAllAccountData($this->preferences);
 			if ($allAccountData) {
 				foreach ($allAccountData as $tmpkey => $accountData)
 				{
