@@ -31,6 +31,8 @@
 			'ea_imap_type'			=> 'imapType',
 			'ea_imap_port'			=> 'imapPort',
 			'ea_imap_login_type'		=> 'imapLoginType',
+			'ea_imap_auth_username'			=> 'imapAuthUsername',
+			'ea_imap_auth_password'		=> 'imapAuthPassword',
 			'ea_imap_tsl_auth'		=> 'imapTLSAuthentication',
 			'ea_imap_tsl_encryption'	=> 'imapTLSEncryption',
 			'ea_imap_enable_cyrus'		=> 'imapEnableCyrusAdmin',
@@ -46,7 +48,9 @@
 			'ea_user_defined_accounts'	=> 'userDefinedAccounts',
 			'ea_imapoldcclient'		=> 'imapoldcclient',
 			'ea_order'			=> 'ea_order',
+			'ea_active'			=> 'ea_active',
 			'ea_group'			=> 'ea_group',
+			'ea_user'          => 'ea_user',
 			'ea_appname'			=> 'ea_appname',
 			'ea_smtp_auth_username'		=> 'ea_smtp_auth_username',
 			'ea_smtp_auth_password'		=> 'ea_smtp_auth_password',
@@ -138,29 +142,116 @@
 			return $data;
 		}
 		
-		function getUserProfile($_appName, $_groups)
+		function getUserProfile($_appName, $_groups, $_user = NULL)
 		{
 			if(empty($_appName) || !is_array($_groups))
 				return false;
-				
-			$where = $this->db->expression(
-				$this->table,'(',
-				array('ea_appname'=>$_appName),
-				' OR ea_appname IS NULL or ea_appname = \'\') and ',
-				'(',
-				array('ea_group'=>$_groups),
-				' OR ea_group IS NULL or ea_group = \'\')'
-			);
-
-			$this->db->select($this->table,'ea_profile_id',$where, __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
-			
-			if (($data = $this->db->row(true))) {
-				return $this->getProfile($data['ea_profile_id'], $this->db_cols);
+			if (!empty($_user)) {	
+				$where = $this->db->expression(
+					$this->table,'(',
+					array('ea_appname'=>$_appName),
+					' OR ea_appname IS NULL or ea_appname = \'\') and ',
+					'(',
+					array('ea_group'=>$_groups),
+					' OR ea_group IS NULL or ea_group = \'\') and ',
+					'(',
+					array('ea_user'=>$_user),
+					' OR ea_user IS NULL or ea_user = \'0\' or ea_user = \'\')'
+				);
+			} else {
+				$where = $this->db->expression(
+					$this->table,'(',
+					array('ea_appname'=>$_appName),
+					' OR ea_appname IS NULL or ea_appname = \'\') and ',
+					'(',
+					array('ea_group'=>$_groups),
+					' OR ea_group IS NULL or ea_group = \'\')'
+				);
 			}
-
-			return false;
+			$anyValues = 0;
+			// retrieve the Global/Overall Settings
+			$this->db->select($this->table,'ea_profile_id',$where, __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
+			if (($data = $this->db->row(true))) {
+				$globalDefaults = $this->getProfile($data['ea_profile_id'], $this->db_cols);
+				$anyValues++;
+			}
+			// retrieve application settings if set
+			if (strlen($_appName)>0) {
+				$this->db->select($this->table,'ea_profile_id',$this->db->expression($this->table,'(',array('ea_appname'=>$_appName),' and ea_active=1)'), __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
+				if (($data = $this->db->row(true))) {
+					$appDefaults = $this->getProfile($data['ea_profile_id'], $this->db_cols);
+					$globalDefaults = self::mergeProfileData($globalDefaults, $appDefaults);
+					$anyValues++;
+				}
+			}
+			// retrieve primary-group settings if set
+			if (is_array($_groups) && $_groups[1] == $GLOBALS['egw_info']['user']['account_primary_group']) {
+				$this->db->select($this->table,'ea_profile_id',$this->db->expression($this->table,'(',array('ea_group'=>$_groups[1]),' and ea_active=1)'), __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
+				if (($data = $this->db->row(true))) {
+					$groupDefaults = $this->getProfile($data['ea_profile_id'], $this->db_cols);
+					$globalDefaults = self::mergeProfileData($globalDefaults, $groupDefaults);
+					$anyValues++;
+				}
+			}
+			// retrieve usersettings if set
+			if (!empty($_user) && $_user != 0) {
+				$this->db->select($this->table,'ea_profile_id',$this->db->expression($this->table,'(',array('ea_user'=>$_user),' and ea_active=1)'), __LINE__, __FILE__, false, 'ORDER BY ea_order', false, 1);
+				if (($data = $this->db->row(true))) {
+					$userDefaults = $this->getProfile($data['ea_profile_id'], $this->db_cols);
+					$globalDefaults = self::mergeProfileData($globalDefaults, $userDefaults);
+					$anyValues++;
+				}
+			}
+			if ($anyValues) {
+				return $globalDefaults;
+			} else {
+				return false;
+			}
 		}
 
+		/*
+		* merge profile data.
+		* for each key of the mergeInTo Array check if there is a value set in the toMerge Array and replace it.
+		*/
+		static function mergeProfileData($mergeInTo, $toMerge)
+		{
+			if (is_array($toMerge) && count($toMerge)>0) 
+			{
+				$allkeys = array_unique(array_keys($mergeInTo)+array_keys($toMerge));
+				foreach ($allkeys as $i => $key) {
+					if (!array_key_exists($key, $mergeInTo) && array_key_exists($key, $toMerge) && !empty($toMerge[$key])) 
+					{
+						$mergeInTo[$key]=$toMerge[$key];
+					} else {
+						if (array_key_exists($key, $toMerge) && !empty($toMerge[$key])) 
+						{
+							switch ($key) {
+								case 'ea_imap_server':
+								case 'ea_imap_type':
+								case 'ea_imap_port':
+								case 'ea_imap_tsl_encryption':
+								case 'ea_imap_tsl_auth':
+									if (strlen($toMerge['ea_imap_server'])>0) $mergeInTo[$key]=$toMerge[$key];
+									break;
+								case 'ea_smtp_port':
+								case 'ea_smtp_type':
+								case 'ea_smtp_server':
+									if (strlen($toMerge['ea_smtp_server'])>0) $mergeInTo[$key]=$toMerge[$key];
+									break;
+								case 'ea_default_signature':
+									$testVal = $toMerge['ea_default_signature'];
+									bofelamimail::getCleanHTML($testVal);
+									if (strlen($testVal)>10 || $testVal != '<br>' || $testVal != '<br />') $mergeInTo[$key]=$toMerge[$key];
+									break;
+								default:
+									$mergeInTo[$key]=$toMerge[$key];
+							}
+						}
+					}
+				}
+			}
+			return $mergeInTo;			
+		}
 		
 		function getProfileList($_profileID=0,$_defaultProfile=false)
 		{
@@ -173,6 +264,7 @@
 			{
 				$where['ea_appname'] = '';
 				$where['ea_group'] = 0;
+				$where['ea_user'] = 0;
 			}			
 			$this->db->select($this->table,'*',$where, __LINE__,__FILE__,false,(int) $_profileID ? '' : 'ORDER BY ea_order');
 

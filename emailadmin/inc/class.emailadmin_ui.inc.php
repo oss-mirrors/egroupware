@@ -37,7 +37,7 @@
 			$this->boemailadmin = new emailadmin_bo();
 		}
 		
-		function addProfile()
+		static function getAllGroups()
 		{
 			$allGroups = $GLOBALS['egw']->accounts->get_list('groups');
 			foreach($allGroups as $groupInfo)
@@ -51,14 +51,40 @@
 			{
 				$allGroups[$groupID] = $groupName;
 			}
-			
+			return $allGroups;
+		}
+
+		static function getAllUsers()
+		{
+			$allUsers = $GLOBALS['egw']->accounts->get_list('accounts');
+			foreach($allUsers as $userInfo)
+			{
+				$users[$userInfo['account_id']] = $userInfo['account_lid'];
+			}
+			asort($users);
+			$allUsers = array('' => lang('any user'));
+			foreach($users as $userID => $userName)
+			{
+				$allUsers[$userID] = $userName;
+			}
+			return $allUsers;
+		}
+
+		static function getAllApps()
+		{
 			$applications = array(
 				'calendar'	=> $GLOBALS['egw_info']['apps']['calendar']['title'],
 				'felamimail' 	=> $GLOBALS['egw_info']['apps']['felamimail']['title'],
 			);
 			asort($applications);
-			$applications = array_merge(array('' => lang('any application')),$applications);
-			
+			return $applications = array_merge(array('' => lang('any application')),$applications);
+		}
+
+		function addProfile()
+		{
+			$allGroups = self:: getAllGroups();
+			$allUsers = self::getAllUsers();
+			$applications = self::getAllApps();	
 			$this->display_app_header();
 			
 			$this->t->set_file(array("body" => "editprofile.tpl"));
@@ -71,7 +97,9 @@
 			$this->t->set_var('imapActiveTab','2');	// IMAP
 			$this->t->set_var('application_select_box', html::select('globalsettings[ea_appname]','',$applications, true, "style='width: 250px;'"));
 			$this->t->set_var('group_select_box', html::select('globalsettings[ea_group]','',$allGroups, true, "style='width: 250px;'"));
-			
+			$this->t->set_var('user_select_box', html::select('globalsettings[ea_user]','',$allUsers, true, "style='width: 250px;'"));
+			$this->t->set_var('selected_ea_active','checked="1"');
+
 			$linkData = array
 			(
 				'menuaction'	=> 'emailadmin.emailadmin_ui.saveProfile'
@@ -183,26 +211,10 @@
 		}
 
 		function editProfile($_profileID='') {
-			$allGroups = $GLOBALS['egw']->accounts->get_list('groups');
-			foreach($allGroups as $groupInfo)
-			{
-				$groups[$groupInfo['account_id']] = $groupInfo['account_lid'];
-			}
-			asort($groups);
+			$allGroups = self:: getAllGroups();
+			$allUsers = self::getAllUsers();
+			$applications = self::getAllApps();
 
-			$allGroups = array('' => lang('any group'));
-			foreach($groups as $groupID => $groupName)
-			{
-				$allGroups[$groupID] = $groupName;
-			}
-			
-			$applications = array(
-				'calendar'	=> $GLOBALS['egw_info']['apps']['calendar']['title'],
-				'felamimail' 	=> $GLOBALS['egw_info']['apps']['felamimail']['title'],
-			);
-			asort($applications);
-			$applications = array_merge(array('' => lang('any application')),$applications);
-			
 			if($_profileID != '')
 			{
 				$profileID = $_profileID;
@@ -246,9 +258,11 @@
 					case 'userDefinedAccounts':
 					case 'userDefinedIdentities':
 					case 'ea_user_defined_signatures':
+					case 'ea_active':
+						#echo $key."->".$value."<br>";
 					case 'imapoldcclient':
 					case 'editforwardingaddress':
-						if($value == 'yes') {
+						if($value == 'yes' || $value == 1) {
 							$this->t->set_var('selected_'.$key,'checked="1"');
 						}
 						break;
@@ -262,6 +276,9 @@
 						break;
 					case 'ea_group':
 						$this->t->set_var('group_select_box', html::select('globalsettings[ea_group]',$value,$allGroups, true, "style='width: 250px;'"));
+						break;
+					case 'ea_user':
+						$this->t->set_var('user_select_box', html::select('globalsettings[ea_user]',$value,$allUsers, true, "style='width: 250px;'"));
 						break;
 					default:
 						$this->t->set_var('value_'.$key,$value);
@@ -376,6 +393,8 @@
 					$applicationLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$application.'</a>';					
 
 					$group = (empty($profileList[$i]['ea_group']) ? lang('any group') : $GLOBALS['egw']->accounts->id2name($profileList[$i]['ea_group']));
+					$user = (empty($profileList[$i]['ea_user']) ? lang('any user') : $GLOBALS['egw']->accounts->id2name($profileList[$i]['ea_user']));
+					$isactive = (empty($profileList[$i]['ea_active']) ? lang('inactive') : ($profileList[$i]['ea_active']>0 ? lang('active') : lang('inactive')));
 					$linkData = array
 					(
 						'menuaction'	=> 'emailadmin.emailadmin_ui.editProfile',
@@ -384,7 +403,8 @@
 						'profileid'	=> $profileList[$i]['profileID']
 					);
 					$groupLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$group.'</a>';
-
+					$userLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$user.'</a>';
+					$activeLink = '<a href="#" onclick="egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600); return false;">'.$isactive.'</a>';
 					$moveButtons = '<img src="'. $GLOBALS['egw']->common->image('phpgwapi', 'up') .'" onclick="moveUp(this)">&nbsp;'.
 						       '<img src="'. $GLOBALS['egw']->common->image('phpgwapi', 'down') .'" onclick="moveDown(this)">';
 					
@@ -394,6 +414,8 @@
 						$imapServerLink,
 						$applicationLink,
 						$groupLink,
+						$userLink,
+						$activeLink,
 						$deleteLink,
 						$moveButtons,
 						
@@ -408,6 +430,8 @@
 				lang('imap server name'),
 				lang('application'),
 				lang('group'),
+				lang('user'),
+				lang('active'),
 				lang('delete'),
 				lang('order'),
 			);
@@ -498,13 +522,14 @@
 			$globalSettings['description'] = $_POST['globalsettings']['description'];
 			$globalSettings['defaultDomain'] = $_POST['globalsettings']['defaultDomain'];
 			$globalSettings['organisationName'] = $_POST['globalsettings']['organisationName'];
-			$globalSettings['userDefinedAccounts'] = $_POST['globalsettings']['userDefinedAccounts'];
-			$globalSettings['userDefinedIdentities'] = $_POST['globalsettings']['userDefinedIdentities'];
+			$globalSettings['userDefinedAccounts'] = ($_POST['globalsettings']['userDefinedAccounts'] == 'yes' ? 'yes' : 'no' );
+			$globalSettings['userDefinedIdentities'] = ($_POST['globalsettings']['userDefinedIdentities'] == 'yes' ? 'yes' : 'no' );
+			$globalSettings['ea_active'] = ($_POST['globalsettings']['ea_active'] == 'yes' ? 1 : 0 );
 			$globalSettings['ea_user_defined_signatures'] = ($_POST['globalsettings']['ea_user_defined_signatures'] == 'yes' ? 'yes' : 'no' );
 			$globalSettings['ea_default_signature'] = $_POST['globalsettings']['ea_default_signature'];
 			$globalSettings['ea_appname'] = ($_POST['globalsettings']['ea_appname'] == 'any' ? '' : $_POST['globalsettings']['ea_appname']);
 			$globalSettings['ea_group'] = ($_POST['globalsettings']['ea_group'] == 'any' ? '' : (int)$_POST['globalsettings']['ea_group']);
-			
+			$globalSettings['ea_user'] = ($_POST['globalsettings']['ea_user'] == 'any' ? '' : (int)$_POST['globalsettings']['ea_user']);	
 			// get the settings for the smtp server
 			$smtpType = $_POST['smtpsettings']['smtpType'];
 			foreach($this->boemailadmin->getFieldNames($smtpType,'smtp') as $key) {
@@ -608,6 +633,10 @@
 			$this->t->set_var('lang_encrypted_connection',lang('encrypted connection'));
 			$this->t->set_var('lang_do_not_validate_certificate',lang('do not validate certificate'));
 			$this->t->set_var('lang_vacation_requires_admin',lang('Vaction messages with start- and end-date require an admin account to be set!'));
+			$this->t->set_var('lang_can_be_used_by_user',lang('can be used by user'));
+			$this->t->set_var('lang_profile_isactive',lang('profile is active'));
+			$this->t->set_var('lang_defined_by_admin',lang('Username/Password defined by admin'));
+			$this->t->set_var('lang_Use_IMAP_auth', lang('Use predefined username and password defined below'));
 			$this->t->set_var('',lang(''));
 			# $this->t->set_var('',lang(''));
 			

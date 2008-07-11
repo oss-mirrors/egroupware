@@ -66,11 +66,27 @@
 				{group_select_box}
 			</td>
 		</tr>
+		<tr>
+			<td>
+				{lang_can_be_used_by_user}:
+			</td>
+			<td>
+				{user_select_box}
+			</td>
+		</tr>
 	</table>
 	</fieldset>
 	<p>
 	<fieldset style="width:650px;" class="row_off"><legend>{lang_global_options}</legend>
 	<table width="100%" border="0" cellspacing="0" cellpading="1">
+		<tr>
+			<td width="300px">
+				{lang_profile_isactive}
+			</td>
+			<td>
+				<input type="checkbox" name="globalsettings[ea_active]" {selected_ea_active} value="yes">
+			</td>
+		</tr>
         <tr>
             <td width="300px">
                 {lang_user_defined_identities}:
@@ -183,7 +199,7 @@
 			<tr>
 				<td>{lang_password}:</td>
 				<td>
-					<input type="password" name="smtpsettings[2][ea_smtp_auth_password]" style="width: 350px;" value="{value_ea_smt_pauth_password}">
+					<input type="password" name="smtpsettings[2][ea_smtp_auth_password]" style="width: 350px;" value="{value_ea_smtp_auth_password}">
 				</td>
 			</tr>
 		</table>
@@ -421,9 +437,10 @@
 			<tr>
 				<td>{lang_imap_server_logintyp}:</td>
 				<td>
-					<select name="imapsettings[1][imapLoginType]" style="width: 350px;" size="1">
+					<select name="imapsettings[1][imapLoginType]" style="width: 350px;" size="1" onclick="onchange_imapsettings(1,'imapLoginType');">
 						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
 						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+						<option value="admin" {selected_imapLoginType_admin}>{lang_defined_by_admin}</option>
 					</select>
 				</td>
 
@@ -431,6 +448,28 @@
 		</table>
 		</fieldset>
 		<p>
+        <fieldset style="width:650px;" class="row_off"><legend>{lang_imap_auth}</legend>
+        <table width="100%" border="0" cellspacing="0" cellpading="1">
+            <tr class="row_off">
+                <td width="300px">{lang_Use_IMAP_auth}:</td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_username}:</td>
+                <td>
+                    <input type="text" name="imapsettings[1][imapAuthUsername]" style="width: 350px;" value="{value_imapAuthUsername}">
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_password}:</td>
+                <td>
+                    <input type="password" name="imapsettings[1][imapAuthPassword]" style="width: 350px;" value="{value_imapAuthPassword}">
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+        <p>
 		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
@@ -474,9 +513,10 @@
 			<tr>
 				<td>{lang_imap_server_logintyp}:</td>
 				<td>
-					<select name="imapsettings[2][imapLoginType]" style="width: 350px;" size="1">
+					<select name="imapsettings[2][imapLoginType]" style="width: 350px;" size="1" onclick="onchange_imapsettings(2,'imapLoginType');">
 						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
 						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+						<option value="admin" {selected_imapLoginType_admin}>{lang_defined_by_admin}</option>
 					</select>
 				</td>
 
@@ -484,6 +524,28 @@
 		</table>
 		</fieldset>
 		<p>
+        <fieldset style="width:650px;" class="row_off"><legend>{lang_imap_auth}</legend>
+        <table width="100%" border="0" cellspacing="0" cellpading="1">
+            <tr class="row_off">
+                <td width="300px">{lang_Use_IMAP_auth}:</td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_username}:</td>
+                <td>
+                    <input type="text" name="imapsettings[2][imapAuthUsername]" style="width: 350px;" value="{value_imapAuthUsername}">
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_password}:</td>
+                <td>
+                    <input type="password" name="imapsettings[2][imapAuthPassword]" style="width: 350px;" value="{value_imapAuthPassword}">
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+        <p>
 		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
@@ -527,9 +589,10 @@
 			<tr>
 				<td>{lang_imap_server_logintyp}:</td>
 				<td>
-					<select name="imapsettings[3][imapLoginType]" style="width: 350px;" size="1">
+					<select name="imapsettings[3][imapLoginType]" style="width: 350px;" size="1" onclick="onchange_imapsettings(3,'imapLoginType');">
 						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
 						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+						<option value="admin" {selected_imapLoginType_admin}>{lang_defined_by_admin}</option>
 					</select>
 				</td>
 
@@ -537,6 +600,28 @@
 		</table>
 		</fieldset>
 		<p>
+        <fieldset style="width:650px;" class="row_off"><legend>{lang_imap_auth}</legend>
+        <table width="100%" border="0" cellspacing="0" cellpading="1">
+            <tr class="row_off">
+                <td width="300px">{lang_Use_IMAP_auth}:</td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_username}:</td>
+                <td>
+                    <input type="text" name="imapsettings[3][imapAuthUsername]" style="width: 350px;" value="{value_imapAuthUsername}">
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_password}:</td>
+                <td>
+                    <input type="password" name="imapsettings[3][imapAuthPassword]" style="width: 350px;" value="{value_imapAuthPassword}">
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+        <p>
 		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
@@ -618,9 +703,10 @@
 			<tr>
 				<td>{lang_imap_server_logintyp}:</td>
 				<td>
-					<select name="imapsettings[4][imapLoginType]" style="width: 350px;" size="1">
+					<select name="imapsettings[4][imapLoginType]" style="width: 350px;" size="1" onclick="onchange_imapsettings(4,'imapLoginType');">
 						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
 						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+						<option value="admin" {selected_imapLoginType_admin}>{lang_defined_by_admin}</option>
 					</select>
 				</td>
 
@@ -628,6 +714,28 @@
 		</table>
 		</fieldset>
 		<p>
+        <fieldset style="width:650px;" class="row_off"><legend>{lang_imap_auth}</legend>
+        <table width="100%" border="0" cellspacing="0" cellpading="1">
+            <tr class="row_off">
+                <td width="300px">{lang_Use_IMAP_auth}:</td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_username}:</td>
+                <td>
+                    <input type="text" name="imapsettings[4][imapAuthUsername]" style="width: 350px;" value="{value_imapAuthUsername}">
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_password}:</td>
+                <td>
+                    <input type="password" name="imapsettings[4][imapAuthPassword]" style="width: 350px;" value="{value_imapAuthPassword}">
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+        <p>
 		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
@@ -685,9 +793,10 @@
 			<tr>
 				<td>{lang_imap_server_logintyp}:</td>
 				<td>
-					<select name="imapsettings[5][imapLoginType]" style="width: 350px;" size="1">
+					<select name="imapsettings[5][imapLoginType]" style="width: 350px;" size="1" onclick="onchange_imapsettings(5,'imapLoginType');">
 						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
 						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+						<option value="admin" {selected_imapLoginType_admin}>{lang_defined_by_admin}</option>
 					</select>
 				</td>
 
@@ -695,6 +804,28 @@
 		</table>
 		</fieldset>
 		<p>
+        <fieldset style="width:650px;" class="row_off"><legend>{lang_imap_auth}</legend>
+        <table width="100%" border="0" cellspacing="0" cellpading="1">
+            <tr class="row_off">
+                <td width="300px">{lang_Use_IMAP_auth}:</td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_username}:</td>
+                <td>
+                    <input type="text" name="imapsettings[5][imapAuthUsername]" style="width: 350px;" value="{value_imapAuthUsername}">
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_password}:</td>
+                <td>
+                    <input type="password" name="imapsettings[5][imapAuthPassword]" style="width: 350px;" value="{value_imapAuthPassword}">
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+        <p>
 		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 
@@ -738,9 +869,10 @@
 			<tr>
 				<td>{lang_imap_server_logintyp}:</td>
 				<td>
-					<select name="imapsettings[6][imapLoginType]" style="width: 350px;" size="1">
+					<select name="imapsettings[6][imapLoginType]" style="width: 350px;" size="1" onclick="onchange_imapsettings(6,'imapLoginType');">
 						<option value="standard" {selected_imapLoginType_standard}>{lang_standard}</option>
 						<option value="vmailmgr" {selected_imapLoginType_vmailmgr}>{lang_vmailmgr}</option>
+						<option value="admin" {selected_imapLoginType_admin}>{lang_defined_by_admin}</option>
 					</select>
 				</td>
 
@@ -748,6 +880,28 @@
 		</table>
 		</fieldset>
 		<p>
+        <fieldset style="width:650px;" class="row_off"><legend>{lang_imap_auth}</legend>
+        <table width="100%" border="0" cellspacing="0" cellpading="1">
+            <tr class="row_off">
+                <td width="300px">{lang_Use_IMAP_auth}:</td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_username}:</td>
+                <td>
+                    <input type="text" name="imapsettings[6][imapAuthUsername]" style="width: 350px;" value="{value_imapAuthUsername}">
+                </td>
+            </tr>
+            <tr>
+                <td>{lang_password}:</td>
+                <td>
+                    <input type="password" name="imapsettings[6][imapAuthPassword]" style="width: 350px;" value="{value_imapAuthPassword}">
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+        <p>
 		<fieldset style="width:650px;" class="row_off"><legend>{lang_encryption_settings}</legend>
                 <table width="100%" border="0" cellspacing="0" cellpading="1">
 

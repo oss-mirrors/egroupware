@@ -14,7 +14,7 @@
 
 	$setup_info['emailadmin']['name']      = 'emailadmin';
 	$setup_info['emailadmin']['title']     = 'EMailAdmin';
-	$setup_info['emailadmin']['version']   = '1.5.001';
+	$setup_info['emailadmin']['version']   = '1.5.003';
 	$setup_info['emailadmin']['app_order'] = 10;
 	$setup_info['emailadmin']['enable']    = 2;
 
@@ -25,8 +25,8 @@
 	$setup_info['emailadmin']['note'] =
 		'';
 	$setup_info['emailadmin']['maintainer'] = array(
-		'name'  => 'Lars Kneschke',
-		'email' => 'lkneschke@linux-at-work.de'
+		'name'  => 'Leithoff, Klaus',
+		'email' => 'kl@stylite.de'
 	);
 
 	$setup_info['emailadmin']['tables'][]	= 'egw_emailadmin';

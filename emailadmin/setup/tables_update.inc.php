@@ -230,4 +230,32 @@
         return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.5.001';
     }
 
+	$test[] = '1.5.001';
+	function emailadmin_upgrade1_5_001()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_emailadmin','ea_user',array(
+			'type' => 'varchar',
+			'precision' => '80'
+		));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_emailadmin','ea_active',array(
+			'type' => 'int',
+			'precision' => '4'
+		));
+		$GLOBALS['phpgw_setup']->oProc->query("UPDATE egw_emailadmin set ea_user='0', ea_active=1",__LINE__,__FILE__);
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.5.002';
+	}
+
+	$test[] = '1.5.002';
+	function emailadmin_upgrade1_5_002()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_emailadmin','ea_imap_auth_username',array(
+			'type' => 'varchar',
+			'precision' => '80'
+		));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_emailadmin','ea_imap_auth_password',array(
+			'type' => 'varchar',
+			'precision' => '80'
+		));
+		return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.5.003';
+	}
 ?>
