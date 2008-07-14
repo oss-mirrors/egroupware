@@ -1,7 +1,7 @@
 <?php
 /**
  * eGroupWare Gallery2 integration: embeding the whole gallery
- * 
+ *
  * @link http://www.egroupware.org
  * @link http://gallery.sourceforge.net/
  * @package gallery
@@ -31,7 +31,7 @@ class module_gallery extends Module
 					'core'     => lang('Gallery without sidebar'),
 					'sidebar'  => lang('Gallery sidebar'),
 				)
-			),	
+			),
 			'set_page_title' => array(
 				'type' => 'checkbox',
 				'label' => lang('Set Gallery title as page-title?'),
@@ -46,7 +46,7 @@ class module_gallery extends Module
 		$this->properties = array();
 		$this->title = lang('Gallery');
 		$this->description = lang('Use this module to display the embeded Gallery');
-		
+
 		$GLOBALS['egw']->translation->add_app('gallery');
 	}
 
@@ -56,9 +56,9 @@ class module_gallery extends Module
 		{
 			return lang('You have no rights to view %1 content !!!',lang('Gallery'));
 		}
-		if (!is_object($GLOBALS['egw']->g2)) 
+		if (!isset($GLOBALS['egw']->g2))
 		{
-			$GLOBALS['egw']->g2 =& new g2_integration(false,sitemgr_link(array('page_name' => $GLOBALS['page']->name)));
+			$GLOBALS['egw']->g2 = new g2_integration(false,sitemgr_link(array('page_name' => $GLOBALS['page']->name)));
 
 			if ($GLOBALS['egw']->g2->error)
 			{
@@ -84,7 +84,7 @@ class module_gallery extends Module
 			}
 		}
 		$content .= $GLOBALS['egw']->g2->handleRequest($arguments['type'],$title);
-		
+
 		if ($arguments['set_page_title'])
 		{
 			$GLOBALS['page']->title = $title;
