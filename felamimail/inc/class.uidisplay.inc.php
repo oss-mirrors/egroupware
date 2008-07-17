@@ -575,7 +575,7 @@
 				foreach ($attachments as $key => $value)
 				{
 					#$detectedCharSet = mb_detect_encoding($value['name'].'a',strtoupper($this->displayCharset).",UTF-8, ISO-8559-1");
-					mb_convert_variables("UTF-8","ISO-8559-1",$value['name']); # iso 2 UTF8
+					if (function_exists('mb_convert_variables')) mb_convert_variables("UTF-8","ISO-8559-1",$value['name']); # iso 2 UTF8
 					//if (mb_convert_variables("ISO-8859-1","UTF-8",$value['name'])){echo "Juhu utf8 2 ISO\n";};
 					//echo $value['name']."\n";
 					$filename=htmlentities($value['name'], ENT_QUOTES, $detectedCharSet);
