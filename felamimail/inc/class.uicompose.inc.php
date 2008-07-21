@@ -149,6 +149,30 @@
 
 			if (is_array($_REQUEST['preset']))
 			{
+				#_debug_array($_REQUEST);
+				if ($_REQUEST['preset']['mailto']) {
+					// handle mailto strings such as
+					// mailto:larry,dan?cc=mike&bcc=sue&subject=test&body=type+your&body=message+here
+					// the above string may be htmlentyty encoded, then multiple body tags are supported
+					// first, strip the mailto: string out of the mailto URL
+					$tmp_send_to = trim(substr(html_entity_decode($_REQUEST['preset']['mailto']),7));
+					// check if there is more than the to address
+					$mailtoArray = explode('?',$tmp_send_to,2);
+					if ($mailtoArray[1]) {
+						// check if there are more than one requests
+						$addRequests = explode('&',$mailtoArray[1]);
+						foreach ($addRequests as $key => $reqval) {
+							// the additional requests should have a =, to separate key from value.
+							$keyValuePair = explode('=',$reqval,2);
+							$sessionData[$keyValuePair[0]] .= (strlen($sessionData[$keyValuePair[0]])>0 ? ' ':'') . $keyValuePair[1]; 
+						}
+					}
+					$sessionData['to']=$mailtoArray[0];
+					// if the mailto string is not htmlentity decoded the arguments are passed as simple requests
+					foreach(array('cc','bcc','subject','body') as $name) {
+						if ($_REQUEST[$name]) $sessionData[$name] .= (strlen($sessionData[$name])>0 ? ( $name == 'cc' || $name == 'bcc' ? ',' : ' ') : '') . $_REQUEST[$name];
+					}
+				}
 				if ($_REQUEST['preset']['file'] && is_readable($_REQUEST['preset']['file']))
 				{
 					$this->bocompose->addAttachment(array_merge($sessionData,$_REQUEST['preset']));
@@ -288,12 +312,13 @@
 			$this->t->set_var('lang_no_recipient',lang('No recipient address given!'));
 			$this->t->set_var('lang_no_subject',lang('No subject given!'));
 			$this->t->pparse("out","header");
-
-
+			
 			// body
 			if($sessionData['mimeType'] == 'html') {
+				$mode = 'simple';
+				#if (isset($GLOBALS['egw_info']['server']['enabled_spellcheck'])) $mode = 'egw_simple_spellcheck';
 				$style="border:0px; width:100%; height:400px;";
-				$this->t->set_var('tinymce', html::fckEditorQuick('body', 'simple', $sessionData['body']));
+				$this->t->set_var('tinymce', html::fckEditorQuick('body', $mode, $sessionData['body']));
 				$this->t->set_var('mimeType', 'html');
 				$ishtml=1;
 			} else {
