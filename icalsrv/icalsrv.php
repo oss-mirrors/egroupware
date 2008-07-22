@@ -1,26 +1,26 @@
 <?php
   /* WARNING: EXPERIMENTAL CODE DO NOT USE FOR PRODUCTION  */
   /**
-   * @file 
+   * @file
    *  IcalsrvNG: Export and Import Egw events and task as ICalendar over http using
    *  Virtual Calendars
    *
    * Possible clients include Mozilla Calendar/Sunbird, Korganizer, Apple Ical
-   * and Evolution. 
+   * and Evolution.
    * @note <b> THIS IS STILL EXPERIMENTAL CODE </b> do not use in production.
    * @note this script is supposed to be at:  egw-root/icalsrv.php
-   * 
+   *
    * NEW RalfBecker Aug 2007
    * many modifications to improve the support of (at least) lightning
    * - changed default uid handling to UID2UID (means keep them unchanged), as the other
    *   modes created doublicates on client and server, as the client did not understand
    *   that the server changes his uid's (against the RFC specs).
-   * - ability to delete events (not yet InfoLogs!), by tracking the id's of the GET request 
+   * - ability to delete events (not yet InfoLogs!), by tracking the id's of the GET request
    *   of the client and deleting the ones NOT send back to the server in PUT requests
    * - added etag handling to allow to reject put requests if the calendar is not up to date
    *   (HTTP_IF header with etag in client PUT requests) and to report unmodified calendars
    *   to the client (HTTP_IF_NONE_MATCH header with etag gets 304 Not modified response)
-   * - returning 501 Not implemented response, for WebDAV/CalDAV request (eg. PROPFIND), to 
+   * - returning 501 Not implemented response, for WebDAV/CalDAV request (eg. PROPFIND), to
    *   let the client know we dont support it
    * - ability to use contacts identified by their mail address as participants (mail addresses
    *   which are no contacts still get written to the description!)
@@ -29,7 +29,7 @@
    * @date 20060510
    * @since 0.9.37-ng-a1 removed fixed default domain authentication
    * @since 0.9.36-ng-a1 first version for NAPI-3.1 (write in non owner rscs)
-   * @author Jan van Lieshout <jvl (at) xs4all.nl> Rewrite and extension for egw 1.2. 
+   * @author Jan van Lieshout <jvl (at) xs4all.nl> Rewrite and extension for egw 1.2.
    * (see: @url http://www.egroupware.org  )
    * $Id$
    * Based on some code from:
@@ -40,7 +40,7 @@
    *  under the terms of the GNU General Public License as published by the
    *  Free Software Foundation; either version 2 of the License, or (at your
    *  option) any later version.
-   * 
+   *
    * @todo make this 'ical-service' enabled/disabled from the egw
    * admin interface
    * @todo make the definition of virtual calendars possible from a 'ical-service' web
@@ -81,7 +81,7 @@
 		'nonavbar'   => True,
 		'disable_Template_class' => True
 	);
-	include('header.inc.php');
+	include('../header.inc.php');
 
 	$ical_login = split('\@',$_SERVER['PHP_AUTH_USER']);
 	if($ical_login[1])
@@ -143,7 +143,7 @@
 
 	/** uid  mapping export  configuration switch
 	* @var int
-	* Parameter that determines, a the time of export from Egw (aka dowload by client), how 
+	* Parameter that determines, a the time of export from Egw (aka dowload by client), how
 	* ical elements (like VEVENT's) get their uid fields filled, from data in
 	* the related Egroupware element.
 	* See further in @ref secuidmapping in the icalsrv_resourcehandler documentation.
@@ -166,7 +166,7 @@
 	// NOT using UID2UID creates doublicates on the iCal client, see above
 	$uid_import_mode = UMM_UID2UID;
 
-	/** 
+	/**
 	* @section secisuidmapping Basic Possible settings of UID to ID mapping.
 	*
 	* @warning the default setting in icalsrv.php is one of the 3 basic uid mapping modes:
@@ -235,7 +235,7 @@
 		// no specific calendar requested, so do default.ics
 		$reqvircal_pathname = '/default.ics';
 
-		// try owner + base for a personal vircal request 
+		// try owner + base for a personal vircal request
 	}
 	elseif(preg_match('#^/([\w.]+)(/[^<^>^?]+)$#', $_SERVER['PATH_INFO'], $matches))
 	{
@@ -271,7 +271,7 @@
 			. ',rvc_owner:' . $reqvircal_owner . ',rvc_owner_id:' . $reqvircal_owner_id
 			. ',rvc_basename:' . $reqvircal_basename);
 	}
-	// S1A search for the requested calendar in the vircal_ardb's 
+	// S1A search for the requested calendar in the vircal_ardb's
 	if(is_numeric($reqvircal_owner_id))
 	{
 		// check if the requested personal calender is provided by the owner..
@@ -311,7 +311,7 @@
 	else
 	{
 		// check if the requested system calender is provided by system
-		$cnmsg = 'system calendar [' . $reqvircal_pathname . ']';  
+		$cnmsg = 'system calendar [' . $reqvircal_pathname . ']';
 		/**
 		* @todo 1. create somehow the list of available system vircal
 		* arstores note: this should be done via preferences and read
@@ -406,7 +406,7 @@
 	}
 
 
-	/** 
+	/**
 	* @todo this extra password checkin should, at least for logged-in users,
 	* better be incorporated in the ACL checkings. At some time...
 	*/
@@ -426,19 +426,19 @@
 	// now we are authenticated  enough
 	// go setup import and export mode in our ical virtual calendar
 
-	$icalvc->uid_mapping_export = $uid_export_mode; 
-	$icalvc->uid_mapping_import = $uid_import_mode; 
+	$icalvc->uid_mapping_export = $uid_export_mode;
+	$icalvc->uid_mapping_import = $uid_import_mode;
 	$icalvc->reimport_missing_elements = $reimport_missing_elements;
 	$logmsg = "";
 
-	
+
 	// NEW RalfBecker Aug 2007
 	// We have to handle the request methods different, specially the WebDAV ones we dont support
 	switch($_SERVER['REQUEST_METHOD'])
 	{
 	case 'PUT':
 		// *** PUT Request so do an Import *************
-		
+
 		if($isdebug)
 		{
 			error_log('icalsrv.php: importing, by user:' .$GLOBALS['egw_info']['user']['account_id']
@@ -464,7 +464,7 @@
 		// for a PUT we have to check if the currently loaded calendar is still up to date
 		// (not changed eg. by someone else or via the webfrontend).
 		// This is done by comparing the ETAG given as HTTP_IF with the current ETAG (last modification date)
-		// of the calendar --> on failure we return 412 Precondition failed, to not overwrite the modifications 
+		// of the calendar --> on failure we return 412 Precondition failed, to not overwrite the modifications
 		if (isset($_SERVER['HTTP_IF']) && preg_match('/\(\[([0-9]+)\]\)/',$_SERVER['HTTP_IF'],$matches))
 		{
 			$etag = $icalvc->get_etag();
@@ -474,7 +474,7 @@
 				fail_exit('Precondition Failed',412);
 			}
 		}
-	
+
 		// I0 read the payload
 		$logmsg = 'IMPORTING in '. $importMode . ' mode';
 		$fpput = fopen("php://input", "r");
@@ -502,7 +502,7 @@
 			{
 				$logmsg .=  "\n   resource: " . $rsc_class . ' : ' . count($vids) .' elements OK';
 			}
-		} 
+		}
 		// DONE importing
 		if($logdir)
 		{
@@ -516,7 +516,7 @@
 
 		// handle response ...
 		$GLOBALS['egw']->common->egw_exit();
-	
+
 	case 'GET':
 		// *** GET Request so do an export
 		$logmsg = 'EXPORTING';
@@ -546,9 +546,9 @@
 		else
 		{
 			$logmsg .= "\n exported " . $cnmsg ." : OK ";
-		} 
+		}
 		// DONE exporting
-		
+
 		// NEW RalfBecker Aug 2007
 		// returnung max modification date of events as etag header
 		header("ETag: ". $icalvc->export_etag);
@@ -594,11 +594,11 @@
 	}
 
 	/*
-	* Log info and data to logfiles if logging is set 
+	* Log info and data to logfiles if logging is set
 	*
 	* @param $msg  string with loginfo
 	* @param $data data to be logged
-	* @param $icalmethod $string value can be import or export 
+	* @param $icalmethod $string value can be import or export
 	* @global $logdir string/boolean log directory. Set to false to disab logging
 	*/
 	function log_ical($msg,$icalmethod="data",$data)
@@ -611,7 +611,7 @@
 		$loguser = $_SERVER['PHP_AUTH_USER'];
 		$logdate = date("Ymd:His");
 		// filename for log info, only used when logging is on
-		$fnloginfo = "$logdir/ical.log"; 
+		$fnloginfo = "$logdir/ical.log";
 
 		// log info
 		$fnlogdata = $logdir . "/ical." . $icalmethod . '.' . $logstamp . ".ics";
