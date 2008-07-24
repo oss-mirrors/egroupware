@@ -8,17 +8,17 @@
 	var fm_compose_langNoAddressSet	= "{lang_no_address_set}";
 
 	self.focus();
-  
+
 	self.name="first_Window";
-	
+
 	function addybook() {
 		Window1=window.open('{link_addressbook}',"{lang_search}","width=800,height=600,toolbar=no,scrollbars=yes,status=yes,resizable=yes");
 	}
-	
+
 	function attach_window(url) {
 		awin = window.open(url,"attach","width=500,height=400,toolbar=no,resizable=yes");
 	}
-	
+
 	function check_data()
 	{
 		// check recipient(s)
@@ -39,12 +39,11 @@
 		return true;
 	}
 </script>
-
 <center>
 <form method="post" name="doit" action="{link_action}" ENCTYPE="multipart/form-data" onsubmit="return check_data();">
 <input type="hidden" id="saveAsDraft" name="saveAsDraft" value="0">
 <input type="hidden" id="printit" name="printit" value="0">
-<TABLE WIDTH="100%" CELLPADDING="1" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
+<TABLE WIDTH="99%" CELLPADDING="1" CELLSPACING="0" style="border: solid #aaaaaa 1px; border-right: solid black 1px; border-bottom: solid black 1px;">
 	<tr class="navbarBackground">
 		<td align="left" width="250px">
 			<div class="parentDIV">
@@ -66,7 +65,7 @@
 			</div>
 		</td>
 		<td align="right">
-			<table border="0" width="100%">
+			<table border="0" width="99%">
 					<tr>
 						<td>
 							<table>
@@ -102,7 +101,7 @@
 		</td>
 	</tr>
 </table>
-<table style="clear:left; width:100%;" border="0" cellspacing="0" cellpading="1">
+<table style="clear:left; width:99%;" border="0" cellspacing="0" cellpading="1">
 <tr class="row_on">
 	<td align="left" style="width:116px;">
 		<b>{lang_identity}</b>
@@ -116,11 +115,11 @@
 </tr>
 </table>
 
-<div id="addressDIV" class="row_on" style="width:100%; border: solid black 0px; overflow: auto; padding: 0px; margin: 0px; text-align: left;">
-<table id="addressTable" style="width:100%;" border="0" cellspacing="0" cellpading="0"><tbody id="addressRows">{destinationRows}</tbody></table>
+<div id="addressDIV" class="row_on" style="width:99%; border: solid black 0px; overflow: auto; padding: 0px; margin: 0px; text-align: left;">
+<table id="addressTable" style="width:99%;" border="0" cellspacing="0" cellpading="0"><tbody id="addressRows">{destinationRows}</tbody></table>
 </div>
 
-<table style="width:100%;" border="0" cellspacing="0" cellpading="1">
+<table style="width:99%;" border="0" cellspacing="0" cellpading="1">
 <tr class="row_on">
 	<td align="left" style="width:116px;">
 		<b>{lang_subject}</b>
@@ -148,19 +147,23 @@
 </tr>
 </table>
 <input type="hidden" id="mimeType" name="mimeType" value="{mimeType}">
-<div id="editorArea" style="border:0px solid black; width:100%; height:400px;">
+<div id="editorArea" style="border:0px solid black; width:99%; height:400px;">
 	{tinymce}
 </div>
-
+<table width="99%" cellspacing="0" cellpadding="0"><tr>
+<td>
 <fieldset class="bordertop"><legend>{lang_signature}/{lang_editormode}</legend>
 	{select_signature} &nbsp; {toggle_editormode}
 <!--		<TEXTAREA class="input_text" NAME=signature ROWS="5" COLS="76" WRAP=HARD>{signature}</TEXTAREA> -->
 </fieldset>
+</td>
+</tr>
+</table>
 <!-- END body_input -->
 
 <!-- BEGIN simple_text -->
 <div id="editorArea">
-	<TEXTAREA class="input_text" name="body" style="width:100%; height:100%" wrap="virtual" wrap="soft">{body}</TEXTAREA>
+	<TEXTAREA class="input_text" name="body" style="width:99%; height:100%" wrap="virtual" wrap="soft">{body}</TEXTAREA>
 </div>
 <!-- END simple_text -->
 
@@ -173,8 +176,8 @@
 </script>
 
 <fieldset class="bordertop"><legend>{lang_attachments}</legend>
-<div id="divAttachments" style="border:1px solid lightgrey; width:100%;">
-<table width="100%" border="0" cellspacing="1" cellpading="0">
+<div id="divAttachments" style="border:1px solid lightgrey; width:99%;">
+<table width="99%" border="0" cellspacing="1" cellpading="0">
 {attachment_rows}
 </table>
 </div>
@@ -237,7 +240,7 @@
 <!-- BEGIN fileSelector -->
 <div id="fileSelectorDIV1" style="height:80px; border:0px solid red; background-color:white; padding:0px; margin:0px;">
 <form method="post" enctype="multipart/form-data" name="fileUploadForm" action="{file_selector_url}">
-	<table style="width:100%;">
+	<table style="width:99%;">
 		<tr>
 			<td style="text-align:center;">
 				<span id="statusMessage">&nbsp;</span>
@@ -256,7 +259,7 @@
 	</table>
 </form>
 </div>
-<div id="fileSelectorDIV2" style="position:absolute; display:none; height:80px; width:100%; border:0px solid red; top:0px; left:0px; text-align:right; vertical-align:bottom; background:white;">
-<table border="0" style="margin-left:140px; height:100%;"><tr><td><img src="{ajax-loader}"></td><td><span id="statusMessage" style="height:100%; width:100%; text-align:center;border:0px solid green; top:30px; left:0px;">{lang_adding_file_please_wait}</span></td></tr></table>
+<div id="fileSelectorDIV2" style="position:absolute; display:none; height:80px; width:99%; border:0px solid red; top:0px; left:0px; text-align:right; vertical-align:bottom; background:white;">
+<table border="0" style="margin-left:140px; height:100%;"><tr><td><img src="{ajax-loader}"></td><td><span id="statusMessage" style="height:100%; width:99%; text-align:center;border:0px solid green; top:30px; left:0px;">{lang_adding_file_please_wait}</span></td></tr></table>
 </div>
 <!-- END fileSelector -->
