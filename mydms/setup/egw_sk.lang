@@ -1,0 +1,62 @@
+access mode	mydms	sk	Režim prístupu
+access rights	mydms	sk	Prístupové oprávnenia
+access_mode_all	mydms	sk	Všetko
+access_mode_none	mydms	sk	Bez prístupu
+access_mode_read	mydms	sk	Čítanie
+access_mode_readwrite	mydms	sk	Čítanie+Zápis
+acl get inherited	mydms	sk	ACL sa kumuluje
+add acl	mydms	sk	Pridať acl
+add document	mydms	sk	Pridať dokument
+add notification	mydms	sk	Pridať upozornenie
+add subfolder	mydms	sk	Pridať podpriečinok
+admin-tools	mydms	sk	Nástroje pre správu
+all versions	mydms	sk	Všetky verzie
+comment	mydms	sk	Poznámka
+comment for current version	mydms	sk	Poznámka k súčasnej verzii
+copy acl	mydms	sk	Skopírovať acl
+copy documents	mydms	sk	Skopírovať dokumenty
+copy folder	mydms	sk	Skopírovať priečinok
+copy options	mydms	sk	Možnosti kopírovania
+copy subfolders	mydms	sk	Skopírovať podpriečinok
+create empty acl	mydms	sk	Vytvoriť prázdne acl
+creation date	mydms	sk	Dátum vytvorenia
+current acl	mydms	sk	Súčasné acl
+current version	mydms	sk	Súčasná verzia
+default access	mydms	sk	Predvolený prístup
+delete folder	mydms	sk	Odstrániť priečinok
+delete this notification	mydms	sk	Odstrániť toto upozornenie
+do you really want to delete this acl?	mydms	sk	Naozaj chcete odstrániť toto acl?
+do you really want to delete this document?	mydms	sk	Naozaj chcete odstrániť tento dokument?
+do you really want to delete this version of the document?	mydms	sk	Naozaj chcete odstrániť túto verziu dokumentu?
+does not expire	mydms	sk	Nevyprší
+download	mydms	sk	Stiahnutie
+edit folder	mydms	sk	Upraviť priečinok
+expires	mydms	sk	Vyprší
+expires after	mydms	sk	Vyprší po
+file size	mydms	sk	Veľkosť súboru
+filename	mydms	sk	Názov súboru
+folder	mydms	sk	Priečinok
+general information	mydms	sk	Všeobecné informácie
+information about last update	mydms	sk	Informácie o poslednej aktualizácii
+informations	mydms	sk	Informácie
+inherit acl again	mydms	sk	Znovu kumulovať ACL
+last update	mydms	sk	Posledná aktualizácia
+linked documents	mydms	sk	Pripojené dokumenty
+lock status	mydms	sk	Stav zámky
+mime type	mydms	sk	MIME typ
+move document	mydms	sk	Presunúť dokument
+move folder	mydms	sk	Presunúť priečinok
+mydms	common	sk	MyDMS
+notifications	mydms	sk	Upozornenia
+permission	mydms	sk	Oprávnenie
+select folder	mydms	sk	Vybrať priečinok
+select target folder	mydms	sk	Vybrať cieľový priečinok
+target folder	mydms	sk	Cieľový priečinok
+this document gets locked by you!	mydms	sk	Tento dokument ste zamkli!
+this document gets unlocked by you.	mydms	sk	Tento dokument ste odomkli.
+this document is currently not locked.	mydms	sk	Tento dokument teraz nie je zamknutý.
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	sk	Tento dokument zamkol používateľ: <a href="mailto:%1">%2</a>.
+update document	mydms	sk	Aktualizovať dokument
+upload date	mydms	sk	Dátum odoslania
+uploaded by	mydms	sk	Odoslal
+view online	mydms	sk	Zobraziť online
