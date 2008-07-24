@@ -115,6 +115,7 @@ down	felamimail	sk	dole
 download	felamimail	sk	Stiahnuť
 download this as a file	felamimail	sk	Stiahnuť to do súboru
 draft folder	felamimail	sk	Priečinok návrhov
+drafts	felamimail	sk	Návrhy
 e-mail	felamimail	sk	E-Mail
 e-mail address	felamimail	sk	E-mailová adresa
 e-mail folders	felamimail	sk	E-mailové priečinky
@@ -215,6 +216,7 @@ invalid user name or password	felamimail	sk	Chybné používateľské meno alebo
 javascript	felamimail	sk	JavaScript
 jumping to end	felamimail	sk	skočiť na koniec
 jumping to start	felamimail	sk	skočiť na začiatok
+junk	felamimail	sk	Spam
 keep a copy of the message in your inbox	felamimail	sk	ponechať kópiu správy v priečinku Doručenej pošty
 keep local copy of email	felamimail	sk	uschovať lokálnu kópiu správy
 kilobytes	felamimail	sk	kilobajtov
@@ -289,6 +291,7 @@ or	felamimail	sk	alebo
 organisation	felamimail	sk	organizácia
 organization	felamimail	sk	organizácia
 organization name	admin	sk	Názov organizácie
+original message	felamimail	sk	Pôvodná správa
 outgoing mail server(smtp)	felamimail	sk	Odchodzí mail server (SMTP)
 participants	felamimail	sk	Účastníci
 personal information	felamimail	sk	Osobné informácie
@@ -343,6 +346,7 @@ select folder	felamimail	sk	vybrať priečinok
 select your mail server type	admin	sk	Vyberte typ vášho poštového servera
 send	felamimail	sk	Odoslať
 send a reject message	felamimail	sk	odoslať odmietaciu správu
+sent	felamimail	sk	Odoslaná pošta
 sent folder	felamimail	sk	Priečinok Odoslaná pošta
 server supports mailfilter(sieve)	felamimail	sk	server podporuje mailfilter (sieve)
 set as default	felamimail	sk	Nastaviť ako predvolené
@@ -371,6 +375,7 @@ subscribed successfully!	felamimail	sk	Úspešne prihlásené!
 sun	felamimail	sk	Ned
 system signature	felamimail	sk	podpis systému
 table of contents	felamimail	sk	Obsahová tabuľka
+templates	felamimail	sk	Šablóny
 text only	felamimail	sk	Iba text
 the connection to the imap server failed!!	felamimail	sk	Pripojenie na IMAP server sa nepodarilo!!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	sk	Tento IMAP server nepodporuje vybranú metódu overovania. Prosím kontaktujte správcu systému.
@@ -384,6 +389,7 @@ to mail sent to	felamimail	sk	pre správu poslanú (komu)
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	sk	Ak chcete používať TLS spojenie, musíte fungovať na PHP verzii 5.1.0 alebo vyššej.
 translation preferences	felamimail	sk	Nastavenia prekladu
 translation server	felamimail	sk	Prekladový server
+trash	felamimail	sk	Odpadkový kôš
 trash fold	felamimail	sk	Priečinok Odpad
 trash folder	felamimail	sk	Priečinok Odpadkový kôš
 tue	felamimail	sk	Uto

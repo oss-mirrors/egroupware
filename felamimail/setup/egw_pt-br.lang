@@ -115,6 +115,7 @@ down	felamimail	pt-br	baixo
 download	felamimail	pt-br	Download
 download this as a file	felamimail	pt-br	Fazer download como arquivo
 draft folder	felamimail	pt-br	Pasta Rascunho
+drafts	felamimail	pt-br	Rascunhos
 e-mail	felamimail	pt-br	E-Mail
 e-mail address	felamimail	pt-br	Endereço de E-Mail
 e-mail folders	felamimail	pt-br	Pastas de E-Mail
@@ -127,7 +128,7 @@ email address	felamimail	pt-br	Endereço de E-Mail
 email forwarding address	felamimail	pt-br	E-Mail de encaminhamento
 email signature	felamimail	pt-br	Assinatura de E-Mail
 emailaddress	felamimail	pt-br	endereço de e-mail
-empty trash	felamimail	pt-br	Lixeira  vazia
+empty trash	felamimail	pt-br	Esvaziar Lixeira
 enable	felamimail	pt-br	habilitado
 encrypted connection	felamimail	pt-br	conexão criptografada
 enter your default mail domain ( from: user@domain )	admin	pt-br	Digite o seu domínio de correio eletrônico (do modelo usuario@dominio)
@@ -215,6 +216,7 @@ invalid user name or password	felamimail	pt-br	Usuário e/ou senha inválido(s)
 javascript	felamimail	pt-br	JavaScript
 jumping to end	felamimail	pt-br	Indo para o final
 jumping to start	felamimail	pt-br	Indo para o início
+junk	felamimail	pt-br	Spam
 keep a copy of the message in your inbox	felamimail	pt-br	Manter uma cópia da mensagem em sua caixa de entrada
 keep local copy of email	felamimail	pt-br	manter uma cópia local do e-mail
 kilobytes	felamimail	pt-br	Kbytes
@@ -289,6 +291,7 @@ or	felamimail	pt-br	ou
 organisation	felamimail	pt-br	organização
 organization	felamimail	pt-br	organização
 organization name	admin	pt-br	Nome da organização
+original message	felamimail	pt-br	mensagem original
 outgoing mail server(smtp)	felamimail	pt-br	servidor SMTP de saída
 participants	felamimail	pt-br	Participantes
 personal information	felamimail	pt-br	Informação pessoal
@@ -343,6 +346,7 @@ select folder	felamimail	pt-br	Selecionar pasta
 select your mail server type	admin	pt-br	Selecionar o tipo do seu servidor de e-mail
 send	felamimail	pt-br	Enviar
 send a reject message	felamimail	pt-br	Enviar uma mensagem de rejeição
+sent	felamimail	pt-br	Enviado
 sent folder	felamimail	pt-br	Pasta Enviadas
 server supports mailfilter(sieve)	felamimail	pt-br	Servidor suporta filtro de e-mails (sieve)
 set as default	felamimail	pt-br	Definir como padrão
@@ -370,7 +374,8 @@ subscribed	felamimail	pt-br	Inscrito
 subscribed successfully!	felamimail	pt-br	Inscrito com sucesso!
 sun	felamimail	pt-br	Dom
 system signature	felamimail	pt-br	assinatura do sistema
-table of contents	felamimail	pt-br	Ïndice
+table of contents	felamimail	pt-br	Índice
+templates	felamimail	pt-br	Modelos
 text only	felamimail	pt-br	Somente texto
 the connection to the imap server failed!!	felamimail	pt-br	A conexão com o servidor IMAP falhou!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	pt-br	O servidor IMAP aparentemente não suporta o método de autenticação selecionado. Por favor, entre em contato com o administrador do sistema.
@@ -384,6 +389,7 @@ to mail sent to	felamimail	pt-br	Enviar e-mail para
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	pt-br	Para usar uma conexão TLS você precisar estar rodadndo a versão 5.1.0 ou maior do PHP.
 translation preferences	felamimail	pt-br	Preferências de tradução
 translation server	felamimail	pt-br	Servidor de tradução
+trash	felamimail	pt-br	Lixeira
 trash fold	felamimail	pt-br	Pasta Lixeira
 trash folder	felamimail	pt-br	Pasta Lixeira
 tue	felamimail	pt-br	Ter

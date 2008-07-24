@@ -15,6 +15,7 @@ profilepath	admin	pt-br	Caminho para perfis
 samba config	sambaadmin	pt-br	Configuração do Samba
 samba settings	common	pt-br	Configurações do Samba
 samba sid	admin	pt-br	SID do Samba
+sambaadmin	common	pt-br	Samba Admin
 smb homepath	admin	pt-br	Caminho do smb
 workstation account for	sambaadmin	pt-br	Conta de estação de trabalho para
 workstation configuration	sambaadmin	pt-br	Configuração de estação de trabalho

@@ -103,6 +103,7 @@ wiki menu	wiki	pt-br	Menu Wiki
 wiki startpage	wiki	pt-br	Página wiki inicial
 writable by	wiki	pt-br	Edição
 yes always	admin	pt-br	Sim sempre
+yes with navbar	admin	pt-br	Sim com barra de navegação
 you have been denied access to this site.	wiki	pt-br	Você está bloqueado para acesso a esta página.
 you have entered an invalid user name.	wiki	pt-br	Você informou um nome de usuário inválido.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	pt-br	Você excedeu o número de páginas permitidos à você para visitação dentro do período. Por favor retorne mais tarde.

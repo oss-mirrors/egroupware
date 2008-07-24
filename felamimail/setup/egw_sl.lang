@@ -1,8 +1,10 @@
 (no subject)	felamimail	sl	(brez zadeve)
 (only cc/bcc)	felamimail	sl	(le CC/BCC)
+(separate multiple addresses by comma)	felamimail	sl	(več naslovov ločite z vejico)
 (unknown sender)	felamimail	sl	(neznan pošiljatelj)
 activate	felamimail	sl	Aktiviraj
 activate script	felamimail	sl	Skripta za aktiviranje
+activating by date requires a start- and end-date!	felamimail	sl	Aktiviranje glede na datum zahteva določitev začetnega in končnega datuma!
 add acl	felamimail	sl	Dodaj ACL
 add address	felamimail	sl	Dodaj naslov
 add rule	felamimail	sl	Dodaj pravilo
@@ -38,6 +40,8 @@ bcc	felamimail	sl	BCC
 before headers	felamimail	sl	Pred glavo sporočila
 between headers and message body	felamimail	sl	Med glavo in telesom sporočila
 body part	felamimail	sl	Telo sporočila
+by date	felamimail	sl	Po datumu
+can not send message. no recipient defined!	felamimail	sl	Ne morem poslati sporočila - ni določen prejemnik!
 can't connect to inbox!!	felamimail	sl	Ne morem se povezati z INBOX nabiralnikom!
 cc	felamimail	sl	CC
 change folder	felamimail	sl	Spremeni mapo
@@ -75,6 +79,7 @@ date(newest first)	felamimail	sl	Datum (najprej novejši)
 date(oldest first)	felamimail	sl	Datum (najprej starejši)
 days	felamimail	sl	Dni
 deactivate script	felamimail	sl	Skript za deaktiviranje
+default	felamimail	sl	Privzeto
 default signature	felamimail	sl	Privzeti podpis
 default sorting order	felamimail	sl	Privzet način razvrščanja
 delete all	felamimail	sl	Briši vse
@@ -110,6 +115,7 @@ down	felamimail	sl	Navzdol
 download	felamimail	sl	Prenesi
 download this as a file	felamimail	sl	Prenesi kot datoteko
 draft folder	felamimail	sl	Mapa Osnutki
+drafts	felamimail	sl	Osnutki
 e-mail	felamimail	sl	E-Pošta
 e-mail address	felamimail	sl	E-Poštni naslov
 e-mail folders	felamimail	sl	E-Poštne mape
@@ -163,6 +169,7 @@ follow	felamimail	sl	Sledi
 for mail to be send - not functional yet	felamimail	sl	Za pošiljanje sporočila - še ne deluje
 for received mail	felamimail	sl	Za prejeto pošto
 forward	felamimail	sl	Posreduj
+forward messages to	felamimail	sl	Posreduj sporočilo osebi
 forward to	felamimail	sl	Posreduj
 forward to address	felamimail	sl	Posreduj na naslov
 forwarding	felamimail	sl	Posredujem
@@ -209,6 +216,7 @@ invalid user name or password	felamimail	sl	Napačno uporabniško ime ali geslo
 javascript	felamimail	sl	Javascript
 jumping to end	felamimail	sl	Skok na konec
 jumping to start	felamimail	sl	Skok na začetek
+junk	felamimail	sl	Smeti
 keep a copy of the message in your inbox	felamimail	sl	Obdrži kopijo sporočila v mapi Prejeto
 keep local copy of email	felamimail	sl	Obdrži lokalno kopijo E-pošte
 kilobytes	felamimail	sl	Kilobajtov
@@ -237,7 +245,7 @@ mark selected as unflagged	felamimail	sl	Označenim sporočilom odvzemi zastavic
 mark selected as unread	felamimail	sl	Označi izbrana sporočila kot neprebrana
 match	felamimail	sl	Ujemanje
 matches	felamimail	sl	Se ujema z
-matches regexp	felamimail	sl	Sse ujema z regularnim izrazom
+matches regexp	felamimail	sl	Se ujema z regularnim izrazom
 max uploadsize	felamimail	sl	Največja velikost prenosa
 message highlighting	felamimail	sl	Poudarjanje sporočil
 message list	felamimail	sl	Seznam sporočil
@@ -267,6 +275,8 @@ no messages were selected.	felamimail	sl	Nobeno sporočilo ni izbrano
 no plain text part found	felamimail	sl	Ni najdenega čistega besedila
 no previous message	felamimail	sl	Ni predhodnjega sporočila
 no recipient address given!	felamimail	sl	Ni nobenega nsalove prejemnika!
+no signature	felamimail	sl	Brez podpisa
+no subject given!	felamimail	sl	Ni zadeve!
 no supported imap authentication method could be found.	felamimail	sl	Ni podprte metode avtentikacije IMAP.
 no valid emailprofile selected!!	felamimail	sl	Ni veljavnega E-poštnega profila!
 none	felamimail	sl	Prazno
@@ -281,6 +291,7 @@ or	felamimail	sl	ali
 organisation	felamimail	sl	Organizacija
 organization	felamimail	sl	Organizacija
 organization name	admin	sl	Ime organizacije
+original message	felamimail	sl	Izvirno sporočilo
 outgoing mail server(smtp)	felamimail	sl	Strežnik za odhajajočo pošto (IMAP)
 participants	felamimail	sl	Soudeleženci
 personal information	felamimail	sl	Osebni podatki
@@ -335,8 +346,10 @@ select folder	felamimail	sl	Izberi mapo
 select your mail server type	admin	sl	Izberite tip poštnega strežnika
 send	felamimail	sl	Pošlji
 send a reject message	felamimail	sl	Pošlji zavrnjeno sporočilo
+sent	felamimail	sl	Poslano
 sent folder	felamimail	sl	Mapa s poslanimi
 server supports mailfilter(sieve)	felamimail	sl	Strežnik podpira mailfilter (sieve)
+set as default	felamimail	sl	Nastavi kot privzeto
 show header	felamimail	sl	Prikaži glavo
 show new messages on main screen	felamimail	sl	Prikaži nova sporočila na začetnem zaslonu
 sieve script name	felamimail	sl	Ime skripte sieve
@@ -360,7 +373,9 @@ subscribe	felamimail	sl	Naroči
 subscribed	felamimail	sl	Naročeno
 subscribed successfully!	felamimail	sl	Uspešno naročeno!
 sun	felamimail	sl	Ned
+system signature	felamimail	sl	Sistemski podpis
 table of contents	felamimail	sl	Kazalo
+templates	felamimail	sl	Predloge
 text only	felamimail	sl	Le besedilo
 the connection to the imap server failed!!	felamimail	sl	Povezava na strežnik IMAP ni uspela.
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	sl	Strežnik IMAP verjetno ne podpira izbrane metode avtentikacije. Kontaktirajte sistemskega administratorja.
@@ -374,6 +389,7 @@ to mail sent to	felamimail	sl	Sporočilo poslano na
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	sl	Če želite uporabljati povezavo TLS, morate imeti različico PHP 5.1.0 ali več.
 translation preferences	felamimail	sl	Nastavitve prevodov
 translation server	felamimail	sl	Strežnik s prevodi
+trash	felamimail	sl	Koš
 trash fold	felamimail	sl	Koš
 trash folder	felamimail	sl	Mapa Koš
 tue	felamimail	sl	Tor
@@ -406,6 +422,7 @@ use smtp auth	admin	sl	Uporabi SMTP avtentikacijo
 users can define their own emailaccounts	admin	sl	Uporabniki lahko definirajo lastne E-poštne račune
 vacation notice	common	sl	Obvestilo o odsotnosti
 vacation notice is active	felamimail	sl	Obvestilo o odsotnosti je aktivno
+vacation start-date must be before the end-date!	felamimail	sl	Začetni datum počitnic mora biti pred končnim
 validate certificate	felamimail	sl	Preveri certifikat
 view full header	felamimail	sl	Pokaži celotno glavo
 view header lines	felamimail	sl	Pokaži glavo
@@ -420,3 +437,4 @@ with message "%1"	felamimail	sl	S sporočilom "%1"
 wrap incoming text at	felamimail	sl	Besedilo prelomi pri
 writing	felamimail	sl	Pisanje
 wrote	felamimail	sl	Je napisal
+you can use %1 for the above start-date and %2 for the end-date.	felamimail	sl	Za začetni datum lahko uporabite %1 in za končni datum %2
