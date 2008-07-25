@@ -1,0 +1,40 @@
+after successful installation of all instances, you have to copy %1 to %2!	gallery	cs	Po úspěšné instalaci všech instancí musíte zkopírovat %1 do %2!
+album frame (%1samples%2)	gallery	cs	Rám alba (%1Ukázky%2)
+alignment of the block	gallery	cs	Zarovnání bloku
+all filenames are relative to %1.	gallery	cs	Všechny názvy souborů jsou relativní k %1.
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	cs	Všichni ostatní uživatelé eGroupWaru budou vytvořeni integrací s G2, včetně jejich administrátorských oprávnění.
+an error occurred during user creation in g2.	gallery	cs	Během vytváření uživatele v G2 došlo k chybě.
+an error occurred while trying to initialize g2.	gallery	cs	Během inicializace G2 došlo k chybě.
+can be used to limit the block to a certain album.	gallery	cs	Může být použito k omezení bloku na určité album.
+center	gallery	cs	Střed
+complete gallery	gallery	cs	Kompletní galerie
+default item to show in the gallery.	gallery	cs	Výchozí položka zobrazovaná v galerii
+extra information to show	gallery	cs	Další informace, které se mají zobrazit
+for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	cs	Pro více instancí eGroupWaru musíte odstranit %1, aby bylo možné nainstalovat další instanci.
+full size	gallery	cs	Plná velikost
+gallery	common	cs	Galerie
+gallery menu	gallery	cs	Menu galerie
+gallery sidebar	gallery	cs	Postranní lišta galerie
+gallery without sidebar	gallery	cs	Galerie bez postranní lišty
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	cs	Galerie2 NENÍ nainstalovaná, musíte jí nejprve %1nainstalovat%2 !!!
+heading	gallery	cs	Záhlaví
+image frame (%1samples%2)	gallery	cs	Rám obrázku (%1Ukázky%2)
+imageblock	gallery	cs	Blok obrázku
+imageblock of the gallery	gallery	cs	Blok obrázku v galerii
+item id (number)	gallery	cs	ID položky (číslo)
+one or more blocks to show	gallery	cs	Jeden nebo více bloků, které se mají zobrazit
+pagename of an other page to link to	gallery	cs	Název jiné stránky, na kterou budeme odkazovat
+please note:	gallery	cs	Upozornění:
+set block title to	gallery	cs	Pojmenovat blok
+set gallery title as page-title?	gallery	cs	Nastavit název Galerie jako název stránky?
+should contain a "gallery" block in contentarea "center".	gallery	cs	Má obsahovat blok "galerie" v obsahové oblasti "střed".
+size (maximum number of pixel of the longest side)	gallery	cs	Velikost (maximální počet pixelů na nejdelší straně)
+specific item (requires itemid!)	gallery	cs	specifická položka (vyžaduje ID položky!)
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	cs	Administrátorský účet se musí do posledního písmene shodovat s již existujícím účtem v eGroupWaru!
+type of the embeded gallery	gallery	cs	Typ vložené galerie
+use %1 as g2 data directory.	gallery	cs	Použijte %1 jako datový adresář G2.
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	cs	Použijte stejné nastavení databáze jako při instalaci eGroupWaru (nahlédněte do souboru %1) a předpony tabulek a sloupců ponechte dle doporučení.
+use this module to display the embeded gallery	gallery	cs	Použít tento modul pro zobrazení vložené galerie
+view count	gallery	cs	Zobrazit počet
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	cs	Když kliknete na položku, můžete její ID získat z parametru "g2_itemId" v URL.
+you have no rights to view %1 content !!!	gallery	cs	Nemáte oprávnění na zobrazení obsahu %1 !!!

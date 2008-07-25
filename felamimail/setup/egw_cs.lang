@@ -115,6 +115,7 @@ down	felamimail	cs	dolů
 download	felamimail	cs	stáhnout
 download this as a file	felamimail	cs	Stáhnout jako soubor
 draft folder	felamimail	cs	Rozepsané
+drafts	felamimail	cs	Rozepsané
 e-mail	felamimail	cs	E-mail
 e-mail address	felamimail	cs	E-mailová adresa
 e-mail folders	felamimail	cs	E-mailové složky
@@ -215,6 +216,7 @@ invalid user name or password	felamimail	cs	Neplatné uživatelské jméno nebo 
 javascript	felamimail	cs	JavaScript
 jumping to end	felamimail	cs	přeskakuji na konec
 jumping to start	felamimail	cs	přeskakuji na začátek
+junk	felamimail	cs	Spam
 keep a copy of the message in your inbox	felamimail	cs	zachovat kopii zprávy ve Vašem inboxu
 keep local copy of email	felamimail	cs	zachovat lokální kopii zprávy
 kilobytes	felamimail	cs	kilobytů
@@ -274,6 +276,7 @@ no plain text part found	felamimail	cs	nebyla nalezena část ve formě prostéh
 no previous message	felamimail	cs	žádná předchozí zpráva
 no recipient address given!	felamimail	cs	Nebyla zadána adresa příjemce!
 no signature	felamimail	cs	bez podpisu
+no subject given!	felamimail	cs	Nebyl zadán předmět!
 no supported imap authentication method could be found.	felamimail	cs	Nebyla nalezena podporovaná metoda IMAP autentikace.
 no valid emailprofile selected!!	felamimail	cs	Nebyl vybrán platný e-mailový profil!!
 none	felamimail	cs	Žádné
@@ -342,6 +345,7 @@ select folder	felamimail	cs	vybrat složku
 select your mail server type	admin	cs	Vybrat typ e-mailového serveru
 send	felamimail	cs	Odeslat
 send a reject message	felamimail	cs	odeslat zprávu se zamítnutím
+sent	felamimail	cs	Odesláno
 sent folder	felamimail	cs	Odeslané
 server supports mailfilter(sieve)	felamimail	cs	server podporuje poštovní filter (sieve)
 set as default	felamimail	cs	Nastavit jako výchozí
@@ -370,6 +374,7 @@ subscribed successfully!	felamimail	cs	Úspěšně přihlášeno !
 sun	felamimail	cs	Ne
 system signature	felamimail	cs	systémový podpis
 table of contents	felamimail	cs	Obsah
+templates	felamimail	cs	Šablony
 text only	felamimail	cs	Pouze text
 the connection to the imap server failed!!	felamimail	cs	Připojení k IMAP serveru selhalo!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	cs	Zdá se, že IMAP server nepodporuje vybranou metodu autentikace. Zkontaktujte prosím Vašeho systémového administrátora.
@@ -383,6 +388,7 @@ to mail sent to	felamimail	cs	na e-mail zaslaný (komu)
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	cs	Pro použití TLS připojení je třeba provozovat systém na PHP 5.1.0 nebo vyšším.
 translation preferences	felamimail	cs	Předvolby překladu
 translation server	felamimail	cs	Server pro překlad
+trash	felamimail	cs	Koš
 trash fold	felamimail	cs	Koš
 trash folder	felamimail	cs	Koš
 tue	felamimail	cs	Út

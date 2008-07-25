@@ -1,259 +1,259 @@
-"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	cs	Nemáte pøístup k ¾ádnım webùm. Po¾ádejte svého administrátora a» Vám pøidìlí pøístup k objektu Va¹eho webu nebo zkontrolujte, zda vùbec nìjakı web existuje
-%1 has a one-to-many with %2 (default:%4) showing %3	jinn	cs	%1 má vztah jeden k mnoha s %2 (vıchozí:%4) zobrazujíce %3
-%1 has a one-to-many with %2 showing %3	jinn	cs	%1 má vztah jeden k mnoha s %2 zobrazuje %3
-%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	cs	%1 má vztah jeden k jednomu s %2 pou¾ívá konfiguraci objektu %3
-%1 new objects where successfully created	jinn	cs	%1 novıch objektù bylo úspì¹nì vytvoøeno
-%1 new objects where successfully created%2	jinn	cs	%1 novıch objektù bylo úspì¹nì vytvoøeno%2
-%1 objects available	jinn	cs	%1 objektù je k dispozici
-%1 records	jinn	cs	%1 záznamù
-%1 records per page	jinn	cs	%1 záznamù na stránku
-%1 site obj-fields have been imported.	jinn	cs	%1 objektù a polí webu bylo naimportováno.
-%1 site objects have been imported.	jinn	cs	%1 objektù webu bylo naimportováno.
-%3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	cs	%3: událost <b>%1</b> spustí plugin <b>%2</b>
-4 (default)	jinn	cs	4 (vıchozí)
-access rights	jinn	cs	Pøístupová práva
-access rights for site not succesfully editted	jinn	cs	Pøístupová práva pro web NEBYLA úspì¹nì editována
-access rights for site not succesfully saved	jinn	cs	Pøístupová práva pro web NEBYLA úspì¹nì ulo¾ena
-access rights for site succesfully editted	jinn	cs	Pøístupová práva pro web byla úspì¹nì editována
-access rights for site succesfully saved	jinn	cs	Pøístupová práva pro web byla úspì¹nì ulo¾ena
-access rights for site-object not succesfully editted	jinn	cs	Pøístupová práva pro objekt webu NEBYLA úspì¹nì editována
-access rights for site-object not succesfully saved	jinn	cs	Pøístupová práva pro objekt webu NEBYLA úspì¹nì ulo¾ena
-access rights for site-object succesfully editted	jinn	cs	Pøístupová práva pro objekt webu byla úspì¹nì editována
-access rights for site-object succesfully saved	jinn	cs	Pøístupová práva pro objekt webu byla úspì¹nì ulo¾ena
-access rights site-objects	jinn	cs	Pøístupová práva pro objekty webu
-access_rights	jinn	cs	pøístupová práva
-action was not succesful. unknown error	jinn	cs	Akce nebyla úspì¹ná. Neznámá chyba
-action was succesful.	jinn	cs	Akce byla úspì¹ná.
+"you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	cs	NemÃ¡te pÅ™Ã­stup k Å¾Ã¡dnÃ½m webÅ¯m. PoÅ¾Ã¡dejte svÃ©ho administrÃ¡tora aÅ¥ VÃ¡m pÅ™idÄ›lÃ­ pÅ™Ã­stup k objektu VaÅ¡eho webu nebo zkontrolujte, zda vÅ¯bec nÄ›jakÃ½ web existuje
+%1 has a one-to-many with %2 (default:%4) showing %3	jinn	cs	%1 mÃ¡ vztah jeden k mnoha s %2 (vÃ½chozÃ­:%4) zobrazujÃ­ce %3
+%1 has a one-to-many with %2 showing %3	jinn	cs	%1 mÃ¡ vztah jeden k mnoha s %2 zobrazuje %3
+%1 has a one-to-one relation with %2 using the configuration of object %3	jinn	cs	%1 mÃ¡ vztah jeden k jednomu s %2 pouÅ¾Ã­vÃ¡ konfiguraci objektu %3
+%1 new objects where successfully created	jinn	cs	%1 novÃ½ch objektÅ¯ bylo ÃºspÄ›Å¡nÄ› vytvoÅ™eno
+%1 new objects where successfully created%2	jinn	cs	%1 novÃ½ch objektÅ¯ bylo ÃºspÄ›Å¡nÄ› vytvoÅ™eno%2
+%1 objects available	jinn	cs	%1 objektÅ¯ je k dispozici
+%1 records	jinn	cs	%1 zÃ¡znamÅ¯
+%1 records per page	jinn	cs	%1 zÃ¡znamÅ¯ na strÃ¡nku
+%1 site obj-fields have been imported.	jinn	cs	%1 objektÅ¯ a polÃ­ webu bylo naimportovÃ¡no.
+%1 site objects have been imported.	jinn	cs	%1 objektÅ¯ webu bylo naimportovÃ¡no.
+%3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	cs	%3: udÃ¡lost <b>%1</b> spustÃ­ plugin <b>%2</b>
+4 (default)	jinn	cs	4 (vÃ½chozÃ­)
+access rights	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va
+access rights for site not succesfully editted	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro web NEBYLA ÃºspÄ›Å¡nÄ› editovÃ¡na
+access rights for site not succesfully saved	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro web NEBYLA ÃºspÄ›Å¡nÄ› uloÅ¾ena
+access rights for site succesfully editted	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro web byla ÃºspÄ›Å¡nÄ› editovÃ¡na
+access rights for site succesfully saved	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro web byla ÃºspÄ›Å¡nÄ› uloÅ¾ena
+access rights for site-object not succesfully editted	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro objekt webu NEBYLA ÃºspÄ›Å¡nÄ› editovÃ¡na
+access rights for site-object not succesfully saved	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro objekt webu NEBYLA ÃºspÄ›Å¡nÄ› uloÅ¾ena
+access rights for site-object succesfully editted	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro objekt webu byla ÃºspÄ›Å¡nÄ› editovÃ¡na
+access rights for site-object succesfully saved	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro objekt webu byla ÃºspÄ›Å¡nÄ› uloÅ¾ena
+access rights site-objects	jinn	cs	PÅ™Ã­stupovÃ¡ prÃ¡va pro objekty webu
+access_rights	jinn	cs	pÅ™Ã­stupovÃ¡ prÃ¡va
+action was not succesful. unknown error	jinn	cs	Akce nebyla ÃºspÄ›Å¡nÃ¡. NeznÃ¡mÃ¡ chyba
+action was succesful.	jinn	cs	Akce byla ÃºspÄ›Å¡nÃ¡.
 actions	jinn	cs	Akce
-actions to apply on all selected objects	jinn	cs	Akce, které se mají aplikovat na vybrané objekty
-actions to apply on all selected record	jinn	cs	Akce, které se mají aplikovat na vybrané záznamy
-actions to apply on all selected sites	jinn	cs	Akce, které se mají aplikovat na vybrané weby
-activate experimental features which are in development	jinn	cs	Aktivovat experimentální vlastnosti, které jsou ve vıvoji
+actions to apply on all selected objects	jinn	cs	Akce, kterÃ© se majÃ­ aplikovat na vybranÃ© objekty
+actions to apply on all selected record	jinn	cs	Akce, kterÃ© se majÃ­ aplikovat na vybranÃ© zÃ¡znamy
+actions to apply on all selected sites	jinn	cs	Akce, kterÃ© se majÃ­ aplikovat na vybranÃ© weby
+activate experimental features which are in development	jinn	cs	Aktivovat experimentÃ¡lnÃ­ vlastnosti, kterÃ© jsou ve vÃ½voji
 activate filter	jinn	cs	aktivovat plugin
-activated plugins	jinn	cs	Aktivované pluginy
-active tabs	jinn	cs	Aktivní tabulky
-add	jinn	cs	pøidat
-add %1st image	jinn	cs	pøidat %1 obrázek
-add a new configuration:	jinn	cs	pøidat novou konfiguraci:
-add attachent	jinn	cs	pøipojit pøílohu
-add attachment	jinn	cs	pøipojit pøílohu
-add attachment %1	jinn	cs	pøipojit pøílohu %1
-add edit	jinn	cs	Pøidat / Editovat
-add egw_jinn_sites	jinn	cs	pøidat weby
-add image	jinn	cs	pøidat obrázek
-add image %1	jinn	cs	pøidat obrázek %1
-add many-to-many relation(s)	jinn	cs	Pøidat vztah(y) mnoho k mnoha
-add many-to-one relation(s)	jinn	cs	Pøidat vztah(y) mnoho k jednomu
-add multiple records	jinn	cs	Pøidat nìkolik záznamù
-add new	jinn	cs	Pøidat novı
-add new entry	jinn	cs	Pøidat novı záznam
-add new many to many relation	jinn	cs	Pøidat novı vztah mnoho k mnoha
-add new many with many relation	jinn	cs	Pøidat novı vztah mnoho s mnoha
-add new one to many	jinn	cs	Pøidat novı vztah jeden k mnoha
-add new one with many	jinn	cs	Pøidat novı vztah jeden s mnoha
-add new one-to-one relation	jinn	cs	Pøidat novı vztah jeden k jednomu
-add object	jinn	cs	pøidat objekt
-add one-to-many relation(s)	jinn	cs	Pøidat vztah(y) jeden k mnoha
-add one-to-one relation(s)	jinn	cs	Pøidat vztah(y) jeden k jednomu
-add optional extra palets	jinn	cs	Pøidat volitelné extra palety
-add or remove	jinn	cs	pøidat nebo odstranit
-add site	jinn	cs	Pøidat web
-add site object	jinn	cs	pøidat objekt webu
-add site-object	jinn	cs	pøidat objekt webu
-add slot	jinn	cs	pøidat pozici
-add your zip-file with images here	jinn	cs	Sem pøipojte svùj ZIP soubor s obrázky
-admin:: edit site	jinn	cs	administrátor: editovat web
-administrator mode	jinn	cs	Re¾im administrace
-administrators for site %1	jinn	cs	administrátoøi webu %1
-advanced configuration	jinn	cs	pokroèilá konfigurace
-advanced settings	jinn	cs	Pokroèilá nastavení
+activated plugins	jinn	cs	AktivovanÃ© pluginy
+active tabs	jinn	cs	AktivnÃ­ tabulky
+add	jinn	cs	pÅ™idat
+add %1st image	jinn	cs	pÅ™idat %1 obrÃ¡zek
+add a new configuration:	jinn	cs	pÅ™idat novou konfiguraci:
+add attachent	jinn	cs	pÅ™ipojit pÅ™Ã­lohu
+add attachment	jinn	cs	pÅ™ipojit pÅ™Ã­lohu
+add attachment %1	jinn	cs	pÅ™ipojit pÅ™Ã­lohu %1
+add edit	jinn	cs	PÅ™idat / Editovat
+add egw_jinn_sites	jinn	cs	pÅ™idat weby
+add image	jinn	cs	pÅ™idat obrÃ¡zek
+add image %1	jinn	cs	pÅ™idat obrÃ¡zek %1
+add many-to-many relation(s)	jinn	cs	PÅ™idat vztah(y) mnoho k mnoha
+add many-to-one relation(s)	jinn	cs	PÅ™idat vztah(y) mnoho k jednomu
+add multiple records	jinn	cs	PÅ™idat nÄ›kolik zÃ¡znamÅ¯
+add new	jinn	cs	PÅ™idat novÃ½
+add new entry	jinn	cs	PÅ™idat novÃ½ zÃ¡znam
+add new many to many relation	jinn	cs	PÅ™idat novÃ½ vztah mnoho k mnoha
+add new many with many relation	jinn	cs	PÅ™idat novÃ½ vztah mnoho s mnoha
+add new one to many	jinn	cs	PÅ™idat novÃ½ vztah jeden k mnoha
+add new one with many	jinn	cs	PÅ™idat novÃ½ vztah jeden s mnoha
+add new one-to-one relation	jinn	cs	PÅ™idat novÃ½ vztah jeden k jednomu
+add object	jinn	cs	pÅ™idat objekt
+add one-to-many relation(s)	jinn	cs	PÅ™idat vztah(y) jeden k mnoha
+add one-to-one relation(s)	jinn	cs	PÅ™idat vztah(y) jeden k jednomu
+add optional extra palets	jinn	cs	PÅ™idat volitelnÃ© extra palety
+add or remove	jinn	cs	pÅ™idat nebo odstranit
+add site	jinn	cs	PÅ™idat web
+add site object	jinn	cs	pÅ™idat objekt webu
+add site-object	jinn	cs	pÅ™idat objekt webu
+add slot	jinn	cs	pÅ™idat pozici
+add your zip-file with images here	jinn	cs	Sem pÅ™ipojte svÅ¯j ZIP soubor s obrÃ¡zky
+admin:: edit site	jinn	cs	administrÃ¡tor: editovat web
+administrator mode	jinn	cs	ReÅ¾im administrace
+administrators for site %1	jinn	cs	administrÃ¡toÅ™i webu %1
+advanced configuration	jinn	cs	pokroÄilÃ¡ konfigurace
+advanced settings	jinn	cs	PokroÄilÃ¡ nastavenÃ­
 advhr	jinn	cs	advhr
 advlink	jinn	cs	advlink
-all from	jinn	cs	v¹e z
-all possible entries from %1	jinn	cs	V¹echny mo¾né záznamy z %1
-all records	jinn	cs	v¹echny záznamy
-all records (unfiltered)	jinn	cs	v¹echny záznamy (nefiltrované)
-all relations	jinn	cs	V¹echny vztahy
-all tests were successful. you can go on with the site-objects	jinn	cs	V¹echny testy byly úspì¹né. Mù¾ete pokraèovat s objekty webu
-alternative fieldname for display	jinn	cs	Alternativní název pole pro zobrazení
-an error occured.	jinn	cs	Do¹lo k chybì.
-an unknown error has occured (error code 109)	jinn	cs	Do¹lo k neznámé chybì (chybovı kód 109)
-an unknown error has occured (error code 110)	jinn	cs	Do¹lo k neznámé chybì (chybovı kód 110)
-another	jinn	cs	jiné
-are you sure you want to delete these multiple records?	jinn	cs	Urèitì chcete smazat tyto záznamy?
-are you sure you want to delete these selected sites?	jinn	cs	Urèitì chcete smazat tyto vybrané weby?
-are you sure you want to delete this filter?	jinn	cs	Urèitì chcete smazat tento filtr?
-are you sure you want to delete this record?	jinn	cs	Urèitì chcete smazat tento záznam?
-are you sure your want to edit these records?	jinn	cs	Uèitì chcete editovat tyto záznamy?
-are you sure?	jinn	cs	Jste si jistı(á)?
+all from	jinn	cs	vÅ¡e z
+all possible entries from %1	jinn	cs	VÅ¡echny moÅ¾nÃ© zÃ¡znamy z %1
+all records	jinn	cs	vÅ¡echny zÃ¡znamy
+all records (unfiltered)	jinn	cs	vÅ¡echny zÃ¡znamy (nefiltrovanÃ©)
+all relations	jinn	cs	VÅ¡echny vztahy
+all tests were successful. you can go on with the site-objects	jinn	cs	VÅ¡echny testy byly ÃºspÄ›Å¡nÃ©. MÅ¯Å¾ete pokraÄovat s objekty webu
+alternative fieldname for display	jinn	cs	AlternativnÃ­ nÃ¡zev pole pro zobrazenÃ­
+an error occured.	jinn	cs	DoÅ¡lo k chybÄ›.
+an unknown error has occured (error code 109)	jinn	cs	DoÅ¡lo k neznÃ¡mÃ© chybÄ› (chybovÃ½ kÃ³d 109)
+an unknown error has occured (error code 110)	jinn	cs	DoÅ¡lo k neznÃ¡mÃ© chybÄ› (chybovÃ½ kÃ³d 110)
+another	jinn	cs	jinÃ©
+are you sure you want to delete these multiple records?	jinn	cs	UrÄitÄ› chcete smazat tyto zÃ¡znamy?
+are you sure you want to delete these selected sites?	jinn	cs	UrÄitÄ› chcete smazat tyto vybranÃ© weby?
+are you sure you want to delete this filter?	jinn	cs	UrÄitÄ› chcete smazat tento filtr?
+are you sure you want to delete this record?	jinn	cs	UrÄitÄ› chcete smazat tento zÃ¡znam?
+are you sure your want to edit these records?	jinn	cs	UÄitÄ› chcete editovat tyto zÃ¡znamy?
+are you sure?	jinn	cs	Jste si jistÃ½(Ã¡)?
 area size	jinn	cs	Velikost oblasti
-ascending	jinn	cs	Vzestupnì
-attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	cs	adresáø pro pøílohy neexistuje, není platnı nebo nemù¾e bıt vytvoøen...<br>zkontrolujte prosím u objektu adresáø pro upload:
-automatic	jinn	cs	automatickı
-automaticly add objects for all tables	jinn	cs	automaticky pøidat objekty pro v¹echny tabulky
-automaticly incrementing	jinn	cs	automaticky zvìt¹ován (inkrementován)
-available for events	jinn	cs	Dostupnı pro události
-available for field types	common	cs	Dostupnı pro typy polí
-back to normal mode	jinn	cs	Zpìt do normálního re¾imu
-back to record list	jinn	cs	zpìt na seznam záznamù
-back to record listing	jinn	cs	Zpìt na vıpis záznamù
-background color %1	jinn	cs	Barva pozadí %1
-background image %1	jinn	cs	Obrázek na pozadí %1
-binary	jinn	cs	binární
-binary, contains data	jinn	cs	binární, obsahuje data
-binary, empty	jinn	cs	binární, prázdnı
-body	jinn	cs	Tìlo
-browse	jinn	cs	Procházet
-browse current object	jinn	cs	Procházet aktuální objekt
-browse sites	jinn	cs	procházet weby
-browse through object settings	admin	cs	Pprocházet nastavení objektu
-browse through sites	jinn	cs	Procházet weby
-browses through sites	admin	cs	Porchází weby
-can't edit more then 99 record at once	jinn	cs	Nemohu editovat více jak 99 záznamù najednou
-can't edit more then 99 record at once (error code 108)	jinn	cs	Nemohu editovat více jak 99 záznamù najednou (chybová kód 108)
-can't write in sites directory	jinn	cs	Nemohu zapisovat do adresáøe webù
+ascending	jinn	cs	VzestupnÄ›
+attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	cs	adresÃ¡Å™ pro pÅ™Ã­lohy neexistuje, nenÃ­ platnÃ½ nebo nemÅ¯Å¾e bÃ½t vytvoÅ™en...<br>zkontrolujte prosÃ­m u objektu adresÃ¡Å™ pro upload:
+automatic	jinn	cs	automatickÃ½
+automaticly add objects for all tables	jinn	cs	automaticky pÅ™idat objekty pro vÅ¡echny tabulky
+automaticly incrementing	jinn	cs	automaticky zvÄ›tÅ¡ovÃ¡n (inkrementovÃ¡n)
+available for events	jinn	cs	DostupnÃ½ pro udÃ¡losti
+available for field types	common	cs	DostupnÃ½ pro typy polÃ­
+back to normal mode	jinn	cs	ZpÄ›t do normÃ¡lnÃ­ho reÅ¾imu
+back to record list	jinn	cs	zpÄ›t na seznam zÃ¡znamÅ¯
+back to record listing	jinn	cs	ZpÄ›t na vÃ½pis zÃ¡znamÅ¯
+background color %1	jinn	cs	Barva pozadÃ­ %1
+background image %1	jinn	cs	ObrÃ¡zek na pozadÃ­ %1
+binary	jinn	cs	binÃ¡rnÃ­
+binary, contains data	jinn	cs	binÃ¡rnÃ­, obsahuje data
+binary, empty	jinn	cs	binÃ¡rnÃ­, prÃ¡zdnÃ½
+body	jinn	cs	TÄ›lo
+browse	jinn	cs	ProchÃ¡zet
+browse current object	jinn	cs	ProchÃ¡zet aktuÃ¡lnÃ­ objekt
+browse sites	jinn	cs	prochÃ¡zet weby
+browse through object settings	admin	cs	PprochÃ¡zet nastavenÃ­ objektu
+browse through sites	jinn	cs	ProchÃ¡zet weby
+browses through sites	admin	cs	PorchÃ¡zÃ­ weby
+can't edit more then 99 record at once	jinn	cs	Nemohu editovat vÃ­ce jak 99 zÃ¡znamÅ¯ najednou
+can't edit more then 99 record at once (error code 108)	jinn	cs	Nemohu editovat vÃ­ce jak 99 zÃ¡znamÅ¯ najednou (chybovÃ¡ kÃ³d 108)
+can't write in sites directory	jinn	cs	Nemohu zapisovat do adresÃ¡Å™e webÅ¯
 cancel	jinn	cs	Storno
-cannot copy a record from this table.	jinn	cs	Nemohu kopírovat záznam z této tabulky
-canvas	jinn	cs	Plátno
+cannot copy a record from this table.	jinn	cs	Nemohu kopÃ­rovat zÃ¡znam z tÃ©to tabulky
+canvas	jinn	cs	PlÃ¡tno
 category	jinn	cs	Kategorie
-change number of records	jinn	cs	zmìnit poèet záznamù
-change plugin	jinn	cs	Zmìnit plugin
+change number of records	jinn	cs	zmÄ›nit poÄet zÃ¡znamÅ¯
+change plugin	jinn	cs	ZmÄ›nit plugin
 check:	jinn	cs	zkontrolovat:
 choose	jinn	cs	zvolit
-click to select a new color	jinn	cs	kliknìte pro vıbìr nové barvy
-close this window	jinn	cs	zavøít okno
+click to select a new color	jinn	cs	kliknÄ›te pro vÃ½bÄ›r novÃ© barvy
+close this window	jinn	cs	zavÅ™Ã­t okno
 column	jinn	cs	sloupec
-column name	jinn	cs	název sloupce
-come back after new valid tablename is saved to configure plugins	jinn	cs	vrátit se zkonfigurovat pluginy po ulo¾ení nového platného názvu tabulky
-come back in edit mode for configuring plugins	jinn	cs	vrátit se v editaèním re¾imu konfigurovat pluginy
-come back in edit mode to configure plugins	jinn	cs	vrátit se v editaèním re¾imu konfigurovat pluginy
-come back in edit mode to enter one-to-one fields for this record.	jinn	cs	Vrátit se v editaèním re¾imu zadat pole jeden k jednomu pro tento záznam
+column name	jinn	cs	nÃ¡zev sloupce
+come back after new valid tablename is saved to configure plugins	jinn	cs	vrÃ¡tit se zkonfigurovat pluginy po uloÅ¾enÃ­ novÃ©ho platnÃ©ho nÃ¡zvu tabulky
+come back in edit mode for configuring plugins	jinn	cs	vrÃ¡tit se v editaÄnÃ­m reÅ¾imu konfigurovat pluginy
+come back in edit mode to configure plugins	jinn	cs	vrÃ¡tit se v editaÄnÃ­m reÅ¾imu konfigurovat pluginy
+come back in edit mode to enter one-to-one fields for this record.	jinn	cs	VrÃ¡tit se v editaÄnÃ­m reÅ¾imu zadat pole jeden k jednomu pro tento zÃ¡znam
 configure	jinn	cs	konfigurovat
-configure browse view	jinn	cs	konfigurovat pohled procházení
+configure browse view	jinn	cs	konfigurovat pohled prochÃ¡zenÃ­
 configure field plugin	jinn	cs	konfigurovat plugin pole
 configure list	jinn	cs	Konfigurovat seznam
 configure list view	jinn	cs	Konfugurovat pohled seznamu
 configure this tableview	jinn	cs	Konfigurovat tento pohled tabulky
 configure this view	jinn	cs	Konfigurovat tento pohled
-configure view of	jinn	cs	Konfigurovat pohled (èeho)
-convert exec ( e.g. /usr/x11r6/bin/convert )	admin	cs	cesta k utilitì convert z ImageMagic ( napø. /usr/X11R6/bin/convert )
-copy	jinn	cs	kopírovat
-copy and edit the new record	jinn	cs	kopírovat a editovat novı záznam
-copy record	jinn	cs	kopírovat záznam
-copy this record?	jinn	cs	Kopírovat tento záznam?
-could not delete site files. please remove manually	jinn	cs	Nemohu smazat soubory webu. Odstraòte je prosím ruènì
-could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	cs	Nemohu najít ¾ádné tabulky! Zkontrolujte název své databáze a u¾ivatelské jméno a heslo k databázi nebo v databázi vytvoøte jednu èi více tabulek.
-create a new site now	jinn	cs	Vytvoøit novı web nyní
-create new relation	jinn	cs	Vytvoøit novı vztah
-criterium	jinn	cs	kritérium
-current color:	jinn	cs	aktuální barva:
-current session filter	jinn	cs	aktuální filtr relací
-custom css file for area content	jinn	cs	U¾ivatelsky definovanı CSS soubor pro obsah oblasti
-custom height (e.g. 100%, 300px, 70em)	jinn	cs	U¾ivatelsky definovaná vı¹ka (napø. 100%, 300px, 70em)
-custom width (e.g. 100%, 300px, 70em)	jinn	cs	U¾ivatelsky definovaná ¹íøka (napø. 100%, 300px, 70em)
-database connection	jinn	cs	Databázové spojení
-database connection failed! <p>please recheck your settings.	jinn	cs	Databázové spojení selhalo!<P>Pøekontrolujte prosím svá nastavení.
-database connection was succesful.	jinn	cs	Databázové spojení bylo úspì¹né.
-database connection was succesfull. <p>you can go on with the site-objects	jinn	cs	Databázové spojení bylo úspì¹né.<P>Mù¾ete pokraèovat s objekty webu
-database hostname	jinn	cs	Databázovı server
-database name	jinn	cs	Název databáze
-database password	jinn	cs	Heslo k databázi
-database type	jinn	cs	Typ databáze
-database username	jinn	cs	U¾ivatelské jméno k databázi
+configure view of	jinn	cs	Konfigurovat pohled (Äeho)
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	cs	cesta k utilitÄ› convert z ImageMagic ( napÅ™. /usr/X11R6/bin/convert )
+copy	jinn	cs	kopÃ­rovat
+copy and edit the new record	jinn	cs	kopÃ­rovat a editovat novÃ½ zÃ¡znam
+copy record	jinn	cs	kopÃ­rovat zÃ¡znam
+copy this record?	jinn	cs	KopÃ­rovat tento zÃ¡znam?
+could not delete site files. please remove manually	jinn	cs	Nemohu smazat soubory webu. OdstraÅˆte je prosÃ­m ruÄnÄ›
+could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	cs	Nemohu najÃ­t Å¾Ã¡dnÃ© tabulky! Zkontrolujte nÃ¡zev svÃ© databÃ¡ze a uÅ¾ivatelskÃ© jmÃ©no a heslo k databÃ¡zi nebo v databÃ¡zi vytvoÅ™te jednu Äi vÃ­ce tabulek.
+create a new site now	jinn	cs	VytvoÅ™it novÃ½ web nynÃ­
+create new relation	jinn	cs	VytvoÅ™it novÃ½ vztah
+criterium	jinn	cs	kritÃ©rium
+current color:	jinn	cs	aktuÃ¡lnÃ­ barva:
+current session filter	jinn	cs	aktuÃ¡lnÃ­ filtr relacÃ­
+custom css file for area content	jinn	cs	UÅ¾ivatelsky definovanÃ½ CSS soubor pro obsah oblasti
+custom height (e.g. 100%, 300px, 70em)	jinn	cs	UÅ¾ivatelsky definovanÃ¡ vÃ½Å¡ka (napÅ™. 100%, 300px, 70em)
+custom width (e.g. 100%, 300px, 70em)	jinn	cs	UÅ¾ivatelsky definovanÃ¡ Å¡Ã­Å™ka (napÅ™. 100%, 300px, 70em)
+database connection	jinn	cs	DatabÃ¡zovÃ© spojenÃ­
+database connection failed! <p>please recheck your settings.	jinn	cs	DatabÃ¡zovÃ© spojenÃ­ selhalo!<P>PÅ™ekontrolujte prosÃ­m svÃ¡ nastavenÃ­.
+database connection was succesful.	jinn	cs	DatabÃ¡zovÃ© spojenÃ­ bylo ÃºspÄ›Å¡nÃ©.
+database connection was succesfull. <p>you can go on with the site-objects	jinn	cs	DatabÃ¡zovÃ© spojenÃ­ bylo ÃºspÄ›Å¡nÃ©.<P>MÅ¯Å¾ete pokraÄovat s objekty webu
+database hostname	jinn	cs	DatabÃ¡zovÃ½ server
+database name	jinn	cs	NÃ¡zev databÃ¡ze
+database password	jinn	cs	Heslo k databÃ¡zi
+database type	jinn	cs	Typ databÃ¡ze
+database username	jinn	cs	UÅ¾ivatelskÃ© jmÃ©no k databÃ¡zi
 days	jinn	cs	dny
 debug	jinn	cs	ladit
-default	jinn	cs	vıchozí
-default image to choose from	jinn	cs	Vıchozí obrázek pro vıbìr
-default image type (jpg, gif, png)	admin	cs	Vıchozí typ obrázku (jpg, gif, png)
-default image width	admin	cs	Vıchozí ¹íøka obrázku
-default number of visable columns	jinn	cs	Vıchozí poèet viditelnıch sloupcù
-default order	jinn	cs	vıchozí øazení
-default thumb width	admin	cs	Vıchozí ¹íøka miniatury
-default value	jinn	cs	vıchozí hodnota
-default value:	jinn	cs	vıchozí hodnota:
-default:	jinn	cs	vıchozí:
+default	jinn	cs	vÃ½chozÃ­
+default image to choose from	jinn	cs	VÃ½chozÃ­ obrÃ¡zek pro vÃ½bÄ›r
+default image type (jpg, gif, png)	admin	cs	VÃ½chozÃ­ typ obrÃ¡zku (jpg, gif, png)
+default image width	admin	cs	VÃ½chozÃ­ Å¡Ã­Å™ka obrÃ¡zku
+default number of visable columns	jinn	cs	VÃ½chozÃ­ poÄet viditelnÃ½ch sloupcÅ¯
+default order	jinn	cs	vÃ½chozÃ­ Å™azenÃ­
+default thumb width	admin	cs	VÃ½chozÃ­ Å¡Ã­Å™ka miniatury
+default value	jinn	cs	vÃ½chozÃ­ hodnota
+default value:	jinn	cs	vÃ½chozÃ­ hodnota:
+default:	jinn	cs	vÃ½chozÃ­:
 delete	jinn	cs	Smazat
-delete all selected records	jinn	cs	smazat v¹echny vybrané záznamy
+delete all selected records	jinn	cs	smazat vÅ¡echny vybranÃ© zÃ¡znamy
 delete file	jinn	cs	smazat soubor
 delete filter	jinn	cs	smazat filtr
-delete this record?	jinn	cs	Smazat tento záznam?
-descending	jinn	cs	Sestupnì
+delete this record?	jinn	cs	Smazat tento zÃ¡znam?
+descending	jinn	cs	SestupnÄ›
 descrition	common	cs	Popis
-dev site db host	jinn	cs	Databázovı server pro vıvojovı (testovací) web
-dev site db name	jinn	cs	Název datbáze pro vıvojovı (testovací) web
-dev site db password	jinn	cs	Heslo k databázi pro vıvojovı (testovací) web
-dev site db type	jinn	cs	Typ databáze pro vıvojovı (testovací) web
-dev site db user	jinn	cs	U¾ivatelské jméno k databázi pro vıvojovı (testovací) web
-dev upload path	jinn	cs	Cesta pro upload na vıvojovı (testovací) web
-dev upload url	jinn	cs	URL uploadu pro vıvoj
-developer links	jinn	cs	Odkazy pro vıvojáøe
-development	admin	cs	Vıvoj
-development (test) site upload path	jinn	cs	Cesta pro upload na vıvojovı (testovací) web
-development database	jinn	cs	Databáze pro vıvoj
-development environment profile	jinn	cs	Profil vıvojového prostøedí
-development server	jinn	cs	Server pro vıvoj
-dimensions	jinn	cs	rozmìry
-directionality	jinn	cs	smìrovost
-disable the wysiwyg/htmlarea plugin	jinn	cs	Zakázat plugin pro WYSIWYG/HTML oblast
+dev site db host	jinn	cs	DatabÃ¡zovÃ½ server pro vÃ½vojovÃ½ (testovacÃ­) web
+dev site db name	jinn	cs	NÃ¡zev datbÃ¡ze pro vÃ½vojovÃ½ (testovacÃ­) web
+dev site db password	jinn	cs	Heslo k databÃ¡zi pro vÃ½vojovÃ½ (testovacÃ­) web
+dev site db type	jinn	cs	Typ databÃ¡ze pro vÃ½vojovÃ½ (testovacÃ­) web
+dev site db user	jinn	cs	UÅ¾ivatelskÃ© jmÃ©no k databÃ¡zi pro vÃ½vojovÃ½ (testovacÃ­) web
+dev upload path	jinn	cs	Cesta pro upload na vÃ½vojovÃ½ (testovacÃ­) web
+dev upload url	jinn	cs	URL uploadu pro vÃ½voj
+developer links	jinn	cs	Odkazy pro vÃ½vojÃ¡Å™e
+development	admin	cs	VÃ½voj
+development (test) site upload path	jinn	cs	Cesta pro upload na vÃ½vojovÃ½ (testovacÃ­) web
+development database	jinn	cs	DatabÃ¡ze pro vÃ½voj
+development environment profile	jinn	cs	Profil vÃ½vojovÃ©ho prostÅ™edÃ­
+development server	jinn	cs	Server pro vÃ½voj
+dimensions	jinn	cs	rozmÄ›ry
+directionality	jinn	cs	smÄ›rovost
+disable the wysiwyg/htmlarea plugin	jinn	cs	ZakÃ¡zat plugin pro WYSIWYG/HTML oblast
 display fields	jinn	cs	Zobrazit pole
 do you really want to delete this site object?	jinn	cs	Opravdu chcete smazat tento objekt webu?
 do you really want to delete this site?	jinn	cs	Opravdu chcete smazat tento web?
-do you want to copy and then edit this record?	jinn	cs	Opravdu chcete kopírovat a poté editovat tento záznam?
-do you want to copy this record?	jinn	cs	Opravdu chcete kopírovat tento záznam?
-don't save / back to list	jinn	cs	Neukládat / Zpìt na seznam
+do you want to copy and then edit this record?	jinn	cs	Opravdu chcete kopÃ­rovat a potÃ© editovat tento zÃ¡znam?
+do you want to copy this record?	jinn	cs	Opravdu chcete kopÃ­rovat tento zÃ¡znam?
+don't save / back to list	jinn	cs	NeuklÃ¡dat / ZpÄ›t na seznam
 edit	jinn	cs	editovat
-edit all selected records	jinn	cs	editovat v¹echny vybrané záznamy
+edit all selected records	jinn	cs	editovat vÅ¡echny vybranÃ© zÃ¡znamy
 edit egw_jinn_sites	jinn	cs	editovat weby
 edit field properties	jinn	cs	Editovat vlastnosti pole
 edit filter	jinn	cs	editovat filtr
-edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	cs	Editace parametrù objektù JiNN webu: <li>vyberte pro JiNN objekt název, kterı se bude zobrazovat</li><li>vyberte databázovou tabulku, kterou budete s tímto objektem pou¾ívat</li> <li>pokud je zapotøebí, alternativní platnou absolutní cestu pro upload</li><li>pokud je zapotøebí, odpovídající alternativní URL pro náhled uploadovanıch prvkù</li><br><li>definujte vztahy mezi poli</li><li>konfigurujte pluginy pro pole</li>
+edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	cs	Editace parametrÅ¯ objektÅ¯ JiNN webu: <li>vyberte pro JiNN objekt nÃ¡zev, kterÃ½ se bude zobrazovat</li><li>vyberte databÃ¡zovou tabulku, kterou budete s tÃ­mto objektem pouÅ¾Ã­vat</li> <li>pokud je zapotÅ™ebÃ­, alternativnÃ­ platnou absolutnÃ­ cestu pro upload</li><li>pokud je zapotÅ™ebÃ­, odpovÃ­dajÃ­cÃ­ alternativnÃ­ URL pro nÃ¡hled uploadovanÃ½ch prvkÅ¯</li><br><li>definujte vztahy mezi poli</li><li>konfigurujte pluginy pro pole</li>
 edit object	jinn	cs	Editovat objekt
-edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	cs	Editace konfigurace objektu:  <li>vyberte pro objekt název, kterı se bude zobrazovat</li><li>vyberte databázovou tabulku, kterou budete s tímto objektem pou¾ívat</li> <li>pokud je zapotøebí, alternativní platnou absolutní cestu pro upload</li><li>pokud je zapotøebí, odpovídající alternativní URL pro náhled uploadovanıch prvkù</li><br><li>definujte vztahy mezi poli</li><li>konfigurujte pluginy pro pole</li>
-edit relations of %1	jinn	cs	Editovat vztahy (èeho) %1
+edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	cs	Editace konfigurace objektu:  <li>vyberte pro objekt nÃ¡zev, kterÃ½ se bude zobrazovat</li><li>vyberte databÃ¡zovou tabulku, kterou budete s tÃ­mto objektem pouÅ¾Ã­vat</li> <li>pokud je zapotÅ™ebÃ­, alternativnÃ­ platnou absolutnÃ­ cestu pro upload</li><li>pokud je zapotÅ™ebÃ­, odpovÃ­dajÃ­cÃ­ alternativnÃ­ URL pro nÃ¡hled uploadovanÃ½ch prvkÅ¯</li><br><li>definujte vztahy mezi poli</li><li>konfigurujte pluginy pro pole</li>
+edit relations of %1	jinn	cs	Editovat vztahy (Äeho) %1
 edit site	jinn	cs	Editovat web
-edit this record	jinn	cs	editovat tento záznam
+edit this record	jinn	cs	editovat tento zÃ¡znam
 edit this site	jinn	cs	Editovat tento web
 edit this site object	jinn	cs	Editovat tento objekt webu
-editors for object %1 in site %2	jinn	cs	editoøi pro objekt %1 na webu %2
-empty	jinn	cs	prázdnı
-empty filter	jinn	cs	prázdnı filtr
+editors for object %1 in site %2	jinn	cs	editoÅ™i pro objekt %1 na webu %2
+empty	jinn	cs	prÃ¡zdnÃ½
+empty filter	jinn	cs	prÃ¡zdnÃ½ filtr
 enable colors	jinn	cs	Povolit barvy
-enable font properties	jinn	cs	Povolit vlastnosti písma
-enable fullscreen mode	jinn	cs	Povolit re¾im zobrazení pøes celou obrazovku
+enable font properties	jinn	cs	Povolit vlastnosti pÃ­sma
+enable fullscreen mode	jinn	cs	Povolit reÅ¾im zobrazenÃ­ pÅ™es celou obrazovku
 enable links	jinn	cs	Povolit odkazy
-enable simple image	jinn	cs	Povolit jednoduchı obrázek
+enable simple image	jinn	cs	Povolit jednoduchÃ½ obrÃ¡zek
 enable styles	jinn	cs	Povolit styly
 enable tables	jinn	cs	Povlit tabulky
-environment profile to use	jinn	cs	Pou¾ít profil prostøedí
-error code %1	jinn	cs	CHYBOVİ KÓD %1
-error creating one or more new objects	jinn	cs	Chyba pøi vytváøení jednoho nebo více novıch objektù
-error creating one or more new objects%1	jinn	cs	Chyba pøi vytváøení jednoho nebo více novıch objektù%1
-error in event plugin	jinn	cs	Chyba v pluginu událostí
-error path_open %1	jinn	cs	chyba pøi otevírání cesty %1
-error, field info not saved.	jinn	cs	Chyba, informace o poli nebyla ulo¾ena.
-error: connection with database failed. please check if database connection settings are correct	jinn	cs	CHYBA: Databázové spojení selhalo. Zkontrolujte prosím, zda jsou platná nastavení databázového spojení
-error: the file %1 doesn't exists, please contact the webmaster	jinn	cs	CHYBA: soubor %1 neexistuje, zkontaktujte prosím webmastera
-events config	jinn	cs	Konfigurace událostí
-existing plugin configuration	jinn	cs	Konfigurace stávajících pluginù
+environment profile to use	jinn	cs	PouÅ¾Ã­t profil prostÅ™edÃ­
+error code %1	jinn	cs	CHYBOVÃ KÃ“D %1
+error creating one or more new objects	jinn	cs	Chyba pÅ™i vytvÃ¡Å™enÃ­ jednoho nebo vÃ­ce novÃ½ch objektÅ¯
+error creating one or more new objects%1	jinn	cs	Chyba pÅ™i vytvÃ¡Å™enÃ­ jednoho nebo vÃ­ce novÃ½ch objektÅ¯%1
+error in event plugin	jinn	cs	Chyba v pluginu udÃ¡lostÃ­
+error path_open %1	jinn	cs	chyba pÅ™i otevÃ­rÃ¡nÃ­ cesty %1
+error, field info not saved.	jinn	cs	Chyba, informace o poli nebyla uloÅ¾ena.
+error: connection with database failed. please check if database connection settings are correct	jinn	cs	CHYBA: DatabÃ¡zovÃ© spojenÃ­ selhalo. Zkontrolujte prosÃ­m, zda jsou platnÃ¡ nastavenÃ­ databÃ¡zovÃ©ho spojenÃ­
+error: the file %1 doesn't exists, please contact the webmaster	jinn	cs	CHYBA: soubor %1 neexistuje, zkontaktujte prosÃ­m webmastera
+events config	jinn	cs	Konfigurace udÃ¡lostÃ­
+existing plugin configuration	jinn	cs	Konfigurace stÃ¡vajÃ­cÃ­ch pluginÅ¯
 export	jinn	cs	exportovat
-export all columns	jinn	cs	exportovat v¹echny sloupce
-export all selected records	jinn	cs	exportovat v¹echny vybrané záznamy
-export records	jinn	cs	Exportovat záznamy
-export selection below	jinn	cs	exportovat ní¾e vybrané
-export source	jinn	cs	exportovat zdrojovı kód
+export all columns	jinn	cs	exportovat vÅ¡echny sloupce
+export all selected records	jinn	cs	exportovat vÅ¡echny vybranÃ© zÃ¡znamy
+export records	jinn	cs	Exportovat zÃ¡znamy
+export selection below	jinn	cs	exportovat nÃ­Å¾e vybranÃ©
+export source	jinn	cs	exportovat zdrojovÃ½ kÃ³d
 export this site	jinn	cs	exportovat tento web
 exporteer object	jinn	cs	Exportovat objekt
-extra help information for this field	jinn	cs	Extra pomocné informace pro toto pole
+extra help information for this field	jinn	cs	Extra pomocnÃ© informace pro toto pole
 extra palets	jinn	cs	Extra Palety
 extra where sql filter	jinn	cs	Extra where sql filtr
 failed	jinn	cs	Selhalo
-failed to copy: %1 to %2 ...	jinn	cs	nepodaøilo se zkopírovat: %1 do %2 ...
-failed to open table. please check if table <i>%1</i> still exists in database	jinn	cs	Nepodaøilo se otevøít tabulku. Zkontrolujte prosím, zda tabulka <i>%1</i> stále existuje v databázi
+failed to copy: %1 to %2 ...	jinn	cs	nepodaÅ™ilo se zkopÃ­rovat: %1 do %2 ...
+failed to open table. please check if table <i>%1</i> still exists in database	jinn	cs	NepodaÅ™ilo se otevÅ™Ã­t tabulku. Zkontrolujte prosÃ­m, zda tabulka <i>%1</i> stÃ¡le existuje v databÃ¡zi
 field	jinn	cs	pole
 field configuration	jinn	cs	Konfigurace pole
-field helpinfo and alternative name configuration	jinn	cs	Konfigurace pomocnıch informací a alternativního názvu pole
-field info configuration	jinn	cs	Konfigurace informací o poli
-field info configuration successfully saved	jinn	cs	Konfigurace informací o poli byla úspì¹nì ulo¾ena
+field helpinfo and alternative name configuration	jinn	cs	Konfigurace pomocnÃ½ch informacÃ­ a alternativnÃ­ho nÃ¡zvu pole
+field info configuration	jinn	cs	Konfigurace informacÃ­ o poli
+field info configuration successfully saved	jinn	cs	Konfigurace informacÃ­ o poli byla ÃºspÄ›Å¡nÄ› uloÅ¾ena
 field plugin	jinn	cs	Plugin pole
 field plugin configuration	jinn	cs	konfigurace pluginu pole
 field plugins	jinn	cs	Pluginy pole
@@ -263,71 +263,71 @@ field to display	jinn	cs	zobrazit pole
 field to display:	jinn	cs	zobrazit pole:
 field:	jinn	cs	pole:
 fieldconfiguration	jinn	cs	Konfigurace pole
-fieldname	jinn	cs	Název pole
+fieldname	jinn	cs	NÃ¡zev pole
 fields	jinn	cs	pole
-fields enclosed by	jinn	cs	pole uzavøená (èím)
-fields escaped by	jinn	cs	pole vyvázaná (èím)
-fields terminated by	jinn	cs	pole ukonèená (èím)
+fields enclosed by	jinn	cs	pole uzavÅ™enÃ¡ (ÄÃ­m)
+fields escaped by	jinn	cs	pole vyvÃ¡zanÃ¡ (ÄÃ­m)
+fields terminated by	jinn	cs	pole ukonÄenÃ¡ (ÄÃ­m)
 file	jinn	cs	Soubor
 file %1	jinn	cs	Soubor %1
-filename	jinn	cs	název souboru
+filename	jinn	cs	nÃ¡zev souboru
 filesize	jinn	cs	velikost souboru
-filter operator	jinn	cs	operátor filtru
-filterd list	jinn	cs	filtrovanı seznam
-filtered list	jinn	cs	filtrovanı seznam
-first row has field names	jinn	cs	první øádek obsahuje názvy polí
-font file for image %1	jinn	cs	Soubor písma pro obrázek %1
-font for image %1	jinn	cs	Písmo pro obrázek %1
-font padding on left of the image in pixels %1	jinn	cs	Odsazení písma nalevo od obrázku v pixelech %1
-font padding on right of the image in pixels %1	jinn	cs	Odsazení písma napravo od obrázku v pixelech %1
-font padding on top of the image in pixels %1	jinn	cs	Odsazení písma navrchu obrázku v pixelech %1
-font size for image %1	jinn	cs	Velikost písma pro obrázek %1
-footer	jinn	cs	Zápatí
-foreigh tables	jinn	cs	Cizí tabulky
-foreign fields	jinn	cs	Cizí pole
-form	jinn	cs	Formuláø
-form height	jinn	cs	Vı¹ka formuláøe
-form input plugin	jinn	cs	Plugin pro vstup formuláøe
-form type	jinn	cs	Typ formuláøe
-form visibility	jinn	cs	Viditelnost formuláøe
-form width	jinn	cs	©íøka formuláøe
-free	jinn	cs	Volnı
-free picker	jinn	cs	Volnı voliè
-from image	jinn	cs	Z obrázku
-general objects settings	jinn	cs	Obecná nastavení objektù
-general options	jinn	cs	Obecné volby
-general preferences	jinn	cs	Obecné pøedvolby
-general settings	admin	cs	Obecná nastavení
-generate html start en end tags	jinn	cs	Generovat poèáteèní a koncové HTML tagy
-give a new timestamp	jinn	cs	Poskytnout nové èasové razítko
-give new timestamp	jinn	cs	Poskytnout nové èasové razítko
-global configuration	jinn	cs	Globální konfigurace
-global site configuration	admin	cs	Globální konfigurace webu
-go	jinn	cs	jít
-has a many to many relation with	jinn	cs	má vztah mnoho k mnoha s
-has a many to many relation with:	jinn	cs	má vztah mnoho k mnoha s:
-has a one to many relation with	jinn	cs	má vztah jeden k mnoha s
-has a one to many relation with:	jinn	cs	má vztah jeden k mnoha s:
-has a one-to-one relation with	jinn	cs	má vztah jeden k jednomu s
-has a one-to-one relation with:	jinn	cs	má vztah jeden k jednomu s:
-header	jinn	cs	Záhlaví
-height image  %1	jinn	cs	Vı¹ka obrázku %1
-height:	jinn	cs	Vı¹ka:
-help infomation	jinn	cs	Pomocné informace
-hidden	jinn	cs	skrytı
-hide from menu	jinn	cs	Skrıt z menu objektu
-hide from object menu	jinn	cs	Skrıt z menu objektu
+filter operator	jinn	cs	operÃ¡tor filtru
+filterd list	jinn	cs	filtrovanÃ½ seznam
+filtered list	jinn	cs	filtrovanÃ½ seznam
+first row has field names	jinn	cs	prvnÃ­ Å™Ã¡dek obsahuje nÃ¡zvy polÃ­
+font file for image %1	jinn	cs	Soubor pÃ­sma pro obrÃ¡zek %1
+font for image %1	jinn	cs	PÃ­smo pro obrÃ¡zek %1
+font padding on left of the image in pixels %1	jinn	cs	OdsazenÃ­ pÃ­sma nalevo od obrÃ¡zku v pixelech %1
+font padding on right of the image in pixels %1	jinn	cs	OdsazenÃ­ pÃ­sma napravo od obrÃ¡zku v pixelech %1
+font padding on top of the image in pixels %1	jinn	cs	OdsazenÃ­ pÃ­sma navrchu obrÃ¡zku v pixelech %1
+font size for image %1	jinn	cs	Velikost pÃ­sma pro obrÃ¡zek %1
+footer	jinn	cs	ZÃ¡patÃ­
+foreigh tables	jinn	cs	CizÃ­ tabulky
+foreign fields	jinn	cs	CizÃ­ pole
+form	jinn	cs	FormulÃ¡Å™
+form height	jinn	cs	VÃ½Å¡ka formulÃ¡Å™e
+form input plugin	jinn	cs	Plugin pro vstup formulÃ¡Å™e
+form type	jinn	cs	Typ formulÃ¡Å™e
+form visibility	jinn	cs	Viditelnost formulÃ¡Å™e
+form width	jinn	cs	Å Ã­Å™ka formulÃ¡Å™e
+free	jinn	cs	VolnÃ½
+free picker	jinn	cs	VolnÃ½ voliÄ
+from image	jinn	cs	Z obrÃ¡zku
+general objects settings	jinn	cs	ObecnÃ¡ nastavenÃ­ objektÅ¯
+general options	jinn	cs	ObecnÃ© volby
+general preferences	jinn	cs	ObecnÃ© pÅ™edvolby
+general settings	admin	cs	ObecnÃ¡ nastavenÃ­
+generate html start en end tags	jinn	cs	Generovat poÄÃ¡teÄnÃ­ a koncovÃ© HTML tagy
+give a new timestamp	jinn	cs	Poskytnout novÃ© ÄasovÃ© razÃ­tko
+give new timestamp	jinn	cs	Poskytnout novÃ© ÄasovÃ© razÃ­tko
+global configuration	jinn	cs	GlobÃ¡lnÃ­ konfigurace
+global site configuration	admin	cs	GlobÃ¡lnÃ­ konfigurace webu
+go	jinn	cs	jÃ­t
+has a many to many relation with	jinn	cs	mÃ¡ vztah mnoho k mnoha s
+has a many to many relation with:	jinn	cs	mÃ¡ vztah mnoho k mnoha s:
+has a one to many relation with	jinn	cs	mÃ¡ vztah jeden k mnoha s
+has a one to many relation with:	jinn	cs	mÃ¡ vztah jeden k mnoha s:
+has a one-to-one relation with	jinn	cs	mÃ¡ vztah jeden k jednomu s
+has a one-to-one relation with:	jinn	cs	mÃ¡ vztah jeden k jednomu s:
+header	jinn	cs	ZÃ¡hlavÃ­
+height image  %1	jinn	cs	VÃ½Å¡ka obrÃ¡zku %1
+height:	jinn	cs	VÃ½Å¡ka:
+help infomation	jinn	cs	PomocnÃ© informace
+hidden	jinn	cs	skrytÃ½
+hide from menu	jinn	cs	SkrÃ½t z menu objektu
+hide from object menu	jinn	cs	SkrÃ½t z menu objektu
 host profile	jinn	cs	Profil serveru
-how many columns do you want to be visible by default in list view?	jinn	cs	Kolik sloupcù má bıt ve vıchozím nastavení pohledu seznamu viditelnıch?
-how many records do you want to list per page?	jinn	cs	Kolik chcete zobrazovat záznamù na stránku?
-ibrowser	jinn	cs	Navigátor (iBrowser)
-if you change the table of this object youn may loose field configuration data.nnn think of this before you save these settings.	jinn	cs	Pokud zmìníte tabulku tohoto objektu\n mù¾ete ztratit konfiguraèní data pro pole.\n\n\n Mìjte to na pamìti, ne¾ ulo¾íte tato nastavení.
-image 1	jinn	cs	Obrázek 1
-image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	cs	adresáø pro obrázky neexistuje nebo není platnı ...<br>zkontrolujte prosím upload adresáø objektu
-image picker	jinn	cs	Voliè obrázkù
-image settings	admin	cs	Nastavení obrázku
-imagemagick directory ( e.g. /usr/x11r6/bin )	admin	cs	Adresáø programu ImageMagick ( nspø. /usr/X11R6/bin )
-import anyway	jinn	cs	pøesto importovat
+how many columns do you want to be visible by default in list view?	jinn	cs	Kolik sloupcÅ¯ mÃ¡ bÃ½t ve vÃ½chozÃ­m nastavenÃ­ pohledu seznamu viditelnÃ½ch?
+how many records do you want to list per page?	jinn	cs	Kolik chcete zobrazovat zÃ¡znamÅ¯ na strÃ¡nku?
+ibrowser	jinn	cs	NavigÃ¡tor (iBrowser)
+if you change the table of this object youn may loose field configuration data.nnn think of this before you save these settings.	jinn	cs	Pokud zmÄ›nÃ­te tabulku toho objektu\n mÅ¯Å¾ete ztratit konfiguraÄnÃ­ data pole.\n\n\n MÄ›jte to na pamÄ›ti neÅ¾ uloÅ¾Ã­te tato nastavenÃ­.
+image 1	jinn	cs	ObrÃ¡zek 1
+image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	cs	adresÃ¡Å™ pro obrÃ¡zky neexistuje nebo nenÃ­ platnÃ½ ...<br>zkontrolujte prosÃ­m upload adresÃ¡Å™ objektu
+image picker	jinn	cs	VoliÄ obrÃ¡zkÅ¯
+image settings	admin	cs	NastavenÃ­ obrÃ¡zku
+imagemagick directory ( e.g. /usr/x11r6/bin )	admin	cs	AdresÃ¡Å™ programu ImageMagick ( nspÅ™. /usr/X11R6/bin )
+import anyway	jinn	cs	pÅ™esto importovat
 import failed	jinn	cs	import selhal
 import jinn site	jinn	cs	Importovat JiNN web
 import jinn-object	jinn	cs	Importovat JiNN objekt
@@ -336,398 +336,398 @@ import object from file	jinn	cs	Importovat objekt ze souboru
 import object from file to this site	jinn	cs	Importovat objekt ze souboru do tohoto webu
 import site	jinn	cs	importovat web
 import site from file	jinn	cs	Importovat web ze souboru
-import was succesfull	jinn	cs	Import byl úspì¹nı
-import was succesfull<br>imported one site with	jinn	cs	import byl úspì¹nı<br>Byl naimportován jeden web s
+import was succesfull	jinn	cs	Import byl ÃºspÄ›Å¡nÃ½
+import was succesfull<br>imported one site with	jinn	cs	import byl ÃºspÄ›Å¡nÃ½<br>Byl naimportovÃ¡n jeden web s
 in menu	jinn	cs	V menu
-incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	cs	následek nekompatibility: Objekt <b>'%2'</b>, pole <b>'%1'</b>, vlastnost <b>'%3'</b> nebyl pøítomen v souboru
-incompatibility result: object <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	cs	následek nekompatibility: Objekt <b>'%2'</b>, vlastnost <b>'%1'</b> nebyl pøítomen v souboru
-incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	cs	následek nekompatibility: Objekt <b>'%3'</b>, pole <b>'%1'</b>, vlastnost <b>'%2'</b> nemohl bıt naimportován, proto¾e neexistuje v této verzi JiNN
-incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	cs	následek nekompatibility: Objekt <b>'%3'</b>, vlastnost <b>'%1'</b> s hodnotou <b>'%2'</b> nemohl bıt naimportován, proto¾e neexistuje v této verzi JiNN
-incompatibility result: object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> was not present in the file	jinn	cs	následek nekompatibility: Objekt <strong>'%2'</strong>, pole <strong>'%1'</strong>, vlastnost <strong>'%3'</strong> nebyl pøítomen v souboru
-incompatibility result: object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> could not be imported because it does not exist in this jinn version	jinn	cs	následek nekompatibility:Objekt <strong>'%3'</strong>, pole <strong>'%1'</strong>, vlastnost <strong>'%2'</strong> nemohl bıt naimportován, proto¾e neexistuje v této verzi JiNN
-incompatibility result: site <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	cs	následek nekompatibility: Web <b>'%2'</b>, vlastnost <b>'%1'</b> nebyl pøítomen v souboru
-incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	cs	následek nekompatibility: Web <b>'%3'</b>, vlastnost <b>'%1'</b> s hodnotou <b>'%2'</b> nemohl bıt naimportován, proto¾e neexistuje v této verzi JiNN
+incompatibility result: object <b>'%2'</b>, field <b>'%1'</b>, property <b>'%3'</b> was not present in the file	jinn	cs	nÃ¡sledek nekompatibility: Objekt <b>'%2'</b>, pole <b>'%1'</b>, vlastnost <b>'%3'</b> nebyl pÅ™Ã­tomen v souboru
+incompatibility result: object <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	cs	nÃ¡sledek nekompatibility: Objekt <b>'%2'</b>, vlastnost <b>'%1'</b> nebyl pÅ™Ã­tomen v souboru
+incompatibility result: object <b>'%3'</b>, field <b>'%1'</b>, property <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	cs	nÃ¡sledek nekompatibility: Objekt <b>'%3'</b>, pole <b>'%1'</b>, vlastnost <b>'%2'</b> nemohl bÃ½t naimportovÃ¡n, protoÅ¾e neexistuje v tÃ©to verzi JiNN
+incompatibility result: object <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	cs	nÃ¡sledek nekompatibility: Objekt <b>'%3'</b>, vlastnost <b>'%1'</b> s hodnotou <b>'%2'</b> nemohl bÃ½t naimportovÃ¡n, protoÅ¾e neexistuje v tÃ©to verzi JiNN
+incompatibility result: object <strong>'%2'</strong>, field <strong>'%1'</strong>, property <strong>'%3'</strong> was not present in the file	jinn	cs	nÃ¡sledek nekompatibility: Objekt <strong>'%2'</strong>, pole <strong>'%1'</strong>, vlastnost <strong>'%3'</strong> nebyl pÅ™Ã­tomen v souboru
+incompatibility result: object <strong>'%3'</strong>, field <strong>'%1'</strong>, property <strong>'%2'</strong> could not be imported because it does not exist in this jinn version	jinn	cs	nÃ¡sledek nekompatibility:Objekt <strong>'%3'</strong>, pole <strong>'%1'</strong>, vlastnost <strong>'%2'</strong> nemohl bÃ½t naimportovÃ¡n, protoÅ¾e neexistuje v tÃ©to verzi JiNN
+incompatibility result: site <b>'%2'</b>, property <b>'%1'</b> was not present in the file	jinn	cs	nÃ¡sledek nekompatibility: Web <b>'%2'</b>, vlastnost <b>'%1'</b> nebyl pÅ™Ã­tomen v souboru
+incompatibility result: site <b>'%3'</b>, property <b>'%1'</b> with value <b>'%2'</b> could not be imported because it does not exist in this jinn version	jinn	cs	nÃ¡sledek nekompatibility: Web <b>'%3'</b>, vlastnost <b>'%1'</b> s hodnotou <b>'%2'</b> nemohl bÃ½t naimportovÃ¡n, protoÅ¾e neexistuje v tÃ©to verzi JiNN
 index	jinn	cs	index
 info	jinn	cs	informace
 information	jinn	cs	informace
-input mandatory	jinn	cs	Vstup povinnı
-insert another record after saving	jinn	cs	vlo¾it dal¹í záznam po ulo¾ení
-insert date / time	jinn	cs	Vlo¾it Datum / Èas
-insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	cs	Vlo¾it parametry JiNN webu: <li>Vlo¾it název JiNN webu, kterı se bude zobrazovat</li> <li>vlo¾it platná nastavení databáze</li> <li>vlo¾it platnou absolutní cestu pro upload</li><li>vlo¾it odpovídající URL pro náhled uploadovanıch prvkù</li>
-insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	cs	Vlo¾it/Vybrat parametry objektu JiNN webu: <li>vybrat název JiNN objektu, kterı se bude zobrazovat</li> <li>vybrat databázovou tabulku pro pou¾ití s tímto objektem</li> <li>pokud je zapotøebí, alternativní platnou absolutní cestu pro upload</li><li>pokud je zapotøebí, odpovídající alternativní URL pro náhled uploadovanıch prvkù</li>
+input mandatory	jinn	cs	Vstup povinnÃ½
+insert another record after saving	jinn	cs	vloÅ¾it dalÅ¡Ã­ zÃ¡znam po uloÅ¾enÃ­
+insert date / time	jinn	cs	VloÅ¾it Datum / ÄŒas
+insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	cs	VloÅ¾it parametry JiNN webu: <li>VloÅ¾it nÃ¡zev JiNN webu, kterÃ½ se bude zobrazovat</li> <li>vloÅ¾it platnÃ¡ nastavenÃ­ databÃ¡ze</li> <li>vloÅ¾it platnou absolutnÃ­ cestu pro upload</li><li>vloÅ¾it odpovÃ­dajÃ­cÃ­ URL pro nÃ¡hled uploadovanÃ½ch prvkÅ¯</li>
+insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	cs	VloÅ¾it/Vybrat parametry objektu JiNN webu: <li>vybrat nÃ¡zev JiNN objektu, kterÃ½ se bude zobrazovat</li> <li>vybrat databÃ¡zovou tabulku pro pouÅ¾itÃ­ s tÃ­mto objektem</li> <li>pokud je zapotÅ™ebÃ­, alternativnÃ­ platnou absolutnÃ­ cestu pro upload</li><li>pokud je zapotÅ™ebÃ­, odpovÃ­dajÃ­cÃ­ alternativnÃ­ URL pro nÃ¡hled uploadovanÃ½ch prvkÅ¯</li>
 jinn	common	cs	JiNN
-jinn - add report	jinn	cs	JiNN - Pøidat hlá¹ení
-jinn - add report from selected	jinn	cs	JiNN - Pøidat hlá¹ení z vybranıch
-jinn editors menu	jinn	cs	JiNN Menu editorù
-jinn main	jinn	cs	JiNN Hlavní
-jinn main menu	jinn	cs	JiNN Hlavní menu
-jinn navigator	jinn	cs	JiNN Navigátor
-jinn preferences	jinn	cs	JiNN Pøedvolby
-jinn-description	common	cs	JiNN je rekurzivní akronym, kterı znamená 'JiNN není Nuke', proto¾e hlavní autor nemá rád zpùsob, jakım Nuke vytváøí systém správy obsahu (CMS - Content Management System). Pomocí JiNN mù¾e vytváøet své vlastní CMS zcela pøizpùsobené struktuøe Va¹í databáze a webovému designu. Ke konfiguraci formuláøù pro vstup od u¾ivatele pou¾ívá pluginy, které zobrazují a zpracovávají data polí. Pro více informací nav¹tivte prosím: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>.<p>Zde je ná¹ <a href="jinn/CHANGELOG" target="_blank">protokol o zmìnách</a>.</p>
-keep current timestamp	jinn	cs	Zachovat souèasné èasové razítko
-keep this empty to let is auto increment	jinn	cs	ponechte prázdné pro automatické zvìt¹ování
-last edited record	jinn	cs	Poslední editovanı záznam
+jinn - add report	jinn	cs	JiNN - PÅ™idat hlÃ¡Å¡enÃ­
+jinn - add report from selected	jinn	cs	JiNN - PÅ™idat hlÃ¡Å¡enÃ­ z vybranÃ½ch
+jinn editors menu	jinn	cs	JiNN Menu editorÅ¯
+jinn main	jinn	cs	JiNN HlavnÃ­
+jinn main menu	jinn	cs	JiNN HlavnÃ­ menu
+jinn navigator	jinn	cs	JiNN NavigÃ¡tor
+jinn preferences	jinn	cs	JiNN PÅ™edvolby
+jinn-description	common	cs	JiNN je rekurzivnÃ­ akronym, kterÃ½ znamenÃ¡ 'JiNN nenÃ­ Nuke', protoÅ¾e hlavnÃ­ autor nemÃ¡ rÃ¡d zpÅ¯sob, jakÃ½m Nuke vytvÃ¡Å™Ã­ systÃ©m sprÃ¡vy obsahu (CMS - Content Management System). PomocÃ­ JiNN mÅ¯Å¾e vytvÃ¡Å™et svÃ© vlastnÃ­ CMS zcela pÅ™izpÅ¯sobenÃ© struktuÅ™e VaÅ¡Ã­ databÃ¡ze a webovÃ©mu designu. Ke konfiguraci formulÃ¡Å™Å¯ pro vstup od uÅ¾ivatele pouÅ¾Ã­vÃ¡ pluginy, kterÃ© zobrazujÃ­ a zpracovÃ¡vajÃ­ data polÃ­. Pro vÃ­ce informacÃ­ navÅ¡tivte prosÃ­m: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>.<p>Zde je nÃ¡Å¡ <a href="jinn/CHANGELOG" target="_blank">protokol o zmÄ›nÃ¡ch</a>.</p>
+keep current timestamp	jinn	cs	Zachovat souÄasnÃ© ÄasovÃ© razÃ­tko
+keep this empty to let is auto increment	jinn	cs	ponechte prÃ¡zdnÃ© pro automatickÃ© zvÄ›tÅ¡ovÃ¡nÃ­
+last edited record	jinn	cs	PoslednÃ­ editovanÃ½ zÃ¡znam
 license	common	cs	Licence
-lines terminated by	jinn	cs	øádky zakonèené (èím)
-linked entries	jinn	cs	Odkazované záznamy
-list record(s)	jinn	cs	Vypsat záznamy
-list record(s) in current object	jinn	cs	Seznam záznamù v aktuálním objektu
+lines terminated by	jinn	cs	Å™Ã¡dky zakonÄenÃ© (ÄÃ­m)
+linked entries	jinn	cs	OdkazovanÃ© zÃ¡znamy
+list record(s)	jinn	cs	Vypsat zÃ¡znamy
+list record(s) in current object	jinn	cs	Seznam zÃ¡znamÅ¯ v aktuÃ¡lnÃ­m objektu
 list sites	jinn	cs	Vypsat weby
 list visibility	jinn	cs	Vypsat viditelnost
-load export profile	jinn	cs	naèíst exportní profil
-load site conf from file	jinn	cs	Naèíst konfiguraci webu ze souboru
-loaded jinn site file	jinn	cs	Naètenı soubor JiNN webu
-local fields	jinn	cs	Lokální pole
-main settings	jinn	cs	Hlavní nastavení
-maintainer	common	cs	Správce
-mandatory	jinn	cs	povinnı
-manually enter a new relative file path	jinn	cs	Ruènì zadat novou relativní cestu k souboru
+load export profile	jinn	cs	naÄÃ­st exportnÃ­ profil
+load site conf from file	jinn	cs	NaÄÃ­st konfiguraci webu ze souboru
+loaded jinn site file	jinn	cs	NaÄtenÃ½ soubor JiNN webu
+local fields	jinn	cs	LokÃ¡lnÃ­ pole
+main settings	jinn	cs	HlavnÃ­ nastavenÃ­
+maintainer	common	cs	SprÃ¡vce
+mandatory	jinn	cs	povinnÃ½
+manually enter a new relative file path	jinn	cs	RuÄnÄ› zadat novou relativnÃ­ cestu k souboru
 many 2 many relations will not work	jinn	cs	Vztahy mnoho k mnoha nebudou fungovat
 many-to-many	jinn	cs	Mnoho k mnoha
 many-to-many relations	jinn	cs	Vztahy mnoho k mnoha
 many-to-one	jinn	cs	Mnoho k jednomu
 many-to-one relations	jinn	cs	Vztahy mnoho k jednomu
-max records	jinn	cs	Maximální poèet záznamù
-max. number of previews in form	jinn	cs	Maximální poèet náhledù ve formuláøi
-max. records	jinn	cs	Maximální poèet záznamù
-maximum image width isn	jinn	cs	maximální ¹íøka obrázku
-merge	jinn	cs	Slouèit
-moderator mode	jinn	cs	Re¾im moderátora
-months	jinn	cs	mìsíce
-move down	jinn	cs	pøesunout dolù
-move to last position	jinn	cs	pøesunout na poslední pozici
-move up	jinn	cs	pøesunout nahoru
-moved record one row down.	jinn	cs	Záznam pøesunut o jeden øádek dolù.
-moved record one row up.	jinn	cs	Záznam pøesunut o jeden øádek nahoru.
-moved record to last row.	jinn	cs	Záznam pøesunut na poslední øádek
-name and help info	jinn	cs	název a pomocné informace
-new	jinn	cs	Novı
-new from selected	jinn	cs	Novı z vybraného
-new image size limits.	jinn	cs	Nové limity pro velikost obrázku
-new object	jinn	cs	Novı objekt
-new record	jinn	cs	novı záznam
-new record(s)	jinn	cs	Novı(é) záznam(y)
-new report	jinn	cs	Nové hlá¹ení
-new site	jinn	cs	Novı web
-new sub entry	jinn	cs	Novı podzáznam
-no filter	jinn	cs	¾ádnı filtr
-no matchs found	jinn	cs	Nebyly nalezeny ¾ádné záznamy
-no max. number	jinn	cs	Není maximální poèet
-no new objects created	jinn	cs	Nebyly vytvoøeny ¾ádné nové objekty
-no new objects created%1	jinn	cs	nebyly vytvoøeny ¾ádné nové objekty%1
-no object selected. no able to configure this view	jinn	cs	Nebyl vybrán ¾ádnı objekt. Není mo¾né konfigurovat tento pohled
-no objects available	jinn	cs	®ádné objekty nejsou k dispozici
-no objects found for this site.	jinn	cs	Pro tento web nebyly nalezeny ¾ádné objekty.
-no palet defined	jinn	cs	®ádná paleta není definována
-no records found	jinn	cs	®ádné záznamy nebyly nalezeny
-no records linked	jinn	cs	®ádné záznamy nejsou odkazovány
-normal view	jinn	cs	Normální pohled
-not yet implemented	jinn	cs	zatím není implementováno
-nothing to save. please select a plugin to delete or configure a new plugin	jinn	cs	Není co ulo¾it. Vyberte prosím plugin, kterı chcete smazat nebo nakonfigurujte novı plugin
-notice that jinn needs imagemagick 5.4.9 or a later version	admin	cs	Pamatujte, ¾e JiNN potøebuje ImageMagick verze 5.4.9 nebo novìj¹í
-number of images to create	jinn	cs	Poèet obrázkù, které mají bıt vytvoøeny
-number of images to generate.	jinn	cs	Poèet obrázkù, které mají bıt vygenerovány.
-number of objects	jinn	cs	Poèet objektù
-number of records per page	jinn	cs	Poèet záznamù na stránku
+max records	jinn	cs	MaximÃ¡lnÃ­ poÄet zÃ¡znamÅ¯
+max. number of previews in form	jinn	cs	MaximÃ¡lnÃ­ poÄet nÃ¡hledÅ¯ ve formulÃ¡Å™i
+max. records	jinn	cs	MaximÃ¡lnÃ­ poÄet zÃ¡znamÅ¯
+maximum image width isn	jinn	cs	maximÃ¡lnÃ­ Å¡Ã­Å™ka obrÃ¡zku
+merge	jinn	cs	SlouÄit
+moderator mode	jinn	cs	ReÅ¾im moderÃ¡tora
+months	jinn	cs	mÄ›sÃ­ce
+move down	jinn	cs	pÅ™esunout dolÅ¯
+move to last position	jinn	cs	pÅ™esunout na poslednÃ­ pozici
+move up	jinn	cs	pÅ™esunout nahoru
+moved record one row down.	jinn	cs	ZÃ¡znam pÅ™esunut o jeden Å™Ã¡dek dolÅ¯.
+moved record one row up.	jinn	cs	ZÃ¡znam pÅ™esunut o jeden Å™Ã¡dek nahoru.
+moved record to last row.	jinn	cs	ZÃ¡znam pÅ™esunut na poslednÃ­ Å™Ã¡dek
+name and help info	jinn	cs	nÃ¡zev a pomocnÃ© informace
+new	jinn	cs	NovÃ½
+new from selected	jinn	cs	NovÃ½ z vybranÃ©ho
+new image size limits.	jinn	cs	NovÃ© limity pro velikost obrÃ¡zku
+new object	jinn	cs	NovÃ½ objekt
+new record	jinn	cs	novÃ½ zÃ¡znam
+new record(s)	jinn	cs	NovÃ½(Ã©) zÃ¡znam(y)
+new report	jinn	cs	NovÃ© hlÃ¡Å¡enÃ­
+new site	jinn	cs	NovÃ½ web
+new sub entry	jinn	cs	NovÃ½ podzÃ¡znam
+no filter	jinn	cs	Å¾Ã¡dnÃ½ filtr
+no matchs found	jinn	cs	Nebyly nalezeny Å¾Ã¡dnÃ© zÃ¡znamy
+no max. number	jinn	cs	NenÃ­ maximÃ¡lnÃ­ poÄet
+no new objects created	jinn	cs	Nebyly vytvoÅ™eny Å¾Ã¡dnÃ© novÃ© objekty
+no new objects created%1	jinn	cs	nebyly vytvoÅ™eny Å¾Ã¡dnÃ© novÃ© objekty%1
+no object selected. no able to configure this view	jinn	cs	Nebyl vybrÃ¡n Å¾Ã¡dnÃ½ objekt. NenÃ­ moÅ¾nÃ© konfigurovat tento pohled
+no objects available	jinn	cs	Å½Ã¡dnÃ© objekty nejsou k dispozici
+no objects found for this site.	jinn	cs	Pro tento web nebyly nalezeny Å¾Ã¡dnÃ© objekty.
+no palet defined	jinn	cs	Å½Ã¡dnÃ¡ paleta nenÃ­ definovÃ¡na
+no records found	jinn	cs	Å½Ã¡dnÃ© zÃ¡znamy nebyly nalezeny
+no records linked	jinn	cs	Å½Ã¡dnÃ© zÃ¡znamy nejsou odkazovÃ¡ny
+normal view	jinn	cs	NormÃ¡lnÃ­ pohled
+not yet implemented	jinn	cs	zatÃ­m nenÃ­ implementovÃ¡no
+nothing to save. please select a plugin to delete or configure a new plugin	jinn	cs	NenÃ­ co uloÅ¾it. Vyberte prosÃ­m plugin, kterÃ½ chcete smazat nebo nakonfigurujte novÃ½ plugin
+notice that jinn needs imagemagick 5.4.9 or a later version	admin	cs	Pamatujte, Å¾e JiNN potÅ™ebuje ImageMagick verze 5.4.9 nebo novÄ›jÅ¡Ã­
+number of images to create	jinn	cs	PoÄet obrÃ¡zkÅ¯, kterÃ© majÃ­ bÃ½t vytvoÅ™eny
+number of images to generate.	jinn	cs	PoÄet obrÃ¡zkÅ¯, kterÃ© majÃ­ bÃ½t vygenerovÃ¡ny.
+number of objects	jinn	cs	PoÄet objektÅ¯
+number of records per page	jinn	cs	PoÄet zÃ¡znamÅ¯ na strÃ¡nku
 object configuration	jinn	cs	Konfigurace objektu
-object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	cs	Konfigurace objektu: <li>vybrat název objektu, kterı se bude zobrazovat</li> <li>vybrat databázovou tabulku pro pou¾ití s tímto objektem</li> <li>pokud je zapotøebí, alternativní platnou absolutní cestu pro upload</li><li>pokud je zapotøebí, odpovídající alternativní URL pro náhled uploadovanıch prvkù</li>
-object event configuration	jinn	cs	Konfigurace události objektu
-object event plugins	jinn	cs	Pluginy událostí objektu
-object events configuration	jinn	cs	Konfigurace událostí objektu
+object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	cs	Konfigurace objektu: <li>vybrat nÃ¡zev objektu, kterÃ½ se bude zobrazovat</li> <li>vybrat databÃ¡zovou tabulku pro pouÅ¾itÃ­ s tÃ­mto objektem</li> <li>pokud je zapotÅ™ebÃ­, alternativnÃ­ platnou absolutnÃ­ cestu pro upload</li><li>pokud je zapotÅ™ebÃ­, odpovÃ­dajÃ­cÃ­ alternativnÃ­ URL pro nÃ¡hled uploadovanÃ½ch prvkÅ¯</li>
+object event configuration	jinn	cs	Konfigurace udÃ¡losti objektu
+object event plugins	jinn	cs	Pluginy udÃ¡lostÃ­ objektu
+object events configuration	jinn	cs	Konfigurace udÃ¡lostÃ­ objektu
 object id	jinn	cs	Id objektu
-object serialnumber	jinn	cs	Sériové èíslo objektu
+object serialnumber	jinn	cs	SÃ©riovÃ© ÄÃ­slo objektu
 objects	jinn	cs	Objekty
-old relation method	jinn	cs	Stará metoda vztahu
-on_update	jinn	cs	pøi aktualizaci
-one or more records not succesfully added.	jinn	cs	Jeden nebo více záznamù NEBYLO úspì¹nì pøidáno.
-one or more records not succesfully saved.	jinn	cs	Jeden nebo více záznamù NEBYLO úspì¹nì ulo¾eno.
-one or more records not succesfully saved. (error code 106)	jinn	cs	Jeden nebo více záznamù NEBYLO úspì¹nì pøidáno. (chybovı kód 106)
-one page backwards	jinn	cs	Jednu stranu zpìt
-one page forward	jinn	cs	Jednu stranu dopøedu
+old relation method	jinn	cs	StarÃ¡ metoda vztahu
+on_update	jinn	cs	pÅ™i aktualizaci
+one or more records not succesfully added.	jinn	cs	Jeden nebo vÃ­ce zÃ¡znamÅ¯ NEBYLO ÃºspÄ›Å¡nÄ› pÅ™idÃ¡no.
+one or more records not succesfully saved.	jinn	cs	Jeden nebo vÃ­ce zÃ¡znamÅ¯ NEBYLO ÃºspÄ›Å¡nÄ› uloÅ¾eno.
+one or more records not succesfully saved. (error code 106)	jinn	cs	Jeden nebo vÃ­ce zÃ¡znamÅ¯ NEBYLO ÃºspÄ›Å¡nÄ› pÅ™idÃ¡no. (chybovÃ½ kÃ³d 106)
+one page backwards	jinn	cs	Jednu stranu zpÄ›t
+one page forward	jinn	cs	Jednu stranu dopÅ™edu
 one-to-many	jinn	cs	Jeden k mnoha
 one-to-many relations	jinn	cs	Vztahy jeden k mnoha
 one-to-one	jinn	cs	Jeden k jednomu
-one-to-one relation is broken, please fix it or contact site-developer.<br/>%1	jinn	cs	Vztah jeden k jednomu je po¹kozen, opravte ho prosím nebo kontaktujte vıvojáøe webu.<br/>%1
+one-to-one relation is broken, please fix it or contact site-developer.<br/>%1	jinn	cs	Vztah jeden k jednomu je poÅ¡kozen, opravte ho prosÃ­m nebo kontaktujte vÃ½vojÃ¡Å™e webu.<br/>%1
 one-to-one relations	jinn	cs	Vztahy jeden k jednomu
-only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	cs	Toto aktivujte jen v pøípadì, ¾e víte, co dìláte. Pou¾íváním experimentálních vlastností mù¾ete znièit svá data.
-only if thumnails exits	jinn	cs	Jen pokud existují miniatury
+only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	cs	Toto aktivujte jen v pÅ™Ã­padÄ›, Å¾e vÃ­te, co dÄ›lÃ¡te. PouÅ¾Ã­vÃ¡nÃ­m experimentÃ¡lnÃ­ch vlastnostÃ­ mÅ¯Å¾ete zniÄit svÃ¡ data.
+only if thumnails exits	jinn	cs	Jen pokud existujÃ­ miniatury
 only one	jinn	cs	jen jeden
-open debugging window.	jinn	cs	Otevøít okno ladìní.
-operation on multiple records failed.	jinn	cs	Operace na nìkolika záznamech selhala.
-operation on multiple records failed. (error code 100)	jinn	cs	Operace na nìkolika záznamech selhala. (chybovı kód 100)
-optional max. height	jinn	cs	Volitelná maximální vı¹ka
-optional max. width	jinn	cs	Volitelná maximální ¹íøka
+open debugging window.	jinn	cs	OtevÅ™Ã­t okno ladÄ›nÃ­.
+operation on multiple records failed.	jinn	cs	Operace na nÄ›kolika zÃ¡znamech selhala.
+operation on multiple records failed. (error code 100)	jinn	cs	Operace na nÄ›kolika zÃ¡znamech selhala. (chybovÃ½ kÃ³d 100)
+optional max. height	jinn	cs	VolitelnÃ¡ maximÃ¡lnÃ­ vÃ½Å¡ka
+optional max. width	jinn	cs	VolitelnÃ¡ maximÃ¡lnÃ­ Å¡Ã­Å™ka
 page %1	jinn	cs	Strana %1
-parent site id	jinn	cs	Id nadøazeného webu
-path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	cs	Cesta k utilitì convert z programu ImageMagick ( napø. /usr/X11R6/bin )
-please comlete all relation elements.	jinn	cs	Dokonèete prosím v¹echny prvky vztahu
-please contact administrator with this message	jinn	cs	Zkontaktujte prosím administrátora s touto zprávou
-please contact administrator with this message.	jinn	cs	Zkontaktujte prosím administrátora s touto zprávou
-please fill in all mandatory fields	jinn	cs	vyplòte prosím v¹echna povinná pole
-please select a site	jinn	cs	Vyberte prosím web
-please set your preferences for this application	jinn	cs	Nastavte prosím své pøedvolby pro tuto aplikaci
-please upgrade	jinn	cs	prosím aktualizujte
+parent site id	jinn	cs	Id nadÅ™azenÃ©ho webu
+path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	cs	Cesta k utilitÄ› convert z programu ImageMagick ( napÅ™. /usr/X11R6/bin )
+please comlete all relation elements.	jinn	cs	DokonÄete prosÃ­m vÅ¡echny prvky vztahu
+please contact administrator with this message	jinn	cs	Zkontaktujte prosÃ­m administrÃ¡tora s touto zprÃ¡vou
+please contact administrator with this message.	jinn	cs	Zkontaktujte prosÃ­m administrÃ¡tora s touto zprÃ¡vou
+please fill in all mandatory fields	jinn	cs	vyplÅˆte prosÃ­m vÅ¡echna povinnÃ¡ pole
+please select a site	jinn	cs	Vyberte prosÃ­m web
+please set your preferences for this application	jinn	cs	Nastavte prosÃ­m svÃ© pÅ™edvolby pro tuto aplikaci
+please upgrade	jinn	cs	prosÃ­m aktualizujte
 plugin configuration	jinn	cs	Konfigurace pluginu
-plugin configuration not saved.	jinn	cs	Konfigurace pluginu NEBYLA ulo¾ena.
-plugin configuration successfully saved	jinn	cs	Konfigurace pluginu byla úspe¹nì ulo¾ena.
-plugin name	jinn	cs	Název pluginu
+plugin configuration not saved.	jinn	cs	Konfigurace pluginu NEBYLA uloÅ¾ena.
+plugin configuration successfully saved	jinn	cs	Konfigurace pluginu byla ÃºspeÅ¡nÄ› uloÅ¾ena.
+plugin name	jinn	cs	NÃ¡zev pluginu
 plugins	jinn	cs	Pluginy
-postgresql support is not stable. wanna help?	common	cs	Podpora PostgreSQL není stabilní. Chcete nápovìdu?
-preset: ms excel	jinn	cs	pøedvolba: MS Excel
-preset: open office spreadsheet	jinn	cs	pøedvolba: OpenOffice tabulka
-preview	jinn	cs	Náhled
-preview thumbs or images in form	jinn	cs	Náhled miniatur nebo obrázkù ve formuláøi
-preview website	jinn	cs	Náhled webu
-primary palet	jinn	cs	Primární paleta
-primary palet colors in hex seperated by commas	jinn	cs	Barvy primární palety v hexa oddìlené èárkami
-production	admin	cs	Produkèní
-production database	jinn	cs	Produkèní databáze
-production environment profile	jinn	cs	Profil produkèního prostøedí
-real value	jinn	cs	reálná hodnota
-record	jinn	cs	záznam
-record %1	jinn	cs	Záznam %1
-record added succesfully	jinn	cs	Záznam byl úspe¹nì pøidán
-record deleted succesfully	jinn	cs	Záznam byl úspe¹nì smazán
-record is not succesfully added.	jinn	cs	Záznam NEBYL úspì¹nì pøidán.
-record is succesfully added.	jinn	cs	Záznam je úspì¹nì pøidán.
-record list	jinn	cs	seznam záznamù
-record not succesfully copied	jinn	cs	Záznam NEBYL úspì¹nì zkopírován
-record not succesfully copied. unknown error	jinn	cs	Záznam NEBYL úspì¹nì zkopírován. Neznámá chyba
-record not succesfully deleted	jinn	cs	Záznam NEBYL úspì¹nì smazán
-record not succesfully deleted.	jinn	cs	Záznam NEBYL úspì¹nì smazán.
-record not succesfully deleted. unknown error	jinn	cs	Záznam NEBYL úspì¹nì smazán. Neznámá chyba
-record not succesfully saved	jinn	cs	Záznam NEBYL úspì¹nì ulo¾en
-record not succesfully saved. unknown error	jinn	cs	Záznam NEBYL úspì¹nì ulo¾en. Neznámá chyba
-record succesfully copied	jinn	cs	Záznam byl úspe¹nì zkopírován
-record succesfully deleted	jinn	cs	Záznam byl úspe¹nì smazán
-record succesfully editted	jinn	cs	Záznam byl úspe¹nì editován
-record successfully added	jinn	cs	Záznam byl úspe¹nì pøidán
-record was not succesfully saved.	jinn	cs	Záznam NEBYL úspì¹nì ulo¾en.
-record was succesfully saved.	jinn	cs	Záznam byl úspe¹nì ulo¾en.
-records not succesfully deleted.	jinn	cs	Záznamy NEBYLY úspì¹nì smazány.
-records not succesfully deleted. (error code 101)	jinn	cs	Záznamy NEBYLY úspì¹nì smazány. (chybovı kód 101)
-records succesfully deleted	jinn	cs	Záznamy byly úspe¹nì smazány
-records were not succesfully added.	jinn	cs	Záznamy NEBYLY úspe¹nì pøidány.
-records were not succesfully saved.	jinn	cs	Záznamy NEBYLY úspe¹nì ulo¾eny.
-records were succesfully added.	jinn	cs	Záznamy byly úspe¹nì pøidány.
-records were succesfully saved.	jinn	cs	Záznamy byly úspe¹nì ulo¾eny.
-registered field plugins	common	cs	Registrované pluginy pole
-registered object event plugins	jinn	cs	Registrované pluginy událostí objektu
-related	jinn	cs	související (ve vztahu)
-related entries from table %1	jinn	cs	Související záznamy z tabulky %1
+postgresql support is not stable. wanna help?	common	cs	Podpora PostgreSQL nenÃ­ stabilnÃ­. Chcete nÃ¡povÄ›du?
+preset: ms excel	jinn	cs	pÅ™edvolba: MS Excel
+preset: open office spreadsheet	jinn	cs	pÅ™edvolba: OpenOffice tabulka
+preview	jinn	cs	NÃ¡hled
+preview thumbs or images in form	jinn	cs	NÃ¡hled miniatur nebo obrÃ¡zkÅ¯ ve formulÃ¡Å™i
+preview website	jinn	cs	NÃ¡hled webu
+primary palet	jinn	cs	PrimÃ¡rnÃ­ paleta
+primary palet colors in hex seperated by commas	jinn	cs	Barvy primÃ¡rnÃ­ palety v hexa oddÄ›lenÃ© ÄÃ¡rkami
+production	admin	cs	ProdukÄnÃ­
+production database	jinn	cs	ProdukÄnÃ­ databÃ¡ze
+production environment profile	jinn	cs	Profil produkÄnÃ­ho prostÅ™edÃ­
+real value	jinn	cs	reÃ¡lnÃ¡ hodnota
+record	jinn	cs	zÃ¡znam
+record %1	jinn	cs	ZÃ¡znam %1
+record added succesfully	jinn	cs	ZÃ¡znam byl ÃºspeÅ¡nÄ› pÅ™idÃ¡n
+record deleted succesfully	jinn	cs	ZÃ¡znam byl ÃºspeÅ¡nÄ› smazÃ¡n
+record is not succesfully added.	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› pÅ™idÃ¡n.
+record is succesfully added.	jinn	cs	ZÃ¡znam je ÃºspÄ›Å¡nÄ› pÅ™idÃ¡n.
+record list	jinn	cs	seznam zÃ¡znamÅ¯
+record not succesfully copied	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› zkopÃ­rovÃ¡n
+record not succesfully copied. unknown error	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› zkopÃ­rovÃ¡n. NeznÃ¡mÃ¡ chyba
+record not succesfully deleted	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› smazÃ¡n
+record not succesfully deleted.	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› smazÃ¡n.
+record not succesfully deleted. unknown error	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› smazÃ¡n. NeznÃ¡mÃ¡ chyba
+record not succesfully saved	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› uloÅ¾en
+record not succesfully saved. unknown error	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› uloÅ¾en. NeznÃ¡mÃ¡ chyba
+record succesfully copied	jinn	cs	ZÃ¡znam byl ÃºspeÅ¡nÄ› zkopÃ­rovÃ¡n
+record succesfully deleted	jinn	cs	ZÃ¡znam byl ÃºspeÅ¡nÄ› smazÃ¡n
+record succesfully editted	jinn	cs	ZÃ¡znam byl ÃºspeÅ¡nÄ› editovÃ¡n
+record successfully added	jinn	cs	ZÃ¡znam byl ÃºspeÅ¡nÄ› pÅ™idÃ¡n
+record was not succesfully saved.	jinn	cs	ZÃ¡znam NEBYL ÃºspÄ›Å¡nÄ› uloÅ¾en.
+record was succesfully saved.	jinn	cs	ZÃ¡znam byl ÃºspeÅ¡nÄ› uloÅ¾en.
+records not succesfully deleted.	jinn	cs	ZÃ¡znamy NEBYLY ÃºspÄ›Å¡nÄ› smazÃ¡ny.
+records not succesfully deleted. (error code 101)	jinn	cs	ZÃ¡znamy NEBYLY ÃºspÄ›Å¡nÄ› smazÃ¡ny. (chybovÃ½ kÃ³d 101)
+records succesfully deleted	jinn	cs	ZÃ¡znamy byly ÃºspeÅ¡nÄ› smazÃ¡ny
+records were not succesfully added.	jinn	cs	ZÃ¡znamy NEBYLY ÃºspeÅ¡nÄ› pÅ™idÃ¡ny.
+records were not succesfully saved.	jinn	cs	ZÃ¡znamy NEBYLY ÃºspeÅ¡nÄ› uloÅ¾eny.
+records were succesfully added.	jinn	cs	ZÃ¡znamy byly ÃºspeÅ¡nÄ› pÅ™idÃ¡ny.
+records were succesfully saved.	jinn	cs	ZÃ¡znamy byly ÃºspeÅ¡nÄ› uloÅ¾eny.
+registered field plugins	common	cs	RegistrovanÃ© pluginy pole
+registered object event plugins	jinn	cs	RegistrovanÃ© pluginy udÃ¡lostÃ­ objektu
+related	jinn	cs	souvisejÃ­cÃ­ (ve vztahu)
+related entries from table %1	jinn	cs	SouvisejÃ­cÃ­ zÃ¡znamy z tabulky %1
 relation %1	jinn	cs	vztah %1
-relation not succesfully saved, unknown error	jinn	cs	Vztah NEBYL úspì¹nì ulo¾en, neznámá chyba
-relation succesfully saved	jinn	cs	Vztah byl úspì¹nì ulo¾en
+relation not succesfully saved, unknown error	jinn	cs	Vztah NEBYL ÃºspÄ›Å¡nÄ› uloÅ¾en, neznÃ¡mÃ¡ chyba
+relation succesfully saved	jinn	cs	Vztah byl ÃºspÄ›Å¡nÄ› uloÅ¾en
 relation widgets	jinn	cs	Widgety vztahu
 relations	jinn	cs	vztahy
 relations for this object	jinn	cs	Vztahy pro tento objekt
-relative paths to images	jinn	cs	Relativní cesty k obrázkùm
-reload parent window	jinn	cs	Naèíst znovu nadøazené okno
-remote	admin	cs	Vzdálenı
+relative paths to images	jinn	cs	RelativnÃ­ cesty k obrÃ¡zkÅ¯m
+reload parent window	jinn	cs	NaÄÃ­st znovu nadÅ™azenÃ© okno
+remote	admin	cs	VzdÃ¡lenÃ½
 remove	jinn	cs	odstranit
-remove all	jinn	cs	Odstranit v¹e
+remove all	jinn	cs	Odstranit vÅ¡e
 replace	jinn	cs	nahradit
-replace existing site with the same name?	jinn	cs	Nahradit stávající web stejného jména?
-replaced existing site named <strong>%1</strong>.	jinn	cs	Nahrazen stávající web pojmenovanı <strong>%1</strong>.
-report not saved succesfull	jinn	cs	Hlá¹ení NEBYLO úspì¹nì ulo¾eno
-report saved succesfull	jinn	cs	Hlá¹ení bylo úspì¹nì ulo¾eno
-reports	jinn	cs	Hlá¹ení
-represented by:	jinn	cs	reprezentovanı (èím):
+replace existing site with the same name?	jinn	cs	Nahradit stÃ¡vajÃ­cÃ­ web stejnÃ©ho jmÃ©na?
+replaced existing site named <strong>%1</strong>.	jinn	cs	Nahrazen stÃ¡vajÃ­cÃ­ web pojmenovanÃ½ <strong>%1</strong>.
+report not saved succesfull	jinn	cs	HlÃ¡Å¡enÃ­ NEBYLO ÃºspÄ›Å¡nÄ› uloÅ¾eno
+report saved succesfull	jinn	cs	HlÃ¡Å¡enÃ­ bylo ÃºspÄ›Å¡nÄ› uloÅ¾eno
+reports	jinn	cs	HlÃ¡Å¡enÃ­
+represented by:	jinn	cs	reprezentovanÃ½ (ÄÃ­m):
 reset	jinn	cs	Resetovat
-reset form	jinn	cs	resetovat formuláø
-right button content menu	jinn	cs	Kontextové menu pravého tlaèítka
-save	jinn	cs	Ulo¾it
-save and add new record	jinn	cs	ulo¾it a pøidat novı záznam
-save and add new records	jinn	cs	ulo¾it a pøidat nové záznamy
-save and continue	jinn	cs	ulo¾it a pokraèovat
-save and contiue	jinn	cs	ulo¾it a pokraèovat
-save and finish	jinn	cs	ulo¾it a ukoèit
-save and return to list	jinn	cs	ulo¾it a vrátit se na seznam
-save as	jinn	cs	ulo¾it jako
-save export profile	jinn	cs	ulo¾it exportní profil
-save form lay-out	jinn	cs	Ulo¾it vzhled (rozvr¾ení) formuláøe
-save profile	jinn	cs	ulo¾it profil
-save relation	jinn	cs	Ulo¾it vztah
-save site conf to file	jinn	cs	Ulo¾it konfiguraci webu do souboru
-saved version	jinn	cs	Ulo¾ená verze
-saved with version	jinn	cs	Ulo¾eno s verzí
-screenshot	jinn	cs	snímek obrazovky
+reset form	jinn	cs	resetovat formulÃ¡Å™
+right button content menu	jinn	cs	KontextovÃ© menu pravÃ©ho tlaÄÃ­tka
+save	jinn	cs	UloÅ¾it
+save and add new record	jinn	cs	uloÅ¾it a pÅ™idat novÃ½ zÃ¡znam
+save and add new records	jinn	cs	uloÅ¾it a pÅ™idat novÃ© zÃ¡znamy
+save and continue	jinn	cs	uloÅ¾it a pokraÄovat
+save and contiue	jinn	cs	uloÅ¾it a pokraÄovat
+save and finish	jinn	cs	uloÅ¾it a ukoÄit
+save and return to list	jinn	cs	uloÅ¾it a vrÃ¡tit se na seznam
+save as	jinn	cs	uloÅ¾it jako
+save export profile	jinn	cs	uloÅ¾it exportnÃ­ profil
+save form lay-out	jinn	cs	UloÅ¾it vzhled (rozvrÅ¾enÃ­) formulÃ¡Å™e
+save profile	jinn	cs	uloÅ¾it profil
+save relation	jinn	cs	UloÅ¾it vztah
+save site conf to file	jinn	cs	UloÅ¾it konfiguraci webu do souboru
+saved version	jinn	cs	UloÅ¾enÃ¡ verze
+saved with version	jinn	cs	UloÅ¾eno s verzÃ­
+screenshot	jinn	cs	snÃ­mek obrazovky
 search	jinn	cs	Hledat
 search and replace	jinn	cs	Hledat a nahradit
-search for string	jinn	cs	hledat øetìzec
+search for string	jinn	cs	hledat Å™etÄ›zec
 select a plugin	jinn	cs	vybrat plugin
-select an event	jinn	cs	vybrat událost
-select directory	jinn	cs	vybrat adresáø
-select fields to display from foreign table	jinn	cs	Vybrat pole, která se mají zobrazit z cizí tabulky
-select foreign key	jinn	cs	Vybrat cizí klíè
-select foreign table	jinn	cs	Vybrat cizí tabulku
+select an event	jinn	cs	vybrat udÃ¡lost
+select directory	jinn	cs	vybrat adresÃ¡Å™
+select fields to display from foreign table	jinn	cs	Vybrat pole, kterÃ¡ se majÃ­ zobrazit z cizÃ­ tabulky
+select foreign key	jinn	cs	Vybrat cizÃ­ klÃ­Ä
+select foreign table	jinn	cs	Vybrat cizÃ­ tabulku
 select jinn object file (*.jobj	jinn	cs	Vybrat soubor JiNN objektu (*.jobj)
 select jinn site file	jinn	cs	Vybrat soubor JiNN webu
-select local key	jinn	cs	Vybrat lokální klíè
-select object configuration to use	jinn	cs	Vybrat konfiguraci objektu, která se má pou¾ít
+select local key	jinn	cs	Vybrat lokÃ¡lnÃ­ klÃ­Ä
+select object configuration to use	jinn	cs	Vybrat konfiguraci objektu, kterÃ¡ se mÃ¡ pouÅ¾Ã­t
 select site	jinn	cs	vybrat web
-select site to moderate	jinn	cs	Vybrat web, kterı se má spravovat
-select site-object to moderate	jinn	cs	Vybrat objekt webu, kterı se má spravovat
-select theme	jinn	cs	Vybrat téma
-select which graphic library jinn must use	admin	cs	Vybrat grafickou knihovnu, kterou musí JiNN pou¾ít
+select site to moderate	jinn	cs	Vybrat web, kterÃ½ se mÃ¡ spravovat
+select site-object to moderate	jinn	cs	Vybrat objekt webu, kterÃ½ se mÃ¡ spravovat
+select theme	jinn	cs	Vybrat tÃ©ma
+select which graphic library jinn must use	admin	cs	Vybrat grafickou knihovnu, kterou musÃ­ JiNN pouÅ¾Ã­t
 select_object	jinn	cs	Vybrat objekt
-selected records	jinn	cs	vybrané záznamy
-serialnumber	jinn	cs	Sériové èíslo objektu
+selected records	jinn	cs	vybranÃ© zÃ¡znamy
+serialnumber	jinn	cs	SÃ©riovÃ© ÄÃ­slo objektu
 server type?	admin	cs	Typ serveru?
 session filter	jinn	cs	filtr relace
-set access right for site objects	jinn	cs	Nastavit pøístupová práva pro objekty webu
-set access rights	jinn	cs	Nastavit pøístupová práva
-set access rights for sites	jinn	cs	Nastavit pøístupová práva pro weby
-set administrators for	jinn	cs	Nastavit administrátory pro
-set administrators for %1	jinn	cs	Nastavit administrátory pro %1
-set object moderator	jinn	cs	nastavit moderátor objektu
-set site admin	jinn	cs	nastavit administrátora webu
+set access right for site objects	jinn	cs	Nastavit pÅ™Ã­stupovÃ¡ prÃ¡va pro objekty webu
+set access rights	jinn	cs	Nastavit pÅ™Ã­stupovÃ¡ prÃ¡va
+set access rights for sites	jinn	cs	Nastavit pÅ™Ã­stupovÃ¡ prÃ¡va pro weby
+set administrators for	jinn	cs	Nastavit administrÃ¡tory pro
+set administrators for %1	jinn	cs	Nastavit administrÃ¡tory pro %1
+set object moderator	jinn	cs	nastavit moderÃ¡tor objektu
+set site admin	jinn	cs	nastavit administrÃ¡tora webu
 show	jinn	cs	zobrazit
-show all columns	jinn	cs	Zobrazit v¹echny sloupce
-show all colums, always	jinn	cs	Zobrazit v¹echny sloupce, v¾dy
-show by default in listview	jinn	cs	standardnì zobrazit v pohledu seznam
-show by default_listview	jinn	cs	standardnì zobrazit v pohledu seznam
+show all columns	jinn	cs	Zobrazit vÅ¡echny sloupce
+show all colums, always	jinn	cs	Zobrazit vÅ¡echny sloupce, vÅ¾dy
+show by default in listview	jinn	cs	standardnÄ› zobrazit v pohledu seznam
+show by default_listview	jinn	cs	standardnÄ› zobrazit v pohledu seznam
 show colomn	jinn	cs	zobrazit sloupec
-show extra table debugging information	jinn	cs	Zobrazit extra ladící informace o tabulce
-show in form	jinn	cs	Zobrazit ve formuláøi
-show object_arr in msgbox	jinn	cs	Zobrazit pole objektu v dialogovém oknì
-show site navigation menu on top of the page?	jinn	cs	Zobrazit navigaèní menu webu na vrchu stránky?
-show site_arr in msgbox	jinn	cs	Zobrazit pole webu v dialogovém oknì
-show sql-statements in msgbox	jinn	cs	Zobrazit SQL pøíkazy v dialogovém oknì
+show extra table debugging information	jinn	cs	Zobrazit extra ladÃ­cÃ­ informace o tabulce
+show in form	jinn	cs	Zobrazit ve formulÃ¡Å™i
+show object_arr in msgbox	jinn	cs	Zobrazit pole objektu v dialogovÃ©m oknÄ›
+show site navigation menu on top of the page?	jinn	cs	Zobrazit navigaÄnÃ­ menu webu na vrchu strÃ¡nky?
+show site_arr in msgbox	jinn	cs	Zobrazit pole webu v dialogovÃ©m oknÄ›
+show sql-statements in msgbox	jinn	cs	Zobrazit SQL pÅ™Ã­kazy v dialogovÃ©m oknÄ›
 show upload path	admin	cs	Zobrazit cestu pro upload
 showing	jinn	cs	zobrazeno
 showing:	jinn	cs	zobrazeno:
 site	jinn	cs	Web
-site beheerders	jinn	cs	Administrátoøi webu
-site db host	jinn	cs	Server webové databáze
-site db name	jinn	cs	Název webové databáze
-site db password	jinn	cs	Heslo k webové databázi
-site db type	jinn	cs	Typ webové databáze
-site db user	jinn	cs	U¾ivatelské jméno k webové databázi
+site beheerders	jinn	cs	AdministrÃ¡toÅ™i webu
+site db host	jinn	cs	Server webovÃ© databÃ¡ze
+site db name	jinn	cs	NÃ¡zev webovÃ© databÃ¡ze
+site db password	jinn	cs	Heslo k webovÃ© databÃ¡zi
+site db type	jinn	cs	Typ webovÃ© databÃ¡ze
+site db user	jinn	cs	UÅ¾ivatelskÃ© jmÃ©no k webovÃ© databÃ¡zi
 site description	admin	cs	Popis webu
-site files succesfully deleted	jinn	cs	Soubory webu byly úspì¹nì smazány
-site files succesfully extracted.	jinn	cs	Soubory webu byly úspì¹nì rozbaleny.
+site files succesfully deleted	jinn	cs	Soubory webu byly ÃºspÄ›Å¡nÄ› smazÃ¡ny
+site files succesfully extracted.	jinn	cs	Soubory webu byly ÃºspÄ›Å¡nÄ› rozbaleny.
 site id	jinn	cs	Id webu
-site media and documents	jinn	cs	Média a dokumenty webu
-site name	jinn	cs	Název webu
-site not succesfully added, unknown error	jinn	cs	Web NEBYL úspì¹nì pøidán, neznámá chyba
-site not succesfully deleted, unknown error	jinn	cs	Web NEBYL úspì¹nì smazán, neznámá chyba
-site not succesfully saved, unknown error	jinn	cs	Web NEBYL úspì¹nì ulo¾en, neznámá chyba
-site object not succesfully added, unknown error	jinn	cs	Objekt webu NEBYL úspì¹nì pøidán, neznámá chyba
-site object not succesfully deleted, unknown error	jinn	cs	Objekt webu NEBYL úspì¹nì smazán, neznámá chyba
-site object not succesfully saved, unknown error	jinn	cs	Objekt webu NEBYL úspì¹nì ulo¾en, neznámá chyba
-site object succesfully added	jinn	cs	Objekt webu byl úspì¹nì pøidán
-site object succesfully deleted	jinn	cs	Objekt webu byl úspì¹nì smazán
-site object succesfully saved	jinn	cs	Objekt webu byl úspì¹nì ulo¾en
+site media and documents	jinn	cs	MÃ©dia a dokumenty webu
+site name	jinn	cs	NÃ¡zev webu
+site not succesfully added, unknown error	jinn	cs	Web NEBYL ÃºspÄ›Å¡nÄ› pÅ™idÃ¡n, neznÃ¡mÃ¡ chyba
+site not succesfully deleted, unknown error	jinn	cs	Web NEBYL ÃºspÄ›Å¡nÄ› smazÃ¡n, neznÃ¡mÃ¡ chyba
+site not succesfully saved, unknown error	jinn	cs	Web NEBYL ÃºspÄ›Å¡nÄ› uloÅ¾en, neznÃ¡mÃ¡ chyba
+site object not succesfully added, unknown error	jinn	cs	Objekt webu NEBYL ÃºspÄ›Å¡nÄ› pÅ™idÃ¡n, neznÃ¡mÃ¡ chyba
+site object not succesfully deleted, unknown error	jinn	cs	Objekt webu NEBYL ÃºspÄ›Å¡nÄ› smazÃ¡n, neznÃ¡mÃ¡ chyba
+site object not succesfully saved, unknown error	jinn	cs	Objekt webu NEBYL ÃºspÄ›Å¡nÄ› uloÅ¾en, neznÃ¡mÃ¡ chyba
+site object succesfully added	jinn	cs	Objekt webu byl ÃºspÄ›Å¡nÄ› pÅ™idÃ¡n
+site object succesfully deleted	jinn	cs	Objekt webu byl ÃºspÄ›Å¡nÄ› smazÃ¡n
+site object succesfully saved	jinn	cs	Objekt webu byl ÃºspÄ›Å¡nÄ› uloÅ¾en
 site objects in %1	jinn	cs	Objekty webu v %1
-site objects not succesfully deleted, unknown error	jinn	cs	Objekty webu NEBYLY úspì¹nì smazány, neznámá chyba
-site objects succesfully deleted	jinn	cs	Objekty webu byly úspì¹nì smazány
-site succesfully added	jinn	cs	Web byl úspì¹nì pøidán
-site succesfully deleted	jinn	cs	Web byl úspì¹nì smazán
-site succesfully saved	jinn	cs	Web byl úspì¹nì ulo¾en
+site objects not succesfully deleted, unknown error	jinn	cs	Objekty webu NEBYLY ÃºspÄ›Å¡nÄ› smazÃ¡ny, neznÃ¡mÃ¡ chyba
+site objects succesfully deleted	jinn	cs	Objekty webu byly ÃºspÄ›Å¡nÄ› smazÃ¡ny
+site succesfully added	jinn	cs	Web byl ÃºspÄ›Å¡nÄ› pÅ™idÃ¡n
+site succesfully deleted	jinn	cs	Web byl ÃºspÄ›Å¡nÄ› smazÃ¡n
+site succesfully saved	jinn	cs	Web byl ÃºspÄ›Å¡nÄ› uloÅ¾en
 site title	admin	cs	Titulek webu
 site-objects	jinn	cs	Objekty webu
 sites	jinn	cs	Weby
-sites not succesfully deleted, unknown error	jinn	cs	Weby NEBYLY úspì¹nì smazány, neznámá chyba
-sites succesfully deleted	jinn	cs	Weby byly úspì¹nì smazány
-some errors accured while upgrading. we have not touched the old settings so you can try again. if this error keeps coming back please contact your administrator or the jinn developers<br/><br/>	jinn	cs	Pøi aktualizaci do¹lo k chybám. Stará nastavení zùstala beze zmìny, tak¾e se mù¾ete pokusit znovu. Pokud se tato chyba bude opakovat, zkontaktujte prosím Va¹e administrátora nebo vıvojáøe JiNNu<br/><br/>
-standard editor options	jinn	cs	Volby standardního editoru
-start	admin	cs	Zaèátek
-start at record	jinn	cs	zaèátek na záznamu
-stop at record	jinn	cs	konec na záznamu
-store filter	jinn	cs	ulo¾it filtr
+sites not succesfully deleted, unknown error	jinn	cs	Weby NEBYLY ÃºspÄ›Å¡nÄ› smazÃ¡ny, neznÃ¡mÃ¡ chyba
+sites succesfully deleted	jinn	cs	Weby byly ÃºspÄ›Å¡nÄ› smazÃ¡ny
+some errors accured while upgrading. we have not touched the old settings so you can try again. if this error keeps coming back please contact your administrator or the jinn developers<br/><br/>	jinn	cs	PÅ™i aktualizaci doÅ¡lo k chybÃ¡m. StarÃ¡ nastavenÃ­ zÅ¯stala beze zmÄ›ny, takÅ¾e se mÅ¯Å¾ete pokusit znovu. Pokud se tato chyba bude opakovat, zkontaktujte prosÃ­m VaÅ¡e administrÃ¡tora nebo vÃ½vojÃ¡Å™e JiNNu<br/><br/>
+standard editor options	jinn	cs	Volby standardnÃ­ho editoru
+start	admin	cs	ZaÄÃ¡tek
+start at record	jinn	cs	zaÄÃ¡tek na zÃ¡znamu
+stop at record	jinn	cs	konec na zÃ¡znamu
+store filter	jinn	cs	uloÅ¾it filtr
 submit and import	jinn	cs	Odeslat a importovat
-successful	jinn	cs	Úspì¹nı
-switchboard	jinn	cs	Rozvadeè
+successful	jinn	cs	ÃšspÄ›Å¡nÃ½
+switchboard	jinn	cs	RozvadeÄ
 t/m	jinn	cs	t/m
 table	jinn	cs	Tabulka
-table name	jinn	cs	Název tabulky
-table prefix for data objects	jinn	cs	Prefix tabulky pro datové objekty
-tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	cs	Název tabulky <i>%1</i> není platnı. Pravdìpodobnì se název tabulky zmìnil nebo byla tabulka smazána. Vyberte prosím novou tabulku nebo sma¾te tento objekt
-test database access	jinn	cs	Testovat pøístup k databázi
-test database and paths	jinn	cs	Testovat databázi a cesty
-test site settings	jinn	cs	Testovat nastavení webu
+table name	jinn	cs	NÃ¡zev tabulky
+table prefix for data objects	jinn	cs	Prefix tabulky pro datovÃ© objekty
+tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	cs	NÃ¡zev tabulky <i>%1</i> nenÃ­ platnÃ½. PravdÄ›podobnÄ› se nÃ¡zev tabulky zmÄ›nil nebo byla tabulka smazÃ¡na. Vyberte prosÃ­m novou tabulku nebo smaÅ¾te tento objekt
+test database access	jinn	cs	Testovat pÅ™Ã­stup k databÃ¡zi
+test database and paths	jinn	cs	Testovat databÃ¡zi a cesty
+test site settings	jinn	cs	Testovat nastavenÃ­ webu
 text color %1	jinn	cs	Barva textu %1
-text label	jinn	cs	Textovı popisek
-the administrator set an invalid max. file upload size. for safety reasons we now use a max. filesize of 1mb. please contact your jinn administrator.	jinn	cs	Administrátor nastavil neplatnou maximální velikost uploadovaného souboru. Z bezpeènostních dùvodù teï pou¾íváme maximální velikost souboru 1 MB. Zkontaktujte prosím Va¹eho administrátora JiNNu.
-the attachments subdirectory does not exist and cannot be created ...	jinn	cs	Podadresáø pro pøílohy neexistuje a nemù¾e bıt vytvoøen ...
-the attachments subdirectory is not writable by the webserver ...	jinn	cs	Webovı server nemá právo zápisu do podadresáøe pro pøílohy ...
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	cs	Uploadovanı soubor jménem %1 není obrázek, je po¹kozen nebo se jedná o typ souboru, kterı JiNN nepodporuje.
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	cs	Uploadovanı soubor jménem %1 není obrázek, je po¹kozen nebo se jedná o typ souboru, kterı JiNN nepodporuje. Pokud se tato chyba bude opakovat, zkontrolujte prosím svoji instalaci programu ImageMagick. Je známo, ¾e jeho star¹í verze nepracovaly s JiNNem korektnì. Ujistìte se, ¾e máte nainstalovanou verzi 5.4.9 nebo vy¹¹í.
-the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	cs	Tento server nepodporuje soubory typu GIF, vra»te se prosím zpìt a zkuste jinı typ souboru.
-the identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5	jinn	cs	Identifikaèní pole této tabulky, %1, reprezentovanı %2 má vztah mnoho k mnoha s %3 pøedstavovanım %4 zobrazujíce %5
-the identifyer from this table (%1.id) represented by	jinn	cs	Identifikátor z této tabulky (%1.id) reprezentovanı (èím)
-the identifyer from this table (tp_categories.id) represented by:	jinn	cs	Identifikátor z této tabulky (tp_categories.id) reprezentovanı (èím)
-the image normal_size-directory subdirectory does not exist and cannot be created ...	jinn	cs	Podadresáø pro obrázky normální velikosti neexistuje a nemù¾e bıt vytvoøen ...
-the image_path normal_size subdirectory is not writable by the webserver ...	jinn	cs	Webovı server nemá právo zápisu do podadresáøe pro obrázky normální velikosti ...
-the image_path thumb subdirectory is not writable by the webserver ...	jinn	cs	Webovı server nemá právo zápisu do podadresáøe pro miniatury ...
-the max. file upload size is %1 mb.	jinn	cs	Maximální velikost uploadovaného souboru je %1 MB.
-the name of the new object is <strong>%1</strong>.	jinn	cs	Název nového objektu je <strong>%1</strong>.
-the name of the new site is <strong>%1</strong>.	jinn	cs	Název nového webu je <strong>%1</strong>.
-the old confguration data is replaced<br/><br/>	jinn	cs	Stará konfiguraèní data byla nahrazena<br/><br/>
-the old style or the new way with the dhtml calendar	jinn	cs	Starı styl nebo novì s DHTML kalendáøem
-the path to upload files is not correct, please contact your jinn administrator.	jinn	cs	Cesta pro upload souborù není platná, kontaktujte prosím Va¹eho administrátora JiNNu.
-the path to upload files is not set, please contact your jinn administrator.	jinn	cs	Cesta pro upload souborù není nastavena, kontaktujte prosím Va¹eho administrátora JiNNu.
-the path to upload images is not correct, please contact your jinn administrator.	jinn	cs	Cesta pro upload obrázkù není platná, kontaktujte prosím Va¹eho administrátora JiNNu.
-the path to upload images is not set, please contact your jinn administrator.	jinn	cs	Cesta pro upload obrázkù není nastavena, kontaktujte prosím Va¹eho administrátora JiNNu.
-the resize process failed, please contact the administrator	jinn	cs	proces zmìny velikosti selhal, kontaktujte prosím administrátora
-the upgrade process has is finished. you can now close this windows and start over again<br/><br/>	jinn	cs	Proces aktualizace je dokonèen. Nyní mù¾ete zavøít tato okna a znovu zaèít<br/><br/>
-the wysiwyg plugin makes you edit text like you do in a program like openoffice writer or word. some people don't like this feature though, so you can force jinn not to use it.	jinn	cs	WYSIWYG plugin dovoluje editovat text podobnım zpùsobem, jako v OpenOffice Writeru nebo MS Wordu. Nicménì, nìkteøí lidé takovou funkcionalitu nemají rádi, tak¾e mù¾ete pøinutit JiNN, aby tento plugin nepou¾íval.
-there are no directories in this site you have access to.	jinn	cs	V tomto webu nejsou adresáøe, ke kterım by jste mìl(a) pøístup.
-there are no pages	jinn	cs	®ádné stránky neexistují
-there are no records found for this object. you can now at a new record.	jinn	cs	Pro tento objekt nebyly nalezeny ¾ádné záznamy. Mù¾ete nyní novı záznam pøidat.
-there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	cs	Není tu web, ke kterému by jste mìl(a) pøístup. Po¾ádejte Va¹eho administrátora, a» Vám pøidìlí pøístup k objektu Va¹eho webu nebo zkontrolujte, zda vùbec nìjakı web existuje
-this allows the users to use the report functionalitie	admin	cs	Toto dovoluje u¾ivatelùm pou¾ívat funkci hlá¹ení
-this is for debugging purposes.	jinn	cs	Toto je pro úèely ladìní.
-this navigation is also available in the sitebox menu	jinn	cs	Tato navigace je také dostupná postranním panelu
-this object can only have one record.	jinn	cs	Tento objekt mù¾e mít jeden záznam.
-this siteconfiguration, saved using jinn version %1, may be incompatible with this jinn version %2	jinn	cs	Tato konfigurace webu, vytvoøená za pou¾ití JiNNu verze %1, mù¾e bıt nekompatibilní s tímto JiNNem verze %2
-this table has not unique identifier field	jinn	cs	Tato tabulka nemá unikátní identifikaèní pole
+text label	jinn	cs	TextovÃ½ popisek
+the administrator set an invalid max. file upload size. for safety reasons we now use a max. filesize of 1mb. please contact your jinn administrator.	jinn	cs	AdministrÃ¡tor nastavil neplatnou maximÃ¡lnÃ­ velikost uploadovanÃ©ho souboru. Z bezpeÄnostnÃ­ch dÅ¯vodÅ¯ teÄ pouÅ¾Ã­vÃ¡me maximÃ¡lnÃ­ velikost souboru 1 MB. Zkontaktujte prosÃ­m VaÅ¡eho administrÃ¡tora JiNNu.
+the attachments subdirectory does not exist and cannot be created ...	jinn	cs	PodadresÃ¡Å™ pro pÅ™Ã­lohy neexistuje a nemÅ¯Å¾e bÃ½t vytvoÅ™en ...
+the attachments subdirectory is not writable by the webserver ...	jinn	cs	WebovÃ½ server nemÃ¡ prÃ¡vo zÃ¡pisu do podadresÃ¡Å™e pro pÅ™Ã­lohy ...
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	cs	UploadovanÃ½ soubor jmÃ©nem %1 nenÃ­ obrÃ¡zek, je poÅ¡kozen nebo se jednÃ¡ o typ souboru, kterÃ½ JiNN nepodporuje.
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	cs	UploadovanÃ½ soubor jmÃ©nem %1 nenÃ­ obrÃ¡zek, je poÅ¡kozen nebo se jednÃ¡ o typ souboru, kterÃ½ JiNN nepodporuje. Pokud se tato chyba bude opakovat, zkontrolujte prosÃ­m svoji instalaci programu ImageMagick. Je znÃ¡mo, Å¾e jeho starÅ¡Ã­ verze nepracovaly s JiNNem korektnÄ›. UjistÄ›te se, Å¾e mÃ¡te nainstalovanou verzi 5.4.9 nebo vyÅ¡Å¡Ã­.
+the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	cs	Tento server nepodporuje soubory typu GIF, vraÅ¥te se prosÃ­m zpÄ›t a zkuste jinÃ½ typ souboru.
+the identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5	jinn	cs	IdentifikaÄnÃ­ pole tÃ©to tabulky, %1, reprezentovanÃ½ %2 mÃ¡ vztah mnoho k mnoha s %3 pÅ™edstavovanÃ½m %4 zobrazujÃ­ce %5
+the identifyer from this table (%1.id) represented by	jinn	cs	IdentifikÃ¡tor z tÃ©to tabulky (%1.id) reprezentovanÃ½ (ÄÃ­m)
+the identifyer from this table (tp_categories.id) represented by:	jinn	cs	IdentifikÃ¡tor z tÃ©to tabulky (tp_categories.id) reprezentovanÃ½ (ÄÃ­m)
+the image normal_size-directory subdirectory does not exist and cannot be created ...	jinn	cs	PodadresÃ¡Å™ pro obrÃ¡zky normÃ¡lnÃ­ velikosti neexistuje a nemÅ¯Å¾e bÃ½t vytvoÅ™en ...
+the image_path normal_size subdirectory is not writable by the webserver ...	jinn	cs	WebovÃ½ server nemÃ¡ prÃ¡vo zÃ¡pisu do podadresÃ¡Å™e pro obrÃ¡zky normÃ¡lnÃ­ velikosti ...
+the image_path thumb subdirectory is not writable by the webserver ...	jinn	cs	WebovÃ½ server nemÃ¡ prÃ¡vo zÃ¡pisu do podadresÃ¡Å™e pro miniatury ...
+the max. file upload size is %1 mb.	jinn	cs	MaximÃ¡lnÃ­ velikost uploadovanÃ©ho souboru je %1 MB.
+the name of the new object is <strong>%1</strong>.	jinn	cs	NÃ¡zev novÃ©ho objektu je <strong>%1</strong>.
+the name of the new site is <strong>%1</strong>.	jinn	cs	NÃ¡zev novÃ©ho webu je <strong>%1</strong>.
+the old confguration data is replaced<br/><br/>	jinn	cs	StarÃ¡ konfiguraÄnÃ­ data byla nahrazena<br/><br/>
+the old style or the new way with the dhtml calendar	jinn	cs	StarÃ½ styl nebo novÄ› s DHTML kalendÃ¡Å™em
+the path to upload files is not correct, please contact your jinn administrator.	jinn	cs	Cesta pro upload souborÅ¯ nenÃ­ platnÃ¡, kontaktujte prosÃ­m VaÅ¡eho administrÃ¡tora JiNNu.
+the path to upload files is not set, please contact your jinn administrator.	jinn	cs	Cesta pro upload souborÅ¯ nenÃ­ nastavena, kontaktujte prosÃ­m VaÅ¡eho administrÃ¡tora JiNNu.
+the path to upload images is not correct, please contact your jinn administrator.	jinn	cs	Cesta pro upload obrÃ¡zkÅ¯ nenÃ­ platnÃ¡, kontaktujte prosÃ­m VaÅ¡eho administrÃ¡tora JiNNu.
+the path to upload images is not set, please contact your jinn administrator.	jinn	cs	Cesta pro upload obrÃ¡zkÅ¯ nenÃ­ nastavena, kontaktujte prosÃ­m VaÅ¡eho administrÃ¡tora JiNNu.
+the resize process failed, please contact the administrator	jinn	cs	proces zmÄ›ny velikosti selhal, kontaktujte prosÃ­m administrÃ¡tora
+the upgrade process has is finished. you can now close this windows and start over again<br/><br/>	jinn	cs	Proces aktualizace je dokonÄen. NynÃ­ mÅ¯Å¾ete zavÅ™Ã­t tato okna a znovu zaÄÃ­t<br/><br/>
+the wysiwyg plugin makes you edit text like you do in a program like openoffice writer or word. some people don't like this feature though, so you can force jinn not to use it.	jinn	cs	WYSIWYG plugin dovoluje editovat text podobnÃ½m zpÅ¯sobem, jako v OpenOffice Writeru nebo MS Wordu. NicmÃ©nÄ›, nÄ›kteÅ™Ã­ lidÃ© takovou funkcionalitu nemajÃ­ rÃ¡di, takÅ¾e mÅ¯Å¾ete pÅ™inutit JiNN, aby tento plugin nepouÅ¾Ã­val.
+there are no directories in this site you have access to.	jinn	cs	V tomto webu nejsou adresÃ¡Å™e, ke kterÃ½m by jste mÄ›l(a) pÅ™Ã­stup.
+there are no pages	jinn	cs	Å½Ã¡dnÃ© strÃ¡nky neexistujÃ­
+there are no records found for this object. you can now at a new record.	jinn	cs	Pro tento objekt nebyly nalezeny Å¾Ã¡dnÃ© zÃ¡znamy. MÅ¯Å¾ete nynÃ­ novÃ½ zÃ¡znam pÅ™idat.
+there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	cs	NenÃ­ tu web, ke kterÃ©mu by jste mÄ›l(a) pÅ™Ã­stup. PoÅ¾Ã¡dejte VaÅ¡eho administrÃ¡tora, aÅ¥ VÃ¡m pÅ™idÄ›lÃ­ pÅ™Ã­stup k objektu VaÅ¡eho webu nebo zkontrolujte, zda vÅ¯bec nÄ›jakÃ½ web existuje
+this allows the users to use the report functionalitie	admin	cs	Toto dovoluje uÅ¾ivatelÅ¯m pouÅ¾Ã­vat funkci hlÃ¡Å¡enÃ­
+this is for debugging purposes.	jinn	cs	Toto je pro ÃºÄely ladÄ›nÃ­.
+this navigation is also available in the sitebox menu	jinn	cs	Tato navigace je takÃ© dostupnÃ¡ postrannÃ­m panelu
+this object can only have one record.	jinn	cs	Tento objekt mÅ¯Å¾e mÃ­t jeden zÃ¡znam.
+this siteconfiguration, saved using jinn version %1, may be incompatible with this jinn version %2	jinn	cs	Tato konfigurace webu, vytvoÅ™enÃ¡ za pouÅ¾itÃ­ JiNNu verze %1, mÅ¯Å¾e bÃ½t nekompatibilnÃ­ s tÃ­mto JiNNem verze %2
+this table has not unique identifier field	jinn	cs	Tato tabulka nemÃ¡ unikÃ¡tnÃ­ identifikaÄnÃ­ pole
 thisfile	jinn	cs	tento soubor
-thumb directory does not exist or is not correct ...	jinn	cs	adresáø pro miniatury neexistuje nebo není platnı ...
-thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	cs	adresáø pro miniatury neexistuje nebo není platnı ...<br>zkontrolujte prosím adresáø pro upload u objektu
+thumb directory does not exist or is not correct ...	jinn	cs	adresÃ¡Å™ pro miniatury neexistuje nebo nenÃ­ platnÃ½ ...
+thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	cs	adresÃ¡Å™ pro miniatury neexistuje nebo nenÃ­ platnÃ½ ...<br>zkontrolujte prosÃ­m adresÃ¡Å™ pro upload u objektu
 thumbnail	jinn	cs	miniatura
-title for html-page	jinn	cs	titulek HTML stránky
-to see changed previews you have to safe this record first.	jinn	cs	Pro zobrazení zmìnìného náhledu musíte nejprve ulo¾it tento záznam.
-toggle all above checkboxes	jinn	cs	(od)oznaèit v¹echna vı¹e zobrazená za¹krtávací políèka
-tooltip text	jinn	cs	Text nápovìdy k nástroji
-unexpected error	jinn	cs	neoèekávaná chyba
-unique id	jinn	cs	Unikátní id
-unlimited	jinn	cs	neomezenı
+title for html-page	jinn	cs	titulek HTML strÃ¡nky
+to see changed previews you have to safe this record first.	jinn	cs	Pro zobrazenÃ­ zmÄ›nÄ›nÃ©ho nÃ¡hledu musÃ­te nejprve uloÅ¾it tento zÃ¡znam.
+toggle all above checkboxes	jinn	cs	(od)oznaÄit vÅ¡echna vÃ½Å¡e zobrazenÃ¡ zaÅ¡krtÃ¡vacÃ­ polÃ­Äka
+tooltip text	jinn	cs	Text nÃ¡povÄ›dy k nÃ¡stroji
+unexpected error	jinn	cs	neoÄekÃ¡vanÃ¡ chyba
+unique id	jinn	cs	UnikÃ¡tnÃ­ id
+unlimited	jinn	cs	neomezenÃ½
 upgrade	jinn	cs	aktualizovat
 upload	jinn	cs	uploadovat
-upload new font (reload to select this font)	jinn	cs	Uploadovat nové písmo (naètìte znovu pro vıbìr fontu)
+upload new font (reload to select this font)	jinn	cs	Uploadovat novÃ© pÃ­smo (naÄtÄ›te znovu pro vÃ½bÄ›r fontu)
 upload path	jinn	cs	Cesta pro upload
 upload path exist	jinn	cs	Cesta pro upload existuje
 upload path writable	jinn	cs	Do cesty pro upload lze zapisovat
-upload path write test	jinn	cs	Test zápisu do cesty pro upload
+upload path write test	jinn	cs	Test zÃ¡pisu do cesty pro upload
 upload url	jinn	cs	URL pro upload
-upload url location correct	jinn	cs	Umístìní URL pro upload je platné
-use reports	admin	cs	Pou¾ít hlá¹ení
-using object configuration	jinn	cs	Za pou¾ítí konfigurace objektu
-using object configuration:	jinn	cs	Za pou¾ítí konfigurace objektu:
+upload url location correct	jinn	cs	UmÃ­stÄ›nÃ­ URL pro upload je platnÃ©
+use reports	admin	cs	PouÅ¾Ã­t hlÃ¡Å¡enÃ­
+using object configuration	jinn	cs	Za pouÅ¾Ã­tÃ­ konfigurace objektu
+using object configuration:	jinn	cs	Za pouÅ¾Ã­tÃ­ konfigurace objektu:
 version	jinn	cs	verze
-very experimental	jinn	cs	Velmi experimentální
-view all selected records	jinn	cs	zobrazit v¹echny vybrané záznamy
-visible	jinn	cs	Viditelnı
-we must upgrade your plugin configuration. <p>please don't click on back or stop untill i'm finished and a close button appears</p>	jinn	cs	Musím aktualizovat Va¹í konfiguraci pluginù. <p>Neklikejte prosím na tlaèítka Zpìt nebo Zastavit dokud neskonèím a neobjeví se tlaèítko Zavøít</p>
-website url	jinn	cs	URL pro náhled webu
-website url for previewing	jinn	cs	URL pro náhled webu
-when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	cs	Pokud je k záznamu pøipojeno hodnì obrázkù, formuláø se mù¾e naèítat velmi pomalu. Mù¾ete nastavit maximální poèet obrázkù, které se budou ve formuláøi zobrazovat.
-when this is enables information like field length and field type is shown when editing record	jinn	cs	Pokud je toto povoleno, pak se pøi editaci záznamu zobrazují informace jako délka a typ pole.
-when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	cs	Pokud zvolíte 'Nikdy', budou se zobrazovat jen odkazy na obrázky; pokud zvolíte 'Jen pokud existují miniatury' budou se (pokud existují) zobrazovat miniatury obrázkù; pokud zvolíte 'Ano', budou se zobrazovat v¹echny obrázky
-width:	jinn	cs	©íøka:
-with_checked_files	jinn	cs	s oznaèenımi soubory
-yes, hide from menu	jinn	cs	Ano, skrıt v menu
-you are on a <b>development</b> server	jinn	cs	nacházíte se na <b>vıvojovém</b> serveru
-you are on a <b>production</b> server	jinn	cs	nacházíte se na <b>produkèním</b> serveru
-you can only edit your own templates	jinn	cs	Mù¾ete editovat jen své vlastní ¹ablony
-you cannot delete the session filter	jinn	cs	nemù¾ete smazat filtr relací
-you don't have access to this page.	jinn	cs	K této stránce nemáte pøístup.
-you have no access to this file.	jinn	cs	K tomuto souboru nemáte pøístup.
-you have no access to this object	jinn	cs	K tomuto objektu nemáte pøístup
-you must select one or more records for this function.	jinn	cs	Pro tuto funkci musíte vybrat jeden nebo více záznamù.
-you must select one or more sites for this function.	jinn	cs	Pro tuto funkci musíte vybrat jeden nebo více webù.
-you're not allowed to acces this screen.	jinn	cs	Nemáte oprávnìní k pøístupu na tuto obrazovku.
-you're not allowed to administrate media files	jinn	cs	Nemáte oprávnìní k administraci souborù médií
+very experimental	jinn	cs	Velmi experimentÃ¡lnÃ­
+view all selected records	jinn	cs	zobrazit vÅ¡echny vybranÃ© zÃ¡znamy
+visible	jinn	cs	ViditelnÃ½
+we must upgrade your plugin configuration. <p>please don't click on back or stop untill i'm finished and a close button appears</p>	jinn	cs	MusÃ­m aktualizovat VaÅ¡Ã­ konfiguraci pluginÅ¯. <p>Neklikejte prosÃ­m na tlaÄÃ­tka ZpÄ›t nebo Zastavit dokud neskonÄÃ­m a neobjevÃ­ se tlaÄÃ­tko ZavÅ™Ã­t</p>
+website url	jinn	cs	URL pro nÃ¡hled webu
+website url for previewing	jinn	cs	URL pro nÃ¡hled webu
+when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	cs	Pokud je k zÃ¡znamu pÅ™ipojeno hodnÄ› obrÃ¡zkÅ¯, formulÃ¡Å™ se mÅ¯Å¾e naÄÃ­tat velmi pomalu. MÅ¯Å¾ete nastavit maximÃ¡lnÃ­ poÄet obrÃ¡zkÅ¯, kterÃ© se budou ve formulÃ¡Å™i zobrazovat.
+when this is enables information like field length and field type is shown when editing record	jinn	cs	Pokud je toto povoleno, pak se pÅ™i editaci zÃ¡znamu zobrazujÃ­ informace jako dÃ©lka a typ pole.
+when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	cs	Pokud zvolÃ­te 'Nikdy', budou se zobrazovat jen odkazy na obrÃ¡zky; pokud zvolÃ­te 'Jen pokud existujÃ­ miniatury' budou se (pokud existujÃ­) zobrazovat miniatury obrÃ¡zkÅ¯; pokud zvolÃ­te 'Ano', budou se zobrazovat vÅ¡echny obrÃ¡zky
+width:	jinn	cs	Å Ã­Å™ka:
+with_checked_files	jinn	cs	s oznaÄenÃ½mi soubory
+yes, hide from menu	jinn	cs	Ano, skrÃ½t v menu
+you are on a <b>development</b> server	jinn	cs	nachÃ¡zÃ­te se na <b>vÃ½vojovÃ©m</b> serveru
+you are on a <b>production</b> server	jinn	cs	nachÃ¡zÃ­te se na <b>produkÄnÃ­m</b> serveru
+you can only edit your own templates	jinn	cs	MÅ¯Å¾ete editovat jen svÃ© vlastnÃ­ Å¡ablony
+you cannot delete the session filter	jinn	cs	nemÅ¯Å¾ete smazat filtr relacÃ­
+you don't have access to this page.	jinn	cs	K tÃ©to strÃ¡nce nemÃ¡te pÅ™Ã­stup.
+you have no access to this file.	jinn	cs	K tomuto souboru nemÃ¡te pÅ™Ã­stup.
+you have no access to this object	jinn	cs	K tomuto objektu nemÃ¡te pÅ™Ã­stup
+you must select one or more records for this function.	jinn	cs	Pro tuto funkci musÃ­te vybrat jeden nebo vÃ­ce zÃ¡znamÅ¯.
+you must select one or more sites for this function.	jinn	cs	Pro tuto funkci musÃ­te vybrat jeden nebo vÃ­ce webÅ¯.
+you're not allowed to acces this screen.	jinn	cs	NemÃ¡te oprÃ¡vnÄ›nÃ­ k pÅ™Ã­stupu na tuto obrazovku.
+you're not allowed to administrate media files	jinn	cs	NemÃ¡te oprÃ¡vnÄ›nÃ­ k administraci souborÅ¯ mÃ©diÃ­
 zoom	jinn	cs	Lupa
