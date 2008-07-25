@@ -105,16 +105,20 @@ do not use trash	felamimail	es-es	No usar Papelera
 do not validate certificate	felamimail	es-es	No validar el certificado
 do you really want to delete the '%1' folder?	felamimail	es-es	¿Realmente quiere borrar la carpeta '%1'?
 do you really want to delete the selected signatures?	felamimail	es-es	¿Realmente desea borrar las firmas seleccionadas?
+do you really want to move the selected messages to folder:	felamimail	es-es	¿Realmente desea mover los mensajes seleccionados a la carpeta:
+do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	es-es	¿Desea que se le pida confirmación antes de mover los mensajes seleccionados a otra carpeta?
 does not contain	felamimail	es-es	No contiene
 does not match	felamimail	es-es	No coincide con
 does not match regexp	felamimail	es-es	No coincide con la expresión
 don't use draft folder	felamimail	es-es	No usar la carpeta borradores
 don't use sent	felamimail	es-es	No usar Enviados
+don't use template folder	felamimail	es-es	No usar la carpeta de plantillas
 don't use trash	felamimail	es-es	No usar Papelera
 down	felamimail	es-es	abajo
 download	felamimail	es-es	descargar
 download this as a file	felamimail	es-es	Descargar esto como un fichero
 draft folder	felamimail	es-es	Carpeta borradores
+drafts	felamimail	es-es	Borradores
 e-mail	felamimail	es-es	Correo electrónico
 e-mail address	felamimail	es-es	Dirección de correo electrónico
 e-mail folders	felamimail	es-es	Carpetas de correo electrónico
@@ -123,6 +127,7 @@ edit filter	felamimail	es-es	Editar filtro
 edit rule	felamimail	es-es	Añadir regla
 edit selected	felamimail	es-es	Editar selección
 edit vacation settings	felamimail	es-es	editar configuración de vacaciones
+editor type	felamimail	es-es	Tipo de editor
 email address	felamimail	es-es	Dirección de correo electrónico
 email forwarding address	felamimail	es-es	dirección de reenvío del correo
 email signature	felamimail	es-es	Firma de correo
@@ -168,6 +173,8 @@ follow	felamimail	es-es	seguir
 for mail to be send - not functional yet	felamimail	es-es	Para el correo pendiente de enviar - todavía no funciona
 for received mail	felamimail	es-es	Para el correo recibido
 forward	felamimail	es-es	Reenviar
+forward as attachment	felamimail	es-es	reenviar como adjunto
+forward inline	felamimail	es-es	reenviar como incorporado
 forward messages to	felamimail	es-es	Reenviar mensajes a
 forward to	felamimail	es-es	reenviar a
 forward to address	felamimail	es-es	reenviar a la dirección
@@ -183,6 +190,7 @@ have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.
 header lines	felamimail	es-es	Líneas de encabezado
 hide header	felamimail	es-es	Ocultar cabecera
 hostname / address	felamimail	es-es	servidor / dirección
+how to forward messages	felamimail	es-es	cómo reenviar mensajes
 html	felamimail	es-es	HTML
 icons and text	felamimail	es-es	Iconos y texto
 icons only	felamimail	es-es	Sólo iconos
@@ -215,6 +223,7 @@ invalid user name or password	felamimail	es-es	El usuario o la contraseña no so
 javascript	felamimail	es-es	JavaScript
 jumping to end	felamimail	es-es	saltando al final
 jumping to start	felamimail	es-es	saltando al principio
+junk	felamimail	es-es	Basura
 keep a copy of the message in your inbox	felamimail	es-es	guardar una copia del mensaje en la bandeja de entrada
 keep local copy of email	felamimail	es-es	guardar copia local del correo
 kilobytes	felamimail	es-es	kilobytes
@@ -289,6 +298,7 @@ or	felamimail	es-es	o
 organisation	felamimail	es-es	Organización
 organization	felamimail	es-es	Organización
 organization name	admin	es-es	Nombre de la organización
+original message	felamimail	es-es	mensaje original
 outgoing mail server(smtp)	felamimail	es-es	servidor de correo de salida (SMTP)
 participants	felamimail	es-es	Participantes
 personal information	felamimail	es-es	Información personal
@@ -301,6 +311,7 @@ previous	felamimail	es-es	Anterior
 previous message	felamimail	es-es	Mensaje anterior
 print it	felamimail	es-es	Imprimirlo
 print this page	felamimail	es-es	Imprimir esta página
+printview	felamimail	es-es	vista de impresión
 quicksearch	felamimail	es-es	Búsqueda rápida
 read	felamimail	es-es	leídos
 reading	felamimail	es-es	leyendo
@@ -343,6 +354,7 @@ select folder	felamimail	es-es	seleccionar carpeta
 select your mail server type	admin	es-es	Seleccionar el tipo de servidor de correo
 send	felamimail	es-es	Enviar
 send a reject message	felamimail	es-es	enviar un mensaje de rechazo
+sent	felamimail	es-es	Enviados
 sent folder	felamimail	es-es	Carpeta de enviados
 server supports mailfilter(sieve)	felamimail	es-es	El servidor soporta filtro de correo (sieve)
 set as default	felamimail	es-es	Establecer como predeterminado
@@ -371,9 +383,12 @@ subscribed successfully!	felamimail	es-es	Suscripción correcta
 sun	felamimail	es-es	Dom
 system signature	felamimail	es-es	firma del sistema
 table of contents	felamimail	es-es	Tabla de contenidos
+template folder	felamimail	es-es	Carpeta de plantillas
+templates	felamimail	es-es	Plantillas
 text only	felamimail	es-es	Sólo texto
 the connection to the imap server failed!!	felamimail	es-es	¡Ha fallado la conexión con el servidor IMAP!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	es-es	El servidor IMAP no parece que soporte el método de identificación seleccionado. Por favor, póngase en contacto con su administrador del sistema.
+the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	es-es	El remitente del mensaje ha solicitado una respuesta para indicar que usted ha leído este mensaje. ¿Desea enviar una confirmación?
 the mimeparser can not parse this message.	felamimail	es-es	El intérprete mime no puede interpretar este mensaje
 then	felamimail	es-es	ENTONCES
 this folder is empty	felamimail	es-es	ESTA CARPETA ESTA VACIA
@@ -384,6 +399,7 @@ to mail sent to	felamimail	es-es	al correo enviado a
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	felamimail	es-es	Para usar una conexión TLS, debe estar ejecutando una versión de PHP 5.1.0 o superior.
 translation preferences	felamimail	es-es	Preferencias de la traducción
 translation server	felamimail	es-es	Servidor de traducciones
+trash	felamimail	es-es	Papelera
 trash fold	felamimail	es-es	Carpeta Papelera
 trash folder	felamimail	es-es	Carpeta Papelera
 tue	felamimail	es-es	Mar
@@ -432,3 +448,4 @@ wrap incoming text at	felamimail	es-es	Ajustar el texto entrante a
 writing	felamimail	es-es	escribiendo
 wrote	felamimail	es-es	escribió
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	es-es	Puede usar %1 para la fecha de inicio de arriba y %2 para la fecha de fin.
+your message to %1 was displayed.	felamimail	es-es	Su mensaje para %1 ha sido mostrado
