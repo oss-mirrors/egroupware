@@ -1,0 +1,604 @@
+#	workflow	zh	#
+%1 aborted	workflow	zh	%1 已中止
+%1 active	workflow	zh	%1 活动
+%1 completed	workflow	zh	%1 已完成
+%1 configuration	workflow	zh	%1 配置
+%1 days, %2:%3:%4	workflow	zh	%1 天， %2:%3:%4
+%1 exception	workflow	zh	%1 异常
+%1 menu	workflow	zh	%1 菜单
+%1 monitoring	workflow	zh	%1 监控
+%1 processes (%2 active) (%3 being_run)	workflow	zh	%1 处理（%2 活动，%3  执行中）
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	common	zh	/workflow 文件夹不存在而且无法建立，请要求系统管理员检查全局设置
+<strong>%owner%</strong> is the instance owner email	workflow	zh	<strong>%owner%</strong> 是实例拥有人信箱
+<strong>%property_xx%</strong> is the content of the instance's property xx	workflow	zh	<strong>%property_XX%</strong> 是实例的属性内容 XX
+<strong>%role_xx%</strong> are all the emails of all users mapped to the role xx	workflow	zh	<strong>%role_XX%</strong> 是所有对应到角色 XX 的用户信箱
+<strong>%roles%</strong> are the emails of all users mapped to any role on this activity	workflow	zh	<strong>%roles%</strong> 是所有对应到这个活动任意角色的用户信箱
+<strong>%signature%</strong> is the agent signature defined in the process configuration	workflow	zh	<strong>%signature%</strong>是在流程设定中定义的代理人签名
+<strong>%user%</strong> is the instance user email	workflow	zh	<strong>%user%</strong>是实例的用户信箱
+<strong>%user_xx%</strong> is the email of the acount xx	workflow	zh	<strong>%user_XX%</strong>是帐号 XX 的信箱
+a please wait message is shown when loading the activity form usefull for long tasks	admin	zh	一个提示等候的讯息在读取较多任务的活动表单时会相当有用
+abort instance	workflow	zh	中止实例
+abort this instance	workflow	zh	中止这个实例
+aborted	workflow	zh	已中止
+access denied for user %1 on activity %2, no role	workflow	zh	用户 %1 在活动 %2 没有访问权限，缺少角色
+act	workflow	zh	活动
+act. status	workflow	zh	动作状态
+act. status:	workflow	zh	动作状态：
+action %1 is impossible if we have no activity and no instance designated for it!	workflow	zh	动作 %1 无法在没有活动与实例被指定时进行！
+action %1 is impossible, another user is already in place	workflow	zh	动作 %1 无法进行，另一个用户配置中
+action %1 is impossible, there are no user assigned to this activity for this instance	workflow	zh	动作 %1 无法进行，这个实例没有指派任何人到这个活动
+action %1 needs an activity and activity %2 does not exists	workflow	zh	动作 %1 需要一个活动而活动 %2 不存在
+action %1 needs an instance and instance %2 does not exists	workflow	zh	动作 %1 需要一个实例而实例 %2 不存在
+actions	workflow	zh	动作
+actions right options	common	zh	动作权限选项
+activate	workflow	zh	启动
+active	workflow	zh	活动
+active:	workflow	zh	活动：
+activities	workflow	zh	活动
+activities selection	workflow	zh	选择活动
+activities updated	workflow	zh	活动更新了
+activity	workflow	zh	活动
+activity  status	workflow	zh	活动状态
+activity %1	workflow	zh	活动 %1
+activity %1 (#%2) is associated with a non-existent process (#%3)	workflow	zh	活动 %1 (编号 %2 ）归类于不存在的流程（编号 %3 ）
+activity %1 code is not avaible	workflow	zh	活动 %1 代码无法使用
+activity %1 is interactive but has no role assigned	workflow	zh	活动 %1 是互动类型，但是没有指定角色
+activity %1 is interactive so it must use the $instance->complete() method	workflow	zh	活动 %1 是互动类型，所以必须使用方法  $instance->complete()
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	zh	活动 %1 是非互动类型且非自动配置，但是没有指定角色
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	zh	活动 %1 是非互动类型，所以必须使用方法  $instance->complete()
+activity %1 is standalone and is using the $instance object	workflow	zh	活动 %1 是独立的且使用物件 $instance
+activity %1 is standalone but has transitions	workflow	zh	活动 %1 是独立的但有转移
+activity %1 is standalone or view but has transitions	workflow	zh	活动 %1 是独立的或可以浏览但必须递交
+activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	zh	活动 %1 是交换式的，所以必须使用方法$instance->setNextActivity($actname)
+activity %1 is view and is using the $instance object in write mode	workflow	zh	活动 %1 可以浏览且正使用 $instance 物件于写入模式
+activity agent removed	workflow	zh	活动代理已移除
+activity completed	workflow	zh	活动完成
+activity failure	workflow	zh	活动失败
+activity in inexistent process	workflow	zh	活动属于不存在的流程
+activity is waiting for pending transitions	workflow	zh	活动在等待未决转移
+activity name already exists	workflow	zh	活动名称已经存在
+activity role #%1 removed	workflow	zh	活动角色 #%1 移除了
+activity role removed	workflow	zh	活动角色移除了
+activity saved	workflow	zh	活动已保存
+activity start not avaible, no corresponding activity was found.	workflow	zh	活动开始日期无效，没有找到一致的活动。
+activity start not set, no corresponding activity was found.	workflow	zh	活动开始日期为设定，没有找到一致的活动。
+activity status not avaible, no corresponding activity was found.	workflow	zh	活动状态无效，没有找到一致的活动。
+activity:	workflow	zh	过程活动：
+add a transition	workflow	zh	添加一个过程转移
+add aborted instances	workflow	zh	添加中止实例
+add advanced actions	workflow	zh	添加高级动作
+add agent	workflow	zh	添加代理
+add completed instances	workflow	zh	添加已完成实例
+add instances in exception	workflow	zh	添加异常实例
+add new	workflow	zh	添加
+add new role	workflow	zh	添加新角色
+add or edit a process	workflow	zh	添加或编辑一个过程
+add or edit a role	workflow	zh	添加或编辑一个角色
+add or edit an activity	workflow	zh	添加或编辑一个活动
+add property	workflow	zh	添加属性
+add role	workflow	zh	添加角色
+add role to process	workflow	zh	添加角色到流程
+add transition	workflow	zh	添加过程转移
+add transitions	workflow	zh	添加过程转移
+add transitions from	workflow	zh	添加过程转移从
+add transitions to	workflow	zh	添加过程转移到
+admin instance	workflow	zh	管理工作流实例
+admin process activities	workflow	zh	管理过程活动
+admin process roles	workflow	zh	管理过程角色
+admin processes	common	zh	管理工作流程
+admin processes sources	workflow	zh	管理过程资源
+administer instances	admin	zh	管理工作流实例
+administer processes	admin	zh	管理工作流程
+agent #%1 of type %2 is associated to an inexistent activity #%3	workflow	zh	代理人 #%1 于类型 %2 被归类到一个不存在的活动 #%3
+agent #%1 of type %2 is not linked with an activity	workflow	zh	代理人 #%1 于类型 %2 没有被任何活动链接
+agent associated with inexistent activity	workflow	zh	代理人被归类到一个不存在的活动
+agent without activity	workflow	zh	没有活动的代理人
+agents assigned to this activity	workflow	zh	指派到这个活动的代理人
+all	workflow	zh	全部
+always show advanced actions	workflow	zh	永远显示高级动作
+always show advanced mode	workflow	zh	永远显示高级模式
+assign me this activity	workflow	zh	将这个活动指派给我
+at least one email address cannot be validated.	workflow	zh	一个以上的信箱无法通过验证
+auto routed	workflow	zh	自动指派
+auto-release on leaving activity	common	zh	在离开活动时自动释出
+automatic	workflow	zh	自动
+autorouted activities does not need to be sent by any user after their execution	workflow	zh	自动侦测的活动在他们执行后不需要由任何用户寄出
+bad parameter for setagents, the parameter should be an array	workflow	zh	setAgents的参数错误，参数必须是一个阵列
+bad role type	workflow	zh	错误的角色类型
+bad user	workflow	zh	错误的用户
+base directory does not exist, please ask adminstrator to check the global configuration	common	zh	主要目录不存在，请联系管理人员添加全局设定
+bcc:	workflow	zh	密件副本：
+be carefull with interactive activity, end and start of theses activities are multiple.	workflow	zh	在互动的活动中请小心，这些活动可能有多个开始与结束时间。
+being run	workflow	zh	开始执行
+by running theses links you will create new instances of the related process.	workflow	zh	透过执行这些链接，您将会建立相关流程的新实例
+cannot add transition only split or switch activities can have more than one outbound transition	workflow	zh	无法添加递交，只有分割或是切换活动可以有超过一个的对外递交
+cannot add transition. only split activities can have more than one outbound transition	workflow	zh	无法添加更改，只有切割出来的活动可以有一个以上的外来更改
+cannot create compiled file %1	workflow	zh	无法建立编译过的文件 %1
+cannot retrieve the user running the security check	workflow	zh	无法回复执行安全检查的用户
+cannot run the activity	workflow	zh	无法执行活动
+cannot run the activity without her process	workflow	zh	无法执行没有指定流程的活动
+cannot run the activity without instance	workflow	zh	无法执行没有指定实例的活动
+cannot run unknown activity	workflow	zh	无法执行不知名的活动
+cc:	workflow	zh	副本：
+circular reference found some activity has a transition leading to itself	workflow	zh	发现循环参照，部分活动有递交处理于自己本身
+circular reference found. some activity has a transition leading to itself	workflow	zh	发现循环参照，部分活动有递交处理于自己本身
+cleanup aborted instances	admin	zh	清除中止实例
+cleanup actions	workflow	zh	清除动作
+close and get back later	workflow	zh	关闭且晚点再看
+close printer friendly mode	workflow	zh	关闭友好打印模式
+code	workflow	zh	代码
+column activity status in instance lists	workflow	zh	在实例列表中的活动栏位状态
+column category in instance lists	workflow	zh	在实例列表中的类别栏位
+column instance id in instance lists	workflow	zh	在实例列表中的实例代码栏位
+column instance name in instance lists	workflow	zh	在实例列表中的实例名称栏位
+column instance status in instance lists	workflow	zh	在实例列表中的实例状态栏位
+column owner in instance lists	workflow	zh	在实例列表中的拥有者栏位
+column priority in instance lists	workflow	zh	在实例列表中的属性栏位
+column process name in instance lists	workflow	zh	在实例列表中的流程名称栏位
+column start date in instance lists	workflow	zh	在实例列表中的开始日期栏位
+compilation	workflow	zh	编译
+compiling activity %1 : %2	workflow	zh	编译中活动 %1 : %2
+complete	workflow	zh	完成
+complete cleanup of aborted instances done	workflow	zh	完整清除中止实例完成
+complete cleanup of all instances done	workflow	zh	完整清除所有实例完成
+completed	workflow	zh	完成
+config values	common	zh	设定值
+confirm delete	workflow	zh	确认删除
+consult %1 to get the default values:	workflow	zh	询问 %1 来取得默认值：
+couldn't add transition	workflow	zh	无法添加更改
+create	workflow	zh	建立
+created	workflow	zh	已建立
+date:	workflow	zh	日期：
+default config values	workflow	zh	默认设置值
+default next user	workflow	zh	默认下一个用户
+default owner	workflow	zh	默认拥有者
+default settings for processes	admin	zh	默认过程设置
+default user	workflow	zh	默认用户
+delete selected	workflow	zh	删除选择的
+delete transition	workflow	zh	删除递交
+deletion successful	workflow	zh	删除成功
+delition successful	workflow	zh	删除成功
+description	workflow	zh	描述
+display please wait message	common	zh	显示请等候消息
+do you want the activity status on instances lists. most of the time it is "running" but if you use non-autorouted transitions you will have some completed activities.	workflow	zh	在实例列表中是否要显示活动状态？大部分情况下它都是 "执行中" ，但是如果您使用非自动递送方式传输，会有部份显示完成状态的活动。
+do you want the category column on instances lists, if yout instances use categories you should use it	workflow	zh	在实例列表中是否要显示类别栏位？如果您的实例有进行分类，建议採用
+do you want the category name column on instances lists, if your instances use categories you should use it	workflow	zh	在实例列表中是否要显示类别名称栏位？如果您的实例有进行分类，建议採用
+do you want the category name column on instances lists. if your instances use categories you should use this	workflow	zh	在实例列表中是否要显示类别名称栏位？如果您的实例有进行分类，建议採用
+do you want the instance id column on instances lists. this is the unique identifier of an instance	workflow	zh	在实例列表中是否要显示实例编号栏位？每个实例会有一个不重複的编号
+do you want the instance name column on instances lists. if your instances have name you should really use this	workflow	zh	在实例列表中是否要显示实例名称栏位？如果您有设定名称，建议採用
+do you want the instance status on instances lists. the instance status is usefull to disting beteween aborted, completed, exception or active instances	workflow	zh	在实例列表中是否要显示实例状态？实例状态可以方便区分中止、完成、异常或活动实例
+do you want the owner column on instances lists. this will show you the actual owner, especially usefull if ownership is defined with special rights	workflow	zh	在实例列表中是否要显示拥有人栏位？这将会显示实际的拥有者，在这些拥有者被定义了特殊权限时这个项目相当实用
+do you want the priority column on instances lists. priority can be set with activities forms	workflow	zh	在实例列表中是否要显示优先顺序栏位？优先顺序可以在活动表单中设定
+do you want the process column on instances lists. usefull if you have different processes and/or versions of theses processes	workflow	zh	在实例列表中是否要显示流程栏位？如果您有不同的流程且/或版本，这会相当实用
+do you want the search instance button in the last row of instances list.	workflow	zh	在实例列表最后一列是否要显示搜索实例的按钮。
+do you want the started date column on instances lists.	workflow	zh	在实例列表是否要显示开始日期栏位。
+don't move	workflow	zh	不能移动
+draw roles	common	zh	绘制角色
+draw roles on the graph beside activity name like [that]	admin	zh	绘制角色于图形上，在像是 [that] 的活动名称旁
+duration	workflow	zh	期间
+empty agent type	workflow	zh	清空代理类型
+end	workflow	zh	结束
+end activity is not reachable from start activity	workflow	zh	结束活动无法从起始活动找到
+ended	workflow	zh	已结束
+enter an activity name	workflow	zh	输入活动名称
+error: nextactivity does not match any candidate in autorouting switch activity	workflow	zh	错误： 在自动导引切换活动中找不到符合候选项目的下一个活动
+error: non-deterministic decision for autorouting activity	workflow	zh	错误： 在自动导引活动没有做出决定
+error: removing was not done	workflow	zh	错误： 移动失败
+error: trying to send an instance to an activity but it was impossible to get this activity	workflow	zh	错误： 尝试传送一个实例到一个无法存取的活动
+error: trying to send an instance to an activity but no transition found	workflow	zh	错误： 尝试传送一个实例到一个找不到移转的活动
+exception	workflow	zh	异常
+exception instance	workflow	zh	异常实例
+exception raised by %1 %2: %3	workflow	zh	由 %1 %2：%3 引发异常
+exception resumed by %1 %2: %3	workflow	zh	异常由 %1 %2：%3 恢复
+exception this instance	workflow	zh	排除这个实例
+exceptions	workflow	zh	异常
+execute this activity	workflow	zh	执行这个活动
+export	workflow	zh	导出
+failed to create workitem	workflow	zh	建立工作项目时发生错误
+failed to execute automatic activity	workflow	zh	执行自动活动时发生错误
+failed to obtain lock on %1 table	workflow	zh	取消 %1 资料表锁定时发生错误
+failed to obtain lock on instances table	workflow	zh	在实例资料表取消锁定时发生错误
+failed to obtain lock on instances_activities table	workflow	zh	在实例活动资料表取消锁定时发生错误
+failed to record instance properties	workflow	zh	记录实例属性时发生错误
+failed to synchronize instance data with the database	workflow	zh	在数据库同步实例资料时发生错误
+failure	workflow	zh	失败
+fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	zh	错误： 下一个活动不符合任何自动配置的活动切换列表
+fatal error: non-deterministic decision for autorouting activity	workflow	zh	错误： 自动配置活动没有预期的决定
+fatal error: setting next activity to an unexisting activity	workflow	zh	错误： 下一个活动设定到不存在的活动中
+fatal error: trying to send an instance to an activity but no transition found	workflow	zh	错误： 尝试送出阶段到没有更改的活动
+filter	workflow	zh	筛选
+filter instance by id	workflow	zh	通过 ID 筛选实例
+finally you have links with <strong>%link_xx|yy%</strong> syntax, xx is the address part, yy the text part.	workflow	zh	最后您的链接语法为 <strong>%link_XX|YY%</strong>， XX是网路位址， YY是说明文字。
+fix	workflow	zh	修正
+fix concistency for selected rows	workflow	zh	修正选取资料的重要性
+font size	workflow	zh	字型大小
+from	workflow	zh	来自
+from:	workflow	zh	发件人：
+get back to global activities	workflow	zh	回到全局活动
+get back to instance creation	workflow	zh	回到实例创建
+get property	workflow	zh	取得属性
+global activities	workflow	zh	全局活动
+global workflow preferences	workflow	zh	全局工作流程参数
+go	workflow	zh	前往
+go to same activities for other instances of this process	workflow	zh	前往这个流程其他实例的同样活动
+go to same process activities	workflow	zh	前往同样流程的活动
+go to the actual state of this instance	workflow	zh	前往这个实例的实际状态
+grab instance	workflow	zh	重要阶段
+grant access to the administration and development of workflow processes and activities.	admin	zh	取得工作流程与活动的管理与开发权限。
+grant access to the administration of workflow elements	admin	zh	取得工作流程元件的管理权限
+grant access to the administration of workflow instances in monitor screens	admin	zh	取得在监控窗口中工作流程实例的管理权限
+grant access to the cleanup/deletion of workflow aborted instances in monitor screens	admin	zh	取得在监控窗口中停用工作流程的清除、删除权限
+grant access to the monitoring of workflow elements	admin	zh	取得工作流程元件的监控权限
+graph	workflow	zh	图形
+graphic options	common	zh	图形选项
+group	workflow	zh	群组
+id	workflow	zh	编号
+if automatic parsing is disabled next options will be useless	admin	zh	如果自动分析停用，下一个选项就没用了
+if not in debug mail_smtp agent would have sent this email:	workflow	zh	如果不是在进行邮件 smtp 除错，信件会被寄到：
+if user is in a role for an activity he will have the right to abort the related instance	admin	zh	如果用户是一个活动中的角色，他就有权限中止相关实例
+if user is in a role for an activity he will have the right to exception or resume the related instance	admin	zh	如果用户是一个活动中的角色，他就有权限排除或继续相关实例
+if user is in a role for an activity he will have the right to release (un-assign) the related instance	admin	zh	如果用户是一个活动中的角色，他就有权限释出（取消指派）相关实例
+if:setnextact	workflow	zh	If:SetNextact
+import aborted	workflow	zh	导入中止了
+import successfull	workflow	zh	导入成功
+in role mappings user #%1 is specified as a "%2" but is maybe a "%3"	workflow	zh	在角色对应表中，用户 #%1 被定义为一个 "%2" ，但他也许是一个 "%3"
+inactive	workflow	zh	停止中
+inst.	workflow	zh	实例
+inst. status	workflow	zh	实例状态
+instance	workflow	zh	实例
+instance %1	workflow	zh	实例 %1
+instance %1 is in %2 state, action %3 is impossible.	workflow	zh	实例 %1 目前处于 %2 状态，无法执行 %3 动作
+instance %1 is in exception, action %2 is not possible.	workflow	zh	实例 %1 目前是异常，无法执行 %2 动作
+instance %1 is not associated with activity %2, action %3 is impossible.	workflow	zh	实例 %1 没有归类于活动 %2 ，无法执行 %3 动作。
+instance history	workflow	zh	实例记录
+instance properties	workflow	zh	阶段属性
+instance:	workflow	zh	实例：
+instance: %1 (process: %2)	workflow	zh	实例： %1 (处理程序： %2)
+instance: unable to modify %1 [%2], someone has changed it before us	workflow	zh	实例： 无法修改%1 [%2]，有人在我们之前修改过
+instance: unable to modify %1, someone has changed it before us	workflow	zh	实例： 无法修改%1，有人在我们之前修改过
+instances	workflow	zh	实例
+instances selection	workflow	zh	实例选择
+int.	workflow	zh	实例
+interactive	workflow	zh	互动模式
+interactive activities show form before being executed	workflow	zh	互动活动会在被执行前显示表单
+interactive instances should not call the complete() method	workflow	zh	互动实例不应该使用 complete() 方法
+interactive:	workflow	zh	互动：
+interactivity	workflow	zh	互动活动
+invalid	workflow	zh	错误
+invalid process	workflow	zh	错误的处理程序
+invalid role name	workflow	zh	错误的角色名称
+is active	workflow	zh	进行中
+it seems this activity for this instance is not assigned to you anymore.	workflow	zh	这个实例的活动似乎不再是指派给您。
+it was impossible to complete, no activity was given.	workflow	zh	无法执行完成，没有选择活动。
+it was impossible to complete, no corresponding activity was found.	workflow	zh	无法执行完成，没有找到符合的活动。
+join	workflow	zh	加入
+link addresses are considered local if not containing <strong>http://</strong>. they will get appended the configured local prefix and scanned by egroupware link engine	workflow	zh	链接位置如果不包含 <strong>http://</strong> 就会被视为本地端，他们将会被附加设定中的本地端前置字元并且由 egroupware 链接引擎扫描
+list of activities	workflow	zh	活动列表
+list of all activities with, for each,  counters of instances by status	workflow	zh	列出所有活动的每一个实例状态计数器的列表
+list of all history items made by instances while they travel in the workflow with information about duration and date	workflow	zh	当他们浏览工作流程的期间与日期时，列出所有由实例产生的记录
+list of all instances with info about current status and activities and link to administration of theses instances	workflow	zh	列出所有实例，包含目前状态与活动资讯以及前往这些实例的管理链接
+list of instances	workflow	zh	阶段列表
+list of mappings	workflow	zh	对应列表
+list of monitors	workflow	zh	列出监控
+list of processes	workflow	zh	流程列表
+list of processes (%1)	workflow	zh	流程列表(%1)
+list of processes with status and validity and, for each, counters of instances by status	workflow	zh	流程列表，包含状态、有效性与每笔资料依据状态产生的实例计数器
+list of transitions	workflow	zh	更改列表
+list of workitems	workflow	zh	工作项目列表
+mail automatically sent by mail smtp agent for egroupware's workflow	workflow	zh	邮件由 eGroupware 工作流程的邮件发送程序自动送出
+mail smtp agent	workflow	zh	SMTP邮件发送代理人
+mail smtp debug	common	zh	SMTP邮件发送侦错
+mail smtp local link prefix	common	zh	SMTP邮件本地端链接前置字元（smtp）
+mail smtp profile	common	zh	SMTP邮件资料
+mail smtp signature	common	zh	SMTP邮件签名
+mails can be sent at the begining or at the end of the activity, for interactive activities only it can be sent after completion.	workflow	zh	邮件可以在活动开始或结束时寄出，互动式的活动只能够在完成后寄出。
+manual	workflow	zh	手册
+map	workflow	zh	对应
+map users/groups to roles	workflow	zh	将用户/群组对应到角色
+mapping to inexistent role	workflow	zh	对应到不存在的角色
+mappings deleted	workflow	zh	对应删除了
+message:	workflow	zh	讯息：
+monitor activities	workflow	zh	监控过程活动
+monitor instance	workflow	zh	监控工作流实例
+monitor instances	workflow	zh	监控工作流实例
+monitor processes	workflow	zh	监控工作流程
+monitor this instance	workflow	zh	监控这个实例
+monitor work items	workflow	zh	监控工作项目
+monitor workitems	workflow	zh	监控工作项目
+monitoring	admin	zh	监控中
+monitors	workflow	zh	监控
+more options?	workflow	zh	更多选项？
+my activities	workflow	zh	我的活动
+my instances	workflow	zh	我的实例
+my processes	workflow	zh	我的流程
+name	workflow	zh	名称
+new instance	workflow	zh	新建实例
+new major	workflow	zh	添加主要
+new major version created	workflow	zh	新的主版本已创建
+new mapping added	workflow	zh	新映射以添加
+new minor	workflow	zh	新建次版本
+new minor version created	workflow	zh	新的次版本已创建
+new status not set, no corresponding activity was found.	workflow	zh	没有设定新状态，没有找到符合的活动。
+new transition added	workflow	zh	新转移以添加
+next activity	workflow	zh	下一个活动
+next user:	workflow	zh	下一个用户：
+no action avaible because no activity and no instance are given!	workflow	zh	没有指定活动与实例，因此没有能够进行的动作！
+no activites	workflow	zh	没有活动
+no activity indicated	workflow	zh	没有包含在任何活动
+no agents associated with this activity	workflow	zh	这个活动没有归类于任何代理人
+no circular transitions allowed.	workflow	zh	无法使用循环递送
+no corresponding activity was found.	workflow	zh	找不到符合的活动。
+no inbound for start activity	workflow	zh	没有开始活动的输入
+no inconcistency detected	workflow	zh	没有重要性删除
+no instance avaible	workflow	zh	没有实例
+no instance given, nothing to show	workflow	zh	没有指定实例，无法显示
+no instance indicated	workflow	zh	没有包含任何阶段
+no outbound for end activity	workflow	zh	没有结束活动的输出
+no process indicated	workflow	zh	没有包含任何处理程序
+no properties defined	workflow	zh	没有定义属性
+no roles	workflow	zh	没有角色
+no roles asociated with this activity	workflow	zh	这个活动没有任何角色
+no routage	workflow	zh	没有开始
+no scan done	workflow	zh	没有执行扫描
+no transitions allowed for standalone or view activities	workflow	zh	没有为独立或查看活动考虑转移
+no work item indicated	workflow	zh	没有工作项目显示
+nobody	workflow	zh	没有人
+not defined	workflow	zh	未定义
+or import a process	workflow	zh	或是导入业务过程
+owner	workflow	zh	拥有者
+owner of the instance will have the right to abort the instance at any time	admin	zh	实例的拥有者有权随时中止这个实例
+owner of the instance will have the right to exception or resume the instance at any time	admin	zh	实例的拥有者有权随时异常处理或恢复这个实例
+owner of the instance will have the right to release (un-assign) an activity assigned to an user	admin	zh	实例的拥有者有权发布(取消指派)指派给用户的活动
+owner:	workflow	zh	拥有者：
+ownership give abort right	common	zh	拥有者有中止权限
+ownership give exception right	common	zh	拥有者有排除权限
+ownership give release right	common	zh	拥有者有释出权限
+please wait, task in progress ...	workflow	zh	请稍候，任务处理中...
+post activity %1 code is not avaible	workflow	zh	下一活动 %1 代码不存在
+post shared code is not avaible	workflow	zh	下一分享代码不存在
+post-agent %1 code is not avaible	workflow	zh	下一代理人 %1 代码不存在
+pr.	workflow	zh	上一
+pre-activity %1 code is not avaible	workflow	zh	上一活动 %1 代码不存在
+pre-agent %1 code is not avaible	workflow	zh	上一代理人 %1 代码不存在
+pre-shared code is not avaible	workflow	zh	上一分享代码不存在
+printer friendly	workflow	zh	友好打印
+priority level:	workflow	zh	优先级：
+process	workflow	zh	过程
+process %1	workflow	zh	过程 %1
+process %1 %2 is not active, action %3 is impossible	workflow	zh	过程 %1 %2 为激活，动作 %3 是不可能的
+process %1 v%2 as no related activity	workflow	zh	过程 %1 %2 没有相关活动
+process %d has been activated	workflow	zh	过程 &d 进行中
+process %d has been deactivated	workflow	zh	过程 &d 停止中
+process %s %s already exists, the import process was aborted	workflow	zh	处理程序 %s %s 已经存在，导入动作中止
+process %s %s imported	workflow	zh	工作过程 %s %s 已导入
+process %s has been created	workflow	zh	工作过程 %s 已建立
+process %s has been updated	workflow	zh	工作过程 %s 已更新
+process %s removed	workflow	zh	工作过程 %s 已移除
+process activities	workflow	zh	处理程序的活动
+process alone	workflow	zh	独立过程
+process does not have a start activity	workflow	zh	过程没有开始活动
+process does not have exactly one end activity	workflow	zh	过程没有确切的一结束活动
+process form	workflow	zh	过程表单
+process name	workflow	zh	过程名称
+process name already exists	workflow	zh	过程名称已存在
+process roles	workflow	zh	过程角色
+process saved	workflow	zh	过程已保存
+process transitions	workflow	zh	过程已转移
+process version:	workflow	zh	过程版本：
+process:	workflow	zh	过程：
+processes	workflow	zh	过程
+properties	workflow	zh	属性
+property	workflow	zh	属性
+property %1 already exists	workflow	zh	属性 %1 已经存在
+property %1 not found	workflow	zh	找不到属性 %1
+quit without saving	workflow	zh	离开且不保存
+read-only	workflow	zh	只读
+release access to this activity	workflow	zh	这个活动的释出权限
+release activity for this instance	workflow	zh	这个实例的释出活动
+release instance	workflow	zh	释出阶段
+reload filter	workflow	zh	重新读取过滤规则
+remove active instances	workflow	zh	移除启用的实例
+remove all instances for this process	workflow	zh	移除这个处理程序的所有实例
+remove selected roles	workflow	zh	移除选择的角色
+removing instances and workitems for aborted instances on all processes	workflow	zh	在所有处理程序中移除中止实例的实例与工作项目
+removing instances and workitems for aborted instances on process #%1	workflow	zh	在处理程序 #%1 中移除中止实例的实例与工作项目
+removing instances and workitems for all instances on process #%1	workflow	zh	在处理程序 #%1 中移除所有实例的实例与工作项目
+replyto:	workflow	zh	回信信箱：
+restart	workflow	zh	重新开始
+restart activity	workflow	zh	重新开始活动
+resume this exception instance	workflow	zh	回复这个排除的实例
+role	workflow	zh	角色
+role #%1 in process %2 has different process (%3) in mapping with user #%4	workflow	zh	角色 #%1 于处理程序 %2 在用户 #%4 对应上有不同的处理程序 %3
+role %1 (#%2) is associated with a non-existent process (#%3)	workflow	zh	角色 #%1 (#%2) 归类于不存在的处理程序 (#%3)
+role %1 is associated in a mapping with user #%2 with a non-existent process (%3)	workflow	zh	归类于用户 #%2 的角色 %1 对应到不存在的处理程序 (#%3)
+role %1 is not mapped	workflow	zh	角色 %1 不匹配
+role added to activity	workflow	zh	角色添加到活动
+role added to process	workflow	zh	角色添加到处理程序
+role give abort right	common	zh	角色有中止权限
+role give exception right	common	zh	角色有排除权限
+role give release right	common	zh	角色有释出权限
+role in inexistent process	workflow	zh	角色在不存在的处理程序中
+role mapping in inexistent process	workflow	zh	角色对应到不存在的处理程序
+role name	workflow	zh	角色名称
+role not saved (maybe a name collision)	workflow	zh	角色未储存（也许是名称重複）
+role process inconcistency in mappings	workflow	zh	角色处理对应不一致
+role saved	workflow	zh	角色储存了
+roles	workflow	zh	角色
+roles assigned to this activity	workflow	zh	指派到这个活动的角色
+roles deleted	workflow	zh	角色删除了
+routing	workflow	zh	分配
+routing:	workflow	zh	分配：
+run	workflow	zh	执行
+run activity	workflow	zh	执行活动
+run instance	workflow	zh	执行更改
+running	workflow	zh	执行中
+running activities options	common	zh	执行中活动选项
+running activity	workflow	zh	执行中活动
+scan activities	workflow	zh	扫描活动
+scan agents	workflow	zh	扫描代理人
+scan instances	workflow	zh	扫描实例
+scan processes	workflow	zh	扫描处理程序
+scan roles	workflow	zh	扫描角色
+scan transitions	workflow	zh	扫描转换
+search instance filter in the bottom of instance lists	workflow	zh	在实例列表底部显示搜索规则
+search:	workflow	zh	搜索：
+security check: cannot understand asked action	workflow	zh	安全检查：不知名的动作
+see as well <strong>%instance_name%</strong>, <strong>%activity_name%</strong>, <strong>%process_name%</strong>,<strong>%process_version%</strong>, <strong>%instance_id%</strong>, <strong>%activity_id%</strong> and <strong>%process_id%</strong>	workflow	zh	浏览其他 <strong>%instance_name%</strong>, <strong>%activity_name%</strong>, <strong>%process_name%</strong>,<strong>%process_version%</strong>, <strong>%instance_id%</strong>, <strong>%activity_id%</strong> and <strong>%process_id%</strong>
+select a transition to remove	workflow	zh	选择要移除的转换
+select source	workflow	zh	选择来源
+send after interactive activity is completed	workflow	zh	在互动活动完成后发送
+send all to	workflow	zh	全部送到
+send an email	workflow	zh	发送信件
+send instance	workflow	zh	送出实例
+send this instance to the next activity	workflow	zh	将这个实例送出到下个活动
+send transition	workflow	zh	发送转换
+send when the activity is ending	workflow	zh	在活动结束时发送
+send when the activity is starting	workflow	zh	在活动开始时发送
+send when wf_agent_mail_smtp['submit_send'] is posted	workflow	zh	在 wf_agent_mail_smtp['submit_send'] 发佈时发送
+set next act	workflow	zh	设定下个活动
+set next user	workflow	zh	设定下个用户
+set property	workflow	zh	设定属性
+setnextuser directives can override it	workflow	zh	setNextUser 会覆盖它
+setting next activity to an unexisting activity	workflow	zh	设定的下个活动不存在
+shared code	workflow	zh	共享程序码
+should we always give you the advanced search row on instances lists?	workflow	zh	在实例列表中是否永远显示进接搜索资料列？
+show activity info zone	common	zh	显示活动资讯区域
+show activity title	common	zh	显示活动标题
+show code	workflow	zh	显示程序码
+show instance name	common	zh	显示实例名称
+show instance owner	common	zh	显示实例拥有者
+show multiple submit as select	common	zh	显示选取的多个项目
+show template	workflow	zh	显示样板
+size of the font used on the graph 12 should be a good default value	admin	zh	在图形中使用的文字大小，默认值 12
+smtp agent has detected some errors when sending email after completion of the activity	workflow	zh	在活动完成后发送邮件时发生错误
+smtp agent has detected some errors when sending email at the beginning of the activity	workflow	zh	在活动开始时后发送邮件发生错误
+smtp agent has detected some errors when sending email at the end of this activity	workflow	zh	在活动结束时发送邮件发生错误
+smtp agent has detected some errors when sending email on demand whith this activity	workflow	zh	在这个活动中根据需求发送邮件时发生错误
+something was wrong while creating the new major version	workflow	zh	建立新的主要版本时发生错误
+something was wrong while creating the new minor version	workflow	zh	建立新的次要版本时发生错误
+source code file for activity %1 is not avaible	workflow	zh	活动  %1 原始码文件无法使用
+source code for activity %1 is not avaible	workflow	zh	活动  %1 原始码无法使用
+source saved	workflow	zh	来源储存了
+special known values for local links address are <strong>userinstance</strong>, <strong>viewinstance</strong>, <strong>viewniceinstance</strong> and <strong>admininstance</strong>.	workflow	zh	本地端位址使用的特殊链接为 <strong>userinstance</strong>, <strong>viewinstance</strong>, <strong>viewniceinstance</strong> 与 <strong>admininstance</strong>.
+split	workflow	zh	切割
+standalone	workflow	zh	独立
+start	workflow	zh	开始
+start activities must be autorouted	workflow	zh	开始的活动必须是自动递送
+start activities must be interactive	workflow	zh	开始的活动必须是互动式
+start activity	workflow	zh	开始活动
+start process	workflow	zh	开始程序
+started	workflow	zh	开始了
+started:	workflow	zh	开始：
+starting page	workflow	zh	开始页面
+status	workflow	zh	状态
+status:	workflow	zh	状态：
+stop	workflow	zh	停止
+subject:	workflow	zh	主旨：
+switch	workflow	zh	切换
+switch construct	workflow	zh	切换结构
+template	workflow	zh	样板
+test concistency	workflow	zh	测试一致性
+test consistency of datas in the database	workflow	zh	测试数据库的资料一致性
+test local installation	workflow	zh	测试本地安装
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	common	zh	文件夹 /workflow 不存在且无法建立，请联系管理员来检查全局设定
+the activity was not completed	workflow	zh	这个活动没有完成
+the default user will only be set if he is mapped to a role on the activity	workflow	zh	默认用户将只会在对应到活动角色时被设定
+the following items must be corrected to be able to activate this process	workflow	zh	进行这个处理程序前必须先修正下面这些项目
+the instance title is shown on top of the form	admin	zh	实例标题会显示在表单上方
+the label you want	workflow	zh	要使用的标签
+the smtp configuration cannot be loaded by the mail_smtp workflow agent	workflow	zh	工作流程无法读取 SMTP 设定
+there are no activities available	workflow	zh	目前没有任何活动
+there are no config value defined	workflow	zh	没有定义设定值
+there are no instances available	workflow	zh	目前没有任何阶段
+there are no mappings defined for this process	workflow	zh	这个处理程序目前没有定义任何对应
+there are no process available	workflow	zh	没有处理程序
+there are no processes	workflow	zh	没有处理程序
+there are no processes available	workflow	zh	没有处理程序
+there are no processes defined	workflow	zh	目前没有定义任何处理程序
+there are no processes with the current filter	workflow	zh	这个规则找不到任何处理程序
+there are no properties available	workflow	zh	目前没有任何属性
+there are no roles defined for this process	workflow	zh	这个处理程序目前没有定义任何角色
+there are no transitions defined	workflow	zh	目前没有定义任何更改
+there are no user activites available	workflow	zh	目前没有任何用户活动
+there are no workitems available	workflow	zh	目前没有任何工作项目
+there are some undefined preferences associated with this form : %1	workflow	zh	这个表单有一些未定义的设定： %1
+there is an unknown user or group #%1 in role mappings	workflow	zh	在角色对应时发现有一个未知的用户或群组 #%1
+they were problems at the compilation of the source:	workflow	zh	编译程序码时发生错误：
+this activity for this instance is actually avaible for you.	workflow	zh	您可以使用这个实例的活动。
+this activity for this instance is actually only avaible for you.	workflow	zh	只有您可以使用这个实例的活动。
+this activity for this instance is not specifically assigned to you.	workflow	zh	这个实例的活动并没有指派给您。
+this agent gives the activity the possibility to send an smtp message (mail)	workflow	zh	这个代理人可以让活动发送 SMTP 讯息(也就是邮件)
+this form will test your local workflow installation to detect potential issues	workflow	zh	这个表单会测试您的工作流程系统并且侦测可能的问题
+this is the first screen shown when you click on the workflow application icon	workflow	zh	这是当您点选工作流程图示时显示的第一个画面
+this process has a view activity. access in view mode is granted only for this view activty.	workflow	zh	这个处理程序有个浏览活动，浏览模式只允许再这个浏览活动中取得。
+this process has no end activity	workflow	zh	这个处理程序没有结束活动
+this will automatically release the instance when leaving an activity without completing	admin	zh	这将会在离开未完成活动时自动释出实例
+this will display an activity footer when any activity is runned with workflow engine related informations	admin	zh	这将会显示在每个透过工作流程引擎执行的活动资讯下方
+to	workflow	zh	收件人
+to:	workflow	zh	收件人：
+transition	workflow	zh	过程转移
+transition mode	workflow	zh	运转模型
+transition to %1	workflow	zh	过程转移到 %1
+transition waiting for human interaction	workflow	zh	转换等待人的交互
+transitions	workflow	zh	过程转移
+transitions removed successfully	workflow	zh	转移成功移除
+type	workflow	zh	类型
+type:	workflow	zh	类型：
+unknow fix instruction :%1	workflow	zh	不知名的修正指令： %1
+unknown instruction from the workflow engine: %1	workflow	zh	不知名的指令来自工作流程引擎： %1
+unknown status	workflow	zh	不知名的状态
+update	workflow	zh	更新
+upload file	workflow	zh	上传文件
+use <a href="%1">emailadmin</a> to create mail profiles	workflow	zh	使用<a href="%1">邮件管理</a>来建立邮件资料
+use automatic parsing	common	zh	使用自动解析
+use default	workflow	zh	使用默认值
+use existing roles	workflow	zh	使用已经存在的角色
+user	workflow	zh	用户
+user #%1 is associated with a non-existent role #%2	workflow	zh	用户 #%1 归类于不存在的角色 #%2
+user activities	workflow	zh	用户活动
+user instances	workflow	zh	用户实例
+user instances form: columns	workflow	zh	用户实例表单： 栏位
+user instances form: filters and actions	workflow	zh	用户实例表单： 规则与动作
+user is not authorized to delete aborted instances	workflow	zh	用户没有被授权来删除中止的实例
+user is not authorized to delete instances	workflow	zh	用户没有被授权来删除实例
+user processes	workflow	zh	用户处理程序
+user/group	workflow	zh	用户/群组
+user:	workflow	zh	用户：
+users can act on activity before its execution with form and after by sending it to the next activity	workflow	zh	用户可以在活动执行前以及在发送它到下一个活动后透过表单操作
+users/groups	workflow	zh	用户/群组
+valid	workflow	zh	正确
+valid process	workflow	zh	正确处理程序
+valid:	workflow	zh	正确：
+validity:	workflow	zh	有效性：
+value	workflow	zh	值
+version	workflow	zh	版本
+view details	workflow	zh	浏览细节
+view this instance	workflow	zh	浏览这个实例
+view workitem	workflow	zh	浏览工作项目
+warning this filter override all others filters	workflow	zh	警告：这个规则覆盖了所有的其他规则
+warning: by using this button you will definitively remove all aborted instances and their history (workitems) for the selected process.	workflow	zh	警告：使用这个按钮您将会在选择的程序中删除所有中止的实例与他们的记录(工作项目)。
+warning: by using this button you will definitively remove all instances and their history (workitems) for the selected process, whatever the state they are.	workflow	zh	警告：使用这个按钮您将会在选择的程序中删除所有的实例与他们的记录（工作项目），无论他们的状态为何。
+we cannot run this activity, maybe this instance or this activity do not exists anymore.	workflow	zh	我们无法执行这个活动，也许这个实例或活动已经不存在了。
+we were not able to build the message	workflow	zh	我们不能够建立讯息
+when in advanced mode, should we show you advanced actions by default (resume, exception, grab, etc.)?	workflow	zh	在高级模式时，我们将以缺省方式显示您高级动作(恢复、异常、抓取等等)？
+when multiple submit options are avaible we draw a select box with only one submit instead of multiple buttons	admin	zh	当多重提交选项可用时，我们绘制一个下拉菜单只用一个提交而不是多个按钮
+when to send the message:	workflow	zh	当发送讯息时：
+workflow	common	zh	工作流程
+workflow configuration	admin	zh	工作流程设置
+workflow navigation	workflow	zh	工作流程导航
+workflow preferences	workflow	zh	工作流程参数
+workflow site configuration	workflow	zh	工作流程网站配置
+workitem information	workflow	zh	工作项目信息
+workitems	workflow	zh	工作项目
+you are not allowed to abort instance %1	workflow	zh	您没有权限中止实例 %1
+you are not allowed to exception instance %1	workflow	zh	您没有权限排除实例 %1
+you are not allowed to grab instance %1	workflow	zh	您没有权限取得实例 %1
+you are not allowed to release instance %1	workflow	zh	您没有权限释出实例 %1
+you are not allowed to restart instance %1	workflow	zh	您没有权限重新开始实例 %1
+you are not allowed to resume instance %1	workflow	zh	您没有权限回复执行实例 %1
+you are not allowed to send instance %1	workflow	zh	您没有权限发送实例 %1
+you can use special values with this mail agent:	workflow	zh	您可以透过这个邮件代理程序使用特殊值：
+you do not have the right to run this activity anymore, maybe a concurrent access problem, refresh your datas.	workflow	zh	您没有权限再进行这活动，可能一个并行存取问题，刷新您的数据。
+you don't have the rights necessary to exception instance %1	workflow	zh	您没有异常实例%1的必须权限
+you have not permission to execute this activity	workflow	zh	您没有权限执行这个活动
+you were not allowed to complete the activity	workflow	zh	您没有权限完成这个活动

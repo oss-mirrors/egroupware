@@ -1,0 +1,41 @@
+after successful installation of all instances, you have to copy %1 to %2!	gallery	zh	在所有实例安裝完成后，您需要复制 %1 到 %2！
+album frame (%1samples%2)	gallery	zh	相框 (%1范例%2)
+alignment of the block	gallery	zh	区块对齐
+all filenames are relative to %1.	gallery	zh	所有文件名都与 %1 有关。
+all other egroupware users will be created by the g2 integration including there admin rights.	gallery	zh	所有其他的 eGroupWare 用户会由 G2 创建完成，包含他们的管理权限。
+an error occurred during user creation in g2.	gallery	zh	在 G2 中创建用户时发生错误。
+an error occurred while trying to initialize g2.	gallery	zh	在试图对 G2 初始化时发生错误。
+can be used to limit the block to a certain album.	gallery	zh	可以用来限制目前相册使用的区块。
+center	gallery	zh	居中
+complete gallery	gallery	zh	完整的相册
+default item to show in the gallery.	gallery	zh	相册要显示的默认项目。
+extra information to show	gallery	zh	要显示的其他信息
+for multiple egroupware instances, you have to remove %1, to be able to install the next instance.	gallery	zh	在多重登录的 eGroupWare 环境，在安裝下一个实例时，您必须移除 %1。
+full size	gallery	zh	完整大小
+gallery	common	zh	我的相册
+gallery menu	gallery	zh	相册菜单
+gallery sidebar	gallery	zh	相册侧边栏
+gallery without sidebar	gallery	zh	相册沒有侧边栏
+gallery2 is not installed, you need to %1do that%2 first!!!	gallery	zh	沒有安裝 Gallery2 ，您必须先 %1安裝%2 ！
+heading	gallery	zh	页首
+image frame (%1samples%2)	gallery	zh	相框 (%1范例%2)
+imageblock	gallery	zh	图块
+imageblock of the gallery	gallery	zh	相册的图块
+item id (number)	gallery	zh	项目 ID(数字)
+one or more blocks to show	gallery	zh	要显示一个或多个区块
+pagename of an other page to link to	gallery	zh	要链接到其它页面的页面名称
+please note:	gallery	zh	请注意：
+set block title to	gallery	zh	设定区块标题
+set gallery title as page-title?	gallery	zh	设定相册标题为页面标题？
+should contain a "gallery" block in contentarea "center".	gallery	zh	內容区域 "center" 是否要包含一个 "gallery" 区块。
+site configuration	gallery	zh	站点配置
+size (maximum number of pixel of the longest side)	gallery	zh	大小 (最长边的最大像素)
+specific item (requires itemid!)	gallery	zh	指定项目 (需要项目 ID！)
+the administrator account has to be an existing egroupware account with exactly the same spelling!	gallery	zh	管理员账号必须是 eGroupWare 中已经存在的账号，而且英文大小写一致！
+type of the embeded gallery	gallery	zh	嵌入式相册类型
+use %1 as g2 data directory.	gallery	zh	使用 %1 作为 G2 的数据目录。
+use the same database settings as for your egw installation (see your %1 file) and leave the table- and colum-prefix as suggested.	gallery	zh	使用与您 eGroupWare 一样的数据库设定(参考文件 %1)并且依据建议设置数据表与栏的前缀。
+use this module to display the embeded gallery	gallery	zh	用这个模块來显示内嵌相册
+view count	gallery	zh	查看次数
+you can get the id from the "g2_itemid" parameter in the url, when you click on the item.	gallery	zh	您可以在点击项目后从网址的 g2_itemId 参数取得编号。
+you have no rights to view %1 content !!!	gallery	zh	您沒有查看 %1 內容的权限！
