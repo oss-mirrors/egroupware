@@ -1,8 +1,10 @@
+(don't offer the possibility)	admin	it	(non offrono la possibilità)
 <em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	it	<em>Ma</em> visualizza almeno questo numero di voci in Modifiche Recenti e altre liste di sottoscrizione:
 add document to category	wiki	it	Aggiungi documento alla categoria
 added	wiki	it	Aggiunto
 administration features are disabled for this wiki.	wiki	it	Le opzioni di amministrazione sono disabilitate per questo Wiki
 admins	wiki	it	Amministratori
+after how many days should old versions of a page be removed (0 for never)	admin	it	Dopo quanti giorni le vecchie versioni della pagina dovrebbe essere rimossa (0 per mai)
 allow anonymous access	admin	it	Permetti accesso anonimo
 anonymous password	admin	it	Password per anonimo
 anonymous session type	admin	it	Tipo sessione per anonimo
@@ -54,9 +56,15 @@ locked	wiki	it	Bloccato
 name wiki home link	admin	it	Nome collegamento HOME del Wiki
 newer	wiki	it	Più recente
 no never	admin	it	No mai
+no only on request	admin	it	No solo su richiesta
 not set	wiki	it	Non impostato
 older	wiki	it	Più vecchio
+on all pages	wiki	it	su tutte le pagine
 only if browser supports a richtext-editor	admin	it	Solo se il browser supporta un editor RICHTEXT
+only on the first page	wiki	it	solo sulla prima pagina
+page '%1' not found !!!	wiki	it	Pagina '%1' non trovata !!!
+path of the upload directory (has to be writable by the webserver!)	admin	it	Percorso della cartella di upload (deve essere scrivibile dal Server web)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	it	Upload delle immagini attraverso l'editor richtext (lascia la cartella di upload vuota per disabilitare l'upload)
 please contact the %1administrator%2 for assistance.	wiki	it	Prego contatta l' %1Amministratore%2 per assistenza.
 preview	wiki	it	Anteprima
 preview of current version	wiki	it	Anteprima della Versione Attuale
@@ -69,14 +77,20 @@ richtext	wiki	it	Richtext
 rows	wiki	it	Righe
 save the changes and exit	wiki	it	Salva le modifiche ed esci
 saves and continues editing	wiki	it	Salva e continua la modifica
+search for	wiki	it	Cerca per
 see complete list (%1 entries)	wiki	it	Vedi lista completa (%1 inserimenti)
+show a search	wiki	it	Visualizza una ricerca
+show the title of the wiki page	wiki	it	Visualizza il titolo della pagina wiki
 site configuration	wiki	it	Configurazione Sito
 summary	wiki	it	Indice
 summary of change	wiki	it	Indice delle modifiche
+the search returned no result!	wiki	it	La ricerca non ha dato risultati
 this page can not be edited.	wiki	it	Questa pagina non può essere modificata.
 twin pages	wiki	it	Pagine gemelle
 unblock	wiki	it	Sblocca
 updates the preview	wiki	it	Aggiorna l'anteprima
+url of the upload directory	admin	it	URL della cartella di upload
+use this module for displaying wiki-pages	wiki	it	usa questo modulo per visualizzare le pagine wiki
 users	wiki	it	utenti
 view document history	wiki	it	Visualizza cronologia documento
 visit %1 to set your user name	wiki	it	Visita %1 per settare il tuo nome utente
@@ -86,10 +100,13 @@ who should be able to read this page	wiki	it	chi può leggere questa pagina
 wiki	common	it	Wiki
 wiki administration	wiki	it	Configurazione Wiki
 wiki menu	wiki	it	Menù Wiki
+wiki startpage	wiki	it	Pagina d'inizio Wiki
 writable by	wiki	it	Scrivibile da
 yes always	admin	it	Sì sempre
+yes with navbar	admin	it	Si con barra di navigazione
 you have been denied access to this site.	wiki	it	Ti è stato negato l'accesso a questo sito.
 you have entered an invalid user name.	wiki	it	Hai inserito un nome utente non valido.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	it	Hai superato il numero di pagine che puoi visitare in un dato periodo di tempo. Per favore torna più tardi.
+you have no rights to view wiki content !!!	wiki	it	Non hai i permessi per vedere i contenuti del wiki !!!
 your changes	wiki	it	Le tue modifiche
 your user name is "%1".	wiki	it	Il tuo nome utente è "%1".
