@@ -61,6 +61,8 @@
 		 */
 		function addAttachment($_formData)
 		{
+#echo "addattachment<br>";
+#_debug_array($_formData);
 			// to gard against exploits the file must be either uploaded or be in the temp_dir
 			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) || 
 				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir'])))
@@ -1107,11 +1109,8 @@
 				$bofelamimail->reopen($this->sessionData['messageFolder']);
 				// if the draft folder is a starting part of the messages folder, the draft message will be deleted after the send
 				// unless your templatefolder is a subfolder of your draftfolder, and the message is in there
-				if((!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']) && 
-					preg_match('/^'.$GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder'].'/',$this->sessionData['messageFolder']))
-					&& !(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['templateFolder']) &&
-					preg_match('/^'.$GLOBALS['egw_info']['user']['preferences']['felamimail']['templateFolder'].'/',$this->sessionData['messageFolder']))
-				) {
+				if ($bofelamimail->isDraftFolder($this->sessionData['messageFolder']) || $bofelamimail->isTemplateFolder($this->sessionData['messageFolder'])) 
+				{
 					$bofelamimail->deleteMessages(array($this->sessionData['uid']));
 				} else {
 					$bofelamimail->flagMessages("answered", array($this->sessionData['uid']));
