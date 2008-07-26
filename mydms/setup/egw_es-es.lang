@@ -9,6 +9,7 @@ add acl	mydms	es-es	añadir acl
 add document	mydms	es-es	añadir documento
 add notification	mydms	es-es	añadir notificación
 add subfolder	mydms	es-es	añadir subcarpeta
+adding subfolder "%1" to folder "%2"...	mydms	es-es	Añadiendo la subcarpeta "%1" a la carpeta "%2"...
 admin-tools	mydms	es-es	Herramientas de administración
 all versions	mydms	es-es	Todas las versiones
 comment	mydms	es-es	Comentario
@@ -28,6 +29,7 @@ delete this notification	mydms	es-es	borrar esta notificación
 do you really want to delete this acl?	mydms	es-es	¿Realmente desea borrar esta acl?
 do you really want to delete this document?	mydms	es-es	¿Realmente desea borrar este documento?
 do you really want to delete this version of the document?	mydms	es-es	¿Realmente desea borrar esta versión del documento?
+do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	es-es	¿Realmente desea eliminar la carpeta "%1" y su contenido?<br>Tenga cuidado: está acción no se puede deshacer.
 does not expire	mydms	es-es	no expira
 download	mydms	es-es	descargar
 edit folder	mydms	es-es	editar carpeta

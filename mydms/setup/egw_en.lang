@@ -9,6 +9,7 @@ add acl	mydms	en	add acl
 add document	mydms	en	add document
 add notification	mydms	en	add notification
 add subfolder	mydms	en	add subfolder
+adding subfolder "%1" to folder "%2"...	mydms	en	Adding subfolder "%1" to folder "%2"...
 admin-tools	mydms	en	administration Tools
 all versions	mydms	en	all versions
 comment	mydms	en	Kommentar
@@ -28,6 +29,7 @@ delete this notification	mydms	en	delete this notification
 do you really want to delete this acl?	mydms	en	Do you really want to delete this acl?
 do you really want to delete this document?	mydms	en	Do you really want to delete this document?
 do you really want to delete this version of the document?	mydms	en	do you really want to delete this version of the document?
+do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	en	Do you really want to remove the folder "%1" and its content?<br>Be careful: This action cannot be undone.
 does not expire	mydms	en	does not expire
 download	mydms	en	download
 edit folder	mydms	en	edit folder

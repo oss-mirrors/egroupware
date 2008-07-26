@@ -8,11 +8,13 @@ advanced options	emailadmin	en	Advanced options
 alternate email address	emailadmin	en	Alternate email address
 any application	emailadmin	en	Any application
 any group	emailadmin	en	Any group
+any user	emailadmin	en	any user
 bad login name or password.	emailadmin	en	Bad login name or password.
 bad or malformed request. server responded: %s	emailadmin	en	Bad or malformed request. Server Responded: %s
 bad request: %s	emailadmin	en	Bad request: %s
 can be used by application	emailadmin	en	Can be used by application
 can be used by group	emailadmin	en	Can be used by group
+can be used by user	emailadmin	en	can be used by user
 connection dropped by imap server.	emailadmin	en	Connection dropped by IMAP server.
 could not complete request. reason given: %s	emailadmin	en	Could not complete request. Reason Given: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	en	Could not open secure connection to the IMAP server. %s : %s.
@@ -52,6 +54,7 @@ imap server name	emailadmin	en	imap server name
 imap server port	emailadmin	en	IMAP server port
 imap/pop3 server name	emailadmin	en	IMAP/POP3 server name
 in mbyte	emailadmin	en	in MByte
+inactive	emailadmin	en	inactive
 ldap basedn	emailadmin	en	LDAP basedn
 ldap server	emailadmin	en	LDAP server
 ldap server accounts dn	emailadmin	en	LDAP server accounts DN
@@ -78,6 +81,7 @@ pop3 server hostname or ip address	emailadmin	en	POP3 server hostname or ip addr
 pop3 server port	emailadmin	en	POP3 server port
 postfix with ldap	emailadmin	en	Postfix with LDAP
 profile access rights	emailadmin	en	profile access rights
+profile is active	emailadmin	en	profile is active
 profile list	emailadmin	en	Profile List
 profile name	emailadmin	en	Profile Name
 qmaildotmode	emailadmin	en	qmaildotmode
@@ -111,12 +115,16 @@ unknown imap response from the server. server responded: %s	emailadmin	en	Unknow
 unsupported action '%1' !!!	emailadmin	en	Unsupported action '%1' !!!
 update current email address:	emailadmin	en	Update current email address:
 use ldap defaults	emailadmin	en	Use LDAP defaults
+use predefined username and password defined below	emailadmin	en	Use predefined username and password defined below
 use smtp auth	emailadmin	en	Use SMTP auth
 use tls authentication	emailadmin	en	Use TLS authentication
 use tls encryption	emailadmin	en	Use TLS encryption
 user can edit forwarding address	emailadmin	en	User can edit forwarding address
 username (standard)	emailadmin	en	username (standard)
+username/password defined by admin	emailadmin	en	Username/Password defined by admin
 username@domainname (virtual mail manager)	emailadmin	en	username@domainname (Virtual MAIL ManaGeR)
 users can define their own emailaccounts	emailadmin	en	Users can define their own email accounts
+users can define their own identities	emailadmin	en	users can define their own identities
+users can define their own signatures	emailadmin	en	users can define their own signatures
 vaction messages with start- and end-date require an admin account to be set!	emailadmin	en	Vaction messages with start- and end-date require an admin account to be set!
 virtual mail manager	emailadmin	en	Virtual MAIL ManaGeR

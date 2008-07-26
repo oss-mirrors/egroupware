@@ -16,6 +16,7 @@ bookmark not readable	bookmarks	es-es	No se puede leer el marcador
 bookmarks	common	es-es	Marcadores
 bookmarks settings	bookmarks	es-es	Configuración de los marcadores
 change bookmark	bookmarks	es-es	Cambiar marcador
+choose the categories to display	bookmarks	es-es	Elija las categorías a mostrar
 close this window to return	bookmarks	es-es	cerrar esta ventana para volver
 create bookmark	bookmarks	es-es	Crear marcador
 create new bookmark	bookmarks	es-es	Crear nuevo marcador
@@ -61,6 +62,7 @@ select the format you would like to export to	bookmarks	es-es	Seleccione el form
 send bookmark	bookmarks	es-es	Enviar marcador
 site configuration	bookmarks	es-es	Configuración del sitio
 sub category	bookmarks	es-es	Subcategoría
+this module displays bookmarks in a javascript based tree	bookmarks	es-es	Este módulo muestra los marcadores en un árbol basado en javascript
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	es-es	La dirección Para: %1 no es válida. El formato debe ser <strong>usuario@dominio</strong> y el dominio debe existir.
 to e-mail addresses	bookmarks	es-es	Direcciones de correo de los destinatarios
 to which category should the imported folder hierarchy be attached	bookmarks	es-es	A qué categoría hay que adjuntar la jerarquía de la carpeta importada

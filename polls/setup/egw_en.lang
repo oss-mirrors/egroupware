@@ -1,3 +1,4 @@
+%1 group	polls	en	%1 group
 actions	polls	en	actions
 add answer to poll	polls	en	Add answer to poll
 add answers	polls	en	Add answers
@@ -28,12 +29,18 @@ result visible to	polls	en	Result visible to
 select current poll	polls	en	Select current poll
 settings updated	polls	en	Settings updated
 show answers	polls	en	Show answers
+show bullet if allowed to vote and result else	polls	en	Show bullet if allowed to vote and result else
+show only the ballot	polls	en	Show only the ballot
+show only the result	polls	en	Show only the result
 show questions	common	en	Show questions
+site configuration	polls	en	Site configuration
+this module displays polls.	polls	en	This module displays polls.
 total votes	polls	en	Total
 view poll	polls	en	View poll
 view results	polls	en	View Results
 vote	polls	en	Vote
 voting booth admin	admin	en	Voting Booth
 voting booth administration	polls	en	Voting Booth Administration
+what to show	polls	en	What to show
 which poll	polls	en	Which poll
 you are not (yet) allowed view the result of this vote.	polls	en	You are not (yet) allowed view the result of this vote.

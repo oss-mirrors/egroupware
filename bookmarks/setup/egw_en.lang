@@ -16,6 +16,7 @@ bookmark not readable	bookmarks	en	Bookmark not readable
 bookmarks	common	en	Bookmarks
 bookmarks settings	bookmarks	en	Bookmarks Settings
 change bookmark	bookmarks	en	Change Bookmark
+choose the categories to display	bookmarks	en	Choose the categories to display
 close this window to return	bookmarks	en	close this window to return
 create bookmark	bookmarks	en	Create bookmark
 create new bookmark	bookmarks	en	Create new bookmark
@@ -61,6 +62,7 @@ select the format you would like to export to	bookmarks	en	Select the format you
 send bookmark	bookmarks	en	Send bookmark
 site configuration	bookmarks	en	Site Configuration
 sub category	bookmarks	en	Sub Category
+this module displays bookmarks in a javascript based tree	bookmarks	en	This module displays bookmarks in a javascript based tree
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	en	To address %1 invalid. Format must be <strong>user@domain</strong> and domain must exist!
 to e-mail addresses	bookmarks	en	To E-Mail Addresses
 to which category should the imported folder hierarchy be attached	bookmarks	en	To which category should the imported folder hierarchy be attached

@@ -239,7 +239,7 @@ location of buttons when composing	felamimail	es-es	Ubicación de los botones al
 mail server login type	admin	es-es	Tipo de sesión del servidor de correo
 mail settings	felamimail	es-es	Configuración del correo
 mainmessage	felamimail	es-es	mensaje principal
-manage emailaccounts	preferences	es-es	Administrar cuentas de correo
+manage emailaccounts	common	es-es	Administrar cuentas de correo
 manage emailfilter / vacation	preferences	es-es	Administrar filtros de correo / Vacaciones
 manage folders	common	es-es	Administrar carpetas
 manage sieve	common	es-es	Administrar scripts Sieve

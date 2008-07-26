@@ -1,3 +1,4 @@
+%1 group	polls	es-es	grupo %1
 actions	polls	es-es	acciones
 add answer to poll	polls	es-es	Añadir respuestas al sondeo
 add answers	polls	es-es	Añadir respuestas
@@ -28,12 +29,18 @@ result visible to	polls	es-es	Resultado visible para
 select current poll	polls	es-es	Seleccionar sondeo actual
 settings updated	polls	es-es	Configuración actualizada
 show answers	polls	es-es	Mostrar respuestas
+show bullet if allowed to vote and result else	polls	es-es	Mostrar el icono si tiene permiso para votar y ver los resultados. Si no
+show only the ballot	polls	es-es	Mostrar sólo la votación
+show only the result	polls	es-es	Mostrar sólo el resultado
 show questions	common	es-es	Mostrar preguntas
+site configuration	polls	es-es	Configuración del sitio
+this module displays polls.	polls	es-es	Este módulo sólo muestra sondeos.
 total votes	polls	es-es	Total
 view poll	polls	es-es	Ver sondeo
 view results	polls	es-es	Ver resultados
 vote	polls	es-es	Votar
 voting booth admin	admin	es-es	Puesto del voto
 voting booth administration	polls	es-es	Administración de puestos de voto
+what to show	polls	es-es	Qué mostrar
 which poll	polls	es-es	Qué sondeo
 you are not (yet) allowed view the result of this vote.	polls	es-es	No puede (aún) ver el resultado de esta votación.

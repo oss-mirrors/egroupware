@@ -1,6 +1,7 @@
 compose	messenger	en	Compose
 compose global message	common	en	Compose global message
 compose message	messenger	en	Compose message
+compose to group-users	messenger	en	Compose to group-users
 delete a message.	messenger	en	Delete a message.
 delete selected	messenger	en	Delete selected
 forward	messenger	en	Forward
