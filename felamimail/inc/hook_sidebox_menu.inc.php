@@ -68,7 +68,8 @@
 			$linkData = array (
 				'menuaction' => 'felamimail.uipreferences.listAccountData',
 			);
-			$file['Manage eMail: Accounts / Identities'] = $GLOBALS['egw']->link('/index.php',$linkData);
+			$file['Manage eMail Accounts and Identities'] = $GLOBALS['egw']->link('/index.php',$linkData);
+
 		}
 
 		if($preferences->ea_user_defined_signatures) {

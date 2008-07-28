@@ -241,6 +241,7 @@
             if($this->_debug) error_log("ajaxfelamimail::toggleEditor");
             $bocompose  =& CreateObject('felamimail.bocompose', $_composeID);
 			if($_mode == 'simple') {
+				#if (isset($GLOBALS['egw_info']['server']['enabled_spellcheck'])) $_mode = 'egw_simple_spellcheck';
         		$this->sessionData['mimeType'] = 'html';
 				// convert emailadresses presentet in angle brackets to emailadress only
 				$bocompose->replaceEmailAdresses($_content);

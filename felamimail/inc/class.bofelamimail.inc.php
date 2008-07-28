@@ -947,16 +947,15 @@
 					"border"	=> array('maxlen' => 30),
 				)
 			);
-			// clean out empty or pagewide style definitions
-			self::replaceTagsCompletley($_html,'style>','</style');
-			// no scripts allowed
-			self::replaceTagsCompletley($_html,'script', '</script');
-			// clean ot comments
-			self::replaceTagsCompletley($_html,'!--','--');
-
+			// do the kses clean out first, to avoid general problems with content later on
 			$_html = $kses->Parse($_html);
-			// there may be leftovers clean out empty or pagewide style definitions
+			// clean out empty or pagewide style definitions / left over tags
 			self::replaceTagsCompletley($_html,'style>','</style');
+			// no scripts allowed / left over tags
+			self::replaceTagsCompletley($_html,'script', '</script');
+			// clean out comments
+			self::replaceTagsCompletley($_html,'!--','--');
+			// remove non printable chars
 			$_html = preg_replace('/([\000-\012])/','',$_html);
 		}
 
@@ -2230,7 +2229,7 @@
 		
 		function restoreSessionData()
 		{
-			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data');
+			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data','felamimail');
 		}
 		
 		function saveFilter($_formData)
@@ -2252,7 +2251,7 @@
 		
 		function saveSessionData()
 		{
-			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
+			$GLOBALS['egw']->session->appsession('session_data','felamimail',$this->sessionData);
 		}
 		
 		function setEMailProfile($_profileID)

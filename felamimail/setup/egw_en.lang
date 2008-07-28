@@ -55,6 +55,7 @@ close this page	felamimail	en	close this page
 close window	felamimail	en	Close window
 color	felamimail	en	Color
 compose	felamimail	en	Compose
+compose as new	felamimail	en	compose as new
 compress folder	felamimail	en	Compress folder
 condition	felamimail	en	condition
 configuration	felamimail	en	Configuration
@@ -104,16 +105,19 @@ do not use sent	felamimail	en	Do not use Sent
 do not use trash	felamimail	en	Do not use Trash
 do not validate certificate	felamimail	en	do not validate certificate
 do you really want to delete the '%1' folder?	felamimail	en	Do you really want to delete the '%1' folder?
+do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	en	Do you really want to delete the selected Accountsettings and the assosiated Identity.
 do you really want to delete the selected signatures?	felamimail	en	Do you really want to delete the selected signatures?
 do you really want to move the selected messages to folder:	felamimail	en	Do you really want to move the selected messages to folder:
 do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	en	Do you want to be asked for confirmation before moving selected messages to another folder?
 does not contain	felamimail	en	does not contain
+does not exist on imap server.	felamimail	en	does not exist on IMAP Server.
 does not match	felamimail	en	does not match
 does not match regexp	felamimail	en	does not match regexp
 don't use draft folder	felamimail	en	Don't use draft folder
 don't use sent	felamimail	en	Don't use Sent
 don't use template folder	felamimail	en	Don't use template folder
 don't use trash	felamimail	en	Don't use Trash
+dont strip any tags	felamimail	en	dont strip any tags
 down	felamimail	en	down
 download	felamimail	en	download
 download this as a file	felamimail	en	Download this as a file
@@ -130,6 +134,7 @@ edit vacation settings	felamimail	en	edit vacation settings
 editor type	felamimail	en	Editor type
 email address	felamimail	en	E-Mail Address
 email forwarding address	felamimail	en	email forwarding address
+email notification update failed	felamimail	en	email notification update failed
 email signature	felamimail	en	Email signature
 emailaddress	felamimail	en	emailaddress
 empty trash	felamimail	en	empty trash
@@ -146,6 +151,7 @@ error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	felamimail	en	Error connecting to IMAP server: [%s] %s.
 error opening	felamimail	en	Error opening
+error: could not save message as draft	felamimail	en	Error: Could not save Message as Draft
 every	felamimail	en	every
 every %1 days	felamimail	en	every %1 days
 expunge	felamimail	en	Expunge
@@ -159,6 +165,7 @@ filter rules	common	en	filter rules
 first name	felamimail	en	First name
 flagged	felamimail	en	flagged
 flags	felamimail	en	Flags
+folder	felamimail	en	folder
 folder acl	felamimail	en	folder acl
 folder name	felamimail	en	Folder name
 folder path	felamimail	en	Folder Path
@@ -200,6 +207,7 @@ if	felamimail	en	IF
 if from contains	felamimail	en	if from contains
 if mail header	felamimail	en	if mail header
 if message size	felamimail	en	if message size
+if shown, which folders should appear on main screen	felamimail	en	if shown, which folders should appear on main screen
 if subject contains	felamimail	en	if subject contains
 if to contains	felamimail	en	if to contains
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	en	If using SSL or TLS, you must have the PHP openssl extension loaded.
@@ -239,6 +247,7 @@ location of buttons when composing	felamimail	en	Location of buttons when compos
 mail server login type	admin	en	Mail server login type
 mail settings	felamimail	en	Mail Settings
 mainmessage	felamimail	en	mainmessage
+manage email accounts and identities	common	en	Manage eMail Accounts and Identities
 manage emailaccounts	common	en	Manage EMailaccounts
 manage emailfilter / vacation	preferences	en	Manage EMailfilter / Vacation
 manage folders	common	en	Manage Folders
@@ -278,6 +287,7 @@ no folders were found to unsubscribe from!	felamimail	en	No folders were found t
 no highlighting is defined	felamimail	en	No highlighting is defined
 no message returned.	felamimail	en	No message returned.
 no messages found...	felamimail	en	no messages found...
+no messages selected, or lost selection. changing to folder	felamimail	en	No messages selected, or lost selection. Changing to folder
 no messages were selected.	felamimail	en	No messages were selected.
 no plain text part found	felamimail	en	no plain text part found
 no previous message	felamimail	en	no previous Message
@@ -363,6 +373,7 @@ show header	felamimail	en	show header
 show new messages on main screen	felamimail	en	Show new messages on main screen
 sieve script name	felamimail	en	sieve script name
 sieve settings	admin	en	Sieve settings
+signatur	felamimail	en	Signatur
 signature	felamimail	en	Signature
 simply click the target-folder	felamimail	en	Simply click the target-folder
 site configuration	felamimail	en	site configuration
@@ -374,6 +385,7 @@ skipping forward	felamimail	en	skipping forward
 skipping previous	felamimail	en	skipping previous
 small view	felamimail	en	small view
 smtp settings	admin	en	SMTP settings
+start new messages with mime type plain/text or html?	felamimail	en	start new messages with mime type plain/text or html?
 subject	felamimail	en	Subject
 subject(a->z)	felamimail	en	Subject (A->Z)
 subject(z->a)	felamimail	en	Subject (Z->A)
@@ -387,6 +399,7 @@ table of contents	felamimail	en	Table of Contents
 template folder	felamimail	en	Template folder
 templates	felamimail	en	Templates
 text only	felamimail	en	Text only
+text/plain	felamimail	en	text/plain
 the connection to the imap server failed!!	felamimail	en	The connection to the IMAP Server failed!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	en	The IMAP server does not appear to support the authentication method selected. Please contact your system administrator.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	en	The message sender has requested a response to indicate that you have read this message. Would you like to send a receipt?
@@ -427,6 +440,7 @@ use <a href="%1">emailadmin</a> to create profiles	felamimail	en	use <a href="%1
 use a signature	felamimail	en	Use a signature
 use a signature?	felamimail	en	Use a signature?
 use addresses	felamimail	en	Use Addresses
+use custom identities	felamimail	en	use custom identities
 use custom settings	felamimail	en	Use Custom Settings
 use regular expressions	felamimail	en	use regular expressions
 use smtp auth	admin	en	Use SMTP auth
@@ -449,4 +463,5 @@ wrap incoming text at	felamimail	en	Wrap incoming text at
 writing	felamimail	en	writing
 wrote	felamimail	en	wrote
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	en	You can use %1 for the above start-date and %2 for the end-date.
+you have received a new message on the	felamimail	en	You have received a new message on the
 your message to %1 was displayed.	felamimail	en	Your message to %1 was displayed.
