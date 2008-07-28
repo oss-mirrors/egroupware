@@ -8,11 +8,13 @@ advanced options	emailadmin	de	erweiterte Einstellungen
 alternate email address	emailadmin	de	zusätzliche E-Mail-Adressen
 any application	emailadmin	de	jede Anwendung
 any group	emailadmin	de	jede Gruppe
+any user	emailadmin	de	jeder Benutzer
 bad login name or password.	emailadmin	de	Falscher Benutzername oder Passwort.
 bad or malformed request. server responded: %s	emailadmin	de	Falsche oder ungültige Anfrage. Server antwortet: %s
 bad request: %s	emailadmin	de	Falsche Anfrage: %s
 can be used by application	emailadmin	de	Kann von folgender Anwendung verwendet werden
 can be used by group	emailadmin	de	Kann von folgender Gruppe verwendet werden
+can be used by user	emailadmin	de	Kann von folgendem Benutzer verwendet werden
 connection dropped by imap server.	emailadmin	de	Verbindung von IMAP-Server beendet.
 could not complete request. reason given: %s	emailadmin	de	Konnte Anfrage nicht beenden. Grund: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	de	Konnte keine sichere Verbindung zum IMAP Server aufbauen. %s: %s.
@@ -52,6 +54,7 @@ imap server name	emailadmin	de	IMAP-Server Name
 imap server port	emailadmin	de	IMAP-Server Port
 imap/pop3 server name	emailadmin	de	IMAP/POP3-Server Name
 in mbyte	emailadmin	de	in MByte
+inactive	emailadmin	de	inaktiv
 ldap basedn	emailadmin	de	LDAP BaseDN
 ldap server	emailadmin	de	LDAP Server
 ldap server accounts dn	emailadmin	de	LDAP-Server Benutzerkonten DN
@@ -78,6 +81,7 @@ pop3 server hostname or ip address	emailadmin	de	POP3-Server Hostname oder IP-Ad
 pop3 server port	emailadmin	de	POP3-Server Port
 postfix with ldap	emailadmin	de	Postfix mit LDAP
 profile access rights	emailadmin	de	Profilzugriffsrechte
+profile is active	emailadmin	de	Profil ist aktiv
 profile list	emailadmin	de	Profilliste
 profile name	emailadmin	de	Profilname
 qmaildotmode	emailadmin	de	qmaildotmode
@@ -111,12 +115,16 @@ unknown imap response from the server. server responded: %s	emailadmin	de	Unbeka
 unsupported action '%1' !!!	emailadmin	de	Nicht unterstützte Aktion '%1' !!!
 update current email address:	emailadmin	de	Aktualisiere aktuelle EMailadresse
 use ldap defaults	emailadmin	de	LDAP Standardeinstellungen benutzen
+use predefined username and password defined below	emailadmin	de	Verwende den unten vordefinierten Benutzernamen und Passwort
 use smtp auth	emailadmin	de	SMTP Auth benutzen
 use tls authentication	emailadmin	de	TLS Authentifizierung benutzen
 use tls encryption	emailadmin	de	TLS Verschlüsselung benutzen
 user can edit forwarding address	emailadmin	de	Anwender können ihre Weiterleitungsadresse bearbeiten
 username (standard)	emailadmin	de	Benutzername (Standard)
+username/password defined by admin	emailadmin	de	Benutzername/Passwort vordefiniert
 username@domainname (virtual mail manager)	emailadmin	de	Benutzername@Domänenname (Virtual MAIL ManaGeR)
 users can define their own emailaccounts	emailadmin	de	Anwender können ihre eigenen Konten definieren
+users can define their own identities	emailadmin	de	Anwender können ihre eigenen Identitäten definieren
+users can define their own signatures	emailadmin	de	Anwender können ihre eigenen Signaturen definieren
 vaction messages with start- and end-date require an admin account to be set!	emailadmin	de	Urlaubsbenachrichtigungen mit Start- und Endedatum benötigen einen gesetzten Administrator Benutzer!
 virtual mail manager	emailadmin	de	Virtual MAIL ManaGeR
