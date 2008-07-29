@@ -55,6 +55,7 @@ close this page	felamimail	es-es	cerrar esta página
 close window	felamimail	es-es	Cerrar ventana
 color	felamimail	es-es	Color
 compose	felamimail	es-es	Redactar
+compose as new	felamimail	es-es	Redactar como nuevo
 compress folder	felamimail	es-es	Comprimir carpeta
 condition	felamimail	es-es	condición
 configuration	felamimail	es-es	Configuración
@@ -104,10 +105,12 @@ do not use sent	felamimail	es-es	No usar Enviados
 do not use trash	felamimail	es-es	No usar Papelera
 do not validate certificate	felamimail	es-es	No validar el certificado
 do you really want to delete the '%1' folder?	felamimail	es-es	¿Realmente quiere borrar la carpeta '%1'?
+do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	es-es	¿Realmente desea borrar las configuraciones de cuenta seleccionadas y la identidad asociada?
 do you really want to delete the selected signatures?	felamimail	es-es	¿Realmente desea borrar las firmas seleccionadas?
 do you really want to move the selected messages to folder:	felamimail	es-es	¿Realmente desea mover los mensajes seleccionados a la carpeta:
 do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	es-es	¿Desea que se le pida confirmación antes de mover los mensajes seleccionados a otra carpeta?
 does not contain	felamimail	es-es	No contiene
+does not exist on imap server.	felamimail	es-es	No existe en el servidor IMAP
 does not match	felamimail	es-es	No coincide con
 does not match regexp	felamimail	es-es	No coincide con la expresión
 don't use draft folder	felamimail	es-es	No usar la carpeta borradores
@@ -130,6 +133,7 @@ edit vacation settings	felamimail	es-es	editar configuración de vacaciones
 editor type	felamimail	es-es	Tipo de editor
 email address	felamimail	es-es	Dirección de correo electrónico
 email forwarding address	felamimail	es-es	dirección de reenvío del correo
+email notification update failed	felamimail	es-es	falló la actualización de la notificación de correo electrónico
 email signature	felamimail	es-es	Firma de correo
 emailaddress	felamimail	es-es	dirección de correo electrónico
 empty trash	felamimail	es-es	Vaciar papelera
@@ -146,6 +150,7 @@ error connecting to imap serv	felamimail	es-es	Error al conectar al servidor IMA
 error connecting to imap server. %s : %s.	felamimail	es-es	Error al conectar con el servidor IMAP: %s: %s
 error connecting to imap server: [%s] %s.	felamimail	es-es	Error al conectar con el servidor IMAP: [%s] %s
 error opening	felamimail	es-es	Error al abrir
+error: could not save message as draft	felamimail	es-es	Error: no se pudo salvar el mensaje como borrador
 every	felamimail	es-es	cada
 every %1 days	felamimail	es-es	cada %1 días
 expunge	felamimail	es-es	Suprimir
@@ -159,6 +164,7 @@ filter rules	common	es-es	reglas de filtrado
 first name	felamimail	es-es	Nombre de pila
 flagged	felamimail	es-es	marcado
 flags	felamimail	es-es	Marcas
+folder	felamimail	es-es	carpeta
 folder acl	felamimail	es-es	ACL de la carpeta
 folder name	felamimail	es-es	Nombre de la carpeta
 folder path	felamimail	es-es	Ruta de la carpeta
@@ -200,6 +206,7 @@ if	felamimail	es-es	SI
 if from contains	felamimail	es-es	si el remitente contiene
 if mail header	felamimail	es-es	si el encabezado
 if message size	felamimail	es-es	si el tamaño del mensaje
+if shown, which folders should appear on main screen	felamimail	es-es	Si se muestra, qué carpetas deben aparecer en la pantalla principal
 if subject contains	felamimail	es-es	si el asunto contiene
 if to contains	felamimail	es-es	si el destinatario contiene
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	es-es	Si se usa SSL o TLS, debe tener la extensión openssl de PHP cargada.
@@ -278,6 +285,7 @@ no folders were found to unsubscribe from!	felamimail	es-es	No se encontraron ca
 no highlighting is defined	felamimail	es-es	No se definió un resaltado
 no message returned.	felamimail	es-es	No se devolvió ningún mensaje.
 no messages found...	felamimail	es-es	no se encontraron mensajes...
+no messages selected, or lost selection. changing to folder	felamimail	es-es	No hay mensajes seleccionados, o se ha perdido la selección. Cambiando a la carpeta
 no messages were selected.	felamimail	es-es	No se seleccionaron mensajes
 no plain text part found	felamimail	es-es	No se encontró ninguna parte con texto sencillo
 no previous message	felamimail	es-es	No hay mensaje anterior
@@ -362,6 +370,7 @@ show header	felamimail	es-es	mostrar cabecera
 show new messages on main screen	felamimail	es-es	Mostrar mensajes nuevos en la pantalla principal
 sieve script name	felamimail	es-es	nombre del script sieve
 sieve settings	admin	es-es	Configuración de Sieve
+signatur	felamimail	es-es	Firma
 signature	felamimail	es-es	Firma
 simply click the target-folder	felamimail	es-es	Simplemente pulse en la carpeta destino
 site configuration	felamimail	es-es	Configuración del sitio
@@ -373,6 +382,7 @@ skipping forward	felamimail	es-es	saltando el siguiente
 skipping previous	felamimail	es-es	saltando el anterior
 small view	felamimail	es-es	Vista reducida
 smtp settings	admin	es-es	Opciones SMTP
+start new messages with mime type plain/text or html?	felamimail	es-es	¿Comenzar nuevos mensajes con el tipo MIME plain/text o html?
 subject	felamimail	es-es	Asunto
 subject(a->z)	felamimail	es-es	Asunto (A->Z)
 subject(z->a)	felamimail	es-es	Asunto (Z->A)
@@ -426,6 +436,7 @@ use <a href="%1">emailadmin</a> to create profiles	felamimail	es-es	use <a href=
 use a signature	felamimail	es-es	Usar una firma
 use a signature?	felamimail	es-es	¿Usar una firma?
 use addresses	felamimail	es-es	Usar direcciones
+use custom identities	felamimail	es-es	usar identidades personalizadas
 use custom settings	felamimail	es-es	Usar opciones personalizadas
 use regular expressions	felamimail	es-es	usar expresiones regulares
 use smtp auth	admin	es-es	Usar identificación SMTP
@@ -448,4 +459,5 @@ wrap incoming text at	felamimail	es-es	Ajustar el texto entrante a
 writing	felamimail	es-es	escribiendo
 wrote	felamimail	es-es	escribió
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	es-es	Puede usar %1 para la fecha de inicio de arriba y %2 para la fecha de fin.
+you have received a new message on the	felamimail	es-es	Ha recibido un mensaje nuevo en la
 your message to %1 was displayed.	felamimail	es-es	Su mensaje para %1 ha sido mostrado
