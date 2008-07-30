@@ -59,7 +59,6 @@ rating	bookmarks	pl	Ocena
 search for:	bookmarks	pl	Szukaj:
 select the format you would like to export to	bookmarks	pl	Wybierz format, który chciałbyś exportować
 send bookmark	bookmarks	pl	Wyślij zakładkę
-site configuration	bookmarks	pl	Konfiguracja strony
 sub category	bookmarks	pl	Podkategoria
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	pl	Adres odbiorcy %1 nieprawidłowy. Powinien być <strong>użytkownik@domena</strong> i musi być to poprawna domena.
 to e-mail addresses	bookmarks	pl	Na Adres E-mail

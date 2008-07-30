@@ -302,7 +302,6 @@ generate html start en end tags	jinn	es-es	Generar etiquetas html de inicio y fi
 give a new timestamp	jinn	es-es	Dar una marca de tiempo nueva
 give new timestamp	jinn	es-es	Dar nueva marca de tiempo
 global configuration	jinn	es-es	Configuración global
-global site configuration	admin	es-es	Conifguración global del sitio
 go	jinn	es-es	ir
 has a many to many relation with	jinn	es-es	tiene una relación MUCHOS A MUCHOS con
 has a many to many relation with:	jinn	es-es	tiene una relación MUCHOS A MUCHOS con:

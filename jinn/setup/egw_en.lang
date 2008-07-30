@@ -416,7 +416,6 @@ gif	jinn	en	gif
 give a new timestamp	jinn	en	Give a new timestamp
 give new timestamp	jinn	en	Give new timestamp
 global configuration	jinn	en	Global Configuration
-global site configuration	admin	en	Global site configuration
 go	jinn	en	go
 has a many to many relation with	jinn	en	has a MANY TO MANY relation with
 has a many to many relation with:	jinn	en	has a MANY TO MANY relation with:

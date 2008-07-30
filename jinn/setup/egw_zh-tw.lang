@@ -302,7 +302,6 @@ generate html start en end tags	jinn	zh-tw	產生 HTML 的開始與結束標籤
 give a new timestamp	jinn	zh-tw	使用新的時區
 give new timestamp	jinn	zh-tw	使用新的時區
 global configuration	jinn	zh-tw	全域設定
-global site configuration	admin	zh-tw	全域網站設定
 go	jinn	zh-tw	GO
 has a many to many relation with	jinn	zh-tw	有一個多對多關聯於
 has a many to many relation with:	jinn	zh-tw	有一個多對多關聯於：

@@ -33,7 +33,6 @@ show bullet if allowed to vote and result else	polls	ca	Mostra les opcions si es
 show only the ballot	polls	ca	Mostra només el vot
 show only the result	polls	ca	Mostra només el resultat
 show questions	common	ca	Mostra preguntes
-site configuration	polls	ca	Configuració del lloc
 this module displays polls.	polls	ca	Aquest mòdul mostra sondejos/votacions.
 total votes	polls	ca	Total
 view poll	polls	ca	Veure sondeig

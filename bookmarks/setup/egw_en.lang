@@ -60,7 +60,6 @@ rating	bookmarks	en	Rating
 search for:	bookmarks	en	Search for:
 select the format you would like to export to	bookmarks	en	Select the format you would like to export to
 send bookmark	bookmarks	en	Send bookmark
-site configuration	bookmarks	en	Site Configuration
 sub category	bookmarks	en	Sub Category
 this module displays bookmarks in a javascript based tree	bookmarks	en	This module displays bookmarks in a javascript based tree
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	en	To address %1 invalid. Format must be <strong>user@domain</strong> and domain must exist!

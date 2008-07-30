@@ -302,7 +302,6 @@ generate html start en end tags	jinn	nl	Genereer begin en einde tags in HTML
 give a new timestamp	jinn	nl	Geef een nieuwe tijdstempel
 give new timestamp	jinn	nl	Geef een nieuwe tijdstempel
 global configuration	jinn	nl	Globale configuratie
-global site configuration	admin	nl	Globale Site Configuratie
 go	jinn	nl	ga
 has a many to many relation with	jinn	nl	Heeft een veel-op-veel-relatie met
 has a many to many relation with:	jinn	nl	Heeft een veel-op-veel-relatie met:

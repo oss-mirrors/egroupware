@@ -59,7 +59,6 @@ rating	bookmarks	hu	Értékelés
 search for:	bookmarks	hu	Keresem ezt:
 select the format you would like to export to	bookmarks	hu	Válassza ki az exportálás formátumát
 send bookmark	bookmarks	hu	Könyvjelző küldése
-site configuration	bookmarks	hu	Webhely beállításai
 sub category	bookmarks	hu	Alkategória
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	hu	A %1 cím érvénytelen. <strong>user@domain</strong> formátumú kell lenni és a tartománynak létezni kell!
 to e-mail addresses	bookmarks	hu	E-Mail címekhez

@@ -59,7 +59,6 @@ rating	bookmarks	fr	Note
 search for:	bookmarks	fr	Rechercher:
 select the format you would like to export to	bookmarks	fr	Sélectionnez le format dans lequel vous désirez exporter
 send bookmark	bookmarks	fr	Envoyer le signet
-site configuration	bookmarks	fr	Configuration du Site
 sub category	bookmarks	fr	Sous-catégorie
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	fr	L'adresse du destinataire %1 est invalide. Le format doit être <strong>utilisateur@domaine</strong> et le domaine doit exister!
 to e-mail addresses	bookmarks	fr	Adresses EMail des destinataires

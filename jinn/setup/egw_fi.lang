@@ -285,7 +285,6 @@ generate html start en end tags	jinn	fi	Luo html alku ja loppu tagit
 give a new timestamp	jinn	fi	Anna uusi aikaleima
 give new timestamp	jinn	fi	Anna uusi aikaleima
 global configuration	jinn	fi	Yleinen konfiguraatio
-global site configuration	admin	fi	Yleinen sivuston konfiguraatio
 go	jinn	fi	mene
 has a many to many relation with	jinn	fi	on monen suhde moneen
 has a many to many relation with:	jinn	fi	on monen suhde moneen:

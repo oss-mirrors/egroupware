@@ -337,7 +337,6 @@ sieve script name	felamimail	pl	Nazwa skryptu sita ('sieve')
 sieve settings	admin	pl	Ustawienia Sieve
 signature	felamimail	pl	Sygnaturka
 simply click the target-folder	felamimail	pl	Kliknij folder docelowy
-site configuration	felamimail	pl	Konfiguracja serwisu
 size	felamimail	pl	Wielkość
 size of editor window	felamimail	pl	Wielkość okna edytora
 size(...->0)	felamimail	pl	Rozmiar (...->0)

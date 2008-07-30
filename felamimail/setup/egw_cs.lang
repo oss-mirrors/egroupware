@@ -355,7 +355,6 @@ sieve script name	felamimail	cs	Jméno sieve skriptu
 sieve settings	admin	cs	Nastavení sieve
 signature	felamimail	cs	Podpis
 simply click the target-folder	felamimail	cs	Jednoduše klikněte na cílovou složku
-site configuration	felamimail	cs	nastavení systému
 size	felamimail	cs	Velikost
 size of editor window	felamimail	cs	Velikost okna editoru
 size(...->0)	felamimail	cs	Velikost (...->0)

@@ -342,7 +342,6 @@ sieve script name	felamimail	fi	Seulomis skriptin nimi
 sieve settings	admin	fi	Seulomis asetukset
 signature	felamimail	fi	Allekirjoitus
 simply click the target-folder	felamimail	fi	Paina kerran kansiota siirtääksesi valitut viestit
-site configuration	felamimail	fi	Sivun määritykset
 size	felamimail	fi	Koko
 size of editor window	felamimail	fi	Muokkausikkunan koko
 size(...->0)	felamimail	fi	Koko(...->0)

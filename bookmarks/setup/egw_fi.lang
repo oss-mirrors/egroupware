@@ -59,7 +59,6 @@ rating	bookmarks	fi	Luokitus
 search for:	bookmarks	fi	Etsi:
 select the format you would like to export to	bookmarks	fi	Valitse muoto, johon viedään
 send bookmark	bookmarks	fi	Lähetä suosikki
-site configuration	bookmarks	fi	Sivun määritykset
 sub category	bookmarks	fi	Alakategoria
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	fi	Vastaanottajan osoite %1 ei kelpaa. Osoitteen on oltava muotoa <strong>kayttaja@verkkotunnus</strong> ja verkkotunnuksen on oltava olemassa!
 to e-mail addresses	bookmarks	fi	Osoitteiseen

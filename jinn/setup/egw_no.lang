@@ -195,7 +195,6 @@ general settings	admin	no	Generelle innstillinger
 give a new timestamp	jinn	no	Sett en ny tidsangivelse
 give new timestamp	jinn	no	Sett en ny tidsangivelse
 global configuration	jinn	no	Global konfigurasjon
-global site configuration	admin	no	Global nettsidekonfigurasjon
 go	jinn	no	Gå til
 has a many to many relation with	jinn	no	har en MANGE-TIL-MANGE relasjon med
 has a one to many relation with	jinn	no	har en EN-TIL-MANGE relasjon med

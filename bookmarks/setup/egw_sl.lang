@@ -59,7 +59,6 @@ rating	bookmarks	sl	Ocena
 search for:	bookmarks	sl	Pošči:
 select the format you would like to export to	bookmarks	sl	Izberite izvozni format
 send bookmark	bookmarks	sl	Pošlji zaznamek
-site configuration	bookmarks	sl	Nastavitve strežnika
 sub category	bookmarks	sl	Podkategorija
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sl	Naslovnik %1 je nepravilen. Oblika mora biti <strong>uporabnik@domena</strong> in domena mora obstajati!
 to e-mail addresses	bookmarks	sl	Prejemnikov E-naslov

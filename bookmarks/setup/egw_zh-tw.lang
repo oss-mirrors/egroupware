@@ -59,7 +59,6 @@ rating	bookmarks	zh-tw	評分
 search for:	bookmarks	zh-tw	搜尋：
 select the format you would like to export to	bookmarks	zh-tw	請選擇您希望匯出的格式
 send bookmark	bookmarks	zh-tw	傳送網站連結
-site configuration	bookmarks	zh-tw	網站設定
 sub category	bookmarks	zh-tw	子類別
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	zh-tw	%1 位址錯誤，格式必須是<strong>user@domain</strong>，且網域名稱必須存在！
 to e-mail addresses	bookmarks	zh-tw	收件人E-Mail

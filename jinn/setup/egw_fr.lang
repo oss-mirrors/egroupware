@@ -302,7 +302,6 @@ generate html start en end tags	jinn	fr	Générer les tags de début et fin
 give a new timestamp	jinn	fr	Donne un nouvel estampillage
 give new timestamp	jinn	fr	Donner nouvel estampillage
 global configuration	jinn	fr	Configuration Globale
-global site configuration	admin	fr	Configuration Globale du site
 go	jinn	fr	aller
 has a many to many relation with	jinn	fr	a une relation PLUSIEURS VERS PLUSIEURS avec
 has a many to many relation with:	jinn	fr	a une relation PLUSIEURS VERS PLUSIEURS avec:

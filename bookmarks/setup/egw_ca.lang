@@ -60,7 +60,6 @@ rating	bookmarks	ca	Estimació
 search for:	bookmarks	ca	Cercar:
 select the format you would like to export to	bookmarks	ca	Seleccioneu el format amb que ho voleu exportar
 send bookmark	bookmarks	ca	Enviar adreça d'interès
-site configuration	bookmarks	ca	Configuració del lloc
 sub category	bookmarks	ca	Subcategoria
 this module displays bookmarks in a javascript based tree	bookmarks	ca	Aquest mòdul mostra adreces d'interès en un arbre basat en javascript
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ca	L'adreça Per: %1 no es vàlida. El format ha de ser <strong>usuari@domini</strong> i el domini ha d'existir.

@@ -346,7 +346,6 @@ sieve script name	felamimail	fr	nom du script sieve
 sieve settings	admin	fr	Réglages SIEVE
 signature	felamimail	fr	Signature
 simply click the target-folder	felamimail	fr	Cliquer sur le dossier de destination
-site configuration	felamimail	fr	Configuration du site
 size	felamimail	fr	Taille
 size of editor window	felamimail	fr	Taille de la fenêtre d'édition
 size(...->0)	felamimail	fr	Taille (MAX -> 0)

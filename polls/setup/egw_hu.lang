@@ -33,7 +33,6 @@ show bullet if allowed to vote and result else	polls	hu	Ha engedélyezett a szav
 show only the ballot	polls	hu	Csak a titkos szavazás megjelenítése
 show only the result	polls	hu	Csak az eredmények megjelenítése
 show questions	common	hu	Kérdések megjelenítése
-site configuration	polls	hu	Webhely beállításai
 this module displays polls.	polls	hu	Ez a modul megjeleníti a szavazásokat.
 total votes	polls	hu	Összesen
 view poll	polls	hu	Szavazás megtekintése

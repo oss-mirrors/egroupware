@@ -167,7 +167,6 @@ general settings	admin	zt	一般設定
 give a new timestamp	jinn	zt	使用新的時區
 give new timestamp	jinn	zt	使用新的時區
 global configuration	jinn	zt	全域設定
-global site configuration	admin	zt	全域網站設定
 go	jinn	zt	GO
 has a many to many relation with	jinn	zt	有一個多對多關係於
 has a one to many relation with	jinn	zt	有一個一對多關係於

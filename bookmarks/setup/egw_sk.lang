@@ -59,7 +59,6 @@ rating	bookmarks	sk	Hodnotenie
 search for:	bookmarks	sk	Vyhľadať:
 select the format you would like to export to	bookmarks	sk	Vyberte formát do ktorého chcete exportovať
 send bookmark	bookmarks	sk	Poslať záložku
-site configuration	bookmarks	sk	Konfigurácia stránky
 sub category	bookmarks	sk	Podkategória
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sk	Adresa Kmou %1 je chybná. Formát musí byť <strong>user@domain</strong> a doména musí byť spomedzi existujúcich!
 to e-mail addresses	bookmarks	sk	Adresa Komu

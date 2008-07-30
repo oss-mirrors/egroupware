@@ -33,7 +33,6 @@ show bullet if allowed to vote and result else	polls	es-es	Mostrar el icono si t
 show only the ballot	polls	es-es	Mostrar sólo la votación
 show only the result	polls	es-es	Mostrar sólo el resultado
 show questions	common	es-es	Mostrar preguntas
-site configuration	polls	es-es	Configuración del sitio
 this module displays polls.	polls	es-es	Este módulo sólo muestra sondeos.
 total votes	polls	es-es	Total
 view poll	polls	es-es	Ver sondeo

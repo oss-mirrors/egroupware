@@ -59,7 +59,6 @@ rating	bookmarks	sv	Omdömme
 search for:	bookmarks	sv	Sök efter:
 select the format you would like to export to	bookmarks	sv	Välj export format
 send bookmark	bookmarks	sv	Skicka bokmärke
-site configuration	bookmarks	sv	Sajt alternativ
 sub category	bookmarks	sv	Underkategori
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sv	Adressen %1 är ogiltig. Formatet måste vara <strong>user@domain</strong> och domänen måste vara giltig!
 to e-mail addresses	bookmarks	sv	Till

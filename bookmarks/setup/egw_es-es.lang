@@ -60,7 +60,6 @@ rating	bookmarks	es-es	Valoración
 search for:	bookmarks	es-es	Buscar:
 select the format you would like to export to	bookmarks	es-es	Seleccione el formato al que le gustaría exportar
 send bookmark	bookmarks	es-es	Enviar marcador
-site configuration	bookmarks	es-es	Configuración del sitio
 sub category	bookmarks	es-es	Subcategoría
 this module displays bookmarks in a javascript based tree	bookmarks	es-es	Este módulo muestra los marcadores en un árbol basado en javascript
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	es-es	La dirección Para: %1 no es válida. El formato debe ser <strong>usuario@dominio</strong> y el dominio debe existir.

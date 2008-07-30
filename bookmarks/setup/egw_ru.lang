@@ -59,7 +59,6 @@ rating	bookmarks	ru	Рейтинг
 search for:	bookmarks	ru	Искать:
 select the format you would like to export to	bookmarks	ru	Выбирите формат в который вы хотите экспортировать
 send bookmark	bookmarks	ru	Отправить закладку
-site configuration	bookmarks	ru	Конфигурация сайта
 sub category	bookmarks	ru	Под-категория
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ru	Адрес %1 неверен. Он  должен быть в виде <strong>пользователь@домен</strong> и этот домен должен существовать!
 to e-mail addresses	bookmarks	ru	Отправить на E-Mail

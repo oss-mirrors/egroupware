@@ -35,7 +35,6 @@ show bullet if allowed to vote and result else	polls	zh	如果允许投票与结
 show only the ballot	polls	zh	只显示投票
 show only the result	polls	zh	只显示结果
 show questions	common	zh	显示待表决问题
-site configuration	polls	zh	站点配置
 this module displays polls.	polls	zh	这个模块显示投票。
 total votes	polls	zh	总票数
 view poll	polls	zh	查看投票

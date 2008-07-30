@@ -302,7 +302,6 @@ generate html start en end tags	jinn	pt-br	Gerar início e fim de tags HTML
 give a new timestamp	jinn	pt-br	Dê um novo timestamp
 give new timestamp	jinn	pt-br	Dê um novo timestamp
 global configuration	jinn	pt-br	Configuração Global
-global site configuration	admin	pt-br	Configuração Global do site
 go	jinn	pt-br	ir
 has a many to many relation with	jinn	pt-br	tem uma relação muitos-para-muitos com
 has a many to many relation with:	jinn	pt-br	tem uma relação muitos-para-muitos com:

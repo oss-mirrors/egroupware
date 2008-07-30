@@ -60,7 +60,6 @@ rating	bookmarks	zh	等级
 search for:	bookmarks	zh	搜索方式：
 select the format you would like to export to	bookmarks	zh	请选择您希望导出的格式
 send bookmark	bookmarks	zh	发送书签
-site configuration	bookmarks	zh	站点配置
 sub category	bookmarks	zh	子类别
 this module displays bookmarks in a javascript based tree	bookmarks	zh	这个模块在基于树型的 Java 脚本内显示书签
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	zh	收件人地址%1无效。正确格式是 <strong>用户名@域名</strong>，并且域名必须存在！

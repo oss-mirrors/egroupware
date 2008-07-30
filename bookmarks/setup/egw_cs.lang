@@ -59,7 +59,6 @@ rating	bookmarks	cs	Hodnocení
 search for:	bookmarks	cs	Hledat (co):
 select the format you would like to export to	bookmarks	cs	Vyberte formát, do jakého chcete exportovat
 send bookmark	bookmarks	cs	Poslat záložku
-site configuration	bookmarks	cs	Konfigurace webu
 sub category	bookmarks	cs	Podkategorie
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	cs	Adresa příjemce %1 je neplatná. Formát musí být <strong>uživatel@doména</strong> a doména musí existovat!
 to e-mail addresses	bookmarks	cs	E-mailová adresa příjemce

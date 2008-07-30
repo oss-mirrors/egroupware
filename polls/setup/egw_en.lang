@@ -33,7 +33,6 @@ show bullet if allowed to vote and result else	polls	en	Show bullet if allowed t
 show only the ballot	polls	en	Show only the ballot
 show only the result	polls	en	Show only the result
 show questions	common	en	Show questions
-site configuration	polls	en	Site configuration
 this module displays polls.	polls	en	This module displays polls.
 total votes	polls	en	Total
 view poll	polls	en	View poll

@@ -415,7 +415,6 @@ gif	jinn	zh	gif
 give a new timestamp	jinn	zh	提供新的时间戳
 give new timestamp	jinn	zh	提供新的时间戳
 global configuration	common	zh	全局配置
-global site configuration	common	zh	全局站点配置
 go	jinn	zh	go
 has a many to many relation with	jinn	zh	有一个 MANY TO MANY 关系与
 has a many to many relation with:	jinn	zh	有一个 MANY TO MANY 关系与：

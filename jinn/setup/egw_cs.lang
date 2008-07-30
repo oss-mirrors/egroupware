@@ -302,7 +302,6 @@ generate html start en end tags	jinn	cs	Generovat počáteční a koncové HTML 
 give a new timestamp	jinn	cs	Poskytnout nové časové razítko
 give new timestamp	jinn	cs	Poskytnout nové časové razítko
 global configuration	jinn	cs	Globální konfigurace
-global site configuration	admin	cs	Globální konfigurace webu
 go	jinn	cs	jít
 has a many to many relation with	jinn	cs	má vztah mnoho k mnoha s
 has a many to many relation with:	jinn	cs	má vztah mnoho k mnoha s:
