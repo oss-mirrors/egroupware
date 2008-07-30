@@ -64,7 +64,7 @@ if ($action == "adduser")
 		if (isset($userfile) && ($userfile != "") && ($userfile != "none"))
 		{
 			printMLText("setting_user_image");
-			$lastDotIndex = strrpos(basename($userfile_name), ".");
+			$lastDotIndex = strrpos(_basename($userfile_name), ".");
 			$fileType = substr($userfile_name, $lastDotIndex);
 			if ($fileType != ".jpg")
 			{
@@ -137,7 +137,7 @@ else if ($action == "edituser")
 	if (isset($userfile) && ($userfile != "") && ($userfile != "none"))
 	{
 		printMLText("setting_user_image");
-		$lastDotIndex = strrpos(basename($userfile_name), ".");
+		$lastDotIndex = strrpos(_basename($userfile_name), ".");
 		$fileType = substr($userfile_name, $lastDotIndex);
 		if ($fileType != ".jpg")
 		{

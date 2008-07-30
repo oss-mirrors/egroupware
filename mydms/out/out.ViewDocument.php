@@ -229,11 +229,11 @@ if ($user->getID() != $settings->_guestID)
 {
 ?>
 	<form action="../op/op.AddDocumentLink.php" name="form1">
-	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
+	<input type="Hidden" name="documentid" value="<?php print $documentid;?>"> 
 	<table>
 		<tr>
 			<td class="inputDescription"><?php printMLText("choose_target_document");?>:</td>
-			<td><?php printDocumentChooser("form1");?></td>
+			<td><?php  printDocumentChooser("form1");?></td>
 		</tr>
 		<?php
 			if ($document->getAccessMode($user) >= M_READWRITE)

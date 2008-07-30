@@ -13,6 +13,10 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+//tim
+$documentid = get_var('documentid', 'GET', '');
+//---
+
 $document = getDocument($documentid);
 
 if ($document->getAccessMode($user) < M_READWRITE)
@@ -86,8 +90,8 @@ if ($document->isLocked())
 		<tr>
 			<td valign="top" class="inputDescription"><?php printMLText("expires");?>:</td>
 			<td class="standardText">
-				<input type="Radio" name="expires" value="false"<?phpif (!$document->expires()) print " checked";?>><?php printMLText("does_not_expire");?><br>
-				<input type="radio" name="expires" value="true"<?phpif ($document->expires()) print " checked";?>><?php printDateChooser(-1, "exp");?>
+				<input type="Radio" name="expires" value="false"<?php if (!$document->expires()) print " checked";?>><?php printMLText("does_not_expire");?><br>
+				<input type="radio" name="expires" value="true"<?php if ($document->expires()) print " checked";?>><?php printDateChooser(-1, "exp");?>
 			</td>
 		</tr>
 		<tr>

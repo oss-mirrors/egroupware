@@ -12,6 +12,12 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+//tim
+$documentid = get_var('documentid', 'GET', '');
+$docid = get_var('docid', 'GET', '');
+$public = get_var('public', 'GET', false);
+//----
+
 $document = getDocument($documentid);
 
 printHTMLHead( getMLText("document_title", array("documentname" => $document->getName()) ) );

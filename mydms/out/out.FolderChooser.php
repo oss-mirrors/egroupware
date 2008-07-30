@@ -108,6 +108,9 @@ function folderSelected(id, name) {
 <body>
 
 <?php
+	//tim
+	$folderid = get_var('folderid', 'GET', 1);
+	//--------
 	$folder = getFolder($folderid);
 	printTree($folder->getPath(), $mode, $exclude);
 ?>

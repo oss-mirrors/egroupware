@@ -39,7 +39,7 @@ if ($user->getComment() != $comment)
 
 if (isset($userfile) && ($userfile != "") && ($userfile != "none"))
 {
-	$lastDotIndex = strrpos(basename($userfile_name), ".");
+	$lastDotIndex = strrpos(_basename($userfile_name), ".");
 	$fileType = substr($userfile_name, $lastDotIndex);
 	if ($fileType != ".jpg")
 	{

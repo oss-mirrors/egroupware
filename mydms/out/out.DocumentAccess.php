@@ -24,7 +24,9 @@ function printAccessModeSelection($defMode)
 	print "</select>\n";
 }
 
-
+//tim
+$documentid = get_var('documentid', 'GET', '');
+//--
 $document = getDocument($documentid);
 $allUsers = getAllUsers();
 

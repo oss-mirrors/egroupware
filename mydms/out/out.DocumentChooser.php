@@ -92,6 +92,8 @@ function printTree($path, $level = 0)
 
 <html>
 <head>
+<!-- //tim -->
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="STYLESHEET" type="text/css" href="styles.css">
 <title><?php echo getMLText("choose_target_document")?></title>
 
@@ -111,6 +113,10 @@ function documentSelected(id, name) {
 <body>
 
 <?php
+	//tim
+	$folderid = get_var('folderid', 'GET', 1);
+	$form = get_var('form', 'GET', '');
+	//---
 	$folder = getFolder($folderid);
 	printTree($folder->getPath());
 ?>
@@ -119,6 +125,8 @@ function documentSelected(id, name) {
 targetName = opener.document.<?php echo $form?>.docname;
 targetID   = opener.document.<?php echo $form?>.docid;
 </script>
+
+
 
 </body>
 </html>

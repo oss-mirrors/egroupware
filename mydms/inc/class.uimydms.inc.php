@@ -21,10 +21,16 @@
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.ClassGroup.php');
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.ClassFolder.php');
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.ClassDocument.php');
-
+	
 	class uimydms
 	{
 		var $icons = array(
+			'odt'   => 'writer.png',
+			'ods'   => 'calc.png',
+			'odp'   => 'impress.png',
+			'odg'   => 'draw.png',
+			'odb'   => 'base.png',
+			'odf'   => 'math.png',
 			'txt'	=> 'txt.png',
 			'doc'	=> 'word.png',
 			'rtf'	=> 'document.png',
@@ -63,6 +69,8 @@
 			'deleteACL'		=> 'true',
 			'deleteDocument'	=> 'true',
 			'deleteFile'		=> 'true',
+			'deleteLink'		=> 'true',
+			'addLink'		=> 'true',
 			'deleteNotification'	=> 'true',
 			'folderChooser'		=> 'true',
 			'inheritACL'		=> 'true',
@@ -333,6 +341,40 @@
 				$this->viewDocument($documentID);
 			}
 		}
+		
+		//tim
+		function deleteLink()
+		{
+			$documentID	= (int)$_GET['documentid'];
+			$linkid		= (int)$_GET['linkid'];
+
+			if($documentID && $linkid)
+			{
+				$this->bomydms->deleteLink($documentID, $linkid);
+				$this->viewDocument($documentID);
+			}
+		}
+		//-----
+		
+		//tim
+		function addLink()
+		{
+			$documentID	= (int)get_var('documentid','GET','');
+			$docid 		= (int)get_var('docid','POST','');
+			$public 	= get_var('public','POST',false);
+			
+			if($documentID && $docid)
+			{
+				$this->bomydms->addLink($documentID, $docid, $public);
+				$this->viewDocument($documentID);
+			}
+			else
+			{
+				$this->viewDocument($documentID);
+				echo "<div style=\"text-align: center; color: rgb(255, 0, 0);\"><br>".lang('Not selected document!')."</div>";
+			}
+		}
+		//-----
 
 		function deleteNotification()
 		{
@@ -365,6 +407,8 @@
 				case 'mydms.uimydms.addNotification':
 				case 'mydms.uimydms.deleteACL':
 				case 'mydms.uimydms.deleteFile':
+				case 'mydms.uimydms.deleteLink':   //tim
+				case 'mydms.uimydms.addLink':   //tim
 				case 'mydms.uimydms.deleteNotification':
 				case 'mydms.uimydms.setDefaultAccess':
 				case 'mydms.uimydms.setOwner':
@@ -485,6 +529,12 @@
 			$this->t->set_var('lang_current_acl',lang('current acl'));
 			$this->t->set_var('lang_access_mode',lang('access mode'));
 			$this->t->set_var('lang_confirm_acl_delete',lang('Do you really want to delete this acl?'));
+			//tim
+			$this->t->set_var('lang_document_link_by',lang('Linked by'));
+			$this->t->set_var('lang_document_link_public',lang('Public'));
+			$this->t->set_var('lang_choose_target_document',lang('Choose document'));
+			$this->t->set_var('lang_add_document_link',lang('Add link'));
+			//---
 		}
 		
 		function updateACL()
@@ -543,9 +593,19 @@
 				$this->viewDocument($documentID);
 			}
 		}
+                
+    		//tim
+		function getMimeIcon($fileType)
+		{
+			$ext = substr($fileType, 1);
+			if (isset($this->icons[$ext]))
+				return $this->icons[$ext];
+			else
+				return $this->icons["default"];
+		}//--------------
 
 		function viewDocument($_documentID=false)
-		{
+		{	
 			$documentID = ($_documentID === false ? (int)$_GET['documentid'] : $_documentID);
 
 			if(!$document	= getDocument($documentID))
@@ -580,6 +640,11 @@
 			$this->t->set_block('viewDocument', 'block_change_owner', 'block_change_owner');
 			$this->t->set_block('viewDocument', 'block_acl_inherite', 'block_acl_inherite');
 			$this->t->set_block('viewDocument', 'block_acl_notinherite', 'block_acl_notinherite');
+			//tim link_tab
+			$this->t->set_block('viewDocument', 'link_tab', 'link_tab');
+			$this->t->set_block('viewDocument', 'link_tab_cont', 'link_tab_cont');
+			$this->t->set_block('viewDocument', 'link_cel', 'link_cel');
+			//---
 
 			$downloadImage 	= $GLOBALS['egw']->common->image('mydms','download');
 			$viewImage 	= $GLOBALS['egw']->common->image('mydms','view');
@@ -640,13 +705,15 @@
 				$this->t->set_var('delete_link', $GLOBALS['egw']->link('/index.php',$linkData));
 				$this->t->parse('delete','block_delete',True);
 			}
-
+			
 			$this->t->set_var('owner_fullname',	$owner->getFullName());
 			$this->t->set_var('owner_email',	$owner->getEmail());
 
 			$this->t->set_var('updater_fullname',	$updatingUser->getFullName());
 			$this->t->set_var('updater_email',	$updatingUser->getEmail());
-
+			//tim добавлена переменная 'name_icon'  вшаблон и функция getMimeIcon
+			$this->t->set_var('name_icon',		$this->getMimeIcon($latestContent->getFileType()));
+			
 			$this->t->set_var('filename',		$document->getName());
 			$this->t->set_var('comment',		$document->getComment());
 			$this->t->set_var('keywords',		$document->getKeywords());
@@ -696,6 +763,8 @@
 			$this->t->set_var('mime_type',		$latestContent->getMimeType());
 			$this->t->set_var('file_size',		filesize($GLOBALS['phpgw_info']['server']['files_dir'] . '/mydms/' . $latestContent->getPath()));
 			$this->t->set_var('last_update',	date("d.m.Y - H:i:s",$latestContent->getDate()));
+			//tim
+
 
 			$this->t->set_var('rownum',		count($versions)+1);
 
@@ -750,6 +819,79 @@
 				$this->t->parse('versions','version_row',True);
 			}
 			
+			//tim
+			// div 3 notifications
+			//------------------------------------------------------
+			$settings = $GLOBALS['mydms']->settings;
+			$links = $document->getDocumentLinks();
+			$links = filterDocumentLinks($user, $links);
+			$l_rownum = count($links)+1;
+			
+			$this->t->set_var('l_rownum',$l_rownum);
+
+			if ($l_rownum > 1)
+			{
+				$this->t->parse('link_head','link_tab',True);
+
+				foreach($links as $link)
+				{
+					$responsibleUser = $link->getUser();
+					$targetDoc = $link->getTarget();
+					$linkData = array
+						(
+							'menuaction'	=> 'mydms.uimydms.viewDocument',
+							'documentid'	=> $targetDoc->getID(),
+							'tabpage'	=> 1,
+						);
+					$this->t->set_var('link_id',($GLOBALS['egw']->link('/index.php',$linkData)));
+					//old
+					//$this->t->set_var('link_id',"mydms/out/out.ViewDocument.php?documentid=".($targetDoc->getID()));
+					$this->t->set_var('link_name',$targetDoc->getName());
+					$this->t->set_var('link_comment',$targetDoc->getComment());
+					$this->t->set_var('link_fullname',$responsibleUser->getFullName());
+					$this->t->set_var('link_public',($link->isPublic()) ? lang('yes') : lang('no'));
+					if (($user->getID() == $responsibleUser->getID()) || ($user->getID() == $settings->_adminID) || ($link->isPublic() && ($document->getAccessMode($user) >= M_READWRITE )))
+					{
+						$linkData = array
+						(
+							'menuaction'	=> 'mydms.uimydms.deleteLink',
+							'documentid'	=> $documentID,
+							'linkid'	=> $link->getID(),
+							'tabpage'	=> 3,
+						);
+						$link_del = "<a href=\"".$GLOBALS['egw']->link('/index.php',$linkData).
+							"\" onClick=\"return confirm('".lang('do you really want to delete this link for document?').
+							"');\"><img src=\"$deleteImage\" width=15 height=15 border=0 title=\"".
+							lang("delete")."\"></a>";
+						//old 
+						//$link_del = "<a href=\"mydms/op/op.RemoveDocumentLink.php?documentid=".$documentID."&linkid=".$link->getID()."\"><img src=\"mydms/out/images/del.gif\" border=0></a>";
+
+						$this->t->set_var('link_del',$link_del);
+					}
+				
+					$this->t->parse('link_body','link_tab_cont',True);
+				}
+			}
+			else $this->t->set_var('link_head',"<tr><td class=\"filelist\">&nbsp;&nbsp;".lang('No related documents')."</td></tr>");
+			
+			if (($user->getID() != $settings->_guestID) && ($document->getAccessMode($user) >= M_READWRITE))
+			{
+				$linkData = array
+						(
+							'menuaction'	=> 'mydms.uimydms.addLink',
+							'documentid'	=> $documentID,
+							'tabpage'	=> 3,
+						);
+				$this->t->set_var('link_actadd', ($GLOBALS['egw']->link('/index.php',$linkData)));
+				//$this->t->set_var('link_actadd', "mydms/op/op.AddDocumentLink.php");
+				$this->t->set_var('link_documentid', $documentID);
+				$this->t->set_var('link_yes',lang('yes'));
+				$this->t->set_var('link_no',lang('no'));
+				$this->t->set_var('link_folder', ($settings->_rootFolderID));
+				$this->t->parse('link_cell','link_cel',True);
+			}
+			
+//-----------------------------------------------------------------------------------------------------------------------------
 			// div 4 notifications
 			$linkData = array
 			(

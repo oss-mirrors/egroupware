@@ -32,13 +32,15 @@ function getMLText($key, $replace = array())
 	
 	$tmpText = $text[$key];
 	if (count($replace) == 0)
-		return $GLOBALS['egw']->translation->convert($tmpText,'iso-8859-1',$displayCharset);
-	
+		//return $GLOBALS['egw']->translation->convert($tmpText,'iso-8859-1',$displayCharset);
+              	return $GLOBALS['egw']->translation->convert($tmpText,'',$displayCharset);
+
 	$keys = array_keys($replace);
 	foreach ($keys as $key)
 		$tmpText = str_replace("[".$key."]", $replace[$key], $tmpText);
 
-	return $GLOBALS['egw']->translation->convert($tmpText,'iso-8859-1',$displayCharset);
+	//return $GLOBALS['egw']->translation->convert($tmpText,'iso-8859-1',$displayCharset);
+        return $GLOBALS['egw']->translation->convert($tmpText,'',$displayCharset);
 }
 
 function printMLText($key, $replace = array())

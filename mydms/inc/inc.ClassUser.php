@@ -82,16 +82,30 @@ function getAllUsers()
 
 	$accounts = $GLOBALS['phpgw']->accounts->get_list('accounts'); 
 	
+	//tim сортировка по имени или фамилии
+	//по имени
+        for ($i = 0; $i < count($accounts); $i++) $s_users[$accounts[$i]["account_id"]] = $accounts[$i]['account_firstname'];
+	//или по фамилии
+	//for ($i = 0; $i < count($accounts); $i++) $s_users[$accounts[$i]["account_id"]] = $accounts[$i]['account_lastname'];
+	asort($s_users);//сортировка массива по возрастанию значений массива - имя/фамилия
+	$i =0;
+	foreach ($s_users as $key => $value) $s_id[$i++] = $key; //заполняем массив id упорядоченными в порядке роста имен/фамилий
+	//----
+
 	for ($i = 0; $i < count($accounts); $i++)
 	{
 		$id = $accounts[$i]["account_id"];
 		$login = $accounts[$i]["account_lid"];
-		$fullName = $accounts[$i]['account_firstname'].' '.$accounts[$i]['account_lastname'];
+		$fullName = $accounts[$i]['account_firstname'].' '.$accounts[$i]['account_lastname']; //сорт.по фам.надо помнять местами 
 		$email = $accounts[$i]["account_email"];
 		$isAdmin = egw_is_admin($id);
 		$pwd = '';
 		$comment = '';
-		$users[$i] = new User($id, $login, $pwd, $fullName, $email, $comment, $isAdmin);
+		//tim номер ключа задаем поиском по $id из отсортированного массива $s_id а не по порядку $i
+		//$users[$i] = new User($id, $login, $pwd, $fullName, $email, $comment, $isAdmin);
+		$users[array_search($id,$s_id)] = new User($id, $login, $pwd, $fullName, $email, $comment, $isAdmin);
+		ksort($users); //сортируем по ключам - получаем записи, где имена/фамилии в алфавитном порядке
+		//------
 	}
 	
 	return $users;

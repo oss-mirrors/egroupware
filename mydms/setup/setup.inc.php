@@ -27,6 +27,8 @@
  
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['mydms']['hooks'][] = 'sidebox_menu';
+	$setup_info['mydms']['hooks'][] = 'settings'; //tim
+	$setup_info['mydms']['hooks']['search_link'] = 'mydms.bomydms.search_link'; //tim
 
     /* The tables this app creates */
 	$setup_info['mydms']['tables']    = array(

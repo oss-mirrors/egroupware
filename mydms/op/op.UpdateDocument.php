@@ -20,7 +20,6 @@ $expmonth	= (int)$_POST['expmonth'];
 $expyear	= (int)$_POST['expyear'];
 $userfile	= $_FILES['userfile']['tmp_name'];
 
-
 $document = getDocument($documentid);
 
 
@@ -74,13 +73,13 @@ else
 		$userfile_type = sanitizeString($userfile_type);
 		$userfile_name = sanitizeString($userfile_name);
 		
-		$lastDotIndex = strrpos(basename($userfile_name), ".");
+		$lastDotIndex = strrpos(_basename($userfile_name), ".");
 		if (is_bool($lastDotIndex) && !$lastDotIndex)
 			$fileType = ".";
 		else
 			$fileType = substr($userfile_name, $lastDotIndex);
 		
-		if (!$document->addContent($comment, $user, $userfile, basename($userfile_name), $fileType, $userfile_type))
+		if (!$document->addContent($comment, $user, $userfile, _basename($userfile_name), $fileType, $userfile_type))
 		{
 			printMLText("error_occured");
 			printGoBack();

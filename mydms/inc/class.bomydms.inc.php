@@ -18,7 +18,7 @@
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.ClassFolder.php');
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.ClassDocument.php');
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.FileUtils.php');
-
+	
 	class bomydms
 	{
 		function addACL($_documentID, $_userID, $_groupID, $_access)
@@ -89,7 +89,13 @@
 			$accessMode	= $document->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id']));
 			
 			if($accessMode < M_ALL)	return false;
-			
+			//tim   delete links
+			$linksDoc = $document->getLinksDocument();
+			foreach ($linksDoc as $links) 
+			{
+				$document->removeDocumentLink($links->getID());	
+			}
+			//----
 			if (!$document->remove())
 			{
 				return false;
@@ -119,6 +125,50 @@
 			
 			return true;
 		}
+
+		//tim
+		function deleteLink($_documentID, $_linkid)
+		{
+			if(!$_documentID || !$_linkid)	return false;
+			if(!is_numeric($_linkid)) return false;
+
+			$document		= getDocument($_documentID);
+			$link 			= getDocumentLink($_linkid);
+			$responsibleUser	= $link->getUser();
+			$userID			= $GLOBALS['egw_info']['user']['account_id'];
+			$accessMode		= $document->getAccessMode(getUser($userID));
+			
+			if (
+				($accessMode < M_READ)
+				|| (($accessMode == M_READ) && ($responsibleUser->getID() != $userID))
+				|| (($accessMode > M_READ) && (!getUser($userID)->isAdmin()) && ($responsibleUser->getID() != $userID) && !$link->isPublic())
+   			   ) return false;
+					
+			if (!$document->removeDocumentLink($_linkid)) 	return false;
+			
+			return true;
+		}
+		//---
+		
+		//tim
+		function addLink($_documentID, $_docid, $_public)
+		{
+			if(!$_documentID || !$_docid)	return false;
+			if(!is_numeric($_docid)) return false;
+
+			$docid		= $_docid;
+			$document	= getDocument($_documentID);
+			$userID		= $GLOBALS['egw_info']['user']['account_id'];
+			$accessMode	= $document->getAccessMode(getUser($userID));
+			$public 	= (isset($_public) && $_public == "true") ? true : false;
+
+			if ($accessMode < M_READ) return false;
+			if ($public && ($accessMode == M_READ)) $public = false;
+			if (!$document->addDocumentLink($docid, $userID, $public)) return false;
+
+			return true;
+		}
+		//---
 
 		function deleteNotification($_documentID, $_userID, $_groupID)
 		{
@@ -315,13 +365,13 @@
 			
 			if(is_uploaded_file($_userfile['tmp_name']))
 			{
-				$lastDotIndex = strrpos(basename($_userfile['name']), ".");
+				$lastDotIndex = strrpos(_basename($_userfile['name']), ".");
 				if (is_bool($lastDotIndex) && !$lastDotIndex)
 					$fileType = ".";
 				else
 					$fileType = substr($_userfile['name'], $lastDotIndex);
 
-				if (!$document->addContent($_comment, $user, $_userfile['tmp_name'], basename($_userfile['name']), $fileType, $_userfile['type']))
+				if (!$document->addContent($_comment, $user, $_userfile['tmp_name'], _basename($_userfile['name']), $fileType, $_userfile['type']))
 				{
 					return false;
 				}
@@ -383,5 +433,129 @@
 			
 			return false;
 		}
+
+		
+		//tim  
+		//hooks search_link----------------------------------------------------------------------------
+		/**
+		* @author	Tim Usach 
+		* @param string $mode = "and","or"
+		**/
+
+		function searchFilter($document,$query,$mode="or")	
+		{
+			$str = "";
+			$str .= $document->getKeywords() . " ";
+			$str .= $document->getName() . " ";
+			$str .= $document->getComment();
+			
+			$querywords = split(" ", strtolower($query));
+			$keywords = split(" ", strtolower($str));
+			
+			$hitsCount = 0;
+			foreach ($querywords as $queryword)
+			{
+				$found = false;
+				
+				foreach ($keywords as $keyword) 
+				{
+					if ((substr_count($keyword, $queryword) > 0) || ($queryword == "%")) 
+					{
+						$found = true;
+						if ($mode == "or") return true;
+					}
+				}
+				if ($mode == "and" && !$found)
+					return false;
+			}
+			if ($mode == "and")
+				return true;
+			else
+				return false;
+		}
+
+		
+		function searchInFolder($query, $folder) 
+		{
+			 $results = array();
+			//GLOBAl $search_results;
+			$user = getUser($GLOBALS['egw_info']['user']['account_id']);
+	
+			$documents = $folder->getDocuments();
+			$documents = filterAccess($documents, $user, M_READ);
+			$subFolders = $folder->getSubFolders();
+			$subFolders = filterAccess($subFolders, $user, M_READ);
+	
+			foreach ($documents as $document) 
+			{
+				if ($this->searchFilter($document, $query, "and")) array_push($results, $document);
+				
+			}
+			
+			foreach ($subFolders as $subFolder) 
+			{
+				$results = array_merge($results,$this->searchInFolder($query, $subFolder));
+			}
+
+			return $results;
+		}
+
+
+		/**
+	 	* Hook called by link-class to include infolog in the appregistry of the linkage
+		*
+		* @param array/string $location location and other parameters (not used)
+		* @return array with method-names
+		*/
+
+		function search_link($location)
+		{
+			return array(
+			'query'      => 'mydms.bomydms.link_query',
+			'title'      => 'mydms.bomydms.link_title',
+			'view'       => array('menuaction' => 'mydms.uimydms.viewDocument',),
+			'view_id'    => 'documentid',
+			);
+		}
+
+		/**
+		 * get title  identified by $page
+		 * 
+		* Is called as hook to participate in the linking
+		*
+		* @param string/object $page string with page-name or sowikipage object
+		* @return string/boolean string with title, null if page not found or false if not view perms
+		*/
+		function link_title($id)
+		{
+			if (!is_array($id))
+			{
+			$doc = getDocument($id);
+			}
+			if(!$id) return $id;
+	
+			return $doc->getName();
+		}
+
+	
+		/**
+		* query for pages matching $pattern
+		*
+		* Is called as hook to participate in the linking
+		*
+		* @param string $pattern pattern to search
+		* @return array with info_id - title pairs of the matching entries
+		*/
+		function link_query($pattern)
+		{
+			$content = array();
+			$docs = $this->searchInFolder($pattern,getFolder(1));
+			foreach($docs  as $doc)
+			{
+				$content[$doc->getID()] = strip_tags($doc->getName());
+			}
+			return $content;
+		}	
+
 	}
 ?>

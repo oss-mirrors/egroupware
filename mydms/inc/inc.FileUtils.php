@@ -1,5 +1,13 @@
 <?php
 
+//tim
+function _basename($ful_name)
+{
+$ful_name = str_replace ("\\","/",$ful_name);
+$short_name =  substr($ful_name,strrpos($ful_name,"/"));
+return $short_name;
+}//-----
+
 function renameFile($old, $new)
 {
 	return rename($old, $new);

@@ -62,7 +62,7 @@ else
 		if (!is_numeric($sequence))
 			die ("invalid sequence value");
 		
-		$lastDotIndex	= strrpos(basename($userfile_name), ".");
+		$lastDotIndex	= strrpos(_basename($userfile_name), ".");
 		if (is_bool($lastDotIndex) && !$lastDotIndex)
 			$fileType = ".";
 		else
@@ -70,7 +70,7 @@ else
 		
 		$expires = ($expires == "true") ? mktime(0,0,0, $expmonth, $expday, $expyear) : false;
 		
-		$newDocument = $folder->addDocument($fname, $comment, $expires, $user, $keywords, $userfile, basename($userfile_name), $fileType, $userfile_type, $sequence);
+		$newDocument = $folder->addDocument($fname, $comment, $expires, $user, $keywords, $userfile, _basename($userfile_name), $fileType, $userfile_type, $sequence);
 		
 		if (is_bool($newDocument) && !$newDocument)
 		{

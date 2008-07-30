@@ -44,73 +44,14 @@
 	</table>
 </div>
 
+
 <div id="tabcontent3" class="inactivetab">
-<!--
-<table cellspacing="5" cellpadding="0" border="1">
-	<?php
-	if ($rownum > 1)
-	{
-		?>
-		<tr>
-		<td></td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("name");?></i></td>
-		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("comment");?></i></td>
-		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("document_link_by");?></i></td>
-		<td rowspan="<?php print $rownum;?>" style="border-left: 1pt solid #000080;">&nbsp;</td>
-		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i><?php printMLText("document_link_public");?></i></td>
-		<td></td>
-		</tr>
-		<?php 
-		foreach($links as $link)
-		{
-			$responsibleUser = $link->getUser();
-			$targetDoc = $link->getTarget();
-			
-			print "<tr>";
-			print "<td><img src=\"images/file.gif\" width=18 height=18 border=0></td>";
-			print "<td class=\"linklist\"><a href=\"out.ViewDocument.php?documentid=".$targetDoc->getID()."\" class=\"linklist\">".$targetDoc->getName()."</a></td>";
-			print "<td class=\"linklist\">".$targetDoc->getComment()."</td>";
-			print "<td class=\"linklist\">".$responsibleUser->getFullName()."</td>";
-			print "<td class=\"linklist\">" . (($link->isPublic()) ? getMLText("yes") : getMLText("no")) . "</td>";
-			print "<td>";
-			if (($user->getID() == $responsibleUser->getID()) || ($user->getID() == $settings->_adminID) || ($link->isPublic() && ($document->getAccessMode($user) >= M_READWRITE )))
-				print "<a href=\"../op/op.RemoveDocumentLink.php?documentid=".$documentid."&linkid=".$link->getID()."\"><img src=\"images/del.gif\" border=0></a>";
-			print "</td>";
-			print "</tr>";
-		}
-	}
-	else
-		print "<tr><td class=\"filelist\">".getMLText("no_document_links")."</td></tr>";
-	?>
-</table>
-
-
-if ($user->getID() != $settings->_guestID)
-
-	<form action="../op/op.AddDocumentLink.php" name="form1">
-	<input type="Hidden" name="documentid" value="<?php print $documentid;?>">
-	<table>
-		<tr>
-			<td class="inputDescription"><?php printMLText("choose_target_document");?>:</td>
-			<td><?php printDocumentChooser("form1");?></td>
-		</tr>
-		<?php 
-			if ($document->getAccessMode($user) >= M_READWRITE)
-			{
-				print "<tr><td class=\"inputDescription\">".getMLText("document_link_public")."</td><td class=\"inputDescription\">";
-				print "<input type=\"Radio\" name=\"public\" value=\"true\" checked>" . getMLText("yes") . "&nbsp;&nbsp;";
-				print "<input type=\"Radio\" name=\"public\" value=\"false\">" . getMLText("no");
-				print "</td></tr>";
-			}
-		?>
-		<tr>
-			<td colspan="2"><br><input type="Submit" value="<?php printMLText("add_document_link");?>"></td>
-		</tr>
+	<table cellspacing="5" cellpadding="0" border="0" width="100%">
+		{link_head}
 	</table>
-	</form>-->
+{link_cell}
 </div>
+
 
 <div id="tabcontent4" class="inactivetab">
 	<table cellspacing="0" cellpadding="5" border="0" width="100%">
@@ -184,6 +125,67 @@ if ($user->getID() != $settings->_guestID)
 
 </div>
 <!-- END main -->
+
+<!-- tim -->
+
+<!-- BEGIN link_tab -->
+		<tr>
+		<td></td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i>{lang_name}</i></td>
+		<td rowspan="{l_rownum}" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i>{lang_comment}</i></td>
+		<td rowspan="{l_rownum}" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i>{lang_document_link_by}</i></td>
+		<td rowspan="{l_rownum}" style="border-left: 1pt solid #000080;">&nbsp;</td>
+		<td class="filelist" style="border-bottom: 1pt solid #000080;"><i>{lang_document_link_public}</i></td>
+		<td></td>
+		</tr>
+         	    {link_body}
+<!-- END link_tab -->
+
+
+<!-- BEGIN link_tab_cont -->
+		<tr>
+			<td><img src="images/file.gif" width=18 height=18 border=0></td>
+			<td class="linklist"><a href="{link_id}" class="linklist">{link_name}</a></td>
+			<td class="linklist">{link_comment}</td>
+			<td class="linklist">{link_fullname}</td>
+			<td class="linklist">{link_public}</td>
+			<td>{link_del}</td>
+		</tr>
+<!-- END link_tab_cont -->
+
+
+<!-- BEGIN link_cel -->
+	<form action="{link_actadd}" method="post" name="form1">
+	
+	<script language="JavaScript">
+	var openDlg;
+	function chooseDoc() {
+		openDlg = open("mydms/out/out.DocumentChooser.php?folderid={link_folder}&form=form1", "openDlg", "width=300,height=450,scrollbars=yes,resizable=yes,status=yes");
+	}
+	</script>
+
+	<input type="Hidden" name="documentid" value="{link_documentid}">
+	<table>
+		<tr>
+			<td class="inputDescription">&nbsp;&nbsp;{lang_choose_target_document}:</td>
+			<td> 
+ 				<input type="Hidden" name="docid">
+				<input disabled name="docname">
+				&nbsp;&nbsp;<input type="Button" value="Open..." onclick="chooseDoc();">
+			</td>
+		</tr>
+			<tr><td class="inputDescription">&nbsp;&nbsp;{lang_document_link_public}</td><td class="inputDescription">
+			<input type="Radio" name="public" value="true" checked>{link_yes} &nbsp;&nbsp;
+			<input type="Radio" name="public" value="false">{link_no}
+			</td></tr>
+		<tr>
+			<td colspan="2"><br><input type="Submit" value="{lang_add_document_link}"></td>
+		</tr>
+	</table>
+	</form>
+<!-- END link_cel -->
 
 <!-- BEGIN lock_row -->
 	<tr class="row_on">
@@ -275,7 +277,8 @@ if ($user->getID() != $settings->_guestID)
 		<tr>
 			<td class="infos" valign="top">{lang_mime_type}:</td>
 			<td class="infos">
-				<img align="absmiddle" src="images/icons/<?php print getMimeIcon($latestContent->getFileType());?>"> 
+			<!--	<img align="absmiddle" src="images/icons/<?php print getMimeIcon($latestContent->getFileType());?>">  -->
+				<img align="absmiddle" src="mydms/out/images/icons/{name_icon}">
 				{mime_type}
 			</td>
 		</tr>
@@ -365,7 +368,9 @@ if ($user->getID() != $settings->_guestID)
 		<tr>
 			<td class="description_small" valign="top">{lang_mime_type}:</td>
 			<td class="infos" colspan="3">
-				<img align="absmiddle" src="images/icons/<?php print getMimeIcon($latestContent->getFileType());?>"> 
+				<!-- //tim -->
+				<!--<img align="absmiddle" src="images/icons/<?php print getMimeIcon($latestContent->getFileType());?>"> -->
+				<img align="absmiddle" src="mydms/out/images/icons/{name_icon}">
 				{mime_type}
 			</td>
 		</tr>

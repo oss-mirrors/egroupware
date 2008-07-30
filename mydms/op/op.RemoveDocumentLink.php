@@ -12,6 +12,11 @@ include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
 
+//tim
+$linkid = get_var('linkid', 'GET', '');
+$documentid = get_var('documentid', 'GET', '');
+//--
+
 $document = getDocument($documentid);
 $link = getDocumentLink($linkid);
 $responsibleUser = $link->getUser();

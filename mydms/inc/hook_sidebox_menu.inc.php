@@ -45,6 +45,12 @@
 		display_sidebox($appname,$menu_title,$file); 
 	}
 	
+
+	//tim
+	$file = Array('Preferences' => $GLOBALS['egw']->link('/index.php','menuaction=preferences.uisettings.index&appname='.$appname));
+	display_sidebox($appname,lang('Preferences'),$file); 
+	//--------------------------------------
+
 	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
 	{
 		$menu_title = 'Administration';

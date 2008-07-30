@@ -799,6 +799,24 @@ class Document
 		return $this->_documentLinks;
 	}
 
+	//tim  looking for all references to the document
+	function getLinksDocument()
+	{
+		if (!isset($this->_LinksDocument))
+		{
+			$queryStr = "SELECT * FROM phpgw_mydms_DocumentLinks WHERE target = " . $this->_id;
+			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			if (is_bool($resArr) && !$resArr)
+				return false;
+			$this->_LinksDocument = array();
+			
+			foreach ($resArr as $row)
+				array_push($this->_LinksDocument, new DocumentLink($row["id"], $row["document"], $row["target"], $row["userID"], $row["public"]));
+		}
+		return $this->_LinksDocument;
+	}
+	//----
+
 	function addDocumentLink($targetID, $userID, $public)
 	{
 		$data = array(
@@ -987,9 +1005,9 @@ class DocumentContent
 	function remove()
 	{
 		# does this check make sense here??? Lars
-		#if (!removeDir($GLOBALS['mydms']->settings->_contentDir . $this->_dir)) {
-		#	return false;
-		#}
+		if (!removeDir($GLOBALS['mydms']->settings->_contentDir . $this->_dir)) {
+			return false;
+		}
 
 		$where = array(
 			'id'	=> $this->_id,

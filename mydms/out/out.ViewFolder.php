@@ -23,6 +23,7 @@ if ($folder->getAccessMode($user) < M_READ) {
 	die ("Access to folder denied!");
 }
 
+$prefs = $GLOBALS['egw']->preferences->data['mydms']; //tim
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );
 printTitleBar($folder);
@@ -50,8 +51,10 @@ printStartBox(getMLText("document_list"));
 			{
 				$owner = $document->getOwner();
 				$comment = $document->getComment();
-				if (strlen($comment) > 25) $comment = substr($comment, 0, 22) . "...";
-				
+				//tim  обрезка длинны коментария
+				if (($prefs['сrоpComment']) && (strlen($comment) > 25)) $comment = substr($comment, 0, 22) . "...";
+				//if ((strlen($comment) > 25)) $comment = substr($comment, 0, 22) . "...";
+
 				$linkData = array
 				(
 					'documentid'	=> $document->getID(),
@@ -69,11 +72,12 @@ printStartBox(getMLText("document_list"));
 				
 				// the new code
 				// onclick="window.open(this.href,this.target,'dependent=yes,width=750,height=400,scrollbars=yes,status=yes'); return false;"
+				//tim добавлено выравнивание по верху style=\"vertical-align: top;\"
 				print "<tr>";
-				print "<td><img src=\"images/file.gif\" width=18 height=18 border=0></td>";
-				print "<td class=\"filelist\"><a class=\"filelist\" href=\"#\" onclick=\"javascript:egw_openWindowCentered('$editURL','editDocument','680','630');\">" . $document->getName() . "</a></td>\n";
-				print "<td class=\"filelist\">" . $comment . "</td>";
-				print "<td class=\"filelist\">".$owner->getFullName()."</td>";
+				print "<td style=\"vertical-align: top;\"><img src=\"images/file.gif\" width=18 height=18 border=0></td>";
+				print "<td style=\"vertical-align: top;\" class=\"filelist\"><a class=\"filelist\" href=\"#\" onclick=\"javascript:egw_openWindowCentered('$editURL','editDocument','680','630');\">" . $document->getName() . "</a></td>\n";
+				print "<td style=\"vertical-align: top;\" class=\"filelist\">".$comment."</td>";
+				print "<td style=\"vertical-align: top;\" class=\"filelist\">".$owner->getFullName()."</td>";
 				print "</tr>";
 			}
 		} else {

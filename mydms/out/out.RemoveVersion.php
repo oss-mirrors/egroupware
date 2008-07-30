@@ -13,6 +13,10 @@ include("../inc/inc.OutUtils.php");
 
 include("../inc/inc.Authentication.php");
 
+//tim
+$documentid = get_var('documentid','GET','');
+//---
+
 $document = getDocument($documentid);
 if (!$document) die("Error: could not get document");
 $version  = $document->getContentByVersion($version);

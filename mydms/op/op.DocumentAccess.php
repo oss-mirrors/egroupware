@@ -11,7 +11,11 @@ include("../inc/inc.FileUtils.php");
 include("../inc/inc.Language.php");
 include("../inc/inc.OutUtils.php");
 include("../inc/inc.Authentication.php");
-
+//tim
+$documentid = get_var('documentid', 'GET','');
+$action = get_var('action', 'GET','');
+$mode = get_var('mode', 'GET','');
+//--
 $document = getDocument($documentid);
 
 

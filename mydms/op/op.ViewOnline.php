@@ -38,7 +38,7 @@ if (is_bool($content) && !$content)
 	die("Version " . $version . " of Document \"" . $document->getName() . "\" not found");
 
 if (in_array($content->getFileType(), $settings->_viewOnlineFileTypes))
-	header("Content-Type: " . $content->getMimeType());
+	header("Content-Type: " . $content->getMimeType(). ";  charset=".($GLOBALS['egw']->translation->charset()));
 
 header("Content-Length: " . filesize($settings->_contentDir . $content->getDir() . $content->getFileName()));
 header("Expires: 0");

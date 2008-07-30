@@ -12,6 +12,11 @@ switch($GLOBALS['phpgw_info']['user']['preferences']['common']['lang'])
         case 'de':
           $lang1 = 'German';
           break;
+         //----
+        case 'ru':
+          $lang1 = 'Russian';
+          break;
+         //----
 	default:
 	  $lang1 = "English";
 }
