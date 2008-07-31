@@ -21,6 +21,7 @@
 			'changeFolder'		=> True,
 			'changeSorting'		=> True,
 			'compressFolder'	=> True,
+			'importMessage'		=> True,
 			'deleteMessage'		=> True,
 			'handleButtons'		=> True,
 			'hookAdmin'		=> True,
@@ -155,6 +156,142 @@
 			$this->viewMainScreen();
 		} */
 
+
+		function importMessage()
+		{
+			if(is_array($_FILES["addFileName"])) {
+				#phpinfo();
+				#error_log(print_r($_FILES,true));
+				if($_FILES['addFileName']['error'] == $UPLOAD_ERR_OK) {
+					$formData['name']	= $_FILES['addFileName']['name'];
+					$formData['type']	= $_FILES['addFileName']['type'];
+					$formData['file']	= $_FILES['addFileName']['tmp_name'];
+					$formData['size']	= $_FILES['addFileName']['size'];
+					$message = $this->importMessageToFolder($formData);
+					print "<script type='text/javascript'>window.close();</script>";
+					if (!$message) {
+						print "<script type=\"text/javascript\">alert('".lang("Error: Could not import Message:").htmlentities($formData['name'])."');</script>";
+						return;
+					} else {
+						$linkData = array(
+							'menuaction'	=> 'felamimail.uidisplay.display',
+							'uid'		=> $message['uid'],
+							'mailbox'    => base64_encode($message['folder']),
+						);
+						print "<script type=\"text/javascript\">opener.fm_readMessage('".$GLOBALS['egw']->link('/index.php',$linkData)."', 'displayMessage_".$message['uid']."', this);</script>";
+						return;
+					}
+				}
+			}
+			if(!@is_object($GLOBALS['egw']->js))
+			{
+				$GLOBALS['egw']->js =& CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
+			$GLOBALS['egw']->js->validate_file('jscode','importMessage','felamimail');
+			$GLOBALS['egw']->common->egw_header();
+
+			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
+
+			$this->t->set_file(array("importMessage" => "importMessage.tpl"));
+			$this->t->set_block('importMessage','fileSelector','fileSelector');
+
+			$this->translate();
+
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uifelamimail.importMessage',
+			);
+			$this->t->set_var('file_selector_url', $GLOBALS['egw']->link('/index.php',$linkData));
+
+			$maxUploadSize = ini_get('upload_max_filesize');
+			$this->t->set_var('max_uploadsize', $maxUploadSize);
+
+			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
+
+			$this->t->pparse("out","fileSelector");
+		}
+
+		function importMessageToFolder($_formData,$_folder='')
+		{
+			if ($_formData['size'] != 0 && (is_uploaded_file($_formData['file']) || 
+				realpath(dirname($_formData['file'])) == realpath($GLOBALS['egw_info']['server']['temp_dir'])))
+			{
+				// ensure existance of eGW temp dir
+				// note: this is different from apache temp dir, 
+				// and different from any other temp file location set in php.ini
+				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
+				{
+					@mkdir($GLOBALS['egw_info']['server']['temp_dir'],0700);
+				}
+				
+				// if we were NOT able to create this temp directory, then make an ERROR report
+				if (!file_exists($GLOBALS['egw_info']['server']['temp_dir']))
+				{
+					$alert_msg .= 'Error:'.'<br>'
+						.'Server is unable to access phpgw tmp directory'.'<br>'
+						.$GLOBALS['egw_info']['server']['temp_dir'].'<br>'
+						.'Please check your configuration'.'<br>'
+						.'<br>';
+				}
+				
+				// sometimes PHP is very clue-less about MIME types, and gives NO file_type
+				// rfc default for unknown MIME type is:
+				$mime_type_default = 'message/rfc';
+				// so if PHP did not pass any file_type info, then substitute the rfc default value
+				if (substr(strtolower(trim($_formData['type'])),0,strlen($mime_type_default)) != $mime_type_default)
+				{
+					// fail silently
+					error_log("Message rejected, no message/rfc. Is:".$_formData['type']);
+					return false;
+				}
+				
+				$tmpFileName = $GLOBALS['egw_info']['server']['temp_dir'].
+					SEP.
+					$GLOBALS['egw_info']['user']['account_id'].
+					basename($_formData['file']);
+				
+				if (is_uploaded_file($_formData['file']))
+				{
+					move_uploaded_file($_formData['file'],$tmpFileName);	// requirement for safe_mode!
+				}
+				else
+				{
+					rename($_formData['file'],$tmpFileName);
+				}
+			} else {
+				// fail silently
+				error_log("Import of message ".$_formData['file']." failes to meet basic restrictions");
+				return false;
+			}
+			// -----------------------------------------------------------------------
+			#error_log(print_r($this->preferences->preferences['draftFolder'],true));
+			$fhandle = fopen($tmpFileName, "r");
+			$headercomplete = false;
+			$header = "";
+			$body = "";
+			while (!feof($fhandle)) {
+    			$buffer = fgets($fhandle, 4096);
+				if ($headercomplete === false && $buffer == "\r\n") {
+					$headercomplete = true;
+					continue;
+				}
+				if ($headercomplete == false) $header.=$buffer;
+				if ($headercomplete == true) $body.=$buffer;
+				#error_log($buffer);
+			}
+			fclose ($fhandle);
+			if ($_folder == '') $savingDestination = $this->preferences->preferences['draftFolder'];
+			if (empty($savingDestination) || $savingDestination == '') $savingDestination = $this->mailbox;
+			$message['folder'] = $savingDestination;
+			#error_log($header."\n".$body);
+			$message['uid'] = $this->bofelamimail->appendMessage($savingDestination,$header,$body,NULL);
+			error_log(print_r($message,true));
+			unlink($tmpFileName);
+			if (!$message['uid']) $message = false;
+			return $message;
+		}
 
 		function deleteMessage()
 		{
@@ -852,6 +989,7 @@
 			$this->t->set_var('lang_connection_failed',lang("The connection to the IMAP Server failed!!"));
 			$this->t->set_var('lang_select_target_folder',lang("Simply click the target-folder"));
 			$this->t->set_var('lang_updating_message_status',lang("updating message status"));
+			$this->t->set_var('lang_max_uploadsize',lang('max uploadsize'));
 			$this->t->set_var('lang_loading',lang('loading'));
 			$this->t->set_var('lang_deleting_messages',lang('deleting messages'));
 			$this->t->set_var('lang_open_all',lang("open all"));

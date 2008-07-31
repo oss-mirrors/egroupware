@@ -71,9 +71,11 @@
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
 
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
-			$this->icServer = $this->mailPreferences->getIncomingServer(0);
-			$this->ogServer = $this->mailPreferences->getOutgoingServer(0);
-
+			if ($this->mailPreferences) {
+				$this->icServer = $this->mailPreferences->getIncomingServer(0);
+				$this->ogServer = $this->mailPreferences->getOutgoingServer(0);
+				$this->htmlOptions  = $this->mailPreferences->preferences['htmlOptions'];
+			}
 			#_debug_array($this->mailPreferences);
 			$this->imapBaseDir	= '';
 
@@ -143,7 +145,6 @@
 				$this->mbAvailable = TRUE;
 			}
 
-			$this->htmlOptions	= $this->mailPreferences->preferences['htmlOptions'];
 		}
 		
 		function setACL($_folderName, $_accountName, $_acl)
@@ -221,6 +222,7 @@
 			$body   = str_replace("\n","\r\n",$_body);
 			$messageid = $this->icServer->appendMessage("$header"."$body", $_folderName, $_flags);
 			if ( PEAR::isError($messageid)) {
+				error_log("Could not append Message:".print_r($messageid->message,true));
 				return false;
 			}
 			return $messageid;

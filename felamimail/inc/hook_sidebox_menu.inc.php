@@ -37,6 +37,17 @@
                     ),
 
 	);
+#	$linkData = array
+#	(
+#		'menuaction'    => 'felamimail.uifelamimail.importMessage'
+#	);
+#	$file += array(
+#		'import' => array(
+#			'text' => '<a class="textSidebox" href="'. htmlspecialchars($GLOBALS['egw']->link('/index.php', $linkData)).'" target="_blank" onclick="egw_openWindowCentered(\''.$GLOBALS['egw']->link('/index.php', $linkData).'\',\''.lang('import').'\',550,100); return false;">'.lang('Import Mail'),
+#			'no_lang' => true,
+#		),
+#	);
+			
 
 	if($preferences->preferences['deleteOptions'] == 'move_to_trash')
 	{

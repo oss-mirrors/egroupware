@@ -120,7 +120,9 @@
 			}
 
 			$this->saveSessionData();
-			#print"<pre>";print_r($this->sessionData);print"</pre>";exit;
+			#print"<pre>";
+			#error_log(print_r($this->sessionData,true));
+			#print"</pre>";exit;
 		}
 		
 		function addMessageAttachment($_uid, $_partID, $_folder, $_name, $_type, $_size) 
@@ -197,8 +199,8 @@
 			$replace = array('* ', '');
 			$text = preg_replace($search, $replace, $text);
 
-			$search = array('/<hr.*>/','/<br.*?>\r\n/','/<br.*?>/','/<\/div>\r\n/','/<\/div>/');
-			$replace = array("\r\n--------------------------------\r\n", "\r\n", "\r\n", "\r\n", "\r\n");
+			$search = array('/<hr.*>/','/<br.*?>\n/','/<br.*?>\r\n/','/<br.*?>/','/<\/div>\r\n/','/<\/div>/');
+			$replace = array("\r\n--------------------------------\r\n", "\r\n", "\r\n", "\r\n", "\r\n", "\r\n");
 			$text = preg_replace($search, $replace, $text);
 			
 			$text = html_entity_decode($text, ENT_COMPAT, $this->displayCharset);
@@ -254,8 +256,9 @@
 									if (strlen($v))  $quotePart3 .= (strlen($quotePart3) ? " " : "").$v;
 								}
 							}
-							$asciiText .= $indentString . $quotePart3 . "\r\n";
+							$asciiText .= $indentString . $quotePart3 ;
 						}
+						$asciiText .= "\r\n";
 					}
 				}
 			}
@@ -431,11 +434,12 @@
 						$this->sessionData['body'] .= '<hr>';
 					}
 					if($bodyParts[$i]['mimeType'] == 'text/plain') {
-						$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
+						#$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
+						$bodyParts[$i]['body'] = "<pre>".$bodyParts[$i]['body']."</pre>";
 					}
 					$bodyParts[$i]['body'] = $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 					#error_log( "GetDraftData (HTML) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
-					$this->sessionData['body'] .=  $bodyParts[$i]['body'] ;
+					$this->sessionData['body'] .= "<br>". $bodyParts[$i]['body'] ;
 				}
 
 			} else {
@@ -447,7 +451,7 @@
 					}
 					$bodyParts[$i]['body'] = $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
 					#error_log( "GetDraftData (Plain) CharSet".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
-					$this->sessionData['body'] .=  $bodyParts[$i]['body'] ;
+					$this->sessionData['body'] .= "\r\n". $bodyParts[$i]['body'] ;
 				}
 			}
 
@@ -671,11 +675,11 @@
 			}
 			if (count($ccAddressA)>0) $ccAddress = @htmlspecialchars(lang("cc").": ".$bofelamimail->decode_header(implode(', ', $ccAddressA)),ENT_QUOTES).($bodyParts['0']['mimeType'] == 'text/html'?"<br>":"\r\n");
 			if($bodyParts['0']['mimeType'] == 'text/html') {
-				$this->sessionData['body']	= '----------------'.lang("original message").'-----------------<br>'.
+				$this->sessionData['body']	= "<br>&nbsp;\r\n<p>".'----------------'.lang("original message").'-----------------<br>'.
 					@htmlspecialchars(lang("from").": ".$bofelamimail->decode_header($fromAddress),ENT_QUOTES)."<br>".
 					$toAddress.$ccAddress.
 					@htmlspecialchars(lang("date").": ".$headers['DATE'],ENT_QUOTES)."<br>".
-					'----------------------------------------------------------'."<br>";
+					'----------------------------------------------------------'."</p>\r\n";
 				$this->sessionData['mimeType'] 	= 'html';
 				$this->sessionData['body']	.= '<blockquote type="cite">';
 
@@ -684,9 +688,10 @@
 						$this->sessionData['body'] .= '<hr>';
 					}
 					if($bodyParts[$i]['mimeType'] == 'text/plain') {
-						$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body']);
+						#$bodyParts[$i]['body'] = nl2br($bodyParts[$i]['body'])."<br>";
+						$bodyParts[$i]['body'] = "<pre>".$bodyParts[$i]['body']."</pre>";
 					}
-					$this->sessionData['body'] .= self::_getCleanHTML($this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']));
+					$this->sessionData['body'] .= "<br>".self::_getCleanHTML($this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']));
 					#error_log( "GetReplyData (HTML) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
 
 				}
@@ -694,11 +699,11 @@
 				$this->sessionData['body']	.= '</blockquote><br>';
 			} else {
 				#$this->sessionData['body']	= @htmlspecialchars(lang("on")." ".$headers['DATE']." ".$bofelamimail->decode_header($fromAddress), ENT_QUOTES) . " ".lang("wrote").":\r\n";
-                $this->sessionData['body']  = '----------------'.lang("original message").'-----------------'."\r\n".
+                $this->sessionData['body']  = " \r\n \r\n".'----------------'.lang("original message").'-----------------'."\r\n".
                     @htmlspecialchars(lang("from").": ".$bofelamimail->decode_header($fromAddress),ENT_QUOTES)."\r\n".
 					$toAddress.$ccAddress.
 					@htmlspecialchars(lang("date").": ".$headers['DATE'], ENT_QUOTES)."\r\n".
-                    '-------------------------------------------------'."\r\n";
+                    '-------------------------------------------------'."\r\n \r\n ";
  
 				$this->sessionData['mimeType']	= 'plain';
 			
@@ -712,12 +717,13 @@
 					#error_log( "GetReplyData (Plain) CharSet:".mb_detect_encoding($bodyParts[$i]['body'] . 'a' , strtoupper($bodyParts[$i]['charSet']).','.strtoupper($this->displayCharset).',UTF-8, ISO-8859-1'));
 
 					$newBody        = explode("\n",$newBody);
-
+					$this->sessionData['body'] .= "\r\n";
 					// create body new, with good line breaks and indention
 					foreach($newBody as $value) {
 						// the explode is removing the character
-						$value .= "\n";
-						
+						if (trim($value) != '') {
+							if ($value != "\r") $value .= "\n";
+						}
 						$numberOfChars = strspn(trim($value), ">");
 						$appendString = str_repeat('>', $numberOfChars + 1);
 						

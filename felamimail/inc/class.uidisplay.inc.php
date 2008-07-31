@@ -993,7 +993,9 @@
 					$this->parseEmail($newBody);
 
 					$newBody	= $this->highlightQuotes($newBody);
-					$newBody	= nl2br($newBody);
+					// to display a mailpart of mimetype plain/text, may be better taged as preformatted
+					#$newBody	= nl2br($newBody);
+					$newBody	= "<pre>".$newBody."</pre>";
 				}
 				else
 				{
