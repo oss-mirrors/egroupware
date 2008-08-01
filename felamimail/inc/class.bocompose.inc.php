@@ -152,9 +152,10 @@
 	
 		function convertHTMLToText($_html) 
 		{
-			#print $_html;
+			#error_log($_html);
 			#print '<hr>';
-			#print "<pre>"; print htmlspecialchars($_html); print "</pre>";
+			#print "<pre>"; print htmlspecialchars($_html); 
+			#print "</pre>";
 			#print "<hr>";
 			bofelamimail::replaceTagsCompletley($_html,'style');
 			// remove these tags and any spaces behind the tags
@@ -166,8 +167,8 @@
 			$replace = '';
 			$text = preg_replace($search, $replace, $_html);
 			
-			// convert these tags and any spaces behind the tags to double line breaks
-			$search = array('/&nbsp;<\/p> */', '/<\/p> */','/\r\n\r\n/');
+			// convert these tags and any spaces behind the tags to double line breaks, a double linebreak itself may be desired
+			$search = array('/&nbsp;<\/p> */', '/<\/p> */');
 			$replace = array("\r\n\r\n","\r\n");
 			$text = preg_replace($search, $replace, $text);
 			
@@ -207,7 +208,7 @@
 			// replace emailaddresses eclosed in <> (eg.: <me@you.de>) with the emailaddress only (e.g: me@you.de)
 			#$text = preg_replace("/(<|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))(>|&gt;)/ie","'$2'", $text);
 			self::replaceEmailAdresses($text);
-
+			#error_log($text);
 			$pos = strpos($text, 'blockquote');
 			#error_log("convert HTML2Text");
 			if($pos === false) {
@@ -887,6 +888,7 @@
 			} else {
 				$_mailObject->IsHTML(false);
 				$_mailObject->Body = $this->convertHTMLToText($_formData['body']);
+				#$_mailObject->Body = $_formData['body'];
 				if(!empty($_signature->fm_signature)) {
 					$_mailObject->Body .= "\r\n--\r\n". $this->convertHTMLToText($_signature->fm_signature);
 				}

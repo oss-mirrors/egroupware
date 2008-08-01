@@ -2321,9 +2321,9 @@
 			return $userACL;
 		}
 		
-		function wordwrap($str, $cols, $cut)
+		static function wordwrap($str, $cols, $cut)
 		{
-			$lines = explode('\n', $str);
+			$lines = explode("\n", $str);
 			$newStr = '';
 			foreach($lines as $line)
 			{
@@ -2344,14 +2344,15 @@
 						// the rest should be broken at the start of the new word that exceeds the limit  
 						if ($linecnt+$cnt > $allowedLength) {
 							$v=$cut.$v;
-							$linecnt = 0;
+							#$linecnt = 0;
+							$linecnt =strlen($v)-strlen($cut);
 						} else {
 							$linecnt += $cnt;
 						}
 						if (strlen($v)) $line .= (strlen($line) ? " " : "").$v;
 					}
 				}
-				$newStr .= $line;
+				$newStr .= $line . "\n";
 			}
 			return $newStr;
 		}

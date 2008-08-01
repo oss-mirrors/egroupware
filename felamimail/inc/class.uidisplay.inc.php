@@ -995,7 +995,9 @@
 					$newBody	= $this->highlightQuotes($newBody);
 					// to display a mailpart of mimetype plain/text, may be better taged as preformatted
 					#$newBody	= nl2br($newBody);
-					$newBody	= "<pre>".$newBody."</pre>";
+					// since we do not display the message as HTML anymore we may want to insert good linebreaking (for visibility).
+					$newBody	= "<pre>".bofelamimail::wordwrap($newBody,85,"\n")."</pre>";
+					#$newBody   = "<pre>".$newBody."</pre>";
 				}
 				else
 				{
