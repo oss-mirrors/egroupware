@@ -253,7 +253,7 @@
 			return $mergeInTo;			
 		}
 		
-		function getProfileList($_profileID=0,$_defaultProfile=false)
+		function getProfileList($_profileID=0,$_defaultProfile=false,$_appName=false,$_groupID=false,$_accountID=false)
 		{
 			$where = false;
 			if ((int) $_profileID)
@@ -265,7 +265,19 @@
 				$where['ea_appname'] = '';
 				$where['ea_group'] = 0;
 				$where['ea_user'] = 0;
-			}			
+			}
+			elseif ($_appName)
+			{
+				$where['ea_appname'] = $_appName;
+			}
+			elseif ((int) $_groupID)
+			{
+				$where['ea_group'] = (int) $_groupID;
+			}
+			elseif ((int) $_accountID)
+			{
+				$where['ea_user'] = (int) $_accountID;
+			}
 			$this->db->select($this->table,'*',$where, __LINE__,__FILE__,false,(int) $_profileID ? '' : 'ORDER BY ea_order');
 
 			$serverList = false;

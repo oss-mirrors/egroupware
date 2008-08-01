@@ -9,6 +9,7 @@ alternate email address	emailadmin	en	Alternate email address
 any application	emailadmin	en	Any application
 any group	emailadmin	en	Any group
 any user	emailadmin	en	any user
+back to admin/userlist	emailadmin	en	Back to Admin/Userlist
 bad login name or password.	emailadmin	en	Bad login name or password.
 bad or malformed request. server responded: %s	emailadmin	en	Bad or malformed request. Server Responded: %s
 bad request: %s	emailadmin	en	Bad request: %s
@@ -25,6 +26,7 @@ default	emailadmin	en	default
 deliver extern	emailadmin	en	deliver extern
 do not validate certificate	emailadmin	en	do not validate certificate
 do you really want to delete this profile	emailadmin	en	Do you really want to delete this Profile
+do you really want to reset the filter for the profile listing	emailadmin	en	Do you really want to reset the filter for the Profile listing
 domainname	emailadmin	en	Domainname
 edit email settings	emailadmin	en	Edit email settings
 email account active	emailadmin	en	Email account active
@@ -38,6 +40,7 @@ encryption settings	emailadmin	en	Encryption settings
 enter your default mail domain (from: user@domain)	emailadmin	en	Enter your default mail domain (from: user@domain)
 error connecting to imap server. %s : %s.	emailadmin	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	en	Error connecting to IMAP server: [%s] %s.
+filtered by account	emailadmin	en	filtered by Account
 forward also to	emailadmin	en	Forward also to
 forward email's to	emailadmin	en	Forward email's to
 forward only	emailadmin	en	Forward only
@@ -88,6 +91,7 @@ qmaildotmode	emailadmin	en	qmaildotmode
 qouta size in mbyte	emailadmin	en	Qouta size in MByte
 quota settings	emailadmin	en	Quota settings
 remove	emailadmin	en	Remove
+reset filter	emailadmin	en	reset filter
 select type of imap server	emailadmin	en	select type of IMAP server
 select type of imap/pop3 server	emailadmin	en	Select type of IMAP/POP3 server
 select type of smtp server	emailadmin	en	Select type of SMTP Server

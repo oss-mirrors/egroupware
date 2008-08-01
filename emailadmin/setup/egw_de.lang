@@ -9,6 +9,7 @@ alternate email address	emailadmin	de	zusätzliche E-Mail-Adressen
 any application	emailadmin	de	jede Anwendung
 any group	emailadmin	de	jede Gruppe
 any user	emailadmin	de	jeder Benutzer
+back to admin/userlist	emailadmin	de	Zurück zu: Admin/Benutzerverwaltung
 bad login name or password.	emailadmin	de	Falscher Benutzername oder Passwort.
 bad or malformed request. server responded: %s	emailadmin	de	Falsche oder ungültige Anfrage. Server antwortet: %s
 bad request: %s	emailadmin	de	Falsche Anfrage: %s
@@ -25,6 +26,7 @@ default	emailadmin	de	Vorgabe
 deliver extern	emailadmin	de	extern ausliefern
 do not validate certificate	emailadmin	de	Zertifikat nicht überprüfen
 do you really want to delete this profile	emailadmin	de	Wollen Sie dieses Profil wirklich löschen
+do you really want to reset the filter for the profile listing	emailadmin	de	Möchten Sie den Filter für die Profilliste wirklich zurücksetzen?
 domainname	emailadmin	de	Domänenname
 edit email settings	emailadmin	de	E-Mail-Einstellungen
 email account active	emailadmin	de	E-Mail-Konto aktiv
@@ -38,6 +40,7 @@ encryption settings	emailadmin	de	Verschlüsselungseinstellungen
 enter your default mail domain (from: user@domain)	emailadmin	de	Standard E-Mail-Domain (Von: benutzer@domain)
 error connecting to imap server. %s : %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. [%s] %s.
+filtered by account	emailadmin	de	Suche nach Benutzerprofilen
 forward also to	emailadmin	de	zusätzlich weiterleiten
 forward email's to	emailadmin	de	E-Mails weiterleiten an
 forward only	emailadmin	de	nur weiterleiten
@@ -88,6 +91,7 @@ qmaildotmode	emailadmin	de	qmaildotmode
 qouta size in mbyte	emailadmin	de	Quota Größe in MByte
 quota settings	emailadmin	de	Quota Einstellungen
 remove	emailadmin	de	Entfernen
+reset filter	emailadmin	de	Filter zurücksetzen
 select type of imap server	emailadmin	de	IMAP-Server Typ auswählen
 select type of imap/pop3 server	emailadmin	de	IMAP/POP3-Server Typ auswählen
 select type of smtp server	emailadmin	de	SMTP-Server Typ auswählen

@@ -82,6 +82,10 @@
 
 		function addProfile()
 		{
+			if(is_int(intval($_GET['account_id'])) && !empty($_GET['account_id']))
+			{
+				$accountID = intval($_GET['account_id']);
+			}
 			$allGroups = self:: getAllGroups();
 			$allUsers = self::getAllUsers();
 			$applications = self::getAllApps();	
@@ -97,9 +101,17 @@
 			$this->t->set_var('imapActiveTab','2');	// IMAP
 			$this->t->set_var('application_select_box', html::select('globalsettings[ea_appname]','',$applications, true, "style='width: 250px;'"));
 			$this->t->set_var('group_select_box', html::select('globalsettings[ea_group]','',$allGroups, true, "style='width: 250px;'"));
-			$this->t->set_var('user_select_box', html::select('globalsettings[ea_user]','',$allUsers, true, "style='width: 250px;'"));
+			$this->t->set_var('user_select_box', html::select('globalsettings[ea_user]',($accountID ? $accountID :''),$allUsers, true, "style='width: 250px;'"));
 			$this->t->set_var('selected_ea_active','checked="1"');
-
+			if ($accountID) 
+			{
+				// some useful presets, if you want to create a user dedicated profile
+				$this->t->set_var('value_description',$allUsers[$accountID]);
+				$this->t->set_var('selected_smtpAuth','checked="1"');
+				$this->t->set_var('value_ea_smtp_auth_username',$allUsers[$accountID]);
+				$this->t->set_var('selected_imapLoginType_admin','selected="selected"');
+				$this->t->set_var('value_imapAuthUsername',$allUsers[$accountID]);
+			}
 			$linkData = array
 			(
 				'menuaction'	=> 'emailadmin.emailadmin_ui.saveProfile'
@@ -332,6 +344,15 @@
 		
 		function listProfiles()
 		{
+			$accountID = false;
+			$groupID = false;
+			$appName = '';
+			$profileID = '';
+			if(is_int(intval($_GET['account_id'])) && !empty($_GET['account_id']))
+			{
+				$accountID = intval($_GET['account_id']);
+			}
+
 			$this->display_app_header();
 
 			$this->t->set_file(array("body" => "listprofiles.tpl"));
@@ -339,7 +360,7 @@
 			
 			$this->translate();
 
-			$profileList = $this->boemailadmin->getProfileList();
+			$profileList = $this->boemailadmin->getProfileList($profileID,$appName,$groupID,$accountID);
 			
 			// create the data array
 			if ($profileList)
@@ -421,6 +442,29 @@
 						
 					);
 				}
+				if ($accountID && count($profileList)==1) 
+				{
+					$linkData = array
+					(
+						'menuaction'    => 'emailadmin.emailadmin_ui.editProfile',
+						'nocache'   => '1',
+						'tabpage'   => '1',
+						'profileid' => $profileList[0]['profileID']
+					);
+					print "<script type=\"text/javascript\">".'egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600);</script>';
+				}
+			} else {
+				if ($accountID) {
+					$linkData = array
+					(
+						'menuaction'    => 'emailadmin.emailadmin_ui.addProfile',
+						'nocache'   => '1',
+						'tabpage'   => '1',
+						'account_id' => $accountID
+					);
+					print "<script type=\"text/javascript\">".'egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_addProfile\',700,600);</script>';
+
+				}
 			}
 
 			// create the array containing the table header 
@@ -435,12 +479,29 @@
 				lang('delete'),
 				lang('order'),
 			);
-				
+			if ($accountID) {
+				$linkData = array
+				(
+					'menuaction'    => 'emailadmin.emailadmin_ui.listProfiles',
+				);
+				$listLink = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).
+					'" onClick="return confirm(\''.lang('Do you really want to reset the filter for the Profile listing').'?\')">'.
+					lang('reset filter').'</a>';
+
+				if ($GLOBALS['egw_info']['user']['apps']['admin']) {
+					$linkData = array
+					(
+						'menuaction'    => 'admin.uiaccounts.list_users',
+					);
+					$listLink2 = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.lang('Back to Admin/Userlist').'</a>';
+				}
+			}
+	
 			// create the table html code
 			$this->t->set_var('server_next_match',$this->nextMatchTable(
 				$rows, 
 				$data, 
-				lang('profile list'), 
+				lang('profile list').($accountID ? ' '.lang('filtered by Account').' ['.$listLink.']'.' ['.$listLink2.']': ''), 
 				$_start, 
 				$_total, 
 				$_menuAction)

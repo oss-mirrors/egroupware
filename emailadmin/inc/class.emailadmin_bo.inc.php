@@ -442,9 +442,13 @@
 			return $profileData;
 		}
 		
-		function getProfileList($_profileID='')
+		function getProfileList($_profileID='',$_appName=false,$_groupID=false,$_accountID=false)
 		{
-			return $this->soemailadmin->getProfileList($_profileID);
+			if ($_appName!==false ||$_groupID!==false ||$_accountID!==false) {
+				return $this->soemailadmin->getProfileList($_profileID,false,$_appName,$_groupID,$_accountID);
+			} else {
+				return $this->soemailadmin->getProfileList($_profileID);
+			}
 		}
 		
 		function getSMTPServerTypes()
