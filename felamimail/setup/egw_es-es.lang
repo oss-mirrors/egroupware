@@ -246,6 +246,7 @@ location of buttons when composing	felamimail	es-es	Ubicación de los botones al
 mail server login type	admin	es-es	Tipo de sesión del servidor de correo
 mail settings	felamimail	es-es	Configuración del correo
 mainmessage	felamimail	es-es	mensaje principal
+manage email accounts and identities	common	es-es	Administrar cuentas de correo e identidades
 manage emailaccounts	common	es-es	Administrar cuentas de correo
 manage emailfilter / vacation	preferences	es-es	Administrar filtros de correo / Vacaciones
 manage folders	common	es-es	Administrar carpetas
@@ -395,6 +396,7 @@ table of contents	felamimail	es-es	Tabla de contenidos
 template folder	felamimail	es-es	Carpeta de plantillas
 templates	felamimail	es-es	Plantillas
 text only	felamimail	es-es	Sólo texto
+text/plain	felamimail	es-es	text/plain
 the connection to the imap server failed!!	felamimail	es-es	¡Ha fallado la conexión con el servidor IMAP!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	es-es	El servidor IMAP no parece que soporte el método de identificación seleccionado. Por favor, póngase en contacto con su administrador del sistema.
 the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	es-es	El remitente del mensaje ha solicitado una respuesta para indicar que usted ha leído este mensaje. ¿Desea enviar una confirmación?

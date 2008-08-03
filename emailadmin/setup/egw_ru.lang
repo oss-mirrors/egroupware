@@ -9,7 +9,7 @@ alternate email address	emailadmin	ru	Добавочный адрес эл. по
 any application	emailadmin	ru	Любое приложение
 any group	emailadmin	ru	Любая группа
 bad login name or password.	emailadmin	ru	Неверное имя пользователя или пароль.
-bad or malformed request. server responded: %s	emailadmin	ru	Неправильный или неправильно сформированный запрос. Сервер ответил: %s
+bad or malformed request. server responded: %s	emailadmin	ru	Неверный или нераспознанный запрос. Ответ Сервера: %s
 bad request: %s	emailadmin	ru	Неверный запрос: %s
 can be used by application	emailadmin	ru	Может быть использовано приложением
 can be used by group	emailadmin	ru	Может быть использовано группой
@@ -118,5 +118,5 @@ user can edit forwarding address	emailadmin	ru	Ползователь может
 username (standard)	emailadmin	ru	имя пользователя (стандартное)
 username@domainname (virtual mail manager)	emailadmin	ru	username@domainname (Менеджер Виртуальной ПОЧТЫ)
 users can define their own emailaccounts	emailadmin	ru	Пользователь может назначать свои собственные учетные записи эл. почты.
-vaction messages with start- and end-date require an admin account to be set!	emailadmin	ru	Vaction(?)-сообщения с начальной и конечной датой требуют, чтобы был установлен бюджет администратора!
+vaction messages with start- and end-date require an admin account to be set!	emailadmin	ru	Vaction-сообщения с датами начала и окончания требуют установленной учетной записи администратора!
 virtual mail manager	emailadmin	ru	Менеджер Виртуальной ПОЧТЫ

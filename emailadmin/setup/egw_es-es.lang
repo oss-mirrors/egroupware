@@ -9,6 +9,7 @@ alternate email address	emailadmin	es-es	dirección de correo alternativa
 any application	emailadmin	es-es	cualquier aplicación
 any group	emailadmin	es-es	cualquier grupo
 any user	emailadmin	es-es	cualquier usuario
+back to admin/userlist	emailadmin	es-es	Volver a Administración/Lista de usuarios
 bad login name or password.	emailadmin	es-es	Nombre de usuario o contraseña incorrectos
 bad or malformed request. server responded: %s	emailadmin	es-es	Petición errónea o mal formado. El servidor respondió: %s
 bad request: %s	emailadmin	es-es	Petición errónea: %s
@@ -25,6 +26,7 @@ default	emailadmin	es-es	predeterminada
 deliver extern	emailadmin	es-es	entrega externa
 do not validate certificate	emailadmin	es-es	No validar el certificado
 do you really want to delete this profile	emailadmin	es-es	¿Realmente desea borrar este perfil?
+do you really want to reset the filter for the profile listing	emailadmin	es-es	Realmente desea restablecer el filtro para la lista de perfiles
 domainname	emailadmin	es-es	nombre del dominio
 edit email settings	emailadmin	es-es	editar configuración de la cuenta
 email account active	emailadmin	es-es	cuenta de correo electrónico activa
@@ -38,6 +40,7 @@ encryption settings	emailadmin	es-es	configuración del cifrado
 enter your default mail domain (from: user@domain)	emailadmin	es-es	introduzca el dominio predeterminado (de usuario@dominio)
 error connecting to imap server. %s : %s.	emailadmin	es-es	Error al conectar con el servidor IMAP. %s: %s.
 error connecting to imap server: [%s] %s.	emailadmin	es-es	Error al conectar con el servidor IMAP: [%s] %s.
+filtered by account	emailadmin	es-es	filtrado por cuenta
 forward also to	emailadmin	es-es	reenviar también a
 forward email's to	emailadmin	es-es	reenviar correos a
 forward only	emailadmin	es-es	sólo reenviar
@@ -88,6 +91,7 @@ qmaildotmode	emailadmin	es-es	Modo de punto de qmail
 qouta size in mbyte	emailadmin	es-es	Tamaño de la cuota en MBytes
 quota settings	emailadmin	es-es	Configuración de las cuotas
 remove	emailadmin	es-es	borrar
+reset filter	emailadmin	es-es	restablecer filtro
 select type of imap server	emailadmin	es-es	Seleccione el tipo de servidor IMAP
 select type of imap/pop3 server	emailadmin	es-es	Seleccione el tipo de servidor IMAP/POP3
 select type of smtp server	emailadmin	es-es	Seleccione el tipo de servidor SMTP

@@ -7,12 +7,10 @@ access_mode_readwrite	mydms	ru	Чтение+Запись
 acl get inherited	mydms	ru	acl наследовано
 add acl	mydms	ru	добавить acl
 add document	mydms	ru	добавить документ
-add link	mydms	ru	Добавить ссылку
 add notification	mydms	ru	добавить уведомление
 add subfolder	mydms	ru	Добавить подпапку
 admin-tools	mydms	ru	Утилиты управления
 all versions	mydms	ru	все версии
-choose document	mydms	ru	Выберите документ
 comment	mydms	ru	Коментарий
 comment for current version	mydms	ru	коментарий для текущей версии
 copy acl	mydms	ru	копировать acl
@@ -22,7 +20,6 @@ copy options	mydms	ru	параметры копирования
 copy subfolders	mydms	ru	копировать подпапку
 create empty acl	mydms	ru	создать пустой acl
 creation date	mydms	ru	дата создания
-crop comment	mydms	ru	Обрезать комментарий
 current acl	mydms	ru	текущий acl
 current version	mydms	ru	текущая версия
 default access	mydms	ru	досуп по умолчанию
@@ -30,7 +27,6 @@ delete folder	mydms	ru	удалить папку
 delete this notification	mydms	ru	удалить это извещение
 do you really want to delete this acl?	mydms	ru	Вы действительно хотите удалить этот acl?
 do you really want to delete this document?	mydms	ru	Вы действительно хотите удалить этот документ?
-do you really want to delete this link for document?	mydms	ru	Вы действительно хотите удалить эту ссылку на документ?
 do you really want to delete this version of the document?	mydms	ru	Вы действительно хотите удалить эту версию документа?
 does not expire	mydms	ru	срок не истекает
 download	mydms	ru	Загрузить
@@ -45,15 +41,12 @@ information about last update	mydms	ru	информация о последне�
 informations	mydms	ru	Информация
 inherit acl again	mydms	ru	наследовать acl снова
 last update	mydms	ru	последнее обновление
-linked by	mydms	ru	Прилинковано
-linked documents	mydms	ru	связанный документ
+linked documents	mydms	ru	свзяанный документ
 lock status	mydms	ru	статус блокировки
 mime type	mydms	ru	Тип Mime
 move document	mydms	ru	переместить документ
 move folder	mydms	ru	переместить папку
 mydms	common	ru	Управление Документами
-no related documents	mydms	ru	Нет связанных документов
-not selected document!	mydms	ru	Не выбран документ!
 notifications	mydms	ru	уведомления
 permission	mydms	ru	разрешение
 select folder	mydms	ru	выбрать папку
@@ -63,7 +56,6 @@ this document gets locked by you!	mydms	ru	Данный документ бло�
 this document gets unlocked by you.	mydms	ru	Данный документ разблокирован вами.
 this document is currently not locked.	mydms	ru	Данный документ не блокирован.
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	ru	этот документ заблокирован <a href="mailto:%1">%2</a>.
-to save space do not show the full comment to the file	mydms	ru	Для экономии места не показывать полного комментария к файлу
 update document	mydms	ru	обновить документ
 upload date	mydms	ru	дата выгрузки
 uploaded by	mydms	ru	выгружено
