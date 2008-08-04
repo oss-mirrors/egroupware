@@ -704,9 +704,7 @@ class HTTP_WebDAV_Server
             /* TODO right now the user implementation has to make sure
              collections end in a slash, this should be done in here
              by checking the resource attribute */
-            //$href = $this->_mergePathes($this->_SERVER['SCRIPT_NAME'], $path);
-			// href needs protocol and host too
-            $href = $this->_mergePathes($this->base_uri, $path);
+            $href = $this->_mergePathes($this->_SERVER['SCRIPT_NAME'], $path);
 
             echo "  <D:href>$href</D:href>\n";
 
