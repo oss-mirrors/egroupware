@@ -55,7 +55,9 @@
 	{
 		$menu_title = 'Administration';
 		$file = Array(
-			'Admin-Tools'			=>  $settings->_httpRoot . "out.AdminTools.php"
+			//tim
+			//'Admin-Tools'			=>  $settings->_httpRoot . "out.AdminTools.php"
+                        'Admin-Tools'			=>  $GLOBALS['egw']->link('/mydms/'). "out/out.AdminTools.php"
 		);
 		display_sidebox($appname,$menu_title,$file);
 	}

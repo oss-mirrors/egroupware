@@ -8,7 +8,8 @@ acl get inherited	mydms	ru	acl наследовано
 add acl	mydms	ru	добавить acl
 add document	mydms	ru	добавить документ
 add notification	mydms	ru	добавить уведомление
-add subfolder	mydms	ru	Добавить подпапку
+add subfolder	mydms	ru	добавить подпапку
+adding subfolder "%1" to folder "%2"...	mydms	ru	Добавление папки "% 1" в папку "% 2" ...
 admin-tools	mydms	ru	Утилиты управления
 all versions	mydms	ru	все версии
 comment	mydms	ru	Коментарий
@@ -28,6 +29,7 @@ delete this notification	mydms	ru	удалить это извещение
 do you really want to delete this acl?	mydms	ru	Вы действительно хотите удалить этот acl?
 do you really want to delete this document?	mydms	ru	Вы действительно хотите удалить этот документ?
 do you really want to delete this version of the document?	mydms	ru	Вы действительно хотите удалить эту версию документа?
+do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	ru	Вы действительно хотите удалить папку "%1" и все ее содержимое?<br>Внимание: Это действие нельзя отменить.
 does not expire	mydms	ru	срок не истекает
 download	mydms	ru	Загрузить
 edit folder	mydms	ru	редактировать папку
