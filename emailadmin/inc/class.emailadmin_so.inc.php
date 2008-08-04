@@ -225,18 +225,38 @@
 					} else {
 						if (array_key_exists($key, $toMerge) && !empty($toMerge[$key])) 
 						{
+							#error_log($key.'->'.$toMerge[$key]);
 							switch ($key) {
-								case 'ea_imap_server':
-								case 'ea_imap_type':
-								case 'ea_imap_port':
-								case 'ea_imap_tsl_encryption':
-								case 'ea_imap_tsl_auth':
-									if (strlen($toMerge['ea_imap_server'])>0) $mergeInTo[$key]=$toMerge[$key];
+								case 'imapLoginType':
+									// if the logintype is admin, it will be added to the default value
+									if ($toMerge[$key] =='admin') {
+										// take the first value found by explode, which is assumed the default value
+										list($mergeInTo[$key],$rest) = explode('#',$mergeInTo[$key],2);
+										$mergeInTo[$key] = $mergeInTo[$key].'#'.$toMerge[$key];
+										#error_log($mergeInTo[$key]);
+										break;
+									}
+								case 'imapServer':
+								case 'imapType':
+								case 'imapPort':
+								case 'imapTLSEncryption':
+								case 'imapTLSAuthentication':
+								case 'imapEnableCyrusAdmin':
+								case 'imapAdminUsername':
+								case 'imapAdminPW':
+									if (strlen($toMerge['imapServer'])>0) $mergeInTo[$key]=$toMerge[$key];
 									break;
-								case 'ea_smtp_port':
-								case 'ea_smtp_type':
-								case 'ea_smtp_server':
-									if (strlen($toMerge['ea_smtp_server'])>0) $mergeInTo[$key]=$toMerge[$key];
+								case 'smtpPort':
+								case 'smtpType':
+								case 'smtpServer':
+									if (strlen($toMerge['smtpServer'])>0) $mergeInTo[$key]=$toMerge[$key];
+									break;
+								case 'smtpLDAPServer':     
+								case 'smtpLDAPBaseDN':    
+								case 'smtpLDAPAdminDN':   
+								case 'smtpLDAPAdminPW': 
+								case 'smtpLDAPUseDefault':
+									if (strlen($toMerge['smtpLDAPServer'])>0) $mergeInTo[$key]=$toMerge[$key];
 									break;
 								case 'ea_default_signature':
 									$testVal = $toMerge['ea_default_signature'];

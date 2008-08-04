@@ -495,6 +495,8 @@
 				$icServer->validatecert	= $data['imapTLSAuthentication'] == 'yes';
 				$icServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
 				$icServer->password	= $GLOBALS['egw_info']['user']['passwd'];
+				// restore the default loginType and check if there are forced/predefined user access Data ($imapAuthType may be set to admin)
+				list($data['imapLoginType'],$imapAuthType) = explode('#',$data['imapLoginType'],2);
 				$icServer->loginType	= $data['imapLoginType'];
 				$icServer->domainName	= $data['defaultDomain'];
 				$icServer->loginName 	= $data['imapLoginType'] == 'standard' ? $GLOBALS['egw_info']['user']['account_lid'] : $GLOBALS['egw_info']['user']['account_lid'].'@'.$data['defaultDomain'];
@@ -503,7 +505,7 @@
 				$icServer->adminPassword = $data['imapAdminPW'];
 				$icServer->enableSieve	= ($data['imapEnableSieve'] == 'yes');
 				$icServer->sievePort	= $data['imapSievePort'];
-				if ($icServer->loginType == 'admin') {
+				if ($imapAuthType == 'admin') {
 					if (!empty($data['imapAuthUsername'])) $icServer->username = $icServer->loginName = $data['imapAuthUsername'];
 					if (!empty($data['imapAuthPassword'])) $icServer->password = $data['imapAuthPassword'];
 				}
@@ -519,10 +521,13 @@
 				if($ogServer->smtpAuth) {
 					if(!empty($data['ea_smtp_auth_username'])) {
 						$ogServer->username 	= $data['ea_smtp_auth_username'];
-						$ogServer->password 	= $data['ea_smtp_auth_password'];
 					} else {
 						$ogServer->username 	= $GLOBALS['egw_info']['user']['account_lid'];
-						$ogServer->password 	= $GLOBALS['egw_info']['user']['passwd'];
+					}
+					if(!empty($data['ea_smtp_auth_password'])) {
+						$ogServer->password     = $data['ea_smtp_auth_password'];
+					} else {
+						$ogServer->password     = $GLOBALS['egw_info']['user']['passwd'];
 					}
 				}
 				$eaPreferences->setOutgoingServer($ogServer);
