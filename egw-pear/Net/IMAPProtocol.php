@@ -538,7 +538,7 @@ class Net_IMAPProtocol {
      */
     function _authDigest_MD5($uid , $pwd , $cmdid)
     {
-
+		class_exists('Auth_SASL') || require_once 'Auth/SASL.php';
         if ( PEAR::isError($error = $this->_putCMD( $cmdid ,"AUTHENTICATE" , "DIGEST-MD5") ) ) {
             return $error;
         }
@@ -596,7 +596,7 @@ class Net_IMAPProtocol {
     function _authCRAM_MD5($uid, $pwd, $cmdid)
     {
 
-
+		class_exists('Auth_SASL') || require_once 'Auth/SASL.php';
 
         if ( PEAR::isError($error = $this->_putCMD( $cmdid ,"AUTHENTICATE" , "CRAM-MD5") ) ) {
             return $error;
