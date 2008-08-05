@@ -117,6 +117,7 @@ don't use draft folder	felamimail	es-es	No usar la carpeta borradores
 don't use sent	felamimail	es-es	No usar Enviados
 don't use template folder	felamimail	es-es	No usar la carpeta de plantillas
 don't use trash	felamimail	es-es	No usar Papelera
+dont strip any tags	felamimail	es-es	no separar ninguna etiqueta
 down	felamimail	es-es	abajo
 download	felamimail	es-es	descargar
 download this as a file	felamimail	es-es	Descargar esto como un fichero
@@ -296,6 +297,7 @@ no subject given!	felamimail	es-es	¡No se ha indicado un asunto!
 no supported imap authentication method could be found.	felamimail	es-es	No se pudo encontrar ningún método de identificación IMAP
 no valid emailprofile selected!!	felamimail	es-es	No se ha seleccionado un perfil de correo válido
 none	felamimail	es-es	ninguno
+on	felamimail	es-es	en
 on behalf of	felamimail	es-es	en nombre de
 one address is not valid	felamimail	es-es	Una dirección no es válida
 only inbox	felamimail	es-es	Sólo la Bandeja de entrada
