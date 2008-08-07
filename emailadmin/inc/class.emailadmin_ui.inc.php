@@ -84,7 +84,11 @@
 		{
 			if(is_int(intval($_GET['account_id'])) && !empty($_GET['account_id']))
 			{
-				$accountID = intval($_GET['account_id']);
+				if ( intval($_GET['account_id']) < 0 ) {
+					$groupID =  intval($_GET['account_id']);
+				} else {
+					$accountID = intval($_GET['account_id']);
+				}
 			}
 			$allGroups = self:: getAllGroups();
 			$allUsers = self::getAllUsers();
@@ -100,13 +104,13 @@
 			$this->t->set_var('smtpActiveTab','1');
 			$this->t->set_var('imapActiveTab','2');	// IMAP
 			$this->t->set_var('application_select_box', html::select('globalsettings[ea_appname]','',$applications, true, "style='width: 250px;'"));
-			$this->t->set_var('group_select_box', html::select('globalsettings[ea_group]','',$allGroups, true, "style='width: 250px;'"));
+			$this->t->set_var('group_select_box', html::select('globalsettings[ea_group]',($groupID ? $groupID :''),$allGroups, true, "style='width: 250px;'"));
 			$this->t->set_var('user_select_box', html::select('globalsettings[ea_user]',($accountID ? $accountID :''),$allUsers, true, "style='width: 250px;'"));
 			$this->t->set_var('selected_ea_active','checked="1"');
+			$this->t->set_var('value_description',($accountID ? $allUsers[$accountID]: ($groupID ? $allGroups[$groupID]: '')));
 			if ($accountID) 
 			{
 				// some useful presets, if you want to create a user dedicated profile
-				$this->t->set_var('value_description',$allUsers[$accountID]);
 				$this->t->set_var('selected_smtpAuth','checked="1"');
 				$this->t->set_var('value_ea_smtp_auth_username',$allUsers[$accountID]);
 				$this->t->set_var('selected_imapLoginType_admin','selected="selected"');
@@ -350,7 +354,11 @@
 			$profileID = '';
 			if(is_int(intval($_GET['account_id'])) && !empty($_GET['account_id']))
 			{
-				$accountID = intval($_GET['account_id']);
+				if ( intval($_GET['account_id']) < 0 ) {
+					$groupID =  intval($_GET['account_id']);
+				} else {
+					$accountID = intval($_GET['account_id']);
+				}
 			}
 
 			$this->display_app_header();
@@ -442,7 +450,7 @@
 						
 					);
 				}
-				if ($accountID && count($profileList)==1) 
+				if (($accountID || !empty($groupID)) && count($profileList)==1) 
 				{
 					$linkData = array
 					(
@@ -454,13 +462,13 @@
 					print "<script type=\"text/javascript\">".'egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_editProfile\',700,600);</script>';
 				}
 			} else {
-				if ($accountID) {
+				if ($accountID || !empty($groupID)) {
 					$linkData = array
 					(
 						'menuaction'    => 'emailadmin.emailadmin_ui.addProfile',
 						'nocache'   => '1',
 						'tabpage'   => '1',
-						'account_id' => $accountID
+						'account_id' => ($accountID ? $accountID : $groupID)
 					);
 					print "<script type=\"text/javascript\">".'egw_openWindowCentered2(\''.$GLOBALS['egw']->link('/index.php',$linkData).'\',\'ea_addProfile\',700,600);</script>';
 
@@ -479,7 +487,7 @@
 				lang('delete'),
 				lang('order'),
 			);
-			if ($accountID) {
+			if ($accountID || !empty($groupID)) {
 				$linkData = array
 				(
 					'menuaction'    => 'emailadmin.emailadmin_ui.listProfiles',
@@ -491,9 +499,9 @@
 				if ($GLOBALS['egw_info']['user']['apps']['admin']) {
 					$linkData = array
 					(
-						'menuaction'    => 'admin.uiaccounts.list_users',
+						'menuaction'    => 'admin.uiaccounts.list_'.($accountID ? 'users' : 'groups'),
 					);
-					$listLink2 = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.lang('Back to Admin/Userlist').'</a>';
+					$listLink2 = '<a href="'.$GLOBALS['egw']->link('/index.php',$linkData).'">'.($accountID ? lang('Back to Admin/Userlist'): lang('Back to Admin/Grouplist')).'</a>';
 				}
 			}
 	
@@ -501,7 +509,7 @@
 			$this->t->set_var('server_next_match',$this->nextMatchTable(
 				$rows, 
 				$data, 
-				lang('profile list').($accountID ? ' '.lang('filtered by Account').' ['.$listLink.']'.' ['.$listLink2.']': ''), 
+				lang('profile list').($accountID || !empty($groupID) ? ' '.($accountID ? lang('filtered by Account') :  lang('filtered by Group')).' ['.$listLink.']'.' ['.$listLink2.']': ''), 
 				$_start, 
 				$_total, 
 				$_menuAction)

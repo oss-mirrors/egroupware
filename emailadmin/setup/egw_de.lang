@@ -9,6 +9,7 @@ alternate email address	emailadmin	de	zusätzliche E-Mail-Adressen
 any application	emailadmin	de	jede Anwendung
 any group	emailadmin	de	jede Gruppe
 any user	emailadmin	de	jeder Benutzer
+back to admin/grouplist	emailadmin	de	Zurück zu: Admin/Gruppenverwaltung
 back to admin/userlist	emailadmin	de	Zurück zu: Admin/Benutzerverwaltung
 bad login name or password.	emailadmin	de	Falscher Benutzername oder Passwort.
 bad or malformed request. server responded: %s	emailadmin	de	Falsche oder ungültige Anfrage. Server antwortet: %s
@@ -33,6 +34,8 @@ email account active	emailadmin	de	E-Mail-Konto aktiv
 email address	emailadmin	de	E-Mail-Adresse
 email settings	common	de	E-Mail-Konto
 emailadmin	emailadmin	de	EMailAdmin
+emailadmin: group assigned profile	common	de	eMailAdmin: Vordefiniertes Gruppenprofil
+emailadmin: user assigned profile	common	de	eMailAdmin: Vordefiniertes Benutzerprofil
 enable cyrus imap server administration	emailadmin	de	Cyrus IMAP-Server Administration aktivieren
 enable sieve	emailadmin	de	Sieve aktivieren
 encrypted connection	emailadmin	de	verschlüsselte Verbindung
@@ -41,6 +44,7 @@ enter your default mail domain (from: user@domain)	emailadmin	de	Standard E-Mail
 error connecting to imap server. %s : %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	de	Fehler beim Verbinden mit dem IMAP Server. [%s] %s.
 filtered by account	emailadmin	de	Suche nach Benutzerprofilen
+filtered by group	emailadmin	de	Suche nach Gruppenprofilen
 forward also to	emailadmin	de	zusätzlich weiterleiten
 forward email's to	emailadmin	de	E-Mails weiterleiten an
 forward only	emailadmin	de	nur weiterleiten

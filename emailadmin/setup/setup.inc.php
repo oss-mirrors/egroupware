@@ -14,7 +14,7 @@
 
 	$setup_info['emailadmin']['name']      = 'emailadmin';
 	$setup_info['emailadmin']['title']     = 'EMailAdmin';
-	$setup_info['emailadmin']['version']   = '1.5.003';
+	$setup_info['emailadmin']['version']   = '1.5.004';
 	$setup_info['emailadmin']['app_order'] = 10;
 	$setup_info['emailadmin']['enable']    = 2;
 
@@ -33,16 +33,21 @@
 	
 	/* The hooks this app includes, needed for hooks registration */
 	#$setup_info['emailadmin']['hooks'][] = 'preferences';
-	$setup_info['emailadmin']['hooks'][] = 'admin';
-
+	$setup_info['emailadmin']['hooks']['admin'] = 'emailadmin_hooks::admin';
+	$setup_info['emailadmin']['hooks']['edit_user'] = 'emailadmin_hooks::edit_user';
+	$setup_info['emailadmin']['hooks']['view_user'] = 'emailadmin_hooks::edit_user';
+	$setup_info['emailadmin']['hooks']['edit_group'] = 'emailadmin_hooks::edit_group';
+	$setup_info['emailadmin']['hooks']['group_manager'] = 'emailadmin_hooks::edit_group';
+	$setup_info['emailadmin']['hooks']['deleteaccount'] = 'emailadmin_hooks::deleteaccount';
+	$setup_info['emailadmin']['hooks']['deletegroup'] = 'emailadmin_hookss::deletegroup';
 	/* Dependencies for this app to work */
 	$setup_info['emailadmin']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('1.3','1.4','1.5')
+		'versions' => Array('1.3','1.4','1.5','1.6')
 	);
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'egw-pear',
-		'versions' => Array('1.4.000','1.5')
+		'versions' => Array('1.4.000','1.5','1.6')
 	);
 	// installation checks for felamimail
 	$setup_info['emailadmin']['check_install'] = array(
