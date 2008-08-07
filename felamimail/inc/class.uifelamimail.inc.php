@@ -454,6 +454,7 @@
 			$urlMailbox		=  urlencode($this->mailbox);
 
 			$imapServer =& $preferences->getIncomingServer(0);
+			#_debug_array($imapServer);
 			$activeIdentity =& $preferences->getIdentity(0);
 			#_debug_array($activeIdentity);
 			$maxMessages		=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];

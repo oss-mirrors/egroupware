@@ -682,7 +682,10 @@
 		{
 			$tempID = '';
 			$structure = $_structure;
+			if (empty($_partID)) $_partID=1;
 			$imapPartIDs = explode('.',$_partID);
+			#error_log(print_r($structure,true));
+			#error_log(print_r($_partID,true));
 
 			if($_partID != 1) {
 				foreach($imapPartIDs as $imapPartID) {
@@ -690,7 +693,7 @@
 						$tempID .= '.';
 					}
 					$tempID .= $imapPartID;
-					//print "TEMPID: $tempID<br>";
+					#error_log(print_r( "TEMPID: $tempID<br>",true));
 					//_debug_array($structure);
 					if($structure->subParts[$tempID]->type == 'MESSAGE' && $structure->subParts[$tempID]->subType == 'RFC822' &&
 					   count($structure->subParts[$tempID]->subParts) == 1 &&

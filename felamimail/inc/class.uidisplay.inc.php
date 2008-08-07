@@ -1003,6 +1003,7 @@
 				{
 					$newBody	= $singleBodyPart['body'];
 					$newBody	= $this->highlightQuotes($newBody);
+					#error_log(print_r($newBody,true));
 					bofelamimail::getCleanHTML($newBody);
 					// create links for websites
 					#$newBody = preg_replace("/(?<!\>)((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie",
