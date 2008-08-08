@@ -1031,16 +1031,17 @@
 		function getAttachmentByCID($_uid, $_cid, $_part)
 		{
 			$partID = false;
-			
+			#error_log("getAttachmentByCID:$_uid, $_cid, $_part");			
 			$attachments = $this->getMessageAttachments($_uid, $_part);
 			foreach($attachments as $attachment) {
-				if(strpos($attachment['cid'], $_cid) !== false) {
+				#error_log(print_r($attachment,true));
+				if(strpos($attachment['cid'], $_cid) !== false || strpos($cid, $attachment['cid']) !== false) {
 					$partID = $attachment['partID'];
 					break;
 				}
 			}
 
-			#print "PARTID: $partID<bR>"; exit;
+			#error_log( "PARTID:$_cid $partID<bR>"); #exit;
 
 			if($partID == false) {
 				return false;
@@ -1819,7 +1820,7 @@
 			} else {
 				$structure = $this->icServer->getStructure($_uid, true);
 				
-				if($_partID != '') {
+				if($_partID != '' && $_partID !=0) {
 					$structure = $this->_getSubStructure($structure, $_partID);
 				}
 			}
