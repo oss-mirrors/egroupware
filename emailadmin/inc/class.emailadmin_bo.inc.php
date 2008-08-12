@@ -214,7 +214,7 @@
 				),
 			); 
 			
-			if ($_restoreSesssion) $this->restoreSessionData();
+			if ($_restoreSesssion &&  !(is_array($this->sessionData) && (count($this->sessionData)>0))  ) $this->restoreSessionData();
 			#_debug_array($this->sessionData);	
 			if($_profileID >= 0)
 			{
@@ -363,7 +363,7 @@
 
 		function getProfile($_profileID)
 		{
-			$this->restoreSessionData();
+			if (!(is_array($this->sessionData) && (count($this->sessionData)>0))) $this->restoreSessionData();
 			if (is_array($this->sessionData) && (count($this->sessionData)>0) && $this->sessionData['profile'][$_profileID]) {
 				#error_log("sessionData Restored for Profile $_profileID <br>");
 				return $this->sessionData['profile'][$_profileID]; 
@@ -462,7 +462,7 @@
 		
 		function getUserProfile($_appName='', $_groups='')
 		{
-			$this->restoreSessionData();
+			if (!(is_array($this->sessionData) && (count($this->sessionData)>0))) $this->restoreSessionData();
 			if (is_array($this->sessionData) && count($this->sessionData)>0 && $this->sessionData['eapreferences']) {
 				#error_log("sessionData Restored for UserProfile<br>");
 				return $this->sessionData['eapreferences']; 
@@ -578,7 +578,9 @@
 
 		function restoreSessionData()
 		{
-			$this->sessionData = (array)$GLOBALS['egw']->session->appsession('session_data','emailadmin');
+			//echo function_backtrace()."<br>";
+			//unserializing the sessiondata, since they are serialized for objects sake
+			$this->sessionData = (array) unserialize($GLOBALS['egw']->session->appsession('session_data','emailadmin'));
 			#$this->userSessionData = $GLOBALS['egw']->session->appsession('user_session_data','emailadmin');
 		}
 		
@@ -737,7 +739,8 @@
 		
 		function saveSessionData()
 		{
-			$GLOBALS['egw']->session->appsession('session_data','emailadmin',$this->sessionData);
+			// serializing the session data, for the sake of objects
+			$GLOBALS['egw']->session->appsession('session_data','emailadmin',serialize($this->sessionData));
 			#$GLOBALS['egw']->session->appsession('user_session_data','',$this->userSessionData);
 		}
 		
