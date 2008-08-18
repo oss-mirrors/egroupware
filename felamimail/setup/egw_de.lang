@@ -62,6 +62,7 @@ configuration	felamimail	de	Konfiguration
 connection dropped by imap server.	felamimail	de	Verbindung von IMAP Server beendet.
 contains	felamimail	de	enthält
 could not complete request. reason given: %s	felamimail	de	Konnte Anfrage nicht beenden. Grund: %s
+could not import message:	felamimail	de	Konnte diese Nachricht nicht importieren:
 could not open secure connection to the imap server. %s : %s.	felamimail	de	Konnte sichere Verbindung zum IMAP Server nicht öffnen. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	de	CRAM-MD5 oder DIGEST-MD5 benötigt das Auth_SASL Packet.
 create	felamimail	de	Erzeugen
@@ -151,12 +152,13 @@ error connecting to imap serv	felamimail	de	Konnte den IMAP Server (Mailserver) 
 error connecting to imap server. %s : %s.	felamimail	de	Fehler beim Verbinden mit dem IMAP Server. %s : %s.
 error connecting to imap server: [%s] %s.	felamimail	de	Fehler beim Verbinden mit dem IMAP Server: [%s]  %s.
 error opening	felamimail	de	Fehler beim Öffnen
+error:	felamimail	de	FEHLER:
 error: could not save message as draft	felamimail	de	FEHLER: Die nachricht konnte nicht als Entwurf gespeichert werden.
 every	felamimail	de	alle
 every %1 days	felamimail	de	alle %1 Tage
 expunge	felamimail	de	Endgültig löschen
 extended	felamimail	de	Erweitert
-felamimail	common	de	FeLaMiMail
+felamimail	common	de	eMail
 file into	felamimail	de	verschiebe nach
 files	felamimail	de	Dateien
 filter active	felamimail	de	Filter aktiv
@@ -222,6 +224,8 @@ imap server type	felamimail	de	IMAP-Servertyp
 imap server username	felamimail	de	IMAP Server Benutzername
 imaps authentication	felamimail	de	IMAPS Authetifizierung
 imaps encryption only	felamimail	de	IMAPS nur Verschlüsselung
+import	felamimail	de	Importieren
+import mail	felamimail	de	Mail Importieren
 in	felamimail	de	In
 inbox	felamimail	de	Posteingang
 incoming mail server(imap)	felamimail	de	eingehender Mailserver (IMAP)
@@ -279,6 +283,7 @@ new filter	felamimail	de	neuer Filter
 next	felamimail	de	nächste
 next message	felamimail	de	nächste Nachricht
 no active imap server found!!	felamimail	de	Kein aktiver IMAP Server gefunden!!
+no address to/cc/bcc supplied, and no folder to save message to provided.	felamimail	de	Keine Empfänger Adresse (To/CC/BCC ) angegeben und kein Ordner zur Ablage der Mail spezifiziert.
 no encryption	felamimail	de	keine Verschlüsselung
 no filter	felamimail	de	kein Filter
 no folders found	felamimail	de	Keine Ordner gefunden

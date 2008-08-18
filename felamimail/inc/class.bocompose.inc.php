@@ -135,7 +135,6 @@
 				'size'		=> $_size,
 				'folder'	=> $_folder
 			);
-			
 			$this->saveSessionData();
 		}
 		
@@ -158,67 +157,81 @@
 			#print "</pre>";
 			#print "<hr>";
 			bofelamimail::replaceTagsCompletley($_html,'style');
-			// remove these tags and any spaces behind the tags
-			$search = array('/<div.*?>/', '/<p.*?> */',  
-							'/<.?strong> /', '/<.?strong>/', '/<.?em>/', '/<.?u>/', '/<.?b>/', '/<.?i>/', '/<.?s>/', 
-							'/<\/li>/', '/<.?ul> */', '/<.?ol> */', 
-							'/<.?font.*?>/', '/<style.*?>/','/<.?style>/' ,
-							'/<span.*?>/','/<.?span>/', '/<a.*?>/','/<.?a>/','/<img.*?>/');
-			$replace = '';
-			$text = preg_replace($search, $replace, $_html);
-			
-			// convert these tags and any spaces behind the tags to double line breaks, a double linebreak itself may be desired
-			$search = array('/&nbsp;<\/p> */', '/<\/p> */');
-			$replace = array("\r\n\r\n","\r\n");
-			$text = preg_replace($search, $replace, $text);
-			
-			$search = array('/<pre.*?>/','/<.?pre>/');
-			$replace = "\r\n";
-			$text = preg_replace($search, $replace, $text);
+			$Rules = array ('@<script[^>]*?>.*?</script>@si', // Strip out javascript
+				'@&(quot|#34);@i',                // Replace HTML entities
+				'@&(amp|#38);@i',                 //   Ampersand &
+				'@&(lt|#60);@i',                  //   Less Than <
+				'@&(gt|#62);@i',                  //   Greater Than >
+				'@&(nbsp|#160);@i',               //   Non Breaking Space
+				'@&(iexcl|#161);@i',              //   Inverted Exclamation point
+				'@&(cent|#162);@i',               //   Cent
+				'@&(pound|#163);@i',              //   Pound
+				'@&(copy|#169);@i',               //   Copyright
+				'@&(reg|#174);@i',                //   Registered
+			);
+			$Replace = array ('',
+				'"',
+				'&',
+				'<',
+				'>',
+				' ',
+				chr(161),
+				chr(162),
+				chr(163),
+				chr(169),
+				chr(174),
+			);
+			$_html = preg_replace($Rules, $Replace, $_html);
+			$tags = array (
+				0 => '~<h[123][^>]*>~si',
+				1 => '~<h[456][^>]*>~si',
+				2 => '~<table[^>]*>~si',
+				3 => '~<tr[^>]*>~si',
+				4 => '~<li[^>]*>~si',
+				5 => '~<br[^>]*>~si',
+				6 => '~<p[^>]*>~si',
+				7 => '~<div[^>]*>~si',
+				8 => '~<hr[^>]*>~si',
+				9 => '/<blockquote type="cite">/'
+			);
+			$Replace = array (
+				0 => "\r\n",
+				1 => "\r\n",
+				2 => "\r\n",
+				3 => "\r\n",
+				4 => "\r\n",
+				5 => "\r\n",
+				6 => "\r\n",
+				7 => "\r\n",
+				8 => "\r\n__________________________________________________\r\n",
+				9 => '#blockquote#type#cite#'
+			);
+    		$_html = preg_replace($tags,$Replace,$_html);
+    		$_html = preg_replace('~</t(d|h)>\s*<t(d|h)[^>]*>~si',' - ',$_html);
+			$_html = preg_replace('~<img[^>]+>~s','',$_html);
+    		$_html = preg_replace('~<[^>^@]+>~s','',$_html);
+    		// reducing spaces
+    		$_html = preg_replace('~ +~s',' ',$_html);
+			// we dont reduce whitespace at the start or the end of the line, since its used for structuring the document
+    		#$_html = preg_replace('~^\s+~m','',$_html);
+    		#$_html = preg_replace('~\s+$~m','',$_html);
+			// restoring the preserved blockquote
+			$_html = preg_replace('~#blockquote#type#cite#~s','<blockquote type="cite">',$_html);
 
-			// special replacements
-			$search = array('/&#160;/');
-			$replace = array(' ');
-			$text = preg_replace($search, $replace, $text);
-			$search = array('/<li>/');
-			$replace = array('  * ');
-			$text = preg_replace($search, $replace, $text);
-			// table stuff
-			$search = array('/<table.*?>/','/<.?table>/', '/<tr.*?>/','/<.?tr>/');
-			$replace = array("\r\n\r\n ","\r\n\r\n ","\r\n ","");
-			$text = preg_replace($search, $replace, $text);
 			
-			$search = array('/<thead.*?>/','/<.?thead>/','/<tbody.*?>/','/<.?tbody>/');
-			$replace = '';
-			$text = preg_replace($search, $replace, $text);
-
-			$search = array('/<td.*?>/','/<.?td>/','/<th.*?>/','/<.?th>/');
-			$replace = array('| ',' |', '| ',' |');
-			$text = preg_replace($search, $replace, $text);
-			// headings, rules
-			$search = array('/<h[1-9]>/', '/<\/h[1-9]>/');
-			$replace = array('* ', '');
-			$text = preg_replace($search, $replace, $text);
-
-			$search = array('/<hr.*>/','/<br.*?>\n/','/<br.*?>\r\n/','/<br.*?>/','/<\/div>\r\n/','/<\/div>/');
-			$replace = array("\r\n--------------------------------\r\n", "\r\n", "\r\n", "\r\n", "\r\n", "\r\n");
-			$text = preg_replace($search, $replace, $text);
-			
-			$text = html_entity_decode($text, ENT_COMPAT, $this->displayCharset);
+			$_html = html_entity_decode($_html, ENT_COMPAT, $this->displayCharset);
 			// replace emailaddresses eclosed in <> (eg.: <me@you.de>) with the emailaddress only (e.g: me@you.de)
-			#$text = preg_replace("/(<|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))(>|&gt;)/ie","'$2'", $text);
-			self::replaceEmailAdresses($text);
+			self::replaceEmailAdresses($_html);
 			#error_log($text);
-			$pos = strpos($text, 'blockquote');
+			$pos = strpos($_html, 'blockquote');
 			#error_log("convert HTML2Text");
 			if($pos === false) {
-				$asciiText = $text;
+				return $_html;
 			} else {
 				$indent = 0;
 				$indentString = '';
-				$asciiText = '';
 				
-				$quoteParts = preg_split('/<blockquote type="cite">/', $text, -1, PREG_SPLIT_OFFSET_CAPTURE);
+				$quoteParts = preg_split('/<blockquote type="cite">/', $_html, -1, PREG_SPLIT_OFFSET_CAPTURE);
 
 				foreach($quoteParts as $quotePart) {
 					if($quotePart[1] > 0) {
@@ -233,7 +246,7 @@
 							$indentString = substr($indentString, 0, $indent);
 						}
 
-						$quoteParts3 = preg_split('/\r\n/', $quotePart2[0]);
+						$quoteParts3 = explode("\r\n", $quotePart2[0]);
 
 						foreach($quoteParts3 as $quotePart3) {
 							$allowedLength = 76-strlen("\r\n$indentString");
@@ -257,14 +270,12 @@
 									if (strlen($v))  $quotePart3 .= (strlen($quotePart3) ? " " : "").$v;
 								}
 							}
-							$asciiText .= $indentString . $quotePart3 ;
+							$asciiTextBuff[] = $indentString . $quotePart3 ;
 						}
-						$asciiText .= "\r\n";
 					}
 				}
+				return implode("\r\n",$asciiTextBuff);
 			}
-
-			return $asciiText;
 		}
 		
 		function convertHTMLToTextTiny($_html) 
@@ -723,7 +734,7 @@
 					foreach($newBody as $value) {
 						// the explode is removing the character
 						if (trim($value) != '') {
-							if ($value != "\r") $value .= "\n";
+							#if ($value != "\r") $value .= "\n";
 						}
 						$numberOfChars = strspn(trim($value), ">");
 						$appendString = str_repeat('>', $numberOfChars + 1);
@@ -772,18 +783,17 @@
 		function removeAttachment($_attachmentID) {
 			unlink($this->sessionData['attachments'][$_attachmentID]['file']);
 			unset($this->sessionData['attachments'][$_attachmentID]);
-
 			$this->saveSessionData();
 		}
 		
 		function restoreSessionData() 
 		{
-			$this->sessionData = $GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID);
+			$this->sessionData = $GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID, 'felamimail');
 		}
 		
 		function saveSessionData() 
 		{
-			$GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID,'',$this->sessionData);
+			$GLOBALS['egw']->session->appsession('compose_session_data_'.$this->composeID,'felamimail',$this->sessionData);
 		}
 
 		function createMessage(&$_mailObject, $_formData, $_identity, $_signature = false) 
@@ -1049,9 +1059,19 @@
 			// set a higher timeout for big messages
 			@set_time_limit(120);
 			#$mail->SMTPDebug = 10;
+			#error_log("Folder:".count(array($this->sessionData['folder']))."To:".count((array)$this->sessionData['to'])."CC:". count((array)$this->sessionData['cc']) ."bcc:".count((array)$this->sessionData['bcc']));
 			if(count((array)$this->sessionData['to']) > 0 || count((array)$this->sessionData['cc']) > 0 || count((array)$this->sessionData['bcc']) > 0) {
 				if(!$mail->Send()) {
 					$this->errorInfo = $mail->ErrorInfo;
+					#error_log($this->errorInfo);
+					return false;
+				}
+			} else {
+				if (count(array($this->sessionData['folder']))>0 && !empty($this->sessionData['folder'])) {
+					#error_log("Folders:".print_r($this->sessionData['folder'],true));
+				} else {
+					$this->errorInfo = lang("Error: ").lang("No Address TO/CC/BCC supplied, and no folder to save message to provided.");
+					#error_log($this->errorInfo);
 					return false;
 				}
 			}
@@ -1064,7 +1084,7 @@
 			}
 			if($messageIsDraft == true) {
 			   	if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder'])) {
-				   	$this->sessionData['folder'] = array($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']);
+				   	$folder[] = $this->sessionData['folder'] = array($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']);
 			   	}
 			}
 			$folder = array_unique($folder);
@@ -1117,7 +1137,7 @@
 				$bofelamimail->reopen($this->sessionData['messageFolder']);
 				// if the draft folder is a starting part of the messages folder, the draft message will be deleted after the send
 				// unless your templatefolder is a subfolder of your draftfolder, and the message is in there
-				if ($bofelamimail->isDraftFolder($this->sessionData['messageFolder']) || $bofelamimail->isTemplateFolder($this->sessionData['messageFolder'])) 
+				if ($bofelamimail->isDraftFolder($this->sessionData['messageFolder']) && !$bofelamimail->isTemplateFolder($this->sessionData['messageFolder'])) 
 				{
 					$bofelamimail->deleteMessages(array($this->sessionData['uid']));
 				} else {

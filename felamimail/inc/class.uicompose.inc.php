@@ -362,7 +362,7 @@
 						'1' => $attachment['name'],
 						'2' => $attachment['type'], '.2' => "style='text-align:center;'",
 						'3' => $attachment['size'],
-						'4' => "<img src='$imgClearLeft' onclick=\"fm_compose_deleteAttachmentRow(this,'$_composeID','$id')\">"
+						'4' => "<img src='$imgClearLeft' onclick=\"fm_compose_deleteAttachmentRow(this,'".$this->composeID."','$id')\">"
 					);
 					$tableRows[] = $tempArray;
 				}

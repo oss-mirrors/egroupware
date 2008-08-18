@@ -57,7 +57,7 @@
 		 * @var array
 		 */
 		var $autoFolders = array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates');
-		
+	
 		function bofelamimail($_displayCharset='iso-8859-1')
 		{
 			$this->restoreSessionData();
@@ -952,14 +952,22 @@
 					"border"	=> array('maxlen' => 30),
 				)
 			);
+			
+			// no scripts allowed
+			// clean out comments
+			$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
+				'@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments including CDATA
+			);
+			$_html = preg_replace($search,"",$_html);
+
 			// do the kses clean out first, to avoid general problems with content later on
 			$_html = $kses->Parse($_html);
 			// clean out empty or pagewide style definitions / left over tags
 			self::replaceTagsCompletley($_html,'style>','</style');
 			// no scripts allowed / left over tags
-			self::replaceTagsCompletley($_html,'script', '</script');
+			#self::replaceTagsCompletley($_html,'script', '</script');
 			// clean out comments
-			self::replaceTagsCompletley($_html,'!--','--');
+			#self::replaceTagsCompletley($_html,'!--','--');
 			// remove non printable chars
 			$_html = preg_replace('/([\000-\012])/','',$_html);
 		}
@@ -2174,6 +2182,7 @@
 
 		function openConnection($_icServerID=0, $_adminConnection=false)
 		{
+			#if (!is_object($this->mailPreferences)) echo function_backtrace();
 			if(!$this->icServer = $this->mailPreferences->getIncomingServer((int)$_icServerID)) {
 				$this->errorMessage = lang('No active IMAP server found!!');
 				return false;

@@ -62,6 +62,7 @@ configuration	felamimail	en	Configuration
 connection dropped by imap server.	felamimail	en	Connection dropped by IMAP server.
 contains	felamimail	en	contains
 could not complete request. reason given: %s	felamimail	en	Could not complete request. Reason Given: %s
+could not import message:	felamimail	en	Could not import Message:
 could not open secure connection to the imap server. %s : %s.	felamimail	en	Could not open secure connection to the IMAP server. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	en	CRAM-MD5 or DIGEST-MD5 requires the Auth_SASL package to be installed.
 create	felamimail	en	Create
@@ -151,12 +152,13 @@ error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	felamimail	en	Error connecting to IMAP server: [%s] %s.
 error opening	felamimail	en	Error opening
+error:	felamimail	en	Error:
 error: could not save message as draft	felamimail	en	Error: Could not save Message as Draft
 every	felamimail	en	every
 every %1 days	felamimail	en	every %1 days
 expunge	felamimail	en	Expunge
 extended	felamimail	en	extended
-felamimail	common	en	FelaMiMail
+felamimail	common	en	eMail
 file into	felamimail	en	file into
 files	felamimail	en	files
 filter active	felamimail	en	filter active
@@ -222,6 +224,8 @@ imap server type	felamimail	en	IMAP Server type
 imap server username	felamimail	en	imap server username
 imaps authentication	felamimail	en	IMAPS Authentication
 imaps encryption only	felamimail	en	IMAPS Encryption only
+import	felamimail	en	import
+import mail	felamimail	en	Import Mail
 in	felamimail	en	in
 inbox	felamimail	en	INBOX
 incoming mail server(imap)	felamimail	en	incoming mail server(IMAP)
@@ -279,6 +283,7 @@ new filter	felamimail	en	New filter
 next	felamimail	en	Next
 next message	felamimail	en	next message
 no active imap server found!!	felamimail	en	No active IMAP server found!!
+no address to/cc/bcc supplied, and no folder to save message to provided.	felamimail	en	No Address TO/CC/BCC supplied, and no folder to save message to provided.
 no encryption	felamimail	en	no encryption
 no filter	felamimail	en	No Filter
 no folders found	felamimail	en	No folders found

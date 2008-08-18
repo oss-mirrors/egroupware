@@ -1026,8 +1026,13 @@
 						'mailbox'	=> base64_encode($this->mailbox)
 					);
 					$imageURL = $GLOBALS['egw']->link('/index.php', $linkData);
-					$newBody = preg_replace("/(\"|\')cid:(.*)(\"|\')/iUe",
-						"'\"$imageURL&cid='.base64_encode('$2').'&partID='.urlencode($this->partID).'\"'", $newBody);
+					if ($this->partID) {
+						$newBody = preg_replace("/(\"|\')cid:(.*)(\"|\')/iUe",
+							"'\"$imageURL&cid='.base64_encode('$2').'&partID='.urlencode($this->partID).'\"'", $newBody);
+					} else {
+						$newBody = preg_replace("/(\"|\')cid:(.*)(\"|\')/iUe",
+							"'\"$imageURL&cid='.base64_encode('$2').'&partID='.'\"'", $newBody);
+					}
 
 					// create links for email addresses
 					$linkData = array

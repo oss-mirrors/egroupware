@@ -170,7 +170,7 @@
 					$message = $this->importMessageToFolder($formData);
 					print "<script type='text/javascript'>window.close();</script>";
 					if (!$message) {
-						print "<script type=\"text/javascript\">alert('".lang("Error: Could not import Message:").htmlentities($formData['name'])."');</script>";
+						print "<script type=\"text/javascript\">alert('".lang("Error: ").lang("Could not import Message:").htmlentities($formData['name'])."');</script>";
 						return;
 					} else {
 						$linkData = array(
