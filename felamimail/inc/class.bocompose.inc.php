@@ -887,7 +887,7 @@
 					#$_mailObject->Body    = array($_formData['body'], $_signature['signature']);
 					$_mailObject->Body    = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $_signature->fm_signature;
 					$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']).
-						"\r\n--\r\n". 
+						"\r\n-- \r\n". 
 						$this->convertHTMLToText($_signature->fm_signature);
 					#print "<pre>$_mailObject->AltBody</pre>";
 					#print htmlentities($_signature['signature']);
@@ -900,7 +900,7 @@
 				$_mailObject->Body = $this->convertHTMLToText($_formData['body']);
 				#$_mailObject->Body = $_formData['body'];
 				if(!empty($_signature->fm_signature)) {
-					$_mailObject->Body .= "\r\n--\r\n". $this->convertHTMLToText($_signature->fm_signature);
+					$_mailObject->Body .= "\r\n-- \r\n". $this->convertHTMLToText($_signature->fm_signature);
 				}
 			}
 			
