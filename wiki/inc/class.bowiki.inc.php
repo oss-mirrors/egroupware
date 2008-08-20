@@ -1,17 +1,14 @@
 <?php
-/**************************************************************************\
-* eGroupWare Wiki - Business Objects                                       *
-* http://www.egroupware.org                                                *
-* -------------------------------------------------                        *
-* Copyright (C) 2004-6 by RalfBecker@outdoor-training.de                   *
-* --------------------------------------------                             *
-*  This program is free software; you can redistribute it and/or modify it *
-*  under the terms of the GNU General Public License as published by the   *
-*  Free Software Foundation; either version 2 of the License, or (at your  *
-*  option) any later version.                                              *
-\**************************************************************************/
-
-/* $Id$ */
+/**
+ * eGroupware Wiki - Business Object
+ *
+ * @link http://www.egroupware.org
+ * @package wiki
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright (C) 2004-8 by RalfBecker-AT-outdoor-training.de
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @version $Id$
+ */
 
 // old global stuff, is still need for now, but hopefully will go away
 global $ParseEngine,$DiffEngine,$DisplayEngine,$ConvertEngine,$SaveMacroEngine,$ViewMacroEngine;
@@ -71,7 +68,7 @@ class bowiki extends sowiki
 		$InterWikiPrefix = isset($this->config['InterWikiPrefix'])   ? $this->config['InterWikiPrefix'] : 'EGroupWare';
 		$EnableFreeLinks = isset($this->config['Enable_Free_Links']) ? $this->config['Enable_Free_Links'] == 'True' : true;
 		$EnableWikiLinks = isset($this->config['Enable_Wiki_Links']) ? $this->config['Enable_Wiki_Links'] == 'True' : true;
-		
+
 		$this->ExpireLen = $this->config['ExpireLen'];
 		$this->upload_dir = $this->config['upload_dir'];
 
@@ -88,7 +85,7 @@ class bowiki extends sowiki
 
 	/**
 	 * Generate a short summary for the search-result from the page-content
-	 * 
+	 *
 	 * @param array $page array with keys name, title, lang and text
 	 * @return string
 	 */
@@ -303,7 +300,7 @@ class bowiki extends sowiki
 		// the page-parameter has to be the last one, as the old wiki code only calls it once with empty page and appends the pages later
 		return $GLOBALS['egw']->link('/index.php',$args).'&page='.urlencode(is_array($page) ? $page['name'] : $page);
 	}
-	
+
 	function historyURL($page, $full = '',$lang='')
 	{
 		global $HistoryBase;
@@ -336,7 +333,7 @@ class bowiki extends sowiki
 
 	/**
 	 * get title of a wiki-page identified by $page
-	 * 
+	 *
 	 * Is called as hook to participate in the linking
 	 *
 	 * @param string/object $page string with page-name or sowikipage object
@@ -350,7 +347,7 @@ class bowiki extends sowiki
 			$page->read();
 		}
 		if (!$page->exists) return null;
-		
+
 		return $page->acl_check(true)  ? strip_tags($page->title) : false;
 	}
 
@@ -370,5 +367,5 @@ class bowiki extends sowiki
 			$content[$page['name']] = strip_tags($page['title']);
 		}
 		return $content;
-	}		
+	}
 }

@@ -1,17 +1,14 @@
 <?php
-/**************************************************************************\
-* eGroupWare Wiki - UserInterface                                          *
-* http://www.egroupware.org                                                *
-* -------------------------------------------------                        *
-* Copyright (c) 2004-6 by RalfBecker@outdoor-training.de                   *
-* --------------------------------------------                             *
-*  This program is free software; you can redistribute it and/or modify it *
-*  under the terms of the GNU General Public License as published by the   *
-*  Free Software Foundation; either version 2 of the License, or (at your  *
-*  option) any later version.                                              *
-\**************************************************************************/
-
-/* $Id$ */
+/**
+ * eGroupware Wiki - User interface
+ *
+ * @link http://www.egroupware.org
+ * @package wiki
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright (C) 2004-8 by RalfBecker-AT-outdoor-training.de
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @version $Id$
+ */
 
 require_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
 
@@ -191,7 +188,7 @@ class uiwiki extends bowiki
 			'is_html'  => $content['is_html'],
 		));
 	}
-	
+
 	/**
 	 * Show a wiki page
 	 *
@@ -217,7 +214,7 @@ class uiwiki extends bowiki
 		$html = $this->header($page).$html;
 		if ($page) $html .= $this->get($page,'',$this->wiki_id);
 		$html .= $this->footer($page);
-		
+
 		if ($return_content) return $html;
 
 		echo $html;
@@ -234,7 +231,7 @@ class uiwiki extends bowiki
 		// anonymous sessions have no navbar !!!
 		$GLOBALS['egw_info']['flags']['nonavbar'] = $this->config['allow_anonymous'] != 'Navbar' && $this->anonymous;
 		$GLOBALS['egw']->common->egw_header();
-		
+
 		if ($page)
 		{
 			$title = '<a href="'.$GLOBALS['egw']->link('/index.php',array(
@@ -250,10 +247,10 @@ class uiwiki extends bowiki
 			'<input name="search" value="'.html::htmlspecialchars($_REQUEST['search']).'" /> '.
 			'<input type="submit" name="go" value="'.html::htmlspecialchars(lang('Search')).'" /></form>'."\n";
 		$html .= "<hr />\n";
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Show the page-footer for the manual
 	 *
@@ -268,7 +265,7 @@ class uiwiki extends bowiki
 			$parts[] = $page->acl_check() ? '<a href="'.htmlspecialchars($this->editURL($page->name,$page->lang,$page->version)).'">'.
 				($page->supercede == $page->time ? lang('Edit this document') : lang('Edit this <em>ARCHIVE VERSION</em> of this document')).'</a>' :
 				lang('This page can not be edited.');
-				
+
 			$parts[] = '<a href="'.htmlspecialchars($this->historyURL($page->name,false,$page->lang)).'">'.lang('View document history').'</a>';
 
 			$parts[] = lang('Document last modified').': '.html_time($page->time);
@@ -284,7 +281,7 @@ class uiwiki extends bowiki
 		$this->rateCheck('view',$_SERVER['REMOTE_ADDR']);
 
 		$html = $this->header(false,lang('Search for').': '.html::htmlspecialchars($_REQUEST['search']));
-		
+
 		$nothing_found = true;
 		foreach($this->find(str_replace(array('*','?'),array('%','_'),$_REQUEST['search'])) as $page)
 		{
@@ -296,7 +293,7 @@ class uiwiki extends bowiki
 			$item = '<li><a href="'.htmlspecialchars($this->viewURL($page['name'],$page['lang'])).'"><b>'.html::htmlspecialchars($page['title']).'</b></a>'.
 				($page['lang'] != $this->lang ? ' <i>'.html::htmlspecialchars($GLOBALS['egw']->translation->lang2language($page['lang'])).'</i>' : '').'<br />'.
 				html::htmlspecialchars($this->summary($page))."</li>\n";
-			
+
 			if ($page['lang'] != $this->lang)
 			{
 				$other_langs .= $item;
@@ -305,7 +302,7 @@ class uiwiki extends bowiki
 			$html .= $item;
 		}
 		if ($other_langs) $html .= $other_langs;
-		
+
 		if (!$nothing_found)
 		{
 			$html .= "</ul>\n";
@@ -315,9 +312,9 @@ class uiwiki extends bowiki
 			$html .= '<p><i>'.lang('The search returned no result!')."</i></p>\n";
 		}
 		$html .= $this->footer();
-		
+
 		if ($return_content) return $html;
-		
+
 		echo $html;
 	}
 }

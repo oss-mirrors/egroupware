@@ -1,18 +1,16 @@
 <?php
-/**************************************************************************\
-* eGroupWare - Wiki DB-Layer                                               *
-* http://www.egroupware.org                                                *
-* Written by Ralf Becker <RalfBecker@outdoor-training.de>                  *
-* originaly based on WikkiTikkiTavi tavi.sf.net and www.axisgroupware.org: *
-* former files lib/pagestore.php + lib/page.php                            *
-* --------------------------------------------                             *
-*  This program is free software; you can redistribute it and/or modify it *
-*  under the terms of the GNU General Public License as published by the   *
-*  Free Software Foundation; either version 2 of the License, or (at your  *
-*  option) any later version.                                              *
-\**************************************************************************/
-
-/* $Id$ */
+/**
+ * eGroupware Wiki - DB-Layer
+ *
+ * originaly based on WikkiTikkiTavi tavi.sf.net and www.axisgroupware.org:
+ * former files lib/pagestore.php + lib/page.php
+ *
+ * @link http://www.egroupware.org
+ * @package wiki
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @version $Id$
+ */
 
 define ('WIKI_ACL_ALL',0);		// everyone incl. anonymous
 define ('WIKI_ACL_USER',1);		// everyone BUT anonymous
@@ -20,9 +18,6 @@ define ('WIKI_ACL_ADMIN',2);	// only admins (access to the admin app !)
 
 /**
  * Class representing a wiki-page, usualy gets instanciated via sowiki::page()
- * @class soWikiPage
- * @author RalfBecker-AT-outdoor-training.de
- * @license GPL
  */
 class soWikiPage
 {
