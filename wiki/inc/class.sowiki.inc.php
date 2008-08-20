@@ -138,7 +138,7 @@ class soWikiPage
 		$sql = '('.($add_wiki_id ? " wiki_id=$this->wiki_id AND " : '').
 			($table ? $table.'.' : '').
 			($readable ? 'wiki_readable' : 'wiki_writable').' IN ('.implode(',',$filter).'))';
-		
+
 		if ($this->debug) echo "<p>sowiki::acl_filter($readable,$add_wiki_id) = '$sql'</p>\n";
 
 		return $filters[$filter_id] = $sql;
@@ -318,7 +318,7 @@ class soWikiPage
 
 		return $this->db->affected_rows();
 	}
-	
+
 	/**
 	 * Returns colNames array, which translates column-names to internal names
 	 *
@@ -327,7 +327,7 @@ class soWikiPage
 	function column2names()
 	{
 		return $this->colNames;
-	}	 
+	}
 }
 
 /**
@@ -368,7 +368,7 @@ class sowiki	// DB-Layer
 
 		$this->db = clone($GLOBALS['egw']->db);
 		$this->db->set_app('wiki');
-		
+
 		global $ExpireLen,$Admin;		// this should come from the app-config later
 		global $RatePeriod, $RateView, $RateSearch, $RateEdit;
 		$this->ExpireLen  = $ExpireLen;
@@ -395,24 +395,24 @@ class sowiki	// DB-Layer
 			$name = @$name['name'] ? $name['name'] : @$name['title'];
 		}
 		$page =& new soWikiPage($this->db,$this->PgTbl,$name,$lang,$this->wiki_id,$this->debug);
-		
+
 		if (!$this->colNames) $this->colNames = $page->column2names();
-		
+
 		return $page;
 	}
 
-		
+
 	/**
 	 * Returns the SQL to retrive the length of the body-column
 	 *
 	 * MaxDB cant calculate the length of the content of a LONG column, we set it to 1,
-	 * we could retrive the complete column and use strlen on it, I dont do it as the length is only for sorting 
+	 * we could retrive the complete column and use strlen on it, I dont do it as the length is only for sorting
 	 * via a macro and that macro retrives all pages(!) - never used that macro ;-)
 	 *
 	 * @param string $table table-name of join alias incl. '.', or '' (default)
 	 * @return string the SQL
 	 */
-	function length_sql($table)
+	function length_sql($table='')
 	{
 		if ($this->db->Type == 'maxdb' || $this->db->Type == 'sapdb')
 		{
@@ -420,7 +420,7 @@ class sowiki	// DB-Layer
 		}
 		return 'LENGTH('.$table.'wiki_body)';
 	}
-		
+
 	/**
 	 * Find $text in the database, searches title and body.
 	 *
@@ -443,8 +443,8 @@ class sowiki	// DB-Layer
 		$op_text .= ' '.$this->db->quote($search_in ? $text : "%$text%");
 
 		$search_in = $search_in ? explode(',',$search_in) : array('wiki_name','wiki_title','wiki_body');
-		
-		if (!$this->db->capabilities['like_on_text']) 
+
+		if (!$this->db->capabilities['like_on_text'])
 		{
 			$search_in = array_intersect($search_in,array('wiki_name','wiki_title'));
 		}
@@ -455,16 +455,16 @@ class sowiki	// DB-Layer
 		$sql .= ')';
 
 		$this->db->query($sql,__LINE__,__FILE__);
-		
+
 		return $this->_return_pages("find('$text','".implode(',',$search_in)."'");
 	}
 
 	/**
 	 * Retrieve a page's edit history.
 	 *
-	 * @param string/array $page name of the page or array with values for keys 'name' and 'lang' 
-	 * @param string/boolean $lang language to use or false if given via array in $name, default false 
-	 * @return an array of the different versions 
+	 * @param string/array $page name of the page or array with values for keys 'name' and 'lang'
+	 * @param string/boolean $lang language to use or false if given via array in $name, default false
+	 * @return an array of the different versions
 	 */
 	function history($page,$lang=False)
 	{
@@ -476,7 +476,7 @@ class sowiki	// DB-Layer
 				'wiki_lang'	=> is_array($page) && !$lang ? $page['lang'] : $lang,
 				'wiki_id'	=> $this->wiki_id,
 			),__LINE__,__FILE__,False,'ORDER BY wiki_version DESC');
-		
+
 		return $this->_return_pages('history('.print_r($page,True).",'$lang')");
 	}
 
@@ -484,7 +484,7 @@ class sowiki	// DB-Layer
 	 * Look up an interwiki prefix
 	 *
 	 * @param string $name name-prefix of an interwiki
-	 * @return string/boolean the url of False 
+	 * @return string/boolean the url of False
 	 */
 	function interwiki($name)
 	{
@@ -492,7 +492,7 @@ class sowiki	// DB-Layer
 				'wiki_id' => $this->wiki_id,
 				'interwiki_prefix'  => $name,
 			),__LINE__,__FILE__);
-		
+
 		return $this->db->next_record() ? $this->db->f('url') : False;
 	}
 
@@ -563,7 +563,7 @@ class sowiki	// DB-Layer
 		// $links need to be 2-dimensional as rename, can cause new_link to be called for different pages
 		$page_uid = strtolower($where['wiki_id'].':'.$where['page'].':'.$where['lang']);
 		$link = strtolower(trim($link));
-		
+
 		$data = array('wiki_count' => ++$links[$page_uid][$link]);
 
 		if ($this->debug) echo "<p>sowiki::new_link('$where[wiki_id]:$where[wiki_name]:$where[wiki_lang]','$link') = $data[wiki_count]</p>";
@@ -653,7 +653,7 @@ class sowiki	// DB-Layer
 
 		$list = array();
 		while($this->db->next_record())
-		{ 
+		{
 			$list[] = array(
 				'site' => $this->db->f('wiki_remote_site'),
 				'page' => $this->db->f('wiki_remote_page'),
@@ -694,7 +694,7 @@ class sowiki	// DB-Layer
 
 		return $this->_return_pages('allpages()');
 	}
-	
+
 	/**
 	 * Create array of page-arrays from the returned rows of a query
 	 *
@@ -717,7 +717,7 @@ class sowiki	// DB-Layer
 			{
 				$name = isset($this->colNames[$col]) ? $this->colNames[$col] : ($name == 'wiki_length' ? 'length' : $col);
 				$page[$name] = $val;
-			}	
+			}
 			$list[] = $page;
 		}
 		if ($this->debug) echo "<p>sowiki::$func<pre>".print_r($list,true)."</pre>\n";
@@ -802,7 +802,7 @@ class sowiki	// DB-Layer
 	function rateCheck($type,$remote_addr)
 	{
 		if(!$this->RatePeriod)
-		{ 
+		{
 			return;
 		}
 
@@ -814,7 +814,7 @@ class sowiki	// DB-Layer
 		$this->db->select($this->RtTbl,'*',"wiki_rate_ip='$fields[0].*'".
 			" OR wiki_rate_ip='$fields[0].$fields[1].*'".
 			" OR wiki_rate_ip='$fields[0].$fields[1].$fields[2].*'",__LINE__,__FILE__);
-		
+
 		if ($this->db->next_record())
 		{
 			global $ErrorDeniedAccess;
@@ -828,8 +828,8 @@ class sowiki	// DB-Layer
 			),__LINE__,__FILE__);
 
 		if(!$this->db->next_record())
-		{ 
-			$result = array(-1, $this->RateView, $this->RateSearch, $this->RateEdit); 
+		{
+			$result = array(-1, $this->RateView, $this->RateSearch, $this->RateEdit);
 		}
 		else
 		{
@@ -837,8 +837,8 @@ class sowiki	// DB-Layer
 
 			$result[0] = time()-$result[0];
 			if ($result[0]  < 0)
-			{ 
-				$result[0] = $this->RatePeriod; 
+			{
+				$result[0] = $this->RatePeriod;
 			}
 			$result[1] = min($result[1] + $result[0] * $this->RateView / $this->RatePeriod,$this->RateView);
 			$result[2] = min($result[2] + $result[0] * $this->RateSearch / $this->RatePeriod,$this->RateSearch);
@@ -881,15 +881,15 @@ class sowiki	// DB-Layer
 		$list = array();
 
 		if(!$this->RatePeriod)
-		{ 
-			return $list; 
+		{
+			return $list;
 		}
 		$this->db->select($this->RtTbl,'wiki_rate_ip',false,__LINE__,__FILE__);
-		
+
 		while($this->db->next_record())
 		{
 			if(preg_match('/^\\d+\\.(\\d+\\.(\\d+\\.)?)?\\*$/',$this->db->f('wiki_rate_ip')))
-			{ 
+			{
 				$list[] = $this->db->f('wiki_rate_ip');
 			}
 		}
