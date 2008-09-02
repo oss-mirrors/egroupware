@@ -44,7 +44,12 @@
 				'fm_ic_validatecertificate' => array('type' => 'bool'),
 				'fm_ic_enable_sieve' => array('type' => 'bool','precision' => '255'),
 				'fm_ic_sieve_server' => array('type' => 'varchar','precision' => '128'),
-				'fm_ic_sieve_port' => array('type' => 'int','precision' => '4')
+				'fm_ic_sieve_port' => array('type' => 'int','precision' => '4'),
+				'fm_ic_folderstoshowinhome'	=>	array('type' => 'text'),
+				'fm_ic_sentfolder' =>  array('type' => 'varchar','precision' => '128'),
+				'fm_ic_trashfolder' =>  array('type' => 'varchar','precision' => '128'),
+				'fm_ic_draftfolder' =>  array('type' => 'varchar','precision' => '128'),
+				'fm_ic_templatefolder' =>  array('type' => 'varchar','precision' => '128'),
 			),
 			'pk' => array('fm_id'),
 			'fk' => array(),

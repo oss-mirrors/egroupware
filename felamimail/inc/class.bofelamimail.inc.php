@@ -53,7 +53,10 @@
 		
 		/**
 		 * Folders that get automatic created AND get translated to the users language
-		 *
+		 * their creation is also controlled by users mailpreferences. if set to none / dont use folder
+		 * the folder will not be automatically created. This is controlled in bofelamimail->getFolderObjects 
+		 * so changing names here, must include a change of keywords there as well. Since these
+		 * foldernames are subject to translation, keep that in mind too, if you change names here.
 		 * @var array
 		 */
 		var $autoFolders = array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates');
@@ -76,7 +79,7 @@
 				$this->ogServer = $this->mailPreferences->getOutgoingServer(0);
 				$this->htmlOptions  = $this->mailPreferences->preferences['htmlOptions'];
 			}
-			#_debug_array($this->mailPreferences);
+			#_debug_array($this->mailPreferences->preferences);
 			$this->imapBaseDir	= '';
 
 			self::$displayCharset	= $_displayCharset;
@@ -1252,7 +1255,6 @@
 					}
 				  }
 				}
-
 				// check for autocreated folders
 				if(isset($foldersNameSpace['personal']['prefix'])) {
 					$personalPrefix = $foldersNameSpace['personal']['prefix'];
@@ -1264,10 +1266,41 @@
 							$folderPrefix = $personalPrefix;
 						}
 					}
-					foreach($this->autoFolders as $personalFolderName) {
+					if ($this->mailPreferences->preferences['notavailableautofolders'] && !empty($this->mailPreferences->preferences['notavailableautofolders']))
+					{
+						$foldersToCheck = array_diff($this->autoFolders,explode(',',$this->mailPreferences->preferences['notavailableautofolders']));
+					} else {
+						$foldersToCheck = $this->autoFolders;
+					}
+					#_debug_array($foldersToCheck); 
+					foreach($foldersToCheck as $personalFolderName) {
 						$folderName = (!empty($personalPrefix)) ? $folderPrefix.$personalFolderName : $personalFolderName;
 						if(!is_array($foldersNameSpace['personal']['all']) || !in_array($folderName, $foldersNameSpace['personal']['all'])) {
-							if($this->createFolder('', $folderName, true)) {
+							$createfolder = true;
+							switch($folderName) 
+							{
+								case 'Drafts': // => Entwürfe
+									if ($this->mailPreferences->preferences['draftFolder'] && $this->mailPreferences->preferences['draftFolder']=='none') 
+										$createfolder=false; 
+									break;
+								case 'Junk': //] => Spammails
+									if ($this->mailPreferences->preferences['junkFolder'] && $this->mailPreferences->preferences['junkFolder']=='none') 
+										$createfolder=false; 
+									break;
+								case 'Sent': //] => Gesendet
+									if ($this->mailPreferences->preferences['sentFolder'] && $this->mailPreferences->preferences['sentFolder']=='none') 
+										$createfolder=false; 
+									break;
+								case 'Trash': //] => Papierkorb
+									if ($this->mailPreferences->preferences['trashFolder'] && $this->mailPreferences->preferences['trashFolder']=='none') 
+										$createfolder=false; 
+									break;
+								case 'Templates': //] => Vorlagen
+									if ($this->mailPreferences->preferences['templateFolder'] && $this->mailPreferences->preferences['templateFolder']=='none') 
+										$createfolder=false; 
+									break;
+							}
+							if($createfolder === true && $this->createFolder('', $folderName, true)) {
 								$foldersNameSpace['personal']['all'][] = $folderName;
 								$foldersNameSpace['personal']['subscribed'][] = $folderName;
 							} else {

@@ -22,6 +22,10 @@
 		$this->bofelamimail->closeConnection();
 	}
 
+	foreach($this->bofelamimail->autoFolders as $aname) {
+		$availableAutoFolders[$aname] = lang($aname);
+	}
+
 	$config =& CreateObject('phpgwapi.config','felamimail');
 	$config->read_repository();
 	$felamimailConfig = $config->config_data;
@@ -48,7 +52,9 @@
 		'0' => lang('no'),
 		'1' => lang('yes')
 	);
- 
+
+	$prefAllowManageFolders = $prefAskForMove;
+
 	$forwardOptions = array(
 		'asmail' => lang('forward as attachment'),
 		'inline' => lang('forward inline'),
@@ -145,6 +151,22 @@
             'xmlrpc' => True,
             'admin'  => False
         ),
+       'prefpreventmanagefolders' => array(
+            'type'   => 'select',
+            'label'  => 'Do you want to prevent the managing of folders (creation, accessrights AND subscribtion)?',
+            'name'   => 'prefpreventmanagefolders',
+            'values' => $prefAllowManageFolders,
+            'xmlrpc' => True,
+            'admin'  => False
+        ),
+        'notavailableautofolders' => array(
+            'type'   => 'multiselect',
+            'label'  => 'which folders - in general - should NOT be automatically created, if not existing',
+            'name'   => 'notavailableautofolders',
+            'values' => $availableAutoFolders,
+            'xmlrpc' => True,
+            'admin'  => False
+        ),		
 		'sortOrder' => array(
 			'type'   => 'select',
 			'label'  => 'Default sorting order',

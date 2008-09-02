@@ -72,8 +72,10 @@
 					break;
 				case 'felamimail.uipreferences.listAccountData':
 				case 'felamimail.uipreferences.editAccountData':
+					$GLOBALS['egw']->js->validate_file('tabs','tabs');
 					$GLOBALS['egw']->js->validate_file('jscode','editAccountData','felamimail');
 					$GLOBALS['egw']->js->set_onload('javascript:initEditAccountData();');
+					$GLOBALS['egw']->js->set_onload('javascript:initTabs();');
 					break;
 
 				case 'felamimail.uipreferences.listSignatures':
@@ -100,8 +102,8 @@
 		
 		function editForwardingAddress()
 		{
-			$bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
-			$mailPrefs	= $bofelamimail->getMailPreferences();
+			if (!isset($this->bofelamimail)) $this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			$mailPrefs	= $this->bofelamimail->getMailPreferences();
 			$ogServer	= $mailPrefs->getOutgoingServer(0);
 			
 			if(!is_a($ogServer, 'defaultsmtp') || !$ogServer->editForwardingAddress) {
@@ -195,8 +197,8 @@
 		
 		function editAccountData()
 		{
-			$boPreferences	=& CreateObject('felamimail.bopreferences');
-			$preferences =& $boPreferences->getPreferences();
+			if (!isset($this->bopreferences)) $this->bopreferences	=& CreateObject('felamimail.bopreferences');
+			$preferences =& $this->bopreferences->getPreferences();
 			
 			if(!($preferences->userDefinedAccounts || $preferences->userDefinedIdentities)) {
 				die('you are not allowed to be here');
@@ -224,7 +226,6 @@
 				} else {
 					$icServer = NULL;
 				}
-				
 				// SMTP connection settings
 				$ogServer =& CreateObject('emailadmin.defaultsmtp');
 				if(is_array($_POST['og'])) {
@@ -244,14 +245,14 @@
 				}
 				
 
-				$newID = $boPreferences->saveAccountData($icServer, $ogServer, $identity);
+				$newID = $this->bopreferences->saveAccountData($icServer, $ogServer, $identity);
 				if ($identity->id == 'new') $identity->id = $newID;
 				if((int)$_POST['active']) {
 					#$boPreferences->saveAccountData($icServer, $ogServer, $identity);
-					$boPreferences->setProfileActive(false);
-					$boPreferences->setProfileActive(true,$identity->id);
+					$this->bopreferences->setProfileActive(false);
+					$this->bopreferences->setProfileActive(true,$identity->id);
 				} else {
-					$boPreferences->setProfileActive(false,$identity->id);
+					$this->bopreferences->setProfileActive(false,$identity->id);
 				}
 				
 				if($_POST['save']) {
@@ -262,6 +263,24 @@
 				ExecMethod('felamimail.uifelamimail.viewMainScreen');
 				return;
 			}
+
+			$folderList = array();
+			if (!isset($this->bofelamimail) || (int)$_POST['active']) $this->bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			if($this->bofelamimail->openConnection()) {
+				$folderObjects = $this->bofelamimail->getFolderObjects();
+				foreach($folderObjects as $folderName => $folderInfo) {
+					#_debug_array($folderData);
+					$folderList[$folderName] = $folderInfo->displayName;
+				}
+				$this->bofelamimail->closeConnection();
+			}
+
+			$trashOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use Trash")),$folderList);
+			$sentOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use Sent")),$folderList);
+			$draftOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use draft folder")),$folderList);
+			$templateOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use template folder")),$folderList);
+			$folderList = array_merge( array('' => lang('default').' '.lang("folder settings")),$folderList);
+
 			$this->display_app_header(TRUE);
 			
 			$this->t->set_file(array("body" => "edit_account_data.tpl"));
@@ -276,8 +295,9 @@
 			}
 			if ($_GET['accountID'] == 'new') $account2retrieve = 'new';
 			if (!empty($newID) && $newID>0) $account2retrieve = $newID;
-			if ($account2retrieve != 'new') $accountData	= $boPreferences->getAccountData($preferences, $account2retrieve);
+			if ($account2retrieve != 'new') $accountData	= $this->bopreferences->getAccountData($preferences, $account2retrieve);
 			$icServer =& $accountData['icServer'];
+			#_debug_array($icServer);
 			$ogServer =& $accountData['ogServer'];
 			$identity =& $accountData['identity'];
 			#_debug_array($identity);
@@ -355,7 +375,11 @@
 			}
 			$this->t->set_var('allowAccounts',($preferences->userDefinedAccounts ? 1 : 0));
 			$this->t->set_var('identity_selectbox', $GLOBALS['egw']->html->select('identity[signature]',$sigvalue,$allSignatures, true, "style='width: 250px;'"));
-			
+			$this->t->set_var('folder_selectbox', $GLOBALS['egw']->html->select('ic[folderstoshowinhome]',$icServer->folderstoshowinhome,$folderList, true, "style='width: 250px;'",6));
+			$this->t->set_var('trash_selectbox', $GLOBALS['egw']->html->select('ic[trashfolder]',$icServer->trashfolder,$trashOptions, true, "style='width: 250px;'"));
+			$this->t->set_var('sent_selectbox', $GLOBALS['egw']->html->select('ic[sentfolder]',$icServer->sentfolder,$sentOptions, true, "style='width: 250px;'"));
+			$this->t->set_var('draft_selectbox', $GLOBALS['egw']->html->select('ic[draftfolder]',$icServer->draftfolder,$draftOptions, true, "style='width: 250px;'"));
+			$this->t->set_var('template_selectbox', $GLOBALS['egw']->html->select('ic[templatefolder]',$icServer->templatefolder,$templateOptions, true, "style='width: 250px;'"));
 			$linkData = array
 			(
 				'menuaction'    => 'felamimail.uipreferences.editAccountData'
@@ -598,9 +622,9 @@
 		function listAccountData()
 		{
 			$this->display_app_header(TRUE);
-			$boPreferences  =& CreateObject('felamimail.bopreferences');
-			$preferences =& $boPreferences->getPreferences();
-			$allAccountData    = $boPreferences->getAllAccountData($preferences);
+			if (!isset($this->bopreferences)) $this->bopreferences  =& CreateObject('felamimail.bopreferences');
+			$preferences =& $this->bopreferences->getPreferences();
+			$allAccountData    = $this->bopreferences->getAllAccountData($preferences);
 			if ($allAccountData) {
 				foreach ($allAccountData as $tmpkey => $accountData)
 				{
@@ -712,7 +736,11 @@
 			$this->t->set_var('lang_no_encryption',lang('no encryption'));
 			$this->t->set_var('lang_default_signature',lang('default signature'));
 			$this->t->set_var('lang_server_supports_sieve',lang('server supports mailfilter(sieve)'));
-			
+			$this->t->set_var('lang_sent_folder', lang('sent folder'));
+			$this->t->set_var('lang_trash_folder', lang('trash folder'));
+			$this->t->set_var('lang_draft_folder', lang('draft folder'));
+			$this->t->set_var('lang_template_folder', lang('template folder'));
+			$this->t->set_var('lang_folder_to_appear_on_main_screen', lang('if shown, which folders should appear on main screen'));
 			$this->t->set_var("th_bg",$GLOBALS['egw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['egw_info']["theme"]["bg01"]);
 			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);

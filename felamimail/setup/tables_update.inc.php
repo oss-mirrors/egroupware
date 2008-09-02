@@ -524,4 +524,14 @@
 		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.5.003';
 	}
 
+	$test[] = '1.5.003';
+	function felamimail_upgrade1_5_003()
+	{
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_ic_folderstoshowinhome',  array('type' => 'text'));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_ic_sentfolder', array('type' => 'varchar','precision' => '128'));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_ic_trashfolder',  array('type' => 'varchar','precision' => '128'));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_ic_draftfolder',  array('type' => 'varchar','precision' => '128'));
+		$GLOBALS['egw_setup']->oProc->AddColumn('egw_felamimail_accounts','fm_ic_templatefolder',  array('type' => 'varchar','precision' => '128'));
+		return $GLOBALS['setup_info']['felamimail']['currentver'] = '1.6.001';
+	}
 ?>

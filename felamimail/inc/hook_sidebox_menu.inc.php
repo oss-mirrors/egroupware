@@ -89,9 +89,11 @@
 			);
 			$file['Manage Signatures'] = $GLOBALS['egw']->link('/index.php',$linkData);
 		}
-		
-		$file['Manage Folders']	= $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');
-		
+
+		if(empty($preferences->preferences['prefpreventmanagefolders']) || $preferences->preferences['prefpreventmanagefolders'] == 0) {		
+			$file['Manage Folders']	= $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');
+		}
+
 		$icServer = $preferences->getIncomingServer(0);
 		if(is_a($icServer, 'defaultimap')) {
 			if($icServer->enableSieve) 

@@ -43,13 +43,21 @@
 			$where		= array('fm_owner' => $accountID);
 			if (!empty($_identity) && $_identity != 'active' && $_identity != 'all') $where['fm_id'] = $_identity;
 			if ($_identity == 'active' || empty($_identity)) $where['fm_active'] = true;
-			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_signatureid,fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,fm_ic_enable_sieve,fm_ic_sieve_server,fm_ic_sieve_port,fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
+			$this->db->select($this->accounts_table,'fm_id,fm_active,fm_realname,fm_organization,fm_emailaddress,fm_signatureid,'.
+				'fm_ic_hostname,fm_ic_port,fm_ic_username,fm_ic_password,fm_ic_encryption,fm_ic_validatecertificate,'.
+				'fm_ic_enable_sieve,fm_ic_sieve_server,fm_ic_sieve_port,'.
+				'fm_ic_folderstoshowinhome, fm_ic_trashfolder, fm_ic_sentfolder, fm_ic_draftfolder, fm_ic_templatefolder,'.
+				'fm_og_hostname,fm_og_port,fm_og_smtpauth,fm_og_username,fm_og_password',
 				$where,__LINE__,__FILE__);
 				
 			while(($row = $this->db->row(true,'fm_'))) {
-				foreach(array('active','ic_validatecertificate','ic_enable_sieve','og_smtpauth') as $name)
+				foreach(array('active','ic_validatecertificate','ic_enable_sieve','og_smtpauth','ic_folderstoshowinhome') as $name)
 				{
-					$row[$name] = $this->db->from_bool($row[$name]);
+					if ($name == 'ic_folderstoshowinhome') {
+						$row[$name] = unserialize($row[$name]);
+					} else {
+						$row[$name] = $this->db->from_bool($row[$name]);
+					}
 				}
 				$retValue[$row['id']] = $row;
 			}
@@ -78,6 +86,11 @@
 					'fm_ic_enable_sieve' 		=> (bool)$_icServer->enableSieve,
 					'fm_ic_sieve_server'		=> $_icServer->sieveHost,
 					'fm_ic_sieve_port'		=> $_icServer->sievePort,
+					'fm_ic_folderstoshowinhome'	=> serialize($_icServer->folderstoshowinhome),
+					'fm_ic_trashfolder'	=> $_icServer->trashfolder,
+					'fm_ic_sentfolder'	=> $_icServer->sentfolder,
+					'fm_ic_draftfolder'	=> $_icServer->draftfolder,
+					'fm_ic_templatefolder'	=> $_icServer->templatefolder,
 				));
 			}
 			if (is_object($_ogServer)) {

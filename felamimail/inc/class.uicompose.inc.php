@@ -323,7 +323,7 @@
 				$ishtml=1;
 			} else {
 				$style="border:0px; width:100%; height:400px;";
-				$this->t->set_var('tinymce', html::fckEditorQuick('body', 'ascii', $sessionData['body']));
+				$this->t->set_var('tinymce', html::fckEditorQuick('body', 'ascii', $sessionData['body'],'400px','99%'));
 				$this->t->set_var('mimeType', 'text');
 				$ishtml=0;
 			}

@@ -12,7 +12,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']     	= '1.5.003';
+	$setup_info['felamimail']['version']     	= '1.6.001';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -40,15 +40,15 @@
 	/* Dependencies for this app to work */
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('1.3','1.4','1.5')
+		'versions' => Array('1.3','1.4','1.5','1.6','1.7')
 	);
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'emailadmin',
-		'versions' => Array('1.3','1.4','1.5')
+		'versions' => Array('1.3','1.4','1.5','1.6','1.7')
 	);
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'egw-pear',
-		'versions' => Array('1.4.000','1.5')
+		'versions' => Array('1.4.000','1.5','1.6','1.7')
 	);
 	// installation checks for felamimail
 	$setup_info['felamimail']['check_install'] = array(

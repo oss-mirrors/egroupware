@@ -24,16 +24,29 @@
 		
 		// stores the users profile
 		var $profileData;
+		var $sessionData;
 		
 		function bopreferences()
 		{
 			parent::sopreferences();
 			$this->boemailadmin = new emailadmin_bo();
+			if ( !(is_array($this->sessionData) && (count($this->sessionData)>0))  ) $this->restoreSessionData();
+			if (isset($this->sessionData['profileData']) && is_a($this->sessionData['profileData'],'ea_preferences')) {
+				$this->profileData = $this->sessionData['profileData'];
+			}
 		}
-
+		function restoreSessionData()
+		{
+			$this->sessionData = (array) unserialize($GLOBALS['egw']->session->appsession('fm_preferences','felamimail'));
+		}
+		function saveSessionData()
+		{
+			$GLOBALS['egw']->session->appsession('fm_preferences','felamimail',serialize($this->sessionData));
+		}
 		// get the first active user defined account		
 		function getAccountData(&$_profileData, $_accountID=NULL)
 		{
+			#echo "<p>backtrace: ".function_backtrace()."</p>\n";
 			if(!is_a($_profileData, 'ea_preferences'))
 				die(__FILE__.': '.__LINE__);
 			$accountData = parent::getAccountData($GLOBALS['egw_info']['user']['account_id'],$_accountID);
@@ -53,6 +66,11 @@
 			$icServer->enableSieve	= isset($accountData['ic_enable_sieve']) ? (bool)$accountData['ic_enable_sieve'] : 1;
 			$icServer->sieveHost	= $accountData['ic_sieve_server'];
 			$icServer->sievePort	= isset($accountData['ic_sieve_port']) ? $accountData['ic_sieve_port'] : 2000;
+			if ($accountData['ic_folderstoshowinhome']) $icServer->folderstoshowinhome	= $accountData['ic_folderstoshowinhome'];
+			if ($accountData['ic_trashfolder']) $icServer->trashfolder = $accountData['ic_trashfolder'];
+			if ($accountData['ic_sentfolder']) $icServer->sentfolder = $accountData['ic_sentfolder'];
+			if ($accountData['ic_draftfolder']) $icServer->draftfolder = $accountData['ic_draftfolder'];
+			if ($accountData['ic_templatefolder']) $icServer->templatefolder = $accountData['ic_templatefolder'];
 
 			$ogServer =& CreateObject('emailadmin.defaultsmtp');
 			$ogServer->host		= $accountData['og_hostname'];
@@ -96,6 +114,11 @@
 				$icServer->enableSieve	= isset($accountData['ic_enable_sieve']) ? (bool)$accountData['ic_enable_sieve'] : 1;
 				$icServer->sieveHost	= $accountData['ic_sieve_server'];
 				$icServer->sievePort	= isset($accountData['ic_sieve_port']) ? $accountData['ic_sieve_port'] : 2000;
+				if ($accountData['ic_folderstoshowinhome']) $icServer->folderstoshowinhome = $accountData['ic_folderstoshowinhome'];
+				if ($accountData['ic_trashfolder']) $icServer->trashfolder = $accountData['ic_trashfolder'];
+				if ($accountData['ic_sentfolder']) $icServer->sentfolder = $accountData['ic_sentfolder'];
+				if ($accountData['ic_draftfolder']) $icServer->draftfolder = $accountData['ic_draftfolder'];
+				if ($accountData['ic_templatefolder']) $icServer->templatefolder = $accountData['ic_templatefolder'];
 
 				$ogServer =& CreateObject('emailadmin.defaultsmtp');
 				$ogServer->host		= $accountData['og_hostname'];
@@ -142,7 +165,10 @@
 
 		function getPreferences()
 		{
-			if(!is_a($this->profileData,'ea_preferences ')) {
+			if (isset($this->sessionData['profileData']) && is_a($this->sessionData['profileData'],'ea_preferences')) {
+				$this->profileData = $this->sessionData['profileData'];
+			}
+			if(!is_a($this->profileData,'ea_preferences')) {
 
 				$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
 				$profileData		= $this->boemailadmin->getUserProfile('felamimail');
@@ -185,24 +211,32 @@
 				
 				$GLOBALS['egw']->preferences->read_repository();
 				$userPrefs = $GLOBALS['egw_info']['user']['preferences']['felamimail'];
+				# echo "<p>backtrace: ".function_backtrace()."</p>\n";
+				if (is_array($profileData->ic_server[0]->folderstoshowinhome) && !empty($profileData->ic_server[0]->folderstoshowinhome[0])) {
+					$userPrefs['mainscreen_showfolders'] = implode(',',$profileData->ic_server[0]->folderstoshowinhome); 
+				}
+				if (!empty($profileData->ic_server[0]->sentfolder)) $userPrefs['sentFolder'] = $profileData->ic_server[0]->sentfolder;
+				if (!empty($profileData->ic_server[0]->trashfolder)) $userPrefs['trashFolder'] = $profileData->ic_server[0]->trashfolder;
+				if (!empty($profileData->ic_server[0]->draftfolder)) $userPrefs['draftFolder'] = $profileData->ic_server[0]->draftfolder;
+				if (!empty($profileData->ic_server[0]->templatefolder)) $userPrefs['templateFolder'] = $profileData->ic_server[0]->templatefolder;
 				if(empty($userPrefs['deleteOptions']))
 					$userPrefs['deleteOptions'] = 'mark_as_deleted';
 				
-				#$data['trash_folder']		= $userPrefs['felamimail']['trashFolder'];
 				if (!empty($userPrefs['trash_folder'])) 
 					$userPrefs['move_to_trash'] 	= True;
 				if (!empty($userPrefs['sent_folder'])) 
 					$userPrefs['move_to_sent'] 	= True;
+				
 				$userPrefs['signature']		= $userPrefs['email_sig'];
 				
 	 			unset($userPrefs['email_sig']);
  			
  				$profileData->setPreferences($userPrefs);
 
-				#_debug_array($profileData);exit;
+				#_debug_array($profileData);#exit;
 			
-				$this->profileData = $profileData;
-				
+				$this->sessionData['profileData'] = $this->profileData = $profileData;
+				$this->saveSessionData();	
 				#_debug_array($this->profileData);
 			} 
 			return $this->profileData;
@@ -255,6 +289,8 @@
 			if(isset($_icServer->host)) {
 				$_icServer->sieveHost = $_icServer->host;
 			}
+			$this->sessionData = array();
+			$this->saveSessionData();
 			return parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
 		}
 	
@@ -272,7 +308,8 @@
 			} else {
 				$identity = $_identity;
 			} 
-	
+			$this->sessionData = array();
+			$this->saveSessionData();
 			parent::deleteAccountData($GLOBALS['egw_info']['user']['account_id'], $identity);
 		}
 
@@ -283,6 +320,8 @@
 
 		function setProfileActive($_status, $_identity=NULL) 
 		{
+			$this->sessionData = array();
+			$this->saveSessionData();
 			parent::setProfileActive($GLOBALS['egw_info']['user']['account_id'], $_status, $_identity);
 		}
 	}
