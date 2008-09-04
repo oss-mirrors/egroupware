@@ -624,6 +624,13 @@
 #					return $_string;
 #			}
 #		}
+		function getFlags ($_messageUID) {
+			$flags =  $this->icServer->getFlags($_messageUID, true);
+			if (PEAR::isError($flags)) {
+				return null;
+			}
+			return $flags;
+		}
 
 		function getNotifyFlags ($_messageUID) {
 			$flags =  $this->icServer->getFlags($_messageUID, true);

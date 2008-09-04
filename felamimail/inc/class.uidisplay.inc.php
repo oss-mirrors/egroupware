@@ -213,6 +213,7 @@
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
 			#_debug_array($headers);exit;
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
+			#_debug_array($rawheaders);exit;
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid, $partID);
 			#_debug_array($attachments); exit;
 			$envelope	= $this->bofelamimail->getMessageEnvelope($this->uid, $partID);
@@ -222,6 +223,10 @@
 			// Problem is: the iFrame Layout provides the scrollbars.
 			#$bodyParts  = $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 			#_debug_array($bodyParts); exit;
+			#_debug_array($this->bofelamimail->getFlags($this->uid)); exit;
+			// flag the message as read/seen
+			if (!empty($this->uid)) $this->bofelamimail->flagMessages('read', $this->uid);
+
 			$nextMessage	= $this->bofelamimail->getNextMessage($this->mailbox, $this->uid);
 
 			$webserverURL	= $GLOBALS['egw_info']['server']['webserver_url'];
