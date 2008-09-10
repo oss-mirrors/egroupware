@@ -392,6 +392,11 @@
 		
 		function listFolder()
 		{
+			if (!isset($this->bopreferences)) $this->bopreferences  =& CreateObject('felamimail.bopreferences');
+			$preferences =& $this->bopreferences->getPreferences();
+			if(!(empty($preferences->preferences['prefpreventmanagefolders']) || $preferences->preferences['prefpreventmanagefolders'] == 0)) {
+				die('you are not allowed to be here');
+			}
 			// rename a mailbox
 			if(isset($_POST['newMailboxName']))
 			{

@@ -70,13 +70,14 @@
 					foreach(array($contact['email'],$contact['email_home']) as $email) {
 						// avoid wrong addresses, if an rfc822 encoded address is in addressbook
 						$email = preg_replace("/(^.*<)([a-zA-Z0-9_\-]+@[a-zA-Z0-9_\-\.]+)(.*)/",'$2',$email);
-						if(!empty($email) && !isset($jsArray[$email])) {
+						$completeMailString = addslashes(trim($contact['n_fn'] ? $contact['n_fn'] : $contact['fn']) .' <'. trim($email) .'>');
+						if(!empty($email) && in_array($completeMailString ,$jsArray) === false) {
 							$i++;
 							$str = $GLOBALS['egw']->translation->convert(trim($contact['n_fn'] ? $contact['n_fn'] : $contact['fn']) .' <'. trim($email) .'>', $this->charset, 'utf-8');
 							#$innerHTML .= '<div class="inactiveResultRow" onclick="selectSuggestion('. $i .')">'.
 							$innerHTML .= '<div class="inactiveResultRow" onmousedown="keypressed(13,1)" onmouseover="selectSuggestion('.($i-1).')">'.
 								htmlentities($str, ENT_QUOTES, 'utf-8') .'</div>';
-							$jsArray[$email] = addslashes(trim($contact['n_fn'] ? $contact['n_fn'] : $contact['fn']) .' <'. trim($email) .'>');
+							$jsArray[$i] = $completeMailString;
 						}
 						if ($i > 10) break;	// we check for # of results here, as we might have empty email addresses
 					}

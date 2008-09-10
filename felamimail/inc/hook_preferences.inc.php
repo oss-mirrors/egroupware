@@ -25,9 +25,9 @@
 		);
 		$file['Manage eMail Accounts and Identities'] = $GLOBALS['egw']->link('/index.php',$linkData);
 	}
-
-	$file['Manage Folders'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');
-
+	if(empty($mailPreferences->preferences['prefpreventmanagefolders']) || $mailPreferences->preferences['prefpreventmanagefolders'] == 0) {
+		$file['Manage Folders'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder');
+	}
 	$icServer = $mailPreferences->getIncomingServer(0);
 
 	if($icServer->enableSieve) {
