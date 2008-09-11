@@ -160,7 +160,7 @@
 				. "<body><h2>System Virtual Calendars available</h2>\n"
 				. "</p><dl>";
 
-			$basepath = $GLOBALS['egw']->link('/icalsrv.php');
+			$basepath = $GLOBALS['egw']->link('/icalsrv/icalsrv.php');
 
 			foreach($this->calendars as $vcname => $vcdef)
 			{
@@ -184,4 +184,3 @@
 			return $str;
 		}
 	}
-?>

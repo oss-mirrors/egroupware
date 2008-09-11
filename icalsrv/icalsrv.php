@@ -8,7 +8,7 @@
    * Possible clients include Mozilla Calendar/Sunbird, Korganizer, Apple Ical
    * and Evolution.
    * @note <b> THIS IS STILL EXPERIMENTAL CODE </b> do not use in production.
-   * @note this script is supposed to be at:  egw-root/icalsrv.php
+   * @note this script is supposed to be at:  egw-root/icalsrv/icalsrv.php
    *
    * NEW RalfBecker Aug 2007
    * many modifications to improve the support of (at least) lightning
@@ -623,4 +623,3 @@
 		fputs($fp, $data);
 		fclose($fp);
 	}
-?>

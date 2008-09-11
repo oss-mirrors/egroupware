@@ -42,7 +42,7 @@
    * @since 0.9.37-a2 added detection of http or https for list and a note
    * @since 0.9.36-a1 first release adapted for NAPI-3.1
    * @since version 0.9.36 initialize resources with hndarg3 set (NAPI-3.1)
-   */ 
+   */
 
 	class personal_vircal_ardb extends vircal_ardb
 	{
@@ -173,7 +173,7 @@
 		*/
 		var $_calendar_proto = array();
 
-		/** Initialize the storage in $calendars according to user settings 
+		/** Initialize the storage in $calendars according to user settings
 		* Create all the defined standard virtual calendars for the user in $user_id
 		* The calendars defined are:
 		* - /events.ics the events (appointments) from -1 month till +1 year
@@ -182,7 +182,7 @@
 		* - /default.ics combined info from /events.ics and /tasks.ics
 		* - /freebusy.ifb
 		*
-		* @param int $user_id the user (as id) whose personal virtual calendars will 
+		* @param int $user_id the user (as id) whose personal virtual calendars will
 		* are set up.
 		* @return int the number of entries set in $calendars
 		*/
@@ -223,7 +223,7 @@
 			$this->calendars['/events.ics'] =& $this->_cprw_vcdef(
 				$this->_events_proto,
 				$username . '/events.ics',
-				"events for $username from 1 month back till 1 year from now", 
+				"events for $username from 1 month back till 1 year from now",
 				$rwrule_stdperiod_stduser,
 				$user_id
 			);
@@ -232,7 +232,7 @@
 			$this->calendars['/tasks.ics'] =& $this->_cprw_vcdef(
 				$this->_tasks_proto,
 				$username . '/tasks.ics',
-				"open tasks for $username", 
+				"open tasks for $username",
 				$rwrule_opentasks_stduser,
 				$user_id
 			);
@@ -241,7 +241,7 @@
 			$this->calendars['/default.ics'] =& $this->_cprw_vcdef(
 				$this->_calendar_proto,
 				$username . '/default.ics',
-				"events and tasks for $username from 1 month back till 1 year from now", 
+				"events and tasks for $username from 1 month back till 1 year from now",
 				array_merge($rwrule_stdperiod_stduser, $rwrule_opentasks_stduser),
 				$user_id
 			);
@@ -250,7 +250,7 @@
 			$this->calendars['/freebusy.ifb'] =& $this->_cprw_vcdef(
 				$this->_freebusy_proto,
 				$username . '/freebusy.ifb',
-				"freebusy times for $username , based on events calendar  from 1 month back till 1 year from now", 
+				"freebusy times for $username , based on events calendar  from 1 month back till 1 year from now",
 				$rwrule_stdperiod_stduser,
 				$user_id
 			);
@@ -267,7 +267,7 @@
 			$this->calendars['/week/events.ics'] =& $this->_cprw_vcdef(
 				$this->_events_proto,
 				$username . '/week/events.ics',
-				"events in this week for $username", 
+				"events in this week for $username",
 				$rwrule_weekperiod_stduser,
 				$user_id
 			);
@@ -276,7 +276,7 @@
 			// 	   $this->calendars['/week/tasks.ics']
 			// 		 =& $this->_cprw_vcdef($this->_tasks_proto,
 			// 							  $username . '/week/tasks.ics',
-			// 							 "tasks in this week for $username", 
+			// 							 "tasks in this week for $username",
 			// 							  '_fn_week_start()', '_fn_week_end()',
 			// 							  $user_id);
 
@@ -284,7 +284,7 @@
 			$this->calendars['/week/default.ics'] =& $this->_cprw_vcdef(
 				$this->calendars['/default.ics'],
 				$username . '/week/default.ics',
-				"events in this week and open tasks for $username", 
+				"events in this week and open tasks for $username",
 				$rwrule_weekperiod_stduser,
 				$user_id
 			);
@@ -300,7 +300,7 @@
 			$this->calendars['/month/events.ics'] =& $this->_cprw_vcdef(
 				$this->_events_proto,
 				$username . '/month/events.ics',
-				"events in this month for $username", 
+				"events in this month for $username",
 				$rwrule_month_stduser,
 				$user_id
 			);
@@ -309,7 +309,7 @@
 			// 	   $this->calendars['/month/tasks.ics']
 			// 		 =& $this->_cprw_vcdef($this->_tasks_proto,
 			// 							  $username . '/month/tasks.ics',
-			// 							 "tasks in this month for $username", 
+			// 							 "tasks in this month for $username",
 			// 							   $rwrule_month_stduser
 			// 							   );
 
@@ -318,7 +318,7 @@
 			$this->calendars['/month/default.ics'] =& $this->_cprw_vcdef(
 				$this->calendars['/default.ics'],
 				$username . '/month/default.ics',
-				"events and tasks in this month for $username", 
+				"events and tasks in this month for $username",
 				$rwrule_month_stduser,
 				$user_id
 			);
@@ -372,7 +372,7 @@
 		}
 
 		/** Provide a html listing of all available personal calendars
-		* 
+		*
 		* @param int $detail control in how much detail the listing provides:
 		* [0..1) => paths only, [1..2) => paths and description [100..) => dump
 		* @return string a html page with a listing of the calendars and their
@@ -391,7 +391,7 @@
 				. "<body><h2>Personal Virtual Calendars defined for</h2>\n"
 				. "</p><h1>&nbsp;&nbsp; $username </h1><dl>";
 
-			$basepath = $GLOBALS['egw']->link('/icalsrv.php');
+			$basepath = $GLOBALS['egw']->link('/icalsrv/icalsrv.php');
 
 			foreach($this->calendars as $vcname => $vcdef)
 			{
@@ -406,6 +406,7 @@
 					$str .=  "\n<dd>" . print_r($vcdef, true) . "</dd>";
 				}
 			}
+
 			$str .= "\n</dl>";
 			$str .= "\n<p/> Note: when using https access to this egroupware system, "
 				. "the locations (urls) for the virtual calendars above should start with https."
@@ -424,7 +425,7 @@
 		* @param string $desc short description of the new calendar
 		* @param string $rwrules rewrite rules, a hash of keys and new values for the associated
 		* content fields.
-		* @return VCalDefAr new deepcoy with some fields changed of $oldcdf 
+		* @return VCalDefAr new deepcoy with some fields changed of $oldcdf
 		*/
 		function _cprw_vcdef(&$ofield, $name, $desc, $rwrules, $owner)
 		{
@@ -456,4 +457,3 @@
 			return $ofield;
 		}
 	}
-?>
