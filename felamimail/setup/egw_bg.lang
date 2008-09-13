@@ -341,7 +341,7 @@ rule	felamimail	bg	Правило
 sat	felamimail	bg	съб
 save	felamimail	bg	Запис
 save as draft	felamimail	bg	запис като чернова
-save as infolog	felamimail	bg	запис в InfoLog
+save as infolog	felamimail	bg	запис в Дневника
 save changes	felamimail	bg	запис на промените
 save message to disk	felamimail	bg	запис на съобщението на диска
 script name	felamimail	bg	име на скрипт
