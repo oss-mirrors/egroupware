@@ -21,44 +21,45 @@
 		}
 		
 		function searchAddress($_searchString) {
-			if (method_exists($GLOBALS['egw']->contacts,'search')) {
-				// 1.3+
-				$contacts = $GLOBALS['egw']->contacts->search(array(
-					'n_fn'       => $_searchString,
-					'email'      => $_searchString,
-					'email_home' => $_searchString,
-				),array('n_fn','email','email_home'),'n_fn','','%',false,'OR',array(0,20));
-
-				// additionally search the accounts, if the contact storage is not the account storage
-				if ($GLOBALS['egw_info']['server']['account_repository'] == 'ldap' &&
-					$GLOBALS['egw_info']['server']['contact_repository'] == 'sql')
-				{
-					$accounts = $GLOBALS['egw']->contacts->search(array(
+			if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
+				if (method_exists($GLOBALS['egw']->contacts,'search')) {
+					// 1.3+
+					$contacts = $GLOBALS['egw']->contacts->search(array(
 						'n_fn'       => $_searchString,
 						'email'      => $_searchString,
 						'email_home' => $_searchString,
-					),array('n_fn','email','email_home'),'n_fn','','%',false,'OR',array(0,20),array('owner' => 0));
-					
-					if ($contacts && $accounts)
-					{
-						$contacts = array_merge($contacts,$accounts);
-						usort($contacts,create_function('$a,$b','return strcasecmp($a["n_fn"],$b["n_fn"]);'));
-					}
-					elseif($accounts)
-					{
-						$contacts =& $accounts;
-					}
-					unset($accounts);
-				}
-			} else {
-				// < 1.3
-				$contacts = $GLOBALS['egw']->contacts->read(0,20,array(
-					'fn' => 1,
-					'email' => 1,
-					'email_home' => 1,
-				), $_searchString, 'tid=n', '', 'fn');
-			}
+					),array('n_fn','email','email_home'),'n_fn','','%',false,'OR',array(0,20));
 
+					// additionally search the accounts, if the contact storage is not the account storage
+					if ($GLOBALS['egw_info']['server']['account_repository'] == 'ldap' &&
+						$GLOBALS['egw_info']['server']['contact_repository'] == 'sql')
+					{
+						$accounts = $GLOBALS['egw']->contacts->search(array(
+							'n_fn'       => $_searchString,
+							'email'      => $_searchString,
+							'email_home' => $_searchString,
+						),array('n_fn','email','email_home'),'n_fn','','%',false,'OR',array(0,20),array('owner' => 0));
+						
+						if ($contacts && $accounts)
+						{
+							$contacts = array_merge($contacts,$accounts);
+							usort($contacts,create_function('$a,$b','return strcasecmp($a["n_fn"],$b["n_fn"]);'));
+						}
+						elseif($accounts)
+						{
+							$contacts =& $accounts;
+						}
+						unset($accounts);
+					}
+				} else {
+					// < 1.3
+					$contacts = $GLOBALS['egw']->contacts->read(0,20,array(
+						'fn' => 1,
+						'email' => 1,
+						'email_home' => 1,
+					), $_searchString, 'tid=n', '', 'fn');
+				}
+			}
 			$response =& new xajaxResponse();
 
 			if(is_array($contacts)) {

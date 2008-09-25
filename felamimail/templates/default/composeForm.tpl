@@ -53,9 +53,7 @@
 				<button class="menuButton" type="button" onclick="fm_compose_saveAsDraft();" title="{lang_save_as_draft}">
 					<img src="{img_fileexport}">
 				</button>
-				<button class="menuButton" type="button" onclick="addybook();" title="{lang_addressbook}">
-					<img src="{addressbookImage}">
-				</button>
+				{addressbookButton}
 				<button class="menuButton" type="button" onclick="fm_compose_displayFileSelector();" title="{lang_attachments}">
 					<img src="{img_attach_file}">
 				</button>
@@ -77,7 +75,7 @@
 										<label for="to_infolog">{infologImage}</label>
 									</td>
 									<td>
-										<input class="input_text" type="checkbox" id="to_infolog" name="to_infolog" />
+										{infolog_checkbox}
 									</td>
 									<td>
 										<label for="disposition">{lang_receive_notification}</label>

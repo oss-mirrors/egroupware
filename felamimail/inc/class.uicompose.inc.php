@@ -216,9 +216,13 @@
 
 			$this->translate();
 
-			$this->t->set_var("link_addressbook",$GLOBALS['egw']->link('/index.php',array(
-				'menuaction' => 'addressbook.addressbook_ui.emailpopup',
-			)));
+			if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
+				$this->t->set_var("link_addressbook",$GLOBALS['egw']->link('/index.php',array(
+					'menuaction' => 'addressbook.addressbook_ui.emailpopup',
+				)));
+			} else {
+				$this->t->set_var("link_addressbook",'');
+			}
 			$this->t->set_var("focusElement",$_focusElement);
 
 			$linkData = array
@@ -306,9 +310,22 @@
 			$this->t->parse('destinationRows','destination_row',True);
 
 			$this->t->set_var("subject",@htmlentities($sessionData['subject'],ENT_QUOTES,$this->displayCharset));
-			$this->t->set_var('addressbookImage',$GLOBALS['egw']->common->image('phpgwapi/templates/phpgw_website','users'));
-			$this->t->set_var('infologImage',html::image('felamimail','to_infolog',lang('Save as infolog'),'width="17px" height="17px" valign="middle"' ));
-			$this->t->set_var('lang_save_as_infolog',lang('Save as infolog'));
+			if ($GLOBALS['egw_info']['user']['apps']['addressbook']) {
+				$this->t->set_var('addressbookButton','<button class="menuButton" type="button" onclick="addybook();" title="'.lang('addressbook').'">
+                    <img src="'.$GLOBALS['egw']->common->image('phpgwapi/templates/phpgw_website','users').'">
+                </button>');
+			} else {
+				$this->t->set_var('addressbookButton','');
+			}
+			if ($GLOBALS['egw_info']['user']['apps']['infolog']) {
+				$this->t->set_var('infologImage',html::image('felamimail','to_infolog',lang('Save as infolog'),'width="17px" height="17px" valign="middle"' ));
+				$this->t->set_var('lang_save_as_infolog',lang('Save as infolog'));
+				$this->t->set_var('infolog_checkbox','<input class="input_text" type="checkbox" id="to_infolog" name="to_infolog" />');
+			} else {
+				$this->t->set_var('infologImage','');
+				$this->t->set_var('lang_save_as_infolog','');
+				$this->t->set_var('infolog_checkbox','');
+			}
 			$this->t->set_var('lang_no_recipient',lang('No recipient address given!'));
 			$this->t->set_var('lang_no_subject',lang('No subject given!'));
 			$this->t->pparse("out","header");

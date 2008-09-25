@@ -433,11 +433,10 @@
 					'action'	=> "window.location.href = '$printURL'",
 					'tooltip'	=> lang('print it'),
 				),
-				'to_infolog' => array(
-					'action'	=> "window.open('$to_infologURL','_blank','dependent=yes,width=750,height=550,scrollbars=yes,status=yes')",
-					'tooltip'	=> lang('save as infolog'),
-				),
 			);
+			if ($GLOBALS['egw_info']['user']['apps']['infolog']) $navbarImages['to_infolog'] = array(
+					'action'	=> "window.open('$to_infologURL','_blank','dependent=yes,width=750,height=550,scrollbars=yes,status=yes')",
+					'tooltip'	=> lang('save as infolog'));
 
 			// save email as
 			$navbarImages['fileexport'] = array(
@@ -858,7 +857,7 @@
 							}
 							$linkData['presets[n_fn]']	= $decodedPersonalName;
 						}
-						if ($showAddToAdrdessbookLink) {
+						if ($showAddToAdrdessbookLink && $GLOBALS['egw_info']['user']['apps']['addressbook']) {
 							$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
 							$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
 							$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
@@ -890,7 +889,7 @@
 							'referer'		=> $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']
 						);
 
-						if ($showAddToAdrdessbookLink) {
+						if ($showAddToAdrdessbookLink && $GLOBALS['egw_info']['user']['apps']['addressbook']) {
 							$urlAddToAddressbook = $GLOBALS['egw']->link('/index.php',$linkData);
 							$onClick = "window.open(this,this.target,'dependent=yes,width=850,height=440,location=no,menubar=no,toolbar=no,scrollbars=yes,status=yes'); return false;";
 							$image = $GLOBALS['egw']->common->image('felamimail','sm_envelope');
