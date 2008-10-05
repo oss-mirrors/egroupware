@@ -55,12 +55,14 @@ close this page	felamimail	cs	zavřít tuto stránku
 close window	felamimail	cs	Zavřít okno
 color	felamimail	cs	Barva
 compose	felamimail	cs	Nová zpráva
+compose as new	felamimail	cs	Vytvořit jako novou zprávu
 compress folder	felamimail	cs	Komprimovat složku
 condition	felamimail	cs	podmínka
 configuration	felamimail	cs	Konfigurace
 connection dropped by imap server.	felamimail	cs	Připojení ukončeno IMAP serverem.
 contains	felamimail	cs	obsahuje
 could not complete request. reason given: %s	felamimail	cs	Nemohu dokončit požadavek. Důvod: %s
+could not import message:	felamimail	cs	Nemohu importovat zprávu:
 could not open secure connection to the imap server. %s : %s.	felamimail	cs	Nemohu otevřít zabezpečené připojení k IMAP serveru. %s : %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	cs	CRAM-MD5 nebo DIGEST-MD5 vyžadují nainstalovaný balík Auth_SASL.
 create	felamimail	cs	Vytvořit
@@ -104,13 +106,19 @@ do not use sent	felamimail	cs	Nepoužívat Odeslané
 do not use trash	felamimail	cs	Nepoužívat Koš
 do not validate certificate	felamimail	cs	neověřovat certifikát
 do you really want to delete the '%1' folder?	felamimail	cs	Opravdu chcete smazat složku '%1' ?
+do you really want to delete the selected accountsettings and the assosiated identity.	felamimail	cs	Opravdu chcete smazat vybraná nastavení účtu a přiřazené identity?
 do you really want to delete the selected signatures?	felamimail	cs	Opravdu chcete smazat vybrané podpisy?
+do you really want to move the selected messages to folder:	felamimail	cs	Opravdu chcete přesunout vybrané zprávy do složky:
+do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	cs	Chcete být požádáni o potvrzení při přesouvání vybraných zpráv do jiné složky?
 does not contain	felamimail	cs	neobsahuje
+does not exist on imap server.	felamimail	cs	neexistuje na IMAP serveru.
 does not match	felamimail	cs	neshoduje se s
 does not match regexp	felamimail	cs	neshoduje se s regulárním výrazem
 don't use draft folder	felamimail	cs	Nepoužívat složku Rozepsané
 don't use sent	felamimail	cs	Nepoužívat Odeslané
+don't use template folder	felamimail	cs	Nepoužívat složku šablon
 don't use trash	felamimail	cs	Nepoužívat Koš
+dont strip any tags	felamimail	cs	neodstraňovat žádné štítky
 down	felamimail	cs	dolů
 download	felamimail	cs	stáhnout
 download this as a file	felamimail	cs	Stáhnout jako soubor
@@ -124,8 +132,10 @@ edit filter	felamimail	cs	Editovat filtr
 edit rule	felamimail	cs	editovat pravidlo
 edit selected	felamimail	cs	Editovat vybrané
 edit vacation settings	felamimail	cs	editovat nastavení odpovědi v nepřítomnosti
+editor type	felamimail	cs	Typ editoru
 email address	felamimail	cs	E-mailová adresa
 email forwarding address	felamimail	cs	adresa pro přeposílání
+email notification update failed	felamimail	cs	aktualizace e-mailových upozornění se nezdařila
 email signature	felamimail	cs	Podpis zprávy
 emailaddress	felamimail	cs	e-mailová adresa
 empty trash	felamimail	cs	vyprázdnit koš
@@ -142,6 +152,8 @@ error connecting to imap serv	felamimail	cs	Chyba spojení na IMAP server
 error connecting to imap server. %s : %s.	felamimail	cs	Chyba spojení na IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	felamimail	cs	Chyba spojení na IMAP server: [%s] %s.
 error opening	felamimail	cs	Chyba při otevírání
+error:	felamimail	cs	Chyba:
+error: could not save message as draft	felamimail	cs	Chyba: Zprávu nebylo možné uložit jako rozepsanou
 every	felamimail	cs	každý
 every %1 days	felamimail	cs	každý %1 den
 expunge	felamimail	cs	Vymazat
@@ -155,6 +167,7 @@ filter rules	common	cs	pravidla filtru
 first name	felamimail	cs	Křestní jméno
 flagged	felamimail	cs	s příznakem
 flags	felamimail	cs	Příznaky
+folder	felamimail	cs	složka
 folder acl	felamimail	cs	acl složky
 folder name	felamimail	cs	Název složky
 folder path	felamimail	cs	Cesta ke složce
@@ -169,6 +182,8 @@ follow	felamimail	cs	následovat
 for mail to be send - not functional yet	felamimail	cs	Pro odesílanou zprávu - zatím nefunkční
 for received mail	felamimail	cs	Pro přijatou poštu
 forward	felamimail	cs	Přeposlat
+forward as attachment	felamimail	cs	přeposlat jako přílohu
+forward inline	felamimail	cs	přeposlat vložené do dopisu
 forward messages to	felamimail	cs	Přeposlat zprávu (komu)
 forward to	felamimail	cs	přeposlat (komu)
 forward to address	felamimail	cs	přeposlat na adresu
@@ -184,6 +199,7 @@ have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.
 header lines	felamimail	cs	Řádky hlavičky
 hide header	felamimail	cs	skrýt záhlaví
 hostname / address	felamimail	cs	doménové jméno / adresa
+how to forward messages	felamimail	cs	jak přeposílat zprávy
 html	felamimail	cs	HTML
 icons and text	felamimail	cs	Ikony a text
 icons only	felamimail	cs	Jen ikony
@@ -193,6 +209,7 @@ if	felamimail	cs	POKUD
 if from contains	felamimail	cs	pokud odesílatel obsahuje
 if mail header	felamimail	cs	pokud hlavička obsahuje
 if message size	felamimail	cs	pokud velikost zprávy
+if shown, which folders should appear on main screen	felamimail	cs	při zobrazení, které složky by se měly objevit na hlavní obrazovce
 if subject contains	felamimail	cs	pokud předmět obsahuje
 if to contains	felamimail	cs	pokud adresát obsahuje
 if using ssl or tls, you must have the php openssl extension loaded.	felamimail	cs	Pro používání SSL nebo TLS musíte mít k aktivní openssl rozšíření PHP.
@@ -207,6 +224,8 @@ imap server type	felamimail	cs	Typ IMAP serveru
 imap server username	felamimail	cs	uživatelské jméno pro IMAP server
 imaps authentication	felamimail	cs	IMAPS autentikace
 imaps encryption only	felamimail	cs	IMAPS jen šifrování
+import	felamimail	cs	importovat
+import mail	felamimail	cs	Importovat poštu
 in	felamimail	cs	v
 inbox	felamimail	cs	INBOX
 incoming mail server(imap)	felamimail	cs	server příchozí pošty (IMAP)
@@ -232,7 +251,8 @@ location of buttons when composing	felamimail	cs	Umístění tlačítek při psa
 mail server login type	admin	cs	Typ přihlášení na poštovní server
 mail settings	felamimail	cs	Nastavení pošty
 mainmessage	felamimail	cs	hlavní zpráva
-manage emailaccounts	preferences	cs	Spravovat e-mailové účty
+manage email accounts and identities	common	cs	Spravovat e-mailové účty a indentity
+manage emailaccounts	common	cs	Spravovat e-mailové účty
 manage emailfilter / vacation	preferences	cs	Spravovat e-mailový filter / odpověď v nepřítomnosti
 manage folders	common	cs	Spravovat složky
 manage sieve	common	cs	Spravovat Sieve skripty
@@ -263,6 +283,7 @@ new filter	felamimail	cs	Nový filtr
 next	felamimail	cs	Další
 next message	felamimail	cs	Další zpráva
 no active imap server found!!	felamimail	cs	Nenalezen aktivní IMAP server!!
+no address to/cc/bcc supplied, and no folder to save message to provided.	felamimail	cs	Nebyly zadány adresy Komu/Kopie/Skrytá kopie ani složka pro uložení zprávy.
 no encryption	felamimail	cs	bez šifrování
 no filter	felamimail	cs	Žádný filtr
 no folders found	felamimail	cs	Nebyly nalezeny žádné složky
@@ -271,6 +292,7 @@ no folders were found to unsubscribe from!	felamimail	cs	Nebyly nalezeny složky
 no highlighting is defined	felamimail	cs	Žádné zvýrazňování není definováno
 no message returned.	felamimail	cs	Žádná zpráva se nevrátila.
 no messages found...	felamimail	cs	nebyly nalezeny žádné zprávy...
+no messages selected, or lost selection. changing to folder	felamimail	cs	Nebyla vybrána žádná zpráva nebo byl výběr ztracen. Přecházím do složky
 no messages were selected.	felamimail	cs	Nebyly vybrány žádné zprávy.
 no plain text part found	felamimail	cs	nebyla nalezena část ve formě prostého textu
 no previous message	felamimail	cs	žádná předchozí zpráva
@@ -280,6 +302,7 @@ no subject given!	felamimail	cs	Nebyl zadán předmět!
 no supported imap authentication method could be found.	felamimail	cs	Nebyla nalezena podporovaná metoda IMAP autentikace.
 no valid emailprofile selected!!	felamimail	cs	Nebyl vybrán platný e-mailový profil!!
 none	felamimail	cs	Žádné
+on	felamimail	cs	na
 on behalf of	felamimail	cs	jménem (koho)
 one address is not valid	felamimail	cs	Jedna adresa není platná
 only inbox	felamimail	cs	Jen INBOX
@@ -291,6 +314,7 @@ or	felamimail	cs	nebo
 organisation	felamimail	cs	organizace
 organization	felamimail	cs	organizace
 organization name	admin	cs	Jméno organizace
+original message	felamimail	cs	původní zpráva
 outgoing mail server(smtp)	felamimail	cs	odchozí poštovní server(SMTP)
 participants	felamimail	cs	Účastníci
 personal information	felamimail	cs	Osobní údaje
@@ -303,6 +327,7 @@ previous	felamimail	cs	Předchozí
 previous message	felamimail	cs	Předchozí zpráva
 print it	felamimail	cs	Tisknout
 print this page	felamimail	cs	tisknout aktuální stranu
+printview	felamimail	cs	tiskový náhled
 quicksearch	felamimail	cs	Rychlé hledání
 read	felamimail	cs	přečtené
 reading	felamimail	cs	čtení
@@ -353,6 +378,7 @@ show header	felamimail	cs	Zobrazit hlavičku
 show new messages on main screen	felamimail	cs	Zobrazovat nové zprávy na hlavní obrazovce
 sieve script name	felamimail	cs	Jméno sieve skriptu
 sieve settings	admin	cs	Nastavení sieve
+signatur	felamimail	cs	Podpis
 signature	felamimail	cs	Podpis
 simply click the target-folder	felamimail	cs	Jednoduše klikněte na cílovou složku
 size	felamimail	cs	Velikost
@@ -363,6 +389,7 @@ skipping forward	felamimail	cs	vynechávám přeposlání
 skipping previous	felamimail	cs	vynechávám předchozí
 small view	felamimail	cs	malé zobrazení
 smtp settings	admin	cs	Nastavení SMTP
+start new messages with mime type plain/text or html?	felamimail	cs	Začínat psaní nových zpráv jako MIME typ plain/text nebo html?
 subject	felamimail	cs	Předmět
 subject(a->z)	felamimail	cs	Předmět (A->Z)
 subject(z->a)	felamimail	cs	Předmět (Z->A)
@@ -373,10 +400,13 @@ subscribed successfully!	felamimail	cs	Úspěšně přihlášeno !
 sun	felamimail	cs	Ne
 system signature	felamimail	cs	systémový podpis
 table of contents	felamimail	cs	Obsah
+template folder	felamimail	cs	Složka šablon
 templates	felamimail	cs	Šablony
 text only	felamimail	cs	Pouze text
+text/plain	felamimail	cs	prostý text
 the connection to the imap server failed!!	felamimail	cs	Připojení k IMAP serveru selhalo!!
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	felamimail	cs	Zdá se, že IMAP server nepodporuje vybranou metodu autentikace. Zkontaktujte prosím Vašeho systémového administrátora.
+the message sender has requested a response to indicate that you have read this message. would you like to send a receipt?	felamimail	cs	Odesílatel požaduje zaslání potvrzení o přečtení zprávy. Přejete si potvrzení odeslat?
 the mimeparser can not parse this message.	felamimail	cs	Mimeparser nemůže zpracovat tuto zprávu.
 then	felamimail	cs	POTOM
 this folder is empty	felamimail	cs	TATO SLOŽKA JE PRÁZDNÁ
@@ -414,6 +444,7 @@ use <a href="%1">emailadmin</a> to create profiles	felamimail	cs	pro vytvoření
 use a signature	felamimail	cs	Použít podpis
 use a signature?	felamimail	cs	Použít podpis?
 use addresses	felamimail	cs	Použít adresy
+use custom identities	felamimail	cs	použít uživatelsky definované identity
 use custom settings	felamimail	cs	Použít uživatelsky definovaná nastavení
 use regular expressions	felamimail	cs	použít regulární výrazy
 use smtp auth	admin	cs	Použít SMTP autentikaci
@@ -436,3 +467,5 @@ wrap incoming text at	felamimail	cs	Zarovnat příchozí text
 writing	felamimail	cs	psaní
 wrote	felamimail	cs	napsal
 you can use %1 for the above start-date and %2 for the end-date.	felamimail	cs	Můžete použít %1 pro počáteční datum a %2 pro koncové datum.
+you have received a new message on the	felamimail	cs	Přišla Vám nová zpráva na
+your message to %1 was displayed.	felamimail	cs	Vaše zpráva pro %1 byla zobrazena.

@@ -1,6 +1,7 @@
 compose	messenger	cs	Vytvořit
 compose global message	common	cs	Vytvořit globální zprávu
 compose message	messenger	cs	Vytvořit zprávu
+compose to group-users	messenger	cs	Vytvořit zprávu skupině uživatelů
 delete a message.	messenger	cs	Smazat zprávu.
 delete selected	messenger	cs	Smazat vybrané
 forward	messenger	cs	Přeposlat

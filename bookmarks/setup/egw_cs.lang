@@ -16,6 +16,7 @@ bookmark not readable	bookmarks	cs	Záložku nelze načíst
 bookmarks	common	cs	Záložky
 bookmarks settings	bookmarks	cs	Nastavení záložek
 change bookmark	bookmarks	cs	Změnit záložku
+choose the categories to display	bookmarks	cs	Zvolte kategorie, které chcete zobrazit
 close this window to return	bookmarks	cs	pro návrat zavřete toto okno
 create bookmark	bookmarks	cs	Vytvořit záložku
 create new bookmark	bookmarks	cs	Vytvořit novou záložku
@@ -60,6 +61,7 @@ search for:	bookmarks	cs	Hledat (co):
 select the format you would like to export to	bookmarks	cs	Vyberte formát, do jakého chcete exportovat
 send bookmark	bookmarks	cs	Poslat záložku
 sub category	bookmarks	cs	Podkategorie
+this module displays bookmarks in a javascript based tree	bookmarks	cs	Tento modul zobrazuje záložky ve stromě postaveném na javasrciptu
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	cs	Adresa příjemce %1 je neplatná. Formát musí být <strong>uživatel@doména</strong> a doména musí existovat!
 to e-mail addresses	bookmarks	cs	E-mailová adresa příjemce
 to which category should the imported folder hierarchy be attached	bookmarks	cs	Ke které kategorii má být importovaná hierarchie složek připojena

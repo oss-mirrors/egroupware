@@ -1,3 +1,4 @@
+%1 group	polls	cs	skupina %1
 actions	polls	cs	akce
 add answer to poll	polls	cs	Přidat odpověď do ankety
 add answers	polls	cs	Přidat odpovědi
@@ -28,12 +29,17 @@ result visible to	polls	cs	Výsledek mohou shlédnout
 select current poll	polls	cs	Vybrat aktuální anketu
 settings updated	polls	cs	Nastavení zaktualizována
 show answers	polls	cs	Zobrazit odpovědi
+show bullet if allowed to vote and result else	polls	cs	Zobrazovat hlasovací lístek při oprávnění k hlasování jinak jen výsledek
+show only the ballot	polls	cs	Zobrazovat jen hlasovací lístek
+show only the result	polls	cs	Zobrazovat jen výsledek
 show questions	common	cs	Zobrazit otázky
+this module displays polls.	polls	cs	Tento modul zobrazuje ankety.
 total votes	polls	cs	Celkem
 view poll	polls	cs	Zobrazit anketu
 view results	polls	cs	Zobrazit výsledky
 vote	polls	cs	Hlasovat
 voting booth admin	admin	cs	Hlasovací koisek
 voting booth administration	polls	cs	Administrace hlasovacího kiosku
+what to show	polls	cs	Co zobrazovat
 which poll	polls	cs	Která anketa
 you are not (yet) allowed view the result of this vote.	polls	cs	Nemáte oprávnění (zatím) zobrazit výsledek této ankety.

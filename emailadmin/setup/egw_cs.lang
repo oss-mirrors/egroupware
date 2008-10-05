@@ -8,11 +8,15 @@ advanced options	emailadmin	cs	Rozšířené volby
 alternate email address	emailadmin	cs	Alternativní e-mailová adresa
 any application	emailadmin	cs	Kterákoli aplikace
 any group	emailadmin	cs	Kterákoli skupina
+any user	emailadmin	cs	Kterýkoli uživatel
+back to admin/grouplist	emailadmin	cs	Zpět na Administrátor/Skupiny uživatelů
+back to admin/userlist	emailadmin	cs	Zpět na Administrátor/Uživatelské účty
 bad login name or password.	emailadmin	cs	Chybné přihlašovací jméno nebo heslo.
 bad or malformed request. server responded: %s	emailadmin	cs	Chybný nebo špatně fomulovaný požadavek. Server odpověděl: %s
 bad request: %s	emailadmin	cs	Chybný požadavek: %s
 can be used by application	emailadmin	cs	Může být použit aplikací
 can be used by group	emailadmin	cs	Může být použit skupinou
+can be used by user	emailadmin	cs	Může být použit uživatelem
 connection dropped by imap server.	emailadmin	cs	Připojení ukončeno IMAP serverem.
 could not complete request. reason given: %s	emailadmin	cs	Nemohu dokončit požadavek. Důvod: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	cs	Nemohu otevřít zabezpečené připojení na IMAP server. %s : %s.
@@ -23,12 +27,15 @@ default	emailadmin	cs	výchozí
 deliver extern	emailadmin	cs	doručit externě
 do not validate certificate	emailadmin	cs	neověřovat certifikát
 do you really want to delete this profile	emailadmin	cs	Opravdu chcete smazat tento profil
+do you really want to reset the filter for the profile listing	emailadmin	cs	Opravdu chcete vyresetovat filtr pro seznam profilů
 domainname	emailadmin	cs	Doménové jméno
 edit email settings	emailadmin	cs	Editovat nastavení e-mailu
 email account active	emailadmin	cs	E-mailový účet aktivní
 email address	emailadmin	cs	E-mailová adresa
 email settings	common	cs	Nastavení e-mailu
 emailadmin	emailadmin	cs	Administrátor pošty
+emailadmin: group assigned profile	common	cs	Administrátor pošty: profil přidělený skupině
+emailadmin: user assigned profile	common	cs	Administrátor pošty: profil přidělený uživateli
 enable cyrus imap server administration	emailadmin	cs	Povolit administraci Cyrus IMAP serveru
 enable sieve	emailadmin	cs	Povolit Sieve
 encrypted connection	emailadmin	cs	šifrované připojení
@@ -36,6 +43,8 @@ encryption settings	emailadmin	cs	Nastavení šifrování
 enter your default mail domain (from: user@domain)	emailadmin	cs	Zadejte Vaši výchozí poštovní doménu (z: uživatel@doména)
 error connecting to imap server. %s : %s.	emailadmin	cs	Chyba spojení na IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	cs	Chyba spojení na IMAP server: [%s] %s.
+filtered by account	emailadmin	cs	filtrováno podle účtu
+filtered by group	emailadmin	cs	filtrováno podle skupiny
 forward also to	emailadmin	cs	Přeposlat také na
 forward email's to	emailadmin	cs	Přeposílat e-maily na
 forward only	emailadmin	cs	Jen přeposlat
@@ -52,6 +61,7 @@ imap server name	emailadmin	cs	Název IMAP serveru
 imap server port	emailadmin	cs	Port IMAP serveru
 imap/pop3 server name	emailadmin	cs	Název IMAP/POP3 serveru
 in mbyte	emailadmin	cs	v MBytech
+inactive	emailadmin	cs	neaktivní
 ldap basedn	emailadmin	cs	LDAP basedn
 ldap server	emailadmin	cs	LDAP server
 ldap server accounts dn	emailadmin	cs	DN (distinguished name) účtů na LDAP serveru
@@ -78,12 +88,14 @@ pop3 server hostname or ip address	emailadmin	cs	DNS jméno nebo IP adresa POP3 
 pop3 server port	emailadmin	cs	Port POP3 serveru
 postfix with ldap	emailadmin	cs	Postfix s LDAP
 profile access rights	emailadmin	cs	přístupová práva profilu
+profile is active	emailadmin	cs	profil je aktivní
 profile list	emailadmin	cs	Seznam profilů
 profile name	emailadmin	cs	Název profilu
 qmaildotmode	emailadmin	cs	Tečkový režim Qmail
 qouta size in mbyte	emailadmin	cs	Velikost kvóty v MBytech
 quota settings	emailadmin	cs	Nastavení kvóty
 remove	emailadmin	cs	Odstranit
+reset filter	emailadmin	cs	vyresetovat filtr
 select type of imap server	emailadmin	cs	Vyberte typ IMAP serveru
 select type of imap/pop3 server	emailadmin	cs	Vyberte typ IMAP/POP3 serveru
 select type of smtp server	emailadmin	cs	Vyberte typ SMTP serveru
@@ -111,12 +123,16 @@ unknown imap response from the server. server responded: %s	emailadmin	cs	Nezná
 unsupported action '%1' !!!	emailadmin	cs	Nepodporovaná akce '%1' !!!
 update current email address:	emailadmin	cs	Aktualizovat současnou e-mailovou adresu:
 use ldap defaults	emailadmin	cs	Použít výchozí hodnoty LDAP
+use predefined username and password defined below	emailadmin	cs	Použít předdefinované uživatelské jméno a heslo uvedené níže
 use smtp auth	emailadmin	cs	Použít SMTP autentikaci
 use tls authentication	emailadmin	cs	Použít TLS autentikaci
 use tls encryption	emailadmin	cs	Použít TLS šifrování
 user can edit forwarding address	emailadmin	cs	Uživatel smí editovat adresu pro přeposílání
 username (standard)	emailadmin	cs	uživatelské jméno (standardní)
+username/password defined by admin	emailadmin	cs	Uživatelské jméno/Heslo definované administrátorem
 username@domainname (virtual mail manager)	emailadmin	cs	uživatelskéjméno@doména (Virtuální správce pošty)
 users can define their own emailaccounts	emailadmin	cs	Uživatelé smí definovat vlastní poštovní účty
+users can define their own identities	emailadmin	cs	uživatelé smí definovat své vlastní identity
+users can define their own signatures	emailadmin	cs	uživatelé smí definovat své vlastní podpisy
 vaction messages with start- and end-date require an admin account to be set!	emailadmin	cs	Automatické odpovědi v nepřítomnosti, které mají určeno počáteční a koncové datum, vyžadují nastavení administrátorského účtu.
 virtual mail manager	emailadmin	cs	Virtuální správce pošty
