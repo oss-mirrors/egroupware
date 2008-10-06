@@ -1048,7 +1048,6 @@
 			#_debug_array($ogServer);
 			$mail->Host 	= $ogServer->host;
 			$mail->Port	= $ogServer->port;
-
 			// SMTP Auth??
 			if($ogServer->smtpAuth) {
 				$mail->SMTPAuth	= true;
@@ -1077,14 +1076,14 @@
 			}
 			#error_log("Mail Sent.!");
 			$folder = (array)$this->sessionData['folder'];
-			if(isset($GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder']) && 
-				$GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'] != 'none' &&
+			if(isset($this->preferences->preferences['sentFolder']) && 
+				$this->preferences->preferences['sentFolder'] != 'none' &&
 				$messageIsDraft == false) {
-				$folder[] = $GLOBALS['egw_info']['user']['preferences']['felamimail']['sentFolder'];
+				$folder[] = $this->preferences->preferences['sentFolder'];
 			}
 			if($messageIsDraft == true) {
-			   	if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder'])) {
-				   	$folder[] = $this->sessionData['folder'] = array($GLOBALS['egw_info']['user']['preferences']['felamimail']['draftFolder']);
+			   	if(!empty($this->preferences->preferences['draftFolder'])) {
+				   	$folder[] = $this->sessionData['folder'] = array($this->preferences->preferences['draftFolder']);
 			   	}
 			}
 			$folder = array_unique($folder);
