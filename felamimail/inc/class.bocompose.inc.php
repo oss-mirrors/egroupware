@@ -148,7 +148,7 @@
 			$text = preg_replace("/(<|&lt;)(([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+))(>|&gt;)/ie","'$2'", $text);
 			return 1;
 		}
-	
+
 		function convertHTMLToText($_html) 
 		{
 			#error_log($_html);
@@ -188,11 +188,12 @@
 				2 => '~<table[^>]*>~si',
 				3 => '~<tr[^>]*>~si',
 				4 => '~<li[^>]*>~si',
-				5 => '~<br[^>]*>~si',
-				6 => '~<p[^>]*>~si',
-				7 => '~<div[^>]*>~si',
-				8 => '~<hr[^>]*>~si',
-				9 => '/<blockquote type="cite">/'
+				5 => '~<br[^>]*>\r*\n*~si',
+				6 => '~<br[^>]*>~si',
+				7 => '~<p[^>]*>~si',
+				8 => '~<div[^>]*>~si',
+				9 => '~<hr[^>]*>~si',
+				10 => '/<blockquote type="cite">/',
 			);
 			$Replace = array (
 				0 => "\r\n",
@@ -203,13 +204,17 @@
 				5 => "\r\n",
 				6 => "\r\n",
 				7 => "\r\n",
-				8 => "\r\n__________________________________________________\r\n",
-				9 => '#blockquote#type#cite#'
+				8 => "\r\n",
+				9 => "\r\n__________________________________________________\r\n",
+				10 => '#blockquote#type#cite#',
 			);
     		$_html = preg_replace($tags,$Replace,$_html);
     		$_html = preg_replace('~</t(d|h)>\s*<t(d|h)[^>]*>~si',' - ',$_html);
 			$_html = preg_replace('~<img[^>]+>~s','',$_html);
+			//convert hrefs to description -> URL
+			$_html = preg_replace('~<a[^>]+href=\"([^"]+)\"[^>]*>(.*)</a>~si','[$2 -> $1]',$_html);
     		$_html = preg_replace('~<[^>^@]+>~s','',$_html);
+			#$_html = strip_tags($_html);
     		// reducing spaces
     		$_html = preg_replace('~ +~s',' ',$_html);
 			// we dont reduce whitespace at the start or the end of the line, since its used for structuring the document
