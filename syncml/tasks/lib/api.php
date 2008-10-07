@@ -57,7 +57,7 @@ function _egwtaskssync_list()
 	$guids = array();
 
 	Horde::logMessage("SymcML: egwtaskssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	$searchFilter = array
 	(
 		'order'		=> 'info_datemodified',
@@ -71,15 +71,15 @@ function _egwtaskssync_list()
 			'info_type'	=> 'task',
 		),
 	);
-	
-	$tasks = ExecMethod('infolog.boinfolog.search',$searchFilter);
+
+	$tasks = ExecMethod('infolog.infolog_bo.search',$searchFilter);
 	Horde::logMessage("SymcML: egwtaskssync list found: ".count($tasks), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach((array)$tasks as $task)
 	{
 		$guids[] = $GLOBALS['egw']->common->generate_uid('infolog_task',$task['info_id']);
 	}
-	
+
 	return $guids;
 }
 
@@ -95,15 +95,15 @@ function _egwtaskssync_list()
 function &_egwtaskssync_listBy($action, $timestamp)
 {
 	#Horde::logMessage("SymcML: egwtaskssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('infolog_task', $action, $timestamp);
-	
+
 	if($action == 'delete')
 	{
 		return $allChangedItems;	// InfoLog has no further info about deleted entries
 	}
 
-	$boInfolog =& CreateObject('infolog.boinfolog');
+	$infolog_bo = new infolog_bo();
 	$user = $GLOBALS['egw_info']['user']['account_id'];
 
 	$readableItems = array();
@@ -114,7 +114,7 @@ function &_egwtaskssync_listBy($action, $timestamp)
 
 		// check READ rights too and return false if none
 		// for filter my = all items the user is responsible for:
-		if (($info = $boInfolog->read($uid))
+		if (($info = $infolog_bo->read($uid))
 			&& ($user == $info['info_owner']
 				|| (count($info['info_responsible']) > 0 && in_array($user,$info['info_responsible']))))
 		{
@@ -153,8 +153,8 @@ function _egwtaskssync_import($content, $contentType, $notepad = null)
 	{
 		case 'text/x-vcalendar':
 		case 'text/calendar':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			$taskID = $vcalInfolog->importVTODO($content);
+			$infolog_ical = new infolog_ical();
+			$taskID = $infolog_ical->importVTODO($content);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -162,14 +162,14 @@ function _egwtaskssync_import($content, $contentType, $notepad = null)
 		case 'text/x-s4j-sifn':
 			Horde::logMessage("SyncML: egwtaskssync import treating bad task content-type '$contentType' as if is was 'text/x-s4j-sift'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sift':
-			$sifInfolog	=& CreateObject('infolog.sifinfolog');
-			$taskID = $sifInfolog->addSIF($content,-1,'task');
+			$infolog_sif	= new infolog_sif();
+			$taskID = $infolog_sif->addSIF($content,-1,'task');
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
-	
+
 	if (is_a($taskID, 'PEAR_Error'))
 	{
 		return $taskID;
@@ -207,23 +207,23 @@ function _egwtaskssync_search($content, $contentType)
 	{
 		case 'text/x-vcalendar':
 		case 'text/calendar':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			$taskID	= $vcalInfolog->searchVTODO($content);
+			$infolog_ical = new infolog_ical();
+			$taskID	= $infolog_ical->searchVTODO($content);
 			break;
-			
+
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
 		case 'text/x-s4j-sifn':
 			Horde::logMessage("SyncML: egwtaskssync search treating bad task content-type '$contentType' as if is was 'text/x-s4j-sift'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sift':
-			$sifInfolog	=& CreateObject('infolog.sifinfolog');
-			$taskID = $sifInfolog->searchSIF($content,'task');
+			$infolog_sif	= new infolog_sif();
+			$taskID = $infolog_sif->searchSIF($content,'task');
 			break;
-			
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
-	
+
 	if (is_a($taskID, 'PEAR_Error'))
 	{
 		return $taskID;
@@ -269,28 +269,28 @@ function _egwtaskssync_export($guid, $contentType)
 	}
 
 	Horde::logMessage("SymcML: egwtaskssync export guid: $guid contenttype: ". $contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	#$syncProfile	= _egwcalendarsync_getSyncProfile();
 	$taskID	= $GLOBALS['egw']->common->get_egwId($guid);
-	
+
 	switch ($contentType) {
 		case 'text/calendar':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			return $vcalInfolog->exportVTODO($taskID, '2.0');
+			$infolog_ical = new infolog_ical();
+			return $infolog_ical->exportVTODO($taskID, '2.0');
 			break;
-		
+
 		case 'text/x-vcalendar':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			return $vcalInfolog->exportVTODO($taskID, '1.0');
+			$infolog_ical = new infolog_ical();
+			return $infolog_ical->exportVTODO($taskID, '1.0');
 			break;
-		
+
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
 		case 'text/x-s4j-sifn':
 			Horde::logMessage("SyncML: egwtaskssync export treating bad task content-type '$contentType' as if is was 'text/x-s4j-sift'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sift':
-			$sifInfolog	=& CreateObject('infolog.sifinfolog');
-			if($task = $sifInfolog->getSIF($taskID, 'task'))
+			$infolog_sif	= new infolog_sif();
+			if($task = $infolog_sif->getSIF($taskID, 'task'))
 			{
 				return $task;
 			}
@@ -299,7 +299,7 @@ function _egwtaskssync_export($guid, $contentType)
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			break;
-		
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
@@ -327,11 +327,11 @@ function _egwtaskssync_delete($guid)
 				return $result;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	return ExecMethod('infolog.boinfolog.delete',$GLOBALS['phpgw']->common->get_egwId($guid));
+
+	return ExecMethod('infolog.infolog_bo.delete',$GLOBALS['phpgw']->common->get_egwId($guid));
 }
 
 /**
@@ -349,7 +349,7 @@ function _egwtaskssync_delete($guid)
 function _egwtaskssync_replace($guid, $content, $contentType)
 {
 	Horde::logMessage("SymcML: egwtaskssync replace content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	if (is_array($contentType))
 	{
 		$options = $contentType;
@@ -367,8 +367,8 @@ function _egwtaskssync_replace($guid, $content, $contentType)
 	{
 		case 'text/calendar':
 		case 'text/x-vcalendar':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			return $vcalInfolog->importVTODO($content, $taskID);
+			$infolog_ical = new infolog_ical();
+			return $infolog_ical->importVTODO($content, $taskID);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -376,8 +376,8 @@ function _egwtaskssync_replace($guid, $content, $contentType)
 		case 'text/x-s4j-sifn':
 			Horde::logMessage("SyncML: egwtaskssync replace treating bad task content-type '$contentType' as if is was 'text/x-s4j-sift'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sift':
-			$sifInfolog	=& CreateObject('infolog.sifinfolog');
-			return $sifInfolog->addSIF($content, $taskID, 'task');
+			$infolog_sif	= new infolog_sif();
+			return $infolog_sif->addSIF($content, $taskID, 'task');
 			break;
 
 		default:
@@ -392,15 +392,15 @@ function _egwtaskssync_getSyncProfile()
 
 	$state = $_SESSION['SyncML.state'];
 	$deviceInfo = $state->getClientDeviceInfo();
-	
+
 	Horde::logMessage("SymcML: egwtaskssync remote device: ". $deviceInfo['model'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	switch($deviceInfo['model'])
 	{
 		case 'SySync Client PalmOS PRO':
 			$syncProfile = 1;
 			break;
 	}
-	
+
 	return $syncProfile;
 }

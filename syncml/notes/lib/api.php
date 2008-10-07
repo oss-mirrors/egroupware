@@ -57,7 +57,7 @@ function _egwnotessync_list()
 	$guids = array();
 
 	#Horde::logMessage("SymcML: egwnotessync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	$searchFilter = array
 	(
 		'order'		=> 'info_datemodified',
@@ -68,9 +68,9 @@ function _egwnotessync_list()
 			'info_type'	=> 'note',
 		),
 	);
-	
-	$notes =& ExecMethod('infolog.boinfolog.search',$searchFilter);
-	
+
+	$notes =& ExecMethod('infolog.infolog_bo.search',$searchFilter);
+
 	foreach((array)$notes as $note)
 	{
 		$guids[] = $GLOBALS['egw']->common->generate_uid('infolog_note',$note['info_id']);
@@ -90,14 +90,14 @@ function _egwnotessync_list()
 function &_egwnotessync_listBy($action, $timestamp)
 {
 	#Horde::logMessage("SymcML: egwnotessync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	
+
 	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('infolog_note', $action, $timestamp);
-	
+
 	if($action == 'delete')
 	{
 		return $allChangedItems;	// InfoLog has no further info about deleted entries
 	}
-	$boInfolog =& CreateObject('infolog.boinfolog');
+	$infolog_bo = new infolog_bo();
 	$user = $GLOBALS['egw_info']['user']['account_id'];
 
 	$readAbleItems = array();
@@ -105,7 +105,7 @@ function &_egwnotessync_listBy($action, $timestamp)
 	{
 		$uid = $GLOBALS['egw']->common->get_egwId($guid);
 
-		if(($info = $boInfolog->read($uid)) &&		// checks READ rights too and returns false if none
+		if(($info = $infolog_bo->read($uid)) &&		// checks READ rights too and returns false if none
 			// for filter my = all items the user is responsible for:
 			//($user == $info['info_owner'] && !count($info['info_responsible']) || in_array($user,$info['info_responsible'])))
 			// for filter own = all items the user own or is responsible for:
@@ -165,8 +165,8 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 	{
 		case 'text/plain':
 		case 'text/x-vnote':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			$noteId = $vcalInfolog->importVNOTE($content, $contentType);
+			$infolog_ical = new infolog_ical();
+			$noteId = $infolog_ical->importVNOTE($content, $contentType);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -174,15 +174,15 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 		case 'text/x-s4j-sift':
 			Horde::logMessage("SyncML: egwnotessync import treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
-			$sifInfolog	=& CreateObject('infolog.sifinfolog');
-			$noteId = $sifInfolog->addSIF($content,-1,'note');
+			$infolog_sif	= new infolog_sif();
+			$noteId = $infolog_sif->addSIF($content,-1,'note');
 			error_log("Done add note: noteId=$noteId");
 			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
-	
+
 	if (is_a($noteId, 'PEAR_Error'))
 	{
 		return $noteId;
@@ -220,23 +220,23 @@ function _egwnotessync_search($content, $contentType)
 	{
 		case 'text/x-vnote':
 		case 'text/plain':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			$noteId	= $vcalInfolog->searchVNOTE($content, $contentType);
+			$infolog_ical = new infolog_ical();
+			$noteId	= $infolog_ical->searchVNOTE($content, $contentType);
 			break;
-			
+
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
 		case 'text/x-s4j-sift':
 			Horde::logMessage("SyncML: egwnotessync search treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
-			$sifInfolog	=& CreateObject('infolog.sifinfolog');
-			$noteId = $sifInfolog->searchSIF($content,'note');
+			$infolog_sif	= new infolog_sif();
+			$noteId = $infolog_sif->searchSIF($content,'note');
 			break;
-			
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
-	
+
 	if (is_a($noteId, 'PEAR_Error'))
 	{
 		return $noteId;
@@ -293,15 +293,15 @@ function _egwnotessync_export($guid, $contentType)
 	{
 		$options = array();
 	}
-	
+
 	$noteId = $GLOBALS['egw']->common->get_egwId($guid);
-	
+
 	switch ($contentType)
 	{
 		case 'text/x-vnote':
 		case 'text/plain':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			return $vcalInfolog->exportVNOTE($noteId, $contentType);
+			$infolog_ical = new infolog_ical();
+			return $infolog_ical->exportVNOTE($noteId, $contentType);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -309,8 +309,8 @@ function _egwnotessync_export($guid, $contentType)
 		case 'text/x-s4j-sift':
 			Horde::logMessage("SyncML: egwnotessync export treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
-			$sifInfolog	=& CreateObject('infolog.sifinfolog');
-			if($note = $sifInfolog->getSIF($noteId, 'note'))
+			$infolog_sif	= new infolog_sif();
+			if($note = $infolog_sif->getSIF($noteId, 'note'))
 			{
 				return $note;
 			}
@@ -319,7 +319,7 @@ function _egwnotessync_export($guid, $contentType)
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			break;
-		
+
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
@@ -359,8 +359,8 @@ function _egwnotessync_delete($guid)
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 	#
-	
-	return ExecMethod('infolog.boinfolog.delete',$GLOBALS['egw']->common->get_egwId($guid));
+
+	return ExecMethod('infolog.infolog_bo.delete',$GLOBALS['egw']->common->get_egwId($guid));
 }
 
 /**
@@ -387,7 +387,7 @@ function _egwnotessync_replace($guid, $content, $contentType)
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_EDIT))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
-	
+
 	if (is_array($contentType))
 	{
 		$options = $contentType;
@@ -398,15 +398,15 @@ function _egwnotessync_replace($guid, $content, $contentType)
 	{
 		$options = array();
 	}
-	
+
 	$noteId = $GLOBALS['egw']->common->get_egwId($guid);
-	
+
 	switch ($contentType)
 	{
 		case 'text/plain':
 		case 'text/x-vnote':
-			$vcalInfolog =& CreateObject('infolog.vcalinfolog');
-			return $vcalInfolog->importVNOTE($content, $contentType, $noteId);
+			$infolog_ical = new infolog_ical();
+			return $infolog_ical->importVNOTE($content, $contentType, $noteId);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -414,8 +414,8 @@ function _egwnotessync_replace($guid, $content, $contentType)
 		case 'text/x-s4j-sift':
 			Horde::logMessage("SyncML: egwnotessync replace treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
-			$sifInfolog	=& CreateObject('infolog.sifinfolog');
-			return $sifInfolog->addSIF($content, $infoId, 'note');
+			$infolog_sif	= new infolog_sif();
+			return $infolog_sif->addSIF($content, $infoId, 'note');
 			break;
 
 		default:

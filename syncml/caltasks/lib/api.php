@@ -91,7 +91,7 @@ function _egwcaltaskssync_list($_startDate='', $_endDate='')
 		),
 	);
 
-	$tasks = ExecMethod('infolog.boinfolog.search',$searchFilter);
+	$tasks = ExecMethod('infolog.infolog_bo.search',$searchFilter);
 
 	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($tasks) .' tasks', __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
@@ -146,13 +146,13 @@ function &_egwcaltaskssync_listBy($action, $timestamp)
 		}
 	}
 
-	$boInfolog =& CreateObject('infolog.boinfolog');
+	$infolog_bo = new infolog_bo();
 	$user = $GLOBALS['egw_info']['user']['account_id'];
 
 	foreach($allChangedTasksItems as $guid) {
 		$uid = $GLOBALS['egw']->common->get_egwId($guid);
 
-		if(($info = $boInfolog->read($uid)) &&		// checks READ rights too and returns false if none
+		if(($info = $infolog_bo->read($uid)) &&		// checks READ rights too and returns false if none
 			// for filter my = all items the user is responsible for:
 			($user == $info['info_owner'] && !count($info['info_responsible']) || in_array($user,$info['info_responsible'])))
 			// for filter own = all items the user own or is responsible for:
@@ -187,8 +187,8 @@ function _egwcaltaskssync_import($content, $contentType, $notepad = null)
 		case 'text/x-vcalendar':
 		case 'text/calendar':
 			if(strrpos($content, 'BEGIN:VTODO')) {
-				$vcalInfolog	=& CreateObject('infolog.vcalinfolog');
-				$id = $vcalInfolog->importVTODO($content);
+				$infolog_ical	= new infolog_ical();
+				$id = $infolog_ical->importVTODO($content);
 				$type = 'infolog_task';
 			} else {
 				$boical	= new calendar_ical();
@@ -230,8 +230,8 @@ function _egwcaltaskssync_search($content, $contentType)
 		case 'text/x-vcalendar':
 		case 'text/calendar':
 			if(strrpos($content, 'BEGIN:VTODO')) {
-				$vcalInfolog	=& CreateObject('infolog.vcalinfolog');
-				$id 		=  $vcalInfolog->searchVTODO($content);
+				$infolog_ical	= new infolog_ical();
+				$id 		=  $infolog_ical->searchVTODO($content);
 				$type		=  'infolog_task';
 			} else {
 				$boical		= new calendar_ical();
@@ -298,8 +298,8 @@ function _egwcaltaskssync_export($guid, $contentType)
 
 		switch ($contentType) {
 			case 'text/x-vcalendar':
-				$vcalInfolog    =& CreateObject('infolog.vcalinfolog');
-				return $vcalInfolog->exportVTODO($taskID,'1.0');
+				$infolog_ical    = new infolog_ical();
+				return $infolog_ical->exportVTODO($taskID,'1.0');
 
 				break;
 			default:
@@ -357,7 +357,7 @@ function _egwcaltaskssync_delete($guid)
 
 	if(strrpos($guid, 'infolog_task') !== false) {
 		Horde::logMessage("SymcML: egwcaltaskssync delete deleting task", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		return ExecMethod('infolog.boinfolog.delete',$GLOBALS['egw']->common->get_egwId($guid));
+		return ExecMethod('infolog.infolog_bo.delete',$GLOBALS['egw']->common->get_egwId($guid));
 	} else {
 		Horde::logMessage("SymcML: egwcaltaskssync delete deleting event", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		$bocalendar =& new calendar_boupdate();
@@ -391,9 +391,9 @@ function _egwcaltaskssync_replace($guid, $content, $contentType)
 			if(strrpos($guid, 'infolog_task') !== false) {
 				Horde::logMessage("SymcML: egwcaltaskssync replace replacing task", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 				$taskID = $GLOBALS['egw']->common->get_egwId($guid);
-				$vcalInfolog	=& CreateObject('infolog.vcalinfolog');
+				$infolog_ical	= new infolog_ical();
 
-				return $vcalInfolog->importVTODO($content, $taskID);
+				return $infolog_ical->importVTODO($content, $taskID);
 			} else {
 				Horde::logMessage("SymcML: egwcaltaskssync replace replacing event", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 				$boical	= new calendar_ical();
