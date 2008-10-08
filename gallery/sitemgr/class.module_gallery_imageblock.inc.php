@@ -1,7 +1,7 @@
 <?php
 /**
  * eGroupWare Gallery2 integration: image-block
- * 
+ *
  * @link http://www.egroupware.org
  * @link http://gallery.sourceforge.net/
  * @package gallery
@@ -92,7 +92,7 @@ class module_gallery_imageblock extends Module
 		$this->properties = array();
 		$this->title = lang('Imageblock');
 		$this->description = lang('Imageblock of the Gallery');
-		
+
 		$GLOBALS['egw']->translation->add_app('gallery');
 	}
 
@@ -109,7 +109,7 @@ class module_gallery_imageblock extends Module
 		$this->arguments['albumFrame']['label'] = lang('Album frame (%1Samples%2)','<a href="'.$sample_url.'" target="_blank">','</a>');
 
 		$this->arguments['blocks']['options'] = ExecMethod('gallery.g2_integration.imageBlockTypes');
-		
+
 		return parent::get_user_interface();
 	}
 
@@ -119,9 +119,9 @@ class module_gallery_imageblock extends Module
 		{
 			return lang('You have no rights to view %1 content !!!',lang('Gallery'));
 		}
-		if (!is_object($GLOBALS['egw']->g2)) 
+		if (!isset($GLOBALS['egw']->g2))
 		{
-			$GLOBALS['egw']->g2 =& new g2_integration(true,sitemgr_link(array(
+			$GLOBALS['egw']->g2 = new g2_integration(true,sitemgr_link(array(
 				'page_name' => $arguments['page_name'] ? $arguments['page_name'] : $GLOBALS['page']->name
 			)));
 			if ($GLOBALS['egw']->g2->error)
@@ -164,7 +164,7 @@ class module_gallery_imageblock extends Module
 				}
 				break;
 		}
-		
+
 		if ($arguments['align'])
 		{
 			$content = '<div align="'.$arguments['align'].'">'."\n".$content."\n</div>\n";
