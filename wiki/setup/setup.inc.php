@@ -41,12 +41,12 @@
 	$setup_info['wiki']['depends'][] = array
 	(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('1.3','1.4','1.5')
+		'versions' => Array('1.3','1.4','1.5','1.6')
 	);
 	$setup_info['wiki']['depends'][] = array
 	(
 		'appname'  => 'etemplate',
-		'versions' => Array('1.3','1.4','1.5')
+		'versions' => Array('1.3','1.4','1.5','1.6')
 	);
 
 
