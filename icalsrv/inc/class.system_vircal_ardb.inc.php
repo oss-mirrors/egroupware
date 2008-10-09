@@ -107,7 +107,7 @@
 				'enabled' => 1,
 				'auth'  => ':basic',
 				'rscs'  => array(
-					'infolog.boinfolog' => array(
+					'infolog.infolog_bo' => array(
 						'hnd'   => 'icalsrv.boinfolog_vtodos',
 						'hndarg3' => '0',
 						'qmeth' => 'search',

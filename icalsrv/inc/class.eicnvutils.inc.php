@@ -3,7 +3,7 @@
 	 * @file
 	 * eGroupWare API - eGroupWare specific ICalendar component conversion,
 	 * auxiliary utility routines.
-	 * @author Jan van Lieshout 
+	 * @author Jan van Lieshout
 	 * @package icalsrv
 	 */
 	/* ------------------------------------------------------------------------ *
@@ -27,7 +27,7 @@
     /**
 	 * Common  utility routines to manipulate iCalendar components and fields in
 	 * an EGroupware context.
-	 * 
+	 *
 	 * @section eicnv_synopsis Synopsis
 	 * To illustrate just a few of the many conversion routines in this library, lets take
 	 * as example a piece from a task to VTODO conversion routine. In this
@@ -39,7 +39,7 @@
 	 * library object (because not all the conversion routines can yet be called
 	 * as class methods):
 @verbatim
-  $binf =& CreateObject('infolog.boinfolog');        
+  $binf =& CreateObject('infolog.infolog_bo');
   $task = $binf->read(1233);
   ....
   $vtodo = Horde_iCalendar::newComponent('VTODO',....);
@@ -49,7 +49,7 @@
 
   Now we use three routines from our class to fill the ATTENDEE attribute
   of <code>$vtodo</code> with info for the first responsible person
-  we found in the  task in <code>$task</code>. 
+  we found in the  task in <code>$task</code>.
 
 @verbatim
  $actor1_id  = $task['info_responsible'][0];
@@ -64,8 +64,8 @@
 	 * (by use of the method <code>mki_v_CAL_ADDRESS()</code>) and a full Calendar Name as
 	 * vtodo parameter (by use of the method <code>mki_p_CN()</code>). Finally the property value
 	 * and the property parameters are added to the new vtodo element by use of the
-	 * <code>updi_c_addAttribute()</code> routine. 
-	 * 
+	 * <code>updi_c_addAttribute()</code> routine.
+	 *
 	 * As a result of this code you might find in the printed variant of
 	 * <code>$vtodo</code> a line added like:
 @verbatim
@@ -115,7 +115,7 @@ END:VTODO
 	 * the functions callable as class method (i.e. as <code>eicnvutils::method_x(...)</code>)
 	 * are labeled as such.
 	 * You dont need more than a singleton of the class  icalsrv.eicnvutils though, as it carries
-	 * no state. 
+	 * no state.
 	 *
 	 * @section secrfc Background literature for ICalendar conversions
 	 * When you start using the iCalendar format the infamous RFC 2445 is indispensible
@@ -132,7 +132,7 @@ END:VTODO
 	 * From this on the bocalendar and boinfolog classes will do the proper conversion to
 	 * server times.
 	 * On export (all|most) date-time values produced will be in utc format.
-	 * Date values on the contrary (as for 
+	 * Date values on the contrary (as for
 	 * whole day events etc) will be in UI time of the logged in user, thus in a likewise
 	 * manner as on import.  The logic here is that wholeday events are to respect daylight
 	 * and not exact time. There will be no VTIMEZONE written in the exported icalendar.
@@ -184,14 +184,14 @@ END:VTODO
 
 			$this->TASKMAGIC = $GLOBALS['egw_info']['server']['install_id']
 				? $GLOBALS['egw_info']['server']['install_id']
-				: 'local'; 
+				: 'local';
 		}
 
 		// ------------- second: below only generic conversion stuff --------------
 
 		/**
 		* @private
-		* @var string 
+		* @var string
 		* Magic unique number used for de/encoding our uids.
 		*
 		* This string that contains global unique magic number that is
@@ -224,7 +224,7 @@ END:VTODO
 		);
 
 		/**
-		* @var array $partstatus_egw2ical 
+		* @var array $partstatus_egw2ical
 		* Conversion of the egw used participant status values to the corresponding icalendar
 		* attendee status terminology.
 		* @private
@@ -236,7 +236,7 @@ END:VTODO
 			'T' => 'TENTATIVE'
 		);
 		/**
-		* @var array 
+		* @var array
 		* Conversion of the icalendar used attendee status values to the corresponding icalendar
 		* participants status terminology.
 		* @private
@@ -293,7 +293,7 @@ END:VTODO
 		// 	   * @private
 		// 	   * @var array
 		// 	   * Vcalendar attributes for a iCalendar string that gets exported from Egw
-		// 	   * This variable is set by the constructor to the defaults from 
+		// 	   * This variable is set by the constructor to the defaults from
 		// 	   */
 		// 	  var $export_vcalendar_attributes = array();
 
@@ -305,15 +305,15 @@ END:VTODO
 		*/
 		//@{
 
-	  /** 
+	  /**
 	   * Convert a 6 field hash array in the current active timezone to a unix servertime timestamp. --Class method--
-	   * 
+	   *
 	   *  This is basically the inverseof php getdate() function.
-	   * 
+	   *
 	   *  The a6date array has fields as in the php getdate() function:
 	   * - <code>year</code> four digit year field
-	   * - <code>month</code> integer month number <b> note: mon, not month!! </b> 
-	   * - <code>mday</code> integer day of month number 
+	   * - <code>month</code> integer month number <b> note: mon, not month!! </b>
+	   * - <code>mday</code> integer day of month number
 	   * - <code>hour</code> integer hour
 	   * - <code>minute</code> integer minutes
 	   * - <code>second</code> integer seconds
@@ -327,19 +327,19 @@ END:VTODO
 				$a6['month'],$a6['mday'],$a6['year']);
 		}
 
-		/** 
+		/**
 		* Convert a unix timestamp to a 6 field hash array in the current active timezone. --Class method--
-		* 
+		*
 		*  This is basically alike the php getdate() function but with different field names
-		* 
+		*
 		*  The a6date array has fields as in the php getdate() function:
 		* - <code>year</code> four digit year field
 		* - <code>month</code> integer month number
-		* - <code>mday</code> integer day of month number 
+		* - <code>mday</code> integer day of month number
 		* - <code>hour</code> integer hour
 		* - <code>minute</code> integer minutes
 		* - <code>second</code> integer seconds
-		* 
+		*
 		* @param int  $utime   a unixtimestamp assumed in servertime
 		* @return array The date in a6date in local timezone format.
 		*/
@@ -353,7 +353,7 @@ END:VTODO
 		}
 
 	  /**
-	   * Get database add date of event or todo. --Class method-- 
+	   * Get database add date of event or todo. --Class method--
 	   * @private
 	   * @param int $id id of event or todo
 	   * @param string $appname  name of the application (='calendar' or 'infolog')
@@ -412,9 +412,9 @@ END:VTODO
 		* used for later synchronisation.
 		* @param string|int $egw_id  eGW id of the egw entity (event, task,..)
 		* @param string $app_prefix prefix to use in ecnoding the name
-		* 
+		*
 		* @return string|false  on success the global unique id. On error: false.
-		*                     
+		*
 		* Uses @ref $TASKMAGIC  string that holds our unique ID
 		*/
 		function mki_v_guid($egw_id,$app_prefix='egw')
@@ -426,8 +426,8 @@ END:VTODO
 			return $app_prefix .'-' . $egw_id. '-' . $this->TASKMAGIC;
 		}
 
-		/** 
-		* produce array of default vcalendar attributes. --Class method-- 
+		/**
+		* produce array of default vcalendar attributes. --Class method--
 		* @return array a hash of the default vcalendar element attributes with values.
 		* The attributes set are: <code>PRODID</code>, <code>VERSION</code>and
 		* <code>METHOD</code>
@@ -435,7 +435,7 @@ END:VTODO
 		function mki_default_vcalendar_attributes()
 		{
 			return array(
-				'PRODID'  => '-//eGroupWare//NONSGML eGroupWare Calendar '  
+				'PRODID'  => '-//eGroupWare//NONSGML eGroupWare Calendar '
 					. $GLOBALS['egw_info']['apps']['calendar']['version']  . '//'
 					. strtoupper($GLOBALS['egw_info']['user']['preferences']['common']['lang']),
 				'VERSION' => '1.0',
@@ -476,13 +476,13 @@ END:VTODO
 			return $this->priority_egw2ical[$eprio];
 		}
 
-		/** 
+		/**
 		* Translate cat-ids to commasepstingh cat-names. --Class method--
 		*
 		* <i>JVLNOTE: boldly copied from class.xmlrpc_server.inc.php because I donot know how
 		* to instantiate $GLOBALS['server'] (that provides this method) atm.</i>
 		* @note THIS CODE SHOULD BE SOMEWHERE ELSE: IT HAS NOTHING TO DO WITH ICAL!!
-		* @param array $cids   the list with category ids 
+		* @param array $cids   the list with category ids
 		* @return string|false $idnamescstr  commasep string with names for the category ids or
 		* on error false
 		*/
@@ -514,7 +514,7 @@ END:VTODO
 		*
 		* NEW RalfBecker Aug 2007
 		* allow to use contact email addresses as participants too (as the webgui)
-		* 
+		*
 		* @param int $aid egw account(person) id
 		* @return string $cls cal_address format string (mailto:<emailadr>. On error
 		* the emailadr part will stay empty.
@@ -537,10 +537,10 @@ END:VTODO
 
 		/**
 		* Convert and egw account id into a iCalendar CN type parameter string. --Class method--
-		* 
+		*
 		* NEW RalfBecker Aug 2007
 		* allow to use contact email addresses as participants too (as the webgui)
-		* 
+		*
 		* @param  int $account_id egw account(person) id
 		* @return array CN param in horde_icalendar format. On error this will be empty.
 		*/
@@ -562,7 +562,7 @@ END:VTODO
 			return array('CN' => $cns ? $cns : '');
 		}
 
-		/** Convert an egw period with start and end times to a freebusy value. --Class method-- 
+		/** Convert an egw period with start and end times to a freebusy value. --Class method--
 		* Generate a simple, single freebusy value according to rfc2445,sec.4.8.2.6
 		* as start and end dt times
 		* @param int $utstart start time of period (as unix time)
@@ -578,7 +578,7 @@ END:VTODO
 		* Generate parameter a according to rfc2445,sec.4.2.9
 		* @todo not yet implemented egw activity type to fbtype conversion
 		* @param string $act-typ egw activity type
-		* @return string value for ical freebusy property 
+		* @return string value for ical freebusy property
 		*/
 		function mki_p_FBTYPE($fbtype=null)
 		{
@@ -598,7 +598,7 @@ END:VTODO
 		*
 		* NEW RalfBecker Aug 2007
 		* allow to use contact email addresses as participants too (as the webgui)
-		* 
+		*
 		* The resulting value of the ATTENDEE field will be in CAL_ADDRESS type format.
 		* The  resulting parameterlist may contain  fields of the following:
 		*  - <code> ROLE={CHAIR|REQ-PARTICIPANT|OPT-PARTICIPANT|NON-PARTICIPANT} </code>
@@ -633,12 +633,12 @@ END:VTODO
 		/**
 		* Make a value of type RECUR for a ical RRULE property
 		*
-		* A simple example: 
+		* A simple example:
 		* <code> ( RRULE) : (FREQ=MONTHLY;COUNT=10;INTERVAL=2) </code>
 		* here the first part between parenthesis is property and the
 		* second is a value of type RECUR
 		*
-		* @param string $recur_type the type of recurrence frequence we have 
+		* @param string $recur_type the type of recurrence frequence we have
 		* @param mixed $recur_data Todo describe this parameter...
 		* @param int $recur_interval Todo describe this parameter...
 		* @param utime $recur_enddate the final date that the recurrence ends
@@ -787,7 +787,7 @@ END:VTODO
 			// (that is: the values!, not the keys though)
 			// so lets apply it to the avalue and aparams, that should be enough!
 			//		error_log('n:' . $aname . 'v:' . $avalue);
-			$valueData = 
+			$valueData =
 			$GLOBALS['egw']->translation->convert($avalue,
 			$GLOBALS['egw']->translation->charset(),'UTF-8');
 			$paramData = $GLOBALS['egw']->translation->convert(
@@ -831,7 +831,7 @@ END:VTODO
 		*
 		* @param string $guid the global Icalendar UID value
 		* @param string $app_prefix prefix to be found in the encoding
-		* @return false|int On error: false. 
+		* @return false|int On error: false.
 		*                   On success: local egw todo id.
 		*/
 		function mke_guid2id($guid,$app_prefix='egw')
@@ -859,10 +859,10 @@ END:VTODO
 		// ************ JVL CHECK THE CODE BENEATH *****************
 		// oke: seems to work for a single categorie (tested form bovtodos calls)
 
-		/** 
+		/**
 		* Translate catnames back to cat-ids creating/modifying cats on the fly. --Class method--
 		*
-		* 
+		*
 		* @note THIS CODE SHOULD BE SOMEWHERE ELSE: IT HAS NOTHING TO DO WITH ICAL!!
 		* @param array $cnames  list with category names
 		* @param string $owner_id the userid of the owner, default to empty string
@@ -912,11 +912,11 @@ END:VTODO
 				$cids[] = (int)$cid;
 			}
 
-			return implode(',',$cids); 
+			return implode(',',$cids);
 		}
 
-		/** 
-		* Convert a horde_icalendar parsed attribute date- or date-time value 
+		/**
+		* Convert a horde_icalendar parsed attribute date- or date-time value
 		* to a unix timestamp.  --Class method--
 		* @note this is just a hack because horde_icalendar converts only date-times to utime
 		* @param array|string $ddtval DATE array or DATE-TIME utime string
@@ -927,7 +927,7 @@ END:VTODO
 			if(!is_array($ddtval))
 			{
 				// assume an already parsed(by Horde_iCalendar) date-time value
-				return $ddtval; 
+				return $ddtval;
 			}
 			else
 			{
@@ -994,7 +994,7 @@ END:VTODO
 		* value of type RECUR
 		*
 		* @bug RECUR: MONTHLY;BYMONTHDAY,  only ok if startdate is also on this MONTHDAY
-		* egw problem. 
+		* egw problem.
 		*
 		* @todo RECUR: COUNT=xx;WEEKLY;BYDAY, may miss the last occurence, if not started
 		* on a BYDAY day: to be fixed! prio=low
@@ -1004,9 +1004,9 @@ END:VTODO
 		* @author JVL (required some thinking..)
 		* @param string $recur RECUR type value of RRULE
 		* @param mixed $rstart start date in UTC format
-		* @return  array $rar a assoc array with keys: 'recur_type', 'recur_data', 'recur_interval' 
+		* @return  array $rar a assoc array with keys: 'recur_type', 'recur_data', 'recur_interval'
 		*  and 'recur_enddate'. On error:  false
-		* @note the class var @ref $hi is used as auxiliary Horde_iCalendar object  
+		* @note the class var @ref $hi is used as auxiliary Horde_iCalendar object
 		*/
 		function mke_RECUR2rar($recur,$rstart)
 		{
@@ -1017,7 +1017,7 @@ END:VTODO
 
 			// error_log('IMPORT RECURVAL=' . $recur . 'ustart=' .$ustart);
 
-			$r_data = 0; 
+			$r_data = 0;
 			$dow =array(); // for weekly count calc
 			$r_type = $r_interval = $r_end = $r_count = false;
 
@@ -1074,7 +1074,7 @@ END:VTODO
 						{
 							if (in_array(strtoupper(substr($day,0,2)), $days))
 							{ //WAS ERROR IN BOICAL!!
-								$r_data |= $mid; 
+								$r_data |= $mid;
 							}
 						}
 						$r_type = MCAL_RECUR_WEEKLY;
@@ -1082,14 +1082,14 @@ END:VTODO
 					// --------- r_end calculation from COUNT and BYDAYs ---
 					if ($r_count)
 					{
-						$c_count = ($r_count - 1)*$c_interval; 
+						$c_count = ($r_count - 1)*$c_interval;
 						foreach($days as $wdd)
 						{
 							$dow[] = $this->dowseqid[$wdd];
 						}
 						sort($dow);
 						$ustart_seqid = $this->dowseqid[strtoupper(substr(date('D',$ustart),0,2))];
-						// find index of start day 0.. 
+						// find index of start day 0..
 						$sdi = 0;                               //in case start is not on a byday
 						foreach($dow as $i)
 						{
@@ -1131,15 +1131,15 @@ END:VTODO
 					if ($r_count)
 					{
 						// count calc is still experimental!
-						$c_count = ($r_count - 1)*$c_interval; 
-						$a6sd['mday'] += $c_count;  
+						$c_count = ($r_count - 1)*$c_interval;
+						$a6sd['mday'] += $c_count;
 						$r_end = $this->a6toutime($a6sd);
 					}
 					break;
 				case 'MONTHLY':
-					$r_type = strpos($recur,'BYDAY') !== false ? 
+					$r_type = strpos($recur,'BYDAY') !== false ?
 					MCAL_RECUR_MONTHLY_WDAY : MCAL_RECUR_MONTHLY_MDAY;
-					//		  break;										
+					//		  break;
 					//fall through
 				case 'M':
 					if(preg_match('/MD(\d+) (.*)/',$recur, $recurMatches))
@@ -1152,7 +1152,7 @@ END:VTODO
 						$r_type = MCAL_RECUR_MONTHLY_WDAY;
 						$c_interval = $r_interval = $recurMatches[1];
 					}
-					// 
+					//
 					if ($r_count)
 					{
 						// count calc is still experimental!
@@ -1161,18 +1161,18 @@ END:VTODO
 							case MCAL_RECUR_MONTHLY_MDAY:
 								// error_log('DOING MOTNHLY MDAY'); Egw doesnot handle this special, see todo
 								$c_count = ($r_count - 1)*$c_interval; // maybe changed because 1.0 found
-								$a6sd['month'] += $c_count;  
+								$a6sd['month'] += $c_count;
 								$r_end = $this->a6toutime($a6sd);
 								break;
 							case MCAL_RECUR_MONTHLY_WDAY:
 								$c_count = ($r_count - 1)*$c_interval; // maybe changed because 1.0 found
-								// startday 
-								$dowsd = date('w',$this->a6toutime($a6sd)); // day of week for sd 
+								// startday
+								$dowsd = date('w',$this->a6toutime($a6sd)); // day of week for sd
 								//end day, first try
-								$a6ed = array_diff($a6sd,array());  $a6ed['month'] += $c_count;  
+								$a6ed = array_diff($a6sd,array());  $a6ed['month'] += $c_count;
 								//day1 of startmonth
 								$a6smd1 = array_diff($a6sd,array()); $a6smd1['mday'] = 1;
-								$dowsmd1 = date('w',$this->a6toutime($a6smd1)); // day of week for smd1 
+								$dowsmd1 = date('w',$this->a6toutime($a6smd1)); // day of week for smd1
 
 								//startdate as day of 5week segment, anchored on and afer smd1
 								$do5wsegsd = $dowsmd1 + $a6sd['mday'];
@@ -1211,7 +1211,7 @@ END:VTODO
 						// count calc is still experimental!
 						// is there only this BYMONTHDAY support?
 						$c_count = ($r_count - 1)*$c_interval; // maybe changed because 1.0 found
-						$a6sd['year'] += $c_count;  
+						$a6sd['year'] += $c_count;
 						$r_end = $this->a6toutime($a6sd);
 					}
 					break;
@@ -1221,16 +1221,16 @@ END:VTODO
 				'recur_type'     => $r_type,
 				'recur_data'     => $r_data,
 				'recur_interval' => $r_interval,
-				'recur_enddate'  => $r_end 
+				'recur_enddate'  => $r_end
 			);
 		}
 
 		/**
 		* Parse a CAL_ADDRESS and try to find the associated egw account_id or contact_id. --Class method--
-		* 
+		*
 		* NEW RalfBecker Aug 2007
 		* allow to use contact email addresses as participants too (as the webgui)
-		* 
+		*
 		* @param  string $attrval CAL_ADDRESS type value string
 		* @return int|string|false $pid associated (by email) egw pid. On error: false.
 		*/
@@ -1332,7 +1332,7 @@ END:VTODO
 		* Parse the params array to find a PARTSTAT param, convert this to
 		* a egw partstatus (may occur e.g. in ATTENDEE params)
 		* @param array $params  params of e.g. an ical ATTENDEE field
-		* @return array|false $epartstatus egw term for particpant status if detected else false 
+		* @return array|false $epartstatus egw term for particpant status if detected else false
 		*/
 		function mke_params2partstat($params)
 		{
@@ -1372,10 +1372,10 @@ END:VTODO
 						switch ($vtype)
 						{
 							case 'DURATION':
-								$alarms[] = array('offset' => -$vattr['value']); 					
+								$alarms[] = array('offset' => -$vattr['value']);
 								break;
 							case 'DATE-TIME':
-								$alarms[] = array('time' => $vattr['value']); 					
+								$alarms[] = array('time' => $vattr['value']);
 								break;
 							default:
 								// we should also do ;RELATED=START|END

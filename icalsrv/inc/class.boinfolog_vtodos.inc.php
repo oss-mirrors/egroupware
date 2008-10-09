@@ -1,9 +1,9 @@
 <?php
-   /** 
-	* @file 
+   /**
+	* @file
 	* eGroupWare - iCalendar VTODOS conversion, import and export for egw infolog
-	* @author Jan van Lieshout  
-	* @version $Id$ 
+	* @author Jan van Lieshout
+	* @version $Id$
 	*/
 
    /* http://www.egroupware.org                                                *
@@ -46,7 +46,7 @@
 	 * Some simple examples. Firs we need a couple of egw tasks and an instance of our
 	 * (concrete) infologresource handler class:
 @verbatim
-  $binf =& CreateObject('infolog.boinfolog');
+  $binf =& CreateObject('infolog.infolog_bo');
 
   $tsk1 = $binf->read(1233);                    // get 3 tasks
   $tsk2 = $binf->read(4011);
@@ -169,7 +169,7 @@
 		*
 		* @note when a field is filled with a <code>array('rn' => xxx) </code> this
 		* means that for conversion the value from xxx can simply be copied to the new field.
-		* For other values the conversion is more complex and needs to be handled by 
+		* For other values the conversion is more complex and needs to be handled by
 		* specific functions.
 		*
 		* Produce the array of vtodo to task field mappings that this class implements.
@@ -179,7 +179,7 @@
 		function _provided_vtodo2taskFields()
 		{
 			static $v2t = array(
-				// optional once only 
+				// optional once only
 				'CLASS'     => array('rn' => 'info_access'),
 				'COMPLETED' => array('rn' =>  'info_datecompleted'),
 				'CREATED'   => array('fn_TSforAction(modify)'),
@@ -242,7 +242,7 @@
 		* using the set_rsc() method.
 		* @param ProductType $devicetype The type identification of the device that is used to
 		* the transport the ical data to and from. This is used to set the supportedFields already.
-		* @note These can also later be set using the setSupportedFields() method. 
+		* @note These can also later be set using the setSupportedFields() method.
 		* @param string $rscownid the id of the calendar owner. This is only needed for import
 		* in calendars not owned by the authenticated user. Default (0) the id of the
 		* authenticated user is used.
@@ -263,8 +263,8 @@
 			return true;
 		}
 
-		/** Set the egw infolog resource  that this worker will handle.  
-		* 
+		/** Set the egw infolog resource  that this worker will handle.
+		*
 		* This worker is only capable of handling  boinfolog task objects, so it should
 		* be of that class. The $egw_rsc is registered in the $rsc variable and the supported
 		* ical element is set to be 'vtodo'. This is registered in $rsc_vtypes.
@@ -298,9 +298,9 @@
 		* the $uid_mapping_export parameter. Either with the task id encoded (ID2UID) or with the
 		* task uid field copied (UID2UID) or with a completey new generated string (NEWUID).
 		* .
-		* For more info see @ref secuidmapping 
+		* For more info see @ref secuidmapping
 		*
-		* The mapping is inspired on rfc 2445 -sec 4.6.2 
+		* The mapping is inspired on rfc 2445 -sec 4.6.2
 		*  @bug created field is not fetched oke from db.
 		* @param TaskId|TaskData $task id or data of the eGW task that will be exported
 		* @param int $uid_mapping_export switch to set the export mode for the uid fields.
@@ -312,9 +312,9 @@
 		function export_vtodo(&$task, $uid_mapping_export=ID2UID)
 		{
 			// decode the mode
-			$euid_export = ($uid_mapping_export == ID2UID) ? false : true; 
+			$euid_export = ($uid_mapping_export == ID2UID) ? false : true;
 			// auxiliary horde_iCalendar object
-			$hIcal = $this->hi; 
+			$hIcal = $this->hi;
 
 			$veExportFields =& $this->supportedFields;
 
@@ -384,7 +384,7 @@
 							}
 							$propval  = $this->ecu->mki_v_CAL_ADDRESS($pid);
 							$propparams = $this->ecu->mki_p_CN($pid);
-							// NOTE: we need to add it already: multiple ATTENDEE fields may be occur 
+							// NOTE: we need to add it already: multiple ATTENDEE fields may be occur
 							$this->ecu->updi_c_addAttribute($vtodo,'ATTENDEE',$propval,$propparams);
 						}
 						break;
@@ -403,7 +403,7 @@
 							$parameters['ORGANIZER']  = $this->ecu->mki_p_CN($task['info_owner']);
 						}
 						break;
-						// Note; wholeday detection may change the DUE value later! 
+						// Note; wholeday detection may change the DUE value later!
 					case 'DUE':
 						if($task['info_enddate'])
 						{
@@ -430,7 +430,7 @@
 //						break;
 					case 'CATEGORIES':
 						if($catids = $task['info_cat'])
-						{ 
+						{
 							$catnamescstr = $this->ecu->cats_ids2idnamescstr(explode(',',$catids));
 							$attributes['CATEGORIES'] = $catnamescstr;
 						}
@@ -494,7 +494,7 @@
 			// wholeday detector (DUE =23:59:59 && DTSTART = 00:00)
 			// if detected the times will be exported in VALUE=DATE format
 			if(((date('H:i:s',$task['info_enddate']) == '23:59:59') ||
-				(date('H:i:s',$task['info_enddate']) == '00:00:00')) 
+				(date('H:i:s',$task['info_enddate']) == '00:00:00'))
 				&& (date('H:i',$task['info_startdate'] == '00:00')))
 			{
 				// only replace if supported!
@@ -544,7 +544,7 @@
 		}
 
 		/**
-		* Import a VTODO as a task into  the Egw infolog 
+		* Import a VTODO as a task into  the Egw infolog
 		*
 		* The ical VTODO component is converted to an eGW task for the
 		* infolog resource in $rsc and then imported into this eGW infolog resource.
@@ -558,15 +558,15 @@
 		* - use the value in the VTODO uid field a search key for a uid search
 		*  amongst the Egw tasks (<code>UMM_UID2UID</code>) to use as task to update. Or finally
 		* - update a specific existing Egw task defined by the $cal_id parameter, with the data
-		*  (UMM_FIXEDID). 
+		*  (UMM_FIXEDID).
 		*
-		* Default the mode <code>UMM_UID2ID</code> is used. 	 For more info see @ref secuidmapping 
+		* Default the mode <code>UMM_UID2ID</code> is used. 	 For more info see @ref secuidmapping
 		*
 		* @ref $supportedFields    determines the VTODOS that will be used for import
 		*
 		* @todo implement ATTENDEE and ORGANIZER import for VTODOS
 		*
-		* @param  VTODO $vtodo   VTODO object (horde_iCalendar_vtodo) 
+		* @param  VTODO $vtodo   VTODO object (horde_iCalendar_vtodo)
 		* @param int $uid_mapping_import uid mapping import mode used. see @ref secuidmapping Default
 		*  UMM_UID2ID.
 		* @param boolean $reimport_missing_tasks enable the import of previously exported tasks
@@ -581,7 +581,7 @@
 		function import_vtodo(&$vtodo, $uid_mapping_import, $reimport_missing_tasks=false, $cal_id=0)
 		{
 			// auxiliary horde_iCalendar object
-			$hIcal = $this->hi; 
+			$hIcal = $this->hi;
 
 			$veImportFields =& $this->supportedFields;
 
@@ -608,11 +608,11 @@
 			$cur_tid      = false;  // current egw task id
 			$cur_owner_id = false;  // current egw task owner id
 			$cur_task    = false;  // and the whole array of possibly correspond egw task
-			// import action description (just for fun and debug) : 
+			// import action description (just for fun and debug) :
 			// NEW|NEW-NONUID|NEW-FOR-MISSING
 			// DEL-MISSING|DEL-READ|DEL-READ-UID|
-			// UPD-MISSING|UPD-READ|UPD-READ-UID 
-			$imp_action    = 'NEW-NONUID';    
+			// UPD-MISSING|UPD-READ|UPD-READ-UID
+			$imp_action    = 'NEW-NONUID';
 
 			$vuid = null;
 			if($uidval = $vtodo->getAttribute('UID'))
@@ -662,18 +662,18 @@
 					if($reimport_missing_tasks)
 					{
 						// maybe it was deleted in egw already..
-						$imp_action = 'UPD-MISSING'; 
+						$imp_action = 'UPD-MISSING';
 						unset($task['info_id']); // import as a new one
 						$imp_action = 'NEW';
 						break;
-					} 
+					}
 					// no reimport allowed and task for id not found
 					return VELT_IMPORT_STATUS_NOELT;
 					break;
 				case UMM_UID2UID :
 					if((!empty($vuid)) && ($uidmatch_task = $this->rsc->read($vuid)))
 					{
-						// go do uidmatching, search for a egw task with the vuid as uid field 
+						// go do uidmatching, search for a egw task with the vuid as uid field
 						// is this uid-search really implemented in bocal ??
 						$cur_tid      = $uidmatch_task['info_id'];
 						$cur_owner_id = $uidmatch_task['info_owner'];
@@ -806,7 +806,7 @@
 			if (!isset($task['info_enddate']) && ($evduration !== false))
 			{
 				$task['info_enddate'] = $this->ecu->mke_DDT2utime($task['info_startdate']) + $evduration;
-			} 
+			}
 
 			#		  // a trick for whole day handling or ...??
 			#		  if(date('H:i:s',$task['end']) == '00:00:00')
@@ -835,7 +835,7 @@
 			}
 
 			// handle fixed id call (for boical compatibility)
-			// @todo test boical compatibility (esp. with $cal_id>0 case) 
+			// @todo test boical compatibility (esp. with $cal_id>0 case)
 			if($cal_id > 0)
 			{
 				$task['info_id'] = $cal_id;
@@ -908,7 +908,7 @@
 						// DELETE BAD and it was ours
 						$this->_errorlog_evupd(
 							'task',
-							'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
+							'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)',
 							$user_id, $task, $cur_task
 						);
 						return VELT_IMPORT_STATUS_ERROR;
@@ -920,7 +920,7 @@
 			{
 				// ******** for serious debugging only.. **************
 				// 			  if ($this->tsdebug){
-					// 				$this->_errorlog_evupd('task', 'OK: ' . $imp_action, 
+					// 				$this->_errorlog_evupd('task', 'OK: ' . $imp_action,
 					// 									   $user_id, $task, $cur_task);
 					// 				error_log('task readback dump:' . print_r($updatedTask,true));
 					// 			  }
@@ -948,7 +948,7 @@
 				// UPDATE BAD and we own it or it was a new one
 				$this->_errorlog_evupd(
 					'task',
-					'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)', 
+					'ERROR: ' . $imp_action . '(** INTERNAL ERROR ? **)',
 					$user_id, $task, $cur_task
 				);
 				return VELT_IMPORT_STATUS_ERROR;
@@ -963,10 +963,10 @@
 	   *
 	   * The value of the member variable $reimport_missing_elements is used to possibly allow to
 	   * reimport of gone tasks in the infolog.
-	   * 
+	   *
 	   * The value of the member variable $uid_mapping_import is used to control the set
 	   * of iCalendar fields that are imported.
-	   * @param  VTODO $ncvelt    VTODO object (horde_iCalendar_vtodo) 
+	   * @param  VTODO $ncvelt    VTODO object (horde_iCalendar_vtodo)
 	   * @param  int $tid  id for a selected task to be updated by the info from $velt
 	   *     If left out or set to -1 then uid_mapping_import is switched back to its standard
 	   *  setting as found in the member variable $uid_mapping_import.
@@ -988,8 +988,8 @@
 
 	/**
 	 * Delete a tasks specified by the id
-	 * 
-	 * There's not yet a way to handle the situation that the user has no right to delete a task, 
+	 *
+	 * There's not yet a way to handle the situation that the user has no right to delete a task,
 	 * eg. because it's delegated to him
 	 *
 	 * @param int $id info_id

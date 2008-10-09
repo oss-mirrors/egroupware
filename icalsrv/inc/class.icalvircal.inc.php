@@ -159,7 +159,7 @@
 				if($rh_def['qmeth'] == 'search')
 				{
 					if($this->ivdebug) error_log('icalvircal.export_vcal-search:'. print_r($rh_def['qarg'],true));
-					
+
 					// NEW RalfBecker Aug 2007
 					// if only the etag / maximum modification date of the current resource is requested ($max_modified)
 					// it is done by requesting only the first event of the calendar sorted by modification date
@@ -176,7 +176,7 @@
 									'order' => 'cal_modified DESC',
 								);
 								break;
-							case 'infolog.boinfolog':
+							case 'infolog.infolog_bo':
 								$params += array(
 									'start' => 0,
 									'num_rows' => 1,
@@ -221,7 +221,7 @@
 							if ($this->export_etag < $event['modified']) $this->export_etag = $event['modified'];
 						}
 						break;
-					case 'infolog.boinfolog':
+					case 'infolog.infolog_bo':
 						$ids_exported['infolog'] = array();
 						foreach($ids as $task)
 						{
@@ -287,10 +287,10 @@
 			}
 			return $vcb->render_vcal($attribs);
 		}
-		
+
 		/**
 		 * Get the etag / maximum modification date of the current calendar (!)
-		 * 
+		 *
 		 * NEW RalfBecker Aug 2007
 		 *
 		 * @todo enhance this to allow to retrieve also the etag of InfoLog
@@ -301,7 +301,7 @@
 		{
 			return $this->export_vcal($attribs,true);
 		}
-		
+
 		/**
 		* Import all suited elements  from an iCalendar string into the
 		* various bound Egw resources of the virtual calendar.

@@ -402,7 +402,7 @@
 					)
 					'access' => 'RW'
 				)
-				'infolog.boinfolog' => array(
+				'infolog.infolog_bo' => array(
 					'hnd'   => 'boinfolog_vtodos',
 					'owner_id' => $user_id,
 					'qmeth' => 'search',

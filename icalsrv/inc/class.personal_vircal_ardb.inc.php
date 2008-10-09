@@ -144,7 +144,7 @@
 			'enabled' => 1,
 			'auth'  => ':basic',
 			'rscs'  => array(
-				'infolog.boinfolog' => array(
+				'infolog.infolog_bo' => array(
 					'hnd'   => 'icalsrv.boinfolog_vtodos',
 					'owner_id' => '_fn_cal_owner_id()',
 					'qmeth' => 'search',
