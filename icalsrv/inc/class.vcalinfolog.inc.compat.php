@@ -19,10 +19,10 @@
 
 	//require_once EGW_SERVER_ROOT.'/icalsrv/inc/infolog/class.bovtodos.inc.php';
 
-	class vcalinfolog extends boinfolog
+	class vcalinfolog extends infolog_bo
 	{
 		/** the icalsrv resource handler object that handles  ical import and export for the infolog
-		* @var boinfolog_vtodos $infhnd 
+		* @var boinfolog_vtodos $infhnd
 		*/
 		var $infhnd;
 
@@ -63,8 +63,8 @@
 		* @note -- PART OF  calendar.boical API COMPATIBILITY INTERFACE -----------
 		*
 		* @todo check if the return value of importVcal is still compatible..
-		* @param string $_vcalData  ical data string to be imported 
-		* @param int $_taskID fixed id of the eGW task to fill with the VTODO data      
+		* @param string $_vcalData  ical data string to be imported
+		* @param int $_taskID fixed id of the eGW task to fill with the VTODO data
 		*    when -1 import the VTODO content to new EGW  according to the Uid Matching Mode
 		*    set in the handler.
 		* @return boolean $ok  false on failure | true on success

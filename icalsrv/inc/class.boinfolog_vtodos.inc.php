@@ -136,7 +136,7 @@
 		/**
 		 * instance of boinfolog
 		 *
-		 * @var boinfolog
+		 * @var infolog_bo
 		 */
 		var $rsc;
 
@@ -276,7 +276,7 @@
 		*/
 		function set_rsc($egw_rsc)
 		{
-			if(!is_a($egw_rsc,'boinfolog'))
+			if(!is_a($egw_rsc,'infolog_bo'))
 			{
 				return false;
 			}
