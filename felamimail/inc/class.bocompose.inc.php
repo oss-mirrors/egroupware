@@ -1157,7 +1157,7 @@
 			//error_log("performing Infolog Stuff");
 			// attension: we dont return from infolog. cleanups will be done there.
 			if ($_formData['to_infolog'] == 'on') {
-				$uiinfolog =& CreateObject('infolog.uiinfolog');
+				$uiinfolog =& CreateObject('infolog.infolog_ui');
 				$uiinfolog->import_mail(
 					$this->sessionData['to'],
 					$this->sessionData['subject'],

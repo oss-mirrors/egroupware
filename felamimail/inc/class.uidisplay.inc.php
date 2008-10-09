@@ -392,7 +392,7 @@
 
 			// infolog URL
 			$linkData = array(
-				'menuaction' => 'infolog.uiinfolog.import_mail',
+				'menuaction' => 'infolog.infolog_ui.import_mail',
 				'uid'    => $this->uid,
 				'mailbox' =>  base64_encode($this->mailbox)
 			);
