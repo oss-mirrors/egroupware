@@ -17,14 +17,14 @@
 	$setup_info['phpsysinfo']['app_order'] = 99;
 	$setup_info['phpsysinfo']['enable']    = 2;
 	$setup_info['phpsysinfo']['tables']    = '';
-	
+
 	$setup_info['phpsysinfo']['license']  = 'GPL';
 	$setup_info['phpsysinfo']['description'] =
 		'phpSysInfo displays information about system facts like Uptime, CPU, Memory, PCI devices, SCSI devices, IDE devices, Network adapters, Disk usage, and more.<p>'.
 		'phpSysInfo supports now <b>Windows</b>, beside <b>Linux</b> and nearly every other *nix operating system: <b>Darwin, FreeBSD, HP-UX, NetBSD, OpenBSD, SunOS</b>.';
 	$setup_info['phpsysinfo']['note'] =
 		'The version bundled with eGroupWare is equivalent to phpSysInfo\'s version 2.5.2rc1 from 2005-02-27.';
-		
+
 	$setup_info['phpsysinfo']['author'] = array(
 		'name' => 'phpSysInfo project',
 		'url'  => 'http://phpsysinfo.sf.net',
@@ -39,5 +39,5 @@
 	/* Dependencies for this app to work */
 	$setup_info['phpsysinfo']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('1.2','1.3','1.4','1.5')
+		'versions' => Array('1.2','1.3','1.4','1.5','1.6','1.7')
 	);
