@@ -1,7 +1,7 @@
 <?php
   /**
-   * @file EGroupware - IcalSrv setup file 
-   * @package IcalSrv 
+   * @file EGroupware - IcalSrv setup file
+   * @package IcalSrv
    * @version 0.0.2
    * @author erics
    * @author jvl
@@ -41,6 +41,5 @@
 	/* Dependencies for this app to work */
 	$setup_info['icalsrv']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('1.3','1.4','1.5')
+		'versions' => Array('1.4','1.5','1.6','1.7')
 	);
-?>
