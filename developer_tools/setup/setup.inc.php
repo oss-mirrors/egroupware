@@ -20,7 +20,7 @@
 
 	$setup_info['developer_tools']['author'] = 'Miles Lott';
 	$setup_info['developer_tools']['description'] =
-		'The TranslationTools allow to create and extend translations-files for eGroupWare. 
+		'The TranslationTools allow to create and extend translations-files for eGroupWare.
 		They can search the sources for new / added phrases and show you the ones missing in your language.';
 	$setup_info['developer_tools']['note'] =
 		'Reworked and improved version of the former language-management of Milosch\'s developer_tools.';
@@ -39,6 +39,5 @@
 	/* Dependencies for this app to work */
 	$setup_info['developer_tools']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('1.2','1.3','1.4','1.5')
+		'versions' => Array('1.2','1.3','1.4','1.5','1.6','1.7')
 	);
-?>
