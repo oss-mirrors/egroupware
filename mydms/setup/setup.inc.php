@@ -24,7 +24,7 @@
 
 	$setup_info['mydms']['maintainer'] = 'Lars Kneschke';
 	$setup_info['mydms']['maintainer_email'] = 'l.kneschke@metaways.de';
- 
+
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['mydms']['hooks'][] = 'sidebox_menu';
 	$setup_info['mydms']['hooks'][] = 'settings'; //tim
@@ -47,10 +47,9 @@
 		'phpgw_mydms_Keywords'
 	);
 	$setup_info['mydms']['only_db'] = array('mysql');
-	
+
 	/* Dependencies for this app to work */
 	$setup_info['mydms']['depends'][] = array(
 		 'appname'  => 'phpgwapi',
-		 'versions' => Array('1.3','1.4','1.5')
+		 'versions' => Array('1.4','1.5','1.6','1.7')
 	);
-?>
