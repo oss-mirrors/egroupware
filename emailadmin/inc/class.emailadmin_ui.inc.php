@@ -17,7 +17,6 @@
 		var $public_functions = array
 		(
 			'addProfile'	=> True,
-			'css'		=> True,
 			'deleteProfile'	=> True,
 			'editProfile'	=> True,
 			'listProfiles'	=> True,
@@ -35,6 +34,7 @@
 			$this->t            =& CreateObject('phpgwapi.Template',EGW_APP_TPL);
 			#$this->boemailadmin =& CreateObject('emailadmin.bo');
 			$this->boemailadmin = new emailadmin_bo();
+			$this->css();
 		}
 		
 		static function getAllGroups()
@@ -159,7 +159,8 @@
 	
 		function css()
 		{
-			$appCSS = 
+			#$appCSS =
+			$GLOBALS['egw_info']['flags']['css'] .= 
 			'th.activetab
 			{
 				color:#000000;
@@ -190,7 +191,7 @@
 			div.activetab{ display:inline; }
 			div.inactivetab{ display:none; }';
 			
-			return $appCSS;
+			#return $appCSS;
 		}
 		
 		function deleteProfile()
@@ -335,11 +336,11 @@
 			);
 			$this->t->set_var('imaptype', $selectFrom);
 
-						$style="width:100%; border:0px; height:150px;";
-						$this->t->set_var('signature', html::fckEditorQuick(
-							'globalsettings[ea_default_signature]', 'simple',
-							$profileData['ea_default_signature'], '150px')
-						);
+			$style="width:100%; border:0px; height:150px;";
+			$this->t->set_var('signature', html::fckEditorQuick(
+					'globalsettings[ea_default_signature]', 'simple',
+					$profileData['ea_default_signature'], '150px')
+			);
 			
 						
 			$this->t->parse("out","main");
