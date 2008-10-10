@@ -200,13 +200,13 @@
 				foreach($_signatureList as $signature) {
 					$description = ($signature['fm_defaultsignature'] == true) ? $signature['fm_description'] .' ('. lang('default') .')' : $signature['fm_description'];
 					$tableRows[] = array(
-						'1'	=> $signature['fm_signatureid'] != -1 ? $GLOBALS['egw']->html->checkbox('signatureID', false, $signature['fm_signatureid']) : '',
+						'1'	=> $signature['fm_signatureid'] != -1 ? html::checkbox('signatureID', false, $signature['fm_signatureid']) : '',
 						'.1'	=> 'style="width:30px"',
 						'2'	=> '<a href="" onclick="egw_openWindowCentered(\''. $urlEditSignature ."&signatureID=".$signature['fm_signatureid']. '\',\'felamiMailACL\',\'600\',\'230\'); return false;">'. @htmlspecialchars($description, ENT_QUOTES, $this->charset) .'</a>',
 					);
 				}
 
-				return $GLOBALS['egw']->html->table($tableRows, 'style="width:100%;"');
+				return html::table($tableRows, 'style="width:100%;"');
 			}
 
 			return '';
@@ -225,13 +225,13 @@
 					$description = $identity['id'].":".$identity['realName']." ".$identity['organization']." <".$identity['emailAddress'].">";
 					$description = ($identity['default'] == true) ? $description .' ('. lang('default') .')' : $description;
 					$tableRows[] = array(
-						'1'	=> $identity['id'] != -1 ? $GLOBALS['egw']->html->checkbox('accountID', false, $identity['id']) : '',
+						'1'	=> $identity['id'] != -1 ? html::checkbox('accountID', false, $identity['id']) : '',
 						'.1'	=> 'style="width:30px"',
 						'2'	=> '<a href="'. $urlEditAccountData ."&accountID=".$identity['id'].'">'. @htmlspecialchars($description, ENT_QUOTES, $this->charset) .'</a>',
 					);
 				}
 
-				return $GLOBALS['egw']->html->table($tableRows, 'style="width:100%;"');
+				return html::table($tableRows, 'style="width:100%;"');
 			}
 
 			return '';
@@ -277,17 +277,17 @@
 
 				// the status icon
 				if($header['deleted']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgdel'));
+					$this->t->set_var('image_url',html::image('felamimail','kmmsgdel'));
 				} elseif($header['recent']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgnew'));
+					$this->t->set_var('image_url',html::image('felamimail','kmmsgnew'));
 				} elseif($header['forwarded']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgforwarded'));
+					$this->t->set_var('image_url',html::image('felamimail','kmmsgforwarded'));
 				} elseif($header['answered']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgreplied'));
+					$this->t->set_var('image_url',html::image('felamimail','kmmsgreplied'));
 				} elseif($header['seen']) {
-					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgread'));
+					$this->t->set_var('image_url',html::image('felamimail','kmmsgread'));
 				} else {
-					$this->t->set_var('image_url',$GLOBALS['egw']->html->image('felamimail','kmmsgunseen'));
+					$this->t->set_var('image_url',html::image('felamimail','kmmsgunseen'));
 				}
 
 				// the css for this row
@@ -337,16 +337,16 @@
 				   $header['mimetype'] == 'multipart/related' ||
 				   substr($header['mimetype'],0,11) == 'application' ||
 				   substr($header['mimetype'],0,5) == 'audio') {
-					$image = $GLOBALS['egw']->html->image('felamimail','attach');
+					$image = html::image('felamimail','attach');
 					$this->t->set_var('attachment_image', $image);
 				} else {
 					$this->t->set_var('attachment_image', '&nbsp;');
 				}
 				// show priority flag
 				if ($header['priority'] < 3) {
-					 $image = $GLOBALS['egw']->html->image('felamimail','prio_high');
+					 $image = html::image('felamimail','prio_high');
 				} elseif ($header['priority'] > 3) {
-					$image = $GLOBALS['egw']->html->image('felamimail','prio_low');
+					$image = html::image('felamimail','prio_low');
 				} else {
 					$image = '';
 				}

@@ -36,8 +36,8 @@
 			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
 			$this->_connectionStatus = $this->bofelamimail->openConnection();
 
-			$this->sessionDataAjax	= $GLOBALS['egw']->session->appsession('ajax_session_data');
-			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data');
+			$this->sessionDataAjax	= $GLOBALS['egw']->session->appsession('ajax_session_data','felamimail');
+			$this->sessionData	= $GLOBALS['egw']->session->appsession('session_data','felamimail');
 
 			if(!isset($this->sessionDataAjax['folderName'])) {
 				$this->sessionDataAjax['folderName'] = 'INBOX';
@@ -816,8 +816,8 @@
 		
 		function saveSessionData() 
 		{
-			$GLOBALS['egw']->session->appsession('ajax_session_data','',$this->sessionDataAjax);
-			$GLOBALS['egw']->session->appsession('session_data','',$this->sessionData);
+			$GLOBALS['egw']->session->appsession('ajax_session_data','felamimail',$this->sessionDataAjax);
+			$GLOBALS['egw']->session->appsession('session_data','felamimail',$this->sessionData);
 		}
 		
 		function saveSignature($_mode, $_id, $_description, $_signature, $_isDefaultSignature) 

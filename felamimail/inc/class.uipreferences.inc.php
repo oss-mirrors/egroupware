@@ -169,13 +169,13 @@
 			
 				$this->t->set_var('signatureID', $signatureID);
 
-				$this->t->set_var('tinymce',$GLOBALS['egw']->html->fckEditorQuick(
+				$this->t->set_var('tinymce',html::fckEditorQuick(
 					'signature', 'simple', 
 					$signatureData->fm_signature, 
 					'150px')
 				);
 
-				$this->t->set_var('checkbox_isDefaultSignature',$GLOBALS['egw']->html->checkbox(
+				$this->t->set_var('checkbox_isDefaultSignature',html::checkbox(
 					'isDefaultSignature',
 					$signatureData->fm_defaultsignature,
 					'true',
@@ -183,9 +183,9 @@
 					)
 				);
 			} else {
-				$this->t->set_var('tinymce',$GLOBALS['egw']->html->fckEditorQuick('signature', 'simple', '', '150px'));
+				$this->t->set_var('tinymce',html::fckEditorQuick('signature', 'simple', '', '150px'));
 
-				$this->t->set_var('checkbox_isDefaultSignature',$GLOBALS['egw']->html->checkbox(
+				$this->t->set_var('checkbox_isDefaultSignature',html::checkbox(
 					'isDefaultSignature', false, 'true', 'id="isDefaultSignature"'
 				));
 
@@ -374,12 +374,12 @@
 				$this->t->set_var('accountID','new');
 			}
 			$this->t->set_var('allowAccounts',($preferences->userDefinedAccounts ? 1 : 0));
-			$this->t->set_var('identity_selectbox', $GLOBALS['egw']->html->select('identity[signature]',$sigvalue,$allSignatures, true, "style='width: 250px;'"));
-			$this->t->set_var('folder_selectbox', $GLOBALS['egw']->html->select('ic[folderstoshowinhome]',$icServer->folderstoshowinhome,$folderList, true, "style='width: 250px;'",6));
-			$this->t->set_var('trash_selectbox', $GLOBALS['egw']->html->select('ic[trashfolder]',$icServer->trashfolder,$trashOptions, true, "style='width: 250px;'"));
-			$this->t->set_var('sent_selectbox', $GLOBALS['egw']->html->select('ic[sentfolder]',$icServer->sentfolder,$sentOptions, true, "style='width: 250px;'"));
-			$this->t->set_var('draft_selectbox', $GLOBALS['egw']->html->select('ic[draftfolder]',$icServer->draftfolder,$draftOptions, true, "style='width: 250px;'"));
-			$this->t->set_var('template_selectbox', $GLOBALS['egw']->html->select('ic[templatefolder]',$icServer->templatefolder,$templateOptions, true, "style='width: 250px;'"));
+			$this->t->set_var('identity_selectbox', html::select('identity[signature]',$sigvalue,$allSignatures, true, "style='width: 250px;'"));
+			$this->t->set_var('folder_selectbox', html::select('ic[folderstoshowinhome]',$icServer->folderstoshowinhome,$folderList, true, "style='width: 250px;'",6));
+			$this->t->set_var('trash_selectbox', html::select('ic[trashfolder]',$icServer->trashfolder,$trashOptions, true, "style='width: 250px;'"));
+			$this->t->set_var('sent_selectbox', html::select('ic[sentfolder]',$icServer->sentfolder,$sentOptions, true, "style='width: 250px;'"));
+			$this->t->set_var('draft_selectbox', html::select('ic[draftfolder]',$icServer->draftfolder,$draftOptions, true, "style='width: 250px;'"));
+			$this->t->set_var('template_selectbox', html::select('ic[templatefolder]',$icServer->templatefolder,$templateOptions, true, "style='width: 250px;'"));
 			$linkData = array
 			(
 				'menuaction'    => 'felamimail.uipreferences.editAccountData'

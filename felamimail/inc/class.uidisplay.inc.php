@@ -572,7 +572,7 @@
 				$this->t->set_var('name',lang('name'));
 				$this->t->set_var('type',lang('type'));
 				$this->t->set_var('size',lang('size'));
-				$this->t->set_var('url_img_save',$GLOBALS['egw']->html->image('felamimail','fileexport', lang('save')));
+				$this->t->set_var('url_img_save',html::image('felamimail','fileexport', lang('save')));
 				#$this->t->parse('attachment_rows','attachment_row_bold',True);
 
 				$detectedCharSet=$charset2use=$this->displayCharset;
