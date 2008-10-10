@@ -1,7 +1,7 @@
 <?php
 /**
  * eGroupWare - Setup
- * http://www.egroupware.org 
+ * http://www.egroupware.org
  *
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @package polls
@@ -10,7 +10,7 @@
  * @author Till Gerken <tig@skv.org>
  * @author Greg Haygood <shrykedude@bellsouth.net>
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @version $Id$ 
+ * @version $Id$
  */
 
 /* Basic information about this app */
@@ -29,7 +29,7 @@ $setup_info['polls']['hooks'][]   = 'sidebox_menu';
 /* Dependencies for this app to work */
 $setup_info['polls']['depends'][] = array(
 	'appname' => 'phpgwapi',
-	'versions' => Array('1.2','1.3','1.4','1.5')
+	'versions' => Array('1.2','1.3','1.4','1.5','1.6','1.7')
 );
 
 
