@@ -617,6 +617,11 @@
 					'ea_user' => 0,
 					'ea_active' => 1,
 				);
+				
+                if (empty($settings['mail_server'])) $profile['userDefinedAccounts'] = 'yes';
+				if (empty($settings['mail_server'])) $profile['userDefinedIdentities'] == 'yes';
+                if (empty($settings['mail_server'])) $profile['ea_user_defined_signatures'] == 'yes';
+
 			}
 			foreach($to_parse = array(
 				'mail_server' => 'imapServer',
@@ -629,7 +634,7 @@
 					'imaps' => array(
 						'imapType' => 2,
 						'imapPort' => 993,
-						'imapTLSEncryption' => 'yes',
+						'imapTLSEncryption' => '3',
 					),
 /*					'pop3' => array(
 						'imapType' => 1,
