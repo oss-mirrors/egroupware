@@ -7,13 +7,15 @@ access_mode_readwrite	mydms	pt-br	Ler+Escrever
 acl get inherited	mydms	pt-br	Acl foi herdada
 add acl	mydms	pt-br	Adicionar acl
 add document	mydms	pt-br	Adicionar documento
+add link	mydms	pt-br	Adicionar link
 add notification	mydms	pt-br	Adicionar notificação
 add subfolder	mydms	pt-br	Adicionar sub-pasta
+adding subfolder "%1" to folder "%2"...	mydms	pt-br	Adicionando sub-pasta "%1" à pasta "%2"...
 admin-tools	mydms	pt-br	Ferramentas Administrativas
 all versions	mydms	pt-br	Todas versões
+choose document	mydms	pt-br	Escolher documento
 comment	mydms	pt-br	Comentário
 comment for current version	mydms	pt-br	Comentário da versão atual
-content	mydms	pt-br	Conteúdo
 copy acl	mydms	pt-br	Copiar acl
 copy documents	mydms	pt-br	Copiar documentos
 copy folder	mydms	pt-br	Copiar pasta
@@ -21,6 +23,7 @@ copy options	mydms	pt-br	Copiar opções
 copy subfolders	mydms	pt-br	Copiar sub-pasta
 create empty acl	mydms	pt-br	Criar acl vazia
 creation date	mydms	pt-br	Data de criação
+crop comment	mydms	pt-br	Recortar comentário
 current acl	mydms	pt-br	Acl atual
 current version	mydms	pt-br	Versão atual
 default access	mydms	pt-br	Acesso padrão
@@ -28,7 +31,9 @@ delete folder	mydms	pt-br	Remover pasta
 delete this notification	mydms	pt-br	Remover esta notificação
 do you really want to delete this acl?	mydms	pt-br	Tem certeza que deseja remover esta conta?
 do you really want to delete this document?	mydms	pt-br	Tem certeza que deseja remover este documento?
+do you really want to delete this link for document?	mydms	pt-br	Tem certeza que deseja remover este link para o documento?
 do you really want to delete this version of the document?	mydms	pt-br	Tem certeza que deseja remover esta versão do documento?
+do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	pt-br	Tem certeza que deseja remover a pasta "%1" e seu conteúdo? <br>Cuidado: Esta ação não pode ser desfeita.
 does not expire	mydms	pt-br	Não expira
 download	mydms	pt-br	Baixar
 edit folder	mydms	pt-br	Editar pasta
@@ -42,12 +47,15 @@ information about last update	mydms	pt-br	Informação sobre última atualizaç�
 informations	mydms	pt-br	Informações
 inherit acl again	mydms	pt-br	Herdar acl novamente
 last update	mydms	pt-br	Última atualização
+linked by	mydms	pt-br	Linkado por
 linked documents	mydms	pt-br	Documentos linkados
 lock status	mydms	pt-br	Status de proteção
 mime type	mydms	pt-br	Mime Type
 move document	mydms	pt-br	Mover documento
 move folder	mydms	pt-br	Mover pasta
 mydms	common	pt-br	Meus Documentos
+no related documents	mydms	pt-br	Nenhum documento relacionado
+not selected document!	mydms	pt-br	Nenhum documento selecionado!
 notifications	mydms	pt-br	Notificações
 permission	mydms	pt-br	Permissões
 select folder	mydms	pt-br	Selecionar pasta
@@ -57,6 +65,7 @@ this document gets locked by you!	mydms	pt-br	Este documento foi protegido por v
 this document gets unlocked by you.	mydms	pt-br	Este documento foi desprotegido por você
 this document is currently not locked.	mydms	pt-br	Este documento não está protegido no momento
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	pt-br	Este documento está protegido por <a href="mailto:%1">%2</a>
+to save space do not show the full comment to the file	mydms	pt-br	Para salvar espaço, não exibir o comentário completo do arquivo
 update document	mydms	pt-br	Atualizar documento
 upload date	mydms	pt-br	Data do carregamento
 uploaded by	mydms	pt-br	Carregado por

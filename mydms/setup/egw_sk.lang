@@ -9,6 +9,7 @@ add acl	mydms	sk	Pridať acl
 add document	mydms	sk	Pridať dokument
 add notification	mydms	sk	Pridať upozornenie
 add subfolder	mydms	sk	Pridať podpriečinok
+adding subfolder "%1" to folder "%2"...	mydms	sk	Pridávam podpriečinok "%1" do priečinka "%2"...
 admin-tools	mydms	sk	Nástroje pre správu
 all versions	mydms	sk	Všetky verzie
 comment	mydms	sk	Poznámka
@@ -28,6 +29,7 @@ delete this notification	mydms	sk	Odstrániť toto upozornenie
 do you really want to delete this acl?	mydms	sk	Naozaj chcete odstrániť toto acl?
 do you really want to delete this document?	mydms	sk	Naozaj chcete odstrániť tento dokument?
 do you really want to delete this version of the document?	mydms	sk	Naozaj chcete odstrániť túto verziu dokumentu?
+do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	sk	Ste si istí, že chcete odstrániť "%1" a jeho obsah?<br>Budte opatrní: Táto akcia sa nedá vrátiť späť.
 does not expire	mydms	sk	Nevyprší
 download	mydms	sk	Stiahnutie
 edit folder	mydms	sk	Upraviť priečinok

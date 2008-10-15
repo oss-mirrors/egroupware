@@ -16,6 +16,7 @@ bookmark not readable	bookmarks	sk	Záložka sa nedá čítať
 bookmarks	common	sk	Záložky
 bookmarks settings	bookmarks	sk	Nastavenia záložiek
 change bookmark	bookmarks	sk	Zmeniť záložku
+choose the categories to display	bookmarks	sk	Vyberte, ktoré kategórie zobraziť
 close this window to return	bookmarks	sk	pre návrat zavrite toto okno
 create bookmark	bookmarks	sk	Vytvoriť záložku
 create new bookmark	bookmarks	sk	Vytvoriť novú záložku
@@ -60,6 +61,7 @@ search for:	bookmarks	sk	Vyhľadať:
 select the format you would like to export to	bookmarks	sk	Vyberte formát do ktorého chcete exportovať
 send bookmark	bookmarks	sk	Poslať záložku
 sub category	bookmarks	sk	Podkategória
+this module displays bookmarks in a javascript based tree	bookmarks	sk	Tento modul zobrazuje záložky v javaskriptovom strome
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	sk	Adresa Kmou %1 je chybná. Formát musí byť <strong>user@domain</strong> a doména musí byť spomedzi existujúcich!
 to e-mail addresses	bookmarks	sk	Adresa Komu
 to which category should the imported folder hierarchy be attached	bookmarks	sk	Ku ktorej kategórii mám priradiť naimportovanú hierarchiu priečinkov

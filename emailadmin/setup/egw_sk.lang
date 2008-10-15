@@ -8,11 +8,13 @@ advanced options	emailadmin	sk	Pokročilé možnosti
 alternate email address	emailadmin	sk	Alternatívna E-mailová adresa
 any application	emailadmin	sk	Ktorákoľvek aplikácia
 any group	emailadmin	sk	Ktorákoľvek skupina
+any user	emailadmin	sk	Ktorýkoľvek používateľ
 bad login name or password.	emailadmin	sk	Chybné prihlasovacie meno alebo heslo.
 bad or malformed request. server responded: %s	emailadmin	sk	Chybná požiadavka. Odpoveď servera: %s
 bad request: %s	emailadmin	sk	Chybná požiadavka: %s
 can be used by application	emailadmin	sk	môže byť použité aplikáciou
 can be used by group	emailadmin	sk	môže byť použité skupinou
+can be used by user	emailadmin	sk	môže byť použité používateľom
 connection dropped by imap server.	emailadmin	sk	Spojenie prerušené IMAP serverom.
 could not complete request. reason given: %s	emailadmin	sk	Nemožno dokončiť požiadavku. Dôvod: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	sk	Nepodarilo sa nadviazať zabezpečené pripojenie k IMAP serveru. %s : %s.
@@ -52,6 +54,7 @@ imap server name	emailadmin	sk	názov IMAP servera
 imap server port	emailadmin	sk	port IMAP servera
 imap/pop3 server name	emailadmin	sk	názov IMAP/POP3 servera
 in mbyte	emailadmin	sk	v Megabajtoch
+inactive	emailadmin	sk	neaktívne
 ldap basedn	emailadmin	sk	LDAP basedn
 ldap server	emailadmin	sk	LDAP server
 ldap server accounts dn	emailadmin	sk	DN účtov LDAP servera
@@ -78,6 +81,7 @@ pop3 server hostname or ip address	emailadmin	sk	názov (hostname) alebo IP adre
 pop3 server port	emailadmin	sk	port POP3 servera
 postfix with ldap	emailadmin	sk	Postfix + LDAP
 profile access rights	emailadmin	sk	prístupové práva profilu
+profile is active	emailadmin	sk	profil je aktívny
 profile list	emailadmin	sk	Zoznam profilov
 profile name	emailadmin	sk	Názov profilu
 qmaildotmode	emailadmin	sk	qmail bodkový režim
@@ -111,11 +115,16 @@ unknown imap response from the server. server responded: %s	emailadmin	sk	Nezná
 unsupported action '%1' !!!	emailadmin	sk	Nepodporovaná akcia '%1' !!!
 update current email address:	emailadmin	sk	Aktualizovať súčasnú E-mailovú adresu:
 use ldap defaults	emailadmin	sk	Použiť predvolené hodnoty LDAP
+use predefined username and password defined below	emailadmin	sk	Použiť preddefinované používateľské meno a heslo, definované nižšie
 use smtp auth	emailadmin	sk	Použiť SMTP overovanie
 use tls authentication	emailadmin	sk	Použiť TLS overovanie
 use tls encryption	emailadmin	sk	Použiť TLS šifrovanie
 user can edit forwarding address	emailadmin	sk	Používateľ môže upraviť adresu preposielania
 username (standard)	emailadmin	sk	používateľské meno (štandardné)
+username/password defined by admin	emailadmin	sk	Používateľské meno/heslo definované správcom
 username@domainname (virtual mail manager)	emailadmin	sk	používateľ@doména (Virtuálny Mail ManaGeR)
 users can define their own emailaccounts	emailadmin	sk	Používatelia môžu definovať ich vlastné E-mailové účty
+users can define their own identities	emailadmin	sk	Používatelia môžu definovať svoje vlastné identity
+users can define their own signatures	emailadmin	sk	Používatelia môžu definovať svoje vlastné podpisy
+vaction messages with start- and end-date require an admin account to be set!	emailadmin	sk	Správy v neprítomnosti s počiatočným a koncovým dátumom vyžadujú, aby bol nastavený účet správcu!
 virtual mail manager	emailadmin	sk	Virtuálny MAIL ManaGeR

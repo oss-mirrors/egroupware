@@ -30,6 +30,7 @@ news headlines	common	nl	Nieuws headlines
 news type	headlines	nl	Nieuws type
 no headlines found	headlines	nl	Geen headlines gevonden
 other preferences	preferences	nl	Andere voorkeuren
+purge headline cache	common	nl	Headline cache leegmaken
 read a list / search for entries.	headlines	nl	Lees een lijst / zoek naar entries.
 read cached site data for a single site by passing the id.	headlines	nl	Lees bewaarde site gegevens van een site door het ID mee te geven.
 read site data for a single site by passing the id.	headlines	nl	Lees site gegevens van een site door het ID mee te geven.

@@ -4,4 +4,5 @@ apps	icalsrv	nl	Toepassingen
 assigned sessionid	icalsrv	nl	Toegewezen sessie id
 bogus request	icalsrv	nl	Bogus verzoek
 calendar test	icalsrv	nl	Agenda test
+icalsrv	common	nl	iCalSrv
 system	icalsrv	nl	Systeem

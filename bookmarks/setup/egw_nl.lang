@@ -16,6 +16,7 @@ bookmark not readable	bookmarks	nl	Favoriet niet leesbaar
 bookmarks	common	nl	Favorieten
 bookmarks settings	bookmarks	nl	Favorieteninstellingen
 change bookmark	bookmarks	nl	Wijzig favoriet
+choose the categories to display	bookmarks	nl	Kies de categorieën om weer te geven
 close this window to return	bookmarks	nl	Sluit dit venster om terug te keren
 create bookmark	bookmarks	nl	Maak favoriet
 create new bookmark	bookmarks	nl	Maak een nieuwe favoriet
@@ -60,6 +61,7 @@ search for:	bookmarks	nl	Zoeken op:
 select the format you would like to export to	bookmarks	nl	Selecteer het formaat waarnaar u wilt exporteren
 send bookmark	bookmarks	nl	Verzend favoriet
 sub category	bookmarks	nl	Subcategorie
+this module displays bookmarks in a javascript based tree	bookmarks	nl	Deze module toont bladwijzers in een javascript boom
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	nl	Het <B>Aan E-Mailadres</B> %1 is ongeldig. Het adres moet als volgt eruit zien <strong>gebruiker@domein</strong>
 to e-mail addresses	bookmarks	nl	Het <B>Aan E-Mailadres</B>
 to which category should the imported folder hierarchy be attached	bookmarks	nl	Aan welke categorie moet de geïmporteerde maphiërarchie worden toegevoegd

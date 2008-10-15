@@ -30,6 +30,7 @@ news headlines	common	pt-br	Manchetes novas
 news type	headlines	pt-br	Tipo de notícias
 no headlines found	headlines	pt-br	Nenhuma manchete encontrada
 other preferences	preferences	pt-br	Outras preferências
+purge headline cache	common	pt-br	Limpar cache do módulo
 read a list / search for entries.	headlines	pt-br	Ler um lista / pesquisar por registros.
 read cached site data for a single site by passing the id.	headlines	pt-br	Ler dados em cache de um único site informando o código.
 read site data for a single site by passing the id.	headlines	pt-br	Ler dados de um único site informando o código.

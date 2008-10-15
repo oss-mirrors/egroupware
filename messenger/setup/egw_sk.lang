@@ -1,6 +1,7 @@
 compose	messenger	sk	Vytvoriť
 compose global message	common	sk	Vytvoriť verejnú správu
 compose message	messenger	sk	Vytvoriť správu
+compose to group-users	messenger	sk	Vytvoriť pre používateľov skupiny
 delete a message.	messenger	sk	Odstrániť správu.
 delete selected	messenger	sk	Odstrániť vybrané
 forward	messenger	sk	Odoslať ďalej

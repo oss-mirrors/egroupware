@@ -16,6 +16,7 @@ bookmark not readable	bookmarks	pt-br	Favoritos não podem ser lidos
 bookmarks	common	pt-br	Favoritos
 bookmarks settings	bookmarks	pt-br	Configurações dos Favoritos
 change bookmark	bookmarks	pt-br	Mudar Favorito
+choose the categories to display	bookmarks	pt-br	Escolher as categorias a serem exibidas
 close this window to return	bookmarks	pt-br	feche essa janela para retornar
 create bookmark	bookmarks	pt-br	Criar Favorito
 create new bookmark	bookmarks	pt-br	Criar novo Favorito
@@ -60,6 +61,7 @@ search for:	bookmarks	pt-br	Pesquisar  por:
 select the format you would like to export to	bookmarks	pt-br	Selecione para qual formato você gostaria de exportar
 send bookmark	bookmarks	pt-br	Enviar Favorito
 sub category	bookmarks	pt-br	Subcategoria
+this module displays bookmarks in a javascript based tree	bookmarks	pt-br	Este módulo exibe favoritos organizados em uma visão árvore
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	pt-br	Destinatário %1 inválido. O Formato deve ser <strong> usuario@dominio.com.br</strong> e o domínio deve existir!
 to e-mail addresses	bookmarks	pt-br	Correio eletrônico do destinatário
 to which category should the imported folder hierarchy be attached	bookmarks	pt-br	Em qual categoria a pasta importada deve ser anexada
@@ -67,8 +69,8 @@ total visits	bookmarks	pt-br	total de visitas
 tree view	bookmarks	pt-br	Visão em árvore
 unable to open temp file %1 for import.	bookmarks	pt-br	Incapaz de abrir arquivo temporário %1 para importação.
 url is required.	bookmarks	pt-br	o URL é requerida.
-view bookmark	bookmarks	pt-br	Ver Favorito
-view this bookmark	bookmarks	pt-br	Ver este Favorito
+view bookmark	bookmarks	pt-br	Exibir Favorito
+view this bookmark	bookmarks	pt-br	Exibir este Favorito
 warning	bookmarks	pt-br	Atenção
 you are viewing this site outside of egroupware	bookmarks	pt-br	Você está visualizando um site fora do eGroupware
 you must select a category	bookmarks	pt-br	Você deve selecionar uma categoria

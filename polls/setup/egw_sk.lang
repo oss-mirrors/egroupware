@@ -1,3 +1,4 @@
+%1 group	polls	sk	%1 skupina
 actions	polls	sk	Akcie
 add answer to poll	polls	sk	Pridať odpoveď pre voľbu
 add answers	polls	sk	Pridať odpovede
@@ -28,12 +29,18 @@ result visible to	polls	sk	Výsledky smie vidieť
 select current poll	polls	sk	Vyberte aktuálnu voľbu
 settings updated	polls	sk	Nastavenia boli aktualizované
 show answers	polls	sk	Zobraziť odpovede
+show bullet if allowed to vote and result else	polls	sk	Zobraziť odrážku ak je povolené hlasovať, ináč výsledky
+show only the ballot	polls	sk	Zobraziť iba hlasovanie
+show only the result	polls	sk	Zobraziť iba výsledky
 show questions	common	sk	Zobraziť otázky
+site configuration	polls	sk	Konfigurácia stránky
+this module displays polls.	polls	sk	Tento modul zobrazuje voľby.
 total votes	polls	sk	Celkovo
 view poll	polls	sk	Zobraziť voľbu
 view results	polls	sk	Zobraziť výsledky
 vote	polls	sk	Hlasovať
 voting booth admin	admin	sk	Hlasovacia kabína
 voting booth administration	polls	sk	Správa hlasovacej kabíny
+what to show	polls	sk	Čo zobraziť
 which poll	polls	sk	Ktorá voľba
 you are not (yet) allowed view the result of this vote.	polls	sk	Nemôžete (zatiaľ) vidieť výsledky tejto voľby.

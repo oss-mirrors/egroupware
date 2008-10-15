@@ -1,8 +1,7 @@
 %1 by %2	comic	nl	%1 bij %2
 %1 by %2 (%3)	comic	nl	%1 bij %2 (%3)
-are you sure you want to reset all	comic	nl	Weet u zeker dat u alles wilt herstarten
 are you sure you want to reset all comic dates and resolved image urls?	comic	nl	Weet u zeker dat u alle strip datums en gevonden URLS wilt herstarten?
-censorship level	comic	nl	Niveau Censuur
+censorship level	comic	nl	Censuurniveau
 censorship override enabled	comic	nl	Censuur overschrijding ingeschakeld
 comic	common	nl	Strips
 comic preferences updated	comic	nl	Voorkeuren strips bijgewerkt
@@ -21,8 +20,8 @@ egroupware daily comics	comic	nl	eGroupWare dagelijkse strips
 front page comic	comic	nl	Coverstrip
 front page comic scaled	comic	nl	Afmetingen coverstrip bijgewerkt
 genre	comic	nl	Genre
-global comics	comic	nl	Globale strips
-global options	comic	nl	Globale opties
+global comics	common	nl	Globale strips
+global options	common	nl	Globale opties
 global options updated	comic	nl	Globale opties bijgewerkt
 image source	comic	nl	Afbeeldingbron
 max file size	comic	nl	Max. bestandsgrootte

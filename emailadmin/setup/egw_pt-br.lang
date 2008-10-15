@@ -8,11 +8,15 @@ advanced options	emailadmin	pt-br	opções avançadas
 alternate email address	emailadmin	pt-br	endereço de e-mail alternativo
 any application	emailadmin	pt-br	qualquer aplicação
 any group	emailadmin	pt-br	qualquer grupo
+any user	emailadmin	pt-br	qualquer usuário
+back to admin/grouplist	emailadmin	pt-br	Voltar para Administração/Lista de Grupos
+back to admin/userlist	emailadmin	pt-br	Voltar para Administração/Lista de Usuários
 bad login name or password.	emailadmin	pt-br	Nome de usuário ou senha inválido(s).
 bad or malformed request. server responded: %s	emailadmin	pt-br	Solicitação inválida. Resposta do servidor: %s
 bad request: %s	emailadmin	pt-br	Solicitação inválida: %s
 can be used by application	emailadmin	pt-br	pode ser usado pela aplicação
 can be used by group	emailadmin	pt-br	pode ser usado pelo grupo
+can be used by user	emailadmin	pt-br	pode ser usado pelo usuário
 connection dropped by imap server.	emailadmin	pt-br	Conexão interrompida pelo servidor IMAP.
 could not complete request. reason given: %s	emailadmin	pt-br	Não foi possível completar a solicitação. Resposta do servidor: %s
 could not open secure connection to the imap server. %s : %s.	emailadmin	pt-br	Não foi possível abrir conexão segura com o servidor IMAP. %s : %s.
@@ -23,12 +27,15 @@ default	emailadmin	pt-br	padrão
 deliver extern	emailadmin	pt-br	entrega externa
 do not validate certificate	emailadmin	pt-br	não validar certificado
 do you really want to delete this profile	emailadmin	pt-br	Tem certeza que deseja remover esse perfil?
+do you really want to reset the filter for the profile listing	emailadmin	pt-br	Tem certeza que deseja reiniciar o filtro para a listagem do perfil
 domainname	emailadmin	pt-br	nome do domínio
 edit email settings	emailadmin	pt-br	editar configurações de e-mail
 email account active	emailadmin	pt-br	conta de e-mail ativa
 email address	emailadmin	pt-br	endrereço de e-mail
 email settings	common	pt-br	Configurações do E-mail
 emailadmin	emailadmin	pt-br	Administração do E-Mail
+emailadmin: group assigned profile	common	pt-br	Administração de eMail: Perfil de Grupo
+emailadmin: user assigned profile	common	pt-br	Administração de eMail: Perfil de Usuário
 enable cyrus imap server administration	emailadmin	pt-br	habilitar administração do Servidor Cyrus IMAP
 enable sieve	emailadmin	pt-br	habilitar Sieve
 encrypted connection	emailadmin	pt-br	conexão criptografada
@@ -36,6 +43,8 @@ encryption settings	emailadmin	pt-br	configurações de criptografia
 enter your default mail domain (from: user@domain)	emailadmin	pt-br	Entre com o domínio de e-mail padrão (de: usuario@dominio)
 error connecting to imap server. %s : %s.	emailadmin	pt-br	Erro conectando ao servidor IMAP. %s : %s.
 error connecting to imap server: [%s] %s.	emailadmin	pt-br	Erro conectando ao servidor IMAP: [%s] %s.
+filtered by account	emailadmin	pt-br	filtrado por Conta
+filtered by group	emailadmin	pt-br	filtrado por Grupo
 forward also to	emailadmin	pt-br	encaminhar também para
 forward email's to	emailadmin	pt-br	encaminhar mensagens para
 forward only	emailadmin	pt-br	encaminhar somente
@@ -52,6 +61,7 @@ imap server name	emailadmin	pt-br	nome do servidor imap
 imap server port	emailadmin	pt-br	Porta do servidor IMAP
 imap/pop3 server name	emailadmin	pt-br	Nome do servidor IMAP/POP3
 in mbyte	emailadmin	pt-br	em Mbytes
+inactive	emailadmin	pt-br	inativo
 ldap basedn	emailadmin	pt-br	DN Base do LDAP
 ldap server	emailadmin	pt-br	Servidor LDAP
 ldap server accounts dn	emailadmin	pt-br	Contas DN de servidores LDAP
@@ -78,12 +88,14 @@ pop3 server hostname or ip address	emailadmin	pt-br	Nome ou endereço IP do serv
 pop3 server port	emailadmin	pt-br	Porta do servidor POP3
 postfix with ldap	emailadmin	pt-br	Postfix com LDAP
 profile access rights	emailadmin	pt-br	direito de acesso aos perfis
+profile is active	emailadmin	pt-br	perfil está ativo
 profile list	emailadmin	pt-br	Lista de perfis
 profile name	emailadmin	pt-br	Nome do perfil
 qmaildotmode	emailadmin	pt-br	modo dos arquivos qmail (.qmail)
 qouta size in mbyte	emailadmin	pt-br	tamanho da quota em MBytes
 quota settings	emailadmin	pt-br	configurações de quota
 remove	emailadmin	pt-br	remover
+reset filter	emailadmin	pt-br	reiniciar filtro
 select type of imap server	emailadmin	pt-br	selecione o tipo de servidor IMAP
 select type of imap/pop3 server	emailadmin	pt-br	Selecione o tipo de servidor IMAP/POP3
 select type of smtp server	emailadmin	pt-br	Selecione o tipo de servidor SMTP
@@ -111,12 +123,16 @@ unknown imap response from the server. server responded: %s	emailadmin	pt-br	Res
 unsupported action '%1' !!!	emailadmin	pt-br	Ação não suportada: '%1' !!!
 update current email address:	emailadmin	pt-br	Atualizar e-mail atual:
 use ldap defaults	emailadmin	pt-br	usar padrões LDAP
+use predefined username and password defined below	emailadmin	pt-br	Usar usuário e senha pré-definidos abaixo
 use smtp auth	emailadmin	pt-br	usar SMTP Autenticado
 use tls authentication	emailadmin	pt-br	Usar autenticação TLS
 use tls encryption	emailadmin	pt-br	Usar encriptação TLS
 user can edit forwarding address	emailadmin	pt-br	usuário pode editar endereço de encaminhamento
 username (standard)	emailadmin	pt-br	nome do usuário (padrão)
+username/password defined by admin	emailadmin	pt-br	Nome de usuário/Senha definidos pelo administrador
 username@domainname (virtual mail manager)	emailadmin	pt-br	nomedousuario@nomedodominio (Gerenciador Virtual Mail)
 users can define their own emailaccounts	emailadmin	pt-br	Os usuários podem definir sua próprias contas de correio
+users can define their own identities	emailadmin	pt-br	usuários podem definir suas próprias identidades
+users can define their own signatures	emailadmin	pt-br	usuários podem definir suas próprias assinaturas
 vaction messages with start- and end-date require an admin account to be set!	emailadmin	pt-br	Mensagens de ausência com datas de início e término necessitam de uma conta de administrador para serem definidas!
 virtual mail manager	emailadmin	pt-br	Gerenciador Virtual Mail
