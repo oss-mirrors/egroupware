@@ -36,10 +36,10 @@
 		// define some constants
 		// message types
 		var $type = array("text", "multipart", "message", "application", "audio", "image", "video", "other");
-		
+
 		// message encodings
 		var $encoding = array("7bit", "8bit", "binary", "base64", "quoted-printable", "other");
-		static $displayCharset;		
+		static $displayCharset;
 		// set to true, if php is compiled with multi byte string support
 		var $mbAvailable = FALSE;
 
@@ -47,20 +47,20 @@
 		var $htmlOptions;
 
 		var $sessionData;
-		
+
 		// the current selected user profile
 		var $profileID = 0;
-		
+
 		/**
 		 * Folders that get automatic created AND get translated to the users language
 		 * their creation is also controlled by users mailpreferences. if set to none / dont use folder
-		 * the folder will not be automatically created. This is controlled in bofelamimail->getFolderObjects 
+		 * the folder will not be automatically created. This is controlled in bofelamimail->getFolderObjects
 		 * so changing names here, must include a change of keywords there as well. Since these
 		 * foldernames are subject to translation, keep that in mind too, if you change names here.
 		 * @var array
 		 */
 		var $autoFolders = array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates');
-	
+
 		function bofelamimail($_displayCharset='iso-8859-1')
 		{
 			$this->restoreSessionData();
@@ -68,7 +68,7 @@
 			// FIXME: this->foldername seems to be unused
 			//$this->foldername	= $this->sessionData['mailbox'];
 			$this->accountid	= $GLOBALS['egw_info']['user']['account_id'];
-			
+
 			$this->bopreferences	=& CreateObject('felamimail.bopreferences');
 			$this->sofelamimail	=& CreateObject('felamimail.sofelamimail');
 			$this->botranslation	=& CreateObject('phpgwapi.translation');
@@ -99,13 +99,13 @@
 				$this->sessionData['startMessage']	= 1;
 				// default mailbox for preferences pages
 				$this->sessionData['preferences']['mailbox']	= "INBOX";
-				
+
 				$this->sessionData['messageFilter'] = array(
 					'string'	=> '',
 					'type'		=> 'quick',
 					'status'	=> 'any',
 				);
-				
+
 				// default sorting
 				switch($GLOBALS['egw_info']['user']['preferences']['felamimail']['sortOrder']) {
 					case 1:
@@ -143,31 +143,31 @@
 				}
 				$this->saveSessionData();
 			}
-			
+
 			if (function_exists('mb_convert_encoding')) {
 				$this->mbAvailable = TRUE;
 			}
 
 		}
-		
+
 		function setACL($_folderName, $_accountName, $_acl)
 		{
 			if ( PEAR::isError($this->icServer->setACL($_folderName, $_accountName, $_acl)) ) {
 				return false;
 			}
-			
+
 			return TRUE;
 		}
-		
+
 		function deleteACL($_folderName, $_accountName)
 		{
 			if ( PEAR::isError($this->icServer->deleteACL($_folderName, $_accountName)) ) {
 				return false;
 			}
-			
+
 			return TRUE;
 		}
-		
+
 		/**
 		* hook to add account
 		*
@@ -176,7 +176,7 @@
 		* @param _hookValues contains the hook values as array
 		* @returns nothing
 		*/
-		function addAccount($_hookValues) 
+		function addAccount($_hookValues)
 		{
 			$icServer = $this->mailPreferences->getIncomingServer(0);
 			if(is_a($icServer,'defaultimap')) {
@@ -188,7 +188,7 @@
 				$ogServer->addAccount($_hookValues);
 			}
 		}
-		
+
 		function adminMenu()
 		{
  			if ($GLOBALS['egw_info']['server']['account_repository'] == "ldap")
@@ -199,20 +199,20 @@
 					'url'           => '/index.php',
 					'extradata'     => 'menuaction=emailadmin.uiuserdata.editUserData'
 				);
-			
+
 				//Do not modify below this line
 				global $menuData;
-			
+
 				$menuData[] = $data;
 			}
 		}
-		
+
 		/**
 		* save a message in folder
 		*
 		* @todo set flags again
 		*
-		* @param string _folderName the foldername 
+		* @param string _folderName the foldername
 		* @param string _header the header of the message
 		* @param string _body the body of the message
 		* @param string _flags the imap flags to set for the saved message
@@ -230,16 +230,16 @@
 			}
 			return $messageid;
 		}
-		
+
 		function closeConnection() {
 			$this->icServer->disconnect();
 		}
-		
+
 		/**
 		* remove any messages which are marked as deleted or
 		* remove any messages from the trashfolder
 		*
-		* @param string _folderName the foldername 
+		* @param string _folderName the foldername
 		* @returns nothing
 		*/
 		function compressFolder($_folderName = false)
@@ -247,7 +247,7 @@
 			$folderName	= ($_folderName ? $_folderName : $this->sessionData['mailbox']);
 			$deleteOptions	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['deleteOptions'];
 			$trashFolder	= $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'];
-			
+
 			$this->icServer->selectMailbox($folderName);
 
 			if($folderName == $trashFolder && $deleteOptions == "move_to_trash") {
@@ -257,12 +257,12 @@
 				$this->icServer->expunge();
 			}
 		}
-		
+
 		/**
 		* create a new folder under given parent folder
 		*
 		* @param string _parent the parent foldername
-		* @param string _folderName the new foldername 
+		* @param string _folderName the new foldername
 		* @param bool _subscribe subscribe to the new folder
 		*
 		* @returns mixed name of the newly created folder or false on error
@@ -271,7 +271,7 @@
 		{
 			$parent		= $this->_encodeFolderName($_parent);
 			$folderName	= $this->_encodeFolderName($_folderName);
-			
+
 			if(empty($parent)) {
 				$newFolderName = $folderName;
 			} else {
@@ -279,7 +279,7 @@
 				if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
 				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
-			
+
 			if ( PEAR::isError($this->icServer->createMailbox($newFolderName) ) ) {
 				return false;
 			}
@@ -287,19 +287,19 @@
 			if ( PEAR::isError($this->icServer->subscribeMailbox($newFolderName) ) ) {
 				return false;
 			}
-			
+
 			return $newFolderName;
 
 		}
-		
-		function createIMAPFilter($_folder, $_criterias) 
+
+		function createIMAPFilter($_folder, $_criterias)
 		{
 			if(!is_array($_criterias)) {
 				return 'ALL';
 			}
 		#	error_log(print_r($_criterias, true));
 			$imapFilter = '';
-			
+
 			#foreach($_criterias as $criteria => $parameter) {
 			if(!empty($_criterias['string'])) {
 				$criteria = strtoupper($_criterias['type']);
@@ -340,7 +340,7 @@
 					case 'UNSEEN':
 						$imapFilter .= $criteria .' ';
 						break;
-					
+
 					case 'BEFORE':
 					case 'ON':
 					case 'SINCE':
@@ -356,11 +356,11 @@
 				#return 'CHARSET '. strtoupper(self::$displayCharset) .' '. trim($imapFilter);
 			}
 		}
-		
+
 		/**
 		* convert a mailboxname from displaycharset to urf7-imap
 		*
-		* @param string _folderName the foldername 
+		* @param string _folderName the foldername
 		*
 		* @returns string the converted foldername
 		*/
@@ -369,11 +369,11 @@
 			return $this->botranslation->convert($_folderName, self::$displayCharset, 'UTF7-IMAP');
 		}
 
-		function decodeMimePart($_mimeMessage, $_encoding, $_charset = '') 
+		function decodeMimePart($_mimeMessage, $_encoding, $_charset = '')
 		{
 			// decode the part
 			if (self::$debug) error_log("bofelamimail::decodeMimePart: ".print_r($_mimeMessage,true));
-			switch ($_encoding) 
+			switch ($_encoding)
 			{
 				case 'BASE64':
 					// use imap_base64 to decode
@@ -392,22 +392,7 @@
 
 		function decode_header($_string)
 		{
-			if(function_exists(mb_decode_mimeheader)) {
-				$string = $_string;
-				if(preg_match_all('/=\?.*\?Q\?.*\?=/iU', $string, $matches)) {
-					foreach($matches[0] as $match) {
-						$fixedMatch = str_replace('_', ' ', $match);
-						$string = str_replace($match, $fixedMatch, $string);
-					}
-					$string = str_replace('=?ISO8859-','=?ISO-8859-',$string);
-				}
-				$string = mb_decode_mimeheader($string);
-				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$string);
-			} elseif(function_exists(iconv_mime_decode)) {
-				// continue decoding also if an error occurs
-				$string = @iconv_mime_decode($_string, 2, self::$displayCharset);
-				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$string);
-			} elseif(function_exists(imap_mime_header_decode)) {
+			if(function_exists(imap_mime_header_decode)) {
 				$newString = '';
 
 				$string = preg_replace('/\?=\s+=\?/', '?= =?', $_string);
@@ -417,13 +402,27 @@
 				foreach((array)$elements as $element) {
 					if ($element->charset == 'default')
 						$element->charset = 'iso-8859-1';
-					$tempString = $this->botranslation->convert($element->text,$element->charset);
-					$newString .= $tempString;
+					$newString .= $this->botranslation->convert($element->text,$element->charset);
 				}
-				
 				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$newString);
+			} elseif(function_exists(mb_decode_mimeheader)) {
+				$string = $_string;
+				if(preg_match_all('/=\?.*\?Q\?.*\?=/iU', $string, $matches)) {
+					foreach($matches[0] as $match) {
+						$fixedMatch = str_replace('_', ' ', $match);
+						$string = str_replace($match, $fixedMatch, $string);
+					}
+					$string = str_replace('=?ISO8859-','=?ISO-8859-',$string);
+					$string = str_replace('=?windows-1258','=?ISO-8859-1',$string);
+				}
+				$string = mb_decode_mimeheader($string);
+				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$string);
+			} elseif(function_exists(iconv_mime_decode)) {
+				// continue decoding also if an error occurs
+				$string = @iconv_mime_decode($_string, 2, self::$displayCharset);
+				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$string);
 			}
-			
+
 			// no decoding function available
 			return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$_string);
 		}
@@ -448,16 +447,16 @@
 		 * @param int $_filenumber
 		 * @return array
 		 */
-		function decode_winmail( $_uid, $_partID, $_filenumber=0 ) 
+		function decode_winmail( $_uid, $_partID, $_filenumber=0 )
 		{
 			$attachment = $this->getAttachment( $_uid, $_partID );
 
 			$dir = $GLOBALS['egw_info']['server']['temp_dir']."/fmail_winmail/$_uid";
 			$mime = CreateObject('phpgwapi.mime_magic');
-			if ( $attachment['type'] == 'APPLICATION/MS-TNEF' && $attachment['filename'] == 'winmail.dat' ) 
+			if ( $attachment['type'] == 'APPLICATION/MS-TNEF' && $attachment['filename'] == 'winmail.dat' )
 			{
 				// decode winmail.dat
-				if ( !file_exists( "$dir/winmail.dat" ) ) 
+				if ( !file_exists( "$dir/winmail.dat" ) )
 				{
 					mkdir( $dir, 0700, true );
 					file_put_contents( "$dir/winmail.dat", $attachment['attachment'] );
@@ -466,7 +465,7 @@
 
 				// list contents
 				$files = scandir( $dir );
-				foreach ( $files as $num => $file ) 
+				foreach ( $files as $num => $file )
 				{
 					if ( filetype( "$dir/$file" ) != 'file' || $file == 'winmail.dat' ) continue;
 					if ( $_filenumber > 0 && $_filenumber != $num ) continue;
@@ -488,7 +487,7 @@
 			}
 			return false;
 		}
-	
+
 		function deleteAccount($_hookValues)
 		{
 			$icServer = $this->mailPreferences->getIncomingServer(0);
@@ -501,7 +500,7 @@
 				$ogServer->deleteAccount($_hookValues);
 			}
 		}
-		
+
 		/**
 		* delete a existing folder
 		*
@@ -509,23 +508,23 @@
 		*
 		* @returns bool true on success, false on failure
 		*/
-		function deleteFolder($_folderName) 
+		function deleteFolder($_folderName)
 		{
 			$folderName = $this->_encodeFolderName($_folderName);
-			
+
 			$this->icServer->unsubscribeMailbox($folderName);
 			if ( PEAR::isError($this->icServer->deleteMailbox($folderName)) ) {
 				return false;
 			}
-			
+
 			return true;
 		}
 
-		function deleteMessages($_messageUID, $_folder=NULL) 
+		function deleteMessages($_messageUID, $_folder=NULL)
 		{
 			$msglist = '';
 			$oldMailbox = '';
-			if (is_null($_folder) || empty($_folder)) $_folder = $this->sessionData['mailbox'];	
+			if (is_null($_folder) || empty($_folder)) $_folder = $this->sessionData['mailbox'];
 			if(!is_array($_messageUID) || count($_messageUID) === 0) {
 				return false;
 			}
@@ -543,7 +542,7 @@
 				$oldMailbox = $this->icServer->getCurrentMailbox();
 				$this->icServer->selectMailbox($_folder);
 			}
-			
+
 			switch($deleteOptions) {
 				case "move_to_trash":
 					if(!empty($trashFolder)) {
@@ -578,18 +577,18 @@
 					$this->icServer->expunge();
 					break;
 			}
-			
+
 			if($oldMailbox != '') {
 				$this->icServer->selectMailbox($oldMailbox);
 			}
-			
+
 			return true;
 		}
-		
+
 		/**
-		* convert a mailboxname from utf7-imap to displaycharset 
+		* convert a mailboxname from utf7-imap to displaycharset
 		*
-		* @param string _folderName the foldername 
+		* @param string _folderName the foldername
 		*
 		* @returns string the converted string
 		*/
@@ -606,7 +605,7 @@
 #						// nothing to quote, only 7 bit ascii
 #						return $_string;
 #					}
-#					
+#
 #					$string = imap_8bit($_string);
 #					$stringParts = explode("=\r\n",$string);
 #					while(list($key,$value) = each($stringParts)) {
@@ -653,9 +652,9 @@
 				#return false;
 				$_messageUID=array($_messageUID);
 			}
-			
+
 			$this->icServer->selectMailbox($this->sessionData['mailbox']);
-			
+
 			switch($_flag) {
 				case "flagged":
 					$this->icServer->setFlags($_messageUID, '\\Flagged', 'add', true);
@@ -683,11 +682,11 @@
 					$this->icServer->setFlags($_messageUID, 'MDNnotSent', 'add', true);
 					break;
 			}
-			
+
 			$this->sessionData['folderStatus'][$this->profileID][$this->sessionData['mailbox']]['uidValidity'] = 0;
 			$this->saveSessionData();
 		}
-		
+
 		function _getSubStructure($_structure, $_partID)
 		{
 			$tempID = '';
@@ -711,7 +710,7 @@
 					   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' ||
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'ALTERNATIVE' ||
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'RELATED' ||
-					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) 
+					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT'))
 					{
 						$structure = $structure->subParts[$tempID]->subParts[$tempID];
 					} else {
@@ -731,7 +730,7 @@
 					if($structure->subParts[$tempID]->type == 'MESSAGE' && $structure->subParts[$tempID]->subType == 'RFC822' &&
 					   count($structure->subParts[$tempID]->subParts) == 1 &&
 					   $structure->subParts[$tempID]->subParts[$tempID]->type == 'MULTIPART' &&
-					   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' || 
+					   ($structure->subParts[$tempID]->subParts[$tempID]->subType == 'MIXED' ||
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'ALTERNATIVE' ||
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'RELATED' ||
 					    $structure->subParts[$tempID]->subParts[$tempID]->subType == 'REPORT')) {
@@ -745,7 +744,7 @@
 					return false;
 				}
 			}
-			
+
 			return $structure;
 		}
 
@@ -759,7 +758,7 @@
 		static function replaceTagsCompletley(&$_body,$tag,$endtag='')
 		{
 			if ($tag) $tag = strtolower($tag);
-			if ($endtag == '' || empty($endtag) || !isset($endtag)) 
+			if ($endtag == '' || empty($endtag) || !isset($endtag))
 			{
 			        $endtag = $tag;
 			} else {
@@ -797,7 +796,7 @@
 				}
 			}
 		}
-		
+
 		static function getCleanHTML(&$_html)
 		{
 
@@ -879,7 +878,7 @@
 					"wrap" => array('maxlen' => 10)
 				)
 			);
-			
+
 			//      Allows 'td' tag with colspan|rowspan|class|style|width|nowrap attributes,
 			//              colspan has minval of   2       and maxval of 5
 			//              rowspan has minval of   3       and maxval of 6
@@ -942,7 +941,7 @@
 			$kses->AddHTML(
 				"span",array(
 					"class"   => array("minlen" =>   1, 'maxlen' =>  20),
-					"style"	  => array('minlen' =>  5, 'maxlen' => 100) 
+					"style"	  => array('minlen' =>  5, 'maxlen' => 100)
 				)
 			);
 			$kses->AddHTML(
@@ -962,7 +961,7 @@
 					"border"	=> array('maxlen' => 30),
 				)
 			);
-			
+
 			// no scripts allowed
 			// clean out comments
 			$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
@@ -1008,9 +1007,9 @@
 			} else {
 				$filename	= lang("unknown");
 			}
-			
+
 			$attachment = $this->icServer->getBodyPart($_uid, $_partID, true);
-			
+
 			switch ($structure->encoding) {
 				case 'BASE64':
 					// use imap_base64 to decode
@@ -1024,32 +1023,32 @@
 				default:
 					// it is either not encoded or we don't know about it
 			}
-			
+
 			$attachmentData = array(
 				'type'		=> $structure->type .'/'. $structure->subType,
-				'filename'	=> $filename, 
+				'filename'	=> $filename,
 				'attachment'	=> $attachment
 				);
 			# if the attachment holds a winmail number and is a winmail.dat then we have to handle that.
 			if ( $filename == 'winmail.dat' && $_winmail_nr > 0 &&
-				( $wmattach = $this->decode_winmail( $_uid, $_partID, $_winmail_nr ) ) ) 
+				( $wmattach = $this->decode_winmail( $_uid, $_partID, $_winmail_nr ) ) )
 			{
 				$attachmentData = array(
 					'type'       => $wmattach['type'],
-					'filename'   => $wmattach['name'], 
+					'filename'   => $wmattach['name'],
 					'attachment' => $wmattach['attachment'],
  				);
 			}
 			return $attachmentData;
 		}
-		
+
 		// this function is based on a on "Building A PHP-Based Mail Client"
 		// http://www.devshed.com
 		// fetch a specific attachment from a message
 		function getAttachmentByCID($_uid, $_cid, $_part)
 		{
 			$partID = false;
-			#error_log("getAttachmentByCID:$_uid, $_cid, $_part");			
+			#error_log("getAttachmentByCID:$_uid, $_cid, $_part");
 			$attachments = $this->getMessageAttachments($_uid, $_part);
 			foreach($attachments as $attachment) {
 				#error_log(print_r($attachment,true));
@@ -1078,9 +1077,9 @@
 			} else {
 				$filename	= lang("unknown");
 			}
-			
+
 			$attachment = $this->icServer->getBodyPart($_uid, $partID, true);
-			
+
 			switch ($structure->encoding) {
 				case 'BASE64':
 					// use imap_base64 to decode
@@ -1094,35 +1093,35 @@
 				default:
 					// it is either not encoded or we don't know about it
 			}
-			
+
 			$attachmentData = array(
 				'type'		=> $structure->type .'/'. $structure->subType,
-				'filename'	=> $filename, 
+				'filename'	=> $filename,
 				'attachment'	=> $attachment
 			);
-				
+
 			return $attachmentData;
 		}
-		
+
 		function getEMailProfile()
 		{
 			$config =& CreateObject('phpgwapi.config','felamimail');
 			$config->read_repository();
 			$felamimailConfig = $config->config_data;
-			
+
 			#_debug_array($felamimailConfig);
-			
+
 			if(!isset($felamimailConfig['profileID'])){
 				return -1;
 			} else {
 				return intval($felamimailConfig['profileID']);
 			}
 		}
-		
+
 		function getErrorMessage()
 		{
 			return $this->icServer->_connectionErrorObject->message;
-		}		
+		}
 
 		/**
 		* get IMAP folder status
@@ -1149,7 +1148,7 @@
 			#if(!is_array($folderInfo[0])) {
 			#	return false;
 			#}
-			
+
 			$subscribedFolders = $this->icServer->listsubscribedMailboxes('', $_folderName);
 			if(is_array($subscribedFolders) && count($subscribedFolders) == 1) {
 				$retValue['subscribed'] = true;
@@ -1170,7 +1169,7 @@
 			{
 				$retValue['displayName'] = $retValue['shortDisplayName'] = lang($retValue['shortName']);
 			}
-			
+
 			if ( PEAR::isError($folderStatus = $this->icServer->getStatus($_folderName)) ) {
 				//_debug_array($folderStatus);
 			} else {
@@ -1183,7 +1182,7 @@
 
 			return $retValue;
 		}
-		
+
 		/**
 		* get IMAP folder objects
 		*
@@ -1195,14 +1194,14 @@
 		* @param _getCounters    boolean get get messages counters
 		*
 		* @returns array with folder objects. eg.: INBOX => {inbox object}
-		*/		
-		function getFolderObjects($_subscribedOnly=false, $_getCounters=false) 
+		*/
+		function getFolderObjects($_subscribedOnly=false, $_getCounters=false)
 		{
 			$isUWIMAP = false;
-			
+
 			$delimiter = $this->icServer->getHierarchyDelimiter();
 			if( PEAR::isError($delimiter)) $delimiter = '/';
-			
+
 			$inboxData = new stdClass;
 			$inboxData->name 		= 'INBOX';
 			$inboxData->folderName		= 'INBOX';
@@ -1213,7 +1212,7 @@
 			$inboxData->subscribed = true;
 			if($_getCounters == true) {
 				$folderStatus = $this->icServer->getStatus('INBOX');
-				
+
 				$status =  new stdClass;
 				$status->messages	= $folderStatus['MESSAGES'];
 				$status->unseen		= $folderStatus['UNSEEN'];
@@ -1234,7 +1233,7 @@
 				// uw imap does not return the attribute of a folder, when requesting subscribed folders only
 				// dovecot has the same problem too
 			} else {
-				if (is_array($nameSpace)) { 
+				if (is_array($nameSpace)) {
 				  foreach($nameSpace as $type => $singleNameSpace) {
 					if($type == 'personal' && ($singleNameSpace[2]['name'] == '#mh/' || count($nameSpace) == 1) && $this->icServer->mailboxExist('Mail')) {
 						// uw-imap server with mailbox prefix or dovecot maybe
@@ -1279,32 +1278,32 @@
 					} else {
 						$foldersToCheck = $this->autoFolders;
 					}
-					#_debug_array($foldersToCheck); 
+					#_debug_array($foldersToCheck);
 					foreach($foldersToCheck as $personalFolderName) {
 						$folderName = (!empty($personalPrefix)) ? $folderPrefix.$personalFolderName : $personalFolderName;
 						if(!is_array($foldersNameSpace['personal']['all']) || !in_array($folderName, $foldersNameSpace['personal']['all'])) {
 							$createfolder = true;
-							switch($folderName) 
+							switch($folderName)
 							{
 								case 'Drafts': // => Entwürfe
-									if ($this->mailPreferences->preferences['draftFolder'] && $this->mailPreferences->preferences['draftFolder']=='none') 
-										$createfolder=false; 
+									if ($this->mailPreferences->preferences['draftFolder'] && $this->mailPreferences->preferences['draftFolder']=='none')
+										$createfolder=false;
 									break;
 								case 'Junk': //] => Spammails
-									if ($this->mailPreferences->preferences['junkFolder'] && $this->mailPreferences->preferences['junkFolder']=='none') 
-										$createfolder=false; 
+									if ($this->mailPreferences->preferences['junkFolder'] && $this->mailPreferences->preferences['junkFolder']=='none')
+										$createfolder=false;
 									break;
 								case 'Sent': //] => Gesendet
-									if ($this->mailPreferences->preferences['sentFolder'] && $this->mailPreferences->preferences['sentFolder']=='none') 
-										$createfolder=false; 
+									if ($this->mailPreferences->preferences['sentFolder'] && $this->mailPreferences->preferences['sentFolder']=='none')
+										$createfolder=false;
 									break;
 								case 'Trash': //] => Papierkorb
-									if ($this->mailPreferences->preferences['trashFolder'] && $this->mailPreferences->preferences['trashFolder']=='none') 
-										$createfolder=false; 
+									if ($this->mailPreferences->preferences['trashFolder'] && $this->mailPreferences->preferences['trashFolder']=='none')
+										$createfolder=false;
 									break;
 								case 'Templates': //] => Vorlagen
-									if ($this->mailPreferences->preferences['templateFolder'] && $this->mailPreferences->preferences['templateFolder']=='none') 
-										$createfolder=false; 
+									if ($this->mailPreferences->preferences['templateFolder'] && $this->mailPreferences->preferences['templateFolder']=='none')
+										$createfolder=false;
 									break;
 							}
 							if($createfolder === true && $this->createFolder('', $folderName, true)) {
@@ -1331,7 +1330,7 @@
 						}
 						$folderParts = explode($delimiter, $folderName);
 						$shortName = array_pop($folderParts);
-						
+
 						$folderObject = new stdClass;
 						$folderObject->delimiter	= $delimiter;
 						$folderObject->folderName	= $folderName;
@@ -1339,7 +1338,7 @@
 						if(!$_subscribedOnly) {
 							$folderObject->subscribed = in_array($folderName, $foldersNameSpace[$type]['subscribed']);
 						}
-						
+
 						if($_getCounters == true) {
 							$folderStatus = $this->icServer->getStatus($folderName);
 
@@ -1348,7 +1347,7 @@
 								$status->messages	= $folderStatus['MESSAGES'];
 								$status->unseen		= $folderStatus['UNSEEN'];
 								$status->recent 	= $folderStatus['RECENT'];
-								
+
 								$folderObject->counter = $status;
 							}
 						}
@@ -1372,13 +1371,13 @@
 					}
 				}
 			}
-			
+
 			#_debug_array($folders); exit;
-			
+
 			return $folders;
 		}
-		
-		function getMimePartCharset($_mimePartObject) 
+
+		function getMimePartCharset($_mimePartObject)
 		{
 			$charSet = 'iso-8859-1';
 
@@ -1387,11 +1386,11 @@
 					$charSet = $_mimePartObject->parameters['CHARSET'];
 				}
 			}
-			
+
 			return $charSet;
 		}
-		
-		function getMultipartAlternative($_uid, $_structure, $_htmlMode) 
+
+		function getMultipartAlternative($_uid, $_structure, $_htmlMode)
 		{
 			// a multipart/alternative has exactly 2 parts (text and html  OR  text and something else)
 
@@ -1434,7 +1433,7 @@
 					}
 
 					break;
-						
+
 				default:
 					if(is_object($partText)) {
 						return $this->getTextPart($_uid, $partText);
@@ -1451,8 +1450,8 @@
 
 			return $bodyPart;
 		}
-		
-		function getMultipartMixed($_uid, $_structure, $_htmlMode) 
+
+		function getMultipartMixed($_uid, $_structure, $_htmlMode)
 		{
 			$bodyPart = array();
 
@@ -1463,18 +1462,18 @@
 							case 'ALTERNATIVE':
 								$bodyPart[] = $this->getMultipartAlternative($_uid, $part->subParts, $_htmlMode);
 								break;
-							
+
 							case 'MIXED':
 							case 'SIGNED':
 								$bodyPart = array_merge($bodyPart, $this->getMultipartMixed($_uid, $part->subParts, $_htmlMode));
 								break;
-							
+
 							case 'RELATED':
 								$bodyPart = array_merge($bodyPart, $this->getMultipartRelated($_uid, $part->subParts, $_htmlMode));
 								break;
 						}
 						break;
-					
+
 					case 'TEXT':
 						switch($part->subType) {
 							case 'PLAIN':
@@ -1485,13 +1484,13 @@
 								break;
 						}
 						break;
-			
+
 					case 'MESSAGE':
 						if($part->subType == 'delivery-status') {
 							$bodyPart[] = $this->getTextPart($_uid, $part);
 						}
 						break;
-						
+
 					default:
 						// do nothing
 						// the part is a attachment
@@ -1500,16 +1499,16 @@
 
 			return $bodyPart;
 		}
-		
-		function getMultipartRelated($_uid, $_structure, $_htmlMode) 
+
+		function getMultipartRelated($_uid, $_structure, $_htmlMode)
 		{
 			return $this->getMultipartMixed($_uid, $_structure, $_htmlMode);
 		}
-		
-		function getTextPart($_uid, $_structure, $_htmlMode = '') 
+
+		function getTextPart($_uid, $_structure, $_htmlMode = '')
 		{
 			$bodyPart = array();
-			
+
 			$partID = $_structure->partID;
 			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true);
 			#_debug_array(preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)));
@@ -1529,8 +1528,8 @@
 			}
 			return $bodyPart;
 		}
-		
-		function getNameSpace($_icServer) 
+
+		function getNameSpace($_icServer)
 		{
 			$this->icServer->getNameSpaces();
 		}
@@ -1546,12 +1545,12 @@
 		* @param array $_filter the search filter
 		* @return bool
 		*/
-		function getSortedList($_folderName, $_sort, $_reverse, $_filter) 
+		function getSortedList($_folderName, $_sort, $_reverse, $_filter)
 		{
 			if(PEAR::isError($folderStatus = $this->icServer->examineMailbox($_folderName))) {
 				return false;
 			}
-			
+
 			if(is_array($this->sessionData['folderStatus'][0][$_folderName]) &&
 				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity']	=== $folderStatus['UIDVALIDITY'] &&
 				$this->sessionData['folderStatus'][0][$_folderName]['messages']	=== $folderStatus['EXISTS'] &&
@@ -1575,7 +1574,7 @@
 				} else {
 					$advFilter = 'CHARSET '. strtoupper(self::$displayCharset) .' '.$filter;
 					$sortResult = $this->icServer->search($advFilter, true);
-					if (PEAR::isError($sortResult)) $sortResult = $this->icServer->search($filter, true); 
+					if (PEAR::isError($sortResult)) $sortResult = $this->icServer->search($filter, true);
 					if(is_array($sortResult)) {
 							sort($sortResult, SORT_NUMERIC);
 					}
@@ -1590,23 +1589,23 @@
 			}
 			$this->sessionData['folderStatus'][0][$_folderName]['reverse'] 	= $_reverse;
 			$this->saveSessionData();
-			
+
 			return $sortResult;
 		}
-		
+
 		function getMessageEnvelope($_uid, $_partID = '')
 		{
 			if($_partID == '') {
 				if( PEAR::isError($envelope = $this->icServer->getEnvelope('', $_uid, true)) ) {
 					return false;
 				}
-			
+
 				return $envelope[0];
 			} else {
 				if( PEAR::isError($headers = $this->icServer->getParsedHeaders($_uid, true, $_partID, true)) ) {
 					return false;
 				}
-				
+
 				#_debug_array($headers);
 				$newData = array(
 					'DATE'		=> $headers['DATE'],
@@ -1646,17 +1645,17 @@
 				return $newData;
 			}
 		}
-		
+
 		function getHeaders($_folderName, $_startMessage, $_numberOfMessages, $_sort, $_reverse, $_filter)
 		{
 			$reverse = (bool)$_reverse;
 			// get the list of messages to fetch
 			$this->reopen($_folderName);
 			//$this->icServer->selectMailbox($_folderName);
-			
+
 			#print "<pre>";
 			#$this->icServer->setDebug(true);
-			
+
 			$sortResult = $this->getSortedList($_folderName, $_sort, $_reverse, $_filter);
 
 			#$this->icServer->setDebug(false);
@@ -1669,7 +1668,7 @@
 				$retValue['info']['last']	= 0;
 				return $retValue;
 			}
-			
+
 			$total = count($sortResult);
 			#_debug_array($sortResult);
 			#_debug_array(array_slice($sortResult, -5, -2));
@@ -1698,11 +1697,11 @@
 			}
 
 			$count = 0;
-			if (is_array($headersNew)) {	
+			if (is_array($headersNew)) {
 				foreach((array)$headersNew as $headerObject) {
 					#if($count == 0) _debug_array($headerObject);
 					$uid = $headerObject['UID'];
-					
+
 					// make dates like "Mon, 23 Apr 2007 10:11:06 UT" working with strtotime
 					if(substr($headerObject['DATE'],-2) === 'UT') {
 						$headerObject['DATE'] .= 'C';
@@ -1735,7 +1734,7 @@
 						if($headerObject['FROM'][0]['PERSONAL_NAME'] != 'NIL') {
 							$retValue['header'][$sortOrder[$uid]]['sender_name'] = $this->decode_header($headerObject['FROM'][0]['PERSONAL_NAME']);
 						}
-						
+
 					}
 
 					if(is_array($headerObject['TO']) && is_array($headerObject['TO'][0])) {
@@ -1747,12 +1746,12 @@
 						if($headerObject['TO'][0]['PERSONAL_NAME'] != 'NIL') {
 							$retValue['header'][$sortOrder[$uid]]['to_name'] = $this->decode_header($headerObject['TO'][0]['PERSONAL_NAME']);
 						}
-						
+
 					}
 
 					$count++;
 				}
-				
+
 				// sort the messages to the requested displayorder
 				if(is_array($retValue['header'])) {
 					ksort($retValue['header']);
@@ -1777,7 +1776,7 @@
 			}
 		}
 
-		function getNextMessage($_foldername, $_id) 
+		function getNextMessage($_foldername, $_id)
 		{
 			#_debug_array($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult']);
 			#_debug_array($this->sessionData['folderStatus'][$this->profileID]);
@@ -1790,7 +1789,7 @@
 
 			if($position !== false) {
 				$retValue = array();
-				
+
 				if($this->sessionData['folderStatus'][$this->profileID][$_foldername]['reverse'] == true) {
 					#print "is reverse<br>";
 					if(isset($this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position-1])) {
@@ -1808,24 +1807,24 @@
 						$retValue['next'] = $this->sessionData['folderStatus'][$this->profileID][$_foldername]['sortResult'][$position+1];
 					}
 				}
-				
+
 				return $retValue;
 			}
-			
+
 			return false;
 		}
-		
+
 		function getIMAPACL($_folderName, $user='')
 		{
 			if(($this->hasCapability('ACL'))) {
 				if ( PEAR::isError($acl = $this->icServer->getACL($_folderName)) ) {
 					return false;
 				}
-				
+
 				if ($user=='') {
 					return $acl;
 				}
-				
+
 				foreach ($acl as $i => $userACL) {
 					if ($userACL['USER'] == $user) {
 						return $userACL['RIGHTS'];
@@ -1834,10 +1833,10 @@
 
 				return '';
 			}
-			
+
 			return false;
 		}
-		
+
 		/**
 		* checks if the imap server supports a given capability
 		*
@@ -1848,13 +1847,13 @@
 		{
 			return $this->icServer->hasCapability(strtoupper($_capability));
 		}
-		
-		function getMailPreferences() 
+
+		function getMailPreferences()
 		{
 			return $this->mailPreferences;
 		}
-		
-		function getMessageAttachments($_uid, $_partID='', $_structure='') 
+
+		function getMessageAttachments($_uid, $_partID='', $_structure='')
 		{
 			#if($_structure!='') {
 			#	if(is_object($_structure)) {
@@ -1867,19 +1866,19 @@
 				$structure = $_structure;
 			} else {
 				$structure = $this->icServer->getStructure($_uid, true);
-				
+
 				if($_partID != '' && $_partID !=0) {
 					$structure = $this->_getSubStructure($structure, $_partID);
 				}
 			}
-			
+
 			#print "<hr>";
 			#_debug_array($structure);
-			
+
 			// this kind of messages contain only the attachment and no body
 			if($structure->type == 'APPLICATION' || $structure->type == 'AUDIO' || $structure->type == 'IMAGE') {
 				$attachments = array();
-			
+
 				$newAttachment = array();
 				$newAttachment['size']		= $structure->bytes;
 				$newAttachment['mimeType']	= $structure->type .'/'. $structure->subType;
@@ -1898,20 +1897,20 @@
 					$newAttachment['name']	= lang("unknown");
 				}
 				# if the new attachment is a winmail.dat, we have to decode that first
-				if ( $newAttachment['name'] == 'winmail.dat' && 
-					( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) ) 
+				if ( $newAttachment['name'] == 'winmail.dat' &&
+					( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) )
 				{
 					$attachments = array_merge( $attachments, $wmattachments );
 				} else {
 					$attachments[] = $newAttachment;
 				}
 				//$attachments[] = $newAttachment;
-				
+
 				return $attachments;
 			}
-			
+
 			// this kind of message can have no attachments
-			if($structure->type == 'TEXT' || 
+			if($structure->type == 'TEXT' ||
 			   ($structure->type == 'MULTIPART' && $structure->subType == 'ALTERNATIVE' && !is_array($structure->subParts)) ||
 			   !is_array($structure->subParts)) {
 				return array();
@@ -1924,7 +1923,7 @@
 				if(($subPart->type == 'TEXT' && ($subPart->subType == 'PLAIN' || $subPart->subType == 'HTML') && $subPart->disposition != 'ATTACHMENT') ||
 				   ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE') ||
 				   ($subPart->type == 'MULTIPART' && $subPart->subType == 'APPLEFILE') ||
-				   ($subPart->type == 'MESSAGE' && $subPart->subType == 'delivery-status')) 
+				   ($subPart->type == 'MESSAGE' && $subPart->subType == 'delivery-status'))
 				{
 					if ($subPart->type == 'MULTIPART' && $subPart->subType == 'ALTERNATIVE')
 					{
@@ -1932,12 +1931,12 @@
 					}
 					continue;
 				}
-				
+
 			   	// fetch the subparts for this part
-				if($subPart->type == 'MULTIPART' && 
-				   ($subPart->subType == 'RELATED' || 
-					$subPart->subType == 'MIXED' || 
-					$subPart->subType == 'SIGNED' || 
+				if($subPart->type == 'MULTIPART' &&
+				   ($subPart->subType == 'RELATED' ||
+					$subPart->subType == 'MIXED' ||
+					$subPart->subType == 'SIGNED' ||
 					$subPart->subType == 'APPLEDOUBLE')) {
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
 				} else {
@@ -1974,11 +1973,11 @@
 			return $attachments;
 
 		}
-		
-		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '') 
+
+		function getMessageBody($_uid, $_htmlOptions='', $_partID='', $_structure = '')
 		{
 			if($_htmlOptions != '') {
-				$this->htmlOptions = $_htmlOptions; 
+				$this->htmlOptions = $_htmlOptions;
 			}
 			if(is_object($_structure)) {
 				$structure = $_structure;
@@ -2003,7 +2002,7 @@
 					switch($structure->subType) {
 						case 'ALTERNATIVE':
 							return array($this->getMultipartAlternative($_uid, $structure->subParts, $this->htmlOptions));
-							
+
 							break;
 
 						case 'MIXED':
@@ -2016,7 +2015,7 @@
 							return $this->getMultipartRelated($_uid, $structure->subParts, $this->htmlOptions);
 							break;
 					}
-					
+
 					break;
 				case 'AUDIO': // some servers send audiofiles and imagesfiles directly, without any stuff surround it
 				case 'IMAGE': // they are displayed as Attachment NOT INLINE
@@ -2054,10 +2053,10 @@
 			}
 		}
 
-		function getMessageHeader($_uid, $_partID = '') 
+		function getMessageHeader($_uid, $_partID = '')
 		{
 			$retValue = $this->icServer->getParsedHeaders($_uid, true, $_partID, true);
-			
+
 			return $retValue;
 		}
 
@@ -2068,19 +2067,19 @@
 			} else {
 				$body = $this->icServer->getBodyPart($_uid, $_partID, true);
 			}
-			
+
 			return $body;
 		}
 
-		function getMessageRawHeader($_uid, $_partID = '') 
+		function getMessageRawHeader($_uid, $_partID = '')
 		{
 			$retValue = $this->icServer->getRawHeaders($_uid, $_partID, true);
-			
+
 			return $retValue;
 		}
 
 		// return the qouta of the users INBOX
-		function getQuotaRoot() 
+		function getQuotaRoot()
 		{
 			if(!$this->icServer->hasCapability('QUOTA')) {
 				return false;
@@ -2096,7 +2095,7 @@
 				return false;
 			}
 		}
-		
+
 	#	function imapGetQuota($_username)
 	#	{
 	#		$quota_value = @imap_get_quota($this->mbox, "user.".$_username);
@@ -2109,13 +2108,13 @@
 	#		{
 	#			return false;
 	#		}
-	#	}		
-		
+	#	}
+
 	#	function imap_get_quotaroot($_folderName)
 	#	{
 	#		return @imap_get_quotaroot($this->mbox, $_folderName);
 	#	}
-		
+
 	#	function imapSetQuota($_username, $_quotaLimit)
 	#	{
 	#		if(is_numeric($_quotaLimit) && $_quotaLimit >= 0)
@@ -2129,14 +2128,14 @@
 	#			$quota_value = @imap_set_quota($this->mbox, "user.".$_username, -1);
 	#		}
 	#	}
-		
+
 		function isSentFolder($_folderName)
 		{
 			if(empty($this->mailPreferences->preferences['sentFolder'])) {
 				return false;
 			}
 			// does the folder exist???
-			if (!self::folderExists($_folderName)) {	
+			if (!self::folderExists($_folderName)) {
 				return false;
 			}
 
@@ -2146,7 +2145,7 @@
 				return false;
 			}
 		}
-		
+
 		function isDraftFolder($_folderName)
 		{
 			if(empty($this->mailPreferences->preferences['draftFolder'])) {
@@ -2156,7 +2155,7 @@
 			if (!self::folderExists($_folderName)) {
 				return false;
 			}
-	
+
 			if(false !== strpos(strtolower($_folderName), strtolower($this->mailPreferences->preferences['draftFolder']))) {
 				return true;
 			} else {
@@ -2180,7 +2179,7 @@
 				return false;
 			}
 		}
-		
+
 		function folderExists($_folder, $forceCheck=false)
 		{
 			// does the folder exist???
@@ -2188,20 +2187,20 @@
 			if ((!($this->icServer->_connected == 1)) && $forceCheck) {
 				#error_log("bofelamimail::folderExists->NotConnected and forceCheck");
 				return false;
-			} 
+			}
 			$folderInfo = $this->icServer->getMailboxes('', $_folder, true);
 			#error_log(print_r($folderInfo,true));
 			if(is_a($folderInfo, 'PEAR_Error') || !is_array($folderInfo[0])) {
 				return false;
 			} else {
 				return true;
-			} 
+			}
 		}
 
 		function moveMessages($_foldername, $_messageUID)
 		{
 			$msglist = '';
-			
+
 			$deleteOptions  = $GLOBALS['egw_info']["user"]["preferences"]["felamimail"]["deleteOptions"];
 
 			if ( PEAR::isError($this->icServer->copyMessages($_foldername, $_messageUID, $this->sessionData['mailbox'], true)) ) {
@@ -2216,7 +2215,7 @@
 				// delete the messages finaly
 				$this->icServer->expunge();
 			}
-			
+
 			return true;
 		}
 
@@ -2236,14 +2235,14 @@
 			}
 			#error_log(print_r($this->icServer->_connected,true));
 			return $tretval;
-		}		
+		}
 
 		/**
 		* rename a folder
 		*
 		* @param string _oldFolderName the old foldername
 		* @param string _parent the parent foldername
-		* @param string _folderName the new foldername 
+		* @param string _folderName the new foldername
 		*
 		* @returns mixed name of the newly created folder or false on error
 		*/
@@ -2252,7 +2251,7 @@
 			$oldFolderName	= $this->_encodeFolderName($_oldFolderName);
 			$parent		= $this->_encodeFolderName($_parent);
 			$folderName	= $this->_encodeFolderName($_folderName);
-			
+
 			if(empty($parent)) {
 				$newFolderName = $folderName;
 			} else {
@@ -2261,7 +2260,7 @@
 				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
 			error_log("create folder: $newFolderName");
-			
+
 			if ( PEAR::isError($this->icServer->renameMailbox($oldFolderName, $newFolderName) ) ) {
 				return false;
 			}
@@ -2269,7 +2268,7 @@
 			return $newFolderName;
 
 		}
-		
+
 		function reopen($_foldername)
 		{
 			#error_log( "------------------------reopen-<br>");
@@ -2281,12 +2280,12 @@
 				$tretval = $this->icServer->selectMailbox($_foldername);
 			}
 		}
-		
+
 		function restoreSessionData()
 		{
 			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data','felamimail');
 		}
-		
+
 		function saveFilter($_formData)
 		{
 			if(!empty($_formData['from']))
@@ -2303,12 +2302,12 @@
 			$this->sessionData['filter'] = $data;
 			$this->saveSessionData();
 		}
-		
+
 		function saveSessionData()
 		{
 			$GLOBALS['egw']->session->appsession('session_data','felamimail',$this->sessionData);
 		}
-		
+
 		function setEMailProfile($_profileID)
 		{
 			$config =& CreateObject('phpgwapi.config','felamimail');
@@ -2316,7 +2315,7 @@
 			$config->value('profileID',$_profileID);
 			$config->save_repository();
 		}
-		
+
 		function subscribe($_folderName, $_status)
 		{
 			if($_status === true) {
@@ -2328,11 +2327,11 @@
 					return false;
 				}
 			}
-			
+
 			return true;
 		}
-		
-		function toggleFilter() 
+
+		function toggleFilter()
 		{
 			if($this->sessionData['filter']['filterActive'] == 'true') {
 				$this->sessionData['filter']['filterActive'] = 'false';
@@ -2342,7 +2341,7 @@
 			$this->saveSessionData();
 		}
 
-		function updateAccount($_hookValues) 
+		function updateAccount($_hookValues)
 		{
 			$icServer = $this->mailPreferences->getIncomingServer(0);
 			if(is_a($icServer,'defaultimap')) {
@@ -2354,11 +2353,11 @@
 				$ogServer->updateAccount($_hookValues);
 			}
 		}
-		
+
 		function updateSingleACL($_folderName, $_accountName, $_aclType, $_aclStatus)
 		{
 			$userACL = $this->getIMAPACL($_folderName, $_accountName);
-			
+
 			if($_aclStatus == 'true') {
 				if(strpos($userACL, $_aclType) === false) {
 					$userACL .= $_aclType;
@@ -2370,10 +2369,10 @@
 					$this->setACL($_folderName, $_accountName, $userACL);
 				}
 			}
-			
+
 			return $userACL;
 		}
-		
+
 		static function wordwrap($str, $cols, $cut)
 		{
 			$lines = explode("\n", $str);
@@ -2390,11 +2389,11 @@
 					$linecnt = 0;
 					foreach ($s as $k=>$v) {
 						$cnt = strlen($v);
-						// only break long words within the wordboundaries, 
+						// only break long words within the wordboundaries,
 						if($cnt > $allowedLength) {
 							$v=wordwrap($v, $allowedLength, $cut, true);
 						}
-						// the rest should be broken at the start of the new word that exceeds the limit  
+						// the rest should be broken at the start of the new word that exceeds the limit
 						if ($linecnt+$cnt > $allowedLength) {
 							$v=$cut.$v;
 							#$linecnt = 0;
@@ -2409,7 +2408,7 @@
 			}
 			return $newStr;
 		}
-		
+
 		/**
 		* convert the foldername from display charset to UTF-7
 		*
@@ -2436,7 +2435,7 @@
 		* @param int _sort the integer sort order
 		* @returns the ascii sort string
 		*/
-		function _getSortString($_sort) 
+		function _getSortString($_sort)
 		{
 			switch($_sort) {
 				case 2:
@@ -2453,7 +2452,7 @@
 					$retValue = 'DATE';
 					break;
 			}
-			
+
 			return $retValue;
 		}
 
@@ -2490,9 +2489,9 @@
 
 			$send->AddCustomHeader('References: '.$headers['MESSAGE-ID']);
 			$send->Subject = $send->encode_subject( lang('Read')." : ".$headers['SUBJECT'] );
-			
+
 			$sep = "-----------mdn".$uniq_id = md5(uniqid(time()));
-			
+
 			$body = "--".$sep."\r\n".
 				"Content-Type: text/plain; charset=ISO-8859-1\r\n".
 				"Content-Transfer-Encoding: 7bit\r\n\r\n".
