@@ -14,6 +14,8 @@ if (!defined('GALAXIA_LIBRARY')) {
 		define('GALAXIA_LIBRARY', dirname(__FILE__));
 }
 
+define('SEP', '/');
+
 // Specify how error messages should be shown
 if (!function_exists('galaxia_show_error')) {
 	/**
@@ -313,13 +315,12 @@ if (!function_exists('galaxia_get_config_values'))
 {
 	function galaxia_get_config_values($parameters=array())
 	{
-			$config =& CreateObject('phpgwapi.config');
-			$config->read_repository();
+			$config = config::read('workflow');
 
 			$result_array = array();
 			foreach ($parameters as $config_var => $default_value)
 			{
-				$config_value = $config->config_data[$config_var];
+				$config_value = $config[$config_var];
 				if(isset($config_value))
 				{ //we add something in the config store, we take it
 					if ($config_value=='False')
@@ -350,8 +351,7 @@ if (!function_exists('galaxia_get_config_values'))
 						$stored_value='False';
 					}
 
-					$config->value($config_var,$stored_value);
-					$config->save_repository();
+					config::save_value($config_var, $stored_value, 'workflow');
 					// take the not casted variable
 					$result_array[$config_var] = $default_value;
 				}
