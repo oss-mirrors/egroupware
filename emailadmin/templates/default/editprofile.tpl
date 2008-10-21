@@ -148,6 +148,12 @@
 					<input type="checkbox" name="smtpsettings[1][smtpAuth]" {selected_smtpAuth} value="yes">
 				</td>
 			</tr>
+            <tr class="row_off">
+                <td>{lang_sender}:</td>
+                <td>
+                    <input type="text" name="smtpsettings[1][smtp_senderadress]" style="width: 350px;" value="{value_smtp_senderadress}">
+                </td>
+            </tr>
 			<tr class="row_off">
 				<td>{lang_username}:</td>
 				<td>
@@ -190,6 +196,12 @@
 					<input type="checkbox" name="smtpsettings[2][smtpAuth]" {selected_smtpAuth} value="yes">
 				</td>
 			</tr>
+            <tr class="row_off">
+                <td>{lang_sender}:</td>
+                <td>
+                    <input type="text" name="smtpsettings[2][smtp_senderadress]" style="width: 350px;" value="{value_smtp_senderadress}">
+                </td>
+            </tr>
 			<tr>
 				<td>{lang_username}:</td>
 				<td>
@@ -282,6 +294,12 @@
 					<input type="checkbox" name="smtpsettings[3][smtpAuth]" {selected_smtpAuth} value="yes">
 				</td>
 			</tr>
+            <tr class="row_off">
+                <td>{lang_sender}:</td>
+                <td>
+                    <input type="text" name="smtpsettings[3][smtp_senderadress]" style="width: 350px;" value="{value_smtp_senderadress}">
+                </td>
+            </tr>
 			<tr class="row_off">
 				<td>{lang_username}:</td>
 				<td>
@@ -323,6 +341,12 @@
 					<input type="checkbox" name="smtpsettings[4][smtpAuth]" {selected_smtpAuth} value="yes">
 				</td>
 			</tr>
+            <tr class="row_off">
+                <td>{lang_sender}:</td>
+                <td>
+                    <input type="text" name="smtpsettings[4][smtp_senderadress]" style="width: 350px;" value="{value_smtp_senderadress}">
+                </td>
+            </tr>
 			<tr class="row_off">
 				<td>{lang_username}:</td>
 				<td>
@@ -375,6 +399,12 @@
 					<input type="checkbox" name="smtpsettings[5][smtpAuth]" {selected_smtpAuth} value="yes">
 				</td>
 			</tr>
+            <tr class="row_off">
+                <td>{lang_sender}:</td>
+                <td>
+                    <input type="text" name="smtpsettings[5][smtp_senderadress]" style="width: 350px;" value="{value_smtp_senderadress}">
+                </td>
+            </tr>
 			<tr>
 				<td>{lang_username}:</td>
 				<td>

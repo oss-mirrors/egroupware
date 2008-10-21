@@ -297,6 +297,12 @@
 					case 'ea_user':
 						$this->t->set_var('user_select_box', html::select('globalsettings[ea_user]',$value,$allUsers, true, "style='width: 250px;'"));
 						break;
+					case 'ea_smtp_auth_username':
+						#echo "<br>value_$key,$value";
+						list($username,$senderadress) = explode(';',$value,2);
+						if (!empty($senderadress)) $this->t->set_var('value_smtp_senderadress',$senderadress);
+						$this->t->set_var('value_'.$key,$username);
+						break;
 					default:
 						$this->t->set_var('value_'.$key,$value);
 						break;
@@ -605,6 +611,10 @@
 			foreach($this->boemailadmin->getFieldNames($smtpType,'smtp') as $key) {
 				$smtpSettings[$key] = $_POST['smtpsettings'][$smtpType][$key];
 			}
+			// append the email to be used as sender adress(, if set)
+			if (!empty($smtpSettings['ea_smtp_auth_username']) && isset($_POST['smtpsettings'][$smtpType]['smtp_senderadress']) && !empty($_POST['smtpsettings'][$smtpType]['smtp_senderadress'])) {
+				$smtpSettings['ea_smtp_auth_username'] .= ";".$_POST['smtpsettings'][$smtpType]['smtp_senderadress'];
+			}
 			$smtpSettings['smtpType'] = $smtpType;
 			
 			#_debug_array($smtpSettings); exit;
@@ -689,6 +699,7 @@
 			$this->t->set_var('lang_can_be_used_by_application',lang('can be used by application'));
 			$this->t->set_var('lang_can_be_used_by_group',lang('can be used by group'));
 			$this->t->set_var('lang_smtp_auth',lang('smtp authentication'));
+			$this->t->set_var('lang_sender',lang('send using this eMail-Address'));
 			$this->t->set_var('lang_username',lang('username'));
 			$this->t->set_var('lang_password',lang('password'));
 			$this->t->set_var('lang_smtp_settings',lang('smtp settings'));
