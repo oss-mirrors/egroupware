@@ -152,7 +152,9 @@ class HTTP_WebDAV_Server
         $this->uri      = $uri . $path_info;
 
         // set path
-        $this->path = $this->_urldecode($path_info);
+        // $_SERVER['PATH_INFO'] is already urldecoded
+        //$this->path = $this->_urldecode($path_info);
+        $this->path = $path_info;
         if (!strlen($this->path)) {
             if ($this->_SERVER["REQUEST_METHOD"] == "GET") {
                 // redirect clients that try to GET a collection
@@ -704,7 +706,9 @@ class HTTP_WebDAV_Server
             /* TODO right now the user implementation has to make sure
              collections end in a slash, this should be done in here
              by checking the resource attribute */
-			$href = $this->_mergePathes($this->base_uri, $path);
+            // path needs to be urlencoded (only basic version of this class!)
+			//$href = $this->_mergePathes($this->base_uri, $path);
+			$href = $this->_urlencode($this->_mergePathes($this->base_uri, $path));
 
             echo "  <D:href>$href</D:href>\n";
 
@@ -2009,6 +2013,7 @@ class HTTP_WebDAV_Server
                                  "&"=>"%26",
                                  "<"=>"%3C",
                                  ">"=>"%3E",
+                                 '+'=>'%2B',
                                  ));
     }
 
