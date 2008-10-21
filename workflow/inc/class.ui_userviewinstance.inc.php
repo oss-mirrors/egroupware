@@ -28,7 +28,7 @@
 			$iid = get_var('iid', 'any', 0);
 			if($iid != 0)
 			{
-				$this->instance->getInstance($iid);
+				$this->instance->loadInstance($iid);
 				//Security check
 				if (!($this->security->checkUserAction(0,$iid,'view')))
 				{
