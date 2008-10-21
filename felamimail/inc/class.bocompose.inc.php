@@ -1047,8 +1047,7 @@
 			#print "<pre>". $mail->getMessageHeader() ."</pre><hr><br>";
 			#print "<pre>". $mail->getMessageBody() ."</pre><hr><br>";
 			#exit;
-			                                                                
-
+ 
 			$ogServer = $this->preferences->getOutgoingServer(0);
 			#_debug_array($ogServer);
 			$mail->Host 	= $ogServer->host;
@@ -1056,7 +1055,10 @@
 			// SMTP Auth??
 			if($ogServer->smtpAuth) {
 				$mail->SMTPAuth	= true;
-				$mail->Username	= $ogServer->username;
+				// check if username contains a ; -> then a sender is specified (and probably needed)
+				list($username,$senderadress) = explode(';', $ogServer->username,2);
+				if (isset($senderadress) && !empty($senderadress)) $mail->Sender = $senderadress;
+				$mail->Username = $username;
 				$mail->Password	= $ogServer->password;
 			}
 

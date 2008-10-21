@@ -2223,7 +2223,17 @@
 		{
 			#if (!is_object($this->mailPreferences)) echo function_backtrace();
 			if(!$this->icServer = $this->mailPreferences->getIncomingServer((int)$_icServerID)) {
-				$this->errorMessage = lang('No active IMAP server found!!');
+				$this->errorMessage .= lang('No active IMAP server found!!');
+				return false;
+			}
+			if ($this->icServer && empty($this->icServer->host)) {
+				$errormessage = lang('No IMAP server host configured!!');
+				if ($GLOBALS['egw_info']['user']['apps']['emailadmin']) {
+					$errormessage .= "<br>".lang("Configure a valid IMAP Server in emailadmin for the profile you are using.");
+				} else {	
+					$errormessage .= "<br>".lang('Please ask the administrator to correct the emailadmin IMAP Server Settings for you.');
+				}
+				$this->icServer->_connectionErrorObject->message .= $this->errorMessage .= $errormessage;
 				return false;
 			}
 			#error_log( "---------------------------open connection <br>");
