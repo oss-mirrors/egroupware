@@ -757,6 +757,7 @@
 		*/
 		static function replaceTagsCompletley(&$_body,$tag,$endtag='')
 		{
+			if (self::$debug) error_log("bofelamimail:replaceTagsCompletley $tag/$endtag: $_body");
 			if ($tag) $tag = strtolower($tag);
 			if ($endtag == '' || empty($endtag) || !isset($endtag))
 			{
@@ -768,32 +769,9 @@
 			$taglen=strlen($tag);
 			$endtaglen=strlen($endtag);
 			if ($_body) {
-				$begin_tag = strpos(strtolower($_body),'<'.$tag);
-				while ($begin_tag !== FALSE) {
-					$bodylength = strlen($_body);
-					//since there is a begin tag there should be an end tag, starting somewhere at least the length of the tag down chars further down
-					$end_tag=strpos(strtolower($_body),$endtag.'>',$begin_tag+$taglen+1);
-					if ($end_tag !== FALSE && $end_tag > $begin_tag) {
-						if (self::$debug) error_log("bofelamimail:replaceTagsCompletley: substitution of (<)$tag to $endtag(>) from position $begin_tag:". substr($_body,$begin_tag,$taglen+10));
-						if (self::$debug) error_log("bofelamimail:replaceTagsCompletley: substitute to $endtag(>) at position ".($end_tag+$endtaglen+1).":".substr($_body,$end_tag+$endtaglen+1-$endtaglen-1,$endtaglen+10));
-						$_body = substr($_body,0,$begin_tag-1).substr($_body,$end_tag+$endtaglen+1);
-					} else {
-						//somehow there is a begin tag of a tag but no end tag. throw it away
-						// we will take care of this later on/somewhere else: now
-						if (self::$debug) error_log("bofelamimail:replaceTagsCompletley: substitution of (<)$tag(>), since there is no end tag");
-						$end_tag=strpos(strtolower($_body),'>',$begin_tag+$taglen+1);
-						$_body = substr($_body,0,$begin_tag-1).substr($_body,$end_tag+1);
-						//break;
-					}
-					$new_start = strpos(strtolower($_body),'<'."$tag");
-					if ($new_start == $begin_tag && $bodylength == strlen($_body)) {
-						// sometimes the substitution does not take place, so if the position does not change: break
-						break;
-					} else {
-						$begin_tag = $new_start;
-					}
-					if (strlen($_body)<$begin_tag) break;
-				}
+				$_body = preg_replace('~<'.$tag.'[^>]*?>(.*)</'.$endtag.'>~sim','',$_body);
+				// remove left over tags, unfinished ones, and so on
+				$_body = preg_replace('~<'.$tag.'[^>]*?>~si','',$_body);
 			}
 		}
 
@@ -972,11 +950,7 @@
 			// do the kses clean out first, to avoid general problems with content later on
 			$_html = $kses->Parse($_html);
 			// clean out empty or pagewide style definitions / left over tags
-			self::replaceTagsCompletley($_html,'style>','</style');
-			// no scripts allowed / left over tags
-			#self::replaceTagsCompletley($_html,'script', '</script');
-			// clean out comments
-			#self::replaceTagsCompletley($_html,'!--','--');
+			self::replaceTagsCompletley($_html,'style');
 			// remove non printable chars
 			$_html = preg_replace('/([\000-\012])/','',$_html);
 		}
@@ -2156,7 +2130,7 @@
 				return false;
 			}
 
-			if(false !== strpos(strtolower($_folderName), strtolower($this->mailPreferences->preferences['draftFolder']))) {
+			if(false !== stripos($_folderName, $this->mailPreferences->preferences['draftFolder'])) {
 				return true;
 			} else {
 				return false;
@@ -2173,7 +2147,7 @@
 				return false;
 			}
 
-			if(false !== strpos(strtolower($_folderName), strtolower($this->mailPreferences->preferences['templateFolder']))) {
+			if(false !== stripos($_folderName, $this->mailPreferences->preferences['templateFolder'])) {
 				return true;
 			} else {
 				return false;
@@ -2269,7 +2243,7 @@
 				if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
 				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
-			error_log("create folder: $newFolderName");
+			if (self::$debug) error_log("create folder: $newFolderName");
 
 			if ( PEAR::isError($this->icServer->renameMailbox($oldFolderName, $newFolderName) ) ) {
 				return false;
