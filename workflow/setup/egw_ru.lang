@@ -85,7 +85,7 @@ add transitions to	workflow	ru	Добавить переходы к
 admin instance	workflow	ru	Административный Экземпляр
 admin process activities	workflow	ru	Деятельности Административного Процесса
 admin process roles	workflow	ru	Роли Административного Процесса
-admin processes	workflow	ru	Административные Процессы
+admin processes	common	ru	Административные Процессы
 admin processes sources	workflow	ru	Источникии Административных Процессов
 administer instances	admin	ru	Администрировать экземпляры
 administer processes	admin	ru	Администрировать процессы
@@ -588,7 +588,6 @@ workflow configuration	admin	ru	Конфигурация Бизнес-проце
 workflow navigation	workflow	ru	Навигация по бизнес-процессу
 workflow preferences	workflow	ru	Предпочтения Бизнес-Процесса
 workflow site configuration	workflow	ru	Конфигурация Сайта Бизнес-Процесса
-workflow.ui_useractivities	workflow	ru	workflow.ui_useractivities
 workitem information	workflow	ru	Информация об элементах работы
 workitems	workflow	ru	Элементы работы
 you are not allowed to abort instance %1	workflow	ru	Вам не разрешено прерывать экземпляр %1

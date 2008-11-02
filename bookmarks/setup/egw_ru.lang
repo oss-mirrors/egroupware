@@ -1,7 +1,7 @@
 %1 bookmarks have been deleted	bookmarks	ru	%1 закладок удалено
 %1 bookmarks imported from %2 successfully.	bookmarks	ru	%1 закладок импортировано из %2 успешно
 (comma separate multiple addresses)	bookmarks	ru	(множественные адреса, разделенные запятыми)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ru	<b>Примечание:</b> Эта функция сейчас работает только с закладками Netskape
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	ru	<b>Примечание:</b> Эта функция сейчас работает только с закладками Netscape
 all bookmarks	bookmarks	ru	Все закладки
 and	bookmarks	ru	и
 append this message to mailed bookmarks	bookmarks	ru	Добавить это сообщение к закладкам, пересылаемым почтовым сообщением
@@ -16,6 +16,7 @@ bookmark not readable	bookmarks	ru	Закладка не читаемая
 bookmarks	common	ru	Закладки
 bookmarks settings	bookmarks	ru	Настройки Закладок
 change bookmark	bookmarks	ru	Изменить закладку
+choose the categories to display	bookmarks	ru	Выберите категории для показа
 close this window to return	bookmarks	ru	для возврата закрыть окно
 create bookmark	bookmarks	ru	Создать закладку
 create new bookmark	bookmarks	ru	Создать новую закладку
@@ -60,6 +61,7 @@ search for:	bookmarks	ru	Искать:
 select the format you would like to export to	bookmarks	ru	Выбирите формат в который вы хотите экспортировать
 send bookmark	bookmarks	ru	Отправить закладку
 sub category	bookmarks	ru	Под-категория
+this module displays bookmarks in a javascript based tree	bookmarks	ru	Этот модуль показывает закладки деревом на основе javascript
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	ru	Адрес %1 неверен. Он  должен быть в виде <strong>пользователь@домен</strong> и этот домен должен существовать!
 to e-mail addresses	bookmarks	ru	Отправить на E-Mail
 to which category should the imported folder hierarchy be attached	bookmarks	ru	В какую категорию должна быть импортирована вложенная папка

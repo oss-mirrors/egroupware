@@ -4,61 +4,69 @@ access_mode_all	mydms	ru	Все
 access_mode_none	mydms	ru	Нет доступа
 access_mode_read	mydms	ru	Чтение
 access_mode_readwrite	mydms	ru	Чтение+Запись
-acl get inherited	mydms	ru	acl наследовано
+acl get inherited	mydms	ru	acl унаследован
 add acl	mydms	ru	добавить acl
 add document	mydms	ru	добавить документ
-add notification	mydms	ru	добавить уведомление
+add link	mydms	ru	Добавить ссылку
+add notification	mydms	ru	добавить напоминание
 add subfolder	mydms	ru	добавить подпапку
-adding subfolder "%1" to folder "%2"...	mydms	ru	Добавление папки "% 1" в папку "% 2" ...
-admin-tools	mydms	ru	Утилиты управления
+adding subfolder "%1" to folder "%2"...	mydms	ru	Добавление подпапки '%1' в папку "%2"...
+admin-tools	mydms	ru	Инструментарий администратора
 all versions	mydms	ru	все версии
-comment	mydms	ru	Коментарий
-comment for current version	mydms	ru	коментарий для текущей версии
+choose document	mydms	ru	Выбрать документ
+comment	mydms	ru	Комментатор (?)
+comment for current version	mydms	ru	комментарий к текущей версии
 copy acl	mydms	ru	копировать acl
 copy documents	mydms	ru	копировать документ
 copy folder	mydms	ru	копировать папку
-copy options	mydms	ru	параметры копирования
+copy options	mydms	ru	настройки копирования
 copy subfolders	mydms	ru	копировать подпапку
 create empty acl	mydms	ru	создать пустой acl
 creation date	mydms	ru	дата создания
+crop comment	mydms	ru	Собрать коментарии
 current acl	mydms	ru	текущий acl
 current version	mydms	ru	текущая версия
-default access	mydms	ru	досуп по умолчанию
+default access	mydms	ru	доступ по-умолчанию
 delete folder	mydms	ru	удалить папку
-delete this notification	mydms	ru	удалить это извещение
-do you really want to delete this acl?	mydms	ru	Вы действительно хотите удалить этот acl?
-do you really want to delete this document?	mydms	ru	Вы действительно хотите удалить этот документ?
-do you really want to delete this version of the document?	mydms	ru	Вы действительно хотите удалить эту версию документа?
-do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	ru	Вы действительно хотите удалить папку "%1" и все ее содержимое?<br>Внимание: Это действие нельзя отменить.
-does not expire	mydms	ru	срок не истекает
-download	mydms	ru	Загрузить
+delete this notification	mydms	ru	удалить это напоминание
+do you really want to delete this acl?	mydms	ru	Вы уверенны, что хотите удалть этот acl?
+do you really want to delete this document?	mydms	ru	Вы уверенны, что хотите удалить этот документ?
+do you really want to delete this link for document?	mydms	ru	Вы действительно хотите удалить эту ссылку для документа?
+do you really want to delete this version of the document?	mydms	ru	вы уверенны, что хотите удалить эту версию документа?
+do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	ru	Вы уверены что хотите удалить папку "%1" со всем содержимым?<br>Будьте осторожны, это действие отменить будет нельзя.
+does not expire	mydms	ru	не истекает
+download	mydms	ru	получить
 edit folder	mydms	ru	редактировать папку
 expires	mydms	ru	истекает
 expires after	mydms	ru	истекает после
 file size	mydms	ru	размер файла
 filename	mydms	ru	имя файла
 folder	mydms	ru	папка
-general information	mydms	ru	общая информация
-information about last update	mydms	ru	информация о последнем обновлении
+general information	mydms	ru	основная информация
+information about last update	mydms	ru	сведения о последнем изменении
 informations	mydms	ru	Информация
-inherit acl again	mydms	ru	наследовать acl снова
-last update	mydms	ru	последнее обновление
-linked documents	mydms	ru	свзяанный документ
+inherit acl again	mydms	ru	наследавать acl снова
+last update	mydms	ru	последнее изменение
+linked by	mydms	ru	Привязано
+linked documents	mydms	ru	связанные документы
 lock status	mydms	ru	статус блокировки
 mime type	mydms	ru	Тип Mime
-move document	mydms	ru	переместить документ
+move document	mydms	ru	переместиь документ
 move folder	mydms	ru	переместить папку
-mydms	common	ru	Управление Документами
-notifications	mydms	ru	уведомления
+mydms	common	ru	Моя СУД  (MyDMS)
+no related documents	mydms	ru	Нет связанных документов
+not selected document!	mydms	ru	Нет выбранных документов
+notifications	mydms	ru	напоминания
 permission	mydms	ru	разрешение
-select folder	mydms	ru	выбрать папку
-select target folder	mydms	ru	выбрать папку назначения
-target folder	mydms	ru	папка назначения
-this document gets locked by you!	mydms	ru	Данный документ блокирован вами!
-this document gets unlocked by you.	mydms	ru	Данный документ разблокирован вами.
-this document is currently not locked.	mydms	ru	Данный документ не блокирован.
-this document is locked by <a href="mailto:%1">%2</a>.	mydms	ru	этот документ заблокирован <a href="mailto:%1">%2</a>.
-update document	mydms	ru	обновить документ
-upload date	mydms	ru	дата выгрузки
-uploaded by	mydms	ru	выгружено
-view online	mydms	ru	просмотр тут же
+select folder	mydms	ru	выберите папку
+select target folder	mydms	ru	выберите конечную папку
+target folder	mydms	ru	конечная папка
+this document gets locked by you!	mydms	ru	этот документ заблокирован вами!
+this document gets unlocked by you.	mydms	ru	этот документ раблокирован вами.
+this document is currently not locked.	mydms	ru	этот документ в настоящее время не заблокирован.
+this document is locked by <a href="mailto:%1">%2</a>.	mydms	ru	этот документ заблокировал <a href="mailto:%1">%2</a>.
+to save space do not show the full comment to the file	mydms	ru	Чтобы сэкономить место не показывать полный комментарий к файлу
+update document	mydms	ru	изменить документ
+upload date	mydms	ru	опубликовать данные
+uploaded by	mydms	ru	опубликовал
+view online	mydms	ru	просмотр онлайн

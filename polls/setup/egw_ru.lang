@@ -1,3 +1,4 @@
+%1 group	polls	ru	Группа %1
 actions	polls	ru	действия
 add answer to poll	polls	ru	Добавить ответ в опрос
 add answers	polls	ru	Добавить ответы
@@ -28,12 +29,17 @@ result visible to	polls	ru	Результаты видны
 select current poll	polls	ru	Выбрать текущий опрос
 settings updated	polls	ru	Установки обновлены
 show answers	polls	ru	Показать ответы
+show bullet if allowed to vote and result else	polls	ru	Показать маркер, если разрешено голосовать, иначе - результат
+show only the ballot	polls	ru	Показать только голосование
+show only the result	polls	ru	Показать только результат
 show questions	common	ru	Показать вопросы
+this module displays polls.	polls	ru	Этот модуль показывает опросы.
 total votes	polls	ru	Итого
 view poll	polls	ru	Смотреть опрос
 view results	polls	ru	Смотреть результаты
 vote	polls	ru	Голосовать
 voting booth admin	admin	ru	Кабинка для голосования
 voting booth administration	polls	ru	Администрирование кабинки для голосования
+what to show	polls	ru	Что показывать
 which poll	polls	ru	Который опрос
 you are not (yet) allowed view the result of this vote.	polls	ru	Вам (еще) не разрешено видеть результат этого голоса.
