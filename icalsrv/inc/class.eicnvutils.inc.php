@@ -365,12 +365,8 @@ END:VTODO
 			{
 				return false;
 			}
-			if (! $auid = $GLOBALS['egw']->common->generate_uid($appname,$id))
-			{
-				return false;
-			}
 
-			return $GLOBALS['egw']->contenthistory->getTSforAction($auid,'add');
+			return $GLOBALS['egw']->contenthistory->getTSforAction($appname,$id,'add');
 		}
 
 	  /**

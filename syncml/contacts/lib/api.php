@@ -76,9 +76,11 @@ function _egwcontactssync_list()
 	$guids = array();
 	foreach((array)$allContacts as $contact)
 	{
-        #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-        #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		$guids[] = $GLOBALS['egw']->common->generate_uid('contacts', $contact['id']);
+    #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". $contact['id'], __FILE__, __LINE__, PEAR_LOG_DEBUG);
+    #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	  $guids[] = "contacts-".$contact['id'];
+    
 	}
 
 	#Horde::logMessage("SymcML: egwcontactssync list found ids: ". print_r($guids, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -100,7 +102,7 @@ function &_egwcontactssync_listBy($action, $timestamp) {
 	#Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state = $_SESSION['SyncML.state'];
 
-	$allChangedItems = (array)$GLOBALS['egw']->contenthistory->getHistory('contacts', $action, $timestamp);
+	$allChangedItems = (array)$state->getHistory('contacts', $action, $timestamp);
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allChangedItems: '. print_r($allChangedItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwcontactssync_list();
 	#Horde::logMessage('SymcML: egwcontactssync listBy $allReadAbleItems: '. print_r($allReadAbleItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -173,11 +175,12 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 	}
 
 	if (is_a($contactId, 'PEAR_Error')) {
-		return $contactId;
+		return 'contacts-' .$contactId;
 	}
 
 	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['egw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	return $GLOBALS['egw']->common->generate_uid('contacts',$contactId);
+	//return $GLOBALS['egw']->common->generate_uid('contacts',$contactId);
+  return 'contacts-' .$contactId;
 }
 
 /**
@@ -193,7 +196,6 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
  */
 function _egwcontactssync_search($content, $contentType)
 {
-//error_log("_egwcontactssync_search");
 	Horde::logMessage("SymcML: egwcontactssync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= $_SESSION['SyncML.state'];
@@ -222,15 +224,15 @@ function _egwcontactssync_search($content, $contentType)
 	}
 
 	if (is_a($contactId, 'PEAR_Error')) {
-		return $contactId;
+		return 'contacts-' .$contactId;
 	}
 
 	#error_log("SymcML: egwcontactssync search found: $contactId");
-	Horde::logMessage("SymcML: egwcontactssync search found: ".$GLOBALS['egw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcontactssync search found: contacts-".$contactId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	if(!$contactId) {
 		return false;
 	} else {
-		return $GLOBALS['egw']->common->generate_uid('contacts',$contactId);
+		return 'contacts-' . $contactId;
 	}
 }
 
@@ -265,7 +267,7 @@ function _egwcontactssync_export($guid, $contentType)
 	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
-	$contactID		= $GLOBALS['egw']->common->get_egwId($guid);
+	$contactID		= $state->get_egwId($guid);
 
 	switch ($contentType)
 	{
@@ -291,7 +293,7 @@ function _egwcontactssync_export($guid, $contentType)
 			/* fall through */
 		case 'text/x-s4j-sifc':
 			$sifaddressbook	= new addressbook_sif();
-			$contactID	= $GLOBALS['egw']->common->get_egwId($guid);
+			$contactID	= $state->get_egwId($guid);
 			if($sifcard = $sifaddressbook->getSIF($contactID))
 			{
 				return $sifcard;
@@ -319,6 +321,7 @@ function _egwcontactssync_export($guid, $contentType)
  */
 function _egwcontactssync_delete($guid)
 {
+	$state = $_SESSION['SyncML.state'];
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// contacts at once.
 	if (is_array($guid)) {
@@ -331,13 +334,14 @@ function _egwcontactssync_delete($guid)
 
 		return true;
 	}
-	Horde::logMessage("SymcML: egwcontactssync delete guid: $guid egwid: ". $GLOBALS['egw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcontactssync delete guid: $guid egwid: ". $state->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
+ 
+	return ExecMethod('addressbook.addressbook_vcal.delete', $state->get_egwId($guid));
 
-	return ExecMethod('addressbook.addressbook_vcal.delete', $GLOBALS['egw']->common->get_egwId($guid));
 }
 
 /**
@@ -354,8 +358,8 @@ function _egwcontactssync_delete($guid)
  */
 function _egwcontactssync_replace($guid, $content, $contentType)
 {
-//error_log("_egwcontactsync_replace");
-	Horde::logMessage("SymcML: egwcontactssync replace guid: $guid with content: $content", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	#Horde::logMessage("SymcML: egwcontactssync replace guid: $guid with content: $content", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_EDIT))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
@@ -363,7 +367,7 @@ function _egwcontactssync_replace($guid, $content, $contentType)
 	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
-	$contactID	= $GLOBALS['egw']->common->get_egwId($guid);
+	$contactID	= $state->get_egwId($guid);
 
 	switch ($contentType) {
 		case 'text/x-vcard':

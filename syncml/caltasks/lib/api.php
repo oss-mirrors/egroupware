@@ -75,7 +75,7 @@ function _egwcaltaskssync_list($_startDate='', $_endDate='')
 	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($events) .' events', __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach((array)$events as $event) {
-		$guids[] = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
+		$guids[] = 'calendar-'.$event['id'];
 	}
 
 
@@ -96,7 +96,7 @@ function _egwcaltaskssync_list($_startDate='', $_endDate='')
 	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($tasks) .' tasks', __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach((array)$tasks as $task) {
-		$guids[] = $GLOBALS['egw']->common->generate_uid('infolog_task',$task['info_id']);
+		$guids[] = 'infolog_task-' . $task['info_id'];
 	}
 
 	return $guids;
@@ -114,9 +114,9 @@ function _egwcaltaskssync_list($_startDate='', $_endDate='')
 function &_egwcaltaskssync_listBy($action, $timestamp)
 {
 	Horde::logMessage("SymcML: egwcaltaskssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	$allChangedCalendarItems = $GLOBALS['egw']->contenthistory->getHistory('calendar', $action, $timestamp);
-	$allChangedTasksItems	= $GLOBALS['egw']->contenthistory->getHistory('infolog_task', $action, $timestamp);
+  $state = $_SESSION['SyncML.state'];
+	$allChangedCalendarItems = $state->getHistory('calendar', $action, $timestamp);
+	$allChangedTasksItems	= $state->getHistory('infolog_task', $action, $timestamp);
 	Horde::logMessage("SymcML: egwcaltaskssync getHistory('calendar and infolog_task', $action, $timestamp)", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	if($action == 'delete') {
@@ -133,14 +133,14 @@ function &_egwcaltaskssync_listBy($action, $timestamp)
 	$ids = $guids = array();
 
 	foreach($allChangedCalendarItems as $guid) {
-		$ids[] = $GLOBALS['egw']->common->get_egwId($guid);
+		$ids[] = $state->get_egwId($guid);
 	}
 	// read all events in one go, and check if the user participats
 	if (count($ids) && ($events =& $boCalendar->read($ids))) {
 		foreach((array)$boCalendar->read($ids) as $event) {
 			Horde::logMessage("SymcML: egwcaltaskssync check participation for $event[id] / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			if (isset($event['participants'][$user]) && ($show_rejected || $event['participants'][$user] != 'R')) {
-				$guids[] = $guid = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
+				$guids[] = $guid = 'calendar-' . $event['id'];
 				Horde::logMessage("SymcML: egwcaltaskssync added id $event[id] ($guid) / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			}
 		}
@@ -150,7 +150,7 @@ function &_egwcaltaskssync_listBy($action, $timestamp)
 	$user = $GLOBALS['egw_info']['user']['account_id'];
 
 	foreach($allChangedTasksItems as $guid) {
-		$uid = $GLOBALS['egw']->common->get_egwId($guid);
+		$uid = $state->get_egwId($guid);
 
 		if(($info = $infolog_bo->read($uid)) &&		// checks READ rights too and returns false if none
 			// for filter my = all items the user is responsible for:
@@ -203,10 +203,10 @@ function _egwcaltaskssync_import($content, $contentType, $notepad = null)
 	}
 
 	if (is_a($id, 'PEAR_Error')) {
-		return $id;
+		return $type . '-' .$id;
 	}
 
-	$guid = $GLOBALS['egw']->common->generate_uid($type, $id);
+	$guid = $type .'-' .$id;
 	Horde::logMessage("SymcML: egwcaltaskssync import imported: ".$guid, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $guid;
 }
@@ -246,14 +246,14 @@ function _egwcaltaskssync_search($content, $contentType)
 	}
 
 	if (is_a($id, 'PEAR_Error')) {
-		return $id;
+		return $type . '-' . $id;
 	}
 
 	if(!$id) {
 		Horde::logMessage('SymcML: egwcaltaskssync search nothing found', __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		return false;
 	} else {
-		$id = $GLOBALS['egw']->common->generate_uid($type, $id);
+		$id = $type . '-' . $id;
 
 		Horde::logMessage('SymcML: egwcaltaskssync search found: '. $id, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
@@ -294,7 +294,7 @@ function _egwcaltaskssync_export($guid, $contentType)
 
 	if(strrpos($guid, 'infolog_task') !== false) {
 		Horde::logMessage("SymcML: egwcaltaskssync export exporting tasks", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		$taskID	= $GLOBALS['egw']->common->get_egwId($guid);
+		$taskID	= $state->get_egwId($guid);
 
 		switch ($contentType) {
 			case 'text/x-vcalendar':
@@ -310,7 +310,7 @@ function _egwcaltaskssync_export($guid, $contentType)
 		$boical	= new calendar_ical();
 		$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-		$eventID	= $GLOBALS['egw']->common->get_egwId($guid);
+		$eventID	= $state->get_egwId($guid);
 
 		switch ($contentType) {
 			case 'text/x-vcalendar':
@@ -337,6 +337,7 @@ function _egwcaltaskssync_export($guid, $contentType)
  */
 function _egwcaltaskssync_delete($guid)
 {
+	$state = $_SESSION['SyncML.state'];
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// contacts at once.
 	if (is_array($guid)) {
@@ -353,16 +354,16 @@ function _egwcaltaskssync_delete($guid)
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
-	Horde::logMessage("SymcML: egwcaltaskssync delete id: ".$GLOBALS['egw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcaltaskssync delete id: ".$state->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	if(strrpos($guid, 'infolog_task') !== false) {
 		Horde::logMessage("SymcML: egwcaltaskssync delete deleting task", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		return ExecMethod('infolog.infolog_bo.delete',$GLOBALS['egw']->common->get_egwId($guid));
+		return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
 	} else {
 		Horde::logMessage("SymcML: egwcaltaskssync delete deleting event", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		$bocalendar =& new calendar_boupdate();
 
-		return $bocalendar->delete($GLOBALS['egw']->common->get_egwId($guid));
+		return $bocalendar->delete($state->get_egwId($guid));
 	}
 	#return $bocalendar->expunge();
 }
@@ -390,7 +391,7 @@ function _egwcaltaskssync_replace($guid, $content, $contentType)
 		case 'text/calendar':
 			if(strrpos($guid, 'infolog_task') !== false) {
 				Horde::logMessage("SymcML: egwcaltaskssync replace replacing task", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-				$taskID = $GLOBALS['egw']->common->get_egwId($guid);
+				$taskID = $state->get_egwId($guid);
 				$infolog_ical	= new infolog_ical();
 
 				return $infolog_ical->importVTODO($content, $taskID);
@@ -399,7 +400,7 @@ function _egwcaltaskssync_replace($guid, $content, $contentType)
 				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-				$eventID = $GLOBALS['egw']->common->get_egwId($guid);
+				$eventID = $state->get_egwId($guid);
 
 				return $boical->importVCal($content, $eventID);
 			}

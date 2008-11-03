@@ -55,7 +55,7 @@ $_services['replace'] = array(
 function _egwnotessync_list()
 {
 	$guids = array();
-
+  
 	#Horde::logMessage("SymcML: egwnotessync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$searchFilter = array
@@ -73,7 +73,7 @@ function _egwnotessync_list()
 
 	foreach((array)$notes as $note)
 	{
-		$guids[] = $GLOBALS['egw']->common->generate_uid('infolog_note',$note['info_id']);
+		$guids[] = 'infolog_note-'.$note['info_id'];
 	}
 	return $guids;
 }
@@ -90,8 +90,8 @@ function _egwnotessync_list()
 function &_egwnotessync_listBy($action, $timestamp)
 {
 	#Horde::logMessage("SymcML: egwnotessync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('infolog_note', $action, $timestamp);
+  $state = $_SESSION['SyncML.state'];
+	$allChangedItems = $state->getHistory('infolog_note', $action, $timestamp);
 
 	if($action == 'delete')
 	{
@@ -103,7 +103,7 @@ function &_egwnotessync_listBy($action, $timestamp)
 	$readAbleItems = array();
 	foreach($allChangedItems as $guid)
 	{
-		$uid = $GLOBALS['egw']->common->get_egwId($guid);
+		$uid = $state->get_egwId($guid);
 
 		if(($info = $infolog_bo->read($uid)) &&		// checks READ rights too and returns false if none
 			// for filter my = all items the user is responsible for:
@@ -185,11 +185,11 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 
 	if (is_a($noteId, 'PEAR_Error'))
 	{
-		return $noteId;
+		return 'infolog_note-' . $noteId;
 	}
 
 	#Horde::logMessage("SymcML: egwnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	return $GLOBALS['egw']->common->generate_uid('infolog_note',$noteId);
+	return 'infolog_note-' . $noteId;
 }
 
 /**
@@ -239,7 +239,7 @@ function _egwnotessync_search($content, $contentType)
 
 	if (is_a($noteId, 'PEAR_Error'))
 	{
-		return $noteId;
+		return 'infolog_note-' . $noteId;
 	}
 
 	#Horde::logMessage("SymcML: egwsifnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog_note',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -249,7 +249,7 @@ function _egwnotessync_search($content, $contentType)
 		return false;
 	}
 
-	return $GLOBALS['egw']->common->generate_uid('infolog_note',$noteId);
+	return 'infolog_note-' . $noteId;
 }
 
 /**
@@ -335,6 +335,7 @@ function _egwnotessync_export($guid, $contentType)
  */
 function _egwnotessync_delete($guid)
 {
+	$state = $_SESSION['SyncML.state'];
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// notes at once.
 	if (is_array($guid))
@@ -360,7 +361,7 @@ function _egwnotessync_delete($guid)
 	#}
 	#
 
-	return ExecMethod('infolog.infolog_bo.delete',$GLOBALS['egw']->common->get_egwId($guid));
+	return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
 }
 
 /**
@@ -378,7 +379,7 @@ function _egwnotessync_delete($guid)
 function _egwnotessync_replace($guid, $content, $contentType)
 {
 	#Horde::logMessage("SymcML: egwnotessync replace guid: $guid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
+  $state		= $_SESSION['SyncML.state'];
 	#$memo = $storage->getByGUID($guid);
 	#if (is_a($memo, 'PEAR_Error')) {
 	#	return $memo;
@@ -399,7 +400,7 @@ function _egwnotessync_replace($guid, $content, $contentType)
 		$options = array();
 	}
 
-	$noteId = $GLOBALS['egw']->common->get_egwId($guid);
+	$noteId = $state->get_egwId($guid);
 
 	switch ($contentType)
 	{

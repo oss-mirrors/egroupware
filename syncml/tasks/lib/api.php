@@ -77,7 +77,7 @@ function _egwtaskssync_list()
 
 	foreach((array)$tasks as $task)
 	{
-		$guids[] = $GLOBALS['egw']->common->generate_uid('infolog_task',$task['info_id']);
+		$guids[] = 'infolog_task-' . $task['info_id'];
 	}
 
 	return $guids;
@@ -95,8 +95,8 @@ function _egwtaskssync_list()
 function &_egwtaskssync_listBy($action, $timestamp)
 {
 	#Horde::logMessage("SymcML: egwtaskssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('infolog_task', $action, $timestamp);
+  $state = $_SESSION['SyncML.state'];
+	$allChangedItems = $state->getHistory('infolog_task', $action, $timestamp);
 
 	if($action == 'delete')
 	{
@@ -110,7 +110,7 @@ function &_egwtaskssync_listBy($action, $timestamp)
 
 	foreach($allChangedItems as $guid)
 	{
-		$uid = $GLOBALS['egw']->common->get_egwId($guid);
+		$uid = $state->get_egwId($guid);
 
 		// check READ rights too and return false if none
 		// for filter my = all items the user is responsible for:
@@ -172,11 +172,11 @@ function _egwtaskssync_import($content, $contentType, $notepad = null)
 
 	if (is_a($taskID, 'PEAR_Error'))
 	{
-		return $taskID;
+		return 'infolog_task-' . $taskID;
 	}
 
 	#Horde::logMessage("SymcML: egwtaskssync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog',$taskID), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	return $GLOBALS['egw']->common->generate_uid('infolog_task',$taskID);
+	return 'infolog_task-' . $taskID;
 }
 
 /**
@@ -226,7 +226,7 @@ function _egwtaskssync_search($content, $contentType)
 
 	if (is_a($taskID, 'PEAR_Error'))
 	{
-		return $taskID;
+		return 'infolog_task-' . $taskID;
 	}
 
 	#Horde::logMessage("SymcML: egwsiftaskssync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog_task',$taskID), __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -236,7 +236,7 @@ function _egwtaskssync_search($content, $contentType)
 		return false;
 	}
 
-	return $GLOBALS['egw']->common->generate_uid('infolog_task',$taskID);
+	return 'infolog_task-' . $taskID;
 }
 
 /**
@@ -271,7 +271,8 @@ function _egwtaskssync_export($guid, $contentType)
 	Horde::logMessage("SymcML: egwtaskssync export guid: $guid contenttype: ". $contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	#$syncProfile	= _egwcalendarsync_getSyncProfile();
-	$taskID	= $GLOBALS['egw']->common->get_egwId($guid);
+	$state		= $_SESSION['SyncML.state'];
+	$taskID	= $state->get_egwId($guid);
 
 	switch ($contentType) {
 		case 'text/calendar':
@@ -331,7 +332,7 @@ function _egwtaskssync_delete($guid)
 		return true;
 	}
 
-	return ExecMethod('infolog.infolog_bo.delete',$GLOBALS['phpgw']->common->get_egwId($guid));
+	return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
 }
 
 /**
@@ -361,7 +362,7 @@ function _egwtaskssync_replace($guid, $content, $contentType)
 		$options = array();
 	}
 
-	$taskID = $GLOBALS['egw']->common->get_egwId($guid);
+	$taskID = $state->get_egwId($guid);
 
 	switch ($contentType)
 	{

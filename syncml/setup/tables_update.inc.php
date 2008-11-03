@@ -116,3 +116,23 @@ function syncml_upgrade1_4()
 {
 	return $GLOBALS['setup_info']['syncml']['currentver'] = '1.6';
 }
+
+/**
+ * Remove install_id from egw_contentmap.map_guid
+ */
+function syncml_upgrade1_6()
+{
+	foreach($GLOBALS['egw_setup']->db->select('egw_contentmap','map_id,map_guid,map_locuid',false,__LINE__,__FILE__,false,'','syncml') as $row)
+	{
+		$guid_parts = explode('-',$row['map_guid']);
+		if (count($guid_parts) > 2)
+		{
+			array_pop($guid_parts);	// remove last part (install_id)
+
+			$GLOBALS['egw_setup']->db->update('egw_contentmap',array(
+				'map_guid' => implode('-',$guid_parts),
+			),$row,__LINE__,__FILE__,'syncml');
+		}
+	}
+	return $GLOBALS['setup_info']['syncml']['currentver'] = '1.6.001';
+}

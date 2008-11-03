@@ -74,7 +74,7 @@ function _egwcalendarsync_list($_startDate='', $_endDate='')
 
 	foreach((array)$events as $event)
 	{
-		$guids[] = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
+		$guids[] = 'calendar-' . $event['id'];
 	}
 	return $guids;
 }
@@ -91,8 +91,8 @@ function _egwcalendarsync_list($_startDate='', $_endDate='')
 function &_egwcalendarsync_listBy($action, $timestamp)
 {
 	Horde::logMessage("SymcML: egwcalendarsync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
-	$allChangedItems = $GLOBALS['egw']->contenthistory->getHistory('calendar', $action, $timestamp);
+  $state		= $_SESSION['SyncML.state'];
+	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
 	Horde::logMessage("SymcML: egwcalendarsync getHistory('calendar', $action, $timestamp)=".print_r($allChangedItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	if($action == 'delete')
@@ -109,7 +109,7 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 	$ids = $guids = array();
 	foreach($allChangedItems as $guid)
 	{
-		$ids[] = $GLOBALS['egw']->common->get_egwId($guid);
+		$ids[] = $state->get_egwId($guid);
 	}
 
 	// read all events in one go, and check if the user participats
@@ -120,7 +120,7 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 			Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			if (isset($event['participants'][$user]) && ($show_rejected || $event['participants'][$user] != 'R'))
 			{
-				$guids[] = $guid = $GLOBALS['egw']->common->generate_uid('calendar',$event['id']);
+				$guids[] = $guid = 'calendar-' . $event['id'];
 				Horde::logMessage("SymcML: egwcalendarsync added id $event[id] ($guid) / $event[title]", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			}
 		}
@@ -184,10 +184,10 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 
 	if (is_a($calendarId, 'PEAR_Error'))
 	{
-		return $calendarId;
+		return 'calendar-' . $calendarId;
 	}
 
-	$guid = $GLOBALS['egw']->common->generate_uid('calendar',$calendarId);
+	$guid = 'calendar-' . $calendarId;
 	Horde::logMessage("SymcML: egwcalendarsync import imported: ".$guid, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $guid;
 }
@@ -245,7 +245,7 @@ function _egwcalendarsync_search($content, $contentType)
 
 	if (is_a($eventId, 'PEAR_Error'))
 	{
-		return $eventId;
+		return 'calendar-' . $eventId;
 	}
 
 	if(!$eventId)
@@ -254,7 +254,7 @@ function _egwcalendarsync_search($content, $contentType)
 	}
 	else
 	{
-		$eventId = $GLOBALS['egw']->common->generate_uid('calendar', $eventId);
+		$eventId = 'calendar-' . $eventId;
 		Horde::logMessage('SymcML: egwcalendarsync search found: '. $eventId, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		return $eventId;
 	}
@@ -291,7 +291,7 @@ function _egwcalendarsync_export($guid, $contentType)
 #        return PEAR::raiseError(_("Permission Denied"));
 #    }
 #
-
+  $state		= $_SESSION['SyncML.state'];
 	if (is_array($contentType))
 	{
 		$options = $contentType;
@@ -306,7 +306,7 @@ function _egwcalendarsync_export($guid, $contentType)
 	Horde::logMessage("SymcML: egwcalendarsync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 
-	$eventID	= $GLOBALS['egw']->common->get_egwId($guid);
+	$eventID	= $state->get_egwId($guid);
 
 	switch ($contentType)
 	{
@@ -354,6 +354,7 @@ function _egwcalendarsync_delete($guid)
 {
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// contacts at once.
+	$state = $_SESSION['SyncML.state'];
 	if (is_array($guid))
 	{
 		foreach ($guid as $g)
@@ -371,11 +372,11 @@ function _egwcalendarsync_delete($guid)
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
-	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$GLOBALS['egw']->common->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$state->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$bocalendar =& new calendar_boupdate();
 
-	return $bocalendar->delete($GLOBALS['egw']->common->get_egwId($guid));
+	return $bocalendar->delete($state->get_egwId($guid));
 	#return $bocalendar->expunge();
 }
 
@@ -394,7 +395,7 @@ function _egwcalendarsync_delete($guid)
 function _egwcalendarsync_replace($guid, $content, $contentType)
 {
 	Horde::logMessage("SymcML: egwcalendarsync replace guid: $guid content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
+  
 	if (is_array($contentType))
 	{
 		$options = $contentType;
@@ -405,15 +406,14 @@ function _egwcalendarsync_replace($guid, $content, $contentType)
 	{
 		$options = array();
 	}
-
-	$eventID = $GLOBALS['egw']->common->get_egwId($guid);
+  $state = $_SESSION['SyncML.state'];
+	$eventID = $state->get_egwId($guid);
 
 	switch ($contentType)
 	{
 		case 'text/x-vcalendar':
 		case 'text/vcalendar':
 		case 'text/calendar':
-			$state = $_SESSION['SyncML.state'];
 			$deviceInfo = $state->getClientDeviceInfo();
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);

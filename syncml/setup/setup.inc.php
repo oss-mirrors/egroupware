@@ -12,7 +12,7 @@
 /* Basic information about this app */
 $setup_info['syncml']['name']      = 'syncml';
 $setup_info['syncml']['title']     = 'SyncML';
-$setup_info['syncml']['version']   = '1.6';
+$setup_info['syncml']['version']   = '1.6.001';
 $setup_info['syncml']['enable']    = 3;
 $setup_info['syncml']['app_order'] = 99;
 
