@@ -790,7 +790,7 @@
 				$_GET['menuaction'] == 'felamimail.uidisplay.displayBody') {
 				$GLOBALS['egw_info']['flags']['nofooter'] = true;
 			}
-
+			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 			$GLOBALS['egw']->common->egw_header();
 		}
 
