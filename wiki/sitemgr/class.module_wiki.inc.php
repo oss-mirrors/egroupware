@@ -89,7 +89,7 @@ class sitemgr_wiki extends uiwiki
 		$html = '<table class="wiki-title"><tr>';
 		if ($page && ($this->arguments['title'] == 2 || $this->arguments['title'] == 1 && $page->name == $this->arguments['startpage']))
 		{
-			if (is_set($page->title)) $title = $this->html->htmlspecialchars($page->title);
+			if (isset($page->title)) $title = $this->html->htmlspecialchars($page->title);
 		}
 		if ($this->arguments['search'])
 		{
