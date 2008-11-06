@@ -58,4 +58,8 @@
 		'appname' => 'preferences',
 		'versions' => Array('1.4','1.5','1.6')
 	);
+	$setup_info['workflow']['depends'][] = array(
+		'appname' => 'emailadmin',
+		'versions' => Array('1.4','1.5','1.6')
+	);
 ?>

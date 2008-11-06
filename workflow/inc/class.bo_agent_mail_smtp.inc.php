@@ -66,7 +66,7 @@
 		{
 			parent::bo_agent();
 			$this->so_agent =& CreateObject('workflow.so_agent_mail_smtp');
-			$this->bo_emailadmin =& CreateObject('emailadmin.bo');
+			$this->bo_emailadmin =& CreateObject('emailadmin.emailadmin_bo');
 			//the showProcessConfigurationFields is not done here, quite harder to build
 			$this->ProcessConfigurationFieldsdefault = array(
 				'mail_smtp_profile' 		=> false,
