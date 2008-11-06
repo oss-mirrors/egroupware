@@ -89,13 +89,13 @@ class sitemgr_wiki extends uiwiki
 		$html = '<table class="wiki-title"><tr>';
 		if ($page && ($this->arguments['title'] == 2 || $this->arguments['title'] == 1 && $page->name == $this->arguments['startpage']))
 		{
-			if (isset($page->title)) $title = $this->html->htmlspecialchars($page->title);
+			if (isset($page->title)) $title = html::htmlspecialchars($page->title);
 		}
 		if ($this->arguments['search'])
 		{
 			$search = '<form class="wiki-search" action="'.htmlspecialchars($this->viewURL($this->search_tag)).'" method="POST">'.
-				'<input name="search" value="'.$this->html->htmlspecialchars($_REQUEST['search']).'" />&nbsp;'.
-				'<input type="submit" value="'.$this->html->htmlspecialchars(lang('Search')).'" /></form>'."\n";
+				'<input name="search" value="'.html::htmlspecialchars($_REQUEST['search']).'" />&nbsp;'.
+				'<input type="submit" value="'.html::htmlspecialchars(lang('Search')).'" /></form>'."\n";
 		}
 		if ($title && $search || $search && $this->arguments['title'] == 1)
 		{
