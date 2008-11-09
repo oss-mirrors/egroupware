@@ -34,7 +34,7 @@
 			'selectFolder'		=> True,
 			'editEmailNotification'           => True, // Added email notifications
 		);
-		
+
 		/**
 		 * Flag if we can do a timed vaction message, requires Cyrus Admin User/Pw to enable/disable via async service
 		 *
@@ -42,12 +42,12 @@
 		 */
 		var $timed_vacation;
 		//var $scriptName = 'felamimail';
-		
+
 		/**
 		 * @var bosieve
 		 */
 		var $bosieve;
-		
+
 		var $errorStack;
 
 		function uisieve()
@@ -61,32 +61,29 @@
 			$this->displayCharset	= $GLOBALS['egw']->translation->charset();
 
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
- 			$this->botranslation	=& CreateObject('phpgwapi.translation');
+ 			$this->botranslation	= $GLOBALS['egw']->translation;
 
 			$this->bopreferences    =& CreateObject('felamimail.bopreferences');
 			$this->mailPreferences  = $this->bopreferences->getPreferences();
-			
-			$config 		=& CreateObject('phpgwapi.config','felamimail');
-			$config->read_repository();
-			$this->felamimailConfig	= $config->config_data;
-			unset($config);
-			
+
+			$this->felamimailConfig	= config::read('felamimail');
+
 			$this->restoreSessionData();
 
 			$icServer = $this->mailPreferences->getIncomingServer(0);
-			
+
 			if(is_a($icServer,'defaultimap') && $icServer->enableSieve) {
 				$this->bosieve		=& CreateObject('felamimail.bosieve',$icServer);
-				$this->timed_vacation = is_a($icServer,'cyrusimap') && $icServer->enableCyrusAdmin && 
+				$this->timed_vacation = is_a($icServer,'cyrusimap') && $icServer->enableCyrusAdmin &&
 					$icServer->adminUsername && $icServer->adminPassword;
 			} else {
 				die('Sieve not activated');
 			}
-			
+
 			$this->rowColor[0] = $GLOBALS['egw_info']["theme"]["bg01"];
 			$this->rowColor[1] = $GLOBALS['egw_info']["theme"]["bg02"];
 		}
-		
+
 		function addScript() {
 			if($scriptName = $_POST['newScriptName']) {
 				#$script	=& CreateObject('felamimail.Script',$scriptName);
@@ -105,7 +102,7 @@
 				#	}
 				#}
 			}
-			
+
 			$this->listScripts();
 		}
 
@@ -124,46 +121,46 @@
 #					/* we could display the full output here */
 #				}
 #			}
-#										
+#
 #			$this->listScripts();
 #		}
-		
-		function buildRule($rule) 
+
+		function buildRule($rule)
 		{
 			$andor = ' '. lang('and') .' ';
 			$started = 0;
 			if ($rule['anyof']) $andor = ' '. lang('or') .' ';
 			$complete = lang('IF').' ';
 			if ($rule['unconditional']) $complete = "[Unconditional] ";
-			
-			if ($rule['from']) 
+
+			if ($rule['from'])
 			{
 				$match = $this->setMatchType($rule['from'],$rule['regexp']);
 				$complete .= "'From:' " . $match . " '" . $rule['from'] . "'";
 				$started = 1;
 			}
-			if ($rule['to']) 
+			if ($rule['to'])
 			{
 				if ($started) $complete .= $andor;
 				$match = $this->setMatchType($rule['to'],$rule['regexp']);
 				$complete .= "'To:' " . $match . " '" . $rule['to'] . "'";
 				$started = 1;
 			}
-			if ($rule['subject']) 
+			if ($rule['subject'])
 			{
 				if ($started) $complete .= $andor;
 				$match = $this->setMatchType($rule['subject'],$rule['regexp']);
 				$complete .= "'Subject:' " . $match . " '" . $rule['subject'] . "'";
 				$started = 1;
 			}
-			if ($rule['field'] && $rule['field_val']) 
+			if ($rule['field'] && $rule['field_val'])
 			{
 				if ($started) $complete .= $andor;
 				$match = $this->setMatchType($rule['field_val'],$rule['regexp']);
 				$complete .= "'" . $rule['field'] . "' " . $match . " '" . $rule['field_val'] . "'";
 				$started = 1;
 			}
-			if ($rule['size']) 
+			if ($rule['size'])
 			{
 				$xthan = " less than '";
 				if ($rule['gthan']) $xthan = " greater than '";
@@ -185,17 +182,17 @@
 
 			return $complete;
 		}
-		
+
 		function buildVacationString($_vacation)
 		{
 #			global $script;
 #			$vacation = $script->vacation;
 			$vacation_str = '';
 			if (!is_array($_vacation))
-			{ 
-				return @htmlspecialchars($vacation_str, ENT_QUOTES, $GLOBALS['egw']->translation->charset()); 
+			{
+				return @htmlspecialchars($vacation_str, ENT_QUOTES, $GLOBALS['egw']->translation->charset());
 			}
-			
+
 			$vacation_str .= lang('Respond');
 			if (is_array($_vacation['addresses']) && $_vacation['addresses'][0])
 			{
@@ -215,11 +212,11 @@
 			$vacation_str .= ' ' . lang('with message "%1"',$_vacation['text']);
 			return @htmlspecialchars($vacation_str, ENT_QUOTES, $GLOBALS['egw']->translation->charset());
 		}
-		
+
 		function checkRule($_vacation)
 		{
 			$this->errorStack = array();
-			
+
 			if (!$_vacation['text'])
 			{
 				$this->errorStack['text'] = lang('Please supply the message to send with auto-responses'.'!	');
@@ -229,13 +226,13 @@
 			{
 				$this->errorStack['days'] = lang('Please select the number of days to wait between responses'.'!');
 			}
-			
+
 			if(is_array($_vacation['addresses']))
 			{
 				$regexp="/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
 				foreach ($_vacation['addresses'] as $addr)
 				{
-					if (!preg_match($regexp,$addr)) 
+					if (!preg_match($regexp,$addr))
 					{
 						$this->errorStack['addresses'] = lang('One address is not valid'.'!');
 					}
@@ -245,7 +242,7 @@
 			{
 				$this->errorStack['addresses'] = lang('Please select a address'.'!');
 			}
-			
+
 			if ($_vacation['status'] == 'by_date')
 			{
 				if (!$_vacation['start_date'] || !$_vacation['end_date'])
@@ -257,15 +254,15 @@
 					$this->errorStack['status'] = lang('Vacation start-date must be BEFORE the end-date!');
 				}
 			}
-			
+
 			if ($_vacation['forwards'])
 			{
 				foreach(split(', ?',$_vacation['forwards']) as $addr)
 				{
-					if (!preg_match($regexp,$addr)) 
+					if (!preg_match($regexp,$addr))
 					{
 						$this->errorStack['forwards'] = lang('One address is not valid'.'!');
-					}					
+					}
 				}
 			}
 
@@ -295,25 +292,25 @@
 #				#	/* we could display the full output here */
 #				#}
 #			}
-#										
+#
 #			$this->listScripts();
 #		}
-		
+
 		function decreaseFilter()
 		{
 			$this->getRules();	/* ADDED BY GHORTH */
 			$ruleID = get_var('ruleID',array('GET'));
-			if ($this->rules[$ruleID] && $this->rules[$ruleID+1]) 
+			if ($this->rules[$ruleID] && $this->rules[$ruleID+1])
 			{
 				$tmp = $this->rules[$ruleID+1];
 				$this->rules[$ruleID+1] = $this->rules[$ruleID];
 				$this->rules[$ruleID] = $tmp;
 			}
-			
+
 			$this->updateScript();
-			
+
 			$this->saveSessionData();
-			
+
 			$this->listRules();
 		}
 
@@ -341,7 +338,7 @@
 					break;
 			}
 		}
-		
+
 		function displayRule($_ruleID, $_ruleData) {
 			// display the header
 			$this->display_app_header();
@@ -363,14 +360,14 @@
 			);
 			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
-			
+
 			if(is_array($_ruleData))
 			{
-				if($_ruleData['continue']) 
+				if($_ruleData['continue'])
 					$this->t->set_var('continue_checked','checked');
-				if($_ruleData['keep']) 
+				if($_ruleData['keep'])
 					$this->t->set_var('keep_checked','checked');
-				if($_ruleData['regexp']) 
+				if($_ruleData['regexp'])
 					$this->t->set_var('regexp_checked','checked');
 				$this->t->set_var('anyof_selected'.intval($_ruleData['anyof']),'selected');
 				$this->t->set_var('value_from',htmlspecialchars($_ruleData['from'], ENT_QUOTES, $GLOBALS['egw']->translation->charset()));
@@ -388,30 +385,30 @@
 				}
 			}
 			$this->t->set_var('value_ruleID',$_ruleID);
-			
+
 			#$bofelamimail		=& CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			#$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 			#$connectionStatus	= $bofelamimail->openConnection();
 			#$folders = $bofelamimail->getFolderObjects(false);
-			
+
 			#foreach($folders as $folderName => $folderDisplayName)
 			#{
 			#	$this->t->set_var('folderName',$folderName);
 			#	$this->t->set_var('folderDisplayName',$folderDisplayName);
-			#	$this->t->parse("folder_rows", 'folder', true); 
+			#	$this->t->parse("folder_rows", 'folder', true);
 			#}
-			
+
 			// translate most of the parts
 			$this->translate();
 			$this->t->pfp("out","main");
 		}
-		
+
 		function editRule()
 		{
 			$this->getRules();	/* ADDED BY GHORTH */
 
 			$ruleType = get_var('ruletype',array('GET'));
-			
+
 			if(isset($_POST['anyof'])) {
 				if(get_var('priority',array('POST')) != 'unset') {
 					$newRule['priority']	= get_var('priority',array('POST'));
@@ -424,7 +421,7 @@
 				$newRule['from']	= get_var('from',array('POST'));
 				$newRule['to']		= get_var('to',array('POST'));
 				$newRule['subject']	= get_var('subject',array('POST'));
-				//$newRule[flg]		= get_var('???',array('POST'));
+				//$newRule['flg']		= get_var('???',array('POST'));
 				$newRule['field']	= get_var('field',array('POST'));
 				$newRule['field_val']	= get_var('field_val',array('POST'));
 				$newRule['size']	= intval(get_var('size',array('POST')));
@@ -434,21 +431,21 @@
 				$newRule['keep']	= get_var('keep',array('POST'));
 				$newRule['regexp']	= get_var('regexp',array('POST'));
 				$newRule['unconditional'] = '0';		// what's this???
-				
-				$newRule[flg] = 0 ;
-				if( $newRule['continue'] ) { $newRule[flg] += 1; }
-				if( $newRule['gthan'] )    { $newRule[flg] += 2; }
-				if( $newRule['anyof'] )    { $newRule[flg] += 4; }
-				if( $newRule['keep'] )     { $newRule[flg] += 8; }
-				if( $newRule['regexp'] )   { $newRule[flg] += 128; }
-				
+
+				$newRule['flg'] = 0 ;
+				if( $newRule['continue'] ) { $newRule['flg'] += 1; }
+				if( $newRule['gthan'] )    { $newRule['flg'] += 2; }
+				if( $newRule['anyof'] )    { $newRule['flg'] += 4; }
+				if( $newRule['keep'] )     { $newRule['flg'] += 8; }
+				if( $newRule['regexp'] )   { $newRule['flg'] += 128; }
+
 				switch(get_var('action',array('POST')))
 				{
 					case 'reject':
 						$newRule['action']	= 'reject';
 						$newRule['action_arg']	= get_var('reject',array('POST'));
 						break;
-						
+
 					case 'folder':
 						$newRule['action']	= 'folder';
 						$newRule['action_arg']	= get_var('folder',array('POST'));
@@ -469,13 +466,15 @@
 					$this->rules[$ruleID] = $newRule;
 
 					$this->bosieve->setRules($this->scriptName, $this->rules);
-					
+
 					$this->saveSessionData();
 				}
-				
+				// refresh the list
+				$js = "opener.location.href = '".addslashes(egw::link('/index.php','menuaction=felamimail.uisieve.listRules'))."';";
 				if(isset($_POST['save'])) {
-					print "<script type=\"text/javascript\">window.close();</script>";
+					echo "<script type=\"text/javascript\">$js\nwindow.close();\n</script>\n";
 				} else {
+					$GLOBALS['egw']->js->set_onload($js);
 					$this->displayRule($ruleID, $newRule);
 				}
 			}
@@ -494,10 +493,10 @@
 			#LK	$this->sieve->disconnet();
 			}
 		}
-		
+
 		function editVacation() {
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
-			
+
 			$uiwidgets	=& CreateObject('felamimail.uiwidgets',EGW_APP_TPL);
 			$boemailadmin	= new emailadmin_bo();
 
@@ -537,13 +536,13 @@
 				$newVacation['forwards']    = get_var('vacation_forwards',array('POST'));
 				if (!in_array($newVacation['status'],array('on','off','by_date'))) $newVacation['status'] = 'off';
 				if ($this->timed_vacation) {
-					$date = $jscal->input2date($_POST['start_date']); 
+					$date = $jscal->input2date($_POST['start_date']);
 					if ($date['raw']) $newVacation['start_date'] = $date['raw']-12*3600;
-					$date = $jscal->input2date($_POST['end_date']); 
+					$date = $jscal->input2date($_POST['end_date']);
 					if ($date['raw']) $newVacation['end_date'] = $date['raw']-12*3600;
 				}
 				if(isset($_POST['save']) || isset($_POST['apply'])) {
-					if($this->checkRule($newVacation)) { 
+					if($this->checkRule($newVacation)) {
 						if (!$this->bosieve->setVacation($this->scriptName, $newVacation)) {
 							print "vacation update failed<br>";
 							#print $script->errstr."<br>";
@@ -555,7 +554,7 @@
 					}
 				}
 				$vacation = $newVacation;
-				
+
 				if(isset($_POST['save']) || isset($_POST['cancel'])) {
 					$GLOBALS['egw']->redirect_link('/felamimail/index.php');
 				}
@@ -565,21 +564,21 @@
 
 			// display the header
 			$this->display_app_header();
-			
+
 			// initialize the template
 			$this->t->set_file(array("filterForm" => "sieveForm.tpl"));
 			$this->t->set_block('filterForm','vacation');
 
 			// translate most of the parts
 			$this->translate();
-			
+
 			// vacation status
 			if($vacation['status'] == 'on') {
 				$this->t->set_var('checked_active', 'checked');
 			} elseif($vacation['status'] == 'off') {
 				$this->t->set_var('checked_disabled', 'checked');
 			}
-				
+
 			// vacation text
 			if (empty($vacation['text'])) {
 				$config =& new config('felamimail');
@@ -592,7 +591,7 @@
 			if(empty($vacation)) {
 				$this->t->set_var('selected_7', 'selected="selected"');
 				// ToDO set default
-				
+
 			} else {
 				$this->t->set_var('selected_'.$vacation['days'], 'selected="selected"');
 			}
@@ -605,7 +604,7 @@
 				}
 				asort($selectedAddresses);
 			}
-			
+
 
 			$allIdentities = $preferences->getIdentity();
 			foreach($allIdentities as $key => $singleIdentity) {
@@ -627,9 +626,9 @@
 			$linkData = array (
 				'menuaction'	=> 'felamimail.uisieve.editVacation',
 			);
-			
+
 			$this->t->set_var('vacation_action_url',$GLOBALS['egw']->link('/index.php',$linkData));
-			
+
 			if ($this->timed_vacation)
 			{
 				$this->t->set_var('by_date','<input type="radio" name="vacationStatus" value="by_date" id="status_by_date" '.
@@ -638,7 +637,7 @@
 				$this->t->set_var('lang_help_start_end_replacement','<br />'.lang('You can use %1 for the above start-date and %2 for the end-date.','$$start$$','$$end$$'));
 			}
 			$this->t->pfp('out','vacation');
-			
+
 		#LK	$this->bosieve->disconnect();
 		}
 
@@ -712,24 +711,24 @@
 		{
 			$this->getRules();	/* ADDED BY GHORTH */
 			$ruleID = get_var('ruleID',array('GET'));
-			if ($this->rules[$ruleID] && $this->rules[$ruleID-1]) 
+			if ($this->rules[$ruleID] && $this->rules[$ruleID-1])
 			{
 				$tmp = $this->rules[$ruleID-1];
 				$this->rules[$ruleID-1] = $this->rules[$ruleID];
 				$this->rules[$ruleID] = $tmp;
 			}
-			
+
 			$this->updateScript();
-			
+
 			$this->saveSessionData();
-			
+
 			$this->listRules();
 		}
-		
-		function listRules() 
+
+		function listRules()
 		{
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
-			
+
 			$uiwidgets	=& CreateObject('felamimail.uiwidgets', EGW_APP_TPL);
 			$boemailadmin	= new emailadmin_bo();
 
@@ -739,15 +738,15 @@
 
 			// display the header
 			$this->display_app_header();
-			
+
 			// initialize the template
 			$this->t->set_file(array('filterForm' => 'listRules.tpl'));
 			$this->t->set_block('filterForm','header');
 			$this->t->set_block('filterForm','filterrow');
-			
+
 			// translate most of the parts
 			$this->translate();
-			
+
 			#if(!empty($this->scriptToEdit))
 			#{
 				$listOfImages = array(
@@ -758,7 +757,7 @@
 				{
 					$this->t->set_var('url_'.$image,$GLOBALS['egw']->common->image('felamimail',$image));
 				}
-			
+
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uisieve.editRule',
@@ -784,7 +783,7 @@
 					{
 						$this->t->set_var('ruleCSS','sieveRowInActive');
 					}
-					
+
 					$this->t->set_var('filter_text',htmlspecialchars($this->buildRule($rule),ENT_QUOTES,$GLOBALS['egw']->translation->charset()));
 					$this->t->set_var('ruleID',$ruleID);
 
@@ -808,7 +807,7 @@
 						'ruleID'	=> $ruleID,
 					);
 					$this->t->set_var('url_decrease',$GLOBALS['egw']->link('/index.php',$linkData));
-					
+
 					$linkData = array
 					(
 						'menuaction'	=> 'felamimail.uisieve.updateRules',
@@ -819,17 +818,17 @@
 				}
 
 			#}
-			
+
 			$linkData = array (
 				'menuaction'    => 'felamimail.uisieve.saveScript'
 			);
 			$this->t->set_var('formAction',$GLOBALS['egw']->link('/index.php',$linkData));
-			
+
 			$linkData = array (
 				'menuaction'    => 'felamimail.uisieve.listRules'
 			);
 			$this->t->set_var('refreshURL',$GLOBALS['egw']->link('/index.php',$linkData));
-			
+
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uisieve.listScripts',
@@ -845,15 +844,15 @@
 		function restoreSessionData()
 		{
 			$sessionData = $GLOBALS['egw']->session->appsession('sieve_session_data');
-			
+
 			$this->rules		= $sessionData['sieve_rules'];
 			$this->scriptToEdit	= $sessionData['sieve_scriptToEdit'];
 		}
-		
+
 		function selectFolder()
 		{
 			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
-			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');                        
+			$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
 			$GLOBALS['egw']->js->validate_file('jscode','editSieveRule','felamimail');
 			$GLOBALS['egw']->common->egw_header();
 
@@ -895,11 +894,11 @@
 					$match = lang('does not match regexp');
 			}
 			$matchstr = preg_replace("/^\s*!/","",$matchstr);
-			
+
 			return $match;
 		}
-		
-		function saveScript() 
+
+		function saveScript()
 		{
 			$scriptName 	= $_POST['scriptName'];
 			$scriptContent	= $_POST['scriptContent'];
@@ -926,14 +925,14 @@
 			$this->mainScreen();
 		}
 
-		function saveSessionData() 
+		function saveSessionData()
 		{
 			$sessionData['sieve_rules']		= $this->rules;
 			$sessionData['sieve_scriptToEdit']	= $this->scriptToEdit;
-			
+
 			$GLOBALS['egw']->session->appsession('sieve_session_data','',$sessionData);
 		}
-		
+
 		function translate()
 		{
 			$this->t->set_var("lang_message_list",lang('Message List'));
@@ -997,14 +996,14 @@
 			$this->t->set_var("bg02",$GLOBALS['egw_info']["theme"]["bg02"]);
 			$this->t->set_var("bg03",$GLOBALS['egw_info']["theme"]["bg03"]);
 		}
-		
+
 		function updateRules()
 		{
 			$this->getRules();	/* ADDED BY GHORTH */
 			$action 	= get_var('rulelist_action',array('POST'));
 			$ruleIDs	= get_var('ruleID',array('POST'));
 			$scriptName 	= get_var('scriptname',array('GET'));
-			
+
 			switch($action)
 			{
 				case 'enable':
@@ -1016,7 +1015,7 @@
 						}
 					}
 					break;
-					
+
 				case 'disable':
 					if(is_array($ruleIDs))
 					{
@@ -1026,7 +1025,7 @@
 						}
 					}
 					break;
-					
+
 				case 'delete':
 					if(is_array($ruleIDs))
 					{
@@ -1037,12 +1036,12 @@
 					}
 					$this->rules = array_values($this->rules);
 					break;
-			}  
-			
+			}
+
 			$this->updateScript();
-			
+
 			$this->saveSessionData();
-			
+
 			$this->listRules();
 		}
 
@@ -1053,7 +1052,7 @@
 		#LK		print $script->errstr."<br>";
 			}
 		}
-		
+
 		/* ADDED BY GHORTH */
 		function getRules()
 		{
