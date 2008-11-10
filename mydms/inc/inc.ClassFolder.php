@@ -1,4 +1,13 @@
 <?php
+
+//Tim: otherwise there's no ACL check
+if(!class_exists('UserAccess',false))
+{
+	include_once(EGW_INCLUDE_ROOT.'/mydms/inc/inc.ClassAccess.php');
+	include_once(EGW_INCLUDE_ROOT.'/mydms/inc/inc.ClassUser.php');
+	include_once(EGW_INCLUDE_ROOT.'/mydms/inc/inc.ClassGroup.php');
+}
+
 function getFolder($id)
 {
 	if (!is_numeric($id))
@@ -6,26 +15,26 @@ function getFolder($id)
 
 	$queryStr = "SELECT * FROM phpgw_mydms_Folders WHERE id = " . $id;
 	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
-		
+
 	if (is_bool($resArr) && $resArr == false)
 		return false;
 	else if (count($resArr) != 1)
 		return false;
-		
+
 	$resArr = $resArr[0];
 	if($id == 1) {
 		$resArr["defaultAccess"] = M_READ;
 	}
 	$newFolder =  new Folder(
-		$resArr["id"], 
-		$resArr["name"], 
-		$resArr["parent"], 
-		$resArr["comment"], 
-		$resArr["owner"], 
-		($resArr["inheritAccess"] ? $resArr["inheritAccess"] : $resArr["inheritaccess"]), 
-		($resArr["defaultAccess"] ? $resArr["defaultAccess"] : $resArr["defaultaccess"]), 
+		$resArr["id"],
+		$resArr["name"],
+		$resArr["parent"],
+		$resArr["comment"],
+		$resArr["owner"],
+		($resArr["inheritAccess"] ? $resArr["inheritAccess"] : $resArr["inheritaccess"]),
+		($resArr["defaultAccess"] ? $resArr["defaultAccess"] : $resArr["defaultaccess"]),
 		$resArr["sequence"]);
-	
+
 	#print $resArr["name"]."<br>";
 	#print $newFolder->getAccessMode(getUser($GLOBALS['phpgw_info']['user']['account_id']))."<br>";
 	if($newFolder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id'])) > 1)
@@ -64,7 +73,7 @@ class Folder
 		}
 		$this->_defaultAccess = $defaultAccess;
 		$this->_sequence = $sequence;
-		
+
 		$this->db = clone($GLOBALS['egw']->db);
 		$this->db->set_app('mydms');
 	}
@@ -77,12 +86,12 @@ class Folder
 	{
 		$data 	= array('name' => $newName);
 		$where	= array('id' => $this->_id);
-		
+
 		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
-		
+
 		$this->_name = $newName;
-		
+
 		return true;
 	}
 
@@ -92,12 +101,12 @@ class Folder
 	{
 		$data 	= array('comment' => $newComment);
 		$where	= array('id' => $this->_id);
-		
+
 		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
-		
+
 		$this->_comment = $newComment;
-		
+
 		return true;
 	}
 
@@ -105,7 +114,7 @@ class Folder
 	{
 		if (!isset($this->_parentID) || ($this->_parentID == "") || ($this->_parentID == 0))
 			return false;
-		
+
 		if (!isset($this->_parent))
 			$this->_parent = getFolder($this->_parentID);
 		return $this->_parent;
@@ -115,13 +124,13 @@ class Folder
 	{
 		$data 	= array('parent' => $newParent->getID());
 		$where	= array('id' => $this->_id);
-		
+
 		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
-		
+
 		$this->_parentID = $newParent->getID();
 		$this->_parent = $newParent;
-		
+
 		return true;
 	}
 
@@ -136,10 +145,10 @@ class Folder
 	{
 		$data 	= array('owner' => $user->getID());
 		$where	= array('id' => $this->_id);
-		
+
 		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
-		
+
 		$this->_ownerID = $user->getID();
 		$this->_owner = $user;
 		return true;
@@ -153,7 +162,7 @@ class Folder
 			if (!$res) return false;
 			return $this->_parent->getDefaultAccess();
 		}
-		
+
 		return $this->_defaultAccess;
 	}
 
@@ -161,10 +170,10 @@ class Folder
 	{
 		$data 	= array('defaultAccess' => $mode);
 		$where	= array('id' => $this->_id);
-		
+
 		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
-		
+
 		$this->_defaulAccess = $mode;
 		return true;
 	}
@@ -177,10 +186,10 @@ class Folder
 
 		$data 	= array('inheritAccess' => $inheritAccess);
 		$where	= array('id' => $this->_id);
-		
+
 		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
-		
+
 		$this->_inheritAccess = $inheritAccess;
 		return true;
 	}
@@ -191,7 +200,7 @@ class Folder
 	{
 		$data 	= array('sequence' => $seq);
 		$where	= array('id' => $this->_id);
-		
+
 		if(!$this->db->update('phpgw_mydms_Folders', $data, $where, __LINE__, __FILE__))
 			return false;
 
@@ -207,25 +216,25 @@ class Folder
 			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && $resArr == false)
 				return false;
-			
+
 			$this->_subFolders = array();
 			for ($i = 0; $i < count($resArr); $i++)
 			{
 				$newSubFolder = new Folder(
-					$resArr[$i]["id"], 
-					$resArr[$i]["name"], 
-					$resArr[$i]["parent"], 
-					$resArr[$i]["comment"], 
-					$resArr[$i]["owner"], 
-					($resArr[$i]["inheritAccess"]?$resArr[$i]["inheritAccess"]:$resArr[$i]["inheritaccess"]), 
-					($resArr[$i]["defaultAccess"]?$resArr[$i]["defaultAccess"]:$resArr[$i]["defaultaccess"]), 
+					$resArr[$i]["id"],
+					$resArr[$i]["name"],
+					$resArr[$i]["parent"],
+					$resArr[$i]["comment"],
+					$resArr[$i]["owner"],
+					($resArr[$i]["inheritAccess"]?$resArr[$i]["inheritAccess"]:$resArr[$i]["inheritaccess"]),
+					($resArr[$i]["defaultAccess"]?$resArr[$i]["defaultAccess"]:$resArr[$i]["defaultaccess"]),
 					$resArr[$i]["sequence"]);
 
 				if($newSubFolder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id'])) > 1)
         				$this->_subFolders[$i] = $newSubFolder;
-			}			
+			}
 		}
-		
+
 		return $this->_subFolders;
 	}
 
@@ -247,9 +256,9 @@ class Folder
 
 		if (!$res)
 			return false;
-		
+
 		unset($this->_subFolders);
-		
+
 		return getFolder($this->db->get_last_insert_id('phpgw_mydms_Folders','id'));
 	}
 
@@ -265,10 +274,10 @@ class Folder
 		{
 			$res = $this->getParent();
 			if (!$res) return false;
-			
+
 			$path = $this->_parent->getPath();
 			if (!$path) return false;
-			
+
 			array_push($path, $this);
 			return $path;
 		}
@@ -286,14 +295,14 @@ class Folder
 		{
 			$res = $this->getParent();
 			if (!$res) return false;
-			
+
 			#print "search parent ".$this->_id."<br>";
 			$path = $this->_parent->getPathNew();
 			#print "_parent->getPathNew(".$this->_id."):<br>";
 			#print "my parent ".$this->_id."<br>";
 			#_debug_array($path);
 			if (!$path) return false;
-			
+
 			#$path = array_merge($path, array($this->_id => $this));
 			#$path[] = array($this);
 			unset($this->_parent);
@@ -315,7 +324,7 @@ class Folder
 		{
 			$res = $this->getParent();
 			if (!$res) return false;
-			
+
 			return $this->_parent->isDescendant($folder);
 		}
 		else
@@ -330,21 +339,21 @@ class Folder
 			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && !$resArr)
 				return false;
-			
+
 			$this->_documents = array();
 			foreach ($resArr as $row)
 				array_push($this->_documents, new Document(
-					$row["id"], 
-					$row["name"], 
-					$row["comment"], 
-					$row["date"], 
-					$row["expires"], 
-					$row["owner"], 
-					$row["folder"], 
-					($row["inheritAccess"]?$row["inheritAccess"]:$row["inheritaccess"]), 
-					($row["defaultAccess"]?$row["defaultAccess"]:$row["defaultaccess"]), 
-					$row["locked"], 
-					$row["keywords"], 
+					$row["id"],
+					$row["name"],
+					$row["comment"],
+					$row["date"],
+					$row["expires"],
+					$row["owner"],
+					$row["folder"],
+					($row["inheritAccess"]?$row["inheritAccess"]:$row["inheritaccess"]),
+					($row["defaultAccess"]?$row["defaultAccess"]:$row["defaultaccess"]),
+					$row["locked"],
+					$row["keywords"],
 					$row["sequence"]));
 		}
 		return $this->_documents;
@@ -352,7 +361,7 @@ class Folder
 
 	function addDocument($name, $comment, $expires, $owner, $keywords, $tmpFile, $orgFileName, $fileType, $mimeType, $sequence)
 	{
-		$ownerid = $GLOBALS['egw_info']['user']['account_id'];		
+		$ownerid = $GLOBALS['egw_info']['user']['account_id'];
 
 		$expires = (!$expires) ? 0 : $expires;
 
@@ -376,16 +385,16 @@ class Folder
 			return false;
 
 		#unset($this->_subFolders);
-		
+
 		#return getFolder($this->db->get_last_insert_id('phpgw_mydms_Folders','id'));
 
 		#$queryStr = "INSERT INTO phpgw_mydms_Documents (name, comment, date, expires, owner, folder, inheritAccess, defaultAccess, locked, keywords, sequence) VALUES ".
 		#			"('".$name."', '".$comment."', " . mktime().", ".$expires.", ".$ownerid.", ".$this->_id.", true, ".M_READ.", -1, '".$keywords."', " . $sequence . ")";
 		#if (!$GLOBALS['mydms']->db->getResult($queryStr))
 		#	return false;
-		
+
 		$document = getDocument($this->db->get_last_insert_id('phpgw_mydms_Documents','id'));
-		
+
 		$res = $document->addContent($comment, $owner, $tmpFile, $orgFileName, $fileType, $mimeType);
 		if (is_bool($res) && !$res)
 		{
@@ -393,7 +402,7 @@ class Folder
 			$GLOBALS['mydms']->db->getResult($queryStr);
 			return false;
 		}
-		
+
 		return $document;
 	}
 
@@ -404,19 +413,19 @@ class Folder
 		if (is_bool($res) && !$res) return false;
 		$res = $this->getDocuments();
 		if (is_bool($res) && !$res) return false;
-		
+
 		foreach ($this->_subFolders as $subFolder)
 		{
 			$res = $subFolder->remove();
 			if (!$res) return false;
 		}
-		
+
 		foreach ($this->_documents as $document)
 		{
 			$res = $document->remove();
 			if (!$res) return false;
 		}
-		
+
 		//Entfernen der Datenbankeintr�ge
 		$queryStr = "DELETE FROM phpgw_mydms_Folders WHERE id =  " . $this->_id;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
@@ -427,7 +436,7 @@ class Folder
 		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE target = ". $this->_id. " AND targetType = " . T_FOLDER;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		
+
 		return true;
 	}
 
@@ -440,14 +449,14 @@ class Folder
 			if (!$res) return false;
 			return $this->_parent->getAccessList();
 		}
-		
+
 		if (!isset($this->_accessList))
 		{
 			$queryStr = "SELECT * FROM phpgw_mydms_ACLs WHERE targetType = ".T_FOLDER." AND target = " . $this->_id . " ORDER BY targetType";
 			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && !$resArr)
 				return false;
-			
+
 			$this->_accessList = array("groups" => array(), "users" => array());
 			foreach ($resArr as $row)
 			{
@@ -460,7 +469,7 @@ class Folder
 				}
 			}
 		}
-		
+
 		return $this->_accessList;
 	}
 
@@ -469,7 +478,7 @@ class Folder
 		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE targetType = " . T_FOLDER . " AND target = " . $this->_id;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		
+
 		unset($this->_accessList);
 		return true;
 	}
@@ -477,12 +486,12 @@ class Folder
 	function addAccess($mode, $userOrGroupID, $isUser)
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
-		
-		$queryStr = "INSERT INTO phpgw_mydms_ACLs (target, targetType, ".$userOrGroup.", mode) VALUES 
+
+		$queryStr = "INSERT INTO phpgw_mydms_ACLs (target, targetType, ".$userOrGroup.", mode) VALUES
 					(".$this->_id.", ".T_FOLDER.", " . $userOrGroupID . ", " .$mode. ")";
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		
+
 		unset($this->_accessList);
 		return true;
 	}
@@ -490,11 +499,11 @@ class Folder
 	function changeAccess($newMode, $userOrGroupID, $isUser)
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
-		
+
 		$queryStr = "UPDATE phpgw_mydms_ACLs SET mode = " . $newMode . " WHERE targetType = ".T_FOLDER." AND target = " . $this->_id . " AND " . $userOrGroup . " = " . $userOrGroupID;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		
+
 		unset($this->_accessList);
 		return true;
 	}
@@ -502,11 +511,11 @@ class Folder
 	function removeAccess($userOrGroupID, $isUser)
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
-		
+
 		$queryStr = "DELETE FROM phpgw_mydms_ACLs WHERE targetType = ".T_FOLDER." AND target = ".$this->_id." AND ".$userOrGroup." = " . $userOrGroupID;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		
+
 		unset($this->_accessList);
 		return true;
 	}
@@ -525,11 +534,11 @@ class Folder
 		//Admin??
 		if ($user->isAdmin())
 			return M_ALL;
-		
+
 		//Besitzer ??
 		if ($user->getID() == $this->_ownerID)
 			return M_ALL;
-		
+
 		//Gast-Benutzer??
 		if (($user->getID() == $settings->_guestID) && ($settings->_enableGuestLogin))
 		{
@@ -554,16 +563,16 @@ class Folder
 			}
 		}
 		*/
-		
+
 		$highestPrivileged = M_NONE;
-		
+
 		//ACLs durchforsten
 		$foundInACL = false;
 		$accessList = $this->getAccessList();
 		if (!$accessList) {
 			return false;
 		}
-			
+
 		foreach ($accessList["users"] as $userAccess)
 		{
 			if ($userAccess->getUserID() == $user->getID())
@@ -588,7 +597,7 @@ class Folder
 		}
 		if ($foundInACL)
 			return $highestPrivileged;
-		
+
 		//Standard-Berechtigung verwenden
 		return $this->getDefaultAccess();
 	}
@@ -601,7 +610,7 @@ class Folder
 			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
 			if (is_bool($resArr) && $resArr == false)
 				return false;
-			
+
 			$this->_notifyList = array("groups" => array(), "users" => array());
 			foreach ($resArr as $row)
 			{
@@ -620,11 +629,11 @@ class Folder
 	function addNotify($userOrGroupID, $isUser)
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
-		
+
 		$queryStr = "INSERT INTO phpgw_mydms_Notify (target, targetType, " . $userOrGroup . ") VALUES (" . $this->_id . ", " . T_FOLDER . ", " . $userOrGroupID . ")";
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		
+
 		unset($this->_notifyList);
 		return true;
 	}
@@ -632,11 +641,11 @@ class Folder
 	function removeNotify($userOrGroupID, $isUser)
 	{
 		$userOrGroup = ($isUser) ? "userID" : "groupID";
-		
+
 		$queryStr = "DELETE FROM phpgw_mydms_Notify WHERE target = " . $this->_id . " AND targetType = " . T_FOLDER . " AND " . $userOrGroup . " = " . $userOrGroupID;
 		if (!$GLOBALS['mydms']->db->getResult($queryStr))
 			return false;
-		
+
 		unset($this->_notifyList);
 		return true;
 	}
