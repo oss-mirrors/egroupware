@@ -10,7 +10,7 @@
 	* under the terms of the GNU General Public License as published by the     *
 	* Free Software Foundation; version 2 of the License.                       *
 	\***************************************************************************/
-	
+
 	/* $Id$ */
 
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.Settings.php');
@@ -21,7 +21,7 @@
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.ClassGroup.php');
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.ClassFolder.php');
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.ClassDocument.php');
-	
+
 	class uimydms
 	{
 		var $icons = array(
@@ -81,7 +81,7 @@
 			'setOwner'		=> 'true',
 			'viewDocument'		=> 'true',
 		);
-		
+
 		function uimydms()
 		{
 			$this->t 		=& CreateObject('phpgwapi.Template',EGW_APP_TPL);
@@ -98,7 +98,7 @@
 			$userID		= (int)$_POST['userid'];
 			$groupID	= (int)$_POST['groupid'];
 			$access		= (int)$_POST['access'];
-			
+
 			$documentID	= (int)$_GET['documentid'];
 
 			if($documentID)
@@ -112,7 +112,7 @@
 		{
 			$userID		= $_POST['userid'];
 			$groupID	= $_POST['groupid'];
-			
+
 			$documentID	= (int)$_GET['documentid'];
 
 			if($documentID)
@@ -126,11 +126,11 @@
 		{
 			$folderID = ($_folderID === false ? (int)$_GET['folderid'] : $_folderID);
 			$formName = $_GET['form'];
-			
+
 			$folder = getFolder($folderID);
 
 			$this->display_app_header();
-		
+
 			$this->t->set_file(array("folderChooser" => "folderChooser.tpl"));
 			$this->t->set_block('folderChooser', 'main', 'main');
 
@@ -138,7 +138,7 @@
 			$this->t->set_var('formName',$formName);
 
 			$this->t->parse("out","main");
-			
+
 			print $this->t->get('out','main');
 		}
 
@@ -160,9 +160,9 @@
 		function createHTMLFolder($_folders, $_selected, $_divName, $_displayCheckBox=false)
 		{
 			$allFolders = $_folders;
-			
+
 			$folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/templates/default/images/';
-			
+
 			$folder_tree_new  = '<link rel="STYLESHEET" type="text/css" href="'.$GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/js/dhtmlxtree/css/dhtmlXTree.css">';
 			$folder_tree_new .= "<script type='text/javascript'>";
 			$folder_tree_new .= "tree=new dhtmlXTreeObject('$_divName','100%','100%',0);\n";
@@ -177,7 +177,7 @@
 			$xmlAutoLoadURL = $GLOBALS['egw']->link('/index.php',$linkData);
 
 			$folder_tree_new .= "tree.setXMLAutoLoading('$xmlAutoLoadURL');\n";
-			
+
 			if($_displayCheckBox)
 			{
 				$folder_tree_new .= "tree.enableCheckBoxes(1);";
@@ -193,7 +193,7 @@
 			$entryOptions	= 'CHILD,CHECKED';
 			$folderID	= $folderObject->getID();
 			$folderName	= $folderObject->getName();
-			
+
 			$selectedFolderID = $_selected->getID();
 
 			$folder_tree_new .= "tree.insertNewItem('0','$folderID','$folderName',onNodeSelect,$image1,$image2,$image3,'$entryOptions');\n";
@@ -205,14 +205,14 @@
 			{
 				$lastFolderID = $folderObject->getID();
 			}
-			
+
 			$linkData = array
 			(
 				'menuaction'	=> 'mydms.uifolder.getInitialFolderView',
 				'id'		=> $lastFolderID,
 			);
 			$xmlInitialLoadURL = $GLOBALS['egw']->link('/index.php',$linkData);
-				
+
 			if($selectedFolderID == 1) {
 				$folder_tree_new .= "tree.selectItem('$folderID',false);";
 			}
@@ -231,9 +231,9 @@
 /*		function createHTMLFolder_old($_folders, $_selected, $_divName, $_displayCheckBox=false)
 		{
 			$allFolders = $_folders;
-			
+
 			$folderImageDir = $GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/templates/default/images/';
-			
+
 			$folder_tree_new  = '<link rel="STYLESHEET" type="text/css" href="'.$GLOBALS['egw_info']['server']['webserver_url'].'/phpgwapi/js/dhtmlxtree/css/dhtmlXTree.css">';
 			$folder_tree_new .= "<script type='text/javascript'>";
 			$folder_tree_new .= "tree=new dhtmlXTreeObject('$_divName','100%','100%',0);";
@@ -266,9 +266,9 @@
 				'id'		=> $folderObject->getID(),
 			);
 			$xmlAutoLoadURL = $GLOBALS['egw']->link('/index.php',$linkData);
-				
+
 				if(empty($parentName)) $parentName = '--topfolder--';
-				
+
 				$entryOptions = 'CHILD,CHECKED';
 
 				// highlight currently selected mailbox
@@ -276,7 +276,7 @@
 				{
 					$entryOptions .= ',SELECT';
 				}
-				
+
 				$folderID	= $folderObject->getID();
 				$folderName	= $folderObject->getName();
 				$parentID	= ($folderObject->_parentID ? $folderObject->_parentID : 0);
@@ -289,14 +289,14 @@
 				#if($_displayCheckBox)
 				#	$folder_tree_new .= "tree.setCheck('$longName','".(int)$obj->subscribed."');";
 			#}
-	
-	
+
+
 #			foreach($allFolders as $folderID => $folderObject)
 #			{
-#				$folder_tree_new .= "tree.loadXML('$xmlAutoLoadURL&id=".$folderObject->getID()."');"; 
+#				$folder_tree_new .= "tree.loadXML('$xmlAutoLoadURL&id=".$folderObject->getID()."');";
 #				$folder_tree_new .= "tree.openItem('".$folderObject->getID()."');";
 #			}
-			
+
 
 			#$selectedID = $_selected->getID();
 			#$folder_tree_new.= "tree.closeAllItems(0);tree.openItem('$selectedID');"
@@ -309,7 +309,7 @@
 		{
 			$userID		= (int)$_GET['userid'];
 			$groupID	= (int)$_GET['groupid'];
-			
+
 			$documentID	= (int)$_GET['documentid'];
 
 			if($documentID)
@@ -341,7 +341,7 @@
 				$this->viewDocument($documentID);
 			}
 		}
-		
+
 		//tim
 		function deleteLink()
 		{
@@ -355,14 +355,14 @@
 			}
 		}
 		//-----
-		
+
 		//tim
 		function addLink()
 		{
 			$documentID	= (int)get_var('documentid','GET','');
 			$docid 		= (int)get_var('docid','POST','');
 			$public 	= get_var('public','POST',false);
-			
+
 			if($documentID && $docid)
 			{
 				$this->bomydms->addLink($documentID, $docid, $public);
@@ -437,9 +437,9 @@
 
 		function getFolderTree($path, $level = 0, $_activeObj, $isFolder)
 		{
-			return $this->createHTMLFolder($path, $_activeObj, 'mydmstreebox');			
+			return $this->createHTMLFolder($path, $_activeObj, 'mydmstreebox');
 		}
-		
+
 		function inheritACL()
 		{
 			$documentID	= (int)$_GET['documentid'];
@@ -452,7 +452,7 @@
 				$this->viewDocument($documentID);
 			}
 		}
-		
+
 		function setDefaultAccess()
 		{
 			$documentID	= (int)$_GET['documentid'];
@@ -536,13 +536,13 @@
 			$this->t->set_var('lang_add_document_link',lang('Add link'));
 			//---
 		}
-		
+
 		function updateACL()
 		{
 			$userID		= (int)$_GET['userid'];
 			$groupID	= (int)$_GET['groupid'];
 			$access		= (int)$_POST['mode'];
-			
+
 			$documentID	= (int)$_GET['documentid'];
 
 			if($documentID)
@@ -561,7 +561,7 @@
 			$expire_date	= $GLOBALS['egw']->jscalendar->input2date($_POST['expire_date']);
 			$lockStatus	= $_POST['lockStatus'];
 			$targetID	= $_POST['targetid'];
-			
+
 			$documentID	= (int)$_GET['documentid'];
 
 			if($documentID)
@@ -593,7 +593,7 @@
 				$this->viewDocument($documentID);
 			}
 		}
-                
+
     		//tim
 		function getMimeIcon($fileType)
 		{
@@ -605,7 +605,7 @@
 		}//--------------
 
 		function viewDocument($_documentID=false)
-		{	
+		{
 			$documentID = ($_documentID === false ? (int)$_GET['documentid'] : $_documentID);
 
 			if(!$document	= getDocument($documentID))
@@ -621,11 +621,11 @@
 			$notifyList	= $document->getNotifyList();
 			$accessList	= $document->getAccessList();
 			$updatingUser	= $latestContent->getUser();
-			
+
 			#_debug_array($document);
-			
+
 			$this->display_app_header();
-		
+
 			$this->t->set_file(array("viewDocument" => "viewDocument.tpl"));
 			$this->t->set_block('viewDocument', 'main', 'main');
 			$this->t->set_block('viewDocument', 'acl_row', 'acl_row');
@@ -659,7 +659,7 @@
 
 
 			$this->translate();
-			
+
 			$linkData = array
 			(
 				'menuaction'	=> 'mydms.uimydms.folderChooser',
@@ -705,7 +705,7 @@
 				$this->t->set_var('delete_link', $GLOBALS['egw']->link('/index.php',$linkData));
 				$this->t->parse('delete','block_delete',True);
 			}
-			
+
 			$this->t->set_var('owner_fullname',	$owner->getFullName());
 			$this->t->set_var('owner_email',	$owner->getEmail());
 
@@ -713,7 +713,7 @@
 			$this->t->set_var('updater_email',	$updatingUser->getEmail());
 			//tim добавлена переменная 'name_icon'  вшаблон и функция getMimeIcon
 			$this->t->set_var('name_icon',		$this->getMimeIcon($latestContent->getFileType()));
-			
+
 			$this->t->set_var('filename',		$document->getName());
 			$this->t->set_var('comment',		$document->getComment());
 			$this->t->set_var('keywords',		$document->getKeywords());
@@ -721,10 +721,10 @@
 
 			$this->t->set_var('foldername',		$folder->getName());
 			$this->t->set_var('current_folder_id',	$folder->getID());
-			
+
 			// lock status
 			// lock select box
-			
+
 			if ($document->isLocked())
 			{
 				$lockingUser = $document->getLockingUser();
@@ -736,15 +736,15 @@
 			else
 			{
 				$this->t->set_var('lang_current_status', lang('this document is currently not locked.'));
-				
+
 				$this->t->parse('locking','lock_row', True);
 			}
-			
+
 			// expire select box
 			$selectOptions = array('0' => lang('does not expire'), '1' => lang('expires after'));
 			$this->t->set_var('select_expire',$GLOBALS['egw']->html->select('expire',(!$document->getExpires() ? 0 : 1),$selectOptions,true,"onchange=\"toggleJSCal(this);\""));
 			#$this->t->set_var('select_expire',$GLOBALS['egw']->html->select('expire',(!$document->getExpires() ? 0 : 1),$selectOptions,true,"onchange=\"alert('test')\""));
-			
+
 			if (!$document->getExpires())
 			{
 				$this->t->set_var('expire_date_ro',lang('does not expire'));
@@ -757,7 +757,7 @@
 				$this->t->set_var('expire_date',$GLOBALS['egw']->jscalendar->input('expire_date',$document->getExpires()));
 				$this->t->set_var('expire_class', 'active');
 			}
-				
+
 			$this->t->set_var('current_version',	$latestContent->getVersion());
 			$this->t->set_var('current_comment',	$latestContent->getComment());
 			$this->t->set_var('mime_type',		$latestContent->getMimeType());
@@ -792,14 +792,14 @@
 					$this->t->set_var('url_view_online', "<a target=\"_blank\" href=\"../op/viewonline" . $version->getURL()."\"><img src=\"images/view.gif\" width=18 height=18 border=0 title=\"".lang('view online')."\"></a>");
 				else
 					$this->t->set_var('url_view_online',	'');
-				
+
 				$linkData = array
 				(
 					'documentid'	=> $documentID,
 					'version'	=> $version->getVersion()
 				);
 				$this->t->set_var('url_download_file', $GLOBALS['egw']->link('/mydms/op/op.Download.php',$linkData));
-				
+
 				if (($accessMode == M_ALL) && (count($versions) > 1))
 				{
 					$linkData = array
@@ -815,10 +815,10 @@
 							"');\"><img src=\"$deleteImage\" width=15 height=15 border=0 title=\"".
 							lang("delete")."\"></a>");
 				}
-				
+
 				$this->t->parse('versions','version_row',True);
 			}
-			
+
 			//tim
 			// div 3 notifications
 			//------------------------------------------------------
@@ -826,7 +826,7 @@
 			$links = $document->getDocumentLinks();
 			$links = filterDocumentLinks($user, $links);
 			$l_rownum = count($links)+1;
-			
+
 			$this->t->set_var('l_rownum',$l_rownum);
 
 			if ($l_rownum > 1)
@@ -835,8 +835,9 @@
 
 				foreach($links as $link)
 				{
-					$responsibleUser = $link->getUser();
 					$targetDoc = $link->getTarget();
+					if(!$targetDoc) continue;
+					$responsibleUser = $link->getUser();
 					$linkData = array
 						(
 							'menuaction'	=> 'mydms.uimydms.viewDocument',
@@ -863,17 +864,17 @@
 							"\" onClick=\"return confirm('".lang('do you really want to delete this link for document?').
 							"');\"><img src=\"$deleteImage\" width=15 height=15 border=0 title=\"".
 							lang("delete")."\"></a>";
-						//old 
+						//old
 						//$link_del = "<a href=\"mydms/op/op.RemoveDocumentLink.php?documentid=".$documentID."&linkid=".$link->getID()."\"><img src=\"mydms/out/images/del.gif\" border=0></a>";
 
 						$this->t->set_var('link_del',$link_del);
 					}
-				
+
 					$this->t->parse('link_body','link_tab_cont',True);
 				}
 			}
 			else $this->t->set_var('link_head',"<tr><td class=\"filelist\">&nbsp;&nbsp;".lang('No related documents')."</td></tr>");
-			
+
 			if (($user->getID() != $settings->_guestID) && ($document->getAccessMode($user) >= M_READWRITE))
 			{
 				$linkData = array
@@ -890,7 +891,7 @@
 				$this->t->set_var('link_folder', ($settings->_rootFolderID));
 				$this->t->parse('link_cell','link_cel',True);
 			}
-			
+
 //-----------------------------------------------------------------------------------------------------------------------------
 			// div 4 notifications
 			$linkData = array
@@ -905,7 +906,7 @@
 			{
 				$this->t->set_var('notify_username',$userNotify->getFullName());
 				$this->t->set_var('notify_image',$userImage);
-				
+
 				$linkData = array
 				(
 					'menuaction'	=> 'mydms.uimydms.deleteNotification',
@@ -917,12 +918,12 @@
 
 				$this->t->parse('notifications','notification_row',True);
 			}
-			
+
 			foreach ((array)$notifyList["groups"] as $groupNotify)
 			{
 				$this->t->set_var('notify_username',$groupNotify->getName());
 				$this->t->set_var('notify_image',$groupImage);
-				
+
 				$linkData = array
 				(
 					'menuaction'	=> 'mydms.uimydms.deleteNotification',
@@ -934,7 +935,7 @@
 
 				$this->t->parse('notifications','notification_row',True);
 			}
-			
+
 			$allUsers = getAllUsers();
 			$allUsersOptions = array('unselected' => lang('please select').'...');
 			foreach ($allUsers as $userObj)
@@ -942,7 +943,7 @@
 				$allUsersOptions[$userObj->getID()] = $userObj->getFullName();
 			}
 			$this->t->set_var('select_userid',$GLOBALS['egw']->html->select('userid',0,$allUsersOptions,true,"style=\"width: 300px;\" onchange=\"javascript:document.notify_form.submit();\""));
-			
+
 			$allGroups = getAllGroups();
 			$allGroupsOptions = array('unselected' => lang('please select').'...');
 			foreach ($allGroups as $groupObj)
@@ -950,7 +951,7 @@
 				$allGroupsOptions[$groupObj->getID()] = $groupObj->getName();
 			}
 			$this->t->set_var('select_groupid',$GLOBALS['egw']->html->select('groupid',0,$allGroupsOptions,true,"style=\"width: 300px;\" onchange=\"javascript:document.notify_form.submit();\""));
-			
+
 	// div 5 ACL
 			if ($accessMode == M_ALL)
 			{
@@ -971,10 +972,10 @@
 						$allUsersOptions[$userObj->getID()] = $userObj->getFullName();
 					}
 					$this->t->set_var('select_ownerid',$GLOBALS['egw']->html->select('owner',$owner->getID(),$allUsersOptions,true,"style=\"width: 300px;\" onchange=\"javascript:document.change_owner.submit();\""));
-					
+
 					$this->t->parse('change_owner','block_change_owner',True);
 				}
-				
+
 				if ($document->inheritsAccess())
 				{
 					$linkData = array
@@ -986,7 +987,7 @@
 						'tabpage'	=> 5,
 					);
 					$this->t->set_var('link_acl_copy', $GLOBALS['egw']->link('/index.php',$linkData));
-					
+
 					$linkData = array
 					(
 						'menuaction'	=> 'mydms.uimydms.inheritACL',
@@ -1026,7 +1027,7 @@
 					);
 					$this->t->set_var('action_add_acl', $GLOBALS['egw']->link('/index.php',$linkData));
 
-					
+
 					$defaultACL = array
 					(
 						M_NONE 		=> 'access_mode_none',
@@ -1063,10 +1064,10 @@
 						$this->t->set_var('link_acl_delete', $GLOBALS['egw']->link('/index.php',$linkData));
 
 						$this->t->set_var('acl_selectbox',$GLOBALS['egw']->html->select('mode',$userAccess->getMode(),$defaultACL,false,"style=\"width: 300px;\""));
-				
+
 						$this->t->parse('acls','acl_row',True);
 					}
-					
+
 					foreach ((array)$accessList["groups"] as $groupAccess)
 					{
 						$groupObj	= $groupAccess->getGroup();
@@ -1106,7 +1107,7 @@
 						$allUsersOptions[$userObj->getID()] = $userObj->getFullName();
 					}
 					$this->t->set_var('select_add_acl_userid',$GLOBALS['egw']->html->select('userid',0,$allUsersOptions,true,"style=\"width: 300px;\" oonchange=\"javascript:document.notify_form.submit();\""));
-			
+
 					$allGroups = getAllGroups();
 					$allGroupsOptions = array('unselected' => lang('please select').'...');
 					foreach ($allGroups as $groupObj)
@@ -1120,9 +1121,9 @@
 					$this->t->parse('display_acl','block_acl_notinherite',True);
 				}
 			}
-			
+
 	// div 6 update file
-			
+
 			$linkData = array
 			(
 				'menuaction'	=> 'mydms.uimydms.updateFile',
@@ -1132,13 +1133,13 @@
 
 			// expire select box
 			$this->t->set_var('select_expire_update',$GLOBALS['egw']->html->select('expire',0,$selectOptions,true,"onchange=\"toggleJSCalUpdate(this);\""));
-			
+
 			$this->t->set_var('expire_date_update',$GLOBALS['egw']->jscalendar->input('expire_date_update',''));
 			$this->t->set_var('expire_class_update', 'inactive');
-			
-			
+
+
 			$this->t->parse("out","main");
-			
+
 			print $this->t->get('out','main');
 		}
 
