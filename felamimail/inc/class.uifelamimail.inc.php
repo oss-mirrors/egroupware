@@ -461,7 +461,22 @@
 			$maxMessages		=&  $GLOBALS['egw_info']['user']['preferences']['common']['maxmatchs'];
 			if (empty($maxMessages)) $maxMessages = 23; // this seems to be the number off messages that fit the height of the folder tree
 			$userPreferences	=&  $GLOBALS['egw_info']['user']['preferences']['felamimail'];
-			
+			// retrieve data for/from user defined accounts
+			$selectedID = 0;
+			if($this->preferences->userDefinedAccounts) $allAccountData = $this->bopreferences->getAllAccountData($this->preferences);
+			if ($allAccountData) {
+				foreach ($allAccountData as $tmpkey => $accountData)
+				{
+					$identity =& $accountData['identity'];
+					$icServer =& $accountData['icServer'];
+					//_debug_array($identity);
+					//_debug_array($icServer);
+					if (empty($icServer->host)) continue;
+					$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
+					if (!empty($identity->default)) $selectedID = $identity->id;
+				}
+			}
+
 			$this->display_app_header();
 
 			$this->t->set_file(array("body" => 'mainscreen.tpl'));
@@ -475,6 +490,25 @@
 			$this->t->set_block('body','subject_new_window');
 
 			$this->translate();
+			if (empty($imapServer->host) && count($identities)==0) {
+				$errormessage = "<br>".lang("There is no IMAP Server configured.");
+				if ($GLOBALS['egw_info']['user']['apps']['emailadmin']) {
+					$errormessage .= "<br>".lang("Configure a valid IMAP Server in emailadmin for the profile you are using.");
+				} else {
+					$errormessage .= "<br>".lang('Please ask the administrator to correct the emailadmin IMAP Server Settings for you.');
+					if($this->preferences->userDefinedAccounts)
+						$errormessage .= "<br>".lang('or configure an valid IMAP Server connection using the Manage Accounts/Identities preference in the Sidebox Menu.');
+				}
+				$this->t->set_var('connection_error_message', $errormessage);
+				$this->t->set_var('message', '&nbsp;');
+				$this->t->parse('header_rows','error_message',True);
+
+				$this->t->parse("out","main");
+				print $this->t->get('out','main');
+
+				$GLOBALS['egw']->common->egw_footer();
+				exit;
+			}
 			
 			$this->t->set_var('oldMailbox',$urlMailbox);
 			$this->t->set_var('image_path',EGW_IMAGES);
@@ -687,20 +721,7 @@
 			$selectStatus = html::select('status', $defaultSelectStatus, $statusTypes, false, "style='width:100%;' onchange='javascript:quickSearch();' id='status'");
 			$this->t->set_var('select_status', $selectStatus);
 
-			$selectedID = 0;
-			if($this->preferences->userDefinedAccounts) $allAccountData = $this->bopreferences->getAllAccountData($this->preferences);
-			if ($allAccountData) {
-				foreach ($allAccountData as $tmpkey => $accountData)
-				{
-					$identity =& $accountData['identity'];
-					$icServer =& $accountData['icServer'];
-					//_debug_array($identity);
-					//_debug_array($icServer);
-					if (empty($icServer->host)) continue;
-					$identities[$identity->id]=$identity->realName.' '.$identity->organization.' <'.$identity->emailAddress.'>';
-					if (!empty($identity->default)) $selectedID = $identity->id;
-				}
-			}
+			// the data needed here are collected at the start of this function
 			if (!isset($activeIdentity->id) && $selectedID == 0) {
 				$identities[0] = $activeIdentity->realName.' '.$activeIdentity->organization.' <'.$activeIdentity->emailAddress.'>';
 			}
