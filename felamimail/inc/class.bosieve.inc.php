@@ -63,6 +63,7 @@
 			if(is_a($_icServer,'defaultimap') && $_icServer->enableSieve) {
 				$sieveHost		= $_icServer->host;
 				$sievePort		= $_icServer->sievePort;
+				$useTLS			= $_icServer->encryption > 0;
 				if ($euser) {
 					$username		= $_icServer->adminUsername;
 					$password		= $_icServer->adminPassword;
@@ -75,7 +76,7 @@
 				return 'die';
 			}
 
-			if(PEAR::isError($this->error = $this->connect($sieveHost , $sievePort) ) ){
+			if(PEAR::isError($this->error = $this->connect($sieveHost , $sievePort, null, $useTLS) ) ){
 				if ($this->debug) error_log(__CLASS__.'::'.__METHOD__.": error in connect($sieveHost,$sievePort): ".$this->error->getMessage());
 				return false;
 			}
