@@ -297,12 +297,14 @@
 			}
 			if ($_GET['accountID'] == 'new') $account2retrieve = 'new';
 			if (!empty($newID) && $newID>0) $account2retrieve = $newID;
-			if ($account2retrieve != 'new') $accountData	= $this->bopreferences->getAccountData($preferences, $account2retrieve);
-			$icServer =& $accountData['icServer'];
-			#_debug_array($icServer);
-			$ogServer =& $accountData['ogServer'];
-			$identity =& $accountData['identity'];
-			#_debug_array($identity);
+			if ($account2retrieve != 'new') {
+				$accountData	= $this->bopreferences->getAccountData($preferences, $account2retrieve);
+				$icServer =& $accountData['icServer'];
+				#_debug_array($icServer);
+				$ogServer =& $accountData['ogServer'];
+				$identity =& $accountData['identity'];
+				#_debug_array($identity);
+			}
 			if ($icServer) {
 				foreach($icServer as $key => $value) {
 					if(is_object($value) || is_array($value)) {
