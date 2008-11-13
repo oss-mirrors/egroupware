@@ -496,9 +496,10 @@
 					$errormessage .= "<br>".lang("Configure a valid IMAP Server in emailadmin for the profile you are using.");
 				} else {
 					$errormessage .= "<br>".lang('Please ask the administrator to correct the emailadmin IMAP Server Settings for you.');
-					if($this->preferences->userDefinedAccounts)
-						$errormessage .= "<br>".lang('or configure an valid IMAP Server connection using the Manage Accounts/Identities preference in the Sidebox Menu.');
 				}
+				if($this->preferences->userDefinedAccounts)
+						$errormessage .= "<br>".lang('or configure an valid IMAP Server connection using the Manage Accounts/Identities preference in the Sidebox Menu.');
+		
 				$this->t->set_var('connection_error_message', $errormessage);
 				$this->t->set_var('message', '&nbsp;');
 				$this->t->parse('header_rows','error_message',True);
