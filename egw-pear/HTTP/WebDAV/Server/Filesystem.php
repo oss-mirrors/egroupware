@@ -356,8 +356,10 @@ class HTTP_WebDAV_Server_Filesystem extends HTTP_WebDAV_Server
         $options['size'] = filesize($fspath);
 
         // no need to check result here, it is handled by the base class
-        $options['stream'] = fopen($fspath, "r");
-
+        if (!($options['stream'] = fopen($fspath, "r")))
+        {
+        	return '403 Forbidden';
+        }
         return true;
     }
 
