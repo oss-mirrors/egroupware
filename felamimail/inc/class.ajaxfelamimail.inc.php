@@ -523,19 +523,29 @@
 				
 				$this->sessionDataAjax['folderName'] = $folderName;
 				$this->saveSessionData();
-				
+				$hasChildren=false;
+				if ($folderStatus['attributes'][0]=="\\HasChildren") $hasChildren=true;	
 				if(strtoupper($folderName) != 'INBOX') {
 					$response->addAssign("newMailboxName", "value", htmlspecialchars($folderStatus['shortDisplayName'], ENT_QUOTES, $this->charset));
+					$response->addAssign("newMailboxMoveName", "value", htmlspecialchars($folderStatus['displayName'], ENT_QUOTES, $this->charset));
 					$response->addScript("document.getElementById('mailboxRenameButton').disabled = false;");
 					$response->addScript("document.getElementById('newMailboxName').disabled = false;");
 					$response->addScript("document.getElementById('divDeleteButton').style.visibility = 'visible';");
 					$response->addScript("document.getElementById('divRenameButton').style.visibility = 'visible';");
+					// if the folder has children, we dont want to move it, since we dont handle the subscribing to subfolders after moving the folder
+					$response->addScript("document.getElementById('divMoveButton').style.visibility = ".($hasChildren ? "'hidden'" : "'visible'").";");
+					$response->addScript("document.getElementById('newMailboxMoveName').disabled = ".($hasChildren ? "true" : "false").";");
+					$response->addScript("document.getElementById('aMoveSelectFolder').style.visibility = ".($hasChildren ? "'hidden'" : "'visible'").";");
 				} else {
 					$response->addAssign("newMailboxName", "value", '');
+					$response->addAssign("newMailboxMoveName", "value", '');
 					$response->addScript("document.getElementById('mailboxRenameButton').disabled = true;");
 					$response->addScript("document.getElementById('newMailboxName').disabled = true;");
 					$response->addScript("document.getElementById('divDeleteButton').style.visibility = 'hidden';");
 					$response->addScript("document.getElementById('divRenameButton').style.visibility = 'hidden';");
+					$response->addScript("document.getElementById('divMoveButton').style.visibility = 'hidden';");
+					$response->addScript("document.getElementById('newMailboxMoveName').disabled = true;");
+					$response->addScript("document.getElementById('aMoveSelectFolder').style.visibility = 'hidden';");
 				}
 				$response->addAssign("folderName", "innerHTML", htmlspecialchars($folderStatus['displayName'], ENT_QUOTES, $this->charset));
 				if($folderACL = $this->bofelamimail->getIMAPACL($folderName)) {
@@ -612,7 +622,11 @@
 			if($this->_debug) error_log("ajaxfelamimail::moveMessages");
 			$folderName = $this->_decodeEntityFolderName($_folderName);
 			if (!empty( $_selectedMessages['msg']) && !empty($folderName)) {
-				$this->bofelamimail->moveMessages($folderName, $_selectedMessages['msg']);
+				if ($this->sessionData['mailbox'] != $folderName) {
+					$this->bofelamimail->moveMessages($folderName, $_selectedMessages['msg']);
+				} else {
+					  if($this->_debug) error_log("ajaxfelamimail::moveMessages-> same folder than current selected");
+				}
 
 				return $this->generateMessageList($this->sessionData['mailbox']);
 			} else {
@@ -795,25 +809,39 @@
 		*/
 		function renameFolder($_oldFolderName, $_parentFolder, $_folderName) 
 		{
+			if($this->_debug) error_log("ajaxfelamimail::renameFolder called as ($_oldFolderName, $_parentFolder, $_folderName)");
 			$oldFolderName = $this->_decodeEntityFolderName($_oldFolderName);
-			$folderName = $GLOBALS['egw']->translation->convert($_folderName, $this->charset, 'UTF7-IMAP');
+			$folderName = $GLOBALS['egw']->translation->convert($this->_decodeEntityFolderName($_folderName), $this->charset, 'UTF7-IMAP');
 			$parentFolder = $this->_decodeEntityFolderName($_parentFolder);
 			$parentFolder = ($_parentFolder == '--topfolder--' ? '' : $parentFolder);
-			if($this->_debug) error_log("ajaxfelamimail::renameFolder($oldFolderName, $parentFolder, $folderName)");
+			if($this->_debug) error_log("ajaxfelamimail::renameFolder work with ($oldFolderName, $parentFolder, $folderName)");
 
 			$response =& new xajaxResponse();
 			if(strtoupper($_oldFolderName) != 'INBOX' ) {
 				if($newFolderName = $this->bofelamimail->renameFolder($oldFolderName, $parentFolder, $folderName)) {
+					//enforce the subscription to the newly named server, as it seems to fail for names with umlauts
+					$rv = $this->bofelamimail->subscribe($newFolderName, true);
 					$newFolderName = $this->_encodeFolderName($newFolderName);
 					$folderName = $this->_encodeDisplayFolderName($folderName);
-
+					if ($parentFolder == '') {
+						#$folderStatus = $this->bofelamimail->getFolderStatus($newFolderName);
+						$HierarchyDelimiter = $this->bofelamimail->getHierarchyDelimiter();
+						#if($this->_debug) error_log("ajaxfelamimail::renameFolder Status of new Folder:".print_r($folderStatus,true));
+						if($this->_debug) error_log("ajaxfelamimail::rename/move Folder($newFolderName, $folderName)");
+						$buffarray = explode($HierarchyDelimiter, $newFolderName);
+						$folderName = $this->_encodeDisplayFolderName( $this->_decodeEntityFolderName(array_pop($buffarray)));
+						$_parentFolder = $parentFolder = implode($HierarchyDelimiter,$buffarray);
+						if($this->_debug) error_log("ajaxfelamimail::renameFolder insert new ITEM $folderName at $_parentFolder");
+						#$hasChildren = false;
+						#if ($folderStatus['attributes'][0]=="\\HasChildren") $hasChildren=true;
+					}
 					$response->addScript("tree.deleteItem('$_oldFolderName',0);");
 					$response->addScript("tree.insertNewItem('$_parentFolder','$newFolderName','$folderName',onNodeSelect,'folderClosed.gif',0,0,'CHILD,CHECKED,SELECT,CALL');");
 				}
 			}
 			return $response->getXML();
 		}
-		
+
 		function saveSessionData() 
 		{
 			$GLOBALS['egw']->session->appsession('ajax_session_data','felamimail',$this->sessionDataAjax);

@@ -275,8 +275,7 @@
 			if(empty($parent)) {
 				$newFolderName = $folderName;
 			} else {
-				$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();
-				if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
+				$HierarchyDelimiter = $this->getHierarchyDelimiter();
 				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
 
@@ -1173,8 +1172,7 @@
 		{
 			$isUWIMAP = false;
 
-			$delimiter = $this->icServer->getHierarchyDelimiter();
-			if( PEAR::isError($delimiter)) $delimiter = '/';
+			$delimiter = $this->getHierarchyDelimiter();
 
 			$inboxData = new stdClass;
 			$inboxData->name 		= 'INBOX';
@@ -1506,6 +1504,13 @@
 		function getNameSpace($_icServer)
 		{
 			$this->icServer->getNameSpaces();
+		}
+
+		function getHierarchyDelimiter()
+		{
+			$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();	
+			if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
+			return $HierarchyDelimiter;
 		}
 
 		/**
@@ -2239,13 +2244,13 @@
 			if(empty($parent)) {
 				$newFolderName = $folderName;
 			} else {
-				$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();
-				if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
+				$HierarchyDelimiter = $this->getHierarchyDelimiter();
 				$newFolderName = $parent . $HierarchyDelimiter . $folderName;
 			}
 			if (self::$debug) error_log("create folder: $newFolderName");
-
-			if ( PEAR::isError($this->icServer->renameMailbox($oldFolderName, $newFolderName) ) ) {
+			$rv = $this->icServer->renameMailbox($oldFolderName, $newFolderName);
+			if ( PEAR::isError($rv) ) {
+				error_log(__METHOD__." failed for $oldFolderName, $newFolderName with error: ".print_r($rv->message,true));
 				return false;
 			}
 
@@ -2302,6 +2307,7 @@
 
 		function subscribe($_folderName, $_status)
 		{
+			if (self::$debug) error_log("bofelamimail::".($_status?"":"un")."subscribe:".$_folderName);
 			if($_status === true) {
 				if ( PEAR::isError($this->icServer->subscribeMailbox($_folderName))) {
 					return false;
@@ -2397,20 +2403,22 @@
 		* convert the foldername from display charset to UTF-7
 		*
 		* @param string _parent the parent foldername
-		* @returns ISO-8859-1 encoded string
+		* @returns ISO-8859-1 / UTF7-IMAP encoded string
 		*/
 		function _encodeFolderName($_folderName) {
 			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'ISO-8859-1');
+			#return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'UTF7-IMAP');
 		}
 
 		/**
 		* convert the foldername from UTF-7 to display charset
 		*
 		* @param string _parent the parent foldername
-		* @returns ISO-8859-1 encoded string
+		* @returns ISO-8859-1 / self::$displayCharset encoded string
 		*/
 		function _decodeFolderName($_folderName) {
 			return $GLOBALS['egw']->translation->convert($_folderName, self::$displayCharset, 'ISO-8859-1');
+			#return $GLOBALS['egw']->translation->convert($_folderName, 'UTF7-IMAP', self::$displayCharset);
 		}
 
 		/**

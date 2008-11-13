@@ -60,10 +60,22 @@
 						{lang_rename_folder}
 					</td>
 					<td align="left">
-						<input type="text" size="30" id="newMailboxName" name="newMailboxName" value="{mailboxNameShort}" oonchange="document.renameMailbox.submit()">
+						<input type="text" size="30" id="newMailboxName" name="newMailboxName" value="{mailboxNameShort}" oonchange="document.renameMailbox.submit()" disabled>
 					</td>
 					<td align="center">
 						<div id="divRenameButton" style="visibility:hidden;"><button type='button' id="mailboxRenameButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.renameFolder",tree.getSelectedItemId(), tree.getParentId(tree.getSelectedItemId()), document.getElementById("newMailboxName").value)'>{lang_rename}</button></div>
+					</td>
+				</tr>
+				<tr>
+					<td align="left">
+						{lang_move_folder}
+					</td>
+					<td align="left">
+						<input type="text" size="30" id="newMailboxMoveName" name="newMailboxMoveName" value="{mailboxNameShort}" oonchange="document.moveMailbox.submit()" disabled;>
+						<a id="aMoveSelectFolder" style="visibility:hidden;" href="#" onclick="javascript:window.open('{folder_select_url}', 'windowName', 'width=400,height=500,toolbar=no,resizable=yes'); return false;">{lang_select}</a>
+					</td>
+					<td align="center">
+						<div id="divMoveButton" style="visibility:hidden;"><button type='button' id="mailboxMoveButton" onclick='xajax_doXMLHTTP("felamimail.ajaxfelamimail.renameFolder",tree.getSelectedItemId(), "", document.getElementById("newMailboxMoveName").value)'>{lang_move}</button></div>
 					</td>
 				</tr>
 				<tr>

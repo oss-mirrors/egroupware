@@ -29,7 +29,8 @@
 			'listSignatures'	=> 'True',
 			'listAccountData'	=> 'True',
 			'showHeader'		=> 'True',
-			'getAttachment'		=> 'True'
+			'getAttachment'		=> 'True',
+			'listSelectFolder'	=> 'True',
 		);
 
 		function uipreferences()
@@ -85,6 +86,7 @@
 
 				case 'felamimail.uipreferences.listFolder':
 				case 'felamimail.uipreferences.addACL':
+				case 'felamimail.uipreferences.listSelectFolder':
 					$GLOBALS['egw']->js->validate_file('tabs','tabs');
 					$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXCommon');
 					$GLOBALS['egw']->js->validate_file('dhtmlxtree','js/dhtmlXTree');
@@ -491,22 +493,12 @@
 				'menuaction'    => 'felamimail.uipreferences.addACL'
 			);
 			$this->t->set_var('url_addACL',$GLOBALS['egw']->link('/index.php',$linkData));
-			
-			// create the link to show folder settings
-			#$linkData = array
-			#(
-			#	'menuaction'    => 'felamimail.uipreferences.listFolder',
-			#	'display'	=> 'settings'
-			#);
-			#$this->t->set_var('settings_url',$GLOBALS['egw']->link('/index.php',$linkData));
-			
-			// create the link to show folder acl
-			#$linkData = array
-			#(
-			#	'menuaction'    => 'felamimail.uipreferences.listFolder',
-			#	'display'	=> 'acl'
-			#);
-			#$this->t->set_var('acl_url',$GLOBALS['egw']->link('/index.php',$linkData));
+
+			$linkData = array
+			(
+					'menuaction'    => 'felamimail.uipreferences.listSelectFolder',
+			);
+			$this->t->set_var('folder_select_url',$GLOBALS['egw']->link('/index.php',$linkData));
 			
 			// folder select box
 			$icServer = $mailPrefs->getIncomingServer(0);
@@ -677,6 +669,32 @@
 			$this->t->pparse("out","main");			
 			$this->bofelamimail->closeConnection();
 		}
+
+		function listSelectFolder()
+		{
+			$this->display_app_header(False);
+			if (!isset($this->bofelamimail)) $this->bofelamimail    =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
+			if (!isset($this->uiwidgets)) $this->uiwidgets          =& CreateObject('felamimail.uiwidgets');
+			$this->bofelamimail->openConnection();
+			$mailPrefs  = $this->bofelamimail->getMailPreferences();
+			$icServer = $mailPrefs->getIncomingServer(0);
+			$folderObjects = $this->bofelamimail->getFolderObjects(false);
+			$folderTree = $this->uiwidgets->createHTMLFolder
+				(
+					$folderObjects,
+					'INBOX',
+					0,
+					lang('IMAP Server'),
+					$icServer->username.'@'.$icServer->host,
+					'divFolderTree',
+					false,
+					true
+				);
+			print '<script type="text/javascript">function onNodeSelect(_folderName){opener.document.getElementById("newMailboxMoveName").value = _folderName + "' . $this->bofelamimail->getHierarchyDelimiter() . '" + opener.document.getElementById("newMailboxName").value;self.close();}</script>';
+			print '<div id="divFolderTree" style="overflow:auto; width:375px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;"></div>';
+			print $folderTree;
+		}
+
 		
 		function translate()
 		{
@@ -705,6 +723,8 @@
 			$this->t->set_var("lang_posting",lang('posting'));
 			$this->t->set_var("lang_none",lang('none'));
 			$this->t->set_var("lang_rename",lang('rename'));
+			$this->t->set_var("lang_move",lang('move'));
+			$this->t->set_var("lang_move_folder",lang('move folder'));
 			$this->t->set_var("lang_create",lang('create'));
 			$this->t->set_var('lang_open_all',lang("open all"));
 			$this->t->set_var('lang_close_all',lang("close all"));
