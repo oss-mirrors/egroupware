@@ -17,7 +17,7 @@ function onchange_active(_checkbox)
 		identityInputs[i].disabled = false;
 	}
 	if (allowAccounts) {
-		if(_checkbox.checked) {
+		if(_checkbox != null && _checkbox.checked) {
 			for(i=0; i<incomingInputs.length; i++) {
 				incomingInputs[i].disabled = false;
 			}
@@ -49,7 +49,7 @@ function onchange_active(_checkbox)
 function onchange_og_smtpauth(_checkbox) 
 {
 	isActive = document.getElementById('active').checked
-	if(_checkbox.checked && isActive) {
+	if(_checkbox != null && _checkbox.checked && isActive) {
 		document.getElementById('og[username]').disabled = false;
 		document.getElementById('og[password]').disabled = false;
 	} else {
@@ -61,7 +61,7 @@ function onchange_og_smtpauth(_checkbox)
 function onchange_ic_enableSieve(_checkbox) 
 {
 	isActive = document.getElementById('active').checked
-	if(_checkbox.checked && isActive) {
+	if(_checkbox != null && _checkbox.checked && isActive) {
 		document.getElementById('ic[sievePort]').disabled = false;
 	} else {
 		document.getElementById('ic[sievePort]').disabled = true;

@@ -217,7 +217,7 @@ div.inactivetab{ display:none; }
 			{hostname_address}
 		</td>
 		<td style="text-align:left;">
-			<input type="text" style="width: 99%;" name="og[host]" value="{og[host]}" maxlength="128">
+			<input type="text" style="width: 99%;" id="og[host]" name="og[host]" value="{og[host]}" maxlength="128">
 		</td>
 	</tr>
 	<tr>
