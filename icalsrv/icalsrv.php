@@ -298,7 +298,7 @@
 			$GLOBALS['egw']->common->egw_exit();
 		}
 
-		error_log('vo_personal_vircal_ardb:' . print_r($vo_personal_vircal_ardb->calendars, true));
+		//error_log('vo_personal_vircal_ardb:' . print_r($vo_personal_vircal_ardb->calendars, true));
 
 		// search our calendar in personal vircal database
 		if(!($vircal_arstore = $vo_personal_vircal_ardb->calendars[$reqvircal_basename]))
