@@ -35,7 +35,6 @@
 
 		function headlines()
 		{
-			$GLOBALS['egw']->network =& CreateObject('phpgwapi.network',False);
 			$this->db = clone($GLOBALS['egw']->db);
 			$this->db->set_app('headlines');
 			$this->current_time = time();
@@ -196,7 +195,7 @@
 					$data = @str_replace('</url>','</link>',$data);
 					$simple = True;
 					break;
-				default: 
+				default:
 					$simple = False;
 			}
 
@@ -471,7 +470,7 @@
 			$this->db->transaction_commit();
 			return array('con' => (int)$id);
 		}
-		
+
 		function sites()
 		{
 			$sites = false;
