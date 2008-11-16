@@ -188,7 +188,7 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 		return 'infolog_note-' . $noteId;
 	}
 	
-	if(!$id) {
+	if(!$noteId) {
   		return false;
   	}
 

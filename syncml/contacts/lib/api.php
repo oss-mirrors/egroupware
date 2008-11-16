@@ -178,7 +178,7 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 		return 'contacts-' .$contactId;
 	}
 	
-	if(!$id) {
+	if(!$contactId) {
   		return false;
   	}
 

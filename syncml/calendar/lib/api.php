@@ -187,7 +187,7 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 		return 'calendar-' . $calendarId;
 	}
 	
-	if(!$id) {
+	if(!$calendarId) {
   		return false;
   	}
 

@@ -175,7 +175,7 @@ function _egwtaskssync_import($content, $contentType, $notepad = null)
 		return 'infolog_task-' . $taskID;
 	}
 
-	if(!$id) {
+	if(!$taskID) {
   		return false;
 	}
 
