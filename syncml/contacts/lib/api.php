@@ -26,7 +26,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType'),
+    'args' => array('content', 'contentType','id'),
     'type' => 'integer'
 );
 
@@ -177,6 +177,10 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 	if (is_a($contactId, 'PEAR_Error')) {
 		return 'contacts-' .$contactId;
 	}
+	
+	if(!$id) {
+  		return false;
+  	}
 
 	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['egw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	//return $GLOBALS['egw']->common->generate_uid('contacts',$contactId);
@@ -184,19 +188,21 @@ function _egwcontactssync_import($content, $contentType, $notepad = null)
 }
 
 /**
- * Import a memo represented in the specified contentType.
+ * Search a memo represented in the specified contentType,
+ * used for SlowSync to check / rebuild content_map.
  *
  * @param string $content      The content of the memo.
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
- * @param string $notepad      (optional) The notepad to save the memo on.
+ * @param string $contentid    the contentid read from contentmap we are expecting the content to be
+ *
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcontactssync_search($content, $contentType)
+function _egwcontactssync_search($content, $contentType, $contentid)
 {
-	Horde::logMessage("SymcML: egwcontactssync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcontactssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
@@ -207,7 +213,7 @@ function _egwcontactssync_search($content, $contentType)
 			$vcaladdressbook = new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-			$contactId = $vcaladdressbook->search($content);
+			$contactId = $vcaladdressbook->search($content,$state->get_egwID($contentid));
 			break;
 
 		case 'text/x-s4j-sife':
@@ -216,7 +222,7 @@ function _egwcontactssync_search($content, $contentType)
 			#Horde::logMessage("SymcML: egwcontactssync search content: Treating bad contact content-type '$contentType' as if it was 'text/x-s4j-sifc'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifc':
 			$sifaddressbook	= new addressbook_sif();
-			$contactId = $sifaddressbook->search($content);
+			$contactId = $sifaddressbook->search($content,$state->get_egwID($contentid));
 			break;
 
 		default:

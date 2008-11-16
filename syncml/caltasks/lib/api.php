@@ -26,7 +26,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType'),
+    'args' => array('content', 'contentType','id'),
     'type' => 'integer'
 );
 
@@ -206,36 +206,43 @@ function _egwcaltaskssync_import($content, $contentType, $notepad = null)
 		return $type . '-' .$id;
 	}
 
+	if(!$id) {
+ 	 	return false;
+	}
+
 	$guid = $type .'-' .$id;
 	Horde::logMessage("SymcML: egwcaltaskssync import imported: ".$guid, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return $guid;
 }
 
 /**
- * Import a memo represented in the specified contentType.
+ * Search a memo represented in the specified contentType.
+ * used for SlowSync to check / rebuild content_map.
  *
  * @param string $content      The content of the memo.
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
- * @param string $notepad      (optional) The notepad to save the memo on.
+ * @param string $contentid    the contentid read from contentmap we are expecting the content to be
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcaltaskssync_search($content, $contentType)
+function _egwcaltaskssync_search($content, $contentType, $contentid)
 {
-	Horde::logMessage("SymcML: egwcaltaskssync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcaltaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	$state			= $_SESSION['SyncML.state'];
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
 		case 'text/calendar':
 			if(strrpos($content, 'BEGIN:VTODO')) {
 				$infolog_ical	= new infolog_ical();
-				$id 		=  $infolog_ical->searchVTODO($content);
+				$id 		=  $infolog_ical->searchVTODO($content,$state->get_egwID($contentid));
 				$type		=  'infolog_task';
 			} else {
 				$boical		= new calendar_ical();
-				$id		=  $boical->search($content);
+				$id		=  $boical->search($content,$state->get_egwID($contentid));
 				$type		=  'calendar';
 			}
 			Horde::logMessage('SymcML: egwcaltaskssync search searched for type: '. $type, __FILE__, __LINE__, PEAR_LOG_DEBUG);

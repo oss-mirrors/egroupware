@@ -26,7 +26,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType'),
+    'args' => array('content', 'contentType','id'),
     'type' => 'integer'
 );
 
@@ -175,23 +175,32 @@ function _egwtaskssync_import($content, $contentType, $notepad = null)
 		return 'infolog_task-' . $taskID;
 	}
 
+	if(!$id) {
+  		return false;
+	}
+
+
 	#Horde::logMessage("SymcML: egwtaskssync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog',$taskID), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return 'infolog_task-' . $taskID;
 }
 
 /**
- * Import a memo represented in the specified contentType.
+ * Search a memo represented in the specified contentType.
+ * used for SlowSync to check / rebuild content_map.
  *
  * @param string $content      The content of the memo.
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
- * @param string $notepad      (optional) The notepad to save the memo on.
+ * @param string $contentid    the contentid read from contentmap we are expecting the content to be
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwtaskssync_search($content, $contentType)
+function _egwtaskssync_search($content, $contentType, $contentid)
 {
+	Horde::logMessage("SymcML: egwtaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$state			= $_SESSION['SyncML.state'];
+	
 	if (is_array($contentType))
 	{
 		$options = $contentType;
@@ -208,7 +217,7 @@ function _egwtaskssync_search($content, $contentType)
 		case 'text/x-vcalendar':
 		case 'text/calendar':
 			$infolog_ical = new infolog_ical();
-			$taskID	= $infolog_ical->searchVTODO($content);
+			$taskID	= $infolog_ical->searchVTODO($content, $state->get_egwID($contentid));
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -217,7 +226,7 @@ function _egwtaskssync_search($content, $contentType)
 			Horde::logMessage("SyncML: egwtaskssync search treating bad task content-type '$contentType' as if is was 'text/x-s4j-sift'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sift':
 			$infolog_sif	= new infolog_sif();
-			$taskID = $infolog_sif->searchSIF($content,'task');
+			$taskID = $infolog_sif->searchSIF($content,'task', $state->get_egwID($contentid));
 			break;
 
 		default:
@@ -235,7 +244,6 @@ function _egwtaskssync_search($content, $contentType)
 	{
 		return false;
 	}
-
 	return 'infolog_task-' . $taskID;
 }
 

@@ -26,7 +26,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType'),
+    'args' => array('content', 'contentType','id'),
     'type' => 'integer'
 );
 
@@ -187,24 +187,32 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 	{
 		return 'infolog_note-' . $noteId;
 	}
+	
+	if(!$id) {
+  		return false;
+  	}
 
 	#Horde::logMessage("SymcML: egwnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	return 'infolog_note-' . $noteId;
 }
 
 /**
- * Import a memo represented in the specified contentType.
+ * Search a memo represented in the specified contentType.
+ * used for SlowSync to check / rebuild content_map.
  *
  * @param string $content      The content of the memo.
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
- * @param string $notepad      (optional) The notepad to save the memo on.
+ * @param string $contentid    the contentid read from contentmap we are expecting the content to be
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwnotessync_search($content, $contentType)
+function _egwnotessync_search($content, $contentType, $contentid)
 {
+	
+	$state			= $_SESSION['SyncML.state'];
+	
 	if (is_array($contentType))
 	{
 		$options = $contentType;
@@ -221,7 +229,7 @@ function _egwnotessync_search($content, $contentType)
 		case 'text/x-vnote':
 		case 'text/plain':
 			$infolog_ical = new infolog_ical();
-			$noteId	= $infolog_ical->searchVNOTE($content, $contentType);
+			$noteId	= $infolog_ical->searchVNOTE($content, $contentType, $state->get_egwID($contentid));
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -230,7 +238,7 @@ function _egwnotessync_search($content, $contentType)
 			Horde::logMessage("SyncML: egwnotessync search treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
-			$noteId = $infolog_sif->searchSIF($content,'note');
+			$noteId = $infolog_sif->searchSIF($content,'note', $state->get_egwID($contentid));
 			break;
 
 		default:
@@ -270,7 +278,8 @@ function _egwnotessync_search($content, $contentType)
  */
 function _egwnotessync_export($guid, $contentType)
 {
-	Horde::logMessage("SymcML: egwnotessync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	  $state = $_SESSION['SyncML.state'];
+	  Horde::logMessage("SymcML: egwnotessync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 #    require_once dirname(__FILE__) . '/base.php';
 #
 #    $storage = &Mnemo_Driver::singleton();
@@ -294,7 +303,7 @@ function _egwnotessync_export($guid, $contentType)
 		$options = array();
 	}
 
-	$noteId = $GLOBALS['egw']->common->get_egwId($guid);
+	$noteId = $state->get_egwId($guid);
 
 	switch ($contentType)
 	{

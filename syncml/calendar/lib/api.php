@@ -26,7 +26,7 @@ $_services['import'] = array(
 );
 
 $_services['search'] = array(
-    'args' => array('content', 'contentType'),
+    'args' => array('content', 'contentType', 'id'),
     'type' => 'integer'
 );
 
@@ -186,6 +186,10 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 	{
 		return 'calendar-' . $calendarId;
 	}
+	
+	if(!$id) {
+  		return false;
+  	}
 
 	$guid = 'calendar-' . $calendarId;
 	Horde::logMessage("SymcML: egwcalendarsync import imported: ".$guid, __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -193,19 +197,22 @@ function _egwcalendarsync_import($content, $contentType, $notepad = null)
 }
 
 /**
- * Import a memo represented in the specified contentType.
+ * Search a memo represented in the specified contentType.
+ * used for SlowSync to check / rebuild content_map.
  *
  * @param string $content      The content of the memo.
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
- * @param string $notepad      (optional) The notepad to save the memo on.
+ * @param string $contentid    the contentid read from contentmap we are expecting the content to be
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcalendarsync_search($content, $contentType)
+function _egwcalendarsync_search($content, $contentType, $contentid)
 {
-	Horde::logMessage("SymcML: egwcalendarsync search content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	$state			= $_SESSION['SyncML.state'];
 
 	if (is_array($contentType))
 	{
@@ -227,7 +234,7 @@ function _egwcalendarsync_search($content, $contentType)
 			$deviceInfo = $state->getClientDeviceInfo();
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$eventId = $boical->search($content);
+			$eventId = $boical->search($content,$state->get_egwID($contentid));
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -236,7 +243,7 @@ function _egwcalendarsync_search($content, $contentType)
 			Horde::logMessage("SyncML: egwcalendarsync treating bad calendar content-type '$contentType' as if is was 'text/x-s4j-sife'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sife':
 			$sifcalendar = new calendar_sif();
-			$eventId = $sifcalendar->search($content);
+			$eventId = $sifcalendar->search($content,$state->get_egwID($contentid));
 			break;
 
 		default:
