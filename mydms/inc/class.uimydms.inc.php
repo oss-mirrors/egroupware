@@ -216,9 +216,9 @@
 			if($selectedFolderID == 1) {
 				$folder_tree_new .= "tree.selectItem('$folderID',false);";
 			}
-
-			$folder_tree_new .= "tree.loadXML('$xmlInitialLoadURL');";
-
+			if($selectedFolderID != $folderID) {
+				$folder_tree_new .= "tree.loadXML('$xmlInitialLoadURL');";
+			}
 			if($selectedFolderID == 1) {
 				$folder_tree_new .= "tree.openItem('1');";
 			}
