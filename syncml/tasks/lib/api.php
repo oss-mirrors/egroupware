@@ -95,7 +95,7 @@ function _egwtaskssync_list()
 function &_egwtaskssync_listBy($action, $timestamp)
 {
 	#Horde::logMessage("SymcML: egwtaskssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-  $state = $_SESSION['SyncML.state'];
+	$state = $_SESSION['SyncML.state'];
 	$allChangedItems = $state->getHistory('infolog_task', $action, $timestamp);
 
 	if($action == 'delete')
@@ -200,7 +200,7 @@ function _egwtaskssync_search($content, $contentType, $contentid)
 {
 	Horde::logMessage("SymcML: egwtaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state			= $_SESSION['SyncML.state'];
-	
+
 	if (is_array($contentType))
 	{
 		$options = $contentType;
@@ -340,6 +340,7 @@ function _egwtaskssync_delete($guid)
 		return true;
 	}
 
+	$state		= $_SESSION['SyncML.state'];
 	return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
 }
 
@@ -370,6 +371,7 @@ function _egwtaskssync_replace($guid, $content, $contentType)
 		$options = array();
 	}
 
+	$state		= $_SESSION['SyncML.state'];
 	$taskID = $state->get_egwId($guid);
 
 	switch ($contentType)
