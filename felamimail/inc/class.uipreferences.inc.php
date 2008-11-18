@@ -277,12 +277,6 @@
 				$this->bofelamimail->closeConnection();
 			}
 
-			$trashOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use Trash")),$folderList);
-			$sentOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use Sent")),$folderList);
-			$draftOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use draft folder")),$folderList);
-			$templateOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use template folder")),$folderList);
-			$folderList = array_merge( array('' => lang('default').' '.lang("folder settings")),$folderList);
-
 			$this->display_app_header(TRUE);
 			
 			$this->t->set_file(array("body" => "edit_account_data.tpl"));
@@ -305,6 +299,7 @@
 				$identity =& $accountData['identity'];
 				#_debug_array($identity);
 			}
+
 			if ($icServer) {
 				foreach($icServer as $key => $value) {
 					if(is_object($value) || is_array($value)) {
@@ -377,6 +372,13 @@
 				}
 				$this->t->set_var('accountID','new');
 			}
+
+			$trashOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use Trash")),($accountData['active'] ? $folderList :array($icServer->trashfolder => $icServer->trashfolder)));
+			$sentOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use Sent")),($accountData['active'] ? $folderList :array($icServer->sentfolder => $icServer->sentfolder)));
+			$draftOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use draft folder")),($accountData['active'] ? $folderList :array($icServer->draftfolder => $icServer->draftfolder)));
+			$templateOptions = array_merge(array('' => lang('default').' '.lang("folder settings"), 'none' => lang("Don't use template folder")),($accountData['active'] ? $folderList :array($icServer->templatefolder => $icServer->templatefolder)));
+			$folderList = array_merge( array('' => lang('default').' '.lang("folder settings")),($accountData['active'] ? $folderList :$icServer->folderstoshowinhome));
+
 			$this->t->set_var('allowAccounts',($preferences->userDefinedAccounts ? 1 : 0));
 			$this->t->set_var('identity_selectbox', html::select('identity[signature]',$sigvalue,$allSignatures, true, "style='width: 250px;'"));
 			$this->t->set_var('folder_selectbox', html::select('ic[folderstoshowinhome]',$icServer->folderstoshowinhome,$folderList, true, "style='width: 250px;'",6));
