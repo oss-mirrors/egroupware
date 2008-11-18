@@ -975,8 +975,10 @@
 				$filename	= $this->decode_header($structure->parameters['NAME']);
 			} elseif(isset($structure->dparameters['FILENAME'])) {
 				$filename	= $this->decode_header($structure->dparameters['FILENAME']);
-                        } elseif(isset($structure->dparameters['FILENAME*'])) {
-                                $filename       = $this->decode_header($structure->dparameters['FILENAME*']);
+			} elseif(isset($structure->dparameters['FILENAME*'])) {
+				$filename       = $this->decode_header($structure->dparameters['FILENAME*']);
+			} elseif ( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
+				$filename   = $this->decode_header($structure->filename);
 			} else {
 				$filename	= lang("unknown");
 			}
@@ -1045,8 +1047,10 @@
 				$filename	= $this->decode_header($structure->parameters['NAME']);
 			} elseif(isset($structure->dparameters['FILENAME'])) {
 				$filename	= $this->decode_header($structure->dparameters['FILENAME']);
-                        } elseif(isset($structure->dparameters['FILENAME*'])) {
-                                $filename       = $this->decode_header($structure->dparameters['FILENAME*']);
+			} elseif(isset($structure->dparameters['FILENAME*'])) {
+				$filename       = $this->decode_header($structure->dparameters['FILENAME*']);
+			} elseif( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
+				$filename   = $this->decode_header($structure->filename);
 			} else {
 				$filename	= lang("unknown");
 			}
@@ -1871,7 +1875,9 @@
 				} elseif(isset($structure->dparameters['FILENAME'])) {
 					$newAttachment['name']	= $this->decode_header($structure->dparameters['FILENAME']);
 				} elseif(isset($structure->dparameters['FILENAME*'])) {
-                                        $newAttachment['name']  = $this->decode_header($structure->dparameters['FILENAME*']);
+					$newAttachment['name']  = $this->decode_header($structure->dparameters['FILENAME*']);
+				} elseif ( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
+					$newAttachment['name']   = $this->decode_header($structure->filename);
 				} else {
 					$newAttachment['name']	= lang("unknown");
 				}
@@ -1931,8 +1937,10 @@
 						$newAttachment['name']	= $this->decode_header($subPart->parameters['NAME']);
 					} elseif(isset($subPart->dparameters['FILENAME'])) {
 						$newAttachment['name']	= $this->decode_header($subPart->dparameters['FILENAME']);
-                                        } elseif(isset($subPart->dparameters['FILENAME*'])) {
-                                                $newAttachment['name']  = $this->decode_header($subPart->dparameters['FILENAME*']);
+					} elseif(isset($subPart->dparameters['FILENAME*'])) {
+						$newAttachment['name']  = $this->decode_header($subPart->dparameters['FILENAME*']);
+					} elseif ( isset($subPart->filename) && !empty($subPart->filename) && $subPart->filename != 'NIL') {
+						$newAttachment['name']   = $this->decode_header($subPart->filename);
 					} else {
 						$newAttachment['name']	= lang("unknown");
 					}

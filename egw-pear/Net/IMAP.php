@@ -548,7 +548,7 @@ class Net_IMAP extends Net_IMAPProtocol {
 
         $mimeParts = array();
         $this->_parseStructureArray($ret, $mimeParts);
-
+        #_debug_array($ret);
         return array_shift($mimeParts);
     }
 
@@ -841,6 +841,7 @@ class Net_IMAP extends Net_IMAPProtocol {
             }
           }
         }
+        $part->filename = $_structure[4];
         $part->encoding = strtoupper($_structure[5]);
         $part->bytes = $_structure[6];
         
