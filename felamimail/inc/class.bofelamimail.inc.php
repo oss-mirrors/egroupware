@@ -980,7 +980,7 @@
 			} elseif ( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
 				$filename   = $this->decode_header($structure->filename);
 			} else {
-				$filename	= lang("unknown");
+				$filename	= lang("unknown").($structure->subType ? ".".$structure->subType : "");
 			}
 
 			$attachment = $this->icServer->getBodyPart($_uid, $_partID, true);
@@ -1052,7 +1052,7 @@
 			} elseif( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
 				$filename   = $this->decode_header($structure->filename);
 			} else {
-				$filename	= lang("unknown");
+				$filename	= lang("unknown").($structure->subType ? ".".$structure->subType : "");
 			}
 
 			$attachment = $this->icServer->getBodyPart($_uid, $partID, true);
@@ -1879,7 +1879,7 @@
 				} elseif ( isset($structure->filename) && !empty($structure->filename) && $structure->filename != 'NIL') {
 					$newAttachment['name']   = $this->decode_header($structure->filename);
 				} else {
-					$newAttachment['name']	= lang("unknown");
+					$newAttachment['name']	= lang("unknown").($structure->subType ? ".".$structure->subType : "");
 				}
 				# if the new attachment is a winmail.dat, we have to decode that first
 				if ( $newAttachment['name'] == 'winmail.dat' &&
@@ -1942,7 +1942,7 @@
 					} elseif ( isset($subPart->filename) && !empty($subPart->filename) && $subPart->filename != 'NIL') {
 						$newAttachment['name']   = $this->decode_header($subPart->filename);
 					} else {
-						$newAttachment['name']	= lang("unknown");
+						$newAttachment['name']	= lang("unknown").($subPart->subType ? ".".$subPart->subType : "");
 					}
 					# if the new attachment is a winmail.dat, we have to decode that first
 					if ( $newAttachment['name'] == 'winmail.dat' &&
