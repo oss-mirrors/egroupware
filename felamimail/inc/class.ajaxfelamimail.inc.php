@@ -427,8 +427,9 @@
 			$listMode = 0;
 		
 			$this->bofelamimail->restoreSessionData();
-			
-			if($this->bofelamimail->isSentFolder($_folderName)) {
+			if($this->bofelamimail->isSentFolder($_folderName) || 
+				false !== in_array($_folderName,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0']))) 
+			{
 				$listMode = 1;
 			} elseif($this->bofelamimail->isDraftFolder($_folderName)) {
 				$listMode = 2;

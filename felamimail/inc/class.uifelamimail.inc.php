@@ -769,13 +769,19 @@
 					$this->t->set_var('lang_from',lang("from"));
 				}
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
-				
+				// determine how to display the current folder: as sent folder (to address visible) or normal (from address visible) 
+				$sentFolderFlag =$this->bofelamimail->isSentFolder($this->mailbox);
+				if(false !== in_array($_folderName,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0']))) {
+					$sentFolderFlag=1;
+					#_debug_array($GLOBALS['egw_info']['user']['preferences']['felamimail']);
+				}
+				$folderType = ($sentFolderFlag
+                            || $this->bofelamimail->isDraftFolder( $this->mailbox)
+                            || $this->bofelamimail->isTemplateFolder($this->mailbox));	
 				$this->t->set_var('header_rows',
 					$uiwidgets->messageTable(
 						$headers,
-						($this->bofelamimail->isSentFolder($this->mailbox) 
-							|| $this->bofelamimail->isDraftFolder( $this->mailbox) 
-							|| $this->bofelamimail->isTemplateFolder($this->mailbox)),
+						$folderType,
 						$this->mailbox,
 						$userPreferences['message_newwindow'],
 						$userPreferences['rowOrderStyle']

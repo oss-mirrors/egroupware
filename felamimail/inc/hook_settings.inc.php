@@ -207,6 +207,14 @@
 			'xmlrpc' => True,
 			'admin'  => False
 		),
+        'messages_showassent_0' => array(
+            'type'   => 'multiselect',
+            'label'  => 'which folders (additional to the Sent Folder) should be displayed using the Sent Folder View Schema',
+            'name'   => 'messages_showassent_0',
+            'values' => $folderList,
+            'xmlrpc' => True,
+            'admin'  => False
+        ),
 		'message_newwindow' => array(
 			'type'   => 'select',
 			'label'  => 'display messages in multiple windows',
