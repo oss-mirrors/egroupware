@@ -771,7 +771,7 @@
 				$msg_icon_sm = $GLOBALS['egw']->common->image('felamimail','msg_icon_sm');
 				// determine how to display the current folder: as sent folder (to address visible) or normal (from address visible) 
 				$sentFolderFlag =$this->bofelamimail->isSentFolder($this->mailbox);
-				if(false !== in_array($_folderName,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0']))) {
+				if(false !== in_array($this->mailbox,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0']))) {
 					$sentFolderFlag=1;
 					#_debug_array($GLOBALS['egw_info']['user']['preferences']['felamimail']);
 				}
