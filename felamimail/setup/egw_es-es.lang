@@ -62,6 +62,7 @@ configuration	felamimail	es-es	Configuración
 connection dropped by imap server.	felamimail	es-es	La conexión ha sido ignorada por el servidor IMAP
 contains	felamimail	es-es	contiene
 could not complete request. reason given: %s	felamimail	es-es	No se pudo completar la petición. Razón: %s
+could not import message:	felamimail	es-es	No se pudo importar el mensaje:
 could not open secure connection to the imap server. %s : %s.	felamimail	es-es	No se pudo abrir una conexión segura al servidor IMAP. %s: %s.
 cram-md5 or digest-md5 requires the auth_sasl package to be installed.	felamimail	es-es	CRAM-MD5 o DIGEST-MD5 necesitan que esté instalado el paquete Auth_SASL.
 create	felamimail	es-es	Crear
@@ -151,6 +152,7 @@ error connecting to imap serv	felamimail	es-es	Error al conectar al servidor IMA
 error connecting to imap server. %s : %s.	felamimail	es-es	Error al conectar con el servidor IMAP: %s: %s
 error connecting to imap server: [%s] %s.	felamimail	es-es	Error al conectar con el servidor IMAP: [%s] %s
 error opening	felamimail	es-es	Error al abrir
+error:	felamimail	es-es	Error:
 error: could not save message as draft	felamimail	es-es	Error: no se pudo salvar el mensaje como borrador
 every	felamimail	es-es	cada
 every %1 days	felamimail	es-es	cada %1 días
@@ -222,6 +224,8 @@ imap server type	felamimail	es-es	Tipo de servidor IMAP
 imap server username	felamimail	es-es	usuario del servidor IMAP
 imaps authentication	felamimail	es-es	Identificación IMAPS
 imaps encryption only	felamimail	es-es	Cifrado IMAPS solamente
+import	felamimail	es-es	importar
+import mail	felamimail	es-es	Importar correo
 in	felamimail	es-es	en
 inbox	felamimail	es-es	Bandeja de entrada
 incoming mail server(imap)	felamimail	es-es	servidor de correo entrante (IMAP)
@@ -279,6 +283,7 @@ new filter	felamimail	es-es	Nuevo filtro
 next	felamimail	es-es	Siguiente
 next message	felamimail	es-es	Mensaje siguiente
 no active imap server found!!	felamimail	es-es	¡No se encontró ningún servidor IMAP activo!
+no address to/cc/bcc supplied, and no folder to save message to provided.	felamimail	es-es	No se ha suministrado dirección para el campo A/CC/CCO, ni carpeta donde guardar el mensaje.
 no encryption	felamimail	es-es	Sin cifrar
 no filter	felamimail	es-es	Sin filtro
 no folders found	felamimail	es-es	No se encontraron carpetas

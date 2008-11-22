@@ -9,6 +9,7 @@ alternate email address	emailadmin	es-es	dirección de correo alternativa
 any application	emailadmin	es-es	cualquier aplicación
 any group	emailadmin	es-es	cualquier grupo
 any user	emailadmin	es-es	cualquier usuario
+back to admin/grouplist	emailadmin	es-es	Volver a Administración/Lista de grupos
 back to admin/userlist	emailadmin	es-es	Volver a Administración/Lista de usuarios
 bad login name or password.	emailadmin	es-es	Nombre de usuario o contraseña incorrectos
 bad or malformed request. server responded: %s	emailadmin	es-es	Petición errónea o mal formado. El servidor respondió: %s
@@ -33,6 +34,8 @@ email account active	emailadmin	es-es	cuenta de correo electrónico activa
 email address	emailadmin	es-es	dirección de correo electrónico
 email settings	common	es-es	Configuración del correo electrónico
 emailadmin	emailadmin	es-es	Administración del correo electrónico
+emailadmin: group assigned profile	common	es-es	eMailAdmin: perfil asignado al grupo
+emailadmin: user assigned profile	common	es-es	eMailAdmin: perfil asignado al usuario
 enable cyrus imap server administration	emailadmin	es-es	activar administración del servidor Cyrus IMAP
 enable sieve	emailadmin	es-es	activar Sieve
 encrypted connection	emailadmin	es-es	conexión cifrada
@@ -41,6 +44,7 @@ enter your default mail domain (from: user@domain)	emailadmin	es-es	introduzca e
 error connecting to imap server. %s : %s.	emailadmin	es-es	Error al conectar con el servidor IMAP. %s: %s.
 error connecting to imap server: [%s] %s.	emailadmin	es-es	Error al conectar con el servidor IMAP: [%s] %s.
 filtered by account	emailadmin	es-es	filtrado por cuenta
+filtered by group	emailadmin	es-es	filtrado por grupo
 forward also to	emailadmin	es-es	reenviar también a
 forward email's to	emailadmin	es-es	reenviar correos a
 forward only	emailadmin	es-es	sólo reenviar
