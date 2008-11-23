@@ -4,6 +4,7 @@ add document to category	wiki	nl	Voeg document toe aan categorie toe
 added	wiki	nl	Toegevoegd
 administration features are disabled for this wiki.	wiki	nl	Beheer mogelijkheden zijn uitgeschakeld voor deze wiki.
 admins	wiki	nl	beheerders
+after how many days should old versions of a page be removed (0 for never)	admin	nl	Na hoeveel dagen moeten oude versies van een pagina verwijderd worden (0 betekent nooit)
 allow anonymous access	admin	nl	sta anonieme toegang toe
 anonymous password	admin	nl	Anoniem wachtwoord
 anonymous session type	admin	nl	Anoniem Sessie Type
@@ -58,7 +59,12 @@ no never	admin	nl	Nee, nooit
 no only on request	admin	nl	Nee, alleen op verzoek
 not set	wiki	nl	niet ingesteld
 older	wiki	nl	Ouder
+on all pages	wiki	nl	op alle pagina's
 only if browser supports a richtext-editor	admin	nl	Alleen indien browser een rich-text editor ondersteunt
+only on the first page	wiki	nl	alleen op de eerste pagina
+page '%1' not found !!!	wiki	nl	Pagina '%1' niet gevonden !!!
+path of the upload directory (has to be writable by the webserver!)	admin	nl	Pad naar de upload directory (moet schrijfbaar zijn voor de webserver!)
+picture upload via richtext editor (leave the upload directory empty to disable the upload)	admin	nl	Afbeeldingen uploaden via richtext editor (laat de upload directory leeg om dit uit te schakelen)
 please contact the %1administrator%2 for assistance.	wiki	nl	Neem s.v.p. contact op met %1Administrator%2 voor assistentie.
 preview	wiki	nl	Voorbeeld
 preview of current version	wiki	nl	Voorbeeld van huidige versie
@@ -71,13 +77,19 @@ richtext	wiki	nl	Richtext
 rows	wiki	nl	Rijen
 save the changes and exit	wiki	nl	Bewaar de wijzigingen en einde
 saves and continues editing	wiki	nl	Bewaart en gaat verder met wijzigen
+search for	wiki	nl	Zoeken naar
 see complete list (%1 entries)	wiki	nl	Zie complete lijst (%1 regels)
+show a search	wiki	nl	Toon een zoekveld
+show the title of the wiki page	wiki	nl	Toon de titel van de wiki pagina
 summary	wiki	nl	Samenvatting
 summary of change	wiki	nl	Samenvatting van wijzigingen
+the search returned no result!	wiki	nl	De zoekactie leverde geen resultaat op!
 this page can not be edited.	wiki	nl	Deze pagina kan niet gewijzigd worden.
 twin pages	wiki	nl	Tweeling pagina's
 unblock	wiki	nl	Deblokkeren
 updates the preview	wiki	nl	Werkt het voorbeeld bij
+url of the upload directory	admin	nl	URL van de upload directory
+use this module for displaying wiki-pages	wiki	nl	Gebruik deze module om wiki-pagina's te tonen
 users	wiki	nl	gebruikers
 view document history	wiki	nl	Bekijk document historie
 visit %1 to set your user name	wiki	nl	Bezoek %1 om je gebruikersnaam in te stellen
@@ -87,10 +99,13 @@ who should be able to read this page	wiki	nl	wie mag deze pagina lezen
 wiki	common	nl	Wiki
 wiki administration	wiki	nl	Wiki beheer
 wiki menu	wiki	nl	Wiki menu
+wiki startpage	wiki	nl	Wiki startpagina
 writable by	wiki	nl	Schrijfbaar voor
 yes always	admin	nl	Ja, altijd
+yes with navbar	admin	nl	Ja met navigatiebalk
 you have been denied access to this site.	wiki	nl	Je hebt geen toegang tot deze website.
 you have entered an invalid user name.	wiki	nl	Je heb een ongeldige gebruikersnaam ingevuld.
 you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	nl	Je hebt het maximum aantal pagina's dat je binnen een bepaalde periode mag bekijken overschreden. Kom s.v.p. later terug.
-your changes	wiki	nl	Jouw wijzigingen
-your user name is "%1".	wiki	nl	Je gebruikersnaam is "%1".
+you have no rights to view wiki content !!!	wiki	nl	U heeft geen rechten om wiki inhoud te bekijken !!!
+your changes	wiki	nl	Uw wijzigingen
+your user name is "%1".	wiki	nl	Uw gebruikersnaam is "%1".

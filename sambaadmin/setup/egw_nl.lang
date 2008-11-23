@@ -15,6 +15,7 @@ profilepath	admin	nl	profielpad
 samba config	sambaadmin	nl	samba configuratie
 samba settings	common	nl	Samba instellingen
 samba sid	admin	nl	Samba SID
+sambaadmin	common	nl	Samba beheer
 smb homepath	admin	nl	smb homepad
 workstation account for	sambaadmin	nl	werkstation account voor
 workstation configuration	sambaadmin	nl	werkstation configuratie
