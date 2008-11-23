@@ -55,7 +55,7 @@ $_services['replace'] = array(
 function _egwnotessync_list()
 {
 	$guids = array();
-  
+
 	#Horde::logMessage("SymcML: egwnotessync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$searchFilter = array
@@ -187,7 +187,7 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 	{
 		return 'infolog_note-' . $noteId;
 	}
-	
+
 	if(!$noteId) {
   		return false;
   	}
@@ -210,9 +210,9 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
  */
 function _egwnotessync_search($content, $contentType, $contentid)
 {
-	
+
 	$state			= $_SESSION['SyncML.state'];
-	
+
 	if (is_array($contentType))
 	{
 		$options = $contentType;
@@ -351,7 +351,7 @@ function _egwnotessync_delete($guid)
 	{
 		foreach ($guid as $g)
 		{
-			$result = _egwnotessync_delete($guid);
+			$result = _egwnotessync_delete($g);
 			if (is_a($result, 'PEAR_Error'))
 			{
 				return $result;
