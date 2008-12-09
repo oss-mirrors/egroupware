@@ -156,7 +156,7 @@
 	   * Switch to print extra debugging about imported and exported events to the httpd errorlog
 	   * stream.
 	   */
-	  var $evdebug = true;
+	  var $evdebug = false; // true;
 
 	  /** The Bound Egw Resource that we handle
 	   * @private
