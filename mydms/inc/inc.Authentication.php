@@ -1,7 +1,7 @@
 <?php
 include_once("inc.Utils.php");
 
-switch($GLOBALS['phpgw_info']['user']['preferences']['common']['lang'])
+switch($GLOBALS['egw_info']['user']['preferences']['common']['lang'])
 {
 	case 'zh':
 	  $lang1 = 'Chinese';
@@ -21,7 +21,7 @@ switch($GLOBALS['phpgw_info']['user']['preferences']['common']['lang'])
 	  $lang1 = "English";
 }
 
-$user = getUser($GLOBALS['phpgw_info']['user']['account_id']);
+$user = getUser($GLOBALS['egw_info']['user']['account_id']);
 $theme = 'English';
 include $settings->_rootDir . "languages/".$lang1."/lang.inc";
 

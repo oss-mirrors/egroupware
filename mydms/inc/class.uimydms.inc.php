@@ -761,7 +761,7 @@
 			$this->t->set_var('current_version',	$latestContent->getVersion());
 			$this->t->set_var('current_comment',	$latestContent->getComment());
 			$this->t->set_var('mime_type',		$latestContent->getMimeType());
-			$this->t->set_var('file_size',		filesize($GLOBALS['phpgw_info']['server']['files_dir'] . '/mydms/' . $latestContent->getPath()));
+			$this->t->set_var('file_size',		filesize($GLOBALS['egw_info']['server']['files_dir'] . '/mydms/' . $latestContent->getPath()));
 			$this->t->set_var('last_update',	date("d.m.Y - H:i:s",$latestContent->getDate()));
 			//tim
 

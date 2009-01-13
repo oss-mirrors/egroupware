@@ -36,7 +36,7 @@ function getFolder($id)
 		$resArr["sequence"]);
 
 	#print $resArr["name"]."<br>";
-	#print $newFolder->getAccessMode(getUser($GLOBALS['phpgw_info']['user']['account_id']))."<br>";
+	#print $newFolder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id']))."<br>";
 	if($newFolder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id'])) > 1)
         	return $newFolder;
 	else
@@ -240,7 +240,7 @@ class Folder
 
 	function addSubFolder($name, $comment, $owner, $sequence)
 	{
-		$ownerid = $GLOBALS['phpgw_info']['user']['account_id'];
+		$ownerid = $GLOBALS['egw_info']['user']['account_id'];
 		//inheritAccess = true, defaultAccess = M_READ
 
 		$insertData = array(
@@ -443,8 +443,10 @@ class Folder
 
 	function getAccessList()
 	{
+		#error_log(__METHOD__." called ");
 		if ($this->inheritsAccess())
 		{
+			#error_log(__METHOD__." inherits Access ");
 			$res = $this->getParent();
 			if (!$res) return false;
 			return $this->_parent->getAccessList();
@@ -452,8 +454,10 @@ class Folder
 
 		if (!isset($this->_accessList))
 		{
+			#error_log(__METHOD__." accessList ");
 			$queryStr = "SELECT * FROM phpgw_mydms_ACLs WHERE targetType = ".T_FOLDER." AND target = " . $this->_id . " ORDER BY targetType";
 			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			#error_log(__METHOD__." Access:".print_r($resArr,true));
 			if (is_bool($resArr) && !$resArr)
 				return false;
 
@@ -469,7 +473,7 @@ class Folder
 				}
 			}
 		}
-
+		#error_log(__METHOD__." Access:".print_r($this->_accessList,true));
 		return $this->_accessList;
 	}
 

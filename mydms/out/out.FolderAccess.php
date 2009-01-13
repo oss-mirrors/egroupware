@@ -30,7 +30,7 @@ $folder		= getFolder($folderid);
 $allUsers = getAllUsers();
 
 if ($folder->getAccessMode($user) < M_ALL)
-	die ("Access denied");
+	die ("Access denied for user ".$user->getID().",".$user->getLogin().",".$user->isAdmin());
 
 
 printHTMLHead( getMLText("folder_title", array("foldername" => $folder->getName()) ) );

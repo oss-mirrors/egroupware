@@ -6,27 +6,27 @@
 //added by dawnlinux to port mydms user management to egroupware
 function egw_name2id($login)
 {
-	$id = $GLOBALS['phpgw']->accounts->name2id($login);
+	$id = $GLOBALS['egw']->accounts->name2id($login);
 	return $id;
 }
 
 function egw_id2name($id)
 {
-	$login = $GLOBALS['phpgw']->accounts->id2name($id);
+	$login = $GLOBALS['egw']->accounts->id2name($id);
         return $login;
 
 }
 
 function egw_get_accname($id)
 {
-	$GLOBALS['phpgw']->accounts->get_account_name($id,$lid,$fname,$lname);
+	$GLOBALS['egw']->accounts->get_account_name($id,$lid,$fname,$lname);
 	$fullname = $fname.' '.$lname;
 	return $fullname;
 }
 
 function egw_get_accemail($id)
 {
-	$email = $GLOBALS['phpgw']->accounts->id2name($id, 'account_email');
+	$email = $GLOBALS['egw']->accounts->id2name($id, 'account_email');
 	return $email;
 }
 
@@ -34,7 +34,7 @@ function egw_is_admin($id)
 {
 	if($id == 0)
 	{
-		$id = $GLOBALS['phpgw_info']['user']['account_id'];
+		$id = $GLOBALS['egw_info']['user']['account_id'];
 	}
 
 	$acl = CreateObject('phpgwapi.acl',$id);
@@ -80,7 +80,7 @@ function getUserByLogin($login)
 function getAllUsers()
 {
 
-	$accounts = $GLOBALS['phpgw']->accounts->get_list('accounts'); 
+	$accounts = $GLOBALS['egw']->accounts->get_list('accounts'); 
 	
 	//tim сортировка по имени или фамилии
 	//по имени
@@ -340,7 +340,7 @@ class User
 
 	function getGroups()
 	{
-		$usergroups = $GLOBALS['phpgw']->accounts->membership($this->_id);
+		$usergroups = $GLOBALS['egw']->accounts->membership($this->_id);
 		$this->_groups = array();
 		foreach($usergroups as $egw_group)
 		{

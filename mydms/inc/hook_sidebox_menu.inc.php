@@ -51,7 +51,7 @@
 	display_sidebox($appname,lang('Preferences'),$file); 
 	//--------------------------------------
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+	if ($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
 		$menu_title = 'Administration';
 		$file = Array(

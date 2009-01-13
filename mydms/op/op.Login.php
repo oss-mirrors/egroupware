@@ -8,7 +8,7 @@ include("../inc/inc.DBAccess.php");
 
 $login = sanitizeString($login);
 
-if($GLOBALS['phpgw']->auth->authenticate($GLOBALS['phpgw_info']['user']['account_lid'], $GLOBALS['phpgw_info']['user']['passwd'], 'text')) {
+if($GLOBALS['egw']->auth->authenticate($GLOBALS['egw_info']['user']['account_lid'], $GLOBALS['egw_info']['user']['passwd'], 'text')) {
 }
 
 
@@ -24,7 +24,7 @@ $id = md5($id);
 $lang      = sanitizeString($lang);
 $sesstheme = sanitizeString($sesstheme);
 
-$userid = $GLOBALS['phpgw']->accounts->name2id($GLOBALS['phpgw_info']['user']['account_lid']);
+$userid = $GLOBALS['egw']->accounts->name2id($GLOBALS['egw_info']['user']['account_lid']);
 
 //Einfügen eines neuen Datensatzes in phpgw_mydms_Sessions
 $queryStr = "INSERT INTO phpgw_mydms_Sessions (id, userID, lastAccess, theme, language) VALUES ('$id', userid, ".mktime().", '$sesstheme', 'English')";
