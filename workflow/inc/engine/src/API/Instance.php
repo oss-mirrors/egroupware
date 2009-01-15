@@ -1331,7 +1331,36 @@ class Instance extends Base {
     }
   
     if ($type == 'join') {
-      if (count($this->activities)>1) {
+	// Check to see if the pre-requisite activities are all done
+
+	// Get all activities leading to this node
+	$query = 'select a1.wf_name as wf_act_from_name, a2.wf_name as wf_act_to_name, wf_act_from_id, wf_act_to_id
+        from '.GALAXIA_TABLE_PREFIX.'transitions gt
+        INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities a1 ON gt.wf_act_from_id = a1.wf_activity_id
+        INNER JOIN '.GALAXIA_TABLE_PREFIX.'activities a2 ON gt.wf_act_to_id = a2.wf_activity_id
+        WHERE gt.wf_p_id = ?
+		and (wf_act_to_id = ?)
+		AND wf_act_from_id NOT IN(
+			SELECT wf_activity_id
+			FROM egw_wf_workitems
+			WHERE 
+			wf_instance_id = ?
+			and wf_ended IS NOT NULL
+		)';
+	$bindvars = array($this->pId, $activityId, $this->instanceId);
+	$result = $this->query($query, $bindvars);
+	
+	$prerequisites = array();
+	if(!(empty($result))) {
+		while($row = $result->fetchRow()) {
+			$prerequisites[] = $row;
+		}
+	}
+	if(_DEBUG) {
+		echo "<br />This is a join.  Unsatisfied prerequisites:<Br />";
+		_debug_array($prerequisites);
+	}
+      if (count($prerequisites) > 0) {
         // This instance will have to wait!
         $returned_data['transition']['status'] = 'waiting';
         return $returned_data;
