@@ -215,6 +215,14 @@
             'xmlrpc' => True,
             'admin'  => False
         ),
+        'notify_folders' => array(
+			'type'   => 'multiselect',
+			'label'  => 'notify when new mails arrive on these folders',
+			'name'   => 'notify_folders',
+			'values' => $folderList,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
 		'message_newwindow' => array(
 			'type'   => 'select',
 			'label'  => 'display messages in multiple windows',
