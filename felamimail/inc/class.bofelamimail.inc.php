@@ -990,7 +990,7 @@
 			return 1;
 		}
 
-		static function convertHTMLToText($_html) 
+		static function convertHTMLToText($_html,$stripcrl=false) 
 		{
 			#error_log($_html);
 			#print '<hr>';
@@ -1009,7 +1009,6 @@
 				'@&(pound|#163);@i',              //   Pound
 				'@&(copy|#169);@i',               //   Copyright
 				'@&(reg|#174);@i',                //   Registered
-				'@(\r\n)@i',					  //   removing carriage return linefeeds
 			);
 			$Replace = array ('',
 				'"',
@@ -1022,9 +1021,10 @@
 				chr(163),
 				chr(169),
 				chr(174),
-				' ',
 			);
 			$_html = preg_replace($Rules, $Replace, $_html);
+			//   removing carriage return linefeeds
+			if ($stripcrl === true ) $_html = preg_replace('@(\r\n)@i',' ',$_html); 
 			$tags = array (
 				0 => '~<h[123][^>]*>\r*\n*~si',
 				1 => '~<h[456][^>]*>\r*\n*~si',
