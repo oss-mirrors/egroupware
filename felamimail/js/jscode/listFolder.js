@@ -9,7 +9,9 @@ function onCheckHandler(_nodeID)
 {
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateFolderStatus',_nodeID,tree.isItemChecked(_nodeID));
 }
-
+function OnLoadingStart(_nodeID) {
+	return true;
+}
 function onNodeSelect(_nodeID)
 {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.getFolderInfo",_nodeID);

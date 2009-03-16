@@ -46,7 +46,60 @@ function tellUser(message,_nodeID) {
 	}
 }
 
+function getTreeNodeOpenItems(_nodeID, mode) {
+	var z = tree.getSubItems(_nodeID).split(",");
+	var oS;
+	var PoS;
+	var rv;
+	var returnValue = ""+_nodeID;
+	var modetorun = "none";
+	if (mode) { modetorun = mode }
+	PoS = tree.getOpenState(_nodeID)
+	if (modetorun == "forced") PoS = 1;
+	if (PoS == 1) {
+		for(var i=0;i<z.length;i++) {
+			oS = tree.getOpenState(z[i])
+			//alert(oS)
+			if (oS == -1) { returnValue=returnValue+"#,#"+ z[i]}
+			if (oS == 0) {returnValue=returnValue+"#,#"+ z[i]}
+			if (oS == 1) {
+				//alert("got here")
+				rv = getTreeNodeOpenItems(z[i]);
+				returnValue = returnValue+"#,#"+rv
+			}		
+		}
+	}
+	return returnValue
+}
+
+function OnLoadingStart(_nodeID) {
+	// this one is used, when you click on the expand "+" icon in the tree
+	//tree.setItemImage(_nodeID, 'loading.gif','loading.gif');
+    //alert(_nodeID);
+	oS = tree.getOpenState(_nodeID)
+	if (oS == -1) { 
+		//closed will be opened
+		//alert(_nodeID+ " state -1");
+		refreshFolderStatus(_nodeID,"forced"); 
+	}
+	if (oS == 0) { 
+		// should not occur
+		//alert(_nodeID+" state 0");
+	}
+	if (oS == 1) { 
+		// open, will be closed
+		//alert(_nodeID+ "state 1");
+	}
+	return true; // if function not return true, operation will be stoped
+}
+
+//function OnLoadingEnd(_nodeID) {
+//	tree.setItemImage(_nodeID, 'folderClose.gif','folderOpen.gif');
+//	alert(_nodeID);
+//}
+
 function onNodeSelect(_nodeID) {
+//alert(_nodeID)
 	var Check = true;
 	if(tree.getUserData(_nodeID, 'folderName')) {
 		if(document.getElementsByName("folderAction")[0].value == "moveMessage") {
@@ -71,6 +124,7 @@ function onNodeSelect(_nodeID) {
 			setStatusMessage('<span style="font-weight: bold;">' + lang_loading + ' ' + tree.getUserData(_nodeID, 'folderName') + '</span>');
 			document.getElementById('divMessageList').innerHTML = '';
 			xajax_doXMLHTTP("felamimail.ajaxfelamimail.updateMessageView",_nodeID);
+			refreshFolderStatus(_nodeID);
 		}
 	}
 }
@@ -261,8 +315,15 @@ function refresh() {
 	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshMessageList');
 }     
 
-function refreshFolderStatus() {
-	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshFolderList');
+function refreshFolderStatus(_nodeID,mode) {
+	var nodeToRefresh = 0;
+	var mode2use = "none";
+	if (_nodeID) nodeToRefresh = _nodeID;
+	if (mode) {
+		if (mode == "forced") {mode2use = mode;}
+	}
+	var activeFolders = getTreeNodeOpenItems(nodeToRefresh,mode2use);
+	xajax_doXMLHTTP('felamimail.ajaxfelamimail.refreshFolderList', activeFolders);
 }
 
 function refreshView() {

@@ -211,6 +211,13 @@
 			$this->bofelamimail->reopen($this->mailbox);
 			#print "$this->mailbox, $this->uid, $partID<br>";
 			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
+			if (PEAR::isError($headers)) {
+				print lang("ERROR: Message could not be displayed.")."<br>";
+				print "In Mailbox: $this->mailbox, with ID: $this->uid, and PartID: $partID<br>";
+				print $headers->message."<br>";
+				_debug_array($headers->backtrace[0]);
+				exit;
+			}
 			#_debug_array($headers);exit;
 			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
 			#_debug_array($rawheaders);exit;
@@ -965,6 +972,22 @@
 					$body .= '<hr style="border:dotted 1px silver;">';
 				}
 				#_debug_array($singleBodyPart['charSet']);
+				#_debug_array($singleBodyPart['mimeType']);
+				#error_log($singleBodyPart['body']);
+				// some characterreplacements, as they fail to translate
+				$sar = array(
+					'@(\x84|\x93|\x94)@',
+					'@(\x96|\x97)@',
+					'@(\x91|\x92)@',
+					'@(\x85)@',
+				);
+				$rar = array(
+					'"',
+					'-',
+					'\'',
+					'...',
+				);
+				if($singleBodyPart['mimeType'] == 'text/html') $singleBodyPart['body'] = preg_replace($sar,$rar,$singleBodyPart['body']);
 				$singleBodyPart['body'] = $this->botranslation->convert(
 					$singleBodyPart['body'],
 					strtolower($singleBodyPart['charSet'])

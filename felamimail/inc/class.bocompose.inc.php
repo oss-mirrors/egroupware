@@ -757,14 +757,16 @@
 				$_formData['body'] = quoted_printable_decode($_formData['body']);
 			}
 			#if ($realCharset != $this->displayCharset) error_log("Error: bocompose::createMessage found Charset ($realCharset) differs from DisplayCharset (".$this->displayCharset.")");
+			$signature = $_signature->fm_signature;
+			$signature = bofelamimail::merge($signature,array($GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')));
 			if($_formData['mimeType'] =='html') {
 				$_mailObject->IsHTML(true);
-				if(!empty($_signature->fm_signature)) {
+				if(!empty($signature)) {
 					#$_mailObject->Body    = array($_formData['body'], $_signature['signature']);
-					$_mailObject->Body    = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $_signature->fm_signature;
+					$_mailObject->Body    = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $signature;
 					$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']).
 						"\r\n-- \r\n". 
-						$this->convertHTMLToText($_signature->fm_signature);
+						$this->convertHTMLToText($signature);
 					#print "<pre>$_mailObject->AltBody</pre>";
 					#print htmlentities($_signature['signature']);
 				} else {
@@ -775,8 +777,8 @@
 				$_mailObject->IsHTML(false);
 				$_mailObject->Body = $this->convertHTMLToText($_formData['body']);
 				#$_mailObject->Body = $_formData['body'];
-				if(!empty($_signature->fm_signature)) {
-					$_mailObject->Body .= "\r\n-- \r\n". $this->convertHTMLToText($_signature->fm_signature);
+				if(!empty($signature)) {
+					$_mailObject->Body .= "\r\n-- \r\n". $this->convertHTMLToText($signature);
 				}
 			}
 			
@@ -799,7 +801,6 @@
 							$attachmentData	= $bofelamimail->getAttachment($attachment['uid'], $attachment['partID']);
 
 							$_mailObject->AddStringAttachment($attachmentData['attachment'], $_mailObject->EncodeHeader($attachment['name']), 'base64', $attachment['type']);
-			
 							break;
 							
 					}

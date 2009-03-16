@@ -526,6 +526,7 @@
 			$oldMailbox = '';
 			if (is_null($_folder) || empty($_folder)) $_folder = $this->sessionData['mailbox'];
 			if(!is_array($_messageUID) || count($_messageUID) === 0) {
+				if (self::$debug) error_log(__METHOD__." no messages Message(s): ".implode(',',$_messageUID));
 				return false;
 			}
 
@@ -546,14 +547,16 @@
 			switch($deleteOptions) {
 				case "move_to_trash":
 					if(!empty($trashFolder)) {
-						#error_log(implode(' : ', $_messageUID));
-						#error_log("$trashFolder <= ". $this->sessionData['mailbox']);
+						if (self::$debug) error_log(implode(' : ', $_messageUID));
+						if (self::$debug) error_log("$trashFolder <= ". $this->sessionData['mailbox']);
 						// copy messages
 						if ( PEAR::isError($this->icServer->copyMessages($trashFolder, $_messageUID, $_folder, true)) ) {
+							if (self::$debug) error_log(__METHOD__." failed to copy Message(s) to $trashFolder: ".implode(',',$_messageUID));
 							return false;
 						}
 						// mark messages as deleted
 						if ( PEAR::isError($this->icServer->deleteMessages($_messageUID, true))) {
+							if (self::$debug) error_log(__METHOD__." failed to delete Message(s): ".implode(',',$_messageUID));
 							return false;
 						}
 						// delete the messages finaly
@@ -564,6 +567,7 @@
 				case "mark_as_deleted":
 					// mark messages as deleted
 					if ( PEAR::isError($this->icServer->deleteMessages($_messageUID, true))) {
+						if (self::$debug) error_log(__METHOD__." failed to mark as deleted for Message(s): ".implode(',',$_messageUID));
 						return false;
 					}
 					break;
@@ -571,6 +575,7 @@
 				case "remove_immediately":
 					// mark messages as deleted
 					if ( PEAR::isError($this->icServer->deleteMessages($_messageUID, true))) {
+						if (self::$debug) error_log(__METHOD__." failed to remove immediately Message(s): ".implode(',',$_messageUID));
 						return false;
 					}
 					// delete the messages finaly
@@ -1268,6 +1273,7 @@
 			// does the folder exist???
 			$folderInfo = $this->icServer->getMailboxes('', $_folderName, true);
 			if(is_a($folderInfo, 'PEAR_Error') || !is_array($folderInfo[0])) {
+				error_log(__METHOD__." returned Info for folder $_folderName:".print_r($folderInfo->message,true));
 				return false;
 			}
 			#if(!is_array($folderInfo[0])) {
@@ -1296,7 +1302,15 @@
 			}
 
 			if ( PEAR::isError($folderStatus = $this->icServer->getStatus($_folderName)) ) {
+			/*if ($folderStatus = $this->bofelamimail->getMailBoxCounters($_folderName)) {
+				$retValue['messages']	=	$folderStatus->messages;
+				$retValue['recent']		=	$folderStatus->recent;
+				$retValue['uidnext']	=	$folderStatus->uidnext;
+				$retValue['unseen']		=	$folderStatus->unseen;
+				$retValue['uidvalidity']=	$folderStatus->uidvalidity;
+			*/ 
 				//_debug_array($folderStatus);
+				error_log(__METHOD__." returned folderStatus for Folder $_folderName:".print_r($folderStatus->message,true));
 			} else {
 				$retValue['messages']		= $folderStatus['MESSAGES'];
 				$retValue['recent']		= $folderStatus['RECENT'];
@@ -1335,6 +1349,7 @@
 			$inboxData->shortDisplayName	= lang('INBOX');
 			$inboxData->subscribed = true;
 			if($_getCounters == true) {
+				/*
 				$folderStatus = $this->icServer->getStatus('INBOX');
 
 				$status =  new stdClass;
@@ -1343,6 +1358,8 @@
 				$status->recent		= $folderStatus['RECENT'];
 
 				$inboxData->counter	= $status;
+				*/
+				$inboxData->counter = self::getMailBoxCounters('INBOX');
 			}
 			#$inboxData->attributes = 64;
 			$folders = array('INBOX' => $inboxData);
@@ -1350,7 +1367,7 @@
 
 			$nameSpace = $this->icServer->getNameSpaces();
 			#_debug_array($nameSpace);
-
+			#_debug_array($delimiter);
 			if(isset($nameSpace['#mh/'])) {
 				// removed the uwimap code
 				// but we need to reintroduce him later
@@ -1368,25 +1385,53 @@
 					} else {
 						$foldersNameSpace[$type]['prefix'] = $singleNameSpace[0]['name'];
 					}
-
+					#echo "############## ".print_r($singleNameSpace,true)." ###################<br>";
 					$foldersNameSpace[$type]['delimiter'] = $delimiter;
 
 					if(is_array($singleNameSpace[0])) {
 						// fetch and sort the subscribed folders
 						$subscribedMailboxes = $this->icServer->listsubscribedMailboxes($foldersNameSpace[$type]['prefix']);
+						#echo "subscribedMailboxes";_debug_array($subscribedMailboxes);
 						if( PEAR::isError($subscribedMailboxes) ) {
 							continue;
 						}
 						$foldersNameSpace[$type]['subscribed'] = $subscribedMailboxes;
 						if (is_array($foldersNameSpace[$type]['subscribed'])) sort($foldersNameSpace[$type]['subscribed']);
+						#_debug_array($foldersNameSpace);
+						if ($_subscribedOnly == true) {
+							$foldersNameSpace[$type]['all'] = (is_array($foldersNameSpace[$type]['subscribed']) ? $foldersNameSpace[$type]['subscribed'] :array());
+							continue;	
+						}
 						// fetch and sort all folders
-						$allMailboxes = $this->icServer->getMailboxes($foldersNameSpace[$type]['prefix']);
-						if( PEAR::isError($allMailboxes) ) {
+						$allMailboxesExt = $this->icServer->getMailboxes($foldersNameSpace[$type]['prefix'],2,true);
+						if( PEAR::isError($allMailboxesExt) ) {
 							continue;
 						}
-						$foldersNameSpace[$type]['all'] = $allMailboxes;
+						foreach ($allMailboxesExt as $mbx) {
+							#echo __METHOD__;_debug_array($mbx);
+							$allMailBoxesExtSorted[$mbx['MAILBOX']] = $mbx;
+						}
+						ksort($allMailBoxesExtSorted);
+						#_debug_array($allMailBoxesExtSorted);
+						$allMailboxes = array();
+						foreach ($allMailBoxesExtSorted as $mbx) {
+							#echo $mbx['MAILBOX']."<br>";
+							if (in_array('\HasChildren',$mbx["ATTRIBUTES"]) || in_array('\Haschildren',$mbx["ATTRIBUTES"])) {
+								unset($buff);
+								//$buff = $this->icServer->getMailboxes($mbx['MAILBOX'].$delimiter,0,false);
+								if (!in_array($mbx['MAILBOX'],$allMailboxes)) $buff = self::getMailBoxesRecursive($mbx['MAILBOX'],$delimiter,$foldersNameSpace[$type]['prefix'],1);
+								if( PEAR::isError($buff) ) {
+									continue;
+								}
+								#_debug_array($buff);
+								if (is_array($buff)) $allMailboxes = array_merge($allMailboxes,$buff); 
+							}
+							if (!in_array($mbx['MAILBOX'],$allMailboxes)) $allMailboxes[] = $mbx['MAILBOX'];
+							#echo "Result:";_debug_array($allMailboxes);
+						}
+						$foldersNameSpace[$type]['all'] = $allMailboxes; 
 						if (is_array($foldersNameSpace[$type]['all'])) sort($foldersNameSpace[$type]['all']);
-					}
+				    }
 				  }
 				}
 				// check for autocreated folders
@@ -1406,7 +1451,7 @@
 					} else {
 						$foldersToCheck = $this->autoFolders;
 					}
-					#_debug_array($foldersToCheck);
+					#echo "foldersToCheck:";_debug_array($foldersToCheck);
 					foreach($foldersToCheck as $personalFolderName) {
 						$folderName = (!empty($personalPrefix)) ? $folderPrefix.$personalFolderName : $personalFolderName;
 						if(!is_array($foldersNameSpace['personal']['all']) || !in_array($folderName, $foldersNameSpace['personal']['all'])) {
@@ -1438,13 +1483,13 @@
 								$foldersNameSpace['personal']['all'][] = $folderName;
 								$foldersNameSpace['personal']['subscribed'][] = $folderName;
 							} else {
-							#	print "FOLDERNAME failed: $folderName<br>";
+								#print "FOLDERNAME failed: $folderName<br>";
 							}
 						}
 					}
 				}
 			}
-
+			#echo "<br>FolderNameSpace To Process:";_debug_array($foldersNameSpace);
 			foreach( array('personal', 'others', 'shared') as $type) {
 				if(isset($foldersNameSpace[$type])) {
 					if($_subscribedOnly) {
@@ -1453,7 +1498,9 @@
 						if( !PEAR::isError($foldersNameSpace[$type]['all'])) $listOfFolders = $foldersNameSpace[$type]['all'];
 					}
 					foreach((array)$listOfFolders as $folderName) {
+						#echo "<br>FolderToCheck:$folderName";
 						if($_subscribedOnly && !in_array($folderName, $foldersNameSpace[$type]['all'])) {
+							#echo "$folderName failed to be here <br>";
 							continue;
 						}
 						$folderParts = explode($delimiter, $folderName);
@@ -1468,8 +1515,9 @@
 						}
 
 						if($_getCounters == true) {
+							/*
 							$folderStatus = $this->icServer->getStatus($folderName);
-
+							#echo "<br> FolderStatus:";_debug_array($folderStatus);
 							if(is_array($folderStatus)) {
 								$status =  new stdClass;
 								$status->messages	= $folderStatus['MESSAGES'];
@@ -1478,6 +1526,8 @@
 
 								$folderObject->counter = $status;
 							}
+							*/
+							$folderObject->counter = $this->bofelamimail->getMailBoxCounters($folderName);
 						}
 
 						if(strtoupper($folderName) == 'INBOX') {
@@ -1500,9 +1550,69 @@
 				}
 			}
 
-			#_debug_array($folders); exit;
+			#_debug_array($folders); #exit;
 
 			return $folders;
+		}
+
+		function getMailBoxCounters($folderName)
+		{
+			$folderStatus = $this->icServer->getStatus($folderName);
+			#echo "<br> FolderStatus:";_debug_array($folderStatus);
+			if ( PEAR::isError($folderStatus)) {
+				error_log(__METHOD__." returned FolderStatus for Folder $folderName:".print_r($folderStatus,true));
+				return false;
+			}
+			if(is_array($folderStatus)) {
+				$status =  new stdClass;
+				$status->messages   = $folderStatus['MESSAGES'];
+				$status->unseen     = $folderStatus['UNSEEN'];
+				$status->recent     = $folderStatus['RECENT'];
+				$status->uidnext        = $folderStatus['UIDNEXT'];
+				$status->uidvalidity    = $folderStatus['UIDVALIDITY'];
+
+				return $status;
+			}
+			return false;
+		}
+
+		function getMailBoxesRecursive($_mailbox, $delimiter, $prefix, $reclevel=0)
+		{
+			#echo __METHOD__." retrieve SubFolders for $_mailbox$delimiter <br>";
+			$maxreclevel=25;
+			if ($reclevel > $maxreclevel) {
+				error_log( __METHOD__." Recursion Level Exeeded ($reclevel) while looking up $_mailbox$delimiter ");
+				return array();
+			}
+			$reclevel++;
+			// clean up douple delimiters
+			$_mailbox = preg_replace('~'.$delimiter.'+~s',$delimiter,$_mailbox);
+			//get that mailbox in question
+			$mbx = $this->icServer->getMailboxes($_mailbox,1,true);
+			#_debug_array($mbx);
+			if (in_array('\HasChildren',$mbx[0]["ATTRIBUTES"]) || in_array('\Haschildren',$mbx[0]["ATTRIBUTES"])) {
+				// if there are children fetch them
+				#echo $mbx[0]['MAILBOX']."<br>";
+				unset($buff);
+				$buff = $this->icServer->getMailboxes($mbx[0]['MAILBOX'].($mbx[0]['MAILBOX'] == $prefix ? '':$delimiter),2,false);
+				//$buff = $this->icServer->getMailboxes($mbx[0]['MAILBOX'],2,false);
+				#_debug_array($buff);
+				if( PEAR::isError($buff) ) {
+					error_log(__METHOD__." Error while retrieving Mailboxes for:".$mbx[0]['MAILBOX'].$delimiter.".");
+					return array();
+				} else {
+					$allMailboxes = array();
+					foreach ($buff as $mbxname) {
+						$mbxname = preg_replace('~'.$delimiter.'+~s',$delimiter,$mbxname);
+						#echo "About to recur in level $reclevel:".$mbxname."<br>";
+						if ( $mbxname != $mbx[0]['MAILBOX'] && $mbxname != $prefix) $allMailboxes = array_merge($allMailboxes, self::getMailBoxesRecursive($mbxname, $delimiter, $prefix, $reclevel));
+					}
+					if (!(in_array('\NoSelect',$mbx[0]["ATTRIBUTES"]) || in_array('\Noselect',$mbx[0]["ATTRIBUTES"]))) $allMailboxes[] = $mbx[0]['MAILBOX'];
+					return $allMailboxes;
+				}
+			} else {
+				return array($_mailbox);
+			}
 		}
 
 		function getMimePartCharset($_mimePartObject)
@@ -1644,6 +1754,7 @@
 
 			$partID = $_structure->partID;
 			$mimePartBody = $this->icServer->getBodyPart($_uid, $partID, true);
+
 			#_debug_array(preg_replace('/PropertyFile___$/','',$this->decodeMimePart($mimePartBody, $_structure->encoding)));
 			if($_structure->subType == 'HTML' && $_htmlMode != 'always_display'  && $_htmlMode != 'only_if_no_text') {
 				$bodyPart = array(
@@ -1840,6 +1951,7 @@
 			if (is_array($headersNew)) {
 				foreach((array)$headersNew as $headerObject) {
 					#if($count == 0) _debug_array($headerObject);
+					if (empty($headerObject['UID'])) continue;
 					$uid = $headerObject['UID'];
 
 					// make dates like "Mon, 23 Apr 2007 10:11:06 UT" working with strtotime
@@ -2316,6 +2428,7 @@
 
 		function folderExists($_folder, $forceCheck=false)
 		{
+			#echo __METHOD__." called; check for $_folder<br>";
 			// does the folder exist???
 			#error_log("bofelamimail::folderExists->Connected?".$this->icServer->_connected.", ".$_folder.", ".$forceCheck);
 			if ((!($this->icServer->_connected == 1)) && $forceCheck) {
@@ -2374,8 +2487,10 @@
 			#error_log(print_r($this->icServer,true));
 			if ($this->icServer->_connected == 1) {
 				$tretval = $this->icServer->selectMailbox($this->icServer->currentMailbox);
+				#error_log(__METHOD__." using existing Connection ".print_r($this->icServer->_connected,true));
 			} else {
 				$tretval = $this->icServer->openConnection($_adminConnection);
+				#error_log(__METHOD__." open new Connection ".print_r($this->icServer->_connected,true));
 			}
 			#error_log(print_r($this->icServer->_connected,true));
 			return $tretval;
@@ -2665,6 +2780,46 @@
 			$header = rtrim($send->CreateHeader())."\r\n"."Content-Type: multipart/report; report-type=disposition-notification;\r\n".
 				"\tboundary=\"".$sep."\"\r\n\r\n";
 			return $send->SmtpSend($header,$body);
+		}
+
+		/**
+		 * Merges a given content with contact data
+		 *
+		 * @param string $content
+		 * @param array $ids array with contact id(s)
+		 * @param string &$err error-message on error
+		 * @return string/boolean merged content or false on error
+		 */
+		function merge($content,$ids)
+		{
+			$contacts =& new addressbook_bo();
+			$mergeobj =& new addressbook_merge();
+
+			foreach ($ids as $id)
+			{
+				// generate replacements
+				if (!($replacements = $mergeobj->contact_replacements($id)))
+				{
+					$err = lang('Contact not found!');
+					return false;
+				}
+				if (strpos($content,'$$user/') !== null && ($user = $GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')))
+				{
+					$replacements += $mergeobj->contact_replacements($user,'user');
+				}
+				$replacements['$$date$$'] = date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'],time()+$this->contacts->tz_offset_s);
+
+				$content = str_replace(array_keys($replacements),array_values($replacements),$content);
+
+
+				$this->replacements = $replacements;
+				if (strpos($content,'$$IF'))
+				{	//Example use to use: $$IF n_prefix~Herr~Sehr geehrter~Sehr geehrte$$
+					$content = preg_replace_callback('/\$\$IF ([0-9a-z_-]+)~(.*)~(.*)~(.*)\$\$/imU',Array($this,'replace_callback'),$content);
+				}
+
+			}
+			return $content;
 		}
 
 		/**

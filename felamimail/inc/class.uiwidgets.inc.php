@@ -117,7 +117,14 @@
 				$folder_tree_new .= "tree.enableCheckBoxes(1);";
 				$folder_tree_new .= "tree.setOnCheckHandler('onCheckHandler');";
 			}
-
+			// beware this is "old" dhtmlx Code
+			$folder_tree_new .= "tree.openFuncHandler=1;";
+			$folder_tree_new .= "tree.setOnOpenHandler(OnLoadingStart);";
+			// this is code for their latest codebase, since "old" stuff is deprecated
+			/*
+			$folder_tree_new .='tree.attachEvent("onOpenStart", onOpenStartHandler);';
+			$folder_tree_new .='tree.attachEvent("onOpenEnd", onOpenEndHandler);';
+			*/
 			#$topFolderBase64 = base64_encode('--topfolder--');
 			$topFolderBase64 = '--topfolder--';
 			$folder_tree_new .= "tree.insertNewItem(0,'$topFolderBase64','$_topFolderName',onNodeSelect,'thunderbird.png','thunderbird.png','thunderbird.png','CHILD,TOP');\n";

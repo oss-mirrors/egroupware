@@ -471,6 +471,10 @@ function fm_compose_selectFolder() {
 	egw_openWindowCentered(folderSelectURL,'fm_compose_selectFolder','350','500',window.outerWidth/2,window.outerHeight/2);
 }
 
+function OnLoadingStart(_nodeID) {
+    return true;
+}
+
 function onNodeSelect(_folderName) {
 	opener.fm_compose_setFolderSelectValue(_folderName);
 	self.close();

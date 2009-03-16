@@ -860,7 +860,7 @@
 			$uiwidgets		=& CreateObject('felamimail.uiwidgets');
 			$connectionStatus	= $bofelamimail->openConnection();
 
-			$folderObjects = $bofelamimail->getFolderObjects(false);
+			$folderObjects = $bofelamimail->getFolderObjects(true,false);
 			$folderTree = $uiwidgets->createHTMLFolder
 			(
 				$folderObjects,

@@ -295,10 +295,12 @@
 		*/
 		function deleteMessages($_messageList) 
 		{
-			if($this->_debug) error_log("ajaxfelamimail::deleteMessages");
+			if($this->_debug) error_log(__METHOD__." called with Messages ".print_r($_messageList,true));
+			$messageCount = 0;
+			if(is_array($_messageList) && count($_messageList['msg']) > 0) $messageCount = count($_messageList['msg']);
 			$this->bofelamimail->deleteMessages($_messageList['msg']);
 
-			return $this->generateMessageList($this->sessionData['mailbox']);
+			return $this->generateMessageList($this->sessionData['mailbox'],(-1*$messageCount));
 		}
 		
 		function deleteSignatures($_signatures) 
@@ -415,9 +417,9 @@
 		}
 
 		
-		function generateMessageList($_folderName) 
+		function generateMessageList($_folderName,$modifyoffset=0) 
 		{
-			if($this->_debug) error_log("ajaxfelamimail::generateMessageList");
+			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $_folderName,$modifyoffset");
 			$response =& new xajaxResponse();
 
 			if($this->_connectionStatus === false) {
@@ -438,10 +440,14 @@
 			}
 
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-
+			
+			$offset = $this->sessionData['startMessage'];
+			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $offset,$modifyoffset");
+			if ($modifyoffset != 0 && ($offset+$modifyoffset)>0) $offset = $offset+$modifyoffset;
+			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $offset");
 			$headers = $this->bofelamimail->getHeaders(
 				$_folderName, 
-				$this->sessionData['startMessage'], 
+				$offset, 
 				$maxMessages, 
 				$this->sessionData['sort'], 
 				$this->sessionData['sortReverse'],
@@ -487,7 +493,8 @@
 				}
 			}
 
-			if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'])) {
+			if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']) &&
+				$GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] != 'none' ) {
 				$folderStatus = $this->bofelamimail->getFolderStatus($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder']);
 				if($folderStatus['unseen'] > 0) {
 					$response->addScript("tree.setItemText('". $GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'] ."', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");
@@ -620,7 +627,9 @@
 		*/
 		function moveMessages($_folderName, $_selectedMessages) 
 		{
-			if($this->_debug) error_log("ajaxfelamimail::moveMessages");
+			if($this->_debug) error_log(__METHOD__." called with Messages ".print_r($_selectedMessages,true));
+			$messageCount = 0;
+			if(is_array($_selectedMessages) && count($_selectedMessages['msg']) > 0) $messageCount = count($_selectedMessages['msg']);
 			$folderName = $this->_decodeEntityFolderName($_folderName);
 			if (!empty( $_selectedMessages['msg']) && !empty($folderName)) {
 				if ($this->sessionData['mailbox'] != $folderName) {
@@ -629,7 +638,7 @@
 					  if($this->_debug) error_log("ajaxfelamimail::moveMessages-> same folder than current selected");
 				}
 
-				return $this->generateMessageList($this->sessionData['mailbox']);
+				return $this->generateMessageList($this->sessionData['mailbox'],(-1*$messageCount));
 			} else {
 				$response =& new xajaxResponse();
 				$response->addScript('resetMessageSelect();');
@@ -687,17 +696,33 @@
 			return $response->getXML();
 		}
 
-		function refreshFolderList() 
+		function refreshFolderList($activeFolderList ='') 
 		{
-			if($this->_debug) error_log("ajaxfelamimail::refreshFolderList");
+			if ($this->_debug) error_log("ajaxfelamimail::refreshFolderList with folders:".$activeFolderList);
+			if ($activeFolderList != '') $activeFolders = explode('#,#',$activeFolderList);
 			$GLOBALS['egw']->session->commit_session();
 			
 			$response =& new xajaxResponse();
 
 			if($this->_connectionStatus === true) {
-				$folders = $this->bofelamimail->getFolderObjects();
-			
+				#error_log("connected");
+				if (is_array($activeFolders)) {
+					foreach ($activeFolders as $key => $name) {
+						#error_log($key."=>".$name);
+						switch($name) {
+							case "0": break;
+							case "--topfolder--": break;
+							default:
+								$folders[$name] = $name;
+								#error_log("check folder $name");
+						}
+					}
+				} else {
+					#error_log("check/get all folders");
+					$folders = $this->bofelamimail->getFolderObjects(true);
+				}			
 				foreach($folders as $folderName => $folderData) {
+					#error_log("checking $folderName");
 					if($folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 						if($folderStatus['unseen'] > 0) {
 							$response->addScript("tree.setItemText('$folderName', '<b>". $folderStatus['shortDisplayName'] ." (". $folderStatus['unseen'] .")</b>');");

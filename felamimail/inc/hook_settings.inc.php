@@ -14,7 +14,7 @@
 	
 	$this->bofelamimail =& CreateObject('felamimail.bofelamimail',$GLOBALS['egw']->translation->charset());
 	if($this->bofelamimail->openConnection()) {
-		$folderObjects = $this->bofelamimail->getFolderObjects();
+		$folderObjects = $this->bofelamimail->getFolderObjects(true, false);
 		foreach($folderObjects as $folderName => $folderInfo) {
 			#_debug_array($folderData);
 			$folderList[$folderName] = $folderInfo->displayName;

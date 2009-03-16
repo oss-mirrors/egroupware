@@ -757,7 +757,7 @@
  				// adjust $this->startMessage  
  				if ($headerCount==0 && $this->startMessage > $maxMessages) {
  					$this->startMessage = $this->startMessage - $maxMessages;
-					$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
+					#$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 					$headerCount = count($headers['header']);
 				}
 				
@@ -775,6 +775,7 @@
 					$sentFolderFlag=1;
 					#_debug_array($GLOBALS['egw_info']['user']['preferences']['felamimail']);
 				}
+	
 				$folderType = ($sentFolderFlag
                             || $this->bofelamimail->isDraftFolder( $this->mailbox)
                             || $this->bofelamimail->isTemplateFolder($this->mailbox));	

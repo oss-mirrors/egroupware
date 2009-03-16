@@ -63,7 +63,8 @@
 		if(!$this->bofelamimail->openConnection()) {
 			$extra_data = lang("can't connect to INBOX!!");
 		} else {
-			$folderList	= $this->bofelamimail->getFolderObjects(true, true);
+			// it may be cheaper to fetch the folderstatus per folder which is to be displayed, as for all folders
+			$folderList	= $this->bofelamimail->getFolderObjects(true, false);
 			#_debug_array($folderList);
 			$extra_data = '<table border="0" cellspacing="0" cellpading="0" width="100%">
 					<tr class="th">
@@ -83,10 +84,23 @@
 				#echo count($showFolders).'-'.in_array($key, $showFolders).'#<br>'; 
 				#_debug_array($value);
 				if (count($showFolders) == 0 || (count($showFolders)>0 && in_array($key, $showFolders))) {
+					unset($messages);
+					unset($unseen);
+					unset($recent);
+					/*
 					if(is_object($value->counter)) {
 						$messages	= $value->counter->messages;
 						$unseen		= $value->counter->unseen;
 						$recent		= $value->counter->recent;
+					}
+					*/
+					// as usually not all subscribed folders are shown in home, it occurrs to speed up things, to fetch
+					$folderStatus = $this->bofelamimail->getMailBoxCounters($key);
+					#echo "<br> FolderStatus:";_debug_array($folderStatus);
+					if($folderStatus !== false) {
+						$messages   = $folderStatus->messages;
+						$unseen     = $folderStatus->unseen;
+						$recent     = $folderStatus->recent;
 					}
 
 					if($recent > 0) {
