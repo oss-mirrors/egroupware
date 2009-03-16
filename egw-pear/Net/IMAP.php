@@ -419,9 +419,9 @@ class Net_IMAP extends Net_IMAPProtocol {
         #print "<hr>"; 
 		#error_log("egw-pear::NET::IMAP:getSummary->".print_r($ret["PARSED"],TRUE)); 
 		#print "<hr>";
-
         if(isset( $ret["PARSED"] ) ){
             for($i=0; $i<count($ret["PARSED"]) ; $i++){
+				if ($ret["PARSED"][$i]['COMMAND'] != 'FETCH') continue;
                 $a=$ret["PARSED"][$i]['EXT']['ENVELOPE'];
                 $a['MSG_NUM']=$ret["PARSED"][$i]['NRO'];
                 $a['UID']=$ret["PARSED"][$i]['EXT']['UID'];
