@@ -1590,7 +1590,7 @@
 			//get that mailbox in question
 			$mbx = $this->icServer->getMailboxes($_mailbox,1,true);
 			#_debug_array($mbx);
-			if (in_array('\HasChildren',$mbx[0]["ATTRIBUTES"]) || in_array('\Haschildren',$mbx[0]["ATTRIBUTES"])) {
+			if (is_array($mbx[0]["ATTRIBUTES"]) && (in_array('\HasChildren',$mbx[0]["ATTRIBUTES"]) || in_array('\Haschildren',$mbx[0]["ATTRIBUTES"]))) {
 				// if there are children fetch them
 				#echo $mbx[0]['MAILBOX']."<br>";
 				unset($buff);
