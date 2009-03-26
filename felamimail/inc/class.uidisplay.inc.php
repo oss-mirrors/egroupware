@@ -987,7 +987,7 @@
 					'\'',
 					'...',
 				);
-				if($singleBodyPart['mimeType'] == 'text/html') $singleBodyPart['body'] = preg_replace($sar,$rar,$singleBodyPart['body']);
+				if($singleBodyPart['mimeType'] == 'text/html' && strtoupper($singleBodyPart['charSet']) != 'UTF-8') $singleBodyPart['body'] = preg_replace($sar,$rar,$singleBodyPart['body']);
 				$singleBodyPart['body'] = $this->botranslation->convert(
 					$singleBodyPart['body'],
 					strtolower($singleBodyPart['charSet'])
