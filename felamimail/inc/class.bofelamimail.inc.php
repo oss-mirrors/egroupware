@@ -1586,7 +1586,7 @@
 			}
 			$reclevel++;
 			// clean up douple delimiters
-			$_mailbox = preg_replace('~'.$delimiter.'+~s',$delimiter,$_mailbox);
+			$_mailbox = preg_replace('~'.($delimiter == '.' ? "\\".$delimiter:$delimiter).'+~s',$delimiter,$_mailbox);
 			//get that mailbox in question
 			$mbx = $this->icServer->getMailboxes($_mailbox,1,true);
 			#_debug_array($mbx);
@@ -1603,7 +1603,7 @@
 				} else {
 					$allMailboxes = array();
 					foreach ($buff as $mbxname) {
-						$mbxname = preg_replace('~'.$delimiter.'+~s',$delimiter,$mbxname);
+						$mbxname = preg_replace('~'.($delimiter == '.' ? "\\".$delimiter:$delimiter).'+~s',$delimiter,$mbxname);
 						#echo "About to recur in level $reclevel:".$mbxname."<br>";
 						if ( $mbxname != $mbx[0]['MAILBOX'] && $mbxname != $prefix) $allMailboxes = array_merge($allMailboxes, self::getMailBoxesRecursive($mbxname, $delimiter, $prefix, $reclevel));
 					}
