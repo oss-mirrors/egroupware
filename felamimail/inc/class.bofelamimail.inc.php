@@ -226,7 +226,7 @@
 			$body   = str_replace("\n","\r\n",$_body);
 			$messageid = $this->icServer->appendMessage("$header"."$body", $_folderName, $_flags);
 			if ( PEAR::isError($messageid)) {
-				error_log("Could not append Message:".print_r($messageid->message,true));
+				if (self::$debug) error_log("Could not append Message:".print_r($messageid->message,true));
 				return false;
 			}
 			return $messageid;
@@ -1274,7 +1274,7 @@
 			// does the folder exist???
 			$folderInfo = $this->icServer->getMailboxes('', $_folderName, true);
 			if(is_a($folderInfo, 'PEAR_Error') || !is_array($folderInfo[0])) {
-				error_log(__METHOD__." returned Info for folder $_folderName:".print_r($folderInfo->message,true));
+				if (self::$debug) error_log(__METHOD__." returned Info for folder $_folderName:".print_r($folderInfo->message,true));
 				return false;
 			}
 			#if(!is_array($folderInfo[0])) {
@@ -1311,7 +1311,7 @@
 				$retValue['uidvalidity']=	$folderStatus->uidvalidity;
 			*/ 
 				//_debug_array($folderStatus);
-				error_log(__METHOD__." returned folderStatus for Folder $_folderName:".print_r($folderStatus->message,true));
+				if (self::$debug) error_log(__METHOD__." returned folderStatus for Folder $_folderName:".print_r($folderStatus->message,true));
 			} else {
 				$retValue['messages']		= $folderStatus['MESSAGES'];
 				$retValue['recent']		= $folderStatus['RECENT'];
@@ -1561,7 +1561,7 @@
 			$folderStatus = $this->icServer->getStatus($folderName);
 			#echo "<br> FolderStatus:";_debug_array($folderStatus);
 			if ( PEAR::isError($folderStatus)) {
-				error_log(__METHOD__." returned FolderStatus for Folder $folderName:".print_r($folderStatus,true));
+				if (self::$debug) error_log(__METHOD__." returned FolderStatus for Folder $folderName:".print_r($folderStatus->message,true));
 				return false;
 			}
 			if(is_array($folderStatus)) {
@@ -1599,7 +1599,7 @@
 				//$buff = $this->icServer->getMailboxes($mbx[0]['MAILBOX'],2,false);
 				#_debug_array($buff);
 				if( PEAR::isError($buff) ) {
-					error_log(__METHOD__." Error while retrieving Mailboxes for:".$mbx[0]['MAILBOX'].$delimiter.".");
+					if (self::$debug) error_log(__METHOD__." Error while retrieving Mailboxes for:".$mbx[0]['MAILBOX'].$delimiter.".");
 					return array();
 				} else {
 					$allMailboxes = array();
@@ -2521,7 +2521,7 @@
 			if (self::$debug) error_log("create folder: $newFolderName");
 			$rv = $this->icServer->renameMailbox($oldFolderName, $newFolderName);
 			if ( PEAR::isError($rv) ) {
-				error_log(__METHOD__." failed for $oldFolderName, $newFolderName with error: ".print_r($rv->message,true));
+				if (self::$debug) error_log(__METHOD__." failed for $oldFolderName, $newFolderName with error: ".print_r($rv->message,true));
 				return false;
 			}
 

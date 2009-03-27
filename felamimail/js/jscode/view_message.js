@@ -13,6 +13,11 @@ function sendNotify (uid) {
 	xajax_doXMLHTTP("felamimail.ajaxfelamimail.sendNotify",uid,ret);	
 }
 
+function goToMessage(url) {
+	window.location.href = url;
+	opener.refresh();
+}
+
 function initAll()
 {
 	//tab.init();

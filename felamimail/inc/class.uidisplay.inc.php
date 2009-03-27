@@ -230,9 +230,10 @@
 			// Problem is: the iFrame Layout provides the scrollbars.
 			#$bodyParts  = $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 			#_debug_array($bodyParts); exit;
-			#_debug_array($this->bofelamimail->getFlags($this->uid)); exit;
+			#_debug_array($this->uid);
+			#_debug_array($this->bofelamimail->getFlags($this->uid)); #exit;
 			// flag the message as read/seen
-			if (!empty($this->uid)) $this->bofelamimail->flagMessages('read', $this->uid);
+			if (!empty($this->uid)) $this->bofelamimail->flagMessages('read', $this->uid);	
 
 			$nextMessage	= $this->bofelamimail->getNextMessage($this->mailbox, $this->uid);
 
@@ -474,7 +475,7 @@
 					'mailbox'	=> base64_encode($this->mailbox)
 				);
 				$previousURL = $GLOBALS['egw']->link('/index.php',$linkData);
-				$previousURL = "window.location.href = '$previousURL'";
+				$previousURL = "goToMessage('$previousURL')";
 				$navbarImages['up.button']	= array(
 					'action'	=> $previousURL,
 					'tooltip'	=> lang('previous message'),
@@ -491,7 +492,7 @@
 					'mailbox'	=> base64_encode($this->mailbox)
 				);
 				$nextURL = $GLOBALS['egw']->link('/index.php',$linkData);
-				$nextURL = "window.location.href = '$nextURL'";
+				$nextURL = "goToMessage('$nextURL')";
 				$navbarImages['down.button']	= array(
 					'action'	=> $nextURL,
 					'tooltip'	=> lang('next message'),
