@@ -717,6 +717,7 @@
 								#error_log("check folder $name");
 						}
 					}
+					if (!(is_array($folders) && count($folders)>0)) $folders = $this->bofelamimail->getFolderObjects(true);
 				} else {
 					#error_log("check/get all folders");
 					$folders = $this->bofelamimail->getFolderObjects(true);
