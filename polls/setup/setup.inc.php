@@ -19,6 +19,7 @@ $setup_info['polls']['title']     = 'Polls';
 $setup_info['polls']['version']   = '1.4';
 $setup_info['polls']['app_order'] = 17;
 $setup_info['polls']['enable']    = 1;
+$setup_info['polls']['index']     = 'polls.uipolls.index';
 
 /* The tables this app creates */
 $setup_info['polls']['tables']    = array('egw_polls','egw_polls_answers','egw_polls_votes');

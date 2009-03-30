@@ -29,6 +29,7 @@
 
 	$setup_info['sambaadmin']['tables']    = array();
 	$setup_info['sambaadmin']['enable']    = 1;
+	$setup_info['sambaadmin']['index']     = 'sambaadmin.uisambaadmin.listWorkstations';
 
 	/* The hooks this app includes, needed for hooks registration */
 	#$setup_info['sambaadmin']['hooks'][]	= 'preferences';

@@ -17,6 +17,7 @@
 	$setup_info['developer_tools']['version']   = '1.4';
 	$setup_info['developer_tools']['app_order'] = 61;
 	$setup_info['developer_tools']['enable']    = 1;
+	$setup_info['developer_tools']['index']     = 'developer_tools.uilangfile.index';
 
 	$setup_info['developer_tools']['author'] = 'Miles Lott';
 	$setup_info['developer_tools']['description'] =
