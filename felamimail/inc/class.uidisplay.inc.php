@@ -481,7 +481,11 @@
 					'tooltip'	=> lang('previous message'),
 				);
 			} else {
-				$previousURL = '';
+				$previousURL = '#';
+				$navbarImages['up.grey']  = array(
+					'action'    => $previousURL,
+					'tooltip'   => lang('previous message'),
+				);
 			}
 
 			if($nextMessage['next']) {
@@ -498,7 +502,11 @@
 					'tooltip'	=> lang('next message'),
 				);
 			} else {
-				$nextURL = '';
+				$nextURL = '#';
+				$navbarImages['down.grey']    = array(
+					#'action'    => $nextURL,
+					'tooltip'   => lang('next message'),
+				);
 			}
 
 
