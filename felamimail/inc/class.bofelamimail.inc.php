@@ -392,39 +392,7 @@
 
 		function decode_header($_string)
 		{
-			if(function_exists(imap_mime_header_decode)) {
-				$newString = '';
-
-				$string = preg_replace('/\?=\s+=\?/', '?= =?', $_string);
-
-				$elements=imap_mime_header_decode($string);
-
-				foreach((array)$elements as $element) {
-					if ($element->charset == 'default')
-						$element->charset = 'iso-8859-1';
-					$newString .= self::$botranslation->convert($element->text,$element->charset);
-				}
-				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$newString);
-			} elseif(function_exists(mb_decode_mimeheader)) {
-				$string = $_string;
-				if(preg_match_all('/=\?.*\?Q\?.*\?=/iU', $string, $matches)) {
-					foreach($matches[0] as $match) {
-						$fixedMatch = str_replace('_', ' ', $match);
-						$string = str_replace($match, $fixedMatch, $string);
-					}
-					$string = str_replace('=?ISO8859-','=?ISO-8859-',$string);
-					$string = str_replace('=?windows-1258','=?ISO-8859-1',$string);
-				}
-				$string = mb_decode_mimeheader($string);
-				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$string);
-			} elseif(function_exists(iconv_mime_decode)) {
-				// continue decoding also if an error occurs
-				$string = @iconv_mime_decode($_string, 2, self::$displayCharset);
-				return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$string);
-			}
-
-			// no decoding function available
-			return preg_replace('/([\000-\012\015\016\020-\037\075])/','',$_string);
+			return self::$botranslation->decodeMailHeader($_string,self::$displayCharset);
 		}
 
 		function decode_subject($_string)
@@ -1499,7 +1467,7 @@
 						if( !PEAR::isError($foldersNameSpace[$type]['all'])) $listOfFolders = $foldersNameSpace[$type]['all'];
 					}
 					foreach((array)$listOfFolders as $folderName) {
-						#echo "<br>FolderToCheck:$folderName";
+						#echo "<br>FolderToCheck:$folderName<br>";
 						if($_subscribedOnly && !in_array($folderName, $foldersNameSpace[$type]['all'])) {
 							#echo "$folderName failed to be here <br>";
 							continue;
@@ -1512,6 +1480,8 @@
 						$folderObject->folderName	= $folderName;
 						$folderObject->shortFolderName	= $shortName;
 						if(!$_subscribedOnly) {
+							#echo $type."<br>";
+							#_debug_array($foldersNameSpace[$type]['subscribed']);
 							$folderObject->subscribed = in_array($folderName, $foldersNameSpace[$type]['subscribed']);
 						}
 
@@ -2275,8 +2245,21 @@
 					break;
 				case 'TEXT':
 					$bodyPart = array();
-					if (($structure->subType == 'HTML' || $structure->subType == 'PLAIN') && $structure->disposition != 'ATTACHMENT') {
-						$bodyPart = array($this->getTextPart($_uid, $structure, $this->htmlOptions));
+					if ( $structure->disposition != 'ATTACHMENT') {
+						switch($structure->subType) {
+							case 'CALENDAR':
+								// maybe opening an egw_calendar object, ... in the future
+								#$calobj =& CreateObject('calendar.calendar_ical');
+								#$bodyPart = $this->getTextPart($_uid, $structure, $this->htmlOptions);
+								#$calobj->importVCal($bodyPart['body']);
+								#break;
+							case 'HTML':
+							case 'PLAIN':
+							default:
+								$bodyPart = array($this->getTextPart($_uid, $structure, $this->htmlOptions));
+						}
+					} else {
+						// what if the structure->disposition is attachment ,...
 					}
 					return $bodyPart;
 					break;
