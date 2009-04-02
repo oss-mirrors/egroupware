@@ -1014,7 +1014,7 @@ class Net_IMAPProtocol {
 			}
             $ret["PARSED"]=$subrv;
             //fill the $this->_serverAuthMethods and $this->_serverSupportedCapabilities arrays
-            foreach( $ret["PARSED"]["CAPABILITIES"] as $auth_method ){
+            foreach( (array)$ret["PARSED"]["CAPABILITIES"] as $auth_method ){
                 if( strtoupper( substr( $auth_method , 0 ,5 ) ) == "AUTH=" )
                     $this->_serverAuthMethods[] = substr( $auth_method , 5 );
             }
