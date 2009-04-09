@@ -2785,7 +2785,8 @@
 				if (!($replacements = $mergeobj->contact_replacements($id)))
 				{
 					$err = lang('Contact not found!');
-					return false;
+					#return false;
+					continue;
 				}
 				if (strpos($content,'$$user/') !== null && ($user = $GLOBALS['egw']->accounts->id2name($GLOBALS['egw_info']['user']['account_id'],'person_id')))
 				{
