@@ -109,7 +109,7 @@
 			$formData['to_infolog'] = $_POST['to_infolog'];
 			//$formData['mailbox']	= $_GET['mailbox'];
 			if((bool)$_POST['printit'] == true) {
-				$formData['printit'] = 1; 
+				$formData['printit'] = 1;
 				$formData['isDraft'] = 1;
 				// pint the composed message. therefore save it as draft and reopen it as plain printwindow
 				$formData['subject'] = "[".lang('printview').":]".$formData['subject'];
@@ -117,14 +117,14 @@
 				if (!$messageUid) {
 					 print "<script type=\"text/javascript\">alert('".lang("Error: Could not save Message as Draft")."');</script>";
 					return;
-				} 
+				}
 				$uidisplay   =& CreateObject('felamimail.uidisplay');
 				$uidisplay->printMessage($messageUid, $formData['printit']);
 				//$GLOBALS['egw']->link('/index.php',array('menuaction' => 'felamimail.uidisplay.printMessage','uid'=>$messageUid));
 				return;
 			}
 			if((bool)$_POST['saveAsDraft'] == true) {
-				$formData['isDraft'] = 1; 
+				$formData['isDraft'] = 1;
 				// save as draft
 				$messageUid = $this->bocompose->saveAsDraft($formData);
 				if (!$messageUid) {
@@ -164,7 +164,7 @@
 						foreach ($addRequests as $key => $reqval) {
 							// the additional requests should have a =, to separate key from value.
 							$keyValuePair = explode('=',$reqval,2);
-							$sessionData[$keyValuePair[0]] .= (strlen($sessionData[$keyValuePair[0]])>0 ? ' ':'') . $keyValuePair[1]; 
+							$sessionData[$keyValuePair[0]] .= (strlen($sessionData[$keyValuePair[0]])>0 ? ' ':'') . $keyValuePair[1];
 						}
 					}
 					$sessionData['to']=$mailtoArray[0];
@@ -190,7 +190,7 @@
 				$sessionData['to'] = base64_decode($_REQUEST['send_to']);
 			}
 			//is the MimeType set/requested
-			if (!empty($_REQUEST['mimeType'])) 
+			if (!empty($_REQUEST['mimeType']))
 			{
 				$sessionData['mimeType'] = $_REQUEST['mimeType'];
 			}
@@ -238,6 +238,14 @@
 			);
 			$this->t->set_var('file_selector_url',$GLOBALS['egw']->link('/index.php',$linkData));
 
+			$this->t->set_var('vfs_selector_url',egw::link('/index.php',array(
+				'menuaction' => 'filemanager.filemanager_select.select',
+				'mode' => 'open-multiple',
+				'method' => 'felamimail.uicompose.vfsSelector',
+				'id' => $this->composeID,
+				'label' => lang('Attach'),
+			)));
+
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uicompose.action',
@@ -278,6 +286,7 @@
 			$this->t->set_var('img_fileopen', $GLOBALS['egw']->common->image('phpgwapi','fileopen'));
 			$this->t->set_var('img_mail_send', $GLOBALS['egw']->common->image('felamimail','mail_send'));
 			$this->t->set_var('img_attach_file', $GLOBALS['egw']->common->image('felamimail','attach'));
+			$this->t->set_var('img_attach_vfs', $GLOBALS['egw']->common->image('filemanager','navbar'));
 			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
 			$this->t->set_var('img_fileexport', $GLOBALS['egw']->common->image('felamimail','fileexport'));
 			// prepare print url/button
@@ -329,7 +338,7 @@
 			$this->t->set_var('lang_no_recipient',lang('No recipient address given!'));
 			$this->t->set_var('lang_no_subject',lang('No subject given!'));
 			$this->t->pparse("out","header");
-			
+
 			// body
 			if($sessionData['mimeType'] == 'html') {
 				$mode = 'simple';
@@ -357,7 +366,7 @@
 					}
 				}
 			}
-	
+
 			$selectSignatures = array(
 				'-2' => lang('no signature')
 			);
@@ -419,11 +428,35 @@
 			$GLOBALS['egw']->common->egw_header();
 		}
 
+		/**
+		 * Callback for filemanagers select file dialog
+		 *
+		 * @param string $composeid
+		 * @param string|array $files path of file(s) in vfs (no egw_vfs::PREFIX, just the path)
+		 * @return string javascript output by the file select dialog, usually to close it
+		 */
+		function vfsSelector($composeid,$files)
+		{
+			$this->bocompose   =& CreateObject('felamimail.bocompose',$this->composeID=$composeid,$this->displayCharset);
+
+			foreach((array) $files as $path)
+			{
+				$formData = array(
+					'name' => egw_vfs::basename($path),
+					'type' => egw_vfs::mime_content_type($path),
+					'file' => egw_vfs::PREFIX.$path,
+					'size' => filesize(egw_vfs::PREFIX.$path),
+				);
+				$this->bocompose->addAttachment($formData);
+			}
+			return 'window.close();';
+		}
+
 		function fileSelector()
 		{
 			if(is_array($_FILES["addFileName"])) {
 				#phpinfo();
-				#_debug_array($_FILES);
+				//_debug_array($_FILES);
 				if($_FILES['addFileName']['error'] == $UPLOAD_ERR_OK) {
 					$formData['name']	= $_FILES['addFileName']['name'];
 					$formData['type']	= $_FILES['addFileName']['type'];
@@ -485,6 +518,10 @@
 		{
 			$bocompose  =& CreateObject('felamimail.bocompose', $_GET['_composeID']);
 			$attachment =  $bocompose->sessionData['attachments'][$_GET['attID']] ;
+			if (parse_url($attachment['file'],PHP_URL_SCHEME) == 'vfs')
+			{
+				egw_vfs::load_wrapper('vfs');
+			}
 			header ("Content-Type: ".$attachment['type']."; name=\"". $this->bofelamimail->decode_header($attachment['name']) ."\"");
 			header ("Content-Disposition: inline; filename=\"". $this->bofelamimail->decode_header($attachment['name']) ."\"");
 			header("Expires: 0");
@@ -492,6 +529,7 @@
 			header("Pragma: public");
 			$fp = fopen($attachment['file'], 'rb');
 			fpassthru($fp);
+			fclose($fp);
 			$GLOBALS['egw']->common->egw_exit();
 			exit;
 
@@ -575,6 +613,7 @@
 			$this->t->set_var('lang_save_as_draft',lang('save as draft'));
 			$this->t->set_var("lang_back_to_folder",lang('back to folder'));
 			$this->t->set_var("lang_attachments",lang('attachments'));
+			$this->t->set_var('lang_attachment_vfs',lang('Filemanager'));
 			$this->t->set_var("lang_add",lang('add'));
 			$this->t->set_var("lang_remove",lang('remove'));
 			$this->t->set_var("lang_priority",lang('priority'));

@@ -46,10 +46,10 @@ function initAll()
 function addEmail(to,email)
 {
 	//alert(to+': '+email);
-	
+
 	var tableBody = document.getElementById('addressRows');
 	var tableRows = tableBody.getElementsByTagName('tr');
-	
+
 	var lastRow = tableRows[tableRows.length-1];
 	var inputElements	= lastRow.getElementsByTagName('input');
 
@@ -67,9 +67,9 @@ function addEmail(to,email)
 		{
 			continue;
 		}
-		
+
 	}
-	
+
 	if (inputElements[0].value != '')	// last row not empty --> create new
 	{
 		addAddressRow(lastRow);
@@ -80,7 +80,7 @@ function addEmail(to,email)
 	inputElements[0].value = email;
 	var selectElements = lastRow.getElementsByTagName('select');
 	selectElements[0].selectedIndex = to == 'cc' ? 1 : (to == 'bcc' ? 2 : 0);
-	
+
 	// add a new empty last row if there is no empty one at all
 	lastRow = tableRows[tableRows.length-1];
 	inputElements	= lastRow.getElementsByTagName('input');
@@ -113,7 +113,7 @@ function addAddressRow(_tableRow)
 			spanElements[i].style.display	= 'none';
 		}
 	}
-	
+
 	tableBody.appendChild(newTableRow);
 
 //	inputElements[0].focus();
@@ -170,14 +170,14 @@ function deleteTableRow(_imageObject)
 	tableRows = tableBody.getElementsByTagName('tr');
 
 	if(tableRows.length > 4) {
-	
+
 		// the row where the clicked image is located
 		tableRow = _imageObject.parentNode.parentNode;
 
 		// the table body
 		tableBody = document.getElementById('addressRows');
 		tableBody.removeChild(tableRow);
-	
+
 		singleRowHeight = tableRows[0].clientHeight;
 		if(tableRows.length > 4) {
 			neededHeight = singleRowHeight*4;
@@ -192,13 +192,13 @@ function deleteTableRow(_imageObject)
 
 		var inputElements	= tableRow.getElementsByTagName('input');
 		inputElements[0].value	= '';
-		
+
 	}
 }
 
 function getPosLeft(_node) {
 	var left=0;
-	
+
 	if(_node.offsetParent) {
 		while (_node.offsetParent)
 		{
@@ -208,13 +208,13 @@ function getPosLeft(_node) {
 	} else if (_node.x) {
 		left += _node.x;
 	}
-	
+
 	return left;
 }
 
 function getPosTop(_node) {
 	var top=0;
-	
+
 	if(_node.offsetParent) {
 		while (_node.offsetParent) {
 			top += _node.offsetTop;
@@ -226,7 +226,7 @@ function getPosTop(_node) {
 	} else if (_node.y) {
 		left += _node.y;
 	}
-	
+
 	return top;
 }
 
@@ -268,7 +268,7 @@ function displayResultBox() {
 		top = getPosTop(currentInputField) + currentInputField.offsetHeight;
 		left = getPosLeft(currentInputField);
 		width = currentInputField.clientWidth;
-	
+
 		resultBox.style.top=top + 'px';
 		resultBox.style.left=left + 'px';
 		resultBox.style.width=width + 'px';
@@ -301,9 +301,9 @@ function keypressed(keycode, keyvalue) {
 	if(liveSearchTimer) {
 		window.clearTimeout(liveSearchTimer);
 	}
-		
+
 	//_pressed = new Date().getTime();
-		
+
 	switch (keycode) {
 	//	case KEYCODE_LEFT:
 		case KEYCODE_UP:
@@ -313,7 +313,7 @@ function keypressed(keycode, keyvalue) {
 				selectSuggestion(resultRows.length-1);
 			}
 			break;
-		
+
 	//	case KEYCODE_RIGHT:
 		case KEYCODE_DOWN:
 			//document.title='down '+selectedSuggestion;
@@ -327,7 +327,7 @@ function keypressed(keycode, keyvalue) {
 				}
 			}
 			break;
-		
+
 		case KEYCODE_ENTER:
 			if(resultboxVisible) {
 				currentInputField.value = results[selectedSuggestion];
@@ -336,11 +336,11 @@ function keypressed(keycode, keyvalue) {
 			focusToNextInputField();
 			searchActive=false;
 			break;
-			
+
 		case KEYCODE_ESC:
 			hideResultBox();
 			break;
-		
+
 		case KEYCODE_TAB:
 			if(resultboxVisible) {
 				if( selectedSuggestion < resultRows.length-1) {
@@ -352,12 +352,12 @@ function keypressed(keycode, keyvalue) {
 				focusToNextInputField();
 			}
 			break;
-		
-		
+
+
 		case KEYCODE_ALT:
 		case KEYCODE_SHIFT:
 			break;
-		
+
 		default:
 			//_setValue(-1);
 			liveSearchTimer = window.setTimeout('startLiveSearch()', keyboardTimeout);
@@ -371,7 +371,7 @@ function keypressed(keycode, keyvalue) {
 function keyDown(e) {
 	var pressedKeyID = document.all ? window.event.keyCode : e.which;
 	var pressedKey = String.fromCharCode(pressedKeyID).toLowerCase();
-	
+
 	currentKeyCode=pressedKeyID;
 	if(keyDownCallback!=null) {
 		keyDownCallback(pressedKeyID, pressedKey);
@@ -412,7 +412,7 @@ function disabledKeyCodes(_keyCodes) {
 			return false;
 		}
 	}
-	
+
 	return true;
 }
 
@@ -420,7 +420,7 @@ function updateTitle(_text) {
 	if(_text.length>30) {
 		_text = _text.substring(0,30) + '...';
 	}
-	
+
 	document.title = _text;
 }
 
@@ -521,7 +521,15 @@ function fm_compose_setFolderSelectValue(_folderName) {
 }
 
 function fm_compose_displayFileSelector() {
-	fileSelectorWindow = egw_openWindowCentered(displayFileSelectorURL,'fm_compose_fileSelector','550','100',window.outerWidth/2,window.outerHeight/2);	
+	fileSelectorWindow = egw_openWindowCentered(displayFileSelectorURL,'fm_compose_fileSelector','550','100',window.outerWidth/2,window.outerHeight/2);
+	if(fileSelectorWindowTimer) {
+		window.clearTimeout(fileSelectorWindowTimer);
+	}
+	fileSelectorWindowTimer = window.setInterval('fm_compose_reloadAttachments()', fileSelectorWindowTimeout);
+}
+
+function fm_compose_displayVfsSelector() {
+	fileSelectorWindow = egw_openWindowCentered(displayVfsSelectorURL,'fm_compose_vfsSelector','640','580',window.outerWidth/2,window.outerHeight/2);
 	if(fileSelectorWindowTimer) {
 		window.clearTimeout(fileSelectorWindowTimer);
 	}
@@ -665,7 +673,7 @@ function removeFCK(fieldId)
        var frameElement =  document.getElementById(fieldId+'___Frame');
        //var textarea = document.forms[this].elements[fieldId];
        var editor = FCKeditorAPI.GetInstance(fieldId);
-       
+
        //if (editor!=null && configElement && frameElement && configElement.parentNode==textarea.parentNode && frameElement.parentNode==textarea.parentNode && document.removeChild)
 	   if (editor!=null && configElement && frameElement && document.removeChild)
        {

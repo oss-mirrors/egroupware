@@ -2,6 +2,7 @@
 <script language="JavaScript1.2">
 	var folderSelectURL		="{folder_select_url}";
 	var displayFileSelectorURL	="{file_selector_url}";
+	var displayVfsSelectorURL	= "{vfs_selector_url}";
 	var composeID			="{compose_id}";
 
 	var activityImagePath		= "{ajax-loader}";
@@ -56,6 +57,9 @@
 				{addressbookButton}
 				<button class="menuButton" type="button" onclick="fm_compose_displayFileSelector();" title="{lang_attachments}">
 					<img src="{img_attach_file}">
+				</button>
+				<button class="menuButton" type="button" onclick="fm_compose_displayVfsSelector();" title="{lang_attachment_vfs}">
+					<img src="{img_attach_vfs}" height="18">
 				</button>
 				<button class="menuButton" type="button" onclick="fm_compose_printit();" title="{lang_print_it}">
 					<img src="{img_print_it}">
