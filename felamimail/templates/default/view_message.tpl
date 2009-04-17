@@ -1,6 +1,6 @@
 <!-- BEGIN message_main -->
 <script language="JavaScript1.2">
-var lang_sendnotify = "{lang_sendnotify}"; 
+var lang_sendnotify = "{lang_sendnotify}";
 self.focus();
 </script>
 <!-- {print_navbar} -->
@@ -85,7 +85,7 @@ self.focus();
 	<td valign="top">
 		<a href="#" onclick="{link_view} return false;">
 		<b>{filename}</b><a>
-	</td> 
+	</td>
 	<td align="center">
 		{mimetype}
 	</td>
@@ -95,6 +95,9 @@ self.focus();
 	<td width="10%" align="center">
 		<a href="{link_save}">{url_img_save}</a>
 	</td>
+	<td width="10%" align="center">
+		<a href="#" onclick="egw_openWindowCentered('{link_vfs_save}','vfs_save_attachment','640','580',window.outerWidth/2,window.outerHeight/2); return false;">{url_img_vfs}</a>
+	</td>
 </tr>
 <!-- END message_attachement_row -->
 
@@ -102,7 +105,7 @@ self.focus();
 <tr>
 	<td width="100" style="font-weight:bold; font-size:10px;">
 		{lang_cc}:
-	</td> 
+	</td>
 	<td style="font-size:10px;" colspan="3">
 		{cc_data}
 	</td>
@@ -124,7 +127,7 @@ self.focus();
 <tr>
 	<td width="100" style="font-weight:bold; font-size:10px; vertical-align:top;">
 		{lang_on_behalf_of}:
-	</td> 
+	</td>
 	<td style="font-size:10px;" colspan="3">
 		{onbehalfof_data}
 	</td>
@@ -152,7 +155,7 @@ self.focus();
 <tr>
 	<td style="font-weight:bold; font-size:10px;">
 		{lang_date}:
-	</td> 
+	</td>
 	<td style="font-size:10px;" colspan="3">
 		{date_received}
 	</td>
@@ -161,7 +164,7 @@ self.focus();
 <tr>
 	<td style="font-weight:bold; font-size:10px; vertical-align:top;">
 		{lang_to}:
-	</td> 
+	</td>
 	<td style="font-size:10px;" colspan="3">
 		{to_data}
 	</td>

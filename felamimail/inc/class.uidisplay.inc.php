@@ -203,7 +203,7 @@
 		{
 			$partID		= $_GET['part'];
 			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
-			
+
 			$transformdate	=& CreateObject('felamimail.transformdate');
 			$htmlFilter	=& CreateObject('felamimail.htmlfilter');
 			$uiWidgets	=& CreateObject('felamimail.uiwidgets');
@@ -233,7 +233,7 @@
 			#_debug_array($this->uid);
 			#_debug_array($this->bofelamimail->getFlags($this->uid)); #exit;
 			// flag the message as read/seen
-			if (!empty($this->uid)) $this->bofelamimail->flagMessages('read', $this->uid);	
+			if (!empty($this->uid)) $this->bofelamimail->flagMessages('read', $this->uid);
 
 			$nextMessage	= $this->bofelamimail->getNextMessage($this->mailbox, $this->uid);
 
@@ -572,7 +572,7 @@
 					'menuaction'	=> 'felamimail.uidisplay.displayBody',
 					'uid'		=> $this->uid,
 					'part'		=> $partID,
-					'mailbox'	=>  base64_encode($this->mailbox) 
+					'mailbox'	=>  base64_encode($this->mailbox)
 				);
 			$this->t->set_var('url_displayBody', $GLOBALS['egw']->link('/index.php',$linkData));
 
@@ -589,6 +589,7 @@
 				$this->t->set_var('type',lang('type'));
 				$this->t->set_var('size',lang('size'));
 				$this->t->set_var('url_img_save',html::image('felamimail','fileexport', lang('save')));
+				$this->t->set_var('url_img_vfs',html::image('filemanager','navbar', lang('Filemanager'), ' height="16"'));
 				#$this->t->parse('attachment_rows','attachment_row_bold',True);
 
 				$detectedCharSet=$charset2use=$this->displayCharset;
@@ -661,6 +662,15 @@
 					);
 					$this->t->set_var("link_save",$GLOBALS['egw']->link('/index.php',$linkData));
 
+					$this->t->set_var('link_vfs_save',egw::link('/index.php',array(
+						'menuaction' => 'filemanager.filemanager_select.select',
+						'mode' => 'saveas',
+						'name' => $value['name'],
+						'mime' => strtolower($value['mimeType']),
+						'method' => 'felamimail.uidisplay.vfsSaveAttachment',
+						'id' => $this->mailbox.'::'.$this->uid.'::'.$value['partID'].'::'.$value['is_winmail'],
+						'label' => lang('Save'),
+					)));
 					$this->t->parse('attachment_rows','message_attachement_row',True);
 				}
 			} else {
@@ -682,7 +692,7 @@
 		{
 			$partID		= $_GET['part'];
 			if (!empty($_GET['mailbox'])) $this->mailbox  = base64_decode($_GET['mailbox']);
-			
+
 			$this->bofelamimail->reopen($this->mailbox);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 			$this->bofelamimail->closeConnection();
@@ -797,7 +807,7 @@
 				$GLOBALS['egw']->js->validate_file('jscode','view_message','felamimail');
 				$GLOBALS['egw']->js->set_onload('javascript:initAll();');
 			}
-			
+
 			if(($_GET['menuaction'] == 'felamimail.uidisplay.printMessage') || (!empty($printing) && $printing == 1)) {
 				$GLOBALS['egw']->js->set_onload('javascript:window.print()');
 			}
@@ -927,6 +937,31 @@
 
 			// if something goes wrong, just return the original address
 			return $_emailAddress;
+		}
+
+		/**
+		 * Save an attachment in the vfs
+		 *
+		 * @param string $id '::' delemited mailbox::uid::part-id::is_winmail
+		 * @param string $path path in vfs (no egw_vfs::PREFIX!)
+		 * @return string javascript eg. to close the selector window
+		 */
+		function vfsSaveAttachment($id,$path)
+		{
+			//return "alert('".__METHOD__.'("'.$id.'","'.$path."\")'); window.close();";
+
+			list($this->mailbox,$this->uid,$part,$is_winmail) = explode('::',$id);
+			$this->bofelamimail->reopen($this->mailbox);
+			$attachment = $this->bofelamimail->getAttachment($this->uid,$part,$is_winmail);
+			$this->bofelamimail->closeConnection();
+
+			if (($fp = egw_vfs::fopen($path,'wb')))
+			{
+				fwrite($fp,$attachment['attachment']);
+				fclose($fp);
+			}
+
+			return 'window.close();';
 		}
 
 		function getAttachment()
@@ -1198,8 +1233,8 @@
 
 			$this->t->set_var("date_data",
 				@htmlspecialchars($GLOBALS['egw']->common->show_date(strtotime($headers['DATE'])), ENT_QUOTES,$this->displayCharset));
-			
-			// link to go back to the message view. the link differs if the print was called from a normal viewing window, or from compose 
+
+			// link to go back to the message view. the link differs if the print was called from a normal viewing window, or from compose
 			$subject = @htmlspecialchars($this->bofelamimail->decode_subject(preg_replace($nonDisplayAbleCharacters, '', $envelope['SUBJECT'])), ENT_QUOTES, $this->displayCharset);
 			$this->t->set_var("subject_data", $subject);
 			$this->t->set_var("full_subject_data", $subject);
