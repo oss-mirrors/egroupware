@@ -977,7 +977,7 @@
 			}
 			foreach((array)$ids as $id)
 			{
-				list($this->mailbox,$this->uid,$part,$is_winmail,$name) = explode('::',$id);
+				list($this->mailbox,$this->uid,$part,$is_winmail,$name) = explode('::',$id,5);
 				if ($mb != $this->mailbox) $this->bofelamimail->reopen($mb = $this->mailbox);
 				$attachment = $this->bofelamimail->getAttachment($this->uid,$part,$is_winmail);
 
