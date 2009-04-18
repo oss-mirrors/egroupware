@@ -82,21 +82,20 @@ self.focus();
 
 <!-- BEGIN message_attachement_row -->
 <tr>
-	<td valign="top">
+	<td valign="top" width="40%">
 		<a href="#" onclick="{link_view} return false;">
 		<b>{filename}</b><a>
 	</td>
-	<td align="center">
+	<td align="left">
 		{mimetype}
 	</td>
-	<td align="center">
+	<td align="right">
 		{size}
 	</td>
-	<td width="10%" align="center">
+	<td width="10%">&nbsp;</td>
+	<td width="10%" align="left">
 		<a href="{link_save}">{url_img_save}</a>
-	</td>
-	<td width="10%" align="center">
-		<a href="#" onclick="egw_openWindowCentered('{link_vfs_save}','vfs_save_attachment','640','580',window.outerWidth/2,window.outerHeight/2); return false;">{url_img_vfs}</a>
+		{vfs_save}
 	</td>
 </tr>
 <!-- END message_attachement_row -->

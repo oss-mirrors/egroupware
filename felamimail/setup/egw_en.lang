@@ -1,3 +1,4 @@
+%1 is not writable by you!	felamimail	en	%1 is NOT writable by you!
 (no subject)	felamimail	en	(no subject)
 (only cc/bcc)	felamimail	en	(only Cc/Bcc)
 (separate multiple addresses by comma)	felamimail	en	(separate multiple addresses by comma)
@@ -152,6 +153,7 @@ error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error connecting to imap server. %s : %s.	felamimail	en	Error connecting to IMAP server. %s : %s.
 error connecting to imap server: [%s] %s.	felamimail	en	Error connecting to IMAP server: [%s] %s.
 error opening	felamimail	en	Error opening
+error saving %1!	felamimail	en	Error saving %1!
 error:	felamimail	en	Error:
 error: could not save message as draft	felamimail	en	Error: Could not save Message as Draft
 every	felamimail	en	every
@@ -355,6 +357,7 @@ row order style	felamimail	en	row order style
 rule	felamimail	en	Rule
 sat	felamimail	en	Sat
 save	felamimail	en	Save
+save all	felamimail	en	Save all
 save as draft	felamimail	en	save as draft
 save as infolog	felamimail	en	save as infolog
 save changes	felamimail	en	save changes

@@ -58,9 +58,7 @@
 				<button class="menuButton" type="button" onclick="fm_compose_displayFileSelector();" title="{lang_attachments}">
 					<img src="{img_attach_file}">
 				</button>
-				<button class="menuButton" type="button" onclick="fm_compose_displayVfsSelector();" title="{lang_attachment_vfs}">
-					<img src="{img_attach_vfs}" height="18">
-				</button>
+				{vfs_attach_button}
 				<button class="menuButton" type="button" onclick="fm_compose_printit();" title="{lang_print_it}">
 					<img src="{img_print_it}">
 				</button>

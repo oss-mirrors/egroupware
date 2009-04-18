@@ -245,7 +245,13 @@
 				'id' => $this->composeID,
 				'label' => lang('Attach'),
 			)));
-
+			if ($GLOBALS['egw_info']['user']['apps']['filemanager'])
+			{
+				$this->t->set_var('vfs_attach_button','
+				<button class="menuButton" type="button" onclick="fm_compose_displayVfsSelector();" title="'.htmlspecialchars(lang('filemanager')).'">
+					<img src="'.$GLOBALS['egw']->common->image('filemanager','navbar').'" height="18">
+				</button>');
+			}
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uicompose.action',
@@ -286,7 +292,6 @@
 			$this->t->set_var('img_fileopen', $GLOBALS['egw']->common->image('phpgwapi','fileopen'));
 			$this->t->set_var('img_mail_send', $GLOBALS['egw']->common->image('felamimail','mail_send'));
 			$this->t->set_var('img_attach_file', $GLOBALS['egw']->common->image('felamimail','attach'));
-			$this->t->set_var('img_attach_vfs', $GLOBALS['egw']->common->image('filemanager','navbar'));
 			$this->t->set_var('ajax-loader', $GLOBALS['egw']->common->image('felamimail','ajax-loader'));
 			$this->t->set_var('img_fileexport', $GLOBALS['egw']->common->image('felamimail','fileexport'));
 			// prepare print url/button
@@ -385,10 +390,11 @@
 				$imgClearLeft	=  $GLOBALS['egw']->common->image('felamimail','clear_left');
 				foreach((array)$sessionData['attachments'] as $id => $attachment) {
 					$tempArray = array (
-						'1' => $attachment['name'],
-						'2' => $attachment['type'], '.2' => "style='text-align:center;'",
-						'3' => $attachment['size'],
-						'4' => "<img src='$imgClearLeft' onclick=\"fm_compose_deleteAttachmentRow(this,'".$this->composeID."','$id')\">"
+						'1' => $attachment['name'], '.1' => 'width="40%"',
+						'2' => mime_magic::mime2label($attachment['type']),
+						'3' => egw_vfs::hsize($attachment['size']), '.3' => "style='text-align:right;'",
+						'4' => '&nbsp;', '.4' => 'width="10%"',
+						'5' => "<img src='$imgClearLeft' onclick=\"fm_compose_deleteAttachmentRow(this,'".$this->composeID."','$id')\">",
 					);
 					$tableRows[] = $tempArray;
 				}
@@ -613,7 +619,6 @@
 			$this->t->set_var('lang_save_as_draft',lang('save as draft'));
 			$this->t->set_var("lang_back_to_folder",lang('back to folder'));
 			$this->t->set_var("lang_attachments",lang('attachments'));
-			$this->t->set_var('lang_attachment_vfs',lang('Filemanager'));
 			$this->t->set_var("lang_add",lang('add'));
 			$this->t->set_var("lang_remove",lang('remove'));
 			$this->t->set_var("lang_priority",lang('priority'));

@@ -17,18 +17,18 @@
 	class ajaxfelamimail {
 		// which profile to use(currently only 0 is supported)
 		var $imapServerID=0;
-		
+
 		// the object storing the data about the incoming imap server
 		var $icServer;
-		
+
 		var $charset;
-		
+
 		var $_debug = false;
-		
+
 		// boolean if openConnection was successfull or not
 		var $_connectionStatus;
-		
-		function ajaxfelamimail() 
+
+		function ajaxfelamimail()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::ajaxfelamimail");
 			$this->charset		=  $GLOBALS['egw']->translation->charset();
@@ -42,11 +42,11 @@
 			if(!isset($this->sessionDataAjax['folderName'])) {
 				$this->sessionDataAjax['folderName'] = 'INBOX';
 			}
-			
+
 			$this->icServer = $this->bofelamimail->mailPreferences->getIncomingServer($this->imapServerID);
 		}
-		
-		function addACL($_accountName, $_aclData) 
+
+		function addACL($_accountName, $_aclData)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::addACL");
 			$response =& new xajaxResponse();
@@ -58,7 +58,7 @@
 
 			return $response->getXML();
 		}
-		
+
 		/**
 		* create a new folder
 		*
@@ -66,11 +66,11 @@
 		* @param string _newSubFolder the name of the new subfolder
 		* @return xajax response
 		*/
-		function addFolder($_parentFolder, $_newSubFolder) 
+		function addFolder($_parentFolder, $_newSubFolder)
 		{
 			$parentFolder = $this->_decodeEntityFolderName($_parentFolder);
 			$parentFolder = ($parentFolder == '--topfolder--' ? '' : $parentFolder);
-			
+
 			$newSubFolder = $GLOBALS['egw']->translation->convert($_newSubFolder, $this->charset, 'UTF7-IMAP');
 
 			if($this->_debug) error_log("ajaxfelamimail::addFolder($parentFolder, $newSubFolder)");
@@ -88,8 +88,8 @@
 
 			return $response->getXML();
 		}
-		
-		function changeSorting($_sortBy) 
+
+		function changeSorting($_sortBy)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::changeSorting");
 			$this->sessionData['startMessage']	= 1;
@@ -121,27 +121,27 @@
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
-		
+
 		/**
 		* removes any messages marked as delete from current folder
 		*
 		* @return xajax response
 		*/
-		function compressFolder() 
+		function compressFolder()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::compressFolder");
 			$this->bofelamimail->restoreSessionData();
 			$this->bofelamimail->compressFolder($this->sessionData['mailbox']);
 
 			$bofilter =& CreateObject('felamimail.bofilter');
-			
+
 			$sortResult = $this->bofelamimail->getSortedList(
-				$this->sessionData['mailbox'], 
-				$this->sessionData['sort'], 
-				$this->sessionData['sortReverse'], 
+				$this->sessionData['mailbox'],
+				$this->sessionData['sort'],
+				$this->sessionData['sortReverse'],
 				$bofilter->getFilter($this->sessionData['activeFilter'])
 			);
-			
+
 			if(!is_array($sortResult) || empty($sortResult)) {
 				$messageCounter = 0;
 			} else {
@@ -173,7 +173,7 @@
 		 *
 		 * @return	string	html output for ACL table
 		 */
-		function createACLTable($_acl) 
+		function createACLTable($_acl)
 		{
 			$aclList = array('l','r','s','w','i','p','c','d','a');
 			$aclShortCuts = array(	'custom'	=> 'custom',
@@ -183,19 +183,19 @@
 									'lrswipcd'	=> 'write',
 									'lrswipcda'	=>	'all'
 								);
-		
+
 			ksort($_acl);
-		
+
 			foreach($_acl as $accountAcl) {
 				$accountName = $accountAcl['USER'];
 				$row .= '<tr class="row_on">';
-				
+
 				$row .= "<td><input type=\"checkbox\" name=\"accountName[]\" id=\"accountName\" value=\"$accountName\"></td>";
-				
+
 				$row .= "<td>$accountName</td>";
-				
+
 				foreach($aclList as $acl) {
-					$row .= "<td><input type=\"checkbox\" name=\"acl[$accountName][$acl]\" id=\"acl_$accountName_$acl\"". 
+					$row .= "<td><input type=\"checkbox\" name=\"acl[$accountName][$acl]\" id=\"acl_$accountName_$acl\"".
 						(strpos($accountAcl['RIGHTS'],$acl) !== false ? 'checked' : '') .
 						" onclick=\"xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateSingleACL','$accountName','$acl',this.checked); document.getElementById('predefinedFor_$accountName').options[0].selected=true\"</td>";
 				}
@@ -203,14 +203,14 @@
 				$selectFrom = html::select('identity', $accountAcl['RIGHTS'], $aclShortCuts, false, "id=\"predefinedFor_$accountName\" style='width: 100px;' onChange=\"xajax_doXMLHTTP('felamimail.ajaxfelamimail.updateACL','$accountName',this.value)\"");
 
 				$row .= "<td>$selectFrom</td>";
-				
+
 				$row .= "</tr>";
 			}
-			
+
 			return "<table border=\"0\" style=\"width: 100%;\"><tr class=\"th\"><th>&nbsp;</th><th style=\"width:100px;\">Name</th><th>L</th><th>R</th><th>S</th><th>W</th><th>I</th><th>P</th><th>C</th><th>D</th><th>A</th><th>&nbsp;</th></tr>$row</table>";
 		}
-		
-		function deleteACL($_aclData) 
+
+		function deleteACL($_aclData)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::deleteACL");
 			$response =& new xajaxResponse();
@@ -218,7 +218,7 @@
 				foreach($_aclData['accountName'] as $accountName) {
 					$data = $this->bofelamimail->deleteACL($this->sessionDataAjax['folderName'], $accountName);
 				}
-				
+
 				if ($folderACL = $this->bofelamimail->getIMAPACL($this->sessionDataAjax['folderName'])) {
 					$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
 				}
@@ -226,7 +226,7 @@
 			return $response->getXML();
 		}
 
-		function deleteAttachment($_composeID, $_attachmentID) 
+		function deleteAttachment($_composeID, $_attachmentID)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::deleteAttachment");
 			$bocompose	=& CreateObject('felamimail.bocompose', $_composeID);
@@ -267,12 +267,12 @@
 		*
 		* @return xajax response
 		*/
-		function deleteFolder($_folderName) 
+		function deleteFolder($_folderName)
 		{
 			$folderName = $this->_decodeEntityFolderName($_folderName);
 			if($this->_debug) error_log("ajaxfelamimail::deleteFolder($_folderName)");
 			$response =& new xajaxResponse();
-			
+
 			// don't delete this folders
 			if($folderName == 'INBOX' || $folderName == '--topfolder--') {
 				return $response->getXML();
@@ -282,10 +282,10 @@
 				$folderName = $this->_encodeFolderName($folderName);
 				$response->addScript("tree.deleteItem('$folderName',1);");
 			}
-			
+
 			return $response->getXML();
 		}
-		
+
 		/*
 		* delete messages
 		*
@@ -293,7 +293,7 @@
 		*
 		* @return xajax response
 		*/
-		function deleteMessages($_messageList) 
+		function deleteMessages($_messageList)
 		{
 			if($this->_debug) error_log(__METHOD__." called with Messages ".print_r($_messageList,true));
 			$messageCount = 0;
@@ -302,14 +302,14 @@
 
 			return $this->generateMessageList($this->sessionData['mailbox'],(-1*$messageCount));
 		}
-		
-		function deleteSignatures($_signatures) 
+
+		function deleteSignatures($_signatures)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::deleteSignatures");
 			$signatures = explode(",",$_signatures);
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
 			$boSignatures = new felamimail_bosignatures();
-				
+
 			$boSignatures->deleteSignatures($signatures);
 			unset($signatures);
 			$signatures = $boSignatures->getListOfSignatures();
@@ -331,7 +331,7 @@
 			$response->addScript('refreshView();');
 			return $response->getXML();
 		}
-		
+
 		function deleteAccountData($accountIDs)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::deleteAccountData");
@@ -365,7 +365,7 @@
 		*
 		* @return xajax response
 		*/
-		function emptyTrash() 
+		function emptyTrash()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::emptyTrash");
 			if(!empty($GLOBALS['egw_info']['user']['preferences']['felamimail']['trashFolder'])) {
@@ -374,19 +374,19 @@
 
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
-		
-		function extendedSearch($_filterID) 
+
+		function extendedSearch($_filterID)
 		{
 			// start displaying at message 1
 			$this->sessionData['startMessage']      = 1;
 			$this->sessionData['activeFilter']	= (int)$_filterID;
 			$this->saveSessionData();
 			$GLOBALS['egw']->session->commit_session();
-			
-			// generate the new messageview                
+
+			// generate the new messageview
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
-		
+
 		/*
 		* flag messages as read, unread, flagged, ...
 		*
@@ -395,7 +395,7 @@
 		*
 		* @return xajax response
 		*/
-		function flagMessages($_flag, $_messageList) 
+		function flagMessages($_flag, $_messageList)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::flagMessages");
 			$this->bofelamimail->flagMessages($_flag, $_messageList);
@@ -403,7 +403,7 @@
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
-		function sendNotify ($_uid, $_ret) 
+		function sendNotify ($_uid, $_ret)
 		{
 			$response =& new xajaxResponse();
 			if ($_ret==='true') {
@@ -416,8 +416,8 @@
 
 		}
 
-		
-		function generateMessageList($_folderName,$modifyoffset=0) 
+
+		function generateMessageList($_folderName,$modifyoffset=0)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $_folderName,$modifyoffset");
 			$response =& new xajaxResponse();
@@ -427,10 +427,10 @@
 			}
 
 			$listMode = 0;
-		
+
 			$this->bofelamimail->restoreSessionData();
-			if($this->bofelamimail->isSentFolder($_folderName) || 
-				false !== in_array($_folderName,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0']))) 
+			if($this->bofelamimail->isSentFolder($_folderName) ||
+				false !== in_array($_folderName,explode(',',$GLOBALS['egw_info']['user']['preferences']['felamimail']['messages_showassent_0'])))
 			{
 				$listMode = 1;
 			} elseif($this->bofelamimail->isDraftFolder($_folderName)) {
@@ -440,16 +440,16 @@
 			}
 
 			$maxMessages = $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
-			
+
 			$offset = $this->sessionData['startMessage'];
 			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $offset,$modifyoffset");
 			if ($modifyoffset != 0 && ($offset+$modifyoffset)>0) $offset = $offset+$modifyoffset;
 			if($this->_debug) error_log("ajaxfelamimail::generateMessageList with $offset");
 			$headers = $this->bofelamimail->getHeaders(
-				$_folderName, 
-				$offset, 
-				$maxMessages, 
-				$this->sessionData['sort'], 
+				$_folderName,
+				$offset,
+				$maxMessages,
+				$this->sessionData['sort'],
 				$this->sessionData['sortReverse'],
 				(array)$this->sessionData['messageFilter']
 			);
@@ -461,7 +461,7 @@
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['message_newwindow'],
 				$GLOBALS['egw_info']['user']['preferences']['felamimail']['rowOrderStyle']
 			);
-			
+
 			$firstMessage = (int)$headers['info']['first'];
 			$lastMessage  = (int)$headers['info']['last'];
 			$totalMessage = (int)$headers['info']['total'];
@@ -471,15 +471,15 @@
 			} else {
 				$response->addAssign("messageCounter", "innerHTML", lang('Viewing messages')." <b>$firstMessage</b> - <b>$lastMessage</b> ($totalMessage ".lang("total").')');
 			}
-			
+
 			if($listMode) {
 				$response->addAssign("from_or_to", "innerHTML", lang('to'));
 			} else {
 				$response->addAssign("from_or_to", "innerHTML", lang('from'));
 			}
-			
+
 			$response->addAssign("divMessageList", "innerHTML", $headerTable);
-			
+
 			if($quota = $this->bofelamimail->getQuotaRoot()) {
 				$quotaDisplay = $this->uiwidgets->quotaDisplay($quota['usage'], $quota['limit']);
 				$response->addAssign('quotaDisplay', 'innerHTML', $quotaDisplay);
@@ -509,12 +509,12 @@
 
 			return $response->getXML();
 		}
-		
-		function getFolderInfo($_folderName) 
+
+		function getFolderInfo($_folderName)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::getFolderInfo($_folderName)");
 			$folderName = html_entity_decode($_folderName, ENT_QUOTES, $this->charset);
-			
+
 			if($folderName != '--topfolder--' && $folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
 				$response =& new xajaxResponse();
 
@@ -528,11 +528,11 @@
 				#} else {
 				#	$response->addScript("document.getElementById('newSubFolder').disabled = true;");
 				#}
-				
+
 				$this->sessionDataAjax['folderName'] = $folderName;
 				$this->saveSessionData();
 				$hasChildren=false;
-				if ($folderStatus['attributes'][0]=="\\HasChildren") $hasChildren=true;	
+				if ($folderStatus['attributes'][0]=="\\HasChildren") $hasChildren=true;
 				if(strtoupper($folderName) != 'INBOX') {
 					$response->addAssign("newMailboxName", "value", htmlspecialchars($folderStatus['shortDisplayName'], ENT_QUOTES, $this->charset));
 					$response->addAssign("newMailboxMoveName", "value", htmlspecialchars($folderStatus['displayName'], ENT_QUOTES, $this->charset));
@@ -576,22 +576,22 @@
 				return $response->getXML();
 			}
 		}
-		
-		function gotoStart() 
+
+		function gotoStart()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::gotoStart");
 			$this->sessionData['startMessage']	= 1;
 			$this->saveSessionData();
-			
+
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
-		
-		function jumpEnd() 
+
+		function jumpEnd()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::jumpEnd");
 			$sortedList = $this->bofelamimail->getSortedList(
-				$this->sessionData['mailbox'], 
-				$this->sessionData['sort'], 
+				$this->sessionData['mailbox'],
+				$this->sessionData['sort'],
 				$this->sessionData['sortReverse'],
 				(array)$this->sessionData['messageFilter']
 			);
@@ -608,12 +608,12 @@
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
-		function jumpStart() 
+		function jumpStart()
 		{
 			if($this->_debug) error_log("ajaxfelamimail::jumpStart");
 			$this->sessionData['startMessage']	= 1;
 			$this->saveSessionData();
-			
+
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
@@ -625,7 +625,7 @@
 		*
 		* @return xajax response
 		*/
-		function moveMessages($_folderName, $_selectedMessages) 
+		function moveMessages($_folderName, $_selectedMessages)
 		{
 			if($this->_debug) error_log(__METHOD__." called with Messages ".print_r($_selectedMessages,true));
 			$messageCount = 0;
@@ -645,11 +645,11 @@
 				$response->addScript('tellUser("'.lang('No messages selected, or lost selection. Changing to folder ').'","'.$_folderName.'");');
 				$response->addScript('onNodeSelect("'.$_folderName.'");');
 				return $response->getXML();
- 
+
 			}
 		}
 
-		function quickSearch($_searchType, $_searchString, $_status) 
+		function quickSearch($_searchType, $_searchString, $_status)
 		{
 			// save the filter
 			$bofilter		=& CreateObject('felamimail.bofilter');
@@ -660,16 +660,16 @@
 			$filter['status']	= $_status;
 
 			$this->sessionData['messageFilter'] = $filter;
-			
+
 			$this->sessionData['startMessage'] = 1;
 
 			$this->saveSessionData();
-			
-			// generate the new messageview                
+
+			// generate the new messageview
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
-		
-		function refreshMessageList() 
+
+		function refreshMessageList()
 		{
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
@@ -696,12 +696,12 @@
 			return $response->getXML();
 		}
 
-		function refreshFolderList($activeFolderList ='') 
+		function refreshFolderList($activeFolderList ='')
 		{
 			if ($this->_debug) error_log("ajaxfelamimail::refreshFolderList with folders:".$activeFolderList);
 			if ($activeFolderList != '') $activeFolders = explode('#,#',$activeFolderList);
 			$GLOBALS['egw']->session->commit_session();
-			
+
 			$response =& new xajaxResponse();
 
 			if($this->_connectionStatus === true) {
@@ -721,7 +721,7 @@
 				} else {
 					#error_log("check/get all folders");
 					$folders = $this->bofelamimail->getFolderObjects(true);
-				}			
+				}
 				foreach($folders as $folderName => $folderData) {
 					#error_log("checking $folderName");
 					if($folderStatus = $this->bofelamimail->getFolderStatus($folderName)) {
@@ -733,12 +733,12 @@
 					}
 				}
 			}
-			
+
 			return $response->getXML();
-			
+
 		}
-		
-		function refreshSignatureTable() 
+
+		function refreshSignatureTable()
 		{
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
 			$boSignatures = new felamimail_bosignatures();
@@ -748,7 +748,7 @@
 			$response->addAssign('signatureTable', 'innerHTML', $this->uiwidgets->createSignatureTable($signatures));
 			return $response->getXML();
 		}
-		
+
 		function refreshAccountDataTable()
 		{
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.bopreferences.inc.php');
@@ -774,7 +774,7 @@
 			return $response->getXML();
 		}
 
-		function reloadAttachments($_composeID) 
+		function reloadAttachments($_composeID)
 		{
 			$bocompose	=& CreateObject('felamimail.bocompose', $_composeID);
 			$tableRows	=  array();
@@ -791,9 +791,9 @@
 						);
 						$windowName = 'displayMessage_';
 						$att_link = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',700,egw_getWindowOuterHeight()); return false;";
-						
+
 						break;
-						
+
 					case 'IMAGE/JPEG':
 					case 'IMAGE/PNG':
 					case 'IMAGE/GIF':
@@ -805,18 +805,19 @@
 						);
 						$windowName = 'displayAttachment_';
 						$att_link = "egw_openWindowCentered('".$GLOBALS['egw']->link('/index.php',$linkData)."','$windowName',800,600);";
-						
+
 						break;
 				}
 				$tempArray = array (
-					'1' => '<a href="#" onclick="'. $att_link .'">'. $attachment['name'] .'</a>',
-					'2' => $attachment['type'], '.2' => "style='text-align:center;'",
-					'3' => $attachment['size'],
-					'4' => "<img src='$imgClearLeft' onclick=\"fm_compose_deleteAttachmentRow(this,'$_composeID','$id')\">"
+					'1' => '<a href="#" onclick="'. $att_link .'">'. $attachment['name'] .'</a>', '.1' => 'width="40%"',
+					'2' => mime_magic::mime2label($attachment['type']),
+					'3' => egw_vfs::hsize($attachment['size']), '.3' => "style='text-align:right;'",
+					'4' => '&nbsp;', '.4' => 'width="10%"',
+					'5' => "<img src='$imgClearLeft' onclick=\"fm_compose_deleteAttachmentRow(this,'$_composeID','$id')\">"
 				);
 				$tableRows[] = $tempArray;
 			}
-			
+
 			if(count($tableRows) > 0) {
 				$table = html::table($tableRows, "style='width:100%'");
 			}
@@ -834,7 +835,7 @@
 		*
 		* @return xajax response
 		*/
-		function renameFolder($_oldFolderName, $_parentFolder, $_folderName) 
+		function renameFolder($_oldFolderName, $_parentFolder, $_folderName)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::renameFolder called as ($_oldFolderName, $_parentFolder, $_folderName)");
 			$oldFolderName = $this->_decodeEntityFolderName($_oldFolderName);
@@ -869,22 +870,22 @@
 			return $response->getXML();
 		}
 
-		function saveSessionData() 
+		function saveSessionData()
 		{
 			$GLOBALS['egw']->session->appsession('ajax_session_data','felamimail',$this->sessionDataAjax);
 			$GLOBALS['egw']->session->appsession('session_data','felamimail',$this->sessionData);
 		}
-		
-		function saveSignature($_mode, $_id, $_description, $_signature, $_isDefaultSignature) 
+
+		function saveSignature($_mode, $_id, $_description, $_signature, $_isDefaultSignature)
 		{
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.felamimail_bosignatures.inc.php');
-			
+
 			$boSignatures = new felamimail_bosignatures();
-			
+
 			$isDefaultSignature = ($_isDefaultSignature == 'true' ? true : false);
-				
+
 			$signatureID = $boSignatures->saveSignature($_id, $_description, $_signature, $isDefaultSignature);
-			
+
 			$response =& new xajaxResponse();
 
 			if($_mode == 'save') {
@@ -895,7 +896,7 @@
 				$response->addScript("opener.fm_refreshSignatureTable()");
 				$response->addAssign('signatureID', 'value', $signatureID);
 			}
-				
+
 			return $response->getXML();
 		}
 
@@ -910,8 +911,8 @@
 			$response->addScript('setSignature('.$Identities->signature.');');
 			return $response->getXML();
 		}
-		
-		function searchAddress($_searchString) 
+
+		function searchAddress($_searchString)
 		{
 			$contacts = $GLOBALS['egw']->contacts->search(array(
 				'n_fn'       => $_searchString,
@@ -925,7 +926,7 @@
 				$innerHTML	= '';
 				$jsArray	= array();
 				$i		= 0;
-				
+
 				foreach($contacts as $contact) {
 					foreach(array($contact['email'],$contact['email_home']) as $email) {
 						if(!empty($email) && !isset($jsArray[$email])) {
@@ -951,12 +952,12 @@
 			}
 			return $response->getXML();
 		}
-		
-		function skipForward() 
+
+		function skipForward()
 		{
 			$sortedList = $this->bofelamimail->getSortedList(
-				$this->sessionData['mailbox'], 
-				$this->sessionData['sort'], 
+				$this->sessionData['mailbox'],
+				$this->sessionData['sort'],
 				$this->sessionData['sortReverse'],
 				(array)$this->sessionData['messageFilter']
 			);
@@ -976,20 +977,20 @@
 			}
 
 			$this->saveSessionData();
-			
+
 			$response = $this->generateMessageList($this->sessionData['mailbox']);
-			
+
 			return $response;
 		}
-		
-		function skipPrevious() 
+
+		function skipPrevious()
 		{
 			$this->sessionData['startMessage']	-= $GLOBALS['egw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			if($this->sessionData['startMessage'] < 1) {
 				$this->sessionData['startMessage'] = 1;
 			}
 			$this->saveSessionData();
-			
+
 			return $this->generateMessageList($this->sessionData['mailbox']);
 		}
 
@@ -1030,9 +1031,9 @@
 		 *
 		 * @return	string	ajax xml response containing new ACL table
 		 */
-		function updateACLView() 
+		function updateACLView()
 		{
-			
+
 			$response =& new xajaxResponse();
 			if($folderACL = $this->bofelamimail->getIMAPACL($this->sessionDataAjax['folderName'])) {
 				$response->addAssign("aclTable", "innerHTML", $this->createACLTable($folderACL));
@@ -1042,8 +1043,8 @@
 
 		/**
 		* subscribe/unsubribe from/to a folder
-		*/		
-		function updateFolderStatus($_folderName, $_status) 
+		*/
+		function updateFolderStatus($_folderName, $_status)
 		{
 			$folderName = $this->_decodeEntityFolderName($_folderName);
 			$status = (bool)$_status;
@@ -1053,67 +1054,67 @@
 			$response =& new xajaxResponse();
 			return $response->getXML();
 		}
-		
+
 		// remove html entities
-		function _decodeEntityFolderName($_folderName) 
+		function _decodeEntityFolderName($_folderName)
 		{
 			return html_entity_decode($_folderName, ENT_QUOTES, $this->charset);
 		}
-		
-		function updateMessageView($_folderName) 
+
+		function updateMessageView($_folderName)
 		{
 			$folderName = $this->_decodeEntityFolderName($_folderName);
 			if($this->_debug) error_log("ajaxfelamimail::updateMessageView $folderName $this->charset");
-			
+
 			$this->sessionData['mailbox'] 		= $folderName;
 			$this->sessionData['startMessage']	= 1;
 			$this->saveSessionData();
-			
+
 			$messageList = $this->generateMessageList($folderName);
-			
+
 			$this->bofelamimail->closeConnection();
-			
+
 			return $messageList;
 		}
-		
-		function updateSingleACL($_accountName, $_aclType, $_aclStatus) 
+
+		function updateSingleACL($_accountName, $_aclType, $_aclStatus)
 		{
 			$response =& new xajaxResponse();
 			$data = $this->bofelamimail->updateSingleACL($this->sessionDataAjax['folderName'], $_accountName, $_aclType, $_aclStatus);
 			return $response->getXML();
 		}
-		
-		function xajaxFolderInfo($_formValues) 
+
+		function xajaxFolderInfo($_formValues)
 		{
 			$response =& new xajaxResponse();
 
 			$response->addAssign("field1", "value", $_formValues['num1']);
 			$response->addAssign("field2", "value", $_formValues['num2']);
 			$response->addAssign("field3", "value", $_formValues['num1'] * $_formValues['num2']);
-			
+
 			return $response->getXML();
 		}
-		
-		function _encodeFolderName($_folderName) 
+
+		function _encodeFolderName($_folderName)
 		{
 			$folderName = htmlspecialchars($_folderName, ENT_QUOTES, $this->charset);
-			
+
 			$search         = array('\\');
 			$replace        = array('\\\\');
-			
+
 			return str_replace($search, $replace, $folderName);
 		}
-		
-		function _encodeDisplayFolderName($_folderName) 
+
+		function _encodeDisplayFolderName($_folderName)
 		{
 			$folderName = $GLOBALS['egw']->translation->convert($_folderName, 'UTF7-IMAP', $this->charset);
 			$folderName = htmlspecialchars($folderName, ENT_QUOTES, $this->charset);
-			
+
 			$search         = array('\\');
 			$replace        = array('\\\\');
-			
+
 			return str_replace($search, $replace, $folderName);
 		}
-		
+
 	}
 ?>

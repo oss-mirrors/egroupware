@@ -589,7 +589,8 @@
 				$this->t->set_var('type',lang('type'));
 				$this->t->set_var('size',lang('size'));
 				$this->t->set_var('url_img_save',html::image('felamimail','fileexport', lang('save')));
-				$this->t->set_var('url_img_vfs',html::image('filemanager','navbar', lang('Filemanager'), ' height="16"'));
+				$url_img_vfs = html::image('filemanager','navbar', lang('Filemanager'), ' height="16"');
+				$url_img_vfs_save_all = html::image('felamimail','save_all', lang('Save all'));
 				#$this->t->parse('attachment_rows','attachment_row_bold',True);
 
 				$detectedCharSet=$charset2use=$this->displayCharset;
@@ -603,8 +604,8 @@
 
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
 					$this->t->set_var('filename',($value['name'] ? ( $filename ? $filename : $value['name'] ) : lang('(no subject)')));
-					$this->t->set_var('mimetype',$value['mimeType']);
-					$this->t->set_var('size',$value['size']);
+					$this->t->set_var('mimetype',mime_magic::mime2label($value['mimeType']));
+					$this->t->set_var('size',egw_vfs::hsize($value['size']));
 					$this->t->set_var('attachment_number',$key);
 
 					switch($value['mimeType'])
@@ -662,15 +663,35 @@
 					);
 					$this->t->set_var("link_save",$GLOBALS['egw']->link('/index.php',$linkData));
 
-					$this->t->set_var('link_vfs_save',egw::link('/index.php',array(
-						'menuaction' => 'filemanager.filemanager_select.select',
-						'mode' => 'saveas',
-						'name' => $value['name'],
-						'mime' => strtolower($value['mimeType']),
-						'method' => 'felamimail.uidisplay.vfsSaveAttachment',
-						'id' => $this->mailbox.'::'.$this->uid.'::'.$value['partID'].'::'.$value['is_winmail'],
-						'label' => lang('Save'),
-					)));
+					if ($GLOBALS['egw_info']['user']['apps']['filemanager'])
+					{
+						$link_vfs_save = egw::link('/index.php',array(
+							'menuaction' => 'filemanager.filemanager_select.select',
+							'mode' => 'saveas',
+							'name' => $value['name'],
+							'mime' => strtolower($value['mimeType']),
+							'method' => 'felamimail.uidisplay.vfsSaveAttachment',
+							'id' => $this->mailbox.'::'.$this->uid.'::'.$value['partID'].'::'.$value['is_winmail'],
+							'label' => lang('Save'),
+						));
+						$vfs_save = "<a href='#' onclick=\"egw_openWindowCentered('$link_vfs_save','vfs_save_attachment','640','570',window.outerWidth/2,window.outerHeight/2); return false;\">$url_img_vfs</a>";
+						// add save-all icon for first attachment
+						if (!$key && count($attachments) > 1)
+						{
+							foreach ($attachments as $key => $value)
+							{
+								$ids["id[$key]"] = $this->mailbox.'::'.$this->uid.'::'.$value['partID'].'::'.$value['is_winmail'].'::'.$value['name'];
+							}
+							$link_vfs_save = egw::link('/index.php',array(
+								'menuaction' => 'filemanager.filemanager_select.select',
+								'mode' => 'select-dir',
+								'method' => 'felamimail.uidisplay.vfsSaveAttachment',
+								'label' => lang('Save all'),
+							)+$ids);
+							$vfs_save .= "\n<a href='#' onclick=\"egw_openWindowCentered('$link_vfs_save','vfs_save_attachment','640','530',window.outerWidth/2,window.outerHeight/2); return false;\">$url_img_vfs_save_all</a>";
+						}
+						$this->t->set_var('vfs_save',$vfs_save);
+					}
 					$this->t->parse('attachment_rows','message_attachement_row',True);
 				}
 			} else {
@@ -942,26 +963,34 @@
 		/**
 		 * Save an attachment in the vfs
 		 *
-		 * @param string $id '::' delemited mailbox::uid::part-id::is_winmail
-		 * @param string $path path in vfs (no egw_vfs::PREFIX!)
+		 * @param string|array $ids '::' delemited mailbox::uid::part-id::is_winmail::name (::name for multiple id's)
+		 * @param string $path path in vfs (no egw_vfs::PREFIX!), only directory for multiple id's ($ids is an array)
 		 * @return string javascript eg. to close the selector window
 		 */
-		function vfsSaveAttachment($id,$path)
+		function vfsSaveAttachment($ids,$path)
 		{
-			//return "alert('".__METHOD__.'("'.$id.'","'.$path."\")'); window.close();";
+			//return "alert('".__METHOD__.'("'.array2string($id).'","'.$path."\")'); window.close();";
 
-			list($this->mailbox,$this->uid,$part,$is_winmail) = explode('::',$id);
-			$this->bofelamimail->reopen($this->mailbox);
-			$attachment = $this->bofelamimail->getAttachment($this->uid,$part,$is_winmail);
+			if (is_array($ids) && !egw_vfs::is_writable($path) || !is_array($ids) && !egw_vfs::is_writable(dirname($path)))
+			{
+				return 'alert("'.addslashes(lang('%1 is NOT writable by you!',$path)).'"); window.close();';
+			}
+			foreach((array)$ids as $id)
+			{
+				list($this->mailbox,$this->uid,$part,$is_winmail,$name) = explode('::',$id);
+				if ($mb != $this->mailbox) $this->bofelamimail->reopen($mb = $this->mailbox);
+				$attachment = $this->bofelamimail->getAttachment($this->uid,$part,$is_winmail);
+
+				if (!($fp = egw_vfs::fopen($file=$path.($name ? '/'.$name : ''),'wb')) ||
+					!fwrite($fp,$attachment['attachment']))
+				{
+					$err .= 'alert("'.addslashes(lang('Error saving %1!',$file)).'");';
+				}
+				if ($fp) fclose($fp);
+			}
 			$this->bofelamimail->closeConnection();
 
-			if (($fp = egw_vfs::fopen($path,'wb')))
-			{
-				fwrite($fp,$attachment['attachment']);
-				fclose($fp);
-			}
-
-			return 'window.close();';
+			return $err.'window.close();';
 		}
 
 		function getAttachment()
