@@ -47,8 +47,8 @@ class uilangfile
 		$this->template->egroupware_hack = False;	// else the phrases got translated
 		$this->bo =& CreateObject('developer_tools.bolangfile');
 		$this->nextmatchs =& CreateObject('phpgwapi.nextmatchs');
-		$GLOBALS['egw']->translation->add_app('developer_tools');
-		$GLOBALS['egw']->translation->add_app('common');
+		translation::add_app('developer_tools');
+		translation::add_app('common');
 	}
 
 	function addphrase()
@@ -311,7 +311,7 @@ class uilangfile
 			$targetlang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
 		}
 
-		foreach($GLOBALS['egw']->translation->list_langs() as $lang_id => $lang_name)
+		foreach(translation::list_langs() as $lang_id => $lang_name)
 		{
 			$sourcelangs .= '      <option value="' . $lang_id . '"';
 			if ($lang_id == $sourcelang || !$sourcelang && $lang_id == 'en')
@@ -514,12 +514,12 @@ class uilangfile
 				break;
 		}
 		$browser =& CreateObject('phpgwapi.browser');
-		$browser->content_header(EGW_LANGFILE_PREFIX . $userlang . '.lang');
-		$to = $GLOBALS['egw']->translation->charset($userlang);
-		$from = $GLOBALS['egw']->translation->charset();
+		$browser->content_header(translation::LANGFILE_PREFIX . $userlang . '.lang');
+		$to = translation::charset($userlang);
+		$from = translation::charset();
 		while(list($mess_id,$data) = @each($langarray))
 		{
-			$content = $GLOBALS['egw']->translation->convert(trim($data['content']),$from,$to);
+			$content = translation::convert(trim($data['content']),$from,$to);
 			if (!empty($content))
 			{
 				echo $mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $content . "\n";
