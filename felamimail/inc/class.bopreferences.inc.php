@@ -54,7 +54,7 @@
 			if (file_exists($file=EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php'))
 			{
 				include_once($file);
-				error_log(__METHOD__."($class) included $file");
+				//error_log(__METHOD__."($class) included $file");
 			}
 			else
 			{
