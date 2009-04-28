@@ -35,12 +35,33 @@
 				$this->profileData = $this->sessionData['profileData'];
 			}
 		}
+
 		function restoreSessionData()
 		{
-			// explicit require ea_preferences, 'til it get a autoloading conform name
-			require_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.ea_preferences.inc.php');
+			// set an own autoload function, search emailadmin for missing classes
+			$GLOBALS['egw_info']['flags']['autoload'] = __CLASS__.'::autoload';
+
 			$this->sessionData = (array) unserialize($GLOBALS['egw']->session->appsession('fm_preferences','felamimail'));
 		}
+
+		/**
+		 * Autoload classes from emailadmin, 'til they get autoloading conform names
+		 *
+		 * @param string $class
+		 */
+		static function autoload($class)
+		{
+			if (file_exists($file=EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php'))
+			{
+				include_once($file);
+				error_log(__METHOD__."($class) included $file");
+			}
+			else
+			{
+				error_log(__METHOD__."($class) failed!");
+			}
+		}
+
 		function saveSessionData()
 		{
 			$GLOBALS['egw']->session->appsession('fm_preferences','felamimail',serialize($this->sessionData));
