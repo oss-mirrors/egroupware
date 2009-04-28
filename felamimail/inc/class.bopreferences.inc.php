@@ -14,18 +14,18 @@
 	/* $Id$ */
 
 	require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.sopreferences.inc.php');
-	 
+
 	class bopreferences extends sopreferences
 	{
 		var $public_functions = array
 		(
 			'getPreferences'	=> True,
 		);
-		
+
 		// stores the users profile
 		var $profileData;
 		var $sessionData;
-		
+
 		function bopreferences()
 		{
 			parent::sopreferences();
@@ -37,13 +37,15 @@
 		}
 		function restoreSessionData()
 		{
+			// explicit require ea_preferences, 'til it get a autoloading conform name
+			require_once(EGW_INCLUDE_ROOT.'/emailadmin/inc/class.ea_preferences.inc.php');
 			$this->sessionData = (array) unserialize($GLOBALS['egw']->session->appsession('fm_preferences','felamimail'));
 		}
 		function saveSessionData()
 		{
 			$GLOBALS['egw']->session->appsession('fm_preferences','felamimail',serialize($this->sessionData));
 		}
-		// get the first active user defined account		
+		// get the first active user defined account
 		function getAccountData(&$_profileData, $_accountID=NULL)
 		{
 			#echo "<p>backtrace: ".function_backtrace()."</p>\n";
@@ -161,7 +163,7 @@
 				}
 			}
 			return array();
-		}	
+		}
 
 		function getPreferences()
 		{
@@ -179,17 +181,17 @@
 				if($profileData->userDefinedAccounts && $GLOBALS['egw_info']['user']['apps']['felamimail']) {
 					// get user defined accounts
 					$accountData = $this->getAccountData($profileData);
-					
+
 					if($accountData['active']) {
-					
+
 						// replace the global defined IMAP Server
 						if(is_a($accountData['icServer'],'defaultimap'))
 							$profileData->setIncomingServer($accountData['icServer'],0);
-					
+
 						// replace the global defined SMTP Server
 						if(is_a($accountData['ogServer'],'defaultsmtp'))
 							$profileData->setOutgoingServer($accountData['ogServer'],0);
-					
+
 						// replace the global defined identity
 						if(is_a($accountData['identity'],'ea_identity')) {
 							$profileData->setIdentity($accountData['identity'],0);
@@ -208,12 +210,12 @@
 						}
 					}
 				}
-				
+
 				$GLOBALS['egw']->preferences->read_repository();
 				$userPrefs = $GLOBALS['egw_info']['user']['preferences']['felamimail'];
 				# echo "<p>backtrace: ".function_backtrace()."</p>\n";
 				if (is_array($profileData->ic_server[0]->folderstoshowinhome) && !empty($profileData->ic_server[0]->folderstoshowinhome[0])) {
-					$userPrefs['mainscreen_showfolders'] = implode(',',$profileData->ic_server[0]->folderstoshowinhome); 
+					$userPrefs['mainscreen_showfolders'] = implode(',',$profileData->ic_server[0]->folderstoshowinhome);
 				}
 				if (!empty($profileData->ic_server[0]->sentfolder)) $userPrefs['sentFolder'] = $profileData->ic_server[0]->sentfolder;
 				if (!empty($profileData->ic_server[0]->trashfolder)) $userPrefs['trashFolder'] = $profileData->ic_server[0]->trashfolder;
@@ -221,32 +223,32 @@
 				if (!empty($profileData->ic_server[0]->templatefolder)) $userPrefs['templateFolder'] = $profileData->ic_server[0]->templatefolder;
 				if(empty($userPrefs['deleteOptions']))
 					$userPrefs['deleteOptions'] = 'mark_as_deleted';
-				
-				if (!empty($userPrefs['trash_folder'])) 
+
+				if (!empty($userPrefs['trash_folder']))
 					$userPrefs['move_to_trash'] 	= True;
-				if (!empty($userPrefs['sent_folder'])) 
+				if (!empty($userPrefs['sent_folder']))
 					$userPrefs['move_to_sent'] 	= True;
-				
+
 				$userPrefs['signature']		= $userPrefs['email_sig'];
-				
+
 	 			unset($userPrefs['email_sig']);
- 			
+
  				$profileData->setPreferences($userPrefs);
 
 				#_debug_array($profileData);#exit;
-			
+
 				$this->sessionData['profileData'] = $this->profileData = $profileData;
-				$this->saveSessionData();	
+				$this->saveSessionData();
 				#_debug_array($this->profileData);
-			} 
+			}
 			return $this->profileData;
 		}
-		
-		function ggetSignature($_signatureID, $_unparsed = false) 
+
+		function ggetSignature($_signatureID, $_unparsed = false)
 		{
 			if($_signatureID == -1) {
 				$profileData = $this->boemailadmin->getUserProfile('felamimail');
-				
+
 				$systemSignatureIsDefaultSignature = !parent::getDefaultSignature($GLOBALS['egw_info']['user']['account_id']);
 
 				$systemSignature = array(
@@ -255,9 +257,9 @@
 					'signature'		=> ($_unparsed === true ? $profileData->ea_default_signature : $GLOBALS['egw']->preferences->parse_notify($profileData->ea_default_signature)),
 					'defaultsignature'	=> $systemSignatureIsDefaultSignature,
 				);
-				
+
 				return $systemSignature;
-				
+
 			} else {
 				require_once('class.felamimail_signatures.inc.php');
 				$signature = new felamimail_signatures($_signatureID);
@@ -267,21 +269,21 @@
 				return $signature;
 			}
 		}
-		
-		function ggetDefaultSignature() 
+
+		function ggetDefaultSignature()
 		{
 			return parent::getDefaultSignature($GLOBALS['egw_info']['user']['account_id']);
 		}
-		
-		function ddeleteSignatures($_signatureID) 
+
+		function ddeleteSignatures($_signatureID)
 		{
 			if(!is_array($_signatureID)) {
 				return false;
 			}
 			return parent::deleteSignatures($GLOBALS['egw_info']['user']['account_id'], $_signatureID);
 		}
-		
-		function saveAccountData($_icServer, $_ogServer, $_identity) 
+
+		function saveAccountData($_icServer, $_ogServer, $_identity)
 		{
 			if(is_object($_icServer) && !isset($_icServer->validatecert)) {
 				$_icServer->validatecert = true;
@@ -293,7 +295,7 @@
 			$this->saveSessionData();
 			return parent::saveAccountData($GLOBALS['egw_info']['user']['account_id'], $_icServer, $_ogServer, $_identity);
 		}
-	
+
 		function deleteAccountData($_identity)
 		{
 			if (is_array($_identity)) {
@@ -307,18 +309,18 @@
 				}
 			} else {
 				$identity = $_identity;
-			} 
+			}
 			$this->sessionData = array();
 			$this->saveSessionData();
 			parent::deleteAccountData($GLOBALS['egw_info']['user']['account_id'], $identity);
 		}
 
-		function ssaveSignature($_signatureID, $_description, $_signature, $_isDefaultSignature) 
+		function ssaveSignature($_signatureID, $_description, $_signature, $_isDefaultSignature)
 		{
 			return parent::saveSignature($GLOBALS['egw_info']['user']['account_id'], $_signatureID, $_description, $_signature, (bool)$_isDefaultSignature);
 		}
 
-		function setProfileActive($_status, $_identity=NULL) 
+		function setProfileActive($_status, $_identity=NULL)
 		{
 			$this->sessionData = array();
 			$this->saveSessionData();
