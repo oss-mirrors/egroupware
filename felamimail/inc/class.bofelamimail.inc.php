@@ -62,6 +62,28 @@
 		 */
 		var $autoFolders = array('Drafts', 'Junk', 'Sent', 'Trash', 'Templates');
 
+		/**
+		* Autoload classes from emailadmin, 'til they get autoloading conform names
+		*
+		* @param string $class
+		*/
+		static function autoload($class)
+		{
+			if (file_exists($file=EGW_INCLUDE_ROOT.'/emailadmin/inc/class.'.$class.'.inc.php'))
+			{
+				include_once($file);
+				//error_log(__METHOD__."($class) included $file");
+			}
+			elseif (file_exists($file=EGW_INCLUDE_ROOT.'/felamimail/inc/class.'.$class.'.inc.php'))
+			{
+				include_once($file);
+			}
+			else
+			{
+				error_log(__METHOD__."($class) failed!");
+			}
+		}
+
 		function bofelamimail($_displayCharset='iso-8859-1')
 		{
 			$this->restoreSessionData();
@@ -2452,7 +2474,7 @@
 
 		function openConnection($_icServerID=0, $_adminConnection=false)
 		{
-			#if (!is_object($this->mailPreferences)) echo function_backtrace();
+			if (!is_object($this->mailPreferences)) echo function_backtrace();
 			if(!$this->icServer = $this->mailPreferences->getIncomingServer((int)$_icServerID)) {
 				$this->errorMessage .= lang('No active IMAP server found!!');
 				return false;
@@ -2526,6 +2548,8 @@
 
 		function restoreSessionData()
 		{
+			$GLOBALS['egw_info']['flags']['autoload'] = __CLASS__.'::autoload';
+
 			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data','felamimail');
 		}
 
