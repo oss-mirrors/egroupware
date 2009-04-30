@@ -56,6 +56,10 @@
 				include_once($file);
 				//error_log(__METHOD__."($class) included $file");
 			}
+			elseif (file_exists($file=EGW_INCLUDE_ROOT.'/felamimail/inc/class.'.$class.'.inc.php'))
+			{
+				include_once($file);
+			}
 			else
 			{
 				error_log(__METHOD__."($class) failed!");
