@@ -796,8 +796,8 @@
 			#	)
 			#);
 			#$kses->AddHTML('link',array(
-			#		'rel' => array(), // ="stylesheet" 
-			#		'type' => array(), //="text/css" 
+			#		'rel' => array(), // ="stylesheet"
+			#		'type' => array(), //="text/css"
 			#		'href' => array(),
 			#		'media' => array(),
 			#	)
@@ -986,11 +986,11 @@
 			return 1;
 		}
 
-		static function convertHTMLToText($_html,$stripcrl=false) 
+		static function convertHTMLToText($_html,$stripcrl=false)
 		{
 			#error_log($_html);
 			#print '<hr>';
-			#print "<pre>"; print htmlspecialchars($_html); 
+			#print "<pre>"; print htmlspecialchars($_html);
 			#print "</pre>";
 			#print "<hr>";
 			self::replaceTagsCompletley($_html,'style');
@@ -1020,7 +1020,7 @@
 			);
 			$_html = preg_replace($Rules, $Replace, $_html);
 			//   removing carriage return linefeeds
-			if ($stripcrl === true ) $_html = preg_replace('@(\r\n)@i',' ',$_html); 
+			if ($stripcrl === true ) $_html = preg_replace('@(\r\n)@i',' ',$_html);
 			$tags = array (
 				0 => '~<h[123][^>]*>\r*\n*~si',
 				1 => '~<h[456][^>]*>\r*\n*~si',
@@ -1062,7 +1062,7 @@
 			// restoring the preserved blockquote
 			$_html = preg_replace('~#blockquote#type#cite#~s','<blockquote type="cite">',$_html);
 
-			
+
 			$_html = html_entity_decode($_html, ENT_COMPAT, self::$displayCharset);
 			// replace emailaddresses eclosed in <> (eg.: <me@you.de>) with the emailaddress only (e.g: me@you.de)
 			self::replaceEmailAdresses($_html);
@@ -1074,7 +1074,7 @@
 			} else {
 				$indent = 0;
 				$indentString = '';
-				
+
 				$quoteParts = preg_split('/<blockquote type="cite">/', $_html, -1, PREG_SPLIT_OFFSET_CAPTURE);
 
 				foreach($quoteParts as $quotePart) {
@@ -1083,7 +1083,7 @@
 						$indentString .= '>';
 					}
 					$quoteParts2 = preg_split('/<\/blockquote>/', $quotePart[0], -1, PREG_SPLIT_OFFSET_CAPTURE);
-				
+
 					foreach($quoteParts2 as $quotePart2) {
 						if($quotePart2[1] > 0) {
 							$indent--;
@@ -1100,11 +1100,11 @@
 								$linecnt = 0;
 								foreach ($s as $k=>$v) {
 									$cnt = strlen($v);
-									// only break long words within the wordboundaries, 
+									// only break long words within the wordboundaries,
 									if($cnt > $allowedLength) {
 										$v=wordwrap($v, $allowedLength, "\r\n$indentString", true);
 									}
-									// the rest should be broken at the start of the new word that exceeds the limit  
+									// the rest should be broken at the start of the new word that exceeds the limit
 									if ($linecnt+$cnt > $allowedLength) {
 										$v="\r\n$indentString$v";
 										$linecnt = 0;
@@ -1299,7 +1299,7 @@
 				$retValue['uidnext']	=	$folderStatus->uidnext;
 				$retValue['unseen']		=	$folderStatus->unseen;
 				$retValue['uidvalidity']=	$folderStatus->uidvalidity;
-			*/ 
+			*/
 				//_debug_array($folderStatus);
 				if (self::$debug) error_log(__METHOD__." returned folderStatus for Folder $_folderName:".print_r($folderStatus->message,true));
 			} else {
@@ -1391,7 +1391,7 @@
 						#_debug_array($foldersNameSpace);
 						if ($_subscribedOnly == true) {
 							$foldersNameSpace[$type]['all'] = (is_array($foldersNameSpace[$type]['subscribed']) ? $foldersNameSpace[$type]['subscribed'] :array());
-							continue;	
+							continue;
 						}
 						// fetch and sort all folders
 						$allMailboxesExt = $this->icServer->getMailboxes($foldersNameSpace[$type]['prefix'],2,true);
@@ -1415,12 +1415,12 @@
 									continue;
 								}
 								#_debug_array($buff);
-								if (is_array($buff)) $allMailboxes = array_merge($allMailboxes,$buff); 
+								if (is_array($buff)) $allMailboxes = array_merge($allMailboxes,$buff);
 							}
 							if (!in_array($mbx['MAILBOX'],$allMailboxes)) $allMailboxes[] = $mbx['MAILBOX'];
 							#echo "Result:";_debug_array($allMailboxes);
 						}
-						$foldersNameSpace[$type]['all'] = $allMailboxes; 
+						$foldersNameSpace[$type]['all'] = $allMailboxes;
 						if (is_array($foldersNameSpace[$type]['all'])) sort($foldersNameSpace[$type]['all']);
 				    }
 				  }
@@ -1773,7 +1773,7 @@
 
 		function getHierarchyDelimiter()
 		{
-			$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();	
+			$HierarchyDelimiter = $this->icServer->getHierarchyDelimiter();
 			if (PEAR::isError($HierarchyDelimiter)) $HierarchyDelimiter = '/';
 			return $HierarchyDelimiter;
 		}
@@ -2167,7 +2167,7 @@
 				   ($subPart->subType == 'RELATED' ||
 					$subPart->subType == 'MIXED' ||
 					$subPart->subType == 'SIGNED' ||
-					$subPart->subType == 'APPLEDOUBLE')) 
+					$subPart->subType == 'APPLEDOUBLE'))
 				{
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
 				} else {
@@ -2197,7 +2197,7 @@
 
 		}
 
-		static function getFileNameFromStructure(&$structure) 
+		static function getFileNameFromStructure(&$structure)
 		{
 			if(isset($structure->parameters['NAME'])) {
 				return self::decode_header($structure->parameters['NAME']);
@@ -2483,7 +2483,7 @@
 				$errormessage = lang('No IMAP server host configured!!');
 				if ($GLOBALS['egw_info']['user']['apps']['emailadmin']) {
 					$errormessage .= "<br>".lang("Configure a valid IMAP Server in emailadmin for the profile you are using.");
-				} else {	
+				} else {
 					$errormessage .= "<br>".lang('Please ask the administrator to correct the emailadmin IMAP Server Settings for you.');
 				}
 				$this->icServer->_connectionErrorObject->message .= $this->errorMessage .= $errormessage;
@@ -2548,7 +2548,7 @@
 
 		function restoreSessionData()
 		{
-			$GLOBALS['egw_info']['flags']['autoload'] = __CLASS__.'::autoload';
+			$GLOBALS['egw_info']['flags']['autoload'] = array(__CLASS__,'autoload');
 
 			$this->sessionData = $GLOBALS['egw']->session->appsession('session_data','felamimail');
 		}
