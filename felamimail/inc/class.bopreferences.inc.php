@@ -39,7 +39,7 @@
 		function restoreSessionData()
 		{
 			// set an own autoload function, search emailadmin for missing classes
-			$GLOBALS['egw_info']['flags']['autoload'] = __CLASS__.'::autoload';
+			$GLOBALS['egw_info']['flags']['autoload'] = array(__CLASS__,'autoload');
 
 			$this->sessionData = (array) unserialize($GLOBALS['egw']->session->appsession('fm_preferences','felamimail'));
 		}
