@@ -2020,6 +2020,15 @@ class HTTP_WebDAV_Server
      */
     function _urlencode($url)
     {
+    	// cadaver (and probably all neon using agents) need a more complete url encoding
+    	// otherwise special chars like "$,()'" in filenames do NOT work
+		if (strpos($_SERVER['HTTP_USER_AGENT'],'neon') !== false)
+		{
+			return strtr(rawurlencode($url),array(
+				'%2F' => '/',
+				'%3A' => ':',
+			));
+		}
 		//error_log( __METHOD__."\n" .print_r($url,true));
 		return strtr($url, array(" "=>"%20",
                                  "&"=>"%26",
