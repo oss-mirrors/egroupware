@@ -427,7 +427,7 @@ class sowiki	// DB-Layer
 	{
 		$sowikipage = new soWikiPage($this->db,$this->PgTbl);
 		$sql="SELECT t1.wiki_name,t1.wiki_lang,t1.wiki_version,MAX(t2.wiki_version) as wiki_max,t1.wiki_title,t1.wiki_body".
-			" FROM $this->PgTbl AS t1,$this->PgTbl AS t2".
+			" FROM $this->PgTbl AS t1, (select wiki_id,wiki_lang,wiki_name, max(wiki_version) as wiki_version  from $this->PgTbl GROUP BY wiki_id, wiki_lang, wiki_name) AS t2".
 			" WHERE t1.wiki_name=t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=$this->wiki_id AND t2.wiki_id=$this->wiki_id".
 			"  AND ".$sowikipage->acl_filter(true,false,'t1').	// only include pages we are allowed to read!
 			" GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_title,t1.wiki_body".
@@ -682,7 +682,7 @@ class sowiki	// DB-Layer
 	{
 		$qid = $this->db->query("SELECT t1.wiki_time,t1.wiki_name,t1.wiki_lang,t1.wiki_hostname,t1.wiki_username,t1.wiki_title,".$this->length_sql('t1.').
 														" AS wiki_length,t1.wiki_comment,t1.wiki_version,MAX(t2.wiki_version)" .
-														" FROM $this->PgTbl AS t1, $this->PgTbl AS t2" .
+														" FROM $this->PgTbl AS t1, (select wiki_id,wiki_lang,wiki_name, max(wiki_version) as wiki_version  from $this->PgTbl GROUP BY wiki_id, wiki_lang, wiki_name) AS t2" .
 														" WHERE t1.wiki_name = t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=t2.wiki_id AND t1.wiki_id=".(int)$this->wiki_id.
 														" GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_time,t1.wiki_hostname,t1.wiki_username,t1.wiki_body,t1.wiki_comment,t1.wiki_title" .
 														" HAVING t1.wiki_version = MAX(t2.wiki_version)",__LINE__,__FILE__);
@@ -744,7 +744,7 @@ class sowiki	// DB-Layer
 	function emptypages()
 	{
 		$this->db->query("SELECT t1.wiki_time,t1.wiki_name,t1.wiki_lang,t1.wiki_hostname,t1.wiki_username,0,t1.wiki_comment,t1.wiki_version,MAX(t2.wiki_version),t1.wiki_title " .
-										 " FROM $this->PgTbl AS t1,$this->PgTbl AS t2" .
+										 " FROM $this->PgTbl AS t1, (select wiki_id,wiki_lang,wiki_name, max(wiki_version) as wiki_version  from $this->PgTbl GROUP BY wiki_id, wiki_lang, wiki_name) AS t2" .
 										 " WHERE t1.wiki_name=t2.wiki_name AND t1.wiki_lang=t2.wiki_lang AND t1.wiki_id=t2.wiki_id AND t1.wiki_id=".(int)$this->wiki_id.
 										 " GROUP BY t1.wiki_name,t1.wiki_lang,t1.wiki_version,t1.wiki_time,t1.wiki_hostname,t1.wiki_username,t1.wiki_comment".
 										 " HAVING t1.wiki_version = MAX(t2.wiki_version) AND t1.wiki_body IS NULL",__LINE__,__FILE__);
