@@ -101,7 +101,7 @@ function html_table_start($args)
     }
     if ($class=='') {$class = ' class="wiki"';}
 	if ($styleStr=='') {$styleStr = ' border:'.$borderval.'px  solid black; border-collapse: collapse;';}
-    if ((stristr($styleStr, 'border') === FALSE) && $styleStr!='' && ($borderval==0)) { 
+    if ((stristr($styleStr, 'border') === FALSE) && $styleStr!='' && ($borderval==0)) {
 		$border= ' ';
 		$styleStr .= ' border:'.$borderval.'px  solid black; border-collapse: collapse;';
 	}
@@ -116,7 +116,7 @@ function html_table_end()
 	// set the table border width back to its defaultvalue 1
 	global $borderwidth;
 	$borderwidth=1;
-	return '</table>'; 
+	return '</table>';
 }
 function html_table_row_start($args)
 {
@@ -206,7 +206,7 @@ function html_gmtime($time)
 function html_timestamp($time)
 {
 	global $TimeZoneOff;
-	
+
 	return date($GLOBALS['egw_info']['user']['preferences']['common']['dateformat'].' '.
 		((int) $GLOBALS['egw_info']['user']['preferences']['common']['timeformat'] == 12 ? 'h:i:s a' : 'H:i:s'), $time + $TimeZoneOff * 60);
 }
@@ -263,6 +263,20 @@ function html_url($url, $text)
 		$domains = "'".implode("'+unescape('%2E')+'",explode('.',$matchs[2]))."'";
 		$onClick = " onClick=\"document.location='mai'+'lto:$matchs[1]'+unescape('%40')+$domains; return false;\"";
 		$text = str_replace('@',' AT ',str_replace('mailto:','',str_replace('.',' DOT ',$text)));
+	}
+	if (substr($url,0,8) == 'flash://')
+	{
+		$url = 'http://'.substr($url,8);
+		if (preg_match_all('/(width|height)=([0-9]+)&?/',$url,$matches))
+		{
+			$params = array_combine($matches[1],$matches[2]);
+		}
+		$widht = isset($params['width']) && is_numeric($params['width']) ? (int)$params['width'] : 560;
+		$height = isset($params['height']) && is_numeric($params['height']) ? (int)$params['height'] : 340;
+		return '<object width="'.$widht.'" height="'.$height.'"><param name="movie" value="'.htmlspecialchars($url).
+			'"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="'.
+			htmlspecialchars($url).'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="'.
+			$widht.'" height="'.$height.'"></embed></object>';
 	}
 	if ($text{0} == '[' && substr($text,-1) == ']' && !is_numeric($t=substr($text,1,-1))) $text = $t;
 
@@ -373,7 +387,7 @@ function html_fullhistory($page, $count)
 function html_toolbar_top()
 {
 	global $HomePage, $PrefsScript,$AdminScript;
-		
+
 	return html_ref($HomePage, $HomePage) . ' | ' .
 				 html_ref('RecentChanges', lang('Recent Changes'));
 /*
