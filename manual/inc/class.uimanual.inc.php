@@ -12,9 +12,7 @@
 
 /* $Id$ */
 
-include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.uiwiki.inc.php');
-
-class uimanual extends uiwiki
+class uimanual extends wiki_ui
 {
 	var $public_functions = array(
 		'view'   => True,

@@ -12,9 +12,7 @@
 
 /* $Id$ */
 
-include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.xmlwiki.inc.php');
-
-class uimanualadmin extends xmlwiki
+class uimanualadmin extends wiki_xml
 {
 	var $public_functions = array(
 		'import' =>True,
@@ -58,7 +56,7 @@ class uimanualadmin extends xmlwiki
 			'<a href="'.$url.'" target="_blank">'.$from.'</a>')."</h3>\n",4096);	// dirty hack to flushes the buffer;
 		@set_time_limit(0);
 
-		$status = xmlwiki::import($url,True);
+		$status = wiki_xml::import($url,True);
 		
 		$this->manual_config['manual_updated'] = $status['meta']['exported'];
 		$this->manual_config['manual_langs'] = $langs;
