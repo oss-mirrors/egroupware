@@ -13,14 +13,12 @@
 
 /* $Id$ */
 
-include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.uiwiki.inc.php');
-
 /**
  * extends the wiki user-interface for sitemgr
  *
  * As php cant do multiple inheritance, we have to use two classes
  */
-class sitemgr_wiki extends uiwiki
+class sitemgr_wiki extends wiki_ui
 {
 	var $wikipage_param = 'wikipage';	// name of the get-param used to transport the wiki-page-names
 	var $wikilang_param = 'wikilang';	// name of the get-param used to transport the wiki-lang

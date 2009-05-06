@@ -9,13 +9,13 @@ $ScriptBase .= strpos($ScriptBase,'?') !== false ? '&' : '?';
 $AdminScript = $ScriptBase . 'action=admin';
 
 //if(!isset($ViewBase))
-	{ $ViewBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.view')). '&page='; }
+	{ $ViewBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.view')). '&page='; }
 //if(!isset($EditBase))
-	{ $EditBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.edit')).'&page='; }
+	{ $EditBase    = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.edit')).'&page='; }
 //if(!isset($HistoryBase))
 	{ $HistoryBase = $ScriptBase . 'action=history&page='; }
 //if(!isset($FindScript))
-	{ $FindScript  = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.search')); }
+	{ $FindScript  = $GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.search')); }
 //if(!isset($FindBase))
 	{ $FindBase    = $FindScript . '&search='; }
 //if(!isset($SaveBase))

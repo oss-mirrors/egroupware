@@ -98,7 +98,7 @@
 	require('lib/url.php');
 	require('lib/messages.php');
 
-	$pagestore =& CreateObject('wiki.sowiki');
+	$pagestore =& CreateObject('wiki.wiki_so');
 
 	$FlgChr = chr(255);                     // Flag character for parse engine.
 

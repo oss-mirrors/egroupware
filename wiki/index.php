@@ -57,7 +57,7 @@ $GLOBALS['egw_info']['flags'] = array(
 );
 include('../header.inc.php');
 
-ExecMethod('wiki.uiwiki.view');
+ExecMethod('wiki.wiki_ui.view');
 
 // Expire old versions, etc.
-$GLOBALS['uiwiki']->maintain();
+$GLOBALS['wiki_ui']->maintain();

@@ -10,9 +10,7 @@
  * @version $Id$
  */
 
-require_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
-
-class uiwiki extends bowiki
+class wiki_ui extends wiki_bo
 {
 	var $public_functions = array(
 		'edit' => True,
@@ -21,9 +19,9 @@ class uiwiki extends bowiki
 	);
 	var $anonymous;		// wiki is used anonymous
 
-	function uiwiki()
+	function __construct()
 	{
-		$this->bowiki($_GET['wiki_id']);
+		parent::__construct($_GET['wiki_id']);
 
 		$this->anonymous = $this->config['allow_anonymous'] && $this->config['anonymous_username'] == $GLOBALS['egw_info']['user']['account_lid'];
 
@@ -48,6 +46,11 @@ class uiwiki extends bowiki
 				$_GET[$name] = stripslashes($val);
 			}
 		}
+	}
+
+	function uiwiki()
+	{
+		self::__construct();
 	}
 
 	function edit($content='')
@@ -176,7 +179,7 @@ class uiwiki extends bowiki
 			($content['lang'] && $content['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'] ?
 				':' . $content['lang'] : '').
 			($content['name'] != $content['title'] ? ' - ' . $content['title'] : '');
-		$this->tpl->exec('wiki.uiwiki.edit',$content,array(
+		$this->tpl->exec('wiki.wiki_ui.edit',$content,array(
 			'lang'     => array('' => lang('not set')) + $GLOBALS['egw']->translation->get_installed_langs(),
 			'readable' => $acl_values,
 			'writable' => $acl_values,
@@ -235,13 +238,13 @@ class uiwiki extends bowiki
 		if ($page)
 		{
 			$title = '<a href="'.$GLOBALS['egw']->link('/index.php',array(
-				'menuaction' => 'wiki.uiwiki.search',
+				'menuaction' => 'wiki.wiki_ui.search',
 				'search'     => $page->name,
 			)).'">'.$page->title.'</a>';
 		}
 		$html = '<h1 style="margin:0px;" class="title">'.$title."</h1>\n";
 
-		$html .= '<form action="'.$GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.search')).'" method="POST">'.
+		$html .= '<form action="'.$GLOBALS['egw']->link('/index.php',array('menuaction'=>'wiki.wiki_ui.search')).'" method="POST">'.
 			'<a href="'.$this->viewURL($this->config['wikihome']).'">'.$this->config['wikihome'].'</a> | '.
 			'<a href="'.$this->viewUrl('RecentChanges').'">'.lang('Recent Changes').'</a> | '.
 			'<input name="search" value="'.html::htmlspecialchars($_REQUEST['search']).'" /> '.

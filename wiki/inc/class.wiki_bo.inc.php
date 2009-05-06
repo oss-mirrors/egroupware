@@ -40,21 +40,19 @@ require_once(EGW_INCLUDE_ROOT.'/wiki/parse/save.php');
 
 require_once(EGW_INCLUDE_ROOT.'/wiki/lib/category.php');
 
-require_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.sowiki.inc.php');
-
-class bowiki extends sowiki
+class wiki_bo extends wiki_so
 {
 	var $upload_dir;
 	var $config;
 
-	function bowiki($wiki_id=0)
+	function __construct($wiki_id=0)
 	{
-		$this->sowiki($wiki_id);
+		parent::__construct($wiki_id);
 
 		global $pagestore;
 		if (!is_object($pagestore))
 		{
-			$pagestore = new sowiki($wiki_id);	// cant use =& as global $pagestore is a reverence!
+			$pagestore = new wiki_so($wiki_id);	// cant use =& as global $pagestore is a reverence!
 		}
 		global $Admin,$HomePage,$InterWikiPrefix,$EnableFreeLinks,$EnableWikiLinks;
 		$c =& CreateObject('phpgwapi.config','wiki');
@@ -81,6 +79,11 @@ class bowiki extends sowiki
 		global $ViewBase,$EditBase;
 		$ViewBase = $this->viewURL('');
 		if(!isset($EditBase)) { $EditBase = $this->editURL(''); }
+	}
+
+	function bowiki($wiki_id=0)
+	{
+		self::__construct($wiki_id);
 	}
 
 	/**
@@ -264,7 +267,7 @@ class bowiki extends sowiki
 	function editURL($page, $lang='',$version = '')
 	{
 		$args = array(
-			'menuaction' => 'wiki.uiwiki.edit',
+			'menuaction' => 'wiki.wiki_ui.edit',
 			'page' => is_array($page) ? $page['name'] : $page
 		);
 		if ($lang || is_array($page) && $page['lang'])
@@ -282,7 +285,7 @@ class bowiki extends sowiki
 	function viewURL($page, $lang='', $version='', $full = '')
 	{
 		$args = array(
-			'menuaction' => 'wiki.uiwiki.view',
+			'menuaction' => 'wiki.wiki_ui.view',
 		);
 		if ($lang || is_array($page) && $page['lang'])
 		{
@@ -322,10 +325,10 @@ class bowiki extends sowiki
 	function search_link($location)
 	{
 		return array(
-			'query'      => 'wiki.bowiki.link_query',
-			'title'      => 'wiki.bowiki.link_title',
+			'query'      => 'wiki.wiki_bo.link_query',
+			'title'      => 'wiki.wiki_bo.link_title',
 			'view'       => array(
-				'menuaction' => 'wiki.uiwiki.view',
+				'menuaction' => 'wiki.wiki_ui.view',
 			),
 			'view_id'    => 'page',
 		);

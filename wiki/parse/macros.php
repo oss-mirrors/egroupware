@@ -248,6 +248,7 @@ function view_macro_anchor($args)
 }
 
 // This macro transcludes another page into a wiki page.
+/*
 function view_macro_transclude($args)
 {
 	global $pagestore, $ParseEngine, $ParseObject;
@@ -274,10 +275,59 @@ function view_macro_transclude($args)
 		$visited_count--;
 		return '[[Transclude ' . $args . ']]';
 	}
-
 	$result = parseText($pg->text, $ParseEngine, $args);
 	$visited_count--;
 	return $result;
+}
+*/
+// This macro transcludes another page into a wiki page.
+function view_macro_transclude($args)
+{
+  global $pagestore, $ParseEngine, $ParseObject, $HeadingOffset;
+  static $visited_array = array();
+  static $visited_count = 0;
+  
+  $previousHeadingOffset = $HeadingOffset;  // Backup previous version
+  
+  // Check for CurlyOptions, and split them
+  preg_match("/^(?:\s*{([^]]*)})?\s*(.*)$/", $args, $arg);
+  $options = $arg[1];
+  $page = $arg[2];
+  
+  if(!validate_page($page))
+    { return '[[Transclude ' . $args . ']]'; }
+
+  $visited_array[$visited_count++] = $ParseObject;
+  for($i = 0; $i < $visited_count; $i++)
+  {
+    if($visited_array[$i] == $page)
+    {
+      $visited_count--;
+      return '[[Transclude ' . $args . ']]';
+    }
+  }
+
+  $pg = $pagestore->page($page);
+  $pg->read();
+  if(!$pg->exists)
+  {
+    $visited_count--;
+    return '[[Transclude ' . $args . ']]';
+  }
+
+  // Check for CurlyOptions affecting transclusion 
+  // Parse options
+  foreach (split_curly_options($options) as $name=>$value) {
+    $name=strtolower($name);
+    if ($name[0]=='o') { // Offset - Adds to header levels in transcluded docs
+      $HeadingOffset = $previousHeadingOffset + (($value=='') ? 1 : $value);
+    }
+  }
+  
+  $result = parseText($pg->text, $ParseEngine, $page);
+  $visited_count--;
+  $HeadingOffset = $previousHeadingOffset; // Restore offset
+  return $result;
 }
 
 ?>

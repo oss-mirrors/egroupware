@@ -331,7 +331,7 @@ class soWikiPage
  * @author RalfBecker-AT-outdoor-training.de
  * @license GPL
  */
-class sowiki	// DB-Layer
+class wiki_so	// DB-Layer
 {
 	/**
 	 * private instance of the db class
@@ -356,7 +356,7 @@ class sowiki	// DB-Layer
 	 *
 	 * @param int $wikid_id which wiki to use, default 0
 	 */
-	function sowiki($wiki_id=0)
+	function __construct($wiki_id=0)
 	{
 		$this->wiki_id = (int) $wiki_id;
 		$this->user_lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
@@ -372,6 +372,11 @@ class sowiki	// DB-Layer
 		$this->RateView   = $RateView;
 		$this->RateSearch = $RateSearch;
 		$this->RateEdit   = $RateEdit;
+	}
+
+	function sowiki($wiki_id=0)
+	{
+		self::__construct($wiki_id);
 	}
 
 	/**

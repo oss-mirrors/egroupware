@@ -22,16 +22,20 @@ if (!function_exists('var2xml'))
 	}
 }
 
-include_once(EGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
 
 /**
  * XML Import & Export
  */
-class xmlwiki extends bowiki
+class wiki_xml extends wiki_bo
 {
 	var $public_functions = array(
 		'export' => True,
 	);
+
+	function __construct($wiki_id=0)
+	{
+		self::xmlwiki($wiki_id);
+	}
 
 	function xmlwiki($wiki_id=0)
 	{

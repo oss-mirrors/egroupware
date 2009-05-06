@@ -82,7 +82,7 @@ require('parse/transforms.php');
 //   is the file to load, second is the function to call, and third is how
 //   to treat it for rate-checking purposes ('view', 'edit', or 'search').
 $ActionList = array(
-								'xml'  => array('wiki.xmlwiki.export','','view'),
+								'xml'  => array('wiki.wiki_xml.export','','view'),
 								'view' => array('action/view.php', 'action_view', 'view'),
 								'edit' => array('action/edit.php', 'action_edit', 'view'),
 								'save' => array('action/save.php', 'action_save', 'edit'),
