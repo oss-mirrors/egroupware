@@ -1041,6 +1041,7 @@
 			#_debug_array($bodyParts); exit;
 
 			foreach($bodyParts as $singleBodyPart) {
+				if (!isset($singleBodyPart['body'])) $singleBodyPart['body'] = $this->getdisplayableBody($singleBodyPart);
 				if(!empty($body)) {
 					$body .= '<hr style="border:dotted 1px silver;">';
 				}
@@ -1082,16 +1083,15 @@
 					// http://www.php.net/manual/en/function.preg-replace.php
 
 					// create links for websites
-					$newBody = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,!&gt;,\%,@,\*,#,:,~,\+]+)/ie",
-						"'<a href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
+					#$newBody = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,!&gt;,\%,@,\*,#,:,~,\+]+)/ie",
+					#	"'<a href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
 
 					// create links for ftp sites
-					$newBody = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i",
-						"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">ftp://$3$4</font></a>", $newBody);
-
+					#$newBody = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i",
+					#	"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">ftp://$3$4</font></a>", $newBody);
+					$newBody = html::activate_links($newBody);	
 					// create links for email addresses
 					$this->parseEmail($newBody);
-
 					$newBody	= $this->highlightQuotes($newBody);
 					// to display a mailpart of mimetype plain/text, may be better taged as preformatted
 					#$newBody	= nl2br($newBody);
@@ -1106,18 +1106,16 @@
 					#error_log(print_r($newBody,true));
 					bofelamimail::getCleanHTML($newBody);
 					// create links for websites
-					#$newBody = preg_replace("/(?<!\>)((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie",
-					#	"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
-					$newBody = preg_replace("/(?<!>|\/|\"|href='|href=\")((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie",
-						"'<a href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
+					#$newBody = preg_replace("/(?<!>|\/|\"|href='|href=\")((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie",
+					#	"'<a href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
 
 					// create links for websites
-					$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\(,\),\*,#,:,~,\+]+)(\"|\')/ie",
-						"'href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"'", $newBody);
-
+					#$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\(,\),\*,#,:,~,\+]+)(\"|\')/ie",
+					#	"'href=\"$webserverURL/redirect.php?go='.@htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"'", $newBody);
+					$newBody = html::activate_links($newBody);
 					// create links for ftp sites
-					$newBody = preg_replace("/href=(\"|\')((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)(\"|\')/i",
-						"href=\"ftp://$4$5\" target=\"_blank\"", $newBody);
+					#$newBody = preg_replace("/href=(\"|\')((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)(\"|\')/i",
+					#	"href=\"ftp://$4$5\" target=\"_blank\"", $newBody);
 
 					// create links for inline images
 					$linkData = array (
