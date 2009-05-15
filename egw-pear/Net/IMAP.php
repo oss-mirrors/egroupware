@@ -1664,15 +1664,14 @@ class Net_IMAP extends Net_IMAPProtocol {
             foreach( $ret["PARSED"] as $mbox ){
                 if( isset($mbox["EXT"]["LSUB"]["MAILBOX_NAME"]) ){
                     if( $returnAttributes){
-                            $ret_aux[]=array(
-                                        'MAILBOX' => $mbox["EXT"]["LSUB"]["MAILBOX_NAME"],
-                                        'ATTRIBUTES' => $mbox["EXT"]["LSUB"]["NAME_ATTRIBUTES"],
-                                        'HIERACHY_DELIMITER' =>  $mbox["EXT"]["LSUB"]["HIERACHY_DELIMITER"]
-                                        ) ;
-                        }else{
-                            $ret_aux[]=$mbox["EXT"]["LSUB"]["MAILBOX_NAME"];
-
-                        }
+                        $ret_aux[]=array(
+                                'MAILBOX' => $mbox["EXT"]["LSUB"]["MAILBOX_NAME"],
+                                'ATTRIBUTES' => $mbox["EXT"]["LSUB"]["NAME_ATTRIBUTES"],
+                                'HIERACHY_DELIMITER' =>  $mbox["EXT"]["LSUB"]["HIERACHY_DELIMITER"]
+                        ) ;
+                    } else {
+                        $ret_aux[]=$mbox["EXT"]["LSUB"]["MAILBOX_NAME"];
+                    }
                 }
             }
         }
