@@ -34,12 +34,7 @@ class wiki_xml extends wiki_bo
 
 	function __construct($wiki_id=0)
 	{
-		self::xmlwiki($wiki_id);
-	}
-
-	function xmlwiki($wiki_id=0)
-	{
-		$this->bowiki($wiki_id);	// call the constructor of the extended class
+		parent::__construct($wiki_id);
 	}
 
 	function export($name='',$lang='',$modified=0)

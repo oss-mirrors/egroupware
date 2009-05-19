@@ -322,7 +322,7 @@ class wiki_bo extends wiki_so
 	 * @param array/string $location location and other parameters (not used)
 	 * @return array with method-names
 	 */
-	function search_link($location)
+	static function search_link($location)
 	{
 		return array(
 			'query'      => 'wiki.wiki_bo.link_query',

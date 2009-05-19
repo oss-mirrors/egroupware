@@ -20,16 +20,16 @@ class uimanualadmin extends wiki_xml
 	var $manual_config;
 	var $mconfig;
 
-	function uimanualadmin()
+	function __construct()
 	{
 		CreateObject('manual.uimanual');	// sets the default config
 
 		$this->mconfig =& CreateObject('phpgwapi.config','manual');
 		$this->mconfig->read_repository();
 		$this->manual_config =& $this->mconfig->config_data;
-		
+
 		$this->wiki_id = (int) $this->manual_config['manual_wiki_id'];
-		$this->xmlwiki($this->wiki_id);	// call the constructor of the class we extend
+		parent::__construct($this->wiki_id);	// call the constructor of the class we extend
 	}
 
 	function import()
@@ -57,7 +57,7 @@ class uimanualadmin extends wiki_xml
 		@set_time_limit(0);
 
 		$status = wiki_xml::import($url,True);
-		
+
 		$this->manual_config['manual_updated'] = $status['meta']['exported'];
 		$this->manual_config['manual_langs'] = $langs;
 		$this->mconfig->save_repository();
@@ -74,7 +74,7 @@ class uimanualadmin extends wiki_xml
 			'install or update the manual-pages' => $GLOBALS['egw']->link('/index.php',array('menuaction'=>'manual.uimanualadmin.import')),
 		));
 	}
-	
+
 	function config($args)
 	{
 		$GLOBALS['egw_info']['server']['found_validation_hook'] = True;

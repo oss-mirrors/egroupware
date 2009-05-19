@@ -35,7 +35,7 @@ $setup_info['wiki']['hooks'][] = 'admin';
 $setup_info['wiki']['hooks'][] = 'sidebox_menu';
 $setup_info['wiki']['hooks'][] = 'config_validate';
 $setup_info['wiki']['hooks'][] = 'settings';
-$setup_info['wiki']['hooks']['search_link'] = 'wiki.wiki_bo.search_link';
+$setup_info['wiki']['hooks']['search_link'] = 'wiki_bo::search_link';
 
 /* Dependencies for this app to work */
 $setup_info['wiki']['depends'][] = array

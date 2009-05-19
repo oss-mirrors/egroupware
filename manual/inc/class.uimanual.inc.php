@@ -20,7 +20,7 @@ class uimanual extends wiki_ui
 	);
 	var $manual_config;
 
-	function uimanual()
+	function __construct()
 	{
 		$config =& CreateObject('phpgwapi.config','manual');
 		$config->read_repository();
@@ -52,7 +52,7 @@ class uimanual extends wiki_ui
 		$this->wiki_id = (int) $this->manual_config['manual_wiki_id'];
 
 		// set a language given in the URL as session preference
-		if ($this->manual_config['manual_allow_anonymous'] && isset($_REQUEST['lang']) && preg_match('/^[a-z]{2}(-[a-z]{2})?$/',$_REQUEST['lang']) && 
+		if ($this->manual_config['manual_allow_anonymous'] && isset($_REQUEST['lang']) && preg_match('/^[a-z]{2}(-[a-z]{2})?$/',$_REQUEST['lang']) &&
 			$_REQUEST['lang'] != $GLOBALS['egw_info']['user']['preferences']['common']['lang'])
 		{
 			$GLOBALS['egw']->preferences->add('common','lang',$_REQUEST['lang'],'session');
@@ -60,7 +60,7 @@ class uimanual extends wiki_ui
 		}
 		$this->lang = $GLOBALS['egw_info']['user']['preferences']['common']['lang'];
 
-		$this->bowiki($this->wiki_id);
+		parent::__construct($this->wiki_id);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class uimanual extends wiki_ui
 		// the page-parameter has to be the last one, as the old wiki code only calls it once with empty page and appends the pages later
 		return $GLOBALS['egw']->link('/index.php',$args).'&page='.urlencode(is_array($page) ? $page['name'] : $page);
 	}
-	
+
 	/**
 	 * reimplemented to disallow editing
 	 */
@@ -95,7 +95,7 @@ class uimanual extends wiki_ui
 	{
 		return False;
 	}
-	
+
 	/**
 	 * Show the page-header for the manual
 	 *
@@ -105,7 +105,7 @@ class uimanual extends wiki_ui
 	function header($page=false,$title='')
 	{
 		$GLOBALS['egw']->common->egw_header();
-		
+
 		// let the (existing) window pop up
 		$html .= "<script language=\"JavaScript\">\n\twindow.focus();\n</script>\n";
 		$html .= '<div id="divMain">'."\n";
@@ -123,12 +123,12 @@ class uimanual extends wiki_ui
 			'<input name="search" value="'.html::htmlspecialchars($_REQUEST['search']).'" />&nbsp;'.
 			'<input type="submit" name="go" value="'.html::htmlspecialchars(lang('Search')).'" /></form>'."\n";
 		$html .= "<hr />\n";
-		
+
 		if ($title) $html .= '<p><b>'.$titel."</b></p>\n";
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Show the page-footer for the manual
 	 *
@@ -138,7 +138,7 @@ class uimanual extends wiki_ui
 	{
 		return "\n</div>\n";
 	}
-	
+
 	/**
 	 * view a manual page
 	 */
@@ -169,7 +169,7 @@ class uimanual extends wiki_ui
 			list($referer,$query) = explode('?',$referer,2);
 			parse_str($query,$query);
 			//echo "<p>_GET[referer]='$_GET[referer]', referer='$referer', query=".print_r($query,True)."</p>\n";
-			
+
 			if (isset($query['menuaction']) && $query['menuaction'])
 			{
 				list($app,$class,$function) = explode('.',$query['menuaction']);
@@ -230,7 +230,7 @@ class uimanual extends wiki_ui
 		$html = $this->header($page).$html;
 		$html .= $this->get($page,'',$this->wiki_id);
 		$html .= $this->footer();
-		
+
 		echo $html;
 	}
 }
