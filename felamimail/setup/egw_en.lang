@@ -114,6 +114,10 @@ do you really want to delete the selected accountsettings and the assosiated ide
 do you really want to delete the selected signatures?	felamimail	en	Do you really want to delete the selected signatures?
 do you really want to move the selected messages to folder:	felamimail	en	Do you really want to move the selected messages to folder:
 do you want to be asked for confirmation before moving selected messages to another folder?	felamimail	en	Do you want to be asked for confirmation before moving selected messages to another folder?
+do you want to prevent the editing/setup for forwarding of mails via settings (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup for forwarding of mails via settings (, even if SIEVE is enabled)?
+do you want to prevent the editing/setup of filter rules (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup of filter rules (, even if SIEVE is enabled)?
+do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if SIEVE is enabled)?
+do you want to prevent the editing/setup of the absent/vacation notice (, even if sieve is enabled)?	felamimail	en	Do you want to prevent the editing/setup of the absent/vacation notice (, even if SIEVE is enabled)?
 do you want to prevent the managing of folders (creation, accessrights and subscribtion)?	felamimail	en	Do you want to prevent the managing of folders (creation, accessrights AND subscribtion)?
 does not contain	felamimail	en	does not contain
 does not exist on imap server.	felamimail	en	does not exist on IMAP Server.
@@ -295,6 +299,7 @@ no active imap server found!!	felamimail	en	No active IMAP server found!!
 no address to/cc/bcc supplied, and no folder to save message to provided.	felamimail	en	No Address TO/CC/BCC supplied, and no folder to save message to provided.
 no encryption	felamimail	en	no encryption
 no filter	felamimail	en	No Filter
+no folders	felamimail	en	no folders
 no folders found	felamimail	en	No folders found
 no folders were found to subscribe to!	felamimail	en	No folders were found to subscribe to!
 no folders were found to unsubscribe from!	felamimail	en	No folders were found to unsubscribe from!
@@ -312,6 +317,7 @@ no subject given!	felamimail	en	No subject given!
 no supported imap authentication method could be found.	felamimail	en	No supported IMAP authentication method could be found.
 no valid emailprofile selected!!	felamimail	en	No Valid Email Profile Selected!!
 none	felamimail	en	none
+none, create all	felamimail	en	none, create all
 notify when new mails arrive on these folders	felamimail	en	notify when new mails arrive on these folders
 on	felamimail	en	on
 on behalf of	felamimail	en	on behalf of
