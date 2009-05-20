@@ -1,5 +1,7 @@
 %1 manual page(s) added or updated	manual	de	%1 Handbuchseite(n) zugefügt oder aktualisiert
 allow anonymous access to the manual, only necessary to act as remote manual	admin	de	Anonymen Zugriff auf das Handbuch erlauben, nur notwendig um als entferntes Handbuch zu agieren
+anonymous password	admin	de	Anonymous Passwort
+anonymous username	admin	de	Anonymous Benutzername
 download	manual	de	Herunterladen
 index	manual	de	Inhaltsverzeichnis
 install or update the manual-pages	admin	de	Installieren oder Aktualisieren der Handbuchseiten
