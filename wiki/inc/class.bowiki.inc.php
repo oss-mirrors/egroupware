@@ -17,7 +17,7 @@
  */
 class bowiki extends wiki_bo
 {
-	function search_link($location)
+	static function search_link($location)
 	{
 		// register all hooks
 		ExecMethod('phpgwapi.hooks.register_hooks','wiki');
