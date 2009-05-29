@@ -772,6 +772,41 @@
 
 		static function getCleanHTML(&$_html)
 		{
+/*
+			// using the new purifier, as it is easier to handle
+			// add htmlpurifiers library to include_path
+			require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.path.php');
+			// include most of the required files, for best performance with bytecode caches
+			require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.includes.php');
+			// installs an autoloader for other files
+			require_once(EGW_API_INC.'/htmlpurifier/library/HTMLPurifier.autoload.php');
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set('Core', 'Encoding', self::$displayCharset);
+            $config->set('Cache', 'SerializerPath', $GLOBALS['egw_info']['server']['temp_dir']);
+			$config->set('URI','DisableExternalResources', ($GLOBALS['egw_info']['user']['preferences']['felamimail']['allowExternalIMGs']?false:true));
+			$config->set('HTML', 'DefinitionID', 'felamimail_custom.html internal');
+			$config->set('HTML', 'DefinitionRev', 1);
+			$config->set('Cache', 'DefinitionImpl', null); // remove this later!
+			$def = $config->getHTMLDefinition(true);
+			$def->addAttribute('a', 'href', 'URI');
+			$def->addAttribute('a', 'target', 'Enum#_blank,_self,_target,_top');
+			$def->addAttribute('img', 'src', 'CDATA');
+			$def->addAttribute('img', 'alt', 'CDATA');
+			#_debug_array($def);
+
+			$_html = html::purify($_html, $config);
+			// no scripts allowed
+			// clean out comments
+			$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
+				'@<!--[\s\S]*?[ \t\n\r]*-->@'         // Strip multi-line comments including CDATA
+			);
+			$_html = preg_replace($search,"",$_html);
+			// clean out empty or pagewide style definitions / left over tags
+			self::replaceTagsCompletley($_html,'style');
+			// remove non printable chars
+			$_html = preg_replace('/([\000-\012])/','',$_html);
+			return $_html;
+*/
 			#echo $_html;exit;
 			$kses = new kses();
 			$kses->AddProtocol('cid');
@@ -851,7 +886,8 @@
 				"style",array(
 					"type"	=> array('maxlen' => 20),
 					"color"	=> array('maxlen' => 20),
-					"background-color" => array('maxlen' => 20)
+					"background-color" => array('maxlen' => 20),
+					"background" => array('maxlen' => 5),
 				)
 			);
 
@@ -960,13 +996,15 @@
 				)
 			);
 
+
 			// no scripts allowed
 			// clean out comments
 			$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
-				'@<!--[\s\S]*?[ \t\n\r]*-->@'         // Strip multi-line comments including CDATA
+				'@<!--[\s\S]*?[ \t\n\r]*-->@',         // Strip multi-line comments including CDATA
+				'@<head[^>]*?>.*?</head>@si',  // Strip out javascript
+				'@url\(http:\/\/[^\)].*?\)@si',  // url calls e.g. in style definitions
 			);
 			$_html = preg_replace($search,"",$_html);
-
 			// do the kses clean out first, to avoid general problems with content later on
 			$_html = $kses->Parse($_html);
 			// clean out empty or pagewide style definitions / left over tags
