@@ -19,8 +19,9 @@ class bowiki extends wiki_bo
 {
 	static function search_link($location)
 	{
+		include(EGW_INCLUDE_ROOT.'/wiki/setup/setup.inc.php');
 		// register all hooks
-		ExecMethod('phpgwapi.hooks.register_hooks','wiki');
+		ExecMethod2('phpgwapi.hooks.register_hooks','wiki',$setup_info['wiki']['hooks']);
 
 		return parent::search_link($location);
 	}
