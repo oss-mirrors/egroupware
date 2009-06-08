@@ -65,8 +65,8 @@ if (!$hide_picklist) {
 
   $dir = opendir(APP_ROOT . '/includes/lang/');
   while (false !== ($file = readdir($dir))) {
-    if ($file[0] != '.' && is_file(APP_ROOT . '/includes/lang/' . $file) && eregi("\.php$", $file)) {
-      $filelist[] = eregi_replace('.php', '', $file);
+    if ($file[0] != '.' && is_file(APP_ROOT . '/includes/lang/' . $file) && preg_match('/'."\.php$".'/i', $file)) {
+      $filelist[] = preg_replace('/.php/i', '', $file);
     } 
   } 
   closedir($dir);

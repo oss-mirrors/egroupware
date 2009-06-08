@@ -2849,8 +2849,8 @@
 		 */
 		function merge($content,$ids)
 		{
-			$contacts =& new addressbook_bo();
-			$mergeobj =& new addressbook_merge();
+			$contacts = new addressbook_bo();
+			$mergeobj = new addressbook_merge();
 
 			foreach ($ids as $id)
 			{

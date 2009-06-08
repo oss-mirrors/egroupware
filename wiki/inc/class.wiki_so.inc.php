@@ -394,7 +394,7 @@ class wiki_so	// DB-Layer
 			$lang = $lang ? $lang : @$name['lang'];
 			$name = @$name['name'] ? $name['name'] : @$name['title'];
 		}
-		$page =& new soWikiPage($this->db,$this->PgTbl,$name,$lang,$this->wiki_id,$this->debug);
+		$page = new soWikiPage($this->db,$this->PgTbl,$name,$lang,$this->wiki_id,$this->debug);
 
 		if (!$this->colNames) $this->colNames = $page->column2names();
 
@@ -705,7 +705,7 @@ class wiki_so	// DB-Layer
 	{
 		if (!$this->colNames)
 		{
-			$page =& new soWikiPage($this->db,$this->PgTbl);
+			$page = new soWikiPage($this->db,$this->PgTbl);
 			$this->colNames = $page->column2names();
 			unset($page);
 		}

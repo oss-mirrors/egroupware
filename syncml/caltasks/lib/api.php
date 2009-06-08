@@ -125,7 +125,7 @@ function &_egwcaltaskssync_listBy($action, $timestamp)
 		return $allChangedCalendarItems + $allChangedTasksItems;
 	}
 	// query the calendar, to check if we are a participants in these changed events
-	$boCalendar =& new calendar_bo();
+	$boCalendar = new calendar_bo();
 	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
 	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
 
@@ -368,7 +368,7 @@ function _egwcaltaskssync_delete($guid)
 		return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
 	} else {
 		Horde::logMessage("SymcML: egwcaltaskssync delete deleting event", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		$bocalendar =& new calendar_boupdate();
+		$bocalendar = new calendar_boupdate();
 
 		return $bocalendar->delete($state->get_egwId($guid));
 	}

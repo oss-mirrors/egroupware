@@ -158,7 +158,7 @@ function sys_pcibus ()
             } 
 
             if ($device) { 
-                list($key, $value) = split(': ', $buf, 2);
+                list($key, $value) = preg_split('/: /', $buf, 2);
 
                 if (!preg_match('/bridge/i', $key) && !preg_match('/USB/i', $key)) {
                     $results[] = preg_replace('/\([^\)]+\)\.$/', '', trim($value));
@@ -235,7 +235,7 @@ function sys_scsibus ()
         while ($buf = fgets($fd, 4096)) {
             if (preg_match('/Vendor/', $buf)) {
                 preg_match('/Vendor: (.*) Model: (.*) Rev: (.*)/i', $buf, $dev);
-                list($key, $value) = split(': ', $buf, 2);
+                list($key, $value) = preg_split('/: /', $buf, 2);
                 $dev_str = $value;
                 $get_type = 1;
                 continue;
@@ -287,7 +287,7 @@ function sys_meminfo ()
                 
                 // Get info on individual swap files
                 $swaps = file ('/proc/swaps');
-                $swapdevs = split("\n", $swaps);
+                $swapdevs = explode("\n", $swaps);
                     
                 for ($i = 1; $i < (sizeof($swapdevs) - 1); $i++) {
                     $ar_buf = preg_split('/\s+/', $swapdevs[$i], 6);
@@ -373,7 +373,7 @@ function sys_kernel ()
 function sys_loadavg ()
 {
     if ($fd = fopen('/proc/loadavg', 'r')) {
-        $results = split(' ', fgets($fd, 4096));
+        $results = explode(' ', fgets($fd, 4096));
         fclose($fd);
     } else {
         $results = array('N.A.','N.A.','N.A.');
@@ -389,7 +389,7 @@ function sys_uptime ()
 {
     global $text;
     $fd = fopen('/proc/uptime', 'r');
-    $ar_buf = split(' ', fgets($fd, 4096));
+    $ar_buf = explode(' ', fgets($fd, 4096));
     fclose($fd);
     
     $sys_ticks = trim($ar_buf[0]);
@@ -415,7 +415,7 @@ function sys_uptime ()
 // Returns the number of users currently logged in.
 function sys_users ()
 {
-    $who = split('=', execute_program('who', '-q'));
+    $who = explode('=', execute_program('who', '-q'));
     $result = $who[1];
     return $result;
 }
@@ -482,7 +482,7 @@ function sys_cpu ()
 function sys_fsinfo ()
 {
     $df = execute_program('df', '-kP');
-    $mounts = split("\n", $df);
+    $mounts = explode("\n", $df);
     $fstype = array();
     
     if ($fd = fopen('/proc/mounts', 'r')) {

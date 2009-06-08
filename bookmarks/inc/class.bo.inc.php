@@ -325,7 +325,7 @@
 							 $from_charset = $matches[1];
 						}
 						// URLs are recognized by A HREF tags in the NS file.
-						elseif (eregi('<A HREF="([^"]*)[^>]*>(.*)</A>', $line, $match))
+						elseif (preg_match('/<A HREF="([^"]*)[^>]*>(.*)<\\/A>/i', $line, $match))
 						{
 							if(!$have_desc)
 							{
@@ -369,7 +369,7 @@
 						// and end with the close </DL> tag.
 						// we use a stack to keep track of where we are in the
 						// folder hierarchy.
-						elseif (eregi('<H3[^>]*>(.*)</H3>', $line, $match))
+						elseif (preg_match('/<H3[^>]*>(.*)<\\/H3>/i', $line, $match))
 						{
 							$folder_name = $this->translation->convert($match[1],$from_charset);
 							$current_cat_id = $this->get_category($folder_name,end($folderstack));
@@ -378,7 +378,7 @@
 						}
 						// description start with tag <DD> and the description for folder
 						// will be skiped
-						elseif (eregi('<DD>(.*)',$line,$desc))
+						elseif (preg_match('/<DD>(.*)/i',$line,$desc))
 						{
 							if($dir_desc)
 							{
@@ -394,7 +394,7 @@
 								$have_desc = True;
 							}
 						}
-						elseif (eregi('</DL>', $line))
+						elseif (preg_match('/<\\/DL>/i', $line))
 						{
 							array_pop($folderstack);
 						}
@@ -441,7 +441,7 @@
 
 		function gencat($catid)
 		{
-			$t =& new Template(EGW_INCLUDE_ROOT . '/bookmarks/templates/export');
+			$t = new Template(EGW_INCLUDE_ROOT . '/bookmarks/templates/export');
 			$t->set_file('categ','export_' . $this->type . '_catlist.tpl');
 			$t->set_block('categ','subcatlist','subcats');
 			$t->set_block('categ','urllist','urls');

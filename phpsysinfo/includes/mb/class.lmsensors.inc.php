@@ -44,9 +44,9 @@ class mbinfo {
 
     foreach($sensors_value as $line) {
       $data = array();
-      if (ereg("(.*):(.*)\((.*)=(.*),(.*)=(.*)\)(.*)", $line, $data)) ;
-      elseif (ereg("(.*):(.*)\((.*)=(.*)\)(.*)", $line, $data)) ;
-      else (ereg("(.*):(.*)", $line, $data));
+      if (preg_match('/'."(.*):(.*)\((.*)=(.*),(.*)=(.*)\)(.*)".'/', $line, $data)) ;
+      elseif (preg_match('/'."(.*):(.*)\((.*)=(.*)\)(.*)".'/', $line, $data)) ;
+      else (preg_match('/'."(.*):(.*)".'/', $line, $data));
       if (count($data) > 1) {
         $temp = substr(trim($data[2]), -1);
         switch ($temp) {
@@ -61,10 +61,10 @@ class mbinfo {
     $i = 0;
     foreach($ar_buf as $line) {
       unset($data);
-      if (ereg("(.*):(.*).C[ ]*\((.*)=(.*).C,(.*)=(.*).C\)(.*)\)", $line, $data)) ;
-      elseif (ereg("(.*):(.*).C[ ]*\((.*)=(.*).C,(.*)=(.*).C\)(.*)", $line, $data)) ;
-      elseif (ereg("(.*):(.*).C[ ]*\((.*)=(.*).C\)(.*)", $line, $data)) ;
-      else (ereg("(.*):(.*).C", $line, $data));
+      if (preg_match('/'."(.*):(.*).C[ ]*\((.*)=(.*).C,(.*)=(.*).C\)(.*)\)".'/', $line, $data)) ;
+      elseif (preg_match('/'."(.*):(.*).C[ ]*\((.*)=(.*).C,(.*)=(.*).C\)(.*)".'/', $line, $data)) ;
+      elseif (preg_match('/'."(.*):(.*).C[ ]*\((.*)=(.*).C\)(.*)".'/', $line, $data)) ;
+      else (preg_match('/'."(.*):(.*).C".'/', $line, $data));
 
       $results[$i]['label'] = $data[1];
       $results[$i]['value'] = trim($data[2]);
@@ -93,8 +93,8 @@ class mbinfo {
 
     foreach($sensors_value as $line) {
       $data = array();
-      if (ereg("(.*):(.*)\((.*)=(.*),(.*)=(.*)\)(.*)", $line, $data));
-      elseif (ereg("(.*):(.*)\((.*)=(.*)\)(.*)", $line, $data));
+      if (preg_match('/'."(.*):(.*)\((.*)=(.*),(.*)=(.*)\)(.*)".'/', $line, $data));
+      elseif (preg_match('/'."(.*):(.*)\((.*)=(.*)\)(.*)".'/', $line, $data));
       else ereg("(.*):(.*)", $line, $data);
 
       if (count($data) > 1) {
@@ -114,9 +114,9 @@ class mbinfo {
     $i = 0;
     foreach($ar_buf as $line) {
       unset($data);
-      if (ereg("(.*):(.*) RPM  \((.*)=(.*) RPM,(.*)=(.*)\)(.*)\)", $line, $data));
-      elseif (ereg("(.*):(.*) RPM  \((.*)=(.*) RPM,(.*)=(.*)\)(.*)", $line, $data));
-      elseif (ereg("(.*):(.*) RPM  \((.*)=(.*) RPM\)(.*)", $line, $data));
+      if (preg_match('/'."(.*):(.*) RPM  \((.*)=(.*) RPM,(.*)=(.*)\)(.*)\)".'/', $line, $data));
+      elseif (preg_match('/'."(.*):(.*) RPM  \((.*)=(.*) RPM,(.*)=(.*)\)(.*)".'/', $line, $data));
+      elseif (preg_match('/'."(.*):(.*) RPM  \((.*)=(.*) RPM\)(.*)".'/', $line, $data));
       else ereg("(.*):(.*) RPM", $line, $data);
 
       $results[$i]['label'] = trim($data[1]);
@@ -138,7 +138,7 @@ class mbinfo {
 
     foreach($sensors_value as $line) {
       $data = array();
-      if (ereg("(.*):(.*)\((.*)=(.*),(.*)=(.*)\)(.*)", $line, $data));
+      if (preg_match('/'."(.*):(.*)\((.*)=(.*),(.*)=(.*)\)(.*)".'/', $line, $data));
       else ereg("(.*):(.*)", $line, $data);
       
       if (count($data) > 1) {
@@ -158,8 +158,8 @@ class mbinfo {
     $i = 0;
     foreach($ar_buf as $line) {
       unset($data);
-      if (ereg("(.*):(.*) V  \((.*)=(.*) V,(.*)=(.*) V\)(.*)\)", $line, $data));
-      elseif (ereg("(.*):(.*) V  \((.*)=(.*) V,(.*)=(.*) V\)(.*)", $line, $data));
+      if (preg_match('/'."(.*):(.*) V  \((.*)=(.*) V,(.*)=(.*) V\)(.*)\)".'/', $line, $data));
+      elseif (preg_match('/'."(.*):(.*) V  \((.*)=(.*) V,(.*)=(.*) V\)(.*)".'/', $line, $data));
       else ereg("(.*):(.*) V$", $line, $data);
       if(isset($data[1])) {
         $results[$i]['label'] = trim($data[1]);

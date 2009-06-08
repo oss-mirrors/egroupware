@@ -197,7 +197,7 @@ class module_wiki extends Module
 		{
 			return lang('You have no rights to view wiki content !!!');
 		}
-		$wiki =& new sitemgr_wiki($arguments);
+		$wiki = new sitemgr_wiki($arguments);
 
 		return $wiki->view();
 	}

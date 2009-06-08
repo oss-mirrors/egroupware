@@ -101,7 +101,7 @@ function &_egwcalendarsync_listBy($action, $timestamp)
 	}
 
 	// query the calendar, to check if we are a participants in these changed events
-	$boCalendar =& new calendar_bo();
+	$boCalendar = new calendar_bo();
 	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
 	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
 
@@ -381,7 +381,7 @@ function _egwcalendarsync_delete($guid)
 	#}
 	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$state->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$bocalendar =& new calendar_boupdate();
+	$bocalendar = new calendar_boupdate();
 
 	return $bocalendar->delete($state->get_egwId($guid));
 	#return $bocalendar->expunge();

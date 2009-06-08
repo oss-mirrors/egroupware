@@ -49,14 +49,14 @@ class wiki_xml extends wiki_bo
 
 		header('Content-Type: text/xml; charset=utf-8');
 
-		$xml_doc =& new xmldoc();
+		$xml_doc = new xmldoc();
 		$xml_doc->add_comment('$'.'Id$');	// to be able to comit the file
 		$xml_doc->add_comment("eGroupWare wiki-pages matching '$name%'".
 			($lang ? " and lang in(".implode(',',$lang).')':'').
 			($modified ? " modified since ".date('Y-m-d H:m:i',$modified):'').
 			", exported ".date('Y-m-d H:m:i',$exported=time())." from $_SERVER[HTTP_HOST]");
 
-		$xml_wiki =& new xmlnode('wiki');
+		$xml_wiki = new xmlnode('wiki');
 
 		foreach($this->find($name.'%','wiki_name') as $page)
 		{
@@ -78,7 +78,7 @@ class wiki_xml extends wiki_bo
 
 			$page = $GLOBALS['egw']->translation->convert($page,$GLOBALS['egw']->translation->charset(),'utf-8');
 
-			$xml_page =& new xmlnode('page');
+			$xml_page = new xmlnode('page');
 			foreach($page as $attr => $val)
 			{
 				if ($attr != 'text')

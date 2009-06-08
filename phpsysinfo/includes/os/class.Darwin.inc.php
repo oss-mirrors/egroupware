@@ -38,18 +38,18 @@ class sysinfo extends bsd_common {
 
   function grab_key ($key) {
     $s = execute_program('sysctl', $key);
-    $s = ereg_replace($key . ': ', '', $s);
-    $s = ereg_replace($key . ' = ', '', $s); // fix Apple set keys
+    $s = preg_replace('/'.$key . ': /', '', $s);
+    $s = preg_replace('/'.$key . ' = /', '', $s); // fix Apple set keys
     
     return $s;
   } 
 
   function grab_ioreg ($key) {
     $s = execute_program('ioreg', '-cls "' . $key . '" | grep "' . $key . '"'); //ioreg -cls "$key" | grep "$key"
-    $s = ereg_replace('\|', '', $s);
-    $s = ereg_replace('\+\-\o', '', $s);
-    $s = ereg_replace('[ ]+', '', $s);
-    $s = ereg_replace('<[^>]+>', '', $s); // remove possible XML conflicts
+    $s = preg_replace('/\|/', '', $s);
+    $s = preg_replace('/\+\-\o/', '', $s);
+    $s = preg_replace('/[ ]+/', '', $s);
+    $s = preg_replace('/<[^>]+>/', '', $s); // remove possible XML conflicts
 
     return $s;
   } 
@@ -65,7 +65,7 @@ class sysinfo extends bsd_common {
     $results = array(); 
     // $results['model'] = $this->grab_key('hw.model'); // need to expand this somehow...
     // $results['model'] = $this->grab_key('hw.machine');
-    $results['model'] = ereg_replace('Processor type: ', '', execute_program('hostinfo', '| grep "Processor type"')); // get processor type
+    $results['model'] = str_replace('Processor type: ', '', execute_program('hostinfo', '| grep "Processor type"')); // get processor type
     $results['cpus'] = $this->grab_key('hw.ncpu');
     $results['cpuspeed'] = round($this->grab_key('hw.cpufrequency') / 1000000); // return cpu speed - Mhz
     $results['busspeed'] = round($this->grab_key('hw.busfrequency') / 1000000); // return bus speed - Mhz
@@ -81,7 +81,7 @@ class sysinfo extends bsd_common {
     $results = array();
     $s = $this->grab_ioreg('IOPCIDevice');
 
-    $lines = split("\n", $s);
+    $lines = explode("\n", $s);
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\s+/", $lines[$i], 19);
       $results[$i] = $ar_buf[0];
@@ -95,7 +95,7 @@ class sysinfo extends bsd_common {
     // ioreg | grep "Media  <class IOMedia>"
     $s = $this->grab_ioreg('IOATABlockStorageDevice'); 
 
-    $lines = split("\n", $s);
+    $lines = explode("\n", $s);
     $j = 0;
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\/\//", $lines[$i], 19);
@@ -114,7 +114,7 @@ class sysinfo extends bsd_common {
     $results['ram'] = array();
 
     $pstat = execute_program('vm_stat'); // use darwin's vm_stat
-    $lines = split("\n", $pstat);
+    $lines = explode("\n", $pstat);
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\s+/", $lines[$i], 19);
 
@@ -134,7 +134,7 @@ class sysinfo extends bsd_common {
     $results['ram']['percent'] = round(($results['ram']['used'] * 100) / $results['ram']['total']); 
     // need to fix the swap info...
     $pstat = execute_program('swapinfo', '-k');
-    $lines = split("\n", $pstat);
+    $lines = explode("\n", $pstat);
 
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\s+/", $lines[$i], 6);
@@ -156,7 +156,7 @@ class sysinfo extends bsd_common {
 
   function network () {
     $netstat = execute_program('netstat', '-nbdi | cut -c1-24,42- | grep Link');
-    $lines = split("\n", $netstat);
+    $lines = explode("\n", $netstat);
     $results = array();
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\s+/", $lines[$i]);
@@ -182,7 +182,7 @@ class sysinfo extends bsd_common {
 
   function filesystems () {
     $df = execute_program('df', '-k');
-    $mounts = split("\n", $df);
+    $mounts = explode("\n", $df);
     $fstype = array();
 
     $s = execute_program('mount');
