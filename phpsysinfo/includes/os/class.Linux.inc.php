@@ -83,7 +83,7 @@ class sysinfo {
   
   function uptime () {
     $buf = rfts( '/proc/uptime', 1 );
-    $ar_buf = split( ' ', $buf );
+    $ar_buf = explode( ' ', $buf );
     $result = trim( $ar_buf[0] );
 
     return $result;
