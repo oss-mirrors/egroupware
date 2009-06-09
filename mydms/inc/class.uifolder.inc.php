@@ -10,7 +10,7 @@
 	* under the terms of the GNU General Public License as published by the     *
 	* Free Software Foundation; version 2 of the License.                       *
 	\***************************************************************************/
-	
+
 	/* $Id$ */
 
 	require_once(EGW_SERVER_ROOT.'/mydms/inc/inc.Settings.php');
@@ -30,26 +30,26 @@
 			'getInitialFolderView'	=> 'true',
 			'getSubFolder'		=> 'true',
 		);
-		
+
 		function uifolder() {
 			$this->charset  = $GLOBALS['egw']->translation->charset();
 		}
-		
+
 		function copyFolder()
 		{
 			if(isset($_GET['folderid']) && isset($_POST['targetid']) && isset($_POST['copy']))
 			{
 				$bo	=& CreateObject('mydms.bofolder');
-				
+
 				$folderID = (int)$_GET['folderid'];
 				$targetID = (int)$_POST['targetid'];
 				$newFolderName = $_POST['newfoldername'];
-				
+
 				//var_export($_POST);
 				//options
 				$copySubFolder = ($_POST['copy_subfolder'] == 'on' ? true : false);
 				$copyDocuments = ($_POST['copy_documents'] == 'on' ? true : false);
-				
+
 				if($newFolder = $bo->copyFolder($folderID, $targetID, $newFolderName, $copySubFolder, $copyDocuments))
 				{
 					$newFolderID = $newFolder->getID();
@@ -71,13 +71,13 @@
 
 			$folderID = (int)$_GET['folderid'];
 			$formName = $_GET['form'];
-			
+
 			$folder = getFolder($folderID);
 			$parent = $folder->getParent();
 
 			$this->display_app_header();
 			$this->translate($t);
-		
+
 			$t->set_file(array("copyFolder" => "copyFolder.tpl"));
 			$t->set_block('copyFolder', 'main', 'main');
 
@@ -86,7 +86,7 @@
 
 			$t->set_var('foldername',$parent->getName());
 			$t->set_var('folderid',$parent->getID());
-			
+
 			$linkData = array
 			(
 				'menuaction'    => 'mydms.uimydms.folderChooser',
@@ -107,10 +107,10 @@
 			$t->set_var('form_action', $GLOBALS['egw']->link('/index.php',$linkData));
 
 			$t->parse("out","main");
-			
+
 			print $t->get('out','main');
 		}
-		
+
 		function display_app_header()
 		{
 			if(!@is_object($GLOBALS['egw']->js))
@@ -128,58 +128,59 @@
 			$GLOBALS['egw_info']['flags']['include_xajax'] = True;
 
 			$GLOBALS['egw']->common->egw_header();
-			
+
 			echo parse_navbar();
 		}
 
-		function generateXML($_folder, $_childID, $_targetID, $_childContent) {
-			
-			$subFolders = $_folder->getSubFolders();
-			
-			foreach((array)$subFolders as $subFolderObject) {
+		function &generateXML($_folder, $_childID, $_targetID, &$_childContent) {
+
+			$subFolders =& $_folder->getSubFolders();
+			if (!is_array($subFolders)) $subFolders = array();
+
+			foreach($subFolders as $subFolderObject) {
 				$subFolderID	= $subFolderObject->getID();
 				$subFolderName	= htmlspecialchars($subFolderObject->getName(), ENT_QUOTES, $this->charset);
 				$hasSubfolder	= ($subFolderObject->getSubFolders() ? 1 : 0);
-				$childContent	= ($subFolderID == $_childID ? $_childContent : '');
 				$selectedNode	= ($subFolderID == $_targetID ? " select='1'" : '');
 				$openNode	= ($subFolderID == $_childID ? " open='1'" : '');
-				$retValue .="<item child='$hasSubfolder' id='$subFolderID' text='$subFolderName' im0='folderClosed.gif'$selectedNode$openNode>$childContent</item>";
+				$retValue .="<item child='$hasSubfolder' id='$subFolderID' text='$subFolderName' im0='folderClosed.gif'$selectedNode$openNode>".
+					($subFolderID == $_childID ? $_childContent : '').'</item>';
 			}
 
 			return $retValue;
 		}
-		
+
 		function getInitialFolderView()
 		{
-			header("Content-type:text/xml"); 
+			header("Content-type:text/xml");
 			print("<?xml version=\"1.0\" encoding=\"$this->charset\"?>");
-			
+
 			if (isset($_GET["id"]))
 				$folderID=$_GET["id"];
 			else
 				$folderID=1;
 
 			if($folderObject = getFolder($folderID)) {
-			
+
 				$path = $folderObject->getPathNew();
-			
+
 				$xmlContent	= '';
 				$clientID	= $folderID;
-			
+
 				// skip the last path part
 				array_pop($path);
 
 				while($subFolder = array_pop($path)) {
-					$xmlContent	= $this->generateXML($subFolder, $clientID, $folderID, $xmlContent);
+					$xmlContent	=& $this->generateXML($subFolder, $clientID, $folderID, $xmlContent);
 					$clientID	= $subFolder->getID();
 				}
 
 			}
 			print "<tree id='$clientID'>$xmlContent</tree>";
-			
+
 			$GLOBALS['egw']->common->egw_exit();
 		}
-			
+
 		function getSubFolder()
 		{
 			header("Content-type:text/xml");
@@ -192,9 +193,9 @@
 			print("<tree id='".$folderID."'>");
 
 			if($folderObject = getFolder($folderID)) {
-			
+
 				$subFolders = $folderObject->getSubFolders();
-			
+
 
 				foreach((array)$subFolders as $subFolderObject) {
 					$subFolderID	= $subFolderObject->getID();
