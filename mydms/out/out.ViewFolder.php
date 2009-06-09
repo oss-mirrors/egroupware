@@ -34,8 +34,8 @@ printStartBox(getMLText("document_list"));
 	<div id="rightClickMenu" style="border:1px solid grey; position:absolute; display:none; background-color:silver; z-index:40;">the next big thing...</div>
 	<table cellspacing="5" cellpadding="0" border="0">
 	<?php
-		$documents = $folder->getDocuments();
-		$documents = filterAccess($documents, $user, M_READ);
+		$documents =& $folder->getDocuments();
+		$documents =& filterAccess($documents, $user, M_READ);
 		if (count($documents) > 0)
 		{
 			$rownum = (count($documents)*2)+1;
@@ -61,7 +61,7 @@ printStartBox(getMLText("document_list"));
 					'menuaction'	=> 'mydms.uimydms.viewDocument'
 				);
 				$editURL = $GLOBALS['egw']->link('/index.php',$linkData);
-				
+
 				// the old code
 				#print "<tr>";
 				#print "<td><img src=\"images/file.gif\" width=18 height=18 border=0></td>";
@@ -69,7 +69,7 @@ printStartBox(getMLText("document_list"));
 				#print "<td class=\"filelist\">" . $comment . "</td>";
 				#print "<td class=\"filelist\">".$owner->getFullName()."</td>";
 				#print "</tr>";
-				
+
 				// the new code
 				// onclick="window.open(this.href,this.target,'dependent=yes,width=750,height=400,scrollbars=yes,status=yes'); return false;"
 				//tim добавлено выравнивание по верху style=\"vertical-align: top;\"
@@ -85,7 +85,7 @@ printStartBox(getMLText("document_list"));
 		}
 	?>
 	</table>
-		
+
 <?php
 
 printEndBox();

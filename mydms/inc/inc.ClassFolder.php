@@ -14,14 +14,15 @@ function getFolder($id)
 		die ("invalid folderid");
 
 	$queryStr = "SELECT * FROM phpgw_mydms_Folders WHERE id = " . $id;
-	$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+	//$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+	$resArr = $GLOBALS['mydms']->db->getResult($queryStr)->fetch();
 
 	if (is_bool($resArr) && $resArr == false)
 		return false;
-	else if (count($resArr) != 1)
+/*	else if (count($resArr) != 1)
 		return false;
 
-	$resArr = $resArr[0];
+	$resArr = $resArr[0];*/
 	if($id == 1) {
 		$resArr["defaultAccess"] = M_READ;
 	}
@@ -208,30 +209,32 @@ class Folder
 		return true;
 	}
 
-	function getSubFolders()
+	function &getSubFolders()
 	{
 		if (!isset($this->_subFolders))
 		{
 			$queryStr = "SELECT * FROM phpgw_mydms_Folders WHERE parent = " . $this->_id . " ORDER BY sequence";
-			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			//$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			$resArr = $GLOBALS['mydms']->db->getResult($queryStr);
 			if (is_bool($resArr) && $resArr == false)
 				return false;
 
 			$this->_subFolders = array();
-			for ($i = 0; $i < count($resArr); $i++)
+			//for ($i = 0; $i < count($resArr); $i++)
+			foreach($resArr as $row)
 			{
 				$newSubFolder = new Folder(
-					$resArr[$i]["id"],
-					$resArr[$i]["name"],
-					$resArr[$i]["parent"],
-					$resArr[$i]["comment"],
-					$resArr[$i]["owner"],
-					($resArr[$i]["inheritAccess"]?$resArr[$i]["inheritAccess"]:$resArr[$i]["inheritaccess"]),
-					($resArr[$i]["defaultAccess"]?$resArr[$i]["defaultAccess"]:$resArr[$i]["defaultaccess"]),
-					$resArr[$i]["sequence"]);
+					$row["id"],
+					$row["name"],
+					$row["parent"],
+					$row["comment"],
+					$row["owner"],
+					($row["inheritAccess"]?$row["inheritAccess"]:$row["inheritaccess"]),
+					($row["defaultAccess"]?$row["defaultAccess"]:$row["defaultaccess"]),
+					$row["sequence"]);
 
 				if($newSubFolder->getAccessMode(getUser($GLOBALS['egw_info']['user']['account_id'])) > 1)
-        				$this->_subFolders[$i] = $newSubFolder;
+        				$this->_subFolders[] = $newSubFolder;
 			}
 		}
 
@@ -331,12 +334,13 @@ class Folder
 			return false;
 	}
 
-	function getDocuments()
+	function &getDocuments()
 	{
 		if (!isset($this->_documents))
 		{
 			$queryStr = "SELECT * FROM phpgw_mydms_Documents WHERE folder = " . $this->_id . " ORDER BY sequence";
-			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			//$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			$resArr = $GLOBALS['mydms']->db->getResult($queryStr);
 			if (is_bool($resArr) && !$resArr)
 				return false;
 
@@ -456,7 +460,8 @@ class Folder
 		{
 			#error_log(__METHOD__." accessList ");
 			$queryStr = "SELECT * FROM phpgw_mydms_ACLs WHERE targetType = ".T_FOLDER." AND target = " . $this->_id . " ORDER BY targetType";
-			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			//$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			$resArr = $GLOBALS['mydms']->db->getResult($queryStr);
 			#error_log(__METHOD__." Access:".print_r($resArr,true));
 			if (is_bool($resArr) && !$resArr)
 				return false;
@@ -611,7 +616,8 @@ class Folder
 		if (!isset($this->_notifyList))
 		{
 			$queryStr ="SELECT * FROM phpgw_mydms_Notify WHERE targetType = " . T_FOLDER . " AND target = " . $this->_id;
-			$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			//$resArr = $GLOBALS['mydms']->db->getResultArray($queryStr);
+			$resArr = $GLOBALS['mydms']->db->getResult($queryStr);
 			if (is_bool($resArr) && $resArr == false)
 				return false;
 

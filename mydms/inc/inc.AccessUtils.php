@@ -3,14 +3,14 @@
 define("M_NONE", 1);		//Keine Rechte
 define("M_READ", 2);		//Lese-Recht
 define("M_READWRITE", 3);	//Schreib-Lese-Recht
-define("M_ALL", 4);		//Unbeschränkte Rechte
+define("M_ALL", 4);		//Unbeschrï¿½nkte Rechte
 
 define("T_FOLDER", 1);		//TargetType = Folder
 define("T_DOCUMENT", 2);	//    "      = Document
 
 //Sortiert aus dem Array $objArr (entweder Folder- oder Document-Objeckte) alle Elemente heraus, auf
-//die der Benutzer $user nicht mindestens den Zugriff $minMode hat und gib die restlichen Elemente zurück
-function filterAccess($objArr, $user, $minMode)
+//die der Benutzer $user nicht mindestens den Zugriff $minMode hat und gib die restlichen Elemente zurï¿½ck
+function &filterAccess(&$objArr, $user, $minMode)
 {
 	$newArr = array();
 	foreach ($objArr as $obj)
@@ -22,7 +22,7 @@ function filterAccess($objArr, $user, $minMode)
 }
 
 //Sortiert aus dem Benutzer-Array $users alle Benutzer heraus, die auf den Ordner oder das Dokument $obj
-//nicht mindestens den Zugriff $minMode haben und gibt die restlichen Benutzer zurück
+//nicht mindestens den Zugriff $minMode haben und gibt die restlichen Benutzer zurï¿½ck
 function filterUsersByAccess($obj, $users, $minMode)
 {
 	$newArr = array();
