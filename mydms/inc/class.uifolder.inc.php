@@ -194,8 +194,7 @@
 
 			if($folderObject = getFolder($folderID)) {
 
-				$subFolders = $folderObject->getSubFolders();
-
+				$subFolders =& $folderObject->getSubFolders();
 
 				foreach((array)$subFolders as $subFolderObject) {
 					$subFolderID	= $subFolderObject->getID();

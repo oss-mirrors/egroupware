@@ -37,8 +37,9 @@ function egw_is_admin($id)
 		$id = $GLOBALS['egw_info']['user']['account_id'];
 	}
 
-	$acl = CreateObject('phpgwapi.acl',$id);
-	if ($acl->check('run',1,'admin'))
+	#$acl = CreateObject('phpgwapi.acl',$id);
+	#if ($acl->check('run',1,'admin'))
+	if ($GLOBALS['egw_info']['user']['apps']['admin'])
 	{
 		return true;
 	}
