@@ -33,8 +33,10 @@
 		$icServer = $mailPreferences->getIncomingServer(0);
 
 		if($icServer->enableSieve) {
-			$file['filter rules'] = $GLOBALS['egw']->link('/index.php', 'menuaction=felamimail.uisieve.listRules');
-			$file['vacation notice'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editVacation');
+			if(empty($mailPreferences->preferences['prefpreventeditfilterrules']) || $mailPreferences->preferences['prefpreventeditfilterrules'] == 0)
+				$file['filter rules'] = $GLOBALS['egw']->link('/index.php', 'menuaction=felamimail.uisieve.listRules');
+			if(empty($mailPreferences->preferences['prefpreventabsentnotice']) || $mailPreferences->preferences['prefpreventabsentnotice'] == 0)
+				$file['vacation notice'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editVacation');
 		}
 	}
 	//Do not modify below this line

@@ -36,6 +36,7 @@ $setup_info['felamimail']['hooks']['addaccount']	= 'felamimail.bofelamimail.addA
 $setup_info['felamimail']['hooks']['deleteaccount']	= 'felamimail.bofelamimail.deleteAccount';
 $setup_info['felamimail']['hooks']['editaccount']	= 'felamimail.bofelamimail.updateAccount';
 $setup_info['felamimail']['hooks']['edit_user']		= 'felamimail.bofelamimail.adminMenu';
+$setup_info['felamimail']['hooks']['verify_settings'] = 'felamimail.bofelamimail.forcePrefReload';
 
 /* Dependencies for this app to work */
 $setup_info['felamimail']['depends'][] = array(

@@ -102,14 +102,24 @@
 				(
 					'menuaction'	=> 'felamimail.uisieve.listRules',
 				);
-				$file['filter rules']	= $GLOBALS['egw']->link('/index.php',$linkData);
+				if(empty($preferences->preferences['prefpreventeditfilterrules']) || $preferences->preferences['prefpreventeditfilterrules'] == 0)
+					$file['filter rules']	= $GLOBALS['egw']->link('/index.php',$linkData);
 
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uisieve.editVacation',
 				);
-				$file['vacation notice']	= $GLOBALS['egw']->link('/index.php',$linkData);
-				$file['email notification'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editEmailNotification'); //Added email notifications
+				if(empty($preferences->preferences['prefpreventabsentnotice']) || $preferences->preferences['prefpreventabsentnotice'] == 0)
+				{
+					$file['vacation notice']	= $GLOBALS['egw']->link('/index.php',$linkData);
+				}
+				if((empty($preferences->preferences['prefpreventnotificationformailviaemail']) || 
+					$preferences->preferences['prefpreventnotificationformailviaemail'] == 0) && 
+					(empty($preferences->preferences['prefpreventforwarding']) ||
+					$preferences->preferences['prefpreventforwarding'] == 0) )
+				{
+					$file['email notification'] = $GLOBALS['egw']->link('/index.php','menuaction=felamimail.uisieve.editEmailNotification'); //Added email notifications
+				}
 			}
 		}
 
@@ -121,7 +131,8 @@
 				(
 					'menuaction'	=> 'felamimail.uipreferences.editForwardingAddress',
 				);
-				$file['Forwarding']	= $GLOBALS['egw']->link('/index.php',$linkData);
+				if(empty($preferences->preferences['prefpreventforwarding']) || $preferences->preferences['prefpreventforwarding'] == 0)
+					$file['Forwarding']	= $GLOBALS['egw']->link('/index.php',$linkData);
 			}
 		}
 

@@ -273,10 +273,10 @@ function createScript()
 	</tr>
 	<tr CLASS="sieveRowActive">
 		<td>
-			{lang_vacation_forwards}:
+			{lang_vacation_forwards}
 		</td>
 		<td nowrap="nowrap">
-			<input class="input_text" name="vacation_forwards" size="80" value="{vacation_forwards}" />
+			{vacation_forwards}
 		</td>
 	</tr>
 	<tr>

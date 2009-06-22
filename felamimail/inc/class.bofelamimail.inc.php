@@ -173,6 +173,12 @@
 
 		}
 
+		function forcePrefReload()
+		{
+			// unset the fm_preferences session object, to force the reload/rebuild
+			$GLOBALS['egw']->session->appsession('fm_preferences','felamimail',serialize(array()));	
+		}
+
 		function setACL($_folderName, $_accountName, $_acl)
 		{
 			if ( PEAR::isError($this->icServer->setACL($_folderName, $_accountName, $_acl)) ) {

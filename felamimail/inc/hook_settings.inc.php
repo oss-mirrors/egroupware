@@ -22,6 +22,7 @@
 		$this->bofelamimail->closeConnection();
 	}
 
+	$availableAutoFolders['none'] = lang('none, create all');
 	foreach($this->bofelamimail->autoFolders as $aname) {
 		$availableAutoFolders[$aname] = lang($aname);
 	}
@@ -132,6 +133,8 @@
         $folderList
     );
 
+	// modify folderlist, add a none entry, to be able to force the regarding settings, if no folders apply
+	$folderList['none'] = lang('no folders');
 
 	/* Settings array for this app */
 	$GLOBALS['settings'] = array(
@@ -159,6 +162,38 @@
             'xmlrpc' => True,
             'admin'  => False
         ),
+		'prefpreventforwarding' => array(
+			'type'   => 'select',
+			'label'  => 'Do you want to prevent the editing/setup for forwarding of mails via settings (, even if SIEVE is enabled)?',
+			'name'   => 'prefpreventforwarding',
+			'values' => $prefAskForMove,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'prefpreventnotificationformailviaemail' => array(
+			'type'   => 'select',
+			'label'  => 'Do you want to prevent the editing/setup of notification by mail to other emailadresses if emails arrive (, even if SIEVE is enabled)?',
+			'name'   => 'prefpreventnotificationformailviaemail',
+			'values' => $prefAskForMove,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'prefpreventeditfilterrules' => array(
+			'type'   => 'select',
+			'label'  => 'Do you want to prevent the editing/setup of filter rules (, even if SIEVE is enabled)?',
+			'name'   => 'prefpreventeditfilterrules',
+			'values' => $prefAskForMove,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
+		'prefpreventabsentnotice' => array(
+			'type'   => 'select',
+			'label'  => 'Do you want to prevent the editing/setup of the absent/vacation notice (, even if SIEVE is enabled)?',
+			'name'   => 'prefpreventabsentnotice',
+			'values' => $prefAskForMove,
+			'xmlrpc' => True,
+			'admin'  => False
+		),
         'notavailableautofolders' => array(
             'type'   => 'multiselect',
             'label'  => 'which folders - in general - should NOT be automatically created, if not existing',
