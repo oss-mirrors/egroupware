@@ -1,26 +1,22 @@
 <?php
 /**
- * eGroupWare - SyncML
+ * Mnemo external API interface.
  *
- * SyncML Addressbook eGroupWare Datastore API for Horde
+ * $Horde: mnemo/lib/api.php,v 1.52 2004/09/14 04:27:07 chuck Exp $
  *
- * @link http://www.egroupware.org
- * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
- * @package syncml
- * @subpackage addressbook
- * @author Lars Kneschke <lkneschke@egroupware.org>
- * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
- * @author Joerg Lehrke <jlehrke@noc.de>
- * @version $Id$
+ * This file defines Mnemo's external API interface. Other
+ * applications can interact with Mnemo through this API.
+ *
+ * @package Mnemo
  */
 
 $_services['list'] = array(
-    'args' => array('filter'),
+    'args' => array(),
     'type' => 'stringArray'
 );
 
 $_services['listBy'] = array(
-    'args' => array('action', 'timestamp', 'type', 'filter'),
+    'args' => array('action', 'timestamp'),
     'type' => 'stringArray'
 );
 
@@ -45,7 +41,7 @@ $_services['delete'] = array(
 );
 
 $_services['replace'] = array(
-    'args' => array('guid', 'content', 'contentType', 'merge'),
+    'args' => array('guid', 'content', 'contentType'),
     'type' => 'boolean'
 );
 
@@ -54,11 +50,9 @@ $_services['replace'] = array(
  * Returns an array of GUIDs for all notes that the current user is
  * authorized to see.
  *
- * @param string  $filter     The filter expression the client provided.
- *
  * @return array  An array of GUIDs for all notes the user can access.
  */
-function _egwcontactssync_list($filter='')
+function _egwcontactssync_list()
 {
 	$guids = array();
 
@@ -68,7 +62,8 @@ function _egwcontactssync_list($filter='')
 	$criteria = array();
 
 	$filter = array();
-	if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts']) {
+	if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts'])
+	{
 		$filter['account_id'] = null;
 	}
 
@@ -85,7 +80,7 @@ function _egwcontactssync_list($filter='')
     #Horde::logMessage("SymcML: egwcontactssync list generate id for: ". print_r($contact, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	  $guids[] = "contacts-".$contact['id'];
-
+    
 	}
 
 	#Horde::logMessage("SymcML: egwcontactssync list found ids: ". print_r($guids, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -99,22 +94,20 @@ function _egwcontactssync_list($filter='')
  *
  * @param string  $action     The action to check for - add, modify, or delete.
  * @param integer $timestamp  The time to start the search.
- * @param string  $type       The type of the content.
- * @param string  $filter     The filter expression the client provided.
  *
  * @return array  An array of GUIDs matching the action and time criteria.
  */
-function &_egwcontactssync_listBy($action, $timestamp, $type, $filter='') {
+function &_egwcontactssync_listBy($action, $timestamp) {
 
 	#Horde::logMessage("SymcML: egwcontactssync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$state = &$_SESSION['SyncML.state'];
+	$state = $_SESSION['SyncML.state'];
 
 	$allChangedItems = (array)$state->getHistory('contacts', $action, $timestamp);
-	#Horde::logMessage('SymcML: egwcontactssync listBy $allChangedItems: '. count($allChangedItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage('SymcML: egwcontactssync listBy $allChangedItems: '. print_r($allChangedItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$allReadAbleItems = (array)_egwcontactssync_list();
-	#Horde::logMessage('SymcML: egwcontactssync listBy $allReadAbleItems: '. count($allReadAbleItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	$allClientItems = (array)$state->getClientItems();
-	#Horde::logMessage('SymcML: egwcontactssync listBy $allClientItems: '. count($allClientItems), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	#Horde::logMessage('SymcML: egwcontactssync listBy $allReadAbleItems: '. print_r($allReadAbleItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allClientItems = (array)$state->_getClientItems($state->_currentTargetURI);
+	#Horde::logMessage('SymcML: egwcontactssync listBy $allClientItems: '. print_r($allClientItems,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 	switch ($action) {
 		case 'delete' :
 			// filters may have changed, so we need to calculate which
@@ -145,56 +138,27 @@ function &_egwcontactssync_listBy($action, $timestamp, $type, $filter='') {
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
- * @param string $guid         (optional) The guid of a collision entry.
+ * @param string $notepad      (optional) The notepad to save the memo on.
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcontactssync_import($content, $contentType, $guid = null)
+function _egwcontactssync_import($content, $contentType, $notepad = null)
 {
 //error_log("_egwcontactssync_import");
 	#error_log("SymcML: egwcontactssync import content: ".base64_decode($ccontent)." contentType: $contentType");
-	#Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype:\n" . print_r($contentType,true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcontactssync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	if (is_array($contentType)) {
-                $contentType = $contentType['ContentType'];
-	}
-
-	$contactId = null; //default for new entry
-
-	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['addressbook_conflict_category'])) {
-		if (!$guid) {
-			$guid = _egwcontactssync_search($content, $contentType, null, true);
-		}
-		if (preg_match('/contacts-(\d+)/', $guid, $matches)) {
-			Horde::logMessage("SymcML: egwcontactssync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-			// We found a conflicting entry on the server, let's make it a duplicate
-			if ($conflict = ExecMethod2('addressbook.addressbook_bo.read', $matches[1])) {
-				$cat_ids = explode(",", $conflict['cat_id']);   //existing categories
-				$conflict_cat = $GLOBALS['egw_info']['user']['preferences']['syncml']['addressbook_conflict_category'];
-				if (!in_array($conflict_cat, $cat_ids)) {
-					$cat_ids[] = $conflict_cat;
-					$conflict['cat_id'] = implode(",", $cat_ids);
-				}
-				if (!empty($conflict['uid'])) {
-					$conflict['uid'] = 'DUP-' . $conflict['uid'];
-				}
-				ExecMethod2('addressbook.addressbook_bo.save', $conflict);
-			}
-		}
-	}
-
-	$state			= &$_SESSION['SyncML.state'];
+	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
 	#error_log(print_r($deviceInfo, true));
 
 
 	switch ($contentType) {
 		case 'text/x-vcard':
-		case 'text/vcard':
 			$vcaladdressbook	= new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-			$contactId		= $vcaladdressbook->addVCard($content, $contactId);
+			$contactId		= $vcaladdressbook->addVCard($content, false);
 			break;
 
 		case 'text/x-s4j-sife':
@@ -203,7 +167,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 			error_log("[_egwcontactssync_import] Treating bad contact content-type '".$contentType."' as if is was 'text/x-s4j-sifc'");
 		case 'text/x-s4j-sifc':
 			$sifaddressbook		= new addressbook_sif();
-			$contactId = 		$sifaddressbook->addSIF($content, $contactId);
+			$contactId = 		$sifaddressbook->addSIF($content);
 			break;
 
 		default:
@@ -211,51 +175,45 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 	}
 
 	if (is_a($contactId, 'PEAR_Error')) {
-		return $contactId;
+		return 'contacts-' .$contactId;
 	}
-
+	
 	if(!$contactId) {
   		return false;
   	}
 
-	$guid = 'contacts-' .$contactId;
-	Horde::logMessage("SymcML: egwcontactssync imported: $guid",
-			__FILE__, __LINE__, PEAR_LOG_DEBUG);
-  	return $guid;
+	#Horde::logMessage("SymcML: egwcontactssync import imported: ".$GLOBALS['egw']->common->generate_uid('contacts',$contactId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	//return $GLOBALS['egw']->common->generate_uid('contacts',$contactId);
+  return 'contacts-' .$contactId;
 }
 
 /**
  * Search a memo represented in the specified contentType,
  * used for SlowSync to check / rebuild content_map.
  *
- * @param string  $content      The content of the memo.
- * @param string  $contentType  What format is the data in? Currently supports:
- *                               text/plain
- *                               text/x-vnote
- * @param string  $contentid    the contentid read from contentmap we are expecting the content to be
- * @param boolean $relax=false  relaxed matching (lesser fields)
+ * @param string $content      The content of the memo.
+ * @param string $contentType  What format is the data in? Currently supports:
+ *                             text/plain
+ *                             text/x-vnote
+ * @param string $contentid    the contentid read from contentmap we are expecting the content to be
  *
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwcontactssync_search($content, $contentType, $contentid, $relax=false)
+function _egwcontactssync_search($content, $contentType, $contentid)
 {
-	#Horde::logMessage("SymcML: egwcontactssync search content: $content contentid: $contentid contenttype:\n" . print_r($contentType, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcontactssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state			= &$_SESSION['SyncML.state'];
+	$state			= $_SESSION['SyncML.state'];
 	$deviceInfo		= $state->getClientDeviceInfo();
 
-	if (is_array($contentType)) {
-                $contentType = $contentType['ContentType'];
-	}
 
 	switch ($contentType) {
 		case 'text/x-vcard':
-		case 'text/vcard':
 			$vcaladdressbook = new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
-			$contactId = $vcaladdressbook->search($content, $state->get_egwID($contentid), $relax);
+			$contactId = $vcaladdressbook->search($content,$state->get_egwID($contentid));
 			break;
 
 		case 'text/x-s4j-sife':
@@ -264,7 +222,7 @@ function _egwcontactssync_search($content, $contentType, $contentid, $relax=fals
 			#Horde::logMessage("SymcML: egwcontactssync search content: Treating bad contact content-type '$contentType' as if it was 'text/x-s4j-sifc'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifc':
 			$sifaddressbook	= new addressbook_sif();
-			$contactId = $sifaddressbook->search($content, $state->get_egwID($contentid), $relax);
+			$contactId = $sifaddressbook->search($content,$state->get_egwID($contentid));
 			break;
 
 		default:
@@ -302,30 +260,26 @@ function _egwcontactssync_search($content, $contentType, $contentid, $relax=fals
  */
 function _egwcontactssync_export($guid, $contentType)
 {
-	#Horde::logMessage("SymcML: egwcontactssync export guid: $guid contentType:\n" . print_r($contentType, true), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcontactssync export guid: $guid contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	if (is_array($contentType)) {
-		if (is_array($contentType['Properties'])) {
-			$clientProperties = &$contentType['Properties'];
-		} else {
-			$clientProperties = array();
-		}
-		$contentType = $contentType['ContentType'];
+		$options = $contentType;
+		$contentType = $options['ContentType'];
+		unset($options['ContentType']);
 	} else {
-		$clientProperties = array();
+		$options = array();
 	}
 
-	$state		= &$_SESSION['SyncML.state'];
+	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
-	$contactID	= $state->get_egwId($guid);
+	$contactID		= $state->get_egwId($guid);
 
 	switch ($contentType)
 	{
 		case 'text/x-vcard':
-		case 'text/vcard':
-			$vcaladdressbook = new addressbook_vcal('addressbook', $contentType, $clientProperties);
-			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
+			$vcaladdressbook	= new addressbook_vcal();
+			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 			if($vcard = $vcaladdressbook->getVCard($contactID))
 			{
@@ -359,7 +313,7 @@ function _egwcontactssync_export($guid, $contentType)
 
 		default:
 			#Horde::logMessage("SymcML: export unsupported", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-			return PEAR::raiseError(_("Unsupported Content-Type: $contentType"));
+			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 }
 
@@ -373,7 +327,7 @@ function _egwcontactssync_export($guid, $contentType)
  */
 function _egwcontactssync_delete($guid)
 {
-	$state = &$_SESSION['SyncML.state'];
+	$state = $_SESSION['SyncML.state'];
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// contacts at once.
 	if (is_array($guid)) {
@@ -391,7 +345,7 @@ function _egwcontactssync_delete($guid)
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
-
+ 
 	return ExecMethod('addressbook.addressbook_vcal.delete', $state->get_egwId($guid));
 
 }
@@ -405,11 +359,10 @@ function _egwcontactssync_delete($guid)
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
- * @param boolean $merge       merge data instead of replace
  *
  * @return boolean  Success or failure.
  */
-function _egwcontactssync_replace($guid, $content, $contentType, $merge=false)
+function _egwcontactssync_replace($guid, $content, $contentType)
 {
 
 	#Horde::logMessage("SymcML: egwcontactssync replace guid: $guid with content: $content", __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -417,21 +370,16 @@ function _egwcontactssync_replace($guid, $content, $contentType, $merge=false)
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 
-	$state		= &$_SESSION['SyncML.state'];
+	$state		= $_SESSION['SyncML.state'];
 	$deviceInfo	= $state->getClientDeviceInfo();
 
 	$contactID	= $state->get_egwId($guid);
 
-	if (is_array($contentType)) {
-                $contentType = $contentType['ContentType'];
-	}
-
 	switch ($contentType) {
 		case 'text/x-vcard':
-		case 'text/vcard':
 			$vcaladdressbook = new addressbook_vcal();
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			$result = $vcaladdressbook->addVCard($content, $contactID, $merge);
+			$result = $vcaladdressbook->addVCard($content,$contactID);
 			return $result;
 			break;
 
@@ -446,7 +394,7 @@ function _egwcontactssync_replace($guid, $content, $contentType, $merge=false)
 			#fclose($handle);
 
 			$sifaddressbook		= new addressbook_sif();
-			$result = $sifaddressbook->addSIF($content, $contactID, $merge);
+			$result = $sifaddressbook->addSIF($content,$contactID);
 			return $result;
 			break;
 
