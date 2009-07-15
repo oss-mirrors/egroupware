@@ -1,19 +1,19 @@
 <?php
-/**************************************************************************\
-* eGroupWare - Setup                                                       *
-* http://www.egroupware.org                                                *
-* --------------------------------------------                             *
-*  This program is free software; you can redistribute it and/or modify it *
-*  under the terms of the GNU General Public License as published by the   *
-*  Free Software Foundation; either version 2 of the License, or (at your  *
-*  option) any later version.                                              *
-\**************************************************************************/
-
-/* $Id: default_records.inc.php 20209 2006-01-06 05:06:46Z ralfbecker $ */
+/**
+ * eGroupWare - SyncML
+ *
+ * @link http://www.egroupware.org
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @package syncml
+ * @subpackage setup
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright (c) 2007-9 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @version $Id$
+ */
 
 //$oProc->m_odb->Halt_On_Error = 'yes';
 
- 
+
 /*
 
 foreach(array(

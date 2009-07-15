@@ -1,22 +1,26 @@
 <?php
 /**
- * Mnemo external API interface.
+ * eGroupWare - SyncML
  *
- * $Horde: mnemo/lib/api.php,v 1.52 2004/09/14 04:27:07 chuck Exp $
+ * SyncML Infolog eGroupWare Datastore API for Horde
  *
- * This file defines Mnemo's external API interface. Other
- * applications can interact with Mnemo through this API.
- *
- * @package Mnemo
+ * @link http://www.egroupware.org
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @package syncml
+ * @subpackage infolog
+ * @author Lars Kneschke <lkneschke@egroupware.org>
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @author Joerg Lehrke <jlehrke@noc.de>
+ * @version $Id$
  */
 
 $_services['list'] = array(
-    'args' => array(),
+    'args' => array('filter'),
     'type' => 'stringArray'
 );
 
 $_services['listBy'] = array(
-    'args' => array('action', 'timestamp'),
+    'args' => array('action', 'timestamp', 'type', 'filter'),
     'type' => 'stringArray'
 );
 
@@ -41,7 +45,7 @@ $_services['delete'] = array(
 );
 
 $_services['replace'] = array(
-    'args' => array('guid', 'content', 'contentType'),
+    'args' => array('guid', 'content', 'contentType', 'merge'),
     'type' => 'boolean'
 );
 
@@ -50,9 +54,11 @@ $_services['replace'] = array(
  * Returns an array of GUIDs for all notes that the current user is
  * authorized to see.
  *
+ * @param string  $filter     The filter expression the client provided.
+ *
  * @return array  An array of GUIDs for all notes the user can access.
  */
-function _egwnotessync_list()
+function _egwnotessync_list($filter='')
 {
 	$guids = array();
 
@@ -84,13 +90,17 @@ function _egwnotessync_list()
  *
  * @param string  $action     The action to check for - add, modify, or delete.
  * @param integer $timestamp  The time to start the search.
+ * @param string  $type       The type of the content.
+ * @param string  $filter     The filter expression the client provided.
  *
  * @return array  An array of GUIDs matching the action and time criteria.
  */
-function &_egwnotessync_listBy($action, $timestamp)
+function &_egwnotessync_listBy($action, $timestamp, $type, $filter)
 {
 	#Horde::logMessage("SymcML: egwnotessync listBy action: $action timestamp: $timestamp", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-  $state = $_SESSION['SyncML.state'];
+
+	$state = $_SESSION['SyncML.state'];
+
 	$allChangedItems = $state->getHistory('infolog_note', $action, $timestamp);
 
 	if($action == 'delete')
@@ -101,16 +111,15 @@ function &_egwnotessync_listBy($action, $timestamp)
 	$user = $GLOBALS['egw_info']['user']['account_id'];
 
 	$readAbleItems = array();
-	foreach($allChangedItems as $guid)
-	{
+	foreach($allChangedItems as $guid) {
 		$uid = $state->get_egwId($guid);
 
 		if(($info = $infolog_bo->read($uid)) &&		// checks READ rights too and returns false if none
 			// for filter my = all items the user is responsible for:
 			//($user == $info['info_owner'] && !count($info['info_responsible']) || in_array($user,$info['info_responsible'])))
 			// for filter own = all items the user own or is responsible for:
-			($user == $info['info_owner'] || in_array($user,$info['info_responsible'])))
-		{
+			($user == $info['info_owner']
+				|| in_array($user,$info['info_responsible']))) {
 			$readAbleItems[] = $guid;
 		}
 	}
@@ -124,41 +133,35 @@ function &_egwnotessync_listBy($action, $timestamp)
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
- * @param string $notepad      (optional) The notepad to save the memo on.
+ * @param string $guid         (optional) The guid of a collision entry.
  *
  * @return string  The new GUID, or false on failure.
  */
-function _egwnotessync_import($content, $contentType, $notepad = null)
+function _egwnotessync_import($content, $contentType, $guid = null)
 {
 	Horde::logMessage("SymcML: egwnotessync import content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-#    global $prefs;
-#	require_once dirname(__FILE__) . '/base.php';
-#	require_once 'Horde/History.php';
-#	$history = &Horde_History::singleton();
-#
-#    /* Make sure we have a valid notepad and permissions to edit
-#     * it. */
-#    if (empty($notepad)) {
-#        $notepad = Mnemo::getDefaultNotepad(PERMS_EDIT);
-#    }
-#
-#    if (!array_key_exists($notepad, Mnemo::listNotepads(false, PERMS_EDIT))) {
-#        return PEAR::raiseError(_("Permission Denied"));
-#    }
-#
-#    /* Create a Mnemo_Driver instance. */
-#    require_once MNEMO_BASE . '/lib/Driver.php';
-#    $storage = &Mnemo_Driver::singleton($notepad);
-#
-	if (is_array($contentType))
-	{
-		$options = $contentType;
-		$contentType = $options['ContentType'];
-		unset($options['ContentType']);
+
+	if (is_array($contentType)) {
+		$contentType = $contentType['ContentType'];
 	}
-	else
-	{
-		$options = array();
+
+	$noteId = -1; // default for new entry
+
+	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'])) {
+		if (!$guid) {
+			$guid = _egwnotessync_search($content, $contentType, null);
+		}
+		if (preg_match('/infolog_note-(\d+)/', $guid, $matches)) {
+			Horde::logMessage("SymcML: egwnotessync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			// We found a conflicting entry on the server, let's make it a duplicate
+			if ($conflict = ExecMethod2('infolog.infolog_bo.read', $matches[1])) {
+				$conflict['info_cat'] = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'];
+				if (!empty($conflict['info_uid'])) {
+					$conflict['info_uid'] = 'DUP-' . $conflict['info_uid'];
+				}
+				ExecMethod2('infolog.infolog_bo.write', $conflict);
+			}
+		}
 	}
 
 	switch ($contentType)
@@ -166,7 +169,7 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 		case 'text/plain':
 		case 'text/x-vnote':
 			$infolog_ical = new infolog_ical();
-			$noteId = $infolog_ical->importVNOTE($content, $contentType);
+			$noteId = $infolog_ical->importVNOTE($content, $contentType, $noteId);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -175,7 +178,7 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 			Horde::logMessage("SyncML: egwnotessync import treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
-			$noteId = $infolog_sif->addSIF($content,-1,'note');
+			$noteId = $infolog_sif->addSIF($content, $noteId, 'note');
 			error_log("Done add note: noteId=$noteId");
 			break;
 
@@ -185,15 +188,17 @@ function _egwnotessync_import($content, $contentType, $notepad = null)
 
 	if (is_a($noteId, 'PEAR_Error'))
 	{
-		return 'infolog_note-' . $noteId;
+		return $noteId;
 	}
 
-	if(!$noteId) {
+	if(!$noteId || $noteId == -1) {
   		return false;
   	}
 
-	#Horde::logMessage("SymcML: egwnotessync import imported: ".$GLOBALS['egw']->common->generate_uid('infolog',$noteId), __FILE__, __LINE__, PEAR_LOG_DEBUG);
-	return 'infolog_note-' . $noteId;
+	$guid = 'infolog_note-' . $noteId;
+	Horde::logMessage("SymcML: egwnotessync imported: $guid",
+			__FILE__, __LINE__, PEAR_LOG_DEBUG);
+	return $guid;
 }
 
 /**
@@ -278,38 +283,27 @@ function _egwnotessync_search($content, $contentType, $contentid)
  */
 function _egwnotessync_export($guid, $contentType)
 {
-	  $state = $_SESSION['SyncML.state'];
-	  Horde::logMessage("SymcML: egwnotessync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
-#    require_once dirname(__FILE__) . '/base.php';
-#
-#    $storage = &Mnemo_Driver::singleton();
-#    $memo = $storage->getByGUID($guid);
-#    if (is_a($memo, 'PEAR_Error')) {
-#        return $memo;
-#    }
-#
-#    if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_EDIT))) {
-#        return PEAR::raiseError(_("Permission Denied"));
-#    }
-#
-	if (is_array($contentType))
-	{
-		$options = $contentType;
-		$contentType = $options['ContentType'];
-		unset($options['ContentType']);
-	}
-	else
-	{
-		$options = array();
+	Horde::logMessage("SymcML: egwnotessync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+	$state = $_SESSION['SyncML.state'];
+
+	if (is_array($contentType)) {
+		if (is_array($contentType['Properties'])) {
+			$clientProperties = &$contentType['Properties'];
+		} else {
+			$clientProperties = array();
+		}
+		$contentType = $contentType['ContentType'];
+	} else {
+		$clientProperties = array();
 	}
 
 	$noteId = $state->get_egwId($guid);
 
-	switch ($contentType)
-	{
+	switch ($contentType) {
 		case 'text/x-vnote':
 		case 'text/plain':
-			$infolog_ical = new infolog_ical();
+			$infolog_ical = new infolog_ical($clientProperties);
 			return $infolog_ical->exportVNOTE($noteId, $contentType);
 			break;
 
@@ -319,12 +313,9 @@ function _egwnotessync_export($guid, $contentType)
 			Horde::logMessage("SyncML: egwnotessync export treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
-			if($note = $infolog_sif->getSIF($noteId, 'note'))
-			{
+			if($note = $infolog_sif->getSIF($noteId, 'note')) {
 				return $note;
-			}
-			else
-			{
+			} else {
 				return PEAR::raiseError(_("Access Denied"));
 			}
 			break;
@@ -347,28 +338,15 @@ function _egwnotessync_delete($guid)
 	$state = $_SESSION['SyncML.state'];
 	// Handle an arrray of GUIDs for convenience of deleting multiple
 	// notes at once.
-	if (is_array($guid))
-	{
-		foreach ($guid as $g)
-		{
+	if (is_array($guid)) {
+		foreach ($guid as $g) {
 			$result = _egwnotessync_delete($g);
-			if (is_a($result, 'PEAR_Error'))
-			{
+			if (is_a($result, 'PEAR_Error')) {
 				return $result;
 			}
 		}
 		return true;
 	}
-
-	#$memo = $storage->getByGUID($guid);
-	#if (is_a($memo, 'PEAR_Error')) {
-	#	return $memo;
-	#}
-	#
-	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
-	#	return PEAR::raiseError(_("Permission Denied"));
-	#}
-	#
 
 	return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
 }
@@ -382,41 +360,27 @@ function _egwnotessync_delete($guid)
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
+ * @param boolean $merge       merge data instead of replace
  *
  * @return boolean  Success or failure.
  */
-function _egwnotessync_replace($guid, $content, $contentType)
+function _egwnotessync_replace($guid, $content, $contentType, $merge=false)
 {
-	#Horde::logMessage("SymcML: egwnotessync replace guid: $guid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-  $state		= $_SESSION['SyncML.state'];
-	#$memo = $storage->getByGUID($guid);
-	#if (is_a($memo, 'PEAR_Error')) {
-	#	return $memo;
-	#}
-	#
-	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_EDIT))) {
-	#	return PEAR::raiseError(_("Permission Denied"));
-	#}
+	Horde::logMessage("SymcML: egwtaskssync replace content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	if (is_array($contentType))
-	{
-		$options = $contentType;
-		$contentType = $options['ContentType'];
-		unset($options['ContentType']);
-	}
-	else
-	{
-		$options = array();
+	$state = $_SESSION['SyncML.state'];
+
+	if (is_array($contentType)) {
+		$contentType = $contentType['ContentType'];
 	}
 
 	$noteId = $state->get_egwId($guid);
 
-	switch ($contentType)
-	{
+	switch ($contentType) {
 		case 'text/plain':
 		case 'text/x-vnote':
 			$infolog_ical = new infolog_ical();
-			return $infolog_ical->importVNOTE($content, $contentType, $noteId);
+			return $infolog_ical->importVNOTE($content, $contentType, $noteId, $merge);
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -425,7 +389,7 @@ function _egwnotessync_replace($guid, $content, $contentType)
 			Horde::logMessage("SyncML: egwnotessync replace treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
-			return $infolog_sif->addSIF($content, $infoId, 'note');
+			return $infolog_sif->addSIF($content, $noteId, 'note', $merge);
 			break;
 
 		default:

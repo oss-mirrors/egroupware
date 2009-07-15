@@ -6,24 +6,31 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  * @package syncml
  * @subpackage setup
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @copyright (c) 2007-9 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @version $Id$
  */
 
 /* Basic information about this app */
 $setup_info['syncml']['name']      = 'syncml';
 $setup_info['syncml']['title']     = 'SyncML';
-$setup_info['syncml']['version']   = '1.6.001';
-$setup_info['syncml']['enable']    = 3;
+$setup_info['syncml']['version']   = '1.6.500jl';
+$setup_info['syncml']['enable']    = 2;
 $setup_info['syncml']['app_order'] = 99;
 
-$setup_info['syncml']['author'] = 'Lars Kneschke, Horde Project';
-$setup_info['syncml']['note']   = 'SyncML interface for eGroupWare';
+$setup_info['syncml']['author'] = array(
+		'name' => 'Lars Kneschke, Horde Project/Jörg Lehrke',
+		'url'  => 'http://k.noc.de'
+	);
+$setup_info['syncml']['note']   = 'SyncML interface for eGroupWare with extensions from Joerg Lehrke';
 $setup_info['syncml']['license']  = 'GPL';
 $setup_info['syncml']['description'] =
 	'This module allows you to syncronize your SyncML enabled device.';
 
-$setup_info['syncml']['maintainer'] = 'eGroupware coretime';
-$setup_info['syncml']['maintainer_email'] = 'egroupware-developers@list.sf.net';
+$setup_info['syncml']['maintainer'] = array(
+		'name' => 'eGroupware coreteam/Jörg Lehrke',
+		'email' => 'egroupware-developers@list.sf.net'
+	);
 
 
 /* The tables this app creates */
@@ -31,6 +38,11 @@ $setup_info['syncml']['tables'][]  = 'egw_contentmap';
 $setup_info['syncml']['tables'][]  = 'egw_syncmldevinfo';
 $setup_info['syncml']['tables'][]  = 'egw_syncmlsummary';
 $setup_info['syncml']['tables'][]  = 'egw_syncmldeviceowner';
+
+/* The hooks this app includes, needed for hooks registration */
+$setup_info['syncml']['hooks'][] = 'preferences';
+$setup_info['syncml']['hooks'][] = 'settings';
+
 
 /* Dependencies for this app to work */
 $setup_info['syncml']['depends'][] = array(
