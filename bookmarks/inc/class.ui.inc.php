@@ -14,14 +14,14 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-	
+
 	require_once(EGW_API_INC. '/class.html.inc.php');
 
 	define('TREE',1);
 	define('_LIST',2);
 	define('CREATE',3);
 	define('SEARCH',4);
-	
+
 	class ui
 	{
 		var $t;
@@ -29,7 +29,7 @@
 		var $img;
 		var $expandedcats;
 		var $nextmatchs;
-		
+
 		/**
 		 * @var html
 		 */
@@ -762,14 +762,16 @@
 				'th_bg' => $GLOBALS['egw_info']['theme']['th_bg']
 			));
 
-			$categories = (array)$this->bo->categories->return_array( 'all', 0 , false );
-			
+			$categories = (array)$this->bo->categories->return_array( 'all', 0 , false, '', '', '', true );
+
 			//build cat tree
 			foreach ( $categories as $key => $cat ) {
 				$categories[$key]['tree'] = $cat['id'];
 				$parent = $cat['parent'];
 				while ( $parent != 0) {
 					$categories[$key]['tree'] = $parent. '/'. $categories[$key]['tree'];
+					// Select a nonexisting key, in case the referenced cat doesn't exist.
+					$parcatkey = count($categories) + 1;
 					foreach ( $categories as $ikey => $icat ) {
 						if ( $icat['id'] == $parent ) {
 							$parcatkey = $ikey;
@@ -779,17 +781,17 @@
 					$parent = $categories[$parcatkey]['parent'];
 				}
 			}
-			
+
 			// buld bm tree
 			foreach ( $categories as $cat ) {
 				$bookmarks = $this->bo->_list($cat['id'],False,False,False);
 				$bm_tree[$cat['tree']] = $cat['name'];
-				
+
 				foreach ( (array)$bookmarks as $id => $bm ) {
 					// begin entry
-					$bm_tree[$cat['tree']. '/'. $id] = array('image' => 'blank.gif');
+					$bm_tree[$cat['tree']. '/'. $id] = array();
 					$entry = &$bm_tree[$cat['tree']. '/'. $id]['label'];
-					
+
 					// edit
 					if ($this->bo->check_perms2( $bm['owner'], $bm['access'], EGW_ACL_EDIT) ) {
 						$entry .= '<a href ="'.
@@ -797,13 +799,13 @@
 							html::image( 'bookmarks', $this->img['edit'], lang( 'Edit this bookmark' ) ).
 							'</a>';
 					}
-					
+
 					//view
 					$entry .= '<a href ="'.
 						$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.ui.view&bm_id='. $id ). '">'.
 						html::image( 'bookmarks', $this->img['view'], lang( 'View this bookmark' ) ).
 						'</a>';
-					
+
 					//redirect
 					$entry .= '<a target="_new" href ="'.
 						$GLOBALS['egw']->link( '/index.php', 'menuaction=bookmarks.ui.redirect&bm_id='. $id ). '">'.
@@ -811,7 +813,7 @@
 				}
 			}
 			$tree = html::tree((array)$bm_tree, false, false, "null", 'foldertree', '', '', false, '/', null);
-			
+
 			$this->t->set_var('body',$tree);
 			$this->app_messages($this->t);
 			$this->t->pfp('out','common_');
