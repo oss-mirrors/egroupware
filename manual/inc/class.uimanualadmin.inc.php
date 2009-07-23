@@ -1,32 +1,27 @@
 <?php
-/**************************************************************************\
-* eGroupWare - Online User manual                                          *
-* http://www.eGroupWare.org                                                *
-* Written and copyright (c) 2004-6 by RalfBecker@outdoor-training.de       *
-* --------------------------------------------                             *
-*  This program is free software; you can redistribute it and/or modify it *
-*  under the terms of the GNU General Public License as published by the   *
-*  Free Software Foundation; either version 2 of the License, or (at your  *
-*  option) any later version.                                              *
-\**************************************************************************/
-
-/* $Id$ */
+/**
+ * eGroupWare - Online User manual
+ *
+ * @link http://www.egroupware.org
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @package manual
+ * @copyright (c) 2004-9 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @version $Id$
+ */
 
 class uimanualadmin extends wiki_xml
 {
 	var $public_functions = array(
-		'import' =>True,
+		'import' => True,
 	);
 	var $manual_config;
-	var $mconfig;
 
 	function __construct()
 	{
 		CreateObject('manual.uimanual');	// sets the default config
 
-		$this->mconfig =& CreateObject('phpgwapi.config','manual');
-		$this->mconfig->read_repository();
-		$this->manual_config =& $this->mconfig->config_data;
+		$this->manual_config = config::read('manual');
 
 		$this->wiki_id = (int) $this->manual_config['manual_wiki_id'];
 		parent::__construct($this->wiki_id);	// call the constructor of the class we extend
@@ -58,9 +53,8 @@ class uimanualadmin extends wiki_xml
 
 		$status = wiki_xml::import($url,True);
 
-		$this->manual_config['manual_updated'] = $status['meta']['exported'];
-		$this->manual_config['manual_langs'] = $langs;
-		$this->mconfig->save_repository();
+		config::save_value('manual_update',$this->manual_config['manual_updated'] = $status['meta']['exported'],'manual');
+		config::save_value('manual_langs',$this->manual_config['manual_langs'] = $langs,'manual');
 
 		echo '<h3>'.lang('%1 manual page(s) added or updated',count($status['imported']))."</h3>\n";
 

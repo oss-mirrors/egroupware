@@ -1,16 +1,14 @@
 <?php
-/**************************************************************************\
-* eGroupWare - Online User manual                                          *
-* http://www.eGroupWare.org                                                *
-* Written and copyright (c) 2004-6 by RalfBecker@outdoor-training.de       *
-* --------------------------------------------                             *
-*  This program is free software; you can redistribute it and/or modify it *
-*  under the terms of the GNU General Public License as published by the   *
-*  Free Software Foundation; either version 2 of the License, or (at your  *
-*  option) any later version.                                              *
-\**************************************************************************/
-
-/* $Id$ */
+/**
+ * eGroupWare - Online User manual
+ *
+ * @link http://www.egroupware.org
+ * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @package manual
+ * @copyright (c) 2004-9 by Ralf Becker <RalfBecker-AT-outdoor-training.de>
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ * @version $Id$
+ */
 
 class uimanual extends wiki_ui
 {
@@ -22,9 +20,8 @@ class uimanual extends wiki_ui
 
 	function __construct()
 	{
-		$config =& CreateObject('phpgwapi.config','manual');
-		$config->read_repository();
-		if (!is_array($config->config_data) || !isset($config->config_data['manual_update_url']))	// empty never get's stored
+		$this->manual_config = config::read('manual');
+		if (!is_array($this->manual_config) || !isset($this->manual_config['manual_update_url']))	// empty never get's stored
 		{
 			foreach(array(
 				'manual_remote_egw_url'     => 'http://manual.egroupware.org/egroupware',
@@ -35,20 +32,13 @@ class uimanual extends wiki_ui
 				'manual_anonymous_password' => 'anonymous',
 			) as $name => $default)
 			{
-				if (!isset($config->config_data[$name]) ||
-					$name == 'manual_update_url' && $config->config_data[$name] == 'http://egroupware.org/egroupware/wiki/index.php?page=Manual&action=xml')
+				if (!isset($this->manual_config[$name]) ||
+					$name == 'manual_update_url' && $this->manual_config[$name] == 'http://egroupware.org/egroupware/wiki/index.php?page=Manual&action=xml')
 				{
-					$config->config_data[$name] = $default;
-					$need_save = True;
+					config::save_value($name,$this->manual_config[$name]=$default,'manual');
 				}
 			}
-			if ($need_save)
-			{
-				$config->save_repository();
-			}
 		}
-		$this->manual_config = $config->config_data;
-		unset($config);
 		$this->wiki_id = (int) $this->manual_config['manual_wiki_id'];
 
 		// set a language given in the URL as session preference
