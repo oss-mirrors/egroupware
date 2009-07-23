@@ -25,7 +25,7 @@ if (!file_exists(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat/data/public/themes')
 	!is_writable(EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat/data/public'))
 {
 	$GLOBALS['egw']->framework->render('<h3><b>'.lang('To complete the phpFreeChat installation you have to give the webserver write access to:').
-		'<br />'.EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat/public'."</b></h3>\n<p>".
+		'<br />'.EGW_INCLUDE_ROOT.'/phpfreechat/phpfreechat/data/public'."</b></h3>\n<p>".
 		lang(' You should remove the write access, once you see the chat!')."</p>\n");
 
 	$GLOBALS['egw']->common->egw_exit();
