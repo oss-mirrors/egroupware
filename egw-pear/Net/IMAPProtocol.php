@@ -751,9 +751,11 @@ class Net_IMAPProtocol {
         }
 
         if ( PEAR::isError( $args = $this->_genericCommand( 'LOGOUT' ) ) ) {
+	    error_log(__METHOD__.$args->message);
             return $args;
         }
-        if (PEAR::isError( $this->_socket->disconnect() ) ) {
+        if (PEAR::isError( $reval = $this->_socket->disconnect() ) ) {
+	    error_log(__METHOD__.$reval->message);
             return new PEAR_Error('socket disconnect failed');
         }
 

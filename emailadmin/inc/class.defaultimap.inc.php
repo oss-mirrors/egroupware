@@ -183,7 +183,9 @@
 		
 		function disconnect()
 		{
-			parent::disconnect();
+			//error_log(__METHOD__.function_backtrace());
+			$retval = parent::disconnect();
+			if( PEAR::isError($retval)) error_log(__METHOD__.$retval->message);
 			$this->_isConnected = false;
 		}
 		
@@ -395,7 +397,9 @@
 		{
 			$mailboxName = $this->getUserMailboxString($_username);
 			$storageQuota = $this->getStorageQuota($mailboxName); 
-
+			//error_log(__METHOD__.$_username);
+			//error_log(__METHOD__.$mailboxName);
+			if ( PEAR::isError($storageQuota)) error_log(__METHOD__.$storageQuota->message);
 			if(is_array($storageQuota) && isset($storageQuota['QMAX'])) {
 				return (int)$storageQuota['QMAX'];
 			}
@@ -412,6 +416,11 @@
 		 */
 		function getUserData($_username) 
 		{
+                        if($this->_connected === true) {
+				//error_log(__METHOD__."try to disconnect");
+                                $this->disconnect();
+                        }
+
 			$this->openConnection(true);
 
 			$userData = array();
@@ -434,6 +443,7 @@
 		 */
 		function openConnection($_adminConnection=false) 
 		{
+			//error_log(__METHOD__.function_backtrace());
 			unset($this->_connectionErrorObject);
 			
 			if($_adminConnection) {
@@ -450,17 +460,19 @@
 			
 			$this->setStreamContextOptions($this->_getTransportOptions());
 			$this->setTimeout(20);
-			
-			if( PEAR::isError($status = $this->connect($this->_getTransportString(), $this->port, $this->encryption == 1)) ) {
+			if( PEAR::isError($status = parent::connect($this->_getTransportString(), $this->port, $this->encryption == 1)) ) {
+				error_log(__METHOD__."Could not connect");
+				error_log(__METHOD__.$status->message);
 				$this->_connectionErrorObject = $status;
 				return false;
 			}
-			
-			if( PEAR::isError($status = $this->login($username, $password, TRUE, !$this->isAdminConnection)) ) {
+			if( PEAR::isError($status = parent::login($username, $password, TRUE, !$this->isAdminConnection)) ) {
+				error_log(__METHOD__."Could not log in");
+				error_log(__METHOD__.$status->message);
 				$this->_connectionErrorObject = $status;
 				return false;
 			}
-			
+	
 			return true;
 		}		
 

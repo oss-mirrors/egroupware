@@ -122,6 +122,7 @@
 			}
 
 			$this->disconnect();
+			$this->_connected = false;
 
 			return true;
 			

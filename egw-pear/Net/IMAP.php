@@ -183,9 +183,13 @@ class Net_IMAP extends Net_IMAPProtocol {
         }
 
         if (PEAR::isError($ret=$this->cmdLogout())) {
+	    error_log(__METHOD__.$ret->message);
             return $ret;
-        }
+        } else {
+	    //error_log(__METHOD__.print_r($ret,true));
+	}
         if(strtoupper($ret["RESPONSE"]["CODE"]) != "OK"){
+	    error_log(__METHOD__.$ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
             return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
         }
 
