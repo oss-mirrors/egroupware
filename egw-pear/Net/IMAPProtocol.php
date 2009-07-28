@@ -2746,7 +2746,6 @@ class Net_IMAPProtocol {
             quota_resource  ::= atom SP number SP number
             quota_response  ::= "QUOTA" SP astring SP quota_list
             */
-
             $mailbox = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
             $ret_aux = array('MAILBOX'=>$this->utf_7_decode($mailbox));
 
@@ -2806,6 +2805,21 @@ class Net_IMAPProtocol {
                 $mmax = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
                 return array($token=>array("MUSED"=> $mused, "MMAX" => $mmax));
         break;
+	case "LEVEL" :
+		$lused = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
+		$lmax = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
+		return array($token=>array("LUSED"=> $lused, "LMAX" => $lmax));
+		break;
+	case "MAILBOX" :
+		$mbused = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
+		$mbmax = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
+		return array(); //throw away this information as this info seems quite useless with a QUOTA Response, AND we use the KEYWORD otherwise
+		break;
+	case "EXPIRATION" :
+		$expused = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
+		$expmax = $this->_parseOneStringResponse( $str,__LINE__ , __FILE__ );
+		return array(); //throw away this information as this info seems quite useless
+		break; 
         case "FETCH" :
                 $this->_parseSpace( $str  ,__LINE__  ,__FILE__ );
                 // Get the parsed pathenthesis
