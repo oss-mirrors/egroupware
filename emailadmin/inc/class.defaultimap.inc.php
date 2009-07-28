@@ -186,7 +186,7 @@
 			//error_log(__METHOD__.function_backtrace());
 			$retval = parent::disconnect();
 			if( PEAR::isError($retval)) error_log(__METHOD__.$retval->message);
-			$this->_isConnected = false;
+			$this->_connected = false;
 		}
 		
 		/**
