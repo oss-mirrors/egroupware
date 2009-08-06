@@ -150,6 +150,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$vcal = new Horde_iCalendar;
+	$boCalendar = new calendar_bo();
 	$soCalendar = new calendar_so();
 
 	$now = time();
@@ -180,7 +181,6 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
     	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	// query the calendar, to check if we are a participants in these changed events
-	$boCalendar = new calendar_bo();
 	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
 	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
 	$ids = $guids = array();
@@ -205,6 +205,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 			foreach((array)$events as $event) {
 				//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
 				//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+				$boCalendar->enum_groups($event);
 				if ((!$endDate || $event['end'] <= $endDate)
 							&& $startDate <= $event['start']
 						&& isset($event['participants'][$user])
@@ -243,6 +244,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 		foreach((array)$events as $event) {
 			//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
 			//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+			$boCalendar->enum_groups($event);
 			if ((!$startDate || $startDate <= $event['start']
 						&& $event['end'] <= $endDate)
 					&& isset($event['participants'][$user])
