@@ -29,7 +29,7 @@ $LinkPtn = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' .
 //   Note that changing this requires a change to parse/transforms.php so
 //   that parse_hyperlinkxxx know how many parentheses are included in $UrlPtn.
 $UrlPtn  = "(http:|mailto:|https:|ftp:|gopher:|news:|irc:|egw:|vfs:|flash:)" .
-					 "([^ \\/\"\']*\\/)*[^ \\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+					 "([^ \\/\"\'<]*\\/)*[^ \\t\\n\\/\"\'<]*[A-Za-z0-9\\/?=&~_]";
 
 // $InterWikiPtn establishes the format for InterWiki links in this wiki.
 //   Note that changing this requires a change to parse/transforms.php so
