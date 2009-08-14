@@ -14,7 +14,8 @@
 
 	class uicompose
 	{
-
+		const _stationery_prefix = 'felamimail.stationery';
+		
 		var $public_functions = array
 		(
 			'action'		=> True,
@@ -104,6 +105,7 @@
 			}
 			$formData['priority'] 	= $this->bocompose->stripSlashes($_POST['priority']);
 			$formData['signatureID'] = (int)$_POST['signatureID'];
+			$formData['stationeryID'] = $_POST['stationeryID'];
 			$formData['mimeType']	= $this->bocompose->stripSlashes($_POST['mimeType']);
 			$formData['disposition'] = (bool)$_POST['disposition'];
 			$formData['to_infolog'] = $_POST['to_infolog'];
@@ -203,6 +205,7 @@
 				$presetSig = (strtolower($_REQUEST['signature']) == 'no' ? -2 : -1);
 			}
 			if ($sessionData['isDraft'] && !empty($sessionData['signatureID'])) $presetSig = (int)$sessionData['signatureID'];
+			if ($sessionData['isDraft'] && !empty($sessionData['stationeryID'])) $presetStationery = $sessionData['stationeryID'];
 			$presetId = NULL;
 			if ($sessionData['isDraft'] && !empty($sessionData['identity'])) $presetId = (int)$sessionData['identity'];
 			$this->display_app_header();
@@ -382,10 +385,21 @@
 				'-2' => lang('no signature')
 			);
 			foreach($signatures as $signature) {
-				$selectSignatures[$signature['fm_signatureid']] = $signature['fm_description'];
+				$selectSignatures[$signature['fm_signatureid']] = lang('Signature').': '.$signature['fm_description'];
 			}
-			$selectBox = html::select('signatureID', ($presetSig ? $presetSig : $sessionData['signatureID']), $selectSignatures, true, "style='width: 70%;' onchange='fm_compose_changeInputType(this)'");
-			$this->t->set_var("select_signature", $selectBox);
+			$selectStationeries = array(
+				'0' => lang('no stationery')
+			);
+			$etemplate = new etemplate();
+			$stationeries = $etemplate->search(self::_stationery_prefix);
+			foreach($stationeries as $stationery) {
+				list(,,$stationeryDescription) = explode('.',$stationery['name']);
+				$selectStationeries[$stationery['name']] = lang('stationery').': '.$stationeryDescription;
+			}
+			$selectBoxSignature  = html::select('signatureID', ($presetSig ? $presetSig : $sessionData['signatureID']), $selectSignatures, true, "style='width: 35%;' onchange='fm_compose_changeInputType(this)'");
+			$selectBoxStationery = html::select('stationeryID', ($presetStationery ? $presetStationery : 0), $selectStationeries, true, "style='width: 35%;'");
+			$this->t->set_var("select_signature", $selectBoxSignature);
+			$this->t->set_var("select_stationery", $selectBoxStationery);
 			$this->t->set_var("lang_editormode",lang("Editor type"));
 			$this->t->set_var("toggle_editormode", lang("Editor type").":&nbsp;<span><input name=\"_is_html\" value=\"".$ishtml."\" type=\"hidden\" /><input name=\"_editorselect\" onchange=\"fm_toggle_editor(this)\" ".($ishtml ? "checked=\"checked\"" : "")." id=\"_html\" value=\"html\" type=\"radio\"><label for=\"_html\">HTML</label><input name=\"_editorselect\" onchange=\"fm_toggle_editor(this)\" ".($ishtml ? "" : "checked=\"checked\"")." id=\"_plain\" value=\"plain\" type=\"radio\"><label for=\"_plain\">Plain text</label></span>");
 			$this->t->pparse("out","body_input");
@@ -632,6 +646,7 @@
 			$this->t->set_var("lang_high",lang('high'));
 			$this->t->set_var("lang_low",lang('low'));
 			$this->t->set_var("lang_signature",lang('signature'));
+			$this->t->set_var("lang_stationery",lang('stationery'));
 			$this->t->set_var("lang_select_folder",lang('select folder'));
 			$this->t->set_var('lang_max_uploadsize',lang('max uploadsize'));
 			$this->t->set_var('lang_adding_file_please_wait',lang('Adding file to message. Please wait!'));

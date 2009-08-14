@@ -237,6 +237,9 @@
 			if (!empty($addHeadInfo['X-SIGNATURE'])) {
 				$this->sessionData['signatureID'] = $addHeadInfo['X-SIGNATURE'];
 			}
+			if (!empty($addHeadInfo['X-STATIONERY'])) {
+				$this->sessionData['stationeryID'] = $addHeadInfo['X-STATIONERY'];
+			}
 			if (!empty($addHeadInfo['X-IDENTITY'])) {
 				$this->sessionData['identity'] = $addHeadInfo['X-IDENTITY'];
 			}
@@ -770,14 +773,22 @@
 				$_mailObject->IsHTML(true);
 				if(!empty($signature)) {
 					#$_mailObject->Body    = array($_formData['body'], $_signature['signature']);
-					$_mailObject->Body    = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $signature;
+					if($this->sessionData['stationeryID']) {
+						$_mailObject->Body = $this->renderStationery($_formData['body'], $signature);
+					} else {
+						$_mailObject->Body = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $signature;
+					}
 					$_mailObject->AltBody = $this->convertHTMLToText($_formData['body']).
 						"\r\n-- \r\n".
 						$this->convertHTMLToText($signature);
 					#print "<pre>$_mailObject->AltBody</pre>";
 					#print htmlentities($_signature['signature']);
 				} else {
-					$_mailObject->Body	= $_formData['body'];
+					if($this->sessionData['stationeryID']) {
+						$_mailObject->Body = $this->renderStationery($_formData['body']);
+					} else {
+						$_mailObject->Body	= $_formData['body'];
+					}
 					$_mailObject->AltBody	= $this->convertHTMLToText($_formData['body']);
 				}
 			} else {
@@ -840,6 +851,7 @@
 			$this->sessionData['folder']    = $_formData['folder'];
 			$this->sessionData['bcc']   = $_formData['bcc'];
 			$this->sessionData['signatureID'] = $_formData['signatureID'];
+			$this->sessionData['stationeryID'] = $_formData['stationeryID'];
 			$this->sessionData['identity']  = $_formData['identity'];
 			foreach((array)$this->sessionData['bcc'] as $address) {
 				$address_array  = imap_rfc822_parse_adrlist($address,'');
@@ -855,6 +867,7 @@
 				$mail->AddCustomHeader("X-Mailfolder: $folders");
 			}
 			$mail->AddCustomHeader('X-Signature: '.$this->sessionData['signatureID']);
+			$mail->AddCustomHeader('X-Stationery: '.$this->sessionData['stationeryID']);
 			$mail->AddCustomHeader('X-Identity: '.(int)$this->sessionData['identity']);
 			// decide where to save the message (default to draft folder, if we find nothing else)
 			// if the current folder is in draft or template folder save it there
@@ -899,6 +912,7 @@
 			$this->sessionData['body']	= $_formData['body'];
 			$this->sessionData['priority']	= $_formData['priority'];
 			$this->sessionData['signatureID'] = $_formData['signatureID'];
+			$this->sessionData['stationeryID'] = $_formData['stationeryID'];
 			$this->sessionData['disposition'] = $_formData['disposition'];
 			$this->sessionData['mimeType']	= $_formData['mimeType'];
 			$this->sessionData['to_infolog'] = $_formData['to_infolog'];
@@ -1077,7 +1091,7 @@
 				if (is_array($signatureData)) {
 					$this->sessionData['signatureID'] = $signatureData['signatureid'];
 				} else {
-					$this->sessionData['signatureID'] =$signatureData;
+					$this->sessionData['signatureID'] = $signatureData;
 				}
 			} else {
 				$this->sessionData['signatureID'] = -1;
@@ -1102,5 +1116,26 @@
 			} else {
 				return $_string;
 			}
+		}
+		
+		/*
+		 * Renders the mail body with a given stationery template
+		 *
+		 * @param string $_message the mail message
+		 * @param string $_signature='' the mail signature
+		 *
+		 * @return string complete html rendered mail body
+		 */
+		function renderStationery($_message, $_signature='')
+		{
+			$content = array();
+			$content['message'] = $_message;
+			$content['signature'] = $_signature;
+			
+			$tpl = new etemplate();
+			$tpl->read($this->sessionData['stationeryID']);
+			$mail_body = $tpl->exec(false, $content, false, false, false, 3);
+
+			return $mail_body;
 		}
 }

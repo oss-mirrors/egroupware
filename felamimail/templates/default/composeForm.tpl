@@ -152,8 +152,8 @@
 </div>
 <table width="99%" cellspacing="0" cellpadding="0"><tr>
 <td>
-<fieldset class="bordertop"><legend>{lang_signature}/{lang_editormode}</legend>
-	{select_signature} &nbsp; {toggle_editormode}
+<fieldset class="bordertop"><legend>{lang_signature}/{lang_stationery}/{lang_editormode}</legend>
+	{select_signature} &nbsp; {select_stationery} &nbsp; {toggle_editormode}
 <!--		<TEXTAREA class="input_text" NAME=signature ROWS="5" COLS="76" WRAP=HARD>{signature}</TEXTAREA> -->
 </fieldset>
 </td>
