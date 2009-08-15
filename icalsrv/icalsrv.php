@@ -140,6 +140,7 @@
 	// now set the variables that will control the working mode of icalvircal
 	// the defines are in the icalsrv_resourcehandler sourcefile
 	require_once EGW_SERVER_ROOT. '/icalsrv/inc/class.icalsrv_resourcehandler.inc.php' ;
+	require_once EGW_SERVER_ROOT. '/phpgwapi/inc/horde/lib/core.php';
 
 	/** uid  mapping export  configuration switch
 	* @var int
