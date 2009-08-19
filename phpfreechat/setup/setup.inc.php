@@ -27,7 +27,7 @@ $setup_info['phpfreechat']['license']  = 'LGPL';
 $setup_info['phpfreechat']['description'] = lang('phpFreeChat integration into eGroupWare');
 $setup_info['phpfreechat']['note'] = '';
 
-$setup_info['phpfreechat']['tables']  = array();	// handled by pfc itself atm.
+$setup_info['phpfreechat']['tables']  = array('egw_phpfreechat');	// handled by pfc itself atm.
 
 /* Dependencies for this app to work */
 $setup_info['phpfreechat']['depends'][] = array(

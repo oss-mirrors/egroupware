@@ -13,7 +13,6 @@
 
 /* CONFIGURATION HERE. */
 $params = array();
-$params["serverid"] = $_REQUEST['domain'].md5(__FILE__); // used to identify the chat
 $params["title"] = lang('eGroupware Chat');
 /* Make the channel list configurable (via an admin interface?). */
 $params["channels"] = array("eGroupware");
@@ -136,3 +135,28 @@ $params["data_public_path"] = dirname(__FILE__).'/phpfreechat/data/public';
 $params["data_public_url"] = $GLOBALS['egw_info']['server']['webserver_url']."/phpfreechat/phpfreechat/data/public";
 $params["server_script_url"] = $GLOBALS['egw']->link('/phpfreechat/index.php');
 $params['height'] = '400px';
+// eGroupware install_id used as serverid
+$params["serverid"] = $GLOBALS['egw_info']['server']['install_id'];
+// mysql integration: note your serverid must fit the fieldlength of your database tables server column. 
+if (substr($GLOBALS['egw_info']['server']['db_type'],0,5)=='mysql')
+{
+/*  
+      container_cfg_mysql_host : the host of your Database. Default value is “localhost”
+      container_cfg_mysql_port : the port of your database. default value is 3306
+      container_cfg_mysql_database : your database's name. Default value is “phpfreechat”
+      container_cfg_mysql_table : the table within your database. Default value is “phpfreechat”
+      container_cfg_mysql_username : username to connect to your Database. Default value is “root”
+      container_cfg_mysql_password : password to identify the username that connects to the database. Default value is ””
+*/
+	$params['container_type']='mysql';
+	$params['container_cfg_mysql_host']=$GLOBALS['egw_info']['server']['db_host'];
+	$params['container_cfg_mysql_port']=$GLOBALS['egw_info']['server']['db_port'];
+	$params['container_cfg_mysql_database']=$GLOBALS['egw_info']['server']['db_name'];
+	$params['container_cfg_mysql_table']='egw_phpfreechat';
+	$params['container_cfg_mysql_username']=$GLOBALS['egw_info']['server']['db_user'];
+	$params['container_cfg_mysql_password']=$GLOBALS['egw_info']['server']['db_pass'];
+	// depending how long your server field is, you must trim the serverid accordingly
+	$serverid_length = 32;
+	$params["container_cfg_mysql_fieldtype_server"] = 'varchar('.$serverid_length.')';
+	$params["serverid"] = substr($GLOBALS['egw_info']['server']['install_id'],0,$serverid_length); // used to identify the chat
+}
