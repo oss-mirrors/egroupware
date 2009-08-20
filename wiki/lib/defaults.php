@@ -284,7 +284,9 @@ $ViewMacroEngine = array(
 										 'OrphanedPages' => 'view_macro_orphans',
 										 'WantedPages'   => 'view_macro_wanted',
 										 'PageLinks'     => 'view_macro_outlinks',
-										 'PageRefs'      => 'view_macro_refs'
+										 'PageRefs'      => 'view_macro_refs',
+										 'PageNames'	 => 'view_macro_names',
+										 'PageTitle'	 => 'view_macro_title',
 									 );
 
 // $SaveMacroEngine determines what save macros will be called after a

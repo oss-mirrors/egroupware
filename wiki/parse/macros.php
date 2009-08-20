@@ -129,9 +129,9 @@ function view_macro_orphans()
 	foreach($pages as $page)
 	{
 		$esc_page = addslashes($page[1]);
-		$q2 = $pagestore->dbh->query("SELECT page FROM $LkTbl " .
-																 "WHERE link='$esc_page' AND page!='$esc_page'",__LINE__,__FILE__);
-		if(!($r2 = $pagestore->dbh->result($q2)) || empty($r2[0]))
+		$q2 = $pagestore->db->query("SELECT wiki_name FROM ".$pagestore->LkTbl." " .
+																 "WHERE wiki_link='$esc_page' AND wiki_name!='$esc_page'",__LINE__,__FILE__);
+		if(!($r2 = $pagestore->db->next_record()) || empty($r2[0]))
 		{
 			if(!$first)                       // Don't prepend newline to first one.
 				{ $text = $text . "\n"; }
@@ -145,6 +145,46 @@ function view_macro_orphans()
 	return html_code($text);
 }
 
+// Prepare a list of page names
+function view_macro_names($args)
+{
+	global $pagestore;
+
+	$text = '<ol>';
+	$counter = 0;
+	$pages = $pagestore->find($args,'wiki_name');
+	//usort($pages, 'nameSort');
+	while($counter < count($pages))
+	{
+		$text = $text . "<li>".html_ref($pages[$counter]['name'], $pages[$counter]['name']). ' ('.$pages[$counter]['lang'].'): ' .
+						html_ref(findURL($pages[$counter]['name']), $pages[$counter]['title']).
+						' </li>';
+		$counter++;
+	}
+	$text .= '</ol>';
+	return html_code($text);
+}
+
+// Prepare a list of page Titles
+function view_macro_title($args)
+{
+	global $pagestore;
+
+	$text = '<ol>';
+	$counter = 0;
+	$pages = $pagestore->find($args,'wiki_title');
+	//usort($pages, 'nameSort');
+	while($counter < count($pages))
+	{
+		$text = $text . "<li>".html_ref($pages[$counter]['name'], $pages[$counter]['name']). ' ('.$pages[$counter]['lang'].'): ' .
+						html_ref(findURL($pages[$counter]['name']), $pages[$counter]['title']).
+						' </li>';
+		$counter++;
+	}
+	$text .= '</ol>';
+	return html_code($text);
+}
+
 // Prepare a list of pages linked to that do not exist.
 function view_macro_wanted()
 {
@@ -153,14 +193,14 @@ function view_macro_wanted()
 	$text = '';
 	$first = 1;
 
-	$q1 = $pagestore->dbh->query("SELECT l.link, SUM(l.count) AS ct, p.title " .
-															 "FROM $LkTbl AS l LEFT JOIN $PgTbl AS p " .
-															 "ON l.link = p.title " .
-															 "GROUP BY l.link " .
-															 "HAVING p.title IS NULL " .
-															 "ORDER BY ct DESC, l.link",__LINE__,__FILE__);
+	$q1 = $pagestore->db->query("SELECT l.wiki_link, SUM(l.wiki_count) AS ct, p.wiki_title " .
+															 "FROM ".$pagestore->LkTbl." AS l LEFT JOIN ".$pagestore->PgTbl." AS p " .
+															 "ON l.wiki_link = p.wiki_title " .
+															 "GROUP BY l.wiki_link " .
+															 "HAVING p.wiki_title IS NULL " .
+															 "ORDER BY ct DESC, l.wiki_link",__LINE__,__FILE__);
 
-	while(($result = $pagestore->dbh->result($q1)))
+	while(($result = $pagestore->db->next_record()))
 	{
 		if(!$first)                         // Don't prepend newline to first one.
 			{ $text = $text . "\n"; }
@@ -183,9 +223,9 @@ function view_macro_outlinks()
 	$text = '';
 	$first = 1;
 
-	$q1 = $pagestore->dbh->query("SELECT page, SUM(count) AS ct FROM $LkTbl " .
-															 "GROUP BY page ORDER BY ct DESC, page",__LINE__,__FILE__);
-	while(($result = $pagestore->dbh->result($q1)))
+	$q1 = $pagestore->db->query("SELECT wiki_name, SUM(wiki_count) AS ct FROM ".$pagestore->LkTbl." " .
+															 "GROUP BY wiki_name ORDER BY ct DESC, wiki_name",__LINE__,__FILE__);
+	while(($result = $pagestore->db->next_record()))
 	{
 		if(!$first)                         // Don't prepend newline to first one.
 			{ $text = $text . "\n"; }
@@ -213,14 +253,14 @@ function view_macro_refs()
 // exist.  If anyone has some efficient suggestions, I'd be welcome to
 // entertain them.  -- ScottMoonen
 
-	$q1 = $pagestore->dbh->query("SELECT link, SUM(count) AS ct FROM $LkTbl " .
-															 "GROUP BY link ORDER BY ct DESC, link",__LINE__,__FILE__);
-	while(($result = $pagestore->dbh->result($q1)))
+	$q1 = $pagestore->db->query("SELECT wiki_link, SUM(wiki_count) AS ct FROM ".$pagestore->LkTbl." " .
+															 "GROUP BY wiki_link ORDER BY ct DESC, wiki_link",__LINE__,__FILE__);
+	while(($result = $pagestore->db->next_record()))
 	{
 		$esc_page = addslashes($result[0]);
-		$q2 = $pagestore->dbh->query("SELECT MAX(version) FROM $PgTbl " .
-																 "WHERE title='$esc_page'",__LINE__,__FILE__);
-		if(($r2 = $pagestore->dbh->result($q2)) && !empty($r2[0]))
+		$q2 = $pagestore->db->query("SELECT MAX(wiki_version) FROM ".$pagestore->PgTbl." " .
+																 "WHERE wiki_title='$esc_page'",__LINE__,__FILE__);
+		if(($r2 = $q2->next_record()) && !empty($r2[0]))
 		{
 			if(!$first)                       // Don't prepend newline to first one.
 				{ $text = $text . "\n"; }
