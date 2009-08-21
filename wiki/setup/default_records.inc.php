@@ -144,6 +144,41 @@ You can create tables using pairs of vertical bars:
 || cell four || cell five ||
 || cell six || here's a very long cell ||
 </code>
+----
+You can create anchors with the Macro:
+<code>
+[[Anchor ANCHORNAME]]
+</code>
+You can jump to that Anchor with:
+<code>
+((PageName|Jump to Anchor #ANCHORNAME))
+</code>
+----
+=== Curly Options ===
+only supported with tables right now
+<code>
+||{s=background:red}  CurlyOptions ||{s=color:blue;font-variant:small-caps;font-size:large} some text||
+</code>
+||{s=background:red}  CurlyOptions ||{s=color:blue;font-variant:small-caps;font-size:large} some text||
+<code>
+||{Tb=0,s=background:red;color:blue;font-variant:small-caps;font-size:large} some blue text on red ground||
+</code>
+||{Tb=0,s=background:red;color:blue;font-variant:small-caps;font-size:large} some blue text on red ground||
+<code>
+||{Tb=0,s=color:red;font-variant:small-caps;font-size:large} some red text||
+</code>
+||{Tb=0,s=color:red;font-variant:small-caps;font-size:large} some red text||
+----
+=== HTML Formatting ===
+<code>
+<html>
+<b> more </b> <font color=\"red\">to</font> <b>come</b>
+</html>
+</code>
+displays as:
+<html>
+<b> more </b> <font color=\"red\">to</font> <b>come</b>
+</html>
 ",
 	) as $name => $body)
 	{
