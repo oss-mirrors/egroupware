@@ -68,12 +68,21 @@ function _egwcontactssync_list($filter='')
 	$criteria = array();
 
 	$filter = array();
-	if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts']) {
+	if ($GLOBALS['egw_info']['user']['preferences']['addressbook']['hide_accounts'])
+	{
 		$filter['account_id'] = null;
 	}
 
-	// hardcode your filter here
-	//$filter['cat_id'] = '!215';
+	if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+	{
+  		$filter['list'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list'];
+    }
+
+    if (array_key_exists('filter_addressbook', $GLOBALS['egw_info']['user']['preferences']['syncml']))
+    {
+    	$filter['owner'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_addressbook'];
+    }
+
 	$allContacts = ExecMethod2('addressbook.addressbook_bo.search',$criteria,True,'','','',False,'AND',false,$filter);
 
 	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -195,6 +204,9 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 			$vcaladdressbook->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 			$contactId		= $vcaladdressbook->addVCard($content, $contactId);
+			if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml'])) {
+				$vcaladdressbook->add2list($contactId, $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list']);
+			}
 			break;
 
 		case 'text/x-s4j-sife':
@@ -204,6 +216,9 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 		case 'text/x-s4j-sifc':
 			$sifaddressbook		= new addressbook_sif();
 			$contactId = 		$sifaddressbook->addSIF($content, $contactId);
+			if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml'])) {
+				$sifaddressbook->add2list($contactId, $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list']);
+			}
 			break;
 
 		default:

@@ -28,6 +28,12 @@ $selectYesNot = array(
 
 $user = $GLOBALS['egw_info']['user']['account_id'];
 
+// list the distribution lists of this user
+$addressbook_bo = new addressbook_bo();
+$perms = EGW_ACL_READ | EGW_ACL_ADD | EGW_ACL_EDIT | EGW_ACL_DELETE;
+$show_addr_lists = $addressbook_bo->get_lists($perms,array('' => lang('none')));
+$show_addr_addr = $addressbook_bo->get_addressbooks($perms,lang('All'));
+unset($show_addr_addr[0]); // No Acounts
 // list the calendar categories of this user
 $categories = new categories($user, 'calendar');
 $calendar_categories = $categories->return_array('app', 0, false, '', 'ASC', 'cat_name', true);
@@ -36,7 +42,6 @@ foreach ($calendar_categories as $cat)
 {
 	$show_cal_cats[$cat['id']] = $cat['name'];
 }
-
 // list the addressbook categories of this user
 $categories = new categories($user, 'addressbook');
 $addressbook_categories = $categories->return_array('app', 0, false, '', 'ASC', 'cat_name', true);
@@ -116,7 +121,7 @@ $GLOBALS['settings'] = array(
 	),
 	'prefintro' => array(
 		'type'  => 'subsection',
-		'title' => lang('Preferences for the SyncML Conflict Handling<br/>and Server R/O Options'),
+		'title' => '<h3>' . lang('Preferences for the SyncML Conflict Handling<br/>and Server R/O Options') . '</h3>',
 		'xmlrpc' => False,
 		'admin'  => False
 	),
@@ -370,6 +375,30 @@ $GLOBALS['settings'] = array(
 		'xmlrpc'	=> True,
 		'admin'		=> False,
 	),
+	'preffilter' => array(
+		'type'  => 'subsection',
+		'title' => '<h3>' . lang('Addressbook Synchronization Options') . '</h3>',
+		'xmlrpc' => False,
+		'admin'  => False
+	),
+	'filter_list' => array(
+                'type'   => 'select',
+                'label'  => 'Syncronize this list',
+                'name'   => 'filter_list',
+                'help'   => lang('This addressbook list of contacts will be synchronized.'),
+                'values' => $show_addr_lists,
+                'xmlrpc' => True,
+                'admin'  => False,
+        ),
+	'filter_addressbook' => array(
+                'type'   => 'select',
+                'label'  => 'Synchronize this addressbook',
+                'name'   => 'filter_addressbook',
+                'help'   => lang('Only this addressbook will synchronized.'),
+                'values' => $show_addr_addr,
+                'xmlrpc' => True,
+                'admin'  => False,
+        ),
 	'calendarhistoryintro' => array(
 		'type'  => 'subsection',
 		'title' => '<h3>' . lang('Calendar Synchronization Period') . '</h3>',

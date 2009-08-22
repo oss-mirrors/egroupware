@@ -146,8 +146,8 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 	$state	= &$_SESSION['SyncML.state'];
 	$allChangedItems = $state->getHistory('calendar', $action, $timestamp);
-	Horde::logMessage("SymcML: egwcalendarsync getHistory('calendar', $action, $timestamp)=".print_r($allChangedItems, true),
-		__FILE__, __LINE__, PEAR_LOG_DEBUG);
+	//Horde::logMessage("SymcML: egwcalendarsync getHistory('calendar', $action, $timestamp)=".print_r($allChangedItems, true),
+	//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$vcal = new Horde_iCalendar;
 	$boCalendar = new calendar_bo();
