@@ -53,7 +53,8 @@ $phpgw_baseline = array(
 			'ea_user_defined_signatures' => array('type' => 'varchar','precision' => '3'),
 			'ea_default_signature' => array('type' => 'text'),
 			'ea_imap_auth_username' => array('type' => 'varchar','precision' => '80'),
-			'ea_imap_auth_password' => array('type' => 'varchar','precision' => '80')
+			'ea_imap_auth_password' => array('type' => 'varchar','precision' => '80'),
+			'ea_stationery_active_templates' => array('type' => 'text')
 		),
 		'pk' => array('ea_profile_id'),
 		'fk' => array(),

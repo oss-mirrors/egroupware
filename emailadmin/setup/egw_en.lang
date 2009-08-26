@@ -1,4 +1,5 @@
 account '%1' not found !!!	emailadmin	en	Account '%1' not found !!!
+active templates	emailadmin	en	Active templates
 add new email address:	emailadmin	en	Add new email address:
 add profile	emailadmin	en	Add Profile
 admin dn	emailadmin	en	Admin dn
@@ -114,6 +115,7 @@ standard	emailadmin	en	Standard
 standard imap server	emailadmin	en	Standard IMAP server
 standard pop3 server	emailadmin	en	Standard POP3 server
 standard smtp-server	emailadmin	en	Standard SMTP server
+stationery	emailadmin	en	Stationery
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	en	The IMAP server does not appear to support the authentication method selected. Please contact your system administrator.
 this php has no imap support compiled in!!	emailadmin	en	This PHP has no IMAP support compiled in!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	en	To use a TLS connection, you must be running a version of PHP 5.1.0 or higher.
@@ -135,5 +137,6 @@ username@domainname (virtual mail manager)	emailadmin	en	username@domainname (Vi
 users can define their own emailaccounts	emailadmin	en	Users can define their own email accounts
 users can define their own identities	emailadmin	en	users can define their own identities
 users can define their own signatures	emailadmin	en	users can define their own signatures
+users can utilize these stationery templates	emailadmin	en	Users can utilize these stationery templates
 vaction messages with start- and end-date require an admin account to be set!	emailadmin	en	Vaction messages with start- and end-date require an admin account to be set!
 virtual mail manager	emailadmin	en	Virtual MAIL ManaGeR

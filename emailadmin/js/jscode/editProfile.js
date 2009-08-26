@@ -1,4 +1,4 @@
-var tab = new Tabs(4,'activetab','inactivetab','tab','tabcontent','','','tabpage');
+var tab = new Tabs(5,'activetab','inactivetab','tab','tabcontent','','','tabpage');
 var smtp = new Tabs(5,'activetab','inactivetab','smtp','smtpcontent','smtpselector','','');
 var imap = new Tabs(6,'activetab','inactivetab','imap','imapcontent','imapselector','','');
 

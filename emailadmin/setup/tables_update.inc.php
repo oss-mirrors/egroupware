@@ -271,3 +271,12 @@ function emailadmin_upgrade1_6()
 
 	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.6.001';
 }
+
+function emailadmin_upgrade1_6_001()
+{
+	$GLOBALS['egw_setup']->oProc->AddColumn('egw_emailadmin','ea_stationery_active_templates',array(
+		'type' => 'text'
+	));
+
+	return $GLOBALS['setup_info']['emailadmin']['currentver'] = '1.7.003';
+}

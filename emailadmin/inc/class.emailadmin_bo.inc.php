@@ -13,7 +13,7 @@
 	/* $Id$ */
 
 	class emailadmin_bo
-	{
+	{		
 		var $sessionData;
 		#var $userSessionData;
 		var $LDAPData;
@@ -443,9 +443,14 @@
 			$fieldNames[] = 'ea_active';
 			$fieldNames[] = 'ea_user_defined_signatures';
 			$fieldNames[] = 'ea_default_signature';
+			$fieldNames[] = 'ea_stationery_active_templates';
 			
 			$profileData = $this->soemailadmin->getProfile($_profileID, $fieldNames);
 			$profileData['imapTLSEncryption'] = ($profileData['imapTLSEncryption'] == 'yes' ? 1 : (int)$profileData['imapTLSEncryption']);
+			if(strlen($profileData['ea_stationery_active_templates']) > 0)
+			{
+				$profileData['ea_stationery_active_templates'] = unserialize($profileData['ea_stationery_active_templates']);
+			}
 			$this->sessionData['profile'][$_profileID] = $profileData;
 			$this->saveSessionData();
 			return $profileData;
@@ -556,6 +561,10 @@
 				$eaPreferences->userDefinedIdentities     = ($data['userDefinedIdentities'] == 'yes');
 				$eaPreferences->ea_user_defined_signatures	= ($data['ea_user_defined_signatures'] == 'yes');
 				$eaPreferences->ea_default_signature		= $data['ea_default_signature'];
+				if(strlen($data['ea_stationery_active_templates']) > 0)
+				{
+					$eaPreferences->ea_stationery_active_templates = unserialize($data['ea_stationery_active_templates']);
+				}
 				$this->sessionData['ea_preferences'] = $eaPreferences;
 				$this->saveSessionData();
 				return $eaPreferences;
@@ -715,6 +724,15 @@
 			if(!isset($_imapSettings['imapTLSAuthentication'])) {
 				$_imapSettings['imapTLSAuthentication'] = true;
 			}
+			
+			if(is_array($_globalSettings['ea_stationery_active_templates']) && count($_globalSettings['ea_stationery_active_templates']) > 0)
+			{
+				$_globalSettings['ea_stationery_active_templates'] = serialize($_globalSettings['ea_stationery_active_templates']);
+			}
+			else
+			{
+				$_globalSettings['ea_stationery_active_templates'] = null;
+			}
 
 			if(!isset($_globalSettings['profileID'])) {
 				$_globalSettings['ea_order'] = count($this->getProfileList()) + 1;
@@ -825,6 +843,5 @@
 			$this->sessionData = array();
 			$this->saveSessionData();
 		}
-		
 	}
 ?>

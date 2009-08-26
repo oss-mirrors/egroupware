@@ -1,4 +1,5 @@
 account '%1' not found !!!	emailadmin	de	Benutzerkonto '%1' nicht gefunden !!!
+active templates	emailadmin	de	Aktive Vorlagen
 add new email address:	emailadmin	de	Neue EMailadresse hinzufügen
 add profile	emailadmin	de	Profil hinzufügen
 admin dn	emailadmin	de	Admin DN
@@ -114,6 +115,7 @@ standard	emailadmin	de	Vorgabe
 standard imap server	emailadmin	de	Standard IMAP-Server
 standard pop3 server	emailadmin	de	Standard POP3-Server
 standard smtp-server	emailadmin	de	Standard SMTP-Server
+stationery	emailadmin	de	Briefpapier
 the imap server does not appear to support the authentication method selected. please contact your system administrator.	emailadmin	de	Der IMAP Server scheint die eingestellte Authentifizierungsmethode nicht zu unterstützen. Bitte fragen Sie ihren Systemadministrator.
 this php has no imap support compiled in!!	emailadmin	de	Dieses PHP hat keine IMAP Unterstützung!!!
 to use a tls connection, you must be running a version of php 5.1.0 or higher.	emailadmin	de	Um eine TLS Verbindung zu verwenden, benötigen Sie PHP 5.1.0 oder neuer.
@@ -135,5 +137,6 @@ username@domainname (virtual mail manager)	emailadmin	de	Benutzername@Domänenna
 users can define their own emailaccounts	emailadmin	de	Anwender können ihre eigenen Konten definieren
 users can define their own identities	emailadmin	de	Anwender können ihre eigenen Identitäten definieren
 users can define their own signatures	emailadmin	de	Anwender können ihre eigenen Signaturen definieren
+users can utilize these stationery templates	emailadmin	de	Benutzer können diese Briefpapiervorlagen verwenden
 vaction messages with start- and end-date require an admin account to be set!	emailadmin	de	Urlaubsbenachrichtigungen mit Start- und Endedatum benötigen einen gesetzten Administrator Benutzer!
 virtual mail manager	emailadmin	de	Virtual MAIL ManaGeR

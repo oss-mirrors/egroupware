@@ -778,7 +778,8 @@
 				if(!empty($signature)) {
 					#$_mailObject->Body    = array($_formData['body'], $_signature['signature']);
 					if($this->sessionData['stationeryID']) {
-						$_mailObject->Body = $this->renderStationery($_formData['body'], $signature);
+						$bostationery = new felamimail_bostationery();
+						$_mailObject->Body = $bostationery->render($this->sessionData['stationeryID'],$_formData['body'],$signature);
 					} else {
 						$_mailObject->Body = $_formData['body'] .'<hr style="border:dotted 1px silver; width:90%; border:dotted 1px silver;">'. $signature;
 					}
@@ -789,7 +790,8 @@
 					#print htmlentities($_signature['signature']);
 				} else {
 					if($this->sessionData['stationeryID']) {
-						$_mailObject->Body = $this->renderStationery($_formData['body']);
+						$bostationery = new felamimail_bostationery();
+						$_mailObject->Body = $bostationery->render($this->sessionData['stationeryID'],$_formData['body']);
 					} else {
 						$_mailObject->Body	= $_formData['body'];
 					}
@@ -1120,26 +1122,5 @@
 			} else {
 				return $_string;
 			}
-		}
-		
-		/*
-		 * Renders the mail body with a given stationery template
-		 *
-		 * @param string $_message the mail message
-		 * @param string $_signature='' the mail signature
-		 *
-		 * @return string complete html rendered mail body
-		 */
-		function renderStationery($_message, $_signature='')
-		{
-			$content = array();
-			$content['message'] = $_message;
-			$content['signature'] = $_signature;
-			
-			$tpl = new etemplate();
-			$tpl->read($this->sessionData['stationeryID']);
-			$mail_body = $tpl->exec(false, $content, false, false, false, 3);
-
-			return $mail_body;
 		}
 }

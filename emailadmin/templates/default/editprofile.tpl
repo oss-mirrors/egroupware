@@ -4,10 +4,11 @@
 <form action="{action_url}" name="mailsettings" method="post">
 <table width="670px" border="0" cellspacing="0" cellpading="0">
 	<tr>
-		<th width="25%" id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="1" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);">Global</a></th>
-		<th width="25%" id="tab2" class="activetab" onclick="javascript:tab.display(2);"><a href="#" tabindex="2" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);">SMTP</a></th>
-		<th width="25%" id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="3" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);">IMAP</a></th>
-		<th width="25%" id="tab4" class="activetab" onclick="javascript:tab.display(4);"><a href="#" tabindex="4" accesskey="4" onfocus="tab.display(4);" onclick="tab.display(4); return(false);">Signature</a></th>
+		<th width="20%" id="tab1" class="activetab" onclick="javascript:tab.display(1);"><a href="#" tabindex="1" accesskey="1" onfocus="tab.display(1);" onclick="tab.display(1); return(false);">Global</a></th>
+		<th width="20%" id="tab2" class="activetab" onclick="javascript:tab.display(2);"><a href="#" tabindex="2" accesskey="2" onfocus="tab.display(2);" onclick="tab.display(2); return(false);">SMTP</a></th>
+		<th width="20%" id="tab3" class="activetab" onclick="javascript:tab.display(3);"><a href="#" tabindex="3" accesskey="3" onfocus="tab.display(3);" onclick="tab.display(3); return(false);">IMAP</a></th>
+		<th width="20%" id="tab4" class="activetab" onclick="javascript:tab.display(4);"><a href="#" tabindex="4" accesskey="4" onfocus="tab.display(4);" onclick="tab.display(4); return(false);">Signature</a></th>
+		<th width="20%" id="tab5" class="activetab" onclick="javascript:tab.display(5);"><a href="#" tabindex="5" accesskey="5" onfocus="tab.display(5);" onclick="tab.display(5); return(false);">{lang_stationery}</a></th>
 	</tr>
 </table>
 <br><br>
@@ -973,7 +974,7 @@
 	
 </div>
 
-<!-- The code for External Tab -->
+<!-- The code for Signatures Tab -->
 
 <div id="tabcontent4" class="inactivetab">
 	<fieldset style="width:650px;" class="row_off"><legend>{lang_signature_settings}</legend>
@@ -989,6 +990,23 @@
 		<tr>
 			<td colspan="2">
 				{signature}
+			</td>
+		</tr>
+	</table>
+	</fieldset>
+</div>
+
+<!-- The code for Stationery Tab -->
+
+<div id="tabcontent5" class="inactivetab">
+	<fieldset style="width:650px;" class="row_off"><legend>{lang_active_templates}</legend>
+	<table width="100%" border="0" cellspacing="0" cellpading="1">
+		<tr>
+			<td width="300px">
+				{lang_active_templates_description}
+			</td>
+			<td>
+				{stored_templates}
 			</td>
 		</tr>
 	</table>

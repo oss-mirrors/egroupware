@@ -13,9 +13,7 @@
 	/* $Id$ */
 
 	class uicompose
-	{
-		const _stationery_prefix = 'felamimail.stationery';
-		
+	{	
 		var $public_functions = array
 		(
 			'action'		=> True,
@@ -388,15 +386,12 @@
 			foreach($signatures as $signature) {
 				$selectSignatures[$signature['fm_signatureid']] = lang('Signature').': '.$signature['fm_description'];
 			}
+			
+			$bostationery = new felamimail_bostationery();
 			$selectStationeries = array(
 				'0' => lang('no stationery')
 			);
-			$etemplate = new etemplate();
-			$stationeries = $etemplate->search(self::_stationery_prefix);
-			foreach($stationeries as $stationery) {
-				list(,,$stationeryDescription) = explode('.',$stationery['name']);
-				$selectStationeries[$stationery['name']] = lang('stationery').': '.$stationeryDescription;
-			}
+			$selectStationeries += $bostationery->get_valid_templates();
 			$selectBoxSignature  = html::select('signatureID', ($presetSig ? $presetSig : $sessionData['signatureID']), $selectSignatures, true, "style='width: 35%;' onchange='fm_compose_changeInputType(this)'");
 			$selectBoxStationery = html::select('stationeryID', ($presetStationery ? $presetStationery : 0), $selectStationeries, true, "style='width: 35%;'");
 			$this->t->set_var("select_signature", $selectBoxSignature);

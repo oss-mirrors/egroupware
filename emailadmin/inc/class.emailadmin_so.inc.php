@@ -56,6 +56,7 @@
 			'ea_smtp_auth_password'		=> 'ea_smtp_auth_password',
 			'ea_user_defined_signatures'	=> 'ea_user_defined_signatures',
 			'ea_default_signature'		=> 'ea_default_signature',
+			'ea_stationery_active_templates'	=> 'ea_stationery_active_templates',
 		);
 
 		function __construct()

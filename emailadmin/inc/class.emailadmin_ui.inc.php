@@ -12,8 +12,7 @@
 	/* $Id$ */
 
 	class emailadmin_ui
-	{
-		
+	{	
 		var $public_functions = array
 		(
 			'addProfile'	=> True,
@@ -152,6 +151,12 @@
 			$this->t->set_var('value_smtpPort', '25');
 			$this->t->set_var('value_imapPort', '110');
 			$this->t->set_var('value_imapSievePort', '2000');
+			
+			// Stationery settings
+			$bostationery = new felamimail_bostationery();
+			$this->t->set_var('stored_templates', html::checkbox_multiselect(
+				'globalsettings[ea_stationery_active_templates]',0
+				,$bostationery->get_stored_templates(),true,'',3,true,'width: 100%;'));
 						
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -260,6 +265,8 @@
 					case 'ea_default_signature':
 						// nothing to do here
 						break;
+					case 'ea_stationery_active_templates':
+						$activeTemplates = $value;
 					case 'imapTLSEncryption':
 						$this->t->set_var('checked_'. $key .'_'. $value,'checked="1"');
 						break;
@@ -276,7 +283,6 @@
 					case 'userDefinedIdentities':
 					case 'ea_user_defined_signatures':
 					case 'ea_active':
-						#echo $key."->".$value."<br>";
 					case 'imapoldcclient':
 					case 'editforwardingaddress':
 						if($value == 'yes' || $value == 1) {
@@ -348,7 +354,13 @@
 					$profileData['ea_default_signature'], '150px')
 			);
 			
-						
+			// Stationery settings
+			$bostationery = new felamimail_bostationery();
+			$activeTemplates = is_array($activeTemplates) ? $activeTemplates : array();
+			$this->t->set_var('stored_templates', html::checkbox_multiselect(
+				'globalsettings[ea_stationery_active_templates]',$activeTemplates
+				,$bostationery->get_stored_templates(),true,'',3,true,'width: 100%;'));
+					
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
 		}
@@ -606,6 +618,8 @@
 			$globalSettings['ea_appname'] = ($_POST['globalsettings']['ea_appname'] == 'any' ? '' : $_POST['globalsettings']['ea_appname']);
 			$globalSettings['ea_group'] = ($_POST['globalsettings']['ea_group'] == 'any' ? '' : (int)$_POST['globalsettings']['ea_group']);
 			$globalSettings['ea_user'] = ($_POST['globalsettings']['ea_user'] == 'any' ? '' : (int)$_POST['globalsettings']['ea_user']);	
+			$globalSettings['ea_stationery_active_templates'] = $_POST['globalsettings']['ea_stationery_active_templates'];
+
 			// get the settings for the smtp server
 			$smtpType = $_POST['smtpsettings']['smtpType'];
 			foreach($this->boemailadmin->getFieldNames($smtpType,'smtp') as $key) {
@@ -718,6 +732,9 @@
 			$this->t->set_var('lang_profile_isactive',lang('profile is active'));
 			$this->t->set_var('lang_defined_by_admin',lang('Username/Password defined by admin'));
 			$this->t->set_var('lang_Use_IMAP_auth', lang('Use predefined username and password defined below'));
+			$this->t->set_var('lang_stationery', lang('stationery'));
+			$this->t->set_var('lang_active_templates', lang('active templates'));
+			$this->t->set_var('lang_active_templates_description', lang('users can utilize these stationery templates'));
 			$this->t->set_var('',lang(''));
 			# $this->t->set_var('',lang(''));
 			
