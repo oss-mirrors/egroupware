@@ -82,7 +82,7 @@ class felamimail_bostationery
 		$stored_templates = $this->get_stored_templates();
 		
 		$valid_templates = array();
-		foreach($active_templates as $index => $id)
+		foreach((array)$active_templates as $index => $id)
 		{
 			if(isset($stored_templates[$id]))
 			{
