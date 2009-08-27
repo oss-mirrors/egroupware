@@ -391,11 +391,17 @@
 			$selectStationeries = array(
 				'0' => lang('no stationery')
 			);
-			$selectStationeries += $bostationery->get_valid_templates();
+			$showStationaries = false;
+			$validStationaries = $bostationery->get_valid_templates();
+			if (is_array($validStationaries) && count($validStationaries)>0) 
+			{
+				$showStationaries = true;
+				$selectStationeries += $validStationaries;
+			}
 			$selectBoxSignature  = html::select('signatureID', ($presetSig ? $presetSig : $sessionData['signatureID']), $selectSignatures, true, "style='width: 35%;' onchange='fm_compose_changeInputType(this)'");
 			$selectBoxStationery = html::select('stationeryID', ($presetStationery ? $presetStationery : 0), $selectStationeries, true, "style='width: 35%;'");
 			$this->t->set_var("select_signature", $selectBoxSignature);
-			$this->t->set_var("select_stationery", $selectBoxStationery);
+			$this->t->set_var("select_stationery", ($showStationaries ? $selectBoxStationery:''));
 			$this->t->set_var("lang_editormode",lang("Editor type"));
 			$this->t->set_var("toggle_editormode", lang("Editor type").":&nbsp;<span><input name=\"_is_html\" value=\"".$ishtml."\" type=\"hidden\" /><input name=\"_editorselect\" onchange=\"fm_toggle_editor(this)\" ".($ishtml ? "checked=\"checked\"" : "")." id=\"_html\" value=\"html\" type=\"radio\"><label for=\"_html\">HTML</label><input name=\"_editorselect\" onchange=\"fm_toggle_editor(this)\" ".($ishtml ? "" : "checked=\"checked\"")." id=\"_plain\" value=\"plain\" type=\"radio\"><label for=\"_plain\">Plain text</label></span>");
 			$this->t->pparse("out","body_input");
