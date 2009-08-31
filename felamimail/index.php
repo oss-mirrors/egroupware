@@ -12,20 +12,5 @@
 	*  option) any later version.                                              *
 	\**************************************************************************/
 	/* $Id$ */
-
-	// this is to get css inclusion working
-	$_GET['menuaction']	= 'felamimail.uifelamimail.viewMainScreen';
-	
-	$egw_info = array();
-	$egw_info['flags'] = array
-	(
-		'currentapp' => 'felamimail',
-		'noheader'   => True,
-		'nonavbar'   => True,
-		'include_xajax' => True,
-	);
-								
-	include('../header.inc.php');
-
-	execmethod('felamimail.uifelamimail.viewMainScreen');
-?>
+	header('Location: ../index.php?menuaction=felamimail.uifelamimail.viewMainScreen'.
+    	(isset($_GET['sessionid']) ? '&sessionid='.$_GET['sessionid'].'&kp3='.$_GET['kp3'] : ''));
