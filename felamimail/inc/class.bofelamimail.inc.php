@@ -1065,6 +1065,8 @@
 				'filename'	=> $filename,
 				'attachment'	=> $attachment
 				);
+			// try guessing the mimetype, if we get the application/octet-stream
+			if (strtolower($attachmentData['type']) == 'application/octet-stream') $attachmentData['type'] = mime_magic::filename2mime($attachmentData['filename']);
 			# if the attachment holds a winmail number and is a winmail.dat then we have to handle that.
 			if ( $filename == 'winmail.dat' && $_winmail_nr > 0 &&
 				( $wmattach = $this->decode_winmail( $_uid, $_partID, $_winmail_nr ) ) )
@@ -1125,7 +1127,9 @@
 				'filename'	=> $filename,
 				'attachment'	=> $attachment
 			);
-
+			// try guessing the mimetype, if we get the application/octet-stream
+			if (strtolower($attachmentData['type']) == 'application/octet-stream') $attachmentData['type'] = mime_magic::filename2mime($attachmentData['filename']);
+ 
 			return $attachmentData;
 		}
 
@@ -2050,14 +2054,17 @@
 			if($structure->type == 'APPLICATION' || $structure->type == 'AUDIO' || $structure->type == 'IMAGE') 
 			{
 				$newAttachment = array();
+				$newAttachment['name']		= self::getFileNameFromStructure($structure);
 				$newAttachment['size']		= $structure->bytes;
 				$newAttachment['mimeType']	= $structure->type .'/'. $structure->subType;
 				$newAttachment['partID']	= $structure->partID;
 				$newAttachment['encoding']      = $structure->encoding;
+				// try guessing the mimetype, if we get the application/octet-stream
+				if (strtolower($newAttachment['mimeType']) == 'application/octet-stream') $newAttachment['mimeType'] = mime_magic::filename2mime($newAttachment['name']);
+ 
 				if(isset($structure->cid)) {
 					$newAttachment['cid']	= $structure->cid;
 				}
-				$newAttachment['name'] = self::getFileNameFromStructure($structure);
 				# if the new attachment is a winmail.dat, we have to decode that first
 				if ( $newAttachment['name'] == 'winmail.dat' &&
 					( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) )
@@ -2106,14 +2113,17 @@
 				   	$attachments = array_merge($this->getMessageAttachments($_uid, '', $subPart), $attachments);
 				} else {
 					$newAttachment = array();
+					$newAttachment['name']		= self::getFileNameFromStructure($subPart);
 					$newAttachment['size']		= $subPart->bytes;
 					$newAttachment['mimeType']	= $subPart->type .'/'. $subPart->subType;
 					$newAttachment['partID']	= $subPart->partID;
 					$newAttachment['encoding']	= $subPart->encoding;
+					// try guessing the mimetype, if we get the application/octet-stream
+					if (strtolower($newAttachment['mimeType']) == 'application/octet-stream') $newAttachment['mimeType'] = mime_magic::filename2mime($newAttachment['name']);
+ 
 					if(isset($subPart->cid)) {
 						$newAttachment['cid']	= $subPart->cid;
 					}
-					$newAttachment['name'] = self::getFileNameFromStructure($subPart);
 					# if the new attachment is a winmail.dat, we have to decode that first
 					if ( $newAttachment['name'] == 'winmail.dat' &&
 						( $wmattachments = $this->decode_winmail( $_uid, $newAttachment['partID'] ) ) )
