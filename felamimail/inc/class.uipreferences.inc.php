@@ -466,14 +466,14 @@
 				$this->bofelamimail->subscribe($this->selectedFolder,$_POST['folderStatus']);
 			}
 			
-
 			$this->selectedFolder	= $this->bofelamimail->sessionData['preferences']['mailbox'];
 
 			// check user input END
-			
-			
+
 			if($this->selectedFolder != '--topfolderselected--')
+			{
 				$folderStatus	= $this->bofelamimail->getFolderStatus($this->selectedFolder);
+			}
 			$mailPrefs	= $this->bofelamimail->getMailPreferences();
 			
 			$this->display_app_header(TRUE);

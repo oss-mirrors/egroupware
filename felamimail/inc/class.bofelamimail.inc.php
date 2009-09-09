@@ -1738,12 +1738,13 @@
 				$this->sessionData['folderStatus'][0][$_folderName]['filter']	=== $_filter &&
 				$this->sessionData['folderStatus'][0][$_folderName]['sort']	=== $_sort
 			) {
-				#error_log("USE CACHE");
+				if (self::$debug) error_log(__METHOD__." USE CACHE");
 				$sortResult = $this->sessionData['folderStatus'][0][$_folderName]['sortResult'];
 			} else {
-				#error_log("USE NO CACHE");
+				if (self::$debug) error_log(__METHOD__." USE NO CACHE");
 				$filter = $this->createIMAPFilter($_folderName, $_filter);
 				if($this->icServer->hasCapability('SORT')) {
+					if (self::$debug) error_log(__METHOD__." Mailserver has SORT Capability");
 					$sortOrder = $this->_getSortString($_sort);
 					if (!empty(self::$displayCharset)) {
 						$sortResult = $this->icServer->sort($sortOrder, strtoupper( self::$displayCharset ), $filter, true);
@@ -1751,13 +1752,16 @@
 					if (PEAR::isError($sortResult) || empty(self::$displayCharset)) {
 						$sortResult = $this->icServer->sort($sortOrder, 'US-ASCII', $filter, true);
 					}
+					if (self::$debug) error_log(__METHOD__.print_r($sortResult,true));
 				} else {
+					if (self::$debug) error_log(__METHOD__." Mailserver has NO SORT Capability");
 					$advFilter = 'CHARSET '. strtoupper(self::$displayCharset) .' '.$filter;
 					$sortResult = $this->icServer->search($advFilter, true);
 					if (PEAR::isError($sortResult)) $sortResult = $this->icServer->search($filter, true);
 					if(is_array($sortResult)) {
 							sort($sortResult, SORT_NUMERIC);
 					}
+					if (self::$debug) error_log(__METHOD__." using Filter:".print_r($filter,true)." ->".print_r($sortResult,true));
 				}
 
 				$this->sessionData['folderStatus'][0][$_folderName]['uidValidity'] = $folderStatus['UIDVALIDITY'];
