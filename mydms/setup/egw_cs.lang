@@ -1,62 +1,72 @@
-access mode	mydms	cs	přístupový režim
-access rights	mydms	cs	přístupová práva
+access mode	mydms	cs	Přístupový režim
+access rights	mydms	cs	Přístupová práva
 access_mode_all	mydms	cs	Vše
 access_mode_none	mydms	cs	Bez přístupu
 access_mode_read	mydms	cs	Čtení
 access_mode_readwrite	mydms	cs	Čtení+Zápis
 acl get inherited	mydms	cs	zděděné acl
-add acl	mydms	cs	přidat acl
-add document	mydms	cs	přidat dokument
-add notification	mydms	cs	přidat upozornění
-add subfolder	mydms	cs	přidat podsložku
-admin-tools	mydms	cs	administrační nástroje
-all versions	mydms	cs	všechny verze
+add acl	mydms	cs	Přidat acl
+add document	mydms	cs	Přidat dokument
+add link	mydms	cs	Přidat odkaz
+add notification	mydms	cs	Přidat upozornění
+add subfolder	mydms	cs	Přidat podsložku
+adding subfolder "%1" to folder "%2"...	mydms	cs	Přidávám podložku "%1" do složky "%2"...
+admin-tools	mydms	cs	Administrační nástroje
+all versions	mydms	cs	Všechny verze
+choose document	mydms	cs	Vybrat dokument
 comment	mydms	cs	Komentář
-comment for current version	mydms	cs	komentář pro aktuální verzi
-copy acl	mydms	cs	kopírovat acl
-copy documents	mydms	cs	kopírovat dokumenty
-copy folder	mydms	cs	kopírovat složku
-copy options	mydms	cs	volby kopírování
-copy subfolders	mydms	cs	kopírovat podsložku
-create empty acl	mydms	cs	vytvořit prázdný acl
-creation date	mydms	cs	datum vytvoření
-current acl	mydms	cs	aktuální acl
-current version	mydms	cs	aktuální verze
-default access	mydms	cs	výchozí přístup
-delete folder	mydms	cs	smazat složku
-delete this notification	mydms	cs	smazat upozornění
+comment for current version	mydms	cs	Komentář pro aktuální verzi
+copy acl	mydms	cs	Kopírovat acl
+copy documents	mydms	cs	Kopírovat dokumenty
+copy folder	mydms	cs	Kopírovat složku
+copy options	mydms	cs	Volby kopírování
+copy subfolders	mydms	cs	Kopírovat podsložku
+create empty acl	mydms	cs	Vytvořit prázdný acl
+creation date	mydms	cs	Datum vytvoření
+crop comment	mydms	cs	Zkrátit komentář
+current acl	mydms	cs	Aktuální acl
+current version	mydms	cs	Aktuální verze
+default access	mydms	cs	Výchozí přístup
+delete folder	mydms	cs	Smazat složku
+delete this notification	mydms	cs	Smazat upozornění
 do you really want to delete this acl?	mydms	cs	Opravdu chcete smazat tento acl?
 do you really want to delete this document?	mydms	cs	Opravdu chcete smazat tento dokument?
+do you really want to delete this link for document?	mydms	cs	Opravdu chcete smazat tento odkaz na dokument?
 do you really want to delete this version of the document?	mydms	cs	Opravdu chcete smazat tuto verzi dokumentu?
+do you really want to remove the folder "%1" and its content?<br>be careful: this action cannot be undone.	mydms	cs	Opravdu chcete smazat složku "%1" a její obsah?<br>Buďte opatrný(á): Tento krok nelze vzít zpět.
 does not expire	mydms	cs	nevyprší
-download	mydms	cs	stáhnout
-edit folder	mydms	cs	editovat složku
-expires	mydms	cs	vyprší
-expires after	mydms	cs	vyprší za
-file size	mydms	cs	velikost souboru
-filename	mydms	cs	jméno souboru
-folder	mydms	cs	složka
-general information	mydms	cs	obecné informace
-information about last update	mydms	cs	informace o poslední aktualizaci
+download	mydms	cs	Stáhnout
+edit folder	mydms	cs	Editovat složku
+expires	mydms	cs	Vyprší
+expires after	mydms	cs	vyprší po
+file size	mydms	cs	Velikost souboru
+filename	mydms	cs	Jméno souboru
+folder	mydms	cs	Složka
+general information	mydms	cs	Obecné informace
+information about last update	mydms	cs	Informace o poslední aktualizaci
 informations	mydms	cs	Informace
-inherit acl again	mydms	cs	znovu zdědit acl
-last update	mydms	cs	poslední aktualizace
-linked documents	mydms	cs	odkazované dokumenty
-lock status	mydms	cs	stav uzamčení
+inherit acl again	mydms	cs	Znovu zdědit acl
+last update	mydms	cs	Poslední aktualizace
+linked by	mydms	cs	Odkaz vytvořil(a)
+linked documents	mydms	cs	Odkazované dokumenty
+lock status	mydms	cs	Stav uzamčení
 mime type	mydms	cs	MIME typ
-move document	mydms	cs	přesunout dokument
-move folder	mydms	cs	přesunout složku
+move document	mydms	cs	Přesunout dokument
+move folder	mydms	cs	Přesunout složku
 mydms	common	cs	Správce dokumentů
-notifications	mydms	cs	upozornění
-permission	mydms	cs	oprávnění
-select folder	mydms	cs	vybrat složku
-select target folder	mydms	cs	vybrat cílovou složku
-target folder	mydms	cs	cílová složka
+no related documents	mydms	cs	Žádné související dokumenty
+not selected document!	mydms	cs	Žádný vybraný dokument!
+notifications	mydms	cs	Upozornění
+permission	mydms	cs	Oprávnění
+select folder	mydms	cs	Vybrat složku
+select target folder	mydms	cs	Vybrat cílovou složku
+target folder	mydms	cs	Cílová složka
 this document gets locked by you!	mydms	cs	dokument jste uzamknul(a)!
 this document gets unlocked by you.	mydms	cs	dokument jste odemknul(a)!
 this document is currently not locked.	mydms	cs	dokument není v současné době uzamčen
 this document is locked by <a href="mailto:%1">%2</a>.	mydms	cs	dokument uzamknul <a href="mailto:%1">%2</a>.
-update document	mydms	cs	akutalizovat dokument
-upload date	mydms	cs	datum uploadu
-uploaded by	mydms	cs	uploadoval(a)
-view online	mydms	cs	zobrazit online
+to save space do not show the full comment to the file	mydms	cs	Pro ušetření místa nezobrazovat celý komentář k souboru
+update document	mydms	cs	Akutalizovat dokument
+upload date	mydms	cs	Datum uploadu
+uploaded by	mydms	cs	Uploadoval(a)
+view online	mydms	cs	Zobrazit online
