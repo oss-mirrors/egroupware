@@ -660,7 +660,6 @@
 		{
 			# skeleton
 			# $this->t->set_var('',lang(''));
-			
 			$this->t->set_var('lang_server_name',lang('server name'));
 			$this->t->set_var('lang_server_description',lang('description'));
 			$this->t->set_var('lang_edit',lang('edit'));
@@ -735,6 +734,7 @@
 			$this->t->set_var('lang_stationery', lang('stationery'));
 			$this->t->set_var('lang_active_templates', lang('active templates'));
 			$this->t->set_var('lang_active_templates_description', lang('users can utilize these stationery templates'));
+			$this->t->set_var('lang_email',lang('use Users eMail-Address (as seen in Useraccount)'));
 			$this->t->set_var('',lang(''));
 			# $this->t->set_var('',lang(''));
 			

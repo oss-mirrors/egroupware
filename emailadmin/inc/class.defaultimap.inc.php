@@ -424,10 +424,10 @@
 		 */
 		function getUserData($_username) 
 		{
-                        if($this->_connected === true) {
+			if($this->_connected === true) {
 				//error_log(__METHOD__."try to disconnect");
-                                $this->disconnect();
-                        }
+				$this->disconnect();
+			}
 
 			$this->openConnection(true);
 
