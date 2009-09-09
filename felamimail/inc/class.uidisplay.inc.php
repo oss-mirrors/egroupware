@@ -651,7 +651,7 @@
 					$this->t->set_var('size',egw_vfs::hsize($value['size']));
 					$this->t->set_var('attachment_number',$key);
 
-					switch($value['mimeType'])
+					switch(strtoupper($value['mimeType']))
 					{
 						case 'MESSAGE/RFC822':
 							$linkData = array
@@ -668,7 +668,9 @@
 						case 'IMAGE/JPEG':
 						case 'IMAGE/PNG':
 						case 'IMAGE/GIF':
-						#case 'application/pdf':
+						case 'APPLICATION/PDF':
+						case 'TEXT/PLAIN':
+						case 'TEXT/HTML':
 							$linkData = array
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
