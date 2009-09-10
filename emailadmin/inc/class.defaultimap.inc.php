@@ -312,10 +312,10 @@
 			if ($this->loginType == 'email')
 			{
 				$_username = $_username;
-				$userinfo = $GLOBALS['egw']->accounts->read($GLOBALS['egw']->accounts->name2id($_username));
-				if (!empty($userinfo['account_email']))
+				$accountemail = $GLOBALS['egw']->accounts->read($GLOBALS['egw']->accounts->name2id($_username,'account_email'));
+				if (!empty($accountemail))
 				{
-					list($username,$domain) = explode('@',$userinfo['account_email'],2);
+					list($username,$domain) = explode('@',$accountemail,2);
 					if (strtolower($domain) == strtolower($this->domainName) && !empty($username))
 					{
 						$_username = $username;
