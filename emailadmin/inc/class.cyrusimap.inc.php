@@ -74,29 +74,6 @@
 		}
 
 		/**
-		 * get the effective Username for the Mailbox, as it is depending on the loginType
-		 * @param string $_username
-		 * @return string the effective username to be used to access the Mailbox
-		 */
-		function getMailBoxUserName($_username)
-		{
-			if ($this->loginType == 'email')
-			{
-				$_username = $_username;
-				$userinfo = $GLOBALS['egw']->accounts->read($GLOBALS['egw']->accounts->name2id($_username));
-				if (!empty($userinfo['account_email']))
-				{
-					list($username,$domain) = explode('@',$userinfo['account_email'],2);
-					if (strtolower($domain) == strtolower($this->domainName) && !empty($username))
-					{
-						$_username = $username;
-					}
-				}
-			}
-			return $_username;
-		}
-
-		/**
 		 * Create mailbox string from given mailbox-name and user-name
 		 * @param string $_username
 		 * @param string $_folderName='' 
