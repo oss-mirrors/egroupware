@@ -74,8 +74,31 @@
 		}
 
 		/**
+		 * get the effective Username for the Mailbox, as it is depending on the loginType
+		 * @param string $_username
+		 * @return string the effective username to be used to access the Mailbox
+		 */
+		function getMailBoxUserName($_username)
+		{
+			if ($this->loginType == 'email')
+			{
+				$_username = $_username;
+				$userinfo = $GLOBALS['egw']->accounts->read($GLOBALS['egw']->accounts->name2id($_username));
+				if (!empty($userinfo['account_email']))
+				{
+					list($username,$domain) = explode('@',$userinfo['account_email'],2);
+					if (strtolower($domain) == strtolower($this->domainName) && !empty($username))
+					{
+						$_username = $username;
+					}
+				}
+			}
+			return $_username;
+		}
+
+		/**
 		 * Create mailbox string from given mailbox-name and user-name
-		 *
+		 * @param string $_username
 		 * @param string $_folderName='' 
 		 * @return string utf-7 encoded (done in getMailboxName)
 		 */
@@ -86,7 +109,7 @@
 			if(!isset($nameSpaces['others'])) {
 				return false;
 			}
-
+			$_username = $this->getMailBoxUserName($_username);
 			$mailboxString = $nameSpaces['others'][0]['name'] . strtolower($_username) . (!empty($_folderName) ? $nameSpaces['others'][0]['delimiter'] . $_folderName : '');
 			
 			if($this->loginType == 'vmailmgr' || $this->loginType == 'email') {
@@ -147,8 +170,10 @@
 				return false;
 			}
 
-			// create the mailbox
+			// create the mailbox, with the account_lid, as it is passed from the hook values (gets transformed there if needed)
 			$mailboxName = $this->getUserMailboxString($username, $mailboxName);
+			// make sure we use the correct username here.
+			$username = $this->getMailBoxUserName($username);
 			$folderInfo = $this->getMailboxes('', $mailboxName, true);
 			if(empty($folderInfo)) {
 				if(!PEAR::isError($this->createMailbox($mailboxName))) {
