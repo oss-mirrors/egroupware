@@ -72,6 +72,7 @@ ldap server hostname or ip address	emailadmin	en	LDAP server hostname or ip addr
 ldap settings	emailadmin	en	LDAP settings
 leave empty for no quota	emailadmin	en	leave empty for no quota
 mail settings	admin	en	Mail settings
+manage stationery templates	emailadmin	en	Manage stationery templates
 name of organisation	emailadmin	en	Name of organization
 no alternate email address	emailadmin	en	no alternate email address
 no encryption	emailadmin	en	no encryption

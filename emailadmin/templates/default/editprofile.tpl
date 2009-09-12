@@ -1010,6 +1010,12 @@
 				{stored_templates}
 			</td>
 		</tr>
+		<tr>
+			<td></td>
+			<td align='right'>
+				{link_manage_templates}
+			</td>
+		</tr>
 	</table>
 	</fieldset>
 </div>

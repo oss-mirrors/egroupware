@@ -157,6 +157,15 @@
 			$this->t->set_var('stored_templates', html::checkbox_multiselect(
 				'globalsettings[ea_stationery_active_templates]',0
 				,$bostationery->get_stored_templates(),true,'',3,true,'width: 100%;'));
+			$this->t->set_var(
+				'link_manage_templates',
+				html::a_href(
+					lang('manage stationery templates'),
+					'/index.php?menuaction=etemplate.editor.edit',
+					array('name' => 'felamimail.stationery'),
+					'target="_blank"'
+				)
+			);
 						
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
@@ -360,7 +369,16 @@
 			$this->t->set_var('stored_templates', html::checkbox_multiselect(
 				'globalsettings[ea_stationery_active_templates]',$activeTemplates
 				,$bostationery->get_stored_templates(),true,'',3,true,'width: 100%;'));
-					
+			$this->t->set_var(
+				'link_manage_templates',
+				html::a_href(
+					lang('manage stationery templates'),
+					'/index.php?menuaction=etemplate.editor.edit',
+					array('name' => 'felamimail.stationery'),
+					'target="_blank"'
+				)
+			);
+			
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
 		}
