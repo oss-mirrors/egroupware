@@ -13,6 +13,12 @@
 class felamimail_bostationery
 {
 	/**
+	 * application stationery is working for
+	 *
+	 */
+	const _appname = 'felamimail';
+	
+	/**
 	 * prefix for the etemplate stationery templates
 	 *
 	 */
@@ -41,7 +47,7 @@ class felamimail_bostationery
 	private function get_active_templates()
 	{
 		$boemailadmin = new emailadmin_bo();
-		$profile_data = $boemailadmin->getUserProfile('felamimail');
+		$profile_data = $boemailadmin->getUserProfile(self::_appname);
 		$active_templates = $profile_data->ea_stationery_active_templates;
 			
 		return $active_templates;
@@ -54,6 +60,9 @@ class felamimail_bostationery
 	 */
 	public function get_stored_templates()
 	{
+		// ensure that templates are actually loaded into the database
+		$this->etemplate->test_import(self::_appname);
+		
 		$templates = $this->etemplate->search(self::_stationery_prefix);
 		$stored_templates = array();
 				
