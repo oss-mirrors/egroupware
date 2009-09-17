@@ -461,7 +461,13 @@ function _egwcontactssync_replace($guid, $content, $contentType, $merge=false)
 	}
 }
 
-function setSupportedFields(object $content)
+/**
+ * Adjust the supported fields of the device for a memo.
+ *
+ * @param object  $content      The content of the memo.
+ *
+ */
+function setSupportedFields($content)
 {
 	$deviceInfo = $_SESSION['SyncML.state']->getClientDeviceInfo();
 
@@ -757,6 +763,7 @@ function setSupportedFields(object $content)
 				'NOTE'		=> array('note'),
 				'ORG'		=> array('org_name','org_unit'),
 				'TEL;VOICE;CELL'	=> array('tel_cell'),
+				'TEL;X-CustomLabel-iPhone'	=> array('tel_cell_private'),
 				'TEL;WORK;FAX'		=> array('tel_fax'),
 				'TEL;HOME;FAX'		=> array('tel_fax_home'),
 				'TEL;WORK;VOICE'	=> array('tel_work'),
@@ -956,7 +963,7 @@ function setSupportedFields(object $content)
 					$supportedFields = $defaultFields[13];
 					break;
 				default:
-					if ($this->productName[0] == 'w')
+					if ($productName[0] == 'w')
 					{
 						error_log('unknown Sony Ericsson phone "' . $deviceInfo['model'] . '", assuming same as "W760i"');
 						$supportedFields = $defaultFields[13];
