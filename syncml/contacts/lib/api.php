@@ -907,6 +907,7 @@ function setSupportedFields($content)
 				case 'e90':
 				case 'e71':
 				case 'n95':
+				case 'n97':
 					$supportedFields = $defaultFields[9];
 					break;
 				case '9300':
