@@ -45,7 +45,7 @@ $_services['delete'] = array(
 );
 
 $_services['replace'] = array(
-    'args' => array('guid', 'content', 'contentType', 'merge'),
+    'args' => array('guid', 'content', 'contentType', 'type', 'merge'),
     'type' => 'boolean'
 );
 
@@ -343,6 +343,12 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			$calendarId = $boical->importVCal($content, $calendarId);
+			if (preg_match('/(\d+):(\d+)/', $calendarId, $matches)) {
+				// We have created a pseudo exception; date it back to this session
+				$guid = 'calendar-' . $matches[1];
+				$ts = $state->getSyncTSforAction($guid, 'modify');
+				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
+			}
 			break;
 
 		case 'text/x-s4j-sifc':
@@ -594,13 +600,15 @@ function _egwcalendarsync_delete($guid)
  *                             text/calendar
  *                             text/x-vcalendar
  *                             text/x-s4j-sife
+ * @param string  $type        The type of the content.
  * @param boolean $merge       merge data instead of replace
  *
  * @return boolean  Success or failure.
  */
-function _egwcalendarsync_replace($guid, $content, $contentType, $merge=false)
+function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=false)
 {
-	Horde::logMessage("SymcML: egwcalendarsync replace guid: $guid content: $content contenttype: $contentType", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync replace guid: $guid content: $content contenttype: $contentType",
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	if (is_array($contentType))
 	{
@@ -621,7 +629,19 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $merge=false)
 		case 'text/calendar':
 			$boical	= new calendar_ical();
 			$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-			return $boical->importVCal($content, $eventID, null, $merge, $recur_date);
+			$calendarId = $boical->importVCal($content, $eventID, null, $merge, $recur_date);
+			if ($recur_date && $_id != $calendarId) {
+				Horde::logMessage("SymcML: egwcalendarsync replace propagated guid: $guid to calendar-$calendarId",
+					__FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+				// The pseudo exception was propagated to a real exception
+				$ts = $state->getChangeTS($type, 'calendar-' . $eventID);
+				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $eventID, 'modify', $ts);
+				$ts = $state->getServerAnchorLast($type) + 1;
+				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $_id, 'delete', $ts);
+				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
+			}
+			return $calendarId;
 			break;
 
 		case 'text/x-s4j-sifc':

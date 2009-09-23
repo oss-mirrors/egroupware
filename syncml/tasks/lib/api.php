@@ -45,7 +45,7 @@ $_services['delete'] = array(
 );
 
 $_services['replace'] = array(
-    'args' => array('guid', 'content', 'contentType', 'merge'),
+    'args' => array('guid', 'content', 'contentType', 'type', 'merge'),
     'type' => 'boolean'
 );
 
@@ -380,11 +380,12 @@ function _egwtaskssync_delete($guid)
  * @param string $contentType  What format is the data in? Currently supports:
  *                             text/plain
  *                             text/x-vnote
+ * @param string  $type        The type of the content.
  * @param boolean $merge       merge data instead of replace
  *
  * @return boolean  Success or failure.
  */
-function _egwtaskssync_replace($guid, $content, $contentType, $merge=false)
+function _egwtaskssync_replace($guid, $content, $contentType, $type, $merge=false)
 {
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
