@@ -867,6 +867,7 @@ function setSupportedFields($content)
 					$supportedFields = $defaultFields[6];
 					break;
 
+				case 'pocket pc sync client':
 				case 'pocket pc plug-in':
 				case 'blackberry plug-in':
 				case 'iphone':
