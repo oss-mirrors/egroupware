@@ -61,6 +61,7 @@ $_services['replace'] = array(
 function _egwnotessync_list($filter='')
 {
 	$guids = array();
+	$boInfolog = new infolog_bo();
 
 	#Horde::logMessage("SymcML: egwnotessync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
@@ -75,7 +76,7 @@ function _egwnotessync_list($filter='')
 		),
 	);
 
-	$notes =& ExecMethod('infolog.infolog_bo.search',$searchFilter);
+	$notes =& $boInfolog->search($searchFilter);
 
 	foreach((array)$notes as $note)
 	{
@@ -107,14 +108,15 @@ function &_egwnotessync_listBy($action, $timestamp, $type, $filter)
 	{
 		return $allChangedItems;	// InfoLog has no further info about deleted entries
 	}
-	$infolog_bo = new infolog_bo();
+
+	$boInfolog = new infolog_bo();
 	$user = $GLOBALS['egw_info']['user']['account_id'];
 
 	$readAbleItems = array();
 	foreach($allChangedItems as $guid) {
 		$uid = $state->get_egwId($guid);
 
-		if(($info = $infolog_bo->read($uid)) &&		// checks READ rights too and returns false if none
+		if(($info =& $boInfolog->read($uid)) &&		// checks READ rights too and returns false if none
 			// for filter my = all items the user is responsible for:
 			//($user == $info['info_owner'] && !count($info['info_responsible']) || in_array($user,$info['info_responsible'])))
 			// for filter own = all items the user own or is responsible for:
@@ -145,6 +147,7 @@ function _egwnotessync_import($content, $contentType, $guid = null)
 		$contentType = $contentType['ContentType'];
 	}
 
+	$boInfolog = new infolog_bo();
 	$noteId = -1; // default for new entry
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'])) {
@@ -154,12 +157,12 @@ function _egwnotessync_import($content, $contentType, $guid = null)
 		if (preg_match('/infolog_note-(\d+)/', $guid, $matches)) {
 			Horde::logMessage("SymcML: egwnotessync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			// We found a conflicting entry on the server, let's make it a duplicate
-			if ($conflict = ExecMethod2('infolog.infolog_bo.read', $matches[1])) {
+			if (($conflict =& $boInfolog->read($matches[1]))) {
 				$conflict['info_cat'] = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'];
 				if (!empty($conflict['info_uid'])) {
 					$conflict['info_uid'] = 'DUP-' . $conflict['info_uid'];
 				}
-				ExecMethod2('infolog.infolog_bo.write', $conflict);
+				$boInfolog->write($conflict);
 			}
 		}
 	}
@@ -305,7 +308,6 @@ function _egwnotessync_export($guid, $contentType)
 		case 'text/plain':
 			$infolog_ical = new infolog_ical($clientProperties);
 			return $infolog_ical->exportVNOTE($noteId, $contentType);
-			break;
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
@@ -313,12 +315,9 @@ function _egwnotessync_export($guid, $contentType)
 			Horde::logMessage("SyncML: egwnotessync export treating bad task content-type '$contentType' as if is was 'text/x-s4j-sifn'", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
-			if($note = $infolog_sif->getSIF($noteId, 'note')) {
-				return $note;
-			} else {
-				return PEAR::raiseError(_("Access Denied"));
-			}
-			break;
+			if($note = $infolog_sif->getSIF($noteId, 'note')) return $note;
+
+			return PEAR::raiseError(_("Access Denied"));
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
@@ -348,7 +347,9 @@ function _egwnotessync_delete($guid)
 		return true;
 	}
 
-	return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
+	$boInfolog = new infolog_bo();
+
+	return $boInfolog->delete($state->get_egwId($guid));
 }
 
 /**
@@ -382,7 +383,6 @@ function _egwnotessync_replace($guid, $content, $contentType, $type, $merge=fals
 		case 'text/x-vnote':
 			$infolog_ical = new infolog_ical();
 			return $infolog_ical->importVNOTE($content, $contentType, $noteId, $merge);
-			break;
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
@@ -391,7 +391,6 @@ function _egwnotessync_replace($guid, $content, $contentType, $type, $merge=fals
 		case 'text/x-s4j-sifn':
 			$infolog_sif	= new infolog_sif();
 			return $infolog_sif->addSIF($content, $noteId, 'note', $merge);
-			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));

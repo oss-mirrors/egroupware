@@ -61,6 +61,7 @@ $_services['replace'] = array(
 function _egwtaskssync_list($filter='')
 {
 	$guids = array();
+	$boInfolog = new infolog_bo();
 
 	$searchFilter = array
 	(
@@ -70,13 +71,12 @@ function _egwtaskssync_list($filter='')
 								// filter own: entries the user own or is responsible for
 
 		// todo add a filter to limit how far back entries from the past get synced
-		'col_filter'	=> Array
-		(
+		'col_filter'	=> Array (
 			'info_type'	=> 'task',
 		),
 	);
 
-	$tasks = ExecMethod('infolog.infolog_bo.search',$searchFilter);
+	$tasks =& $boInfolog->search($searchFilter);
 
 	Horde::logMessage("SymcML: egwtaskssync list found: " . count($tasks), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
@@ -104,8 +104,8 @@ function &_egwtaskssync_listBy($action, $timestamp, $type, $filter='')
 
 	$state = &$_SESSION['SyncML.state'];
 	$allChangedItems = $state->getHistory('infolog_task', $action, $timestamp);
-	$infolog_bo = new infolog_bo();
-	$user = $GLOBALS['egw_info']['user']['account_id'];
+	$boInfolog = new infolog_bo();
+	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
 
 	if($action == 'delete') {
 		$deletedItems = $allChangedItems;
@@ -115,8 +115,8 @@ function &_egwtaskssync_listBy($action, $timestamp, $type, $filter='')
 		    $uid = $state->get_egwId($guid);
 
 		    // check whether I am no longer responsible for a task
-		    if (($info = $infolog_bo->read($uid))
-				    && !$infolog_bo->is_responsible($info)
+		    if (($info =& $boInfolog->read($uid))
+				    && !$boInfolog->is_responsible($info)
 				    || !count($info['info_responsible'])
 				    	&& $user != $info['info_owner'])
 			{
@@ -128,15 +128,15 @@ function &_egwtaskssync_listBy($action, $timestamp, $type, $filter='')
 
 	$readableItems = array();
 
-	foreach($allChangedItems as $guid) {
+	foreach ($allChangedItems as $guid) {
 		$uid = $state->get_egwId($guid);
 
 		// check READ rights too and return false if none
 		// for filter my = all items the user is responsible for:
-		if (($info = $infolog_bo->read($uid))
+		if (($info =& $boInfolog->read($uid))
 			&& ($user == $info['info_owner']
 			&& !count($info['info_responsible']))
-			|| $infolog_bo->is_responsible($info))
+			|| $boInfolog->is_responsible($info))
 		{
 			$readableItems[] = $guid;
 		}
@@ -162,6 +162,7 @@ function _egwtaskssync_import($content, $contentType, $guid = null)
 		$contentType = $contentType['ContentType'];
 	}
 
+	$boInfolog = new infolog_bo();
 	$taskID = -1; // default for new entry
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'])) {
@@ -171,12 +172,12 @@ function _egwtaskssync_import($content, $contentType, $guid = null)
 		if (preg_match('/infolog_task-(\d+)/', $guid, $matches)) {
 			Horde::logMessage("SymcML: egwtaskssync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			// We found a conflicting entry on the server, let's make it a duplicate
-			if ($conflict = ExecMethod2('infolog.infolog_bo.read', $matches[1])) {
+			if (($conflict =& $boInfolog->read($matches[1]))) {
 				$conflict['info_cat'] = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'];
 				if (!empty($conflict['info_uid'])) {
 					$conflict['info_uid'] = 'DUP-' . $conflict['info_uid'];
 				}
-				ExecMethod2('infolog.infolog_bo.write', $conflict);
+				$boInfolog->write($conflict);
 			}
 		}
 	}
@@ -313,17 +314,16 @@ function _egwtaskssync_export($guid, $contentType)
 	$deviceInfo	= $state->getClientDeviceInfo();
 
 	switch ($contentType) {
-		case 'text/calendar':
-			$infolog_ical = new infolog_ical($clientProperties);
-			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
-			return $infolog_ical->exportVTODO($taskID, '2.0');
-			break;
-
 		case 'text/x-vcalendar':
 			$infolog_ical = new infolog_ical($clientProperties);
 			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
 			return $infolog_ical->exportVTODO($taskID, '1.0');
-			break;
+
+		case 'text/calendar':
+		case 'text/vcalendar':
+			$infolog_ical = new infolog_ical($clientProperties);
+			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
+			return $infolog_ical->exportVTODO($taskID, '2.0');
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
@@ -334,10 +334,8 @@ function _egwtaskssync_export($guid, $contentType)
 			$infolog_sif->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
 			if($task = $infolog_sif->getSIF($taskID, 'task')) {
 				return $task;
-			} else {
-				return PEAR::raiseError(_("Access Denied"));
 			}
-			break;
+			return PEAR::raiseError(_("Access Denied"));
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
@@ -359,16 +357,14 @@ function _egwtaskssync_delete($guid)
 	if (is_array($guid)) {
 		foreach ($guid as $g) {
 			$result = _egwtaskssync_delete($g);
-			if (is_a($result, 'PEAR_Error')) {
-				return $result;
-			}
+			if (is_a($result, 'PEAR_Error')) return $result;
 		}
-
 		return true;
 	}
 
+	$boInfolog = new infolog_bo();
 	$state	= &$_SESSION['SyncML.state'];
-	return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
+	return $boInfolog->delete($state->get_egwId($guid));
 }
 
 /**
@@ -403,7 +399,6 @@ function _egwtaskssync_replace($guid, $content, $contentType, $type, $merge=fals
 			$infolog_ical = new infolog_ical();
 			$infolog_ical->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
 			return $infolog_ical->importVTODO($content, $taskID, $merge);
-			break;
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sife':
@@ -413,7 +408,6 @@ function _egwtaskssync_replace($guid, $content, $contentType, $type, $merge=fals
 			$infolog_sif	= new infolog_sif();
 			$infolog_sif->setSupportedFields($deviceInfo['model'], $deviceInfo['softwareVersion']);
 			return $infolog_sif->addSIF($content, $taskID, 'task', $merge);
-			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));

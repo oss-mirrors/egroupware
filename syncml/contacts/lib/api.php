@@ -60,7 +60,7 @@ $_services['replace'] = array(
  */
 function _egwcontactssync_list($filter='')
 {
-	$guids = array();
+	$soAddressbook = new addressbook_so();
 
 	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
@@ -76,16 +76,16 @@ function _egwcontactssync_list($filter='')
 	if (array_key_exists('filter_list', $GLOBALS['egw_info']['user']['preferences']['syncml']))
 	{
   		$filter['list'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_list'];
+  		// Horde::logMessage('SymcML: egwcontactssync list() list='. $filter['list'] , __FILE__, __LINE__, PEAR_LOG_DEBUG);
     }
 
     if (array_key_exists('filter_addressbook', $GLOBALS['egw_info']['user']['preferences']['syncml']))
     {
     	$filter['owner'] = (string) (int) $GLOBALS['egw_info']['user']['preferences']['syncml']['filter_addressbook'];
+    	// Horde::logMessage('SymcML: egwcontactssync list() owner='. $filter['owner'] , __FILE__, __LINE__, PEAR_LOG_DEBUG);
     }
 
-	$allContacts = ExecMethod2('addressbook.addressbook_bo.search',$criteria,True,'','','',False,'AND',false,$filter);
-
-	#Horde::logMessage("SymcML: egwcontactssync list ", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	$allContacts = $soAddressbook->search($criteria,true,'','','',false,'AND',false,$filter);
 
 	$guids = array();
 	foreach((array)$allContacts as $contact)
@@ -169,6 +169,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 	}
 
 	$contactId = null; //default for new entry
+	$boAddressbook = new addressbook_bo();
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['addressbook_conflict_category'])) {
 		if (!$guid) {
@@ -177,7 +178,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 		if (preg_match('/contacts-(\d+)/', $guid, $matches)) {
 			Horde::logMessage("SymcML: egwcontactssync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			// We found a conflicting entry on the server, let's make it a duplicate
-			if ($conflict = ExecMethod2('addressbook.addressbook_bo.read', $matches[1])) {
+			if ($conflict = $boAddressbook->read($matches[1])) {
 				$cat_ids = explode(",", $conflict['cat_id']);   //existing categories
 				$conflict_cat = $GLOBALS['egw_info']['user']['preferences']['syncml']['addressbook_conflict_category'];
 				if (!in_array($conflict_cat, $cat_ids)) {
@@ -187,7 +188,7 @@ function _egwcontactssync_import($content, $contentType, $guid = null)
 				if (!empty($conflict['uid'])) {
 					$conflict['uid'] = 'DUP-' . $conflict['uid'];
 				}
-				ExecMethod2('addressbook.addressbook_bo.save', $conflict);
+				$boAddressbook->save($conflict);
 			}
 		}
 	}
@@ -336,16 +337,9 @@ function _egwcontactssync_export($guid, $contentType)
 			$vcaladdressbook = new addressbook_vcal('addressbook', $contentType, $clientProperties);
 			setSupportedFields($vcaladdressbook);
 
-			if($vcard = $vcaladdressbook->getVCard($contactID))
-			{
-				return $vcard;
-			}
-			else
-			{
-				return PEAR::raiseError(_("Access Denied"));
-			}
+			if($vcard = $vcaladdressbook->getVCard($contactID))	return $vcard;
 
-			break;
+			return PEAR::raiseError(_("Access Denied"));
 
 		case 'text/x-s4j-sift':
 		case 'text/x-s4j-sife':
@@ -354,16 +348,9 @@ function _egwcontactssync_export($guid, $contentType)
 			/* fall through */
 		case 'text/x-s4j-sifc':
 			$sifaddressbook	= new addressbook_sif();
-			if($sifcard = $sifaddressbook->getSIF($contactID))
-			{
-				return $sifcard;
-			}
-			else
-			{
-				return PEAR::raiseError(_("Access Denied"));
-			}
+			if($sifcard = $sifaddressbook->getSIF($contactID)) return $sifcard;
 
-			break;
+			return PEAR::raiseError(_("Access Denied"));
 
 		default:
 			#Horde::logMessage("SymcML: export unsupported", __FILE__, __LINE__, PEAR_LOG_DEBUG);
@@ -396,11 +383,13 @@ function _egwcontactssync_delete($guid)
 	}
 	Horde::logMessage("SymcML: egwcontactssync delete guid: $guid egwid: ". $state->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
+	$boAddressbook = new addressbook_bo();
+
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
 
-	return ExecMethod('addressbook.addressbook_vcal.delete', $state->get_egwId($guid));
+	return $boAddressbook->delete($state->get_egwId($guid));
 
 }
 
@@ -440,7 +429,6 @@ function _egwcontactssync_replace($guid, $content, $contentType, $type, $merge=f
 			setSupportedFields($vcaladdressbook);
 			$result = $vcaladdressbook->addVCard($content, $contactID, $merge);
 			return $result;
-			break;
 
 		case 'text/x-s4j-sife':
 		case 'text/x-s4j-sift':
@@ -455,7 +443,6 @@ function _egwcontactssync_replace($guid, $content, $contentType, $type, $merge=f
 			$sifaddressbook		= new addressbook_sif();
 			$result = $sifaddressbook->addSIF($content, $contactID, $merge);
 			return $result;
-			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
@@ -906,6 +893,7 @@ function setSupportedFields($content)
 					$supportedFields = $defaultFields[5];
 					break;
 				case 'e51':
+				case 'e66':
 				case 'e90':
 				case 'e71':
 				case 'n95':

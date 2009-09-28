@@ -68,7 +68,7 @@ function _egwcalendarsync_list($filter='')
 	$guids = array();
 
 	$vcal = new Horde_iCalendar;
-	$soCalendar = new calendar_so();
+	$boCalendar = new calendar_bo();
 
 	$now = time();
 
@@ -110,7 +110,7 @@ function _egwcalendarsync_list($filter='')
 		'enum_groups' => true,
 	);
 
-	$events =& ExecMethod('calendar.calendar_bo.search', $searchFilter);
+	$events =& $boCalendar->search($searchFilter);
 
 	foreach((array)$events as $event)
 	{
@@ -118,7 +118,7 @@ function _egwcalendarsync_list($filter='')
 		if ($event['recur_type'] != MCAL_RECUR_NONE)
 		{
 			// Check if the stati for all participants are identical for all recurrences
-			$days = $soCalendar->get_recurrence_exceptions(&$event);
+			$days = $boCalendar->so->get_recurrence_exceptions(&$event);
 
 			foreach ($days as $recur_date)
 			{
@@ -151,7 +151,6 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 
 	$vcal = new Horde_iCalendar;
 	$boCalendar = new calendar_bo();
-	$soCalendar = new calendar_so();
 
 	$now = time();
 
@@ -217,7 +216,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 						$recur_exceptions = $state->getGUIDExceptions($type, $guid);
 						foreach ($recur_exceptions as $rexception) {
 							$parts = preg_split('/:/', $rexception);
-  							$recur_dates = $soCalendar->get_recurrence_exceptions($event);
+  							$recur_dates = $boCalendar->so->get_recurrence_exceptions($event);
   							if (!in_array($parts[1], $recur_dates))
   							{
   								// "status only" exception does no longer exist
@@ -254,7 +253,7 @@ function &_egwcalendarsync_listBy($action, $timestamp, $type, $filter='')
 				if ($event['recur_type'] != MCAL_RECUR_NONE)
 				{
 					// Check if the stati for all participants are identical for all recurrences
-					$days = $soCalendar->get_recurrence_exceptions(&$event);
+					$days = $boCalendar->so->get_recurrence_exceptions(&$event);
 
 					foreach ($days as $recur_date)
 					{
@@ -288,7 +287,6 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 
 	#$syncProfile	= _egwcalendarsync_getSyncProfile();
 
-
 	if (is_array($contentType)) {
 		$contentType = $contentType['ContentType'];
 	}
@@ -301,13 +299,13 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 		}
 		if (preg_match('/calendar-(\d+)(:(\d+))?/', $guid, $matches))
 		{
-			$bocalendar = new calendar_boupdate();
+			$boCalendar = new calendar_boupdate();
 			// We found a matching entry. Are we allowed to change it?
-			if ($bocalendar->check_perms(EGW_ACL_EDIT, $matches[1]))
+			if ($boCalendar->check_perms(EGW_ACL_EDIT, $matches[1]))
 			{
 				// We found a conflicting entry on the server, let's make it a duplicate
 				Horde::logMessage("SymcML: egwcalendarsync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-				if (($conflict = $bocalendar->read($matches[1])))
+				if (($conflict =& $boCalendar->read($matches[1])))
 				{
 					$cat_ids = explode(",", $conflict['category']);   //existing categories
 					$conflict_cat = $GLOBALS['egw_info']['user']['preferences']['syncml']['calendar_conflict_category'];
@@ -320,7 +318,7 @@ function _egwcalendarsync_import($content, $contentType, $guid = null)
 					if (!empty($conflict['uid'])) {
 						$conflict['uid'] = 'DUP-' . $conflict['uid'];
 					}
-					$bocalendar->save($conflict);
+					$boCalendar->save($conflict);
 				}
 			}
 			else
@@ -529,8 +527,7 @@ function _egwcalendarsync_delete($guid)
 	$state = &$_SESSION['SyncML.state'];
 	if (is_array($guid))
 	{
-		foreach ($guid as $g)
-		{
+		foreach ($guid as $g) {
 			$result = _egwcalendarsync_delete($g);
 			if (is_a($result, 'PEAR_Error')) return $result;
 		}
@@ -538,9 +535,10 @@ function _egwcalendarsync_delete($guid)
 	}
 
 
-	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$state->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcalendarsync delete id: ".$state->get_egwId($guid),
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$bocalendar = new calendar_boupdate();
+	$boCalendar = new calendar_boupdate();
 	$_id = $state->get_egwId($guid);
 	$parts = preg_split('/:/', $_id);
 	$eventId = $parts[0];
@@ -548,17 +546,17 @@ function _egwcalendarsync_delete($guid)
 	$user = $GLOBALS['egw_info']['user']['account_id'];
 
 	// Check if the user has at least read access to the event
-	if (!($event = $bocalendar->read($eventId))) return false;
+	if (!($event =& $boCalendar->read($eventId))) return false;
 
 
-	if (!$bocalendar->check_perms(EGW_ACL_EDIT, $eventId)
+	if (!$boCalendar->check_perms(EGW_ACL_EDIT, $eventId)
 		&& isset($event['participants'][$user]))
 	{
 		if ($recur_date && $event['recur_type'] != MCAL_RECUR_NONE) {
-			$bocalendar->set_status($event, $user, $event['participants'][$user], $recur_date);
+			$boCalendar->set_status($event, $user, $event['participants'][$user], $recur_date);
 		} else {
 			// user rejects the event by deleting it from his device
-			$bocalendar->set_status($eventId, $user, 'R', $recur_date);
+			$boCalendar->set_status($eventId, $user, 'R', $recur_date);
 		}
 		return true;
 	}
@@ -566,7 +564,7 @@ function _egwcalendarsync_delete($guid)
 	if ($recur_date && $event['recur_type'] != MCAL_RECUR_NONE)
 	{
 		// Delete a "status only" exception of a recurring event
-		$participants = $bocalendar->so->get_participants($event['id'], 0);
+		$participants = $boCalendar->so->get_participants($event['id'], 0);
 		foreach ($participants as &$participant)
 		{
 			if (isset($event['participants'][$participant['uid']]))
@@ -582,12 +580,12 @@ function _egwcalendarsync_delete($guid)
 		foreach ($participants as $attendee)
 		{
 			// Set participant status back
-			$bocalendar->set_status($event, $attendee['uid'], $attendee['status'], $recur_date);
+			$boCalendar->set_status($event, $attendee['uid'], $attendee['status'], $recur_date);
 		}
 		return true;
 	}
 
-	return $bocalendar->delete($eventId);
+	return $boCalendar->delete($eventId);
 }
 
 /**
@@ -642,7 +640,6 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 				$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
 			}
 			return $calendarId;
-			break;
 
 		case 'text/x-s4j-sifc':
 		case 'text/x-s4j-sift':
@@ -652,7 +649,6 @@ function _egwcalendarsync_replace($guid, $content, $contentType, $type, $merge=f
 			$sifcalendar = new calendar_sif();
 			$sifcalendar->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 			return $sifcalendar->addSIF($content, $eventID, $merge);
-			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));

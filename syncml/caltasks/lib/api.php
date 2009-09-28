@@ -61,6 +61,8 @@ $_services['replace'] = array(
 function _egwcaltaskssync_list($filter='')
 {
 	$guids = array();
+	$boCalendar = new calendar_bo();
+	$boInfolog = new infolog_bo();
 
 	$now = time();
 
@@ -86,6 +88,7 @@ function _egwcaltaskssync_list($filter='')
 		$endDate	= ($cendDate ? $cendDate : ($now + 65000000));
 	}
 
+	#1 search through the calendar
 	$searchFilter = array (
 		'start'   => date('Ymd', $startDate),
 		'end'     => date('Ymd', $endDate),
@@ -95,16 +98,26 @@ function _egwcaltaskssync_list($filter='')
 		'enum_groups' => true,
 	);
 
-	$events =& ExecMethod('calendar.calendar_bo.search',$searchFilter);
+	$events =& $boCalendar->search($searchFilter);
 
 	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($events) .' events', __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	foreach((array)$events as $event) {
-		$guids[] = 'calendar-'.$event['id'];
+		$guids[] = $guid = 'calendar-' . $event['id'];
+		if ($event['recur_type'] != MCAL_RECUR_NONE)
+		{
+			// Check if the stati for all participants are identical for all recurrences
+			$days = $boCalendar->so->get_recurrence_exceptions(&$event);
+
+			foreach ($days as $recur_date)
+			{
+				if ($recur_date) $guids[] = $guid . ':' . $recur_date;
+			}
+		}
 	}
 
 
-	# 2.) search for tasks(infolog)
+	#2 search for tasks(infolog)
 	$searchFilter = array (
 		'order'		=> 'info_datemodified',
 		'sort'		=> 'DESC',
@@ -116,7 +129,7 @@ function _egwcaltaskssync_list($filter='')
 		),
 	);
 
-	$tasks = ExecMethod('infolog.infolog_bo.search',$searchFilter);
+	$tasks =& $boInfolog->search($searchFilter);
 
 	Horde::logMessage('SymcML: egwcaltaskssync list found: '. count($tasks) .' tasks', __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
@@ -149,6 +162,12 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	$vcal = new Horde_iCalendar;
+	$boCalendar = new calendar_bo();
+	$boInfolog = new infolog_bo();
+	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
+
+	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
+	$ids = $guids = array();
 
 	$now = time();
 
@@ -178,15 +197,18 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
     	__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	// query the calendar, to check if we are a participants in these changed events
-	$boCalendar = new calendar_bo();
-	$user = (int) $GLOBALS['egw_info']['user']['account_id'];
-	$show_rejected = $GLOBALS['egw_info']['user']['preferences']['calendar']['show_rejected'];
-	$ids = $guids = array();
-
 	if($action == 'delete')
 	{
 		$guids = $allChangedCalendarItems;
+
+		// Delete all exceptions of deleted series events
+		foreach($allChangedCalendarItems as $guid) {
+			$recur_exceptions = $state->getGUIDExceptions($type, $guid);
+			$guids = array_merge($guids, $recur_exceptions);
+		}
+
 		$allChangedCalendarItems = $state->getHistory('calendar', 'modify', $timestamp);
+		$allChangedCalendarItems =  array_unique($allChangedCalendarItems + $guids);
 		foreach($allChangedCalendarItems as $guid) {
 			$ids[] = $state->get_egwId($guid);
 		}
@@ -204,24 +226,41 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 					{
 						$guid = 'calendar-' . $event['id'];
 						$recur_exceptions = $state->getGUIDExceptions($type, $guid);
-						// Get all dates where the stati for all participants are not identical with the series
-						$days = _egwcalendarsync_recurrence_exceptions(&$event);
-						foreach ($days as $recur_date)
-						{
-							// Keep this exception
-							unset($recur_exceptions[$recur_date]);
-						}
-						$guids = $guids + $recur_exceptions;
+						foreach ($recur_exceptions as $rexception) {
+							$parts = preg_split('/:/', $rexception);
+  							$recur_dates = $boCalendar->so->get_recurrence_exceptions($event);
+  							if (!in_array($parts[1], $recur_dates))
+  							{
+  								// "status only" exception does no longer exist
+  								$guids[] = $rexception;
+  							}
+  						}
 					}
 				}
 			}
 		}
-		return $guids + $allChangedTasksItems;	// we cant query the calendar for deleted events
+
+		$deletedTasksItems = $allChangedTasksItems;
+	    // Add all changed items for which I'm no longer responsible
+	    $allChangedTasksItems = $state->getHistory('infolog_task', 'modify', $timestamp);
+	    foreach($allChangedTasksItems as $guid) {
+		    $uid = $state->get_egwId($guid);
+
+		    // check whether I am no longer responsible for a task
+		    if (($info =& $boInfolog->read($uid))
+				    && !$boInfolog->is_responsible($info)
+				    || !count($info['info_responsible'])
+				    	&& $user != $info['info_owner'])
+			{
+			    $deletedTasksItems[] = $guid;
+		    }
+	    }
+		return $guids + $deletedTasksItems;
 	}
 
 
 	// get the calendar id's for all these items
-	foreach($$allChangedCalendarItems as $guid) {
+	foreach($allChangedCalendarItems as $guid) {
 		$ids[] = $state->get_egwId($guid);
 	}
 
@@ -230,6 +269,7 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 		foreach((array)$events as $event) {
 			//Horde::logMessage("SymcML: egwcalendarsync check participation for $event[id] / $event[title]",
 			//	__FILE__, __LINE__, PEAR_LOG_DEBUG);
+			$boCalendar->enum_groups($event);
 			if ((!$startDate || $startDate <= $event['start']
 						&& $event['end'] <= $endDate)
 					&& isset($event['participants'][$user])
@@ -239,7 +279,7 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 				if ($event['recur_type'] != MCAL_RECUR_NONE)
 				{
 					// Check if the stati for all participants are identical for all recurrences
-					$days = _egwcalendarsync_recurrence_exceptions(&$event);
+					$days = $boCalendar->so->get_recurrence_exceptions(&$event);
 
 					foreach ($days as $recur_date)
 					{
@@ -252,17 +292,15 @@ function &_egwcaltaskssync_listBy($action, $timestamp, $type, $filter='')
 		}
 	}
 
-	$infolog_bo = new infolog_bo();
-	$user = $GLOBALS['egw_info']['user']['account_id'];
-
-	foreach($allChangedTasksItems as $guid) {
+	foreach ($allChangedTasksItems as $guid) {
 		$uid = $state->get_egwId($guid);
 
-		if(($info = $infolog_bo->read($uid)) &&		// checks READ rights too and returns false if none
-			// for filter my = all items the user is responsible for:
-			($user == $info['info_owner'] && !count($info['info_responsible']) || in_array($user,$info['info_responsible'])))
-			// for filter own = all items the user own or is responsible for:
-			//($user == $info['info_owner'] || in_array($user,$info['info_responsible'])))
+		// check READ rights too and return false if none
+		// for filter my = all items the user is responsible for:
+		if (($info =& $boInfolog->read($uid))
+			&& ($user == $info['info_owner']
+			&& !count($info['info_responsible']))
+			|| $boInfolog->is_responsible($info))
 		{
 			$guids[] = $guid;
 		}
@@ -290,6 +328,10 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 		$contentType = $contentType['ContentType'];
 	}
 
+	$boCalendar = new calendar_boupdate();
+	$boInfolog = new infolog_bo();
+
+
 	$taskID = -1; // default for new entry
 
 	if (isset($GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'])) {
@@ -297,31 +339,44 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 			$guid = _egwcaltaskssync_search($content, $contentType, null);
 		}
 		if (preg_match('/infolog_task-(\d+)/', $guid, $matches)) {
-			Horde::logMessage("SymcML: egwcaltaskssync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
+			Horde::logMessage("SymcML: egwcaltaskssync import conflict found for " . $matches[1],
+				__FILE__, __LINE__, PEAR_LOG_DEBUG);
 			// We found a conflicting entry on the server, let's make it a duplicate
-			if ($conflict = ExecMethod2('infolog.infolog_bo.read', $matches[1])) {
+			if (($conflict =& $boInfolog->read($matches[1]))) {
 				$conflict['info_cat'] = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'];
 				if (!empty($conflict['info_uid'])) {
 					$conflict['info_uid'] = 'DUP-' . $conflict['info_uid'];
 				}
 				// the EGW's item gets a new id, to keep the subtasks attached to the client's entry
-				ExecMethod2('infolog.infolog_bo.write', $conflict);
+				$boInfolog->write($conflict);
 			}
 		} else if (preg_match('/calendar-(\d+)(:(\d+))?/', $guid, $matches)) {
-			Horde::logMessage("SymcML: egwcaltaskssync import conflict found for " . $matches[1], __FILE__, __LINE__, PEAR_LOG_DEBUG);
-			// We found a conflicting entry on the server, let's make it a duplicate
-			if ($conflict = ExecMethod2('calendar.calendar_bo.read', $matches[1])) {
-				$conflict = $conflict[$matches[1]];
-				$cat_ids = explode(",", $conflict['category']);   //existing categories
-				$conflict_cat = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'];
-				if (!in_array($conflict_cat, $cat_ids)) {
-					$cat_ids[] = $conflict_cat;
-					$conflict['category'] = implode(",", $cat_ids);
+			Horde::logMessage("SymcML: egwcaltaskssync import conflict found for " . $matches[1],
+				__FILE__, __LINE__, PEAR_LOG_DEBUG);
+			// We found a matching entry. Are we allowed to change it?
+			if ($boCalendar->check_perms(EGW_ACL_EDIT, $matches[1]))
+			{
+				// We found a conflicting entry on the server, let's make it a duplicate
+				if (($conflict =& $boCalendar->read($matches[1])))
+				{
+					$cat_ids = explode(",", $conflict['category']);   //existing categories
+					$conflict_cat = $GLOBALS['egw_info']['user']['preferences']['syncml']['infolog_conflict_category'];
+					if (!in_array($conflict_cat, $cat_ids))
+					{
+						$cat_ids[] = $conflict_cat;
+						$conflict['category'] = implode(",", $cat_ids);
+					}
+					if (!empty($conflict['uid'])) {
+						$conflict['uid'] = 'DUP-' . $conflict['uid'];
+					}
+					$boCalendar->save($conflict);
 				}
-				if (!empty($conflict['uid'])) {
-					$conflict['uid'] = 'DUP-' . $conflict['uid'];
-				}
-				ExecMethod2('calendar.calendar_boupdate.save', $conflict);
+			}
+			else
+			{
+				// If the user is not allowed to change this event,
+				// he still may update his participaction status
+				$calendarId = $matches[1];
 			}
 		}
 	}
@@ -331,6 +386,7 @@ function _egwcaltaskssync_import($content, $contentType, $guid = null)
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
+		case 'text/vcalendar':
 		case 'text/calendar':
 			if(strrpos($content, 'BEGIN:VTODO')) {
 				$infolog_ical	= new infolog_ical();
@@ -379,19 +435,23 @@ function _egwcaltaskssync_search($content, $contentType, $contentid)
 {
 	Horde::logMessage("SymcML: egwcaltaskssync search content: $content contenttype: $contentType contentid: $contentid", __FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-	$state	= &$_SESSION['SyncML.state'];
+	$state = &$_SESSION['SyncML.state'];
+	$deviceInfo = $state->getClientDeviceInfo();
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
+		case 'text/vcalendar':
 		case 'text/calendar':
 			if(strrpos($content, 'BEGIN:VTODO')) {
-				$infolog_ical	= new infolog_ical();
-				$id 		=  $infolog_ical->searchVTODO($content,$state->get_egwID($contentid));
-				$type		=  'infolog_task';
+				$infolog_ical = new infolog_ical();
+				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+				$id =  $infolog_ical->searchVTODO($content,$state->get_egwID($contentid));
+				$type =  'infolog_task';
 			} else {
-				$boical		= new calendar_ical();
-				$id		=  $boical->search($content,$state->get_egwID($contentid));
-				$type		=  'calendar';
+				$boical	= new calendar_ical();
+				$boical->setSupportedFields($deviceInfo['manufacturer'], $deviceInfo['model']);
+				$id	=  $boical->search($content,$state->get_egwID($contentid));
+				$type =  'calendar';
 			}
 			Horde::logMessage('SymcML: egwcaltaskssync search searched for type: '. $type, __FILE__, __LINE__, PEAR_LOG_DEBUG);
 			break;
@@ -400,18 +460,17 @@ function _egwcaltaskssync_search($content, $contentType, $contentid)
 			return PEAR::raiseError(_("Unsupported Content-Type."));
 	}
 
-	if (is_a($id, 'PEAR_Error')) {
-		return $id;
-	}
+	if (is_a($id, 'PEAR_Error')) return $id;
 
 	if(!$id) {
-		Horde::logMessage('SymcML: egwcaltaskssync search nothing found', __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		Horde::logMessage('SymcML: egwcaltaskssync search nothing found',
+			__FILE__, __LINE__, PEAR_LOG_DEBUG);
 		return false;
 	} else {
 		$id = $type . '-' . $id;
 
-		Horde::logMessage('SymcML: egwcaltaskssync search found: '. $id, __FILE__, __LINE__, PEAR_LOG_DEBUG);
-
+		Horde::logMessage('SymcML: egwcaltaskssync search found: '. $id,
+			__FILE__, __LINE__, PEAR_LOG_DEBUG);
 		return $id;
 	}
 }
@@ -453,39 +512,40 @@ function _egwcaltaskssync_export($guid, $contentType)
 	}
 
 
-	Horde::logMessage("SymcML: egwcaltaskssync export guid: $guid contenttype: ".$contentType, __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcaltaskssync export guid: $guid contenttype: ".$contentType,
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	if(strrpos($guid, 'infolog_task') !== false) {
 		Horde::logMessage("SymcML: egwcaltaskssync export exporting tasks",
 			__FILE__, __LINE__, PEAR_LOG_DEBUG);
+        $infolog_ical    = new infolog_ical($clientProperties);
+		$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 
 		switch ($contentType) {
 			case 'text/x-vcalendar':
-				$infolog_ical    = new infolog_ical($clientProperties);
-				$infolog_ical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
 				return $infolog_ical->exportVTODO($taskID, '1.0');
 
-				break;
+			case 'text/vcalendar':
+			case 'text/calendar':
+				return $infolog_ical->exportVTODO($taskID, '2.0');
+
 			default:
 				return PEAR::raiseError(_("Unsupported Content-Type."));
 		}
 	} else {
 		Horde::logMessage("SymcML: egwcaltaskssync export exporting event",
 			__FILE__, __LINE__, PEAR_LOG_DEBUG);
-		$boical	= new calendar_ical();
+		$boical	= new calendar_ical($clientProperties);
 		$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
-
-
 
 		switch ($contentType) {
 			case 'text/x-vcalendar':
 				return $boical->exportVCal($taskID,'1.0', 'PUBLISH', $recur_date);
 
-				break;
+			case 'text/vcalendar':
 			case 'text/calendar':
 				return $boical->exportVCal($taskID,'2.0', 'PUBLISH', $recur_date);
 
-				break;
 			default:
 				return PEAR::raiseError(_("Unsupported Content-Type."));
 		}
@@ -508,45 +568,53 @@ function _egwcaltaskssync_delete($guid)
 	if (is_array($guid)) {
 		foreach ($guid as $g) {
 			$result = _egwcaltaskssync_delete($g);
-			if (is_a($result, 'PEAR_Error')) {
-				return $result;
-			}
+			if (is_a($result, 'PEAR_Error')) return $result;
 		}
-
 		return true;
 	}
 
 	#if (!array_key_exists($memo['memolist_id'], Mnemo::listNotepads(false, PERMS_DELETE))) {
 	#	return PEAR::raiseError(_("Permission Denied"));
 	#}
-	Horde::logMessage("SymcML: egwcaltaskssync delete id: ".$state->get_egwId($guid), __FILE__, __LINE__, PEAR_LOG_DEBUG);
+	Horde::logMessage("SymcML: egwcaltaskssync delete id: ".$state->get_egwId($guid),
+		__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
 	if(strrpos($guid, 'infolog_task') !== false) {
-		Horde::logMessage("SymcML: egwcaltaskssync delete deleting task", __FILE__, __LINE__, PEAR_LOG_DEBUG);
-		return ExecMethod('infolog.infolog_bo.delete',$state->get_egwId($guid));
-	} else {
-		Horde::logMessage("SymcML: egwcaltaskssync delete deleting event", __FILE__, __LINE__, PEAR_LOG_DEBUG);
+		Horde::logMessage("SymcML: egwcaltaskssync delete deleting task",
+			__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-		$bocalendar = new calendar_boupdate();
+		$boInfolog = new infolog_bo();
+		return $boInfolog->delete($state->get_egwId($guid));
+	} else {
+		Horde::logMessage("SymcML: egwcaltaskssync delete deleting event",
+			__FILE__, __LINE__, PEAR_LOG_DEBUG);
+
+		$boCalendar = new calendar_boupdate();
 		$_id = $state->get_egwId($guid);
 		$parts = preg_split('/:/', $_id);
 		$eventId = $parts[0];
 		$recur_date = (isset($parts[1]) ? $parts[1] : 0);
+		$user = $GLOBALS['egw_info']['user']['account_id'];
 
-		if (!$bocalendar->check_perms(EGW_ACL_EDIT, $eventId))
+		// Check if the user has at least read access to the event
+		if (!($event =& $boCalendar->read($eventId))) return false;
+
+		if (!$boCalendar->check_perms(EGW_ACL_EDIT, $eventId)
+				&& isset($event['participants'][$user]))
 		{
-			// user rejects the event by deleting it from his device
-			$user = $GLOBALS['egw_info']['user']['account_id'];
-			$event = $bocalendar->set_status($eventId, $user, 'R', $recur_date);
+			if ($recur_date && $event['recur_type'] != MCAL_RECUR_NONE) {
+				$boCalendar->set_status($event, $user, $event['participants'][$user], $recur_date);
+			} else {
+				// user rejects the event by deleting it from his device
+				$boCalendar->set_status($eventId, $user, 'R', $recur_date);
+			}
 			return true;
 		}
 
-		if ($recur_date)
+		if ($recur_date && $event['recur_type'] != MCAL_RECUR_NONE)
 		{
 			// Delete a "status only" exception of a recurring event
-			if (!($event = $bocalendar->read($eventId)) ||
-					$event['recur_type'] == MCAL_RECUR_NONE) return false;
-			$participants = $bocalendar->so->get_participants($event['id'], 0);
+			$participants = $boCalendar->so->get_participants($event['id'], 0);
 			foreach ($participants as &$participant)
 			{
 				if (isset($event['participants'][$participant['uid']]))
@@ -559,17 +627,16 @@ function _egwcaltaskssync_delete($guid)
 					$participant['status'] = 'G';
 				}
 			}
-			foreach ($participants as $participant)
+			foreach ($participants as $attendee)
 			{
 				// Set participant status back
-				$bocalendar->set_status($event, $participant['uid'], $participant['status'], $recur_date);
+				$boCalendar->set_status($event, $attendee['uid'], $attendee['status'], $recur_date);
 			}
 			return true;
 		}
 
-		return $bocalendar->delete($eventId);
+		return $boCalendar->delete($eventId);
 	}
-	#return $bocalendar->expunge();
 }
 
 /**
@@ -604,6 +671,7 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 
 	switch ($contentType) {
 		case 'text/x-vcalendar':
+		case 'text/vcalendar':
 		case 'text/calendar':
 			if(strrpos($guid, 'infolog_task') !== false) {
 				Horde::logMessage("SymcML: egwcaltaskssync replace replacing task",
@@ -617,10 +685,20 @@ function _egwcaltaskssync_replace($guid, $content, $contentType, $type, $merge=f
 					__FILE__, __LINE__, PEAR_LOG_DEBUG);
 				$boical	= new calendar_ical();
 				$boical->setSupportedFields($deviceInfo['manufacturer'],$deviceInfo['model']);
+				$calendarId = $boical->importVCal($content, $taskID, null, $merge, $recur_date);
+				if ($recur_date && $_id != $calendarId) {
+					Horde::logMessage("SymcML: egwcalendarsync replace propagated guid: $guid to calendar-$calendarId",
+						__FILE__, __LINE__, PEAR_LOG_DEBUG);
 
-				return $boical->importVCal($content, $taskID, null, $merge, $recur_date);
+					// The pseudo exception was propagated to a real exception
+					$ts = $state->getChangeTS($type, 'calendar-' . $taskID);
+					$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $taskID, 'modify', $ts);
+					$ts = $state->getServerAnchorLast($type) + 1;
+					$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $_id, 'delete', $ts);
+					$GLOBALS['egw']->contenthistory->updateTimeStamp('calendar', $calendarId, 'modify', $ts);
+				}
+				return $calendarId;
 			}
-			break;
 
 		default:
 			return PEAR::raiseError(_("Unsupported Content-Type."));
