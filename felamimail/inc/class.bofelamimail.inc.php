@@ -478,7 +478,6 @@
 				$files = scandir( $dir );
 				foreach ( $files as $num => $file )
 				{
-error_log($dir."/".$file);
 					if ( filetype( "$dir/$file" ) != 'file' || $file == 'winmail.dat' ) continue;
 					if ( $_filenumber > 0 && $_filenumber != $num ) continue;
 					$type = $mime->filename2mime($file);
