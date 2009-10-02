@@ -32,8 +32,8 @@
 		{
 			if($this->_debug) error_log("ajaxfelamimail::ajaxfelamimail");
 			$this->charset		=  $GLOBALS['egw']->translation->charset();
-			$this->bofelamimail	=& CreateObject('felamimail.bofelamimail',$this->charset);
-			$this->uiwidgets	=& CreateObject('felamimail.uiwidgets');
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->charset);
+			$this->uiwidgets	= CreateObject('felamimail.uiwidgets');
 			$this->_connectionStatus = $this->bofelamimail->openConnection();
 
 			$this->sessionDataAjax	= $GLOBALS['egw']->session->appsession('ajax_session_data','felamimail');
@@ -133,7 +133,7 @@
 			$this->bofelamimail->restoreSessionData();
 			$this->bofelamimail->compressFolder($this->sessionData['mailbox']);
 
-			$bofilter =& CreateObject('felamimail.bofilter');
+			$bofilter = CreateObject('felamimail.bofilter');
 
 			$sortResult = $this->bofelamimail->getSortedList(
 				$this->sessionData['mailbox'],
@@ -229,7 +229,7 @@
 		function deleteAttachment($_composeID, $_attachmentID)
 		{
 			if($this->_debug) error_log("ajaxfelamimail::deleteAttachment");
-			$bocompose	=& CreateObject('felamimail.bocompose', $_composeID);
+			$bocompose	= CreateObject('felamimail.bocompose', $_composeID);
 			$bocompose->removeAttachment($_attachmentID);
 
 			$response = new xajaxResponse();
@@ -239,7 +239,7 @@
         function toggleEditor($_composeID, $_content ,$_mode)
         {
             if($this->_debug) error_log("ajaxfelamimail::toggleEditor");
-            $bocompose  =& CreateObject('felamimail.bocompose', $_composeID);
+            $bocompose  = CreateObject('felamimail.bocompose', $_composeID);
 			if($_mode == 'simple') {
 				#if (isset($GLOBALS['egw_info']['server']['enabled_spellcheck'])) $_mode = 'egw_simple_spellcheck';
         		$this->sessionData['mimeType'] = 'html';
@@ -323,7 +323,7 @@
 		{
 			if($this->_debug) error_log("ajaxfelamimail::changeActiveAccount");
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.bopreferences.inc.php');
-			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$boPreferences  = CreateObject('felamimail.bopreferences');
 			$boPreferences->setProfileActive(false);
 			if ($accountData) $boPreferences->setProfileActive(true,$accountData);
 
@@ -337,7 +337,7 @@
 			if($this->_debug) error_log("ajaxfelamimail::deleteAccountData");
 			$accountData = explode(",",$accountIDs);
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.bopreferences.inc.php');
-			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$boPreferences  = CreateObject('felamimail.bopreferences');
 			$boPreferences->deleteAccountData($accountData);
 			$preferences =& $boPreferences->getPreferences();
 			$allAccountData    = $boPreferences->getAllAccountData($preferences);
@@ -659,7 +659,7 @@
 		function quickSearch($_searchType, $_searchString, $_status)
 		{
 			// save the filter
-			$bofilter		=& CreateObject('felamimail.bofilter');
+			$bofilter		= CreateObject('felamimail.bofilter');
 
 			$filter['filterName']	= lang('Quicksearch');
 			$filter['type']		= $_searchType;
@@ -759,7 +759,7 @@
 		function refreshAccountDataTable()
 		{
 			require_once(EGW_INCLUDE_ROOT.'/felamimail/inc/class.bopreferences.inc.php');
-			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$boPreferences  = CreateObject('felamimail.bopreferences');
 			$preferences =& $boPreferences->getPreferences();
 			$allAccountData    = $boPreferences->getAllAccountData($preferences);
 			foreach ($allAccountData as $tmpkey => $accountData)
@@ -783,7 +783,7 @@
 
 		function reloadAttachments($_composeID)
 		{
-			$bocompose	=& CreateObject('felamimail.bocompose', $_composeID);
+			$bocompose	= CreateObject('felamimail.bocompose', $_composeID);
 			$tableRows	=  array();
 			$table		=  '';
 			$imgClearLeft	=  $GLOBALS['egw']->common->image('felamimail','clear_left');
@@ -909,7 +909,7 @@
 
 		function setComposeSignature($identity)
 		{
-			$boPreferences  =& CreateObject('felamimail.bopreferences');
+			$boPreferences  = CreateObject('felamimail.bopreferences');
 			$preferences =& $boPreferences->getPreferences();
 			$Identities = $preferences->getIdentity($identity);
 			//error_log(print_r($Identities->signature,true));
